@@ -4,105 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5EE8CAC5A7
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 10:11:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5BCCCAC5A7
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 10:33:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2681A8E0001; Mon, 22 Sep 2025 06:10:56 -0400 (EDT)
+	id F08528E0007; Mon, 22 Sep 2025 06:33:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2003D8E0010; Mon, 22 Sep 2025 06:10:56 -0400 (EDT)
+	id EDF488E0001; Mon, 22 Sep 2025 06:33:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1FE18E0001; Mon, 22 Sep 2025 06:10:55 -0400 (EDT)
+	id DF5B88E0007; Mon, 22 Sep 2025 06:33:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D23DB8E000F
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 06:10:55 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 944C4C05D0
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 10:10:55 +0000 (UTC)
-X-FDA: 83916467670.16.8A627B4
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 4EDF5C0004
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 10:10:51 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	spf=pass (imf28.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758535853;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8OUTYjxcjxxHWxR5LZ/wlhMi0zwXyoRsjJC+CpLjkdc=;
-	b=0Ap3RkPo5If8iPm20Khjp+waiFo/A1Hytq4vxdB3c9CWNS+uytTeWZKioh3ik6q2B9gGeL
-	ABVjFU3+9SUeUPY/K1AGM2sjvksToEYOgL8hwMXglWxC544JEAB6TPQFPS6q2SIzv+HsGN
-	AfwrqmB+cPxKxf1xqg7KvDeIyL+NJus=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758535853; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CBD268E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 06:33:18 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7FFD51A058D
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 10:33:18 +0000 (UTC)
+X-FDA: 83916524076.29.F2B1AA6
+Received: from fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com [35.158.23.94])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 574B4180009
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 10:33:16 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=kovy5iRK;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf06.hostedemail.com: domain of "prvs=353d6d59a=farbere@amazon.com" designates 35.158.23.94 as permitted sender) smtp.mailfrom="prvs=353d6d59a=farbere@amazon.com"
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758537196; a=rsa-sha256;
 	cv=none;
-	b=ywM8nEUCpjBSjGhL5hBDhr1ehmB6fTd0DQr1/rVkKJiQL5r17kxzoE5QgrFyPcD/0sVEe9
-	Zzs4zUWPhG21Ki/0r3mKInfc2SmDU76ogBlR6KcIrkJsmU2Y3gEqSwcEvPsKNO0v2tuJsM
-	vI97Rg4Kit4FiPz6sNDzPHAuAYN/H9s=
-X-UUID: 65f05902979c11f08b9f7d2eb6caa7cf-20250922
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_TXT, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
-	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
-	DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS
-	GTI_RG_INFO, GTI_C_BU, AMN_T1, AMN_GOOD, AMN_C_TI
-	AMN_C_BU, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:5c8a2a3f-503f-44a6-af0f-1a5d4aebc910,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:-5
-X-CID-INFO: VERSION:1.1.45,REQID:5c8a2a3f-503f-44a6-af0f-1a5d4aebc910,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-5
-X-CID-META: VersionHash:6493067,CLOUDID:31d7d39b95cce73a5dc3d5d670b85d5f,BulkI
-	D:250922154409NPG9RFLE,BulkQuantity:1,Recheck:0,SF:17|19|24|38|44|66|78|81
-	|82|102|850,TC:nil,Content:0|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:40
-	,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:
-	0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI
-X-UUID: 65f05902979c11f08b9f7d2eb6caa7cf-20250922
-X-User: lienze@kylinos.cn
-Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <lienze@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1089521498; Mon, 22 Sep 2025 18:10:42 +0800
-From: Enze Li <lienze@kylinos.cn>
-To: sj@kernel.org,
-	akpm@linux-foundation.org
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	enze.li@gmx.com,
-	Enze Li <lienze@kylinos.cn>
-Subject: [RFC PATCH 2/2] mm/damon/sysfs: add priority support for DAMOS targets
-Date: Mon, 22 Sep 2025 18:10:22 +0800
-Message-ID: <20250922101022.362822-3-lienze@kylinos.cn>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922101022.362822-1-lienze@kylinos.cn>
-References: <20250922101022.362822-1-lienze@kylinos.cn>
+	b=sSRnSRCwyPDsvRB1HtYRonrZafLQ538kgo76ThQlbvWCQWvRrT2ggc+kR1P1jFYsbXmdG0
+	m4u7NVHhRBnrqT3+jEmOz9zuzxB9PpUS6k+O8C1zhAp9+4SrV7uiMLMtJRzx94p8Hjwyet
+	dVQ4oLWcTTWDssXuAnuipvDOqeaqgbc=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=kovy5iRK;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf06.hostedemail.com: domain of "prvs=353d6d59a=farbere@amazon.com" designates 35.158.23.94 as permitted sender) smtp.mailfrom="prvs=353d6d59a=farbere@amazon.com"
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758537196;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=zVSnvTXkXiuh+OW/uVNUL4x1ADt15TY9E6leiyfAL50=;
+	b=vdswTCovFl5frkfchd+reUv6EuZ9nWe3xGvCom8oEEAEtobBwTxDR7zVZEZbV/SQQddJkd
+	1pJPxBLtBbKaJtfw17fx3FXOhyIm53106Fdt7cqQVdWP5vXeN+co3t9v3wA0eoE2wpq+Ut
+	Kfpr0kD++cF/PO7CHVGEQDfmOmI1efg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1758537196; x=1790073196;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=zVSnvTXkXiuh+OW/uVNUL4x1ADt15TY9E6leiyfAL50=;
+  b=kovy5iRKK4xF4Qw1axLc2YTf3rwuzDa5RIDzIr+nzW/e9Z2DQxPtXkdj
+   iSb11DNa+gpxMQc86JKUQTHJeiFGC6RdLvDp7AFH4IFyF5DU2okdSOGtT
+   Yn+WYnWt1qvTKRsNKop3SmyiFrXPg0xZnZ1Lwzmn5OtPWnVAFLtX57NVK
+   TTq6m3BQHWFy417AX32hKSMf1QpFaXyNnGEK0xhYa3z6NqpOGqr1DxoWn
+   gh5XcBKKMAjRza1MR3+/yWodsk5JilLNetFAltAD7SLGh2MA9vHTiL036
+   VbIbkcT0Jvwp02Do1hxE6/Rx8aMov7unRsFkkw4RDnp0BtwtfqvgUKOkq
+   A==;
+X-CSE-ConnectionGUID: SA7Bpc9VQgG1HmOijFiFuw==
+X-CSE-MsgGUID: 7eapTz9/SuG/x2ufntC2mg==
+X-IronPort-AV: E=Sophos;i="6.18,284,1751241600"; 
+   d="scan'208";a="2478632"
+Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
+  by internal-fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2025 10:33:14 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [54.240.197.232:4640]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.10.226:2525] with esmtp (Farcaster)
+ id c0c65c16-13cf-4fa2-a5a8-1f23642ff95a; Mon, 22 Sep 2025 10:33:14 +0000 (UTC)
+X-Farcaster-Flow-ID: c0c65c16-13cf-4fa2-a5a8-1f23642ff95a
+Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
+ EX19MTAEUA002.ant.amazon.com (10.252.50.126) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Mon, 22 Sep 2025 10:33:13 +0000
+Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
+ (172.19.116.181) by EX19D018EUA004.ant.amazon.com (10.252.50.85) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Mon, 22 Sep 2025
+ 10:32:49 +0000
+From: Eliav Farber <farbere@amazon.com>
+To: <richard@nod.at>, <anton.ivanov@cambridgegreys.com>,
+	<johannes@sipsolutions.net>, <dave.hansen@linux.intel.com>,
+	<luto@kernel.org>, <peterz@infradead.org>, <tglx@linutronix.de>,
+	<mingo@redhat.com>, <bp@alien8.de>, <x86@kernel.org>, <hpa@zytor.com>,
+	<tony.luck@intel.com>, <qiuxu.zhuo@intel.com>, <james.morse@arm.com>,
+	<mchehab@kernel.org>, <rric@kernel.org>, <harry.wentland@amd.com>,
+	<sunpeng.li@amd.com>, <Rodrigo.Siqueira@amd.com>,
+	<alexander.deucher@amd.com>, <christian.koenig@amd.com>,
+	<Xinhui.Pan@amd.com>, <airlied@gmail.com>, <daniel@ffwll.ch>,
+	<evan.quan@amd.com>, <maarten.lankhorst@linux.intel.com>,
+	<mripard@kernel.org>, <tzimmermann@suse.de>, <jdelvare@suse.com>,
+	<linux@roeck-us.net>, <linus.walleij@linaro.org>,
+	<dmitry.torokhov@gmail.com>, <wens@csie.org>, <jernej.skrabec@gmail.com>,
+	<samuel@sholland.org>, <agk@redhat.com>, <snitzer@kernel.org>,
+	<dm-devel@lists.linux.dev>, <mailhol.vincent@wanadoo.fr>,
+	<wg@grandegger.com>, <mkl@pengutronix.de>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<alexandre.torgue@foss.st.com>, <joabreu@synopsys.com>,
+	<mcoquelin.stm32@gmail.com>, <krzysztof.kozlowski@linaro.org>,
+	<malattia@linux.it>, <hdegoede@redhat.com>, <ilpo.jarvinen@linux.intel.com>,
+	<markgross@kernel.org>, <artur.paszkiewicz@intel.com>, <jejb@linux.ibm.com>,
+	<martin.petersen@oracle.com>, <sakari.ailus@linux.intel.com>,
+	<gregkh@linuxfoundation.org>, <clm@fb.com>, <josef@toxicpanda.com>,
+	<dsterba@suse.com>, <luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>,
+	<mhiramat@kernel.org>, <pmladek@suse.com>,
+	<andriy.shevchenko@linux.intel.com>, <linux@rasmusvillemoes.dk>,
+	<senozhatsky@chromium.org>, <minchan@kernel.org>,
+	<akpm@linux-foundation.org>, <dsahern@kernel.org>, <shuah@kernel.org>,
+	<keescook@chromium.org>, <wad@chromium.org>, <farbere@amazon.com>,
+	<David.Laight@ACULAB.COM>, <arnd@kernel.org>, <linux-um@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <linux-edac@vger.kernel.org>,
+	<amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+	<linux-hwmon@vger.kernel.org>, <linux-input@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-sunxi@lists.linux.dev>,
+	<linux-media@vger.kernel.org>, <linux-can@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
+	<platform-driver-x86@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
+	<linux-staging@lists.linux.dev>, <linux-btrfs@vger.kernel.org>,
+	<linux-sparse@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-kselftest@vger.kernel.org>,
+	<bpf@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: [PATCH 00/15 v6.6.y] Backport minmax.h updates from v6.17-rc7
+Date: Mon, 22 Sep 2025 10:32:26 +0000
+Message-ID: <20250922103241.16213-1-farbere@amazon.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4EDF5C0004
-X-Stat-Signature: qt7tk5wb57y5tiiz7q4n4jd4woi33pyx
+Content-Type: text/plain
+X-Originating-IP: [172.19.116.181]
+X-ClientProxiedBy: EX19D039UWB002.ant.amazon.com (10.13.138.79) To
+ EX19D018EUA004.ant.amazon.com (10.252.50.85)
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 574B4180009
+X-Stat-Signature: 36jurf6cr1amzqod1953qpf6mstg5od6
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758535851-186450
-X-HE-Meta: U2FsdGVkX1+gGTPj5b5o85tcBVFKHRhHSz4KIN8ryCbRZ2ViwCgpqSvixrarUCenGMzHZN+0SgQJ2i58Vky1bpPkbaZbWAlEJNaEGL0aTd5Mhi+NLSaFLRKHqD+FzQ+C3y7nW7HJgU2qklAKZTcYfjCv7Kooy+1J43lZ7R85oQMVUPJtXFT/7uH+FRiMPG4UOCC++ZAKUr9TDp55TF1tckHYHZGKUu196ZpDAH0EDA8PeGj0QJgxKVs8YdVBYA7171MrLC28Wh0kwNXA/qN8cNzDOGkPZxB+jg4qe3N6MKpis2kyif5Ppp56s0UDZpxonmFd7YQG0g+RzujiRacdkIdwepn0SPwSK6OPFB6Fj35kCYgijntuV/vL27LjvD1oeTCfu0lp6MGWNgAeXN8r7ggPbGOgGIOBGgDHQpjmeZZ9NUp8EHgdw6tBgEVmChIbxZ04yo/EnsUjzx3TRiZfMo6MeYT5ZSnwM3SvgIMhPOlLlQLAVVYmhollVjk4DeP4Mbvb6P3xoRwZ3hGbfEPqVT709Br6NMybqZrkmgxaqwBItuaor/8Zn2pFMV+VLasmkHjuniH2ActA+uVoF0x6tiGnVlIhNE1/5+t9ADbAayjYfdJKfm40cUOKMl2/Zirug68rFwt9eTygvn/opmWCF1Y7g8kzKORXTvIU/z00t+mL1wKT/aWaJpMZzrgGk2tjpeiBOgjvfX6V5X+tV9VO1uzyDPQxe+eM6TyBiULVR3ZYbWNYhP+rpygIcWf4hWs5+ckyHCor28iRYFuwu8HFA9qdJldxqaLtcXQbK6BTchE7LyDOm1ebFjch+KVOqZg0Cck0DCcIV+oH5K7BA47w71YmZqkDZYGHvV13iItaPTMc2XHx32NF0AQOcN2XP68u1E0KB4XCjBl/J+ZLajK849dTYVu9NaHnZ0xGiDXoUqCfTiSMxDLOQXDLQCKaWHXPjHAheXKNbxMXEqgsQC7
- 4EGDUint
- VIEVdEiS+8PP+juIZs2V8nwSjcdmrFjgZ1Bpz
+X-HE-Tag: 1758537196-510983
+X-HE-Meta: U2FsdGVkX18QBtF9LVOA2OOuaFMKzSMhbmkPRkd1/KJ+XiZ6eTBHN2is7eBL/LVFaNDD0l+wOhV+9ENBCcX/bDIlWxxeYL7HNPLSojrv+9N6pc1USVwCZV1Eyd25MOBJcyhAn34fE6dcZlb0P03D5/kZ5ZfMwthiY2Bb7YkoevdNEAD3nQUvpIbOZY12uVt4XwvTD6lloYsh26Fnkt/SbH+e207mbe4Erh4Mbr6uD+SfSd0lfy/Vs1Gtt8vYGp1QMn8yAuxrsZlruif+t/gt1V2CxuPrFq7R+xbMNT6yFXT/UsODh4P5NDVn8HVpE2Dqza2sc7qCVKqq/zsECt0foEBJuSG7nWbev0NblHRwrTMwoi15KXOpT9JZlA/t5+kziIoJaW5DQ/85aDrlfj+Dp8wlai1au9vI2c4Vs0EDflwJH0NmTAGK1xMIELJtulpFDxrU+njb8Hre/dCFlzBcve1wTjgj4jIL3EnoA3ZBXPX2OXlCgf5kpAKDv0GCdowGqCGWl4wHxnKsVs+6OBQIuFUXAHFQhPXeA+t+Y05Dgvo1ZjdPW2FG4PiaXWx2jFW1fV4WyVIIxTcgWfRdBxCJ59noHJWUT5nBmIDdQqhjw+7q/LYE6ssypMAZ6BYvzjhw/ofo3mKNdvuQ92nQqCKXV5Qp0W1d9/Zva6axOZ25iHG5Yj4H1Igt5tbjXltSGZrG0vE/AIni6QTNsjW/b+7xmuR7eECnztlT78osBqJAI0djBzgeW4o839y7qrQrFW8q6ITowaGYNV5ZdPq9nD/PN8Us1mQ30VltXqM5lAsTwJw59WcfAiRSTfAaPL4ttJzg9pLuHL7yvjqslV1sOcKWBtL+dtt5HgJXV60UlmhSuCJNyErRafJjduWFSsOkOJcASzhYfFLLXJB0wgg0Naod7gt+v5/14RruBixwVeYPo1sfEzstEyeQt6Dtm/MtiV3DV54MZQ19HeynY2O3gXk
+ ktUFFwzb
+ z0PwKn7FshLJDEW2EgYQRlCVjcWbl57Ldz4dCKWuNV9Ih3zAvXrnb1AnOjRT6NRV7aPRj8NAAbCUklxhrTJE4UZOhApVdUbW+rYCrThg6ZIKjDXryEJugmfFQfdeY2ZHU5hs/rFX+Checdr0x0DVfXjEmh8RE/e5C+3GL5ocKWkZok1DDsRcxqWKOmP4U6D00DM7c/t6dr1y4t+kVVGy2/BsQsaxEpXz6BcBSrlOA+AvAhBnrrUwBhRYhET/kFmXz9ivV8NqqjSnPjZRfbrXTmmnNg+41fMf2bcranax1Xe4ZtqGHZO99WDsf/NTCjbYD8JlzdH7KYN1QIll3CouiLybiNM+RSAXAOC0zKNC3ic21yIz6Iv2CG71WRkZ5C8iMaRzw0M8Ol/rWhjyTKnYL91zcVCmrR1BphjAMaGtS6QrWYRmUJrutZ+MCZaEk2xNVqrwB03xfbsgrCjk9qEJiXzy6J1sf4sNqYeZZtIdczKdhg0sfSgZzZ6+89Fz78rT5ALQhLftb+nBfGIJviieGnTKL+yYDokMGeYNvfqveE2F/IzKDS/lUwQL8CHHn/hZ8+zmzJFkPk4lS6rrJCZhufMRj8HIBbpJsm6LknxuatBXKf2ELQGJ7L+Tdj6ej/nib3SCcoChENZRAPSbcfTnWYV8txry0USqbBLUgYzcUVfVNbUpp38hpuD2QcLBoeevSGc5THcT0pe9XfPtCPM3wJpafiDQaIwTWZwjBkk/6Kha7uyfe6e/PBgGn5g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,88 +148,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch extends the DAMON sysfs interface to support the configuration
-of target priorities, enabling users to assign and adjust the relative
-importance of monitored processes at runtime.  A new sysfs file, priority,
-is added under each target’s directory (e.g.,
-/sys/kernel/mm/damon/admin/kdamonds/0/contexts/<ctx>/targets/<target>/priority).
-Users can write an integer value to this file to set the priority level for
-the corresponding target.  Reading the file returns the currently assigned
-priority.
+This series backports 15 patches to update minmax.h in the 6.6.y branch,
+aligning it with v6.17-rc7.
 
-The interface integrates seamlessly with the existing priority-based
-scheduling mechanism introduced in the core DAMON logic.  When a priority
-value is set via sysfs, it directly influences the frequency of scheme
-applications for the target.
+The ultimate goal is to synchronize all longterm branches so that they
+include the full set of minmax.h changes.
 
-This enhancement provides user-space administrators and adaptive system
-controllers with the ability to dynamically adjust monitoring and memory
-management priorities based on real-time workload requirements.  The change
-maintains full backward compatibility -- targets without a configured
-priority use the default behavior, ensuring no disruption to existing
-deployments.
+The key motivation is to bring in commit d03eba99f5bf ("minmax: allow
+min()/max()/clamp() if the arguments have the same signedness"), which
+is missing in older kernels.
 
-Signed-off-by: Enze Li <lienze@kylinos.cn>
----
- mm/damon/sysfs.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+In mainline, this change enables min()/max()/clamp() to accept mixed
+argument types, provided both have the same signedness. Without it,
+backported patches that use these forms may trigger compiler warnings,
+which escalate to build failures when -Werror is enabled.
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 6d2b0dab50cb..cd08732f3b6d 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -212,6 +212,7 @@ struct damon_sysfs_target {
- 	struct kobject kobj;
- 	struct damon_sysfs_regions *regions;
- 	int pid;
-+	int priority;
- };
- 
- static struct damon_sysfs_target *damon_sysfs_target_alloc(void)
-@@ -271,8 +272,33 @@ static void damon_sysfs_target_release(struct kobject *kobj)
- static struct kobj_attribute damon_sysfs_target_pid_attr =
- 		__ATTR_RW_MODE(pid_target, 0600);
- 
-+static ssize_t target_priority_show(struct kobject *kobj,
-+		struct kobj_attribute *attr, char *buf)
-+{
-+	struct damon_sysfs_target *target = container_of(kobj,
-+			struct damon_sysfs_target, kobj);
-+
-+	return sysfs_emit(buf, "%d\n", target->priority);
-+}
-+
-+static ssize_t target_priority_store(struct kobject *kobj,
-+		struct kobj_attribute *attr, const char *buf, size_t count)
-+{
-+	struct damon_sysfs_target *target = container_of(kobj,
-+			struct damon_sysfs_target, kobj);
-+	int err = kstrtoint(buf, 0, &target->priority);
-+
-+	if (err)
-+		return -EINVAL;
-+	return count;
-+}
-+
-+static struct kobj_attribute damon_sysfs_target_priority =
-+		__ATTR_RW_MODE(target_priority, 0600);
-+
- static struct attribute *damon_sysfs_target_attrs[] = {
- 	&damon_sysfs_target_pid_attr.attr,
-+	&damon_sysfs_target_priority.attr,
- 	NULL,
- };
- ATTRIBUTE_GROUPS(damon_sysfs_target);
-@@ -1340,6 +1366,8 @@ static int damon_sysfs_add_target(struct damon_sysfs_target *sys_target,
- 			/* caller will destroy targets */
- 			return -EINVAL;
- 	}
-+	t->priority = sys_target->priority;
-+
- 	return damon_sysfs_set_regions(t, sys_target->regions);
- }
- 
+David Laight (7):
+  minmax.h: add whitespace around operators and after commas
+  minmax.h: update some comments
+  minmax.h: reduce the #define expansion of min(), max() and clamp()
+  minmax.h: use BUILD_BUG_ON_MSG() for the lo < hi test in clamp()
+  minmax.h: move all the clamp() definitions after the min/max() ones
+  minmax.h: simplify the variants of clamp()
+  minmax.h: remove some #defines that are only expanded once
+
+Linus Torvalds (8):
+  minmax: avoid overly complicated constant expressions in VM code
+  minmax: simplify and clarify min_t()/max_t() implementation
+  minmax: add a few more MIN_T/MAX_T users
+  minmax: make generic MIN() and MAX() macros available everywhere
+  minmax: simplify min()/max()/clamp() implementation
+  minmax: don't use max() in situations that want a C constant
+    expression
+  minmax: improve macro expansion and type checking
+  minmax: fix up min3() and max3() too
+
+ arch/um/drivers/mconsole_user.c               |   2 +
+ arch/x86/mm/pgtable.c                         |   2 +-
+ drivers/edac/sb_edac.c                        |   4 +-
+ drivers/edac/skx_common.h                     |   1 -
+ .../drm/amd/display/modules/hdcp/hdcp_ddc.c   |   2 +
+ .../drm/amd/pm/powerplay/hwmgr/ppevvmath.h    |  14 +-
+ drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c        |   2 +-
+ drivers/gpu/drm/drm_color_mgmt.c              |   2 +-
+ drivers/gpu/drm/radeon/evergreen_cs.c         |   2 +
+ drivers/hwmon/adt7475.c                       |  24 +-
+ drivers/input/touchscreen/cyttsp4_core.c      |   2 +-
+ drivers/irqchip/irq-sun6i-r.c                 |   2 +-
+ drivers/md/dm-integrity.c                     |   6 +-
+ drivers/media/dvb-frontends/stv0367_priv.h    |   3 +
+ .../net/can/usb/etas_es58x/es58x_devlink.c    |   2 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c |   2 +-
+ drivers/net/fjes/fjes_main.c                  |   4 +-
+ drivers/nfc/pn544/i2c.c                       |   2 -
+ drivers/platform/x86/sony-laptop.c            |   1 -
+ drivers/scsi/isci/init.c                      |   6 +-
+ .../pci/hive_isp_css_include/math_support.h   |   5 -
+ fs/btrfs/tree-checker.c                       |   2 +-
+ include/linux/compiler.h                      |   9 +
+ include/linux/minmax.h                        | 228 +++++++++++-------
+ include/linux/pageblock-flags.h               |   2 +-
+ kernel/trace/preemptirq_delay_test.c          |   2 -
+ lib/btree.c                                   |   1 -
+ lib/decompress_unlzma.c                       |   2 +
+ lib/vsprintf.c                                |   2 +-
+ mm/zsmalloc.c                                 |   2 -
+ net/ipv4/proc.c                               |   2 +-
+ net/ipv6/proc.c                               |   2 +-
+ tools/testing/selftests/mm/mremap_test.c      |   2 +
+ tools/testing/selftests/seccomp/seccomp_bpf.c |   2 +
+ 34 files changed, 202 insertions(+), 146 deletions(-)
+
 -- 
-2.51.0
+2.47.3
 
 
