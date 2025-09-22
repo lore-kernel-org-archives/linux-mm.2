@@ -4,236 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D2E2CAC5A7
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Sep 2025 23:28:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44A9FCAC5A7
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 00:28:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DDD28E0005; Sun, 21 Sep 2025 19:28:03 -0400 (EDT)
+	id 34DE28E0005; Sun, 21 Sep 2025 20:28:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88F128E0001; Sun, 21 Sep 2025 19:28:03 -0400 (EDT)
+	id 325328E0001; Sun, 21 Sep 2025 20:28:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72F178E0005; Sun, 21 Sep 2025 19:28:03 -0400 (EDT)
+	id 23AF38E0005; Sun, 21 Sep 2025 20:28:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 56E0F8E0001
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 19:28:03 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E08BF1DF322
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 23:28:02 +0000 (UTC)
-X-FDA: 83914847604.12.82A9380
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 84757A000B
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 23:27:59 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=YPw3Njd7;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=kRb2cLuT;
-	spf=pass (imf15.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758497279;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 13E418E0001
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 20:28:40 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 81E56140456
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 00:28:39 +0000 (UTC)
+X-FDA: 83915000358.10.C808662
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 85C0540002
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 00:28:37 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XL7uuYla;
+	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758500917;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=r5zKAof3rpATamO01lYOK+RlRy9z0l44+QvmN1v2dQ0=;
-	b=e4mxXdavveCDH0D8oxVlZXu0jPGUrR6R5i8uiMHYV+6QR94pL8hxunPgWWDwKeREaZT5Hq
-	WKdjVZz1wUfkBZkmm/pEWqYrhrXOPCvoSqyQ77asj9WEdLoaQIN6+L3LExXfIh88yQ360A
-	T2IYxeP5kMwjTjoJb6lcWSLOzsRia+o=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=YPw3Njd7;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=kRb2cLuT;
-	spf=pass (imf15.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758497279; a=rsa-sha256;
-	cv=pass;
-	b=ltD6g82JCEXJxhWlK/DoCQyF643BJ3eHO8xOnmNrU6utAPSaNAkwhOvztqExTXsxizH/Ov
-	YpWrAQ4uDUmly0LejAT5U+Urr2rIvCelmGi0Zun4I+3BTPk/CQAA0qjp3ozH9wF11aqapl
-	6Ydv59VOio73ZmLzB2EhYGX8qTfQfs0=
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58LFce66022357;
-	Sun, 21 Sep 2025 23:27:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=corp-2025-04-25; bh=r5zKAof3rpATamO0
-	1lYOK+RlRy9z0l44+QvmN1v2dQ0=; b=YPw3Njd75s9yQbWyRzt+DPGUvQvzcdYy
-	UWLA+odJgutSulwjtKQTTAG4+pBdkPBw+3VZl/k3k7yjT+fBNKAZRQ56FrSGTOrl
-	KWyq8PKguGGGy1rUVKp7+UYmaRq9V296mXD+vnpJb32Y5y3DGWAPPBVelpw/ltDq
-	l69jZU6VK8702fjhhTAu38D3krABu5WoR2mAyRY+zZ2/7NyYAOcQIS/v8N1FTdIR
-	cnB8ra1ZomjIhN59RtlSLOas4HVcLD5p1WfsDTtt4cHMHdYITVnxarjWhLqZSNKe
-	300xxYuaOlqcvh9qToI6YNQwPCh/TI2zneU4ElyfhsHcTILTWFsuHA==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 499jpdhcse-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 21 Sep 2025 23:27:52 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 58LKlR43028164;
-	Sun, 21 Sep 2025 23:27:51 GMT
-Received: from dm5pr21cu001.outbound.protection.outlook.com (mail-centralusazon11011067.outbound.protection.outlook.com [52.101.62.67])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 499jq6eg10-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 21 Sep 2025 23:27:51 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZvYqFYPIrKyZlJCGDqWJA0myommxcp/QRHaKNuJsPiPrQ2pv1aTR5lszUyWZAp+aSAlh4S94SD8fWTkfbBU636P/UBC6eKm6CVSbdF46Fp1tnNy9+zDbi4S0owJ1wkH7so++ARFiy99P9PrpEL0k4xScW9RkX3Tho7Ofgcp5rc4amXOrd0RqerzPbUDb4mXcrh4PDZ2KzjSxGTuPWxYFKbDBPhATFI6XCDkL+M9I23bNWwnlfybIBzTXKuCPmJkO3IXRh8e5zzzwC/jOdPhvnZe4kBp2O35pgwLW+2WpEK7iiwBPDPuiKtf3oOIbi49Melc+OaGfiPtVsD/Wn/sNSw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=r5zKAof3rpATamO01lYOK+RlRy9z0l44+QvmN1v2dQ0=;
- b=ap2nQhlZazlYbknXM3FNc7GicIZ15FVC1yEFuU59dwP2Fxs9ZX6KrT0830ZWm/em/sdNeM6LDnCXQ9frdzRBGuNklmRWtbkCtESSkoyaO5f8UUF2OjjZKAjPN1ulT2Nl8mUw1KYRHlkmOsxs1fKKrJjblp3Z2cLjCrx6bUnap/X3sRvB6zrpJ33JqtLZXMXnAVfjnD80OOUpYme/hDCKklJlEVCFRzX+SLS6llcBN7JEA4R1TLd79npBmOtm4UlaWVaF1nXo9kpb0bv/6vykQm15Hv9E5b/eHIRsu89tnfOBVW9AVp+6U/p18Gj+/N9RfbYRloocBkfGyfHLPQMyig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9iOnT5FR4XcNpcoZc3MvQE0LLgJ5N8o3aa+ZW0r8SjE=;
+	b=bPA2Sw4ZQKrFAR579J6DsN8+Jq5EfAW66uL4tKtiT7LI6dMoRKaHieZoXYoJidUIR8SMQE
+	nAqjtAxxSLTn6bAh5rzLZ26Dn8F3f+Qp6g/6Rb2osmgd9Z8Tc8HxUlbkGTp/KxgZv1hSHc
+	o9gB+XvrMENPXWWK69bnjnmfUeJ39xM=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XL7uuYla;
+	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758500917; a=rsa-sha256;
+	cv=none;
+	b=EVgX4a6sFXqVKlGzNLyfB+VTyVoSqnsUoODQFfUbp9QWR1U0Tkbk8MXrTLDMiP4lFmq7cc
+	tPz0YOIDSRw0U/RaoZYYMhFSJyl/VsCj5N0hi0IC8yAOdgx4Aazmxdto3agPjtvIgG8uX9
+	DZMcwdiYHOLay/R53wSVmy+MYYVUGiQ=
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b2b4318a202so87539666b.1
+        for <linux-mm@kvack.org>; Sun, 21 Sep 2025 17:28:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=r5zKAof3rpATamO01lYOK+RlRy9z0l44+QvmN1v2dQ0=;
- b=kRb2cLuTluI1WTvhqoSjOYHHLTw4u9EtNKOqfjxOcho7UoHtMtEok8+KVTIINIB8/XRMPPkc/3ieZ14iFdHHr14tUypUyFvMBmF2n9w+/SMBU/BKBSrRIwJjEYLZQhNRdAbjNPSUX/CRrxMpki9zPEkKDNKLUodHXjnpqfpO5NE=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by SA2PR10MB4716.namprd10.prod.outlook.com (2603:10b6:806:11b::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.19; Sun, 21 Sep
- 2025 23:27:46 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::f238:6143:104c:da23]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::f238:6143:104c:da23%7]) with mapi id 15.20.9137.017; Sun, 21 Sep 2025
- 23:27:46 +0000
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@redhat.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Lance Yang <lance.yang@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-        Hugh Dickins <hughd@google.com>, Vlastimil Babka <vbabka@suse.cz>,
-        Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
-        Jane Chu <jane.chu@oracle.com>
-Cc: linux-mm@kvack.org, stable@vger.kernel.org,
-        Harry Yoo <harry.yoo@oracle.com>
-Subject: [DISCUSSION] Fixing bad pmd due to a race condition between change_prot_numa() and THP migration in pre-6.5 kernels.
-Date: Mon, 22 Sep 2025 08:27:09 +0900
-Message-ID: <20250921232709.1608699-1-harry.yoo@oracle.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SL2P216CA0142.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:1::21) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+        d=gmail.com; s=20230601; t=1758500916; x=1759105716; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9iOnT5FR4XcNpcoZc3MvQE0LLgJ5N8o3aa+ZW0r8SjE=;
+        b=XL7uuYlaWbcNi6suhIrkJiFiowGsRFzgTk9RI2F5dts0tXLf/l2ekIECg5DTzg+42I
+         bmvrQdod+iSXJykm4Kw9klxd9mlcVMKnMqh/oBduwdzSce2e2nQxBa/fuUAaMyHh2t3X
+         4G54JgVi1GimvRTQb+zICFQTTceaT4jVqUo8Eiwa4ZYZVnnr5QunG+jWLZoW4piZTOaW
+         tT7xKuix6upIg82sDCncw7EY05pyYkVDZSihWv1f46U8Kx8s3RcF8VmThOeorNC+MQSD
+         pxIX2FhY3j/I4XejREo/AgEUF6fKC/sn4SP9rHQYkyyFRKXm6R+AqJX6fiuREb2DEdq3
+         nkLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758500916; x=1759105716;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9iOnT5FR4XcNpcoZc3MvQE0LLgJ5N8o3aa+ZW0r8SjE=;
+        b=jiJkSm49U+EvUMRGxAnP3phLHZNwx5UFSlQdNJ+AzLZU4ZYVUIjGeNJqX9SdrGfdbN
+         YH0ToBN+gs4Puh8Z3ULkcRHsaNhvwKLtQWq3T68ZQ9vHJ2ZGO9kWtFFkSJUPLe/5KkLc
+         efqX4ts6qQOh1vNjb9qtEyBdlcELVDLARKGaIHir5sTRQvNMTq4QrwDSdcHo3g2EKeLG
+         Uns0G7HRPWkHHz+002W2h9UfmslmfGSMCSR2SQ0zwYPz0qVk8kZciUKS7OY4kbWNsAaA
+         RKtY3+Ike6eYxSpJ0ryB8DXKA+ZSRj1bspf/a+szJt4hMpAP2hR68CzWhDtnTmQWusUM
+         dRDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUSL1NB+E4Vm8dPTFA0qBUyVbSGIsrH8AHMUBf+LLl6ew8LuKSB4mD7aoFmjsN9KETb34G0HRVzaA==@kvack.org
+X-Gm-Message-State: AOJu0Yx3yvWpj9qbtg9OP2DVyWO5/yfwekB2jEfLbWAcic0XIDV8BHNT
+	usS9ja7dTyuwZjz9w9kJus/JmBcgiZi4myMQKOSQPThPTuhpnv5EDWkJ
+X-Gm-Gg: ASbGncv8kmERh6gbtz0DjgXtNcGq9FgLD+FTV+H9Q7XkwS6hizeqg5f+f4ABWFdnC9L
+	cLVzIYT1h3jnAbjKWTlmuN1rIRtoAb1qsLYRWSHEn3yLyqbijn6XKiXSBfkOBVnpszmnQ1+1vtD
+	IAnk09Gxy3t0Im2rLFIZhF5RGm/MxE0xWXUozW7/V3DhlhG+6AnjKPKtxAycoBTXgBWJmIUr+MI
+	XZyiKmH8NsnKXgBVL1T6sYx/ST/daGxFsL6nBehwV/b/Rym2lm62DXkJGayj3RM9bMO9hDBiX4Q
+	nSN0Wrq4tN9n+N1hRDdBcdXTw69NUjipGLOoYOsyFCJvRIT0vSP0UzzEenGnbmGAKLuZnYPxaHA
+	VX+ZSPnu7QXS2wcDJipUl9g==
+X-Google-Smtp-Source: AGHT+IHsXPTF0BdSmW2+RvJ3xD4P4W52sUaj8gysQJt2NBI0+441DdBmcBTdZ6P3WMKdVd3MqLgkow==
+X-Received: by 2002:a17:906:1719:b0:b2a:10a3:7112 with SMTP id a640c23a62f3a-b2a10c21449mr344268166b.24.1758500915578;
+        Sun, 21 Sep 2025 17:28:35 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b2890e047b7sm435957166b.5.2025.09.21.17.28.35
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 21 Sep 2025 17:28:35 -0700 (PDT)
+Date: Mon, 22 Sep 2025 00:28:34 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: Wei Yang <richard.weiyang@gmail.com>, SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org, david@redhat.com,
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+	baohua@kernel.org, xu.xin16@zte.com.cn, linux-mm@kvack.org,
+	Kiryl Shutsemau <kirill@shutemov.name>
+Subject: Re: [Patch v2 2/2] mm/khugepaged: remove definition of struct
+ khugepaged_mm_slot
+Message-ID: <20250922002834.vz6ntj36e75ehkyp@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250920115233.81851-1-sj@kernel.org>
+ <c4df52c1-f873-4e2c-ae7d-f66bcf6e2fbb@linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|SA2PR10MB4716:EE_
-X-MS-Office365-Filtering-Correlation-Id: ffc88e7a-d65f-4157-5feb-08ddf966788c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?WVDm2t5hPVHKl1NKUeuNsrifLTJwpqzgDRHKo1a/s2OaYSfmGVQIVo2/nGxD?=
- =?us-ascii?Q?IrU6F9LmOFpVIGeuTtGp1QJJboS4yZP3ent1rSAd1oRxR7anvqDK+fniKJ0U?=
- =?us-ascii?Q?zJaoXt1D6oPpCSCyeKm/sIlhLaAd1c9gBYw841WXg0VLVuuA9vMfCIBHub65?=
- =?us-ascii?Q?RdS+P6HVsBers59fCEFZM0xLkdSR71p2gu89+hiMF2aiA5UhQLt3w4mMLuOk?=
- =?us-ascii?Q?1aiSseT+kPWigWQsvh4yPcAT0/ujMMsXsCEtgerGNu9C9nbjzQZ8G9Uowlzi?=
- =?us-ascii?Q?7uacQJW/BcTFeO+5/0wqOwugiNn2nXDOczbVeZUAcQcFxTZ6OT1qOwZLFLJr?=
- =?us-ascii?Q?8zTkulDFpXNDFAYuYjqDvaeLfijHHe17HsXMMK6hxUwFi62OmRHeWjb0OAOC?=
- =?us-ascii?Q?7RR9oxx5shBXH30AYjFeFnnHMidVhrSRPI4Zng9yzkarXj2B4FP/eSn9hR3h?=
- =?us-ascii?Q?BqgeB4TMFRqKdnW8CCQh4znr0wXGer4a5gO+AVLTPcTRxrgsUn8sU6Y+U1NQ?=
- =?us-ascii?Q?lEb4NFjEmBZgVBvx43nFxtyemsxXmkgi5enrZZPZ4XGfxPLZ5fUgXB6nUyDO?=
- =?us-ascii?Q?AL4kEw13oDX9T/2hVDNRqboi3qx7xkdwYsaLf0kvsjm5bNiSMaErbofU5qgV?=
- =?us-ascii?Q?nBnZfYQYMKC9xweNBClmIenRbaZ5oENGcmkvjHGnQwDRUrqn9WfycQYtgzHk?=
- =?us-ascii?Q?vwGWuGdRyD4SbIZDYikU2+EvPc93NLV9JwLQ8HLyg5tRp9Hwzk6ifZlAPOxa?=
- =?us-ascii?Q?wWhuYyN3KPe8w3R2zJxRb5T0fxB/hJaJLNAl5CeDQviovxprh4poNsywfI7A?=
- =?us-ascii?Q?pjSVEMnnkLGSLax5DlZOMPKwYTzHbX2bSBkP4mu9jx6TONAESe398v/pkGQq?=
- =?us-ascii?Q?GLtxcGrnHNnf4nDG4l1nrc2oO23zCIxY9X23fBnXeg73mCdcx4Cfk/bfT5Y6?=
- =?us-ascii?Q?pKVmBXWICrvgCZfc/KFD3BCmaAwp7srKQbcm7nw/jluElZ1m7uK4KHbOBftp?=
- =?us-ascii?Q?qxRgNXLOZAGbRqjT7trmWig5qGOS9k8uaU0Sr6B0q1kzKhInIWtGKuwR8MRD?=
- =?us-ascii?Q?npCG3jUBVu76jEiH7lMGj6cxrWgJRqVos44dl4b7mgrJsa5mH41qBUKPja+i?=
- =?us-ascii?Q?FIZy7WbNJDuOTHQYC6PliaA2gZAydz6Pg1N4/G23EKCJLuSp+ixTOZgO1r4n?=
- =?us-ascii?Q?yBPmjNbXlSsrcnK57BCkAHT8mQffcFUb0w9+AcJFbUSCZdIwLip8FKxKeTj3?=
- =?us-ascii?Q?fp64RBcMvIvgOQftMbRUzreTMUvrgw3Pdrf1O/YmlF29ha9TqAyNHMJ6NQxK?=
- =?us-ascii?Q?wrmG5Qvk8cfJ8S6UZgW4ZtXUJ6NmZbLPxS/6n2fm5wFMXWahaYUPPn5jalvn?=
- =?us-ascii?Q?hBDPOp3aBAkqSnsmZF2G6hTCSN+0S8bDaAf38PUk6EQG0ys1cETdh4zu+Kv5?=
- =?us-ascii?Q?XoUJKmv1tCM=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?2nKYClT81j9OPiBIxkgEUi5+1rCri5eybBciSVFQZ09XtjTG27vrfu8tt7df?=
- =?us-ascii?Q?hrQ+Wv+ba3aNNpWz7jbItOliYDvDbPAHkvZJ6Kqeqr6Iylo5nR5cIb28a6YM?=
- =?us-ascii?Q?0Aj16ne3YwKe0RaFOQB/EfHw1sFbiyZHGiUDXrpxS5BlRtE6XY6cBtSLXQv6?=
- =?us-ascii?Q?HBscBq/o5lmmQjXJZYWN35/l81Rih186vAJhQ36MUHVQbkG1p/SeLupDGr0w?=
- =?us-ascii?Q?Ix0OUgepneN2+VJxcF8fbJR+spVuVfon+EvfYTavRddRffAtEaQVcw5CIT5W?=
- =?us-ascii?Q?HboFa9NIupq9JWK/lnD3pcKeIBK7V2+tygH3LCuvM8uZi8XKGpDNPmhquwV9?=
- =?us-ascii?Q?ov46R5hDgJ9R00tddAQJZbuaq1KisQ45vvteGWDCdOMShFLPjqcPs2uZCEjO?=
- =?us-ascii?Q?rNGtjAp9L370hewXgaipdAcYIK4zvqX7DF432OzxyeVkJOCWJINQfpYyiH8j?=
- =?us-ascii?Q?oLIhjMEYCaLW1SX3vYgZ2wdpFilvL53FuDWmYTb26L0bQpgaGJdQy5sTC8LX?=
- =?us-ascii?Q?Yfc9Wx++yQwuiYTh8rwEYmG+F2RFugs/FjKHB2XswED4E48XB0tccpT6Ya8f?=
- =?us-ascii?Q?ntzLGkfjfUsOcUKBHK6KHY5y8rYTxwtWtGEG/S6xGG9FyqHhPFe8x9ml0Lt7?=
- =?us-ascii?Q?pvRp2ixTpyD4uvt7eYqgpuHBGfKncZ0679VjFHPE2S0KWcL/oJa2xRsHDUIx?=
- =?us-ascii?Q?BwnZS/6q9SaRLy3gRlSb4lcgA4xrjcVp//AKG7Y2rU/KSaLA1PUivJOZkHFn?=
- =?us-ascii?Q?inK75inEtSd3I66CqMvlXHGbroa+pToVbFgkTlCtLQPkkwgfXctfXycX6iXv?=
- =?us-ascii?Q?+SV0pnJej9HxGBEpfsj7KaMyUwVMouuObnz8aPJk+wEwoxyGSEV0vha6tBGB?=
- =?us-ascii?Q?/toA1ErnlPyteDxA1C/dY0ke6Og2y0hGoZJHR0oxKy6EYI2M3jOy+SPlGEiF?=
- =?us-ascii?Q?xaAp9uZmaJ1yL2CUkCsyFw42qHnlPyO12xHm0E/ynWbSDFy9EmNwVCiI3/d1?=
- =?us-ascii?Q?v69xgDNai7RVL0QB/0WUMXqJ4VE+GlEfd6DeDQBcIjGViYLyWw6RSyVjE1pg?=
- =?us-ascii?Q?SJNWehOvN30wW9M1VnXc5blxweTLM2R0IJPAacKWRNvY5vuhJivLa68eLeTw?=
- =?us-ascii?Q?eR6YJAWxSArWV64XRsK9Z434QRpi2oP6W/tro1Vj2uIjinpnONwmKWWmIvdt?=
- =?us-ascii?Q?jIFJtRvGnf0ygl2ydYlL/uOxAaH7st+kRePj6Mmv28e3atypmHIwolRjZqg+?=
- =?us-ascii?Q?mGtStMEbN6xsdrTUz/m/2WOVUjLhHbdim/FSdj/0u0lm1pIRm1sLkgRctix+?=
- =?us-ascii?Q?QN+nYhJ1q7Tg0BKsmb/h7yyya/mX5e+PJFTdAFVXohdDzEjtMc7zYUjmF22+?=
- =?us-ascii?Q?rrrx6jjejiDVlpRandxlWjvK8STFlnOb1WDdmDF7c5vQ/uXHavMjB1VQfSy6?=
- =?us-ascii?Q?rRdCenRbtXHDzz9ZOGfZRWaW+lyp8W56RVl8bDu9uOHjPrFOEKR1IJ2vj84G?=
- =?us-ascii?Q?emlvgzOGLHRMoVHKBe65+OmHgm/w3b8+n89cCz09yPbRmagYZMKsTXH4fmjp?=
- =?us-ascii?Q?Jp5BcyEUxHkOHROY2598ifAL3Pv71NdDp9gx2RBF?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	dZ1vyjV7IqiZsgSOdLK0Xj1xCXGl2k+VwWgPW56H6RjUdqxCQrQaATFNP6NdlVbMQpcJdvJxev2iUpoODW0cLurz5fe59w7DP9JiP0IrNsX6LA96MYTSRO3c+qKPuFVi5TFWA+u6rQEhGPwUMAhBnq+1NbxABS8u2LA4GhJpJ/k/s43ILNfvxBSCQUK+lO29TmDH/Id1mtjsNTXv9f6cuG+uYznehlV3a0gZcFIzSXTQSyRINFtleM54WRc8oijjkbqKJ9ygY0leRRHXsBS69XWCNWkbbzacCGqWCQFrVqKM0u695dMhtpS6nOi4eKmGtcuHlU0uMQnm8xmJmSjP8Hjux5l9MJAsP7fQ3kHKvKwKQFENPKKBfBjT4IKyTEJ4HyQ+rDKgvaxtEx+uzbmSw3VM7KJtLiGZkdB74Uy/ChxKJhm+tUiVVnYj9KmO/+CHbqmKgXgiH78fXB/a9tMVyNCrVVyd6zmCcQcCVt3eQrXGVQ/TZnuJ9d0e5FqFHHq/5JFZp2eN19vk31/oxBra0zc4Hg1IOkgOlVQ+425Xc/3wmMsAcV3p/mrY1PZ+k17qJVEm/fuUIVphokzVVmKsuj1qGZAhJs/q8xRj4cdFulE=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ffc88e7a-d65f-4157-5feb-08ddf966788c
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2025 23:27:46.2894
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JJ2cqo/vFt0yypG3PnuRWEh5bufLWFYYKiCN/qvFuYirdHsz90ioSOg9QyWBjnU/rSyUMjLTHw0YPVjid2VdVQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR10MB4716
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-21_09,2025-09-19_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 suspectscore=0
- phishscore=0 mlxlogscore=999 mlxscore=0 spamscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
- definitions=main-2509210240
-X-Proofpoint-GUID: dTHzbMhBu_vvbIkJWSAJml8MgxzXuo09
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDAxMiBTYWx0ZWRfXwNo74oEyMhPx
- BPHvOydD7UE2XxzAl/hwnKihGCn66jqr2RU7pRbc7stGymeUYTv/xERXxVdFiC0dDFLCszjTMrB
- YiTBG31gSf+fBybvpscYBWeQ8Ajj61/fJdgTv0sJUWpxw/oBLu0XM4qjDABqmZMKUqmPzs+gT2s
- iLozHPI2WRBEiuZxanxAH+y3wq8uB8CfRp7D9Ez9THb86fN+f8eoO2oEZBLD74eSOKZToP73mqA
- b73UyfqklnXnhdSlfX6+cD6TDLhs6rhe5xpi4vDT9GwiTOXA38ZSS46sT/ZOkU4XonkKi8YN6US
- 75jOZniEGQ9zzkU1aCCSoyGvc2Kxlln7NWDYeUFoFqwmED68c69X1IMlAbP+MNLF+z0kpBNlP1M
- 4JybvmKR
-X-Authority-Analysis: v=2.4 cv=aJPwqa9m c=1 sm=1 tr=0 ts=68d089f8 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=yJojWOMRYYMA:10
- a=GoEa3M9JfhUA:10 a=VwQbUJbxAAAA:8 a=1XWaLZrsAAAA:8 a=R_Myd5XaAAAA:8
- a=QyXUC8HyAAAA:8 a=20KFwNOVAAAA:8 a=yPCof4ZbAAAA:8 a=hA1-jdVMoAstThmsgiUA:9
- a=1R1Xb7_w0-cA:10 a=OREKyDgYLcYA:10 a=L2g4Dz8VuBQ37YGmWQah:22
-X-Proofpoint-ORIG-GUID: dTHzbMhBu_vvbIkJWSAJml8MgxzXuo09
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c4df52c1-f873-4e2c-ae7d-f66bcf6e2fbb@linux.dev>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Queue-Id: 85C0540002
+X-Rspamd-Server: rspam05
+X-Stat-Signature: iw41rgouwyzywrpnjnium6yjzyz9wz8c
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 84757A000B
-X-Stat-Signature: 9upcujutzw5g7yf9t4a4ap7yyn883dee
-X-HE-Tag: 1758497279-485489
-X-HE-Meta: U2FsdGVkX186r9gIYUsd+BXdLTxcuSkQuSZnjWeMpitjUgvJp3GtAjBoPlSQ/OiKh/vOjhDxhx20zWVNQ2VC+PQcEqI4Sry+obEGHK9Zl8RfNY8/WmIqwuzsqCdKpSjuSbkt6yWIanyaLYPrWCb+oucWzPNBneO2BUT97t/asieqBZoOCULTXw3SkFZiT54eDMFIDxw/C5Bc898h2cjYgGxbNZ3yenI6Ffuc3MDfAzN06VGWEF+aR53ggUWhNd34u5gCtKB5U0fZUTM49gI6eQ9xGce9fNoWhVQsAlQ1Bsc973prZJd1ZUXk7AyF7/OtlPMO/bv6j43uTpJqY8LjvqO1iRnXn9zaa1g8IsCnf8ajhKd/dOOddS13zu950JRfZfP4ikrYhePpCj/puygCzYgrr4G55BiwmI/UL5Be5rF2RBqn9/QBPTVrtMHp1y8x317eF7LqboamOvy99iA0WaE6a4PLqL7CNp7xxQaJTvNRajJ9Pt3CXP6bqlh1+g9lmVaJD516yF8JbR3DRMh10N0TnBvSKdQF4f2QDgO/C1jfnEzrmWLwqLmBzoFYnLss4KayY+r/q75eOj0Q7Q38LVPgcS3iwoy//qWaEd4zptog3OsdYKcf4FqACqyxCOBS09fmzfxJ6oE5oPLqmB37hxWb4mwI4QoV5TcuQgy18HZFz+tn/5CzM/Y3KvlIBpw5G7PMR0k7BpRgD7xdZuvLUqCOklTm9g4Ush4V9kz5kCUpyk5u186pfBtLhCT3CN1zJmQo2Apxw+yhD0cdf34RV5OS/hlZDyRjnGv039iMdR0aEh797SdioWSzCGPkvxY2hvcIkP9aChvxFzi7c/0ZtPZbjOUgj5dJQ+Ng71a5PY1pePJW5vf9K8FwlBb9tq8imZASbbsr0PMLUfCxiLDKmvvBIK0cGI0LwlCVXxrg9CC8IKYp1v2HRfM4AUdu2wDeyMoeppvn61En1KZ80Kf
- xQPvwbY6
- 3ey0OBXI7+YSAyXUYRILF5YEEW9uX51OarKexdK60zK65fTxxf6TWa0Uaix7tC3yTolA4o2uWYSIAOIo9vEfVG5Og2BXpeWWML6NoMPSqZUzGv5myUkV85ZnN0Jue0IpgCABO8+Xc9Iua7dejpInwDOqEtSI7JQgSKdGcN1o+ZD4AOZteTUCkdEevgazCGVBhVVcf2VgpYcmipb7Fzl+jWcnN+Krg7SeGMSpaHK6FtsRiuWipZKtSiDPfGqWQWt8Zrhz0fBl/Bbd4V3/lTtZkiPbDxBRo9mBdRNf0mLSW0P+Jhq0AlbTZ91tPSLMkJwtDKD1v1UlRGhbGqbVy3OgwBnW9ebScF0BRlt5VoxrI9JtjoeV7JqItOkRHaXbyrQUch6Xi9WMCGzulGe9v8ZxsVNVmF2y3ZQsqv5rbfONTsroIYMV9iI+Y25Q5X4CgfhCNffx8reciURLTIoQctPcah7oSLWPBfamoMCqDq570K5h7r2LE1oUMZU+e92tMTg1gdahnGoz8SKyt1JaiK+apWqn0nc1LKl/HO1C3q/mljvuyEwuDZDFoifzR5mnCaIFM1WHzdihLNfzcem5hUVUKXVZ85O9ee27oyKI4UkLgVg/yKUenwVmcyx+t65olAgyy/k74MyBH6tSHmRbRP0WIqbv1BkY0h2oLxS3NR531f6SQsiit2D2Hi+VZ7hfBzZxDPDnhegiSWPZdaUlOwnC6jOb+hpTCng4K7fZfT0XuXvs7lpOFFiqTUh8W4Ctnq7MwqJ6al9djXcJmAUoOLZLkZEpD7Z5GRJPatp0vlpjkO9akmQxvlZMSDSKbpCecbF6QkkjzkJhWunBnJz3kZcAV4zbDzBZAonefK12EaWcvkRk8Z40NsAZq0hQCw+kv5xwSA85dsLInUSiEvEa5bnoBQEx+F9pQX4Iwdrbzu7Llh4ic0aSMUt06YpiNvQ2BACay0UKB2uo8ION0PicEYs4bMEr8ExEK
- OBrqBRkX
+X-HE-Tag: 1758500917-923721
+X-HE-Meta: U2FsdGVkX1+J9zFUN+HYbh9B1OSu7iE7NoTfhXJ2IJiAwEp2agJ9VRdnriBGryztiBzNRlot9ro8zPmOCRAoJB/I10dfl6QPdBTzCH/1hhWQ0RJvA+enLOZOfRD4SWQ4RTsvNH3cvljIPj0Xv37IYMFiDEvoMCeRg/4QeINsNK5DeHj9S872tDXTz21Li0luiHta3g3Q8XfEPRtDmfcoidNp9+d/sGLjDRgXNTl613A33wBlNeY9haZ+x7qRk6rtJckTdRZJFHZyZJvvhojjFsEwpCCBZhYcP6F4zxerurlGwL5GYaYgeHOUvWF3Sm9bCcvKhzSIYoTjaHXjjTLS/IEjxZzyQwYHsPBvRkBvOjv8ufsPn2igwMba+zHnKqKD7p69ADpX3Tzk41dC6dFFgc8X13V2q9/cd3CVU6Ic5U37ZANMSehRcdDlulQHlNGQucK4lz7leHNelvjZ1xKlUXX6L7App5HUP+a43QVIe4VcrpCBc1JAXs6f6cI9KCgB7Rh4gTuODNc9xjVIK3o/0AaI/HAaPDGDXePiCkyFn4pugCIvx5928O2JIuNass0MoRBtD9F3ZALkIVwrxc8H2B+ey29lUFZqxDPyRd01m++vTL6jTmJfjfjlSBiRzdc/dEJwgxCOxbuFhgQmI2AydeUJ7MGxuVSQWvHHF0x9B8r+A8JBx/1gnUUXC9zneGOM8kzgn5KGGbpBqYQuNVdclH9BKt0/x7b4LsP1YBkhcb6KQrhuhbjwm/00vK75yDSMjtsoPmsnXmSriMB7UTC3Tw8zaDsh+Y8+nhoKFL228FyxLZ0Ef+Xf0GigOYw+tryWCm6x2hbhcJkorrCPRPiRBeoZTHQvBKiaXtImpaZndn45cHw2APJBs+bj63Sx6m12zY00A+hy4LY650QSEKqQEGJsOQph+1Qa+G6C7A9qGCJq3pB1WTVuutQq6ok2mORZc+EAjEA95ZB8z+uZrNI
+ xbAFJLHZ
+ +1xuWyNR0h33UdbNDoeCgwsTQoQ7sApb/oM53kAna01ZbahZmKALvle2aHwJPzssBVP2gbJQfCdoc9iwfVptoc95dMNv1UPrY8aURbo3jVi8Ug1WBwCP0wg0i7+61tc/EfDzvs9NWJ7sR7dYotW4ZSnX1CIQ5gtaaq0rfZPwtYDRfi2iytjTAuQsRtiqlIHN9Kpq4yo0cbHrN+/4xqmoeletXFF/qbpifsFtOfnqToav+NAr4GYp4BCI9C+2JdPE0njNUEzqGVZNtweNIPdp3N15QgHjYQKDIWbYtQZsHQYJ4wYD0tVzVMPJwQ9TbPViwJOoJKvtYpwMJltoEell18hXkmdi8Y9fWA+4XCaeiVkRF5QSbiEEIw/XYGEP5MK6JMdSbb5v2Q+ChusXVUeRVgdAzL3Dy3luWm5CTlcjeMURGjYGef5wjxoLYEhwEfjFRIawEMPPAV1gqo6V+rG1XAv705F2Fs5uIThDg5Ru2XIvwbdgQgS1F5ZaD7ViYE3a6VF4kMGUflpy0wPwWmm+hYeMKuub78BPGowXk8eXyjZR4aOEdXxiOU22CxMYu3c2S6+6lvRG/jldAtjRu7WJzrOWgBhmwylQnHg0YjIVpFiaTmQmmuwAitb1F4C+UbiBWkMIj9uXh4C67LZX6h6hXm///Qgsyiu7790sVptfkf1EVdQ8+cOX2wHZdF2BLMe22peL6yRyWo9SBd4dP2kT9Pa2tRAl2V1VaSq/xtO8nor4tgHBDDg1itnwOVm4wf5NxreFwhVJjippUFUi/QpBAlZUvTb/paBAse3uCOtzxVltogfDPt2a8bSQCIi35tbK0c3cQ24qpkgSOVEcLwubqgbmfA/bwrBGBdai1LGmqD4GNjApbtxjdHH7yykqd/uRdUt3vaOhPkKvBhxqoeTnrqfTx7dh7hn2OGXqwh7e3GWcReb/5NTjWk9O2P4tctRQoqGcw8KrmxsUjiaI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -242,157 +127,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi. This is supposed to be a patch, but I think it's worth discussing
-how it should be backported to -stable, so I've labeled it as [DISCUSSION].
+On Mon, Sep 22, 2025 at 12:07:32AM +0800, Lance Yang wrote:
+>Good catch!
+>
+>Looking at the crash report, this seems like a use-after-free bug
+>introduced in khugepaged_scan_mm_slot(). See below please.
+>
+>On 2025/9/20 19:52, SeongJae Park wrote:
+>> Hello,
+>> 
+>> On Fri, 19 Sep 2025 07:12:44 +0000 Wei Yang <richard.weiyang@gmail.com> wrote:
+>> 
+>> > Current code is not correct to get struct khugepaged_mm_slot by
+>> > mm_slot_entry() without checking mm_slot is !NULL. There is no problem
+>> > reported since slot is the first element of struct khugepaged_mm_slot.
+>> > 
+>> > While struct khugepaged_mm_slot is just a wrapper of struct mm_slot,
+>> > there is no need to define it.
+>> > 
+>> > Remove the definition of struct khugepaged_mm_slot, so there is not
+>> > chance to miss use mm_slot_entry().
+>> > 
+>> > Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>> > Cc: Lance Yang <lance.yang@linux.dev>
+>> > Cc: David Hildenbrand <david@redhat.com>
+>> > Cc: Dev Jain <dev.jain@arm.com>
+>> > Cc: Kiryl Shutsemau <kirill@shutemov.name>
+>> > Cc: xu.xin16@zte.com.cn
+>> > ---
+>> >   mm/khugepaged.c | 57 ++++++++++++++++++-------------------------------
+>> >   1 file changed, 21 insertions(+), 36 deletions(-)
+>> > 
+>> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> > index e019ea2cbab0..88ea92c64bf0 100644
+>> > --- a/mm/khugepaged.c
+>> > +++ b/mm/khugepaged.c
+>> [...]
+>> > @@ -2376,7 +2365,6 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+>> >   	__acquires(&khugepaged_mm_lock)
+>> >   {
+>> >   	struct vma_iterator vmi;
+>> > -	struct khugepaged_mm_slot *mm_slot;
+>> >   	struct mm_slot *slot;
+>> >   	struct mm_struct *mm;
+>> >   	struct vm_area_struct *vma;
+>> > @@ -2387,14 +2375,12 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+>> >   	*result = SCAN_FAIL;
+>> >   	if (khugepaged_scan.mm_slot) {
+>> > -		mm_slot = khugepaged_scan.mm_slot;
+>> > -		slot = &mm_slot->slot;
+>> > +		slot = khugepaged_scan.mm_slot;
+>> >   	} else {
+>> >   		slot = list_first_entry(&khugepaged_scan.mm_head,
+>> >   				     struct mm_slot, mm_node);
+>> > -		mm_slot = mm_slot_entry(slot, struct khugepaged_mm_slot, slot);
+>> >   		khugepaged_scan.address = 0;
+>> > -		khugepaged_scan.mm_slot = mm_slot;
+>> > +		khugepaged_scan.mm_slot = slot;
+>> >   	}
+>> >   	spin_unlock(&khugepaged_mm_lock);
+>> > @@ -2492,7 +2478,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+>> >   breakouterloop_mmap_lock:
+>> >   	spin_lock(&khugepaged_mm_lock);
+>> > -	VM_BUG_ON(khugepaged_scan.mm_slot != mm_slot);
+>> > +	VM_BUG_ON(khugepaged_scan.mm_slot != slot);
+>> >   	/*
+>> >   	 * Release the current mm_slot if this mm is about to die, or
+>> >   	 * if we scanned all vmas of this mm.
+>> > @@ -2505,15 +2491,14 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+>> >   		 */
+>> >   		if (!list_is_last(&slot->mm_node, &khugepaged_scan.mm_head)) {
+>> >   			slot = list_next_entry(slot, mm_node);
+>
+>In the original code, we used two distinct local variables.
+>
+>1) struct khugepaged_mm_slot *mm_slot:
+>mm_slot consistently pointed to the item being processed in the
+>current call.
+>
+>2) struct mm_slot *slot:
+>The local slot pointer could be advanced to the next item.
+>
+>> > -			khugepaged_scan.mm_slot =
+>> > -				mm_slot_entry(slot, struct khugepaged_mm_slot, slot);
+>> > +			khugepaged_scan.mm_slot = slot;
+>> >   			khugepaged_scan.address = 0;
+>> >   		} else {
+>> >   			khugepaged_scan.mm_slot = NULL;
+>> >   			khugepaged_full_scans++;
+>> >   		}
+>> > -		collect_mm_slot(mm_slot);
+>
+>At the end, collect_mm_slot(mm_slot) correctly operated on the
+>original item for that scan.
+>
+>> > +		collect_mm_slot(slot);
+>
+>However, this patch merges these two into a single slot variable.
+>
+>When slot = list_next_entry(slot, mm_node); is called, the slot
+>pointer is updated to the next item.
+>
 
-The bug described below was unintentionally fixed in v6.5 and not
-backported to -stable. So technically I would need to use "Option 3" [A],
-but since the original patch [B] did not intend to fix a bug (and it's also
-part of a larger patch series), it looks quite different from the patch below,
-and I'm not sure what the backport should look like.
+Oops, you are right. Thanks for spotting it.
 
-I think there are probably two options:
+@SeongJae, would you mind applying this change and try again?
 
-1. Provide the description of the original patch along with a very long,
-   detailed explanation of why the patch deviates from the upstream version, or
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index d28d1116e83f..fb517b5ad277 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2508,8 +2508,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+                 * mm_slot not pointing to the exiting mm.
+                 */
+                if (!list_is_last(&slot->mm_node, &khugepaged_scan.mm_head)) {
+-                       slot = list_next_entry(slot, mm_node);
+-                       khugepaged_scan.mm_slot = slot;
++                       khugepaged_scan.mm_slot = list_next_entry(slot, mm_node);
+                        khugepaged_scan.address = 0;
+                } else {
+                        khugepaged_scan.mm_slot = NULL;
 
-2. Post the patch below with a clarification that it was fixed upstream
-   by commit 670ddd8cdcbd1.
+>Passing this new pointer to collect_mm_slot() then causes a
+>use-after-free on the following iteration, IIUC.
+>
+>Cheers,
+>Lance
 
-Any thoughts?
-
-[A] https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
-[B] https://lkml.kernel.org/r/725a42a9-91e9-c868-925-e3a5fd40bb4f@google.com
-    (Upstream commit 670ddd8cdcbd1)
-
-In any case, no matter how we backport this, it needs some review and
-feedback would be appreciated. The patch applies to v6.1 and v5.15, and
-v5.10 but not v5.4.
-
-From cf45867ab8e48b42160b7253390db7bdecef1455 Mon Sep 17 00:00:00 2001
-From: Harry Yoo <harry.yoo@oracle.com>
-Date: Thu, 11 Sep 2025 20:05:40 +0900
-Subject: [PATCH] mm, numa: fix bad pmd by atomically checking is_swap_pmd() in
- change_prot_numa()
-
-It was observed that a bad pmd is seen when automatic NUMA balancing
-is marking page table entries as prot_numa:
-
-[2437548.196018] mm/pgtable-generic.c:50: bad pmd 00000000af22fc02(dffffffe71fbfe02)
-
-With some kernel modification, the call stack was dumped:
-
-[2437548.235022] Call Trace:
-[2437548.238234]  <TASK>
-[2437548.241060]  dump_stack_lvl+0x46/0x61
-[2437548.245689]  panic+0x106/0x2e5
-[2437548.249497]  pmd_clear_bad+0x3c/0x3c
-[2437548.253967]  change_pmd_range.isra.0+0x34d/0x3a7
-[2437548.259537]  change_p4d_range+0x156/0x20e
-[2437548.264392]  change_protection_range+0x116/0x1a9
-[2437548.269976]  change_prot_numa+0x15/0x37
-[2437548.274774]  task_numa_work+0x1b8/0x302
-[2437548.279512]  task_work_run+0x62/0x95
-[2437548.283882]  exit_to_user_mode_loop+0x1a4/0x1a9
-[2437548.289277]  exit_to_user_mode_prepare+0xf4/0xfc
-[2437548.294751]  ? sysvec_apic_timer_interrupt+0x34/0x81
-[2437548.300677]  irqentry_exit_to_user_mode+0x5/0x25
-[2437548.306153]  asm_sysvec_apic_timer_interrupt+0x16/0x1b
-
-This is due to a race condition between change_prot_numa() and
-THP migration because the kernel doesn't check is_swap_pmd() and
-pmd_trans_huge() atomically:
-
-change_prot_numa()                      THP migration
-======================================================================
-- change_pmd_range()
--> is_swap_pmd() returns false,
-   meaning it's not a PMD migration
-   entry.
-
-				    - do_huge_pmd_numa_page()
-				    -> migrate_misplaced_page() sets
-				       migration entries for the THP.
-
-- change_pmd_range()
--> pmd_none_or_clear_bad_unless_trans_huge()
--> pmd_none() and pmd_trans_huge() returns false
-
-- pmd_none_or_clear_bad_unless_trans_huge()
--> pmd_bad() returns true for the migration entry!
-
-For the race condition described above to occur:
-
-1) AutoNUMA must be unmapping a range of pages, with at least part of the
-range already unmapped by AutoNUMA.
-
-2) While AutoNUMA is in the process of unmapping, a NUMA hinting fault
-occurs within that range, specifically when we are about to unmap
-the PMD entry, between the is_swap_pmd() and pmd_trans_huge() checks.
-
-So this is a really rare race condition and it's observed that it takes
-usually a few days of autonuma-intensive testing to trigger.
-
-A bit of history on a similar race condition in the past:
-
-In fact, a similar race condition caused by not checking pmd_trans_huge()
-atomically was reported [1] in 2017. However, instead of the patch [1],
-another patch series [3] fixed the problem [2] by not clearing the pmd
-entry but invaliding it instead (so that pmd_trans_huge() would still
-return true).
-
-Despite patch series [3], the bad pmd error continued to be reported
-in mainline. As a result, [1] was resurrected [4] and it landed mainline
-in 2020 in a hope that it would resolve the issue. However, now it turns
-out that [3] was not sufficient.
-
-Fix this race condition by checking is_swap_pmd() and pmd_trans_huge()
-atomically. With that, the kernel should see either
-pmd_trans_huge() == true, or is_swap_pmd() == true when another task is
-migrating the page concurrently.
-
-This bug was introduced when THP migration support was added. More
-specifically, by commit 84c3fc4e9c56 ("mm: thp: check pmd migration entry
-in common path")).
-
-It is unintentionally fixed since v6.5 by commit 670ddd8cdcbd1
-("mm/mprotect: delete pmd_none_or_clear_bad_unless_trans_huge()") while
-removing pmd_none_or_clear_bad_unless_trans_huge() function. But it's not
-backported to -stable because it was fixed unintentionally.
-
-Link: https://lore.kernel.org/linux-mm/20170410094825.2yfo5zehn7pchg6a@techsingularity.net [1]
-Link: https://lore.kernel.org/linux-mm/8A6309F4-DB76-48FA-BE7F-BF9536A4C4E5@cs.rutgers.edu [2]
-Link: https://lore.kernel.org/linux-mm/20170302151034.27829-1-kirill.shutemov@linux.intel.com [3]
-Link: https://lore.kernel.org/linux-mm/20200216191800.22423-1-aquini@redhat.com [4]
-Fixes: 84c3fc4e9c56 ("mm: thp: check pmd migration entry in common path")
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
----
- mm/mprotect.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index 668bfaa6ed2a..c0e796c0f9b0 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -303,7 +303,7 @@ static inline int pmd_none_or_clear_bad_unless_trans_huge(pmd_t *pmd)
- 
- 	if (pmd_none(pmdval))
- 		return 1;
--	if (pmd_trans_huge(pmdval))
-+	if (is_swap_pmd(pmdval) || pmd_trans_huge(pmdval))
- 		return 0;
- 	if (unlikely(pmd_bad(pmdval))) {
- 		pmd_clear_bad(pmd);
-@@ -373,7 +373,7 @@ static inline unsigned long change_pmd_range(struct mmu_gather *tlb,
- 		 * Hence, it's necessary to atomically read the PMD value
- 		 * for all the checks.
- 		 */
--		if (!is_swap_pmd(*pmd) && !pmd_devmap(*pmd) &&
-+		if (!pmd_devmap(*pmd) &&
- 		     pmd_none_or_clear_bad_unless_trans_huge(pmd))
- 			goto next;
- 
 -- 
-2.43.0
-
+Wei Yang
+Help you, Help me
 
