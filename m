@@ -4,117 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EFC5CAC59A
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 03:23:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5DFFCAC5A7
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 03:31:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2AD28E000A; Sun, 21 Sep 2025 23:23:17 -0400 (EDT)
+	id 16B5C8E000A; Sun, 21 Sep 2025 23:31:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDB458E0001; Sun, 21 Sep 2025 23:23:17 -0400 (EDT)
+	id 143128E0001; Sun, 21 Sep 2025 23:31:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC9FC8E000A; Sun, 21 Sep 2025 23:23:17 -0400 (EDT)
+	id 0589B8E000A; Sun, 21 Sep 2025 23:31:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B8CDF8E0001
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 23:23:17 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5F14AC0472
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:23:17 +0000 (UTC)
-X-FDA: 83915440434.30.37EF6B1
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8AD9740002
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:23:15 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Fy0OpYvX;
-	spf=pass (imf27.hostedemail.com: domain of hughd@google.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E64678E0001
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 23:31:21 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7525C86FC6
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:31:21 +0000 (UTC)
+X-FDA: 83915460762.22.143B62A
+Received: from SHSQR01.spreadtrum.com (mx1.unisoc.com [222.66.158.135])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 71B84140008
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:31:18 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=unisoc.com header.s=default header.b=SjR8O3W0;
+	spf=pass (imf23.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com;
+	dmarc=pass (policy=quarantine) header.from=unisoc.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758511395;
+	s=arc-20220608; t=1758511879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3FlwsER74cYqV32Cx96ZjhaczFHdoR+YcDNoqEmBa/E=;
-	b=jBVABBsn3/eLaelUEoweX7vUPgKSDdKlMJdrBgxiQ+jSTMfY1ma6DVkItlreOlwJmFfPQQ
-	YGkAjmp7olhzC+ceX6pMTsy6pRQY6xA7mAApl4wD/WaJ4MhcsjA4RrwHS4JR9EfhJIUUAu
-	ttWmRul/caFwJF6uIUvgD5hkbf1puqI=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=naUubTQs4cvxZpd+FKA4m3TL3kOY3UI3T0jr+Hxcg5I=;
+	b=wq2cZuUGfFYIbHnDdA07jHYr2/NJy/3D5cVB+5KM6GMA6HGezwttnvs/hx9bckgxdTTJd2
+	vEQZ1KduV9OlYrQyBPPVOL3/LIWXijbXR80rJMNXgCZatOxuHh2PRsaY3tGB+kmKjYA/nt
+	/krFSm/2bxpehsNj3muzYyEuV/25VcQ=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Fy0OpYvX;
-	spf=pass (imf27.hostedemail.com: domain of hughd@google.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758511395; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=unisoc.com header.s=default header.b=SjR8O3W0;
+	spf=pass (imf23.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com;
+	dmarc=pass (policy=quarantine) header.from=unisoc.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758511879; a=rsa-sha256;
 	cv=none;
-	b=iSIchv5WhtOCPExp5DBm9heR5lyWYBcxEL4TOMms0+NEH8jNpj4HiDAIDCkIgGCik0Cens
-	uPAaJcdF3vYWW+FJysHL2w1HVRcliUTwCuZK1xOdIfSSgdkpWzB/xv2qBl5UauWyp21L5x
-	zILZG+cNBK48gbf0ADpQ2UDJ0OSnlzg=
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-71d605c6501so27154857b3.3
-        for <linux-mm@kvack.org>; Sun, 21 Sep 2025 20:23:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758511394; x=1759116194; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3FlwsER74cYqV32Cx96ZjhaczFHdoR+YcDNoqEmBa/E=;
-        b=Fy0OpYvXUI7DAb9UhxAX1yYrdmrfiFhl5me+M6N4rAoMnDEJMukE/KPpIzxucPJm5m
-         DtMKAyyAQ13OML8X7Dn1TW5/W1tikIfblWhJkOhz3U1LNHKrHUUixfrhDGiUqPWKHeOl
-         3Q2DqrLCwOLzcruLJpgFlCfp3pJ52I+GitWhB/tf4VamUSrq8d0d1aHCNpP8MgMniPpj
-         5NUlTWwqveEBr7PRvExOinZmE+RMRmb1rZ/pUHjHewCO0T9xbdMLGdo51365Ftl9zJDB
-         GLg/uCX30c4Dn2ksV9kZIzCADl31JgwAhshnl8uI1lGRI87SOR37QpZjs6YdBCJPV/wA
-         E8fA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758511394; x=1759116194;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3FlwsER74cYqV32Cx96ZjhaczFHdoR+YcDNoqEmBa/E=;
-        b=tL5jnePFQbrD3PzJwkNbkRpErHFM2bE6Fg6ddRfYzltWO3NZ9qmN/zupQrdO/l+m7j
-         LhxIB76swsdx+oGUY8tkBnOM+k3VB48xa9f38iavNxTC9RlxSU07PsS+B62MDRSBgGTU
-         7IkfDYFuEUDhjN86WxgLzoXGAbEnxsGHyhmDW14y3hCaHGofKh3p4ucgrgmQo3oPpGck
-         xiEoHCVt63dyVwDd6sJLz1cUZ21bnnwL1pdQB5YVY6BCU+6Eah5twirqQytg2iKSqqt/
-         0mhmW+b75n0zSdXSS2Kfh5ZNi2ad1Ie0dcA1XgQi5on+Nd5mrp81dwUVLtV5PARd76Iu
-         hjpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVGIjL+/7y801bj8mvu8y9Bjymckwa0Yh1Db1On70WDACWZLFBNhjRZ5HCPu/fwniNmmx/h5LyOCA==@kvack.org
-X-Gm-Message-State: AOJu0Yw9ChIYIR81sWnq/1tYyuNBPP/SRHlzuYQElyE0BgrfpET+ykvU
-	ZRqKL4LWaO8ypqOf1byI9mRyDv0ZF51tuhesPQU1aFmxFcqZVcUinoVVZNpDi+Jq8A==
-X-Gm-Gg: ASbGnctxdA4FjEWWEfZFW/BKwvvkg4hH4U8zITHJFyHcbfrNLkhofIaQEHkEJDJ1aYc
-	T+A6Udm19pzKvo1X6IJaHFWvT3Eb7e8iPZSp87OmnxZzXS+BnBaDjXwRblmwGiH3Di5GajRYDUt
-	4cGNUWDvxjhquW8RRQ2fv/WwUDGsVOeQtDbj3ODbKMMW4M929oeKNWV0r0JfB5V9gcHPwYzan1g
-	1TEr4MaJjiReRdstW3KZ4bIEugPcFIruBjk3fQC2NxjJiZBdXvoD9KZEmZ70q2ZFCBVUkmP8p7B
-	TZ2VcTeP9OctVChcbAvKAgV0cUKQRvGYT12S89hQHE5sQu9NNly4HD2ozEGAxFMG3RVcH0yp5HO
-	qsn3BRkIvSjB9sNf8YwH7UhX/tf4U1vl4Aw3N8QmXbyQZQ2bpKsjVI7M1fpiQWexstDjJ/IbtZW
-	ikv+2UpMY=
-X-Google-Smtp-Source: AGHT+IHN/ys8gHLrLIlg7s+DKUjMBq+p6tvCq2COmIp5lBOsMogpQZbYlGnq/VUVqHpKXGstFcOJKQ==
-X-Received: by 2002:a05:690c:5c02:b0:722:6791:c5b2 with SMTP id 00721157ae682-73d3237b3bamr95872717b3.12.1758511394225;
-        Sun, 21 Sep 2025 20:23:14 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-633bcce8a3esm3798775d50.6.2025.09.21.20.23.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Sep 2025 20:23:12 -0700 (PDT)
-Date: Sun, 21 Sep 2025 20:23:01 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: Paul Moore <paul@paul-moore.com>
-cc: =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>, 
-    Hugh Dickins <hughd@google.com>, James Morris <jmorris@namei.org>, 
-    Stephen Smalley <stephen.smalley.work@gmail.com>, 
-    Jeff Vander Stoep <jeffv@google.com>, Nick Kralevich <nnk@google.com>, 
-    Jeff Xu <jeffxu@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-    Isaac Manjarres <isaacmanjarres@google.com>, linux-kernel@vger.kernel.org, 
-    linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
-    linux-mm@kvack.org
-Subject: Re: [PATCH v3] memfd,selinux: call
- security_inode_init_security_anon
-In-Reply-To: <CAHC9VhSbWJ-8tj5BxSTxznGO8zraKRSE31a+tqdfMHB53ef-MQ@mail.gmail.com>
-Message-ID: <a3f1a528-c2dc-74a6-b671-d8b2ccf23183@google.com>
-References: <20250918020434.1612137-1-tweek@google.com> <CAHC9VhSbWJ-8tj5BxSTxznGO8zraKRSE31a+tqdfMHB53ef-MQ@mail.gmail.com>
+	b=tq9rANjTM0Ufd+5MS9+skraPOaPqgqLqiq+Zc4B1y1E/7q61QqOmJ3hFfnD42sSyyrgwj8
+	vc+vi6wyyNGrkUdpn9JswgII0OIaeJjg7I6InlFJXt3k7FPwXcnlRo6Om3JscANEscrnoj
+	aPv5PHqvJgcRc7pzV5SnwB/S/Xt3rPE=
+Received: from dlp.unisoc.com ([10.29.3.86])
+	by SHSQR01.spreadtrum.com with ESMTP id 58M3TPM1052899;
+	Mon, 22 Sep 2025 11:29:25 +0800 (+08)
+	(envelope-from zhaoyang.huang@unisoc.com)
+Received: from SHDLP.spreadtrum.com (BJMBX01.spreadtrum.com [10.0.64.7])
+	by dlp.unisoc.com (SkyGuard) with ESMTPS id 4cVT843LdHz2K5NS5;
+	Mon, 22 Sep 2025 11:27:48 +0800 (CST)
+Received: from bj03382pcu03.spreadtrum.com (10.0.73.40) by
+ BJMBX01.spreadtrum.com (10.0.64.7) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.48; Mon, 22 Sep 2025 11:29:22 +0800
+From: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
+To: Jens Axboe <axboe@kernel.dk>, Ming Lei <ming.lei@redhat.com>,
+        <linux-mm@kvack.org>, <linux-block@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Zhaoyang Huang <huangzhaoyang@gmail.com>, <steve.kang@unisoc.com>
+Subject: [RFC PATCH] driver: loop: introduce synchronized read for loop driver
+Date: Mon, 22 Sep 2025 11:29:15 +0800
+Message-ID: <20250922032915.3924368-1-zhaoyang.huang@unisoc.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="-1463770367-1534621582-1758511392=:2554"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.0.73.40]
+X-ClientProxiedBy: SHCAS03.spreadtrum.com (10.0.1.207) To
+ BJMBX01.spreadtrum.com (10.0.64.7)
+X-MAIL:SHSQR01.spreadtrum.com 58M3TPM1052899
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unisoc.com;
+	s=default; t=1758511777;
+	bh=naUubTQs4cvxZpd+FKA4m3TL3kOY3UI3T0jr+Hxcg5I=;
+	h=From:To:Subject:Date;
+	b=SjR8O3W0D4m5YndAEf7zM3GPQVmmpYj21lEwZrJZ7XACQ+Y31SzAZDa0e+B/0orgs
+	 729F8t91BdmliWox18tjrRJsRpUuyEDiEWVSTAwKmLnq8c9huZNxPXBRsAyUlToH2O
+	 hkPGPS5hPBUfw9+x0DJIxEsMjFjduiq+cMW/hcOk+WA+XPp1ZIk1RQRUf83XCArroa
+	 8u5zlu4vi2FcjjR6uiU1d8F0lhKBq7uzFDgLt+MBENgkweYUKJaB8/qveMdln6ARAg
+	 luOwbYA1X3eWo8MFF+2e6tAzAv1XP/2GKuxZVqfDJ+oSJH5+GM54whnUz+JMa8uH4V
+	 uh2wC5Rn/oUoA==
+X-Rspamd-Queue-Id: 71B84140008
+X-Rspamd-Server: rspam05
+X-Stat-Signature: f59a7o8zga7nfmrdrnrm3j7ze76fzq1a
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8AD9740002
-X-Stat-Signature: znm347c53ihomohie8jgazxkir44ydhh
-X-HE-Tag: 1758511395-859521
-X-HE-Meta: U2FsdGVkX19wgoDZZ0Y74M3pUzOy739AfP/jiz7VpkhAJ+ZXJIMKEZ+cgalWO7IJ+WyZ4qEUgjYfBgqyfnWlnDBFeMm9/qPzOmdF9T9i25v8NpKyGIdxHg8L2KKK6mp55nOMqEHjvdnUUEhExKhcR9U9WrpL56RFNWkGMDft3rux+nqu38uTXGVM2UpP1nKQWJe1npQfveS5kIIAlq/aJrnxHG8psH2z444+25H6P8vAFFUQaECBe9jgr2/8kFdAnUSeUtHfjL6v9jnPGZNsK+ZqJqhV79AVVAVNqeEUbWb+r/9FYtnKVQU+u97Spsams7MZpPyCIUwgolybxD1JCH4vE2LpNsKLQ5Fd1UeJV3eUsQ7Et+Kn+mDzSlTPhHJ5PJgbVqxOM5J3PRrbxTlrLkHczTdcCJPfGc6JKvSm2znD8W0vhmVlwp+23q2+uKorAWI7CkVWcS8oDRYyUc/jW6dsUexGxZpZFehFi/JOgh4TO4OAKs8gB60amtFJ5Y40sGuBIcM12f7Qlpaw+CFEtYYu3fFBqEHpWXbB9+dW3wpV9IICY8Ap9XKRJ66nC+JGZ6acxzEHdtQgXWERv6jfVQZJVPRkABB96FgIGPZrdDE2LM1ek/B3nNi4iB4sIuqzFccm+vxKbCm5RFuDvgAbyxezJaTIZxEufcjNjjdqdMSoJ6qNxlYWMqO6vBg3fwOvMWutFtjqxo9YXyiGZk1YKZoVz3P2iZXWYhmCE5IcgroZKcBVwTq9l3ib2zm5QaeFn1mNeH9cl8BroCLxxYxI9NTYOcI8jWaIlnmP5+cEV/X+2W29gtiI0MPHQFc6BHhVGZkKg+dNG5GkfYnwerNtUzmZ3Qzp3vj2r8CQKBG9Th36M6gT3bo3KUd4U+xl5jY+6n9ZI7+hUDG/4BmN00cHpwOyytrXeqsbQP08R3Mewi3UY6ObwIkqv2GECG6QKFOMKoPURy6Glat4L/JlJbZ
- ZEEKwNRv
- XScOwJhqY3PHDhg9LVojFADh3r6IDMnUUG04NbqGjfpdDNhSQ84aovaXOCjdIElLEioiyWcy9EXVwLg8XsayJ16b4R38K4Hbq7hvylMDT7tMmG/Sgo0bMUKY1VNU8bJ9jaxVP8aQuThXGq4bpeRCp3Ohh3WwhU8oQ7sNHFTU+2AEYtp7YjpgKxznQYMIjO30I16LclE9HTJP4NhPTAAFP2YNPYq+RspaDiHpuIB4JkGSNPE8+4t9NUbMN+EpZQ7XKxwmZP8fd9mGPXVlh72ODSGumTo+PEX8IDvnp+OxIHZzDuBZeS52lyV6YaPsZhMSYOPUJQi3rFQfRYtjAHMu1D4SqtRF5RZZ28GjeJ19itq60hZinYu+8NJYOJGEssmHNqrUBuqm9ZiGWzVB0CAhEOl5CD30Jr8Mpg5UnReZDyayyWH1Ii7ayCIMJioqxrXs908J1yVc02LEaZ5X38AYH6FcWtWg1y9htY1Cevo7SgYI7tR5QUn0UuPlueBCzKSOzIZTut9Cv9NXtnIyKUDH30BySmWvfm2qO1pqENOMGtfk9RrM4aI1cFh3733eTkQ9JQ6wm+r+eQ4ZGuSKO4fnZPYlbUACeEaDS1PJen33sgsG6434c/v6qqs2FSQ==
+X-HE-Tag: 1758511878-790535
+X-HE-Meta: U2FsdGVkX1/9r0dX5h3ga7JvfkePur5ZULVALgBCKYUfphifRyZ2bi5d4iaNEcoFPRMIPBCrEZJ+mUzr1HcoZd7q96s+b+rcMTtM126ih7Qd6ITh6cIM/ZmhuzpJ3X1Q20WL1ixu8+qvj9H28oW7ir9sfAIX1/pQ/WvQ5nugay1da2hjJ9LmtsdOwLkuTUUPD0PWvxtBP/j5R221y6cuc5X8U5d00UTJhFXrsCH1yIKwO6GYKdwM26OOSL/bdsn9X/bL1e9cdFmXDi6uRO4afFGGj3iZQBktVyFMI6Np21A8TYihRYlO0IhiIC+qLKPPChH1UNACrytx9GXB6vgHxAO74bENdNb0FDCJcUVy5AdlJroD2YUh8UjVBs+r+99Zkp2BeE1a6FEmX885hm6lWbsjAPqIGOZYXdCLgB0JUZYeMFlgMk8sd6zeDZG0LoIsLADl3sQUqEzdW7Tqvk9dX+aDdlyWknsBbanWjbg1S0ZRIK9P1WnwLNoH4EVQwFzq6F6m+4BiAGSkou/Ix3e/SVOFfyBmNXuR4ovRs4tY2L7+5WSLdIiFbPvxKWki4Qv50s56hs2rHY3raTqybaFlLNUUI5wd0I8YMD/Mjp5Db3KpnGeGrpteds53CVFEYhGny+1F35K2sNt8enDSrImrO1sfAzqidMUcuo8moga1yWC1Q1MB1Vj8cxl6InzVdrvXmEg6gjB6A6Af0DZY9h7q81+p0kGjXoUgINR+vjPO8BUuJ4CkqQY8xUarMIuwhEBXOoHDgmPWwJO2022bEvg27gFMgF82iEric1432OYfM6l5EF6S4//jwxb/oExBXsC5H5M/18BgR1RDARGTjFtqVh3YkcZhBp1A2ffuXA+xyl35TknaD6B7ztZv+7+hLTOEZ/H0G+L+PgP3P36NdyXjN4Np6ZKgoh4dIXUr8frT/QThdW2jkBjwfdRaY2KcIlONPnIp4Lz8tkugUvxEUt/
+ VAoS/n8y
+ tlkrgWOgqm6a9Vt8CTW49Rfscv8wx0p9wx7uo/n/pt08f0LAsH7fntUqZlCr4DjEEfaKDlS2+ZBVCRzv3B7zqTR7wE0i2YpHi0t4HTReMx0pIT0Ta6GsdFPPpWXsBZyEwgyMkr1bI7hfg7+F9rnqbKtAKZrQuBObY0Q+S2CD6G4V51X00KsR6mFrMndbZv0skydYCiwlnVifwWXYqD/zHVGhYwh8JxzFmFOlZTCvY6N9yXWR0LVSUAMoAmyDir2r54iixcttbR0OrtxnDvLonfor7c8S1ZVlgPrptSk+lS9IN4Rv210LHKVRV4q3Q14naYPfZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,87 +100,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
 
----1463770367-1534621582-1758511392=:2554
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+For now, my android system with per pid memcgv2 setup are suffering
+high block_rq_issue to block_rq_complete latency which is actually
+introduced by schedule latency of too many kworker threads. By further
+investigation, we found that the EAS scheduler which will pack small
+load tasks into one CPU core will make this scenario worse. This commit
+would like to introduce a way of synchronized read to be helpful on
+this scenario. The I2C of loop device's request reduced from 14ms to
+2.1ms under fio test.
 
-On Sun, 21 Sep 2025, Paul Moore wrote:
-> On Wed, Sep 17, 2025 at 10:04=E2=80=AFPM Thi=C3=A9baud Weksteen <tweek@go=
-ogle.com> wrote:
-> >
-> > Prior to this change, no security hooks were called at the creation of =
-a
-> > memfd file. It means that, for SELinux as an example, it will receive
-> > the default type of the filesystem that backs the in-memory inode. In
-> > most cases, that would be tmpfs, but if MFD_HUGETLB is passed, it will
-> > be hugetlbfs. Both can be considered implementation details of memfd.
-> >
-> > It also means that it is not possible to differentiate between a file
-> > coming from memfd_create and a file coming from a standard tmpfs mount
-> > point.
-> >
-> > Additionally, no permission is validated at creation, which differs fro=
-m
-> > the similar memfd_secret syscall.
-> >
-> > Call security_inode_init_security_anon during creation. This ensures
-> > that the file is setup similarly to other anonymous inodes. On SELinux,
-> > it means that the file will receive the security context of its task.
-> >
-> > The ability to limit fexecve on memfd has been of interest to avoid
-> > potential pitfalls where /proc/self/exe or similar would be executed
-> > [1][2]. Reuse the "execute_no_trans" and "entrypoint" access vectors,
-> > similarly to the file class. These access vectors may not make sense fo=
-r
-> > the existing "anon_inode" class. Therefore, define and assign a new
-> > class "memfd_file" to support such access vectors.
-> >
-> > Guard these changes behind a new policy capability named "memfd_class".
-> >
-> > [1] https://crbug.com/1305267
-> > [2] https://lore.kernel.org/lkml/20221215001205.51969-1-jeffxu@google.c=
-om/
-> >
-> > Signed-off-by: Thi=C3=A9baud Weksteen <tweek@google.com>
-> > ---
-> > Changes since v2:
-> > - Add WARN_ON when using unexpected class. Return -EACCES instead
-> >   of -EPERM
-> > - Remove extra new line
-> > - Rebase on selinux/dev
-> >
-> > Changes since v1:
-> > - Move test of class earlier in selinux_bprm_creds_for_exec
-> > - Remove duplicate call to security_transition_sid
-> >
-> > Changes since RFC:
-> > - Remove enum argument, simply compare the anon inode name
-> > - Introduce a policy capability for compatility
-> > - Add validation of class in selinux_bprm_creds_for_exec
-> >  include/linux/memfd.h                      |  2 ++
-> >  mm/memfd.c                                 | 14 ++++++++++--
-> >  security/selinux/hooks.c                   | 26 +++++++++++++++++-----
-> >  security/selinux/include/classmap.h        |  2 ++
-> >  security/selinux/include/policycap.h       |  1 +
-> >  security/selinux/include/policycap_names.h |  1 +
-> >  security/selinux/include/security.h        |  5 +++++
-> >  7 files changed, 44 insertions(+), 7 deletions(-)
->=20
-> Thanks Thi=C3=A9baud, I'm going to merge this into selinux/dev-staging no=
-w
-> with the plan to move it over to selinux/dev after the upcoming merge
-> window closes.
->=20
-> Hugh, since the changes between this patch and the v2 you ACK'd are
-> minimal and limited to the SELinux error handling code (see diff
-> below), I'm going to carry over your ACK, but if you have any concerns
-> or objections please let us know.
+Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+---
+ drivers/block/Kconfig | 10 ++++++++++
+ drivers/block/loop.c  | 22 +++++++++++++++++++++-
+ 2 files changed, 31 insertions(+), 1 deletion(-)
 
-Sure, please do carry over my ACK - thanks.
+diff --git a/drivers/block/Kconfig b/drivers/block/Kconfig
+index df38fb364904..a30d6c5f466e 100644
+--- a/drivers/block/Kconfig
++++ b/drivers/block/Kconfig
+@@ -383,4 +383,14 @@ config BLK_DEV_ZONED_LOOP
+ 
+ 	  If unsure, say N.
+ 
++config LOOP_SYNC_READ
++	bool "enable synchronized read for loop device"
++	default n
++	help
++	  provide a way of synchronized read for loop device which could be
++	  helpful when you are concerned with the schedule latency affection
++	  over the requests of loop device especially when plenty of blkcgs
++	  setup within the system. The loop device should be configured as
++	  LO_FLAGS_DIRECT_IO when applying this config.
++
+ endif # BLK_DEV
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index 053a086d547e..1e18abe48d2b 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -1884,7 +1884,27 @@ static blk_status_t loop_queue_rq(struct blk_mq_hw_ctx *hctx,
+ #endif
+ 	}
+ #endif
+-	loop_queue_work(lo, cmd);
++#ifdef CONFIG_LOOP_SYNC_READ
++	if (req_op(rq) == REQ_OP_READ && cmd->use_aio && current->plug) {
++		struct blk_plug *plug = current->plug;
++
++		current->plug = NULL;
++		/* iterate through the plug->mq_list and launch the requests to real device */
++		while (rq) {
++			loff_t pos;
++
++			cmd = blk_mq_rq_to_pdu(rq);
++			pos = ((loff_t) blk_rq_pos(rq) << 9) + lo->lo_offset;
++			lo_rw_aio(lo, cmd, pos, ITER_DEST);
++			rq = rq_list_pop(&plug->mq_list);
++		}
++		plug->rq_count = 0;
++		current->plug = plug;
++	} else
++		loop_queue_work(lo, cmd);
++#else
++		loop_queue_work(lo, cmd);
++#endif
+ 
+ 	return BLK_STS_OK;
+ }
+-- 
+2.25.1
 
-Hugh
----1463770367-1534621582-1758511392=:2554--
 
