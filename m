@@ -4,100 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8296FCAC592
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 03:36:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04E0ACAC5A7
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 03:48:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE8A08E0002; Sun, 21 Sep 2025 23:36:43 -0400 (EDT)
+	id 4E9368E0002; Sun, 21 Sep 2025 23:48:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC0368E0001; Sun, 21 Sep 2025 23:36:43 -0400 (EDT)
+	id 4C0478E0001; Sun, 21 Sep 2025 23:48:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFC798E0002; Sun, 21 Sep 2025 23:36:43 -0400 (EDT)
+	id 3FD7C8E0002; Sun, 21 Sep 2025 23:48:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AE6328E0001
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 23:36:43 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4FA1187018
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:36:43 +0000 (UTC)
-X-FDA: 83915474286.06.6545C35
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 2C16B1C0004
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:36:40 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dYeIGHtX;
-	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C3948E0001
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 23:48:42 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9E15BB9A9A
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:48:41 +0000 (UTC)
+X-FDA: 83915504442.17.21D62BD
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 37507100005
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:48:37 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf05.hostedemail.com: domain of zhengxinyu6@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=zhengxinyu6@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758512919; a=rsa-sha256;
+	cv=none;
+	b=roOhBfNf3qoOGvi5n8CbB3y7+ms4n1avGIzj9BhoO+WLu+LtooZSfakC4wYT0DC04XL9e+
+	oyeDw6SfQKOyQaOhWB81VEWbQRAwxtMUNM0zYQQMYMTGNVyFZWBN6eaFXYmwHNDLPUp3+L
+	rOlRY3yonxGFmq9u8a7XaIPknqaXCzo=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf05.hostedemail.com: domain of zhengxinyu6@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=zhengxinyu6@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758512201;
+	s=arc-20220608; t=1758512919;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9/pAYjt1PTM1WTwOEAJ1ryShiXtBMZp1571RlbpsQfQ=;
-	b=gcguf24Yzt1TDZSumFeW+h+0U4JxVuZ6lWH3eU10X7XJpWmmExcocmIRem31HE9hVQKSn7
-	qMwv2g0fH4lfMMHh8K00yTY3Vk6ctpdfNKRdKEq/n4twYm5ZGbbWwal2yKxI9f9i26Ezov
-	IlxVIa4B9EwCaV35ngMWe4W0VieVTcY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758512201; a=rsa-sha256;
-	cv=none;
-	b=c9o4wRRXSqpeNDiGu6CF1A4EK7q7nOmGy3eYbbhu6APAPAviIvKbRlPJZeb+l6BZ4hZLN7
-	glbAEMXEIk1cziTBAhCnXapTPtET+NmwQSy7vdFgXjfN9UAFCWVdWT2upeIsQShNRMIIae
-	l7t2UG1VUa23VykI/9YwMvhPfNH9EdM=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dYeIGHtX;
-	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <e4e82695-c03f-4105-bddd-9778d7e368d4@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758512191;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9/pAYjt1PTM1WTwOEAJ1ryShiXtBMZp1571RlbpsQfQ=;
-	b=dYeIGHtXEhwqRe5dY2kuaOhbMvjIC5LBJnI4MTLAavEHM28MO5fC1RBYYw1JQSenqd1Od+
-	ppNvqg9coKtIPXFQHgGtx3lExQK15m1zekX1RHO6FWDHA+ZXFNiB8BTagglJX3zuepxRoC
-	P2383CbGkK919uOabMZSgfcRGK4vAQ8=
-Date: Mon, 22 Sep 2025 11:36:11 +0800
+	bh=OGh1a6NvuF+v0HjEcEfaH5Bs3yxOtrRUC1Uy6ai8wZw=;
+	b=wfqggPG+dq8sZDmZDNyBrQ6cCziAl+Mu8ehXnJ5446MRkrik/IcKjsXuXThGpeio0yr9ww
+	kLOuLzXH6Dw+krvYDSepoH/LYoAfgtNyv2mVTGeac+hlRFKUj3xjaKEZCCylphJ/nez55e
+	1Y+P2nK3+lsp/wT8A2xHtmm5MelW48Y=
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4cVTbf65n2z14MTN;
+	Mon, 22 Sep 2025 11:48:14 +0800 (CST)
+Received: from dggpemr200006.china.huawei.com (unknown [7.185.36.167])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6C6D1180486;
+	Mon, 22 Sep 2025 11:48:33 +0800 (CST)
+Received: from [10.67.110.83] (10.67.110.83) by dggpemr200006.china.huawei.com
+ (7.185.36.167) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 22 Sep
+ 2025 11:48:32 +0800
+Message-ID: <d7f78b73-6bb4-4ccd-b604-5bfa6473fd2a@huawei.com>
+Date: Mon, 22 Sep 2025 11:48:32 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/1] mm/thp: fix MTE tag mismatch when replacing
- zero-filled subpages
+User-Agent: Mozilla Thunderbird
+Subject: Re: [BUG REPORT] mm/damon: softlockup when kdamond walk page with cpu
+ hotplug
+To: SeongJae Park <sj@kernel.org>, Hugh Dickins <hughd@google.com>
+CC: Andrew Morton <akpm@linux-foundation.org>, "Paul E . McKenney"
+	<paulmck@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+	<damon@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <zouyipeng@huawei.com>
+References: <20250920104220.1399-1-sj@kernel.org>
 Content-Language: en-US
-To: Zi Yan <ziy@nvidia.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
- usamaarif642@gmail.com, yuzhao@google.com, baolin.wang@linux.alibaba.com,
- baohua@kernel.org, voidice@gmail.com, Liam.Howlett@oracle.com,
- catalin.marinas@arm.com, cerasuolodomenico@gmail.com, hannes@cmpxchg.org,
- kaleshsingh@google.com, npache@redhat.com, riel@surriel.com,
- roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com,
- dev.jain@arm.com, ryncsn@gmail.com, shakeel.butt@linux.dev,
- surenb@google.com, hughd@google.com, willy@infradead.org,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
- apopple@nvidia.com, qun-wei.lin@mediatek.com, Andrew.Yang@mediatek.com,
- casper.li@mediatek.com, chinwen.chang@mediatek.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-mm@kvack.org, ioworker0@gmail.com,
- stable@vger.kernel.org, linux-riscv@lists.infradead.org,
- palmer@rivosinc.com, samuel.holland@sifive.com, charlie@rivosinc.com
-References: <20250922021458.68123-1-lance.yang@linux.dev>
- <3DD2EF5E-3E6A-40B0-AFCC-8FB38F0763DB@nvidia.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <3DD2EF5E-3E6A-40B0-AFCC-8FB38F0763DB@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Xinyu Zheng <zhengxinyu6@huawei.com>
+In-Reply-To: <20250920104220.1399-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: dyz8fbmiydoa7an8kmbqby5nyczbnpwr
-X-Rspamd-Queue-Id: 2C16B1C0004
+X-Originating-IP: [10.67.110.83]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ dggpemr200006.china.huawei.com (7.185.36.167)
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 37507100005
+X-Stat-Signature: akdh4pdc8irzde6iy71ijqcn66e7ewu9
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758512200-826840
-X-HE-Meta: U2FsdGVkX19056mTsMcAPC2aj1HrYO1Qjw+D/1uY/yQEU2iNsXG5LTi8a5wikLFsHgo8jGbX6akqe+O9TwEwvrAmvf36Y+q7mWIXSB9dkUgUoAKFf/gFB3utJGkugFIr9vdqaQ8sVz4JGU/xCHylzZ7TRqfTvefjNlUWzQOguaH3UI17vKS+1cuacDIr/5+5NeM2c5nLwOwnX4gsAHySP8attmUgOMOCO2wNZrbH/PTWqvgVF4tKipC255w/J4uRCoF+hr5zGZyB0jCn6WZNYY3HBZarXSnFI42xDWDhUp7iOX8RdiFVt2uUvhHLJ/1rVMqpJdqvzz6c36w6fF+wDPadZtYxU2tHruyqYEtLa5BFIDdnE39bbm670pmCL9vbuu/DGuulesyYMN1eWNK//+oMErH39iAziHarjQyLE/TtumPM9rwltkdzMQditd4URj2/ssUodRU8vJk53YqRdu/kA+jAJJxUyvv9GhzgL/oh09zfbShKEnTTWpStef6ryI+fpHqWhOdoIhxbzW/T0TkuTojgHfKYfWgNmqWY5+SnsSfVr0T4rbr49Nh9SzMQdt1lskxrcm9GsktlrFssurHllChILbGr7XDytD81rFxaXK2ald5BaW9aXucfDqrPDR4M0bLXYUmuvSvNKSnAxkt6jqaS04CyfhQAK4zxeJcEy4Ak9bMCMjnZc/U2o4QvK0Sm5P7KcdFr4fuEmNoHCHt8YoO6B+Lq8EBtWlo2IRJkqCkmsFMK0A5b3XBq/Etxw94xkZKH7vE4I+c+uQr1oLZbMFU/OFlX66ID5tF2l+kKbVQ9/VC4q5hM0hOa1IRHAkBoNskIGwl+V9vv/QzVm2xVbgF6f5zzepGZUt+YaBtz/XApEkE1RE7KDh2SGxDMFlM/gQB61HrOD8cSPhml3BzZ6bkMtOznANwheazO6DMtXKDkGVB9YkS6DEpnPRlQeur5eUeMqNcQljBIGO3
- TriUUZMn
- gyx4v0CBGdVFSk2Np3/2KxgSblOeIdXwRteUTEvAH40ZoADPh1Ks35zRxFMIq4BEsZ11X4nSroyUdn/lZ5P7LjzJB9BZRZ+gCBsk5S8HX3Pf01l+vjNMPegGrZSMN8aeIfP/8ZSubwzzNJ6SqNHd8ie0PN1eXFmobdozNPFDGbtyBHLvj04EAZUVC3IkYx1umCiGifPjMbp0GnDHxpPPTMlGJY1DyZ9k7o05+tR1FJiOZ6HfDxD1Y8x/OZmN7uOJaTKFicpqAYJtDnKJT3rQAY9owF+pCul/WP3iI69P80KSeIoO7FEMf6XBPNIoSYxmg8vlQZRWaypqIfTKztcqUmo/xrw==
+X-HE-Tag: 1758512917-132168
+X-HE-Meta: U2FsdGVkX1/4I3YHzH8cdzxUfXMvFEzQdkBQv9uIImqC5aYGYOEzrcyWtAKBEmd6xHiFCTZi1GKMk3FbeTHT0tm5cZ4CkJyFxK5XGg+LWcYQdacJQIcocRHuz5ATgvH+Fg81tixrKVBl4bXAT3fnG34nVP6G980VL06ONqvIj1VvJ/MmCzVTDqc009Mj1q3HiCMLphOFVtgCnMAEM9PLdPYaqECFMIRGt7wgVV5vcDwlBBNdjhnJxI4AxC2Spt9vRztc1NMpoZYWRQ/cfH56Sp0hiVoBYow7ZP7IZb46IaCgUrEaG/KPlGr4wMVKX1aUCVBXyhG0lPTAyf9Wh4n1clKyC7+ODDPGFLVp6icjcY53mYaFMHuJTg7rPFcMB1YvwiLomgfecCwvLa6HimqgagfANTyrHKShn6A/0Ou9uUUwxcLOQ+lXWPpKAQS1yKH7B+pNP4EmcL1ldhBvOO6UJnMu3wLZ5YIKI3O14KSh8BBA8Y9em9G0Fe9x5WD+lewPtthO0kzhIGm81GMF99Rg11EfLnSunk923vM2YeH+LnEiRe5Uc57tGAbMPsBS+zpHVOAzrrkG7aDkxUNlc/YmJEoGJ/HAnccTGe/sw5blg6itRu3eW+iotcxgVYlvbkMd3oupLH6Y6r22SZ3C+XLqnHaxrgnj7J9mqGp33qpLtIV4dsOdlIgVPH7EelWgzh3VXGSvrYWGJ4rfC1QbeKERwnmR7fOQ2VsoDmBj0NteJ+eLIyV5M8LHHMvSLLASulKUpGfWQ2J9/shqsIfruHzdepLZd7Zhpx8E5DDWIrMfcattgp0eOdViL4cm0RntZTUcp3jJ/6Uq75yh82f9jvqGnKbU2AtpVWKpXBDx4MMo8hNsq4iEYgsVlh+HB6D3X3n2hQS7QOafPOv/r8rrXC23gYA9Ykq/hb9GSeCF+Ay2tySR+HepWetCBssTgMuZvBgdDkp1IdBfZcz9XB+PyLQ
+ b+V4yjJ1
+ GWvjUVgUmmRJ2RjaWbSCZhMzJIUwZDOok67TvnPIvcKlj756PQgZwzuzpuyCuZK/djblGylHUqmniL5Tn26Uw1gbKDfAXLBEjMr5mr8nQVz1PHd9c4DVZKvS07Eqqxk5fCt/E43twzEzmvMdFQwuVQVgzsUQNI+2VoliUi2BHA8tu+0OH/ncLM+dP/Avv5eU201Q+Ssb+El87+cgTQun4hWFk9VQBt8tr6rUboktXFddVuRGc5YJPKQV7ADBNmoqltp6cVG5WEH9LlZDdwpS7xA3e0rrb8b1Ptm3+
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,156 +95,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Cc: RISC-V folks
 
-On 2025/9/22 10:36, Zi Yan wrote:
-> On 21 Sep 2025, at 22:14, Lance Yang wrote:
+
+On 9/20/2025 6:42 PM, SeongJae Park wrote:
+> On Fri, 19 Sep 2025 20:56:56 -0700 (PDT) Hugh Dickins <hughd@google.com> wrote:
 > 
->> From: Lance Yang <lance.yang@linux.dev>
+>> On Thu, 18 Sep 2025, SeongJae Park wrote:
 >>
->> When both THP and MTE are enabled, splitting a THP and replacing its
->> zero-filled subpages with the shared zeropage can cause MTE tag mismatch
->> faults in userspace.
+>>> Hello,
+>>>
+>>> On Thu, 18 Sep 2025 03:00:29 +0000 Xinyu Zheng <zhengxinyu6@huawei.com> wrote:
+>>>
+>>>> A softlockup issue was found with stress test:
+> [...]
+>> This had me worried for a while: thought we might be needing to change
+>> lots of other places, and scatter cond_resched()s here and there.
 >>
->> Remapping zero-filled subpages to the shared zeropage is unsafe, as the
->> zeropage has a fixed tag of zero, which may not match the tag expected by
->> the userspace pointer.
+>> But no: no need for cond_resched()'s, this is all just a confusion about
+>> where pmd migration entries are handled: a pmd migration entry is accepted
+>> by pmd_trans_huge_lock(), but is not accepted by pmd_trans_huge().
 >>
->> KSM already avoids this problem by using memcmp_pages(), which on arm64
->> intentionally reports MTE-tagged pages as non-identical to prevent unsafe
->> merging.
+>> See fs/proc/task_mmu.c for mm_walk examples of trying pmd_trans_huge_lock(),
+>> then pte_offset_map_lock() if it failed, or ACTION_AGAIN if that failed too.
 >>
->> As suggested by David[1], this patch adopts the same pattern, replacing the
->> memchr_inv() byte-level check with a call to pages_identical(). This
->> leverages existing architecture-specific logic to determine if a page is
->> truly identical to the shared zeropage.
+>> When I ACTION_AGAINed damon_mkold_pmd_entry() and damon_young_pmd_entry()
+>> in 6.5, I didn't realize that the pmd migration entries were reaching the
+>> pte_offset_map_lock(), with corrupt results (or did pmd_bad() filter them
+>> out? I didn't think so, but it'll take me too long now to work out whether
+>> a pmd migration entry counts as pmd_bad or not); but knew that the new
+>> pte_offset_map_lock() filtered them out safely if there was a race.
 >>
->> Having both the THP shrinker and KSM rely on pages_identical() makes the
->> design more future-proof, IMO. Instead of handling quirks in generic code,
->> we just let the architecture decide what makes two pages identical.
->>
->> [1] https://lore.kernel.org/all/ca2106a3-4bb2-4457-81af-301fd99fbef4@redhat.com
->>
->> Cc: <stable@vger.kernel.org>
->> Reported-by: Qun-wei Lin <Qun-wei.Lin@mediatek.com>
->> Closes: https://lore.kernel.org/all/a7944523fcc3634607691c35311a5d59d1a3f8d4.camel@mediatek.com
->> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
->> Suggested-by: David Hildenbrand <david@redhat.com>
->> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->> ---
->> Tested on x86_64 and on QEMU for arm64 (with and without MTE support),
->> and the fix works as expected.
+>> But they've been reaching it without any race, so yes the ACTION_AGAIN
+>> would send the mm_walk back again and again for as long as the pmd
+>> migration entry remained there: not good, and Xinyu finds a lockup
+>> when hotplugging CPU without preemption.
 > 
->  From [1], I see you mentioned RISC-V also has the address masking feature.
-> Is it affected by this? And memcmp_pages() is only implemented by ARM64
-> for MTE. Should any arch with address masking always implement it to avoid
-> the same issue?
-
-Yeah, I'm new to RISC-V, seems like RISC-V has a similar feature as
-described in Documentation/arch/riscv/uabi.rst, which is the Supm
-(Supervisor-mode Pointer Masking) extension.
-
-```
-Pointer masking
----------------
-
-Support for pointer masking in userspace (the Supm extension) is 
-provided via
-the ``PR_SET_TAGGED_ADDR_CTRL`` and ``PR_GET_TAGGED_ADDR_CTRL`` ``prctl()``
-operations. Pointer masking is disabled by default. To enable it, userspace
-must call ``PR_SET_TAGGED_ADDR_CTRL`` with the ``PR_PMLEN`` field set to the
-number of mask/tag bits needed by the application. ``PR_PMLEN`` is 
-interpreted
-as a lower bound; if the kernel is unable to satisfy the request, the
-``PR_SET_TAGGED_ADDR_CTRL`` operation will fail. The actual number of 
-tag bits
-is returned in ``PR_PMLEN`` by the ``PR_GET_TAGGED_ADDR_CTRL`` operation.
-```
-
-But, IIUC, Supm by itself only ensures that the upper bits are ignored on
-memory access :)
-
-So, RISC-V today would likely not be affected. However, once it implements
-full hardware tag checking, it will face the exact same zero-page problem.
-
-Anyway, any architecture with a feature like MTE in the future will need
-its own memcmp_pages() to prevent unsafe merges ;)
-
+> Thank you for your detailed and kind explanation, Hugh!
 > 
 >>
->>   mm/huge_memory.c | 15 +++------------
->>   mm/migrate.c     |  8 +-------
->>   2 files changed, 4 insertions(+), 19 deletions(-)
+>> My suggested patch below (please take it over SJ, and do with it what
+>> you will), converting damon_mkold_pmd_entry() and damon_young_pmd_entry()
+>> to use pmd_trans_huge_lock() as I'd been expecting, so handling the
+>> pmd migration entry up in that block.  (Side note: patch against 6.17-rc,
+>> but I see mm.git adds also a damos_va_stat_pmd_entry(), which would
+>> better be converted to the same pmd_trans_huge_lock() pattern -
+>> though I notice you're not setting ACTION_AGAIN in that one.)
 >>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 32e0ec2dde36..28d4b02a1aa5 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -4104,29 +4104,20 @@ static unsigned long deferred_split_count(struct shrinker *shrink,
->>   static bool thp_underused(struct folio *folio)
->>   {
->>   	int num_zero_pages = 0, num_filled_pages = 0;
->> -	void *kaddr;
->>   	int i;
+>> But I have to admit, there's very little gained by using ACTION_AGAIN
+>> in these functions: it helps not to miss the range when racing against
+>> THP collapse or split, but you're already content to miss the extent
+>> if it has a pmd migration entry, and there can still be an instant when
+>> the range which used to have a page table does not yet show the THP.
 >>
->>   	for (i = 0; i < folio_nr_pages(folio); i++) {
->> -		kaddr = kmap_local_folio(folio, i * PAGE_SIZE);
->> -		if (!memchr_inv(kaddr, 0, PAGE_SIZE)) {
->> -			num_zero_pages++;
->> -			if (num_zero_pages > khugepaged_max_ptes_none) {
->> -				kunmap_local(kaddr);
->> +		if (pages_identical(folio_page(folio, i), ZERO_PAGE(0))) {
->> +			if (++num_zero_pages > khugepaged_max_ptes_none)
->>   				return true;
->> -			}
->>   		} else {
->>   			/*
->>   			 * Another path for early exit once the number
->>   			 * of non-zero filled pages exceeds threshold.
->>   			 */
->> -			num_filled_pages++;
->> -			if (num_filled_pages >= HPAGE_PMD_NR - khugepaged_max_ptes_none) {
->> -				kunmap_local(kaddr);
->> +			if (++num_filled_pages >= HPAGE_PMD_NR - khugepaged_max_ptes_none)
->>   				return false;
->> -			}
->>   		}
->> -		kunmap_local(kaddr);
->>   	}
->>   	return false;
->>   }
->> diff --git a/mm/migrate.c b/mm/migrate.c
->> index aee61a980374..ce83c2c3c287 100644
->> --- a/mm/migrate.c
->> +++ b/mm/migrate.c
->> @@ -300,9 +300,7 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
->>   					  unsigned long idx)
->>   {
->>   	struct page *page = folio_page(folio, idx);
->> -	bool contains_data;
->>   	pte_t newpte;
->> -	void *addr;
->>
->>   	if (PageCompound(page))
->>   		return false;
->> @@ -319,11 +317,7 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
->>   	 * this subpage has been non present. If the subpage is only zero-filled
->>   	 * then map it to the shared zeropage.
->>   	 */
->> -	addr = kmap_local_page(page);
->> -	contains_data = memchr_inv(addr, 0, PAGE_SIZE);
->> -	kunmap_local(addr);
->> -
->> -	if (contains_data)
->> +	if (!pages_identical(page, ZERO_PAGE(0)))
->>   		return false;
->>
->>   	newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
->> -- 
->> 2.49.0
-> 
-> The changes look good to me. Thanks. Acked-by: Zi Yan <ziy@nvidia.com>
+>> So if you prefer a smaller fix (but a larger source file!), just
+>> dropping the walk->action = ACTION_AGAIN lines should be good enough.
 
-Cheers!
+Hi, Hugh. Thank you for your patient explanation and solution!
+
+> 
+> I agree all your points.
+> 
+> I'd prefer the smaller source file following your suggested change below (using
+> pmd_trans_huge_lock()) in long term.  But, for a short term, I'd prefer the
+> smaller fix (dropping walk->action = ACTION_AGAIN) since it should also be
+> merged into stable@, up to 6.5.y.
+> 
+> So, I'd like to suggest as following.  Let's drop the
+> 'walk->action = ACTION_AGAIN' like the below attached one, for now.  After it
+> is confirmed to fix the issue and merged into relevant trees including stable
+> trees, let's revisit the code to cleanup following pmd_trans_huge_lock()
+> pattern.
+> 
+> Please let me know if I'm missing something, or you have other opinions.
+> 
+> Xinyu, could you please test if the below attached patch fixes your issue and
+> let us know the result?
+
+Thanks for all the reply and suggestion, SJ! I am trying to reproduce 
+the scenario now and will send the result back very soon!
+
+> 
+> If Xinyu confirms the validity of the fix and no one objects to the above plan,
+> I will post the fix as a formal one with a better commit message.
+> 
+> 
+> Thanks,
+> SJ
+> 
+
+> [...]
+> 
+> ==== >8 ====
+>  From 743cafda8982624229541741dbfe5ff252328ac0 Mon Sep 17 00:00:00 2001
+> From: SeongJae Park <sj@kernel.org>
+> Date: Sat, 20 Sep 2025 03:35:34 -0700
+> Subject: [PATCH] mm/damon/vaddr: do not try page table walk again
+> 
+> For a quick fix of a softlockup issue:
+> https://lore.kernel.org/20250918030029.2652607-1-zhengxinyu6@huawei.com
+> 
+> Signed-off-by: SeongJae Park <sj@kernel.org>
+> ---
+>  From 743cafda8982624229541741dbfe5ff252328ac0 Mon Sep 17 00:00:00 2001
+> From: SeongJae Park <sj@kernel.org>
+> Date: Sat, 20 Sep 2025 03:35:34 -0700
+> Subject: [PATCH] mm/damon/vaddr: do not try page table walk again
+> 
+> For a quick fix of a softlockup issue:
+> https://lore.kernel.org/20250918030029.2652607-1-zhengxinyu6@huawei.com
+> 
+> Signed-off-by: SeongJae Park <sj@kernel.org>
+> ---
+>   mm/damon/vaddr.c | 8 ++------
+>   1 file changed, 2 insertions(+), 6 deletions(-)
+> 
+> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+> index 8c048f9b129e..7e834467b2d8 100644
+> --- a/mm/damon/vaddr.c
+> +++ b/mm/damon/vaddr.c
+> @@ -328,10 +328,8 @@ static int damon_mkold_pmd_entry(pmd_t *pmd, unsigned long addr,
+>   	}
+>   
+>   	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
+> -	if (!pte) {
+> -		walk->action = ACTION_AGAIN;
+> +	if (!pte)
+>   		return 0;
+> -	}
+>   	if (!pte_present(ptep_get(pte)))
+>   		goto out;
+>   	damon_ptep_mkold(pte, walk->vma, addr);
+> @@ -481,10 +479,8 @@ static int damon_young_pmd_entry(pmd_t *pmd, unsigned long addr,
+>   #endif	/* CONFIG_TRANSPARENT_HUGEPAGE */
+>   
+>   	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
+> -	if (!pte) {
+> -		walk->action = ACTION_AGAIN;
+> +	if (!pte)
+>   		return 0;
+> -	}
+>   	ptent = ptep_get(pte);
+>   	if (!pte_present(ptent))
+>   		goto out;
+
+-- 
+Xinyu Zheng
 
 
