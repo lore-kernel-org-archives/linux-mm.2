@@ -4,130 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 115B0CAC592
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 21:09:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D943CA100F
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 21:23:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13F228E000E; Mon, 22 Sep 2025 17:09:53 -0400 (EDT)
+	id CCEED8E0005; Mon, 22 Sep 2025 17:23:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 116E98E0001; Mon, 22 Sep 2025 17:09:53 -0400 (EDT)
+	id C57498E0001; Mon, 22 Sep 2025 17:23:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F20C48E000E; Mon, 22 Sep 2025 17:09:52 -0400 (EDT)
+	id B1ECF8E0005; Mon, 22 Sep 2025 17:23:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E24F68E0001
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 17:09:52 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6E35B514DB
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 21:09:52 +0000 (UTC)
-X-FDA: 83918128224.08.50A989D
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7A9AD80016
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 21:09:50 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=VyftjPta;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 983958E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 17:23:06 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5BCD7850F4
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 21:23:06 +0000 (UTC)
+X-FDA: 83918161572.02.90F0952
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6443A14000A
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 21:23:04 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b=BOU6mVcT;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="g mHBoxt";
+	spf=pass (imf26.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.150 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758575390;
+	s=arc-20220608; t=1758576184;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aIOP0jY/+X/9DN9f80nfhBWfHor4awN8nQUrjS4FFGg=;
-	b=VEMBDy58mwtnCeka7T7xbTDdq+KR/7454mT3j062477yHxsfcsNKCTJNxOPRJJNo5BWtyQ
-	V1uvyUfoDGq2nq9mhnOxdxs/ENyehSVtG5BzTTDHBxhjN+DeB/N+UTC12j5w7yQCuuH6Ge
-	d2ihMj8ksHcV7AnWmEeR9t2gBwZJIYU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758575390; a=rsa-sha256;
-	cv=none;
-	b=C/VfZ1rSXL2NRWF8Cs4NEV7QFHmCMBLnEa8w60z803AkKhDdWL8s8QYThpEGj6F9uxfyZU
-	KJHWeIcllp173eJX01MNvSpjx4cgl06W7r3O9+iu/D2Js9SaveLjuD3/zgjQov11oUznaX
-	HvJkSTZZFbBTl5W3BtvonkQNuL4fmqw=
+	bh=Di8U+yHpW9PWxGMprMpa0qfyAiwc5nChUHQPZxjrHH8=;
+	b=fhD8dqaAmR093E1sXUDhg7Idm587QWZvsnVlew0MHjxHG3turTSF3+RKQHxh7cwoNhK+tu
+	bvXLVvlAVVATTTeIsj0iHiYCmCtVzUMsIZnYGB4fYyyg+Kz4g+bPfbf1PbYZShFzi0EP8K
+	ck8IodqXiTNO8ExOOOUJwijvNXa0YBE=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=VyftjPta;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4b38d4de6d9so30831391cf.1
-        for <linux-mm@kvack.org>; Mon, 22 Sep 2025 14:09:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1758575389; x=1759180189; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=aIOP0jY/+X/9DN9f80nfhBWfHor4awN8nQUrjS4FFGg=;
-        b=VyftjPtaIkt+9Gztd3e1J1hiFcwzICUgkwUVL0sEnyL1y4CDUL4RySoeA8BgMHTOjd
-         D1j2VKrznXWbTXUA7VSUcorsdL6SNDDyxrBzXNjPX0c9Y9LL8aSFc1iAX4yC0V1mNDG1
-         SzlH1CHZUsr++CwZ+tRqR73XhFduQkahIPm/+4kuD6W+OeSW5rYWVEGYFQqe2YB6dH8u
-         z2OPxnA2GQGbhGzsjLeHJoCo7ptLEIenj+s91QGKBa+NQdJclkmpLwO19tPtiIR+XCsU
-         wM9luTTIpVGc+WSMfe0l5X/CCrHrgO+ek21pDOpqV2KST8wcFU09zwr6r15atOtrGobh
-         MtFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758575389; x=1759180189;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aIOP0jY/+X/9DN9f80nfhBWfHor4awN8nQUrjS4FFGg=;
-        b=dSj/FL2CpmBNH3vBZtNOEnyik63x/UacrJ0wPrD8n0gD6Qz4ShaFsP8bbjkQGeC69J
-         po87P3gqAHNkmiSYWQLSenzl1f65cX4rf0G98sHY++UvXrTklAD3q4ja+Jmd05Cr/Wpe
-         9oQCgqNPDRZ60GzkaAuYi4fWXh66gE5jVWXvHynsdeRjPH4AKH19jF8zJmT4HejPF5hq
-         cx7PXs2uFZkeljxHPLkYz3ZypcDQt7SpH0cc8O6/7PCaKkQWS3zLKm5YNiC2hC84FocR
-         WkLu5juLFDIkB2/6h3VGGOvxiakyzVPyozWIo+HTiCu7JJf3Z6TNp17e5PKLY0fKtixE
-         VWZA==
-X-Forwarded-Encrypted: i=1; AJvYcCXOmNYtnjmZYpn5kgbmk8ne0ENXeaay/9vAOTmm0QVb2nSFoTPVepAXpNfcqp6ZBVSULKWg5pEgwQ==@kvack.org
-X-Gm-Message-State: AOJu0YyC56SPPD6L2gF5K8h1JJwsnjxYR//YOQCd0Km59dyVaVYurauR
-	eHTwZvnMetql71aNGqE6lJQWFRfdrsS6WuJhnad7YfAZg0+P8pxNyyR0YqchUdXfYIGRWrs/j49
-	Vq0C0uzuEI45x9PMgsfX3L8+TO7QeFq4KyxwNfDq/KA==
-X-Gm-Gg: ASbGncvyFg8azji0rqgFT8iChSbivwNbHpW6BB2uYWDDEBN9yxY99FjUrTOxCimtx7w
-	LM+W3bX6X/gp3+jC88iFQG3l3xTm3J1WJB+TFDcSIPrvJ4OCAJGNDJoIJf7vJnxZr/2BYeJXiJG
-	v+nK5e8ghafpZiGj04QTm86eLIvXo5ktiJVx0OMkOIgMY18E4lIm40YnMjpelXg+y/WaSEELKAc
-	DZF
-X-Google-Smtp-Source: AGHT+IG/qgae5Me0ExwT19ZtCSc7WJPaTAk40SN+WOTTYohTOQCqtXZFZ8mCtUhw0BmokKMxl2aqS4C1ND0ndsRc4Xg=
-X-Received: by 2002:ac8:6f07:0:b0:4cc:48c0:adfe with SMTP id
- d75a77b69052e-4d368a800a4mr3604971cf.30.1758575389346; Mon, 22 Sep 2025
- 14:09:49 -0700 (PDT)
+	imf26.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b=BOU6mVcT;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="g mHBoxt";
+	spf=pass (imf26.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.150 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758576184; a=rsa-sha256;
+	cv=none;
+	b=fYqmoNWyq6tsldR6uYZuFpMEJP9jb/WnC8wqmDU/FV3K1n1fry5q7bZUJtfcUYxdMX6ujI
+	Gk/m18w2t6NLq1RTPwSI5/+rcVig83sXOzRbl/mDsU7MCtouqaD8wEYki3nAkMqPrh+5RC
+	g9rowTMbCDeMW5WreQPl54bGWwo9EqE=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id 97915EC0301;
+	Mon, 22 Sep 2025 17:23:03 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Mon, 22 Sep 2025 17:23:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1758576183;
+	 x=1758662583; bh=Di8U+yHpW9PWxGMprMpa0qfyAiwc5nChUHQPZxjrHH8=; b=
+	BOU6mVcToMxa6qFUiC6cht0bV05a8ANyKR5ukskNj74Kgap+DqTUaWSu+IKdFe3l
+	WRpUM30Wu3H0Q7A2y/voOAEVMz1ItWGdFd+w1g29YJ7Tjl2aT+hQdsIjBYzOSRat
+	P6tosIN336s/ecXEeQ/mGTufNXrxc6oPikF3ykV/4Wx5E6r8XKZkcW5rH07dbYAi
+	hVS+ZWgjs+wGKwhWw9MlR/A61u1V4gi072jORA/RDnj7Nu/QRBfiadbi2FwamY3C
+	z1g3eaCmC+6ZV0VO36eJ9rA4ai9KBUyUl+kX8rwbdvVby3ynOJZk+yOUH9dNivMj
+	J6BkZ2jlIo5ZNgAXnGA8VQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1758576183; x=
+	1758662583; bh=Di8U+yHpW9PWxGMprMpa0qfyAiwc5nChUHQPZxjrHH8=; b=g
+	mHBoxtTQev5hHzzjS7DzOG6LjQc2O42dSxLb4L6WQb2WlRSURFQb5PpcuBN2HTms
+	62d99pLVtJPUCF7OT5ICVSqlboyOqdGHXJIUax+oI0O3IgOolDGEnOWayvlw19bk
+	GTctlMrBtCTrn15fz5C78bks5N4t7sTFyuHhpbp7bypfTbN9jsFm7miJXebzUTbu
+	GkBm5/mf2z9Lam8hkmNkaZhD/Aa8ufZ9KIVP69Ld+kkRg/FCv7kH/PRqbJ/kSgjT
+	Ys/j3Va2f5abW1fJBGV59q3b0QcV6n8w4sBB+Pm5+Jpany6I0MqmylWHR2hKS/7W
+	p6MNsjIRV0fcgvwbafw5Q==
+X-ME-Sender: <xms:Nb7RaHIv0elNNGqKqz2hq59PlbQ1WvH3PQekoKoYN6GHdrkbplcdZg>
+    <xme:Nb7RaF9zWPO1z0eI-85xdehQcHCJ4U-ixtIweYwspyjZNwYzs6sJyQVkn2QKVroo2
+    tuHZCnZ7Y6hRCAk3yvZYtO1xCbsZ8geow9JBfeHT6Z-a8qAnaICeO8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdehkeelvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
+    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeefuddpmhhouggvpehsmhhtphhouhht
+    pdhrtghpthhtoheptghhvghsthgvrhdrrgdruhhnrghlsegrrhhinhgtledrtghomhdprh
+    gtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupdhr
+    tghpthhtohepnhhstghhihgthhgrnhesfhhrvggvsghogidrfhhrpdhrtghpthhtoheprg
+    hnughrvggrshesghgrihhslhgvrhdrtghomhdprhgtphhtthhopehgvggvrhhtodhrvghn
+    vghsrghssehglhhiuggvrhdrsggvpdhrtghpthhtoheprghlvgigrghnuggvrhdrshhvvg
+    hrughlihhnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepshgvrhhgihhordhprghrrggt
+    uhgvlhhlohhssehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhurhgvnhgssehgohhogh
+    hlvgdrtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhg
+X-ME-Proxy: <xmx:Nb7RaHyj4-U5cmLtj8aV6Obmj2wE8qDHFtnv04wApvnSKRdpvOTwyQ>
+    <xmx:Nb7RaPNEf6QOHCcg2sOwG2YcDZEDgMATtieOS7b2v4iNsq7NAARQhg>
+    <xmx:Nb7RaM7LJ7xoeWbjkfv203dQeqEDMpWgwtURBYX5yI5dIc7-dM-KOA>
+    <xmx:Nb7RaGcvvcBerj7e35_eqxKXMQdHMfkXoSuoEeKpoVO0WLLALUm55w>
+    <xmx:N77RaF-PoW2bovyuykM0k5mv84evTeZMjlxPQrSMV7i2vSrQZNKLFHZX>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 2385C70006A; Mon, 22 Sep 2025 17:23:01 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
- <20250807014442.3829950-17-pasha.tatashin@soleen.com> <20250814134917.GE802098@nvidia.com>
-In-Reply-To: <20250814134917.GE802098@nvidia.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Mon, 22 Sep 2025 17:09:11 -0400
-X-Gm-Features: AS18NWCsBRxoeYSv5S_-rUt98UUe9gxpk-iBTnQrKdXEdTrrgwXCgW39zL3zdf8
-Message-ID: <CA+CK2bD68E1-AWxz9p-Byyb=fDVQGu4Q+GpW2ogCNdjCxbAJqQ@mail.gmail.com>
-Subject: Re: [PATCH v3 16/30] liveupdate: luo_ioctl: add userpsace interface
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
-	changyuanl@google.com, rppt@kernel.org, dmatlack@google.com, 
-	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
-	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
-	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
-	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
-	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
-	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
-	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
-	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
-	song@kernel.org, zhangguopeng@kylinos.cn, linux@weissschuh.net, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
-	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
-	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 7A9AD80016
-X-Stat-Signature: uuqge68xf8r5ezx9pzekauh7j3c5ywju
+X-ThreadId: AneuvEk2E7Kg
+Date: Mon, 22 Sep 2025 23:22:30 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Nicolas Schichan" <nschichan@freebox.fr>
+Cc: "Jason Gunthorpe" <jgg@nvidia.com>,
+ "Geert Uytterhoeven" <geert@linux-m68k.org>, ksummit@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, imx@lists.linux.dev,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Richard Weinberger" <richard@nod.at>,
+ "Lucas Stach" <l.stach@pengutronix.de>,
+ "Linus Walleij" <linus.walleij@linaro.org>,
+ "Geert Uytterhoeven" <geert+renesas@glider.be>,
+ "Ankur Arora" <ankur.a.arora@oracle.com>,
+ "David Hildenbrand" <david@redhat.com>,
+ "Mike Rapoport" <rppt@kernel.org>,
+ "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Matthew Wilcox" <willy@infradead.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>,
+ "Suren Baghdasaryan" <surenb@google.com>,
+ "Ira Weiny" <ira.weiny@intel.com>, "Nishanth Menon" <nm@ti.com>,
+ =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>,
+ "Sergio Paracuellos" <sergio.paracuellos@gmail.com>,
+ "Andreas Larsson" <andreas@gaisler.com>
+Message-Id: <598ab56d-7dd0-4adb-b0fe-30ad5cf24335@app.fastmail.com>
+In-Reply-To: 
+ <CAHNNwZCsBY+ta2-OqD40K0-C8N25PLMYfOJowiVeaEMotqR1nQ@mail.gmail.com>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+ <20250917125951.GA1390993@nvidia.com>
+ <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
+ <CAMuHMdVecUeLZ2LPpa457C0a=uduvDhQ4KZJx-++dEFJraRi3w@mail.gmail.com>
+ <547dcb81-434d-4910-aa7c-1d69019fcb3d@app.fastmail.com>
+ <20250919143436.GC2132010@nvidia.com>
+ <44f910bf-ac2c-4b2f-8e50-5cfc7dd0761a@app.fastmail.com>
+ <CAHNNwZCsBY+ta2-OqD40K0-C8N25PLMYfOJowiVeaEMotqR1nQ@mail.gmail.com>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ed863j7beftksssaw6ko1rbsfm99tfm6
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758575390-509700
-X-HE-Meta: U2FsdGVkX18EEjWp5fTxmoDA5rVyFCZfHTXj5WFaCkXX5gJHuEPJG1TWfoN/a5LJBBjgnMIeaAvXXZK6XYWyQ8cdvXhNHq/4esyfj7yjo0BJ91+NKZDZmK3RjCFMVUYyF+VYvyJsv8iUbLh6JiWqgbhJ7Hkoc7Or7q45vKQiRY5RZ6q++nTdJjKNFk7Siu3eb0bN5YV99Id6daC+5IVzPLXKB80WBOqRvcOuDBhYVMxbwj0NmPBkxbQCQyMJtcCWwW+bv3yFR8v/R7JQpHkPtgAmMHGMhxEjcH4rZ8iIgY3wtt5KUv9U1UUZjjp6ezRZSQTXR+jtmDltMxSfE9U+4kfi1aJWiuqNY6YTjELk8Wu0pCRrcQgs8dKawFaeC+SCpU8GZzb0bN5Lf+H1o4f0DGP8IRkV2ENlyJxncbQZq5aZKz2vnF8UHwzluZP2+bZYp1sd0Rg7H1IkeIgymEBXbLfqxN/jaThfT35MRlQOa53nv+G5kFlYhhyf0ZzKrlKAldQCp9gMXcO5aAX7L66T59pRD4uYQCAXEycJOxZ2Nfv0sWo81Brt6Vyki3xVZROPxDUVRT+wDJ+D360DIebTIPfAKJNSmeNFsnx0oBt/p3dJYnL0pXAtAu1SYktYMQXvgoAVZ9nHhjyaSv0/99H8b6Dg39xLuP3BbxPZnLu6mTfOR2uOTnDH3kHP+jaGh286UjnXYoizVsXqmhzrws+JpRHhiFtzHe7UDv9ntZfCbyky3HtvNyRW2/YRB5SlNzbrGltpAE6Jhde39Og1UcN13Yef3k1ZN5ouNejbilG5gyDeCu/z0FVx1qZUKaYv8XI+vzZrvTLMnY8q0uATfoRCgRbJkhpkt++79zV9fpWTgm5ls1C4xxhjmJpJc4IYxSL8o65m1q5ujp87Kal44imuz1IJ55BIJULQsJUBv0CBkFDP/Efgsni0MCnj1GmmRq3wO7Pv9ZlpglZV1ZSOUWS
- l5przu8l
- q7/0a12hORrkP1WDDV2SGrlPJ6Dj8zXcGuXskdsUDmRbCmsxhpXYLI8IueK44uGhGTxFS3tiO8xkRD9t6pwLM5otbWWlWjcRrexC6hz2qc2AyUniG9sAsQAvTUX0YnRE/HF2A7ywFpTfSgQR6Fs8XEtLGV0ZUNnEL4x9TAAOjTOydzcQeQKmqr3XoiqZIKlLBmQk/N0Pr95UNYWBtWZ9drl0e5FrIfWgRz6949Nww3pvIjsarDJacIPWFwpnjgUhnZb9R6ZMStjT1CTR78R/5AjkcY4GRoPzreaHbJAWkHgRFLmDS6+tHyxRUTw==
+X-Rspamd-Queue-Id: 6443A14000A
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758576184-362957
+X-HE-Meta: U2FsdGVkX1+rTMu9VRLUlurzr9RDJhEg1EmqGDwYeXXwjlwwujBIOKr52mxTQgM4nnmnyWkBGfGosznZew1Zo0zyjb3UkVuXTxcDI8+AzeCotAwSvzw103VVJDoM4EoVB0ln9mwAAF6GF1pQo5nMNOd86oZyUM4Gt5xD7kpPC84mc4OwvIIl03HUoMTh+RhlV8vEGc66TbAfnhPE9G4NWdVzOTN6QFK4bEO8o76VgOWaMatBU2jpqsCHupGSVxzmiZ9I3J5ababVYzvifM+K2IqyVg40oVm6rZz1ouXVipmzZxdQFGe9GLILkrrVwUiTjYMdYwhDwEMv2BQng/gaTH10M/vd9XOD0TRg7wkQZHsJDE0/7G+UbltSQJ/2sOrMKc94r23pFsIciOsvuUwoVE9gkOIdkdsUAJmijNowFkP2XXwq8+dDQaXdCeHhR96vaj9zoTrwxXkP1NwIPJu2tiNCtXKGBTTBz33dlKJORncbCB3V3XE7Fo40SQoYosfM+DnXgETZUcaz2sfVgyCRqEaPP7VCRhxmFKnWlcV9Fk3UxeB1TIF+RgK7rbl0KMDMOO3vIzIBRCKSK6SBogVuKfqpVjxqLhOsnLLq/W02bWbHi4cmnNbzWXaNOvODlj6KC+E7djHyWl6eIMs/3DihP4qGTjKSNhC6TpVfAJ+8p+tmOOc6T/3bHEpmK5Gt6DtR9XdPOaPA8rDSp02sOGyM8lRsPnC8n1j+vdUA12qoI1kS2o3lH+mBgJYZlLLfw0jDeHtMOXYeWxEQ9euArbaMtXcVxn8706iCQum1B3RD5t/Evdz3QIhC7XEEDWKDmpaVJDKijkfElAwVFU8949Km4ID1Ov+1TUn1xWRAoadPyGr/qcxMLTy9ug2HQA0GPW8J6QnR05hzKkyfYnFFRfmcXUHvnP//pMjWjdBfH2hSDt1tEw26PSaXC6fSqMrF6zaYe/MIsOHn2ftpiE8HeH+
+ yoYoKPVV
+ wCjvw8MqNSMXkDVAQHlf296MBNN6wQ5DEtKrmB8BbTlRGh78gXWl5lDDcOg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,156 +168,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > + *  - EINVAL: Everything about the IOCTL was understood, but a field is not
-> > + *    correct.
-> > + *  - ENOENT: An ID or IOVA provided does not exist.
->                     ^^^^^^^^^
+On Mon, Sep 22, 2025, at 19:05, Nicolas Schichan wrote:
+>> On Fri, Sep 19, 2025, at 16:34, Jason Gunthorpe wrote:
+>> > On Fri, Sep 19, 2025 at 04:22:20PM +0200, Arnd Bergmann wrote:
+>>
+>> I did get an email from Nicolas Schichan (added to Cc here),
+>> and he is still supporting a widely deployed Kirkwood based
+>> platform that uses 1GB RAM configurations. He should get
+>> a chance to test that with CONFIG_VMSPLIT_3G_OPT, but I
+>> would expect that to continue working, possibly with minor
+>> bugfixes.
 >
-> Maybe this should be 'token' ?
+> We don't use HIGMEM on our Kirkwood platform, we are happy using a
+> 2G/2G WMSPLIT. We don't need a lot of virtual address space for
+> userland, and with the 2G split we don't waste physical memory.
 
-Yes, replaced with token. :-)
+Ok, good.
 
-> > +struct liveupdate_ioctl_fd_unpreserve {
-> > +       __u32           size;
-> > +       __aligned_u64   token;
-> > +};
->
-> It is best to explicitly pad, so add a __u32 reserved between size and
-> token
->
-> Then you need to also check that the reserved is 0 when parsing it,
-> return -EOPNOTSUPP otherwise.
+> I'm happy to test your patch serie with VMSPLIT_3G_OPT and see if it
+> still boots with it once you send it.
 
-Done.
+The patches I did for turning off HIGHMEM on ARMv5 won't have
+any effect if you are already running without highmem, so I
+don't think we need to wait for your tests specifically.
+Any testing would be useful of course just to check that
+everything still works.
 
->
-> > +static atomic_t luo_device_in_use = ATOMIC_INIT(0);
->
-> I suggest you bundle this together into one struct with the misc_dev
-> and the other globals and largely pretend it is not global, eg refer
-> to it through container_of, etc
->
-> Following practices like this make it harder to abuse the globals.
+Jason, I think we can go ahead with your suggestion. I can
+post my patches for review once I've done some testing on
+them.
 
-Done, good suggestion.
-
-> > +struct luo_ucmd {
-> > +     void __user *ubuffer;
-> > +     u32 user_size;
-> > +     void *cmd;
-> > +};
-> > +
-> > +static int luo_ioctl_fd_preserve(struct luo_ucmd *ucmd)
-> > +{
-> > +     struct liveupdate_ioctl_fd_preserve *argp = ucmd->cmd;
-> > +     int ret;
-> > +
-> > +     ret = luo_register_file(argp->token, argp->fd);
-> > +     if (!ret)
-> > +             return ret;
-> > +
-> > +     if (copy_to_user(ucmd->ubuffer, argp, ucmd->user_size))
-> > +             return -EFAULT;
->
-> This will overflow memory, ucmd->user_size may be > sizeof(*argp)
->
-> The respond function is an important part of this scheme:
->
-> static inline int iommufd_ucmd_respond(struct iommufd_ucmd *ucmd,
->                                        size_t cmd_len)
-> {
->         if (copy_to_user(ucmd->ubuffer, ucmd->cmd,
->                          min_t(size_t, ucmd->user_size, cmd_len)))
->                 return -EFAULT;
->
-> The min (sizeof(*argp) in this case) can't be skipped!
-
-Done, thank you for catching this.
-
-> > +static int luo_ioctl_fd_restore(struct luo_ucmd *ucmd)
-> > +{
-> > +     struct liveupdate_ioctl_fd_restore *argp = ucmd->cmd;
-> > +     struct file *file;
-> > +     int ret;
-> > +
-> > +     argp->fd = get_unused_fd_flags(O_CLOEXEC);
-> > +     if (argp->fd < 0) {
-> > +             pr_err("Failed to allocate new fd: %d\n", argp->fd);
->
-> No need
-
-Removed
-
-> > +             return argp->fd;
-> > +     }
-> > +
-> > +     ret = luo_retrieve_file(argp->token, &file);
-> > +     if (ret < 0) {
-> > +             put_unused_fd(argp->fd);
-> > +
-> > +             return ret;
-> > +     }
-> > +
-> > +     fd_install(argp->fd, file);
-> > +
-> > +     if (copy_to_user(ucmd->ubuffer, argp, ucmd->user_size))
-> > +             return -EFAULT;
->
-> Wrong order, fd_install must be last right before return 0. Failing
-> system calls should not leave behind installed FDs.
-
-Fixed.
-
->
-> > +static int luo_ioctl_set_event(struct luo_ucmd *ucmd)
-> > +{
-> > +     struct liveupdate_ioctl_set_event *argp = ucmd->cmd;
-> > +     int ret;
-> > +
-> > +     switch (argp->event) {
-> > +     case LIVEUPDATE_PREPARE:
-> > +             ret = luo_prepare();
-> > +             break;
-> > +     case LIVEUPDATE_FINISH:
-> > +             ret = luo_finish();
-> > +             break;
-> > +     case LIVEUPDATE_CANCEL:
-> > +             ret = luo_cancel();
-> > +             break;
-> > +     default:
-> > +             ret = -EINVAL;
->
-> EOPNOTSUPP
-
-Ack.
-
->
-> > +union ucmd_buffer {
-> > +     struct liveupdate_ioctl_fd_preserve     preserve;
-> > +     struct liveupdate_ioctl_fd_unpreserve   unpreserve;
-> > +     struct liveupdate_ioctl_fd_restore      restore;
-> > +     struct liveupdate_ioctl_get_state       state;
-> > +     struct liveupdate_ioctl_set_event       event;
-> > +};
->
-> I discourage the column alignment. Also sort by name.
-
-Done
-
->
-> > +static const struct luo_ioctl_op luo_ioctl_ops[] = {
-> > +     IOCTL_OP(LIVEUPDATE_IOCTL_FD_PRESERVE, luo_ioctl_fd_preserve,
-> > +              struct liveupdate_ioctl_fd_preserve, token),
-> > +     IOCTL_OP(LIVEUPDATE_IOCTL_FD_UNPRESERVE, luo_ioctl_fd_unpreserve,
-> > +              struct liveupdate_ioctl_fd_unpreserve, token),
-> > +     IOCTL_OP(LIVEUPDATE_IOCTL_FD_RESTORE, luo_ioctl_fd_restore,
-> > +              struct liveupdate_ioctl_fd_restore, token),
-> > +     IOCTL_OP(LIVEUPDATE_IOCTL_GET_STATE, luo_ioctl_get_state,
-> > +              struct liveupdate_ioctl_get_state, state),
-> > +     IOCTL_OP(LIVEUPDATE_IOCTL_SET_EVENT, luo_ioctl_set_event,
-> > +              struct liveupdate_ioctl_set_event, event),
->
-> Sort by name
-
-Done
+     Arnd
 
