@@ -4,114 +4,180 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B9E1CAC5AA
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 13:12:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80B59CAC5AA
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 13:14:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7947A8E000B; Mon, 22 Sep 2025 09:12:44 -0400 (EDT)
+	id DD8598E000D; Mon, 22 Sep 2025 09:14:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76BB68E0001; Mon, 22 Sep 2025 09:12:44 -0400 (EDT)
+	id D895F8E0001; Mon, 22 Sep 2025 09:14:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6819C8E000B; Mon, 22 Sep 2025 09:12:44 -0400 (EDT)
+	id C9F788E000D; Mon, 22 Sep 2025 09:14:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5799D8E0001
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 09:12:44 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E081711AA3D
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 13:12:43 +0000 (UTC)
-X-FDA: 83916925806.05.A28B7D0
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 034004000F
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 13:12:41 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WYTjCHwa;
-	spf=pass (imf07.hostedemail.com: domain of stephen.smalley.work@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=stephen.smalley.work@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758546762;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B96E68E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 09:14:12 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7AD4B876E5
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 13:14:12 +0000 (UTC)
+X-FDA: 83916929544.28.44C9AA1
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010032.outbound.protection.outlook.com [52.101.201.32])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9E377100003
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 13:14:09 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=N0h64Fls;
+	spf=pass (imf14.hostedemail.com: domain of jgg@nvidia.com designates 52.101.201.32 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758546849;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JFvHbq8BGAwHmjI5XMDiCg9CB8o/Dt308prrHiAcRyI=;
-	b=vrjsKpTVl4T3C81VchCRhsbqpsXIBIRaFC/8tnU3l/ZJUuLs1VLBBs/RpIjp6JSTOsosrW
-	Fn2dLd0JPOQl2L4qedQPEd7+fI8pO7mC91kC350EfEPiBY9YhBtyf4wMtN8okZw7+gDQR4
-	T5SGp8aAWHsacGndtGxQxHKhlMIgPFA=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WYTjCHwa;
-	spf=pass (imf07.hostedemail.com: domain of stephen.smalley.work@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=stephen.smalley.work@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758546762; a=rsa-sha256;
-	cv=none;
-	b=1OdakBCptokepvz4B5lmOczefhng4/gkVNcjqX6/Ja6VRlybx3oNLfwLXExytRat2NYMLn
-	SH6YsuNsw3DhoBibSPlEYOPTcypCRUXPiSg3Njg9P6fcSVxKPMCJPCiGR8Cz7v0s5PO9m4
-	ySzE8RmfZ3Z689uYqvaa8sR20esowJY=
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3322e6360bbso1534054a91.0
-        for <linux-mm@kvack.org>; Mon, 22 Sep 2025 06:12:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758546761; x=1759151561; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JFvHbq8BGAwHmjI5XMDiCg9CB8o/Dt308prrHiAcRyI=;
-        b=WYTjCHwavvf/okm6rYYPk1RLHuQ5MntBQbidsE2DAjaf6hJuCzqiYegDx6y52bkbZ/
-         LkgNyY+Vm4S4x2DiNwVdT+TpmldAoVJ+SFkR5v7/KkYyloFDAf6qTsu3ZEaPE2mB5sdN
-         UgF9b0hKQIUnKf2O4bBdl/YUYz9o1nKTvRSccCC56VH60l6az05F0vQ6dK925w3H0DJP
-         7gnGJ6GgidgTOwHnwuzNPJXL1NrUFlKIwYzkPDaFQyvV1wU4fcse9e2onZ7rzxln4Zh/
-         /g7vRahdjmdvZhBm8vT7RpLul9vh6qK4fl9wlWUOLCAxKf2HqYfz1Mr9K/Mf+kSkfEkT
-         DuWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758546761; x=1759151561;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JFvHbq8BGAwHmjI5XMDiCg9CB8o/Dt308prrHiAcRyI=;
-        b=i7Cphbzs5XkKG70o1jDW12wD9LMbfbP4EeKS8eL3hriUBTU4rLi4nqjFmYV3hoHHA0
-         IFNi/GfdlPqlADDvgdBEHXxmYX543wBe1iKrkQGjzdW73H+ZhAfKTz0DtN0JCn5JA5f+
-         FWf6SqECBfnndLhPlWemofAJiTzRxB19zg1Zd9fTO0vZMWf9aIZHgEdQHI7xzV0xcMUW
-         0OBcmnF/UUgxb2ecjW1gUdb0nkna/8MHjJglDTGOke5vf/mgqa/600ua8uqMn3af0dza
-         H7Kj8gDclRO7epRCDvq1wnqFFKuumVMEGThIf4eEcay0z0h/fc7ZF7snedrXu61LfKuN
-         gnJA==
-X-Forwarded-Encrypted: i=1; AJvYcCVK3ven3RrBeHSHThln+ZCC1Ok1A/ekULGWaqnDdqtWbHNAKkMW+1EisKG2jK47SE6S8P3s/a5zrA==@kvack.org
-X-Gm-Message-State: AOJu0Yz91lCa4GS2J2QVWTEYI2jMfWw4pnA1AV61dWi/MH8Z6vBnUqug
-	tYIUXemgkrTuDKJHHU5lVBaA2akfsXeteUyXvtz4J1YCPQXE9C+qEb9+hdE7Rse5yahZ4JxqdHb
-	UYZHPNEaHOGOxUWqUf4p+3KCvmaR96as=
-X-Gm-Gg: ASbGncv+EqbL1IN+GS4xaX2Bz3rvYAI/lH4b5IoA5A/C/IGSMrMYkseYUBtgHFJBwnR
-	t0upCmXnWo2qgUe9EfwjKQ1Aa+S5bzo4OmTNr6GZmJs+b2MKTcgZjMTJuAkkhU9nDPwZt1W+m0k
-	SFwvyWAlHicP41sp9o6Ax7kNag/P3xNAKquoiEWGKgJX3o807JmCA6vNrbNuk5EOu7ZxjJZE2pA
-	BJ4Ips=
-X-Google-Smtp-Source: AGHT+IErOhD8VYTYiXj/emQEmjvSZJYRDnQiUT71TAsYBNpYKZHlMYedIO8UbMKe7SgXnEyy3ylBN2ENEcWlSiRqsO0=
-X-Received: by 2002:a17:90b:33c8:b0:330:6c04:a72b with SMTP id
- 98e67ed59e1d1-33097fdd77dmr15212107a91.3.1758546760692; Mon, 22 Sep 2025
- 06:12:40 -0700 (PDT)
+	bh=VBsiI8bPXZ+ecqCC8s5yZP07lfqQS5GoGWq5a6P3tuk=;
+	b=NaLPIDz7tgfITebAw2EFCK9ufJBZ1Pxdi3Ya8flKrMHL5sAY80MFkGpEJxW8ydwRV1Rsq5
+	N4vSyX1GEovoa+uZ4/rJTSP4eNEcGOrW2/wIWS4kTCmleONmUeTBs8vaqx2OXbXq9OeUKq
+	gHAHEn7ai1vUvN95yWV8Cj/cu2zd8qs=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=N0h64Fls;
+	spf=pass (imf14.hostedemail.com: domain of jgg@nvidia.com designates 52.101.201.32 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758546849; a=rsa-sha256;
+	cv=pass;
+	b=gMkuD4H8ZgX5s07lLnk3A4MdKetw7fIqY3E+cdlvfGg/3c5s8Sy1muIO8mtPQVWsVe7ZR3
+	m0JeP7ryesZSrphbkarSKqQaFQn4qPoEbM/YIZjQ1qZKlgcW9lnT/QSPyMYN3L1Qh+cXww
+	OnSSGAgQ55vZBKxYBMLEKX3RpTQY7+w=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=R8A5PY5+BnqpMjXX+bqJVaT78qQqdU26Rs7R/8TB2oR4IdrEh7TO1hVURPSAGrwci/Nfl4k6VLrDLCPv7luzB2hECxi63rH1ZgF2CwpOxVzdArAaTJvF3V9KV4GDWEANtA1FITkJSRxbrJKnOLmvY77gBw1AVyyTdJlST1xz/a1+681/rSd72sUE1V9lweS8Iwt+EsjgA4BWbLcKasXLrGv/ihMNiNtkWQbS+98Z18Z+WrSmr75XYWGfeI3sqK/d7wBCFpexJAX2stAm9AE1UWkujsRL/O27RFkhh2SY9xvYhb8obFZuAlPne2p/ie5E8kiV3yScVtgJ5Mcbe5YNZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VBsiI8bPXZ+ecqCC8s5yZP07lfqQS5GoGWq5a6P3tuk=;
+ b=kE+4/7TOg3rZI9Y7i7GzEtTmePt/Y0pzPkZkGh6AT1D320sTwAEQlph8GfCnSk6EZid3OFuUCUWU47h2Uso9ofvr2kuXwIlPB9e68tVaoFiBUrOBW37Org3rNsw1LXfUP9F9dj1Ua4SSrNYNG1uGIEonfty4nvPeFoKRFtJ6pntLbIH0Hx8nPFyTEkBKXxalpozZTzxmsOSurUxTSAv6NG0mCmTp9aAgGpJEOe63qG0Yar9xPWkHW8uLtYenH43y7lQbcJ96vPdVMm0BmwRnUq3E5c9Tq68cAglmiA8Fpr0kjBpKVIhWmSnuL29+bI/85vtnVuPLA0H/RHe0vWHbRQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VBsiI8bPXZ+ecqCC8s5yZP07lfqQS5GoGWq5a6P3tuk=;
+ b=N0h64Flsc2VFYCrS33WuGZ8FHRLBuI0uKKvg6DUvFoiFQxtAHKO0OKHrr3MSQE9KYB9oBPGrOZyKDFlu0e3b29wKtBsQXAyUes4v6M3gIKqAPCDvcKUz1mCZuqSNPEpawT9cFXZeMdpDJdiXuC3l/j4FNGJQN1x1xZiLprJ1Kale+zaWC7cku6yp0CH5uznxNXsIHpjtxR2erpLnz7qtYNrH+NR8hA8VGrcaohMbQ1vImO2eL0qSakXtpxMPJK9xRApujnUA/crrvfLewaezK3YNDzb1o0a1jEVJ1xtGxSzAUzgSeGgVgV0OYDRjNplhMFlpBDVLI8I87q1QlN15NA==
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com (2603:10b6:510:1d0::13)
+ by SA1PR12MB7198.namprd12.prod.outlook.com (2603:10b6:806:2bf::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.19; Mon, 22 Sep
+ 2025 13:14:05 +0000
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632]) by PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632%2]) with mapi id 15.20.9137.018; Mon, 22 Sep 2025
+ 13:14:05 +0000
+Date: Mon, 22 Sep 2025 10:14:02 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Graf <graf@amazon.com>, Baoquan He <bhe@redhat.com>,
+	Changyuan Lyu <changyuanl@google.com>, Chris Li <chrisl@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 2/4] kho: replace kho_preserve_phys() with
+ kho_preserve_pages()
+Message-ID: <20250922131402.GW1391379@nvidia.com>
+References: <20250921054458.4043761-1-rppt@kernel.org>
+ <20250921054458.4043761-3-rppt@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250921054458.4043761-3-rppt@kernel.org>
+X-ClientProxiedBy: BN9PR03CA0065.namprd03.prod.outlook.com
+ (2603:10b6:408:fc::10) To PH7PR12MB5757.namprd12.prod.outlook.com
+ (2603:10b6:510:1d0::13)
 MIME-Version: 1.0
-References: <20250918020434.1612137-1-tweek@google.com> <CAHC9VhSbWJ-8tj5BxSTxznGO8zraKRSE31a+tqdfMHB53ef-MQ@mail.gmail.com>
-In-Reply-To: <CAHC9VhSbWJ-8tj5BxSTxznGO8zraKRSE31a+tqdfMHB53ef-MQ@mail.gmail.com>
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
-Date: Mon, 22 Sep 2025 09:12:29 -0400
-X-Gm-Features: AS18NWCCoF-gEznmiapevcW7RPAuF_YwrH7AbkG9x3tb1Dsso_FuxRXtaZlxNKU
-Message-ID: <CAEjxPJ5GidA9oT_fbKRe_nH1J3mER0ggM-dBW=Nuo765JDuQKg@mail.gmail.com>
-Subject: Re: [PATCH v3] memfd,selinux: call security_inode_init_security_anon
-To: Paul Moore <paul@paul-moore.com>
-Cc: =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>, 
-	Hugh Dickins <hughd@google.com>, James Morris <jmorris@namei.org>, 
-	Jeff Vander Stoep <jeffv@google.com>, Nick Kralevich <nnk@google.com>, Jeff Xu <jeffxu@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Isaac Manjarres <isaacmanjarres@google.com>, 
-	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	selinux@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 034004000F
-X-Stat-Signature: cxyp5mj4xa6kx5pyzza9etuhcb9sdaoo
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5757:EE_|SA1PR12MB7198:EE_
+X-MS-Office365-Filtering-Correlation-Id: 24a9687d-fad2-47a0-2c35-08ddf9d9e7c4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?dvPDz2dPY+/g87MAwkXaZjaRwiPCmZSFKVuTbXcO8u2bd1ieq+fENn5CdMqb?=
+ =?us-ascii?Q?dH0Oi7vA5ianti0yzrV1udamYqWnPtqjX6R2VjE3uVqyV6OeNopwhR6/8Xg5?=
+ =?us-ascii?Q?FAiPCyyWj2KJjrofepxJi15coyo9CqrBmZNxUwzU+cK2jie/js1w2Wk5UL47?=
+ =?us-ascii?Q?q2dfB3IXjKCknT4ZYFiNeFUtd33NVhu5JSKoqKiiKAT3e4glRND4qQ7WJaYZ?=
+ =?us-ascii?Q?gQJhcK7ex0mbUSvXtkS/c3Yprnid1Yl0d8pMT2qGuF5ZcszKf647E9D/2JJt?=
+ =?us-ascii?Q?WK2PPrOA5621aukjv+LeeO8B2KAs8YYznArTgSatGK5CO4AsvkLKPcXFhROq?=
+ =?us-ascii?Q?E+4f52GCS3jUzY+SvwYnx3emeGi1WYH6bS6LgLR0S2pbVZGgO2yEvLbhxO51?=
+ =?us-ascii?Q?1sNKGAF4F8rMdcjwOv5Gp7uoQEU7ofHMlCrK028FDzQYdcziQ+hu6CaTXrmy?=
+ =?us-ascii?Q?rPIkF54T2KseMgSKhsqzeomLZ28srrCIghG1sGgbcxpSsZ2axBm8F4j/WAhc?=
+ =?us-ascii?Q?tWixfVNiFvdXg1BtBDJu2bjYlBRbt0me4TbJ4G62soE6A/rpLQWA0n4XRoV5?=
+ =?us-ascii?Q?7/jygNTD3drlZ+7K//jGMn56K3vzfEQZrbJ7d41e60V2XrmvrRGPBiui9NL2?=
+ =?us-ascii?Q?PVYBlw7nPHuS+iX+lrf1e0kMos1uML8cheRt43QRCH1Dh32KemV1ZNm40IJT?=
+ =?us-ascii?Q?oiBirWmO/LqOsBZODjj7LR13FcSXzYSYKuQbnmCu3rduAwHkKeLx7EFLagkf?=
+ =?us-ascii?Q?W5V8I+sB8f2kqEbZZLYwOTrRavNpJxgEQC3RP/d8wmiG2vk2vzoLRAJIHHUq?=
+ =?us-ascii?Q?hagqTQy9n/0O+eFIkM//yjJpHsU/3+NUmankXVfaXZH63DPE0bPt47rDQ7Op?=
+ =?us-ascii?Q?yRDQhwGi1ffjBZqit7K2z6C82sMcLIw+8nxr5FjLzTkB1wLmd6UR0XAAj98h?=
+ =?us-ascii?Q?MJfZkLhwb3msw2z1xSk/ti89GM06Y275C8ziWIcToPA00Jk2/HpXAmx5f/ze?=
+ =?us-ascii?Q?WNQ/CwUds1jnTAwEmxZ05DONKyLSlRV4BcwEISx27LW4XK0eMUm4OfpqpWn4?=
+ =?us-ascii?Q?bi73XUPBCumNI6V1kNBqp5dBxm3HzNXVtgM3EwjX9bQoejhY85nBLzUaGm8q?=
+ =?us-ascii?Q?Je6/0l0yy7Yt+sz/DxbayqKhqUk7TJxE9lbic1H+SWXpQC4MCxg0NE8oE4LQ?=
+ =?us-ascii?Q?yUFSZqlmxEbGkbT5G35jF8rMGmj/qaetYOHf6OjTPcxyhIo/3dGiXbKJ6VKd?=
+ =?us-ascii?Q?dm+ypyGULITFA9joVGk4MxnvxV6gcjJ+Jomqi1anbf7/Gs612FEQOCWgwohK?=
+ =?us-ascii?Q?X7zwOjoBPMjB3T1Z3GM7++kIcYqnKTxHNzpw/DhVL5NZs87IsSaw02N1Mvv/?=
+ =?us-ascii?Q?/Ng7hYgUpPC4JpIz6UAybhJqMpDphBD3uHLJnJR1AYzWVOhIKpdLeHWfYB+B?=
+ =?us-ascii?Q?xuWSdFghnjA=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?8Z1b4aPONTjX6Or8lYQXjJCECuGWS+5SeOqvs5CC/cJjeIqUoB5y9PXQjuJh?=
+ =?us-ascii?Q?XA0eGRzu/lMbUzJDw638JaxPwLXWdlF2OvJImH6Dh5Rz+qt3FiAAZe03ZuLx?=
+ =?us-ascii?Q?8ImVirP6tUa2BtvUIK7t+46BaBlsdjslkGgI0vJR3H1HIa6mbRaevslTC1K7?=
+ =?us-ascii?Q?KuZdDCG/lVUlC5WkgnoO3ZyM+K/MXyRLGFZFk2CHSx3Z2ZoIbQpOmBNZRRJH?=
+ =?us-ascii?Q?37O+W2vMf1zhmzJk8LO8UjJdYyNB6R8+kQ+OIIjqVmLW9yWnvSo/BmSdO8Jd?=
+ =?us-ascii?Q?ka5MikiZL2xipt7+druBA52Nk9pwQObQQGV0ZfEJowsSRuudkGgm9lvLFEkl?=
+ =?us-ascii?Q?a0gYS+AOiSCKADpQPGLlKS+EiVpoi2HpVWeXZ4uutl+kmHPAFan2YapCMxoL?=
+ =?us-ascii?Q?KOXRlFdZHJT2f9JVikCq0oXgFF1+esb6z20AmN3ab0Xg97uDQ001hGOIZqny?=
+ =?us-ascii?Q?cosVVlKhUdZhwypZCl5Bz7cfEQ3FqZ5t/p8ZQP1nNUeyD67FCGdN721jxftv?=
+ =?us-ascii?Q?BZJzX+0oxyXtL3jpE4k7HyNcZBaukAAiTcH8qbg0sJah0CFSClTBUQdU/KL6?=
+ =?us-ascii?Q?9NHHOMAcQi7nj814OXgAJ1DpXn8PTYkpA0C1LkvpRDaWfqMwbyA0QDls+lVF?=
+ =?us-ascii?Q?jbrebPSXJEwswcqY9/nE0k3kGX/jTuHRKm5vwcJOSEV9IPCYXxMNE9M5T2Ah?=
+ =?us-ascii?Q?1dqXamrcRP0auvbSpMh6a31CLkHgR6i0vbmKDCwrdB/z8wzCxN5qEs8gQFIG?=
+ =?us-ascii?Q?YH+/F0LShQ5e+NvpIOJci+UfeZLWEi3iVd5JtWaKz/StHNlbd2Uf04MzpmkC?=
+ =?us-ascii?Q?Pjju4defxlURlmeDnS5PfwVT6vWP1cLYPCUuiiRnWgeI0gtVpGPIhnGUbtAB?=
+ =?us-ascii?Q?o9kSYsN0FoFhrIOylSHMOJk4W5eQoEvbFgh0ApWD+wCAy6a8yqSD9lJnyrT1?=
+ =?us-ascii?Q?TfQX56Qel6lktjln2KhawEVNzyjWNwJTJZEVgdf6hOvDNOPItjtfsMMokqju?=
+ =?us-ascii?Q?fMQ6zKR6afWlDQDRVZd8vbvt/7A0/cnTJRrtaBZVTwpISqbYTIyQk0RiInYK?=
+ =?us-ascii?Q?QV8ZE69w8CxlHsWyiAQ7VdbBO60YNPdVGwKIvU9R53dsu52koa36zmCJnV+i?=
+ =?us-ascii?Q?GLbupDE3Ulx0GFBojSDL/yikOEUTLliFWVjp4Y5Q+epi3ZtId2hRHQB6x0F0?=
+ =?us-ascii?Q?AM+h+SDxqz1x9/8+hO9cLva5GNc/HpO3cBKOf9HRdSl/wx5SyA/ui+VA4rHh?=
+ =?us-ascii?Q?7un30sDl6s41rGBeagE0oMiEQTL10FLB4T1qbLgIrh69TyALy23xVeN/Vst6?=
+ =?us-ascii?Q?RJzrOezawKyrb7Wu8qnDzv+ZOuEyFL9AYHCT78hu95pThpVxnx0Ietr2GAZk?=
+ =?us-ascii?Q?CYX4u8JZEfAXtSHZW6pG1V/td1CksejnOUOgkJC8UUnEzMfn7guSOnQwHiCm?=
+ =?us-ascii?Q?Ovq63Xlw4+IeyGvmJFqmEvcziZZgDN7f+ziBXQXWI+nuAZ98v1a5eEkbRJzD?=
+ =?us-ascii?Q?7jjejM5+GhApDQzwEWEReTap2COH7jXDh7XHrnzeKgVi980e/kVoZjE+tVrI?=
+ =?us-ascii?Q?/v02dolRNayMgvPMorit5YRcwkfblzHsilIB8CVg?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 24a9687d-fad2-47a0-2c35-08ddf9d9e7c4
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5757.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2025 13:14:04.9718
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: e2IkIT6b0i8+R+y2PmZ2Vnzo8+NeHFMVf3/l63UoIqRwIam6lJpY7ymPUUnWmMey
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7198
+X-Rspamd-Queue-Id: 9E377100003
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758546761-355973
-X-HE-Meta: U2FsdGVkX1/bSxEASHGfSN/t2We97v7bS/D8vRrJLyxewSUVLqpbtnbZ2d6ThzlFvDu2c8FOrPzVEcQskW1z0YPvwe2mk+OZpCunbcTj4PNUUD0QKFcQvJgbFiSlI/KuxnzkRumZdRvH5mW9d4NPljjQI1RwfXnEVGoUPyiwrS8CoP45WUCdDhuIztcfihJBPBZmLPXzCMTqK3AN+AEFNPISjBoPX+tRo9WUM4lgZ7xvKsRu+XbEg3zAMVlrWtO1geTE8JF2Mexc69oxHwVu43hfqtKrF9CLKm3423Ct5ql86fscfPhdxmRtF+stfgUQxqd8drZchTd0UfgEXo8GdZ8O2/JjDh8cEJnJy203wnIo2hrUcBgaIlpofom/ePPjJoE3XJ1yg2961IJ/CTstOlUANviVFXfSmTyPre/O4TuBUGcpbpxSJMWQnVyOE8h56xaZELm3hzo4rVev+G0EVeUYBs406sD6feP3AAzXuS+ssn6JcnT19Fafb/J5brkbl8HfIXyy4zpNKUDY1vuyWsW1TD64R71foQiawXe7F0tsNTyKtbfdn1pwyRgjfn+Fwa6B7xaOIXXmihCE2DdgHoeOgzKVYJlo6Z2Im+O83s4ymacvn5LTn4z0yj0owcPA8LORHHcxEmqGji0I+fn9ZwlMuFddf7L1IinupH8pGSPRWHu7gcX8iCk7sLAXrGY9Fm9h90E9VvWJvPS7Y1tzOc5FHxG7PGQugdPKkC1uSx7vvdA4vHwJ9wJK1N8/YGHSOfHPBSuJIXIlw5bTLP0rNh9LbtqkEm+saIQd92OZqyjGRcOgSptbZn+PhZDr3bJ/TLZER4w/aasF6SrxNJY/GgjH64V5YwjHa8Aa3xYJTeJCObv6Kte9PT0weQJrypHq2sa5Th2ExSnuRb1AMaX8zsY6LbzcoiakA5tz8vKJj223Y6mCwJFoztHyIJnaahVenqkWHEl/yg5wWQd34Lu
- KFrpSLuv
- DjhIOIhV26h/OeO8vUcr75oNbm4f1/eePV48XpEgLdDYgFocvXofgHnXeB1Z1YyTR0IAOS44ZV1kVwDx8zEwkCTOvZl5/1nnozt9aI7i8/ZLW9rCVOSwSuiaJxWkpXGQb1NtaPwxAtrbeZUoz1aW2FtC8n0gJhinE2V/vjhf51i98sCZg9bH8x9sjpSM+A89bWSIKxFC76gy68aDPMdKyA4X5zSUsJZMNntFJwIp+FjV8JMZaVUPVm6eSbAcHca4l4XjwuC3rKoKKZc8lkPWg6VuhV9TNTbaNiLCTQbOQjDKBm7yCHEhVNclXY3e8WkW51SifxQv4aoUe7EOYKBAT+rhlnx7FL53qzxOxe5glUTkbpnjx+2E+jJgcHdPsELTLVcspjhLlPnb3xqyuDYG3lN6KGj8EAstT+dfvBQPuL+9gpBUoqJYpbWRQdiXg0pvPRS+7hnuOpQrN9q5qH9M5PUmm1/nFExgHbd7ONRNUBwfONnI5EQs9/ygp2zZAMyGvRbNQ8pif0faW8INTvNu8OGrTkMUMaB91o4dflILkqYtcYwsc3j8/U/6VFw==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: kjnqkeo8n79gfsyqoydjq9otpxeh4iuc
+X-HE-Tag: 1758546849-837470
+X-HE-Meta: U2FsdGVkX1919k4qluEkPq3mB9BgMO2vo+hLM1RFzy2bUvftmS7/hbWSQcbzFkO6cK/t84RqufUY+kf8Lu7akiLyeZgTgB14tku9L+pbsnoD3se75kXRf+WAhN2MJsJX7XIkSCrnNIwb+3O3nDFE1obhWKErBhmyTj9YfHAvLVgieq1HM7RaPEsCzw7cX9TiAj5D0M/0ywUtl7hH5YgyF9TWl1YumzFWmWNoDQvcORuD1p09oY0BMM+Q/GoI9zkUXMlqCU1gyHyx9HckPWcGR2maVFFYSrEtqgs43rQN2tGf7Gx42MAWePQqOeAuWrycjvPU2EJcFqQf7Sh3wmYWs4OwPnufNWBZeVOQL6shgyTRW5CdhzanTKrD9FPE23Aqb/Y9dA8vb0SLupIuM33Dd1ka/Mt6Y4sNA80JkSyweI8yHCtiCFdNErBF8EJyqLE/8yfQTOOuNYZ4tI19a0TvKpkpvI+h/W0Log2Hq7cUiD+gtUKxBIv8CtDVAedNrlZBgMpYpbCuXp1ChWYyjofk7NMM51p7fmZHwUqCeWdl9BLfkUBnWOgh7ahvrjTTnkYIphIcEoQyIV1jrjBKUSjysuZnYLJyj4osZruElOaxl4O7a5Z1CN3cgaasnkGqQBwtD75QNru7RbMoJ1C0WAIdB2hqtd9vme1LYdyQ1grFuQQQ9B2CD61+9GbJVVTI88w2h6xGPHjqmJ2FU/q83kg4DLZ89IEU4+ucSP8WA9s9Qg/GYTwGMZ3WFtJHmDQIM0mxiiFnPyAe8u4cSdX7+ecc0VEfghge0Ya8wHh3FXJk/0z/ZFzq6n+21rDpoVk6Dpgyx8EdfoIPV3zhwBnsiRbR45ztSp2NbPk2RKBM+1DfnleQ2K7HhFJS8caLOs8QvRQh4LX9IMm005v3/FqUr1tsSaUUpMIOmGh3csBYksnHJxyw3Bh3BKKOjh58AX1n24+pRDtxP0TWs47DNoYfPue
+ RYfvmISA
+ iz1GZTnHG3Z7T8ePuC47ddKSsE8UiE5XcAwNPrLHnext/v7iDboOawR3Yv1yLPe4J7cSp8iDVQsHjY0uzKRuvzs4IJCRSYrNs1YESNN/0tx0YgmrVRZKCXncG/P55UySSokTMGLJUHR+u6BjKvmxV0GQiF5WNdhALjZ629EMOO1JP4gNvzUdZVut7ZqU2mNHZBuMIprmcoIw88a0PPFWV+SzgKzIFZqtskYRXBEuMlbmmVcu1ySAR26WMLHjR5Mr8/ZUaVwGDSLF7D+iB7Uo2Jjkqm2eFbnXSl5Sb1fc+5nstfkPrDd6AIYaxBGDCFZei2q87+2EX71uByJA1S/Gjgzx2agR5hMJlj3qVhpVtxNqUSrY8cyS0+CbJc/Yo/eG3GNm2J0emKYnQpiOzg1BGSMMSvGjyhhov/qHW5YeNl71fGWPsXsFzdc2PIHSbsdlScCAQh56+nIkEASfr5EJKtYlKswrbIBaQd7FMj73WGeiGnxbHW6JN6DsTuti9Qq1PxUoa4LshCy9ImSk3s9S5VWVsKwdA7TBSuPm+el1s9xKz+/8R4eu5OEUjj1P9JAEsoPepj0v/rfQrKGQJCKyHU5Msug==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,92 +186,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Sep 21, 2025 at 2:31=E2=80=AFPM Paul Moore <paul@paul-moore.com> wr=
-ote:
->
-> On Wed, Sep 17, 2025 at 10:04=E2=80=AFPM Thi=C3=A9baud Weksteen <tweek@go=
-ogle.com> wrote:
-> >
-> > Prior to this change, no security hooks were called at the creation of =
-a
-> > memfd file. It means that, for SELinux as an example, it will receive
-> > the default type of the filesystem that backs the in-memory inode. In
-> > most cases, that would be tmpfs, but if MFD_HUGETLB is passed, it will
-> > be hugetlbfs. Both can be considered implementation details of memfd.
-> >
-> > It also means that it is not possible to differentiate between a file
-> > coming from memfd_create and a file coming from a standard tmpfs mount
-> > point.
-> >
-> > Additionally, no permission is validated at creation, which differs fro=
-m
-> > the similar memfd_secret syscall.
-> >
-> > Call security_inode_init_security_anon during creation. This ensures
-> > that the file is setup similarly to other anonymous inodes. On SELinux,
-> > it means that the file will receive the security context of its task.
-> >
-> > The ability to limit fexecve on memfd has been of interest to avoid
-> > potential pitfalls where /proc/self/exe or similar would be executed
-> > [1][2]. Reuse the "execute_no_trans" and "entrypoint" access vectors,
-> > similarly to the file class. These access vectors may not make sense fo=
-r
-> > the existing "anon_inode" class. Therefore, define and assign a new
-> > class "memfd_file" to support such access vectors.
-> >
-> > Guard these changes behind a new policy capability named "memfd_class".
-> >
-> > [1] https://crbug.com/1305267
-> > [2] https://lore.kernel.org/lkml/20221215001205.51969-1-jeffxu@google.c=
-om/
-> >
-> > Signed-off-by: Thi=C3=A9baud Weksteen <tweek@google.com>
-> > ---
-> > Changes since v2:
-> > - Add WARN_ON when using unexpected class. Return -EACCES instead
-> >   of -EPERM
-> > - Remove extra new line
-> > - Rebase on selinux/dev
-> >
-> > Changes since v1:
-> > - Move test of class earlier in selinux_bprm_creds_for_exec
-> > - Remove duplicate call to security_transition_sid
-> >
-> > Changes since RFC:
-> > - Remove enum argument, simply compare the anon inode name
-> > - Introduce a policy capability for compatility
-> > - Add validation of class in selinux_bprm_creds_for_exec
-> >  include/linux/memfd.h                      |  2 ++
-> >  mm/memfd.c                                 | 14 ++++++++++--
-> >  security/selinux/hooks.c                   | 26 +++++++++++++++++-----
-> >  security/selinux/include/classmap.h        |  2 ++
-> >  security/selinux/include/policycap.h       |  1 +
-> >  security/selinux/include/policycap_names.h |  1 +
-> >  security/selinux/include/security.h        |  5 +++++
-> >  7 files changed, 44 insertions(+), 7 deletions(-)
->
-> Thanks Thi=C3=A9baud, I'm going to merge this into selinux/dev-staging no=
-w
-> with the plan to move it over to selinux/dev after the upcoming merge
-> window closes.
->
-> Hugh, since the changes between this patch and the v2 you ACK'd are
-> minimal and limited to the SELinux error handling code (see diff
-> below), I'm going to carry over your ACK, but if you have any concerns
-> or objections please let us know.
->
-> Thanks everyone!
+On Sun, Sep 21, 2025 at 08:44:56AM +0300, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> to make it clear that KHO operates on pages rather than on a random
+> physical address.
+> 
+> The kho_preserve_pages() will be also used in upcoming support for
+> vmalloc preservation.
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  include/linux/kexec_handover.h |  5 +++--
+>  kernel/kexec_handover.c        | 25 +++++++++++--------------
+>  mm/memblock.c                  |  4 +++-
+>  3 files changed, 17 insertions(+), 17 deletions(-)
 
-When would you recommend that I re-apply the corresponding userspace
-patch to reserve this policy capability number for memfd_class?
-After it is moved to selinux/dev? Understand that it isn't truly
-reserved until it lands in a kernel.org kernel but would prefer to
-reapply it sooner than that since there may be other policy capability
-requests queueing up (e.g. bpf token) that should be done relative to
-it. Can always revert it again if necessary, at least until another
-userspace release is made (not sure on timeline for that).
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
->
-> --
-> paul-moore.com
+Jason
 
