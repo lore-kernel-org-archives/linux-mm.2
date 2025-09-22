@@ -4,65 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2510ACAC59A
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 03:19:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BF91CAC59A
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 03:21:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45D478E0006; Sun, 21 Sep 2025 23:19:13 -0400 (EDT)
+	id D144C8E0008; Sun, 21 Sep 2025 23:21:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 435288E0001; Sun, 21 Sep 2025 23:19:13 -0400 (EDT)
+	id CEBE78E0001; Sun, 21 Sep 2025 23:21:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34AAF8E0006; Sun, 21 Sep 2025 23:19:13 -0400 (EDT)
+	id C289C8E0008; Sun, 21 Sep 2025 23:21:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DD8A8E0001
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 23:19:13 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A66CE1A043D
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:19:12 +0000 (UTC)
-X-FDA: 83915430144.20.8507574
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	by imf19.hostedemail.com (Postfix) with ESMTP id DE6A41A0005
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:19:09 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JWXFAQpM;
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AB12D8E0001
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 23:21:08 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4F0861A0441
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:21:08 +0000 (UTC)
+X-FDA: 83915435016.15.D1257FE
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+	by imf11.hostedemail.com (Postfix) with ESMTP id CFAF340002
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:21:05 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=QWHMP4Xw;
+	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758511151;
+	s=arc-20220608; t=1758511266;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z1xv7n2dNrf1sQprqQNalsEEZ9e1L86/2wWKLGMKTYE=;
-	b=35IOQt1UMk5f2SAtGRM3n1wzqpA6lElfKOBwbMZ5bn+p1Mspq/w8QHbQcrxocLZUSsV87r
-	2x8G+Oomot+BP3HLPiFkYU9SllyOSHgfe9lUhAfAesOQWgD6rBWX/dxKXqKzESwuiRX+L2
-	WzkcbIJgFoIiUmiojSSsTjj1N15ObXk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758511151; a=rsa-sha256;
+	bh=ixrh/iVBsgE1vkoJFlHD/3G5r4MUeYbHEFcICJyE87Y=;
+	b=53hFeqNC/PvByDJkUI+YhxCUA61bHK/pLcaoW5tWrOwxCMEjQgaDgVVK8Kd57TFxtipCbt
+	tJHmMnSFcIpIOAbeXrVmgidxL+CSZ9A08tswe9o1WNWfPPdJ3uC53XPF1W0Zl7D33L90H4
+	NCBUESr1kdSdir0QP3pX+XAdJmoRF5M=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758511266; a=rsa-sha256;
 	cv=none;
-	b=Qlb9f96lUTcpKPyB2bMWQSy9LIuR7sPuRcA2795YO8KSVLqNGezee2Etd8QQ9jiRuvSaWt
-	2/GCtT2cooj3Fb7bj2e11ScZx67V7R3r/lt4OYHzUfFKTLd/rVOk5tAKXKcixMSqrWQ3Dy
-	YujccKBLaO5zeOfxWML4KpPAdDnRMhg=
+	b=kLDpOt9lL/FQNDWuiemq3r7+QyqrRWga9aIPkQj+8/KEs+ExyA5iOdOB2JAcBQ1t+OHygi
+	SM0HLToor2njcVD86+csdNl+9scS8rHYu2xZa+pu4HY/VO09E0Z14YoyctxYCPYkYECB+I
+	X66Daikr+bwJ3EKlb3pdpFpTmRvaI9A=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JWXFAQpM;
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=QWHMP4Xw;
+	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1758511147; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=z1xv7n2dNrf1sQprqQNalsEEZ9e1L86/2wWKLGMKTYE=;
-	b=JWXFAQpMC2t9tmtlU7NDsydDhHNdpI9NN9o7YQRmU2EiyCzcNLnDMnm1gxKRkO75SSeOXfE3UV7cBdfD6o8Qvs4qAkqo4ulpKj3EC3661Zr6CW1cBB9DO6kJZcUv0I5hK4hkqZR8yrHT/wv+mLIZq4dTipoq5LZXFhHvPKk1IEg=
-Received: from 30.74.144.144(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WoR4wP2_1758511144 cluster:ay36)
+	t=1758511261; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=ixrh/iVBsgE1vkoJFlHD/3G5r4MUeYbHEFcICJyE87Y=;
+	b=QWHMP4XwUybhElJDbhCyY83TXMtb2YGooMSDkXEZOmQ9fO4TIyJf/5FgxEVxeq354emc6kGB6MvV8g0M6qJAEOQzJ8Z5e8qgwlegQho/Ps9YIds/+ppcShldHJxCAQvDbcVKxZF8zjUTF4CWPhF4p0/92wNUWoI/WKm202kiB/M=
+Received: from 30.74.144.144(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WoRD3UW_1758511258 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 22 Sep 2025 11:19:05 +0800
-Message-ID: <ddb7a9f8-5516-4bf2-8bd7-3761f133bc6b@linux.alibaba.com>
-Date: Mon, 22 Sep 2025 11:19:03 +0800
+          Mon, 22 Sep 2025 11:20:59 +0800
+Message-ID: <29d9fa8a-5ff2-47f3-8503-fe3032097e5e@linux.alibaba.com>
+Date: Mon, 22 Sep 2025 11:20:57 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv2 4/5] mm/fault: Try to map the entire file folio in
- finish_fault()
+Subject: Re: [PATCHv2 5/5] mm/rmap: Improve mlock tracking for large folios
 To: Kiryl Shutsemau <kirill@shutemov.name>,
  Andrew Morton <akpm@linux-foundation.org>,
  David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>,
@@ -76,19 +75,19 @@ Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Kiryl Shutsemau <kas@kernel.org>
 References: <20250919124036.455709-1-kirill@shutemov.name>
- <20250919124036.455709-5-kirill@shutemov.name>
+ <20250919124036.455709-6-kirill@shutemov.name>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20250919124036.455709-5-kirill@shutemov.name>
+In-Reply-To: <20250919124036.455709-6-kirill@shutemov.name>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DE6A41A0005
-X-Stat-Signature: o4p4ohp5k3jwp6urxuks3h5b9g7r1xzn
+X-Stat-Signature: 9b74749gizhoho5jjtyu57gs84jyoce6
 X-Rspam-User: 
-X-HE-Tag: 1758511149-882101
-X-HE-Meta: U2FsdGVkX199WbENRTUabl6AP0kdnB8UP6K6+McpaH1pPw63v4QvMzr3scx2lBrBMG0Xo8yd2KsHpqKe4iU+GUs7rDHywON2dFbi+v2Q8sNtdsGPN1bFFtIXDqAteo69rahPr0mjXQBWyVB/+dBh7radiOsOvgNoXCG56JMgQFYPzyDUceXTH34UX5WWY/83vonsyhBom4vBFCmkD4BJyCQKY/xLFjIURqZrWnHgAvKHZri1FgS8Dsyl7HGlc3Jaqz59DHCihwApTxePL/usUiobXFrivj2Y67Fx2yq8IULDROr8YXkbkTYiB/Sgi5uq3FEMMGQrC/f334K7xNY/q+csZO/Ts0/njDGAJE+TvHxH8tTx545BYwFXHd77EU9xZuZ6gPJoRbJivpMVBll/9YL6TZ030dz+ax9oDjWMNYb4fgmgTvRaooAGyO2J031vQctyTyx8QhaLVwnVUPjaOqbz18M1RO/AtSIjcIEvEoRpSx5RpeCLROmILdsfIDFqFlu+vmOGzf/fkBkZLwWcq2KU00puJsnvH1l2VhD1Rm2sTXfssrwzf53bY4LY/Vnw6bTHOShPVvyZYFFAmvJkntuQZb9v5tmx92+QEZhWs6OO5u/KXR8B5K8n5uab7VTfUStFd9GIKDsQV9joOA/qBVb27oQC331A9P53M7qgSTeirle2yqN6o27gxLbwg7FGMqRGaVXiEwfFcn2AA+YtiPpkchn5g3yqSapdJ+KEkMEYxcBmL6MaIqtY9KWQOYBNnXU6203OiNQmHKjwZXO0UflKjKzpgfEkym9rjFJPKp3t7fG/JucGHDHU/Se0pe7S7IBtNczuCXqABJPopd7euDbaVNsp7oX1tFG7l3KW8Y53xLux5rqvlgUccrc96DE0tV7d7xYg3sNZwjOLhFvnr+HJxblA1j/tx7NJoQeYQzjr1P8njMAZvyhfM2sTtQQOUg04pnfnxUo+AhKA0fx
- gkBU3LLF
- l/4OUFnyH0Lo1cARFGvrkbO8radKQ6LvD7GJtuGbp7d1cID/gPBeqR+mPNzsELiP3FGWUpXI1N9wrG8wo+m323i+Ut2zFsbdZawZUecm/6srJONGICFgm3hvsI98w+PwG5m42ev+xFz/zqqt64eDyIwd9rh75M/Yz1spcmmrgQSzCEiD8ORfFM3FQoLjFQEvRjMzn9OhSIW5GisXy3G/hkV6XHBywj345vqMmdE1/UdDANMTycBuVhgmvhLd0wqq/cF0836BxvSnDfNwgjfvXn2xuJKQP4p3ZspkC7n5NpszvmN+IuoZelqzxbw5buuUYF2ic6EL1Ak+2orOYd3cBQfeJFH8rVzI/EJscJWq/V4aA2YZEnMn+mgyorg==
+X-Rspamd-Queue-Id: CFAF340002
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758511265-487055
+X-HE-Meta: U2FsdGVkX18KzLDHgmW5AOGGylCVKCACxClqVnpc4XGk2DAYj+DvO01gbe9bCVA6T/lQBVqEWvX5M24rGhM6ONGa0b7jg4M2UVAJf2VcdRyi59+83BJmXncQIKuZxf373vUmsfi79NteY66TJ9strso5xN/1mS/+b0FsPZglpfOiPksCn9b5XJ8SQz/Db931/apxsSndCkGMyFJwKiuP++2MTWWy7Nq793EOf5oW3z8zgUyJU+xYZz0T95OZ9DWqHmHZ8x8veoOxppM7rA/mEhYDCezUHKi2O/lrggp3OZarLiGzdvMNzsonSEVhUDdl1fEDRka7I3HWXbyBGyKnWw3GXWNgqgb4LWZj4gd1xEjZ6D+SaZPCWGfsZ85tAOoDSerwFw6qg8kcgnMU8nvqUbNkup0izWv+vRTtNcGGIJUeBB+nAo9DwVWNjwJjiot21Tn9aTwv0BO8sEUiL8/HGBpDtn2ae6ijuM7cbwnJVpKG4P9NRv19a5Mzory+rMYTJXL4TxX2lkCl0vnBIEKruPodHrMdk14qh4OL8c0Rn9gcTXGnGjvCJ/p8KBGIu9iX/wLC8j8IiRpBnBa7G19DHCf+MkYvSvJCT5MR2QwkWg8KdX6+kCpGX41zjuLy0OKCZyb/pVhd/EhnNde7KsFC/AiO+N5fN5uaBzoDjhL55SMbnJIOQHsbAPiyrsEhsTC3W1FvBZjLY7Azyve1x/+JPdMQRHV26dmtNTrXhZ+bmPNqwJLfIMsvQA0/z/5W5872fzOvFOWRAt1hdsif3GX1EFX2kcciJ1j3XUmpgXVTOL3M9TSYV/0hMa7KpRnQPYtiCqkOroP7yAtJE+q4befzxFz0SCvn+wJCi5IrBjzPM1Yj59ljDO+exvFgUb3GL/3Fp5nIgZFv/pHfQ9DAfhazOl2FC5XLcHElVr3nmyj/U/X1mLhZSkkYdhVeiXgtudqQpYemeYANWUuBtQp3sed
+ 1z8UsmI2
+ YeahoROUa7BIOJ+CqzOlZcrECx67tKPXNk/hGe/CUrTL4Sa1AyiuvlEMSaB3PLuF6KwBuxf9us3EVgMx7DSVKnoqB3/OtH0futqNN9xKVv9Q2G2i/Wzlm/jWriqsD2hvViDqHw/EPfMuS9aZGZU5YQu+zrukM5UkxgZnPaK4jpxMbwNnyJAr+WqKCYB6Za+s2hB0F4hduuHly/p6fbsw+HAybML9DIqwJezKtja7ECPOfkqpIABVbqhnGpHk2x5ATze5j7zmefDxRFlKXgKIo5Fov8Ag2VWfunXANEczt57JJZDSWN/bwRG7eGcfR8SsvvKjCAcW+s3X4n411FURSKhlV/fnXYae1U4DrYqOfp0JEzGP+5yp3ta0TBr1dgwnBAmPT8LzcgYbk4uY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,50 +101,73 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 2025/9/19 20:40, Kiryl Shutsemau wrote:
 > From: Kiryl Shutsemau <kas@kernel.org>
 > 
-> The finish_fault() function uses per-page fault for file folios. This
-> only occurs for file folios smaller than PMD_SIZE.
+> The kernel currently does not mlock large folios when adding them to
+> rmap, stating that it is difficult to confirm that the folio is fully
+> mapped and safe to mlock it.
 > 
-> The comment suggests that this approach prevents RSS inflation.
-> However, it only prevents RSS accounting. The folio is still mapped to
-> the process, and the fact that it is mapped by a single PTE does not
-> affect memory pressure. Additionally, the kernel's ability to map
-> large folios as PMD if they are large enough does not support this
-> argument.
+> This leads to a significant undercount of Mlocked in /proc/meminfo,
+> causing problems in production where the stat was used to estimate
+> system utilization and determine if load shedding is required.
 > 
-> When possible, map large folios in one shot. This reduces the number of
-> minor page faults and allows for TLB coalescing.
+> However, nowadays the caller passes a number of pages of the folio that
+> are getting mapped, making it easy to check if the entire folio is
+> mapped to the VMA.
 > 
-> Mapping large folios at once will allow the rmap code to mlock it on
-> add, as it will recognize that it is fully mapped and mlocking is safe.
+> mlock the folio on rmap if it is fully mapped to the VMA.
+> 
+> Mlocked in /proc/meminfo can still undercount, but the value is closer
+> the truth and is useful for userspace.
 > 
 > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 > ---
 
-LGTM. Thanks.
+LGTM.
 Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
->   mm/memory.c | 9 ++-------
->   1 file changed, 2 insertions(+), 7 deletions(-)
+>   mm/rmap.c | 19 ++++++++++++-------
+>   1 file changed, 12 insertions(+), 7 deletions(-)
 > 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 0ba4f6b71847..812a7d9f6531 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -5386,13 +5386,8 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 482e6504fa88..6e09956670f4 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -1462,12 +1462,12 @@ static __always_inline void __folio_add_anon_rmap(struct folio *folio,
+>   	}
 >   
->   	nr_pages = folio_nr_pages(folio);
+>   	/*
+> -	 * For large folio, only mlock it if it's fully mapped to VMA. It's
+> -	 * not easy to check whether the large folio is fully mapped to VMA
+> -	 * here. Only mlock normal 4K folio and leave page reclaim to handle
+> -	 * large folio.
+> +	 * Only mlock it if the folio is fully mapped to the VMA.
+> +	 *
+> +	 * Partially mapped folios can be split on reclaim and part outside
+> +	 * of mlocked VMA can be evicted or freed.
+>   	 */
+> -	if (!folio_test_large(folio))
+> +	if (folio_nr_pages(folio) == nr_pages)
+>   		mlock_vma_folio(folio, vma);
+>   }
 >   
-> -	/*
-> -	 * Using per-page fault to maintain the uffd semantics, and same
-> -	 * approach also applies to non shmem/tmpfs faults to avoid
-> -	 * inflating the RSS of the process.
-> -	 */
-> -	if (!vma_is_shmem(vma) || unlikely(userfaultfd_armed(vma)) ||
-> -	    unlikely(needs_fallback)) {
-> +	/* Using per-page fault to maintain the uffd semantics */
-> +	if (unlikely(userfaultfd_armed(vma)) || unlikely(needs_fallback)) {
->   		nr_pages = 1;
->   	} else if (nr_pages > 1) {
->   		pgoff_t idx = folio_page_idx(folio, page);
+> @@ -1603,8 +1603,13 @@ static __always_inline void __folio_add_file_rmap(struct folio *folio,
+>   	nr = __folio_add_rmap(folio, page, nr_pages, vma, level, &nr_pmdmapped);
+>   	__folio_mod_stat(folio, nr, nr_pmdmapped);
+>   
+> -	/* See comments in folio_add_anon_rmap_*() */
+> -	if (!folio_test_large(folio))
+> +	/*
+> +	 * Only mlock it if the folio is fully mapped to the VMA.
+> +	 *
+> +	 * Partially mapped folios can be split on reclaim and part outside
+> +	 * of mlocked VMA can be evicted or freed.
+> +	 */
+> +	if (folio_nr_pages(folio) == nr_pages)
+>   		mlock_vma_folio(folio, vma);
+>   }
+>   
 
 
