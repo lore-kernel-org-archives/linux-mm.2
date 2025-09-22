@@ -4,92 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29E5FCAC592
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 23:55:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84A32CAC5AC
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 23:58:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82F138E000F; Mon, 22 Sep 2025 19:55:14 -0400 (EDT)
+	id E020E8E0013; Mon, 22 Sep 2025 19:58:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 806FD8E0001; Mon, 22 Sep 2025 19:55:14 -0400 (EDT)
+	id DB2CD8E0001; Mon, 22 Sep 2025 19:58:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 743888E000F; Mon, 22 Sep 2025 19:55:14 -0400 (EDT)
+	id CA1188E0013; Mon, 22 Sep 2025 19:58:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6581C8E0001
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 19:55:14 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1273311926A
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 23:55:14 +0000 (UTC)
-X-FDA: 83918544948.28.2047F97
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 48EDD80008
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 23:55:12 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QodwpJl8;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B62C68E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 19:58:06 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3565EB7BC8
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 23:58:06 +0000 (UTC)
+X-FDA: 83918552172.08.BE7B34B
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 44790180007
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 23:58:04 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ecme15aA;
+	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758585312;
+	s=arc-20220608; t=1758585484;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3sROAbG/oi7+CFkW3lPDrCTRoOB+OpbeSi5VqV+IIog=;
-	b=07ZaC+4/TAaq/UBfeTL9rC04YUOhnf12tAlyDDnp+pchd6FCkqONolsJ+2H7bNKbEr4OpK
-	mcI54gf1uZ6Fx4RKOSgewI2v3zV9zRTn2JfoWLepp/LjoGobwBT+Fx30dFg2Lk27rPeNS0
-	cIaqyVy9pUI/PZwUXGQjCUb2QRE3IS4=
+	bh=I249uCXjcrnPHCtWWPGaeLfw8fIgOsN3T+f7nWAqPeA=;
+	b=0ipDWH2h4Ypyy0cvW1ap+UqK037cg3DTWFIsYLB/GHwb34yP5Tj2eSSneQvfbuMS8qbdbd
+	T/o+b4POn05uSwHIx75X0hGdpMd4NjNLfRyv1s5MzO+crcGz5BOnaMTxDEbyUiyRklzpED
+	3a/KqX0UUATGMwASsACX9ExjXvcapak=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QodwpJl8;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758585312; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ecme15aA;
+	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758585484; a=rsa-sha256;
 	cv=none;
-	b=JXHo+HW0PicwlMT3kEciqX+Hhny/rnXD/tGM/WLnLabRvtsKRooSOZD7iwudg7ABddARyB
-	2QhTwjxRWEI+fs1OKKQDTI8sHgtlCINmYoZ3GPshcH5ugBHwjefSBBeTwr2ht8Xz1coAlX
-	TfDCrLsa8dhQEhy5sz+ThKaNYoUTmJs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BF01E440B3;
-	Mon, 22 Sep 2025 23:55:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4220C4CEF0;
-	Mon, 22 Sep 2025 23:55:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1758585310;
-	bh=GUUIv/PzkqvPIBWCrFcZLWsQWgOY8kSV/evTaZnYusU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QodwpJl8LgA0tAs/Ed4XU6lKjkVzRkPVTn1mvkR2m700vx+dg/C36CMq5EA430M8j
-	 NFeO6/Xy2OpKGxh1br3FuHqcjlxhm4YjqqjYErMdYpUEcrYss0BHlgCklJoyJWmHV8
-	 9ClCI0kaA6W4SSO1tML+maH2YGRDO4KUh/IlOcXE=
-Date: Mon, 22 Sep 2025 16:55:09 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Michal
- Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Alexei Starovoitov <ast@kernel.org>,
- Peilin Ye <yepeilin@google.com>, Kumar Kartikeya Dwivedi
- <memxor@gmail.com>, bpf@vger.kernel.org, linux-mm@kvack.org,
- cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, Meta kernel team
- <kernel-team@meta.com>, Michal Hocko <mhocko@suse.com>
+	b=k1fFLsPUyBhLMA220+dhUdGo9o9Mxwm8ymkllT9Z7PMM84t+95ZF6RKTgLxkBz/pOxucBx
+	BXSOxouKPn6jVh2LCFnj7Lx1/mbeUjtMo6pJcSSIYb96/0xGEpiFt1qIQpaq4p8QDOT20K
+	u/wAhwbZnyBoi0Q7fVShzwj0jR83u4E=
+Date: Mon, 22 Sep 2025 16:57:56 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1758585481;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I249uCXjcrnPHCtWWPGaeLfw8fIgOsN3T+f7nWAqPeA=;
+	b=ecme15aA9EoMkti0fX8W5xi+YQF2qPW/Auxv/JqzE9bRN62asdRJojQPfo1ExGUkQXFQKW
+	okzJ+30kHtIAkUNEOe4AsMdnTZWlnKrHcd3ZzlGHSvXqtp5bFW42IhOCXiCm2gnk+6Djdt
+	z/HlYwYH8IdAegegKwcli+pIIkFqTQU=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
+	Peilin Ye <yepeilin@google.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, bpf@vger.kernel.org, 
+	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Meta kernel team <kernel-team@meta.com>, Michal Hocko <mhocko@suse.com>
 Subject: Re: [PATCH v2] memcg: skip cgroup_file_notify if spinning is not
  allowed
-Message-Id: <20250922165509.3fe07892054bb9e149e7cc06@linux-foundation.org>
-In-Reply-To: <552lz3qxc3z45r446rfndi7gx6nsht5iuhrhaszljofka2zrfs@odxfnm2blgdd>
+Message-ID: <uvm7vru6ulfakmy4qb5slq2ee7dgiuis2aei3vdyu4nk4pyubh@noc2gep35huh>
 References: <20250922220203.261714-1-shakeel.butt@linux.dev>
-	<20250922160443.f48bb14e2d055e6e954cd874@linux-foundation.org>
-	<552lz3qxc3z45r446rfndi7gx6nsht5iuhrhaszljofka2zrfs@odxfnm2blgdd>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 48EDD80008
-X-Rspamd-Server: rspam05
-X-Stat-Signature: dwi6ee47d17xdh3g74j79ezjdjbaf1hg
+ <20250922160308.524be6ba4d418886095ab223@linux-foundation.org>
+ <nzr2ztya3duztwfnpcnl2azzcdg74hjbwzzs3nxax67nsu6ffq@leycq6l5d5y2>
+ <20250922164328.0d766c95f9c15330e99514bd@linux-foundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250922164328.0d766c95f9c15330e99514bd@linux-foundation.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 44790180007
 X-Rspam-User: 
-X-HE-Tag: 1758585312-889973
-X-HE-Meta: U2FsdGVkX18ShW6QJyju7SaFYqr9gXLVAEvi6GYacJS3mPcySeNZvWkhyf7qQzCBPqn37p3Au2KVrCEikoDqj9pJxUWr07ErdbeJY++LwNQ+CQgZ4xqsEV1klMhMnam8naG73HyfvHOxVQj07e44NXIRRxmpTQ+DOqPk2bWzJfx/XWic6mYFZYlVgLppCfR+a+HSu+RukHePitKSKzcvgcoesMnTBItQ7OErSUYCIcYK5crEwDhk60KJkZEUjtE18Ul0km2MBCuZPc2/MZ/Mth5Dk3+pv3qR3dBEoi+ApKPrMnFf+0RC7LwFgg8ZwcF04mieQSkbevEsTCEXkqPeDXCjxSaZYYsTFG4TH90lk/2FG9r2TMdj7FOCSZ1YO2tzArFPYGfAizW/PPMrc1or8r3ulXMkgfuf6V3lEyP44wfK5pNIoXcUXPhtWkvGU93jFdfILK80dorC/JqSY+m9/TQ7JWHbdhPLVDWkj9mGjO8mI3WE2yvUqPKtj3o2nf7dsvoWVLAfTje7veIYxBavr/zyORMqgJueGmKQwr6ZGkiiQutST1hvMEmRhroskICmwOkU00j4Q7KnAvt22kJNXearpZ/rPhs47hSbJxFrDslKHv0cWSue36rATvYk+JMnN6NgFfVlahLC0qxTYxmK9BJa6jseWVZ/dv7JKJMsz51vSvXTnq29Xh3lNu2DhTIlDY9KP2ZWBkHFe+sdZ6S8AkPlknCFvNbpt/CLVkQqGjsGsfNoyZxLk4X5zbw4vjFkRkLrFHlZH2U979cL3C7ssdeJvyps9BkhJBBrTIme7kQofMgQfLgzTxTi6TMs1CfCGWbhkX9W7LldYbLvmi1GKosCV1yDZit+V2ZulhB30TNjPNF8Y8jYhdiUNbexXDcvSmsD9PFoHA4g6gKJlIEHbO8nog/TvU12DOT11MDKIZ2SOnmwGkneCxZRNO70xG5Snq/jAyzyK7Qd4P2dpsi
- nhDVtSuM
- ZWE1EqYlCTXESU0wB8zwE53dRLAW7PNPO8KjfIZG1km09c2jWOEB+ZPdLQ4q3DpqOJ+SzUdamnaj1/YV00yOOFOjUPRSE+ZUlFCnLfKNT9pLyI4iLCOc6F25Jr8Z9zUPmzaUatvfKcyfSB8ooT5aDqTqh2evaCTQpG46n8v7KdtplxQz9iqHARGqr186Yns7U28ZkseGd67zZ3yNzhsoL3l2gM+YrZ6uvAjHJ4rBbfDDuml84S0yll3nzDFCJ/M1nKHz0ZjgNYdc1hI7GRootDo6ZB1vXZtFstxvE5pTxdeKQzrgjTz2CO+8wZgPrHDGIdWEoQ18iFKW/SeXFij022azwgTWvW94u4FRse8D07SKinLeCk2ZwPw7kB3jV8L4iJF1vOudVW1oJl9d6AwhJrEC2Qg==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: qqpagjpatoparekhmkhpk3431dz39i3o
+X-HE-Tag: 1758585484-930623
+X-HE-Meta: U2FsdGVkX1/Fye5/A27HtWixktx3b9dGzeeOsNB/sQX+1xhS++TBX5K2khIpdWhU4uLwZh08S2WC1nd8oydhwUPoqW0WHEjhU8KYDc9/WwY6UPBT/zxtN/wtkKGJznACnq5CWdI0WlbrbUpBnckPey0OgEiavraQ2Zz4q5+tyh8T1Q7cnNVGFgMfjiLkB2VOxCVtFABKXeizyRJryghvofy6ne5PDnC04SMYqXjaGrZcUrvutSfYYzVnnFlWpg2CMdP7DmCOt+hxmILvFArIyAdV902LEdRuNiAxUA9vtNGjwW76QSD0dsCjlZW+KU8/C6essg9XcZFnet+LQF+TCLUW0i5pjjtFVaMPaxila2vMklKDPxj/3uy5cVkOejNw3X2qANL9RApLY+0SbZNBozjrwYtKwxFUWC6Ri4uKBgQr+VeuHoThHBIAVwozYgkNDDD/B1FdnxCXfeaD4u2aQgfIGwUZ+MF5Bz9Mq0Ld6rYlySSltSd8ZyntUuBvUCmaGIBFA4QqG/Ad9riFjCLgTN0dAkSSHtxykG7JiOvGE12ZcYSxpc4w7JGACts8pjWQHJ31DBhGjltea/TkvI+jRDNFMPDZJ4nEJTHb6gmuqzIzq1uLCpnYl3QMiajvwUFnKEdTxotFV7AKuLL9wuBmq4e1dyTfuR3bQU42Y9j+aJMi9oR5cAmCSeqzZdIH65HhB7KVGc3+tzL8lNegPuhZh2BBDpMeZ8TstZaA/Gn0/6IaTpMjsootOexeN1lbwMY7rykzhNkskmM9ZHKOfxX798N7RuNmyjhKiqNR3xWdrc98od5BvkkJpD7rBQ1egfhOikiXP2ba/zFawbKse+1mraCGlMkmrUBWENub7q/f8GSdhAlk3VoQPL8sui/Xkos1ponwUrE4ER6wDvgOyjRRH6zi528apAUNCZpAcFq2k5+nY6fVZgOxUnvz6+9/AuUyTa0KjDGCc2XJfVoqrIw
+ Wc5thE8b
+ abW+hrC4YbnO87I3HCjS3o5LsqangOeJq8/JvCIKI5b0TZvz88CfiJMJuEe62vfY3+ADn5GGfwB5MhTT+Lw+x1Af9gfFa/hg9AmfQTLCq0M4fiJZmJDAWPrfh0bdpzjLo7cKbpFnqhw5rvAvdG7B20CaMEx3SdEXoQG8/pKNNL+OMVGCPWZ9iRULQGxNo065cqCtkiYizIqyhB3VGRgYL5cOWCauREsd1ywhfJxEha5o6hNvgzxupe/jggTGIFCIc0+dWRuPUkS5naVjuFk54BnGzSXnbT2PY4nwVHyW7c4dh+wg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,51 +95,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 22 Sep 2025 16:39:53 -0700 Shakeel Butt <shakeel.butt@linux.dev> wrote:
-
-> On Mon, Sep 22, 2025 at 04:04:43PM -0700, Andrew Morton wrote:
-> > On Mon, 22 Sep 2025 15:02:03 -0700 Shakeel Butt <shakeel.butt@linux.dev> wrote:
-> > 
-> > > Generally memcg charging is allowed from all the contexts including NMI
-> > > where even spinning on spinlock can cause locking issues. However one
-> > > call chain was missed during the addition of memcg charging from any
-> > > context support. That is try_charge_memcg() -> memcg_memory_event() ->
-> > > cgroup_file_notify().
-> > > 
-> > > The possible function call tree under cgroup_file_notify() can acquire
-> > > many different spin locks in spinning mode. Some of them are
-> > > cgroup_file_kn_lock, kernfs_notify_lock, pool_workqeue's lock. So, let's
-> > > just skip cgroup_file_notify() from memcg charging if the context does
-> > > not allow spinning.
-> > > 
-> > > Alternative approach was also explored where instead of skipping
-> > > cgroup_file_notify(), we defer the memcg event processing to irq_work
-> > > [1]. However it adds complexity and it was decided to keep things simple
-> > > until we need more memcg events with !allow_spinning requirement.
-> > > 
-> > > Link: https://lore.kernel.org/all/5qi2llyzf7gklncflo6gxoozljbm4h3tpnuv4u4ej4ztysvi6f@x44v7nz2wdzd/ [1]
-> > > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> > > Acked-by: Michal Hocko <mhocko@suse.com>
-> > 
-> > Fixes a possible kernel deadlock, yes?
-> > 
-> > Is a cc:stable appropriate and can we identify a Fixes: target?
-> > 
-> > Thanks.
-> > 
-> > (Did it ever generate lockdep warnings?)
+On Mon, Sep 22, 2025 at 04:43:28PM -0700, Andrew Morton wrote:
+> On Mon, 22 Sep 2025 16:22:57 -0700 Shakeel Butt <shakeel.butt@linux.dev> wrote:
 > 
-> The report is here:
-> https://lore.kernel.org/all/20250905061919.439648-1-yepeilin@google.com/
+> > > 
+> > > > --- a/mm/memcontrol.c
+> > > > +++ b/mm/memcontrol.c
+> > > > @@ -2307,12 +2307,13 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+> > > >  	bool drained = false;
+> > > >  	bool raised_max_event = false;
+> > > >  	unsigned long pflags;
+> > > > +	bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
+> > > >  
+> > > 
+> > > Does this affect only the problematic call chain which you have
+> > > identified, or might other callers be undesirably affected?
+> > 
+> > It will only affect the call chain which can not spin due to possibly
+> > NMI context and at the moment only bpf programs can cause that.
 > 
-> I am not sure about the Fixes tag though or more like which one to put
-> in the Fixes as we recently started supporting memcg charging for NMI
-> context or allowing bpf programs to do memcg charged allocations in
-> recursive context (see the above report for this recursive call chain).
-> There is no single commit which can be blamed here.
+> "possibly" NMI context? 
 
-I tend to view the Fixes: as us suggesting which kernel versions should
-be patched.  I'm suspecting that's 6.16+, so using the final relevant
-patch in that release as a Fixes: target would work.
+NMI is one source which can cause recursive context but bpf programs
+attached to specific call chains can also cause this recursion. For
+example in [1], a bpf program related to sched_ext was called with
+scheduler locks held and then that program made a memcg charged
+allocation which can potentially call cgroup_file_notify(). The
+notification call chain again tries to grab scheduler locks and
+potentially causing deadlocks.
 
+[1] https://lore.kernel.org/all/20250905061919.439648-1-yepeilin@google.com/
+
+> Is it possible that a bpf caller which could
+> have taken locks will now skip the notifications?  Or do the gfp_flags
+> get propagated all the way through?
+
+The bpf programs which might be called/triggerd in a context where
+spinning on a lock might not be safe, will skip the notifications. The
+gfp_flags are plugged through. Basically we have kmalloc_nolock()
+interfaces coming up which will make sure the correct gfp flags are
+passed through.
 
