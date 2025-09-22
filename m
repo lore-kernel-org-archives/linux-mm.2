@@ -4,142 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86F5FCAC592
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 16:38:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B40BCAC592
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 17:04:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B3E548E0008; Mon, 22 Sep 2025 12:38:25 -0400 (EDT)
+	id 494128E000B; Mon, 22 Sep 2025 13:04:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE9288E0001; Mon, 22 Sep 2025 12:38:25 -0400 (EDT)
+	id 46B548E0001; Mon, 22 Sep 2025 13:04:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B0AB8E0008; Mon, 22 Sep 2025 12:38:25 -0400 (EDT)
+	id 359AB8E000B; Mon, 22 Sep 2025 13:04:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 84FC98E0001
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 12:38:25 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 41F9F84340
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 16:38:25 +0000 (UTC)
-X-FDA: 83917444170.20.82B82C0
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf22.hostedemail.com (Postfix) with ESMTP id BDC64C000A
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 16:38:22 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XsBaV1+T;
-	spf=pass (imf22.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 202078E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 13:04:32 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AEC7EC0131
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 17:04:31 +0000 (UTC)
+X-FDA: 83917509942.16.A4B870C
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	by imf25.hostedemail.com (Postfix) with ESMTP id EA856A0019
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 17:04:29 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=RfgjlHj1;
+	spf=pass (imf25.hostedemail.com: domain of viswanathiyyappan@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=viswanathiyyappan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758559102;
+	s=arc-20220608; t=1758560670;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kRPJicGQTdnr4fyUdWpU6gJMxGkHyZtedzSbJu7STr0=;
-	b=OjsTXI+WtQ1+tP8o82OiKd7ErkmlTPHYZIO93v8mu2hofeNPSnqJpL95BEibHaJxW76Rqm
-	nkbbwBFDorC3YTeOMTdAWztkbGZdUZ4Zbo94VdxC1pjEP0dgLebaijdiquzAAk2iGNzTDP
-	4CvrJH+u6UAd60MUZHYTVyotJigL5Vg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758559102; a=rsa-sha256;
-	cv=none;
-	b=MCXYBHNdx6SeU7ncVVcRzp3OJw1RCdGBmNM0lJ++omzN83Itlpjsdvxcf/OxK6CYyMkGnU
-	Uf9q1kDWl0uHWHEQhxcKU3PlWmsczf29t9tkBgKveytyc1aEzD8rO65uHYu+hvvKfb3BDZ
-	Oh8FP/syapQeTGUUi3iDHq8FRBS/Bv0=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Nc77MFzorwqtfxO6TersZ0PGs14XrPU5kx6kkJpwm/c=;
+	b=8AvucLwZpuomLgsjduqA7Q6Dwkq3xuXgGvaBdistVB/IHlT/IiB458giDaBiFNdK6xXLPA
+	ntB2peBjanis6QM63pJUcB696IhF+Yy60cg7+FjJALQvj2HE8jdXdPhTy7XwCYN6ctSwQo
+	g3lCLWxvx2s4h2aYoheLK1yotSQcCMQ=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XsBaV1+T;
-	spf=pass (imf22.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758559102;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kRPJicGQTdnr4fyUdWpU6gJMxGkHyZtedzSbJu7STr0=;
-	b=XsBaV1+T1LPypvZYJSa61EcgUWWmkfZm9xinR/KW/Scnsu/WK5ZbwPUqENytfNl00mYQ6R
-	eBSTx6ZVZYyhQbTUh2XVGpnKrn0oKh4KUZ/735o6Px2rosdiG4qDg1ttciQhPcThxLGF0C
-	0/LQJqWwNqjlzpLeg5U1h8IPPHuXR9M=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-640-hM-SbyEXOByHNfoAML068Q-1; Mon, 22 Sep 2025 12:38:16 -0400
-X-MC-Unique: hM-SbyEXOByHNfoAML068Q-1
-X-Mimecast-MFC-AGG-ID: hM-SbyEXOByHNfoAML068Q_1758559096
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-81b8d38504fso252036685a.3
-        for <linux-mm@kvack.org>; Mon, 22 Sep 2025 09:38:16 -0700 (PDT)
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=RfgjlHj1;
+	spf=pass (imf25.hostedemail.com: domain of viswanathiyyappan@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=viswanathiyyappan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758560670; a=rsa-sha256;
+	cv=none;
+	b=aXzsIweQ5scAgB0cT7K4dvN1xsWK/82Y1I+tRuK8JdBR4uFCjx0kmVVSVUYzOsmWyKmDD5
+	kjk1TNASZtOum5Z5nCKsbuSUKlcn5TaJT19RX3rnXDsShAPbKBdu2D+adgMPoe32R7EL7N
+	sWvZlUE3ghO2/SFzT+LAHN4vqNOH8wY=
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-b5516255bedso2499756a12.3
+        for <linux-mm@kvack.org>; Mon, 22 Sep 2025 10:04:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758560669; x=1759165469; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Nc77MFzorwqtfxO6TersZ0PGs14XrPU5kx6kkJpwm/c=;
+        b=RfgjlHj13Ypz9BTgPEetG3pBi2Xn7O/adMH9WYjht0jO87mLV8JicUvJL+BkJG/w86
+         5x19uRWlCkVPcBsxv3wrimccOyyGRxMnVIls++b8zda+bxVBAtdSE4Z0aCLEZfbbKMFN
+         n2v52IxkOmLjH3qNvcyEOYQvcW0kaDtVQ2YEGCxewStHdW/juDNSitdGCjQ6pYli2okC
+         SearaGJEM/PgmFwHMSi5OJUy01CNUc1qXxaNQ8lg4Q6VPklQVaiTNAdWgChw5/QQhP8s
+         sxkw/Hj2w+dy3d7He09xGINEcfTxIDH5BEbT4PXEhhI7SVDrI3xGWaKSrtCDD3BDEI/y
+         C96A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758559096; x=1759163896;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kRPJicGQTdnr4fyUdWpU6gJMxGkHyZtedzSbJu7STr0=;
-        b=sfJ+XKfyGNuDzm3MMaGIySL2USsR7kB8Uv0f31IpbKyBTuc1CeoFPMhjQ5EMLAt+HV
-         jVH5jgbw/UW6wUn1bNbyQFArE3Q26dry31HSDis8S6BJWdm1dgzFSywC0TqA82BzDKIt
-         wnDDa/wDyCd71WFos929sCJKzkyUgoYh2hdwRNNFp1Tgmt1SgGlrTBmAzQ6qshMErvmZ
-         rs584Lc5UY/4Z89SO13DoZ3S2z0TV8kEFwJA+nbLOEDIzgF/FcTnxqBTjUnaYfGQL1kW
-         O6ysNYcQfsDQK8iDBtcLAHlx1IecWxUThTS02hTcCGcWgRZvMGxmE3HKZmgEWhEqc7VH
-         e1lQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXdc0n0Kvoj6V3cFAiuCGjK9puVlM9thMd8ibG508Sw3hQkWDTGHCmHAECnbOwbx2L+DKFfiRIC+Q==@kvack.org
-X-Gm-Message-State: AOJu0YxwxZxtDKB9jddzeAka4TINRrEU490s2JU75EyVTlxMPh/hPi5G
-	3awP7UXYE0l4rRNxnG6r/LoQVhAeg9Zl8i6Hn1BAfE7Js5LzuadpU2aG2p3xVYYmmO83XhYgZEr
-	IO42R62ZL/owwfa46fBBZ8byl2qD3kuQ0jJivyKPLEMgM7PawwN9A
-X-Gm-Gg: ASbGncsiRLQ00wLX9jsuJebziAQwH9UO+ert6s39Z/4epB9uFJXWVHuQJ+W09UpUr2m
-	tRKwQthtOjm3TCyfuWAefyv/saDGgwZiOF5lEzgBLRXAsuXU9qshBJArM1rFfPo9WW2h+dcNVyM
-	OfWveoam7Q19vA+ibxgRqtRWNbKx66t+ya/iyJA7n3V87EZm/dY3XR36I/PNqwsqYSkSvM1C/KQ
-	3w3IlAOmT0qNvaIeXz7/lQaV4xG7RCGrNyK857iLtFHwl+o2tBdMxlGiy2eis9ZL2DrkNlEc1kp
-	y3KjXcdc9AmyLnRVefWiWdaFjEj258Kg
-X-Received: by 2002:a05:620a:2683:b0:84a:a019:cdf5 with SMTP id af79cd13be357-84aa019cf13mr485439385a.53.1758559095950;
-        Mon, 22 Sep 2025 09:38:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFCS5EDF7ht5BQNo1OOpXMisltQt1vHiFGmi7H0nOcZkAtQZS0HfCi5gZJpE5Oi/8k95h7sgw==
-X-Received: by 2002:a05:620a:2683:b0:84a:a019:cdf5 with SMTP id af79cd13be357-84aa019cf13mr485434985a.53.1758559095449;
-        Mon, 22 Sep 2025 09:38:15 -0700 (PDT)
-Received: from x1.local ([142.188.210.50])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-83631a7fc2fsm817022185a.54.2025.09.22.09.38.13
+        d=1e100.net; s=20230601; t=1758560669; x=1759165469;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Nc77MFzorwqtfxO6TersZ0PGs14XrPU5kx6kkJpwm/c=;
+        b=hItUIOqbr00RJ4jS0RN7/gg+a5l3WWuXlu5E17X6LHbzafRxWtRPjZ6bbvYK1iAUmf
+         CQU0Th+Ee0tJldU2I75xZzy6dmR78ev3/qHPl/R3C0D9iDqAYzxW+0oMoQs3oa+w9sbo
+         TiNZlJlkQxI6qifqh07wfQMMFayxdXgL2q313BJXVqOkcQiBWCg2wiRDSsjkgxG0b8xS
+         P62ISLwx8+i3hNs0GWRu1sasDThMC4JHfa+WT5fjsyI9eTlMsMZaBtP6/mxxyzkyZ4VH
+         JIZxTQQwQIqxgNJ+TYTyoUbpRxnQXqRO2FFrfcfdB+z4s2U2ePX0CIcJJAjD7g/SBsjn
+         hEhw==
+X-Gm-Message-State: AOJu0YwQSH4qWL1Uux2SQHJOh4RyDwaX7WIMJhECupUtgTTWM7zt5tZ7
+	WAeG0vSc+VNA6QCoJMA11+Bg/t6GeoPWEY6pG/QCWsdtH9ng3MoA3eYG
+X-Gm-Gg: ASbGncsQxqINpvw7o/ci3qiuqXeRpluDAWouG3rO6CBEdkTUARPHDzhpYQfu1YPQUJY
+	iiR/+PGOPlyWsLI9TVW5+PYcuUtmdNaLT1UFNy75o4qBYImfs88g7cX6aRp4wqN+RDtPEK165Hb
+	PP+yCYBf+pbiorj/1JoCdOhuwpN6z/4fMtuWAWJ2NOC2hsorYtayuZ7Si9B5hhFyXE39xuFp5tl
+	etvzmN+Cdr2NLd7SyqRYvZE0S/jxNGnp4jWFMYDfValjMwPl896DFeeMf2u13dgWz3F2E0rcauK
+	ND3L+fP97Lk1dMX3PmVji+WOBZCYlydbFa033r2V61yubjgynZo/R47+YHAaeLlOjhsb++HjmFl
+	MuO7otsRkb60hXSzxCH0dA7PD/NHkUKX5RaPl6Jz9I11jlppfcaMpUHUZebrKVltq7jirravTan
+	WlERqJXnCk1FQy
+X-Google-Smtp-Source: AGHT+IGsd8HkhcTtxst8+Dgce85bwqndE2KThGl7pjmFBv8FiVKOmjblKihFJmQw3vbhuDw9HB4q/A==
+X-Received: by 2002:a17:903:b48:b0:264:1afd:82e6 with SMTP id d9443c01a7336-269ba5628fdmr135333825ad.53.1758560667816;
+        Mon, 22 Sep 2025 10:04:27 -0700 (PDT)
+Received: from debian.domain.name ([223.181.114.23])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-26980310e41sm138227825ad.108.2025.09.22.10.04.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Sep 2025 09:38:14 -0700 (PDT)
-Date: Mon, 22 Sep 2025 12:38:13 -0400
-From: Peter Xu <peterx@redhat.com>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	David Hildenbrand <david@redhat.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Vlastimil Babka <vbabka@suse.cz>,
-	Muchun Song <muchun.song@linux.dev>,
-	Hugh Dickins <hughd@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	James Houghton <jthoughton@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Ujwal Kundur <ujwal.kundur@gmail.com>
-Subject: Re: [PATCH v2 1/4] mm: Introduce vm_uffd_ops API
-Message-ID: <aNF7dT-YUccWygka@x1.local>
-References: <982f4f94-f0bf-45dd-9003-081b76e57027@lucifer.local>
- <cda7c46b-c474-48f4-b703-e2f988470f3b@amazon.com>
- <aGVu1Isy-R9RszxW@kernel.org>
- <aGWMsfbayEco0j4R@x1.local>
- <aGbCbW7hUf3a2do2@kernel.org>
- <289eede1-d47d-49a2-b9b6-ff8050d84893@redhat.com>
- <aGfsaIIzHWfjcNFd@x1.local>
- <e7vr62s73dftijeveyg6lfgivctijz4qcar3teswjbuv6gog3k@4sbpuj35nbbh>
- <aMnAscxj_h42wOAC@x1.local>
- <oybstepupgh2s5lpwwk7scryem4mgk2t7wmkr5zhj7cz4da3bp@aylj2x6sgtap>
+        Mon, 22 Sep 2025 10:04:27 -0700 (PDT)
+From: I Viswanath <viswanathiyyappan@gmail.com>
+To: vbabka@suse.cz,
+	akpm@linux-foundation.org,
+	cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	harry.yoo@oracle.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com,
+	linux-kernel-mentees@lists.linux.dev,
+	I Viswanath <viswanathiyyappan@gmail.com>,
+	syzbot+94d20db923b9f51be0df@syzkaller.appspotmail.com
+Subject: [RFC PATCH] mm/slab: Add size validation in kmalloc_array_* functions
+Date: Mon, 22 Sep 2025 22:33:57 +0530
+Message-ID: <20250922170357.148588-1-viswanathiyyappan@gmail.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-In-Reply-To: <oybstepupgh2s5lpwwk7scryem4mgk2t7wmkr5zhj7cz4da3bp@aylj2x6sgtap>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ShD6fKi_lbMksAHzHHUOm0GhvV1SpKLc0hhH_Ohlm2Y_1758559096
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-X-Stat-Signature: 1y1eyg31tr78tyof536xykdpx9y6pwhm
-X-Rspamd-Queue-Id: BDC64C000A
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: EA856A0019
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758559102-609775
-X-HE-Meta: U2FsdGVkX18gZgI4i3mPw8UgIa4ZfbqdT7zv/Lctw+/RyKYivw3j8h4yOYacy+76ApnNv1C5WCCVl127Plvw2PMAIQir/6yNYIH0+g5BH/9oUD6ysWt8YFTK625g6FnEzHXY4eY6itU+DQ05j5oOvuqo2MEGO8VdIMp83m15a+fXLtppWxyDJq5/96p2zzD4gDqpjNvBUeiNc6+2EpwSonjlUWRCuMMu/WwjTrl3urbbYmRdN+rOqLuM/z/3QE5C7L6m0RqzeBmS9+8L3aS74vHQanxoYxcRieHPUrgXdw2P3USnZrRTxIlXBLwc62TXDBTv2kDp75XQXP9c9JdioaXDDOslpGU2IKv9SHwy5sUQPTHcDtgDlRexTPRriJy1ealN2BlV3idxKvOKReadnTp1aAntYQCqXyooHF59NyXOqbmm4heRD+rqoILsS+TiNX502qkDYhw5WA+ikO5nYLSGDQ3VrtugBtHiCGrZ3gcwjc2sHECpipMJA/6mJ/RVTSs1IFF02oNZig11LhhiTVYreG4soKlcN+H7ShWgZ99l9QGKOA4S+YOE8itHdQsysu7j86Q4wE7jvig+Qdm4K32iXPqWkKujeC9jwjA9VSXlb41FP3hreFkpvddrjUqrF4YlkrUWmm+i+uD8ZpeqRKi4bbscux94EjM1uYB3dB5GBciQbdW1eyWtZFCxUye4ZuPEAdCNSrUZcbEGcTwV8Pru10cwMImZD3C23SXWJEHHaovwsu5bb5IFQHWzOexe3TzMA1ms+sV9IU1AXNVHqs7OkBfh6JG/4pONxRmvYP/nLSAdLspWxbYk0GOxqHQr7w+75rWCsQQkIqGl31M4fwI2HvW4J7Dz7mkXpp3NxyCyMenmo1xkotLiSFMKpmxnjdC5L61QYOkCnAJWxPivBm9IYuYy1wFzmp4FShMIpPV/IjjBoFF45RyI2FzxE0BzZT9ikeeH1t9/VnCxslm
- cw9Ze5bB
- 5Xbxs9H2+a5zyG1KnWjpeugibF2MtW8sFTs3pDgWjxGFCc20HZbv5zCQQCMXn4Cb2mWDY3lOGaBJ0+uUCokOx7TTIDO9tJrz1A38pN/NQARCzq61cdOtkBVU095dYjnMeELWcEzlu3B1bRjaZWs5ydcMNu6kFbXQheDj0yeVK4yPJzh2zh/X12ZE8cJ1OgdaErLWmWs4KJjAKx62xw7xe/1V7Es/Jsdu0HdO9EqdOXPGx6nVXMP9L5IxSqZbYLMuxnEd8kTV/VXe9Yp6fmM8OJ3TMH7yg8rlzYp5w0OWDJS03stv5GrYCqTFttyxD5SVrGsHJ2BFhCLHi4qwdzO0e3+spKLpN+TPni+2VtJq+bCkcmyh44g6q/xknQkf7MTF6bNNGVqHZXoRno3cDWyYqY1ASIDIOFxKAqSgffwdBNqPGjhC3PQeB0X2R4NGjyxjnj+dt2ZuAAT7nV1xigcReeTEyT1jSiEcxDkMb8dyCyUZDDC+HUoXSixyeIM8mNnFmua33UvRPRMvz4MUfHMKAlzRBvqbWIiC+AAe1eq4Fx42xRzXYMnB9/XAtL0mK2aXsyGAmFeB6eb1PF+aYwK/S4BgHAvGqSDHdDcdIV2rtp098II8=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 6fbusz4u1tyfc71zy1fpausur8ttfah3
+X-HE-Tag: 1758560669-475867
+X-HE-Meta: U2FsdGVkX1+UsJrrL+TBU3dHEsUV4hXjODJq0iFZ2eX3nJoy+nP54E/yq4kpfOQ6lVfPix7AMsp+jOWjCPq7I41exNLvNEmERsMQZXrIrjWY5A9zPNC/WgHd014dT/kjDIKrvvuu6DmncbIqIXsKpgCJ9FMWYnCt1sZQrGRKvsPx0VDcc7PD3JnTyxGV0D25KVlLeb6uHCusgxV/xuhRRBQWh/AgBe7xdRJjaX9RToAhoC+yyomPqwfgz589vsF9sIo4MBeDcwcTVd5GEeSSHURtGHb5hkHa2SXdEuJaGhNepfs+idhoeND4mpnmeij/FfM0TxmfgcDy1+ypuhA2+SEdqiEEwdkar21uPtjjrcNH+jTVrbMoSjG32dNFgHsjieBE+L5S7Xj5A/tGwg65tNW6zANg3JbN6nmxsMVSFNJ5T+YRWEsfcy9YQuUD2X4Py0GRhgaG9yQonF9vU4ZoaT4p7cmw4hQAXE2tl1oebk7ZHnA3AGdhhvQXySCJxx0FqaEcTW5Nh0FQ12WgJuwWiwp4XP+uuzc7NAmvX9GVetMl5iE/bZGjd/chjE3mFc11PZnMqspVT9ORrJtU430Ahx3tnDDyyS3Hp+v36jtP9AEDVIwqEYM+2s7mozBUcduk2/RXVA3r7DUOF/lMiBaimdAdDWCrtYQHO+H75u90Z8r9pj0Xy0+nXm+MAy4fD1Hk828ZC4vCZ/cagTQGunoHN7c9h2TYjACxaszBoJHvo9a1iinpeYCIFkMnXocer0uoRlclWgv9lXKK3JRLNzlVZdGDWfvDyHo1bwllolRNwTlFZHDWXMd9xIuNx0S0yYScq96uxC/lv6qGMtVvc/zwQ2Kun7nDh7OVrlyeZDb2T4QWGOKSCExoLpTTe3ueee+RqVr7DGX+HdGRsfu8js2a4Uu+ecyIHRlubSEd54G5fRgaxir/9CWJoKb57hcRG2RoFLZLzDKneNMKbGIbpoU
+ v3BAgZX8
+ hcmt4U4NaHWwUxJQupdaZcbMKQVx/IPSek+OblCJ3x0lqAw4jwrm7qujW6IbB9+nq0arBV7acKn+OD1Kmcap+1lzDyMNSzU6d3amD7pXAKWhajr2pYoNBOriKpgiPjN2vO/dA+mCb80QdVj9inG8NNuubgUUZvmEhcbFVLMxcZzopZEeoxo/OItxUAdgwQXyenybxhvuvkMGc2HK8gNUcykxktvOFSFN5gDRRg6uo4wzBPCRY53s87RpAOaYPp7Oh96C8tnlt/cpl7ZzaATaeapENvYOZV8KPmMMtm8TNTJlVTc6mKlYeG6DqwbxnCQGqMFQFZzWfv2asHw1SZ1VbPV3bkHyadSMEtM/eFt5sg60+GgH4o9jZTgU2+kPCgbJRoU5bknNuKENnxQEuDu8hbfyC3UfKGw5JxfP12QpXHwvxoKQ8aqDx8Dsc/dhEcSdj+f3zt91Qz6K04ZKl3fzy1Yt7UUOgtJC+I09+jkwcpv4dU8YgHlI/7n/ZOjczC32gf29dMatShF6FXFhx0OTdb136lZnPKQ2gJnO2+Tz7A3DIijpGTlMkgyEbRnZ9O4YYy59ermWzQfQ0lBwJdyVkGpmjuhcNLAkuKiCgT67EOzy6BFxo/D34mmaKFWWXl4RkqUg9C7UwdyCSj5bVBLPwgp8pM8LGq5+t4B/fv42tZPWVJYk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,69 +125,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 19, 2025 at 01:22:01PM -0400, Liam R. Howlett wrote:
-> > > The shmem call already depends on the vma flags.. which it still does in
-> > > your patch 4 here.  So you've replaced this:
-> > > 
-> > > if (!(dst_vma->vm_flags & VM_SHARED)) {
-> > > ...
-> > > } else {
-> > >         shmem_mfill_atomic_pte()
-> > > }
-> > > 
-> > > With...
-> > > 
-> > > if (!(dst_vma->vm_flags & VM_SHARED)) {
-> > > ...
-> > > } else {
-> > > ...
-> > >         uffd_ops->uffd_copy()
-> > > }
-> > 
-> > I'm not 100% sure I get this comment.  It's intentional to depend on vma
-> > flags here for shmem.  See Andrea's commit:
-> > 
-> > commit 5b51072e97d587186c2f5390c8c9c1fb7e179505
-> > Author: Andrea Arcangeli <aarcange@redhat.com>
-> > Date:   Fri Nov 30 14:09:28 2018 -0800
-> > 
-> >     userfaultfd: shmem: allocate anonymous memory for MAP_PRIVATE shmem
-> > 
-> > Are you suggesting we should merge it somehow?  I'd appreciate some
-> > concrete example here if so.
-> 
-> What I am saying is that the containing function, mfill_atomic_pte(),
-> should be absorbed into each memory type's ->uffd_copy(), at least
-> partially.
-> 
-> Shouldn't each memory type do all the necessary checks in ->uffd_copy()?
-> 
-> To put it another way, no shared memory vma will enter the if()
-> statement, so why are we checking if they need to?
-> 
-> So if the default uffd_copy() does the if (!shared) stuff, you can just
-> call uffd_ops->uffd_copy() with out any check there, right?
+syzbot reported WARNING in max_vclocks_store.
 
-IIUC this is the only piece of technical side of discussion that was not
-addressed, so I'm replying explicitly to this one.  Please let me know if I
-missed something else.
+This occurs when the size argument fits into a u32 but is too large 
+to allocate, i.e., when it's between KMALLOC_MAX_SIZE + 1 
+and UINT_MAX (both limits included)
 
-Here we need to keep MAP_PRIVATE separate and as a common code to
-UFFDIO_COPY / ZEROCOPY.  It not only applies to shmem even if it was about
-shmem only at that time when Andrea fixed this case, it was simply because
-hugetlbfs was working fine via its separate path.
+Add validation to kmalloc_array_noprof() and related functions to 
+return early if the requested size exceeds KMALLOC_MAX_SIZE.
 
-In general, shmem is the file system, and when it's mapped MAP_PRIVATE (and
-even if it's called shmem) we should bypass page cache, hence uffd_copy()
-shouldn't be used.  It should apply to other file systems too when
-UFFDIO_COPY/ZEROCOPY will be implemented via ->uffd_copy().
+This seems like the most reasonable place for this guard.
 
-However since we're not going to export ->uffd_copy() in the new version,
-it's also out of the picture.
+Would it be a good idea to move the check down to 
+the lower level functions like __kmalloc_node_noprof()?
 
-Thanks,
+Moving it up is not a good idea because
+max_vclocks_store shouldn't reason around KMALLOC_MAX_SIZE, 
+a mm specific macro.
 
+Should the Fixes: commit here be the one in which this file 
+was added?
+
+Reported-by: syzbot+94d20db923b9f51be0df@syzkaller.appspotmail.com
+Tested-by: syzbot+94d20db923b9f51be0df@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=94d20db923b9f51be0df
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: I Viswanath <viswanathiyyappan@gmail.com>
+---
+ include/linux/slab.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/include/linux/slab.h b/include/linux/slab.h
+index d5a8ab98035c..6db15c5b2ce7 100644
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -943,7 +943,7 @@ static inline __alloc_size(1, 2) void *kmalloc_array_noprof(size_t n, size_t siz
+ {
+ 	size_t bytes;
+ 
+-	if (unlikely(check_mul_overflow(n, size, &bytes)))
++	if (unlikely(check_mul_overflow(n, size, &bytes) || (bytes > KMALLOC_MAX_SIZE)))
+ 		return NULL;
+ 	return kmalloc_noprof(bytes, flags);
+ }
+@@ -973,7 +973,7 @@ static inline __realloc_size(2, 3) void * __must_check krealloc_array_noprof(voi
+ {
+ 	size_t bytes;
+ 
+-	if (unlikely(check_mul_overflow(new_n, new_size, &bytes)))
++	if (unlikely(check_mul_overflow(new_n, new_size, &bytes) || (bytes > KMALLOC_MAX_SIZE)))
+ 		return NULL;
+ 
+ 	return krealloc_noprof(p, bytes, flags);
+@@ -1013,7 +1013,7 @@ static inline __alloc_size(1, 2) void *kmalloc_array_node_noprof(size_t n, size_
+ {
+ 	size_t bytes;
+ 
+-	if (unlikely(check_mul_overflow(n, size, &bytes)))
++	if (unlikely(check_mul_overflow(n, size, &bytes) || (bytes > KMALLOC_MAX_SIZE)))
+ 		return NULL;
+ 	if (__builtin_constant_p(n) && __builtin_constant_p(size))
+ 		return kmalloc_node_noprof(bytes, flags, node);
+@@ -1059,7 +1059,7 @@ kvmalloc_array_node_noprof(size_t n, size_t size, gfp_t flags, int node)
+ {
+ 	size_t bytes;
+ 
+-	if (unlikely(check_mul_overflow(n, size, &bytes)))
++	if (unlikely(check_mul_overflow(n, size, &bytes) || (bytes > KMALLOC_MAX_SIZE)))
+ 		return NULL;
+ 
+ 	return kvmalloc_node_noprof(bytes, flags, node);
 -- 
-Peter Xu
+2.47.3
 
 
