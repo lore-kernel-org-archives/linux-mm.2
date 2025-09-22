@@ -4,90 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E505DCAC592
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 22:02:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FF50CAC592
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 22:31:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EABD28E000B; Mon, 22 Sep 2025 18:02:21 -0400 (EDT)
+	id 6FE538E0008; Mon, 22 Sep 2025 18:31:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E83BD8E0001; Mon, 22 Sep 2025 18:02:21 -0400 (EDT)
+	id 6D5F28E0001; Mon, 22 Sep 2025 18:31:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D996D8E000B; Mon, 22 Sep 2025 18:02:21 -0400 (EDT)
+	id 6133B8E0008; Mon, 22 Sep 2025 18:31:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C7D058E0001
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 18:02:21 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5510313A13E
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 22:02:21 +0000 (UTC)
-X-FDA: 83918260482.03.EEB86A4
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 2292AA0013
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 22:02:18 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZIesPBQ0;
-	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 510648E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 18:31:52 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DD6DF1DDC07
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 22:31:51 +0000 (UTC)
+X-FDA: 83918334822.07.1BB2211
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf24.hostedemail.com (Postfix) with ESMTP id CD18E180003
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 22:31:49 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=TfGHw5db;
+	spf=pass (imf24.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758578539;
+	s=arc-20220608; t=1758580310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=LvQMnsu791EG1tpjwy9I3544++reF65dwLMnGRELwws=;
-	b=qkvfKMEuAtwqe6jjyl1IsqS0+QJLi7F/+Tn5PFpADbWst1K8lHbKCR9o/jAd88xQqIS+r/
-	5UlhE9ZoSm++p/HRsk0u52VoiAt69EYNjwbp44Ro/o2lJp0VqQCUtLgQPsVpp5spWbprft
-	yR9jkeOfBYOZydIhZC/+QuYK0b1l2qs=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eJFynAT8QIYKybUlzYSFKT2F+7TPewoBKOb/7zjaiUI=;
+	b=tQq7dqoZunDMvSRudMmyQ5xOPiYguwwmzmA+9NeAFJU5NRLs1c4QmhyDKj//Bmo5/BPMoz
+	ijfXW0YAqOn8Z4FWnwbNMDwYTyVPhF1ULoLoQMeZvvooqRtcQb7s96tVm4IIC+ZfB00Ziw
+	qdTWQuVrWwZhrsCCDj5nD1/3xDf2w5w=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZIesPBQ0;
-	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=TfGHw5db;
+	spf=pass (imf24.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758578539; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758580310; a=rsa-sha256;
 	cv=none;
-	b=0H30EKJ9t5Bq3KVGerGVN2pGMOwDBlo5uY47Y/7xQoZaOpIxBVSj8fTrB91rhAym/+iWtg
-	HBU7WhiaX3Kj+ElTZPVfJbjpr3ftCJSeUpu66RI6FUWCtb8DUyCFebQ6RkKmo2dNiHrQNd
-	C/OMZT12HSPxEHL3gW9cKquz9Lh1nGQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+	b=egKUe5nQLjftAj11ILMmJgWA1h3Uwl2wLIpE/tTQI4YBiSbSUAHHThol+5MTpLOWTOpl6/
+	wbKFQgV2i/l/NeFZsy3Lmibk1SfTSQXgSr0rqgKMC+aMNNTHxsFiUzmxosFfM/XkWfFjJ+
+	t+BFCcJVoac6bJCJX8JdG6uZYQJN5HM=
+Message-ID: <8f893019-bd87-4f54-8238-acd8fdeed051@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758578536;
+	t=1758580307;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=LvQMnsu791EG1tpjwy9I3544++reF65dwLMnGRELwws=;
-	b=ZIesPBQ0zAl1Vmukqxmtt0XIK/MVh1ffyqQa8stAcXpFk9CsnyvK3u7hKV5bkDVd50Tz9d
-	518QauXNlAT2j4sE8owNxzkvVG0kvid9zfQUuEIbqqYr7Or6i+wsuhQ7AAQ3ymIsoYuF80
-	BhhlByeyTe56tg6TFdwmWHKUtJCGNNw=
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Tejun Heo <tj@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Peilin Ye <yepeilin@google.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	bpf@vger.kernel.org,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Meta kernel team <kernel-team@meta.com>,
-	Michal Hocko <mhocko@suse.com>
-Subject: [PATCH v2] memcg: skip cgroup_file_notify if spinning is not allowed
-Date: Mon, 22 Sep 2025 15:02:03 -0700
-Message-ID: <20250922220203.261714-1-shakeel.butt@linux.dev>
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eJFynAT8QIYKybUlzYSFKT2F+7TPewoBKOb/7zjaiUI=;
+	b=TfGHw5dboLTINUm5ceBhu4/3su63STyUL1SNRAFy1OGLL2uZzmT+wDdaGsi8IDB4z72CcP
+	rhpcpJsiEOe4opDDyF2nipICIBmz1f6zwQseYKZRj7Cld0JaBKpos+c9R6cZU95uWcAdZj
+	Mdnq7nOGn0LWpOgchTGPGZIqZnGZAPg=
+Date: Mon, 22 Sep 2025 15:31:42 -0700
 MIME-Version: 1.0
+Subject: Re: [PATCH v5 3/4] kho: add support for preserving vmalloc
+ allocations
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexander Graf <graf@amazon.com>, Baoquan He <bhe@redhat.com>,
+ Changyuan Lyu <changyuanl@google.com>, Chris Li <chrisl@kernel.org>,
+ Jason Gunthorpe <jgg@nvidia.com>, Pasha Tatashin
+ <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>,
+ kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20250921054458.4043761-1-rppt@kernel.org>
+ <20250921054458.4043761-4-rppt@kernel.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "yanjun.zhu" <yanjun.zhu@linux.dev>
+In-Reply-To: <20250921054458.4043761-4-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: CD18E180003
+X-Rspamd-Server: rspam05
+X-Stat-Signature: ywegq9wzp4o8xhcqejqp3bbgzbuzthxn
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 2292AA0013
-X-Stat-Signature: ujnutmh18c5upgrez5ddeawknijfxfmh
-X-HE-Tag: 1758578538-164821
-X-HE-Meta: U2FsdGVkX19ZztogkluKVVrkrmfC7aPWfg7NENvnCp1jTEb4+FdvQhcc6IcC+ATvEh+fFO4vMg0MnU1iiD3CQTnfHRNQs1/FjbVcUtC48mIF8qJtXVOdQLvyXyAzWvOpMtu/2prOf23tC81cWytF04nN3/N6kuwkDMXKPdomdSQdEZ1IwgZzVPXooUJ5NEoFsjlxUweuWJfTLFJTEECeydaqxuBhhStp73tP3yavG2Z1bG1CEEfvXxbcAxENW+IpPVTtkT6wSdff3Gp8jfKdfJZ87Jswadx7UhxwXdaEES8U36AplsFztaQ0zycaMv+fOIKPtNn/oJJhnSWZ9yKp2qsTssNOioY8kjISY+Yf3fJtCl7pEdhJLrOkLtJaWwrjs2tCcbNJtbZPs8SHuDnEkbod1UMZ/V3vZMprH7gueWrhnPu65tfRvwe2HhgiH1Vb+FgP39cb+zPmxnHe5LdRMyKgy/3N8IiRBTZuj/uid+9TSSjzLR3bnp3A6b0vAOUYa+zJy0RivbFADmw83BrbWkBlQFoC8+2TQt6HUkA2HLAG5S8OC/uNpYJXxZJm48ieModFdfaP6hn/xAIWiixE9vDoceTpCxoHBK0Jxqr1VnSGpSOzKyCXINu92Zfd6s+cnOaz3NHZ8PTlyO7TbrOHueABKcNgM+T2trzoN/AdmsrfPoAjDY2x0RWYJ7t8spxfzatpPv0S+z1BWjSuXJCLrQQF814nmruoI366IIb7tGK/TTl3rMGaZCup1l4A/W5dRC8rV3jr8yO6yfe9ITSPFOedy4vJd9FAgrSIR8iXDrSzMJrh4LhCpvgIHClApwq7X82gVx01pvdB2jQDik+vnwsf5RIsTZtyZopkftKsOiP2P9YubztR9LackdpjuJUMTkqyfNPOeR4160nG4qlcgQD+YGK9KJj/5Zm17OWRFNgejMBcwEKGYvIo+tJkI/4A3R0ci0rJWujg7SS3OwE
- 0YJMk8JU
- hYjw5TtrA/i1gETXl1SyhmPzYu2bIFe1OLu9BeJF9ShfnSJj/XjgVXxY8U/g81esGCnAYtiDwHarSXTAX3NWb2rinzB/bJHNxkXJ9MUTBROX5SGN00rovIldFgKnYrwxTKbXc4WazVwaOyhs4IaDmW+M7QqQKBggdpl8k5RvfPDD7jUsoW3J/n9ZOgP9MF4rqFknYkrWcuaEl9VOcpl8i99jQFJRLdTKjIogNKbBq4vMSR+e9IxJwFiwxIv7TdlHnbLzCG0l68TBE5vdcPj5XsM2HcDi0JzLUkTVl+VaiZUOZPfZN4/7mJHU7vo0VUu2yYDuFH5fBvBtTiEFfutVhXv0LHDYZRHJDbLNjXxK5M2ToItg6cdO/NBARRg6aFm0dYkoDC/56dKzN/KebUqtFxpoQHuXsHI1u0KGR
+X-HE-Tag: 1758580309-526221
+X-HE-Meta: U2FsdGVkX1/xT2fACS+KW/IhGOMDsX1miGrLSvcseshgGM4Pkj3mKZw+eq8E+2S06lvYEEaGC8Rzyboma2sIULy+I3KcLz/10RMJRY4CE4uIW/rs0DL47d/i7X4/qTnS0u6SOYqfU9MM7NmSaQrswOMrij4RwfzBaeGeidZmaGk+/k4icTXDl+yOIW0FLemG0/NYDqabj3LPjC7Z/Yw9FGNwOmJSZgVAvG8wLQeQCuuclEApB8E5kcMA26TZoVCHrqonuJgo1qtlEvtasstKQYhjnRz+O7PGolMkxpJeXfVaXeNr8K7Hng8CtAlehH2Z1mByaIz+1Iu0AK4vq0PlUuo4k3vi90Rpv6IWf8x3WwfinLaa1LSj1qYKoM63oztlYjIVQqxwJQZsoHLKZaq6HPwOEX3CAO0D8R17elpq0gkuC14CNN9Pg/lxTjjylDQMzUipRnGq1gP0DF4tIKuIjJ2NA/A6N3dcueaOgDQqIOuhX2OWJW3ku1ZnMcFNqXEmKMz+JS1BYgu98Q74pnNA7OuQgmV9Ty2BtKXIypHIsWc40e3hWhA4PPtNCebf9fE1eM1RcKwWKvVosnlTpyzvXOd103hqzj3wM5Oh7A54KCIREh+8R3bSRUg0aR5dSCYY7sRFz8UI4ePKzr0GgIY5ZeRcrTUHbDgrC5TSO79Xr7I5idkNiSCU164UZqD+w/NN3DwwZOMOXoi2MeQVsOuKI30nshrVJg9D+/nb7v91XnGNqmRWF3o+F8qPlHDTGf/6uSrJiOUeIrFmvFwcctLO/q1MW4uwqCdgXfWUYrzgh/GsOnxdeY2obGzTv6Mx9xqPpHxS9LGWJ+tjJXLBoTC63M4l1hkPmgxICYovtvYw/WQTC1ix6OERqgKVrYrWH7zdo4t/aOjtZfBCMB+e+BFaBCyGI/B82obWcyZ/r6nLkQDzhtwyoZERplxx9cdJX2YiLz3aH+0n7DZHZNyLW0W
+ hN24ohfe
+ Np7Rw6Z4yMC9GT/szsPj3q3JPcMOanMsKlBRFoqd8cfocc4pID69mCxlYatMVbKQQSJJO5+odf1e+WRNQY2Ln+AlsMal1owXlLwFffCOQG0onVc/yOq6SZEQgZ+Rdm3lnuhxfN/hqI6CgjEjb2RKMFPDhI5WAS//6wvZZ+NvU5LwSz3eONtcGeRFskZipsao8BIUcSJChSuaD0LoAvaTPRhnBLMBg+scshlnCq7i4sc+V7U5d3BXjzBZ+zBcrySLr1J28
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,126 +95,395 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Generally memcg charging is allowed from all the contexts including NMI
-where even spinning on spinlock can cause locking issues. However one
-call chain was missed during the addition of memcg charging from any
-context support. That is try_charge_memcg() -> memcg_memory_event() ->
-cgroup_file_notify().
+On 9/20/25 10:44 PM, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> A vmalloc allocation is preserved using binary structure similar to
+> global KHO memory tracker. It's a linked list of pages where each page
+> is an array of physical address of pages in vmalloc area.
+> 
+> kho_preserve_vmalloc() hands out the physical address of the head page
+> to the caller. This address is used as the argument to
+> kho_vmalloc_restore() to restore the mapping in the vmalloc address
+> space and populate it with the preserved pages.
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+> ---
+>   include/linux/kexec_handover.h |  28 ++++
+>   kernel/kexec_handover.c        | 281 +++++++++++++++++++++++++++++++++
+>   2 files changed, 309 insertions(+)
+> 
+> diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
+> index cc5c49b0612b..49e36d4ae5dc 100644
+> --- a/include/linux/kexec_handover.h
+> +++ b/include/linux/kexec_handover.h
+> @@ -39,12 +39,23 @@ struct page;
+>   
+>   struct kho_serialization;
+>   
+> +struct kho_vmalloc_chunk;
+> +struct kho_vmalloc {
+> +        DECLARE_KHOSER_PTR(first, struct kho_vmalloc_chunk *);
+> +        unsigned int total_pages;
+> +        unsigned short flags;
+> +        unsigned short order;
+> +};
+> +
+>   #ifdef CONFIG_KEXEC_HANDOVER
+>   bool kho_is_enabled(void);
+>   
+>   int kho_preserve_folio(struct folio *folio);
+>   int kho_preserve_pages(struct page *page, unsigned int nr_pages);
+> +int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation);
+>   struct folio *kho_restore_folio(phys_addr_t phys);
+> +struct page *kho_restore_pages(phys_addr_t phys, unsigned int nr_pages);
+> +void *kho_restore_vmalloc(const struct kho_vmalloc *preservation);
+>   int kho_add_subtree(struct kho_serialization *ser, const char *name, void *fdt);
+>   int kho_retrieve_subtree(const char *name, phys_addr_t *phys);
+>   
+> @@ -71,11 +82,28 @@ static inline int kho_preserve_pages(struct page *page, unsigned int nr_pages)
+>   	return -EOPNOTSUPP;
+>   }
+>   
+> +static inline int kho_preserve_vmalloc(void *ptr,
+> +				       struct kho_vmalloc *preservation)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+>   static inline struct folio *kho_restore_folio(phys_addr_t phys)
+>   {
+>   	return NULL;
+>   }
+>   
+> +static inline struct page *kho_restore_pages(phys_addr_t phys,
+> +					     unsigned int nr_pages)
+> +{
+> +	return NULL;
+> +}
+> +
+> +static inline void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
+> +{
+> +	return NULL;
+> +}
+> +
+>   static inline int kho_add_subtree(struct kho_serialization *ser,
+>   				  const char *name, void *fdt)
+>   {
+> diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
+> index fd80be3b12fd..e6380d8dce57 100644
+> --- a/kernel/kexec_handover.c
+> +++ b/kernel/kexec_handover.c
+> @@ -18,6 +18,7 @@
+>   #include <linux/memblock.h>
+>   #include <linux/notifier.h>
+>   #include <linux/page-isolation.h>
+> +#include <linux/vmalloc.h>
+>   
+>   #include <asm/early_ioremap.h>
+>   
+> @@ -274,6 +275,37 @@ struct folio *kho_restore_folio(phys_addr_t phys)
+>   }
+>   EXPORT_SYMBOL_GPL(kho_restore_folio);
+>   
+> +/**
+> + * kho_restore_pages - restore list of contiguous order 0 pages.
+> + * @phys: physical address of the first page.
+> + * @nr_pages: number of pages.
+> + *
+> + * Restore a contiguous list of order 0 pages that was preserved with
+> + * kho_preserve_pages().
+> + *
+> + * Return: 0 on success, error code on failure
+> + */
+> +struct page *kho_restore_pages(phys_addr_t phys, unsigned int nr_pages)
+> +{
+> +	const unsigned long start_pfn = PHYS_PFN(phys);
+> +	const unsigned long end_pfn = start_pfn + nr_pages;
+> +	unsigned long pfn = start_pfn;
+> +
+> +	while (pfn < end_pfn) {
+> +		const unsigned int order =
+> +			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
+> +		struct page *page = kho_restore_page(PFN_PHYS(pfn));
+> +
+> +		if (!page)
+> +			return NULL;
+> +		split_page(page, order);
+> +		pfn += 1 << order;
+> +	}
+> +
+> +	return pfn_to_page(start_pfn);
+> +}
+> +EXPORT_SYMBOL_GPL(kho_restore_pages);
+> +
+>   /* Serialize and deserialize struct kho_mem_phys across kexec
+>    *
+>    * Record all the bitmaps in a linked list of pages for the next kernel to
+> @@ -763,6 +795,255 @@ int kho_preserve_pages(struct page *page, unsigned int nr_pages)
+>   }
+>   EXPORT_SYMBOL_GPL(kho_preserve_pages);
+>   
+> +struct kho_vmalloc_hdr {
+> +	DECLARE_KHOSER_PTR(next, struct kho_vmalloc_chunk *);
+> +};
+> +
+> +#define KHO_VMALLOC_SIZE				\
+> +	((PAGE_SIZE - sizeof(struct kho_vmalloc_hdr)) / \
+> +	 sizeof(phys_addr_t))
+> +
+> +struct kho_vmalloc_chunk {
+> +	struct kho_vmalloc_hdr hdr;
+> +	phys_addr_t phys[KHO_VMALLOC_SIZE];
+> +};
+> +
+> +static_assert(sizeof(struct kho_vmalloc_chunk) == PAGE_SIZE);
+> +
+> +/* vmalloc flags KHO supports */
+> +#define KHO_VMALLOC_SUPPORTED_FLAGS	(VM_ALLOC | VM_ALLOW_HUGE_VMAP)
+> +
+> +/* KHO internal flags for vmalloc preservations */
+> +#define KHO_VMALLOC_ALLOC	0x0001
+> +#define KHO_VMALLOC_HUGE_VMAP	0x0002
+> +
+> +static unsigned short vmalloc_flags_to_kho(unsigned int vm_flags)
+> +{
+> +	unsigned short kho_flags = 0;
+> +
+> +	if (vm_flags & VM_ALLOC)
+> +		kho_flags |= KHO_VMALLOC_ALLOC;
+> +	if (vm_flags & VM_ALLOW_HUGE_VMAP)
+> +		kho_flags |= KHO_VMALLOC_HUGE_VMAP;
+> +
+> +	return kho_flags;
+> +}
+> +
+> +static unsigned int kho_flags_to_vmalloc(unsigned short kho_flags)
+> +{
+> +	unsigned int vm_flags = 0;
+> +
+> +	if (kho_flags & KHO_VMALLOC_ALLOC)
+> +		vm_flags |= VM_ALLOC;
+> +	if (kho_flags & KHO_VMALLOC_HUGE_VMAP)
+> +		vm_flags |= VM_ALLOW_HUGE_VMAP;
+> +
+> +	return vm_flags;
+> +}
+> +
+> +static struct kho_vmalloc_chunk *new_vmalloc_chunk(struct kho_vmalloc_chunk *cur)
+> +{
+> +	struct kho_vmalloc_chunk *chunk;
+> +	int err;
+> +
+> +	chunk = (struct kho_vmalloc_chunk *)get_zeroed_page(GFP_KERNEL);
+> +	if (!chunk)
+> +		return NULL;
+> +
+> +	err = kho_preserve_pages(virt_to_page(chunk), 1);
+> +	if (err)
+> +		goto err_free;
+> +	if (cur)
+> +		KHOSER_STORE_PTR(cur->hdr.next, chunk);
+> +	return chunk;
+> +
+> +err_free:
+> +	free_page((unsigned long)chunk);
+> +	return NULL;
+> +}
+> +
+> +static void kho_vmalloc_unpreserve_chunk(struct kho_vmalloc_chunk *chunk)
+> +{
+> +	struct kho_mem_track *track = &kho_out.ser.track;
+> +	unsigned long pfn = PHYS_PFN(virt_to_phys(chunk));
+> +
+> +	__kho_unpreserve(track, pfn, pfn + 1);
+> +
+> +	for (int i = 0; chunk->phys[i]; i++) {
+> +		pfn = PHYS_PFN(chunk->phys[i]);
+> +		__kho_unpreserve(track, pfn, pfn + 1);
+> +	}
+> +}
+> +
+> +static void kho_vmalloc_free_chunks(struct kho_vmalloc *kho_vmalloc)
+> +{
+> +	struct kho_vmalloc_chunk *chunk = KHOSER_LOAD_PTR(kho_vmalloc->first);
+> +
+> +	while (chunk) {
+> +		struct kho_vmalloc_chunk *tmp = chunk;
+> +
+> +		kho_vmalloc_unpreserve_chunk(chunk);
+> +
+> +		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
+> +		kfree(tmp);
+> +	}
+> +}
+> +
+> +/**
+> + * kho_preserve_vmalloc - preserve memory allocated with vmalloc() across kexec
+> + * @ptr: pointer to the area in vmalloc address space
+> + * @preservation: placeholder for preservation metadata
+> + *
+> + * Instructs KHO to preserve the area in vmalloc address space at @ptr. The
+> + * physical pages mapped at @ptr will be preserved and on successful return
+> + * @preservation will hold the physical address of a structure that describes
+> + * the preservation.
+> + *
+> + * NOTE: The memory allocated with vmalloc_node() variants cannot be reliably
+> + * restored on the same node
+> + *
+> + * Return: 0 on success, error code on failure
+> + */
+> +int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation)
+> +{
+> +	struct kho_vmalloc_chunk *chunk;
+> +	struct vm_struct *vm = find_vm_area(ptr);
+> +	unsigned int order, flags, nr_contig_pages;
+> +	unsigned int idx = 0;
+> +	int err;
 
-The possible function call tree under cgroup_file_notify() can acquire
-many different spin locks in spinning mode. Some of them are
-cgroup_file_kn_lock, kernfs_notify_lock, pool_workqeue's lock. So, let's
-just skip cgroup_file_notify() from memcg charging if the context does
-not allow spinning.
+This is a trivial issue. I’m not sure whether RCT (Reverse Christmas 
+Trees) is used in the Linux MM mailing list.
 
-Alternative approach was also explored where instead of skipping
-cgroup_file_notify(), we defer the memcg event processing to irq_work
-[1]. However it adds complexity and it was decided to keep things simple
-until we need more memcg events with !allow_spinning requirement.
+If it is, the variable declarations above do not comply with the RCT rules.
 
-Link: https://lore.kernel.org/all/5qi2llyzf7gklncflo6gxoozljbm4h3tpnuv4u4ej4ztysvi6f@x44v7nz2wdzd/ [1]
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-Acked-by: Michal Hocko <mhocko@suse.com>
----
-Changes since v1:
-- Add warning if !allow_spinning is used with memcg events other than
-  MEMCG_MAX (requested by Roman)
+Yanjun.Zhu
 
- include/linux/memcontrol.h | 26 +++++++++++++++++++-------
- mm/memcontrol.c            |  7 ++++---
- 2 files changed, 23 insertions(+), 10 deletions(-)
-
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 16fe0306e50e..873e510d6f8d 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -1001,22 +1001,28 @@ static inline void count_memcg_event_mm(struct mm_struct *mm,
- 	count_memcg_events_mm(mm, idx, 1);
- }
- 
--static inline void memcg_memory_event(struct mem_cgroup *memcg,
--				      enum memcg_memory_event event)
-+static inline void __memcg_memory_event(struct mem_cgroup *memcg,
-+					enum memcg_memory_event event,
-+					bool allow_spinning)
- {
- 	bool swap_event = event == MEMCG_SWAP_HIGH || event == MEMCG_SWAP_MAX ||
- 			  event == MEMCG_SWAP_FAIL;
- 
-+	/* For now only MEMCG_MAX can happen with !allow_spinning context. */
-+	VM_WARN_ON_ONCE(!allow_spinning && event != MEMCG_MAX);
-+
- 	atomic_long_inc(&memcg->memory_events_local[event]);
--	if (!swap_event)
-+	if (!swap_event && allow_spinning)
- 		cgroup_file_notify(&memcg->events_local_file);
- 
- 	do {
- 		atomic_long_inc(&memcg->memory_events[event]);
--		if (swap_event)
--			cgroup_file_notify(&memcg->swap_events_file);
--		else
--			cgroup_file_notify(&memcg->events_file);
-+		if (allow_spinning) {
-+			if (swap_event)
-+				cgroup_file_notify(&memcg->swap_events_file);
-+			else
-+				cgroup_file_notify(&memcg->events_file);
-+		}
- 
- 		if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
- 			break;
-@@ -1026,6 +1032,12 @@ static inline void memcg_memory_event(struct mem_cgroup *memcg,
- 		 !mem_cgroup_is_root(memcg));
- }
- 
-+static inline void memcg_memory_event(struct mem_cgroup *memcg,
-+				      enum memcg_memory_event event)
-+{
-+	__memcg_memory_event(memcg, event, true);
-+}
-+
- static inline void memcg_memory_event_mm(struct mm_struct *mm,
- 					 enum memcg_memory_event event)
- {
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index e090f29eb03b..4deda33625f4 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2307,12 +2307,13 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 	bool drained = false;
- 	bool raised_max_event = false;
- 	unsigned long pflags;
-+	bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
- 
- retry:
- 	if (consume_stock(memcg, nr_pages))
- 		return 0;
- 
--	if (!gfpflags_allow_spinning(gfp_mask))
-+	if (!allow_spinning)
- 		/* Avoid the refill and flush of the older stock */
- 		batch = nr_pages;
- 
-@@ -2348,7 +2349,7 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 	if (!gfpflags_allow_blocking(gfp_mask))
- 		goto nomem;
- 
--	memcg_memory_event(mem_over_limit, MEMCG_MAX);
-+	__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
- 	raised_max_event = true;
- 
- 	psi_memstall_enter(&pflags);
-@@ -2415,7 +2416,7 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 	 * a MEMCG_MAX event.
- 	 */
- 	if (!raised_max_event)
--		memcg_memory_event(mem_over_limit, MEMCG_MAX);
-+		__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
- 
- 	/*
- 	 * The allocation either can't fail or will lead to more memory
--- 
-2.47.3
+> +
+> +	if (!vm)
+> +		return -EINVAL;
+> +
+> +	if (vm->flags & ~KHO_VMALLOC_SUPPORTED_FLAGS)
+> +		return -EOPNOTSUPP;
+> +
+> +	flags = vmalloc_flags_to_kho(vm->flags);
+> +	order = get_vm_area_page_order(vm);
+> +
+> +	chunk = new_vmalloc_chunk(NULL);
+> +	if (!chunk)
+> +		return -ENOMEM;
+> +	KHOSER_STORE_PTR(preservation->first, chunk);
+> +
+> +	nr_contig_pages = (1 << order);
+> +	for (int i = 0; i < vm->nr_pages; i += nr_contig_pages) {
+> +		phys_addr_t phys = page_to_phys(vm->pages[i]);
+> +
+> +		err = kho_preserve_pages(vm->pages[i], nr_contig_pages);
+> +		if (err)
+> +			goto err_free;
+> +
+> +		chunk->phys[idx++] = phys;
+> +		if (idx == ARRAY_SIZE(chunk->phys)) {
+> +			chunk = new_vmalloc_chunk(chunk);
+> +			if (!chunk)
+> +				goto err_free;
+> +			idx = 0;
+> +		}
+> +	}
+> +
+> +	preservation->total_pages = vm->nr_pages;
+> +	preservation->flags = flags;
+> +	preservation->order = order;
+> +
+> +	return 0;
+> +
+> +err_free:
+> +	kho_vmalloc_free_chunks(preservation);
+> +	return err;
+> +}
+> +EXPORT_SYMBOL_GPL(kho_preserve_vmalloc);
+> +
+> +/**
+> + * kho_restore_vmalloc - recreates and populates an area in vmalloc address
+> + * space from the preserved memory.
+> + * @preservation: preservation metadata.
+> + *
+> + * Recreates an area in vmalloc address space and populates it with memory that
+> + * was preserved using kho_preserve_vmalloc().
+> + *
+> + * Return: pointer to the area in the vmalloc address space, NULL on failure.
+> + */
+> +void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
+> +{
+> +	struct kho_vmalloc_chunk *chunk = KHOSER_LOAD_PTR(preservation->first);
+> +	unsigned int align, order, shift, vm_flags;
+> +	unsigned long total_pages, contig_pages;
+> +	unsigned long addr, size;
+> +	struct vm_struct *area;
+> +	struct page **pages;
+> +	unsigned int idx = 0;
+> +	int err;
+> +
+> +	vm_flags = kho_flags_to_vmalloc(preservation->flags);
+> +	if (vm_flags & ~KHO_VMALLOC_SUPPORTED_FLAGS)
+> +		return NULL;
+> +
+> +	total_pages = preservation->total_pages;
+> +	pages = kvmalloc_array(total_pages, sizeof(*pages), GFP_KERNEL);
+> +	if (!pages)
+> +		return NULL;
+> +	order = preservation->order;
+> +	contig_pages = (1 << order);
+> +	shift = PAGE_SHIFT + order;
+> +	align = 1 << shift;
+> +
+> +	while (chunk) {
+> +		struct page *page;
+> +
+> +		for (int i = 0; chunk->phys[i]; i++) {
+> +			phys_addr_t phys = chunk->phys[i];
+> +
+> +			if (idx + contig_pages > total_pages)
+> +				goto err_free_pages_array;
+> +
+> +			page = kho_restore_pages(phys, contig_pages);
+> +			if (!page)
+> +				goto err_free_pages_array;
+> +
+> +			for (int j = 0; j < contig_pages; j++)
+> +				pages[idx++] = page;
+> +
+> +			phys += contig_pages * PAGE_SIZE;
+> +		}
+> +
+> +		page = kho_restore_pages(virt_to_phys(chunk), 1);
+> +		if (!page)
+> +			goto err_free_pages_array;
+> +		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
+> +		__free_page(page);
+> +	}
+> +
+> +	if (idx != total_pages)
+> +		goto err_free_pages_array;
+> +
+> +	area = __get_vm_area_node(total_pages * PAGE_SIZE, align, shift,
+> +				  vm_flags, VMALLOC_START, VMALLOC_END,
+> +				  NUMA_NO_NODE, GFP_KERNEL,
+> +				  __builtin_return_address(0));
+> +	if (!area)
+> +		goto err_free_pages_array;
+> +
+> +	addr = (unsigned long)area->addr;
+> +	size = get_vm_area_size(area);
+> +	err = vmap_pages_range(addr, addr + size, PAGE_KERNEL, pages, shift);
+> +	if (err)
+> +		goto err_free_vm_area;
+> +
+> +	area->nr_pages = total_pages;
+> +	area->pages = pages;
+> +
+> +	return area->addr;
+> +
+> +err_free_vm_area:
+> +	free_vm_area(area);
+> +err_free_pages_array:
+> +	kvfree(pages);
+> +	return NULL;
+> +}
+> +EXPORT_SYMBOL_GPL(kho_restore_vmalloc);
+> +
+>   /* Handling for debug/kho/out */
+>   
+>   static struct dentry *debugfs_root;
 
 
