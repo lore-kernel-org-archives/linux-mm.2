@@ -4,210 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE5BFCAC59A
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 02:40:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07574CAC5A7
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 02:50:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 142ED8E0006; Sun, 21 Sep 2025 22:40:26 -0400 (EDT)
+	id 4677A8E0007; Sun, 21 Sep 2025 22:50:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F3F98E0001; Sun, 21 Sep 2025 22:40:26 -0400 (EDT)
+	id 418438E0001; Sun, 21 Sep 2025 22:50:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F00BE8E0006; Sun, 21 Sep 2025 22:40:25 -0400 (EDT)
+	id 306998E0007; Sun, 21 Sep 2025 22:50:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DB9B28E0001
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 22:40:25 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7E29958F7D
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 02:40:25 +0000 (UTC)
-X-FDA: 83915332410.30.B34C3C5
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4E9958000A
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 02:40:21 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=QL01ijlU;
-	spf=pass (imf30.hostedemail.com: domain of kaushlendra.kumar@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=kaushlendra.kumar@intel.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758508822;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 188D68E0001
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 22:50:18 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 999E114048E
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 02:50:17 +0000 (UTC)
+X-FDA: 83915357274.19.38AA55E
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 4A7A2C0004
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 02:50:15 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=c6u4s3no;
+	spf=pass (imf10.hostedemail.com: domain of paul@paul-moore.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
+	dmarc=pass (policy=none) header.from=paul-moore.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758509415;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wkBq+0HX3Xfj56cm30NUa1WV8yi2hTp7/3gy07uxboE=;
-	b=qpY88FAMRxv1VMlJeXTll3ingyyeEgRKkS678Nynf7ADC33QoRXr0XHSEkcKRQcprS0zyQ
-	KP0CexjgJjMqVz6NuYDEW5GboHlxK60VCnmFsMLxHIIcYt9DsvkkOCmBlUK4zCNLVAve4V
-	grfTK02xkzNhtFlUysdkBNiaPnrqfd8=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=QL01ijlU;
-	spf=pass (imf30.hostedemail.com: domain of kaushlendra.kumar@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=kaushlendra.kumar@intel.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758508822; a=rsa-sha256;
-	cv=pass;
-	b=8OYHvh/6gULPTH4YA2QfgMDYeA+uvGuDClSGuxONidvW5nHcu91Nm4ukRqKV988Pr1KQBE
-	TQ5JfW/Lj7GKySrycE2A8CNunif0PK1/hHu8gl/2XKyuv26xttua1qVyXm0kiuINLBcWoj
-	w8ZnYnETdUO6PF9TI6euV1OKa4ezihs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758508822; x=1790044822;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=wkBq+0HX3Xfj56cm30NUa1WV8yi2hTp7/3gy07uxboE=;
-  b=QL01ijlUtyqsRZi0NaELpqd21vaaNH6CGjyKR6/BNGqvGJwGyVdtTUsj
-   3qDQuyvxatpAj2q3KXh63FqQnLplPA9vmg3HGoo8KuOGej1wXCGtSVbKz
-   4Yr8HiUCqHH338hb0bADuOWilm3asrithO7zyvZFzqOxLg5oX0oHbIsnR
-   B9FXr0D2xu0687Fg6Pn9OZhyuDvGsbzTeRYM/UV9YfyL1xeI4XgPDJ6DP
-   ejV/dA9eECnS31lpVA6q3TH2abTjT4W8PbzmYNkTpOzDNyP2wVKvT2oUl
-   1yphicetWPLmGbbJnJd8CrhvJohhg2HAvmMKZfXkbBijn846St9jrVdSd
-   Q==;
-X-CSE-ConnectionGUID: 1CrqKEwNSbmYhiqkpTwx8Q==
-X-CSE-MsgGUID: 6aj5m8roSKGEu4jEUKtzfQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11560"; a="78206654"
-X-IronPort-AV: E=Sophos;i="6.18,284,1751266800"; 
-   d="scan'208";a="78206654"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2025 19:40:20 -0700
-X-CSE-ConnectionGUID: 5l8bFEHBSi2oPu0i05DG8w==
-X-CSE-MsgGUID: 4GSl+L76RfynG/awd+gXvw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,284,1751266800"; 
-   d="scan'208";a="200076336"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2025 19:40:20 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Sun, 21 Sep 2025 19:40:19 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Sun, 21 Sep 2025 19:40:19 -0700
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.53) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Sun, 21 Sep 2025 19:40:13 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xnrWi+KwH3EISNiAsANVc5iKW0PYOFNV1NYGd+XwNzKWXxpvP+gPNAJpdcj6c7OtfyoZWixO7yiHrwdVpERiES5tZul3aEL4nXskrvovEBfR86r+UpDRMYxrkNLb2l75LqOwjMYwHqyVaiSZ2287nLVtnUk3CXPJu1XqRtk4cxKNb6jopOuhFmXbqT8t7AgA4W1E1+DHNKhJc2jMFUpidQdQxeZUWPFQtF7raJHN0qcQ3Tx8tc54IIaelbjV0F5cnPIZsAGQ02lYnRIsfCitPrbb7h0sKjWXAAVaSAYiAr4y+F1U2zcy1wcGn05BrwGLYBCFDkXuRvYu+iwBe2nobQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wkBq+0HX3Xfj56cm30NUa1WV8yi2hTp7/3gy07uxboE=;
- b=yxXIjfMZ01ykayB47iq/x2Kywm2a0NsO6aRbp5351CBFLFeB1M8Bvq63X4z0twOCDCkicqEVVNCg0B9Dos873e7QobF/bs1Di00CyYNB3JvbM5H7+3mcpZ4+8QEICYVDp8x6ZQafXz6NgGR8TZoR7pB1dy5efXl9pchIRqPIR1pCDbNjF3y0cIbbxEUw1VV3Cl2ioCA/17t1tRGc8LmoTFo0cIUmDDDM1G0u1Wbhh08EJqcI9DAsbwd68ild7xnzE+090Cc2OOjjQ6nhZulnh/DHbMdLMgjrHmYxlfw1q4N72dAjyOzBL0jAHokgHhZ45d0BOkEieGCpvtuQ2gVIjQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from LV3PR11MB8768.namprd11.prod.outlook.com (2603:10b6:408:211::19)
- by DS0PR11MB6352.namprd11.prod.outlook.com (2603:10b6:8:cb::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9137.19; Mon, 22 Sep 2025 02:40:11 +0000
-Received: from LV3PR11MB8768.namprd11.prod.outlook.com
- ([fe80::154a:b33e:71c0:2308]) by LV3PR11MB8768.namprd11.prod.outlook.com
- ([fe80::154a:b33e:71c0:2308%6]) with mapi id 15.20.9137.018; Mon, 22 Sep 2025
- 02:40:11 +0000
-From: "Kumar, Kaushlendra" <kaushlendra.kumar@intel.com>
-To: SeongJae Park <sj@kernel.org>
-CC: "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>
-Subject: RE: [PATCH] tools/mm/slabinfo: fix buffer overflows in fread
- operations
-Thread-Topic: [PATCH] tools/mm/slabinfo: fix buffer overflows in fread
- operations
-Thread-Index: AQHcGRYDNNzQ+Pq3zEOhgdNslMFCubSeohnQ
-Date: Mon, 22 Sep 2025 02:40:11 +0000
-Message-ID: <LV3PR11MB8768BC4A1DF99E07DE49FAD8F512A@LV3PR11MB8768.namprd11.prod.outlook.com>
-References: <20250829095947.1828094-1-kaushlendra.kumar@intel.com>
- <20250829185205.60231-1-sj@kernel.org>
-In-Reply-To: <20250829185205.60231-1-sj@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: LV3PR11MB8768:EE_|DS0PR11MB6352:EE_
-x-ms-office365-filtering-correlation-id: cb71365d-3c43-4ff1-2283-08ddf9815a37
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|38070700021;
-x-microsoft-antispam-message-info: =?us-ascii?Q?NIxOZproOOhpupP19gtFIR8lri9ZYbwQX+73dWi1Ls8WKJTdfqKnK0dyLdCt?=
- =?us-ascii?Q?BQXzspgS8L+N6DLCHhbrauL5Kqcxr7L8lJDMsie7+bxSmUzvkbVWdsmGQuio?=
- =?us-ascii?Q?VGTNfDIG3RqDQuFKQmPoILSI3H8E8CLPiFTsUG+7FCcbQq0zxCjiqYau8/qz?=
- =?us-ascii?Q?81TdEmiCIAT5ugXvyiIJs3isnyGZzF7fUOJBujwf5DsY8PiXoGPUSpe3SWUm?=
- =?us-ascii?Q?EC1S3bbdJI2lZ5Yvge8fZsBDTVpNIdIT8e53Ft/6tNRdI+Qm7Cxf2T5UnMUL?=
- =?us-ascii?Q?LP2nug03cl7KAL+1ynN4nzDB+wB6GAo2Mam8+GPcTDsxg8TXWmwp5E5EtOLS?=
- =?us-ascii?Q?mLcxk1Eik/7id2P6DYP377afq/2mMVXZum7PUyCWJTU9BWIariXAzp1ryKFL?=
- =?us-ascii?Q?wVcM2oMNjelIKqinoMOfxZiFDOajcOzAohitAM48fTSfCLzBg/I3vkqHvBQZ?=
- =?us-ascii?Q?qjVSeNZwSfKEKu6EcFBGxAti/RlgPLUka7waMXyQRmhUNxpBwE1h8/hjU2hF?=
- =?us-ascii?Q?TM8HgYeDnhEnYPTrlbCJsCeMXaKfhR++KQOeuHojT3+19JbYjKwxiWS21zBv?=
- =?us-ascii?Q?WnRp4HgULrwbd0HERTuIqminawdRj6fw0nlrmRkRv2Qpw5tTAFqxsvDrbT+v?=
- =?us-ascii?Q?V0vhiYfPSKQXZKwuw9lsyg5bSPL8TIFhH+Vji4oWI83pCt15buXyGrWBq88P?=
- =?us-ascii?Q?gG7cFRFnKb3FP9w7vz5UqhcASXtwtpTmmKhiWPC0w5giEdiZ93CgDneJjhZ5?=
- =?us-ascii?Q?BTCj5qu20eEbBwVuiPMlmtFHHBfPVoNAptIWutP8HnsT4FOW3uYMDQeqgPjn?=
- =?us-ascii?Q?qwc1J4jBiy87JzKAj1i0l/rPqDurhxmYR7b6CkI7OMe2liDfvdOJPos6aBWF?=
- =?us-ascii?Q?GVZPCrYXSUfTTzLmD4m9ycF3i8ia58c9jTgNrEsbg/vbhSzLXGWg7/AyokFD?=
- =?us-ascii?Q?ekwJRcrMvT6VnmR4/cpM2WCXtBuL8QT4CpbxJxqvSuYBGIbJsEuui8Qv5bHj?=
- =?us-ascii?Q?qMkTikd/+IRrA6ZTgylS64a7Fj/Wa+rembTMTEYxbX6FebgWgPx3Bq35ccBm?=
- =?us-ascii?Q?0YX0BPWPgeC9lNgFRrVgyjJCBWWEqV4HSm4UGnwQSIGezU5+6gr+FIyAtOhD?=
- =?us-ascii?Q?BmxpzkUNkYe4s848buQAP2NX/a+pmn/3qAN5MsDNief6Lv0EiYu12dzV7zrv?=
- =?us-ascii?Q?Gg9SIwrsn/9YLPdz4bX6LWx7K24grz6zwYf/guNtkifv/FyFDlGwoCBgHi1a?=
- =?us-ascii?Q?4VmLDCjifJjonj6qMVFLSVfCpp5zU8lRrJWlSqhz89EqkAmeWz3ihz9P74lo?=
- =?us-ascii?Q?WI2UJwDeiLDN+dacxsQqWr8qaAdflY9H3p3pgUkpJ8MrrcoYaMwc/W2zFt1z?=
- =?us-ascii?Q?YzRkg5ZjO7axG1xcvAfnGenAvpqbB6s+0WeR29RVAG59WXg6xK4bJTkElEdB?=
- =?us-ascii?Q?WmSSQMINPTrwMow1svzCMO16/SR565LHQLjZebPBwFDPcKDEACRM4w=3D=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8768.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?B/ACrB7nKnP4zD2WzansJpqLzBMLNnFdSfdLr3aY45sq+qPVAb+DclaBCm3j?=
- =?us-ascii?Q?2JGPMKuozIjpyiOFhe9xVk4nj48xsj0S8OdGyDV1Tyn+BGQaTDCFo6O3u42b?=
- =?us-ascii?Q?QFIi+ohYRwCcaMUhhktGGYLXCSmIrxVYbhym4dSos/OmNiE5o4C7j4uydikS?=
- =?us-ascii?Q?rjXpeWporIdI3fUV3rIxgfRV5XiLJRL7ymGnvPW/w6wxLlvo6OlOGsJruWBl?=
- =?us-ascii?Q?yMhcIc2JnKS2qOuRU2CwZ9YHZM0Ol+0JTafNXGGww9Va5h3xEfNEBuD3s0KG?=
- =?us-ascii?Q?SWtOr6XnjK+2OCHW7wcvDYwMeKDfeHS8jI39BwJcLo2kuFFyhlQ6wXOvCud9?=
- =?us-ascii?Q?puU/QHP5s8B3tW9Ct0i4Sb93WuBTSt53DcNJMwPv2tlVde6Dwxh3/JsQsSV4?=
- =?us-ascii?Q?1exvHBl56ZBekk14Okl1hzF/Htafj7qqNJp7MEpeTcN18t8mM77v5m465CWX?=
- =?us-ascii?Q?4xMLgdSnlbiGnGAENqdSUq0JiFDqXLdvlkiJn33c4tFtBLadRHuPMl7rOCHo?=
- =?us-ascii?Q?4cdtQt3m681jqF9Ya+OF21lbzt7d2Qvkf2NAYw7kdV7r6evs6A5sb/0aIou+?=
- =?us-ascii?Q?6jjFFKv36tduijNIsmrdWWi47RskaNM04lw3PAp/2YxXk9gwERrBfwlaTs4+?=
- =?us-ascii?Q?+tLc7GSLJGWFxa9NeLYMjauqF8jj/NGiqiCMkn5o9XI5eD4eP8lgaUNuSjTk?=
- =?us-ascii?Q?2bkCbAZSsWItn2uHDCJiIJWQy00WegbhfbzlSq7g8FlzjU/Mf9UePT96y3FE?=
- =?us-ascii?Q?bMqORdmfnbZNW0iJ2F3O/x6nXJJb9K7AA7jvUfuRJ/HCEET0YCkum5pPZhwd?=
- =?us-ascii?Q?AcjbnazaQ0T9V9q4t25/oZKrcFZtvtva4mSqgNEbUxgna+h1bw/fBv6p+aQi?=
- =?us-ascii?Q?vcTpsEsm50+EpO5stlW46an4yPc/STu/cthpdhHOSeW5O5G91H3zrYt9bXMN?=
- =?us-ascii?Q?fPR6t64RI8NqStrInB6zgqVm8jAT84oduuBhVlqdaL60LImI2Gbe64BJS6r3?=
- =?us-ascii?Q?cUCv3V/W/NrQRYBujZwcb5oVeVSuUW4Mf7Yj5hCeMZGj9wQ0bg13o1/UIluc?=
- =?us-ascii?Q?TkkoCC2BaBW51b0lvK4LHoI9oUohetUolG4HMAenkTA79354S5eUZJA3wiQI?=
- =?us-ascii?Q?XHjvTXyv1u21+pRQtqOQypfgJ6tb/1NuxcE0kdC9kuh3XRllLVcVZ051h/yj?=
- =?us-ascii?Q?7Gj/GocNktSvzEShctQ5nZknGeZNVd/3Aj85P9uMJoIiNFJEp00Hp2K8Eb2O?=
- =?us-ascii?Q?7tjRMlcrTiW6zec4eXczSprHZJaD+Z4bMrkKuD+u9+2N2840NQqv0WIucmBt?=
- =?us-ascii?Q?m5P9UFjFgFN42H5Ib4CtFGyFHuwfOG++r8MfmuyC2FyhREFf4kFdD86ZELvP?=
- =?us-ascii?Q?xCnZ/hMYEUX5wHaYPROLxVf7SAQybMT0kXg+oCvFVjz8neTfeU2fggVXas8a?=
- =?us-ascii?Q?JR4lZK8eM89wJ+4j4XGsgO3wYfyvWW4fCdAlWfCMkQipIyUUqYMDm3Zfg5Tc?=
- =?us-ascii?Q?yNgYvpk2u70s9WAAD0OGxVX7IGPR2qsPy1B2JrmtyCKWWnksqXSNNwo+Dbaa?=
- =?us-ascii?Q?TZ0Tf0Vfq62DRTYb+EnxJDfaHFhH3NJu2hOTFpEC?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	bh=p7XFLhLN2bC131m5hKpTDzRYLjnq0kauHpj5EizfADo=;
+	b=Ku5F65psTjR1H+XiRucvwOo1BS758o4w1iiJrVxFoL9IC3XEJeSTGz1DanNpWOVozRzEMd
+	LtjDM/DnhRbX1be+gJ7SlQ9r1Ic1kZNJ7VYaVmxxrWUwxur9ZY/Q/3jKYZFJaa5PcCX0cI
+	MeJ4N0s5g3Kl6kGFSuW+RZAaCk2qrWw=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=c6u4s3no;
+	spf=pass (imf10.hostedemail.com: domain of paul@paul-moore.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
+	dmarc=pass (policy=none) header.from=paul-moore.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758509415; a=rsa-sha256;
+	cv=none;
+	b=7qnZOjLjIw4q4hmf+rJ3nE1+LFQHQEmZgKDrKhPyagP6vse21je3O/KNSLA+KP0reSx7PV
+	U3FfRVGwD/mM1YXZm003LOJy18ttlw82KgajXdqm0w2Jyd53OXumiakU2LjITQVZFsLUMF
+	dlMlQD7ifa85T12NUqJhpDnGBK/f/Yw=
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b4fb8d3a2dbso2710906a12.3
+        for <linux-mm@kvack.org>; Sun, 21 Sep 2025 19:50:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1758509414; x=1759114214; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p7XFLhLN2bC131m5hKpTDzRYLjnq0kauHpj5EizfADo=;
+        b=c6u4s3nom5qyTwaBg2SMji3YGjUFqWzkhAICtQBDeG3rpSOJ1xxj9ZFOoI+vTeqpdo
+         JiAtOQSm7iYag7jS86Q/6ypckSIwXL+hLgsDTx8OEYzq7bPltRLuVJPFd0XQ7UpojowB
+         inryZ1Sg8YlpGZ/qX7kzp1ColZeLk/SMRi8nEUUYID6iwmj/X5062qt18jfSauQWYNLc
+         qTxJspgChgB7CHvFQidgi5RN+zM4Z+rI2A+BVPD19OaAzKPLw3eJEehXrESXIQ8eB2Ow
+         8E6QmuYYrR+k9RnTcvDTEB1MJPAYgvSo69MZRDKbui0vo8U0oZvZfYqY+VktpLflZo94
+         HmAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758509414; x=1759114214;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=p7XFLhLN2bC131m5hKpTDzRYLjnq0kauHpj5EizfADo=;
+        b=J8aud8ixItzKgwjlUmEKvHM3hgxGRtnrSSGLvIVUmNdAxzP8lfA0URtjPWZZtRwxWI
+         2taGzxfyOfcipFwzTMKooXGvGYpn8hUbnCDyBfwOvD5U2pyAJxD5JUSXqT2y7+UcHviA
+         B3f/V1n0hLojXCsR33OyxVngQJfkzGurH9CV3ighwTXbGlvtWmxGJRZ5l88w3+iMbu07
+         4a5OXuoi9koR1nDyl1or5AmXyzoVxjpQKGDpjMC0mljQPb95XSuo/7XZRd/zP9QYSl+Z
+         P8wWJi8S7ZuSbXBBxmjU7+wfWDdhmxFKAakEYzsShnMe12t+E6qF5+sliFxy0OVG3wVg
+         Lesg==
+X-Forwarded-Encrypted: i=1; AJvYcCUbkU8xiemOIYAKkcvvBQRK1Q9dWI+j/uYlyL2bgp9JS3+kcSwNEzDAaTD3vLnHqqpovSAB+YL93A==@kvack.org
+X-Gm-Message-State: AOJu0YzFxo3tz3RZU8kXmeR8dCBlqsrVeoPPGPC1VNqqZBWAhoO8Hv5U
+	EsDsS9385ApUAGPiP9BaIbh1ZTeZ8/nnwCkeuYrTicvEFKdUK7qbAGr+Lxx9lRx5BtYLVJYby1F
+	yiU7SBhqZox+1cUah6rZ1vSs8OeRbBgL2F9VJyRUb
+X-Gm-Gg: ASbGncvNdEnsm3h7vI8/dyPAFn49xXve8BXxCHsUx3VR85y0vcaRN52yqtDGpnPMvSX
+	R99mZi9RlYKlsTOqEeezMWfNXrwX0ctKkzBBKSIp1x5KqZ5k6tKuKlUvmiT1sqTTzZDtez4ZKnl
+	SnE2LfHS0hd0bpkU5yH96wkhv5yD2qUb7Q61E/wC2ztF7YNNSOK91cdagMVpbZHDV00/LemsSTi
+	WN2QJ0=
+X-Google-Smtp-Source: AGHT+IGe+15w8xvp7a+Fw0oSWAsBTAKPDi7raUHSz68Xr1TN17drDWabkB3/4zSQVbDi/BgDo5ph0IOND5WuUlo/leI=
+X-Received: by 2002:a17:90b:5109:b0:327:7c8e:8725 with SMTP id
+ 98e67ed59e1d1-33097fee350mr12554584a91.10.1758509413659; Sun, 21 Sep 2025
+ 19:50:13 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8768.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cb71365d-3c43-4ff1-2283-08ddf9815a37
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Sep 2025 02:40:11.5515
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: roH80ODiJobIX4+5Pu+85GqXTWLcuGSBRAqrdEDyUfgYUVPuwu6d2rtN0MZr7nxYwPhrWFj7yzaPekGYYuGYn9LBawJnw70tnBwmX3zp/1w=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB6352
-X-OriginatorOrg: intel.com
-X-Rspamd-Queue-Id: 4E9958000A
+References: <20250920074156.GK39973@ZenIV> <20250920074759.3564072-1-viro@zeniv.linux.org.uk>
+ <20250920074759.3564072-31-viro@zeniv.linux.org.uk> <CAHC9VhTRsQtncKx4bkbkSqVXpZyQLHbvKkcaVO-ss21Fq36r+Q@mail.gmail.com>
+ <20250921222619.GO39973@ZenIV>
+In-Reply-To: <20250921222619.GO39973@ZenIV>
+From: Paul Moore <paul@paul-moore.com>
+Date: Sun, 21 Sep 2025 22:50:02 -0400
+X-Gm-Features: AS18NWA59TWujxe3lwJRQwcdud2e03V7ijpvYuacj-73O3HLhpPDNRlQbZP5_x0
+Message-ID: <CAHC9VhTy2j+hkT24hM1J2GH+12wp63DArRo6BGTvTwGX2k4CnA@mail.gmail.com>
+Subject: Re: [PATCH 31/39] convert selinuxfs
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, 
+	brauner@kernel.org, jack@suse.cz, raven@themaw.net, miklos@szeredi.hu, 
+	a.hindborg@kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, 
+	ocfs2-devel@lists.linux.dev, kees@kernel.org, rostedt@goodmis.org, 
+	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, casey@schaufler-ca.com, 
+	linuxppc-dev@lists.ozlabs.org, borntraeger@linux.ibm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 4A7A2C0004
+X-Rspamd-Server: rspam05
+X-Stat-Signature: c85hss9sab99cpqnzkh4btzbwc1kbng5
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: iqu3u5na1ih5m9jsj4bx3wycqbuno7xg
-X-HE-Tag: 1758508821-561949
-X-HE-Meta: U2FsdGVkX195TjNg1XYmrIPG/i3AdL1jeJI7x7SHC6ynyYKB72TlIBd2zIbJXSBTZoel4NUnElMhjNbgG9ZtBeH0Em4xLFUEQZdNRsBaSu/dI7zEGmQPmHe2tIU70meHYxPQGLVm0DjXC4x91RJcV9Q0dKRjSPMi7SY51qKBtAUSl/swiE3UDL/ntG+G+CP2AUM7YAUvr4X6ArtahMQirRTKxeyJCWCXL80ayntuKcBjhgZGA71rV6DxBZzeOFXVO5AtirPqlwjH4mrt+JCXwcvQrJWL6FtyyGXvUTvKam0l0F2pfAQ30xFcR5dPh6rEpccpDjyKSfmYnBYNGpDBH0M/7W2rq1FrV8NKXortfWrFKduzLnB7PA2XyDhTty8QgZx5drT8sutE2ROua98Zj5QcTYGEXzkEwwJJunhXPtVVhFqlCXa/TsG/Rpz7Xb2t9ohgkwSkE9NR6mqYwIIXsAb4gK0zZjeZtWo97tEdh3MAQ/wljsPeKyyMkkKHVq72A2psoSFTA2r/8F28G/V7+nOJJxIMc45zNp/fZGXrcYl4igqucUNNAdJv3mhMNEkTTwqbFqq1CdElkqYIE3gIsohdOjLzKRkJEgIZZ7k+rE416pPXZvfEzkBHjWpuhQpZq2+2VShzSxh1BNytnY9/eqOn2oQB8nqm6P2oV3wVfUB9ljgLnycYN5EolqUhakgcyzS1FcAHDNw2E1rbk5Icx6S6PFpGYapTVnje+SBQ4hZsF2Unwe540lxTNEChor6EoaXUzMyAeXUuqRKiPQRm6w+imDxwmlNJvmdP9E2MERNDciu6THBk0B25jPMpPGQsfEYUUj7tT3LIgmRNxio4kHkwHjv8UHhkzoSqpFZ1a5IhZ34omr9V9Z8FlEumU+1I976Fo47QVLYcYfS8d80bG0YGn9zzDYGsav3HShfIcapyDWmGsNr74+RtgDvMko7QX62ZZc0u2mBgsCk1Yvk
- zhyfoZGY
- MUeIdmzx6UgqE++kqjqlrpUlw1N5qWfOxet0FbZiqBHs2zwPdKcX38MWzoumJx2mRiS519gTA52LLNrQYaVFPkPf95eKid7O5ARDu4VmIhCGTvyz4o4D1Jd9NZlUR5FdiMrnsw3xq9+iWSXcwDyM3jQuUGCUd8jHjKVu08rqwomML+85UOtZrEAm6TOWrIAje0kZsX+JUinnChpDgKlREbQYJ3cjLYWSR9M6F0Y5yf0pAlXu/1kGQTbnf27FcAS7rNUaKiYcKVb2IFjPrrFegd09X1BmjZAjZusfQLAWkrOx4bwDCRkXPdr51V/DU7e2HLNBVDHu5t3sXy1+pfdv8W7LVA3ale9pSQZlnbud3tKZKQUANY8AU4hhY9G6qKFVv2GPXisnuS2iTnrvAvtlLWIUzolducy3Yb8bnxpHhn8EiN3ihbhd3tS7pocfGhpJnu/Xav2rLgrhHZkj8FP65P/Hu2kF2m9K0TCgB3H6ZRHUvAtgtM034qBaBIivV0AAz9oqYZSoG0KOyy7M33zzCPd5uqKbuzlVIPCR291IF4LMHGCCFAV3+6OsL+dDuPt6IuufrFaiE7h0srOXCE8TIYgI9kwNLFxW2W07FZRASwHnsenf3o6VJyoEC0A==
+X-HE-Tag: 1758509415-451250
+X-HE-Meta: U2FsdGVkX19VRg21VF4NT9qAdNAAIy+mgbMRPQClFzreJfde7RyIwaRYF9V9nHCfZ2lTJ2W5y3bvR2IU8FRJUJp4z6cJKEey4IqjkxX0V9XB8OFdSFvfp6zBspiAklHNLK8GlIaT5DATmdUZs8rM5J/dBgy+2E3WnoVa7bDUrDuvrflbxqLfhgDMiM3MjenKatwu8S9Q2yIeV9uPkXLUG1pWzLJU4Sm/qAFD75wUgDizxkw6+Dt01q0bwihWTJt2tnSyiiwEwuKrvUddng3tF9r/oNMksyab5crkdDNBt4Nhkilw4NECSk82dZZ1LaOSjzSeTDmTSmKVeCJDHep3ho/5sHC2L4qCOos6k7nSOz7LVp/9k9b16rzFbZULSW+PARrdKkUODO+d/KfsBl3t3ekP9eRFAUCWdvpB35nfyxd6smjlJk0mZDyEdmRlpP0bcsVLD7wNPqrv87qJQsd1/UVUUNlhdgDfWRHhdCH0yrPCiLIcwiUccU4s0bzyd38KZ6Z+WC2HzMvuTdliTSxct4xjcTyzUAtETwEX8Yg9aV9i+mfxpa7vdgEl3o3x5VDI6U8lakhO80szFIOiUjyQe7kvSMdznJF0/t4cfxjsNBmx1dyHOn9N9IFZs8axVq3dKscHb+pCUK3NOXKIMFKMubgg/ntWRbQquFbw1ytdw8u9CqCveHHOskBAJVQg+XWI5GV1opNP6O36zV482MdEX7tHytM5o2z5A33dgglYPSoekB3DcboaVs7HAWKFCXntB2R2bPZV9+R2+M6+SvBp8xrTJyd+8JgDj45psbmz0A8ZXCP22XlK8wCoT8Vaah8+AzthEL5O+U92PdM6YK38dAs7uy43wcAa2LZQv2v/LX5pJ7D1JV2RweKhcaS1B5XLFYPhcC5E9GeC23jp6L8IdeQIGQbSRgKsyW2guKhi0/AOgjnp8ZejVq7N9kO4y6eIdrWWkCKKVudIMIph+OT
+ Uhvr+N5J
+ h8k0Rx4Oe8MzUMM1YV4zxNqs5pLjfFO5Kl6pq1McyZPTBwiZgv4YY6pKJBs31Ir9r4AWo8NREoLFZhBhKI6ezNQB0J5xEieTGoYKHu/C9OL6QVi0//kyW70Ucf2b3zU3E9IEo0kHD4tOaM15PcSaG0hFSdLW8ci+kDDK1L5WKI+dHLCBqlin9P9fWnjSgJthzFJMCkf3caplE/us+RkwLGm7+A/QZkvejZUFFk4bkb1dLOx00q8HKVhYemBVY9VnvaLzDE3/N6EehmxubO9MMjf7FFDbB1QUMg3pAfpyJqdjmTDFIWCIwZJ6ArpXAIvf0MNEgTLSqt/IUGTg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -216,39 +122,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 29 Aug 2025, SeongJae Park wrote:
-> On Fri, 29 Aug 2025 15:29:47 +0530 Kaushlendra Kumar <kaushlendra.kumar@i=
-ntel.com> wrote:
->=20
-> > The fread() calls in read_slab_obj() and read_debug_slab_obj() can=20
-> > read up to sizeof(buffer) bytes, but then unconditionally write a null=
-=20
-> > terminator at buffer[l]. If fread() returns sizeof(buffer), this=20
-> > writes beyond the allocated buffer boundaries.
-> >=20
-> > Fix by limiting reads to sizeof(buffer) - 1 bytes in both functions,=20
-> > ensuring space is always reserved for null termination. This prevents=20
-> > buffer overflows while maintaining proper string handling.
-> >=20
-> > Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
->=20
-> Acked-by: SeongJae Park <sj@kernel.org>
->=20
->=20
-> Thanks,
-> SJ
+On Sun, Sep 21, 2025 at 6:26=E2=80=AFPM Al Viro <viro@zeniv.linux.org.uk> w=
+rote:
+> On Sun, Sep 21, 2025 at 04:44:28PM -0400, Paul Moore wrote:
+> > On Sat, Sep 20, 2025 at 3:48=E2=80=AFAM Al Viro <viro@zeniv.linux.org.u=
+k> wrote:
+> > >
+> > > Tree has invariant part + two subtrees that get replaced upon each
+> > > policy load.  Invariant parts stay for the lifetime of filesystem,
+> > > these two subdirs - from policy load to policy load (serialized
+> > > on lock_rename(root, ...)).
+> > >
+> > > All object creations are via d_alloc_name()+d_add() inside selinuxfs,
+> > > all removals are via simple_recursive_removal().
+> > >
+> > > Turn those d_add() into d_make_persistent()+dput() and that's mostly =
+it.
+> > > Don't bother to store the dentry of /policy_capabilities - it belongs
+> > > to invariant part of tree and we only use it to populate that directo=
+ry,
+> > > so there's no reason to keep it around afterwards.
+> >
+> > Minor comment on that below, as well as a comment style nitpick, but
+> > overall no major concerns from me.
+>
+> FWIW, how's this for the preparatory part?
+>
+> commit 17f3b70a28233078dd3dae3cf773b68fcd899950
+> Author: Al Viro <viro@zeniv.linux.org.uk>
+> Date:   Sun Sep 21 18:09:48 2025 -0400
+>
+>     selinuxfs: don't stash the dentry of /policy_capabilities
+>
+>     Don't bother to store the dentry of /policy_capabilities - it belongs
+>     to invariant part of tree and we only use it to populate that directo=
+ry,
+>     so there's no reason to keep it around afterwards.
+>
+>     Same situation as with /avc, /ss, etc.  There are two directories tha=
+t
+>     get replaced on policy load - /class and /booleans.  These we need to
+>     stash (and update the pointers on policy reload); /policy_capabilitie=
+s
+>     is not in the same boat.
+>
+>     Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 
-Hi SeongJae,
+Looks good to me, ACK below.  For me personally, it's a bit late to
+take non-bugfix stuff for the upcoming merge window so I would defer
+this for a few weeks, but if you want to take it now that's your call.
+Also your call if you would prefer this to go in with the rest of the
+patchset you've working on, or if you want me to take it via the
+SELinux tree.  Let me know.
 
-Thank you for the Acked-by!=20
+Acked-by: Paul Moore <paul@paul-moore.com>
 
-Since this patch has received your acknowledgment, are we going to merge th=
-is=20
-patch? Should I expect it to be picked up for the next kernel release, or=20
-are there any additional steps needed from my side?
+> diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
+> index 9aa1d03ab612..482a2cac9640 100644
+> --- a/security/selinux/selinuxfs.c
+> +++ b/security/selinux/selinuxfs.c
+> @@ -75,7 +75,6 @@ struct selinux_fs_info {
+>         struct dentry *class_dir;
+>         unsigned long last_class_ino;
+>         bool policy_opened;
+> -       struct dentry *policycap_dir;
+>         unsigned long last_ino;
+>         struct super_block *sb;
+>  };
+> @@ -117,7 +116,6 @@ static void selinux_fs_info_free(struct super_block *=
+sb)
+>
+>  #define BOOL_DIR_NAME "booleans"
+>  #define CLASS_DIR_NAME "class"
+> -#define POLICYCAP_DIR_NAME "policy_capabilities"
+>
+>  #define TMPBUFLEN      12
+>  static ssize_t sel_read_enforce(struct file *filp, char __user *buf,
+> @@ -1879,23 +1877,24 @@ static int sel_make_classes(struct selinux_policy=
+ *newpolicy,
+>         return rc;
+>  }
+>
+> -static int sel_make_policycap(struct selinux_fs_info *fsi)
+> +static int sel_make_policycap(struct dentry *dir)
+>  {
+> +       struct super_block *sb =3D dir->d_sb;
+>         unsigned int iter;
+>         struct dentry *dentry =3D NULL;
+>         struct inode *inode =3D NULL;
+>
+>         for (iter =3D 0; iter <=3D POLICYDB_CAP_MAX; iter++) {
+>                 if (iter < ARRAY_SIZE(selinux_policycap_names))
+> -                       dentry =3D d_alloc_name(fsi->policycap_dir,
+> +                       dentry =3D d_alloc_name(dir,
+>                                               selinux_policycap_names[ite=
+r]);
+>                 else
+> -                       dentry =3D d_alloc_name(fsi->policycap_dir, "unkn=
+own");
+> +                       dentry =3D d_alloc_name(dir, "unknown");
+>
+>                 if (dentry =3D=3D NULL)
+>                         return -ENOMEM;
+>
+> -               inode =3D sel_make_inode(fsi->sb, S_IFREG | 0444);
+> +               inode =3D sel_make_inode(sb, S_IFREG | 0444);
+>                 if (inode =3D=3D NULL) {
+>                         dput(dentry);
+>                         return -ENOMEM;
+> @@ -2079,15 +2078,13 @@ static int sel_fill_super(struct super_block *sb,=
+ struct fs_context *fc)
+>                 goto err;
+>         }
+>
+> -       fsi->policycap_dir =3D sel_make_dir(sb->s_root, POLICYCAP_DIR_NAM=
+E,
+> -                                         &fsi->last_ino);
+> -       if (IS_ERR(fsi->policycap_dir)) {
+> -               ret =3D PTR_ERR(fsi->policycap_dir);
+> -               fsi->policycap_dir =3D NULL;
+> +       dentry =3D sel_make_dir(sb->s_root, "policy_capabilities", &fsi->=
+last_ino);
+> +       if (IS_ERR(dentry)) {
+> +               ret =3D PTR_ERR(dentry);
+>                 goto err;
+>         }
+>
+> -       ret =3D sel_make_policycap(fsi);
+> +       ret =3D sel_make_policycap(dentry);
+>         if (ret) {
+>                 pr_err("SELinux: failed to load policy capabilities\n");
+>                 goto err;
 
-I appreciate your review and guidance on the merge process.
-
-Best regards,
-Kaushlendra
+--=20
+paul-moore.com
 
