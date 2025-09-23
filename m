@@ -4,92 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E65ECAC5A5
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 04:10:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 312A2CAC5A5
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 04:28:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 584E78E000B; Tue, 23 Sep 2025 00:10:19 -0400 (EDT)
+	id 75C6C8E000B; Tue, 23 Sep 2025 00:28:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55CA08E0001; Tue, 23 Sep 2025 00:10:19 -0400 (EDT)
+	id 733678E0001; Tue, 23 Sep 2025 00:28:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 499798E000B; Tue, 23 Sep 2025 00:10:19 -0400 (EDT)
+	id 648E08E000B; Tue, 23 Sep 2025 00:28:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 37E388E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 00:10:19 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D16A61402FE
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 04:10:18 +0000 (UTC)
-X-FDA: 83919187716.21.6B4185E
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 50B031C0006
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 04:10:14 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf21.hostedemail.com: domain of xieyuanbin1@huawei.com designates 45.249.212.189 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D6A08E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 00:28:53 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EDDC211995C
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 04:28:52 +0000 (UTC)
+X-FDA: 83919234504.04.8189F14
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 124C6120007
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 04:28:50 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cRbkEEzR;
+	spf=pass (imf29.hostedemail.com: domain of viswanathiyyappan@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=viswanathiyyappan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758600617;
+	s=arc-20220608; t=1758601731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cbwILMP9S/7uCH7Ly9mb9Ufcp+AGOzkLITV7WrkX2FI=;
-	b=35Pk13JcrpyPoANrYoU5Tl8kif/XNR+f9r/WMVyqvQmR6yiqVuvXHUaPJcaGnujjaX3sj4
-	BIlUQJXxK4a/DwuupXlYcCPxsFt/KloLVdqF7AGlktCcmcxOTjZq4uXyfYd74L2AtQJyAR
-	OfraGQ6cn0xLW6aVbGR0KWtfmHhS3/0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758600617; a=rsa-sha256;
-	cv=none;
-	b=k5+bXKvYvzWBr8xlH0CiXk1BvsU7q5Do8i2liO9MtRweZLJzd+ugKMPkSgrCXZZ8vdkNz6
-	r0qAhO72Q/dTVsCm+9WCjI/jvKAeGBHssTTyhHVKjVwF1hIjpFNaNtQGCbB+KwUGAp2LWU
-	EbErrXvzJMNICrw3yJ41BSCQM0G6gqA=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=t0L8/Mj/CMf/BboL9XZ5gn7LsUamResi9L+Dypyqa7g=;
+	b=lDz+S9NKMi8gJ6xWaySdgVMuntgOCryCMVPvp6iuYXV4NXoVz2d9GcSm4rFsP1PFD4eAUx
+	fZBbdC9j3jhX3jAuEe1W24rt5Gz+OrRWhF73wANzY1NlmDkD8lCXnb6HkjX3ROPEl4UHxf
+	jPcD3xeQUospl1RFu/F/JPIJmnaWlx4=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf21.hostedemail.com: domain of xieyuanbin1@huawei.com designates 45.249.212.189 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4cW5x869rMzddRl;
-	Tue, 23 Sep 2025 12:05:32 +0800 (CST)
-Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
-	by mail.maildlp.com (Postfix) with ESMTPS id 178EE147E9C;
-	Tue, 23 Sep 2025 12:10:11 +0800 (CST)
-Received: from DESKTOP-A37P9LK.huawei.com (10.67.108.232) by
- kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 23 Sep 2025 12:10:09 +0800
-From: Xie Yuanbin <xieyuanbin1@huawei.com>
-To: <linux@armlinux.org.uk>, <akpm@linux-foundation.org>, <david@redhat.com>,
-	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-	<linmiaohe@huawei.com>, <nao.horiguchi@gmail.com>,
-	<rmk+kernel@armlinux.org.uk>, <ardb@kernel.org>, <nathan@kernel.org>,
-	<ebiggers@kernel.org>, <arnd@arndb.de>, <rostedt@goodmis.org>,
-	<kees@kernel.org>, <dave@vasilevsky.ca>, <peterz@infradead.org>
-CC: <will@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <liaohua4@huawei.com>,
-	<lilinjie8@huawei.com>, <xieyuanbin1@huawei.com>
-Subject: Re: [RFC PATCH 1/2] ARM: mm: support memory-failure
-Date: Tue, 23 Sep 2025 12:10:05 +0800
-Message-ID: <20250923041005.9831-1-xieyuanbin1@huawei.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <9c0cd24c-559b-4550-9fc8-5dc4bcc20bf7@app.fastmail.com>
-References: <9c0cd24c-559b-4550-9fc8-5dc4bcc20bf7@app.fastmail.com>
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cRbkEEzR;
+	spf=pass (imf29.hostedemail.com: domain of viswanathiyyappan@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=viswanathiyyappan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758601731; a=rsa-sha256;
+	cv=none;
+	b=cxV+TZC7ri8XhJRgKFOXnu/jj1JChM1iK0cH3HplW1bXpM8G+aw+/bC9+882iwyv0uRmHe
+	D8q28zubYvuYA39ZLPiej/tZHgz9W1uw4Wd+2gANvUCbu8oeBRDq5C9Q6DjzmpihPIOPy2
+	4bH+rkoJ4KPj3EnP9VJSSaRUBj3v5DI=
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-62fce8b75a3so6254039a12.1
+        for <linux-mm@kvack.org>; Mon, 22 Sep 2025 21:28:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758601729; x=1759206529; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=t0L8/Mj/CMf/BboL9XZ5gn7LsUamResi9L+Dypyqa7g=;
+        b=cRbkEEzRoMzMuKrTd33W1bkcJorAxpOtxSvS0m6igA+i4K8JaYDDcYY/Hv4fb5SGH7
+         9f0xVgiNlZd24WJzsSFLhP0v4cDiNExrGnkSrohwCCGhfYyAs5k44qSDXcRr/0s657rF
+         h8Ke9desCghVCA+JV88HSJABejmVqgdnUhN5SRGVNnsfu98CGTG5IOYFgNVrszrICI9E
+         p0GwFpYYs1CBZEq+XBlmdKhfjTOqm7Dzt1Yzu2Gy497wn7m3anL8BZAIGHXwobgaTIXr
+         qhbOGThq90wiE5XlDm4eOJQ99j5+9n1fH9/U4E0OCqOz5AvhV3z3npyvYmtM3oUVZvUu
+         T9Bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758601729; x=1759206529;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=t0L8/Mj/CMf/BboL9XZ5gn7LsUamResi9L+Dypyqa7g=;
+        b=eovOxw37p9InEVGk148Dsn4uxgJ8RLV0ZPSX/yomAk7KFnIUvoRjdjL8kIko5Tg9jN
+         YuIQ8F1mQJ7E8/pt4IVcDRC1fGRmilY+ynVxmzfzNvMal1UuMzHhrrU58huwtmyRvFHK
+         Kt0P+1xKAqmeMRZ7UQZ6ykGdN3I1nH3SGSc6MmvQKLq2fOPpZdyZ4FyzwxgjifOxtHpG
+         uar5Va0XgVizscHIEyWdtnqBtECUC84D2R243vavm+4PFg1MvTRAhrDISlT2NoOK6SCn
+         a0dOjQA0R7NtUFXt6CP9iSTceBRutInhU0LTPtzqsjUmYEGHKng3xQDsxKFHF5aKo/7G
+         GElQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW1lz/hOeaYVfnxAJdqO5hP5RPlrK3CHx7N6Jbh+u/5OqJ1brITxNMF7uqrsEMH/BNg3177Rh5uQg==@kvack.org
+X-Gm-Message-State: AOJu0YxbqCGrFFp/eTNyOx23YL4Zn6yzkyD757C/yEWIm9qmwTvN+lF5
+	/6VXlZD9947RHpuJwbJEoLWVFhQ9E5+WpCVYe14achrpM2xx/ngWsxq0qyAHGSipSsUkLe9xzw2
+	5nzeAr1v7gto4g3c+ocYq0JoTqm8DOMY=
+X-Gm-Gg: ASbGnctTTvM+Wm2mvNwsGw8y9iO8K9O9SdUwvX6mIugx8EYLpqlv+j51SfWs7AitJgM
+	lzm5okNfx9VSEAnIo+7QFQtT/uZlFM9Xzh2biIutjrOnqmUkDUW2PRsOh79tfNqSkPlbgqKdXaF
+	htCaw71APWg2eNuf2i0G2DPTrw4VYauLKXWKx3bQIAoYxUaTlGtt/bqI9BbelNb0MLSfxvfb422
+	X5rnfPKd2D+wFk6TtuC2myzuq2AD4XguCXE5QJd/HWklgGVwpKxfg==
+X-Google-Smtp-Source: AGHT+IGI8VvJxjrSqdRzk45M8/kjiV8JUO8fNyOSSFYDwY0MLzTPEqc24EHBbra4TdMiT9VAbUvHKiQhHatek4cxEcY=
+X-Received: by 2002:a05:6402:90a:b0:632:9d0f:dc6a with SMTP id
+ 4fb4d7f45d1cf-634677e7c45mr842619a12.17.1758601729233; Mon, 22 Sep 2025
+ 21:28:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.67.108.232]
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemj100009.china.huawei.com (7.202.194.3)
-X-Stat-Signature: 3cjf3634q7cide6jux5rnkiy4x3piodj
+References: <20250922170357.148588-1-viswanathiyyappan@gmail.com> <aNHBUJxAs-vomIF3@casper.infradead.org>
+In-Reply-To: <aNHBUJxAs-vomIF3@casper.infradead.org>
+From: viswanath <viswanathiyyappan@gmail.com>
+Date: Tue, 23 Sep 2025 09:58:36 +0530
+X-Gm-Features: AS18NWBRX3q1A98kbmNFmK2Q0aBW6YNTfnGsD2smO2bt-RtTaenmbYqnzoT0BHs
+Message-ID: <CAPrAcgOsYofEUxOB81zaJb0vo994N4diDzYYTaZ-hGEtke+dyQ@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm/slab: Add size validation in kmalloc_array_* functions
+To: Matthew Wilcox <willy@infradead.org>
+Cc: vbabka@suse.cz, akpm@linux-foundation.org, cl@gentwo.org, 
+	rientjes@google.com, roman.gushchin@linux.dev, harry.yoo@oracle.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, skhan@linuxfoundation.org, 
+	david.hunter.linux@gmail.com, linux-kernel-mentees@lists.linux.dev, 
+	syzbot+94d20db923b9f51be0df@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 124C6120007
+X-Stat-Signature: awg9fzhs4fq8e8pxkwkbirttyktutqpx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 50B031C0006
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1758600614-831685
-X-HE-Meta: U2FsdGVkX18LZZ1Jj5UQq1bAeTAkp9MeI2IvvnA38pTz0CbfTu0U2LZyGWpYstJQnNANUPS+MN/x8NrE/SZ2Wv9DEnmGfU3vKVvFQNxE5zQOJDZKnIbT2H2q3GDkOW2bnAOCIQrZxlzW2PvRolqCp/Mg9Wo2KDol9Nl/tU15kxZFI7pXdMX/TXpULA8PLDX4433Rspq1jOaPixaBrLKewFJ+WYUzv+rSCikdrJNI+yDK0pi+iZjCeMWUL8MWfKr59KtPZNjJcemBHiUkoPdsaHTkNXMkHbsCd9e1xKNY+GpPEwMmYdL69AHGWDqYUgsmPqrr6jme1i2I+hXrKHFcqlIOQLi2vt73s5kVG1LTN3b4fXrHiIao1a1s3CWZQKFk0E/nIyeyE/9yM+grwv4IVFyg9vZTpvMpe8rNVuKUO0kBnigzkRY4gLm6N+0pu/fcDKfXLhVPWVMy6j/4CkfCHjyukWwKxrla/DLLO0ykCQFpQeEpRb+JmCZ9p0ScF5+QfvKECblWRMbagrwUHht8ySm1Klchd57otXBIlb3UexaRkrduYdiSFJzIY8Jc84bCZ6PvpHxllxhL/+iXVpCyGtX2cX8aQ19TuE9vH1CYF2/Cp8VohyklxtYn5JSEfyqqgM8lVEiNYLFw/H7fg6z6h21Jeq1UmuJw6AzZfgxG2BroCyYE2Z6+YP+X1HJ2hJXuc+JFxxYJZbgInJnTromryk7B7DieDyXDHFJMjzlUNxg5zZbzzxh8PMH5TvTN4/N+kPjCosr0V6xL2fuKEGsP6Db3QTVSxunA+UanlpyZAXPq7BnSU7kRJEYDB93Rzf1yI97Z2Mst3dw93hitXBzcswE/vPGGjytqWP2PlutBW5eN5S5YNcseEEizlYJvOaacs9/om4z0+0YKnrexFpAxSnoNvZB5CVm4JNk0oCNcE3r1XDz/6pG9HnlrZxH3oE2xe+afQ5Huxo019D0cM7g
- YRgAu3Az
- /Khq3JpII8aZQSBzTS8CUrpWDiZ6JaQmBNF27Gx1kgZqi/ynJY+SEHqoXSnYiGxrHW00y0kwPk5qvQA6wc3tMITxwsD3ajM5Gk62m38iypgHNPQt1CYsFDdpMaGX4qh5acnouQLNKn0rOqu/S6eXh+8Bc72aDg+kohaEEKtD32ZMPdH70xLWas2JI69X34IaoJ+bf/0fkkrGxC2MRwIqrKzxUgF7UclUGVTqjjuJKt/bFXTrbSx8/AG9aUZ1EJciXpQqXSia3TfvlfOpzFHdo5qVr1KEAzJtB4qEC6uiaZP6ujZs=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758601730-382676
+X-HE-Meta: U2FsdGVkX1/0GiUU5JJBmtTv1WhNBW3JF0PZGq+Ue7zo/jAlwV0s74M3XnogfM+1+baRtcPiXuUOVCAU6yuEiofsKN1LkRjnKHb36UzpE06Cts30b0Ea7OYckym7tFrVhW+uCOe/Sgzx3lPASHSMHyyCzRAuAbgWhH/6tTncIk8YeGb1qnuSyCR2Yt5YhCIrbBL67ZgqppZtLyYl3pqESQc5JgU4PRfeGBfi4ECjVQhoW+KsENzcBWBB+7rACieUp2H2fytmwDRGW2zNTQNveDFq/XCp+ROctFEZYLDstpJKym1oTzwQ3FeZc16wFjALdbmQJK7E9HQsDCsE2EmvzfhMhw+p8pECqTMdS+wfpINN4AIK+Jh0l6Q/0lm+1qaDHOCP1iD7L+O4ZLIRWR5m2kA1n7SPuwsnmprgUvJ8Fu9HHhpjRISazKbzeytddZVEPUxvksZI14hJpQ8HvxKC3YlugDeaktBN8H4tPGITZwK6AY8d6tyr0z+AUXn+nz4NDcBSzIsKVA8n+zYA4OQx59XXMj0B7yeVJFAGnA5quW0mGopIBXCcBsiFOPTbBpbo4DUjoBIIOP+mbeyh6FkZtGZv62+vpZJCO1bGvjY0SDyq6Kjz7SaQsEkFoFsk7TYpQnqB+4Iv2Vv3w8dD0fW05zsGgxbawgnbDLqgBYhX337VPkbwDRvQCCCs9BMNDUIkDUZ9FfJub7VEbr7gN5pojItFJGiOUi72sR9SSkt5txlTMBEmQ3dDP7ujKRAPXAjHoW+vJKeBoU7LIC24wRuJFWjZSfzjaUiMm1CVUaQvrSdQp7M2eLar6dqiHbwHoOOrq2ZmLJj9dLMdMstneU4MboovstOvUJg6wYsYYRPhC+dcZ4nSO08x2if5b9SjgbBxcAfcBQo08ennzm24CyeDVxbVY7t4rBBhPKIY7INIxtSwwqDzIPemk0btPD3WnOp80Y51So7sYJIf+sFRTDL
+ 30JrGndg
+ 19GkthvkcOj1MeiNZ2LPSUce1VyFyeCb2rL2OwDRCtRo1ycnFx1ShB+HAXxH0uPBaq/b+EPI0XVqFuvMoBEotLzN0psyrgPlMfwTfJuDNG4bXM040xYGUuhyC6ZXCi9jjq65tbdNnLrhLrYH9w7IlaEF8gcHqQ6tgkC3zinZxqk4fDe97wWMMoExLk0+g3A8fCkmlKwFEZftmEQ92HnZPH5Fpg4s80WI6XH13hz0GRH7HfB895dkSO93bA0fy7bfdjlYWnkBgjuNtr7XgW08WwbWsFOv7qhUYmM0AEGtiDW2XVA4JYAGodSj7NRtAYoE6uFrgUTICGUR862SO1u0H9sZNsvFURbqdFuzfWnjqlufAtz4yF0SyxTmgyJnjgoudcKrgafZcN+UxZfA58RlANHxg9aBsKGY93XY19u+c0IOTmCpwD3fSFW35XfPBB047GOtWIH/evwz3Ahh9tmgUep7vdvvxRmg6fZ8Sx+Et2VZ4xVVA9kNVDIK6sOrVYKYMjVpSGUTGrNZq1bP1JECJZ/H8Gm6Xiemp/ZsuuIQ3OQrQO8AkmeA/gRjoDYUMbwzqmzAQ+EzvmTE9Ock=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,95 +116,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Arnd Bergmann wrote:
->>> It would be helpful to be more specific about what you
->>> want to do with this.
->>> 
->>> Are you working on a driver that would actually make use of
->>> the exported interface?
->>
->> Thanks for your reply.
->>
->> Yes, In fact, we have developed a hardware component to detect DDR bit
->> transitions (software does not sense the detection behavior). Once a bit
->> transition is detected, an interrupt is reported to the CPU.
->>
->> On the software side, we have developed a driver module ko to register
->> the interrupt callback to perform soft page offline to the corresponding
->> physical pages.
->>
->> In fact, we will export `soft_offline_page` for ko to use (we can ensure
->> that it is not called in the interrupt context), but I have looked at the
->> code and found that `memory_failure_queue` and `memory_failure` can also
->> be used, which are already exported.
->
-> Ok
->
->>> I see only a very small number of
->>> drivers that call memory_failure(), and none of them are
->>> usable on Arm.
->>
->> I think that not all drivers are in the open source kernel code.
->> As far as I know, there should be similar third-party drivers in other
->> architectures that use memory-failure functions, like x86 or arm64.
->> I am not a specialist in drivers, so if I have made any mistakes,
->> please correct me.
->
-> I'm not familiar with the memory-failure support, but this sounds
-> like something that is usually done with a drivers/edac/ driver.
-> There are many SoC specific drivers, including for 32-bit Arm
-> SoCs.
->
-> Have you considered adding an EDAC driver first? I don't know
-> how the other platforms that have EDAC drivers handle failures,
-> but I would assume that either that subsystem already contains
-> functionality for taking pages offline,
+On Tue, 23 Sept 2025 at 03:06, Matthew Wilcox <willy@infradead.org> wrote:
+> Is it really a good idea to support 2^28 vclocks?  Surely there's a
+> limit that makes sense to the PTP driver.
 
-I'm very sorry, I tried my best to do this,
-but it seems impossible to achieve.
-I am a kernel developer rathder than a driver developer. I have tried to
-communicate with driver developers, but open source is very difficult due
-to the involvement of proprietary hardware and algorithms.
+I think I will add a new macro for the limit and validate against that
 
-> or this is something
-> that should be done in a way that works for all of them without
-> requiring an extra driver.
-
-Yes, I think that the memory-failure feature should not be associated with
-specific architectures or drivers.
-
-I have read the memory-failure's doc and code,
-and found the following features, which are user useable,
-are not associated with specific drivers:
-
-1. `/sys/devices/system/memory/soft_offline_page`:
-see https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-memory-page-offline
-
-This interface only exists when CONFIG_MEMORY_HOTPLUG is enabled, but
-ARM cannot enable it.
-However, I have read the code and believe that it should not require a
-lot of effort to decouple these two, allowing the interface to exist
-even if mem-hotplug is disabled.
-
-2. The syscall madvise with `MADV_SOFT_OFFLINE/MADV_HWPOISON` flags:
-
-According to the documentation, this interface is currently only used for
-testing. However, if the user program can map the specified physical
-address, it can actually be used for memory-failure.
-
-3. The CONFIG_HWPOISON_INJECT which depends on CONFIG_MEMORY_FAILURE:
-see https://docs.kernel.org/mm/hwpoison.html
-
-It seems to allow input of physical addresses and trigger memory-failure,
-but according to the doc, it seems to be used only for testing.
-
-
-Additionally, I noticed that in the memory-failure doc
-https://docs.kernel.org/mm/hwpoison.html, it mentions that
-"The main target right now is KVM guests, but it works for all kinds of
-applications." This seems to confirm my speculation that the
-memory-failure feature should not be associated with specific
-architectures or drivers.
-
-Xie Yuanbin
+Thanks
+Viswanath
 
