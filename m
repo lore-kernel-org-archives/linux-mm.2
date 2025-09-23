@@ -4,119 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C749CAC5A5
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 22:35:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76D22CAC5B0
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 22:39:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C4088E0007; Tue, 23 Sep 2025 18:35:14 -0400 (EDT)
+	id CFDEF8E0007; Tue, 23 Sep 2025 18:39:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 774688E0001; Tue, 23 Sep 2025 18:35:14 -0400 (EDT)
+	id CD5378E0001; Tue, 23 Sep 2025 18:39:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68A268E0007; Tue, 23 Sep 2025 18:35:14 -0400 (EDT)
+	id C120B8E0007; Tue, 23 Sep 2025 18:39:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5461A8E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 18:35:14 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F35BD1DFEC6
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 22:35:13 +0000 (UTC)
-X-FDA: 83921972106.03.5A78768
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 51928C0002
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 22:35:12 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NfvKLIEC;
-	spf=pass (imf10.hostedemail.com: domain of kbusch@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kbusch@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A52468E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 18:39:28 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4979CC031C
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 22:39:28 +0000 (UTC)
+X-FDA: 83921982816.02.B76A82C
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 5FB52180007
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 22:39:25 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=SojriKu2
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758666912;
+	s=arc-20220608; t=1758667166;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K+REPAt7YGROMU060Sut8pDiJmmKCZ4JFkal1RQOmGs=;
-	b=8fG2zNlxCclnrn+InF23r8uuD2A2peWTCOtvVaEERTXbz3PQ3zWmFtQ8efKXYToMpAdt1u
-	TkWktZqR7Dd41t5Odmci51uiACz9pz5WjOS3aSiieeggteXJItVxHFv4NSJqE0FKiRBqno
-	TiK4lWxBPydJQFzfe06Lz0bwtpDyUw8=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NfvKLIEC;
-	spf=pass (imf10.hostedemail.com: domain of kbusch@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kbusch@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758666912; a=rsa-sha256;
+	bh=kMNRIy7juPEY6DIXxF9DZzfJvByV0E5yz461o/FuEmU=;
+	b=jpSDtesvCHfF1eUwrR3K68m11F7LWlSODolbnfKvZ9DC4iKzV5puA30hFhAnfI7QZXM0S0
+	z2XB6Q3KlieyU7PJKl+SB8O/41WKuA/8ps3BsAdc57pKsAFzUrW5H2GGG9OEsgbwkewA+3
+	yH8Ru9ZgM2DmpbFx6x+AV7+BqOKwC/4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758667166; a=rsa-sha256;
 	cv=none;
-	b=o819icRHEZ205oMqJfMRAoALe+iv7zP9VUvhmd2Ak52Dn3SQRg7gsUFVIz2dDnfvLMM/D0
-	BT+4q7aYr66sGIBkQcjaRyE3/zEiqurP+c9oeLcYIqW0orqUCgePwXUiT3SCyxrvKwnSWa
-	sR/ovcBkMY69/kGj7Ov3YKXHIrxWJGI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 34F4144593;
-	Tue, 23 Sep 2025 22:35:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E0DC4CEF5;
-	Tue, 23 Sep 2025 22:35:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758666911;
-	bh=K+REPAt7YGROMU060Sut8pDiJmmKCZ4JFkal1RQOmGs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NfvKLIECePVJSfIsLMzuzmM3Lfkth90P9jpbucNQ1bDMKtxnUUxV5JFtKuhdhpmWb
-	 Cw3GZEX3eQpIT/PWZ/yXnZMG824R5TCQPjlm98ugF9huAG8DeaThH3gkBcbwr/TZuE
-	 vm/De9fznWxi8yL9W3hbwpzVsdSjYKdJINx4sFLGsP2083YAha5J9C5fBwD4MqMtXT
-	 ir+xFYNttlpYqZZmrRAZCSLQPAaJ5po2rCCjv7hee+rH9n2nEI6G7JOlhDYZQf0/X1
-	 1DkImokD6CqYRTWU50ZSiWc781Xdx+oofE6BqZqS50/4CeH67G98lYY+2B9ZA6UvmX
-	 2kJmK3McZDdRg==
-Date: Tue, 23 Sep 2025 16:35:07 -0600
-From: Keith Busch <kbusch@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Leon Romanovsky <leon@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	David Hildenbrand <david@redhat.com>, iommu@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>,
-	Juergen Gross <jgross@suse.com>, kasan-dev@googlegroups.com,
-	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v6 00/16] dma-mapping: migrate to physical address-based
- API
-Message-ID: <aNMgm33W7gh75h3t@kbusch-mbp>
-References: <CGME20250909132821eucas1p1051ce9e0270ddbf520e105c913fa8db6@eucas1p1.samsung.com>
- <cover.1757423202.git.leonro@nvidia.com>
- <0db9bce5-40df-4cf5-85ab-f032c67d5c71@samsung.com>
- <20250912090327.GU341237@unreal>
- <aM1_9cS_LGl4GFC5@kbusch-mbp>
- <20250920155352.GH10800@unreal>
- <aM9LH6WSeOPGeleY@kbusch-mbp>
- <20250923170936.GA2614310@nvidia.com>
- <aNLnXwAJveHIqfz0@kbusch-mbp>
- <20250923222216.GC2617119@nvidia.com>
+	b=WhKAwiR0m4CdfS49aZhK2cyjFqRoARemXAlRY5bxftv/AlmZX+pz42vyCJd4zoUaO3gzTE
+	gtm8zoryTDDFooNnQt+99THjzo7zbt4Be8IoP0wZJBiOYRkuaHiFw1ysAGAG7ma6FWKwzO
+	ErF4ChYcGRVdOqsSeQaurSEvlnBWA94=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=SojriKu2;
+	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=kMNRIy7juPEY6DIXxF9DZzfJvByV0E5yz461o/FuEmU=; b=SojriKu2ZEAiqDCZFCDQRhRKhn
+	nKspnPTfBVKaUKc77OtjSxdvixl+GHzCJK/5nnDH122mvTIjGuaDBtfO2/vhms/1t4MnJvEPwrhjB
+	SL/CfblZqb+J/Mg1qpXUiH8CIEeTs7RnM5SEdFEjpxScnHE1UEuvNZ37MUF2Idfeulhmd9iuFHN+X
+	YneEJmmbwYFcgPkAR878Rq4Hy6K/em+73ZwEXsSrT8HKSJSfk8+IhYUuoVieViWI58YHUR7Ufjd3M
+	/5l7MwBlIgT3Gk4OECBaBAUXXAeZup1SPEBlZdCDvKR6uwJtaxODOFfE3ZGINd6WxrnAwhB2zzg6Y
+	5izeBW/g==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1v1Bf7-00000002lyS-1MIl;
+	Tue, 23 Sep 2025 22:39:05 +0000
+Date: Tue, 23 Sep 2025 23:39:05 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Yin Tirui <yintirui@huawei.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, npache@redhat.com,
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+	catalin.marinas@arm.com, will@kernel.org, paul.walmsley@sifive.com,
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
+	anshuman.khandual@arm.com, yangyicong@hisilicon.com,
+	ardb@kernel.org, apopple@nvidia.com, samuel.holland@sifive.com,
+	luxu.kernel@bytedance.com, abrestic@rivosinc.com,
+	yongxuan.wang@sifive.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, wangkefeng.wang@huawei.com,
+	chenjun102@huawei.com
+Subject: Re: [PATCH RFC 2/2] mm: add PMD-level huge page support for
+ remap_pfn_range()
+Message-ID: <aNMhiZ4FiEE1Rk_T@casper.infradead.org>
+References: <20250923133104.926672-1-yintirui@huawei.com>
+ <20250923133104.926672-3-yintirui@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250923222216.GC2617119@nvidia.com>
+In-Reply-To: <20250923133104.926672-3-yintirui@huawei.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 5FB52180007
+X-Stat-Signature: z1eqghifski3nui395gcde4i4uejtqri
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 51928C0002
-X-Stat-Signature: nyfkq6kbkd5etq8bosin3tbcorbbpy87
-X-HE-Tag: 1758666912-392831
-X-HE-Meta: U2FsdGVkX1+SAbcUU4cMtHLP11O7v/p4lNg9sujb4cE+mV6x6OFb4ijpDDbXCMofYIflr7QTOQyZwLxK9DZMvU77RvgKJNplxjNkfx/rh9G8py6U76Os+/8hfGl63nGUQ/v5c8hhQIqlxmdfshCIafh4AlSSvLVQ7BW6M2eB0dRb1qJjqC4RqUMkbi3ZrSUE+5wkY7agQePWRDHYyrZXd0RmAt3DovA0HmugnrNhw22N+JxcpfmEw+O/o56JiNbqw4c3Sf1fp3lwASUBzhNtAftJZigvzszPhFGhGHh9VOwNC6r5deE/lBVR+kHi7ena3ycuI7QQKQQQjD9D/ho/54wTb2PSa/lC1VDgK/Dis8OXQf4pDVeJEulnMNMuiGSObUKXWEyobFGFsgzYAnnqC7XTDiyLvc2pex+DKc3JBWfIjdWK5H5PI4Of4TC7zmg/3QLsd5XPJcTERcOF7x8t0nXsOKQUiIGZX0RMPk3fxXszDvF1SnNhI3KTt1S1wjz4iX1gNxK2Ekh81Sh7Vs4om9jP7kvn5rOCAtB0pYjRHJs5trakT5F/p8hQMjXTAoqYY7hH20luUZxnYWZHvrc6+dpzjmG7z+cYmCqPARGvnXtAtC2k0FL5Wvd6eS6j0xFcSUmgUVP7jtP568HdUJ9Md81hl+baLLhkgoj+pEkR3s9ZPznVpqPAI/LV9KcKHV9pHECW2ifF7PDE5X9o7ZMg61qqqGLv9YnmRUtGkeCw0lRqzncwNVKAz+r4JfmYZflQek+P72QkxuroshIOQ28SV7T2K37sPtWOgQSc96mCKxaB/NTqetGRZyjIEh7Yi41zJEqV49Fyc09ohP6icEcLBlgn64ArmUf3vJ5RdVF0FeBIgHUUhL70YneK8McJOIsjWjJrbQ0FwHUe0BJ1gT0Ndnjvu6AIlBDQxNzw/t4A55og3hyYrgUWl/Ilj7LGZpy7X0h2Uy6umyeaqN38LZV
- 37lATKkY
- iJeJtCSuP8grHlRkeON9nprwHelQ9/YVbd5qwtJdbSgUj0dKQGKch6LnOQ0j1T6tlTfFSnE5EuaOqot76DuoWiEGLSZFcf/9FTSxiKlkWNVJX/omyjYlNPKQmcwDDCawQNflBGsIWsA7A2cdIIiJnps4hCbeEkpiTVRPricnLGNGMLGEJbqfqb5a1h6iR62yuNIrrAxqg4cOfhcKI/B8Tfpd0LkP1OFHd0UUYyDvLGcFpqU9GNpWGGuBGSdArRxJDv5R3yQi3f4jT9SHInlV5aLkQyB0GpTaV7f46yv4zw6V4SCSLvmVCrXY0GvhzOY+xiHoDCvAMKhn/q8O+ufoE9wm4I+kiddijvvNR
+X-HE-Tag: 1758667165-745348
+X-HE-Meta: U2FsdGVkX1/hD28WlZoqKmMfaxghNjl89hCazmoQIna6gQRGJIoh0fRVG4eQEa4FV+eEs8zBe2YVw6+8ah/hsSufcAk2K/XIH0X/FWeVUIw7rQkfpDvKvcUrMvrqSYDlRRycuxpEtEYEWJPK1+AE1rGLe7MRsRsg7Y64jd050EZKel5L+8oPWhY9jkDT7gX0Exu4UzMofBe7JNu0wiHpYTryUOs6ogEv2iNK7Brb+X2KPOLcqubAfdZm1i0Lh7Fce/REgR+QTmWyDukIJjrez0ZueTTzjfvRpttR7fumQ8zxaK096VOTbM7v4/mBSuwegKVS9ZVmHM/5ppFluFnHSLcHa2q+pZSkJ4kGelxOn0aiByjffUHDDgGLPuLs+MSHtVdUMk35M65CmCVG7UsBBBcDm03bOophtfTzkwEWU/Vk12OAojHUeAO7nnDxB1Ry7Uothzi3X/gddq7BUzWjR1uB8hzlJKMwJlqM5ABh1fpGHrLYI82rbddl+mnsUTCezMjIpTveM54E22drWvtsnfT/dUwCKzbUMmEohGn3JH0mvd+Ndeib41jxkcN/YJAzfD/9KoI2/rhNAj3vmYEiV7WMuTez7B0cLbQO/QorLoqlWkj4rQmxzhyEuhK5e6MZm7Kmqyg6Ud9smPo9wh9NmBKZr30+fm5uVIBNziRciVugnqyTVcwSe0nfMWiq3UebZ9/pywd5IdudD8HIFMDaoZKrWMYCMdHIoQfnMzZvefMuU00p6DfTMcNWzuu6a/4NPX3hRxav0zwgGQfTtOXk1bkP84x2oj3jg9aGgXMIUPiaBFOTrCdAbB6RTJv/8Lnwy5j9PtdDV/YTA8pAGaCKgwHsKnrt5dOguC+dYnuQ28l+FxReS21JOE9T8BKVkKBb8HFkf1c+CwhHWCt3LJDSirkKm5E79nKBoUWtET+DJO1H0KIjc9IFKhmVjwIYStDcvynMYr5kdyZiHiU1r8u
+ K4EEGrsC
+ a/qpeMDbd6tLazHFs6aN7PRXsB6pg8txBH7Q6t5oueE256UjNwsi1E2v9SQjyVu354o3YY4iVTVFqbxXKOjbkOQPu8mRWlzoQY8BwzvgN3Qb2/dHoDQrNN5KAA8QbqzgBVTVyWaiU2Uasd81sJOWuLjI2UbagJ9cSdwXgMw3aHBzO8Uvh8TJkoxaqsiuyCur/hbyDP0e6HZe7MmBQGmhxL1prFNeJd7IyRDGFQJF/M+hyYOAkFyNepp1w5m3nPTMN/OfBldafIJ/HSagBJjY6acAhCwQpRJlYo9tvSE3A/EUSOoFOofosK95Ftw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,11 +101,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 23, 2025 at 07:22:16PM -0300, Jason Gunthorpe wrote:
-> Very rare is a different perspective, I mis-thought it was happening
-> reproducible all the time..
+On Tue, Sep 23, 2025 at 09:31:04PM +0800, Yin Tirui wrote:
+> +			entry = pte_clrhuge(pfn_pte(pmd_pfn(old_pmd), pmd_pgprot(old_pmd)));
 
-Yes, sorry for the false alarm. I think we got unlucky and hit it on one
-of the first boots from testing linux-next, so knee-jerk reaction was to
-suspect the new code that showed up in the stack.
+This doesn't make sense.  And I'm not saying you got this wrong; I
+suspect in terms of how things work today it's actually necessary.
+But the way we handle this stuff is so insane.
+
+pte_clrhuge() should not exist.  If we have a PTE, it can't have the
+huge bit set, by definition (don't anybody mention hugetlbfs because
+that is an entirely separate pile of broken horrors).  I understand what
+you're trying to do here.  You want to construct a PTE that points to
+the same address as the first page of the PMD and has the same
+permissions.  But that *should* be written as:
+
+	entry = pfn_pte(pmd_pfn(old_pmd), pmd_pgprot(old_pmd)));
+
+right?  Now, pmd_pgprot() might or might not want to return the huge bit
+set.  I'm not sure.  Perhaps you could have a look through and figure it
+out.  But pfn_pte() should never return a PTE with the huge bit set.
+So if it is set in the pgorot on entry, it should filter it out.
+
+There are going to be consequences to this.  Maybe there's code
+somewhere that relies on pfn_pte() returning a PTE with the huge bit
+set.  Perhaps it's hugetlbfs.
+
+But we have to start cleaning this garbage up.  I did some work with
+e3981db444a0 and the commits leading up to that.  See
+https://lkml.kernel.org/r/20250402181709.2386022-12-willy@infradead.org
+
+I'd like pte_clrhuge() to be deleted from x86, not added to arm and
+riscv.
 
