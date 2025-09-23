@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D869CAC5B0
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 11:03:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04EB9CAC5B0
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 11:03:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 276EE8E0013; Tue, 23 Sep 2025 07:03:24 -0400 (EDT)
+	id C13A38E0015; Tue, 23 Sep 2025 07:03:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FE418E0001; Tue, 23 Sep 2025 07:03:24 -0400 (EDT)
+	id BC2328E0001; Tue, 23 Sep 2025 07:03:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01B2F8E0013; Tue, 23 Sep 2025 07:03:23 -0400 (EDT)
+	id A18018E0015; Tue, 23 Sep 2025 07:03:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DBD728E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 07:03:23 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9FEDD1A0321
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 11:03:23 +0000 (UTC)
-X-FDA: 83920228686.20.13B38DD
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 86C068E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 07:03:25 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 57CF214047D
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 11:03:25 +0000 (UTC)
+X-FDA: 83920228770.30.04062D3
 Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A24E2140011
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 11:03:21 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="X 94OxRc";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=eBykFhZL;
-	spf=pass (imf26.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 5032D20016
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 11:03:23 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="f xIDwv6";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="I//iNIR+";
+	spf=pass (imf03.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758625401;
+	s=arc-20220608; t=1758625403;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BDBl7oJGV3fWpTYYjjz2yGgNlw4zY/i9bG+IwFihDok=;
-	b=IFrTFGjsoI+91wXG0inJz1cjQWnrGSi18rx5SwtGwM0ZZFwTIvoIEhj+ybC6wESpPoWiw0
-	ST/tVFE+R8wegD8iLXhh0qhU80Pdy9Du8bGJf67zr4/gPkKo+ECEtDUmWvvASOq7EpMh9t
-	RkZf5W8hwjx1bWnED6sBmDJF46ztQkg=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="X 94OxRc";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=eBykFhZL;
-	spf=pass (imf26.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758625401; a=rsa-sha256;
+	bh=l+30FsNxlli8PpC3TpepLFbX1IePGlSZR2KUwpff5IU=;
+	b=j1ahSrz3W9ImD0bzSgx9DCMVuoP9IgPXWN6gBRafUJIVbY5ubnTTlz6UR3NEZdo6iAxG+Q
+	6LfjUzRJclLMQikayjjuERG+axbFf5nwjp1Nky2Pgc5rYEyOq9Po6YVjzfee0KxQSFzPsE
+	UfSXKzDAIyMoieYGTjalLb2ZXi+uaAU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758625403; a=rsa-sha256;
 	cv=none;
-	b=RrU3Bghcy96rPCTAVXA4tf3A3t7o5pneqR6tYZaz5FZP6Dk986jOAwKokfw1x37p6znTO6
-	f0jZTiXzdAuCd761vq2aMQdy08uPFl+VhMxVCATZJAvy8/EGqESUCRH3CwT6HQTk+E9mEe
-	ceXirPZ/Z7mZM7AlRIv6mDiWsZGJxVI=
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 13793140007F;
-	Tue, 23 Sep 2025 07:03:21 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Tue, 23 Sep 2025 07:03:21 -0400
+	b=jGa0BV89gUlCdsJdCoDKCajLQUEZS9JhO80xiyLLIWw2ISA6nItBHoKiCnPPuWk4enHH42
+	Kw7slctBB39GoEdcb+ebPLcDiIBtFdg8wtfPMfcGKv7crapHWYhRw5+vcPENzGxU2Gy83y
+	WOJ2k2h/FFyN2lP+a7awPdC8PMFSPFw=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="f xIDwv6";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="I//iNIR+";
+	spf=pass (imf03.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id A4A551400065;
+	Tue, 23 Sep 2025 07:03:22 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Tue, 23 Sep 2025 07:03:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1758625401; x=
-	1758711801; bh=BDBl7oJGV3fWpTYYjjz2yGgNlw4zY/i9bG+IwFihDok=; b=X
-	94OxRck9RS3KXkLR2kgprjzcjR2TMNPXUrpCff15/MeG3qjwC5e622rJ3fpKHdhs
-	9+asmgb0zhY7IX7Ck0dG4w5SnIfuh2/G+v+NqNl5c+s5Jpz32JVn7Rws+F1fszDg
-	oVPUtP/0taH+vQs5dI+7uWH2Osh2RRHdM9Y190RPr4AhCB2FGJEhgPTej2+RF1A8
-	Aj3pdGm6lzGIBc/crz1NsHHkcUOhYs8jkv6KxWVRfZipfpP3vHMlrQN0zlxxE9u5
-	H5nXk+GsiciJ5LFP6dRl+oGdJy1MEH49sXBBPyD5o8y19D2V96nyaKPk2xtThu89
-	Rg65mVi+JhShKcqtUb/yQ==
+	:reply-to:subject:subject:to:to; s=fm3; t=1758625402; x=
+	1758711802; bh=l+30FsNxlli8PpC3TpepLFbX1IePGlSZR2KUwpff5IU=; b=f
+	xIDwv6Nw4l1i4iTtFMICkXa78Jm5zksgps7DQdUgDIPo5eTMQqU9njEZ9XF6Bg4m
+	FM/TGuKU8UQdvip7vxG43or1wsjsA1SubWgf33EyJBU6CK8XAfDfsi8jjJvx0eeP
+	joIojexJ0zE7/K/5ZHLuh+XNYA/yFxsG6X/r9ppf7OHdl2gAWRVPcngV4xgg+/RW
+	D2ypxesd6iMcTTtihjMZy/mOIr8pCn2GKKM/2mlR7Q3FUr4KPNTODNqcR6gBhO6A
+	XRoc1mbLXIHqFeOhHBcQu2QgA55sTIdgcPxqR4PdiCB208tKzfK34ofjXj3FXq46
+	/AcOJ632kvY7wI40P1nMA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1758625401; x=1758711801; bh=B
-	DBl7oJGV3fWpTYYjjz2yGgNlw4zY/i9bG+IwFihDok=; b=eBykFhZL/pnhgwzO6
-	a0BLPrLSjos+DE2PcwOb9kjK8H0CQ57EunTyPSfwI3Ad2MsNxprbjJUfWzDR00hx
-	HP2OnZVn1FXOjZ2DRhmqA2Tft2UZ6ZowqItiSBUe6nAOvaWzBAnfEZDKQfpJsKoR
-	KAxydWbQfKGUdq7qp9OhmkjZakt/K2TZhETisaqg7D4RxL1I3Cgo8sbJqnfP9Y9M
-	+/5xDPT8m99Kl/AbzHYwIaT6DXye7uiRk1cLL+cb8AXhAL1ocpFrZOPIiED0VoFC
-	6EbfEX5AFNvt9j0HPFRyEK92PFqVbB0193DO1URMQgakrEoW5Lc7Zx6jgGQGgOKH
-	jdQ0g==
-X-ME-Sender: <xms:eH7SaEEnBouU8viGPz3Xt_tAS6xuib4V6q6OGVKV8nliqpNU7iBHIQ>
-    <xme:eH7SaJTbE5CPLWPozq3wuGgfIkGwJJtHMYLW7PJ4RIKpKWSZ3YUYsBWnQl_MS9ZQC
-    U--FM9mNPPzuxpfNwDbQ9KlH6IpVx4H5pgXKcpFIJzJJxTVmaQ-yAE>
-X-ME-Received: <xmr:eH7SaEQSDbdmbPYgKJOVjnz5DTXy-idgGla58KT7c6dHaAMTSyoKuYV-CemOWg>
+	:x-me-sender:x-sasl-enc; s=fm1; t=1758625402; x=1758711802; bh=l
+	+30FsNxlli8PpC3TpepLFbX1IePGlSZR2KUwpff5IU=; b=I//iNIR+jivZO6pAj
+	7qpoyTpnVPMx0lJKVOtzBIMdyHPNoyaW/LnJxPgtCFlZfszbAnmybSLIyWkrWi5l
+	L3w//lhrF7bf7mQ7yV9gM4cp7BQwzzjotYKrFRCMlPLBivtykk3V47f82kPv34+1
+	iaYXjOb6rOxV+uZZo/bqBgwGq/7g7ZlcVc8W+vfDavEnPsdu4vutcA0v8Pw/cjys
+	UtFmFHwRO/z9zhF0LjwIxY3oxmd/kQDvZmqm2pm6DuWahTEbmSfwvPXD5ELugbW0
+	ddtgnSLFDuVkNiwpgrJZY48U2QNHrpLKc+JX/1WF8ETiLiqW0EQBQP1fAb8ofC/g
+	EhaaQ==
+X-ME-Sender: <xms:en7SaP0FTkp-jKXIe6kT-5MyVDr56eJOMoYeM-VpXTJ_8v4Fl_6KpQ>
+    <xme:en7SaKCZGvE7wknVZD4vjgQDq1GZJr5KVJLxb_R4w93xEDhU-xbANBvrM9vdzncGb
+    XA5uuGClSkdBVSML5uWZYAeiLthVbNxUeanVaSldNcQCUA6W_Kx6pI>
+X-ME-Received: <xmr:en7SaGDFurBr04QEb1BbdEfwmyoOAJV8GJdHwT10WqUFSJfQSDL2G9COnL84fw>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdeitdehiecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
@@ -99,14 +99,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdeitdehiecutefuodetgg
     esohhrrggtlhgvrdgtohhmpdhrtghpthhtohepvhgsrggskhgrsehsuhhsvgdrtgiipdhr
     tghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsuhhrvghnsg
     esghhoohhglhgvrdgtohhm
-X-ME-Proxy: <xmx:eH7SaMe3T6BWg8MY6sGH2CCqC4iHOBXQPXR089cvix5oJFJeR3ssaQ>
-    <xmx:eH7SaIe8QevXnGJyqPQtgBBDKAw3HFXrnzw6BwcAXYdGqJVj0LkGiQ>
-    <xmx:eH7SaC8r-7WkGxo-RTNrrc0lV3LFD1IYW92nGuQZHyjX0zEvydtjEQ>
-    <xmx:eH7SaIO8sAC4bkh_nT7UPOFSlXhHvnKCtpHQuH2lr4Zarh6wngMWDA>
-    <xmx:eX7SaGKy2F_9OJ82Xz3AodbFgkFVEbFqEZE10d0UKLiYX-M_Kidkzy7B>
+X-ME-Proxy: <xmx:en7SaLMiAGSv_ZuZVagUgM8NjQf2LLTJTYtj6Tq8FCmC3JjTxv33fw>
+    <xmx:en7SaANL__ZE6lXNAVhwCTTerOtRMvjEFkkDTwzK8pDdhvSRxoid4g>
+    <xmx:en7SaPs9BObgs5sLKfzIhvDIOIlqWTy96RPzcrj_Xc6TkE9LqecB_Q>
+    <xmx:en7SaF8FgdeDyjw32BsXuGDaK9BgRY11BOo8IZGosg7Z208qdgr3Bg>
+    <xmx:en7SaF4okFz25XVvchBB88jptyraGH9IIwrQL4DBAzPdSNZ8ZlR1Aq8o>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 23 Sep 2025 07:03:19 -0400 (EDT)
+ 23 Sep 2025 07:03:22 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@redhat.com>,
@@ -126,22 +126,22 @@ Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Kiryl Shutsemau <kas@kernel.org>
-Subject: [PATCHv3 2/5] mm/rmap: mlock large folios in try_to_unmap_one()
-Date: Tue, 23 Sep 2025 12:03:07 +0100
-Message-ID: <20250923110310.689126-3-kirill@shutemov.name>
+Subject: [PATCHv3 3/5] mm/fault: Try to map the entire file folio in finish_fault()
+Date: Tue, 23 Sep 2025 12:03:08 +0100
+Message-ID: <20250923110310.689126-4-kirill@shutemov.name>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250923110310.689126-1-kirill@shutemov.name>
 References: <20250923110310.689126-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A24E2140011
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 69gfgy5q5f1sabjszjhtxqhuz6jafsxh
+X-Stat-Signature: bt6nqe43n3u57tg1t514sc76emhg8and
+X-Rspamd-Queue-Id: 5032D20016
 X-Rspam-User: 
-X-HE-Tag: 1758625401-895595
-X-HE-Meta: U2FsdGVkX19hYzMro9DH+DNl9d/i93OHGaN1ygEbPXnvessgn2xjNOm/hDVwi2DSyH/r2eJtEgNKRIKpYA2g2a6bm58ELt32i98YUyqoQEaCnc/XeX3XpX8/kA4SsT0Jerv3eQmS6kF2PCnhaK5vI9NeY6T2ZVT0VxvMakHQ1UEDlKHULa0ikP+9HIzk9WyDmYNuETHrh8EenHSfN2ve75JLlMsikkIcea5aiQGXI0VDmIhqjWewK7O7Mj/S1MBJq+zZDkd7Er2C0MUFT/c4BPRtN5rlS0nvEj40rJZTr2nZGXJ2lZh932+PoA0egkhJnXnJtZ+E+4odwZ4nrl2jy6+M9xVJ0zubusZ0ho5PSHrNYN8XNKwcLgh1mWSl1979w4f67yweiCI0/vrLQk/wCLcqPlAS8keQKwAiZJozk0hrgCzPWSc1ymgTJG3Sn7JPqc2PGcZCn9fnDxD5q73jJEtExGwsKu9CEhRZcIOwpIuBnlvHql5TlqjHsOuD1to95btPH5EyEkcMuewcrK5i58bTLv4k2EIzPqS9CFNataBDjGMf1NSZgTNKLAbRk1rXAq+6Vpy0MNPn8zUgWzPA57SI3It/bMLMLSy8fw0Qarcttn+n5YuxJaBSKa1+oym6g/dhZE8grS95oueoCCcW5we2fvyudlvqGU0YFAu8szNdNDlNWU5RoKMj3vWmOv2myvAgqQ2xZYhs/gTz1tXFj+d6YgvDhbGq61AZBvfJs75TYJCron2PknYGpQyJPifvlsyWEoGIWL97PPbdcOUq8xWEBAQm78gzwT28yRY88agJz5kBVtULaPTuoRW4rkAEaeEUgyWUSy/yWN87QrCrKTSG8AAFzN6IzNYRiQanqbNlC1DvZZi4+Qn/u9iNhQopTQsPY6z0q6aL6VfQ8RIQjWDRHhV+NSNqLmOcyBAbP2UJ/v6tF7TxT56NTxKWj+/SA9N1zOCvVRT3GGm5qU+
- waprton4
- OBbotM6TFZiK5rv+EBZvKRZZaSBj1ieEAZMBHV9CDEMDtKXlMZD0xcI46b3pXKmGXcRzOJDJg9iIGKp5jqnlHu/v64qD6dTLFzFj87GnWkJA9+2E31cxX6XEnilyPRBvaSJC8wE/tVEBLnxUk2XoizOZpPHnpLmmW8Kn0lgiPder6Kg96yUmFKRMut9cuDC4K6Wgo+h0JeL9OQbLXmELqUvDcDt7U7XtYtyesX0hjeo2//XvURtiYkQgpDP4YaQo0DIJXW8NQaEBMC4PFwjz1jeahDJarOVy2fXX8G0Egwt1URnXVJvgkzgETPi414ARp2xUBUIFaNqifQelOc5QaWfr3Np0Oje6tIEwAvNvtiVN3MEo//mXALbCul8GGpXMFu4RebnlN8At927ktpBtOV4I2eqs46Y2n2C6jT/w4S2e/fx8Qgv50vxG9NSXiDInRjozLrbeTTu6p/Ao=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1758625403-88572
+X-HE-Meta: U2FsdGVkX1/dZpsJ2rrVhhzQk7DJ4by9sHnyd8+aFKeNYpVnrSmhvNxI8AOD75da83ZXn45Cd2I1xoKAhUuUm5EjN/Jc9sE1+/c2WlFiSm/jQM3MKECDycNOIYuGYxHfM/lPCON1lbTrv0TO386Q3vKnj97V7oADvtIP16hW3UfS9DjyicXRxZBru64G9IQ2W2trUnDwOAtzdTcP1p7OVog2tid2JiZSunKqCjUyEyuXwiiv1dOJUJBFMJl7tukc6pUNF7lYAcbkOVoajuCdoe9SUfLYTbO52g5xz4+Is8UOEbi4QZm+GYyK9Z2MFsD4T7yJt0on1Xq2eH3xpbmCRn/Wgu4z6Zce4+RQhRlFK1h76mKhe9tTYAj4jfLnx2r1cU4wHCiHlxdnY8xo2NoShHLTzGyipv6mDuD1T6cLlAWASP+abfjG6jxOXo9YM55COovP8L86YTYrUTanJX07azpfQvmlpgUPkXiXN+kyFV9giKUo0jG32sDpYxOh3UKznxqSoPO4/htKtoo+NBJSyQKTPzNQHa1hBuuoSHcAgR2XNRhcic43BvZmlxqfzyR0jo2XSbYFlmyGtfoiLEXg5AGy7SUJBlzwkBiOH28NwOp042q4WN1gqqCHjIalbvblaPmhOYK+1F+6r6//GG5D1ft0BgGsQiiC9L3H1sH8lg/oKw0Wvg8j6rUC/yEQWIwYD6HBEnJfWIGmfCE2RP0aShHcSV4/RpK9yuwLKKK/ixccbg2mx+1cH8knhLcBryxgH4yu7xOdvJl5mi4+RcNZyUYw18OvbcDoPUrz+k+vd06t/ILZhStON/KT6Bj5D9vwIA0rLQYYm6k22DXPNzhJL4Xyb00R+pV1U2/kOgy+9R6v/1Xqq74XAIr9IZ6tQd4VlglSNDaStRYmJ8vv0hvxd5weq5ounl94++PuaNquJeU30k7rK1QSt5rZfsj2eOq/yr2LU/fdiGg3eDgxuz4
+ nBZ3YWVv
+ PBqP9IdWH5aKyUkntW5KHA/34xZfafKk4Mfb+nBi4+JK6fzDfhujzSqUmlGSixLGW/SBqysbsMrRq1fq3kBr1RA2nf3L/KOvWtKIEoV335Oe/I1ajZgIot41fCgrqXIX3HLYpnWwC52nE5o8DJvi5B4pZbhLRmpyxltIiRDeMgwJoyZgClI8l9ADDTtpXAFcixrAiLnb7+ZwQBa3ld51HpEpR4oLCTQrb9tu1bfX80s1CCVLM8V5iGnsKHMcApNnfV00hkUiVt2iiC1wzE1BxSIqwRySEdtn6kvw3EOfPVvgxSK/j1yYNTlBTKBQO01o8lYPZ839UmsBGTGJzndjk0TPJNiER1fd4wUSvKNFI7O3eAIE9DlHWkNCHWCquAiwj49rNfTNa33v5XU4gZc0os0atTA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -152,68 +152,49 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kiryl Shutsemau <kas@kernel.org>
 
-Currently, try_to_unmap_once() only tries to mlock small folios.
+The finish_fault() function uses per-page fault for file folios. This
+only occurs for file folios smaller than PMD_SIZE.
 
-Use logic similar to folio_referenced_one() to mlock large folios:
-only do this for fully mapped folios and under page table lock that
-protects all page table entries.
+The comment suggests that this approach prevents RSS inflation.
+However, it only prevents RSS accounting. The folio is still mapped to
+the process, and the fact that it is mapped by a single PTE does not
+affect memory pressure. Additionally, the kernel's ability to map
+large folios as PMD if they are large enough does not support this
+argument.
+
+When possible, map large folios in one shot. This reduces the number of
+minor page faults and allows for TLB coalescing.
+
+Mapping large folios at once will allow the rmap code to mlock it on
+add, as it will recognize that it is fully mapped and mlocking is safe.
 
 Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 ---
- mm/rmap.c | 31 ++++++++++++++++++++++++++++---
- 1 file changed, 28 insertions(+), 3 deletions(-)
+ mm/memory.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 3d0235f332de..a55c3bf41287 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1870,6 +1870,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 	unsigned long nr_pages = 1, end_addr;
- 	unsigned long pfn;
- 	unsigned long hsz = 0;
-+	int ptes = 0;
+diff --git a/mm/memory.c b/mm/memory.c
+index 0ba4f6b71847..812a7d9f6531 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5386,13 +5386,8 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
  
- 	/*
- 	 * When racing against e.g. zap_pte_range() on another cpu,
-@@ -1910,10 +1911,34 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 		 */
- 		if (!(flags & TTU_IGNORE_MLOCK) &&
- 		    (vma->vm_flags & VM_LOCKED)) {
-+			ptes++;
-+
-+			/*
-+			 * Set 'ret' to indicate the page cannot be unmapped.
-+			 *
-+			 * Do not jump to walk_abort immediately as additional
-+			 * iteration might be required to detect fully mapped
-+			 * folio an mlock it.
-+			 */
-+			ret = false;
-+
-+			/* Only mlock fully mapped pages */
-+			if (pvmw.pte && ptes != pvmw.nr_pages)
-+				continue;
-+
-+			/*
-+			 * All PTEs must be protected by page table lock in
-+			 * order to mlock the page.
-+			 *
-+			 * If page table boundary has been cross, current ptl
-+			 * only protect part of ptes.
-+			 */
-+			if (pvmw.flags & PVMW_PGTABLE_CROSSSED)
-+				goto walk_done;
-+
- 			/* Restore the mlock which got missed */
--			if (!folio_test_large(folio))
--				mlock_vma_folio(folio, vma);
--			goto walk_abort;
-+			mlock_vma_folio(folio, vma);
-+			goto walk_done;
- 		}
+ 	nr_pages = folio_nr_pages(folio);
  
- 		if (!pvmw.pte) {
+-	/*
+-	 * Using per-page fault to maintain the uffd semantics, and same
+-	 * approach also applies to non shmem/tmpfs faults to avoid
+-	 * inflating the RSS of the process.
+-	 */
+-	if (!vma_is_shmem(vma) || unlikely(userfaultfd_armed(vma)) ||
+-	    unlikely(needs_fallback)) {
++	/* Using per-page fault to maintain the uffd semantics */
++	if (unlikely(userfaultfd_armed(vma)) || unlikely(needs_fallback)) {
+ 		nr_pages = 1;
+ 	} else if (nr_pages > 1) {
+ 		pgoff_t idx = folio_page_idx(folio, page);
 -- 
 2.50.1
 
