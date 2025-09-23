@@ -4,119 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09982CAC5A7
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 14:17:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 978E2CAC5AC
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 14:57:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 477388E000B; Tue, 23 Sep 2025 10:17:52 -0400 (EDT)
+	id A9C728E0005; Tue, 23 Sep 2025 10:57:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4273F8E0001; Tue, 23 Sep 2025 10:17:52 -0400 (EDT)
+	id A4D2A8E0001; Tue, 23 Sep 2025 10:57:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EE5C8E000B; Tue, 23 Sep 2025 10:17:52 -0400 (EDT)
+	id 915218E0005; Tue, 23 Sep 2025 10:57:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 18D218E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 10:17:52 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D218DC0171
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 14:17:51 +0000 (UTC)
-X-FDA: 83920718742.24.CC851E8
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D64C020010
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 14:17:49 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Y9ygLdD5;
-	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 79D0D8E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 10:57:41 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3E0351A02CB
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 14:57:41 +0000 (UTC)
+X-FDA: 83920819122.05.B2ABBAA
+Received: from out203-205-221-231.mail.qq.com (out203-205-221-231.mail.qq.com [203.205.221.231])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 44F7E100012
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 14:57:37 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=dgrlkJ3s;
+	spf=pass (imf05.hostedemail.com: domain of shengminghu512@qq.com designates 203.205.221.231 as permitted sender) smtp.mailfrom=shengminghu512@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758637070;
+	s=arc-20220608; t=1758639459;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A5q5N3nLYy9yP+B4kwAaZrbrxG23b0NBI/IKB6m71lg=;
-	b=4bzLzvno1FKwpi19HmzUA99zQ5VpqtpgjxglINBCGkhkM+ralAe0i+1xFYycXztpSgzc2D
-	sYfiwPP6RkRnOLYsspAZJbkdtd1h/M/R6KKUvNBPNpYItuB4WihdLxppq/V1koHiegLXTJ
-	1a5pH4wzZayU3BkSXtNmTb5z+NXXKOE=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Y9ygLdD5;
-	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758637070; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=H/DoxZF7P4nKqwBqst7vh1I9d9VymNgrxJ0Xnlc4ZXo=;
+	b=3FqZ9LMOsWgDLFjIM+w6zwXhSeDtO0m5s+CFMJemxOzCnLWWL8gROpLg18cgVpiYwPm7VW
+	zv7U8sdahIS91kp23Ny+k/UYLA5xtdqb6ydzOX0PZDFpgThj7kmZsJwPDPEbZAXaNl5cdm
+	9sHRY4kkHA0cEgbV6G+A9MoH8tfUEWo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758639459; a=rsa-sha256;
 	cv=none;
-	b=xgZf7eqDaTDkpa5bVMgkRxFSDAZBoUHjnk5gORZfjYeyiUpXKzl11ZlXYQa2ehVFgVoJuE
-	T08qwBQA8TXRw5/f5a6R8FkaiXJbA/edq5kfjtco0pQ3XFpTas6461yU4GYlTMtq9cBmyh
-	eb67So3K/SRsOb0IlJ6cZs9ykeExWL4=
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b07d4d24d09so954546266b.2
-        for <linux-mm@kvack.org>; Tue, 23 Sep 2025 07:17:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1758637068; x=1759241868; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=A5q5N3nLYy9yP+B4kwAaZrbrxG23b0NBI/IKB6m71lg=;
-        b=Y9ygLdD5pHmkJaLCk6XEsEcKNIIeDBSzAf/x99OdFt4goXJ54WgV+nR8lFDrZ5vBqm
-         1eJDmzo6rVK76CAqEEwzXaAkIZvo6karoqZ2tY11/MtHBBeLrwOvY1Ib6Kv6WRALHVg1
-         fCKE6lEbaSThSb/V8HEMmmtxvNi3tLZsYODvFXs3m21aZsIxOJIe0EBJv/nkZhRPry5/
-         jBv6vY6hbb2vpjWAiGLUwORjmg52VsUATXC1dH+03qN1WLyW0kYmRtds58QFNuMo8LU4
-         4ZZJU82twfpQxdWfeltJda4p4MsIHgWCSgnWzQkvB5eKgvDO1CGbVjh5X7LEF3OgEm4P
-         1t0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758637068; x=1759241868;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=A5q5N3nLYy9yP+B4kwAaZrbrxG23b0NBI/IKB6m71lg=;
-        b=wOHdMJx5UPZOVNolst/h/OkejjGU7QVBoe8bd604bXMvng8PT9twlMq2OOamrq7uGB
-         J3GeuDzaWbIAJwb6SjF/4ZVRDRbuXMsdMMuoSMusrSAp0c5UifQPS4bEdkLB+7HjE1x2
-         UVDKUc5P/Sa0ZJmVXE6UrE0OFTa7Po03kSaxe3+jaQ1PTScvgdCYQCGcAYNO95YYwAqL
-         gam8TNq4r3fI7IbzZe6OxfZUvmpFyjVNCExwcpte0c3TG2PIsjsQZlw7Qv1AytZA1iAe
-         SrMwBXpU+dr31tNTLX8DbztUiAb2xZ4KczfoLBeJZAIJULXnCjZ7duxXKSly8vyLNLRl
-         BTqw==
-X-Forwarded-Encrypted: i=1; AJvYcCUGHXt6yWEChwDvj2J0m4qinbogHpJDAQYTwT3LY/1J7/O/2A8xENhnOf+qVcRX1h5kJWUtUIC7Jw==@kvack.org
-X-Gm-Message-State: AOJu0YxGVT4Cktt4emX3wczVXptkJuB9kPafTSV7xgphDRz8ui1Tj5Py
-	OyjzuhRT6J+g0/EuHQTUAlUKwoZ2wnWhsUhIzC4Q7uR8zS6cJjUszx1bdSk5VPxW0v8=
-X-Gm-Gg: ASbGncsAHIJcDWdDCGBa1txgwsbwkSQInjgc8Q/Faoxay0uRPm96+sq0z9aJWK5jB2S
-	jUoWSoD2BPnG4C955i/PqMcIK1TOTk93zqAg1fcNNYiRKp9MEoMrqpo2ftfv0hjegU4R8vGAz1c
-	dJcvHQtQ8z81U89+V9fk7xVnN6MmDf9jVjj8rSeKtixqLy012z+rgnt/lHLvK/0WCWBvTi6Z8sE
-	zfo8536nqRIxZvrHDKCZfzK6215SFISeAtPzGwKxu+zw3C5SaxZANzrOUw0z/STZdw23pWebC4M
-	HW4/1ukSvMBDH/bG+4dcFgFJiPYd9fZ20IB5wAW7YskKv02EuhIbEy1IvwAgczKKbuK8lMxSPW0
-	9HukiERfweL5P0jIPxhS11klEBCUazyQLCQ==
-X-Google-Smtp-Source: AGHT+IHv8Ydnb9rIz0+NFvQxdeTcfROor571HxVvcaI2WdRaXpfHr1+DeTmXjRTVXNKfWFeK2MsapA==
-X-Received: by 2002:a17:907:707:b0:b24:6396:c643 with SMTP id a640c23a62f3a-b3028427c9amr256596166b.23.1758637068030;
-        Tue, 23 Sep 2025 07:17:48 -0700 (PDT)
-Received: from localhost (109-81-31-43.rct.o2.cz. [109.81.31.43])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b2aaeea5a1csm621323266b.95.2025.09.23.07.17.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Sep 2025 07:17:47 -0700 (PDT)
-Date: Tue, 23 Sep 2025 16:17:46 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: xu.xin16@zte.com.cn
-Cc: akpm@linux-foundation.org, shakeel.butt@linux.dev, hannes@cmpxchg.org,
-	roman.gushchin@linux.dev, david@redhat.com,
-	chengming.zhou@linux.dev, muchun.song@linux.dev,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	cgroups@vger.kernel.org
-Subject: Re: =?utf-8?B?562U5aSNOiBbUEFUQw==?= =?utf-8?Q?H?= linux-next v3
- 0/6] memcg: Support per-memcg KSM metrics
-Message-ID: <aNKsCm-SUaxtq2Cl@tiehlicka>
-References: <aNEG5W0qLPKKflQA@tiehlicka>
- <20250922173158997VPIUgFcs8UoazWb_JQIc9@zte.com.cn>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250922173158997VPIUgFcs8UoazWb_JQIc9@zte.com.cn>
-X-Rspamd-Queue-Id: D64C020010
-X-Stat-Signature: w1rcayircp9b7fcb3zr41o5j7con89nc
+	b=R0yh+vnkrkPOTfS4BSxBTYOWOVnfaNax/jdtAW1xOg1X2enNU2Z0bAXQ0km0aP2Kqg/58r
+	7AseM1xd9K57unGW7gQMPJ0WYY5MJXZDleBqbb2+CD/nokivw4YXJ3VNOze6MSGhw1NaWy
+	2z9I8Nd7R/hwTlwCf36kWLzO5nJ7Qzw=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=dgrlkJ3s;
+	spf=pass (imf05.hostedemail.com: domain of shengminghu512@qq.com designates 203.205.221.231 as permitted sender) smtp.mailfrom=shengminghu512@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1758639451; bh=H/DoxZF7P4nKqwBqst7vh1I9d9VymNgrxJ0Xnlc4ZXo=;
+	h=From:To:Cc:Subject:Date;
+	b=dgrlkJ3sJ812phOlwAvQZmFlxNMjC7RGZKFjihDu/LYsr20R9XplyGnCqNqS7HIx3
+	 tCcCOjrZCZjtNjDHD9WrcadF67WbHHTYdlw+0R2I09lQIZDoxk9N3E6ImiNwrxP0K8
+	 Q22WmXHxR1eG7c4w4Qf2dwNGY7a4QcPl1gG7k+do=
+X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
+X-QQ-XMAILINFO: N+XrBeZ/LGN6CuENrvAnMc4J53T/tB/LXoiayzw4dNn1ZjfUy5T2NEr1Y6v78s
+	 7s9Q9fJoa4gLONPRl99j6O5t50LhRJcj1QXsLtv5zuVQQDkHi6ebTbZthXmOWjmZ9xwbaPdZEzGCg
+	 wGO8N/rinrEVvaoBCeztVRLUhi8IF0QUbS+Vl6TDsgh1+q6GXbF82Zm3nqSNlVW0Wwqxj49ulY1qZ
+	 cORLaKqyas4IxU7drT+G16XcT7MDJwpGw4k45RTCApRv9bbz3w2Wir6dxFpSZoRnGTWQSbZsW567S
+	 pUq2HFu4V9Z5CSGpr8gqL/Aaq5EOKXkipW7wlmeix912747B2etp0QrD6l2tgxf14cIRAX0zUDqwb
+	 TchtBBMwMjnE1HoqBmUWm+r5lA+Xlcsr2QctR0YqDrvDmMam00gcQJqfedFUKItaOdVhmCImlEikg
+	 SUdVjukTnxe0XQmJij+UrV9JV6r0Zef3D9fCaeGq0hTiktn/B1dHfEw3AIs8NweoTEcTdsw8cxvKL
+	 BpszuypnKF3wNSphLRBJIpcZxkxWRNs8ULsTuPlPMIVHIxOXWF1GgAAGMZuKhzh1Q8LVhof7OW15c
+	 LWV47xRGL/w0zdfpsFACv+N+C0dFOxse4eIHr7Zz5SclBpMxU6NWdHZVAIqlECHTzoyXgeSl7VyIa
+	 Jp4WWsPn4573hMZFXTSSfJCzpB0e1RJjc9UvD07PR6LUP/PiceRWfZlCnwdTMBI47zTQx0vWx2Tjd
+	 H8vjV0A7Civv3b/arU9lKzH2500hnhKpttdTOqv8jeuvuo6gjEe39z8Ty9OCFNRuTawX04EmXE9YW
+	 Uk87H/8kEUzm7WcE7gQH3OkuadRS2UBYN8iVvEMrWq+DBnXxhHSM0vvnUY7LPyk6Na5IKU1Tltm9r
+	 6YlIQRas3LTrbMXC6IFNsI4FVbk8az1tsXkXQCn9aEllV7Xd5QV5yHAAkVyC2xrd6zwwn2SD67AYo
+	 PIYtaK89QgLJ7aOmVQxlwHlvbnj4kD1LFnGU8CYTyjDVk5Pc9o26Lj9fMHOQh5kEwAWt5C6VYW6Av
+	 SG4cg/tFieBsydgUTM5kpN+d4mfFHYOfIBuzsBp1H1YY3bOS/iySv1PlZdG3TxI1esvwPwfP+INPD
+	 hdRcvs+CihQk5ZrQorJQamgDAFhei2SzQvqRuebxbEe1xICR9FDhTWIAf4vHQbEddV8qrfHf61fu+
+	 w==
+From: "=?utf-8?B?c2hlbmdtaW5naHU1MTI=?=" <shengminghu512@qq.com>
+To: "=?utf-8?B?bGlubWlhb2hl?=" <linmiaohe@huawei.com>, "=?utf-8?B?bmFvLmhvcmlndWNoaQ==?=" <nao.horiguchi@gmail.com>, "=?utf-8?B?YWtwbQ==?=" <akpm@linux-foundation.org>
+Cc: "=?utf-8?B?bGludXgtbW0=?=" <linux-mm@kvack.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?aHUuc2hlbmdtaW5n?=" <hu.shengming@zte.com.cn>, "=?utf-8?B?c2hlbmdtaW5naHU1MTI=?=" <shengminghu512@qq.com>, "=?utf-8?B?emhhbmcucnVu?=" <zhang.run@zte.com.cn>
+Subject: [PATCH V2] mm/memory-failure: Ensure collect_procs is retried when  unmap fails
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+Date: Tue, 23 Sep 2025 22:57:09 +0800
+X-Priority: 3
+Message-ID: <tencent_EDEED996FC685E61AADA14A23BCE9CCDAF09@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+X-QQ-mid: xmsezc43-1t1758639429tsinbf3h5
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 44F7E100012
+X-Stat-Signature: p5hxjks34fg9xgftogj8t9jqtiskzfts
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758637069-211837
-X-HE-Meta: U2FsdGVkX1/NTnfMp3wOKtlipZpcpsn0U9E+6Rs3IbsdhNxIrR8/WDIGEXO/jHPzGmjwUmy1zy3yhgPBNF3J5f1EOO2uCFBQhBSTyRlmKX0xnSBk7jhgtXPg80JtfWt6jeoSzfNS7zUZWuVvZnm7RUFUagplJH+KAiFm2zEeDRRso/RFQR+ooOI4jEmO5cZB7le1OE5EmY9Owv5stTnya1uDE2jSCVQMJdDhJ9a0D0syJpLrGn+gZV5OnYCPM5wHf5V2cB5rnekNsUSS90uk1gxXxsQNpUs2Pw6UWZcTZevqc/TQYhKh6KJrTTF0XtkKs7LbVjMao5eTztJ+i3WePE5mOsgN55vifwXcuTAsy6p/4d287KVNDuCokTggKfLNo63jtRUoFj7XFiE9a5N6xRg1iMeF3fmhIh532MdpMc63yUp8Iodn8PtvDOmo3CEaicW9HifbG64MEdZNevrCkp64sL1WToK+cUd6CktLEViRxLxGvpK9kQ9ebb1i9jaiJQmChrnT8YbOK0/CybBkYGgrSWQalmUsUy51g//AOloibGWMGd8T7ZBin38C9HIKWMhzBJmd+rG1efTy0s2eH16q8R+6fJYtammICGB8cjXzN3lWTBTyiCOJddXNk1uXybwPQI0ZjVTo+oePooNDGu0ewPgz5l2wmsoEqLJvOvfUxFjgdujzLdxLyolkBB6FlcgbSmEsCbY74v15yYM+yG5dHjThPTEnbsEaXxsgYBuVApOSFN7cUigOGTCL2Ru9bKSaLMjJR5bjOlP5C+XgbKgjA3MTAgbA0xf3mNTJZnZrmIi/GBS3i4vCzMGYMGaFgTI24pjRXeUFrPlrmhnQYPcyw6mAgmAskLQaDKhmbPnhJEC5RSQ+4+LOoUzlaaDC3WvGyM0fw70psG3ML9yLvwksdLIVE74yMSS3vHKxgF4/FczOsRPpSBhoZwfjPUGsXjdODqdyOnWmOHxrOt3
- eQIkba+0
- n7mqwm8D8LlAZAFxkByd2FPgcZiA1N7u5d9ZfXpxpmyjTd+Sw+6zBZmfccTBAtjmi/fZDJmzEOoCbeidzFXNj67d4FZ/kjX04ANWQfZZXLrAFS0qB/vWirfSm1F6kvCCYdZumtd76Y7WYFtodpoy0/m4bqXCz7Nxf0sv9TjKgWm4+H0S9ArPexoXDP6d+/SDal/6w3AQEM/9J8HAx0mLqGLQ3OfrE4/iEpXD1lh95FWuZbv9h9Bph/ye7c6kYayeHHl2rDASNzIjk8KP20xhuekFOdk4Wb0i4WRSI1Jx2NZDOZnZZEXAFYHd6W6gAEG3AN7uRf0GBZl1ON7UfWs71iliXgHX7+5e5V11PSbCiJYOdtSRyU+KG8kAUl3CnZeVSpi6qo2KemTUVRXmNPWfFay7H4ha8sKvaTBd40nH4DYbJDSjh6WDeCkBnKb+Q0MXLbJhOtsFFxihlTg9IFbNdqZCpfQ==
+X-HE-Tag: 1758639457-131720
+X-HE-Meta: U2FsdGVkX1+jFYIrBXbXdWK8nGk3OAwrYpUHagsyWJ1N5iN3cYWpr1i4Y8ZexoatXa5fO3VfYpdY8If70oOv5D53q6Xg5gzZZnYasAHAibjEey5q7AQpQLcHG1Kb9mGA24weSWAMIEAi1x4u4UKZThP3Q5Y2QH7Zde8GRSIbB3Iu6U5T2xxU6bvn8xAuocSnvxd0Lx7D2MO7PyU/fQYqxNZ79oYYWrS2RKKy7fbvUbJMgfbGqPr3POofVis4TZVc1H7LRRuhh3rN4MBjffYHT67ikdAyiBsAZrI16f4323C+56CoKe1zTHEzRH+UuS1DmXrbJHUsPtJmhUJT7BvmHU0mM5E7XLK0Y0fNJDLanCrUtvxsGJhUubMvdeIMzRKoRIO14Wg8iCaL9Qe1Cfkq6aZPdbeNfBYSCeD8XmXD+MqhcOuIYUGpuZTw6+xGJkxw98vqqWkRXUbRBCqD/36g+StHgR4o1XuNoUeyqWqjpygZXlTEttc0HQp1UNOxUmTxotLNB+JTX7lm6dtra3NBl1dVLRqROcDJr39xcN2KOFOnCsXMab/0VsuwKMBlt1SU7QWY6b4o2q/hgoj669OrwfxWYkDH7VQW5WA1PvBeWaH1oSz63Rci8gIR2I7Wt8yvDAWqS3p4+hcdyHOzX8MLY1TiiEQ5fPM5+ygQB+lXo5KgflJKYGyTFm78CfvJpdV2zJOT5hNwWukAdgv4FZT7CG72hiTlDrfoqwkOfAMeYZo/jVlEayl0HaNs3OFh3FhXe1XBuU96tyA5hDy50oLJ6xMplaBh8QzlowCPdpRHsbKTi+hib6+OI8Ores4YiJtJd5PgwWVVyApkxRW/6dcK+RkUmkcK+8gV1hEtTALYSsxej59lq+5GvUYD3FCbAN/k5WI+yAM0rQyUu0cpus/vg6ERh7Swqkd3VBo9/XuLkAEE3808PdtDLgBpaVfsLAG/6G0hbvukicjawulXXlu
+ vnjBOi55
+ 0wplj1/tE/yTN3VoJ9D/cHf2zo8kOcE4Qsy8tbFb3nuNJy0D/puulr0lSZqen1mMndng7WpSeOvk9jTL4LT4ZpLT15dbGFW6HwJFug+Ng76by485uaf0/9b/GZzUUYiW5qo3a854XGTdlQ9heq+mBE+f4mBYDgiUjOX1XH+3CQlrWH5tZqXcAVCrFAYn+RCJXiEyrLmdNzUR7gLOawQt4LpAQKIDQ3IRazBahqQ9hkMtdAVb47GeCOWB09wNdryoCznEnDrJZYxYHHOfMM9gosCTyJK+VgG/NXXWTWuv0s1AIgh9dOjJ4uN7ZkmIEDnTYPnnpbyvXIS6P2EPp8upaDwxaGBON6X3GCHzvmCNbnibTHbBqGQLZ303kkV7YaSbwPr+0HCcq83sZ1YK9OR5qNQ/8CLRvvf5298YPkapSAeyRc53/5Nym/Kqbl0At41Zt1QSa/376vktJddXlZ3uj07kEmmW6gRrN+9b7Lt/18qTTtKjKh2Fx17gqxiXRXVVPNLogpVY7qzJ9B06Xt9wOKUikcZH9DP/ozkcU9BJ1v2fvlCdCkhTckDuSW8YgTXXObEI6BjydFHJRZ6GI6xIAJ+LjFbqja8ufj/eJpzTWi5DCxjbS1n3Mdup8zdwkL2hxO88QSF1lH6S4Hnk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,66 +103,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 22-09-25 17:31:58, xu.xin16@zte.com.cn wrote:
-> > > From: xu xin <xu.xin16@zte.com.cn>
-> > > 
-> > > v2->v3:
-> > > ------
-> > > Some fixes of compilation error due to missed inclusion of header or missed
-> > > function definition on some kernel config.
-> > > https://lore.kernel.org/all/202509142147.WQI0impC-lkp@intel.com/
-> > > https://lore.kernel.org/all/202509142046.QatEaTQV-lkp@intel.com/
-> > > 
-> > > v1->v2:
-> > > ------
-> > > According to Shakeel's suggestion, expose these metric item into memory.stat
-> > > instead of a new interface.
-> > > https://lore.kernel.org/all/ir2s6sqi6hrbz7ghmfngbif6fbgmswhqdljlntesurfl2xvmmv@yp3w2lqyipb5/
-> > > 
-> > > Background
-> > > ==========
-> > > 
-> > > With the enablement of container-level KSM (e.g., via prctl [1]), there is
-> > > a growing demand for container-level observability of KSM behavior. However,
-> > > current cgroup implementations lack support for exposing KSM-related metrics.
-> > 
-> > Could you be more specific why this is needed and what it will be used
-> > for?
-> 
-> Yes. Some Linux application developers or vendors are eager to deploy container-level
-> KSM feature in containers (docker, containerd or runc and so on). They have found
-> significant memory savings without needing to modify application source code as
-> before—for example, by adding prctl to enable KSM in the container’s startup
-> program. Processes within the container can inherit KSM attributes via fork,
-> allowing the entire container to have KSM enabled.  
-> 
-> However, in practice, not all containers benefit from KSM’s memory savings. Some
-> containers may have few identical pages but incur additional memory overhead due
-> to excessive ksm_rmap_items generation from KSM scanning. Therefore, we need to
-> provide a container-level KSM monitoring method, enabling users to adjust their
-> strategies based on actual KSM merging performance.
+RnJvbTogU2hlbmdtaW5nIEh1IDxzaGVuZ21pbmdodTUxMkBxcS5jb20+CkRhdGU6IFR1ZSwg
+MjMgU2VwIDIwMjUgMjA6NTY6MjggKzA4MDAKU3ViamVjdDogW1BBVENIIFYyXSBtbS9tZW1v
+cnktZmFpbHVyZTogRW5zdXJlIGNvbGxlY3RfcHJvY3MgaXMgcmV0cmllZCB3aGVuCiB1bm1h
+cCBmYWlscwoKSW4gdGhlIG1lbW9yeV9mYWlsdXJlIHByb2Nlc3MsIGlmIGNvbGxlY3RfcHJv
+Y3MgaXMgbm90IGV4ZWN1dGVkIHdpdGggdGhlCmZsYWcgc2V0LCB0aGUgdG9fa2lsbCBsaXN0
+IG1heSBiZSBlbXB0eS4gRXZlbiBpZiB0aGVyZSBhcmUgcGFnZXMgdGhhdCBmYWlsCnRvIGJl
+IHVubWFwcGVkLCBTSUdLSUxMIG9yIFNJR0JVUyBjYW5ub3QgYmUgc2VudCB0byB0aGUgcHJv
+Y2VzcyB2aWEKY29sbGVjdF9wcm9jcy4KClRoaXMgcGF0Y2ggZml4ZXMgdGhlIGlzc3VlIGJ5
+IHJlLWV4ZWN1dGluZyBjb2xsZWN0X3Byb2NzIHdoZW4gdGhlIHRvX2tpbGwKbGlzdCBpcyBl
+bXB0eSBhbmQgdW5tYXAgZmFpbHMuIFRoaXMgY29sbGVjdHMgcHJvY2Vzc2VzIHdpdGggdW5t
+YXAgZmFpbHVyZXMKaW50byB0aGUgdG9fa2lsbCBsaXN0LCBhbGxvd2luZyBTSUdCVVMgb3Ig
+U0lHS0lMTCB0byB0ZXJtaW5hdGUgdGhlbSBpbgpzdWJzZXF1ZW50IGNvZGUuCgpWMjoKICAt
+IFJlc2VudCBhcyBwbGFpbiB0ZXh0IChwcmV2aW91cyB2ZXJzaW9uIHdhcyBIVE1MKS4KICAt
+IE5vIGZ1bmN0aW9uYWwgY2hhbmdlcy4KClNpZ25lZC1vZmYtYnk6IFNoZW5nbWluZyBIdSA8
+aHUuc2hlbmdtaW5nQHp0ZS5jb20uY24+Ci0tLQogbW0vbWVtb3J5LWZhaWx1cmUuYyB8IDUg
+KysrKy0KIDEgZmlsZSBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkK
+CmRpZmYgLS1naXQgYS9tbS9tZW1vcnktZmFpbHVyZS5jIGIvbW0vbWVtb3J5LWZhaWx1cmUu
+YwppbmRleCBhMjQ4MDZiYjhlODIuLjgxNTc4MjNjN2ZiNyAxMDA2NDQKLS0tIGEvbW0vbWVt
+b3J5LWZhaWx1cmUuYworKysgYi9tbS9tZW1vcnktZmFpbHVyZS5jCkBAIC0xNjAwLDkgKzE2
+MDAsMTIgQEAgc3RhdGljIGJvb2wgaHdwb2lzb25fdXNlcl9tYXBwaW5ncyhzdHJ1Y3QgZm9s
+aW8gKmZvbGlvLCBzdHJ1Y3QgcGFnZSAqcCwKIAljb2xsZWN0X3Byb2NzKGZvbGlvLCBwLCAm
+dG9raWxsLCBmbGFncyAmIE1GX0FDVElPTl9SRVFVSVJFRCk7CiAKIAl1bm1hcF9zdWNjZXNz
+ID0gIXVubWFwX3BvaXNvbmVkX2ZvbGlvKGZvbGlvLCBwZm4sIGZsYWdzICYgTUZfTVVTVF9L
+SUxMKTsKLQlpZiAoIXVubWFwX3N1Y2Nlc3MpCisJaWYgKCF1bm1hcF9zdWNjZXNzKSB7CiAJ
+CXByX2VycigiJSNseDogZmFpbGVkIHRvIHVubWFwIHBhZ2UgKGZvbGlvIG1hcGNvdW50PSVk
+KVxuIiwKIAkJICAgICAgIHBmbiwgZm9saW9fbWFwY291bnQoZm9saW8pKTsKKwkJaWYgKGxp
+c3RfZW1wdHkoJnRva2lsbCkpCisJCQljb2xsZWN0X3Byb2NzKGZvbGlvLCBwLCAmdG9raWxs
+LCAxKTsKKwl9CiAKIAkvKgogCSAqIHRyeV90b191bm1hcCgpIG1pZ2h0IHB1dCBtbG9ja2Vk
+IHBhZ2UgaW4gbHJ1IGNhY2hlLCBzbyBjYWxsCi0tIAoyLjI1LjE=
 
-So what is the strategy here? You watch the runtime behavior and then
-disable KSM based on previous run? I do not think this could be changed
-during the runtime, rigtht? So it would only work for the next run and
-that would rely that the workload is consistent in that over re-runs
-right?
-
-I am not really convinced TBH, but not as much as to NAK this. What
-concerns me a bit is that these per memcg stats are slightly different
-from global ones without a very good explanation (or maybe I have just
-not understood it properly).
-
-Also the usecase sounds a bit shaky as it doesn't really give admins
-great control other than a hope that a new execution of the container
-will behave consistently with previous runs. I thought the whole concept
-of per process KSM is based on "we know our userspace benefits" rather
-than "let's try and see". 
-
-All in all I worry this will turn out not really used in the end and we
-will have yet another counters to maintain without real users.
-
--- 
-Michal Hocko
-SUSE Labs
 
