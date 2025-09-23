@@ -4,134 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D070CAC5B0
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 09:57:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CD45CAC5A7
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 10:26:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFCCF8E0008; Tue, 23 Sep 2025 05:57:26 -0400 (EDT)
+	id 294D08E0005; Tue, 23 Sep 2025 06:26:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAD108E0001; Tue, 23 Sep 2025 05:57:26 -0400 (EDT)
+	id 2459B8E0001; Tue, 23 Sep 2025 06:26:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC27C8E0008; Tue, 23 Sep 2025 05:57:26 -0400 (EDT)
+	id 15B828E0005; Tue, 23 Sep 2025 06:26:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C6DCA8E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 05:57:26 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6400458DB3
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:57:26 +0000 (UTC)
-X-FDA: 83920062492.18.0BF16D0
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 00EB51A0002
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:57:23 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UHX7qx7o;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ruU2lr8c;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UHX7qx7o;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ruU2lr8c;
-	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 00E7D8E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 06:26:26 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 37A811DF20E
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 10:26:26 +0000 (UTC)
+X-FDA: 83920135572.07.5067B54
+Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
+	by imf10.hostedemail.com (Postfix) with ESMTP id EB1C2C000C
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 10:26:23 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=konsulko.se header.s=rsa2 header.b="On4c/9u6";
+	dkim=pass header.d=konsulko.se header.s=ed2 header.b=Pv1Y85Bb
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758621444;
+	s=arc-20220608; t=1758623184;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oPVjjucApSRx+R2misnP6FirOYmaZeSfZK2uZlsWJVE=;
-	b=G+jleNoBleyI3Oz9oFbFziiwGBtLmE0STT7Kqt5VMqahNxBemKUAbt+66d9hvWGdQshqYR
-	8LOTYG2DbpGLWHtj8NHDc7RQFHvQJkjLfgxSMpRGUPFnFWrZwamanbYAP3EtwPS0HvNL3c
-	OzvrefdInG7p0QKo6a2MnwawnNuLVgg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758621444; a=rsa-sha256;
-	cv=none;
-	b=x6TTSB29C5SwmF5zb2LdAY0kug1mmLmQ4uN93Jrbxe41i5/h/Rmbr/ULpEq6DikmirQkLO
-	OC6Mys+mRqtfsWn0R75EYgtgzM67YapZrZaxZDKUm1fwFed6Xbmy6fDVhmZWCWzLNn4kwo
-	9GvwuGbH/Jc26FsjTXNPuW9Qg7xiDks=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=wdDTHWqIIQrO4Z56Gwoii2btyUPVsS03K4kULpvGLhE=;
+	b=LUlyiU8u4qCnTRpSEIFIxxklRpEjQukHvEHFHjM6xoir6ZxaAhWEPi4vp+jM/PiIQQeLov
+	nXs9cMVhp3+RyEHHf1E7DNfVqYQL56QbrOZ48ZpUmTsweFsllm/XQnDD/W95aq3xYMY/TR
+	9VNrmvWFIlFiIN1lEES4W/j+GvUZj64=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UHX7qx7o;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ruU2lr8c;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UHX7qx7o;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ruU2lr8c;
-	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	imf10.hostedemail.com;
+	dkim=pass header.d=konsulko.se header.s=rsa2 header.b="On4c/9u6";
+	dkim=pass header.d=konsulko.se header.s=ed2 header.b=Pv1Y85Bb;
+	spf=none (imf10.hostedemail.com: domain of vitaly.wool@konsulko.se has no SPF policy when checking 46.30.212.3) smtp.mailfrom=vitaly.wool@konsulko.se;
 	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1B2A421FCE;
-	Tue, 23 Sep 2025 09:57:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1758621442; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oPVjjucApSRx+R2misnP6FirOYmaZeSfZK2uZlsWJVE=;
-	b=UHX7qx7o2b6ey5mBgk7knXhSh5NAomprqW21FOo3+i6AoaYjVxzuMInDFqJq5xlD0jN7jE
-	l9RdrJAOT9uA5RmNnoc82zw3jNRxsSqGPknIFbKilV4hihF0zw/YTsm6ByAapLHTsAV9VO
-	57CJylLPXR5bzh84ywSpKTnl/NrVnCw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1758621442;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oPVjjucApSRx+R2misnP6FirOYmaZeSfZK2uZlsWJVE=;
-	b=ruU2lr8cQiR7fVNcl8XuNGkvChlzJ0Fo5o5rGdZZM/dtI4Hc971GO4eoOvVJcuZVXmHi3x
-	ko66sHZwAV6xxTDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1758621442; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oPVjjucApSRx+R2misnP6FirOYmaZeSfZK2uZlsWJVE=;
-	b=UHX7qx7o2b6ey5mBgk7knXhSh5NAomprqW21FOo3+i6AoaYjVxzuMInDFqJq5xlD0jN7jE
-	l9RdrJAOT9uA5RmNnoc82zw3jNRxsSqGPknIFbKilV4hihF0zw/YTsm6ByAapLHTsAV9VO
-	57CJylLPXR5bzh84ywSpKTnl/NrVnCw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1758621442;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oPVjjucApSRx+R2misnP6FirOYmaZeSfZK2uZlsWJVE=;
-	b=ruU2lr8cQiR7fVNcl8XuNGkvChlzJ0Fo5o5rGdZZM/dtI4Hc971GO4eoOvVJcuZVXmHi3x
-	ko66sHZwAV6xxTDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0A5E5132C9;
-	Tue, 23 Sep 2025 09:57:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id BUaAAgJv0mh0YQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 23 Sep 2025 09:57:22 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id A67B1A09AF; Tue, 23 Sep 2025 11:57:21 +0200 (CEST)
-Date: Tue, 23 Sep 2025 11:57:21 +0200
-From: Jan Kara <jack@suse.cz>
-To: Aubrey Li <aubrey.li@linux.intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Nanhai Zou <nanhai.zou@intel.com>, 
-	Gang Deng <gang.deng@intel.com>, Tianyou Li <tianyou.li@intel.com>, 
-	Vinicius Gomes <vinicius.gomes@intel.com>, Tim Chen <tim.c.chen@linux.intel.com>, 
-	Chen Yu <yu.c.chen@intel.com>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Jan Kara <jack@suse.cz>, 
-	Roman Gushchin <roman.gushchin@linux.dev>
-Subject: Re: [PATCH] mm/readahead: Skip fully overlapped range
-Message-ID: <cghebadvzchca3lo2cakcihwyoexx7fdqtibfywfm4xjo7eyp2@vbccezepgtoe>
-References: <20250923035946.2560876-1-aubrey.li@linux.intel.com>
- <20250922204921.898740570c9a595c75814753@linux-foundation.org>
- <93f7e2ad-563b-4db5-bab6-4ce2e994dbae@linux.intel.com>
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758623184; a=rsa-sha256;
+	cv=none;
+	b=Rmgkrf7TV367gWYTdYlpdg+1G2HUIPY6mHJL4WYz95b+rJHoYL8wmr9ZZO+L84o8DKOxQz
+	o6iKlxL5WYcYxTqYniRzn6s1GR7P9oWxtPeR7acC3UhDaaRfJfXweAnIG95ZVBZxesmPOO
+	2RqceYo6L6/0FNMxl2JuwdiXo4OIpMw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1758623181; x=1759227981;
+	d=konsulko.se; s=rsa2;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=wdDTHWqIIQrO4Z56Gwoii2btyUPVsS03K4kULpvGLhE=;
+	b=On4c/9u6+mPnFx+axc8y1FQ13QoBkGkkSIigzg6s2MTIDFm9fsDApEqNUZL4M1ZYfD5wG5q3UPFsL
+	 pbgbYfTjDY9SVqhhGT5go8Jz0MM0JUiezkrDgGZlwAcilwdTnPdo+0IJLVQASqKr8im2fXfSqCNKtC
+	 gGjTnjZnPXJO7uxRb3xiOoVdpAQWXohdwazGQpoqtAI0SPjssRvD8vxwQWHhXJIwFyIciYDd/xg630
+	 k4uiBtoRn+M+//+DYnS4+UA3mKEjdsQKlPfXD7LZNUXbB62qOKKi2/z/NBPXNbHZ054+QQDs5/a/Ty
+	 yMSTDTeJZ5y3y2OP7PnC+3bnVaCy8PA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1758623181; x=1759227981;
+	d=konsulko.se; s=ed2;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=wdDTHWqIIQrO4Z56Gwoii2btyUPVsS03K4kULpvGLhE=;
+	b=Pv1Y85Bbid3q4EqIpaUuZa0uJ39ubo4f1p3+Tk6z18By/Ib7BfokadvFbtCXPmJh6kSvMB3tNXe1B
+	 Akpp2p+Bg==
+X-HalOne-ID: bef8abd3-9867-11f0-9446-fb5fec76084d
+Received: from localhost.localdomain (host-95-203-13-255.mobileonline.telia.com [95.203.13.255])
+	by mailrelay3.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
+	id bef8abd3-9867-11f0-9446-fb5fec76084d;
+	Tue, 23 Sep 2025 10:26:21 +0000 (UTC)
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+To: linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org,
+	Vitaly Wool <vitaly.wool@konsulko.se>
+Subject: [PATCH v6 0/2] rust: zpool: add API for C and Rust
+Date: Tue, 23 Sep 2025 12:25:47 +0200
+Message-Id: <20250923102547.2545992-1-vitaly.wool@konsulko.se>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <93f7e2ad-563b-4db5-bab6-4ce2e994dbae@linux.intel.com>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 00EB51A0002
-X-Stat-Signature: 9upgur31h3fwc4zm5f7i5fzem6fban3x
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: EB1C2C000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758621443-319778
-X-HE-Meta: U2FsdGVkX18J+riVI0IsAHnkYyvOx+Erz4Cb0t8xarexUTiYGC35fnpVYBT/9L9mRgoPo210cWnOHVf1uVJvuVYwl+XWAXpxoilinyjljYttlrQ9QI4MdsOLSQTOKQSrJRaaqb6o2Vb/ybd6UjjRUw2+gJRJtxpX/ncmZ6PRnoUp+SCEmE+9Syff41l+NURAVpBW1VRFgnjatfnTc7FYfX+WY5XVjDo87K44CtRsRj795cmwWdCsKzpOOE7oL95fXD2KKCnvNtG38oZAIuJyCdeA6Fbz/+aYd1mgi0SZeoCMGSf7t1D5TuV9qT9i/ToGxOuECVFoODhS8PTOerfNzOWHDeUi3tsZqLdbkzesQMpF4LELh4HNCSyxTuOhXaXgdMNKbKhaATF9c5iugVOrr6m3mNtPHQPFjw8xQ+/LlRDurdr+XLVu1veZe+yu3fkLF2/ATTKo0wvXf/PpVVx6fTIHmciiHA0txuOA2V1uc/bxKWpY54/e7mmqNWh9du05n3UojZYNhfc39lBr2DuO7PMRzbhDpB9Dp5A10GxYaNKkgyzmzJTsBGbt9cD0IZFHCu4GFFRnOfJaEnF5CI4CkCRUxJKkBJLG2dsinGzXcohGDF3CNFqa9pXxWq0g63ygslbiyKXh5ZfQkPs+1OqkbEhDswkNzUKv1ozRxjPX02xy+0Za21Gl105YK/tIJ4ZKTS64QVhdOC/QeuPEiLrrfK4DE8TpTEZVkm2NZpibww+33N7KFH8fI9IUiYER5pgmxx/CoScR42gEL3hjNe7NNImGr/g+rwaqIkU95AbXEcOt54ogmEhpS8vUJzAEwZHLtobA4DKoMZ1pFEKtly/XG8oA9dGMlvR91Eu0a7PlWA2fo6jPtRW7fIhuHfXmm2A7R/+mq4MJC9KeNmUaBwfq+piRVOrggWvsWtk5zRRZnNX3d6X+6ZMUlrrTjgi1tXo8/2DTvJyoXrXPGDKyVhv
- w8Gk63Yz
- jo8SQ6nye2ESR/klYNhxsxmH93PcOQTbCQS5zAG+Tei3MrOr//KO+SIsqDCzin9+W2KFXK9WoD8E7O14j1lq9/ahB+T/ZsbQdbxJzr5XtKtxJ+fdFQFw1RFrcFzxrYk3k88qhgmLQsegJaWv4oBht71iOcUAiupT/ysyhu2HKcLL/au8a0CTt5KzbHjP4jS0IHHClqHOVSPJFjFXUa0w3AROfZgYS3dNRTJ/4IQBawMksHiKzpTNDhnoj44Hvw7WmcEVYWWLWOr53iKwrTR7wIubJ13hbP9MovJMt62k2HlNSfMOUFVG2vzuoFSjNJPAwAhOM6DiakyN8qyo3BG3BYiUSMVi2P/uACWsQv1h5RLP1azE=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 1cn51dkq75e9qzdgdhqmah4o5ck4ruof
+X-HE-Tag: 1758623183-737131
+X-HE-Meta: U2FsdGVkX1/nDwBCWSlsIcjvAdRDFlRfoB97S6n0Th/+BkW8MgMqGOC79LoypXj5RLKig9OuwLLY7HX2aQEVXjOgOa0kd9S1WYbtTGeyiF5p+Z52g/1k7UWYEjpBGSfzsrjblqLpPP0dyhelUreAl4fK2gFIv4m9v6s9ozyDPtfRsgWfsD5qUh13JRZIhJag6wYbor/EFTtehrSF4N5vSAKpqjND7o2bbuj56SlW6C2sSvxo3mNYPCvi+eGnOqgHJiIDtI9deYulq1n9wtcUadgiQWMaLylR5fd7unD29+cMjDCziwvcZoA+2wXi7qU3qPj3asTxgFF7lNdMhVke9WglFh5Q8scjhA7Ufc3ja01sVGOcKyBMXC0UiXxobhuKOSdr9pTEL49/p1/QQUteCOihZBz/bZ+csJEH+/p1gjJpx9kSK4K/ywB1gCCNJ62DEZ4RrLyQShf2dDvFvn+CqcmIEU8JxZcgWAZpxflt5iUSdjTMKP/hjNB+37opvR+90itjLcr2wVHzAKSZagrscO0RlWfCtl7tQpB4WRId/Zoq0/bz2ZlYGEwBw45zJEHcxqGpzys9/c0iDUwuN7v2aZm2SK7dakSsh7K9cjrUVUbmqlMiiqP7R2uVIKlB9RQsjQUAUM0x86IPRPaNjKe7aP4o2E1DNB9pavyeJA47zB28FyS8jsjKtc4Rw4kqOa/frWWqJwDjOWKP3HR6IXfCUJ+48nEoAMGJM+8ehyioDCqAqYNoYOeb+/srEIh9W0fl0EKDl2jKuKPFPgysMa8sBZzEE6lelerL930PVh6UhP467tPG1yWbMSHbyFfgHwc7lD65lHYEvEJydQd3c2y8djyfZWL83zcUb/xfiDobQI/SoOgDcPdEvfhZYyEJ/TEpxFexIOpCBWXNaBUGbHNmpBXI9SYvZCHwr6lYsD8KBtLn0LhFZCfHIw+rX/XZyBT0pEJMyBvCl3xQfPDqqQc
+ 83gJy6FS
+ oSntjK+LGhQlt6OjLbsK/u0zHto2a+p9Ss4l9cX2qLXkbRtCgMTdecc7XAIODVvTSifCNH2SB4qYF4Jwpu3Tn7zs8yP5v1Tj1sdC+hlksbT1ISV2iFc5nSGif+nALl0YOOttTsddlrSqlC8YnadNRD9zoLv1AFNdxoM1LFnAn9OlmNH3ksmPOrXVnqATn6wj/1LraLwTSB2e6QuVDQ4WHGDIXZv6CWLb4RAozmPXnMUYW6LA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,54 +122,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 23-09-25 13:11:37, Aubrey Li wrote:
-> On 9/23/25 11:49, Andrew Morton wrote:
-> > On Tue, 23 Sep 2025 11:59:46 +0800 Aubrey Li <aubrey.li@linux.intel.com> wrote:
-> > 
-> >> RocksDB sequential read benchmark under high concurrency shows severe
-> >> lock contention. Multiple threads may issue readahead on the same file
-> >> simultaneously, which leads to heavy contention on the xas spinlock in
-> >> filemap_add_folio(). Perf profiling indicates 30%~60% of CPU time spent
-> >> there.
-> >>
-> >> To mitigate this issue, a readahead request will be skipped if its
-> >> range is fully covered by an ongoing readahead. This avoids redundant
-> >> work and significantly reduces lock contention. In one-second sampling,
-> >> contention on xas spinlock dropped from 138,314 times to 2,144 times,
-> >> resulting in a large performance improvement in the benchmark.
-> >>
-> >> 				w/o patch       w/ patch
-> >> RocksDB-readseq (ops/sec)
-> >> (32-threads)			1.2M		2.4M
-> > 
-> > On which kernel version?  In recent times we've made a few readahead
-> > changes to address issues with high concurrency and a quick retest on
-> > mm.git's current mm-stable branch would be interesting please.
-> 
-> I'm on v6.16.7. Thanks Andrew for the information, let me check with mm.git.
+zpool used to be a common frontend for memory storage pool
+implementations. With its removal the opportunity to select an
+allocation backend for zswap has been completely lost. However, with
+the recent advancements in the vmap/vmalloc field that allow for fast
+and simple allocation backends, and the initiative to implement one in
+Rust, the zpool API is still necessary, though it's enough to have it
+as a thin API for compile time backend selection.
 
-I don't expect much of a change for this load but getting test result with
-mm.git as a confirmation would be nice. Also, based on the fact that the
-patch you propose helps, this looks like there are many threads sharing one
-struct file which race to read the same content. That is actually rather
-problematic for current readahead code because there's *no synchronization*
-on updating file's readhead state. So threads can race and corrupt the
-state in interesting ways under one another's hands. On rare occasions I've
-observed this with heavy NFS workload where the NFS server is
-multithreaded. Since the practical outcome is "just" reduced read
-throughput / reading too much, it was never high enough on my priority list
-to fix properly (I do have some preliminary patch for that laying around
-but there are some open questions that require deeper thinking - like how
-to handle a situation where one threads does readahead, filesystem requests
-some alignment of the request size after the fact, so we'd like to update
-readahead state but another thread has modified the shared readahead state
-in the mean time).  But if we're going to work on improving behavior of
-readahead for multiple threads sharing readahead state, fixing the code so
-that readahead state is at least consistent is IMO the first necessary
-step. And then we can pile more complex logic on top of that.
+This patchset provides such API and implements the interface to use
+it in Rust kernel code, thus enabling both C and Rust implementations
+of zpool allocators. zsmalloc and documentation are updated
+accordingly.
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+---
+Changelog:
+v1 -> v2:
+* reworked to stick to the existing Rust driver infrastructure
+* removed raw pointers from the Rust API
+v2 -> v3:
+* detailed safety requirements for unsafe API functions
+* removed unwrap()
+* some typo corrections
+v3 -> v4:
+* added a working example of zpool Rust API usage in the
+  documentation part
+* change to Flags arranged as a separate patch
+* improved safety requirements for ZpoolDriver trait
+v4 -> v5:
+* created a new type ZpoolHandle for handle representation on the
+  Rust side
+* improved description of Flags::from_raw()
+* pool is no more borrowed as mutable for ZpoolDriver::malloc()
+* ZpoolDriver::destroy() removed
+* improved ZpoolDriver implementation example
+* typos/markup corrections
+v5 -> v6:
+* removed zpool API is partially restored (to the minimal required
+  extent)
+* no Adapter based runtime registration is necessary
+* a Rust macro for compile time registration is introduced instead
+---
+ Documentation/admin-guide/mm/zswap.rst |   14 +-
+ MAINTAINERS                            |    1 
+ include/linux/zpool.h                  |   62 ++++++++
+ mm/Kconfig                             |   22 ++-
+ mm/zsmalloc.c                          |    3 
+ mm/zswap.c                             |   30 ++--
+ rust/bindings/bindings_helper.h        |    1 
+ rust/kernel/lib.rs                     |    2 
+ rust/kernel/zpool.rs                   |  366 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 9 files changed, 479 insertions(+), 22 deletions(-)
+
 
