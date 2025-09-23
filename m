@@ -4,179 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72207CAC5A7
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 09:01:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60678CAC5A7
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 09:03:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C2658E000F; Tue, 23 Sep 2025 05:01:07 -0400 (EDT)
+	id B4EE88E0017; Tue, 23 Sep 2025 05:03:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99A308E0001; Tue, 23 Sep 2025 05:01:07 -0400 (EDT)
+	id AFED28E0014; Tue, 23 Sep 2025 05:03:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 888EC8E000F; Tue, 23 Sep 2025 05:01:07 -0400 (EDT)
+	id 9C6328E0017; Tue, 23 Sep 2025 05:03:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BF018E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 05:01:07 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2B69B1A040B
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:01:07 +0000 (UTC)
-X-FDA: 83919920574.13.920645E
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id BD5BA8000D
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:01:04 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=L2pmNK5D;
-	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7EAFA8E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 05:03:32 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3A95714041E
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:03:32 +0000 (UTC)
+X-FDA: 83919926664.07.6E139D0
+Received: from mail-il1-f206.google.com (mail-il1-f206.google.com [209.85.166.206])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8F1A440018
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:03:30 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of 3YWLSaAkbALwu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.206 as permitted sender) smtp.mailfrom=3YWLSaAkbALwu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758618064;
+	s=arc-20220608; t=1758618210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IkO4rImhCx3UOUFiDFTs5OyK4dbhGcDUSPwdGTIbKUY=;
-	b=HTZK08LONQgolK7HErXfIcC0L/UYpgwd8ntHvipvuOirB6xI1m9I54ez2ENfi/D6kDOiFB
-	VSqma4BUZ9rtSMszGVNc23t3LRTSHR1Wyjn644zVPCx2BMqEioN0FViRajfVa1yI0Zqy0d
-	poVLoHuBukIX+O3P2JkrPVR7InLsLqY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758618064; a=rsa-sha256;
-	cv=none;
-	b=AxJN0pk+CT4hI7YSIY5RFo6NGzTO4Rd7Vio3bQV3hAD5yEsITpoIa3H8L6IxlrmRbB5ENL
-	B2gpW2begeehG7H7fkSEQriL9OOhuUlBGe8SP5N66KT5yz644Qu90d1POgdwX9vN4t+aGJ
-	aKHJTzF5lrutznxCkJKs88uaaMuAuH4=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=qawIWc6HWAuv7hppdrKNRGMrCqrgNjhh6jQdGpOVwNo=;
+	b=FpXTw3sUPcbPx4pS1oq/OSct2QuC5vGS/aZSL7pPCrKMxIwvkAJYwirBKHAj00oY21q39E
+	ma4buKzUlVXJRkRz8BYQ/Tf4czwnngGnAOof4AIChsp9aqoK8Kpk/KB+FBY9lRQeSJ1XKO
+	1DFP68bMDWH4wq6ZG/sW0AXzTBXPDtw=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=L2pmNK5D;
-	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758618064;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=IkO4rImhCx3UOUFiDFTs5OyK4dbhGcDUSPwdGTIbKUY=;
-	b=L2pmNK5DIYlJC4PBWRfsPAJNIX6wvff2lqAfH+LBQ1VdiCsWaV2n5Z9nPndTri/ayYFY4L
-	AUd0ZdnWpIxYReZXbcm/45sZpOKVDdcrhkWuUB853UyDLE5wS0VVevhBVAV9Y5Lc1l0rPD
-	fxvCq8DP80g9+YtiIkt2WnpizkuoRXc=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-637-kqDZZ4otP-yvmf43nqVIPw-1; Tue, 23 Sep 2025 05:01:01 -0400
-X-MC-Unique: kqDZZ4otP-yvmf43nqVIPw-1
-X-Mimecast-MFC-AGG-ID: kqDZZ4otP-yvmf43nqVIPw_1758618061
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3ece0fd841cso3611455f8f.0
-        for <linux-mm@kvack.org>; Tue, 23 Sep 2025 02:01:01 -0700 (PDT)
+	imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of 3YWLSaAkbALwu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.206 as permitted sender) smtp.mailfrom=3YWLSaAkbALwu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758618210; a=rsa-sha256;
+	cv=none;
+	b=7Q6nu6tLWDsppCimY+i3SsU1clmt8ghKLUHBKooBSRUe95GaOhTNp1YdGSIxvqeNL7wa4t
+	5xzREtfDVUTSfxmjwoG8MHm8KoXRq1l2uzKXwUQOQAUvw4oene1HExTjAuzhwLFwzsFA6E
+	sKneY0v6aS6vCEI9xlwifobN1Oa0Nvs=
+Received: by mail-il1-f206.google.com with SMTP id e9e14a558f8ab-42571449766so55912335ab.2
+        for <linux-mm@kvack.org>; Tue, 23 Sep 2025 02:03:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758618061; x=1759222861;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IkO4rImhCx3UOUFiDFTs5OyK4dbhGcDUSPwdGTIbKUY=;
-        b=wKic8lemyZEpQ9BWMMskmt1sieUytn7eVWoCwfW9Zrow2qDwir2M8zGZn4AV2sfe6X
-         f3QsBP7U8ruSs9QxzO88qMhqZGyCC+IaQoDqlwjKN41vjT7QM7mBwlZQvj1rZboT7lzT
-         h0Hf0R0HZBescYgEgq9kBmHWJcTC+kAXze6sp2OqBBd8tAAHRjkUmQxnfPnpIGzJpkV4
-         OwOnlMjiUaw0AqP+LfT3tonAh1xP9kf+eSYjThF85/08o+otGlESEelB8VTa6qLRhlht
-         0Rc1rbfv+gZ2EJ1HQe/a/cbKoJKJ81oe99jqQ25whFWtk5ykU+OeGFYwXyUO3iUTIKpv
-         U8/g==
-X-Gm-Message-State: AOJu0YwxNY63arIAbqIEVe/4637xvBbKmpMViiDWLC68l9C+CZ64fNa8
-	WcyhFdGXKNdQE1oPe8tiGhDjJUP4H/In4lNhQvwhs+GXWEu1Slf2+jQi94Jfx6nr4KbaadSmVcJ
-	L+Syo8US08mzUtJ09oRhgkv0fT87bDOBXC64LcqN/vOPuPWFNtl3s
-X-Gm-Gg: ASbGncvKRR2c/8XJM8pj2jwhEbSDFfR+rvApLjp3Q2ya5VT+nGHR0jeplhBV3i/8sPC
-	VzCA2j9OzG7QTJ92ZQjR3vyfBp3WK3Uyv+h96fBZgEts+U6IjWANHYBrJn43nne6dj2UYzw3Iey
-	pnCUTUxXymJVnW17c5mPGEXFEDnGWQFNg96MvbnN65eL/ePe/x8Cr69P9Xs7HIc5Uj8Xam1FzVH
-	7+/toSqitVl5OnfGbmOPmfPapx1H5ZA8DxVKIxrkJvIcFQR2Tv2Ckyb3ciqmJWAPk8S2wtroN5w
-	qv5qT4R5Y4JCDXS3HIXYpOsSX31hdFNGrvPj8kO0RqALtvgdDWRScql3/kgtBelrUxwKe/LFpLM
-	OqurYQxCh5s2YmVcWF27r72E5b2hrj+k2wjendSwHhoNvz8RKcHqFCXDqVamf6EdxDQ==
-X-Received: by 2002:a05:6000:2484:b0:3ee:15b4:174c with SMTP id ffacd0b85a97d-405c3e27714mr1264779f8f.3.1758618060362;
-        Tue, 23 Sep 2025 02:01:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG3NrQhba9sI3Pw87M3Zg2mlzDIzvm7/y7Fut6QEDxAdFkWqEoochcNJl6lnDgHbTzCBm/wbQ==
-X-Received: by 2002:a05:6000:2484:b0:3ee:15b4:174c with SMTP id ffacd0b85a97d-405c3e27714mr1264738f8f.3.1758618059633;
-        Tue, 23 Sep 2025 02:00:59 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f4f:700:c9db:579f:8b2b:717c? (p200300d82f4f0700c9db579f8b2b717c.dip0.t-ipconnect.de. [2003:d8:2f4f:700:c9db:579f:8b2b:717c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3ee0740841dsm23126417f8f.23.2025.09.23.02.00.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Sep 2025 02:00:59 -0700 (PDT)
-Message-ID: <b41ea29e-6b48-4f64-859c-73be095453ae@redhat.com>
-Date: Tue, 23 Sep 2025 11:00:57 +0200
+        d=1e100.net; s=20230601; t=1758618209; x=1759223009;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qawIWc6HWAuv7hppdrKNRGMrCqrgNjhh6jQdGpOVwNo=;
+        b=dl3UoJQmcwX7F6AgXWFnVZnHl36G2j7NgH6GCoNAA+XnMAllLESIVWgkctRJnS26zL
+         clisLKGyV9Npn4Ro6vv0LQnEKSVTW1UCipAGhXrWa/OiawjCmdW+9++xUG4VpRGSgs++
+         KpuZFswg8bQv/KODSZMWIPnifFw8kXDlHc2+RTj+eTnthDTwdF1jw8BcTPOHG6tfNYxA
+         nBld7tgz1g73dg8crZsvYNAOGjU126+N+TlNoUwJcmMEL5eKJ980khZja4h8Cml/6i6I
+         Bft23c6Bd9mPSgWDpr9+yXzo0xY4J01My3Fk7rsLeCMAArUsO3YO70jlYv3zsMwtLiOI
+         Engg==
+X-Forwarded-Encrypted: i=1; AJvYcCXRSbCr6vwiuc+3Od2mmlZ6VVjBhUeeKzYuoQ/1NbWEAfsqE1Tp8ZxjRtDf3c/YiGvjmSsNmgn/Aw==@kvack.org
+X-Gm-Message-State: AOJu0Yx7pTtYnuV+AhlwhzmK/1jVGHTKunHWCBH0X0HRKQ+Aake0EhY+
+	7m2U+w3zjHQbIVwwZ/aRkb2+lfRhJNYS8XkbOARCNAm2IcH5q/P9pV2R8Djx3djOySmRyMurszb
+	nHObpamNPHhO3WPKY12d0EI1eNPhvFTDYgm0Fet4j9/bA68tl0uoZ26NG/wo=
+X-Google-Smtp-Source: AGHT+IHJlQAz5UGV5R9SQO4x/bEQmDqd47KX/iH2j0vkgz8h1aDacoLJGydUzrLZxCA2KDvIrVwKxzCeP+1pywKQVSp7kcRis0tr
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [DISCUSSION] Fixing bad pmd due to a race condition between
- change_prot_numa() and THP migration in pre-6.5 kernels.
-To: Harry Yoo <harry.yoo@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Hugh Dickins <hughd@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Jane Chu <jane.chu@oracle.com>
-Cc: linux-mm@kvack.org, stable@vger.kernel.org
-References: <20250921232709.1608699-1-harry.yoo@oracle.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20250921232709.1608699-1-harry.yoo@oracle.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: UgFE4uXr0xBs0PGMiJ9b1WwwiInx6OlLIKFj9tx3_yk_1758618061
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BD5BA8000D
-X-Stat-Signature: quqiop183ms6bedjkuij1faf6zxb1eu4
+X-Received: by 2002:a05:6e02:3f0f:b0:424:8d44:a261 with SMTP id
+ e9e14a558f8ab-42581e2509cmr27390335ab.11.1758618209571; Tue, 23 Sep 2025
+ 02:03:29 -0700 (PDT)
+Date: Tue, 23 Sep 2025 02:03:29 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68d26261.a70a0220.4f78.0004.GAE@google.com>
+Subject: [syzbot] [fs?] [mm?] WARNING: bad unlock balance in hugetlb_vmdelete_list
+From: syzbot <syzbot+62edf7e27b2e8f754525@syzkaller.appspotmail.com>
+To: david@redhat.com, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, muchun.song@linux.dev, 
+	osalvador@suse.de, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 8F1A440018
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 4t4rbpima41duiih4xush5qbs3yzc9s1
 X-Rspam-User: 
-X-HE-Tag: 1758618064-723844
-X-HE-Meta: U2FsdGVkX19ZJSx/Htv58cocUdQ/WYwy6+w35HLPRHYoAji3F/KJxepZZGU4KGp/8J7HBmSWoGEy9RMDjEWMMUI8jiCdRoGzoFIqIeYLAzkeFcyrs6+4eVQpdnZ6HQCOzVECOXHYeIan3xVIm7YwsD+8ET0Lnt5BDA20zV21km2MItiFsoc4xUigBSb+8bhh1s2CmBzo7s/Am0Er6Yxlk3lMQIR4N/rbxwLGe7VLfrreXywFxqP/lRRigsRCvxP6UFtN7ALnyITdelVIBZd/qKWxx0vBU21XZxYI4yUyGucxblfcJxbuULJndVXxi31JNcTC5WLuhSnSf31ZuSTP5XVeQkcRYXmM/jfEvZC3DE5K6Pv6NY3bN9sdIJ+zY4ah2GY09/0y89CNCCE+NqweB5qk7yu1WUUK8RDodrkieeg8Lhm4Ik+fm+PxljxUBufPcPiFBPfbnRULAToobu2v1RRZ6h5+6OgCd77cC9A7bAAJlQiiBk2FINKXJkgMTh7aoPIJ3bJx0bS+VKsKsdssqW4XehL4C5q3hUUU6ogiYaus9rj6dI1fqu+kE1unIeZO0EAfkf5wKUIXvG/QM3+eM5od0k+zbjdZiO0m4Jd9TN4HQGAfg/m7+FrFjO5dt3M7lkBy/MykC9n7l5VbEIT1Q0BklNZS+N4dxm26s3B2lhA4OJ4fZq6Ii6sVL9uwsiw9R1qv7Q8Ci8oRtLHBI/NXW+yIvoZObzYuhVu4+/kijWpdcs3WK2799jNtJc1CCbDvKCTGlvgMZdkOaon3pB0BNwi2abBo0xXg603AuYC08jrn6Eq+inv/TGcaItYjzpjZa6udv8PjKTBTgenuclwKWm1Gzucn6CK+XgDcAPIBkqK2gtm0VU9znR+iQtWs6Lh96H6xJZcGoClFTQigNpUrqFo5QC17lQY+gjvGIz9LTRO9XoC+I5ySOn2nRc0Vfwi8Ea6WT7LMHVTzQ3cn+ev
- 8/4MFspA
- uL9PZnLAj2K6kVXQGfdKT5mPyZatkpQg2dQOu4xZY7+p9xB5kemEGM3LpyG+dMN/qh3EfwDhwqlxy2AUPWoEt9lUREB46U/9H09snJlYiuCGV0RO6GDm26hbeZRzEEfq2kW5MmvZVF4uU6+O78Us44ZAZElNMk038QHTMjMJBU7oFXQBktc+CJz0gCWajXTNQZCwMpsm4XFssm0TwkAsCCFVJsX7fvoJOoqH3zcNgw/AeJYYdGqGsvMkck9b1p9Fd6CtqRDIKx8rULCLDfnRalPhj7t3tjwBINiXQYfoPMmwsdJMUGvjhJpFwlahWJEXGm3PRWHSJXPurfYkmNRCxpsFdX3EPkAkoV3+K1zEKRfo1YiSG1BHBoW5M7DjvCuUknV8QDaxAnBNmT/e+7qbYXF0kmwUeF4SV9Z6xsHc4lWYKtoNDPazhP4BaO1ve1fXtb72BiQ4HzH97LLA/0xMAb15EW3uzyrKjQsKNc9znHpJpuljgyqf6tudl4rZHD+AbySqQyQvI4Z0TvHK1/Ch0GbcydyKXTaRckRUKtVNqaNhCCKqSyJxC+7huidnIFdPySmtgjqvDukgs/3xH0arAWLXWgxRNTlIyak3azmNOHJreJB6HG2EwO2uOPwPm8NuJxpSCS7AVvVXSPj2wNkzlO8M5gantSEY2532M
+X-HE-Tag: 1758618210-575396
+X-HE-Meta: U2FsdGVkX18ty9h/3PRxjGKjIdJzmdrH/bIktg5FAIe9MlOurO5C2ttJf5ZzMnXFqJEtVhGJOu6TAdPn/t9tGkl08mvtXO11ZolHYDjw/PBtkK6pq8lehiaTusQ5lIsVaa+/L9vdzqTf0BnxWxFaz/DXRm73RX7eR8Msyb4mZ//2Ph9Sjk4AAUveHNnXXzSHbSJ/Y9NU+m+LrHkL4GiCGc9/BvgZTw2VoFaC+veAlEEAt+EaxYQI9fmfrM+dxvMRq1kvpMhnbtd19ddDPMe92NEJaSBwK81OWPs5006G9eFj9xKmZyjOXUgskE69lqO7YZSa5r6umhle1PSh6OookielMnIQt0XwXJHZfj7st8yWXs9Pat4YPbI702w1TYQlE74dldWsv2egau7AMnekkFYIwffkEW3dF7hSoIENy7eKNet0fVtf/AOsCa/bJbyIfslkMVcE0sn7bMcGxzBWzi2oebmlI2yaAyAyKVq5RyoZwbBN6OTZNMFhix2NI1GOfi0aJS7IAS/qp8O+2cAernN/yhbPrrkoyKUZ02GCBB72D3I/cB+PI3pJh3L6jMYD/DTp9V/tkBRxhoGqmbaJQzFm/W4BZOtxFwvHw6Q/xUfbt9uEvBoYkACpIA+LOuW/WWZc/wAid4gGj4e7KYKwyNud+36+Dur+GVYOE+WuQAgaIg9TUL5pi+zkzRNHHN4Dlwqb7PzTM4ssk2//yERG/alk0m0vgy9CXPRzHwOxCEOu5968m014wd91kn7nOfZErQvQc2cYR2+4xzgiYbcuM9C78zttJ1q2IcJZVuHRx0ozMBwLVw1Uge8bsA9oa95ffAIsITofGqsXWle7CTunbESLV1l3d6y5Vu++4C0FNA82aWQXUgncgUKJoM3FSvsYD42o0FXCPdj6/Opntj5ICftqsONtG3ZhkPXTko9VIPk86yhkp2Bu7dg0Gto0xd7Hy31CUHefbZ/WgFvYUcD
+ hKP9NNr0
+ L8uhw5C9p9aHuJnAHGiDiDPpesECoVtlWKdvNOe/wd2Mkldi7lmnVcxFP52NTDN8waz1XuYp/hTMBsjZXlsmssmBfYiu0d5WOvick4siYaaa5vNxEjjr4N6M5+IXsxBeafjlB0mNxQ6COmVtYDZjNvbIcC/i367zpNgqMNhn1nuOpU+wSb0fbvydR+7WJzDSykEBvRDdLlbF0QaRCpS8OF5uzXnEl8Cqo2mVwuO3lFIeN4WpPCoOZdh40zvUUzaNZYmSNUObXx2peWNAYE+NV4qKu9Adn+IUYPW7M7xzKFxhVNHMesSIYONYG+lOpI+4eRE8dclTg2ZGOAbsvdfDsejrjlsRKLiMooCNLsZyBJW1auJXehGIH2tDOu6EQzO4SvObrnyJvqyX0N08dzEdiFJDgYxD2laIfXZlyqGC245uZAKK2FX7MDijoFENG45o36wSonEQmHRMxMQZ/1dh4AI4fmjqpMMyUPuIQmWx/mpnsUqKjDN4PTFBSlwQTqwlS2XHKbdaY3l4MJveYWxRG5ngd0osk8tFynz/se3yDJJRrITc/qr7aPmIjTvUge8gBw8vs5SySL0FXfyNDV9yShOgjwyYcU2Ufm4iVk/6t/8np8LF4OVAqbD8OqnHOxAf/baSzuFmYGYUuaKhGeOUehI3VLpcs24T6nvWbeyAKQuLUm5Is47Wm7ets79p/6fBco38ScT+Ka/eo1LzgGwbyWBwwaF7VYk7Cwsaa/BP//SnpGqUxx/j9BeNatE4tgj+cp+fT3d40Bma2S4YOuZmw/jGdXLu7BDhkMT4MVtTg7FGNGOwnoCK1HIiEs1DEK1Wz9zUW+IVRWNrwiUabdBb77V9HiGkA/YnlYHJyHXSA357guuDOExt8I/xtdoXzYO3ZhMsD+zYQqGZiFwj4GNzWdMejgDTtd7wkW4/NiPhDnbWd1vPlveK0IRyOYu8miXY61SkyoI0hKWZmnB2I2WeV4qkDw6Um
+ db1kQB25
+ fiO2/lSFPjanDhNPOu1Q64KMRI+fR9W2y3j7b8wyCki8FKiLWQDe5FiKTBueSNLdLYtobR2HT82sABZ+C1oi7cfcD2LJaesKV+LDBVtR0kPOv3TBYFuDKzaAAo15gMpItTkiT7MJg8IVGZwVgfca23+lCJhToQrCin8e1Q3CIR5WgpXuuXbbbarF34KR8oguV6X1XO51q1RNrR6v2e6wPTPKqJljLd8QxE4HQTHriLzLWQ7pA6w1KDwxS7q2pekH13YlPMAUabYxArkIis0Y1jUq4KbLFLmmAKC0N47NVCgjaWJFLVnlXiKm/7vNjogZ2JxVSDDePjFuK9B7bGDBJ3zs+VMvfwHrgAzWl6PVY1Riit8VTRhBVbR2iiDf1MoQvn8xZ0rEL1m+rZX11CGHNug9Y3TyU7P74DNXwu5VfTZ5BI3fubXGT/nE/ZsraQcFtWjGRAcyspUw0nB82y/ONxMQsz6gLxmphGNxZM0JV+3/Xt+QD4Ba31bzXadKcksj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,177 +97,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 22.09.25 01:27, Harry Yoo wrote:
-> Hi. This is supposed to be a patch, but I think it's worth discussing
-> how it should be backported to -stable, so I've labeled it as [DISCUSSION].
-> 
-> The bug described below was unintentionally fixed in v6.5 and not
-> backported to -stable. So technically I would need to use "Option 3" [A],
+Hello,
 
-What is option 3? Just to clarify: it's fine to do a backport of a 
-commit even though it was not tagged as a fix.
+syzbot found the following issue on:
 
-> but since the original patch [B] did not intend to fix a bug (and it's also
-> part of a larger patch series), it looks quite different from the patch below,
-> and I'm not sure what the backport should look like.
-> 
-> I think there are probably two options:
-> 
-> 1. Provide the description of the original patch along with a very long,
->     detailed explanation of why the patch deviates from the upstream version, or
-> 
-> 2. Post the patch below with a clarification that it was fixed upstream
->     by commit 670ddd8cdcbd1.
-> 
-> Any thoughts?
-> 
-> [A] https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
-> [B] https://lkml.kernel.org/r/725a42a9-91e9-c868-925-e3a5fd40bb4f@google.com
->      (Upstream commit 670ddd8cdcbd1)
-> 
-> In any case, no matter how we backport this, it needs some review and
-> feedback would be appreciated. The patch applies to v6.1 and v5.15, and
-> v5.10 but not v5.4.
-> 
->  From cf45867ab8e48b42160b7253390db7bdecef1455 Mon Sep 17 00:00:00 2001
-> From: Harry Yoo <harry.yoo@oracle.com>
-> Date: Thu, 11 Sep 2025 20:05:40 +0900
-> Subject: [PATCH] mm, numa: fix bad pmd by atomically checking is_swap_pmd() in
->   change_prot_numa()
-> 
-> It was observed that a bad pmd is seen when automatic NUMA balancing
-> is marking page table entries as prot_numa:
-> 
-> [2437548.196018] mm/pgtable-generic.c:50: bad pmd 00000000af22fc02(dffffffe71fbfe02)
-> 
-> With some kernel modification, the call stack was dumped:
-> 
-> [2437548.235022] Call Trace:
-> [2437548.238234]  <TASK>
-> [2437548.241060]  dump_stack_lvl+0x46/0x61
-> [2437548.245689]  panic+0x106/0x2e5
-> [2437548.249497]  pmd_clear_bad+0x3c/0x3c
-> [2437548.253967]  change_pmd_range.isra.0+0x34d/0x3a7
-> [2437548.259537]  change_p4d_range+0x156/0x20e
-> [2437548.264392]  change_protection_range+0x116/0x1a9
-> [2437548.269976]  change_prot_numa+0x15/0x37
-> [2437548.274774]  task_numa_work+0x1b8/0x302
-> [2437548.279512]  task_work_run+0x62/0x95
-> [2437548.283882]  exit_to_user_mode_loop+0x1a4/0x1a9
-> [2437548.289277]  exit_to_user_mode_prepare+0xf4/0xfc
-> [2437548.294751]  ? sysvec_apic_timer_interrupt+0x34/0x81
-> [2437548.300677]  irqentry_exit_to_user_mode+0x5/0x25
-> [2437548.306153]  asm_sysvec_apic_timer_interrupt+0x16/0x1b
-> 
-> This is due to a race condition between change_prot_numa() and
-> THP migration because the kernel doesn't check is_swap_pmd() and
-> pmd_trans_huge() atomically:
-> 
-> change_prot_numa()                      THP migration
-> ======================================================================
-> - change_pmd_range()
-> -> is_swap_pmd() returns false,
->     meaning it's not a PMD migration
->     entry.
-> 
-> 				    - do_huge_pmd_numa_page()
-> 				    -> migrate_misplaced_page() sets
-> 				       migration entries for the THP.
-> 
-> - change_pmd_range()
-> -> pmd_none_or_clear_bad_unless_trans_huge()
-> -> pmd_none() and pmd_trans_huge() returns false
-> 
-> - pmd_none_or_clear_bad_unless_trans_huge()
-> -> pmd_bad() returns true for the migration entry!
-> 
-> For the race condition described above to occur:
-> 
-> 1) AutoNUMA must be unmapping a range of pages, with at least part of the
-> range already unmapped by AutoNUMA.
-> 
-> 2) While AutoNUMA is in the process of unmapping, a NUMA hinting fault
-> occurs within that range, specifically when we are about to unmap
-> the PMD entry, between the is_swap_pmd() and pmd_trans_huge() checks.
-> 
-> So this is a really rare race condition and it's observed that it takes
-> usually a few days of autonuma-intensive testing to trigger.
-> 
-> A bit of history on a similar race condition in the past:
-> 
-> In fact, a similar race condition caused by not checking pmd_trans_huge()
-> atomically was reported [1] in 2017. However, instead of the patch [1],
-> another patch series [3] fixed the problem [2] by not clearing the pmd
-> entry but invaliding it instead (so that pmd_trans_huge() would still
-> return true).
-> 
-> Despite patch series [3], the bad pmd error continued to be reported
-> in mainline. As a result, [1] was resurrected [4] and it landed mainline
-> in 2020 in a hope that it would resolve the issue. However, now it turns
-> out that [3] was not sufficient.
-> 
-> Fix this race condition by checking is_swap_pmd() and pmd_trans_huge()
-> atomically. With that, the kernel should see either
-> pmd_trans_huge() == true, or is_swap_pmd() == true when another task is
-> migrating the page concurrently.
-> 
-> This bug was introduced when THP migration support was added. More
-> specifically, by commit 84c3fc4e9c56 ("mm: thp: check pmd migration entry
-> in common path")).
-> 
-> It is unintentionally fixed since v6.5 by commit 670ddd8cdcbd1
-> ("mm/mprotect: delete pmd_none_or_clear_bad_unless_trans_huge()") while
-> removing pmd_none_or_clear_bad_unless_trans_huge() function. But it's not
-> backported to -stable because it was fixed unintentionally.
-> 
-> Link: https://lore.kernel.org/linux-mm/20170410094825.2yfo5zehn7pchg6a@techsingularity.net [1]
-> Link: https://lore.kernel.org/linux-mm/8A6309F4-DB76-48FA-BE7F-BF9536A4C4E5@cs.rutgers.edu [2]
-> Link: https://lore.kernel.org/linux-mm/20170302151034.27829-1-kirill.shutemov@linux.intel.com [3]
-> Link: https://lore.kernel.org/linux-mm/20200216191800.22423-1-aquini@redhat.com [4]
-> Fixes: 84c3fc4e9c56 ("mm: thp: check pmd migration entry in common path")
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> ---
->   mm/mprotect.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/mprotect.c b/mm/mprotect.c
-> index 668bfaa6ed2a..c0e796c0f9b0 100644
-> --- a/mm/mprotect.c
-> +++ b/mm/mprotect.c
-> @@ -303,7 +303,7 @@ static inline int pmd_none_or_clear_bad_unless_trans_huge(pmd_t *pmd)
+HEAD commit:    846bd2225ec3 Add linux-next specific files for 20250919
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=13263534580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=135377594f35b576
+dashboard link: https://syzkaller.appspot.com/bug?extid=62edf7e27b2e8f754525
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14a118e2580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17e204e2580000
 
-This is like the worst function, ever :D
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/c53d48022f8a/disk-846bd222.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/483534e784c8/vmlinux-846bd222.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/721b36eec9b3/bzImage-846bd222.xz
 
->   
->   	if (pmd_none(pmdval))
->   		return 1;
-> -	if (pmd_trans_huge(pmdval))
-> +	if (is_swap_pmd(pmdval) || pmd_trans_huge(pmdval))
->   		return 0;
->   	if (unlikely(pmd_bad(pmdval))) {
->   		pmd_clear_bad(pmd);
-> @@ -373,7 +373,7 @@ static inline unsigned long change_pmd_range(struct mmu_gather *tlb,
->   		 * Hence, it's necessary to atomically read the PMD value
->   		 * for all the checks.
->   		 */
-> -		if (!is_swap_pmd(*pmd) && !pmd_devmap(*pmd) &&
-> +		if (!pmd_devmap(*pmd) &&
->   		     pmd_none_or_clear_bad_unless_trans_huge(pmd))
->   			goto next;
->   
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+62edf7e27b2e8f754525@syzkaller.appspotmail.com
 
-This is all because we are trying to be smart and walking page tables 
-without the page table lock held. This is just absolutely nasty.
+=====================================
+WARNING: bad unlock balance detected!
+syzkaller #0 Not tainted
+-------------------------------------
+syz.0.8060/30977 is trying to release lock (&vma_lock->rw_sema) at:
+[<ffffffff82903959>] hugetlb_vmdelete_list+0x179/0x1c0 fs/hugetlbfs/inode.c:501
+but there are no more locks to release!
 
-What about the following check:
+other info that might help us debug this:
+3 locks held by syz.0.8060/30977:
+ #0: ffff88807d8da420 (sb_writers#12){.+.+}-{0:0}, at: mnt_want_write+0x41/0x90 fs/namespace.c:508
+ #1: ffff888034404648 (&sb->s_type->i_mutex_key#20){+.+.}-{4:4}, at: inode_lock_killable include/linux/fs.h:985 [inline]
+ #1: ffff888034404648 (&sb->s_type->i_mutex_key#20){+.+.}-{4:4}, at: do_truncate+0x171/0x220 fs/open.c:63
+ #2: ffff888034404918 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}, at: i_mmap_lock_write include/linux/fs.h:548 [inline]
+ #2: ffff888034404918 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}, at: hugetlb_vmtruncate fs/hugetlbfs/inode.c:639 [inline]
+ #2: ffff888034404918 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}, at: hugetlbfs_setattr+0x489/0x6d0 fs/hugetlbfs/inode.c:879
 
-if (is_swap_pmd(*pmd) || pmd_trans_huge(*pmd) || pmd_devmap(*pmd)) {
+stack backtrace:
+CPU: 1 UID: 0 PID: 30977 Comm: syz.0.8060 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/18/2025
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ print_unlock_imbalance_bug+0xdc/0xf0 kernel/locking/lockdep.c:5298
+ __lock_release kernel/locking/lockdep.c:5537 [inline]
+ lock_release+0x269/0x3e0 kernel/locking/lockdep.c:5889
+ up_write+0x2d/0x420 kernel/locking/rwsem.c:1642
+ hugetlb_vmdelete_list+0x179/0x1c0 fs/hugetlbfs/inode.c:501
+ hugetlb_vmtruncate fs/hugetlbfs/inode.c:641 [inline]
+ hugetlbfs_setattr+0x4d1/0x6d0 fs/hugetlbfs/inode.c:879
+ notify_change+0xc1a/0xf40 fs/attr.c:546
+ do_truncate+0x1a4/0x220 fs/open.c:68
+ handle_truncate fs/namei.c:3516 [inline]
+ do_open fs/namei.c:3899 [inline]
+ path_openat+0x306c/0x3830 fs/namei.c:4054
+ do_filp_open+0x1fa/0x410 fs/namei.c:4081
+ do_sys_openat2+0x121/0x1c0 fs/open.c:1435
+ do_sys_open fs/open.c:1450 [inline]
+ __do_sys_open fs/open.c:1458 [inline]
+ __se_sys_open fs/open.c:1454 [inline]
+ __x64_sys_open+0x11e/0x150 fs/open.c:1454
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fdea5b8eec9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fdea6945038 EFLAGS: 00000246 ORIG_RAX: 0000000000000002
+RAX: ffffffffffffffda RBX: 00007fdea5de5fa0 RCX: 00007fdea5b8eec9
+RDX: 0000000000000100 RSI: 000000000014927e RDI: 0000200000000340
+RBP: 00007fdea5c11f91 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fdea5de6038 R14: 00007fdea5de5fa0 R15: 00007ffe42e704f8
+ </TASK>
+------------[ cut here ]------------
+DEBUG_RWSEMS_WARN_ON((rwsem_owner(sem) != current) && !rwsem_test_oflags(sem, RWSEM_NONSPINNABLE)): count = 0x0, magic = 0xffff8880295a5408, owner = 0x1, curr 0xffff8880260d9e40, list empty
+WARNING: kernel/locking/rwsem.c:1381 at __up_write kernel/locking/rwsem.c:1380 [inline], CPU#1: syz.0.8060/30977
+WARNING: kernel/locking/rwsem.c:1381 at up_write+0x3a2/0x420 kernel/locking/rwsem.c:1643, CPU#1: syz.0.8060/30977
+Modules linked in:
+CPU: 1 UID: 0 PID: 30977 Comm: syz.0.8060 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/18/2025
+RIP: 0010:__up_write kernel/locking/rwsem.c:1380 [inline]
+RIP: 0010:up_write+0x3a2/0x420 kernel/locking/rwsem.c:1643
+Code: d0 48 c7 c7 00 f0 aa 8b 48 c7 c6 20 f2 aa 8b 48 8b 14 24 4c 89 f1 4d 89 e0 4c 8b 4c 24 08 41 52 e8 b3 39 e6 ff 48 83 c4 08 90 <0f> 0b 90 90 e9 6d fd ff ff 48 c7 c1 74 0b e5 8f 80 e1 07 80 c1 03
+RSP: 0018:ffffc900051076c8 EFLAGS: 00010282
+RAX: b37f99c54516e500 RBX: ffff8880295a5408 RCX: ffff8880260d9e40
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000002
+RBP: dffffc0000000000 R08: ffffc900051073e7 R09: 1ffff92000a20e7c
+R10: dffffc0000000000 R11: fffff52000a20e7d R12: 0000000000000001
+R13: ffff8880295a5460 R14: ffff8880295a5408 R15: 1ffff110052b4a82
+FS:  00007fdea69456c0(0000) GS:ffff8881258a2000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fdea51fed58 CR3: 00000000779ba000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ hugetlb_vmdelete_list+0x179/0x1c0 fs/hugetlbfs/inode.c:501
+ hugetlb_vmtruncate fs/hugetlbfs/inode.c:641 [inline]
+ hugetlbfs_setattr+0x4d1/0x6d0 fs/hugetlbfs/inode.c:879
+ notify_change+0xc1a/0xf40 fs/attr.c:546
+ do_truncate+0x1a4/0x220 fs/open.c:68
+ handle_truncate fs/namei.c:3516 [inline]
+ do_open fs/namei.c:3899 [inline]
+ path_openat+0x306c/0x3830 fs/namei.c:4054
+ do_filp_open+0x1fa/0x410 fs/namei.c:4081
+ do_sys_openat2+0x121/0x1c0 fs/open.c:1435
+ do_sys_open fs/open.c:1450 [inline]
+ __do_sys_open fs/open.c:1458 [inline]
+ __se_sys_open fs/open.c:1454 [inline]
+ __x64_sys_open+0x11e/0x150 fs/open.c:1454
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fdea5b8eec9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fdea6945038 EFLAGS: 00000246 ORIG_RAX: 0000000000000002
+RAX: ffffffffffffffda RBX: 00007fdea5de5fa0 RCX: 00007fdea5b8eec9
+RDX: 0000000000000100 RSI: 000000000014927e RDI: 0000200000000340
+RBP: 00007fdea5c11f91 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fdea5de6038 R14: 00007fdea5de5fa0 R15: 00007ffe42e704f8
+ </TASK>
 
-Couldn't we have a similar race there when we are concurrently migrating?
 
--- 
-Cheers
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-David / dhildenb
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
