@@ -4,121 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4781CAC5AC
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 16:23:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39927CAC5A7
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 16:30:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E6628E000A; Tue, 23 Sep 2025 12:23:30 -0400 (EDT)
+	id 94C8D8E000F; Tue, 23 Sep 2025 12:30:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BE228E0001; Tue, 23 Sep 2025 12:23:30 -0400 (EDT)
+	id 924B38E0001; Tue, 23 Sep 2025 12:30:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D40E8E000A; Tue, 23 Sep 2025 12:23:30 -0400 (EDT)
+	id 8618C8E000F; Tue, 23 Sep 2025 12:30:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 18B7F8E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 12:23:30 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CA1F7C01C6
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 16:23:29 +0000 (UTC)
-X-FDA: 83921035338.10.804F236
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 881DBA001C
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 16:23:27 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HWYJ2zyG;
-	spf=pass (imf15.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 739CE8E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 12:30:21 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0D95DBA2C0
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 16:30:21 +0000 (UTC)
+X-FDA: 83921052642.23.80E1602
+Received: from 003.mia.mailroute.net (003.mia.mailroute.net [199.89.3.6])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 1A96412000B
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 16:30:18 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=acm.org header.s=mr01 header.b=yOTZEw1I;
+	spf=pass (imf29.hostedemail.com: domain of bvanassche@acm.org designates 199.89.3.6 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
+	dmarc=pass (policy=reject) header.from=acm.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758644607;
+	s=arc-20220608; t=1758645019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UKss1Vq/qNskbdjEuoAF34BI2EldAPZBijh148HYB4w=;
-	b=xEjj80hF0H63F27WjvzV61wuJaGsXuCekxSLNTAdEkozdpKIvU+eijho4gUVRLM0EFDa6a
-	kcowkXWh9QjuG8WfCJEy/h5wc+SJJqdxet4qVMmkSknZEJoiMYKzhwPoji6l2Ce67fslfs
-	7zM9iw91cp+M5JAb+q0IlvLl6byWah8=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HWYJ2zyG;
-	spf=pass (imf15.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758644607; a=rsa-sha256;
+	bh=y99uiFJpTg3J4KVIyd3kcbAn72jmKkYosX7Y/88AOVc=;
+	b=5bIkVFWUppuhuDB+EN+X/SQvmL6FaeVGxEz1bodanNTzfVCklMuwJSbzqwRrStl6OVZ+BT
+	/NPnjJfKqWNKOVnEsM9xVICpo71Go6s+ReYCDeZGcNpndA6DdciRI59cQfJxLKHF7VVFt1
+	G2BnE5XCLVEkLIDdfvtdjX1QnTUBkek=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758645019; a=rsa-sha256;
 	cv=none;
-	b=bs0wtKKxyg0QHgoqYQaC5xoiw2C6WiaHLFEoY1lb3u7gYxzxtiElws7q7jqqqzks0PW9mU
-	yvKVMBDHKhKCBrJfU5JVIyUcYPPFIPs0RWeV3EymSyyEDnXxCe795KYXY5vgZ1EGXHOsj5
-	fLpQ7+Yflje+AVMGoC/AXebyJgCJduM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758644607;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UKss1Vq/qNskbdjEuoAF34BI2EldAPZBijh148HYB4w=;
-	b=HWYJ2zyGZAujigSZRjhzt1uWoS2Yn2OrbozB31aUijfbAtmWJo1rx2kVeg0ClbAgzr5qDB
-	VlJbzJZTNjPv3gzhSqmiXU+umJhiT3rXgE7suCiTJxO5BYT6Yi0Exx0SXSW2OgsCMkpeVO
-	8azxZwWQ9YJx2rdykufOhqZoYKsEGi8=
-Received: from mail-yb1-f200.google.com (mail-yb1-f200.google.com
- [209.85.219.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-330-ZPzWFByQPUiWesQZc0Pm9w-1; Tue, 23 Sep 2025 12:23:24 -0400
-X-MC-Unique: ZPzWFByQPUiWesQZc0Pm9w-1
-X-Mimecast-MFC-AGG-ID: ZPzWFByQPUiWesQZc0Pm9w_1758644604
-Received: by mail-yb1-f200.google.com with SMTP id 3f1490d57ef6-ea7624be2e7so8135015276.3
-        for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:23:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758644604; x=1759249404;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UKss1Vq/qNskbdjEuoAF34BI2EldAPZBijh148HYB4w=;
-        b=AwgxHQxq2/1r+9V9Pb4iEoWMrGPrj0tFwOS20rOaeO2IHGuUNWNNEshEHbQrArQ0BT
-         QKlu9jeAvb/99iqMzHs/FFotS9GtsezTocY+UC5bLGdWProZX8tyTt4WTVU9YfiEnJwI
-         I7ijO3/QEml60pXGcsP0C0JEb+WVGlR8CCh7oDZlKyM/S1WCZhnol7CL22mCIcp0bZJP
-         buxglqiBCog6aY05iC2kcNsRPLLqWebtTFzS4r080w+8B9iKSH+lfBn9MIVGPc19IKm0
-         2I+NNpMuw85xekXfkahrr73OAftoFr0IY+BmDlAgbEu3skfHPLpOptoWI7+tCmqH6g8k
-         O5zw==
-X-Forwarded-Encrypted: i=1; AJvYcCUFpC/pUUXBVb9JtL2H5fc+CnZ9xklabDKgsFrUVqPPUv9bvX8myellXW0vKtBSDre5Totp8ai72Q==@kvack.org
-X-Gm-Message-State: AOJu0YxXSbTgGMn8ZlOo4acQRoNRbdK0m144OoJ2sGXbOhRezEJGM5Sw
-	yCweMEURgE4vNjbHOQbjrLumELDAKnTntutMwYdsGfqRrG/XvCRMDFTAygrIyXr8Z5c76+EjDiI
-	uefbdMFBjoWNkY3C8PbVfEBsp30EgIwZbuw0rrg//H3KVOrdmZEX8bJXkcgfB/C2UCpVBsIGtrQ
-	At63ZuDUA+xtS8oCCEpH68kwzj4dI=
-X-Gm-Gg: ASbGnctiEFw1PXZL7BwFdWvQtQoU8Bii1IyA+0rH2vGiY51QsXeezBk3CnrTVys+Qo+
-	bPzj5Izw78GTXzwAWe6c5p2oxhnIGTYHV57j0woazyiupApOu0HGq1jxyRIXCnPWbKrP0MTXKBf
-	hZc7EOLN78Ry4eQu7dwr9S1+PYYBjVEnYmKsw=
-X-Received: by 2002:a05:6902:6c0d:b0:e97:d52:c5c9 with SMTP id 3f1490d57ef6-eb32e153c6emr2423039276.1.1758644603733;
-        Tue, 23 Sep 2025 09:23:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IElG1psvLGlrCOOsQeaMXrxpi0LR+KmCR4yk6DkzIcT1sNcAqVvTC0+LYxsDcTOe5Xa5c3B8XAFOPMszGJUWWY=
-X-Received: by 2002:a05:6902:6c0d:b0:e97:d52:c5c9 with SMTP id
- 3f1490d57ef6-eb32e153c6emr2423010276.1.1758644603205; Tue, 23 Sep 2025
- 09:23:23 -0700 (PDT)
+	b=P1o6V36GouUyp3GV7R2u8JBzN9brEMPHc+sVO7GTjMpvkpWYaLcvbaU6W19aP4McKR1lmN
+	Y0ykcMWEkR441SsNfJA+uGJX2sqa10pNyYzdcLPt/rG9GVXLBG7Ilof/lfsfFGoTPJuT1+
+	c4yOs2K8CyTVGz7LEICF2NUvKOHf6L0=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=acm.org header.s=mr01 header.b=yOTZEw1I;
+	spf=pass (imf29.hostedemail.com: domain of bvanassche@acm.org designates 199.89.3.6 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
+	dmarc=pass (policy=reject) header.from=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 003.mia.mailroute.net (Postfix) with ESMTP id 4cWQSV1HyBzlgqVZ;
+	Tue, 23 Sep 2025 16:30:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1758645016; x=1761237017; bh=y99uiFJpTg3J4KVIyd3kcbAn
+	72jmKkYosX7Y/88AOVc=; b=yOTZEw1IonbK6S4YQu8OWISBLAJhhYSP/5b1yztt
+	FENOZVRUHQYT3DFTrdQIFpH0G4xhr6eV90/OGPXWQk3Lm6nUcLhrwnvNgnb4H8zx
+	LrFNE31WMK/0aRLQVMgcYZWhjhH/PBoMUMW/StiIQ5FxnObg0GLyRu4wLVmoDPgk
+	iblmp101VvAayHANSSGUBWU9+ycDBnnM0tP7ifpBUlD8M24UNbp1TbsQA8qTJOS/
+	oSgRSYO6d4KyumKliD+qVt8L8H6X620qP043WBF44DZRNQndVYAsEk93+CmZ2vYk
+	h//10Nm4QGas9Q/F5equAPpNER4B6a+26Wz8eDMlMPqd1Q==
+X-Virus-Scanned: by MailRoute
+Received: from 003.mia.mailroute.net ([127.0.0.1])
+ by localhost (003.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id PM0XBfolZEbQ; Tue, 23 Sep 2025 16:30:16 +0000 (UTC)
+Received: from [100.119.48.131] (unknown [104.135.180.219])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 003.mia.mailroute.net (Postfix) with ESMTPSA id 4cWQSC4mDZzlgqV6;
+	Tue, 23 Sep 2025 16:30:01 +0000 (UTC)
+Message-ID: <31091c95-1d0c-4e5a-a53b-929529bf0996@acm.org>
+Date: Tue, 23 Sep 2025 09:30:00 -0700
 MIME-Version: 1.0
-References: <20250922140938.27343-1-richard.weiyang@gmail.com>
-In-Reply-To: <20250922140938.27343-1-richard.weiyang@gmail.com>
-From: Nico Pache <npache@redhat.com>
-Date: Tue, 23 Sep 2025 10:22:57 -0600
-X-Gm-Features: AS18NWCrgPCxhPHqfM8AUhmc4HSoU4EXElLGKZj86ch-rSpxXn-w_lc5CCxqcdM
-Message-ID: <CAA1CXcCjDZ9Q6d9X4-dXsUfLPHMNYehZUTARzMNmZJvaSP_t3A@mail.gmail.com>
-Subject: Re: [Patch v2] mm/khugepaged: use start_addr/addr for better reading
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com, 
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	lance.yang@linux.dev, linux-mm@kvack.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: olGUl3AKQzJQwSURWi4u1jJlsiJeYcm7eUmvxUwCVwI_1758644604
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 881DBA001C
-X-Rspamd-Server: rspam05
-X-Stat-Signature: qqcoa5d5isatdhxnkek3ew4xpndxp7b3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] driver: loop: introduce synchronized read for loop
+ driver
+To: Zhaoyang Huang <huangzhaoyang@gmail.com>,
+ Christoph Hellwig <hch@infradead.org>
+Cc: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>, Jens Axboe
+ <axboe@kernel.dk>, Ming Lei <ming.lei@redhat.com>, linux-mm@kvack.org,
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+ steve.kang@unisoc.com, Minchan Kim <minchan@kernel.org>
+References: <20250922032915.3924368-1-zhaoyang.huang@unisoc.com>
+ <aNGQ66CD9F82BFP-@infradead.org>
+ <CAGWkznGf1eN-iszG21jGNq13C9yz8S0PW03hLc40Gjhn6LRp0Q@mail.gmail.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <CAGWkznGf1eN-iszG21jGNq13C9yz8S0PW03hLc40Gjhn6LRp0Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: gxzfgcjwcs7gcop6kf3fmcmpwz5rorzb
 X-Rspam-User: 
-X-HE-Tag: 1758644607-139868
-X-HE-Meta: U2FsdGVkX18QqHy8rwIJisKbTF7ZHysWC6OECgk4BB01bM6dw2WC0tP+TQUjmUJdqPcCESo4RB6K/mVmPxvCJREjOilJAqx1gNpXkARogl8HIQWVn7OhiXZ8p59HTYLc9A6wk8ux1kGFFHYv4sVeL06v97v+WDqFo60V38Sl9kPQbDa1gE3MfsSVQatud5hNUflx6DxIB/rHmpHgf+gFMUdi7hhqHiJo4gQTk6zDJeVUOoZ16K1CpFLsQGj2qIVxHBZ7ukrL4DWlM2DTJfEUOR4Y3aKo8bcfg2E3f8kwwGYW8v0HyLhN3jLHpi7jUuNs3mGXy41OWyj8PiN3JawKfmQt9OK3puu/qmoBalhgfF+PYi4ivAhGc+vRJmeRXix3JyShlHMozEYLK6NTXsvx6SH6bc4mUPdTWngelLtQRkE42Qh2xlfUnwrOMqlqww4quR2u7dBf3wEsWLFnifYHhS02HG9S1925OM4MR8NcBJE3cXmvP/6YuoC5WHIvnoSS9fqqifWyJk1fcr03Lz50UmS2QmxI7PByCUtQ4ZaHUMzo7WTj4RwcQAmSSqPzWisl/LQ4ycgFhqXPHqlHLTL+zrYTU/PM0ClCc0N6vWiUFFMW8XRRx67n5lVurr8oWFLzuwsCdsORt6z+atOY0wRiWurbXaefmBr4G/TiFT6eoZGquDbtYFfdjGuFvjImkLa1/F+Sekv8FgXOnTTg/16DjtyWyUMygx2WQoencCV7dBYKO/05VGeQiPGj1W4UrhTMKtimtKjUSAzeUj4xlXF6ddWo1+KqDOOLWdYkXBkQvGBTWOpxDrPGTKvx1uR2fFBfzfYNaSmUMkp0H3V/E2T3DzIcj3UE50KK4R//X3s9zlxg6re2axzFdA2jkLZACDtswpEU+gBHiPaMORVui77YtS1ail6jgtYnqnaW2XiFDmsJTIgvIQDcQNGSbiO/jkiCSnsR1iuS66WWW4YJMny
- s8oE0wlF
- MTIWE/f2dQPQP72ES9dVPyhS5ouqOezK10/SilmsfX5TmOm0kpsKtNKwjV2FUxeJGepYJwXcWCuaB6H4U4rubQngn36LaYM43ovu+Yf31ILe0j7g4G6GScmtnBBkB521zNyCRKRyByCeTIyPLkd03ds2KE8b164ne2lkXfbDW5X1chvZDJ5Iw2SylpsGt97zYOGbpCAsSTP/ScR/F4wzbMb8TUPsEJhxlizTb2e666VFbaJxgywu6p82a/pmtNde4KvfnDpGLQEXibbbk8rz/FWW8nI3yo6wxRzd8yvgrogRPHAMx0BieKL5sCInJPMe5PcRtDtv5oKVZd20TGhW6VeZojXzDUokBKn7QzYfdfTP/yRUMVhcKQA5wjqtkJqhK+mROOnMXRN5lfVUSsO2NHXu5FoxLchOlRY1dPZ/dI6h0tM2ASK8+Py6lU0MACKeDBmV5I3vNI6hmotk=
+X-Rspamd-Queue-Id: 1A96412000B
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758645018-767376
+X-HE-Meta: U2FsdGVkX18IdTrx+9d+ST85vrnxTWoYeV5sqaxfcWrKPtWYJqPXKxAq2tJpnl8h+Jvthyii+r3x4uYU8FfDLQ/wymaHqR2fQN7WynPDQIfx/DciP3j3QQrIlw7n4EJhfM00/cdVtdHpbfeg2D7ECfUEMeQhOMcT3aIVGd6Ccsz3XyepRhCTo3xbMooOF70VFowevxzlet2486FrEhOPBuPwAYhWeIDyQr4QeZF9mdIAzz7l7k3eBlpnKB5VwyIhohNDh+CyneLaoi4Xc+rLiQI6+h5qAGH4J5yRYeCiidBZQLlFg2pU8eAxNsH3oPEw2V+Tc6OVRlI27ctadeTU6eeG/1+Ip/uOYGLfJpFhYaACAw2zk8UUk/XfmDOwY8kspEZMltnXBhiaXH1chninp7C08rPMrwDcDmhnH1kLc/UZdbgAwg/90cbxEk4JC4jeFPz0fH/zFwL8q8NabGYyeOEE3Z08SQzoL0r/+WKxJfEfo1fA30y8tY4dlVKKohY6oiSwrqrLQbbPvOBr6V5rNGuXEJMNk5w4bx4yQ50k5p+breiEL83dOQewkKFWgOuWIl0cG6Fr43/jv5DNmcDsBHNN8YJEPROPQS47kHND6xO77MZEIVZgDvSikpouV6zIrqQgcx0qdUKewifszs+fEIiGvy/gJkBsRK07e0znPrv2bPKQ6K1IEhE9M/Arja0vYwq4je+OyD09LzZ45SfptOzMlSOkikCNH9zKUyfNz+i5q5b8OOmb10dWU6kJSn42FPgLajF7XvGwpHukp/QD3H4SeGa90vNe7jIhyv00LXtWd97S3S/farav1o+ClyIjV5i5RtbyxjwtvjOZvxr2CrE6bB0cJO1Ms+WfOM485rml0dmJhmRm2KkXagLezwLhUkLJ8OYWhec2XXeMwkDPyBkI340tFeUgyeukTxyEDu/eMJXHOEeGlnGLN0D3js/DTUCEn7JcNNDM4DYnU5n
+ oFCnlU8c
+ pR91BHq9NUnbKY92xZP+zulumYFsnzp3PTRlv9HdaV/avEVJ3cciicpv539r9KURQr/dDSKABZO1YCAQ43S9RyWjgfmCF7KABj3v7FYrVmRvsw/mMsJBgsbvECbFCuXMfv1p2cPGa/sruu/OSe09I+gIHF5KIZkaBbw7VLOZM7WNtKuwyIsDq+SmXhnCDLkudRrI78pS4txC6Nkvw6ouTSGGI6p924sZHxQuT6OI3G7HLtcRvONYKmdWazUvZ+aFiSp4Vo1Jofh0ntcGayqwh0vRDCeXl9R0tSJy6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,211 +110,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 22, 2025 at 8:09=E2=80=AFAM Wei Yang <richard.weiyang@gmail.com=
-> wrote:
->
-> When collapse a pmd, there are two address in use:
->
->   * address points to the start of pmd
->   * address points to each individual page
->
-> Current naming is not easy to distinguish these two and error prone.
->
-> Considering the plan to collapse mTHP, name the first one to start_addr
-> and second one to addr for better reading and consistency.
->
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Suggested-by: David Hildenbrand <david@redhat.com>
->
-LGTM!
+On 9/22/25 8:50 PM, Zhaoyang Huang wrote:
+> Yes, we have tried to solve this case from the above perspective. As
+> to the scheduler, packing small tasks to one core(Big core in ARM)
+> instead of spreading them is desired for power-saving reasons. To the
+> number of kworker threads, it is upon current design which will create
+> new work for each blkcg. According to ANDROID's current approach, each
+> PID takes one cgroup and correspondingly a kworker thread which
+> actually induces this scenario.
 
-Reviewed-by: Nico Pache <npache@redhat.com>
-> ---
-> v2: use start_addr/addr instead
-> ---
->  mm/khugepaged.c | 43 ++++++++++++++++++++++---------------------
->  1 file changed, 22 insertions(+), 21 deletions(-)
->
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index ec3f91a345a0..e3f7d1760567 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -537,18 +537,19 @@ static void release_pte_pages(pte_t *pte, pte_t *_p=
-te,
->  }
->
->  static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
-> -                                       unsigned long address,
-> +                                       unsigned long start_addr,
->                                         pte_t *pte,
->                                         struct collapse_control *cc,
->                                         struct list_head *compound_pageli=
-st)
->  {
->         struct page *page =3D NULL;
->         struct folio *folio =3D NULL;
-> +       unsigned long addr =3D start_addr;
->         pte_t *_pte;
->         int none_or_zero =3D 0, shared =3D 0, result =3D SCAN_FAIL, refer=
-enced =3D 0;
->
->         for (_pte =3D pte; _pte < pte + HPAGE_PMD_NR;
-> -            _pte++, address +=3D PAGE_SIZE) {
-> +            _pte++, addr +=3D PAGE_SIZE) {
->                 pte_t pteval =3D ptep_get(_pte);
->                 if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
->                         ++none_or_zero;
-> @@ -570,7 +571,7 @@ static int __collapse_huge_page_isolate(struct vm_are=
-a_struct *vma,
->                         result =3D SCAN_PTE_UFFD_WP;
->                         goto out;
->                 }
-> -               page =3D vm_normal_page(vma, address, pteval);
-> +               page =3D vm_normal_page(vma, addr, pteval);
->                 if (unlikely(!page) || unlikely(is_zone_device_page(page)=
-)) {
->                         result =3D SCAN_PAGE_NULL;
->                         goto out;
-> @@ -655,8 +656,8 @@ static int __collapse_huge_page_isolate(struct vm_are=
-a_struct *vma,
->                  */
->                 if (cc->is_khugepaged &&
->                     (pte_young(pteval) || folio_test_young(folio) ||
-> -                    folio_test_referenced(folio) || mmu_notifier_test_yo=
-ung(vma->vm_mm,
-> -                                                                    addr=
-ess)))
-> +                    folio_test_referenced(folio) ||
-> +                    mmu_notifier_test_young(vma->vm_mm, addr)))
->                         referenced++;
->         }
->
-> @@ -985,21 +986,21 @@ static int check_pmd_still_valid(struct mm_struct *=
-mm,
->   */
->  static int __collapse_huge_page_swapin(struct mm_struct *mm,
->                                        struct vm_area_struct *vma,
-> -                                      unsigned long haddr, pmd_t *pmd,
-> +                                      unsigned long start_addr, pmd_t *p=
-md,
->                                        int referenced)
->  {
->         int swapped_in =3D 0;
->         vm_fault_t ret =3D 0;
-> -       unsigned long address, end =3D haddr + (HPAGE_PMD_NR * PAGE_SIZE)=
-;
-> +       unsigned long addr, end =3D start_addr + (HPAGE_PMD_NR * PAGE_SIZ=
-E);
->         int result;
->         pte_t *pte =3D NULL;
->         spinlock_t *ptl;
->
-> -       for (address =3D haddr; address < end; address +=3D PAGE_SIZE) {
-> +       for (addr =3D start_addr; addr < end; addr +=3D PAGE_SIZE) {
->                 struct vm_fault vmf =3D {
->                         .vma =3D vma,
-> -                       .address =3D address,
-> -                       .pgoff =3D linear_page_index(vma, address),
-> +                       .address =3D addr,
-> +                       .pgoff =3D linear_page_index(vma, addr),
->                         .flags =3D FAULT_FLAG_ALLOW_RETRY,
->                         .pmd =3D pmd,
->                 };
-> @@ -1009,7 +1010,7 @@ static int __collapse_huge_page_swapin(struct mm_st=
-ruct *mm,
->                          * Here the ptl is only used to check pte_same() =
-in
->                          * do_swap_page(), so readonly version is enough.
->                          */
-> -                       pte =3D pte_offset_map_ro_nolock(mm, pmd, address=
-, &ptl);
-> +                       pte =3D pte_offset_map_ro_nolock(mm, pmd, addr, &=
-ptl);
->                         if (!pte) {
->                                 mmap_read_unlock(mm);
->                                 result =3D SCAN_PMD_NULL;
-> @@ -1252,7 +1253,7 @@ static int collapse_huge_page(struct mm_struct *mm,=
- unsigned long address,
->
->  static int hpage_collapse_scan_pmd(struct mm_struct *mm,
->                                    struct vm_area_struct *vma,
-> -                                  unsigned long address, bool *mmap_lock=
-ed,
-> +                                  unsigned long start_addr, bool *mmap_l=
-ocked,
->                                    struct collapse_control *cc)
->  {
->         pmd_t *pmd;
-> @@ -1261,26 +1262,26 @@ static int hpage_collapse_scan_pmd(struct mm_stru=
-ct *mm,
->         int none_or_zero =3D 0, shared =3D 0;
->         struct page *page =3D NULL;
->         struct folio *folio =3D NULL;
-> -       unsigned long _address;
-> +       unsigned long addr;
->         spinlock_t *ptl;
->         int node =3D NUMA_NO_NODE, unmapped =3D 0;
->
-> -       VM_BUG_ON(address & ~HPAGE_PMD_MASK);
-> +       VM_BUG_ON(start_addr & ~HPAGE_PMD_MASK);
->
-> -       result =3D find_pmd_or_thp_or_none(mm, address, &pmd);
-> +       result =3D find_pmd_or_thp_or_none(mm, start_addr, &pmd);
->         if (result !=3D SCAN_SUCCEED)
->                 goto out;
->
->         memset(cc->node_load, 0, sizeof(cc->node_load));
->         nodes_clear(cc->alloc_nmask);
-> -       pte =3D pte_offset_map_lock(mm, pmd, address, &ptl);
-> +       pte =3D pte_offset_map_lock(mm, pmd, start_addr, &ptl);
->         if (!pte) {
->                 result =3D SCAN_PMD_NULL;
->                 goto out;
->         }
->
-> -       for (_address =3D address, _pte =3D pte; _pte < pte + HPAGE_PMD_N=
-R;
-> -            _pte++, _address +=3D PAGE_SIZE) {
-> +       for (addr =3D start_addr, _pte =3D pte; _pte < pte + HPAGE_PMD_NR=
-;
-> +            _pte++, addr +=3D PAGE_SIZE) {
->                 pte_t pteval =3D ptep_get(_pte);
->                 if (is_swap_pte(pteval)) {
->                         ++unmapped;
-> @@ -1328,7 +1329,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct=
- *mm,
->                         goto out_unmap;
->                 }
->
-> -               page =3D vm_normal_page(vma, _address, pteval);
-> +               page =3D vm_normal_page(vma, addr, pteval);
->                 if (unlikely(!page) || unlikely(is_zone_device_page(page)=
-)) {
->                         result =3D SCAN_PAGE_NULL;
->                         goto out_unmap;
-> @@ -1397,7 +1398,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct=
- *mm,
->                 if (cc->is_khugepaged &&
->                     (pte_young(pteval) || folio_test_young(folio) ||
->                      folio_test_referenced(folio) ||
-> -                    mmu_notifier_test_young(vma->vm_mm, _address)))
-> +                    mmu_notifier_test_young(vma->vm_mm, addr)))
->                         referenced++;
->         }
->         if (cc->is_khugepaged &&
-> @@ -1410,7 +1411,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct=
- *mm,
->  out_unmap:
->         pte_unmap_unlock(pte, ptl);
->         if (result =3D=3D SCAN_SUCCEED) {
-> -               result =3D collapse_huge_page(mm, address, referenced,
-> +               result =3D collapse_huge_page(mm, start_addr, referenced,
->                                             unmapped, cc);
->                 /* collapse_huge_page will return with the mmap_lock rele=
-ased */
->                 *mmap_locked =3D false;
-> --
-> 2.34.1
->
+More cgroups means more overhead from cgroup-internal tasks, e.g.
+accumulating statistics. How about requesting to the Android core team
+to review the approach of associating one cgroup with each PID? I'm 
+wondering whether the approach of one cgroup per aggregate profile
+(SCHED_SP_BACKGROUND, SCHED_SP_FOREGROUND, ...) would work.
 
+Thanks,
+
+Bart.
 
