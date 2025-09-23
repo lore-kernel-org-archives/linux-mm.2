@@ -4,119 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 958B3CAC5AC
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 17:49:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E375CAC5A5
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 17:49:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE4DE8E000F; Tue, 23 Sep 2025 13:49:18 -0400 (EDT)
+	id E70888E0010; Tue, 23 Sep 2025 13:49:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E94C38E0001; Tue, 23 Sep 2025 13:49:18 -0400 (EDT)
+	id E1FAC8E0001; Tue, 23 Sep 2025 13:49:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5CB98E000F; Tue, 23 Sep 2025 13:49:18 -0400 (EDT)
+	id CE8328E0010; Tue, 23 Sep 2025 13:49:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C1FA28E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 13:49:18 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A11EABA3B5
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B6A048E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 13:49:22 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7620613B499
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 17:49:22 +0000 (UTC)
+X-FDA: 83921251764.25.95192DF
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010037.outbound.protection.outlook.com [52.101.201.37])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 429BB14000A
 	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 17:49:18 +0000 (UTC)
-X-FDA: 83921251596.09.CDF13E0
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B7BB9180012
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 17:49:16 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HIOMlV5h;
-	spf=pass (imf24.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758649756;
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=bsp4l238;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf09.hostedemail.com: domain of shivankg@amd.com designates 52.101.201.37 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758649759;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ak83w47Un+0YVkw6h4ejJTiciQnGZqbDFJcToiU+0xQ=;
-	b=wiwPl18AEP/s61iwCEqPOfpWtFJxqqdr+nm5nVRedatL4S+FfsdQDXhaFAhHDQOce33m8X
-	C/4mbMGs5QzhGPTP/pPrtyAdt2plcO/As6wxOJvSiN1UDeISEjB6WUGR/dV6CXjGpt19ny
-	y0734QGTIG0xmJXugNXeYLcIsbNPNbk=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HIOMlV5h;
-	spf=pass (imf24.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758649756; a=rsa-sha256;
-	cv=none;
-	b=UFWxO19k6g43ppa83YE3mP0/zmewmzBCN+77zXMu8Up7TEt6vVdClSh2WpEx8b62MaVm/H
-	+JFBCG5vhUqr+up3jOiNuBuJKai7A5UZhPQkAzgsX9leurp9iazkF0Cbme4GWhueen7xkc
-	lChFnWD7YZ1hhvbSD2y7P7/4YbDzmQc=
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3ee1317b1f7so2920023f8f.2
-        for <linux-mm@kvack.org>; Tue, 23 Sep 2025 10:49:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758649755; x=1759254555; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ak83w47Un+0YVkw6h4ejJTiciQnGZqbDFJcToiU+0xQ=;
-        b=HIOMlV5hFDga4U/3GIYdMM747S4ZXiyP7guLWLLLf4xR30fz+LMBvwLI+HKFgnr/zE
-         SsGUJnznAHDqqiI83BKYUPzONyisa4zVhdqQaK+zQpcKmfiEk5y86yyiN//r+Toeqv4A
-         IE2OpRWK24C+bu9VUifNzDGUSSuQtJA2Q2fsX/hHA2pPiqVWwNbq0k1viSrcGGIzpwgK
-         gAK8SVBpUfyb8yTkk48194RXJXjQGWKXRJpGA4wEyO2wOzzapSrJmeS0FdBzDxAbEaCQ
-         ImxQbSg1Eq+s8B8bnD8gRpTUyv2WjD/ZURepvLNTg9UASSRRbbMWbwwwvLSVvJ9/b3+2
-         BUNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758649755; x=1759254555;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ak83w47Un+0YVkw6h4ejJTiciQnGZqbDFJcToiU+0xQ=;
-        b=X3MgIwsR44VYdSco2Qs+vBUag75YMd9lcXqrgtaEHd+I/Cj4eF56VuJ8Uh6paFeCnZ
-         qc6+E7D3eg3UkHEdm/mf99tqq9ryIaz8PyGwFQEH3It+QYIxqYnFcJrI4HAHM6Apw05g
-         Hn0TybymX7jNd+nHDEbppjQPNyG+IpVgUNpfe15GmTJXblhO6oFJX2bxuqz+3MBcH4LD
-         1LA9Yd+1q03vm5S5KaLAN6lPlV9uv+Mr+LLbad+g0OtgIFUa5x/yCyTqDQnZWv9dnAnU
-         l4yDIAqpXftG70/ZWRZHGmb2nfkmjsOZOZ0ZqkdJHWdgtAyf52fp5DRdEshGMJ9BsbsJ
-         g6mw==
-X-Forwarded-Encrypted: i=1; AJvYcCUCMxteYg2VwdUcXpDiwM+U2ogYALAiJKBYTaYGr6Vq1KPn8tF8XYs+AcxVNUaNrM+wsdiZbbOGVA==@kvack.org
-X-Gm-Message-State: AOJu0Yx4H+zp4ZNb8/moDao+7ZkQpLNVCn41v/+E042vTvt1/Ky3IPAp
-	KsJva8HyF357j3eViXj0xDmeqL+ptmTQ4WuQBrS6tms4qxYC3PBCURvbGzKc80ChbepA6mGiva5
-	Qkv8K46kqdT8I5HSLz3oRJdPckMkifb8=
-X-Gm-Gg: ASbGnctIuLIQjpQlyZm7sRsBNLFt/Sahz5jm2ZS+CU4miyW8wQUyxu0Wi8T+iyl27ov
-	HuwmVeVf7THZz0eo14MvAAeSgVYUPXnsOh1UDoabPHMWd/rBBURqpwtCI6EHZPSnqdUw0P5cQlH
-	OAvEWxWk6wustPQk8flmcXRWRSvC1zQvk60KKKm7ibuHAGwTM6SNkmZbIn6OYIC2vr5QHNCBQG2
-	YUlPBd/uw==
-X-Google-Smtp-Source: AGHT+IFSBc+NBD1jZsd0LSs+Pw95eV8L2vwpY4rCb+CqA5TPaGXD6Axn8yxp6z29u7E5i0MPRJJiZRdC/VoVJA9DlfM=
-X-Received: by 2002:a05:6000:2585:b0:3ea:c7ea:13da with SMTP id
- ffacd0b85a97d-405c4a9734bmr2645479f8f.9.1758649754815; Tue, 23 Sep 2025
- 10:49:14 -0700 (PDT)
+	bh=zF2Qac4zUCI7Q24GJOdmKjFI0FxBhpcs3iOGl7cRHs0=;
+	b=e/5I7+/XwX781jS2U1aglUty9pog2QfpsN3m/ckjPcEn67ozrLJaPc5zgTq2rc5irfcmaE
+	1DwGlyBDrP+DSCwc4oRgUNN06BqzIbPahVCa3kZCwkUyk3eJ1a/r3wydh07euNvVeeYoY7
+	8V2pNkOh76bWltSTqY+WaZ3ZSwEIknQ=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758649759; a=rsa-sha256;
+	cv=pass;
+	b=MDhUx7DWt8ZznRMpznqEWv8HG9neXIOEJW16HoeGMXJJe34QJhYtWuG7k5ZNSKTafiHokW
+	76gcCXZFirV0vILgMrqEcK1ObMtu4545XSwZznXWRLeBujHym3MeMVMSAD4U+aFBz+BM2d
+	x1J6DMncpKL/8m32qlU66VgHRKfkr/k=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=bsp4l238;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf09.hostedemail.com: domain of shivankg@amd.com designates 52.101.201.37 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GiYmHo0esN+kPnRBIE9R23iaxhCTSoTViLHSevOoaOi+5iD6uEFGloKO3q4/Uyq4PoonzNeLQK8sjqYyGglUka0kPA4oq+djUoyrXbIUDhebg2RBJHy4USZBdWckVMHWVI3xzpzA4TnQzlkuacQjxwL6gXLgRMI8bUWHX2qW++yVvrrDBycJ1MfwZv5Z7qViRAH0NQq8pC01BYq6uU59hqeE9ZMPYWFZthPX4I7fUXv9caOjBw7B4kr8/uj5Oo8hTE264x3DXRYb++Jo+RgVEWYywayG4H4aKPqEgqEWAnoxAoE0P9i/9Ez6LEQomcaeTRv3CB1kYkJ/kzsv6N8ixg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zF2Qac4zUCI7Q24GJOdmKjFI0FxBhpcs3iOGl7cRHs0=;
+ b=woo0ZWx+KKF40kwGEqxawzw1HN4uHIZg/QRpE8xP3+7IbNoWnUJVV5ZNT6N07qJVEr3X97rOcw9OeCrgpVp/Aagayq0OKLPyeDObMgLliUgOSg4OqvVcMCaj3Vs/DFLQlxijr/smKRQmz3kCX68O+Y1OAeqYUiJRi914h8D83zK81OviD6gnIhMSMpagm8JFgh9gKAZukvnIQibRm9ZHbJvDc0h6wwTfMQb2QHE3fvzXOoS9nbLnLDe99t2YN9R3o0Gs4FOfkJDx1lVHO9nJHXzWaRLbX5eZ9QkpOhmBdSwJ+HQB23nj04ZkHP18ta0WqGv6LSYCAnldyIJJhP0Uqg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zF2Qac4zUCI7Q24GJOdmKjFI0FxBhpcs3iOGl7cRHs0=;
+ b=bsp4l238UDubzNFtznrq/V946YiBWakYFuQo44JiW/+UJgDVtRRlnA55KwDRP+5pOdgm6T9vDx+4v1iJsurNxAaz/pIK95yPS8EHTQ7hbjS5wI5uuP/StetosGjdpTXGCAIqXuDkpQhd93BlJUaqbq7ZrJ8JferKK5VtR6S5I4I=
+Received: from BL1P222CA0005.NAMP222.PROD.OUTLOOK.COM (2603:10b6:208:2c7::10)
+ by DM4PR12MB5746.namprd12.prod.outlook.com (2603:10b6:8:5d::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.20; Tue, 23 Sep
+ 2025 17:49:11 +0000
+Received: from MN1PEPF0000F0E1.namprd04.prod.outlook.com
+ (2603:10b6:208:2c7:cafe::9c) by BL1P222CA0005.outlook.office365.com
+ (2603:10b6:208:2c7::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9137.20 via Frontend Transport; Tue,
+ 23 Sep 2025 17:49:10 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ MN1PEPF0000F0E1.mail.protection.outlook.com (10.167.242.39) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9137.12 via Frontend Transport; Tue, 23 Sep 2025 17:49:10 +0000
+Received: from kaveri.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 23 Sep
+ 2025 10:48:56 -0700
+From: Shivank Garg <shivankg@amd.com>
+To: <akpm@linux-foundation.org>, <david@redhat.com>
+CC: <ziy@nvidia.com>, <willy@infradead.org>, <matthew.brost@intel.com>,
+	<joshua.hahnjy@gmail.com>, <rakie.kim@sk.com>, <byungchul@sk.com>,
+	<gourry@gourry.net>, <ying.huang@linux.alibaba.com>, <apopple@nvidia.com>,
+	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
+	<vkoul@kernel.org>, <lucas.demarchi@intel.com>, <rdunlap@infradead.org>,
+	<jgg@ziepe.ca>, <kuba@kernel.org>, <justonli@chromium.org>,
+	<ivecera@redhat.com>, <dave.jiang@intel.com>, <Jonathan.Cameron@huawei.com>,
+	<dan.j.williams@intel.com>, <rientjes@google.com>,
+	<Raghavendra.KodsaraThimmappa@amd.com>, <bharata@amd.com>,
+	<shivankg@amd.com>, <alirad.malek@zptcorp.com>, <yiannis@zptcorp.com>,
+	<weixugc@google.com>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
+Subject: [RFC V3 4/9] mm/migrate: add migrate_folios_batch_move to  batch the folio move operations
+Date: Tue, 23 Sep 2025 17:47:39 +0000
+Message-ID: <20250923174752.35701-5-shivankg@amd.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250923174752.35701-1-shivankg@amd.com>
+References: <20250923174752.35701-1-shivankg@amd.com>
 MIME-Version: 1.0
-References: <20250810125746.1105476-1-snovitoll@gmail.com> <20250810125746.1105476-2-snovitoll@gmail.com>
- <CA+fCnZdFp69ZHbccLSEKYH3i7g6r2WdQ0qzyf+quLnA0tjfXJg@mail.gmail.com> <CACzwLxh4pJOBbU2fHKCPWkHHCuLtDW-rh52788u2Q6+nG-+bTA@mail.gmail.com>
-In-Reply-To: <CACzwLxh4pJOBbU2fHKCPWkHHCuLtDW-rh52788u2Q6+nG-+bTA@mail.gmail.com>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Tue, 23 Sep 2025 19:49:03 +0200
-X-Gm-Features: AS18NWAo7UnIsKkvCh16EnxIlUsef04XXrIh6VHPmyIq2HZ6eh0cMjqVLlDuPQw
-Message-ID: <CA+fCnZce3AR+pUesbDkKMtMJ+iR8eDrcjFTbVpAcwjBoZ=gJnQ@mail.gmail.com>
-Subject: Re: [PATCH v6 1/2] kasan: introduce ARCH_DEFER_KASAN and unify static
- key across modes
-To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Cc: ryabinin.a.a@gmail.com, christophe.leroy@csgroup.eu, bhe@redhat.com, 
-	hca@linux.ibm.com, akpm@linux-foundation.org, zhangqing@loongson.cn, 
-	chenhuacai@loongson.cn, davidgow@google.com, glider@google.com, 
-	dvyukov@google.com, alexghiti@rivosinc.com, alex@ghiti.fr, 
-	agordeev@linux.ibm.com, vincenzo.frascino@arm.com, elver@google.com, 
-	kasan-dev@googlegroups.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-um@lists.infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: B7BB9180012
-X-Stat-Signature: djwbuhaurw33crurtn9bq3d1cibfezdi
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN1PEPF0000F0E1:EE_|DM4PR12MB5746:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2bea6ddb-5773-4ef4-2555-08ddfac98070
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|1800799024|7416014|376014|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?KaKai3uP6nuNb1PEoRBCSLpbtqY1nMD+24k4jQECK23bJTjNtJ4N6UPUILtx?=
+ =?us-ascii?Q?f7RXBghW1JLUzsfgZg77xRbh2m06owSQ3QiKxvZbG6yaJUQmcWNAHOKdcqIa?=
+ =?us-ascii?Q?Y1olaYAxtr0ff0dSm1NvjCLMxmuAgMT+z56v3iQlHddAC3SSORXRYpjII52F?=
+ =?us-ascii?Q?p52sw46qUyManZv6rIo30eSC49XHDj8FfZdQ5UHR2poDgi1U9pgYQGn0IjD9?=
+ =?us-ascii?Q?Wwy/DvwR5UM2wbXSFBOwGB16RBukCZOj7z3SxYdQK/AQww0PDGt9xkeDJH+j?=
+ =?us-ascii?Q?9Bp+wg5EXjlMfxFrvQaNUyKHieNJXXVw8APNbORNmghbjAAy5Y4GS2m3SW3t?=
+ =?us-ascii?Q?PBFI968xBNUcKAVPTvs/aiViYwP2KNra64p9SjPHbM/ZsUUYA19VGXzMkX1H?=
+ =?us-ascii?Q?rQuePgojalCq/hzV/PZHLAtChEzdgHQN3kiVPdN56LSg3z2A8pDCz8yd/yL7?=
+ =?us-ascii?Q?rVO02CaahB6siLqnwt/FwR/xPE/nDKUcfjDuxwU7AQF8akx2spQoFPODC/mS?=
+ =?us-ascii?Q?UGu8ewUWrSz1IFVvZaXqOD+HmhMQv1o1OS8aFEsclPPJDdLoLW9trUSwczZz?=
+ =?us-ascii?Q?EkV3fYu+XZX2Ex9pm5Ce3lRsXVjCqJXNZT6C5U7efJq3tHA56Z0U3o/H6Ut7?=
+ =?us-ascii?Q?dQJ6a1FKjW+PcqPfzTjVnX6z0eMWnZ8Nj3nUW4PwpTcZPBIwmXDINH93e0es?=
+ =?us-ascii?Q?D2T2GYVcwusNhoK3F2uTe3m9wEdS7s+KjSM1ipjT0F/erDB0oZAZA7L1oqqa?=
+ =?us-ascii?Q?+11AWQ2J4tWLxEHdHI+ubu98UqxVysWVhgAUEx8R+MRFD13wOA140o+gBha5?=
+ =?us-ascii?Q?RmHl/BbBuvCbUKoSSJwydFrxSKJMDKI9MHe2PNdiQ6yNrqyxWanhMwdi+C/g?=
+ =?us-ascii?Q?48FHvIGRtfhs+0av7vaIK9J8y9fscTKfdIB9K1lYxoRK2j26URXYpEC5zDNU?=
+ =?us-ascii?Q?83fYn7c8gH06Cyf7FiXpaCBRz05NASqKSuWJoVgRSW8sZkMQqrtuGfUTKH9s?=
+ =?us-ascii?Q?l8SD8oT2ps3X03hNMcJoNCRKjFaNVxr1blukE2vXjNClBcpI3S8uPgI1qPew?=
+ =?us-ascii?Q?wGjV0RT/jrSoabdCCOV8nIdZ1ikR3h7S/EBCb2tgqciLrF7+bfNAga9JtZcH?=
+ =?us-ascii?Q?FcsjdgnKOz7Cb5VLcKC/9wENYqUQFz9CPqAIyK8d0Lz5Ke4snhVsj3A8QEVP?=
+ =?us-ascii?Q?5Kdv5sXgqZbUfLzwfUXvOeu06zpfnnlpfxeK4CjD+577qkXfsj4pd6Q1MJd/?=
+ =?us-ascii?Q?VXPr5iuHowZ4on4pfutN5sA1XHIWyr5nlcwKr6u2+iAekKiek3LCjA3YzSu0?=
+ =?us-ascii?Q?pK2z7TO2DcnnElifHBeNVtEQRGSDk0kuVIM4ZzQP7naSzJSTo4vSdpZhZzBf?=
+ =?us-ascii?Q?ZMhFnehlj1iDJ5K3Rq4H110Jmb6WfymX1GndBnHO4YwclhIIlWXvN7QergS+?=
+ =?us-ascii?Q?ycXrTGIMaI4EG+WpM2/6EnQJMOYbxOyLgRhpGVsGLn352iKwKesguRGyQKsa?=
+ =?us-ascii?Q?5xclNhf8tpwJYrQzRpzVz2FEFJex0ULGQvRu?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(7416014)(376014)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2025 17:49:10.6252
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2bea6ddb-5773-4ef4-2555-08ddfac98070
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MN1PEPF0000F0E1.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5746
+X-Stat-Signature: 516ijip47pai163d4i4qbps6hudbn6a3
+X-Rspamd-Queue-Id: 429BB14000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758649756-103973
-X-HE-Meta: U2FsdGVkX1+t9tgQmeK1HNaoABIPkC9cIyPXtoVmX1TdNtJORFnIai0eHl52AiXVyeRBI+2wqJtotT19Woq96cwPWfvEX8PjSEJEJNlZDsqha65Rn9UApgb8f+1sbOC7bTl08GWHO6xBCs/630wb+KkctJxVakXuay4RYznhS+zEB0Md/lSOWgvmBkwOPRXe4+SH3hTebsbH85PgrcRYu8hUajkIu863u5fgiTya1HCGzJtsr8d3vInIHDaq0PQDlDPP2GZ28EgRjItJGvvOWisT1bh7I0/fh2yNnhe3YWHKi0/LnxB2AsJRST8kAWSVOISqIwl+b/sx6FD19ZI1LLWptDG8y1VxYdI2p/REhZjPqEMyVnqKb9lTw3ncJC/yuwzSwgiIeTekM9VDJN1tZFdmXWLUy51zofC9cV8LcPHcW5W3xYQ2LHEdOroT3CQ7wsyFPBAZ81e7QcIIes65X0ZYP3eVUYjT06Hzr6+wul+rvPRz+GN/pitSIqj4OA2MgxbjBSaROC9lRsyEhiQTol7NBOwbZ9Yka1/JOQMnQPMgsmU1cDQxhL8TtFpznk3S2OtYIdNGhnZNBHKbYvndsclOyHrokiBPv7NxjSpiPJJgulm4KlC37qBIHfLyFcMGXSqpdfv3iLLzPsNAnDmmwZE3PEHcvfm0XBIyi6SMF75f1V7kWuCBaIXY4tIUX1m6VYajH8KJ6q1H49rTB7QThXe+2bW9hOKUI/YVZKM1Uu7Q+Zr1Adb6zdnSETaGJptcJGm1Cg34flQB4FCuOdhn0VjX1pdvCfPxZd3S1o59Ol99ev93LpQRmNJJJI6A/q8fejB58qx36R7Li/ffcS5AAD+phl74Ct/b5p04qRi78ppsaVVgonwbYcX0NX/ndOaAjV0W7bbD/7HQoVqqzdeO/fxfnPfvqzI3wdettP4A5C08tYmjgSLF4J7tAnhSTJxTxcD7nhCwTEIub45bJGr
- izFGSdhh
- fA2IYLdG5fQI53sXdRuQ3DL5DAjg2swCr9XG0NF1xccG2fhHTj69HXYfbzj9v49iChNlWx8HaSbRCFHxe8EtkbZgIK53ug17UiNlyzF/QM0TMyW+dqSb10JNI+Ihp6paj+a9P/djmsT/8GycHmdRl9fONanYDIG2NWd/DpVVdmKVyLrmgku/dMs15kl4GvUNV0TBfKGoxQvYpbEF3TOS23yXDKTaM9qgyQv8vSwyJyB4rAmFW5EUd0muwm1lnlDGI9+upHVAiShPR17gPHdd0PGQmCi8vSyqirqROYoe3M/8oWUHXkYuLABoxwAkw/2diNP1PPSKewOfuyHbUYJnxwaSC1cq5qd61+AL+4o3UdW09PhAoih4YZZNWpcLpM3rRDSYefhJenylXr16eBmhmh4QZMRAY99HBzczZlx3M+MuvFQ5fE2bGmDs5l5yOTYx+GK0hK9zC4Oj47gSKbA4dqgoeVoNmvu4UtL9ZVjU/KRPi+QYSJ+e5M3UI2dvW5pQS5nEgXGNXHzgcQTs=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1758649758-137840
+X-HE-Meta: U2FsdGVkX19SfPCc4bc/+NKMTNjgxpY88tMxg5vigVoo1VQA5VMg5ddIPJeiGyXF54LXQ53AgPFf6RLWWA5RM+AhiszgmiuYxZx0+ulEmyl9pkLhsZQ4JjeL/oQUQ7Id6A1yLIgBIC3lyjJWnn4AK6uukHXzVrP8VH1n/R0lMuvo373pRpMrUHegd8IBbEt5ugUR1ddeujmLmd/FEJ2cfHapad4zj4BDO6yaYFXQh5nvlNO7L+itwuFU0G+LmsNwpr+ST/LOtU2XEVvmJIOn4ZAwabQYeAD4UgU3mhm1VbkW6cugCppyBTL1u5ZBjfmyMSU9vC4FjjX3sqXN9VQTrDVakNZzyALvs0+QCskKNxW3++G9vlnj4Vo63BAxqOOtOs3dHSjLfh2FKDPTK+YfMlLTgi4hYaEvT/IFcWoMMmzDsuucKyYrdH+YwSwqFhcA5CrGvmooNkW592JVvowIR0pLJo2J9tekNzv9gZpvoK9U8+7ZnQDlwCZQ0Kva8YNEoHtHEBc9p8xxld2gVQ7I8CxM0f7zKpkJqeyLfjYma39U0iarKdBAU9cPw0n2ids5McPqUn5m/kMhT7+99Q3/B5ruR3w82PpAifIvGBl7DAAJTxIiMjF+MEnBHjN7Vknb8enpfRcRHRkTrTK3tj0kcFRbCq7l2GCbDntVQXz+9GMctdRcJg3PcEMR78zVeXexLJd9ziyfxSWuyY8rfZT2KrO1pzpoW3kIHZOdje8WGhw/pRO3pRVWi9skPHclpyfsLF72wdCRW5572Y5vpbbQtB+WQEO8SoaedXVJd91xraEdSekdMNkOti1ol60p7Dh+/AvfKJVWS2lTe63nebiQfMG/jPT16b1/Wy941JFeVVYDsifgpvLmydKTpmQ9y6QrfZWsvqu9KWuRjXf32tC1T7Cp3PcXQnc6SUrQA0L9Es9LqI+ixSFDNdv2p7SMOFczzpdwwEr4TffDnTR/0eP
+ ynI1jYVh
+ eas4MGCUVYspiTFkrIl18X1abe9a6lIsi7NpWk78ays6ww6pXt6PwtQdFpWphefp1dz2hv3GcZfRk1jo4sxkS/AYZbSD1dJC6XM2WBcNrlEj55nL/Ar12dczFbchJXiN6n0wUNizonLH5KcYow5TAA2F8cln+bBQD+h5M92XNSwfegIG2IolFTof3NzNjSeYSEVMnIlL6azU5aTLBbM13CmftOTCnepebTBaVLvcxD19aBJeXYO6qy9rxqavy8LNplPHABg+8kwPw0kPIsvkYfzm2xI6wfVJh7x55YC7ePoap0YKskCFjJCzD1jAVUw1RDa0r3yu3K+FwD4gHfaoeBdzcbcJVKTUR0XdmbFq5VbYM3e9BzRc7Ei7ryx0H0Yp0zAy4aExLyu6945r7O0IhhAudm7VfihK3jRpNM2Ke0GyLekRrOlL+ymcwuFALvtv8fSznBfNHRSK8MmS+LPIUjZ9ZHeEVJB3UOb7Ydx4jf1qHkAEbIPK0tDT8obffRqChIafSnee302STw1Rb0E/aeG6Fgon27ivWWmpdlk9RHa/7D39YQxs8zHAfp+wVuTm3lNxT2ekfO4j0Hcdo3hY7U62U5v2DINiG6XWeyQcIt3vlFmtKnvw5/pWIYmA6xK/egOaqUkKUVN9X7adCDcAf2DXv55Qu8TF0yikIIjOZ27RkviujQgzxMvfGCzW9qw9iLAlN5AfsL/VP4BEFu0FTV6AIWn8sYYjTV0x38V2k7Wcmu1c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,51 +180,297 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 15, 2025 at 6:30=E2=80=AFAM Sabyrzhan Tasbolatov
-<snovitoll@gmail.com> wrote:
->
-> > Why is the check removed here and in some other places below? This
-> > need to be explained in the commit message.
->
-> kasan_arch_is_ready which was unified with kasan_enabled, was removed
-> here because
-> __kasan_slab_pre_free is called from include/linux/kasan.h [1] where
-> there's already kasan_enabled() check.
->
-> [1] https://elixir.bootlin.com/linux/v6.16.7/source/include/linux/kasan.h=
-#L198
->
-> Please let me know if v7 is required with the change in the git commit
-> message only.
+This is a preparatory patch that enables batch copying for folios
+undergoing migration. By enabling batch copying the folio content, we can
+efficiently utilize the capabilities of DMA hardware or multi-threaded
+folio copy. It uses MIGRATE_NO_COPY to skip folio copy during metadata
+copy process and performed the copies in a batch later.
 
-No need, but next time please add such info into the commit message.
+Currently, the folio move operation is performed individually for each
+folio in sequential manner:
+for_each_folio() {
+        Copy folio metadata like flags and mappings
+        Copy the folio content from src to dst
+        Update page tables with dst folio
+}
 
-> > What I meant with these __wrappers was that we should add them for the
-> > KASAN hooks that are called from non-KASAN code (i.e. for the hooks
-> > defined in include/linux/kasan.h). And then move all the
-> > kasan_enabled() checks from mm/kasan/* to where the wrappers are
-> > defined in include/linux/kasan.h (see kasan_unpoison_range() as an
-> > example).
-> >
-> > kasan_save_free_info is a KASAN internal function that should need
-> > such a wrapper.
-> >
-> > For now, to make these patches simpler, you can keep kasan_enabled()
-> > checks in mm/kasan/*, where they are now. Later we can move them to
-> > include/linux/kasan.h with a separate patch.
->
-> Yes, I'd like to revisit this in the next separate patch series.
+With this patch, we transition to a batch processing approach as shown
+below:
+for_each_folio() {
+        Copy folio metadata like flags and mappings
+}
+Batch copy all src folios to dst
+for_each_folio() {
+        Update page tables with dst folios
+}
 
-Great!
+dst->private is used to store page states and possible anon_vma value,
+thus needs to be cleared during metadata copy process. To avoid additional
+memory allocation to store the data during batch copy process, src->private
+is used to store the data after metadata copy process, since src is no
+longer used.
 
-But for now, please send a fix-up patch that removes the
-__kasan_save_free_info() wrapper (or a v8? But I see that your series
-is now in mm-stable, so I guess a separate fix-up patch is preferred).
+Co-developed-by: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Shivank Garg <shivankg@amd.com>
+---
+ mm/migrate.c | 197 +++++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 193 insertions(+), 4 deletions(-)
 
-I don't think you need a kasan_enabled() check in
-kasan_save_free_info() at all. Both the higher level paths
-(kasan_slab_free and kasan_mempool_poison_object) already contain this
-check.
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 3fe78ecb146a..ce94e73a930d 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -843,12 +843,15 @@ static int __migrate_folio(struct address_space *mapping, struct folio *dst,
+ 			   enum migrate_mode mode)
+ {
+ 	int rc, expected_count = folio_expected_ref_count(src) + 1;
++	unsigned long dst_private = (unsigned long)dst->private;
+ 
+ 	/* Check whether src does not have extra refs before we do more work */
+ 	if (folio_ref_count(src) != expected_count)
+ 		return -EAGAIN;
+ 
+-	if (mode != MIGRATE_NO_COPY) {
++	if (mode == MIGRATE_NO_COPY) {
++		dst->private = NULL;
++	} else {
+ 		rc = folio_mc_copy(dst, src);
+ 		if (unlikely(rc))
+ 			return rc;
+@@ -862,6 +865,10 @@ static int __migrate_folio(struct address_space *mapping, struct folio *dst,
+ 		folio_attach_private(dst, folio_detach_private(src));
+ 
+ 	folio_migrate_flags(dst, src);
++
++	if (mode == MIGRATE_NO_COPY)
++		src->private = (void *)dst_private;
++
+ 	return MIGRATEPAGE_SUCCESS;
+ }
+ 
+@@ -1149,7 +1156,7 @@ static void __migrate_folio_record(struct folio *dst,
+ 	dst->private = (void *)anon_vma + old_page_state;
+ }
+ 
+-static void __migrate_folio_extract(struct folio *dst,
++static void __migrate_folio_read(struct folio *dst,
+ 				   int *old_page_state,
+ 				   struct anon_vma **anon_vmap)
+ {
+@@ -1157,6 +1164,12 @@ static void __migrate_folio_extract(struct folio *dst,
+ 
+ 	*anon_vmap = (struct anon_vma *)(private & ~PAGE_OLD_STATES);
+ 	*old_page_state = private & PAGE_OLD_STATES;
++}
++static void __migrate_folio_extract(struct folio *dst,
++				   int *old_page_state,
++				   struct anon_vma **anon_vmap)
++{
++	__migrate_folio_read(dst, old_page_state, anon_vmap);
+ 	dst->private = NULL;
+ }
+ 
+@@ -1776,6 +1789,176 @@ static void migrate_folios_move(struct list_head *src_folios,
+ 	}
+ }
+ 
++static void migrate_folios_batch_move(struct list_head *src_folios,
++		struct list_head *dst_folios,
++		free_folio_t put_new_folio, unsigned long private,
++		enum migrate_mode mode, int reason,
++		struct list_head *ret_folios,
++		struct migrate_pages_stats *stats,
++		int *retry, int *thp_retry, int *nr_failed,
++		int *nr_retry_pages)
++{
++	struct folio *folio, *folio2, *dst, *dst2;
++	int rc, nr_pages = 0, nr_batched_folios = 0;
++	int old_page_state = 0;
++	struct anon_vma *anon_vma = NULL;
++	int is_thp = 0;
++	LIST_HEAD(err_src);
++	LIST_HEAD(err_dst);
++
++	/*
++	 * Iterate over the list of locked src/dst folios to copy the metadata
++	 */
++	dst = list_first_entry(dst_folios, struct folio, lru);
++	dst2 = list_next_entry(dst, lru);
++	list_for_each_entry_safe(folio, folio2, src_folios, lru) {
++		is_thp = folio_test_large(folio) && folio_test_pmd_mappable(folio);
++		nr_pages = folio_nr_pages(folio);
++
++		/*
++		 * dst->private is not cleared here. It is cleared and moved to
++		 * src->private in __migrate_folio().
++		 */
++		__migrate_folio_read(dst, &old_page_state, &anon_vma);
++
++		/*
++		 * Use MIGRATE_NO_COPY mode in migrate_folio family functions
++		 * to copy the flags, mapping and some other ancillary information.
++		 * This does everything except the page copy. The actual page copy
++		 * is handled later in a batch manner.
++		 */
++		if (unlikely(page_movable_ops(&folio->page)))
++			rc = -EAGAIN;
++		else
++			rc = _move_to_new_folio_prep(dst, folio, MIGRATE_NO_COPY);
++		/*
++		 * The rules are:
++		 *	Success: folio will be copied in batch
++		 *	-EAGAIN: move src/dst folios to tmp lists for
++		 *	         non-batch retry
++		 *	Other errno: put src folio on ret_folios list, restore
++		 *	             the dst folio
++		 */
++		if (rc == -EAGAIN) {
++			*retry += 1;
++			*thp_retry += is_thp;
++			*nr_retry_pages += nr_pages;
++
++			list_move_tail(&folio->lru, &err_src);
++			list_move_tail(&dst->lru, &err_dst);
++			__migrate_folio_record(dst, old_page_state, anon_vma);
++		} else if (rc != MIGRATEPAGE_SUCCESS) {
++			*nr_failed += 1;
++			stats->nr_thp_failed += is_thp;
++			stats->nr_failed_pages += nr_pages;
++
++			list_del(&dst->lru);
++			migrate_folio_undo_src(folio,
++					old_page_state & PAGE_WAS_MAPPED,
++					anon_vma, true, ret_folios);
++			migrate_folio_undo_dst(dst, true, put_new_folio, private);
++		} else { /* MIGRATEPAGE_SUCCESS */
++			nr_batched_folios++;
++		}
++
++		dst = dst2;
++		dst2 = list_next_entry(dst, lru);
++	}
++
++	/* Exit if folio list for batch migration is empty */
++	if (!nr_batched_folios)
++		goto out;
++
++	/* Batch copy the folios */
++	rc = folios_mc_copy(dst_folios, src_folios, nr_batched_folios);
++
++	/* TODO:  Is there a better way of handling the poison
++	 * recover for batch copy, instead of falling back to serial copy?
++	 */
++	/* fallback to serial page copy if needed */
++	if (rc) {
++		dst = list_first_entry(dst_folios, struct folio, lru);
++		dst2 = list_next_entry(dst, lru);
++		list_for_each_entry_safe(folio, folio2, src_folios, lru) {
++			is_thp = folio_test_large(folio) &&
++				 folio_test_pmd_mappable(folio);
++			nr_pages = folio_nr_pages(folio);
++			rc = folio_mc_copy(dst, folio);
++
++			if (rc) {
++				/*
++				 * dst->private is moved to src->private in
++				 * __migrate_folio(), so page state and anon_vma
++				 * values can be extracted from (src) folio.
++				 */
++				__migrate_folio_extract(folio, &old_page_state,
++						&anon_vma);
++				migrate_folio_undo_src(folio,
++						old_page_state & PAGE_WAS_MAPPED,
++						anon_vma, true, ret_folios);
++				list_del(&dst->lru);
++				migrate_folio_undo_dst(dst, true, put_new_folio,
++						private);
++			}
++
++			switch (rc) {
++			case MIGRATEPAGE_SUCCESS:
++				stats->nr_succeeded += nr_pages;
++				stats->nr_thp_succeeded += is_thp;
++				break;
++			default:
++				*nr_failed += 1;
++				stats->nr_thp_failed += is_thp;
++				stats->nr_failed_pages += nr_pages;
++				break;
++			}
++
++			dst = dst2;
++			dst2 = list_next_entry(dst, lru);
++		}
++	}
++
++	/*
++	 * Iterate the folio lists to remove migration pte and restore them
++	 * as working pte. Unlock the folios, add/remove them to LRU lists (if
++	 * applicable) and release the src folios.
++	 */
++	dst = list_first_entry(dst_folios, struct folio, lru);
++	dst2 = list_next_entry(dst, lru);
++	list_for_each_entry_safe(folio, folio2, src_folios, lru) {
++		is_thp = folio_test_large(folio) && folio_test_pmd_mappable(folio);
++		nr_pages = folio_nr_pages(folio);
++		/*
++		 * dst->private is moved to src->private in __migrate_folio(),
++		 * so page state and anon_vma values can be extracted from
++		 * (src) folio.
++		 */
++		__migrate_folio_extract(folio, &old_page_state, &anon_vma);
++		list_del(&dst->lru);
++
++		_move_to_new_folio_finalize(dst, folio, MIGRATEPAGE_SUCCESS);
++
++		/*
++		 * Below few steps are only applicable for lru pages which is
++		 * ensured as we have removed the non-lru pages from our list.
++		 */
++		_migrate_folio_move_finalize1(folio, dst, old_page_state);
++
++		_migrate_folio_move_finalize2(folio, dst, reason, anon_vma);
++
++		/* Page migration successful, increase stat counter */
++		stats->nr_succeeded += nr_pages;
++		stats->nr_thp_succeeded += is_thp;
++
++		dst = dst2;
++		dst2 = list_next_entry(dst, lru);
++	}
++out:
++	/* Add tmp folios back to the list to re-attempt migration. */
++	list_splice(&err_src, src_folios);
++	list_splice(&err_dst, dst_folios);
++}
++
+ static void migrate_folios_undo(struct list_head *src_folios,
+ 		struct list_head *dst_folios,
+ 		free_folio_t put_new_folio, unsigned long private,
+@@ -1986,13 +2169,19 @@ static int migrate_pages_batch(struct list_head *from,
+ 	/* Flush TLBs for all unmapped folios */
+ 	try_to_unmap_flush();
+ 
+-	retry = 1;
++	retry = 0;
++	/* Batch move the unmapped folios */
++	migrate_folios_batch_move(&unmap_folios, &dst_folios,
++				put_new_folio, private, mode, reason,
++				ret_folios, stats, &retry, &thp_retry,
++				&nr_failed, &nr_retry_pages);
++
+ 	for (pass = 0; pass < nr_pass && retry; pass++) {
+ 		retry = 0;
+ 		thp_retry = 0;
+ 		nr_retry_pages = 0;
+ 
+-		/* Move the unmapped folios */
++		/* Move the remaining unmapped folios */
+ 		migrate_folios_move(&unmap_folios, &dst_folios,
+ 				put_new_folio, private, mode, reason,
+ 				ret_folios, stats, &retry, &thp_retry,
+-- 
+2.43.0
 
-Thanks!
 
