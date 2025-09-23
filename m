@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8BD8CAC5A7
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 09:16:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99804CAC5B0
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 09:17:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 419978E0015; Tue, 23 Sep 2025 05:16:51 -0400 (EDT)
+	id DDE758E0017; Tue, 23 Sep 2025 05:16:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A2EC8E0001; Tue, 23 Sep 2025 05:16:51 -0400 (EDT)
+	id D8E078E0001; Tue, 23 Sep 2025 05:16:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2912F8E0015; Tue, 23 Sep 2025 05:16:51 -0400 (EDT)
+	id C7D218E0017; Tue, 23 Sep 2025 05:16:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 10B418E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 05:16:51 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B1B938E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 05:16:59 -0400 (EDT)
 Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8FE52119F47
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:16:50 +0000 (UTC)
-X-FDA: 83919960180.19.624E0B6
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 39D1C100014
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:16:48 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=hCrei8k6;
-	spf=pass (imf05.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3527E140425
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:16:59 +0000 (UTC)
+X-FDA: 83919960558.19.36ACCCD
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9F7FF4000A
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:16:56 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=aEr8z3MQ;
+	spf=pass (imf17.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758619008;
+	s=arc-20220608; t=1758619016;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=4mMHBSR6iVN6xpeCcQzalGxMENnFCjeMLhkVbx6JQl4=;
-	b=B9Py4tjEcMqZKJSubV9lhH7tGW9Y3M+ly15l5aj7RyGdnaQaT0f7vBMQUYVMiqIDWat+CS
-	BuadcpYGKgtzoQs5iQPJ6HWZSiNIkBap4lIIAcf0X6c7f2UR8IK+Snqfwo2GY4uP8UmHzb
-	S4V1emCj/q6AirugYtgK4bAAE7bgAw4=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1vRIzRAWis1O+Krw5uc9gzQHxpU0thSXw3zEc2VjfIw=;
+	b=ebT1ZCHmwLSzXh8rnEjTFaUxb9QugtTUag03euohvUSQT8Bb7U11nedRxa84mrkzkacPqj
+	pltKKuBVzY0c/x1PV/6g4qklRzckAuNV4K5KdkoYSACLJoym/g+MP/RiYLw7f60riCKr4H
+	XFIh57/2tzhMqrPZFxAqdF8vxUFQDiY=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=hCrei8k6;
-	spf=pass (imf05.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=aEr8z3MQ;
+	spf=pass (imf17.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758619008; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758619016; a=rsa-sha256;
 	cv=none;
-	b=kPTChe9b/Fm9A86m715YmFMCJBevrABjinmn1WYpV1XnflMGbJ3ZlhsbHHS2xZwzIVpgIX
-	yVjz93bjblqApONBErBgdHIh5NOVcULxTPLEvKdeHUftqN4C1T06ApgLPTJom7SkNCEFm7
-	KjkYg4YaeuHiUU8206xXddokofyZbx4=
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-267fac63459so50715425ad.1
-        for <linux-mm@kvack.org>; Tue, 23 Sep 2025 02:16:47 -0700 (PDT)
+	b=pS39wLV8aJk0E9XMlj/HcwskVlTW5xlcOouJN2B4FdYpYW8Ky0DmSgts+OlFWz4WJjj63I
+	NC3mrDSIYiqFE7fRUOxpwIn5cfO1fF8SiQX9woOHERW++JY0VHnXw9yj0ExpE0Ub5sAcZd
+	Fiam52N4+zx6NcJ1/TU0Tn6DRZ4vFvk=
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-b4f9d61e7deso3613173a12.2
+        for <linux-mm@kvack.org>; Tue, 23 Sep 2025 02:16:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1758619007; x=1759223807; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4mMHBSR6iVN6xpeCcQzalGxMENnFCjeMLhkVbx6JQl4=;
-        b=hCrei8k66by26RACtNFuWhOF69HqfwAeCNCeG+OAdmrGQ+UPs5vHWIy897gwZzzzur
-         drKjwK3C79LOpa+4VDC5s3F4bMMUxhHZaE2Cl2cLrMZ+B3AxePQDG8WaIvyvt8z02c/H
-         vMixvwhMMfl0EKWV72iai/oagBCU484znsmR9fitwiA6X4+8m00kPKxSKbGqED5pYycS
-         nN6V7MagakBglymyWZFd2vYPuR+hKmSje6fUQ30Hx3k3zJcP5AJ5OuKPJt9nSfNUOJhA
-         l1O/kVBeeJGUVKJO4D/ojIkxjelzqIE5OQ5Xk7WrTHlYG0ie7bEsfJjIq61TPiUmHvaP
-         ubIQ==
+        d=bytedance.com; s=google; t=1758619015; x=1759223815; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1vRIzRAWis1O+Krw5uc9gzQHxpU0thSXw3zEc2VjfIw=;
+        b=aEr8z3MQtSlIToegCREqSNBFltPG4imdjYJhYXiorLvJEPIdDdcg0GWRDnI3sWfJYH
+         OoJSgbYXBVDeXPQBztYC0sLzw+o7SfdxhnfRYJ2pmFtUnck34JaC02njHsCeO4Cps/lV
+         uXP52q3PUH0cc3U5k9QS2KaNJTFLeGTYJmTN1IjMh/2lbe/+YdGAkRY1cAVtVMUgfSL/
+         +rCHMX06n9vJCrQTXjwsNZeH0fx2AQ13joOFE6Fj3nUezLddIGl14Ds9TW3vd/4oVrCz
+         eVNPhP5e4XQ8lz7D5n0hq13ZpEC39twsSVzaePtJ356XH44HLwBRxFwWLZdhddZag1Y9
+         JksA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758619007; x=1759223807;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4mMHBSR6iVN6xpeCcQzalGxMENnFCjeMLhkVbx6JQl4=;
-        b=ugQ2ItmR8TPLHYyfhgWb53I4QOKgjCRsF7/Tz7+7fpI5uROOx4a5D+iuV8BFUTv7IP
-         19TUNeJYDyncvNqjPjA+YP+jeGvpz+84/22Pb9zZbNoOgUTsFLRMg+k5u2YjEW1Q1xD7
-         pgqXJBuOyeRGOTWmzAHj1pHeGfVqCqaQ/DZ8AwEGKoBpzWSKBU513iC6RU4LIKzaPEMD
-         yHCcwZc2Pusr9t/+W4KULp0caHJw3MYKfkQCC0WEVpGM7d3UTFA33y/Ep16C2rzffYt7
-         zXIxZYLUKBmzNlf29A/5yYElNDK3DuHlArlqk/fw571xapJAYA72TBvrEF0rjFsV800x
-         FCSg==
-X-Gm-Message-State: AOJu0Yy3wOKof94kpJwyn7pS0AAfVafUhuj9GzdWOFeVs92CwM97uJEN
-	W5A+2m2RoZLNFjjl9yFzhOJhQT+4nzW1JEfDeT5YQptn9YZVr2BcJvtRd4SvhMgv7Ps=
-X-Gm-Gg: ASbGncshyREey1sp0qvx3REzTNEakRRRrxfEtSSL29gVOOsi+4YyI2rkr+wtd5O/yNg
-	H05T2OEsL7iEGNsRL/UN1IMxErSAa/QjLXPVlrFYCUJAy7hVTjptq9X+hUimILlxmpS1LvlRz3C
-	SxQrH+b59IcX7+YrB5tOdoDS5SfCIZxrZAMUISr/FQYgFAkmVquUWsH6ZMScyGjisjoOPCiCZnO
-	w8WlbCqHIJXAIvPxNRfZiYP8obs9n/3+CnK2/pD36ZVIwz9OHr3/GTqUmnqq8NAUZJUBABEgszx
-	TldtNf60stZuFEwHRNEUjdFo3fniWMC3TIMcWc8Sb15KyTXqARKa1gayttd/cgfJRz42v6b73td
-	zP2eBFeo6vHoiP9LV8U4xEl/cO1jYzEUNAFAUCsL+R0ER4DVRYdM2CGqLsmfxlI6irUtDzb7CMC
-	cDnRNoSw==
-X-Google-Smtp-Source: AGHT+IE+pTyYnuUeKNBnXn7u5n9qqZquO3ZZc8vyWV1I57TGD6s8tCb5Ogkdy4UaIq5TtfdFMCYfeg==
-X-Received: by 2002:a17:903:1983:b0:24c:da3b:7376 with SMTP id d9443c01a7336-27cc2d8ef77mr24868675ad.26.1758619006912;
-        Tue, 23 Sep 2025 02:16:46 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1758619015; x=1759223815;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1vRIzRAWis1O+Krw5uc9gzQHxpU0thSXw3zEc2VjfIw=;
+        b=bhSK+Y/Wg9oBqst3IT2dr8+nltA5C6kpD/WtUqQULMNGEpzwQnwId6CMUKa61fuxHY
+         +EbehTZrUpfmq510h41rwlReJMCJ6r1cBff1Kcpwb3Q7yskKwHl+YMetkLgGXqCoo/hg
+         mwmnwDWaZa2UjVG5M7e+dUBNzmCMaawR2/ASl4rsFeD2o3AlEjWQM2dkF8E1YrIWmXJq
+         ztJGsjEK1kxHfv/nivqw9EJMIHsre9GW/3e5gBRjbxH+hv2wXs8B6EaXfQMpH4E1nBUf
+         tQPpUyLh73OHzZ05aJYGk8UjGZ90z8zDQNi1FC+40iAHpBSmqoRlhUWRmPF5zhY2ENSd
+         5cdg==
+X-Gm-Message-State: AOJu0YwFFAMG2LbwTmcGfvhsMhf/rUEhjpPEq5n2gl4IbSoCIV6wkqap
+	oVCo/HBAovS1HkqtPE7jR9tMv24wW9GVi0zXm4cEaT1DvPP2Jozwuti0FW2oB6HhHks=
+X-Gm-Gg: ASbGncvpfLzFBTKhELHecVZHMOeuoTiTae2lVwzr2MXZtpNowR6fSVLlvsz+Nv159rM
+	12/TMvlS0KcLUeBX2n7MvXgPfBvyzWSkejDp5Bqy02UAJ9wiMDQbNnmgs3wnd/cjweNvfNKsZl4
+	Sp8eWHRcyxZy2vyhn3ckNeIfOOOwzg1V3iPNQ9ci5/nQEh4bJQLCwSL99Alyvf4+kEqoJqTW683
+	ACuFmLUvKlLS/U6KYPv0W7wobcBE2r2BZ/qtZeGKBJqjgjmqgjsw9FsDYMxRyWk0kMm5vV0mp3W
+	U+g6iZNJyz/5/Di2qVMRl3QVhv9ioioBUWYrTA0ND5fDrBj8sz/wYRaM/syb7V8QS9/E1Cqril5
+	8FrwGS2Z1QKTs7vlG5Kk+2dSM3UupYp6Qf7z8MSDg9uC/MExy9h/JJ0O6uonhl5P2/UMB7G4=
+X-Google-Smtp-Source: AGHT+IHwALepKfuy3l2UtqVt0g85ATZ63XzujHyf6JpHaHemjaQ8df2V5+fXQ28C3kJ2VnPBxstLCQ==
+X-Received: by 2002:a17:90b:1b4b:b0:330:4a1d:223c with SMTP id 98e67ed59e1d1-332a9515d33mr2709085a91.15.1758619015333;
+        Tue, 23 Sep 2025 02:16:55 -0700 (PDT)
 Received: from G7HT0H2MK4.bytedance.net ([63.216.146.178])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32ed26a9993sm18724713a91.11.2025.09.23.02.16.38
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32ed26a9993sm18724713a91.11.2025.09.23.02.16.47
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 23 Sep 2025 02:16:46 -0700 (PDT)
+        Tue, 23 Sep 2025 02:16:54 -0700 (PDT)
 From: Qi Zheng <zhengqi.arch@bytedance.com>
 To: hannes@cmpxchg.org,
 	hughd@google.com,
@@ -111,21 +111,24 @@ To: hannes@cmpxchg.org,
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	cgroups@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>,
 	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v2 0/4] reparent the THP split queue
-Date: Tue, 23 Sep 2025 17:16:21 +0800
-Message-ID: <cover.1758618527.git.zhengqi.arch@bytedance.com>
+Subject: [PATCH v2 1/4] mm: thp: replace folio_memcg() with folio_memcg_charged()
+Date: Tue, 23 Sep 2025 17:16:22 +0800
+Message-ID: <0ac716fb7fea89ada92ad544f88ca546e43d1f29.1758618527.git.zhengqi.arch@bytedance.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <cover.1758618527.git.zhengqi.arch@bytedance.com>
+References: <cover.1758618527.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 39D1C100014
-X-Rspamd-Server: rspam05
-X-Stat-Signature: ptmzz4tgpe8att98w1uy48a11dzennb9
+X-Rspamd-Queue-Id: 9F7FF4000A
+X-Stat-Signature: kzkcx65xwsq7ijbgxcwp78j66uoono8i
 X-Rspam-User: 
-X-HE-Tag: 1758619008-781680
-X-HE-Meta: U2FsdGVkX1+AEa9So9A/07R9lVc2JkobgyKX0eVpxu7fZtqPqICek72QFk1zfF6e9GY7y1oInbxHoc2t++jdilHvpSsp/y5DjGMFmTU9pFO+0wm8lVXuDIBB7WQs3kms8ISlIXZ0J2ZYq1Sh1ibk4G07sXpOTqzPWRf1fnRJ2b74bQL/uNtHq43TWeyD5dciVxTmMoiFpTAoMjFdRD1XqSYJq9mfK2CIh8yPo69Ws4arh1GYnxZhpZJ5JTFZQjk8KACecjKpi5xlcgrT0f+ilRDPfRzACbHn7vM14JT3zEbQ6i0scmTySV8fQBxjhAcvdfw/YUQMjny5Y0+ZIDVWCiMPeBXOvO/XW7/7p0Vm0fMcQmGUlK9vUv7vQpfUmvOhjGqhxLkGw7x9lsQMzbJhEgH29ADmmICsU36Y/nIZMpFzeTxUboevn1v9tw4KNEriWpcfHWyFC9lS7pNNlup+9ExtrQcUWTd0AddV1sZne4JS+xoKLSiW3+SB6VHUrr0NYTwkR47lc8gfDPJrxGJsK3PtUifD0AJ4+BV1dI8Yw0a1IZf6z8XGH/ylndbd+87Jmf/72y4SPTLz9ewhQ1MkDJfAOa3y/1OmITHof70uDfNBnjfmQpHkD19IOiRo3zdcea4TGkFUmoDkSHDY209VJATE9qgjbsuZRE230wsPQ5QAtOER/AXjn6Qm9QMetetVtCtRHitddKcQMC721ApmogKxXbc9KiYBFd8fvZNZbyhOSUFE41AnPdYPMXC0+Tn72Y1Ip+ZXvlr4RxMdT8gakPeFg74cJLJWXd601OhQPiBhJ5S01V9JiAX5IuQ27U2hxupBkzUkmxyLNwjaPKCyrEumYSovjmkxzNglZxuc5UK+63DZ+/IBj8O2HttdlzZsN189ZodCBmYkBvcJO4Ev5zS/eS2Q2t/D1VB5latj97vBsl8HzsDlt56VdDy391R9wXUrjpZZSrKnvIPkpp0
- HsKq+774
- FrU+iLJxndJQ3xpDTrd4YNKE8ocFuLCDrW3sLUSUN7kCd3vUDImrbH+/nHk+qkeKqYykTXdRSONLJiOEh0HKZfDbaaDEMIAOS7hWa2w3rwMxawWiczP0VA4vfbImxiI/jJMG4jcX7+ryJiwMxLNLN0xd+mKrsL+GHs6YuZ7AZRqyrori7icBbLlQSqe9atriTWh2QrodjF2De420MZK6ZesdLvUljp7eIt1QY+rKItAKQVu9+qp/gGpemv37jFUc7QIKnpQKZ4S23j4i9QbFEyT2ZlYTuavA6b/znZXLTuriB9a8=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758619016-654726
+X-HE-Meta: U2FsdGVkX18AbQh7Psbo8R3+oVPKLtdXr9qW2feV3GxXu2DJ5gB69YdOPMacNf8dGlI51joLTcEC0Aac9iVjp3aL6IuGei1BX9t5cOV2TddGgmo4q+eQLCiILgL69dUwI8w3KLRH+gO1f2WIJqUqNg9yyaap9kONikvcKskb9skg5SmU/BpNa2G0ZdGdZ9z/3Xj1BswvUM4ofGzaqb2jMpDLsa7qyhswhy8QW6VXpnDjSxGx/o3tgIKtvRBAID/a1/Hz3fYbtnUBmLkVgkFFdMNbFeXLvoVjd+zX9iRwaRQgJIA1K6n/MhfUU9NFPOFrITFFTo1O8d9P3Y4U09KQ862d2mWiG41MWX8rwIuWZX1AtgnXUKXzMhGucknsfmszdd1vsfgayIzsvZYO4peEZa53xE76l8u+JJzqEApoFgg4koq7r95EY6i3ifO7RHd1dtpWt1/jIiieQXU0plOj9fJysVJWihbmQ64jZV/mbdttz6l310Mms6oNV/fQ6XW9HqJsLnIHlFpL4fIh1dTxBycB0mtr6xTOQzWmEyQuMBT/fEcErIMai3Jlziy8X2LeKeQtNsvG4/1U4agqcvfc6fSeR7Mue5ET4p6kklmX/lLqUemK7dFt2+lHnbbEUdEPExLt6N+1cTbQ2Ob1VZpnaKeHzfHFWWecNWjrLPOVZp3CfuSz8VNBGQlUa3SbevMugFPuVJsIEvBvuU90HenyNZt1Sb+GuAt6//3Sdk8bzm5xAxGj7sbawjnzl+ysSs2lsCypbJjgHtLNH3G0kRQ/BCQYvph/mmQOGGYG8YjmNyCIhPjKfVkeOnMO5M994PHHGXC//8cBVlS4UfKwm5y/m2a4irN4b/xJNNZLOzft3HHZf+meVEpdYIbEF9XNXqHQWP8yLaHjTVq7J+e5yUEFHPqsWvWBbSRnKFpXEA6gsn5wVsajdsJW8QVtH1IlOPs8jOGvV8jbT3RVxhQVfhh
+ 8ovX7wb8
+ PbDjzYHMVga377JiUhwGCaohHgYlbNMCwrfqiYGHCtSNJQrOAQBNIYFpgM3v8M+Xa1y5gGdgwRDyzrBIjjLXDvH6qtISXHShNZDlizghfTT9u69+zl4D5Ge2ExXRX/eZerJoiq9K9cxUpFSGHsYo7IzjmWvnNrNRJ7pGQ64dPcnAkmjPlu0azcDXqhCI19fD8EQli9zHqkAv3zdQcX4wdmtpMdb8gqiGGYNyI+ytlGbNY0CyyiYrl2neooViM+cOYWcq2yIdkzL5ibgwTDvtLDJhroG50Na5i6xFMHMrzizKQLC7bxPw/f9kK+rqDHqiJWUHL0YH8XHR52/4RmbzOKFEljhjyyg9xhQdCpKp043gWzHmE9i2otCvBUBKN5TAvAXWtFx5NquFOeugb3bkfyWxSaVhVpvcK/dy86rSfJiiFr1rPTEOHq8hTH8g+8F4HnMqpCdEaikGsa0MubLV64FcsMQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,54 +137,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Changes in v2:
- - fix build errors in [PATCH 2/4] and [PATCH 4/4]
- - some cleanups for [PATCH 3/4] (suggested by David Hildenbrand)
- - collect Acked-bys and Reviewed-bys
- - rebase onto the next-20250922
+From: Muchun Song <songmuchun@bytedance.com>
 
-Hi all,
+folio_memcg_charged() is intended for use when the user is unconcerned
+about the returned memcg pointer. It is more efficient than folio_memcg().
+Therefore, replace folio_memcg() with folio_memcg_charged().
 
-In the future, we will reparent LRU folios during memcg offline to eliminate
-dying memory cgroups, which requires reparenting the THP split queue to its
-parent memcg.
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+---
+ mm/huge_memory.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Similar to list_lru, the split queue is relatively independent and does not need
-to be reparented along with objcg and LRU folios (holding objcg lock and lru
-lock). Therefore, we can apply the same mechanism as list_lru to reparent the
-split queue first when memcg is offine.
-
-The first three patches in this series are separated from the series
-"Eliminate Dying Memory Cgroup" [1], mainly to do some cleanup and preparatory
-work.
-
-The last patch reparents the THP split queue to its parent memcg during memcg
-offline.
-
-Comments and suggestions are welcome!
-
-Thanks,
-Qi
-
-[1]. https://lore.kernel.org/all/20250415024532.26632-1-songmuchun@bytedance.com/
-
-Muchun Song (3):
-  mm: thp: replace folio_memcg() with folio_memcg_charged()
-  mm: thp: introduce folio_split_queue_lock and its variants
-  mm: thp: use folio_batch to handle THP splitting in
-    deferred_split_scan()
-
-Qi Zheng (1):
-  mm: thp: reparent the split queue during memcg offline
-
- include/linux/huge_mm.h    |   2 +
- include/linux/memcontrol.h |  10 ++
- include/linux/mmzone.h     |   1 +
- mm/huge_memory.c           | 229 +++++++++++++++++++++++++------------
- mm/memcontrol.c            |   1 +
- mm/mm_init.c               |   1 +
- 6 files changed, 172 insertions(+), 72 deletions(-)
-
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 5acca24bbabbe..582628ddf3f33 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -4014,7 +4014,7 @@ bool __folio_unqueue_deferred_split(struct folio *folio)
+ 	bool unqueued = false;
+ 
+ 	WARN_ON_ONCE(folio_ref_count(folio));
+-	WARN_ON_ONCE(!mem_cgroup_disabled() && !folio_memcg(folio));
++	WARN_ON_ONCE(!mem_cgroup_disabled() && !folio_memcg_charged(folio));
+ 
+ 	ds_queue = get_deferred_split_queue(folio);
+ 	spin_lock_irqsave(&ds_queue->split_queue_lock, flags);
 -- 
 2.20.1
 
