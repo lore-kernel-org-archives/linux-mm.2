@@ -4,140 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40D45CAC5AC
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 18:47:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA3F9CAC5AC
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 19:49:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AAE78E000A; Tue, 23 Sep 2025 14:47:39 -0400 (EDT)
+	id 9AB098E0005; Tue, 23 Sep 2025 15:49:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85B488E0001; Tue, 23 Sep 2025 14:47:39 -0400 (EDT)
+	id 95BC18E0001; Tue, 23 Sep 2025 15:49:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74A628E000A; Tue, 23 Sep 2025 14:47:39 -0400 (EDT)
+	id 84A388E0005; Tue, 23 Sep 2025 15:49:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 63D518E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 14:47:39 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EC238E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 15:49:30 -0400 (EDT)
 Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DAD8AC0281
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 18:47:38 +0000 (UTC)
-X-FDA: 83921398596.03.AE67C6D
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf20.hostedemail.com (Postfix) with ESMTP id BA6251C000B
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 18:47:36 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=BVC648B9;
-	spf=pass (imf20.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C925313B4FC
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 19:49:29 +0000 (UTC)
+X-FDA: 83921554458.03.33A3C71
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 43A8F40005
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 19:49:28 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PvIaGTqH;
+	spf=pass (imf11.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758653256;
+	s=arc-20220608; t=1758656968;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HWyBjhPVJ9kEj0HOT4mbQ4gfG9Y9bTTGVqTNTNBk6tY=;
-	b=cZRmftRvbRUXYYtgEqH9beFqY0Ri5eYMTkFh3JOXAn2tCllQlY3og3yb+FfAcdZFeYiiwD
-	B9D5dqJiPFXltB6ASRvYl31Pzm3JTSseVDtnW59jbJzlI/BRttale93qv3x8px4+/LZNpJ
-	3lQ34V33YI7EaJreahQXVx0n+FPqeFw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758653256; a=rsa-sha256;
+	bh=7gv2WzZ+nMC2bdsHIbBsKOEQPNt5h99Cw1wDY0M9npo=;
+	b=1kQ7fpVnWpI54/NRC3LWxwDee7VvzYpWvtqG3PtLL3lS/AnNg1vN6Os2gdUGC3GUPSyYDT
+	Lt+wShvRAomGDrI+7SU0QlIUktHSnn0GYaPPGqMlxUQ3VycNOq24k/6WLT/rGAQDavBs4I
+	7d+yFLacE08IkJGjXPQJr0CcPGpO2EM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758656968; a=rsa-sha256;
 	cv=none;
-	b=RMYZd0HvqtK3Bfs7CMF6OaaI3gdsc8NGK+q1hsmM1P6tvaSEKMg7CSHagJVqrGnjZwR7+s
-	/vQWmczgQm9ADPVQJ6tFMWKMpyz40tycJMQPu2ww0XhhoYw+wfe5R7tx8i4YTzuLsHq8IX
-	rM7SgAvzPb11kV8/btsBO6SI0ZGS1Bo=
+	b=qAjmHQcNAkfpxCWr329aiPyyL6pIis8jgGxDgtiMo+EhIZzuEvTVtXVuSPwdCVCflOjoQB
+	zaYUbkxjA26Iwhv1dKsCvAA0qLykZ3KvntKKcvyY/9OmEaAyeZ78viHKuJzgEf0NSjMH7x
+	OVqPxi+u4U7gm8FpsTfO0mCchyMfHsc=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=BVC648B9;
-	spf=pass (imf20.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58NGWFMC001810;
-	Tue, 23 Sep 2025 18:47:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=HWyBjhPVJ9kEj0HOT
-	4mbQ4gfG9Y9bTTGVqTNTNBk6tY=; b=BVC648B9HlQljWqjRK/jiReSAc1o886UC
-	YyS4reWADYAbpByN/hQpk0FOGhLHWM3h5mps2AngAFiOXIY6Ppveu/SuDeeq1+65
-	pTwCS2l+OLnSA+ImWCG2IY5HVeHJ6jziwJu91G9PiT1XWLxeCiVZerRMnQIBdqDb
-	tHcZGt8ynYUyd6N/5rML0RXSuAT9z/ppcAk3BIyv8EAydbqy9ufKulJRDXpWgHNe
-	ZrQ1YV3jN/V4N4sLSW1yMk/B+6IGvd0HZzcpqYbOAByqndiqOd4uSa0/b8IlGEAN
-	PHbkYnqoMXTZ+hxGuD2NsLymWctm3hiPcrKeu5Y2L1N84jjQZp7rQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499hpqavsy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Sep 2025 18:47:35 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58NIXptq026441;
-	Tue, 23 Sep 2025 18:47:35 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499hpqavsw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Sep 2025 18:47:35 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58NHB2KJ030356;
-	Tue, 23 Sep 2025 18:47:34 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 49a9a14ptr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Sep 2025 18:47:34 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58NIlUPG31850796
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 23 Sep 2025 18:47:30 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9E33A20043;
-	Tue, 23 Sep 2025 18:47:30 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D66DB20040;
-	Tue, 23 Sep 2025 18:47:27 +0000 (GMT)
-Received: from li-218185cc-29b5-11b2-a85c-9a1300ae2e6e.ibm.com.com (unknown [9.39.28.7])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 23 Sep 2025 18:47:27 +0000 (GMT)
-From: Donet Tom <donettom@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@redhat.com>
-Cc: Ritesh Harjani <ritesh.list@gmail.com>, Xu Xin <xu.xin16@zte.com.cn>,
-        Chengming Zhou <chengming.zhou@linux.dev>,
-        Wei Yang <richard.weiyang@gmail.com>,
-        Aboorva Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org,
-        Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>,
-        Donet Tom <donettom@linux.ibm.com>
-Subject: [PATCH v3 2/2] selftests/mm: Added fork inheritance test for ksm_merging_pages counter
-Date: Wed, 24 Sep 2025 00:17:00 +0530
-Message-ID: <e7bb17d374133bd31a3e423aa9e46e1122e74971.1758648700.git.donettom@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1758648700.git.donettom@linux.ibm.com>
-References: <cover.1758648700.git.donettom@linux.ibm.com>
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PvIaGTqH;
+	spf=pass (imf11.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 41C246025A;
+	Tue, 23 Sep 2025 19:49:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C0DAC4CEF5;
+	Tue, 23 Sep 2025 19:49:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758656966;
+	bh=7gv2WzZ+nMC2bdsHIbBsKOEQPNt5h99Cw1wDY0M9npo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PvIaGTqHdNU7Q1p9iQCyi7SI8rzgs+Fd2F62Wvt4e7U9M5ZbQ8qxnT0LiSPe4PKVR
+	 gehyR0Rm0ghRXneZ4tzjafcgpCRITUKyHFvb6JN4O9cuxWgjIBHK2hM2MF5Y/HqnMX
+	 n3nuIsdb1r2D9GFRjzSab+/uI7K6xmpOdsNRSsCVySBQ9n2ybIX4gsztX3PGvijcvT
+	 Sp/fUhAnCreO1LjGnNn/IXq6su5QDyv6TUFvnwV57AFOt5ZY8qGMFKUOL3RBXFtVX+
+	 bbjgLfFkLzJt+rxjoewVtxndm0w4xC2WwbySLCvFHwFbb5zcONvgE0SDuPCi7+lbEf
+	 evcKd6295D9ag==
+Date: Tue, 23 Sep 2025 12:49:15 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Marco Elver <elver@google.com>
+Cc: Christoph Hellwig <hch@lst.de>, Peter Zijlstra <peterz@infradead.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	Arnd Bergmann <arnd@arndb.de>, Bart Van Assche <bvanassche@acm.org>,
+	Bill Wendling <morbo@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
+	Kentaro Takeda <takedakn@nttdata.co.jp>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+	Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Waiman Long <longman@redhat.com>, kasan-dev@googlegroups.com,
+	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
+	linux-sparse@vger.kernel.org, llvm@lists.linux.dev,
+	rcu@vger.kernel.org
+Subject: Re: [PATCH v3 00/35] Compiler-Based Capability- and Locking-Analysis
+Message-ID: <20250923194915.GA2127565@ax162>
+References: <20250918140451.1289454-1-elver@google.com>
+ <20250918141511.GA30263@lst.de>
+ <20250918174555.GA3366400@ax162>
+ <20250919140803.GA23745@lst.de>
+ <20250919140954.GA24160@lst.de>
+ <aNEX46WJh2IWhVUc@elver.google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=FrEF/3rq c=1 sm=1 tr=0 ts=68d2eb47 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=yJojWOMRYYMA:10 a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8 a=kDUdi5sUuU8vu5WplE8A:9
-X-Proofpoint-ORIG-GUID: vlt0YarwwCCxvHbw-JMZk4CEYbXmuZA8
-X-Proofpoint-GUID: a1KWKaFoKTLeUCEZkN4FVGuLStWLiyIR
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE5MDIyNCBTYWx0ZWRfX6m/w6mNclBpP
- mncaMBnW6ImU+kpNZquOQScJDv76v9VLQr8mDpW0eDqVf5ekUqARuljD6GzslFba1aOngp8Biau
- q7z0UlD24w+YWAHqcKGjL4txIWGFjzJEu3H1dXtG1kGxX1H9P1khPgUBYdkjxoT4tAgSk+OLu+D
- mW+ipyyXalQqM2vVisSNC8hbgB+PEP9OFBX2wM8lmbQK8cfE0342o1X/oH6TJBwBUS3Wig/HKYA
- 7wYM7PqByMsMsAKzCro3Esm/1fRvh5IHwHjcXtSw5Ea1PPqLLkhh9OtntPfwa3PGFLud6EuT/QK
- sQtK63L1Hf4v1dhC4uXJ5WaEIoDArns8Kz9n9qF4rGV6lXXzw1RfEjMXWGtD8ugkzjeLkn6KeB3
- S5w+AZrP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-23_04,2025-09-22_05,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 phishscore=0 priorityscore=1501 malwarescore=0 adultscore=0
- clxscore=1015 impostorscore=0 spamscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509190224
-X-Stat-Signature: tke1s1h9soyqfba44joz9kpt7u88ssb6
-X-Rspamd-Queue-Id: BA6251C000B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aNEX46WJh2IWhVUc@elver.google.com>
+X-Stat-Signature: k45qxkqtjeeju9icx6hd9yuazace7xi3
+X-Rspamd-Queue-Id: 43A8F40005
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1758653256-651609
-X-HE-Meta: U2FsdGVkX19yTYS64jqqqPcBq0CENM0nnomNd8AowTJkmYc9FVDGuxJYMS8OFrdld1U4+MzxMqc3whR2IzyX1cEff0jLh6oItPUgHntQrJSCWzXh5neWYa/oieYphuu/2DotPePrPBtbeuAuB7Nc0RDH/hggfmj7fxrIi/a3aKuRcYoiA4nuAWxYqVed7iLNaUmkzm3Oq3ovyCWmYa/onxpKGY6kDovfS5JxOfQimlL7G1yf2hw16ZqUQLsF06+OoTG5mTgfpUchzstWz2m6oP1a+JCUVSU7TTEhWWRSpmqPNfayEF33Uo9GB5QvV6YKI47yMYY5DwGy5N7xakbvEKSjvis6eTgRzMn/AZ0w+P4chyOH5VXowVh1B868fs8qdI0WiyN2nASJZvEZkzT/7bHykK2OUtXuK9HkPtgWe8GdqRRjhdL063bgLuepVqLPqfdLkdCrIi8DXHJbdKn+9L4l9miLQpL0HTPqZM6J/QsSQkwI6pQtwbK8gcDpVoHLCQOgD5lOAdxP/HqWRmVweA1FRSkbKhaLAeixaySTKsPeAtsEMxgYBxeeZ8t4xsPV4LtWhbFA4hKJdnKg1pNUbN28zXZ8xbFKqFWIGiTlHYtj3cNzL4PBBvd0ek9Kv7Zf10TeZAIbEpUzJBEFK+nq/dFZMJ0RgNZXr9Sf8CiAdym/V9CxdiAUxPhEYW5tjw/i+1jj2mfIlKHd4DIiu/pt1v0Hz/CCIlfBdZERmHHG8ZU3RQdGQVZWlgCpchENbgJbIQWrLhaVUMxQk5RV/Ixk+cdolK9BADCyuW6rbhmbvl5RrMRD6hRd46chsrdbzqa+pvkluHh8VYOfk5b8ulp523Nze9sd9J0oC/X2ifCX+fBjLMU4o8cUJutITyRs8bNl0KcTI7PCMHqf3GWKpJMhHImPOCWWe4aWdHcIOo2lABeWI2GwdCkI/OQTWQ8s/b1mIcfFZDDZ72eyqGu8VKC
- 9+qLeF4x
- fGYAmtN20ol89xPg3suVqAeqozdsnpBWHkXNNzo1xNaTwc3QmuIuLH5kSR4Ub6Wu2Vf8+guvEoXGbZteXcwqiyVJZfua44OtLiYSWp8m5OMhndI9WTf4PJ61AOlqTjHk9RSjhmkGBGncAwII=
+X-HE-Tag: 1758656968-759536
+X-HE-Meta: U2FsdGVkX1+MkiY5a4WdCY+mewuhfQN3p4bSPYiT1GPFeL56uqbndDDzOFuhYoF35Rix3gYX0+CCaxN1dAe3LAh23ICiDJ+KduiP8qZAVfI29MIaEEalzySFqSWMbl+Dqs9Wu9WsgxNtp6hz6qjk4jaCuiasBP92HV+SVKHjJz1+N6MyVkZ3e7YN/voWMKJALdFeOD6ZekvTfV5JnzPNbRNWJevklSKSDvDYwu9/pkF/PpoVSltzUb91R7pszpQ31NFfcJVU8eoy3xCo1qtZIc68YUlC/v2ytRn996hC5SV79OxmNyHX/kJvbTsBmNcqdMjWddUC1mIiIJtiOMjM5eeCfv+5foONoLH09mGTnz+xeJe9wdQXwXXZDFGCvyqUhFXYMAhABc2qdyHCMjZJ9Yrr3nmOKicjGAxui+yjS3dVHJ/UP19ho/VNc/gjrunIGoSTYm627XC+7yhbfQfLnjSVYhtzkaC2oqpu26xGA+7VCbz5aDsH3S7JmoV4sh37QYDj07C2e06o84uLvOOwLvA+wrK5vbTrC/Ug5gBUx4weTg1IC/+QbD/xmKJfL/UwNHdo54TOR8v6YXFz+rxEMgPawrEjEEHBpwgUt28QejDG9qwjKlA/3gL49laeORXVKJ9f+hWQhu2NeNSAuJ6VFRia0g0ACgapsur/dL8uQyTrraLAKLLhuD2NGl/0KUdKBIR1V3JjP89sZ+rsX3VYeVmWdvY4kXXyWFeZeVIklbsskjMfTL/sSzJtUgGYe4fTnZ/mEvKQYlFJOcO2B2aSlBcet7Cgf50gK3UGubOfSKDAvs1/OlUuSf1GFrN7fzaXLxB5YeP41IpRQbq8BswowGBw94glyeFxuKrD6JSsX9OP6sgKOs417QQ/qo0asXvrrne7HjKn/xTCxm65TRM7ZvuIVb7N3KLKuSah53go/Uxrjt4OlQSrkXcInSaivDbBkg7J1ZA4XutqXMXqpUy
+ dEU/lCFE
+ XISfBBYARSC6F404QpX/IZrpq7L6ri0wONZQ5byM8a2MWAMhKtYVaPmNGGvbLPEwgHLDOB9Yt4aflWl3OIPrOPKCf+Ccpk+OTSOlBUs28YLdri3m+bqmNhOEjcOxOSZ7KCuHH80T7hUpNgjXmsg1ufXNqzq72CBoggxoWrL5oksKTmdF8HFy1aUx7Sq3Een6IFWMAWo6orsRIrSVUJ6oiEMDxgzdXMBHt9BPi6X89wGH4RhmJmZhCW3E+I+kzdjpwwtDJI1XNh075pF9P+8hrlHL8YJs5OLZTayp9lJwBd4d9xMydPLDqt6QIu4bgj7PYoeyAvT/jkicdPg9MRxQZ7AX2s/mImATDb7YFc8LjtzDug1Atvhzr1pybsY9V+NBrnVt8spo7rJ03pRHu+KtTnAl2zw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,85 +130,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Added a new selftest to verify whether the `ksm_merging_pages` counter
-in `mm_struct` is not inherited by a child process after fork. This helps
-ensure correctness of KSM accounting across process creation.
+On Mon, Sep 22, 2025 at 11:33:23AM +0200, Marco Elver wrote:
+> [1] https://github.com/llvm/llvm-project/pull/159921
 
-Acked-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
----
- .../selftests/mm/ksm_functional_tests.c       | 43 ++++++++++++++++++-
- 1 file changed, 42 insertions(+), 1 deletion(-)
+Now that this is merged, I have pushed an updated snapshot for x86_64:
 
-diff --git a/tools/testing/selftests/mm/ksm_functional_tests.c b/tools/testing/selftests/mm/ksm_functional_tests.c
-index 712f43c87736..ac136f04b8d6 100644
---- a/tools/testing/selftests/mm/ksm_functional_tests.c
-+++ b/tools/testing/selftests/mm/ksm_functional_tests.c
-@@ -602,6 +602,46 @@ static void test_prot_none(void)
- 	munmap(map, size);
- }
- 
-+static void test_fork_ksm_merging_page_count(void)
-+{
-+	const unsigned int size = 2 * MiB;
-+	char *map;
-+	pid_t child_pid;
-+	int status;
-+
-+	ksft_print_msg("[RUN] %s\n", __func__);
-+
-+	map = mmap_and_merge_range(0xcf, size, PROT_READ | PROT_WRITE, KSM_MERGE_MADVISE);
-+	if (map == MAP_FAILED)
-+		return;
-+
-+	child_pid = fork();
-+	if (!child_pid) {
-+		init_global_file_handles();
-+		exit(ksm_get_self_merging_pages());
-+	} else if (child_pid < 0) {
-+		ksft_test_result_fail("fork() failed\n");
-+		goto unmap;
-+	}
-+
-+	if (waitpid(child_pid, &status, 0) < 0) {
-+		ksft_test_result_fail("waitpid() failed\n");
-+		goto unmap;
-+	}
-+
-+	status = WEXITSTATUS(status);
-+	if (status) {
-+		ksft_test_result_fail("ksm_merging_page in child: %d\n", status);
-+		goto unmap;
-+	}
-+
-+	ksft_test_result_pass("ksm_merging_pages is not inherited after fork\n");
-+
-+unmap:
-+	ksm_stop();
-+	munmap(map, size);
-+}
-+
- static void init_global_file_handles(void)
- {
- 	mem_fd = open("/proc/self/mem", O_RDWR);
-@@ -620,7 +660,7 @@ static void init_global_file_handles(void)
- 
- int main(int argc, char **argv)
- {
--	unsigned int tests = 8;
-+	unsigned int tests = 9;
- 	int err;
- 
- 	if (argc > 1 && !strcmp(argv[1], FORK_EXEC_CHILD_PRG_NAME)) {
-@@ -652,6 +692,7 @@ int main(int argc, char **argv)
- 	test_prctl_fork();
- 	test_prctl_fork_exec();
- 	test_prctl_unmerge();
-+	test_fork_ksm_merging_page_count();
- 
- 	err = ksft_get_fail_cnt();
- 	if (err)
--- 
-2.51.0
+https://mirrors.edge.kernel.org/pub/tools/llvm/files/prerelease/llvm-22.0.0-ca2e8fc928ad103f46ca9f827e147c43db3a5c47-20250923-185804-x86_64.tar.xz
 
+Cheers,
+Nathan
 
