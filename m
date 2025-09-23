@@ -4,110 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 312A2CAC5A5
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 04:28:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A340FCAC5A5
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 05:05:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75C6C8E000B; Tue, 23 Sep 2025 00:28:53 -0400 (EDT)
+	id 982B68E0008; Tue, 23 Sep 2025 01:05:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 733678E0001; Tue, 23 Sep 2025 00:28:53 -0400 (EDT)
+	id 95A7E8E0001; Tue, 23 Sep 2025 01:05:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 648E08E000B; Tue, 23 Sep 2025 00:28:53 -0400 (EDT)
+	id 8976C8E0008; Tue, 23 Sep 2025 01:05:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D6A08E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 00:28:53 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EDDC211995C
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 04:28:52 +0000 (UTC)
-X-FDA: 83919234504.04.8189F14
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 124C6120007
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 04:28:50 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cRbkEEzR;
-	spf=pass (imf29.hostedemail.com: domain of viswanathiyyappan@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=viswanathiyyappan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 78E8E8E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 01:05:16 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CA58EB8333
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 05:05:15 +0000 (UTC)
+X-FDA: 83919326190.28.C574CD3
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf01.hostedemail.com (Postfix) with ESMTP id C49874000D
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 05:05:13 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wfMr0eHe;
+	spf=pass (imf01.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758601731;
+	s=arc-20220608; t=1758603914;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t0L8/Mj/CMf/BboL9XZ5gn7LsUamResi9L+Dypyqa7g=;
-	b=lDz+S9NKMi8gJ6xWaySdgVMuntgOCryCMVPvp6iuYXV4NXoVz2d9GcSm4rFsP1PFD4eAUx
-	fZBbdC9j3jhX3jAuEe1W24rt5Gz+OrRWhF73wANzY1NlmDkD8lCXnb6HkjX3ROPEl4UHxf
-	jPcD3xeQUospl1RFu/F/JPIJmnaWlx4=
+	bh=8Onfd9zYeL+OEf7fiK3TSj5PyIeGLL4m+H+3TpOEWGw=;
+	b=f6OPeWXmfCrr6opSC+BbBkomO7SxEwW43YbRt/ywhRfUhPMytjw61iYfgclIMz5LzL6Shy
+	pZcCBHrgvQRTWpxB7cTcsKh0V0z3PdUGg/1gNuYllWyAdpujJw0hy75oPP4kmDJS6sSbTc
+	Ol9llo7BYa5QeAm97CCk0LiGi9NliWM=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cRbkEEzR;
-	spf=pass (imf29.hostedemail.com: domain of viswanathiyyappan@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=viswanathiyyappan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758601731; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wfMr0eHe;
+	spf=pass (imf01.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758603914; a=rsa-sha256;
 	cv=none;
-	b=cxV+TZC7ri8XhJRgKFOXnu/jj1JChM1iK0cH3HplW1bXpM8G+aw+/bC9+882iwyv0uRmHe
-	D8q28zubYvuYA39ZLPiej/tZHgz9W1uw4Wd+2gANvUCbu8oeBRDq5C9Q6DjzmpihPIOPy2
-	4bH+rkoJ4KPj3EnP9VJSSaRUBj3v5DI=
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-62fce8b75a3so6254039a12.1
-        for <linux-mm@kvack.org>; Mon, 22 Sep 2025 21:28:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758601729; x=1759206529; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=t0L8/Mj/CMf/BboL9XZ5gn7LsUamResi9L+Dypyqa7g=;
-        b=cRbkEEzRoMzMuKrTd33W1bkcJorAxpOtxSvS0m6igA+i4K8JaYDDcYY/Hv4fb5SGH7
-         9f0xVgiNlZd24WJzsSFLhP0v4cDiNExrGnkSrohwCCGhfYyAs5k44qSDXcRr/0s657rF
-         h8Ke9desCghVCA+JV88HSJABejmVqgdnUhN5SRGVNnsfu98CGTG5IOYFgNVrszrICI9E
-         p0GwFpYYs1CBZEq+XBlmdKhfjTOqm7Dzt1Yzu2Gy497wn7m3anL8BZAIGHXwobgaTIXr
-         qhbOGThq90wiE5XlDm4eOJQ99j5+9n1fH9/U4E0OCqOz5AvhV3z3npyvYmtM3oUVZvUu
-         T9Bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758601729; x=1759206529;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=t0L8/Mj/CMf/BboL9XZ5gn7LsUamResi9L+Dypyqa7g=;
-        b=eovOxw37p9InEVGk148Dsn4uxgJ8RLV0ZPSX/yomAk7KFnIUvoRjdjL8kIko5Tg9jN
-         YuIQ8F1mQJ7E8/pt4IVcDRC1fGRmilY+ynVxmzfzNvMal1UuMzHhrrU58huwtmyRvFHK
-         Kt0P+1xKAqmeMRZ7UQZ6ykGdN3I1nH3SGSc6MmvQKLq2fOPpZdyZ4FyzwxgjifOxtHpG
-         uar5Va0XgVizscHIEyWdtnqBtECUC84D2R243vavm+4PFg1MvTRAhrDISlT2NoOK6SCn
-         a0dOjQA0R7NtUFXt6CP9iSTceBRutInhU0LTPtzqsjUmYEGHKng3xQDsxKFHF5aKo/7G
-         GElQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW1lz/hOeaYVfnxAJdqO5hP5RPlrK3CHx7N6Jbh+u/5OqJ1brITxNMF7uqrsEMH/BNg3177Rh5uQg==@kvack.org
-X-Gm-Message-State: AOJu0YxbqCGrFFp/eTNyOx23YL4Zn6yzkyD757C/yEWIm9qmwTvN+lF5
-	/6VXlZD9947RHpuJwbJEoLWVFhQ9E5+WpCVYe14achrpM2xx/ngWsxq0qyAHGSipSsUkLe9xzw2
-	5nzeAr1v7gto4g3c+ocYq0JoTqm8DOMY=
-X-Gm-Gg: ASbGnctTTvM+Wm2mvNwsGw8y9iO8K9O9SdUwvX6mIugx8EYLpqlv+j51SfWs7AitJgM
-	lzm5okNfx9VSEAnIo+7QFQtT/uZlFM9Xzh2biIutjrOnqmUkDUW2PRsOh79tfNqSkPlbgqKdXaF
-	htCaw71APWg2eNuf2i0G2DPTrw4VYauLKXWKx3bQIAoYxUaTlGtt/bqI9BbelNb0MLSfxvfb422
-	X5rnfPKd2D+wFk6TtuC2myzuq2AD4XguCXE5QJd/HWklgGVwpKxfg==
-X-Google-Smtp-Source: AGHT+IGI8VvJxjrSqdRzk45M8/kjiV8JUO8fNyOSSFYDwY0MLzTPEqc24EHBbra4TdMiT9VAbUvHKiQhHatek4cxEcY=
-X-Received: by 2002:a05:6402:90a:b0:632:9d0f:dc6a with SMTP id
- 4fb4d7f45d1cf-634677e7c45mr842619a12.17.1758601729233; Mon, 22 Sep 2025
- 21:28:49 -0700 (PDT)
+	b=w32f5M+kITq0y76w/9RTorJjXk5iMSBm315dRLB3kiXqlJ9TTLwWCLxbM0ODLSljEyCNqL
+	3Erc28eKEaK8Gaat3LXP/vf61fM25tFDUiuELBY+2vDeRr9qoCmWoiD9ALrPYZ6SxM/HqI
+	dossdjZ3KXncPwl7A6j8PWXV6u+vAFU=
+Message-ID: <188710e0-6683-4bc3-af64-9ce1e8ae4b32@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1758603911;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8Onfd9zYeL+OEf7fiK3TSj5PyIeGLL4m+H+3TpOEWGw=;
+	b=wfMr0eHeLbrLQ3sqtgI2OVXU+fV60p1sUB/DRs87DoUK/bMRNC4UeVwc39oy5L5HYtrIPB
+	UuGFzBIT8H/WQDm1hHKQaQgxnfYPN588eHXLx3TqjzoVP1ycc6nan7+cJ3fYu108XfXhnz
+	576/7u+y7X6gLaAvm4NFwihKHjXOiNo=
+Date: Mon, 22 Sep 2025 22:04:52 -0700
 MIME-Version: 1.0
-References: <20250922170357.148588-1-viswanathiyyappan@gmail.com> <aNHBUJxAs-vomIF3@casper.infradead.org>
-In-Reply-To: <aNHBUJxAs-vomIF3@casper.infradead.org>
-From: viswanath <viswanathiyyappan@gmail.com>
-Date: Tue, 23 Sep 2025 09:58:36 +0530
-X-Gm-Features: AS18NWBRX3q1A98kbmNFmK2Q0aBW6YNTfnGsD2smO2bt-RtTaenmbYqnzoT0BHs
-Message-ID: <CAPrAcgOsYofEUxOB81zaJb0vo994N4diDzYYTaZ-hGEtke+dyQ@mail.gmail.com>
-Subject: Re: [RFC PATCH] mm/slab: Add size validation in kmalloc_array_* functions
-To: Matthew Wilcox <willy@infradead.org>
-Cc: vbabka@suse.cz, akpm@linux-foundation.org, cl@gentwo.org, 
-	rientjes@google.com, roman.gushchin@linux.dev, harry.yoo@oracle.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, skhan@linuxfoundation.org, 
-	david.hunter.linux@gmail.com, linux-kernel-mentees@lists.linux.dev, 
-	syzbot+94d20db923b9f51be0df@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 124C6120007
-X-Stat-Signature: awg9fzhs4fq8e8pxkwkbirttyktutqpx
+Subject: Re: [PATCH v5 3/4] kho: add support for preserving vmalloc
+ allocations
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>,
+ Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>,
+ Chris Li <chrisl@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20250921054458.4043761-1-rppt@kernel.org>
+ <20250921054458.4043761-4-rppt@kernel.org>
+ <8f893019-bd87-4f54-8238-acd8fdeed051@linux.dev>
+ <20250922160836.8d0dc984ff0986b3809c9ab0@linux-foundation.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
+In-Reply-To: <20250922160836.8d0dc984ff0986b3809c9ab0@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758601730-382676
-X-HE-Meta: U2FsdGVkX1/0GiUU5JJBmtTv1WhNBW3JF0PZGq+Ue7zo/jAlwV0s74M3XnogfM+1+baRtcPiXuUOVCAU6yuEiofsKN1LkRjnKHb36UzpE06Cts30b0Ea7OYckym7tFrVhW+uCOe/Sgzx3lPASHSMHyyCzRAuAbgWhH/6tTncIk8YeGb1qnuSyCR2Yt5YhCIrbBL67ZgqppZtLyYl3pqESQc5JgU4PRfeGBfi4ECjVQhoW+KsENzcBWBB+7rACieUp2H2fytmwDRGW2zNTQNveDFq/XCp+ROctFEZYLDstpJKym1oTzwQ3FeZc16wFjALdbmQJK7E9HQsDCsE2EmvzfhMhw+p8pECqTMdS+wfpINN4AIK+Jh0l6Q/0lm+1qaDHOCP1iD7L+O4ZLIRWR5m2kA1n7SPuwsnmprgUvJ8Fu9HHhpjRISazKbzeytddZVEPUxvksZI14hJpQ8HvxKC3YlugDeaktBN8H4tPGITZwK6AY8d6tyr0z+AUXn+nz4NDcBSzIsKVA8n+zYA4OQx59XXMj0B7yeVJFAGnA5quW0mGopIBXCcBsiFOPTbBpbo4DUjoBIIOP+mbeyh6FkZtGZv62+vpZJCO1bGvjY0SDyq6Kjz7SaQsEkFoFsk7TYpQnqB+4Iv2Vv3w8dD0fW05zsGgxbawgnbDLqgBYhX337VPkbwDRvQCCCs9BMNDUIkDUZ9FfJub7VEbr7gN5pojItFJGiOUi72sR9SSkt5txlTMBEmQ3dDP7ujKRAPXAjHoW+vJKeBoU7LIC24wRuJFWjZSfzjaUiMm1CVUaQvrSdQp7M2eLar6dqiHbwHoOOrq2ZmLJj9dLMdMstneU4MboovstOvUJg6wYsYYRPhC+dcZ4nSO08x2if5b9SjgbBxcAfcBQo08ennzm24CyeDVxbVY7t4rBBhPKIY7INIxtSwwqDzIPemk0btPD3WnOp80Y51So7sYJIf+sFRTDL
- 30JrGndg
- 19GkthvkcOj1MeiNZ2LPSUce1VyFyeCb2rL2OwDRCtRo1ycnFx1ShB+HAXxH0uPBaq/b+EPI0XVqFuvMoBEotLzN0psyrgPlMfwTfJuDNG4bXM040xYGUuhyC6ZXCi9jjq65tbdNnLrhLrYH9w7IlaEF8gcHqQ6tgkC3zinZxqk4fDe97wWMMoExLk0+g3A8fCkmlKwFEZftmEQ92HnZPH5Fpg4s80WI6XH13hz0GRH7HfB895dkSO93bA0fy7bfdjlYWnkBgjuNtr7XgW08WwbWsFOv7qhUYmM0AEGtiDW2XVA4JYAGodSj7NRtAYoE6uFrgUTICGUR862SO1u0H9sZNsvFURbqdFuzfWnjqlufAtz4yF0SyxTmgyJnjgoudcKrgafZcN+UxZfA58RlANHxg9aBsKGY93XY19u+c0IOTmCpwD3fSFW35XfPBB047GOtWIH/evwz3Ahh9tmgUep7vdvvxRmg6fZ8Sx+Et2VZ4xVVA9kNVDIK6sOrVYKYMjVpSGUTGrNZq1bP1JECJZ/H8Gm6Xiemp/ZsuuIQ3OQrQO8AkmeA/gRjoDYUMbwzqmzAQ+EzvmTE9Ock=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C49874000D
+X-Stat-Signature: 3gzw8uj79k8f5gu331kirpsn4inj6k46
+X-HE-Tag: 1758603913-756046
+X-HE-Meta: U2FsdGVkX18knimlhhsKo/r1p0IvkggflzZHUWFjHQKsvmQ7q7rtN/foSHC324GNlHFO2UUsfNUrR7wvzdGZ5ECWsujXDyYek9PaQuHzKGYZXH4kJdfAgacf8fUIoKb/sWzMXajriG+u6p/kM9ZPIEkort0HVwVkk5nDPyWLShbV6760REQejnnm8SQgVQCSuehx2XbA7gOq06cQD2ZZsxzAhgyzNNBbozGNPUqQHk9tsDIWmcD/xy+2u1zywuErfWw/kZ3xP5PLLPdxxMbKUvUril4g5Y6rCQvB6KV6dJ42nTYLcy1egtHJkoi5o4ailllk4yVuF1P787Ql6+Kca+9owo2OJhXZIcw+Vrf8D33wFdlx99zrj6H2J9Qc+HdV4O/zBakyugH0JJ2D3BryN9Fr0lUjacnzWazO77ohDkpNfDN3sPqMnm8ELKTkA7583HgP2gYq2uEv+ms423SezbPwkjhQb4jhrr8UGyb/Mdycwb9a+7dzPRgflyh2qcxdPeC6Ei4wzlT7gdxDZzqknfK+PQVNnfz6hiTDCh01HeYIbYWSapJwGPfRcWTW3ZypzqYotGqJPH4Ef5G0S8bBLoTH8d3xovk5YaTRXrei1FDuSobgeA28rrSW13zE/aHwB2XQ08VDYfp2rpYmXRDuthhFTJ21xZi34sz4jAJDRhR2Ywl2kE7gyG1Vhk/1hMSiyJqaOSdKGhsuq+rP6PSW2QV/jhqd8MQimAUVFaqY1tKcXM4C4N9W8eyGEZQ5LzO1tN1BuQgh4u9ojUDLg4Ba9dq9HND7LH5r2KrzJecYYoRIuvsMv7O1m9gEE69NvMl500KU5ydPhjWhcSOLLNgqxND7gdcwJlBCEfpyfFrLUNkxf+eEe+mEMKae/lUyaUr2+McYy9mb07WTCP42pO+vgzb4jbZlYfyHbdLH5bcHRW+jYkp0tm1OKJNkJCbaevXm2kOfDtnZb9DTJxO/vlI
+ RZj6BywG
+ r5n3ogtePn+G6ewfAYGzVbATj5l6MZ9yqk0oKTemOYerP9+99pIhosrINqRlG1lBjSO8UaVIkGPOL7X8+JqXRL+t9Q+mt86Ft3r13KfIoJJpJz7cMBR0FjDfpwzUX4gakw7iQ6+bLZqe3tej1eRDG5JWi5obp55RAVgoChoNpvvr0DIFrzWx4oDx+BpLDasOsU2zHkgiFwxk2Hsxv+ZTAdc2cWqPxCkzQvtSnPRp03CB83GU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,12 +97,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 23 Sept 2025 at 03:06, Matthew Wilcox <willy@infradead.org> wrote:
-> Is it really a good idea to support 2^28 vclocks?  Surely there's a
-> limit that makes sense to the PTP driver.
 
-I think I will add a new macro for the limit and validate against that
+在 2025/9/22 16:08, Andrew Morton 写道:
+> On Mon, 22 Sep 2025 15:31:42 -0700 "yanjun.zhu" <yanjun.zhu@linux.dev> wrote:
+>
+>>> +int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation)
+>>> +{
+>>> +	struct kho_vmalloc_chunk *chunk;
+>>> +	struct vm_struct *vm = find_vm_area(ptr);
+>>> +	unsigned int order, flags, nr_contig_pages;
+>>> +	unsigned int idx = 0;
+>>> +	int err;
+>> This is a trivial issue. I’m not sure whether RCT (Reverse Christmas
+>> Trees) is used in the Linux MM mailing list.
+> Not as far as I know.  Some like it.
+>
+> If I was to have a preference I'd suggest that things be laid out in a
+> logical order rather than by column count.  Group like things together,
+> avoid use of unintialized storage in initializers(!).
 
-Thanks
-Viswanath
+Thanks for your input. I consider this a trivial issue. RCT will help 
+make the local variables more organized. Since the Linux MM code does 
+not currently use RCT and prefers to group similar logical variables and 
+initialize these local variables, I am fine with the current approach.
+
+Yanjun.Zhu
+
+>
+-- 
+Best Regards,
+Yanjun.Zhu
+
 
