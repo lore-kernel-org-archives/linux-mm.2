@@ -4,91 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2FEACAC5A7
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 16:22:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4781CAC5AC
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 16:23:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BDC38E0006; Tue, 23 Sep 2025 12:22:31 -0400 (EDT)
+	id 3E6628E000A; Tue, 23 Sep 2025 12:23:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3950E8E0001; Tue, 23 Sep 2025 12:22:31 -0400 (EDT)
+	id 3BE228E0001; Tue, 23 Sep 2025 12:23:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2AB408E0006; Tue, 23 Sep 2025 12:22:31 -0400 (EDT)
+	id 2D40E8E000A; Tue, 23 Sep 2025 12:23:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1428C8E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 12:22:31 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AB0D285ED7
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 16:22:30 +0000 (UTC)
-X-FDA: 83921032860.04.CE1B5BD
-Received: from mail-io1-f80.google.com (mail-io1-f80.google.com [209.85.166.80])
-	by imf29.hostedemail.com (Postfix) with ESMTP id DF7C0120009
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 16:22:28 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of 3Q8nSaAkbAG4eklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.80 as permitted sender) smtp.mailfrom=3Q8nSaAkbAG4eklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 18B7F8E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 12:23:30 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CA1F7C01C6
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 16:23:29 +0000 (UTC)
+X-FDA: 83921035338.10.804F236
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 881DBA001C
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 16:23:27 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HWYJ2zyG;
+	spf=pass (imf15.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758644549;
+	s=arc-20220608; t=1758644607;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=fliOmompFcXDPLp5fyc4D6gMx/asPNTMNLo+cXzT8zs=;
-	b=vrDuBG3/UGqRg53c9iXulKOfIF5C2u87Eugwjq4UymfyBudimgg/i4OiTuD9NOpGer8QzU
-	xZRxWhrNy0+iSKOUu0LweRStWROFMLGQDV6CaMEUJ+HFG8oq7YfH1+tUiGwD/wWltH+ySZ
-	yZgNARkUrbrcyKCHvPo9MHREKlREBBU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758644549; a=rsa-sha256;
-	cv=none;
-	b=QH5/A071bulaSsWLPcpDUIEYN9FFuNMIIykW2SvH60hixuvNjkqSSGOAtG04nLBn4Utg4I
-	n5PLjvq1w/7ovtRM+AAkO1PFXGhZs2/p5F4nzQ+AxBLTBqHOdnMzzBshnhRT4Qah/Uj/t6
-	3ZjlkURPezgTvIbDz9owbMkGsFSrLmM=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UKss1Vq/qNskbdjEuoAF34BI2EldAPZBijh148HYB4w=;
+	b=xEjj80hF0H63F27WjvzV61wuJaGsXuCekxSLNTAdEkozdpKIvU+eijho4gUVRLM0EFDa6a
+	kcowkXWh9QjuG8WfCJEy/h5wc+SJJqdxet4qVMmkSknZEJoiMYKzhwPoji6l2Ce67fslfs
+	7zM9iw91cp+M5JAb+q0IlvLl6byWah8=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of 3Q8nSaAkbAG4eklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.80 as permitted sender) smtp.mailfrom=3Q8nSaAkbAG4eklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-Received: by mail-io1-f80.google.com with SMTP id ca18e2360f4ac-893dd6dfe1fso498106439f.1
-        for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:22:28 -0700 (PDT)
+	imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HWYJ2zyG;
+	spf=pass (imf15.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758644607; a=rsa-sha256;
+	cv=none;
+	b=bs0wtKKxyg0QHgoqYQaC5xoiw2C6WiaHLFEoY1lb3u7gYxzxtiElws7q7jqqqzks0PW9mU
+	yvKVMBDHKhKCBrJfU5JVIyUcYPPFIPs0RWeV3EymSyyEDnXxCe795KYXY5vgZ1EGXHOsj5
+	fLpQ7+Yflje+AVMGoC/AXebyJgCJduM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758644607;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UKss1Vq/qNskbdjEuoAF34BI2EldAPZBijh148HYB4w=;
+	b=HWYJ2zyGZAujigSZRjhzt1uWoS2Yn2OrbozB31aUijfbAtmWJo1rx2kVeg0ClbAgzr5qDB
+	VlJbzJZTNjPv3gzhSqmiXU+umJhiT3rXgE7suCiTJxO5BYT6Yi0Exx0SXSW2OgsCMkpeVO
+	8azxZwWQ9YJx2rdykufOhqZoYKsEGi8=
+Received: from mail-yb1-f200.google.com (mail-yb1-f200.google.com
+ [209.85.219.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-330-ZPzWFByQPUiWesQZc0Pm9w-1; Tue, 23 Sep 2025 12:23:24 -0400
+X-MC-Unique: ZPzWFByQPUiWesQZc0Pm9w-1
+X-Mimecast-MFC-AGG-ID: ZPzWFByQPUiWesQZc0Pm9w_1758644604
+Received: by mail-yb1-f200.google.com with SMTP id 3f1490d57ef6-ea7624be2e7so8135015276.3
+        for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:23:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758644548; x=1759249348;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fliOmompFcXDPLp5fyc4D6gMx/asPNTMNLo+cXzT8zs=;
-        b=p48UzNmaKhVcgax0MXbwJ00utU0JjO99+t5v59YeaPT4ccnSOacV/x9A2IC/Y0fQU7
-         aGS/8OUg8xCS6q08FI9GXqDe76lPp36WbjxWnrHma1fLQC5ucLZVrQz2zcFoxZ0YY3jA
-         9Ol1o5hbnh6eB3yk8OirHqVKU2vzAaafQj7TfKjCD5KKTzPr9nqKJhBUMVVaaCcUdub5
-         NMwlohi7yG563sQ15EuUS9Uj4EB9duyF4hKQwDLNHTL6pEwIXOqFE4/5QADMhN0CRRJ/
-         Q725GC46d02XVBX5JX09Xz3CgyR7DLyIZcp/yZyPmGd0CIXiGe/g6GwAttT8vUmzh4Rw
-         pkxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVyX3sWXf6I90kXYLro8BYEaocMpRSzdesRyjAWbXRGoAWYerLc7AlqLqWmD+vv4hZtdUsZBHklRA==@kvack.org
-X-Gm-Message-State: AOJu0YyvCtahlOjsGL4bjvjMPLaIt6Vi6jdZt5YN6b1Zlv6BEUYFOSBD
-	J5lzTZFC7gs1nI/DMF2BXjfQc616z7vqH4Vnxotuycn4Cgkb/IebyvO93cnutC1sHU3mVTsgyQN
-	ktNrwlwbLXJV4eySX5NbkcjRQJDYLc3uSaKpYVwQr6UwqmKEvq9pQOyHRRHY=
-X-Google-Smtp-Source: AGHT+IHfgRC8BMqPaFSbGMJttCZaLVnmtyUOI5o+nYBtHge6b9pil9feGS+SabO7G3WmYb+l+4tOu/L7GNki4CrWFHoNGql+MRnS
+        d=1e100.net; s=20230601; t=1758644604; x=1759249404;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UKss1Vq/qNskbdjEuoAF34BI2EldAPZBijh148HYB4w=;
+        b=AwgxHQxq2/1r+9V9Pb4iEoWMrGPrj0tFwOS20rOaeO2IHGuUNWNNEshEHbQrArQ0BT
+         QKlu9jeAvb/99iqMzHs/FFotS9GtsezTocY+UC5bLGdWProZX8tyTt4WTVU9YfiEnJwI
+         I7ijO3/QEml60pXGcsP0C0JEb+WVGlR8CCh7oDZlKyM/S1WCZhnol7CL22mCIcp0bZJP
+         buxglqiBCog6aY05iC2kcNsRPLLqWebtTFzS4r080w+8B9iKSH+lfBn9MIVGPc19IKm0
+         2I+NNpMuw85xekXfkahrr73OAftoFr0IY+BmDlAgbEu3skfHPLpOptoWI7+tCmqH6g8k
+         O5zw==
+X-Forwarded-Encrypted: i=1; AJvYcCUFpC/pUUXBVb9JtL2H5fc+CnZ9xklabDKgsFrUVqPPUv9bvX8myellXW0vKtBSDre5Totp8ai72Q==@kvack.org
+X-Gm-Message-State: AOJu0YxXSbTgGMn8ZlOo4acQRoNRbdK0m144OoJ2sGXbOhRezEJGM5Sw
+	yCweMEURgE4vNjbHOQbjrLumELDAKnTntutMwYdsGfqRrG/XvCRMDFTAygrIyXr8Z5c76+EjDiI
+	uefbdMFBjoWNkY3C8PbVfEBsp30EgIwZbuw0rrg//H3KVOrdmZEX8bJXkcgfB/C2UCpVBsIGtrQ
+	At63ZuDUA+xtS8oCCEpH68kwzj4dI=
+X-Gm-Gg: ASbGnctiEFw1PXZL7BwFdWvQtQoU8Bii1IyA+0rH2vGiY51QsXeezBk3CnrTVys+Qo+
+	bPzj5Izw78GTXzwAWe6c5p2oxhnIGTYHV57j0woazyiupApOu0HGq1jxyRIXCnPWbKrP0MTXKBf
+	hZc7EOLN78Ry4eQu7dwr9S1+PYYBjVEnYmKsw=
+X-Received: by 2002:a05:6902:6c0d:b0:e97:d52:c5c9 with SMTP id 3f1490d57ef6-eb32e153c6emr2423039276.1.1758644603733;
+        Tue, 23 Sep 2025 09:23:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IElG1psvLGlrCOOsQeaMXrxpi0LR+KmCR4yk6DkzIcT1sNcAqVvTC0+LYxsDcTOe5Xa5c3B8XAFOPMszGJUWWY=
+X-Received: by 2002:a05:6902:6c0d:b0:e97:d52:c5c9 with SMTP id
+ 3f1490d57ef6-eb32e153c6emr2423010276.1.1758644603205; Tue, 23 Sep 2025
+ 09:23:23 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:144b:b0:425:6f0b:a1db with SMTP id
- e9e14a558f8ab-42581e28e41mr43633795ab.9.1758644547759; Tue, 23 Sep 2025
- 09:22:27 -0700 (PDT)
-Date: Tue, 23 Sep 2025 09:22:27 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68d2c943.a70a0220.1b52b.02b3.GAE@google.com>
-Subject: [syzbot] [mm?] WARNING in memory_failure
-From: syzbot <syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, linmiaohe@huawei.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, nao.horiguchi@gmail.com, 
-	syzkaller-bugs@googlegroups.com
+References: <20250922140938.27343-1-richard.weiyang@gmail.com>
+In-Reply-To: <20250922140938.27343-1-richard.weiyang@gmail.com>
+From: Nico Pache <npache@redhat.com>
+Date: Tue, 23 Sep 2025 10:22:57 -0600
+X-Gm-Features: AS18NWCrgPCxhPHqfM8AUhmc4HSoU4EXElLGKZj86ch-rSpxXn-w_lc5CCxqcdM
+Message-ID: <CAA1CXcCjDZ9Q6d9X4-dXsUfLPHMNYehZUTARzMNmZJvaSP_t3A@mail.gmail.com>
+Subject: Re: [Patch v2] mm/khugepaged: use start_addr/addr for better reading
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com, 
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	lance.yang@linux.dev, linux-mm@kvack.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: olGUl3AKQzJQwSURWi4u1jJlsiJeYcm7eUmvxUwCVwI_1758644604
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: DF7C0120009
-X-Stat-Signature: prhohrfeapum68fjkmbgpj8wzusq8gxs
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 881DBA001C
+X-Rspamd-Server: rspam05
+X-Stat-Signature: qqcoa5d5isatdhxnkek3ew4xpndxp7b3
 X-Rspam-User: 
-X-HE-Tag: 1758644548-673316
-X-HE-Meta: U2FsdGVkX1+7Ox2ANaxCMIoF5vEyUoF5X3EvVDUK3C1pgX5RQM7CCqURrLbLIb1zLoGYaCC19Z2iixu0qkeow5tAe45hlptUX4y5mkyLGdY372cVrYYv8FcjAXnp2LsRVgZNA2rqQzYYgJmc8CQjO6C1XmsXHc5bn1wuUxfitn91FG3/1Zx5/86YbELP7+WHTNB0LA13SqN76L//BEqmLL4kBJqHabD3sC0WhtKpY4BxsL6O4HRA+6zf6L3FP7afD26MMyAfHLXdTOjfAgqayEyNXkU1YF/o3Qmdcb18jMNxs0Al9pPGNgqwysS6+KwTguB1LrS1yxTC/HFgRxQ1LDMgrBRmoknATmwusXUj7bbwLbF17uWJ9ci53hem+XmEfAvQuZaunRm7JnjofXIDRI/fe/0vNz8QaTIwrk0xKueYrwWhx5dAUe4DjjFfbMJrkAVvlR4eWyg8kUI7gq39cVpVRjzAdeyCJ/nxIFFhICa1o+Y/sMINScl6tlMr283qc7xxb52+cTAJnlmtxB9GQmHNhoIyNZmAk3XtfiOl1RhI6Q3WX2cyu3ENUcbP9WPg+2UeikfDtmrunCzq9I2BzUcWhIUmm3FaWxpIir6Z5pZFTA6EWCc+cM7kQarDN2H0/8N3HsnWFZQaFBd2RfeLan4c/WQIam+ArpScSMdZ4JP0kpp83dmTsymD1LeyEg7Exj6kVRNro1U4B94ffERiHu46/8JQoPc2jsDTyzRDEnrw4mMfoSjFiv3LuiV43j7jccxiXyYWZnavxbF3x5E8B7wBk53FcHz6kEhvUNkgEmQMtIrw3y3J0cNbKS40dJtvsHWfg+XcQu6+Nhm1Sh9VM4W2Et681ZdySCp5uTUTdU06447q0MwuXs0jZTJ9gJOF555XzmApc8aD3meTq9pXzEVxdMeI0y4cFlPJsR8tyq+VkA4xQs93hSfhEb4PKcoHiVJl1pjlCMOhO3QYFqt
- qG7J91vx
- JnLwgXidnvISmTbxiUQJdmx4utIrk87kLq+iOWSB1DP8Q8919Gu9vNrCjB7qFOipqJerQgSAIBqG5M/bleAH/XOlw2fhc14Ycz7Je/qqCyxx3sV8xR/Ss8egaPjqwGteu+oGy38kbM5MSwav7trKXK2PJERDTCnVO33FE1cnDMHkbhJ1w7owFgRzhoalnRERfd0TsjvNlP/IEWYnx4TpsIC1O0w4Hoiz4fTAv3halLyd94pBNZF9L/JrMzfmMxiIqEKgRizzKSTa/MN5RKf4M6VhA/LI0XS9gFe/Vy3U3rzF8B8iGzQJIT3OuA/ZquVElZaoxOnGMsz+TI2k9b1VdKk4UmtXalP/ZmEIqdxplOZt1sQuaQfTGbcEDPQq7Jcjbi4pm8MiE8/bX2UkStcERYXM7rPJzaay5itwiQSpz3B/QTJhKBD94Hbetbn4dkx73qK6SuvEDyO7Kj8FGhkGrZGY7k/D4/P4+DRgXqhxCub4PQyQhdjzBcepih+rZ50HDjAkBazVUqWnYDsQjWgP392ZfHLgBmsJ1guYmHbKH9rQ1wcKF8TwM2lKdcJaqv2d9iNyF051YQqcbs7X/MeJwVex6n3zdXiGsGeLIMuvN7bVs00mfXozs4kaEvqNC2vuA8wYh3A8Z5PznVfSvjRTYYExVVzNHkRly063F5nt6CO3TgdMW9lrVri9F9wxdhfcNa2Im255LBu0EngehuX+FMfztEn6Km7gV02Nz4zix4NfIiQWRhb9faiTxEOI/uSCfxP27HNJAwqfpU+pjckQuwTO37UCPUPOxGNx3AZu/KX47w/g0GbqacUMX4SHSaLv026VtQBgQqBlUUvyCfrNHz/dOlFTRJBUJCjnVpUO6oTDyAX7UMW40yT0kMO5ux6fze7HZ2c1Tay53YavCYZHOA7jyqqpO5iKXqUpfFcSf8IxXpDFN4gMrYdK4s5H6+C4msHgkih6due9tPfxeLotDGHcuWHo9
- lEBEWXO9
- aSipGwXJ3loXiH7DnaCPX3LBZrW1Lk66B/Q4uCqZJCj7oNQPvb34cZoXze5BdBjoIiV2gDR3ZEpJLsb20tuvrroz9KHoLgM+bpblo/tJHzqFfyitvY/3uAj8LyDYFqJ+9UzYNqNV79sby0jJGFfugXArKoL3p3xgk00m5sRoYBBvajKjDKNIzTbG91F1FA7TttVcs3Wm3EguxammSpaS1q/WnGKUVQ70STm5mO65nMvxNJkxLAfS9dq9eVSmasSlOc9QrHZt87d19zlnvtIEFM0BiT+bXyYiGjvbft00UiI3uRfX6/P9mp2AofcQCNB2RROr8HSWJqHQKNJbBp5n1ouxBZVwS46i9f4oXPdfgg9hmPqSBNA8gkVZsULKwClngLu42pKiEC4JBHXAEOQ/meQC5Yyg0SPPLp3YOWvLKq2sEbviJve406dCTpFy89Tm/FEb1OBo6hInh/+D57UUnyUL54cwF8dw2TowwqeYNK/ulm9ucYMBt5ENIE6DSnuJwYC+IipsQpv5FFcJrtSI3AI7aHs2iFRmwk2+yuTRja43URQS63OAf17f5sw325IAGElMaCMLKe0i454B9/g72MsRCiVWRtka
+X-HE-Tag: 1758644607-139868
+X-HE-Meta: U2FsdGVkX18QqHy8rwIJisKbTF7ZHysWC6OECgk4BB01bM6dw2WC0tP+TQUjmUJdqPcCESo4RB6K/mVmPxvCJREjOilJAqx1gNpXkARogl8HIQWVn7OhiXZ8p59HTYLc9A6wk8ux1kGFFHYv4sVeL06v97v+WDqFo60V38Sl9kPQbDa1gE3MfsSVQatud5hNUflx6DxIB/rHmpHgf+gFMUdi7hhqHiJo4gQTk6zDJeVUOoZ16K1CpFLsQGj2qIVxHBZ7ukrL4DWlM2DTJfEUOR4Y3aKo8bcfg2E3f8kwwGYW8v0HyLhN3jLHpi7jUuNs3mGXy41OWyj8PiN3JawKfmQt9OK3puu/qmoBalhgfF+PYi4ivAhGc+vRJmeRXix3JyShlHMozEYLK6NTXsvx6SH6bc4mUPdTWngelLtQRkE42Qh2xlfUnwrOMqlqww4quR2u7dBf3wEsWLFnifYHhS02HG9S1925OM4MR8NcBJE3cXmvP/6YuoC5WHIvnoSS9fqqifWyJk1fcr03Lz50UmS2QmxI7PByCUtQ4ZaHUMzo7WTj4RwcQAmSSqPzWisl/LQ4ycgFhqXPHqlHLTL+zrYTU/PM0ClCc0N6vWiUFFMW8XRRx67n5lVurr8oWFLzuwsCdsORt6z+atOY0wRiWurbXaefmBr4G/TiFT6eoZGquDbtYFfdjGuFvjImkLa1/F+Sekv8FgXOnTTg/16DjtyWyUMygx2WQoencCV7dBYKO/05VGeQiPGj1W4UrhTMKtimtKjUSAzeUj4xlXF6ddWo1+KqDOOLWdYkXBkQvGBTWOpxDrPGTKvx1uR2fFBfzfYNaSmUMkp0H3V/E2T3DzIcj3UE50KK4R//X3s9zlxg6re2axzFdA2jkLZACDtswpEU+gBHiPaMORVui77YtS1ail6jgtYnqnaW2XiFDmsJTIgvIQDcQNGSbiO/jkiCSnsR1iuS66WWW4YJMny
+ s8oE0wlF
+ MTIWE/f2dQPQP72ES9dVPyhS5ouqOezK10/SilmsfX5TmOm0kpsKtNKwjV2FUxeJGepYJwXcWCuaB6H4U4rubQngn36LaYM43ovu+Yf31ILe0j7g4G6GScmtnBBkB521zNyCRKRyByCeTIyPLkd03ds2KE8b164ne2lkXfbDW5X1chvZDJ5Iw2SylpsGt97zYOGbpCAsSTP/ScR/F4wzbMb8TUPsEJhxlizTb2e666VFbaJxgywu6p82a/pmtNde4KvfnDpGLQEXibbbk8rz/FWW8nI3yo6wxRzd8yvgrogRPHAMx0BieKL5sCInJPMe5PcRtDtv5oKVZd20TGhW6VeZojXzDUokBKn7QzYfdfTP/yRUMVhcKQA5wjqtkJqhK+mROOnMXRN5lfVUSsO2NHXu5FoxLchOlRY1dPZ/dI6h0tM2ASK8+Py6lU0MACKeDBmV5I3vNI6hmotk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,317 +127,211 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Mon, Sep 22, 2025 at 8:09=E2=80=AFAM Wei Yang <richard.weiyang@gmail.com=
+> wrote:
+>
+> When collapse a pmd, there are two address in use:
+>
+>   * address points to the start of pmd
+>   * address points to each individual page
+>
+> Current naming is not easy to distinguish these two and error prone.
+>
+> Considering the plan to collapse mTHP, name the first one to start_addr
+> and second one to addr for better reading and consistency.
+>
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Suggested-by: David Hildenbrand <david@redhat.com>
+>
+LGTM!
 
-syzbot found the following issue on:
+Reviewed-by: Nico Pache <npache@redhat.com>
+> ---
+> v2: use start_addr/addr instead
+> ---
+>  mm/khugepaged.c | 43 ++++++++++++++++++++++---------------------
+>  1 file changed, 22 insertions(+), 21 deletions(-)
+>
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index ec3f91a345a0..e3f7d1760567 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -537,18 +537,19 @@ static void release_pte_pages(pte_t *pte, pte_t *_p=
+te,
+>  }
+>
+>  static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+> -                                       unsigned long address,
+> +                                       unsigned long start_addr,
+>                                         pte_t *pte,
+>                                         struct collapse_control *cc,
+>                                         struct list_head *compound_pageli=
+st)
+>  {
+>         struct page *page =3D NULL;
+>         struct folio *folio =3D NULL;
+> +       unsigned long addr =3D start_addr;
+>         pte_t *_pte;
+>         int none_or_zero =3D 0, shared =3D 0, result =3D SCAN_FAIL, refer=
+enced =3D 0;
+>
+>         for (_pte =3D pte; _pte < pte + HPAGE_PMD_NR;
+> -            _pte++, address +=3D PAGE_SIZE) {
+> +            _pte++, addr +=3D PAGE_SIZE) {
+>                 pte_t pteval =3D ptep_get(_pte);
+>                 if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
+>                         ++none_or_zero;
+> @@ -570,7 +571,7 @@ static int __collapse_huge_page_isolate(struct vm_are=
+a_struct *vma,
+>                         result =3D SCAN_PTE_UFFD_WP;
+>                         goto out;
+>                 }
+> -               page =3D vm_normal_page(vma, address, pteval);
+> +               page =3D vm_normal_page(vma, addr, pteval);
+>                 if (unlikely(!page) || unlikely(is_zone_device_page(page)=
+)) {
+>                         result =3D SCAN_PAGE_NULL;
+>                         goto out;
+> @@ -655,8 +656,8 @@ static int __collapse_huge_page_isolate(struct vm_are=
+a_struct *vma,
+>                  */
+>                 if (cc->is_khugepaged &&
+>                     (pte_young(pteval) || folio_test_young(folio) ||
+> -                    folio_test_referenced(folio) || mmu_notifier_test_yo=
+ung(vma->vm_mm,
+> -                                                                    addr=
+ess)))
+> +                    folio_test_referenced(folio) ||
+> +                    mmu_notifier_test_young(vma->vm_mm, addr)))
+>                         referenced++;
+>         }
+>
+> @@ -985,21 +986,21 @@ static int check_pmd_still_valid(struct mm_struct *=
+mm,
+>   */
+>  static int __collapse_huge_page_swapin(struct mm_struct *mm,
+>                                        struct vm_area_struct *vma,
+> -                                      unsigned long haddr, pmd_t *pmd,
+> +                                      unsigned long start_addr, pmd_t *p=
+md,
+>                                        int referenced)
+>  {
+>         int swapped_in =3D 0;
+>         vm_fault_t ret =3D 0;
+> -       unsigned long address, end =3D haddr + (HPAGE_PMD_NR * PAGE_SIZE)=
+;
+> +       unsigned long addr, end =3D start_addr + (HPAGE_PMD_NR * PAGE_SIZ=
+E);
+>         int result;
+>         pte_t *pte =3D NULL;
+>         spinlock_t *ptl;
+>
+> -       for (address =3D haddr; address < end; address +=3D PAGE_SIZE) {
+> +       for (addr =3D start_addr; addr < end; addr +=3D PAGE_SIZE) {
+>                 struct vm_fault vmf =3D {
+>                         .vma =3D vma,
+> -                       .address =3D address,
+> -                       .pgoff =3D linear_page_index(vma, address),
+> +                       .address =3D addr,
+> +                       .pgoff =3D linear_page_index(vma, addr),
+>                         .flags =3D FAULT_FLAG_ALLOW_RETRY,
+>                         .pmd =3D pmd,
+>                 };
+> @@ -1009,7 +1010,7 @@ static int __collapse_huge_page_swapin(struct mm_st=
+ruct *mm,
+>                          * Here the ptl is only used to check pte_same() =
+in
+>                          * do_swap_page(), so readonly version is enough.
+>                          */
+> -                       pte =3D pte_offset_map_ro_nolock(mm, pmd, address=
+, &ptl);
+> +                       pte =3D pte_offset_map_ro_nolock(mm, pmd, addr, &=
+ptl);
+>                         if (!pte) {
+>                                 mmap_read_unlock(mm);
+>                                 result =3D SCAN_PMD_NULL;
+> @@ -1252,7 +1253,7 @@ static int collapse_huge_page(struct mm_struct *mm,=
+ unsigned long address,
+>
+>  static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+>                                    struct vm_area_struct *vma,
+> -                                  unsigned long address, bool *mmap_lock=
+ed,
+> +                                  unsigned long start_addr, bool *mmap_l=
+ocked,
+>                                    struct collapse_control *cc)
+>  {
+>         pmd_t *pmd;
+> @@ -1261,26 +1262,26 @@ static int hpage_collapse_scan_pmd(struct mm_stru=
+ct *mm,
+>         int none_or_zero =3D 0, shared =3D 0;
+>         struct page *page =3D NULL;
+>         struct folio *folio =3D NULL;
+> -       unsigned long _address;
+> +       unsigned long addr;
+>         spinlock_t *ptl;
+>         int node =3D NUMA_NO_NODE, unmapped =3D 0;
+>
+> -       VM_BUG_ON(address & ~HPAGE_PMD_MASK);
+> +       VM_BUG_ON(start_addr & ~HPAGE_PMD_MASK);
+>
+> -       result =3D find_pmd_or_thp_or_none(mm, address, &pmd);
+> +       result =3D find_pmd_or_thp_or_none(mm, start_addr, &pmd);
+>         if (result !=3D SCAN_SUCCEED)
+>                 goto out;
+>
+>         memset(cc->node_load, 0, sizeof(cc->node_load));
+>         nodes_clear(cc->alloc_nmask);
+> -       pte =3D pte_offset_map_lock(mm, pmd, address, &ptl);
+> +       pte =3D pte_offset_map_lock(mm, pmd, start_addr, &ptl);
+>         if (!pte) {
+>                 result =3D SCAN_PMD_NULL;
+>                 goto out;
+>         }
+>
+> -       for (_address =3D address, _pte =3D pte; _pte < pte + HPAGE_PMD_N=
+R;
+> -            _pte++, _address +=3D PAGE_SIZE) {
+> +       for (addr =3D start_addr, _pte =3D pte; _pte < pte + HPAGE_PMD_NR=
+;
+> +            _pte++, addr +=3D PAGE_SIZE) {
+>                 pte_t pteval =3D ptep_get(_pte);
+>                 if (is_swap_pte(pteval)) {
+>                         ++unmapped;
+> @@ -1328,7 +1329,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct=
+ *mm,
+>                         goto out_unmap;
+>                 }
+>
+> -               page =3D vm_normal_page(vma, _address, pteval);
+> +               page =3D vm_normal_page(vma, addr, pteval);
+>                 if (unlikely(!page) || unlikely(is_zone_device_page(page)=
+)) {
+>                         result =3D SCAN_PAGE_NULL;
+>                         goto out_unmap;
+> @@ -1397,7 +1398,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct=
+ *mm,
+>                 if (cc->is_khugepaged &&
+>                     (pte_young(pteval) || folio_test_young(folio) ||
+>                      folio_test_referenced(folio) ||
+> -                    mmu_notifier_test_young(vma->vm_mm, _address)))
+> +                    mmu_notifier_test_young(vma->vm_mm, addr)))
+>                         referenced++;
+>         }
+>         if (cc->is_khugepaged &&
+> @@ -1410,7 +1411,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct=
+ *mm,
+>  out_unmap:
+>         pte_unmap_unlock(pte, ptl);
+>         if (result =3D=3D SCAN_SUCCEED) {
+> -               result =3D collapse_huge_page(mm, address, referenced,
+> +               result =3D collapse_huge_page(mm, start_addr, referenced,
+>                                             unmapped, cc);
+>                 /* collapse_huge_page will return with the mmap_lock rele=
+ased */
+>                 *mmap_locked =3D false;
+> --
+> 2.34.1
+>
 
-HEAD commit:    b5db4add5e77 Merge branch 'for-next/core' into for-kernelci
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
-console output: https://syzkaller.appspot.com/x/log.txt?x=10edb8e2580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=d2ae34a0711ff2f1
-dashboard link: https://syzkaller.appspot.com/bug?extid=e6367ea2fdab6ed46056
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-userspace arch: arm64
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14160f12580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1361627c580000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/6eee2232d5c1/disk-b5db4add.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/a8b00f2f1234/vmlinux-b5db4add.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/fc0d466f156c/Image-b5db4add.gz.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com
-
-Injecting memory failure for pfn 0x104000 at process virtual address 0x20000000
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 6700 at mm/memory-failure.c:2391 memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
-Modules linked in:
-CPU: 1 UID: 0 PID: 6700 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/30/2025
-pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-pc : memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
-lr : memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
-sp : ffff8000a41478c0
-x29: ffff8000a41479a0 x28: 05ffc00000200868 x27: ffff700014828f20
-x26: 1fffffbff8620001 x25: 05ffc0000020086d x24: 1fffffbff8620000
-x23: fffffdffc3100008 x22: fffffdffc3100000 x21: fffffdffc3100000
-x20: 0000000000000023 x19: dfff800000000000 x18: 1fffe00033793888
-x17: ffff80008f7ee000 x16: ffff80008052aa64 x15: 0000000000000001
-x14: 1fffffbff8620000 x13: 0000000000000000 x12: 0000000000000000
-x11: ffff7fbff8620001 x10: 0000000000ff0100 x9 : 0000000000000000
-x8 : ffff0000d7eedb80 x7 : ffff800080428910 x6 : 0000000000000000
-x5 : 0000000000000001 x4 : 0000000000000001 x3 : ffff800080cf5438
-x2 : 0000000000000001 x1 : 0000000000000040 x0 : 0000000000000000
-Call trace:
- memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391 (P)
- madvise_inject_error mm/madvise.c:1475 [inline]
- madvise_do_behavior+0x2c8/0x7c4 mm/madvise.c:1875
- do_madvise+0x190/0x248 mm/madvise.c:1978
- __do_sys_madvise mm/madvise.c:1987 [inline]
- __se_sys_madvise mm/madvise.c:1985 [inline]
- __arm64_sys_madvise+0xa4/0xc0 mm/madvise.c:1985
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x98/0x254 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
- do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
- el0_svc+0x5c/0x254 arch/arm64/kernel/entry-common.c:744
- el0t_64_sync_handler+0x84/0x12c arch/arm64/kernel/entry-common.c:763
- el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:596
-irq event stamp: 1544
-hardirqs last  enabled at (1543): [<ffff80008b042cd0>] __raw_spin_unlock_irq include/linux/spinlock_api_smp.h:159 [inline]
-hardirqs last  enabled at (1543): [<ffff80008b042cd0>] _raw_spin_unlock_irq+0x30/0x80 kernel/locking/spinlock.c:202
-hardirqs last disabled at (1544): [<ffff80008b01a1ac>] el1_brk64+0x20/0x54 arch/arm64/kernel/entry-common.c:434
-softirqs last  enabled at (1528): [<ffff8000803da960>] softirq_handle_end kernel/softirq.c:425 [inline]
-softirqs last  enabled at (1528): [<ffff8000803da960>] handle_softirqs+0xaf8/0xc88 kernel/softirq.c:607
-softirqs last disabled at (1397): [<ffff800080022028>] __do_softirq+0x14/0x20 kernel/softirq.c:613
----[ end trace 0000000000000000 ]---
-Memory failure: 0x104000: recovery action for huge page: Recovered
-Injecting memory failure for pfn 0x131e00 at process virtual address 0x20200000
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 6700 at mm/memory-failure.c:2391 memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
-Modules linked in:
-CPU: 1 UID: 0 PID: 6700 Comm: syz.0.17 Tainted: G        W           syzkaller #0 PREEMPT 
-Tainted: [W]=WARN
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/30/2025
-pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-pc : memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
-lr : memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
-sp : ffff8000a41478c0
-x29: ffff8000a41479a0 x28: 05ffc00000200868 x27: ffff700014828f20
-x26: 1fffffbff878f001 x25: 05ffc0000020086d x24: 1fffffbff878f000
-x23: fffffdffc3c78008 x22: fffffdffc3c78000 x21: fffffdffc3c78000
-x20: 0000000000000023 x19: dfff800000000000 x18: 00000000ffffffff
-x17: ffff80009353a000 x16: ffff80008052aa64 x15: 0000000000000001
-x14: 1fffffbff878f000 x13: 0000000000000000 x12: 0000000000000000
-x11: ffff7fbff878f001 x10: 0000000000ff0100 x9 : 0000000000000000
-x8 : ffff0000d7eedb80 x7 : ffff800080a549a8 x6 : 0000000000000000
-x5 : 0000000000000000 x4 : 0000000000000001 x3 : ffff800080cf5438
-x2 : 0000000000000001 x1 : 0000000000000040 x0 : 0000000000000000
-Call trace:
- memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391 (P)
- madvise_inject_error mm/madvise.c:1475 [inline]
- madvise_do_behavior+0x2c8/0x7c4 mm/madvise.c:1875
- do_madvise+0x190/0x248 mm/madvise.c:1978
- __do_sys_madvise mm/madvise.c:1987 [inline]
- __se_sys_madvise mm/madvise.c:1985 [inline]
- __arm64_sys_madvise+0xa4/0xc0 mm/madvise.c:1985
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x98/0x254 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
- do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
- el0_svc+0x5c/0x254 arch/arm64/kernel/entry-common.c:744
- el0t_64_sync_handler+0x84/0x12c arch/arm64/kernel/entry-common.c:763
- el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:596
-irq event stamp: 2162
-hardirqs last  enabled at (2161): [<ffff800080ca8720>] __folio_split+0xf7c/0x1438 mm/huge_memory.c:3856
-hardirqs last disabled at (2162): [<ffff80008b01a1ac>] el1_brk64+0x20/0x54 arch/arm64/kernel/entry-common.c:434
-softirqs last  enabled at (1726): [<ffff8000803da960>] softirq_handle_end kernel/softirq.c:425 [inline]
-softirqs last  enabled at (1726): [<ffff8000803da960>] handle_softirqs+0xaf8/0xc88 kernel/softirq.c:607
-softirqs last disabled at (1547): [<ffff800080022028>] __do_softirq+0x14/0x20 kernel/softirq.c:613
----[ end trace 0000000000000000 ]---
-Memory failure: 0x131e00: recovery action for huge page: Recovered
-Injecting memory failure for pfn 0x134200 at process virtual address 0x20400000
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 6700 at mm/memory-failure.c:2391 memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
-Modules linked in:
-CPU: 1 UID: 0 PID: 6700 Comm: syz.0.17 Tainted: G        W           syzkaller #0 PREEMPT 
-Tainted: [W]=WARN
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/30/2025
-pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-pc : memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
-lr : memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
-sp : ffff8000a41478c0
-x29: ffff8000a41479a0 x28: 05ffc00000200868 x27: ffff700014828f20
-x26: 1fffffbff87a1001 x25: 05ffc0000020086d x24: 1fffffbff87a1000
-x23: fffffdffc3d08008 x22: fffffdffc3d08000 x21: fffffdffc3d08000
-x20: 0000000000000023 x19: dfff800000000000 x18: 1fffe00033793888
-x17: 646461206c617574 x16: ffff80008052aa64 x15: 0000000000000001
-x14: 1fffffbff87a1000 x13: 0000000000000000 x12: 0000000000000000
-x11: ffff7fbff87a1001 x10: 0000000000ff0100 x9 : 0000000000000000
-x8 : ffff0000d7eedb80 x7 : ffff800080a549a8 x6 : 0000000000000000
-x5 : 0000000000000000 x4 : 0000000000000001 x3 : ffff800080cf5438
-x2 : 0000000000000001 x1 : 0000000000000040 x0 : 0000000000000000
-Call trace:
- memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391 (P)
- madvise_inject_error mm/madvise.c:1475 [inline]
- madvise_do_behavior+0x2c8/0x7c4 mm/madvise.c:1875
- do_madvise+0x190/0x248 mm/madvise.c:1978
- __do_sys_madvise mm/madvise.c:1987 [inline]
- __se_sys_madvise mm/madvise.c:1985 [inline]
- __arm64_sys_madvise+0xa4/0xc0 mm/madvise.c:1985
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x98/0x254 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
- do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
- el0_svc+0x5c/0x254 arch/arm64/kernel/entry-common.c:744
- el0t_64_sync_handler+0x84/0x12c arch/arm64/kernel/entry-common.c:763
- el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:596
-irq event stamp: 2768
-hardirqs last  enabled at (2767): [<ffff800080ca8720>] __folio_split+0xf7c/0x1438 mm/huge_memory.c:3856
-hardirqs last disabled at (2768): [<ffff80008b01a1ac>] el1_brk64+0x20/0x54 arch/arm64/kernel/entry-common.c:434
-softirqs last  enabled at (2364): [<ffff8000803da960>] softirq_handle_end kernel/softirq.c:425 [inline]
-softirqs last  enabled at (2364): [<ffff8000803da960>] handle_softirqs+0xaf8/0xc88 kernel/softirq.c:607
-softirqs last disabled at (2321): [<ffff800080022028>] __do_softirq+0x14/0x20 kernel/softirq.c:613
----[ end trace 0000000000000000 ]---
-Memory failure: 0x134200: recovery action for huge page: Recovered
-Injecting memory failure for pfn 0x129000 at process virtual address 0x20600000
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 6700 at mm/memory-failure.c:2391 memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
-Modules linked in:
-CPU: 1 UID: 0 PID: 6700 Comm: syz.0.17 Tainted: G        W           syzkaller #0 PREEMPT 
-Tainted: [W]=WARN
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/30/2025
-pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-pc : memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
-lr : memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
-sp : ffff8000a41478c0
-x29: ffff8000a41479a0 x28: 05ffc00000200868 x27: ffff700014828f20
-x26: 1fffffbff8748001 x25: 05ffc0000020086d x24: 1fffffbff8748000
-x23: fffffdffc3a40008 x22: fffffdffc3a40000 x21: fffffdffc3a40000
-x20: 0000000000000023 x19: dfff800000000000 x18: 1fffe00033793888
-x17: 646461206c617574 x16: ffff80008052aa64 x15: 0000000000000001
-x14: 1fffffbff8748000 x13: 0000000000000000 x12: 0000000000000000
-x11: ffff7fbff8748001 x10: 0000000000ff0100 x9 : 0000000000000000
-x8 : ffff0000d7eedb80 x7 : ffff800080a549a8 x6 : 0000000000000000
-x5 : 0000000000000000 x4 : 0000000000000001 x3 : ffff800080cf5438
-x2 : 0000000000000001 x1 : 0000000000000040 x0 : 0000000000000000
-Call trace:
- memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391 (P)
- madvise_inject_error mm/madvise.c:1475 [inline]
- madvise_do_behavior+0x2c8/0x7c4 mm/madvise.c:1875
- do_madvise+0x190/0x248 mm/madvise.c:1978
- __do_sys_madvise mm/madvise.c:1987 [inline]
- __se_sys_madvise mm/madvise.c:1985 [inline]
- __arm64_sys_madvise+0xa4/0xc0 mm/madvise.c:1985
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x98/0x254 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
- do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
- el0_svc+0x5c/0x254 arch/arm64/kernel/entry-common.c:744
- el0t_64_sync_handler+0x84/0x12c arch/arm64/kernel/entry-common.c:763
- el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:596
-irq event stamp: 3024
-hardirqs last  enabled at (3023): [<ffff800080ca8720>] __folio_split+0xf7c/0x1438 mm/huge_memory.c:3856
-hardirqs last disabled at (3024): [<ffff80008b01a1ac>] el1_brk64+0x20/0x54 arch/arm64/kernel/entry-common.c:434
-softirqs last  enabled at (2986): [<ffff8000803da960>] softirq_handle_end kernel/softirq.c:425 [inline]
-softirqs last  enabled at (2986): [<ffff8000803da960>] handle_softirqs+0xaf8/0xc88 kernel/softirq.c:607
-softirqs last disabled at (2771): [<ffff800080022028>] __do_softirq+0x14/0x20 kernel/softirq.c:613
----[ end trace 0000000000000000 ]---
-Memory failure: 0x129000: recovery action for huge page: Recovered
-Injecting memory failure for pfn 0x134600 at process virtual address 0x20800000
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 6700 at mm/memory-failure.c:2391 memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
-Modules linked in:
-CPU: 1 UID: 0 PID: 6700 Comm: syz.0.17 Tainted: G        W           syzkaller #0 PREEMPT 
-Tainted: [W]=WARN
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/30/2025
-pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-pc : memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
-lr : memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
-sp : ffff8000a41478c0
-x29: ffff8000a41479a0 x28: 05ffc0000020086c x27: ffff700014828f20
-x26: 1fffffbff87a3001 x25: 05ffc0000020186d x24: 1fffffbff87a3000
-x23: fffffdffc3d18008 x22: fffffdffc3d18000 x21: fffffdffc3d18000
-x20: 0000000000000023 x19: dfff800000000000 x18: 1fffe00033793888
-x17: ffff80009353a000 x16: ffff80008052aa64 x15: 0000000000000001
-x14: 1fffffbff87a3000 x13: 0000000000000000 x12: 0000000000000000
-x11: ffff7fbff87a3001 x10: 0000000000ff0100 x9 : 0000000000000000
-x8 : ffff0000d7eedb80 x7 : ffff800080a549a8 x6 : 0000000000000000
-x5 : 0000000000000000 x4 : 0000000000000001 x3 : ffff800080cf5438
-x2 : 0000000000000001 x1 : 0000000000000040 x0 : 0000000000000000
-Call trace:
- memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391 (P)
- madvise_inject_error mm/madvise.c:1475 [inline]
- madvise_do_behavior+0x2c8/0x7c4 mm/madvise.c:1875
- do_madvise+0x190/0x248 mm/madvise.c:1978
- __do_sys_madvise mm/madvise.c:1987 [inline]
- __se_sys_madvise mm/madvise.c:1985 [inline]
- __arm64_sys_madvise+0xa4/0xc0 mm/madvise.c:1985
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x98/0x254 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
- do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
- el0_svc+0x5c/0x254 arch/arm64/kernel/entry-common.c:744
- el0t_64_sync_handler+0x84/0x12c arch/arm64/kernel/entry-common.c:763
- el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:596
-irq event stamp: 3462
-hardirqs last  enabled at (3461): [<ffff800080ca8720>] __folio_split+0xf7c/0x1438 mm/huge_memory.c:3856
-hardirqs last disabled at (3462): [<ffff80008b01a1ac>] el1_brk64+0x20/0x54 arch/arm64/kernel/entry-common.c:434
-softirqs last  enabled at (3064): [<ffff8000803da960>] softirq_handle_end kernel/softirq.c:425 [inline]
-softirqs last  enabled at (3064): [<ffff8000803da960>] handle_softirqs+0xaf8/0xc88 kernel/softirq.c:607
-softirqs last disabled at (3027): [<ffff800080022028>] __do_softirq+0x14/0x20 kernel/softirq.c:613
----[ end trace 0000000000000000 ]---
-Memory failure: 0x134600: recovery action for huge page: Recovered
-Injecting memory failure for pfn 0x134800 at proces
-Injecting memory failure for pfn 0x134800 at process virtual address 0x20a00000
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 6700 at mm/memory-failure.c:2391 memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
-Modules linked in:
-CPU: 0 UID: 0 PID: 6700 Comm: syz.0.17 Tainted: G        W           syzkaller #0 PREEMPT 
-Tainted: [W]=WARN
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/30/2025
-pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-pc : memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
-lr : memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
-sp : ffff8000a41478c0
-x29: ffff8000a41479a0 x28: 05ffc0000020086c x27: ffff700014828f20
-x26: 1fffffbff87a4001 x25: 05ffc0000020186d x24: 1fffffbff87a4000
-x23: fffffdffc3d20008 x22: fffffdffc3d20000 x21: fffffdffc3d20000
-x20: 0000000000000023 x19: dfff800000000000 x18: 1fffe0003378f088
-x17: ffff80008f7ee000 x16: ffff80008052aa64 x15: 0000000000000001
-x14: 1fffffbff87a4000 x13: 0000000000000000 x12: 0000000000000000
-x11: ffff7fbff87a4001 x10: 0000000000ff0100 x9 : 0000000000000000
-x8 : ffff0000d7eedb80 x7 : ffff800080a549a8 x6 : 0000000000000000
-x5 : 0000000000000000 x4 : 0000000000000001 x3 : ffff800080cf5438
-x2 : 0000000000000001 x1 : 0000000000000040 x0 : 0000000000000000
-Call trace:
- memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391 (P)
- madvise_inject_error mm/madvise.c:1475 [inline]
- madvise_do_behavior+0x2c8/0x7c4 mm/madvise.c:1875
- do_madvise+0x190/0x248 mm/madvise.c:1978
- __do_sys_madvise mm/madvise.c:1987 [inline]
- __se_sys_madvise mm/madvise.c:1985 [inline]
- __arm64_sys_madvise+0xa4/0xc0 mm/madvise.c:1985
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x98/0x254 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
- do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
- el0_svc+0x5c/0x254 arch/arm64/kernel/entry-common.c:744
- el0t_64_sync_handler+0x84/0x12c arch/arm64/kernel/entry-common.c:763
- el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:596
-irq event stamp: 3538
-hardirqs last  enabled at (3537): [<ffff800080ca8720>] __folio_split+0xf7c/0x1438 mm/huge_memory.c:3856
-hardirqs last disabled at (3538): [<ffff80008b01a1ac>] el1_brk64+0x20/0x54 arch/arm64/kernel/entry-common.c:434
-softirqs last  enabled at (3500): [<ffff8000803da960>] softirq_handle_end kernel/softirq.c:425 [inline]
-softirqs last  enabled at (3500): [<ffff8000803da960>] handle_softirqs+0xaf8/0xc88 kernel/softirq.c:607
-softirqs last disabled at (3465): [<ffff800080022028>] __do_softirq+0x14/0x20 kernel/softirq.c:613
----[ end trace 0000000000000000 ]---
-Memory failure: 0x134800: recovery action for huge page: Recovered
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
