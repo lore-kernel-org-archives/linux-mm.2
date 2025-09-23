@@ -4,92 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2ED8CAC5B0
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 11:52:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18461CAC5A7
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 11:52:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26BD78E0007; Tue, 23 Sep 2025 07:52:20 -0400 (EDT)
+	id 6FF6F8E0021; Tue, 23 Sep 2025 07:52:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21BEA8E0001; Tue, 23 Sep 2025 07:52:20 -0400 (EDT)
+	id 688DA8E0001; Tue, 23 Sep 2025 07:52:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 10B488E0007; Tue, 23 Sep 2025 07:52:20 -0400 (EDT)
+	id 529778E0021; Tue, 23 Sep 2025 07:52:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ECB4B8E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 07:52:19 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 88604140469
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 11:52:19 +0000 (UTC)
-X-FDA: 83920351998.08.8B210FB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4DE138000A
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 11:52:17 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3350D8E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 07:52:31 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D85931A0490
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 11:52:30 +0000 (UTC)
+X-FDA: 83920352460.10.B28E349
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 44E7E40008
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 11:52:28 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=EFGvr8Qy;
+	spf=pass (imf17.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758628337;
+	s=arc-20220608; t=1758628348;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dCAeTeEvIUB7QGUD1yNdtHVyxv+RYozjlDTLNDKvTQA=;
-	b=QkSLPnLtGyPQjq3zOpqxYScl2AuqyvGLUVcMOT4z8pQkJ4lrAALQRUtvx14lCvGE6xa5IQ
-	8w6ZlPVsSnaHq8z3ZaNPDgsB8g7vE/IQM/aHt/BbQc4nJA2hfaH3QaJOCWyuV+J+Hu3ok5
-	4ePJVy1YQ+6OxNqm0AeSQPwBwmCqpLU=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FZaoT1QNSR93wIPtHts3CPzp0ctIk0vYDNbzffEOi0c=;
+	b=XQqhUUwDL3q+FbV0eSVpc14gPBxpMHHJCV1o2E4KdbxtB+S9jHV4+gBzY3BHSowRoOx60S
+	CmnPsGuYZ71UYObIY16U6sexvCVD1b1q3+CTdcgu6g/KtQMIEqz2p+pA7QwUEUVj5LPe+H
+	dTEyBHcn62pQpaBr7MH8H+lp+ZnxxPQ=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758628337; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=EFGvr8Qy;
+	spf=pass (imf17.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758628348; a=rsa-sha256;
 	cv=none;
-	b=J6Y4OP47uKcQPAEqqTKRJPqhfI61IojzJ3QR5LahAlCSjY1gEQs98K5bYpPjqj5VZvuVL3
-	0uc41Q7/Gxr8nGNhhZYvj6o3ZDbiYIJc6XfrSZUG8nL5lTyBb3wgb0Fzaio979V++H6E5+
-	68zJO4ytuonBV31OWeJlY/20ZXx4S0k=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D922043D39;
-	Tue, 23 Sep 2025 11:52:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2910BC4CEF5;
-	Tue, 23 Sep 2025 11:52:09 +0000 (UTC)
-Date: Tue, 23 Sep 2025 12:52:06 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org,
-	lorenzo.stoakes@oracle.com, usamaarif642@gmail.com,
-	yuzhao@google.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	baohua@kernel.org, voidice@gmail.com, Liam.Howlett@oracle.com,
-	cerasuolodomenico@gmail.com, hannes@cmpxchg.org,
-	kaleshsingh@google.com, npache@redhat.com, riel@surriel.com,
-	roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com,
-	dev.jain@arm.com, ryncsn@gmail.com, shakeel.butt@linux.dev,
-	surenb@google.com, hughd@google.com, willy@infradead.org,
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
-	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
-	apopple@nvidia.com, qun-wei.lin@mediatek.com,
-	Andrew.Yang@mediatek.com, casper.li@mediatek.com,
-	chinwen.chang@mediatek.com, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
-	linux-mm@kvack.org, ioworker0@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] mm/thp: fix MTE tag mismatch when replacing
- zero-filled subpages
-Message-ID: <aNKJ5glToE4hMhWA@arm.com>
-References: <20250922021458.68123-1-lance.yang@linux.dev>
- <aNGGUXLCn_bWlne5@arm.com>
- <a3412715-6d9d-4809-9588-ba08da450d16@redhat.com>
+	b=Z+IaOHo+g1+M1F35vtxyLaE3vkYchYGcf3gjrWXQkj+5W2f+YN6jOl4ut8vPFf7D/DCTFk
+	4MPLi3NE3TWuSLwizBgpGVypm1M6GnfOZxuM3LsiAfcQkzDi8mDSVXhK+niCm/Kixyocoj
+	LUOvSQ1riBamu06hdi/tXEWd+dKaHSA=
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58N8Y12b008695;
+	Tue, 23 Sep 2025 11:52:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=FZaoT1QNSR93wIPtHts3CPzp0ctIk0
+	vYDNbzffEOi0c=; b=EFGvr8QyltIf32/aszOR/qJfepgW+UcWXreJDplTglupit
+	m+X7rmX3tdEzuL1hJj2o5XWwJ0r+pCJ4BjGEMOhGvQ5uA7F1CUxQtR7TqdF163bV
+	I3YXhbagNN2r+8NAvqFEHYkOG72rBgt1rm+ek1A/MwpmvyPZqT+huO4x+iKBFWTR
+	eo6ih9hfsFn2nHia9aCP+YLY6UeADcGZp/ivckC/FFUA6i0IL4LnbBeJbqc6eiAl
+	5jWsuCjMMTLD7wV7h8suNXD082oB3YYd9QtgvibDoicaRjRsG3bClbPAwbAw7H1U
+	VId+vHnlTcxFpVyEmlJvEr0+HDviZMbBrXxprVQA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499n0jgm9c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 23 Sep 2025 11:52:19 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58NBn9Dd005820;
+	Tue, 23 Sep 2025 11:52:18 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499n0jgm96-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 23 Sep 2025 11:52:18 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58N9Tk1U019675;
+	Tue, 23 Sep 2025 11:52:17 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49a83k31qr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 23 Sep 2025 11:52:17 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58NBqDIE43516160
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 23 Sep 2025 11:52:13 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F401A20043;
+	Tue, 23 Sep 2025 11:52:12 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A61F420040;
+	Tue, 23 Sep 2025 11:52:10 +0000 (GMT)
+Received: from li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com (unknown [9.87.150.243])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 23 Sep 2025 11:52:10 +0000 (GMT)
+Date: Tue, 23 Sep 2025 13:52:09 +0200
+From: Sumanth Korikkar <sumanthk@linux.ibm.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        Jonathan Corbet <corbet@lwn.net>, Matthew Wilcox <willy@infradead.org>,
+        Guo Ren <guoren@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Andreas Larsson <andreas@gaisler.com>, Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>, Nicolas Pitre <nico@fluxnic.net>,
+        Muchun Song <muchun.song@linux.dev>,
+        Oscar Salvador <osalvador@suse.de>,
+        David Hildenbrand <david@redhat.com>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
+        Dave Young <dyoung@redhat.com>, Tony Luck <tony.luck@intel.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Dave Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Hugh Dickins <hughd@google.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Uladzislau Rezki <urezki@gmail.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Andrey Konovalov <andreyknvl@gmail.com>, Jann Horn <jannh@google.com>,
+        Pedro Falcato <pfalcato@suse.de>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-csky@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+        nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, linux-mm@kvack.org,
+        ntfs3@lists.linux.dev, kexec@lists.infradead.org,
+        kasan-dev@googlegroups.com, Jason Gunthorpe <jgg@nvidia.com>,
+        iommu@lists.linux.dev, Kevin Tian <kevin.tian@intel.com>,
+        Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>
+Subject: Re: [PATCH v4 11/14] mm/hugetlbfs: update hugetlbfs to use
+ mmap_prepare
+Message-ID: <aNKJ6b7kmT_u0A4c@li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com>
+References: <cover.1758135681.git.lorenzo.stoakes@oracle.com>
+ <e5532a0aff1991a1b5435dcb358b7d35abc80f3b.1758135681.git.lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a3412715-6d9d-4809-9588-ba08da450d16@redhat.com>
-X-Rspamd-Queue-Id: 4DE138000A
-X-Rspamd-Server: rspam05
-X-Stat-Signature: bfybcq57bwmik7kdttpf1oz31bysxes6
+In-Reply-To: <e5532a0aff1991a1b5435dcb358b7d35abc80f3b.1758135681.git.lorenzo.stoakes@oracle.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDAzMyBTYWx0ZWRfX1/CT4ehdu5F7
+ 6VnJC5JZb/TGq0GTxXqzwutGBpnh5zvXhqXxihnE0ZIBeLxavZe5A1rzKbuxO1bDNyuFhUEM+Rk
+ 4I1KMXyeBzNEU/g4Tedu1h1rULa5Sn/p0/UqkELdAnxrKDhWjf96WssSMg0ltTS+aMBZqn2U8bf
+ Mm6V030K3rfmUmm6+2tKL/Lil9yhk2vaa1ilZs3936p1XOaPfvsu3tSuBabaOBW+S4p6UJCCS7o
+ UssKxq/W9pewKawoXgWRMXrenvRD0Q+OeFvs8GRRauXhjlsHet/L1r4+QnnsJQ0kVijCVo4qQhY
+ p/3nafFZQN3AWkhiFthvrI3hfInHVuTDSlQN3xLdzE/r0zMDPQuTX7WW9M8m8X+BWNkt+j6HOZU
+ bcmWMt/c
+X-Authority-Analysis: v=2.4 cv=TOlFS0la c=1 sm=1 tr=0 ts=68d289f3 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=NEAV23lmAAAA:8 a=yPCof4ZbAAAA:8
+ a=Ikd4Dj_1AAAA:8 a=P7Dlay8f7KcL8MNlhToA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: F6nP2Q8ol4BSxLNz15joz3bImrmTREZ1
+X-Proofpoint-GUID: 5HR21TLQQZuGh5ctB-qo8M6ErsQDpoDW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-23_02,2025-09-22_05,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 priorityscore=1501 phishscore=0 impostorscore=0 adultscore=0
+ suspectscore=0 spamscore=0 bulkscore=0 malwarescore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2509200033
+X-Rspamd-Queue-Id: 44E7E40008
 X-Rspam-User: 
-X-HE-Tag: 1758628337-554411
-X-HE-Meta: U2FsdGVkX18kdaUTwq9ioZ11CsaOC4iUw5YjCfWHYBi4vasHxdjtmcJgSq4j6NLYtLHuJryzML8uwvb0ZBihj4UpQ5xdrr1lVwTdtemnXZ0Mvn5i2ozieZx4bNeneyccGO7k5dqcW7N/wX8O9Cc6CflgPwA54a6U7v8i0F0gcOy8LrELMa7mEf/OpmCLBzqpuD48f249NRJpWTTZjB6RMwWiHDvySM0be5BRE/1Xc+Elz1CFYSWd4hK5cAMASQbIBI0/uUwLfShhgSPzy7F0xtV61ei/Dy1uRyRpsu6DfsmKr62PClfgWOLMMIjHorLOTC9hKYagoUK5AUnWZuiWG0hdB56jXBVNzUaQPYc6ZpN794BMLJvSdX8gdp3xtRvd8vmSRPak2TQxKQoOTLtlEy5QabPD+PFU/noRoWJxB5W5y/IVa4H0VCpErqn+nRb1tgNmH8RxH7zfZ29+kOBkspTSSHV/PVN16Dr4PZs9qhMvoQoTqgx5iDRzNyJCWCRk4iBItG4RR3XjByr9jBYt68ljrOw6wvvI0wuh5AscRE2V9gz9ySD/psXYyszQNptycV1dvQ9Y/UzQYCKDMch14qMPzHehMES0HHdswc2QRBQ77/wukLyPgCvibVyWDwqtbd5zwpIN+KxGv8w9v6yOXKX8bwcBCGNMBRA4CVPTzYbvfMpAzs3WkTiguPrgZtzeJz35Wt68hBhewUgyNqTXSonEeaQXb/LH0VSuJZJ7QmtV4yh/JKRc4lQzCFEhMN6IGRbfF+rjgNSoUhwjdrxbvhwV17u8SSH6OaTjHKOvSPt+i53g+7ZvwUzJCJ9AcSR53wMS5lMk5Phw6QEYin5ObKsJm6z6U9rIKqHeYt+8YlRe5M9e92cEKhWt4iWpuQ9SN3kC5WXZkPcueSvEJz0KpKN/vDKDk7PGzEekouvi6hymVwuyF50Pk37reI/TbzCsbJDr5jqYLmWtjteeJD6
- Qg2GODVa
- nryr3bhSzI0vo7ux8NVTO7mUcyuY2jt+1RqpSrqq9SgG86qRHyWCZF+dnTF4cmLk+81wkWbDP+pGwXoq7omMxsrwLqe7gtckDFGPONA6eWFFYIZEfHCxA7Z6n0+THPoKiZA6HDIHffqzMsmG6OvyD37mffmRksFsj3AigGKNC9aR/QO+NBirt5qBE3+LAY37by2LM4QP+O6xV49jPJeIWui3ZmrJ2Cw104gR1jAKj+8aqwwGpRMtCptr8weQsRodeX1Dqbc6cjhz3Fuw85jgBdwTO+/tlsLGAuahM+nuodzazakB2JG1tGeReewm9dSsADz/1UkiC7BwDbDeOgZiDp9dhgM38ufBP53qthfxkcKtETXbx6473gdAuHoCtDJacapOKSHBvE9QkSR5ylXSiLw0AkGskErJbKU87
+X-Rspamd-Server: rspam07
+X-Stat-Signature: oz1b69exj5xzthc97wbqytb38fh1hu1r
+X-HE-Tag: 1758628348-719757
+X-HE-Meta: U2FsdGVkX19tT3646igZ0xh6sEwfG/AxBBXnYHK/qNgwe+f0A3ub5BbWpSRrnK9Xx6LSXgjFpUUtShRwU8brkUMEf1TAeQDS3vgjEbcP14l6oQj7/P2/SLgVC2xPlGa9ZQjG9awc/tuz+w2qQrFfiwx/Ct9Vn0CskYBchPT873pIEDzG1pHIn7dzOWngb9lZKqQrIVFJmbVSVZkw9CvgJs7DWy303beVKBU1bFtS/izlaFClcIx+V2N0UTES9Jrw4hbbnAAZgZ8nq1tfMm1hvAqttGQFH3aY6fNIfUmHbhirI85BeDj2gwbk8hS+2LbTuKPpI6PHN5WazxCXJhOzbYhdBH34RQLIaLTR632YIw+OoseZtI9/7fm6FjUnpExg35y1BmSvFvT8AXFCuU/HB1f956lnGrAUjSbEDygYBjI90pVsBxQjggYjmKhmCCHuBgJFqeG1aF+M4ZDEKGhfaG5D2tqxEpv0WgcERHW8OoTXclIuYnCy+6wGMA+0TRPFZw2RvDmdljboLS10HvOr/NeANVV3EPFdQ3byHLDYkaiYKkqvxwSl2JzKuw9sajhbYiExXBnC5WSO4vBy3//Ft5w7NM7IO39qA5+mxLhUxG/2hr2MSbiunDsSUkv+K4P4QcRBv50RHNZm9IXdi/RNmPHv+XB+i7rOxzxiG5bD23EW8PiC7i3YYCCOi5u72yOp2meZGsGEvHR4nUG+S+eiJXMZ2oj0/d9luwY4e2uJeZr4XxEhmyALLiRk9yMGttwziyUrzKwkWJmyp5P7OxOLeIFktZ+FKS/9Y02ldBiFL8bfcFD9i8do2FdcD9tan/LqkV9NbiI7Hwza5adJoVU5Xcom2Szqh9oJC5SH0KCPhsZreaTDAhhUH7/IXImdPb6w9tk/LOFmc997VOpw4edoQfRoYpDtqB1qYFF91wLJKTR12lMZyMtoGvjR1e6h7Ddg+C4whL4LMtX0AIppK2s
+ 7TztKCHd
+ YT0rzOmTEFuGejRd/eHURikbwxO/ca3jSLBa3vSbCrT3X/Fnnl3Y0D1BxHbXoqACHPrh855diS3Tcf8sCx/+QxPYzmB1OTbxY9RBmcubsdI0owS7E2H0FzVyl+CaCmUh3Tz3sGe0T3PH9Wqi8zx1LJKIirIEum9pbqxf6m+vnxiNj3iAtIYY3eH8wliw2x2lgQrkyDMps81vr3pbaX7eVDPakM94Gpwflv6AZKZ3PU6hvtIjHLZ4J4Gd5ik/SaHaEmmez+qvFqAGXlk4TjuQdT4pHcHviRGKlr6s6c9U9cESWi/y2q9ebvZgilucEkcB8C1HJTU+7DO4NHtFJ5MU6vOkdf68XIhL7OulBkh/HrvpcsQvTU3h4mVX26T1xzqhIi0Ho
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,98 +182,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 22, 2025 at 07:59:00PM +0200, David Hildenbrand wrote:
-> On 22.09.25 19:24, Catalin Marinas wrote:
-> > On Mon, Sep 22, 2025 at 10:14:58AM +0800, Lance Yang wrote:
-> > > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> > > index 32e0ec2dde36..28d4b02a1aa5 100644
-> > > --- a/mm/huge_memory.c
-> > > +++ b/mm/huge_memory.c
-> > > @@ -4104,29 +4104,20 @@ static unsigned long deferred_split_count(struct shrinker *shrink,
-> > >   static bool thp_underused(struct folio *folio)
-> > >   {
-> > >   	int num_zero_pages = 0, num_filled_pages = 0;
-> > > -	void *kaddr;
-> > >   	int i;
-> > >   	for (i = 0; i < folio_nr_pages(folio); i++) {
-> > > -		kaddr = kmap_local_folio(folio, i * PAGE_SIZE);
-> > > -		if (!memchr_inv(kaddr, 0, PAGE_SIZE)) {
-> > > -			num_zero_pages++;
-> > > -			if (num_zero_pages > khugepaged_max_ptes_none) {
-> > > -				kunmap_local(kaddr);
-> > > +		if (pages_identical(folio_page(folio, i), ZERO_PAGE(0))) {
-> > > +			if (++num_zero_pages > khugepaged_max_ptes_none)
-> > >   				return true;
-> > 
-> > I wonder what the overhead of doing a memcmp() vs memchr_inv() is. The
-> > former will need to read from two places. If it's noticeable, it would
-> > affect architectures that don't have an MTE equivalent.
-> > 
-> > Alternatively we could introduce something like folio_has_metadata()
-> > which on arm64 simply checks PG_mte_tagged.
+On Wed, Sep 17, 2025 at 08:11:13PM +0100, Lorenzo Stoakes wrote:
+> Since we can now perform actions after the VMA is established via
+> mmap_prepare, use desc->action_success_hook to set up the hugetlb lock
+> once the VMA is setup.
 > 
-> We discussed something similar in the other thread (I suggested
-> page_is_mergable()). I'd prefer to use pages_identical() for now, so we have
-> the same logic here and in ksm code.
+> We also make changes throughout hugetlbfs to make this possible.
 > 
-> (this patch here almost looks like a cleanup :) )
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+> ---
+>  fs/hugetlbfs/inode.c           | 36 ++++++++++------
+>  include/linux/hugetlb.h        |  9 +++-
+>  include/linux/hugetlb_inline.h | 15 ++++---
+>  mm/hugetlb.c                   | 77 ++++++++++++++++++++--------------
+>  4 files changed, 85 insertions(+), 52 deletions(-)
 > 
-> If this becomes a problem, what we could do is in pages_identical() would be
-> simply doing the memchr_inv() in case is_zero_pfn(). KSM might benefit from
-> that as well when merging with the shared zeropage through
-> try_to_merge_with_zero_page().
+> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+> index f42548ee9083..9e0625167517 100644
+> --- a/fs/hugetlbfs/inode.c
+> +++ b/fs/hugetlbfs/inode.c
+> @@ -96,8 +96,15 @@ static const struct fs_parameter_spec hugetlb_fs_parameters[] = {
+>  #define PGOFF_LOFFT_MAX \
+>  	(((1UL << (PAGE_SHIFT + 1)) - 1) <<  (BITS_PER_LONG - (PAGE_SHIFT + 1)))
+>  
+> -static int hugetlbfs_file_mmap(struct file *file, struct vm_area_struct *vma)
+> +static int hugetlb_file_mmap_prepare_success(const struct vm_area_struct *vma)
+>  {
+> +	/* Unfortunate we have to reassign vma->vm_private_data. */
+> +	return hugetlb_vma_lock_alloc((struct vm_area_struct *)vma);
+> +}
 
-Yes, we can always optimise it later.
+Hi Lorenzo,
 
-I just realised that on arm64 with MTE we won't get any merging with the
-zero page even if the user page isn't mapped with PROT_MTE. In
-cpu_enable_mte() we zero the tags in the zero page and set
-PG_mte_tagged. The reason is that we want to use the zero page with
-PROT_MTE mappings (until tag setting causes CoW). Hmm, the arm64
-memcmp_pages() messed up KSM merging with the zero page even before this
-patch.
+The following tests causes the kernel to enter a blocked state,
+suggesting an issue related to locking order. I was able to reproduce
+this behavior in certain test runs.
 
-The MTE tag setting evolved a bit over time with some locking using PG_*
-flags to avoid a set_pte_at() race trying to initialise the tags on the
-same page. We also moved the swap restoring to arch_swap_restore()
-rather than the set_pte_at() path. So it is safe now to merge with the
-zero page if the other page isn't tagged. A subsequent set_pte_at()
-attempting to clear the tags would notice that the zero page is already
-tagged.
+Test case:
+git clone https://github.com/libhugetlbfs/libhugetlbfs.git
+cd libhugetlbfs ; ./configure
+make -j32
+cd tests
+echo 100 > /proc/sys/vm/nr_hugepages
+mkdir -p /test-hugepages && mount -t hugetlbfs nodev /test-hugepages
+./run_tests.py <in a loop>
+...
+shm-fork 10 100 (1024K: 64):    PASS
+set shmmax limit to 104857600
+shm-getraw 100 /dev/full (1024K: 32):
+shm-getraw 100 /dev/full (1024K: 64):   PASS
+fallocate_stress.sh (1024K: 64):  <blocked>
 
-We could go a step further and add tag comparison (I had some code
-around) but I think the quick fix is to just not treat the zero page as
-tagged. Not fully tested yet:
+Blocked task state below:
 
-diff --git a/arch/arm64/kernel/mte.c b/arch/arm64/kernel/mte.c
-index e5e773844889..72a1dfc54659 100644
---- a/arch/arm64/kernel/mte.c
-+++ b/arch/arm64/kernel/mte.c
-@@ -73,6 +73,8 @@ int memcmp_pages(struct page *page1, struct page *page2)
- {
- 	char *addr1, *addr2;
- 	int ret;
-+	bool page1_tagged = page_mte_tagged(page1) && !is_zero_page(page1);
-+	bool page2_tagged = page_mte_tagged(page2) && !is_zero_page(page2);
- 
- 	addr1 = page_address(page1);
- 	addr2 = page_address(page2);
-@@ -83,11 +85,10 @@ int memcmp_pages(struct page *page1, struct page *page2)
- 
- 	/*
- 	 * If the page content is identical but at least one of the pages is
--	 * tagged, return non-zero to avoid KSM merging. If only one of the
--	 * pages is tagged, __set_ptes() may zero or change the tags of the
--	 * other page via mte_sync_tags().
-+	 * tagged, return non-zero to avoid KSM merging. Ignore the zero page
-+	 * since it is always tagged with the tags cleared.
- 	 */
--	if (page_mte_tagged(page1) || page_mte_tagged(page2))
-+	if (page1_tagged || page2_tagged)
- 		return addr1 != addr2;
- 
- 	return ret;
+task:fallocate_stres state:D stack:0     pid:5106  tgid:5106  ppid:5103
+task_flags:0x400000 flags:0x00000001
+Call Trace:
+ [<00000255adc646f0>] __schedule+0x370/0x7f0
+ [<00000255adc64bb0>] schedule+0x40/0xc0
+ [<00000255adc64d32>] schedule_preempt_disabled+0x22/0x30
+ [<00000255adc68492>] rwsem_down_write_slowpath+0x232/0x610
+ [<00000255adc68922>] down_write_killable+0x52/0x80
+ [<00000255ad12c980>] vm_mmap_pgoff+0xc0/0x1f0
+ [<00000255ad164bbe>] ksys_mmap_pgoff+0x17e/0x220
+ [<00000255ad164d3c>] __s390x_sys_old_mmap+0x7c/0xa0
+ [<00000255adc60e4e>] __do_syscall+0x12e/0x350
+ [<00000255adc6cfee>] system_call+0x6e/0x90
+task:fallocate_stres state:D stack:0     pid:5109  tgid:5106  ppid:5103
+task_flags:0x400040 flags:0x00000001
+Call Trace:
+ [<00000255adc646f0>] __schedule+0x370/0x7f0
+ [<00000255adc64bb0>] schedule+0x40/0xc0
+ [<00000255adc64d32>] schedule_preempt_disabled+0x22/0x30
+ [<00000255adc68492>] rwsem_down_write_slowpath+0x232/0x610
+ [<00000255adc688be>] down_write+0x4e/0x60
+ [<00000255ad1c11ec>] __hugetlb_zap_begin+0x3c/0x70
+ [<00000255ad158b9c>] unmap_vmas+0x10c/0x1a0
+ [<00000255ad180844>] vms_complete_munmap_vmas+0x134/0x2e0
+ [<00000255ad1811be>] do_vmi_align_munmap+0x13e/0x170
+ [<00000255ad1812ae>] do_vmi_munmap+0xbe/0x140
+ [<00000255ad183f86>] __vm_munmap+0xe6/0x190
+ [<00000255ad166832>] __s390x_sys_munmap+0x32/0x40
+ [<00000255adc60e4e>] __do_syscall+0x12e/0x350
+ [<00000255adc6cfee>] system_call+0x6e/0x90
 
--- 
-Catalin
+
+Thanks,
+Sumanth
 
