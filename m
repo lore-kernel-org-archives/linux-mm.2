@@ -4,107 +4,204 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3395CCAC5AC
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 17:05:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B871BCAC5AC
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 17:09:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DAF18E0005; Tue, 23 Sep 2025 13:05:58 -0400 (EDT)
+	id 031AD8E0006; Tue, 23 Sep 2025 13:09:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B2A48E0001; Tue, 23 Sep 2025 13:05:58 -0400 (EDT)
+	id EFCF18E0001; Tue, 23 Sep 2025 13:09:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7EF3B8E0005; Tue, 23 Sep 2025 13:05:58 -0400 (EDT)
+	id D76FE8E0006; Tue, 23 Sep 2025 13:09:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 68A378E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 13:05:58 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0F8ED1DFE04
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 17:05:58 +0000 (UTC)
-X-FDA: 83921142396.28.C828475
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4C7BB180008
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 17:05:56 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DnXjNFVw;
-	spf=pass (imf16.hostedemail.com: domain of stefanha@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=stefanha@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758647156;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BE60C8E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 13:09:49 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 15DCE160420
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 17:09:49 +0000 (UTC)
+X-FDA: 83921152098.01.994BA3B
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010003.outbound.protection.outlook.com [52.101.193.3])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 2BACA14000B
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 17:09:45 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Clve4RHO;
+	spf=pass (imf23.hostedemail.com: domain of jgg@nvidia.com designates 52.101.193.3 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758647386;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Si+gRDqfMlxuN0KqN3KFYYBkczK7pbhlc1HLNzDjYGg=;
-	b=BV/oqWY2oNNFFGq8WDKP6mZrwkzdbZIHZmHS2t8hW1Qevs91LABelOCs2I0/Xi/NEa1QQM
-	vzEqEO9iUb9dLLrVPxz2Hb7ieVLMsBScgyayKeu7mDbW0lAk9Cre4NV1dR/gLjHTPxfKSd
-	61i6dfMZpCraFXim0zq2Wl80czVnpEE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758647156; a=rsa-sha256;
-	cv=none;
-	b=cj8HUkOS3BsFWRdwcBgK+5Lyf4hCtXmz4ZW+0Z+XhEs4n2Z8mCh1K6RfNgM0dby58dFQ2m
-	J5Q0qWljkjxo9G+QipKfyZ4JJqt7Fc3bJJCgcmeaUOCcQhHyTzqDUBaeCtQzWY40Z1TMnk
-	F+vQGcUPCEswxeFTZsKtiSBYpDqlQOI=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DnXjNFVw;
-	spf=pass (imf16.hostedemail.com: domain of stefanha@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=stefanha@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758647155;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Si+gRDqfMlxuN0KqN3KFYYBkczK7pbhlc1HLNzDjYGg=;
-	b=DnXjNFVwpzCm6XH0AOVNqDfBPmiyHV3ljem5nk9UqOse3WyhhQdhx9inDJ/NYrvDIfHlkr
-	iYTcVW5kuNVjJVSNfyCaenJfGqI3H0NZniIgMAjEEmfCgUm8JZOvD5woGdBK0Co2QGTzIf
-	A7qzrbcqXLh5Vil121x+PaEaP0xDFD8=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-456-r0ZRWA2iMGiiOTICcbLMBg-1; Tue,
- 23 Sep 2025 13:05:50 -0400
-X-MC-Unique: r0ZRWA2iMGiiOTICcbLMBg-1
-X-Mimecast-MFC-AGG-ID: r0ZRWA2iMGiiOTICcbLMBg_1758647148
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C7C0D1800372;
-	Tue, 23 Sep 2025 17:05:47 +0000 (UTC)
-Received: from localhost (unknown [10.2.17.69])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B878D19560B1;
-	Tue, 23 Sep 2025 17:05:46 +0000 (UTC)
-Date: Tue, 23 Sep 2025 13:05:45 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: linux-kernel@vger.kernel.org, pasha.tatashin@soleen.com,
-	Cong Wang <cwang@multikernel.io>,
+	bh=zfBJt5ORyJeWyTmriSi9rxIRbYwbq9D6z6afL/pAXS8=;
+	b=QZpKcJCBd/hmyNvwkI83BOtFFE+rifU/wR0rL0FBQz6VpUGumf6bdeLwLZODeLRkenryw6
+	aLt4uikJe4p8jiu9RsjMMFr9TZJpJQcb6Abe5R3Nbrl1KarhaELePzUcIXT67XaAkT9X5e
+	uCD3ye0Y821EtWAsAy6h5P1SeFMjyOo=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758647386; a=rsa-sha256;
+	cv=pass;
+	b=KvZSE6VEgdY41EU//fwMo++X0YlEioc12Xbm27YtOfZDxSyqpzAvVaq0HEoPjrLadgotn/
+	yEKpWte9xacvwcdZAFPlsEjUPlL2UJ5dy16vT+JpMeiywwVCq9AriiLXfSHF3OEWLjfw9U
+	V+Urqa2iqDxqFnyJHFjBYyZ37F4JcGQ=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Clve4RHO;
+	spf=pass (imf23.hostedemail.com: domain of jgg@nvidia.com designates 52.101.193.3 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oWXggwVgG5+rl5z3SotJHQW1m4VjyXkt4rjniHHR2g+2Y3BHmjdoAqeVdP8k6mFe4IPb7kV+kge+ua1wSDvFL/quwLj4xhgtg8qlTIIUhCND6ACY1ARSrSYQ1pBHaSOpuwWRUe4OCI33oN+aektYyfNGfWTTlHi5lIwPl+an8UXKbN+hNUXK9Al/EyVpsysGtHD3vdUrEgNt1EMA7AVtqQwfJvPDoxL69kJrBOAbNaM3P//k0fFCX16uKv5cS6gw5sNS6VeWBk1hZgy5h50/yWGLyF4jP1+0rbw5DoPWdZbzD2HEXux/VkFJmyXHmptrQF3nI2FE+1vg30x+4Ui66g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zfBJt5ORyJeWyTmriSi9rxIRbYwbq9D6z6afL/pAXS8=;
+ b=c4pMUCw0BfP/FSxTb+iJvOpFnhv2VZ5tk4N0rFUs3VE5JxKA+/LCYfsgEscOPhkcBmn8mnqWcvQBR8ozQh3kBNvhm/k8t/iXX0N3X3MAB7NL+3A7G+2SRwEnBiw9tNhNJ++RJMXlSFhasUB3UKspQrLRpqDBn809urbmvdRpCe8BQtw+rAQ3B6qSQMHUcXgjB97FDu8Z8M/QGUR/kkKu8BrcsyDg+z1FjySil2bvtHYp5VbPFYh3DrMT5KLkFnOVJE3g2Z9jrRPkrKYpnxDMu5ap+AsWNINW9UHaB4ftMQ/b789+skrb0bomTQOX2Z14ErVFPJGj3bG6xxi2XV3jKQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zfBJt5ORyJeWyTmriSi9rxIRbYwbq9D6z6afL/pAXS8=;
+ b=Clve4RHOxCmnuRZI1E6kaQWOMfhYl/gXKCQEkQ5MRl2kUIrjhbIR4RSReFQ4rSuBhHkpAhanzX9NW2skuKFHEmfVa54Dw9rU1UpMbeRRdeCaTVsqubTq5izKSmZ2udMsGlUy976lrNdGvdmcewLGFwRbyDxCvRPRoebjb0xsVLmuoCx7xSrUXpYQ2q6w72pNlFOj9SpzTionNFu8B24ImUw3Ndcfg55P7wKftC1gE6vXBr7HTN7jnMw935VCoF1V33cShDJxWK0rx+upcHZ3CsEhvN/LdNaaegoduC2dMaXY5bYkNtV4+9iHn88R4gzIty8gy1HBx5HgdWMNwtZsXg==
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com (2603:10b6:510:1d0::13)
+ by CY8PR12MB7097.namprd12.prod.outlook.com (2603:10b6:930:51::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.14; Tue, 23 Sep
+ 2025 17:09:39 +0000
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632]) by PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632%2]) with mapi id 15.20.9137.018; Tue, 23 Sep 2025
+ 17:09:39 +0000
+Date: Tue, 23 Sep 2025 14:09:36 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Keith Busch <kbusch@kernel.org>
+Cc: Leon Romanovsky <leon@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>, Alexander Graf <graf@amazon.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Changyuan Lyu <changyuanl@google.com>, kexec@lists.infradead.org,
-	linux-mm@kvack.org, multikernel@lists.linux.dev
-Subject: Re: [RFC Patch 0/7] kernel: Introduce multikernel architecture
- support
-Message-ID: <20250923170545.GA509965@fedora>
-References: <20250918222607.186488-1-xiyou.wangcong@gmail.com>
- <20250919212650.GA275426@fedora>
- <CAM_iQpXnHr7WC6VN3WB-+=CZGF5pyfo9y9D4MCc_Wwgp29hBrw@mail.gmail.com>
- <20250922142831.GA351870@fedora>
- <CAM_iQpWO71vSV_0qXiUYeKYZMYF0xWNz8MrUVRkqKwDEtQvKqA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="fOWoD/rtAfxeWV+w"
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	David Hildenbrand <david@redhat.com>, iommu@lists.linux.dev,
+	Jason Wang <jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>,
+	Joerg Roedel <joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>,
+	Juergen Gross <jgross@suse.com>, kasan-dev@googlegroups.com,
+	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-trace-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v6 00/16] dma-mapping: migrate to physical address-based
+ API
+Message-ID: <20250923170936.GA2614310@nvidia.com>
+References: <CGME20250909132821eucas1p1051ce9e0270ddbf520e105c913fa8db6@eucas1p1.samsung.com>
+ <cover.1757423202.git.leonro@nvidia.com>
+ <0db9bce5-40df-4cf5-85ab-f032c67d5c71@samsung.com>
+ <20250912090327.GU341237@unreal>
+ <aM1_9cS_LGl4GFC5@kbusch-mbp>
+ <20250920155352.GH10800@unreal>
+ <aM9LH6WSeOPGeleY@kbusch-mbp>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAM_iQpWO71vSV_0qXiUYeKYZMYF0xWNz8MrUVRkqKwDEtQvKqA@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4C7BB180008
-X-Stat-Signature: aoefkuxjw5cmkegt38qfkpzg8qei9dh9
+In-Reply-To: <aM9LH6WSeOPGeleY@kbusch-mbp>
+X-ClientProxiedBy: BL0PR0102CA0062.prod.exchangelabs.com
+ (2603:10b6:208:25::39) To PH7PR12MB5757.namprd12.prod.outlook.com
+ (2603:10b6:510:1d0::13)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5757:EE_|CY8PR12MB7097:EE_
+X-MS-Office365-Filtering-Correlation-Id: bc204952-1979-427d-43f4-08ddfac3faa1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?SJmAD6P8WrWWuHZOaif2sELSogZjML3CSOMNpyLWiBOtInZlQ+z3+HEwPek+?=
+ =?us-ascii?Q?xMrD+nXnpvB6+wyNA1MiGP7PUnMUXGOAo3Uji+JoeKTFjjpa2Wi8Tbdyy306?=
+ =?us-ascii?Q?lwMaY9apU4XbSh6ZMNDCYILAWKLg9xO1o0WaQX8X0t8PvWqGVI05dXYUfaJS?=
+ =?us-ascii?Q?dP23xF90g3yxrMg3E0ZweazGKCUtcpUk0BvZseMZ9Mn3ZEYPDC6SUqNTPyT5?=
+ =?us-ascii?Q?h9T0/JdzXqp5RVHFb0bCnTeE1SrhMbi0i6Rwq9D+7fSAiRtjgDGvD08j6Dh4?=
+ =?us-ascii?Q?9zDSElycQTqtC+SxuEXwPTeBP5j6mXPlytrpc/8I54CGMdxY0OT/iG0EKH+k?=
+ =?us-ascii?Q?fKXK1lmN2YB3l8NfwJKB3i6Bz1OJ+8wsnPpvf5DTWI6QOizZNh1dlKcg9Ons?=
+ =?us-ascii?Q?TwWJMjyGVaKnEc2KUnRHPRc9MXBxGdU2tpcoHFFMsv9ME5toHcHyY+5fBPyE?=
+ =?us-ascii?Q?3Lb1wA0tfhFmNLq9dByW3S/Z+OHToqipzWlBOL6llXnYqFA+YekgTSmj5THl?=
+ =?us-ascii?Q?IUevUbBBCkjpZQxFLPv0NEJI2jBOhEfviO8nRNoLyQPmgl2v4GXdiHmnd5B0?=
+ =?us-ascii?Q?qgOqPkxSpeWRVpwdlX+vRBOY8V8aTOnh+PZoebudEvEnynv7uqK6MA0Pr1F4?=
+ =?us-ascii?Q?+TlSLo1HaMFQ+fiKgoBluBBPW4Er7lSbish+pOk2mGuC9aJf+Flh7VdsNF6A?=
+ =?us-ascii?Q?UBkhE3SDC/eCbRcZtuyp5GvG8SnptVS3yn2DsSwwLQpvFtNh5A2kh4ZNKih5?=
+ =?us-ascii?Q?QE5ni5X10wtQk9Lj7T3AchwuQtLJwd4rBA7qvGl2P71YUZWb2LPuBW0/72Ko?=
+ =?us-ascii?Q?HO0ZQDsdrG8umM0sZrIhMKAFizButughBB28ZD1cnb+YnbeglqerRHRo9O8o?=
+ =?us-ascii?Q?1tTH5/UldaE30aM/XBB3HqZ6cRzzPdXjNJQwa2kWysbdYBzArHi4lJOq6uT+?=
+ =?us-ascii?Q?mZxfrv0YS27avYVToN6qcOyuSpCKxEBWrDJacnMkhhw+w06PXPIWOVgcLgod?=
+ =?us-ascii?Q?pRGBSZmi4gYf6GWVOypTrxrQ0KtcbuO8KCcCkSjevTbrbQp5gUbkFJW/lEoY?=
+ =?us-ascii?Q?zELONf86F3MT5VsZE9116D1a+e6lzmJCL9whVQqkV5sdp1irFJ+ropB9qI/k?=
+ =?us-ascii?Q?gGCmG061yMAzLvZxz6tc7q3/3RWpV+zHLlQxPe1v04t0wauH76R68fyv9HNn?=
+ =?us-ascii?Q?zn9NF6ZRGRZ5r/qNo2Uw/19OKlKFBpbeXLMMvKu5NQTSsADFKP7IT7jD76xH?=
+ =?us-ascii?Q?mn/fba6qnsgXbTXfsL0KdhGksYcRoJxVvi8p2TUhJ41p79ubs5tNZJcXm0IY?=
+ =?us-ascii?Q?Nd/QX/TgbDELc27Fsek28z6L76ISG+5VrCn+LPiDjw7PEuA4X6IpJ76tIYcL?=
+ =?us-ascii?Q?6ccVwWP77+YQSyB29uu+HetpBBRd/bjPUMECjnJO/TWb3cSYEl3+bHX392Dy?=
+ =?us-ascii?Q?2VgYRkJLZZo=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?9brSa+bdlvi/6eftqG0wEDppljbQgJEznYpb1kQH86dDICWbUMxtWiwK0/X7?=
+ =?us-ascii?Q?4rEWjqAc1kRsokCGBoz/oQbnANRsFgz673fviV3zWc3btFSRfD9I/XSh4cqp?=
+ =?us-ascii?Q?Q+Q+8h58Gm0cfSghyhxjy0uUK1l4e4fzZLwD04xX2uZPZxg3rHzASRTDh+us?=
+ =?us-ascii?Q?qgCFEDJR1PuMoPABTM36UOjJ6ub0/RXqf1Q10EItpXz66f9Eqppjjk/LCCMf?=
+ =?us-ascii?Q?49LiQkJ7Jeo39RkV8AIR7CtfJoLZrdV3MdmykRQ57YzURLJzvykAbUMGKRFx?=
+ =?us-ascii?Q?OQFm3ar9RMXa+/T8WxRzXgwMvRW/YW7wivCv74tpewW3AhCRCEu+wj3SOSB+?=
+ =?us-ascii?Q?4RlQ9MjNbsW7Jl9giTy6DXl4x6Fu9qIX6oRShn8Uilv+pRN/ry8KE3UcA+Wn?=
+ =?us-ascii?Q?ULvpHSCX1TyG+D3TBfE5QuTqlCG3isyhf2JNFtZpdroPhK0r/PANzfcv3BWG?=
+ =?us-ascii?Q?5+EH4FUjAbQPDabCUvlrG6EzUYfox05xMC6bLMoreyRPS7Ojy2mp1v2pIg7j?=
+ =?us-ascii?Q?7c1YIEg/truGG6QwtrwM4sI/9Vf+vz4UxPJNkExIvW4XDBa07XUdpPIfdPwD?=
+ =?us-ascii?Q?wx9RpRN+d13xiSLdQIFkuqZII6bHusCMmTb9E4narF0h5L/oEgpOqxsBcHBg?=
+ =?us-ascii?Q?ewdVKMLIBuo4fNrUkHkFKGzyKxveEUg9bW8w2PUI6njWI+DQIkg5J+YF38uK?=
+ =?us-ascii?Q?Ew1CW/yzGdWCvjC7hpcT8Ks7ALN72NOBDVhNCOMPtfuQ00fdyYU/ImkkcDCa?=
+ =?us-ascii?Q?OgXhBxMQtCnHPN/94sn7nXKb42TanX5SvZSuubFyUn9YK/MPNCkdbSd2cvPd?=
+ =?us-ascii?Q?O+eiBurynvlcVjvyQvC6tIMszTe9kXiIDrHL6h2TvytWCOgZyCSBQYmy8HjZ?=
+ =?us-ascii?Q?AJE8h0BeCiD4GxdgQU0B9kVCJ7SRRuaVeWcG/byzaTRliSgzwspmNszSU7vI?=
+ =?us-ascii?Q?w1zJZCrHgFDVq5KyG3ask7NK2W0l6gI+hQBLGORGHW4LJCSId4OVNZlD53px?=
+ =?us-ascii?Q?qw+5w0iybqAX5cb/BcIO3BvJd+6Dvl9TTQXENrWmNE4hrPzOz3r/cCf6XjLK?=
+ =?us-ascii?Q?MOa7ZLp/kRBF0xUqB0hEEAt7uVdrDwUHTBraQMBLZdDZS6Yh5Wmnam1J2ZZu?=
+ =?us-ascii?Q?gL5lGS0Sa8F7GW+ZQWERfs/8h3BinfAAwALQr+XognophwGG/PoHnulu55wn?=
+ =?us-ascii?Q?N6N61LxtGOTnozw9ccWDX9sp7X/5ZZUgMTNqDe5HPkkzf8E+TRIWQaSqsUMZ?=
+ =?us-ascii?Q?h7hVC2StbNxHjI6L/97Q4lxxwCOl59nYpHes7gqUxhZIKkFj1NJ/QML71bGJ?=
+ =?us-ascii?Q?SRBra1y1gGCD6HM4rDZdFiWixSvuP/Zl8olGEJUgiYR0LZo7l2+3qJ0DENnC?=
+ =?us-ascii?Q?5qugSmfjHJFJVySpdCgDiGx7H/u147UlCRCnLlNsX1sBgdSO5fMLmg1bj1M1?=
+ =?us-ascii?Q?8KkyHbCIbZvB+TBvJjr+HZZoL9DomFAIc8tlOZAIx2zdP7zX2hvfN/h9EOpe?=
+ =?us-ascii?Q?dRp/8lGy1sAFgNZzIblQrUHChTBvYY7FFJUihHYLu0AQAC7CntY0Dde2YTGz?=
+ =?us-ascii?Q?SOVUD2AqRajEjF69PyqwB/dZIVBwUeZ/PoDq/A15?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bc204952-1979-427d-43f4-08ddfac3faa1
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5757.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2025 17:09:39.1137
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ceigpDcxetN7qTmDdR6xf/u6VfAhbxjc3VgXcalLxLEkjfvE0x+7MsjxHGl5BBWd
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7097
+X-Rspamd-Queue-Id: 2BACA14000B
+X-Stat-Signature: 38ywt6ghiggjrittagj69rna587ozw3j
 X-Rspam-User: 
-X-HE-Tag: 1758647156-1968
-X-HE-Meta: U2FsdGVkX19jsC6OPo6REJV7NUDqJC5utixdvJsZIHctxP+wqWCcUtVZbjvMNEYdsBllSrqiLa9yod+ba8puf3HsQzNjtFEOEY5imu9EZ6xXbIw3YHjXBEh60Z3VkWIBAvydePCrPx7z5p6nUbEnk1OOo+yt895DEwSII3k9g6MVuPGb8bhuWAROIcTux2JllyfL1hRRx4BSSP9r+qgY8fRq0RZ/nRPmDtIROA95wKq1vlqviwzD/VEbL6ltyxepwzXdSeMRLBovdBEqqUmRRNTuFWIrwyvsPy+A7Z+wGiiuLhO/7CarjjnxwEC1NSUd/cUC59aVjnh+QZqsc+vY1ZLUZ/kveRCzvbtvObMa6tpMU5FGbZ7ccb1YExO1lckuqlEiM6i7sKgDzuZLDBSEC084xmpXfS0EbOcl7Dk7y/EVcGx4kqnQuqbtH1oGbC97pIRzmNmj/xbdaeJF2tg61awMj6D4VH9QOj3H/IgfJdWUfINiUq1MizZSHsdI7dw7ex8W2uRUa3W6fvKRRg8BwywI15H3M7ck06r1U6Ka7CxSP5hi+WqlmyDA1xe92UxhrJAucd3iRZBgSRApoFgcxcyjvZdgelNF8pLUv5zy9eNCQhTxpxP6Q6uRcr1Y/RxJH5f8GN7Lck35FH+Xtmk+m2C2rrxK+wwh4plwxFpCFR/OraV1orXmEf4c+XCz6rarCj+e6BBVTzOb6SjttjGmvbQLoc5y95WmgHVJnEU7eOcEi9RKsFvChB59pxUXKbU0YXS1T0K0PYk5Rp6UDU/telJhXCQpFWqFD/9Rb/9j7N8XCwQ2PVoFimnZIJpYo1iPSq+XIni+37VhiSG8Pmz1k+dGgIn2jsvSNteXBh9AM9whuXuuOdQLGVr82Re7VIQw4blcrqhBtV34pGqHyi5Sjx0wsR/0+lHbR6wlJtwobl/IfK1M709cqsaUCjT9P4jQ1qD235Ry0mfK2PFWCC4
- 3TGDZxh7
- 6SwVm7ossQsxtvtTFKFpFExFMP37t3iDEPU2gAm6kJ3r5V5JEmUZNkFA6+UeRhJStaF6uBcx/rVvR9tZySXMSmeHPtQVDXztqKP8vmmz0oy7U6lqtDabQzcu3Dz9pNKLeQjIZj8D0JN8OwsMrPTihq1O9Tr5BCyiL/yvFKg3KYQOiAj2+f+C6V69f2Jaw/89eDIp4VLRarbohHuI=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758647385-588184
+X-HE-Meta: U2FsdGVkX1+AWicNxO/7Ur4jQuyPkOy/Adbrh9HMuvqqfBHe+XcKpKcKv3Gq0C3kFbf+F0595R4Gu3kFt420qnXjsZ9DUp/t4CAstushlx6sGqZ74bBn6ekQT6QmzPjae3i7bsUaPhcPbntmLBWu1NkkatPctoJeg03Pb3LL1DhbJ06ac4ooz1cY8bhuPh2iu97VzqFbGOTaAIiNmgCDMKzOgd1N8u/FSjXifpeayHc2JiazoB6Td7291cuegklbLYH/dhrbxMLI6nQzQqp1kNTQDvv/65H0rp+0Szdt8LLu9PARRttpB8TeAnQNSc39K5ae+Z5NONvMyrbp40mIHkdJPe2F4XY8UVDhnn2xsjeaupic9Pmfy6Pg2ihGcWm32dsIlts1stLyrPQXjMp0WzdO6UH5Vs82kkHDtvqhzT9+4Qu8VaZ1GgPcq9HMS/8xEG2hQ2+gwC87KFjwjE909g/yUvlsF/VxRB4a8s7rHHKGMR7FbSzT0mJ1bco50wk1iocPU+bcTDgx9Pob+kFXJSS7E19L3Xai66ReSyyEaIXF8Ckyuyw+jMxML3Y4B7UZgWtHq/97wPJ4+YzfKSRe63kkbASYFFZmhr7YKJIq4YWVLv6VPFUp/jHGCvyWIasjDqREuyOKtdDEdVXrPljt9JrOSGVGD+Dgqq5ItoUSMsDJcHE/4iSpGtMMQyG2owhPknGs/DVs/AO+Z3gFe1/dqcVqvAtQN/MTPKFf++hkTO2vAuwENN2PCi+2wAXhlvAL/Y4ZkTDa71CdBK2/KCHmnuPSSIXq6JY1MO0I11t9TKO6GjaAbsfUibwoUgdcfObF2wYWW2ieM8s0182780+W19a5AqpLo1QUFnCzP1m9eUJCz/G2+Bgt4JI0q1VFE/Gu9wrm/2YvgetgC7cS/Fjh6wqZb6/NTo0QNx36fQZY5MXv9Tt+w1azJGor6GJ+l9VgLmBtQnv6+5GjfUjW16G
+ S/w2BCg0
+ upHvi+qk6NtrZ1l7499bLX0886tBYISsCus+bJez+TbqMD0Ng5jWb/EXasgICwt678IjbC7iE7aTS+bVWE54JYve2B+AsAndsLNtwZwDKaSP2BcIoCMpeIVnk+MhgDChDQq3PD7NW3MiMBBCCsZ7UoTjPynAgLc1Qb+afZKTVEUaR6+O+zosmXCB3vRVd63yAM1UKjGWpT5tabYc8KiZo43zhGZ4KY2AaPTWot9p5WzPy3Do89xhVJbZ0dudvZuGQdYZE0W3B7/8jgd/YPYHfUzwJq54PXV/brtSA6SG9VLIfgB3nSxhS4VlVKZiLroNmRlwYIFdJ6HbFLBArnZyym06kX05Wpp0QhNDFaoNR6YffdAFA4t1tXxwmGiCuErscF4FD2gKCm5FguYqW18G0ZSHkq1RJDUSbcIwgvhLtTm/Ke9/sHkTnoEDYyzangn+O4fhO1w+/uxHnF25x6qSwQcFSz7NjEIdaUyGbbthkhe/uT9m2n10hXvYtNTyYD67V8mo08mUsIbg7rnSctPjmBUe3rJsyknjt2q3nKJc4I/vZ1Iibo1SDyX3LgAkfiJYxnnqh
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,130 +210,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sat, Sep 20, 2025 at 06:47:27PM -0600, Keith Busch wrote:
+> On Sat, Sep 20, 2025 at 06:53:52PM +0300, Leon Romanovsky wrote:
+> > On Fri, Sep 19, 2025 at 10:08:21AM -0600, Keith Busch wrote:
+> > > On Fri, Sep 12, 2025 at 12:03:27PM +0300, Leon Romanovsky wrote:
+> > > > On Fri, Sep 12, 2025 at 12:25:38AM +0200, Marek Szyprowski wrote:
+> > > > > >
+> > > > > > This series does the core code and modern flows. A followup series
+> > > > > > will give the same treatment to the legacy dma_ops implementation.
+> > > > > 
+> > > > > Applied patches 1-13 into dma-mapping-for-next branch. Let's check if it 
+> > > > > works fine in linux-next.
+> > > > 
+> > > > Thanks a lot.
+> > > 
+> > > Just fyi, when dma debug is enabled, we're seeing this new warning
+> > > below. I have not had a chance to look into it yet, so I'm just
+> > > reporting the observation.
+> > 
+> > Did you apply all patches or only Marek's branch?
+> > I don't get this warning when I run my NVMe tests on current dmabuf-vfio branch.
+> 
+> This was the snapshot of linux-next from the 20250918 tag. It doesn't
+> have the full patchset applied.
+> 
+> One other thing to note, this was runing on arm64 platform using smmu
+> configured with 64k pages. If your iommu granule is 4k instead, we
+> wouldn't use the blk_dma_map_direct path.
 
---fOWoD/rtAfxeWV+w
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I spent some time looking to see if I could guess what this is and
+came up empty. It seems most likely we are leaking a dma mapping
+tracking somehow? The DMA API side is pretty simple here though..
 
-On Mon, Sep 22, 2025 at 03:41:18PM -0700, Cong Wang wrote:
-> On Mon, Sep 22, 2025 at 7:28=E2=80=AFAM Stefan Hajnoczi <stefanha@redhat.=
-com> wrote:
-> >
-> > On Sat, Sep 20, 2025 at 02:40:18PM -0700, Cong Wang wrote:
-> > > On Fri, Sep 19, 2025 at 2:27=E2=80=AFPM Stefan Hajnoczi <stefanha@red=
-hat.com> wrote:
-> > > >
-> > > > On Thu, Sep 18, 2025 at 03:25:59PM -0700, Cong Wang wrote:
-> > > > > This patch series introduces multikernel architecture support, en=
-abling
-> > > > > multiple independent kernel instances to coexist and communicate =
-on a
-> > > > > single physical machine. Each kernel instance can run on dedicate=
-d CPU
-> > > > > cores while sharing the underlying hardware resources.
-> > > > >
-> > > > > The multikernel architecture provides several key benefits:
-> > > > > - Improved fault isolation between different workloads
-> > > > > - Enhanced security through kernel-level separation
-> > > >
-> > > > What level of isolation does this patch series provide? What stops
-> > > > kernel A from accessing kernel B's memory pages, sending interrupts=
- to
-> > > > its CPUs, etc?
-> > >
-> > > It is kernel-enforced isolation, therefore, the trust model here is s=
-till
-> > > based on kernel. Hence, a malicious kernel would be able to disrupt,
-> > > as you described. With memory encryption and IPI filtering, I think
-> > > that is solvable.
-> >
-> > I think solving this is key to the architecture, at least if fault
-> > isolation and security are goals. A cooperative architecture where
-> > nothing prevents kernels from interfering with each other simply doesn't
-> > offer fault isolation or security.
->=20
-> Kernel and kernel modules can be signed today, kexec also supports
-> kernel signing via kexec_file_load(). It migrates at least untrusted
-> kernels, although kernels can be still exploited via 0-day.
+Not sure the 64k/4k itself is a cause, but triggering the non-iova
+flow is probably the issue.
 
-Kernel signing also doesn't protect against bugs in one kernel
-interfering with another kernel.
+Can you check the output of this debugfs:
 
-> >
-> > On CPU architectures that offer additional privilege modes it may be
-> > possible to run a supervisor on every CPU to restrict access to
-> > resources in the spawned kernel. Kernels would need to be modified to
-> > call into the supervisor instead of accessing certain resources
-> > directly.
-> >
-> > IOMMU and interrupt remapping control would need to be performed by the
-> > supervisor to prevent spawned kernels from affecting each other.
->=20
-> That's right, security vs performance. A lot of times we have to balance
-> between these two. This is why Kata Container today runs a container
-> inside a VM.
->=20
-> This largely depends on what users could compromise, there is no single
-> right answer here.
->=20
-> For example, in a fully-controlled private cloud, security exploits are
-> probably not even a concern. Sacrificing performance for a non-concern
-> is not reasonable.
->=20
-> >
-> > This seems to be the price of fault isolation and security. It ends up
-> > looking similar to a hypervisor, but maybe it wouldn't need to use
-> > virtualization extensions, depending on the capabilities of the CPU
-> > architecture.
->=20
-> Two more points:
->=20
-> 1) Security lockdown. Security lockdown transforms multikernel from
-> "0-day means total compromise" to "0-day means single workload
-> compromise with rapid recovery." This is still a significant improvement
-> over containers where a single kernel 0-day compromises everything
-> simultaneously.
+/*
+ * Dump mappings entries on user space via debugfs
+ */
+static int dump_show(struct seq_file *seq, void *v)
 
-I don't follow. My understanding is that multikernel currently does not
-prevent spawned kernels from affecting each other, so a kernel 0-day in
-multikernel still compromises everything?
+? If the system is idle and it has lots of entries that is probably
+confirmation of the theory.
 
->=20
-> 2) Rapid kernel updates: A more practical way to eliminate 0-day
-> exploits is to update kernel more frequently, today the major blocker
-> is the downtime required by kernel reboot, which is what multikernel
-> aims to resolve.
-
-If kernel upgrades are the main use case for multikernel, then I guess
-isolation is not necessary. Two kernels would only run side-by-side for
-a limited period of time and they would have access to the same
-workloads.
-
-Stefan
-
->=20
-> I hope this helps.
->=20
-> Regards,
-> Cong Wang
->=20
-
---fOWoD/rtAfxeWV+w
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmjS02kACgkQnKSrs4Gr
-c8gaLgf+LttcrIImZ/l3um6RUl/4dYace1hoDwxQJPCPksRImb0wzZW4C3r/6W8V
-dssJAEtVxaLcMnKlkA+usUipzCoHQqjOD6IVOe3gxnD28sSaIuE8v+RhftRbEMNI
-ytTI1l4AHyPwWr2nQG+FQZm2hf7LQUd2uItfnOjIS/sSelm7eOHr1m8zXvYDy1zT
-JXKNxZCk0PGTkYHCDZkmnZotwC/OEUD4htrk2s1V+xaGhXx8VS59XNacaileaplO
-rRPGU2lU6vXA/TRhs+FvZqPGFj0gffZrc+5H/pHCPVeod8Drolcf0YO+9WQ+b+n5
-SLcZ7lhWe6O/QynTmIpd89aXu+L0tA==
-=KKCS
------END PGP SIGNATURE-----
-
---fOWoD/rtAfxeWV+w--
-
+Jason
 
