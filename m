@@ -4,94 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D052FCAC5B0
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 12:51:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76B9DCAC5A7
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 13:13:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7F548E0007; Tue, 23 Sep 2025 08:51:41 -0400 (EDT)
+	id A52FD8E000A; Tue, 23 Sep 2025 09:13:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B2F678E0001; Tue, 23 Sep 2025 08:51:41 -0400 (EDT)
+	id A041E8E0001; Tue, 23 Sep 2025 09:13:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1EC68E0007; Tue, 23 Sep 2025 08:51:41 -0400 (EDT)
+	id 8F2658E000A; Tue, 23 Sep 2025 09:13:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 870FF8E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 08:51:41 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C5042B9C00
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 12:51:40 +0000 (UTC)
-X-FDA: 83920501560.20.06F784E
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 73FC68E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:13:52 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2176AB9CCC
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 13:13:52 +0000 (UTC)
+X-FDA: 83920557504.09.8A89F1C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 34398A0010
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 12:51:39 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
-	spf=pass (imf25.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758631899; a=rsa-sha256;
-	cv=none;
-	b=mT4MdwuAPtkYE3+LLlxjTfVs/ZUw9cxVy9+XBsuvWc0g1xSBnDHF8FQ+6qAmEI0IaIy36N
-	DBoGEV4dh2VxWNa1y5PJYrEHyh/6rm1+Yh9Z9PKbTdFHG0M6YZwzGFf2XIvId0qpPMY3s+
-	FUMsciQEjGtVp61vO3fznWtiBENSyH8=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
-	spf=pass (imf25.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7EB9B40005
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 13:13:50 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oMzSrmpP;
+	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758631899;
+	s=arc-20220608; t=1758633230;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zbMyxGJKnCifDzYMlTNsZNz35I2L39o9GdGpyX8yzLI=;
-	b=I56r3bd5nkSl/VO6jWwNKetFXCzUmZuCsUV3sKv2FyXQWksJrEDgfLQNlLGIfql4it1xo8
-	vVqOO5O1OUzI/06spuF/rPWrTmdD+5Dm/zSmgsLPtET/3rW2l7KsZJH6I8RcrsLHOsZdUK
-	xROBC5QhHc3ZecdbtxCzUiKokyQ/Arg=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=h3D9xtbROxNSb9Gijb8GsRs1BUgX1Qfy/IJ4YGECVdo=;
+	b=KgK+Dk9f3OS0re1iqUPNhmb5VnjZdtFlf5V8WeNaN9aDlxLrV+Z27IIg0UmBiVr13siaI8
+	woRolOn90o7rXjwyL/n9ETZfRqch2jlzwVM55dvUIgpzgMiGYqfSzeoXY4M/S/heaoiC8P
+	1mgLz6TAvO8w++96qQ3yDks5XghMuV0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oMzSrmpP;
+	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758633230; a=rsa-sha256;
+	cv=none;
+	b=PntLqu1bV0WQUSKwfdxBF2y6a1+u4oRGY5+eDmd05zal3uGTX2amYbPPbttqZNhj7Ynxkh
+	wPw7LiKpaxGaQX2vYLTsmLK5BLwiPMy2Y8boF1eX836fDsgKs2+TsBUJ7+8IGKhIW/2Oad
+	8lASVrphHaJ7Ahyp4pYH+YepPnWQ1cs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 207C26027E;
-	Tue, 23 Sep 2025 12:51:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A7AC4CEF5;
-	Tue, 23 Sep 2025 12:51:30 +0000 (UTC)
-Date: Tue, 23 Sep 2025 13:51:27 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org,
-	lorenzo.stoakes@oracle.com, usamaarif642@gmail.com,
-	yuzhao@google.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	baohua@kernel.org, voidice@gmail.com, Liam.Howlett@oracle.com,
-	cerasuolodomenico@gmail.com, hannes@cmpxchg.org,
-	kaleshsingh@google.com, npache@redhat.com, riel@surriel.com,
-	roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com,
-	dev.jain@arm.com, ryncsn@gmail.com, shakeel.butt@linux.dev,
-	surenb@google.com, hughd@google.com, willy@infradead.org,
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
-	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
-	apopple@nvidia.com, qun-wei.lin@mediatek.com,
-	Andrew.Yang@mediatek.com, casper.li@mediatek.com,
-	chinwen.chang@mediatek.com, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
-	linux-mm@kvack.org, ioworker0@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] mm/thp: fix MTE tag mismatch when replacing
- zero-filled subpages
-Message-ID: <aNKXz3B7iIIv7LxK@arm.com>
-References: <20250922021458.68123-1-lance.yang@linux.dev>
- <aNGGUXLCn_bWlne5@arm.com>
- <a3412715-6d9d-4809-9588-ba08da450d16@redhat.com>
- <aNKJ5glToE4hMhWA@arm.com>
- <8bf8302a-6aba-4f7e-8356-a933bcf9e4a1@redhat.com>
+	by tor.source.kernel.org (Postfix) with ESMTP id 6D36D6020D;
+	Tue, 23 Sep 2025 13:13:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE3FC4CEF5;
+	Tue, 23 Sep 2025 13:13:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758633229;
+	bh=h3D9xtbROxNSb9Gijb8GsRs1BUgX1Qfy/IJ4YGECVdo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=oMzSrmpPP/PZ4MdZMnfT6nG+/zBR7nn6g4tNnGPoailLJCzHkLsoyL30vp2ur1OAe
+	 EycvqkFLaoVGg4yXwf3Wtfknm3B+XyCYkscA//AR42PLBwLn9pgexqrCmAXYWHg/Iw
+	 H4g3S8fTTcMXihhCLXObOJ1DaQfxHLWyGCGANTs8ARSYE9CZKaenjyK3DCcPmMORyH
+	 iVD2FcM37OTUlRno11vUbxH0btrUd/4HR+12ckF9hFXqUvuZNBJzOLV4wVY0nSSvE4
+	 ftvgaY/8Z5DZc9cL58e1XsahlgGD+qnui47PHZggyP/6oaZZDQLpk3oYdNe/iMQRu3
+	 LiDgzMSCbyraw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  jasonmiu@google.com,
+  graf@amazon.com,  changyuanl@google.com,  rppt@kernel.org,
+  dmatlack@google.com,  rientjes@google.com,  corbet@lwn.net,
+  rdunlap@infradead.org,  ilpo.jarvinen@linux.intel.com,
+  kanie@linux.alibaba.com,  ojeda@kernel.org,  aliceryhl@google.com,
+  masahiroy@kernel.org,  akpm@linux-foundation.org,  tj@kernel.org,
+  yoann.congal@smile.fr,  mmaurer@google.com,  roman.gushchin@linux.dev,
+  chenridong@huawei.com,  axboe@kernel.dk,  mark.rutland@arm.com,
+  jannh@google.com,  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
+  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
+  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
+  zhangguopeng@kylinos.cn,  linux@weissschuh.net,
+  linux-kernel@vger.kernel.org,  linux-doc@vger.kernel.org,
+  linux-mm@kvack.org,  gregkh@linuxfoundation.org,  tglx@linutronix.de,
+  mingo@redhat.com,  bp@alien8.de,  dave.hansen@linux.intel.com,
+  x86@kernel.org,  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
+  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
+  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
+  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
+  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
+  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
+  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
+  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
+  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
+  saeedm@nvidia.com,  ajayachandra@nvidia.com,  jgg@nvidia.com,
+  parav@nvidia.com,  leonro@nvidia.com,  witu@nvidia.com
+Subject: Re: [PATCH v3 17/30] liveupdate: luo_files: luo_ioctl: Unregister
+ all FDs on device close
+In-Reply-To: <CA+CK2bD_-xwwUBnF4TBCBuX33uL6+V_1nN=0Q8_NXwhubTc8yA@mail.gmail.com>
+	(Pasha Tatashin's message of "Mon, 22 Sep 2025 17:23:11 -0400")
+References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
+	<20250807014442.3829950-18-pasha.tatashin@soleen.com>
+	<mafs07byoye0q.fsf@kernel.org>
+	<CA+CK2bD_-xwwUBnF4TBCBuX33uL6+V_1nN=0Q8_NXwhubTc8yA@mail.gmail.com>
+Date: Tue, 23 Sep 2025 15:13:38 +0200
+Message-ID: <mafs0v7l9l3b1.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8bf8302a-6aba-4f7e-8356-a933bcf9e4a1@redhat.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 34398A0010
-X-Stat-Signature: 3asw9yj7e63fpc9kfzpi8fce7tx6xbod
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: s96j3wzsh75suw9wsxqtp8syouazhc64
 X-Rspam-User: 
-X-HE-Tag: 1758631899-279531
-X-HE-Meta: U2FsdGVkX1+uXGADOdbPPzouvKLRZpBZ78XC3+pTioWHm8vbcpK2uRKvKoUBU2CLxnR9J0jQsFNFOgTrT498Xqm7SwO9D9qW4KwBsPfmyihNiPrcehqNElEc9uS24v2J2OCfH4GXvMQpJhzFvSNWqIOp4ol4hfApIc2mjk4P6ad5hzZE+qm4p0rM9BHmvxzO5YaqGDrnRfk9yFDDY3pyfwxbfJEfsSwDMEZ9qDKZgxlKAjeyeYwVdAF/yzdU5As259y4pu+AXzv0ck4dQ0QlS+54e7dZpFbioec+9fuw5MYIaFNf7KchoN+ReX7kdLgFegbOl74Y1YoQnMX09GrstqzxRLo91tcRtjWpg4KttqtYdtgOszPQwEtp7nTGobDliApnrzW/3BDFZU9ZcupEVgarvJlM9n1tm7BFzfxIWFY8pXD7Fu9bPaX4ppn/4OVil2kzBV68BJhMbCyiFLN2LhpDjvZzkIyKz6XdrrwFzLy77nRE/SbHFC/p8k1OaOlYGGWYrmlgto7Ghn2pbEk/rSECuUdCIyM/zdjpgYKVyEeGx+NAALKR1hGTsZCyjTkv58/vyYwd3v1G0t5db8cUGej1L72uB1ErQtwQgIrd31xQqTk+sDwNxBvW59ISO2J1zreuI9+JgWCi4t2UkwY0kwe5loOVUHHEwGW+7IL1ysqzbwOMulcqu9HaL+4UE4+aPvlrGn7ipDfZA7vWb2owdb2w/MTtHicqcyoGOBjUW/KGHQvRnOigyqvrDDb9LD2Ryr3FMRIK9THL/PvvPdFbDPCuIMWgB9NQIVBOfl4tfPqXjEvSZ6v0AGSxZbE+A1JNoixl4YVW1JbfIQaSqzidDGx3Pe5PaQWJcDabTGXFFIITDNw7QmvLNUQ7d7OmrBJ0qEXgDrHt02uiWLQOXb3veZfuTohozPLCIXhuQg1RKG/6dEnnTjLzTKcifu6QaklgiCJHMjG6oFFY1Ge486s
- APdcF0s6
- /HiP/mszIUSMDUCLs/6zsjwatvAKoiSmN1rtdI0Iekg2Su3SV0UrCw5fT0lwezsNG3PmUIzw8PQ2Scb6iHqglkPqb/HXSVGBu7K0aHTUnEJOHtlMTztgP7Z9QUu1FB0jC6X6pSFOu8hIblstm2PpVP7Upfkayf+GbCjM59E1sJE7pE2Jeqvn1doKIH9Ef/zgus+rNO8csViGTiBeLbO8fDN5rsx17SvzEKF7cRtcviIjspLo0uuLLNvP1bOh1IP3pi2NbE75VhQ0UlQ5sbRVwMQdjYJFzoPZGWB88arMyHqllSESQ80LdtHOZQ2J2TP7wxCGJqCV2Oz+ztPzSWBvRVBdsMn0YtJPBFvxYl2LPtGFjps/GdbS86eSfsDGoS7FuCmFu6OTHQNe8DqiNLPWynkcVN3rm6K1avuOx7JcaLOcE2Pr4IUzK1eVMxQSpQjIDz2Kjq229JpBH2lL2d2ljDg68q+BvHczq2CSkPQYfw1KQwn3RTswcL+TpCQ==
+X-Rspamd-Queue-Id: 7EB9B40005
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758633230-841990
+X-HE-Meta: U2FsdGVkX19mM9oZRbCXTwWN5oFaAZqVtFU0SzDmL/MUthM4FoqwxSx/nNZ5DQqBG0cYixhqyQsA3XyCQ2T65918M/XCcDf2eajVWXrkde4SX1movUWePT7s839VYrg3uVgfxWtf3dd0ATILAYaGw2vsJ2C78HCJJo3+6/ixhERRXNl1ishM4o1LEjzMK8RS/mpPzlQmi/zAIO1FptJXv02yQDi6o9GSD4d4ayZNnkDjupuZoASP/5arKiwjjyfmsfojaq5NDrnwxz14JQ9Odx2G35rU+VbASaf8y0LIbkDK2bESM+A9zrVdzhprcuEiE3cIlcH2oGX46B0guCFVQiBPsWkbiZPhPSkuLXKq2mFRLtl1tCUkPGhCY99NrAyGe26aRKMMcKX3tmDeEaBuvGGsQpymImsh7uiaj3dzrNuNJw4B2gjAuJ1/6tUJkv0tzq3V+7hRcrv6cXf9OITj9foGUDqvdfuyeYRorUotLxiv4VtHgAw/5sIHwzHJW6VXUlU89od7584Dmt4fq+ga2W84macKwECndQ39CM7xZWnjddKXAriZdaBcflpApTrMmUA13HSXMBKkgv83y0ZVIxhj3B3JQ/ZttGf5OY9FM3vYrXPl/G9gs7SbEZFWzXxuUL8hgehHhcHdCYzM3G6QmaaRd9fkABKzvb0qq1og546eRp7e4tgHMnYYXHPXqKGoWfiCwIOlMUDP+8OCfRa7RppRAGpTUqIWvHP0t0OO9TX0i2znaNwm3/1kKeeE+7M9ohcmdYgqkP7ufVTWRDvlpfnVQm5yjL8B5Ib4LV1qr2+fiJLzt5J2ao5Ti/daixbLTZql5KZChObUqtWTRj69ZDJUec6zKELAtU2JePhwMMf2ucCvB582gKtdQYrpEHqlew4AaFrd0VwIeBbIyyyUinTRgl92x5MYjmfu9EUcuJfbkEsHO6rOjPxWezr1KARdvF9ac7L1mxbfJFqWAzw
+ X0A2jhxz
+ ZVH6G3lFNv5c7Los7tW+EjO8CvqKlv0GoDb4l76RiFX/1fFaPZ3jGbowP6knxz90J0yFyZ+fKlFfUA7LXu/PI1Q5fJHMuV5xL4kCDTOOu2L3f/lipwzwm2U17SK5ujJf28IuZ2YeH41uBnnFxYLhx0aUIkYSZ+5exfCJRnHQaGuTXxM2kt/yJxGsFSLX9n9g2jKnN2Fij1Z4Pj6gCYz+fOyeHkWedu1iaqL/juU3Bde+bec9xCir/2/w282gEFZ55YkpUMuFMHgIDWbuL0Ghp0Asklla6uFBen9IMx6oSpyd1B5SAhbpkn/HUGHm6H9lHKT+Gjqr4QYzQWbrVp/ciHqEc9ZdhAHnkFDxePiB/YU7ufPY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,93 +122,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 23, 2025 at 02:00:01PM +0200, David Hildenbrand wrote:
-> On 23.09.25 13:52, Catalin Marinas wrote:
-> > I just realised that on arm64 with MTE we won't get any merging with the
-> > zero page even if the user page isn't mapped with PROT_MTE. In
-> > cpu_enable_mte() we zero the tags in the zero page and set
-> > PG_mte_tagged. The reason is that we want to use the zero page with
-> > PROT_MTE mappings (until tag setting causes CoW). Hmm, the arm64
-> > memcmp_pages() messed up KSM merging with the zero page even before this
-> > patch.
-> > 
-> > The MTE tag setting evolved a bit over time with some locking using PG_*
-> > flags to avoid a set_pte_at() race trying to initialise the tags on the
-> > same page. We also moved the swap restoring to arch_swap_restore()
-> > rather than the set_pte_at() path. So it is safe now to merge with the
-> > zero page if the other page isn't tagged. A subsequent set_pte_at()
-> > attempting to clear the tags would notice that the zero page is already
-> > tagged.
-> > 
-> > We could go a step further and add tag comparison (I had some code
-> > around) but I think the quick fix is to just not treat the zero page as
-> > tagged.
-> 
-> I assume any tag changes would result in CoW.
+On Mon, Sep 22 2025, Pasha Tatashin wrote:
 
-Yes.
+> On Wed, Aug 27, 2025 at 11:34=E2=80=AFAM Pratyush Yadav <pratyush@kernel.=
+org> wrote:
+>>
+>> Hi Pasha,
+>>
+>> On Thu, Aug 07 2025, Pasha Tatashin wrote:
+>>
+>> > Currently, a file descriptor registered for preservation via the remai=
+ns
+>> > globally registered with LUO until it is explicitly unregistered. This
+>> > creates a potential for resource leaks into the next kernel if the
+>> > userspace agent crashes or exits without proper cleanup before a live
+>> > update is fully initiated.
+>> >
+>> > This patch ties the lifetime of FD preservation requests to the lifeti=
+me
+>> > of the open file descriptor for /dev/liveupdate, creating an implicit
+>> > "session".
+>> >
+>> > When the /dev/liveupdate file descriptor is closed (either explicitly
+>> > via close() or implicitly on process exit/crash), the .release
+>> > handler, luo_release(), is now called. This handler invokes the new
+>> > function luo_unregister_all_files(), which iterates through all FDs
+>> > that were preserved through that session and unregisters them.
+>>
+>> Why special case files here? Shouldn't you undo all the serialization
+>> done for all the subsystems?
+>
+> Good point, subsystems should also be cancelled, and system should be
+> brought back to normal state. However, with session support, we will
+> be dropping only FDs that belong to a specific session when its FD is
+> closed, or all FDs+subsystems when closing /dev/liveupdate.
 
-> It would be interesting to know if there are use cases with VMs or other
-> workloads where that could be beneficial with KSM.
+Yeah, that makes sense.
 
-With VMs, if MTE is allowed in the guest, we currently treat any VM page
-as tagged. In the initial version of the MTE spec, we did not have any
-fine-rained control at the stage 2 page table over whether MTE is in use
-by the guest (just a big knob in a control register). We later got
-FEAT_MTE_PERM which allows stage 2 to trap tag accesses in a VM on a
-page by page basis, though we haven't added KVM support for it yet.
+[...]
 
-If we add full tag comparison, VMs may be able to share more pages. For
-example, code pages are never tagged in a VM but the hypervisor doesn't
-know this, so it just avoids sharing. I posted tag comparison some years
-ago but dropped it eventually to keep things simple:
-
-https://lore.kernel.org/all/20200421142603.3894-9-catalin.marinas@arm.com/
-
-However, it needs a bit of tidying up since at the time we assumed
-everything was tagged. I can respin the above (on top of the fix below),
-though I don't see many vendors rushing to deploy MTE in a multi-VM
-scenario (Android + pKVM maybe but not sure they enable KSM due to power
-constraints).
-
-> > diff --git a/arch/arm64/kernel/mte.c b/arch/arm64/kernel/mte.c
-> > index e5e773844889..72a1dfc54659 100644
-> > --- a/arch/arm64/kernel/mte.c
-> > +++ b/arch/arm64/kernel/mte.c
-> > @@ -73,6 +73,8 @@ int memcmp_pages(struct page *page1, struct page *page2)
-> >   {
-> >   	char *addr1, *addr2;
-> >   	int ret;
-> > +	bool page1_tagged = page_mte_tagged(page1) && !is_zero_page(page1);
-> > +	bool page2_tagged = page_mte_tagged(page2) && !is_zero_page(page2);
-> >   	addr1 = page_address(page1);
-> >   	addr2 = page_address(page2);
-> > @@ -83,11 +85,10 @@ int memcmp_pages(struct page *page1, struct page *page2)
-> >   	/*
-> >   	 * If the page content is identical but at least one of the pages is
-> > -	 * tagged, return non-zero to avoid KSM merging. If only one of the
-> > -	 * pages is tagged, __set_ptes() may zero or change the tags of the
-> > -	 * other page via mte_sync_tags().
-> > +	 * tagged, return non-zero to avoid KSM merging. Ignore the zero page
-> > +	 * since it is always tagged with the tags cleared.
-> >   	 */
-> > -	if (page_mte_tagged(page1) || page_mte_tagged(page2))
-> > +	if (page1_tagged || page2_tagged)
-> >   		return addr1 != addr2;
-> 
-> That looks reasonable to me.
-> 
-> @Lance as you had a test setup, could you give this a try as well with KSM
-> shared zeropage deduplication enabled whether it now works as expected as
-> well?
-
-Thanks!
-
-> Then, this should likely be an independent fix.
-
-Yes, I'll add a proper commit message. We could do a cc stable, though
-it's more of an optimisation.
-
--- 
-Catalin
+--=20
+Regards,
+Pratyush Yadav
 
