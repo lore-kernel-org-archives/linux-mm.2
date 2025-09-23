@@ -4,89 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEE54CAC5A5
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 03:49:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83056CAC5A7
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 03:50:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 554AA8E0012; Mon, 22 Sep 2025 23:49:25 -0400 (EDT)
+	id DE38F8E0013; Mon, 22 Sep 2025 23:50:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 505228E0001; Mon, 22 Sep 2025 23:49:25 -0400 (EDT)
+	id D942F8E0001; Mon, 22 Sep 2025 23:50:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4423F8E0012; Mon, 22 Sep 2025 23:49:25 -0400 (EDT)
+	id CD11F8E0013; Mon, 22 Sep 2025 23:50:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3416C8E0001
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 23:49:25 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DFC361196E5
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 03:49:24 +0000 (UTC)
-X-FDA: 83919135048.04.EF7E2B6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 2DAA7A0007
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 03:49:23 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EIaeeEoB;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BC2DE8E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 23:50:51 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5A541C0849
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 03:50:51 +0000 (UTC)
+X-FDA: 83919138702.16.58BB3F6
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6E4D840004
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 03:50:49 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cKkvjzpS;
+	spf=pass (imf17.hostedemail.com: domain of huangzhaoyang@gmail.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=huangzhaoyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758599363;
+	s=arc-20220608; t=1758599449;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HolQDODPyhQpKJyYF9xTae4d3HIDUM6CjM4Q0UXx/qw=;
-	b=qaD+2B4pfi4RXQHBH5k1OTRElA8xS8MyxZdvxdLZxSMxB5e7aFrWYEFMxdvu4RInR6+APd
-	wKztBZsJvyurYo9kHIiSbQ5v6xaHYBKklj2SFbfKlTmTMBFuDsj+pebQUDt7YQ4+W3zMOx
-	LliKVdrW8ZL/Mkgkf+ivZkNE4/3vaCk=
+	bh=z9rIm2Qr+sxmWg43C3LjSRMHytvWzDOz0PNv61PwIN0=;
+	b=aog18wq7maIHdYyoMlvVQYaE4tkIHHS7bM/s67c0dSa/hMI/iY62RL5F+hfckHX0e9U2Ws
+	TeMqUr7QnqC9k+32isbTEUrFl1ZKzqU5+DJgnMvbi0GMwObOzLmq57Q+Chx/PKuWnqZHKi
+	6fdqeyGfNKB8c+Ts3rwkw4w9/ncHfKA=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EIaeeEoB;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758599363; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cKkvjzpS;
+	spf=pass (imf17.hostedemail.com: domain of huangzhaoyang@gmail.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=huangzhaoyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758599449; a=rsa-sha256;
 	cv=none;
-	b=1cr4bFVxjkXcgrUAX2/9LtpTVTHLawJSliIUJZFy8BX72BL97+0H0ww7TTj1pO1Adlxw/y
-	xnEMYtlzD6Z50e4qDzOScKScLtxrgKqQppcYfdZsr2GDWUgvihd0lMXUzRJlZMVcFa4Oy0
-	dRmZhEcOFdMUCxDJA9y1UnZBBVpNBdc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4E3F560271;
-	Tue, 23 Sep 2025 03:49:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A650C113CF;
-	Tue, 23 Sep 2025 03:49:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1758599362;
-	bh=sbacde5IymS4zt+PGppvs/FCiZ+f8/Siy/4gHLV/nA4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EIaeeEoBduPf96ORvfIJNMSLaqJgIRWO/INJuf3A34PfOahvpky4EyMCRd75MFVC1
-	 TaoN2Vdk/qp1jn6U/ybWSUZkyf6GH6cdxHVaZayivCjl1Cd6yB9eN0oQMLRQ2xAaTy
-	 HZ/Jyxanb9JEKifvsIJqPsuLLOU/bjACVUICbgS4=
-Date: Mon, 22 Sep 2025 20:49:21 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Aubrey Li <aubrey.li@linux.intel.com>
-Cc: Matthew Wilcox <willy@infradead.org>, Nanhai Zou <nanhai.zou@intel.com>,
- Gang Deng <gang.deng@intel.com>, Tianyou Li <tianyou.li@intel.com>,
- Vinicius Gomes <vinicius.gomes@intel.com>, Tim Chen
- <tim.c.chen@linux.intel.com>, Chen Yu <yu.c.chen@intel.com>,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Jan Kara <jack@suse.cz>, Roman Gushchin
- <roman.gushchin@linux.dev>
-Subject: Re: [PATCH] mm/readahead: Skip fully overlapped range
-Message-Id: <20250922204921.898740570c9a595c75814753@linux-foundation.org>
-In-Reply-To: <20250923035946.2560876-1-aubrey.li@linux.intel.com>
-References: <20250923035946.2560876-1-aubrey.li@linux.intel.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 2DAA7A0007
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 36axes6fkhhcarhysom44crtqbcam6ko
+	b=5NmtsfN4CSiuOgY2WCS37s1/sQvqZSjxL+n5iOsWdWeyIlVl9UIL+DRpeWm53vRQkSFV/B
+	Bg6A8PlOTTfi5VkLRRPAvESXDj7ynOu2fB1MV+nq4avgYVxWlNH1aJnUvMOA05k/OeKDDU
+	6f6EnvyB7Rg1JxgzWSnWSN4q/AW7We0=
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-361f9d329c9so6635241fa.0
+        for <linux-mm@kvack.org>; Mon, 22 Sep 2025 20:50:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758599447; x=1759204247; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=z9rIm2Qr+sxmWg43C3LjSRMHytvWzDOz0PNv61PwIN0=;
+        b=cKkvjzpS8tJOvKE0/w4ZK3/3gxiOHsRGRrbHb5wzrDGFbSNoo/V9V/jxKCXgvL6c2/
+         dvAgzJCVci0kykekNPFM5jhozE6iR+BlgqWqG/JSvjK5xdaAhD9hbh86C9EC79BPUaH2
+         AfoxDt4E7vTK+XSFMWdaSA3hgF8DnnDwovcSlB6wdcoUvLp7tXuNs7m7LR6G9ZflilKO
+         /Pj1nvZoWHrmZHWn5BGOI2R0tQqP2cebGvulH9yfjiUPWnP0xgqADCk7WDZvwJE4xR/1
+         A/XSsDVAjZTsB/NykUh2Jx7WWsfQvFyX0jcDDHChK++c2vuDCVVHyYL1cq2SbKnGs1RI
+         pWlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758599447; x=1759204247;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=z9rIm2Qr+sxmWg43C3LjSRMHytvWzDOz0PNv61PwIN0=;
+        b=QsNqj/Aj4FH2mVhfdccbq7dfMSOcMkJ3qmFsD+qLBl9t1mIzlGMlqxlcA2+HOcZdr0
+         i0+QCGCJgcXon/QyvASgkD+t82fgHnPbGSk8H/xxHexe01Fd2EYyIv3or/AxReWmMU3Y
+         +J7XCED0rtZTRyHvtY8o/iv5ekcu6vZ6wRdOcgusRCo3a+wBpiH+G1PB+mB4m+c8VLCw
+         SyjZlnmz8RLM/CESOaGwzMyIdFiTKPduwaw37fY5uyUN+FsiqM2DrHkZviUfKXdHvfe+
+         yDJ2lWddNluFUw5sXFW7mivobo4llihLV3XHNMynvgtfM5HzlGmq7KbnPJVeuaeev+S3
+         BRyg==
+X-Forwarded-Encrypted: i=1; AJvYcCVvmFDkVlVmIVTNjlx1TE6w8U69N12eCzasL7mjLhFCAksjqv5pdhICqyoniXohbzwJd/xSCic0Kg==@kvack.org
+X-Gm-Message-State: AOJu0YzyAdBKGNP+QbmQ8oTiA1oakC/0hi6BL2z8MtbF0H1GX68x6PhH
+	/R/kyBEgJhCuDyiXa9n4xc1vjMXk+B1ycGoSic7xlLj4ULKlSRPzDEtapku3VIo/5keMA9WKEUx
+	cL2FfJ5krO42uTL0zOQpEDzpSjkSqMEo=
+X-Gm-Gg: ASbGnctjV0OI51TOhZevIdTin77pN+qk1EGnXiIJaF9gSoh5pVPVAG6rlDL3DtVk9YJ
+	EeKzT83/n84IvjkqGSiwb15Qb/DNOC0fam7PYrBI1dlW4ia9NNYCvYma+ePFQUzc5bA56Im1gMs
+	epV7pN11/Dmo/18hgPd82IJEaSJCys+SVSzRX79PkiVaW0NoeuUGRrp1c2Vysdd16HS8AA4zVoL
+	+a+X0OV
+X-Google-Smtp-Source: AGHT+IFPR/ojxUbcunSqFj95BptI/0qdsAjMPxxte1rg/TtRftlIXBiGgzI+t0qpAtOcsZydxPV/Sc/0QBJ8p57foMo=
+X-Received: by 2002:a2e:a587:0:b0:338:1a1f:1152 with SMTP id
+ 38308e7fff4ca-36d176d9e37mr1511201fa.8.1758599447268; Mon, 22 Sep 2025
+ 20:50:47 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250922032915.3924368-1-zhaoyang.huang@unisoc.com> <aNGQ66CD9F82BFP-@infradead.org>
+In-Reply-To: <aNGQ66CD9F82BFP-@infradead.org>
+From: Zhaoyang Huang <huangzhaoyang@gmail.com>
+Date: Tue, 23 Sep 2025 11:50:35 +0800
+X-Gm-Features: AS18NWDFEH5uLKDpswEZriajtkKtRdC-YZKxVLp-mDKwLqx69RhYurkjBEuTo54
+Message-ID: <CAGWkznGf1eN-iszG21jGNq13C9yz8S0PW03hLc40Gjhn6LRp0Q@mail.gmail.com>
+Subject: Re: [RFC PATCH] driver: loop: introduce synchronized read for loop driver
+To: Christoph Hellwig <hch@infradead.org>
+Cc: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>, Jens Axboe <axboe@kernel.dk>, 
+	Ming Lei <ming.lei@redhat.com>, linux-mm@kvack.org, linux-block@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, steve.kang@unisoc.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: bhijzgdegnopem1w6comezi8mj8fqo4w
 X-Rspam-User: 
-X-HE-Tag: 1758599363-153052
-X-HE-Meta: U2FsdGVkX1863EaaF1Jn5WjmeFCGhFmm93AR0QHpGW7Y6BfFr0k5P+eI2+nGHFOSmQbqOwM7eXpcblIvFAuseTU/ARAMdNWXlUl42UGx5cMdW1wmqxaIKW8xbFMmqZl4nEHcWCYv6CFSzOKFRWA1GjsU+TLRiTmOihXCeYs7qUT/vXEZRHhuvUAhFu+kaEtf4XXBAhJI5O5f7mi/hVXDHuja6KsBb5guPMm9Zno4ioMu2nifFP7OvFug5jQ6wHbUwJlUBFcfynYR4hGS6jwzrQ5ZqSRby/ufF9/RGHCjqWHFoK2ehMIxLTEVbXDUCCX2iyFR0qQylbZ8FVIR+6gQMAFo6GOg2jB8Pjsck3RhuocA+72OmvjZ4rl147Znlt6Hk3tInPVER+/dxDlj9XBqw1lH8xh1okra9+Z6GcgZMHlIEJlicVQX5fS0D03GIAqBfqS1bHmorUwNFV5iSuPh+X14Qrl1WrEiFsXrIXxo7q9CkDEQg4vnG9dfgZGS4tdRQve87M2HfI/bJ5v1vSTuPRC2PpVAEBq5Yx1Xi8/JIrC1edLEkEY3UVrYwH6hZFeCZ1+bpvNi81UpLcHQ7MGqLrWBxSfamYKqC0WHjvtQvaX1k3q0fJ3rQ9aWHl2bw6hsiT/xo6tIVrjLcszr6boNNJ11r/2HrdaLgolC0uy39oIg7c1BnT0xo5NmtsCW++E9yEW1rnk3ruvjlk/n/ofL5SkwqyVE1u0fEhMptSEtFlOSvYGpp1/HURJXROu0KSZm9PKKb5nCN0tDDaBP/W6fu3uUL5IIrRwEiyRbACrDy5wiGovPJh9va2+tGV69mzVb/LCAAw5a8N4r7B5WMWHZ63Wa0tmIqPzvo+zGjSCTCegGfaP/9t3rc8/peYu0k3f3td650qt8AGiJfZFs0hgf0x3xLbLXlGt5ZPUG3cswH/rfurTvWvb5ktV4Q4/vAPJ0MmcrDBvCF99UVm6HBl5
- S5bYJT2m
- te51ESBcucPldgJKcJIe1+GkjirEoEzA5DJ7EhbS3mIK3H/K17eUmHtZl7JI1HrxPKNs5DMfpQtDQYn3+aJlgL315mDu4PjkEztaEAiLnf0fiWfXxqdQs9Es0YUyH/PHz4FZY8j/dbzgaX0lpvsSmulydlN9ne4aHgWDDuzsxkJre15aV/A2FijWBIyIkZJ9gFIEEj90Uyjo/f46y8wH0lheOEXYLmVYh1wvkU4NBDse+QnfFbXrGW5FOO1OSpqRVD7y5UIPtEXPnEnTQsLWZaze49w==
+X-Rspamd-Queue-Id: 6E4D840004
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758599449-595909
+X-HE-Meta: U2FsdGVkX1/waiWCFyVGssNmMyawcZba/FdIIh2zurElrdnJYLVP+8qqLkIFxzaFFbsDNfHjL7goV3B793iTzzSHTz709UXReKeSBtAi75KCy4MktYyosrf5/G58lQbZeZxjvBP5TUWb/npWR709V7UMov40p5EdyKxG50c3r+l1x7MmmCIwMEd0m7JY16JNPhq+dfM1HGD59YYbpRPoYg71wl8uZQvDJs7XYMCo5OIRaOQc8btHsuBb2djaVKk/55vDLw95c+z4a41i1rVglxmXrKV8z6uczWpoaZkl2vJB4ODPawN9yZpobQOBo3OOBfPhifHlDK3hYs8ieeKcsAjUd8m9VogZyzN2PuTMtUy0BHgKzCvc4/jN6vqfHpSVPlTRS3gG1CbBslgQNZf0SBvagDYYW7Upo387vmsw0UYxTrOcq5Gw3p83aUu/b7M06RARmaqnryK1oR07hl+84MD9LRHK7PxoLh8S2iM920YZ8nowTTTL9mmgXbljysQYoLIJe2nQbUXpO7wbHvRsooYLh5GUnNPRH+6X4u+VJpogAWoY3FM8KgSoLYRl4oG6UMUFx9JfKikytwqcnUZhdzZ2LrC/AdG7rkuPTJbnZ+pOHUF347wg4/+IgwRA3PC1fkxGX1cn0pM6cH+L7QXBJBGtQhJXWtbmp9WFHqJoysV4Vp2Eh99jXSY0AXzqS7HZVltwYqcdZh8Ppk4D9vaYow2IMGF3TPSnOoF7qp398eRZlM+e6xyXgv1C5ozErhhK9+af+rzNMODZqadZxdZL9Zg2LYjmB336bufH+9QoCrwDADPble3c/qlCAheN1F48/dkHML69lQ6EBQenJbhtKHc7QhNrzMBjkv3kvxw/VzZb9bBAbOfA0QmL1ra4Wtu44Y9hcNKf0oZXO5polRVVcMEcCBknNE5HO5uPKpSzs8x4ZGhyXbxikJHvzBkmIETJAi/RUtDq/U0WVWs81Bp
+ e0Q8vV5A
+ FJ2/LFPJK8BhIBMEhmEzjdkyHjRdYEptpAMwX49B9IDElcNmpnSQ3vYQUr9sclLSn0CXBXo2pIONdIvCmqwcs0CYSXQ5IpQLSxmBBmSXoYg10R9MOsBZxoKzHwP0v+8rJHuttatbDaWxgffq95EGArpirFU27n5Y3wrYVIuKeBXOy3AFkOwWRsjxldFDR7dB0MPKkHOqOnjrOgjyQ5arKdvpvZLjMQ47f09udnPhC/aAAzMRJCaSRt/rvoinP5SjFG4rgeYNVrkkUWUN8GOBR/loTITqr1MRWDvXLPgnDYOPW+UNMCECG6U2lzM8IS/PBwU8lBkPVvG/+s7uXFRjfbtjAhfQbsISbtbhp/G86xNChbZ+JOvlBOtGVBg3EP6crJzTsLJmb8sBtl4xl+VdmVi2snfuqVpqBgkDqgRtLm+/gFWNcV9Mhzh0etQxYGyrTiDgAjlmIsSirdBe9Y1cDSoyR4zkD9FAxe47z
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,26 +117,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 23 Sep 2025 11:59:46 +0800 Aubrey Li <aubrey.li@linux.intel.com> wrote:
-
-> RocksDB sequential read benchmark under high concurrency shows severe
-> lock contention. Multiple threads may issue readahead on the same file
-> simultaneously, which leads to heavy contention on the xas spinlock in
-> filemap_add_folio(). Perf profiling indicates 30%~60% of CPU time spent
-> there.
-> 
-> To mitigate this issue, a readahead request will be skipped if its
-> range is fully covered by an ongoing readahead. This avoids redundant
-> work and significantly reduces lock contention. In one-second sampling,
-> contention on xas spinlock dropped from 138,314 times to 2,144 times,
-> resulting in a large performance improvement in the benchmark.
-> 
-> 				w/o patch       w/ patch
-> RocksDB-readseq (ops/sec)
-> (32-threads)			1.2M		2.4M
-
-On which kernel version?  In recent times we've made a few readahead
-changes to address issues with high concurrency and a quick retest on
-mm.git's current mm-stable branch would be interesting please.
-
+On Tue, Sep 23, 2025 at 2:09=E2=80=AFAM Christoph Hellwig <hch@infradead.or=
+g> wrote:
+>
+> On Mon, Sep 22, 2025 at 11:29:15AM +0800, zhaoyang.huang wrote:
+> > From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+> >
+> > For now, my android system with per pid memcgv2 setup are suffering
+> > high block_rq_issue to block_rq_complete latency which is actually
+> > introduced by schedule latency of too many kworker threads. By further
+> > investigation, we found that the EAS scheduler which will pack small
+> > load tasks into one CPU core will make this scenario worse. This commit
+> > would like to introduce a way of synchronized read to be helpful on
+> > this scenario. The I2C of loop device's request reduced from 14ms to
+> > 2.1ms under fio test.
+>
+> So fix the scheduler, or create less helper threads, but this work
+> around really look like fixing the symptoms instead of even trying
+> to aim for the root cause.
+Yes, we have tried to solve this case from the above perspective. As
+to the scheduler, packing small tasks to one core(Big core in ARM)
+instead of spreading them is desired for power-saving reasons. To the
+number of kworker threads, it is upon current design which will create
+new work for each blkcg. According to ANDROID's current approach, each
+PID takes one cgroup and correspondingly a kworker thread which
+actually induces this scenario.
+>
 
