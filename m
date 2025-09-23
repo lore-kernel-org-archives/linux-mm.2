@@ -4,124 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 080D7CAC5A7
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 07:20:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31236CAC5A7
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 07:29:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64B948E000A; Tue, 23 Sep 2025 03:20:13 -0400 (EDT)
+	id 5EB048E000A; Tue, 23 Sep 2025 03:29:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6231E8E0001; Tue, 23 Sep 2025 03:20:13 -0400 (EDT)
+	id 59B558E0001; Tue, 23 Sep 2025 03:29:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55FC78E000A; Tue, 23 Sep 2025 03:20:13 -0400 (EDT)
+	id 489DD8E000A; Tue, 23 Sep 2025 03:29:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 45B1C8E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 03:20:13 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EDFA4160320
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 07:20:12 +0000 (UTC)
-X-FDA: 83919666264.04.4D5F726
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	by imf04.hostedemail.com (Postfix) with ESMTP id B25AC40003
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 07:20:09 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=g0PLu25+;
-	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 305528E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 03:29:18 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D68BC844A2
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 07:29:17 +0000 (UTC)
+X-FDA: 83919689154.29.53C0D7D
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf26.hostedemail.com (Postfix) with ESMTP id CC4FC14000E
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 07:29:15 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=eGiwQtH6;
+	spf=pass (imf26.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758612011;
+	s=arc-20220608; t=1758612556;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rQAM5HeB+E2S/wpbN2PwHbZ4/TyMc16X8uDG1CirmwM=;
-	b=XnyORj0jUglQwRf7tumvzS0qWrKIVm7ykdzu/e/bTtfViRpD4nOX7IHTF+6HRfSxXOfCPU
-	gmsXsWDGcHcx1gyOs1sHXUdLtZc67OklCqOGtBNsJFEm30gg0Xqpn1EgYb5TaJUpdiQqP8
-	IU3jtskPycH4rB5YnEMivsONNcWtl14=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758612011; a=rsa-sha256;
+	bh=UTSeb9/e/gBv+XvfhfPvZMZUWbVMsxKjYigguVRQ4SQ=;
+	b=X+eI3GG9VasJ9u9ZJx881YIs1w0wKVR+4KJNK1pjhdHTf/5xeCCLoARACBgaVyDCVVJWCR
+	KnYS+5/VDQa1O5L0JjBloEOh2DgHlHBe/oOe7QuHeFH86wS4blRNrn1az9j2LiUvu5BbY8
+	zZ0L0vE7S/3T/8Jnb636xo3UoLPuwwA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758612556; a=rsa-sha256;
 	cv=none;
-	b=wvfgCKdVH31ZUkpLNRKUuBTCMRhD8hzOGt/cGOZaYfCQR/gdrtNUtzNH2rKineVIESco7W
-	WMCc+EpZl824qwW5xBkkeVj3BKz8wvTNxiMjYNQCqri4tb6u1973PSP3pIDvLxITvNJxkg
-	Q0T/M70cXe5PekxbTliQdhyK/JuTcDA=
+	b=zSFnglet/4G1P1aXZG7DhZyeSs6cmrrNy+csBZq/7/xom/JbIq49YfcU8+c4omsdUohMXs
+	FAv0Gh65rXnuKAKy1ej2lfzkGcsFw/1jLpUwsnjLGROIFUtgdl8+gIYrDilC0aTkPS6k4z
+	yxKyeOzSUZz8Qg9DMXyzG+Z0SI72YmE=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=g0PLu25+;
-	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758612010; x=1790148010;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=lwJ9UOqD//PDM/RdW1ujxGd44CcPYvzNz6RKR54u+xI=;
-  b=g0PLu25+G28lY7/9/fx1WAsbwJfK+zf1Ht9d9y2vlpRyftOfWhhXd5S6
-   Uy+9qLezb17pqQ1p3OV71cWcPwWXW0vkkt7OEjG/XDpy2dKfE57nL55S/
-   t+UcwIkMys1zElRdL6OYd5AiDU04FWbaSO/ucQag9qFclYvT2T8ueRtnW
-   jaZ4f3PwvymFokrzZq3nB6M6aLf8ZpLe84/COuCG0QSiKQvFKESHniMU2
-   okpsPe3N5HKTL/2RxXfvfCsWXMQ0EEMCn+GURQGrq0UZQJZxKbodGb1Dk
-   TG0S9H9B6RsGgMg8WsDhG5bfX5+pL9MatCQ2pXAb1y4i6/luVdf1FLKLI
-   w==;
-X-CSE-ConnectionGUID: YmBokY/xSdm53YOISMEHNw==
-X-CSE-MsgGUID: rK8IAu1qQcKxCreQbesBuQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="72310791"
-X-IronPort-AV: E=Sophos;i="6.18,287,1751266800"; 
-   d="scan'208";a="72310791"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2025 00:20:08 -0700
-X-CSE-ConnectionGUID: Yfyb9R4/Q+iN3TxSgmOafA==
-X-CSE-MsgGUID: tJaYf2dMRTq2G+2tFbHnZg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,287,1751266800"; 
-   d="scan'208";a="181079366"
-Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
-  by fmviesa005.fm.intel.com with ESMTP; 23 Sep 2025 00:20:02 -0700
-Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v0xJf-0002rB-2I;
-	Tue, 23 Sep 2025 07:19:59 +0000
-Date: Tue, 23 Sep 2025 15:19:38 +0800
-From: kernel test robot <lkp@intel.com>
-To: Tariq Toukan <tariqt@nvidia.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>, linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Gal Pressman <gal@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>, Will Deacon <will@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Justin Stitt <justinstitt@google.com>, linux-s390@vger.kernel.org
-Subject: Re: [PATCH net-next V4] net/mlx5: Improve write-combining test
- reliability for ARM64 Grace CPUs
-Message-ID: <202509231437.exOuF9vQ-lkp@intel.com>
-References: <1758528951-817323-1-git-send-email-tariqt@nvidia.com>
+	imf26.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=eGiwQtH6;
+	spf=pass (imf26.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-631df7b2dffso2613692a12.1
+        for <linux-mm@kvack.org>; Tue, 23 Sep 2025 00:29:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1758612554; x=1759217354; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UTSeb9/e/gBv+XvfhfPvZMZUWbVMsxKjYigguVRQ4SQ=;
+        b=eGiwQtH6FhByF6idqP9q7GV3yEd5qav5j/YxA1UAcqdXu2umDwL+rmJAMhSrYCUF3o
+         +DMjd3g+h4eNAhkSO64ULbxki6ndFSgqb7F+oS9oYXKDvob3lL+iB0H5+/R3gzEYwp8R
+         K/kl/baGwdUy0FqiKMmjk7YiCFM/0ubOWQI1GDlSuNhta05i9PZ70b+FmQxE2BAD4JiD
+         +mm4ugHhKsffx638EyJTOfFyuAjZcyqihA62KN+irPiT/VNeu8Vp4o58K7QETAMTD4jS
+         IgAYnwuFVl5lk+sPuOAHImWS7SS5u9nMWptbTg2qNjvle53zUv0a/uN/uMniM5NZoLVk
+         Dgkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758612554; x=1759217354;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UTSeb9/e/gBv+XvfhfPvZMZUWbVMsxKjYigguVRQ4SQ=;
+        b=CjjSCRP4miQrPcU7BL6O3ZGAQ/kUqPbTxBAqDfCVVYsWe326+rofiKK8UX3pZdv2WL
+         r1FJbFhxhZS1XiBFnnC8tLQAqtUMGqllDu/g6/0Y/6lnrg39cnd+F/Zhb+Sd4cxR+kUp
+         xcx1LFNrqFQ4fZ7Zy1uWPJyvSHIwG8I5iqxEwM/7rbOunOuqzNGMOKDYyJKATyyDQu/B
+         KnMopQq8TrihksjM/5U1FBP73hn1E8vloUwb8YJ3KcsuFZ5a/5msnnjGEdBw3zXGMnxo
+         zyE1KOZ3zpEihq8RBCb71jidUygKKwGwQOLnTVoRNjhFrS8RWB3lbbziCbZyoC1kikdY
+         yVng==
+X-Forwarded-Encrypted: i=1; AJvYcCVG7A6rax38NJ18d1N2PDT1nDidph/3gedxMoBKHw5MjYmRIvOs1qJZRbPeWBAMlusU18PcMj4mxg==@kvack.org
+X-Gm-Message-State: AOJu0Yyui+R5aQi1gaZwjyjz9vr8OrnIlc0BvwGwxFcKrmZrjkKQCije
+	zMIljzI+L99DfrCqhV1blJr2D4wIbJTTCaA5ABf+oEGo5Sjuc7ZiMg/qZxBov870FJQ=
+X-Gm-Gg: ASbGncsDTiq1wUgF9YWcBMbgs7yOQuGsO9Vf11Py7UyIBiNXTjO5Qqiy+tr2GBWtx+Q
+	SgBSebnQji0yeHqvKanW63oyqSsjDo0kRIKRJ6UUMfSvQlnVeLmREt3bOjJ93JC9nVBUzBCYlP2
+	SCNqiU0D4WIXJjqGZ3MNtD2Z49i517u9bP4y+24uXsoylqzEAqWOgMkUDn6z9LT2tlZVHojP/45
+	TKHZOXE81vYtvHdKpVXa+K+uHn2M/bbaWaCrWLrb5dXbJwOXsIDPX8vdqr/nPZco7d3OY6d4FGv
+	fC95qLSmdMyXTG2XCZXJUDxnaTsaiv+5I1fO9phuVvt0d3RYBKFMkOj/NjTqtOwU4FdvJ6wRiC0
+	CwLQR3VkSkrhMJ5kxLdoy8Z5kN4V+T7cFhQ==
+X-Google-Smtp-Source: AGHT+IErKXYTIoay7Ej7SNZDCqLJ7m9JLTEB4AI1XMYwNrUrSz0LNSG12cZgvg8Mbc5mynGMGWVuyg==
+X-Received: by 2002:a05:6402:5204:b0:632:466d:5d08 with SMTP id 4fb4d7f45d1cf-63467c35438mr1475736a12.10.1758612554131;
+        Tue, 23 Sep 2025 00:29:14 -0700 (PDT)
+Received: from localhost (109-81-31-43.rct.o2.cz. [109.81.31.43])
+        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-62fa5f1389fsm10310583a12.27.2025.09.23.00.29.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Sep 2025 00:29:13 -0700 (PDT)
+Date: Tue, 23 Sep 2025 09:29:12 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+	david@redhat.com, anshuman.khandual@arm.com, linux-mm@kvack.org,
+	Oscar Salvador <osalvador@suse.de>
+Subject: Re: [PATCH] mm/page_alloc: fix alignment for
+ alloc_contig_pages_noprof()
+Message-ID: <aNJMSNYflPqYMjuE@tiehlicka>
+References: <20250923001943.2479-1-richard.weiyang@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1758528951-817323-1-git-send-email-tariqt@nvidia.com>
-X-Rspamd-Queue-Id: B25AC40003
-X-Stat-Signature: hbs15w67yut9acb7qs8cixuxdjc3qdmw
+In-Reply-To: <20250923001943.2479-1-richard.weiyang@gmail.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: CC4FC14000E
+X-Stat-Signature: ysxrhdiy9yuigqe41oyeu4fg9ohrmekj
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758612009-622221
-X-HE-Meta: U2FsdGVkX190mZ7P5cyucIAe8hXKbBDeAKIUWzD6pPbCaVJCUT4Lc9rAs25aBNDWepiGw+GHyU5CaCUoQpoXZgg9DYoIv+P3+8D6ge2sfHix5SQC4lcamfmnaPJPe5E6wsrqN5+B2ZJCk6/NL8lXT/MJ9/kpD6fi8qbK4KcBQpnc2Bsc0eQh/zMYg/8nnt7YoHcmnxpDdHHjXa56g4Ow7dgC1IA2i5OeMqET/346lQAdYwhk5WN/K4wMgRGNcH5542gGM40RvNLv/JjsBt5Ph/pXnCuxNU2+QFQYtMTiFE/MRuhWsu+4oGnr2VGRypLKSCYukvigMTVZ7z8xLQf0EIkkh2Zi5yeC04M0wVOEeaOfAw7mXJ4Qdf4ZypcThKKdEZl8TKRL+ydARyONZEPxD4u8EHIi1T0iiHwe5dZDbtStOUIjKGGKrwGY3OCDxN2nQm/QRItUzUjkDFkSgv8cnFUw/5VwYUBU8+YlBtlz51xyzJdyWEkFAZcfbu08NsaMHO4djEsJ4cLCKFyEpgauRmvnNi4gsgHM5Ec0QBIwMgyC5UFBIwnMAmIhHbb2bmVcqm/5rgmLz+CVWQEW7a18MKGY/ymVFr8ZvcczriYnMPsnGdW73QN+GlCCDOzE16Pa578LP0KNEUe0PSg0obMREvC1dK3OrqFKyGak3+0YfrHi5Lc39ylShCw5V37jDxmKING31gL2or9PPlQhg48HcpR4KkHzB6B0g9w57fN/Cef0i5tUxGbIJ3NCv7+YgNAxN2ziioAdYV/kLm3VxPvIZAGE26cHFBYeAwqLC8IVcgNbLw4qtL+5A0p1KzcdefWaJ8tg5n+xB9eaEYHaW8KPAL2tgBYV5veDJ6X34vYCV5U1ISanK/g7MR9oXL6mMJ/hlPiggyqe/1HR/ppz73qRrFXyofpkQ+mleZVUj6UeycjdUWHl99028GrkwbmsuE/+DasJPb4u6hsm4SjeWkv
- YZjJuf4K
- 20Rt2Wgs2GI88Yr3TB3DGfXRw+JcGL4jRdFKBv3ax2/Li8avrBULi+4BEDCu96kVHLnpo7sF1MPsMvfefKx3P6PCljK7Upr6vxIM8QOPnUfeC/GJFm83Rpbo3UmTSGVBVuzleN9MUKuyDSjt74Dq3L5JtBlzN3VyZnyTuaCdMSXeEDQS1uTX88K9HA91nGr7eVsok3wxy59v/qSJp08U4XnhxQRI/YbWNCz2+8HpnuUi4S4SK4DW4AULvWBwo0NKBJy7Fs1/p/WWkCRjXblp9Scy3ESZBPdD1c7a9GgAGkTJDGLtm2mD0gNthGKyl6cUn69tjs1MjlUFgSGKOg7igZH8DDeHUxxRTKvYVzPHlljCBsIWRbgL18pcOjfGmvwFbzvD9wRd+VDq2j2qBAj1GKfpzQTNnnI0F+Nd13pPpX+EcvsGnipJwyCpewQ==
+X-HE-Tag: 1758612555-457239
+X-HE-Meta: U2FsdGVkX184O4SS3FduULwD3n40OzWCis33OrrUSPfKOKDZyy5YI2Wpdnd60EUq6M9zW4mvVBhCkofglYvEednbWh4MUS6OtPOrjen1rNHeeyEP5rDYA4kLFZ+Q6dyGyW1oZ6o+AdgOAUpOKYxUeQWuK1OGwIHLED3gYAoDUjAQvRQgYxZB9VC+ogA7bOFHcf3IQUOVwTCORSOe4T4R23WXCS7GNFe13Re1u3hkY9SN/Kt1kv0AGpGcfetAFtX+XSPyHUw8R/Ieb+y1j5RP4uBweFg9Rn1ce+E9Zm0wWKqIxNUD7R3uPlZVzOEC1opn4a2Z9c1MPF0tY60NccMqAbIeQr9KSYak2k0qpWkVTTzcYii2k1IVhBJf0+vYBOCndxpB7kh2EEn/eGIeMwZDgSMPxVb7zGMhSNB5ifvxsHyCDMEzLH6i9zmghhK1Xy98MXEDriBmz+7o6DXXVqJ/HL1ZbrRsJPo13M7TX0khqnHL2PuDc1Xskef7W7uGee4FyXpiw0gBdW0Asup6NPvecvDtz0VbrLxMzuZaVDVN+9Z4y4mKKQXcNE5/uAq0z96ieGTsO+YV7GmV3Q+CA8UwO9WAdyTljKaWvyPylWjxHJ3/ICDgsFcTkQRLR2CL6cbU8AdkIbtoBv6qHVcjoEWGKYsUbIzRh44yOMqzEmFDXfTictMekHXdO/pwmnWTPug0nLWI8BjR1/QwcJvhrqZvBqLUdmQoQTtQwyRIoE8tZ4Tj/AuCqfV0Nrka5SWVMzXtlOWjx5JGSCjKRgDZX9h0pdPidjvoFs7+RzC+kClu3OzudGqakT0dj1MJ8y/LV+c+sXO3YxC61pXQcw2FqAqJGgP2tGAgGMY1ahqD04KyMeUgVXZGybCH7H9rFcTIa+Gk6Med8YTkFdqv+Axumt3lL2H7bAtB+ZONdrXSr/wnZ+zsK7PypznWs05f95zfNYqydD4WAKI5TJJUzdHRvq6
+ O8v++qzo
+ CG33wczFKF9JLfCmIRqAHJn5zxbSF9ZnIdpYXJ9HYPH3PnEb+DMdh3gW9AGmphlhPj28tFMABb85GRYh7GPyP8F8hprPQrR2/DyLiaiR1KejuGYRr7qI5P3kjBao50TYwCUMo2ZtUqL/gDMfIjmE20RnC4od/57ve64Z4WJhIaeUQWJp2CAX3K7jNOCbbG5H2e373b6A0LvMpkNgBzy+NmXjmIAAOHnRFYFa9QgcN6phufjrYr2/pralpkLdzn/Q83jILSNvKrD6SWoLCDAdMZpQxE38RZrxu4JJLc/iY4fxC0tC+JwglpqKM8ZTwslvz7fX+ecjRzsyhlpMF3tmm9YykmtCA06UdEoc8naEIq3R8grcmD1Fxwup/NCAGvKpZ30ca/pujgvz0JZNBmo81MiiXmLyA+zzx8EKxNvvV5di/eA+TFkWRXncNDElgHfql9o2ueSWw1/jLgus8KZbC99ki9jKwqSYrmJrFvNgr5D2siaMUcNgnO6r7/uKFkiPuO0DVY4JINiM2sFiO1Lzijw2AHDszua1+3Pbm6NKRvM2ajejLyiRD3lCx4IDC7at0chSZMrqEB+33VDmzH0qhfQeiFiL0cp8nXcvIuC15kyV63XLl+7FckikO/PYd4A40w8GLp4y5Xr1J/kynBL4/IAtdjQsU6CCAPI+SKGftv/qR/Uk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,60 +120,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Tariq,
+On Tue 23-09-25 00:19:43, Wei Yang wrote:
+> Commit 5e27a2df03b8 ("mm/page_alloc: add alloc_contig_pages()")
+> introduced generic method for alloc_contig_pages(). But the alignment
+> calculation seems wrong.
+> 
+> Since ALIGN() only accept power of two value, while nr_pages could be
+> any positive one, the result is not defined.
+> 
+> Use roundup() to calculate the correct alignment.
 
-kernel test robot noticed the following build errors:
+What is the problem you are trying to fix here? The ALIGN is certainly
+not well defined for nr_pages that is not power of two but does any
+caller of alloc_contig_pages assumes any specific alignment, especially
+when nr_pages is not power of two?
 
-[auto build test ERROR on 312e6f7676e63bbb9b81e5c68e580a9f776cc6f0]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Tariq-Toukan/net-mlx5-Improve-write-combining-test-reliability-for-ARM64-Grace-CPUs/20250922-161859
-base:   312e6f7676e63bbb9b81e5c68e580a9f776cc6f0
-patch link:    https://lore.kernel.org/r/1758528951-817323-1-git-send-email-tariqt%40nvidia.com
-patch subject: [PATCH net-next V4] net/mlx5: Improve write-combining test reliability for ARM64 Grace CPUs
-config: arm-allmodconfig (https://download.01.org/0day-ci/archive/20250923/202509231437.exOuF9vQ-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250923/202509231437.exOuF9vQ-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509231437.exOuF9vQ-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In function 'mlx5_iowrite64_copy',
-       inlined from 'mlx5_wc_post_nop' at drivers/net/ethernet/mellanox/mlx5/core/wc.c:317:2:
->> drivers/net/ethernet/mellanox/mlx5/core/wc.c:268:17: error: unknown register name 'v0' in 'asm'
-     268 |                 asm volatile
-         |                 ^~~
-
-
-vim +268 drivers/net/ethernet/mellanox/mlx5/core/wc.c
-
-   261	
-   262	static void mlx5_iowrite64_copy(struct mlx5_wc_sq *sq, __be32 mmio_wqe[16],
-   263					size_t mmio_wqe_size, unsigned int offset)
-   264	{
-   265	#ifdef CONFIG_KERNEL_MODE_NEON
-   266		if (cpu_has_neon()) {
-   267			kernel_neon_begin();
- > 268			asm volatile
-   269			(".arch_extension simd;\n\t"
-   270			"ld1 {v0.16b, v1.16b, v2.16b, v3.16b}, [%0]\n\t"
-   271			"st1 {v0.16b, v1.16b, v2.16b, v3.16b}, [%1]"
-   272			:
-   273			: "r"(mmio_wqe), "r"(sq->bfreg.map + offset)
-   274			: "memory", "v0", "v1", "v2", "v3");
-   275			kernel_neon_end();
-   276			return;
-   277		}
-   278	#endif
-   279		__iowrite64_copy(sq->bfreg.map + offset, mmio_wqe,
-   280				 mmio_wqe_size / 8);
-   281	}
-   282	
+> Fixes: 5e27a2df03b8 ("mm/page_alloc: add alloc_contig_pages()")
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Brendan Jackman <jackmanb@google.com>
+> Cc: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Wei Yang <richard.weiyang@gmail.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> ---
+>  mm/page_alloc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index a1bcc1e003c7..a17a6014e3db 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -7095,7 +7095,7 @@ struct page *alloc_contig_pages_noprof(unsigned long nr_pages, gfp_t gfp_mask,
+>  					gfp_zone(gfp_mask), nodemask) {
+>  		spin_lock_irqsave(&zone->lock, flags);
+>  
+> -		pfn = ALIGN(zone->zone_start_pfn, nr_pages);
+> +		pfn = roundup(zone->zone_start_pfn, nr_pages);
+>  		while (zone_spans_last_pfn(zone, pfn, nr_pages)) {
+>  			if (pfn_range_valid_contig(pfn, nr_pages)) {
+>  				/*
+> -- 
+> 2.34.1
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Michal Hocko
+SUSE Labs
 
