@@ -4,176 +4,186 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18461CAC5A7
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 11:52:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2CB7CAC5A7
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 12:00:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FF6F8E0021; Tue, 23 Sep 2025 07:52:31 -0400 (EDT)
+	id 27DD38E001A; Tue, 23 Sep 2025 08:00:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 688DA8E0001; Tue, 23 Sep 2025 07:52:31 -0400 (EDT)
+	id 2550A8E0001; Tue, 23 Sep 2025 08:00:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 529778E0021; Tue, 23 Sep 2025 07:52:31 -0400 (EDT)
+	id 144658E001A; Tue, 23 Sep 2025 08:00:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3350D8E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 07:52:31 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D85931A0490
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 11:52:30 +0000 (UTC)
-X-FDA: 83920352460.10.B28E349
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 44E7E40008
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 11:52:28 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=EFGvr8Qy;
-	spf=pass (imf17.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 000D28E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 08:00:12 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9B41E140499
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 12:00:12 +0000 (UTC)
+X-FDA: 83920371864.20.5F01C27
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 18B2180010
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 12:00:09 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eIVlhxbU;
+	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758628348;
+	s=arc-20220608; t=1758628810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FZaoT1QNSR93wIPtHts3CPzp0ctIk0vYDNbzffEOi0c=;
-	b=XQqhUUwDL3q+FbV0eSVpc14gPBxpMHHJCV1o2E4KdbxtB+S9jHV4+gBzY3BHSowRoOx60S
-	CmnPsGuYZ71UYObIY16U6sexvCVD1b1q3+CTdcgu6g/KtQMIEqz2p+pA7QwUEUVj5LPe+H
-	dTEyBHcn62pQpaBr7MH8H+lp+ZnxxPQ=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=EFGvr8Qy;
-	spf=pass (imf17.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758628348; a=rsa-sha256;
+	bh=7mrXBzKlE98K4LjZsBmWzxI5rao/AqbDX4qmTQolpII=;
+	b=5nO+43WfMF80NxByvlyaiUwtjaFJqcDpIw+kmhLRbNu8jQV640k0xyXI05FzBrPddIvfnV
+	51UmpWb0UwwX/qMfmcjeRsON8SQGUIa+XXmCCsu5AX9q0sE8mXmP87drWp2r6o83dJ1ONS
+	9Ju9RQetC/wg8PTJdu6Vds4sFZ0nwFM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758628810; a=rsa-sha256;
 	cv=none;
-	b=Z+IaOHo+g1+M1F35vtxyLaE3vkYchYGcf3gjrWXQkj+5W2f+YN6jOl4ut8vPFf7D/DCTFk
-	4MPLi3NE3TWuSLwizBgpGVypm1M6GnfOZxuM3LsiAfcQkzDi8mDSVXhK+niCm/Kixyocoj
-	LUOvSQ1riBamu06hdi/tXEWd+dKaHSA=
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58N8Y12b008695;
-	Tue, 23 Sep 2025 11:52:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=FZaoT1QNSR93wIPtHts3CPzp0ctIk0
-	vYDNbzffEOi0c=; b=EFGvr8QyltIf32/aszOR/qJfepgW+UcWXreJDplTglupit
-	m+X7rmX3tdEzuL1hJj2o5XWwJ0r+pCJ4BjGEMOhGvQ5uA7F1CUxQtR7TqdF163bV
-	I3YXhbagNN2r+8NAvqFEHYkOG72rBgt1rm+ek1A/MwpmvyPZqT+huO4x+iKBFWTR
-	eo6ih9hfsFn2nHia9aCP+YLY6UeADcGZp/ivckC/FFUA6i0IL4LnbBeJbqc6eiAl
-	5jWsuCjMMTLD7wV7h8suNXD082oB3YYd9QtgvibDoicaRjRsG3bClbPAwbAw7H1U
-	VId+vHnlTcxFpVyEmlJvEr0+HDviZMbBrXxprVQA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499n0jgm9c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Sep 2025 11:52:19 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58NBn9Dd005820;
-	Tue, 23 Sep 2025 11:52:18 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499n0jgm96-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Sep 2025 11:52:18 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58N9Tk1U019675;
-	Tue, 23 Sep 2025 11:52:17 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49a83k31qr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Sep 2025 11:52:17 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58NBqDIE43516160
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 23 Sep 2025 11:52:13 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F401A20043;
-	Tue, 23 Sep 2025 11:52:12 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A61F420040;
-	Tue, 23 Sep 2025 11:52:10 +0000 (GMT)
-Received: from li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com (unknown [9.87.150.243])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 23 Sep 2025 11:52:10 +0000 (GMT)
-Date: Tue, 23 Sep 2025 13:52:09 +0200
-From: Sumanth Korikkar <sumanthk@linux.ibm.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Jonathan Corbet <corbet@lwn.net>, Matthew Wilcox <willy@infradead.org>,
-        Guo Ren <guoren@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Andreas Larsson <andreas@gaisler.com>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>, Nicolas Pitre <nico@fluxnic.net>,
-        Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        David Hildenbrand <david@redhat.com>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-        Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
-        Dave Young <dyoung@redhat.com>, Tony Luck <tony.luck@intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Dave Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Hugh Dickins <hughd@google.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>, Jann Horn <jannh@google.com>,
-        Pedro Falcato <pfalcato@suse.de>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, linux-mm@kvack.org,
-        ntfs3@lists.linux.dev, kexec@lists.infradead.org,
-        kasan-dev@googlegroups.com, Jason Gunthorpe <jgg@nvidia.com>,
-        iommu@lists.linux.dev, Kevin Tian <kevin.tian@intel.com>,
-        Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>
-Subject: Re: [PATCH v4 11/14] mm/hugetlbfs: update hugetlbfs to use
- mmap_prepare
-Message-ID: <aNKJ6b7kmT_u0A4c@li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com>
-References: <cover.1758135681.git.lorenzo.stoakes@oracle.com>
- <e5532a0aff1991a1b5435dcb358b7d35abc80f3b.1758135681.git.lorenzo.stoakes@oracle.com>
+	b=hq5H10zDicww2oFxs5UrPWR5AqN1EycA4dLD0kWE8jyOtEZIR8FzPTRpUUpsDAaYNWjpjT
+	NtekmknkfXFyMd0MKAtRBHJ5OTWSi0Pi+o39/QnwnAI2DrgPEBZwPBL7DObOwgqpLytfSU
+	Q7pUK560vQma+f1i335S9YkpTbsjJxg=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eIVlhxbU;
+	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758628809;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=7mrXBzKlE98K4LjZsBmWzxI5rao/AqbDX4qmTQolpII=;
+	b=eIVlhxbUjhJQyvWX7d1U6YbQx8d+VvLWzcsQegn0cAIEM9XFOjOmoKWmmwhJUmvzvuIkXW
+	nyPg5l8+B/CGaZRcsQzhflVsv9JxhZKfmu+USmf1vTiJRHK+w72HGAtq0WK9hvl+k/u10N
+	PcU77NZ+HGrYDOJ/lRZRZ8E7jBuV6C8=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-25-96P_I_QnMje-o47wccnWAA-1; Tue, 23 Sep 2025 08:00:08 -0400
+X-MC-Unique: 96P_I_QnMje-o47wccnWAA-1
+X-Mimecast-MFC-AGG-ID: 96P_I_QnMje-o47wccnWAA_1758628807
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45b98de0e34so46349955e9.0
+        for <linux-mm@kvack.org>; Tue, 23 Sep 2025 05:00:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758628807; x=1759233607;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7mrXBzKlE98K4LjZsBmWzxI5rao/AqbDX4qmTQolpII=;
+        b=QW5ahhswf0J4OulEPhplcuI1fUgm+R9SvCnoq+suMydeacA5NA60gmt23KExS0plSN
+         LoJXKF1JeR6g9FROOrb3gUC6xn4u85myTumic2xbyBnh/ij13rLoy/WmZNqeNzbKuoa2
+         EfGoJi71zmut0YMhooCtelVDyF+n/Y1PpWtzwKaFBIngSxOrW/m34K4i0peZWKdv7mdV
+         W4idI6J22mopyeJ8P3x79BnkvZb4fdamdi2FcBQcK72Y6QY228Cy0GZNGMf3QluRvMN2
+         uyB4ZwgtErad0KWNAbJOMc3nUCgsCfkC1QvR+4pouoMo3IiADlHh8Bcs+BSF9wO1uk3f
+         E/2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWO8CHColLPgtqDXoW3GECetSEyR39SyaSGZsiZhkvUEGXWV+vGI1Py3cHPEDvr4uWIYOPBXwiatw==@kvack.org
+X-Gm-Message-State: AOJu0Yzj0ncByh/OvYx+tQ5yzoqrCe7HjyU8f+o2ofyOpzaEOWAnXQ7A
+	Wb234ZjqztwGZ0xOk1r2+j7oDnnlvoyzpuF+DlPvrfFhKtpH0NEvZ+x9kFnuFRzr3mxM4SPMw7D
+	z4e1IWCPC5kJfYomoVuOIQUwEnyUmoK94FnusBg2UEXe5IfZ6Flab
+X-Gm-Gg: ASbGnctclo/CbkyMCOtOrR+IvEpJQQkPAk/jTfFL+/+coRkucTHSYnSIxTzQxJrONRw
+	wfE4JC6e28JSfZqVH2P+3JRD9QuzcT4lUfZjB0doZpDNupDEfwrRfTkAe4i4dxJoMNa81oQRjga
+	JaVVxjr4EWd9sPJoKJerugnahXgPLcxcOAmgGO2+OiaBQgOrRHu4CMBuLrDjjtrtHMxRjqWU5YJ
+	o6U7JDiftx4I3LR9cR2m2HySZD7BcevwCPFkfMsj8XZ21OKR4Z9Vk48FNUAaIqOtalieqesRgYA
+	1Wb3nInKgPBi7o88g0AnikPqO8zpm2oW1ap91U6x8CaeqKls5pVoVJ89Xl7HHgMxb71TLODah8f
+	ra2T2rXY9vD5Ro4Dmy7IAN4Ov1RqDRf/KCaaJl2xWF/w4tAdL2rOAKksKWjwu2RnkoA==
+X-Received: by 2002:a05:6000:1816:b0:407:77f9:949e with SMTP id ffacd0b85a97d-40777f997b1mr755887f8f.21.1758628806758;
+        Tue, 23 Sep 2025 05:00:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHc0tnWNhOKVxns9wRVC1qKaXSvIIx3ibWsy3DFh5QbP9+zrm0E/5T5FrXDNhPOpzrAGAyoZg==
+X-Received: by 2002:a05:6000:1816:b0:407:77f9:949e with SMTP id ffacd0b85a97d-40777f997b1mr755855f8f.21.1758628806098;
+        Tue, 23 Sep 2025 05:00:06 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f4f:700:c9db:579f:8b2b:717c? (p200300d82f4f0700c9db579f8b2b717c.dip0.t-ipconnect.de. [2003:d8:2f4f:700:c9db:579f:8b2b:717c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3f9c62d083esm11713443f8f.32.2025.09.23.05.00.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 23 Sep 2025 05:00:04 -0700 (PDT)
+Message-ID: <8bf8302a-6aba-4f7e-8356-a933bcf9e4a1@redhat.com>
+Date: Tue, 23 Sep 2025 14:00:01 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e5532a0aff1991a1b5435dcb358b7d35abc80f3b.1758135681.git.lorenzo.stoakes@oracle.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDAzMyBTYWx0ZWRfX1/CT4ehdu5F7
- 6VnJC5JZb/TGq0GTxXqzwutGBpnh5zvXhqXxihnE0ZIBeLxavZe5A1rzKbuxO1bDNyuFhUEM+Rk
- 4I1KMXyeBzNEU/g4Tedu1h1rULa5Sn/p0/UqkELdAnxrKDhWjf96WssSMg0ltTS+aMBZqn2U8bf
- Mm6V030K3rfmUmm6+2tKL/Lil9yhk2vaa1ilZs3936p1XOaPfvsu3tSuBabaOBW+S4p6UJCCS7o
- UssKxq/W9pewKawoXgWRMXrenvRD0Q+OeFvs8GRRauXhjlsHet/L1r4+QnnsJQ0kVijCVo4qQhY
- p/3nafFZQN3AWkhiFthvrI3hfInHVuTDSlQN3xLdzE/r0zMDPQuTX7WW9M8m8X+BWNkt+j6HOZU
- bcmWMt/c
-X-Authority-Analysis: v=2.4 cv=TOlFS0la c=1 sm=1 tr=0 ts=68d289f3 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=NEAV23lmAAAA:8 a=yPCof4ZbAAAA:8
- a=Ikd4Dj_1AAAA:8 a=P7Dlay8f7KcL8MNlhToA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: F6nP2Q8ol4BSxLNz15joz3bImrmTREZ1
-X-Proofpoint-GUID: 5HR21TLQQZuGh5ctB-qo8M6ErsQDpoDW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-23_02,2025-09-22_05,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 priorityscore=1501 phishscore=0 impostorscore=0 adultscore=0
- suspectscore=0 spamscore=0 bulkscore=0 malwarescore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2509200033
-X-Rspamd-Queue-Id: 44E7E40008
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] mm/thp: fix MTE tag mismatch when replacing
+ zero-filled subpages
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, usamaarif642@gmail.com, yuzhao@google.com,
+ ziy@nvidia.com, baolin.wang@linux.alibaba.com, baohua@kernel.org,
+ voidice@gmail.com, Liam.Howlett@oracle.com, cerasuolodomenico@gmail.com,
+ hannes@cmpxchg.org, kaleshsingh@google.com, npache@redhat.com,
+ riel@surriel.com, roman.gushchin@linux.dev, rppt@kernel.org,
+ ryan.roberts@arm.com, dev.jain@arm.com, ryncsn@gmail.com,
+ shakeel.butt@linux.dev, surenb@google.com, hughd@google.com,
+ willy@infradead.org, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com, qun-wei.lin@mediatek.com,
+ Andrew.Yang@mediatek.com, casper.li@mediatek.com,
+ chinwen.chang@mediatek.com, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ linux-mm@kvack.org, ioworker0@gmail.com, stable@vger.kernel.org
+References: <20250922021458.68123-1-lance.yang@linux.dev>
+ <aNGGUXLCn_bWlne5@arm.com> <a3412715-6d9d-4809-9588-ba08da450d16@redhat.com>
+ <aNKJ5glToE4hMhWA@arm.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
+ ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZoEEwEIAEQCGwMCF4ACGQEFCwkIBwICIgIG
+ FQoJCAsCBBYCAwECHgcWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaJzangUJJlgIpAAKCRBN
+ 3hD3AP+DWhAxD/9wcL0A+2rtaAmutaKTfxhTP0b4AAp1r/eLxjrbfbCCmh4pqzBhmSX/4z11
+ opn2KqcOsueRF1t2ENLOWzQu3Roiny2HOU7DajqB4dm1BVMaXQya5ae2ghzlJN9SIoopTWlR
+ 0Af3hPj5E2PYvQhlcqeoehKlBo9rROJv/rjmr2x0yOM8qeTroH/ZzNlCtJ56AsE6Tvl+r7cW
+ 3x7/Jq5WvWeudKrhFh7/yQ7eRvHCjd9bBrZTlgAfiHmX9AnCCPRPpNGNedV9Yty2Jnxhfmbv
+ Pw37LA/jef8zlCDyUh2KCU1xVEOWqg15o1RtTyGV1nXV2O/mfuQJud5vIgzBvHhypc3p6VZJ
+ lEf8YmT+Ol5P7SfCs5/uGdWUYQEMqOlg6w9R4Pe8d+mk8KGvfE9/zTwGg0nRgKqlQXrWRERv
+ cuEwQbridlPAoQHrFWtwpgYMXx2TaZ3sihcIPo9uU5eBs0rf4mOERY75SK+Ekayv2ucTfjxr
+ Kf014py2aoRJHuvy85ee/zIyLmve5hngZTTe3Wg3TInT9UTFzTPhItam6dZ1xqdTGHZYGU0O
+ otRHcwLGt470grdiob6PfVTXoHlBvkWRadMhSuG4RORCDpq89vu5QralFNIf3EysNohoFy2A
+ LYg2/D53xbU/aa4DDzBb5b1Rkg/udO1gZocVQWrDh6I2K3+cCs7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <aNKJ5glToE4hMhWA@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 15PXUoHo3aA0mCQyIW29uk796SShDaI5UwnM75kvBsk_1758628807
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 18B2180010
+X-Stat-Signature: 7xaowaw185ore7ephwb5yyxwekadexab
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: oz1b69exj5xzthc97wbqytb38fh1hu1r
-X-HE-Tag: 1758628348-719757
-X-HE-Meta: U2FsdGVkX19tT3646igZ0xh6sEwfG/AxBBXnYHK/qNgwe+f0A3ub5BbWpSRrnK9Xx6LSXgjFpUUtShRwU8brkUMEf1TAeQDS3vgjEbcP14l6oQj7/P2/SLgVC2xPlGa9ZQjG9awc/tuz+w2qQrFfiwx/Ct9Vn0CskYBchPT873pIEDzG1pHIn7dzOWngb9lZKqQrIVFJmbVSVZkw9CvgJs7DWy303beVKBU1bFtS/izlaFClcIx+V2N0UTES9Jrw4hbbnAAZgZ8nq1tfMm1hvAqttGQFH3aY6fNIfUmHbhirI85BeDj2gwbk8hS+2LbTuKPpI6PHN5WazxCXJhOzbYhdBH34RQLIaLTR632YIw+OoseZtI9/7fm6FjUnpExg35y1BmSvFvT8AXFCuU/HB1f956lnGrAUjSbEDygYBjI90pVsBxQjggYjmKhmCCHuBgJFqeG1aF+M4ZDEKGhfaG5D2tqxEpv0WgcERHW8OoTXclIuYnCy+6wGMA+0TRPFZw2RvDmdljboLS10HvOr/NeANVV3EPFdQ3byHLDYkaiYKkqvxwSl2JzKuw9sajhbYiExXBnC5WSO4vBy3//Ft5w7NM7IO39qA5+mxLhUxG/2hr2MSbiunDsSUkv+K4P4QcRBv50RHNZm9IXdi/RNmPHv+XB+i7rOxzxiG5bD23EW8PiC7i3YYCCOi5u72yOp2meZGsGEvHR4nUG+S+eiJXMZ2oj0/d9luwY4e2uJeZr4XxEhmyALLiRk9yMGttwziyUrzKwkWJmyp5P7OxOLeIFktZ+FKS/9Y02ldBiFL8bfcFD9i8do2FdcD9tan/LqkV9NbiI7Hwza5adJoVU5Xcom2Szqh9oJC5SH0KCPhsZreaTDAhhUH7/IXImdPb6w9tk/LOFmc997VOpw4edoQfRoYpDtqB1qYFF91wLJKTR12lMZyMtoGvjR1e6h7Ddg+C4whL4LMtX0AIppK2s
- 7TztKCHd
- YT0rzOmTEFuGejRd/eHURikbwxO/ca3jSLBa3vSbCrT3X/Fnnl3Y0D1BxHbXoqACHPrh855diS3Tcf8sCx/+QxPYzmB1OTbxY9RBmcubsdI0owS7E2H0FzVyl+CaCmUh3Tz3sGe0T3PH9Wqi8zx1LJKIirIEum9pbqxf6m+vnxiNj3iAtIYY3eH8wliw2x2lgQrkyDMps81vr3pbaX7eVDPakM94Gpwflv6AZKZ3PU6hvtIjHLZ4J4Gd5ik/SaHaEmmez+qvFqAGXlk4TjuQdT4pHcHviRGKlr6s6c9U9cESWi/y2q9ebvZgilucEkcB8C1HJTU+7DO4NHtFJ5MU6vOkdf68XIhL7OulBkh/HrvpcsQvTU3h4mVX26T1xzqhIi0Ho
+X-HE-Tag: 1758628809-959135
+X-HE-Meta: U2FsdGVkX19Pn9etH9YwwZZOU64pYr/2JQeldrpVnxJbmePJ1JlNjcvUgfvqSnnNZvr2biMlWYyVokjtEdqmzhynrI7yQYhDO11wEdcfAvFBpvPjB2B85mzLc66AtXFhw34874qBcta9jjgZU4sIC+d4SzgT2jQ76sLXzebM23jCVBRVYdlUX3gU/tcJJb2tDXd5RaudDKSn24ANRN0513ixoDONLGOeyLUaRtQfgDM+4ag3Zwdk9ZFyDbkIGqXYOKldYzOKY9AoKejn0aZejbh+yB/Zwngonpzu/vyRwGe4ADz/zh1MuH5A6DdE82O70X+ehKiZ7ob91XJ9a1vIFbknfPDLi7pcIuD0R7PSxSMnQXA5VWBTFiolipLHgzRWTR8ojdUZOvvmOZbtr+kYUo/SSTy1gWXAqKikNayB3dRvuOSpAtnppG7Fnrw44ww0l2T2zYcHu2ysvlpguTpjShIjtDhlXU/Bn8kCumz9IsbO8MsiCU5/5dTQGBuCqnuuiAcfKj0H6tdI0HoZSG5iA+WCXhW7P3KDTgKR6fn+8dbBAxSk+aPN9lHrgy4+5zziKxqTg70oDZcaGqd/wXqsDunnoOSLRgweIqvAxMvHYCArp7P5j6gnP7IJQH7meYdQ1fj9zcuu6omMYoK13E1XuLMLiDRHJbH7W9qD7RdSA9PAf5E80/viuUZAi+ehbmrDExqy+dRWqxzktBQLrmU1zQHuQHiy3F03zRkIYQk4NNPI8pGV4HtgL6I0K5LdYZivqgYi0E9Tj8+eAQxrIwWpWdTANabKfxtN4SG53iy1aLOTuZihjMZmBJUyEQoD4+l2eRvIURwLsNpVv067VSrPZnMAzrnGUQm/0LlseuYMsfAYPxQu6I1y4voukF2KhOxHSNJAyzkpvBY9KxMZkhQNnlt0HAsD6qhQmagUiJJa9jcOBe9iiIcpvcB4jwUk6aCA/1JGx04JZCxnY+8cd1d
+ BLxpil8q
+ I0Nci9nFfyxLgUz02hGAK36jw7qhDeLiH29v77U5bWVnSCQto6InCcqKBax5mW9kRrPW7NR4mnRY0KDI5r7SEM9Tw1C+ZnQBxwMBiGnXcu3GvB3gnujmK0yYfh1yVyxxVauY7/XCUTEsbEyO1oRf9VVACMuKaArgo8A8c0ZbJkh6d2DT+ElrjD3PmQcsb7HSDSoFEvupvPHHz8KVeCylEXbGdjJtsePoBasQA2BVfsLBXzvEetdR9XT3bNTWkOnwNegDKB+QfECBE2dOl9FOPBHjm4oRfrVDeW+q+v0c8G8mRUH0rQGxikydeCcXL4yzZuuGQYyRJjbxfVs7t4jSInAwUgL5oHbMwbtlMyVlyUm7RlB/T94aoh0+/PxoJWpsKXSxleZ3S1ajwfDCxPIM1QVMCw/8z+o80Rv3CD5xgdcjXXPvlJeWzbded5DbmscQh2k8Dx3SAo4zQU5lpuMiAsd9lu+0So5JCz647YyEmGx5SppUCq5Sp9PxrDz+LqF26HjyrGlE2PNsNWi5DwZBn3/3O1UqJouXYKHa4oancgjWRcTRV/+oppSdAz4wYPbb14LDku0cEkG2GKNIg83CiApemIA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,92 +192,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 17, 2025 at 08:11:13PM +0100, Lorenzo Stoakes wrote:
-> Since we can now perform actions after the VMA is established via
-> mmap_prepare, use desc->action_success_hook to set up the hugetlb lock
-> once the VMA is setup.
+On 23.09.25 13:52, Catalin Marinas wrote:
+> On Mon, Sep 22, 2025 at 07:59:00PM +0200, David Hildenbrand wrote:
+>> On 22.09.25 19:24, Catalin Marinas wrote:
+>>> On Mon, Sep 22, 2025 at 10:14:58AM +0800, Lance Yang wrote:
+>>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>>> index 32e0ec2dde36..28d4b02a1aa5 100644
+>>>> --- a/mm/huge_memory.c
+>>>> +++ b/mm/huge_memory.c
+>>>> @@ -4104,29 +4104,20 @@ static unsigned long deferred_split_count(struct shrinker *shrink,
+>>>>    static bool thp_underused(struct folio *folio)
+>>>>    {
+>>>>    	int num_zero_pages = 0, num_filled_pages = 0;
+>>>> -	void *kaddr;
+>>>>    	int i;
+>>>>    	for (i = 0; i < folio_nr_pages(folio); i++) {
+>>>> -		kaddr = kmap_local_folio(folio, i * PAGE_SIZE);
+>>>> -		if (!memchr_inv(kaddr, 0, PAGE_SIZE)) {
+>>>> -			num_zero_pages++;
+>>>> -			if (num_zero_pages > khugepaged_max_ptes_none) {
+>>>> -				kunmap_local(kaddr);
+>>>> +		if (pages_identical(folio_page(folio, i), ZERO_PAGE(0))) {
+>>>> +			if (++num_zero_pages > khugepaged_max_ptes_none)
+>>>>    				return true;
+>>>
+>>> I wonder what the overhead of doing a memcmp() vs memchr_inv() is. The
+>>> former will need to read from two places. If it's noticeable, it would
+>>> affect architectures that don't have an MTE equivalent.
+>>>
+>>> Alternatively we could introduce something like folio_has_metadata()
+>>> which on arm64 simply checks PG_mte_tagged.
+>>
+>> We discussed something similar in the other thread (I suggested
+>> page_is_mergable()). I'd prefer to use pages_identical() for now, so we have
+>> the same logic here and in ksm code.
+>>
+>> (this patch here almost looks like a cleanup :) )
+>>
+>> If this becomes a problem, what we could do is in pages_identical() would be
+>> simply doing the memchr_inv() in case is_zero_pfn(). KSM might benefit from
+>> that as well when merging with the shared zeropage through
+>> try_to_merge_with_zero_page().
 > 
-> We also make changes throughout hugetlbfs to make this possible.
+> Yes, we can always optimise it later.
 > 
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> ---
->  fs/hugetlbfs/inode.c           | 36 ++++++++++------
->  include/linux/hugetlb.h        |  9 +++-
->  include/linux/hugetlb_inline.h | 15 ++++---
->  mm/hugetlb.c                   | 77 ++++++++++++++++++++--------------
->  4 files changed, 85 insertions(+), 52 deletions(-)
+> I just realised that on arm64 with MTE we won't get any merging with the
+> zero page even if the user page isn't mapped with PROT_MTE. In
+> cpu_enable_mte() we zero the tags in the zero page and set
+> PG_mte_tagged. The reason is that we want to use the zero page with
+> PROT_MTE mappings (until tag setting causes CoW). Hmm, the arm64
+> memcmp_pages() messed up KSM merging with the zero page even before this
+> patch.
 > 
-> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-> index f42548ee9083..9e0625167517 100644
-> --- a/fs/hugetlbfs/inode.c
-> +++ b/fs/hugetlbfs/inode.c
-> @@ -96,8 +96,15 @@ static const struct fs_parameter_spec hugetlb_fs_parameters[] = {
->  #define PGOFF_LOFFT_MAX \
->  	(((1UL << (PAGE_SHIFT + 1)) - 1) <<  (BITS_PER_LONG - (PAGE_SHIFT + 1)))
->  
-> -static int hugetlbfs_file_mmap(struct file *file, struct vm_area_struct *vma)
-> +static int hugetlb_file_mmap_prepare_success(const struct vm_area_struct *vma)
->  {
-> +	/* Unfortunate we have to reassign vma->vm_private_data. */
-> +	return hugetlb_vma_lock_alloc((struct vm_area_struct *)vma);
-> +}
+> The MTE tag setting evolved a bit over time with some locking using PG_*
+> flags to avoid a set_pte_at() race trying to initialise the tags on the
+> same page. We also moved the swap restoring to arch_swap_restore()
+> rather than the set_pte_at() path. So it is safe now to merge with the
+> zero page if the other page isn't tagged. A subsequent set_pte_at()
+> attempting to clear the tags would notice that the zero page is already
+> tagged.
+> 
+> We could go a step further and add tag comparison (I had some code
+> around) but I think the quick fix is to just not treat the zero page as
+> tagged.
 
-Hi Lorenzo,
+I assume any tag changes would result in CoW.
 
-The following tests causes the kernel to enter a blocked state,
-suggesting an issue related to locking order. I was able to reproduce
-this behavior in certain test runs.
+It would be interesting to know if there are use cases with VMs or other 
+workloads where that could be beneficial with KSM.
 
-Test case:
-git clone https://github.com/libhugetlbfs/libhugetlbfs.git
-cd libhugetlbfs ; ./configure
-make -j32
-cd tests
-echo 100 > /proc/sys/vm/nr_hugepages
-mkdir -p /test-hugepages && mount -t hugetlbfs nodev /test-hugepages
-./run_tests.py <in a loop>
-...
-shm-fork 10 100 (1024K: 64):    PASS
-set shmmax limit to 104857600
-shm-getraw 100 /dev/full (1024K: 32):
-shm-getraw 100 /dev/full (1024K: 64):   PASS
-fallocate_stress.sh (1024K: 64):  <blocked>
+> Not fully tested yet:
+> 
+> diff --git a/arch/arm64/kernel/mte.c b/arch/arm64/kernel/mte.c
+> index e5e773844889..72a1dfc54659 100644
+> --- a/arch/arm64/kernel/mte.c
+> +++ b/arch/arm64/kernel/mte.c
+> @@ -73,6 +73,8 @@ int memcmp_pages(struct page *page1, struct page *page2)
+>   {
+>   	char *addr1, *addr2;
+>   	int ret;
+> +	bool page1_tagged = page_mte_tagged(page1) && !is_zero_page(page1);
+> +	bool page2_tagged = page_mte_tagged(page2) && !is_zero_page(page2);
+>   
+>   	addr1 = page_address(page1);
+>   	addr2 = page_address(page2);
+> @@ -83,11 +85,10 @@ int memcmp_pages(struct page *page1, struct page *page2)
+>   
+>   	/*
+>   	 * If the page content is identical but at least one of the pages is
+> -	 * tagged, return non-zero to avoid KSM merging. If only one of the
+> -	 * pages is tagged, __set_ptes() may zero or change the tags of the
+> -	 * other page via mte_sync_tags().
+> +	 * tagged, return non-zero to avoid KSM merging. Ignore the zero page
+> +	 * since it is always tagged with the tags cleared.
+>   	 */
+> -	if (page_mte_tagged(page1) || page_mte_tagged(page2))
+> +	if (page1_tagged || page2_tagged)
+>   		return addr1 != addr2;
 
-Blocked task state below:
+That looks reasonable to me.
 
-task:fallocate_stres state:D stack:0     pid:5106  tgid:5106  ppid:5103
-task_flags:0x400000 flags:0x00000001
-Call Trace:
- [<00000255adc646f0>] __schedule+0x370/0x7f0
- [<00000255adc64bb0>] schedule+0x40/0xc0
- [<00000255adc64d32>] schedule_preempt_disabled+0x22/0x30
- [<00000255adc68492>] rwsem_down_write_slowpath+0x232/0x610
- [<00000255adc68922>] down_write_killable+0x52/0x80
- [<00000255ad12c980>] vm_mmap_pgoff+0xc0/0x1f0
- [<00000255ad164bbe>] ksys_mmap_pgoff+0x17e/0x220
- [<00000255ad164d3c>] __s390x_sys_old_mmap+0x7c/0xa0
- [<00000255adc60e4e>] __do_syscall+0x12e/0x350
- [<00000255adc6cfee>] system_call+0x6e/0x90
-task:fallocate_stres state:D stack:0     pid:5109  tgid:5106  ppid:5103
-task_flags:0x400040 flags:0x00000001
-Call Trace:
- [<00000255adc646f0>] __schedule+0x370/0x7f0
- [<00000255adc64bb0>] schedule+0x40/0xc0
- [<00000255adc64d32>] schedule_preempt_disabled+0x22/0x30
- [<00000255adc68492>] rwsem_down_write_slowpath+0x232/0x610
- [<00000255adc688be>] down_write+0x4e/0x60
- [<00000255ad1c11ec>] __hugetlb_zap_begin+0x3c/0x70
- [<00000255ad158b9c>] unmap_vmas+0x10c/0x1a0
- [<00000255ad180844>] vms_complete_munmap_vmas+0x134/0x2e0
- [<00000255ad1811be>] do_vmi_align_munmap+0x13e/0x170
- [<00000255ad1812ae>] do_vmi_munmap+0xbe/0x140
- [<00000255ad183f86>] __vm_munmap+0xe6/0x190
- [<00000255ad166832>] __s390x_sys_munmap+0x32/0x40
- [<00000255adc60e4e>] __do_syscall+0x12e/0x350
- [<00000255adc6cfee>] system_call+0x6e/0x90
+@Lance as you had a test setup, could you give this a try as well with 
+KSM shared zeropage deduplication enabled whether it now works as 
+expected as well?
 
+Then, this should likely be an independent fix.
 
-Thanks,
-Sumanth
+For KSM you likely have to enable it first through 
+/sys/kernel/mm/ksm/use_zero_pages.
+
+-- 
+Cheers
+
+David / dhildenb
+
 
