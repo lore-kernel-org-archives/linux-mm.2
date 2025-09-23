@@ -4,186 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1D59CAC5AC
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 16:40:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC855CAC5A7
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 16:46:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E89B8E0006; Tue, 23 Sep 2025 12:40:19 -0400 (EDT)
+	id 15A238E0008; Tue, 23 Sep 2025 12:46:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 199858E0001; Tue, 23 Sep 2025 12:40:19 -0400 (EDT)
+	id 10B068E0001; Tue, 23 Sep 2025 12:46:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 061478E0006; Tue, 23 Sep 2025 12:40:18 -0400 (EDT)
+	id F3B378E0008; Tue, 23 Sep 2025 12:46:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E4F938E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 12:40:18 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 981F9C020C
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 16:40:18 +0000 (UTC)
-X-FDA: 83921077716.11.B8BF670
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 28C25C0002
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 16:40:15 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ezK7pops;
-	spf=pass (imf28.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DD4FE8E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 12:46:23 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7EF128760A
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 16:46:23 +0000 (UTC)
+X-FDA: 83921093046.16.EE29C1D
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 8C119A0008
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 16:46:21 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ax5+7zZM;
+	spf=pass (imf25.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758645616;
+	s=arc-20220608; t=1758645981;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L1QkzrTGCwMnovMp2G8JNLttd8EAbqBA5tlzUuHhOxE=;
-	b=YQCyMJN4M1hpC1ATbeOPcxesBsHBpwLu7vIFWFgz1rBDm7QJUDN9cTnpvNxTiXTGlHGIuV
-	TEwVva9hkIgr3ItqRNToXYvhsu29UOjIzcmOa/EpozkZpL5Q8kilJ79sfQz1jCK02IlFV3
-	/fhQAbup7q2zcxDsrNnGBmWjgUZZDCI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758645616; a=rsa-sha256;
-	cv=none;
-	b=zokfbhtiiVQunYenQrpv2jpqR5SSCdOuhAmr1wO9n1wKeftZXfXv+MyQkA4rpaVviUU/uA
-	fGkw11sGzishO1+JDK6qvvOPAUnb4Q6B+BrRG4ZQnGw2vawzPZE1xHBvB3gBBcwj9KMq9R
-	lCL8mhlWAp37bE4wOF1upmQ9wo+j1xU=
+	bh=imzMF9eGcF1IvmXHD33jpPta8P3x9Urk2l5tDJ26VmM=;
+	b=wopafXozCr3JY4GEsMoCGKWoij2cmWhVWKiZ/uWCHeP1aOHNmAYHLLfl4+6jhnOMvdxAHW
+	V75lfWVzdYoJLrY0OQDeBzQneEynTanpCAp4TiHW1SlL1wphkoSDz6GzYMvCsROy+euGSK
+	ZS114M2/trRWnIGZ+F86A9RnXBy8mTU=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ezK7pops;
-	spf=pass (imf28.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758645615;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=L1QkzrTGCwMnovMp2G8JNLttd8EAbqBA5tlzUuHhOxE=;
-	b=ezK7popsJ7QgMq3FZPlcHKIY1sML2qu7zTdCPi0xvHj5n2aqJbSBfv61dXVyypJxUJmjZd
-	86YPuluLyDQ7gto+o+Q5bRoi4H1toj9rZb3I5cAFrSl6lBRiQuHI6gYoZdadr7LTGVYSSk
-	Lmoy7k8hEY+zF9sU9gmLjCM7zxYEExA=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-633-gM3bHDFBPLqFHESitasnyw-1; Tue, 23 Sep 2025 12:40:11 -0400
-X-MC-Unique: gM3bHDFBPLqFHESitasnyw-1
-X-Mimecast-MFC-AGG-ID: gM3bHDFBPLqFHESitasnyw_1758645610
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3ed9557f976so4993722f8f.3
-        for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:40:11 -0700 (PDT)
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ax5+7zZM;
+	spf=pass (imf25.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758645981; a=rsa-sha256;
+	cv=none;
+	b=LgFZcS9xv1JZJzhn4+LcrotODef5RIZOq7dd7H/uhwXdnQYuw1icTeHUpuuraJrq+/shEQ
+	KGi/RPRJ++Nh7HblMR/yQCvSlz/uVGq2rHD4sFnb0ZU2lyuT1QSqgHppz/BtNzGZJc/QD3
+	3nph9yMKcKUpI6MWvIUppm5QYY/ZqSw=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-468973c184bso24414515e9.3
+        for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:46:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758645980; x=1759250780; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=imzMF9eGcF1IvmXHD33jpPta8P3x9Urk2l5tDJ26VmM=;
+        b=ax5+7zZM/Lg0hJLt+1Qy4xS5Yd1x//KNRror2Zp6cd9yirdEPpml6xQ9/1rUwMvWNn
+         trg3frRknJ8tD7sjZqqZOc2UE3jrM1R0zXg52W+6M9n0LALtra0aRKhWQbcdpb+KMMi/
+         AlWZdzuLcBPebiUELzC1IjL4z+8Irh8hMwx4ISEFk+3I31kGzJC0HjgBK+Y6srx/kb+6
+         21FhcXuDgOvN4vXu4PPOgR5Ym1+wbJJAZtn5FWEyJDO3Ydd1dsSKE5jaHi5Mzpq6AA2g
+         /Levhs9xZilk1f3bHla+qizoubpuUccfen8caO+qq27rVkeotzT32T4SbQhEZX2ZXOL0
+         hHaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758645610; x=1759250410;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=L1QkzrTGCwMnovMp2G8JNLttd8EAbqBA5tlzUuHhOxE=;
-        b=azc9x91LbFYKMdeWrqA6rObnRLOXZ9dR3myfVLbYClGc/0hAtCNKm3OmzcGs6rGmf1
-         8/NDygV0hvNqZpQ89xKHIw6TQ1PqnzD4HccmdTUQCx/mU42r/psRoSOY8hmnJ0p9ukuh
-         rx+t6OpaI/d4jpASQDbj2tWMwfX6cbs7SZrYJSJQuIv4C4z5O2UUl3v+ZYB9PMBU8Uig
-         mVJ1xFSPh2Wvl70fVSDewf+VOoBRK393jVZqJuUfUC+XCH6At2wLtpz0Rp5YyonMvWtZ
-         lU3gdLegYnyYfFJI5BK0AeOwD6NaIqdeTRCQc9OhuVAoxtTZ9W2jnHipNTd38kNfkys2
-         vAIg==
-X-Forwarded-Encrypted: i=1; AJvYcCWULGKiZxfct3QXbo6bNfw4tXPcyBvlrkirNKRVp+ehLrqAit+MGNtfuGvr7If1d8bUoNvZv+6QGg==@kvack.org
-X-Gm-Message-State: AOJu0YyjlNvzrY7RgpdGERGUx93h7HzYkvXkpfPTo8+H8t+g7wFNjW35
-	ZAsEnXT/rPlXzwNGeXfG1mdB8DHqunGQ+vhsjt/Omf39RzccH98fJoHcuvi+UZZ/gj7vrVZh8M1
-	5Hgvq/b2yw/sKtLo5D+XrJ06Y8cskJ9HuVZ+0KTew2kyvAanBNzG8
-X-Gm-Gg: ASbGncvdmsgiUIr18a/6GDNPk9SB+vKwJDaOJh9YRH3kSr8RpMJNjxkwZxBigHTWb4u
-	kQPdFmyG0kGdrEnnBA1+1XO7RfTW4ORfcXyqtnNHJQYZMoGt8exXuXLVlZJx90qsfpe29CNsZAB
-	UWm+VFPjXndFPfywwxOOJOaoz7PTwY0AovwKSbq7VUbTYl9NCRPts1I/l31Ex5uflMGOz61zGpa
-	Ojokdis9EeJp6CqsxbcfKsyX8QWOIBYss/SmNQF02o8vHa6gSGTsjVmmPWJIiLgC6CRYWAIeQ/A
-	DsIUG+iz5VJKHQmvXrVqpzVJJoXPQi78M4A/qKoYzAWpUrg5eAXQp2iOI2O+31RhTirdz5mI8Jo
-	qxMCLLNt5X1LWzKjAFPfP/98+0AKtXe1bHqJUP7ZYSPezTMJWmq+x0TMOSZybbEQy7g==
-X-Received: by 2002:a05:6000:607:b0:3e3:e7a0:1fec with SMTP id ffacd0b85a97d-405c6c1be66mr2624127f8f.16.1758645610488;
-        Tue, 23 Sep 2025 09:40:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHlBeAzcC62U49+wQ4+N2FLeq7Mpxq7qWokF6XhNbNHyY0QVTf/R3ihiA3HW6AmAgoSQoynKg==
-X-Received: by 2002:a05:6000:607:b0:3e3:e7a0:1fec with SMTP id ffacd0b85a97d-405c6c1be66mr2624093f8f.16.1758645609976;
-        Tue, 23 Sep 2025 09:40:09 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f4f:700:c9db:579f:8b2b:717c? (p200300d82f4f0700c9db579f8b2b717c.dip0.t-ipconnect.de. [2003:d8:2f4f:700:c9db:579f:8b2b:717c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3fcb01a9049sm9757269f8f.61.2025.09.23.09.40.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Sep 2025 09:40:09 -0700 (PDT)
-Message-ID: <45a7aa69-16df-4809-8ccd-c08c404d55cb@redhat.com>
-Date: Tue, 23 Sep 2025 18:40:06 +0200
+        d=1e100.net; s=20230601; t=1758645980; x=1759250780;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=imzMF9eGcF1IvmXHD33jpPta8P3x9Urk2l5tDJ26VmM=;
+        b=HEXEu3U6cskhBsezLXhRNTyHs/c4o/4dISy93sk0Zd7ruw48Jgfxh6zTr5kiEm6L8j
+         +TPTJKe76CDGBzUSawl2QZZQNRQZPfl7/5ZA9y/BvR2uZx8UTZyTkWVG+49Nd9e4Inji
+         ohOd6fX5jvKf7DlTIRX9gYVwA7sGtvA7+1d5Tq+X3EN6RtRObzbc303aeGGH+xT26iKn
+         gokRqylH1RCCBB2dyKoZ2Kzt/mSY/Vb16NySZPgnBLbBkVco4f73YN/dBWKBI3UCPINm
+         gTx0na6GnpUo7WGXR4Z2FqzeYcqeOGA7SXLvAEPc+3/jzyKf6zhvaQIEZX6WQTlMt6nr
+         E89A==
+X-Forwarded-Encrypted: i=1; AJvYcCWyHHDmJwcdsipWqYXAZ/pzDAs7y91gOmbth8rLF+2hr5RHzCzghC/8MyjPonC0HolsyaCh0FFrLg==@kvack.org
+X-Gm-Message-State: AOJu0YwLnPaQBFVX4XD/PUtNHPXjVmRAIWYaeQAnkyM8lNQwWNeL6uVP
+	IvWSZxZV6wh++YS0xSRyNd1vPg8iltrHD7GTZYUd+iHBvl9i5NiNjLgjYJld/CZPOXggzHieDG0
+	hxFv/KTPeXH9xvonc3Hn8+kkX88geU2c=
+X-Gm-Gg: ASbGncveT/m1IxlJYLNsv6tI78rnaP5fcMGd4e1JX1db/95g8acTXd/fSCr+gtEr7Rl
+	0g1qewzU8wVs3giSX2FjuZghpIOwLgtCbquzSS3sbMo3BJoANBThFX9Vh2V7K24BCm+AGwDfBtK
+	/wbNwBH0XZDeCygFJUeKGcZEL0AMe6jcbIWzrBp0DbxF5vtP8aNPwBbr/+0aZLMsxcwHbHc0q8K
+	OKAcWjbHA==
+X-Google-Smtp-Source: AGHT+IFP8pTY+nYi3192pC7v/zVC0ylFZb4IKvnNmuLy2m/5DZrc79HwlN5a4NAdoI7tQpvEg0iRs5lwN2jl7QYp5Qg=
+X-Received: by 2002:a05:6000:25c8:b0:3e7:1f63:6e7d with SMTP id
+ ffacd0b85a97d-405ccbd6d4cmr3017672f8f.45.1758645979885; Tue, 23 Sep 2025
+ 09:46:19 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm/thp: fix MTE tag mismatch when replacing
- zero-filled subpages
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, usamaarif642@gmail.com, yuzhao@google.com,
- ziy@nvidia.com, baolin.wang@linux.alibaba.com, baohua@kernel.org,
- voidice@gmail.com, Liam.Howlett@oracle.com, cerasuolodomenico@gmail.com,
- hannes@cmpxchg.org, kaleshsingh@google.com, npache@redhat.com,
- riel@surriel.com, roman.gushchin@linux.dev, rppt@kernel.org,
- ryan.roberts@arm.com, dev.jain@arm.com, ryncsn@gmail.com,
- shakeel.butt@linux.dev, surenb@google.com, hughd@google.com,
- willy@infradead.org, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, qun-wei.lin@mediatek.com,
- Andrew.Yang@mediatek.com, casper.li@mediatek.com,
- chinwen.chang@mediatek.com, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
- linux-mm@kvack.org, ioworker0@gmail.com, stable@vger.kernel.org
-References: <20250922021458.68123-1-lance.yang@linux.dev>
- <aNGGUXLCn_bWlne5@arm.com> <a3412715-6d9d-4809-9588-ba08da450d16@redhat.com>
- <aNKJ5glToE4hMhWA@arm.com> <aNLHexcNI53HQ46A@arm.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aNLHexcNI53HQ46A@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Z_z2gsc4ixrM_VFf44rs_nwCesecTn75ifuVLSnwJpY_1758645610
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 28C25C0002
-X-Stat-Signature: 9htpp8bzzpmuxzn5wz4i3jybjxmnkfjk
+References: <20250919145750.3448393-1-ethan.w.s.graham@gmail.com> <20250919145750.3448393-2-ethan.w.s.graham@gmail.com>
+In-Reply-To: <20250919145750.3448393-2-ethan.w.s.graham@gmail.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Tue, 23 Sep 2025 18:46:08 +0200
+X-Gm-Features: AS18NWC3Zatya8SBoZMxgc3ReWws0f2Kk0nbCOoRpJZnpr-tGokn7pV_jWkKaCg
+Message-ID: <CA+fCnZegSdAeLkutKP54BH19Kv+FAaFbW1oOvAgbTZZMsyu0sg@mail.gmail.com>
+Subject: Re: [PATCH v2 01/10] mm/kasan: implement kasan_poison_range
+To: Ethan Graham <ethan.w.s.graham@gmail.com>
+Cc: ethangraham@google.com, glider@google.com, andy@kernel.org, 
+	brauner@kernel.org, brendan.higgins@linux.dev, davem@davemloft.net, 
+	davidgow@google.com, dhowells@redhat.com, dvyukov@google.com, 
+	elver@google.com, herbert@gondor.apana.org.au, ignat@cloudflare.com, 
+	jack@suse.cz, jannh@google.com, johannes@sipsolutions.net, 
+	kasan-dev@googlegroups.com, kees@kernel.org, kunit-dev@googlegroups.com, 
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, lukas@wunner.de, rmoar@google.com, shuah@kernel.org, 
+	sj@kernel.org, tarasmadan@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: i9nhzuwpgdfr183yabys7rf96c61hy5j
 X-Rspam-User: 
-X-HE-Tag: 1758645615-488714
-X-HE-Meta: U2FsdGVkX18gy2u+Xkoa61sK90RVrTOK3dxfN2VNkGkc5+RPPjASo+iw4oae7bjpWj3ArbdUgu04ipneuDAW2vRJvq2z81WgTF129C4hLUL7GmEpMErDde5GmIVn909WopCQ/XN7/ykm2XTtkyje88MAo3L4RGxw9jFnhhkg9vwR/HxjBULHV02yzK8i3Sh//ECompzDrNS82oIUxAm2X38IzhrwDJ6ZqFsHo1rTSttsHLfiJk2v301ZtexbFJBzyLecmElr729bhMt0TsowpzZMO+/vkZUASJXqmvoA+rob89n203QmnF6DYmpDUbs/YPFONcvYQEATSUVCSDfv7dIOMGx0paewb6nBtSPX6Lj/FQZ5n6uPnv39K2gIkab/ipMhajUAO+kTBLGaygjPuVxE+H7QC5Juu9Pj9ARIX682i+xW8wigsLA355T2hhrsgJyLTmrnT9nd7lgJK5I2hj97WDceQ0z80Do1C/EP3xhXgGBxNnfAq/hXlPHRMNj7J7yBdDBJVfY+I1IojGqrlHDMwiV9tNaRI939lbpXZM7QXrmO6hKwDlrT3SvREa7zzq/yQx9eciT4MTD0ywzJTfYusAiwDM/yxy8skr8YJkCHFMqYiP3h86ZfUk+pVKHGcJbNk2iQc1OlK3a8fHpGbHn+eeSFf5die0QhrH6sUFvPVNxuWXgLBJ+Xxc1RubF3foRIB2XwkchMDVMke7JpeZ5xRtMrJPEeOspIRv3WVK/ntN5+CSEovy1r8QTvOxhdU69f41ToBN1a1nwH3N/AYOPajrsibAWRPgv+ZuPkcegMbGhQcDyR67e8+Ijc+OEQ4HUHR+j8wMw3hq++d4cFzmgT7UlJSKONTmSKBKWgg77VpIpuXZZNIScLefbrdMvZZieYBy44y3HMfhAeerjwxjw2zt2ihVK536Arz8VgEfS/vhN/6zam9SSrYxuhQs4aM0QmxnXN91XH4txwhJv
- rejNaQU1
- JSGzFsJ3MeZgx2lCa/qS9mvG2yEWlbRYml+Wgg0FRq2r/1j59f/rmThKbc0CzP7YxaV1ukanbY0aXH8FTPYws7Smd9Y3X8Sw+VIEgF9LdzqyDsB8eIfaKoIAG7R108X3hUpGSRGm/rNyEYTaYmLB1Ss66G81xuqpz3iMnhidFW6Dm6AQLW2JG8Qj+5xs3RxoOffN4ic2ojjDA/cyPaUK+OjB/7KddhQyIS5RuwMtfPYmggszEK6IZJWdwWcrkAB63vDKpoKqCGgofVrDWS0+Ljm+5QfBI/D0ALieuxLL4JqNMVzN0DN5hUVP0zlKgRXTBOuQ2Fda+cBjtKAkyN5YJPAafgKlh6HcmCzD9yfSA1jHwLowXGi0fneLOWoe7go2W1pieVgTbhbBWS7i1SP8Uxrl0iXFnv7AaG9yPpfcXALYPx2nPmX2b4dNRgFsRhSiHkENEiPswsZ1+T/K/Ec4b0a5qE4Bkot+KumqYiWb13QlY61abVkqKRoAzqQ==
+X-Rspamd-Queue-Id: 8C119A0008
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758645981-361757
+X-HE-Meta: U2FsdGVkX18MYM2yYCLkriNx0Fg6Kb3G5RoR/4ezOjotS7VjSyQyAVVRbQzql9jMplimUCDb82iU5Rg7ZTYSVr4ylQciHGP6xvSV2y3MbBcFtGhh79Nk8k6qGjP9+he5LjKfvxSSH6xaf7G3mq2RNNCQ/DVFCSho/8uq15Nu3kvgs+hbiZA2UlTU5j2OHmdmv9uxiz1NxR0B+Urfsn9psH8o4My3pgoCcvXGkEoB7np4hVLsxU3qmAmPdBa+M6sMOaEJrW+I2xtfBQUd+TK681tQRLC/m4fwkMU/Okxx/X+FV+Bx8xnRI7NOppTiu+bOKdqvDZ+VbICg5MAvze91+U3zRB0oqfyNURbTNmUT1doAllqSwNZhAe5cZqBBuPmZtuhKHalqJZyVOKChc3iAMOGa1YlyBxAAfrBVMbHrFme9gWaA4mjFG6LAANt65Qzdn/YPvhbBnANk1BRO6WFEhmKmDlUcV+h6zAA7UJrwYVOW5A05jEseDtnE/afEsKl5L8aigD8oMX9gcJwtl58aRJYxZdxnIoBS81yLaTD18EA5b9J7XaTCCevWgl5MK7ZN70bo5DdVpRdXfQe/FNKOzRywomVDY87AswHuGPUgv9LuYb8g5KpxHpogBDjlcogmP/HjZL/Ar4uHADaySSw5+5y0BCNqYsCDRSHhodcjSj5tvMJay+cvBkFu+juDgBomdVSX0zgO/z8hwfqtRSmXA9fh/yExYZmBSNgFzCL2mg6ezA9QJUrVPZolUyfnP/UrgrdntYHENPbQPqfxYGJhrzRovMgYSZf8i9afak1mfOnM/ADlkUFJG1vEAAom6qWvWwpfNfdCD7Kk9siuufptxRWEvhMD6jf/tj7sOerivOV1QZ9+oz3Au3uwjB0p6RF4pWzJXQOPQFw+rLaFLxMA+j1lYniMTElWU0GfdljdgGy8gCWHS/pyesi+SzK5b6APzADiqI6WNmrCREiVDEX
+ Vd4R8R0w
+ o9mRZbR5lNYHkVTdzDSjIomjfqIeYF0e/RF5XlcFnhc/MIwdxF4e0ErrA8jUPF/lwJCubh6bm/C8nry6gbSces4vA6T6HDkZR8UFiLNhi8Nx2z0Ochb0IfSUA52hkNOJqe773oPFKuDjdTmWSy/eC84mrfoWn0u4MwZu6D9iqlcdmb5ORTgl2+5rMoPtu2LBWEQhFM8JK2GIMdjsJ7mrpBYltYPo7QGYo4jkH9KSP/Oc04391mvWc3hWhPKZZv725L2APGtB0/ui9uVWn/6+9xow4Tg+hFUJoOHW8IEuLtdmRzldwm1qyPrEQfGYpzGCQXnvQO5aRnsXBRB5vRKSYGlMQaDEMQsRXsdUQYlhf0LGdf8h6Ds4if21AFXC2D4li9EPywA2/nvFeaOL5xX7bXD1yJJcpu7cHjs/lXazt9SdYY+N+AI8Ly7uOQs3CEJyBjabF0wkNezLBOimHq5pZFCR/OOjq3XrIhebSraQbf1kISol34TcZzNZ/QYZZzh+3zjWEelZEeNut1qfyHoq/uOGMLq9tHS/UokhbPkUDSPJssoPPOGsy1L/Lrw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -192,66 +123,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 23.09.25 18:14, Catalin Marinas wrote:
-> On Tue, Sep 23, 2025 at 12:52:06PM +0100, Catalin Marinas wrote:
->> I just realised that on arm64 with MTE we won't get any merging with the
->> zero page even if the user page isn't mapped with PROT_MTE. In
->> cpu_enable_mte() we zero the tags in the zero page and set
->> PG_mte_tagged. The reason is that we want to use the zero page with
->> PROT_MTE mappings (until tag setting causes CoW). Hmm, the arm64
->> memcmp_pages() messed up KSM merging with the zero page even before this
->> patch.
-> [...]
->> diff --git a/arch/arm64/kernel/mte.c b/arch/arm64/kernel/mte.c
->> index e5e773844889..72a1dfc54659 100644
->> --- a/arch/arm64/kernel/mte.c
->> +++ b/arch/arm64/kernel/mte.c
->> @@ -73,6 +73,8 @@ int memcmp_pages(struct page *page1, struct page *page2)
->>   {
->>   	char *addr1, *addr2;
->>   	int ret;
->> +	bool page1_tagged = page_mte_tagged(page1) && !is_zero_page(page1);
->> +	bool page2_tagged = page_mte_tagged(page2) && !is_zero_page(page2);
->>   
->>   	addr1 = page_address(page1);
->>   	addr2 = page_address(page2);
->> @@ -83,11 +85,10 @@ int memcmp_pages(struct page *page1, struct page *page2)
->>   
->>   	/*
->>   	 * If the page content is identical but at least one of the pages is
->> -	 * tagged, return non-zero to avoid KSM merging. If only one of the
->> -	 * pages is tagged, __set_ptes() may zero or change the tags of the
->> -	 * other page via mte_sync_tags().
->> +	 * tagged, return non-zero to avoid KSM merging. Ignore the zero page
->> +	 * since it is always tagged with the tags cleared.
->>   	 */
->> -	if (page_mte_tagged(page1) || page_mte_tagged(page2))
->> +	if (page1_tagged || page2_tagged)
->>   		return addr1 != addr2;
->>   
->>   	return ret;
-> 
-> Unrelated to this discussion, I got an internal report that Linux hangs
-> during boot with CONFIG_DEFERRED_STRUCT_PAGE_INIT because
-> try_page_mte_tagging() locks up on uninitialised page flags.
-> 
-> Since we (always?) map the zero page as pte_special(), set_pte_at()
+On Fri, Sep 19, 2025 at 4:58=E2=80=AFPM Ethan Graham <ethan.w.s.graham@gmai=
+l.com> wrote:
+>
+> From: Ethan Graham <ethangraham@google.com>
+>
+> Introduce a new helper function, kasan_poison_range(), to encapsulate
+> the logic for poisoning an arbitrary memory range of a given size, and
+> expose it publically in <include/linux/kasan.h>.
+>
+> This is a preparatory change for the upcoming KFuzzTest patches, which
+> requires the ability to poison the inter-region padding in its input
+> buffers.
+>
+> No functional change to any other subsystem is intended by this commit.
+>
+> Signed-off-by: Ethan Graham <ethangraham@google.com>
+> Reviewed-by: Alexander Potapenko <glider@google.com>
+>
+> ---
+> PR v1:
+> - Enforce KASAN_GRANULE_SIZE alignment for the end of the range in
+>   kasan_poison_range(), and return -EINVAL when this isn't respected.
+> ---
+> ---
+>  include/linux/kasan.h | 11 +++++++++++
+>  mm/kasan/shadow.c     | 34 ++++++++++++++++++++++++++++++++++
+>  2 files changed, 45 insertions(+)
+>
+> diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+> index 890011071f2b..cd6cdf732378 100644
+> --- a/include/linux/kasan.h
+> +++ b/include/linux/kasan.h
+> @@ -102,6 +102,16 @@ static inline bool kasan_has_integrated_init(void)
+>  }
+>
+>  #ifdef CONFIG_KASAN
+> +
+> +/**
+> + * kasan_poison_range - poison the memory range [@addr, @addr + @size)
+> + *
+> + * The exact behavior is subject to alignment with KASAN_GRANULE_SIZE, d=
+efined
+> + * in <mm/kasan/kasan.h>: if @start is unaligned, the initial partial gr=
+anule
+> + * at the beginning of the range is only poisoned if CONFIG_KASAN_GENERI=
+C=3Dy.
+> + */
+> +int kasan_poison_range(const void *addr, size_t size);
+> +
+>  void __kasan_unpoison_range(const void *addr, size_t size);
+>  static __always_inline void kasan_unpoison_range(const void *addr, size_=
+t size)
+>  {
+> @@ -402,6 +412,7 @@ static __always_inline bool kasan_check_byte(const vo=
+id *addr)
+>
+>  #else /* CONFIG_KASAN */
+>
+> +static inline int kasan_poison_range(const void *start, size_t size) { r=
+eturn 0; }
+>  static inline void kasan_unpoison_range(const void *address, size_t size=
+) {}
+>  static inline void kasan_poison_pages(struct page *page, unsigned int or=
+der,
+>                                       bool init) {}
+> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+> index d2c70cd2afb1..7faed02264f2 100644
+> --- a/mm/kasan/shadow.c
+> +++ b/mm/kasan/shadow.c
+> @@ -147,6 +147,40 @@ void kasan_poison(const void *addr, size_t size, u8 =
+value, bool init)
+>  }
+>  EXPORT_SYMBOL_GPL(kasan_poison);
+>
+> +int kasan_poison_range(const void *addr, size_t size)
 
-Yes. (if pte_special is implemented by the arch of course)
+This should go into common.c, otherwise this won't be built with the
+HW_TAGS mode enabled.
 
-> won't check if the tags have to be initialised, so we can skip the
-> PG_mte_tagged altogether. We actually had this code for some time until
-> we introduced the pte_special() check in set_pte_at().
-> 
-> So alternative patch that also fixes the deferred struct page init (on
-> the assumptions that the zero page is always mapped as pte_special():
-> 
+Also, you need a wrapper with a kasan_enabled() check; see how
+kasan_unpoison_range() is defined.
 
-LGTM!
+> +{
+> +       uintptr_t start_addr =3D (uintptr_t)addr;
+> +       uintptr_t head_granule_start;
+> +       uintptr_t poison_body_start;
+> +       uintptr_t poison_body_end;
+> +       size_t head_prefix_size;
+> +       uintptr_t end_addr;
+> +
+> +       if ((start_addr + size) % KASAN_GRANULE_SIZE)
+> +               return -EINVAL;
 
--- 
-Cheers
+Other similar KASAN functions do a WARN_ON(bad alignment). I think
+printing a warning is fair for this to force the caller to enforce
+proper alignment.
 
-David / dhildenb
+> +
+> +       end_addr =3D ALIGN_DOWN(start_addr + size, KASAN_GRANULE_SIZE);
 
+I don't think we need to ALIGN_DOWN(): we already checked that
+(start_addr + size) % KASAN_GRANULE_SIZE =3D=3D 0.
+
+> +       if (start_addr >=3D end_addr)
+> +               return -EINVAL;
+
+Can also do a WARN_ON().
+
+> +
+> +       head_granule_start =3D ALIGN_DOWN(start_addr, KASAN_GRANULE_SIZE)=
+;
+> +       head_prefix_size =3D start_addr - head_granule_start;
+> +
+> +       if (IS_ENABLED(CONFIG_KASAN_GENERIC) && head_prefix_size > 0)
+> +               kasan_poison_last_granule((void *)head_granule_start,
+> +                                         head_prefix_size);
+
+Let's rename kasan_poison_last_granule() to kasan_poison_granule()
+then. Here the granule being poisoned is not the last one.
+
+
+> +
+> +       poison_body_start =3D ALIGN(start_addr, KASAN_GRANULE_SIZE);
+> +       poison_body_end =3D ALIGN_DOWN(end_addr, KASAN_GRANULE_SIZE);
+
+end_addr is already aligned.
+
+
+> +
+> +       if (poison_body_start < poison_body_end)
+> +               kasan_poison((void *)poison_body_start,
+> +                            poison_body_end - poison_body_start,
+> +                            KASAN_SLAB_REDZONE, false);
+> +       return 0;
+> +}
+> +EXPORT_SYMBOL(kasan_poison_range);
+> +
+>  #ifdef CONFIG_KASAN_GENERIC
+>  void kasan_poison_last_granule(const void *addr, size_t size)
+>  {
+> --
+> 2.51.0.470.ga7dc726c21-goog
+>
 
