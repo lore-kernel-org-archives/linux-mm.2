@@ -4,82 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABFDACAC5A5
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 07:06:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BFD1CAC5A5
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 07:10:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BBEE8E000B; Tue, 23 Sep 2025 03:06:22 -0400 (EDT)
+	id 01B6F8E000A; Tue, 23 Sep 2025 03:10:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 393A38E0001; Tue, 23 Sep 2025 03:06:22 -0400 (EDT)
+	id F35328E0001; Tue, 23 Sep 2025 03:10:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D04B8E000B; Tue, 23 Sep 2025 03:06:22 -0400 (EDT)
+	id E4AED8E000A; Tue, 23 Sep 2025 03:10:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 188E98E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 03:06:22 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BD9AFC08C8
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 07:06:21 +0000 (UTC)
-X-FDA: 83919631362.26.E9804B4
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf02.hostedemail.com (Postfix) with ESMTP id EB5BC80008
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 07:06:19 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf02.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D17F78E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 03:10:32 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2AB13868FD
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 07:10:32 +0000 (UTC)
+X-FDA: 83919641904.27.815E6D1
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 848CF14000E
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 07:10:30 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=BdkLqEXg;
+	spf=pass (imf23.hostedemail.com: domain of 35UfSaAsKCAwx0wq4tsup3ms00sxq.o0yxuz69-yyw7mow.03s@flex--lokeshgidra.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=35UfSaAsKCAwx0wq4tsup3ms00sxq.o0yxuz69-yyw7mow.03s@flex--lokeshgidra.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758611180;
+	s=arc-20220608; t=1758611430;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9PcTxkODncIYaf2ie+BWlNn2fNYK4Em8fP/tkP68fII=;
-	b=XK9xSlga8H05iGw+PVFGJpphr5lHlJU7h1NH8aYOrt38yowMJ5GKNtiJ0gtiEDAebPvJQp
-	O5C4SuYS5zlorzOAia5fS6f/DDwmmrRA4s5CU+WL3WqXJoaGJTxriY1fnatirOwRM1bS2j
-	12uRG4/VT6KnOcFww5VMPuSzuwYYn0k=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758611180; a=rsa-sha256;
-	cv=none;
-	b=gzkcYx2kFR6RfJVwfBOrL28a5y6gdPCcMnWLEnGOKpXn1oWb/ruM/smJPoysN+KldOP1qN
-	GPdb64EhAZFXmPTYCw12I8peo777KOzGpbm7+pvSITumK6ppM5mnLDoxWxU5m0yBy9hqif
-	I06mQJ8SlKc1JHYPaDmxZji5FlQ2JNY=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=wR1lahi+FoqQzMw6Vp5c+UkfzyZUnSMWePgiKcSESBk=;
+	b=dBAJsfMzPVfbdQpl1xA3+khZiSAJA3N0WzbMDdoU5vQD9xtWWfSzsDFA4v/sI9B6b6viH9
+	6FjQ5FgMQXE7lCu175LFglcKfK3Jj/5fpyUl5qO5VNO0zcde/Bn6Em1C9yxRkCHxP5uge8
+	8Jv4ksQtcRCmIuWOdy5HOlXINHR9yf0=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf02.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BB43F497;
-	Tue, 23 Sep 2025 00:06:10 -0700 (PDT)
-Received: from [10.163.43.74] (unknown [10.163.43.74])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 568D53F66E;
-	Tue, 23 Sep 2025 00:06:15 -0700 (PDT)
-Message-ID: <5491dfda-862a-4c31-b64f-5339007a5302@arm.com>
-Date: Tue, 23 Sep 2025 12:36:11 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: fix alignment for
- alloc_contig_pages_noprof()
-To: Zi Yan <ziy@nvidia.com>, Wei Yang <richard.weiyang@gmail.com>
-Cc: akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
- mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, david@redhat.com,
- linux-mm@kvack.org, Oscar Salvador <osalvador@suse.de>
-References: <20250923001943.2479-1-richard.weiyang@gmail.com>
- <3BF1389C-4B8E-4F50-AB0B-F0D96833D387@nvidia.com>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <3BF1389C-4B8E-4F50-AB0B-F0D96833D387@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: zw8tshcawrrk975agydioy7q5n89x8tj
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=BdkLqEXg;
+	spf=pass (imf23.hostedemail.com: domain of 35UfSaAsKCAwx0wq4tsup3ms00sxq.o0yxuz69-yyw7mow.03s@flex--lokeshgidra.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=35UfSaAsKCAwx0wq4tsup3ms00sxq.o0yxuz69-yyw7mow.03s@flex--lokeshgidra.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758611430; a=rsa-sha256;
+	cv=none;
+	b=zTRRy9FU0YVQdYwqYfDrn0obNX3mTja3VxwF70TKP8udgX6yN3LuyYrNEtjZpBGvf2Je5z
+	1Oz1gGloA+5If5R5EGvjJbun060qQGSyToGejs+osfysOHKwlwSkLfai58XwNxl1tSoDkG
+	Q3sPPwQWCPmH6hUazFwZC2aNn/Y2K9A=
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b54d6a67b5fso4042376a12.1
+        for <linux-mm@kvack.org>; Tue, 23 Sep 2025 00:10:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758611429; x=1759216229; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=wR1lahi+FoqQzMw6Vp5c+UkfzyZUnSMWePgiKcSESBk=;
+        b=BdkLqEXgXJQxLRkSPBTGefvBePy0n4u3v1V+UptSh9g+ucBvP9VjWengYU4GRzLOVb
+         JOEHczPx4Vn7aF3DvfkNJsI5omGMQfbSDrUyox+UxlsWnSZeGlWoddFZf61ir07OR3t5
+         9qHPTYLDjqI6MTMvvx17gZBrInGh4CF+Z2FyoNiFI7gEnHCl9iFx8i1K2QcAy96iOZal
+         nr6pbGHzwjYHhlW/mfCyZtHUYpo4H5PFkKsodj87FW2PGSaD/8nPjyX8KodP3wamsMFe
+         SBbr1Wk2edV9AA8c8rvOJjCTyZUD4IpM0Dtt5eY/CxuLw+d1EWMY15qv6pN8y1te67KZ
+         a2/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758611429; x=1759216229;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wR1lahi+FoqQzMw6Vp5c+UkfzyZUnSMWePgiKcSESBk=;
+        b=ba4eDM2TnY3grbfoZypJPXLkCEumgwEj8zi0OHZmhPj34r/uEC1mM5HwSIR+AOv4b0
+         Oz896RGadCDgjHwnlsdfv6a+RCIbdyH5J5NLxd2QpGin2NFGNX6nuaa6INrJ9P5SlF9R
+         Kw/oPsq/umeSBpefAYpetgpPGB5yYA8g8W9qvSAbB6wgQXrm6gwp8oo/qnZ42cAB+PZn
+         BSg/PxIsbhY4RXBa3ycEzCuedrKOJnWHGMkmKN8M8JyZkAb0Csc524g9sK8VB34pMACz
+         0A8O097jvku2prmER/Zb1gJHGdRBDHsiW3V6kJd61Hjoa4+Wv36VYJhJZiuhHd7I9t4e
+         8FAg==
+X-Gm-Message-State: AOJu0YwWH5mnTRckDwH20ReO3w13tatwBV6XRiJFbSy/edVgMkhOFpeX
+	mCKSZmWbnf1QjGW0tkg/v1TiOlp48fyPXd6TBZoWGmhQhuEKuOoSM63Y7jkJoDBSpn2TZWVOmNB
+	p6SYnsiAICboFgpgyhOewUPAU3Q==
+X-Google-Smtp-Source: AGHT+IGtw6LoXnK5PlDBdfsbPkuy7EOa/C0/hqKJmUMnhfzugONTIoIYjOdvkAFSScgM8z3D+XAVoxeMrGP61kSptg==
+X-Received: from pjur4.prod.google.com ([2002:a17:90a:d404:b0:32e:b87b:6c84])
+ (user=lokeshgidra job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:902:e88b:b0:269:4759:904b with SMTP id d9443c01a7336-27cc8654a54mr24024865ad.58.1758611429259;
+ Tue, 23 Sep 2025 00:10:29 -0700 (PDT)
+Date: Tue, 23 Sep 2025 00:10:17 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.534.gc79095c0ca-goog
+Message-ID: <20250923071019.775806-1-lokeshgidra@google.com>
+Subject: [PATCH v2 0/2] Improve UFFDIO_MOVE scalability by removing anon_vma lock
+From: Lokesh Gidra <lokeshgidra@google.com>
+To: akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, kaleshsingh@google.com, ngeoffray@google.com, 
+	jannh@google.com, Lokesh Gidra <lokeshgidra@google.com>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Harry Yoo <harry.yoo@oracle.com>, Peter Xu <peterx@redhat.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Barry Song <baohua@kernel.org>, SeongJae Park <sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EB5BC80008
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1758611179-778554
-X-HE-Meta: U2FsdGVkX1/zQdK1qp3GWdZKIiXgLh6LdPq9x/TRnyfROFEjFqXpnfe3TuO+/NOApLRFWbwQ2jwdk9jIyudb1xcbaqMADSiuDt35iWFNX9U2jAoVj0phIuGvskHAwQ1rlln48jsONZG1C0O19xncOtEFFYz5VfZXMe1W4XneUh8ZsvtRcVxhbK0N1pIde3mPdce0MnH+k0ZLm0p+0Evtf2KI0CehAxkxHRFlekcu6H6jbNzq3OR3T5VfBZnsTH8thPk0f7B+K/ZgsY3xiP6tuwN5Z2ve6C8aMLOXozCTuV4uCvP/XPdwxsEfZG6XWdkWCUvG+3xQaiFGaVrWUSDdyhOWwaBOwjTQqrPQC11WvUAPreLmwvUdA+5i5mBBMJEORVkT9h3RfcoTxtSz1vjs58U8vBgWAWqup1Yk5KXlE8K81zRAeWwTG0CcQe0JEb0XSlRzAaRDK7iPnZmXoYwNrlGIK7CYpa6RC2opyvbMAHlc5xYYWz1TOSB+4zeUDay4lsyOkVm6Jg6qEZq6HYUpjy+N2M8qD480HncLbTgLVrOw6LpJZ7GkGUjcoaH9IAYtlNA6yYeXjQP3TKUWUac0aXUjUOhOQLjKgd5JQpBOXGPBvFp3D1ZGbMKE2weyheyu5InQb/AkTeaa54foWoOiT+7zpP8spmhmbY+BTTBijRHXQB5X7lL4iqJJ1NoZqryoRSO08LXnyLpHd2KnBkaRWtNxvtGUrla6vygEuPicWrj5TWM1vRkBJeakZ030eHeJQAH5wNOXfj1ohmwSrq6ZMMTAHuAThPeeibViSgmpJtNMTcV9oNnBCH9z3AzJwe0Lor94pveLPufqAq0pxER+ZZ5dIcsXSoZC5q5zk75V2oWUNv4L65yPCFRu0fRvm5BZAyMktMqEHYjwZjyXVzK6SKwP2ih69ekX/sDHaGj+wB5y73re7mFGX0h9ahwrG9EwPpX0WUJKh9hx+BFHk5A
- rjrXXO+p
- 8mZEcAApoGI+ftuyVAUMMwGIL80PwI0S3pXKDJR/pEOzsrgskuLtYPQ/ynPFKXVXUwFgAv7qIYg3IIi9TZSg9NmTJtyDHgRdPppJQumprtFsV/F3OhxrdRPkgQuJjh73vEGJA6rwMtz/eeRQzg6YHplNhtyxkKDyCJ7A5ZhKnO6/NyzCcWWTi+omHsz9GXvT5hXATcPzeXy10yHeXUgMwsRkC1iwVbhqvF1wyBPs7n6l1ARPOF3KA2eBFsaul7/rfU2KdKaDTtS9gKPEr5sKb37cLH9fhqMq492qGt+y6DIyb+U5RDr2EFediugcCmhRQLde9QkYAk/8IP72cIBoxtrzjSdWeeHeqXv59EJb9H4gLHqjR9RgpSd8ew/XUJ788Y72QZRKOK4xp+p2d48RU8/KVpJ8u0Nb+yGQZesfNLGN1ZPZmRsKbTsXr8nwRYgQYiaRXKdSnFOaX5vhBlcp5VAupW3CxojiPReM56tyLIxupRFW+7MRKXshIF5BvcpUFSNzX
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 848CF14000E
+X-Stat-Signature: sdpj36caz6hxz9hnkrdwyphpeprezrdu
+X-HE-Tag: 1758611430-180516
+X-HE-Meta: U2FsdGVkX1+xQBce2x4mIrZMUCw7eChcJHLVZVktTBJp+VzotI0BRUfHqovs9osIVx8z9pG1bnMwMafqRouGm+z+KH6VedrNgbFhm8rKaSDy1sDBxlOBPB7e2L0Pvk/DrrxGMKXCqdvCDi9bYjARMHGNQaQzBx2pdSxiN8zTyXcYPdSTeH0fkXAz263RB1A9N75GwqwEfwNqghI15x4K+spe6u01JtXADgnUhhWyEo8Q45Uy79GDq+nh2Z1huZh5Xe4aAkLMTEk57yiVxlyZ6dhzgDBxTtsNy+P8J0zGjNX0Nyu+y8ZjON9Bp7gQLwZnB6zkXm8fBx/2z0YAUQlkxLydLdenKxlIzGJP1wz89X36V4dDFaXTePDCeH6eJvM9SuxIbNe0ts+KEmOOSw4/PgieWHwaRpmTzqhT83J3EqvdvBMMy8xwbgfD6dkNg07pA4m+JlynHBmG5X/94DD7WQPGMACEDkPH94RF37KxGbMHxOURbSJElEb+xQ5MmFbTHTLJV7vJcv1mE2mgQ7P3kF7EyvnWn1aNtfogElHfVf16eIZXVZEbyzlN7yHzo1BFSkVcdV5kUSh12wxiYlZHHlYZhNI4yynA5WwBqC5wjei66t0PTFsU+JOHTN2eiigx704fqnG+6hGXHNwDy3hsqPqSh987GAVrV5qaPh9uLvlg95v/tqzGkLOxanpRcxAICNtYax6UwOVQ20k9pQUaQbqFoUCxsxF4RBD6P1BnU/5n0a4SJFOpnr5smVRjNSD6AGcQGq++m5TP2eNOjBDz4Z7IylaWNlVGW89k60Kv5sgzzq3V96ToIzTCJsDMRsnfmXg8zA8ElmajwlbQ5IQCplm0ecQ/tFVBmEEZ/j4SxUDwbToY5NKpsDH2O82I2Wa2qtupmPM7DPf488ZIRMzqqmaEQZkC59WEPeoZqd563vGJrpkztQVvDkv37MDt8a1ltSnB/HTJisP2EvXHsqd
+ Kw7wa2W3
+ x7qAbf9yS1zlPZ75ySnQHswZqXTHHAbYvy+kU6F9ZNItrwfqJDaib7BbnDzLewY7zSg0999XPrxO+4suM5j0tBn5Yfnh36pVI5CfalPwZ9PWm556UTUwF7ao9r3N73VVVtjYsEKx34pd5U21VxSK3bSD2AJqnPXtiHEC6B4AsZ2vaL3KhG8Nh5wKkxuBhSqsAxeamXBk4FAyyNFdwmupQ163Jr3iRbaxkEYLznElLZ90NQaBsbhCdBdkBnuwONkgsRcsumHX7nDAyuSI7p6cYADH0Nf+ifaxI2z0Uo41fqxY2ZcoaHkjpMM0KP+k5JYeHOruBG/wOb4m3ApcInlYBQrCCzbP4MvyBcXThZSwrB/n+g4fhM+YfwS8NvfGKg+aRkbL/EFsiDSMKVeL9HUPPL5I/00imWrCb/L4U49SFiDbR5AXMmbJIy/Zkr7QCLDTM10wIxi9lqwqZf90SfiZF9TT8jmJb2tecOW4aOdW8/Foa/k3tZqmbcM0+quLXHe/p8kQNEmNmoB6ktH9KVhO2YJwGsd36LigiD3fA8M8vG5lqVX62P/LQ39Hq/+/KGWS4Jq3HuUbGxzUfKQQZTNTvle0x+NhkM69mRg0krILMz/mYFckQRk0H4JVRJX2oZnsLPwwAeiw312HLlUS7xTG8CDqggLAgkLLkCZIx0KOcrG2SeG+B4jFiHz5g4za3iZU7g/W/qY5+zLb2LPZLoqKUZY+oFO26Wsw4W7c3
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,64 +108,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 23/09/25 7:16 AM, Zi Yan wrote:
-> On 22 Sep 2025, at 20:19, Wei Yang wrote:
-> 
->> Commit 5e27a2df03b8 ("mm/page_alloc: add alloc_contig_pages()")
->> introduced generic method for alloc_contig_pages(). But the alignment
->> calculation seems wrong.
->>
->> Since ALIGN() only accept power of two value, while nr_pages could be
->> any positive one, the result is not defined.
-> 
-> The result would not be any value lower than zone->zone_start_pfn,
-> so the worst case is getting an unaligned PFN range. I guess
-> most of the time nr_pages would be power of 2.
+Userfaultfd has a scalability issue in its UFFDIO_MOVE ioctl, which is
+heavily used in Android as its java garbage collector uses it for
+concurrent heap compaction.
 
-Agreed.
+The issue arises because UFFDIO_MOVE updates folio->mapping to an
+anon_vma with a different root, in order to move the folio from a src
+VMA to dst VMA. It performs the operation with the folio locked, but
+this is insufficient, because rmap_walk() can be performed on non-KSM
+anonymous folios without folio lock.
 
-Also as Dev had pointed out earlier, this function gives no
-guarantee on alignment of non-power-of-2 requests. Hence I
-don't have a strong opinion either way, but does it really
-qualify for a "Fixes:" tag ?
-> 
->>
->> Use roundup() to calculate the correct alignment.
->>
->> Fixes: 5e27a2df03b8 ("mm/page_alloc: add alloc_contig_pages()")
->> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
->> Cc: Oscar Salvador <osalvador@suse.de>
->> Cc: Brendan Jackman <jackmanb@google.com>
->> Cc: Johannes Weiner <hannes@cmpxchg.org>
->> Cc: Michal Hocko <mhocko@suse.com>
->> Cc: Suren Baghdasaryan <surenb@google.com>
->> Cc: Vlastimil Babka <vbabka@suse.cz>
->> Cc: Wei Yang <richard.weiyang@gmail.com>
->> Cc: Zi Yan <ziy@nvidia.com>
->> ---
->>  mm/page_alloc.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->> index a1bcc1e003c7..a17a6014e3db 100644
->> --- a/mm/page_alloc.c
->> +++ b/mm/page_alloc.c
->> @@ -7095,7 +7095,7 @@ struct page *alloc_contig_pages_noprof(unsigned long nr_pages, gfp_t gfp_mask,
->>  					gfp_zone(gfp_mask), nodemask) {
->>  		spin_lock_irqsave(&zone->lock, flags);
->>
->> -		pfn = ALIGN(zone->zone_start_pfn, nr_pages);
->> +		pfn = roundup(zone->zone_start_pfn, nr_pages);
->>  		while (zone_spans_last_pfn(zone, pfn, nr_pages)) {
->>  			if (pfn_range_valid_contig(pfn, nr_pages)) {
->>  				/*
->> -- 
->> 2.34.1
-> 
-> LGTM. Reviewed-by: Zi Yan <ziy@nvidia.com>
-> 
-> Best Regards,
-> Yan, Zi
+This means that UFFDIO_MOVE has to acquire the anon_vma write lock
+of the root anon_vma belonging to the folio it wishes to move.
+
+This causes scalability bottleneck when multiple threads perform
+UFFDIO_MOVE simultanously on distinct pages of the same src VMA. In
+field traces of arm64 android devices, we have observed janky user
+interactions due to long (sometimes over ~50ms) uninterruptible
+sleeps on main UI thread caused by anon_vma lock contention in
+UFFDIO_MOVE. This is particularly severe during the beginning of
+GC's compaction phase when it is likely to have multiple threads
+involved.
+
+This patch resolves the issue by removing the exception in rmap_walk()
+for non-KSM anon folios by ensuring that all folios are locked during
+rmap walk. This is less problematic than it might seem, as the only
+major caller which utilises this mode is shrink_active_list(), which is
+covered in detail in the first patch of this series.
+
+As a result of changing our approach to locking, we can remove all
+the code that took steps to acquire an anon_vma write lock instead
+of a folio lock. This results in a significant simplification and
+scalability improvement of the code (currently only in UFFDIO_MOVE).
+Furthermore, as a side-effect, folio_lock_anon_vma_read() gets simpler
+as we don't need to worry that folio->mapping may have changed under us.
+
+Prior discussions on this can be found at [1, 2].
+
+Changes since v1 [3]:
+1. Move relevant parts of cover letter description to first patch, per
+David Hildenbrand.
+2. Enumerate all callers of rmap_walk(), folio_lock_anon_vma_read(), and
+folio_get_anon_vma(), per Lorenzo Stoakes.
+3. Make other corrections/improvements to commit message, per Lorenzo
+Stoakes.
+
+[1] https://lore.kernel.org/all/CA+EESO4Z6wtX7ZMdDHQRe5jAAS_bQ-POq5+4aDx5jh2DvY6UHg@mail.gmail.com/
+[2] https://lore.kernel.org/all/20250908044950.311548-1-lokeshgidra@google.com/
+[3] https://lore.kernel.org/all/20250918055135.2881413-1-lokeshgidra@google.com/
+
+Lokesh Gidra (2):
+  mm: always call rmap_walk() on locked folios
+  mm/userfaultfd: don't lock anon_vma when performing UFFDIO_MOVE
+
+CC: David Hildenbrand <david@redhat.com>
+CC: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+CC: Harry Yoo <harry.yoo@oracle.com>
+CC: Peter Xu <peterx@redhat.com>
+CC: Suren Baghdasaryan <surenb@google.com>
+CC: Barry Song <baohua@kernel.org>
+CC: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/ops-common.c | 16 +++--------
+ mm/huge_memory.c      | 22 +--------------
+ mm/memory-failure.c   |  3 +++
+ mm/page_idle.c        |  8 ++----
+ mm/rmap.c             | 42 +++++++++--------------------
+ mm/userfaultfd.c      | 62 ++++++++-----------------------------------
+ 6 files changed, 33 insertions(+), 120 deletions(-)
+
+-- 
+2.51.0.534.gc79095c0ca-goog
 
 
