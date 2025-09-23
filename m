@@ -4,97 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 160E5CAC5AC
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 13:37:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71E26CAC5AC
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 13:48:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF5C78E0001; Tue, 23 Sep 2025 09:37:35 -0400 (EDT)
+	id CC2848E0007; Tue, 23 Sep 2025 09:48:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE2A58E0016; Tue, 23 Sep 2025 09:37:35 -0400 (EDT)
+	id C98B28E0001; Tue, 23 Sep 2025 09:48:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B02A08E000B; Tue, 23 Sep 2025 09:37:35 -0400 (EDT)
+	id BD5828E0007; Tue, 23 Sep 2025 09:48:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 808778E0013
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:37:35 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 41A1C1604C4
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 13:37:35 +0000 (UTC)
-X-FDA: 83920617270.25.6683DC6
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-	by imf23.hostedemail.com (Postfix) with ESMTP id F32AD140012
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 13:37:31 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of yintirui@huawei.com designates 45.249.212.189 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A5C5D8E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:48:34 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2E0DCC017B
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 13:48:34 +0000 (UTC)
+X-FDA: 83920644948.28.961D46D
+Received: from out162-62-57-210.mail.qq.com (out162-62-57-210.mail.qq.com [162.62.57.210])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 67D0C8000D
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 13:48:30 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=hVNvlHuE;
+	spf=pass (imf02.hostedemail.com: domain of shengminghu512@qq.com designates 162.62.57.210 as permitted sender) smtp.mailfrom=shengminghu512@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758634653;
+	s=arc-20220608; t=1758635312;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rz2BzszcEXiuSNsZolOaAYncFvYFyjET7mNAKvEoSkg=;
-	b=rwquH+Myp41yELj1GGy99sry1+B2ISaHzH7mAv2ByrsfsKzi4cJcnwiM+zKdeLoBtQhf92
-	FZv8c1mNTQD1KbIu61UcbCL3f+1wCOoY3NUWd0MYs9wti5l/BaaxU+V2l24Yjut5qWaOAr
-	G75NnJWA/Etdfh4eYieUBUIbHbJFlN8=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=b+IiL63MIqdnkFyTDqmhHPO69JPcp4pXgDuXLnSjOEA=;
+	b=5DkgO4e7Wa3E/PMdUiBJUKhsxYZGHk0jMXlVuSizqkKKu3GGsul9QL/U7FGURqaXnsBDdK
+	/PViDKLviIWX/gTq04V3siEKxnNK80J4gF3GVOGXF5ZqcwplqczBiko1icGhTfP0I+y+OM
+	8ETe+xb5CyruWvv/TjEMKBMNaWwZb9U=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of yintirui@huawei.com designates 45.249.212.189 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758634653; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=hVNvlHuE;
+	spf=pass (imf02.hostedemail.com: domain of shengminghu512@qq.com designates 162.62.57.210 as permitted sender) smtp.mailfrom=shengminghu512@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758635312; a=rsa-sha256;
 	cv=none;
-	b=aAiCrAan8gN0ZjLXh41qq8YDQmEa9UnG/jKYjUZ9sG61Ke7/eakN/38cJOipQ8T/79zfVJ
-	r6adeS1+qKMB3nz/JZzG7DdF8Gel3IYAipVHVLgVu0eHjqHRqnf5KzpILIMuaZ8Ce4xwjG
-	Vy6VLZYe+EwqWpVkLo/HULWg9UQp4Kw=
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4cWLWg3pB3zddT4;
-	Tue, 23 Sep 2025 21:32:47 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id E43701800B1;
-	Tue, 23 Sep 2025 21:37:25 +0800 (CST)
-Received: from huawei.com (10.175.101.6) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 23 Sep
- 2025 21:37:24 +0800
-From: Yin Tirui <yintirui@huawei.com>
-To: <akpm@linux-foundation.org>, <david@redhat.com>,
-	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>, <ziy@nvidia.com>,
-	<baolin.wang@linux.alibaba.com>, <npache@redhat.com>, <ryan.roberts@arm.com>,
-	<dev.jain@arm.com>, <baohua@kernel.org>, <catalin.marinas@arm.com>,
-	<will@kernel.org>, <paul.walmsley@sifive.com>, <palmer@dabbelt.com>,
-	<aou@eecs.berkeley.edu>, <alex@ghiti.fr>, <anshuman.khandual@arm.com>,
-	<yangyicong@hisilicon.com>, <ardb@kernel.org>, <willy@infradead.org>,
-	<apopple@nvidia.com>, <samuel.holland@sifive.com>,
-	<luxu.kernel@bytedance.com>, <abrestic@rivosinc.com>,
-	<yongxuan.wang@sifive.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-riscv@lists.infradead.org>
-CC: <wangkefeng.wang@huawei.com>, <chenjun102@huawei.com>,
-	<yintirui@huawei.com>
-Subject: [PATCH RFC 1/2] pgtable: add pte_clrhuge() implementation for arm64 and riscv
-Date: Tue, 23 Sep 2025 21:31:03 +0800
-Message-ID: <20250923133104.926672-2-yintirui@huawei.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250923133104.926672-1-yintirui@huawei.com>
-References: <20250923133104.926672-1-yintirui@huawei.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.175.101.6]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemr500001.china.huawei.com (7.202.194.229)
+	b=0kKWxsX7Qtc2yR+lVSqJJtVfbWP+WePcxjStlowCFORol+DWnINIgLdAEC8+zkd1jKC3X5
+	a+X2fizRBjCKU/RzgQ0+ScjVviv+8fwUtflEltqdKrdrYdXqYji9g3D+ak/GD8AmJ0z1YQ
+	oZnvub3+3SZqf2ef4z42p4OcaO+xBIg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1758635298; bh=b+IiL63MIqdnkFyTDqmhHPO69JPcp4pXgDuXLnSjOEA=;
+	h=From:To:Cc:Subject:Date;
+	b=hVNvlHuEWV9pnJkKEzaUUx4ioi7qJq4Orf5VXUypZkjH5Ni4tH0K1RtjNjIKh4JGB
+	 RxnHcc6xqeYNwKEFERtCqEsuQwWtp6fAJaihxO2c8INKlvrlI0J9/zR8f95/mzlaoE
+	 Wbl388NTMp+CWSHwe9cjRPNa58FAsmubkG4YzKgA=
+X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
+X-QQ-XMAILINFO: MpY9llkH9a9BSJSmopB8ZsLKFH9ATM51D2x3D4rW4vIl2fDgBJjGYU5TNurbNR
+	 kwESVNnDNXEedbu91HAdaUjYuQ1IX8HbrXmgKdYBH4ZTp9c2IxEpTdFZCYghmQB9pFseYgFCb9Bvu
+	 uYOOcR1/3uhy+hFdCreqe0oizMUN0GHWV8ZbNXzKCSGfzzHIngu4D204u2zauxiljsdNnFzKrj875
+	 SmM0UwgJGh4zU7nEJdVEkBD2/G9FD2jZodv4qWPZjqDvxhvlKNvqC2oNsosaA7QqifUgwdeUfr8pC
+	 6mvrP4SgNq+IZvzftWgiYDL0ClrM0wMuZRtgoC3oSQUgoGwt9FVYC1RIltLkCtAurlQRYbHRr50OY
+	 L0NXtm2Czi3ZHJrMDLOxjifdtgdwQKOcC+PcdJ9n/nzTqCXNlXzDwgAKC7Qo4Dk0irI9DONfivZW0
+	 MQ4J0VprOGmwcUt9k7KlfGSPBsQofpXebaZjgs5E6etDxND0wsX5VlHc322Who0aRZ01Q9z9vk39M
+	 2jPpqKZSAaf5rfe5WufY1+Xb9HzaU+r0t6X7YYIKr/3byK0twUs+xoQcCvRlpikLC48gpGjdsx0L3
+	 HI9zUVexdz8m1IEWPscY0fOtp7M0qvA0G7p4yLLWvjWG2aM3GkPfpp9TRJ5ftz+S09Ge5C8q6YZtB
+	 X3gvHvoMyBLclEBXay0ZhDqF0xobMwxowNTAw64HvMLIm42XpML3nB+gIEabNDBwRDXoS1GdcgmA3
+	 GYfiTiw7KPirdlB8QWBPxdeaV0n3cb748+b8Fou0ybTZENKj15hhgSUetuh2kEeNQNXwd5uU64tL2
+	 2ALc2jCVkU2U3ZK8N8n2VvCf+O37DpVarw621u6ywUvXHmeJ7FGRRindu7uvkAKS0LKKc26UEx/Qc
+	 HiBui+sKkindlrkTWrlEhZ1fuBx1hgrf7MMQR4hOOq3B/4av5Y+Xc4kTPMfEnf26bzwhKXLnoA58f
+	 1tvUZ3j0s3HHNxj32w83eOQF6xYUOiqqxbySGNzrh9cwqGxAnbO8xstG13n7oxmAtT7W55JZd3jm4
+	 LY6pQe4dckqL0F5/eYBOI8/6gQnLtJQz2/hOk7YnvxXkPt+o=
+From: "=?utf-8?B?c2hlbmdtaW5naHU1MTI=?=" <shengminghu512@qq.com>
+To: "=?utf-8?B?bGlubWlhb2hl?=" <linmiaohe@huawei.com>, "=?utf-8?B?bmFvLmhvcmlndWNoaQ==?=" <nao.horiguchi@gmail.com>, "=?utf-8?B?YWtwbQ==?=" <akpm@linux-foundation.org>
+Cc: "=?utf-8?B?bGludXgtbW0=?=" <linux-mm@kvack.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?aHUuc2hlbmdtaW5n?=" <hu.shengming@zte.com.cn>, "=?utf-8?B?c2hlbmdtaW5naHU1MTI=?=" <shengminghu512@qq.com>, "=?utf-8?B?emhhbmcucnVu?=" <zhang.run@zte.com.cn>
+Subject: [PATCH] mm/memory-failure: Ensure collect_procs is retried when  unmap fails
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_68D2A50D_8816B9E0_79A22E75"
+Content-Transfer-Encoding: 8Bit
+Date: Tue, 23 Sep 2025 21:47:57 +0800
+X-Priority: 3
+Message-ID: <tencent_265547C79DC9989BDEA72F2DD31CC188B40A@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+X-QQ-mid: xmsezc43-1t1758635277t8af92mif
+X-Rspamd-Queue-Id: 67D0C8000D
+X-Stat-Signature: wu13oqnbu3i9ewkcocibs846gqcz9s7r
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F32AD140012
-X-Stat-Signature: 6ghkb6eke6tdez9py31a6icjnkkh3mqd
-X-HE-Tag: 1758634651-879724
-X-HE-Meta: U2FsdGVkX1+2Mp4w7jFDO7AkNJVNfssDVIlyP0E8gxHmCqq9PehlELBZSZ8lAqmSzAPVPRRQbG6irrVsLoceZ3gzeZ0f1UY4GcjSuhkA0WQe+jYPcp6UbGERbYvG9w+Fx4jDIox+pjswK+ND3tWCgHq4YxwDBe+onmu9ibBUtEgC2h3emQ7FvdH9q3iAV00tZLonHYNmh6V4lKNXK0O2rbLWzIKqAQkHK8iUjuK94QC1B+fL5WMTDW26jAbTuW/IPgBZXTJ20dfBFRljURYrX/5ujCaTr1Kud3t/SO84vaqJs6XVsmuYYWrzDgIUq2dPb+7dQ5F38ZKPqVDKBZg3PimYhhlVeydhktQ4oE+LXN3+Z3qPD95uHdr0qLi3qam1xDfRaEzXcATNVK3ihDxf2lLfJfmvVHDFL3PLFOKoUjuV8l21b86h9azoQMKTb0mV9MuXNdG743YLMaYkPswAwZslvV6Et2GICipm8vZyZlP+upi1fsZesDT02B30yoa5x2B2RNbgmpf4OAbKtIgjWuQz3FxbO9yrA5T8A9AzZS24qRPWXrwdgBkE49B6iCDhEMOXNEgp1x9QAsRqtUrJCnoOwDpJslGSawk7T9ygUfTcO102OAgyNAKi8MXV8VIE9zej0lzousqHKPjkZ9cKS9HDjkcd71uifP4qORrZ9REMLJPECyNxMPfudoZfQaWmze8b0ISwPyIl3Inr9wXgdIdXQZKHPff1E2CcIiLSA4pUAKJvOU+uOTQBR9/BJUgxzMDoToV3bKAHDhmgPTSt9+XZP6op55i14yHuy/7a8RpwYTcriT+oVy+VwNSKgK+150Sca++ZifVY5tcfExVrwhaxiZd5sFPN0CKThJtOA1pYS8sMQ3gqbaOyhInmR3eycZ45s1CU9uB0J0Rx05DXKy7hqdp23rTJWN2+oJChI7r1fQf6AdQzVUnn84YIg8VtIqlHYm/MbPUEIngZIy6
- pHiijocU
- grp/GQZxn1I3gJ8aQvbHWbXyGNQHabQWcNcAgGztgFu70RDmhpmF1dfWo9O377lOit5vB32ZADsLMMazgRSfvqRQxlfOSsk/FwOUL5N+gRxLtGJQT1Cjz0g1AIcJno/hQeRWKnJNyi0fYlfwar5qPBqLjERfhMLsZIAYrnaxN2iULUaO4+dkE2ftE9ZAgTQU+hL+ZBWcBlZSFy7N3Uv7I/JuJcvyS2D3KNA4eob9EToYTBIyhNLOtM2kF/g==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758635310-402855
+X-HE-Meta: U2FsdGVkX18LogsZcj6GtNNJMCRZowr6vW9SpRwOBv0A1QbXSYbu/YE/J/W4PPSJ1kx6khIxUo7ABTrZJQ2sGMVVLmQ6ZYpys2+y/41FVzn8RjOT0RBzDHq4TyPWAe+0WRAlDG2MZiZH4a+gpx9MSx8yg1c8c03+jf7MDDdxdMIRSCJLNNeZkjMqt93kMhxKEBq63G8ZSCedJRe7vbsTDIltr5szzLhnzw+cPnaylcwCyISkFDKuYQM5Wd/WOjMxfF2+qmcTyG1V8HRy64ZYQ9s0KyM47LLagGK0bDkys4yB4tAABcpB9Lw7bXxSLD8XbNI0EH3vHVSHYsL6NlnHKsKmsnZ5DFFhVdDpuGBFp0NrwBPt0E/fUqCDGWXiU/VA8NV16aFt4niurnDrh1wqIyyYcUXlcMnylyu06Z+ORVH9SkQyfIJ2D73T5PN2ynM9VW8nOGJMthNYPPMCrGd3BFhUZvksXXl6Pt3361b1Y4GR9NB/pOlUDNfYAAVkQtiBNYoqcw+fMFI+eI2SeEa5hujIPI4cmqMsF8WihIXbZzMRSn/CLA2Fp+YzHx3I2tKEkmvggjMQlAVz+lnFGomFK+FzIMBVFgYSR8xObdCr/9bBT5SE2oRNn4HwqU5uYQPo5E5OPwQMs4mX7XwuZGagQquZn3tzk2TLJYRFKNGFdp1+8XZZN7CHzmBFEHRprvRKRBG9PYQcRK3mA4+AMJMr8tEJwS2k1pFK2Uwd5HzBKd/zitT4kUCXtENMKYxdd1ZY42XpsZtxnNoA8hFtQ40IjG89dTUBy8MgyNY+NTnuGiOkSH/uEUkark1j42p7WBbb6qEADnl2PFrsXoehHjrkZVkXXm+QJmjpeKxolVyZ62JIv/zLu6O6CO088O2Ckrnxy0KcJm/aPG0K7weoYHElvQ+8uq+Qkne9x5srmzFH1jqi9hSVszh1rycCLr+zXLyKP1CjtSwlMDtSQ5l42pG
+ miFjfw0N
+ 5EEj554+YH0kQ6h7dTQ5hkAIvjkd0vVVpstVqtOEniCq/S/QosFWUn5o3pDDEgxI84DprTMl+S1Mw1kOIkaM0CzBauaViAoVBp9dHTKUUWzQbztuXHGMbx1W9Xonc54int9Nwmtzuoi3FvZyituIanIXlX/z1nH7hBn5B/Cl40bzFbO5oYe+zCaa+BM8apZpoGccwJfv9gtC7L0qgl4EiGtOPdoGRgNIaTR7jYtQ6x26W2zlnSHnngNn7WEQzwA1q5L5j9yftN1vJTGvAC9OY0A7hwt4sOniqvvWVHKJ2u7mOzvkhqBF1QNZjGMSJg8iA+0caC8lGjHliVv2EVy5bZW/L+sBOfezMIw+kmt3Q71v31cn5gT7JhlBIJkHJFyelNCh7VoDE4hWk+NUftRc7odZyTFAs1yjkAHR9baQQBx4h+KNsreEkXfVW9hNI2QybK+m0n3hHAPDBnm2hGnTWdN9tjKYIC+gCK9O/lmj9VMyYl3dJq00gStVOSSt7LZwtHa2nTAo6wd1T4DoGRNC+xeIvvIKUa3kxmot8YZ+Ts3SBE5IxhT8lZpyGA0lox9t8lMTLYzFp/2JYW4q3xXYhGvGPiVVjZK6kQitb3Frby+TwCcqBKqrGBFoA/WIvMvrz2GFC4WsHSYKN+LBE+TBqIy2lQC6slGr9rYaAkpBj88HdypZf3SNZGOU9/3wY92o6I98DdWddqmTkRmQ7ElHJweUI0cVolObvKBGCculBzokEvSYR7Gt7W97ZNbrvrUfU3Sd6uJJrakVUHz7ib5gVgVR4XA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,56 +101,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add pte_clrhuge() helper function for architectures that enable
-ARCH_SUPPORTS_HUGE_PFNMAP to clear huge page attributes from PTE
-entries.
+This is a multi-part message in MIME format.
 
-This function provides the inverse operation of pte_mkhuge() and will
-be needed for upcoming huge page splitting, where PTE entries derived
-from huge page mappings need to have their huge page attributes cleared.
+------=_NextPart_68D2A50D_8816B9E0_79A22E75
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Signed-off-by: Yin Tirui <yintirui@huawei.com>
----
- arch/arm64/include/asm/pgtable.h | 8 ++++++++
- arch/riscv/include/asm/pgtable.h | 5 +++++
- 2 files changed, 13 insertions(+)
+RnJvbTogU2hlbmdtaW5nIEh1IDxzaGVuZ21pbmdodTUxMkBxcS5jb20mZ3Q7DQpEYXRlOiBU
+dWUsIDIzIFNlcCAyMDI1IDIwOjU2OjI4ICswODAwDQpTdWJqZWN0OiBbUEFUQ0hdIG1tL21l
+bW9yeS1mYWlsdXJlOiBFbnN1cmUgY29sbGVjdF9wcm9jcyBpcyByZXRyaWVkIHdoZW4NCiZu
+YnNwO3VubWFwIGZhaWxzDQoNCg0KSW4gdGhlIG1lbW9yeV9mYWlsdXJlIHByb2Nlc3MsIGlm
+IGNvbGxlY3RfcHJvY3MgaXMgbm90IGV4ZWN1dGVkIHdpdGggdGhlDQpmbGFnIHNldCwgdGhl
+IHRvX2tpbGwgbGlzdCBtYXkgYmUgZW1wdHkuIEV2ZW4gaWYgdGhlcmUgYXJlIHBhZ2VzIHRo
+YXQgZmFpbA0KdG8gYmUgdW5tYXBwZWQsIFNJR0tJTEwgb3IgU0lHQlVTIGNhbm5vdCBiZSBz
+ZW50IHRvIHRoZSBwcm9jZXNzIHZpYQ0KY29sbGVjdF9wcm9jcy4NCg0KDQpUaGlzIHBhdGNo
+IGZpeGVzIHRoZSBpc3N1ZSBieSByZS1leGVjdXRpbmcgY29sbGVjdF9wcm9jcyB3aGVuIHRo
+ZSB0b19raWxsDQpsaXN0IGlzIGVtcHR5IGFuZCB1bm1hcCBmYWlscy4gVGhpcyBjb2xsZWN0
+cyBwcm9jZXNzZXMgd2l0aCB1bm1hcCBmYWlsdXJlcw0KaW50byB0aGUgdG9fa2lsbCBsaXN0
+LCBhbGxvd2luZyBTSUdCVVMgb3IgU0lHS0lMTCB0byB0ZXJtaW5hdGUgdGhlbSBpbg0Kc3Vi
+c2VxdWVudCBjb2RlLg0KDQoNClNpZ25lZC1vZmYtYnk6IFNoZW5nbWluZyBIdSA8aHUuc2hl
+bmdtaW5nQHp0ZS5jb20uY24mZ3Q7DQotLS0NCiZuYnNwO21tL21lbW9yeS1mYWlsdXJlLmMg
+fCA1ICsrKystDQombmJzcDsxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCAxIGRl
+bGV0aW9uKC0pDQoNCg0KZGlmZiAtLWdpdCBhL21tL21lbW9yeS1mYWlsdXJlLmMgYi9tbS9t
+ZW1vcnktZmFpbHVyZS5jDQppbmRleCBhMjQ4MDZiYjhlODIuLjgxNTc4MjNjN2ZiNyAxMDA2
+NDQNCi0tLSBhL21tL21lbW9yeS1mYWlsdXJlLmMNCisrKyBiL21tL21lbW9yeS1mYWlsdXJl
+LmMNCkBAIC0xNjAwLDkgKzE2MDAsMTIgQEAgc3RhdGljIGJvb2wgaHdwb2lzb25fdXNlcl9t
+YXBwaW5ncyhzdHJ1Y3QgZm9saW8gKmZvbGlvLCBzdHJ1Y3QgcGFnZSAqcCwNCiZuYnNwOwlj
+b2xsZWN0X3Byb2NzKGZvbGlvLCBwLCAmYW1wO3Rva2lsbCwgZmxhZ3MgJmFtcDsgTUZfQUNU
+SU9OX1JFUVVJUkVEKTsNCiZuYnNwOw0KJm5ic3A7CXVubWFwX3N1Y2Nlc3MgPSAhdW5tYXBf
+cG9pc29uZWRfZm9saW8oZm9saW8sIHBmbiwgZmxhZ3MgJmFtcDsgTUZfTVVTVF9LSUxMKTsN
+Ci0JaWYgKCF1bm1hcF9zdWNjZXNzKQ0KKwlpZiAoIXVubWFwX3N1Y2Nlc3MpIHsNCiZuYnNw
+OwkJcHJfZXJyKCIlI2x4OiBmYWlsZWQgdG8gdW5tYXAgcGFnZSAoZm9saW8gbWFwY291bnQ9
+JWQpXG4iLA0KJm5ic3A7CQkmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDtwZm4sIGZvbGlv
+X21hcGNvdW50KGZvbGlvKSk7DQorCQlpZiAobGlzdF9lbXB0eSgmYW1wO3Rva2lsbCkpDQor
+CQkJY29sbGVjdF9wcm9jcyhmb2xpbywgcCwgJmFtcDt0b2tpbGwsIDEpOw0KKwl9DQombmJz
+cDsNCiZuYnNwOwkvKg0KJm5ic3A7CSZuYnNwOyogdHJ5X3RvX3VubWFwKCkgbWlnaHQgcHV0
+IG1sb2NrZWQgcGFnZSBpbiBscnUgY2FjaGUsIHNvIGNhbGwNCi0tJm5ic3A7DQoyLjI1LjE=
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index abd2dee416b3..244755bad46f 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -366,6 +366,14 @@ static inline pte_t pte_mkinvalid(pte_t pte)
- 	return pte;
- }
- 
-+static inline pte_t pte_clrhuge(pte_t pte)
-+{
-+	pteval_t mask = PTE_TYPE_MASK & ~PTE_VALID;
-+	pteval_t val = PTE_TYPE_PAGE & ~PTE_VALID;
-+
-+	return __pte((pte_val(pte) & ~mask) | val);
-+}
-+
- static inline pmd_t pmd_mkcont(pmd_t pmd)
- {
- 	return __pmd(pmd_val(pmd) | PMD_SECT_CONT);
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 91697fbf1f90..125b241e6d2c 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -455,6 +455,11 @@ static inline pte_t pte_mkhuge(pte_t pte)
- 	return pte;
- }
- 
-+static inline pte_t pte_clrhuge(pte_t pte)
-+{
-+	return pte;
-+}
-+
- #ifdef CONFIG_RISCV_ISA_SVNAPOT
- #define pte_leaf_size(pte)	(pte_napot(pte) ?				\
- 					napot_cont_size(napot_cont_order(pte)) :\
--- 
-2.43.0
+------=_NextPart_68D2A50D_8816B9E0_79A22E75
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+
+PGRpdiBzdHlsZT0ibGluZS1oZWlnaHQ6IDEuNDM7Ij5Gcm9tOiBTaGVuZ21pbmcgSHUgJmx0
+O3NoZW5nbWluZ2h1NTEyQHFxLmNvbSZndDs8L2Rpdj48ZGl2IHN0eWxlPSJmb250LXNpemU6
+IDE0cHg7IGxpbmUtaGVpZ2h0OiAxLjQzOyI+RGF0ZTogVHVlLCAyMyBTZXAgMjAyNSAyMDo1
+NjoyOCArMDgwMDwvZGl2PjxkaXYgc3R5bGU9ImZvbnQtc2l6ZTogMTRweDsgbGluZS1oZWln
+aHQ6IDEuNDM7Ij5TdWJqZWN0OiBbUEFUQ0hdIG1tL21lbW9yeS1mYWlsdXJlOiBFbnN1cmUg
+Y29sbGVjdF9wcm9jcyBpcyByZXRyaWVkIHdoZW48L2Rpdj48ZGl2IHN0eWxlPSJmb250LXNp
+emU6IDE0cHg7IGxpbmUtaGVpZ2h0OiAxLjQzOyI+Jm5ic3A7dW5tYXAgZmFpbHM8L2Rpdj48
+ZGl2IHN0eWxlPSJmb250LXNpemU6IDE0cHg7IGxpbmUtaGVpZ2h0OiAxLjQzOyI+PGJyICAv
+PjwvZGl2PjxkaXYgc3R5bGU9ImZvbnQtc2l6ZTogMTRweDsgbGluZS1oZWlnaHQ6IDEuNDM7
+Ij5JbiB0aGUgbWVtb3J5X2ZhaWx1cmUgcHJvY2VzcywgaWYgY29sbGVjdF9wcm9jcyBpcyBu
+b3QgZXhlY3V0ZWQgd2l0aCB0aGU8L2Rpdj48ZGl2IHN0eWxlPSJmb250LXNpemU6IDE0cHg7
+IGxpbmUtaGVpZ2h0OiAxLjQzOyI+ZmxhZyBzZXQsIHRoZSB0b19raWxsIGxpc3QgbWF5IGJl
+IGVtcHR5LiBFdmVuIGlmIHRoZXJlIGFyZSBwYWdlcyB0aGF0IGZhaWw8L2Rpdj48ZGl2IHN0
+eWxlPSJmb250LXNpemU6IDE0cHg7IGxpbmUtaGVpZ2h0OiAxLjQzOyI+dG8gYmUgdW5tYXBw
+ZWQsIFNJR0tJTEwgb3IgU0lHQlVTIGNhbm5vdCBiZSBzZW50IHRvIHRoZSBwcm9jZXNzIHZp
+YTwvZGl2PjxkaXYgc3R5bGU9ImZvbnQtc2l6ZTogMTRweDsgbGluZS1oZWlnaHQ6IDEuNDM7
+Ij5jb2xsZWN0X3Byb2NzLjwvZGl2PjxkaXYgc3R5bGU9ImZvbnQtc2l6ZTogMTRweDsgbGlu
+ZS1oZWlnaHQ6IDEuNDM7Ij48YnIgIC8+PC9kaXY+PGRpdiBzdHlsZT0iZm9udC1zaXplOiAx
+NHB4OyBsaW5lLWhlaWdodDogMS40MzsiPlRoaXMgcGF0Y2ggZml4ZXMgdGhlIGlzc3VlIGJ5
+IHJlLWV4ZWN1dGluZyBjb2xsZWN0X3Byb2NzIHdoZW4gdGhlIHRvX2tpbGw8L2Rpdj48ZGl2
+IHN0eWxlPSJmb250LXNpemU6IDE0cHg7IGxpbmUtaGVpZ2h0OiAxLjQzOyI+bGlzdCBpcyBl
+bXB0eSBhbmQgdW5tYXAgZmFpbHMuIFRoaXMgY29sbGVjdHMgcHJvY2Vzc2VzIHdpdGggdW5t
+YXAgZmFpbHVyZXM8L2Rpdj48ZGl2IHN0eWxlPSJmb250LXNpemU6IDE0cHg7IGxpbmUtaGVp
+Z2h0OiAxLjQzOyI+aW50byB0aGUgdG9fa2lsbCBsaXN0LCBhbGxvd2luZyBTSUdCVVMgb3Ig
+U0lHS0lMTCB0byB0ZXJtaW5hdGUgdGhlbSBpbjwvZGl2PjxkaXYgc3R5bGU9ImZvbnQtc2l6
+ZTogMTRweDsgbGluZS1oZWlnaHQ6IDEuNDM7Ij5zdWJzZXF1ZW50IGNvZGUuPC9kaXY+PGRp
+diBzdHlsZT0iZm9udC1zaXplOiAxNHB4OyBsaW5lLWhlaWdodDogMS40MzsiPjxiciAgLz48
+L2Rpdj48ZGl2IHN0eWxlPSJmb250LXNpemU6IDE0cHg7IGxpbmUtaGVpZ2h0OiAxLjQzOyI+
+U2lnbmVkLW9mZi1ieTogU2hlbmdtaW5nIEh1ICZsdDtodS5zaGVuZ21pbmdAenRlLmNvbS5j
+biZndDs8L2Rpdj48ZGl2IHN0eWxlPSJmb250LXNpemU6IDE0cHg7IGxpbmUtaGVpZ2h0OiAx
+LjQzOyI+LS0tPC9kaXY+PGRpdiBzdHlsZT0iZm9udC1zaXplOiAxNHB4OyBsaW5lLWhlaWdo
+dDogMS40MzsiPiZuYnNwO21tL21lbW9yeS1mYWlsdXJlLmMgfCA1ICsrKystPC9kaXY+PGRp
+diBzdHlsZT0iZm9udC1zaXplOiAxNHB4OyBsaW5lLWhlaWdodDogMS40MzsiPiZuYnNwOzEg
+ZmlsZSBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSk8L2Rpdj48ZGl2
+IHN0eWxlPSJmb250LXNpemU6IDE0cHg7IGxpbmUtaGVpZ2h0OiAxLjQzOyI+PGJyICAvPjwv
+ZGl2PjxkaXYgc3R5bGU9ImZvbnQtc2l6ZTogMTRweDsgbGluZS1oZWlnaHQ6IDEuNDM7Ij5k
+aWZmIC0tZ2l0IGEvbW0vbWVtb3J5LWZhaWx1cmUuYyBiL21tL21lbW9yeS1mYWlsdXJlLmM8
+L2Rpdj48ZGl2IHN0eWxlPSJmb250LXNpemU6IDE0cHg7IGxpbmUtaGVpZ2h0OiAxLjQzOyI+
+aW5kZXggYTI0ODA2YmI4ZTgyLi44MTU3ODIzYzdmYjcgMTAwNjQ0PC9kaXY+PGRpdiBzdHls
+ZT0iZm9udC1zaXplOiAxNHB4OyBsaW5lLWhlaWdodDogMS40MzsiPi0tLSBhL21tL21lbW9y
+eS1mYWlsdXJlLmM8L2Rpdj48ZGl2IHN0eWxlPSJmb250LXNpemU6IDE0cHg7IGxpbmUtaGVp
+Z2h0OiAxLjQzOyI+KysrIGIvbW0vbWVtb3J5LWZhaWx1cmUuYzwvZGl2PjxkaXYgc3R5bGU9
+ImZvbnQtc2l6ZTogMTRweDsgbGluZS1oZWlnaHQ6IDEuNDM7Ij5AQCAtMTYwMCw5ICsxNjAw
+LDEyIEBAIHN0YXRpYyBib29sIGh3cG9pc29uX3VzZXJfbWFwcGluZ3Moc3RydWN0IGZvbGlv
+ICpmb2xpbywgc3RydWN0IHBhZ2UgKnAsPC9kaXY+PGRpdiBzdHlsZT0iZm9udC1zaXplOiAx
+NHB4OyBsaW5lLWhlaWdodDogMS40MzsiPiZuYnNwOwljb2xsZWN0X3Byb2NzKGZvbGlvLCBw
+LCAmYW1wO3Rva2lsbCwgZmxhZ3MgJmFtcDsgTUZfQUNUSU9OX1JFUVVJUkVEKTs8L2Rpdj48
+ZGl2IHN0eWxlPSJmb250LXNpemU6IDE0cHg7IGxpbmUtaGVpZ2h0OiAxLjQzOyI+Jm5ic3A7
+PC9kaXY+PGRpdiBzdHlsZT0iZm9udC1zaXplOiAxNHB4OyBsaW5lLWhlaWdodDogMS40Mzsi
+PiZuYnNwOwl1bm1hcF9zdWNjZXNzID0gIXVubWFwX3BvaXNvbmVkX2ZvbGlvKGZvbGlvLCBw
+Zm4sIGZsYWdzICZhbXA7IE1GX01VU1RfS0lMTCk7PC9kaXY+PGRpdiBzdHlsZT0iZm9udC1z
+aXplOiAxNHB4OyBsaW5lLWhlaWdodDogMS40MzsiPi0JaWYgKCF1bm1hcF9zdWNjZXNzKTwv
+ZGl2PjxkaXYgc3R5bGU9ImZvbnQtc2l6ZTogMTRweDsgbGluZS1oZWlnaHQ6IDEuNDM7Ij4r
+CWlmICghdW5tYXBfc3VjY2VzcykgezwvZGl2PjxkaXYgc3R5bGU9ImZvbnQtc2l6ZTogMTRw
+eDsgbGluZS1oZWlnaHQ6IDEuNDM7Ij4mbmJzcDsJCXByX2VycigiJSNseDogZmFpbGVkIHRv
+IHVubWFwIHBhZ2UgKGZvbGlvIG1hcGNvdW50PSVkKVxuIiw8L2Rpdj48ZGl2IHN0eWxlPSJm
+b250LXNpemU6IDE0cHg7IGxpbmUtaGVpZ2h0OiAxLjQzOyI+Jm5ic3A7CQkmbmJzcDsgJm5i
+c3A7ICZuYnNwOyAmbmJzcDtwZm4sIGZvbGlvX21hcGNvdW50KGZvbGlvKSk7PC9kaXY+PGRp
+diBzdHlsZT0iZm9udC1zaXplOiAxNHB4OyBsaW5lLWhlaWdodDogMS40MzsiPisJCWlmIChs
+aXN0X2VtcHR5KCZhbXA7dG9raWxsKSk8L2Rpdj48ZGl2IHN0eWxlPSJmb250LXNpemU6IDE0
+cHg7IGxpbmUtaGVpZ2h0OiAxLjQzOyI+KwkJCWNvbGxlY3RfcHJvY3MoZm9saW8sIHAsICZh
+bXA7dG9raWxsLCAxKTs8L2Rpdj48ZGl2IHN0eWxlPSJmb250LXNpemU6IDE0cHg7IGxpbmUt
+aGVpZ2h0OiAxLjQzOyI+Kwl9PC9kaXY+PGRpdiBzdHlsZT0iZm9udC1zaXplOiAxNHB4OyBs
+aW5lLWhlaWdodDogMS40MzsiPiZuYnNwOzwvZGl2PjxkaXYgc3R5bGU9ImZvbnQtc2l6ZTog
+MTRweDsgbGluZS1oZWlnaHQ6IDEuNDM7Ij4mbmJzcDsJLyo8L2Rpdj48ZGl2IHN0eWxlPSJm
+b250LXNpemU6IDE0cHg7IGxpbmUtaGVpZ2h0OiAxLjQzOyI+Jm5ic3A7CSZuYnNwOyogdHJ5
+X3RvX3VubWFwKCkgbWlnaHQgcHV0IG1sb2NrZWQgcGFnZSBpbiBscnUgY2FjaGUsIHNvIGNh
+bGw8L2Rpdj48ZGl2IHN0eWxlPSJmb250LXNpemU6IDE0cHg7IGxpbmUtaGVpZ2h0OiAxLjQz
+OyI+LS0mbmJzcDs8L2Rpdj48ZGl2IHN0eWxlPSJmb250LXNpemU6IDE0cHg7IGxpbmUtaGVp
+Z2h0OiAxLjQzOyI+Mi4yNS4xPC9kaXY+PGRpdiBzdHlsZT0ibGluZS1oZWlnaHQ6IDEuNDM7
+Ij48YnIgIC8+PC9kaXY+
+
+------=_NextPart_68D2A50D_8816B9E0_79A22E75--
 
 
