@@ -4,91 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF7BCCAC5A7
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 07:15:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 080D7CAC5A7
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 07:20:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 299468E000A; Tue, 23 Sep 2025 03:15:20 -0400 (EDT)
+	id 64B948E000A; Tue, 23 Sep 2025 03:20:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26EEB8E0001; Tue, 23 Sep 2025 03:15:20 -0400 (EDT)
+	id 6231E8E0001; Tue, 23 Sep 2025 03:20:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1AB638E000A; Tue, 23 Sep 2025 03:15:20 -0400 (EDT)
+	id 55FC78E000A; Tue, 23 Sep 2025 03:20:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A18B8E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 03:15:20 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6C0A41A03A4
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 07:15:19 +0000 (UTC)
-X-FDA: 83919653958.28.CC7FDF4
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A81B31A0005
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 07:15:17 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 45B1C8E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 03:20:13 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EDFA4160320
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 07:20:12 +0000 (UTC)
+X-FDA: 83919666264.04.4D5F726
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B25AC40003
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 07:20:09 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=g0PLu25+;
+	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758611717;
+	s=arc-20220608; t=1758612011;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BRjzQJGjw2JJF6SecgP0kJUb+uYm0x+KVQlxHfAeE7w=;
-	b=PTH65a4ZX+qbcwhP+OedudZCny+TRVXx5b7I4hLvlvKOZfMk3dYamtJgrJwFjxbhKa1X4L
-	5I+zz3hji8g2WARA/L+952PkRumBsk4HbH6pyaWDatZ5VRimnCh6gpSfzf5QBaX+BFtHte
-	eNohEj+y99yih341NTgZMt9iTpCOSNY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758611717; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=rQAM5HeB+E2S/wpbN2PwHbZ4/TyMc16X8uDG1CirmwM=;
+	b=XnyORj0jUglQwRf7tumvzS0qWrKIVm7ykdzu/e/bTtfViRpD4nOX7IHTF+6HRfSxXOfCPU
+	gmsXsWDGcHcx1gyOs1sHXUdLtZc67OklCqOGtBNsJFEm30gg0Xqpn1EgYb5TaJUpdiQqP8
+	IU3jtskPycH4rB5YnEMivsONNcWtl14=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758612011; a=rsa-sha256;
 	cv=none;
-	b=SZNyq+we0XFXW0BNWtdYybdk9RLNsaM5fbWoNgIAt18LDQjtxrv7agjzol6BGBASxfWZOb
-	aUvJwm6CJKnRLgBt8Fh1B1iTAkz6r8q3j02stK4raQWDYQ01fdTmyAREMqJCkltVBsAl9W
-	LdPGNhxHEvatzOLrwLgA1igkm97+Ig4=
+	b=wvfgCKdVH31ZUkpLNRKUuBTCMRhD8hzOGt/cGOZaYfCQR/gdrtNUtzNH2rKineVIESco7W
+	WMCc+EpZl824qwW5xBkkeVj3BKz8wvTNxiMjYNQCqri4tb6u1973PSP3pIDvLxITvNJxkg
+	Q0T/M70cXe5PekxbTliQdhyK/JuTcDA=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BC997497;
-	Tue, 23 Sep 2025 00:15:08 -0700 (PDT)
-Received: from [10.57.81.133] (unknown [10.57.81.133])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6E7D73F66E;
-	Tue, 23 Sep 2025 00:15:14 -0700 (PDT)
-Message-ID: <3aadd340-f2e3-4926-8a39-69a0162eaa9d@arm.com>
-Date: Tue, 23 Sep 2025 08:15:12 +0100
+	imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=g0PLu25+;
+	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758612010; x=1790148010;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lwJ9UOqD//PDM/RdW1ujxGd44CcPYvzNz6RKR54u+xI=;
+  b=g0PLu25+G28lY7/9/fx1WAsbwJfK+zf1Ht9d9y2vlpRyftOfWhhXd5S6
+   Uy+9qLezb17pqQ1p3OV71cWcPwWXW0vkkt7OEjG/XDpy2dKfE57nL55S/
+   t+UcwIkMys1zElRdL6OYd5AiDU04FWbaSO/ucQag9qFclYvT2T8ueRtnW
+   jaZ4f3PwvymFokrzZq3nB6M6aLf8ZpLe84/COuCG0QSiKQvFKESHniMU2
+   okpsPe3N5HKTL/2RxXfvfCsWXMQ0EEMCn+GURQGrq0UZQJZxKbodGb1Dk
+   TG0S9H9B6RsGgMg8WsDhG5bfX5+pL9MatCQ2pXAb1y4i6/luVdf1FLKLI
+   w==;
+X-CSE-ConnectionGUID: YmBokY/xSdm53YOISMEHNw==
+X-CSE-MsgGUID: rK8IAu1qQcKxCreQbesBuQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="72310791"
+X-IronPort-AV: E=Sophos;i="6.18,287,1751266800"; 
+   d="scan'208";a="72310791"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2025 00:20:08 -0700
+X-CSE-ConnectionGUID: Yfyb9R4/Q+iN3TxSgmOafA==
+X-CSE-MsgGUID: tJaYf2dMRTq2G+2tFbHnZg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,287,1751266800"; 
+   d="scan'208";a="181079366"
+Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
+  by fmviesa005.fm.intel.com with ESMTP; 23 Sep 2025 00:20:02 -0700
+Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v0xJf-0002rB-2I;
+	Tue, 23 Sep 2025 07:19:59 +0000
+Date: Tue, 23 Sep 2025 15:19:38 +0800
+From: kernel test robot <lkp@intel.com>
+To: Tariq Toukan <tariqt@nvidia.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>, linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Gal Pressman <gal@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>, Will Deacon <will@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Justin Stitt <justinstitt@google.com>, linux-s390@vger.kernel.org
+Subject: Re: [PATCH net-next V4] net/mlx5: Improve write-combining test
+ reliability for ARM64 Grace CPUs
+Message-ID: <202509231437.exOuF9vQ-lkp@intel.com>
+References: <1758528951-817323-1-git-send-email-tariqt@nvidia.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 0/5] arm64: support FEAT_BBM level 2 and large block
- mapping when rodata=full
-Content-Language: en-GB
-To: Will Deacon <will@kernel.org>
-Cc: catalin.marinas@arm.com, akpm@linux-foundation.org, david@redhat.com,
- lorenzo.stoakes@oracle.com, ardb@kernel.org, dev.jain@arm.com,
- scott@os.amperecomputing.com, cl@gentwo.org,
- Yang Shi <yang@os.amperecomputing.com>, kernel-team@android.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20250917190323.3828347-1-yang@os.amperecomputing.com>
- <175822779944.710258.10028837182267037801.b4-ty@kernel.org>
- <fc43aa07-d4ad-47d5-8381-61d4a9b8c467@arm.com>
- <aM0-FQlepoxxGkRd@willie-the-truck>
- <ceaf604f-8ad7-4e19-812e-7eeace10d835@arm.com>
- <aM1E34lRjKg7nlRu@willie-the-truck>
- <38fa4717-9105-4bca-a2cd-914afc109570@arm.com>
- <aM2kg49jBia4VKYr@willie-the-truck>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <aM2kg49jBia4VKYr@willie-the-truck>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A81B31A0005
-X-Stat-Signature: 5pikwytqwaxiecuzrg7sm57zt4xhwhwi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1758528951-817323-1-git-send-email-tariqt@nvidia.com>
+X-Rspamd-Queue-Id: B25AC40003
+X-Stat-Signature: hbs15w67yut9acb7qs8cixuxdjc3qdmw
 X-Rspam-User: 
-X-HE-Tag: 1758611717-976205
-X-HE-Meta: U2FsdGVkX1+G1C05aNcQcxWVmLYYArM8+XNSSyhsWowhTnqDCl2gI1DvSKNzwdZY2XRQQ8UdFiYc2LSaAQlQGN8/VpyVGPlgqJ6XIfhTwciOdGDmwx/sIV2QAM7l23OhNyR6/zdijPMnWQUWqFq5XNPhDW2501IyeqrbCT9K4oeb7j4NcO0JqqL+l2K8C/cja+MmDvXo01T9oqFVO8OKEnQXR1EXFmG9pxhTFWEISNVvJQK5L4uIAEPOihY8eOXZEhWSZQwh29ckN9AJ+C8Ma1goptv530M7OhvT0zt8Uka8lYk64euu+4yVEwZ9IzyI3fpDSVGEUyNy0pwdZqIhNXJZfJWZAECBeABqDzJuB4Ox4ggQ8lcqw02MKU9GD9K2ohefdctqhvqiagCgSq2t7LUMX2oEj89ZqAvgVWn6vLXFB5a2lx99I/8UBfAtgF0pOFEXAP4ti43Pu8nnYQeyst+LG0zXao3vJrKZkPtQ+WTlXApazSvI6l65ywkNV241oqigLRCEAnE7iMnz3qMWv0KwnRrddCTEeqFgVj9iGIPm7m0RyOCvIbxOv4+k7K3lYbJ9gnCz/XdmiLbOUd/1od04YqqsPZitiTvlUN7f00M0gw9SmwOEYAtTALhUpJJgikv3ueQVlUM6mNf2D/tHLLjO2rGmFuVDLy8w8sCh76uswZjUMM16be32qt+8sEL6iTime+jsllzMQm+o9K/HctNWmrK9VToXgYAdIiWIcmtmA+UyWWBY0s4ru6NFopIKDYby74/3fjyYpl5jWoy2wkurWReOM4t67t9AaTmIz+GRw0omxJRhxEljX7BIkg+foDOlJ1aocpgE64KZ0Myo+kpSdcPPsyytqIIfT+XvaRRXRDT35uiWTgw/RaWXoeKO1g9XwLGydguQDHtb0Eiz8MCbKMYU+U2IWgtDd2GvdOMULUTVAr2CBZiWeirqhAD7uqsFjFGqjqnHchWC17e
- 8tFUwwvv
- gb5LYZwau96bmwKFqVwSjfnuU8gYV1kdGW0MUYLjfWzVoraaEF8ZQPBufU1YR4IunJjD2o1n20ppzYZTOS0Wy8ErQmBNH40QtuAk8uatWOswYXSB2NiTP5fmadNw1HGuOYs2qnWRxLhfrMr3WFU/M+0FdETJrREcyGCe0nTGaWnX3FIJZuJEvrY55xvF1XM+1eHYK
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758612009-622221
+X-HE-Meta: U2FsdGVkX190mZ7P5cyucIAe8hXKbBDeAKIUWzD6pPbCaVJCUT4Lc9rAs25aBNDWepiGw+GHyU5CaCUoQpoXZgg9DYoIv+P3+8D6ge2sfHix5SQC4lcamfmnaPJPe5E6wsrqN5+B2ZJCk6/NL8lXT/MJ9/kpD6fi8qbK4KcBQpnc2Bsc0eQh/zMYg/8nnt7YoHcmnxpDdHHjXa56g4Ow7dgC1IA2i5OeMqET/346lQAdYwhk5WN/K4wMgRGNcH5542gGM40RvNLv/JjsBt5Ph/pXnCuxNU2+QFQYtMTiFE/MRuhWsu+4oGnr2VGRypLKSCYukvigMTVZ7z8xLQf0EIkkh2Zi5yeC04M0wVOEeaOfAw7mXJ4Qdf4ZypcThKKdEZl8TKRL+ydARyONZEPxD4u8EHIi1T0iiHwe5dZDbtStOUIjKGGKrwGY3OCDxN2nQm/QRItUzUjkDFkSgv8cnFUw/5VwYUBU8+YlBtlz51xyzJdyWEkFAZcfbu08NsaMHO4djEsJ4cLCKFyEpgauRmvnNi4gsgHM5Ec0QBIwMgyC5UFBIwnMAmIhHbb2bmVcqm/5rgmLz+CVWQEW7a18MKGY/ymVFr8ZvcczriYnMPsnGdW73QN+GlCCDOzE16Pa578LP0KNEUe0PSg0obMREvC1dK3OrqFKyGak3+0YfrHi5Lc39ylShCw5V37jDxmKING31gL2or9PPlQhg48HcpR4KkHzB6B0g9w57fN/Cef0i5tUxGbIJ3NCv7+YgNAxN2ziioAdYV/kLm3VxPvIZAGE26cHFBYeAwqLC8IVcgNbLw4qtL+5A0p1KzcdefWaJ8tg5n+xB9eaEYHaW8KPAL2tgBYV5veDJ6X34vYCV5U1ISanK/g7MR9oXL6mMJ/hlPiggyqe/1HR/ppz73qRrFXyofpkQ+mleZVUj6UeycjdUWHl99028GrkwbmsuE/+DasJPb4u6hsm4SjeWkv
+ YZjJuf4K
+ 20Rt2Wgs2GI88Yr3TB3DGfXRw+JcGL4jRdFKBv3ax2/Li8avrBULi+4BEDCu96kVHLnpo7sF1MPsMvfefKx3P6PCljK7Upr6vxIM8QOPnUfeC/GJFm83Rpbo3UmTSGVBVuzleN9MUKuyDSjt74Dq3L5JtBlzN3VyZnyTuaCdMSXeEDQS1uTX88K9HA91nGr7eVsok3wxy59v/qSJp08U4XnhxQRI/YbWNCz2+8HpnuUi4S4SK4DW4AULvWBwo0NKBJy7Fs1/p/WWkCRjXblp9Scy3ESZBPdD1c7a9GgAGkTJDGLtm2mD0gNthGKyl6cUn69tjs1MjlUFgSGKOg7igZH8DDeHUxxRTKvYVzPHlljCBsIWRbgL18pcOjfGmvwFbzvD9wRd+VDq2j2qBAj1GKfpzQTNnnI0F+Nd13pPpX+EcvsGnipJwyCpewQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,29 +130,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 19/09/2025 19:44, Will Deacon wrote:
-> On Fri, Sep 19, 2025 at 01:00:49PM +0100, Ryan Roberts wrote:
->> On 19/09/2025 12:56, Will Deacon wrote:
->>> So how about we:
->>>
->>>   - Remove X4 from the list
->>>   - I try harder to apply your patch for secondary CPUs...
->>>   - ... if I fail, we can apply it next time around
->>>
->>> Sound reasonable?
->>
->> Yeah that works for me. Cheers!
-> 
-> So after all that, the conflict was straightforward once I sat down and
-> looked at it properly.
-> 
-> Please can you check for-next/core? I forcefully triggered the
-> repainting path in qemu and it booted without any problems.
+Hi Tariq,
 
-Thanks Will, I took a look and didn't spot any problems. Thanks for squeezing
-this in.
+kernel test robot noticed the following build errors:
 
-> 
-> Will
+[auto build test ERROR on 312e6f7676e63bbb9b81e5c68e580a9f776cc6f0]
 
+url:    https://github.com/intel-lab-lkp/linux/commits/Tariq-Toukan/net-mlx5-Improve-write-combining-test-reliability-for-ARM64-Grace-CPUs/20250922-161859
+base:   312e6f7676e63bbb9b81e5c68e580a9f776cc6f0
+patch link:    https://lore.kernel.org/r/1758528951-817323-1-git-send-email-tariqt%40nvidia.com
+patch subject: [PATCH net-next V4] net/mlx5: Improve write-combining test reliability for ARM64 Grace CPUs
+config: arm-allmodconfig (https://download.01.org/0day-ci/archive/20250923/202509231437.exOuF9vQ-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250923/202509231437.exOuF9vQ-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509231437.exOuF9vQ-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In function 'mlx5_iowrite64_copy',
+       inlined from 'mlx5_wc_post_nop' at drivers/net/ethernet/mellanox/mlx5/core/wc.c:317:2:
+>> drivers/net/ethernet/mellanox/mlx5/core/wc.c:268:17: error: unknown register name 'v0' in 'asm'
+     268 |                 asm volatile
+         |                 ^~~
+
+
+vim +268 drivers/net/ethernet/mellanox/mlx5/core/wc.c
+
+   261	
+   262	static void mlx5_iowrite64_copy(struct mlx5_wc_sq *sq, __be32 mmio_wqe[16],
+   263					size_t mmio_wqe_size, unsigned int offset)
+   264	{
+   265	#ifdef CONFIG_KERNEL_MODE_NEON
+   266		if (cpu_has_neon()) {
+   267			kernel_neon_begin();
+ > 268			asm volatile
+   269			(".arch_extension simd;\n\t"
+   270			"ld1 {v0.16b, v1.16b, v2.16b, v3.16b}, [%0]\n\t"
+   271			"st1 {v0.16b, v1.16b, v2.16b, v3.16b}, [%1]"
+   272			:
+   273			: "r"(mmio_wqe), "r"(sq->bfreg.map + offset)
+   274			: "memory", "v0", "v1", "v2", "v3");
+   275			kernel_neon_end();
+   276			return;
+   277		}
+   278	#endif
+   279		__iowrite64_copy(sq->bfreg.map + offset, mmio_wqe,
+   280				 mmio_wqe_size / 8);
+   281	}
+   282	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
