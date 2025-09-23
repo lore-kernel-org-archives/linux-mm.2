@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60678CAC5A7
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 09:03:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B770DCAC5B0
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 09:03:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4EE88E0017; Tue, 23 Sep 2025 05:03:32 -0400 (EDT)
+	id D18AB8E0001; Tue, 23 Sep 2025 05:03:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFED28E0014; Tue, 23 Sep 2025 05:03:32 -0400 (EDT)
+	id CAC868E0018; Tue, 23 Sep 2025 05:03:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C6328E0017; Tue, 23 Sep 2025 05:03:32 -0400 (EDT)
+	id A62768E0001; Tue, 23 Sep 2025 05:03:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EAFA8E0001
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 807B28E0014
 	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 05:03:32 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3A95714041E
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 11413B968E
 	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:03:32 +0000 (UTC)
-X-FDA: 83919926664.07.6E139D0
-Received: from mail-il1-f206.google.com (mail-il1-f206.google.com [209.85.166.206])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8F1A440018
+X-FDA: 83919926664.04.A87A23F
+Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 40653A0003
 	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:03:30 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
+Authentication-Results: imf25.hostedemail.com;
 	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of 3YWLSaAkbALwu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.206 as permitted sender) smtp.mailfrom=3YWLSaAkbALwu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	spf=pass (imf25.hostedemail.com: domain of 3YWLSaAkbALwu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.208 as permitted sender) smtp.mailfrom=3YWLSaAkbALwu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
 	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1758618210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=qawIWc6HWAuv7hppdrKNRGMrCqrgNjhh6jQdGpOVwNo=;
-	b=FpXTw3sUPcbPx4pS1oq/OSct2QuC5vGS/aZSL7pPCrKMxIwvkAJYwirBKHAj00oY21q39E
-	ma4buKzUlVXJRkRz8BYQ/Tf4czwnngGnAOof4AIChsp9aqoK8Kpk/KB+FBY9lRQeSJ1XKO
-	1DFP68bMDWH4wq6ZG/sW0AXzTBXPDtw=
+	 references; bh=0DBJDn6xDaiOhYMo2RaF4q11GLTSm+nfoJ4hteBQ+HQ=;
+	b=zwPKPn5xsJD0ilV85QfleOJVDXeZG+sd3urDsixAKQXIbNwo+xBEUuk9ZdUsJ3pE4hWywZ
+	jX3M89uKrX/inSrvAJf10lPXZZ/lHfR9asv4YaYlrL2SMsWvAEGSy5ClmMSBEJUc8kBxHf
+	KwPtrrtLxhkVm4Mfhc5z4PMzh2RoGtQ=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
+	imf25.hostedemail.com;
 	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of 3YWLSaAkbALwu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.206 as permitted sender) smtp.mailfrom=3YWLSaAkbALwu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	spf=pass (imf25.hostedemail.com: domain of 3YWLSaAkbALwu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.208 as permitted sender) smtp.mailfrom=3YWLSaAkbALwu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
 	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758618210; a=rsa-sha256;
 	cv=none;
-	b=7Q6nu6tLWDsppCimY+i3SsU1clmt8ghKLUHBKooBSRUe95GaOhTNp1YdGSIxvqeNL7wa4t
-	5xzREtfDVUTSfxmjwoG8MHm8KoXRq1l2uzKXwUQOQAUvw4oene1HExTjAuzhwLFwzsFA6E
-	sKneY0v6aS6vCEI9xlwifobN1Oa0Nvs=
-Received: by mail-il1-f206.google.com with SMTP id e9e14a558f8ab-42571449766so55912335ab.2
+	b=syzF/scaxAxxO/plrMRzT5HaJIhzQoEFWUPOK1y+G3CZdNbNKwk10qSOzAdN3fxxjmFQXP
+	townyQLdBEHSyI8hsrgmtTXkPV8YTdkDY0xY3+OkHamUiaujS67Tbn9qX+mtqpGSRh9+bD
+	ntuZNVIhSxjR6qaRGS8RMpro9Qdsbeo=
+Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-4248d44a345so42685985ab.1
         for <linux-mm@kvack.org>; Tue, 23 Sep 2025 02:03:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1758618209; x=1759223009;
         h=to:from:subject:message-id:date:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=qawIWc6HWAuv7hppdrKNRGMrCqrgNjhh6jQdGpOVwNo=;
-        b=dl3UoJQmcwX7F6AgXWFnVZnHl36G2j7NgH6GCoNAA+XnMAllLESIVWgkctRJnS26zL
-         clisLKGyV9Npn4Ro6vv0LQnEKSVTW1UCipAGhXrWa/OiawjCmdW+9++xUG4VpRGSgs++
-         KpuZFswg8bQv/KODSZMWIPnifFw8kXDlHc2+RTj+eTnthDTwdF1jw8BcTPOHG6tfNYxA
-         nBld7tgz1g73dg8crZsvYNAOGjU126+N+TlNoUwJcmMEL5eKJ980khZja4h8Cml/6i6I
-         Bft23c6Bd9mPSgWDpr9+yXzo0xY4J01My3Fk7rsLeCMAArUsO3YO70jlYv3zsMwtLiOI
-         Engg==
-X-Forwarded-Encrypted: i=1; AJvYcCXRSbCr6vwiuc+3Od2mmlZ6VVjBhUeeKzYuoQ/1NbWEAfsqE1Tp8ZxjRtDf3c/YiGvjmSsNmgn/Aw==@kvack.org
-X-Gm-Message-State: AOJu0Yx7pTtYnuV+AhlwhzmK/1jVGHTKunHWCBH0X0HRKQ+Aake0EhY+
-	7m2U+w3zjHQbIVwwZ/aRkb2+lfRhJNYS8XkbOARCNAm2IcH5q/P9pV2R8Djx3djOySmRyMurszb
-	nHObpamNPHhO3WPKY12d0EI1eNPhvFTDYgm0Fet4j9/bA68tl0uoZ26NG/wo=
-X-Google-Smtp-Source: AGHT+IHJlQAz5UGV5R9SQO4x/bEQmDqd47KX/iH2j0vkgz8h1aDacoLJGydUzrLZxCA2KDvIrVwKxzCeP+1pywKQVSp7kcRis0tr
+        bh=0DBJDn6xDaiOhYMo2RaF4q11GLTSm+nfoJ4hteBQ+HQ=;
+        b=KuW0U58zGPxuGtBlNduLGsO1LPIF1xQiAUhH0dgnVrY/7gx5DP/gWhtcfs1vpgVKt6
+         MZD3+6oNNV9AS/+m6R15bSNsqmC+PlNnZs93VlvCN1P617KXBJk+G0N2DY1aqc2VorqR
+         jfUnNO6wPlZ+m9NHtm9yK2n1cJZs+MG+hvAIqrR+7yKAnV7xOyMHqOOEF9eE9FJjV2zT
+         02DH4s7f3f4PiUmIHp/QEx2nX4RRdAAmqf2jNfco5LpGHS23gIqNJm/hEnZa/LRBQfAe
+         GrLBwPoa2O1l8SbsNtmFVuMVBPw/A1rb9s5H99AK40b6HYbe5DJUuGH8cx2civYCQH0u
+         r2BA==
+X-Forwarded-Encrypted: i=1; AJvYcCWOyz/jppdy5lxsBTwSpEgZIDQMbpzH9X5TjwLVO1TT9JN3WhKOsURQqXZguaBfh+DaLI2UK8HyIw==@kvack.org
+X-Gm-Message-State: AOJu0YzKCeumCdbiOfAI8zZkkqvB/DoAEMyXir2rmu5VPcyhmf3JLu1U
+	I9Dx6YwPDt7/vcpLPcdqzguZWsIgZFCDrj8pa9Lg3inXVXdHq9eBarCvrA+JBG5DLpELPCH3tlU
+	+4ZyTnfNXisRAUQ5uIDrEY6yCMHn4Hh+aY/dAsCJXLXLqj/1S8gal4oLFgaA=
+X-Google-Smtp-Source: AGHT+IE/1nhaPRURoqVDgGdxyupjZFT/6ioLFhQOG75Ih/hNH2NvNvEsaKQZwfJVfUbEhIe0M8hJycznVzxXLNPubyRxPiFEKLtK
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:3f0f:b0:424:8d44:a261 with SMTP id
- e9e14a558f8ab-42581e2509cmr27390335ab.11.1758618209571; Tue, 23 Sep 2025
+X-Received: by 2002:a05:6e02:3c86:b0:3f2:a771:9fb3 with SMTP id
+ e9e14a558f8ab-42581ebcee2mr27557375ab.27.1758618209337; Tue, 23 Sep 2025
  02:03:29 -0700 (PDT)
 Date: Tue, 23 Sep 2025 02:03:29 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68d26261.a70a0220.4f78.0004.GAE@google.com>
-Subject: [syzbot] [fs?] [mm?] WARNING: bad unlock balance in hugetlb_vmdelete_list
-From: syzbot <syzbot+62edf7e27b2e8f754525@syzkaller.appspotmail.com>
-To: david@redhat.com, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, muchun.song@linux.dev, 
-	osalvador@suse.de, syzkaller-bugs@googlegroups.com
+Message-ID: <68d26261.a70a0220.4f78.0003.GAE@google.com>
+Subject: [syzbot] [mm?] WARNING in hugetlb_vma_assert_locked
+From: syzbot <syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, david@redhat.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, muchun.song@linux.dev, osalvador@suse.de, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 8F1A440018
+X-Rspamd-Queue-Id: 40653A0003
 X-Rspamd-Server: rspam05
-X-Stat-Signature: 4t4rbpima41duiih4xush5qbs3yzc9s1
+X-Stat-Signature: uzyh6ecaaghkkopmghwj3unkah747qtd
 X-Rspam-User: 
-X-HE-Tag: 1758618210-575396
-X-HE-Meta: U2FsdGVkX18ty9h/3PRxjGKjIdJzmdrH/bIktg5FAIe9MlOurO5C2ttJf5ZzMnXFqJEtVhGJOu6TAdPn/t9tGkl08mvtXO11ZolHYDjw/PBtkK6pq8lehiaTusQ5lIsVaa+/L9vdzqTf0BnxWxFaz/DXRm73RX7eR8Msyb4mZ//2Ph9Sjk4AAUveHNnXXzSHbSJ/Y9NU+m+LrHkL4GiCGc9/BvgZTw2VoFaC+veAlEEAt+EaxYQI9fmfrM+dxvMRq1kvpMhnbtd19ddDPMe92NEJaSBwK81OWPs5006G9eFj9xKmZyjOXUgskE69lqO7YZSa5r6umhle1PSh6OookielMnIQt0XwXJHZfj7st8yWXs9Pat4YPbI702w1TYQlE74dldWsv2egau7AMnekkFYIwffkEW3dF7hSoIENy7eKNet0fVtf/AOsCa/bJbyIfslkMVcE0sn7bMcGxzBWzi2oebmlI2yaAyAyKVq5RyoZwbBN6OTZNMFhix2NI1GOfi0aJS7IAS/qp8O+2cAernN/yhbPrrkoyKUZ02GCBB72D3I/cB+PI3pJh3L6jMYD/DTp9V/tkBRxhoGqmbaJQzFm/W4BZOtxFwvHw6Q/xUfbt9uEvBoYkACpIA+LOuW/WWZc/wAid4gGj4e7KYKwyNud+36+Dur+GVYOE+WuQAgaIg9TUL5pi+zkzRNHHN4Dlwqb7PzTM4ssk2//yERG/alk0m0vgy9CXPRzHwOxCEOu5968m014wd91kn7nOfZErQvQc2cYR2+4xzgiYbcuM9C78zttJ1q2IcJZVuHRx0ozMBwLVw1Uge8bsA9oa95ffAIsITofGqsXWle7CTunbESLV1l3d6y5Vu++4C0FNA82aWQXUgncgUKJoM3FSvsYD42o0FXCPdj6/Opntj5ICftqsONtG3ZhkPXTko9VIPk86yhkp2Bu7dg0Gto0xd7Hy31CUHefbZ/WgFvYUcD
- hKP9NNr0
- L8uhw5C9p9aHuJnAHGiDiDPpesECoVtlWKdvNOe/wd2Mkldi7lmnVcxFP52NTDN8waz1XuYp/hTMBsjZXlsmssmBfYiu0d5WOvick4siYaaa5vNxEjjr4N6M5+IXsxBeafjlB0mNxQ6COmVtYDZjNvbIcC/i367zpNgqMNhn1nuOpU+wSb0fbvydR+7WJzDSykEBvRDdLlbF0QaRCpS8OF5uzXnEl8Cqo2mVwuO3lFIeN4WpPCoOZdh40zvUUzaNZYmSNUObXx2peWNAYE+NV4qKu9Adn+IUYPW7M7xzKFxhVNHMesSIYONYG+lOpI+4eRE8dclTg2ZGOAbsvdfDsejrjlsRKLiMooCNLsZyBJW1auJXehGIH2tDOu6EQzO4SvObrnyJvqyX0N08dzEdiFJDgYxD2laIfXZlyqGC245uZAKK2FX7MDijoFENG45o36wSonEQmHRMxMQZ/1dh4AI4fmjqpMMyUPuIQmWx/mpnsUqKjDN4PTFBSlwQTqwlS2XHKbdaY3l4MJveYWxRG5ngd0osk8tFynz/se3yDJJRrITc/qr7aPmIjTvUge8gBw8vs5SySL0FXfyNDV9yShOgjwyYcU2Ufm4iVk/6t/8np8LF4OVAqbD8OqnHOxAf/baSzuFmYGYUuaKhGeOUehI3VLpcs24T6nvWbeyAKQuLUm5Is47Wm7ets79p/6fBco38ScT+Ka/eo1LzgGwbyWBwwaF7VYk7Cwsaa/BP//SnpGqUxx/j9BeNatE4tgj+cp+fT3d40Bma2S4YOuZmw/jGdXLu7BDhkMT4MVtTg7FGNGOwnoCK1HIiEs1DEK1Wz9zUW+IVRWNrwiUabdBb77V9HiGkA/YnlYHJyHXSA357guuDOExt8I/xtdoXzYO3ZhMsD+zYQqGZiFwj4GNzWdMejgDTtd7wkW4/NiPhDnbWd1vPlveK0IRyOYu8miXY61SkyoI0hKWZmnB2I2WeV4qkDw6Um
- db1kQB25
- fiO2/lSFPjanDhNPOu1Q64KMRI+fR9W2y3j7b8wyCki8FKiLWQDe5FiKTBueSNLdLYtobR2HT82sABZ+C1oi7cfcD2LJaesKV+LDBVtR0kPOv3TBYFuDKzaAAo15gMpItTkiT7MJg8IVGZwVgfca23+lCJhToQrCin8e1Q3CIR5WgpXuuXbbbarF34KR8oguV6X1XO51q1RNrR6v2e6wPTPKqJljLd8QxE4HQTHriLzLWQ7pA6w1KDwxS7q2pekH13YlPMAUabYxArkIis0Y1jUq4KbLFLmmAKC0N47NVCgjaWJFLVnlXiKm/7vNjogZ2JxVSDDePjFuK9B7bGDBJ3zs+VMvfwHrgAzWl6PVY1Riit8VTRhBVbR2iiDf1MoQvn8xZ0rEL1m+rZX11CGHNug9Y3TyU7P74DNXwu5VfTZ5BI3fubXGT/nE/ZsraQcFtWjGRAcyspUw0nB82y/ONxMQsz6gLxmphGNxZM0JV+3/Xt+QD4Ba31bzXadKcksj
+X-HE-Tag: 1758618210-158302
+X-HE-Meta: U2FsdGVkX19o1wRm6o/SGjdEJCx9sJugJnIbdV4l96xOQ/txgc88SqNzpCwe9zWBz03SM6Wy3RuDB4rYowMKcvtuszk1Qgh7BHGE7IJuL/VFbbzEUiuvduMd7Qjl7+3hyh6L+WKRtnknLzLykNzoVDLhuPNHJzbLco2A5DEpzbDLn9P1a0J9Wfl4vNvv1zvc27lK2HgsnYwplzApeahl177XJyLBjrR19rqt+iHZhYuOuwm3u4RYfj9xCyE9wOwVYw/IVXo1KqReg+qPtLdMae4I8aOW2/NvTQznD7oRO950UKpz5TpYpsniiSOtaZixyuL1nbMq4K6xhKK/tPTddAQ7jIq3glJNloybSzNIps4977T+TOgMBR7icoZn/bNwOaLbYt8m4N/Ek1gPT7EAs1t+/HKdpEchG+lc8D49YrM8n0kqV9U7CLJQKD2GFQDkfmD291Top+Ifs7YtavQJqcF/24J2Jvb5+p0iCbFepCRiBnNJxwxRImqr5pcta9EpL+HmllPjG0Elydg23v5dwxbKk01M9/IK85qF22bhvjm5nw0bHzLsIR2/RGVSSyUUBlFjrVn0MQHSU8E23wmEJS/r0fqvh0F6ektpMKMH/edFoke4H8r7Ll9yGHmSgS+m1I4vZGYsyGDoNnSr5ld1u2LlrdfYMSnnpNKw5d0LIT4zv6iItN9ly1ePFUjY4BCX8YgI83+TRaPLnqPOugKEEyO3rFViKw2e/SUnMclY3F4B9FqToFK+ASv4asXmt285w1emeN4wO6fEgnIZsrBV8PWoFRnHENuam6ARg4elB8wjW4pYWns3C/NdVUSHTD6Bm3+nkHUYq9grF1f3p+O9XmuHbBqBxXYwVI7gw1hSD0KquB9cGBVyJrl2bm9bd3tHdjQfO+DDrKg4F4Dsb6KS5ysS8+TUSRVk6oCEpGsvFfYu/8m/2+pFyOq8HlB2NN/+A6yG+wwJtve6fmaJm5L
+ UPLcFYhD
+ 4IiyRcmmvqcv6+xHicld11KBIsnvSntiuMWhH8mQ8iGAKc2QNmxdiMqy4zWIkYZgmTGhv0IKr2EBnIc6hJFukdYaqrEdD2ZKrU/OEkRPUkaTT+vxjGq/3fpj1yv3tqAYJPpK5nKVOPEd6nqXSQ8EKp8ePb13mvGHbu4BzxLK5chx/o8nzMM0eHxqqxo83tdZ5fT9nSVmnJKkmJliS3VFmHk+byuBnihIfMxJmIKOUFaL9u3SzprNaw1zybUXDXDE0iEm2iONFBpNPmkN4NHi7LuCLx0hX+mfhY53s/Ydm8NUZhz7GKSbYBEZOPN3+xqqStDaKZUI034tolEX4ac+st0XtSaChveUzi8WMDLQoT7iD4h2gfRPxrsBlg4mteZ+RkROvOGR71eO+qBMq3RYCbFUK+QHFw41gni/5iZXjUyri1ixFHGgBtRofnt+BQY5QZqPvHBI3QRv2FI4yh6ACWB6UUBQZgjVqxtwsNJUP043tEpkg+n7PhrAgsOAP7Qlf2yziHNPHP47vIslJuFrK49AygTfVnLZ3p0C7q8dPVuXTBHhacJK9JHKfOSJMLC0i+PqTkcQCXDCCbK3ESaTxC7hILuUBHqeETMV44vgWce4BPMcKYCr8Ebmk4vzN1M1UggYv98Fyv/qH6RPdgJRb6hkelMAuuCPO796TJBGy3ytvmq1GaFUlNDSBiRmIBoIw9vB7BVhzHtrjnLsGMgKeoCixJkv8vt5VJcbQ79FELu8VROjL5LB3YKsbkvHf8nAbP9i1dlSbA+iIGwWMTGIfPjE2EBX8CgAG6Fbp3/uTpRe2b5wiesg0qgxNj1oc4tKZ4PGzStTWdc1DMkGDpONhcRjugHKUGdp/LQGdKN9Gl6PcB+exrU0MLmKTJa32wJEsa9fcbaGG3yPLiYpDPCC5yQrGtWQTgu38xSolx8D6iYw3IzWKKHxqevusM1CVZmR6sc6MlAp4xXlq8yrcaJl1DHj9IcGm
+ +MNHnkNv
+ 4zzlAbc1BCZqVGWdzlaEa3a0Kipq8nN8LNUfJcDlpuV20AiJQd1ZB4xE3BB9LDkmZT2pJHWv6NDPDjhmDkDbGMPYcTKuuybmILSZUI2OBiaK+iHOzDBbLwlPhGSgkdAbxxpPmlkQyNyLZDF+kPc4BFnbrl9TuyA3aLVr+nlz/FCNm0D+bKB4ys+paHBLFMliElGTd5DiADp0De3DcZLcL6mW9DEi4VTirGBr+VO6bK1kI2r7E4cpYdFdOg9HztQVYk774ULiukjx5Wx9XzXIJUBKdsoWtxgccUi5ZKvBojCyz415FWSADl/Avm1tRDwmw33ycSGIMsxq+Bk8k2EHKyutwHClWcTVso+WTpnB2R5xemsorYKBUR56uHSZ2QBK/H0+nNJ1NkDSrwqsinVeHKFK4Jm6/6BSmP19oVtP6t42avNaVU8GgRxLfF7glAlHC/dn9Q6IfoNU1r4kscJF+sboFb93YnRBF1AYfiyUo+oxnBhDQ2MqN74DCxghViV2
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,12 +103,12 @@ syzbot found the following issue on:
 
 HEAD commit:    846bd2225ec3 Add linux-next specific files for 20250919
 git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=13263534580000
+console output: https://syzkaller.appspot.com/x/log.txt?x=162ab8e2580000
 kernel config:  https://syzkaller.appspot.com/x/.config?x=135377594f35b576
-dashboard link: https://syzkaller.appspot.com/bug?extid=62edf7e27b2e8f754525
+dashboard link: https://syzkaller.appspot.com/bug?extid=f26d7c75c26ec19790e7
 compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14a118e2580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17e204e2580000
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=173b4142580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16f504e2580000
 
 Downloadable assets:
 disk image: https://storage.googleapis.com/syzbot-assets/c53d48022f8a/disk-846bd222.raw.xz
@@ -116,83 +116,30 @@ vmlinux: https://storage.googleapis.com/syzbot-assets/483534e784c8/vmlinux-846bd
 kernel image: https://storage.googleapis.com/syzbot-assets/721b36eec9b3/bzImage-846bd222.xz
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+62edf7e27b2e8f754525@syzkaller.appspotmail.com
+Reported-by: syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
 
-=====================================
-WARNING: bad unlock balance detected!
-syzkaller #0 Not tainted
--------------------------------------
-syz.0.8060/30977 is trying to release lock (&vma_lock->rw_sema) at:
-[<ffffffff82903959>] hugetlb_vmdelete_list+0x179/0x1c0 fs/hugetlbfs/inode.c:501
-but there are no more locks to release!
-
-other info that might help us debug this:
-3 locks held by syz.0.8060/30977:
- #0: ffff88807d8da420 (sb_writers#12){.+.+}-{0:0}, at: mnt_want_write+0x41/0x90 fs/namespace.c:508
- #1: ffff888034404648 (&sb->s_type->i_mutex_key#20){+.+.}-{4:4}, at: inode_lock_killable include/linux/fs.h:985 [inline]
- #1: ffff888034404648 (&sb->s_type->i_mutex_key#20){+.+.}-{4:4}, at: do_truncate+0x171/0x220 fs/open.c:63
- #2: ffff888034404918 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}, at: i_mmap_lock_write include/linux/fs.h:548 [inline]
- #2: ffff888034404918 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}, at: hugetlb_vmtruncate fs/hugetlbfs/inode.c:639 [inline]
- #2: ffff888034404918 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}, at: hugetlbfs_setattr+0x489/0x6d0 fs/hugetlbfs/inode.c:879
-
-stack backtrace:
-CPU: 1 UID: 0 PID: 30977 Comm: syz.0.8060 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/18/2025
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- print_unlock_imbalance_bug+0xdc/0xf0 kernel/locking/lockdep.c:5298
- __lock_release kernel/locking/lockdep.c:5537 [inline]
- lock_release+0x269/0x3e0 kernel/locking/lockdep.c:5889
- up_write+0x2d/0x420 kernel/locking/rwsem.c:1642
- hugetlb_vmdelete_list+0x179/0x1c0 fs/hugetlbfs/inode.c:501
- hugetlb_vmtruncate fs/hugetlbfs/inode.c:641 [inline]
- hugetlbfs_setattr+0x4d1/0x6d0 fs/hugetlbfs/inode.c:879
- notify_change+0xc1a/0xf40 fs/attr.c:546
- do_truncate+0x1a4/0x220 fs/open.c:68
- handle_truncate fs/namei.c:3516 [inline]
- do_open fs/namei.c:3899 [inline]
- path_openat+0x306c/0x3830 fs/namei.c:4054
- do_filp_open+0x1fa/0x410 fs/namei.c:4081
- do_sys_openat2+0x121/0x1c0 fs/open.c:1435
- do_sys_open fs/open.c:1450 [inline]
- __do_sys_open fs/open.c:1458 [inline]
- __se_sys_open fs/open.c:1454 [inline]
- __x64_sys_open+0x11e/0x150 fs/open.c:1454
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fdea5b8eec9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fdea6945038 EFLAGS: 00000246 ORIG_RAX: 0000000000000002
-RAX: ffffffffffffffda RBX: 00007fdea5de5fa0 RCX: 00007fdea5b8eec9
-RDX: 0000000000000100 RSI: 000000000014927e RDI: 0000200000000340
-RBP: 00007fdea5c11f91 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fdea5de6038 R14: 00007fdea5de5fa0 R15: 00007ffe42e704f8
- </TASK>
 ------------[ cut here ]------------
-DEBUG_RWSEMS_WARN_ON((rwsem_owner(sem) != current) && !rwsem_test_oflags(sem, RWSEM_NONSPINNABLE)): count = 0x0, magic = 0xffff8880295a5408, owner = 0x1, curr 0xffff8880260d9e40, list empty
-WARNING: kernel/locking/rwsem.c:1381 at __up_write kernel/locking/rwsem.c:1380 [inline], CPU#1: syz.0.8060/30977
-WARNING: kernel/locking/rwsem.c:1381 at up_write+0x3a2/0x420 kernel/locking/rwsem.c:1643, CPU#1: syz.0.8060/30977
+WARNING: mm/hugetlb.c:368 at hugetlb_vma_assert_locked+0x1dd/0x250 mm/hugetlb.c:368, CPU#0: syz.0.366/7101
 Modules linked in:
-CPU: 1 UID: 0 PID: 30977 Comm: syz.0.8060 Not tainted syzkaller #0 PREEMPT(full) 
+CPU: 0 UID: 0 PID: 7101 Comm: syz.0.366 Not tainted syzkaller #0 PREEMPT(full) 
 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/18/2025
-RIP: 0010:__up_write kernel/locking/rwsem.c:1380 [inline]
-RIP: 0010:up_write+0x3a2/0x420 kernel/locking/rwsem.c:1643
-Code: d0 48 c7 c7 00 f0 aa 8b 48 c7 c6 20 f2 aa 8b 48 8b 14 24 4c 89 f1 4d 89 e0 4c 8b 4c 24 08 41 52 e8 b3 39 e6 ff 48 83 c4 08 90 <0f> 0b 90 90 e9 6d fd ff ff 48 c7 c1 74 0b e5 8f 80 e1 07 80 c1 03
-RSP: 0018:ffffc900051076c8 EFLAGS: 00010282
-RAX: b37f99c54516e500 RBX: ffff8880295a5408 RCX: ffff8880260d9e40
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000002
-RBP: dffffc0000000000 R08: ffffc900051073e7 R09: 1ffff92000a20e7c
-R10: dffffc0000000000 R11: fffff52000a20e7d R12: 0000000000000001
-R13: ffff8880295a5460 R14: ffff8880295a5408 R15: 1ffff110052b4a82
-FS:  00007fdea69456c0(0000) GS:ffff8881258a2000(0000) knlGS:0000000000000000
+RIP: 0010:hugetlb_vma_assert_locked+0x1dd/0x250 mm/hugetlb.c:368
+Code: 2e e8 17 e8 a1 ff eb 0c e8 10 e8 a1 ff eb 05 e8 09 e8 a1 ff 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc e8 f4 e7 a1 ff 90 <0f> 0b 90 eb e5 e8 e9 e7 a1 ff 90 0f 0b 90 eb da 48 c7 c1 70 0b e5
+RSP: 0018:ffffc900036b7388 EFLAGS: 00010293
+RAX: ffffffff821e312c RBX: 0000000000000000 RCX: ffff88807bc95ac0
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 0000000000000001 R08: 0000000000000003 R09: 0000000000000004
+R10: dffffc0000000000 R11: fffff520006d6e74 R12: ffff888033642a00
+R13: 1ffff1100f12319c R14: dffffc0000000000 R15: 0000000000000080
+FS:  00007fa9ba21d6c0(0000) GS:ffff8881257a2000(0000) knlGS:0000000000000000
 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fdea51fed58 CR3: 00000000779ba000 CR4: 00000000003526f0
+CR2: 00007fa9ba21cf98 CR3: 0000000078830000 CR4: 00000000003526f0
 Call Trace:
  <TASK>
- hugetlb_vmdelete_list+0x179/0x1c0 fs/hugetlbfs/inode.c:501
+ huge_pmd_unshare+0x2c8/0x540 mm/hugetlb.c:7622
+ __unmap_hugepage_range+0x6e3/0x1aa0 mm/hugetlb.c:5901
+ unmap_hugepage_range+0x32e/0x410 mm/hugetlb.c:6089
+ hugetlb_vmdelete_list+0x171/0x1c0 fs/hugetlbfs/inode.c:494
  hugetlb_vmtruncate fs/hugetlbfs/inode.c:641 [inline]
  hugetlbfs_setattr+0x4d1/0x6d0 fs/hugetlbfs/inode.c:879
  notify_change+0xc1a/0xf40 fs/attr.c:546
@@ -209,14 +156,14 @@ Call Trace:
  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
  do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fdea5b8eec9
+RIP: 0033:0x7fa9b938eec9
 Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fdea6945038 EFLAGS: 00000246 ORIG_RAX: 0000000000000002
-RAX: ffffffffffffffda RBX: 00007fdea5de5fa0 RCX: 00007fdea5b8eec9
+RSP: 002b:00007fa9ba21d038 EFLAGS: 00000246 ORIG_RAX: 0000000000000002
+RAX: ffffffffffffffda RBX: 00007fa9b95e5fa0 RCX: 00007fa9b938eec9
 RDX: 0000000000000100 RSI: 000000000014927e RDI: 0000200000000340
-RBP: 00007fdea5c11f91 R08: 0000000000000000 R09: 0000000000000000
+RBP: 00007fa9b9411f91 R08: 0000000000000000 R09: 0000000000000000
 R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fdea5de6038 R14: 00007fdea5de5fa0 R15: 00007ffe42e704f8
+R13: 00007fa9b95e6038 R14: 00007fa9b95e5fa0 R15: 00007ffdd776dfc8
  </TASK>
 
 
