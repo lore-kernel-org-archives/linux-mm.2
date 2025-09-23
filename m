@@ -4,127 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 886CDCAC5A5
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 08:37:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72207CAC5A7
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 09:01:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE87D8E000C; Tue, 23 Sep 2025 04:37:11 -0400 (EDT)
+	id 9C2658E000F; Tue, 23 Sep 2025 05:01:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9AB68E0001; Tue, 23 Sep 2025 04:37:11 -0400 (EDT)
+	id 99A308E0001; Tue, 23 Sep 2025 05:01:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B881C8E000C; Tue, 23 Sep 2025 04:37:11 -0400 (EDT)
+	id 888EC8E000F; Tue, 23 Sep 2025 05:01:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A27098E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 04:37:11 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 56D45C0917
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 08:37:11 +0000 (UTC)
-X-FDA: 83919860262.25.FB62223
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BF018E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 05:01:07 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2B69B1A040B
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:01:07 +0000 (UTC)
+X-FDA: 83919920574.13.920645E
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 01CC01C0013
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 08:37:08 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=R0DbxG2S;
-	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf30.hostedemail.com (Postfix) with ESMTP id BD5BA8000D
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:01:04 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=L2pmNK5D;
+	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758616629;
+	s=arc-20220608; t=1758618064;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0FichtJezjG8Fw3oNsREz7KtXAArVifFDdwv8D/TDyo=;
-	b=w7X5CguFrlRYgQbETL956eF++W4no4NpnHSGZ28QixCUvo+ujWrpOlSYSNIKrVsMScHS17
-	Vn9gqp6nlgOQSFiM5PcGNwSzIPmnLRjP8bzYqGMoR0cTNYUjJPM1iGYTinOkN9FlzM7kIV
-	7cKV60733fi+6knkrLkfqnfSjBx5ma0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758616629; a=rsa-sha256;
+	bh=IkO4rImhCx3UOUFiDFTs5OyK4dbhGcDUSPwdGTIbKUY=;
+	b=HTZK08LONQgolK7HErXfIcC0L/UYpgwd8ntHvipvuOirB6xI1m9I54ez2ENfi/D6kDOiFB
+	VSqma4BUZ9rtSMszGVNc23t3LRTSHR1Wyjn644zVPCx2BMqEioN0FViRajfVa1yI0Zqy0d
+	poVLoHuBukIX+O3P2JkrPVR7InLsLqY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758618064; a=rsa-sha256;
 	cv=none;
-	b=FdpIYasqN15RyYeIUokfSRL2C8GOJ9F8xN4Nff9MnwoSdSGbtv8yF1iOUZxKXmFe8uRhzN
-	3f7v9aQsi+t57L2cTbINBw/jvjYJMpjXXSoq7glFwik1FfA0Fg1LR9qpNpUIfD4faQSkVP
-	DtrfT4CpkPCx+6t80eKDOWMn83a9Hw8=
+	b=AxJN0pk+CT4hI7YSIY5RFo6NGzTO4Rd7Vio3bQV3hAD5yEsITpoIa3H8L6IxlrmRbB5ENL
+	B2gpW2begeehG7H7fkSEQriL9OOhuUlBGe8SP5N66KT5yz644Qu90d1POgdwX9vN4t+aGJ
+	aKHJTzF5lrutznxCkJKs88uaaMuAuH4=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=R0DbxG2S;
-	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=L2pmNK5D;
+	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758616628;
+	s=mimecast20190719; t=1758618064;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0FichtJezjG8Fw3oNsREz7KtXAArVifFDdwv8D/TDyo=;
-	b=R0DbxG2S1/TmUh2Zg6uGZ9y8eXX9JHNN/2bWJhuMsfBfptS4c4v9vbsLPB5hYAw2dJeJ+p
-	uTQVXYthIDxQN/gGX9M7F84dSQJ0YAk65ZFF9zhhArnUClTO8rqCkEcDtMgB8MmsRFaePQ
-	lGFVAEXnJSTxyPKdhtEBAx5BBLmQ0kQ=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=IkO4rImhCx3UOUFiDFTs5OyK4dbhGcDUSPwdGTIbKUY=;
+	b=L2pmNK5DIYlJC4PBWRfsPAJNIX6wvff2lqAfH+LBQ1VdiCsWaV2n5Z9nPndTri/ayYFY4L
+	AUd0ZdnWpIxYReZXbcm/45sZpOKVDdcrhkWuUB853UyDLE5wS0VVevhBVAV9Y5Lc1l0rPD
+	fxvCq8DP80g9+YtiIkt2WnpizkuoRXc=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-257-stUP4EjwMsef2M1MtyTNWg-1; Tue, 23 Sep 2025 04:37:06 -0400
-X-MC-Unique: stUP4EjwMsef2M1MtyTNWg-1
-X-Mimecast-MFC-AGG-ID: stUP4EjwMsef2M1MtyTNWg_1758616625
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3ccd58af2bbso2551152f8f.0
-        for <linux-mm@kvack.org>; Tue, 23 Sep 2025 01:37:06 -0700 (PDT)
+ us-mta-637-kqDZZ4otP-yvmf43nqVIPw-1; Tue, 23 Sep 2025 05:01:01 -0400
+X-MC-Unique: kqDZZ4otP-yvmf43nqVIPw-1
+X-Mimecast-MFC-AGG-ID: kqDZZ4otP-yvmf43nqVIPw_1758618061
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3ece0fd841cso3611455f8f.0
+        for <linux-mm@kvack.org>; Tue, 23 Sep 2025 02:01:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758616625; x=1759221425;
+        d=1e100.net; s=20230601; t=1758618061; x=1759222861;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0FichtJezjG8Fw3oNsREz7KtXAArVifFDdwv8D/TDyo=;
-        b=s1YU23DJi/lDyIph8TWqQ9vQDvIWRYVI16iJt5tn56kEZM1E9gayZb7cr9kg0lyu3a
-         ue+WBy+tXDyuuWvhZrgviGgD/xxD55Tno6xDvL4G7ZcUF4UhYpc+FXWe331Exs6s3244
-         Jo5kvopvNU65rTzhhSaQWITXYUgJRW+LmfW3btpnFd/otNDtTDT5z1tP6BHjpMsNrDnG
-         WwBR3S8Dla8hAwXamv6KGNh7xeHd4EtxbIDGF6YVO0bjt6NuLhXeoyDfJP4RXhe20pU6
-         HhAfGQ/IJWFR6dmEpIll3NL27CRNwklts7Nxy2VAqESUOaQuL2S/dlF/z0xlz0QfgaX7
-         QrsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWsVgT1T4+oLdRfBCPdxzYLe5aFCil+uF6JiRFE907Pcydbsih6mb768grAjqAHhhifuC0WwhDxYg==@kvack.org
-X-Gm-Message-State: AOJu0YyNuLLDUlmng2UDCs5o8RhXD8dlkrMEKVSgrwgcSnPaJyRFs/u4
-	EQOUiqxtqCMlkcjdyLpM1DIGC2tiiLKSDlVPO/IuTRF77RJlkbz8zIFuJ8zLmDgtbHxaP8kFIRg
-	jgaoKjF8i8oAebltHzdT3i+5vTEKsazFJWENZ2jV6Daz+A6lQpBw7
-X-Gm-Gg: ASbGncvAvJ3ONQ5fbirsmwyoOVoDSp2nwLmU2Jmz6eBxUlcKG/5T/SIB3zAqWzBTAlv
-	4yv4z30NnfmF0QbTtm64YbOD5WL3tvR8+Pw488CeTCvYR1NMJmgNMJx656LLzbR/Uy0rIIc+vUZ
-	88sStwX1efZiMPq8fwG+uAXKmEZz5H3Dh4in/m3JKc2HRgd1Saax3gEw6ZYpMAhos/3vW4PWt17
-	g/eHgzf1cLzbSnHXiCLl3kLYws5a3tLiytkXFtuQvc9MVdgbEx0MNXKcylbxy+vFTUjK1bquB1j
-	KENdvdpBA/2lOWC02VUloJnZVvElOzXYRjGp9HiDlRidtGtn5Ial51LZUUwW8cT1OIYStTLaPJv
-	IBXHj83jCu+tkZ+Wwk305Ruk9V+umVFqW+MlXEgopEWqBlFnW6GZxNPVJsosgivC23w==
-X-Received: by 2002:a05:6000:184b:b0:401:c55d:2d20 with SMTP id ffacd0b85a97d-405d26c213dmr1225238f8f.26.1758616624935;
-        Tue, 23 Sep 2025 01:37:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEawPPWnpwt5rFwfd2DqihY1bzY492tZVIfX1f84FZQOvJccOmfH7DP+skjktE9t2ycA3257g==
-X-Received: by 2002:a05:6000:184b:b0:401:c55d:2d20 with SMTP id ffacd0b85a97d-405d26c213dmr1225200f8f.26.1758616624459;
-        Tue, 23 Sep 2025 01:37:04 -0700 (PDT)
+        bh=IkO4rImhCx3UOUFiDFTs5OyK4dbhGcDUSPwdGTIbKUY=;
+        b=wKic8lemyZEpQ9BWMMskmt1sieUytn7eVWoCwfW9Zrow2qDwir2M8zGZn4AV2sfe6X
+         f3QsBP7U8ruSs9QxzO88qMhqZGyCC+IaQoDqlwjKN41vjT7QM7mBwlZQvj1rZboT7lzT
+         h0Hf0R0HZBescYgEgq9kBmHWJcTC+kAXze6sp2OqBBd8tAAHRjkUmQxnfPnpIGzJpkV4
+         OwOnlMjiUaw0AqP+LfT3tonAh1xP9kf+eSYjThF85/08o+otGlESEelB8VTa6qLRhlht
+         0Rc1rbfv+gZ2EJ1HQe/a/cbKoJKJ81oe99jqQ25whFWtk5ykU+OeGFYwXyUO3iUTIKpv
+         U8/g==
+X-Gm-Message-State: AOJu0YwxNY63arIAbqIEVe/4637xvBbKmpMViiDWLC68l9C+CZ64fNa8
+	WcyhFdGXKNdQE1oPe8tiGhDjJUP4H/In4lNhQvwhs+GXWEu1Slf2+jQi94Jfx6nr4KbaadSmVcJ
+	L+Syo8US08mzUtJ09oRhgkv0fT87bDOBXC64LcqN/vOPuPWFNtl3s
+X-Gm-Gg: ASbGncvKRR2c/8XJM8pj2jwhEbSDFfR+rvApLjp3Q2ya5VT+nGHR0jeplhBV3i/8sPC
+	VzCA2j9OzG7QTJ92ZQjR3vyfBp3WK3Uyv+h96fBZgEts+U6IjWANHYBrJn43nne6dj2UYzw3Iey
+	pnCUTUxXymJVnW17c5mPGEXFEDnGWQFNg96MvbnN65eL/ePe/x8Cr69P9Xs7HIc5Uj8Xam1FzVH
+	7+/toSqitVl5OnfGbmOPmfPapx1H5ZA8DxVKIxrkJvIcFQR2Tv2Ckyb3ciqmJWAPk8S2wtroN5w
+	qv5qT4R5Y4JCDXS3HIXYpOsSX31hdFNGrvPj8kO0RqALtvgdDWRScql3/kgtBelrUxwKe/LFpLM
+	OqurYQxCh5s2YmVcWF27r72E5b2hrj+k2wjendSwHhoNvz8RKcHqFCXDqVamf6EdxDQ==
+X-Received: by 2002:a05:6000:2484:b0:3ee:15b4:174c with SMTP id ffacd0b85a97d-405c3e27714mr1264779f8f.3.1758618060362;
+        Tue, 23 Sep 2025 02:01:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG3NrQhba9sI3Pw87M3Zg2mlzDIzvm7/y7Fut6QEDxAdFkWqEoochcNJl6lnDgHbTzCBm/wbQ==
+X-Received: by 2002:a05:6000:2484:b0:3ee:15b4:174c with SMTP id ffacd0b85a97d-405c3e27714mr1264738f8f.3.1758618059633;
+        Tue, 23 Sep 2025 02:00:59 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f4f:700:c9db:579f:8b2b:717c? (p200300d82f4f0700c9db579f8b2b717c.dip0.t-ipconnect.de. [2003:d8:2f4f:700:c9db:579f:8b2b:717c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3f829e01a15sm11575843f8f.57.2025.09.23.01.37.02
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3ee0740841dsm23126417f8f.23.2025.09.23.02.00.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Sep 2025 01:37:03 -0700 (PDT)
-Message-ID: <bfede7e3-5295-4453-928f-8e7c0bf8f2cd@redhat.com>
-Date: Tue, 23 Sep 2025 10:37:01 +0200
+        Tue, 23 Sep 2025 02:00:59 -0700 (PDT)
+Message-ID: <b41ea29e-6b48-4f64-859c-73be095453ae@redhat.com>
+Date: Tue, 23 Sep 2025 11:00:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [v6 02/15] mm/huge_memory: add device-private THP support to PMD
- operations
-To: Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, damon@lists.linux.dev,
- dri-devel@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+Subject: Re: [DISCUSSION] Fixing bad pmd due to a race condition between
+ change_prot_numa() and THP migration in pre-6.5 kernels.
+To: Harry Yoo <harry.yoo@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
- =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
- Francois Dugast <francois.dugast@intel.com>
-References: <20250916122128.2098535-1-balbirs@nvidia.com>
- <20250916122128.2098535-3-balbirs@nvidia.com>
- <2A0E854D-0B0B-48A8-A87F-E9D38C6823EF@nvidia.com>
- <5b9da42e-49a2-4229-81ce-625ce00ed7b2@nvidia.com>
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Hugh Dickins <hughd@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ Jane Chu <jane.chu@oracle.com>
+Cc: linux-mm@kvack.org, stable@vger.kernel.org
+References: <20250921232709.1608699-1-harry.yoo@oracle.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -170,21 +162,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <5b9da42e-49a2-4229-81ce-625ce00ed7b2@nvidia.com>
+In-Reply-To: <20250921232709.1608699-1-harry.yoo@oracle.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: iqGy-4ysGbqYoi1f_jIQhnODwXtKQCateV-TspFouc4_1758616625
+X-Mimecast-MFC-PROC-ID: UgFE4uXr0xBs0PGMiJ9b1WwwiInx6OlLIKFj9tx3_yk_1758618061
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 01CC01C0013
-X-Stat-Signature: ayx898sw6w7ng39eymiwx88kmdmm4y91
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: BD5BA8000D
+X-Stat-Signature: quqiop183ms6bedjkuij1faf6zxb1eu4
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758616628-600297
-X-HE-Meta: U2FsdGVkX18n9c9bOgCH2ZidLgypJVxB2DljZ/kyRfH68fIMNI10Lw4JPMhybGf5TFag7ngA6HFcnj643eClkYrAoHKO9cs+kL6gTO3aXC/1Xn0ICxaX2GA+aCHwNJYv00wxLkXyq0YLoxTbFKVnEV/NxpL4X1SDl0bdFCPVOBymaEePxUvwVCH6IQ/EyScaP2M4Fw6UcWPzXhSyIzt05zGy1t78ZeXcIzhNFVPTkH3OIHlQQECpDaU3sqfmLrv1fMoksa6eitqNSnOTsz9RwMwl0vbcCDLoqmhJqoZS0YZHE41A+a8Lk6S6wDZ8416nrFToJ/l1eaLP+DFeNMsNc5D57hhdxO1YMMWL4tI5DcPizskUPktg7eWedqUEIUN3eKHepElDSTrGDZlMi46Kdqi94oPHGYvET0m0mSWNS+pBOIjyqlSFShLC9P1SMde33em3JcqRkZ0wSf5Sw/nlFDYYjMTvqL+7woIfYAcQfkdLFTN0NlNPxgZ/sM1mXE/9UOArewOYhb0rl4R1oa6+sv+UQ18luvJCJoXsbVpMyefwkor0uYBsBYOwdaOQvN149Sqa9d7r87m2G1wJ3TkkGMQIzzjK30Tk9PImW4VwoT+LkOZ7AsVUrromfvyh6J8FKsGklSaOEtyWKQwMq7v5YJ7uYv4rr1ABBaRi7rYklLqigpOu8TZNZdJTXgWpkfrLUjvKyw1dh+a31j/POAjPd4RI7XZ81FhEpVmvoAivdQo7MxHiL+RjrLrU8UpkD9/TRq1CJ4KIoiduIySFm6nAwnhBcS+24Hi7ox4oagyIRC97ZJdXmuf8mRK718JE/slT7cqUv9gviL1FjPI8lfFqshegJMgGK6PA7RGIymDDk8v4Egn5yyfhyCdR2yObyJ7ZQG8isS9rT2F6Y2HGx4eJt7yho5f1XqJVTfdAqJz3hTbjAkAr1MqNb/BIGom9goUe2gKACr7E6+rtsqex+fa
- rkAXauk/
- 6QQU+E2JjLvdR5+Qbpgh/tEwSeaK3MGuL/dYP3NJUYlvK4FIB+Dn1tY0Qlq2OL/T0jFa+Z8CVD/PJkYbOkwXhOkpIJ9WYsP6BrQVzdG4Q6P8SMC8FBBhr0JiBgopmwggFx9WROxhmADgbMnxhJjwIBW5gSPvr7pAhCygC13zFc9bTg5TRono7KDcSGQfyCdEL1t3++TOmCjndFB60PEIK1bv2Cz8afS89h/PoSTA6YB0YlGm6JFT5Lc9Alzbv7m02CRRghhKVzrlSVvs3OMii9Avmz7sNypHn+gESh96fOrE2+OnFjs23F255VnpHvyjVjXe1bIp1FRJHf1SurBUI7/v2VV/nBnvPIXlEOme/vO1Qmg+1+cVWYnBli/yvwCTpape1+fFOvMe3uHhVymm3eOMPC3Czbg6SLrKUcBKWE6w04OGM+a8xmOoE8lJnVAkKz7/ZhZdkaulOJvYSSXXFFzXjkgZxGmbwwhr1nj9y5vp3NXOvLMf6j/nrMDNwDQmRW3rwwSGr+WQ51WLI7Qhdl/m77oz3Tc9uKQd/RSAjPgzUDvGitmjYiO3lx9YF76H7mYLebJmFK3eCyFHJb3JFn/WoESmxBFMHNS8+rH0PS5EwsLo9oSNd3MCv6MuLP5K9vYBgvAPyWxcWVzVTeR6GybLa+CFj0BR9K6S92tWQDdolfak=
+X-HE-Tag: 1758618064-723844
+X-HE-Meta: U2FsdGVkX19ZJSx/Htv58cocUdQ/WYwy6+w35HLPRHYoAji3F/KJxepZZGU4KGp/8J7HBmSWoGEy9RMDjEWMMUI8jiCdRoGzoFIqIeYLAzkeFcyrs6+4eVQpdnZ6HQCOzVECOXHYeIan3xVIm7YwsD+8ET0Lnt5BDA20zV21km2MItiFsoc4xUigBSb+8bhh1s2CmBzo7s/Am0Er6Yxlk3lMQIR4N/rbxwLGe7VLfrreXywFxqP/lRRigsRCvxP6UFtN7ALnyITdelVIBZd/qKWxx0vBU21XZxYI4yUyGucxblfcJxbuULJndVXxi31JNcTC5WLuhSnSf31ZuSTP5XVeQkcRYXmM/jfEvZC3DE5K6Pv6NY3bN9sdIJ+zY4ah2GY09/0y89CNCCE+NqweB5qk7yu1WUUK8RDodrkieeg8Lhm4Ik+fm+PxljxUBufPcPiFBPfbnRULAToobu2v1RRZ6h5+6OgCd77cC9A7bAAJlQiiBk2FINKXJkgMTh7aoPIJ3bJx0bS+VKsKsdssqW4XehL4C5q3hUUU6ogiYaus9rj6dI1fqu+kE1unIeZO0EAfkf5wKUIXvG/QM3+eM5od0k+zbjdZiO0m4Jd9TN4HQGAfg/m7+FrFjO5dt3M7lkBy/MykC9n7l5VbEIT1Q0BklNZS+N4dxm26s3B2lhA4OJ4fZq6Ii6sVL9uwsiw9R1qv7Q8Ci8oRtLHBI/NXW+yIvoZObzYuhVu4+/kijWpdcs3WK2799jNtJc1CCbDvKCTGlvgMZdkOaon3pB0BNwi2abBo0xXg603AuYC08jrn6Eq+inv/TGcaItYjzpjZa6udv8PjKTBTgenuclwKWm1Gzucn6CK+XgDcAPIBkqK2gtm0VU9znR+iQtWs6Lh96H6xJZcGoClFTQigNpUrqFo5QC17lQY+gjvGIz9LTRO9XoC+I5ySOn2nRc0Vfwi8Ea6WT7LMHVTzQ3cn+ev
+ 8/4MFspA
+ uL9PZnLAj2K6kVXQGfdKT5mPyZatkpQg2dQOu4xZY7+p9xB5kemEGM3LpyG+dMN/qh3EfwDhwqlxy2AUPWoEt9lUREB46U/9H09snJlYiuCGV0RO6GDm26hbeZRzEEfq2kW5MmvZVF4uU6+O78Us44ZAZElNMk038QHTMjMJBU7oFXQBktc+CJz0gCWajXTNQZCwMpsm4XFssm0TwkAsCCFVJsX7fvoJOoqH3zcNgw/AeJYYdGqGsvMkck9b1p9Fd6CtqRDIKx8rULCLDfnRalPhj7t3tjwBINiXQYfoPMmwsdJMUGvjhJpFwlahWJEXGm3PRWHSJXPurfYkmNRCxpsFdX3EPkAkoV3+K1zEKRfo1YiSG1BHBoW5M7DjvCuUknV8QDaxAnBNmT/e+7qbYXF0kmwUeF4SV9Z6xsHc4lWYKtoNDPazhP4BaO1ve1fXtb72BiQ4HzH97LLA/0xMAb15EW3uzyrKjQsKNc9znHpJpuljgyqf6tudl4rZHD+AbySqQyQvI4Z0TvHK1/Ch0GbcydyKXTaRckRUKtVNqaNhCCKqSyJxC+7huidnIFdPySmtgjqvDukgs/3xH0arAWLXWgxRNTlIyak3azmNOHJreJB6HG2EwO2uOPwPm8NuJxpSCS7AVvVXSPj2wNkzlO8M5gantSEY2532M
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -193,15 +185,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
->>
->> non_present seems too vague. Maybe just open code it.
+On 22.09.25 01:27, Harry Yoo wrote:
+> Hi. This is supposed to be a patch, but I think it's worth discussing
+> how it should be backported to -stable, so I've labeled it as [DISCUSSION].
 > 
-> This was David's suggestion from the previous posting, there is is_swap_pfn_entry()
-> but it's much larger than we would like for our use case.
+> The bug described below was unintentionally fixed in v6.5 and not
+> backported to -stable. So technically I would need to use "Option 3" [A],
 
-Right. If we can find a better name, great, but open coding this turned 
-out nasty.
+What is option 3? Just to clarify: it's fine to do a backport of a 
+commit even though it was not tagged as a fix.
+
+> but since the original patch [B] did not intend to fix a bug (and it's also
+> part of a larger patch series), it looks quite different from the patch below,
+> and I'm not sure what the backport should look like.
+> 
+> I think there are probably two options:
+> 
+> 1. Provide the description of the original patch along with a very long,
+>     detailed explanation of why the patch deviates from the upstream version, or
+> 
+> 2. Post the patch below with a clarification that it was fixed upstream
+>     by commit 670ddd8cdcbd1.
+> 
+> Any thoughts?
+> 
+> [A] https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
+> [B] https://lkml.kernel.org/r/725a42a9-91e9-c868-925-e3a5fd40bb4f@google.com
+>      (Upstream commit 670ddd8cdcbd1)
+> 
+> In any case, no matter how we backport this, it needs some review and
+> feedback would be appreciated. The patch applies to v6.1 and v5.15, and
+> v5.10 but not v5.4.
+> 
+>  From cf45867ab8e48b42160b7253390db7bdecef1455 Mon Sep 17 00:00:00 2001
+> From: Harry Yoo <harry.yoo@oracle.com>
+> Date: Thu, 11 Sep 2025 20:05:40 +0900
+> Subject: [PATCH] mm, numa: fix bad pmd by atomically checking is_swap_pmd() in
+>   change_prot_numa()
+> 
+> It was observed that a bad pmd is seen when automatic NUMA balancing
+> is marking page table entries as prot_numa:
+> 
+> [2437548.196018] mm/pgtable-generic.c:50: bad pmd 00000000af22fc02(dffffffe71fbfe02)
+> 
+> With some kernel modification, the call stack was dumped:
+> 
+> [2437548.235022] Call Trace:
+> [2437548.238234]  <TASK>
+> [2437548.241060]  dump_stack_lvl+0x46/0x61
+> [2437548.245689]  panic+0x106/0x2e5
+> [2437548.249497]  pmd_clear_bad+0x3c/0x3c
+> [2437548.253967]  change_pmd_range.isra.0+0x34d/0x3a7
+> [2437548.259537]  change_p4d_range+0x156/0x20e
+> [2437548.264392]  change_protection_range+0x116/0x1a9
+> [2437548.269976]  change_prot_numa+0x15/0x37
+> [2437548.274774]  task_numa_work+0x1b8/0x302
+> [2437548.279512]  task_work_run+0x62/0x95
+> [2437548.283882]  exit_to_user_mode_loop+0x1a4/0x1a9
+> [2437548.289277]  exit_to_user_mode_prepare+0xf4/0xfc
+> [2437548.294751]  ? sysvec_apic_timer_interrupt+0x34/0x81
+> [2437548.300677]  irqentry_exit_to_user_mode+0x5/0x25
+> [2437548.306153]  asm_sysvec_apic_timer_interrupt+0x16/0x1b
+> 
+> This is due to a race condition between change_prot_numa() and
+> THP migration because the kernel doesn't check is_swap_pmd() and
+> pmd_trans_huge() atomically:
+> 
+> change_prot_numa()                      THP migration
+> ======================================================================
+> - change_pmd_range()
+> -> is_swap_pmd() returns false,
+>     meaning it's not a PMD migration
+>     entry.
+> 
+> 				    - do_huge_pmd_numa_page()
+> 				    -> migrate_misplaced_page() sets
+> 				       migration entries for the THP.
+> 
+> - change_pmd_range()
+> -> pmd_none_or_clear_bad_unless_trans_huge()
+> -> pmd_none() and pmd_trans_huge() returns false
+> 
+> - pmd_none_or_clear_bad_unless_trans_huge()
+> -> pmd_bad() returns true for the migration entry!
+> 
+> For the race condition described above to occur:
+> 
+> 1) AutoNUMA must be unmapping a range of pages, with at least part of the
+> range already unmapped by AutoNUMA.
+> 
+> 2) While AutoNUMA is in the process of unmapping, a NUMA hinting fault
+> occurs within that range, specifically when we are about to unmap
+> the PMD entry, between the is_swap_pmd() and pmd_trans_huge() checks.
+> 
+> So this is a really rare race condition and it's observed that it takes
+> usually a few days of autonuma-intensive testing to trigger.
+> 
+> A bit of history on a similar race condition in the past:
+> 
+> In fact, a similar race condition caused by not checking pmd_trans_huge()
+> atomically was reported [1] in 2017. However, instead of the patch [1],
+> another patch series [3] fixed the problem [2] by not clearing the pmd
+> entry but invaliding it instead (so that pmd_trans_huge() would still
+> return true).
+> 
+> Despite patch series [3], the bad pmd error continued to be reported
+> in mainline. As a result, [1] was resurrected [4] and it landed mainline
+> in 2020 in a hope that it would resolve the issue. However, now it turns
+> out that [3] was not sufficient.
+> 
+> Fix this race condition by checking is_swap_pmd() and pmd_trans_huge()
+> atomically. With that, the kernel should see either
+> pmd_trans_huge() == true, or is_swap_pmd() == true when another task is
+> migrating the page concurrently.
+> 
+> This bug was introduced when THP migration support was added. More
+> specifically, by commit 84c3fc4e9c56 ("mm: thp: check pmd migration entry
+> in common path")).
+> 
+> It is unintentionally fixed since v6.5 by commit 670ddd8cdcbd1
+> ("mm/mprotect: delete pmd_none_or_clear_bad_unless_trans_huge()") while
+> removing pmd_none_or_clear_bad_unless_trans_huge() function. But it's not
+> backported to -stable because it was fixed unintentionally.
+> 
+> Link: https://lore.kernel.org/linux-mm/20170410094825.2yfo5zehn7pchg6a@techsingularity.net [1]
+> Link: https://lore.kernel.org/linux-mm/8A6309F4-DB76-48FA-BE7F-BF9536A4C4E5@cs.rutgers.edu [2]
+> Link: https://lore.kernel.org/linux-mm/20170302151034.27829-1-kirill.shutemov@linux.intel.com [3]
+> Link: https://lore.kernel.org/linux-mm/20200216191800.22423-1-aquini@redhat.com [4]
+> Fixes: 84c3fc4e9c56 ("mm: thp: check pmd migration entry in common path")
+> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> ---
+>   mm/mprotect.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/mprotect.c b/mm/mprotect.c
+> index 668bfaa6ed2a..c0e796c0f9b0 100644
+> --- a/mm/mprotect.c
+> +++ b/mm/mprotect.c
+> @@ -303,7 +303,7 @@ static inline int pmd_none_or_clear_bad_unless_trans_huge(pmd_t *pmd)
+
+This is like the worst function, ever :D
+
+>   
+>   	if (pmd_none(pmdval))
+>   		return 1;
+> -	if (pmd_trans_huge(pmdval))
+> +	if (is_swap_pmd(pmdval) || pmd_trans_huge(pmdval))
+>   		return 0;
+>   	if (unlikely(pmd_bad(pmdval))) {
+>   		pmd_clear_bad(pmd);
+> @@ -373,7 +373,7 @@ static inline unsigned long change_pmd_range(struct mmu_gather *tlb,
+>   		 * Hence, it's necessary to atomically read the PMD value
+>   		 * for all the checks.
+>   		 */
+> -		if (!is_swap_pmd(*pmd) && !pmd_devmap(*pmd) &&
+> +		if (!pmd_devmap(*pmd) &&
+>   		     pmd_none_or_clear_bad_unless_trans_huge(pmd))
+>   			goto next;
+>   
+
+This is all because we are trying to be smart and walking page tables 
+without the page table lock held. This is just absolutely nasty.
+
+What about the following check:
+
+if (is_swap_pmd(*pmd) || pmd_trans_huge(*pmd) || pmd_devmap(*pmd)) {
+
+Couldn't we have a similar race there when we are concurrently migrating?
 
 -- 
 Cheers
