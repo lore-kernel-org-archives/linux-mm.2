@@ -4,117 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC855CAC5A7
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 16:46:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25F35CAC5A7
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 16:50:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15A238E0008; Tue, 23 Sep 2025 12:46:24 -0400 (EDT)
+	id 693138E000A; Tue, 23 Sep 2025 12:50:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10B068E0001; Tue, 23 Sep 2025 12:46:24 -0400 (EDT)
+	id 66A148E0001; Tue, 23 Sep 2025 12:50:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3B378E0008; Tue, 23 Sep 2025 12:46:23 -0400 (EDT)
+	id 559388E000A; Tue, 23 Sep 2025 12:50:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DD4FE8E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 12:46:23 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7EF128760A
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 16:46:23 +0000 (UTC)
-X-FDA: 83921093046.16.EE29C1D
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 8C119A0008
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 16:46:21 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ax5+7zZM;
-	spf=pass (imf25.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 357818E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 12:50:15 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D7CD211A5F7
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 16:50:14 +0000 (UTC)
+X-FDA: 83921102748.30.CA81423
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+	by imf26.hostedemail.com (Postfix) with ESMTP id EFC4B14000C
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 16:50:12 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf26.hostedemail.com: domain of 3ws_SaAkbAPktz0lbmmfsbqqje.hpphmfvtfsdpoufou.dpn@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.200 as permitted sender) smtp.mailfrom=3ws_SaAkbAPktz0lbmmfsbqqje.hpphmfvtfsdpoufou.dpn@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758645981;
+	s=arc-20220608; t=1758646213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=imzMF9eGcF1IvmXHD33jpPta8P3x9Urk2l5tDJ26VmM=;
-	b=wopafXozCr3JY4GEsMoCGKWoij2cmWhVWKiZ/uWCHeP1aOHNmAYHLLfl4+6jhnOMvdxAHW
-	V75lfWVzdYoJLrY0OQDeBzQneEynTanpCAp4TiHW1SlL1wphkoSDz6GzYMvCsROy+euGSK
-	ZS114M2/trRWnIGZ+F86A9RnXBy8mTU=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=FN4vy/ei+0E9smCznD7VWHOMzZJxE+KM8gwdZwFzFpo=;
+	b=sas71ClJc6/dsyvdtKfEV0AEH0tJgOmvk79fHDG7WHnN85si7S2c1LzNfs60Yck6Syg2rK
+	G7PqSNh7U1EJEF4UdGIUEyV933kJCa53Q440DIJw+hyEb6GSn+fAW6eTwo2NEyy5BhKnYf
+	nuV/RHgG0M2hsDzIUuAxQORXLPxXUP8=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ax5+7zZM;
-	spf=pass (imf25.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758645981; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf26.hostedemail.com: domain of 3ws_SaAkbAPktz0lbmmfsbqqje.hpphmfvtfsdpoufou.dpn@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.200 as permitted sender) smtp.mailfrom=3ws_SaAkbAPktz0lbmmfsbqqje.hpphmfvtfsdpoufou.dpn@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758646213; a=rsa-sha256;
 	cv=none;
-	b=LgFZcS9xv1JZJzhn4+LcrotODef5RIZOq7dd7H/uhwXdnQYuw1icTeHUpuuraJrq+/shEQ
-	KGi/RPRJ++Nh7HblMR/yQCvSlz/uVGq2rHD4sFnb0ZU2lyuT1QSqgHppz/BtNzGZJc/QD3
-	3nph9yMKcKUpI6MWvIUppm5QYY/ZqSw=
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-468973c184bso24414515e9.3
-        for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:46:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758645980; x=1759250780; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=imzMF9eGcF1IvmXHD33jpPta8P3x9Urk2l5tDJ26VmM=;
-        b=ax5+7zZM/Lg0hJLt+1Qy4xS5Yd1x//KNRror2Zp6cd9yirdEPpml6xQ9/1rUwMvWNn
-         trg3frRknJ8tD7sjZqqZOc2UE3jrM1R0zXg52W+6M9n0LALtra0aRKhWQbcdpb+KMMi/
-         AlWZdzuLcBPebiUELzC1IjL4z+8Irh8hMwx4ISEFk+3I31kGzJC0HjgBK+Y6srx/kb+6
-         21FhcXuDgOvN4vXu4PPOgR5Ym1+wbJJAZtn5FWEyJDO3Ydd1dsSKE5jaHi5Mzpq6AA2g
-         /Levhs9xZilk1f3bHla+qizoubpuUccfen8caO+qq27rVkeotzT32T4SbQhEZX2ZXOL0
-         hHaw==
+	b=LRgeeigFowSVy9AWfKp2SjLqylp1pk3/2JkchCryUNCZtLxLWeVKf0/sALVQihZonIEaF+
+	P12uGSQauCpjQGhMMCLOdfMmYHhZLBLrTtiPTZVcewl3ZuezxDiSidG1OG/0gtiggSRObM
+	BC/J4TiXNnCfEgRZTan8y24RbfJwk8E=
+Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-425635e2928so45602865ab.3
+        for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:50:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758645980; x=1759250780;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=imzMF9eGcF1IvmXHD33jpPta8P3x9Urk2l5tDJ26VmM=;
-        b=HEXEu3U6cskhBsezLXhRNTyHs/c4o/4dISy93sk0Zd7ruw48Jgfxh6zTr5kiEm6L8j
-         +TPTJKe76CDGBzUSawl2QZZQNRQZPfl7/5ZA9y/BvR2uZx8UTZyTkWVG+49Nd9e4Inji
-         ohOd6fX5jvKf7DlTIRX9gYVwA7sGtvA7+1d5Tq+X3EN6RtRObzbc303aeGGH+xT26iKn
-         gokRqylH1RCCBB2dyKoZ2Kzt/mSY/Vb16NySZPgnBLbBkVco4f73YN/dBWKBI3UCPINm
-         gTx0na6GnpUo7WGXR4Z2FqzeYcqeOGA7SXLvAEPc+3/jzyKf6zhvaQIEZX6WQTlMt6nr
-         E89A==
-X-Forwarded-Encrypted: i=1; AJvYcCWyHHDmJwcdsipWqYXAZ/pzDAs7y91gOmbth8rLF+2hr5RHzCzghC/8MyjPonC0HolsyaCh0FFrLg==@kvack.org
-X-Gm-Message-State: AOJu0YwLnPaQBFVX4XD/PUtNHPXjVmRAIWYaeQAnkyM8lNQwWNeL6uVP
-	IvWSZxZV6wh++YS0xSRyNd1vPg8iltrHD7GTZYUd+iHBvl9i5NiNjLgjYJld/CZPOXggzHieDG0
-	hxFv/KTPeXH9xvonc3Hn8+kkX88geU2c=
-X-Gm-Gg: ASbGncveT/m1IxlJYLNsv6tI78rnaP5fcMGd4e1JX1db/95g8acTXd/fSCr+gtEr7Rl
-	0g1qewzU8wVs3giSX2FjuZghpIOwLgtCbquzSS3sbMo3BJoANBThFX9Vh2V7K24BCm+AGwDfBtK
-	/wbNwBH0XZDeCygFJUeKGcZEL0AMe6jcbIWzrBp0DbxF5vtP8aNPwBbr/+0aZLMsxcwHbHc0q8K
-	OKAcWjbHA==
-X-Google-Smtp-Source: AGHT+IFP8pTY+nYi3192pC7v/zVC0ylFZb4IKvnNmuLy2m/5DZrc79HwlN5a4NAdoI7tQpvEg0iRs5lwN2jl7QYp5Qg=
-X-Received: by 2002:a05:6000:25c8:b0:3e7:1f63:6e7d with SMTP id
- ffacd0b85a97d-405ccbd6d4cmr3017672f8f.45.1758645979885; Tue, 23 Sep 2025
- 09:46:19 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1758646212; x=1759251012;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FN4vy/ei+0E9smCznD7VWHOMzZJxE+KM8gwdZwFzFpo=;
+        b=NRRGVjxLG5Cp8fUpn+OwJbvJn87viRqG7ySJxSDhQyQsa8aOswZpLgL9FCmY26DRGJ
+         SVTCO1ZX29EB3vJQ2IJq/G8YFn/52AMVVaaR17Vp146y3j69510ktod5neuVGs3jwTfN
+         E8DKo/mr+Vww9ZB7ZARWhw/YBCCWb2PXul41zEpwW53s5vD49KaPl1WUt/5h3LPVjmBz
+         IolK++vn0YxcdXsWt1WkKjjT/rZBtFm6pjAh1HyjCA1kkC6KC4iIKi8QCDQGobsPNfkV
+         Ef8jINhCKaz1SoAF6wJrfDTSgKD8H/rb4R8KZ3M6j2UmV1TNvkoeFdt2Sa2gRBbdFM9S
+         Aw5A==
+X-Forwarded-Encrypted: i=1; AJvYcCUDgY17gSVwy9CfAkfLX4ClXCWmAnPu/UFyTRe0q8iawgYaD0NEIx0Atvo1Zz6o2OeLMNpQRX2NHw==@kvack.org
+X-Gm-Message-State: AOJu0YyRSdp5gq4YpT9kEjuSlBxIcqSLuKn+0QihCnaNip7ym+IA/U6c
+	F8xhJ6T70ijg4U777Do6VM43+/fCU1pTzX2Sr2M/ascXSvTbUi3aaW5CPNHdY1M9L9bIXnOWkHS
+	G+NWRrIcnUkMqNAbxNJChgGxgAxqyq/aNDhYeLRQgeivouKhNYVRcm8yGHSA=
+X-Google-Smtp-Source: AGHT+IFtgoHv0KfDK5mCusCdaJ5hEwpfZCzQD2U62iKWlAae35G3Ko/2ufXfhTlvf3GQs4bPk7ebdqy4xtvDuNwXd+pJpBPMgtIY
 MIME-Version: 1.0
-References: <20250919145750.3448393-1-ethan.w.s.graham@gmail.com> <20250919145750.3448393-2-ethan.w.s.graham@gmail.com>
-In-Reply-To: <20250919145750.3448393-2-ethan.w.s.graham@gmail.com>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Tue, 23 Sep 2025 18:46:08 +0200
-X-Gm-Features: AS18NWC3Zatya8SBoZMxgc3ReWws0f2Kk0nbCOoRpJZnpr-tGokn7pV_jWkKaCg
-Message-ID: <CA+fCnZegSdAeLkutKP54BH19Kv+FAaFbW1oOvAgbTZZMsyu0sg@mail.gmail.com>
-Subject: Re: [PATCH v2 01/10] mm/kasan: implement kasan_poison_range
-To: Ethan Graham <ethan.w.s.graham@gmail.com>
-Cc: ethangraham@google.com, glider@google.com, andy@kernel.org, 
-	brauner@kernel.org, brendan.higgins@linux.dev, davem@davemloft.net, 
-	davidgow@google.com, dhowells@redhat.com, dvyukov@google.com, 
-	elver@google.com, herbert@gondor.apana.org.au, ignat@cloudflare.com, 
-	jack@suse.cz, jannh@google.com, johannes@sipsolutions.net, 
-	kasan-dev@googlegroups.com, kees@kernel.org, kunit-dev@googlegroups.com, 
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, lukas@wunner.de, rmoar@google.com, shuah@kernel.org, 
-	sj@kernel.org, tarasmadan@google.com
+X-Received: by 2002:a05:6e02:2184:b0:423:fb44:e8d4 with SMTP id
+ e9e14a558f8ab-42581e0df9bmr52946125ab.6.1758646210331; Tue, 23 Sep 2025
+ 09:50:10 -0700 (PDT)
+Date: Tue, 23 Sep 2025 09:50:10 -0700
+In-Reply-To: <20250923102547.2545992-1-vitaly.wool@konsulko.se>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68d2cfc2.a70a0220.4f78.000a.GAE@google.com>
+Subject: [syzbot ci] Re: rust: zpool: add API for C and Rust
+From: syzbot ci <syzbot+cica6a1c285444b25f@syzkaller.appspotmail.com>
+To: a.hindborg@kernel.org, akpm@linux-foundation.org, alex.gaynor@gmail.com, 
+	aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
+	chengming.zhou@linux.dev, dakr@kernel.org, david@redhat.com, gary@garyguo.net, 
+	gregkh@linuxfoundation.org, hannes@cmpxchg.org, liam.howlett@oracle.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
+	lossin@kernel.org, mhocko@suse.com, minchan@kernel.org, nphamcs@gmail.com, 
+	ojeda@kernel.org, rppt@kernel.org, rust-for-linux@vger.kernel.org, 
+	senozhatsky@chromium.org, surenb@google.com, tmgross@umich.edu, 
+	vbabka@suse.cz, vitaly.wool@konsulko.se, yosry.ahmed@linux.dev
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: i9nhzuwpgdfr183yabys7rf96c61hy5j
+X-Stat-Signature: qsdcerqrjk1ja77uzci61z3ozwoih4y1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8C119A0008
+X-Rspamd-Queue-Id: EFC4B14000C
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1758645981-361757
-X-HE-Meta: U2FsdGVkX18MYM2yYCLkriNx0Fg6Kb3G5RoR/4ezOjotS7VjSyQyAVVRbQzql9jMplimUCDb82iU5Rg7ZTYSVr4ylQciHGP6xvSV2y3MbBcFtGhh79Nk8k6qGjP9+he5LjKfvxSSH6xaf7G3mq2RNNCQ/DVFCSho/8uq15Nu3kvgs+hbiZA2UlTU5j2OHmdmv9uxiz1NxR0B+Urfsn9psH8o4My3pgoCcvXGkEoB7np4hVLsxU3qmAmPdBa+M6sMOaEJrW+I2xtfBQUd+TK681tQRLC/m4fwkMU/Okxx/X+FV+Bx8xnRI7NOppTiu+bOKdqvDZ+VbICg5MAvze91+U3zRB0oqfyNURbTNmUT1doAllqSwNZhAe5cZqBBuPmZtuhKHalqJZyVOKChc3iAMOGa1YlyBxAAfrBVMbHrFme9gWaA4mjFG6LAANt65Qzdn/YPvhbBnANk1BRO6WFEhmKmDlUcV+h6zAA7UJrwYVOW5A05jEseDtnE/afEsKl5L8aigD8oMX9gcJwtl58aRJYxZdxnIoBS81yLaTD18EA5b9J7XaTCCevWgl5MK7ZN70bo5DdVpRdXfQe/FNKOzRywomVDY87AswHuGPUgv9LuYb8g5KpxHpogBDjlcogmP/HjZL/Ar4uHADaySSw5+5y0BCNqYsCDRSHhodcjSj5tvMJay+cvBkFu+juDgBomdVSX0zgO/z8hwfqtRSmXA9fh/yExYZmBSNgFzCL2mg6ezA9QJUrVPZolUyfnP/UrgrdntYHENPbQPqfxYGJhrzRovMgYSZf8i9afak1mfOnM/ADlkUFJG1vEAAom6qWvWwpfNfdCD7Kk9siuufptxRWEvhMD6jf/tj7sOerivOV1QZ9+oz3Au3uwjB0p6RF4pWzJXQOPQFw+rLaFLxMA+j1lYniMTElWU0GfdljdgGy8gCWHS/pyesi+SzK5b6APzADiqI6WNmrCREiVDEX
- Vd4R8R0w
- o9mRZbR5lNYHkVTdzDSjIomjfqIeYF0e/RF5XlcFnhc/MIwdxF4e0ErrA8jUPF/lwJCubh6bm/C8nry6gbSces4vA6T6HDkZR8UFiLNhi8Nx2z0Ochb0IfSUA52hkNOJqe773oPFKuDjdTmWSy/eC84mrfoWn0u4MwZu6D9iqlcdmb5ORTgl2+5rMoPtu2LBWEQhFM8JK2GIMdjsJ7mrpBYltYPo7QGYo4jkH9KSP/Oc04391mvWc3hWhPKZZv725L2APGtB0/ui9uVWn/6+9xow4Tg+hFUJoOHW8IEuLtdmRzldwm1qyPrEQfGYpzGCQXnvQO5aRnsXBRB5vRKSYGlMQaDEMQsRXsdUQYlhf0LGdf8h6Ds4if21AFXC2D4li9EPywA2/nvFeaOL5xX7bXD1yJJcpu7cHjs/lXazt9SdYY+N+AI8Ly7uOQs3CEJyBjabF0wkNezLBOimHq5pZFCR/OOjq3XrIhebSraQbf1kISol34TcZzNZ/QYZZzh+3zjWEelZEeNut1qfyHoq/uOGMLq9tHS/UokhbPkUDSPJssoPPOGsy1L/Lrw==
+X-HE-Tag: 1758646212-13880
+X-HE-Meta: U2FsdGVkX18l86YOi582pV/huIF/MGT1mqaTlOdN9bKtsaE3OOnK844fjup5+DElE3kxFTP+RCo3cxxJfMYMToUjWKtg3tGc+7PvlHp9ochClgEla/4FmJ6cS4VK5YRLNlErJKFONWAXRraNSys5blhilVygboTSztb7fTRNAhtgv9alUqfGcPdHMnFCSRBCnxbW6nIwcyJCA7lj8xK2m1MIyjsPwfZQJA4Y5fbq2muE4WBaSQ+4Is1pSdx+2BzQpg5juYG14Tg18VyZ5AuxS5pF4C4P4JqwRGWzu5ruzaBpcKl1J+SNcFlNSwmqu546H9LOR//NTDWORJwV7ltnpgSE2+ENf4gfCKDidGtQqi+xMjwytHjPiCv5E5euk+YLOo4ks9y98bg2zUNjSDzd3FxDlkSW6uNIYvYk8LBQlv9TT2jZSyNkWKDdfNwnE5+nGq6nHYfFxHvQLXC4KJVTBS3N5Eatk790V+QKdEVDdTJnYCKqSIi49hh0ATdrAmgt1XvLMHt4tcFNFUeHrgJsjY0kEMuC/w97zcrzDReo9Uo+qlJtVvQuSEp4tS/Q+vAsqBpxDMkOOVA869n78WYn2nMcDaUHyvFt82x4T6DL+sQBJuHKkB6Mdn7ouyEJN/klmrTHMM7vuD1WBqMqD/wBMu+446XzWc7EIheIGj6oXFLeu5Xo3Xm94F1d2dgJVQxGTbkAumB/IkcQxCUTWmJTgcZfaKKoLeg6o+Tx1PlHgS3vn8Z0a2fGO5gXH1kvm+Usgzc9YLqhnFqhpmOtNsmFAj3U9CIGB7TyakAM+NEGHWUV7sk3LlazKvFn9Es+QGqr6RdasE70Wce9Ap8EKRwYP7oZDT7ORoZBzpn/vZAXl72FZySJK/wnLZS8CAdZT/MenLBg/7fgMZ//qj6mBT7koz1GrFaUIyE+d3adtMT2CnQsSfE5VXydA8UlVu0uIloYsI0pG5jCneOPSdEAvoa
+ XozV8Kjd
+ 3vYae1MvIRYxJLujoSgyHFi4EPkLeK27KPYJNy0sA1zEcvq8pZAtkH6zSoPmQAVcWL8B7rZCQY86A3aoT1NqEKpukUNdeZbrUCuNgcgA7cJAIZVY+CEnXKjQV8CiiuGhMJtSP7gdmIG5+bxnTypS++/Rcr8GMPTMnXsV5ADbmVurORE422l4mfymcavj6exJ/EujpCNRf2fX+mJX4OrPfmunXGDB4psWsPI6xocQSGI/4VNSwmYIQvsIEIdFbPkScDJhRAO6y0ipP9ZvTOj//zIGzOeq5C67xRMjjYRu/4+OwyT+xbWY0KoGOZ9M3MEV/02MSXflB1sKJtYofY9yQm7coGZpIvMhs7VS60YgKvt+MDFgbIZzB7dVOS3goU2/bHH1wJvVjoWc4hPjsahBvKlDXBDU60/1nd+tRE/k4rUQUaUZy5hGWAg1Kqgox3uA33cumryA6ClxCuO2bJSzBA2JjG+JdpuJ4aJHAmWinAuyYHZNhgVdWhFd1+L7ZjovE5pVK4XtRr8NSl1J9U0xvlyVh0HEDpIbzdcquQ08auWkiEAolsf60Jv+UHSaftEdgKlMFOXVg1KWDTVjcZuB8ICxihxJd+cTAQHrFCeoLDeB5QnJrbMFrISgzFyIQ6jEEdJFxPwuMIPIqIXX1D2hSjU9WWYWsoJ3v4uFRrxyjnc9/oneEAHs93saSXLUFbx+9HDvaw41vB/zzlMAPYEgkccvfpYOyr2TqP7AR+TakM9KNcnTbCbmFtJoHbSqdQAJ37IarbBCHVr6idcP/WRzdYkxG0BtEfY6/RblWjuhPGIIUOCjW+wZnkH6m8vnmyoz8Ms8khVf2nnZU8KiEbLa4ke7LzWU8PvWHQEGkP35gszdEMDGFMMejcYa6vdvIcW+GVXojPE2jcsjNSnm0a0u5f7Ih9j6gyjQEBBFKRD1x/GDAuILs4JqWKKEfAAdPpbCDwPPx72/pOdP0uqOyRCo4OpnS6gMQ
+ Qj0aya8Q
+ uAgdjmyWxuFXF7mGcST8w7Bl7JtxPvdgNSq2dTfVOoLcOLehqX7ZksKCEQsmZgoVQmzP1uaraTdNwOrdllg4wfSyf+xl2Vfn59JQhNhsrCA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,147 +106,799 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 19, 2025 at 4:58=E2=80=AFPM Ethan Graham <ethan.w.s.graham@gmai=
-l.com> wrote:
->
-> From: Ethan Graham <ethangraham@google.com>
->
-> Introduce a new helper function, kasan_poison_range(), to encapsulate
-> the logic for poisoning an arbitrary memory range of a given size, and
-> expose it publically in <include/linux/kasan.h>.
->
-> This is a preparatory change for the upcoming KFuzzTest patches, which
-> requires the ability to poison the inter-region padding in its input
-> buffers.
->
-> No functional change to any other subsystem is intended by this commit.
->
-> Signed-off-by: Ethan Graham <ethangraham@google.com>
-> Reviewed-by: Alexander Potapenko <glider@google.com>
->
-> ---
-> PR v1:
-> - Enforce KASAN_GRANULE_SIZE alignment for the end of the range in
->   kasan_poison_range(), and return -EINVAL when this isn't respected.
-> ---
-> ---
->  include/linux/kasan.h | 11 +++++++++++
->  mm/kasan/shadow.c     | 34 ++++++++++++++++++++++++++++++++++
->  2 files changed, 45 insertions(+)
->
-> diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-> index 890011071f2b..cd6cdf732378 100644
-> --- a/include/linux/kasan.h
-> +++ b/include/linux/kasan.h
-> @@ -102,6 +102,16 @@ static inline bool kasan_has_integrated_init(void)
->  }
->
->  #ifdef CONFIG_KASAN
-> +
-> +/**
-> + * kasan_poison_range - poison the memory range [@addr, @addr + @size)
-> + *
-> + * The exact behavior is subject to alignment with KASAN_GRANULE_SIZE, d=
-efined
-> + * in <mm/kasan/kasan.h>: if @start is unaligned, the initial partial gr=
-anule
-> + * at the beginning of the range is only poisoned if CONFIG_KASAN_GENERI=
-C=3Dy.
-> + */
-> +int kasan_poison_range(const void *addr, size_t size);
-> +
->  void __kasan_unpoison_range(const void *addr, size_t size);
->  static __always_inline void kasan_unpoison_range(const void *addr, size_=
-t size)
->  {
-> @@ -402,6 +412,7 @@ static __always_inline bool kasan_check_byte(const vo=
-id *addr)
->
->  #else /* CONFIG_KASAN */
->
-> +static inline int kasan_poison_range(const void *start, size_t size) { r=
-eturn 0; }
->  static inline void kasan_unpoison_range(const void *address, size_t size=
-) {}
->  static inline void kasan_poison_pages(struct page *page, unsigned int or=
-der,
->                                       bool init) {}
-> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
-> index d2c70cd2afb1..7faed02264f2 100644
-> --- a/mm/kasan/shadow.c
-> +++ b/mm/kasan/shadow.c
-> @@ -147,6 +147,40 @@ void kasan_poison(const void *addr, size_t size, u8 =
-value, bool init)
->  }
->  EXPORT_SYMBOL_GPL(kasan_poison);
->
-> +int kasan_poison_range(const void *addr, size_t size)
+syzbot ci has tested the following series
 
-This should go into common.c, otherwise this won't be built with the
-HW_TAGS mode enabled.
+[v6] rust: zpool: add API for C and Rust
+https://lore.kernel.org/all/20250923102547.2545992-1-vitaly.wool@konsulko.se
+* [PATCH v6 1/2] mm: reinstate zpool as a thin API
+* [PATCH v6 2/2] rust: zpool: add abstraction for zpool drivers
 
-Also, you need a wrapper with a kasan_enabled() check; see how
-kasan_unpoison_range() is defined.
+and found the following issues:
+* BUG: unable to handle kernel NULL pointer dereference in zswap_store
+* KASAN: slab-out-of-bounds Read in zpool_get_total_pages
+* KASAN: slab-out-of-bounds Read in zswap_store
+* KASAN: slab-use-after-free Read in zpool_get_total_pages
+* KASAN: use-after-free Read in zpool_get_total_pages
 
-> +{
-> +       uintptr_t start_addr =3D (uintptr_t)addr;
-> +       uintptr_t head_granule_start;
-> +       uintptr_t poison_body_start;
-> +       uintptr_t poison_body_end;
-> +       size_t head_prefix_size;
-> +       uintptr_t end_addr;
-> +
-> +       if ((start_addr + size) % KASAN_GRANULE_SIZE)
-> +               return -EINVAL;
+Full report is available here:
+https://ci.syzbot.org/series/e8b22352-ae56-4d7c-9113-75573acf2b64
 
-Other similar KASAN functions do a WARN_ON(bad alignment). I think
-printing a warning is fair for this to force the caller to enforce
-proper alignment.
+***
 
-> +
-> +       end_addr =3D ALIGN_DOWN(start_addr + size, KASAN_GRANULE_SIZE);
+BUG: unable to handle kernel NULL pointer dereference in zswap_store
 
-I don't think we need to ALIGN_DOWN(): we already checked that
-(start_addr + size) % KASAN_GRANULE_SIZE =3D=3D 0.
+tree:      linux-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
+base:      8f7f8b1b3f4c613dd886f53f768f82816b41eaa3
+arch:      amd64
+compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+config:    https://ci.syzbot.org/builds/6739e899-fcf7-4f71-b943-5ad0ca0ef8eb/config
+syz repro: https://ci.syzbot.org/findings/c2ea1ccf-0bb7-4479-ac6d-d6e8e80efa8b/syz_repro
 
-> +       if (start_addr >=3D end_addr)
-> +               return -EINVAL;
+BUG: kernel NULL pointer dereference, address: 0000000000000034
+#PF: supervisor read access in kernel mode
+#PF: error_code(0x0000) - not-present page
+PGD 800000010f582067 P4D 800000010f582067 PUD 0 
+Oops: Oops: 0000 [#1] SMP KASAN PTI
+CPU: 1 UID: 0 PID: 6005 Comm: syz.2.21 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:kmem_cache_alloc_noprof+0x2e/0x6e0 mm/slub.c:5252
+Code: 55 41 57 41 56 41 55 41 54 53 48 83 ec 38 89 f5 49 89 fe 65 48 8b 05 c1 43 ab 10 48 89 44 24 30 48 8b 44 24 68 48 89 44 24 18 <8b> 47 34 48 89 44 24 08 8b 1d 44 78 ab 0d 21 f3 89 df e8 db 9c fd
+RSP: 0018:ffffc90002dee640 EFLAGS: 00010282
+RAX: ffffffff822e7088 RBX: 0000000000012800 RCX: ffff888105ee3a00
+RDX: 0000000000000000 RSI: 0000000000012800 RDI: 0000000000000000
+RBP: 0000000000012800 R08: ffff888105ee3a00 R09: 0000000000000002
+R10: 00000000fffffff0 R11: 0000000000000000 R12: ffff88801d2b1aa0
+R13: 1ffff11003a56454 R14: 0000000000000000 R15: 0000000000000020
+FS:  00007f819a1c56c0(0000) GS:ffff8881a39dd000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000034 CR3: 000000010e704000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ cache_alloc_handle mm/zsmalloc.c:410 [inline]
+ zs_malloc+0x88/0x720 mm/zsmalloc.c:1281
+ zswap_compress mm/zswap.c:910 [inline]
+ zswap_store_page mm/zswap.c:1429 [inline]
+ zswap_store+0x1062/0x1f40 mm/zswap.c:1540
+ swap_writeout+0x710/0xd70 mm/page_io.c:275
+ writeout mm/vmscan.c:662 [inline]
+ pageout mm/vmscan.c:721 [inline]
+ shrink_folio_list+0x3011/0x4c70 mm/vmscan.c:1453
+ reclaim_folio_list+0xeb/0x500 mm/vmscan.c:2233
+ reclaim_pages+0x454/0x520 mm/vmscan.c:2270
+ madvise_cold_or_pageout_pte_range+0x1974/0x1d00 mm/madvise.c:565
+ walk_pmd_range mm/pagewalk.c:130 [inline]
+ walk_pud_range mm/pagewalk.c:224 [inline]
+ walk_p4d_range mm/pagewalk.c:262 [inline]
+ walk_pgd_range+0xfe9/0x1d40 mm/pagewalk.c:303
+ __walk_page_range+0x14c/0x710 mm/pagewalk.c:410
+ walk_page_range_vma+0x393/0x440 mm/pagewalk.c:705
+ madvise_pageout_page_range mm/madvise.c:624 [inline]
+ madvise_pageout mm/madvise.c:649 [inline]
+ madvise_vma_behavior+0x311f/0x3a10 mm/madvise.c:1352
+ madvise_walk_vmas+0x51c/0xa30 mm/madvise.c:1669
+ madvise_do_behavior+0x38e/0x550 mm/madvise.c:1885
+ do_madvise+0x1bc/0x270 mm/madvise.c:1978
+ __do_sys_madvise mm/madvise.c:1987 [inline]
+ __se_sys_madvise mm/madvise.c:1985 [inline]
+ __x64_sys_madvise+0xa7/0xc0 mm/madvise.c:1985
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f819938ec29
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f819a1c5038 EFLAGS: 00000246 ORIG_RAX: 000000000000001c
+RAX: ffffffffffffffda RBX: 00007f81995d5fa0 RCX: 00007f819938ec29
+RDX: 0000000000000015 RSI: 0000000000600003 RDI: 0000200000000000
+RBP: 00007f8199411e41 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f81995d6038 R14: 00007f81995d5fa0 R15: 00007ffe68a453c8
+ </TASK>
+Modules linked in:
+CR2: 0000000000000034
+---[ end trace 0000000000000000 ]---
+RIP: 0010:kmem_cache_alloc_noprof+0x2e/0x6e0 mm/slub.c:5252
+Code: 55 41 57 41 56 41 55 41 54 53 48 83 ec 38 89 f5 49 89 fe 65 48 8b 05 c1 43 ab 10 48 89 44 24 30 48 8b 44 24 68 48 89 44 24 18 <8b> 47 34 48 89 44 24 08 8b 1d 44 78 ab 0d 21 f3 89 df e8 db 9c fd
+RSP: 0018:ffffc90002dee640 EFLAGS: 00010282
+RAX: ffffffff822e7088 RBX: 0000000000012800 RCX: ffff888105ee3a00
+RDX: 0000000000000000 RSI: 0000000000012800 RDI: 0000000000000000
+RBP: 0000000000012800 R08: ffff888105ee3a00 R09: 0000000000000002
+R10: 00000000fffffff0 R11: 0000000000000000 R12: ffff88801d2b1aa0
+R13: 1ffff11003a56454 R14: 0000000000000000 R15: 0000000000000020
+FS:  00007f819a1c56c0(0000) GS:ffff8881a39dd000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000034 CR3: 000000010e704000 CR4: 00000000000006f0
+----------------
+Code disassembly (best guess):
+   0:	55                   	push   %rbp
+   1:	41 57                	push   %r15
+   3:	41 56                	push   %r14
+   5:	41 55                	push   %r13
+   7:	41 54                	push   %r12
+   9:	53                   	push   %rbx
+   a:	48 83 ec 38          	sub    $0x38,%rsp
+   e:	89 f5                	mov    %esi,%ebp
+  10:	49 89 fe             	mov    %rdi,%r14
+  13:	65 48 8b 05 c1 43 ab 	mov    %gs:0x10ab43c1(%rip),%rax        # 0x10ab43dc
+  1a:	10
+  1b:	48 89 44 24 30       	mov    %rax,0x30(%rsp)
+  20:	48 8b 44 24 68       	mov    0x68(%rsp),%rax
+  25:	48 89 44 24 18       	mov    %rax,0x18(%rsp)
+* 2a:	8b 47 34             	mov    0x34(%rdi),%eax <-- trapping instruction
+  2d:	48 89 44 24 08       	mov    %rax,0x8(%rsp)
+  32:	8b 1d 44 78 ab 0d    	mov    0xdab7844(%rip),%ebx        # 0xdab787c
+  38:	21 f3                	and    %esi,%ebx
+  3a:	89 df                	mov    %ebx,%edi
+  3c:	e8                   	.byte 0xe8
+  3d:	db                   	.byte 0xdb
+  3e:	9c                   	pushf
+  3f:	fd                   	std
 
-Can also do a WARN_ON().
 
-> +
-> +       head_granule_start =3D ALIGN_DOWN(start_addr, KASAN_GRANULE_SIZE)=
-;
-> +       head_prefix_size =3D start_addr - head_granule_start;
-> +
-> +       if (IS_ENABLED(CONFIG_KASAN_GENERIC) && head_prefix_size > 0)
-> +               kasan_poison_last_granule((void *)head_granule_start,
-> +                                         head_prefix_size);
+***
 
-Let's rename kasan_poison_last_granule() to kasan_poison_granule()
-then. Here the granule being poisoned is not the last one.
+KASAN: slab-out-of-bounds Read in zpool_get_total_pages
+
+tree:      linux-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
+base:      8f7f8b1b3f4c613dd886f53f768f82816b41eaa3
+arch:      amd64
+compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+config:    https://ci.syzbot.org/builds/6739e899-fcf7-4f71-b943-5ad0ca0ef8eb/config
+C repro:   https://ci.syzbot.org/findings/a2aa8de3-367f-4cb7-b39a-e3eb65596e6d/c_repro
+syz repro: https://ci.syzbot.org/findings/a2aa8de3-367f-4cb7-b39a-e3eb65596e6d/syz_repro
+
+==================================================================
+BUG: KASAN: slab-out-of-bounds in instrument_atomic_read include/linux/instrumented.h:68 [inline]
+BUG: KASAN: slab-out-of-bounds in atomic_long_read include/linux/atomic/atomic-instrumented.h:3188 [inline]
+BUG: KASAN: slab-out-of-bounds in zs_get_total_pages mm/zsmalloc.c:1066 [inline]
+BUG: KASAN: slab-out-of-bounds in zpool_get_total_pages+0x46/0x70 mm/zsmalloc.c:436
+Read of size 8 at addr ffff88810ccc7b10 by task syz.0.17/5992
+
+CPU: 0 UID: 0 PID: 5992 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xca/0x240 mm/kasan/report.c:482
+ kasan_report+0x118/0x150 mm/kasan/report.c:595
+ check_region_inline mm/kasan/generic.c:-1 [inline]
+ kasan_check_range+0x2b0/0x2c0 mm/kasan/generic.c:200
+ instrument_atomic_read include/linux/instrumented.h:68 [inline]
+ atomic_long_read include/linux/atomic/atomic-instrumented.h:3188 [inline]
+ zs_get_total_pages mm/zsmalloc.c:1066 [inline]
+ zpool_get_total_pages+0x46/0x70 mm/zsmalloc.c:436
+ zswap_total_pages+0xf6/0x1e0 mm/zswap.c:457
+ zswap_check_limits mm/zswap.c:465 [inline]
+ zswap_store+0x52f/0x1f40 mm/zswap.c:1521
+ swap_writeout+0x710/0xd70 mm/page_io.c:275
+ writeout mm/vmscan.c:662 [inline]
+ pageout mm/vmscan.c:721 [inline]
+ shrink_folio_list+0x3011/0x4c70 mm/vmscan.c:1453
+ reclaim_folio_list+0xeb/0x500 mm/vmscan.c:2233
+ reclaim_pages+0x454/0x520 mm/vmscan.c:2270
+ madvise_cold_or_pageout_pte_range+0x1974/0x1d00 mm/madvise.c:565
+ walk_pmd_range mm/pagewalk.c:130 [inline]
+ walk_pud_range mm/pagewalk.c:224 [inline]
+ walk_p4d_range mm/pagewalk.c:262 [inline]
+ walk_pgd_range+0xfe9/0x1d40 mm/pagewalk.c:303
+ __walk_page_range+0x14c/0x710 mm/pagewalk.c:410
+ walk_page_range_vma+0x393/0x440 mm/pagewalk.c:705
+ madvise_pageout_page_range mm/madvise.c:624 [inline]
+ madvise_pageout mm/madvise.c:649 [inline]
+ madvise_vma_behavior+0x311f/0x3a10 mm/madvise.c:1352
+ madvise_walk_vmas+0x51c/0xa30 mm/madvise.c:1669
+ madvise_do_behavior+0x38e/0x550 mm/madvise.c:1885
+ do_madvise+0x1bc/0x270 mm/madvise.c:1978
+ __do_sys_madvise mm/madvise.c:1987 [inline]
+ __se_sys_madvise mm/madvise.c:1985 [inline]
+ __x64_sys_madvise+0xa7/0xc0 mm/madvise.c:1985
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f526318ec29
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffdd0a28298 EFLAGS: 00000246 ORIG_RAX: 000000000000001c
+RAX: ffffffffffffffda RBX: 00007f52633d5fa0 RCX: 00007f526318ec29
+RDX: 0000000000000015 RSI: 0000000000003000 RDI: 0000200000000000
+RBP: 00007f5263211e41 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f52633d5fa0 R14: 00007f52633d5fa0 R15: 0000000000000003
+ </TASK>
+
+Allocated by task 1:
+ kasan_save_stack mm/kasan/common.c:56 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
+ poison_kmalloc_redzone mm/kasan/common.c:400 [inline]
+ __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:417
+ kasan_kmalloc include/linux/kasan.h:262 [inline]
+ __do_kmalloc_node mm/slub.c:5602 [inline]
+ __kmalloc_noprof+0x411/0x7f0 mm/slub.c:5614
+ kmalloc_noprof include/linux/slab.h:961 [inline]
+ kzalloc_noprof include/linux/slab.h:1094 [inline]
+ shrinker_alloc+0x199/0xa80 mm/shrinker.c:724
+ binder_alloc_shrinker_init+0x45/0xe0 drivers/android/binder_alloc.c:1265
+ binder_init+0x17/0x260 drivers/android/binder.c:7095
+ do_one_initcall+0x236/0x820 init/main.c:1283
+ do_initcall_level+0x104/0x190 init/main.c:1345
+ do_initcalls+0x59/0xa0 init/main.c:1361
+ kernel_init_freeable+0x334/0x4b0 init/main.c:1593
+ kernel_init+0x1d/0x1d0 init/main.c:1483
+ ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+The buggy address belongs to the object at ffff88810ccc7b00
+ which belongs to the cache kmalloc-8 of size 8
+The buggy address is located 8 bytes to the right of
+ allocated 8-byte region [ffff88810ccc7b00, ffff88810ccc7b08)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x10ccc7
+anon flags: 0x57ff00000000000(node=1|zone=2|lastcpupid=0x7ff)
+page_type: f5(slab)
+raw: 057ff00000000000 ffff88801a841500 0000000000000000 dead000000000001
+raw: 0000000000000000 0000000000800080 00000000f5000000 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 0, migratetype Unmovable, gfp_mask 0x52cc0(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP), pid 1, tgid 1 (swapper/0), ts 16130935485, free_ts 0
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0x240/0x2a0 mm/page_alloc.c:1850
+ prep_new_page mm/page_alloc.c:1858 [inline]
+ get_page_from_freelist+0x21e4/0x22c0 mm/page_alloc.c:3869
+ __alloc_frozen_pages_noprof+0x181/0x370 mm/page_alloc.c:5159
+ alloc_pages_mpol+0x232/0x4a0 mm/mempolicy.c:2416
+ alloc_slab_page mm/slub.c:3023 [inline]
+ allocate_slab+0x96/0x3a0 mm/slub.c:3196
+ new_slab mm/slub.c:3250 [inline]
+ ___slab_alloc+0xe94/0x1920 mm/slub.c:4626
+ __slab_alloc+0x65/0x100 mm/slub.c:4745
+ __slab_alloc_node mm/slub.c:4821 [inline]
+ slab_alloc_node mm/slub.c:5232 [inline]
+ __do_kmalloc_node mm/slub.c:5601 [inline]
+ __kmalloc_node_track_caller_noprof+0x5c7/0x800 mm/slub.c:5711
+ __kmemdup_nul mm/util.c:64 [inline]
+ kstrdup+0x42/0x100 mm/util.c:84
+ __kernfs_new_node+0x9c/0x7e0 fs/kernfs/dir.c:633
+ kernfs_new_node+0x102/0x210 fs/kernfs/dir.c:713
+ kernfs_create_link+0xa7/0x200 fs/kernfs/symlink.c:39
+ sysfs_do_create_link_sd+0x83/0x110 fs/sysfs/symlink.c:44
+ device_create_sys_dev_entry+0x11a/0x180 drivers/base/core.c:3515
+ device_add+0x733/0xb50 drivers/base/core.c:3659
+ __video_register_device+0x3dc1/0x4ca0 drivers/media/v4l2-core/v4l2-dev.c:1076
+page_owner free stack trace missing
+
+Memory state around the buggy address:
+ ffff88810ccc7a00: 00 fc fc fc 05 fc fc fc 00 fc fc fc 00 fc fc fc
+ ffff88810ccc7a80: 00 fc fc fc 05 fc fc fc 06 fc fc fc 06 fc fc fc
+>ffff88810ccc7b00: 00 fc fc fc 06 fc fc fc 07 fc fc fc 07 fc fc fc
+                         ^
+ ffff88810ccc7b80: 04 fc fc fc 06 fc fc fc 00 fc fc fc 00 fc fc fc
+ ffff88810ccc7c00: 07 fc fc fc 00 fc fc fc 06 fc fc fc 05 fc fc fc
+==================================================================
 
 
-> +
-> +       poison_body_start =3D ALIGN(start_addr, KASAN_GRANULE_SIZE);
-> +       poison_body_end =3D ALIGN_DOWN(end_addr, KASAN_GRANULE_SIZE);
+***
 
-end_addr is already aligned.
+KASAN: slab-out-of-bounds Read in zswap_store
+
+tree:      linux-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
+base:      8f7f8b1b3f4c613dd886f53f768f82816b41eaa3
+arch:      amd64
+compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+config:    https://ci.syzbot.org/builds/6739e899-fcf7-4f71-b943-5ad0ca0ef8eb/config
+syz repro: https://ci.syzbot.org/findings/cba572f0-863b-4f91-9ac0-c6f5a16096af/syz_repro
+
+==================================================================
+BUG: KASAN: slab-out-of-bounds in cache_alloc_handle mm/zsmalloc.c:410 [inline]
+BUG: KASAN: slab-out-of-bounds in zs_malloc+0x77/0x720 mm/zsmalloc.c:1281
+Read of size 8 at addr ffff888100ae7680 by task syz.2.19/6046
+
+CPU: 1 UID: 0 PID: 6046 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xca/0x240 mm/kasan/report.c:482
+ kasan_report+0x118/0x150 mm/kasan/report.c:595
+ cache_alloc_handle mm/zsmalloc.c:410 [inline]
+ zs_malloc+0x77/0x720 mm/zsmalloc.c:1281
+ zswap_compress mm/zswap.c:910 [inline]
+ zswap_store_page mm/zswap.c:1429 [inline]
+ zswap_store+0x1062/0x1f40 mm/zswap.c:1540
+ swap_writeout+0x710/0xd70 mm/page_io.c:275
+ writeout mm/vmscan.c:662 [inline]
+ pageout mm/vmscan.c:721 [inline]
+ shrink_folio_list+0x3011/0x4c70 mm/vmscan.c:1453
+ reclaim_folio_list+0xeb/0x500 mm/vmscan.c:2233
+ reclaim_pages+0x454/0x520 mm/vmscan.c:2270
+ madvise_cold_or_pageout_pte_range+0x1974/0x1d00 mm/madvise.c:565
+ walk_pmd_range mm/pagewalk.c:130 [inline]
+ walk_pud_range mm/pagewalk.c:224 [inline]
+ walk_p4d_range mm/pagewalk.c:262 [inline]
+ walk_pgd_range+0xfe9/0x1d40 mm/pagewalk.c:303
+ __walk_page_range+0x14c/0x710 mm/pagewalk.c:410
+ walk_page_range_vma+0x393/0x440 mm/pagewalk.c:705
+ madvise_pageout_page_range mm/madvise.c:624 [inline]
+ madvise_pageout mm/madvise.c:649 [inline]
+ madvise_vma_behavior+0x311f/0x3a10 mm/madvise.c:1352
+ madvise_walk_vmas+0x51c/0xa30 mm/madvise.c:1669
+ madvise_do_behavior+0x38e/0x550 mm/madvise.c:1885
+ do_madvise+0x1bc/0x270 mm/madvise.c:1978
+ __do_sys_madvise mm/madvise.c:1987 [inline]
+ __se_sys_madvise mm/madvise.c:1985 [inline]
+ __x64_sys_madvise+0xa7/0xc0 mm/madvise.c:1985
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fa813d8ec29
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fa814c4c038 EFLAGS: 00000246 ORIG_RAX: 000000000000001c
+RAX: ffffffffffffffda RBX: 00007fa813fd5fa0 RCX: 00007fa813d8ec29
+RDX: 0000000000000015 RSI: 0000000000600000 RDI: 0000200000000000
+RBP: 00007fa813e11e41 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fa813fd6038 R14: 00007fa813fd5fa0 R15: 00007ffcee547488
+ </TASK>
+
+Allocated by task 1:
+ kasan_save_stack mm/kasan/common.c:56 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
+ unpoison_slab_object mm/kasan/common.c:342 [inline]
+ __kasan_slab_alloc+0x6c/0x80 mm/kasan/common.c:368
+ kasan_slab_alloc include/linux/kasan.h:252 [inline]
+ slab_post_alloc_hook mm/slub.c:4945 [inline]
+ slab_alloc_node mm/slub.c:5244 [inline]
+ kmem_cache_alloc_noprof+0x367/0x6e0 mm/slub.c:5251
+ __kernfs_new_node+0xd7/0x7e0 fs/kernfs/dir.c:637
+ kernfs_new_node+0x102/0x210 fs/kernfs/dir.c:713
+ __kernfs_create_file+0x4b/0x2e0 fs/kernfs/file.c:1057
+ sysfs_add_file_mode_ns+0x238/0x300 fs/sysfs/file.c:313
+ create_files fs/sysfs/group.c:76 [inline]
+ internal_create_group+0x66d/0x1110 fs/sysfs/group.c:183
+ internal_create_groups fs/sysfs/group.c:223 [inline]
+ sysfs_create_groups+0x59/0x120 fs/sysfs/group.c:249
+ device_add_groups drivers/base/core.c:2836 [inline]
+ device_add_attrs+0x1c4/0x5a0 drivers/base/core.c:2911
+ device_add+0x496/0xb50 drivers/base/core.c:3643
+ usb_new_device+0xa39/0x16f0 drivers/usb/core/hub.c:2694
+ register_root_hub+0x275/0x590 drivers/usb/core/hcd.c:994
+ usb_add_hcd+0xba1/0x1050 drivers/usb/core/hcd.c:2993
+ vhci_hcd_probe+0x1c1/0x380 drivers/usb/usbip/vhci_hcd.c:1377
+ platform_probe+0xf9/0x190 drivers/base/platform.c:1405
+ call_driver_probe drivers/base/dd.c:-1 [inline]
+ really_probe+0x26d/0x9e0 drivers/base/dd.c:659
+ __driver_probe_device+0x18c/0x2f0 drivers/base/dd.c:801
+ driver_probe_device+0x4f/0x430 drivers/base/dd.c:831
+ __device_attach_driver+0x2ce/0x530 drivers/base/dd.c:959
+ bus_for_each_drv+0x251/0x2e0 drivers/base/bus.c:462
+ __device_attach+0x2b8/0x400 drivers/base/dd.c:1031
+ bus_probe_device+0x185/0x260 drivers/base/bus.c:537
+ device_add+0x7b6/0xb50 drivers/base/core.c:3689
+ platform_device_add+0x4b4/0x820 drivers/base/platform.c:716
+ platform_device_register_full+0x46c/0x570 drivers/base/platform.c:844
+ vhci_hcd_init+0x1bc/0x310 drivers/usb/usbip/vhci_hcd.c:1533
+ do_one_initcall+0x236/0x820 init/main.c:1283
+ do_initcall_level+0x104/0x190 init/main.c:1345
+ do_initcalls+0x59/0xa0 init/main.c:1361
+ kernel_init_freeable+0x334/0x4b0 init/main.c:1593
+ kernel_init+0x1d/0x1d0 init/main.c:1483
+ ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+The buggy address belongs to the object at ffff888100ae75a0
+ which belongs to the cache kernfs_node_cache of size 176
+The buggy address is located 48 bytes to the right of
+ allocated 176-byte region [ffff888100ae75a0, ffff888100ae7650)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x100ae7
+flags: 0x57ff00000000000(node=1|zone=2|lastcpupid=0x7ff)
+page_type: f5(slab)
+raw: 057ff00000000000 ffff888100015dc0 dead000000000122 0000000000000000
+raw: 0000000000000000 0000000000110011 00000000f5000000 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 0, migratetype Unmovable, gfp_mask 0x52cc0(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP), pid 1, tgid 1 (swapper/0), ts 12683536009, free_ts 12683151344
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0x240/0x2a0 mm/page_alloc.c:1850
+ prep_new_page mm/page_alloc.c:1858 [inline]
+ get_page_from_freelist+0x21e4/0x22c0 mm/page_alloc.c:3869
+ __alloc_frozen_pages_noprof+0x181/0x370 mm/page_alloc.c:5159
+ alloc_pages_mpol+0x232/0x4a0 mm/mempolicy.c:2416
+ alloc_slab_page mm/slub.c:3023 [inline]
+ allocate_slab+0x96/0x3a0 mm/slub.c:3196
+ new_slab mm/slub.c:3250 [inline]
+ ___slab_alloc+0xe94/0x1920 mm/slub.c:4626
+ __slab_alloc+0x65/0x100 mm/slub.c:4745
+ __slab_alloc_node mm/slub.c:4821 [inline]
+ slab_alloc_node mm/slub.c:5232 [inline]
+ kmem_cache_alloc_noprof+0x3f9/0x6e0 mm/slub.c:5251
+ __kernfs_new_node+0xd7/0x7e0 fs/kernfs/dir.c:637
+ kernfs_new_node+0x102/0x210 fs/kernfs/dir.c:713
+ __kernfs_create_file+0x4b/0x2e0 fs/kernfs/file.c:1057
+ sysfs_add_file_mode_ns+0x238/0x300 fs/sysfs/file.c:313
+ create_files fs/sysfs/group.c:76 [inline]
+ internal_create_group+0x66d/0x1110 fs/sysfs/group.c:183
+ internal_create_groups fs/sysfs/group.c:223 [inline]
+ sysfs_create_groups+0x59/0x120 fs/sysfs/group.c:249
+ device_add_groups drivers/base/core.c:2836 [inline]
+ device_add_attrs+0x1c4/0x5a0 drivers/base/core.c:2911
+ device_add+0x496/0xb50 drivers/base/core.c:3643
+page last free pid 1 tgid 1 stack trace:
+ reset_page_owner include/linux/page_owner.h:25 [inline]
+ free_pages_prepare mm/page_alloc.c:1394 [inline]
+ __free_frozen_pages+0xbc4/0xd30 mm/page_alloc.c:2906
+ __slab_free+0x2e7/0x390 mm/slub.c:5922
+ qlink_free mm/kasan/quarantine.c:163 [inline]
+ qlist_free_all+0x97/0x140 mm/kasan/quarantine.c:179
+ kasan_quarantine_reduce+0x148/0x160 mm/kasan/quarantine.c:286
+ __kasan_slab_alloc+0x22/0x80 mm/kasan/common.c:352
+ kasan_slab_alloc include/linux/kasan.h:252 [inline]
+ slab_post_alloc_hook mm/slub.c:4945 [inline]
+ slab_alloc_node mm/slub.c:5244 [inline]
+ __kmalloc_cache_noprof+0x36f/0x6f0 mm/slub.c:5718
+ kmalloc_noprof include/linux/slab.h:957 [inline]
+ kzalloc_noprof include/linux/slab.h:1094 [inline]
+ device_private_init drivers/base/core.c:3534 [inline]
+ device_add+0xbe/0xb50 drivers/base/core.c:3585
+ usb_new_device+0xa39/0x16f0 drivers/usb/core/hub.c:2694
+ register_root_hub+0x275/0x590 drivers/usb/core/hcd.c:994
+ usb_add_hcd+0xba1/0x1050 drivers/usb/core/hcd.c:2993
+ vhci_hcd_probe+0x1c1/0x380 drivers/usb/usbip/vhci_hcd.c:1377
+ platform_probe+0xf9/0x190 drivers/base/platform.c:1405
+ call_driver_probe drivers/base/dd.c:-1 [inline]
+ really_probe+0x26d/0x9e0 drivers/base/dd.c:659
+ __driver_probe_device+0x18c/0x2f0 drivers/base/dd.c:801
+ driver_probe_device+0x4f/0x430 drivers/base/dd.c:831
+ __device_attach_driver+0x2ce/0x530 drivers/base/dd.c:959
+
+Memory state around the buggy address:
+ ffff888100ae7580: fc fc fc fc 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff888100ae7600: 00 00 00 00 00 00 00 00 00 00 fc fc fc fc fc fc
+>ffff888100ae7680: fc fc 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+                   ^
+ ffff888100ae7700: 00 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc
+ ffff888100ae7780: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+==================================================================
 
 
-> +
-> +       if (poison_body_start < poison_body_end)
-> +               kasan_poison((void *)poison_body_start,
-> +                            poison_body_end - poison_body_start,
-> +                            KASAN_SLAB_REDZONE, false);
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL(kasan_poison_range);
-> +
->  #ifdef CONFIG_KASAN_GENERIC
->  void kasan_poison_last_granule(const void *addr, size_t size)
->  {
-> --
-> 2.51.0.470.ga7dc726c21-goog
->
+***
+
+KASAN: slab-use-after-free Read in zpool_get_total_pages
+
+tree:      linux-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
+base:      8f7f8b1b3f4c613dd886f53f768f82816b41eaa3
+arch:      amd64
+compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+config:    https://ci.syzbot.org/builds/6739e899-fcf7-4f71-b943-5ad0ca0ef8eb/config
+syz repro: https://ci.syzbot.org/findings/bbd2b5a8-bad1-404c-8f0d-414451cc731a/syz_repro
+
+==================================================================
+BUG: KASAN: slab-use-after-free in instrument_atomic_read include/linux/instrumented.h:68 [inline]
+BUG: KASAN: slab-use-after-free in atomic_long_read include/linux/atomic/atomic-instrumented.h:3188 [inline]
+BUG: KASAN: slab-use-after-free in zs_get_total_pages mm/zsmalloc.c:1066 [inline]
+BUG: KASAN: slab-use-after-free in zpool_get_total_pages+0x46/0x70 mm/zsmalloc.c:436
+Read of size 8 at addr ffff88801b3033b0 by task syz.0.17/6006
+
+CPU: 1 UID: 0 PID: 6006 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xca/0x240 mm/kasan/report.c:482
+ kasan_report+0x118/0x150 mm/kasan/report.c:595
+ check_region_inline mm/kasan/generic.c:-1 [inline]
+ kasan_check_range+0x2b0/0x2c0 mm/kasan/generic.c:200
+ instrument_atomic_read include/linux/instrumented.h:68 [inline]
+ atomic_long_read include/linux/atomic/atomic-instrumented.h:3188 [inline]
+ zs_get_total_pages mm/zsmalloc.c:1066 [inline]
+ zpool_get_total_pages+0x46/0x70 mm/zsmalloc.c:436
+ zswap_total_pages+0xf6/0x1e0 mm/zswap.c:457
+ zswap_check_limits mm/zswap.c:465 [inline]
+ zswap_store+0x52f/0x1f40 mm/zswap.c:1521
+ swap_writeout+0x710/0xd70 mm/page_io.c:275
+ writeout mm/vmscan.c:662 [inline]
+ pageout mm/vmscan.c:721 [inline]
+ shrink_folio_list+0x3011/0x4c70 mm/vmscan.c:1453
+ reclaim_folio_list+0xeb/0x500 mm/vmscan.c:2233
+ reclaim_pages+0x2f4/0x520 mm/vmscan.c:2266
+ madvise_cold_or_pageout_pte_range+0x1974/0x1d00 mm/madvise.c:565
+ walk_pmd_range mm/pagewalk.c:130 [inline]
+ walk_pud_range mm/pagewalk.c:224 [inline]
+ walk_p4d_range mm/pagewalk.c:262 [inline]
+ walk_pgd_range+0xfe9/0x1d40 mm/pagewalk.c:303
+ __walk_page_range+0x14c/0x710 mm/pagewalk.c:410
+ walk_page_range_vma+0x393/0x440 mm/pagewalk.c:705
+ madvise_pageout_page_range mm/madvise.c:624 [inline]
+ madvise_pageout mm/madvise.c:649 [inline]
+ madvise_vma_behavior+0x311f/0x3a10 mm/madvise.c:1352
+ madvise_walk_vmas+0x51c/0xa30 mm/madvise.c:1669
+ madvise_do_behavior+0x38e/0x550 mm/madvise.c:1885
+ do_madvise+0x1bc/0x270 mm/madvise.c:1978
+ __do_sys_madvise mm/madvise.c:1987 [inline]
+ __se_sys_madvise mm/madvise.c:1985 [inline]
+ __x64_sys_madvise+0xa7/0xc0 mm/madvise.c:1985
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f4f4118ec29
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f4f407fe038 EFLAGS: 00000246 ORIG_RAX: 000000000000001c
+RAX: ffffffffffffffda RBX: 00007f4f413d5fa0 RCX: 00007f4f4118ec29
+RDX: 0000000000000015 RSI: 7fffffffffffffff RDI: 0000200000000000
+RBP: 00007f4f41211e41 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f4f413d6038 R14: 00007f4f413d5fa0 R15: 00007ffefd579118
+ </TASK>
+
+Allocated by task 1:
+ kasan_save_stack mm/kasan/common.c:56 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
+ unpoison_slab_object mm/kasan/common.c:342 [inline]
+ __kasan_slab_alloc+0x6c/0x80 mm/kasan/common.c:368
+ kasan_slab_alloc include/linux/kasan.h:252 [inline]
+ slab_post_alloc_hook mm/slub.c:4945 [inline]
+ slab_alloc_node mm/slub.c:5244 [inline]
+ kmem_cache_alloc_noprof+0x367/0x6e0 mm/slub.c:5251
+ acpi_ut_allocate_object_desc_dbg drivers/acpi/acpica/utobject.c:359 [inline]
+ acpi_ut_create_internal_object_dbg+0xe6/0x470 drivers/acpi/acpica/utobject.c:69
+ acpi_ds_create_operand+0x2d7/0x890 drivers/acpi/acpica/dsutils.c:617
+ acpi_ds_create_operands+0x264/0x3f0 drivers/acpi/acpica/dsutils.c:707
+ acpi_ds_exec_end_op+0x26b/0x1120 drivers/acpi/acpica/dswexec.c:385
+ acpi_ps_parse_loop+0xc33/0x1ab0 drivers/acpi/acpica/psloop.c:525
+ acpi_ps_parse_aml+0x22d/0x9b0 drivers/acpi/acpica/psparse.c:475
+ acpi_ps_execute_method+0x58d/0x7c0 drivers/acpi/acpica/psxface.c:190
+ acpi_ns_evaluate+0x5a6/0xa20 drivers/acpi/acpica/nseval.c:205
+ acpi_evaluate_object+0x53f/0xa10 drivers/acpi/acpica/nsxfeval.c:354
+ acpi_evaluate_integer+0xfc/0x270 drivers/acpi/utils.c:260
+ acpi_bus_get_status_handle drivers/acpi/bus.c:82 [inline]
+ acpi_bus_get_status+0x14a/0x380 drivers/acpi/bus.c:111
+ acpi_scan_init_status drivers/acpi/scan.c:1863 [inline]
+ acpi_add_single_object+0x391/0x1a20 drivers/acpi/scan.c:1896
+ acpi_bus_check_add+0x349/0x820 drivers/acpi/scan.c:2179
+ acpi_ns_walk_namespace+0x26b/0x690 drivers/acpi/acpica/nswalk.c:-1
+ acpi_walk_namespace+0xe8/0x130 drivers/acpi/acpica/nsxfeval.c:606
+ acpi_bus_scan+0xe8/0x4b0 drivers/acpi/scan.c:2593
+ acpi_scan_init+0x1b0/0x550 drivers/acpi/scan.c:2746
+ acpi_init+0x130/0x1f0 drivers/acpi/bus.c:1469
+ do_one_initcall+0x236/0x820 init/main.c:1283
+ do_initcall_level+0x104/0x190 init/main.c:1345
+ do_initcalls+0x59/0xa0 init/main.c:1361
+ kernel_init_freeable+0x334/0x4b0 init/main.c:1593
+ kernel_init+0x1d/0x1d0 init/main.c:1483
+ ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+Freed by task 1:
+ kasan_save_stack mm/kasan/common.c:56 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
+ __kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:587
+ kasan_save_free_info mm/kasan/kasan.h:406 [inline]
+ poison_slab_object mm/kasan/common.c:252 [inline]
+ __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:284
+ kasan_slab_free include/linux/kasan.h:234 [inline]
+ slab_free_hook mm/slub.c:2507 [inline]
+ slab_free mm/slub.c:6557 [inline]
+ kmem_cache_free+0x19b/0x690 mm/slub.c:6668
+ acpi_os_release_object+0x1d/0x30 drivers/acpi/osl.c:1644
+ acpi_ut_update_object_reference+0x47f/0x710 drivers/acpi/acpica/utdelete.c:632
+ acpi_ds_clear_operands+0xa9/0x1b0 drivers/acpi/acpica/dsutils.c:396
+ acpi_ds_exec_end_op+0xbe9/0x1120 drivers/acpi/acpica/dswexec.c:442
+ acpi_ps_parse_loop+0xc33/0x1ab0 drivers/acpi/acpica/psloop.c:525
+ acpi_ps_parse_aml+0x22d/0x9b0 drivers/acpi/acpica/psparse.c:475
+ acpi_ps_execute_method+0x58d/0x7c0 drivers/acpi/acpica/psxface.c:190
+ acpi_ns_evaluate+0x5a6/0xa20 drivers/acpi/acpica/nseval.c:205
+ acpi_evaluate_object+0x53f/0xa10 drivers/acpi/acpica/nsxfeval.c:354
+ acpi_evaluate_integer+0xfc/0x270 drivers/acpi/utils.c:260
+ acpi_bus_get_status_handle drivers/acpi/bus.c:82 [inline]
+ acpi_bus_get_status+0x14a/0x380 drivers/acpi/bus.c:111
+ acpi_scan_init_status drivers/acpi/scan.c:1863 [inline]
+ acpi_add_single_object+0x391/0x1a20 drivers/acpi/scan.c:1896
+ acpi_bus_check_add+0x349/0x820 drivers/acpi/scan.c:2179
+ acpi_ns_walk_namespace+0x26b/0x690 drivers/acpi/acpica/nswalk.c:-1
+ acpi_walk_namespace+0xe8/0x130 drivers/acpi/acpica/nsxfeval.c:606
+ acpi_bus_scan+0xe8/0x4b0 drivers/acpi/scan.c:2593
+ acpi_scan_init+0x1b0/0x550 drivers/acpi/scan.c:2746
+ acpi_init+0x130/0x1f0 drivers/acpi/bus.c:1469
+ do_one_initcall+0x236/0x820 init/main.c:1283
+ do_initcall_level+0x104/0x190 init/main.c:1345
+ do_initcalls+0x59/0xa0 init/main.c:1361
+ kernel_init_freeable+0x334/0x4b0 init/main.c:1593
+ kernel_init+0x1d/0x1d0 init/main.c:1483
+ ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+The buggy address belongs to the object at ffff88801b3033a8
+ which belongs to the cache Acpi-Operand of size 72
+The buggy address is located 8 bytes inside of
+ freed 72-byte region [ffff88801b3033a8, ffff88801b3033f0)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff88801b303000 pfn:0x1b303
+flags: 0xfff00000000200(workingset|node=0|zone=1|lastcpupid=0x7ff)
+page_type: f5(slab)
+raw: 00fff00000000200 ffff88801a894dc0 ffffea00006be4d0 ffffea00006bffd0
+raw: ffff88801b303000 000000000027001c 00000000f5000000 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 0, migratetype Unmovable, gfp_mask 0x52cc0(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP), pid 1, tgid 1 (swapper/0), ts 2367926237, free_ts 0
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0x240/0x2a0 mm/page_alloc.c:1850
+ prep_new_page mm/page_alloc.c:1858 [inline]
+ get_page_from_freelist+0x21e4/0x22c0 mm/page_alloc.c:3869
+ __alloc_frozen_pages_noprof+0x181/0x370 mm/page_alloc.c:5159
+ alloc_pages_mpol+0x232/0x4a0 mm/mempolicy.c:2416
+ alloc_slab_page mm/slub.c:3023 [inline]
+ allocate_slab+0x96/0x3a0 mm/slub.c:3196
+ new_slab mm/slub.c:3250 [inline]
+ ___slab_alloc+0xe94/0x1920 mm/slub.c:4626
+ __slab_alloc+0x65/0x100 mm/slub.c:4745
+ __slab_alloc_node mm/slub.c:4821 [inline]
+ slab_alloc_node mm/slub.c:5232 [inline]
+ kmem_cache_alloc_noprof+0x3f9/0x6e0 mm/slub.c:5251
+ acpi_ut_allocate_object_desc_dbg drivers/acpi/acpica/utobject.c:359 [inline]
+ acpi_ut_create_internal_object_dbg+0xe6/0x470 drivers/acpi/acpica/utobject.c:69
+ acpi_ds_create_operand+0x2d7/0x890 drivers/acpi/acpica/dsutils.c:617
+ acpi_ds_create_operands+0x264/0x3f0 drivers/acpi/acpica/dsutils.c:707
+ acpi_ds_load2_end_op+0xa51/0xf30 drivers/acpi/acpica/dswload2.c:663
+ acpi_ds_exec_end_op+0x67b/0x1120 drivers/acpi/acpica/dswexec.c:638
+ acpi_ps_parse_loop+0xc33/0x1ab0 drivers/acpi/acpica/psloop.c:525
+ acpi_ps_parse_aml+0x22d/0x9b0 drivers/acpi/acpica/psparse.c:475
+ acpi_ps_execute_table+0x335/0x410 drivers/acpi/acpica/psxface.c:295
+page_owner free stack trace missing
+
+Memory state around the buggy address:
+ ffff88801b303280: fb fb fb fb fb fb fb fc fc fc fc 00 00 00 00 00
+ ffff88801b303300: 00 00 00 00 fc fc fc fc 00 00 00 00 00 00 00 00
+>ffff88801b303380: 00 fc fc fc fc fa fb fb fb fb fb fb fb fb fc fc
+                                     ^
+ ffff88801b303400: fc fc 00 00 00 00 00 00 00 00 00 fc fc fc fc 00
+ ffff88801b303480: 00 00 00 00 00 00 00 00 fc fc fc fc 00 00 00 00
+==================================================================
+
+
+***
+
+KASAN: use-after-free Read in zpool_get_total_pages
+
+tree:      linux-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
+base:      8f7f8b1b3f4c613dd886f53f768f82816b41eaa3
+arch:      amd64
+compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+config:    https://ci.syzbot.org/builds/6739e899-fcf7-4f71-b943-5ad0ca0ef8eb/config
+syz repro: https://ci.syzbot.org/findings/6687daf2-8ec6-4f60-ab6b-b53425f8483b/syz_repro
+
+==================================================================
+BUG: KASAN: use-after-free in instrument_atomic_read include/linux/instrumented.h:68 [inline]
+BUG: KASAN: use-after-free in atomic_long_read include/linux/atomic/atomic-instrumented.h:3188 [inline]
+BUG: KASAN: use-after-free in zs_get_total_pages mm/zsmalloc.c:1066 [inline]
+BUG: KASAN: use-after-free in zpool_get_total_pages+0x46/0x70 mm/zsmalloc.c:436
+Read of size 8 at addr ffff88801af0a0d0 by task syz.1.18/6044
+
+CPU: 0 UID: 0 PID: 6044 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xca/0x240 mm/kasan/report.c:482
+ kasan_report+0x118/0x150 mm/kasan/report.c:595
+ check_region_inline mm/kasan/generic.c:-1 [inline]
+ kasan_check_range+0x2b0/0x2c0 mm/kasan/generic.c:200
+ instrument_atomic_read include/linux/instrumented.h:68 [inline]
+ atomic_long_read include/linux/atomic/atomic-instrumented.h:3188 [inline]
+ zs_get_total_pages mm/zsmalloc.c:1066 [inline]
+ zpool_get_total_pages+0x46/0x70 mm/zsmalloc.c:436
+ zswap_total_pages+0xf6/0x1e0 mm/zswap.c:457
+ zswap_check_limits mm/zswap.c:465 [inline]
+ zswap_store+0x52f/0x1f40 mm/zswap.c:1521
+ swap_writeout+0x710/0xd70 mm/page_io.c:275
+ writeout mm/vmscan.c:662 [inline]
+ pageout mm/vmscan.c:721 [inline]
+ shrink_folio_list+0x3011/0x4c70 mm/vmscan.c:1453
+ reclaim_folio_list+0xeb/0x500 mm/vmscan.c:2233
+ reclaim_pages+0x454/0x520 mm/vmscan.c:2270
+ madvise_cold_or_pageout_pte_range+0x1974/0x1d00 mm/madvise.c:565
+ walk_pmd_range mm/pagewalk.c:130 [inline]
+ walk_pud_range mm/pagewalk.c:224 [inline]
+ walk_p4d_range mm/pagewalk.c:262 [inline]
+ walk_pgd_range+0xfe9/0x1d40 mm/pagewalk.c:303
+ __walk_page_range+0x14c/0x710 mm/pagewalk.c:410
+ walk_page_range_vma+0x393/0x440 mm/pagewalk.c:705
+ madvise_pageout_page_range mm/madvise.c:624 [inline]
+ madvise_pageout mm/madvise.c:649 [inline]
+ madvise_vma_behavior+0x311f/0x3a10 mm/madvise.c:1352
+ madvise_walk_vmas+0x51c/0xa30 mm/madvise.c:1669
+ madvise_do_behavior+0x38e/0x550 mm/madvise.c:1885
+ do_madvise+0x1bc/0x270 mm/madvise.c:1978
+ __do_sys_madvise mm/madvise.c:1987 [inline]
+ __se_sys_madvise mm/madvise.c:1985 [inline]
+ __x64_sys_madvise+0xa7/0xc0 mm/madvise.c:1985
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fa5a1f8ec29
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fa5a2eb5038 EFLAGS: 00000246 ORIG_RAX: 000000000000001c
+RAX: ffffffffffffffda RBX: 00007fa5a21d5fa0 RCX: 00007fa5a1f8ec29
+RDX: 0000000000000015 RSI: 0000000000600000 RDI: 0000200000000000
+RBP: 00007fa5a2011e41 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fa5a21d6038 R14: 00007fa5a21d5fa0 R15: 00007ffc6cec8398
+ </TASK>
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff88801af0afc0 pfn:0x1af0a
+flags: 0xfff00000000000(node=0|zone=1|lastcpupid=0x7ff)
+page_type: f0(buddy)
+raw: 00fff00000000000 ffffea00008c38c8 ffffea0000811c88 0000000000000000
+raw: ffff88801af0afc0 0000000000000000 00000000f0000000 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as freed
+page last allocated via order 0, migratetype Unmovable, gfp_mask 0x2dc2(GFP_KERNEL|__GFP_HIGHMEM|__GFP_ZERO|__GFP_NOWARN), pid 5864, tgid 5864 (syz-executor), ts 59367185001, free_ts 60188955452
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0x240/0x2a0 mm/page_alloc.c:1850
+ prep_new_page mm/page_alloc.c:1858 [inline]
+ get_page_from_freelist+0x21e4/0x22c0 mm/page_alloc.c:3869
+ __alloc_frozen_pages_noprof+0x181/0x370 mm/page_alloc.c:5159
+ alloc_pages_mpol+0x232/0x4a0 mm/mempolicy.c:2416
+ alloc_frozen_pages_noprof mm/mempolicy.c:2487 [inline]
+ alloc_pages_noprof+0xa9/0x190 mm/mempolicy.c:2507
+ vm_area_alloc_pages mm/vmalloc.c:3642 [inline]
+ __vmalloc_area_node mm/vmalloc.c:3720 [inline]
+ __vmalloc_node_range_noprof+0x97d/0x12f0 mm/vmalloc.c:3893
+ vmalloc_user_noprof+0xad/0xf0 mm/vmalloc.c:4046
+ kcov_ioctl+0x55/0x640 kernel/kcov.c:716
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+page last free pid 5884 tgid 5884 stack trace:
+ reset_page_owner include/linux/page_owner.h:25 [inline]
+ free_pages_prepare mm/page_alloc.c:1394 [inline]
+ __free_frozen_pages+0xbc4/0xd30 mm/page_alloc.c:2906
+ vfree+0x25a/0x400 mm/vmalloc.c:3434
+ kcov_put kernel/kcov.c:439 [inline]
+ kcov_close+0x28/0x50 kernel/kcov.c:535
+ __fput+0x44c/0xa70 fs/file_table.c:468
+ task_work_run+0x1d4/0x260 kernel/task_work.c:227
+ exit_task_work include/linux/task_work.h:40 [inline]
+ do_exit+0x6b5/0x2300 kernel/exit.c:966
+ do_group_exit+0x21c/0x2d0 kernel/exit.c:1107
+ get_signal+0x1285/0x1340 kernel/signal.c:3034
+ arch_do_signal_or_restart+0xa0/0x790 arch/x86/kernel/signal.c:337
+ exit_to_user_mode_loop+0x72/0x130 kernel/entry/common.c:40
+ exit_to_user_mode_prepare include/linux/irq-entry-common.h:225 [inline]
+ syscall_exit_to_user_mode_work include/linux/entry-common.h:175 [inline]
+ syscall_exit_to_user_mode include/linux/entry-common.h:210 [inline]
+ do_syscall_64+0x2bd/0xfa0 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Memory state around the buggy address:
+ ffff88801af09f80: 05 fc fc fc 06 fc fc fc 06 fc fc fc 05 fc fc fc
+ ffff88801af0a000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+>ffff88801af0a080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+                                                 ^
+ ffff88801af0a100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+ ffff88801af0a180: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+==================================================================
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
