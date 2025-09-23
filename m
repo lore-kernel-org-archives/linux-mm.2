@@ -4,106 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3759ECAC5A7
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 05:52:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1277DCAC5A5
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 06:04:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 710148E0008; Tue, 23 Sep 2025 01:52:37 -0400 (EDT)
+	id 619CD8E000B; Tue, 23 Sep 2025 02:04:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E7638E0001; Tue, 23 Sep 2025 01:52:37 -0400 (EDT)
+	id 5C8F88E0001; Tue, 23 Sep 2025 02:04:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 624308E0008; Tue, 23 Sep 2025 01:52:37 -0400 (EDT)
+	id 490DB8E000B; Tue, 23 Sep 2025 02:04:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 51B058E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 01:52:37 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EA6CAB8939
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 05:52:36 +0000 (UTC)
-X-FDA: 83919445512.13.22B067E
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 6D169120004
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 05:52:34 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hz53iHZo;
-	spf=pass (imf29.hostedemail.com: domain of aubrey.li@linux.intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=aubrey.li@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 352768E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 02:04:50 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7A139B8A53
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 06:04:49 +0000 (UTC)
+X-FDA: 83919476298.26.C196374
+Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7922414000C
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 06:04:47 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=hpe.com header.s=pps0720 header.b=Dk+a+gvO;
+	spf=pass (imf09.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.143.35 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com;
+	dmarc=pass (policy=reject) header.from=hpe.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758606754;
+	s=arc-20220608; t=1758607487;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ncEwKodHLofR/hxoHJLbWLArv2qzRlaaSrh4f7ChnNE=;
-	b=q2tJPlO+6iCe4hVwg56Uk/oGLUlInZ8ry4KPJnymPVEkYwTXy8GSPqgxh3G2BOVG8HsyzJ
-	aS96f4OyNU9z3nH0cnV2cHxEu+TizkznX02F1LgWYo5kBhQlv6e4W7pxuWKpKrLwDR4O7p
-	hSOqkOU+W3CH/8/N5NtPzTMJmX0EQAY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758606754; a=rsa-sha256;
-	cv=none;
-	b=gCjW0awTfYz6MaUToNSHe9SqkRTTcdZs02f4jChZSg/he0XLS9cbaF5DpRGjHStMdrL+EO
-	8U0Ku+4P4PzVKVt9ssyHqex5MkKbRuAiNYcT4r6ZlV/uO6n+mE6fgOBo8/xjFoQe6YzVeE
-	Tm83/XCleooiE7TwUE/q6TJJxVGHjcc=
+	bh=Ysy44PRCh+/6wV2z+Ca/XezLJJ6mu2BnXGwORvH9Dd4=;
+	b=MlYnvjSEFAd4qFWi98VkHyas/ntlODgXUTeDgVhGhskjqN2mTbgy3lNsfySFQlzwETytMV
+	/qO5egmQNviEUWhWJ2thVuZPSPIK40qrhxUomNlTs1T1wC72MqChox5Egqpr0p/7jfD171
+	auSFnCfYIlKHTSxX84JSYalPzgwUvEw=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hz53iHZo;
-	spf=pass (imf29.hostedemail.com: domain of aubrey.li@linux.intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=aubrey.li@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758606755; x=1790142755;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Yv4vxS5FfhjU/zpDBpO1D2UxDxUcGTXGSS0bA5T5eAs=;
-  b=hz53iHZoY+Wxq1ZAD0L2k0UBcaEtBahJm1da7sPxR1RKYFNXylVoA2M0
-   u6WdOWqT7p9nT9ravUIXSEcEZU9t1Tw/MYGYbnSZmPm4gpXd7ROX48CjS
-   0Rgp9ZJAHZbsADgiz0I7x2lhNF0As4PVB+8NFRVeeus/o+1FyIP4XHi5D
-   KsExSybskqL469/V9I4bD6Z9umsaiNE2vozif7YziXIfxGQN6YPD7V/ER
-   CM3i1HeEkYLbvgct+c5VGpI7gcXhBPheBrm3Rodx9g1nsv21LZHs4VMQi
-   U/Mld5w841ZBGLHOi7/eXjMery7wsRQNHN/3NzucV77pz7dS9s+6F3h2n
-   A==;
-X-CSE-ConnectionGUID: nUrP2XsdQtWRzq6MHIoyBA==
-X-CSE-MsgGUID: Joj5hH1qSXOus9cjz2vGVA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="71985426"
-X-IronPort-AV: E=Sophos;i="6.18,287,1751266800"; 
-   d="scan'208";a="71985426"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2025 22:52:33 -0700
-X-CSE-ConnectionGUID: ey1wUJiRRRmHLQLcgAPe8Q==
-X-CSE-MsgGUID: borv5jnjTHC3J6hNV2upxA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,287,1751266800"; 
-   d="scan'208";a="180973917"
-Received: from alc-skl-a23.sh.intel.com (HELO [10.239.53.6]) ([10.239.53.6])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2025 22:52:30 -0700
-Message-ID: <93f7e2ad-563b-4db5-bab6-4ce2e994dbae@linux.intel.com>
-Date: Tue, 23 Sep 2025 13:11:37 +0800
+	imf09.hostedemail.com;
+	dkim=pass header.d=hpe.com header.s=pps0720 header.b=Dk+a+gvO;
+	spf=pass (imf09.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.143.35 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com;
+	dmarc=pass (policy=reject) header.from=hpe.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758607487; a=rsa-sha256;
+	cv=none;
+	b=hr9JiyfQl5ZFbwU1Ejl5aXTl7dQpo7A3L4eK4upL+4TbeiKyG46ZNpqBgoCJYgivrkh38D
+	MkMWJcdan06rbaM8xT2CY8SP4QrOQ1f2Nzfj9oupxi1b2XSPoK58fe8PQ1QRJrfGrknW1W
+	z2mF5WWmp59rtGmIpKxZXjFb8w/fdZs=
+Received: from pps.filterd (m0134425.ppops.net [127.0.0.1])
+	by mx0b-002e3701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58N52mPd002159;
+	Tue, 23 Sep 2025 06:03:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pps0720; bh=Ysy44PRCh+/6wV2z+Ca/XezLJJ
+	6mu2BnXGwORvH9Dd4=; b=Dk+a+gvOqKbwRKGH3FWybXgsxrqXr1BZ1JKFr0W974
+	/CSXr1RqrpMiOlbigY36ncNFyRVAuz8eFYNzCDN6uh+vhVujq21rkPbXPmRyRUtd
+	CjXJyX5Dj+8PNpKae+cGn9xYhD9KWYmV7a2JLVCY7DgRnBBesNvWlz/vVRJnYXWr
+	mzLrpCxuhGfHDU6Gc8sqEphT+DujFMSEeVrkuMLfiPVr4/hbEaduEcu0YaO9ltGD
+	nY/6xX01dTUYb8VODhtkXXTezQ9rRBW2swIQBO8i3jBv3xCwJ22WDd8K+97H1zll
+	r0OI0Fg+9X4DSI79leSDIIl1c03U7LzcDNHGfR7mGXwQ==
+Received: from p1lg14878.it.hpe.com (p1lg14878.it.hpe.com [16.230.97.204])
+	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 499njsvuu6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 23 Sep 2025 06:03:57 +0000 (GMT)
+Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by p1lg14878.it.hpe.com (Postfix) with ESMTPS id EF4A212E97;
+	Tue, 23 Sep 2025 06:03:54 +0000 (UTC)
+Received: from HPE-5CG20646DK.localdomain (unknown [16.231.227.36])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTPS id 1E7D4800464;
+	Tue, 23 Sep 2025 06:03:50 +0000 (UTC)
+Date: Tue, 23 Sep 2025 01:03:46 -0500
+From: Kyle Meyer <kyle.meyer@hpe.com>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: "Luck, Tony" <tony.luck@intel.com>, Jiaqi Yan <jiaqiyan@google.com>,
+        David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
+        corbet@lwn.net, linmiaohe@huawei.com, shuah@kernel.org,
+        jane.chu@oracle.com, Liam.Howlett@oracle.com, bp@alien8.de,
+        hannes@cmpxchg.org, jack@suse.cz, joel.granados@kernel.org,
+        laoar.shao@gmail.com, lorenzo.stoakes@oracle.com,
+        mclapinski@google.com, mhocko@suse.com, nao.horiguchi@gmail.com,
+        osalvador@suse.de, rafael.j.wysocki@intel.com, rppt@kernel.org,
+        russ.anderson@hpe.com, shawn.fan@intel.com, surenb@google.com,
+        vbabka@suse.cz, linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-mm@kvack.org
+Subject: Re: [PATCH v2] mm/memory-failure: Support disabling soft offline for
+ HugeTLB pages
+Message-ID: <aNI4QgvyoSrP9-K4@hpe.com>
+References: <aMiu_Uku6Y5ZbuhM@hpe.com>
+ <a99eb11f-a7ac-48a3-a671-c5f0f6b5b491@arm.com>
+ <8c3188da-7078-4099-973a-1d0d74db2720@redhat.com>
+ <aMsDJ3EU1zVJ00cX@hpe.com>
+ <cd71fac2-bb9d-4e84-a074-2b695654e655@redhat.com>
+ <CACw3F52p45t3iSZPjx_Lq9kBn1ZGTDZsxk+iQ-xFA1zdvdqqrw@mail.gmail.com>
+ <aMsR4Tr9ov1pfucC@agluck-desk3>
+ <4d2e8686-8810-4901-8483-9b5eb040d489@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/readahead: Skip fully overlapped range
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Matthew Wilcox <willy@infradead.org>, Nanhai Zou <nanhai.zou@intel.com>,
- Gang Deng <gang.deng@intel.com>, Tianyou Li <tianyou.li@intel.com>,
- Vinicius Gomes <vinicius.gomes@intel.com>,
- Tim Chen <tim.c.chen@linux.intel.com>, Chen Yu <yu.c.chen@intel.com>,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Jan Kara <jack@suse.cz>,
- Roman Gushchin <roman.gushchin@linux.dev>
-References: <20250923035946.2560876-1-aubrey.li@linux.intel.com>
- <20250922204921.898740570c9a595c75814753@linux-foundation.org>
-Content-Language: en-US
-From: Aubrey Li <aubrey.li@linux.intel.com>
-In-Reply-To: <20250922204921.898740570c9a595c75814753@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: szti4t97jomoe5cw55mxxrcwqp6tjqd9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4d2e8686-8810-4901-8483-9b5eb040d489@arm.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDA0MyBTYWx0ZWRfXzcE78KgCk5qI
+ +8m7uiJiXKq3Bjdp0HM5+DG3CMW1LZlOucsOc7oyEMwy9uExNSuJEm2t+SnHJWgGFL4+kFni3IY
+ m/IKGCleRms7RDbsa0JfH/5/3M2HOXc0VT7mfhDUxdHpS67UZ58s9fkz3Qo0OVjTn0BShG6FEFB
+ sraZTw8JtCUO1SOJPj90ij26Abws8eWBhWElzWWmtdQlfOul03NcxKtESHxsXUOHG3bY728UYDx
+ /v0lsrN2sS/UldafeoxcuNA7dOhXJm4AmlBRVCqwDSfbJBnRXnDwEdMucZym2sEzDwi5d8PRtS1
+ aYkdvN11k7xcHo9XFQco7Z7co2gA0AcV8hl380giL/mxCSIBlmdTXf+1GMbNri9gFzC6xwtAni5
+ Y3Pd1c61
+X-Proofpoint-GUID: aW_AMqUIMxBuviqCOxNsJj0xPx3M-AnV
+X-Proofpoint-ORIG-GUID: aW_AMqUIMxBuviqCOxNsJj0xPx3M-AnV
+X-Authority-Analysis: v=2.4 cv=A6FsP7WG c=1 sm=1 tr=0 ts=68d2384d cx=c_pps
+ a=UObrlqRbTUrrdMEdGJ+KZA==:117 a=UObrlqRbTUrrdMEdGJ+KZA==:17
+ a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=QQnSzdILfhi0SjpbxKgA:9
+ a=CjuIK1q_8ugA:10
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-23_01,2025-09-22_05,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 priorityscore=1501 malwarescore=0 suspectscore=0 adultscore=0
+ bulkscore=0 impostorscore=0 phishscore=0 spamscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2509200043
+X-Stat-Signature: wfmp5ip3546gpy4u6u7ccd7aodwyowju
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6D169120004
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1758606754-188070
-X-HE-Meta: U2FsdGVkX1/fLrooBRy701WDFDFHwfT6HcxtjUJz7Aw1VqVEgKNMDRwsdz59OX/RbMHGaQo7dc8Os+U/k/olwBPx/Qhv5/gYHTONRsvLxAkOCE/PwDhPCPHGnGhbdNgI6XEVVEoqtkEcMWTEA2CrO+FQm1X1UH+GZFcecLQvZ4dsBl40lGuycgvTdX0/bjvrpoux0rnZUn5cPuz/D+qZcsfcI9vlMZxT9YRzYCnb+ezza4Lm9TNjnihvkyETGNWlfbsBcMDOJNXQ3PvOvu9KvkBDCs5Xcx5wHwXGyFAssBbnMtQZLFZc+9QlP7TQMQ00GqVKTmOTYTzyPh1zOntRuhqpvEpG/PDBjkqPML2zivYcdKnZhhIX6vJuuxMiWqEIUxD01Ok6FMdddvT67enAZyZ3cSDUCHCbBBiLku5/YCcPSme15a+U0HPoP+ScYqybn9GTYyLBmClzOlAA53oTe/vKR6LlJnGCxcXXh1IgWoL/GEurvFxuQWJFKnnZrB0BDVPH8+00HYT+NQjv/7qaYXpriJvSnvVi8uNqFkW3oqGddt6VxJeEI2GeojIr25651kCS14HzkiGYNwP3C3lLGvP2uPJbqc/9D7G9irEkPXFKAIk+Itf/HMJ1I5JBwaByed5dfa6aTLW2CkjRNq+CX6z393g2pdDxhyE/3tokckBG7PsyQaHxBsgZKm4uNeeatqDutZX4pyBvtHKyg2IwOm882pMkM5qrDI2/6HLXYitDYmO2QDz20NszJblrYBRENtKlOxtoAPStBzgT7Zi8B5LoIJ9RysgkenjgN3U8FPDx6924OA6YaX1gneKYWh5XPlwoBYRDM/CFSu9u47bMCSoJplwAh/lNdtdY3DJszUVZq8cVebcNBKWnOeY0GMnDl0m38qPIzIpPfJ62qxIwR2ivvQ52f8oaqf+bgTcxTuVNmSioa9Y9PIN0ol21t5zm5+qw0+iHQ5bKna3DSvl
- urgcCh8y
- +97af0ygE6w/gwuXTZrZtCYBwzw+W8tg4M9HfMYzx6kXi/ktRFtF4H5gYJZWPAzqe1AyeTTTwqRrAyH8zDN6qN27jqyDDSmeM2TSr8rwpfI6w2+pmNztKUUr0+8LAOt46u7xNbcC3EkEFsvUoGFh4O8BLx/szFWPZdmuy+dcrgwMvAXCky914wTsE+b/no5XCr9oU0UXKvHSfmla+zaWUmX7T0qGSqhLxogp4
+X-Rspamd-Queue-Id: 7922414000C
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758607487-574567
+X-HE-Meta: U2FsdGVkX1/VoZVViArByrdEeOoR/+UlKUB4+gQXlKyyaFWrgFufg9jSEoa/jPSVLo3Qbnm9k0Jrw8HbftAs/8QsV3IcgPX0Dvf8zFCzoPLr5OFrnIz5fhC6+N3EaxqO8jRzCkAx0o9NBBVmeBO9Do7vJv1t5RkpNYBSweNNLEjpjIqXsVXrnjnVsM5cpJeqwOcQobWo40jpJsdCXUQcMJBJyDJgDk2vdJl1F7AFtap6XR7erneQiAwv+oFPxrdrYNKLGvCd8WhLcBZKLaXKvNqJFdjvLwITh61y0hwOCQLwDL+xIyuRk+acGY1Ln3rfSTcMoqUiS124719hdRsZehdGQ5k+11mRJnbxs6gagfaAGn+LjPDADaCTY4doLPRhS1Fq510+sFGB/Gv+P9XIsL+s2bJoM93GnGWacuELVdXXiFeNbYFJr8xwCPfYIvUT2uwkRAmvIIs+Ddot35k7JS7YCN1FAIrC3tvC7X1OkOlzIrUDxcH3n3kY2DJ0k0IC4oasdEoXXoQ0fml6/yyheHEtZ4ByvebzEoxeFEdH/9rQRR6cPLD+g8CqAghU3ABT+W8RTS8SP2PZI1fhzchoFFzFyTOJMUl8szG7zXbhlgtZO7JfyepM4xjW6sXSDSjGr2JwiMor0iNWoQq3wETLDvEzTBBtjrq9eIEMGOYydv4qLSv3LPztUFsiPT5gmPTqeRRdR4/PU1BVRrqxFaNZAdcKcSUM1hagbhsOGsZ+HGFqtolIK2/jU0z2L5HZOrhMEKqg+bwVSlWxxeFhtD2L4GziWhhDqAlsqDBwmbHJaW+yZVphs0oRvZ46yuOVWLCI3pA3SJSIQdkDVkxoJ8jkoc0DFQojLTbz8rsnPo/EPQr7XP5teAjEM5Q39oBLeH8h2iIjRaVs00WsSGloTXcXrGf9PnYHZOtbRVG9Hdt1K94ptjTMTkEI2r4yC7zuXcqB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,33 +142,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/23/25 11:49, Andrew Morton wrote:
-> On Tue, 23 Sep 2025 11:59:46 +0800 Aubrey Li <aubrey.li@linux.intel.com> wrote:
+On Sun, Sep 21, 2025 at 05:06:31PM +0530, Anshuman Khandual wrote:
 > 
->> RocksDB sequential read benchmark under high concurrency shows severe
->> lock contention. Multiple threads may issue readahead on the same file
->> simultaneously, which leads to heavy contention on the xas spinlock in
->> filemap_add_folio(). Perf profiling indicates 30%~60% of CPU time spent
->> there.
->>
->> To mitigate this issue, a readahead request will be skipped if its
->> range is fully covered by an ongoing readahead. This avoids redundant
->> work and significantly reduces lock contention. In one-second sampling,
->> contention on xas spinlock dropped from 138,314 times to 2,144 times,
->> resulting in a large performance improvement in the benchmark.
->>
->> 				w/o patch       w/ patch
->> RocksDB-readseq (ops/sec)
->> (32-threads)			1.2M		2.4M
 > 
-> On which kernel version?  In recent times we've made a few readahead
-> changes to address issues with high concurrency and a quick retest on
-> mm.git's current mm-stable branch would be interesting please.
+> On 18/09/25 1:24 AM, Luck, Tony wrote:
+> > On Wed, Sep 17, 2025 at 12:32:47PM -0700, Jiaqi Yan wrote:
+> >> +1. Given /proc/sys/vm/enable_soft_offline is extensible, I would
+> >> prefer a compact userspace API.
+> >>
+> >>> would create a new file, and the file has weird semantics such that it
+> >>> has no meaning when enable_soft_offline=0.
+> > 
+> > So the expand the bitmask idea from earlier in this thread?
+> > 
+> > Bit0	0 = soft offline disabled. 1 = Enabled (but see other bits)
+> > Bit1	0 = allow offline of 4K pages, 1 = suppress 4K offline
+> > Bit2	0 = allow offline of hugetlb, 1 = suppress hugetlb offline
+> > Bit3	0 = allow breakup of transparent huge pages to just offline 4K, 1 = suppress transparent breakup
+> > Bit4+	Reserved for suppressing other page types we invent in the future
+> > 
+> > Values 0 and 1 keep their original meaning.
+> > 
+> > Value 5 means: offline 4K, keep hugetlb, breakup transparent huge pages.
 > 
+> This disable bitmask (but when generally enabled via bit[0] = 1) method
+> seems much better. But I am not sure about page size being a valid page
+> type classification though. Just to start with, defining first two bits
+> in this bitmask should be good enough, which will atleast help document
+> and validate this new interface properly.
+> 
+> Bit1	0 = allow offline of hugetlb, 1 = suppress hugetlb offline
+> Bit2	0 = allow breakup of transparent huge pages to just offline base pages, 1 = suppress transparent breakup
+> Bit3+	Reserved for suppressing other page types we invent in the future
 
-I'm on v6.16.7. Thanks Andrew for the information, let me check with mm.git.
+The current patch is already applied to mm-git and supports the following bits:
+
+    0 - Enable soft offline
+    1 - Disable soft offline for HugeTLB pages
+
+https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/commit/?h=mm-new&id=9ae6eefa4b6bd3c3e7ef417a6507dce4b55101b4
+
+Are any immediate changes needed?
+
+Support for additional page types, such as transparent huge pages, can be added
+later as needed.
 
 Thanks,
--Aubrey
-
+Kyle Meyer
 
