@@ -4,101 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FFDDCAC5B1
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 17:20:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C85ACAC5AE
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 17:30:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 665158E0005; Tue, 23 Sep 2025 13:20:34 -0400 (EDT)
+	id 5E12B8E000A; Tue, 23 Sep 2025 13:30:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63CBA8E0001; Tue, 23 Sep 2025 13:20:34 -0400 (EDT)
+	id 5B9738E0001; Tue, 23 Sep 2025 13:30:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 579AF8E0005; Tue, 23 Sep 2025 13:20:34 -0400 (EDT)
+	id 4CE7D8E000A; Tue, 23 Sep 2025 13:30:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 431FB8E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 13:20:34 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3BCDB8E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 13:30:51 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 06DCB1DED9A
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 17:20:34 +0000 (UTC)
-X-FDA: 83921179188.20.0770CFC
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf07.hostedemail.com (Postfix) with ESMTP id DAF7C40015
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 17:20:31 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vCnmUEcO;
-	spf=pass (imf07.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B48D111A4D3
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 17:30:50 +0000 (UTC)
+X-FDA: 83921205060.20.E097D1D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 36A3F40010
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 17:30:47 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ye4tZjGe;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf17.hostedemail.com: domain of alex.williamson@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=alex.williamson@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758648648; a=rsa-sha256;
+	cv=none;
+	b=5J9tLOHzX72H6couxtCuHnHWP3oYgTvQkmKUB/6hHf3GNyBvaG2r76zaGO8kGEYqFBXY/o
+	QDOYTxKOkzCsQjoQUIfL4mGGYy/PyXygs0+xrNsF8oVUm/XkCLSkGS/N/wwjLes1bmx8Dk
+	HB1u/VAcgaOy7dYosH0sBJbZ2coeJNg=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ye4tZjGe;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf17.hostedemail.com: domain of alex.williamson@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=alex.williamson@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758648032;
+	s=arc-20220608; t=1758648648;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zhWRSUVB8GF7kCQH4EGUYZkhuU402qmBEblBNgpnv18=;
-	b=YqCkmuVBYtBKOEdeKbWGU0fjEYeqZevBlki4LclFhHw1Xw/QsQkPFghnYgp1/8nG3Tj+TM
-	9VHAKfDvSUHlx61xop9dgmrRvk3En7hN2/f4PNmbX4GBttc1xffHgGb6O3W8LHpPjaaTBl
-	kgQqT8ZG3wbLbmUCOo8Ya7Q7Twhcimk=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vCnmUEcO;
-	spf=pass (imf07.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758648032; a=rsa-sha256;
-	cv=none;
-	b=y1z4HCC87KxHhmIdzj4KTTaC/Icl63CA/WIC5p0ieiSHbIVFxhOK/TSqQjgYN9jJ56XWvO
-	iubo4zSC7NFKdIu2RRoF/lRuhshcewzh1tik0l1tYx8c8qcytVqFHVIqfqodmxT0MFe8ME
-	YDg/w2SZRszzEGOvf9m5ythLEvb4Mpo=
-Message-ID: <1a8352a6-e03f-4f3e-a06b-fab757e39eab@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758648028;
+	bh=OFNQwbdODcls1yBrLTyCkOTsxOyxsNLxzpt49nq+oT4=;
+	b=OrMi76zoCVxnWiTSnUGD5L5QWL1Ma1EszQKfYJ7949QNjVYwG6LGtZaAnoEc0z059gQEKv
+	ouIvvHH5nYB4KxRhhs0WyCg7iirXMMfFw/TleoGq5WKY5PxB7ShdCS5iSMzNnBm/s5ZOkt
+	ZGl8sZlbUPNF4ohIkHG+zXfmdgrjlJ0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758648647;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zhWRSUVB8GF7kCQH4EGUYZkhuU402qmBEblBNgpnv18=;
-	b=vCnmUEcOJcdG5I4H4EeCK1M+LLbB60ngG817jo83Vo6bdMnlfLHaKSuVzIxH0lInW54Sda
-	Kb/hdqVsJnw0cUz93IyL5x7VjXDNCPhZtPTgyDowkkT90DFJN9QxpeBKp4DZvz0YwPUtEL
-	MgZYJV8EAvGz9D3+TvAY57J8A4ijaoM=
-Date: Wed, 24 Sep 2025 01:20:16 +0800
+	bh=OFNQwbdODcls1yBrLTyCkOTsxOyxsNLxzpt49nq+oT4=;
+	b=Ye4tZjGefHj0fV2k1fuaSh/GNWTAXMlo9tPp0qgXfjKm/IaL3BsqW7Up09IYvg8SbqFuoy
+	Wb25z6WmpnMFyYXSZp7XApCUCRMCzUQAAeWErpn7ogRNLCiJ5GKYMgG9/WHnW7aqaxwBZQ
+	p8w89A+3qwxavIFUbCueulzS0GgNMNw=
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com
+ [209.85.166.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-345-aA0MvPhHNO2XqT1-JwZ6Hw-1; Tue, 23 Sep 2025 13:30:46 -0400
+X-MC-Unique: aA0MvPhHNO2XqT1-JwZ6Hw-1
+X-Mimecast-MFC-AGG-ID: aA0MvPhHNO2XqT1-JwZ6Hw_1758648645
+Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-4257fce57faso1571305ab.1
+        for <linux-mm@kvack.org>; Tue, 23 Sep 2025 10:30:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758648645; x=1759253445;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OFNQwbdODcls1yBrLTyCkOTsxOyxsNLxzpt49nq+oT4=;
+        b=oxR/ssJJmYWUvTIeIf7h7dVDZjskuP1ZzZZ7Q0nquVpZF3awGuhuQz8tbZSjDinAzS
+         rRF+4COmWn0jtH+BK1f7WtxQZMbPhDCJMIKRBFcbFf224YqzvTzCFJ1INTSnaEQfxW11
+         BePHCMpT9z+9Ghru1Ck+8biaJ+UoQMkFb4RiWJXku6uiHKqIUj6W/KooVnKboYAKZdL1
+         fjs8c/yyL+MBGFE1wlcfWx+j+p5K6S6LxZKRBE5O5JJG0cSpMxjAIMVCcbV9bUp0/vqr
+         kpei9+xgtU+7q5wlEZVEkM5n36ssVbwhm6wPPXhKKwjXIQT4kTXpfyAL5KpQUf6XML1O
+         eMMg==
+X-Forwarded-Encrypted: i=1; AJvYcCWGcalZ5ODuSbPCooFosy10MpqpXlHCOFp6yEPmhxT6SRHUGjyfk7I7nHT6Xv2kpXtduhRHoilomA==@kvack.org
+X-Gm-Message-State: AOJu0YwLfWO+SqUwbU4fGR62vD1nOUNc7Krf2RtFgnHGVMowVubnbqCG
+	XTO0LuqOpSl6xuIm1KpadifChAlpNiTtJcb8QzpQpf3qlMu8gUPm6tBpUdfO0HUfttW+fR6wDfE
+	comY6pQ3QfOUXHzl/C8E5HwXqKKLSruQJp+nrrmgJBLcdko6XiTZW/JU30Q0S
+X-Gm-Gg: ASbGnctxH38NSBWP9QAldkJzjvVShG0pl31LbC8fQZpbNdRwC59LCB/o7LmM/OFfZ6y
+	dqt+tVPhkJGB4bmx+y2D4HX8MhVBGO95G/9rxdIxOcD0nvpPW5sxobtZtltTqlD2sswD4xEhvhR
+	4gpQ2iZfFA22Lvx+iSOBySYMGZ/y1n2sP11tu98gCtsW38ExxAzveMWy4aDsHv0BHGByIqYyUhT
+	HHunmhTIL44YYvDWWLoHzt4Fad96PAvRmqmprASzqnTa1bn3mKHhBUyF5LmxqIfzFnVKIQh7u4/
+	sw7mfzFkp1gH8CgApk3CRJZ544OlECx9a0fdQlJFLXc=
+X-Received: by 2002:a05:6e02:164d:b0:400:7d06:dd6d with SMTP id e9e14a558f8ab-42581e09c50mr18780905ab.1.1758648644606;
+        Tue, 23 Sep 2025 10:30:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGNobmhXZYu8wcE6bAQtE0C6wCF0m0+GFNpZFLyv2Bpb6JP547FE77pkIiIGw0EG9S0P84Gyw==
+X-Received: by 2002:a05:6e02:164d:b0:400:7d06:dd6d with SMTP id e9e14a558f8ab-42581e09c50mr18780695ab.1.1758648644175;
+        Tue, 23 Sep 2025 10:30:44 -0700 (PDT)
+Received: from redhat.com ([38.15.36.11])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-566127693e0sm275326173.30.2025.09.23.10.30.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Sep 2025 10:30:43 -0700 (PDT)
+Date: Tue, 23 Sep 2025 11:30:41 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Bjorn Helgaas
+ <bhelgaas@google.com>, Christian =?UTF-8?B?S8O2bmln?=
+ <christian.koenig@amd.com>, dri-devel@lists.freedesktop.org,
+ iommu@lists.linux.dev, Jens Axboe <axboe@kernel.dk>, Joerg Roedel
+ <joro@8bytes.org>, kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
+ Logan Gunthorpe <logang@deltatee.com>, Marek Szyprowski
+ <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, Sumit
+ Semwal <sumit.semwal@linaro.org>, Vivek Kasireddy
+ <vivek.kasireddy@intel.com>, Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v2 03/10] PCI/P2PDMA: Refactor to separate core P2P
+ functionality from memory allocation
+Message-ID: <20250923113041.38bee711.alex.williamson@redhat.com>
+In-Reply-To: <20250923150414.GA2608121@nvidia.com>
+References: <cover.1757589589.git.leon@kernel.org>
+	<1e2cb89ea76a92949d06a804e3ab97478e7cacbb.1757589589.git.leon@kernel.org>
+	<20250922150032.3e3da410.alex.williamson@redhat.com>
+	<20250923150414.GA2608121@nvidia.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/1] mm/thp: fix MTE tag mismatch when replacing
- zero-filled subpages
-To: David Hildenbrand <david@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- usamaarif642@gmail.com, yuzhao@google.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, baohua@kernel.org, voidice@gmail.com,
- Liam.Howlett@oracle.com, cerasuolodomenico@gmail.com, hannes@cmpxchg.org,
- kaleshsingh@google.com, npache@redhat.com, riel@surriel.com,
- roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com,
- dev.jain@arm.com, ryncsn@gmail.com, shakeel.butt@linux.dev,
- surenb@google.com, hughd@google.com, willy@infradead.org,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
- apopple@nvidia.com, qun-wei.lin@mediatek.com, Andrew.Yang@mediatek.com,
- casper.li@mediatek.com, chinwen.chang@mediatek.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-mm@kvack.org, ioworker0@gmail.com,
- stable@vger.kernel.org
-References: <20250922021458.68123-1-lance.yang@linux.dev>
- <aNGGUXLCn_bWlne5@arm.com> <a3412715-6d9d-4809-9588-ba08da450d16@redhat.com>
- <aNKJ5glToE4hMhWA@arm.com> <8bf8302a-6aba-4f7e-8356-a933bcf9e4a1@redhat.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <8bf8302a-6aba-4f7e-8356-a933bcf9e4a1@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: DAF7C40015
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 3nsnaq5xju8kfd3n8h3e6hyoskjha6ma
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Dl3I3pmPG_HGyYJDy3IFjgT73LWsPrsQeE-9E4LikFE_1758648645
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 36A3F40010
+X-Stat-Signature: bocec75sdom1xecef5s3jxw44mze93nf
 X-Rspam-User: 
-X-HE-Tag: 1758648031-29104
-X-HE-Meta: U2FsdGVkX1+4hKrL/awA8z/yA1VfTmRLWoxnZAn0LKi//vcOI21ohI5iq7A1+XWnAEsYRu1KuocCrajSavaQiX8/WLyJo36seLv3deqqbwcWkbGUwCJ/2YiIQ+2bwuaqDo2URnuTvSmkVQh83scWUQy1NSauSHfqNaJ6ZGW8knm9lUAUQH3VCkT/WzFuZJ4KSIBpBOSuKxFxtXCTCPE6wcezLiMLD8MpLxilUJPZ7EtbwxrfQLFWIdpkQVdU1TODwxlMsIRBZxQFZkiH590wddkVOwTZDABhl1bMpfteKja3Na3pHsO2vgJVQhd0HUU5RCMg/hFCt8VT7PcebJ8MM6epXIT1rFvis2AsTxv28ZGwT997KNiqoDj+MqwLzIGB87Iypv2wkZCAzURcF1kcXiw5Rj6kOlxCk2sH0poEAzY/wjvQYUWraALfMQ+Ft6Aa+x9fbT5MnolbGGg67i14zJZp9zxK+kXJr+8Z6aEPCcA2bcV5XpwKSFwtJl8baLrAZXdAaEatf8tOPrpYoelb/ZH8BhdtqNYxvD1ciwjo7o8mJCiggMfCmVXjXwOxy1NCsgSS6BHGwGCjN901VoqXur9RIq8UQWVCDiSNQE1uzzWSoLr06V47dqdLwbbpzy6oD0zvPWjK6SwhkW6TGhOhZP1GZRMXODuIohuD6VNmL3NBP41PnId7Kpt8zMTnzww6rusyQ2ruX3gNOlvWKz5lrPGijlnY8QHXUnwRD1YYcDWpvtRDJoxy0HcExqmygj1XeqVM7aOQkPpjVmIsERPfnSCl6eUT1rbqYyV7U1Isw94Q4luHf9kLI+DqWA1MgRkwZul+xiRXLHEzH72doVAbJ7DTqSZlDLfgde7q061P4ldXnvJmiaAHfD0VOYgC+u+JF2Llc3giVWEednkEue+S2IdwZyjrRb8U5PO+iIpTBGU5kvt3720B1B7nMCDgCRRes8CzR/YWwMzvIz9Dh7x
- COS0Nd25
- Upa5ZTldc0IGPdspJISkrWj9W9Hh/O0YGSdQ0BfpXpPPjfYN0BKKYNf3fOO6E/cXiLJgQh6ODwxve4RvaEqBQ+08Y7guWwMAjYq9beeT08Rkbbs4xbYqxARMjGann3dQH6Rtmi/E0/D6lwnvSVmz76daqVUQs3zsapKmsr6LeAmpccrSQsW1fdy12MsnZ73c5zvBBa+XDOVHUZFzPLT9Fm7I/Jh+JTfV2XXtDM9eLZ16eZ+m5tW8dXH2LDsqWGbjK1ZlvDOwybNCB3MTjiaYNZkxEd0XafCUr32BEw+fLJTl8PEJFELJFz/O2gA==
+X-HE-Tag: 1758648647-829547
+X-HE-Meta: U2FsdGVkX1/5ITCRhDcvhdb1aIj+XegWzuhTo+nNL/sU2oLMKDm9Wm5RAGu+Nmli0/pUHKFEF+EWpIwJVMLyorDRS1k77FFei02US8Vz7K/h/zGyheyZwECeG71PkMj7kzgL9+Jh+g935F5cAbP57FzHtHqkjDReBT7s6/LIrdbzwVyPK9EPYuy3uBqPT1rqQK6neyKsz+dCFyn+wNTp6cwhJYiSCGM31gXf1xJxJe39HwehcdaWGPwfkXpF+qsIhtcqWHfAsD52PR5SeKluoo3/6DSRqKJVXhRLziIy+DdueQCh9ErOVRcq8H6jfr1hKC6X/WP68SWGf8UTPX3278plrKAYTpYMtdqhXVzLAA2JLfzUrjVNP4CNZd2m0z65flE0jdmvBBHPV/NLhDhNCMw9nINJstXKduF2mSSNGLS/KKtn3k4szaVuZVb0pFgXJX6q1W5NlU0PK5GL6DPBSys6kxhBa+nuWQ8s5JePNIlY/kvjN0Z2Z1a1MYqvjCA/jBGHqzorcrMAP4ts1GTI5ZzTCR/8ohF5ipM46QMod/QuoGuzlryPp6cd5dG8HNJ3KHhMv057bkFhgIE0+FJ+po3KYj/JxuvCv7KcwkuV1SsDT2ywMYxxGHJkQ+eyy1IjM8ZrrBLlaRCtKcUn35Iv4+K5pjbgIE/ZSUgLpMU4RRLuWfzJ3ZLtKbL7SGIwktoBOiKJ7xae+cSt5NxFYA05XNqEL/c3tV+wg7xxVEvRc2gyaq0FlLG8puolW0C9CFUfe1EA4YreIsAW/lhIeWnpOHmBgowj2Gm/jyR6cjqXG5jdwmYBx9/1gl6JkVDgBduAUtOyDlO819A2YFKE7EZfcnmDq5YbNOvAUkXlEG+UKNGinnvt6VW3aBs3mP1EA85ujaYDsQPREffmhGDXL6Sdgww7W9W0Jkh/zIaDzw2SE6IRaFnqT8A9m9RCF/gHZVTJylelcL5ZDz9XJKRVZnC
+ bG673OkA
+ KZqUER1iHVDu3ebJ3/eVFMZRO0dZX03vLbJ3dTOkTKlhQ9DkDc0YyTGr/66AGzXe+4Xu/m1LWNSBb73FP82KbUhqqcoxswzr8kjSXMXOqDYH1Z5HaVKBrb24b0NfTBvizXj3aiyzAeziqYAjnkC803O4zxavL0/9JI7CBkSuwpXEaa+fJSLt3C4AYzfRcSdfbRyfNmWfFPtENE8f8HHepQbknCsZGpZfZ/QDnY2PNwtNveXQE/4hdqwc8huZhssTsnRwNCZbNbFSlyxncCvxxg2qSRW3oOwor79vh98y9PT9tadalFFcxoedzaP1RNhZ6k1C8en8xgYK4sjRpQUGoKGR5wYzQkQMPjncEKpfAC6psUvEIRXuV5JAB/nNF7Lq7QVajlzh+yjdPStbPo593B5LVvhHBs5D2pH1W3MRRf++aDm9oTUn8L9thfQUfef/FNcHCCH8m2VqLadMisptLIX25Nw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,132 +143,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, 23 Sep 2025 12:04:14 -0300
+Jason Gunthorpe <jgg@nvidia.com> wrote:
 
-
-On 2025/9/23 20:00, David Hildenbrand wrote:
-> On 23.09.25 13:52, Catalin Marinas wrote:
->> On Mon, Sep 22, 2025 at 07:59:00PM +0200, David Hildenbrand wrote:
->>> On 22.09.25 19:24, Catalin Marinas wrote:
->>>> On Mon, Sep 22, 2025 at 10:14:58AM +0800, Lance Yang wrote:
->>>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->>>>> index 32e0ec2dde36..28d4b02a1aa5 100644
->>>>> --- a/mm/huge_memory.c
->>>>> +++ b/mm/huge_memory.c
->>>>> @@ -4104,29 +4104,20 @@ static unsigned long 
->>>>> deferred_split_count(struct shrinker *shrink,
->>>>>    static bool thp_underused(struct folio *folio)
->>>>>    {
->>>>>        int num_zero_pages = 0, num_filled_pages = 0;
->>>>> -    void *kaddr;
->>>>>        int i;
->>>>>        for (i = 0; i < folio_nr_pages(folio); i++) {
->>>>> -        kaddr = kmap_local_folio(folio, i * PAGE_SIZE);
->>>>> -        if (!memchr_inv(kaddr, 0, PAGE_SIZE)) {
->>>>> -            num_zero_pages++;
->>>>> -            if (num_zero_pages > khugepaged_max_ptes_none) {
->>>>> -                kunmap_local(kaddr);
->>>>> +        if (pages_identical(folio_page(folio, i), ZERO_PAGE(0))) {
->>>>> +            if (++num_zero_pages > khugepaged_max_ptes_none)
->>>>>                    return true;
->>>>
->>>> I wonder what the overhead of doing a memcmp() vs memchr_inv() is. The
->>>> former will need to read from two places. If it's noticeable, it would
->>>> affect architectures that don't have an MTE equivalent.
->>>>
->>>> Alternatively we could introduce something like folio_has_metadata()
->>>> which on arm64 simply checks PG_mte_tagged.
->>>
->>> We discussed something similar in the other thread (I suggested
->>> page_is_mergable()). I'd prefer to use pages_identical() for now, so 
->>> we have
->>> the same logic here and in ksm code.
->>>
->>> (this patch here almost looks like a cleanup :) )
->>>
->>> If this becomes a problem, what we could do is in pages_identical() 
->>> would be
->>> simply doing the memchr_inv() in case is_zero_pfn(). KSM might 
->>> benefit from
->>> that as well when merging with the shared zeropage through
->>> try_to_merge_with_zero_page().
->>
->> Yes, we can always optimise it later.
->>
->> I just realised that on arm64 with MTE we won't get any merging with the
->> zero page even if the user page isn't mapped with PROT_MTE. In
->> cpu_enable_mte() we zero the tags in the zero page and set
->> PG_mte_tagged. The reason is that we want to use the zero page with
->> PROT_MTE mappings (until tag setting causes CoW). Hmm, the arm64
->> memcmp_pages() messed up KSM merging with the zero page even before this
->> patch.
->>
->> The MTE tag setting evolved a bit over time with some locking using PG_*
->> flags to avoid a set_pte_at() race trying to initialise the tags on the
->> same page. We also moved the swap restoring to arch_swap_restore()
->> rather than the set_pte_at() path. So it is safe now to merge with the
->> zero page if the other page isn't tagged. A subsequent set_pte_at()
->> attempting to clear the tags would notice that the zero page is already
->> tagged.
->>
->> We could go a step further and add tag comparison (I had some code
->> around) but I think the quick fix is to just not treat the zero page as
->> tagged.
+> On Mon, Sep 22, 2025 at 03:00:32PM -0600, Alex Williamson wrote:
+> > But then later in patch 8/ and again in 10/ why exactly do we cache
+> > the provider on the vfio_pci_core_device rather than ask for it on
+> > demand from the p2pdma?  
 > 
-> I assume any tag changes would result in CoW.
-
-Right, I did a test and confirmed that any attempt to change
-tags on the shared zero page results in a Copy-on-Write, as
-expected ;)
-
+> It makes the most sense if the P2P is activated once during probe(),
+> it is just a cheap memory allocation, so no reason not to.
 > 
-> It would be interesting to know if there are use cases with VMs or other 
-> workloads where that could be beneficial with KSM.
-> 
->> Not fully tested yet:
->>
->> diff --git a/arch/arm64/kernel/mte.c b/arch/arm64/kernel/mte.c
->> index e5e773844889..72a1dfc54659 100644
->> --- a/arch/arm64/kernel/mte.c
->> +++ b/arch/arm64/kernel/mte.c
->> @@ -73,6 +73,8 @@ int memcmp_pages(struct page *page1, struct page 
->> *page2)
->>   {
->>       char *addr1, *addr2;
->>       int ret;
->> +    bool page1_tagged = page_mte_tagged(page1) && !is_zero_page(page1);
->> +    bool page2_tagged = page_mte_tagged(page2) && !is_zero_page(page2);
->>       addr1 = page_address(page1);
->>       addr2 = page_address(page2);
->> @@ -83,11 +85,10 @@ int memcmp_pages(struct page *page1, struct page 
->> *page2)
->>       /*
->>        * If the page content is identical but at least one of the 
->> pages is
->> -     * tagged, return non-zero to avoid KSM merging. If only one of the
->> -     * pages is tagged, __set_ptes() may zero or change the tags of the
->> -     * other page via mte_sync_tags().
->> +     * tagged, return non-zero to avoid KSM merging. Ignore the zero 
->> page
->> +     * since it is always tagged with the tags cleared.
->>        */
->> -    if (page_mte_tagged(page1) || page_mte_tagged(page2))
->> +    if (page1_tagged || page2_tagged)
->>           return addr1 != addr2;
-> 
-> That looks reasonable to me.
-> 
-> @Lance as you had a test setup, could you give this a try as well with 
-> KSM shared zeropage deduplication enabled whether it now works as 
-> expected as well?
+> If you try to do it on-demand then it will require more locking.
 
-This works as expected. Both KSM (with use_zero_pages enabled) and
-the THP shrinker are now able to successfully merge zero-filled
-pages with the shared zero page, as long as those pages are not
-mapped with PROT_MTE.
+I'm only wondering about splitting to an "initialize/setup" function
+where providers for each BAR are setup, and a "get provider" interface,
+which doesn't really seem to be a hot path anyway.  Batching could
+still be done to setup all BAR providers at once.
 
-> 
-> Then, this should likely be an independent fix.
+However, the setup isn't really once per probe(), even in the case of a
+new driver probing we re-use the previously setup providers.  Doesn't
+that introduce a problem that the provider bus_offset can be stale if
+something like a BAR resize has occurred between drivers?
 
-@Catalin could you send a real patch?
+Possibly the providers should be setup in PCI core, a re-init triggered
+for resource updates, and the driver interface is only to get the
+provider.  Thanks,
+
+Alex
 
 
