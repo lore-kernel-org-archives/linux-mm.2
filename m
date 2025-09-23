@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41EA5CAC5AC
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 17:49:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 534F0CAC5A5
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 17:49:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DCA28E0012; Tue, 23 Sep 2025 13:49:50 -0400 (EDT)
+	id AC7378E0013; Tue, 23 Sep 2025 13:49:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98D358E0001; Tue, 23 Sep 2025 13:49:50 -0400 (EDT)
+	id A77378E0001; Tue, 23 Sep 2025 13:49:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82E6D8E0012; Tue, 23 Sep 2025 13:49:50 -0400 (EDT)
+	id 93F448E0013; Tue, 23 Sep 2025 13:49:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 67EA18E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 13:49:50 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 00041C026E
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 593068E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 13:49:53 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1FC26BA235
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 17:49:53 +0000 (UTC)
+X-FDA: 83921253066.26.8AF2805
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010041.outbound.protection.outlook.com [40.93.198.41])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 34231C000E
 	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 17:49:49 +0000 (UTC)
-X-FDA: 83921252898.11.B79BED2
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012000.outbound.protection.outlook.com [40.107.200.0])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0298240002
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 17:49:46 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=hvIC9Hib;
-	spf=pass (imf07.hostedemail.com: domain of shivankg@amd.com designates 40.107.200.0 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=mlSWpLYC;
+	spf=pass (imf28.hostedemail.com: domain of shivankg@amd.com designates 40.93.198.41 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=amd.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758649787;
+	s=arc-20220608; t=1758649790;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ySxMyb6AxP1VEu8p9pR2Cxm8wJ0Dj/H34gqdILOtxH0=;
-	b=uMSqODvueB7UQq5gK06w89C6zyUBxUesAzoWdOsOZq9JoRQ4KE+uXBvpjc4vImk2Rx7cwK
-	Dk5QaI/H7/PuUHuCeGU8lTIJ2bwII96YcYUzAJBx3x9cLB0pwmVem8GmxsDbr4bhVcDV4T
-	npvLz25hXv8h1n4H2T7D/vU1B35ie+E=
+	bh=Zro2hd4Ble5cJHXwetB3OFEMfa0I21dYEBYdyGm1024=;
+	b=hcFp5/8nRTVCbc0usZ+dFksz6085mhCZkiF71CvreBCf7bTSN9ATs7zCKUZuJhnzFyUTJC
+	fqMcdSNlPg5cUyiSP5T/g0KUAXEwofAatHTzt+SMrgjqpkvjobz9CRHkzq2ropfDihmQWO
+	qcTiJ/xtJKY+87+AJl08yRHO8duKaxY=
 ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=hvIC9Hib;
-	spf=pass (imf07.hostedemail.com: domain of shivankg@amd.com designates 40.107.200.0 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758649787; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=mlSWpLYC;
+	spf=pass (imf28.hostedemail.com: domain of shivankg@amd.com designates 40.93.198.41 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758649790; a=rsa-sha256;
 	cv=pass;
-	b=S5LCPunStKdOpHrh75qeNpgKYacmvL7AmMlFELpWYSCCcigTbH/Yk0ZShP5GZBIeVIWOh5
-	UTnLAnXxajfJwoSRXqbGjO1XSI4VFsOJ/g/S4EW28Phi97wR3ufk9ycvFjCsPaisviE1Ow
-	GMe+cQO4wH5lYjl2sb6JCwgKqhdvtl4=
+	b=xJTO/XIKjbRgxJ/hW2o1l/Q/pvvvpinpPNltGehF0oGkaffMHAWOldA/Bav8jnTG6xu0Rs
+	AJ7fAPdHTFYJ9uD/miH2HWXQ7t2byPP0c/tnlVlK7x6gOni6k1kNWibld7wI5ZiSbEPZOD
+	lj4Q60XW2Poi+OEQ0B8bbLe5iwlkRtc=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QwJp/YkKdxFeI2hFtz9up6W98SLrDquAyqPH39cRwxLmSSjxcU3TSI1TB4IugvpYKkfzVGjKetnBlSDj15tZ1aOPsicJ9WsNkkhqDy//WHXHijDFisGoU6Chmq6z5c1PvfdK6rcf2ULEBEaMjRf+GlOxmD6oltNGu7JYIFSC2aXoarFtlT4ITMJ0GLajUSSd2h2mUd/xopCmJwuyKPXOnH5ra9x79g14w8lkK3hpR6lm17tp84CVTa+VFzmd/gcFFwB+iAAwd4O6T9KTh8u5IybKtyueg/UQnsKY+c98dyYM0GDt7kcUR4pa1pJnDmj4jG+guhIrX0SEoz8bBAjXCg==
+ b=UuTuv+O0dCY9+hQ1qWkAG6Elze9adBWSDRNIbVaJqIFvJogBIvMmXAwpOShWO/IDUz9VkdTETriBLovD3kvaB2kj7+0XcMpFne/DyQ6CRdAXYUWIEXOJBQxQR1xQ7pWJ9BitnvSBo+QrTt1CKfyWDZ4Xd2ThKi7rlO6e8eJmgDZA3NYnhJ8MPTcqCuBvxoDFqkUm7vYDwsIIwO5iyh4k60whmSsdwbFqArwLtld6iCXR+nzzNlaQFaM7uC32rChGahV6xoq6H/vHQmqfkPWZ0P+Dl/NnffHD8Gj5oXavxKTGy0aPnoAQUKL33LT+IIUgoGbeXCW/eUEWSLnBBREW9w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ySxMyb6AxP1VEu8p9pR2Cxm8wJ0Dj/H34gqdILOtxH0=;
- b=mURaNmf6otSl9hyskm0voSibCoMGsK4iRu8bIRQm4uTa6m3k8dWxso8+hQl+i1GEotNp8zJn4U3qo4LQoJlz1uS1pz9c9jd8+LTfDhjn4kO0kbAEawSv7Dv7PHkBK9ICyrkN87paOKpMOpZrZ+dfQDAUdTdue8pptaULcUGsm9SGyykEzYxGipq1DaXbY+ATVeB7P1lHUUXH1zSGHykGV3JwPYkPqYIP5gwM/SUy34xdleO5nyMd9IUelc/trHx3zmI6mK11pfZuavXBPE+y0vNJai04k2U+p9DvQE5OQ1TO0PwVz+n8ssZcMsT7c9ZakbFwPbu3lAfwyR/6oJUmOg==
+ bh=Zro2hd4Ble5cJHXwetB3OFEMfa0I21dYEBYdyGm1024=;
+ b=p6qPaRJriL4Or6GIXTAERJeox2aMC/V6lNsBkCDU2B+mcb+xlmCrK0S6+8yaiGmw2TziCwTrUr5bGbNfK54YW8nOOQj/MKRP2B6dVUamk+b1lHVWIAsMjpVzK5ck0jyQIg4EtbzJW6MfLBW816Gw9p+x+FhQIjLoJc5HnVN8TUDcSCfNpXK1MFF5KX5U3oenvhemIc+xvGi4vnAbO0bgwEaAk/rrPFA3vaY79ITeBH119F2P0fiJfDMVKPbbIq/SiFkx6TO/WyhnTHKYhKUL8TXAMPh5hnHX/ixN7O+78kvtNyL27udpxk5i2TIp/gSfkW6e5c6BuSMDxFYsoVrFaA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ySxMyb6AxP1VEu8p9pR2Cxm8wJ0Dj/H34gqdILOtxH0=;
- b=hvIC9HibVtJf0adTAY6x9yIsS2jD73MDc5Ej7TKbCMOHDPphYNGE9vBCXTWEc1qR6xl8MFWRrcobB6kO9hsmcHduQZvss0YN/U1fBV5hq4a1Qvq+m7uv9mSC19D4eiFoUdfDawYYdArE7zSArjf84NgC4tBZGl9BbjuEb2m5ZU0=
-Received: from BL1PR13CA0269.namprd13.prod.outlook.com (2603:10b6:208:2ba::34)
- by CY8PR12MB7097.namprd12.prod.outlook.com (2603:10b6:930:51::17) with
+ bh=Zro2hd4Ble5cJHXwetB3OFEMfa0I21dYEBYdyGm1024=;
+ b=mlSWpLYCdutoKhwJK50QHmMdUIKl+xwBsGJOl+73GIbU34b10+kogIGn5wokiMGWJs0zlMb1A8x5dVajVrFOEcQrlo4IPkhhh8JHv0DlNaoGMiz55GnJ0ZzsXr63evZ7Ol//GuXukZGHIwnUYK9K9EnC4Ah+YTGhb/u471Q9SXQ=
+Received: from BL1PR13CA0246.namprd13.prod.outlook.com (2603:10b6:208:2ba::11)
+ by SA5PPF5D41D38AD.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8cb) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.14; Tue, 23 Sep
- 2025 17:49:40 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.18; Tue, 23 Sep
+ 2025 17:49:46 +0000
 Received: from MN1PEPF0000F0E5.namprd04.prod.outlook.com
- (2603:10b6:208:2ba:cafe::7e) by BL1PR13CA0269.outlook.office365.com
- (2603:10b6:208:2ba::34) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9160.9 via Frontend Transport; Tue,
- 23 Sep 2025 17:49:40 +0000
+ (2603:10b6:208:2ba:cafe::a3) by BL1PR13CA0246.outlook.office365.com
+ (2603:10b6:208:2ba::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9137.20 via Frontend Transport; Tue,
+ 23 Sep 2025 17:49:46 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -85,11 +85,11 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from satlexmb07.amd.com (165.204.84.17) by
  MN1PEPF0000F0E5.mail.protection.outlook.com (10.167.242.43) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9137.12 via Frontend Transport; Tue, 23 Sep 2025 17:49:39 +0000
+ 15.20.9137.12 via Frontend Transport; Tue, 23 Sep 2025 17:49:46 +0000
 Received: from kaveri.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 23 Sep
- 2025 10:49:22 -0700
+ 2025 10:49:31 -0700
 From: Shivank Garg <shivankg@amd.com>
 To: <akpm@linux-foundation.org>, <david@redhat.com>
 CC: <ziy@nvidia.com>, <willy@infradead.org>, <matthew.brost@intel.com>,
@@ -104,9 +104,9 @@ CC: <ziy@nvidia.com>, <willy@infradead.org>, <matthew.brost@intel.com>,
 	<Raghavendra.KodsaraThimmappa@amd.com>, <bharata@amd.com>,
 	<shivankg@amd.com>, <alirad.malek@zptcorp.com>, <yiannis@zptcorp.com>,
 	<weixugc@google.com>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
-Subject: [RFC V3 7/9] dcbm: add dma core batch migrator for batch page offloading
-Date: Tue, 23 Sep 2025 17:47:42 +0000
-Message-ID: <20250923174752.35701-8-shivankg@amd.com>
+Subject: [RFC V3 8/9] adjust NR_MAX_BATCHED_MIGRATION for testing
+Date: Tue, 23 Sep 2025 17:47:43 +0000
+Message-ID: <20250923174752.35701-9-shivankg@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250923174752.35701-1-shivankg@amd.com>
 References: <20250923174752.35701-1-shivankg@amd.com>
@@ -118,60 +118,60 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF0000F0E5:EE_|CY8PR12MB7097:EE_
-X-MS-Office365-Filtering-Correlation-Id: 085cbdc6-0f45-4926-7eeb-08ddfac991d9
+X-MS-TrafficTypeDiagnostic: MN1PEPF0000F0E5:EE_|SA5PPF5D41D38AD:EE_
+X-MS-Office365-Filtering-Correlation-Id: cdba7694-7d0c-4780-18ac-08ddfac995e1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|376014|7416014|1800799024;
+	BCL:0;ARA:13230040|7416014|36860700013|82310400026|376014|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?3pbclC735Jkd5U9DCIAKodNSGrv9SfbjycCeOnmd4nJQUrZY7FmaLS9XZwzP?=
- =?us-ascii?Q?gRX+Ol7oxRSRXWE85jtxUJdJuMKNkgZpLpJUarjpER5MGK0zFyJhIjznpTiQ?=
- =?us-ascii?Q?0btR4PkBhVw6kGHBOZF5LEhb5NiLy8QgR0hhQhKDyRj6KJZOGGrD9fxvq7c3?=
- =?us-ascii?Q?hj+GG7r36Z81lz4pc+OUc3+BKmLP9e1dGN3jSS1zfcKYczTF/ZjMApjGwDHr?=
- =?us-ascii?Q?XWNHbhYfq8Aj7u6+o/TbBRWhN648CY/emGECN8MkOooGrZrMsSWcw05eX1U2?=
- =?us-ascii?Q?XqMoP7Dqi0BFURqna8XDCUaxSajrssym+a5D0+8FiEDdNVpKdfNsFE6i33h1?=
- =?us-ascii?Q?WQcJOVtDHEbtJ105gSFKuainpB1ZIRPq2GxqFMLwqouxkFraKR+VaCreJ2pX?=
- =?us-ascii?Q?316SgBSq3J6JRsA5WTOboH2ARELBD0anVL0hl59ALk5rNoGL2FHTubynvks3?=
- =?us-ascii?Q?zDabZbexqKmep1XoScEINPLhsO8df2NH4tQX2zBFSAEFOlXK2kkCSGKddX3B?=
- =?us-ascii?Q?qYvnxt7yPLs9MPUwlrZ+7aNsBD+xkHK6HxKFpL3d16vhOOizriWOg+KaQaNH?=
- =?us-ascii?Q?bV7S6OW4JmfpYtrn9wJUEeJTMhxEQCSa5apDTu8txpZBIaRVhAgBCGUSGzby?=
- =?us-ascii?Q?LZvw0ek5J1Q1MrXvyTEFCnOPCGbT3C4lFQeFARrgZYOk41RH+kQnffS/yfLZ?=
- =?us-ascii?Q?0zr5Qmgyma0zaJQM+jHJ5b+wc6FtpahtjCrSUaxOkg7FK/dbt6CTyd/KErSV?=
- =?us-ascii?Q?ivNOEdm9xQ2n2X0RX+3+KlEaYEBJAUNcb8Os4GtM+n5UlOnGlOaKiGKpCaQb?=
- =?us-ascii?Q?z9JsYExeNvVgFrU5sVQ/+R0AUrQBtdDIVBgvdS8OFKMnkJtbSqET5QftFaY1?=
- =?us-ascii?Q?KjaF1yzR5kE/xCNcuksRYc+AjCdkgQlk8EwSjE8wgZP97FY4TNnVp+s/Rm7Q?=
- =?us-ascii?Q?hUtIeHhZe9B9TZv378Tsf1ecM8g7lGk1k9gafSrzKwuYKSA5n5LT0xxfs15L?=
- =?us-ascii?Q?xBHydxfz29dfd+M4E7q4OQT5r5hu83t2FlpZSBYdTcyxnwz96CoM/PaEsO6F?=
- =?us-ascii?Q?XtNQawRuVBWF1Vu6utwLicmO4V4qpG2fQDBPVNjGd2DxpS79VXKb9mYhwpIe?=
- =?us-ascii?Q?po6+nf0dOnOy1N+HV5dmW2I1d6rOaq80gqhbDlXMx+K6MCcSgTyGNLUixxAJ?=
- =?us-ascii?Q?X9+KSdFxuD1mlBM6+pw1mHPkqWlOenNBc3mw4q//SuEqIdvMttrzE5nvmzyO?=
- =?us-ascii?Q?J7/1T47s+CBufWaQLtsdupmNYf3etiiKKl2TKnhZp7eILi70T8TgbqCVFUeT?=
- =?us-ascii?Q?bws1cUQAfXWgVpMP4DfIisNTltvXONud9XxHx9M3iHxyBQ62kQ9+SRYkdFa0?=
- =?us-ascii?Q?B62XrDKQgV7BI2qGzgLM2mhebVJniURXHgdpO6xwntAONHGv4X3SIs7uVDkM?=
- =?us-ascii?Q?FytYJ6G0GHqtm2RikZ9ScObLscqURbQf/VSjpaTUux++yYclLndLn3eze5wo?=
- =?us-ascii?Q?oVBlR7ydYbqQ4rYiv2f5ID8i6MSD85o6AxOa?=
+	=?us-ascii?Q?QsYamSeARRtEJf8M93bgYAEskzEFS/5tCh3TQu6I11uQB4hKJfzm6FaecIHd?=
+ =?us-ascii?Q?DQtPX90U4zhrvV9r31QHgaz3n/flYiRU0LsNgnvB4RgCN4VNM+x6OgyqMfnP?=
+ =?us-ascii?Q?bKo9zgWdFoqwTCmZ9gg/+8rJzawL5iMk/cZ4/2iIHWhrb9Fa/pGMqvFX2/xu?=
+ =?us-ascii?Q?f5VDPo1G3l0dhExa1aFHfPpvWuDPBTlCpg3Tca4m/m1YC8cyU6gz7NqGECEz?=
+ =?us-ascii?Q?sJXfY3hAKO+0jZ6Q3BQEaOMi25C244VJ8NJWJ+DxKZfndTJHvwBuKbt5WMkv?=
+ =?us-ascii?Q?ETWve7QlAW/Vdxqv8KaQdz6RyrOnS7hRdEwzHcz1j9E7/a+98qSNXS+RcEnL?=
+ =?us-ascii?Q?jPtDtDE73X/dPB+ha8/ZjDzEQo71+SNyey1tt04xJHKe3OWInPWAB5o12wHG?=
+ =?us-ascii?Q?UTVkqf1ZlyEYQPDR2oCcMIQj7A11v45DmEdJWzgl9T0Vg0ECl+DqRqKIudVi?=
+ =?us-ascii?Q?GnfxWXR78SnEjvQG+67wgB7ykqQi4YAxufAa7AZ4WHowtFuy15hohJPBS3/S?=
+ =?us-ascii?Q?lmzOQNJsa41bwKHzV7BdG9CrPmZGWzGBcC3Fce1yoUYqf5W5nzMpLs6GFYnf?=
+ =?us-ascii?Q?4lqWAn7HHVynpFRzCYJCWeDK3YfgYg/kwnDQusUGYhAMaJDoj/59atMfe6Lx?=
+ =?us-ascii?Q?JdnMUgW1GOz4NFofRteLlYLXgdQn03Cia7I3XKGa1hOhzeL5l14rvXSz+OTA?=
+ =?us-ascii?Q?FSHOPuo1/Ut3iLgfOBYoNN++f4+LFn5mv/CppK8nB9jhpJduBqFBFhEx5Pup?=
+ =?us-ascii?Q?axC2mL6a+jbMQQKHlP77Vhj69lxTuBPuL4uF2VBOBq/Zcs+6ATuUDczezKsk?=
+ =?us-ascii?Q?y1TpDWMIcyj0Dk5OrKiv/9SHvXoyw/Jj625pZw9GxzUhQn4cAi6HEYgnv5ck?=
+ =?us-ascii?Q?Bq+Q4XG63TFNdTz9jpneFYwGVAOmWH1Of1ypoaXc+rqpHolAgMkA1QesRHvf?=
+ =?us-ascii?Q?cj70MdJ+EWN7LhNgtNRwZKwb4s9kGhxZEKq+fKXUvlvXzdETvIcYbSeJwJrY?=
+ =?us-ascii?Q?JuYboA51o92mICal9RFyKXWunXOWUfmAhQDXr1z+i1LLANHsodztsYGdPv4X?=
+ =?us-ascii?Q?27pJM+a35mj5Z/vlNR17JJeLaIht4RE5eIstthFmmFI+LiPTzwu8qKpWv2f8?=
+ =?us-ascii?Q?4cq0hOdmi8jjwRSVKcREkakOrcfPxuS/gUcS5//vXU9aRHNKGS8eMAfEn+gT?=
+ =?us-ascii?Q?NNAKkVtuO1MQNBhPynanSKHVbmctKhsopzImuwTitKg6J/oH+DR6IjEjHQpf?=
+ =?us-ascii?Q?Bd6YXzMYYVf3nZp3gS6xqM/OyFVUjuIG61L4WBwNrjX0bEVYBtOnvX7qrxxq?=
+ =?us-ascii?Q?MMIWvBITkswD6wBZBGkysTkQ0hqdtfmhERg1Wl2/vsj1E/oVa/RxCx9UHuTL?=
+ =?us-ascii?Q?VwrN9wPYHs0R9VUU4dp4H6hp8mCjcetbe8vjaDRm8PYZbHsR+vfyh9i38bOU?=
+ =?us-ascii?Q?5RzZPbArKjw/PtEcxXVeGKdPT2JGXbGoV7gZJcXEbyZlDp1PAhOdvskd5h8K?=
+ =?us-ascii?Q?cMSwIHLzgxSWA2weQQ4qZVSeRPIF9Rpii6ob?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(36860700013)(82310400026)(376014)(1800799024);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2025 17:49:39.8360
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2025 17:49:46.5981
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 085cbdc6-0f45-4926-7eeb-08ddfac991d9
+X-MS-Exchange-CrossTenant-Network-Message-Id: cdba7694-7d0c-4780-18ac-08ddfac995e1
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	MN1PEPF0000F0E5.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7097
-X-Stat-Signature: zf1u4kxyrd8fr8i9p7mt8aaz7p6rsb7b
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF5D41D38AD
+X-Rspamd-Queue-Id: 34231C000E
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0298240002
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758649786-476617
-X-HE-Meta: U2FsdGVkX1/P6f0RW/6gQ4gkXoLOpdkrkjDqjewNF4ijGVeSMbJ34r2doIK7ZY5obrLwpgnUqmX7iufMGSL/JQmBA7mFMIYqAYW0XT44542LHfAmL+44IQLg4lxYjuytwXNKgE0c+MSoNY+BnOJPqIbXe59yYq/rxe6fnj3PGi3tPWsORGM+IrhBx7pdCOM7mZrRBdJ8Yly7FRlK2Tmmt4ZUdV4cUU7QIAYKAthZETOQcwTHVAxiAvqBpxhLFbn1jeTYw54q1XY5opONMwLWRiOjw3pVeF+tJQiylFQvPDNoSnSPblETvC25wWKiSgeu9N+LA7l+gxG7gC77zBeed1D9Ww0T7+2VwVgRkGFZT8kqKQuORMRSjfI71HAHG0OovVaPpD1SHHxduhAH4tiY8Lp5mp9PAz7woySiax7ZSZbz01HjYnt9gvyH6tjEMquc2iW9ww1tk6dVKj004GTv51UYbJRCZvKxMetJy5rutWd8+h5z8owqWunfTDLcjdgYXxGz9uHitKSdknBLu1XzalxloKSFKLpWZBOL6X6dFcUZcy4Q9KuffINWdxbLKKRGmNZlO1revPgldbshASY30YonySZyt/RnJYVVGuGiUo/LvrmLig/0L3FOIrPIhPSsnM5XNF+w7lqTYUnxqm4zeTFkjMMTqYaJKuXNQUa07/VRbyYK/dIfidYFJuVdQKXAQUatlQmiYMs6G8ezxzPxIbjiX9+ris58581T4x8w8pHUCcmhKFyDMQaPD3QlIN+DDJ7xrXhy+s/3gV2ZvDoKdGGGjkiUqGGfeBIDv5hxEDHL8oARLO4hn9yyYm22zN4GAE9NGYVWHZXDczew+62irfR2YF0+1tikt6CkiZ32Jf+1y/rIy2aUb6FiP2zfiDQwnCj64Z6zVpaBIGnMyNdDIp6q12+YibJvSXgzZTbRPkpy2UblkpgZQaFUtjEkOy4pz3zpIj+n5MhRoAPb/cr
- dh+DIt+H
- rvYjcGHoKsnI7fCeC1WWSKaIWrjLqntmUL/S5EtSrcUJTdQV1gDtaMRzR5C/4n1hfWujc0/VqQ4vbOcZVacuBaBRrQWmraeZFOQGF/dmmF36qYmW5gBc20+aJS4+/uqae8HU/vfowRRcCPUkZzAhUYJ1K4jEHw9AOOIOGkj//Ab7rINuRicsa2oPfA4MFd1CTRh7wNUDgcc1aOMGlZKTJJL3QT6cL0gm3EPf92BD/T5t/P17CMu7T2prLjVi+zIzF4V7x3foreicxiiEwVYB2FUXAKhj7hENP6erISJ0Eyp9m9vmvmCKBDX70DTPyJBRgYEIDCi0xbYo8B+vKv7UC+PfZNjm8vKsJulTZo82Bd1FIpTq+GzKdB02cUShglMmdFLKtQQ5m+Tg/bem4L4j0a1P6+N0GhzWkrrjO5LDAn8UovHtaUOfhrkjQYWOU8zOFZ21hehsqGKBM43u6TMxx2Wb6IpLkdXcNUcgf9iZ5QCY9yBpOwJawtELDuu5oDT3oO7xt3fcLVmw0mQlMnvWEBoJtDgNhxvWVaz/zSKxEi4VBqvXeeOvyYpYHnsWTJiNlOEzKAXbIiezp684oW/WkfMQhyIbH+w2BsuUK+iM8J3POgJMdWCOL8/OkETa43N/LvRdcCY9Ng4uAVXDISzBFOiZL9Ylj5ELZn/yh
+X-Rspamd-Server: rspam07
+X-Stat-Signature: chxbtaaqxpo7kikpc61btjeieert973e
+X-HE-Tag: 1758649789-929470
+X-HE-Meta: U2FsdGVkX18upoSU6bWrbfoDmAIp3eUmHZKS3N/yxY0dXpxqAd3y3Vz2DSjqAwwrV3go6pnwD3AvOMHStvP6Wj02gr+FcU1CvLjZy4yiwZ4pagYJ9e5dyoMElTejDqpkbH8NI9u93y1rs84Qt4fP5+kRk1aYoiYjO5euyA3DPxGZmfD9E5LViBS+pNtVM1uE5y8cL4WyiPOdd2oaYTacjOVjFawGpM2K1FFowttFfdsw5kqb9rFEs2lvkV9MdYPZ2EYA66LMrHF1PW//95TMobRTghre+Tbcxurtw3tW78dCvflMApxO6PdkhkHJO+htT//25Bbb9rkQ8KbszqGb+KHIkXS00k/3ldSNN9i36EF77tdMK57OsEpGvT+BJmg4A5I1XZCeJkkiWX1we3ePnTVNL1Sw99bxohXvv/RnP5Wb5xe5/PL/uTl4PnGPMdCYSWQZSCiGjFrfDkcGRtzXik0wh+wbfEwhU8yBTIze75DM2bnPb5P0YptYn/OXmQAKQ5MaHZIN+Mm68ACkmlF9DChW8i/RQSJ3GeZF1lZqk+Z1B0oDDUzSqd/wxH9BSxYjvyn8nCZCSyVFWJI4a9rg3EpVOkUSCAeDt6u/XKNAHOIQ1t3q49QP/bJXxmE/kam56e6Wm0oZF3sfp3SDHX3GZi0dshaqRHoCMGBg0xSsUJaY7p41SItgo++pf78mmFLxOzxhSYxHtQ9/+F4AGf4ouVBqcOP8ThTBcpLOrAHdt+5pdIk5eu9ZO7s/CeY51oeY/W+YwnrO6qk4HM+P+MkkdU0IaPEWMphtd//3KaCjOljGkc4fKO3FqOhtXE6Hls2upsW2s8yJM+9zbsllJ9+z+ecKwmfsbIno1NoURXpuR0A89rdceeX7V4ESK5gp79yDzqBgcAAjDs+kBnwzQLAO3V92sQjBDQGKd76gh/W64Xfz4Y6YSqhWEkK/Pf5d0PUQ8dLruIV9ASwGK8QChUq
+ M+i2cfXD
+ WqZXCEQgLtX/rCev+qXZXZ7floSHna+kaLvVKpoX0vGgphoXkPIcjVHOgZWiy6h+kss0WA/PM81URF8bTDimK6X/KIR+tjAoL41axUS1tlH6zTa6wIdo1cvaWJeSVT6H7W1JRs4CZQex9bFHGfrD2QRztrHte73QLR71QqY5QaLl8IfNkErcFKMCR3Aq+LiWO2Uf/hYAVIMmLEm1s0HSSQatrbY3nVdlVugXzeeO/vH7ku8/hzxksSkiV9WSQ49mnB1imnhb9V1d5SmMXGUbzpHvmMnRFMqf2M5WTU/4Mw9ZL6x7pjlJmb8uN1GAEpVzeFRyp63KcuqM+QrErHv+AnU0gLsW0NEJfLyfPlVne8Ajke3fGDakDuHYPvoYBk4skcKFex6JiMzh1aVvvxiZs7fkSMIuvneYNl15ZIJ5AhBths29fX+0vDl6+8aTxNH4IPYe5fhNfNp0f4XWCWyldanFr9CHSYvHPt6Hf8M/EJ2sG8v1ow47XGFBJE/qr8ZjfEFXg32ad9wKIDJysB3HFMBkbQ26/JJZdsxSmrMOUfj/pCAhAxBc2JCJHb2bMwTkvzlZf1DTXvH3DneX6bjDg+l+w2j3uFBfG+TWiRwAQ+VJ26wkJHHU+Ww1DyZEVpkTYGzlLTkBfSk+Xsh7kEJNfH84iCSwOwUP/8tW0mHFNI9WpzFgtaSJuX8mGUN+rxR3I4CRveisqPs1wod+pZLRexVTBKJFDUlOkgXlHMnA8iFgYDcxkDKbyMdejWsa9enEQsAtZItcHTnsQawA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,479 +180,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The dcbm (DMA core batch migrator) provides a generic interface using
-DMAEngine for end-to-end testing of the batch page migration offload
-feature.
+From: Zi Yan <ziy@nvidia.com>
 
-Enable DCBM offload:
-echo 1 > /sys/kernel/dcbm/offloading
-echo NR_DMA_CHAN_TO_USE > /sys/kernel/dcbm/nr_dma_chan
+change NR_MAX_BATCHED_MIGRATION to HPAGE_PUD_NR to allow batching THP
+copies.
 
-Disable DCBM offload:
-echo 0 > /sys/kernel/dcbm/offloading
+These are for testing purpose only.
 
+Signed-off-by: Zi Yan <ziy@nvidia.com>
 Signed-off-by: Shivank Garg <shivankg@amd.com>
 ---
- drivers/migoffcopy/Kconfig       |   8 +
- drivers/migoffcopy/Makefile      |   1 +
- drivers/migoffcopy/dcbm/Makefile |   1 +
- drivers/migoffcopy/dcbm/dcbm.c   | 415 +++++++++++++++++++++++++++++++
- 4 files changed, 425 insertions(+)
- create mode 100644 drivers/migoffcopy/dcbm/Makefile
- create mode 100644 drivers/migoffcopy/dcbm/dcbm.c
+ mm/migrate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/migoffcopy/Kconfig b/drivers/migoffcopy/Kconfig
-index e73698af3e72..c1b2eff7650d 100644
---- a/drivers/migoffcopy/Kconfig
-+++ b/drivers/migoffcopy/Kconfig
-@@ -6,4 +6,12 @@ config MTCOPY_CPU
-          Interface MT COPY CPU driver for batch page migration
-          offloading. Say Y if you want to try offloading with
-          MultiThreaded CPU copy APIs.
-+config DCBM_DMA
-+       bool "DMA Core Batch Migrator"
-+       depends on OFFC_MIGRATION && DMA_ENGINE
-+       default n
-+       help
-+         Interface DMA driver for batch page migration offloading.
-+         Say Y if you want to try offloading with DMAEngine APIs
-+         based driver.
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 41bea48d823c..7f50813d87e4 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1668,7 +1668,7 @@ static inline int try_split_folio(struct folio *folio, struct list_head *split_f
+ }
  
-diff --git a/drivers/migoffcopy/Makefile b/drivers/migoffcopy/Makefile
-index 0a3c356d67e6..dedc86ff54c1 100644
---- a/drivers/migoffcopy/Makefile
-+++ b/drivers/migoffcopy/Makefile
-@@ -1 +1,2 @@
- obj-$(CONFIG_MTCOPY_CPU) += mtcopy/
-+obj-$(CONFIG_DCBM_DMA)		+= dcbm/
-diff --git a/drivers/migoffcopy/dcbm/Makefile b/drivers/migoffcopy/dcbm/Makefile
-new file mode 100644
-index 000000000000..56ba47cce0f1
---- /dev/null
-+++ b/drivers/migoffcopy/dcbm/Makefile
-@@ -0,0 +1 @@
-+obj-$(CONFIG_DCBM_DMA) += dcbm.o
-diff --git a/drivers/migoffcopy/dcbm/dcbm.c b/drivers/migoffcopy/dcbm/dcbm.c
-new file mode 100644
-index 000000000000..87a58c0c3b9b
---- /dev/null
-+++ b/drivers/migoffcopy/dcbm/dcbm.c
-@@ -0,0 +1,415 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ *
-+ * DMA batch-offloading interface driver
-+ *
-+ * Copyright (C) 2024-25 Advanced Micro Devices, Inc.
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/dma-mapping.h>
-+#include <linux/dmaengine.h>
-+#include <linux/migrate.h>
-+#include <linux/migrate_offc.h>
-+
-+#define MAX_DMA_CHANNELS	16
-+
-+static bool offloading_enabled;
-+static unsigned int nr_dma_channels = 1;
-+static DEFINE_MUTEX(dcbm_mutex);
-+
-+struct dma_work {
-+	struct dma_chan *chan;
-+	struct completion done;
-+	atomic_t pending;
-+	struct sg_table *src_sgt;
-+	struct sg_table *dst_sgt;
-+	bool mapped;
-+};
-+
-+static void dma_completion_callback(void *data)
-+{
-+	struct dma_work *work = data;
-+
-+	if (atomic_dec_and_test(&work->pending))
-+		complete(&work->done);
-+}
-+
-+static int setup_sg_tables(struct dma_work *work, struct list_head **src_pos,
-+		struct list_head **dst_pos, int nr)
-+{
-+	struct scatterlist *sg_src, *sg_dst;
-+	struct device *dev;
-+	int i, ret;
-+
-+	work->src_sgt = kmalloc(sizeof(*work->src_sgt), GFP_KERNEL);
-+	if (!work->src_sgt)
-+		return -ENOMEM;
-+	work->dst_sgt = kmalloc(sizeof(*work->dst_sgt), GFP_KERNEL);
-+	if (!work->dst_sgt)
-+		goto err_free_src;
-+
-+	ret = sg_alloc_table(work->src_sgt, nr, GFP_KERNEL);
-+	if (ret)
-+		goto err_free_dst;
-+	ret = sg_alloc_table(work->dst_sgt, nr, GFP_KERNEL);
-+	if (ret)
-+		goto err_free_src_table;
-+
-+	sg_src = work->src_sgt->sgl;
-+	sg_dst = work->dst_sgt->sgl;
-+	for (i = 0; i < nr; i++) {
-+		struct folio *src = list_entry(*src_pos, struct folio, lru);
-+		struct folio *dst = list_entry(*dst_pos, struct folio, lru);
-+
-+		sg_set_folio(sg_src, src, folio_size(src), 0);
-+		sg_set_folio(sg_dst, dst, folio_size(dst), 0);
-+
-+		*src_pos = (*src_pos)->next;
-+		*dst_pos = (*dst_pos)->next;
-+
-+		if (i < nr - 1) {
-+			sg_src = sg_next(sg_src);
-+			sg_dst = sg_next(sg_dst);
-+		}
-+	}
-+
-+	dev = dmaengine_get_dma_device(work->chan);
-+	if (!dev) {
-+		ret = -ENODEV;
-+		goto err_free_dst_table;
-+	}
-+	ret = dma_map_sgtable(dev, work->src_sgt, DMA_TO_DEVICE,
-+			      DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_NO_KERNEL_MAPPING);
-+	if (ret)
-+		goto err_free_dst_table;
-+	ret = dma_map_sgtable(dev, work->dst_sgt, DMA_FROM_DEVICE,
-+			      DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_NO_KERNEL_MAPPING);
-+	if (ret)
-+		goto err_unmap_src;
-+	/* Verify mapping produced same number of entries */
-+	if (work->src_sgt->nents != work->dst_sgt->nents) {
-+		pr_err("Mismatched SG entries after mapping: src=%d dst=%d\n",
-+			work->src_sgt->nents, work->dst_sgt->nents);
-+		ret = -EINVAL;
-+		goto err_unmap_dst;
-+	}
-+	work->mapped = true;
-+	return 0;
-+
-+err_unmap_dst:
-+	dma_unmap_sgtable(dev, work->dst_sgt, DMA_FROM_DEVICE,
-+			  DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_NO_KERNEL_MAPPING);
-+err_unmap_src:
-+	dma_unmap_sgtable(dev, work->src_sgt, DMA_TO_DEVICE,
-+			  DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_NO_KERNEL_MAPPING);
-+err_free_dst_table:
-+	sg_free_table(work->dst_sgt);
-+err_free_src_table:
-+	sg_free_table(work->src_sgt);
-+err_free_dst:
-+	kfree(work->dst_sgt);
-+	work->dst_sgt = NULL;
-+err_free_src:
-+	kfree(work->src_sgt);
-+	work->src_sgt = NULL;
-+	pr_err("DCBM: Failed to setup SG tables\n");
-+	return ret;
-+}
-+
-+static void cleanup_dma_work(struct dma_work *works, int actual_channels)
-+{
-+	struct device *dev;
-+	int i;
-+
-+	if (!works)
-+		return;
-+
-+	for (i = 0; i < actual_channels; i++) {
-+		if (!works[i].chan)
-+			continue;
-+
-+		dev = dmaengine_get_dma_device(works[i].chan);
-+
-+		/* Terminate any pending transfers */
-+		if (atomic_read(&works[i].pending) > 0)
-+			dmaengine_terminate_sync(works[i].chan);
-+
-+		if (dev && works[i].mapped) {
-+			if (works[i].src_sgt) {
-+				dma_unmap_sgtable(dev, works[i].src_sgt, DMA_TO_DEVICE,
-+					DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_NO_KERNEL_MAPPING);
-+				sg_free_table(works[i].src_sgt);
-+				kfree(works[i].src_sgt);
-+			}
-+			if (works[i].dst_sgt) {
-+				dma_unmap_sgtable(dev, works[i].dst_sgt, DMA_FROM_DEVICE,
-+					DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_NO_KERNEL_MAPPING);
-+				sg_free_table(works[i].dst_sgt);
-+				kfree(works[i].dst_sgt);
-+			}
-+		}
-+		dma_release_channel(works[i].chan);
-+	}
-+	kfree(works);
-+}
-+
-+static int submit_dma_transfers(struct dma_work *work)
-+{
-+	struct scatterlist *sg_src, *sg_dst;
-+	struct dma_async_tx_descriptor *tx;
-+	unsigned long flags = DMA_CTRL_ACK;
-+	dma_cookie_t cookie;
-+	int i;
-+
-+	/* Logic: send single callback for the entire batch */
-+	atomic_set(&work->pending, 1);
-+
-+	sg_src = work->src_sgt->sgl;
-+	sg_dst = work->dst_sgt->sgl;
-+	/* Iterate over DMA-mapped entries */
-+	for_each_sgtable_dma_sg(work->src_sgt, sg_src, i) {
-+		/* Only interrupt on the last transfer */
-+		if (i == work->src_sgt->nents - 1)
-+			flags |= DMA_PREP_INTERRUPT;
-+
-+		tx = dmaengine_prep_dma_memcpy(work->chan,
-+					       sg_dma_address(sg_dst),
-+					       sg_dma_address(sg_src),
-+					       sg_dma_len(sg_src),
-+					       flags);
-+		if (!tx) {
-+			atomic_set(&work->pending, 0);
-+			return -EIO;
-+		}
-+
-+		/* Only set callback on last transfer */
-+		if (i == work->src_sgt->nents - 1) {
-+			tx->callback = dma_completion_callback;
-+			tx->callback_param = work;
-+		}
-+
-+		cookie = dmaengine_submit(tx);
-+		if (dma_submit_error(cookie)) {
-+			atomic_set(&work->pending, 0);
-+			return -EIO;
-+		}
-+		sg_dst = sg_next(sg_dst);
-+	}
-+	return 0;
-+}
-+
-+/**
-+ * folios_copy_dma - Copy folios using DMA engine
-+ * @dst_list: Destination folio list
-+ * @src_list: Source folio list
-+ * @nr_folios: Number of folios to copy
-+ *
-+ * Return: 0. Fallback to CPU copy on any error.
-+ */
-+static int folios_copy_dma(struct list_head *dst_list,
-+			   struct list_head *src_list,
-+			   unsigned int nr_folios)
-+{
-+	struct dma_work *works;
-+	struct list_head *src_pos = src_list->next;
-+	struct list_head *dst_pos = dst_list->next;
-+	int i, folios_per_chan, ret = 0;
-+	dma_cap_mask_t mask;
-+	int actual_channels = 0;
-+	int max_channels;
-+
-+	max_channels = min3(nr_dma_channels, nr_folios, MAX_DMA_CHANNELS);
-+
-+	works = kcalloc(max_channels, sizeof(*works), GFP_KERNEL);
-+	if (!works)
-+		goto fallback;
-+
-+	dma_cap_zero(mask);
-+	dma_cap_set(DMA_MEMCPY, mask);
-+
-+	for (i = 0; i < max_channels; i++) {
-+		works[actual_channels].chan = dma_request_chan_by_mask(&mask);
-+		if (IS_ERR(works[actual_channels].chan))
-+			break;
-+		init_completion(&works[actual_channels].done);
-+		actual_channels++;
-+	}
-+
-+	if (actual_channels == 0) {
-+		kfree(works);
-+		goto fallback;
-+	}
-+
-+	for (i = 0; i < actual_channels; i++) {
-+		folios_per_chan = nr_folios * (i + 1) / actual_channels -
-+					(nr_folios * i) / actual_channels;
-+		if (folios_per_chan == 0)
-+			continue;
-+
-+		ret = setup_sg_tables(&works[i], &src_pos, &dst_pos, folios_per_chan);
-+	if (ret)
-+		goto cleanup;
-+	}
-+
-+	for (i = 0; i < actual_channels; i++) {
-+		ret = submit_dma_transfers(&works[i]);
-+		if (ret) {
-+			dev_err(dmaengine_get_dma_device(works[i].chan),
-+				"Failed to submit transfers for channel %d\n", i);
-+			goto cleanup;
-+		}
-+	}
-+
-+	for (i = 0; i < actual_channels; i++) {
-+		if (atomic_read(&works[i].pending) > 0)
-+			dma_async_issue_pending(works[i].chan);
-+	}
-+
-+	for (i = 0; i < actual_channels; i++) {
-+		if (atomic_read(&works[i].pending) > 0) {
-+			if (!wait_for_completion_timeout(&works[i].done, msecs_to_jiffies(10000))) {
-+				dev_err(dmaengine_get_dma_device(works[i].chan),
-+					"DMA timeout on channel %d\n", i);
-+				ret = -ETIMEDOUT;
-+				goto cleanup;
-+			}
-+		}
-+	}
-+
-+cleanup:
-+	cleanup_dma_work(works, actual_channels);
-+	if (ret)
-+		goto fallback;
-+	return 0;
-+fallback:
-+	/* Fall back to CPU copy */
-+	pr_err("DCBM: Falling back to CPU copy\n");
-+	folios_mc_copy(dst_list, src_list, nr_folios);
-+	return 0;
-+}
-+
-+static struct migrator dma_migrator = {
-+	.name = "DCBM",
-+	.migrate_offc = folios_copy_dma,
-+	.owner = THIS_MODULE,
-+};
-+
-+static ssize_t offloading_show(struct kobject *kobj,
-+			       struct kobj_attribute *attr, char *buf)
-+{
-+	return sysfs_emit(buf, "%d\n", offloading_enabled);
-+}
-+
-+static ssize_t offloading_store(struct kobject *kobj,
-+				struct kobj_attribute *attr,
-+				const char *buf, size_t count)
-+{
-+	bool enable;
-+	int ret;
-+
-+	ret = kstrtobool(buf, &enable);
-+	if (ret)
-+		return ret;
-+
-+	mutex_lock(&dcbm_mutex);
-+
-+	if (enable == offloading_enabled) {
-+		pr_err("migration offloading is already %s\n",
-+			 enable ? "ON" : "OFF");
-+		goto out;
-+	}
-+
-+	if (enable) {
-+		start_offloading(&dma_migrator);
-+		offloading_enabled = true;
-+		pr_info("migration offloading is now ON\n");
-+	} else {
-+		stop_offloading();
-+		offloading_enabled = false;
-+		pr_info("migration offloading is now OFF\n");
-+	}
-+out:
-+	mutex_unlock(&dcbm_mutex);
-+	return count;
-+}
-+
-+static ssize_t nr_dma_chan_show(struct kobject *kobj,
-+				struct kobj_attribute *attr, char *buf)
-+{
-+	return sysfs_emit(buf, "%u\n", nr_dma_channels);
-+}
-+
-+static ssize_t nr_dma_chan_store(struct kobject *kobj,
-+				 struct kobj_attribute *attr,
-+				 const char *buf, size_t count)
-+{
-+	unsigned int val;
-+	int ret;
-+
-+	ret = kstrtouint(buf, 0, &val);
-+	if (ret)
-+		return ret;
-+
-+	if (val < 1 || val > MAX_DMA_CHANNELS)
-+		return -EINVAL;
-+
-+	mutex_lock(&dcbm_mutex);
-+	nr_dma_channels = val;
-+	mutex_unlock(&dcbm_mutex);
-+
-+	return count;
-+}
-+
-+static struct kobj_attribute offloading_attr = __ATTR_RW(offloading);
-+static struct kobj_attribute nr_dma_chan_attr = __ATTR_RW(nr_dma_chan);
-+
-+static struct attribute *dcbm_attrs[] = {
-+	&offloading_attr.attr,
-+	&nr_dma_chan_attr.attr,
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(dcbm);
-+
-+static struct kobject *dcbm_kobj;
-+
-+static int __init dcbm_init(void)
-+{
-+	int ret;
-+
-+	dcbm_kobj = kobject_create_and_add("dcbm", kernel_kobj);
-+	if (!dcbm_kobj)
-+		return -ENOMEM;
-+
-+	ret = sysfs_create_groups(dcbm_kobj, dcbm_groups);
-+	if (ret) {
-+		kobject_put(dcbm_kobj);
-+		return ret;
-+	}
-+
-+	pr_info("DMA Core Batch Migrator initialized\n");
-+	return 0;
-+}
-+
-+static void __exit dcbm_exit(void)
-+{
-+	/* Ensure offloading is stopped before module unload */
-+	mutex_lock(&dcbm_mutex);
-+	if (offloading_enabled) {
-+		stop_offloading();
-+		offloading_enabled = false;
-+	}
-+	mutex_unlock(&dcbm_mutex);
-+
-+	sysfs_remove_groups(dcbm_kobj, dcbm_groups);
-+	kobject_put(dcbm_kobj);
-+
-+	pr_info("DMA Core Batch Migrator unloaded\n");
-+}
-+
-+module_init(dcbm_init);
-+module_exit(dcbm_exit);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Shivank Garg");
-+MODULE_DESCRIPTION("DMA Core Batch Migrator");
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-#define NR_MAX_BATCHED_MIGRATION	HPAGE_PMD_NR
++#define NR_MAX_BATCHED_MIGRATION	HPAGE_PUD_NR
+ #else
+ #define NR_MAX_BATCHED_MIGRATION	512
+ #endif
 -- 
 2.43.0
 
