@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B35FCAC5AC
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 13:37:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBD47CAC5AE
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 13:37:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 690C28E0007; Tue, 23 Sep 2025 09:37:35 -0400 (EDT)
+	id BE8888E0013; Tue, 23 Sep 2025 09:37:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 619F38E0001; Tue, 23 Sep 2025 09:37:35 -0400 (EDT)
+	id B77BB8E0001; Tue, 23 Sep 2025 09:37:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E2768E0007; Tue, 23 Sep 2025 09:37:35 -0400 (EDT)
+	id 9EB2D8E0001; Tue, 23 Sep 2025 09:37:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 317528E0001
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 788BA8E000B
 	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 09:37:35 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A62DE140504
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 13:37:34 +0000 (UTC)
-X-FDA: 83920617228.15.6941087
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1883A40010
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 13:37:30 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2FFA8C0162
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 13:37:35 +0000 (UTC)
+X-FDA: 83920617270.30.D3B93CA
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 933EA4000D
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 13:37:31 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
 	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of yintirui@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
+	spf=pass (imf01.hostedemail.com: domain of yintirui@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1758634653;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=j5P5jHQTWMWJkiZaH4CCcRdICdkNrF4W+wHUuVS6e3U=;
-	b=Q0bWrDCVJ6ZOCWBaIODTpHyY872NF2Y3VQHJ38wTp39DVf9zuzdz/ZxA15ASF86LEXUH1A
-	VGfNRCLWHLStUmUuinnWQR6gwM7p2apa/KCrbCNn57Um5/ASjFV8iSiJMv94EO9GLto+vp
-	No4OPtP+f1zpjs5JW2YSHOWsVHLM1nI=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of yintirui@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cImIzswbVblbncJUIKsGJV2GEX2y2IAc1Muz2j2wglI=;
+	b=Dm5cHzfWIWqHnHEO/FLrX8gkgtwc6eKLk0wOChqpmHlGQbULGWCHmEPhXaFBVrb0FQnrqQ
+	0K0f5VnHet5P0/+E8HGUq5QtnpLvKX4Tpej3WFfRY4FrviS+HkSnWxf1ZBXpeWFueVRDlk
+	2TzMcdu3zJ6wVD8UzTMlCysccG/mhbc=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758634653; a=rsa-sha256;
 	cv=none;
-	b=XBWI512QaegOG1QqwlWWvKC237AH2wqWUV2bLgBhAZdpGOrCHpJ+eRkJK7i2MLa6e6bcuC
-	UrXTt2WIcxlWkbxuJl+LpuFr4aOIOTNWZaI1WVeNg2l7/0AhzWinTC+/abuwrz2OW457WI
-	1JOeUadJmppzFQTerM82LEOOIEhau0E=
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4cWLXv3hftz2RW50;
-	Tue, 23 Sep 2025 21:33:51 +0800 (CST)
+	b=QC2mCRIIrW+dZH/dB19anNymVoXVk+MRMBP8VC7vecPkk5QJhiXx047SWrgKzYlTPM+BIz
+	LdyTg2UEMukf41Ks34Vht7jdLrn8Ehxw0FNZItOFYys2pz6bzTLM3LXBiU2nlu2HfLCEmg
+	AMRM6rNwtnUUVH9B6Wr7rr6OUQ82+UM=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of yintirui@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4cWLWj1Z2SzVgCP;
+	Tue, 23 Sep 2025 21:32:49 +0800 (CST)
 Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5788A1A016C;
-	Tue, 23 Sep 2025 21:37:24 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 98ABD1401E9;
+	Tue, 23 Sep 2025 21:37:27 +0800 (CST)
 Received: from huawei.com (10.175.101.6) by kwepemr500001.china.huawei.com
  (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 23 Sep
- 2025 21:37:22 +0800
+ 2025 21:37:25 +0800
 From: Yin Tirui <yintirui@huawei.com>
 To: <akpm@linux-foundation.org>, <david@redhat.com>,
 	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
@@ -74,24 +75,26 @@ To: <akpm@linux-foundation.org>, <david@redhat.com>,
 	<linux-riscv@lists.infradead.org>
 CC: <wangkefeng.wang@huawei.com>, <chenjun102@huawei.com>,
 	<yintirui@huawei.com>
-Subject: [PATCH RFC 0/2] mm: add huge pfnmap support for remap_pfn_range()
-Date: Tue, 23 Sep 2025 21:31:02 +0800
-Message-ID: <20250923133104.926672-1-yintirui@huawei.com>
+Subject: [PATCH RFC 2/2] mm: add PMD-level huge page support for remap_pfn_range()
+Date: Tue, 23 Sep 2025 21:31:04 +0800
+Message-ID: <20250923133104.926672-3-yintirui@huawei.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250923133104.926672-1-yintirui@huawei.com>
+References: <20250923133104.926672-1-yintirui@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.175.101.6]
 X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
  kwepemr500001.china.huawei.com (7.202.194.229)
-X-Rspamd-Queue-Id: 1883A40010
-X-Stat-Signature: 4iq86dtdi3he1gcrfm6myytiurte7zd3
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 933EA4000D
+X-Stat-Signature: d7d6s1uim3tubsmpmty63xwsipqr6x19
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758634650-473352
-X-HE-Meta: U2FsdGVkX18lic9SNsfQADMXiP0ug7ul7dKV2BDx8s8KebdrB8plqGDZYi4HOAvV6886910Doq9ScGuO653R9NHq2BVJH15BmlT40AmMoiS/gRAe5IH6cjQGyWgdtkqUu8MUlyxTPGCdAiQYBwfx6vO690tBld1JmSic0wr6yhN+FJGoZCm16wlo8arxxb0ew7tkDlNCW0WkBnQVZ06HxdO+AQ3rsmv9p5s5FlGuW72YsuPu7HUc5jCPvTFvnpshocuZZECXanGtNLlMvN57pPoup/syppIrwf+j6f5tple8otxMh86PfsYESb6PyA4Yyj9cfGXYIEvKDExcNmuGST7uxqZQXdb9UjcmE0JZimoGqpSOpMmKA4W+muur4J0Bje1onywsFy+y5HOvNPn3njVMGRlV2zLcVWhc+0DAhG4fr0bTofpWh/IRFLa3fQJwCvwxaLJuXbgV5R2YQliWakYbtt+dr9F63/tMGUZ7eo6Rvn7naN2p7jS6VPny74YGcHViofWXcuKMrpMl84noFmgyVOmm3jfA/IzQBAoAOM8lb+erNRHquEcDO57tLyk4/vVgOBxLBryWG1UYGYl/bpn/Dp8bXrGmzSV0GlsM7XI0jN3Nre2BwfKKFgEmTBhcV0rmNsBg9xc8MEBEBrDxyzrMdPz93RblXPNjfuTcoKS7iyrOK/NHJt/QXqDfsS2SQk4vATYpuW1myYfNMMpTN3RyhDb9ygSK71XeOQu1RygV5RJKSD7uNZtQOR7WGDm3gXqoDxf1HTADomQUO2PQOwSMpeo10myGTmE7BK65cNaB1DboHgB+YDM/A4ie4CkXPoIkXNtMHMGsWCVlR7R9fSUl4z3kHOy/SF1qqYqKlB6/nT7RK+kfiKbHhLpU7tkVFN6Qnk/iPBMvMuwo7E9gsJqT6vsV+Ca2gUcM5MveFtPY6VevwLJZ+uQ3xGUHXtB8Vf6W/ofRYsHMd3iHlZU
- +QWzo4nN
- MDLIo8tcG99+mfUnB9nxwTjPL4t5iwDWzlRhGyn/wBFJnxHjY5fpsAB0R3Os/FLQ+kUz0Tye9nEMhsFd1oln7PnWWSzVh2ohctFpsgaotuedZUhpAcJCu1sKFaP/AzuttYbIF7qiAqipDyGID+V0+8SBNlPlBqgRLT6LDTqwGIkV2Ol/EfyMxhOPtgAsAoLnAu4WExtaZfzil226+W69mgAlXW9drcoV0eBkLqz3dwFq/+pr9JP2SGje/NHAq2pF3duV7ahk6hsvDLGE=
+X-HE-Tag: 1758634651-197264
+X-HE-Meta: U2FsdGVkX19TuWWHfxeObZMVLDoL3RlAgpgyMbPHsg9LQUfG3mhf2F0/TbuIhnDkIiBZ9TR03wC7PApEyKNFxvnIX41S1Zl5Nfmt82KprjUlV4f3nxPLlBpJDuF8E4GpfFoiz/i4/HgqVTIHZoseOTbf6Tn3SH9w9e1cFC1bJzqU3JqVJzZeQnq4ebQCEShQP77sg5dzDicZ+6wCUZugSDc2+8+zaxPPwEq4Z5CczlxEYVqC760OwrZg7oiJ5dLecGZ+tFlALayRkcFjBlJXV5MabUAqXpCfK3CKIXVV6baorJNQ0NbqUlVcy53Mta/AYHWsyWZ5ewTxYm185d7iex2/hoICnBnMnuT4lQkRO690zVIkAiH3VD7+sa3ABbZ9VY1o4+bz8iuuy70JvrMRyu60f5udaiy06jLg8JeWbqAjkWaDiPSh6x0Z7j4/UsmMBE4BVjdkiYuCXBptIYZCkuJZXS/abfG7Op4l9FXEu/+W+Qg2bRktHS7Kv76+6gpuaNyzjc5fMc9D5l2vUWJvGZIouvkbqp93+TwithHIvPeu7browdCaUkWz1GAs/raqoys5fwLasbbwd2REOhUiPg7yoqiNwpa/+9Ib1WtuB8hPLmueIkk3vihfC1B/5A5+HCne4gaA3nrwKYrILA0BL6JLpXtaBVjufOwaOllCgD1E+eeB2dxpio4qe9y4C7hCgzuyOYu19WDX4GrIfJf/m9GH9Rx33MVXXO+7z50ULVRVE4uBIr+58nnvizPE2jF4zX4+H5LkIwGf1bmWULMtk4cZ13SIsevIQHOOrrFrz5TT0I3VIBhntVR5koy8Ayx7hy9UrVGLuAraA/PuKwjrK3bPkcAHb30+iq/QYIJa0oJGrA9eAnHrByEKZutXUTKMEaFHmopdS8iu30ORudu4wUhSkxJ6XLXXbrKA1k8DjO5RhjiFT+57OCmXjfeURDizm8JpoJpDF/J8bs3+opW
+ jlFM5cd8
+ RW51u68fnRavepgIczkbMJYznPqeO/uaikNeq34/EGBtIABfDXq/hoLFfBquPBEFtxjtFnKID416Zir6Re2xGByffLqTVYC/w2guHARkON2oIevzem7ex8NrClqaDlaJKXtqifR52YJ+Dow9NRCM/cI9wePrWLoH6xS0c2SfBAPIZ6SnHB1YZDHjQQNVBlZtMnKFtqJEgwHSNXksIqQKvOtvlMYZQKVt5WtYAI3TBUDXG5iyyAvYTN7S+NqLcZ6PZm/7xFJoDn1xBLj+Yz+g0V+Wbyg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,66 +103,231 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Overview
-========
-This patch series adds huge page support for remap_pfn_range(),
-automatically creating huge mappings when prerequisites are satisfied
-(size, alignment, architecture support, etc.) and falling back to
-normal page mappings otherwise.
+Add PMD-level huge page support to remap_pfn_range(), automatically
+creating huge mappings when prerequisites are satisfied (size, alignment,
+architecture support, etc.) and falling back to normal page mappings
+otherwise.
 
-This work builds on Peter Xu's previous efforts on huge pfnmap
-support [0].
+Implement special huge PMD splitting by utilizing the pgtable deposit/
+withdraw mechanism. When splitting is needed, the deposited pgtable is
+withdrawn and populated with individual PTEs created from the original
+huge mapping, using pte_clrhuge() to clear huge page attributes.
 
-TODO
-====
-- Add PUD-level huge page support. Currently, only PMD-level huge
-pages are supported.
-- Consider the logic related to vmap_page_range and extract
-reusable common code.
+Update arch_needs_pgtable_deposit() to return true when PMD pfnmap
+support is enabled, ensuring proper pgtable management for huge
+pfnmap operations.
 
-Tests Done
-==========
-- Cross-build tests.
-- Performance tests with custom device driver implementing mmap()
-  with remap_pfn_range():
-    - lat_mem_rd benchmark modified to use mmap(device_fd) instead of
-      malloc() shows around 40% improvement in memory access latency with
-      huge page support compared to normal page mappings.
+Introduce pfnmap_max_page_shift parameter to control maximum page
+size and "nohugepfnmap" boot option to disable huge pfnmap entirely.
 
-      numactl -C 0 lat_mem_rd -t 4096M (stride=64)
-      Memory Size (MB)    Without Huge Mapping With Huge Mapping Improvement
-      ----------------    -----------------    --------------    -----------
-      64.00               148.858 ns           100.780 ns        32.3%
-      128.00              164.745 ns           103.537 ns        37.2%
-      256.00              169.907 ns           103.179 ns        39.3%
-      512.00              171.285 ns           103.072 ns        39.8%
-      1024.00             173.054 ns           103.055 ns        40.4%
-      2048.00             172.820 ns           103.091 ns        40.3%
-      4096.00             172.877 ns           103.115 ns        40.4%
+Signed-off-by: Yin Tirui <yintirui@huawei.com>
+---
+ include/linux/pgtable.h |  6 +++-
+ mm/huge_memory.c        | 22 ++++++++----
+ mm/memory.c             | 74 ++++++++++++++++++++++++++++++++++++-----
+ 3 files changed, 85 insertions(+), 17 deletions(-)
 
-    - Custom memory copy operations on mmap(device_fd) show around 18% performance 
-      improvement with huge page support compared to normal page mappings.
-
-      numactl -C 0 memcpy_test (memory copy performance test)
-      Memory Size (MB)    Without Huge Mapping With Huge Mapping Improvement
-      ----------------    -----------------    --------------    -----------
-      1024.00             95.76 ms             77.91 ms          18.6%
-      2048.00             190.87 ms            155.64 ms         18.5%
-      4096.00             380.84 ms            311.45 ms         18.2%
-
-[0] https://lore.kernel.org/all/20240826204353.2228736-2-peterx@redhat.com/T/#u
-
-Yin Tirui (2):
-  pgtable: add pte_clrhuge() implementation for arm64 and riscv
-  mm: add PMD-level huge page support for remap_pfn_range()
-
- arch/arm64/include/asm/pgtable.h |  8 ++++
- arch/riscv/include/asm/pgtable.h |  5 +++
- include/linux/pgtable.h          |  6 ++-
- mm/huge_memory.c                 | 22 +++++++---
- mm/memory.c                      | 74 ++++++++++++++++++++++++++++----
- 5 files changed, 98 insertions(+), 17 deletions(-)
-
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 4c035637eeb7..4028318552ca 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1025,7 +1025,11 @@ extern pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp);
+ #endif
+ 
+ #ifndef arch_needs_pgtable_deposit
+-#define arch_needs_pgtable_deposit() (false)
++#define arch_needs_pgtable_deposit arch_needs_pgtable_deposit
++static inline bool arch_needs_pgtable_deposit(void)
++{
++	return IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP);
++}
+ #endif
+ 
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 9c38a95e9f09..9f20adcbbb55 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2857,14 +2857,22 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ 
+ 	if (!vma_is_anonymous(vma)) {
+ 		old_pmd = pmdp_huge_clear_flush(vma, haddr, pmd);
+-		/*
+-		 * We are going to unmap this huge page. So
+-		 * just go ahead and zap it
+-		 */
+-		if (arch_needs_pgtable_deposit())
+-			zap_deposited_table(mm, pmd);
+-		if (!vma_is_dax(vma) && vma_is_special_huge(vma))
++		if (!vma_is_dax(vma) && vma_is_special_huge(vma)) {
++			pte_t entry;
++
++			pgtable = pgtable_trans_huge_withdraw(mm, pmd);
++			if (unlikely(!pgtable))
++				return;
++			pmd_populate(mm, &_pmd, pgtable);
++			pte = pte_offset_map(&_pmd, haddr);
++			entry = pte_clrhuge(pfn_pte(pmd_pfn(old_pmd), pmd_pgprot(old_pmd)));
++			set_ptes(mm, haddr, pte, entry, HPAGE_PMD_NR);
++			pte_unmap(pte);
++
++			smp_wmb(); /* make pte visible before pmd */
++			pmd_populate(mm, pmd, pgtable);
+ 			return;
++		}
+ 		if (unlikely(is_pmd_migration_entry(old_pmd))) {
+ 			swp_entry_t entry;
+ 
+diff --git a/mm/memory.c b/mm/memory.c
+index 0ba4f6b71847..c4aaf3bd9cad 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2674,6 +2674,19 @@ vm_fault_t vmf_insert_mixed_mkwrite(struct vm_area_struct *vma,
+ 	return __vm_insert_mixed(vma, addr, pfn, true);
+ }
+ 
++#ifdef CONFIG_ARCH_SUPPORTS_HUGE_PFNMAP
++static unsigned int __ro_after_init pfnmap_max_page_shift = BITS_PER_LONG - 1;
++
++static int __init set_nohugepfnmap(char *str)
++{
++	pfnmap_max_page_shift = PAGE_SHIFT;
++	return 0;
++}
++early_param("nohugepfnmap", set_nohugepfnmap);
++#else /* CONFIG_ARCH_SUPPORTS_HUGE_PFNMAP */
++static const unsigned int pfnmap_max_page_shift = PAGE_SHIFT;
++#endif	/* CONFIG_ARCH_SUPPORTS_HUGE_PFNMAP */
++
+ /*
+  * maps a range of physical memory into the requested pages. the old
+  * mappings are removed. any references to nonexistent pages results
+@@ -2705,9 +2718,47 @@ static int remap_pte_range(struct mm_struct *mm, pmd_t *pmd,
+ 	return err;
+ }
+ 
++#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
++static int remap_try_huge_pmd(struct mm_struct *mm, pmd_t *pmd,
++			unsigned long addr, unsigned long end,
++			unsigned long pfn, pgprot_t prot,
++			unsigned int page_shift)
++{
++	pgtable_t pgtable;
++	spinlock_t *ptl;
++
++	if (page_shift < PMD_SHIFT)
++		return 0;
++
++	if ((end - addr) != PMD_SIZE)
++		return 0;
++
++	if (!IS_ALIGNED(addr, PMD_SIZE))
++		return 0;
++
++	if (!IS_ALIGNED(pfn, 1 << (PMD_SHIFT - PAGE_SHIFT)))
++		return 0;
++
++	if (pmd_present(*pmd) && !pmd_free_pte_page(pmd, addr))
++		return 0;
++
++	set_pmd_at(mm, addr, pmd, pmd_mkspecial(pmd_mkhuge(pfn_pmd(pfn, prot))));
++
++	pgtable = pte_alloc_one(mm);
++	if (unlikely(!pgtable))
++		return 1;
++	mm_inc_nr_ptes(mm);
++	ptl = pmd_lock(mm, pmd);
++	pgtable_trans_huge_deposit(mm, pmd, pgtable);
++	spin_unlock(ptl);
++
++	return 1;
++}
++#endif
++
+ static inline int remap_pmd_range(struct mm_struct *mm, pud_t *pud,
+ 			unsigned long addr, unsigned long end,
+-			unsigned long pfn, pgprot_t prot)
++			unsigned long pfn, pgprot_t prot, unsigned int max_page_shift)
+ {
+ 	pmd_t *pmd;
+ 	unsigned long next;
+@@ -2720,6 +2771,12 @@ static inline int remap_pmd_range(struct mm_struct *mm, pud_t *pud,
+ 	VM_BUG_ON(pmd_trans_huge(*pmd));
+ 	do {
+ 		next = pmd_addr_end(addr, end);
++#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
++		if (remap_try_huge_pmd(mm, pmd, addr, next,
++				pfn + (addr >> PAGE_SHIFT), prot, max_page_shift)) {
++			continue;
++		}
++#endif
+ 		err = remap_pte_range(mm, pmd, addr, next,
+ 				pfn + (addr >> PAGE_SHIFT), prot);
+ 		if (err)
+@@ -2730,7 +2787,7 @@ static inline int remap_pmd_range(struct mm_struct *mm, pud_t *pud,
+ 
+ static inline int remap_pud_range(struct mm_struct *mm, p4d_t *p4d,
+ 			unsigned long addr, unsigned long end,
+-			unsigned long pfn, pgprot_t prot)
++			unsigned long pfn, pgprot_t prot, unsigned int max_page_shift)
+ {
+ 	pud_t *pud;
+ 	unsigned long next;
+@@ -2743,7 +2800,7 @@ static inline int remap_pud_range(struct mm_struct *mm, p4d_t *p4d,
+ 	do {
+ 		next = pud_addr_end(addr, end);
+ 		err = remap_pmd_range(mm, pud, addr, next,
+-				pfn + (addr >> PAGE_SHIFT), prot);
++				pfn + (addr >> PAGE_SHIFT), prot, max_page_shift);
+ 		if (err)
+ 			return err;
+ 	} while (pud++, addr = next, addr != end);
+@@ -2752,7 +2809,7 @@ static inline int remap_pud_range(struct mm_struct *mm, p4d_t *p4d,
+ 
+ static inline int remap_p4d_range(struct mm_struct *mm, pgd_t *pgd,
+ 			unsigned long addr, unsigned long end,
+-			unsigned long pfn, pgprot_t prot)
++			unsigned long pfn, pgprot_t prot, unsigned int max_page_shift)
+ {
+ 	p4d_t *p4d;
+ 	unsigned long next;
+@@ -2765,7 +2822,7 @@ static inline int remap_p4d_range(struct mm_struct *mm, pgd_t *pgd,
+ 	do {
+ 		next = p4d_addr_end(addr, end);
+ 		err = remap_pud_range(mm, p4d, addr, next,
+-				pfn + (addr >> PAGE_SHIFT), prot);
++				pfn + (addr >> PAGE_SHIFT), prot, max_page_shift);
+ 		if (err)
+ 			return err;
+ 	} while (p4d++, addr = next, addr != end);
+@@ -2773,7 +2830,7 @@ static inline int remap_p4d_range(struct mm_struct *mm, pgd_t *pgd,
+ }
+ 
+ static int remap_pfn_range_internal(struct vm_area_struct *vma, unsigned long addr,
+-		unsigned long pfn, unsigned long size, pgprot_t prot)
++		unsigned long pfn, unsigned long size, pgprot_t prot, unsigned int max_page_shift)
+ {
+ 	pgd_t *pgd;
+ 	unsigned long next;
+@@ -2817,7 +2874,7 @@ static int remap_pfn_range_internal(struct vm_area_struct *vma, unsigned long ad
+ 	do {
+ 		next = pgd_addr_end(addr, end);
+ 		err = remap_p4d_range(mm, pgd, addr, next,
+-				pfn + (addr >> PAGE_SHIFT), prot);
++				pfn + (addr >> PAGE_SHIFT), prot, max_page_shift);
+ 		if (err)
+ 			return err;
+ 	} while (pgd++, addr = next, addr != end);
+@@ -2832,8 +2889,7 @@ static int remap_pfn_range_internal(struct vm_area_struct *vma, unsigned long ad
+ int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
+ 		unsigned long pfn, unsigned long size, pgprot_t prot)
+ {
+-	int error = remap_pfn_range_internal(vma, addr, pfn, size, prot);
+-
++	int error = remap_pfn_range_internal(vma, addr, pfn, size, prot, pfnmap_max_page_shift);
+ 	if (!error)
+ 		return 0;
+ 
 -- 
 2.43.0
 
