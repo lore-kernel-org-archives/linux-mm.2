@@ -4,121 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCD4DCAC5A7
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 02:29:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16375CAC5A7
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 02:35:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DEC9A8E0013; Mon, 22 Sep 2025 22:29:05 -0400 (EDT)
+	id 743458E0014; Mon, 22 Sep 2025 22:35:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9BD48E0001; Mon, 22 Sep 2025 22:29:05 -0400 (EDT)
+	id 71AF58E0001; Mon, 22 Sep 2025 22:35:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C646D8E0013; Mon, 22 Sep 2025 22:29:05 -0400 (EDT)
+	id 658558E0014; Mon, 22 Sep 2025 22:35:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B11F88E0001
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 22:29:05 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7E67DB7711
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 02:29:05 +0000 (UTC)
-X-FDA: 83918932650.08.24E39BA
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 7F71A1C0007
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 02:29:03 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KUFyg44D;
-	spf=pass (imf18.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 543BA8E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 22:35:38 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 025C1C07E1
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 02:35:37 +0000 (UTC)
+X-FDA: 83918949156.01.F825275
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 57E99180010
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 02:35:36 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BpzuDtiL;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758594543;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1758594936;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UBqHLoQEf/Npt09p7CWAiUjG43kXXR8Q43uV99bdbew=;
-	b=58gPFk9cmAfug7PS7nG9j+9zKio9/AYExN/dObEwox1ja9Y+4eiwyi4m/KT5VjpuAwZI4g
-	DBk/jvmFMkM81piVqSersJXOSrz5JmBgc0dlUwW92YJ20wktJ6FCM4OreeNfq2/mQ6DiX+
-	cLnET7wBBc+9A1TIMeO3uv3avomvz7U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758594543; a=rsa-sha256;
-	cv=none;
-	b=x1ICLAvuhDVuIHOuyKP6OIZxFVA9Ow2XAWXN/6OzXIwflmasus+wlIf7S88XbjDDND0hE2
-	LaCmtWGu9rS4PSEJ87iZKFiDhMpGHv34H2BbkgCDztKA2xj6nBKZq6PMPwtv6yND5kPKrk
-	IWjROCCEYhV+n09NY3dU8Pc5gkJZamk=
+	bh=rSYGHNukA8d9c5/9l5vtbr6yTPTZwVknnlvEbRywswg=;
+	b=8ljVrdFRLJujpxPuLM6w529aA69YkbyBsZyAoXDGa5B/0DIh1W9wtg7MiiVsgJ1tSXl2PX
+	puR7+51a1sxb4P3JojzhPS+qGEI2JkqPsxOnIJj1/amIwSRxOW8YRWQdQT+R95BAIPb9Eb
+	2a8jse2y1K4HxW+vkJKR0BgAGdnPLZc=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KUFyg44D;
-	spf=pass (imf18.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b04ba58a84fso865552166b.2
-        for <linux-mm@kvack.org>; Mon, 22 Sep 2025 19:29:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758594542; x=1759199342; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UBqHLoQEf/Npt09p7CWAiUjG43kXXR8Q43uV99bdbew=;
-        b=KUFyg44DuresOJaEimBR3lEn4+78p15ki8Q4iotE2tl4jNruGx205PL9sNPhvfAY31
-         hU12GvJ/yIsZFiimBnvQffRfLB7Q7T9RjjCzdUXjEoPLHtX+A/USTW7HMCzSBjPzyKbI
-         u+BqqTDr/erJAL9ipJXeGZo3or93wrLGchDB+hBKsfDN0NLVSjBh5hdVVJ+zK7qx0/Zs
-         x97aFmNFRocm55AuP+cKw3LSIgo/ssZZgPF1gzZOVl9ACVG+beww9BaV9sicmWSIa3Lg
-         iZ/a9N5wOCZuuT0hK7LJM3nnfLsIV9vXqIk2Tsm7rgXcA5vgnsCxfXYvEihfpGp7gpJi
-         W3jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758594542; x=1759199342;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=UBqHLoQEf/Npt09p7CWAiUjG43kXXR8Q43uV99bdbew=;
-        b=qkmzRtZ0eMMZsuEg7Q6MWv1v2vKIXcQVMEvu8uGLmS/YLtBCp9bODKKN9zgiq6V6mD
-         AM1WqbW8r9x1czy81PSJIeW0Z9WLH9Bs38CtDDTuo+qi89jGJn+jgDI1cj9387Ovw5zN
-         nEcrSpWo0qeJ4Fnogw+a1IWlAZu5bJUKO3c2LKkf//SMdD0f+vbzpuFzKF3T/cfAwxgR
-         prOY1UxHLK6+qu0BYU3+BKh2wWG8Txhzbspq8OnzWzPOJYy/BmblE7UN1hxqQqzVED+0
-         P2ZYvZTS2f24C/bMmkOWFi8Erc+5JFmLdW8NGCxnTcQfTKPbPCwJBUHkTzbVMudmze2C
-         5UAA==
-X-Forwarded-Encrypted: i=1; AJvYcCVpyPcJsj68B/I0e4INkrX0BcuQrbUi88zqEmKP0RHvJv8wKe1xiTN9SojwzBtPmG2e9GJihZuZ1Q==@kvack.org
-X-Gm-Message-State: AOJu0YzK3wrd+lzhKJKArYaL2Bg7ZJQCRKk3QROR7vdXbj/I7JAdn2bZ
-	U3j6zmh3C2L4vln7F2vN2O8xC8t+xE7Js5baj7p7FfRy20EF6X+uleui
-X-Gm-Gg: ASbGncvbuq1uJOQEDKMcJQVudsVmkAUuoe7NltLZOxwrQXXMaJ/J5SZHhD36njKZ9GY
-	k4a9Hu5/7jVNl+T+4Xh5D7X7xK5377xbQiLxaeQeYlomv6W6Ec7bif9+ePk13WgT4G7E8GTp03B
-	KxHbWFhrbg84IgUcY72CkZNr8CVda9FxUQaHut5LrlcfbDLzYUJdR0pm+OOtojsp6sY6PFRcsoa
-	7yzTm/GJUl+T27H+m03LdIt5ILXE0XGWLEDx6eku0uQCeXQqPZohI1AooFb4O8gmCCDBbvcXzuV
-	9ay+jbk9GycjhW3+JTC7jTXrSwHMehBRWyujSMCaLXFvj8xegd5CxBBNCaI1l0ccpufLITS8lfG
-	/Yscm0fuPPCjHcX8h7MCMewbA9dIbcMCP
-X-Google-Smtp-Source: AGHT+IEIHMVCIffPBe/9Z5NBuOjCfg4C5FU/n65GHAiYlD0hvBLo36yOCIQ6ZXcmw0EH50gdL1sw8A==
-X-Received: by 2002:a17:907:6d16:b0:b0c:fdb7:4df2 with SMTP id a640c23a62f3a-b302705e540mr73287066b.21.1758594541891;
-        Mon, 22 Sep 2025 19:29:01 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b29e6597caesm580894566b.73.2025.09.22.19.29.01
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 22 Sep 2025 19:29:01 -0700 (PDT)
-Date: Tue, 23 Sep 2025 02:29:01 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
-	dev.jain@arm.com, baohua@kernel.org, ioworker0@gmail.com,
-	kirill@shutemov.name, hughd@google.com, mpenttil@redhat.com,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	Kairui Song <kasong@tencent.com>
-Subject: Re: [PATCH mm-new v2 1/2] mm: make is_guard_pte_marker() available
- for hugepage collapse
-Message-ID: <20250923022901.mzjqkrkdrwn2r7n2@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250918050431.36855-1-lance.yang@linux.dev>
- <20250918050431.36855-2-lance.yang@linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250918050431.36855-2-lance.yang@linux.dev>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Queue-Id: 7F71A1C0007
-X-Stat-Signature: bt6mzna797zbjtr4p7wi5a9buc5wmuq3
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BpzuDtiL;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758594936; a=rsa-sha256;
+	cv=none;
+	b=KbEtcj2VMTxzkOiEoVjpsUoNosZbTbsEJfHBE9CnnGR6QYzdifKuXqZUbZPgPRPpXFlWsQ
+	Vh3MFtilc686fglqEOGgPX9rCP9KtMDcRUzSAISb7NNSjGV17np3wpXYsG0Okj543Q6Kxc
+	nLi0tNbfxxrYiWLSTv6HS7a1o3ORP0U=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1A7D7440D1;
+	Tue, 23 Sep 2025 02:35:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C757C4CEF0;
+	Tue, 23 Sep 2025 02:35:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1758594935;
+	bh=X3eaLEU60ObEERuu3aBppzOV/d8IvjBq57A8xIsdI/k=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=BpzuDtiLH5DjM5xwj+bJZDUJd9H++v0wIsLaURYcHdL0CoI1iS/7Nfukchbsxnv3E
+	 lIZ1PabU334X9eotP8NB1uz/fIbH6JT7sY/5vYsQPYY5W9rkznQ824Ix3tKT9Gl0ki
+	 TDDxyTGZoq64m/k6l16BONshHAip9pM1EjyY4rZ0=
+Date: Mon, 22 Sep 2025 19:35:33 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>, "Vishal Moola (Oracle)"
+ <vishal.moola@gmail.com>, vbabka@suse.cz, surenb@google.com,
+ mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
+ wangkefeng.wang@huawei.com, linux-mm@kvack.org, Oscar Salvador
+ <osalvador@suse.de>
+Subject: Re: [PATCH] mm/compaction: fix low_pfn advance on isolating hugetlb
+Message-Id: <20250922193533.dd6081d78e9e98f47fdf8d3d@linux-foundation.org>
+In-Reply-To: <20250913001034.wt3iw4nyrmldblhg@master>
+References: <20250910092240.3981-1-richard.weiyang@gmail.com>
+	<20250911012521.4p7kmxv46kwz5fz5@master>
+	<5F7DCC9D-4CA2-4BA2-9EA8-F04C3883E289@nvidia.com>
+	<20250911032751.khtgvdhcqzyf3rgr@master>
+	<3DE28F4B-ACB1-468F-89B9-D7750D24BE4E@nvidia.com>
+	<aMMGbPX9uUj7TfoG@fedora>
+	<20250912010721.zd67xbfdava2u26e@master>
+	<ED7450E4-51F9-4749-A74E-C3AE8927E577@nvidia.com>
+	<20250913001034.wt3iw4nyrmldblhg@master>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 4gm35am6959doe4jukq3r9bs7o7c35q1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758594543-572036
-X-HE-Meta: U2FsdGVkX1+UeeCoHE+KojFECjGhLZEvIBCHufaqmVs6EENYrUotJUFqTQp2DVlOjGUijTd6W8HuZ7PeCRbvl5NmbEY926WTav6dPz6USnrYBAkmn1mev3n9Hg530AZcUGXycfcVZvAXu/jiKluq6vVzuMIYjx0OFdmFxjxZ3X+3ZH08HViYAMdhTwwITx40JCA2mxfXUI8nHZZyV7Q/ELP+lUqzyha0vqMv+0+5xtrAy/pmx60dZIvsGh57Imh8kyfFU01xoft2NWvN+kaq59nDErEsefMjueg5jHt4ZqMH7+SNCiWO6eujN0Ah9niomQYIqFWXZBCM+AHw2R+Z+kXALH8OaLCFcyMUeba/QxT2Dj2ScsHQPiIZqHH+SMAcPBVL2bevwV4dB9uX3uWbldhFlL/y7bL60DHJW/Mk4F2RAr1JGyKZpEHd5+TBgO9RinBQAUOV8lrPDrlryQ90RcZqrsjSh42tWsr3AhdiRDn9lhgS3SU1S1PUYNuEMNluGAXi1f4IfsaLUXX8g/a+MiEv89EoJO3iwwyqFPtHlJwuK+8JUD4JPTkxf5mtvVZZuro+q04gZt5CzSoAfdNHiM96xh9pHd9etSctDbP3abvrnt90iAeaE9z6h/DwRgSlOa4gHyQ6ZMDM3Zn03XBq/kVjOHBAmGxYCwsPk0Pe63oSI7XgIaMLkdhDnnYh7d3GEs18lkcD5A1ZbIrKhmR2d3GGH4Zhvu9alAzvtCNGhVx1vSeFKB+NUeTQxqrUT9QHBgJnEdzsF+z037DQyX+DyBAvdXc/KTUUX8Zo0Koh/QtgD8TKgl1QWKywj0abwRM4zaHpRGEs+Aza/HU58K5j8gIXD6dBMOATiNhNIjFfNp/H9OvzdCfU+31O7FzvaH2I8kQ9DQqsPsSUCrSfppJYtaPzdTsAUnmcE5gXwzu6wqfZBxvlC1esTmcT5JyISrcBbBWaqe5DAzl2NY/1M+c
- mBA2ICkw
- NgrGujaFukjeYaF5jBGxecLB1oOiwv6vquSv0G5/tG1d7fkNJi3NZSpypkL5d/E20qiUjnPJTO7IJsPhYMHZmVDn9hCO0Y7nqX7l7FH0nMCYCXYtVVTqf06WSH9qnLVAiaGb4CBPLqnLrWOK8GGg4tPP5+NQOBOM1KmqhwOQQDTR5KlOYYTDNgjdf6UgjIg1pXek+YjX5CIFIvaODF2QzTmViTYpIJkvpiVL1pWv9IZGbtX1s9R6d+SZGn4unywLzUL0hf7j+0/dU3jnKbernvjoQQqb3jJ5PP2TpTyf5jaesDvDxJ/dNzPbfApR8TCjlXRqw2Sj5pZhARAQbsdnQsIZKLrJOMqmwyXTDj++AyiF3zIG4fdcMNUuuPGJN3zIWG2l0EmEYAZ1HjhUGsKpLuOHEaheOWnjSSGoZr8GNx/uBqEbw47zC/HcLeNTQAzHWPK2bVnkHmETwYgTKDbByV5PYZfk7gGPipBSvWeWYquvoqLLyeRslz38UC6cZi82UxcL4NnqeAnhPqyw6CZRU6vZK59YG5u1/0rqyJZimErMX5nJ7PM4v9WoFpreXxDHIJi/L1QurZHV0X8WxoRb7e5do5i9qh8O3DCl3/1P8utR9W5jUJpWekPmDqcWV3FLuVTOc/e+9h+Ak6ywMyR1ubcFimjkP1WeX9JR+BGvUh3a2HB3xw2W2cgfyk8jYyyRwMZUhV8kZRP3Jn31TdpK0HcDVZQw6DWku25yGNAVx5P4OFY2OICazOqPk+pQqFQFR1TS4cDf2WKxbwLKT5fXaXHKT5Q==
+X-Rspamd-Queue-Id: 57E99180010
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758594936-775475
+X-HE-Meta: U2FsdGVkX1/Brk+/n8cYXzPiYFD+Ra66tIthNPgxnOKTv5HefKZSr2WOG3ylgEaTVV5NmEGkrR2Tys0pi9vEBWhfxeBY+Q3NhucP7VdLQm2z5ove+DMdUdIthP1ReMIEBXyZlhvRmpdos0ZBzb8tmTMsNjOZCbnqG0UUCRy2ELjWgbkNzMZ7O5AUulrpAuT7vH7m+OCp8WAhn4o2nmJl7WqtYQsZK7gi1C243HQsJzGQj8b3iWaTMsgtTNzKg/Lhkh/LCLgpg1G2YXZcp+dPrh0eqE/cEpgHxZ4Ztdtr+thHT8ZE2km7rVyoUrmhnFaIK6nBYBxhrK/YNnvHnK+dxyLEwAy+6jEPnV5w2kzja69XcBwjYFUAZ+JgRsKLDVhQiZEJZG5m9edIITywOZ0FjplaoolC6hYD6nocIqlpvmB9p6aMsI/FAkUtv1rpGq7jWl4Ws2jJym0HpsxSaBjZYMBhiyG1gTOvPhTkAXKMFfBa0QR76L5ApSm/EZW+vxUQWrfXtP5wG2hubqNLl3Mw23k6ijXHBoz7bGz9Zf33pUQ0OW1IskYmQv4elW7eAQ6fQfvc6DYaH/BumtP1lmJ47+VXvyY7i5g0gML7Tk2zQKakOIibjdklybJSwPNME38zv98/EpnuZEuDdV2PfLfCSTO57Q4gsEpShOcKO52im3RFhwjH8cdW4xdlccOZms/PvvzFeli8uXxc8THbM9JVXkPD9LCer+vlWK3EGI/ormgCRsuquYD7dMdcIDU3LpDk9Dt2EE9tl/4t/vA5oWDla6BJ7qUQVYOrroI5EKr/OdAvNUcIKSgLMIIPnX0zqttxz1/7kzSfdd2bGFTaKn3JZ+7h+4h65+dEljnOumt8enqnj7bNA/HtzVbOnb0xMJ8QJhcFHrPh+6G0pl80wN5AtgbP1+T68RXwQwtcPddqS5CEb4iZEgoJ8PQ75qjcd9mDlChJF9eqjLyO/4au3hY
+ GaF+11e0
+ Spy/1wPmM4r6gjR8u7gmHOQu4geeeDJPDqk8JGPdqpYQqOjhx1uOW2RIhIPxp+q0QF039
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,31 +101,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 18, 2025 at 01:04:30PM +0800, Lance Yang wrote:
->From: Lance Yang <lance.yang@linux.dev>
->
->The hugepage collapsing code needs is_guard_pte_marker() to correctly
->handle PTE guard markers. Move the helper to a shared header and expose
->it.
->
->While at it, simplify the implementation. The current code is redundant
->as it effectively expands to:
->
->  is_swap_pte(pte) &&
->  is_pte_marker_entry(...) && // from is_pte_marker()
->  is_pte_marker_entry(...)    // from is_guard_swp_entry()
->
->While a modern compiler could likely optimize this away, let's have clean
->code and not rely on it.
->
->Cc: Kairui Song <kasong@tencent.com>
->Acked-by: David Hildenbrand <david@redhat.com>
->Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->Signed-off-by: Lance Yang <lance.yang@linux.dev>
 
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+There has been a lot of discussion here, little clarity and no recorded
+acks.  I'm inclined to just drop the patch and to ask that issue be
+reopened.
 
--- 
-Wei Yang
-Help you, Help me
+Comments?
+
+Thanks.
+
+
+From: Wei Yang <richard.weiyang@gmail.com>
+Subject: mm/compaction: fix low_pfn advance on isolating hugetlb
+Date: Wed, 10 Sep 2025 09:22:40 +0000
+
+Commit 56ae0bb349b4 ("mm: compaction: convert to use a folio in
+isolate_migratepages_block()") converts api from page to folio.  But the
+low_pfn advance for hugetlb page seems wrong when low_pfn doesn't point to
+head page.
+
+Originally, if page is a hugetlb tail page, compound_nr() return 1, which
+means low_pfn only advance one in next iteration.  After the change,
+low_pfn would advance more than the hugetlb range, since folio_nr_pages()
+always return total number of the large page.  This results in skipping
+some range to isolate and then to migrate.
+
+The worst case for alloc_contig is it does all the isolation and
+migration, but finally find some range is still not isolated.  And then
+undo all the work and try a new range.
+
+Advance low_pfn to the end of hugetlb.
+
+Link: https://lkml.kernel.org/r/20250910092240.3981-1-richard.weiyang@gmail.com
+Fixes: 56ae0bb349b4 ("mm: compaction: convert to use a folio in isolate_migratepages_block()")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Cc: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Wei Yang <richard.weiyang@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/compaction.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/compaction.c~mm-compaction-fix-low_pfn-advance-on-isolating-hugetlb
++++ a/mm/compaction.c
+@@ -989,7 +989,7 @@ isolate_migratepages_block(struct compac
+ 				 * Hugepage was successfully isolated and placed
+ 				 * on the cc->migratepages list.
+ 				 */
+-				low_pfn += folio_nr_pages(folio) - 1;
++				low_pfn += folio_nr_pages(folio) - folio_page_idx(folio, page) - 1;
+ 				goto isolate_success_no_list;
+ 			}
+ 
+_
+
 
