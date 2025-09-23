@@ -4,107 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C7FCCAC5B0
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 11:03:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD4D1CAC5B1
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Sep 2025 11:03:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A65CE8E000F; Tue, 23 Sep 2025 07:03:19 -0400 (EDT)
+	id 387688E0011; Tue, 23 Sep 2025 07:03:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A15DB8E0001; Tue, 23 Sep 2025 07:03:19 -0400 (EDT)
+	id 35F818E0001; Tue, 23 Sep 2025 07:03:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B6AC8E000F; Tue, 23 Sep 2025 07:03:19 -0400 (EDT)
+	id 2756D8E0011; Tue, 23 Sep 2025 07:03:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 72E808E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 07:03:19 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3E7F9B9A29
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 11:03:19 +0000 (UTC)
-X-FDA: 83920228518.28.B1CAD92
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 114438E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 07:03:22 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B8F5B589A0
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 11:03:21 +0000 (UTC)
+X-FDA: 83920228602.30.0953C43
 Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3099E40003
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 11:03:17 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b=fgAra4gg;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=NcfKpGk4;
-	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.150 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 91E9620008
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 11:03:19 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="A ujJnep";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=gBi3iRA2;
+	spf=pass (imf13.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.150 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758625397;
+	s=arc-20220608; t=1758625399;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=v0Iv997UV6fMyfR2AD4bwzcf2iZuLe+1+UK+1BwCASs=;
-	b=Ytf6zMBXAlXCef9saukRTXj+p9H4hHQEhfZ747xuVmO/E9nuR3g5ycI+2cyLZwv/ld+Qgz
-	QMJqrPESrtn824at+u3HBzmylcr36hdp8a8mdc8Zjr8CHEY6ne/c+or/FnOHHuI89iW6TC
-	/txeS6pLlKGgWVasQH4cjg9JwhzV6MI=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b=fgAra4gg;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=NcfKpGk4;
-	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.150 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758625397; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9h5a9glrsc1Q9FewltBTBylrIxsnIQry21VQ9ojF/aI=;
+	b=tyapJ9JaFQ5gLy4/DmvbO7SPVAnuhbY3f2dJOZdME/bK0KovdkvcQYhvMDMvQWFgFWIWqi
+	HRc1b0cVilRhcaBdT7TqtTtZ3pGBClr6NoBZEdrNRJlnV2WwGCosauv3GAGrbBnF63CYL5
+	Ajzf6Rf80vEWPgTQMUQmi/teMnw+nYk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758625399; a=rsa-sha256;
 	cv=none;
-	b=Q3ww6fd4YEX4ABevxXFIF7VmWxlGqp/uRsYxOXKZ2meXTyE1hBo7v1NBu0oEXFzajcK8w/
-	z8hY7Kf50HYo8R/8LlRt17BLPXlCHk8EOrUBJWMlKXlAS1l3VVocqTf7wTP0CFVR2Th2iT
-	oAh2YxYtZxbVq23fwrzmASakNartQHs=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id 7DEBFEC0084;
-	Tue, 23 Sep 2025 07:03:16 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Tue, 23 Sep 2025 07:03:16 -0400
+	b=w1ja4Cc0BKyGz0oUqySidShQCWF8KuAWGXhtZtZQLsu1wjsoVg0InVm1kI07Jcj9byAlyA
+	e0RQVQYgquobkoaJunbMqK1l+XRai18xNRzYB7dOv2FSiRmglnQ5dpiFWaxojhI4CeWnqc
+	zcbrVBQUpX4hvSBc+EbzPhcyRmoyQr0=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="A ujJnep";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=gBi3iRA2;
+	spf=pass (imf13.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.150 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfout.phl.internal (Postfix) with ESMTP id DA7A3EC00A0;
+	Tue, 23 Sep 2025 07:03:18 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Tue, 23 Sep 2025 07:03:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to; s=fm3; t=1758625396; x=1758711796; bh=v0Iv997UV6
-	fMyfR2AD4bwzcf2iZuLe+1+UK+1BwCASs=; b=fgAra4gg2KoWwsNTu4d4nbdT+b
-	+jCGJMm/fQRT9LT9eb65wq+PwizXsr5WB8wQgiFIe4x5Y0n471IwVE0UTPKhbGN/
-	341SJhS0Yx9eStfEMaAqIDlOK3/4n/14WOG0VA+cIn69pb22VMfvp+lffq6BSa0b
-	Z5unjyVg3onwA+qd0xu/d6RN7aK+iXv2TVlOj5BkmgdCGYXXzsdm0NZwzWEHD+LG
-	dxXh3pHzjC8gmL2DGu0amWnN/4rINNO3iFSUsUuQfUzhl1CUafNyyFtiVCFmNv7n
-	iZFf6WYXCRr7QqmLsoHQuHlxf2VaguXzO6QlTJ0pSfU2ILSQ9aplAtyxoNtA==
+	:from:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1758625398; x=
+	1758711798; bh=9h5a9glrsc1Q9FewltBTBylrIxsnIQry21VQ9ojF/aI=; b=A
+	ujJnepmyPZhX+WU2im5VqmQB3MvkTLXHej6jJZyzkNWzDWqCFIyVSqoAGpSMAboq
+	+b/122qzuZjnXko4oM/kCcXjJg14d1MLno35d5juDolhe13UfmmeHhiKC9rYmeCS
+	M/kFWQUxZvOuVThjgjJ4lW3bBxuFGd2Uz41duKqu31Sij7XXs2XFzehKo65XRSZS
+	dqzL9n//3JFY9Hka9eHl4kv5rC5m8jm7oCXvu/Ts6Y+a636NULVzhcBIoph2mRcH
+	7yf99Nt+Ur1WAkArYEems7E5zX00MaJhlxjUclyJT08c46yXcKtlNjKaDqlajZWp
+	dWklv5pxm2ETssA8/JMSg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1758625396; x=1758711796; bh=v0Iv997UV6fMyfR2AD4bwzcf2iZuLe+1+UK
-	+1BwCASs=; b=NcfKpGk4ZgpwLCBkfJkXM/VA1m4shVyguCG9Nl76jfRigMPSdY2
-	Cd4TfM+5/bEbg8O/9VtMkjMWKiHfBQUcrfxrW1ac+nKfwIGIMauyKGAhXQm5UCLr
-	bxVCsW/H48yU3AXW97Ndc61jRjWSHn/Ogpf0jIJJlPcoUy96My96YUYcgwIZIqAQ
-	tHpG9j941tqAVSO6YUuBdnO9E+/NxqfRrCsHmg4sVxv8lN6IfrMVBlx0HEfgbbEo
-	4lpbvI4hPaxgO+DZtbU04XQDtmo4RC2ieBQblv+tF4r/zdW/iiDOZ8cXV35dzqGL
-	L2dsdQrIHekKp04LV2xD8ISuJ3igSZbcU8A==
-X-ME-Sender: <xms:cn7SaMGSdI08bEYpEzBg_SvLz-cWwgaI8dzA0-KcAkkRo6I9nSQm_Q>
-    <xme:cn7SaBShrOfa6qKWJZnbOEDb0BWfaMhJM3qmyMDVf-2KOsozUH2XgsobPLSmMjP3Z
-    abrUqUmJSiJll9VEFLLJM-fkO-b9QTaihGj9pNCmyFLK2FHdpyGuEA>
-X-ME-Received: <xmr:cn7SaMQpilZtF127zMbjMcKq5O-z6J7cWVwCVTzwpycWQe_I18unNnYXtlK8FQ>
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm1; t=1758625398; x=1758711798; bh=9
+	h5a9glrsc1Q9FewltBTBylrIxsnIQry21VQ9ojF/aI=; b=gBi3iRA2F5JjgzmV+
+	BbK3yEUYy5dVuMOaEa3mlJoVNS12UA9rh2MueCMl1WmzTCjNFt+McWKcbUJfSKNa
+	v02KmchecKc2952pY4HUFLGYscXlbISs1v1pwCsknGlBf2XJ/iOP9QLthZL8cyPg
+	slKOMCzS5kOd/5slgK1S4xJHSoMdoHunlQGB07mQQSOb3eG6CKdAieOgkubfEyvb
+	3v1W43vpahyJVPkQcLS3+xUFbnpc6p6nwyg2XKbu013ks/dlfMtmT4YfTgnElYmJ
+	yltiLz72DPp78PrQ4ntMvtfApoVMWushhaT6knITFRgN/lYSJdgrLc3uGMM+WgE0
+	6E8EQ==
+X-ME-Sender: <xms:dn7SaLCRyfOeMN-LirZgCNkSzzPe7I_uIkCiCeLwM4WiwYnzu31_zw>
+    <xme:dn7SaNfmOx0V162i6npcR1LRccL2LA9xRuwqa0Mdy0peFQhEl4FAkGAVm2f4moZYE
+    21gBS7uXrVsLBcOTZUgF-aYZDnc3NeSCFEkh8LM1YBtd6WOABsVKQ>
+X-ME-Received: <xmr:dn7SaMsP_EZTYkBeQOSCMcO1DqVRLUAB4h3EtXENojYIDjWIidJTQWMfoi6z5w>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdeitdehiecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpefmihhrhihlucfuhhhu
-    thhsvghmrghuuceokhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtffrrg
-    htthgvrhhnpeetffduudehveejfedugeektddtvedthfehfeehteffleetieevhedvfeeg
-    tdehfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    hkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepudekpdhm
-    ohguvgepshhmthhpohhuthdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnug
-    grthhiohhnrdhorhhgpdhrtghpthhtohepuggrvhhiugesrhgvughhrghtrdgtohhmpdhr
-    tghpthhtohephhhughhhugesghhoohhglhgvrdgtohhmpdhrtghpthhtohepfihilhhlhi
-    esihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehlohhrvghniihordhsthhorghk
-    vghssehorhgrtghlvgdrtghomhdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesoh
-    hrrggtlhgvrdgtohhmpdhrtghpthhtohepvhgsrggskhgrsehsuhhsvgdrtgiipdhrtghp
-    thhtoheprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsuhhrvghnsgesgh
-    hoohhglhgvrdgtohhm
-X-ME-Proxy: <xmx:cn7SaEe5r5WHRDSR68JoxWB4haNtAduHKyEGQYl90rnZPeWoAlAX7A>
-    <xmx:cn7SaAdgewjJ1ZxEoNxkJ8yTmuWYkL-4QRHpv-BpBU8JUaVIZigV1w>
-    <xmx:cn7SaK_IaqrwPiCoC9HY_Drgk9oy-Cd4i2EX__9reo1Jv2wTpo6JKA>
-    <xmx:cn7SaAPMt43Vpjl4Fic3wHtn8noiVWqE-s1M_25uk-6v8418F0ow-Q>
-    <xmx:dH7SaOaXb4iVhWti3Xbm-GHEMwARJY5XamyJ9Tfq2CT2SBLEURHh7iU4>
+    hrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpefmihhrhihlucfu
+    hhhuthhsvghmrghuuceokhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtf
+    frrghtthgvrhhnpeegveehtdfgvdfhudegffeuuddvgeevjefhveevgefhvdevieevteei
+    vdehjefhjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
+    hmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepudek
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouh
+    hnuggrthhiohhnrdhorhhgpdhrtghpthhtohepuggrvhhiugesrhgvughhrghtrdgtohhm
+    pdhrtghpthhtohephhhughhhugesghhoohhglhgvrdgtohhmpdhrtghpthhtohepfihilh
+    hlhiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehlohhrvghniihordhsthho
+    rghkvghssehorhgrtghlvgdrtghomhdprhgtphhtthhopehlihgrmhdrhhhofihlvghtth
+    esohhrrggtlhgvrdgtohhmpdhrtghpthhtohepvhgsrggskhgrsehsuhhsvgdrtgiipdhr
+    tghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsuhhrvghnsg
+    esghhoohhglhgvrdgtohhm
+X-ME-Proxy: <xmx:dn7SaEL0TGvqvagSgL1oJennoyf4z9ha436y9tH2hsoS4Ucx7SagVQ>
+    <xmx:dn7SaOb-zkhE9P-t6GzGXOs4qVOr8skp2iU7ZTFkNxzQNmuz0N7gWw>
+    <xmx:dn7SaKLHVQZqrQeZ__21eRWumkA-AugL1An9SFsrHotPAVtvoZ55Sg>
+    <xmx:dn7SaHqr2JMWXKEgqf8Z88pCc09vkLR1XVw3KFFjwTCHggyjvM3wDQ>
+    <xmx:dn7SaKHG10GWoGr7hoEXwpzOVcObPuZHFV7R6mCXVrrrmj0Dl6QnYO6V>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 23 Sep 2025 07:03:14 -0400 (EDT)
+ 23 Sep 2025 07:03:17 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@redhat.com>,
@@ -124,20 +126,22 @@ Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Kiryl Shutsemau <kas@kernel.org>
-Subject: [PATCHv3 0/5] mm: Improve mlock tracking for large folios
-Date: Tue, 23 Sep 2025 12:03:05 +0100
-Message-ID: <20250923110310.689126-1-kirill@shutemov.name>
+Subject: [PATCHv3 1/5] mm/rmap: Fix a mlock race condition in folio_referenced_one()
+Date: Tue, 23 Sep 2025 12:03:06 +0100
+Message-ID: <20250923110310.689126-2-kirill@shutemov.name>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250923110310.689126-1-kirill@shutemov.name>
+References: <20250923110310.689126-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3099E40003
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 91E9620008
+X-Stat-Signature: m6cew1987mohrky4gj7szc18gp9wrdsr
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 9prg57jp9f15mqpfi43h71wf676z1q7t
-X-HE-Tag: 1758625397-119493
-X-HE-Meta: U2FsdGVkX19gCm+Loj88OOL5B9p6MJ8+RUc/bIE7gWuOa2amtQv6elpNM1SrHdF608MAZLIfan57LxJeG3SQHsdrmPfaheKZFQP2JU3kroNj/pHUwfdkEun5EzwqcUb6vouEqxVm67k8z8Er0J+QqmetiZ10fF7JmvDIh+EvdSmD9cJ7Rkn4yV7k1pjoaf7Jsn00Z5x1lZPJL0lxoxI+5Sed2xESihym5io3oj6V2diJtxR4e3SP1D/YAu6eL6VuRF61fEedPmURgLA54/N34/f/60IEKBERdTjy4Po669YXmpO+l3qbbqGEkNLPy6jM/wmJAHovbAVRnQu1ODzIwZBVSyGNsNiDDmfm1JdmVB3wtWrztKKOZx91OIp8T6xtpXshGyUzwNcmsIfTskTShvhBi3UKpiU47lz5Wfeuu4dvPFMthd60+wycmeGxchxoeieIB4pR0Mkd4okns6cd7Zq40uJ7Ad298CNOk6EuRwyoj21afyIkJLO0Bb8caipt2V6TetaQrUN4pm6NHPzwhc/KnyZ0merGTsLgfsMAayYjnHnuyVUXW3/4ReO3bSXEwI45apQ0kBFcTWl7rEIX5qv0X+0xTxynPoZyg/GBoM51VB+KyretLuWfzTIdRSkQI2JEO7dyM9S3MiBTkFgOsznHIYS9pB5PWIjnYq3LN/PF8PDbXeV6daJUsHay4EmGHkhOfgExZwNmXhbg7quxwVR3FM9++7R7yCfjDTCo0Gw5+d67SvQeseXuM3GDDqduASGXxznH9/tJQAew7VcPgwBuSyKpjKbyj9rZgN3s8PQ6HFo7p4ZkMK+K5jiQrngVwpLe0Fs2SHqwM9wXL6xhmXkQUTFVarYr5EJgCzp3sb3MGYkLQdvodm40iMt7MKoWnLfz1XJJE066R9jUyHsJMArUgGz1J2H4WrEjxkE8CwlcAqFi5StLoIhmv46vm1VRdM+WrvHdgXqp09MATcc
- re9pRx0I
- jEOmn2oNdzi9AFzIok6oc20C59lyEsTp962A/BshyRKl3RAGLNmRdK+6C2cUDACZu7lL1r8kLlskPbLR35SmV4H7BHFsS/Mx9nblV73tvUPQFqOhiMM27/7R1rzSWgqClhyVvglk3DIjO4sakRTrsgX2+TP2t4YYKAKpb/+mYbdi5/TZssUea4L18lN0x8368M2OQIiLwlPTxeh+N6Jm9O7WPCKRfl3DN7x3i0AjZTkzqqi85+UUUSKoKIGdaqr7eHMQQ6CtxDJ15TkfFIAwPey/FTQGyMmY6XajtZqaq26C6d6+vVJYMGxOLcxnyYRxfBIkYHPMS/4125nou11fwlVnyaOp11XyGUSEeV0psQ6h9fKz/ARGKMi2Igg==
+X-HE-Tag: 1758625399-67742
+X-HE-Meta: U2FsdGVkX1+RPa+6WcfqXljD5PrmoP7TYM+RlcGfDLCPYcQUKOMYZwYGhdfyiOXIYlDhLG+UQnFkricqlLOnTdaQVzhh1VuSKgkfcphV1QT/yFmcajDG9CAuiYzMerrZcv++kUrrQBHGEOP4abqaNNIdeVIQbkzYLd9dQygyBZdj1TbjphvSpGkkLaOx3+3+rFQZTIol0PjUAnWfKuLFltx9rvWiKsHPiGqg7ei7tvKgEA3nXFZU3Z0lpOYZf0qxnMe2NH1NEI4dMOVhjeclUvkPcyla6TA4lPqKpdPQbdhYQyMRNt90qqBJ5mkTg82KQ4fZfuGc0akyMwhTq8M/sPmBIERQ4nPogIo1gMRvaX40jWwyw8A08USi4haayxQjrfV01AGOaTWMihtEKUhzCB3bjLSzkwCnQhujalMQ7UTpLvYvDRTGv8OYgdT7SJBOw9bwalLS+ru7UE9X4aekU0fFyVUi9nUNmAaDVpHhhfKKuFR1Rp+4AcoiOa+TDLyWESoZi0MwoEo7vE1qKn/DqkJSObDmf7/X5iDzcN22ZohAiXbgnU/ScBVFikKIX0n+p1XHF3A2hTMGvtJo5TrzlzKE31W5c+FZ9lWzw3faR2gk0TZcK1pfN9za/t0nKeGMCI3Yav/Bhz6IOOpP5tH0O6vjtF2C8YsAtpmByQFghW8ExxsMGml89ZsV5/QR5mLBfZy/FytBP+M6o2lLZZ8UhzxsDjVB90RsCZ/gX4hEl1bQ48q7moDmHi/QcJEbhj06KtVljhC41qvrz/fbdZa7Hf1ZeiaLyxelJ8yhAT1j+PhIOndpNWpOJ0ANdc2AhD1OntvbRX/oVBdllguRjuETFGf3ithN+lsGvRPvmZijH8VdGrAM5sGIUgYrW+FT+qKnjbfAp46xVIN7oDZ/wSJQ8KTY3wiBshmGh5b9F5MheXmWJSNbzobYOgrdQq3WlRutFGaWgqZcUCfRLdOYj5k
+ zQS34kQY
+ VFbPfGo5xUM0Y8BwUcnINNqEjNzznBStIFCirLHxXz4RoO0GvFGwtLAqgftTZS2D9uGyJ1ZE5GQLCl4EC+6KGoUTHiJCYYZsLxHaB3AmPDu32wOOZocKFyR5PTOqaKwNPbJ06ZCO+mf+Dlo70mZNjOfMi4H7ToWZddmi/CQ7JTgjTsehIaOTvbKblmu42eoUiWlN/m3gjjFe8NSJzfoRzvAGliA1jzwuVMqDIdPRPmpJMUzx8oR15V+J2b1qeEiNRq67RZjZ21qo3MkdtJlvccKpglrrChAAZz/PULu6COBiPOxQ3yJx3K1AFZaTvJgpKAIYqceh3tiRTyf8JinEfT6FwoZyoPVez0FN0DSdOl7hEEPyaYFuSFREKeKFS75ViVvYnC8d+FX11deGqP1ZMkTxKadPxZOEr4e0b
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,59 +152,107 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kiryl Shutsemau <kas@kernel.org>
 
-The patchset includes several fixes and improvements related to mlock
-tracking of large folios.
+The mlock_vma_folio() function requires the page table lock to be held
+in order to safely mlock the folio. However, folio_referenced_one()
+mlocks a large folios outside of the page_vma_mapped_walk() loop where
+the page table lock has already been dropped.
 
-The main objective is to reduce the undercount of Mlocked memory in
-/proc/meminfo and improve the accuracy of the statistics.
+Rework the mlock logic to use the same code path inside the loop for
+both large and small folios.
 
-Patches 1-2:
+Use PVMW_PGTABLE_CROSSED to detect when the folio is mapped across a
+page table boundary.
 
-These patches address a minor race condition in folio_referenced_one()
-related to mlock_vma_folio().
+Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+---
+ mm/rmap.c | 59 ++++++++++++++++++++-----------------------------------
+ 1 file changed, 21 insertions(+), 38 deletions(-)
 
-Currently, mlock_vma_folio() is called on large folio without the page
-table lock, which can result in a race condition with unmap (i.e.
-MADV_DONTNEED). This can lead to partially mapped folios on the
-unevictable LRU list.
-
-While not a significant issue, I do not believe backporting is
-necessary.
-
-Patch 3:
-
-This patch adds mlocking logic similar to folio_referenced_one() to
-try_to_unmap_one(), allowing for mlocking of large folios where
-possible.
-
-Patch 4-5:
-
-These patches modifies finish_fault() and faultaround to map in the
-entire folio when possible, enabling efficient mlocking upon addition to
-the rmap.
-
-Patch 6:
-
-This patch makes rmap mlock large folios if they are fully mapped,
-addressing the primary source of mlock undercount for large folios.
-
-v3:
- - Map entire folios on faultaround where possible;
- - Fix comments and commit messages;
- - Apply tags;
-
-Kiryl Shutsemau (5):
-  mm/rmap: Fix a mlock race condition in folio_referenced_one()
-  mm/rmap: mlock large folios in try_to_unmap_one()
-  mm/fault: Try to map the entire file folio in finish_fault()
-  mm/filemap: Map entire large folio faultaround
-  mm/rmap: Improve mlock tracking for large folios
-
- mm/filemap.c |  15 +++++++
- mm/memory.c  |   9 +----
- mm/rmap.c    | 109 ++++++++++++++++++++++++++++-----------------------
- 3 files changed, 78 insertions(+), 55 deletions(-)
-
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 568198e9efc2..3d0235f332de 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -851,34 +851,34 @@ static bool folio_referenced_one(struct folio *folio,
+ {
+ 	struct folio_referenced_arg *pra = arg;
+ 	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
+-	int referenced = 0;
+-	unsigned long start = address, ptes = 0;
++	int ptes = 0, referenced = 0;
+ 
+ 	while (page_vma_mapped_walk(&pvmw)) {
+ 		address = pvmw.address;
+ 
+ 		if (vma->vm_flags & VM_LOCKED) {
+-			if (!folio_test_large(folio) || !pvmw.pte) {
+-				/* Restore the mlock which got missed */
+-				mlock_vma_folio(folio, vma);
+-				page_vma_mapped_walk_done(&pvmw);
+-				pra->vm_flags |= VM_LOCKED;
+-				return false; /* To break the loop */
+-			}
+-			/*
+-			 * For large folio fully mapped to VMA, will
+-			 * be handled after the pvmw loop.
+-			 *
+-			 * For large folio cross VMA boundaries, it's
+-			 * expected to be picked  by page reclaim. But
+-			 * should skip reference of pages which are in
+-			 * the range of VM_LOCKED vma. As page reclaim
+-			 * should just count the reference of pages out
+-			 * the range of VM_LOCKED vma.
+-			 */
+ 			ptes++;
+ 			pra->mapcount--;
+-			continue;
++
++			/* Only mlock fully mapped pages */
++			if (pvmw.pte && ptes != pvmw.nr_pages)
++				continue;
++
++			/*
++			 * All PTEs must be protected by page table lock in
++			 * order to mlock the page.
++			 *
++			 * If page table boundary has been cross, current ptl
++			 * only protect part of ptes.
++			 */
++			if (pvmw.flags & PVMW_PGTABLE_CROSSSED)
++				continue;
++
++			/* Restore the mlock which got missed */
++			mlock_vma_folio(folio, vma);
++			page_vma_mapped_walk_done(&pvmw);
++			pra->vm_flags |= VM_LOCKED;
++			return false; /* To break the loop */
+ 		}
+ 
+ 		/*
+@@ -914,23 +914,6 @@ static bool folio_referenced_one(struct folio *folio,
+ 		pra->mapcount--;
+ 	}
+ 
+-	if ((vma->vm_flags & VM_LOCKED) &&
+-			folio_test_large(folio) &&
+-			folio_within_vma(folio, vma)) {
+-		unsigned long s_align, e_align;
+-
+-		s_align = ALIGN_DOWN(start, PMD_SIZE);
+-		e_align = ALIGN_DOWN(start + folio_size(folio) - 1, PMD_SIZE);
+-
+-		/* folio doesn't cross page table boundary and fully mapped */
+-		if ((s_align == e_align) && (ptes == folio_nr_pages(folio))) {
+-			/* Restore the mlock which got missed */
+-			mlock_vma_folio(folio, vma);
+-			pra->vm_flags |= VM_LOCKED;
+-			return false; /* To break the loop */
+-		}
+-	}
+-
+ 	if (referenced)
+ 		folio_clear_idle(folio);
+ 	if (folio_test_clear_young(folio))
 -- 
 2.50.1
 
