@@ -4,110 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE25FCAC5B3
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 11:32:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A19DCAC5B3
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 11:38:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56E2B8E000B; Wed, 24 Sep 2025 07:32:57 -0400 (EDT)
+	id 7ED1C8E000D; Wed, 24 Sep 2025 07:38:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 545788E0001; Wed, 24 Sep 2025 07:32:57 -0400 (EDT)
+	id 7C4B18E0001; Wed, 24 Sep 2025 07:38:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45C208E000B; Wed, 24 Sep 2025 07:32:57 -0400 (EDT)
+	id 6B37F8E000D; Wed, 24 Sep 2025 07:38:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 30DE58E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 07:32:57 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EAB86C04F8
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:32:56 +0000 (UTC)
-X-FDA: 83923931952.10.A107B9E
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 57C0C8E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 07:38:41 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EACA55B326
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:38:40 +0000 (UTC)
+X-FDA: 83923946400.01.A77C7F3
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 827C0180008
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:32:54 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ear3zImt;
-	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf14.hostedemail.com (Postfix) with ESMTP id AC8B510000B
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:38:38 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pl7stuKD;
+	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758713574;
+	s=arc-20220608; t=1758713918;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ehdJCefWHjHZQ2xeUY6vBszLodzgm+iwxilga3dW7Oo=;
-	b=nyVyazvMge5H4yj1HehE6mQHQOF9y7F/OaGLC76KrhmqxS4GiR4tlGfYl3vKZmq307Z1dB
-	mK5gxxqbvxveBD1C6DXuqXAwjz7YkNxDEg5hX5zF9v1MOqhvX141RRtCEcBdtyfHlK/KTf
-	ydy1SfnDQnWsyu/RYKlNetn8/Q2gp2g=
+	bh=+nr7Ue+Q8mDfosTulm3J5UwQG5E9B4yAzAZ8LnR/jDs=;
+	b=zn/CbWd6oE1m2U0JtoE7xi18BavVjOMgZAJZzI2pXe05Rce+Y4vw5K4kJPOl9wAguk+ny+
+	lkVsW4Is9AF2ohh7bUU0MQYo6n47tzgUWPRDGdujQw7snzq7w6xyy5pcsKDHIJH+dm61Ux
+	SLPU70Ia/bBg3R43NH+EsakOm2ecu/Y=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ear3zImt;
-	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pl7stuKD;
+	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758713574; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758713918; a=rsa-sha256;
 	cv=none;
-	b=RybRRFCmBr4VclVi8QtdJzKQ7aVYoty6TDLoX89Mr4PztvGeIli7882m/bIsGAB9CT+CJA
-	LJXy7NpzZhHv+TPa6xiaTCDEx4uOjxVRwUGHpe6lzcSMfifISUWiB41Wv+RdTgISDQ6rOg
-	bZO/guxBDeJV39CQLffMMFIeaOrn5Wc=
+	b=wtUs1TKOvs04N9fcitYqhzPYBkOuspCgo+OMwX1BIDD1iEeNZAJ/c8guor4W3OcY4RoRmr
+	aGFVorsQWry4v/OSWj2kjLrthpAIGeL8oOO0mJmjWflNW1g7yrNXi52JUvoWp4openwbSB
+	PHNFyaFO4ZFdo5AGtCCwYwfnoR5UhFw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758713573;
+	s=mimecast20190719; t=1758713918;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ehdJCefWHjHZQ2xeUY6vBszLodzgm+iwxilga3dW7Oo=;
-	b=Ear3zImtT361ViCdTLY+pC9D0mFFbZmEHEkVvHUQm5pEftFmOVi8xzJNy4TVRJxK0SuC3B
-	8coFMJsnSJ9DnkTVOhaPZNhAA8yK7KMJvBT2/8AXai70g1nVjrTiar/t6RAwBhdn/PISpF
-	03cMa76Tt9uuUNf0YJwIaLJDi8GwqNg=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=+nr7Ue+Q8mDfosTulm3J5UwQG5E9B4yAzAZ8LnR/jDs=;
+	b=Pl7stuKDQ1QJYa7p82DVVBLGNBT7LJ0C6SNA+EBCtADNAMHrA8+Jm8qq+Hy180pH+JzcHU
+	CPnrMmpPF0bZvbF0Ab9cXz/SmvUjJWJHUAq4bGGJX8hsr08NL0lJJUcy819316GvnHlwKL
+	F9BgVNzEt3MvgAXk/GQvkihjmHZaTbA=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-60-XevSid9gPKaAPIdBpT1U_w-1; Wed, 24 Sep 2025 07:32:52 -0400
-X-MC-Unique: XevSid9gPKaAPIdBpT1U_w-1
-X-Mimecast-MFC-AGG-ID: XevSid9gPKaAPIdBpT1U_w_1758713571
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-46e19ee1094so25819875e9.0
-        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 04:32:52 -0700 (PDT)
+ us-mta-164-EO3CE1XTPkaVmOUVyhazxA-1; Wed, 24 Sep 2025 07:38:37 -0400
+X-MC-Unique: EO3CE1XTPkaVmOUVyhazxA-1
+X-Mimecast-MFC-AGG-ID: EO3CE1XTPkaVmOUVyhazxA_1758713914
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-46b15e6f227so13728505e9.1
+        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 04:38:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758713571; x=1759318371;
+        d=1e100.net; s=20230601; t=1758713914; x=1759318714;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ehdJCefWHjHZQ2xeUY6vBszLodzgm+iwxilga3dW7Oo=;
-        b=cCLcTWCdZC62/+Nh3iOpEodUWJ1luMACmf2a3K/ntX4Xv3r0Wkcir3/S8li58yK5p2
-         pKRkziKIGAOVUmb/MGXdb8T9UPMAA8iQly+VH3A2ESuzU6ru8ZIfh5tjLd6R4YL1Is7Y
-         V23Z8jjRUk7WvU+xCaF/YL9p4KitNsSqFRP66K4Ucw2XejptQ96Hu5S6dpSQfGSYJLeB
-         cTAZq8rHz/AndwAACuCUPJEhNaD7o/GJL9RYagMuvxSqK7ULQwTj3zA+aaUfT2a5GeaI
-         3ka1RWbRHAFGhaLLsMRBSUAU3FoUW+5tA7d5/Zpn6ssDSwJXil83rjXVolUtDv0Fhvfc
-         9C1g==
-X-Forwarded-Encrypted: i=1; AJvYcCW3Ziga+YVLxhtylyHqSllSa9Y8rUd7HYT+fO1K7wSAg0c08SKO1XqwW6ZVh9EviRBSwN85Re+lqQ==@kvack.org
-X-Gm-Message-State: AOJu0Yys63BfKTsmHGvNP35LXmKvJKm3GJ6fXnE+NIc3LyEgsTmTnesV
-	xHp4NZDjk3zvKlrBrJdMvECujTgKZS/1HIAyfwGyCeSWeqn6nWs6b2jzHhYRYRrnhsd9qPrymPN
-	ONdovvzr9QaTYlHG1ijbuNU2SJTgHqOe6zlwDQiBzHFykH3cI4TRj
-X-Gm-Gg: ASbGncup+srNGYFl+o0r4FVu7HSHZIUkLMhp36CXnDo2rD4YZu1zrWnof11pnCfj2Fa
-	oxobH4XJXfF46eOqO0gxb0rkg+qUnNWLIIdGkcE80OiMtDBm5c6Hw//poNT3MCmMuWJnpoyaYkU
-	Y0jUh+PtLJ5nNekidH65KhhtVt/0DPzXK3xWMYkUpN4/svFjSvZmqrU4mvpT60GFTmIA87UBj8J
-	MTSM5U4dgx770ykW/lvvGYMLbtfFrQ74OJQ3mfuoEmiQXGTBVqbj5SstOyaRtLgjAuqAwdqbcxp
-	gKg6dgwJ/wVilysk50O/hKCH8bJ2yNvHk73ubjZVGZfqmLdBxnF226et8vRwaIAKiI8kHN+B7rx
-	q1PXoiCNXFPL+dGsxvwaK8NXJ93PHvOzMnDv2nREn9RS9En8Orx2tqBoODdjZ/pJlhA==
-X-Received: by 2002:a05:600c:4ed1:b0:45d:d88b:cc6 with SMTP id 5b1f17b1804b1-46e1dac188fmr61037675e9.25.1758713571147;
-        Wed, 24 Sep 2025 04:32:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH7pGCZ1fOiVqtAVOm2u7cESZGBYcjIfXBGgaEl6BtT//qVBAhf53t3ShXmK+XZpgtplZVSlA==
-X-Received: by 2002:a05:600c:4ed1:b0:45d:d88b:cc6 with SMTP id 5b1f17b1804b1-46e1dac188fmr61037115e9.25.1758713570613;
-        Wed, 24 Sep 2025 04:32:50 -0700 (PDT)
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+nr7Ue+Q8mDfosTulm3J5UwQG5E9B4yAzAZ8LnR/jDs=;
+        b=IE0VDSNwtzxwAxVHG6kHrEHnfXBtZE5c6Qae2Dld58QOVvOOs0FoX+lXcy6AVQLFT/
+         ep0ArkMFpiA8lr24c3DFI7kh3V1AKG10ndD9oDxV3bjUj+bHTS+HSFuqMGAjyRl2eg7Q
+         xLqRPgdmSTasvnrc/rAQx8t9vot2k8Rv3tI9lQMcZ2dgUps/Aw9bYfq5CfUlzq69GGk2
+         ww61dhhAyswKGRWLOFYyHntmulxXqVATRUa7bhaRFFMqzmLgo3HwgUczTGHXN+B4qWZh
+         P398PN/y5iE0Fp8YSPc88ZB12fwdFnwNG8e+uFaqwOAWaZ9dK6bHYO4emkSOVlfXoikk
+         bBKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVk4z826Oxzvkb0qk/FysT4TszvedqNE9BiuenC9K2Niws9TdLVkYjHu06bAxU5cnDSS65ban8y8Q==@kvack.org
+X-Gm-Message-State: AOJu0Yyl3+yKlja1mwaKE5UNev5ylaotnWraRx9hya5p50Vdx7jRzn64
+	70iN+OxkI6u7OJgPvVtC8wVDMreKQAhjT3Iyjik6vIUyf279r3HFgHpLAGoFp5FQZgET2DmVUO2
+	VKuYm9J+t+8lYFqoBnj05CoB83k34DhTAtuof2twDne3qaKWyjwe4
+X-Gm-Gg: ASbGncu6YOrpWDSN9WirJvpB71jzruqmVrV32qNXJofhIrhlkKmC06qgwDI7EOO3+1e
+	nFDgN7KFqjo/8abgvJdwNzuVLYwa5K5ily12tmuUTW/oe8WWekUjq+pXhonTxiWy5DQUGFAAY2n
+	VPXozuvw0d43jrIJo20CgMdsQt1X4+VZ5E8wpcJu1sw+afJ+kNQtArTJZYj4rr9xF6tYwFJmkHj
+	tHEo/4np/cgc/LtcVa5dwrAPhs/XXYkfheDJpoqEIHNvWN9osMPHq4ySPx3A6m3ZqZ63bxEo4jg
+	YD2vRNP3ggKbam30A18Z/cjFRfcsgB0u7xhZfUZFdFf4hv1QsDat7UgDlESK61Jg6wg6j3JdlCA
+	SgJo2V7Ier5K4QH8ziHMBh5zJpRZ9JltaQVFX6ifWiU6uQ8ZUIAVpxzX8HhoPPk0FuA==
+X-Received: by 2002:a05:600c:1f8e:b0:45b:9a3b:34aa with SMTP id 5b1f17b1804b1-46e1d98dfefmr81427455e9.16.1758713914075;
+        Wed, 24 Sep 2025 04:38:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEDyoQr1XMCzLogNb5hrirQ5E/He80PBLPI4tToWKtH2OlAXQ+KTAg/KFfVKjMR/pGFLjp+xw==
+X-Received: by 2002:a05:600c:1f8e:b0:45b:9a3b:34aa with SMTP id 5b1f17b1804b1-46e1d98dfefmr81427215e9.16.1758713913699;
+        Wed, 24 Sep 2025 04:38:33 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f14:2400:afc:9797:137c:a25b? (p200300d82f1424000afc9797137ca25b.dip0.t-ipconnect.de. [2003:d8:2f14:2400:afc:9797:137c:a25b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e2a996d7dsm29743925e9.4.2025.09.24.04.32.49
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e2aadf5c9sm28867015e9.19.2025.09.24.04.38.31
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Sep 2025 04:32:50 -0700 (PDT)
-Message-ID: <ce93b55c-75a7-4b4d-a68b-9d80baf1578b@redhat.com>
-Date: Wed, 24 Sep 2025 13:32:48 +0200
+        Wed, 24 Sep 2025 04:38:33 -0700 (PDT)
+Message-ID: <3b1a1b17-9a93-47c6-99a1-43639cd05cbf@redhat.com>
+Date: Wed, 24 Sep 2025 13:38:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [syzbot] [mm?] WARNING in memory_failure
-To: syzbot <syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com>,
- akpm@linux-foundation.org, linmiaohe@huawei.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, nao.horiguchi@gmail.com,
- syzkaller-bugs@googlegroups.com, Zi Yan <ziy@nvidia.com>
-References: <68d2c943.a70a0220.1b52b.02b3.GAE@google.com>
+Subject: Re: [RFC Patch 0/7] kernel: Introduce multikernel architecture
+ support
+To: Stefan Hajnoczi <stefanha@redhat.com>,
+ Cong Wang <xiyou.wangcong@gmail.com>
+Cc: linux-kernel@vger.kernel.org, pasha.tatashin@soleen.com,
+ Cong Wang <cwang@multikernel.io>, Andrew Morton <akpm@linux-foundation.org>,
+ Baoquan He <bhe@redhat.com>, Alexander Graf <graf@amazon.com>,
+ Mike Rapoport <rppt@kernel.org>, Changyuan Lyu <changyuanl@google.com>,
+ kexec@lists.infradead.org, linux-mm@kvack.org, multikernel@lists.linux.dev
+References: <20250918222607.186488-1-xiyou.wangcong@gmail.com>
+ <20250919212650.GA275426@fedora>
+ <CAM_iQpXnHr7WC6VN3WB-+=CZGF5pyfo9y9D4MCc_Wwgp29hBrw@mail.gmail.com>
+ <20250922142831.GA351870@fedora>
+ <CAM_iQpWO71vSV_0qXiUYeKYZMYF0xWNz8MrUVRkqKwDEtQvKqA@mail.gmail.com>
+ <20250923170545.GA509965@fedora>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -153,23 +163,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <68d2c943.a70a0220.1b52b.02b3.GAE@google.com>
-X-Mimecast-Spam-Score: 1
-X-Mimecast-MFC-PROC-ID: iET95bDZIqiOfL2NF29ZIyHHG6fNrh6aG6NCT0GHgX4_1758713571
+In-Reply-To: <20250923170545.GA509965@fedora>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: wGzoyLJjcRl9kY1YvpAvMEf8uI4rJ3lqpkNGsrVKciw_1758713914
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 827C0180008
+X-Stat-Signature: wzf8ps68r94d346tms347o9brehn9mdj
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: erfxapieb9b5imfmmjzyis989pu9jb1i
-X-HE-Tag: 1758713574-86852
-X-HE-Meta: U2FsdGVkX18P8vWpkyned1njktsj57tmJEG9Wds5MXbA1UNyI2COuPUXqpWe72TGuwLiMNgIku5BWHnlRt2EH+RCZyB+HA69aURUjCLHwkOaFesCN8He/VS6qlCfbrwu2YvcEM9GtA46u5LMJb0xW+/Izj/bEOEtUqIlz3VTKK8cqq7NH5xr50dkFG0tp2Pq8M0IW6vaOYzv0nYEeLHxLE4kEzIEqbVy72zNjxZR8UrRDYOZ1RbtpejNfVJ4T4VlrYArjx/8dP5sNw9Y5Y19KVuRv54brD4dqEK9sMq772kjAO+zU/q1RvJQXZZVFmuKuCb14K1RAHTZNl//NM0lBfsQWiXv9N5xV/d9WMLB9WnzfHzqASHLBqraF5dPmFMR3CHyS7W7iYP4MQP6yNsogX11dYbH0SmsVNMCKMXAxnbNKSGAe+0s0i75ooY/l5uQ8QMX3t8dhMhFNVRnD6e6umxGtNdO+Ki+/8CRNTiP2759TtbVRUgRs+11DAEUR4z5mb6sXJnMzlj+ovlMqs/dFoSDryPcd3Gj4sCMXqMvwkM/Cc8WONzjsslqpfc8wRA1IeDLU7kE3x+lmxJeMCGRCBlA6rnzoP+Ak8+f7EBOt9llgsYR4A3iGILblOEf81n1eyFpHBiATtTg4TlQ8t5TLWISHvYA+CHhLdqdK8U4XTvXOV5+QFooygPCDkiXjkJFdSrrghE+qhBTX2KozSTEdxNrVwnHH9fNuruplySwrWGTRyJ1v7Bry4j13CX4IOb7/fo7TnTQAeFPe/q+c/E9cxBoVqmkvxtNi8F9epg9O+u8D0yjfofTqD4IVUK6iieUlhfX+6xQUr9NJ2OhODBR/wv/HSQlCWbfum9/2ShbsR1c6HVLbKHgEyCUhSLprSDEaeDze5BBFMRgQNP1uUxVTUiJJQuRDojo0+IijxbgJ9JBwI0hey5HHn2T5zX8JL+iOKK9kTlnlo3Bfe54Bca
- RIP5j+Xb
- obVLscz+ya1sTzv1uWjcI9IYXSCfRZtDTdYyK3teZE2fgKli1PVG7qsdfATkQBIlOIhDBSXZIbN+xWlvIrW8ZbwUUyl8mB66qXw5WHbfV2HlYbysgxVWWsfBUuh2VdlBKsNo3MX0BtqiMxvNigEyVm1Hi6jfES6q7iFfpRk6/YwWfqgI9NETDjMBASOmBkMqqimt+0FtoylMH1g76zbkm+62+vCzbsDlFahUB+YrYv13V5ucQ0sf6GezfTUmf7rsueIEQMOVxVwkbhN2wrnE6UZwqPyhHbljh2uOkbShQTDFxNn+p512N7HF+NL+UhCx0kZera9YEus8qWVLuZJMuclv+Xzu4GPnAkEwlrNYFHuGzen7omIhSoxbwp1MM6OKoIp9YXQy+B1GzdVj+zJQj7pULBgMYNhVnvhLx2UgbjwcAcwgSaqXZFjdWmyf3PgEe5Hy0y9jQqlM3OPbAxXu92fHLc1yfYIFUbRTUDy2KJ04kHsDS+Xoomtl9+Ud+S8urHYvSltrWIRn6iAB8FbMux0MzlPB9tM1GMZZVDU8krkNs2m3Rl/4fbF99VjhrHsvjgptiu62OVwbg0YCLXKpG6bmD8Uc1opXWtg38XURaGabj2wutI7wuIZ8I+ES49rVuUcXQMTVyCgIwUM6EYVaPxj6qY7Y9WnQxslxLtWswzsXojTwwyEIrt6eU1moHuExFxyTR8Z5p2i3yox011C30KbNIHF9mR94J8tcjBLT1aL89zQ2etU52srr0no/WcFZOrI4sjOQ/Vs6deiuGL4ohROOrITbWbbULQEMRWKV8YLbGhJyBw3zz+SdKTLfoH2Zbx4B8ObLlFHUm9flUtTqs8l1ZqemoLq3Uiu2N0ZrqIIBsmSMagrg9ay5NFOP0MoG2VClr6IYLD4zLMT9I0LCA++HbdfauvWilIJtEnC/K39wxhLesHbLqn2oyx9UUGdkYc28QajYeT9MbPCYEdPVwajoc9z9l
- oSJbO2t5
- tt3u1vQjaT/ajM7Kry7kMr+wzfsDZOKNzS/FO/qILXhpCy3SFYCket3+YZBPilEDGcV4cm9/mrWiKw23pnkKQIfvldIHcV9QscIZI8Z2rrP+tvBR7O3gSQfhpT2BE3hD4FM24eFzA1S4M/G8wZdPEA8mJ+hG/BqtiEJxeZw8IpY5sWFog8/Een9dHLtlLTxmIzRZ6OM60KrYVq4aDrAdCPrEeq+W1Pd8CpXslsfW2OdDHsIBf9RAv1ulwy7rUCHWBqhku5qatZqiDqmfwzZCtrm8Ix9s5px2
+X-Rspamd-Queue-Id: AC8B510000B
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758713918-120683
+X-HE-Meta: U2FsdGVkX191CYoBbCAZZT+wZYdo4wLW8sSm+YGHsQO+JsAMPKB4frtuRTLPrqAd1OcyUqSW1vqecNTRBe83Mvh3wmN2IcnTWm1spHanlp1ktdmg09JZKdvOTIR4cMeGUaR+4hHQ1GAuoe16zbXXDwvNXSDEiUYZ/seuo7lNRMCsOfIP0OVaf8evgCnIvSZM3Cp9EHrshfvtKkNnGKO86fDurS7Ney/rAvhjiqtNlpywl6XVrgpNaW8Grvhzrh5A2sRqFcxbe2QztAZPxB3gyBrU5f6zkVURPbE8BuhwKNNBUblWHbwLqysPas6TCubkMDNZgJqPqUV+gVHUvGNisWA026ltcPiTw3OB2JHvwK+gZYmOfoz2liB+cHyu99PQLDcM77OQxnpiRp+VaTt44O/6nd4w33JdOZ37i7MGSvrvkfMTF8wzuJx+oCSvM6OmjM624owHow41oaxYZnltk81Iedd4Y6OcrXr5uDoX4w0f8ufGe62eRMiW7V8Lue//d7vrM1TuRqkSEPQpJ8lNWcMCL2H2Pm0GCchqoHlo+XJgKjtros7P4LfeRsqMmq22lnPaiYEH9m3QLk6kbN9dd8WFCqEL3RwG0BFefNpslF41I+YKjST2HSSisoZ6Jnugl0j42gj3eQ83Kk1xnXEEejhkT3K0psvGlhQyXS911CqPqhOkik3yS3D3/SL9lHTbhlOJXY4MbIIRNyr1bK3Jq04xNmLWagRphE7A8qfxJZgoUgEXuI4eZEKtarV72Mv8zorroNPCy+iNZXxOA0k+2Ob+qI8btIEO18p26ib/7myTGkKtYXLhD1bN77QwGT4+76IVGdh3WitguVRPdQicG7NnYeCMzxRDYgU5B2nA+9FfwYSu1rIfYcCx3dG1XtLTWBlRzxT2QVTQV61cJ4UDvnjlX7Cqu5GDFLn1HdXaLl0XQPtEG6Op+tByGw/b63FYiaNFPwtoPczVwcRHe4P
+ r+mbWoOz
+ fsrRUSwM7DMRFQJq4JN6AtHcaRdhbC9vnOCRFJMA9SSXBsNQyhS+RDZ297GrxrzxTDaV8vFpUZETL2j5Tt2AF4163zliuOZM3w77sBaowsyokivg9Q95hGSWaVJFPE6qDwM73aNXO2pbQovy+xfNNM+2I1XYF2qaKnKwIQqC0n6mJQtQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -178,111 +186,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 23.09.25 18:22, syzbot wrote:
-> Hello,
+>>
+>> Two more points:
+>>
+>> 1) Security lockdown. Security lockdown transforms multikernel from
+>> "0-day means total compromise" to "0-day means single workload
+>> compromise with rapid recovery." This is still a significant improvement
+>> over containers where a single kernel 0-day compromises everything
+>> simultaneously.
 > 
-> syzbot found the following issue on:
-> 
-> HEAD commit:    b5db4add5e77 Merge branch 'for-next/core' into for-kernelci
-> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
-> console output: https://syzkaller.appspot.com/x/log.txt?x=10edb8e2580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=d2ae34a0711ff2f1
-> dashboard link: https://syzkaller.appspot.com/bug?extid=e6367ea2fdab6ed46056
-> compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-> userspace arch: arm64
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14160f12580000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1361627c580000
-> 
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/6eee2232d5c1/disk-b5db4add.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/a8b00f2f1234/vmlinux-b5db4add.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/fc0d466f156c/Image-b5db4add.gz.xz
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com
-> 
-> Injecting memory failure for pfn 0x104000 at process virtual address 0x20000000
-> ------------[ cut here ]------------
-> WARNING: CPU: 1 PID: 6700 at mm/memory-failure.c:2391 memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
-> Modules linked in:
-> CPU: 1 UID: 0 PID: 6700 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/30/2025
-> pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-> pc : memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
-> lr : memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
-> sp : ffff8000a41478c0
-> x29: ffff8000a41479a0 x28: 05ffc00000200868 x27: ffff700014828f20
-> x26: 1fffffbff8620001 x25: 05ffc0000020086d x24: 1fffffbff8620000
-> x23: fffffdffc3100008 x22: fffffdffc3100000 x21: fffffdffc3100000
-> x20: 0000000000000023 x19: dfff800000000000 x18: 1fffe00033793888
-> x17: ffff80008f7ee000 x16: ffff80008052aa64 x15: 0000000000000001
-> x14: 1fffffbff8620000 x13: 0000000000000000 x12: 0000000000000000
-> x11: ffff7fbff8620001 x10: 0000000000ff0100 x9 : 0000000000000000
-> x8 : ffff0000d7eedb80 x7 : ffff800080428910 x6 : 0000000000000000
-> x5 : 0000000000000001 x4 : 0000000000000001 x3 : ffff800080cf5438
-> x2 : 0000000000000001 x1 : 0000000000000040 x0 : 0000000000000000
-> Call trace:
->   memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391 (P)
->   madvise_inject_error mm/madvise.c:1475 [inline]
->   madvise_do_behavior+0x2c8/0x7c4 mm/madvise.c:1875
->   do_madvise+0x190/0x248 mm/madvise.c:1978
->   __do_sys_madvise mm/madvise.c:1987 [inline]
->   __se_sys_madvise mm/madvise.c:1985 [inline]
->   __arm64_sys_madvise+0xa4/0xc0 mm/madvise.c:1985
->   __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
->   invoke_syscall+0x98/0x254 arch/arm64/kernel/syscall.c:49
->   el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
->   do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
->   el0_svc+0x5c/0x254 arch/arm64/kernel/entry-common.c:744
->   el0t_64_sync_handler+0x84/0x12c arch/arm64/kernel/entry-common.c:763
->   el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:596
+> I don't follow. My understanding is that multikernel currently does not
+> prevent spawned kernels from affecting each other, so a kernel 0-day in
+> multikernel still compromises everything?
 
-We're running into the
+I would assume that if there is no enforced isolation by the hardware 
+(e.g., virtualization, including partitioning hypervisors like 
+jailhouse, pkvm etc) nothing would stop a kernel A to access memory 
+assigned to kernel B.
 
-         WARN_ON(folio_test_large(folio));
+And of course, memory is just one of the resources that would not be 
+properly isolated.
 
-in memory_failure().
+Not sure if encrypting memory per kernel would really allow to not let 
+other kernels still damage such kernels.
 
-Which is weird because we have the
-
-         if (folio_test_large(folio)) {
-                 /*
-                  * The flag must be set after the refcount is bumped
-                  * otherwise it may race with THP split.
-                  * And the flag can't be set in get_hwpoison_page() since
-                  * it is called by soft offline too and it is just called
-                  * for !MF_COUNT_INCREASED.  So here seems to be the best
-                  * place.
-                  *
-                  * Don't need care about the above error handling paths for
-                  * get_hwpoison_page() since they handle either free page
-                  * or unhandlable page.  The refcount is bumped iff the
-                  * page is a valid handlable page.
-                  */
-                 folio_set_has_hwpoisoned(folio);
-                 if (try_to_split_thp_page(p, false) < 0) {
-                         res = -EHWPOISON;
-                         kill_procs_now(p, pfn, flags, folio);
-                         put_page(p);
-                         action_result(pfn, MF_MSG_UNSPLIT_THP, MF_FAILED);
-                         goto unlock_mutex;
-                 }
-                 VM_BUG_ON_PAGE(!page_count(p), p);
-                 folio = page_folio(p);
-         }
-
-before it.
-
-But likely that's what I raised to Zi Yan recently: if try_to_split_thp_page()->split_huge_page()
-silently decided to split to something that is not a small folio (the min_order_for_split() bit),
-this changed the semantics of the function.
-
-Likely split_huge_page() should have failed if the min_order makes us not split to order-0,
-or there would have to be some "parameter" that tells split_huge_page() what expectation (order) the
-callers has.
-
-We can check folio_test_large() after the split, but really, we should just not be splitting at
-all if it doesn't serve our purpose.
+Also, what stops a kernel to just reboot the whole machine? Happy to 
+learn how that will be handled such that there is proper isolation.
 
 -- 
 Cheers
