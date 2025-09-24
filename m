@@ -4,130 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0A52CAC5B0
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 11:04:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3E56CAC5A5
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 11:05:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46E178E000D; Wed, 24 Sep 2025 07:04:19 -0400 (EDT)
+	id 497CD8E0011; Wed, 24 Sep 2025 07:05:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 446308E0001; Wed, 24 Sep 2025 07:04:19 -0400 (EDT)
+	id 449098E0001; Wed, 24 Sep 2025 07:05:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 334B48E000D; Wed, 24 Sep 2025 07:04:19 -0400 (EDT)
+	id 337CB8E0011; Wed, 24 Sep 2025 07:05:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DCD28E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 07:04:19 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B0B7CC04E9
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:04:18 +0000 (UTC)
-X-FDA: 83923859796.26.696FC38
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C6E81180010
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:04:14 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LxuEm00k;
-	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E1498E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 07:05:52 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A985B876E2
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:05:51 +0000 (UTC)
+X-FDA: 83923863702.20.C3D05DF
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 3946B40019
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:05:49 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dT7yiylI;
+	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758711856;
+	s=arc-20220608; t=1758711949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mrljuIrpmbITb85jGMlf+AU3g1TLxbNe5fHByQmiOw4=;
-	b=5yAyIcySlQjYj2D83hzIFwG4Ew38eg/WeFzfLDlO6ldgagU7qC25gQ5YvS/8k1iOr+BYFM
-	GRu6dmhRBwpY7NlDiwvkuzsueNAbgSNeW9Pa2LJS6j0PpRjhrb0ImrfL9E0H0AE78twbwg
-	h7Z/9HMV1G0nmn7h7BpJZph3/NlKH/I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758711856; a=rsa-sha256;
-	cv=none;
-	b=tXrlW2g2YfwuZvn4bhd8f1XbKAcBnkGZBjFN+muhUhSWlR8IiP0i1tGWgAcm8ogpevkZO+
-	TJ3fu3t1jipjSBWdjRgy587G6MmmVcn3KWzWVcwR/aklmVBTvp9B14xaTifGoH8jYxgeQl
-	oli/Ng9574IpAJ/ij8rAQiJe1biSbm0=
+	bh=pJfstQJzF7vQWtME8nc3e37MPEdGJfdg+SENn3HGjjw=;
+	b=yar6pDPgs/GOE9HeKLxSGzHEt3amR+9stnnJ9FBp61z7gQKCJAL4CJPqyYA6ZmaMDSdTEU
+	nnLoPrHzIoTzQjmPr0vLIBfWp0fi+yhKAhFG2zvn5HkGCYCRlp51fyRE7oNnkcWqQgsqKt
+	z18BbobZdvy3N24lnvk1o0GXRFhvbLU=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LxuEm00k;
-	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dT7yiylI;
+	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758711949; a=rsa-sha256;
+	cv=none;
+	b=7g++hFr8jY7a7IbSheCoidpOCQ+nlLEJ8wn9RNXAJD7T22qTRWV1yeYglGskMSXiHXxW7M
+	9Hv3Q649BKgZH1aMeUrS/mLrYykHRDKdAc87Z3wSOQ1XQ6GXCSr5Vj6kGwp9wWghUQv/X/
+	RaGArxqLa/g+JkvjOS354L6tJB7MXOM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758711854;
+	s=mimecast20190719; t=1758711948;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=mrljuIrpmbITb85jGMlf+AU3g1TLxbNe5fHByQmiOw4=;
-	b=LxuEm00kX9gseM2gkfSaQow0iT+GHXGXbhscl9wskZSYzS3i3UmbFmxIbUCSGt3sxJGwAl
-	ZHyqak9LYk6pGcw49n+LG3k6VLAI1QX2EYq7Vd4PcVPwgyPsDyArgxtvVQPO9BT3wu4wJJ
-	aW3trNlgJ9O9e4p69gHkg7DO5wH6q7Y=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=pJfstQJzF7vQWtME8nc3e37MPEdGJfdg+SENn3HGjjw=;
+	b=dT7yiylIJrBfLUptE3Bv9xggagrRl7wY84nGwWX1uXRvKpQqo/vZDiRurbFN/FBDI1fT5m
+	Kn2c58j0aAkmOxnXWcxqoRhdEQ3ESleQ4J4CzU8+5q2f9vgSNWW6JNH6w8nE0nf4FLUz8g
+	IXLM/Gyh2Lsnx5duGXoW6y0OTDsfvvI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-299-3MTtB-8sMmiOtmr0p1j2qw-1; Wed, 24 Sep 2025 07:04:12 -0400
-X-MC-Unique: 3MTtB-8sMmiOtmr0p1j2qw-1
-X-Mimecast-MFC-AGG-ID: 3MTtB-8sMmiOtmr0p1j2qw_1758711852
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-46e19ee1094so25615485e9.0
-        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 04:04:12 -0700 (PDT)
+ us-mta-412-vWVcpXy5OgWmIshSPl48BQ-1; Wed, 24 Sep 2025 07:05:46 -0400
+X-MC-Unique: vWVcpXy5OgWmIshSPl48BQ-1
+X-Mimecast-MFC-AGG-ID: vWVcpXy5OgWmIshSPl48BQ_1758711945
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-46e31191379so747925e9.3
+        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 04:05:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758711851; x=1759316651;
+        d=1e100.net; s=20230601; t=1758711945; x=1759316745;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=mrljuIrpmbITb85jGMlf+AU3g1TLxbNe5fHByQmiOw4=;
-        b=KiB4RZVS/AywVvKfZYdvpZTdKGVeV5Ks0UhcgJ/4S9DD9apO2VmH0/y9L9S1m4l4pO
-         gRzDm4lku41FN483j1yGeB12fArYGoxQzXaSKrKu52z8+lpv7WTZX8oNA7FCPDdUvPTI
-         FRrESAa+oKZiHDybXld32CjToWIn5vuBsejR32pfcbLAmFSQEkh0j2qBw/53aP8iRNc5
-         g2g7e6nwTmbEtgJJfV4S8kZQY31Gc7fqjhPaVsWuJmnyQ1NemxlVefcd/ZgiOqm8gcTi
-         vF9GSvh7Ye+xszSFsI1zqupM5J9BTeIwpEDHqsfxpVW+GnWHhPuhDpJgqhZa4o3KQfJn
-         4FLw==
-X-Forwarded-Encrypted: i=1; AJvYcCXANupNMyG2b+tC/0yMm2MgyluNIs7TEF2yIZCc7eFOCRLyRwpy3fULGQbtxHf6Lw8Gerv7jFWa/A==@kvack.org
-X-Gm-Message-State: AOJu0Yxs8bD8fOpWVFwlkmIF05byM8M9J3mfMQhZwtHUuMVc6qVOHQRQ
-	YKdcVsT5icq6qwHQq1O6YpvcudsxlxGcPD3GWfUJKFGe//17fYbsRtoB1OSTpgMVVKNjF+uSiiU
-	ppg13y85Jp9NNR3yIrI9dS150PDbwmlNM107J2MHR2gBJ/z1DB/iU
-X-Gm-Gg: ASbGnctn46r6jE4yS4cd6uAYzxo0huQ2aQSLqCLWRJ7k5Td1RWvsIDLUgGlyfqOF5kO
-	ax+UpqcCZeS2lx/x1Px50v479FUTyNnOLvqXizHkYic87WEhQUkvbLxFvB5DtVX/WlHgL7q9YY0
-	AlaAM8GEWW8PX61LmDG3Wvsqrwy4m0HBgkhCKczKUTEMy0VjuhR+kJJxVpwhiRttYluF0nqSjvS
-	ENLa00lphe8tg3zCevI3RYgSY+NqXyI6DF28PdL1IzgfU9dsaAAHfj0Dx7/8Afag8qZuBRGIBPp
-	WJJYF9fgRaoxANdIrcwlqMUnjgOQG9bHKcPXrVhB6PBem6Z/WnohYsM9H/jXgc8gkrnpt76w/t3
-	4mkBZKWP9bDg08vUPEl2CRe8o1ZI0eWFpxMnmOn/S4nWcf9VCztuIiayRTRBU65kzvw==
-X-Received: by 2002:a05:600c:1c08:b0:46d:d6f0:76d8 with SMTP id 5b1f17b1804b1-46e1dac9fcemr74296465e9.35.1758711851514;
-        Wed, 24 Sep 2025 04:04:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IExYOxpci5QLmPvizPk29ikl+FA6dmszx1aCY/b5DkFPNIURQjjjajZAf2da25kjbr5619Hpw==
-X-Received: by 2002:a05:600c:1c08:b0:46d:d6f0:76d8 with SMTP id 5b1f17b1804b1-46e1dac9fcemr74296065e9.35.1758711851051;
-        Wed, 24 Sep 2025 04:04:11 -0700 (PDT)
+        bh=pJfstQJzF7vQWtME8nc3e37MPEdGJfdg+SENn3HGjjw=;
+        b=hByn88aup1CPciICk+BE/29HGNDTQsJ9XN5BsPTrOpmBTLNO3V2gFX+/8XdJjMzhX2
+         ITJGPgvVf8DptQ7bJmkDK2PNNnAJFZvwcd6ONnojnfHRf6zYpPsVe10SM8I7aFPCnKXM
+         5YrkHlcZ//8L6pUX0AqU3uYK56Om3j6cV9LR6QN67VLeWN0YbEWvpatDqyoomwxb07ig
+         1MNFLPokmZ8e7k4p0CA3/HiyVxNxYoP/NnoiNxQYw73KKJDd4BzNM8j4wYvwXmZEnHv9
+         IsETd1vsp9t6MtOOygGGInwaxurnzYIN+uhY0/tt2C9Y86nUe5dXyTIvMDkGXCxxKtDl
+         OtKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUd676dP20B+RSm/bcFxp6hPaTUanJOu78+UGawNwKQhdhpp8OEz6cNqZOUhB2ci4FgS9NzieaKVg==@kvack.org
+X-Gm-Message-State: AOJu0YytHiL3eczWedjTIcLrbxGE0c8lClKimTUjnhFps8kdgTHmmhCv
+	pPw2iqYEWODFhDUCLVJSCwcW+JFWqtdJVdi6xariZGzqf67lexK5D9Jyy4aNuBi/7ob14sTBcDI
+	s1HKXI0DPFVBEvWer6s385nHsfojY4VYWM+pYKBWMDSxkV0sCULEi
+X-Gm-Gg: ASbGncugZxxwlihPgnKCUA0w25Yr/fDsoYVZcivEiyzXfyM1c83ZfISgqQlNIteDGp2
+	8cw3kMgoDCHR6vK0TRQAQan6d1JFOfCFNZrYr3fsQTZlu1TF+FBRrJpWtpI2F2/+qrwHiCnrhPe
+	O7Go6IyTIP65lHC0FJ3IYw8o6/Is91U7yCAJDo1d2kk9KKqzOWtzxUqiCAtCHhcOTWMzd/Wc5KS
+	gWhI3Abw/s5ZWJ4y2iSM8lM6siMa7pV9BINQWp0G3FtIdHw1k+uhH7R3+x5B36vCYb1eeXoklGu
+	09sjAYkLdH3LUkS4+rxZakJlvrf2D6sLaKGbfxgPrYfi+dSiB3H3ABaB0P//rSqdyK7EfpMXp12
+	MRJrBk/BxX8cTm1ki96ee0XftmznDoebUugeqNEhE/yo7Mc1moRXcgE2FOUUO+oSjUQ==
+X-Received: by 2002:a05:600c:4703:b0:45d:cfee:7058 with SMTP id 5b1f17b1804b1-46e1dad1bcemr54121195e9.22.1758711945447;
+        Wed, 24 Sep 2025 04:05:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHbaeHw9ntX1+d3BLrDR31uBudOw3xXPWA7XtzGS71JBGdZjAGfyJ4Rw0XfiWGDvgzwltJ3qw==
+X-Received: by 2002:a05:600c:4703:b0:45d:cfee:7058 with SMTP id 5b1f17b1804b1-46e1dad1bcemr54120805e9.22.1758711944957;
+        Wed, 24 Sep 2025 04:05:44 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f14:2400:afc:9797:137c:a25b? (p200300d82f1424000afc9797137ca25b.dip0.t-ipconnect.de. [2003:d8:2f14:2400:afc:9797:137c:a25b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e2ab6a514sm26958575e9.22.2025.09.24.04.04.09
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e2a9af289sm28426105e9.6.2025.09.24.04.05.42
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Sep 2025 04:04:10 -0700 (PDT)
-Message-ID: <c7a2ad6e-68cb-4689-b72e-6e7ebfcf5e64@redhat.com>
-Date: Wed, 24 Sep 2025 13:04:08 +0200
+        Wed, 24 Sep 2025 04:05:44 -0700 (PDT)
+Message-ID: <6743ead5-4d61-4274-a24f-13a8a8265aee@redhat.com>
+Date: Wed, 24 Sep 2025 13:05:42 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [v6 01/15] mm/zone_device: support large zone device private
- folios
-To: Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, damon@lists.linux.dev,
- dri-devel@lists.freedesktop.org, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Oscar Salvador <osalvador@suse.de>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
- =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Francois Dugast <francois.dugast@intel.com>
-References: <20250916122128.2098535-1-balbirs@nvidia.com>
- <20250916122128.2098535-2-balbirs@nvidia.com>
- <882D81FA-DA40-4FF9-8192-166DBE1709AF@nvidia.com>
- <f026c5a1-ec51-4fa5-bc58-c2d690f9248c@nvidia.com>
- <87F52459-85DC-49C3-9720-819FAA0D1602@nvidia.com>
- <891b7840-3cde-49d0-bdde-8945e9767627@nvidia.com>
+Subject: Re: [PATCH v7 10/16] mm: define clear_pages(), clear_user_pages()
+To: Ankur Arora <ankur.a.arora@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
+ akpm@linux-foundation.org, bp@alien8.de, dave.hansen@linux.intel.com,
+ hpa@zytor.com, mingo@redhat.com, mjguzik@gmail.com, luto@kernel.org,
+ peterz@infradead.org, acme@kernel.org, namhyung@kernel.org,
+ tglx@linutronix.de, willy@infradead.org, raghavendra.kt@amd.com,
+ boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
+References: <20250917152418.4077386-1-ankur.a.arora@oracle.com>
+ <20250917152418.4077386-11-ankur.a.arora@oracle.com>
+ <5ec85b0b-9848-4cee-98f4-37953d504773@redhat.com> <87y0q4ewzf.fsf@oracle.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -173,21 +159,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <891b7840-3cde-49d0-bdde-8945e9767627@nvidia.com>
+In-Reply-To: <87y0q4ewzf.fsf@oracle.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 3bDllwija40sCDtMliE2ODMBGMDRH15Yc9HhnZBRsYU_1758711852
+X-Mimecast-MFC-PROC-ID: QOlOWHFp8Z9mA-TnY2bh5Lqpl597cWn3jvko0q2sEsM_1758711945
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C6E81180010
-X-Stat-Signature: waa1ewh7wnnq7c17e7whazyzqmjz9jwu
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 3946B40019
+X-Stat-Signature: tudzr9no4u5wr376qiawfdepsqgohxgn
 X-Rspam-User: 
-X-HE-Tag: 1758711854-573435
-X-HE-Meta: U2FsdGVkX1+IliXBndagWiAIcXJEDji6Jx+FUCcFSgxsgnbLsMMONkYzP6i9pumwofOXR8rJbMokLmbsQgyP1wjVuPEZ8OdR+hN8aMZU7KIFBPAJNCLw45X+5oR14TiRhFRH/2hsMkA5c/zZqXQxfBDVqNeswgFaJyJDA2fQ4Wzh3K/82iQzUc+Qm9/pSwccFuDB9gbp1xAFDvPTVldvSJxLP2iy2/NrltQ/sQNRQsG76sO7Y5j0l6UL2hM78q/kZ3woc21Ghwb7HBFoXQvYW5hy4guVzuYM5lUPttVDNnp/YOxrLxnk0BPFsYTPlyl/HuMq25YuxLd6+aROvMAoHbqBoie9HJRyMyKRUcnIv3V/br8jvS4xGXvC7EuwWse8+pFMsOVFum5VpFQoKF7BIe94jBkxyeAQu058Y1lcQxqvGg3tGCMFuiOAnZnn6HfUUXRhlgztGfPKA4tHjX7Vth0jP7G2ry3j8JD58D41T/ceM//B9KjHJktKoFT4UZ/jn03Gd2y8BKjvnSPn6zQA4oNqbfsYFFnURnx4zRDPV41Rw8oBEM/WpfoLbhZ8ncHBMLdQfZry8Yaaot7oOHTprYx6H16I6FSEN+crRixt04mX6OccdpBv/mSRb1Zo4cta7V11wJ5jTj2F3kjQkWxgGmmmwEaD91EW5WXXP2mWR2gEYzFYMxTNhMxJXjDvSuMKUeQsho1CS5oA5nYb6xOphAm47IroiND1X4PZu/PrNnqkxiGkSVEhuruILTXDqgQlSSG00he93CyGAyvnTGCe3H5hk2jaTwEnuLjMlZkBVYOo0IFXPhwtyJVr6+02njzVYMgxJyFuycpLCSx5FIyfetpPs9rZyyowfAmRqFFoGDJdl3x6NXNqW8OGox1cRe/X03TrwoUKnFquyTjzfPjYNx9Xsxl/79nZDeN8wIQVb0h1Z6bAZQoyBDGurcxIqivXPkfvrDBItBEKQxvlwkz
- PsbhZMO+
- UQ+beujZngVFNTPNV8XLI2vzvaIMuoqQmnpyVx+nDp5N5iM+sBaRsrw8aEX4leKNGBdLTG6oLp3VJcJlABGN8MkECw7pIXe0ZsuBSDa9uZATNHeU8SFxjDk9Gkxbf+Cp2Bd7YjQsIQlgA7mJ8dwolgf7N89NdvV+oQ8iUb0ADrdVLOWwjA7fxwxoYnyuerAOeel6cSiM5JJFLkjTCjPaTtdl1S7+5tyghTs+XTNPJ0oJ8hHJL7tJspAdFnoYIu0V6WyO30Irw5vyXibZ7ZXyltNugVPEN7XH7S787VbyvntfUg7jNxi62TjksFJJBuZdDnrvQK66rcd4Jv/5oo2K+blvh+oOd7aiR+1kr43ejY0Odry6x0GKoZxHyMFLEE0f3cYYrg24Vb1bNaewxmEC+AvZ50XLzKkooKo0XNS0wK+wpp1+Jak2CBdKObMBJPSMHl2RU/9wn1FZA+h4B+5LofSzekFylNRPb/GO5RAiHBm74yk7J4HyCcqtjQesMIbY17UZj2POWiGESIwAB78GGNqWG4EpYrIRxwIdKUKxRfY5uyMDuh4AdT8MEhJgZzdn/39Q4XmcvHKH36V58cEpecCJeJ66OOnB/VIkU9t428e/sbYEHRegIqZnT54/zEJZY6GiuS7D1sA/6VAcstYiUZM1vMTmFlCsOcaJ3brnwTMdYS9nvpt9GDdVcaY/XsV5uyhfz9YJzy8vOwzNqz/zrqMyICFcRkp4JgGUsb4i7d5C/zElxe4zj8/UEH53/pwC0hL+XfRNS5qUM3PtfxXSWJhdWVHrvnWdG9DqcW+CJYy57fh0dqKy7bkRtryHjjp+L3zJc6UYsirIPaKbTgQ0W5MDYxC2QBujNXCYGsxz0XKgdFDi3FqCKCsbfSA==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758711949-758978
+X-HE-Meta: U2FsdGVkX1+zT6T3XRpn/NeNkPiKFK55EccG1ZxXyDW8pvQhN6a4a0O+0jyORGf7IHflffPxlDn/kzXe/jm604PLYvOzcMOkvh5xMa4qUmTlKaFLFdFaNylKGMFBmWOpNmEdJF/FRkGVEos48d8Fv/UZv1OgnQjff4OHTK3/WFyczf1gF0ca04dLyfyHGvQpCjcl1YedcN8+RTcgIBxuQ5T+j+IraS8BTFX3up0iSk3ii7YQpM3iTGNiLTx2pUvxXjUw3dpXqSAKjwXBcz8sBQYQaO42IPDQhVVoJRJ5PayD42CTQWcRUXNZIhG1deubXSiqV0QVUnvSW64ZgNmKpTly2yZ4cvrj0oBOrcVtBi6XtDWkfUXSdZEdwu/WWXwlBhvdPn5rSWr/K0ouE1p/aA+VwLZRSagNCET4I5J1UCJ3BtP41+66DUusU4rfA1LEbvBB6Oa7JheIhUId6agkE5zvKyEOkI8v7zXX28Jsi9lVPN52u+bOe8seJQ+IXz3z6InONrz1zMzeZIfzkCH28lLr4hO+7k4Vrw/BBfIsm80ZoVI56sq5VQl4hpNLut4jZXAUtEfhHpCowr0u7Zu8x4xOhy4t3PRd6bjCkzGb9qlYExjZv+WTC/5+ItYpojizpK5f0amUlvBJ/2xfIz2R3E/YJ45rx89F3y/50/HUadpM7IEsENelTfMYJFd4HCzgqE9IlvzTpCIsKuMjQCdzWMfEJwro2ba6j1DTVMlwAJNRMxecGRv1gKjGQIC1rtvEqSDS0krNFNQAQZ/IVkwsL5ksGTPGpGaOjFXLRN0Ky2NUVqKUkcvgLVhRD4YEjw8tLsw3Xaznn2ezPJVkZV9Nf5vIFb8uDFB6JVgbZ8SujPZxbkpbwZ0a/C2Y8om30sdNfV9BQuBiuvZdFCUHzSi7JxDA/yUAYLWxWhHroQpHcdJBpnolDAulP9X0UAFNarUvAzxcn+SqwGcSwNlycaT
+ qBVBcAYl
+ 9i5zpq17xlvgFc5sZ1JbIqPgaso2Hw1vKx04gar3yo4fCLMvFinkQzcwkCvB85pr57h7HBtJtmDYimyKOs4F0VuDD0KplE2x6SQ9CvSzUMYiPxQ8QGwEadDJQei0wb4Zrbh834Ku1yFpWHzvfON89qR6P/4ya1TPKLkPICYqsiNWaQ98V50kwyragNyX2hbRv5u38GM06HMnllVZ+chxPdUJjh5XbJf3zOqyAVUDpYnNn5ypxSV/aL5YmUiyrioRSkhZnKaEiS5uZSxPfJvPMC+YRkcKeuumeqcBTpanM3uX2wMb5zEaR9FrS3YkfV5fpsJeOCY00ZuMwj+NTUfdGcQnZUBWoaRZyGGW9fcmPgdG2eRA5Kf45VeQtaF0K9Avwj2UNbUW9yR7CcHMoyepZ/23lCj+funDtcyut0xhkAEtWfRuxuhuOAWBVjBLdDi50HTILn0mzRWcdBCmjwrUnXPVDYuTrj5qvp07gaV+MHQWDQTB913mQ9K1qVlwSiIQ2V9WCR1stpedPfbeAe6AmqBGPqyNCe3qEsyLEIfCmiF1UZHASr0gcUSFBPgSpbX+/3VdK2jMwHq7Zj0AaPAjdJAJR0u7bgpDGLYqQ8rpPJTNDlnxQ28RV7V2lMOe0IGp6LJcCFe3gMZQ8pnLH5uoxxJy/KA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -196,262 +182,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 23.09.25 05:47, Balbir Singh wrote:
-> On 9/19/25 23:26, Zi Yan wrote:
->> On 19 Sep 2025, at 1:01, Balbir Singh wrote:
->>
->>> On 9/18/25 12:49, Zi Yan wrote:
->>>> On 16 Sep 2025, at 8:21, Balbir Singh wrote:
->>>>
->>>>> Add routines to support allocation of large order zone device folios
->>>>> and helper functions for zone device folios, to check if a folio is
->>>>> device private and helpers for setting zone device data.
->>>>>
->>>>> When large folios are used, the existing page_free() callback in
->>>>> pgmap is called when the folio is freed, this is true for both
->>>>> PAGE_SIZE and higher order pages.
->>>>>
->>>>> Zone device private large folios do not support deferred split and
->>>>> scan like normal THP folios.
->>>>>
->>>>> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
->>>>> Cc: David Hildenbrand <david@redhat.com>
->>>>> Cc: Zi Yan <ziy@nvidia.com>
->>>>> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
->>>>> Cc: Rakie Kim <rakie.kim@sk.com>
->>>>> Cc: Byungchul Park <byungchul@sk.com>
->>>>> Cc: Gregory Price <gourry@gourry.net>
->>>>> Cc: Ying Huang <ying.huang@linux.alibaba.com>
->>>>> Cc: Alistair Popple <apopple@nvidia.com>
->>>>> Cc: Oscar Salvador <osalvador@suse.de>
->>>>> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->>>>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
->>>>> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
->>>>> Cc: Nico Pache <npache@redhat.com>
->>>>> Cc: Ryan Roberts <ryan.roberts@arm.com>
->>>>> Cc: Dev Jain <dev.jain@arm.com>
->>>>> Cc: Barry Song <baohua@kernel.org>
->>>>> Cc: Lyude Paul <lyude@redhat.com>
->>>>> Cc: Danilo Krummrich <dakr@kernel.org>
->>>>> Cc: David Airlie <airlied@gmail.com>
->>>>> Cc: Simona Vetter <simona@ffwll.ch>
->>>>> Cc: Ralph Campbell <rcampbell@nvidia.com>
->>>>> Cc: Mika Penttilä <mpenttil@redhat.com>
->>>>> Cc: Matthew Brost <matthew.brost@intel.com>
->>>>> Cc: Francois Dugast <francois.dugast@intel.com>
->>>>> ---
->>>>>   include/linux/memremap.h | 10 +++++++++-
->>>>>   mm/memremap.c            | 34 +++++++++++++++++++++-------------
->>>>>   mm/rmap.c                |  6 +++++-
->>>>>   3 files changed, 35 insertions(+), 15 deletions(-)
->>>>>
->>>>> diff --git a/include/linux/memremap.h b/include/linux/memremap.h
->>>>> index e5951ba12a28..9c20327c2be5 100644
->>>>> --- a/include/linux/memremap.h
->>>>> +++ b/include/linux/memremap.h
->>>>> @@ -206,7 +206,7 @@ static inline bool is_fsdax_page(const struct page *page)
->>>>>   }
->>>>>
->>>>>   #ifdef CONFIG_ZONE_DEVICE
->>>>> -void zone_device_page_init(struct page *page);
->>>>> +void zone_device_folio_init(struct folio *folio, unsigned int order);
->>>>>   void *memremap_pages(struct dev_pagemap *pgmap, int nid);
->>>>>   void memunmap_pages(struct dev_pagemap *pgmap);
->>>>>   void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap);
->>>>> @@ -215,6 +215,14 @@ struct dev_pagemap *get_dev_pagemap(unsigned long pfn);
->>>>>   bool pgmap_pfn_valid(struct dev_pagemap *pgmap, unsigned long pfn);
->>>>>
->>>>>   unsigned long memremap_compat_align(void);
->>>>> +
->>>>> +static inline void zone_device_page_init(struct page *page)
->>>>> +{
->>>>> +	struct folio *folio = page_folio(page);
->>>>> +
->>>>> +	zone_device_folio_init(folio, 0);
->>>>
->>>> I assume it is for legacy code, where only non-compound page exists?
->>>>
->>>> It seems that you assume @page is always order-0, but there is no check
->>>> for it. Adding VM_WARN_ON_ONCE_FOLIO(folio_order(folio) != 0, folio)
->>>> above it would be useful to detect misuse.
->>>>
->>>>> +}
->>>>> +
->>>>>   #else
->>>>>   static inline void *devm_memremap_pages(struct device *dev,
->>>>>   		struct dev_pagemap *pgmap)
->>>>> diff --git a/mm/memremap.c b/mm/memremap.c
->>>>> index 46cb1b0b6f72..a8481ebf94cc 100644
->>>>> --- a/mm/memremap.c
->>>>> +++ b/mm/memremap.c
->>>>> @@ -416,20 +416,19 @@ EXPORT_SYMBOL_GPL(get_dev_pagemap);
->>>>>   void free_zone_device_folio(struct folio *folio)
->>>>>   {
->>>>>   	struct dev_pagemap *pgmap = folio->pgmap;
->>>>> +	unsigned long nr = folio_nr_pages(folio);
->>>>> +	int i;
->>>>>
->>>>>   	if (WARN_ON_ONCE(!pgmap))
->>>>>   		return;
->>>>>
->>>>>   	mem_cgroup_uncharge(folio);
->>>>>
->>>>> -	/*
->>>>> -	 * Note: we don't expect anonymous compound pages yet. Once supported
->>>>> -	 * and we could PTE-map them similar to THP, we'd have to clear
->>>>> -	 * PG_anon_exclusive on all tail pages.
->>>>> -	 */
->>>>>   	if (folio_test_anon(folio)) {
->>>>> -		VM_BUG_ON_FOLIO(folio_test_large(folio), folio);
->>>>> -		__ClearPageAnonExclusive(folio_page(folio, 0));
->>>>> +		for (i = 0; i < nr; i++)
->>>>> +			__ClearPageAnonExclusive(folio_page(folio, i));
->>>>> +	} else {
->>>>> +		VM_WARN_ON_ONCE(folio_test_large(folio));
->>>>>   	}
->>>>>
->>>>>   	/*
->>>>> @@ -456,8 +455,8 @@ void free_zone_device_folio(struct folio *folio)
->>>>>   	case MEMORY_DEVICE_COHERENT:
->>>>>   		if (WARN_ON_ONCE(!pgmap->ops || !pgmap->ops->page_free))
->>>>>   			break;
->>>>> -		pgmap->ops->page_free(folio_page(folio, 0));
->>>>> -		put_dev_pagemap(pgmap);
->>>>> +		pgmap->ops->page_free(&folio->page);
->>>>> +		percpu_ref_put_many(&folio->pgmap->ref, nr);
->>>>>   		break;
->>>>>
->>>>>   	case MEMORY_DEVICE_GENERIC:
->>>>> @@ -480,14 +479,23 @@ void free_zone_device_folio(struct folio *folio)
->>>>>   	}
->>>>>   }
->>>>>
->>>>> -void zone_device_page_init(struct page *page)
->>>>> +void zone_device_folio_init(struct folio *folio, unsigned int order)
->>>>>   {
->>>>> +	struct page *page = folio_page(folio, 0);
->>>>
->>>> It is strange to see a folio is converted back to page in
->>>> a function called zone_device_folio_init().
->>>>
->>>>> +
->>>>> +	VM_WARN_ON_ONCE(order > MAX_ORDER_NR_PAGES);
->>>>> +
->>>>>   	/*
->>>>>   	 * Drivers shouldn't be allocating pages after calling
->>>>>   	 * memunmap_pages().
->>>>>   	 */
->>>>> -	WARN_ON_ONCE(!percpu_ref_tryget_live(&page_pgmap(page)->ref));
->>>>> -	set_page_count(page, 1);
->>>>> +	WARN_ON_ONCE(!percpu_ref_tryget_many(&page_pgmap(page)->ref, 1 << order));
->>>>> +	folio_set_count(folio, 1);
->>>>>   	lock_page(page);
->>>>> +
->>>>> +	if (order > 1) {
->>>>> +		prep_compound_page(page, order);
->>>>> +		folio_set_large_rmappable(folio);
->>>>> +	}
->>>>
->>>> OK, so basically, @folio is not a compound page yet when zone_device_folio_init()
->>>> is called.
->>>>
->>>> I feel that your zone_device_page_init() and zone_device_folio_init()
->>>> implementations are inverse. They should follow the same pattern
->>>> as __alloc_pages_noprof() and __folio_alloc_noprof(), where
->>>> zone_device_page_init() does the actual initialization and
->>>> zone_device_folio_init() just convert a page to folio.
->>>>
->>>> Something like:
->>>>
->>>> void zone_device_page_init(struct page *page, unsigned int order)
->>>> {
->>>> 	VM_WARN_ON_ONCE(order > MAX_ORDER_NR_PAGES);
->>>>
->>>> 	/*
->>>> 	 * Drivers shouldn't be allocating pages after calling
->>>> 	 * memunmap_pages().
->>>> 	 */
->>>>
->>>>      WARN_ON_ONCE(!percpu_ref_tryget_many(&page_pgmap(page)->ref, 1 << order));
->>>> 	
->>>> 	/*
->>>> 	 * anonymous folio does not support order-1, high order file-backed folio
->>>> 	 * is not supported at all.
->>>> 	 */
->>>> 	VM_WARN_ON_ONCE(order == 1);
->>>>
->>>> 	if (order > 1)
->>>> 		prep_compound_page(page, order);
->>>>
->>>> 	/* page has to be compound head here */
->>>> 	set_page_count(page, 1);
->>>> 	lock_page(page);
->>>> }
->>>>
->>>> void zone_device_folio_init(struct folio *folio, unsigned int order)
->>>> {
->>>> 	struct page *page = folio_page(folio, 0);
->>>>
->>>> 	zone_device_page_init(page, order);
->>>> 	page_rmappable_folio(page);
->>>> }
->>>>
->>>> Or
->>>>
->>>> struct folio *zone_device_folio_init(struct page *page, unsigned int order)
->>>> {
->>>> 	zone_device_page_init(page, order);
->>>> 	return page_rmappable_folio(page);
->>>> }
->>>>
->>>>
->>>> Then, it comes to free_zone_device_folio() above,
->>>> I feel that pgmap->ops->page_free() should take an additional order
->>>> parameter to free a compound page like free_frozen_pages().
->>>>
->>>>
->>>> This is my impression after reading the patch and zone device page code.
->>>>
->>>> Alistair and David can correct me if this is wrong, since I am new to
->>>> zone device page code.
->>>> 	
->>>
->>> Thanks, I did not want to change zone_device_page_init() for several
->>> drivers (outside my test scope) that already assume it has an order size of 0.
->>
->> But my proposed zone_device_page_init() should still work for order-0
->> pages. You just need to change call site to add 0 as a new parameter.
->>
+On 23.09.25 22:26, Ankur Arora wrote:
 > 
-> I did not want to change existing callers (increases testing impact)
-> without a strong reason.
+> David Hildenbrand <david@redhat.com> writes:
 > 
+>> On 17.09.25 17:24, Ankur Arora wrote:
+>>> Define fallback versions of clear_pages(), clear_user_pages().
+>>> In absence of architectural primitives, we just clear pages
+>>> sequentially.
+>>> Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
+>>> ---
+>>>    include/linux/mm.h | 38 ++++++++++++++++++++++++++++++++++++++
+>>>    1 file changed, 38 insertions(+)
+>>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>>> index 1ae97a0b8ec7..0cde9b01da5e 100644
+>>> --- a/include/linux/mm.h
+>>> +++ b/include/linux/mm.h
+>>> @@ -3768,6 +3768,44 @@ static inline void clear_page_guard(struct zone *zone, struct page *page,
+>>>    				unsigned int order) {}
+>>>    #endif	/* CONFIG_DEBUG_PAGEALLOC */
+>>>    +#ifndef clear_pages
+>>> +/**
+>>> + * clear_pages() - clear a page range using a kernel virtual address.
 >>
->> One strange thing I found in the original zone_device_page_init() is
->> the use of page_pgmap() in
->> WARN_ON_ONCE(!percpu_ref_tryget_many(&page_pgmap(page)->ref, 1 << order)).
->> page_pgmap() calls page_folio() on the given page to access pgmap field.
->> And pgmap field is only available in struct folio. The code initializes
->> struct page, but in middle it suddenly finds the page is actually a folio,
->> then treat it as a page afterwards. I wonder if it can be done better.
+>> I'd just call this "clear a page range for kernel-internal use"
 >>
->> This might be a question to Alistair, since he made the change.
+>>> + * @addr: start address
+>>> + * @npages: number of pages
+>>> + *
+>>> + * Assumes that (@addr, +@npages) references a kernel region.
 >>
+>> And say here simply that "Use clear_user_pages() instead for clearing a page
+>> range to be mapped to user space".
 > 
-> I'll let him answer it :)
+> So, comments that actually speak to the use instead of technically
+> correct but unhelpful generalities :). Thanks, good lesson.
+> 
+>>> + * Does absolutely no exception handling.
+>>> + */
+>>> +static inline void clear_pages(void *addr, unsigned int npages)
+>>> +{
+>>> +	do {
+>>> +		clear_page(addr);
+>>> +		addr += PAGE_SIZE;
+>>> +	} while (--npages);
+>>> +}
+>>> +#endif
+>>> +
+>>> +#ifndef clear_user_pages
+>>> +/**
+>>> + * clear_user_pages() - clear a page range mapped by the user.
+>>
+>> I'd call this then "clear a page range to be mapped to user space"
+>>
+>> Because it's usually called before we actually map it and it will properly flush
+>> the dcache if required.
+> 
+> Makes sense.
+> 
+>>> + * @addr: kernel mapped address
+>>
+>> "start address"
+>>
+>>> + * @vaddr: user mapped address
+>>
+>> "start address of the user mapping" ?
+>>
+>>> + * @pg: start page
+>>
+>> Please just call it "page". I know, clear_user_page() has this weird page vs. pg
+>> thingy, but let's do it better here.
+>>
+>>> + * @npages: number of pages
+>>> + *
+>>> + * Assumes that the region (@addr, +@npages) has been validated
+>>> + * already so this does no exception handling.
+>>> + */
+>>> +#define clear_user_pages(addr, vaddr, pg, npages)	\
+>>> +do {							\
+>>> +	clear_user_page(addr, vaddr, pg);		\
+>>> +	addr += PAGE_SIZE;				\
+>>> +	vaddr += PAGE_SIZE;				\
+>>> +	pg++;						\
+>>> +} while (--npages)
+>>> +#endif
+>>
+>> Should indent with one tab.
+> 
+> Will do. Also acking to the ones above.
+> 
+>> Any reason this is not a static inline function?
+> 
+> Alas yes. Most architecture code defines clear_user_page() as a macro
+> where, if they need a to flush the dcache or otherwise do something
+> special, they need access to some external primitive. And this primitive
+> which might not be visible in contexts that we include this header.
+> 
+> For instance this one on sparc:
+>    https://lore.kernel.org/lkml/202509030338.DlQJTxIk-lkp@intel.com/
+> 
+> Defining as a macro to get around that. But maybe there's a better
+> way?
 
-Not him, but I think this goes back to my question raised in my other 
-reply: When would we allocate "struct folio" in the future.
+Can we just move it to mm/utils.c and not have it be an inline function?
 
-If it's "always" then actually most of the zone-device code would only 
-ever operate on folios and never on pages in the future.
-
-I recall during a discussion at LSF/MM I raised that, and the answer was 
-(IIRC) that we will allocate "struct folio" as we will initialize the 
-memmap for dax.
-
-So essentially, we'd always have folios and would never really have to 
-operate on pages.
 
 -- 
 Cheers
