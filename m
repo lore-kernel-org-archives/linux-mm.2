@@ -4,99 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D857DCAC5A5
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 10:02:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64D89CAC5A5
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 10:03:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BFF18E0013; Wed, 24 Sep 2025 06:02:28 -0400 (EDT)
+	id A50AB8E000D; Wed, 24 Sep 2025 06:03:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36FDB8E0001; Wed, 24 Sep 2025 06:02:28 -0400 (EDT)
+	id A009E8E0001; Wed, 24 Sep 2025 06:03:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2860B8E0013; Wed, 24 Sep 2025 06:02:28 -0400 (EDT)
+	id 8F0748E000D; Wed, 24 Sep 2025 06:03:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 172768E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 06:02:28 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 853E31407C4
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 10:02:27 +0000 (UTC)
-X-FDA: 83923703934.20.8668DC5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 273E810000F
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 10:02:26 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A5848E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 06:03:08 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 28CAC11AC2D
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 10:03:08 +0000 (UTC)
+X-FDA: 83923705656.28.B6992B9
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6AE6F100016
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 10:03:06 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ryywmcG1;
+	spf=pass (imf05.hostedemail.com: domain of 32MHTaAYKCPcfkhcdqfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--glider.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=32MHTaAYKCPcfkhcdqfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--glider.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758708146;
+	s=arc-20220608; t=1758708186;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sN4TFCft2/wZSXIELr5RHWTzLUBfhTJlV5b+crUf6Vc=;
-	b=zy0pyJTw5umrTBjqyozLiXp1AfISrSl2tWi+52vhP9ZMixUUz3Fl3DAymw7WniMpr8ADTB
-	fnJItgOji+ifU9qbiKZdzVjoNR929id1d77m3CxltWbzuhpySmP9p8EPpKyUoOhoGkdtVw
-	51gjUEVgURyfPJrL+8zxFzIHmO4hXgo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758708146; a=rsa-sha256;
-	cv=none;
-	b=MUkqy0viu12fX9nd/kmWQakdhnPa2AfIO4tI0y7uvZWXiu023hJT9SDtA+DC54ROUiwWVW
-	PoXjhqDyHv5qe91RMrQSumW1paqtc2RSVnF3kT0jwbvfoQ2I2s8JA/YBhGqZiL65p46sNP
-	ZVUEJxM6/JcxYZnDGNKF0nlclfqkk1Q=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ZjocDtApH+mYILuh2MoVR7BbFeZzIGZsGcmRz0O6aqA=;
+	b=1MhJ0g2qj6muI8kmnFM0/tgJRP7DOjbWwkBMKFGoSFcv/TK8ZR0ErFcgiIWH4Iabecj97Q
+	iasO4J2eADJlFYw+Uw87QW6P2qGe3lxmZj76awVj5GS6B138pfmyXTKEEfbVF2+Co2bjbg
+	or4rOrwvE0w1WloYWdFWr2r/nsXHvt8=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 717B6600AA;
-	Wed, 24 Sep 2025 10:02:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A36D5C4CEE7;
-	Wed, 24 Sep 2025 09:59:49 +0000 (UTC)
-Date: Wed, 24 Sep 2025 10:59:23 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org,
-	lorenzo.stoakes@oracle.com, usamaarif642@gmail.com,
-	yuzhao@google.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	baohua@kernel.org, voidice@gmail.com, Liam.Howlett@oracle.com,
-	cerasuolodomenico@gmail.com, hannes@cmpxchg.org,
-	kaleshsingh@google.com, npache@redhat.com, riel@surriel.com,
-	roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com,
-	dev.jain@arm.com, ryncsn@gmail.com, shakeel.butt@linux.dev,
-	surenb@google.com, hughd@google.com, willy@infradead.org,
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
-	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
-	apopple@nvidia.com, qun-wei.lin@mediatek.com,
-	Andrew.Yang@mediatek.com, casper.li@mediatek.com,
-	chinwen.chang@mediatek.com, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
-	linux-mm@kvack.org, ioworker0@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] mm/thp: fix MTE tag mismatch when replacing
- zero-filled subpages
-Message-ID: <aNPA--5AcqeFd6nl@arm.com>
-References: <20250922021458.68123-1-lance.yang@linux.dev>
- <aNGGUXLCn_bWlne5@arm.com>
- <a3412715-6d9d-4809-9588-ba08da450d16@redhat.com>
- <aNKJ5glToE4hMhWA@arm.com>
- <aNLHexcNI53HQ46A@arm.com>
- <f2fe9c01-2a8d-4de9-abd5-dbb86d15a37b@linux.dev>
- <aNOwuKmbAaMaEMb7@arm.com>
- <17dabd83-0849-44c9-b4a2-196af60d9676@redhat.com>
- <aNO7MrQt9oPT8Hic@arm.com>
- <791e0d59-0eb2-481f-bf8b-ba4b413d5ebd@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <791e0d59-0eb2-481f-bf8b-ba4b413d5ebd@redhat.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 273E810000F
-X-Stat-Signature: beb9dmatxgjgsk7sf4aq7xfdyd79y7or
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ryywmcG1;
+	spf=pass (imf05.hostedemail.com: domain of 32MHTaAYKCPcfkhcdqfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--glider.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=32MHTaAYKCPcfkhcdqfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--glider.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758708186; a=rsa-sha256;
+	cv=none;
+	b=DwXwFhBMx8dDohcqKA1BY8UVB6qEZ9bR7byZwvt/TW4bXbTopJrPbCuOUXewcYydVJQF7w
+	vSU6rNrIcWbpnWPFQOcs3Njc2kGlvWsSgFoLtntm73mQHJZOt1usFV+S+XESSYTM7aViv/
+	L/qM3vujRzi7foVxwn5qd1zOENKDlGA=
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3ed9557f976so5526027f8f.3
+        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 03:03:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758708185; x=1759312985; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ZjocDtApH+mYILuh2MoVR7BbFeZzIGZsGcmRz0O6aqA=;
+        b=ryywmcG1tZRvcGqXuATI/h4DUNDqITwPpK4TIhJRWcBcSYXX26mV2xZz4gV29wneLa
+         sgcTj/6jkfgwEYceYzSnJitt4vtE3x0tQLju5p2PRrK5CfNKh7OM1idgfngU85WZONuM
+         pP+j9uBoWVdCLTUV89cU3EVf3SBQB9YLJDFvRqSr6lEiIoshFD/HI4z1q+1KWPVdesOr
+         iLxbBtTktVSAJbsHQHuCi44t3jj4vLdkLR0nkkUCP4jiNE3LIgC+Syzav5MIrZdiDnjq
+         yqmDhKDRz5RpLAK2w7ml6x1NdEWKxpQL8x5ZP/qcbFZ1uhVgTDIaNaIUwxMOvkaPmBPW
+         WzDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758708185; x=1759312985;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZjocDtApH+mYILuh2MoVR7BbFeZzIGZsGcmRz0O6aqA=;
+        b=nfMGuqmHsPMEWSgbL0j2UFwQPFLRMvhi4h6+8E2GEL7xCpT8QydNbwHW4Cz/d/gH6M
+         u7vMGkuzzWcIi06pqIaojfkF+zad8PRl5FqGWwfC7+f9UbLz8kGBqHeRwIyH4Ok8pljA
+         RtttpcHrQfAI0xJjiaVokqA1Ym1amwM0R+9oBrdTbYojjGAfpL6y1WX/MoTurqYBIDEO
+         oTO8HI2z1b4XeSNXzqQL7Ii2bdA4JZD/EH7u6Ifem58WTkd10k1qd5qhe5VAfvRWHvn2
+         vkkqPtBoyuXFbBszx7CvjwpvJyepMBg2YIRwOOXmxY4Encq9iIde4R57TSAyMRpwnMLM
+         9PQw==
+X-Forwarded-Encrypted: i=1; AJvYcCUvzXIYD0Xz9tHYdSmZLXmlVs+/2UNwKeZ6UImkirIFr7VsD/GEr0zycyaOufGSexgCqY63CqXpOw==@kvack.org
+X-Gm-Message-State: AOJu0Yzs1bjWjKbIr3OEFWmfGw015VU9il1mqbtUuFuaMvL8ZKlrnw0x
+	8Y1VGZYGrUsFjs/LBrw8CVCDobttsegGV5EqjVxddkIaMT4lxpOhGIkVzIa2OZdHOtcbt/UTj8P
+	AQA1n6w==
+X-Google-Smtp-Source: AGHT+IHt24AXDuzRv8mfV0+Dd7gn9yVXlAssjjo5xVzAkMIAyKd0XpBQuf6DwkbGgm2mAJytPIKDsRe4zdo=
+X-Received: from wrbet7.prod.google.com ([2002:a05:6000:2307:b0:3ed:665b:ec9d])
+ (user=glider job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:288b:b0:3ee:1296:d9e6
+ with SMTP id ffacd0b85a97d-405cdc1e751mr3789906f8f.61.1758708184637; Wed, 24
+ Sep 2025 03:03:04 -0700 (PDT)
+Date: Wed, 24 Sep 2025 12:03:01 +0200
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.534.gc79095c0ca-goog
+Message-ID: <20250924100301.1558645-1-glider@google.com>
+Subject: [PATCH v2] mm/memblock: Correct totalram_pages accounting with KMSAN
+From: Alexander Potapenko <glider@google.com>
+To: glider@google.com
+Cc: akpm@linux-foundation.org, david@redhat.com, vbabka@suse.cz, 
+	rppt@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	elver@google.com, dvyukov@google.com, kasan-dev@googlegroups.com, 
+	Aleksandr Nogikh <nogikh@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: fzunwjkd5hxf7h58kw1nxabqicpi7d3r
 X-Rspam-User: 
-X-HE-Tag: 1758708146-684865
-X-HE-Meta: U2FsdGVkX18eUVMPRkkz2tEb4BhjE5pfLHPU/LxLJkSEFkGUIeFQQ01+OEL4q9Iu2NZpDH40755ybVGxuCAXTDXKvRSaWT2SY/EnmGiLQn9MvpR+WHsB668SsWq34NZui0m5RkCR2LuwkVAtUv5A57Xqt5mg0KNtQsNI+c7kRtUqYvHcpB1QfTtiigLkUxkVDuOmiBKgxVBx6ga/YPD6ZC2cna2EWOfwqilxZzPxneGa4TMjHsd/bul2+btZvnRqtDy+b0k4peyKpMJT9drR9Xrz5xY+CKcIyuE8YWArye+aBW653D2uKS9zjxYFpsJbvD0f7L499D7gSRekiZYAxGl+OGsAu3TDIgoBWji8c2d50ObHKJTB0GdBjQXArlDaQnjhpBAahpp5wru+GvxRvgRIp50597i/x2KGM6ezTj9n/AqY16+kQuB7hnVC3wr/OvjPcAZVjUYVIA2GMpNbXXXjNGHY9cQUL8e+CBaDggk/XGOYUwQD0MngOOTQqRxcrO1X1sN+UizcoQhEyQmxhXV0hrbzc7VJXLTN/Ajd1XBUPIp6H34VsOQoqCX7ekILD/SigF8c/+WD0ws6OruvMrko5Vre/ZXCCWIwwPRkhItgQxzVh92GrkER8Jt3ntOEfNXFo2opBbResIdMk8nrs2cCUguCQDRbrO8Q0l4EXL6PyhCc+GiE/sSEUM+WBbrf/QwTMdFMSnT9Nt9M9N7vzJOKTGwmCRvnPua2roNpff7jt6O/gfsLafO+FLlEWW2F3BLH6tI9kq3m4krMoDbfsyzoLcFuy19i0LpbnMMlDW1IXn3MXVCdyFnG8Gic2wClqlLv+Nh31S8SDEgMXAisfHTtmpHyUxNf1HZmUJYMfaGYmkGjGEJRVcR2IUQ85+S17lmeDg2cFHnHiLV0CvCtOlmlAteWO0CrZ5KUm4oNe43oNd2SlMMIM+2yBtsRnvNWGFvCQzzi3NvcS4v0zUR
- taJPiN1F
- 1RJji1WdFNpYwa4JqG6WxrTy5LB9inr6VpFL+l5TyNmUIXwwF74uZCp+Ru7zk6GKX+uBJ/GE4al4fSMnOTRd2R55ktB3kaJ17nu9U9WApqhjINjfKbrR1JbqEEJY2BHc7drkGzEyKxWjE8x0=
+X-Rspamd-Queue-Id: 6AE6F100016
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758708186-526320
+X-HE-Meta: U2FsdGVkX19HjgH90ydpQrHFMnp9J0dsUTNPBORfWe7i8XWYx3PxbVGE8WL69pgdsxmr4XQBR/0lRsNRHzbudMjxrOIqmyu3+F/dZ/2Cso3W1XTbkuaEeWTquzVN38q10y5/OavskkJFDBOyoRyURtgLvL/N7Csi86xkIFxX5cYYE290kAnZ/5LGCjKk1r+BmLTjD8IM+gsQj58Lht0K8ricE+b0n8N5CoR3+/AmA+mAHj/bHd5ZeceVlBClRMRH535gwo+YOzmemwW36pr8LIHfn6azt5GNAheQMH0lF49CkA97qDqdcDur5I6cBx/ToMe7X7ZHXG5Fgf8O6fCZHIRxr6qVKUSPb9qGPsmKXB9RqVaVn8A5NFm/zjL4aefdNAVeHbioGolr48luzCxcVI7gu+GjhAG2MidafJes5LJnX1N2oXvRVAcLyq1jfxUGqY+I8Hyw3hgR5cRECkpaLDt4rTmsivP7k45qYR0ikhsjo+HnJBF7Ms6QaoCZhvtQWB6uIscTv+kxELHClLcnx6095Xqy9kAWY0Y1Ev7QGCrNHJn+nKcU2bu+KJ4Ykbh/8HhuQCy4frrBm2KU5W91EhsVaRpDLHBIhLz3JE0izgqeUodlWxOHxuZX3xoppcW1VE+6Cd8KXn7XA/t13S5Arffse9P7N0V98IOkHr8B7yyjv+KkfU48fyd3AO0MZZXCwkmho+8TKdsAILhTYxn7VOmAyiFfjVB0rvo7ODqCNqKvcAh7qfoe1f6+OwnnENZ4q9spYhGHDBmcWuCTsZZNyocd6FiYoe5m7lZShAqYWZ6zLCWSmF1e0EMp3Pbmtc0Yy5e6JJSKdKMp8ynyZWEoVUfGRNJ26FwI988IAxHiaJges5dC2EhW4+Uyd61J1xP8Yy98izl68I3vD9Xuq/ljU5hyul+GEvMSNg4jUVXtIVTVXGRHRALeM4y/v/dqGPgeuG+3qz1e/XQdwNAqCze
+ u/agk/Vn
+ p/PvyZ0wt3bAQ+mzXGj85roEf+9TAuoBxAMssdUV6Xy9w1J4eKrlrrIQWlRO0YeE8FIMKU/JO/fzg7WZfGBYLae5UbGzPOyn7mlMfY+yY2BcY3sqc4MoSxfiBV5PpPLLeEi0S826YNq8rY7gZ2VtdfFPtu88XZSdQxjQjeu+gebt5xSZfYXEptYhrZIjyd2In77MiYwtgJcBXvB/jf1tXg/tWc4pk6Wd73DQVLPdK0y5IGsXrthN0HYa0ykav/lixBqaHFCgrXgikVP3icegOcnxASYLgMgaWwC07m537ovr11jY/+8412BluyHTxwgKBm+fR9Ke/WgEJ0lOi5h9Un/etsQfyY3cV7WOSLg99LN7KG/TcXNG1mVYxqdRcQGCZhD0HQS6Yfsw9v6v1WeXHx7lgNrKO6CYMCx6IX14kZzxwgGymOy+kA0TvR87s2Scih2b1ZeP84O7E0S/IjiZDvQy/StHB1B9AdWSSvdVXqLgEVk0Bl4Jyuy8AXToZkAhPAJRmIXb42R5Bim6Sm0sgt0oeafwRY85XIBkJbzPArJElP4psFK9vX56lEnSkzGcFhOUHhAXs7KgOALURd+lMDDC9wU+rBtXYU09peggl09k0gKs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,67 +108,159 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 24, 2025 at 11:44:19AM +0200, David Hildenbrand wrote:
-> On 24.09.25 11:34, Catalin Marinas wrote:
-> > On Wed, Sep 24, 2025 at 11:13:18AM +0200, David Hildenbrand wrote:
-> > > On 24.09.25 10:50, Catalin Marinas wrote:
-> > > > On Wed, Sep 24, 2025 at 10:49:27AM +0800, Lance Yang wrote:
-> > > > > On 2025/9/24 00:14, Catalin Marinas wrote:
-> > > > > > So alternative patch that also fixes the deferred struct page init (on
-> > > > > > the assumptions that the zero page is always mapped as pte_special():
-> > > > > 
-> > > > > I can confirm that this alternative patch also works correctly; my tests
-> > > > > for MTE all pass ;)
-> > > > 
-> > > > Thanks Lance for testing. I'll post one of the variants today.
-> > > > 
-> > > > > This looks like a better fix since it solves the boot hang issue too.
-> > > > 
-> > > > In principle, yes, until I tracked down why I changed it in the first
-> > > > place - 68d54ceeec0e ("arm64: mte: Allow PTRACE_PEEKMTETAGS access to
-> > > > the zero page"). ptrace() can read tags from PROT_MTE mappings and we
-> > > > want to allow reading zeroes as well if the page points to the zero
-> > > > page. Not flagging the page as PG_mte_tagged caused issues.
-> > > > 
-> > > > I can change the logic in the ptrace() code, I just need to figure out
-> > > > what happens to the huge zero page. Ideally we should treat both in the
-> > > > same way but, AFAICT, we don't use pmd_mkspecial() on the huge zero
-> > > > page, so it gets flagged with PG_mte_tagged.
-> > > 
-> > > I changed that recently :) The huge zero folio will now always have
-> > > pmd_special() set.
-> > 
-> > Oh, which commit was this? It means that we can end up with
-> > uninitialised tags if we have a PROT_MTE huge zero page since
-> > set_pmd_at/set_pte_at() skips mte_sync_tags().
-> 
-> This one:
-> 
-> commit d82d09e482199e6bbc204df10b2082f764cbe1f4
-> Author: David Hildenbrand <david@redhat.com>
-> Date:   Mon Aug 11 13:26:25 2025 +0200
-> 
->     mm/huge_memory: mark PMD mappings of the huge zero folio special
-> 
->     The huge zero folio is refcounted (+mapcounted -- is that a word?)
->     differently than "normal" folios, similarly (but different) to the
->     ordinary shared zeropage.
-> 
-> 
-> It should be in mm-stable, to go upstream in the upcoming merge window. It's
-> been lurking in -next for a while now.
+When KMSAN is enabled, `kmsan_memblock_free_pages()` can hold back pages
+for metadata instead of returning them to the early allocator. The callers,
+however, would unconditionally increment `totalram_pages`, assuming the
+pages were always freed. This resulted in an incorrect calculation of the
+total available RAM, causing the kernel to believe it had more memory than
+it actually did.
 
-Thanks. At least it's something to address in the next kernel version. I
-need to improve the MTE kselftests to catch the zero page scenarios.
+This patch refactors `memblock_free_pages()` to return the number of pages
+it successfully frees. If KMSAN stashes the pages, the function now
+returns 0; otherwise, it returns the number of pages in the block.
 
-> As it behaves just like the ordinary shared zeropage now, would we have to
-> zero/initialize the tags after allocating it?
+The callers in `memblock.c` have been updated to use this return value,
+ensuring that `totalram_pages` is incremented only by the number of pages
+actually returned to the allocator. This corrects the total RAM accounting
+when KMSAN is active.
 
-Yes. Before pmd_special(), it was be done lazily via set_pmd_at(). I
-think it just needs a __GFP_ZEROTAGS. The only other place we use this
-flag is in vma_alloc_zeroed_movable_folio(), as an optimisation to avoid
-a separate loop for zeroing the tags after data.
+Cc: Aleksandr Nogikh <nogikh@google.com>
+Fixes: 3c2065098260 ("init: kmsan: call KMSAN initialization routines")
+Signed-off-by: Alexander Potapenko <glider@google.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
+---
+v2:
+- Remove extern from the declaration of memblock_free_pages() in
+  mm/internal.h as suggested by Mike Rapoport.
+- Fix formatting in the definition of memblock_free_pages() in
+  mm/mm_init.c as suggested by Mike Rapoport.
+- Refactor memblock_free_late() to improve readability as suggested by
+  David Hildenbrand.
+---
+ mm/internal.h |  4 ++--
+ mm/memblock.c | 21 +++++++++++----------
+ mm/mm_init.c  |  9 +++++----
+ 3 files changed, 18 insertions(+), 16 deletions(-)
+
+diff --git a/mm/internal.h b/mm/internal.h
+index 45b725c3dc030..ac841c53653eb 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -742,8 +742,8 @@ static inline void clear_zone_contiguous(struct zone *zone)
+ extern int __isolate_free_page(struct page *page, unsigned int order);
+ extern void __putback_isolated_page(struct page *page, unsigned int order,
+ 				    int mt);
+-extern void memblock_free_pages(struct page *page, unsigned long pfn,
+-					unsigned int order);
++unsigned long memblock_free_pages(struct page *page, unsigned long pfn,
++				  unsigned int order);
+ extern void __free_pages_core(struct page *page, unsigned int order,
+ 		enum meminit_context context);
+ 
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 117d963e677c9..9b23baee7dfe7 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -1826,6 +1826,7 @@ void *__init __memblock_alloc_or_panic(phys_addr_t size, phys_addr_t align,
+ void __init memblock_free_late(phys_addr_t base, phys_addr_t size)
+ {
+ 	phys_addr_t cursor, end;
++	unsigned long freed_pages = 0;
+ 
+ 	end = base + size - 1;
+ 	memblock_dbg("%s: [%pa-%pa] %pS\n",
+@@ -1834,10 +1835,9 @@ void __init memblock_free_late(phys_addr_t base, phys_addr_t size)
+ 	cursor = PFN_UP(base);
+ 	end = PFN_DOWN(base + size);
+ 
+-	for (; cursor < end; cursor++) {
+-		memblock_free_pages(pfn_to_page(cursor), cursor, 0);
+-		totalram_pages_inc();
+-	}
++	for (; cursor < end; cursor++)
++		freed_pages += memblock_free_pages(pfn_to_page(cursor), cursor, 0);
++	totalram_pages_add(freed_pages);
+ }
+ 
+ /*
+@@ -2259,9 +2259,11 @@ static void __init free_unused_memmap(void)
+ #endif
+ }
+ 
+-static void __init __free_pages_memory(unsigned long start, unsigned long end)
++static unsigned long __init __free_pages_memory(unsigned long start,
++						unsigned long end)
+ {
+ 	int order;
++	unsigned long freed = 0;
+ 
+ 	while (start < end) {
+ 		/*
+@@ -2279,14 +2281,15 @@ static void __init __free_pages_memory(unsigned long start, unsigned long end)
+ 		while (start + (1UL << order) > end)
+ 			order--;
+ 
+-		memblock_free_pages(pfn_to_page(start), start, order);
++		freed += memblock_free_pages(pfn_to_page(start), start, order);
+ 
+ 		start += (1UL << order);
+ 	}
++	return freed;
+ }
+ 
+ static unsigned long __init __free_memory_core(phys_addr_t start,
+-				 phys_addr_t end)
++					       phys_addr_t end)
+ {
+ 	unsigned long start_pfn = PFN_UP(start);
+ 	unsigned long end_pfn = PFN_DOWN(end);
+@@ -2297,9 +2300,7 @@ static unsigned long __init __free_memory_core(phys_addr_t start,
+ 	if (start_pfn >= end_pfn)
+ 		return 0;
+ 
+-	__free_pages_memory(start_pfn, end_pfn);
+-
+-	return end_pfn - start_pfn;
++	return __free_pages_memory(start_pfn, end_pfn);
+ }
+ 
+ static void __init memmap_init_reserved_pages(void)
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 5c21b3af216b2..9883612768511 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -2548,24 +2548,25 @@ void *__init alloc_large_system_hash(const char *tablename,
+ 	return table;
+ }
+ 
+-void __init memblock_free_pages(struct page *page, unsigned long pfn,
+-							unsigned int order)
++unsigned long __init memblock_free_pages(struct page *page, unsigned long pfn,
++					 unsigned int order)
+ {
+ 	if (IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT)) {
+ 		int nid = early_pfn_to_nid(pfn);
+ 
+ 		if (!early_page_initialised(pfn, nid))
+-			return;
++			return 0;
+ 	}
+ 
+ 	if (!kmsan_memblock_free_pages(page, order)) {
+ 		/* KMSAN will take care of these pages. */
+-		return;
++		return 0;
+ 	}
+ 
+ 	/* pages were reserved and not allocated */
+ 	clear_page_tag_ref(page);
+ 	__free_pages_core(page, order, MEMINIT_EARLY);
++	return 1UL << order;
+ }
+ 
+ DEFINE_STATIC_KEY_MAYBE(CONFIG_INIT_ON_ALLOC_DEFAULT_ON, init_on_alloc);
 -- 
-Catalin
+2.51.0.534.gc79095c0ca-goog
+
 
