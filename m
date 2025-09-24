@@ -4,106 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6B80CAC59A
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 05:46:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ECD0CAC5A5
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 05:51:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01EB48E0002; Wed, 24 Sep 2025 01:46:22 -0400 (EDT)
+	id E09118E0005; Wed, 24 Sep 2025 01:51:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F38BC8E0001; Wed, 24 Sep 2025 01:46:21 -0400 (EDT)
+	id DE0D18E0001; Wed, 24 Sep 2025 01:51:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E75AB8E0002; Wed, 24 Sep 2025 01:46:21 -0400 (EDT)
+	id D1DCC8E0005; Wed, 24 Sep 2025 01:51:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D5D758E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 01:46:21 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 860981DFF96
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 05:46:21 +0000 (UTC)
-X-FDA: 83923058562.27.803F9D1
-Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 04843140003
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 05:46:18 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=rVGfQL00;
-	dkim=pass header.d=konsulko.se header.s=ed2 header.b="/mmLDvlU"
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C24458E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 01:51:33 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6F63A8786D
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 05:51:33 +0000 (UTC)
+X-FDA: 83923071666.16.F57F585
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf03.hostedemail.com (Postfix) with ESMTP id AD75920010
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 05:51:31 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=none;
+	spf=pass (imf03.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758692779;
+	s=arc-20220608; t=1758693091;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ceNeCilvWmvDqFapyK6FLjZjj+QYbrWfVKvkUR9mCAg=;
-	b=Afn7RQa+I6T/HGIoHpAmuajS9v9tmm0gYyO8+YQZdKI51kxiN7mt0xENVrH8GAEEbumayU
-	y97mlQlM0YBrkCvpASf9udXN4ubYKBxHKPzLeJIGXNDqZhkUJpLBROV2dw7TE3bVLGn5OZ
-	+k/dkXm/sqhARQhGwsTcbeuDGoGN2Ms=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=rVGfQL00;
-	dkim=pass header.d=konsulko.se header.s=ed2 header.b="/mmLDvlU";
-	spf=none (imf09.hostedemail.com: domain of vitaly.wool@konsulko.se has no SPF policy when checking 46.30.212.3) smtp.mailfrom=vitaly.wool@konsulko.se;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758692779; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=9V/zklm5pjGq+V3PZ8nHe30I+uskYxeOkBeKxTBhA70=;
+	b=QlYYMX29JfD3QbtTvClrJodfql0asLMsr6HkizMLqjolYLPLB1y2lIycn1M3CXaFnhL5gD
+	ToRS5KRWtku2lzcHZH596gZ9RGAVV9IjNzq9rNAZ75cfRl0oyfvxMRE9H4dGKIqIEpJmUd
+	fNOnh4VDcMfCtGSMz7E3pLoXLTuV0LE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758693091; a=rsa-sha256;
 	cv=none;
-	b=mOGNkJnvZ21OusUaXnslBnxWmfirjziSra9JPTZ+ISzkS0hqLj8iLa7jUrYRMDtzbqNzQK
-	4a+CEUe1uYhmrr9UBSesPGgZPGasDHJMWD3NDvr8U1zWbo5mSCHAOIpB5JxITVd9dRs52K
-	AzoSxmieraQPUWCYgQ6kyDbOhStgjnM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1758692777; x=1759297577;
-	d=konsulko.se; s=rsa2;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=ceNeCilvWmvDqFapyK6FLjZjj+QYbrWfVKvkUR9mCAg=;
-	b=rVGfQL00k6mSUNSSGnPAcEgyLaqqLxakIkTBof7Q+ftRDBwFHkbG/9DvMSEtvd2QCb8SOYfOBPxCR
-	 N5/c6JN5n/HnV+4qkGDX1ngTXGp/tF3TEUcxUg0vKm3iUEyc0XgbWvfEFAPwnmVu+yH5NxFGapMKDD
-	 WP8LPoBLSH10+RttR/fQ9K8HeqCkcWr7BUN41EcqFWtw8hpj1gkQGryZuAeBqq+Yjmx9Zx8tLgJOK/
-	 o4KujiS68eGAdlPKkVZj3ahR6OBh46vwT43ijVv4aiD7rUKPf8ubyBnA7P4JD7X+kivX0siJk0C+O/
-	 xGhiwYI+m8gABjB3zavHgzN4JkLZD0A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1758692777; x=1759297577;
-	d=konsulko.se; s=ed2;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=ceNeCilvWmvDqFapyK6FLjZjj+QYbrWfVKvkUR9mCAg=;
-	b=/mmLDvlUG9BCiHooLMXQhGuhyg6nbm5ZccML5W5+71RMPj83kQaXBl75QOy5lV5es2/cebmJCOEfN
-	 KGadZpNAg==
-X-HalOne-ID: c83fe29a-9909-11f0-85ca-fb5fec76084d
-Received: from [192.168.10.245] (host-90-233-199-55.mobileonline.telia.com [90.233.199.55])
-	by mailrelay3.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
-	id c83fe29a-9909-11f0-85ca-fb5fec76084d;
-	Wed, 24 Sep 2025 05:46:16 +0000 (UTC)
-Message-ID: <aabca3ff-3cbe-468a-9b65-290d5239d987@konsulko.se>
-Date: Wed, 24 Sep 2025 07:46:13 +0200
+	b=PQxra/6+wp4DYKWDSuehyuuLK+jClZggJzjqpNVastf83KiF3rD+Kb1Nzmfzqh9J63oFjc
+	2nzKOmaFkarCYIMF5JoZ81Rqwev7b/fwufquLYos9OuWGgLwp2dU175dm1Xq2xBqmbwPOR
+	WDLY9JukUG6jOstUpvSiSbsUOI8NGdE=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=none;
+	spf=pass (imf03.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A2528106F;
+	Tue, 23 Sep 2025 22:51:22 -0700 (PDT)
+Received: from [10.164.18.52] (MacBook-Pro.blr.arm.com [10.164.18.52])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BD0733F66E;
+	Tue, 23 Sep 2025 22:51:26 -0700 (PDT)
+Message-ID: <3db68662-7082-44c8-b410-00322c759d08@arm.com>
+Date: Wed, 24 Sep 2025 11:21:24 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [syzbot ci] Re: rust: zpool: add API for C and Rust
-To: Johannes Weiner <hannes@cmpxchg.org>,
- syzbot ci <syzbot+cica6a1c285444b25f@syzkaller.appspotmail.com>
-Cc: a.hindborg@kernel.org, akpm@linux-foundation.org, alex.gaynor@gmail.com,
- aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
- chengming.zhou@linux.dev, dakr@kernel.org, david@redhat.com,
- gary@garyguo.net, gregkh@linuxfoundation.org, liam.howlett@oracle.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, lossin@kernel.org, mhocko@suse.com,
- minchan@kernel.org, nphamcs@gmail.com, ojeda@kernel.org, rppt@kernel.org,
- rust-for-linux@vger.kernel.org, senozhatsky@chromium.org, surenb@google.com,
- tmgross@umich.edu, vbabka@suse.cz, yosry.ahmed@linux.dev,
- syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-References: <20250923102547.2545992-1-vitaly.wool@konsulko.se>
- <68d2cfc2.a70a0220.4f78.000a.GAE@google.com>
- <20250923215929.GA1122379@cmpxchg.org>
+Subject: Re: [Patch v3 2/2] mm/khugepaged: remove definition of struct
+ khugepaged_mm_slot
+To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ xu.xin16@zte.com.cn, chengming.zhou@linux.dev
+Cc: linux-mm@kvack.org, Kiryl Shutsemau <kirill@shutemov.name>,
+ SeongJae Park <sj@kernel.org>
+References: <20250924004854.29889-1-richard.weiyang@gmail.com>
+ <20250924004854.29889-3-richard.weiyang@gmail.com>
 Content-Language: en-US
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <20250923215929.GA1122379@cmpxchg.org>
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20250924004854.29889-3-richard.weiyang@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 04843140003
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 9ehhhzq6juuyqc8uf8cpfwngyqce8tnd
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: AD75920010
+X-Stat-Signature: sda5kkethbyswfptpoyf4nswzi5shers
 X-Rspam-User: 
-X-HE-Tag: 1758692778-855864
-X-HE-Meta: U2FsdGVkX1+VLqzZlA1LD17ASFym70kliQFEK2B+9rwhMpmC+W1rkVF5wkfZBVGW2odT4EEkPZRhmNa8RO/71P+8wy1SL46oqbQAhzMC+48tNkCzFldEXt0hU4IKHRc3VM3BLRqpssLti2x52/gcmxs/sKykMhj3HHhfpkzAukhA1YkeTVKvcWpLyTc56Ji14w3MdI6rknRnCAgLRQeAoSsJc+TZu4PcDuRlD2u5x+9fvEoGB0AIs/yWt32XeGq3wGvO0mTQDKZMYUklEogDK700+o1XCQUCQP1XnA/mRvARpb5ax055WyI0NGUqZX8xGcfWThj/XX62+vkDbhjfDOhZvLu9in0HtoGjQlOg1Aq2SDitkZlTfr0rSRGIlIvLV/svyI6nUytWx5i20ipQz3RL6/IZLgS9qqMAJVx5Ahu+77SwUGpHfUNzA86trJuesoYbY+9PFE2p+Nz2cRPPO90KhgE21BX3XASVMki0RZgZ+5BW0L8Idn3r3ef1nb87Mkx+mw0EEhZYd541Q71ahoj2QzFU63QNLrYPYMlzcAutvWMrNIlRqlGFGCHs+dkMOGh4kFX/4EnYtP1rVjiyciNmMSgvA/MHUIjQQwNf1Z+MoEwRVvoROgfkRZlUr2KmuvqqbIWd7TcRsqi/0gAlhKXXoDJiMfJrt9FjAIFUJerSAPjdwoy3BvqyK78OOq4H0W7HaxDDCi9WpP/MjVnPML/P35mg6L1IXI1lARuONFvPHroDwdqppx/Poc7Q6H/o+yFYf+x8A6Fl4CrxzSl7GzL+OAityWEqIkK+beo1Cfs3lksPFlAQBjZFpZgTX1O7DqR8ofUDQyfddaDTnzATNhWLo3tv8wEO0YVRSsI3YklpkjPWvSJXNVzQVvUxxOrImnAcRXyCvvEC6PSLnWF8Zea9wZQ59uWDjFSLnZM3RZSGQ+/OR6P8lQXh9mVCUIXZGbTeESCle9e72JyZ+6j
- RQanHmsC
- 8MwohnuyVUghlXSt7NWipsbQlxZJ0RioAyWoGAqqgS9Vd0OY3VCAb0pD9Ig68rQjOSOVs7rH82bsRdTho+HWFt0ygiDH5QDTyvL5D5pcLMzOvrrcINCKhaav235tQrambyMGJYavOJbs8dU8lyj4DBXmL8fW3nmTyBytZ1hypjTZBCWkj3tpofYfdza6DvmTJNWqTjFPrhamBzpCzztYeFU3eMX/FQwJnd+AP9ZT4WKDaQU4OJ5dMxXfS5+gjlV8MVe5Bpoa8zjz9X16X2QEhW29QeOCqQ8j8jPTpCGevZsGud+OAUC5+Nr2gaNf5SnanTOGkoANypj1zKMznCCW8rOD27e6FUaLDeh+54rTPBHIyTEo=
+X-HE-Tag: 1758693091-318948
+X-HE-Meta: U2FsdGVkX18yFNTwPfxKN7N7ZY0YqEFOeUJhAt9MtrXlH4kwpvwtv3NbDn0ni48MXClDr3jlOI61iqm083DkA9hjCft7qQJuh7ghlCfe8A4rmUqEIj5ruqGFuC9hRuCi2XNDpIbRpjjRZUmZCvOwToiGmJryVsfwWikHXI0MMMSf9pRbgB/Bg0lSLGVyss2/tj50I39TYyALVZoezPFSB2piZhYM8f67vNkfC8/wKi9yna3P1XV+i38thw88WvTnuqtfu0zkgZho6dFI+v5pizYWjga2j2hmQLjETVu99GwZSa4JCTn4dQLx5lP7j1VEXRv5wGJLhd0Cl4iGXX5vm2W8JBFfCv9RUPFZvY3Y9LeUQEZqkzk2yydvvZAfjW97ZAExrejJUVWAmsSaHZ+dyhEZLLsvp6BlY4/JfEdpdT4BdM0sknV9PTTAIi9FhRIa5/BqK3wkfAvAozQ430jo8oZi5jc9iBhlBX4lCjiep5R5r6pFkq5lc4BBs7FqpR+WNCv67RwqeYCanfsdjL+JbGMuLDCbWuoDJAp+zdL+efEAqTST2Gej+uODkpy2Zkf2SaD8QVgdoNmT9oPBfqARrqQ+B85fw+U5iBHYNe5UOdPimYJeYURm5TtAa7HOXEi7UeR3rD1Df7GIbBM9tGRd/TKtn0n6q6dEjUnt2A00Iy81bzlxMR1znZZwrPbGKnW8f+KzSONKdEx4HxHq+3+FF/vqCpNZtrYFK9hsSYYM9YFlIWXb6WMwkiiUGGYQBqRo0Zcx+SzHt3iW7aWzH3lgd+EOR3PTlGfiXVIpX4REGI52LpABndrbU/RipwoLrxTTscRAygz/9aQHjafhoEWbkeGS6dTRR5cmfNmTuubovgxnVt/sQ2O74eTipXGZ8VsA/1nyLiPJw38+8IaU+n60kAGAUp4cBjH9QonkLA1Bpk6iQew+3GgL+i5I5vjnKZeyibN2bQQ7m1CdRkrFhQ7
+ mVwUim5m
+ WV4OaAzRsQ66OktgTbK3TSrlB5lfaX19QWJmK5FwwiabUA096DeHyu2O25aSaOTPQhmQ8AvHXAAQiYPE7JgFyBhN/f3KfWtA9P9kGOYOKP5fMLE9yFS66hr3ZfKTXkF9X5Br77g+dSZFM+ljZszzhUKhJIeqhn89w1MPOuXC79lQQtvxiZwXgRxOAmWs9SOLpCaSc/LK68p0deIK5a7EXiqwN1qcblngSJ7g1GJzGXaoYenNcLhRZwwxnQqELCbUQDfYuUz18KAphnn1AtdkaoFEnLIg0j5Qa2fBGreI6lU9V9oZ2OQcHIo9jox8KDQKBrnzyOOB1V4+Ua75h1e5ufLh6qEOmXUwEw2aem1GKJZX+eb12UidG8u1Kb8iI5p6/CsxAF0hs4/ukh8jlyeNnBmka//sOmQTpJ2VsAV79Xzg0wuAT7wtSdDIMmWqlAfSU0X+zmzP9aW73s+ThNosMkT5i1udwYH/2LJ8A
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,56 +92,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
+On 24/09/25 6:18 am, Wei Yang wrote:
+> Current code is not correct to get struct khugepaged_mm_slot by
+> mm_slot_entry() without checking mm_slot is !NULL.  There is no problem
+> reported since slot is the first element of struct khugepaged_mm_slot.
+>
+> While struct khugepaged_mm_slot is just a wrapper of struct mm_slot, there
+> is no need to define it.
+>
+> Remove the definition of struct khugepaged_mm_slot, so there is not chance
+> to miss use mm_slot_entry().
+>
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Cc: Lance Yang <lance.yang@linux.dev>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Cc: Kiryl Shutsemau <kirill@shutemov.name>
+> Cc: xu xin <xu.xin16@zte.com.cn>
+> Cc: SeongJae Park <sj@kernel.org>
+> Cc: Nico Pache <npache@redhat.com>
+>
+> ---
 
-On 9/23/25 23:59, Johannes Weiner wrote:
-> On Tue, Sep 23, 2025 at 09:50:10AM -0700, syzbot ci wrote:
->> syzbot ci has tested the following series
->>
->> [v6] rust: zpool: add API for C and Rust
->> https://lore.kernel.org/all/20250923102547.2545992-1-vitaly.wool@konsulko.se
->> * [PATCH v6 1/2] mm: reinstate zpool as a thin API
->> * [PATCH v6 2/2] rust: zpool: add abstraction for zpool drivers
->>
->> and found the following issues:
->> * BUG: unable to handle kernel NULL pointer dereference in zswap_store
->> * KASAN: slab-out-of-bounds Read in zpool_get_total_pages
->> * KASAN: slab-out-of-bounds Read in zswap_store
->> * KASAN: slab-use-after-free Read in zpool_get_total_pages
->> * KASAN: use-after-free Read in zpool_get_total_pages
->>
->> Full report is available here:
->> https://ci.syzbot.org/series/e8b22352-ae56-4d7c-9113-75573acf2b64
->>
->> ***
->>
->> BUG: unable to handle kernel NULL pointer dereference in zswap_store
-> 
-> struct zpool {
-> 	void *pool;
-> };
-> 
-> struct zpool *zpool_create_pool(const char *name) \
-> { \
-> 	return (struct zpool *) prefix ## _create_pool(name); \
-> } \
-> 
-> u64 zpool_get_total_pages(struct zpool *zpool) \
-> { \
-> 	return prefix ## _get_total_pages(zpool->pool); \
-> }
-> 
-> You create the zpool by simply casting the backend pool, but then you
-> deref it twice as if it were an actual container for the backend pool.
-> 
-> I'm guessing you didn't test this even superficially?
+Reviewed-by: Dev Jain <dev.jain@arm.com>
 
-LOL, no, forgot to run git commit --amend so came up with a wrong version.
-
-The Rust version is correct though.
-
-> This also still proposes an API with no in-kernel user.
-
-That's not correct, zsmalloc is the user.
-
-~Vitaly
 
