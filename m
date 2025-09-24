@@ -4,91 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2ACBCAC5AE
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 22:52:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05610CAC5A5
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 23:09:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 481DA8E0007; Wed, 24 Sep 2025 18:52:02 -0400 (EDT)
+	id 40DCE8E0008; Wed, 24 Sep 2025 19:09:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 433658E0001; Wed, 24 Sep 2025 18:52:02 -0400 (EDT)
+	id 3BDFB8E0001; Wed, 24 Sep 2025 19:09:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 322388E0007; Wed, 24 Sep 2025 18:52:02 -0400 (EDT)
+	id 2D3F38E0008; Wed, 24 Sep 2025 19:09:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E14A8E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 18:52:02 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B15321601C4
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 22:52:01 +0000 (UTC)
-X-FDA: 83925643242.06.CF0AD4C
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 17F7B8E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 19:09:50 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B9F6F118A26
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 23:09:49 +0000 (UTC)
+X-FDA: 83925688098.28.563077E
 Received: from gentwo.org (gentwo.org [62.72.0.81])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1404040006
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 22:51:59 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gentwo.org header.s=default header.b=JCkCMpg9;
-	spf=pass (imf12.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org;
-	dmarc=pass (policy=reject) header.from=gentwo.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id 17EB28000A
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 23:09:47 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gentwo.org header.s=default header.b=WLrJDxT8;
+	dmarc=pass (policy=reject) header.from=gentwo.org;
+	spf=pass (imf30.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758755388; a=rsa-sha256;
+	cv=none;
+	b=YJWPfKrNt/lAqGQDXJbyBE9mUe+7nGJAEm99UcCpyex/3ftX+npAlTjLQEI1hFgSKpinJF
+	jRhiR5OrPbfwX0HU4UVSdrKMFDckTrgyF6c+ElDZImGLsZjYGUsbWQ3MQBIr1kAH19LyzI
+	61MCCXTkE7Lt4FJYcTwZjQjw6ehAdAg=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gentwo.org header.s=default header.b=WLrJDxT8;
+	dmarc=pass (policy=reject) header.from=gentwo.org;
+	spf=pass (imf30.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758754320;
+	s=arc-20220608; t=1758755388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sAeA7P6OD4ycKMwz9bR0cq11m4HVzCoNn6h4QDXMPwI=;
-	b=y4M36+WWM6BE9/eGhHT42UYFe5B9mmxdJl/DL0DFCX3Z+3NIcvtsa1ZiPw83LKEeZtNEx0
-	0Q7qtAcl+6tCkLYRqouzs/b2xXtj30B+L3KPi874ZE3JncxledgOwJwsXrhTNpmn9V3pZc
-	uM+dWEZAtchDznul0d+WBduaYeN2dD8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758754320; a=rsa-sha256;
-	cv=none;
-	b=MJlBvx4OUjA6V6DEzEdUhbog8Ncdv0djYXvdsFRhYhgWOFSnlMrtEZ1uA1eXkdgdSTYgtx
-	W4zKDGBl1ugaq7Ebcl+eXK8ba5fmfWA1uUmt9HE5rpq/+rzaKZJrhqUYu6GI/MhTaNSpFz
-	Ki1nYXaTvpHetJ7oijlIjkY8JarVMHs=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gentwo.org header.s=default header.b=JCkCMpg9;
-	spf=pass (imf12.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org;
-	dmarc=pass (policy=reject) header.from=gentwo.org
+	bh=KDm7q+MIJNTRpl7BCOFoPDj04yz/4t+34tin/l+vess=;
+	b=2ppjORBBDV8szd9TWuPorQGzTyHbdKeYDNJTACBUcNzmup7cvpwXcMieGX6QppZq8hXHi6
+	HvUlFxcecToOsP8bZENAaf1hu7F6Z48mDT4wjZLDcaVKUWC/ZViTCEcAd6FZ6mgsqcF8Bq
+	QnsQ8pxC0Kdvj5rEimgnNLcAbsGIsjA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gentwo.org;
-	s=default; t=1758754318;
-	bh=IYb7VmkC8waq1uiEkTNs1ha+Uf22LW177xDsSZHKOyE=;
+	s=default; t=1758755387;
+	bh=KDm7q+MIJNTRpl7BCOFoPDj04yz/4t+34tin/l+vess=;
 	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=JCkCMpg9pMvCG5sdzhc/l9xavadn3mVYqBUWq+pWTTDU3r7/d4AWUZCljoC1cWS7U
-	 fDA1Fm21fmLvxNdElU/Dn4buonvrfMmPZXnnToA2MLYjgrOTPbTvs+y8CedNIYA0B8
-	 M/12NGGm6Z3KqTxAS5c4AWa+axj2Mkbgz0UcfNwM=
+	b=WLrJDxT8W9UBbmk/+FKsjVXtd0LFDGdTEyb9WOSSMPMhYaMfNN0HyHARKw9zaTiQe
+	 qQfTIwcYtqT+Q/x2bKM2QE828TSZG18Qc3kv3y7k4Wtv5V67C2aEgPvYZ9yU89Hg/5
+	 tRv0Tm/h+V3KqyMEXOt+LhR56U3/S+mlwA1a2uP4=
 Received: by gentwo.org (Postfix, from userid 1003)
-	id D4A7940293; Wed, 24 Sep 2025 15:51:58 -0700 (PDT)
+	id 0ABC540293; Wed, 24 Sep 2025 16:09:47 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-	by gentwo.org (Postfix) with ESMTP id D29D74028E;
-	Wed, 24 Sep 2025 15:51:58 -0700 (PDT)
-Date: Wed, 24 Sep 2025 15:51:58 -0700 (PDT)
+	by gentwo.org (Postfix) with ESMTP id 0805F4028E;
+	Wed, 24 Sep 2025 16:09:47 -0700 (PDT)
+Date: Wed, 24 Sep 2025 16:09:47 -0700 (PDT)
 From: "Christoph Lameter (Ampere)" <cl@gentwo.org>
 To: Joshua Hahn <joshua.hahnjy@gmail.com>
 cc: Andrew Morton <akpm@linux-foundation.org>, 
     Johannes Weiner <hannes@cmpxchg.org>, Chris Mason <clm@fb.com>, 
     Kiryl Shutsemau <kirill@shutemov.name>, 
-    "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-    Brendan Jackman <jackmanb@google.com>, 
-    David Hildenbrand <david@redhat.com>, 
-    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-    Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+    Brendan Jackman <jackmanb@google.com>, Michal Hocko <mhocko@suse.com>, 
     Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
     Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
     kernel-team@meta.com
-Subject: Re: [PATCH v2 1/4] mm/page_alloc/vmstat: Simplify refresh_cpu_vm_stats
- change detection
-In-Reply-To: <20250924204409.1706524-2-joshua.hahnjy@gmail.com>
-Message-ID: <fdb56260-8235-eb20-05cd-491fd512cec0@gentwo.org>
-References: <20250924204409.1706524-1-joshua.hahnjy@gmail.com> <20250924204409.1706524-2-joshua.hahnjy@gmail.com>
+Subject: Re: [PATCH v2 2/4] mm/page_alloc: Perform appropriate batching in
+ drain_pages_zone
+In-Reply-To: <20250924204409.1706524-3-joshua.hahnjy@gmail.com>
+Message-ID: <a84ede7d-60ad-3df9-77ae-cd0dbc545b85@gentwo.org>
+References: <20250924204409.1706524-1-joshua.hahnjy@gmail.com> <20250924204409.1706524-3-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1404040006
-X-Stat-Signature: dc5ahddmdbj8t6xpiz5afdnrn331tsw1
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 17EB28000A
+X-Stat-Signature: th7f8hj78q53uwkdqwz8gqjxasrbwckx
 X-Rspam-User: 
-X-HE-Tag: 1758754319-143903
-X-HE-Meta: U2FsdGVkX19OMTaZkxSOEIUkxyNjkvjiG5MAPxex+/5SoNGPTyM6eyTGeqmnrOwHU1T3EGCa6dx+BXyFu32VkdwSWabn0MOD/ZvLUwFkRFxZ3B35by4lXxwwEThqaJQQq7RDBf0AUWbXbvAW6Y2KY1bC4OToVxpGWIHhSi8OfdNrkTYABrPosaDqNvIxBi1WFk4nI2Ree3uIn/fPEUqYQwCJXaZPDzYjWz2CvLSaK51nmUkgVb79w8cZl18A0/XS/5OJnz8GU762yq3Dtv94HMzKCkZdLS9LYNSOUOt0vgs3/0KvQtiEyUKsAMIZ7KKxEgswyPLrCiPDB07jT8R5KBApoAmhJC2bPop441iWTsCTg6uswN8iNXU3QDNdzw0pzrSOinv12jk28onnCunPNw4s7iuN1wg/tF3cJLB0GjgQqbCLIQs1c0Z8UnNmB87NcmNYxIwEjAAU5hw31bkFLks6Gnoavy6/TSheVfNNjZcEQ1C2oJ6cnb3y2zswt/L/9n11U1dt1G4L8y0XOKPqL838l8aZBerz6LGnOuYEQkrUWfOs0jG/ONPeWD7xxg6IQpszyZQ4xxl5Ukksqg6DO3lPcpie2WFrIfZcKLG8ZqhxUAyCLfHNp7bYuXKa5vjL6e+eCA7zbf0KRKinxalTccZvxh8eH2iA6g+DVBAzg6uu2nFZPfzH1N1d+DcU+vA6X7y3BmJlTQYNjCGVS2+2toSpgamuEhhTAv8z/Po80iKoiswzPwOObUnVEKTiLXOapcix7sw6Y9bnXU+U3ozaocHk6YYS6CMzHm2YJTHkdWa6ktsa4Fo5iNn168pviWRM4Lrk9CspGuJeV3/hcSTz5hzdXvVWDVqwLDwGZ2eEaiOobSe+PPxkUkQIf2tF3CvY3peEcjSWp6RL57sOQ4gYIebKmCqjZPIm0ZMjm1eBluMYvrBrUcocoRKyAejllTAxx37DtlDIIi/8ANVRFhO
- IYzGKIpl
- CCYICaydYGbehhXXDKF/mEc4KXVjcU+GjeEa8r0BGAeGyy81ofm59z6+4eusTn5UXUh20YnhlSTy+6mX6CwVeCKHf9ECoe2ycKSc/b5Mk+CM70Y6XLyUC4aFWzbsF3GqWDMlB/Y+BUheJ66+CX5pEVEFbmSC0p4kfKX2wkyoVQOjsEd7rnQ19kEq5N8SLfjpw+4RkmaIT+fwNVdbDhDdD5Bj7diZppFDp97z+tiV0DA5e+1e0md7dOH1i6sr9kLehJw1N0DrPqNoV2zW+LgR2JWgWyEO9GxlXifSPNwMu3GbHFVfOv5IytWqmoVBjPfdhhrP49xLAk9xTMd5kVzsBPWL1C1r2ohhjeKHjEZAiu5BypauFhz7fX0lT//1Veli5aSEBHF09Kj6J3TgECNnVvrh3ug==
+X-HE-Tag: 1758755387-303152
+X-HE-Meta: U2FsdGVkX19Es6VgRRap/IBZa4ppX25NzEgO625hRN/yAsR0SlQvUlqGsmPJ+c+qQDoytvym+09a7LHM+OZjjgm6bhHPT31xhrOSR3nhk0XMRoxpsGT4+desNiKDXIcvAADVlQwoDeaLE05PNCTbUpHV4SdoSxAZ7mRgWd7LdifSX2mHRNnTb7nuAa7fOciTsLmBx6h3KMYXTNGqZ8Q5O0nrZ/aNfmI3PmdO6hkvGeAuuQzaLu7UcoADupX3JWlvYM/N3yYjl5EdJRvZPGh8wzA2sdFCXNHqsbUQPBmsHOW8DGBQXkTuyUUQWBO/izyYDL1nkToCrEQXMV1Ue3F+hJs6Z8mvwT2U4g9z2S4Un98pOCwVj/btFQreDCDfTAGZ1xFuVPIoYFunwwo9mYXY+6iJb3bKD7YYWRZyIp7yCzQY7QbXe815B8na53cvwSQuDTDnYBZYFknNoTIN4Uud9bEQlGDcYwRX0lz9cHEtn0m8wIXVZL+aJTbIA3XsOoGvibHkYoefsmmwKQ7RBnVwUOBxZ0Yvq00FH0iwW+bDKOSXy/TKpB5x0MvPXFdFWvKMFGVQa5/NHFpmcueKGqu/JD0xL0doUS8dUrey4L5aaxhM02FVK9O9YazdL7laUC76dgNuIfzNSfeo45uc2RkIUFhBKyOw4+7l457AsLp7pTa9Z+RfiSnyAuaJL3qufXfXwdHoGeEe/F3JA+XZSxI3EWpqIiKWf42vnkkzACL4CzMK5kTYacQ+wZYDSyoJjMMsepl5A/hMHuKKb3EDpQBRsF9A2FVubEhXD1IFqfRW8bwMBrAnXsZkB9IVST3fDZiUQmMXNl3vKqIplY6JkeCNlANdlED/TuA5Q+U7ywGSkT5sdUX6TFJFeB2gm9Jc2rfEa5vyDAUgDzL3LxEG9ZbSm/tAmSt91kok8QfoUnTtqi3Jj23xkg0LHtzsrF/bKCJCGnjNUA9+9CZiu89TbKN
+ cKLsLpiT
+ K/G3//vZPmDb5YetJX386TrSFWQYGa0ARgGfV64p8xoMLzGYNjcYqla31/8V8fF7nasjoREmnrsXwFpZJlAoQeKYlQ9NhrsieJsOhE6c/QF1Ecy0qT+TYapGk3C2AkyjliLt23YBXrdrDfWWS2uaJcgE8Sl42z6/W2PtHym64wWC1+7expxcJxBjMIAnBprsmbWWKoTK1AOr7OY0mji3nGRyei2S6a2UfmDyu9P0StH1QQAg5JMvvTss594DjTQ5Y2g17P+jO3MDsaFmZszWNCPWFaOzg8uG/uTQKBRz0f2BK1tjl3ERgNV56NdjUcssUQdyQKSK1tTvLPiY5MyFVmNsgl6jkUJpXYESbiWo8CrpzfHYt+bekpG2nZQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,23 +95,27 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Wed, 24 Sep 2025, Joshua Hahn wrote:
 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index d1d037f97c5f..77e7d9a5f149 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -2561,10 +2561,10 @@ static int rmqueue_bulk(struct zone *zone, unsigned int order,
->   * Called from the vmstat counter updater to decay the PCP high.
->   * Return whether there are addition works to do.
->   */
-> -int decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
-> +bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
->  {
->  	int high_min, to_drain, batch;
-> -	int todo = 0;
-> +	bool todo;
+> drain_pages_zone completely drains a zone of its pcp free pages by
+> repeatedly calling free_pcppages_bulk until pcp->count reaches 0.
+> In this loop, it already performs batched calls to ensure that
+> free_pcppages_bulk isn't called to free too many pages at once, and
+> relinquishes & reacquires the lock between each call to prevent
+> lock starvation from other processes.
 
-	todo = false
 
-is needed here.
+drain_pages_zone() operates on a lock in a percpu area. The lock is
+specific to a cpu and should not be contended in normal operatons unless
+there is significant remote access to the per cpu queues.
+
+This seems to be then from __drain_all_pages() running on multiple cpus
+frequently. There is no point in concurrently draining the per cpu pages
+of all processors from multiple remote processors and we have a
+pcpu_drain_mutex to prevent that from happening.
+
+So we need an explanation as to why there is such high contention on the
+lock first before changing the logic here.
+
+The current logic seems to be designed to prevent the lock contention you
+are seeing.
 
 
