@@ -4,109 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 863CECAC5A5
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 12:51:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76ABFCAC5B0
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 12:52:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E14AB8E0014; Wed, 24 Sep 2025 08:51:14 -0400 (EDT)
+	id C43788E0018; Wed, 24 Sep 2025 08:52:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC41E8E0001; Wed, 24 Sep 2025 08:51:14 -0400 (EDT)
+	id C1AE98E0001; Wed, 24 Sep 2025 08:52:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB4278E0014; Wed, 24 Sep 2025 08:51:14 -0400 (EDT)
+	id B57AE8E0018; Wed, 24 Sep 2025 08:52:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B78E18E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 08:51:14 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8434911AE62
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 12:51:14 +0000 (UTC)
-X-FDA: 83924129268.24.07E80FD
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D3BF518000F
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 12:51:12 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YV9D5K7z;
-	spf=pass (imf16.hostedemail.com: domain of stefanha@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=stefanha@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F4D38E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 08:52:45 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4B045C0519
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 12:52:45 +0000 (UTC)
+X-FDA: 83924133090.13.0BD41E1
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	by imf05.hostedemail.com (Postfix) with ESMTP id B0CF3100008
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 12:52:43 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=sipsolutions.net header.s=mail header.b=AmaFo1FI;
+	spf=pass (imf05.hostedemail.com: domain of johannes@sipsolutions.net designates 168.119.38.16 as permitted sender) smtp.mailfrom=johannes@sipsolutions.net;
+	dmarc=pass (policy=none) header.from=sipsolutions.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758718272;
+	s=arc-20220608; t=1758718363;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RTQTYZTiz2YYOPaT/MkK88YrNEGe0k4y4vUiJM9oV9U=;
-	b=cA0TSR9+DW1KKKX5vVfNectUGAgywOeyZkfOt/dERDrezv4vf/jGhTaM5eGZ4yVPVloiEj
-	K1xvfR5F9rl3Fq4tPQyK+uomz0MpzSl178Ow841z29hQxYrH6ZIv+7U8Q19IRUnHjZZNng
-	IjfMgmHwPovPslAin6EfIoB3neTQQQ4=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YV9D5K7z;
-	spf=pass (imf16.hostedemail.com: domain of stefanha@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=stefanha@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758718272; a=rsa-sha256;
+	bh=h5K+P/riDmU7tvn3fIuQxPNsf4KltKjt2Yr02gW3kT0=;
+	b=77YvMJusl+P3AeE7523bN34v+qCJHGtB2hUIFQyIr5Itc+CGCTirkGl4mj/pYACMm6WBjR
+	ugkpdA+aLnWHqHWz6Os8jghJNYgytZHbv+8OyeDK5aj2uQ5+R/gOdf1DcWUwA9bvVtzk6f
+	ne0TcCPI2dUZkdtmYxGid0+suk6vY+s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758718363; a=rsa-sha256;
 	cv=none;
-	b=cwV0JJxcVEEowHzeQhez3NNcOZ5cnClLKFMFgBfdaxYLG4rFi1OysfSoBr7DhUCAy/FUNy
-	VxmjzmSZ7HwuRSxcgySx795+BLHGbLwod3OkAx8ieYSApdIqJefFbdvKhl7Vq6mCVBvGf5
-	Z6jt++PR9OHJco2/Q4sRQnARnjyLUaw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758718272;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RTQTYZTiz2YYOPaT/MkK88YrNEGe0k4y4vUiJM9oV9U=;
-	b=YV9D5K7zrFEQSHmvSJ/Dnl89vMTFgjMwX5SmOPBftIl3NUCQ/W1FvHuHcp+qb8fR1StQNX
-	TxCduNYIdPQWxGCO0HK841xOhIK4gfi/oGpvjB2LEy0zjf04QVA7y9XJNXI3DhcT2kBs3t
-	ePP3VtGsvo6CMACBmh9HY8bRIKOBcOI=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-471-PvkmhR6fP--M8zTnbb8_Mw-1; Wed,
- 24 Sep 2025 08:51:06 -0400
-X-MC-Unique: PvkmhR6fP--M8zTnbb8_Mw-1
-X-Mimecast-MFC-AGG-ID: PvkmhR6fP--M8zTnbb8_Mw_1758718265
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3741919560B7;
-	Wed, 24 Sep 2025 12:51:04 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.108])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EFF741800452;
-	Wed, 24 Sep 2025 12:51:02 +0000 (UTC)
-Date: Wed, 24 Sep 2025 08:51:01 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Cong Wang <xiyou.wangcong@gmail.com>, linux-kernel@vger.kernel.org,
-	pasha.tatashin@soleen.com, Cong Wang <cwang@multikernel.io>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>, Alexander Graf <graf@amazon.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Changyuan Lyu <changyuanl@google.com>, kexec@lists.infradead.org,
-	linux-mm@kvack.org, multikernel@lists.linux.dev
-Subject: Re: [RFC Patch 0/7] kernel: Introduce multikernel architecture
- support
-Message-ID: <20250924125101.GA562097@fedora>
-References: <20250918222607.186488-1-xiyou.wangcong@gmail.com>
- <20250919212650.GA275426@fedora>
- <CAM_iQpXnHr7WC6VN3WB-+=CZGF5pyfo9y9D4MCc_Wwgp29hBrw@mail.gmail.com>
- <20250922142831.GA351870@fedora>
- <CAM_iQpWO71vSV_0qXiUYeKYZMYF0xWNz8MrUVRkqKwDEtQvKqA@mail.gmail.com>
- <20250923170545.GA509965@fedora>
- <3b1a1b17-9a93-47c6-99a1-43639cd05cbf@redhat.com>
+	b=AVKwqH4y/FHRP676AIVwmRo6M1Wp/qu5p0GJt2lrXY7/VrjmiuIQYPmHgLxrCDi6EIfSxe
+	UkTT4oE6Au96lPowEnp8VP7kHotANiV3NFl7AzAG4Uj1/2Sj7Q/UAJFw4aWgz99icC7tE2
+	oIegPGKQVaVgX6PYV4wo6Bo0aCLgdeA=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=sipsolutions.net header.s=mail header.b=AmaFo1FI;
+	spf=pass (imf05.hostedemail.com: domain of johannes@sipsolutions.net designates 168.119.38.16 as permitted sender) smtp.mailfrom=johannes@sipsolutions.net;
+	dmarc=pass (policy=none) header.from=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=h5K+P/riDmU7tvn3fIuQxPNsf4KltKjt2Yr02gW3kT0=;
+	t=1758718363; x=1759927963; b=AmaFo1FIYGhDn8ysOJWdXbu4JDq0k3l44jZB7KYHhx/0gRQ
+	JnZohNcZSnKzZxp647Uog7uL7ZRedaJ5CgvWhSrsAza12nQTb52sEgrZdXg+OJVF2GYKMYGwNkmkT
+	pku4CmqWF/VFvBo8ZSoUSJsSHBdqn0YEB7ltDz0+Tjsi49G5EYMFwg7irHJOgAVtUkKJH1PlexCbi
+	X3HXUb5O7VJBa7vI13jeBH2ETVxCGePLLhKQ6aaSg9CMSuIrNwBaatrPGJxCMvEH3j+bvgWL6IFwu
+	PvL/Y/xhTRYBw63QylnrampQP9X4ufE8JaWqSUVK4yf2Mx0cfzZt36+NqaXuTNGQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1v1Oz3-00000008sim-1o1i;
+	Wed, 24 Sep 2025 14:52:33 +0200
+Message-ID: <3562eeeb276dc9cc5f3b238a3f597baebfa56bad.camel@sipsolutions.net>
+Subject: Re: [PATCH v2 0/10] KFuzzTest: a new kernel fuzzing framework
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Ethan Graham <ethan.w.s.graham@gmail.com>, ethangraham@google.com, 
+	glider@google.com
+Cc: andreyknvl@gmail.com, andy@kernel.org, brauner@kernel.org, 
+	brendan.higgins@linux.dev, davem@davemloft.net, davidgow@google.com, 
+	dhowells@redhat.com, dvyukov@google.com, elver@google.com, 
+	herbert@gondor.apana.org.au, ignat@cloudflare.com, jack@suse.cz,
+ jannh@google.com, 	kasan-dev@googlegroups.com, kees@kernel.org,
+ kunit-dev@googlegroups.com, 	linux-crypto@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, 	lukas@wunner.de,
+ rmoar@google.com, shuah@kernel.org, sj@kernel.org, 	tarasmadan@google.com
+Date: Wed, 24 Sep 2025 14:52:32 +0200
+In-Reply-To: <20250919145750.3448393-1-ethan.w.s.graham@gmail.com> (sfid-20250919_165801_647339_D5FEA55B)
+References: <20250919145750.3448393-1-ethan.w.s.graham@gmail.com>
+	 (sfid-20250919_165801_647339_D5FEA55B)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="CpzOrJ/+7+dHBlWP"
-Content-Disposition: inline
-In-Reply-To: <3b1a1b17-9a93-47c6-99a1-43639cd05cbf@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Stat-Signature: da599e6jq7dbc1nb7349mqafbhix85jc
+X-malware-bazaar: not-scanned
+X-Stat-Signature: amtigst9tbt1x9sscuytbjxx3hr7fxzx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D3BF518000F
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758718272-821517
-X-HE-Meta: U2FsdGVkX18z8H8AFC13y13f33Uv/N+c3T7gQ/XBTFCLwXAnseIVbHFqEQRNMGhnmTczxYSwRgytcbCTpVq/uydBOfr8fDM3WkcnK3uDQDlx9MXHFnSnUeVckmI2AidfRCpg1hl1YMm3Ei2tb+49SWZn1W7t/jn1WIqZhUnPTbILUNz+a+/HxWM9WQYriojYtdKFkuGiOYXGPtFywLUuHXfC68XIOdu13qvvgRsP+NThiBfs+Krr6zC1+eIC3d1sXgk0su0v/r3Fv1f6BuAMUaKfykygDZ9OfDE2dsTD7/tb2ovGScIRvGaen7ZrIZstS5pUYPTvIVhwXnWKBTomDRavO0WgVQpAg8bXkV8I79yq9fmQcHTwPPmKwg2C47CcwCVP0YFPKXlu34dv+pLwrMiyzotrBFd5VzeVDCQVDWAtYHA6K53RxaKcDykaycpUpOm9kCCLSLZAwo6bffRmcQR4idXKbPtKYOUo167rfM2lBoiH4l7XKFMouuRNwoAnPg0bICZu/u7YZ/mdRh6cD5iyZ57mpzKfGW3o3khdCRbbShXeKjbfmkJQx3hBDHbKh5ZecC4f63WZ5HlKjLZThgpQh8f9Ta49arqtTW25NpuDFNz5FWFQ3iduzEfaZipn6G/HMWUYFLWu9VawT0y5Gw+GogGEBj/uvKPbTnKGy1PAsw5VUyVxn/xwGv21S3ec+zfOcIumC5wzTgsJcmRcF7CP/xlvNqQJHM7NQh9kaj6EvY9apqhKNmLNvW3zNIDbSEBrBL4xM8LtTP4KGUZHEeDl5a5BS9j7SY0rO8Yjn7AiBgDE5DbsDeQbeV4AdQVTP0fH9a3UozvYLj1z/G7o/LK0Y5Jen+RwsO9TehvVEDUxvtGBpkKzJ64usELGyeZlkRY1EJdruN/aAYqQBQyGGGmBKNXJjuKJNLFBetcPlVdgVhWLFZIfDZnZnKzAWmGdQoJWK/21fdEQdIhi5cH
- r+3A9lpE
- b+JlFe+CEuvVj1Hw0bPrltYiTPZY56ZUZRnS7kMftICkW1ItcvMUOM3EEXzChT3UYjxbg02IKm8+xHTe9wPadswQii9TLbsOOf6iS6zNDZOPshcdu3YCPXpsdK0ZL67Rcmelthsq74yQpB/efCmVDMPLNraeob8VOZ2EWZdowe7XVr+IUOrFYTkx8l7F/y6Y/6JyPVV3AfLqzJqg=
+X-Rspamd-Queue-Id: B0CF3100008
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758718363-2613
+X-HE-Meta: U2FsdGVkX1+/LsdiICVS4Dqfkj6Tr/hX8od9wB+IgcfKNnuL1UkL1n/bAJetiXmyBfny/ADPqyQ2m+kh4dRtve9JhzdTVRLXv+q7mUb8N1Ri8VLaInstFiANmUWHLt2SJ8E7nGjgIrH9oOVVxF3B1wDqKUd31cUIG/BVR4q5btndgmnsj565fqKmE4MzWNbSb03WFqfJ7u0bn1UB+LjQEoyHtjYtyCD79YQzO63Ek+OGfMtJaKzA6RuOEwKmxxH+Vdc0uur7gtxVypoyN4ALN0P5uiq4DKCNxZKVC/fbESOqofrUhCaU7148KGn+Rt4VehhfP7mt+qBu3ZIDuFE4KPWkVA+F9po+rDGx8/fpcZmVbW9udYxcKW/t8tgbGHM5dGK8SUIOiHFLTalwjfr7h+EgpI/qNktIetFMH1uI7MnBuuhMYOCKlvpCiY3d11fIZHLKzfNg5uKAAcp5KwWbEECwuvihfr9HmM4vsu3M7QK88JGwfqRQz33od6P9EmYUFo87k3lhfGCTJ/sd5c5qeiJpnyssnvn2fmJbK3OcLNwUuMBEkttC9YXoVjXw3phKD+36UZxPZS8MN+tDzKD0PmjqCQVXP4o9bFl3T27G3/tlwpGRYxUmas1vk4JrnjDB43vFHwoaul6DpLahQruV0cutzjqsA8w3lYqohH//QKjczaUy5WMgdCZE5RcFfbdnePGkg9IbjG4/u2/rRcpas6Q7UV6nTn3/CLfNBekFgh+2SO8KM/uOtjHAP/yHUjaJN22jN6cLKBmaF/+daQMrYrACOKq1JhGt6jx95GVDuop/yKDeEse/1zTbI9hG/PWqf0UtOE4N0fRF3PB1/+PBKMkJgtlQrwfPgDQRg4j1j7a0iMfuL+lk2nMkoc0KDJGRDqsEh2F/blGKNHSb550GSDxVFALgYOGfNocWGX9l0hug5a7sjYC1Z+Qpentu1aWqvBKsGE5oxDnUBQvFbD5
+ pZ+GLJBF
+ K6xOw+a5xTh9Z/lE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,70 +102,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
---CpzOrJ/+7+dHBlWP
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Sep 24, 2025 at 01:38:31PM +0200, David Hildenbrand wrote:
-> > >=20
-> > > Two more points:
-> > >=20
-> > > 1) Security lockdown. Security lockdown transforms multikernel from
-> > > "0-day means total compromise" to "0-day means single workload
-> > > compromise with rapid recovery." This is still a significant improvem=
-ent
-> > > over containers where a single kernel 0-day compromises everything
-> > > simultaneously.
-> >=20
-> > I don't follow. My understanding is that multikernel currently does not
-> > prevent spawned kernels from affecting each other, so a kernel 0-day in
-> > multikernel still compromises everything?
+On Fri, 2025-09-19 at 14:57 +0000, Ethan Graham wrote:
 >=20
-> I would assume that if there is no enforced isolation by the hardware (e.=
-g.,
-> virtualization, including partitioning hypervisors like jailhouse, pkvm e=
-tc)
-> nothing would stop a kernel A to access memory assigned to kernel B.
+> This patch series introduces KFuzzTest, a lightweight framework for
+> creating in-kernel fuzz targets for internal kernel functions.
 >=20
-> And of course, memory is just one of the resources that would not be
-> properly isolated.
->=20
-> Not sure if encrypting memory per kernel would really allow to not let ot=
-her
-> kernels still damage such kernels.
->=20
-> Also, what stops a kernel to just reboot the whole machine? Happy to learn
-> how that will be handled such that there is proper isolation.
+> The primary motivation for KFuzzTest is to simplify the fuzzing of
+> low-level, relatively stateless functions (e.g., data parsers, format
+> converters) that are difficult to exercise effectively from the syscall
+> boundary. It is intended for in-situ fuzzing of kernel code without
+> requiring that it be built as a separate userspace library or that its
+> dependencies be stubbed out. Using a simple macro-based API, developers
+> can add a new fuzz target with minimal boilerplate code.
 
-The reason I've been asking about the fault isolation and security
-statements in the cover letter is because it's unclear:
-1. What is implemented today in multikernel.
-2. What is on the roadmap for multikernel.
-3. What is out of scope for multikernel.
+So ... I guess I understand the motivation to make this easy for
+developers, but I'm not sure I'm happy to have all of this effectively
+depend on syzkaller.
 
-Cong: Can you clarify this? If the answer is that fault isolation and
-security are out of scope, then this discussion can be skipped.
+You spelled out the process to actually declare a fuzz test, but you
+never spelled out the process to actually run fuzzing against it. For
+the record, and everyone else who might be reading, here's my
+understanding:
 
-Thanks,
-Stefan
+ - the FUZZ_TEST() macro declares some magic in the Linux binary,
+   including the name of the struct that describes the necessary input
 
---CpzOrJ/+7+dHBlWP
-Content-Type: application/pgp-signature; name=signature.asc
+ - there's a parser in syzkaller (and not really usable standalone) that
+   can parse the vmlinux binary (and doesn't handle modules) and
+   generates descriptions for the input from it
 
------BEGIN PGP SIGNATURE-----
+ - I _think_ that the bridge tool uses these descriptions, though the
+   example you have in the documentation just says "use this command for
+   this test" and makes no representation as to how the first argument
+   to the bridge tool is created, it just appears out of thin air
 
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmjT6TUACgkQnKSrs4Gr
-c8glqAf/V/fg56oCmCv+HaFs3LvmQyEljhq0JJy17N25yTd+uBaKlL/RQs/qTsez
-VrTtD5K5M/dKzlI9hpUM+/RzrxvYy65ZPp6CIfo1eBCRTUpmLZeUXYnZfjk/oU7A
-8lL4qXt4sohUnt52FX6jT0io63SgZfzVa+ioe2WDZmh/YVkIi9JNjxhH5HJMuUPU
-MxS53WDukYaEaBUJSi4cs/QdjcCudEzZBaeP1FjC6uoeZQ/3lT6Ozr0YGNeHHLUT
-XRG0dL1oq9ABmi7Yy2UHwmqj+4cT2964SErwJUesi+a7ij4/ZL2osb1aurT098ZC
-e75vuYwusPi8KJrYkzuXOLpAWMW6EA==
-=+t3/
------END PGP SIGNATURE-----
+ - the bridge tool will then parse the description and use some random
+   data to create the serialised data that's deserialized in the kernel
+   and then passed to the test
 
---CpzOrJ/+7+dHBlWP--
+   - side note: did that really have to be a custom serialization
+     format? I don't see any discussion on that, there are different
+     formats that exist already, I'd think?
 
+ - the test runs now, and may or may not crash, as you'd expect
+
+
+I was really hoping to integrate this with ARCH=3Dum and other fuzzers[1],
+but ... I don't really think it's entirely feasible. I can basically
+only require hard-coding the input description like the bridge tool
+does, but that doesn't scale, or attempt to extract a few thousand lines
+of code from syzkaller to extract the data...
+
+[1] in particular honggfuzz as I wrote earlier, due to the coverage
+    feedback format issues with afl++, but if I were able to use clang
+    right now I could probably also make afl++ work in a similar way
+    by adding support for --fsanitize-coverage=3Dtrace-pc-guard first.
+
+
+I'm not even saying that you had many choices here, but it's definitely
+annoying, at least to me, that all this infrastructure is effectively
+dependent on syzkaller due to all of this. At the same time, yes, I get
+that parsing dwarf and getting a description out is not an easy feat,
+and without the infrastructure already in syzkaller it'd take more than
+the ~1.1kLOC (and even that is not small) it has now.
+
+
+I guess the biggest question to me is ultimately why all that is
+necessary? Right now, there's only the single example kfuzztest that
+even uses this infrastructure beyond a single linear buffer [2]. Where
+is all that complexity even worth it? It's expressly intended for
+simpler pieces of code that parse something ("data parsers, format
+converters").
+
+[2] admittedly the auxdisplay one is slightly different and uses a
+    string, but that's pretty much equivalent
+
+johannes
 
