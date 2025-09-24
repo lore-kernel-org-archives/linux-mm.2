@@ -4,112 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4135BCAC5B0
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 09:29:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E87ECAC5A5
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 09:35:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CB798E000B; Wed, 24 Sep 2025 05:29:16 -0400 (EDT)
+	id B6E238E000C; Wed, 24 Sep 2025 05:35:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 655678E0001; Wed, 24 Sep 2025 05:29:16 -0400 (EDT)
+	id B45788E0001; Wed, 24 Sep 2025 05:35:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51D0E8E000B; Wed, 24 Sep 2025 05:29:16 -0400 (EDT)
+	id A355D8E000C; Wed, 24 Sep 2025 05:35:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 37DF08E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 05:29:16 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C5479C0475
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 09:29:15 +0000 (UTC)
-X-FDA: 83923620270.19.2A64CB9
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	by imf15.hostedemail.com (Postfix) with ESMTP id ECC74A001F
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 09:29:12 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ALGIDVXY;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 89FC28E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 05:35:15 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3E61CBB5C9
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 09:35:15 +0000 (UTC)
+X-FDA: 83923635390.28.7976FB2
+Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 245B4140008
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 09:35:12 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="k vMndgh";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=RYDdD8qp;
+	spf=pass (imf23.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.154 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758706153;
+	s=arc-20220608; t=1758706513;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NQxhHDKJBxc1HbO7bdi2pKWv6xqO3AMW4eLlFgQFTOw=;
-	b=xoM+ZuNYnfUp40IpMHdqYdNMUjkVbXVWql1MNTiq2RbXUP+1t5uKHNVNL/X2dBiuwG6oBT
-	lvzjytnQU2wc6H2Vo1ye4EgR2RRkWRkA4EUxu+uXG3s7l6C1nm+LaFdxU7rMnKa2YI+cdy
-	XXW4QyaQDWiYmTDS3TUXoHmoHykbp3M=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ALGIDVXY;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758706153; a=rsa-sha256;
+	bh=RwxT2y/Fo/wEThm0R0fUBSP/jGcCTaRkM4zay+eO9dw=;
+	b=8k8HpB4e83WLjRgB4U5AQnQ1mqrKZ37pyb0ivsx378JBDzrXtyje172zuL5AVfZGAKxFMu
+	foQdeZnwVyacfkcx/TV0cAfoR2P81YXlCIQN35yqRbw4IciCEq2sdisyf6Yq9G0xK4Awgq
+	5e55PRJjJ7SGuKo+t0bh+SnqhGq3Tvk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758706513; a=rsa-sha256;
 	cv=none;
-	b=s+tRP/GvfVtdvgyUWz6/n5iD4yj7YJqatVaBM+w3bTJMTDOpluibLtmRhx/SRuL0WbrNuq
-	J/FhVPzMHAKqsPurud8Ap39JIspDvmUI/3YMCECVjXn9C+7KHz1Ug2RoA8dLkGUkoBD9nz
-	sDpnanbTl7bctESrgmexLB7tI2pu36E=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758706153; x=1790242153;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=yMSkQplP3rHZaWo2oMDZguxX9qzRed9Ka3XpCLi17Ng=;
-  b=ALGIDVXYf9G1GVMEIcCBBiF/L/zD0VOLb//g/lN1fnjna/InvszGt2f0
-   OuFZyxTkL3lhJXvbS4IVpKeLvMovPgch4LicwzP/geXST/ihyDp9ypxIR
-   omdF8bIV3iN33gbfJ0z80Wl48wzdtPF5kWOm6sLPaX80IaYQuBvdVROll
-   aIShP5pL4SQmvbsnkfbgEU6bE6+gAMzFwzf7K7wjsoP119hKMWsNLp8sm
-   CpLAacAc9KwxK+qLUslAActaWx6nqUVYUujvbMmK0wzsoj9TpVfnPV+Bf
-   FggoMw/JJLbYZKRmVmJDN45bO/xfLrbUbQUqT82XSyQAeqdmiBzsPzTWx
-   w==;
-X-CSE-ConnectionGUID: o1CIC61PR6qqxI1QS1Awjg==
-X-CSE-MsgGUID: NxugcwUnSB+7oIrzSEtr7w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="60702501"
-X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; 
-   d="scan'208";a="60702501"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2025 02:29:12 -0700
-X-CSE-ConnectionGUID: AoNF+o4URPO9+pRaHhaaHQ==
-X-CSE-MsgGUID: /rwmqYRdQFCX2ffO479rtw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; 
-   d="scan'208";a="182159717"
-Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
-  by orviesa005.jf.intel.com with ESMTP; 24 Sep 2025 02:29:04 -0700
-Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v1Lo5-000409-2y;
-	Wed, 24 Sep 2025 09:29:01 +0000
-Date: Wed, 24 Sep 2025 17:28:49 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ethan Graham <ethan.w.s.graham@gmail.com>, ethangraham@google.com,
-	glider@google.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	andreyknvl@gmail.com, andy@kernel.org, brauner@kernel.org,
-	brendan.higgins@linux.dev, davem@davemloft.net, davidgow@google.com,
-	dhowells@redhat.com, dvyukov@google.com, elver@google.com,
-	herbert@gondor.apana.org.au, ignat@cloudflare.com, jack@suse.cz,
-	jannh@google.com, johannes@sipsolutions.net,
-	kasan-dev@googlegroups.com, kees@kernel.org,
-	kunit-dev@googlegroups.com, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lukas@wunner.de,
-	rmoar@google.com, shuah@kernel.org, sj@kernel.org,
-	tarasmadan@google.com
-Subject: Re: [PATCH v2 08/10] drivers/auxdisplay: add a KFuzzTest for
- parse_xy()
-Message-ID: <202509241655.GL49TRF9-lkp@intel.com>
-References: <20250919145750.3448393-9-ethan.w.s.graham@gmail.com>
+	b=XHAKQ+Crw9hjI+290nSt55k9UYgZPQbNtOf6ULIgY7D4Fqw+2OXPGf+gAMNO2AJ6C7zQl4
+	SR3rDKcgZ0H7MkvtVTyhJ98aYXUfjAsmmDKFy5qUUF5vP5KNpHIojWYz54Du7hsNVUimoX
+	u/eHTqucQ7wUwYBM35wWLjGYeJQg4oE=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="k vMndgh";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=RYDdD8qp;
+	spf=pass (imf23.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.154 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 516A41400066;
+	Wed, 24 Sep 2025 05:35:12 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Wed, 24 Sep 2025 05:35:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1758706512; x=
+	1758792912; bh=RwxT2y/Fo/wEThm0R0fUBSP/jGcCTaRkM4zay+eO9dw=; b=k
+	vMndgh3LWI5bt978muw7xZXLFR0zG2Zvtm29snab06KD1qCWwf78LuunSI+70ITZ
+	vzKQ/+dHBhX4f1l4eFdotSVQDxFcrd0wZaRXH23ZMOy/3M8SN6DXeJuPEDyEpyLC
+	SuwCqrvVvCHtOYpXbkHYhhgBN6dVp1FLBxYrZO3nQ7xUILeJspn1mMbJ0OFj6D8u
+	piV1PnfNaOtkcR0lr9MXV9rjeN0193HURfi8kimzrrCp2AmlYxZNPCAU0XmHernj
+	7AkZnYC2d4Xld9rShTiWjyNMNC8J9FTc1oSQYrHreLRjdaywczxQCSruaD2JMQAu
+	WZH77WsmVsodzZnU1oaMw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1758706512; x=1758792912; bh=RwxT2y/Fo/wEThm0R0fUBSP/jGcCTaRkM4z
+	ay+eO9dw=; b=RYDdD8qpjfFM8OH1AibRws/QOX6fSJsCbuEGcqgbdyCjeVwcOxI
+	Rd69Tp9DeQjpT5hdFwqJB1Uj988E5TNDnFWnq5bhe9l2BKBTycKgRUTRGgmh4D28
+	4cWWcrqLh3LlJhIhWxoY1i0c5tp3Zet1EKa4+rgMasQXhvRxUsBj9Vo1TCHvmTA9
+	lnH/UAw21Y0v1dpner/PkpKfOXBmnHMaK66z1V5tfTG+Yzj6fSWb3a/ZXaYI6Z+S
+	Ib936NuRVozYHksu3EUqWiE0ozQA9qhGChGtpIIz+SYDnD/AagKnneeGT4poN+5u
+	6q2IaB0EhstAQT6yR7bwDTKjWn4Ygu7eX6Q==
+X-ME-Sender: <xms:TrvTaF-yzhq6wApsY0I5VOyWJBAA3-4rOlIknmkh0mdaHuu-Uf5fJw>
+    <xme:TrvTaDYvZM26CQzDqwxrRlWDBad8nwgGLKZCR2lc3v8D0mh_vPdlFFm7q_3mI6QLY
+    flsQ8sRorMijWOZO99LuIAlpQz3oRDUYZeliUiwHla-ewMQw-bet58>
+X-ME-Received: <xmr:TrvTaCXfO89CeQeVUULQ7Qf8YKT3s4F8dvlxLeIs8dKXBANWGBhQjPBdj4FIsQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdeifedviecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
+    hhhuthhsvghmrghuuceokhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtf
+    frrghtthgvrhhnpeejheeufeduvdfgjeekiedvjedvgeejgfefieetveffhfdtvddtledu
+    hfeffeffudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
+    hmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepfedv
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehrihgthhgrrhgurdifvghihigrnh
+    hgsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgu
+    rghtihhonhdrohhrghdprhgtphhtthhopegurghvihgusehrvgguhhgrthdrtghomhdprh
+    gtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdrtghomhdprhgt
+    phhtthhopeiiihihsehnvhhiughirgdrtghomhdprhgtphhtthhopegsrgholhhinhdrfi
+    grnhhgsehlihhnuhigrdgrlhhisggrsggrrdgtohhmpdhrtghpthhtoheplhhirghmrdhh
+    ohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthhopehnphgrtghhvgesrhgvug
+    hhrghtrdgtohhmpdhrtghpthhtoheprhihrghnrdhrohgsvghrthhssegrrhhmrdgtohhm
+X-ME-Proxy: <xmx:TrvTaBhfFuMyhpo4uXpgNh3p_nO-TnnYMz9RMIbqJdE46e_eMjApDg>
+    <xmx:TrvTaOlh3qDt7P7GojARw2Co5wK4Yhp2yO0MnTTs5PfrPrY-m7scnQ>
+    <xmx:TrvTaIKqbDjo1CAsg9HWvWwb5biiu12mx927pxGrpBKnJALEzLj54w>
+    <xmx:TrvTaLXCILAvhQdhQY_T7fw7WGSU3t6SHBTs4P6vSTrq8IkoGQmW8Q>
+    <xmx:ULvTaC5F9Q24qi6KRUWvlw6vPR_SpZL9pgigh3WnZufXlum8wnQjQvkw>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 24 Sep 2025 05:35:10 -0400 (EDT)
+Date: Wed, 24 Sep 2025 10:35:07 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, 
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	baohua@kernel.org, lance.yang@linux.dev, xu.xin16@zte.com.cn, 
+	chengming.zhou@linux.dev, linux-mm@kvack.org, Dan Carpenter <dan.carpenter@linaro.org>
+Subject: Re: [Patch v3 1/2] mm/ksm: get mm_slot by mm_slot_entry() when slot
+ is !NULL
+Message-ID: <27storxu4seijr5smul3xx7pofe45ittjrchii3jtwbntalsiy@2cu3wf42drwa>
+References: <20250924004854.29889-1-richard.weiyang@gmail.com>
+ <20250924004854.29889-2-richard.weiyang@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250919145750.3448393-9-ethan.w.s.graham@gmail.com>
-X-Stat-Signature: 6b85jigdrd8i4ebmimk8eogdubpn6cna
+In-Reply-To: <20250924004854.29889-2-richard.weiyang@gmail.com>
+X-Stat-Signature: bim6jcnxa1ehn8oi3g97i6pbq4t4bhjo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: ECC74A001F
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758706152-600483
-X-HE-Meta: U2FsdGVkX1/hF6roD3mKBcxhPD5RH8XqVoRd3iyH0Y8j+GQVIh4yjmf6P3fijofxnAUEcew8CudHb7o4cqx6nmHnR42QT/TUHsnYQHO1BQ8q3wdm+TOMuIHkBahDr7fzKgaSl8OyA64f+1ED6+oUJyd6YTgkG53M2slLy9tsZ/c3u55E5mf72R/TKi8/aY3v6JP3YBx7IZHCplmLIctYoGs98T4NZO+a8/zuZZ/vM1rn8t7q9C6qPqRpJl3wBj27JpIcuJ8Tze+6ea3waS3FXdC4b7hPzOLFAUIFbWHnwkLM4zq3QQr36i+83T0/t1UK+MrG+0gtEUq7uF3fVeLVjtAgZmMVas0XgbhBwdphVIjT/WXXKcsIhmUhlDaqQZYMiRwBXR/C8tG7Ql2lPIQXYjANYRG4CK42phX1frefAji2y6hIwWdtjHe14B8Ywom/EcS7B4asZHusAWRjrs3lFjo8unseFT89EQhxjpbKgbTfXHD8RcA1LWQ2w1HTpw8MIWVxiCcZJMtZgyUPRg5GOp/ug97Kt+etlOiSgb1rVrb3wQTS3TagGY7JXzip8rpC0Hp2xU4qwafJ7RAr3u2DPznchok/4NvZ/FjMlaLm0azp390fYAy5QtJrpRQznoQv7Ks0TCz229XB6NKI7YrkgZ77Gl10cIpn/lES9uCRv7Ml/8SGkvpr8mfTeEvpq4i/4x+fa3+/iPGLUG+PHzlm/7nBhDfxRqWplC5isnia9DZGVUn5/P04/92foCzOJbOtWdq077EfonckVV55vi2TUhuayaHQsms78P6gg3IPREgmQJKdKUI/y9pDWNVs6E1pDRe2NQXTvN4Ah6RIxSk0p5/SQkevaR8Gi3Ns5K1I7gpFR0ZCkGMVQIdSAbYzQqafcvfudcVsrXNbAel5xnI4Okrdob58Cut8CDjea5LDqwZKSxZCZp3fUCpH76FOIYvStCIcip1xy7m5xWWaq65
- cap9fgkO
- s0EWg4McaaUFEfA9Rza3i4w6/PLyjIAl6Y+bffL8ly2BZEG5cnv5woB2w7lbIstp3RlfYe8715/hxQdB/goB4n4s7hyM8fGkWuyq7rn0RU2Au1F7r39Hji5a76LjXhoJROMiZVAgoeAN2noF0FWFo2ilN0l3A30YRHlRaStXnqPQix+xWq5hURWXl7pZ+fvVtRVCdGcE/ittaNTKvJDFiAJ8APbdpZK+b7M2MBqwVmdkevDiTFwXQvLdYqCGUY3nSd7dfmtJLlvZdNCKuPHwSrJtyQb83GP9yxKn5/axTcDKP+TG0FvoARmJm6j67CP+ikQEOvcTFQc7ZnKDSHuY08Uxt3RCRTsUxTDS2tld36m24LUk7CxASj+UYMUjyOqwamAjBVl6uunvE9RE7B/bpOk3/YUPbM2enWVbJm/9iFzfook/c9tqJHs6caSUJl34hsNQ5fV6PuHxo/xjdjrxDsNZmMvMeF5EbzS06BW5jCAdhNeG0lzuHUNqleA==
+X-Rspamd-Queue-Id: 245B4140008
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758706512-858397
+X-HE-Meta: U2FsdGVkX198c6ctXfjYoks4NpN0NNWTsQFZK5oKiIw6tjsDcWUXFRuAx+g9mGPJ+d8a2013PsKDiHoIhZEXSDozzCb/QoXdOcCyf0dg8hkStxVWw9gMrSGcsGI+XWRE0GF4JFD2J06/96CckiH8ZXsRy78I/IOSQE04i94n350Gg42KgR/FGSAlCm0Prjn3MjZZkw2mxtnbD7ksIEf1Yqx7i+Fte+w+A0nl5YQHIPOJ5PEE/Nw5qzbYdJRyptwni4RFVU1OdUudn56XgiDrsjIVTyD6YfyIxoSIgB4oBn6Fx8Ti6bX42scBIlKHORHftQ3zQSRfNFiM8ATHvkC9CEOSG+9u8r5BUWPUiZONZuSBEFbUTPjd+ZzkfIQte74Va0YlMGoFmK4os/ZX4amg+1hwOJkAi2ZizQNAoQgOnWs+5afztM3qQKZYFJ+cU89blh/caBw59g/Ubmr0s4uGNaqA/BKo2iKIXnAnVYJfqnXZ0+g5iJiuDcDcYPmtKXdqJfx2LGK5qXN6UoQfwI4Ih7qmgAXiOWgdwY2B6KtJyJUabZBVqkeBDQefrCr3sy8mo68OvTeusrfixNGigi4bUEUPeAVrYAm5SAGQcbUfm6KtIZsVyPjXqVfrJztDB1b0tIn9VAMU7qdqU6HctQt6Yv8FC5Wro/KO9MiAd/kELvHkOoyq0HMI/HQYzBbXMxUmyiaGlneuMdZgQG+ph7aJ7q6ji5eKF43qvOiBhoaUExT6W7ODRk+FuLlP3PGw1RGTqw3br09eGq0Bkk1tfjAslCX66Npvr9rWnuX1ap3dZDk2h/K3gWDLDkSO2n/ONoH0d6hj695RRm7TkaLgiHi17iX6QBLbQ3PaIt8xDsj+MV9XoJB9VK0VAoQTv3DC+o1CkvITElpP33L/o6QgTzeO/wudJshoZxbVHC+QG6A6YYZ5Rm+UBQQXKvhVS8SbSdMDMyxLIY/yPfQA8L+W4t/
+ vrGwS9Gz
+ 6zaGf8OjXKz4SsCWUxhcJE9Z8tyfI9z70MTPUKl/0yVA2QO0rvyScVnsft+6bSBPQhzu6AXidHmDz87zHAiMaLceXQUSwuNjF4+ymnr2w3ruSCt3JeaPHDkzWGbLPybPpK8536KMmFzrs3QUslgv7ceBwcFc72nFy2GL5cT/u+dhhLtxifpoC0uWnlc0QznlfpG8xUW9Vxj0Yix+33hwBdmUNd0wFqb9br/BEETEr/s+I5cZFfQGzUUWIPXVla+hOcgaVAFz2ar8U+sl2KqHnVtuxiIvgP0eeDtkKrLBJDi2JlT/NM43d5bU4pc3HoyZJKJsyTdemK4lhLAlHeNvopnPaKVi0Qm4BX/M4CxjKTnAfHcQQb7gk/j36x0SM8jNRbgfTBHJQuy0Qw8PM3L+pae5SrESJEIPg434zs9Ev8DiNWqJArAzh1RPH0rIw3thW2RmVmcOjl3VN9a17DOaPeEO44b2xBUQaIcUqCQMTZie9dcBdtpkE9zVFZP08p4jCin4pWSqUKJzQ/066r9FEFGAZCGB9J1UBzcQI3H3g5wK4l2FUMK7N9XqxqFdpw3Mt7jcWAsX1zV/cs60P2sB8D50XEXEwa2y1WdXIngm4NVR5R1L5TqSFZ8a+byhKglHjD7izqw5bF2VUits60EMhmMKddN8d1LAwz+pnkBZ0wJF73b1N+qffryyHoFqMvJD2Xc6Z2t+wb8PYDIKq7/3rWYnsW4rJ1dvtq007L0Z79+ULIhStQTF21VBDRaEHV4D/08kWzxqx7E7r0ZoV5nxXxrnCfnXpFRqFKxT6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,35 +139,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ethan,
+On Wed, Sep 24, 2025 at 12:48:53AM +0000, Wei Yang wrote:
+> Patch series "mm_slot: fix the usage of mm_slot_entry", v2.
+> 
+> When using mm_slot in ksm, there is code like:
+> 
+>      slot = mm_slot_lookup(mm_slots_hash, mm);
+>      mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
+>      if (mm_slot && ..) {
+>      }
+> 
+> The mm_slot_entry() won't return a valid value if slot is NULL generally.
+> But currently it works since slot is the first element of struct
+> ksm_mm_slot.
+> 
+> To reduce the ambiguity and make it robust, access mm_slot_entry() when
+> slot is !NULL.
+> 
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Cc: Kiryl Shutsemau <kirill@shutemov.name>
+> Cc: xu xin <xu.xin16@zte.com.cn>
+> Cc: Dan Carpenter <dan.carpenter@linaro.org>
+> 
+> ---
+> v3:
+>   * fix uninitialized mm_slot
+> ---
+>  mm/ksm.c | 22 ++++++++++++----------
+>  1 file changed, 12 insertions(+), 10 deletions(-)
+> 
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index 2dbe92e3dd52..c00a21800067 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -2921,7 +2921,7 @@ int __ksm_enter(struct mm_struct *mm)
+>  
+>  void __ksm_exit(struct mm_struct *mm)
+>  {
+> -	struct ksm_mm_slot *mm_slot;
+> +	struct ksm_mm_slot *mm_slot = NULL;
+>  	struct mm_slot *slot;
+>  	int easy_to_free = 0;
+>  
+> @@ -2936,15 +2936,17 @@ void __ksm_exit(struct mm_struct *mm)
+>  
+>  	spin_lock(&ksm_mmlist_lock);
+>  	slot = mm_slot_lookup(mm_slots_hash, mm);
+> -	mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
+> -	if (mm_slot && ksm_scan.mm_slot != mm_slot) {
+> -		if (!mm_slot->rmap_list) {
+> -			hash_del(&slot->hash);
+> -			list_del(&slot->mm_node);
+> -			easy_to_free = 1;
+> -		} else {
+> -			list_move(&slot->mm_node,
+> -				  &ksm_scan.mm_slot->slot.mm_node);
+> +	if (slot) {
+> +		mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
+> +		if (ksm_scan.mm_slot != mm_slot) {
+> +			if (!mm_slot->rmap_list) {
+> +				hash_del(&slot->hash);
+> +				list_del(&slot->mm_node);
+> +				easy_to_free = 1;
+> +			} else {
+> +				list_move(&slot->mm_node,
+> +					  &ksm_scan.mm_slot->slot.mm_node);
+> +			}
 
-kernel test robot noticed the following build errors:
+Indent level gets extreme.
 
-[auto build test ERROR on akpm-mm/mm-nonmm-unstable]
-[also build test ERROR on herbert-cryptodev-2.6/master herbert-crypto-2.6/master linus/master v6.17-rc7 next-20250923]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Any reason not to fold slot check inside mm_slot_entry() as I suggested
+on early version.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ethan-Graham/mm-kasan-implement-kasan_poison_range/20250919-225911
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
-patch link:    https://lore.kernel.org/r/20250919145750.3448393-9-ethan.w.s.graham%40gmail.com
-patch subject: [PATCH v2 08/10] drivers/auxdisplay: add a KFuzzTest for parse_xy()
-config: x86_64-randconfig-008-20250924 (https://download.01.org/0day-ci/archive/20250924/202509241655.GL49TRF9-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250924/202509241655.GL49TRF9-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509241655.GL49TRF9-lkp@intel.com/
-
-All errors (new ones prefixed by >>, old ones prefixed by <<):
-
->> ERROR: modpost: "kfuzztest_parse_and_relocate" [drivers/auxdisplay/charlcd.ko] undefined!
->> ERROR: modpost: "record_invocation" [drivers/auxdisplay/charlcd.ko] undefined!
+>  		}
+>  	}
+>  	spin_unlock(&ksm_mmlist_lock);
+> -- 
+> 2.34.1
+> 
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+  Kiryl Shutsemau / Kirill A. Shutemov
 
