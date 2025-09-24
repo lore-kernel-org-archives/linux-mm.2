@@ -4,103 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39866CAC5AE
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 19:15:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD91FCAC5AE
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 19:17:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 712308E0005; Wed, 24 Sep 2025 15:15:49 -0400 (EDT)
+	id E1A978E0008; Wed, 24 Sep 2025 15:17:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6EA268E0001; Wed, 24 Sep 2025 15:15:49 -0400 (EDT)
+	id DF2508E0001; Wed, 24 Sep 2025 15:17:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FFD98E0005; Wed, 24 Sep 2025 15:15:49 -0400 (EDT)
+	id D08AC8E0008; Wed, 24 Sep 2025 15:17:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C94A8E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:15:49 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0211A138B08
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 19:15:48 +0000 (UTC)
-X-FDA: 83925098418.15.6EEBBD9
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A59A1140004
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 19:15:46 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
-	spf=pass (imf26.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758741347; a=rsa-sha256;
-	cv=none;
-	b=btn8QS00fTpAgyiJc+wOg44NNvYsXB+RTS2UChOuvWslZS0MpUYDgOCq5bZB7Ma8MHFdJI
-	OyZ9003Y6tlgOT6YxFtXO/CAqyqWwO3stnnNmpPR0bk26KoQ1bhRPtkUfUu3/RV3q+byOO
-	dmqiyEnhXa9d/uLO1RxiFewZKxEWVz8=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
-	spf=pass (imf26.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BB5018E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:17:27 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 650DA1A015A
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 19:17:27 +0000 (UTC)
+X-FDA: 83925102534.14.CA63F71
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 790051C0009
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 19:17:25 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=J2u6q82c;
+	spf=pass (imf21.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758741347;
+	s=arc-20220608; t=1758741445;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2x7+Rm13mRhSwl91pdR3BNXkadzfUgRUZMh799UmRzk=;
-	b=UTMkvj9VN5ZguF+90uZGrIBafyCL68DBKp5ShTAIlGaU/WTw7oeFPqe473CPcPRAfsjZfo
-	gIXl9aUWUngTB25ER8ZgSpA10cq582CUkKXIk8afjEpTR3blIjJoYsaaob3dfpStgk7Lgh
-	wphOIWx2+FONEQ1kWPQRo3qmB9OD3n8=
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cX64v3MX8z9sRr;
-	Wed, 24 Sep 2025 21:15:43 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id MjkCrWp6j8_X; Wed, 24 Sep 2025 21:15:43 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cX64v2BmNz9sRk;
-	Wed, 24 Sep 2025 21:15:43 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 2A1358B770;
-	Wed, 24 Sep 2025 21:15:43 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id WzjUaTohc-zd; Wed, 24 Sep 2025 21:15:43 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 1F2AA8B763;
-	Wed, 24 Sep 2025 21:15:40 +0200 (CEST)
-Message-ID: <d168030f-388c-4f58-987f-648bba5b32f9@csgroup.eu>
-Date: Wed, 24 Sep 2025 21:15:40 +0200
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=i/oQJGNV1ovbEYyXr+Q20w5HwOCKHZUJ7HSCX77QoG0=;
+	b=NgyqApg6uEdhJmjlpgnH7+NWvght/jwjdMKPLn1y+/O5jPzrpYhHDlt5aTCjx/qDmf6BGm
+	MZUsR1edFzgA867LNxgqL1Qeo4nlIPiAAz8NLSK2fxzTEh8J7SSoSYoMgZqP2/ksphuNoY
+	X+2moUJkHmi5XkuNQsv6BppUuuNNBhg=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=J2u6q82c;
+	spf=pass (imf21.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758741445; a=rsa-sha256;
+	cv=none;
+	b=1apxK+OVRKsoNm8C65VamoHXlZfmuU2PgMShgLelC+yuZUcaZqtxyjLwxVPqdBdQkB2n8H
+	PKjTHQYtQ0iAUmmc12MpKP9aq9bAj6NOsWjpmbHktk/hDr7KS/zdhg01wVVgKFAOxhoSa6
+	XAIgFg9PIUIJB5uMBdzGQXqFBXYhmRI=
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-62fa84c6916so16536a12.0
+        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 12:17:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758741444; x=1759346244; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=i/oQJGNV1ovbEYyXr+Q20w5HwOCKHZUJ7HSCX77QoG0=;
+        b=J2u6q82c4TOOgkqzNo+sQrkS9d6AJ9ShINjlIhOf9RAXBlGIfJe0/HcfhI+wzLkC3O
+         CeHgXlrGZcEJg5i6TXyRWlU3z8qGDGQII5NV7uaeOQ62YYB/q8smwYNtsokHbSrCLeRB
+         +62v0vZXmfViMxtDzovaMSNV2+0zhfgEJckK8Csnatmj+SD1UoHdVRAP4aEPVwADr4fc
+         d3G4k9hbA87zu96lvdD5qblMMSWDQP44H4pxscqFuBxDXwJ9lE61XXEhCX8pHm7+AiaV
+         yRUXOkHCIB7Dd7pGyGZMLsMZXhbdxbHBUsKc5Xw0220B8LwUK2QZ/ovlUAYXhBUguyIO
+         xJvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758741444; x=1759346244;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=i/oQJGNV1ovbEYyXr+Q20w5HwOCKHZUJ7HSCX77QoG0=;
+        b=a4K/JBcsNVVeuRBdpWg9dsXqyDiFgthfRhywRY8m/quPSeI71pE7WbkKMuUmpwu5kV
+         +wu5slh5ecXhWHsfos0v3kLGZ0O1CEtxeQ3tZWT7sL6wYLACT64501w6UnCqf25jX7pz
+         z/3GxsmrZllMG7dqK5BOpih10UD59ldL9FE1Zct+jOVTmr8QFzcVLgb362a2cjoqas7b
+         4Mk/XKdhIbJq7Jsd5gavDxe4993tziEisAg/vdCF1Ud+NQPY5d/33ST1ALjKoL7GdDSD
+         XTh/EoYi77qhCxnIzkOnGFmXoqKn5kTDjj0crSoUDs19SUKywVp6iMmmFZ/pGVUB0IV/
+         nFMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXJeP50DUJFmMYEPaMayOOBPGyXnbGcybTBbS72oSFl5GbdLBMebM/zhT1Ub29sOXWXaKCbIfiACg==@kvack.org
+X-Gm-Message-State: AOJu0Yz7eZPqdXyr6fkojtgfeUDco4j1liYfFibNlta7R+qpNJ3Jmojn
+	0Ul/1mzCKPHPFvbYASttVSTJq4zJC89QqdfE6g/JXXEMhG+BLHSL0fSRvQnXvQZSScvkSxSDaLe
+	UE+ZHoLTIg8UQG0pEAs5Ywdbr3cTzbrQwhvumyI2d
+X-Gm-Gg: ASbGncs9c7jHxT1oKSHWRlrE0TBGFCjxXv1gvF5POTvEbT3m4i88Dwd9UfaS++uCEVl
+	CuaDNVYBclx/DMUBkM0IvXvw7N/tQpnhBJOZ4bGVW9GZuIeLcCC5qf0GLmfI2toPtd8UR607cEX
+	5igbtTx+bTHvCE9tOAHdz0RpiQWlZkp9SnvchtXAbEev5Glf/scvNTJJHoAokIrRJgqZi8skHLU
+	W+Rx2R1lD/zFfwaYBoVtgEeMTlRhPciUjrmSOdiBTZu
+X-Google-Smtp-Source: AGHT+IEicMXXtlWGyN6G7V+npJLewUO9XO8YiJmcQ+jrZ8XvJO05E+8ZmlyznHeCsCR1BvtDkyC40A5meCL2FvxyVw8=
+X-Received: by 2002:aa7:d4ce:0:b0:62f:c78f:d0d4 with SMTP id
+ 4fb4d7f45d1cf-6349bc5d2b5mr36890a12.6.1758741443542; Wed, 24 Sep 2025
+ 12:17:23 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] drivers/base/node: merge register_one_node() and
- register_node() to a single function.
-To: Donet Tom <donettom@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, Oscar Salvador <osalvador@suse.de>
-Cc: Ritesh Harjani <ritesh.list@gmail.com>,
- Aboorva Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, x86@kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Dave Jiang <dave.jiang@intel.com>
-References: <cover.1758736423.git.donettom@linux.ibm.com>
- <40257b5228dec05e5b252f02438608eb8d681a2d.1758736423.git.donettom@linux.ibm.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <40257b5228dec05e5b252f02438608eb8d681a2d.1758736423.git.donettom@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A59A1140004
-X-Stat-Signature: dzqmxzx3r4wijigxrdz61495etnxczum
+References: <20250918055135.2881413-1-lokeshgidra@google.com>
+ <20250918055135.2881413-2-lokeshgidra@google.com> <2c9df5ee-6109-4fa5-b895-ad8e47d34bee@redhat.com>
+ <CA+EESO4h-_U=Xo3x0G_74t_qJQ54AZ4Qd2Ji437aMV8nDZ+tkw@mail.gmail.com> <5549ac3a-20cf-4959-ac53-0a89ed0eadd2@redhat.com>
+In-Reply-To: <5549ac3a-20cf-4959-ac53-0a89ed0eadd2@redhat.com>
+From: Lokesh Gidra <lokeshgidra@google.com>
+Date: Wed, 24 Sep 2025 12:17:11 -0700
+X-Gm-Features: AS18NWA_yx_FbzE9Cq77Vt-Azas1zBBSMX6lJsRJSsjkUoBpj9SIA6zlW2o2Yik
+Message-ID: <CA+EESO5e0gupVfM9NgWqx34oMRk1jGzsNfM=X3idPKaXkRL2fg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mm: always call rmap_walk() on locked folios
+To: David Hildenbrand <david@redhat.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, kaleshsingh@google.com, 
+	ngeoffray@google.com, jannh@google.com, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Harry Yoo <harry.yoo@oracle.com>, 
+	Peter Xu <peterx@redhat.com>, Suren Baghdasaryan <surenb@google.com>, Barry Song <baohua@kernel.org>, 
+	SeongJae Park <sj@kernel.org>, Dan Williams <dan.j.williams@intel.com>, 
+	Alistair Popple <apopple@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 790051C0009
 X-Rspam-User: 
-X-HE-Tag: 1758741346-353817
-X-HE-Meta: U2FsdGVkX1/cQ8GN6p1U0MKiOQm0a47fL0nnNowWJziAKKoJ8wOG7qXwC4c1l8FtlRPWc6vA7DHVJWHH0GM5mnO8SbPQJI2PTidqfsLokFbKOBK09HTKU9D8PshpjQHGhUxHCvU9iErSznZybyopHUEiAkUb3UQEHff0VfaFqXGQrg5dcTfLKDSqb/rPdwpmR41s5n8f5NAkAtl9x5T9XVRr7JXnlzz4THG8D1DpAiAigZ/LpGaKbBPgO5afvqve2nwHsPBe+c8ZBzj3RhGXlAQbRMlh4A1Bt5cVaKhGy0npkYNZ5JXD4AkgqGFPpUvEVAccong1SAiC8ONQ4bKRgH+3IRmran2klFAVk90Hmtz2j07Sh0aCslrLwTytDG37zaRQjxAUd0bzcI0Tzm4GJrIKjaUgUDGUKgVXtQXMzqxM5W8Wg05QxqlIQwwLn8MGjtgJunelZyc7XbtTQnGAv1KoVMbs1iDLMw/+6yVD0d4Jbi/NGGX9EAA58w5wqP9RA90XzRawpwvcvpFBDy6bFi8wIjcAWx0tmBAAVJyUyLniftUtQe/kpRg8TCfkh+dehoHMqcMeJ0xgdqv4bF2AjUdj7g2c/nqKt6AGiwoaPxVVVzbUVQvPXHqpqHOT19N/7RByP6eyusg2snMr3nuyTeBbtkxfJwszrGqm1kPzJW730UcEftVjVeUzGB+2ZoTipaHYVnjksJH8gI7LxoPHCn/vi9Y0eeobLXBINJAmieXqG9fOME+Ar2o3T1NtIo1Liw0XyIdWZPsVxaae4FEXdlVu7irpuOfrelzF1caiddvHYTFI690BQHC83j3WA3wBu0rQ1mi0n7M+NS7Y7XUVv/lxi0LeRy8xW3YZmqopB5hYQpE4fhVsU80x90BMEe+XNYJe9X84XRgVjRyb/9szsY527TcUG1Qva3f03vG39LZAkdJm/8WRTUrVKD3/R6SWN8G/kHbrvgh7FYbnlE+
- sGY6OLjE
- TNSVmQrFnUlsH8JINYHCit5av00vymoerjyPWCGuL/NKKYN1GtDVeugAZ1iiuHxHxemQjPGKTI/HpX4pr1aA2PxVyAZWYWKfqw7EIaAhTWQZG/1CTOgYsnn5LnZl8aBzFq1MXd75du3mJCDnfPaUuLUstE2V3IRj/bxc+n6xnOYJ+ijdaseOA66YEUnyXSEbylyc5mQKnPJHm1cmfPpNqNvQvEOECJrqvwY6IzNzmJT5x5tkrlYKb6TcC6qEiWf5D1PuuLKEiBd1pVcSsdVVZ8u4U5DDesG2boFTriZTkZzDk3mQToJKh44kdsskk0wZdf5bsoKPRavoZmamc35j8pMrmgN2+CUiy/T8SvtE/csKhcSw=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: hes1morennszedkwe7qxj8t1835whddy
+X-HE-Tag: 1758741445-308047
+X-HE-Meta: U2FsdGVkX1+HU3bb4HS1GzF39Cvn1CLNyGpj+ABfLG3URBG7C4yP7jreeuQnURQ4LHCSmkINZDmwAA/wEARxmejj+2+bFQQLZbWqYeVAhhtjlZPY6IsKCEemhvmBXyCn+vKqDrAM2OXizGQit02rs7HQSCLiULPg2Thh7/IxRfqOFhIbUhrCg3XfVsvMwVzIve9qlLuO7ab6nwmzXStbvMzNUoB+L+JScSmvJ8wfIyb/6dKCTVVeAsXER5gZdpOJyLfuiUg9KVwU4mTRPZ3eCt0ymWh6iCXXpeJYTXBJqzvnRRjdjV9oW9EvQ6AMSQIGdDZ9QfMC8LlncIxz9g7BZcwwshfVqNPXfQzZ73VVJuFDWqEOBIJ6IqvVFxHMQKwGgxsHtAV6e4YHJsqaxPF0XSvmaKn9M+xi8MEKHkugpiV1sqlxoe/D4vrac+5FfE06Um+qZch8rHkPCgHgiNe0ib0a3xNZtEkxk8iLWA4fc1BvD8N9KQQumcJ9Z8Oa5V8ZF3GMDDUxq+O8hO+/RNO3qRIiuVndpwJMcw9EnKs3ydIlXm4mWJ89oM+i4ebKImfEkpRfPWcmjcnq9jYtDQ7gDTy9nm+6K+CIqbYli0x+WOqndoBT0GW2ZPWY1Mu2kXtzwWwl3ATUGZywyZHqLJpZLuslQ/e3SeVq3hnT6nmHy/BtBFPkQEc5wG139yJlNuk+K9cxiIq1oH/CVCLv24m+Itmjh9Z55t4swtSj+AUGqYhTZxVvtMk4S2lTe22l7/qVSpeTv9WB9uIS97rYyrBc2dV47eXGm5jLW/cR6js5z2oxBQhrvuuSteXuzrqWYrds6mbHwIjdgXGftJJBVMJNRjs0M2zKM+SGmVdSiSxDqIx3/EvImU/hsEBeVPbvNQoBHU7PTfTMzJ3E1Ag9CioJmsqb6n8cKQAs/XiUOckgL88Liebv73on9mNSTWgBarKBjgoXeLJbc0NH1yqlDP+
+ kP1T9tkZ
+ /7dWRnwbARCCbSB2BclzFnp3IYVO8oNaGdPRYA44KFfFntHvij/OGreg24hJcLuB3V/kbAB5Kjj5qfqb15YTO3tD/MldbIheFn1aIE+rzakegGn1rCQoTlzJ53zEeBZL/Lb68OyFjMtP7V685XC2ZdlM3O4xYKKBxqZ8WSqo/Z7yDuvvQkl3K3L+5JGcf8D5b8AwUNv81D/i0dkexEHeKkboO7OIz5e2GL8WZvT58+nYfQ2FtynB1bawY4QDKrSec8LiQoVvzQ+1B/ZY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,221 +122,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Sep 24, 2025 at 3:00=E2=80=AFAM David Hildenbrand <david@redhat.com=
+> wrote:
+>
+> >>
+> >> Is mf_generic_kill_procs()->collect_procs() problematic?
+> >>
+> >> The dax_lock_folio/dax_unlock_folio part confuses me: I think it only
+> >> locks an entry in the page cache but not the actual folio ("Lock the D=
+AX
+> >> entry corresponding to a folio")?
+> > Yeah. The name dax_lock_folio() gives an impression as if the folio is
+> > locked but it isn't :)
+>
+> Sorry for the late reply, I saw you posted v2 in the meantime.
+>
+> >
+> > IIUC, a dax folio can't have an anon_vma (folio->mapping is actually
+> > an address_space instead of anon_vma), right?
+>
+> We have these weird device-private dax folios that are anonymous and
+> should have the anon_vma set up.
+>
+> > So, I thought it wasn't
+> > required to actually lock the folio in this case. Please let me know
+> > if you want me to still lock the folio around collect_procs(), or add
+> > a comment?
+>
+> I think we can end up reaching memory_failure_dev_pagemap() with an
+> anonymous dax folio.
+>
+> Not sure if anything would prevent us into calling
+>
+> mf_generic_kill_procs()->collect_procs()->collect_procs_anon()->folio_loc=
+k_anon_vma_read()
+>
+I must be missing something but dax_lock_folio() dereferences
+folio->mapping (to get to host) without checking for
+FOLIO_MAPPING_FLAGS presence. If it were an anon folio, wouldn't that
+be a problem? And then in collect_procs() we obviously check for
+folio_test_anon() on the same folio before calling
+collect_procs_anon().
 
-
-Le 24/09/2025 à 20:40, Donet Tom a écrit :
-> register_one_node() and register_node() are small functions.
-> This patch merges them into a single function named register_node()
-> to improve code readability.
-
-This is unclear.
-
-What it really does is it folds register_node() into its only caller 
-which is register_one_node() and then it renames register_one_node() 
-into register_node().
-
-> 
-> No functional changes are introduced.
-> 
-> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-> ---
->   arch/powerpc/platforms/pseries/pci_dlpar.c |  2 +-
->   arch/x86/mm/numa.c                         |  4 +-
->   drivers/base/node.c                        | 52 +++++++++-------------
->   include/linux/node.h                       |  4 +-
->   mm/memory_hotplug.c                        |  4 +-
->   mm/mm_init.c                               |  2 +-
->   6 files changed, 28 insertions(+), 40 deletions(-)
-> 
-> diff --git a/arch/powerpc/platforms/pseries/pci_dlpar.c b/arch/powerpc/platforms/pseries/pci_dlpar.c
-> index aeb8633a3d00..8c77ec7980de 100644
-> --- a/arch/powerpc/platforms/pseries/pci_dlpar.c
-> +++ b/arch/powerpc/platforms/pseries/pci_dlpar.c
-> @@ -29,7 +29,7 @@ struct pci_controller *init_phb_dynamic(struct device_node *dn)
->   	nid = of_node_to_nid(dn);
->   	if (likely((nid) >= 0)) {
->   		if (!node_online(nid)) {
-> -			if (register_one_node(nid)) {
-> +			if (register_node(nid)) {
->   				pr_err("PCI: Failed to register node %d\n", nid);
->   			} else {
->   				update_numa_distance(dn);
-> diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-> index c24890c40138..7a97327140df 100644
-> --- a/arch/x86/mm/numa.c
-> +++ b/arch/x86/mm/numa.c
-> @@ -262,7 +262,7 @@ void __init init_gi_nodes(void)
->   	 * bringup_nonboot_cpus
->   	 *  cpu_up
->   	 *   __try_online_node
-> -	 *    register_one_node
-> +	 *    register_node
->   	 * because node_subsys is not initialized yet.
->   	 * TODO remove dependency on node_online
->   	 */
-> @@ -303,7 +303,7 @@ void __init init_cpu_to_node(void)
->   		 * bringup_nonboot_cpus
->   		 *  cpu_up
->   		 *   __try_online_node
-> -		 *    register_one_node
-> +		 *    register_node
->   		 * because node_subsys is not initialized yet.
->   		 * TODO remove dependency on node_online
->   		 */
-> diff --git a/drivers/base/node.c b/drivers/base/node.c
-> index 6b6e55a98b79..eab620e29c78 100644
-> --- a/drivers/base/node.c
-> +++ b/drivers/base/node.c
-> @@ -638,33 +638,6 @@ static void node_device_release(struct device *dev)
->   	kfree(to_node(dev));
->   }
->   
-> -/*
-> - * register_node - Setup a sysfs device for a node.
-> - * @num - Node number to use when creating the device.
-> - *
-> - * Initialize and register the node device.
-> - */
-> -static int register_node(struct node *node, int num)
-> -{
-> -	int error;
-> -
-> -	node->dev.id = num;
-> -	node->dev.bus = &node_subsys;
-> -	node->dev.release = node_device_release;
-> -	node->dev.groups = node_dev_groups;
-> -	error = device_register(&node->dev);
-> -
-> -	if (error) {
-> -		put_device(&node->dev);
-> -	} else {
-> -		hugetlb_register_node(node);
-> -		compaction_register_node(node);
-> -		reclaim_register_node(node);
-> -	}
-> -
-> -	return error;
-> -}
-> -
->   /**
->    * unregister_node - unregister a node device
->    * @node: node going away
-> @@ -869,7 +842,13 @@ void register_memory_blocks_under_node_hotplug(int nid, unsigned long start_pfn,
->   }
->   #endif /* CONFIG_MEMORY_HOTPLUG */
->   
-> -int register_one_node(int nid)
-> +/*
-> + * register_node - Setup a sysfs device for a node.
-> + * @nid - Node number to use when creating the device.
-> + *
-> + * Initialize and register the node device.
-> + */
-> +int register_node(int nid)
->   {
->   	int error;
->   	int cpu;
-> @@ -880,14 +859,23 @@ int register_one_node(int nid)
->   		return -ENOMEM;
->   
->   	INIT_LIST_HEAD(&node->access_list);
-> -	node_devices[nid] = node;
->   
-> -	error = register_node(node_devices[nid], nid);
-> +	node->dev.id = nid;
-> +	node->dev.bus = &node_subsys;
-> +	node->dev.release = node_device_release;
-> +	node->dev.groups = node_dev_groups;
-> +
-> +	error = device_register(&node->dev);
->   	if (error) {
-> -		node_devices[nid] = NULL;
-> +		put_device(&node->dev);
->   		return error;
->   	}
->   
-> +	node_devices[nid] = node;
-> +	hugetlb_register_node(node);
-> +	compaction_register_node(node);
-> +	reclaim_register_node(node);
-> +
->   	/* link cpu under this node */
->   	for_each_present_cpu(cpu) {
->   		if (cpu_to_node(cpu) == nid)
-> @@ -980,7 +968,7 @@ void __init node_dev_init(void)
->   	 * to already created cpu devices.
->   	 */
->   	for_each_online_node(i) {
-> -		ret =  register_one_node(i);
-> +		ret =  register_node(i);
->   		if (ret)
->   			panic("%s() failed to add node: %d\n", __func__, ret);
->   	}
-> diff --git a/include/linux/node.h b/include/linux/node.h
-> index 2c7529335b21..4dcf876cd0b4 100644
-> --- a/include/linux/node.h
-> +++ b/include/linux/node.h
-> @@ -168,7 +168,7 @@ static inline int hotplug_node_notifier(notifier_fn_t fn, int pri)
->   #ifdef CONFIG_NUMA
->   extern void node_dev_init(void);
->   /* Core of the node registration - only memory hotplug should use this */
-> -extern int register_one_node(int nid);
-> +extern int register_node(int nid);
-
-extern keyword is pointless on functions prototypes.
-
-checkpatch.pl usually complains about that.
-
-I know previous prototype was extern and all surrounding also are, but 
-it is not because mistakes were done in the past that you have to 
-continue doing the same mistakes.
-
->   extern void unregister_one_node(int nid);
->   extern int register_cpu_under_node(unsigned int cpu, unsigned int nid);
->   extern int unregister_cpu_under_node(unsigned int cpu, unsigned int nid);
-> @@ -181,7 +181,7 @@ extern int register_memory_node_under_compute_node(unsigned int mem_nid,
->   static inline void node_dev_init(void)
->   {
->   }
-> -static inline int register_one_node(int nid)
-> +static inline int register_node(int nid)
->   {
->   	return 0;
->   }
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 0be83039c3b5..6c050d867031 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -1311,7 +1311,7 @@ static int __try_online_node(int nid, bool set_node_online)
->   
->   	if (set_node_online) {
->   		node_set_online(nid);
-> -		ret = register_one_node(nid);
-> +		ret = register_node(nid);
->   		BUG_ON(ret);
->   	}
->   out:
-> @@ -1542,7 +1542,7 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
->   		goto error_memblock_remove;
->   	if (ret) {
->   		node_set_online(nid);
-> -		ret = register_one_node(nid);
-> +		ret = register_node(nid);
->   		if (WARN_ON(ret)) {
->   			node_set_offline(nid);
->   			goto error_memblock_remove;
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index df614556741a..e1a19a3dadd7 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -1909,7 +1909,7 @@ void __init free_area_init(unsigned long *max_zone_pfn)
->   		free_area_init_node(nid);
->   
->   		/*
-> -		 * No sysfs hierarchy will be created via register_one_node()
-> +		 * No sysfs hierarchy will be created via register_node()
->   		 *for memory-less node because here it's not marked as N_MEMORY
->   		 *and won't be set online later. The benefit is userspace
->   		 *program won't be confused by sysfs files/directories of
-
+> CCing Dan and AAlistair
+>
+> --
+> Cheers
+>
+> David / dhildenb
+>
 
