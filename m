@@ -4,101 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D207CAC5A5
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 02:49:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A624CCAC5A5
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 03:12:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 60CA68E0008; Tue, 23 Sep 2025 22:49:52 -0400 (EDT)
+	id CA66E8E0006; Tue, 23 Sep 2025 23:12:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E5108E0001; Tue, 23 Sep 2025 22:49:52 -0400 (EDT)
+	id C57518E0001; Tue, 23 Sep 2025 23:12:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 521F28E0008; Tue, 23 Sep 2025 22:49:52 -0400 (EDT)
+	id B6C9A8E0006; Tue, 23 Sep 2025 23:12:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 455278E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 22:49:52 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CF4451403FB
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 02:49:51 +0000 (UTC)
-X-FDA: 83922613782.10.6DB78B6
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf12.hostedemail.com (Postfix) with ESMTP id D112A40009
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 02:49:49 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="D/w43Tn3";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758682190; a=rsa-sha256;
-	cv=none;
-	b=kbHNnWcBf3aoLTvEVzKw+bUL9yrbuZHWwjGE/gdgpOdsv/mAgQjxtUx17ycw+tZYSOKBOG
-	pzNQmdq7vWAABfV26PHBAVqYYiESSCyjtHMiuTVjOwzfuNagwODFryE9jNWe1DtwsbtIgH
-	ATY6WmEdD5CyE5zfd/uMy0BrZ7MXFv8=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="D/w43Tn3";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A508D8E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 23:12:09 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3C099BAD00
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 03:12:09 +0000 (UTC)
+X-FDA: 83922669978.22.F9E55E3
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 9542640007
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 03:12:04 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ry3iHDml;
+	spf=pass (imf07.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758682190;
+	s=arc-20220608; t=1758683526;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gS3UMQYfDRiVXfktUZqtEyuly+0oheyOGtsfiL3CXxU=;
-	b=59kY2i2uxgOXOyMxvH+tg1q61uzJb/Y9+8ytwKTDNjc2AS/tTMuukPbaghUFcCduW7nZVY
-	4L/+BM5oe/WTvXVajZaTdjE+tg7q5vq6eUoSLmePAdXJAAN3Zuh208MmQ1A3F83TcCVA2V
-	+ul94vYo949cqbZTkuHTJWjaJPOki1Y=
-Message-ID: <f2fe9c01-2a8d-4de9-abd5-dbb86d15a37b@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758682186;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gS3UMQYfDRiVXfktUZqtEyuly+0oheyOGtsfiL3CXxU=;
-	b=D/w43Tn3x7CWbbsMju6wP2WmE63sMFT1L5kwMs0zBjv7gSY8AEfER8sfxukJxuwIgzMoyb
-	HkO0RKC4KmgarsNHiuI71MwRgtTRzO2yF3PnzTH3CFUBqrRPSCu3rabdUvARAHDsykafy8
-	GMLfw99XCOHABMYrqi82Sa7ykFYURTI=
-Date: Wed, 24 Sep 2025 10:49:27 +0800
+	bh=jpN6MR9tWHzIM5XbfO5zo6eTuKj59QIgIbF5cCp3dF8=;
+	b=CSCJpBonwgfFmks5cYRBFngHxqsAd/uXclmqci5VpM16qYbEi91Yk9Pch+d/klqCqaQ2zP
+	T96jrJwq7dA7qMfLgVj1Rcyc5n8Hv3YwLFPoZVcSIqWI3lwmWFv9FVH+LsCRZfzNUfDYuZ
+	KPSiG6Iy79svQDVnD6n0hdAFpcyrzjs=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ry3iHDml;
+	spf=pass (imf07.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758683526; a=rsa-sha256;
+	cv=none;
+	b=KBDfKrXtAdtfqvJAoTzfBYDNwiARNXWQcan9VAnEInLxt13ROhk8VEeHAblvHmCg7BS+3T
+	wjv8CsF/FoBOY2ACgtb3BgtoedZeo9VTd5VibhQJv+lKf7Pe+1tmINSD1NQiBuC6jju5DT
+	ARF9IZeuAk0TVvufhawXKX9V5E0msuk=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1758683521; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=jpN6MR9tWHzIM5XbfO5zo6eTuKj59QIgIbF5cCp3dF8=;
+	b=ry3iHDmlMOJFCVsLB0QrfCdy8xkhscZIEbjVYnvOSr5QOkmGlnin0ReRcAJAb6QTu9vtleZR4cFuSbSuTnXMwX3wVLfUcP4J4IHb+QKTCVnMo2TTmEIAxCWhcpbObbxSIqTvCaIy06sosyYV441Mje9d/LyrZk3rf3BXpH+NrbU=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WohrEz9_1758683508 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 24 Sep 2025 11:11:59 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Shivank Garg <shivankg@amd.com>,  akpm@linux-foundation.org,
+  david@redhat.com,  willy@infradead.org,  matthew.brost@intel.com,
+  joshua.hahnjy@gmail.com,  rakie.kim@sk.com,  byungchul@sk.com,
+  gourry@gourry.net,  apopple@nvidia.com,  lorenzo.stoakes@oracle.com,
+  Liam.Howlett@oracle.com,  vbabka@suse.cz,  rppt@kernel.org,
+  surenb@google.com,  mhocko@suse.com,  vkoul@kernel.org,
+  lucas.demarchi@intel.com,  rdunlap@infradead.org,  jgg@ziepe.ca,
+  kuba@kernel.org,  justonli@chromium.org,  ivecera@redhat.com,
+  dave.jiang@intel.com,  Jonathan.Cameron@huawei.com,
+  dan.j.williams@intel.com,  rientjes@google.com,
+  Raghavendra.KodsaraThimmappa@amd.com,  bharata@amd.com,
+  alirad.malek@zptcorp.com,  yiannis@zptcorp.com,  weixugc@google.com,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org
+Subject: Re: [RFC V3 0/9] Accelerate page migration with batch copying and
+ hardware offload
+In-Reply-To: <C8E561B3-B9DB-4F58-A2C7-4EE17E08A993@nvidia.com> (Zi Yan's
+	message of "Tue, 23 Sep 2025 22:03:18 -0400")
+References: <20250923174752.35701-1-shivankg@amd.com>
+	<87plbghb66.fsf@DESKTOP-5N7EMDA>
+	<C8E561B3-B9DB-4F58-A2C7-4EE17E08A993@nvidia.com>
+Date: Wed, 24 Sep 2025 11:11:36 +0800
+Message-ID: <87tt0sfst3.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/1] mm/thp: fix MTE tag mismatch when replacing
- zero-filled subpages
-Content-Language: en-US
-To: Catalin Marinas <catalin.marinas@arm.com>,
- David Hildenbrand <david@redhat.com>
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- usamaarif642@gmail.com, yuzhao@google.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, baohua@kernel.org, voidice@gmail.com,
- Liam.Howlett@oracle.com, cerasuolodomenico@gmail.com, hannes@cmpxchg.org,
- kaleshsingh@google.com, npache@redhat.com, riel@surriel.com,
- roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com,
- dev.jain@arm.com, ryncsn@gmail.com, shakeel.butt@linux.dev,
- surenb@google.com, hughd@google.com, willy@infradead.org,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
- apopple@nvidia.com, qun-wei.lin@mediatek.com, Andrew.Yang@mediatek.com,
- casper.li@mediatek.com, chinwen.chang@mediatek.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-mm@kvack.org, ioworker0@gmail.com,
- stable@vger.kernel.org
-References: <20250922021458.68123-1-lance.yang@linux.dev>
- <aNGGUXLCn_bWlne5@arm.com> <a3412715-6d9d-4809-9588-ba08da450d16@redhat.com>
- <aNKJ5glToE4hMhWA@arm.com> <aNLHexcNI53HQ46A@arm.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <aNLHexcNI53HQ46A@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D112A40009
-X-Stat-Signature: mgh3gufpthhdgf3k8915pj1zjq431m7i
+Content-Type: text/plain; charset=ascii
+X-Rspamd-Queue-Id: 9542640007
+X-Rspamd-Server: rspam05
+X-Stat-Signature: krxspjo39cq476oj8hcmukfsnsutab7b
 X-Rspam-User: 
-X-HE-Tag: 1758682189-402838
-X-HE-Meta: U2FsdGVkX18zWMXpKNV2YmOOzV/mZbKM0VVpSZuA2WeyapB3p4DbWrdgqHApS8+r5SO4u8DGIzfIlRzzeG0Qh/AQ99EAEImDxDZALTjurNSMyhYwUTuf8xaTYDN+/yq6MWDJdh1QEp8Vs+5bKmGf+NQ38jjGUPJ3r7sSXZhvSI6cV1lIwbX5N9xAA4auutpPdXlKIDCe7YTi2gq1gXeHQLehqooZo8b1SXLQe3OesY7aMFW0VvHw6GLoYYA6YsASkO08TjcwqxJm8MptjSJnd+a1cCkzCkoH+xnphdgsVGENTzRiwBYhm3QAfm6GfFy4DLNfdnLwp6u71UI5TbR7JFpYJ2jXxy8bI1UCeJlIwE55Ml4SI7CRH7CBIqIuz9fVm5XZit1CTX3UMMtjMUD9TeIdG0HpDrBx/r4GDtZtO7QCUT+dFSdUdxEnIwVZ7Kf3NMWzyrXaBtWm24r08BVX9N/iJONtIwjoLsBQiOstfIG1HvpAJgghnr7EgsUOAWggn05LioQmCenMrPS/W+PL2wqojmXAcEbB/XNO6C1YVkGbn3illSXaV9+1C8HlpRJx+Y0kfm+upEJRTHh9+mzX0K08nMxnhn8ZdAz/NPBL/CJytdICxg729qAKqEarPC5PAn8GEZwjz9fF0rpSTyEr2nUs+NPxznf5SwbhPOEZCDVP6X6XHoyeHGGaHOHhRYDQCYiJM59RsnIFrMxXBDmWYUluPLis10nzCoSfBj6ISxZrsvN77t/52N4SC+C8MTuMdqB7EdAhI2nZHPU2qGIok24QcgnkbJeVD10rPLEVg2nKQ3mMUbiROvnfmnEGs0df+xBd9W2+azsVfwt3lznRgYt9yJ/baUsg2qRfqP6MSR/6XIKvYElYgBhd1UQ2u4dASJQlm89AyktkW7QYEGgozmO1UBzNylV19mwy6xhq4ZRwyIIWcr6YjiawMR3rmwN2UI68/DxFzaqilGylf1u
- Q+PYKPn1
- l/uKQg3ZpQyqYPjSl+6UObI/BtYKLDNNlSu50q64d/ViTzkrYWmKQQTK3gnEKz0eW1yQ1Z1VXk9bJFjNCQTeYcI2EXyyLlTUTOvu2kNEoFToukeSPLtcPwARJOvNf9330N2Abr1gKcf6UGruMyxLekBu68hrMx/nM44ok0kEpvUfrZpHBO6kIeIIy3o26TzMG2KsLI/F3fW+aw0RLamIrSkAqIU2sXYJndropcXbC5EIi7IMInRjohBPEbiJRvUaQcdcq/yCd9PImEngOwUbinfhvIW44CoXJZ3h+
+X-HE-Tag: 1758683524-965223
+X-HE-Meta: U2FsdGVkX1/FlPVJNfQFM9rPVAX0M666td8nuvxA9aaoZp6UmsUk3ErAlw+5cy+VYnm4kU9ydkZ0YZ6qy/+kZpnJddYUd7t8QeM+/OEE0oEjTOb97n0U1rk4JqcfEVYrNpo0QhuKEJj6r7kh/l6lZjBKyVSTGlaXazKzUuZl1xDxPmNoXhgbxOqFDgvy9SJ6Brv0ByC6IH/pOYzjSjwIe9FWkh9RWg6TjqXIzvU9C55Hb4+CxBbwh6lsOXew7nHTPlM6Ao9CafE7boyMmquyWtMU7gd15RYtdQZtbTezwRqFL3iGLchD0nzX9uC5OIzFdfi8eFam3buu8WVPO9Shvh+6tH+YDgIJoeEzs469Tzbe7wvcAmUPzoL6ES20WTyhMacZEBFCzRtEKx+ggcHOrQwjtYDLCf9ly0Wt+P7AP66WVz8KA5+DwtaPLNdOIs6W+Tmv3rGbu9Aog6MKmOXp4R/y6WoueoukZ/WYCMynzRRgAzE0/13eETV5qtIRRbVVOH+M7SCMgNmrOlUEaswiJZS5816oxSgk0Vjdwij14q+DC7XyfXqflP+KwZHefaytsIQRfas38sGfPBEsAzwVDr7nkipNBnOhzpbryssLofRhcEB4EROd6C1iNQbD1egcvpfLPNsfIamNvXkBwnrcw86uRXf9LsQiChOQm/bD5G5XeY1Cq3RIxvCUhxQl/+THhhluuTmB0z6lG8/pPQktxiR5NXCMMCDX5lIhljVbRjcXGxfr9VZS81soAu0NidNO3qr2Pm8JJTrVNRrXe0WLx6rWjbLHy/JSDK50GBsX/gFKyxC5BTXoF0iCfmdIkx3FbiahTyQKvkaU9gVu3HUH3vEoy1zmliavjWEtd3v+4GlLW17ooAtCJ1lD/9r2fE7SQVB3GT2npZBMZnJaWr7oVX12Lzt52ticLHMN98VaIWiYu4HdDrrhjEPqC6HmAvI9zLfc2sAI4mkGsbzfgUO
+ wVZmRVh/
+ 5MCV9rqoA6rR0w77tm92Z0hydt8bD4+UYGgT7MKV1DNoS7ktsCIZ2nwGYIqNT86bUAkYTKofXGRfCuieYgHyxf1YaNWeSA4Od/RcD9X66liW5YdUF2Rs3QbDpCiWb3q3vt9YbbYg3Vm8Rr/eSZAvy2KeMhBgH/NlJvlFffWWvXnIepXF4G4+jeYamfsVIlcjx6JufpFcp2cyxe4g6KT3vJHm/gdHqqyZ6LFCcchYdPYwb7cA7NX7/g7PMn6lrKZ4nV+z9rmrI4iqZCpwqlOlMu4UCTNwV7HNtRKN1bVX9FCFhe+TCaRIjHr54EJT1ynf/70c7ih18rMpToI65ZSeHpu4LLEr48vEmjKR8Rh1GgUhSw4LyK517Pwz8v626UU4X7rFD7NCNWU6+bSY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,94 +99,164 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Zi Yan <ziy@nvidia.com> writes:
 
+> On 23 Sep 2025, at 21:49, Huang, Ying wrote:
+>
+>> Hi, Shivank,
+>>
+>> Thanks for working on this!
+>>
+>> Shivank Garg <shivankg@amd.com> writes:
+>>
+>>> This is the third RFC of the patchset to enhance page migration by batching
+>>> folio-copy operations and enabling acceleration via multi-threaded CPU or
+>>> DMA offload.
+>>>
+>>> Single-threaded, folio-by-folio copying bottlenecks page migration
+>>> in modern systems with deep memory hierarchies, especially for large
+>>> folios where copy overhead dominates, leaving significant hardware
+>>> potential untapped.
+>>>
+>>> By batching the copy phase, we create an opportunity for significant
+>>> hardware acceleration. This series builds a framework for this acceleration
+>>> and provides two initial offload driver implementations: one using multiple
+>>> CPU threads (mtcopy) and another leveraging the DMAEngine subsystem (dcbm).
+>>>
+>>> This version incorporates significant feedback to improve correctness,
+>>> robustness, and the efficiency of the DMA offload path.
+>>>
+>>> Changelog since V2:
+>>>
+>>> 1. DMA Engine Rewrite:
+>>>    - Switched from per-folio dma_map_page() to batch dma_map_sgtable()
+>>>    - Single completion interrupt per batch (reduced overhead)
+>>>    - Order of magnitude improvement in setup time for large batches
+>>> 2. Code cleanups and refactoring
+>>> 3. Rebased on latest mainline (6.17-rc6+)
+>>>
+>>> MOTIVATION:
+>>> -----------
+>>>
+>>> Current Migration Flow:
+>>> [ move_pages(), Compaction, Tiering, etc. ]
+>>>               |
+>>>               v
+>>>      [ migrate_pages() ] // Common entry point
+>>>               |
+>>>               v
+>>>     [ migrate_pages_batch() ] // NR_MAX_BATCHED_MIGRATION (512) folios at a time
+>>>       |
+>>>       |--> [ migrate_folio_unmap() ]
+>>>       |
+>>>       |--> [ try_to_unmap_flush() ] // Perform a single, batched TLB flush
+>>>       |
+>>>       |--> [ migrate_folios_move() ] // Bottleneck: Interleaved copy
+>>>            - For each folio:
+>>>              - Metadata prep: Copy flags, mappings, etc.
+>>>              - folio_copy()  <-- Single-threaded, serial data copy.
+>>>              - Update PTEs & finalize for that single folio.
+>>>
+>>> Understanding overheads in page migration (move_pages() syscall):
+>>>
+>>> Total move_pages() overheads = folio_copy() + Other overheads
+>>> 1. folio_copy() is the core copy operation that interests us.
+>>> 2. The remaining operations are user/kernel transitions, page table walks,
+>>> locking, folio unmap, dst folio alloc, TLB flush, copying flags, updating
+>>> mappings and PTEs etc. that contribute to the remaining overheads.
+>>>
+>>> Percentage of folio_copy() overheads in move_pages(N pages) syscall time:
+>>> Number of pages being migrated and folio size:
+>>>             4KB     2MB
+>>> 1 page     <1%     ~66%
+>>> 512 page   ~35%    ~97%
+>>>
+>>> Based on Amdahl's Law, optimizing folio_copy() for large pages offers a
+>>> substantial performance opportunity.
+>>>
+>>> move_pages() syscall speedup = 1 / ((1 - F) + (F / S))
+>>> Where F is the fraction of time spent in folio_copy() and S is the speedup of
+>>> folio_copy().
+>>>
+>>> For 4KB folios, folio copy overheads are significantly small in single-page
+>>> migrations to impact overall speedup, even for 512 pages, maximum theoretical
+>>> speedup is limited to ~1.54x with infinite folio_copy() speedup.
+>>>
+>>> For 2MB THPs, folio copy overheads are significant even in single page
+>>> migrations, with a theoretical speedup of ~3x with infinite folio_copy()
+>>> speedup and up to ~33x for 512 pages.
+>>>
+>>> A realistic value of S (speedup of folio_copy()) is 7.5x for DMA offload
+>>> based on my measurements for copying 512 2MB pages.
+>>> This gives move_pages(), a practical speedup of 6.3x for 512 2MB page (also
+>>> observed in the experiments below).
+>>>
+>>> DESIGN: A Pluggable Migrator Framework
+>>> ---------------------------------------
+>>>
+>>> Introduce migrate_folios_batch_move():
+>>>
+>>> [ migrate_pages_batch() ]
+>>>     |
+>>>     |--> migrate_folio_unmap()
+>>>     |
+>>>     |--> try_to_unmap_flush()
+>>>     |
+>>>     +--> [ migrate_folios_batch_move() ] // new batched design
+>>>             |
+>>>             |--> Metadata migration
+>>>             |    - Metadata prep: Copy flags, mappings, etc.
+>>>             |    - Use MIGRATE_NO_COPY to skip the actual data copy.
+>>>             |
+>>>             |--> Batch copy folio data
+>>>             |    - Migrator is configurable at runtime via sysfs.
+>>>             |
+>>>             |          static_call(_folios_copy) // Pluggable migrators
+>>>             |          /          |            \
+>>>             |         v           v             v
+>>>             | [ Default ]  [ MT CPU copy ]  [ DMA Offload ]
+>>>             |
+>>>             +--> Update PTEs to point to dst folios and complete migration.
+>>>
+>>
+>> I just jump in the discussion, so this may be discussed before already.
+>> Sorry if so.  Why not
+>>
+>> migrate_folios_unmap()
+>> try_to_unmap_flush()
+>> copy folios in parallel if possible
+>> migrate_folios_move(): with MIGRATE_NO_COPY?
+>
+> Since in move_to_new_folio(), there are various migration preparation
+> works, which can fail. Copying folios regardless might lead to some
+> unnecessary work. What is your take on this?
 
-On 2025/9/24 00:14, Catalin Marinas wrote:
-> On Tue, Sep 23, 2025 at 12:52:06PM +0100, Catalin Marinas wrote:
->> I just realised that on arm64 with MTE we won't get any merging with the
->> zero page even if the user page isn't mapped with PROT_MTE. In
->> cpu_enable_mte() we zero the tags in the zero page and set
->> PG_mte_tagged. The reason is that we want to use the zero page with
->> PROT_MTE mappings (until tag setting causes CoW). Hmm, the arm64
->> memcmp_pages() messed up KSM merging with the zero page even before this
->> patch.
-> [...]
->> diff --git a/arch/arm64/kernel/mte.c b/arch/arm64/kernel/mte.c
->> index e5e773844889..72a1dfc54659 100644
->> --- a/arch/arm64/kernel/mte.c
->> +++ b/arch/arm64/kernel/mte.c
->> @@ -73,6 +73,8 @@ int memcmp_pages(struct page *page1, struct page *page2)
->>   {
->>   	char *addr1, *addr2;
->>   	int ret;
->> +	bool page1_tagged = page_mte_tagged(page1) && !is_zero_page(page1);
->> +	bool page2_tagged = page_mte_tagged(page2) && !is_zero_page(page2);
->>   
->>   	addr1 = page_address(page1);
->>   	addr2 = page_address(page2);
->> @@ -83,11 +85,10 @@ int memcmp_pages(struct page *page1, struct page *page2)
->>   
->>   	/*
->>   	 * If the page content is identical but at least one of the pages is
->> -	 * tagged, return non-zero to avoid KSM merging. If only one of the
->> -	 * pages is tagged, __set_ptes() may zero or change the tags of the
->> -	 * other page via mte_sync_tags().
->> +	 * tagged, return non-zero to avoid KSM merging. Ignore the zero page
->> +	 * since it is always tagged with the tags cleared.
->>   	 */
->> -	if (page_mte_tagged(page1) || page_mte_tagged(page2))
->> +	if (page1_tagged || page2_tagged)
->>   		return addr1 != addr2;
->>   
->>   	return ret;
-> 
-> Unrelated to this discussion, I got an internal report that Linux hangs
-> during boot with CONFIG_DEFERRED_STRUCT_PAGE_INIT because
-> try_page_mte_tagging() locks up on uninitialised page flags.
-> 
-> Since we (always?) map the zero page as pte_special(), set_pte_at()
-> won't check if the tags have to be initialised, so we can skip the
-> PG_mte_tagged altogether. We actually had this code for some time until
-> we introduced the pte_special() check in set_pte_at().
-> 
-> So alternative patch that also fixes the deferred struct page init (on
-> the assumptions that the zero page is always mapped as pte_special():
+Good point, we should skip copying folios that fails the checks.
 
-I can confirm that this alternative patch also works correctly; my tests
-for MTE all pass ;)
+>>
+>>> User Control of Migrator:
+>>>
+>>> # echo 1 > /sys/kernel/dcbm/offloading
+>>>    |
+>>>    +--> Driver's sysfs handler
+>>>         |
+>>>         +--> calls start_offloading(&cpu_migrator)
+>>>               |
+>>>               +--> calls offc_update_migrator()
+>>>                     |
+>>>                     +--> static_call_update(_folios_copy, mig->migrate_offc)
+>>>
+>>> Later, During Migration ...
+>>> migrate_folios_batch_move()
+>>>     |
+>>>     +--> static_call(_folios_copy) // Now dispatches to the selected migrator
+>>>           |
+>>>           +-> [ mtcopy | dcbm | kernel_default ]
+>>>
+>>
+>> [snip]
 
-This looks like a better fix since it solves the boot hang issue too.
-
-> 
-> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-> index 7b78c95a9017..e325ba34f45c 100644
-> --- a/arch/arm64/kernel/cpufeature.c
-> +++ b/arch/arm64/kernel/cpufeature.c
-> @@ -2419,17 +2419,21 @@ static void bti_enable(const struct arm64_cpu_capabilities *__unused)
->   #ifdef CONFIG_ARM64_MTE
->   static void cpu_enable_mte(struct arm64_cpu_capabilities const *cap)
->   {
-> +	static bool cleared_zero_page = false;
-> +
->   	sysreg_clear_set(sctlr_el1, 0, SCTLR_ELx_ATA | SCTLR_EL1_ATA0);
->   
->   	mte_cpu_setup();
->   
->   	/*
->   	 * Clear the tags in the zero page. This needs to be done via the
-> -	 * linear map which has the Tagged attribute.
-> +	 * linear map which has the Tagged attribute. Since this page is
-> +	 * always mapped as pte_special(), set_pte_at() will not attempt to
-> +	 * clear the tags or set PG_mte_tagged.
->   	 */
-> -	if (try_page_mte_tagging(ZERO_PAGE(0))) {
-> +	if (!cleared_zero_page) {
-> +		cleared_zero_page = true;
->   		mte_clear_page_tags(lm_alias(empty_zero_page));
-> -		set_page_mte_tagged(ZERO_PAGE(0));
->   	}
->   
->   	kasan_init_hw_tags_cpu();
-> 
-
+---
+Best Regards,
+Huang, Ying
 
