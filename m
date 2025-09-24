@@ -4,114 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E3C9CAC5B5
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 12:29:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0027CAC5A5
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 12:32:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2F408E0010; Wed, 24 Sep 2025 08:29:10 -0400 (EDT)
+	id 44AF68E0011; Wed, 24 Sep 2025 08:32:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E063E8E0001; Wed, 24 Sep 2025 08:29:10 -0400 (EDT)
+	id 422418E0001; Wed, 24 Sep 2025 08:32:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1C838E0010; Wed, 24 Sep 2025 08:29:10 -0400 (EDT)
+	id 338028E0011; Wed, 24 Sep 2025 08:32:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BE9948E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 08:29:10 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6215A160734
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 12:29:10 +0000 (UTC)
-X-FDA: 83924073660.01.12BCCED
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 244248E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 08:32:10 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BEC8A11ACA3
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 12:32:09 +0000 (UTC)
+X-FDA: 83924081178.03.1C4848A
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0398040011
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 12:29:07 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PYr4fkpm;
-	spf=pass (imf01.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 64CE0120011
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 12:32:07 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Fq60GKxA;
+	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758716948;
+	s=arc-20220608; t=1758717127;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zg/KeJeUvNE6SDnPn43Ej3SICDgB1VedGAUJQ2XUMaw=;
-	b=1fnu7WM3rszfW0hLIITePUP4acPnmF6Lx67pzbXEo0NyPQUCGLb6LXxX9xcfz5j5sjqCtP
-	3IslFZb01NU4hw2oQGfAtaV4F7RElgBcIj47AHYn0FTAzJs7/A6wZUl0ku6Ntp8+ELPU8h
-	y1aXRN10YmEnxuWOXoHhiWbWYwokPLM=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PYr4fkpm;
-	spf=pass (imf01.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758716948; a=rsa-sha256;
+	bh=nxDPC3N2WqjlWNs99FhY5LFBBOFWE7WmpuWkOT+s240=;
+	b=lY4rBHBNeeASa4cen2epEcq7HYbWl7Ql+r+AJ9qJsF16e7dqv/Pvqwy/+zGtPrBOpBDqNK
+	OBF8EiurYp3tXhE4Te69y9NQMf8YWJ8FtREne4ACXHHV8KCqPMfcn767G7J9mIGyhnDUmj
+	Zq5bR8rZ1gVBIgwjWy8CIQoA712F2l8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758717127; a=rsa-sha256;
 	cv=none;
-	b=LG3GxSvtT4i8TgEiWX7yxztb2qw6MjZvnzC6T+yQkN+pY+RTGCxsJAW/7o+cJYosnD2SNF
-	4SBmCU5c1byC/UMdf+fh7nR8WP+WwQ9X+STsslveqzjGd94KMLgkIOAViNpeD3OvI1oLHU
-	PjmVqjsZdAMk9T3tb/ahWIclpe9Owt8=
+	b=s0KWlbv8UGd0QfDODAN9il8G/0kGg5kV53b6T+wrsNHQ8XzenwmYqqzwzRI3IcXuF1yOBo
+	Z9+OvbMSWpLioHEYQaxPsQwQE8ktQHSjBObQyh3sUq8ZBzV63ZjAbq0BClm18vYdg+v6b7
+	1LWwcWaJswa25G+pTR+DvBWQbqbB8P4=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Fq60GKxA;
+	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758716947;
+	s=mimecast20190719; t=1758717126;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Zg/KeJeUvNE6SDnPn43Ej3SICDgB1VedGAUJQ2XUMaw=;
-	b=PYr4fkpm+ZY82JZEBZ9yJJrfWIxv6xfCfPvvt1VanUkXuw564qCmRq5siEnBzRFl/90+vc
-	M8OoqMc/C29FQ+9PFSOKif2IaqeTdS0HtuqD973Na+lgaOFW3ke3ZYZPHQWshitXjhZWAh
-	mDyPL+HCJ8K/4d8nkr3iXj1COZIO1tU=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=nxDPC3N2WqjlWNs99FhY5LFBBOFWE7WmpuWkOT+s240=;
+	b=Fq60GKxAQwDNUv1kbt/VOGNx3B9hh073Cmb2bGNTdKNS6YE/CAc/gQBBcpU1sIquj/MsX6
+	5nHOFIAt0sLcssAow9i+eUiqSZCyI05WS6iCibT58G1gZarPPmnTaon6c3Qr7Ud5TR0rD0
+	U4Lolgx7YmbVo22U5BKgHx5Rw07a7s0=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-76-eqU6PbX2NYSP4163aCx3xg-1; Wed, 24 Sep 2025 08:29:04 -0400
-X-MC-Unique: eqU6PbX2NYSP4163aCx3xg-1
-X-Mimecast-MFC-AGG-ID: eqU6PbX2NYSP4163aCx3xg_1758716943
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3ecdf7b5c46so2896294f8f.2
-        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 05:29:03 -0700 (PDT)
+ us-mta-604-7J5pFT4iMlKgsA-7jeabtg-1; Wed, 24 Sep 2025 08:32:03 -0400
+X-MC-Unique: 7J5pFT4iMlKgsA-7jeabtg-1
+X-Mimecast-MFC-AGG-ID: 7J5pFT4iMlKgsA-7jeabtg_1758717123
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7e870614b86so1758432785a.2
+        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 05:32:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758716943; x=1759321743;
+        d=1e100.net; s=20230601; t=1758717123; x=1759321923;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Zg/KeJeUvNE6SDnPn43Ej3SICDgB1VedGAUJQ2XUMaw=;
-        b=OTdS89f7AdQD6+bC0PIEGNF48ioKNi74jMmOA1C/NitF8aJNYkO3EjfOMQn8wJP5at
-         diOXgPHmUDRXFPwI1NGkTXBKgLyKfJX9DVXKBM7NAVvJhY3nv/FG1/8+X8EN5YFT2g9L
-         LCedYxOoWlSFGWQ6HAWunoKNLuVJnkXOvblyyykxrcrugAxoQ9n2ZN+E9E9G8BryQG9w
-         Ag49Rdaftt4ZlnUXDQmVGVjbCM9PAQ+iaQx7V/heIBNrJ4fFmbLcFxyMUAkmf7RsHbc1
-         hs41h2NBqjuFs8YNc6NQKYPV/+SUCNSS6b0k0Xq6oehAJL4+A/JNF4adfaZ3pu4nfJ2H
-         mA3g==
-X-Forwarded-Encrypted: i=1; AJvYcCXRCn2eKN40YbXBGcS4K7oOn35BXirfWOeS7MiTfXgvUujuy07awA9qrX24Gtgn1G372rlaV0oVuQ==@kvack.org
-X-Gm-Message-State: AOJu0YwShVI/fzbRtWmjBCH7l9wefJOVnpy4uxRQ6r7yL+IoW6vAhecM
-	PYSuOVg0MVvW7yGDMbqx0lkaMAIg6MRTs9FkyDDU28iANMV35J3o6zJ3BeFwZaaDa3gPhcvLUsM
-	V1PXy60QKMJFgiUYybickZQMNM7+HtEjpeM1m355dstgB6LxDtysb
-X-Gm-Gg: ASbGncuwsXvsBv4F5Et1Bp+dLNIaJAZTCx1J6p8/4CYQM3ZB9BIdYjjuBh47As/apC4
-	0a6lP/o4ROnUG6Y1GcJZKeLu72N9SGhd530M9dos5Lh6mSbLWzZrX5XnYTkCO0ECOg59wJHCfy8
-	xir494IgUzdgoJqoy3sxK+5Ibu7gL+UDBfHyz00AXjokgEvS9wMlPnbObyT4JWhF/mgAe5tTku2
-	IMrf/zhZRIgRSF+GHOUbzTf9UcYplIh+W+raZmgzT5ZFzd9k1kjh+sNfB2rW6gUtEDTj3F0Ij8n
-	42cnOgW7cmCADsCrPP+KdS7/Hr+OO08Z+qzP8OTd7wx0P9BKiZntxItGFRPyzEaEB4geYXZe9hj
-	YN4XM4aJ2CgYNisSyY6WgikHUAEQ3vVkvFSXaQACpt5g0mV0y0dIt86wIMHOjNjteLw==
-X-Received: by 2002:a5d:64e9:0:b0:3ec:d740:a71b with SMTP id ffacd0b85a97d-405ca959d79mr5315911f8f.31.1758716942794;
-        Wed, 24 Sep 2025 05:29:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG3xevDTMGBQG/yt32a0HQ37hskBklE0qC7Sm/CkDYkjJXHbzM/EDh9lB7E+58ArZeOtFZBpQ==
-X-Received: by 2002:a5d:64e9:0:b0:3ec:d740:a71b with SMTP id ffacd0b85a97d-405ca959d79mr5315882f8f.31.1758716942363;
-        Wed, 24 Sep 2025 05:29:02 -0700 (PDT)
+        bh=nxDPC3N2WqjlWNs99FhY5LFBBOFWE7WmpuWkOT+s240=;
+        b=dMD35JL7wCHFb4j++m+2OQztfqaKYW3t0Jf7Vpa0b9JefBdPPjO6IZm10lruwckkNV
+         /1/OEyMqsSUeBzaxzNMqy8mhqaPmWpV4KFPH/+gdVlUTP6j4SM06vmQFe179UKtklKow
+         O4z7cktVEsQDnyAR1DVYDXAAiARzf7lSNofVh1y01n1bTfCLIhyoHK11rDw6sgpq9ZGF
+         +uiu2mPBCM0NRDMurSFBLH0Tj/pIOCcwHXFAkPfLBR0evp0etIAHIIJfcTgPzHBh5qe2
+         puXXmcqt9Y/iYQBT12WTZUzES3Nymu+i9aSo855R2+uzrSBkCofDAERaT9Y6wQmdbP4j
+         v0Xg==
+X-Gm-Message-State: AOJu0YzEDPOfcU8ZQDmc7CiD9KXeGObL3GxvjYUV+nmSUPrNcMwMOvnH
+	5GA5qqEj3pdZSwe5+h9TOaF4tUTwpHabLs20+kkPxuAHkvM+IlN/sZVvuzXQczvXYJrLTIVNw8y
+	Wr6tXGRQ6eihII9eGEkE4rB/1qzTmDWXhKnHY933zM3XWfUYZ6qTD
+X-Gm-Gg: ASbGncuEH6BQSfvVHvs3s3H+7GmkPOr0waGD3cua0IUoPLn2y+Dnrl0dJmhUEldH/+r
+	OXW7S0I6hvLI0LpbJHMmUnmlwapVbN9mpZcWq+Y9kH2ef96R6BCsN59zGAj3KRjMfhwJ/s/bcGn
+	qDzk9q0aov/MYl9QV2ggXfhYS9LFH/QvJah2JQ13XJwBEIr4lSY+4ZtU/5sb8mviO1/xdVAtB/g
+	kRHusREy+5Hw8jy9azVhCKfJ3wA5siReQ++gtOfVScVK+tV595hKSH5AUC2LDvEpfzStJ/6j8bO
+	Zea1bWRU5+UBODrcA2zWXWYRhsZVkLNaOvVDkCAdnJCebX2GA2R6fUlLCGXjq6zhfPQHNEfxM9O
+	nQKBFL1US28tHblDcoCgh8Qeu/u2dwK/oHT+bbjFXuOqtMo+pUPfw6y7NxhXt2ZrPrg==
+X-Received: by 2002:a05:620a:319b:b0:84a:568:b7d3 with SMTP id af79cd13be357-8517370024bmr640303785a.74.1758717122870;
+        Wed, 24 Sep 2025 05:32:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGU15mmr+4FrFEuvbHzmbfHN1dEwcBROdLoWHPYj5RplChD/U2Nd74SiOjXAk6SjarpxJnJ8Q==
+X-Received: by 2002:a05:620a:319b:b0:84a:568:b7d3 with SMTP id af79cd13be357-8517370024bmr640299285a.74.1758717122380;
+        Wed, 24 Sep 2025 05:32:02 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f14:2400:afc:9797:137c:a25b? (p200300d82f1424000afc9797137ca25b.dip0.t-ipconnect.de. [2003:d8:2f14:2400:afc:9797:137c:a25b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e2ab62233sm30792525e9.21.2025.09.24.05.29.00
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4cc0b7734d8sm45780151cf.53.2025.09.24.05.31.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Sep 2025 05:29:01 -0700 (PDT)
-Message-ID: <2dcffe42-141b-40fc-9bc1-b61a1ed7d74f@redhat.com>
-Date: Wed, 24 Sep 2025 14:29:00 +0200
+        Wed, 24 Sep 2025 05:32:01 -0700 (PDT)
+Message-ID: <3ffda308-1210-4760-bac0-ba5b019c0e2a@redhat.com>
+Date: Wed, 24 Sep 2025 14:31:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH Next] copy_process(): Fixed jump logic error
-To: Edward Adam Davis <eadavis@qq.com>, kees@kernel.org
-Cc: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
- bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
- akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <tencent_5E4F978D9525A58D97925ADDBADDB2193107@qq.com>
+Subject: Re: [PATCH v2 3/4] mm: thp: use folio_batch to handle THP splitting
+ in deferred_split_scan()
+To: Qi Zheng <zhengqi.arch@bytedance.com>, hannes@cmpxchg.org,
+ hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev,
+ shakeel.butt@linux.dev, muchun.song@linux.dev, lorenzo.stoakes@oracle.com,
+ ziy@nvidia.com, harry.yoo@oracle.com, baolin.wang@linux.alibaba.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>
+References: <cover.1758618527.git.zhengqi.arch@bytedance.com>
+ <782da2d3eca63d9bf152c58c6733c4e16b06b740.1758618527.git.zhengqi.arch@bytedance.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -157,21 +160,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <tencent_5E4F978D9525A58D97925ADDBADDB2193107@qq.com>
+In-Reply-To: <782da2d3eca63d9bf152c58c6733c4e16b06b740.1758618527.git.zhengqi.arch@bytedance.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: SPdK5oBeQDEtNdCkT-ZXJkZEoHHHaH1rSQw0zH6_zp8_1758716943
+X-Mimecast-MFC-PROC-ID: 36YvyLuDvbDkSDYqOxpCkrdetKAvFdxQZI620pka-JE_1758717123
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 64CE0120011
+X-Stat-Signature: 7e3chxq6bgirrf31s7n1mx1q7r6597pg
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 0398040011
-X-Stat-Signature: qq4e68is4ub6oihx1okwoscfth17o5cj
-X-HE-Tag: 1758716947-157876
-X-HE-Meta: U2FsdGVkX1+MtNk9HKEHP0vdFHRgLYylYG5zQ1qS7OVU6r1w6K08snxIiqrRVYyPSYIPRKv3QWBmgTtYLaxEQQHRG72a+sawdj62QrCVxX2eiESap/zZL6dJvUNVnCYtFzsERf1QngHLV29rT9fU4Rii9+ouyTHzVHRrIiBQp5R0byn05T12NTL2qZUKCYX+FBqbr5T0dQNhQUX4pkXKjs7Nfo8p4j8jI/9MfEJ4QoVNRHZTUFM0ESoBS56mjXJdcr35wFLZFrU8QZh8FrQmHkZAkmmOdaYwnNUP0VXxeTFMn2OrM60CQ9Yf4E01z0yzTIhXXC3lUqTK4Qsu6kDblL0l2wS6UmEGorkC8ao8aoeT+TtyIVoUywfpE6D4cqOC47b2Yr9yzHk6Ba0MoGFuNGFKW5VyjaoYtKXDzrThs7meW6awP4v9JwIqT1fZpzTTZs6O1b/cYwFwikSWJ9YMhEKbNqrz1rtY0sT23tbULL9JcVCt6HsLPxULGt0U4ec+hrWfA6o51fSE5ACKcS3zrhpE8elakXYLDL70Wbb5v+JGwcuWJst1XUgOKTyToG/MgXTbydqALnUAXMMsWiXOmTwWQX/vs3/hs6QqG31U6nMHle0E8EEmWIM4FOR8wMaXqgkDlsMmuG+QrHq1A6c5D4gaequDfZDDCD1UuFVMFJQwpnLa5hYmCaiy00uU74WQ1SAF9rkCVRuw6RabZUkFf8amabcMvdNS+0ea8/ep0vFEpTHtY9c81lAcy9ua3sDM4ynAYAERIhXfXUgOVYXViWcojve7ItIh1mOcHJ6ruNWYE/Ow7wenOp7FthDK6HymE1rMu6eaIL4GCjvuOVP1XKgPZPMCR+PWoaLd0O3wZVTb4fVhV+ArF7CQzOCO7HfFkckali3QAxhBWTzu2oOeIt5W8bMeaj+jYXKzQK5SXhyN5I8oDJR6sQG+axiAILnXqHBN/+tS/UU+ZOKwQ7g
- wq82LlUq
- AKHmdpeKNuBK92DNGhuHIjzrQnPlDj7LVZW+91lsihUFLvWFz+NBITHPZE0ZFerAuZ12pb0hBSv/X8h80B8IKdXhzBB+OckF7QBudpexNJdXUEUyOh79YIqosJnZp0OlgaZEpEQNC0vAJlwRBB4FhIa8JiRKjZ1sc8lQXTv6fAse/2KY6Urjipu+KUcKTGySYn1KhjK4FZdc9zgdlZvcb7Iq3R+z4IT/N9B9ZifjSZLrRX3/lkiWRflgCnUFqAwCBm4/yazSjbt6YUsMH50AMMMmo9ZYraOr35G+3ncIyJ+L3L+cc0Wt8pjqsAB6F1AvYH0pFt9uY0ISKDvB6dUPPKdaHYsganhb6ADh4rhnS4zAmt9YGj7JunZ1b74JHLBRi2fMYekbIxUFaMWg6nvnTAa6ohqnZihZwm0Iu2ZrEI3DdhQuym87g0zZ4vmcYMGUnTH79PM5gZeDZdWGoj9evESW0YQ7tMs/IkIItg3PSu7glzSL0PKd2Lx0Dt+91A/bWVgmoL+/ZDjcZpG6daGjoLjqEf4E7onZhz1I+Y4DJ2lqjlvwkJ6iAT4lW4fD3TobVVRjxUj6+rS/6DnI8VQ8R/aLsEoXZkWBbEepSaQlJStRO/TLH+9Z7kaR3ScOCaXENE5zRYO9O/safS2BW5jFIqa0NEmD42LulyvjaqZQbtLkje7c=
+X-HE-Tag: 1758717127-254630
+X-HE-Meta: U2FsdGVkX1/g1vu4I7NJao8nlEIvbA5g+MTPDE8clxGvV/rMEw/4Wmu2tBHe7LPr9w/fiLaY7l19UMpM60byUktlLMnXX6aL0zyCSyxgC5lrMOPqtWpuY0jRK7nh+fZeIodAcicj8gyE0ukc2i+uQ5aUlTHGwMvEwzniE7wPlCC9eu1eiDFiG/dcKU0Zu1rUGhd/SNrCqdSUIhT2kz0NCYfDGbORuD1lWIdyG8Pr+7MW5Ym9G3PRcf0xfJ43kf5Qiyaw/DoPWippNX9IACTjE4sToPwQTzi4HVFDvNO3Loa4idaBU2jCilxkMQbhFfg4olsgWTx5Xx20HxIvI/KexsUfacQ1gvJ/hhRnO6Jz76XiL9b8pBEt81PLuxXRRm8FeAHtYDklR+/bkvsBFFWZWJix0nPVKQLGA6bwixUyD8xygLwQk/mzNgeoRtIgA6E5OduUWoXlDmKJiqZ8I/x6ojpntm0VR1a6JZddxUDup4voGtZppN5AL8sy16UnILXMYnNNkuu5EV/LioMgQiabIGvEKh/5mv4zwWjw4Xc62bRrkdi/5FO08TU9DuSVthTmzNUY7xtoxp1PpgLwF+JSl6a4Ql8QxLRtEM37HajWoy1X3vFwrSnLUp6pZUQmivnoQjjB0dljWYGVF0VCzTvQe2xOcMf2IFgT9KHIoJb/KNLs0bb/p5d4IJi31woAHTHQTxw7zMgBU47qozN2NyzFCKeNeDlcXCcOrfT019OYmd09i40i24Uku2hwpCuk4WFhSPe7ovZ8jMQem07KhuAB6SrF8UpZoB+FM4EXCEVFUR2psxj5eRKBcCCFSteAGxKLjYf6QzXfsROJukFu3gPqp/R5bMrWNoM8QH6PltGb24f9sE6GDc19wykLVI92zmpzJBZQ8PjoyRF6HhvBEt9YlJD5ixSHg8oXo4hMtSgKeOV1urCOGlhyXjlUIAmibIb7hIRMzH0McRr5s2vGXu2
+ /aaajj5D
+ 01eSclZ2fVFImxg0vKMn/CTGOL4GhxNrDX6MpQ/WaLBVNrhJSGDApZLV3VB0+4Rqy/FE3C+59e+UBcoVNu/uszR9gwv9A1Ju1oDkSOuocylrXKxtLTHlvySmVDF4a+Qq8jzFgv9FyAQHBDczjHJflYJ0Abm4FTCoH7UiSMHZ8wrCfFSZg+zAMeuRKLfRmSNcJ6ADW5XxkCJYR0wbIJ3trGKRxCHnK3xDZYZVtvVUIYBGxmKWSr8oxqBb4spKkn3OtnENVHfF65FO8t/6HhLEiONWzwamDl3s7yoXAAUDQb2J45JOROeVbpNvXLNcFPP2iZzMs10NIs1mZgGjfMfHlWZCRF3+kEWPlF8COUG+Q2xt6bdVnnmebQRkHTWn7V0lhKE481DlHvJV0xXvLduqmu0yOvINofn/RLhwdoqxJ8FoHqgq8wbVudR7znxqtuzfj5KFXkVsAKLDr1C+fA6fsCKrYCm2mBpo6gKfSUjMKiKzHO9NUlsrvESuD3gXFoCHrRqoVOAC+UX3ycFSCyWPsD/Bodx/kVtc2N1gK+ROZnTvAjWqY1D7Ur1qnRVaZVE1hAont2xDY1A2F63pnulOaFN3TTPFeQ6kcgZZk9jFXQrKOsRI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,43 +183,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 24.09.25 14:06, Edward Adam Davis wrote:
-> After futex_hash_allocate_default() fails, the logic should jump to
-> bad_fork_cancel_cgroup, not bad_fork_core_free.
+On 23.09.25 11:16, Qi Zheng wrote:
+> From: Muchun Song <songmuchun@bytedance.com>
 > 
-> Jumping to bad_fork_core_free would cause a siglock imbalance.
+> The maintenance of the folio->_deferred_list is intricate because it's
+> reused in a local list.
 > 
-> Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-
-If it's still only in -next (which I assume when looking at the Next 
-tag), into which patch should this fixup get squashed?
-
-Or is this already upstream and we want actually Fixes: and CC stable?
-
-(staring at current master, this seems to be an upstream problem?)
-
+> Here are some peculiarities:
+> 
+>     1) When a folio is removed from its split queue and added to a local
+>        on-stack list in deferred_split_scan(), the ->split_queue_len isn't
+>        updated, leading to an inconsistency between it and the actual
+>        number of folios in the split queue.
+> 
+>     2) When the folio is split via split_folio() later, it's removed from
+>        the local list while holding the split queue lock. At this time,
+>        this lock protects the local list, not the split queue.
+> 
+>     3) To handle the race condition with a third-party freeing or migrating
+>        the preceding folio, we must ensure there's always one safe (with
+>        raised refcount) folio before by delaying its folio_put(). More
+>        details can be found in commit e66f3185fa04 ("mm/thp: fix deferred
+>        split queue not partially_mapped"). It's rather tricky.
+> 
+> We can use the folio_batch infrastructure to handle this clearly. In this
+> case, ->split_queue_len will be consistent with the real number of folios
+> in the split queue. If list_empty(&folio->_deferred_list) returns false,
+> it's clear the folio must be in its split queue (not in a local list
+> anymore).
+> 
+> In the future, we will reparent LRU folios during memcg offline to
+> eliminate dying memory cgroups, which requires reparenting the split queue
+> to its parent first. So this patch prepares for using
+> folio_split_queue_lock_irqsave() as the memcg may change then.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 > ---
->   kernel/fork.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index e9a7fb5c3e49..a0b8eeeb1d27 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -2349,7 +2349,7 @@ __latent_entropy struct task_struct *copy_process(
->   	if (need_futex_hash_allocate_default(clone_flags)) {
->   		retval = futex_hash_allocate_default();
->   		if (retval)
-> -			goto bad_fork_core_free;
-> +			goto bad_fork_cancel_cgroup;
->   		/*
->   		 * If we fail beyond this point we don't free the allocated
->   		 * futex hash map. We assume that another thread will be created
 
-Makes me wonder whether we would have to undo anything the 
-sched_cgroup_fork() did, or if that cleanup is implied in 
-bad_fork_cancel_cgroup. Without digging too deep into the code, I assume 
-the latter.
+Nothing jumped at me
+
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers
