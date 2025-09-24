@@ -4,117 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D249CCAC5B0
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 09:40:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B904CAC5A5
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 09:44:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 364A78E0010; Wed, 24 Sep 2025 05:40:29 -0400 (EDT)
+	id CE38D8E0011; Wed, 24 Sep 2025 05:44:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33C078E0001; Wed, 24 Sep 2025 05:40:29 -0400 (EDT)
+	id CBC788E0001; Wed, 24 Sep 2025 05:44:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 203598E0010; Wed, 24 Sep 2025 05:40:29 -0400 (EDT)
+	id BA9B88E0011; Wed, 24 Sep 2025 05:44:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A9D88E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 05:40:29 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A1B1FBB64A
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 09:40:28 +0000 (UTC)
-X-FDA: 83923648536.21.B7293D0
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A6E298E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 05:44:28 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5993711ACE1
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 09:44:28 +0000 (UTC)
+X-FDA: 83923658616.16.31A3BAA
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4C3261C0012
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 09:40:26 +0000 (UTC)
+	by imf20.hostedemail.com (Postfix) with ESMTP id F051D1C0008
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 09:44:25 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TVmU1PMO;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ym2fl5Ds;
 	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758706826;
+	s=arc-20220608; t=1758707066;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y5g2huPHmUyw3NpDK8BXokdT/yczIG51iBSq9Te/XQg=;
-	b=Tubm850j+wbaDWIsWrHKZOeWeAnIN2TPQdHA1Gxqv6qAKehyWAmgUueFnkvwsfmnjjcPHm
-	GMTD2SaZnlQ78uYsdsT88yF8sOStaXR0l7A2Nu318V7n2qsKTuhevLVulr1GnnJTbp9fS8
-	6BCiYQYsjOaIii5vccw0+Fvp0Ud1TRI=
+	bh=LATvy2V6SYrxON5S0ZwKxz6/ssurKvZ0zpsAbTZsXD4=;
+	b=6w8EQaCSF7w96MFT+mKBNt2pJKfItgIsppY78/M27eGAs4I8gaeH5EpD5wLW0G7jkfuJc3
+	FOLPoQ27GKuFRxlb2Ml7PTjR6l/RgK5QKG7xygMY8PBnHOD/ZCYZlEZc3eNMVmkil08g7a
+	w/4nUR+WPxyzpxAUDJUxzMdqqSKV+Pc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758707066; a=rsa-sha256;
+	cv=none;
+	b=PATIOm3JQIBy/GP2nzEfvKSIhvgo2ZiGZi3mOsRmutCWzaAa4sNUwChQXgcMgEQFLqfrjr
+	esT9NfttBw6f6vZJdNxh26Ni2gR93BfIzfEM+k6dCC8IX/053pJeTOwHT3gkgy/9eeWW/0
+	gxr9anUCuBNLRlBNgl0/JZkxEMaqEqo=
 ARC-Authentication-Results: i=1;
 	imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TVmU1PMO;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ym2fl5Ds;
 	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758706826; a=rsa-sha256;
-	cv=none;
-	b=FvQDOES6j5LWv5KoU1fGILvcIOZ0JCkJy8wgdF3NCSriTpvLnk11WSk/zOU+iD+dEq+ony
-	9s+K+IHekmAivXJQpiuCgsjwWC9giDdtEU1gFyAifaDgHyLqeqt5LwrsrwJWlFeihCJcck
-	xTxkIiHWIlqB9hLxKqAVALK44YBeO5Y=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758706825;
+	s=mimecast20190719; t=1758707065;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Y5g2huPHmUyw3NpDK8BXokdT/yczIG51iBSq9Te/XQg=;
-	b=TVmU1PMOiBr4ODBfHaW1v31bp0indEDKnZN6d0PfxEoeOE5H9RAzKbUWSBTLZS2bv1NQGG
-	BbKSnqqNo/wRZxPbzLssPJgh9qIJlOiEC9PVHMXEOslDKd6odpFK9hAfbbt8OzJsYWMoYK
-	qw61UR0nh/qEifMEnAd5AUAdPMrbyKE=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=LATvy2V6SYrxON5S0ZwKxz6/ssurKvZ0zpsAbTZsXD4=;
+	b=Ym2fl5DsEBP/zm3pmP3tCV37bPoTuhLZTx3SXhSRx/No2FLicoa8MslT2xHsSYV1flh3UQ
+	YXJd4+NCoJt4CSDVyu3Ps1BMSK8bM+9oCcc2wgYkwWzICsFKdOX+dQ4QKprC5eRHoTotYY
+	+ok7+B0AeZHI+t66KpmExa3j0ITYx88=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-36-yhVjg4N6OaSUR6xdIVIpxw-1; Wed, 24 Sep 2025 05:40:24 -0400
-X-MC-Unique: yhVjg4N6OaSUR6xdIVIpxw-1
-X-Mimecast-MFC-AGG-ID: yhVjg4N6OaSUR6xdIVIpxw_1758706823
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45de18e7eccso31412275e9.0
-        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 02:40:24 -0700 (PDT)
+ us-mta-538-N4uZ5oY_OLOkGDcE5HHtmg-1; Wed, 24 Sep 2025 05:44:24 -0400
+X-MC-Unique: N4uZ5oY_OLOkGDcE5HHtmg-1
+X-Mimecast-MFC-AGG-ID: N4uZ5oY_OLOkGDcE5HHtmg_1758707063
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4612d068c47so45928965e9.3
+        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 02:44:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758706823; x=1759311623;
+        d=1e100.net; s=20230601; t=1758707063; x=1759311863;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Y5g2huPHmUyw3NpDK8BXokdT/yczIG51iBSq9Te/XQg=;
-        b=S1tTtwBH8KhRMlESlj8IDsZKowRfHNPYdgZGhgwHlxlmJvzGFyslhf3yNpH6bhsnGi
-         f757p0O0JBpoL0UD5p44Och4yrfOFz3PCHOvgSscBgH8YYdQI5DyHSktTgKAduBxXuaM
-         SsCk1wmQHYLXy0T8go/ARqgeqKkxuyO5+Ldz3Q0vXddx2o8LEj1ZL6FDGKByo5AGqvOD
-         9g9+fl8MlYSk0yAHM2MZLmQh2YirpMyVmgLwGy6MG+CG941AB28Ya5E2LPDPhAMb52Rr
-         WJ8Cv8H5V9H7UWGOeWTVgoiJ/h2liUIsyEFXKBJi/sqQtGjDIQldR6470A+YuNzb2O/J
-         M8Hg==
-X-Forwarded-Encrypted: i=1; AJvYcCXCWqHK2glB7n1rgheY13c1OhmbZoKNDYQ5TioaEQh/vviBpdyoi+Ee+kpfraQllDCmGy/aQzWcVw==@kvack.org
-X-Gm-Message-State: AOJu0YwooMZdxlKaM5qfwbXN8WA3su3rby++6WD2dq62m60wrwgbN7cu
-	4Jc93Tq7LhOS4h3jSTaoalToMOH2YVvY3Irt/hi0BWJ65q++IQau+YuLIaFc1i1DXi5EPVrrXKF
-	NOmo1oVqrsP+otZm85dYABdZgVKKGQRvIvE0SL0v0jCm4Z+dCfJNa
-X-Gm-Gg: ASbGnctbqUZz5xEXugYLu6iKqqH05NWWIaGjNexHTys+Jz4VWLOcvxqjROZFp8P4ZaU
-	zKYfReRDMbnbJpB1fL/H+f3s2aTF1EO2gldNAYE22W8vS/iSxcOw6IRQI1XUv5MxkLwmw3gtF8x
-	SbZgYluOeF2Cv0Pd0eKdyT76B2B4o03fDcQDfzoCt4NsmuefPjee6Fb2YamtWJeXl360EihRgvK
-	xcWx28ZgZXnI1A2JVJ4rmzDPNR4kCNFREcnbS7cD14D1PLTLQQ9/CY5LZw6c5RDaLc/TCpgViuI
-	YJrZqwQGrAABgML3iBLO2HpyCXzhv7fmY+VVA6UVU6yh0g9ehB7yT7zvOQRhOGwAlYanszjEDwE
-	3pdBn002RjzM41lue5t4YZvekAZQuehplAJq74Bh0WrrQrwYkxcf+E2Cm/TyTVvXDyA==
-X-Received: by 2002:a05:600c:a01:b0:45f:2cd5:5086 with SMTP id 5b1f17b1804b1-46e1d97463dmr56052335e9.3.1758706823077;
-        Wed, 24 Sep 2025 02:40:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH1SPfc+AjS8YKJC3JYF7rr+BGI/4Dkb1jzNcjaRzwJii/fosxGNb9VJb9nXiJZmMesquPXnQ==
-X-Received: by 2002:a05:600c:a01:b0:45f:2cd5:5086 with SMTP id 5b1f17b1804b1-46e1d97463dmr56052125e9.3.1758706822689;
-        Wed, 24 Sep 2025 02:40:22 -0700 (PDT)
+        bh=LATvy2V6SYrxON5S0ZwKxz6/ssurKvZ0zpsAbTZsXD4=;
+        b=oHQVR05BK26681XkHoYfDDt7reI/vxh+mHBGRSuucn9byo9Q0yRsy9w5nbKRk7C/Ec
+         FY6Xl8oDV01D7hpzYHHphPtj0Uru2PTZ6nfSxGQLyH9q6Pg38SsrdLaBrsxBpwVshyQe
+         5/6DCW+Pqshu/vaP1ph6i2pSb1eTJMnIHhkweHNZuuOTaz2zf+ZKc3hvrQETYxum9Jm/
+         bwOF+8100mBsPeT32it1+TNUmj5ja/3SzxVQvq6n3yiwgMPFYbtPqUrdwhUj6HxMmVLe
+         B8hrNz21uWiYUDRwkl1DDPfTjowmtAh9u+fJFh8qIakWPQuYe4f+rRNf/nhtmaeRmqnd
+         +ThQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU6gY5iSIE45JhDB1rezEYN3b8SEK4gU61Lkj03Y3jkV5dCa5R+BRei4qonDVjz8SiEpxBfe+saXQ==@kvack.org
+X-Gm-Message-State: AOJu0YzVrLGxRsN5JsMx1kPJf+hscUbWsWytLg1vwru6ZyzfG4IUHqYM
+	mNctu9VcZsFTFaJo1oEw+6sFLENaiKh7vnplKSgnwBdaMZrkCmAFQlpOsH9W6+2aacDyI5yf+5j
+	Q6oBOAEB0n2z8ZFQscbM6nGkhMfg1Uabm0OelccxvKSZ4AYUmJfrQ
+X-Gm-Gg: ASbGncsY+OUrSuwDT72KJWlVvTd575ndRpfeW8XXTL7bAxtkIlAkoXnR/MXjyvFebk3
+	cdhoPpnfIqza0lSQ2q6bLd7hBquy7xgSBvZfCdSMCM4h4pWeC3x0ApmQSsZXw78t+2LhUrt62hl
+	EmPdOInQA2dDb16L45hdDjok2msI2Ljf1w7Yh8JrKdvdIq8fREBizkWcomWYnb8ggk50rE0/HQV
+	FZjNiJtSZEpDPjITtpoVMQtCqTGjr3nKK9JC9/mKR4UvdyOZLbyE1hQph6DtsR6vBYG6M+bFXE5
+	hsI1UTgoJT3XmV49i9o+X+8WK3NMAadIaw5WXsqiLDBrxu2lxhB7VN25A2OmFf82PgYcyPcuvf/
+	LbtqUyQ2EEsnHoRqrUZ+8kC/MwyOT+BZAdm08oxdYo4GJf2XfE39eDlfaQlKGBxxsJw==
+X-Received: by 2002:a05:600c:8b4c:b0:46e:1ae7:dc1a with SMTP id 5b1f17b1804b1-46e1dacdeccmr60077215e9.35.1758707062742;
+        Wed, 24 Sep 2025 02:44:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFtajsvp/kDNdAlIZ81myaBdoqXgoPzgIMj71ym20C24BB7lOR6FEuJDw/hq3ekdj+UMiHTYg==
+X-Received: by 2002:a05:600c:8b4c:b0:46e:1ae7:dc1a with SMTP id 5b1f17b1804b1-46e1dacdeccmr60076735e9.35.1758707062201;
+        Wed, 24 Sep 2025 02:44:22 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f14:2400:afc:9797:137c:a25b? (p200300d82f1424000afc9797137ca25b.dip0.t-ipconnect.de. [2003:d8:2f14:2400:afc:9797:137c:a25b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e2a998309sm24176775e9.4.2025.09.24.02.40.21
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e2aad99f8sm25671645e9.17.2025.09.24.02.44.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Sep 2025 02:40:22 -0700 (PDT)
-Message-ID: <1ebbfe02-1cb5-4f7a-a640-68d5d95cb99b@redhat.com>
-Date: Wed, 24 Sep 2025 11:40:21 +0200
+        Wed, 24 Sep 2025 02:44:21 -0700 (PDT)
+Message-ID: <791e0d59-0eb2-481f-bf8b-ba4b413d5ebd@redhat.com>
+Date: Wed, 24 Sep 2025 11:44:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v3 1/2] mm/ksm: get mm_slot by mm_slot_entry() when slot
- is !NULL
-To: Kiryl Shutsemau <kirill@shutemov.name>,
- Wei Yang <richard.weiyang@gmail.com>
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
- linux-mm@kvack.org, Dan Carpenter <dan.carpenter@linaro.org>
-References: <20250924004854.29889-1-richard.weiyang@gmail.com>
- <20250924004854.29889-2-richard.weiyang@gmail.com>
- <27storxu4seijr5smul3xx7pofe45ittjrchii3jtwbntalsiy@2cu3wf42drwa>
+Subject: Re: [PATCH 1/1] mm/thp: fix MTE tag mismatch when replacing
+ zero-filled subpages
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, usamaarif642@gmail.com, yuzhao@google.com,
+ ziy@nvidia.com, baolin.wang@linux.alibaba.com, baohua@kernel.org,
+ voidice@gmail.com, Liam.Howlett@oracle.com, cerasuolodomenico@gmail.com,
+ hannes@cmpxchg.org, kaleshsingh@google.com, npache@redhat.com,
+ riel@surriel.com, roman.gushchin@linux.dev, rppt@kernel.org,
+ ryan.roberts@arm.com, dev.jain@arm.com, ryncsn@gmail.com,
+ shakeel.butt@linux.dev, surenb@google.com, hughd@google.com,
+ willy@infradead.org, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com, qun-wei.lin@mediatek.com,
+ Andrew.Yang@mediatek.com, casper.li@mediatek.com,
+ chinwen.chang@mediatek.com, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ linux-mm@kvack.org, ioworker0@gmail.com, stable@vger.kernel.org
+References: <20250922021458.68123-1-lance.yang@linux.dev>
+ <aNGGUXLCn_bWlne5@arm.com> <a3412715-6d9d-4809-9588-ba08da450d16@redhat.com>
+ <aNKJ5glToE4hMhWA@arm.com> <aNLHexcNI53HQ46A@arm.com>
+ <f2fe9c01-2a8d-4de9-abd5-dbb86d15a37b@linux.dev> <aNOwuKmbAaMaEMb7@arm.com>
+ <17dabd83-0849-44c9-b4a2-196af60d9676@redhat.com> <aNO7MrQt9oPT8Hic@arm.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -160,21 +171,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <27storxu4seijr5smul3xx7pofe45ittjrchii3jtwbntalsiy@2cu3wf42drwa>
+In-Reply-To: <aNO7MrQt9oPT8Hic@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: VPkmznMXZwe2wDnFuAefI-lz37ERDj0D4a7hPUPOEoY_1758706823
+X-Mimecast-MFC-PROC-ID: cvAd2Kfk004Wp119sqqYjO8b73S6R9C3U98fcg9hUaE_1758707063
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4C3261C0012
-X-Stat-Signature: 9xnzrq947cmypntaupw69ztp6uiykdi3
+X-Stat-Signature: kecxk5f67e3unuybbuma1u7deamr6qqu
+X-Rspamd-Queue-Id: F051D1C0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758706826-247595
-X-HE-Meta: U2FsdGVkX19P/uo7izWco+XMIlPTwpJgBxdiEsPI7UlQ8S/+CA/5hUPAd/ir5EU2eN7h4Y02LOFWfF+yH9bgr2oVwgmq1W7dgSW310byHOOmGScLD6IKP+nRnMhPIsvCa6lkG9VkSNhJptlRT22C5Gpj1pua09hx6dW5nGPpMsEurhGxaZkpz/oyYSF9zFZpkjcZG2LuDkdkGn7wK36cwwGbcZuwSBz1ftEzFOLpkWIKqrNyDw6IrucPN1MvQVQ1MoAmgEA6+TKIYmINMDIqOV4y7J2jmtMkx9c3TIWlbqa2XezZQDaO8nIdxLUBAqdWTFSTsLp3SIFRI92sjKICxAGxDpYSWJyYWqC0KVDVL40nPkyzd4nwsLJMEsS361aCYtDKwUBRPCsSO0g+VJ+yZZXTKeKKd0CumdP+ZJngtyi2wK8f+L0s8kafBmAvhlpF9FSNefyV+wPdyE+X6MmM9H/RcTzFRJtMKSm5cLC0Zia6gP+19//Ow5EVE2kIGar8/7zI7mRjXVbLrM5iHu4yK2gDlesXxAEUqvrBxXRn1RonpFVXUAqj4nojsMkmaDDrzK6IChFFgmtw0X4BhXlTNVPmtTKQFugVVckyRkYiJ/+oulVTjzc2wkySQcqnukriTo86kUiBrPwKQIlplnyOPBoZwmQna04tVkYKmxJ9r2aXw0FxwrqEXgTz4FVlnnlVooAoCuRK6fsarJzUIU1RUKPRHjaDvKlTZU2CJBJd+DcvUek3CP/NX0i6LEeQaS9m0zuUq0OPcxSTRW8n4Mt15T2+ziGCCix2RbhcD/c8bE87NW5iG22RbM1eoDmoGJfQ+01m6oVnF4MwuLRahNnNT4I4mkph0QHFMdc825mj1a4DRwloTrejgaAPo29G5IqgTpI3/8QwqfU7Z5NBQNWamSIrjDXRWAx4TAficD5BlhKslKURH6dCE23Q7is/V5HCFIF6ksgCtd5VHpUsW5H
- 9OcPYcaB
- gYFv7aYOr2cn7ITIQtehDBjVG0NWYTLi3L6u2Z52sdvUv8ZzefTIaFsvRyKVj/jF9XDz5ou7CL6XViUjuMSZbcTLZCKCmFJcJ/u2Rb+G9oqTXX4QcLjeA891eR3W227EcYesmTxfLAeB471Q8WPYksjUe2BlalnknVXJ5w6mR8VEx+LJIXsCoUcSzvr4enZ6ZI5PPsyfYIIjjqHGJb9w1NMvT1+gPV0t/JmX7FyTRCszIpKoJKQixsS8nf30MuRVefyo3xy70Mdff2uMB1V5NUwwWOWlN6ld1r7GfL5God6Q9LNbc2ShVOxJ32jXUM4xnU5vTBsc2Qv3FjtWHTay+jxAXHdhG8VVGGpwrrsjTETp9FtDF9vqqcQM2V9us6DhzOGvYFU009vowWWcAIu1fJGzc9UNFwhhqT7+pLfvq3AUbeeVScau6rhxZuPPmhAxj3TMxsNYoGqVoW/ht3j/dZAdLoT7ZWlVPFNkd5sIVtmLrGznqOu9keHQeEcfiLq0Yao7mYT3U2XD4YrM5DaTRJXIovnXeXkKJpxqOPcnQ63/hqyaelkYivHFb3P2Ix3q+t6CzgY+d6AS7U8+ZojZenephgjFopBIJ64B8y2UdfikUrA7GZGGC7VXrNLdVyUJrYUZ12IpgSRTsrFIGkgGl0Q55rK7S1egdweNLn4HcFjn+1+0WUpyY8kGDl40HFSxxnrl8R5hcf5/YwToAgPTGpEh29quky4l55NJZZOT9i6cjmnh5mj4VlBThLVbqAt+zXSunKDzzI9kAjh2I594hB1lPaUvmOttQZLSJecDmPTj0yOuEb/PvKTAIMYd7RucJ3lPAaygepCT1f4IOgH+0uZWqk0iekJjv1aOQVArkED4IlRRHeHsBhZ1f/KyZdikdZ9MItGpdNQcRC0A=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1758707065-881700
+X-HE-Meta: U2FsdGVkX1/9KvzOHFEG3wSOv4SdoXXgpfTQBrj2EbHJhRQIV7HNzORkuhSiPEEw3qmnNBWrmNIInqGDnSh/SAmYlYvuS4Lsor47F3o0bxfbVkkWiKU1FoczQ26/IL4tOuy9P1gDXPE8btDStlr9xBqENSQIKbRjVnBZPHxc34Ql18yUB/4sUmLHxU/EY52h3Ybmq+ul4bXWw7+RXAUCF8LZLkxYQiePnbDfJSV2OV5stskbYFJ1ZeEmdTEENCHFIAw7Dkaw19b9BInDpQlDl4S8TIuNnM+b/pL8i5s2Qtya6HS+J6IAYWYE9b//Bu3xiIF4qZvre8NnDud7wNAbIRYCT3jDY6i5tuh1EnmG/l/x1JDol+MNEopGGfUKq2X2yHHUFRpoHozbArJOTj/P24MX3MkzBaH01DIolRaQHBUK3SIh8xJXbBVmG+ATpdHrLtXOVc0WCTKL1zfoKSTDkI198g4SUOYTIOrw0/L49atjLWt7ZQx1zXI/slgYN+rDn1E7DYAA0K35c1jpClnCsEW7CeZXqwWjep07SfoDl3F4sWBPweorRjDuIkLnKbbcOAkbvxcy3rtrVTjkqo+eyIr0IwNQLVyszAvixu36Ob1NmughtF10kGlK1gPE2qbIzYx7gyO+zL/jKVnloqB8Fi2SWZ2wLlrUMr8uMDnCBr7O79W2Uk4QX9cy+EbDZ/MzYFFyqRT70yiycKBLJ33bJxSTaaBmnrgQ9i7RU5Sq2wrrdy7A5Tyfkn6ADMcvaTCsswOxBdQDziV6UwtCS4vRFMsLftAyYhyliGcEFXMpTbUO4SfoP1IBF+LQhc4P9Ph+i47DhOXadDTyX6YilsAkjtpYiiTJydwfUElwgmnaKnr90hXDEHBTBhB/7jdUXKMrEFWedPuQlvhOkE+YZy1t8EDnQ6iomQvexUUqTW3EDZrdNWRv4sbCb8UDc0sXcCcFhIXELQ9hrj3QcAdjVkW
+ vLtfYlle
+ MiJTFkX9OKy9lF5T1Y3/pnwC7YXS2pU3vvz06oPyoJQDQtclI9uF9sKUvmY3UjY41BEqGDGqRpxI+eI5bl/XQ3tVKUA5+sdJqZ9Ax/6Nj1mAzSllMlhRUtEFFIPoXgUljaWyE9fqDU8C5falmttHPArhst0pvK4zkyHxMvHC3f9ohrXVcozmiarCzTQo9QieiDSbyHIe6qc03kxLosbcsF/gTIcCDBUQnSz4DjSpd3aYpeiHVKhZZrgJg2ZA1LETPajQSGG6UipJJj1D5I6DUWVvBBlO2y16rOOe3LzGVzaEFMoZx7Wq9kVshR573uZMPmoYTi/ZJt5sOn6DjHK4q80epVMYBdUnTRohrz12aXLJXsyKrZdUaHVz/G0l+7hlh9nhyFGxcuDe8RwesZzrn37b+5HZem2b2ivH1mwQb44GhqF+DXYQUA7P6BZhZdCku2r7qUKBF+HLG++Ur3ORUGQca+Oo7xR38WuJW/VtPWRNSDiXtW7WOP7/1etx34shb4VG24EwI72S8h/55JZAFt+rN2pYqn8oXfWnMgUvA+PlKAkS1j7srYHAoUYk+23I8CP9zdvDfBOj8U0k=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -183,80 +194,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 24.09.25 11:35, Kiryl Shutsemau wrote:
-> On Wed, Sep 24, 2025 at 12:48:53AM +0000, Wei Yang wrote:
->> Patch series "mm_slot: fix the usage of mm_slot_entry", v2.
+On 24.09.25 11:34, Catalin Marinas wrote:
+> On Wed, Sep 24, 2025 at 11:13:18AM +0200, David Hildenbrand wrote:
+>> On 24.09.25 10:50, Catalin Marinas wrote:
+>>> On Wed, Sep 24, 2025 at 10:49:27AM +0800, Lance Yang wrote:
+>>>> On 2025/9/24 00:14, Catalin Marinas wrote:
+>>>>> So alternative patch that also fixes the deferred struct page init (on
+>>>>> the assumptions that the zero page is always mapped as pte_special():
+>>>>
+>>>> I can confirm that this alternative patch also works correctly; my tests
+>>>> for MTE all pass ;)
+>>>
+>>> Thanks Lance for testing. I'll post one of the variants today.
+>>>
+>>>> This looks like a better fix since it solves the boot hang issue too.
+>>>
+>>> In principle, yes, until I tracked down why I changed it in the first
+>>> place - 68d54ceeec0e ("arm64: mte: Allow PTRACE_PEEKMTETAGS access to
+>>> the zero page"). ptrace() can read tags from PROT_MTE mappings and we
+>>> want to allow reading zeroes as well if the page points to the zero
+>>> page. Not flagging the page as PG_mte_tagged caused issues.
+>>>
+>>> I can change the logic in the ptrace() code, I just need to figure out
+>>> what happens to the huge zero page. Ideally we should treat both in the
+>>> same way but, AFAICT, we don't use pmd_mkspecial() on the huge zero
+>>> page, so it gets flagged with PG_mte_tagged.
 >>
->> When using mm_slot in ksm, there is code like:
->>
->>       slot = mm_slot_lookup(mm_slots_hash, mm);
->>       mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
->>       if (mm_slot && ..) {
->>       }
->>
->> The mm_slot_entry() won't return a valid value if slot is NULL generally.
->> But currently it works since slot is the first element of struct
->> ksm_mm_slot.
->>
->> To reduce the ambiguity and make it robust, access mm_slot_entry() when
->> slot is !NULL.
->>
->> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->> Acked-by: David Hildenbrand <david@redhat.com>
->> Reviewed-by: Dev Jain <dev.jain@arm.com>
->> Reviewed-by: Lance Yang <lance.yang@linux.dev>
->> Cc: Kiryl Shutsemau <kirill@shutemov.name>
->> Cc: xu xin <xu.xin16@zte.com.cn>
->> Cc: Dan Carpenter <dan.carpenter@linaro.org>
->>
->> ---
->> v3:
->>    * fix uninitialized mm_slot
->> ---
->>   mm/ksm.c | 22 ++++++++++++----------
->>   1 file changed, 12 insertions(+), 10 deletions(-)
->>
->> diff --git a/mm/ksm.c b/mm/ksm.c
->> index 2dbe92e3dd52..c00a21800067 100644
->> --- a/mm/ksm.c
->> +++ b/mm/ksm.c
->> @@ -2921,7 +2921,7 @@ int __ksm_enter(struct mm_struct *mm)
->>   
->>   void __ksm_exit(struct mm_struct *mm)
->>   {
->> -	struct ksm_mm_slot *mm_slot;
->> +	struct ksm_mm_slot *mm_slot = NULL;
->>   	struct mm_slot *slot;
->>   	int easy_to_free = 0;
->>   
->> @@ -2936,15 +2936,17 @@ void __ksm_exit(struct mm_struct *mm)
->>   
->>   	spin_lock(&ksm_mmlist_lock);
->>   	slot = mm_slot_lookup(mm_slots_hash, mm);
->> -	mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
->> -	if (mm_slot && ksm_scan.mm_slot != mm_slot) {
->> -		if (!mm_slot->rmap_list) {
->> -			hash_del(&slot->hash);
->> -			list_del(&slot->mm_node);
->> -			easy_to_free = 1;
->> -		} else {
->> -			list_move(&slot->mm_node,
->> -				  &ksm_scan.mm_slot->slot.mm_node);
->> +	if (slot) {
->> +		mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
->> +		if (ksm_scan.mm_slot != mm_slot) {
->> +			if (!mm_slot->rmap_list) {
->> +				hash_del(&slot->hash);
->> +				list_del(&slot->mm_node);
->> +				easy_to_free = 1;
->> +			} else {
->> +				list_move(&slot->mm_node,
->> +					  &ksm_scan.mm_slot->slot.mm_node);
->> +			}
+>> I changed that recently :) The huge zero folio will now always have
+>> pmd_special() set.
 > 
-> Indent level gets extreme.
+> Oh, which commit was this? It means that we can end up with
+> uninitialised tags if we have a PROT_MTE huge zero page since
+> set_pmd_at/set_pte_at() skips mte_sync_tags().
+> 
 
-You call this extreme? :)
+This one:
+
+commit d82d09e482199e6bbc204df10b2082f764cbe1f4
+Author: David Hildenbrand <david@redhat.com>
+Date:   Mon Aug 11 13:26:25 2025 +0200
+
+     mm/huge_memory: mark PMD mappings of the huge zero folio special
+
+     The huge zero folio is refcounted (+mapcounted -- is that a word?)
+     differently than "normal" folios, similarly (but different) to the
+     ordinary shared zeropage.
+
+
+It should be in mm-stable, to go upstream in the upcoming merge window. 
+It's been lurking in -next for a while now.
+
+As it behaves just like the ordinary shared zeropage now, would we have 
+to zero/initialize the tags after allocating it?
 
 -- 
 Cheers
