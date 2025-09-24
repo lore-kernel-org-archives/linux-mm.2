@@ -4,133 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B68FCAC5B5
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 10:17:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DE28CAC5B0
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 10:24:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C95078E0002; Wed, 24 Sep 2025 06:17:06 -0400 (EDT)
+	id BBB568E0002; Wed, 24 Sep 2025 06:24:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6C458E0001; Wed, 24 Sep 2025 06:17:06 -0400 (EDT)
+	id B6F088E0001; Wed, 24 Sep 2025 06:24:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA9198E0002; Wed, 24 Sep 2025 06:17:06 -0400 (EDT)
+	id A816C8E0002; Wed, 24 Sep 2025 06:24:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A95E18E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 06:17:06 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 44B035B01F
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 10:17:06 +0000 (UTC)
-X-FDA: 83923740852.07.A057479
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 4BE2D40006
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 10:17:04 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="n T0Sarp";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=JldBqo5T;
-	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.148 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BD158E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 06:24:14 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3D1F511AD3C
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 10:24:14 +0000 (UTC)
+X-FDA: 83923758828.25.87B6132
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 326DC2000B
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 10:24:12 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZFHRgOt3;
+	spf=pass (imf13.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758709024;
+	s=arc-20220608; t=1758709452;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JDTtAbQOmZtZk8z1Mcd5kf03E8S/F8hNJ0v+YQG+MwE=;
-	b=6rWhKrZsgfgG8J8Op+w9QxUWOnR7sN/AqxSRe/+/lyVnVFF//83UYMlTZkTB8P2to5YZMY
-	3yRJHNKF6bBa2VuaWSbWK6KZ8joW4gUr7mCCw1hYIwL9HZZ4kNf9qchsj8kHZ+KtMGeBeh
-	+xkH09US0kXxP8wbBGhK6pkOyFisM5M=
+	bh=sw6pLFSQlgK9PmXn7/WRyXp/tUvvcWarjA+fMyiXP/E=;
+	b=S0yR5+Puw5MdqoiRKeahWHWf5DnfpCqwYFOfCgUkLTEveGoBYgRbiYyFzoObY6sUZnLtS1
+	Kd9dQz4bME8oy6gMJpLhBWgHfnvl35Byl0XT/+rFamsNRbn6SmuuH5Oc7mnkuZ35nei9Sa
+	4XQWgKOa6arcNlnZcvg/h0d4oVv0wCc=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="n T0Sarp";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=JldBqo5T;
-	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.148 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758709024; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZFHRgOt3;
+	spf=pass (imf13.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758709452; a=rsa-sha256;
 	cv=none;
-	b=2//BO5fBrtCF4FvM27H0leLFpQkXLRGCmpOK0KsCODgfgN3e/WEzlhqSkZZhLJwLuDJNkX
-	VeVVdTd8av+V2KuNJirkqpOsA4hzTtCZB3DjDFTSKa9ybq8mXyadVxRB1VJWGuoLj8mWyF
-	i0vBpI1smJwqxZVWCp/yWcpbic5G0PU=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id B033EEC0183;
-	Wed, 24 Sep 2025 06:17:03 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Wed, 24 Sep 2025 06:17:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1758709023; x=
-	1758795423; bh=JDTtAbQOmZtZk8z1Mcd5kf03E8S/F8hNJ0v+YQG+MwE=; b=n
-	T0Sarpa/KG1+uAkBBQqbXY4rEH/R2AorxuNHbF0W558Z4sbBbe0Z0+rZF8OYQsZK
-	BU+mCgZFhEOq7OntNt+IksY1Vx9bkdnsFIavtxbpntIGjMNPBMYCZUSnu8/ep4aP
-	7DQ9ogy7n/M3zv3OcTbQLrMxjVteBUcqU+eXf/NsGWj+ARXx0Mu+ZDXTn6KDBnWT
-	AzyMEwpVKQWae2P6ZSnjxG6ydKd0vHoSxcwW3qJ9GDGTTYTF1aAv0vEcPPorpfd6
-	wKV+ezp0sWgtqlot/6kGFxkoozo5mPCGDJeU6HKobCO2Aegu4x52bpWiXW9vc3f0
-	qPL9SNjH/oThyUZaO1Jyw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1758709023; x=1758795423; bh=JDTtAbQOmZtZk8z1Mcd5kf03E8S/F8hNJ0v
-	+YQG+MwE=; b=JldBqo5TO55HJf2/UnRQWnRhe5UJYTVIDlVKXKfbfdFTDbdejoL
-	DCSH9xcw8jrDOn82r//G6rIotADGSWUQQkm48dIzfNjfKlFVr5KEHKflvRrNzg9N
-	suvcs53R0h1iGMV6IcWSgoB9YOES7uPePyzOGabU3RFp2Dw14oSCZpRV3/auKtjZ
-	amxi4JHd1KrMxMq3e+k4/WnRBlPbf7SDp4Ky1YQsRGDDZZQHWsDj+XguAtTbJ6dJ
-	kG9RkaE6s+l1j//gRfVIb25dKx3GttQblSiYzwyHW9iD+nFMLej3lRpvZRyTaA+f
-	0+hIEqFDURGCSkT2R3bGnhl9gt+yanpJ/eQ==
-X-ME-Sender: <xms:H8XTaGGdBKmDLwL8l8Syo9qC6GNAyyrH6pRH1EQLYLwqh-dQh776RQ>
-    <xme:H8XTaE_jZ51a-AoPPsU73w0AwDU3jz1Tfg2-7gFsezGxUyauG9Wt_I_1qqVNjHFaO
-    ziGcD88gtDBzB282dnSiQuUkNvYRBot18MZyFJlOaZvBm4tpMofBmNY>
-X-ME-Received: <xmr:H8XTaHhUgTkXh7FsUx97x1ij0ymi8FMEXeRiBYLorV48iYiCYvQuQ_DwnyS3Mw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdeifeefhecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtf
-    frrghtthgvrhhnpeejheeufeduvdfgjeekiedvjedvgeejgfefieetveffhfdtvddtledu
-    hfeffeffudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
-    hmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepfeeg
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegurghvihgusehrvgguhhgrthdrtg
-    homhdprhgtphhtthhopehlrghntggvrdihrghngheslhhinhhugidruggvvhdprhgtphht
-    thhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoh
-    eplhhorhgvnhiiohdrshhtohgrkhgvshesohhrrggtlhgvrdgtohhmpdhrtghpthhtohep
-    lhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthhopegsrghohh
-    hurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsggrohhlihhnrdifrghngheslhhi
-    nhhugidrrghlihgsrggsrgdrtghomhdprhgtphhtthhopeguvghvrdhjrghinhesrghrmh
-    drtghomhdprhgtphhtthhopehhuhhghhgusehgohhoghhlvgdrtghomh
-X-ME-Proxy: <xmx:H8XTaISTvG4b3JkljYyYanWghsQ4CeXpHgOJvgqXm1dsCx6-8Z78NQ>
-    <xmx:H8XTaEAfaxIgpR_50G_AoUmiSrRTKSvo4e-G7nnT-RhDE0K7KSZbUQ>
-    <xmx:H8XTaC9PP0gPhVI_IzpB_VI5dR-uVXnR1CTTabcXNBwlBo_5uoQLcA>
-    <xmx:H8XTaO07S3C9iemYfZQB6v5XV81GaRnlIWtWUbZGz5QGxZ2n3c4ziQ>
-    <xmx:H8XTaOxgtZpX59qH382vwNfECxNqEQUeW0miHTVU5pUtEdsl9OiAcefK>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 24 Sep 2025 06:17:02 -0400 (EDT)
-Date: Wed, 24 Sep 2025 11:17:00 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: David Hildenbrand <david@redhat.com>
-Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org, 
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, dev.jain@arm.com, hughd@google.com, ioworker0@gmail.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mpenttil@redhat.com, npache@redhat.com, 
-	ryan.roberts@arm.com, ziy@nvidia.com, richard.weiyang@gmail.com
-Subject: Re: [PATCH mm-new 1/1] mm/khugepaged: abort collapse scan on
- non-swap entries
-Message-ID: <2i5t62obfweid2zrt33vo3boviw4okha4d3gglw76eqv43ofky@pdv3evw5yjmh>
-References: <20250924100207.28332-1-lance.yang@linux.dev>
- <1282de5a-3dce-443d-91d1-111103140973@redhat.com>
+	b=WgyeNSAY3tAFAGy0oy04kFbjfhGZUboqR2ZXnlSGIT3VyanSJ/lPlaGaC5wAkLR4HvxXde
+	wJBQnv11sLyFAeS9EqaeyPBwHfWjX8dpgNcpt7oYhri/rulTuBby59x+5Wltomdp89upK3
+	t2pcQ1/UFUtnhttePhY4YjZPLivNdW8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758709451;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sw6pLFSQlgK9PmXn7/WRyXp/tUvvcWarjA+fMyiXP/E=;
+	b=ZFHRgOt3YY9n1RiVIoZI2r1vBK/N7NPm+ZgaaDtJTLj4bTYQzWUvp8Eh5Psm3lErVFCkhQ
+	ND6ovKhY+iL1WBBMf7olWtc3BJNDf8jLog5EaOKRl7exlThFFPiZfd+rW2H27uoqY176u0
+	5tYYQSIpIWDQ2M7lIfwT0qpO9QsIMXM=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-513-yEkpl_NoPF2ZU5OYcXTCqA-1; Wed,
+ 24 Sep 2025 06:24:06 -0400
+X-MC-Unique: yEkpl_NoPF2ZU5OYcXTCqA-1
+X-Mimecast-MFC-AGG-ID: yEkpl_NoPF2ZU5OYcXTCqA_1758709445
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C5C651956054;
+	Wed, 24 Sep 2025 10:24:04 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.54])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 323F51955F19;
+	Wed, 24 Sep 2025 10:24:02 +0000 (UTC)
+Date: Wed, 24 Sep 2025 18:23:58 +0800
+From: Baoquan He <bhe@redhat.com>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
+	baohua@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com
+Subject: Re: [PATCH] mm/swapfile.c: select the swap device with default
+ priority round robin
+Message-ID: <aNPGvsQplsBeIMfu@MiWiFi-R3L-srv>
+References: <20250924091746.146461-1-bhe@redhat.com>
 MIME-Version: 1.0
+In-Reply-To: <20250924091746.146461-1-bhe@redhat.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Gvp1DjZH5ADvu_YpUFOMqU9qzJg4LFAoU43tPxpqcGY_1758709445
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1282de5a-3dce-443d-91d1-111103140973@redhat.com>
+X-Stat-Signature: baswodkmyr5pje3p3a6jycg7wrdpb1kj
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 4BE2D40006
-X-Stat-Signature: zanhoib9tp5sxk4hm5x5847pia7b8nab
-X-HE-Tag: 1758709024-734904
-X-HE-Meta: U2FsdGVkX19AEnCZtjxQ47s8J4SzeWV7FoSoasyrqLogD+cNK6xT+6xxLUBdzU0nz0CY+cTRg6Fux2SGhc9WoDyvexN6gja1BvLk8ArndBF7rdEvaR/LhcsjByywg8zN41Qm3MgQMwZw1S6X8U/hw1YA0O5VXzgNAVkvrk5eNXg4HnCo34Dwkx6dNQDiJvuVvYJxo9JDNqq5DCIL1wlengNsPi/FLp5XWWHdylz8kXQOJhMOJ0nOM8trOAl/fodbjukiSKb1gtEr/Zxw+qc5/vbJS5RS/eJgrG+cqbKzmHJV6BvfuwIDg0W6RS8q17SsJ6FSUieFxC+4HL/jAUrAobME9+YIDMDI7VSotKuTFPi44YzjEjH6Ijz14j0yBnkOzxquxpLWr/Vu6Kon4hZyAy1dZIo8eTT9cu4Oin+nOcQYE2qkjZNEMdd1xh8Pxuvgdq37LOZzyctk92UGX7Qxwmy3YZIzPiruMEW6iBr/DH0GCAJXf/onm4ar8xM+gOIImEfQG9P3ezHMnRHnHRI1X6yIlsI4+L5sf1jN2nxMgM/XS1RbT25lfk9UArfOgrrIWOvP8OVCQU8jjzS7Lqbqog3+v/LOkoWq/4uIVXRUI/9bzKDKV2nvBtOFcijU4TWCMW62w1zTVKz9hlljfv5HDSrulghewNUSTMHtGo1xlV6P4kvi/px1/M/fOn6DdCcmPjDn0VYWfQv4iOwtgztYVp1BMqkUeUv75rJDXTo/qlo9iyk7xp2v4Se+nfkVEJ0a2G0XAsxnYDT07D8i/EPAVEHOZskIc0Afn9bpAe5ZPK51D+Eokr0arq7SBAmjjaGn3ZAtRo0wk7EmVmMqgvacKX8vt+0P8i8LZ11+JYClkj6ZX39fS2c5HS37+yxtQHthmu+yem955Kc+LpPUka/+nDzkR4OjaVkHbh163QPuzFdkBEXVqBizGCQaVxD6fF1Vg2jv+ajth5nLzO/3D+o
- Mnf2sVqh
- AeqNNILyKSbFmRN3V5aORwoA/2ux/t4j9M9MReuCfKgh1epdr1a9IX/f2IPD31wkMRQvQqILG03WlAaF5rWeAc6/Yj9jmH8ft7DyPVcSq/30NfkVyJhTPmX2EUIE7RBw6kbXTi4Ork14o3x+vw5v9lVM2kkA1kAhPiExmgaYmKlDs5vxiI/XxksyZBStY6ejayPsytIedo/3gpfNjvqeOc6LVYHDScOkJ2gRHISSaMg7Ds44QH8W8KsWYc85Qcz0yhumFfye7alfndho7k2YUSjnQROhLTHL7RUC+OsuKgP+Rq/sdTVpSTjGFXOCB8aYHtANH2q8NeJWwAZuGDhNCvJZG0B2vg6Qb2RbW64SlKpTsjksSh0V4vdUvcxSCu61ccFx0PMajODf0qi1ZcVWoDlOUJepbWSywZ4e0I803K3pWr8/Zl2opYAZjoQ==
+X-Rspamd-Queue-Id: 326DC2000B
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758709452-554625
+X-HE-Meta: U2FsdGVkX19pV1/YEqIyhpEfbGydSZZ9oDhzUrBaS9f9g4IvNnkRyBwne8BLHeXJgFTC5L8bDNdNczL6tNt73xDMcHxrd/2n14pK603JKo20oCAhoAhwyKIlcFe2svn+Lo2WBg6GfZiGTAjlDeMpypWHuLWt2BLKSwpZk0hYHrudsvewXu0du8OV3yWDAjj1wLRORkC8LyWfV3zKhfFGSGXj+0AHgVzoxEfLV1F+SzUfroiEiQu8jr861T7iGPBS/plMulN0Q7GbbBK5uTwf07kxe3BOI8vH+EHP0jCYs62JoSh+y/mMB7RqPLgP+c5mxWPx5hk55OrLCkFreqTcpDVAXA7XY13RlAh66LBJRo30g/p3uIgmdmd7W7A4s7Nofa6jpEYFsR6U7L5a2F9pE/rR1rAS8X/HnKE5h6Er5fShKdBY/28L6VXe5b2I4+a8LpYLmLYkP7WTYXty98m9Hu8aen/xqgQDrDyNTLiG2ie6NIoTbIAcuJ6h50jT9hSsH0cP8uM616Bz1u539r2cgaks2H+ToCMX2diru3IQCBpgB/CcGA879NwgqDD26zwALya+8dFVHgRfZfY/Tyu+6nzRIikWTI1r/tcAstNPjyr6tEaa0KUZqbVpLRzIkO4l7p+WMG/VmDlpHTTuDKanOV9/xustw5bayS19A+Hm5AgXhDg6oUr/2hqxrKALrLAsxK1AkoEWXIgeYj99uQ4HZvJd3F67j+c9JtVgR0oIlR6kL5e35U6mpXAgcAxQFyuKWZnQVDiPCbFmZMHp3MdONZ8DfqoccLYJf+EunaEQJjoqTGXo7n8ftx7qADhbB6Qh9djXmuBpZt8Squ1EmpuksvJXW2L0JrRf3lr6wiHpg3OMm3HdbVpUtvmZ5qggzGDPhwMqYcaUgFy+gfrX7K/ZoeJ55aJEY/P9kVvNdggEkuVn7ZO/THegw70M2Ah57dePt+XU+xUD6Z2pROsmTe0
+ aqAcp8ai
+ CC6OqtPhj4vV/P5vtow5vbt8hSFonCjVCU7zFB+jZA09/DIx6APi1HrlcWAvASy47KRbfaVTVAQR2480pLcgKPBsy738r+tXI06Fkl9gKDzhGBmo3U8DuUUwk3IkTtDr8SH9T2PIRVTpg2n/PVdRCtQodW01AX5c05VlJwj7JmuWcTlZ6854P9qDJvayZxxdyYb8/20hd2xWEiI39RknEJ69P6Aw4IgbCtASaUfZwLERvz/koN4i0s48DKFWP6joqOqHYbf4L9UmpuVyoT24AAISSoaOUT6rM1a2U60j7iUB96x1Ygz7zKnL8f5kgSGauDTClLMhJlLTHmTKEzm60zDxgPutrPmQXH5L34R3z5DXBJ1GCJokAtzCcDoS/rgNpvS+JJhTWy3Qh8QH7RRu9s7EI2fbGA8acjHYcXXgDnOWAM/amz1SuzVgpZ3P7NHoUUP8R
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,29 +106,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 24, 2025 at 12:10:47PM +0200, David Hildenbrand wrote:
-> On 24.09.25 12:02, Lance Yang wrote:
-> > From: Lance Yang <lance.yang@linux.dev>
-> > 
-> > The existing check in hpage_collapse_scan_pmd() is specific to uffd-wp
-> > markers. Other special markers (e.g., GUARD, POISONED) would not be caught
-> > early, leading to failures deeper in the swap-in logic.
-> > 
-> > hpage_collapse_scan_pmd()
-> >   `- collapse_huge_page()
-> >       `- __collapse_huge_page_swapin() -> fails!
-> > 
-> > As David suggested[1], this patch skips any such non-swap entries early.
-> > If a special marker is found, the scan is aborted immediately with the
-> > SCAN_PTE_NON_PRESENT result, as Lorenzo suggested[2], avoiding wasted
-> > work.
+On 09/24/25 at 05:17pm, Baoquan He wrote:
+> Currently, on system with multiple swap devices, swap allocation will
+> select one swap device according to priority. The swap device with the
+> highest priority will be chosen to allocate firstly.
 > 
-> Note that I suggested to skip all non-present entries except swap entries,
-> which includes migration entries, hwpoisoned entries etc.
+> People can specify a priority from 0 to 32767 when swapon a swap device,
+> or the system will set it from -2 then downwards by default. Meanwhile,
+> on NUMA system, the swap device with node_id will be considered first
+> on that NUMA node of the node_id.
+> 
+> In the current code, an array of plist, swap_avail_heads[nid], is used
+> to organize swap devices on each NUMA node. For each NUMA node, there
+> is a plist organizing all swap devices. The 'prio' value in the plist
+> is the negated value of the device's priority due to plist being sorted
+> from low to high. The swap device owning one node_id will be promoted to
+> the front position on that NUMA node, then other swap devices are put in
+> order of their default priority.
+> 
+> E.g I got a system with 8 NUMA nodes, and I setup 4 zram partition as
+> swap devices.
+> 
+> Current behaviour:
+> their priorities will be(note that -1 is skipped):
+> NAME       TYPE      SIZE USED PRIO
+> /dev/zram0 partition  16G   0B   -2
+> /dev/zram1 partition  16G   0B   -3
+> /dev/zram2 partition  16G   0B   -4
+> /dev/zram3 partition  16G   0B   -5
+> 
+> And their positions in the 8 swap_avail_lists[nid] will be:
+> swap_avail_lists[0]: /* node 0's available swap device list */
+> zram0   -> zram1   -> zram2   -> zram3
+> prio:1     prio:3     prio:4     prio:5
+> swap_avali_lists[1]: /* node 1's available swap device list */
+> zram1   -> zram0   -> zram2   -> zram3
+> prio:1     prio:2     prio:4     prio:5
+> swap_avail_lists[2]: /* node 2's available swap device list */
+> zram2   -> zram0   -> zram1   -> zram3
+> prio:1     prio:2     prio:3     prio:5
+> swap_avail_lists[3]: /* node 3's available swap device list */
+> zram3   -> zram0   -> zram1   -> zram2
+> prio:1     prio:2     prio:3     prio:4
+> swap_avail_lists[4-7]: /* node 4,5,6,7's available swap device list */
+> zram0   -> zram1   -> zram2   -> zram3
+> prio:2     prio:3     prio:4     prio:5
 
-Hm. So swap in is fine, but wait for migration to complete is not?
-Seems odd.
+By the way, when testing, I hacked zram kernel code to assign device_id
+to zram->disk->node_id to emulate those disk with node_id. 
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index 8acad3cc6e6e..b0bb6531b029 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -2719,6 +2719,7 @@ static int zram_add(void)
+ 	zram->disk->flags |= GENHD_FL_NO_PART;
+ 	zram->disk->fops = &zram_devops;
+ 	zram->disk->private_data = zram;
++	zram->disk->node_id = device_id % nr_node_ids;
+ 	snprintf(zram->disk->disk_name, 16, "zram%d", device_id);
+ 	atomic_set(&zram->pp_in_progress, 0);
+ 	zram_comp_params_reset(zram);
+
 
