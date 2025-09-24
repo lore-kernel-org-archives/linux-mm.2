@@ -4,112 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1C17CAC5AE
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 15:07:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50C4ACAC5AE
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 15:11:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E82E8E0023; Wed, 24 Sep 2025 11:07:49 -0400 (EDT)
+	id ABD6B8E000C; Wed, 24 Sep 2025 11:11:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BF638E0007; Wed, 24 Sep 2025 11:07:49 -0400 (EDT)
+	id A94C68E0007; Wed, 24 Sep 2025 11:11:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D5308E0023; Wed, 24 Sep 2025 11:07:49 -0400 (EDT)
+	id 9A9F88E000C; Wed, 24 Sep 2025 11:11:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E3298E0007
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:07:49 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C0F16438A5
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:07:48 +0000 (UTC)
-X-FDA: 83924473416.23.E7DEE2C
-Received: from mail-lf1-f73.google.com (mail-lf1-f73.google.com [209.85.167.73])
-	by imf11.hostedemail.com (Postfix) with ESMTP id DDAC940017
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:07:46 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ay5Q8eJi;
-	spf=pass (imf11.hostedemail.com: domain of 3gAfUaAgKCC0SJLTVJWKPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--jackmanb.bounces.google.com designates 209.85.167.73 as permitted sender) smtp.mailfrom=3gAfUaAgKCC0SJLTVJWKPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 891188E0007
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:11:33 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3B20E5B82E
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:11:33 +0000 (UTC)
+X-FDA: 83924482866.25.CA3FA35
+Received: from postout2.mail.lrz.de (postout2.mail.lrz.de [129.187.255.138])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B4AFC20019
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:11:30 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=lmu.de header.s=lm-postout21 header.b=HxQEGW2Q;
+	spf=pass (imf13.hostedemail.com: domain of patrick.roy@campus.lmu.de designates 129.187.255.138 as permitted sender) smtp.mailfrom=patrick.roy@campus.lmu.de;
+	dmarc=pass (policy=none) header.from=lmu.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758726467;
+	s=arc-20220608; t=1758726691;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cxm1+BttfzZabXPoYExS0LpEIkdqq5ptW85BH8SIzIM=;
-	b=f8ifgw8A/WpDRG17M67wnG/hYiv3yuQK115fOG9pbDkDzkAQifO7nA/sTOLSlqosthlU+d
-	GOWQ33Zxr7LbvKtP2u457LQ/gGKk+uiauAJRYDjz6Oog+2xAYcbrVEtIXEMZ8zN/UIBzPz
-	lGM0sfOfg1BJecmI3UfJSp25J7Obr00=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758726467; a=rsa-sha256;
-	cv=none;
-	b=NF4M9Q6COpTURJWEhkHCgOuSfXK3T93lwqZ5GCtpt/FNXz+otCvY9pkBwz5XWUr+kSaBTR
-	ayqoiV6Cl8EZnjeskG3j4Q/zQg3DBhsq4PNxv2sEklVvcGxhdsdSgAYYdcBTscgn+tKtSC
-	s2o0m766odxr+Bdz0zGteQTTx5ZzjS4=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=T6LxtLsJSjh5VFaqIEo/5wr5RrqvMX416qBvYTVfg0E=;
+	b=uX3EJ1d25sfJmZfj3ZZD6AfMX7EdWX586UVtDl9qa66NjXUCi4v4STInQjVSFVbXhDdkBs
+	W2BPMG52579jpLDjwktT/x95o4yef47f57iiI6LZt6b5iqjskRXf4lw7MhdaMsxnOe7TlC
+	0zky/TNy0lw1lhQf0JKbpLNhurxbbh8=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ay5Q8eJi;
-	spf=pass (imf11.hostedemail.com: domain of 3gAfUaAgKCC0SJLTVJWKPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--jackmanb.bounces.google.com designates 209.85.167.73 as permitted sender) smtp.mailfrom=3gAfUaAgKCC0SJLTVJWKPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-lf1-f73.google.com with SMTP id 2adb3069b0e04-5777d0bbb91so3810401e87.2
-        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 08:07:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758726465; x=1759331265; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cxm1+BttfzZabXPoYExS0LpEIkdqq5ptW85BH8SIzIM=;
-        b=ay5Q8eJiSGvw8hxa7HO8n1YrCdfqewkg4+GrfqwoKjrAc2frGst/7iNBVPe/7hacUz
-         bPZG9948w1wxJExbBOjGPnyrPGTBAmEngQCmjqZkdNhEC1MNyLjXuUKpccO6frEjeMJA
-         h1rHmgFusy7q6UFcbv9QfjY36+K7FylnIOjAqaPDKrM+sX0ZhGajir/BNth7Q1KYHmAg
-         lnIlEBZivMafd/suREE7/t1D/WnqWDMv551X7M7bmekkgKeqbznmfAr4spLgUwd5UOQ7
-         U59s44S5r8m7UacxXXxU74eTi8Ly/lGybL4IgJV3a4xRTKPuNeEwsbphrTjKEOOl1FF5
-         1Nnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758726465; x=1759331265;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cxm1+BttfzZabXPoYExS0LpEIkdqq5ptW85BH8SIzIM=;
-        b=CCUCsGHV1qNTWXfoihgWB1eEIK3sauaWE0d9TbcIX2pMO51nn59NP5ijcfFhjx749T
-         7w/7eYscrqPYGcYPdqa/P6i6AjHXm8nb/hKrXMETEj4yp/oqoZCEVYOMx7+Fpbnx73PQ
-         z+OIjacFeJPmHaPMYXBpa+Ef26DM21DpYXZ6oG72CjI9NP/oZzk3YL3LkuMHbldbMLiD
-         RypmkjuCp0y681EH+mWFdMJxUqQtGKAJSCipO6m9U7vyPRWB74/Yg0f90bBYWzPf5pYS
-         fX0LpnLC+HSWDiom9HHhkN8gPS/X2RZKJ9qNOfcUbyxHPBtUYugmXItq4OUOWc/K/c5w
-         Re5w==
-X-Forwarded-Encrypted: i=1; AJvYcCWiRzmgJZpptblEEv+i01/VfDTXGbnzIvcSVk9geHa2BasFIdwk13ckEV6rpSrs4zYVo/Z5D28XQQ==@kvack.org
-X-Gm-Message-State: AOJu0Yxt0mV/0jUxrgkn/6cIqyMsDjNmUC/QSr9nR6P/ecDqjpiC7k/x
-	gVvzwngGQulSHd0nGEjS0X3z+dhEFsLR1HS2mAulJqVCwFswrE4nLjrdG9o1L5n5jA5orqtKFVX
-	zUOBwXJxEtplNrQ==
-X-Google-Smtp-Source: AGHT+IFbV4XCppcQcBh4YT0+YYYGbMDe4to2Az87MctcSzey34CxXXjmAG4jYevOjLMuvS5zxWssC7rPfCkOlw==
-X-Received: from wmpz21.prod.google.com ([2002:a05:600c:a15:b0:46e:2f78:5910])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:420e:b0:3e3:e7a0:1fec with SMTP id ffacd0b85a97d-40e43b08a86mr265628f8f.16.1758726016966;
- Wed, 24 Sep 2025 08:00:16 -0700 (PDT)
-Date: Wed, 24 Sep 2025 14:59:44 +0000
-In-Reply-To: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
-Mime-Version: 1.0
-References: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
-X-Mailer: b4 0.14.2
-Message-ID: <20250924-b4-asi-page-alloc-v1-9-2d861768041f@google.com>
-Subject: [PATCH 09/21] mm/page_alloc: Invert is_check_pages_enabled() check
-From: Brendan Jackman <jackmanb@google.com>
-To: jackmanb@google.com, Andy Lutomirski <luto@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>
-Cc: peterz@infradead.org, bp@alien8.de, dave.hansen@linux.intel.com, 
-	mingo@redhat.com, tglx@linutronix.de, akpm@linux-foundation.org, 
-	david@redhat.com, derkling@google.com, junaids@google.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, reijiw@google.com, 
-	rientjes@google.com, rppt@kernel.org, vbabka@suse.cz, x86@kernel.org, 
-	yosry.ahmed@linux.dev
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: DDAC940017
-X-Stat-Signature: xh8ur4cynz1inqj8wqiyfu6inraz7qwj
+	imf13.hostedemail.com;
+	dkim=pass header.d=lmu.de header.s=lm-postout21 header.b=HxQEGW2Q;
+	spf=pass (imf13.hostedemail.com: domain of patrick.roy@campus.lmu.de designates 129.187.255.138 as permitted sender) smtp.mailfrom=patrick.roy@campus.lmu.de;
+	dmarc=pass (policy=none) header.from=lmu.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758726691; a=rsa-sha256;
+	cv=none;
+	b=wfCJE/kiZongsWqOOa52CQcwMViUeJvkdon82BDJaXWciZK7DNuI/tATtj+RCWAX8IgzvF
+	1eCsmKQCtFK5HaxPQrAZKI3Mq8AvvKp8CbH8A2KFBfgnD4gA2Z2hn1O/R20qFGZMyrOw5B
+	4R7wEnASCDo1GjBiNaECjerUOn5A6yM=
+Received: from lxmhs52.srv.lrz.de (localhost [127.0.0.1])
+	by postout2.mail.lrz.de (Postfix) with ESMTP id 4cX0fy3XKnzyTM;
+	Wed, 24 Sep 2025 17:11:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lmu.de; h=
+	content-transfer-encoding:mime-version:x-mailer:message-id:date
+	:date:subject:subject:from:from:received:received; s=
+	lm-postout21; i=@campus.lmu.de; t=1758726681; bh=T6LxtLsJSjh5VFa
+	qIEo/5wr5RrqvMX416qBvYTVfg0E=; b=HxQEGW2QLMQxARGwSZU1TNXRNbiDlou
+	BMJUwogj9SQS+zAwVFesU+rm6J8ESrh5EeQb8FBQenIY3bu5DTO6JKqOyT9QT7oe
+	qE0uVSVfDHNlHPRF0cEqwhQIZ+q6CQc14tIb0t3gUZUvCGMT4voVbA7OTed58ZVQ
+	Fp7eMjDT1tZPZda+E2TBcGOZatLAYcCYmVqmKrnab+3B5t+QAK4LMD2QJRboE0eN
+	z8BGvqbGKfXfsZrfVv9wyzvaAwKUaiKNE2Gwir3zQLPYBd3x3XjwH276/NO8/IjR
+	rA8M46iav7Dn7yNPKX1XTaZ8lp6Gh7wTu+F3GTcn8f0k6MkbGN5w2vw==
+X-Virus-Scanned: by amavisd-new at lrz.de in lxmhs52.srv.lrz.de
+Received: from postout2.mail.lrz.de ([127.0.0.1])
+ by lxmhs52.srv.lrz.de (lxmhs52.srv.lrz.de [127.0.0.1]) (amavis, port 20024)
+ with LMTP id w1gLyyBlciFZ; Wed, 24 Sep 2025 17:11:21 +0200 (CEST)
+Received: from spacestation.cable.virginm.net (oxfd-27-b2-v4wan-164230-cust474.vm42.cable.virginm.net [86.22.133.219])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by postout2.mail.lrz.de (Postfix) with ESMTPSA id 4cX0fr09PgzyS8;
+	Wed, 24 Sep 2025 17:11:15 +0200 (CEST)
+From: Patrick Roy <patrick.roy@campus.lmu.de>
+To: 
+Cc: Patrick Roy <roypat@amazon.co.uk>,
+	pbonzini@redhat.com,
+	corbet@lwn.net,
+	maz@kernel.org,
+	oliver.upton@linux.dev,
+	joey.gouly@arm.com,
+	suzuki.poulose@arm.com,
+	yuzenghui@huawei.com,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	luto@kernel.org,
+	peterz@infradead.org,
+	willy@infradead.org,
+	akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	song@kernel.org,
+	jolsa@kernel.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	martin.lau@linux.dev,
+	eddyz87@gmail.com,
+	yonghong.song@linux.dev,
+	john.fastabend@gmail.com,
+	kpsingh@kernel.org,
+	sdf@fomichev.me,
+	haoluo@google.com,
+	jgg@ziepe.ca,
+	jhubbard@nvidia.com,
+	peterx@redhat.com,
+	jannh@google.com,
+	pfalcato@suse.de,
+	shuah@kernel.org,
+	seanjc@google.com,
+	kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	bpf@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	xmarcalx@amazon.co.uk,
+	kalyazin@amazon.co.uk,
+	jackabt@amazon.co.uk,
+	derekmn@amazon.co.uk,
+	tabba@google.com,
+	ackerleytng@google.com
+Subject: [PATCH v7 00/12] Direct Map Removal Support for guest_memfd
+Date: Wed, 24 Sep 2025 16:10:40 +0100
+Message-ID: <20250924151101.2225820-1-patrick.roy@campus.lmu.de>
+X-Mailer: git-send-email 2.51.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: B4AFC20019
+X-Rspamd-Server: rspam05
+X-Stat-Signature: pwe7sdjh144ughbixqt98ybrridtdczi
 X-Rspam-User: 
-X-HE-Tag: 1758726466-279712
-X-HE-Meta: U2FsdGVkX19Q4b3bzONIieEClmJjqisbe7JhtrBJDXEm7pw6eoj0Dip9V3J61A7JExlP8GiOwWUqzUe0v1pp7+nRF8mSlmxuiIPAFCqEb0kid1Zh41jWNGMWf+z3pxOrx1h7b7qyYm1nyKi/IsxJq2KQlmYgfvbJ3CteEhrkCblIsbgTwk7MdWqcaqzH3Z95ZMIZXVZuQfJW2uLI5WKnOrczNPn90qOu6hDxfKzs3IwVF8h/MRZwrENM/KpYpgGMuOSipLsEuRo9nQXdWAY7ZmqZZDuAEjO+hBCOY0V7KvWaI1XSu62qHHGB1AiyWsPOyToBq2ldV+GuJkbSVpaYmilRvtOhKUFaWEe09F7UhnOitioooZkwOI9WgcachhG+1weG37eXa/otVsYL8TiitezG3S5DBZoSDmd4eG2+Ej7NiXilduIBeWl1xCr8aXCmzevbSNfjVfRr03Asv9ulMje7jc6FTk8K2YY5jpP9nkfwfhLkdsUJ98ilsvOukaxF+TsvsjFdY4RT2cWI8Yqy5Zr/NyB9agvAxfb6mMSFqcMgBmdGDav7t5WjLksVNE/+6VIE0NDYHWltwpMgNxZsdLiLiHQOWsO/yXu7rBRsxEkdUKhstYodN/22vIUv5t0lRyJGYKcqIb4qKTRL2pA1aEH5f5AYDjx3EVo8xhCwMxXmZuGcsJ8+kT7fRf/+LuPiwuOoigxGRFX436o74yND/jX2pJXScZ1tX/J/MY17PT6CEG41rc8D4lOo1s3simUmdQYLPC0aA8YNy0B2RSx88zfG2ruLIaCsiIXcPgEKSofkrBYwwi8uL2D+xRPcghXqFDbZl0+6FRwNgepoL6BNYZ43/MhGQR2T140WQu8ZPZP05pR/Roo7gB/DSdR3Pnopqj9QZW81DTPXruyBEU07unLHlxVi2ubccGaNNKTFuNNTeqG1d40z4WpgAq3+9zzYsDN4cYijadhDAHXh9hh
- ivqQwH8B
- eLI7r01+Cjo2bg/hfT60PENihtFqgZ2/58dHekP7cgjr3ATgP8ZlU2JKowzdc2mHsrI6BCzqHTzoInG1Hpc77GDXYeALhXucLFTh48VsqTiLOvOG+b3iFR10TQ2FcFRuc02TBgRvOtrYpdqwQEEU1jPQMoFjIqC/4Pv7Rqntr29sTP2DBFddVXW1hBbVly/cHcIWGvd4Jx+5jvbsb9H689Fys2rSikzCQRJ/GBbnisznwld/J0rSNGXDTjv18c3xOPJdi3e/Ov7VFUYharX32dmzBm7q2mgK579ntye8TuwLDrGkHaMhw6Lbhdiwcfl4/DBfKmihQR5hHHN6naB8PUpOu6mrPzBcidDS4WQQ6eOi+SdJ08XxkZw4MrZkorduf9g4M/tYIaTNV+GYc+5T4pd9Os0jT3EhLS49QbMNHjgfd/eefFomZWuNQ9Eqgst5sQkzeA5dRiXlHbxTnifYF9OVAN6mswnhUngtltjjbmOeDAJEb6jaOEymrSgPsJfvz7CpbcYgGXXtw6F7dyxMmxId6+ju79CWNMGx8jH9vjVh4Xfa9y+NbHcQYC+8ieH4NSu7Ov+4TTitAC0ANSdAb48KE3/RVI9iigSUBjxuSn/r5qz+I/oZN0zDWIzhtgDTqG1aGnHPkv2QBzE6gbX+hzQYZcQTLssoVLviJKPeVpxty9ryrBL8KoU7BIYVZi9O1D6Ed6IevkwUzX73PcqJR/qxYwf2Nptc3XXDT
+X-HE-Tag: 1758726690-301592
+X-HE-Meta: U2FsdGVkX18HDg/hy9n6OfRbt4i9WzXed+CGpoXTwvLzPExTVeKpZp7cGXAD4jjh1Z/wBbmAEHozo3C4k9oHowcDBORAL9ljUlmgG03ZEIyZfUyHjUXffq0OYkM4NMTcPVobdFE59pD7emntayLt2IX2+9tC8A93/UeZacN9WCh8CGQ6HvMxhc2Hcku32zhX+98K46UuNIfAURBY0pj5nkvAu4KzH7OVIa6LG+G5tFMOSx6fe1Al/krdpIH8Qmqu4tAHN3MXl1g+6d286zdg4XbmxRtZ6oFk0aUN1ifvAM6U81f6NvjgKx670UCcpsaIVGVu1iEuqWmCfly3U2Vr8VvmeT74fJGiDPuzKHgdWpBC3+4+kRR56iHYl2CGlSm6hkcz17H1VdIXjBodgeVfg2S3D0dS5CgaREs4gkylrYy6duRl+RFqdcFlpbXee3Um0ak02KoNSSq8KKLpBzTGc1PDmDzuPmC6/2LjCBppwg/P5pGKk5ZtorAWsVRPguYt2hXQ37TU1AoDWR+gZHvUA1VoT7pzFxFH/s2cVr8DPF5nvqmlv9SfnQq6a2e817gN7rbFNsDA/8Jcg/iCStgspyiTe25C+pfCkxJuts3G3j4cq/TyqenaPIHoaaJrhs/1PWG/xUpubQlrWICnW8ughagOq5xE/BsYQd39aqH07w3pk2RaloFzr7jwYGqdsDcjZYc50wZBlaHKasdz81k7jrW0RCgb4vvf0V3w0fzdPpbnF8gGScXzlH53zLgltwBHoKn90QKDZcm5/o0KkRlkUvG6SmClKtCAJECJTspA1Snk+PWe6gsNj25Aju6N7JZkDKbMkW+rMC2oeUkSncQe8RhIDJeXFnHzxgXfkaeftspBBJvzAZOY6vxAgk7ndtaQL6e6HFyaucnmimZvB6j7/Bbc8fdvvZZ860iVCJkNTDR0TVfUO7aJNBK1lrEu28I0l56T/+EdNH93PkEtUUB
+ fuuMDbGx
+ nDcpKMP3/NfFpSz51+OxaiWJyFee1OuYw69lZOGtHT6B2cBl0JbNGFvzckWEvkJlDeKnbLO5E4SSMGC/W5HU9uv2+4oV1ZcW7eD7wtJbkKlr+u6n3uk5kRO8LXgtG+R0+70GSCkX8kdU81wV1FlVvZahiAXvxmM5WCJ239lRFYlV8EVPvqBwDM3c4BVaSxmMR5EXYgB2Gek6jnZlBJQwXEmXU+2h2uRQw3k4mVwW9I4cSD9eLiHA/xxGbzoTmtsVZIKpq0f0JUKNznqtpTwVjPe30r4UVrWHR9rhujkmFV4wExt7mzYihVZiTFjvcJJxykDr+o45yWtwSGBr4JB0psHs0qM2Y+TCzH8qX8m+m1C2h+Fcw03HlpGYyh+urHssOtCXrGkkC0lAK3E0FS07Z08uaKg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,44 +156,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A later patch will expand this function, making it ugly that the whole
-body sits inside a conditional.
+From: Patrick Roy <roypat@amazon.co.uk>
 
-In preparation, invert it to de-indent the main logic. Separate commit
-to make review easier.
+[ based on kvm/next ]
 
-Signed-off-by: Brendan Jackman <jackmanb@google.com>
----
- mm/page_alloc.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+Unmapping virtual machine guest memory from the host kernel's direct map is a
+successful mitigation against Spectre-style transient execution issues: If the
+kernel page tables do not contain entries pointing to guest memory, then any
+attempted speculative read through the direct map will necessarily be blocked
+by the MMU before any observable microarchitectural side-effects happen. This
+means that Spectre-gadgets and similar cannot be used to target virtual machine
+memory. Roughly 60% of speculative execution issues fall into this category [1,
+Table 1].
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index a1db87488296a6d2d91a1be8d4d202f1841c4dfd..10757410da2127b0488c99c5933422fc649f9a1d 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1752,13 +1752,14 @@ static bool check_new_page(struct page *page)
- 
- static inline bool check_new_pages(struct page *page, unsigned int order)
- {
--	if (is_check_pages_enabled()) {
--		for (int i = 0; i < (1 << order); i++) {
--			struct page *p = page + i;
-+	if (!is_check_pages_enabled())
-+		return false;
- 
--			if (check_new_page(p))
--				return true;
--		}
-+	for (int i = 0; i < (1 << order); i++) {
-+		struct page *p = page + i;
-+
-+		if (check_new_page(p))
-+			return true;
- 	}
- 
- 	return false;
+This patch series extends guest_memfd with the ability to remove its memory
+from the host kernel's direct map, to be able to attain the above protection
+for KVM guests running inside guest_memfd.
 
+Additionally, a Firecracker branch with support for these VMs can be found on
+GitHub [2].
+
+For more details, please refer to the v5 cover letter [v5]. No
+substantial changes in design have taken place since.
+
+=== Changes Since v6 ===
+
+- Drop patch for passing struct address_space to ->free_folio(), due to
+  possible races with freeing of the address_space. (Hugh)
+- Stop using PG_uptodate / gmem preparedness tracking to keep track of
+  direct map state.  Instead, use the lowest bit of folio->private. (Mike, David)
+- Do direct map removal when establishing mapping of gmem folio instead
+  of at allocation time, due to impossibility of handling direct map
+  removal errors in kvm_gmem_populate(). (Patrick)
+- Do TLB flushes after direct map removal, and provide a module
+  parameter to opt out from them, and a new patch to export
+  flush_tlb_kernel_range() to KVM. (Will)
+
+[1]: https://download.vusec.net/papers/quarantine_raid23.pdf
+[2]: https://github.com/firecracker-microvm/firecracker/tree/feature/secret-hiding
+[RFCv1]: https://lore.kernel.org/kvm/20240709132041.3625501-1-roypat@amazon.co.uk/
+[RFCv2]: https://lore.kernel.org/kvm/20240910163038.1298452-1-roypat@amazon.co.uk/
+[RFCv3]: https://lore.kernel.org/kvm/20241030134912.515725-1-roypat@amazon.co.uk/
+[v4]: https://lore.kernel.org/kvm/20250221160728.1584559-1-roypat@amazon.co.uk/
+[v5]: https://lore.kernel.org/kvm/20250828093902.2719-1-roypat@amazon.co.uk/
+[v6]: https://lore.kernel.org/kvm/20250912091708.17502-1-roypat@amazon.co.uk/
+
+
+Patrick Roy (12):
+  arch: export set_direct_map_valid_noflush to KVM module
+  x86/tlb: export flush_tlb_kernel_range to KVM module
+  mm: introduce AS_NO_DIRECT_MAP
+  KVM: guest_memfd: Add stub for kvm_arch_gmem_invalidate
+  KVM: guest_memfd: Add flag to remove from direct map
+  KVM: guest_memfd: add module param for disabling TLB flushing
+  KVM: selftests: load elf via bounce buffer
+  KVM: selftests: set KVM_MEM_GUEST_MEMFD in vm_mem_add() if guest_memfd
+    != -1
+  KVM: selftests: Add guest_memfd based vm_mem_backing_src_types
+  KVM: selftests: cover GUEST_MEMFD_FLAG_NO_DIRECT_MAP in existing
+    selftests
+  KVM: selftests: stuff vm_mem_backing_src_type into vm_shape
+  KVM: selftests: Test guest execution from direct map removed gmem
+
+ Documentation/virt/kvm/api.rst                |  5 ++
+ arch/arm64/include/asm/kvm_host.h             | 12 ++++
+ arch/arm64/mm/pageattr.c                      |  1 +
+ arch/loongarch/mm/pageattr.c                  |  1 +
+ arch/riscv/mm/pageattr.c                      |  1 +
+ arch/s390/mm/pageattr.c                       |  1 +
+ arch/x86/include/asm/tlbflush.h               |  3 +-
+ arch/x86/mm/pat/set_memory.c                  |  1 +
+ arch/x86/mm/tlb.c                             |  1 +
+ include/linux/kvm_host.h                      |  9 +++
+ include/linux/pagemap.h                       | 16 +++++
+ include/linux/secretmem.h                     | 18 -----
+ include/uapi/linux/kvm.h                      |  2 +
+ lib/buildid.c                                 |  4 +-
+ mm/gup.c                                      | 19 ++----
+ mm/mlock.c                                    |  2 +-
+ mm/secretmem.c                                |  8 +--
+ .../testing/selftests/kvm/guest_memfd_test.c  |  2 +
+ .../testing/selftests/kvm/include/kvm_util.h  | 37 ++++++++---
+ .../testing/selftests/kvm/include/test_util.h |  8 +++
+ tools/testing/selftests/kvm/lib/elf.c         |  8 +--
+ tools/testing/selftests/kvm/lib/io.c          | 23 +++++++
+ tools/testing/selftests/kvm/lib/kvm_util.c    | 61 +++++++++--------
+ tools/testing/selftests/kvm/lib/test_util.c   |  8 +++
+ tools/testing/selftests/kvm/lib/x86/sev.c     |  1 +
+ .../selftests/kvm/pre_fault_memory_test.c     |  1 +
+ .../selftests/kvm/set_memory_region_test.c    | 50 ++++++++++++--
+ .../kvm/x86/private_mem_conversions_test.c    |  7 +-
+ virt/kvm/guest_memfd.c                        | 66 +++++++++++++++++--
+ virt/kvm/kvm_main.c                           |  8 +++
+ 30 files changed, 290 insertions(+), 94 deletions(-)
+
+
+base-commit: a6ad54137af92535cfe32e19e5f3bc1bb7dbd383
 -- 
-2.50.1
+2.51.0
 
 
