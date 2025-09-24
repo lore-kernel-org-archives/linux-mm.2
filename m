@@ -4,120 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A19DCAC5B3
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 11:38:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CEF4CAC5A5
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 11:41:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7ED1C8E000D; Wed, 24 Sep 2025 07:38:41 -0400 (EDT)
+	id 77E238E0002; Wed, 24 Sep 2025 07:41:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C4B18E0001; Wed, 24 Sep 2025 07:38:41 -0400 (EDT)
+	id 72E948E0001; Wed, 24 Sep 2025 07:41:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B37F8E000D; Wed, 24 Sep 2025 07:38:41 -0400 (EDT)
+	id 5F6FF8E0002; Wed, 24 Sep 2025 07:41:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 57C0C8E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 07:38:41 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EACA55B326
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:38:40 +0000 (UTC)
-X-FDA: 83923946400.01.A77C7F3
+	by kanga.kvack.org (Postfix) with ESMTP id 4768D8E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 07:41:10 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 142BAC0507
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:41:10 +0000 (UTC)
+X-FDA: 83923952700.03.20283DD
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf14.hostedemail.com (Postfix) with ESMTP id AC8B510000B
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:38:38 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pl7stuKD;
-	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 323CF4000D
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:41:06 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=d+V2WNT7;
+	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758713918;
+	s=arc-20220608; t=1758714067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+nr7Ue+Q8mDfosTulm3J5UwQG5E9B4yAzAZ8LnR/jDs=;
-	b=zn/CbWd6oE1m2U0JtoE7xi18BavVjOMgZAJZzI2pXe05Rce+Y4vw5K4kJPOl9wAguk+ny+
-	lkVsW4Is9AF2ohh7bUU0MQYo6n47tzgUWPRDGdujQw7snzq7w6xyy5pcsKDHIJH+dm61Ux
-	SLPU70Ia/bBg3R43NH+EsakOm2ecu/Y=
+	bh=A7NBE1Ki5OUP9jlGIoLwtwOf/hcQQQ6mkLCpqaV+pnQ=;
+	b=M2d9dZcz7AJI38QnPpPV+TTwjoehAHf1dsF4rtPpHsr9uaJD0zPWqQ9OQbpgvLbztLkLuP
+	VigogMh9Dc93MNvCEDcorh1iQ1Xc4TDivWdVi9hlKK9zyY/pUUodjUzVLCVXsxtsUcR/L6
+	2hsAHMcl8WSQgtfvMrkSb1OBiHfHHyM=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pl7stuKD;
-	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=d+V2WNT7;
+	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758713918; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758714067; a=rsa-sha256;
 	cv=none;
-	b=wtUs1TKOvs04N9fcitYqhzPYBkOuspCgo+OMwX1BIDD1iEeNZAJ/c8guor4W3OcY4RoRmr
-	aGFVorsQWry4v/OSWj2kjLrthpAIGeL8oOO0mJmjWflNW1g7yrNXi52JUvoWp4openwbSB
-	PHNFyaFO4ZFdo5AGtCCwYwfnoR5UhFw=
+	b=zxzbIJTNwLXwwnExTyyA/FCUhAd+KMU6viSrz/OvuyNsDvpjEmqsjQ0DjT5YPMiq5+f5u9
+	VINBqHofwQScT3cECQ+BZKmvflYB1zO0WGx/vxkX2voVdPZDqNU6TIev+71Di/UynoTxwU
+	0tQwZAB6vDs/xS7diNSW4L22U4k1cNY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758713918;
+	s=mimecast20190719; t=1758714065;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+nr7Ue+Q8mDfosTulm3J5UwQG5E9B4yAzAZ8LnR/jDs=;
-	b=Pl7stuKDQ1QJYa7p82DVVBLGNBT7LJ0C6SNA+EBCtADNAMHrA8+Jm8qq+Hy180pH+JzcHU
-	CPnrMmpPF0bZvbF0Ab9cXz/SmvUjJWJHUAq4bGGJX8hsr08NL0lJJUcy819316GvnHlwKL
-	F9BgVNzEt3MvgAXk/GQvkihjmHZaTbA=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=A7NBE1Ki5OUP9jlGIoLwtwOf/hcQQQ6mkLCpqaV+pnQ=;
+	b=d+V2WNT7l+PmaEdtsSwTovgIMszDqX9eGVPYYrkGL2O/dRbbGJoqd9KgKLEi7KKNxh0iBV
+	QJsjCpH11m3EtLtj3EMdrd/gAEhPh6SrfhFqNsX4YUgSa5Ody4TAcnYPSFm/rA8TGGfiA9
+	FzGGeTwVk6LVVLXU29yJ9cpnsc06HR4=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-164-EO3CE1XTPkaVmOUVyhazxA-1; Wed, 24 Sep 2025 07:38:37 -0400
-X-MC-Unique: EO3CE1XTPkaVmOUVyhazxA-1
-X-Mimecast-MFC-AGG-ID: EO3CE1XTPkaVmOUVyhazxA_1758713914
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-46b15e6f227so13728505e9.1
-        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 04:38:36 -0700 (PDT)
+ us-mta-528-CgOSfMs9MpGwYYdP_cMm6w-1; Wed, 24 Sep 2025 07:41:02 -0400
+X-MC-Unique: CgOSfMs9MpGwYYdP_cMm6w-1
+X-Mimecast-MFC-AGG-ID: CgOSfMs9MpGwYYdP_cMm6w_1758714061
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3ee1365964cso4649497f8f.2
+        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 04:41:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758713914; x=1759318714;
+        d=1e100.net; s=20230601; t=1758714061; x=1759318861;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+nr7Ue+Q8mDfosTulm3J5UwQG5E9B4yAzAZ8LnR/jDs=;
-        b=IE0VDSNwtzxwAxVHG6kHrEHnfXBtZE5c6Qae2Dld58QOVvOOs0FoX+lXcy6AVQLFT/
-         ep0ArkMFpiA8lr24c3DFI7kh3V1AKG10ndD9oDxV3bjUj+bHTS+HSFuqMGAjyRl2eg7Q
-         xLqRPgdmSTasvnrc/rAQx8t9vot2k8Rv3tI9lQMcZ2dgUps/Aw9bYfq5CfUlzq69GGk2
-         ww61dhhAyswKGRWLOFYyHntmulxXqVATRUa7bhaRFFMqzmLgo3HwgUczTGHXN+B4qWZh
-         P398PN/y5iE0Fp8YSPc88ZB12fwdFnwNG8e+uFaqwOAWaZ9dK6bHYO4emkSOVlfXoikk
-         bBKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVk4z826Oxzvkb0qk/FysT4TszvedqNE9BiuenC9K2Niws9TdLVkYjHu06bAxU5cnDSS65ban8y8Q==@kvack.org
-X-Gm-Message-State: AOJu0Yyl3+yKlja1mwaKE5UNev5ylaotnWraRx9hya5p50Vdx7jRzn64
-	70iN+OxkI6u7OJgPvVtC8wVDMreKQAhjT3Iyjik6vIUyf279r3HFgHpLAGoFp5FQZgET2DmVUO2
-	VKuYm9J+t+8lYFqoBnj05CoB83k34DhTAtuof2twDne3qaKWyjwe4
-X-Gm-Gg: ASbGncu6YOrpWDSN9WirJvpB71jzruqmVrV32qNXJofhIrhlkKmC06qgwDI7EOO3+1e
-	nFDgN7KFqjo/8abgvJdwNzuVLYwa5K5ily12tmuUTW/oe8WWekUjq+pXhonTxiWy5DQUGFAAY2n
-	VPXozuvw0d43jrIJo20CgMdsQt1X4+VZ5E8wpcJu1sw+afJ+kNQtArTJZYj4rr9xF6tYwFJmkHj
-	tHEo/4np/cgc/LtcVa5dwrAPhs/XXYkfheDJpoqEIHNvWN9osMPHq4ySPx3A6m3ZqZ63bxEo4jg
-	YD2vRNP3ggKbam30A18Z/cjFRfcsgB0u7xhZfUZFdFf4hv1QsDat7UgDlESK61Jg6wg6j3JdlCA
-	SgJo2V7Ier5K4QH8ziHMBh5zJpRZ9JltaQVFX6ifWiU6uQ8ZUIAVpxzX8HhoPPk0FuA==
-X-Received: by 2002:a05:600c:1f8e:b0:45b:9a3b:34aa with SMTP id 5b1f17b1804b1-46e1d98dfefmr81427455e9.16.1758713914075;
-        Wed, 24 Sep 2025 04:38:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEDyoQr1XMCzLogNb5hrirQ5E/He80PBLPI4tToWKtH2OlAXQ+KTAg/KFfVKjMR/pGFLjp+xw==
-X-Received: by 2002:a05:600c:1f8e:b0:45b:9a3b:34aa with SMTP id 5b1f17b1804b1-46e1d98dfefmr81427215e9.16.1758713913699;
-        Wed, 24 Sep 2025 04:38:33 -0700 (PDT)
+        bh=A7NBE1Ki5OUP9jlGIoLwtwOf/hcQQQ6mkLCpqaV+pnQ=;
+        b=c/dGkQoElz0xz46bhGOWI41uxEmLt43j5AaKLXQ+BBcydnmNqwHgkG8ns8LO12lG29
+         gBcSj5YEao588Dr9GC/LrDlahDaE2xDLbpUK3nm4oXP3Wxz5uqrUvqIgDAoRRR7IPF4j
+         a30zJINyKXP1nwy0Ae8dw4ITw5qfWjX6+b1WX1+qdiDLdqorHSsq7mZZ0spBFYvBc3Zf
+         qKPqr8eDJ4D4BTCC1vOtF7Y8s4xjrGOkIbV+1BqD5vy8bAUVgT1Xgge6qwFtVeqyQg7J
+         n6/BfrryzjGIhLSv6xJtbKKz5aI9UYnQ5oW3P5N8Q7LYlFyD4iItnleQifRJvpg9nacq
+         W1+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW5m2IjVqS1mLytXshUhAG/9x4AjiWiYF+otcBimlOnahyS5o4uEr/+EZDuuF3i5Ya+ElzO8TcxPg==@kvack.org
+X-Gm-Message-State: AOJu0YwlIjSU1m6tZWaEYNz3ASqOa6F+3qVPCri1+DP2uS57rEinICEn
+	6K8kFpt6ciWfo/KZdsItrz6K78iq0DVtxPDRX5T7DHfTK8895yltBKpISmUBSa4mZHFtalucwxP
+	mz5RBu7hN0u7GHX9fDyfYzoiF5ZAu+q7qZYfQXfajsd/jkChYESoO
+X-Gm-Gg: ASbGncs7tZOkmD8+rIIjl0OICJpWPJc3SttZDp9q0OyIyjyYj3/d12xaNuM4jsO0md9
+	MNwmvrwapJEJ2Dot3dJwZn8JBJM8T51Wd7+VXhcxOR/nUHmf7zIR4L88YyDRxUqk26m3kaeiw3a
+	V+mgkSv0lVC85rEC0u4USqDd6L5rlamhyQ/FFlbTi016Y2ctw2Dd+zdRHhbdObmpam7SilaBlXW
+	Mg3h0TNIYEubas20KF1sDQMOBm+dr3ndYLo0vKdrKiRCTTDe5vXZcGQYIHzADTlNpk7BeykbyOl
+	HS8T1vwCzkQlLDtAOpmE0CW0zEwPGEI9OXVWU7qaSOx0KREaA+G8YLaQi4ZhVMRBqbHGhv6taZN
+	7yfiHyeVIdEsEtwYywSGrN7GQ7bg5JOWRcO1szITYJ7UsrensHBIvK5avP/ywxeFzwQ==
+X-Received: by 2002:a05:6000:25c8:b0:3e7:1f63:6e7d with SMTP id ffacd0b85a97d-405ccbd6d4cmr5702081f8f.45.1758714060940;
+        Wed, 24 Sep 2025 04:41:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFgfrvynla+wHkmS6uu0qZf4arTWCZv+c0BaB+ytWjIg9L+sNJcWew+zKX2Y4WNBmLdO2qKlg==
+X-Received: by 2002:a05:6000:25c8:b0:3e7:1f63:6e7d with SMTP id ffacd0b85a97d-405ccbd6d4cmr5702054f8f.45.1758714060475;
+        Wed, 24 Sep 2025 04:41:00 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f14:2400:afc:9797:137c:a25b? (p200300d82f1424000afc9797137ca25b.dip0.t-ipconnect.de. [2003:d8:2f14:2400:afc:9797:137c:a25b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e2aadf5c9sm28867015e9.19.2025.09.24.04.38.31
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3f02f332c31sm21831543f8f.45.2025.09.24.04.40.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Sep 2025 04:38:33 -0700 (PDT)
-Message-ID: <3b1a1b17-9a93-47c6-99a1-43639cd05cbf@redhat.com>
-Date: Wed, 24 Sep 2025 13:38:31 +0200
+        Wed, 24 Sep 2025 04:40:59 -0700 (PDT)
+Message-ID: <81a827ce-24f7-4038-bca7-c96dc558cb38@redhat.com>
+Date: Wed, 24 Sep 2025 13:40:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC Patch 0/7] kernel: Introduce multikernel architecture
- support
-To: Stefan Hajnoczi <stefanha@redhat.com>,
- Cong Wang <xiyou.wangcong@gmail.com>
-Cc: linux-kernel@vger.kernel.org, pasha.tatashin@soleen.com,
- Cong Wang <cwang@multikernel.io>, Andrew Morton <akpm@linux-foundation.org>,
- Baoquan He <bhe@redhat.com>, Alexander Graf <graf@amazon.com>,
- Mike Rapoport <rppt@kernel.org>, Changyuan Lyu <changyuanl@google.com>,
- kexec@lists.infradead.org, linux-mm@kvack.org, multikernel@lists.linux.dev
-References: <20250918222607.186488-1-xiyou.wangcong@gmail.com>
- <20250919212650.GA275426@fedora>
- <CAM_iQpXnHr7WC6VN3WB-+=CZGF5pyfo9y9D4MCc_Wwgp29hBrw@mail.gmail.com>
- <20250922142831.GA351870@fedora>
- <CAM_iQpWO71vSV_0qXiUYeKYZMYF0xWNz8MrUVRkqKwDEtQvKqA@mail.gmail.com>
- <20250923170545.GA509965@fedora>
+Subject: Re: [PATCH] mm/page_alloc: fix alignment for
+ alloc_contig_pages_noprof()
+To: Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>, Dev Jain
+ <dev.jain@arm.com>, Wei Yang <richard.weiyang@gmail.com>,
+ akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
+ jackmanb@google.com, hannes@cmpxchg.org, linux-mm@kvack.org,
+ Oscar Salvador <osalvador@suse.de>
+References: <20250923001943.2479-1-richard.weiyang@gmail.com>
+ <3BF1389C-4B8E-4F50-AB0B-F0D96833D387@nvidia.com>
+ <5491dfda-862a-4c31-b64f-5339007a5302@arm.com>
+ <09284390-5a1a-47e0-9929-0a5ba98c836e@redhat.com>
+ <760C8EBD-9201-4680-8B9B-CAD7641A81C4@nvidia.com>
+ <aNPW4Ynrxyn23Ko8@tiehlicka>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -163,21 +162,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20250923170545.GA509965@fedora>
+In-Reply-To: <aNPW4Ynrxyn23Ko8@tiehlicka>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: wGzoyLJjcRl9kY1YvpAvMEf8uI4rJ3lqpkNGsrVKciw_1758713914
+X-Mimecast-MFC-PROC-ID: bszth41LFuYqbQKero_FnShLfgB7UamBVZ6V32MTl8M_1758714061
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: wzf8ps68r94d346tms347o9brehn9mdj
+X-Rspamd-Queue-Id: 323CF4000D
+X-Stat-Signature: wwgetfswpp86cq7p8n7h6pcuxrpxw63j
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AC8B510000B
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758713918-120683
-X-HE-Meta: U2FsdGVkX191CYoBbCAZZT+wZYdo4wLW8sSm+YGHsQO+JsAMPKB4frtuRTLPrqAd1OcyUqSW1vqecNTRBe83Mvh3wmN2IcnTWm1spHanlp1ktdmg09JZKdvOTIR4cMeGUaR+4hHQ1GAuoe16zbXXDwvNXSDEiUYZ/seuo7lNRMCsOfIP0OVaf8evgCnIvSZM3Cp9EHrshfvtKkNnGKO86fDurS7Ney/rAvhjiqtNlpywl6XVrgpNaW8Grvhzrh5A2sRqFcxbe2QztAZPxB3gyBrU5f6zkVURPbE8BuhwKNNBUblWHbwLqysPas6TCubkMDNZgJqPqUV+gVHUvGNisWA026ltcPiTw3OB2JHvwK+gZYmOfoz2liB+cHyu99PQLDcM77OQxnpiRp+VaTt44O/6nd4w33JdOZ37i7MGSvrvkfMTF8wzuJx+oCSvM6OmjM624owHow41oaxYZnltk81Iedd4Y6OcrXr5uDoX4w0f8ufGe62eRMiW7V8Lue//d7vrM1TuRqkSEPQpJ8lNWcMCL2H2Pm0GCchqoHlo+XJgKjtros7P4LfeRsqMmq22lnPaiYEH9m3QLk6kbN9dd8WFCqEL3RwG0BFefNpslF41I+YKjST2HSSisoZ6Jnugl0j42gj3eQ83Kk1xnXEEejhkT3K0psvGlhQyXS911CqPqhOkik3yS3D3/SL9lHTbhlOJXY4MbIIRNyr1bK3Jq04xNmLWagRphE7A8qfxJZgoUgEXuI4eZEKtarV72Mv8zorroNPCy+iNZXxOA0k+2Ob+qI8btIEO18p26ib/7myTGkKtYXLhD1bN77QwGT4+76IVGdh3WitguVRPdQicG7NnYeCMzxRDYgU5B2nA+9FfwYSu1rIfYcCx3dG1XtLTWBlRzxT2QVTQV61cJ4UDvnjlX7Cqu5GDFLn1HdXaLl0XQPtEG6Op+tByGw/b63FYiaNFPwtoPczVwcRHe4P
- r+mbWoOz
- fsrRUSwM7DMRFQJq4JN6AtHcaRdhbC9vnOCRFJMA9SSXBsNQyhS+RDZ297GrxrzxTDaV8vFpUZETL2j5Tt2AF4163zliuOZM3w77sBaowsyokivg9Q95hGSWaVJFPE6qDwM73aNXO2pbQovy+xfNNM+2I1XYF2qaKnKwIQqC0n6mJQtQ=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758714066-327522
+X-HE-Meta: U2FsdGVkX1/TAx6hAXXR9UWFDE4pOnCL+vhP6yH6YyzPcKXRANZtqEK0ZT/P8gRi0MbEsOnKrhluqffrM3n8Wb0Q/i/+zc1WiMsQUaKD4N7ToehchZJYTa8u3nuJq4piQblVcJqXzkTRZEz08yKxwPSu6YH3ShQO2kFeXz+12MO6oDrdTJ+/SUuU6OVUMwZ8pqWtqWnyW+E36dYf4JcqdrUgJ6y7JuNqXdkwoMx9gSTVXD4NRRpt39r/AJF2r7dRwAacM74sUVw56t0EAIV62EGG5CBYRhEyTTq4ZtNuBJdlmI5cvNbUpcDBUjYs8joEsi6+QNLW0yz7yxb7OE/U/o4aDxqghAElPut8z+K9p9uhW20pbd7wxJ6WmKgPtntXCjgomPuDFAauiAMon9MkqlfaHFMdPc0abzcgp0Dwp61hhqizk3+7rSIIUoSlw9Ri3Qs3wbOzp4NtBEGMjkVcW1db+825y4tFJBw1QHfsoBgQ3ta8TeuRu5imVT7Y3ydo/C+MjalmK/jnWiAgDBBqrbJKAfk136W6pxmIs9ccXAkwN4yqF9Xl51HDpEFQ6s2Crj3uul4s4fW+ZxQDfNl4+d00/ndSIgktWy7vkr99JWEjKAikHIIMZUhYu8s3orBXkJTUKj6MWjueHJKZeNFwDsPHaWotVX3SQF1wHu4QRwzNJm96LQ/waPYqdkGzCJ3tSjytLr9iKyXn3lnLGF4a61A+EODjqEw3/ELYZNZC6mji+NTn7PGvR1ijFMQic934HGKZT3Hep5VDjsaQ5xVsK8Ts9e72kG32oDYbjDvR2iY2U/UPbnFh5iEV0YhI4WYYhqjfKwEWOK9KGEdWyhprnD/1m/wNY8E5zB3gRNj7fAgaUcJ020KtzzARiiWDQv2ZnX+/H4aKVOLoWQRrXvXezptFiFsgM/16YWPZc3ccQvdkGElWIzIpi+mkQEPFmVtw8CqEVPEEgqKdqKRdtr4
+ Xclqynfq
+ uGasr1z0c/UZgRSY70+ws+6WtEebiFRf4Q8r/PFGAfNOkh8S96j5JMpvbwDHr/wGwSt/wyH8LhRGlLQ6XgmG33y75PurNtTQyaFnB7RxdANQlMEbaoEns9rJsdfUyMxsQ1rmhdJ/osHpJKMQWdNp8BGHoijHHTc6Lp4ncWEQMRXvXOLtUFTQqzpIBIjQDOqmIuKANR/L0T2M4fp2cBue84XeI2Z0Wt30nuOWFOcPnGOO+wu4p6oWmz7r027zxsCbwSuEDf9atOuz6D0M7Cw4dWIKPSP/YywTmC6uiUg6+uJAP3HGwDjL7bpRnGd/OsBNjkubBz7VZVNpD/mV8bOsFucwelfEWEpJFV2joYyzdPQxnn9EZRfFKlrf1d/BTWCSU9BVpXL6ETO8fMdWZqEMHnFBfD+zYoD59YtZaFATwRreR4FatDxsYUSJbB6mB0ZOt+2mBQ/i39liSZyvhMbNxQFGV5Mo3ASkjNErGjSLA9xrh8AKnVADSCOsl1xvM+bpGpc8/PZT9BSmOwLkhfxRyvAZxF4SDopzs3IS3t1dcGo6+CWA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,32 +185,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 24.09.25 13:32, Michal Hocko wrote:
+> On Tue 23-09-25 11:07:28, Zi Yan wrote:
+>> On 23 Sep 2025, at 3:48, David Hildenbrand wrote:
 >>
->> Two more points:
+>>> On 23.09.25 09:06, Anshuman Khandual wrote:
+>>>> On 23/09/25 7:16 AM, Zi Yan wrote:
+>>>>> On 22 Sep 2025, at 20:19, Wei Yang wrote:
+>>>>>
+>>>>>> Commit 5e27a2df03b8 ("mm/page_alloc: add alloc_contig_pages()")
+>>>>>> introduced generic method for alloc_contig_pages(). But the alignment
+>>>>>> calculation seems wrong.
+>>>>>>
+>>>>>> Since ALIGN() only accept power of two value, while nr_pages could be
+>>>>>> any positive one, the result is not defined.
+>>>>>
+>>>>> The result would not be any value lower than zone->zone_start_pfn,
+>>>>> so the worst case is getting an unaligned PFN range. I guess
+>>>>> most of the time nr_pages would be power of 2.
+>>>>
+>>>> Agreed.
+>>>>
+>>>> Also as Dev had pointed out earlier, this function gives no
+>>>> guarantee on alignment of non-power-of-2 requests. Hence I
+>>>> don't have a strong opinion either way, but does it really
+>>>> qualify for a "Fixes:" tag ?
+>>>
+>>> I'd say if there is nothing to fix, then this patch is not required.
+>>>
+>>> What likely does make sense would be that a non-power-of-2 would be aligned to the smallest contained power of 2.
+>>>
+>>> E.g., a 6 MiB request would be aligned to 2 MiB instead of multiples of 6 MiB.
+>>>
+>>> Not sure what the existing ALIGN would do with that ...
 >>
->> 1) Security lockdown. Security lockdown transforms multikernel from
->> "0-day means total compromise" to "0-day means single workload
->> compromise with rapid recovery." This is still a significant improvement
->> over containers where a single kernel 0-day compromises everything
->> simultaneously.
+>> Something like the code below:
+>>
+>> pfn = ALIGN(zone->zone_start_pfn, rounddown_pow_of_two(nr_pages));
 > 
-> I don't follow. My understanding is that multikernel currently does not
-> prevent spawned kernels from affecting each other, so a kernel 0-day in
-> multikernel still compromises everything?
+> Please let's not try to fix a non-existent problem here. If there is no
+> alignement requirement then make sure we document it and drop the
+> existing ALIGN which doesn't seem to serve any actual purpose rather
+> than make the code more subtle and more obscure for no known reason.
 
-I would assume that if there is no enforced isolation by the hardware 
-(e.g., virtualization, including partitioning hypervisors like 
-jailhouse, pkvm etc) nothing would stop a kernel A to access memory 
-assigned to kernel B.
+I think we need at least one initial align because the zone_start_pfn 
+might not be aligned to the desired order/nr_pages.
 
-And of course, memory is just one of the resources that would not be 
-properly isolated.
-
-Not sure if encrypting memory per kernel would really allow to not let 
-other kernels still damage such kernels.
-
-Also, what stops a kernel to just reboot the whole machine? Happy to 
-learn how that will be handled such that there is proper isolation.
+So I don't think we can drop it.
 
 -- 
 Cheers
