@@ -4,117 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 680CACAC5AE
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 18:28:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B920ACAC5A5
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 18:39:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 967F98E000A; Wed, 24 Sep 2025 14:28:19 -0400 (EDT)
+	id 0A7ED8E000A; Wed, 24 Sep 2025 14:39:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93F5A8E0001; Wed, 24 Sep 2025 14:28:19 -0400 (EDT)
+	id 07F678E0001; Wed, 24 Sep 2025 14:39:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 854908E000A; Wed, 24 Sep 2025 14:28:19 -0400 (EDT)
+	id F03958E000A; Wed, 24 Sep 2025 14:39:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 72D4F8E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 14:28:19 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 286F3C0137
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 18:28:19 +0000 (UTC)
-X-FDA: 83924978718.01.FA85C16
-Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4A0C4140002
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 18:28:17 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=l0LdB9X8;
-	spf=pass (imf23.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.217.51 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DF9AC8E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 14:39:58 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 64EEA55DAD
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 18:39:58 +0000 (UTC)
+X-FDA: 83925008076.19.52E4E51
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 833D1C000C
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 18:39:56 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=F3FwoBwH;
+	spf=pass (imf22.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.217.43 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758738497;
+	s=arc-20220608; t=1758739196;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IC9nKcdgtD6FCnJ0khO3nQPUu6U/Swo2cDFZgdHuKJk=;
-	b=1oFfksWLahRGhjcT3rGO0CnKom6OoqomczuqbIevV3zlKfjHSucsGfUsJYKwnjKEw5ifiS
-	0rwM0Hi5r1nDjSx2G8RVIuEUfV1Zf482KsU7fhYbhJx99Dfojdg/hRY8rQEPj3cry9W8l+
-	EnJdCgkDgk2QgYQ53/MvBpT7YcA465M=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758738497; a=rsa-sha256;
+	bh=ST5MIPZNh+rk0Xdo2MPGLb53Npr23yQ+YE/sn+TsaZQ=;
+	b=UxtM4nOhC/6dadrMIEli15A4yxanSl6UlMXM16Lq7qADDi4lArbi406XBKLn3QfeU9moNS
+	nVi7rIIAKdoK4umIu8sp2NDmO/1JOC+ef7+bT5z+Cf8MOEf1vgyh15Pcfq3Hu/PcRBJrhN
+	0T8CJa9BcNoTXQ8Pz8Zh07lt5ZpZCBM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758739196; a=rsa-sha256;
 	cv=none;
-	b=nqCZixTM2OdbAntAxZY+GXC0TbtFWglhMrL3f5JQwZl41xv5NGEgXzEJOVfxBlGbi6RFwL
-	FEma87aaaIZrFzXOGxOgA7O2iye0aCMyPrbJvA1KyarePjhB0hb+fHGiY+ji1XESgyz+Eq
-	fvo6tIj9xqIiERH1wdrPH4R9lypk/2M=
+	b=4MO72RJyus7uAIi4kROq3HQc111cFCPUTPOl9XHVVid39x6wm/JSQ7PTpDorXODibamjD1
+	ObIwwuE6BXIDPPiUGi+Kc9tWTada8G+X7fYLxYmDZim8fW0GhZR7LJwqi1+SDwTPEH2i3r
+	jcdH0+YpWFIfXKyroTsExFKeu64m1l0=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=l0LdB9X8;
-	spf=pass (imf23.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.217.51 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=F3FwoBwH;
+	spf=pass (imf22.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.217.43 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-58d377d786bso129429137.1
-        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:28:17 -0700 (PDT)
+Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-5838680e242so73177137.0
+        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:39:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758738496; x=1759343296; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1758739195; x=1759343995; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IC9nKcdgtD6FCnJ0khO3nQPUu6U/Swo2cDFZgdHuKJk=;
-        b=l0LdB9X8NbOid+PGy11phHVc/4nekmBuedqbWMcfIBTLeOajGWDWURlZsJH9x0tA4f
-         qui/fGY/haYw1i81sbmdL9R4EthIIQHS2jEvykpcthYQBr+JrnxHlEzdwll+b+FZdKcJ
-         94kRScWJunu5RZhIG1hMIIc4vysxcjGGcyXDiBBLHjwEVik09/GEGKfaJbc+1BTSDf4d
-         N3QvI6ZFe/tn2WiV/N7jO2kefOlgCLHSn6kOaCeSd6iaMrsJN79oCc1iXtDy8kEW2k2c
-         x81PbCimozn8OYKQZ9xCSHXeGpW+T6HeOPsqt/ilUddel46mbAL3NjzSwMmWouPQ2euK
-         g7Rw==
+        bh=ST5MIPZNh+rk0Xdo2MPGLb53Npr23yQ+YE/sn+TsaZQ=;
+        b=F3FwoBwH8fhg2foAheQM4jiS/ng4QZMt58KJI4B4aCJZeAPxnDXG9NhHtjfxvSUtMk
+         EYUkO5dWJUZH8owhPlDljqgRERTeJJfFrk0DQMzZfveHI3E7OfdwyhmBG8BTGpIjeB8V
+         R3hGBtz7q2kkTEh4dVRMwtSfw3nUwqGRe8YEGqwx1B3btCidN+5t6XZ/1fWAvsaY9mh/
+         XZglCcxUkPFAmhZgDhOt5vnfKCOrBHrgG8cNXUtseyPf3h1pLj3NyoSqJiAsPEnujsPc
+         tVLeAf62QD3/9jsPM3kDO7srtyEO6u2g7wgK9qiB6p8z12eqS51DKH42MewyVzCp0bHH
+         xPEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758738496; x=1759343296;
+        d=1e100.net; s=20230601; t=1758739195; x=1759343995;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=IC9nKcdgtD6FCnJ0khO3nQPUu6U/Swo2cDFZgdHuKJk=;
-        b=wsN+eJiWKCtftLTUd5W5a5YueaF2SHzkPFndygFGhJjsihE/7aFbRxsGm4UUCZivLs
-         vaRd5Nssj0XnAyWlimHlFQXC/OdbPCXaLBPojtU2WzKt7QJZV+qkxE0mtshiu98+8qup
-         dxYMrvrsUcXluaGk8d024g7uTs+rzxkGj9/TfANBcoRcr9S0JQbvR7felHp+tGyyzLSN
-         bApEppgA+LFYXUnvszYw/XD5ZV5sStDdSmI0qx+nRGLhS8mwfc/qcrrBc6RUnl7eQjyZ
-         3GCwZM0xhyj6xziNqD1XgunoqyTWSCMidsNj1lcM+g3czUzkwV3uFycm69Sx/hIJogyF
-         fs4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXllADCl/QNCqAFF+Qs9YpiCVU3L6wrgmNaQjgxjUqAzTnOgZcpPn79hvkmzcqYvjuNveTfY9vudg==@kvack.org
-X-Gm-Message-State: AOJu0Yyz9Xm0nAqMMpI7kqwHbhhJ0GTKlxQsiyBh2DFGIR+ecSAQgpVC
-	NKIqadvSczgCzxXZA7NxIXw57g2vfKZbWj2kC1iV5SlbTdTsae4MakhRdUhEQ1j0QGJSIZRUBFv
-	/j+w3sh4ieoDorXuPyBdV9uJ4nNRdufw=
-X-Gm-Gg: ASbGncsZmi9/ItNRAhGNMNvVItMNvecTPtYunXfHCVXOkxfa/gTDyh66g68Vmbg/dXw
-	+kyA5CXP1QZi4v8eHfnKDgnekkM2txh1Kryp+fmh7tJh98EHzXNGY66ajkkCcOiRJ5OOMs8mLy2
-	H4xvizs6UYy3Hoj5ehRZ3LlLvgqKIAwxT42no3flhg8kIwwIXWeJDq+XFEAiY8if3/K291YcgIV
-	4zGzLGfHoEufCXydWLi+azgmDEs5oVyFslIQNg=
-X-Google-Smtp-Source: AGHT+IGnZ5YD7V4USsci1qW3abSoXkq9k+Mc//5cJJhmJJIWBD1IuJEsonv3BX4urHjIQD5e13xNPYxJy+BdDvyWIxM=
-X-Received: by 2002:a05:6102:d90:b0:4fd:53e0:b522 with SMTP id
- ada2fe7eead31-5acd4639abbmr429762137.19.1758738496130; Wed, 24 Sep 2025
- 11:28:16 -0700 (PDT)
+        bh=ST5MIPZNh+rk0Xdo2MPGLb53Npr23yQ+YE/sn+TsaZQ=;
+        b=UbDgS6Sf/1OaC49p46okc3BdMb9Q8yGlJgtFlrnOMoDmSbqTTxmCZNoDro5hg/B24i
+         pm7XuGLo+d9S1poAoPdUs2cXGdf8Sw913xQPB0VozDom3296WiUk+UDGwEFDQd2lN/8T
+         YHB8z/p+iFqhTdw04524iFQx+rtYiKsG3BGE9hgJBCuFxFZj6p/l+JmVLnoSCQv30WcA
+         qDoAQofrhNROuWwapwMVlCyZt0NwO2siIL+u519QgpIn+QOVT/FutgZ4EGQ4ZnzhlJLt
+         ZN7Dd2k2bWVxU3i5IfcFgoQ1zDwB7yQ0i0oDKJxkop4ZwqYbPX9aIy/teByxP9yDC4Gj
+         FPpg==
+X-Forwarded-Encrypted: i=1; AJvYcCUC8uDr1oqnnEdIRHfvWPlW/0mkf4nVTrqvEAknerZUImLCnq6+2Zy697v6iLl2FtLUW2jNn7UzVQ==@kvack.org
+X-Gm-Message-State: AOJu0YyL4mlHEh4FGll1gMuHFW3qQ5hkf/B2D4pPVRPM+JDpKbOdtlur
+	0f/FMBdpxTCz4TgLgXsfSbzlecuPmjreWyjb550n5594OGHXcdWkyGX/eUSq/3imYfcJsSnIjnq
+	zcorNCLQ60fimohgiUOrVFHYR7ICHygQ=
+X-Gm-Gg: ASbGnct10O0+mLHwq51xnM3Lp0ManmKWkMvcVklSpTMs+z2KR+H1GVyP7VH8iuBE+a9
+	sofw3RV1KD3x7i6Vn+2SvAQBiAo/S5jyKqcAeVhNNNNP1oJlVFQ86uTzfA2fgKcGK3jebALMlEo
+	big8TEIixPSwG2F1dQ56UXImI0uAgSmcXE6AeBmiIVFvlhgUHWwnEDscTjjfLDibW6xE+2JISNY
+	UssMNxw0/v1jh4tccISCPyNtlT9MJ7hk4zA0pqt7cxgnOKyJQ==
+X-Google-Smtp-Source: AGHT+IFKQvu7KK7l/LdyC6yvPgiOYdOAsqsd81zbe9e62XVFhzH2deCxnYNW5eJ9DEvQFVudwuvTGiufcXziCwsP/r0=
+X-Received: by 2002:a05:6102:161e:b0:533:ff66:698c with SMTP id
+ ada2fe7eead31-5acc4a1ef0fmr489265137.2.1758739195537; Wed, 24 Sep 2025
+ 11:39:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250918222607.186488-1-xiyou.wangcong@gmail.com>
- <20250919212650.GA275426@fedora> <CAM_iQpXnHr7WC6VN3WB-+=CZGF5pyfo9y9D4MCc_Wwgp29hBrw@mail.gmail.com>
- <20250922142831.GA351870@fedora> <CAM_iQpWO71vSV_0qXiUYeKYZMYF0xWNz8MrUVRkqKwDEtQvKqA@mail.gmail.com>
- <20250923170545.GA509965@fedora> <3b1a1b17-9a93-47c6-99a1-43639cd05cbf@redhat.com>
- <20250924125101.GA562097@fedora>
-In-Reply-To: <20250924125101.GA562097@fedora>
+References: <20250918222607.186488-1-xiyou.wangcong@gmail.com> <78127855-104f-46e2-e5d2-52c622243b08@gentwo.org>
+In-Reply-To: <78127855-104f-46e2-e5d2-52c622243b08@gentwo.org>
 From: Cong Wang <xiyou.wangcong@gmail.com>
-Date: Wed, 24 Sep 2025 11:28:04 -0700
-X-Gm-Features: AS18NWCuwrysu1oqk43xTve6hldZaAK8cQhNTzJSaIvDKFt0icQ4DA4v7i2Wf-M
-Message-ID: <CAM_iQpWRZ-vihMEa=k-j9EYN9itUeZLhZ14AoCvZ9mturFxAyw@mail.gmail.com>
+Date: Wed, 24 Sep 2025 11:39:44 -0700
+X-Gm-Features: AS18NWCWklyrjJnbHl1kScwWNFAGeo0abQkt5rG3TPvdr87PEwYrqpVB-8wXyvA
+Message-ID: <CAM_iQpU2QucTR7+6TwE9yKb+QZg5u_=r9O_tMfsn7Ss7kJbd9A@mail.gmail.com>
 Subject: Re: [RFC Patch 0/7] kernel: Introduce multikernel architecture support
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, 
-	pasha.tatashin@soleen.com, Cong Wang <cwang@multikernel.io>, 
-	Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, 
-	Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, Changyuan Lyu <changyuanl@google.com>, 
-	kexec@lists.infradead.org, linux-mm@kvack.org, multikernel@lists.linux.dev
+To: "Christoph Lameter (Ampere)" <cl@gentwo.org>
+Cc: linux-kernel@vger.kernel.org, pasha.tatashin@soleen.com, 
+	Cong Wang <cwang@multikernel.io>, Andrew Morton <akpm@linux-foundation.org>, 
+	Baoquan He <bhe@redhat.com>, Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
+	Changyuan Lyu <changyuanl@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4A0C4140002
-X-Stat-Signature: qg8q69gjd4suwtj9y1mtstrpbcuc3ffr
+X-Rspamd-Queue-Id: 833D1C000C
+X-Stat-Signature: fn8mqabj5bat9w4xegye7b596pnezngh
 X-Rspam-User: 
-X-HE-Tag: 1758738497-186415
-X-HE-Meta: U2FsdGVkX1/A21hnyglQt+2c2rFMDbrCa0C332GzrgZKH9tPHRlfXHjRGz+lRT5cxso7xEXu4qr53NZeNb05zAUEXT3oV0OiPYSZfaU469K4K6QvYGboTzWHyR8E2oyK3uUHjeQsYhlxlZUWoPRT1pHaGAqTvV66O3s1FGCn2w9lcwGYzJ2rNVR28Go9IUAa/mGKCWNJEzGPDu9oRGGiPgc0XkNADV3iQntMTgde2ciMQLND6APq/HnLzYwkJEB5kT1PITn/gtLFFP/96Bth38+Lkux8BLRoeiWLHpo4qpSd29lR+uCbofW1GK9Lxx5LNIZApTTxw9z+ayTgl+vmAbfsajipya7sTjcPiVBYT+RIZlc/TJtldxOR9i9pJRQT/5wV/31QZACLyqNuv+FKpV2CT1QwEpF8/ApgpgUcyly34jFkkcjw0zi+KGzFNV2snX+HtOlhM7X1sFcYk2xrAnn+nSbGBla+5iL1ZALauA/fuB8TkiniWR7wxoRr8nN1BZwPKqPiE0jrO+oJxd2klcFA2fHDpThdz1PAnPsUW5H/U6XKEgrYYm3+haDO8ImxKRR1t5oRQbDsxX/SgUAffhVEcr4AbI4ZMli/NfJ4Q0br0kgiNwK7uIPpMKoPSSDYX/GdU8maU3L4m6pclW+8qUlyYxQLveZ2JQqlfLNFSP1oREBHz2RbUofntyYrdFDjjZqmktRxC+067Z+I2ZzSlFsvUvxkA+cqmtDNFIZRl3zDfp2JzGCYE1feGk8k9ykk4xyOtxlXfiStoEcf0wT+FpE3IKjZcFy9u+MV/Y9eqJ1c5B79bxzHC44mXO4JlDxgpUwP+RzLZovdZcF5Hd0EQlIEv8GTYL45PqAFtMDQeFiVhZoJsnppCn1fOExNMatVb6OQA8ys2T07TlleIlzcAsLOlUyd5YLUB0QOv1A26optIHJy20XA7sawzu80AYuNLNKYdJe6Kr2QG9o4P6U
- ZBjjbeie
- /OQLSiSKTdbdSIIXPSnZ1t16erbK/+JFXOKQt8r88Wtrt0HcO0AFUmprQxCScAvRMA1pb4qA5UyGDs/cy2iOGp0xovSNSXbtUMAwphISDOs7ADpUZCt2Ngbq4pWD8ug87oQK4LH2UNKRf4EFzFoEXUi/ycD5onxQNU36MM/dRFnxjPG4mXczBAly0890B2fDMelrseg/IMbFo0aYNzVtPZf9Dy0Fz0zXDocx56ehs/VAQdoenrkdO+GEhQgm0C7m//aIUco0ZJ9rKvOlDMzYYv7lqn/uyY0KTAjv7wfq3A3x+SnHOwKflSZ3KhVNWEERaK8hmfG1tOCr9ZDJvXFM3Md3mCSJrDyuvcLfEUKanEipHbnDbcgc62qDRJuS1s8M7g8TE4Hltm6gQh9+5qWw6b5/HQIT+jFD/s4vV8apEeHM6gLg/0p+L5gDozg==
+X-HE-Tag: 1758739196-620254
+X-HE-Meta: U2FsdGVkX1/RZJPg/VoeMul6IRufG6gFiZMxBmpt6IHZEcSLWga38THcdL+H8EvR95vR/LZwgKV5UA4Om/twocySyd9HaJ9WYJWZJJ8aSwnkgDMUZxKNzFWjxdd0oLmZqOEd/MyfRyQrAXlE2xRbmOI8CVbIz9+JO42b/JVv4dN/B/s8kuV/lcddMf712AUbIufXxXClsO9oOn4mpwQoBoPgQzCPIBy1thFxvAxAO1o+AgcdXVH0U2PmJcihoKtcFQH6WUcyJa2eBsFLyHIO3JndrdvpP5xEIH9azuY3j62DroaYkrkKzkazSWmXQaLbDidTSJZhy2n7Zbl9H6A/aYQOUmxZkZB1D55tfAKI1wDqu7Jdo+0ucPAe3rzo+NiC+7JtgtdpsgGBVIahp552OPI8PVYuCP6P4uRQ7h6YOHIEObig9uXchMweDKSBZY106xGZLRtHz1MmsG/NbzBhje178UXv2MsvJ4368R6NMgfjSIYQ5tH5yYBrTqnu8eWDKl4NhEtv2Y24aAo9Z82AvOTn5/Diu34itfptXoxaqwsXOPMKPQZaG0DGSg29wQYlWBN4d7IApsN8AvViMavCDq4Ei+V76WQSAapKMaZAq6mFzwa3FiskeCwm9yeSU0OY5QVtVY2mFC7DWaf+OhNRBJSJpsRN/fZ+5qGIpJGtmmuLZf8I2LyW5QbDuZ/0YUNKfV3ddHLKPjkrFtEiBwQIR5A/y9CyCuaZQ4qFd1SvZZN/yc9x9bZeFdpoI5H9JpON8eB2RgDhCMBSF5cXgiYH0gALCtLKcDrb+D1E8l7leNavwrxWrq9B1LiMOiqGCC929AHup/5n5+oNrZb5eOFRyB3+D9emK8DUudkgjvNi35RvV0KrMfsLYBvVaCXOEJtFVSvIszz3xDiLR9e+/zV402D5i0c3rHVu4UqmnTXjRWY3ort/+5CYwVLzmdleVeCJM+PPDZakWUZ9uYXiS6+
+ vIGsdKds
+ jfDGxSc6+S72JK3i/I5dtozuMdHtr7UMGhgRISd1XhnK4xGooPkG265MfWe2FwtZcOYVKnKMys+Mqs6c5Kw8eBEsrTirxpAt/saA14ecROuhklCv4dIV5qtIiLOFthEJg7elvjtvsxCHN92VJ9M83jsPH6Yd7clZk6042DDLZYJM8LG/80ZIkOmoekdaErAacqXurjabpjK+G//INU0VlftWGWFkYvbG1nxW1rMqNmt2Y67M89BgEZwusCcCYH0TASGoOoX3HkwTZdUUwUwp8N9RamuAsicr+nNR5CD/0vbmoCKQCSxXb/FFuCSd1AZvTrNyD5VHO1nUDTlRF+OqP/xiwg+CZfwpPO24x/Yyya+pqVhwwaD/7EOUjtOu8RX/6MKnWcGeKEwIx4PLLt+w9fTZ3GewQmINPDUzX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,62 +118,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 24, 2025 at 5:51=E2=80=AFAM Stefan Hajnoczi <stefanha@redhat.co=
-m> wrote:
->
-> On Wed, Sep 24, 2025 at 01:38:31PM +0200, David Hildenbrand wrote:
-> > > >
-> > > > Two more points:
-> > > >
-> > > > 1) Security lockdown. Security lockdown transforms multikernel from
-> > > > "0-day means total compromise" to "0-day means single workload
-> > > > compromise with rapid recovery." This is still a significant improv=
-ement
-> > > > over containers where a single kernel 0-day compromises everything
-> > > > simultaneously.
-> > >
-> > > I don't follow. My understanding is that multikernel currently does n=
-ot
-> > > prevent spawned kernels from affecting each other, so a kernel 0-day =
-in
-> > > multikernel still compromises everything?
-> >
-> > I would assume that if there is no enforced isolation by the hardware (=
-e.g.,
-> > virtualization, including partitioning hypervisors like jailhouse, pkvm=
- etc)
-> > nothing would stop a kernel A to access memory assigned to kernel B.
-> >
-> > And of course, memory is just one of the resources that would not be
-> > properly isolated.
-> >
-> > Not sure if encrypting memory per kernel would really allow to not let =
-other
-> > kernels still damage such kernels.
-> >
-> > Also, what stops a kernel to just reboot the whole machine? Happy to le=
-arn
-> > how that will be handled such that there is proper isolation.
->
-> The reason I've been asking about the fault isolation and security
-> statements in the cover letter is because it's unclear:
-> 1. What is implemented today in multikernel.
-> 2. What is on the roadmap for multikernel.
-> 3. What is out of scope for multikernel.
->
-> Cong: Can you clarify this? If the answer is that fault isolation and
-> security are out of scope, then this discussion can be skipped.
+On Wed, Sep 24, 2025 at 10:51=E2=80=AFAM Christoph Lameter (Ampere)
+<cl@gentwo.org> wrote:
+> AFAICT various contemporary Android deployments do the multiple kernel
+> approach in one way or another already for security purposes and for
+> specialized controllers. However, the multi kernel approaches are often
+> depending on specialized and dedicated hardware. It may be difficult to
+> support with a generic approach developed here.
 
-It is my pleasure. The email is too narrow, therefore I wrote a
-complete document for you:
-https://docs.google.com/document/d/1yneO6O6C_z0Lh3A2QyT8XsH7ZrQ7-naGQT-rpdj=
-Wa_g/edit?usp=3Dsharing
+You are right, the multikernel concept is indeed pretty old, the BarrelFish
+OS was invented in around 2009. Jailhouse was released 12 years ago.
+There are tons of papers in this area too.
 
-I hope it answers all of the above questions and provides a clear
-big picture. If not, please let me know.
+Dual-kernel systems, whether using virtualization or firmware, are indeed
+common at least for automotives today. This is a solid justification of its
+usefulness and real-world practice.
 
-(If you need edit permission for the above document, please just
-request, I will approve.)
+As you stated, it should not depend on any firmware or specialized
+hardware, hence I am making this effort here. Let's join the effort, instea=
+d
+of inventing things in isolation. This is why I not only open the source co=
+de
+but also open the roadmap and invite the whole communication for
+collaboration.
 
 Regards,
 Cong Wang
