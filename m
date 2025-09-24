@@ -4,116 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 786D3CAC5AE
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 18:48:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29896CAC5A5
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 19:03:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C04968E0008; Wed, 24 Sep 2025 14:48:15 -0400 (EDT)
+	id 4AE6A8E000E; Wed, 24 Sep 2025 15:03:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB5188E0001; Wed, 24 Sep 2025 14:48:15 -0400 (EDT)
+	id 484A28E0001; Wed, 24 Sep 2025 15:03:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACB618E0008; Wed, 24 Sep 2025 14:48:15 -0400 (EDT)
+	id 3C1018E000E; Wed, 24 Sep 2025 15:03:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 98AB98E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 14:48:15 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2FDE9140145
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 18:48:15 +0000 (UTC)
-X-FDA: 83925028950.28.C32CFF9
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4517F2000C
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 18:48:13 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VZmb1rhB;
-	spf=pass (imf13.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DE738E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:03:27 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C2878160168
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 19:03:26 +0000 (UTC)
+X-FDA: 83925067212.18.9624906
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf06.hostedemail.com (Postfix) with ESMTP id DBDAE180006
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 19:03:24 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gBIlxJ10;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf06.hostedemail.com: domain of stefanha@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=stefanha@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758740605; a=rsa-sha256;
+	cv=none;
+	b=lw1ECeWQoVEzFFh04nSFhhMlTDtg7YCsa2aS+x9L8v1s+y4j2AvAhOGV9K8WMv5yEvU17c
+	HlOnRl7NmeMbs3qHyzpKCQyayC28dJ4iPzsVJpN/+4wm7HaLndrJsCV/WF32btGlQtDsjD
+	vXZPexDm3QjQhVlb+ZdB5giGju82Iok=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gBIlxJ10;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf06.hostedemail.com: domain of stefanha@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=stefanha@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758739693;
+	s=arc-20220608; t=1758740605;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hkL6ZFw2eyDJxTR6geR0RUKNGEtDseea1wBQWsTFcXM=;
-	b=0y8aZVvMcZ5EOBdV/0LoS/5LpyVE9/At2LYk3VypJaiRQXA2j3a5NvPoPBJhADVgdXCRIO
-	niv2jHzWkIrEMfUCdiIGhHbSAAni0GLvV53B3h7lEsppgE1UDg+KD5CbMqC7ALeWb/a9X4
-	Uqk2ugcDFU8hZP7xhxAvHyMVHXk6hFY=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VZmb1rhB;
-	spf=pass (imf13.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758739693; a=rsa-sha256;
-	cv=none;
-	b=iV61+DJ2DXZndq+OHYMs3J0taI3qnybnV2z+/WblsHgte50jNh3sF3kk9uqw1DsAlmdIcf
-	uUXGCMnCZaMHCOxJm2miBDoNO2sWyF6J8rgEmpWzCKloiFnfdhJyPxr3LFAou/EcqUTREM
-	/msFSPNJtE8MqCfniNKItq2wEAZqPrM=
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b557367479eso104008a12.0
-        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:48:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758739692; x=1759344492; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hkL6ZFw2eyDJxTR6geR0RUKNGEtDseea1wBQWsTFcXM=;
-        b=VZmb1rhBEijWXPj1l/39xJSJyTUNDLCBn330USQvIIlmqkEEW8JeS5Q7AKt+wQ26lY
-         WGjrKtcXO6O4GclqlaTsTPV6PsIek6wlywZQMeY7w8msZ9bTCSgyX0jh1OdacS8gAsFO
-         V0z+nH5b+MPXDnCi//FfYzr705//g7SgRAAs+XNkAum2KQPzqzc8N1d1TiHiwivlfW0a
-         OrFzgokaEGij5hHiQvNBnijzw1z5t1U6077TdTsllyrDYNZfgXrmAAibzq6EYmJrBBMq
-         61INAouYcJjYx2s1Wk9GmO2lhubh7vTNxLbj0lEBDMQXCQn3YYH1zb5L6UHesZ91IuDA
-         IEtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758739692; x=1759344492;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hkL6ZFw2eyDJxTR6geR0RUKNGEtDseea1wBQWsTFcXM=;
-        b=n6mP9YrObUOSGAouKND5VOCVS5VXDhHj+pO3N0CnTrpmp8nDz3Ws6HDHi7R5P0WxPQ
-         +seY5Q5nH9pBahvQKYluqu1V3zw2Nc2kJxKnwCpXyKcBbLyrOLDU61tP2skM1T99w9/y
-         jL2/H1GrJiCGPCZg6IVLBr/7HkGO3gCVhe/z3UctUOYl4V1GbhbTLcIIpQ1y5MWfhLBO
-         HkKC3gwStpUlTLseJtK9+Z9mko51esfucORQ4J513qMWEesbnBPWDZ95/qlk1Fo+ThkH
-         y3DDkB2HZPQIUkA9XQJ1t8Uw2t9yVHLKeAR0nDR1FJTZUbLDBUfPgHShQipJLs6IwaO6
-         7uGw==
-X-Forwarded-Encrypted: i=1; AJvYcCWKXqXshSCZwEusB0sSYZcLR6340uJ2skw3ev71vT1gV8CIrfCVDdlqyTLXK2sYh4nsyeqbUN1uDg==@kvack.org
-X-Gm-Message-State: AOJu0YxmcgR7zyCh3e2TcWYJubrelpyOQLuRX+iTwaTwy5dYLbS9NWUG
-	eIoLtMgT9DeegG+g1m334rTS0Hh21UdvnqyWkWknpNEU08vEnhyLpwaR
-X-Gm-Gg: ASbGncskSe3CZ+sM4/KP0oQyhXk+KYStLXK5pt4yCVHmwJTaPIoFa9aPMzAhlobsvsm
-	NHfBaBJNcQN1hLtWoQwSNiV1wktbgZySgC/1Xgz7uR7dBkOBPGB7ehIVLVjKY/Bl8gVery2Sbxb
-	MwLZMhJ//mcLLED+5/b4EhWzVB4zpUcKe5K8an2Tw+iNiGjHXzdMojDYi+Y1P2VwjGobodCGe8p
-	mfgGWljpSMATls7w9pFDcPzZutl4wYHxH0PH3ptsgkI0NwhhB6GQNJ0pQKpkKoe1r7Ma5foxnO2
-	NCovnp3s5dAUNyK9zuTEYRLlJZMuJszMq93mUlYbz+1aeI0e1vtaiypMLPSPy23cNz6L4qtrz72
-	D/KZPBxwanLdOVzPEhNBlKO7APuVNquW0IIb9qoXq48krA3tNJtGPwj7xu1zBty0M
-X-Google-Smtp-Source: AGHT+IGTxELwHOVAchfeV+Zua3SucLlubodBPLOiFSjPNAs1H57tvT0lzKr1jBAv6AHjCcpTAs5tCg==
-X-Received: by 2002:a17:903:b47:b0:267:bd8d:1b1 with SMTP id d9443c01a7336-27ed4a934b8mr5659715ad.50.1758739691900;
-        Wed, 24 Sep 2025 11:48:11 -0700 (PDT)
-Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-269802df630sm198733655ad.81.2025.09.24.11.48.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Sep 2025 11:48:11 -0700 (PDT)
-Date: Wed, 24 Sep 2025 11:48:08 -0700
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	bh=svtYRVGVOWiQOwGeQLqrRvGYBYlTxeSGi1nAMXidbZw=;
+	b=7Qi6//eXQKoGQ1y7zdEvhaH3ZfiquFXbz0eAMmvkRdiqSooevKPLYc72TMrlWJiBkrHDoD
+	MJlZ8WhGEwXcahJGvoQc4w7MrhTglRqBhknBpeAx7ccP54/jkIXSHHfwGgwak1q0CZXux+
+	6gXjklGO2iCotgtfxtBwdGDvowVt7Do=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758740604;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=svtYRVGVOWiQOwGeQLqrRvGYBYlTxeSGi1nAMXidbZw=;
+	b=gBIlxJ100chrgopChZ9bgpWzhZegHp5JIpAu7nArVCixWzKEfrtD8xs8TGF+qs8p9AV8lv
+	OwnJOOz+txFHz8LRNH7qnDRAeIWJsR0M/p1zvU4zPGPNkUV+2tcLAFiWIy7BnLgkLTeAUK
+	p9uuP+5hqlEsUh+CMkdo57mMiC3nsus=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-634-q4nOE_dQORmW9pfmQoS9GA-1; Wed,
+ 24 Sep 2025 15:03:20 -0400
+X-MC-Unique: q4nOE_dQORmW9pfmQoS9GA-1
+X-Mimecast-MFC-AGG-ID: q4nOE_dQORmW9pfmQoS9GA_1758740599
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 83EBC1800357;
+	Wed, 24 Sep 2025 19:03:18 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.176])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 931C9300018D;
+	Wed, 24 Sep 2025 19:03:17 +0000 (UTC)
+Date: Wed, 24 Sep 2025 15:03:16 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Cong Wang <xiyou.wangcong@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
+	pasha.tatashin@soleen.com, Cong Wang <cwang@multikernel.io>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH v1] mm: convert folio_page() back to a macro
-Message-ID: <aNQ86GPdjRc2DoJN@fedora>
-References: <20250923140058.2020023-1-david@redhat.com>
+	Baoquan He <bhe@redhat.com>, Alexander Graf <graf@amazon.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Changyuan Lyu <changyuanl@google.com>, kexec@lists.infradead.org,
+	linux-mm@kvack.org, multikernel@lists.linux.dev
+Subject: Re: [RFC Patch 0/7] kernel: Introduce multikernel architecture
+ support
+Message-ID: <20250924190316.GA8709@fedora>
+References: <20250918222607.186488-1-xiyou.wangcong@gmail.com>
+ <20250919212650.GA275426@fedora>
+ <CAM_iQpXnHr7WC6VN3WB-+=CZGF5pyfo9y9D4MCc_Wwgp29hBrw@mail.gmail.com>
+ <20250922142831.GA351870@fedora>
+ <CAM_iQpWO71vSV_0qXiUYeKYZMYF0xWNz8MrUVRkqKwDEtQvKqA@mail.gmail.com>
+ <20250923170545.GA509965@fedora>
+ <3b1a1b17-9a93-47c6-99a1-43639cd05cbf@redhat.com>
+ <20250924125101.GA562097@fedora>
+ <CAM_iQpWRZ-vihMEa=k-j9EYN9itUeZLhZ14AoCvZ9mturFxAyw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="io8Dp1r+z0FFF6O3"
 Content-Disposition: inline
-In-Reply-To: <20250923140058.2020023-1-david@redhat.com>
-X-Rspamd-Queue-Id: 4517F2000C
-X-Rspamd-Server: rspam05
-X-Stat-Signature: bmcdqgeqwsic8tumomjmxpy4pe7apjby
+In-Reply-To: <CAM_iQpWRZ-vihMEa=k-j9EYN9itUeZLhZ14AoCvZ9mturFxAyw@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DBDAE180006
+X-Stat-Signature: rbin55r84s99jh79omwcojm75n6ec5rw
 X-Rspam-User: 
-X-HE-Tag: 1758739693-717147
-X-HE-Meta: U2FsdGVkX1+wYRZ3CL1yxEY/1FXTcpRKyd6JjZcGro3bVVmAu8qeT73vdP0eRqyubJtYTKO/jlzies9cQhgg0aMthTQ43ThbDP2EhtqWzAygWB3kWAWyHpXwi7LsRbXuHL8GZSUslFidtGJK3qVlQmcEF7n0x653eCA/w2EUjk7VQQnIZZSlSVn3kQnvg7s29SljdJvg0vR9NneAL5iXvIIyYHr9MTgeT5SWnmx8zTTlcyReyefMrOfgc7Zd3WoHtQdXMx+bWE3HAo/ARaWR2E2sg5YMlFuNgLnyoXL8a0yPXZOgWvhnnYZrVsTp/o0l7bCBwVOcdrkYpPyAqf8QPyEJvGuhWauAztCY4Ce2ZvbVSvz92Pz7CDEaZgaApbwdorEFdL4JvfNztRq+HnJz+wtmM5blmPwbJkMXsJuh6YiUYZozVC+fvnP+U5xD9Pp658OxgxAhSNCg4aaeShsMOfIrqnimo65lBfUEUb6AR45MvlNtSu+YfVHP01y69t2g2IOtmJubo7ldqeaN+VdGd71mHuh61R9+Si2EUU5qy+Lw1UMzacpu2bmo9r28dWzU/1hhcrgZRdMHQKCDXjIFM/t1au12UMu83ddVTANWYJmwY3MU0SMUkT3vdogtle+CIz/oAt+PCarJYJyzp0s+1nW0ia3RWcw7AVkJ7ycXXNjbC7inSAn5GX3TxqbJdDRr3Y85thhaLgwDlE+QChKMbic5S9Z1CybmnwQABujMATPl9CF81Tm8hRSoNgva6TyPl7xc6ZHCxEk4jamXjuuAmqcXUnTO37FLcbOikIanshv4nA9h1B0/q8+rpAGrnokAlRcLwm7hjNDB083NZQ2YEREP96V152QH1paqdbRzrC2rgEHheIRDf/GpGe34HdI8uvFFA5kxKJT5cmMOQ9o6fEKnu2RgzbgeBpa8Ft5thqn6elMTJw1Kda4nIhDAvyQN+QIe1mAZu+OJFTcrrwd
- VVHOTh7u
- eLcciVBumpciWVB9xAyjxSCGbKnBLMz4nvS8Ze5Cu8Rc16fD9IOx096aCdsWPVbdB2Yo+JU+L86URtePMtnVurRKBZosaHZRWVeZj3BHjvySpAXrlp6VMKf2yEzfo63CWNUG+fvFHWj97OjOA2ZOK3N/AZG3m/QawtGp7EHJlbJMv3yhhcUUoN5AakYeMMzxOu0LePXZzBxE9vH3xElD2r+UcZbnRILfi7/b7ttaozwGJx4ufPkm3qTQ4kw7slBj/7OJJIXDam0otRr3HEICVNo3fQDbtOmUkC6lt8d7w5pRyDACm+4YdzJy2TMoCNswTnck5ptmDVusCIFXOhaAD54jEZdFv+F1tw+fBWJ2GY1rXDJE8HqInO020YChcglqaLLdyt4CQl6qmWjhVRm/FrCjAqoHXLYgFXmkZL1Po+W6D7A1E8cQeNQ7v6FX7+97qDXr5naDfM6maiQVZLx+X+RoHprqnILXvc/0FYSBGeaJfjqZlcAVg0gjca4R450MDQenD6QHiVJduG6NSWjqELjiUHW0uGalbQq34znBMGv5orrX6bswOWqN06AU4KO7rlRi4I15+gyrdLD2juhLUJBM3R8VFz0m2Z1Mbp+baGF0PEhIIEN5lNjHOIxjT166aBxtL7hMkHbgiUrVen9rkUz3wokcX61jX4dGUOrasA5ngsde1aTDvfYY3AGwPX2TSyLACKhpthhMu7B8DnhzGuKIs4QpwtDXjy3UQA2GfO9+vFw4=
+X-HE-Tag: 1758740604-143920
+X-HE-Meta: U2FsdGVkX18dwGm2f3HuRnZD7RrR3LkwyHHtwxQxrJsAnWrShGzG6Cjcxpul2PHv8RnPrKHc+qD6/sBW4JBRt6LIKB38V7idzXtTZa1nQgeSge1JXifC+o43cy+BK8KNh3Hgg9yXfDPZaXN7ixndjtPIXIKbV7+UnROcJxc+oASno4lAFfNcZj4iBFHTcTo8Ox3lcjfSelQ71oJyC6/4zk2qVGAYToV/LJxuprEgOWPy60HqMxe8q860GVLeyKYaf5ZEIAB8OYRUxlzFBxDFGulVPY/EU720OfgVz2vWs3P7PyylYVzFxAbyktu/cpCQKrdAfHX7HHonynj85ElWQi7WEuKCQSebBA9OHVRK5jPK5JhENiCBWPF2zhU63O2KBtfKFkAiu7QFNA6B7DkwT8D6cdI547fX1A1N4QQKnLPKIenI6+qRxjeQL9VilcCXGuSlg8N7f2ErTF4IAKxglO5hwfeP+ARxh0sK1cGXRk9KxlKpRLzAPsN7xMgSmOTXYqIMw1ZyXd1SCir0mJurCrlRvTZ+7BMsB5tVM80zDb4PvLuimnU5kGlvBFzAfaea++wjYDvWAIK2L/yCjwgFFCQ3oTMggklKAceMGW7PWrGIisVtYAyYR0iYLDW/Rnt3lsfFATuf94xzrAJ/eC2vcX0dOpiUICUrDGtZjTNF8IWLyk+pdfeJVJn4x2PN44HsUhFe5An36Wbk3Y3XXbUOUphwdh3GsOtjtCDdDTbgqRG0Ke2hEKY+l8rufGiAKdiQBk6mlGMk1bst0D7VN5g/LZqHEgufiKj8IPtC9X73CagcxkJZQ6O2FWi6WFItO36mI7TvQ4Ps55QuoQPwm5pR2OwWEu8XZjZSzpf/DXYwhEv75xtMhS1TF86YcBCExdC5PUCA/atKwpN//v6mEW9YCXeEZtxe2iG7Nm0cwmEFR+jem90ZiaVCLkh7M3RW76fSpzOK5pdWTZh4rsidpww
+ OoR0MQYF
+ aVsnpirlZOz2oTQkmiB38UlbbYMQ0yCfnf5hsESYMFPlo0jt0ul2rHAKvtY2VXTdBEzVsTobhHBr0u7m5ixYXr96yaJRcxiiicLbwo2JDwljdkD3WC94Ng7WuZs9wRd2cU1al7bImXOuqOY3xUXogLhO2fhz/bGuwMqqF/ue4Bo1HlopbRaBzj5h1HMLGcrjC+RRakDCaeYfFmyqVXl96jaTF9NEDVwDqCliJRfIlIk3UQW+Vp3kWFM9nbxoZA5nxdkg8Q1A1At7uZh6h5I4QfU37ahWADAqSVwNbPBZjkSrK4ZkMBQkRTRtu0jazHJDg1dczfHsFW66UqLs1HKpgRI12AZum/h+0iEv9AoDbooM8ZOT3ddM5ZV7DFd0+OWeASah1vgZh2hLvh5fbh5482xDCoSPCPHaqOYTI8GMlkczHwyoTglkGvcFd7pdzH7jIWCE+lhMOJFpZw55rMPFwhnWSpm1O5imDyrzLRGamDY6iy02oZ4vT8u/BZ0w+Ar4j9aHsmFBERwW7vblEEQJkJFpGBXNMfkkCD82osez8gLw2J7Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,28 +117,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 23, 2025 at 04:00:58PM +0200, David Hildenbrand wrote:
-> In commit 73b3294b1152 ("mm: simplify folio_page() and folio_page_idx()")
-> we converted folio_page() into a static inline function. However
-> briefly afterwards in commit a847b17009ec ("mm: constify highmem related
-> functions for improved const-correctness") we had to add some nasty
-> const-away casting to make the compiler happy when checking const
-> correctness.
-> 
-> So let's just convert it back to a simple macro so the compiler can
-> check const correctness properly. There is the alternative of
-> using a _Generic() similar to page_folio(), but there is not a lot of
-> benefit compared to just using a simple macro.
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
 
-Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+--io8Dp1r+z0FFF6O3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Sep 24, 2025 at 11:28:04AM -0700, Cong Wang wrote:
+> On Wed, Sep 24, 2025 at 5:51=E2=80=AFAM Stefan Hajnoczi <stefanha@redhat.=
+com> wrote:
+> >
+> > On Wed, Sep 24, 2025 at 01:38:31PM +0200, David Hildenbrand wrote:
+> > > > >
+> > > > > Two more points:
+> > > > >
+> > > > > 1) Security lockdown. Security lockdown transforms multikernel fr=
+om
+> > > > > "0-day means total compromise" to "0-day means single workload
+> > > > > compromise with rapid recovery." This is still a significant impr=
+ovement
+> > > > > over containers where a single kernel 0-day compromises everything
+> > > > > simultaneously.
+> > > >
+> > > > I don't follow. My understanding is that multikernel currently does=
+ not
+> > > > prevent spawned kernels from affecting each other, so a kernel 0-da=
+y in
+> > > > multikernel still compromises everything?
+> > >
+> > > I would assume that if there is no enforced isolation by the hardware=
+ (e.g.,
+> > > virtualization, including partitioning hypervisors like jailhouse, pk=
+vm etc)
+> > > nothing would stop a kernel A to access memory assigned to kernel B.
+> > >
+> > > And of course, memory is just one of the resources that would not be
+> > > properly isolated.
+> > >
+> > > Not sure if encrypting memory per kernel would really allow to not le=
+t other
+> > > kernels still damage such kernels.
+> > >
+> > > Also, what stops a kernel to just reboot the whole machine? Happy to =
+learn
+> > > how that will be handled such that there is proper isolation.
+> >
+> > The reason I've been asking about the fault isolation and security
+> > statements in the cover letter is because it's unclear:
+> > 1. What is implemented today in multikernel.
+> > 2. What is on the roadmap for multikernel.
+> > 3. What is out of scope for multikernel.
+> >
+> > Cong: Can you clarify this? If the answer is that fault isolation and
+> > security are out of scope, then this discussion can be skipped.
+>=20
+> It is my pleasure. The email is too narrow, therefore I wrote a
+> complete document for you:
+> https://docs.google.com/document/d/1yneO6O6C_z0Lh3A2QyT8XsH7ZrQ7-naGQT-rp=
+djWa_g/edit?usp=3Dsharing
+>=20
+> I hope it answers all of the above questions and provides a clear
+> big picture. If not, please let me know.
+>=20
+> (If you need edit permission for the above document, please just
+> request, I will approve.)
+
+Thanks, that gives a nice overview!
+
+I/O Resource Allocation part will be interesting. Restructuring existing
+device drivers to allow spawned kernels to use specific hardware queues
+could be a lot of work and very device-specific. I guess a small set of
+devices can be supported initially and then it can grow over time.
+
+This also reminds me of VFIO/mdev devices, which would be another
+solution to the same problem, but equally device-specific and also a lot
+of work to implement the devices that spawned kernels see.
+
+Anyway, I look forward to seeing how this develops.
+
+Stefan
+
+--io8Dp1r+z0FFF6O3
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmjUQHQACgkQnKSrs4Gr
+c8g6GQf/dmqLH7btBgBhJhQSXIXjdWf+M92gUSUpXzizVaSB2xUrl68p4xZlWEzc
+7ijpcKjxMVVGeUgLU7ziduh4sS/Pu/GclMmyTU17mrlVCZjbJsxwz4NmcbWJbvjl
+sne3cnef4ov/U/AOPKpTLWHdNMLVvtCltuc+bZ7uS2Zeae7u0ZLWUgZUllddDu2y
+OjZBAa4PxbDLrBvm5btURx7kzh4t3bP4TAcKC4GkEngI47jyl5E4XTEWYpFUSEEF
+PrlgE+22skiH038nIpmPvHvQhfeM52npehlqBajdFjgmpTMOeNjDNTR0mM+b8+nr
+UtE9Nt0gu32myYQUKVwt+vAfC7hNBw==
+=9wqm
+-----END PGP SIGNATURE-----
+
+--io8Dp1r+z0FFF6O3--
+
 
