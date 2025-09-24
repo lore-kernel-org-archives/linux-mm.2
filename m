@@ -4,87 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05610CAC5A5
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 23:09:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37F1CCAC5A5
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 23:27:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40DCE8E0008; Wed, 24 Sep 2025 19:09:50 -0400 (EDT)
+	id 3E5ED8E000E; Wed, 24 Sep 2025 19:27:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BDFB8E0001; Wed, 24 Sep 2025 19:09:50 -0400 (EDT)
+	id 396848E0001; Wed, 24 Sep 2025 19:27:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D3F38E0008; Wed, 24 Sep 2025 19:09:50 -0400 (EDT)
+	id 25E408E000E; Wed, 24 Sep 2025 19:27:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 17F7B8E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 19:09:50 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B9F6F118A26
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 23:09:49 +0000 (UTC)
-X-FDA: 83925688098.28.563077E
-Received: from gentwo.org (gentwo.org [62.72.0.81])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 17EB28000A
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 23:09:47 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gentwo.org header.s=default header.b=WLrJDxT8;
-	dmarc=pass (policy=reject) header.from=gentwo.org;
-	spf=pass (imf30.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758755388; a=rsa-sha256;
-	cv=none;
-	b=YJWPfKrNt/lAqGQDXJbyBE9mUe+7nGJAEm99UcCpyex/3ftX+npAlTjLQEI1hFgSKpinJF
-	jRhiR5OrPbfwX0HU4UVSdrKMFDckTrgyF6c+ElDZImGLsZjYGUsbWQ3MQBIr1kAH19LyzI
-	61MCCXTkE7Lt4FJYcTwZjQjw6ehAdAg=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gentwo.org header.s=default header.b=WLrJDxT8;
-	dmarc=pass (policy=reject) header.from=gentwo.org;
-	spf=pass (imf30.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 104078E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 19:27:15 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A16FE1DD98C
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 23:27:14 +0000 (UTC)
+X-FDA: 83925731988.17.66DF123
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf08.hostedemail.com (Postfix) with ESMTP id EACD516000C
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 23:27:12 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XaXA6Mre;
+	spf=pass (imf08.hostedemail.com: domain of thehajime@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758755388;
+	s=arc-20220608; t=1758756433;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KDm7q+MIJNTRpl7BCOFoPDj04yz/4t+34tin/l+vess=;
-	b=2ppjORBBDV8szd9TWuPorQGzTyHbdKeYDNJTACBUcNzmup7cvpwXcMieGX6QppZq8hXHi6
-	HvUlFxcecToOsP8bZENAaf1hu7F6Z48mDT4wjZLDcaVKUWC/ZViTCEcAd6FZ6mgsqcF8Bq
-	QnsQ8pxC0Kdvj5rEimgnNLcAbsGIsjA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gentwo.org;
-	s=default; t=1758755387;
-	bh=KDm7q+MIJNTRpl7BCOFoPDj04yz/4t+34tin/l+vess=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=WLrJDxT8W9UBbmk/+FKsjVXtd0LFDGdTEyb9WOSSMPMhYaMfNN0HyHARKw9zaTiQe
-	 qQfTIwcYtqT+Q/x2bKM2QE828TSZG18Qc3kv3y7k4Wtv5V67C2aEgPvYZ9yU89Hg/5
-	 tRv0Tm/h+V3KqyMEXOt+LhR56U3/S+mlwA1a2uP4=
-Received: by gentwo.org (Postfix, from userid 1003)
-	id 0ABC540293; Wed, 24 Sep 2025 16:09:47 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-	by gentwo.org (Postfix) with ESMTP id 0805F4028E;
-	Wed, 24 Sep 2025 16:09:47 -0700 (PDT)
-Date: Wed, 24 Sep 2025 16:09:47 -0700 (PDT)
-From: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-cc: Andrew Morton <akpm@linux-foundation.org>, 
-    Johannes Weiner <hannes@cmpxchg.org>, Chris Mason <clm@fb.com>, 
-    Kiryl Shutsemau <kirill@shutemov.name>, 
-    Brendan Jackman <jackmanb@google.com>, Michal Hocko <mhocko@suse.com>, 
-    Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
-    Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-    kernel-team@meta.com
-Subject: Re: [PATCH v2 2/4] mm/page_alloc: Perform appropriate batching in
- drain_pages_zone
-In-Reply-To: <20250924204409.1706524-3-joshua.hahnjy@gmail.com>
-Message-ID: <a84ede7d-60ad-3df9-77ae-cd0dbc545b85@gentwo.org>
-References: <20250924204409.1706524-1-joshua.hahnjy@gmail.com> <20250924204409.1706524-3-joshua.hahnjy@gmail.com>
-MIME-Version: 1.0
+	bh=ZJ1sgli7ptqR62/CrqjdmqyeswCTgFuJHQ9m7NV2USY=;
+	b=0wHgRvbaI3ZzW20vSjkwA20oFn7lu3LID61IZUAjd7ZRfkd+dHtW9BHzKTNDvEtUBt3PBw
+	Mf7lTB2FdgON73EsxxcbsDXZM1fx7ZhbwsD/pkU7YhZBs+wkbC6KC+CEeBEtsrRoDLfLor
+	d6w8YvL9714Vync7ZdMep/VMJdAa0CM=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XaXA6Mre;
+	spf=pass (imf08.hostedemail.com: domain of thehajime@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758756433; a=rsa-sha256;
+	cv=none;
+	b=bps9lxYDSH8dCH6IlkaQFEqVVAgUgCsOOvK7TurEcNWIxaZz8+oUPrTMoV9lEWP+jrp7WJ
+	ukpfQC9WRomr207NmE6A1rCJC2JEScgcz/UqI2h5MI1FR3CbU1ffS37wUnHuCq8KEpCepH
+	At7gps/YIIfbfj44W/YmxLfR2bYcD8A=
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2570bf6058aso5803075ad.0
+        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 16:27:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758756432; x=1759361232; darn=kvack.org;
+        h=mime-version:user-agent:references:in-reply-to:subject:cc:to:from
+         :message-id:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZJ1sgli7ptqR62/CrqjdmqyeswCTgFuJHQ9m7NV2USY=;
+        b=XaXA6Mresz8OLOvosFyECQtlK6ZtJxGUFXO+tt4+M3gLSfN2AdvtYjmqqBOYuRXCoA
+         vNi+L1vIiFqN/JfFtgg9qf0gPmRrIl9UlT4eSW8+1VoGCAezvxnUNE5lpCYNPcyILDYC
+         +3zFavP2sQKPEuG2h3JUj4kWjHcYHF5gd9qTLy/8VLVc25gNVZi/AvZQbOs57tke+pwo
+         QeC0LNb6EirLurpGWlFLuvpju/xIxXfduK1gybTumJqpZ4+JyAnTnnfBZKpZN9pfN0kD
+         arjNjerKBTtaVNTnDVWrZo1QPm1d2ctbLHrKM8pU/ytLOgfAHUtyx/mnMzCfnPVJTlxV
+         bhxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758756432; x=1759361232;
+        h=mime-version:user-agent:references:in-reply-to:subject:cc:to:from
+         :message-id:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZJ1sgli7ptqR62/CrqjdmqyeswCTgFuJHQ9m7NV2USY=;
+        b=aWNxX7sdlnNGLFOFE4JPKf8L+h3B/GOhdH/V2k4UMydIk+N4UfbAZDsvjRpuxyYzp4
+         z+eAGeg3gH8i4KXZzCBti13y5AwXPiFdqtXCDLtij/2SnUqnFT9Kekb+BPlrje+WKkqU
+         OSlr4zlh005sPa9IRIy7+aeSeWtHo+VQR2tQo0huIa5Ng6qT8mBZUozAvMtVtf6t8FZg
+         pdjSyX1qAZ5vhp6AzWT0XnvU7HBvlxiPNFFDUs5Rq1R2gNECvsBeYvnIiVrEJ9REEFFB
+         hbyJO5YMsjX9iScpy/uwCxjLrvBWPDznOotWY5j4adtVP75bRirSdjFpAuhj2I7bZ57L
+         6wCw==
+X-Forwarded-Encrypted: i=1; AJvYcCXt9dTVFC/euVE239GeZYg71QaRh0mriqNtmyE1iK9MAYe97YUKrcj6AgoGgJnOzaLuHqt4IMjwfA==@kvack.org
+X-Gm-Message-State: AOJu0Yx5hyPy61NTKYxT9KZ62Loc76XK66AZPyFr6rBEh3E5GfiLDpbf
+	9YRA7G0xWU9avP/rfFTSZEqXAvuWjs0D5LPahkeahgv6It9cUWi90UZY
+X-Gm-Gg: ASbGncuoxAvs4dwUWtsURH4mf83xFTT9XJ2hGO3L5hn9f8VBauKOBP5CmaXlQZ8s2Tc
+	meZh8YDYpCRJLVDEi2NkD27lDxb4UCdTUEQqapFR309N3f/ds7a6FPyEwvoeObz4Gs6hvD76t0n
+	f+dPpaUHTS+8YQZtb1eTyI8YKDL+4j0JxaLI8KnAPyYp+yhV+vl+6jiogKhkfBt/dK3yDafLXQE
+	aVurBSJPoQxps9K6nRDnvjVoclm7mqDPYjX7lkB4dBba+8vr0blxM5qNY05mG2MG7+xG2igRbOy
+	1qfJSIaZ3TWrkCcSiLxUTGD5pJ2U2B7Wl8iqJJt7CXIGnkjeBc+EGP+I6Mh8LU27fC1CW/ChHg+
+	lvQoIFpU6nNgxUruQ4I32cYBRNQvgmRI5IvV1rSX/S2eTpTT0Ce84aHjbgh45kJMPOFto8aQ21t
+	Ok2tWxMWwaxngDVt0y8dY+tQ==
+X-Google-Smtp-Source: AGHT+IH/KDLvQBQ7UfQ+ug7/uqqc5vZ4hRiu7RY+Ut1AjNGo+pZ/b3uV5AW21gKl38+5adHmTwsrgg==
+X-Received: by 2002:a17:902:d507:b0:265:982a:d450 with SMTP id d9443c01a7336-27ed4a492e2mr13671305ad.40.1758756431589;
+        Wed, 24 Sep 2025 16:27:11 -0700 (PDT)
+Received: from mars.local.gmail.com (KD111238238118.ec-userreverse.dion.ne.jp. [111.238.238.118])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-27ed6ab64c7sm4012795ad.130.2025.09.24.16.27.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Sep 2025 16:27:10 -0700 (PDT)
+Date: Thu, 25 Sep 2025 08:27:07 +0900
+Message-ID: <m2qzvv77p0.wl-thehajime@gmail.com>
+From: Hajime Tazaki <thehajime@gmail.com>
+To: arnd@arndb.de
+Cc: johannes@sipsolutions.net,
+	geert@linux-m68k.org,
+	linux-um@lists.infradead.org,
+	ricarkol@google.com,
+	Liam.Howlett@oracle.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH RESEND v11 10/13] um: nommu: a work around for MMU dependency to PCI driver
+In-Reply-To: <b55251bf-625e-48c3-8c60-eb4f8358f397@app.fastmail.com>
+References: <cover.1758181109.git.thehajime@gmail.com>
+	<4a9dde10c586883d20a8201ca7d76e6d7d52eaf4.1758181109.git.thehajime@gmail.com>
+	<a58620ecefa207e141a435c36492647c3d5bd3df.camel@sipsolutions.net>
+	<m28qib8g1r.wl-thehajime@gmail.com>
+	<6b1abe384237c8129e8043ecdfdad77758d2fd2f.camel@sipsolutions.net>
+	<m27bxu949d.wl-thehajime@gmail.com>
+	<CAMuHMdWAdhiY=MiG5JtboffSo_=D7TD5vFM6Ui5E8eS_VJiJ=g@mail.gmail.com>
+	<23adb61e95275251e459513a03ab7d2bcf1f2e07.camel@sipsolutions.net>
+	<m2zfak7mnd.wl-thehajime@gmail.com>
+	<b55251bf-625e-48c3-8c60-eb4f8358f397@app.fastmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
 Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 17EB28000A
-X-Stat-Signature: th7f8hj78q53uwkdqwz8gqjxasrbwckx
 X-Rspam-User: 
-X-HE-Tag: 1758755387-303152
-X-HE-Meta: U2FsdGVkX19Es6VgRRap/IBZa4ppX25NzEgO625hRN/yAsR0SlQvUlqGsmPJ+c+qQDoytvym+09a7LHM+OZjjgm6bhHPT31xhrOSR3nhk0XMRoxpsGT4+desNiKDXIcvAADVlQwoDeaLE05PNCTbUpHV4SdoSxAZ7mRgWd7LdifSX2mHRNnTb7nuAa7fOciTsLmBx6h3KMYXTNGqZ8Q5O0nrZ/aNfmI3PmdO6hkvGeAuuQzaLu7UcoADupX3JWlvYM/N3yYjl5EdJRvZPGh8wzA2sdFCXNHqsbUQPBmsHOW8DGBQXkTuyUUQWBO/izyYDL1nkToCrEQXMV1Ue3F+hJs6Z8mvwT2U4g9z2S4Un98pOCwVj/btFQreDCDfTAGZ1xFuVPIoYFunwwo9mYXY+6iJb3bKD7YYWRZyIp7yCzQY7QbXe815B8na53cvwSQuDTDnYBZYFknNoTIN4Uud9bEQlGDcYwRX0lz9cHEtn0m8wIXVZL+aJTbIA3XsOoGvibHkYoefsmmwKQ7RBnVwUOBxZ0Yvq00FH0iwW+bDKOSXy/TKpB5x0MvPXFdFWvKMFGVQa5/NHFpmcueKGqu/JD0xL0doUS8dUrey4L5aaxhM02FVK9O9YazdL7laUC76dgNuIfzNSfeo45uc2RkIUFhBKyOw4+7l457AsLp7pTa9Z+RfiSnyAuaJL3qufXfXwdHoGeEe/F3JA+XZSxI3EWpqIiKWf42vnkkzACL4CzMK5kTYacQ+wZYDSyoJjMMsepl5A/hMHuKKb3EDpQBRsF9A2FVubEhXD1IFqfRW8bwMBrAnXsZkB9IVST3fDZiUQmMXNl3vKqIplY6JkeCNlANdlED/TuA5Q+U7ywGSkT5sdUX6TFJFeB2gm9Jc2rfEa5vyDAUgDzL3LxEG9ZbSm/tAmSt91kok8QfoUnTtqi3Jj23xkg0LHtzsrF/bKCJCGnjNUA9+9CZiu89TbKN
- cKLsLpiT
- K/G3//vZPmDb5YetJX386TrSFWQYGa0ARgGfV64p8xoMLzGYNjcYqla31/8V8fF7nasjoREmnrsXwFpZJlAoQeKYlQ9NhrsieJsOhE6c/QF1Ecy0qT+TYapGk3C2AkyjliLt23YBXrdrDfWWS2uaJcgE8Sl42z6/W2PtHym64wWC1+7expxcJxBjMIAnBprsmbWWKoTK1AOr7OY0mji3nGRyei2S6a2UfmDyu9P0StH1QQAg5JMvvTss594DjTQ5Y2g17P+jO3MDsaFmZszWNCPWFaOzg8uG/uTQKBRz0f2BK1tjl3ERgNV56NdjUcssUQdyQKSK1tTvLPiY5MyFVmNsgl6jkUJpXYESbiWo8CrpzfHYt+bekpG2nZQ==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: EACD516000C
+X-Stat-Signature: hurssj3zpdyrtt1kcxt9gr4kucih4re6
+X-HE-Tag: 1758756432-512088
+X-HE-Meta: U2FsdGVkX1/HLG9cE2pqK4SuLg/MtybOEQ6kHzOVtSMGAddt1Uc9Mn/NRvS49QzSxqxFW5pasg/L1nu5ljL0gP6yLaRd9UV9o5ZzhUdGX+ymcbv7ezIZpVeDFlyUPig5ZpvHfSUT5A5GyUmcY2v+tbQbUQyAeK7sVSpCu9+3yGkdmuGbEu6rbbF2gTzwnVhLx5eEYJ07gvNI0DmGAOhQhS47oKffR7GgxnQTyk+o9RPX6eXaHy07DNY0QK3tTDjsuRJm/wVCyKzra69Y+fXhB8ckbfn5VMOPEuF4WUGTfd+Z/mqVtC6muyaFJkMJxsW/wXmm53HPv0SoqfUNUH9a5qaTJMRAnlc/77uLTZ2AJIkthIDeIV5J0jdtSo7JBWhKnUD3jFsTx3JBtle12zb74No4ElpvodSn3ZudoOGJObUl1GTm4rhW/HFHMHIsAPwjr+pX1usWd0rELzLdjaqGt+u0qmB11J4RYL3wVxu6/7igM3wZDahvZnPCMcfWd68Fda8w3bkwtPnzsbzYIJYK1WMKyMv7rcRyKQRjXmNvgfFYvV/FRqP7wfogwJuUaitaXOE3UQ2bYLaQIW8mMy5/pgrfOH8eZFBQTYQOSY3TUowlQW+FS97krOGl2iOyyjqaglCQcaDDzndhBtzt7wIqHqo5OEoRoluC/TexhxYSe6mi2rgAh5To/yg9LifLGVtjiJgg5j1aqDCj91LCgMylR36pndSUax63lEPA0qHyi8X9aN5dscFANqETMOdjCoB7MdvStqG45pw0juF4Od9R+1PMiy06sL1hQvIo4iLDKzi2zwPXHapefE2tAOi3cnQ842KHha8JLXrink+x5uNZpeZ8NArJvYZ1/idZsCQs8DuqNqt3X/f0B43Dq6DcvRS98iNZo/tSPWkhcH7x8Q39FQaXkz0ly5RNXuNhZTseoBs2KOZXtd8j2niQkNeRUJePPtEnHblK8ScvqCcFUyo
+ MlWrKt36
+ jKAd3qeJ+HzHIn0o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,29 +132,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 24 Sep 2025, Joshua Hahn wrote:
 
-> drain_pages_zone completely drains a zone of its pcp free pages by
-> repeatedly calling free_pcppages_bulk until pcp->count reaches 0.
-> In this loop, it already performs batched calls to ensure that
-> free_pcppages_bulk isn't called to free too many pages at once, and
-> relinquishes & reacquires the lock between each call to prevent
-> lock starvation from other processes.
+Hello Arnd,
 
+On Wed, 24 Sep 2025 20:03:11 +0900,
+Arnd Bergmann wrote:
 
-drain_pages_zone() operates on a lock in a percpu area. The lock is
-specific to a cpu and should not be contended in normal operatons unless
-there is significant remote access to the per cpu queues.
+> > currently nommu UML doesn't come with using PCI except building under
+> > kunit (ARCH=um), but I have in my mind to use it under !MMU
+> > environment, so would be an option in the future.
+> >
+> > and this series doesn't include PCI w/ !MMU.
+> >
+> > so, I would propose the modification to revert the MMU dependency when
+> > time has come.
+> 
+> The reason why it's currently disabled is that it was causing extra
+> work to fix build failures in random PCI drivers that individually
+> have a CONFIG_MMU dependency. Since we know that none of the NOMMU
+> boards we support uses PCI, this was an easy way to avoid work.
+> 
+> While there are still developers that care about NOMMU Linux
+> and test it on the platforms they use, the NOMMU build failures
+> usually end up in code that are irrelevant for their use cases,
+> so neither the platform owners nor the driver authors care deeply
+> about fixing that combination.
+> 
+> If you want to be able to use PCI drivers on UML-NOMMU,
+> you can probably use
+> 
+> config PCI
+>        depends on MMU || UML
+> 
+> so it will be ignored by the build bots on other architectures.
+> You'll still have to decide whether to fix driver code when
+> regressions in PCI drivers happen, add 'depends on !UML'
+> to individual drivers, or just live with randconfig failures.
 
-This seems to be then from __drain_all_pages() running on multiple cpus
-frequently. There is no point in concurrently draining the per cpu pages
-of all processors from multiple remote processors and we have a
-pcpu_drain_mutex to prevent that from happening.
+thanks for the detail information.
+yes, when nommu UML wish to use PCI drivers in the future, I'll take
+this approach to be able to use it.
 
-So we need an explanation as to why there is such high contention on the
-lock first before changing the logic here.
-
-The current logic seems to be designed to prevent the lock contention you
-are seeing.
-
+-- Hajime
 
