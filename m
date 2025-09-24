@@ -4,176 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26EECCAC5B0
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 11:10:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7E59CAC5A5
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 11:31:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B00E8E0013; Wed, 24 Sep 2025 07:10:41 -0400 (EDT)
+	id E91D48E0006; Wed, 24 Sep 2025 07:31:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75EAA8E0001; Wed, 24 Sep 2025 07:10:41 -0400 (EDT)
+	id E69708E0001; Wed, 24 Sep 2025 07:31:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 626EA8E0013; Wed, 24 Sep 2025 07:10:41 -0400 (EDT)
+	id DA6758E0006; Wed, 24 Sep 2025 07:31:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A7488E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 07:10:41 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E6A72BB64A
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:10:40 +0000 (UTC)
-X-FDA: 83923875840.30.867AD6A
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 84F51100016
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:10:38 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AfvV1JP8;
-	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C7CC48E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 07:31:16 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 817FE8793F
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:31:16 +0000 (UTC)
+X-FDA: 83923927752.02.F0961B9
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5413820013
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:31:14 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Ul+x9Ewj;
+	spf=pass (imf13.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758712238;
+	s=arc-20220608; t=1758713474;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QjizJOtIasCre17yrgz49+y54DCATqZxCDyv3+Ah6yA=;
-	b=sez4EDE0tS0FY60r0vD0NSZxtf/rx4HYWde21Q39sbvCER8sD9PA5aVlUitzEzfr4bJF3T
-	rQVGkVrYKkxteKmUiu+xx6xKOhQCvdSZ5wgHZ4Bm5WeN7ds9Sj+qQ3Nf7kbltY1jcPbey2
-	NURTYfOskgaZq3letxelGzXkWQKxAj0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758712238; a=rsa-sha256;
-	cv=none;
-	b=xzx/9TnJMRhIfxadBZWPXQ2UwdvxoCq7jq0rMSvwfda+bajjdRCztUHbcEwjXy7MdP5IFc
-	/zikM/jxk3yCO2QLUnYvb6+USf56TIpUbbwOH8kXHylxtuQphheKiEppVrcTXDfcHlesEr
-	CtkNYTnq+P8Y2P56BulJhBq089pf2tw=
+	bh=637WUc/nwWiUM+V8dhx4NgX++0S0IdJZKJNTlkNoKtU=;
+	b=xncaoxP0ap498g2yK5Br4IjLKTwF6PgwiCBUtm6wwkXcTKjQjTzJyVo7Z20wr2B7wf4pub
+	qMpHHSp3vBIsWOPtWwC1LgRC6yv90x828giJBcz0jU4ICxVDA4pwBb3xIfF9cTW5Ji0mU4
+	LN/i+zMnAdZFtJKEjQnxb/V4/LGldC8=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AfvV1JP8;
-	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758712237;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=QjizJOtIasCre17yrgz49+y54DCATqZxCDyv3+Ah6yA=;
-	b=AfvV1JP8eJoHkh/pX8QKSPmIxzbcjbKtMbDcUq24sgyvSNR4B+4bvo7H8khspTimN5Yg9H
-	CbzZpQBgnO225qbyvFuI5+UXRG0qGnB8+SQbweTv7X92kW7i4zVFRK9N7lHaa0y1nukqVZ
-	MW61Lxpk8YPlZoeC0+FB1QgubXu7yow=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-ExJijJftNu-gggxURjzJhA-1; Wed, 24 Sep 2025 07:10:36 -0400
-X-MC-Unique: ExJijJftNu-gggxURjzJhA-1
-X-Mimecast-MFC-AGG-ID: ExJijJftNu-gggxURjzJhA_1758712235
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45e05ff0b36so3808335e9.0
-        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 04:10:36 -0700 (PDT)
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Ul+x9Ewj;
+	spf=pass (imf13.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758713474; a=rsa-sha256;
+	cv=none;
+	b=bGAfMwZLsFTVqe39ximEOLrSrygKpoFFxe3r1NJngZY1nU2LOhej6dzBKoK/NxXMwA0IxL
+	1YLPO0sYF250sf5zronZfpaKWsu4wPjrMNY6sQLgUy9w9jyKHeP2Pldxwzq5x3mJJ5Y7VR
+	IxqWfsw4TXS26yy4HII/KHJ2TjDRo9M=
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b33d2f0f5f4so45232566b.2
+        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 04:31:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1758713473; x=1759318273; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=637WUc/nwWiUM+V8dhx4NgX++0S0IdJZKJNTlkNoKtU=;
+        b=Ul+x9EwjAgLkk9LlfxoQj0RbwVsloT44vCLq6QdZVnHrp1PgP7JT27ZQI/uCN3LAn3
+         1eFUGO7gvnBQTpjQGRldYC2BpsLAkaP8R1krjShmyGpQevAzRFhIDnJ4g3gTA9CyfeFw
+         PwTMZQMtmjtlrhYCdTwk/jfpW/eGhyV79up7mzfN80N+l1SKBTnWwHjO6VgYmZpya6td
+         UEm6ttX5uZcGzqr3QOeJgrpZABdEKrDQeNwn/TXepKo81ko/JMvqBjT3GfTagf7Bnm0r
+         InjV16vMpzXCKdbfg75wxyDE2OKQTdsZ1SS1W96/GcrFEUSmqkffqabWaLB1vOturs+T
+         /Itg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758712235; x=1759317035;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QjizJOtIasCre17yrgz49+y54DCATqZxCDyv3+Ah6yA=;
-        b=GRB+W52qgZb9jzB6/oD2WQB5T6NAyeflt7wWVqAj2z26e6K0gkh6BS/ZPJTI+mTM77
-         xpyRCRBEk8Vla0a7kfu/Ox9s8X33/21d1SnA3ReNMCkjE1+x+/yCfmWjkwvg/UEEegVG
-         mPsaq1F4GRzOE5nyE6wD/xU7U1h4GfKeT0TsaG/OWIdF06+eNcLzc5qupzZS6YEyIGPy
-         +tr21C56i7IJPRicsrMO4mbMDYwc+GQB/6xcLn+N5zf7GkWOGVVZBqCvIf174Gw9LRTU
-         R20gZHD9Vu0NAUdyVlrcp3nRoF6Jta8Oo5/s1gWcohmqiIdFioUv1+64a9Nmyz2L2kwE
-         c53g==
-X-Forwarded-Encrypted: i=1; AJvYcCUvXmUdkNISC13m7+K0xchJOaFt+kt9jYyjrgpdyhTrVZOjBTg+fUZzVLlU79EUAH+RiE4MTCEOEA==@kvack.org
-X-Gm-Message-State: AOJu0YxzQYoFeHjmIw2dIyvsaBFeh3WjHVbJH7ADe8Q3Rn7RU6l+ZBvT
-	V9+ANT6S6IGFqrQqrTGfeqFeWXMf3w7eLfsvq2HiJh4mxPMtu4DreaxRQvWvY2r92JKB4Pby1Pn
-	u8D2Z/9Nb80Hv3/oHUcjcf3Aj1doiwOyB6ICDQFrWNM+7b7AdzBGQ1AxQvXJr03M=
-X-Gm-Gg: ASbGncsg7pJwKV6GdORmWrCS0SIEWtSzlDOlXla/Xds/ShWyzSBr+dcz++R4Z2s6pNA
-	gVFtKrUdx79z1gkwhxprSq0766SDi2FAXyAktMMPgpiUkuEPJKOu3i6HnX+wSBWv8lv9UVWRrrS
-	+AEv5+2CKKaiHVFy4rQetGF7iaQoLe0XvpjJ2so3Bu03vNtSfoaWTJr3WzE6FkX+GZUO4NfeSRi
-	hd3CPVJJ6aBvB7KvEfg8rxOCl5POaeU2K8RmAESGa51IRKnI0a9TZ3pLYavatTad3FAfc4aygup
-	ETmkwivr7chJiK8XS0uptCzew/YWLujLct4mnf6qTJalEtLLaMCaoni1fl1jD+BPrZiE80sNBRH
-	jAAr+IEy9IFO5S5w5o5xmYSgt1NbM962asBxCYbGBkFbYd97FRqmMFvCA/N6oa+Ealg==
-X-Received: by 2002:a05:600c:a318:b0:46e:1b9d:ac6c with SMTP id 5b1f17b1804b1-46e2b5ae650mr15221195e9.17.1758712235543;
-        Wed, 24 Sep 2025 04:10:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGfjm0wZkVbwQ1ssygwylIahTNFeY9nCpNKyJLOIN5at81FhLNCYY61YbcAmW3vmCGWGRo8/g==
-X-Received: by 2002:a05:600c:a318:b0:46e:1b9d:ac6c with SMTP id 5b1f17b1804b1-46e2b5ae650mr15220925e9.17.1758712235127;
-        Wed, 24 Sep 2025 04:10:35 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f14:2400:afc:9797:137c:a25b? (p200300d82f1424000afc9797137ca25b.dip0.t-ipconnect.de. [2003:d8:2f14:2400:afc:9797:137c:a25b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e2aaea069sm34696585e9.24.2025.09.24.04.10.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Sep 2025 04:10:34 -0700 (PDT)
-Message-ID: <d03dd7ab-5237-4de6-8872-a8ae2e9b7c5d@redhat.com>
-Date: Wed, 24 Sep 2025 13:10:32 +0200
+        d=1e100.net; s=20230601; t=1758713473; x=1759318273;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=637WUc/nwWiUM+V8dhx4NgX++0S0IdJZKJNTlkNoKtU=;
+        b=ksDwcnmttgZ5upn8GfBCB1Ds7+uQtUycBeRJBMIcDVCS+y8hbEkRq2qwpkGn/rl7DW
+         48kne1oI5UeEtvMl6ys5jYkoj3SvmnwWmsWp59k5pVl8QguJZKQ80FU/mJ8BGb7YK+fk
+         oeLVlI0BDswhuZrbPsFswQQP9Eh9Vfqi6DDWalrUHyicySz2OITU/URbOe1/zr35DBjd
+         z3vo1w6NWXQ0UaOBZHQXBkb7qp2mFzGJk72FAQmxiUCmZJfcfBIpYGibfRAMzCZGVd8Z
+         Tqt20oGw+VEsDZX4iHxrrddiXZs9+ujlrWFccXsnHVWoKFbNnCLtHFsKH2shP65p4+Rd
+         sw8g==
+X-Forwarded-Encrypted: i=1; AJvYcCV7MBUUBJeA1B6rsMHcU4asUSHaG6hn8t/xTVRK5HXPQvxPBVAsHcoFYcF9BIEFYGot6ieO+QnWsg==@kvack.org
+X-Gm-Message-State: AOJu0YzuCdapRyYTj+QSGMZIiTUxgs/7dBna/skDSUo6pqjQ1DJCWh+6
+	m2tLE8YOOsRPfn5ZHKq4DaAahBk114ceg10mlBh/L8YtQJf7JpLMwZEd7y5gRzfLxek=
+X-Gm-Gg: ASbGncvpJUArNTUycPxt27RvSlnO0a8LXm6QwSkDOJIEcGYfBd2N9Zy4px4a3/6dA1D
+	2ZVZl8GaCtwiPvhvjWbqGfGLVfeapgaE0NwXsiCIReD/QY9U9jvahkNVVzMo+GPs4s4rHiwk4AE
+	1+exNy8MgMUNTnAihzOhol9fgicqmI7yvtafJuVSbQlr/epOKqa+j0S9mf65AX/2NM5xQQWxaFQ
+	Fq3l/TyYBL7prTn+EXJ7JZDnm/aY9hCbphuPqaDJZGxTz15S+cODMGie+MJW/U0+FxzA8dbKeBY
+	+MWTQDyBl1LUUwz9QtJK5y1I8kf4nHtRY1Ide8LzF41jUNeSVueIWVYCEOm6J1HVT866hfy+M5F
+	tNT+5K5x6Cun2cRwAG082xjZpJo1NQAC9JA==
+X-Google-Smtp-Source: AGHT+IFwqviL2x6K5KiCu69kgX1ZGMPc3DEhoWrI7DBGQxyVK+302tzYrLsoz1pxucgNK2qllIwT9g==
+X-Received: by 2002:a17:906:c14c:b0:b04:2212:4211 with SMTP id a640c23a62f3a-b3027a4aa98mr602315566b.16.1758713472627;
+        Wed, 24 Sep 2025 04:31:12 -0700 (PDT)
+Received: from localhost (109-81-31-43.rct.o2.cz. [109.81.31.43])
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b27217f616esm1136307466b.72.2025.09.24.04.31.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Sep 2025 04:31:12 -0700 (PDT)
+Date: Wed, 24 Sep 2025 13:31:11 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+	david@redhat.com, anshuman.khandual@arm.com, linux-mm@kvack.org,
+	dev.jain@arm.com, Oscar Salvador <osalvador@suse.de>
+Subject: Re: [PATCH] mm/page_alloc: fix alignment for
+ alloc_contig_pages_noprof()
+Message-ID: <aNPWf-OfqmUn8wzk@tiehlicka>
+References: <20250923001943.2479-1-richard.weiyang@gmail.com>
+ <aNJMSNYflPqYMjuE@tiehlicka>
+ <20250924000528.plhmkfn4qnx44a6x@master>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 12/16] arm: mm: define clear_user_highpages()
-To: Ankur Arora <ankur.a.arora@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
- akpm@linux-foundation.org, bp@alien8.de, dave.hansen@linux.intel.com,
- hpa@zytor.com, mingo@redhat.com, mjguzik@gmail.com, luto@kernel.org,
- peterz@infradead.org, acme@kernel.org, namhyung@kernel.org,
- tglx@linutronix.de, willy@infradead.org, raghavendra.kt@amd.com,
- boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
-References: <20250917152418.4077386-1-ankur.a.arora@oracle.com>
- <20250917152418.4077386-13-ankur.a.arora@oracle.com>
- <d2dca02c-ec5a-4b3d-92fe-2b3a3614b5df@redhat.com> <87jz1obyd7.fsf@oracle.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <87jz1obyd7.fsf@oracle.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Up-zFiEXLuHKaZK5nwCW-HcAbKbSbzOD9WtCTDfcsoE_1758712235
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 84F51100016
-X-Stat-Signature: xi7xi5cro46hwytj3ojtwt51rk8w6har
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250924000528.plhmkfn4qnx44a6x@master>
+X-Rspamd-Queue-Id: 5413820013
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 5751iwdbonf1g6hynh4zxystz3saptwm
 X-Rspam-User: 
-X-HE-Tag: 1758712238-672405
-X-HE-Meta: U2FsdGVkX1/5qLLrvMkFhkfxRh6Bsq1dFbkW438wsjlJw+wdxsQG5Yq67+klFBeYK8OrZq2AuY0Uhb01lk6pcr5CvCfLa49X2+W4uTG/371Fq7PWSw6cl8oNvYzyZ5Gvd6x22p9WLVJYYnDtTG8cod0MD0AwDb6cf0usbMsflrdx/ZB36fZKvPJpYeKPTkLfACabOMrjIoiNEAZyErYRyu3WE1ShzBrJL48ighpzPMfDSsgb92Au91XsxaQXm5JAKnr0/wWx1OrdWBhzMIssuUhiszZT60mcBa3J5/DDrdYYtDF2FoPockrF7kTvgZvqCgAixqlgMKcdcn7+MmIaS9RMtvoEK3GPExCEZ0uHdVHFeAbHZeB7fdGPHT+fKjZDNyYwbwYQh72OHdEej8yT+rubBNcSlPvnlK+jDXvQ4pZfLPGbtMYcYA22bHyW3PN/Z9IvsPrNhVK9c7J6MAvUuYoVIgSb9DdHRQNcWwWqlon0gk8hPgLV8Xf3KWqECnSJ6UH9R86QBRmzYqSzyOKRu+eI3Vtof3xpiUmqp+6QH6IhI8VHVVTA3jABcaitbafz/WgqnGg50TEh/CaWUGu6wIUBWhUPbdP3I092/dceEe27ifsnf3e4aNc4URmUIr0JwhzvvcYBkSEaCJtzfZwUr1V6R8ZXK8RLkVYe5hwR/sjA8neJ7GfDwqDF2KQhemObR6bxeX/5RWQ5gEtC+yZAhxGxJ0LQR9Ioh1O4Im/4GfE8QF1dCuGHHgzquYZzo7U09RFoaMuirXhz00tQYx4pP9mIIv5mXhD9Wb+FmNs7wohX0ARBcL1pnpXeSLfxrLgmaTvmxl+EWISgGMpDKWncVV/PKUUhIc2VgK7eT1wAjT0Iim1EDCKhZAb39tp8l/ogtJTDry0WFMthajCD7URp7EEKNTYJLDOtoa9MeoaQ3arYlooOlnN8qLFGl1ihPUklAIt/wNiNYFnPvRXs+X4
- o4/mGTUW
- Kgzl7WmQ6Q9QiW5+wROhDOMEMS6t+hDWAEEZk5JdhxvRet1Km1+lhK7qEsZejhWv53QMFaU/YvdF9WkcCpkXtNpZckV85v386sXeUXshPPglvOD6jsVhZB3S0ZD4z4eh6Bhmvrlo6axj/U0Dod1FakOa82LuksGpTi64tL9mdq8F6afIsNlFCKG1cxajdxzeNd7EhNESnsXIabgWejBr/q0kRrZx+F0khCQNQfQwY7dpj+5Vgum1SaMZd7NKxuBzJdGvd5OuPb8x3IDeoviOhbupm1Pdhu9WrqySnNKP77oN0U67ccKoaICkxUZCpkGFns17XdoD28zUJtKsPp2cne3lohY0gu+8Ex74VrHlbPnm4mfpd7JQyhH04PjvGzYEyyMIY+urIPud1Y2cnZEsDnLGWMYaT1Ce92tQH/inK5xdLzEjOjvk+BlxcozAEGXeFswOwfAM2Z2fAXpaYq50HjDr9i7anngkArK7p52GZORK9wB6oAbLq7TDd/7oLVRYBGzphgkSftMF563XDqTU/oKBrA6Y8kGnx0s4hNqfyVvScyGc=
+X-HE-Tag: 1758713474-473349
+X-HE-Meta: U2FsdGVkX1/cKOoO2lxFxqblvo/vSXGpsnodDIm0044wlUae0J+xEks4P4BJ6kTf9W8UMyuGXzjV4DDWLVBYaKjwpyqgYInvMP65u0WO+ZpZ7DJWnhM/wNhm4t7t+IC9gA1y5+n7FhXwCRjWN4LiuCXHkPLFqInpxTjQsJpsqIU7beCoMveeHHEBFR6Ph2MzPkJD6aOu8cHZGaCBhpI6Ros76nCJbtUGZbApm0Zi+FMAZBV6eksW9sCgtCa+ipkZ+LAoPh/27MdmulirSl3SZ7kAGcM6aRSI9jeNIgvl1O/AUwNvat8dFQv3HC+FviA/IqTPrtXQJ9bk55rTPp8qV2ysI6SwQBnzrYbPHHxDdHcKhjplAF/lHA7N8uFi5FJ+M2vl4rLwz7LrTrc0A4R1imIGIMZJWqeaqKSBv+SThmGHvVM0lSLjTYd95CsnPK8J7KGQ8vWXtgeUJ4aDyw4NcZ/9UdhVBvO+2lCMloqh4sjaiHcDfCwdD/E3V7f8giAQwqyRw5zvwnTC3R3b3359m31Bb8kBE5STC3lj5WErFTf1ENZ7/iztPkQHVUAKBLYs5+buHnVuLbh9OW3Nizb99wZxKN0krUlI4GBmId4BLwNe6P1YrT3GZGpdrHLJPCaAOafu5rPj1nOJrurA+XIPIsT+phzm/lJDLRw0U8U0hC78NYRdc9DBDq4tS8mnGcSFjekCbKPsWV+1hASn/yKoN6MuSJlsIC8NL4HOZy2AmdHUPLARuA4qi2XuXe0EbBteJQXb0eWmvLqQENbXbxP0LbH1Tq+HgXR8KGoGTs7fDsdoTIRTbzqFbrpP8KMvqmQwAUHQw+6ucjZS1OKDKyBwKw58A0xERqBLTTnpQKWVVvDyU5EjUIcnOKu5PCUFaAk7SO7PCiqprf86iELN+Ow6k0NyKuHI7JrtjuVhtky2oBG8aO2aRf8EbvT/yhbap0KnQW5fYY6jBblqSDcUbFI
+ XNKv1c/j
+ AmHu5IO1OEXIodA1QcxCktZzLaILEjWL/EVXHwPn9M6V3y6mVbsIenOIjSQxtPUBA6BoDcKyl7KJhWpiuoKnuqYSXa6at/gYwXejK1WnurHorYmI3buv5QMCUFMGHcoH45fEUE59g/alNElRh/I790XROeOrwbjuyi3E6UbICTGuN8BpdT2lIEPEOE/zLjV1z3ixZF8pDk9YW/Fydou4XClFBC/K4QdX5PvNIzvxMw/oBYu0RL6FRysa7IVmtj3UsNwWwl7OCinoXB4Uzq06GaE32Jb/OMdDrIpEdNf1t74Cej26+n+URuAgNBVy/KuEycg6NWZVLqjAN9emdFC5eX0+f7chSqk6cVRXqEngZT+txug1Rl7qXy4czHz2FP0X9VvKSeWOeYCCOrElHBdmhNRAfCoD1THRT+uSO5qNvjGk+a+WlLOna290y/Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,57 +122,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 24.09.25 00:25, Ankur Arora wrote:
+On Wed 24-09-25 00:05:28, Wei Yang wrote:
+> On Tue, Sep 23, 2025 at 09:29:12AM +0200, Michal Hocko wrote:
+> >On Tue 23-09-25 00:19:43, Wei Yang wrote:
+> >> Commit 5e27a2df03b8 ("mm/page_alloc: add alloc_contig_pages()")
+> >> introduced generic method for alloc_contig_pages(). But the alignment
+> >> calculation seems wrong.
+> >> 
+> >> Since ALIGN() only accept power of two value, while nr_pages could be
+> >> any positive one, the result is not defined.
+> >> 
+> >> Use roundup() to calculate the correct alignment.
+> >
+> >What is the problem you are trying to fix here? The ALIGN is certainly
+> >not well defined for nr_pages that is not power of two but does any
+> >caller of alloc_contig_pages assumes any specific alignment, especially
+> >when nr_pages is not power of two?
+> >
 > 
-> David Hildenbrand <david@redhat.com> writes:
+> There is no real problem here. The initial thought is ALIGN() don't expect
+> non-power_of_two value.
 > 
->> On 17.09.25 17:24, Ankur Arora wrote:
->>> For configurations with CONFIG_MMU we do not define clear_user_page().
->>> This runs into issues for configurations with !CONFIG_HIGHMEM, because
->>> clear_user_highpages() expects to clear_user_page() (via a default
->>> version of clear_user_pages()).
->>
->> I'm confused. Can you elaborate once more why we cannot take care of that in
->> common code?
+> The discussion above sounds reasonable, we don't need alignment for
+> non-power_of_two nr_pages.
 > 
-> So my definition of clear_user_highpages,
+> So this looks we can start iteration from zone->zone_start_pfn for
+> non-power_of_two nr_pages.
 > 
->      +#ifndef clear_user_highpages
->      +static inline void clear_user_highpages(struct page *page, unsigned long vaddr,
->      +					unsigned int npages)
->      +{
->      +	if (!IS_ENABLED(CONFIG_HIGHMEM)) {
->      +		void *base = page_address(page);
->      +		clear_user_pages(base, vaddr, page, npages);
->      +		return;
->      +	}
->      +
->      +	do {
->      +		clear_user_highpage(page, vaddr);
->      +		vaddr += PAGE_SIZE;
->      +		page++;
->      +	} while (--npages);
->      +}
->      +#endif
+> IMHO, How about the change below?
 > 
-> assumes one of the following:
-> 
->    1. clear_user_highpages is defined by the architecture or,
->    2. HIGHMEM => arch defines clear_user_highpage or clear_user_page
->    3. !HIGHMEM => arch defines clear_user_pages or clear_user_page
-> 
-> Case 2 is fine, since ARM has clear_user_highpage().
-> 
-> Case 3 runs into a problem since ARM doesn't have clear_user_pages()
-> or clear_user_page() (it does have the second, but only with !CONFIG_MMU).
+>     pfn = zone->zone_start_pfn;
+>     if (is_power_of_2(nr_pages))
+>         pfn = ALIGN(pfn, nr_pages)
 
-I think we should look into having a generic fallback version in common 
-code instead for that case, and not require the arch to implement such a 
-loop around clear_user_highpage().
-
+Why should we do that if we claim there is no alignment enforced and
+therefore it shouldn't be expected. Something like this would merely
+create a confusion and subtle bugs in the worst case.
 -- 
-Cheers
-
-David / dhildenb
-
+Michal Hocko
+SUSE Labs
 
