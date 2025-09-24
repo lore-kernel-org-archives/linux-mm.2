@@ -4,135 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F368FCAC5A5
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 10:06:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26CC1CAC5B0
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 10:07:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 576B28E0016; Wed, 24 Sep 2025 06:06:38 -0400 (EDT)
+	id 8115B8E0017; Wed, 24 Sep 2025 06:07:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 527CF8E0001; Wed, 24 Sep 2025 06:06:38 -0400 (EDT)
+	id 7E8DE8E0001; Wed, 24 Sep 2025 06:07:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EF978E0016; Wed, 24 Sep 2025 06:06:38 -0400 (EDT)
+	id 6B0B18E0017; Wed, 24 Sep 2025 06:07:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B54E8E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 06:06:38 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DF6481407AD
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 10:06:37 +0000 (UTC)
-X-FDA: 83923714434.08.F577C09
-Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
-	by imf29.hostedemail.com (Postfix) with ESMTP id E63E0120010
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 10:06:35 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="V 8qKL4I";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=DogKE0h3;
-	spf=pass (imf29.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.154 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 57D758E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 06:07:32 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 253AA5B150
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 10:07:32 +0000 (UTC)
+X-FDA: 83923716744.25.BEFAC51
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf23.hostedemail.com (Postfix) with ESMTP id B98F0140005
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 10:07:29 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Re6o0pnj;
+	spf=pass (imf23.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758708396;
+	s=arc-20220608; t=1758708449;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YeVmShso1hOIBjH1XRKo39NErYkmRiZZhQmNNqAXxRo=;
-	b=TMiW7qMovwcdJCk+vk/IbDIaeCimLTuK5E6ha/C4dN1Uy9DBgWSVLPr2gKCNgCWrBAZudL
-	QfP3UO5KJc46/n8prRRsk/70RaNwEPNM9bnNpW2a/KTFQlrhrMTUm/2FrfD+RdbVghYnu5
-	LLcJR7W3GNryCBMRznP672FQAW7nE2w=
+	bh=8GrFljRltqv2IkALg1YfGWmZraH37YnKJBWkHZnJJ9Q=;
+	b=2PAtp/kJxZsF0qunfjDH1iYhPIAGls8V4DBRLlJq3kswJ5+pMCNAarT2b3o3HdmL2hsbPC
+	pc4jtwO9b3kokjsCxlMHMg5xhwYn20yG4yeeYcgVKo3BmXl7T9XQf8sUKBkWMusStiSMPe
+	bxNeT77JifYFn9aKtiio/wQgWK8isnM=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="V 8qKL4I";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=DogKE0h3;
-	spf=pass (imf29.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.154 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758708396; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Re6o0pnj;
+	spf=pass (imf23.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758708449; a=rsa-sha256;
 	cv=none;
-	b=fFCFSZCqV2UA7N34kFxWHjq9v2PwTOHHk7DcE6GWlRDIiumc+aYSKY5/H325VcU7jKxYQs
-	FSqxEY5boEPMsMTY9SP1s7CJPkK6/U9UW/M7foHPWwdSXJkXNsuDTXZZDanKNIG32z3S9U
-	WQFxYEYBOpEttPZ3oIN6qpBoM8SB6sc=
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 5A4701400096;
-	Wed, 24 Sep 2025 06:06:35 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Wed, 24 Sep 2025 06:06:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1758708395; x=
-	1758794795; bh=YeVmShso1hOIBjH1XRKo39NErYkmRiZZhQmNNqAXxRo=; b=V
-	8qKL4IcD3IaxYE3RXDH47KZz5qv0sVzwbQ4pFZIR8m6KkACQ2OsJ/tw9DYT8+K+H
-	u6Mx3bJbdQHjoSS0iBFsGjT72OQdCV+6+hF0i/ISAJ0TkMURe927FtiEiDMURVx8
-	WuxOwv+Qjp+jMFsxtioovPDq/B45zCBdU4iYzLg+ryMMXryTvD7vPoxRQyd1ydDU
-	Upen78efQLTm1b2BtZ3wK6FCcczxZIY4RG1LKvxHFCKn5zLkp9zyms7DReAvETIZ
-	UCzOZ8RC1WTxXH588fYah15aTuCcAkE5bSHEBUtqS+3FmdieBw4A7NWMF2PNdJct
-	xa9V6XGv2DhyXmAtrxoTA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1758708395; x=1758794795; bh=YeVmShso1hOIBjH1XRKo39NErYkmRiZZhQm
-	NNqAXxRo=; b=DogKE0h3xGmU8elEuDL68LPH/BrsmrWkD617JGZAAUHQ+s4EKFd
-	961OAl3WNZAjlqwYOt+e2CSXo9zACLiq85oTXtWpz2J2UsnvlVdDXDSHc/0yX9zy
-	ng3krvVjiiKp+qpASXyNxClOyki+zeNKYjEBVHAE6giB0sCRFIQbi9qHVF0rWc2Q
-	w1VnFn3XqgE8KJJ1kQOTZYO567VxRFoUjGa9AuYKW+Wv51mBR0rwhUP/xmxwePgo
-	QZ1oA8igiz6JAKgoNGpRS9RodFlI6k/o32vPN9bApwSZ1Un8Bd9U6rN9k31LFfwQ
-	nYqu3O3ihNpATNMN2tkCGeMnNiX7XqTah8g==
-X-ME-Sender: <xms:qsLTaKqq4mzqeH_x7AL1tswnt6aLqKMcrdph6fQ1YfVaIdfxerwF6A>
-    <xme:qsLTaCVJHKACsegBZkf402Oq3oODyTsfp8iZbGa99LQE18kl4AVUpgtqJQD9yi6My
-    JnHslOViXYraTBWGyZyocd5j5WgOP1FMFI2_rtKkFbW8b2PFWcZSw>
-X-ME-Received: <xmr:qsLTaOijPxnF70sSEbTCpWHOC7w2B3n-dyHbrgrdV1PuQE7_WlUrKz-BEc0Zkg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdeifeefvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtf
-    frrghtthgvrhhnpeejheeufeduvdfgjeekiedvjedvgeejgfefieetveffhfdtvddtledu
-    hfeffeffudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
-    hmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepfedv
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegurghvihgusehrvgguhhgrthdrtg
-    homhdprhgtphhtthhopehrihgthhgrrhgurdifvghihigrnhhgsehgmhgrihhlrdgtohhm
-    pdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprh
-    gtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdrtghomhdprhgt
-    phhtthhopeiiihihsehnvhhiughirgdrtghomhdprhgtphhtthhopegsrgholhhinhdrfi
-    grnhhgsehlihhnuhigrdgrlhhisggrsggrrdgtohhmpdhrtghpthhtoheplhhirghmrdhh
-    ohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthhopehnphgrtghhvgesrhgvug
-    hhrghtrdgtohhmpdhrtghpthhtoheprhihrghnrdhrohgsvghrthhssegrrhhmrdgtohhm
-X-ME-Proxy: <xmx:qsLTaB9YPEfXWZcR0CXQ6KSVT8fHfRYkgCk5FpTDWPZ_8J_mgcKXOg>
-    <xmx:qsLTaOSzOQcx2kQUduNP3K9bF-GCv8ZVBtgjv_eF74F7k6boAg1Jsg>
-    <xmx:qsLTaGEUWhasl_63w3qGil6e_GJquURrnJW6idDu9i6VYfGiU6WB3w>
-    <xmx:qsLTaKgw6XbB1mVhthto83zmwrPRbcepNU0h-RsuMJV_IBa_nO9Jzw>
-    <xmx:q8LTaOnXOaLeadFQMAQ0SYILFGwzo1cu7cbddgzJKvD5tIBju-Rsm3Ag>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 24 Sep 2025 06:06:33 -0400 (EDT)
-Date: Wed, 24 Sep 2025 11:06:31 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: David Hildenbrand <david@redhat.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org, 
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	baohua@kernel.org, lance.yang@linux.dev, xu.xin16@zte.com.cn, 
-	chengming.zhou@linux.dev, linux-mm@kvack.org, Dan Carpenter <dan.carpenter@linaro.org>
-Subject: Re: [Patch v3 1/2] mm/ksm: get mm_slot by mm_slot_entry() when slot
- is !NULL
-Message-ID: <viz42o4iscxkpxystnikuvfnqzwwfq3anivizgx5dncm4qyqvu@4kymskstues7>
-References: <20250924004854.29889-1-richard.weiyang@gmail.com>
- <20250924004854.29889-2-richard.weiyang@gmail.com>
- <27storxu4seijr5smul3xx7pofe45ittjrchii3jtwbntalsiy@2cu3wf42drwa>
- <1ebbfe02-1cb5-4f7a-a640-68d5d95cb99b@redhat.com>
+	b=wYHsZTHaY9J/oWbghWIQprmr9Zp2jCsYoeBwpSkmjb74oCUNNdrp/neZbtDe2+I6Ej1vk4
+	TEzxy1c7Q3nIohRhln9Jb1CHz2/fXb/OrXHu6yyeuWljbdad2khcZVppAA7ShvGoFHFhub
+	CX6hlz1TTxvb7HI2+qUu7x6tCGB3Q7o=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758708449;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=8GrFljRltqv2IkALg1YfGWmZraH37YnKJBWkHZnJJ9Q=;
+	b=Re6o0pnjZ+1G8+EITSCg3GFYNmG7YQI9s1OM9JaNj2a7wwny7N+TTZZfKP7tjGTjQ2zwSP
+	hgdKQr5Aw1s2C3tdMDKX6KVmCI8VCBpqodxBYF3L0WeKqNnAD/0t9e/xzIHjUVzMKGGffy
+	n+EXg1/GqbNYLJF6JJNIVwvWKIVbVlA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-319-f1G8nltCNqS9n1MJ4HCoig-1; Wed, 24 Sep 2025 06:07:28 -0400
+X-MC-Unique: f1G8nltCNqS9n1MJ4HCoig-1
+X-Mimecast-MFC-AGG-ID: f1G8nltCNqS9n1MJ4HCoig_1758708446
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-46b303f6c9cso28166085e9.2
+        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 03:07:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758708446; x=1759313246;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8GrFljRltqv2IkALg1YfGWmZraH37YnKJBWkHZnJJ9Q=;
+        b=Rq81fNok/M8ujlOwdtmKQg07O8Y7BEcrgv4twizcXCqqAQ9WYpZLGfCt/JofbTvRI0
+         DY0B+HB6nvaYbGzelXOxp9jQfeCcyLhx2RLvYq3q8N5Zmusa0KazwZnvch56etfFYosR
+         2jlYJNyZ6YaiWi2z9YooNak/fj5hjIHRlCxW/coHQzTwM1Ag4rWzkt6v2V8aCJYGGfz0
+         4EdwPooOP0CcGbunPcLF2H/00isiUFwL8zoh4Cu8m/COYitk3Qe7D7jHOCNd8V5RyzU7
+         PsS4YQtobuITIHWYsPK9UNCOht4DBNMfL7HwJu1jDNKZuAVjlkmDGkMqscS3ECnYtWeM
+         SuPg==
+X-Gm-Message-State: AOJu0YxYKbB/540LKXWJ1LTTZj5+AlrrPX7A3lzFKQNo1CjUJHhhJ6Ri
+	GlKhEfnUbRkUgpd39RA++AaugIKTU9Cag+sEuaJW0uSrQafy27QU/4ywWQUcB86w8HUyg/wEQ9p
+	Y9Me7/WHvlJ0Ki8FB0CsriRNF1yifqyXisOD89Wg0tRMQGtAoPufz
+X-Gm-Gg: ASbGncuXlF86BDOnCfRUDCjpKdZqSMf44NGxhvpGDkCP2ZnAFmacJ1LypI9gXFy4V5V
+	C7TfrBPp87Ail12w+2PGSNEX3B8tke3M2/G5PZY/DvTTtJXelhpmugymJMeIShpiRQ/ftXyg0gz
+	y2waeI1Jw5pbSXZSI0wg5IKFYeomaUT5N0EDYMeKzEmfYey5qO+eAuhcr742yrUOC5VXzC5Gkxr
+	WS/SnxZYMg7Hj8w+94o0KXzL2Gqqt5BCTW1uKhlNmbCCx7iQHeG+H2sWv7m+FMFVCjPs4wYbsm0
+	9qDLo/HAftDdoB05oi4KppdPf1dR4n7zYLr61TSkvzE6KdBMxwMWnyTIuIIL7tWS/RKySzKTl93
+	Oks2EnlHwjvKGFgX3fUlQDoyq2Q6rzWH83yggA+5chg5Qu3MFEmLQmeTwKfy4neIRRA==
+X-Received: by 2002:a05:600c:c4a1:b0:45d:d56c:4ab5 with SMTP id 5b1f17b1804b1-46e1d97d834mr61858825e9.5.1758708445765;
+        Wed, 24 Sep 2025 03:07:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFaQcC+ULZdp8/N6kG5WGhH1icSL2ZrXnUmEBTw0kMbgJba2jUfE9tmmYof9yvOb6DQDACnRw==
+X-Received: by 2002:a05:600c:c4a1:b0:45d:d56c:4ab5 with SMTP id 5b1f17b1804b1-46e1d97d834mr61858355e9.5.1758708445323;
+        Wed, 24 Sep 2025 03:07:25 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f14:2400:afc:9797:137c:a25b? (p200300d82f1424000afc9797137ca25b.dip0.t-ipconnect.de. [2003:d8:2f14:2400:afc:9797:137c:a25b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3ee07411f4dsm27150172f8f.26.2025.09.24.03.07.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 24 Sep 2025 03:07:24 -0700 (PDT)
+Message-ID: <0341cf34-9c20-4f25-9838-39871409b2a6@redhat.com>
+Date: Wed, 24 Sep 2025 12:07:23 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1ebbfe02-1cb5-4f7a-a640-68d5d95cb99b@redhat.com>
-X-Rspamd-Queue-Id: E63E0120010
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] mm/userfaultfd: don't lock anon_vma when
+ performing UFFDIO_MOVE
+To: Lokesh Gidra <lokeshgidra@google.com>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, kaleshsingh@google.com, ngeoffray@google.com,
+ jannh@google.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Peter Xu <peterx@redhat.com>, Suren Baghdasaryan <surenb@google.com>,
+ Barry Song <baohua@kernel.org>
+References: <20250923071019.775806-1-lokeshgidra@google.com>
+ <20250923071019.775806-3-lokeshgidra@google.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250923071019.775806-3-lokeshgidra@google.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: DfQ0qtxy0R2qp0Snwbjx5_u0YV7oeH8L30_gvybIN9E_1758708446
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: B98F0140005
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 1iyq3kk4i871wnufdwo7qsdy7jykxhs1
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: bpeceqtx7c3jao97qi5dnzfqqwmzwxw1
-X-HE-Tag: 1758708395-907404
-X-HE-Meta: U2FsdGVkX18Esya4psVCWnRqjlmbgIXQ4fAVdUNmqeMkoQ32XBqft4PwP+u2KhQjiv76wL3ABWL/3OaQEFhEkutkhGHV8In2N8H2gv6qDf0NKpv0HJyryVmCSrN4PNSPKmi1qRfmKIPBy6cZ/bTsal5Kz2+KD8K3xu61/nCxYyVvVEMGEhBWCt+d4u2kyfL3U9TyEG368SofVxjuR0DSmJssOGLMY8Mb7xsbY6t9SNBdoHwDJRcKQKdk/9nTnmgiutqIAUPoB41gSs6uUeYbYqTnD3GPcGcl6VX6BQxZ7wMEP0k7+ElIDVyvX8K05qnmZ43NejvmqDmjfR/LGAZM/WzUAMieqDIjjFUpndLjVMvAnOTYFVJSZ4L6Hld0gNXksn0qFmaIoMJ9Bxw0rqvHDnjb7KHBBK7c6R62zllQG96iBYWs2UNiRvCLUuyc2o8xGAZbuB1Tmw58e/AZVGvAIOR1ET8ZyzsPLdVtqYeNJkRNK5+Gjsh4sLlbOswQ7v8AYZItvHtPlVm6mWX0f33v/QgjkZ9uk74MOo5g+OfsV0zzC3MjGamggrC8Qpehcv3WO7Swvv4qbNE9Gd+U0+DsvtfHfZtq7OzbqAwBQk45+RoUzuq74BR9LMaRTbRGQWW7Wm5v4BVnNhpxyhZjPPOrX5J+EgKHyyalcRINNKiHx8tmnnRl9oa5CIWbmzS/kCbT5tg1BkbhiCRsiYAut3edsr2lYfnSlK6mtJfP1K1+nbwftA7gMeuBmkwx0kQNQe0yJpVpGUQe9CwhTmDxaJLb5iEkR17T8DHDU8H5HRg3H+qNRWJX/3oYkNs7SOWREGrmVvyyepOODFtfaDSxM/iBRR8lSEpuzPV57yvPXmainSheoBhRGuKgPjW26aHmtMGeTN0YmsoMYsSNj56AVVxyQFMgBwMeXXknLfSI6LLjnNeT1kJsnFdI15kc7m1ZzlbxOxKygR6NPI/TC0JgWtL
- IVZvJ3lt
- aQJxf9GSPz7159VSmIhPRrMiGbIJLggMK6Xv4x2vswn5Z8hzancwybVwYIFcH/7wENbAUEt5JZPzxI6pirlPrekTaRxMHLv6kmpVefyTdiEPbW62yzYZOgyCbvVHzabo8S3XfwmjCkyFSzx3fq8WIV5m5p0incsllgUh/xjHJ3Plr76TtaEj34CuwVEpSBiiCTd7h7Aa8TLq4F2AOCiFTxxrgwTWfQFOGQKicqIs+u/H+7PJ0cL6Q3afC1QQ6H2F7gVgeqog0XuLWa84h8HHrjnW4tWB0QatHfLRt6HfFavLaiKyXHRjtO0qtrXjP1FmA8vn6XX5VqyogrYHg95ofmammBKoww37wxjiTlHQjA5CN7VrbuF0EJACi2nmcmo7rC400h+aUNHPo5CvHSJ9PazWyQZ/iGSAs+0XyG7onfhVFT/PVNg2oFs7LAEtk7QRZWUohacGsOD4PwCTaHo68wQm2OMCFqbFeOLG5u87GNuVZ0dV8j5ex8Qhn0PTJgEbRmf0FzKQ5YSpLHTVC0WRzW2TT+T7yO/WpqWneQQXubqMPusMms2nY/M8GbsYoWTmpzdw/q4X4D80t9+CcII5bLZPVsfqezlx+lmhrVvgLMkaNWy4aajxoGh6QEJ8vJB0fCMqNBuda27dSDoWuV38V+zX+zXMPzLo9askjDVA6teP090gp4OVSGu56TWlM2AGOaU6MNW7+4rz0f/ujhaipbVYQm8jlxYnA8HCVpabEw9A6SL+YUYtmsPLpumD3ly3694V/lRqUpHlkX/vBJzvWyDh5xFmWw2hT8Mu+
+X-HE-Tag: 1758708449-285881
+X-HE-Meta: U2FsdGVkX1+xtDjrUE+IcytAyZyNTUQ2rbJpu1ogVmmQLNrwzGeUPoLXvMwIxDEGxrJVLOCE7SjOfTTl1AG3c7iZr58E0bEGU/SVpJ0T6OXcP62QYvDqLDN+D+4erz+1jBca3LX0RJ1q7xGAbhcnqRbxfO3Fv1fgF2REU+Z8sR7PjnB3aAGNgTGvYBY3WOrHRJbgxZrnQBzybGg/8o58zhdIpxaDWUqbwrnb1exMTfXoOqshasRmURI301eBYBnfsb0yngbIrExxIEY3z7oNmmxravd0s6n1nnwpkTgPlEWNq0zw5UMTMDfH5Eipkytb1y+tBQcdalkx3TNOe6aeWxWHKksWl9S6s/ccIQgn0BfjEygZGJDZ86l45EqWJXUOnNjIYbsu8GaWO+KVaWMkUHBCKh2n1BimTD1TMHZdCUlSoxDe23En8vzDBEYrctBBABiyhc1YteVWfLp5P9PrRs3/x3Pq+NvankwOcNLO0LzrnxdApAFl73jYZIgiPaGZsNoICAd7Sqyw08x9OBQveWLFctLZIX1hobr1QHgYwqZho1OVB8aWLOst7nUAfABUDABefTOlkluBTyJ0UVgwjp/lmCepud/5dPR5L5s+bwlHbmpWuzn/AZ4t4eY+PqSFJYwIxxPC4BLzsOvcy7QfMpPyoePwPMTnNv9rjlWElkAH73hUia5Q8jBt1pDmH8IOYliZjfuiZJalBYpQrDRkD3z9FO/SjT1rWIbYOyWWfiWG154eiT55IBWpwxYQp7KiWelugx09kNzImi+7bt2+WSvnW3mhk6SMyihfNiZ5Z4ZuNR0fBNgy7t8n81O3kkIknkMvbuwfZKEuWduVWagt7Mw6MH021Vy8A6veJ3ZiNyAD/yr2wMunycBhBzpGBdn90eBARMQopeINeQEmqAs6nTsZEDkpVK1IerRRb2ytLZlxfHKP22O6I8tlQC4EsY8LyeQl1j1wI2wxMz1q8cn
+ wWQ8m7uC
+ C7J6BUhhTGFU4/amMx1IoPCc8z9IsE8T174ldftJ/JFojbp+t1jZRGiOnoptBMGPaiPsvQQ2/o/8NVznf+nNlKv0Bs9XI/7oSLhdPxM4RXeyaLPnU9LhV92Cr+kSwdya1q6D9p7smpB4Qy5+c1bX7feBdswf95UGB1NPZmZmrfUxqpGPY87FdhniywXLQDRm4d5onew1wETGQDGUK0U1xMa2gWE1uzuR+h0LJ0Z0CuQs/lDnXve/ht0tIKPS9XVuopFfJfxcEViy2ozG4Hjm/C4HBKFQWSBxYKasyPs4cJ4k71n56BkpNtD/DADjdlPMn8ECkNg+vlD545ZAGcHZ9AtpjdSFyOXvp7HIA+ZCLFs/u8N8nLbuPrGC7cab+DCXrqRAoCjTuHHtohXzFOU2DqW1Ss97m+A52v9tipJe5QuKA1qJuXYgrEAIObil21CDtY1t5pTZxHseAG/NQZJkqfSD2hp7huAZyFOf4VWuWrAfzkqJRPT7qFTr6eIWqrMmsFXuoR4AqivDJ1XXbN8VxJJNM4w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,81 +179,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 24, 2025 at 11:40:21AM +0200, David Hildenbrand wrote:
-> On 24.09.25 11:35, Kiryl Shutsemau wrote:
-> > On Wed, Sep 24, 2025 at 12:48:53AM +0000, Wei Yang wrote:
-> > > Patch series "mm_slot: fix the usage of mm_slot_entry", v2.
-> > > 
-> > > When using mm_slot in ksm, there is code like:
-> > > 
-> > >       slot = mm_slot_lookup(mm_slots_hash, mm);
-> > >       mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
-> > >       if (mm_slot && ..) {
-> > >       }
-> > > 
-> > > The mm_slot_entry() won't return a valid value if slot is NULL generally.
-> > > But currently it works since slot is the first element of struct
-> > > ksm_mm_slot.
-> > > 
-> > > To reduce the ambiguity and make it robust, access mm_slot_entry() when
-> > > slot is !NULL.
-> > > 
-> > > Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> > > Acked-by: David Hildenbrand <david@redhat.com>
-> > > Reviewed-by: Dev Jain <dev.jain@arm.com>
-> > > Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> > > Cc: Kiryl Shutsemau <kirill@shutemov.name>
-> > > Cc: xu xin <xu.xin16@zte.com.cn>
-> > > Cc: Dan Carpenter <dan.carpenter@linaro.org>
-> > > 
-> > > ---
-> > > v3:
-> > >    * fix uninitialized mm_slot
-> > > ---
-> > >   mm/ksm.c | 22 ++++++++++++----------
-> > >   1 file changed, 12 insertions(+), 10 deletions(-)
-> > > 
-> > > diff --git a/mm/ksm.c b/mm/ksm.c
-> > > index 2dbe92e3dd52..c00a21800067 100644
-> > > --- a/mm/ksm.c
-> > > +++ b/mm/ksm.c
-> > > @@ -2921,7 +2921,7 @@ int __ksm_enter(struct mm_struct *mm)
-> > >   void __ksm_exit(struct mm_struct *mm)
-> > >   {
-> > > -	struct ksm_mm_slot *mm_slot;
-> > > +	struct ksm_mm_slot *mm_slot = NULL;
-> > >   	struct mm_slot *slot;
-> > >   	int easy_to_free = 0;
-> > > @@ -2936,15 +2936,17 @@ void __ksm_exit(struct mm_struct *mm)
-> > >   	spin_lock(&ksm_mmlist_lock);
-> > >   	slot = mm_slot_lookup(mm_slots_hash, mm);
-> > > -	mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
-> > > -	if (mm_slot && ksm_scan.mm_slot != mm_slot) {
-> > > -		if (!mm_slot->rmap_list) {
-> > > -			hash_del(&slot->hash);
-> > > -			list_del(&slot->mm_node);
-> > > -			easy_to_free = 1;
-> > > -		} else {
-> > > -			list_move(&slot->mm_node,
-> > > -				  &ksm_scan.mm_slot->slot.mm_node);
-> > > +	if (slot) {
-> > > +		mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
-> > > +		if (ksm_scan.mm_slot != mm_slot) {
-> > > +			if (!mm_slot->rmap_list) {
-> > > +				hash_del(&slot->hash);
-> > > +				list_del(&slot->mm_node);
-> > > +				easy_to_free = 1;
-> > > +			} else {
-> > > +				list_move(&slot->mm_node,
-> > > +					  &ksm_scan.mm_slot->slot.mm_node);
-> > > +			}
-> > 
-> > Indent level gets extreme.
+On 23.09.25 09:10, Lokesh Gidra wrote:
+> Now that rmap_walk() is guaranteed to be called with the folio lock
+> held, we can stop serializing on the src VMA anon_vma lock when moving
+> an exclusive folio from a src VMA to a dst VMA in UFFDIO_MOVE ioctl.
 > 
-> You call this extreme? :)
+> When moving a folio, we modify folio->mapping through
+> folio_move_anon_rmap() and adjust folio->index accordingly. Doing that
+> while we could have concurrent RMAP walks would be dangerous. Therefore,
+> to avoid that, we had to acquire anon_vma of src VMA in write-mode. That
+> meant that when multiple threads called UFFDIO_MOVE concurrently on
+> distinct pages of the same src VMA, they would serialize on it, hurting
+> scalability.
+> 
+> In addition to avoiding the scalability bottleneck, this patch also
+> simplifies the complicated lock dance that UFFDIO_MOVE has to go through
+> between RCU, folio-lock, ptl, and anon_vma.
+> 
+> folio_move_anon_rmap() already enforces that the folio is locked. So
+> when we have the folio locked we can no longer race with concurrent
+> rmap_walk() as used by folio_referenced() and others who call it on
+> unlocked non-KSM anon folios, and therefore the anon_vma lock is no
+> longer required.
+> 
+> Note that this handling is now the same as for other
+> folio_move_anon_rmap() users that also do not hold the anon_vma lock --
+> namely COW reuse handling (do_wp_page()->wp_can_reuse_anon_folio(),
+> do_huge_pmd_wp_page(), and hugetlb_wp()). These users never required the
+> anon_vma lock as they are only moving the anon VMA closer to the anon_vma
+> leaf of the VMA, for example, from an anon_vma root to a leaf of that root.
+> rmap walks were always able to tolerate that scenario.
+> 
+> CC: David Hildenbrand <david@redhat.com>
+> CC: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> CC: Peter Xu <peterx@redhat.com>
+> CC: Suren Baghdasaryan <surenb@google.com>
+> CC: Barry Song <baohua@kernel.org>
+> Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
+> ---
 
-Emphasis on "gets". :)
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Cheers
+
+David / dhildenb
+
 
