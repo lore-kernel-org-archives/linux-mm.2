@@ -4,115 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95B0DCAC59A
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 07:44:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C7D6CAC5A7
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 08:17:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B6DF8E0002; Wed, 24 Sep 2025 03:44:00 -0400 (EDT)
+	id 45B408E0005; Wed, 24 Sep 2025 04:17:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 967878E0001; Wed, 24 Sep 2025 03:44:00 -0400 (EDT)
+	id 408208E0001; Wed, 24 Sep 2025 04:17:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8563D8E0002; Wed, 24 Sep 2025 03:44:00 -0400 (EDT)
+	id 2F5C98E0005; Wed, 24 Sep 2025 04:17:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D46B8E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 03:44:00 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CC1131DFF36
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 07:43:59 +0000 (UTC)
-X-FDA: 83923354998.04.00E6193
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D434740006
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 07:43:57 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bQOyD7nC;
-	spf=pass (imf17.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 052A48E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 04:17:15 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A6DEDC0472
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 08:17:14 +0000 (UTC)
+X-FDA: 83923438788.14.CBE6F4F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 152BC160004
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 08:17:12 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UaZBnTzB;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758699837;
+	s=arc-20220608; t=1758701833;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=frTPUrkK2UtIrSktvJErOKGACg/qrYMYkNJq7wZnIzo=;
-	b=1XYwR5nOYPrJL5PvN33N8aEW4m6tAJSGUO7h5LTkFnfgmH9adhTiX/2p+TX6/cKgKpm59W
-	hIH05VsW08sGIsuOL8qTGvATlVqvdZ6in5rqLzkUA9f/dfad+zGZJ4rOzauJvi8zBlc7DW
-	JPnEm5MclyKLJZnTIjnvRM3L1YmFdJA=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bQOyD7nC;
-	spf=pass (imf17.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758699837; a=rsa-sha256;
+	bh=gXNOPhLdKfYtiwpS8D518O8VnvPG9pMlFRHlCj+WU4c=;
+	b=bQ3KgL1/yHaHr40ltkqZ5+gwXVs326n3T5RvYadC+Wtl0NHbS5Ax6z4gvVQtChpg1FtpeV
+	v1DAEL+ZAtvpEbfQJi6neCuFeeE8EIZT2+dl003uLvbJOhUSFozr72Pj+78/nyfDUubEWy
+	eONTdibaQghnK8bsO85ehOZVumP7hTE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758701833; a=rsa-sha256;
 	cv=none;
-	b=SlPFzT01cJCs4MQsUbvSHw46dKWicAb2UVJT8sTaKXzLPl/jozDAYiIQEurV47ubanU3Mc
-	XtwYuGsmJXMJkKI6jipPo9pJlvSk84zsW2MAo8uDxug5wIs11n4GUx+/lhJqAEeZNmNmVq
-	4W7dZtK3bHRAa+xuJDRsz/UyXaRk3h0=
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-46d25f99d5aso4577985e9.0
-        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 00:43:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758699836; x=1759304636; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=frTPUrkK2UtIrSktvJErOKGACg/qrYMYkNJq7wZnIzo=;
-        b=bQOyD7nC2oXUqYyeUVyOuMXVI+uRW08l/0rlwtQgBdDZOUcrH8sVZOoaA5BlEEZ4Ek
-         e4Fj3cutPP1aIUMPS1JkxyNEZ+2oVhh2l/fsPSha0ivBeZ1rEd/I1ebc2YLt6u/T9Brc
-         +nSAs1z9XVS/Ci8ocaDflEqCl2NQ6jIb7QQycCPz+Tf0Q3+NrbI1ou3EingZLSpwG6Uv
-         enLqsUUCbkBKI8fNMKERKnYnhnmbJPwep+G9P8s8KIkbWuUqQvIcgJh1Y1nD+oLx9W8E
-         8aIstOtAzt9M1aqp+O7YrC2fvoWBlciPZWVqNCea1yoqO5Kuqcqa32w++YgQX/8kMkGP
-         TXUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758699836; x=1759304636;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=frTPUrkK2UtIrSktvJErOKGACg/qrYMYkNJq7wZnIzo=;
-        b=woCBDlh6qE6jZa6vA6I2QWu4b0xxNhIhYhW+3nnoVyl5ym0kKGj5lLQNzY/H3sjPQw
-         BpUnweWJUgdRhCqcOefPwZVKTEyEhvu+//kvNMFS7udZqZEmjhpBo0yzyQiTju7p0Smj
-         LuWcaNzIHNIMrs0cVypeGpMw5EHM/0CXiULKAvOUueUm8ZLkReX0sHA4GgRgh18Hg/M5
-         KRncyFbtNWvSG6sa1C2kCQAR41jmn8IoBda7qwhyAHpEG+hjzd1ivIJZ6MVPbEVrIF5f
-         ypSJCleJeN/0SaXWbTTid3LXmZVjmF8yNHqJiLlZQyZVUnnBOqQNqRwNMLZw8FaPjOQV
-         EtPA==
-X-Forwarded-Encrypted: i=1; AJvYcCW7xItN4cdkxogLral35UdUY+aq5JHaJSXAiys00H/wUJEOs4XJtI0DhyS6TitgRf2bwJOjqw2xtQ==@kvack.org
-X-Gm-Message-State: AOJu0Yzd4paC3s4xQzGW9+a3Nrnc3GqWyPK+WZG3sVhhW3rwSOS/NCkn
-	rEAh/Qd2yvsgJKCZqyI+61YZJmfqeW0bebeYO/snMHLyOykQGO6MwbkujWwhR+Qh/iI511yAFzt
-	8+kzfbSWjPVkaT7iCBnt22W96sQFiDu8=
-X-Gm-Gg: ASbGncvww7x9pt6IbaJc66tRKhGPenuUOuEZVKfqUcIdw8ceV3eKGdlxDshxd0MUd5e
-	RYARjipG4pNN2NYhggwLkPXYvIvn6yPNAlXnfHhzYB81FY6c9T6lioSwAw9K8sKQsdPwRCnNK26
-	b6rmKOry7Idjz8vE8y6YzC07R6gNH55MnaNlxwgXvf6zQA67xcSmGVA5r2r9M0aqzRjfR9OluwY
-	ZuXj/iz
-X-Google-Smtp-Source: AGHT+IFeSvGFdTAg6SbA5V2QuwWWkKFqtUByAMy6HTgCTwSDkCwT/0AuWhnDCRxkb5JZaEcrx/NRUs8w/jN9j3HSApM=
-X-Received: by 2002:a05:600c:c084:b0:45d:d86b:b386 with SMTP id
- 5b1f17b1804b1-46e2b5959camr9036435e9.14.1758699835931; Wed, 24 Sep 2025
- 00:43:55 -0700 (PDT)
+	b=jNy3r4EXCZ5ZdE5iPB9/oL+B7xJE/v2fdRgLJWnQRrTfLzZop8ep5ZeytuNGWmTcgTuq/u
+	AqLw19wRYFJr9VcwFvZRQhlDgPxe/c9mzjqJPXJG31P/8O2DLPMHDdGMjjmuQunwf2QfW3
+	Di2pwNRjJShnbrkLZrn7Tb4ZwAxuRr0=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UaZBnTzB;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 37E1560007;
+	Wed, 24 Sep 2025 08:17:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B57D5C4CEE7;
+	Wed, 24 Sep 2025 08:17:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758701831;
+	bh=80TBCq2xtbZyQwcjgk75oUDRl3DELO/Ho2DPzv73C98=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=UaZBnTzBosxoU0mr/La3OpGYNa7BmjoxfFelqB9/C7od+Q7f1WnTp9pU+r0kV+A+A
+	 WmFNXsaJD+IiNidYvB0jCdtBVqlmDdgLsRyS1/R41XUGtR5ZGtg7Lk/Gv1lgQVZuYK
+	 tTl4ax5VkEu2QqTrUjBdxQdiUbAUa2ONQXffNQsn/poQjL/+JEoQUiSg3MoPX4LKMI
+	 Bsf1F3tBuKNRtWvGbjCfZDHcp7G1jfp+y3s9s8nHb46uYDswwzFb6u2Y60DPcUjnGF
+	 GEgXkjndciK1Zgni08SrT8MZG+MWtgZUPCFPE3RFfmOOh5o/+Yc9pebjZWWveC8LKn
+	 +LbxcbUXjiohw==
+From: SeongJae Park <sj@kernel.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH v1] mm: convert folio_page() back to a macro
+Date: Wed, 24 Sep 2025 01:17:09 -0700
+Message-Id: <20250924081709.63722-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250923140058.2020023-1-david@redhat.com>
+References: 
 MIME-Version: 1.0
-References: <20250909010007.1660-1-alexei.starovoitov@gmail.com>
- <20250909010007.1660-7-alexei.starovoitov@gmail.com> <aNM-Esr0v_95qmEa@hyeyoo>
-In-Reply-To: <aNM-Esr0v_95qmEa@hyeyoo>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Wed, 24 Sep 2025 09:43:45 +0200
-X-Gm-Features: AS18NWDeAMrjjtfpXXRptTmZHrkySpGxWA_vASLXbV5Wtzy4kLnoifAGbihM3rY
-Message-ID: <CAADnVQ+7W9MBG5i-r1Bh+ya=xN13LTVLN+EYwzP9dhVo4cUnjw@mail.gmail.com>
-Subject: Re: [PATCH slab v5 6/6] slab: Introduce kmalloc_nolock() and kfree_nolock().
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: bpf <bpf@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@suse.com>, 
-	Sebastian Sewior <bigeasy@linutronix.de>, Andrii Nakryiko <andrii@kernel.org>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: D434740006
-X-Rspamd-Server: rspam05
-X-Stat-Signature: fswreztkws3kc7p81whn71i1xoy8h65i
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 152BC160004
+X-Stat-Signature: eg9wuqiw9agzbnyyki5epyp7s4ogiooz
 X-Rspam-User: 
-X-HE-Tag: 1758699837-293342
-X-HE-Meta: U2FsdGVkX1+aEBxhmmeJ+zpLiWYafILakaiUh30tPX/uwihgHMMdTWKsXSMeWvm+YZfRJYEsVvL4aIrcLA3jGBmhW8B5U2YeaDRPaZRUyqLJZvXWXqUkdjvME9X7cEW7uUQCrEMjRvRZLKaGhwjQZvIogIJz/hAGQlSCC3DIo+CUMcXMVJTQe3v+Gt7TkcKOY4/foMe3122MD03xhOrimLck217HwKgccbfTmLF3BcKl8r5RVt/doj6H9xqnp6qSq54Znb+n7TF4nMtIRhZEeE5eUnaRxuaV0cZccnyUJNYcu4+OMwQYkWxoPBrycIJ0X+xqC6/PQbie5yQgn/mkUXShn0XN82HWxEW8njeRByNoWAWy3g62Qy1HGitcjbX7SGsdZgHAPVt2CYKnjEjhANuMIr+L6R+ta0oot+IJKh0Pto35xvmyDLs0waTqPqAIKC0gk0UzEGgwl6JAMIT4faSe6WWBKhcAQBpBzx9D5RoVYt6KSVNQ7f3BHiybegoHLEHgwDBRTz+4Cbi7Z6a9tGpYWGxLWEQdkHHp9mG51oQf/TT4x6j+Ipx9jkH9qccY/lLHE+cyyCTTlu52T0/5ctjKZWvtVrZkAgrwUpX7AofkVu7BWGaZu1AvjI/AtHqZV6fHVdciyhy81VluGuh8H6Fg+RXfBiKjubcH6jjOSTDJXiHW6QuYUaEor8kX1Lwi4wChjsBE0Kw4lxQNToOyJuuHPBsEz66EMrnaj6U5I7RbNegxShAw6E8SCmR21zMYmc7BQaCJvATwuOFX4qq95E0MDhiahR64/le3Wb5acg7OKxzqI+vp58+YSovMBhvdnuSkLZU44jFwcCgwCLQ1uYftD6jQkRskf7uRP/g/LOXvRIfwn423FUDtP6e8DMoqdQXPvgCBaJ14hF20stZ1wv1SdPghiACfdopcD/oTUbCkGXNP7RUhUSTjw4Tmrls9X4kSKXSMNQqjkYnN5s8
- kMvBD2iN
- V/+p3sdn9YRC/dGiM4JmaRoJop7BaA7VlNfUFmaAOWCaBb6EJiW7E1BYhZTQx+l7RTp4O/il++ZlV2kEq9QnwEsFZ307IAh7AQG2jN9akHAQeo3pWs2zvTHK/Oh8BswjkTU/aYCTtQgEeMfNS4XoUjcnpMvmJ1TRs4sU+9HOdZiOuPD+ppw4zCkbKwYDOkLd6cADk0ISlEMrzBVdA+vwUfnaKJf82L0oCoovhto4hmx9G+IeOcZ/zxZo3GJA7DKjaEb7GH01AiZaNVQG1HMsNCw0ptDU2+9W+4hOPP0HbjGDjCLdBUqNdmsjsS4g0XJMaKhPu7MSzCPAl9a7YpbD/YRlJIsdlGvMSD9Z1yFcyIX6dPmvGb2BpZAxaMkyj4VE7boHj7o3ZofkvyIgESXNqzSPqfstIVWZlYXJZJE4n7SAijstEMmTXGN5K1xofUxcvlbct88CeAEq9il+kiIwVtDLbgd39F65RmmL1MwtXLrBghm8=
+X-HE-Tag: 1758701832-796230
+X-HE-Meta: U2FsdGVkX1+VmmEIRisvib4kREPGfKW+C7JVHPdSS3QxCeA2oBj7Satf+ZSqJpzfHxon3lCG0IZrAU1EvTtZLky+6N8bBZE0gsZcgIY85e+GoqWNvu4biqBtqKoZAFLVnbVibLJAIg47sPkA53GniSKtyHs7tJ5jJ5sUHiaxDpaIg6b7vDcnZny8JWggVGwuTDZUMlwf0lcL9VdNu/uba/6cILUV6AFfON5I+vvyUnnB+wjCB/l9wLFm8UQ1uVT5oLYiLgSLY6B8+yW+PFyU/58mYf+V5FFmjEje+wT3vy7/uNWmPX5+hioeQZZjf5mXWW+ZLbc9FRmrjwTlC02A656vjifLJyh9eMnT+bgkdKYEcSS/oiFWBdKF6pFAOrbDL1ghTVPzMKwj3WcuiVjVPQuQKVZMQupEU5g29ashiy1owFLlPU5qgI6kqZD+8dLf83kTAWwjir3WT/9gi3xFeNdOTMg/avxQvRU93JfawyBjYOFjIFyR99/wN1FFzPMWANTqovI4WB8XroKg1huqIDZf0+oetfdfS8pGWaYGd7xXi5WkMtLtNhfde4uhXsR8sIwZJ5kHfWyxGlxTy89fhfIe/SsJsxENKORxQ94+7KblXBynKgOz6Q2NLP7zVPKf2zQ6isQTWpi+cvMj2fbgUJPfNvbo1Tsv3UDQMudcviMLhu4wWLXUWTx6/2uCkK64zikc2qWjwTtfJEXFxi2RcpTUH+kcw2qzle8XJsBHLHuodtDzi91y4iWq+T6t4huGfHV/Qhdg5y5qUaIIhVzlwsuJ9T2pOfRSeSndDpRtQDgcQNdcgsWgi1y4GssxJLMn5BvmltqNW2b7cQ7VsmB7+JqAqWOfA3qImwCykrDJCNjAAvTh4oNzFGMXtWjbTqal6MxWRqgAbbkLv9luUwT2R+YYoIL99Teh8uopF8dCNT55WVGX8+pwPWqwi2JMWsQg4ggCDp1xGC3EsgZBp96
+ eU955j0A
+ 7Ymz1DITS/xbH5RccbbyT5hfhG/1u/x3ipnAeTe02bjGD3Wb8jFn+Uza5xeNKyaNtnIlSdDCUDxWZRsAgFMNCrrsmFlVaN5UrgDM6xZuI3BShjt7wWxym2CXOHS+7lReMn5+0i/aH5SEWidwnWWPQptBXEjZDPoGLXEoAu9qX76CGkaVSODLcXOnMnJ4oTWvij64KRnMDJRvo2kNaHBj9h/J3qVDQZLy0xcNB+4sQngCPbXlxNgH2ZbOLSc1uQIQaSajMehtwI3Axd7lSmKGklTnulTd+N5YgIttNBwSiVVi7W0CZO+xs+9vohz9KNiVF7S44BGioNHjlSSL3pn+cvrS+J1o0ddcvqUiHD7oRGUywBDUKO9Eu67zm2BoMfV26uOjc3O+qBq5p6YRJ0EjoxBk4+gC5JaBriSQgH5X2jyy1RoNt/L9fgcx28Dck07JrVX4N2ebuEyi/A3+WJF9CFpoPfQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,67 +99,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 24, 2025 at 2:41=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> wr=
-ote:
->
-> On Mon, Sep 08, 2025 at 06:00:07PM -0700, Alexei Starovoitov wrote:
-> > From: Alexei Starovoitov <ast@kernel.org>
-> >
-> > kmalloc_nolock() relies on ability of local_trylock_t to detect
-> > the situation when per-cpu kmem_cache is locked.
-> >
-> > In !PREEMPT_RT local_(try)lock_irqsave(&s->cpu_slab->lock, flags)
-> > disables IRQs and marks s->cpu_slab->lock as acquired.
-> > local_lock_is_locked(&s->cpu_slab->lock) returns true when
-> > slab is in the middle of manipulating per-cpu cache
-> > of that specific kmem_cache.
-> >
-> > kmalloc_nolock() can be called from any context and can re-enter
-> > into ___slab_alloc():
-> >   kmalloc() -> ___slab_alloc(cache_A) -> irqsave -> NMI -> bpf ->
-> >     kmalloc_nolock() -> ___slab_alloc(cache_B)
-> > or
-> >   kmalloc() -> ___slab_alloc(cache_A) -> irqsave -> tracepoint/kprobe -=
-> bpf ->
-> >     kmalloc_nolock() -> ___slab_alloc(cache_B)
-> >
-> > Hence the caller of ___slab_alloc() checks if &s->cpu_slab->lock
-> > can be acquired without a deadlock before invoking the function.
-> > If that specific per-cpu kmem_cache is busy the kmalloc_nolock()
-> > retries in a different kmalloc bucket. The second attempt will
-> > likely succeed, since this cpu locked different kmem_cache.
-> >
-> > Similarly, in PREEMPT_RT local_lock_is_locked() returns true when
-> > per-cpu rt_spin_lock is locked by current _task_. In this case
-> > re-entrance into the same kmalloc bucket is unsafe, and
-> > kmalloc_nolock() tries a different bucket that is most likely is
-> > not locked by the current task. Though it may be locked by a
-> > different task it's safe to rt_spin_lock() and sleep on it.
-> >
-> > Similar to alloc_pages_nolock() the kmalloc_nolock() returns NULL
-> > immediately if called from hard irq or NMI in PREEMPT_RT.
-> >
-> > kfree_nolock() defers freeing to irq_work when local_lock_is_locked()
-> > and (in_nmi() or in PREEMPT_RT).
-> >
-> > SLUB_TINY config doesn't use local_lock_is_locked() and relies on
-> > spin_trylock_irqsave(&n->list_lock) to allocate,
-> > while kfree_nolock() always defers to irq_work.
-> >
-> > Note, kfree_nolock() must be called _only_ for objects allocated
-> > with kmalloc_nolock(). Debug checks (like kmemleak and kfence)
-> > were skipped on allocation, hence obj =3D kmalloc(); kfree_nolock(obj);
-> > will miss kmemleak/kfence book keeping and will cause false positives.
-> > large_kmalloc is not supported by either kmalloc_nolock()
-> > or kfree_nolock().
-> >
-> > Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-> > ---
->
-> On the up-to-date version [1] of this patch,
-> I tried my best to find flaws in the code, but came up empty this time.
+On Tue, 23 Sep 2025 16:00:58 +0200 David Hildenbrand <david@redhat.com> wrote:
 
-Here's hoping :)
-Much appreciate all the feedback and reviews during
-this long journey (v1 was back in April).
+> In commit 73b3294b1152 ("mm: simplify folio_page() and folio_page_idx()")
+> we converted folio_page() into a static inline function. However
+> briefly afterwards in commit a847b17009ec ("mm: constify highmem related
+> functions for improved const-correctness") we had to add some nasty
+> const-away casting to make the compiler happy when checking const
+> correctness.
+> 
+> So let's just convert it back to a simple macro so the compiler can
+> check const correctness properly. There is the alternative of
+> using a _Generic() similar to page_folio(), but there is not a lot of
+> benefit compared to just using a simple macro.
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+
+Reviewed-by: SeongJae Park <sj@kernel.org>
+
+
+Thanks,
+SJ
+
+[...]
 
