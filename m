@@ -4,102 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0137CAC5A5
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 09:18:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE16FCAC5A7
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 09:23:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F6878E0002; Wed, 24 Sep 2025 05:18:06 -0400 (EDT)
+	id DC2AB8E0007; Wed, 24 Sep 2025 05:23:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1CDEE8E0001; Wed, 24 Sep 2025 05:18:06 -0400 (EDT)
+	id D735F8E0001; Wed, 24 Sep 2025 05:23:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E4248E0002; Wed, 24 Sep 2025 05:18:06 -0400 (EDT)
+	id C621D8E0007; Wed, 24 Sep 2025 05:23:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E30228E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 05:18:05 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 959ED1DFEE3
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 09:18:05 +0000 (UTC)
-X-FDA: 83923592130.12.C4AEB6B
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id AD13F80005
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 09:18:03 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jEzOnJVw;
-	spf=pass (imf30.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A79968E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 05:23:27 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 295DF1A07A7
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 09:23:27 +0000 (UTC)
+X-FDA: 83923605654.23.C8A0653
+Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2C5FF1C000B
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 09:23:22 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=Rmw0qhTV;
+	dkim=pass header.d=konsulko.se header.s=ed2 header.b=TIn9hZXS
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758705483;
+	s=arc-20220608; t=1758705804;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=CQfjef4kEb8JhiSk4N7cSk1E0nFKYC18vxJZDtNCbWk=;
-	b=AN1Vuwz5+kRnCmMdnhM8k75sqcNK3YaVjrJBxmA8x4AtAPc3ZUvwNa9zYbC7UaIJmyFUqY
-	C84bhc4j1x9lSDRMrlcFin53oD1BKuZRmBdZvRnibapWynuW24+pNAXC9zX6v4E2uzEryA
-	0RpBirL6scKaO2ATUCd2b7e30dVE1WE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758705483; a=rsa-sha256;
-	cv=none;
-	b=45C7xTO6DIAqYBInx93b/THWnTKifxOBzP535oAGKv+p1niFVUc7la6qxvL/NMahYvCvN+
-	W7k/XO4+TY5mCHpQP0ECH2SmcbflNCFkREfIDXK3JAkixJ0HoX4x6KwQXNO9I7EGv7Dcfp
-	milh8yPn5kWIxKB2vMd2at7TOztcRzI=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8hQAmdgsj56lWZqQa4snfcTxmVBqhzBEMqIVUh7ap20=;
+	b=SGItES4zwpbEKqRFocAE10CrYQix1t5wI+smOr0gVDPopnlv2NuNLnniDkhhe/OCewrYMZ
+	0Nfr55c/fD6gNWZVwVNBEIn8F5rcW+2RJL4TNrQdmLPm8k6pK5NndJcBJHbFxBzrOb1EaB
+	CIm/lgh/LYruka29jKD2FCvviBB8T4o=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jEzOnJVw;
-	spf=pass (imf30.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758705483;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=CQfjef4kEb8JhiSk4N7cSk1E0nFKYC18vxJZDtNCbWk=;
-	b=jEzOnJVw5Lllxva7Q2QIX2wmw6kLD1tfVmURVM/3GB8mxLvSzLdW2RybMGpcPBmtghvPN8
-	HoH83ejhA2sw9emymMRFt8fzUSmUa4OhJuhbZLnzHjD0MIokB28sVvchDloqWXDvkzDGUn
-	VsXfHBP8CoPgUTh3GbSzca1GEBpMHUQ=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-532-_7XxDVmNPf2-bQDbbBwAxg-1; Wed,
- 24 Sep 2025 05:17:59 -0400
-X-MC-Unique: _7XxDVmNPf2-bQDbbBwAxg-1
-X-Mimecast-MFC-AGG-ID: _7XxDVmNPf2-bQDbbBwAxg_1758705478
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ADA90195605C;
-	Wed, 24 Sep 2025 09:17:57 +0000 (UTC)
-Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.112.54])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5095C180035E;
-	Wed, 24 Sep 2025 09:17:52 +0000 (UTC)
-From: Baoquan He <bhe@redhat.com>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	Baoquan He <bhe@redhat.com>
-Subject: [PATCH] mm/swapfile.c: select the swap device with default priority round robin
-Date: Wed, 24 Sep 2025 17:17:46 +0800
-Message-ID: <20250924091746.146461-1-bhe@redhat.com>
+	imf20.hostedemail.com;
+	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=Rmw0qhTV;
+	dkim=pass header.d=konsulko.se header.s=ed2 header.b=TIn9hZXS;
+	spf=none (imf20.hostedemail.com: domain of vitaly.wool@konsulko.se has no SPF policy when checking 46.30.212.3) smtp.mailfrom=vitaly.wool@konsulko.se;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758705804; a=rsa-sha256;
+	cv=none;
+	b=kkjrEE+8HixsmIThqoDPCOPMHbfMIXhAbACRQbnB9xBytA/UPSDsLEHs0TlNGb7BSk9CmQ
+	/oHYr/nwBIx2h0zVl2+f3EU31glZ30ZwdPmQ9VvgVZnhmQKQS4uUH/fS1f9DLS82ynZv+G
+	n4JDTLEq9EIyuuDi+kNGqFk5lxvjee4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1758705800; x=1759310600;
+	d=konsulko.se; s=rsa2;
+	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
+	 subject:mime-version:date:message-id:from;
+	bh=8hQAmdgsj56lWZqQa4snfcTxmVBqhzBEMqIVUh7ap20=;
+	b=Rmw0qhTV/Eia148x7JHjY9Fa6dUs1crqJwLdK1Y7ngO4RDOnV/nq+Uj+UMdGlnlOI7X4fhOKRW9ba
+	 HZp6diEex6mrViqExA9m54tzS1HyoPgkox6LFRA3wHz/yOkd9jjG0VPwJ5jwziyU1D38XVJEb2Q9jM
+	 w5KI+lyRqPcvOr6xalzL1dG1eu5v43WvGLX85oB4BgmWyif/vICQwgptthZnjX3HQJsesjXBbBj/zs
+	 pE9XHfCoXme0YIQeqa+MyYs9orsdw+KoVk7q89XqM64aqSIZW40ORMJuJR+2cY8RA/HklvOoSjWVX2
+	 7lqH6l80I73bTvJ83K2kL1AGUb/Ukwg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1758705800; x=1759310600;
+	d=konsulko.se; s=ed2;
+	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
+	 subject:mime-version:date:message-id:from;
+	bh=8hQAmdgsj56lWZqQa4snfcTxmVBqhzBEMqIVUh7ap20=;
+	b=TIn9hZXS9Ua9ogFH9ICjrfAm3/5xFx+rhcRvnC+8q529qtc4M1wVP6OhVis1ytn80CJ9yFZYT0Q4V
+	 QMIyT6FAQ==
+X-HalOne-ID: 19dcd115-9928-11f0-bdd8-e90f2b8e16ca
+Received: from [192.168.10.245] (host-90-233-199-55.mobileonline.telia.com [90.233.199.55])
+	by mailrelay2.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
+	id 19dcd115-9928-11f0-bdd8-e90f2b8e16ca;
+	Wed, 24 Sep 2025 09:23:18 +0000 (UTC)
+Message-ID: <d01074e3-600c-4ceb-95b6-d10fd9c253a4@konsulko.se>
+Date: Wed, 24 Sep 2025 11:23:16 +0200
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: fjtZ_1V1H4Mavxe_HvDW29kc-u02RZ-COFc9usyMLXs_1758705478
-X-Mimecast-Originator: redhat.com
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: AD13F80005
-X-Stat-Signature: odcfpj847nrh5hpeh8b744f5m89h4r75
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 2/2] rust: zpool: add abstraction for zpool drivers
+To: Benno Lossin <lossin@kernel.org>, linux-mm@kvack.org,
+ rust-for-linux@vger.kernel.org
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed
+ <yosry.ahmed@linux.dev>, Nhat Pham <nphamcs@gmail.com>,
+ Chengming Zhou <chengming.zhou@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Minchan Kim <minchan@kernel.org>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org
+References: <20250923102547.2545992-1-vitaly.wool@konsulko.se>
+ <20250923102702.2552392-1-vitaly.wool@konsulko.se>
+ <DD0IEU4DSZVI.32SU7U5B4AOGE@kernel.org>
+Content-Language: en-US
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+In-Reply-To: <DD0IEU4DSZVI.32SU7U5B4AOGE@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1758705483-585738
-X-HE-Meta: U2FsdGVkX18eIzIiM8zNCex1FGWRwHrSF0RzQ8zJXUFtbUYwbaNXQu6iFEhcKA5ML40CwSodqo3Jc2L9ZC9jLU+lL+Dwx1jn4taSVyYhVcp6Cg4G1clUd8xf3GVXqO/kf3KObQVENIeufLUEVYqClGiq/j+VyAJNthQmVpTrzcfaTTyIWKsG6syJ7dftwOoaU9T36Ayu8KvEn2RvJ4mKCS3+sD31g+9PdcV+CaBblEzBgeM0a9OcqqDVsoIqwWPC5C4sYmTOfqORHV0Hr6XS5cWXGCy5gtKjgHaWd/KezPS019XicjkGZSBFEjHq3PoymGIh3AjlMX9JB+MgfulOnj+XKaCJ+oACsuwVAZk7aFNYFYZZsL9IpvBLera1j6c/nGitq/QXXfRwmkj2QngiuxiC83vCrcId1Q1lXX4QttkbV/OJBddW8eQBfx0mxpGHa/+XM55barHBl440ZzUf7JOSsQ3ytEtGdZFgQoSVjIsfjhTArA+YOGT0ef7epioGFJelcNYlPU7U8ppUdNV1dQ5ORwevIqvTz69q/mqt0Ezjto1jtRLQiSI3fyGAanXuZ3KSkcMiTewnB6cnN5392fHOE5VbBM6iqFW2K4b0QU3qO2acFJJhAU3aNKp5PFQmzigutngXpeX9lardfy9OeOOnFhT4USdy4URrKWa/dQg04esj9Iy9kQSJ+TfbldNXtzuAmOiwW4w9ewpnveEmXdz3thLBL2j6jFk+tWvagWt64LM1SK+xVvwIxqjXr9OLmuP+My1UliWyse7YYPw3wb3Yx/TAQV/76JLEthk1DkCoxDjJBDzDQ4TXy2BBdzQcJJ6rSsVK3Xk92sDCuDyr3UHk/Ettxe4NI9LFR/Z20meD0uAKVnA5EAXD+UulKwwU61j5hG/++lRkrDqPUg4Qbe3AYrTSk0HIVNmZiavdH09mn1X3XnblfCPwbnnWv1GPhyO+jBhkxGM4p2HHqBm
- UJNB5xkX
- LY9xfZ5dT4GqhIM5VHEIZHbRyUvIll66bs7tDSWsxAhsLzTa/XVV5OXr2IcdTRYbe8uNTEfOg+dP4jQnOah4qduTy5YEeDpMIYOAjVf9xMMzWUADXW2LYHODlHAkOGYqMY0i4t69H6Gl+zCpYa/0uYqwWHNriGKUBnWD5YZq599AGVyBuQMHuna7F6bdr8byJPNPm2dqeyjHF9a/5gYtuDsRq+Z7Hrjo73PZUcJ6r2HYy41ShZrNukyunpIt663aTCumoVFqSaU1ZzapkWM8ZcCzOuUltYpdMPFPzqoNzR22MQ6QpnewyV+ozuR9lbZ6tvUI9KBTNvtjT19/PnFJ7Y6z5rgGpHKD71IdVTUZY3IYrdpIfYwr+K/zyL7DiPS8anEhgH4hruPJn6bM=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 2C5FF1C000B
+X-Stat-Signature: za3k8es5etiouchcq8zscyo5dxyw6h39
+X-HE-Tag: 1758705802-307510
+X-HE-Meta: U2FsdGVkX1/mbz3FKFKqhae3Ytn5hfu4OuCFEvMGa4AN0rTFFzYSf+6RD7JlIYAZyrUUif1ChIH63P5ZPdWRaSrrMklEqH7vWumd8zGjOxQHmRGLN0mdw913A7xWjl8uDQN83pVE/wMGZ0L/gN0vv67KeXT2dazC5WTTml3xWLHNKQUyRTgi451dW1BwW/tVNyAuH6Xu4zanwPvi9XzvYoWMKRP1NbCBckiOOTT2SCXIHe3hJnu3WDlKyyWVKMxPTm1BV+40s8E+a2R/FFaiZ+WivToNG1kYgyhpuRBUDBVttyJarKVWXsN9NS1KIZgIeRf0xHpWF2VlT9ZGa+1Jz1rcEHhXeyclM5+EMF+kpickR184iAYg2tt0xX6QgZPdF1sR7NRauz/4OvUzA4WF5eBwi9PI83ypUQdW3d3k1TFbcgM1HJ6Z0yZk2dlq4Lmc35zQq5FcLlgDYr6YO61lmBCcYaj44fro731xEENONcSaCtBQ9atJlhosF33fyBZqdZa6kOWjIrMAo7UnRX9obgDKg5m9FuD5nqpNP3C3Le8daTocXFFEaQCzGX8YLGftUDd56b8ftfHzgU9YL4/wwE36K4O7/BLa5Tf+cJ7XQ8tyJTBOTLYyJWw8mQvTvH6un+3sZnkxprLEb+otvowDD3sQ64zw76wCEkh+tS12it+kXbqF7ApxgA2X4pmsYlyVHkWuGA3ICAlfWSxyxfjRnqkNVqyTleCxVKutO9eFNc3T45CAWoRddW6CZwJJN6bMw06Stc7uBEenU1cXNBNX4ip38is18WM0SpifErPpEmTg6nnZj0a7QZt74PWwOmSimCJ48hvd8iEDh3deFFQOFWx+U05WoR1cXysM5ZKNzUo0UOm39aLFM8W8U7RBOOZWChkmPOfOt5lGBc9KX+GTvIT2b/B9yKWMmzlrGzPq1s7E1FXwMbO0qJ0TmQKc4zd49CQ9L6ZCV16SbHDkceT
+ qCZJlyWc
+ jZk8hHyiknRRnvZHqa3tjU7ssJllZfLFVDQLZrwxu5EhElQ6+Tnlverg0pznkEKtUXN+0QSzoDK/2tkudKhhSW9h0X9TavnacxM/5BLtxqlp18k9UqS7ASm9Je3B6qWwl5A5eTfHDxfBwC/ClZrQuDDMZFmR6FFUfCl8DLvNNUhiIzIVOW/DLnFrq9TsIN/aDfcVE1TGnU4ySE1riYZM+hThW1zfWFTgQ653XcGDpK8PEiWNQUR9l81Rh38nJi5JSrufU/64ablpxFv9xpwFnmOOVzg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,383 +119,373 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, on system with multiple swap devices, swap allocation will
-select one swap device according to priority. The swap device with the
-highest priority will be chosen to allocate firstly.
 
-People can specify a priority from 0 to 32767 when swapon a swap device,
-or the system will set it from -2 then downwards by default. Meanwhile,
-on NUMA system, the swap device with node_id will be considered first
-on that NUMA node of the node_id.
 
-In the current code, an array of plist, swap_avail_heads[nid], is used
-to organize swap devices on each NUMA node. For each NUMA node, there
-is a plist organizing all swap devices. The 'prio' value in the plist
-is the negated value of the device's priority due to plist being sorted
-from low to high. The swap device owning one node_id will be promoted to
-the front position on that NUMA node, then other swap devices are put in
-order of their default priority.
+On 9/23/25 23:49, Benno Lossin wrote:
+> On Tue Sep 23, 2025 at 12:27 PM CEST, Vitaly Wool wrote:
+>> diff --git a/rust/kernel/zpool.rs b/rust/kernel/zpool.rs
+>> new file mode 100644
+>> index 000000000000..53a0dc0607e6
+>> --- /dev/null
+>> +++ b/rust/kernel/zpool.rs
+>> @@ -0,0 +1,366 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +
+>> +//! Implementation of Rust interface towards zpool API.
+>> +
+>> +use crate::{error::Result, kernel::alloc::Flags, str::CString, types::ForeignOwnable};
+>> +use core::ptr::NonNull;
+>> +use kernel::alloc::NumaNode;
+>> +
+>> +/// The Rust representation of zpool handle.
+> 
+> Would be great to explain what this means, what's the handle used for?
 
-E.g I got a system with 8 NUMA nodes, and I setup 4 zram partition as
-swap devices.
+Sorry, do you mean explaining it here or in the code?
 
-Current behaviour:
-their priorities will be(note that -1 is skipped):
-NAME       TYPE      SIZE USED PRIO
-/dev/zram0 partition  16G   0B   -2
-/dev/zram1 partition  16G   0B   -3
-/dev/zram2 partition  16G   0B   -4
-/dev/zram3 partition  16G   0B   -5
+>> +pub struct ZpoolHandle(usize);
+>> +
+>> +impl ZpoolHandle {
+>> +    /// Create `ZpoolHandle` from the raw representation.
+>> +    pub fn from_raw(h: usize) -> Self {
+>> +        Self(h)
+>> +    }
+>> +
+>> +    /// Get the raw representation of the handle.
+>> +    pub fn as_raw(self) -> usize {
+>> +        self.0
+>> +    }
+> 
+> Hmm this seems a bit weird, because now users of Zpools can manufacture
+> their own handles? Not sure as to how we could still allow Zpool
+> implementers to create these while preventing other users from doing
+> creating them though...
 
-And their positions in the 8 swap_avail_lists[nid] will be:
-swap_avail_lists[0]: /* node 0's available swap device list */
-zram0   -> zram1   -> zram2   -> zram3
-prio:1     prio:3     prio:4     prio:5
-swap_avali_lists[1]: /* node 1's available swap device list */
-zram1   -> zram0   -> zram2   -> zram3
-prio:1     prio:2     prio:4     prio:5
-swap_avail_lists[2]: /* node 2's available swap device list */
-zram2   -> zram0   -> zram1   -> zram3
-prio:1     prio:2     prio:3     prio:5
-swap_avail_lists[3]: /* node 3's available swap device list */
-zram3   -> zram0   -> zram1   -> zram2
-prio:1     prio:2     prio:3     prio:4
-swap_avail_lists[4-7]: /* node 4,5,6,7's available swap device list */
-zram0   -> zram1   -> zram2   -> zram3
-prio:2     prio:3     prio:4     prio:5
+This is a good question indeed. The thing is, an allocation backend 
+(these implementing zpool api) is to provide an opaque handle which is 
+usize, and since it has the best knowledge how to compose it, we need to 
+let it do that. OTOH I am not too happy with this straightforward 
+approach (from_raw()/as_raw()) either.
 
-The adjustment for swap device with node_id intended to decrease the
-pressure of lock contention for one swap device by taking different
-swap device on different node. However, the adjustment is very
-coarse-grained. On the node, the swap device sharing the node's id will
-always be selected firstly by node's CPUs until exhausted, then next one.
-And on other nodes where no swap device shares its node id, swap device
-with priority '-2' will be selected firstly until exhausted, then next
-with priority '-3'.
+Would making ZpoolHandle opaque here and defining a trait that a backend 
+must implement for ZpoolHandle work better? The example backend would 
+then do something like
 
-This is the swapon output during the process high pressure vm-scability
-test is being taken. It's clearly shown zram0 is heavily exploited until
-exhausted.
-===================================
-[root@hp-dl385g10-03 ~]# swapon
-NAME       TYPE      SIZE  USED PRIO
-/dev/zram0 partition  16G 15.7G   -2
-/dev/zram1 partition  16G  3.4G   -3
-/dev/zram2 partition  16G  3.4G   -4
-/dev/zram3 partition  16G  2.6G   -5
+struct MyZpoolHandle {
+     ptr: *mut u8,
+     pow: usize,
+}
+type ZpoolHandle = MyZpoolHandle;
 
-This is unreasonable because swap devices are assumed to have similar
-accessing speed if no priority is specified when swapon. It's unfair and
-doesn't make sense just because one swap device is swapped on firstly,
-its priority will be higher than the one swapped on later.
+trait AsRawHandle {
+     fn as_raw_handle(&self) -> usize;
+}
 
-So here change is made to select the swap device round robin if default
-priority. In code, the plist array swap_avail_heads[nid] is replaced
-with a plist swap_avail_head. Any device w/o specified priority will get
-the same default priority '-1'. Surely, swap device with specified priority
-are always put foremost, this is not impacted. If you care about their
-different accessing speed, then use 'swapon -p xx' to deploy priority for
-your swap devices.
+impl AsRawHandle for ZpoolHandle {
+     fn as_raw_handle(&self) -> usize {
+         (self.ptr as usize) | self.pow
+     }
+}
 
-New behaviour:
+Would that make sense?
 
-swap_avail_list: /* one global available swap device list */
-zram0   -> zram1   -> zram2   -> zram3
-prio:1     prio:1     prio:1     prio:1
+>> +
+>> +/// Zpool API.
+>> +///
+>> +/// The [`ZpoolDriver`] trait serves as an interface for Zpool drivers implemented in Rust.
+>> +/// Such drivers implement memory storage pools in accordance with the zpool API.
+>> +///
+>> +/// # Example
+>> +///
+>> +/// A zpool driver implementation which uses KVec of 2**n sizes, n = 6, 7, ..., PAGE_SHIFT.
+>> +/// Every zpool object is packed into a KVec that is sufficiently large, and n (the
+>> +/// denominator) is saved in the least significant bits of the handle, which is guaranteed
+>> +/// to be at least 2**6 aligned by kmalloc.
+>> +///
+>> +/// ```
+>> +/// use core::ptr::{NonNull, copy_nonoverlapping};
+>> +/// use core::sync::atomic::{AtomicU64, Ordering};
+>> +/// use kernel::alloc::{Flags, flags, KBox, KVec, NumaNode};
+>> +/// use kernel::page::PAGE_SHIFT;
+>> +/// use kernel::prelude::EINVAL;
+>> +/// use kernel::str::CString;
+>> +/// use kernel::zpool::*;
+>> +///
+>> +/// struct MyZpool {
+>> +///     name: CString,
+>> +///     bytes_used: AtomicU64,
+>> +/// }
+>> +///
+>> +/// struct MyZpoolDriver;
+>> +///
+>> +/// impl ZpoolDriver for MyZpoolDriver {
+>> +///     type Pool = KBox<MyZpool>;
+>> +///
+>> +///     fn create(name: CString, gfp: Flags) -> Result<KBox<MyZpool>> {
+>> +///         let my_pool = MyZpool { name, bytes_used: AtomicU64::new(0) };
+>> +///         let pool = KBox::new(my_pool, gfp)?;
+>> +///
+>> +///         pr_debug!("Pool {:?} created\n", pool.name);
+>> +///         Ok(pool)
+>> +///     }
+>> +///
+>> +///     fn malloc(pool: &MyZpool, size: usize, _gfp: Flags, _nid: NumaNode) -> Result<ZpoolHandle> {
+>> +///         let pow = size.next_power_of_two().trailing_zeros().max(6);
+>> +///         match pow {
+>> +///             0 => Err(EINVAL),
+>> +///             m if m > PAGE_SHIFT as u32 => Err(ENOSPC),
+>> +///             _ => {
+>> +///                 let vec = KVec::<u8>::with_capacity(1 << pow, GFP_KERNEL)?;
+>> +///                 let (ptr, _len, _cap) = vec.into_raw_parts();
+>> +///
+>> +///                 // We assume that kmalloc-64, kmalloc-128 etc. kmem caches will be used for
+>> +///                 // our allocations, so it's actually `1 << pow` bytes that we have consumed.
+>> +///                 pool.bytes_used.fetch_add(1 << pow, Ordering::Relaxed);
+>> +///
+>> +///                 // `kmalloc` guarantees that an allocation of size x*2^n is 2^n aligned.
+>> +///                 // Therefore the 6 lower bits are zeros and we can use these to store `pow`.
+>> +///                 Ok(ZpoolHandle::from_raw(ptr as usize | (pow as usize - 6)))
+>> +///             }
+>> +///         }
+>> +///     }
+>> +///
+>> +///     unsafe fn free(pool: &MyZpool, handle: ZpoolHandle) {
+>> +///         let h = handle.as_raw();
+>> +///         let n = (h & 0x3F) + 6;
+>> +///         let uptr = h & !0x3F;
+>> +///
+>> +///         // SAFETY:
+>> +///         // - we derive `uptr` from handle by zeroing 6 lower bits where we store the power
+>> +///         //   denominator for the vector capacity. As noted above, the result will be exactly the
+>> +///         //   pointer to the area allocated by `KVec`. Thus, uptr is a valid pointer pointing to
+>> +///         //   the vector allocated by `alloc` function above.
+>> +///         // - 1 << n == capacity and is coming from the first 6 bits of handle.
+>> +///         let vec = unsafe { KVec::<u8>::from_raw_parts(uptr as *mut u8, 0, 1 << n) };
+>> +///         drop(vec);
+>> +///         pool.bytes_used.fetch_sub(1 << n, Ordering::Relaxed);
+>> +///     }
+>> +///
+>> +///     unsafe fn read_begin(_pool: &MyZpool, handle: ZpoolHandle) -> NonNull<u8> {
+>> +///         let uptr = handle.as_raw() & !0x3F;
+>> +///         // SAFETY:
+>> +///         // - we derive `uptr` from handle by zeroing 6 lower bits where we store the power
+>> +///         //   denominator for the vector capacity. As noted above, the result will be exactly the
+>> +///         //   pointer to the area allocated by `KVec`. Thus, uptr is a valid pointer pointing to
+>> +///         //   the vector allocated by `alloc` function above.
+>> +///         unsafe { NonNull::new_unchecked(uptr as *mut u8) }
+>> +///     }
+>> +///
+>> +///     unsafe fn read_end(_pool: &MyZpool, _handle: ZpoolHandle, _handle_mem: NonNull<u8>) {}
+>> +///
+>> +///     unsafe fn write(_p: &MyZpool, handle: ZpoolHandle, h_mem: NonNull<u8>, mem_len: usize) {
+>> +///         let uptr = handle.as_raw() & !0x3F;
+>> +///         // SAFETY:
+>> +///         // - `h_mem` is a valid non-null pointer provided by zswap.
+>> +///         // - `uptr` is derived from handle by zeroing 6 lower bits where we store the power
+>> +///         //   denominator for the vector capacity. As noted above, the result will be exactly the
+>> +///         //   pointer to the area allocated by `KVec`. Thus, uptr is a valid pointer pointing to
+>> +///         //   the vector allocated by `alloc` function above.
+>> +///         unsafe {
+>> +///             copy_nonoverlapping(h_mem.as_ptr().cast(), uptr as *mut c_void, mem_len)
+>> +///         };
+>> +///     }
+>> +///
+>> +///     fn total_pages(pool: &MyZpool) -> u64 {
+>> +///         pool.bytes_used.load(Ordering::Relaxed) >> PAGE_SHIFT
+>> +///     }
+>> +/// }
+>> +///
+>> +/// // Uncomment this for compile time registration (disabled to avoid build error when KUNIT
+>> +/// // tests and zsmalloc are enabled):
+>> +/// // kernel::DECLARE_ZPOOL!(MyZpoolDriver);
+>> +/// ```
+>> +///
+>> +pub trait ZpoolDriver {
+>> +    /// Opaque Rust representation of `struct zpool`.
+>> +    type Pool: ForeignOwnable;
+> 
+> Also what happened to my comment on v4 of this patchset?
+> 
+> https://lore.kernel.org/all/DCLK1YG1L5TZ.1VMGX131LII9V@kernel.org:
+> 
+>>> It can indeed but then the ZpoolDriver trait will have to be extended
+>>> with functions like into_raw() and from_raw(), because zpool expects
+>>> *mut c_void, so on the Adapter side it will look like
+>>>
+>>>       extern "C" fn create_(name: *const c_uchar, gfp: u32) -> *mut c_void {
+>>>           // SAFETY: the memory pointed to by name is guaranteed by zpool
+>>> to be a valid string
+>>>           let pool = unsafe { T::create(CStr::from_char_ptr(name),
+>>> Flags::from_raw(gfp)) };
+>>>           match pool {
+>>>               Err(_) => null_mut(),
+>>>               Ok(p) => T::into_raw(p).cast(),
+>>>           }
+>>>       }
+>>>
+>>> The question is, why does this make it better?
+>>
+>> No, thanks for sharing that function. Then the question becomes, do you
+>> really need `ForeignOwnable`? Or is `KBox` enough? Do you really want
+>> people to use `Arc<MyZPool>`? Because `BorrowedMut` of `Arc` is the same
+>> as it's `Borrowed` variant (it's read-only after all).
+>>
+>> If you can get away with just `Box` (you might want people to choose
+>> their allocator, which is fine IMO), then I'd do so.
+> 
+> I still think that if you can use `Box<Self>` the trait is going to be
+> much easier to understand.
 
-This is the swapon output during the process high pressure vm-scability
-being taken, all is selected round robin:
-=======================================
-[root@hp-dl385g10-03 linux]# swapon
-NAME       TYPE      SIZE  USED PRIO
-/dev/zram0 partition  16G 12.6G   -1
-/dev/zram1 partition  16G 12.6G   -1
-/dev/zram2 partition  16G 12.6G   -1
-/dev/zram3 partition  16G 12.6G   -1
+Okay, thanks, I'll work on that.
 
-With the change, we can see about 18% efficiency promotion as below:
+>> +
+>> +    /// Create a pool.
+>> +    fn create(name: CString, gfp: Flags) -> Result<Self::Pool>;
+>> +
+>> +    /// Allocate an object of `size` bytes from `pool`, with the allocation flags `gfp` and
+>> +    /// preferred NUMA node `nid`. If the allocation is successful, an opaque handle is returned.
+>> +    fn malloc(
+>> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
+>> +        size: usize,
+>> +        gfp: Flags,
+>> +        nid: NumaNode,
+>> +    ) -> Result<ZpoolHandle>;
+>> +
+>> +    /// Free an object previously allocated from the `pool`, represented by `handle`.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// - `handle` must be a valid handle previously returned by `malloc`.
+>> +    /// - `handle` must not be used any more after the call to `free`.
+>> +    unsafe fn free(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>, handle: ZpoolHandle);
+>> +
+>> +    /// Make all the necessary preparations for the caller to be able to read from the object
+>> +    /// represented by `handle` and return a valid pointer to that object's memory to be read.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// - `handle` must be a valid handle previously returned by `malloc`.
+>> +    /// - `read_end` with the same `handle` must be called for each `read_begin`.
+>> +    unsafe fn read_begin(
+>> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
+>> +        handle: ZpoolHandle,
+>> +    ) -> NonNull<u8>;
+>> +
+>> +    /// Finish reading from a previously allocated `handle`. `handle_mem` must be the pointer
+>> +    /// previously returned by `read_begin`.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// - `handle` must be a valid handle previously returned by `malloc`.
+>> +    /// - `handle_mem` must be the pointer previously returned by `read_begin`.
+>> +    unsafe fn read_end(
+>> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
+>> +        handle: ZpoolHandle,
+>> +        handle_mem: NonNull<u8>,
+>> +    );
+>> +
+>> +    /// Write to the object represented by a previously allocated `handle`. `handle_mem` points
+>> +    /// to the memory to copy data from, and `mem_len` defines the length of the data block to
+>> +    /// be copied.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// - `handle` must be a valid handle previously returned by `malloc`.
+>> +    /// - `handle_mem` must be a valid pointer into the allocated memory aread represented by
+>> +    ///   `handle`.
+>> +    /// - `handle_mem + mem_len - 1` must not point outside the allocated memory area.
+>> +    unsafe fn write(
+>> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
+>> +        handle: ZpoolHandle,
+>> +        handle_mem: NonNull<u8>,
+>> +        mem_len: usize,
+>> +    );
+>> +
+>> +    /// Get the number of pages used by the `pool`.
+>> +    fn total_pages(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>) -> u64;
+>> +}
+>> +
+>> +/// Provide a zpool allocator to zswap
+>> +#[macro_export]
+>> +macro_rules! DECLARE_ZPOOL {
+> 
+> Why all caps and not snake case?
 
-vm-scability test:
-==================
-Test with:
-usemem --init-time -O -y -x -n 31 2G (4G memcg, zram as swap)
-                           Before:          After:
-System time:               637.92 s         526.74 s
-Sum Throughput:            3546.56 MB/s     4207.56 MB/s
-Single process Throughput: 114.40 MB/s      135.72 MB/s
-free latency:              10138455.99 us   6810119.01 us
+C style, sorry :) Will fix.
 
-Suggested-by: Chris Li <chrisl@kernel.org>
-Signed-off-by: Baoquan He <bhe@redhat.com>
----
- include/linux/swap.h | 11 +-----
- mm/swapfile.c        | 94 +++++++-------------------------------------
- 2 files changed, 16 insertions(+), 89 deletions(-)
+>> +    ($t: ident) => {
+>> +        use core::ptr::null_mut;
+>> +        use kernel::error::from_result;
+>> +        use kernel::types::ForeignOwnable;
+> 
+> Macros shouldn't have `use` statements in a non-local area (so inside
+> `const` bodies and modules is fine).
+> 
+>> +
+>> +        const __LOG_PREFIX: &[u8] = b"zpool_rust\0";
+> 
+> This seems wrong. Why do you need to generate this? Shouldn't the user
+> still invoke `module!` or a similar macro?
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 3473e4247ca3..f72c8e5e0635 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -337,16 +337,7 @@ struct swap_info_struct {
- 	struct work_struct discard_work; /* discard worker */
- 	struct work_struct reclaim_work; /* reclaim worker */
- 	struct list_head discard_clusters; /* discard clusters list */
--	struct plist_node avail_lists[]; /*
--					   * entries in swap_avail_heads, one
--					   * entry per node.
--					   * Must be last as the number of the
--					   * array is nr_node_ids, which is not
--					   * a fixed value so have to allocate
--					   * dynamically.
--					   * And it has to be an array so that
--					   * plist_for_each_* can work.
--					   */
-+	struct plist_node avail_list;   /* entry in swap_avail_head */
- };
- 
- static inline swp_entry_t page_swap_entry(struct page *page)
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index b4f3cc712580..d8a54e5af16d 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -73,7 +73,7 @@ atomic_long_t nr_swap_pages;
- EXPORT_SYMBOL_GPL(nr_swap_pages);
- /* protected with swap_lock. reading in vm_swap_full() doesn't need lock */
- long total_swap_pages;
--static int least_priority = -1;
-+#define DEF_SWAP_PRIO  -1
- unsigned long swapfile_maximum_size;
- #ifdef CONFIG_MIGRATION
- bool swap_migration_ad_supported;
-@@ -102,7 +102,7 @@ static PLIST_HEAD(swap_active_head);
-  * is held and the locking order requires swap_lock to be taken
-  * before any swap_info_struct->lock.
-  */
--static struct plist_head *swap_avail_heads;
-+static PLIST_HEAD(swap_avail_head);
- static DEFINE_SPINLOCK(swap_avail_lock);
- 
- static struct swap_info_struct *swap_info[MAX_SWAPFILES];
-@@ -995,7 +995,6 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si, int o
- /* SWAP_USAGE_OFFLIST_BIT can only be set by this helper. */
- static void del_from_avail_list(struct swap_info_struct *si, bool swapoff)
- {
--	int nid;
- 	unsigned long pages;
- 
- 	spin_lock(&swap_avail_lock);
-@@ -1007,7 +1006,7 @@ static void del_from_avail_list(struct swap_info_struct *si, bool swapoff)
- 		 * swap_avail_lock, to ensure the result can be seen by
- 		 * add_to_avail_list.
- 		 */
--		lockdep_assert_held(&si->lock);
-+		//lockdep_assert_held(&si->lock);
- 		si->flags &= ~SWP_WRITEOK;
- 		atomic_long_or(SWAP_USAGE_OFFLIST_BIT, &si->inuse_pages);
- 	} else {
-@@ -1024,8 +1023,7 @@ static void del_from_avail_list(struct swap_info_struct *si, bool swapoff)
- 			goto skip;
- 	}
- 
--	for_each_node(nid)
--		plist_del(&si->avail_lists[nid], &swap_avail_heads[nid]);
-+	plist_del(&si->avail_list, &swap_avail_head);
- 
- skip:
- 	spin_unlock(&swap_avail_lock);
-@@ -1034,7 +1032,6 @@ static void del_from_avail_list(struct swap_info_struct *si, bool swapoff)
- /* SWAP_USAGE_OFFLIST_BIT can only be cleared by this helper. */
- static void add_to_avail_list(struct swap_info_struct *si, bool swapon)
- {
--	int nid;
- 	long val;
- 	unsigned long pages;
- 
-@@ -1067,8 +1064,7 @@ static void add_to_avail_list(struct swap_info_struct *si, bool swapon)
- 			goto skip;
- 	}
- 
--	for_each_node(nid)
--		plist_add(&si->avail_lists[nid], &swap_avail_heads[nid]);
-+	plist_add(&si->avail_list, &swap_avail_head);
- 
- skip:
- 	spin_unlock(&swap_avail_lock);
-@@ -1211,16 +1207,14 @@ static bool swap_alloc_fast(swp_entry_t *entry,
- static bool swap_alloc_slow(swp_entry_t *entry,
- 			    int order)
- {
--	int node;
- 	unsigned long offset;
- 	struct swap_info_struct *si, *next;
- 
--	node = numa_node_id();
- 	spin_lock(&swap_avail_lock);
- start_over:
--	plist_for_each_entry_safe(si, next, &swap_avail_heads[node], avail_lists[node]) {
-+	plist_for_each_entry_safe(si, next, &swap_avail_head, avail_list) {
- 		/* Rotate the device and switch to a new cluster */
--		plist_requeue(&si->avail_lists[node], &swap_avail_heads[node]);
-+		plist_requeue(&si->avail_list, &swap_avail_head);
- 		spin_unlock(&swap_avail_lock);
- 		if (get_swap_device_info(si)) {
- 			offset = cluster_alloc_swap_entry(si, order, SWAP_HAS_CACHE);
-@@ -1245,7 +1239,7 @@ static bool swap_alloc_slow(swp_entry_t *entry,
- 		 * still in the swap_avail_head list then try it, otherwise
- 		 * start over if we have not gotten any slots.
- 		 */
--		if (plist_node_empty(&next->avail_lists[node]))
-+		if (plist_node_empty(&si->avail_list))
- 			goto start_over;
- 	}
- 	spin_unlock(&swap_avail_lock);
-@@ -2535,44 +2529,18 @@ static int setup_swap_extents(struct swap_info_struct *sis, sector_t *span)
- 	return generic_swapfile_activate(sis, swap_file, span);
- }
- 
--static int swap_node(struct swap_info_struct *si)
--{
--	struct block_device *bdev;
--
--	if (si->bdev)
--		bdev = si->bdev;
--	else
--		bdev = si->swap_file->f_inode->i_sb->s_bdev;
--
--	return bdev ? bdev->bd_disk->node_id : NUMA_NO_NODE;
--}
--
- static void setup_swap_info(struct swap_info_struct *si, int prio,
- 			    unsigned char *swap_map,
- 			    struct swap_cluster_info *cluster_info,
- 			    unsigned long *zeromap)
- {
--	int i;
--
--	if (prio >= 0)
--		si->prio = prio;
--	else
--		si->prio = --least_priority;
-+	si->prio = prio;
- 	/*
- 	 * the plist prio is negated because plist ordering is
- 	 * low-to-high, while swap ordering is high-to-low
- 	 */
- 	si->list.prio = -si->prio;
--	for_each_node(i) {
--		if (si->prio >= 0)
--			si->avail_lists[i].prio = -si->prio;
--		else {
--			if (swap_node(si) == i)
--				si->avail_lists[i].prio = 1;
--			else
--				si->avail_lists[i].prio = -si->prio;
--		}
--	}
-+	si->avail_list.prio = -si->prio;
- 	si->swap_map = swap_map;
- 	si->cluster_info = cluster_info;
- 	si->zeromap = zeromap;
-@@ -2721,20 +2689,6 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
- 	}
- 	spin_lock(&p->lock);
- 	del_from_avail_list(p, true);
--	if (p->prio < 0) {
--		struct swap_info_struct *si = p;
--		int nid;
--
--		plist_for_each_entry_continue(si, &swap_active_head, list) {
--			si->prio++;
--			si->list.prio--;
--			for_each_node(nid) {
--				if (si->avail_lists[nid].prio != 1)
--					si->avail_lists[nid].prio--;
--			}
--		}
--		least_priority++;
--	}
- 	plist_del(&p->list, &swap_active_head);
- 	atomic_long_sub(p->pages, &nr_swap_pages);
- 	total_swap_pages -= p->pages;
-@@ -2972,9 +2926,8 @@ static struct swap_info_struct *alloc_swap_info(void)
- 	struct swap_info_struct *p;
- 	struct swap_info_struct *defer = NULL;
- 	unsigned int type;
--	int i;
- 
--	p = kvzalloc(struct_size(p, avail_lists, nr_node_ids), GFP_KERNEL);
-+	p = kvzalloc(sizeof(struct swap_info_struct), GFP_KERNEL);
- 	if (!p)
- 		return ERR_PTR(-ENOMEM);
- 
-@@ -3013,8 +2966,7 @@ static struct swap_info_struct *alloc_swap_info(void)
- 	}
- 	p->swap_extent_root = RB_ROOT;
- 	plist_node_init(&p->list, 0);
--	for_each_node(i)
--		plist_node_init(&p->avail_lists[i], 0);
-+	plist_node_init(&p->avail_list, 0);
- 	p->flags = SWP_USED;
- 	spin_unlock(&swap_lock);
- 	if (defer) {
-@@ -3282,9 +3234,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EPERM;
- 
--	if (!swap_avail_heads)
--		return -ENOMEM;
--
- 	si = alloc_swap_info();
- 	if (IS_ERR(si))
- 		return PTR_ERR(si);
-@@ -3465,7 +3414,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
- 	}
- 
- 	mutex_lock(&swapon_mutex);
--	prio = -1;
-+	prio = DEF_SWAP_PRIO;
- 	if (swap_flags & SWAP_FLAG_PREFER)
- 		prio = swap_flags & SWAP_FLAG_PRIO_MASK;
- 	enable_swap_info(si, prio, swap_map, cluster_info, zeromap);
-@@ -3904,7 +3853,6 @@ static bool __has_usable_swap(void)
- void __folio_throttle_swaprate(struct folio *folio, gfp_t gfp)
- {
- 	struct swap_info_struct *si, *next;
--	int nid = folio_nid(folio);
- 
- 	if (!(gfp & __GFP_IO))
- 		return;
-@@ -3923,8 +3871,8 @@ void __folio_throttle_swaprate(struct folio *folio, gfp_t gfp)
- 		return;
- 
- 	spin_lock(&swap_avail_lock);
--	plist_for_each_entry_safe(si, next, &swap_avail_heads[nid],
--				  avail_lists[nid]) {
-+	plist_for_each_entry_safe(si, next, &swap_avail_head,
-+				  avail_list) {
- 		if (si->bdev) {
- 			blkcg_schedule_throttle(si->bdev->bd_disk, true);
- 			break;
-@@ -3936,18 +3884,6 @@ void __folio_throttle_swaprate(struct folio *folio, gfp_t gfp)
- 
- static int __init swapfile_init(void)
- {
--	int nid;
--
--	swap_avail_heads = kmalloc_array(nr_node_ids, sizeof(struct plist_head),
--					 GFP_KERNEL);
--	if (!swap_avail_heads) {
--		pr_emerg("Not enough memory for swap heads, swap is disabled\n");
--		return -ENOMEM;
--	}
--
--	for_each_node(nid)
--		plist_head_init(&swap_avail_heads[nid]);
--
- 	swapfile_maximum_size = arch_max_swapfile_size();
- 
- #ifdef CONFIG_MIGRATION
--- 
-2.41.0
+Unfortunately not. As we have discussed at Kangrejos, the zpool 
+implementation as a driver is on its way out [1] and there has to be 
+more voices against that for it to be stopped. If we now are dealing 
+with the build time API (i. e. a wrapper over zsmalloc functions) then 
+we have to define a build time macro, be that DECLARE_ZPOOL or 
+DeclareZpool :)
 
+>> +
+>> +        fn handle_from_result<T, F>(f: F) -> T
+>> +        where
+>> +            T: From<usize>,
+>> +            F: FnOnce() -> Result<T>,
+>> +        {
+>> +            match f() {
+>> +                Ok(v) => v,
+>> +                Err(e) => T::from(0),
+>> +            }
+>> +        }
+> 
+> Why is this function inside the macro?
+
+Doesn't seem to be needed elsewhere. I could put it in a separate patch 
+for error.rs as a complement to from_result() but I thought no one was 
+interested in this case.
+
+>> +
+>> +        /// Create a pool.
+>> +        #[no_mangle]
+>> +        pub unsafe extern "C" fn zpool_create_pool(name: *const c_uchar) -> *mut c_void {
+> 
+> Missing safety docs.
+> 
+>> +            match (|| -> Result<<$t as ZpoolDriver>::Pool> {
+>> +                // SAFETY: the memory pointed to by name is guaranteed by `zpool` to be a valid
+>> +                // string.
+>> +                let name_r = unsafe { CStr::from_char_ptr(name).to_cstring() }?;
+>> +                $t::create(name_r, flags::GFP_KERNEL)
+>> +            })() {
+>> +                Err(_) => null_mut(),
+>> +                Ok(pool) => <$t as ZpoolDriver>::Pool::into_foreign(pool),
+>> +            }
+>> +        }
+>> +
+>> +        /// Destroy the pool.
+>> +        #[no_mangle]
+>> +        pub unsafe extern "C" fn zpool_destroy_pool(pool: *mut c_void) {
+>> +            // SAFETY: The pointer originates from an `into_foreign` call.
+>> +            drop(unsafe { <$t as ZpoolDriver>::Pool::from_foreign(pool) })
+>> +        }
+> 
+> Have you tried to use the same pattern that we use for the many
+> different `Registration` types in the kernel? For example take a look at
+> `Adapter<T>` from `rust/kernel/net/phy.rs`. That way you don't need a
+> macro and can make the registration a function that takes a generic `T:
+> ZpoolDriver`.
+
+That's what was in the previous version. Unfortunately it won't work any 
+more for the reason described above, see also [1].
+
+[1] 
+https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/commit/mm?h=mm-stable&id=2ccd9fecd9163f168761d4398564c81554f636ef
 
