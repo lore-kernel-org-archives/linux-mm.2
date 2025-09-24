@@ -4,86 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 673FECAC5A5
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 01:12:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 507BCCAC5A5
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 01:49:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A82618E000A; Tue, 23 Sep 2025 21:12:55 -0400 (EDT)
+	id 52F858E0002; Tue, 23 Sep 2025 21:49:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A315C8E0001; Tue, 23 Sep 2025 21:12:55 -0400 (EDT)
+	id 4DFE58E0001; Tue, 23 Sep 2025 21:49:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 946CA8E000A; Tue, 23 Sep 2025 21:12:55 -0400 (EDT)
+	id 41CA48E0002; Tue, 23 Sep 2025 21:49:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D7ED8E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 21:12:55 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4921059BEB
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 01:12:55 +0000 (UTC)
-X-FDA: 83922369510.06.6064D4F
-Received: from r3-11.sinamail.sina.com.cn (r3-11.sinamail.sina.com.cn [202.108.3.11])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6D7CD140002
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 01:12:52 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=sina.com header.s=201208 header.b=X8607Efd;
-	spf=pass (imf23.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.11 as permitted sender) smtp.mailfrom=hdanton@sina.com;
-	dmarc=pass (policy=none) header.from=sina.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F5C78E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 21:49:57 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AE27D14065E
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 01:49:56 +0000 (UTC)
+X-FDA: 83922462792.09.B02EC31
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	by imf01.hostedemail.com (Postfix) with ESMTP id AE9DB40003
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 01:49:53 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=F4xoxPze;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf01.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758678595; a=rsa-sha256;
+	cv=none;
+	b=j7dLDmBylpnyBnxC2qxmOp6L1q7vAGpiAhRVCc7lpPg8zNbtguDxosOt8s/kevaU6fh8/Z
+	RdL4M2U1VXWdoN2qpLse93f7XEqzHwVSvZwAL7IrtuUDMAek07UDDWFj8zCfKUFDNDO0pC
+	2LTRpf9BrSFzWUvxwfkVjYvy0n9jH6M=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=F4xoxPze;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf01.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758676373;
+	s=arc-20220608; t=1758678594;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8F3Vev1S7aV8UUtT9qzzcZZdbgYkh5ZuQnEAJO6fFqg=;
-	b=K237uSMi8KoRexJq9R/jffgLDoiC+sb3r3rvc6/cuKIZ4CyNmdl+5kiOp3MW8a7LgVcci4
-	JFDA3sDRDhJSQ7FnEeZMbpgisuq/w69dFjgDAYfU9QDvt4tT/z3NJSnH0GQ4itfObW41Va
-	k63zN1uR3C05tiO5MZEcIUwBXVAt5PY=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=sina.com header.s=201208 header.b=X8607Efd;
-	spf=pass (imf23.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.11 as permitted sender) smtp.mailfrom=hdanton@sina.com;
-	dmarc=pass (policy=none) header.from=sina.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758676373; a=rsa-sha256;
-	cv=none;
-	b=Yluvbze8TFQU7Hx9ahgWdmuoo3y4BlEEIXZOS5xDwGTa5KUWjnBfqIsRA/rtcd9Kqm2leJ
-	fG5eIssIgQq/xvcsx18hgayGt654vJfW6jwiNRAX6uFGr9pcFbM5wjQvYjroEygmN6LhWF
-	JNGX+Mg2Ih4iqmWEjrecKg6FUtoHN8g=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1758676372;
-	bh=8F3Vev1S7aV8UUtT9qzzcZZdbgYkh5ZuQnEAJO6fFqg=;
-	h=From:Subject:Date:Message-ID;
-	b=X8607Efdu+ixsllkUWKEqKwM2hhn8RROQJcGgrSr87BJNOq5gGfwbIUeW1HJp9Lqe
-	 H0OkuY+SVKzX36At801GGlwAMrsqaXmFrbFnPGS1/yQjfmydcyiWaZ1JEaqFqR2uKD
-	 cp/nrMCWCB6Xw+3XaYjz13HD9L5j+TZsWArLbKzg=
-X-SMAIL-HELO: localhost.localdomain
-Received: from unknown (HELO localhost.localdomain)([114.249.58.236])
-	by sina.com (10.54.253.34) with ESMTP
-	id 68D3458F000026EA; Wed, 24 Sep 2025 09:12:48 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-X-SMAIL-MID: 5722796292116
-X-SMAIL-UIID: 3BE03A43A15B4C7999275EDEE5C853FC-20250924-091248-1
-From: Hillf Danton <hdanton@sina.com>
-To: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	multikernel@lists.linux.dev
-Subject: Re: [RFC Patch 0/7] kernel: Introduce multikernel architecture support
-Date: Wed, 24 Sep 2025 09:12:35 +0800
-Message-ID: <20250924011237.7568-1-hdanton@sina.com>
-In-Reply-To: <CAM_iQpXMjFs4LmpRVNqxeBnFp4KxEfgi9cB_Jwuy7VgOSqTfsQ@mail.gmail.com>
-References: <20250918222607.186488-1-xiyou.wangcong@gmail.com> <20250921014721.7323-1-hdanton@sina.com>
+	bh=0NxHbnawDoiwdor0a0/TkIoFsILHYQtnh4tEXaeWR3w=;
+	b=G7sU5Zji8D8/TAl3qo2va6xndjgFIHx4+3z6ATxJs4WtOs4Js8j3OO09plavmolPS9KJ4G
+	NhcypP1QDc+gc0CHYjgDZcE0VrGDtZyfhflSOS5L7wBcYkLaLmrz7ED585rkXNYoW2+fEw
+	3dCLvh8ccqZAEwEVr0Pz8hpaFsZzZq4=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1758678590; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=0NxHbnawDoiwdor0a0/TkIoFsILHYQtnh4tEXaeWR3w=;
+	b=F4xoxPzegiASihfxGaqZBCRDa6m7zwGFzEiEdi38a1Mkljz3NyJu8eNo0j2lKjbgeF+cuS6/75RkkT8Dw7kisrlQtb1jbKNQFsixmd50t3YD2HAXoIB/cONoPB+wbsWpEs5BPXeRnMHC07QgK3xugPnOXBe0eFjXSwEqh2Q5FDY=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WohcHHC_1758678578 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 24 Sep 2025 09:49:48 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Shivank Garg <shivankg@amd.com>
+Cc: <akpm@linux-foundation.org>,  <david@redhat.com>,  <ziy@nvidia.com>,
+  <willy@infradead.org>,  <matthew.brost@intel.com>,
+  <joshua.hahnjy@gmail.com>,  <rakie.kim@sk.com>,  <byungchul@sk.com>,
+  <gourry@gourry.net>,  <apopple@nvidia.com>,
+  <lorenzo.stoakes@oracle.com>,  <Liam.Howlett@oracle.com>,
+  <vbabka@suse.cz>,  <rppt@kernel.org>,  <surenb@google.com>,
+  <mhocko@suse.com>,  <vkoul@kernel.org>,  <lucas.demarchi@intel.com>,
+  <rdunlap@infradead.org>,  <jgg@ziepe.ca>,  <kuba@kernel.org>,
+  <justonli@chromium.org>,  <ivecera@redhat.com>,  <dave.jiang@intel.com>,
+  <Jonathan.Cameron@huawei.com>,  <dan.j.williams@intel.com>,
+  <rientjes@google.com>,  <Raghavendra.KodsaraThimmappa@amd.com>,
+  <bharata@amd.com>,  <alirad.malek@zptcorp.com>,  <yiannis@zptcorp.com>,
+  <weixugc@google.com>,  <linux-kernel@vger.kernel.org>,
+  <linux-mm@kvack.org>
+Subject: Re: [RFC V3 0/9] Accelerate page migration with batch copying and
+ hardware offload
+In-Reply-To: <20250923174752.35701-1-shivankg@amd.com> (Shivank Garg's message
+	of "Tue, 23 Sep 2025 17:47:35 +0000")
+References: <20250923174752.35701-1-shivankg@amd.com>
+Date: Wed, 24 Sep 2025 09:49:37 +0800
+Message-ID: <87plbghb66.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=ascii
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AE9DB40003
+X-Stat-Signature: st4inezo4xwocmgouqaxuwokrko13ywg
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6D7CD140002
-X-Stat-Signature: m4murnnupuy6swawfrzwbyy6cihdjizs
-X-HE-Tag: 1758676372-175347
-X-HE-Meta: U2FsdGVkX1/HYSG0gWe7RJU9z8NemdMxRBf05C7lS+aYiozlNfcvGaV4qraeuB4XIFDJlef1paqMspbBD6pFO8pGvnKoS+EhLfNnmOjr/pSm/15NIjIYCPXJ1RJ8t9MjtQFFLyMzz947VBi6vMrzNHqYgID68HmyTtATYX2amVBviTO0wKO87YL5kYHleYI5bDBml7BLtTeIgShMGIA0oqwEay0X8Jjo18+Ol/evWwEdvPQF5J+xIJawT7M8qE3cHwzHx96dgDLai/t4+fRE/RHNqDgl+ILcDz2PSpmDKrWvDFP3Eph4Fr+hM1t1YYAdMLx2lkKP6Ee7cZRt5CfSvkE3ayjQgKBC0q4NeJQps06G8nIisQk6EnLgRug4ZJuQrRHRCobJBHKJKvzh8ZYeNpISPvP538z+fkOqfOV0G9jzLU2qxg5BZaLb7Z5fs+lNQyKGxmPDX1guD45+KaKMzMGt/I/c3FnmwpjfsUbszceS3lVr/E5teOFbrpG+crsSIYo0uR0DVz/O2I4XzC5RmC/rRqSBKzzkC+qUMiT71fx0D72ILTW0axqY6fehwK+CMXaPcACQcXk9f/2Hcu4MGbv1DSjlhS6Lq3fnUtsWjwTNUG71KzIJZs8Rsx6Zxn8sipI1Xey2Ux7NzbAhuXagGhlL4h+cCenCxwKbc2mJqm813k0lQ2kx1+Hjtx4vaYzgi81/ukqTQULP0mDnGM7y3Ziyj1FM3ku54S/wWxzk+bm/v3wZvno84rSjVne05IySNwN+bXzvoeSN9MDZcRJWnjVMPUNHaZ0Sz7G9Y6Jm6Nc5CBwzMevhbmQ1SykTPchu9HYvKejXtHw7JnS9XGvQMzjXYE3V0/ISP44DiTOuCyMGEvHBeAYqqyCqvxciXRm6g3roEMgWx40YHgtYa9FgBQ128HnyY7WehUkGYoa+wHioSvX8w9g0wXVZvDjSyib5cPQc33TrWuKG8+zICzI
- gHaTXOgu
- foHnUBpzv5iUTJCTyX+1GWPykdsiKW4NXdm3Wvs+YCc0kwI77gskjb2xYd6ezv1UGDf3oC8Q+Z1GkXYyiW7r1YdA0zIZ+jol+ghZJq870a3pJILAObOGQinQcs4tX5Gj8+fspNvlBLwh3oX3RSK6ZUuu84F9LdP96Nzs19l5Ms3DvrqSORW+fvilu325sKdXrvdOtCVEqHi1HclQtVfYAoL4IydeDFqBaM1r1tASh/fF34jP+MyN2Ua3Dxm9QMJB9ekhOE4zvJA4hGX98e7tMq2jm6CFBcNJd7MhLS23Q1Wjw27BpIyR5wJoXV5SXZGr8eF34dVWJ2v5ep8AR8kLWEB1IJoisu2EcvygrN4EU9TBJfxCFgGpePmsMggoxQqPaUolR2GnpNfbhD4GIFjoy8TkeZCKiFK0aMuSuJPaOTSADm2pLDW1EqbPykw/gM74jiPxLLV7IzHrruJ4=
+X-HE-Tag: 1758678593-617378
+X-HE-Meta: U2FsdGVkX1+9f/O94BxwL5LMn7r0USsfDSUmGKZBBmT/XOLYyOV9WWw2Z4red8BHTEInDX8Fqosgp3fgp4O08sWU2he1h9dK3Ixg8Di4CgzuGLUXP2BAWrFC/u0du/gBbgBWZBHJFi17c7KKwKD+xk9baU3iqe4Y7+MwOtcATktFSdxU1DmG574x/QUpc5JhCVMO7hxAsLT1AkVNjL7Efv5nLY5p42bfaYzNYmtYTVfVOSMkpGzWj5s7eaoR8sxxRMPxLu+TPeqHzzx5jsPYI+nc6R5xrFuFLxMFw26muydHfH5J7yAmRgmHEc6rfCH76C/xG5MHHJktMNXChTaNA1aqaSgm492GFa/toMiKDH58WoPzLfb4HtCD9/e9l6++Gyep+NvwlbTX3t6JLnQCb2tMdp8q0EMpo0QxQ34e+pnSAXy/vgGZwdM7A93qGt5vw7tWgWMcVuzuWBqxj6Y0r0S9O9MsPlpU9GRvoUF2Ty8X2CqwCOL3djQM26GBY/kwTz1fxhtIrP3Xp9LFs2MN1F5FebWQuHkL1L88oDfKuiuiU+/Hg+IG6y0eg968W9zz2FvWV0iHtiSeq6i0YHGHq895HhDhlKfhKXgq+BaBvj+M280RVhYE15TISV+axjXHmn/12cCQpv6Z9Pu1JpdE1g8zRCvDQf2nACLnTA3F+gVKah5UGBSe2wgWeMxKzMAkRrm5Z3ipa/gVnhLFEN69I3Ww+ex6Pxu1RCJjL1QhVdU1nW3FN+UvzOZHwfgWg0nrJEwLR6NCjmrAUOYjxZxgZO+lB3qiJ3lL+W4NQ+YqGS4W4z56McBZnUdOz3431EatQ9DTR4QuSDsR3Gj+CN5jIZWjQL2/+g2397javyrBdc78elNkBxySBkI//1ZwGtp3wuFCDuRNb33wzlbZkD8VcL7ykjJSgwBblfnQ0St+N3w+Av8tgW3M/aC5ZD9Gd+5LOz33XtVlQuOeSgNMoEv
+ CjKT9JNX
+ SRdp8W9/TvXpeNovGFMUHNURVIcQNegu76NebNwfhHkh96mloXQqUHqQCE32c8hq0tHMBLP81pRjm2ssjiaIfz3WjCzOCAKwQn2RpYL2BhQRjILRO2qdIxgjdLWwnXKiNWuR+dhBMCFwoLwOE8QFz58MQPSdGBrnqe62VUUFnkJmR+Gfykxfy+cR8cBvqqem2XxwcmgVzFMcFzJqyE46ncy2VSQwdptxZ2xWOitleT9Sbp7r/xW5PtnRlMePVwfW/xJh7YmlmsxSp57FpMCW0sJ4zp+I5SZBsO6pKNQecNO3tX+A4jznWcNCkPuii6P+hrI0/+PmiKH2FZy8SLBnGvkI4FTvkT1jDFAg9Q/7967HdxobVGAkoyw0JAg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,59 +98,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 22 Sep 2025 14:55:41 -0700 Cong Wang wrote:
-> On Sat, Sep 20, 2025 at 6:47 PM Hillf Danton <hdanton@sina.com> wrote:
-> > On Thu, 18 Sep 2025 15:25:59 -0700 Cong Wang wrote:
-> > > This patch series introduces multikernel architecture support, enabling
-> > > multiple independent kernel instances to coexist and communicate on a
-> > > single physical machine. Each kernel instance can run on dedicated CPU
-> > > cores while sharing the underlying hardware resources.
-> > >
-> > > The multikernel architecture provides several key benefits:
-> > > - Improved fault isolation between different workloads
-> > > - Enhanced security through kernel-level separation
-> > > - Better resource utilization than traditional VM (KVM, Xen etc.)
-> > > - Potential zero-down kernel update with KHO (Kernel Hand Over)
-> > >
-> > Could you illustrate a couple of use cases to help understand your idea?
-> 
-> Sure, below are a few use cases on my mind:
-> 
-> 1) With sufficient hardware resources: each kernel gets isolated resources
-> with real bare metal performance. This applies to all VM/container use cases
-> today, just with pure better performance: no virtualization, no noisy neighbor.
-> 
-> More importantly, they can co-exist. In theory, you can run a multiernel with
-> a VM inside and with a container inside the VM.
-> 
-If the 6.17 eevdf perfs better than the 6.15 one could, their co-exist wastes
-bare metal cpu cycles.
+Hi, Shivank,
 
-> 2) Active-backup kernel for mission-critical tasks: after the primary kernel
-> crashes, a backup kernel in parallel immediately takes over without interrupting
-> the user-space task.
-> 
-> Dual-kernel systems are very common for automotives today.
-> 
-If 6.17 is more stable than 6.14, running the latter sounds like square skull
-in the product environment.
+Thanks for working on this!
 
-> 3) Getting rid of the OS to reduce the attack surface. We could pack everything
-> properly in an initramfs and run it directly without bothering a full
-> OS. This is similar to what unikernels or macro VM's do today.
-> 
-Duno
+Shivank Garg <shivankg@amd.com> writes:
 
-> 4) Machine learning in the kernel. Machine learning is too specific to
-> workloads, for instance, mixing real-time scheduling and non-RT can be challenging for
-> ML to tune the CPU scheduler, which is an essential multi-goal learning.
-> 
-No room for CUDA in kernel I think in 2025.
+> This is the third RFC of the patchset to enhance page migration by batching
+> folio-copy operations and enabling acceleration via multi-threaded CPU or
+> DMA offload.
+>
+> Single-threaded, folio-by-folio copying bottlenecks page migration
+> in modern systems with deep memory hierarchies, especially for large
+> folios where copy overhead dominates, leaving significant hardware
+> potential untapped. 
+>
+> By batching the copy phase, we create an opportunity for significant
+> hardware acceleration. This series builds a framework for this acceleration
+> and provides two initial offload driver implementations: one using multiple
+> CPU threads (mtcopy) and another leveraging the DMAEngine subsystem (dcbm).
+>
+> This version incorporates significant feedback to improve correctness,
+> robustness, and the efficiency of the DMA offload path.
+>
+> Changelog since V2:
+>
+> 1. DMA Engine Rewrite:
+>    - Switched from per-folio dma_map_page() to batch dma_map_sgtable()
+>    - Single completion interrupt per batch (reduced overhead)
+>    - Order of magnitude improvement in setup time for large batches
+> 2. Code cleanups and refactoring
+> 3. Rebased on latest mainline (6.17-rc6+)
+>
+> MOTIVATION:
+> -----------
+>
+> Current Migration Flow:
+> [ move_pages(), Compaction, Tiering, etc. ]
+>               |
+>               v
+>      [ migrate_pages() ] // Common entry point
+>               |
+>               v
+>     [ migrate_pages_batch() ] // NR_MAX_BATCHED_MIGRATION (512) folios at a time
+>       |
+>       |--> [ migrate_folio_unmap() ]
+>       |
+>       |--> [ try_to_unmap_flush() ] // Perform a single, batched TLB flush
+>       |
+>       |--> [ migrate_folios_move() ] // Bottleneck: Interleaved copy
+>            - For each folio:
+>              - Metadata prep: Copy flags, mappings, etc.
+>              - folio_copy()  <-- Single-threaded, serial data copy.
+>              - Update PTEs & finalize for that single folio.
+>              
+> Understanding overheads in page migration (move_pages() syscall):
+>
+> Total move_pages() overheads = folio_copy() + Other overheads
+> 1. folio_copy() is the core copy operation that interests us.
+> 2. The remaining operations are user/kernel transitions, page table walks,
+> locking, folio unmap, dst folio alloc, TLB flush, copying flags, updating
+> mappings and PTEs etc. that contribute to the remaining overheads.
+>
+> Percentage of folio_copy() overheads in move_pages(N pages) syscall time:
+> Number of pages being migrated and folio size:
+>             4KB     2MB
+> 1 page     <1%     ~66%
+> 512 page   ~35%    ~97%
+>
+> Based on Amdahl's Law, optimizing folio_copy() for large pages offers a
+> substantial performance opportunity.
+>
+> move_pages() syscall speedup = 1 / ((1 - F) + (F / S))
+> Where F is the fraction of time spent in folio_copy() and S is the speedup of
+> folio_copy().
+>
+> For 4KB folios, folio copy overheads are significantly small in single-page
+> migrations to impact overall speedup, even for 512 pages, maximum theoretical
+> speedup is limited to ~1.54x with infinite folio_copy() speedup.
+>
+> For 2MB THPs, folio copy overheads are significant even in single page
+> migrations, with a theoretical speedup of ~3x with infinite folio_copy()
+> speedup and up to ~33x for 512 pages.
+>
+> A realistic value of S (speedup of folio_copy()) is 7.5x for DMA offload
+> based on my measurements for copying 512 2MB pages.
+> This gives move_pages(), a practical speedup of 6.3x for 512 2MB page (also
+> observed in the experiments below).
+>
+> DESIGN: A Pluggable Migrator Framework
+> ---------------------------------------
+>
+> Introduce migrate_folios_batch_move():
+>
+> [ migrate_pages_batch() ]
+>     |
+>     |--> migrate_folio_unmap()
+>     |      
+>     |--> try_to_unmap_flush()
+>     |
+>     +--> [ migrate_folios_batch_move() ] // new batched design
+>             |
+>             |--> Metadata migration
+>             |    - Metadata prep: Copy flags, mappings, etc.
+>             |    - Use MIGRATE_NO_COPY to skip the actual data copy.
+>             |
+>             |--> Batch copy folio data
+>             |    - Migrator is configurable at runtime via sysfs.
+>             |
+>             |          static_call(_folios_copy) // Pluggable migrators
+>             |          /          |            \
+>             |         v           v             v
+>             | [ Default ]  [ MT CPU copy ]  [ DMA Offload ]
+>             |
+>             +--> Update PTEs to point to dst folios and complete migration.
+>
 
-> 5) Per-application specialized kernel: For example, running a RT kernel
-> and non-RT kernel in parallel. Memory footprint can also be reduced by
-> reducing the 5-level paging tables when necessary.
+I just jump in the discussion, so this may be discussed before already.
+Sorry if so.  Why not
 
-If RT makes your product earn more money in fewer weeks, why is eevdf
-another option, given RT means no schedule at the first place?
+migrate_folios_unmap()
+try_to_unmap_flush()
+copy folios in parallel if possible
+migrate_folios_move(): with MIGRATE_NO_COPY?
+
+> User Control of Migrator:
+>
+> # echo 1 > /sys/kernel/dcbm/offloading
+>    |
+>    +--> Driver's sysfs handler
+>         |
+>         +--> calls start_offloading(&cpu_migrator)
+>               |
+>               +--> calls offc_update_migrator()
+>                     |
+>                     +--> static_call_update(_folios_copy, mig->migrate_offc)
+>
+> Later, During Migration ...
+> migrate_folios_batch_move()
+>     |
+>     +--> static_call(_folios_copy) // Now dispatches to the selected migrator
+>           |
+>           +-> [ mtcopy | dcbm | kernel_default ]
+>
+
+[snip]
+
+---
+Best Regards,
+Huang, Ying
 
