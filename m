@@ -4,93 +4,151 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C27CCAC5AE
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 15:28:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F15DFCAC5AE
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 15:29:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F0528E0012; Wed, 24 Sep 2025 11:28:13 -0400 (EDT)
+	id 5B57A8E0015; Wed, 24 Sep 2025 11:29:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C7B28E000F; Wed, 24 Sep 2025 11:28:13 -0400 (EDT)
+	id 58D3D8E000F; Wed, 24 Sep 2025 11:29:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 404AB8E0012; Wed, 24 Sep 2025 11:28:13 -0400 (EDT)
+	id 4A3B78E0015; Wed, 24 Sep 2025 11:29:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FF658E000F
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:28:13 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D5956BBE43
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:28:12 +0000 (UTC)
-X-FDA: 83924524824.18.9090E50
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4EADF4000A
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:28:11 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=irQgTQzj;
-	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 399248E000F
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:29:19 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C219A1408A5
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:29:18 +0000 (UTC)
+X-FDA: 83924527596.04.832FA4F
+Received: from fra-out-003.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-003.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.72.182.33])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 433B4100017
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:29:16 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b="d/v0uJyX";
+	spf=pass (imf05.hostedemail.com: domain of "prvs=355a74973=roypat@amazon.co.uk" designates 3.72.182.33 as permitted sender) smtp.mailfrom="prvs=355a74973=roypat@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758727691;
+	s=arc-20220608; t=1758727756;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fO6Z//rPL79a8R8QZxUtb2XRgOYLfIxN6LnW/zgnSJE=;
-	b=FVO5jvu5AhvYoJzTDRfyjVHCkPa8mhW0tV/zA14xE56XMg802i8k6lbu4yrG6DJGe5Ottm
-	8ETZG86dzBOacA9BJxGyR3/AoTMb5EykCqjvtbANE/AXWl6Id8Ll7J1vSgMfo5zdVI35K7
-	mf2wb3e3emNHUGBRbR7pOGD3L5WFlHc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758727691; a=rsa-sha256;
-	cv=none;
-	b=QzJLmqkPlfg5iolSzip++6mrut/o2Yav9djmbSfIlR7fIIvBGtVy/kwgI0TQJHnHO1xz1d
-	b0FNZydkUHWqEyWSFoQ1EiDYvW5V+qQln8Icoh7s5C6DFpCt8uWRhDwvMVsMhC6vcw0SRW
-	6ge2Yv2LIyMrgOa7mXcNQgIr/88KuEA=
+	bh=xYwtDKmp/Zq0jOTCpG7R8cZcsQAosKrhHZ6MWIe4xuU=;
+	b=H9JpZlAX7JgEC7MjunowgNEQHzYIQlzdeFzt/1eIJat1+0od8pQm8iwxoX7jl3F2IiRERk
+	cJa1PaGDMBQljc39I/OlZu4GzI4FQk9weq/HN8dEJVxXP0sar7vMZFWXR9ffMbXjRrRWbX
+	KdYaUR1GX6+3XavXE4eTa8IizKsH6vE=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=irQgTQzj;
-	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9EFFD601EB;
-	Wed, 24 Sep 2025 15:28:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F31FC4CEE7;
-	Wed, 24 Sep 2025 15:28:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758727690;
-	bh=O/bKTpvQARqt8FVg/y21EPm0JoWae7amDRNYbxV7ONc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=irQgTQzjfSAjWwFVUQYTRj/oZ1GIQOmw6hdssvbkPidionp5q5qRBCVgMhNc71jUA
-	 RpsG9bOvIDFcynHxs5toNX9PmUeYLEkApMwKR07l/VKoaqMkKEi4uDMFbIKmpvCMF4
-	 FdTi3dHPyvwoX3cnCcLsFQKRZXASwWuDUzS3vQoQFz2Vn2adC+XM1YHWXIcklNt1p/
-	 wYGFAX22klRZ7NuqxsHnDpJjIRZeFh9CCAqb0si0AEFWD9ZP5V67PvFMS8xdbyMuBT
-	 V+OlOwvaf35CchUJqb0cx5b/InhHOicYhWFNucyh5gLSkC2/UiOMh2riv7Cjk+T1j/
-	 j0+7OvHvZ2RUg==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jason Gunthorpe <jgg@nvidia.com>,  Mike Rapoport <rppt@kernel.org>,
-  Alexander Graf <graf@amazon.com>,  Baoquan He <bhe@redhat.com>,
-  Changyuan Lyu <changyuanl@google.com>,  Chris Li <chrisl@kernel.org>,
-  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush Yadav
- <pratyush@kernel.org>,  kexec@lists.infradead.org,  linux-mm@kvack.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 3/4] kho: add support for preserving vmalloc allocations
-In-Reply-To: <20250922143407.93e171f8b7c09eb21159a33e@linux-foundation.org>
-	(Andrew Morton's message of "Mon, 22 Sep 2025 14:34:07 -0700")
-References: <20250921054458.4043761-1-rppt@kernel.org>
-	<20250921054458.4043761-4-rppt@kernel.org>
-	<20250922131948.GX1391379@nvidia.com>
-	<20250922143407.93e171f8b7c09eb21159a33e@linux-foundation.org>
-Date: Wed, 24 Sep 2025 17:28:07 +0200
-Message-ID: <mafs0ikh7dg54.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	imf05.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b="d/v0uJyX";
+	spf=pass (imf05.hostedemail.com: domain of "prvs=355a74973=roypat@amazon.co.uk" designates 3.72.182.33 as permitted sender) smtp.mailfrom="prvs=355a74973=roypat@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758727756; a=rsa-sha256;
+	cv=none;
+	b=YhsHkbEqOhcnHK0nhMruCbQaIZXWyqUa+AJoerI2aihe4o57SoNuc6IRQKnt+lJwXri7Cb
+	0WObBpokt9/FY2yq/U+mnWN5weIU2wK1ezuQsgUcUYMltgKqV4H23ibj+mQiF+JJNQNxRh
+	4Yj2hLwTpLHGSnVeeOOcRz181hpdzyM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
+  s=amazoncorp2; t=1758727756; x=1790263756;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=xYwtDKmp/Zq0jOTCpG7R8cZcsQAosKrhHZ6MWIe4xuU=;
+  b=d/v0uJyXQ/W/HUYtT07fNKGmTGeZg6bQzA0vkgNx5p3rB1FOYpPTowX4
+   Pzf+OpbcF/9qsFVAQVk6/43ahglUyRjPReDg2KxlOBMu4EEQ0FeR6ys1k
+   MVeWgRuufTvpbCaz8e2axeJXigANMMYWjg1eW90kTtQNW00I0Xgr0Ar4t
+   LVpSekA5bgMlLg+Ak+t6zJSf4qgg4VxzoTm3z3cX8Fvn9ShLf9HINEAVM
+   4iQN6J8Plg0H3miUkDQG8Z+EQHl/mz0AVm6SFJ6hqtmIlU/rnLV3aguT1
+   jUUlQAYzvnXJGifE9Tme73jXeVnp07ECTwLAVxcRVAj0pmREN5Ck+Rqi3
+   w==;
+X-CSE-ConnectionGUID: H1Nwja16SO+mJPPrYIM6Uw==
+X-CSE-MsgGUID: 6BUVeHZ3T1iQWbqFFphHSA==
+X-IronPort-AV: E=Sophos;i="6.18,290,1751241600"; 
+   d="scan'208";a="2615965"
+Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
+  by internal-fra-out-003.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2025 15:29:14 +0000
+Received: from EX19MTAEUB002.ant.amazon.com [54.240.197.232:7826]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.45.166:2525] with esmtp (Farcaster)
+ id f979d79c-010c-49b7-9e97-d5be296685f6; Wed, 24 Sep 2025 15:29:14 +0000 (UTC)
+X-Farcaster-Flow-ID: f979d79c-010c-49b7-9e97-d5be296685f6
+Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
+ EX19MTAEUB002.ant.amazon.com (10.252.51.59) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Wed, 24 Sep 2025 15:29:13 +0000
+Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
+ EX19D015EUB004.ant.amazon.com (10.252.51.13) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Wed, 24 Sep 2025 15:29:13 +0000
+Received: from EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a]) by
+ EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a%3]) with mapi id
+ 15.02.2562.020; Wed, 24 Sep 2025 15:29:13 +0000
+From: "Roy, Patrick" <roypat@amazon.co.uk>
+To: "patrick.roy@campus.lmu.de" <patrick.roy@campus.lmu.de>
+CC: "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
+	"ackerleytng@google.com" <ackerleytng@google.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "andrii@kernel.org"
+	<andrii@kernel.org>, "ast@kernel.org" <ast@kernel.org>, "bp@alien8.de"
+	<bp@alien8.de>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+	"catalin.marinas@arm.com" <catalin.marinas@arm.com>, "corbet@lwn.net"
+	<corbet@lwn.net>, "daniel@iogearbox.net" <daniel@iogearbox.net>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"david@redhat.com" <david@redhat.com>, "derekmn@amazon.co.uk"
+	<derekmn@amazon.co.uk>, "eddyz87@gmail.com" <eddyz87@gmail.com>,
+	"haoluo@google.com" <haoluo@google.com>, "hpa@zytor.com" <hpa@zytor.com>,
+	"Thomson, Jack" <jackabt@amazon.co.uk>, "jannh@google.com"
+	<jannh@google.com>, "jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com"
+	<jhubbard@nvidia.com>, "joey.gouly@arm.com" <joey.gouly@arm.com>,
+	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "jolsa@kernel.org"
+	<jolsa@kernel.org>, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+	"kpsingh@kernel.org" <kpsingh@kernel.org>, "kvm@vger.kernel.org"
+	<kvm@vger.kernel.org>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>, "linux-fsdevel@vger.kernel.org"
+	<linux-fsdevel@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-kselftest@vger.kernel.org"
+	<linux-kselftest@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, "luto@kernel.org"
+	<luto@kernel.org>, "martin.lau@linux.dev" <martin.lau@linux.dev>,
+	"maz@kernel.org" <maz@kernel.org>, "mhocko@suse.com" <mhocko@suse.com>,
+	"mingo@redhat.com" <mingo@redhat.com>, "oliver.upton@linux.dev"
+	<oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"peterx@redhat.com" <peterx@redhat.com>, "peterz@infradead.org"
+	<peterz@infradead.org>, "pfalcato@suse.de" <pfalcato@suse.de>, "Roy, Patrick"
+	<roypat@amazon.co.uk>, "rppt@kernel.org" <rppt@kernel.org>, "sdf@fomichev.me"
+	<sdf@fomichev.me>, "seanjc@google.com" <seanjc@google.com>,
+	"shuah@kernel.org" <shuah@kernel.org>, "song@kernel.org" <song@kernel.org>,
+	"surenb@google.com" <surenb@google.com>, "suzuki.poulose@arm.com"
+	<suzuki.poulose@arm.com>, "tabba@google.com" <tabba@google.com>,
+	"tglx@linutronix.de" <tglx@linutronix.de>, "vbabka@suse.cz" <vbabka@suse.cz>,
+	"will@kernel.org" <will@kernel.org>, "willy@infradead.org"
+	<willy@infradead.org>, "x86@kernel.org" <x86@kernel.org>, "Cali, Marco"
+	<xmarcalx@amazon.co.uk>, "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>
+Subject: Re: [PATCH v7 00/12] Direct Map Removal Support for guest_memfd
+Thread-Topic: [PATCH v7 00/12] Direct Map Removal Support for guest_memfd
+Thread-Index: AQHcLWf7p6lrgf1yqEyGzQxUogXjVw==
+Date: Wed, 24 Sep 2025 15:29:13 +0000
+Message-ID: <20250924152912.11563-1-roypat@amazon.co.uk>
+References: <20250924151101.2225820-1-patrick.roy@campus.lmu.de>
+In-Reply-To: <20250924151101.2225820-1-patrick.roy@campus.lmu.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [172.19.88.180]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4EADF4000A
-X-Stat-Signature: fkxs57fm7h7g9yfap17abafidjsisd4o
+X-Rspamd-Queue-Id: 433B4100017
 X-Rspam-User: 
-X-HE-Tag: 1758727691-683100
-X-HE-Meta: U2FsdGVkX1+AxQNhwnUHxrU4pmgu5poHrwaUQphxEnNSXKZ76o0pHhGxfAsGUqMW8RHUDIfQ5vON3MFCob7ICsn7PTHQoGZwYEpmbJOGmG5ujAiFoYcd4fJnNPofyUwSrNC3rRJxr5E2dlugMLgGLUxImvp39LwSFtppfYh9f/lEs77r+RxXnCNWGbz7qT8nxU3McSBs0pbtVbg6P98dMRxCnRDVKJ1jbcS4sVsQtWw0QFq0yVCBKdc+11ylKZu8j9ETvCXpBH6prBbO8syVoqkKekf2lieGmvSyZU9FowOMKqrLh+XYVamwkRjWsuPMY+j66rFxoG8hFQjaf9MQx2oWHaF+v3RkSSWFzlzKE6RAEDtErVZkw466sNpYNHS31GjvhMuG3Jwwjj9dZn4kGFpeIGpmlZcAadymIwDIph4OWEHi2+9wcZBnNu/11AwdYevwGSx3N7C6pT+zLlDZqGwP7wAaNY15jelb4plCevxYwC6lv6af1ESBHE5qG8NsIAieSYqhJiiS0zk5Z+ZWiVyeAXQyc+U+e637D6bAiefo2sJDmQLLOSNQd1bShTbFwGelnorbURtjhZtwNXqp/gDJT6LmgRVbej9hE0sFFxGRDLxv4fNaO0gJW6MazbuUQvHQHI9TxN87Ebc6zczSfvNXoskE/judH1N+wE62GtSHU6OKGZvInbtV2Oudg/mqLmMW/40orx9KdgcVBQMOPew0TT51MGf0isoOnJ7q5a/EF5kYhREqS4OFwxMVbFjAIorH+ju+IArmdFEjeSV+B31GHfY2DL/AZ3ulVC7n9ChQN4Z4KG6wQdrcLQTVGDsNnTgM5KN7RRiuIoNEC17hXR223ODMYS60xrZnYR0BaNwtBw44wWfYxsC6cDlSe0Fo6dIDXDEceSaXGyBvp4Rq3x31a9QcbC7FFTVPAJrqJaser2mujTethzLTV0BvqA3IBl+LKQaKcRaN3jltl4j
- 4uTCSOar
- UgDi7U+SYHSm0tcyR4Ppz68zgSIcXeTJQFvSshkXx9xbSJzHP6Tr5RPbmhiugJE9rJ6IRS31pwr3c6tX8lglxF/CIt+U8lMKCGp9aJiKvzZQQgJebtLWaKM6IlkD33QDYCcSR6vQmVr+JpOlBTqHCOc8iznQgvlZuNhcxwAS9tNpcPFsN4dIkHyokgjq9Jc6TCvcm
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 3auerjw9zyhs6y9cj1rryskpwo5ecpyr
+X-HE-Tag: 1758727756-933767
+X-HE-Meta: U2FsdGVkX1+HrVehh7QQOYG+lUFF3xNPL0xbLhmQF4hiYba94v6Nv44cMcvv/AZa/ngexsR+RXSEMZXJhRm2fiAo8IMLNrADw/7dbgpXZskUZig+/1jYLag2+1RD4o9fMarfX3QYd92hs6YgeLlt25z5bFZOlDHb83Oky42YD21jYFhXCK6NgZGxwlLSSAF7eeNE4lBYvOszt5oe1QycTZzPhFXy2eL66JJPaC9+xt7v0Nti3ayGar2GMyWmyFsCYw/pmVDnrhBA0d/kx6YD7cSD2IBdeAL7kZH2mn7Lrny4QXNtACYq7FG+1/QYHj75PJqhVUbXk3qNmQaujSci632X55Ry9PZPAXGUrEt2N6R98JUpLRlZdrJESoTUJgUbETxRFzWMvbwfj0LUFE/KXxqs3hUYwHP6RrUNhqOBWhk1VtplWRU6HG5UlBCv1u3akc8FaJSLAFQwSjCJXrXcIG9tjvbspqVpgOE+fD4kx6aDmLieF7GnoD/ISDDr54Qbqb27IvOAkhLCNuP9VcjVA6qzGLmNv6yS9lYgY/EwFy1b8d1msXbVm4UFqiO1SIKPPZo0UCKYJiBbEW5BdZZwpvzs67nAoAvhMiInFIKgdlOgYEf7+MuKGGe5UsdKP+CBqrqopWnkmMOZgZ8uebDFZzh2rtmYYBRUpMDvX/kJb6NbRbefpR0/X3P51D4PmIwpll4Ke4biELpgH6WLgOlJt3KTK0xPEoPwS3QATMIpC1Bq71f4SrbmEW+V8oHdt5CMtJAFifu/lj2N2c+Dx1YHFINnc4v45kwXaWsRPqPxuLTM1Zkv56DX9L69+uQnGwpM5q+3GypaW5qoQ1t2UBvtA406j0UGJoFRz8YXEzotPFNe6JBRcenQ9G/kCCqIANqd+KiZ42Z4DvT3oy/SKcl/MFGNQRbvL681autS/wJ71oBSEspyKjSGlLUXPP32VkIbKXw0x/envG+KeV2WEHf
+ pkTUU15M
+ teJNPPjs8GPPRh2Y3HOcYDaeG3UV7MHP91Q+k8gFaO/4g2bOiAhjmGNkM0elTNMbA6n2A5V43m8irMLGr4Uaa4V2S35dfMWKW62ZyYZFIOy4oJ98RGNsAhhEnN/mMAgWgZ/7vYDZoQhdgEKLSO+P2vRBipNkMLMlLqvTxGhJnKU5GHVvLS8YFX7n+mue9K/yWAzx1zupkxeDmP1mrtwVI0sDdpv6TukJjk9mjSWj1W/BCHMENtUsFghNOk/nuToimRSwWXbCqfhiSUDRbEMGndS8mzvYZNaLN1sjP9KWBTbJalUsn079PJqXUphTW8KmOhaJgv1VnI0sB9swcvAfLYG3X4VnorUfGWJAHcBFbkJSvXo/6SnkDGLieaLtLYAJPPJ+5zYFSaz+2OjEm1ADcOtapO9CVWo8mvV02OqXf5/jrVKWyB13KamENbA5Ah6yp3cXMV/dhgfqE+r7aEDvZ4jgicO+fyE0D5A8Ln0xl9FEloVEX9tsEdb9Kib832QCFRPT49cIbqtVz7/pxKPIWAMVqk64qGuAHE7418IAFK273Ja9apjs1j8GB0viIqJHy81ufRyzv6LMphxVp1nPf0sEmZ4eRIRPWqLMu1SRsJnZWePSooKKV1S8AkahYVMj/+F6xFS1EIjmV9uhaDISvoAUnghrhqaQkUTT/LYdVWxLTL4SRSHyDz7U0CfVxy+iINCbD8WDTIYMmd/53isC6Ps0kwiW+e+wzeG079FKATNqkjF2pAFmRJcmiJzsOaiu7ZgjSQqMIqU+t+AHAwvriO3JMitwkmdzJjRjnskv9OomiS9dGoZxjV3NN2NKInpqZ1E2/xH6H0whJNvs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,43 +157,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 22 2025, Andrew Morton wrote:
-
-> On Mon, 22 Sep 2025 10:19:48 -0300 Jason Gunthorpe <jgg@nvidia.com> wrote:
->
->> > +static void kho_vmalloc_free_chunks(struct kho_vmalloc *kho_vmalloc)
->> > +{
->> > +	struct kho_vmalloc_chunk *chunk = KHOSER_LOAD_PTR(kho_vmalloc->first);
->> > +
->> > +	while (chunk) {
->> > +		struct kho_vmalloc_chunk *tmp = chunk;
->> > +
->> > +		kho_vmalloc_unpreserve_chunk(chunk);
->> > +
->> > +		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
->> > +		kfree(tmp);
->> 
->> Shouldn't this be free_page()?
->
-> Or vfree()?
-
-It should be free_page(). The chunk isn't in the vmalloc-ed area, it is
-the metadata to track it. It gets allocated in new_vmalloc_chunk() using
-get_zeroed_page().
-
->
-> Not sure why this code works - I'll suspend the series from linux-next
-> for now.
-
-It only gets called in the error path and that didn't get hit during
-testing I suppose. Until v3 the chunk was being allocated using
-kzalloc() so I guess this got missed in the move to get_zeroed_page().
-
-I think Mike is out of office this week. Do you think this series is
-stable enough to land in the upcoming merge window? If so, I can send a
-v6 with the fix today.
-
--- 
-Regards,
-Pratyush Yadav
+_sigh_=0A=
+=0A=
+I tried to submit this iteration from a personal email, because amazon's ma=
+il=0A=
+server was scrambling the "From" header and I couldn't figure out why (and =
+also=0A=
+because I am leaving Amazon next month and wanted replies to go into an inb=
+ox=0A=
+to which I'll continue to have access). And then after posting the first 4=
+=0A=
+emails I hit "daily mail quota exceeded", and had to submit the rest of the=
+=0A=
+patch series from the amazon email anyway. Sorry about the resulting mess (=
+i=0A=
+think the threading got slightly messed up as a result of this). I'll somet=
+hing=0A=
+else out for the next iteration.=0A=
+=0A=
 
