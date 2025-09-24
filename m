@@ -4,111 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26E8ECAC5AC
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 02:35:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D207CAC5A5
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 02:49:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 687B88E0007; Tue, 23 Sep 2025 22:35:16 -0400 (EDT)
+	id 60CA68E0008; Tue, 23 Sep 2025 22:49:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65EA78E0001; Tue, 23 Sep 2025 22:35:16 -0400 (EDT)
+	id 5E5108E0001; Tue, 23 Sep 2025 22:49:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 574428E0007; Tue, 23 Sep 2025 22:35:16 -0400 (EDT)
+	id 521F28E0008; Tue, 23 Sep 2025 22:49:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D0098E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 22:35:16 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B781B13B5ED
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 02:35:15 +0000 (UTC)
-X-FDA: 83922576990.03.46F1BD2
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C96D51C0006
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 02:35:13 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZHQFiypz;
-	spf=pass (imf18.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 455278E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 22:49:52 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CF4451403FB
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 02:49:51 +0000 (UTC)
+X-FDA: 83922613782.10.6DB78B6
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D112A40009
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 02:49:49 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="D/w43Tn3";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758682190; a=rsa-sha256;
+	cv=none;
+	b=kbHNnWcBf3aoLTvEVzKw+bUL9yrbuZHWwjGE/gdgpOdsv/mAgQjxtUx17ycw+tZYSOKBOG
+	pzNQmdq7vWAABfV26PHBAVqYYiESSCyjtHMiuTVjOwzfuNagwODFryE9jNWe1DtwsbtIgH
+	ATY6WmEdD5CyE5zfd/uMy0BrZ7MXFv8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="D/w43Tn3";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758681314;
+	s=arc-20220608; t=1758682190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r8pUVu7ebrm0X4wJheoYfCWuw4PuHNLvghKI3Pai2MA=;
-	b=UoMx7gU6wjIYW8CDq7Vcni0iEcfKRsQiLnLtjdk1sRKOyO4uj+AxRfgi+uMClmYSD4IEmQ
-	oF/gosQbYiyjfwq/gdW88upcJUlr9407O6LUZXrFPh6VTg0sI0XLigpF27Rk245F3ybpFe
-	GxKLKQ8VUkycHJ8zvUUwEzj08cQ/FlM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758681314; a=rsa-sha256;
-	cv=none;
-	b=1y1JOASGPsGhIrd+rbkY6uneZ2vl42h59b0ClGnk+RI8pmvnUKAh+2/A92PiTlKlDwHmUx
-	C1nBOwJffChh+VZD2jhRTI+KU3BLlfePpznuRG00khNdovoTTMJmUrqLxvgJH8zMxONj3E
-	LD3L4zo6BWuWmM+DCOgH1BPbBOzrGMw=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZHQFiypz;
-	spf=pass (imf18.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758681313;
+	bh=gS3UMQYfDRiVXfktUZqtEyuly+0oheyOGtsfiL3CXxU=;
+	b=59kY2i2uxgOXOyMxvH+tg1q61uzJb/Y9+8ytwKTDNjc2AS/tTMuukPbaghUFcCduW7nZVY
+	4L/+BM5oe/WTvXVajZaTdjE+tg7q5vq6eUoSLmePAdXJAAN3Zuh208MmQ1A3F83TcCVA2V
+	+ul94vYo949cqbZTkuHTJWjaJPOki1Y=
+Message-ID: <f2fe9c01-2a8d-4de9-abd5-dbb86d15a37b@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1758682186;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=r8pUVu7ebrm0X4wJheoYfCWuw4PuHNLvghKI3Pai2MA=;
-	b=ZHQFiypz6QRpCuNpKx3PvVK/yXKnjgy0IYqI0n+GEFES0Inh+d3nAm7PZ2u+3jenYBpVku
-	s2JwPBQhjEWFFgKt/8xo6q1RoNVRQVyyOrmZBoOhXHh3JPY1GAXOWZXvtoGUz6nSNkQoBX
-	bv4TQwSg9eZhi6iU19Uj53OlHo2voFs=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-215-MVxsJoxEMu6l8sCFbwGk7g-1; Tue,
- 23 Sep 2025 22:35:09 -0400
-X-MC-Unique: MVxsJoxEMu6l8sCFbwGk7g-1
-X-Mimecast-MFC-AGG-ID: MVxsJoxEMu6l8sCFbwGk7g_1758681307
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 006D61956096;
-	Wed, 24 Sep 2025 02:35:07 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.54])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 06F6B1800446;
-	Wed, 24 Sep 2025 02:35:04 +0000 (UTC)
-Date: Wed, 24 Sep 2025 10:35:00 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Andrey Konovalov <andreyknvl@gmail.com>, snovitoll@gmail.com
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, glider@google.com,
-	dvyukov@google.com, elver@google.com, linux-mm@kvack.org,
-	vincenzo.frascino@arm.com, akpm@linux-foundation.org,
-	kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org, sj@kernel.org,
-	lorenzo.stoakes@oracle.com, christophe.leroy@csgroup.eu
-Subject: Re: [PATCH v3 00/12] mm/kasan: make kasan=on|off work for all three
- modes
-Message-ID: <aNNY1AzfGua3Kk3S@MiWiFi-R3L-srv>
-References: <20250820053459.164825-1-bhe@redhat.com>
- <CA+fCnZdfv+D7sfRtWgbbFAmWExggzC2by8sDaK7hXfTS7viY8w@mail.gmail.com>
- <aLlJtTeNMdtZAA9B@MiWiFi-R3L-srv>
- <CA+fCnZf2fGTQ6PpoKxDqkOtwcdwyPYx2cFwQw+3xAjOVxjoh6w@mail.gmail.com>
- <75a2eb31-3636-44d4-b2c9-3a24646499a4@gmail.com>
- <CA+fCnZf7jYPUyqHqonWhDKVi9eeN6aaaByMTBYCQrv2-8+hngQ@mail.gmail.com>
- <aMfWz4gwFNMx7x82@MiWiFi-R3L-srv>
- <CA+fCnZcWEuBerMeS4RCXQtged06MJhY=55KsYeJEOJn3K0psXQ@mail.gmail.com>
+	bh=gS3UMQYfDRiVXfktUZqtEyuly+0oheyOGtsfiL3CXxU=;
+	b=D/w43Tn3x7CWbbsMju6wP2WmE63sMFT1L5kwMs0zBjv7gSY8AEfER8sfxukJxuwIgzMoyb
+	HkO0RKC4KmgarsNHiuI71MwRgtTRzO2yF3PnzTH3CFUBqrRPSCu3rabdUvARAHDsykafy8
+	GMLfw99XCOHABMYrqi82Sa7ykFYURTI=
+Date: Wed, 24 Sep 2025 10:49:27 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+fCnZcWEuBerMeS4RCXQtged06MJhY=55KsYeJEOJn3K0psXQ@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Stat-Signature: gdtcjun4bzze7xobba73yxjsd781dc7q
-X-Rspamd-Queue-Id: C96D51C0006
+Subject: Re: [PATCH 1/1] mm/thp: fix MTE tag mismatch when replacing
+ zero-filled subpages
+Content-Language: en-US
+To: Catalin Marinas <catalin.marinas@arm.com>,
+ David Hildenbrand <david@redhat.com>
+Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+ usamaarif642@gmail.com, yuzhao@google.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, baohua@kernel.org, voidice@gmail.com,
+ Liam.Howlett@oracle.com, cerasuolodomenico@gmail.com, hannes@cmpxchg.org,
+ kaleshsingh@google.com, npache@redhat.com, riel@surriel.com,
+ roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com,
+ dev.jain@arm.com, ryncsn@gmail.com, shakeel.butt@linux.dev,
+ surenb@google.com, hughd@google.com, willy@infradead.org,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, qun-wei.lin@mediatek.com, Andrew.Yang@mediatek.com,
+ casper.li@mediatek.com, chinwen.chang@mediatek.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-mm@kvack.org, ioworker0@gmail.com,
+ stable@vger.kernel.org
+References: <20250922021458.68123-1-lance.yang@linux.dev>
+ <aNGGUXLCn_bWlne5@arm.com> <a3412715-6d9d-4809-9588-ba08da450d16@redhat.com>
+ <aNKJ5glToE4hMhWA@arm.com> <aNLHexcNI53HQ46A@arm.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <aNLHexcNI53HQ46A@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D112A40009
+X-Stat-Signature: mgh3gufpthhdgf3k8915pj1zjq431m7i
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758681313-822073
-X-HE-Meta: U2FsdGVkX1+5EEO5aAnZQxsE5eDzkTfNyfntrZE/3E/rr9xDM2Z4gf20PlLxzSg2clV1/k1uDynYurjzHdfTSLzSXTPL85mW/4d+Xr6UzxAhU2XI2evkzrXp3u8AZmswYYLaB9v4qLTCLQvb+cQSbd3XixYT2j5R0mb46P68YcwY/8saYMEKzRMJdwAomTapaBPNVuaBZnQUmT9GZ9xeg8of5YKUf50+v+r28WVwPoGyI1T1K7nNp6ADz90R4RJcG9wVim3ThAgaBnFmRMNbGbPadFAA9Vb90YBeEPJ0ZMaUzpcw68pLsKbEJi8dQKjagCBDhXYd6McHY5YQuwnGwgLy1XGmIxZ7yIwkRegrTUYGCzEGZOPmgYeraX8Y8nuDj8VDpzq3hYRA4L9uOHElQm3y1Z4QCOxMMa7aQyWi/cwAaZL/NETEs4wt5oyEhkat7BvZbjNMFkpyO7c1UHTtvRWLSUOIvIevRsabvXiVHG2JQDI+uiU3eYwK3fAw8Wvcqyu0hgnvC+po/M4v2cscyZZ8MvWu+4ckjmMkqefdjwgQH+WwdDfHs99G2aD0oU4eMRjulgJZ3cYyXI9OC27lkNwofeWeBUz5OzawoeN5GUdqZu9BA1PKQXRgRbj+sNa1F/bqXHw6zFFZdmvQvWPtAitLmb2PuT0zKbSdZDICRa1oH7xYIjEXzJQbZZxvIaT11LshxnRIMkBO+NIXHeYzdkzOfP8IM6NdCMmj7R8ZCJZLyvXJZWEhaXaBawdoyiA9QcsXKo4Ty21rDLjuzz6K7YsYSBEUxjNEsd5KwCCsWXammOPG5NNa9dUPgTP0N1VaGUYZntRN8T4rLPQwMnbkeKCLggnB+qjcNTmwB1I5Whka5iNlLY5RLmW06B0zVhMHO+f8UNy1a+BD4K3ZYC8yDCyQBO71FtdtaFKwMVM2IkmcdgQQ5ObKVL8TYoIj9DRmY58cFc44HuzEpzZsUl2
- OMNZ4SfR
- LGc0xh4lx3TKzF9loeAFoClPeWpkAmnCIg84ewxUbCTVxPcGG6KpYZWfCMe1TdMNCslgcrxy0jMCpwh6exi/lMW1Qy0B5mpsE8mutpCM7qliD9KJdSOarkpDAVFS0tX+k8AwwZPUPhjTmTK6iPXB/CSLt6+CaIgWIyHqCTANNn03MU+dc446FxPm14hfblhhqOdiec1I8lcE5WiMuA/zmqMbEQmC1+0rjR8CRCLqIl9NzRKIYx584wWj/23ZI3FocU1mkqorJjh91//ICbUz/P4FnqR1lSrt1PpoHnR+CrvRF8I48pbeBPlMio+X0DAKJ2bKL/sbcjTNopI4yP4hQEXMFa2yE3Q15sb9ipbl1tck8oyrSsrJaF5USFszqlb0CgD56xese3E+5R18hXNrC0O4fCAS4WZn8I/fxal654nS43Z5dgi8GUe9ZkDyoQ+Bhn6duIpMt0zZuAZjhbovfdbOaagPs2wExndDRaJMgNp5pHLH+tp7gHEj2kpkmFxYQfQW4pGEnfR+hwZXs4Li1uIqbQTYa+FtABfbzzG1DUckIOVk=
+X-HE-Tag: 1758682189-402838
+X-HE-Meta: U2FsdGVkX18zWMXpKNV2YmOOzV/mZbKM0VVpSZuA2WeyapB3p4DbWrdgqHApS8+r5SO4u8DGIzfIlRzzeG0Qh/AQ99EAEImDxDZALTjurNSMyhYwUTuf8xaTYDN+/yq6MWDJdh1QEp8Vs+5bKmGf+NQ38jjGUPJ3r7sSXZhvSI6cV1lIwbX5N9xAA4auutpPdXlKIDCe7YTi2gq1gXeHQLehqooZo8b1SXLQe3OesY7aMFW0VvHw6GLoYYA6YsASkO08TjcwqxJm8MptjSJnd+a1cCkzCkoH+xnphdgsVGENTzRiwBYhm3QAfm6GfFy4DLNfdnLwp6u71UI5TbR7JFpYJ2jXxy8bI1UCeJlIwE55Ml4SI7CRH7CBIqIuz9fVm5XZit1CTX3UMMtjMUD9TeIdG0HpDrBx/r4GDtZtO7QCUT+dFSdUdxEnIwVZ7Kf3NMWzyrXaBtWm24r08BVX9N/iJONtIwjoLsBQiOstfIG1HvpAJgghnr7EgsUOAWggn05LioQmCenMrPS/W+PL2wqojmXAcEbB/XNO6C1YVkGbn3illSXaV9+1C8HlpRJx+Y0kfm+upEJRTHh9+mzX0K08nMxnhn8ZdAz/NPBL/CJytdICxg729qAKqEarPC5PAn8GEZwjz9fF0rpSTyEr2nUs+NPxznf5SwbhPOEZCDVP6X6XHoyeHGGaHOHhRYDQCYiJM59RsnIFrMxXBDmWYUluPLis10nzCoSfBj6ISxZrsvN77t/52N4SC+C8MTuMdqB7EdAhI2nZHPU2qGIok24QcgnkbJeVD10rPLEVg2nKQ3mMUbiROvnfmnEGs0df+xBd9W2+azsVfwt3lznRgYt9yJ/baUsg2qRfqP6MSR/6XIKvYElYgBhd1UQ2u4dASJQlm89AyktkW7QYEGgozmO1UBzNylV19mwy6xhq4ZRwyIIWcr6YjiawMR3rmwN2UI68/DxFzaqilGylf1u
+ Q+PYKPn1
+ l/uKQg3ZpQyqYPjSl+6UObI/BtYKLDNNlSu50q64d/ViTzkrYWmKQQTK3gnEKz0eW1yQ1Z1VXk9bJFjNCQTeYcI2EXyyLlTUTOvu2kNEoFToukeSPLtcPwARJOvNf9330N2Abr1gKcf6UGruMyxLekBu68hrMx/nM44ok0kEpvUfrZpHBO6kIeIIy3o26TzMG2KsLI/F3fW+aw0RLamIrSkAqIU2sXYJndropcXbC5EIi7IMInRjohBPEbiJRvUaQcdcq/yCd9PImEngOwUbinfhvIW44CoXJZ3h+
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,68 +107,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/23/25 at 07:49pm, Andrey Konovalov wrote:
-> On Mon, Sep 15, 2025 at 11:05 AM Baoquan He <bhe@redhat.com> wrote:
-> >
-> > > If you feel strongly that the ~1/8th RAM overhead (coming from the
-> > > physmap shadow and the slab redzones) is still unacceptable for your
-> > > use case (noting that the performance overhead (and the constant
-> > > silent detection of false-positive bugs) would still be there), I
-> > > think you can proceed with your series (unless someone else is
-> > > against).
-> >
-> > Yeah, that would be great if we can also avoid any not needed memory
-> > consumption for kdump.
-> 
-> Ack. Let's add support for kasan=off then.
 
-Thanks.
-> 
-> But please describe it in detail in the KASAN documentation.
 
-Will do in next round.
-
-> 
+On 2025/9/24 00:14, Catalin Marinas wrote:
+> On Tue, Sep 23, 2025 at 12:52:06PM +0100, Catalin Marinas wrote:
+>> I just realised that on arm64 with MTE we won't get any merging with the
+>> zero page even if the user page isn't mapped with PROT_MTE. In
+>> cpu_enable_mte() we zero the tags in the zero page and set
+>> PG_mte_tagged. The reason is that we want to use the zero page with
+>> PROT_MTE mappings (until tag setting causes CoW). Hmm, the arm64
+>> memcmp_pages() messed up KSM merging with the zero page even before this
+>> patch.
 > [...]
+>> diff --git a/arch/arm64/kernel/mte.c b/arch/arm64/kernel/mte.c
+>> index e5e773844889..72a1dfc54659 100644
+>> --- a/arch/arm64/kernel/mte.c
+>> +++ b/arch/arm64/kernel/mte.c
+>> @@ -73,6 +73,8 @@ int memcmp_pages(struct page *page1, struct page *page2)
+>>   {
+>>   	char *addr1, *addr2;
+>>   	int ret;
+>> +	bool page1_tagged = page_mte_tagged(page1) && !is_zero_page(page1);
+>> +	bool page2_tagged = page_mte_tagged(page2) && !is_zero_page(page2);
+>>   
+>>   	addr1 = page_address(page1);
+>>   	addr2 = page_address(page2);
+>> @@ -83,11 +85,10 @@ int memcmp_pages(struct page *page1, struct page *page2)
+>>   
+>>   	/*
+>>   	 * If the page content is identical but at least one of the pages is
+>> -	 * tagged, return non-zero to avoid KSM merging. If only one of the
+>> -	 * pages is tagged, __set_ptes() may zero or change the tags of the
+>> -	 * other page via mte_sync_tags().
+>> +	 * tagged, return non-zero to avoid KSM merging. Ignore the zero page
+>> +	 * since it is always tagged with the tags cleared.
+>>   	 */
+>> -	if (page_mte_tagged(page1) || page_mte_tagged(page2))
+>> +	if (page1_tagged || page2_tagged)
+>>   		return addr1 != addr2;
+>>   
+>>   	return ret;
 > 
-> > When I made patch and posted, I didn't see Sabyrzhan's patches because I
-> > usually don't go through mm mailing list. If I saw his patch earlier, I
-> > would have suggested him to solve this at the same time.
-> >
-> > About Sabyrzhan's patch sereis, I have picked up part of his patches and
-> > credit the author to Sabyrzhan in below patchset.
-> >
-> > [PATCH 0/4] mm/kasan: remove kasan_arch_is_ready()
-> > https://lore.kernel.org/all/20250812130933.71593-1-bhe@redhat.com/T/#u
-> >
-> > About reposting of this series, do you think which one is preferred:
-> >
-> > 1) Firstly merge Sabyrzhan's patch series, I reverted them and apply for
-> >    my patchset.
-> >
-> > 2) Credit the author of patch 1,2,3 of this patch series to Sabyrzhan
-> >    too as below, because Sabyrzhan do the unification of the static keys
-> >    usage and the KASAN initialization calls earlier:
+> Unrelated to this discussion, I got an internal report that Linux hangs
+> during boot with CONFIG_DEFERRED_STRUCT_PAGE_INIT because
+> try_page_mte_tagging() locks up on uninitialised page flags.
 > 
-> Since the Sabyrzhan's patches are already in mm-stable (and I assume
-> will be merged during the next merge window), just rebase your changes
-> on top.
+> Since we (always?) map the zero page as pte_special(), set_pte_at()
+> won't check if the tags have to be initialised, so we can skip the
+> PG_mte_tagged altogether. We actually had this code for some time until
+> we introduced the pte_special() check in set_pte_at().
+> 
+> So alternative patch that also fixes the deferred struct page init (on
+> the assumptions that the zero page is always mapped as pte_special():
 
-That's fine, I will rebase.
+I can confirm that this alternative patch also works correctly; my tests
+for MTE all pass ;)
+
+This looks like a better fix since it solves the boot hang issue too.
 
 > 
-> But also note that Sabyrzhan is planning to move out the
-> kasan_enabled() checks into include/linux/kasan.h (which is a clean-up
-> I would have also asked you to do with the kasan=off patches), so
-> maybe you should sync up with him wrt these changes.
-
-Hi Sabyrzhan,
-
-What's your thought? You want to do the cleanup after my rebasing on
-your merged patches or you prefer to do it ahead of time? Please let me
-know so that I can adjust my posting accordingly. Thanks.
-
-Thanks
-Baoquan
+> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+> index 7b78c95a9017..e325ba34f45c 100644
+> --- a/arch/arm64/kernel/cpufeature.c
+> +++ b/arch/arm64/kernel/cpufeature.c
+> @@ -2419,17 +2419,21 @@ static void bti_enable(const struct arm64_cpu_capabilities *__unused)
+>   #ifdef CONFIG_ARM64_MTE
+>   static void cpu_enable_mte(struct arm64_cpu_capabilities const *cap)
+>   {
+> +	static bool cleared_zero_page = false;
+> +
+>   	sysreg_clear_set(sctlr_el1, 0, SCTLR_ELx_ATA | SCTLR_EL1_ATA0);
+>   
+>   	mte_cpu_setup();
+>   
+>   	/*
+>   	 * Clear the tags in the zero page. This needs to be done via the
+> -	 * linear map which has the Tagged attribute.
+> +	 * linear map which has the Tagged attribute. Since this page is
+> +	 * always mapped as pte_special(), set_pte_at() will not attempt to
+> +	 * clear the tags or set PG_mte_tagged.
+>   	 */
+> -	if (try_page_mte_tagging(ZERO_PAGE(0))) {
+> +	if (!cleared_zero_page) {
+> +		cleared_zero_page = true;
+>   		mte_clear_page_tags(lm_alias(empty_zero_page));
+> -		set_page_mte_tagged(ZERO_PAGE(0));
+>   	}
+>   
+>   	kasan_init_hw_tags_cpu();
+> 
 
 
