@@ -4,107 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2304CAC5A5
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 13:50:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EE98CAC5A5
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 14:00:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1EFD8E000A; Wed, 24 Sep 2025 09:50:08 -0400 (EDT)
+	id E83F98E000D; Wed, 24 Sep 2025 10:00:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF6D78E0001; Wed, 24 Sep 2025 09:50:08 -0400 (EDT)
+	id E5B578E0001; Wed, 24 Sep 2025 10:00:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D33788E000A; Wed, 24 Sep 2025 09:50:08 -0400 (EDT)
+	id D71918E000D; Wed, 24 Sep 2025 10:00:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C3C398E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 09:50:08 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7A83BC0539
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 13:50:08 +0000 (UTC)
-X-FDA: 83924277696.17.9B62F7B
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 333BC120007
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 13:50:06 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="Ig/CQdvv";
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C389C8E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 10:00:58 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5F88A5B794
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 14:00:58 +0000 (UTC)
+X-FDA: 83924304996.05.4AD4054
+Received: from out203-205-221-191.mail.qq.com (out203-205-221-191.mail.qq.com [203.205.221.191])
+	by imf20.hostedemail.com (Postfix) with ESMTP id A503A1C000F
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 14:00:54 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=f8AuoRiM;
+	spf=pass (imf20.hostedemail.com: domain of shengminghu512@qq.com designates 203.205.221.191 as permitted sender) smtp.mailfrom=shengminghu512@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758721806;
+	s=arc-20220608; t=1758722456;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R/A2Ch/GtAi8GIZoLCN9t6+BlhVa+r6QoKh4VzB4iqU=;
-	b=EvmvSV7sijH+N1BtUfnuA1m974yBNwstyGuHad1v2ITi5iokr0R7kHICz7BNGWcILXoG03
-	V9UhIkEK8C7xIPnjDr6BsJYCc5hs38ZBpq66AkCbghK/Qb9ADhCO19pniQ/2uDMTe9D6SJ
-	Xb7jsGcpnmBCZlWS68IBH/zicpZcv1s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758721806; a=rsa-sha256;
+	bh=4S270O0n2JWhFjJ0/OQ/JHGdvT4eV4sO3yg9Io6c/L8=;
+	b=a+XJaDdQKXzfLjeTfCvxaP4/eoDHbFUYHmyszOtK8G6Ldkotrbpbgar8lXfSjYQc1Qv3UN
+	ZjHkmyvxe75BILlTwlrIYzykeghIPKHbIjCZIIe0zxeudbIUv91ZLEYleJ6QToR3Tq7Mgz
+	rpDyLpJJ+aI1UxO4gcBKtCrO9/oKhU4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758722456; a=rsa-sha256;
 	cv=none;
-	b=WwA4baIUU/SPg6Vone9XXMPUraux+WcaThQt9tSQJif90bpddFv+bNoU9Tsw/zdPHufKdL
-	PbbdceYX4ApFrewesX81Ok9vlsbBNa3Cth3wgK585JAsa7uos7cuVAXxFbg/GVEl/dLu7n
-	R6hmces39QSdqM5CZvMkWwEbx9h3FCA=
+	b=mo5f1C7nu1c8UNVoMTwS18YcZ1ZnS+E6DQsfvB3pscg7m5E/8Ln1MFWgJOgJzxucVjaM85
+	Bf6cMWaGy2rn/lVt/Prycww/lgmHKK9O1MAW9Kz6QPhcDwylftdaw3JkSi20gUFX1ceZwQ
+	armqexVGZEaklRtTPpD70NXgacO6XSY=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="Ig/CQdvv";
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758721806; x=1790257806;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FVTlGQRfhtupRSo1RZWEmSo3V6SWhG+b4V2VQt6fC2M=;
-  b=Ig/CQdvvfHUVghP2Fwcf4Y8DUIokuAO0RGyagB4IsJAN9NOgzpGSZaps
-   3n9OkEpHNlJTf/gUSw9TZLR161Kx3V95l1Dp5yuCRg4NEsvGPcWpO1RMX
-   we2U7JSqnKUiyPDrrw9CKBAFgNUvGe5ezskTW93Fo4iHUmqmNURGmiGF0
-   FbSzUeqYRkQe3SELJcrckB44hq9iHi38CEdtfnU2yEgYB614pD9EIusZk
-   Eisbh3ELbZllvis8yGA8Kx/qe09d3+9NBDD3M5rn3uwuUuuHhxt9cEE0W
-   vgCtGLrcb0M/LMkKkGbALKzTcCOq6kjwipWsnku2MLhLUViKYdGldJAsp
-   A==;
-X-CSE-ConnectionGUID: uFntkMe1Raerh5+ulC55jw==
-X-CSE-MsgGUID: loJ8IceQRUOOFgeVgKiHTg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="60931971"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="60931971"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2025 06:50:04 -0700
-X-CSE-ConnectionGUID: +LyeUF/IR8CAyRI+4elb0g==
-X-CSE-MsgGUID: 7NA19qq7SRSo+9WS0jpauw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; 
-   d="scan'208";a="181051824"
-Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
-  by orviesa003.jf.intel.com with ESMTP; 24 Sep 2025 06:49:59 -0700
-Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v1Psa-0004C9-1F;
-	Wed, 24 Sep 2025 13:49:56 +0000
-Date: Wed, 24 Sep 2025 21:49:18 +0800
-From: kernel test robot <lkp@intel.com>
-To: Qi Zheng <zhengqi.arch@bytedance.com>, hannes@cmpxchg.org,
-	hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev, muchun.song@linux.dev, david@redhat.com,
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com,
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, lance.yang@linux.dev, akpm@linux-foundation.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v2 4/4] mm: thp: reparent the split queue during memcg
- offline
-Message-ID: <202509242123.QwwFy7gc-lkp@intel.com>
-References: <55370bda7b2df617033ac12116c1712144bb7591.1758618527.git.zhengqi.arch@bytedance.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <55370bda7b2df617033ac12116c1712144bb7591.1758618527.git.zhengqi.arch@bytedance.com>
-X-Rspamd-Queue-Id: 333BC120007
-X-Stat-Signature: 4zpjcfpwjcq19xwxezqgptkrpajrzkny
+	imf20.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=f8AuoRiM;
+	spf=pass (imf20.hostedemail.com: domain of shengminghu512@qq.com designates 203.205.221.191 as permitted sender) smtp.mailfrom=shengminghu512@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1758722142; bh=4S270O0n2JWhFjJ0/OQ/JHGdvT4eV4sO3yg9Io6c/L8=;
+	h=From:To:Cc:Subject:Date:References:In-Reply-To;
+	b=f8AuoRiMpvHJ7yvq12Ux4W6pR6W852vic/WX4gXlec30rBebayJBoyE2mO1H2SN/F
+	 +DhxEc4LHFBA7DJN0B1s+1z701O1mho9F0RRqxucmUPPFmTuwkWWOrUiPqDwX4C94Y
+	 j1BzXm8gY7Pzi6GdNx9CRPvEn6WWCB84U/4xBxxc=
+X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
+X-QQ-XMAILINFO: N/PZ68u28+T/Pkr5ZUrubj3nRMkWq3KKT8t3I2qYuekDZG39Pe+TEJERT97fel
+	 wjvMDe82xLJeqYdObWLPUDozbfBYiAq7vIzmvJKDanrc4DONltA9H37N8LLLiU+60xjIzXtPveWfN
+	 eu8YqUXYRALJL4bewSHo7Y8RgGPaftgWLzK7gX08+FnN4Csk0a8kM8SOS8V0eNJ/IBTeKsHvE67YC
+	 FocFArRRaJvPfi1zqOpbZE9HNWlKnqZLeJmpCZ6tiBS1VM0EJhVBLzjAeGOgC+MiLYPgsmaPQN+qx
+	 gxnt6Jg3CkoyOF/bwnYHtWAjK94GdlHgaaFeixqoB8Y0a0ME17/0yI0qlwbSCFwtV0kN4+6DxmaD2
+	 AH2qldStqmCiwqEUXPYnr2WBKc9ypVN7UfiZA/hD/EgmK0wiE5efZfAajYs5U/PvYY/0MHbMh4wMT
+	 R+jqe7kbz7fHtlT0mJwaiAYz4WYorW7AWRSSHDyP8qBEg2O3sAYFfbJSb7uujtF0pskswKptizShm
+	 ZheLjrToSR7FwJJPkZWsSDkPo/syEyQB3CS8XuyHij249Qmb7KYdxy4KedNzCS5ds5OpjmAuMPZNb
+	 9xvWDWR/K5PoVObnPjyTGZKyixitl7HidYtRAI0x67xm1H1w2EkBdLz1Y0ZEG0fTILVnoHxTRwSBf
+	 gvtSR0Cw+eyZg3Vg/r6rIGaSG7R02UJ8EksJQnfjyp7/oTQlcQ6jhzSO9eSaQKCCml+mZS4bYtTa4
+	 0BH4t3jwqJeVldAKQlhUxmlSZQ4DU//D7ZHzoMyA/sogD41TesDCXge5H7gPipzbe+0e2h8xr/zgo
+	 NR52+h4X2hB5gxAAUZqx56e3n6MXL0cO9HdQ1z8b/mxlYpOGQXsOmQDWgtwj9/1P34S4Jiiz2MlPM
+	 NKAAsmUN45FPiKMJi443hBCtfOzmjmtVsf85lxPbBk9+bAjWVUf9KBX8fANimXu/UE4NbliA6luy5
+	 cUSnEJfc97ac8yGt/SmmkbXsgwDz/TSk7O0iAvJKZFb83aX1JV7RB1otJLp5CCjXjIFJkjeMfymyc
+	 H5vcp3FdI5sPWdR0sY8QN/+MjzDGpIClgNjHFcHbY8S2TFB8QwfhRvzuIEppzxpyPrNnt0x2WnscD
+	 NVM5GLvNGQ71GyP5aG0AQrAE
+From: "=?utf-8?B?c2hlbmdtaW5naHU1MTI=?=" <shengminghu512@qq.com>
+To: "=?utf-8?B?SmlhcWkgWWFu?=" <jiaqiyan@google.com>
+Cc: "=?utf-8?B?bGlubWlhb2hl?=" <linmiaohe@huawei.com>, "=?utf-8?B?bmFvLmhvcmlndWNoaQ==?=" <nao.horiguchi@gmail.com>, "=?utf-8?B?YWtwbQ==?=" <akpm@linux-foundation.org>, "=?utf-8?B?bGludXgtbW0=?=" <linux-mm@kvack.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?aHUuc2hlbmdtaW5n?=" <hu.shengming@zte.com.cn>, "=?utf-8?B?emhhbmcucnVu?=" <zhang.run@zte.com.cn>
+Subject: Re: [PATCH V2] mm/memory-failure: Ensure collect_procs is retriedwhen unmap fails
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+Date: Wed, 24 Sep 2025 21:55:38 +0800
+X-Priority: 3
+Message-ID: <tencent_E424DB6EA2E9CFD8CD43EE3596DC69506009@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+References: <tencent_EDEED996FC685E61AADA14A23BCE9CCDAF09@qq.com>
+	<CACw3F53PUGZ-gWKHiBHzcGfM9r8h-vTp7HnGDOZruucMQC5yDg@mail.gmail.com>
+In-Reply-To: <CACw3F53PUGZ-gWKHiBHzcGfM9r8h-vTp7HnGDOZruucMQC5yDg@mail.gmail.com>
+X-QQ-mid: xmsezc43-1t1758722138tuly5dr5b
+X-Stat-Signature: 7dihirungqfybbi5er76fnnshiw6kthb
+X-Rspamd-Queue-Id: A503A1C000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758721806-69529
-X-HE-Meta: U2FsdGVkX19xSU9Fbf9cD2ICiRK3wivwmiVauJstY0ogOzVMwyRLeG8NLXZo3A19CNRRB20jDGQrDZEeScvg/DV3SPzrkBC5UC1G2NmgywR8KEjEYK+jMgiC94iwZKBxKrDLvmI9s9Zi6BC7/89DJxCdZHKg50LBCMGKFCTal8bj05iM0Gm4S/RvkCdP4VjU4nf0ItsxOosHwScpe1Ut1/UZk2jwpgLNVCp831DDDuoJW+29MLJje0ryXoAjdUsh8H5foy/ODh0NCBZoXDK6R5hXvsBMHHl5MuUc9q5Gq5JEThA2SswgKNTHypgqm+W8SjKiP/r8dwANw7MRgAGnXUbVa+o22XTqJFgaXZkQuJYkjO5tf+aO9uhhJs8Bx5Gn0GRld2fWIPIbjIoIsh5fHnm+qsrsJMCleCGS5ysyrRAEAQpfEKqBM7YjX1OhkPXOE3RxRXSE9GeXoKfltwI5bbNS5RKlhW81GOEYJwl7aSLprKF9K1FuG2WH6kvTPG1ANDmzGCR6C5coMoo7PpJvSdNDdM2wH7p/oYMyl6HHvYUAlPywQ8EQheWeZ98y594rsSgdQi2YpmI7xJjGT0/dmgYKpbyYK3QeoORRT+EZshZsfmniBDyrGDWCvC59S2Htt/Uhb3BkNNn968ct5eVIBFsp8SeNph/WzcXJgEhBUz23kXGdnSFvgrxEtMEQVK9junXMMaSVaDnJqovxZ068gosAh9axUJOidcg5ZYI64omv4ZDDBAdQDMn6m2PXieJYWl6w4laGPYeQzW6fhIHwflqXG15vJrJatdww1/GdAzgn1ie7Yj8otaUZ2AuJBE6FVJppViQ/jArxkvzb3FJRUSnurzzVMayRaV59bAKDAHpBTJ3bGJjYzA==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1758722454-526033
+X-HE-Meta: U2FsdGVkX1/BMvEUWfRpna3yuoIeT9prKp1tuRI4XFVm+ohVKPfG//DWZEaptN4+4ylnokvDbT9IcKfGVAdXFuru9P9mLBGWYVf6s67eo2YdTwvBD53404Q0RBn8IpKAn5g+uGyhigA6FejdiFgx9worKkJ3e+MYlxL5VPIo4fOCOcwDZPo6UuCCCm8Zt3FpzZzHqYiwX75MoFQt3lVhn3WvIzspmFug2MMnDrHqGmnjemgoj+PvDS4RNL4LcHRhDv83mGVcDFF1puhu6ZJruAcC7ydMIUFAFgkfldHrDSJmXV0qV+bTzqOlAuVurC6ynF7TTSA+NqpqPUn14jjjiX1a8Lk+JqJeGT4rvo3YSkep+Lk6SjKsIir67AmsUhvIxKTfI/62Adri0+LoK1KS07bA8n5z/XQDzMSVW9J5ewNK1DJ6t5ivQX5/0diOo7zdWep7shzEMlyoe/ZpnzXvOBWnbAr+C6/wVcYRk1BXwRdoGiogfBxPGI/rW3WRpYt1cMF8hcmypUKECammmZPxoZChp68XCJFx6Y41thAR0f1ymChVpWtmLQ6vHuEJdmtVw+/u72+sJponSRuHOPlwlJU4pqVNjsLi8ClPiMYk10x/HeKj+A3A2RmXjmuQr1+1MjvE31unLSnz9dNzBElGomRaSsvfNVtb3ybcYf8hs0w9EPoRZPS27jzq+WxJX6pbvkrR0WX+e32fo/dYCx830JGiCq6Q7vSiqEmB+pIJN2NeO2SVT0/aChCJO1hUkcjr4Qs2WnfGny4lhg/jj2UKs/XXdWIjP4JAJ00MWXL5V2V1+3AQPKXkdgWcCpVh7V//f1XBRX8QsAoOVKHJYJWov6VsOM3ywnDun/wcyPKnf8av9R7zFn24ucfKtcUDikU/Lvw3nKlqN/CqomHdvPtCBiOvGA/g4MhWkDIagfV1lt0O/EnjIKz3VCEMfuvd2QjnLSABjdmTk+QsAJ6Ngts
+ xq3urO5N
+ LL0vzAoAfNieXIvTJ2mHVoUNkhCqrx+u0mOS02Y+to9h2s8MaH6Iu8oMF00XIqvlJvAyg9jjsdbSmcujuk7sLgpaCS2BqRvnISK6I8C2GZhX9TQlsbJP+6koNHskmcoT4lvE1+fJCx6yKQf+p0DJ/l/qUoEozIGdt4PlNRbhzrAcqfK6Wc4ft/yBnqtisP2IDf0UnHNyfVY3s9c077bjz2bsfEE1dc/Ng/ShrtPuLbxqWl3GSchfi/pBk2SThfauHaoH6fk6rZu0oHZsQXcrr5WxYK+LzLQHz3BiOmGRntbTYVFaQe98QmnfPnxRkViUzVmIiIeo6+QRCaWzuHAHSRBGzKr2UUjL615OgUo9t9EZKUNwDj88VX1ivbMFcMeWC3BKQcYNG32uGDdydIXPHbhr7sTkJF8EwdUnkEfkdMzZqTXwKUfbsbwcjccXHJsc9maBaQpxWaFsMw9DqdwceeQCjj/nO4mwkTaXilX+JAUIczJ4hTkB9NoT+T2jKfu2P7fDvU7BXg/2im9nXrSSBJYr/2462089a1xNQaYiA1r+TRWa7xUx3n9ucfAMjeurDUTo32fXNFqGYLqXqPuvQ81+CIvXOFaNjRkPms1BkjCO6Z78=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,76 +106,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Qi,
+SmlhcWkgWWFuIDxqaWFxaXlhbkBnb29nbGUuY29tPiB3cml0ZXM6Cj4gT24gVHVlLCBTZXAg
+MjMsIDIwMjUgYXQgNzo1N+KAr0FNIHNoZW5nbWluZ2h1NTEyIDxzaGVuZ21pbmdodTUxMkBx
+cS5jb20+IHdyb3RlOgo+ID4KPiA+IEZyb206IFNoZW5nbWluZyBIdSA8c2hlbmdtaW5naHU1
+MTJAcXEuY29tPgo+ID4gRGF0ZTogVHVlLCAyMyBTZXAgMjAyNSAyMDo1NjoyOCArMDgwMAo+
+ID4gU3ViamVjdDogW1BBVENIIFYyXSBtbS9tZW1vcnktZmFpbHVyZTogRW5zdXJlIGNvbGxl
+Y3RfcHJvY3MgaXMgcmV0cmllZCB3aGVuCj4gPiAgdW5tYXAgZmFpbHMKPiA+Cj4gPiBJbiB0
+aGUgbWVtb3J5X2ZhaWx1cmUgcHJvY2VzcywgaWYgY29sbGVjdF9wcm9jcyBpcyBub3QgZXhl
+Y3V0ZWQgd2l0aCB0aGUKPiA+IGZsYWcgc2V0LCB0aGUgdG9fa2lsbCBsaXN0IG1heSBiZSBl
+bXB0eS4gRXZlbiBpZiB0aGVyZSBhcmUgcGFnZXMgdGhhdCBmYWlsCj4gCj4gSGkgU2hlbmdt
+aW5nLAo+IAo+IEkgYW0gdHJ5aW5nIHRvIGZpZ3VyZSBvdXQgd2hhdCB5b3VyIGNvZGUgaXMg
+Zm9yLgo+IAo+IElmIHdlIGdldCBpbnRvIGh3cG9pc29uX3VzZXJfbWFwcGluZ3Mgd2l0aCBN
+Rl9BQ1RJT05fUkVRVUlSRUQgKm5vdCoKPiBzZXQgaW4gZmxhZ3MsIGZvcmNlX2Vhcmx5IHNo
+b3VsZCBub3QgYmUgc2V0IGFuZCBpdCBpcyB0b3RhbGx5IHZhbGlkCj4gdGhhdCBjb2xsZWN0
+X3Byb2NzIGFkZCBub3RoaW5nIHRvIHRvIGtpbGwuLi4KPiAKCkhpIEppYXFpCgpUaGFuayB5
+b3UgZm9yIHRoZSByZXZpZXcgYW5kIGZvciB0aGUgZXhwbGFuYXRpb24uIEnigJlkIGxpa2Ug
+dG8gZG91YmxlLWNoZWNrIApteSB1bmRlcnN0YW5kaW5nIGFuZCBhc2sgZm9yIHlvdXIgZ3Vp
+ZGFuY2UuCgo+ID4gdG8gYmUgdW5tYXBwZWQsIFNJR0tJTEwgb3IgU0lHQlVTIGNhbm5vdCBi
+ZSBzZW50IHRvIHRoZSBwcm9jZXNzIHZpYQo+IAo+IHVubGVzcyBzb21lIHByb2Nlc3Mgb3B0
+LWVkIGluIE1DRV9LSUxMX0VBUkxZIGFuZCBjb2xsZWN0X3Byb2NzIHdpbGwKPiBmaW5kIHRo
+YXQgcHJvY2VzcyBpZiBpdCBtYXBwZWQgdGhlIHBvaXNvbmVkIHBhZ2UsIHJlZ2FyZGxlc3Mg
+aWYKPiBmb3JjZV9lYXJseSBpcyAxIG9yIDAuCj4gCj4gSU9XIEkgZG9uJ3QgdGhpbmsgdGhl
+cmUgaXMgYW55IHJlYXNvbiAobm8gYnVnIHRvIGZpeCBhbmQgbm90aGluZyB0bwo+IGltcHJv
+dmUpIGZvciB3aGF0IHlvdSBhcmUgdHJ5aW5nIHRvIGRvIGhlcmUuCj4gCgpZb3VyIGV4cGxh
+bmF0aW9uIG9mIHRoZSBjb2xsZWN0X3Byb2NzIGNvbGxlY3Rpb24gZmxvdyB3YXMgZXh0cmVt
+ZWx5IGRldGFpbGVkIAphbmQgaGVscGZ1bC4gQWZ0ZXIgZGl2aW5nIGRlZXBlciBpbnRvIHRo
+ZSBjb2RlIG15c2VsZiwgSeKAmWQgbGlrZSB0byBkaXNjdXNzIAp3aXRoIHlvdSBhIGZldyBz
+Y2VuYXJpb3MgSeKAmW0gcGFydGljdWxhcmx5IHdvcnJpZWQgYWJvdXQgd2hlcmUgdGhpbmdz
+IG1pZ2h0IApnbyB3cm9uZy4KCkZyb20gcmVhZGluZyB0aGUgY29kZSwgbXkgdW5kZXJzdGFu
+ZGluZyBvZiB0aGUgZmxvdyBpczoKCiAgLSBod3BvaXNvbl91c2VyX21hcHBpbmdzIGhhbmRs
+ZXMgcG9pc29uZWQgcGFnZXMgaW4gdHdvIHdheXM6CiAgICAoMSkgbWFyayBQVEVzIHdpdGgg
+aHdwb2lzb24gc28gdGhhdCBsYXRlciBhY2Nlc3NlcyB0cmlnZ2VyIFNJR0JVUywgb3IKICAg
+ICgyKSBwcm9hY3RpdmVseSBzZW5kIFNJR0JVUy9TSUdLSUxMIHRvIHRlcm1pbmF0ZSBwcm9j
+ZXNzZXMuCgogIC0gVGhlIHNlcXVlbmNlIGlzOiAgCiAgICAgICAgY29sbGVjdF9wcm9jcyAt
+PiB1bm1hcF9wb2lzb25lZF9mb2xpbyAtPiBraWxsX3Byb2NzCgogIC0gRm9yIGtpbGxfcHJv
+Y3MgdG8gc2VuZCBzaWduYWxzLCB0aHJlZSBjb25kaXRpb25zIG11c3QgYmUgc2F0aXNmaWVk
+OiAgCiAgICAgICAgZm9yY2VraWxsID0gZm9saW9fdGVzdF9kaXJ0eShmb2xpbykgfHwgKGZs
+YWdzICYgTUZfTVVTVF9LSUxMKSB8fCAhdW5tYXBfc3VjY2VzcyAgCiAgICAgICAgYW5kIGB0
+b2tpbGxgIG11c3Qgbm90IGJlIGVtcHR5LgoKTXkgY29uY2VybiBpcyB0aGUgZm9sbG93aW5n
+IGNvcm5lciBjYXNlOgoKICAqIElmIHVubWFwX3BvaXNvbmVkX2ZvbGlvKCkgZmFpbHMgb24g
+YSBwb2lzb25lZCBwYWdlLCBpdCBtYXkgbm90IGluc3RhbGwKICAgIGEgaHdwb2lzb24gUFRF
+IGVudHJ5LiAgCiAgKiBBcyB5b3Ugbm90ZSBJZiBjb2xsZWN0X3Byb2NzKCkgZWFybGllciBy
+YW4gd2l0aG91dCBNRl9BQ1RJT05fUkVRVUlSRUQgKGFuZCAKICAgIHNvbWUgcHJvY2Vzc2Vz
+IGRpZCBub3Qgb3B0IGludG8gTUNFX0tJTExfRUFSTFkpLCBgdG9raWxsYCBjYW4gcmVtYWlu
+IGVtcHR5LgogICogSW4gdGhpcyBzaXR1YXRpb24sIGtpbGxfcHJvY3MoKSB3aWxsIG5vdCBk
+ZWxpdmVyIGFueSBzaWduYWwsIGFuZCBhCiAgICBwcm9jZXNzIGNhbiBzdGlsbCBydW4gd2hp
+bGUgdXNpbmcgdGhlIHBvaXNvbmVkIHBhZ2UuCgpNeSBwYXRjaCByZXRyaWVzIGNvbGxlY3Rf
+cHJvY3MoKSAod2l0aCBmb3JjZV9lYXJseSA9IDEpIHdoZW4KdW5tYXBfcG9pc29uZWRfZm9s
+aW8oKSBmYWlscyBhbmQgYHRva2lsbGAgaXMgZW1wdHksIGVuc3VyaW5nIHByb2Nlc3NlcyB0
+aGF0CnN0aWxsIGhvbGQgdGhlIG1hcHBpbmcgYXJlIGNvbGxlY3RlZCBhbmQgY2FuIHJlY2Vp
+dmUgU0lHQlVTL1NJR0tJTEwuIFRoYXQKaXMgdGhlIG1vdGl2YXRpb24gZm9yIHRoZSBjaGFu
+Z2UuCgpNeSBxdWVzdGlvbiBpczogIApJcyB0aGVyZSBhbHJlYWR5IGEgZ3VhcmFudGVlIGlu
+IHRoZSBjdXJyZW50IGRlc2lnbiB0aGF0IGVpdGhlciAoYSkgYQpod3BvaXNvbiBQVEUgZW50
+cnkgd2lsbCBhbHdheXMgYmUgaW5zdGFsbGVkLCBvciAoYikgYSBwcm9jZXNzIHdpbGwgYWx3
+YXlzCmJlIGNvbGxlY3RlZCBpbnRvIGB0b2tpbGxgIGluIHRoaXMgdW5tYXAgZmFpbHVyZSBj
+YXNlPyAgCgpJZiBzdWNoIGEgZ3VhcmFudGVlIGV4aXN0cywgSSBtYXkgaGF2ZSBtaXN1bmRl
+cnN0b29kIHRoZSBpbnRlbmRlZCBmbG93IOKAlApjb3VsZCB5b3UgaGVscCBjbGFyaWZ5IHdo
+ZXJlIHRoYXQgaGFwcGVucyBpbiB0aGUgY29kZT8gSWYgbm90LCBkb2VzIG15CmFwcHJvYWNo
+IG9mIHJldHJ5aW5nIGNvbGxlY3RfcHJvY3MgbWFrZSBzZW5zZT8KClRoYW5rcyBhIGxvdCBm
+b3IgdGhlIGZlZWRiYWNrIGFuZCBndWlkYW5jZSDigJQgSeKAmWQgbGlrZSB0byBhbGlnbiB3
+aXRoIHRoZQppbnRlbmRlZCBzZW1hbnRpY3MgYW5kIHVwZGF0ZSB0aGUgcGF0Y2ggYWNjb3Jk
+aW5nbHkuCgo+ID4gY29sbGVjdF9wcm9jcy4KPiA+Cj4gPiBUaGlzIHBhdGNoIGZpeGVzIHRo
+ZSBpc3N1ZSBieSByZS1leGVjdXRpbmcgY29sbGVjdF9wcm9jcyB3aGVuIHRoZSB0b19raWxs
+Cj4gPiBsaXN0IGlzIGVtcHR5IGFuZCB1bm1hcCBmYWlscy4gVGhpcyBjb2xsZWN0cyBwcm9j
+ZXNzZXMgd2l0aCB1bm1hcCBmYWlsdXJlcwo+ID4gaW50byB0aGUgdG9fa2lsbCBsaXN0LCBh
+bGxvd2luZyBTSUdCVVMgb3IgU0lHS0lMTCB0byB0ZXJtaW5hdGUgdGhlbSBpbgo+ID4gc3Vi
+c2VxdWVudCBjb2RlLgo+ID4KPiA+IFYyOgo+ID4gICAtIFJlc2VudCBhcyBwbGFpbiB0ZXh0
+IChwcmV2aW91cyB2ZXJzaW9uIHdhcyBIVE1MKS4KPiA+ICAgLSBObyBmdW5jdGlvbmFsIGNo
+YW5nZXMuCj4gPgo+ID4gU2lnbmVkLW9mZi1ieTogU2hlbmdtaW5nIEh1IDxodS5zaGVuZ21p
+bmdAenRlLmNvbS5jbj4KPiA+IC0tLQo+ID4gIG1tL21lbW9yeS1mYWlsdXJlLmMgfCA1ICsr
+KystCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigt
+KQo+ID4KPiA+IGRpZmYgLS1naXQgYS9tbS9tZW1vcnktZmFpbHVyZS5jIGIvbW0vbWVtb3J5
+LWZhaWx1cmUuYwo+ID4gaW5kZXggYTI0ODA2YmI4ZTgyLi44MTU3ODIzYzdmYjcgMTAwNjQ0
+Cj4gPiAtLS0gYS9tbS9tZW1vcnktZmFpbHVyZS5jCj4gPiArKysgYi9tbS9tZW1vcnktZmFp
+bHVyZS5jCj4gPiBAQCAtMTYwMCw5ICsxNjAwLDEyIEBAIHN0YXRpYyBib29sIGh3cG9pc29u
+X3VzZXJfbWFwcGluZ3Moc3RydWN0IGZvbGlvICpmb2xpbywgc3RydWN0IHBhZ2UgKnAsCj4g
+PiAgICAgICAgIGNvbGxlY3RfcHJvY3MoZm9saW8sIHAsICZ0b2tpbGwsIGZsYWdzICYgTUZf
+QUNUSU9OX1JFUVVJUkVEKTsKPiA+Cj4gPiAgICAgICAgIHVubWFwX3N1Y2Nlc3MgPSAhdW5t
+YXBfcG9pc29uZWRfZm9saW8oZm9saW8sIHBmbiwgZmxhZ3MgJiBNRl9NVVNUX0tJTEwpOwo+
+ID4gLSAgICAgICBpZiAoIXVubWFwX3N1Y2Nlc3MpCj4gPiArICAgICAgIGlmICghdW5tYXBf
+c3VjY2Vzcykgewo+ID4gICAgICAgICAgICAgICAgIHByX2VycigiJSNseDogZmFpbGVkIHRv
+IHVubWFwIHBhZ2UgKGZvbGlvIG1hcGNvdW50PSVkKVxuIiwKPiA+ICAgICAgICAgICAgICAg
+ICAgICAgICAgcGZuLCBmb2xpb19tYXBjb3VudChmb2xpbykpOwo+ID4gKyAgICAgICAgICAg
+ICAgIGlmIChsaXN0X2VtcHR5KCZ0b2tpbGwpKQo+ID4gKyAgICAgICAgICAgICAgICAgICAg
+ICAgY29sbGVjdF9wcm9jcyhmb2xpbywgcCwgJnRva2lsbCwgMSk7Cj4gPiArICAgICAgIH0K
+PiA+Cj4gPiAgICAgICAgIC8qCj4gPiAgICAgICAgICAqIHRyeV90b191bm1hcCgpIG1pZ2h0
+IHB1dCBtbG9ja2VkIHBhZ2UgaW4gbHJ1IGNhY2hlLCBzbyBjYWxsCj4gPiAtLQo+ID4gMi4y
+NS4xCgpCZXN0IHJlZ2FyZHMsICAKU2hlbmdtaW5nIEh1
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on next-20250922]
-[also build test ERROR on v6.17-rc7]
-[cannot apply to akpm-mm/mm-everything rppt-memblock/for-next rppt-memblock/fixes linus/master v6.17-rc7 v6.17-rc6 v6.17-rc5]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Qi-Zheng/mm-thp-replace-folio_memcg-with-folio_memcg_charged/20250923-171935
-base:   next-20250922
-patch link:    https://lore.kernel.org/r/55370bda7b2df617033ac12116c1712144bb7591.1758618527.git.zhengqi.arch%40bytedance.com
-patch subject: [PATCH v2 4/4] mm: thp: reparent the split queue during memcg offline
-config: riscv-randconfig-001-20250924 (https://download.01.org/0day-ci/archive/20250924/202509242123.QwwFy7gc-lkp@intel.com/config)
-compiler: riscv64-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250924/202509242123.QwwFy7gc-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509242123.QwwFy7gc-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   mm/huge_memory.c: In function 'reparent_deferred_split_queue':
->> mm/huge_memory.c:4302:42: error: dereferencing pointer to incomplete type 'struct mem_cgroup'
-     struct deferred_split *ds_queue = &memcg->deferred_split_queue;
-                                             ^~
-
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for ARCH_HAS_ELF_CORE_EFLAGS
-   Depends on [n]: BINFMT_ELF [=n] && ELF_CORE [=n]
-   Selected by [y]:
-   - RISCV [=y]
-
-
-vim +4302 mm/huge_memory.c
-
-  4298	
-  4299	void reparent_deferred_split_queue(struct mem_cgroup *memcg)
-  4300	{
-  4301		struct mem_cgroup *parent = parent_mem_cgroup(memcg);
-> 4302		struct deferred_split *ds_queue = &memcg->deferred_split_queue;
-  4303		struct deferred_split *parent_ds_queue = &parent->deferred_split_queue;
-  4304		int nid;
-  4305	
-  4306		spin_lock_irq(&ds_queue->split_queue_lock);
-  4307		spin_lock_nested(&parent_ds_queue->split_queue_lock, SINGLE_DEPTH_NESTING);
-  4308	
-  4309		if (!ds_queue->split_queue_len)
-  4310			goto unlock;
-  4311	
-  4312		list_splice_tail_init(&ds_queue->split_queue, &parent_ds_queue->split_queue);
-  4313		parent_ds_queue->split_queue_len += ds_queue->split_queue_len;
-  4314		ds_queue->split_queue_len = 0;
-  4315		/* Mark the ds_queue dead */
-  4316		ds_queue->is_dying = true;
-  4317	
-  4318		for_each_node(nid)
-  4319			set_shrinker_bit(parent, nid, shrinker_id(deferred_split_shrinker));
-  4320	
-  4321	unlock:
-  4322		spin_unlock(&parent_ds_queue->split_queue_lock);
-  4323		spin_unlock_irq(&ds_queue->split_queue_lock);
-  4324	}
-  4325	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
