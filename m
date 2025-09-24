@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF1E5CAC5AE
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 15:00:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC2C2CAC5AE
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 15:00:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 832F38E0015; Wed, 24 Sep 2025 11:00:19 -0400 (EDT)
+	id A7C248E0016; Wed, 24 Sep 2025 11:00:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BBFD8E0012; Wed, 24 Sep 2025 11:00:19 -0400 (EDT)
+	id A2D9A8E0012; Wed, 24 Sep 2025 11:00:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65C5E8E0015; Wed, 24 Sep 2025 11:00:19 -0400 (EDT)
+	id 969B78E0016; Wed, 24 Sep 2025 11:00:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 531648E0012
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:00:19 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0F6B0C058B
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7EC868E0012
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:00:21 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4605F87A7E
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:00:21 +0000 (UTC)
+X-FDA: 83924454642.11.0352C5C
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 5F5351A0010
 	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:00:19 +0000 (UTC)
-X-FDA: 83924454558.30.8C7139A
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1FBB840011
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:00:16 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ZAZtiqa6;
-	spf=pass (imf11.hostedemail.com: domain of 3fwfUaAgKCCwRIKSUIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3fwfUaAgKCCwRIKSUIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jackmanb.bounces.google.com;
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=P+K3BTvf;
+	spf=pass (imf19.hostedemail.com: domain of 3ggfUaAgKCC8ULNVXLYMRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3ggfUaAgKCC8ULNVXLYMRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758726017;
+	s=arc-20220608; t=1758726019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bKJT4vpnX5xVBMK5mB1lNcuXbTDuRuXg8xoq8hiioZw=;
-	b=G7VKjwIktQIg03f7/2qgFBRWUIdqLc4QqumkZHV87K+qPzfkY3b07Fntj9xDAbDp9C6L0o
-	RDaCDbznMdopJuo8IeLW+QvMp2QUuRswKl8835cZzNPcWC0pgKnanngDZI8QNAG9ALwar2
-	nA9M0evWE3m8O8PC6a4fdatdzgbNnLc=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ZAZtiqa6;
-	spf=pass (imf11.hostedemail.com: domain of 3fwfUaAgKCCwRIKSUIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3fwfUaAgKCCwRIKSUIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758726017; a=rsa-sha256;
+	bh=8QF2cRHh8FytPgxr8dpYOGpJvCeadM1546zJy7s8ewQ=;
+	b=v1muBJbUXb6oR8nHwdr5C4li7/JupDfiE+GGvH/V+uYepH25Fn2qGE10jwFYy9944ONjFX
+	ORIr1/LxjTXImao+U9grmjx8w8r7bKpoybzmrMDC2PAShvQULLft0KGBBhMqcr1XxN0Vzy
+	7008GeHCrx58H/YuJRDCKLCIcKfGMCE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758726019; a=rsa-sha256;
 	cv=none;
-	b=BxllQgRBe7DnyfIa08/yttACdo5/H4h7YtqlcYOM47+Xz27HLaiIBksfuqrSZEJdBIJix2
-	Ip/dwkecxVRo2+92ExSoJM3qLvby9ron5AbWmEUY/IG6Pq9G/phuD2IRIMs5glzkMMy00A
-	lYDIwA3VjiqwnlSTCelKlIu2LdKHWYs=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-46e1b906bf3so23560375e9.1
-        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 08:00:16 -0700 (PDT)
+	b=D3yyg1kRmlQxEnS4P7ASrEZgVdRaVhOZiTlRAkNuJwDdHrNCDtKl5T/QvO9Tj5CkK8V3Aj
+	Y8rhH5rVwfE92YYOuxs+NUC7ufJoJmtqmpQAUdykFMs4AkgY4hdMbRBWcrIV0kmbtG8nJ7
+	WEaMoA3P0EeKnH25Zq8kHMYmix84TGg=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=P+K3BTvf;
+	spf=pass (imf19.hostedemail.com: domain of 3ggfUaAgKCC8ULNVXLYMRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3ggfUaAgKCC8ULNVXLYMRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-46e1b05b42fso19988435e9.2
+        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 08:00:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758726016; x=1759330816; darn=kvack.org;
+        d=google.com; s=20230601; t=1758726018; x=1759330818; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bKJT4vpnX5xVBMK5mB1lNcuXbTDuRuXg8xoq8hiioZw=;
-        b=ZAZtiqa6AzbT2Udt2xwi+yYyqOxEwY4Sp1QtLEc4uvv6MUfm97m4K0xW/Z22QqnPbf
-         kxnyFglFPHm0jB2Hcqr+2V7si1/grvH3DBCc7Y7ux/OmbOUo1pYx+iJOK4088Ab+NdiV
-         sHwnAfVgTSGTy4xVHfBCedvu2ZTAp/DglgAjczlW5X3wloKREVWNGicAmTsgSKxiJzDp
-         0UziP5LFbybGuoLcbWFr7NloWJt1okE21EWXNNLI+OI5J8CH4U5zFXFe/DSAnN7YPH/Y
-         2jNEgJBRvddKDWCFiYUdgOSEqzrE66bd7b/QCZle5uyQ456nEVfmT68NbnSI9oizZqAG
-         b7BA==
+        bh=8QF2cRHh8FytPgxr8dpYOGpJvCeadM1546zJy7s8ewQ=;
+        b=P+K3BTvfDexCJKw0V+Z+zV5GvFk/pKJrunPbPH7n7G4w0ghLkHxQqx8TwBa4q5kXU1
+         7mKUayp5lCyZETlaDsRxxQ+0Z7Ocm4s0a6s+IIuDsdzk9IQjjsqJvYK08oim7JhEx1ix
+         UV0PfgOZ6S4r6fvCLh75wqUiTJhftt+EwgZ5bL982zSgaRFWJ+p5x1xrt6XIGJq0wUoo
+         3W/9tAzDYt3Ilb+O96h2VMrMfCB3C+Gz9+LSnaQg8JMxqBGXIXaYVTkChdxnq4pIaVPq
+         0f3PrFVVRgCNXvZQqeKnTl0OT0kcq93ZU/V+LlyGZKbV6FLZnDySxmA0JHIf5eIjrHaG
+         C/Bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758726016; x=1759330816;
+        d=1e100.net; s=20230601; t=1758726018; x=1759330818;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bKJT4vpnX5xVBMK5mB1lNcuXbTDuRuXg8xoq8hiioZw=;
-        b=LeIl4yURLg6PBpK+XFdQcALG8dXXkikNsQ/1uatvFrptp36HMVvMHGBJFoMPm2VLqa
-         WJRpalv+dSvDtkH1Xt9qqSbOfCTf0X+apQjxwIY/c9QRZALKgqyNIR3idQWLcT25uKJR
-         CL/2+xc1ODOSfoqAfja4eSitqn+v3CQn2U1yqWHcd9NndY2BNke20eolUrjBiiNulSZp
-         O3aK95CvC77mGxwJlqRcZJZOdvHFnLxCNBm0vA6oOOPZ6Kn+T7/7IMK8IeeTTbgVDlfi
-         vlUYhEdhjsZsbvz9ITI3BPkTQkFl6az9LDDcSFRQFn3mih6W6O5z77aHuCQYCMQfFpqJ
-         eYsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVZu99+rXBBmT4WzSBxz9HQxqk29Yit90qt/dx74gKakzU7eQFZ/XcKTE2UCGc2WAjfH4yjQh3+Cw==@kvack.org
-X-Gm-Message-State: AOJu0YyA65x0U9daZ1GGLwM4wBfs1f8rGgY8KE5Q1PLnW5WBaS/b6fBh
-	NW8rRXu8mKwBrKHDr03evuaVmkyHLNv37U6dhAxoCf5JDp4RhNiqOPgTjY8CtgxsYoBvmfp7oAf
-	280idJyxfZ/z2nQ==
-X-Google-Smtp-Source: AGHT+IEwpH5Oza9iuA/SA1ZMp2dUWj5FnIP9hJFno7WJD+Pwhp72Tuy9jz82MKe39ZlHCf09lf2CtXpfs4Ad2A==
-X-Received: from wmim22.prod.google.com ([2002:a7b:cb96:0:b0:46d:712:e422])
+        bh=8QF2cRHh8FytPgxr8dpYOGpJvCeadM1546zJy7s8ewQ=;
+        b=nnqDwDAyn3V10ux1s4sO6ni53VOqFcuHw6ZdOsyUB/WhGpKytzz0KZLwyTQgTOQjwA
+         /9zFY5RwFl0i3kSsV+fIj5U9D8mCG5Ch45azP+BDLKLRO/qKMsQaHhErN1i/Ep+EaNQi
+         JJi8K9GQq2XoLtvLHzfuNFxLAkv69ui4ouw3V53NG+vQ2d/yoXqVG3uyHmYi7TfJZ9Na
+         0wh42BMrT+2gAoPDFNAulKCGJu/Si9hkA+XkpyuuhL6HYgTxur0Rs0BNt9kq9gF/p2hh
+         iSMOk5CZs+oWk3QBx5JdyPHoJ0Nr9E+PlvAi9tLzZmmjRb0ueVVPuzGHWDobV9uVyZzp
+         CqBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV31lw8PxNVbmSTkGPikXJsak5MW592zaYBnQXY5pTJR3VmEdiVuQsr25H+45uuAyOHmiE/IjPD/g==@kvack.org
+X-Gm-Message-State: AOJu0YwINn3lfuMI+BxKZte61N9sN8U7vsKPrNE+qND+SOekFu1EKIeP
+	wsclrIzuYU5aifCDdyibyEICZmq0WEZMDboSKWOiKBe/37H6cQgKbc6dY63UmYsrTQn14QU1rXt
+	09k6u7prDrO9dWQ==
+X-Google-Smtp-Source: AGHT+IHJnBZBPS1nMKaaZcgp71cKjbeNO0YRmTqlXBuWFLXJWbiztOh0lMCy2GikS/TH3xlbidCnHScZxYe/Iw==
+X-Received: from wmpd40.prod.google.com ([2002:a05:600c:4c28:b0:45f:2be0:b17e])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3b9e:b0:45f:2f0f:6649 with SMTP id 5b1f17b1804b1-46e329d474fmr2189815e9.8.1758726015769;
- Wed, 24 Sep 2025 08:00:15 -0700 (PDT)
-Date: Wed, 24 Sep 2025 14:59:43 +0000
+ 2002:a05:600c:198f:b0:45d:d197:fecf with SMTP id 5b1f17b1804b1-46e329229ffmr2453735e9.0.1758726018015;
+ Wed, 24 Sep 2025 08:00:18 -0700 (PDT)
+Date: Wed, 24 Sep 2025 14:59:45 +0000
 In-Reply-To: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
 Mime-Version: 1.0
 References: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
 X-Mailer: b4 0.14.2
-Message-ID: <20250924-b4-asi-page-alloc-v1-8-2d861768041f@google.com>
-Subject: [PATCH 08/21] mm: rejig pageblock mask definitions
+Message-ID: <20250924-b4-asi-page-alloc-v1-10-2d861768041f@google.com>
+Subject: [PATCH 10/21] mm/page_alloc: remove ifdefs from pindex helpers
 From: Brendan Jackman <jackmanb@google.com>
 To: jackmanb@google.com, Andy Lutomirski <luto@kernel.org>, 
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
@@ -102,14 +102,14 @@ Cc: peterz@infradead.org, bp@alien8.de, dave.hansen@linux.intel.com,
 	rientjes@google.com, rppt@kernel.org, vbabka@suse.cz, x86@kernel.org, 
 	yosry.ahmed@linux.dev
 Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5F5351A0010
+X-Stat-Signature: crm1tw86c4rw7odwijmgfypd86gaiffm
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 1FBB840011
-X-Stat-Signature: pcidm5jwaa49rxhxarbsrc7gyn8dcykr
-X-HE-Tag: 1758726016-698202
-X-HE-Meta: U2FsdGVkX18t9LMr2EG0g8RjlqEKMuSp2bkJQaPHQRw4kCf3OrMqQztLmIyMeIhgbY3hP1vrPcUKXwp+MmoEibNWSVIATE+oT4Yy5ir/5HgAQfQ9sJWicF8f8usKBX97TjnNk7u+3Ep9dYL1H4uNPTW7gQ0z85r90SmgFAJS+HCufY0IM2nvTsjh0rFDOgYTzOJV8k4wZ8fxnCFn41V1XCspyl13B9QdD0MW9s900rbz9Y/4A3aOzKR9xR9TYG4dU+tMkRzHtrTBc5CUwiQes8QOpZVzdfNWex0RwaiA+CqlMaCG5w9gqMIXzZAEQkccMMLDDwDQhZYZ6m68LzG1vkdjlxsQ2RzXrUpuo5q6yax5SX5Kmmvdy8b0hfLOGvXT7y2BUsrt9fre0k3Lt0kCwp7Li2ydCli6CRarge+UOYxOx3zpFGkDlxtWZ0Tze9sPcYaLB2azKHzM8OLDrFRJME1Vei+yJ4RwtQ5lf6QLq8pZ60I4bDyPEmE8k4BsXF+sFRoobAAK889VmsCENiYoWQ/lX1KfLsm7cSSkY8nOD2B1zfDes+wq72IhC5+BtZFUqoOugj3n7RtwkVA8CMgm2CNx6TOC4r+eTNXil7p4rxkth0lN75S60ilg+rYBh8ISzBsg0jqh3UmDXVK32+GNsqIvQHOHrucu0Nlz6MTcIUnInAaxcUUKjxUoWRZq2s22HFdHrJEt7ggX52HgBngoPwep0aswbWH8aZbtx6bVM2lEFk9oDa9s2Vxtw7cEiBg0Bn4EjOkanYCvvizaB8+x/PhoyPysmSYN76zemSsZ1a8bJqXPk2UZa9vab/SaGUyc9wNHshvvzCf+IHB6e7uGIyxc2aHbRu8BZEWysw+VYlLoInoR7HHwZIaA0sbsucH5cCnkG+GFnXMxDy6POsvSdgfJCiDNabzOf40RNrPPaimFZ8eu+v+Oe/ItmcCGN4x3y0DysO6UTG4K8O8qO3H
- Dz3c0L4/
- J19LgN0U3Ir39ChFGRZXAkD6ys3J6K4D9kdDRXI6zZn0tSMvgbamrHQrI+YADJe9EJw1u5MM6Aa1K2WFnJJtKwfwbtoINCpVvOsBt5k25fQxzmEMHAoKLmdO/FPHm6wY4XdDjNUi19scqhVxMWflEhMPdP4IbjpJl+LTD+BbogvLEqZsp5IRotE6rHgqlZSmhyPmXbU6afWMUAjgjz7ikRD/RHzZTc0IhhURFdRNa7gQtJ9trwofkUmN/6KsIDAIl5CJeBevJHEm9PD+kdOxjvuk17KqJAFZNMT7f41FolSFL5psCmHkK7RIyK59g0rhhKTt6iKZXqSv5nWZZ8gQRhoMbLpvLbyniHGamKNFpUsAbEumNMqm/bkJ+Vyr5CiBCOo76yenTynDCiDVpgtYb6xDdQAB70NFwx5qntkfo9Q2yjcrwhAIyRSCgoWEs1DUbF8LVTDTZL5rf90PTzPRsqAjF6wRgXsf4FP8/ndO3CPW1XTwZ9emOSxRR+ztR6dMrBxmjZQ1F4Van+FkIkOiVa3a3qg==
+X-HE-Tag: 1758726019-457313
+X-HE-Meta: U2FsdGVkX1+fOXR7fyf7AdOuhIqXP29D6O2wGFuHQGLdlsj+36YrdD37/4T/rOjAbz95yptWhPTl8CBGcI4Ciwc7LbDkkpt3Uez2T6TO/bZaMwwqViiHzwyRJkd/dtSFT3HXLoa6WDiaA1y90o+1hNK6vqoYs1NwDjUkZs4eGyHk++mF4TFbjRXdQM9WxmZD48TnzUozOEuvKK2FboKyqrHhp3dcBt4cbC7q0i4fI0RzLP2x3Pity8AJwYMJIOTztC+teAF5vYOpO1O04lmlE0ZKEBDd3eUEA3A5E/x7hhlCP/dlgnWqufVghDcNEl1QVCgwlFsPJawMdD5jQuYsqA1r2P1zpyYgoMsTsuDSLKJh6a+C9SXvFnRJH5JmiSUrHdjaQue1gUVJ7ucnVuBTr8lrz0RYpVOjp9w34zb/G6q94ZK4+X4lrni7ssDimySbk1HgMNqt7F/Rlfm6qU6Nhtau+CfYeZWWISmuIfXerlDqkQ75pil3w3NqRWo5x2plfInW0IDEdyqZraD1ikGKc2y6AeUhZGzl4ZYt9d7nJuVc2LQlGEyWE4OJStYbhbzB9L7Bo544p1P7hpYz0E+3aiYiw8149xqS12u9NfzFvzIiBKctJCAXuoOycUn7jffZElbkZkzqLJUvwogLJqQ8GH/XoxiC413gaGBWEkIejxC26gJUiNNQhlRbJeiM6vfC0h3GNvU6kw2VhJNYlPXqQ1SALS2SSJ17S6gCAm4PsMMFyNnZSZe83bh0iFlx1ce7pN8EtObuhVPAEiqvYnHQjNk4BzAnDsGPTS0mDkqfVHxcSaAbd5nR2SFYfoQknfBb1g/rdebiKdV5FpS0s9mZC0KBz5h6rmjhd8ThwqdoGfVpF9EuG9LGmmA6MZUVij86uObVXbvYcEA5Ww98wntx9Sfvky1+M5a5oT1KDDibQ84KF2qpm04KFZM0XqXmosSUmFv2zHiY3xdrNkXaPOe
+ CMn0TNfw
+ uTMiyic4/kW23U7fzKq9vDRTcbrCxZboGoQ7EeZ0MjHjefs7xTs4IpDeGGWYBWG1GlrC0/JsgNvMbkzrrqnjpTzGji3QzFtwa1nN+t8eC/sJwj9iIHuDUfkgZsn7+Ah2JAWKm+qwyzfjQY+03NbFEsoXfXj0LOs5EsxfLj3o8OWS9IjtD5aRmxVhukc+25LHAbj4qyPTeoZrNp+iaGkf+WghPwJkJ6JETEKJ0FcVJfK45pmg5rbvye+xfJQ4iSwCdta2SS526Aq40MUk7IJJpdIVFcmYkBY1mhJDG361Pc7Ctdb2rQ88o4cwV4YAnUITHpHbvOYBgw3HG3EC4OASP/BXuJWDbRjgkRGVJ3dCrzeiREIo683+emghKw3ye8ZGyKmPKYZwdu/SRr2ctCj+UKAzJDnHmky3VesZuntaknPJ4HB1E/S4QviTHMjrU00bUPuVNgMCPc+Up3g2Z42Ehpp1OQwHzQxa32LeuDRkIS3TEWJzeI5eOGjLqgEpUSdOBQ8ZAk8DFVen9D0L8edcZVVifjadcdJRf780qjy9Y9KJUylDgswq1q+j29W5eBtsnSmoW
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,118 +118,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A later patch will complicate the definition of these masks, this is a
-preparatory patch to make that patch easier to review.
+The ifdefs are not technically needed here, everything used here is
+always defined.
 
-- More masks will be needed, so add a PAGEBLOCK_ prefix to the names
-  to avoid polluting the "global namespace" too much.
-
-- Move the CONFIG_MEMORY_ISOLATION ifdeffery into a separate block, this
-  allows the various conditionally-defined masks to be combined cleanly.
-
-- This makes MIGRATETYPE_AND_ISO_MASK start to look pretty long. Well,
-  that global mask only exists for quite a specific purpose so just drop
-  it and take advantage of the newly-defined PAGEBLOCK_ISO_MASK.
+They aren't doing much harm right now but a following patch will
+complicate these functions. Switching to IS_ENABLED() makes the code a
+bit less tiresome to read.
 
 Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- include/linux/pageblock-flags.h |  6 +++---
- mm/page_alloc.c                 | 18 +++++++++---------
- 2 files changed, 12 insertions(+), 12 deletions(-)
+ mm/page_alloc.c | 30 ++++++++++++++----------------
+ 1 file changed, 14 insertions(+), 16 deletions(-)
 
-diff --git a/include/linux/pageblock-flags.h b/include/linux/pageblock-flags.h
-index e046278a01fa8c37d898df94114d088933b6747f..13457e920e892c1c5083e0dc63e2ecfbed88f60e 100644
---- a/include/linux/pageblock-flags.h
-+++ b/include/linux/pageblock-flags.h
-@@ -36,12 +36,12 @@ enum pageblock_bits {
- 
- #define NR_PAGEBLOCK_BITS (roundup_pow_of_two(__NR_PAGEBLOCK_BITS))
- 
--#define MIGRATETYPE_MASK (BIT(PB_migrate_0)|BIT(PB_migrate_1)|BIT(PB_migrate_2))
-+#define PAGEBLOCK_MIGRATETYPE_MASK (BIT(PB_migrate_0)|BIT(PB_migrate_1)|BIT(PB_migrate_2))
- 
- #ifdef CONFIG_MEMORY_ISOLATION
--#define MIGRATETYPE_AND_ISO_MASK (MIGRATETYPE_MASK | BIT(PB_migrate_isolate))
-+#define PAGEBLOCK_ISO_MASK		BIT(PB_migrate_isolate)
- #else
--#define MIGRATETYPE_AND_ISO_MASK MIGRATETYPE_MASK
-+#define PAGEBLOCK_ISO_MASK		0
- #endif
- 
- #if defined(CONFIG_HUGETLB_PAGE)
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 0d1c28decd57b4a5e250acc0efc41669b7f67f5b..a1db87488296a6d2d91a1be8d4d202f1841c4dfd 100644
+index 10757410da2127b0488c99c5933422fc649f9a1d..08e0faab992fcf3c426d4783da041f930075d903 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -370,7 +370,7 @@ get_pfnblock_bitmap_bitidx(const struct page *page, unsigned long pfn,
- #else
- 	BUILD_BUG_ON(NR_PAGEBLOCK_BITS != 4);
- #endif
--	BUILD_BUG_ON(__MIGRATE_TYPE_END > MIGRATETYPE_MASK);
-+	BUILD_BUG_ON(__MIGRATE_TYPE_END > PAGEBLOCK_MIGRATETYPE_MASK);
- 	VM_BUG_ON_PAGE(!zone_spans_pfn(page_zone(page), pfn), page);
+@@ -656,19 +656,17 @@ static void bad_page(struct page *page, const char *reason)
  
- 	bitmap = get_pageblock_bitmap(page, pfn);
-@@ -443,7 +443,7 @@ bool get_pfnblock_bit(const struct page *page, unsigned long pfn,
- __always_inline enum migratetype
- get_pfnblock_migratetype(const struct page *page, unsigned long pfn)
+ static inline unsigned int order_to_pindex(int migratetype, int order)
  {
--	unsigned long mask = MIGRATETYPE_AND_ISO_MASK;
-+	unsigned long mask = PAGEBLOCK_MIGRATETYPE_MASK | PAGEBLOCK_ISO_MASK;
- 	unsigned long flags;
++	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
++		bool movable = migratetype == MIGRATE_MOVABLE;
  
- 	flags = __get_pfnblock_flags_mask(page, pfn, mask);
-@@ -452,7 +452,7 @@ get_pfnblock_migratetype(const struct page *page, unsigned long pfn)
- 	if (flags & BIT(PB_migrate_isolate))
- 		return MIGRATE_ISOLATE;
- #endif
--	return flags & MIGRATETYPE_MASK;
-+	return flags & PAGEBLOCK_MIGRATETYPE_MASK;
- }
+-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	bool movable;
+-	if (order > PAGE_ALLOC_COSTLY_ORDER) {
+-		VM_BUG_ON(order != HPAGE_PMD_ORDER);
++		if (order > PAGE_ALLOC_COSTLY_ORDER) {
++			VM_BUG_ON(order != HPAGE_PMD_ORDER);
  
- /**
-@@ -540,11 +540,11 @@ static void set_pageblock_migratetype(struct page *page,
+-		movable = migratetype == MIGRATE_MOVABLE;
+-
+-		return NR_LOWORDER_PCP_LISTS + movable;
++			return NR_LOWORDER_PCP_LISTS + movable;
++		}
++	} else {
++		VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
  	}
- 	VM_WARN_ONCE(get_pageblock_isolate(page),
- 		     "Use clear_pageblock_isolate() to unisolate pageblock");
--	/* MIGRATETYPE_AND_ISO_MASK clears PB_migrate_isolate if it is set */
-+	/* PAGEBLOCK_ISO_MASK clears PB_migrate_isolate if it is set */
- #endif
- 	__set_pfnblock_flags_mask(page, page_to_pfn(page),
- 				  (unsigned long)migratetype,
--				  MIGRATETYPE_AND_ISO_MASK);
-+				  PAGEBLOCK_MIGRATETYPE_MASK | PAGEBLOCK_ISO_MASK);
+-#else
+-	VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
+-#endif
+ 
+ 	return (MIGRATE_PCPTYPES * order) + migratetype;
  }
+@@ -677,12 +675,12 @@ static inline int pindex_to_order(unsigned int pindex)
+ {
+ 	int order = pindex / MIGRATE_PCPTYPES;
  
- void __meminit init_pageblock_migratetype(struct page *page,
-@@ -570,7 +570,7 @@ void __meminit init_pageblock_migratetype(struct page *page,
- 		flags |= BIT(PB_migrate_isolate);
- #endif
- 	__set_pfnblock_flags_mask(page, page_to_pfn(page), flags,
--				  MIGRATETYPE_AND_ISO_MASK);
-+				  PAGEBLOCK_MIGRATETYPE_MASK | PAGEBLOCK_ISO_MASK);
+-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	if (pindex >= NR_LOWORDER_PCP_LISTS)
+-		order = HPAGE_PMD_ORDER;
+-#else
+-	VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
+-#endif
++	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
++		if (pindex >= NR_LOWORDER_PCP_LISTS)
++			order = HPAGE_PMD_ORDER;
++	} else {
++		VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
++	}
+ 
+ 	return order;
  }
- 
- #ifdef CONFIG_DEBUG_VM
-@@ -2122,15 +2122,15 @@ static bool __move_freepages_block_isolate(struct zone *zone,
- 	}
- 
- move:
--	/* Use MIGRATETYPE_MASK to get non-isolate migratetype */
-+	/* Use PAGEBLOCK_MIGRATETYPE_MASK to get non-isolate migratetype */
- 	if (isolate) {
- 		from_mt = __get_pfnblock_flags_mask(page, page_to_pfn(page),
--						    MIGRATETYPE_MASK);
-+						    PAGEBLOCK_MIGRATETYPE_MASK);
- 		to_mt = MIGRATE_ISOLATE;
- 	} else {
- 		from_mt = MIGRATE_ISOLATE;
- 		to_mt = __get_pfnblock_flags_mask(page, page_to_pfn(page),
--						  MIGRATETYPE_MASK);
-+						  PAGEBLOCK_MIGRATETYPE_MASK);
- 	}
- 
- 	__move_freepages_block(zone, start_pfn, from_mt, to_mt);
 
 -- 
 2.50.1
