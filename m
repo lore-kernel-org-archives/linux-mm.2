@@ -4,86 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9FCCCAC5AE
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 22:43:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2ACBCAC5AE
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 22:52:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A89AF8E0006; Wed, 24 Sep 2025 18:42:59 -0400 (EDT)
+	id 481DA8E0007; Wed, 24 Sep 2025 18:52:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A12648E0001; Wed, 24 Sep 2025 18:42:59 -0400 (EDT)
+	id 433658E0001; Wed, 24 Sep 2025 18:52:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 901498E0006; Wed, 24 Sep 2025 18:42:59 -0400 (EDT)
+	id 322388E0007; Wed, 24 Sep 2025 18:52:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 786B68E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 18:42:59 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E1F3F1DC071
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 22:42:58 +0000 (UTC)
-X-FDA: 83925620436.18.35F5037
-Received: from r3-18.sinamail.sina.com.cn (r3-18.sinamail.sina.com.cn [202.108.3.18])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7F3841C000C
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 22:42:55 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=sina.com header.s=201208 header.b=Vfq2y2IK;
-	spf=pass (imf20.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.18 as permitted sender) smtp.mailfrom=hdanton@sina.com;
-	dmarc=pass (policy=none) header.from=sina.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E14A8E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 18:52:02 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B15321601C4
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 22:52:01 +0000 (UTC)
+X-FDA: 83925643242.06.CF0AD4C
+Received: from gentwo.org (gentwo.org [62.72.0.81])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 1404040006
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 22:51:59 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gentwo.org header.s=default header.b=JCkCMpg9;
+	spf=pass (imf12.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org;
+	dmarc=pass (policy=reject) header.from=gentwo.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758753777;
+	s=arc-20220608; t=1758754320;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9jzoboa1vOfIqQZDoYIh1fW4a4hloVEmA+RmS4r7Wa4=;
-	b=6sVNnJ5omsWyJlqW2BuI15OGcPjp2rdrBzA397FcNQNsYvfhn6Sv1k5fwdVmjXLkem9v5X
-	jhV5E9MPKgRVYZesF7DTwS042J/7fZwZrKhmm2TO04Bb6FmtilboiAgyPiaQ87FRBYZQXH
-	Ul7lkaw97iiTYPPQdxk6z+yQM4OgJxM=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=sina.com header.s=201208 header.b=Vfq2y2IK;
-	spf=pass (imf20.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.18 as permitted sender) smtp.mailfrom=hdanton@sina.com;
-	dmarc=pass (policy=none) header.from=sina.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758753777; a=rsa-sha256;
+	bh=sAeA7P6OD4ycKMwz9bR0cq11m4HVzCoNn6h4QDXMPwI=;
+	b=y4M36+WWM6BE9/eGhHT42UYFe5B9mmxdJl/DL0DFCX3Z+3NIcvtsa1ZiPw83LKEeZtNEx0
+	0Q7qtAcl+6tCkLYRqouzs/b2xXtj30B+L3KPi874ZE3JncxledgOwJwsXrhTNpmn9V3pZc
+	uM+dWEZAtchDznul0d+WBduaYeN2dD8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758754320; a=rsa-sha256;
 	cv=none;
-	b=rXWtZWLxReIFL1Ayo0hT9JTDz18kTKdFF4WuUAgkmgXJp99XuHjJGSmUUCY/lsOzXflLGv
-	a5C1UZ3Lz5DKwrfCnz6sFVNKff+hZdJcy9FT0Zc6YisxbNtGuhP9a/GUx4HYaEBfMh6E8/
-	iyK9ao8tr1MfUe0yrTmBZ6MlPWRSh+k=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1758753775;
-	bh=9jzoboa1vOfIqQZDoYIh1fW4a4hloVEmA+RmS4r7Wa4=;
-	h=From:Subject:Date:Message-ID;
-	b=Vfq2y2IKqo9nDdeAzUouuRLe4HytaxrVG8KzUPomcrSyiBu1SMJlTBU6EITF9+csl
-	 1ylFp1n7W5zcJlgGshrcGjw0tY9Xq7NlAktbI/zaWH1vRa3YI4CJoti1YE1Du1FtTH
-	 5PSK/So62sou3lUEF91805mo7CTKNbkSQLVXcwAw=
-X-SMAIL-HELO: localhost.localdomain
-Received: from unknown (HELO localhost.localdomain)([114.249.58.236])
-	by sina.com (10.54.253.32) with ESMTP
-	id 68D473E8000051CE; Wed, 25 Sep 2025 06:42:50 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-X-SMAIL-MID: 4969544456649
-X-SMAIL-UIID: 63B27576B27242D597FF52660C38BAB2-20250925-064250-1
-From: Hillf Danton <hdanton@sina.com>
-To: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	multikernel@lists.linux.dev
-Subject: Re: [RFC Patch 0/7] kernel: Introduce multikernel architecture support
-Date: Thu, 25 Sep 2025 06:42:36 +0800
-Message-ID: <20250924224238.7592-1-hdanton@sina.com>
-In-Reply-To: <CAM_iQpUwm0wOQx3Epo-5MmkfwZmLsehx6HmABNwzqpRNiPjTmQ@mail.gmail.com>
-References: <20250918222607.186488-1-xiyou.wangcong@gmail.com> <20250921014721.7323-1-hdanton@sina.com> <CAM_iQpXMjFs4LmpRVNqxeBnFp4KxEfgi9cB_Jwuy7VgOSqTfsQ@mail.gmail.com> <20250924011237.7568-1-hdanton@sina.com>
+	b=MJlBvx4OUjA6V6DEzEdUhbog8Ncdv0djYXvdsFRhYhgWOFSnlMrtEZ1uA1eXkdgdSTYgtx
+	W4zKDGBl1ugaq7Ebcl+eXK8ba5fmfWA1uUmt9HE5rpq/+rzaKZJrhqUYu6GI/MhTaNSpFz
+	Ki1nYXaTvpHetJ7oijlIjkY8JarVMHs=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gentwo.org header.s=default header.b=JCkCMpg9;
+	spf=pass (imf12.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org;
+	dmarc=pass (policy=reject) header.from=gentwo.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gentwo.org;
+	s=default; t=1758754318;
+	bh=IYb7VmkC8waq1uiEkTNs1ha+Uf22LW177xDsSZHKOyE=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=JCkCMpg9pMvCG5sdzhc/l9xavadn3mVYqBUWq+pWTTDU3r7/d4AWUZCljoC1cWS7U
+	 fDA1Fm21fmLvxNdElU/Dn4buonvrfMmPZXnnToA2MLYjgrOTPbTvs+y8CedNIYA0B8
+	 M/12NGGm6Z3KqTxAS5c4AWa+axj2Mkbgz0UcfNwM=
+Received: by gentwo.org (Postfix, from userid 1003)
+	id D4A7940293; Wed, 24 Sep 2025 15:51:58 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+	by gentwo.org (Postfix) with ESMTP id D29D74028E;
+	Wed, 24 Sep 2025 15:51:58 -0700 (PDT)
+Date: Wed, 24 Sep 2025 15:51:58 -0700 (PDT)
+From: "Christoph Lameter (Ampere)" <cl@gentwo.org>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+cc: Andrew Morton <akpm@linux-foundation.org>, 
+    Johannes Weiner <hannes@cmpxchg.org>, Chris Mason <clm@fb.com>, 
+    Kiryl Shutsemau <kirill@shutemov.name>, 
+    "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+    Brendan Jackman <jackmanb@google.com>, 
+    David Hildenbrand <david@redhat.com>, 
+    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+    Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+    Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
+    Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+    kernel-team@meta.com
+Subject: Re: [PATCH v2 1/4] mm/page_alloc/vmstat: Simplify refresh_cpu_vm_stats
+ change detection
+In-Reply-To: <20250924204409.1706524-2-joshua.hahnjy@gmail.com>
+Message-ID: <fdb56260-8235-eb20-05cd-491fd512cec0@gentwo.org>
+References: <20250924204409.1706524-1-joshua.hahnjy@gmail.com> <20250924204409.1706524-2-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1404040006
+X-Stat-Signature: dc5ahddmdbj8t6xpiz5afdnrn331tsw1
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7F3841C000C
-X-Stat-Signature: pjre4f6gdjyqqro7dtxsozd5jjpe69jz
-X-HE-Tag: 1758753775-725351
-X-HE-Meta: U2FsdGVkX18U8IcIDrlqMdeb0Disg7qPiUQ4M9do+J4tfUW7K7ONFimLq1L19GRmMi9vTCI2tzsuvd6YTOuO8TNjOLwOkzOIazktr3PmB7BszyZbzQjTqILresI8cVttAjAL1MeFi3U/PbrJqIMqdYTw/ho8KUjqbRrGyTk+KSHr2WnE/CxGzhBUN5HHZLyt4l06nPhM9KxStDgaMWnl8Fze0ekfCl4JH3zC0bHpjWvJI5gES9jveYKcTK2knACma6MCwl1x/3jRqWx1+Z5ILGB4qklVG+WstULFOdkry2LZd5yJYJy06Ytd3lfo+aiRFY9gquyK1k1LtdFJoRSG5tzRvBkzUwgF0dYmGE3vMHL/z8wUzWL9F9r0vjR8COWTVmxcVtjzkr6DB69aTyPyOIosJ1RlmtSk9bUuHAtH4gg3xR3nokP7No25td+w05fdzh8oBpysfeOZPna7YhFXCS4PEZCFpCBGvBXwhV67T0JR6jRp7U1bB0aVrE822ycTkQ32zuwYGKWSQQlN0sFD3XpVZOEQ96Sen8vTbtPRJIYmfG0lJgitLaexghok6Cr1TyhAbEnFXb/S1c3BKOlu4VipWT+cRIcFNQR3O8AqXXzYdUSd8a/TO5PNxBsoevToprkvnEOlrjEjPitL3YA6F2M6K1lheAINi4SWG9FGk4Z5AnSvDzz3KjtUCpLACej4f0CcEB5rrwfbLZcBbQk06xwapaqP9Wqya/f/kpI+htFhB0Pqyhy4IM8JeLGSHl/dCLjn9WvJ4n7rI7BCBYiaNk76UixGbOOit/8JkNT+2GEUvIz81OyU2k9KWq6BqSbfA0griuahDhDxi11Ue32C4QXng3FEOalBxblmQLBlcz9H4xYyU4GxQ/JQXjVkX6nTbZKYr5L4NrL0J5aRILc9Tz8mMHM7apERjp+HMd4RlDhsZP26vnfpomaScMM69GO8QAQgRGYB8z4DolEBpK7
- ZKah573e
- kG8+TQijuv5dhQ1zfxqu4pvnrrngPe3YDCuq9mCO8EZtqSzKOeuTzE6E0YcF7KLx857T0M1uYWsmi5EOTvuY1ab/WlN7NQBl1ckQ9pXtlYJSRKtWtYE1ztf3tDLA+JK6lKJg/h/hVrmAYWW6xZc3d8fmflmdLZYN1ZjLIXfpZC6mXhZ5f0wPNavHSGzpa0SNvpHigvgKasiahRCtFovZJPMvd4UyPUwkeEQG8DNNtoqXXCRbNaAJUk3DSktmgJ0leRS/0TYU4zXshBxC+VjsnkFSP7lVVO/mlzhAIZUQ/gTMWWp1OGvaMgZDTR6pWqD3dV7nBQ4h/I8UStQKhwWIriDJae45rXYVBla4wT2/u38mMRhgsqqcl+VnJ1F7jfw+/zdLtgTLIQW8VNGlKvG0dy7cEEg==
+X-HE-Tag: 1758754319-143903
+X-HE-Meta: U2FsdGVkX19OMTaZkxSOEIUkxyNjkvjiG5MAPxex+/5SoNGPTyM6eyTGeqmnrOwHU1T3EGCa6dx+BXyFu32VkdwSWabn0MOD/ZvLUwFkRFxZ3B35by4lXxwwEThqaJQQq7RDBf0AUWbXbvAW6Y2KY1bC4OToVxpGWIHhSi8OfdNrkTYABrPosaDqNvIxBi1WFk4nI2Ree3uIn/fPEUqYQwCJXaZPDzYjWz2CvLSaK51nmUkgVb79w8cZl18A0/XS/5OJnz8GU762yq3Dtv94HMzKCkZdLS9LYNSOUOt0vgs3/0KvQtiEyUKsAMIZ7KKxEgswyPLrCiPDB07jT8R5KBApoAmhJC2bPop441iWTsCTg6uswN8iNXU3QDNdzw0pzrSOinv12jk28onnCunPNw4s7iuN1wg/tF3cJLB0GjgQqbCLIQs1c0Z8UnNmB87NcmNYxIwEjAAU5hw31bkFLks6Gnoavy6/TSheVfNNjZcEQ1C2oJ6cnb3y2zswt/L/9n11U1dt1G4L8y0XOKPqL838l8aZBerz6LGnOuYEQkrUWfOs0jG/ONPeWD7xxg6IQpszyZQ4xxl5Ukksqg6DO3lPcpie2WFrIfZcKLG8ZqhxUAyCLfHNp7bYuXKa5vjL6e+eCA7zbf0KRKinxalTccZvxh8eH2iA6g+DVBAzg6uu2nFZPfzH1N1d+DcU+vA6X7y3BmJlTQYNjCGVS2+2toSpgamuEhhTAv8z/Po80iKoiswzPwOObUnVEKTiLXOapcix7sw6Y9bnXU+U3ozaocHk6YYS6CMzHm2YJTHkdWa6ktsa4Fo5iNn168pviWRM4Lrk9CspGuJeV3/hcSTz5hzdXvVWDVqwLDwGZ2eEaiOobSe+PPxkUkQIf2tF3CvY3peEcjSWp6RL57sOQ4gYIebKmCqjZPIm0ZMjm1eBluMYvrBrUcocoRKyAejllTAxx37DtlDIIi/8ANVRFhO
+ IYzGKIpl
+ CCYICaydYGbehhXXDKF/mEc4KXVjcU+GjeEa8r0BGAeGyy81ofm59z6+4eusTn5UXUh20YnhlSTy+6mX6CwVeCKHf9ECoe2ycKSc/b5Mk+CM70Y6XLyUC4aFWzbsF3GqWDMlB/Y+BUheJ66+CX5pEVEFbmSC0p4kfKX2wkyoVQOjsEd7rnQ19kEq5N8SLfjpw+4RkmaIT+fwNVdbDhDdD5Bj7diZppFDp97z+tiV0DA5e+1e0md7dOH1i6sr9kLehJw1N0DrPqNoV2zW+LgR2JWgWyEO9GxlXifSPNwMu3GbHFVfOv5IytWqmoVBjPfdhhrP49xLAk9xTMd5kVzsBPWL1C1r2ohhjeKHjEZAiu5BypauFhz7fX0lT//1Veli5aSEBHF09Kj6J3TgECNnVvrh3ug==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,49 +97,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 24 Sep 2025 10:30:28 -0700 Cong Wang wrote:
->On Tue, Sep 23, 2025 at 6:12 PM Hillf Danton <hdanton@sina.com> wrote:
->> On Mon, 22 Sep 2025 14:55:41 -0700 Cong Wang wrote:
->> > On Sat, Sep 20, 2025 at 6:47 PM Hillf Danton <hdanton@sina.com> wrote:
->> > > On Thu, 18 Sep 2025 15:25:59 -0700 Cong Wang wrote:
->> > > > This patch series introduces multikernel architecture support, enabling
->> > > > multiple independent kernel instances to coexist and communicate on a
->> > > > single physical machine. Each kernel instance can run on dedicated CPU
->> > > > cores while sharing the underlying hardware resources.
->> > > >
->> > > > The multikernel architecture provides several key benefits:
->> > > > - Improved fault isolation between different workloads
->> > > > - Enhanced security through kernel-level separation
->> > > > - Better resource utilization than traditional VM (KVM, Xen etc.)
->> > > > - Potential zero-down kernel update with KHO (Kernel Hand Over)
->> > > >
->> > > Could you illustrate a couple of use cases to help understand your idea?
->> >
->> > Sure, below are a few use cases on my mind:
->> >
->> > 1) With sufficient hardware resources: each kernel gets isolated resources
->> > with real bare metal performance. This applies to all VM/container use cases
->> > today, just with pure better performance: no virtualization, no noisy neighbor.
->> >
->> > More importantly, they can co-exist. In theory, you can run a multiernel with
->> > a VM inside and with a container inside the VM.
->> >
->> If the 6.17 eevdf perfs better than the 6.15 one could, their co-exist wastes
->> bare metal cpu cycles.
->
-> I think we should never eliminate the ability of not using multikernel, users
-> should have a choice. Apologize if I didn't make this clear.
-> 
-If multikernel is one of features the Thompson and Ritchie Unix offered,
-all is fine simply because the linux kernel is never the pill expected
-to cure all pains particularly in the user space.
+On Wed, 24 Sep 2025, Joshua Hahn wrote:
 
-> And even if you only want one kernel, you might still want to use
-> zero-downtime upgrade via multikernel. ;-)
-> 
-FYI what I see in Shenzhen 2025 in the car cockpit product environment WRT
-multikernel is - hypervisor like QNX supports multi virtual machines
-including Android, !Android, linux and !linux, RT and !RT.
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index d1d037f97c5f..77e7d9a5f149 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -2561,10 +2561,10 @@ static int rmqueue_bulk(struct zone *zone, unsigned int order,
+>   * Called from the vmstat counter updater to decay the PCP high.
+>   * Return whether there are addition works to do.
+>   */
+> -int decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
+> +bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
+>  {
+>  	int high_min, to_drain, batch;
+> -	int todo = 0;
+> +	bool todo;
 
-Hillf
+	todo = false
+
+is needed here.
+
 
