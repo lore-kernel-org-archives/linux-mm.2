@@ -4,98 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08B83CAC5A7
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 08:44:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41633CAC5A7
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 08:50:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D9E48E0002; Wed, 24 Sep 2025 04:44:41 -0400 (EDT)
+	id 695008E0002; Wed, 24 Sep 2025 04:50:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48B0A8E0001; Wed, 24 Sep 2025 04:44:41 -0400 (EDT)
+	id 66E628E0001; Wed, 24 Sep 2025 04:50:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A0718E0002; Wed, 24 Sep 2025 04:44:41 -0400 (EDT)
+	id 5A99F8E0002; Wed, 24 Sep 2025 04:50:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 21DFC8E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 04:44:41 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C58E65ACBE
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 08:44:40 +0000 (UTC)
-X-FDA: 83923507920.21.702DEAC
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 18022180010
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 08:44:38 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b="n/nEpjyN";
-	spf=pass (imf24.hostedemail.com: domain of johannes@sipsolutions.net designates 168.119.38.16 as permitted sender) smtp.mailfrom=johannes@sipsolutions.net;
-	dmarc=pass (policy=none) header.from=sipsolutions.net
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 41EE88E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 04:50:13 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8CEECBB459
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 08:50:12 +0000 (UTC)
+X-FDA: 83923521864.15.C67A4F9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1EC5F1A000F
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 08:50:10 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758703479;
+	s=arc-20220608; t=1758703811;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7E6QK7pHBc6Tj/OKkybEC4KJUY708g6FvcrorHKD8Ws=;
-	b=XNGN1FM980bVrP2CZ0cB+fouYEvXntJ2c8PI7ySiLmho0GsBdiDs/e1qm6BbYfz0eJS6V0
-	l0UIGgpIsbMEu4Zw3kAuygO4dnb2YBmPXd5lCYwi/BQFFkshXruU5giBSuyjJ8TPjOdbr8
-	6dlHXCKXBCsixSN5ID+9lI0hbmHvqL0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758703479; a=rsa-sha256;
-	cv=none;
-	b=BU0ABzsTb0nJvifvwlqECdjT3qITZtHzYRwCNQwwF+gB62z+ZfwHPweWeWAuFRH00gXokS
-	RrqPqHGGI2DQbWbjlKMHDG355bEcVNfaZRChFifY4xnOTgyguqrl2JXjLrkJyuRsBxOCqx
-	SESX0jvuZg94H+d06JMo+DnR+RnHBQI=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J4cKTSeea7/czdVYO122nuGfInlG59hXiu0r7c4Sres=;
+	b=QzoQB/WcF2DHZQ2WOUH9d1QeNlgZ5uoK2YebdL7Gn8GqzcRv3qbzRuF7djVWoTFZ/Q1cMg
+	aYt5fHLgL40wtHgHTcjtrc/8fUh5bJgrdeiWej9KcAJxTz62bbFOvv9AkTIjg3lbqcaqLd
+	aIAsSOMPdgSXNWq+tPBim+dIwCsmPOk=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b="n/nEpjyN";
-	spf=pass (imf24.hostedemail.com: domain of johannes@sipsolutions.net designates 168.119.38.16 as permitted sender) smtp.mailfrom=johannes@sipsolutions.net;
-	dmarc=pass (policy=none) header.from=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=7E6QK7pHBc6Tj/OKkybEC4KJUY708g6FvcrorHKD8Ws=;
-	t=1758703479; x=1759913079; b=n/nEpjyNAmQPJvvj9sPD4cVSeMuuxACtKSqk5aQZYOgGsi1
-	AhKMtt7xTHCSSFWpqJP8KbEOzhbx9iKxFJplDYE2Do++gDlJ8jlKcFPOSBsY9tc4CIiO/CEhJMDgN
-	wK+gOvpta/FOvThh+ZsQYCsG6vxbrie280R/g5FZvSq7rsFQmvNXA4CHNPbPdhnUK8odzOO+MFLMm
-	XXmoTjX7l+MYBBHoK5FDuCh1YsKsxe+IecscdU8lMRAP8qRFeiotq4fqssHPRCK0J5OmXN3OirBtY
-	KfI+Jpl7aKZ3oiG2Qz0A6tjDvEM2YdL1B6cOCaJLvp1luZUjDq3Nys3CMlIBXSNg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1v1L6u-00000008TYW-2seR;
-	Wed, 24 Sep 2025 10:44:25 +0200
-Message-ID: <8d2ec79561f5aa17403014a298bb9188f904e489.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 02/10] kfuzztest: add user-facing API and data
- structures
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Ethan Graham <ethan.w.s.graham@gmail.com>, ethangraham@google.com, 
-	glider@google.com
-Cc: andreyknvl@gmail.com, andy@kernel.org, brauner@kernel.org, 
-	brendan.higgins@linux.dev, davem@davemloft.net, davidgow@google.com, 
-	dhowells@redhat.com, dvyukov@google.com, elver@google.com, 
-	herbert@gondor.apana.org.au, ignat@cloudflare.com, jack@suse.cz,
- jannh@google.com, 	kasan-dev@googlegroups.com, kees@kernel.org,
- kunit-dev@googlegroups.com, 	linux-crypto@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, 	lukas@wunner.de,
- rmoar@google.com, shuah@kernel.org, sj@kernel.org, 	tarasmadan@google.com
-Date: Wed, 24 Sep 2025 10:44:22 +0200
-In-Reply-To: <20250919145750.3448393-3-ethan.w.s.graham@gmail.com> (sfid-20250919_165803_858771_D7FB8768)
-References: <20250919145750.3448393-1-ethan.w.s.graham@gmail.com>
-	 <20250919145750.3448393-3-ethan.w.s.graham@gmail.com>
-	 (sfid-20250919_165803_858771_D7FB8768)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758703811; a=rsa-sha256;
+	cv=none;
+	b=ToXmGgISLWp+KvmY8vEnHQ4U96w/62u8L11HSt+eArodArmUjpN7dQoCx8w41swgWhRHky
+	a0RSZQtSNpvTTYJK7Zxh+OHl2BDuYVx9RKSl05prk1jurd1vL4LPx0C4rIGz1xmcJu6nfO
+	HyxPIDuWW5Gl7a/O5+NzucdyXy3ynAY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 91B4643CCC;
+	Wed, 24 Sep 2025 08:50:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E087DC4CEE7;
+	Wed, 24 Sep 2025 08:50:02 +0000 (UTC)
+Date: Wed, 24 Sep 2025 09:50:00 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
+	lorenzo.stoakes@oracle.com, usamaarif642@gmail.com,
+	yuzhao@google.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+	baohua@kernel.org, voidice@gmail.com, Liam.Howlett@oracle.com,
+	cerasuolodomenico@gmail.com, hannes@cmpxchg.org,
+	kaleshsingh@google.com, npache@redhat.com, riel@surriel.com,
+	roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com,
+	dev.jain@arm.com, ryncsn@gmail.com, shakeel.butt@linux.dev,
+	surenb@google.com, hughd@google.com, willy@infradead.org,
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+	apopple@nvidia.com, qun-wei.lin@mediatek.com,
+	Andrew.Yang@mediatek.com, casper.li@mediatek.com,
+	chinwen.chang@mediatek.com, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
+	linux-mm@kvack.org, ioworker0@gmail.com, stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] mm/thp: fix MTE tag mismatch when replacing
+ zero-filled subpages
+Message-ID: <aNOwuKmbAaMaEMb7@arm.com>
+References: <20250922021458.68123-1-lance.yang@linux.dev>
+ <aNGGUXLCn_bWlne5@arm.com>
+ <a3412715-6d9d-4809-9588-ba08da450d16@redhat.com>
+ <aNKJ5glToE4hMhWA@arm.com>
+ <aNLHexcNI53HQ46A@arm.com>
+ <f2fe9c01-2a8d-4de9-abd5-dbb86d15a37b@linux.dev>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 18022180010
-X-Stat-Signature: iygquyhked5trrd4n1s61xnau7ccutoy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f2fe9c01-2a8d-4de9-abd5-dbb86d15a37b@linux.dev>
+X-Rspamd-Queue-Id: 1EC5F1A000F
 X-Rspam-User: 
-X-HE-Tag: 1758703478-975331
-X-HE-Meta: U2FsdGVkX19HK0+8TBKEWivDHjHRqrjHfwD9NWsWzOt6+JiBe/OXbTrGC9Bi8C/yzOcfl9tF59+jqx31X2flduFfn5weKgChRcFSIWM2aKRYlTy3PLlHlo4ucI4JYhac0xIVzaIm+5d8tsk6wA04EjihJ1AqEOWWczDAa+2BVDrcgPD+UBcFGyIYR9LPnW4Oh3ij31o8pDCKN5rq8yNIZxPpYeGo8TGcfjotRfv0kMDmrWiOrwAvLJJW5f4JJ7sefD2ej7adKOGsRGIhneuZB/EjnkUaX9NO7xa6p4CLFPgdg+Itpkatp5GVC1YY9TEsuilJKiceWCV3UfUWQD4MvMy2V4BBUkp8SRlLy+t5uUt4tHICV++eBysNP9Lb8LNb33255poyjbKlq9y20YNQQQ2lN8cMe3OUwaRQYqNHKGHSyDAaKbnHx1pcvv01IpuWJaLayLV/EeKMzju6CsV8HpwK9Kjlc10ELWIA0gpK9djAbxpVMRKT7Osl/r/3BbXDxJLtd4+rcelLsT0ZVQ4LIpfcZrLWOH2X2QDm4xJpc2stFrnqpMCvSXKVYs9GPFxG4IwkpMbiTVtPMvffAcPnGA/o9N0qJCPXcci0kxhqCS4Vg8p+9vjUzhDZ/lQMwKerBplPuCkopY3+stEs+IEkWenqGSO7Ro2EdlIG4WNDEDtSR6FAQXy4pQbJPiRImk3Oj7xRbIJMvedCo+xLWfUOstvxkH1LaHBT/0OkXIyh4XJGmUE2qNgzJQyXomVaEjGd3spSBcSKJ7oLZISh2QhEgKW95Y17XeW81bx9FKgvIUCItN2F7HLFHngjMxd4MveoYfaAcqLDiOqMefqVg9KYTRe9zVQEOHjrr/cgVCP4wm9/dH7+t0JnOpiUg8sxYXUWCXJSl8ll4kZHlG891Quwu8ywgc3SA9wd8H586Z1Rcgf2TUqnr1MxWj4n8zsSknRRwrpxrVp4SkdyRAh9H0T
- NTR7w2YK
- vCSpTDob3x8dxdv9Y7BjzdZCyINV5lLrU0O/kvBCNQRnFxJvSUDz7sduCBCYIlB89ECwEGD9xvr/uFZ7MIS+fJ2sgTbqYPubIQzpkqUZa2KCMJP17o+FNBi28SU5HeXgGkpOybQG1GzfxYHCRXJTkK4NM2qekZfpSVD9k3EgMAxeZm1rbm6gsmk0gRK8T0jx0UISLFZKp+WFbAROmkzLKsLXKK30HF4E15uOSDvQcmKviTTiD3DCJUGvveW9IWRqvzH6xuXEcdeRH0+/8hSmn21iXFqTbV/XlARWwb2WBAzNrm5v/+dJuC7aikA==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: hdp7nfya8a3jjcfstxjz3ez9w9hqtexi
+X-HE-Tag: 1758703810-420660
+X-HE-Meta: U2FsdGVkX1/Fgmyodmfd4MtoedAmpAXaQZYu/qQnGSg2BPqYms1IYlIwGYUqMU83ZlFVxpEOYF4iKTgNbibipiIsVD3uax+ba1jiE7GXIUDwJi5Xw0Eap+wpgy24uboLAk/5SNBzvBezrX2Hwh+RKjsSIrWN0icgx0HqQS4wMJZ5jrB4tJjzvR1AKJ9K/KmlN0XrwzMKTNV+KNKISesfH5VBnASwGPfC2sGw7C98sqBNR7IW/DnuP/bKeC42RIr7BWfsXMiOlpMgsx3VZ2BClfhvkakTlxgFs9oA4uIUjtjlxS0XPc0/3WwlMH79ryYp9is6VkyFFmUkIa9jONa0zo9sP59hpn+VNxKlaHOXqWPghmYNR3815zv5YqfWAHeKOhSSv7Pxq2arpyp/NyjyeL1KTUaKkQ8M/+qo3dE4RcXlr6b3VdhXlKRnfMUjwnr0JCPm4bkYHQYOTIaKELlAf5qrpISVbQNtt2fRy8w9GnfQpjsClGgFPmZDHb6WZK+Uz65gHu9lLTN1ZRFhbBcymA3H7bVXcLwcptqHspeSDD24+KLf0wfkD80/CmMluWa5Lgweqh/m4XLviKp1dp0Dh9LxU77cD0Y7gUxOP5puyI0h3ezEdPqXarUrSuYPqOnAbK7MQpFgMlA1NQ9eDR+AzwzG8kFX+Ql9+7fu8Gp7fWyJI/oDy1e7xN3dY74Xj431gQVtRXkpI/fnxHvxWToGOSIUo3idsX3CCEFLV/Qds1ScxP0W/c+xDMm8agGijYVEej5YMzZgk9D0qOX16OKqPWxe1JCTEodPSmrloevWlCT7NpKSZhs2p8DVKm+k6nq8685vfohyXpaMm/4Vt56MHyw0s2gKINtw+U7l01yjcKcIEu6Xuyst8+EhEn2ZBn8Eie8swFKmzu+xR7qNGUe6VdvMvILJoVYaXs8dNAzvs0wTAaDk64MFVxEYlU4IOTAdV0Gvpg7iPwE1dvUk2G9
+ zngqVoSg
+ hE11YsrqXVYFmGgT4dwNOYwsYMiXxPautNzOE/ck1FYlZKgI5kM0bjugubNdysCdOlLNoLwy6GwPmSX6OYakcv4iKTdh9+FPV53Pg33EMpSuRvCMjrx5Ow+Ra3X6SItvDsBOUtkSyM+tUdXs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,21 +101,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 2025-09-19 at 14:57 +0000, Ethan Graham wrote:
->=20
-> + * User-Provided Logic:
-> + * The developer must provide the body of the fuzz test logic within the=
- curly
-> + * braces following the macro invocation. Within this scope, the framewo=
-rk
-> + * provides the `arg` variable, which is a pointer of type `@test_arg_ty=
-pe *`=20
+On Wed, Sep 24, 2025 at 10:49:27AM +0800, Lance Yang wrote:
+> On 2025/9/24 00:14, Catalin Marinas wrote:
+> > So alternative patch that also fixes the deferred struct page init (on
+> > the assumptions that the zero page is always mapped as pte_special():
+> 
+> I can confirm that this alternative patch also works correctly; my tests
+> for MTE all pass ;)
 
-FWIW, git complained about trailing whitespace on this line.
+Thanks Lance for testing. I'll post one of the variants today.
 
-I'm trying to apply this and integrate it with ARCH=3Dum and honggfuzz
-(because afl++ doesn't work with -fsanitize-coverage=3Dtrace-pc and I have
-issues with clang right now ...). Fingers crossed :)
+> This looks like a better fix since it solves the boot hang issue too.
 
-johannes
+In principle, yes, until I tracked down why I changed it in the first
+place - 68d54ceeec0e ("arm64: mte: Allow PTRACE_PEEKMTETAGS access to
+the zero page"). ptrace() can read tags from PROT_MTE mappings and we
+want to allow reading zeroes as well if the page points to the zero
+page. Not flagging the page as PG_mte_tagged caused issues.
+
+I can change the logic in the ptrace() code, I just need to figure out
+what happens to the huge zero page. Ideally we should treat both in the
+same way but, AFAICT, we don't use pmd_mkspecial() on the huge zero
+page, so it gets flagged with PG_mte_tagged.
+
+If I go with the first fix for the page merging, I'll look to defer the
+zero page initialisation post page_alloc_init_late() in a separate
+patch.
+
+-- 
+Catalin
 
