@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F35E7CAC5A5
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 15:00:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ABE7CAC5A5
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 15:00:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C778A8E000F; Wed, 24 Sep 2025 11:00:16 -0400 (EDT)
+	id 6850E8E0013; Wed, 24 Sep 2025 11:00:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDA048E0012; Wed, 24 Sep 2025 11:00:16 -0400 (EDT)
+	id 65BE38E0012; Wed, 24 Sep 2025 11:00:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A51A08E000F; Wed, 24 Sep 2025 11:00:16 -0400 (EDT)
+	id 524DE8E0013; Wed, 24 Sep 2025 11:00:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D8E68E000F
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:00:16 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1EDBD87A8D
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 439E88E0012
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:00:17 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DB4DF1608CE
 	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:00:16 +0000 (UTC)
-X-FDA: 83924454432.17.2A93FFE
+X-FDA: 83924454432.23.2F55E89
 Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 30265100016
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:00:13 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=bOONPAwb;
-	spf=pass (imf05.hostedemail.com: domain of 3fAfUaAgKCCkOFHPRFSGLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3fAfUaAgKCCkOFHPRFSGLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--jackmanb.bounces.google.com;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 0C340180011
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:00:14 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="CC/2Riqz";
+	spf=pass (imf24.hostedemail.com: domain of 3fQfUaAgKCCoPGIQSGTHMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3fQfUaAgKCCoPGIQSGTHMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758726014;
+	s=arc-20220608; t=1758726015;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z2K58t/vrOefSYqdR7POZfHM/E5LlRhe2fvwwEfqIfU=;
-	b=giSWlqNTz6ub0lnlo/O30hTOLQO09y9EVlxYI45pStZvKueOoEWo/RssvliSSFhKOwtzLv
-	jg+Ck3TxvQHFL28YW2nTOPRdPdJG6dRLIzc7l2DKD3EZ757Zh3nEhH36C9Yh4wyrudpMO2
-	TnsG5HCm4BG0P0H7U2HMUORdFEimnV4=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=bOONPAwb;
-	spf=pass (imf05.hostedemail.com: domain of 3fAfUaAgKCCkOFHPRFSGLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3fAfUaAgKCCkOFHPRFSGLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758726014; a=rsa-sha256;
+	bh=CX5Q5YH/plIL1ST5QoPko2JUmjdnIY0LBvORLR/qltw=;
+	b=HE0S3aINKk45LKdES5eUAcp4L/RH8V/Uanicta8tS5sY7/N1cZMYyrsfMm4CxxlfXTPj8W
+	t52w3uueX1SgiRUqne1tj9dwepIi5/4vU8Bzg8G8RnmfrgpnglPEntiKxx0WqNskUA+jdU
+	acsDbP2jT3YE4jNw3Lzg6S/YzfSh8gQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758726015; a=rsa-sha256;
 	cv=none;
-	b=wlq5fLsz/OdzK7a2/SqZn7zxsZchSZLZ9xOtU3grUtR2Oc7rCk2e2CCt8MTVHzvTmYvnZD
-	j/Zk3TLbXr7Qc7Aj6zmhfIgz5g3CQ7jquQ1g8ZJr8YzfjaANltdf6j9BShRZ9hba9B9E2l
-	VbG4QlIbgNdeqGMdETCP9YMKgawQg2A=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-46e23a66122so11666525e9.0
-        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 08:00:13 -0700 (PDT)
+	b=irn26rK730rIMqHRvwFs/vQ26wE9DMBDGlp6nL5ouMtmRyhD/5H0MDVZKEpYXMYowYwWGJ
+	u6evw71s2vDc1EUaNRLXvF3AUL9MTME3RIaWHOCjeoJyMyXKKC8Ypa9v9CLQQpCAQpvxGS
+	WrbbsHadPYQKok0rWVjGQHdM6kZWddM=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="CC/2Riqz";
+	spf=pass (imf24.hostedemail.com: domain of 3fQfUaAgKCCoPGIQSGTHMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3fQfUaAgKCCoPGIQSGTHMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-46e2c11b94cso5443615e9.3
+        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 08:00:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20230601; t=1758726013; x=1759330813; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z2K58t/vrOefSYqdR7POZfHM/E5LlRhe2fvwwEfqIfU=;
-        b=bOONPAwbTE52ukZVxMoo4AccRKpZ/D9KfweVvmsof2A36IdVtdXOMQF9l4xWSDedBt
-         n7ijJice1IJfYVsDUWV6XItovAhVVMdilK8pC73Ey0YNE75umtFiuMxR9S7Qx6dxKOUR
-         Azd5fvbOF5rcIMkBN7714tQMN+G99z6ctNkVXck/OreThuxpe5PhhA5uplC6/CTxMBKO
-         lCrYZHp7qDUMAXW7LqNeb1A7/23afJ8ib6Gr1az6yKIYhkha/jej0d4EEOFm0meyAQbq
-         XM4ZIuzhjApnPpD7+cAgQa+XM0XHIczxwobCWXIIzbFLGQtwdSKMJE5TnljvoOpn4IG+
-         GLgg==
+        bh=CX5Q5YH/plIL1ST5QoPko2JUmjdnIY0LBvORLR/qltw=;
+        b=CC/2RiqzqwZS6HETapVF6t1YevJPxHgNr7JLG8faJEaG+CCOG8ijjLXj7KEDq56JrR
+         wiIABoBeInc9qq99Zz9u1XjiPWyCMsI9sg8z4q24hZyT+MJ/61qPXtyuwgdOT7wwaJ2+
+         YyAYT4o1tiL1VHERp3BEZZ+PifJrwumUiz/wckMViKFF1+w0DlV8lQ+mEqcXuGebNNaN
+         4aoBniIn2HAvW4SSjmLG7ln8frirXQB51OPuZcsJqb+8b0SSAgb6543JBK2+/3jNR2dn
+         q5f9wxVnFS4z6lSwZtrHxPEal4KNDq2pfF3wxsBieOvdS4sNixhx2RcsviHi0Q/CpBJk
+         6H6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1758726013; x=1759330813;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z2K58t/vrOefSYqdR7POZfHM/E5LlRhe2fvwwEfqIfU=;
-        b=tEQM3QpCC95jsFNI9VyiSJ0Ugn3Lroy0QnvZn3MJmT+xMFP3PJjSGHov86bchEZmAH
-         squmoXC180dtNqIdYQV0TIekgq3V2uGqdW5irmUyyF9L8UjYYhNa+J+HjGIiYB8jnTKV
-         QmIQBHiwt9jRUA2Q+vMItRfRbrInqXZ5nxLGOFy8p2/2KPOWJUgvvpNnEw2hyski0sEf
-         FSE4vHb6lXg42rFHT1X6KX77oAlCcKpcLYiUUKDWnRURIMKZmPH8IZo3RZLMuBlP/2r4
-         Cb/EQ5xDU41DTYWtzg48aiIZiY1bXpNaogcfvpUwqWBz8WVUUYwZauC5APKy++vtETtu
-         0pvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUD6F8aGqpgb3zFXnTJLI457L/MPB40+jJ6/3VVTntSJ9N/MWgHmlkDFRIMMR6zShebqKne1Dn3rw==@kvack.org
-X-Gm-Message-State: AOJu0Yw83yTwJsr+g6uiI8ORvDEfreAxyQDViCAJi0Tj9B6oif4+ZAQO
-	WgZaLGcWtZgK+9vX0mOA0GgSsiJeStl5abHfFSoSOg6PaoXlkqWry3+modMnHxoF4jyQDjQIwrs
-	qxuuVSyT95BGqGw==
-X-Google-Smtp-Source: AGHT+IFLbqLP4y9VzvHzeY0NK/ko0qJcgJDnQDoVhaZ1NLWwdjq/QRcEPRrnluk2M64Siud++fEyGmKNZKOPkA==
-X-Received: from wmqb8.prod.google.com ([2002:a05:600c:4e08:b0:45d:d60a:8d7e])
+        bh=CX5Q5YH/plIL1ST5QoPko2JUmjdnIY0LBvORLR/qltw=;
+        b=t51MptNe5uxUFUkntRv581zrNcW4+ipqcVSkWd2yafKXfaiRrU9FKCQmOBgOkFkHPL
+         570s6k168HhCYTeF7VZ//vM1kGz/Ypj5a1Tfg5MXeZWxXw8yT9OjJzsJLRyCxOFQu4Sa
+         i4GaLQJE9kDU8JdlqKc/jUtScLOCFUlzENxzXbKh5m/Wu56BcQ5rQgKo/bHwBKMVkmUG
+         wrn+p7nhD2KdkzDms66KWFW4TYSeqIbFKavGjeNDW+0Q4kNErpmjf7DWaqjV/s1ShquK
+         cOaBAm6emWZj8ed4ZLGnI9KiudruwOlNx1MpVZpJxd+dZNQ3khVChELeQ8515MLcfx8d
+         7LXA==
+X-Forwarded-Encrypted: i=1; AJvYcCX6v6/PRbxk/1YHTqj5y8EnYEBr7WrM/KxwuJJJlYNTdoMsl1tTGrZ04WDIJk/CngiZzdC5hjTdow==@kvack.org
+X-Gm-Message-State: AOJu0YwlP1M5N7NlCp5yVkkLnQG57iSi+z6d7LwcfMlN9aA0ky2h4VSV
+	PY8+wcqZu1FRO3bR0fMgtyYaqGbM+frRzWw2yFvaicAvzphwQFus/ZuKGxuaH0INkV3bija8wcR
+	QhZ+lKzzJlJQkqg==
+X-Google-Smtp-Source: AGHT+IH1z5403qKBJ7o7GKoFaP/RUEDwuiU+FQ2BI25kf1Pv6Ap4eL3k4PLg1ZIY6q/Lrj8v/DOCur38GOqArA==
+X-Received: from wmbdr13.prod.google.com ([2002:a05:600c:608d:b0:45c:b682:883b])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:609b:b0:45d:e4ff:b642 with SMTP id 5b1f17b1804b1-46e32a04a4emr1138645e9.25.1758726012269;
- Wed, 24 Sep 2025 08:00:12 -0700 (PDT)
-Date: Wed, 24 Sep 2025 14:59:40 +0000
+ 2002:a05:600c:17d0:b0:45c:b53f:ad9 with SMTP id 5b1f17b1804b1-46e32a1919dmr978105e9.33.1758726013525;
+ Wed, 24 Sep 2025 08:00:13 -0700 (PDT)
+Date: Wed, 24 Sep 2025 14:59:41 +0000
 In-Reply-To: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
 Mime-Version: 1.0
 References: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
 X-Mailer: b4 0.14.2
-Message-ID: <20250924-b4-asi-page-alloc-v1-5-2d861768041f@google.com>
-Subject: [PATCH 05/21] x86/mm/pat: mirror direct map changes to ASI
+Message-ID: <20250924-b4-asi-page-alloc-v1-6-2d861768041f@google.com>
+Subject: [PATCH 06/21] mm/page_alloc: add __GFP_SENSITIVE and always set it
 From: Brendan Jackman <jackmanb@google.com>
 To: jackmanb@google.com, Andy Lutomirski <luto@kernel.org>, 
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
@@ -100,16 +100,16 @@ Cc: peterz@infradead.org, bp@alien8.de, dave.hansen@linux.intel.com,
 	david@redhat.com, derkling@google.com, junaids@google.com, 
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org, reijiw@google.com, 
 	rientjes@google.com, rppt@kernel.org, vbabka@suse.cz, x86@kernel.org, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>
+	yosry.ahmed@linux.dev
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: 30265100016
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0C340180011
+X-Stat-Signature: iw4mraq6w699ny97kgd1b6gg9ok8o44b
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: emfrg4kgyyrj8tcy1cgghuymteagoqo1
-X-HE-Tag: 1758726013-528721
-X-HE-Meta: U2FsdGVkX19OYSlZjeq4Xz52VJVBTJkKlvRckImi4H06gIqXyolMeVkPPhMBtk5BEMpgk9fVou5HGCazdEMNgzt5eVOL1qnmMmvzkt3r4za/TfQdPnzRUSZm/gYXB+bEPL0EgvsLNM/DR/2Pr3knVQrLXBqQcMnXIVE5NgjZkmKuPsl11xzfYNT0n0tTKTQe4uwEuGYmBHRxdgZ4gbHdDuYMn2kdY5hq5aF+Vbbcn/idU5emqlprXnYcgjkZMM20mAuO9nnPm1nj5UKUu0jQeN/XX1n9XQZ1zrpW+WOzmNJOxRko82ja3oANdPIbnABvGuzDnRIm97J+Wl97WiJubhl37J5E8VPc//nAsDGG6WpavmOMAjGF+VHVKznfVG9AXJf7xsu4f/SlU4tTwA5CUi1jGIgMidkOW1jFEn64b9S3OJIoYP/XXg4MepN2LBNxi4XGjJ1ykT2GpBbk3WvW/ycIZbsObEdAfZpSwLuJz9aA9CKjehzDp0nmISASR4oMUGgN+FJrJPpDXQ2A8rXtnu+mJmk4ET+ZGB9cgDaPahjzZ93kwfJ1lmFHyM/WqQvi1VZMEmKkDQs+o9PgoQ5TslBl4UaX9bdn+aKVocps4qruA+qwilQYpKsT4rfWXzGK7vG/ln9ECHaGID9TSysyZr78NzJGRpVSURcfV5pDlkd/8s+SivQzsl8oMrfDcVWni7RVG818CzqRtn14XIBCUPwrAwmn872BF5OBII0bGD/bwl8xvznI7gisNpUlLP4aWKWcauSN04AXEZZo+Wmrd02y8Xn9nh8iMwEwt9Rx6iZwNv8mXqk92Z9mTt4pFqdAoCYJ9Ay9nTJjxSSLnuu5/I5ut+sV0C5vBZ3CTRus7dUeZ6iAhLPUfp9lMwA5K1egMIuzENwpkXByvPH9LK9pySpZFzQRCZK3gbTIPAYYZbVqbqsDeuNN+DcZSViZ5gnA7F2V8NfLXtFvp0UDsEt
- kd7h7ps6
- K1lNDkfLuBtQ6zlq6OGt9HDdbOrtSE52tjP4uhskHvxxwYUqTleEppxspGka7JFEepX7fWxBjfaQTIryOfQVL5F4/tGZsliV4nJ8HEsNFckx83oUyQ05dUqYSWGkBoeDJ6PGzCRSIlN4m7TDiNeoXXGCOGxuoeKbkcbXbFoynjo1qs9YMUlLICvns4wHdNGd9O2+CJXsRpmwbxDOwYFpVB+cuC5TlAQC8Ro7yaH8ITvv4Lwaox0v+73kfOC4Nf0UVIfvX4AJtQaxvcI6v7rxEAV8YWlfVzGmtPUSiWRmEGoUesmnzDktBm53Rlf8eeOS34dbW0FGBxit8I8BFTh/Ht3sANq+idT75BFsiBknNJlh6JzdcBY9gRx+rWr/I01ttqBZOHwfzMb//eZjUTCZrwohIGiSXxJqSjwJRkLx8zF5SrC5yTG5sC5C36Sj55zKpraT2YnhaajavoJLhVO6l7tMpqykNXlVRkhFZMxBbQqOz2TGRoQxXr1+I4C5xlY/T3Rr/MvQESaV7cgrO77SgWdCRiZL+Dn3rRj0PzTus97cLWru/60bO037gcw==
+X-HE-Tag: 1758726014-610849
+X-HE-Meta: U2FsdGVkX1+SIwmbyCwqIZU/8EGrHY9McXGSEHvetvNClvfOal39q/Kb1GAEZ/wgCZi2lC+SCCatcLY2aEBLO3N0n9E/3I2TDEUW1Q1NXXBDpTPgxO5sQTryyFamIIhB3tHcRmdxLts0oLqTaMRATyyhMLXV26xM8poQ/YuYfNhlyetvGr4xxauWZgX3iGMEfsiGWffQi45/q+lzSOvlgDXsJDbZb2Dr0lhlenECR/QDA4+eMqM4hU8DJWMZwM4Vc+/B1W9BpoaFulZxSt7paqYZuJ7JRDgPewFSKpovEz7ebOTGMT2ix/HMS3kfpAkwQUXGjDA3XqSsDXHN3RgSmhtFhxHxfbaRbnpBrSVR5RZRLH3ZIVq36sBr0z9hY8AuUvduaEqztRSsZ08OtGXXWNMaPFkDSWj3bDAOWqclrDOT5W0F3K+1uzXZisdbvirgBbBI1eLHShUEWWOWzTevSA/q0ZW7KbgNaZ0/1T1ClWEOKwFUqlr2Bkrs1e0RJmkZQuPr1wSH1iDfvJvlZgFq8XtYP5hna3RTT9C8Nb0WNwXpcoUZZhZ2vixuR3vaaI0qZWM8bFH3yehH5TXH8NouIyJDm/5Yb89ZU3Bpl2i7JmOrUnhexbdnc7XLb23IqUcy5C6jPkqRy/FEZ2w4zaPVM3I9yJbP5RdFonvWwJldySBkx1/fzxWhpa6kfzKVvI+Y6CW9f7Ffh03HUPh6mBQWl7/3ZRpoLOp9twEPSjmIjG6W4OnWY1a49sDnYIgb7IdxzhleojDtWIvGGs4CWqRx415+RgoArSvEVqjXGVENQXBMgu8524Mgv4E57S0yE9o6EoylOd1woHjunNi9fdqXW7nIrQsApBUHlvLgFYm5/wbOVW70b0n4ysDhOmnWXS/X4wYRTghTRH0Ga4NFuQiJuvja2hpHZ431io67g91/gjdaNDNOMDFVAbBr5nt0D9i/UbK9odatGtIKJIv6wEn
+ xgB2KGWS
+ 9HLaOtPtmTBWsY1vZQG8eHj/gwWwOQUjQnTXiWa3CU0JXYB3bUONC/GyEmHlUxW5VJCGMR6ZACGjrHH4H1ITM65sJkeLJqfptEgoTUmHcxCfatw7ZBQhZzHW6aUTDfnSEBCCa4fmO76HGLSScpw2+Hhc9f1j9c2ZFu6Bq8wxu1lNMZVk8nKf46aZbd02w1rwVw5Ipxbu0m15bWUO4EPhSajIB3zYZE5NTbkkzM3DQ/7pf5h6ip+0EiFQr/xYIOUQmM2Saae0yGeHoIywawbmXGqL59hGDT7pGZ48o4/h89IMNpmGdiDRpGYIyaCHV4w1lKfLCIcyDLs2oxObhwWFy08QpoK37L3Wtg5KYaCRIqAsHql+H2ZkzlQ+mqTygprN/I8HiZVpebWuLZd/nmZBhJF2+7R9ask1oJ+bT4qMqSxyV1vTux4rRQa2rHmf3+FxAeGvOgo8mS6qT38GogL/yMGrKJugN0gRcpLcRpSlzArijyUPKodl1fJqx06zmgiWcnYnfyA8AIdlwmXXx9BcPiG8ToFMZr0ZjVdKeENYg15GDcuL7BVyHubmBEkRZYFVCtIY7ugnAzmxZ0LLaqAUJuiX683R0/b6YE1fu1ZXFEVkd5vc1pSorcUhiFr3SyKZxHZY6pxzOmPSKW90=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,91 +118,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-ASI has a separate PGD for the physmap, which needs to be kept in sync
-with the unrestricted physmap with respect to permissions.
+__GFP_SENSITIVE represents that a page should not be mapped into the
+ASI restricted address space.
 
-Since only the direct map is currently populated in that address space,
-just ignore everything else. Handling of holes in that map is left
-behaving the same as the unrestricted pagetables.
+This is added as a GFP flag instead of via some contextual hint, because
+its presence is not ultimately expected to correspond to any such
+existing context. If necessary, it should be possible to instead achieve
+this optionality with something like __alloc_pages_sensitive(), but
+this would be much more invasive to the overall kernel.
 
-Co-developed-by: Yosry Ahmed <yosryahmed@google.com>
-Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
+On startup, all pages are sensitive. Since there is currently no way to
+create nonsensitive pages, temporarily set the flag unconditionally at
+the top of the allocator.
+
+__GFP_SENSITIVE is also added to GFP_USER since that's the most
+important data that ASI needs to protect.
+
 Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- arch/x86/mm/pat/set_memory.c | 32 ++++++++++++++++++++++++++++++--
- 1 file changed, 30 insertions(+), 2 deletions(-)
+ include/linux/gfp_types.h      | 15 ++++++++++++++-
+ include/trace/events/mmflags.h |  1 +
+ mm/page_alloc.c                |  7 +++++++
+ 3 files changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index d2d54b8c4dbb04cf276d074ddee3ffde2f48e381..53c3ac0ba55d6b6992db6f6761ffdfbd52bf3688 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -3,6 +3,7 @@
-  * Copyright 2002 Andi Kleen, SuSE Labs.
-  * Thanks to Ben LaHaise for precious feedback.
-  */
-+#include <linux/asi.h>
- #include <linux/highmem.h>
- #include <linux/memblock.h>
- #include <linux/sched.h>
-@@ -1780,6 +1781,11 @@ static int populate_pgd(struct cpa_data *cpa, unsigned long addr)
- 	cpa->numpages = ret;
- 	return 0;
- }
-+static inline bool is_direct_map(unsigned long vaddr)
-+{
-+	return within(vaddr, PAGE_OFFSET,
-+		      PAGE_OFFSET + (max_pfn_mapped << PAGE_SHIFT));
-+}
+diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
+index 65db9349f9053c701e24bdcf1dfe6afbf1278a2d..5147dbd53eafdccc32cfd506569b04d5c082d1b2 100644
+--- a/include/linux/gfp_types.h
++++ b/include/linux/gfp_types.h
+@@ -58,6 +58,7 @@ enum {
+ #ifdef CONFIG_SLAB_OBJ_EXT
+ 	___GFP_NO_OBJ_EXT_BIT,
+ #endif
++	___GFP_SENSITIVE_BIT,
+ 	___GFP_LAST_BIT
+ };
  
- static int __cpa_process_fault(struct cpa_data *cpa, unsigned long vaddr,
- 			       int primary)
-@@ -1808,8 +1814,7 @@ static int __cpa_process_fault(struct cpa_data *cpa, unsigned long vaddr,
- 	 * one virtual address page and its pfn. TBD: numpages can be set based
- 	 * on the initial value and the level returned by lookup_address().
- 	 */
--	if (within(vaddr, PAGE_OFFSET,
--		   PAGE_OFFSET + (max_pfn_mapped << PAGE_SHIFT))) {
-+	if (is_direct_map(vaddr)) {
- 		cpa->numpages = 1;
- 		cpa->pfn = __pa(vaddr) >> PAGE_SHIFT;
- 		return 0;
-@@ -1981,6 +1986,27 @@ static int cpa_process_alias(struct cpa_data *cpa)
- 	return 0;
- }
+@@ -103,6 +104,11 @@ enum {
+ #else
+ #define ___GFP_NO_OBJ_EXT       0
+ #endif
++#ifdef CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION
++#define ___GFP_SENSITIVE	BIT(___GFP_SENSITIVE_BIT)
++#else
++#define ___GFP_SENSITIVE 0
++#endif
+ 
+ /*
+  * Physical address zone modifiers (see linux/mmzone.h - low four bits)
+@@ -299,6 +305,12 @@ enum {
+ /* Disable lockdep for GFP context tracking */
+ #define __GFP_NOLOCKDEP ((__force gfp_t)___GFP_NOLOCKDEP)
  
 +/*
-+ * Having updated the unrestricted PGD, reflect this change in the ASI
-+ * restricted address space too.
++ * Allocate sensitive memory, i.e. do not map it into ASI's restricted address
++ * space.
 + */
-+static inline int mirror_asi_direct_map(struct cpa_data *cpa, int primary)
-+{
-+	struct cpa_data asi_cpa = *cpa;
++#define __GFP_SENSITIVE	((__force gfp_t)___GFP_SENSITIVE)
 +
-+	if (!asi_enabled_static())
-+		return 0;
+ /* Room for N __GFP_FOO bits */
+ #define __GFP_BITS_SHIFT ___GFP_LAST_BIT
+ #define __GFP_BITS_MASK ((__force gfp_t)((1 << __GFP_BITS_SHIFT) - 1))
+@@ -380,7 +392,8 @@ enum {
+ #define GFP_NOWAIT	(__GFP_KSWAPD_RECLAIM | __GFP_NOWARN)
+ #define GFP_NOIO	(__GFP_RECLAIM)
+ #define GFP_NOFS	(__GFP_RECLAIM | __GFP_IO)
+-#define GFP_USER	(__GFP_RECLAIM | __GFP_IO | __GFP_FS | __GFP_HARDWALL)
++#define GFP_USER	(__GFP_RECLAIM | __GFP_IO | __GFP_FS | \
++			 __GFP_HARDWALL | __GFP_SENSITIVE)
+ #define GFP_DMA		__GFP_DMA
+ #define GFP_DMA32	__GFP_DMA32
+ #define GFP_HIGHUSER	(GFP_USER | __GFP_HIGHMEM)
+diff --git a/include/trace/events/mmflags.h b/include/trace/events/mmflags.h
+index aa441f593e9a6b537d02189add91eb77bebc6a97..425385b7f073d05e9d660ad19cb7497f045adfb7 100644
+--- a/include/trace/events/mmflags.h
++++ b/include/trace/events/mmflags.h
+@@ -100,6 +100,7 @@ TRACE_DEFINE_ENUM(___GFP_LAST_BIT);
+ 	gfpflag_string(GFP_DMA),		\
+ 	gfpflag_string(GFP_DMA32),		\
+ 	gfpflag_string(__GFP_RECLAIM),		\
++	gfpflag_string(__GFP_SENSITIVE),	\
+ 	TRACE_GFP_FLAGS				\
+ 	{ 0, NULL }
+ 
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 600d9e981c23d75fdd4aec118e34f3f49d3de2e0..0d1c28decd57b4a5e250acc0efc41669b7f67f5b 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -5152,6 +5152,13 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
+ 	gfp_t alloc_gfp; /* The gfp_t that was actually used for allocation */
+ 	struct alloc_context ac = { };
+ 
++	/*
++	 * Temporary hack: Allocation of nonsensitive pages is not possible yet,
++	 * allocate everything sensitive. The restricted address space is never
++	 * actually entered yet so this is fine.
++	 */
++	gfp |= __GFP_SENSITIVE;
 +
-+	/* Only need to do this for the real unrestricted direct map. */
-+	if ((cpa->pgd && cpa->pgd != init_mm.pgd) || !is_direct_map(*cpa->vaddr))
-+		return 0;
-+	VM_WARN_ON_ONCE(!is_direct_map(*cpa->vaddr + (cpa->numpages * PAGE_SIZE)));
-+
-+	asi_cpa.pgd = asi_nonsensitive_pgd;
-+	asi_cpa.curpage = 0;
-+	return __change_page_attr(cpa, primary);
-+}
-+
- static int __change_page_attr_set_clr(struct cpa_data *cpa, int primary)
- {
- 	unsigned long numpages = cpa->numpages;
-@@ -2007,6 +2033,8 @@ static int __change_page_attr_set_clr(struct cpa_data *cpa, int primary)
- 		if (!debug_pagealloc_enabled())
- 			spin_lock(&cpa_lock);
- 		ret = __change_page_attr(cpa, primary);
-+		if (!ret)
-+			ret = mirror_asi_direct_map(cpa, primary);
- 		if (!debug_pagealloc_enabled())
- 			spin_unlock(&cpa_lock);
- 		if (ret)
+ 	/*
+ 	 * There are several places where we assume that the order value is sane
+ 	 * so bail out early if the request is out of bound.
 
 -- 
 2.50.1
