@@ -4,87 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F290CAC5B0
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 09:24:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4135BCAC5B0
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 09:29:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86D2F8E000A; Wed, 24 Sep 2025 05:24:07 -0400 (EDT)
+	id 6CB798E000B; Wed, 24 Sep 2025 05:29:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81E188E0001; Wed, 24 Sep 2025 05:24:07 -0400 (EDT)
+	id 655678E0001; Wed, 24 Sep 2025 05:29:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70C7D8E000A; Wed, 24 Sep 2025 05:24:07 -0400 (EDT)
+	id 51D0E8E000B; Wed, 24 Sep 2025 05:29:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A65B8E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 05:24:07 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 022B81A0748
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 09:24:06 +0000 (UTC)
-X-FDA: 83923607334.15.171EEDD
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C137E10000D
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 09:24:03 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pTSQvpMO;
-	spf=pass (imf14.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 37DF08E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 05:29:16 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C5479C0475
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 09:29:15 +0000 (UTC)
+X-FDA: 83923620270.19.2A64CB9
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	by imf15.hostedemail.com (Postfix) with ESMTP id ECC74A001F
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 09:29:12 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ALGIDVXY;
+	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758705845;
+	s=arc-20220608; t=1758706153;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Wzo9Dce6E9bbwacKQ1Ls7mKYPDh+vWG+TtUgCH/OXas=;
-	b=8cww/cnjv4cN9qUsuCBZzggRjc8LA8uU5g3QennYctEdwbKZOXPbeF5ZpELSgDRaoCKAbg
-	Gen/zpADH4ZAcuS1osZ8Of6lHarwpQqxaSkeCGSdEzlfa7POSKypLyDORV1yxE1XIB+rsC
-	nzEtVtB+yp7nL9BmLivGdaA0aThKCbI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758705845; a=rsa-sha256;
-	cv=none;
-	b=0c04Tz+f1UQqf2GXQ7rsSeg5FjanTJiYeDptmsDsCRw4JKgKkN4l3Kle7lfjqua6LBPPg0
-	uyrmyV/X1F+45rbq9/GK8lsHK6dsSsRM7YTZ/Yx4lgoHd5IamGSNAmM1TjmU0orTULTIOD
-	81OWzjQboG8IHqtg+GXQSXv1tIBsCJ4=
+	bh=NQxhHDKJBxc1HbO7bdi2pKWv6xqO3AMW4eLlFgQFTOw=;
+	b=xoM+ZuNYnfUp40IpMHdqYdNMUjkVbXVWql1MNTiq2RbXUP+1t5uKHNVNL/X2dBiuwG6oBT
+	lvzjytnQU2wc6H2Vo1ye4EgR2RRkWRkA4EUxu+uXG3s7l6C1nm+LaFdxU7rMnKa2YI+cdy
+	XXW4QyaQDWiYmTDS3TUXoHmoHykbp3M=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pTSQvpMO;
-	spf=pass (imf14.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758705841;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Wzo9Dce6E9bbwacKQ1Ls7mKYPDh+vWG+TtUgCH/OXas=;
-	b=pTSQvpMOMjgXR64fDZuX0h3oxFz000s6Zr4Ovo6DPMsm1S5N8H8RS0PBUenEQIWyqabi4n
-	rWKzQRXKWeCwCui0yJfERDJiGtQSaY7oxafIm5sfifcNNC0J1B2rfaXfIcmvtRzPDIsuLg
-	SnJeD0BWSWGTvXOWCde/Zfqt48JVv18=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: hannes@cmpxchg.org,  hughd@google.com,  mhocko@suse.com,
-  shakeel.butt@linux.dev,  muchun.song@linux.dev,  david@redhat.com,
-  lorenzo.stoakes@oracle.com,  ziy@nvidia.com,  harry.yoo@oracle.com,
-  baolin.wang@linux.alibaba.com,  Liam.Howlett@oracle.com,
-  npache@redhat.com,  ryan.roberts@arm.com,  dev.jain@arm.com,
-  baohua@kernel.org,  lance.yang@linux.dev,  akpm@linux-foundation.org,
-  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,
-  cgroups@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] mm: thp: reparent the split queue during memcg
- offline
-In-Reply-To: <55370bda7b2df617033ac12116c1712144bb7591.1758618527.git.zhengqi.arch@bytedance.com>
-	(Qi Zheng's message of "Tue, 23 Sep 2025 17:16:25 +0800")
-References: <cover.1758618527.git.zhengqi.arch@bytedance.com>
-	<55370bda7b2df617033ac12116c1712144bb7591.1758618527.git.zhengqi.arch@bytedance.com>
-Date: Wed, 24 Sep 2025 09:23:49 +0000
-Message-ID: <7ia4bjn06w62.fsf@castle.c.googlers.com>
+	imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ALGIDVXY;
+	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758706153; a=rsa-sha256;
+	cv=none;
+	b=s+tRP/GvfVtdvgyUWz6/n5iD4yj7YJqatVaBM+w3bTJMTDOpluibLtmRhx/SRuL0WbrNuq
+	J/FhVPzMHAKqsPurud8Ap39JIspDvmUI/3YMCECVjXn9C+7KHz1Ug2RoA8dLkGUkoBD9nz
+	sDpnanbTl7bctESrgmexLB7tI2pu36E=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758706153; x=1790242153;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=yMSkQplP3rHZaWo2oMDZguxX9qzRed9Ka3XpCLi17Ng=;
+  b=ALGIDVXYf9G1GVMEIcCBBiF/L/zD0VOLb//g/lN1fnjna/InvszGt2f0
+   OuFZyxTkL3lhJXvbS4IVpKeLvMovPgch4LicwzP/geXST/ihyDp9ypxIR
+   omdF8bIV3iN33gbfJ0z80Wl48wzdtPF5kWOm6sLPaX80IaYQuBvdVROll
+   aIShP5pL4SQmvbsnkfbgEU6bE6+gAMzFwzf7K7wjsoP119hKMWsNLp8sm
+   CpLAacAc9KwxK+qLUslAActaWx6nqUVYUujvbMmK0wzsoj9TpVfnPV+Bf
+   FggoMw/JJLbYZKRmVmJDN45bO/xfLrbUbQUqT82XSyQAeqdmiBzsPzTWx
+   w==;
+X-CSE-ConnectionGUID: o1CIC61PR6qqxI1QS1Awjg==
+X-CSE-MsgGUID: NxugcwUnSB+7oIrzSEtr7w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="60702501"
+X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; 
+   d="scan'208";a="60702501"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2025 02:29:12 -0700
+X-CSE-ConnectionGUID: AoNF+o4URPO9+pRaHhaaHQ==
+X-CSE-MsgGUID: /rwmqYRdQFCX2ffO479rtw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; 
+   d="scan'208";a="182159717"
+Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
+  by orviesa005.jf.intel.com with ESMTP; 24 Sep 2025 02:29:04 -0700
+Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v1Lo5-000409-2y;
+	Wed, 24 Sep 2025 09:29:01 +0000
+Date: Wed, 24 Sep 2025 17:28:49 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ethan Graham <ethan.w.s.graham@gmail.com>, ethangraham@google.com,
+	glider@google.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	andreyknvl@gmail.com, andy@kernel.org, brauner@kernel.org,
+	brendan.higgins@linux.dev, davem@davemloft.net, davidgow@google.com,
+	dhowells@redhat.com, dvyukov@google.com, elver@google.com,
+	herbert@gondor.apana.org.au, ignat@cloudflare.com, jack@suse.cz,
+	jannh@google.com, johannes@sipsolutions.net,
+	kasan-dev@googlegroups.com, kees@kernel.org,
+	kunit-dev@googlegroups.com, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lukas@wunner.de,
+	rmoar@google.com, shuah@kernel.org, sj@kernel.org,
+	tarasmadan@google.com
+Subject: Re: [PATCH v2 08/10] drivers/auxdisplay: add a KFuzzTest for
+ parse_xy()
+Message-ID: <202509241655.GL49TRF9-lkp@intel.com>
+References: <20250919145750.3448393-9-ethan.w.s.graham@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 85pwut1cjeje7kkttfa6z6baht4xi4cs
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250919145750.3448393-9-ethan.w.s.graham@gmail.com>
+X-Stat-Signature: 6b85jigdrd8i4ebmimk8eogdubpn6cna
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C137E10000D
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1758705843-558525
-X-HE-Meta: U2FsdGVkX19Qw1LceVri4GCcKt2pB9F7QccAyQGqXS2TCaYQ1EiXjpXueL7fMVviTScsxiIi7ahAxwJBWDBkmmbgLFDToraSZilcZ6ebflA+5UZjMGJX9Q/dv11wWCGBPhGfmTx3CVQea5wO++CVoEQiJ2aPivJ4O9UgSecvJjXy/Hc2UJXGBHd1p8mK6w0wlCpR1vtAilT1wbfobADu5W0OoK1TfiZ59dfMp6FQTECj5pmzn0p9E1V4jxrEhxLOqtR2GZDdaJNqyYNIjCrAFfuk3kXZuvY97fURTJ0YmbdcffnHF0yrvrMeaq5tl7wCfQFlU3pcPjw+BFPDt93cNIef0t/RndLEInEBmCIB6zbNMRwcAP+gmRaud2n7iOr4pfbMNm1hSrzqiSmCjAqTXauylnG2b59rt8QVLxWua+xn3qmS5rrH4EYEkh0BRi/RbIHad+AFayb93Yj1/6lY8njtqYnOqjD6ETkRxW8AGdZ5/Xoq8UTY5rmcEmVL50n/qNnNuyRdc5XVABgtMmywhyEaX/hFIB9fk3OYioAkfvL/anuYaVujDjk8ZjavW46LjkiQtnpQdBW9dIBnO61X94wK7LBUfnMSegtmSEXr/H1AeyUYwKxhFV43aSQZ3OvoZKNQ9MKTnl8ZF8kHqwwJH/50C3jsPLvetFrLLhvCJa9kegm4H4gFSlToHZksbD+KdSBd0MEi3YG2fNmQaeSNboa+S5qA8DkDxiriSYCikeXokKXwKmRPtc16hy4f7GTw5gcj5AlUZdX8HI9BTqTHyCjWCFFLa8Vs+1spGzYK/B/uzZBQpCTRG4Z27n2mN1S+PFuaH7hHIyBwsBoIio5LbjHLib8M6rbPWx42c5SBW3s=
+X-Rspamd-Queue-Id: ECC74A001F
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758706152-600483
+X-HE-Meta: U2FsdGVkX1/hF6roD3mKBcxhPD5RH8XqVoRd3iyH0Y8j+GQVIh4yjmf6P3fijofxnAUEcew8CudHb7o4cqx6nmHnR42QT/TUHsnYQHO1BQ8q3wdm+TOMuIHkBahDr7fzKgaSl8OyA64f+1ED6+oUJyd6YTgkG53M2slLy9tsZ/c3u55E5mf72R/TKi8/aY3v6JP3YBx7IZHCplmLIctYoGs98T4NZO+a8/zuZZ/vM1rn8t7q9C6qPqRpJl3wBj27JpIcuJ8Tze+6ea3waS3FXdC4b7hPzOLFAUIFbWHnwkLM4zq3QQr36i+83T0/t1UK+MrG+0gtEUq7uF3fVeLVjtAgZmMVas0XgbhBwdphVIjT/WXXKcsIhmUhlDaqQZYMiRwBXR/C8tG7Ql2lPIQXYjANYRG4CK42phX1frefAji2y6hIwWdtjHe14B8Ywom/EcS7B4asZHusAWRjrs3lFjo8unseFT89EQhxjpbKgbTfXHD8RcA1LWQ2w1HTpw8MIWVxiCcZJMtZgyUPRg5GOp/ug97Kt+etlOiSgb1rVrb3wQTS3TagGY7JXzip8rpC0Hp2xU4qwafJ7RAr3u2DPznchok/4NvZ/FjMlaLm0azp390fYAy5QtJrpRQznoQv7Ks0TCz229XB6NKI7YrkgZ77Gl10cIpn/lES9uCRv7Ml/8SGkvpr8mfTeEvpq4i/4x+fa3+/iPGLUG+PHzlm/7nBhDfxRqWplC5isnia9DZGVUn5/P04/92foCzOJbOtWdq077EfonckVV55vi2TUhuayaHQsms78P6gg3IPREgmQJKdKUI/y9pDWNVs6E1pDRe2NQXTvN4Ah6RIxSk0p5/SQkevaR8Gi3Ns5K1I7gpFR0ZCkGMVQIdSAbYzQqafcvfudcVsrXNbAel5xnI4Okrdob58Cut8CDjea5LDqwZKSxZCZp3fUCpH76FOIYvStCIcip1xy7m5xWWaq65
+ cap9fgkO
+ s0EWg4McaaUFEfA9Rza3i4w6/PLyjIAl6Y+bffL8ly2BZEG5cnv5woB2w7lbIstp3RlfYe8715/hxQdB/goB4n4s7hyM8fGkWuyq7rn0RU2Au1F7r39Hji5a76LjXhoJROMiZVAgoeAN2noF0FWFo2ilN0l3A30YRHlRaStXnqPQix+xWq5hURWXl7pZ+fvVtRVCdGcE/ittaNTKvJDFiAJ8APbdpZK+b7M2MBqwVmdkevDiTFwXQvLdYqCGUY3nSd7dfmtJLlvZdNCKuPHwSrJtyQb83GP9yxKn5/axTcDKP+TG0FvoARmJm6j67CP+ikQEOvcTFQc7ZnKDSHuY08Uxt3RCRTsUxTDS2tld36m24LUk7CxASj+UYMUjyOqwamAjBVl6uunvE9RE7B/bpOk3/YUPbM2enWVbJm/9iFzfook/c9tqJHs6caSUJl34hsNQ5fV6PuHxo/xjdjrxDsNZmMvMeF5EbzS06BW5jCAdhNeG0lzuHUNqleA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,147 +118,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Qi Zheng <zhengqi.arch@bytedance.com> writes:
+Hi Ethan,
 
-> In the future, we will reparent LRU folios during memcg offline to
-> eliminate dying memory cgroups, which requires reparenting the split queue
-> to its parent.
+kernel test robot noticed the following build errors:
 
-Nit: commit logs should really focus on the actual change, not the future
-plans.
+[auto build test ERROR on akpm-mm/mm-nonmm-unstable]
+[also build test ERROR on herbert-cryptodev-2.6/master herbert-crypto-2.6/master linus/master v6.17-rc7 next-20250923]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
->
-> Similar to list_lru, the split queue is relatively independent and does
-> not need to be reparented along with objcg and LRU folios (holding
-> objcg lock and lru lock). So let's apply the same mechanism as list_lru
-> to reparent the split queue separately when memcg is offine.
->
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> ---
->  include/linux/huge_mm.h |  2 ++
->  include/linux/mmzone.h  |  1 +
->  mm/huge_memory.c        | 39 +++++++++++++++++++++++++++++++++++++++
->  mm/memcontrol.c         |  1 +
->  mm/mm_init.c            |  1 +
->  5 files changed, 44 insertions(+)
->
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index f327d62fc9852..a0d4b751974d2 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -417,6 +417,7 @@ static inline int split_huge_page(struct page *page)
->  	return split_huge_page_to_list_to_order(page, NULL, ret);
->  }
->  void deferred_split_folio(struct folio *folio, bool partially_mapped);
-> +void reparent_deferred_split_queue(struct mem_cgroup *memcg);
->  
->  void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
->  		unsigned long address, bool freeze);
-> @@ -611,6 +612,7 @@ static inline int try_folio_split(struct folio *folio, struct page *page,
->  }
->  
->  static inline void deferred_split_folio(struct folio *folio, bool partially_mapped) {}
-> +static inline void reparent_deferred_split_queue(struct mem_cgroup *memcg) {}
->  #define split_huge_pmd(__vma, __pmd, __address)	\
->  	do { } while (0)
->  
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 7fb7331c57250..f3eb81fee056a 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -1346,6 +1346,7 @@ struct deferred_split {
->  	spinlock_t split_queue_lock;
->  	struct list_head split_queue;
->  	unsigned long split_queue_len;
-> +	bool is_dying;
->  };
->  #endif
->  
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 48b51e6230a67..de7806f759cba 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -1094,9 +1094,15 @@ static struct deferred_split *folio_split_queue_lock(struct folio *folio)
->  	struct deferred_split *queue;
->  
->  	memcg = folio_memcg(folio);
-> +retry:
->  	queue = memcg ? &memcg->deferred_split_queue :
->  			&NODE_DATA(folio_nid(folio))->deferred_split_queue;
->  	spin_lock(&queue->split_queue_lock);
-> +	if (unlikely(queue->is_dying == true)) {
-> +		spin_unlock(&queue->split_queue_lock);
-> +		memcg = parent_mem_cgroup(memcg);
-> +		goto retry;
-> +	}
->  
->  	return queue;
->  }
-> @@ -1108,9 +1114,15 @@ folio_split_queue_lock_irqsave(struct folio *folio, unsigned long *flags)
->  	struct deferred_split *queue;
->  
->  	memcg = folio_memcg(folio);
-> +retry:
->  	queue = memcg ? &memcg->deferred_split_queue :
->  			&NODE_DATA(folio_nid(folio))->deferred_split_queue;
->  	spin_lock_irqsave(&queue->split_queue_lock, *flags);
-> +	if (unlikely(queue->is_dying == true)) {
-> +		spin_unlock_irqrestore(&queue->split_queue_lock, *flags);
-> +		memcg = parent_mem_cgroup(memcg);
-> +		goto retry;
-> +	}
->  
->  	return queue;
->  }
-> @@ -4284,6 +4296,33 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
->  	return split;
->  }
->  
-> +void reparent_deferred_split_queue(struct mem_cgroup *memcg)
-> +{
-> +	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
-> +	struct deferred_split *ds_queue = &memcg->deferred_split_queue;
-> +	struct deferred_split *parent_ds_queue = &parent->deferred_split_queue;
-> +	int nid;
-> +
-> +	spin_lock_irq(&ds_queue->split_queue_lock);
-> +	spin_lock_nested(&parent_ds_queue->split_queue_lock, SINGLE_DEPTH_NESTING);
-> +
-> +	if (!ds_queue->split_queue_len)
-> +		goto unlock;
-> +
-> +	list_splice_tail_init(&ds_queue->split_queue, &parent_ds_queue->split_queue);
-> +	parent_ds_queue->split_queue_len += ds_queue->split_queue_len;
-> +	ds_queue->split_queue_len = 0;
-> +	/* Mark the ds_queue dead */
-> +	ds_queue->is_dying = true;
-> +
-> +	for_each_node(nid)
-> +		set_shrinker_bit(parent, nid, shrinker_id(deferred_split_shrinker));
+url:    https://github.com/intel-lab-lkp/linux/commits/Ethan-Graham/mm-kasan-implement-kasan_poison_range/20250919-225911
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
+patch link:    https://lore.kernel.org/r/20250919145750.3448393-9-ethan.w.s.graham%40gmail.com
+patch subject: [PATCH v2 08/10] drivers/auxdisplay: add a KFuzzTest for parse_xy()
+config: x86_64-randconfig-008-20250924 (https://download.01.org/0day-ci/archive/20250924/202509241655.GL49TRF9-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250924/202509241655.GL49TRF9-lkp@intel.com/reproduce)
 
-Does this loop need to be under locks?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509241655.GL49TRF9-lkp@intel.com/
 
-> +
-> +unlock:
-> +	spin_unlock(&parent_ds_queue->split_queue_lock);
-> +	spin_unlock_irq(&ds_queue->split_queue_lock);
-> +}
-> +
->  #ifdef CONFIG_DEBUG_FS
->  static void split_huge_pages_all(void)
->  {
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index e090f29eb03bd..d03da72e7585d 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -3887,6 +3887,7 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
->  	zswap_memcg_offline_cleanup(memcg);
->  
->  	memcg_offline_kmem(memcg);
-> +	reparent_deferred_split_queue(memcg);
->  	reparent_shrinker_deferred(memcg);
+All errors (new ones prefixed by >>, old ones prefixed by <<):
 
-I guess the naming can be a bit more consistent here :)
+>> ERROR: modpost: "kfuzztest_parse_and_relocate" [drivers/auxdisplay/charlcd.ko] undefined!
+>> ERROR: modpost: "record_invocation" [drivers/auxdisplay/charlcd.ko] undefined!
 
-Thanks!
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
