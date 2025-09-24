@@ -4,121 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E3AFCAC5A5
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 17:38:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE04DCAC5A5
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 17:40:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BF5C8E0005; Wed, 24 Sep 2025 13:38:27 -0400 (EDT)
+	id 21F248E000F; Wed, 24 Sep 2025 13:40:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 796898E0001; Wed, 24 Sep 2025 13:38:27 -0400 (EDT)
+	id 1F60D8E0001; Wed, 24 Sep 2025 13:40:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6ACD28E0005; Wed, 24 Sep 2025 13:38:27 -0400 (EDT)
+	id 133698E000F; Wed, 24 Sep 2025 13:40:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 56B148E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 13:38:27 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 23B8F140907
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 17:38:27 +0000 (UTC)
-X-FDA: 83924853054.22.95AC996
-Received: from mail-il1-f177.google.com (mail-il1-f177.google.com [209.85.166.177])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 3AFF41C0012
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 17:38:25 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CbXqdQez;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.177 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758735505; a=rsa-sha256;
-	cv=none;
-	b=jJTjgYwCtij4I82dsinlrbpfex6rR6U+wGvzuAv4+be8DfCjOz01qosBxDrcQocHbGTbfz
-	F1lys+xUGyBMx7R2m70ponwI5l4BiuCkOQRnp4qlXB8LgWx3fx5M18zzvK9l5cDTWPvJnS
-	hUL1RJqINQE5u675sAPyl2NEbHGcDyY=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CbXqdQez;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.177 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 01B588E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 13:40:43 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8EC6F5B9EF
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 17:40:43 +0000 (UTC)
+X-FDA: 83924858766.30.FC9C78B
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 91DFD140002
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 17:40:41 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=N3MrS6ax;
+	spf=pass (imf23.hostedemail.com: domain of mfo@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=mfo@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758735505;
+	s=arc-20220608; t=1758735642;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=30S3XZGJU9mWOJVs113Jcz1pN9m3tlO1m1w4FB2QQH0=;
-	b=gw0bZR7YM97d70t9/M3CRDMeyZyKbcApkUp3SEp6QFg2lkTNPom8JHquQ1dZjFpOCrMQKT
-	8U2wLu7y7oGakkn5P1YgqwDFF8OxuUnOSrDUMruHTPIqkyMuesLkj+HpMqmN7cj9cnK+sB
-	VM4RFGolbFeDWqh07RGGEGwqJWknapY=
-Received: by mail-il1-f177.google.com with SMTP id e9e14a558f8ab-4256f0fac67so306565ab.2
-        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 10:38:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758735504; x=1759340304; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=30S3XZGJU9mWOJVs113Jcz1pN9m3tlO1m1w4FB2QQH0=;
-        b=CbXqdQezcIJExGu7uzt+XJEJ8rWSVi1V3XqckgGBKOL5d7O7RPceneJTT9yhofZjFO
-         Lw5F+yaOETkyheXPZuuSEImVCGGFeX33tLdcgIcvT8zyYKUoZqaLEMKcuGqwjQfW9gmi
-         B/KYNlPjxwrAHqaSh12EAezQItJFljqu1se04hlbypSTabBj6btb15rpCFCWsfaElWJQ
-         MiZk0uJbhhpwXImB+nueIuwksZLsUhxHip/Bp0+isbd5VTAkc/E2juuMc72pRGU+V2UY
-         5i5b/+3PDjwo+SpBvV/oHYgkI+uDKTHCira6apyUl9jVAuIWcKgt9gm7/EKwuGdenfOV
-         rsVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758735504; x=1759340304;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=30S3XZGJU9mWOJVs113Jcz1pN9m3tlO1m1w4FB2QQH0=;
-        b=iI7rQL+jQ9lbcO0iugkyv02mcltGYr0SWyuVdOrOGxbJktta786qctjzyZcf1atl4V
-         PyrsvqOCt0y1I6SqPDEjKAi452l7aAHvwdgTSIAg/TeXMzAqtESOCi+nKim6ly/rL4HW
-         HmgY2oiLul1vMtsLdRJXdKafdgNSryi6s+QlVL/XHTsNxQlJxTYTsWXXoIpijrdAKmvz
-         F1TBhDO+Gd1Jc2sXUQmQI4218TCKodKpMZGSMGhTNXsZ7yhdlCfri4fkjRdQgFbpC0Gd
-         3ipyzKgVO3/QBiaUtx5/R1SxInTa+fZWmO6smWbACV5OYpGbPBwaxv6u7rTHUbbTVBQf
-         IX2A==
-X-Forwarded-Encrypted: i=1; AJvYcCVRQP93o8AbWthQyUCw0J5yF7El/YIKZZV7Izu7vMVDPLcjWEHIu/Jhe4avBCTDQRLxPLCeyIL5YQ==@kvack.org
-X-Gm-Message-State: AOJu0YwvWMouHjXnzOo6725InxYslNbO/h8Vl4ZWF529sUzk+UGN6rZo
-	3NO+djjF2Sg4NtDXWV1mXEM3M+XCXbKrQn8TuTJUavBqpPUdXB8wWxqkA0AhgMLR16ZydDeW/sa
-	s7zIjOqGM52YEbJU4cgBmmmJvBJ3HZD4=
-X-Gm-Gg: ASbGncsWstaor8ajhuaEqCxRl6/YT0QKvfwKFmgGVfqSOsU8S8308tVDQ5dmdYFOUep
-	aHGusMMv4nHi3/6n9cXwUoqC1x9PGbMbq+/FCv9FNQgNBqsYROGfT6+7j6+peS18lLoHDMvAw1Z
-	804F9NYkS5jNr9yhbCqBDXT2gEq89R0DWD0xEJvX+9STIMFehAH9hbl3+KagXnOWaLg1/A3Lm3X
-	YN7
-X-Google-Smtp-Source: AGHT+IF6MTXy6w1DyXC7/o/nI0lSM4Q/Gz/7/Id81c+he4tFC30Z8cRyZeTvBBdURAh4Zo5aTq0YpXpMF9IG5v6/6so=
-X-Received: by 2002:a05:6e02:218f:b0:424:1c9a:cadf with SMTP id
- e9e14a558f8ab-425955ed4d8mr6926285ab.3.1758735503219; Wed, 24 Sep 2025
- 10:38:23 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=AKqISWi5pFZ3HfusPO8StEZwUrSgKKkuNFc8w/cbCQM=;
+	b=p/STJr/xHOhXs7rgsa24QVeKy5UAHNaSvLewiUnyE0Btdif8fFBRamW847GfEZh0VcxZ2o
+	pZOY1OgYyEeAFjqgpCuk0/lfYpQouTS9HMuel6cKFIJyf5TbzJi/P2Fz2z0aLicRa/SvV4
+	cs4ZFSPkkrgijmmgXUzYcbFo/a7z3i0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758735642; a=rsa-sha256;
+	cv=none;
+	b=pAQaGOzTEoXN1V5VD6UgUyL5A3euiP+VMAxCuWFDIeae5hC08upkQJbmaGhUkWiH1lneSS
+	gvpdWTn5AyPeCyVeukYnTAqyCblAXfPY1aKdtcsqE4Z/tG5KpBXXCqwReyDYN2L4/NfKOz
+	F8YSrYofHQIuWB2CvRIeOJ2meyDeq8M=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=N3MrS6ax;
+	spf=pass (imf23.hostedemail.com: domain of mfo@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=mfo@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=AKqISWi5pFZ3HfusPO8StEZwUrSgKKkuNFc8w/cbCQM=; b=N3MrS6axRSCDgelm5aqIGeLCWJ
+	f/IRkEr9n9u5Q4L1qne/Lkx8FAG7mLkbvfUOlA24oi6dYKPiCgVh/7OP0iyRCwqETWEYymQDWxE5g
+	OiFmV3e4AqdS8592P53AQOa0W+9CtzWQ9GgUKGZrk8TPmZU+EKgRip+joyVJ9zavTqK5gkYY61KZs
+	z/DcbChyrdhIXbgRs5qrbu2M8IhQeb2+MBhO1aHywbBUocJsfGTsfzgcePU5ISYziIi2G8IjJYtGJ
+	EwunbGK1FINF4eops31fkn1YvkkRsDSpy2n/lgNpnT3gSOtf94JOmgL2VwFBi4VnPf8IT8MT1c1zp
+	oP2g57LQ==;
+Received: from [179.159.118.139] (helo=localhost.localdomain)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1v1TTj-00Gz9Z-2r; Wed, 24 Sep 2025 19:40:31 +0200
+From: Mauricio Faria de Oliveira <mfo@igalia.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>
+Cc: Oscar Salvador <osalvador@suse.de>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-dev@igalia.com
+Subject: [PATCH 0/3] mm/page_owner: add options 'print_handle' and 'print_stack' for 'show_stacks'
+Date: Wed, 24 Sep 2025 14:40:20 -0300
+Message-ID: <20250924174023.261125-1-mfo@igalia.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-References: <20250923102547.2545992-1-vitaly.wool@konsulko.se>
- <68d2cfc2.a70a0220.4f78.000a.GAE@google.com> <20250923215929.GA1122379@cmpxchg.org>
- <aabca3ff-3cbe-468a-9b65-290d5239d987@konsulko.se>
-In-Reply-To: <aabca3ff-3cbe-468a-9b65-290d5239d987@konsulko.se>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Wed, 24 Sep 2025 10:38:11 -0700
-X-Gm-Features: AS18NWAPSCyNKHQcdiRVEaduc42g7VmVYowOBIJ4ozJua0iyYaZ3jlavJyn10Pg
-Message-ID: <CAKEwX=P18Krj-+rXvTSCocRt+Q3o07Ghisv4nJLRCJ8tLus54Q@mail.gmail.com>
-Subject: Re: [syzbot ci] Re: rust: zpool: add API for C and Rust
-To: Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, 
-	syzbot ci <syzbot+cica6a1c285444b25f@syzkaller.appspotmail.com>, a.hindborg@kernel.org, 
-	akpm@linux-foundation.org, alex.gaynor@gmail.com, aliceryhl@google.com, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, chengming.zhou@linux.dev, 
-	dakr@kernel.org, david@redhat.com, gary@garyguo.net, 
-	gregkh@linuxfoundation.org, liam.howlett@oracle.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
-	lossin@kernel.org, mhocko@suse.com, minchan@kernel.org, ojeda@kernel.org, 
-	rppt@kernel.org, rust-for-linux@vger.kernel.org, senozhatsky@chromium.org, 
-	surenb@google.com, tmgross@umich.edu, vbabka@suse.cz, yosry.ahmed@linux.dev, 
-	syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3AFF41C0012
-X-Stat-Signature: hudh141xa6wyab9wu3nihwpr5drtao58
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: cymi46suh4j1kzf48d9856nxhc3cdwya
 X-Rspam-User: 
-X-HE-Tag: 1758735505-874880
-X-HE-Meta: U2FsdGVkX19MS55eKGtzcEENUtUUVOyoFp1icpyZU+gZhaefnnS/Ma9B2Gt2fq0tfNr9/puNpNYEd0DhFHley60eP1fibiYxxcOjaYYrOXAPO6mMYQorbOX+BVXqBv7FdMYkPiNaGqhf5JICvWY6++jIoOsuI/v3P7jut2N+dZdQYZkOfujGCrTVe4l+8xJsvXwqB/R7AheBGLDu1bIaIDhMzRRR0BXIE+ZaUy5mfe41CZuQ0WWbbQkYkJJBZszHbgsDgQDPdloz4Y7TWf28NO3O9JQkx+PAtL/ALTdvRuLioQoFwm1HJ9qIXd90d/Kp+l8BJ/nIICUeSYL2V4hY4wn6ZfC97Rja7hPY9VH2/xWZFOD/xqICS93SDGdBPv6Su8ifCACNDar/Gl6QNHEocDi1ZohEbffCHZ4yXSktIRZAbnnqxTh0OOaXmBZyZd/BTPfyACUG8osq14jBPVEgwVzMMFYSr3Ez5teEGtzRe+NgW1xmxeptHwruqvJ+csgYO47qoQNlzV4gDF2LzZoUXihQL11+M1aXpXVPkPw9nIA/CYUxsFSrj3qKD3CquIb3yB0qwbSgZoPvpjZaonh5PfCJFNGmFnVP8Qil2DeY+PXdG1ldK2fLLhl76LozaxC+pmNvFPAYg++ZNc0Y75G9/ovGTxBP9xUbg9+wWrfO5liBDlzm4ufDOpAN18XIoZJepVXr7HnqmqiHJIWDmDpLmhF8Lfj6ca4zGZm0AdHBIdNEPXhGyE4H0vOO2WVJRiCsZMgoFN9chnLkOBy2YodPgPke7sD59c8KX9wsEFSTBXKs1SEu2O7gf1x3zeA+z8EkSuKXhmLezMF9a695jaKhMKv0qtnpa1Qt+tAW58YYJzgvEaYztI7gtnoV1rITmrc159qGdYIDkCzRuCtsBQqk3bPGyveuXTxKbrbc3ePFjvkw7Cor+F8EisYcANAVirSMQUk1JzpoBze54N96b53
- tfO5I2wQ
- BsdcSabQK3Zm1qIUuiCLLFNInKrqwazqNRCIPxst1U4cy+FKMyn63PyfbQYESoKWAbRvWb7DB9V/9jm0iSZR+Z8b/vBn574gzJX8zZo0wuRfzV1+yx0mwrrSmkIa7dd4qrS+tRwbIgLgzEDnvmY6mC2h64+8mY5QpGIXpcxk6QIUpGjDFb+8pI+jYP6x95O8/BGcY/6NZCV1nv7syjP1E8Z7JEYhgf8IsULfbKgRzDNkZnZlMhnQszP2ouDgVbzvIPdfv0NP0DLFCHIldxL0aQj06oWNL0Cu8nA62heJeIy8jsJb7wFS9KFxLkfHecXERCUe37gtz01Z0A9QNhwUlrZVwq3MvLTqMdPjLpSzp1ZszsLgurNxKsIYzeWyj9qsaPvcuqMGVgFSsCAkOLQR9dh3nT+6b4//5qTEsn7SyV0jOevCk6des9PFCp4gSSzuhyo34HSXABqx08/y6ANwr7am6t3C4lVt+wvEEa8LxfbcmD8PcCQPVO3qRrQ==
+X-Rspamd-Queue-Id: 91DFD140002
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758735641-422460
+X-HE-Meta: U2FsdGVkX182qvEo7hNcP3b4eiewglTzVpcUoPc0BR0+zNMBhgwKTth6aBlSLnFDznG+j5FQLONGtp1TsKlEOp1R9KDOXwGz66KOAPzhCECJ4ObjwRx/+vCT9Ay2Hk2P7raIDkyYrqR9CmmHrB9g145v+XTmqZUTsiUsZ5bIm1d6FVhYBNa9xN4tx7AZkHLvoflDQrJL12uAXsP93Yp2OQBDe7QF0o7MamyBNJdhMx77fM8Kj1sUzV4SIgABEIlrbjXZ17Cpah9J5Cgi3DZ3l51w7dAyplLHwnB24QmIi7gEcYRXxoL9lS2JUrQu9yWrmXqQiL6tVBM1gW3Lbk8MhYec3XckuYpqy+5YkrqQypioHXXKchc12EO/kmFZmuiv0FMxskHmtL4DtdzaWeODWgYhGNGFves2b4IevR5UsWEbxoBvVi2LGbO8zZ9JpWzktkdKwap19OwMLmq3CEJe14vpFpq3+zUxaojl6ghm2gygLvwgw+arKoRVmd1kO7zsx4GLGGoAcqAvoxhGnowZ54DAcTo3i57GN6HBCSTejh87a6fkCeXq70MFa4xFeQka2UTvQCeddYFTCt9KlOdaL/+oyufWqhgURa5mL6ngi7p7URFe2H4CbEYx90Tgh17CVeS3IEnQUXq2AuvbbM3wrJjHYXvsJql765bhQTI2tAbTSNy8ypGJqO91GXaBJLf+hkaBsltzgiSwLH5VW0fF/7ZafhY21gaj2sxVu+unZ5SABjAgAG6Q8MUkms3BJU9yPpiC0u0YO3wrGXrsqc/zR3p6H4CAJ8zb5qs7zmDXGSb36nZikbK/gXTj/vn3Elx8n1DPibojsAi2BHciXEQr8xFFOHIt026IVzqQfxMYslxf0xK5vlecvz2EKRxXEjXsIBYM1D1U/pvZpPWCmn006wrd3+tHTQn6rhQmbqevvZRmjV7/DCSCT542iF1zz9yCDu/ZulT5FRkA2ale6lD
+ 7oGRZfB5
+ 4sZzZmyEeRU6L3OBwWktxYlK//KGL9H4DiR7xVmsAZ848JouCfsx1gc+c1cfVFkksdBl/EruX59ptKv4v9hJ5/HVcV+apni4YItom3S4eH/5GjDJSg2ZUUbpimXc7R1tvzYfXF8yq6bxqvZYGmvjh0/nzFHidh4V3CdDLp+KrFsK9dQWdLkqftQ+zITxhUpwYIKvbtofN0sV+l/tKv9aJI2JaYDDYqiOiYukaIBbPvsV7dAenQ5YIbAA9WJMEE/5bSSVw
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,62 +98,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 23, 2025 at 10:46=E2=80=AFPM Vitaly Wool <vitaly.wool@konsulko.=
-se> wrote:
->
->
->
-> On 9/23/25 23:59, Johannes Weiner wrote:
-> > On Tue, Sep 23, 2025 at 09:50:10AM -0700, syzbot ci wrote:
-> >> syzbot ci has tested the following series
-> >>
-> >> [v6] rust: zpool: add API for C and Rust
-> >> https://lore.kernel.org/all/20250923102547.2545992-1-vitaly.wool@konsu=
-lko.se
-> >> * [PATCH v6 1/2] mm: reinstate zpool as a thin API
-> >> * [PATCH v6 2/2] rust: zpool: add abstraction for zpool drivers
-> >>
-> >> and found the following issues:
-> >> * BUG: unable to handle kernel NULL pointer dereference in zswap_store
-> >> * KASAN: slab-out-of-bounds Read in zpool_get_total_pages
-> >> * KASAN: slab-out-of-bounds Read in zswap_store
-> >> * KASAN: slab-use-after-free Read in zpool_get_total_pages
-> >> * KASAN: use-after-free Read in zpool_get_total_pages
-> >>
-> >> Full report is available here:
-> >> https://ci.syzbot.org/series/e8b22352-ae56-4d7c-9113-75573acf2b64
-> >>
-> >> ***
-> >>
-> >> BUG: unable to handle kernel NULL pointer dereference in zswap_store
-> >
-> > struct zpool {
-> >       void *pool;
-> > };
-> >
-> > struct zpool *zpool_create_pool(const char *name) \
-> > { \
-> >       return (struct zpool *) prefix ## _create_pool(name); \
-> > } \
-> >
-> > u64 zpool_get_total_pages(struct zpool *zpool) \
-> > { \
-> >       return prefix ## _get_total_pages(zpool->pool); \
-> > }
-> >
-> > You create the zpool by simply casting the backend pool, but then you
-> > deref it twice as if it were an actual container for the backend pool.
-> >
-> > I'm guessing you didn't test this even superficially?
->
-> LOL, no, forgot to run git commit --amend so came up with a wrong version=
-.
->
-> The Rust version is correct though.
->
-> > This also still proposes an API with no in-kernel user.
->
-> That's not correct, zsmalloc is the user.
+Problem:
 
-A single user does not an API make.
+The use case of monitoring the memory usage per stack trace (or tracking
+a particular stack trace) requires uniquely identifying each stack trace.
+
+This has to be done for every stack trace on every sample of monitoring,
+even if tracking only one stack trace (to identify it among all others).
+
+Therefore, an approach like, for example, hashing the stack traces from
+'show_stacks' for calculating unique identifiers can become expensive.
+
+Solution:
+
+Fortunately, the kernel can provide a unique identifier for stack traces
+in page_owner, which is the handle number in stackdepot.
+
+Additionally, with that information, the stack traces themselves are not
+needed until the time when the memory usage should be associated with a
+stack trace (say, to look at a few top consumers), using handle numbers.
+
+This eliminates hashing and reduces filtering related to stack traces in
+userspace, and reduces text emitted/copied by the kernel.
+
+Changes:
+
+This patchset adds 2 options to configure the output of 'show_stacks':
+ - print_handle: print the handle number of the stack traces (disabled)
+ - print_stack: print the stack traces (enabled)
+
+Now, it is possible to sample with handles/without stacks, and do one last
+sample with handles and stacks to associate the handles with their stacks.
+
+Tested on next-20250922.
+
+Results:
+
+Numbers on a freshly booted system (gains should be higher after load,
+as more stack traces would be present); average time of 10 runs:
+
+ - Baseline: 
+   average = 0.165
+   # cat /sys/kernel/debug/page_owner_stacks/show_stacks >file
+
+ - Enable handles:
+   average = 0.165 (same)
+   # echo 1 >/sys/kernel/debug/page_owner_stacks/print_handle
+   # cat /sys/kernel/debug/page_owner_stacks/show_stacks >file
+
+ - Enable handles, remove stack traces in userspace (example):
+   average = 0.167 (+1.2%)
+   # echo 1 >/sys/kernel/debug/page_owner_stacks/print_handle
+   # grep -v '^ ' /sys/kernel/debug/page_owner_stacks/show_stacks >file
+
+ - Enable handles, disable stack traces in kernel:
+   average = 0.041 (-75.2%)
+   # echo 1 >/sys/kernel/debug/page_owner_stacks/print_handle
+   # echo 0 >/sys/kernel/debug/page_owner_stacks/print_stack
+   # cat /sys/kernel/debug/page_owner_stacks/show_stacks >file
+
+Mauricio Faria de Oliveira (3):
+  mm/page_owner: add option 'print_handle' for 'show_stacks'
+  mm/page_owner: add option 'print_stack' for 'show_stacks'
+  mm/page_owner: update Documentation with print_handle and print_stack
+
+ Documentation/mm/page_owner.rst | 15 ++++++++++++++-
+ mm/page_owner.c                 | 18 ++++++++++++++----
+ 2 files changed, 28 insertions(+), 5 deletions(-)
+
+-- 
+2.48.1
+
 
