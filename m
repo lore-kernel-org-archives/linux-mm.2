@@ -4,95 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEEE1CAC5A5
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 03:12:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 725B8CAC5A5
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 03:19:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 469998E000A; Tue, 23 Sep 2025 23:12:30 -0400 (EDT)
+	id C67048E000B; Tue, 23 Sep 2025 23:19:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4418E8E0001; Tue, 23 Sep 2025 23:12:30 -0400 (EDT)
+	id BF0B88E0001; Tue, 23 Sep 2025 23:19:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37E7D8E000A; Tue, 23 Sep 2025 23:12:30 -0400 (EDT)
+	id ADF6B8E000B; Tue, 23 Sep 2025 23:19:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 270798E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 23:12:30 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CE287876F6
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 03:12:29 +0000 (UTC)
-X-FDA: 83922670818.18.16166A0
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 3B325C0002
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 03:12:26 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PcXBfc8S;
-	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 994108E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 23:19:07 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 33CC1561AB
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 03:19:07 +0000 (UTC)
+X-FDA: 83922687534.06.12B960A
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4291040003
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 03:19:05 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="jkqkYM/7";
+	spf=pass (imf04.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758683546;
+	s=arc-20220608; t=1758683945;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FOrHhjsmxF2Ew0D7GzKZcNGlrZ1OvklqA2nVYEVLSIc=;
-	b=UxLU3wHgvZMh22hjDGPK63S8te3xXlYuo+Jf+NMJa/ZO3TDuGLtZquzGA6RnfbQHXfYmA4
-	ImbAkw3ZP9K05JA7l5OGgVRfkgCyEyJWaTbroj6ljgMzDvQL9gLxlgu/CWWN1WRv8ZhgsN
-	R/aitbwOPXTdokjLgW/GhWr0DK7O0ZY=
+	bh=NL7CYeR7dElaAmM/uf3P4L9Zdyfei+4i0an9LllGORI=;
+	b=jELa+2aiGWnMJhntSyuKSJ+4bb/l8NUeDU08UNQta18VAX1S7UbAB5Zb+EBez80cwLntee
+	ZseNqYJAMdTGEiJ7Iv72OMO3bR2NyQl1nxenDpGxmmPSnUNftkGEHyVZ6NboFAmV/Y+33X
+	2Yvl9Ydj0q4CNU+RRjbGT0qAjF7GCIo=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PcXBfc8S;
-	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="jkqkYM/7";
+	spf=pass (imf04.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758683546; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758683945; a=rsa-sha256;
 	cv=none;
-	b=SkIyebjRFYLH71iytTa3Vp7pca4BmsPBJ1rhdiqei26GBaKzUW9ONO+tFm1mPb85s8Y3mv
-	jyS481ppCr1VfZ44HE+R2PIjX+C3gltgnl/2idazLgLOttc/xXOm5x4vChWd7IXnlV+6en
-	ntJbS8E7g0jGD+PWVW5DduTuz1Ut/xs=
-X-Forwarded-Encrypted: i=1; AJvYcCV1N8WKEy2vJRoewfVOpOM27WS/kB6yeYLzH56ufxb2wU9A+Wvywf3wGgj/5AiKgYyHDzTaRiHSPQ==@kvack.org
+	b=8Vulu1sd2MKZ5bTensqWVKLVY6l/VaKX8ExBhkgiLHHfa3kkquT0dcUI1YWEibXlPXdNVA
+	vg3LihWr0k8yCADSH2QXxkt6d/x+hqD3mFWXX2BGmvoNTjtLRf58VOFyMG7/cIrU2XOGYl
+	cEOVvIlvg9LaqU/KYws1pKictqgfqYc=
+Message-ID: <72d3eaf2-09ec-4c87-a680-636cc578a32d@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758683542;
+	t=1758683943;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FOrHhjsmxF2Ew0D7GzKZcNGlrZ1OvklqA2nVYEVLSIc=;
-	b=PcXBfc8S4pT/MvSx2urXiqvA37SnrmN94TIbn5CP4NFZWi72EThf721q8EoYn7nHgs/rQR
-	CRyfYjbaoyUzJIgp66votW3WnvV2QIO59AOMNlQzsqsrdXhw7cF9fLJP7nLCMWB9QkacGe
-	krHm3VhxUlrnKOZRrck1xt3KZdkuaVg=
-X-Gm-Message-State: AOJu0YzndKV2gdpsY1efv5IjY2wOmcWQHF96ZZAtxlG+7Z5mhSUJbtt/
-	u1bq/KSPII7YXKCClTDzzurw2XEkTCgT9wHa1t0sTWBmOdxKx8dkHAsTIs2JsYrSiZdliJmjXcr
-	Wd8llYMiz1Jt5NKoZkBImq1p8HaaOlqQ=
-X-Google-Smtp-Source: AGHT+IGQ4pBfaILYlDHVJp4SkABtJmejqgHl68noujwNpKHg3bpoTJW1Hux0HRmpISdc0eyTZ91uBuK0aDN1rxLh/wk=
-X-Received: by 2002:a05:6214:5196:b0:70f:a4b0:1eb8 with SMTP id
- 6a1803df08f44-7e6ff32e686mr49834776d6.13.1758683538065; Tue, 23 Sep 2025
- 20:12:18 -0700 (PDT)
+	bh=NL7CYeR7dElaAmM/uf3P4L9Zdyfei+4i0an9LllGORI=;
+	b=jkqkYM/7tnMSDP+GCyt2eC7fRP6URhc6GDU+QIDsvBo9vwET5ugzHet60QjaC0HptI3nfO
+	5CMi82+5Eo8zQKFYbqB0SiyKsPvEcAUNe+/wHzrb8y/n4a866UjAeLUFmB2mUnGNDYoQFK
+	WggiqLXjhr9m3U/5ILnSZs6fiSmQg3U=
+Date: Wed, 24 Sep 2025 11:18:52 +0800
 MIME-Version: 1.0
-References: <20250923140058.2020023-1-david@redhat.com>
-In-Reply-To: <20250923140058.2020023-1-david@redhat.com>
+Subject: Re: [Patch v3 2/2] mm/khugepaged: remove definition of struct
+ khugepaged_mm_slot
+Content-Language: en-US
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: linux-mm@kvack.org, Kiryl Shutsemau <kirill@shutemov.name>,
+ SeongJae Park <sj@kernel.org>, dev.jain@arm.com, akpm@linux-foundation.org,
+ baohua@kernel.org, ryan.roberts@arm.com, david@redhat.com,
+ xu.xin16@zte.com.cn, chengming.zhou@linux.dev, npache@redhat.com,
+ Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com,
+ baolin.wang@linux.alibaba.com, ziy@nvidia.com
+References: <20250924004854.29889-1-richard.weiyang@gmail.com>
+ <20250924004854.29889-3-richard.weiyang@gmail.com>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Lance Yang <lance.yang@linux.dev>
-Date: Wed, 24 Sep 2025 11:11:42 +0800
-X-Gmail-Original-Message-ID: <CABzRoyaWCxOZAvMO5ZAxk3eaf4mkSQwfUwYW0dXcR3yhjCMJhA@mail.gmail.com>
-X-Gm-Features: AS18NWDqoKmUtQv8Yz5yjznM5vChyLT8QPhh1t0udZYb9G0scu2d2wiqj3iGwe8
-Message-ID: <CABzRoyaWCxOZAvMO5ZAxk3eaf4mkSQwfUwYW0dXcR3yhjCMJhA@mail.gmail.com>
-Subject: Re: [PATCH v1] mm: convert folio_page() back to a macro
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250924004854.29889-3-richard.weiyang@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 3B325C0002
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 1pxpz9e7rgozpub6g33y9kacn4d9jx1b
+X-Rspamd-Queue-Id: 4291040003
+X-Stat-Signature: ny4p1xinnysepahyhfpbu4he1jjp4k3k
 X-Rspam-User: 
-X-HE-Tag: 1758683546-731398
-X-HE-Meta: U2FsdGVkX1/W/sgqkjPc8EcZM3shp0SK0xaMjWy17JpxAft0DZ5HtJCuiCKnaJvsmRg8pV7YlqQf2Em6ILLkpdqnxTJtBAQPIaD6FNFTfcHPyobt2LMsQ+co6T+Pf7x+ls6/8GSArEAOEy61WoksM4cQFz+ik4mUR8N6eeIo3GpIEGzwQUt3NbfVWEgWMQa5eDe4HC8CZO+o+KyIeHetCKoH+05ngJNmmCk3SqtEo/+oV+D7kpwB07zN8Z6cuEarZmHewMwzRbd4KWL47YbU8N4Q+ZDfHkgULjyUvGfOWG8ysq8tbZnckqjBCL8QaXw0LcPKqB6u1IqdSTXYuHnTS1OTa4UH4vY3d+oa6PmFAwoXeY5GpG4Ztjxr3ej7KC/A6jE6tL0A5ZOkP0a3Ooyl4i/tC2MN61KGIyNc2Y5zv4GlQzn+UtdiDg2tHIJTqsTTmQisv63X37Di7QWuUNgM4PGwGpgVhjtEFyrj/bwkNONYTbApAEMHQce1j6SE0MXn601TtLeZ+nGpLXr90/VtMtvwtZdWDZwPGHUU21fuKbIyEbFm9oH/+xArVaIJmLNnoyeany5TmlUU3y0A/RLc+rcvkqfSm3zM+cB+JlruNghwyDeMfe8geFDhXJ3nI+nK5AjwVzt+QjNdKiHGnavlCQwF4oweOmsx+8vGNeA4vVpncslqHMQ1JT1pHPFfBMZgYwUBDBNgefipjKKCkE8R7ggK1u+t4R+NticJSRY09ngr9nfjyVmK0KUMz3BDx4wlEqBeL0+08e4axkrj9gYtu8whhZzeDdf7N2GbOxCPn1FJBjdhJjFmBSnekVsBo1G5vN+n2g4QVVCtXS31fxrG9s1Ld9wGlS+DkrUCg33ggKBANqVClqanjTdoxwr/Lmkcq1Wk54CJGDtWqaNlACXAq2q7uX8vDHPfh7D3DJ7UtwXSV6vz46qdX+40S4YU6hIVZLueh3Jh3KoNxT8E+Hb
- bBPSZ32Q
- VPIoCMdusCthQZb183a/6XFxwpKCAjxalVZIpPtxggI3al2te7zLNbV0lBjjSngnQrC/4wtFqyb4hCXEEA00FTr8pNtLFCc9JnED8MZh1xNyXceC8FRl5e5fbkKVcRraup5Cc4gkVFZ0/ll3ikq389LqCOCFMjbR3V76SaWR4bTLpRMe3GWW8oo/PYWYqMiLJpZjX6KdiH9RDbOHEWlIsFPUoffymPiIBrhGDQt6tdOGzmvmVhrs9jMHX5dkSw4SbqH700swZlxsjG6C3b7LjjS7FSG2Yn//ReGTIlrHrTfdksVDNmLpeTsrTWAnq9xucKmyqorpMRUhxEa0NMcREmZAl5khVX/8JzJiiFtwoKx1K0aaUzy0XRtw4iNxPh7Bd5F0RortfTqER97zdQgBwYF54m+FtlaXZczWjSCtJAlQcJvFOHLUegcEZcZceeQgrduk/ijrSqqnRPIc=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758683945-333015
+X-HE-Meta: U2FsdGVkX19mSYR+MJwru733xlDA5RFxrdEl5aenKLsMoHvi5tR+sTCaBjcm2kymgYscE4kpJ6ord6mOVBhuCZvrQ0YCEWzJZiwMYJXbQLFPAUuekwzMUwUi+uUwvD+8fqvzOYhLjkl5J/H1okquKK2NILIkoK08F9U8XzIqqnU6hvbDoDaUCBuheQXa8D+zb34hJHIV7qa+SyYePfZoKYsn1sdxVgy25xLHMMUewAhzLzZ4bSoa0Fuks+iHiVszaEUIDh1lGSwSyaNcXGpatDrWZFhC75r9CfRc8CWCmj5G2z2S9CuGrOYBXcwc3S1agykFLQIvF+ZbK07ScRfyqy2SOyfprD4CDz2I+n5n2KejEgjkpGYdsDmjNkhma1yoDUFAAcZlRg76f4nkHFtBX3oWR8Sj13zM4pu3qq94IO5/E5QGmm8xy7KNcZXPsI2+ndBZq34LhbfDRGWbuUIPOM2NT8N2RE1+aLEesG4CyzBPxoSZykfkG4JzGsNSOG1ASg0tDOSWy2lq2pN67iJuI2E9utMqnJp87LP1XkuAqlN7hlbSpBsvxNuY5DDHC0Nd7rdtin9Co/ZvEvuf0dHky6kENkmo2yAOv7J4mmI+qz5QtNiAelONbnKAC2pvrmAtHYqFXOhMFJGLgwdyf1CebE8Qj/H6KEeYM9KuDkDg0zY4jWJIOkuFMlnE/JOHX3F8I1YE05z6CQN+8Rpx+rbpQ9dtTiA+4NeCgeACSXpglaNsjop/kaX6TMMMH51wHFiV46kDFGG9I+SZnqsd4vA5uWRxAgjOrzIs3CoXdgJhSeBfWniW2GxjnI6HBXd+rGNAThuJmk3czeJM9fwDRVoy+SUYi8n/z+K9+r8Z8FssYbiFLvtjomIzcPZxUUTZBJNNtVbWv+QPfDKpjoatIgNl6nUp1yg+zBCsyvWbykUJ716V4l1sTyjmI+Kxl8nNPfw9c1ZMfSgkv7mE1ewYG79
+ VdAqPsTl
+ jg+n3fhjBlyYDZ7JUGsIkAFPSl4Vjawz497n28TKENEgxQDioTFrJBDPU/0BlrPNU153XO03SPnr5QCZvjWcKesN2QvVvNlUfJoYp6+g3yWj54pAabVj4Ct4bYwCOYDvbpTnNJbetgz4wwOpn5kDeKN11LsIpQrnsXdtNPGT7/qcDc0HTYpskbW8ur91eSUsD5wN+joC1qJbqJ967SksswEgsDYAmYr+3snVUs9jXhXEK8wP4gNDdgXoUML8uXD7L+ocPa7oRgl274YCobfMRtgmwEKYOi1Urwp+SkJ/iJByHdT7qAJv5lBpUaL2PWTjPl1nxjsXznjMJZTV3C1h6EklDh0V9KAdg5dRNDOmnRUXoZhhAKkFRoLMJRI1CRjZFcB0zUwYF6PTELrag8slan5KKaiuGuFmykwfTcnYtNkRRFjVgpTS6k8A845/g1x/1VAKxgibW8KDuAvyKO3UwpLnG47RZKResaXpD16g8co5Kt/jxEID2nhgoBHPVBdvGmW8M7DWN93i/n1oJ4mAuyN8cZLvpe/XGAMUc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,57 +96,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 24, 2025 at 12:44=E2=80=AFAM David Hildenbrand <david@redhat.co=
-m> wrote:
->
-> In commit 73b3294b1152 ("mm: simplify folio_page() and folio_page_idx()")
-> we converted folio_page() into a static inline function. However
-> briefly afterwards in commit a847b17009ec ("mm: constify highmem related
-> functions for improved const-correctness") we had to add some nasty
-> const-away casting to make the compiler happy when checking const
-> correctness.
->
-> So let's just convert it back to a simple macro so the compiler can
-> check const correctness properly. There is the alternative of
-> using a _Generic() similar to page_folio(), but there is not a lot of
-> benefit compared to just using a simple macro.
->
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
 
-LGTM. Feel free to add:
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
->  include/linux/page-flags.h | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
->
-> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> index 568011930e358..48e27768e7ba9 100644
-> --- a/include/linux/page-flags.h
-> +++ b/include/linux/page-flags.h
-> @@ -316,10 +316,7 @@ static __always_inline unsigned long _compound_head(=
-const struct page *page)
->   * check that the page number lies within @folio; the caller is presumed
->   * to have a reference to the page.
->   */
-> -static inline struct page *folio_page(const struct folio *folio, unsigne=
-d long n)
-> -{
-> -       return (struct page *)(&folio->page + n);
-> -}
-> +#define folio_page(folio, n)   (&(folio)->page + (n))
->
->  static __always_inline int PageTail(const struct page *page)
->  {
-> --
-> 2.51.0
->
->
+On 2025/9/24 08:48, Wei Yang wrote:
+> Current code is not correct to get struct khugepaged_mm_slot by
+> mm_slot_entry() without checking mm_slot is !NULL.  There is no problem
+> reported since slot is the first element of struct khugepaged_mm_slot.
+> 
+> While struct khugepaged_mm_slot is just a wrapper of struct mm_slot, there
+> is no need to define it.
+> 
+> Remove the definition of struct khugepaged_mm_slot, so there is not chance
+> to miss use mm_slot_entry().
+> 
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Cc: Lance Yang <lance.yang@linux.dev>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Cc: Kiryl Shutsemau <kirill@shutemov.name>
+> Cc: xu xin <xu.xin16@zte.com.cn>
+> Cc: SeongJae Park <sj@kernel.org>
+> Cc: Nico Pache <npache@redhat.com>
+
+LGTM.
+Acked-by: Lance Yang <lance.yang@linux.dev>
+
+[..]
 
