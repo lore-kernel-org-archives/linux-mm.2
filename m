@@ -4,100 +4,177 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DE28CAC5B0
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 10:24:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00C35CAC5B5
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 10:40:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBB568E0002; Wed, 24 Sep 2025 06:24:14 -0400 (EDT)
+	id 355C18E0002; Wed, 24 Sep 2025 06:40:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6F088E0001; Wed, 24 Sep 2025 06:24:14 -0400 (EDT)
+	id 32E2E8E0001; Wed, 24 Sep 2025 06:40:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A816C8E0002; Wed, 24 Sep 2025 06:24:14 -0400 (EDT)
+	id 243788E0002; Wed, 24 Sep 2025 06:40:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BD158E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 06:24:14 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3D1F511AD3C
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 10:24:14 +0000 (UTC)
-X-FDA: 83923758828.25.87B6132
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 326DC2000B
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 10:24:12 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZFHRgOt3;
-	spf=pass (imf13.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 143548E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 06:40:58 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9E2375B27C
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 10:40:57 +0000 (UTC)
+X-FDA: 83923800954.16.DFFA927
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 39D834000C
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 10:40:55 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=T2pZxXuB;
+	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758709452;
+	s=arc-20220608; t=1758710455;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sw6pLFSQlgK9PmXn7/WRyXp/tUvvcWarjA+fMyiXP/E=;
-	b=S0yR5+Puw5MdqoiRKeahWHWf5DnfpCqwYFOfCgUkLTEveGoBYgRbiYyFzoObY6sUZnLtS1
-	Kd9dQz4bME8oy6gMJpLhBWgHfnvl35Byl0XT/+rFamsNRbn6SmuuH5Oc7mnkuZ35nei9Sa
-	4XQWgKOa6arcNlnZcvg/h0d4oVv0wCc=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZFHRgOt3;
-	spf=pass (imf13.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758709452; a=rsa-sha256;
+	bh=eYvl7ezRqdgxCLchmpqGNEskUuk4TYHOhQ80u6nmeiY=;
+	b=mDjaux1rEAs/7ojgwYcyHQ0XRlYn3Pgq3q8abEMGMRhSAW87Ksfw1tC3crDD+1BtiPRilE
+	NpI21RFX1ZQFgywyH50Onzq+vcVdvFxjLw9XM5MVWSNR2zxAvmsWNlRA2Wqcsb4RtsUm1E
+	eS+2T0WosDJH86yG5O8FcQO4R1merUc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758710455; a=rsa-sha256;
 	cv=none;
-	b=WgyeNSAY3tAFAGy0oy04kFbjfhGZUboqR2ZXnlSGIT3VyanSJ/lPlaGaC5wAkLR4HvxXde
-	wJBQnv11sLyFAeS9EqaeyPBwHfWjX8dpgNcpt7oYhri/rulTuBby59x+5Wltomdp89upK3
-	t2pcQ1/UFUtnhttePhY4YjZPLivNdW8=
+	b=IlL1iuv2HpQcc7mwtUHKR07Ke9UhlOOiyZmEAFZ2yyT1ylCYLo/zTkZ+oL0ia0JnJyhtc6
+	2F0d3gFM8SDm6eGIiJktyZdtudGRMeX7muR8DwxYIuEk/66Vsc1RdfJY51r6LGWVpQOETT
+	Pl0u4TwDN0y5bDnZbfqkikIOqGytlTI=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=T2pZxXuB;
+	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758709451;
+	s=mimecast20190719; t=1758710454;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sw6pLFSQlgK9PmXn7/WRyXp/tUvvcWarjA+fMyiXP/E=;
-	b=ZFHRgOt3YY9n1RiVIoZI2r1vBK/N7NPm+ZgaaDtJTLj4bTYQzWUvp8Eh5Psm3lErVFCkhQ
-	ND6ovKhY+iL1WBBMf7olWtc3BJNDf8jLog5EaOKRl7exlThFFPiZfd+rW2H27uoqY176u0
-	5tYYQSIpIWDQ2M7lIfwT0qpO9QsIMXM=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-513-yEkpl_NoPF2ZU5OYcXTCqA-1; Wed,
- 24 Sep 2025 06:24:06 -0400
-X-MC-Unique: yEkpl_NoPF2ZU5OYcXTCqA-1
-X-Mimecast-MFC-AGG-ID: yEkpl_NoPF2ZU5OYcXTCqA_1758709445
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C5C651956054;
-	Wed, 24 Sep 2025 10:24:04 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.54])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 323F51955F19;
-	Wed, 24 Sep 2025 10:24:02 +0000 (UTC)
-Date: Wed, 24 Sep 2025 18:23:58 +0800
-From: Baoquan He <bhe@redhat.com>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
-	baohua@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com
-Subject: Re: [PATCH] mm/swapfile.c: select the swap device with default
- priority round robin
-Message-ID: <aNPGvsQplsBeIMfu@MiWiFi-R3L-srv>
-References: <20250924091746.146461-1-bhe@redhat.com>
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=eYvl7ezRqdgxCLchmpqGNEskUuk4TYHOhQ80u6nmeiY=;
+	b=T2pZxXuBvVxSXECEu8KJZc2ZYVl9k//JP7Tt+tABSm4kd5XwVPNWcfGcToxr15fJnME5tU
+	lysJkvQM2xyA8iuklXtJI68rzUi0PR78OiJBL5Q/i+qcQmulLe2VKuLhuAa7sexCfTIXv7
+	s2yWjAe6pR9lWX9Rzi9jLSmxf04cVWA=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-332-6J4l1tOaMMWmCARnhrAOeg-1; Wed, 24 Sep 2025 06:40:53 -0400
+X-MC-Unique: 6J4l1tOaMMWmCARnhrAOeg-1
+X-Mimecast-MFC-AGG-ID: 6J4l1tOaMMWmCARnhrAOeg_1758710452
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45f2a1660fcso53175215e9.1
+        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 03:40:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758710452; x=1759315252;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eYvl7ezRqdgxCLchmpqGNEskUuk4TYHOhQ80u6nmeiY=;
+        b=fOnJxlLHxsKPkQ3seRCB98SLSuPNHQ2ZA76q3dKc2sL4DQX2mBnKe1Lh281FttDqLr
+         8irCHnkykUHlCYwLpx+nf47XpNwy2IjYvfNDJezRVbl3DlzDgTppg6enSqetCgxCFyr8
+         uYnQ/q26nm1KDhwcMGt+4epHCGVMnJL02VB4KL91WeoGwj38gvJkZTKmQXAok6zvR0ny
+         GI/0moj3TCxZoHq4P5dfY4nGORg372kDw+x36sHW7eQ7sY7bSuoZLK/l7eZqufYTKjQg
+         SPnyhMmOBGiqnCMj2E3gFqvzPY0oeVjB7R5NOTecUVOkTdPWMTM3q5VESBK1ZrX+KmF+
+         S8lw==
+X-Forwarded-Encrypted: i=1; AJvYcCVPe18Lh3G26tLsxg5gx0vVrfixmb3uL0AwbzSnT9mjKXLoeHhOUtszgpKEzr3Y8yC60m15f8febg==@kvack.org
+X-Gm-Message-State: AOJu0Ywno491XBXiT7Qpw6Kl7nIfsq0F4BcQs3FcnpqPxEYuuTarVySR
+	akTyz4aymwDP278ph/vxCM9WjlNGvXfftlil+ylSRu8yv580LCHEQI0lVVnZ8PuVNtParl1w4Q2
+	HNY65bNKWZkF/F9S+BPJwQa0rn0yTBci5Bnm8nOZjRXPiEYTgvg1B
+X-Gm-Gg: ASbGncteHMSTpnd/QXbDfVNdzZ8uvzhu+GYhSgzhp1gt55i+VwBQvLghgNNGgMPYHGG
+	WW7DFQSDuxwRkfneYgNAaXsN1cRrk6yvJoylqMhlp2DfWCZBmVIhDp4gvX4O2BIrm8OQm0gO+vz
+	iCuzNNgMW6liF4bRwHgGal5iINU2KUyN5CZXn/EYJ395vL/Tww5xa28rYC7DluvqTzoySVUofg4
+	WE04juktfr1MnyWndRfB8WiLe3en3FZBgZdclhblppbXhg4WbIZIDrcjVBwwnKob0NDGnsgNDP0
+	Rc9ZuBXoELpZv316ndAdie78t/VYyEAHUgCoWBEmZ+ov8LoYEGDYmnOnALW17AGy7/TqY4nBBnX
+	AZrtGfEg0bDweZUxGTarK0/Foem/yfD1spmOZqIL8xoOOe+s355/SDGjjLQRs6e+vNA==
+X-Received: by 2002:a05:600c:8b16:b0:45b:7d24:beac with SMTP id 5b1f17b1804b1-46e1d988acamr63832465e9.10.1758710451994;
+        Wed, 24 Sep 2025 03:40:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGQUGWyhr6bvPS0QO0bjgArU7ygo/54DWi914RDCMaEcYUUvLnJDJjf0YevNsZ43xh89pWQVw==
+X-Received: by 2002:a05:600c:8b16:b0:45b:7d24:beac with SMTP id 5b1f17b1804b1-46e1d988acamr63832145e9.10.1758710451594;
+        Wed, 24 Sep 2025 03:40:51 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f14:2400:afc:9797:137c:a25b? (p200300d82f1424000afc9797137ca25b.dip0.t-ipconnect.de. [2003:d8:2f14:2400:afc:9797:137c:a25b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e2a9af775sm26973055e9.7.2025.09.24.03.40.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 24 Sep 2025 03:40:51 -0700 (PDT)
+Message-ID: <bdb25331-4273-4bf8-b095-d052e5124003@redhat.com>
+Date: Wed, 24 Sep 2025 12:40:49 +0200
 MIME-Version: 1.0
-In-Reply-To: <20250924091746.146461-1-bhe@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-new 1/1] mm/khugepaged: abort collapse scan on non-swap
+ entries
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, dev.jain@arm.com, hughd@google.com,
+ ioworker0@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ mpenttil@redhat.com, npache@redhat.com, ryan.roberts@arm.com,
+ ziy@nvidia.com, richard.weiyang@gmail.com
+References: <20250924100207.28332-1-lance.yang@linux.dev>
+ <1282de5a-3dce-443d-91d1-111103140973@redhat.com>
+ <2i5t62obfweid2zrt33vo3boviw4okha4d3gglw76eqv43ofky@pdv3evw5yjmh>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <2i5t62obfweid2zrt33vo3boviw4okha4d3gglw76eqv43ofky@pdv3evw5yjmh>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Gvp1DjZH5ADvu_YpUFOMqU9qzJg4LFAoU43tPxpqcGY_1758709445
+X-Mimecast-MFC-PROC-ID: azyXJ3oJ5qvnX09t21EKk4ZAzLjDkPsfRZrkIhJpeG8_1758710452
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Stat-Signature: baswodkmyr5pje3p3a6jycg7wrdpb1kj
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 8qqjsj8xzxybiuzufho4yc73o3zm55jn
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 326DC2000B
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758709452-554625
-X-HE-Meta: U2FsdGVkX19pV1/YEqIyhpEfbGydSZZ9oDhzUrBaS9f9g4IvNnkRyBwne8BLHeXJgFTC5L8bDNdNczL6tNt73xDMcHxrd/2n14pK603JKo20oCAhoAhwyKIlcFe2svn+Lo2WBg6GfZiGTAjlDeMpypWHuLWt2BLKSwpZk0hYHrudsvewXu0du8OV3yWDAjj1wLRORkC8LyWfV3zKhfFGSGXj+0AHgVzoxEfLV1F+SzUfroiEiQu8jr861T7iGPBS/plMulN0Q7GbbBK5uTwf07kxe3BOI8vH+EHP0jCYs62JoSh+y/mMB7RqPLgP+c5mxWPx5hk55OrLCkFreqTcpDVAXA7XY13RlAh66LBJRo30g/p3uIgmdmd7W7A4s7Nofa6jpEYFsR6U7L5a2F9pE/rR1rAS8X/HnKE5h6Er5fShKdBY/28L6VXe5b2I4+a8LpYLmLYkP7WTYXty98m9Hu8aen/xqgQDrDyNTLiG2ie6NIoTbIAcuJ6h50jT9hSsH0cP8uM616Bz1u539r2cgaks2H+ToCMX2diru3IQCBpgB/CcGA879NwgqDD26zwALya+8dFVHgRfZfY/Tyu+6nzRIikWTI1r/tcAstNPjyr6tEaa0KUZqbVpLRzIkO4l7p+WMG/VmDlpHTTuDKanOV9/xustw5bayS19A+Hm5AgXhDg6oUr/2hqxrKALrLAsxK1AkoEWXIgeYj99uQ4HZvJd3F67j+c9JtVgR0oIlR6kL5e35U6mpXAgcAxQFyuKWZnQVDiPCbFmZMHp3MdONZ8DfqoccLYJf+EunaEQJjoqTGXo7n8ftx7qADhbB6Qh9djXmuBpZt8Squ1EmpuksvJXW2L0JrRf3lr6wiHpg3OMm3HdbVpUtvmZ5qggzGDPhwMqYcaUgFy+gfrX7K/ZoeJ55aJEY/P9kVvNdggEkuVn7ZO/THegw70M2Ah57dePt+XU+xUD6Z2pROsmTe0
- aqAcp8ai
- CC6OqtPhj4vV/P5vtow5vbt8hSFonCjVCU7zFB+jZA09/DIx6APi1HrlcWAvASy47KRbfaVTVAQR2480pLcgKPBsy738r+tXI06Fkl9gKDzhGBmo3U8DuUUwk3IkTtDr8SH9T2PIRVTpg2n/PVdRCtQodW01AX5c05VlJwj7JmuWcTlZ6854P9qDJvayZxxdyYb8/20hd2xWEiI39RknEJ69P6Aw4IgbCtASaUfZwLERvz/koN4i0s48DKFWP6joqOqHYbf4L9UmpuVyoT24AAISSoaOUT6rM1a2U60j7iUB96x1Ygz7zKnL8f5kgSGauDTClLMhJlLTHmTKEzm60zDxgPutrPmQXH5L34R3z5DXBJ1GCJokAtzCcDoS/rgNpvS+JJhTWy3Qh8QH7RRu9s7EI2fbGA8acjHYcXXgDnOWAM/amz1SuzVgpZ3P7NHoUUP8R
+X-Rspamd-Queue-Id: 39D834000C
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758710455-475293
+X-HE-Meta: U2FsdGVkX1+bJ0nfV+WkHk0IeKDIjeVMheg7/C9WzWqDZEtLgotOPBr051wlJj3Y3cnLOXgfh4r6xjfIpb2EIj+wg6IEOpXbn7eMWxoqw53eLFlKbpKEsCDAgRqQt77okSgY7dfQQzwkOeRaCTW+N0flR7YilMgGLn+PjiKqxInJ/G9+ujbTF73tFRzo2lNli8L25u3FBs+Sm1L8CDzz+aGwHW4aG9+uwZLo8BGZr8jmV7RHsS4EuSh/MuN4F2a4QsDZmeAsJ27gcpKaKB2QEt91FgKM8+xgdHpFof2bhz3DxoNkctZgy+tZjDAgG61JgzSMq4xS769eUUv1PI5qWagJgOHd9bWVv/eT2tDt4uj20BGnqam64QfdXskD5XAxjO1p407wY4DuJOmh3UJLPuhkp0oXemBy57ZQwMyna7qGFLzkUQwN2polz6RgxE9LuwXm76FMYFdKDxKmJw1g6osf2JGmSqB/L7ozKijEpXgyi2/3UkkUS6xN2kTTWfj0qZiW06B4wyIqEDWm1bixRerm1n/GJyvAk4zrYBQnGGIntEc4eqKaAR4oj80BmoYx+0iDNltrdl9HZ4X4+IE76s7VQB9KQOb5DVnWi2FoVJ9ZoMJA+b0UvjJJqPWtZilBWxjpzbTGdgKEp0iVGloBeK0h7LRL22XgaqPSdd+m10R6p368ksPx6Jc2QPLOpFd7gda0rYdDpixs0AElDF3G0lQGyYHe5U+yDZWOB7TST7HI7GvxTfbyM+hA4FjPVxdGAnG18pexW/tkGiERIXMRrXV4hs3BXpS9X4qIiScv8+RPxxg2u/qkJVN75K+foo6SMm4NFooVFPBwQVCaRJNnJ9cgj/0HZLHJMvhSY1tgQk7djjI0a4MqAO/OxwV+A/UokRi0nofbKnT50ZWtH91aarP004u04CkmWXm9fPhfoVV39CtZc2pLbu9Fh090Gp5H0wfaeI0kSYnBVLPzNIK
+ FxUHW9TC
+ AsunQmm8HnoFtbL3G+CpZQgjL+rwfuyMQGmeOGPsC8NrWbczmJ4/SoMaskevW2TnLdWo5ikCuBBwFwQ0YIYOTpmeZkTR7tsUD7BnLsxbfCwiOfvqItE7Qe2r+vkfLXRtHHUqUjU/JyFT8Jb3/kRTNYlGKOVgYpJ3/NqLaXUSAVVnhaESLmWWoM6/dfh8UPjQGe9LP3SgYXIBT9RRT7/MZfw2BCPYjsbo1MxmOQdB1azv9IJu3fGTeCtjsQTet+P8iuAhtK1BCVzekTyt6En7iJoKOBwZnOJTxIJoz52WpHPzDIL0e5nVkyBbxFEmbZGVRlvUqHom9TgiMLOkktb44CeGOsft07RKaB8uV1M33v4mg2AHVZcILlluD0jJB+O7XD+Zvi15S49bfiYrBfStjihQZkwM+qelgjkYxmU/wLffv7Ih4e1Ljh3sVKVzRDXUdMJcOWC455R7FBZbj8rlguYEwxiHaxTTTOdFR8i5BJz2eGURjYuIbE/wx3dyKfwWcHgP0wkOqBfqXrrEBwwskbnjjA9PU97UYEbZ2XTeS9+WmEdEusf8leBFLmKawv5Cv/5B/4kgsYB+n64Vuub0wWFWIhA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,66 +183,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/24/25 at 05:17pm, Baoquan He wrote:
-> Currently, on system with multiple swap devices, swap allocation will
-> select one swap device according to priority. The swap device with the
-> highest priority will be chosen to allocate firstly.
+On 24.09.25 12:17, Kiryl Shutsemau wrote:
+> On Wed, Sep 24, 2025 at 12:10:47PM +0200, David Hildenbrand wrote:
+>> On 24.09.25 12:02, Lance Yang wrote:
+>>> From: Lance Yang <lance.yang@linux.dev>
+>>>
+>>> The existing check in hpage_collapse_scan_pmd() is specific to uffd-wp
+>>> markers. Other special markers (e.g., GUARD, POISONED) would not be caught
+>>> early, leading to failures deeper in the swap-in logic.
+>>>
+>>> hpage_collapse_scan_pmd()
+>>>    `- collapse_huge_page()
+>>>        `- __collapse_huge_page_swapin() -> fails!
+>>>
+>>> As David suggested[1], this patch skips any such non-swap entries early.
+>>> If a special marker is found, the scan is aborted immediately with the
+>>> SCAN_PTE_NON_PRESENT result, as Lorenzo suggested[2], avoiding wasted
+>>> work.
+>>
+>> Note that I suggested to skip all non-present entries except swap entries,
+>> which includes migration entries, hwpoisoned entries etc.
 > 
-> People can specify a priority from 0 to 32767 when swapon a swap device,
-> or the system will set it from -2 then downwards by default. Meanwhile,
-> on NUMA system, the swap device with node_id will be considered first
-> on that NUMA node of the node_id.
-> 
-> In the current code, an array of plist, swap_avail_heads[nid], is used
-> to organize swap devices on each NUMA node. For each NUMA node, there
-> is a plist organizing all swap devices. The 'prio' value in the plist
-> is the negated value of the device's priority due to plist being sorted
-> from low to high. The swap device owning one node_id will be promoted to
-> the front position on that NUMA node, then other swap devices are put in
-> order of their default priority.
-> 
-> E.g I got a system with 8 NUMA nodes, and I setup 4 zram partition as
-> swap devices.
-> 
-> Current behaviour:
-> their priorities will be(note that -1 is skipped):
-> NAME       TYPE      SIZE USED PRIO
-> /dev/zram0 partition  16G   0B   -2
-> /dev/zram1 partition  16G   0B   -3
-> /dev/zram2 partition  16G   0B   -4
-> /dev/zram3 partition  16G   0B   -5
-> 
-> And their positions in the 8 swap_avail_lists[nid] will be:
-> swap_avail_lists[0]: /* node 0's available swap device list */
-> zram0   -> zram1   -> zram2   -> zram3
-> prio:1     prio:3     prio:4     prio:5
-> swap_avali_lists[1]: /* node 1's available swap device list */
-> zram1   -> zram0   -> zram2   -> zram3
-> prio:1     prio:2     prio:4     prio:5
-> swap_avail_lists[2]: /* node 2's available swap device list */
-> zram2   -> zram0   -> zram1   -> zram3
-> prio:1     prio:2     prio:3     prio:5
-> swap_avail_lists[3]: /* node 3's available swap device list */
-> zram3   -> zram0   -> zram1   -> zram2
-> prio:1     prio:2     prio:3     prio:4
-> swap_avail_lists[4-7]: /* node 4,5,6,7's available swap device list */
-> zram0   -> zram1   -> zram2   -> zram3
-> prio:2     prio:3     prio:4     prio:5
+> Hm. So swap in is fine, but wait for migration to complete is not?
 
-By the way, when testing, I hacked zram kernel code to assign device_id
-to zram->disk->node_id to emulate those disk with node_id. 
+If so we'd have to add the logic to actually wait for migration entries, 
+and not count them towards max swap entries.
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 8acad3cc6e6e..b0bb6531b029 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -2719,6 +2719,7 @@ static int zram_add(void)
- 	zram->disk->flags |= GENHD_FL_NO_PART;
- 	zram->disk->fops = &zram_devops;
- 	zram->disk->private_data = zram;
-+	zram->disk->node_id = device_id % nr_node_ids;
- 	snprintf(zram->disk->disk_name, 16, "zram%d", device_id);
- 	atomic_set(&zram->pp_in_progress, 0);
- 	zram_comp_params_reset(zram);
+But that's a different discussion and could be added on top of cleanly 
+handling all non-swap entries.
+
+-- 
+Cheers
+
+David / dhildenb
 
 
