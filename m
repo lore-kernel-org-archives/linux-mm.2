@@ -4,121 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D8D3CAC5AC
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 00:49:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1772CAC5AC
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 01:08:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE2908E000A; Tue, 23 Sep 2025 20:49:04 -0400 (EDT)
+	id 98C818E0002; Tue, 23 Sep 2025 21:08:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1C478E0001; Tue, 23 Sep 2025 20:49:04 -0400 (EDT)
+	id 93D018E0001; Tue, 23 Sep 2025 21:08:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C95128E000A; Tue, 23 Sep 2025 20:49:04 -0400 (EDT)
+	id 804718E0002; Tue, 23 Sep 2025 21:08:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B2C388E0001
-	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 20:49:04 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 63841877FF
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 00:49:04 +0000 (UTC)
-X-FDA: 83922309408.05.5620BB2
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 999FD10000A
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 00:49:02 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="M5mRsEM/";
-	spf=pass (imf05.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758674942;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=Yx0OQ9n8NqSm6LUBQKRZvBvcolX/CtMd/sBt68RO2rg=;
-	b=5q/SD6WAz/PeloJwrLQ+pUCRur/Xxx3aa/PIt5qKoXl/3wT2yhg2XQwmjvgcQd3jx4O8mZ
-	jIT4JP46vx+BSicatZBH0qsxC2svHL7sBNM7whFpCp6M1a2z14G6KFJfYoKJF31GrnH/pn
-	cx4ekFl8sskc2V5P75LuGoy/aTCgJEY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758674942; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 690F28E0001
+	for <linux-mm@kvack.org>; Tue, 23 Sep 2025 21:08:42 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C4EA1140664
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 01:08:41 +0000 (UTC)
+X-FDA: 83922358842.01.03CC287
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 1C0011C000B
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 01:08:38 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=cLg2VpJl;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf20.hostedemail.com: domain of aubrey.li@linux.intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=aubrey.li@linux.intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758676119; a=rsa-sha256;
 	cv=none;
-	b=AcQmFrwmTUnrTXJn7hdnkY9S444M9d9MnD43iXNU7OZkOaLPCTgYxHQsvNbMPhPvuGlDvl
-	WfiohU+NpLj+agXhSH4l2GSRm7b152IE2HYBMNbduFzgN3d2PTt4WcO3tXg6i0f1rhqqj/
-	SIyOcSpeUESml+HIMXUXuSDa6HFRiKQ=
+	b=6TCY4I0qX+1vI0uBwUllHJtpGPkYL3VENyrCuZZRPzegshXxB1TjUeeyjbBuKy7QviEIYG
+	EXnWR1Wp1VJW45Mb96E7HQP7B+m7ZP0vJr11EZ0UugG4VokEMF5nXvhkxkWySYny/od2nB
+	b+HzFBLxJaxMZK9N3Y/bH5jnXJnyBes=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="M5mRsEM/";
-	spf=pass (imf05.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-62fc2d92d34so9088326a12.2
-        for <linux-mm@kvack.org>; Tue, 23 Sep 2025 17:49:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758674941; x=1759279741; darn=kvack.org;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Yx0OQ9n8NqSm6LUBQKRZvBvcolX/CtMd/sBt68RO2rg=;
-        b=M5mRsEM/I1cVOfIWiB/HSPyX2j8E2OrTDp3ynwB9LPd0X+N24k0MSYSKGk7xK6gx9F
-         juLhZShT24Xlya6URa38QCXMwDR1ITGV3aCHCUoAuPN/7Hg725cflP7kehZIS2wk41C3
-         F9zwljbXjCNX41byy9rXfc6RF46cBlmXHgOEKQtWWwjoMPrvg8YH5GwUNf9U4KJOEXyz
-         Ey/kPWS26HZoR3zvcq/Vgmp0rrrkIrkS7p/FAV2hNF76YhpMYjzsmp/guGzdgykUrFwD
-         ctIpfQf6hovfLQlE97KSWepnlZlT3tEcbs98Z1zW/fWlUO4mmnyVywYEVYFkkI+Ux1h/
-         oPjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758674941; x=1759279741;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Yx0OQ9n8NqSm6LUBQKRZvBvcolX/CtMd/sBt68RO2rg=;
-        b=wCYW/lF5BqwoHlvsMwRhTUeXPrbEVftMR0GqhmOY6u7gP2YjRVLrAw7Mow5ISs5dQM
-         CHgT0b+cc5OMGpsmYO1ikyfoeu2lXH9uHfkQn+m0b9PWe9iYn7D1gVY6/ae8KzRbI3Qr
-         5C8xJNvK/GldnWIUpDS4BlJi7BofRFtNFiDyxF4xQIwh1W2/IQ9R+rmNk9e64eX5ZFop
-         11FYtbR7RWjIqgxPjbD3OtqBCG0/la/z6mU3eBUYC+XBV4pAAzb3pOcLRqK61TXrKI/T
-         MBsSgLU7Zg3KnKPeWk8YirH103I1gFwvC5kGpPh7samkZKg1wFZaEEFfruWV38NKjK1X
-         A1Lw==
-X-Gm-Message-State: AOJu0YykY5cbXtqTl8OpLQ8e31QfTCkNrC8FBnMUmgEUK2DrUB9fS7ru
-	bvltrcf/L4+XXYhy96vO1Rwbi62ZHwnsizB7R4JzEthlH53Uz/fmUDYo
-X-Gm-Gg: ASbGncs004JZ16UkudqCgK+xcCYCwM1jbEuSJYuflD85wTFFpqg0ErfxOSnG3SDGXWo
-	YwArxJT/dOT2BbRYRqdYeAHbYTA6Lj9ZpsTzuXXRuekjlJU3n/O6FkSCs+dz2Lg1yV23Ul9wbwZ
-	FyfD+AITfzv4YKGX64OEIkqNpa89yDKHj/eRU0MkLyxX7Jh/Rnhdy//kadF2Jhj+aDxaVr39crp
-	zVflRxJG7+65h9mDlb/8LD6U7RmR8hhNO6X+ZvLpnGZhZVQg/FNkZRzCUbmlqLyXu9uXVepXS2f
-	nnmN/q3WjivvY4gou2mbHwvC6oXvJfA5ylbd2VyXhkyy55Eq7o63aTNAUYqcs5sdtM8Isfn+O4+
-	45TJLKVOg56hv564QpU4Mgw==
-X-Google-Smtp-Source: AGHT+IGbAQdINWgnl8AoCEwIhyJCp9n0iy/5wcJ6yB0//hzqpZWasB1Ucm7rw6BPErGiUkwDujxV7w==
-X-Received: by 2002:a05:6402:4551:b0:633:afb7:2e6a with SMTP id 4fb4d7f45d1cf-6346780ebb9mr3082534a12.18.1758674940905;
-        Tue, 23 Sep 2025 17:49:00 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-62fa5f14e64sm11645971a12.25.2025.09.23.17.48.59
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 23 Sep 2025 17:49:00 -0700 (PDT)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	xu.xin16@zte.com.cn,
-	chengming.zhou@linux.dev
-Cc: linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Kiryl Shutsemau <kirill@shutemov.name>,
-	SeongJae Park <sj@kernel.org>
-Subject: [Patch v3 2/2] mm/khugepaged: remove definition of struct khugepaged_mm_slot
-Date: Wed, 24 Sep 2025 00:48:54 +0000
-Message-Id: <20250924004854.29889-3-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20250924004854.29889-1-richard.weiyang@gmail.com>
-References: <20250924004854.29889-1-richard.weiyang@gmail.com>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 999FD10000A
-X-Stat-Signature: w95g3dgg7ypbye84gtf9wb7i48mqh4y8
+	imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=cLg2VpJl;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf20.hostedemail.com: domain of aubrey.li@linux.intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=aubrey.li@linux.intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758676119;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vgXWAsFoLxpb8J4qxlIRcO1gt5wTKGjQaepQ6HGzzzE=;
+	b=UV3nq16HQ5NY5W6NYEUFLDQ+aTqYzEsmn0P+s9OkRvYXQfiQzcgMhEASeCfqtyP9kziDNs
+	QTcYwcELJs3bPZ0TkLWBaPe6VCCy2y+/AtFI+9yj9QM46bDbzpDEYyN9DzuPgS2i6vZyFe
+	q3158Mn6kqglCA1msiaGg+TzLjZmiCE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758676119; x=1790212119;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=NMr8YHsAc1qYXXZdTcENL3OIhnYEafGh+AtSGRf6TLc=;
+  b=cLg2VpJlt74ifxlDkZ6jvUAFAidCvFPYeG1qJ67u//WiL1ZmBUEAMLYw
+   OCFcXihrw2UV+twoR55r052L/8OPANTxG7Jil5DVMLm/L3ddrO6EideHu
+   Z4ybSOJbKQTi2oSopT5Y/8Kr0NagyQeGO9eu0hsKatu5PW9JPizhNAzN8
+   Mxz9jjiPhvxR9UAZv/fzk9GuDLzlL6dz+BJN8LazoG6KI3YNMh0JhefNz
+   dafnHYl6oyGv1yPyE5YoMuz33zyd6pD2ARCKngXuHrGtMphytM8F2/WBj
+   0HpXywkPRw9iu2HM7g+KYVNOn/1ZWPq0VWpGsJvXqtJMOCOqROF8g5bQE
+   A==;
+X-CSE-ConnectionGUID: C0BOgBvPQgaam/WRLCx8FA==
+X-CSE-MsgGUID: 73UIo4ikTES/qCi8NJMrNw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="72391784"
+X-IronPort-AV: E=Sophos;i="6.18,289,1751266800"; 
+   d="scan'208";a="72391784"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2025 18:08:37 -0700
+X-CSE-ConnectionGUID: fjBTYTLDSiCoIsBzqV7wMQ==
+X-CSE-MsgGUID: IyKXHQQ5TJ+72htfqHKDig==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,289,1751266800"; 
+   d="scan'208";a="214035413"
+Received: from alc-skl-a23.sh.intel.com (HELO [10.239.53.6]) ([10.239.53.6])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2025 18:08:35 -0700
+Message-ID: <c7ac8e6f-d24c-4a13-b9a4-c5bd287e9f9f@linux.intel.com>
+Date: Wed, 24 Sep 2025 08:27:39 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/readahead: Skip fully overlapped range
+To: Jan Kara <jack@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>, Nanhai Zou <nanhai.zou@intel.com>,
+ Gang Deng <gang.deng@intel.com>, Tianyou Li <tianyou.li@intel.com>,
+ Vinicius Gomes <vinicius.gomes@intel.com>,
+ Tim Chen <tim.c.chen@linux.intel.com>, Chen Yu <yu.c.chen@intel.com>,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Roman Gushchin <roman.gushchin@linux.dev>
+References: <20250923035946.2560876-1-aubrey.li@linux.intel.com>
+ <20250922204921.898740570c9a595c75814753@linux-foundation.org>
+ <93f7e2ad-563b-4db5-bab6-4ce2e994dbae@linux.intel.com>
+ <cghebadvzchca3lo2cakcihwyoexx7fdqtibfywfm4xjo7eyp2@vbccezepgtoe>
+Content-Language: en-US
+From: Aubrey Li <aubrey.li@linux.intel.com>
+In-Reply-To: <cghebadvzchca3lo2cakcihwyoexx7fdqtibfywfm4xjo7eyp2@vbccezepgtoe>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1C0011C000B
+X-Stat-Signature: 1i537dax4akmtsb1yqqopqsjb5d11bc6
 X-Rspam-User: 
-X-HE-Tag: 1758674942-656557
-X-HE-Meta: U2FsdGVkX19fYaJnPN95p85gwQw27IE3NVG5yiLzIgv/eCB8Ftsxs4/6GF/3bVBB9WSoos1SB956un6xkKDEnrHE30N1JLU1EVvYElEtXYQOmfBZc4OFmC2ZgvKm4VrXuLrBVGV1mMD16hrRrmuOxSv9MiOCXY0Yvx/LU8zu/vFZTIy39h4BvtrGqpbYIvqLmE2CARzJHNu5jQoYGKwC/i+j6m7ddG4Dw1qPcAId36BLkXO5tO9urj5PVRoaGPFoSoJIOmxpXTUp1ikYifgTp3pL1IiRMKM7erSz1dHpTjCBvPD7N1pm7sDBNMGlCdXRDO3ZxrlviGoCvvYTLlP3T0eoukPp3H/L/7T5XE8Fl4hQsBGEStIqe23DFG70gqSrb4lxxHk6kmL4AanqNDS+f4s2el/754A6JXXHmFwKfh+qQ2lHnlYEupqJWtaDpDxG9Sc1B/vNuMnvWl9UoSyeXKuD4PAIdi5bD2CTpfW8xP/DoHWpMkB0MXKk23/Vbe28ezA6dwZvaXq2S99WDr6r69ttaB/Z1P3hy4md1PshUI+icx6/J0eiN3RVyUQc8HTqKgLV5UJieFAJAPfHLim/lK8jy+NdtyGr5TvVnYYM50Y5EZV5uvbZDoG9xJDjLjwDcn8yFeVUAUeBwJ8eqtZHuWwXDILsCxrBz6gdARx4SSZvkqrSrwqvwwwGJlEHCXuNhG5VLci7iUD1Ufp4JtmfQSovy0645Lo8UaSrEvaQCwg3qPO3BbAg2WoDX1QcXBHn6TZwHdZVHK0ujpalN7Iv70YQ2JnsvuWcICRi1HvZCml3CmonEO+R8LF3KYOwh3puy3m8mf2TX38cKbiD5d8/73VcwylEjguDicuNrFAJZn9g9EzUM/fRIbVQlA7TKomtGbPSiREa6oLv7q/ZBUF6CYVYAtHKuznbcOP0S5O8YgIQYgLBZx0CpIwklKx2vJ+MCZ+UqYkzwacvrrpnNIw
- uFuSRdZ5
- Tq3ZL11HzHODvBtTtrl+KOPlTuW1KQBxQyq7flWm0tIQIpjeuJjBXe/NOmsFnCFoA6H6KGyPwDLPFz5iAbq8Ct7N1+B5i7GUwKdXGLXafq8rpchJDUGwTsG54aUXZhVOmCTmcEvYUpSbX9tIPp/0OtYvr6TphZkP/DHI1gF52jyDv5GcT/GMRgwBVNzNX6IUon+VPwbyCwi4re5Hz9Ifw8KlAWtLxN4a8/+O9I1sgEqxoAqmBJWwFLN7jrn3wfwcaKeLMLfpbbyreRJFgiQlA5zsU8cx0HcXp8PbocLQPkrRnSPiQYqkRQY/M3cYdfA9zyXHqwTmk1WYr2cvjPFtvYXDT4VEHw/kRQxs+bFGO/mWaw/lq0wIcBUf5RN/QDxpE3jhRoIHTDaX0EWGc1ExSTybash/v/8aArGz/8LX0ToH6thNg71/ZEsDi1ik0plIfQ1PQf3ByLaMzn7+iH6hpbNb6ceNDN6DmZAi7y2nz+1jUizXPdBXKxCQ4ycb3FpF+b7IGqwc9PejMueYv/zJqiV858gdj6Zhm75caSPFSY9Pbf1wNNKrVAEgChDVWzrBmGXNyDiUYF45P1tmUrjAWdeFyXwjh2ooTm3VGqoThgxjC/SevyQUD7WzHcnCco/CHVBsyKMnHG8wD0j6jpKG9C61OxBwZ9gDqPwm7dAUWJCQypBQK9zRz2y/R38ygS/nPJh4+Rwud0feKwwIvkg2Z6KsvE9q3YbI44ziAqy+9E48mNVFco6JP6KN2ubfLD+vjs8Hg485UwTSBoU8=
+X-HE-Tag: 1758676118-435801
+X-HE-Meta: U2FsdGVkX19Qe8XARlPA8pyJpx0SR/lrRdCPtmBFdrKLbLWEMaYTJTiNfz45YvDx5/Q9DHNk5L/izyV7z6SVNtQqIjwZCTYn/Vpx0U4E4lSOdgIgcfuTOadqGiNgdaypXpJkJQhOMZrt/TO67sMj9lkBdMzyOuAObtj2DecbU63YBc+t45gXxr14aDrhjjdYWIUhZOjBHUQiyEggyxxQFJwZ5/pmHWxhPog5flvZf22B40VnzBnHIKfLpfnGVGFbtZFSxVQD/eBY5ax5w3CTGd7F3cXYE4nRVx1xFsNhybgRMJm4NmsLepS7EKo0QcIjzACSRLaI6wKPtut6dKBHaG5Z33JywOXY4mhg01YlcZrxhfrD3z6skXWTOU9IazAYHb//T/K5i3X5wP0l7hZ0gyrS9pJ2O+AFuBzW8kgaHLUkuVxu7IV98CoUrfoPx45O6PMneYd2l1Yoz+aAUfFP7dnr+1eIDJyFru6QEUxE7/Kb0JWBoWAaeNgM0ccnmL9LH/I+CV8nQZVhIDWcTA686DXQMaS88Wcpo8E5PpqHkwSz5iUHj9mmV+x+yqnnp9hkQ23htojYyJqntmVc4Bi9nK7Wq62JaWglDXNwVbA8hRXPe+ZsmC53l+YVosRZd2r64ImceAvbgceImhtl120tR5OXyc3Nb9e3C/2IdRCN04oR9RRqe5lDLTiCcsZ8kWmZTc1BTJZZHnCFgNWe0ZRp63csguGQWGz2EZNK9waLS1yF/khG1XJRI4boQ2+dVETwnUnZmI2dwgQisGnbcX8cMPY4fX94pyHqi0IpPIGNoJlxu7ioZdiNWTNnLi/b3UqOfqHHEQPJukFsTm0abBz8IO9G/gAzqqsoubRFXOIhWH/+mYVPt7IHOmsnsdH2n/pUfpyHkvqnc8qULeDUBlf8wdcN7cny9wKMRtWy25oaeBGEQD9ywkZkIatXJsF1+5y4l4Dj9LLEDifc4TwenMi
+ 4BAABeKK
+ GMEzntjtfO2LN6+yjJRkKlwYkKMVvE15MBdZY891oPOR43fnD5DUcmSttN+0k1PPWxLjgLYGuq+gqrX1dsF9L8MZFglhL1aeT8hlEkYzo60QtQxkutGNlx/572LGFGV8NtefUTweuTWXdb7lNwBTLEOn4brnDDb5jbGCMXktKj68qlCq7NJQSMzYkdrEhvkswzjMGBSjcMdsHtDvhKx9s+ywmrKb+j8EbPaSZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,220 +114,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Current code is not correct to get struct khugepaged_mm_slot by
-mm_slot_entry() without checking mm_slot is !NULL.  There is no problem
-reported since slot is the first element of struct khugepaged_mm_slot.
+On 9/23/25 17:57, Jan Kara wrote:
+> On Tue 23-09-25 13:11:37, Aubrey Li wrote:
+>> On 9/23/25 11:49, Andrew Morton wrote:
+>>> On Tue, 23 Sep 2025 11:59:46 +0800 Aubrey Li <aubrey.li@linux.intel.com> wrote:
+>>>
+>>>> RocksDB sequential read benchmark under high concurrency shows severe
+>>>> lock contention. Multiple threads may issue readahead on the same file
+>>>> simultaneously, which leads to heavy contention on the xas spinlock in
+>>>> filemap_add_folio(). Perf profiling indicates 30%~60% of CPU time spent
+>>>> there.
+>>>>
+>>>> To mitigate this issue, a readahead request will be skipped if its
+>>>> range is fully covered by an ongoing readahead. This avoids redundant
+>>>> work and significantly reduces lock contention. In one-second sampling,
+>>>> contention on xas spinlock dropped from 138,314 times to 2,144 times,
+>>>> resulting in a large performance improvement in the benchmark.
+>>>>
+>>>> 				w/o patch       w/ patch
+>>>> RocksDB-readseq (ops/sec)
+>>>> (32-threads)			1.2M		2.4M
+>>>
+>>> On which kernel version?  In recent times we've made a few readahead
+>>> changes to address issues with high concurrency and a quick retest on
+>>> mm.git's current mm-stable branch would be interesting please.
+>>
+>> I'm on v6.16.7. Thanks Andrew for the information, let me check with mm.git.
+> 
+> I don't expect much of a change for this load but getting test result with
+> mm.git as a confirmation would be nice. 
 
-While struct khugepaged_mm_slot is just a wrapper of struct mm_slot, there
-is no need to define it.
+Yes, the hotspot remains on mm.git:mm-stable branch.
 
-Remove the definition of struct khugepaged_mm_slot, so there is not chance
-to miss use mm_slot_entry().
+   - 88.68% clone3
+      - 88.68% start_thread
+         - 88.68% reader_thread
+            - 88.27% syscall
+                 entry_SYSCALL_64_after_hwframe
+                 do_syscall_64
+                 ksys_readahead
+                 generic_fadvise
+                 force_page_cache_ra
+                 page_cache_ra_unbounded
+                 filemap_add_folio
+                 __filemap_add_folio
+                 _raw_spin_lock_irq
+               - do_raw_spin_lock
+                    native_queued_spin_lock_slowpath
 
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: xu xin <xu.xin16@zte.com.cn>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Nico Pache <npache@redhat.com>
+> Also, based on the fact that the
+> patch you propose helps, this looks like there are many threads sharing one
+> struct file which race to read the same content. That is actually rather
+> problematic for current readahead code because there's *no synchronization*
+> on updating file's readhead state. So threads can race and corrupt the
+> state in interesting ways under one another's hands. On rare occasions I've
+> observed this with heavy NFS workload where the NFS server is
+> multithreaded. Since the practical outcome is "just" reduced read
+> throughput / reading too much, it was never high enough on my priority list
+> to fix properly (I do have some preliminary patch for that laying around
+> but there are some open questions that require deeper thinking - like how
+> to handle a situation where one threads does readahead, filesystem requests
+> some alignment of the request size after the fact, so we'd like to update
+> readahead state but another thread has modified the shared readahead state
+> in the mean time).  But if we're going to work on improving behavior of
+> readahead for multiple threads sharing readahead state, fixing the code so
+> that readahead state is at least consistent is IMO the first necessary
+> step. And then we can pile more complex logic on top of that.
 
----
-v3:
-  * fix a PF reported by SeongJae, where slot is changed to next one
----
- mm/khugepaged.c | 58 ++++++++++++++++++-------------------------------
- 1 file changed, 21 insertions(+), 37 deletions(-)
+This makes sense. I actually had a version using atomic operations to update
+ra in my patch, but I found that ra is also updated in other paths without
+synchronization, so I dropped the atomic operations before sending the patch.
+Let me check what I can do for this.
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 204ce3059267..e3f7d1760567 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -103,14 +103,6 @@ struct collapse_control {
- 	nodemask_t alloc_nmask;
- };
- 
--/**
-- * struct khugepaged_mm_slot - khugepaged information per mm that is being scanned
-- * @slot: hash lookup from mm to mm_slot
-- */
--struct khugepaged_mm_slot {
--	struct mm_slot slot;
--};
--
- /**
-  * struct khugepaged_scan - cursor for scanning
-  * @mm_head: the head of the mm list to scan
-@@ -121,7 +113,7 @@ struct khugepaged_mm_slot {
-  */
- struct khugepaged_scan {
- 	struct list_head mm_head;
--	struct khugepaged_mm_slot *mm_slot;
-+	struct mm_slot *mm_slot;
- 	unsigned long address;
- };
- 
-@@ -384,7 +376,10 @@ int hugepage_madvise(struct vm_area_struct *vma,
- 
- int __init khugepaged_init(void)
- {
--	mm_slot_cache = KMEM_CACHE(khugepaged_mm_slot, 0);
-+	mm_slot_cache = kmem_cache_create("khugepaged_mm_slot",
-+					  sizeof(struct mm_slot),
-+					  __alignof__(struct mm_slot),
-+					  0, NULL);
- 	if (!mm_slot_cache)
- 		return -ENOMEM;
- 
-@@ -438,7 +433,6 @@ static bool hugepage_pmd_enabled(void)
- 
- void __khugepaged_enter(struct mm_struct *mm)
- {
--	struct khugepaged_mm_slot *mm_slot;
- 	struct mm_slot *slot;
- 	int wakeup;
- 
-@@ -447,12 +441,10 @@ void __khugepaged_enter(struct mm_struct *mm)
- 	if (unlikely(mm_flags_test_and_set(MMF_VM_HUGEPAGE, mm)))
- 		return;
- 
--	mm_slot = mm_slot_alloc(mm_slot_cache);
--	if (!mm_slot)
-+	slot = mm_slot_alloc(mm_slot_cache);
-+	if (!slot)
- 		return;
- 
--	slot = &mm_slot->slot;
--
- 	spin_lock(&khugepaged_mm_lock);
- 	mm_slot_insert(mm_slots_hash, mm, slot);
- 	/*
-@@ -480,14 +472,12 @@ void khugepaged_enter_vma(struct vm_area_struct *vma,
- 
- void __khugepaged_exit(struct mm_struct *mm)
- {
--	struct khugepaged_mm_slot *mm_slot;
- 	struct mm_slot *slot;
- 	int free = 0;
- 
- 	spin_lock(&khugepaged_mm_lock);
- 	slot = mm_slot_lookup(mm_slots_hash, mm);
--	mm_slot = mm_slot_entry(slot, struct khugepaged_mm_slot, slot);
--	if (mm_slot && khugepaged_scan.mm_slot != mm_slot) {
-+	if (slot && khugepaged_scan.mm_slot != slot) {
- 		hash_del(&slot->hash);
- 		list_del(&slot->mm_node);
- 		free = 1;
-@@ -496,9 +486,9 @@ void __khugepaged_exit(struct mm_struct *mm)
- 
- 	if (free) {
- 		mm_flags_clear(MMF_VM_HUGEPAGE, mm);
--		mm_slot_free(mm_slot_cache, mm_slot);
-+		mm_slot_free(mm_slot_cache, slot);
- 		mmdrop(mm);
--	} else if (mm_slot) {
-+	} else if (slot) {
- 		/*
- 		 * This is required to serialize against
- 		 * hpage_collapse_test_exit() (which is guaranteed to run
-@@ -1432,9 +1422,8 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
- 	return result;
- }
- 
--static void collect_mm_slot(struct khugepaged_mm_slot *mm_slot)
-+static void collect_mm_slot(struct mm_slot *slot)
- {
--	struct mm_slot *slot = &mm_slot->slot;
- 	struct mm_struct *mm = slot->mm;
- 
- 	lockdep_assert_held(&khugepaged_mm_lock);
-@@ -1451,7 +1440,7 @@ static void collect_mm_slot(struct khugepaged_mm_slot *mm_slot)
- 		 */
- 
- 		/* khugepaged_mm_lock actually not necessary for the below */
--		mm_slot_free(mm_slot_cache, mm_slot);
-+		mm_slot_free(mm_slot_cache, slot);
- 		mmdrop(mm);
- 	}
- }
-@@ -2394,7 +2383,6 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
- 	__acquires(&khugepaged_mm_lock)
- {
- 	struct vma_iterator vmi;
--	struct khugepaged_mm_slot *mm_slot;
- 	struct mm_slot *slot;
- 	struct mm_struct *mm;
- 	struct vm_area_struct *vma;
-@@ -2405,14 +2393,12 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
- 	*result = SCAN_FAIL;
- 
- 	if (khugepaged_scan.mm_slot) {
--		mm_slot = khugepaged_scan.mm_slot;
--		slot = &mm_slot->slot;
-+		slot = khugepaged_scan.mm_slot;
- 	} else {
- 		slot = list_first_entry(&khugepaged_scan.mm_head,
- 				     struct mm_slot, mm_node);
--		mm_slot = mm_slot_entry(slot, struct khugepaged_mm_slot, slot);
- 		khugepaged_scan.address = 0;
--		khugepaged_scan.mm_slot = mm_slot;
-+		khugepaged_scan.mm_slot = slot;
- 	}
- 	spin_unlock(&khugepaged_mm_lock);
- 
-@@ -2510,7 +2496,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
- breakouterloop_mmap_lock:
- 
- 	spin_lock(&khugepaged_mm_lock);
--	VM_BUG_ON(khugepaged_scan.mm_slot != mm_slot);
-+	VM_BUG_ON(khugepaged_scan.mm_slot != slot);
- 	/*
- 	 * Release the current mm_slot if this mm is about to die, or
- 	 * if we scanned all vmas of this mm.
-@@ -2522,16 +2508,14 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
- 		 * mm_slot not pointing to the exiting mm.
- 		 */
- 		if (!list_is_last(&slot->mm_node, &khugepaged_scan.mm_head)) {
--			slot = list_next_entry(slot, mm_node);
--			khugepaged_scan.mm_slot =
--				mm_slot_entry(slot, struct khugepaged_mm_slot, slot);
-+			khugepaged_scan.mm_slot = list_next_entry(slot, mm_node);
- 			khugepaged_scan.address = 0;
- 		} else {
- 			khugepaged_scan.mm_slot = NULL;
- 			khugepaged_full_scans++;
- 		}
- 
--		collect_mm_slot(mm_slot);
-+		collect_mm_slot(slot);
- 	}
- 
- 	return progress;
-@@ -2618,7 +2602,7 @@ static void khugepaged_wait_work(void)
- 
- static int khugepaged(void *none)
- {
--	struct khugepaged_mm_slot *mm_slot;
-+	struct mm_slot *slot;
- 
- 	set_freezable();
- 	set_user_nice(current, MAX_NICE);
-@@ -2629,10 +2613,10 @@ static int khugepaged(void *none)
- 	}
- 
- 	spin_lock(&khugepaged_mm_lock);
--	mm_slot = khugepaged_scan.mm_slot;
-+	slot = khugepaged_scan.mm_slot;
- 	khugepaged_scan.mm_slot = NULL;
--	if (mm_slot)
--		collect_mm_slot(mm_slot);
-+	if (slot)
-+		collect_mm_slot(slot);
- 	spin_unlock(&khugepaged_mm_lock);
- 	return 0;
- }
--- 
-2.34.1
+Have you put your preliminary patch somewhere?
+
+Thanks,
+-Aubrey
+> 
+> 								Honza
 
 
