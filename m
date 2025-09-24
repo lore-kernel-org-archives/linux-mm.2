@@ -4,93 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C7D6CAC5A7
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 08:17:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FD1BCAC5A5
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 08:32:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45B408E0005; Wed, 24 Sep 2025 04:17:15 -0400 (EDT)
+	id 70A878E0007; Wed, 24 Sep 2025 04:32:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 408208E0001; Wed, 24 Sep 2025 04:17:15 -0400 (EDT)
+	id 6BB2F8E0001; Wed, 24 Sep 2025 04:32:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F5C98E0005; Wed, 24 Sep 2025 04:17:15 -0400 (EDT)
+	id 5F7FD8E0007; Wed, 24 Sep 2025 04:32:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 052A48E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 04:17:15 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A6DEDC0472
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 08:17:14 +0000 (UTC)
-X-FDA: 83923438788.14.CBE6F4F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 49A958E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 04:32:36 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EDB0616079F
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 08:32:35 +0000 (UTC)
+X-FDA: 83923477470.01.F9A55FB
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 152BC160004
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 08:17:12 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UaZBnTzB;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5883C40003
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 08:32:34 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WKCiEqK8;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758701833;
+	s=arc-20220608; t=1758702754;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gXNOPhLdKfYtiwpS8D518O8VnvPG9pMlFRHlCj+WU4c=;
-	b=bQ3KgL1/yHaHr40ltkqZ5+gwXVs326n3T5RvYadC+Wtl0NHbS5Ax6z4gvVQtChpg1FtpeV
-	v1DAEL+ZAtvpEbfQJi6neCuFeeE8EIZT2+dl003uLvbJOhUSFozr72Pj+78/nyfDUubEWy
-	eONTdibaQghnK8bsO85ehOZVumP7hTE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758701833; a=rsa-sha256;
+	bh=yelwEdVyFlvDCiRDVOLVouJn/0aKPQv0jeYtJq158vU=;
+	b=yFi6qMKHMDDzXI0Lh+T3D1X2OIHJh+bGckt5PPoYxBjwDbYKNEnnntvrm55LxxaUq9DtAl
+	vxDI0FFoqE5eY0pGRAUKHbNKiZBmLEWfsmlioJf0B1EpXiSod62OUmIo03doj/GYUEdgug
+	AiQz4rgGFREa1ZYw2jamAl3jppXU71I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758702754; a=rsa-sha256;
 	cv=none;
-	b=jNy3r4EXCZ5ZdE5iPB9/oL+B7xJE/v2fdRgLJWnQRrTfLzZop8ep5ZeytuNGWmTcgTuq/u
-	AqLw19wRYFJr9VcwFvZRQhlDgPxe/c9mzjqJPXJG31P/8O2DLPMHDdGMjjmuQunwf2QfW3
-	Di2pwNRjJShnbrkLZrn7Tb4ZwAxuRr0=
+	b=lpIgxWLpCRW771LLzkG/FQuerGOIzZGdsjOZX6HIfS8tv2g2SExWH0F5HJCeVFJFiJshZz
+	1cEHRAhiA6zE+O84BBV+gB4K3b51f1dFkH1jgw88pDt7ERbFdiTRSyTv5iKOIw5dAlt5Do
+	AnyxzMYk6hL48kL4oYobefSoVzOFCfc=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UaZBnTzB;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WKCiEqK8;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 37E1560007;
-	Wed, 24 Sep 2025 08:17:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B57D5C4CEE7;
-	Wed, 24 Sep 2025 08:17:11 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9D4FA60202;
+	Wed, 24 Sep 2025 08:32:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 276C7C4CEE7;
+	Wed, 24 Sep 2025 08:32:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758701831;
-	bh=80TBCq2xtbZyQwcjgk75oUDRl3DELO/Ho2DPzv73C98=;
+	s=k20201202; t=1758702753;
+	bh=IeX8yOCoDvdcx0fmIasWNFpPwpjlgV+9WMTNQdEmwx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UaZBnTzBosxoU0mr/La3OpGYNa7BmjoxfFelqB9/C7od+Q7f1WnTp9pU+r0kV+A+A
-	 WmFNXsaJD+IiNidYvB0jCdtBVqlmDdgLsRyS1/R41XUGtR5ZGtg7Lk/Gv1lgQVZuYK
-	 tTl4ax5VkEu2QqTrUjBdxQdiUbAUa2ONQXffNQsn/poQjL/+JEoQUiSg3MoPX4LKMI
-	 Bsf1F3tBuKNRtWvGbjCfZDHcp7G1jfp+y3s9s8nHb46uYDswwzFb6u2Y60DPcUjnGF
-	 GEgXkjndciK1Zgni08SrT8MZG+MWtgZUPCFPE3RFfmOOh5o/+Yc9pebjZWWveC8LKn
-	 +LbxcbUXjiohw==
+	b=WKCiEqK8BrrchqRM3mvUVeZyIHSQcphRs0Pn/zKiofSIxKdDycgQec11VJpho3HhB
+	 f3TPMh7Cd3FPuL3MZ+1WcHdYv/7/KIOFfg+pL7NGMMm797Tbf3pyf0x92qJXtpg5nG
+	 vdBNszgGIRz71lHagi+gJSmcBvjON8rqgkSTV9aB904ZpKhrfbgwrAkA0zUBmiur4+
+	 ilfckVKEogkxF+f2ZXXrdjpSP7oO8gpnvxJIvyCFg08POk/ZGAcVgQo5acdxhlexnl
+	 CX5tW8G55aYDv9N/OUk3n6UIruY10vjTYRClD+ySOq17u2I4bIpF4vPHZdTjRWp0wp
+	 gkuMHk9elmRSg==
 From: SeongJae Park <sj@kernel.org>
-To: David Hildenbrand <david@redhat.com>
+To: Ethan Graham <ethan.w.s.graham@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
+	ethangraham@google.com,
+	glider@google.com,
+	andreyknvl@gmail.com,
+	andy@kernel.org,
+	brauner@kernel.org,
+	brendan.higgins@linux.dev,
+	davem@davemloft.net,
+	davidgow@google.com,
+	dhowells@redhat.com,
+	dvyukov@google.com,
+	elver@google.com,
+	herbert@gondor.apana.org.au,
+	ignat@cloudflare.com,
+	jack@suse.cz,
+	jannh@google.com,
+	johannes@sipsolutions.net,
+	kasan-dev@googlegroups.com,
+	kees@kernel.org,
+	kunit-dev@googlegroups.com,
+	linux-crypto@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH v1] mm: convert folio_page() back to a macro
-Date: Wed, 24 Sep 2025 01:17:09 -0700
-Message-Id: <20250924081709.63722-1-sj@kernel.org>
+	lukas@wunner.de,
+	rmoar@google.com,
+	shuah@kernel.org,
+	tarasmadan@google.com
+Subject: Re: [PATCH v2 10/10] MAINTAINERS: add maintainer information for KFuzzTest
+Date: Wed, 24 Sep 2025 01:32:28 -0700
+Message-Id: <20250924083228.63898-1-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250923140058.2020023-1-david@redhat.com>
+In-Reply-To: <20250919145750.3448393-11-ethan.w.s.graham@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 152BC160004
-X-Stat-Signature: eg9wuqiw9agzbnyyki5epyp7s4ogiooz
+X-Stat-Signature: afaq9zurrasyu4grhf7wo6yycpkudxth
+X-Rspamd-Queue-Id: 5883C40003
 X-Rspam-User: 
-X-HE-Tag: 1758701832-796230
-X-HE-Meta: U2FsdGVkX1+VmmEIRisvib4kREPGfKW+C7JVHPdSS3QxCeA2oBj7Satf+ZSqJpzfHxon3lCG0IZrAU1EvTtZLky+6N8bBZE0gsZcgIY85e+GoqWNvu4biqBtqKoZAFLVnbVibLJAIg47sPkA53GniSKtyHs7tJ5jJ5sUHiaxDpaIg6b7vDcnZny8JWggVGwuTDZUMlwf0lcL9VdNu/uba/6cILUV6AFfON5I+vvyUnnB+wjCB/l9wLFm8UQ1uVT5oLYiLgSLY6B8+yW+PFyU/58mYf+V5FFmjEje+wT3vy7/uNWmPX5+hioeQZZjf5mXWW+ZLbc9FRmrjwTlC02A656vjifLJyh9eMnT+bgkdKYEcSS/oiFWBdKF6pFAOrbDL1ghTVPzMKwj3WcuiVjVPQuQKVZMQupEU5g29ashiy1owFLlPU5qgI6kqZD+8dLf83kTAWwjir3WT/9gi3xFeNdOTMg/avxQvRU93JfawyBjYOFjIFyR99/wN1FFzPMWANTqovI4WB8XroKg1huqIDZf0+oetfdfS8pGWaYGd7xXi5WkMtLtNhfde4uhXsR8sIwZJ5kHfWyxGlxTy89fhfIe/SsJsxENKORxQ94+7KblXBynKgOz6Q2NLP7zVPKf2zQ6isQTWpi+cvMj2fbgUJPfNvbo1Tsv3UDQMudcviMLhu4wWLXUWTx6/2uCkK64zikc2qWjwTtfJEXFxi2RcpTUH+kcw2qzle8XJsBHLHuodtDzi91y4iWq+T6t4huGfHV/Qhdg5y5qUaIIhVzlwsuJ9T2pOfRSeSndDpRtQDgcQNdcgsWgi1y4GssxJLMn5BvmltqNW2b7cQ7VsmB7+JqAqWOfA3qImwCykrDJCNjAAvTh4oNzFGMXtWjbTqal6MxWRqgAbbkLv9luUwT2R+YYoIL99Teh8uopF8dCNT55WVGX8+pwPWqwi2JMWsQg4ggCDp1xGC3EsgZBp96
- eU955j0A
- 7Ymz1DITS/xbH5RccbbyT5hfhG/1u/x3ipnAeTe02bjGD3Wb8jFn+Uza5xeNKyaNtnIlSdDCUDxWZRsAgFMNCrrsmFlVaN5UrgDM6xZuI3BShjt7wWxym2CXOHS+7lReMn5+0i/aH5SEWidwnWWPQptBXEjZDPoGLXEoAu9qX76CGkaVSODLcXOnMnJ4oTWvij64KRnMDJRvo2kNaHBj9h/J3qVDQZLy0xcNB+4sQngCPbXlxNgH2ZbOLSc1uQIQaSajMehtwI3Axd7lSmKGklTnulTd+N5YgIttNBwSiVVi7W0CZO+xs+9vohz9KNiVF7S44BGioNHjlSSL3pn+cvrS+J1o0ddcvqUiHD7oRGUywBDUKO9Eu67zm2BoMfV26uOjc3O+qBq5p6YRJ0EjoxBk4+gC5JaBriSQgH5X2jyy1RoNt/L9fgcx28Dck07JrVX4N2ebuEyi/A3+WJF9CFpoPfQ==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1758702754-814307
+X-HE-Meta: U2FsdGVkX1+JCPlNpK2qgXclHX3FL8imAHj26hLTywBkjuytEnhNSK0ENTk1WTXrUTsE1Y36JBRZ0rGE0H+iqj/q+PL8X1zayPZn2Jkcf0xeFjQOjmvnaRLNSnamenBPZMewnxdKb72a7qEdxhiLNXSqECE4az97l/woJMGBsE6V8i/LcNMKTFJKQjrP4Hw1rKaL862xJcx+pwO5gwVV4rhr9AnIUtiXIoaIOKIw/ZTPFGLrl7Jiu/Bv1bcT4u+gouch8Md2HlajIIvm1ECaG+elHp7uTe5U5gvcI/FCIFMJhQy8/JWuX2GC5sSa3D891E87BmwUz5zTZWLbPYX2EUQk+7Lql/qzwdR9LIhFxo+eH/e8nFvVIdQVh13/0lxgIwzTY9/iZOZAPYAk/tSay2j3THh8vthXEMopSkP0f0Z3DeL0t+CwS5NmsJHZ/aVxQ3Ugqz827k8uYFKVmDczHPjgoLFziH1SB69sXpJ0Dirs2UBklf4Eo+xRgb+3IkrM63NCqp+iNW4UD0s89EWle7iqfMd/k45LA8AUk0GJ9R8VIe4RG7J9uUVMMZBzbiIZ9PS8p3oX3BsH3ui4qQ5wgGkU08XJo/dXauMNohVW8tZtGNdotH1jqThxmN7Qip5nTSPxI07w4aE+Nc9nQMOoXgGczlQaInoB3Y1vFgEdImlhvGc+A0lKC+7zAU7UeyBMOB2XhtrATzTh5u7EdorYeKM8UhkdUKU+U2lRC/8GXyknCMyht+4ATH5a4G02U2bz6uKs/+LxiGt5UFbgUY7J0lA31M4/ZxaN0KfAVLTZbd7WSxrh/MDq/CtpEPzJ1BlxKlNH2jtO45m4RjHyA+jfWwGVsrmCN7zIQyZQdbaZJJF7Jk+56dsSaPOVOEBM3YlY6iRbGAOSRY98CU+T0JXKimRY2bXGvU7oSDAYd1bsyGNHle9+GG+CZVWfmdlkYfU2pOnDHf/dxS8lcU8XAos
+ K8nbTEif
+ zocK6enbvgb6PiyHeQFm8JE1lpGz22V2NZOdDHmhnQ7eArtzOWSIrACyHiOqot7j4tysk61CiURdT1lvVj7yuNpB0PsbYkfuNfG9UdY+cXtshA5v7D34IffuJ/PUrMv2iU/2SUJaNKhBY9ttcygvBaep1ER0eseOSULWl7xpz+TmtoW/xQiZoh8PKsXxWcCfNvpYDUM1K//icQW7DJiN6ZKdc0bPCydEQ8DgTSDKG2Y72RqCBuBMuKBb8CAa6TqnEqG3FGHhtAt5u4iismEStJfunPpuUgmxmweeC0a+zoRUwqSSNwHDDcAKCLiiMH95RoLCC2v08153AiLhHLl/tEof/hYx2Gn9EPw+pP1uMRSXIommfJDwit6TyfbQu4iWXN83WkZPU7/lolUT+sexfoZf1duo8J5w7AsmC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,34 +116,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 23 Sep 2025 16:00:58 +0200 David Hildenbrand <david@redhat.com> wrote:
+Hello Ethan,
 
-> In commit 73b3294b1152 ("mm: simplify folio_page() and folio_page_idx()")
-> we converted folio_page() into a static inline function. However
-> briefly afterwards in commit a847b17009ec ("mm: constify highmem related
-> functions for improved const-correctness") we had to add some nasty
-> const-away casting to make the compiler happy when checking const
-> correctness.
-> 
-> So let's just convert it back to a simple macro so the compiler can
-> check const correctness properly. There is the alternative of
-> using a _Generic() similar to page_folio(), but there is not a lot of
-> benefit compared to just using a simple macro.
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+On Fri, 19 Sep 2025 14:57:50 +0000 Ethan Graham <ethan.w.s.graham@gmail.com> wrote:
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
+> From: Ethan Graham <ethangraham@google.com>
+> 
+> Add myself as maintainer and Alexander Potapenko as reviewer for
+> KFuzzTest.
+> 
+> Signed-off-by: Ethan Graham <ethangraham@google.com>
+> Acked-by: Alexander Potapenko <glider@google.com>
+> ---
+>  MAINTAINERS | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 6dcfbd11efef..14972e3e9d6a 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -13641,6 +13641,14 @@ F:	include/linux/kfifo.h
+>  F:	lib/kfifo.c
+>  F:	samples/kfifo/
+>  
+> +KFUZZTEST
+> +M:  Ethan Graham <ethan.w.s.graham@gmail.com>
+> +R:  Alexander Potapenko <glider@google.com>
+> +F:  include/linux/kfuzztest.h
+> +F:  lib/kfuzztest/
+> +F:  Documentation/dev-tools/kfuzztest.rst
+> +F:  tools/kfuzztest-bridge/
+
+I found you moved kfuzztest-bridge to tools/testing/ on this version, accepting
+my suggestion.  Thank you for that.
+
+Nevertheless, so I think the above line should also be updated like below.
+
+F:  tools/testing/kfuzztest-bridge
 
 
 Thanks,
 SJ
 
-[...]
+> +
+>  KGDB / KDB /debug_core
+>  M:	Jason Wessel <jason.wessel@windriver.com>
+>  M:	Daniel Thompson <danielt@kernel.org>
+> -- 
+> 2.51.0.470.ga7dc726c21-goog
 
