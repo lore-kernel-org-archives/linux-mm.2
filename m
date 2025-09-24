@@ -4,153 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CDCDCAC5A5
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 15:23:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C27CCAC5AE
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 15:28:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE8FA8E002E; Wed, 24 Sep 2025 11:23:08 -0400 (EDT)
+	id 4F0528E0012; Wed, 24 Sep 2025 11:28:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC1188E000F; Wed, 24 Sep 2025 11:23:08 -0400 (EDT)
+	id 4C7B28E000F; Wed, 24 Sep 2025 11:28:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3A968E002E; Wed, 24 Sep 2025 11:23:08 -0400 (EDT)
+	id 404AB8E0012; Wed, 24 Sep 2025 11:28:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 907F28E000F
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:23:08 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 544E813BDA3
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:23:07 +0000 (UTC)
-X-FDA: 83924512014.26.CCDB033
-Received: from fra-out-003.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-003.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.72.182.33])
-	by imf21.hostedemail.com (Postfix) with ESMTP id DE14F1C000C
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:23:04 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=Xe6tUH6Z;
-	spf=pass (imf21.hostedemail.com: domain of "prvs=355a74973=roypat@amazon.co.uk" designates 3.72.182.33 as permitted sender) smtp.mailfrom="prvs=355a74973=roypat@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FF658E000F
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:28:13 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D5956BBE43
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:28:12 +0000 (UTC)
+X-FDA: 83924524824.18.9090E50
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 4EADF4000A
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:28:11 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=irQgTQzj;
+	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758727385;
+	s=arc-20220608; t=1758727691;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FC0wlYdU3H6pxbJnzrvR8fYAavscI+YR5lWUNyKVjNo=;
-	b=pOCn5e8lKAic16AHEllSS8LsLNVdvvFTUXCF2DpAiPACyyDMvoMZn3qu3BvwP07EOTw5GV
-	Yp8Sbw8m0cMs6xw73EtuGlwPK66cXHC++MnIB5v4DwnQ66pGZ0J32Xdmt0mfkwUp9cYDxm
-	7POpLc7eq/Z1itkMHRgPxmAT18cAJQ4=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=Xe6tUH6Z;
-	spf=pass (imf21.hostedemail.com: domain of "prvs=355a74973=roypat@amazon.co.uk" designates 3.72.182.33 as permitted sender) smtp.mailfrom="prvs=355a74973=roypat@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758727385; a=rsa-sha256;
+	bh=fO6Z//rPL79a8R8QZxUtb2XRgOYLfIxN6LnW/zgnSJE=;
+	b=FVO5jvu5AhvYoJzTDRfyjVHCkPa8mhW0tV/zA14xE56XMg802i8k6lbu4yrG6DJGe5Ottm
+	8ETZG86dzBOacA9BJxGyR3/AoTMb5EykCqjvtbANE/AXWl6Id8Ll7J1vSgMfo5zdVI35K7
+	mf2wb3e3emNHUGBRbR7pOGD3L5WFlHc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758727691; a=rsa-sha256;
 	cv=none;
-	b=eRmrJVmZmkBaUeOuxI/kbEjYC0ZMkyM88RVKOQUhfbEtxmU0pfSa2yVxBnMMSCHHbrEAZb
-	p0hc5WlkpVGL3AwsbNlAsJ5bEOVkqfZ8EBygDxGpwSZP3n1OJkThZoCLwVRNqz0GirysrD
-	lHoB9BU9sJ3DGvNQCkrePxQE+PmWQOo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1758727385; x=1790263385;
-  h=from:cc:subject:date:message-id:references:in-reply-to:
-   content-transfer-encoding:mime-version;
-  bh=FC0wlYdU3H6pxbJnzrvR8fYAavscI+YR5lWUNyKVjNo=;
-  b=Xe6tUH6ZHtqS/xrTMSDpIKK1p07lYCW1euN18IkEgR/nyA9NJJLG4m0a
-   +cyc93/VP71eowjqNbrWpet01DGyFoqpIWlVFeXK9FWhc39IWUOLqy5nS
-   vWr5xzcr2f9A/d/8IMPh1fuqrDcuYpfZv+1mIBH7L50zcmlMjslomH7Z7
-   qqi2RyXLGFIcV5mo9nnOpXcTPFo49GNiLbjCgkGrxHTbf5HBtJqtvjmXS
-   22S0xlRR8WsviIgLf4Gidct0qfI3sU6VVE/TUuoAGjbejQCFBPn67KDXW
-   77EuDWwHGBV4VW4OhbfhVpgFnXabaiRldtsLG1rJ5LPmczZfLtJ/Y6qkc
-   w==;
-X-CSE-ConnectionGUID: bnqBIY0+S7ugHJxPMWxQtg==
-X-CSE-MsgGUID: vtWk9PxTTeqaCk4lc38v8Q==
-X-IronPort-AV: E=Sophos;i="6.18,290,1751241600"; 
-   d="scan'208";a="2615697"
-Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
-  by internal-fra-out-003.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2025 15:22:55 +0000
-Received: from EX19MTAEUB001.ant.amazon.com [54.240.197.234:17289]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.38.97:2525] with esmtp (Farcaster)
- id f8fd47b8-ee11-4f7c-baeb-49adbc882bb4; Wed, 24 Sep 2025 15:22:54 +0000 (UTC)
-X-Farcaster-Flow-ID: f8fd47b8-ee11-4f7c-baeb-49adbc882bb4
-Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
- EX19MTAEUB001.ant.amazon.com (10.252.51.28) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Wed, 24 Sep 2025 15:22:52 +0000
-Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
- EX19D015EUB004.ant.amazon.com (10.252.51.13) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Wed, 24 Sep 2025 15:22:51 +0000
-Received: from EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a]) by
- EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a%3]) with mapi id
- 15.02.2562.020; Wed, 24 Sep 2025 15:22:51 +0000
-From: "Roy, Patrick" <roypat@amazon.co.uk>
-CC: "Roy, Patrick" <roypat@amazon.co.uk>, "pbonzini@redhat.com"
-	<pbonzini@redhat.com>, "corbet@lwn.net" <corbet@lwn.net>, "maz@kernel.org"
-	<maz@kernel.org>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
-	"joey.gouly@arm.com" <joey.gouly@arm.com>, "suzuki.poulose@arm.com"
-	<suzuki.poulose@arm.com>, "yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"catalin.marinas@arm.com" <catalin.marinas@arm.com>, "will@kernel.org"
-	<will@kernel.org>, "tglx@linutronix.de" <tglx@linutronix.de>,
-	"mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org"
-	<x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org"
-	<luto@kernel.org>, "peterz@infradead.org" <peterz@infradead.org>,
-	"willy@infradead.org" <willy@infradead.org>, "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>, "david@redhat.com" <david@redhat.com>,
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "vbabka@suse.cz"
-	<vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com"
-	<surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, "song@kernel.org"
-	<song@kernel.org>, "jolsa@kernel.org" <jolsa@kernel.org>, "ast@kernel.org"
-	<ast@kernel.org>, "daniel@iogearbox.net" <daniel@iogearbox.net>,
-	"andrii@kernel.org" <andrii@kernel.org>, "martin.lau@linux.dev"
-	<martin.lau@linux.dev>, "eddyz87@gmail.com" <eddyz87@gmail.com>,
-	"yonghong.song@linux.dev" <yonghong.song@linux.dev>,
-	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org"
-	<kpsingh@kernel.org>, "sdf@fomichev.me" <sdf@fomichev.me>,
-	"haoluo@google.com" <haoluo@google.com>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
-	"jhubbard@nvidia.com" <jhubbard@nvidia.com>, "peterx@redhat.com"
-	<peterx@redhat.com>, "jannh@google.com" <jannh@google.com>,
-	"pfalcato@suse.de" <pfalcato@suse.de>, "shuah@kernel.org" <shuah@kernel.org>,
-	"seanjc@google.com" <seanjc@google.com>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>, "linux-fsdevel@vger.kernel.org"
-	<linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "Cali,
- Marco" <xmarcalx@amazon.co.uk>, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
-	"Thomson, Jack" <jackabt@amazon.co.uk>, "derekmn@amazon.co.uk"
-	<derekmn@amazon.co.uk>, "tabba@google.com" <tabba@google.com>,
-	"ackerleytng@google.com" <ackerleytng@google.com>
-Subject: [PATCH v7 12/12] KVM: selftests: Test guest execution from direct map
- removed gmem
-Thread-Topic: [PATCH v7 12/12] KVM: selftests: Test guest execution from
- direct map removed gmem
-Thread-Index: AQHcLWcXXo32DUDFrUWE2L4osbrEFQ==
-Date: Wed, 24 Sep 2025 15:22:51 +0000
-Message-ID: <20250924152214.7292-9-roypat@amazon.co.uk>
-References: <20250924151101.2225820-4-patrick.roy@campus.lmu.de>
- <20250924152214.7292-1-roypat@amazon.co.uk>
-In-Reply-To: <20250924152214.7292-1-roypat@amazon.co.uk>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [172.19.88.180]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	b=QzJLmqkPlfg5iolSzip++6mrut/o2Yav9djmbSfIlR7fIIvBGtVy/kwgI0TQJHnHO1xz1d
+	b0FNZydkUHWqEyWSFoQ1EiDYvW5V+qQln8Icoh7s5C6DFpCt8uWRhDwvMVsMhC6vcw0SRW
+	6ge2Yv2LIyMrgOa7mXcNQgIr/88KuEA=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=irQgTQzj;
+	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9EFFD601EB;
+	Wed, 24 Sep 2025 15:28:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F31FC4CEE7;
+	Wed, 24 Sep 2025 15:28:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758727690;
+	bh=O/bKTpvQARqt8FVg/y21EPm0JoWae7amDRNYbxV7ONc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=irQgTQzjfSAjWwFVUQYTRj/oZ1GIQOmw6hdssvbkPidionp5q5qRBCVgMhNc71jUA
+	 RpsG9bOvIDFcynHxs5toNX9PmUeYLEkApMwKR07l/VKoaqMkKEi4uDMFbIKmpvCMF4
+	 FdTi3dHPyvwoX3cnCcLsFQKRZXASwWuDUzS3vQoQFz2Vn2adC+XM1YHWXIcklNt1p/
+	 wYGFAX22klRZ7NuqxsHnDpJjIRZeFh9CCAqb0si0AEFWD9ZP5V67PvFMS8xdbyMuBT
+	 V+OlOwvaf35CchUJqb0cx5b/InhHOicYhWFNucyh5gLSkC2/UiOMh2riv7Cjk+T1j/
+	 j0+7OvHvZ2RUg==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jason Gunthorpe <jgg@nvidia.com>,  Mike Rapoport <rppt@kernel.org>,
+  Alexander Graf <graf@amazon.com>,  Baoquan He <bhe@redhat.com>,
+  Changyuan Lyu <changyuanl@google.com>,  Chris Li <chrisl@kernel.org>,
+  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush Yadav
+ <pratyush@kernel.org>,  kexec@lists.infradead.org,  linux-mm@kvack.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 3/4] kho: add support for preserving vmalloc allocations
+In-Reply-To: <20250922143407.93e171f8b7c09eb21159a33e@linux-foundation.org>
+	(Andrew Morton's message of "Mon, 22 Sep 2025 14:34:07 -0700")
+References: <20250921054458.4043761-1-rppt@kernel.org>
+	<20250921054458.4043761-4-rppt@kernel.org>
+	<20250922131948.GX1391379@nvidia.com>
+	<20250922143407.93e171f8b7c09eb21159a33e@linux-foundation.org>
+Date: Wed, 24 Sep 2025 17:28:07 +0200
+Message-ID: <mafs0ikh7dg54.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
+Content-Type: text/plain
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4EADF4000A
+X-Stat-Signature: fkxs57fm7h7g9yfap17abafidjsisd4o
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: DE14F1C000C
-X-Stat-Signature: egki8ex5b1kp7qzige8gg15yg13hje3o
-X-HE-Tag: 1758727384-967261
-X-HE-Meta: U2FsdGVkX18uhyEkUnNh31Axnrn4eMaMbkgyISpVQMZ/hMoTsmPF6CR1LEGBWbqIqST+oyNlhKdJZgmwwX68sGjPiwNk7wGf8CQ6JytRwv/e4n2C0C4IIKaR8VWeWqfnuMf8JgFw6x9E9nBLCTqmPiF1P/q5b++OEuNajeZkDmokgZu3oO8B1EJCVTju4DenDjPU1LQKCPRhYIvBZIQgsVqxidlCMSTeH9BFmfmbjmeolazg6OAD/bwdmGOQqDk++9OgmmYgmfggOvbrJtTv9F0Mk3XOGKszF5uKEC1V0K6XtmmTyyeBzwE8e7THBCdmRO5Pm44eM9v0hDxpPVznRK/sVO+eITxpUPUTCeICDEWcAxu8mp7O4eMqE+tcRG1DHKA928otoZHNrqmIXzkBXWZDG7Xo08vtTfp8kouIaDm47NtBgd7ftXIcvSndSNk9tXdaYE2KlXuzPsNNaGSPOyc36Y3C7fAnsEYb08Y7aRiTRq9niY7x/b6WQWduvzsf8GSfpd4J3debaFLWbycncQQKox2DDY5yLrrPrIei1OQNc4WxtJmbNGuecUQ1KuouFFeOQnEa7lFQbtMzcDqWwFoXvBGqNuys8JnsHGeuaiz4Z/MigHtvWj9qOl7eJ+NPy1cEyvBNlqbW8MJEfcDDdBAYneJ3eOmp8VSYxq7HEIFVIRVonlmd0qVNL3uL0pOocFYmnA17Fq1uQCLYVdbL8dWvkfyCtJKUtZSjLVjW8l8x2JXcT/Y7EXBh13WC1OaOcWWMdhux4BJEk7y2YuKxUI12jyiAm38H8kfw6FZ/lQ/9amqRKu5qERb08ZBcnRH2wEwsySc7eZMBgWcPyi2uGgzGPw7eQlc4XfLsHtxlX7VQHW/Z74xZR/Hfip5sbrJY201aDmM9Xmqzdn1WTKTI5bFuO4DuSILpw6q2JUZ9+Ls4ozpAQEFldTqEaEj2XyyhMALAs97DzgdEvMR4VuF
- mZzk0/Yy
- x77ajU1gQJebsS5FA0p5uXMY2i1PKGaCA/Tl/4pDz3Q15rLyLw9JaaGEUJbo0CUiKHupVt2hwBSZAi4rB2KFXOAn1W2bVg/EzM/gDr3mTAmtaVUTVxv8bTKPFsQgfH78/Bnv1tk5EnBO1B9kW37lJFqApoerTancr9jSiASRPgsR5e83S78A/H1TltUQX+MRAEqodTtdiyRuouYH7+Ts5uR7x90Q+0cY8LXec/a9Xtns7yypk1TQA6fIO3xe3Jkuke6r0v9zSdjJbVz12HnvVQruXFsjSoBHEMs1DLV3aEG7zlhgqyrImaPZCGRzpUZJBfirvF4/ABXnExi4kc34oFZfuZ4RpAQ6Kvu8jHt4PWRS25odgApTs11NuNvdK5AklkYA7syETuDm2ZRkCOYczhG4aW152b8PhE87d7mbc4czMiV6cxLPTnQZh4laCBmQ1PDhouInEcU2z5m2/ZD/VKU7SjygE7I9MZTK4AtEHZkkbJEfAVmfsAL8YKTWU3qxg/t9qvq93Ce0HEOyzHDxINcrqQAa09znbXjyOAYYMDLYhRPAkmTKGp4R71TKAEu2kKifwJV2G7RpocuQoJwI1agHxhIQJ3/nEz7GOyfDIArjhhGo8HUhJEt6z80SkhsgXerGe98pZKDzM726dTmNKJHLNVZSzmujJFm8LrxVxqNeA916Z2nMFQYzBA9RQ30vfjTf5bYgWek0NvApo3TK8uAIemPaLm8snW+XTRdLEPlyP6NTmk119qrMHcVK9t4yRt1tcJ+a8HGlFTqrHD2nVi+SHO6N7hwiSO++ox9UnIku20N9FKc1r+D5wOg==
+X-HE-Tag: 1758727691-683100
+X-HE-Meta: U2FsdGVkX1+AxQNhwnUHxrU4pmgu5poHrwaUQphxEnNSXKZ76o0pHhGxfAsGUqMW8RHUDIfQ5vON3MFCob7ICsn7PTHQoGZwYEpmbJOGmG5ujAiFoYcd4fJnNPofyUwSrNC3rRJxr5E2dlugMLgGLUxImvp39LwSFtppfYh9f/lEs77r+RxXnCNWGbz7qT8nxU3McSBs0pbtVbg6P98dMRxCnRDVKJ1jbcS4sVsQtWw0QFq0yVCBKdc+11ylKZu8j9ETvCXpBH6prBbO8syVoqkKekf2lieGmvSyZU9FowOMKqrLh+XYVamwkRjWsuPMY+j66rFxoG8hFQjaf9MQx2oWHaF+v3RkSSWFzlzKE6RAEDtErVZkw466sNpYNHS31GjvhMuG3Jwwjj9dZn4kGFpeIGpmlZcAadymIwDIph4OWEHi2+9wcZBnNu/11AwdYevwGSx3N7C6pT+zLlDZqGwP7wAaNY15jelb4plCevxYwC6lv6af1ESBHE5qG8NsIAieSYqhJiiS0zk5Z+ZWiVyeAXQyc+U+e637D6bAiefo2sJDmQLLOSNQd1bShTbFwGelnorbURtjhZtwNXqp/gDJT6LmgRVbej9hE0sFFxGRDLxv4fNaO0gJW6MazbuUQvHQHI9TxN87Ebc6zczSfvNXoskE/judH1N+wE62GtSHU6OKGZvInbtV2Oudg/mqLmMW/40orx9KdgcVBQMOPew0TT51MGf0isoOnJ7q5a/EF5kYhREqS4OFwxMVbFjAIorH+ju+IArmdFEjeSV+B31GHfY2DL/AZ3ulVC7n9ChQN4Z4KG6wQdrcLQTVGDsNnTgM5KN7RRiuIoNEC17hXR223ODMYS60xrZnYR0BaNwtBw44wWfYxsC6cDlSe0Fo6dIDXDEceSaXGyBvp4Rq3x31a9QcbC7FFTVPAJrqJaser2mujTethzLTV0BvqA3IBl+LKQaKcRaN3jltl4j
+ 4uTCSOar
+ UgDi7U+SYHSm0tcyR4Ppz68zgSIcXeTJQFvSshkXx9xbSJzHP6Tr5RPbmhiugJE9rJ6IRS31pwr3c6tX8lglxF/CIt+U8lMKCGp9aJiKvzZQQgJebtLWaKM6IlkD33QDYCcSR6vQmVr+JpOlBTqHCOc8iznQgvlZuNhcxwAS9tNpcPFsN4dIkHyokgjq9Jc6TCvcm
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -159,94 +99,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a selftest that loads itself into guest_memfd (via=0A=
-GUEST_MEMFD_FLAG_MMAP) and triggers an MMIO exit when executed. This=0A=
-exercises x86 MMIO emulation code inside KVM for guest_memfd-backed=0A=
-memslots where the guest_memfd folios are direct map removed.=0A=
-Particularly, it validates that x86 MMIO emulation code (guest page=0A=
-table walks + instruction fetch) correctly accesses gmem through the VMA=0A=
-that's been reflected into the memslot's userspace_addr field (instead=0A=
-of trying to do direct map accesses).=0A=
-=0A=
-Signed-off-by: Patrick Roy <roypat@amazon.co.uk>=0A=
----=0A=
- .../selftests/kvm/set_memory_region_test.c    | 50 +++++++++++++++++--=0A=
- 1 file changed, 46 insertions(+), 4 deletions(-)=0A=
-=0A=
-diff --git a/tools/testing/selftests/kvm/set_memory_region_test.c b/tools/t=
-esting/selftests/kvm/set_memory_region_test.c=0A=
-index ce3ac0fd6dfb..cb3bc642d376 100644=0A=
---- a/tools/testing/selftests/kvm/set_memory_region_test.c=0A=
-+++ b/tools/testing/selftests/kvm/set_memory_region_test.c=0A=
-@@ -603,6 +603,41 @@ static void test_mmio_during_vectoring(void)=0A=
- =0A=
- 	kvm_vm_free(vm);=0A=
- }=0A=
-+=0A=
-+static void guest_code_trigger_mmio(void)=0A=
-+{=0A=
-+	/*=0A=
-+	 * Read some GPA that is not backed by a memslot. KVM consider this=0A=
-+	 * as MMIO and tell userspace to emulate the read.=0A=
-+	 */=0A=
-+	READ_ONCE(*((uint64_t *)MEM_REGION_GPA));=0A=
-+=0A=
-+	GUEST_DONE();=0A=
-+}=0A=
-+=0A=
-+static void test_guest_memfd_mmio(void)=0A=
-+{=0A=
-+	struct kvm_vm *vm;=0A=
-+	struct kvm_vcpu *vcpu;=0A=
-+	struct vm_shape shape =3D {=0A=
-+		.mode =3D VM_MODE_DEFAULT,=0A=
-+		.src_type =3D VM_MEM_SRC_GUEST_MEMFD_NO_DIRECT_MAP,=0A=
-+	};=0A=
-+	pthread_t vcpu_thread;=0A=
-+=0A=
-+	pr_info("Testing MMIO emulation for instructions in gmem\n");=0A=
-+=0A=
-+	vm =3D __vm_create_shape_with_one_vcpu(shape, &vcpu, 0, guest_code_trigge=
-r_mmio);=0A=
-+=0A=
-+	virt_map(vm, MEM_REGION_GPA, MEM_REGION_GPA, 1);=0A=
-+=0A=
-+	pthread_create(&vcpu_thread, NULL, vcpu_worker, vcpu);=0A=
-+=0A=
-+	/* If the MMIO read was successfully emulated, the vcpu thread will exit =
-*/=0A=
-+	pthread_join(vcpu_thread, NULL);=0A=
-+=0A=
-+	kvm_vm_free(vm);=0A=
-+}=0A=
- #endif=0A=
- =0A=
- int main(int argc, char *argv[])=0A=
-@@ -626,10 +661,17 @@ int main(int argc, char *argv[])=0A=
- 	test_add_max_memory_regions();=0A=
- =0A=
- #ifdef __x86_64__=0A=
--	if (kvm_has_cap(KVM_CAP_GUEST_MEMFD) &&=0A=
--	    (kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM))) {=
-=0A=
--		test_add_private_memory_region();=0A=
--		test_add_overlapping_private_memory_regions();=0A=
-+	if (kvm_has_cap(KVM_CAP_GUEST_MEMFD)) {=0A=
-+		if (kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM)) {=0A=
-+			test_add_private_memory_region();=0A=
-+			test_add_overlapping_private_memory_regions();=0A=
-+		}=0A=
-+=0A=
-+		if (kvm_has_cap(KVM_CAP_GUEST_MEMFD_MMAP) &&=0A=
-+			kvm_has_cap(KVM_CAP_GUEST_MEMFD_NO_DIRECT_MAP))=0A=
-+			test_guest_memfd_mmio();=0A=
-+		else=0A=
-+			pr_info("Skipping tests requiring KVM_CAP_GUEST_MEMFD_MMAP | KVM_CAP_GU=
-EST_MEMFD_NO_DIRECT_MAP");=0A=
- 	} else {=0A=
- 		pr_info("Skipping tests for KVM_MEM_GUEST_MEMFD memory regions\n");=0A=
- 	}=0A=
--- =0A=
-2.51.0=0A=
-=0A=
+On Mon, Sep 22 2025, Andrew Morton wrote:
+
+> On Mon, 22 Sep 2025 10:19:48 -0300 Jason Gunthorpe <jgg@nvidia.com> wrote:
+>
+>> > +static void kho_vmalloc_free_chunks(struct kho_vmalloc *kho_vmalloc)
+>> > +{
+>> > +	struct kho_vmalloc_chunk *chunk = KHOSER_LOAD_PTR(kho_vmalloc->first);
+>> > +
+>> > +	while (chunk) {
+>> > +		struct kho_vmalloc_chunk *tmp = chunk;
+>> > +
+>> > +		kho_vmalloc_unpreserve_chunk(chunk);
+>> > +
+>> > +		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
+>> > +		kfree(tmp);
+>> 
+>> Shouldn't this be free_page()?
+>
+> Or vfree()?
+
+It should be free_page(). The chunk isn't in the vmalloc-ed area, it is
+the metadata to track it. It gets allocated in new_vmalloc_chunk() using
+get_zeroed_page().
+
+>
+> Not sure why this code works - I'll suspend the series from linux-next
+> for now.
+
+It only gets called in the error path and that didn't get hit during
+testing I suppose. Until v3 the chunk was being allocated using
+kzalloc() so I guess this got missed in the move to get_zeroed_page().
+
+I think Mike is out of office this week. Do you think this series is
+stable enough to land in the upcoming merge window? If so, I can send a
+v6 with the fix today.
+
+-- 
+Regards,
+Pratyush Yadav
 
