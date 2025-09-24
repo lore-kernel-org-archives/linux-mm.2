@@ -4,165 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DC4ACAC5B0
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 13:23:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7228BCAC5AE
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 13:33:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC6D58E000B; Wed, 24 Sep 2025 09:23:34 -0400 (EDT)
+	id AF1F98E000A; Wed, 24 Sep 2025 09:33:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9ED98E0001; Wed, 24 Sep 2025 09:23:34 -0400 (EDT)
+	id AA2E88E0001; Wed, 24 Sep 2025 09:33:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB4578E000B; Wed, 24 Sep 2025 09:23:34 -0400 (EDT)
+	id 9B8638E000A; Wed, 24 Sep 2025 09:33:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BA668E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 09:23:34 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 37ABE11AA1C
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 13:23:34 +0000 (UTC)
-X-FDA: 83924210748.05.451D010
-Received: from mout.web.de (mout.web.de [212.227.17.12])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 10B8BA0008
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 13:23:31 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=web.de header.s=s29768273 header.b="Q//IkjTE";
-	spf=pass (imf25.hostedemail.com: domain of Markus.Elfring@web.de designates 212.227.17.12 as permitted sender) smtp.mailfrom=Markus.Elfring@web.de;
-	dmarc=pass (policy=quarantine) header.from=web.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B6C58E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 09:33:48 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2DFAE160811
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 13:33:48 +0000 (UTC)
+X-FDA: 83924236536.09.DDAE9C2
+Received: from out203-205-221-202.mail.qq.com (out203-205-221-202.mail.qq.com [203.205.221.202])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E737540012
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 13:33:44 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=m9HHTgXz;
+	dmarc=pass (policy=quarantine) header.from=qq.com;
+	spf=pass (imf07.hostedemail.com: domain of shengminghu512@qq.com designates 203.205.221.202 as permitted sender) smtp.mailfrom=shengminghu512@qq.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758720825; a=rsa-sha256;
+	cv=none;
+	b=fmyhPYEmOdqIkDafEVSDaKvawhHWmMBhDgs180SuOGex64IHVeSDecbBnzuc+UmwPbwrXA
+	LOFV6h063WKeKFSL04K7ev4fz5w2tXnUlou8pgOsURXPmZxaGk18vEgVEGaJ5+kcDA6Ay/
+	la6WQn84v+dKyAV2stfW4NRqOO0UmWI=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=m9HHTgXz;
+	dmarc=pass (policy=quarantine) header.from=qq.com;
+	spf=pass (imf07.hostedemail.com: domain of shengminghu512@qq.com designates 203.205.221.202 as permitted sender) smtp.mailfrom=shengminghu512@qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758720212;
+	s=arc-20220608; t=1758720825;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oUx7FQDk2SiuLavlx/HNjgWtSxwt+Njd+F6PUkWYXZc=;
-	b=NXGVs7SVvdX6RckLPs6r7xl0IHAOCeufQ+n5eojeGAJ4Geq3BJdZ01/frVgsFZdzNPwO5+
-	AhaY+8w+X1TN+Xbw2GNhSVFz1/GVX2c1MO3REXj5Ivh0l9gsdHX7fBYwKpHuERqiGcKdf8
-	Qsp8Bn8O7d9OFDHWVnucCBzLJCnEok4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758720212; a=rsa-sha256;
-	cv=none;
-	b=rlQhFTeKwPrBovNPqOeFWTr3yd9VpsOCNx1HgjHOWgjMcOhOFs8vLxGJ6gEChSDJiKyDrW
-	qnXdILSqHdw/AlmweBEBuh5EDWwxYbkKoiISzkHVuT+97civBVP7xMDzTuehi08qFtleNM
-	DU4pXwJpk3cM0nkskX3Ap2kM0PRhuOs=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=web.de header.s=s29768273 header.b="Q//IkjTE";
-	spf=pass (imf25.hostedemail.com: domain of Markus.Elfring@web.de designates 212.227.17.12 as permitted sender) smtp.mailfrom=Markus.Elfring@web.de;
-	dmarc=pass (policy=quarantine) header.from=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1758720208; x=1759325008; i=markus.elfring@web.de;
-	bh=oUx7FQDk2SiuLavlx/HNjgWtSxwt+Njd+F6PUkWYXZc=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=Q//IkjTEddC1uTTET7XqodQwxs0USK5Tp0NlciUFBdusrkoOVGlTSrFHIpLDEqIn
-	 Q56RlA0hhswnOoWSLaWOIFCea5SVxrWvvjbCLIo2aczMHrTP8LxAkNlBWQjfC1bwv
-	 63tCnddtkYK00S6i8jf1CUtxBlXjkgDtgbrIN8cLEV34ni7Bbd501LkisWsg7abDA
-	 K7xdrEOEixs5kFYillU7uEN6W9ixv894l5PFtGtUWreXHa5pdLqhfUnjtDeKODZoE
-	 93WBshPIcXDzD7e9f6j9xy6g8N3NF0gzcOXdoM3w14Glw9iowmKuleSlejR/pGpq/
-	 IyF1ElCPUk/pk4BYZA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.69.191]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MdfCN-1uRnfK3hGD-00nFl0; Wed, 24
- Sep 2025 15:23:27 +0200
-Message-ID: <8f0366c8-f05e-4687-817f-90a5b47922c9@web.de>
-Date: Wed, 24 Sep 2025 15:23:26 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Alexander Potapenko <glider@google.com>, linux-mm@kvack.org,
- kasan-dev@googlegroups.com
-Cc: LKML <linux-kernel@vger.kernel.org>, Aleksandr Nogikh
- <nogikh@google.com>, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, Dmitry Vyukov <dvyukov@google.com>,
- Marco Elver <elver@google.com>, Mike Rapoport <rppt@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>
-References: <20250924100301.1558645-1-glider@google.com>
-Subject: Re: [PATCH v2] mm/memblock: Correct totalram_pages accounting with
- KMSAN
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20250924100301.1558645-1-glider@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:GbK73zxLYoS2kQ137BowTVrHDqoJ8gk83c2ByReHUM2nq/LRqlh
- CZO842TFixdnpUk1ktMJFWudMgvfOEDHLgTrHpvgtEf6VDZAlIkg892QjA6IwmIm4AZAGQa
- oNuryIfeGvJ2wsDd3/FylPuN2EIt+UCxKigm6SB0DvsaAXNqmFhAss29qpFku4zedN1kKB/
- RSZKpA/cm2WPRO972GolA==
-UI-OutboundReport: notjunk:1;M01:P0:q/uBpl4JHmo=;6HT6GiaWj/LEuxTLU8Jcvzj9PSt
- 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
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 10B8BA0008
-X-Stat-Signature: faseftpp3wg3kjhimpkyot4hnm987mcx
+	bh=2heApyMUpOR17dxGbNa+4WWjl6+fk2XmOwB1nya+w94=;
+	b=z97NL7i+N0RcZySihwD32Xaf1G70wrbNfePsFgj2/LKpdChIBs3PJNrC6jtinROWLGRpdr
+	oo4YJ8ZkYClsw56s63+j6XwnGFzQ7EZKeQiJHZl2BOjqdyhs1sPC62HrQ/pY8RZhHwUpSn
+	r5msib95pXZbVICl85yvaI2PbrmEu2c=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1758720810; bh=2heApyMUpOR17dxGbNa+4WWjl6+fk2XmOwB1nya+w94=;
+	h=In-Reply-To:References:From:To:Cc:Subject:Date;
+	b=m9HHTgXzEAhnoN4wRhwUj02KHJ3GVToMBIQZQ4UWp6ZqYD0QOJgyki0U27kwW7iDV
+	 q3kYM5bJpDEIG6naPDDFxOOPpXRCBzNZsKfA7vw7bo0Kjqd/DOlsnYY0dKhk95I9qf
+	 6gvCt+BNFYOjwM0A29L3rxjZ68aRMpwyQ1/Mjk10=
+X-QQ-FEAT: oHWrrGTW1dCGJEu1CuC8+nIWkvSYK6n9
+X-QQ-SSF: 00000000000000F0000000000000
+X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
+X-QQ-XMAILINFO: M7eUDzS4Y86jHJNzCJkK7W6OPtEmZHZN15Yai52umDdnj+m840ncvr3FYr1cjs
+	 0IGTdKBcya1I99C1Ylnypxsd6UDAvfJJiZw90J1Dbq0oUxBazajgl5uq/QUa7lG9vaQYQfI/cfkxQ
+	 oArClKCwB/JeGiJeZtc66+ic7zl3k1dYeE6cuvP73JuO1XHCp5wMPoqwwJSVU5i3i5jng+jURJnOX
+	 uzq7U9mGrA+jrOD28KU1ycuXGVVIl9mR0k2frXWWHqlhtdPMSbVIRsTE2urPkN79hFkcY8/YyVjLo
+	 KHWuhQxL623tEwhGCU7FVPdvNDb2fqzqN/Tv8Qt/G81XLdg9RFzpxmeMIdHvGWH3OcSbEJPBmgNIW
+	 aMAe56Qbt8h2PiD+FIAK4MgWt/9ZTDbT/MNfcGHrxahyzwcfePwtuSRkgGrgzHY39E7vcjZndPVkr
+	 qgzb1YJIaCyg2opG4Bd8TofwCo5Xb84LQeWjgWbPKPoMWN8wpg7bRN8yOxdXisfTFWTJaSWv9840G
+	 EVTGvSF+ZP95o6cc7OSXgy/5IF2vQqisX7fN+isczQcgnmDhghqvhEUYZLGX3750X+nbXYGLgre8Q
+	 ptEBNstOtWq58PZL/uGjjFz4m75nJAoGQp2+73g/5ZHORatvFSVA8c16EG9PSrb+w23WgGuQOqWJV
+	 v7MfyswCUbZSp6p8WueuoP8tSno/4XKFJSGNctmo/47FRpFKjN4g3abx5FQitoyj2mqtjW4u6kqNl
+	 pqcc6AinL5nhsb57Wr1mZGPYwX19r6DugJxTXHrFjxI/gbvsrVKEjq6cHbD4t1F+ObEyAm9X5c2Za
+	 /AGhHXTSkxN1bLqTVQQHMeYCBlnvRreiKC86J4J5HxfECegzspl3LQi+37rmvTEHKhSAvVHYH78PR
+	 pkJoXnmYABCglrLOeVMKogFYUkPKBEewpFomJcRvmQO4JRA10ns6d13eX3Qr2qHJlEwCx9+4PWysr
+	 LbNQ0vzBYeXvbI3Z6xTDxBuI2HLPmBjfufufICMvrOcCBRFMfK/F5+QiW6ejAVhaYwj6p9B0F2xXl
+	 sHmKUgo9Fc0sdp6A=
+X-HAS-ATTACH: no
+X-QQ-BUSINESS-ORIGIN: 2
+X-Originating-IP: 175.152.60.34
+In-Reply-To: <CACw3F53PUGZ-gWKHiBHzcGfM9r8h-vTp7HnGDOZruucMQC5yDg@mail.gmail.com>
+References: <tencent_EDEED996FC685E61AADA14A23BCE9CCDAF09@qq.com>
+	<CACw3F53PUGZ-gWKHiBHzcGfM9r8h-vTp7HnGDOZruucMQC5yDg@mail.gmail.com>
+X-QQ-STYLE: 
+X-QQ-mid: webmail434t1758720809t9208317
+From: "=?gb18030?B?c2hlbmdtaW5naHU1MTI=?=" <shengminghu512@qq.com>
+To: "=?gb18030?B?SmlhcWkgWWFu?=" <jiaqiyan@google.com>
+Cc: "=?gb18030?B?bGlubWlhb2hl?=" <linmiaohe@huawei.com>, "=?gb18030?B?bmFvLmhvcmlndWNoaQ==?=" <nao.horiguchi@gmail.com>, "=?gb18030?B?YWtwbQ==?=" <akpm@linux-foundation.org>, "=?gb18030?B?bGludXgtbW0=?=" <linux-mm@kvack.org>, "=?gb18030?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?gb18030?B?aHUuc2hlbmdtaW5n?=" <hu.shengming@zte.com.cn>, "=?gb18030?B?emhhbmcucnVu?=" <zhang.run@zte.com.cn>
+Subject: Re: [PATCH V2] mm/memory-failure: Ensure collect_procs is retried when unmap fails
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="gb18030"
+Content-Transfer-Encoding: base64
+Date: Wed, 24 Sep 2025 21:33:29 +0800
+X-Priority: 3
+Message-ID: <tencent_82246142DA7EA247CE70CD19EEF3975C6809@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E737540012
+X-Stat-Signature: yxr374me4ou8ck68ojrz4o5inum55197
 X-Rspam-User: 
-X-HE-Tag: 1758720211-41584
-X-HE-Meta: U2FsdGVkX19APRgQvmxf1qUkJVBs72ClixCnGIvmvBCYlXdns6V7PbplXOapbi13h8fSBthCzDhSloqo+QWgglVwFxSHPULfHwOwWIuzDOJXIupUgTbiuYvy8+G5dC+39A8rtv4YNPX0l0nfmeu55AwoZwDpvyOyQ8vuHz61kBHg0BTKw9m51kb668LPj2ntlgTVso7wHt8NPp9wen1JXWKZ7iSz/rk/eU+nbGKAGWKSkCR9FHSx9gLvynUx1+STpMlElC+kFoh7Td1LLwdjqkQA9sfFPW9upkVqQnwwKn9n37UI5+gkdlJPJ1BYoQpHpKB0d6zoFQXW4ZTTtfcwW6HMu4RyJprfhQJhV6Drkp/6CzmdzRlVRzA9gDb1pXKsB1Y6o5d4HjlpLVCQj2avcuy4yjSaV5Z7MszMeA/6O3WQWv9vz5dMud0vxSXD9YmzVqy5OVF7hxbXhKPWg61N6elf3ePJRPubiUf6/tl7KWXV6r4goYxX+txvRVw2kE3rZYPjCvMYg3ClH2OM6sWl0IFwS2FCZitl2A1yCtWlwqERmbpqSLw66CZGl5lfMhwvDq3nmJtcVNgQTz++hcgckcYra7XbaeijhYxCBBRblE/dnkDB77ZkkwOEykO/PmKOTVCNzJ9k2mfivfhnqmGmWQnnO0HR4h9gpWz/kMKgGfCIIAKIgavEbQplM0QyqSWeh8k9VL6u0vjWPwYdD+N2NzSuSBhwakzx6PMsSMk3vIYr/nsTgrM0egA/jZmtw+G1WQemKT4hRdt4Izey5OTcpTvUz4Gab18Dbbx7MRZ3nuN9W4ubZQvyD1SdhCWRgV6ZuztCziEXNdp3Vhkx/qUwfOFxbSkIjocJc1DvY2BFlyaRHrkC5FyJFkzjIlDFbxToyy2AFlIFjKxEBWX0h8rV40xjxV4P0G3MGsqwP3213MtwbUlXx2iPvQVMqO9I1M/9xhe+8uCZJFupLheArR3
- g9VDl0uS
- mQnRKDlmix5grm/er5wc3bZqi/RTVAMV9z38WuWpT22P4gN/73u1MsaqmDUr7Xqlnaez3fKiOsw4q5XQH7AgT8MYCBixENi/LE3/cjvy2gOplRFzyCGI+9h8QQjldgJQTeZT9ZjxRa+3zWgnzEvfnGJU0+RvMIHZhB05WjZvdUQ8KZkdaeExM+xxx2Wia/V4Tu2cv1axnh5bzKKSGDKNI6XXbvsW7hfcdqKt2toP5D2WkbBfqz6vrPMZ3tgRUemwYfSRPI2Wyf8+DQmc5035aFHaXca6KZX4G8NbJOWoL8vC2It20nNo3S1ml4hSEulnaezNSIU5q/9fL+NZc1uA76+oYjEWpDNgk3zE+YfnJqwnKh82zfky5STGn6t5vs3AF7XoqXDWANC6Z6wC01ua5Ex4lz+YVKadeRAPM4l04j6aywQQ=
+X-HE-Tag: 1758720824-682971
+X-HE-Meta: U2FsdGVkX1+Q9cv139I5YlkNZcKHjPRtnFfB6sPPnu9/SzadfAUyWmTPHEev2AZVrMa/eM0/JIU3mmEc7pIbCI4lqqOFF9UNqp/jCxK9YBI20Ub7N40kCI0NQWiNiJVHcXtnm7AAysqQHOCH6D/o17xeKpEsbIJC3kGuxVrcxkeaBqTJusyv/x/WIfpRKhZLey3a/YW1RoSnMjukC9K6jHCfYcATrhBGEjHbug5WBTlmaDlcvG/NXRdbyqMHEMGqDVyCGabSKEmAAIH084o6yomw7l9Jw1VE0TiIThWc1phpIxk+xX+6EQeGTAZWjwHK3P2RrO+mXQQ0bsJYC49FhH9osHDfQg8YE8kT2UhUbEN4I1S1juI3yKnZ+wCx3Vd3yR2X7FVx747HcjUPtftkr+/qq08FszFsF2TsihR4xvKZ+DG9CRV99ldxOGTZT03SOc6VqY4/VDqHdrPMlkYZrs5zQJKp/A4gTXw5iiaiC2tvE93VttPn9MUjjsi/M8lf1kjkHOQWxy/AD4mXEa97bhHm12ZA80awOsRrVA+zDcccMQUdFvUI51gLZTMAvx28PzkqB4op0fFiAc4/6E9KUe3XFjnXjyc9yC5TH4YK9YQZOnkvooeCxqaXjWGDD5nvq6exBt8vWFo2kJyY3FCh4FujbQRPpyWzQrrT1RA2wddhZUV3pjbdclAapkpyD3IFFq0UhUbqQv7oSJtHycHqlv/0qZxL9rLfpdw32AyBCHSKySyJwnLRyu9QYMsEzKedVYug/3qquSoOORxTFvMLXWt3FqP1itiDsif/GD3ai9jrKLeJ/ZdwOFoHJlx1sugos8eEupD3u9Gw9ZRffNHd/R6EnwsFZ7UdivsBg1CHA9pIcWpvATuoPy1EqbUymZax56dzIzgBvkbvuf23Y65ruYrN0IiG2F0CkisArRjxuotVRwoiAYMt4/wNxWKGevJ3+qv+Glnuo4sIo3mDcde
+ FjQdo2TT
+ UznzqFWc8FqA3aKRmBgQjVu5TmKhat+7YJ8WsRCEhV9Ze8StyySjG5IGONkMvCAgHrDERBPLisIIxGEkBQMevBdtnH8cqhGXFajxd/+fO8MVz0eyVzY1Dp6FR/A9S5xGhA5+AZc/TxHqFDba9U4sSjW0yHDVz5N6goEQlMWX8EC9azMfSeDkNRWQDktzMXOZPSu2gPPxguH3N3QMoQc97+Q9xzzGyiuIptEJQJ4UN0uOH1+ncRd549W/OupPmws01lCV4QsHTjmKNlsIxfKUQIkoq1L9KleaSll8BrRF2kjw1OJMcLnLS0xVjs6vaoXCVv6PjpIskF0S3YcbOfQdoJu/gquQGr1fa7FPyFmegjnsoyrDCM32Uj2fFweYhQE/mHmgDSl8XLgMusngbPDtuE//+gB98fwMsWvyNqBxJ98tsiw7slDVMnmu/jJPidmak5QE/XKCC9TfWTMpFeeFniQK+PUYVAMrG7lGmvoAnxH/7/VWWkus8TngN9OVc1yEiU6+JfAG0zkM3Q86ADcki0GdLYwPFtA4YoauZTt4TTAhBdbfFs5VlemSniiERbrVx2VUUvqdHkgY/Jx9UaScjG4JlVuXwEIhZquWP/hLpG24VYQJsu8LTuAV2tGTa9rNuCV0EP3w+LQw1FXnOxiRMX/uQfhC8XMy8HSRpVabK22kzWuo5wI0GFr6Hxmb4N4Nnkr36goDGm92KehCxlFEb4QnnJRQUJZvbzlkVZIYG72WyrUr+5ixswrKZ8A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -171,27 +111,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-=E2=80=A6
-> +++ b/mm/mm_init.c
-> @@ -2548,24 +2548,25 @@ void *__init alloc_large_system_hash(const char =
-*tablename,
-=E2=80=A6
-> +unsigned long __init memblock_free_pages(struct page *page, unsigned lo=
-ng pfn,
-> +					 unsigned int order)
->  {
-=E2=80=A6
->  	if (!kmsan_memblock_free_pages(page, order)) {
->  		/* KMSAN will take care of these pages. */
-> -		return;
-> +		return 0;
->  	}
-=E2=80=A6
+SmlhcWkgWWFuIDxqaWFxaXlhbkBnb29nbGUuY29tPiB3cml0ZXM6CiZndDsgT24gVHVlLCBT
+ZXAgMjMsIDIwMjUgYXQgNzo1N4E2pzJBTSBzaGVuZ21pbmdodTUxMiA8c2hlbmdtaW5naHU1
+MTJAcXEuY29tPiB3cm90ZToKJmd0OyAmZ3Q7CiZndDsgJmd0OyBGcm9tOiBTaGVuZ21pbmcg
+SHUgPHNoZW5nbWluZ2h1NTEyQHFxLmNvbT4KJmd0OyAmZ3Q7IERhdGU6IFR1ZSwgMjMgU2Vw
+IDIwMjUgMjA6NTY6MjggKzA4MDAKJmd0OyAmZ3Q7IFN1YmplY3Q6IFtQQVRDSCBWMl0gbW0v
+bWVtb3J5LWZhaWx1cmU6IEVuc3VyZSBjb2xsZWN0X3Byb2NzIGlzIHJldHJpZWQgd2hlbgom
+Z3Q7ICZndDsgIHVubWFwIGZhaWxzCiZndDsgJmd0OwomZ3Q7ICZndDsgSW4gdGhlIG1lbW9y
+eV9mYWlsdXJlIHByb2Nlc3MsIGlmIGNvbGxlY3RfcHJvY3MgaXMgbm90IGV4ZWN1dGVkIHdp
+dGggdGhlCiZndDsgJmd0OyBmbGFnIHNldCwgdGhlIHRvX2tpbGwgbGlzdCBtYXkgYmUgZW1w
+dHkuIEV2ZW4gaWYgdGhlcmUgYXJlIHBhZ2VzIHRoYXQgZmFpbAomZ3Q7IAomZ3Q7IEhpIFNo
+ZW5nbWluZywKJmd0OyAKJmd0OyBJIGFtIHRyeWluZyB0byBmaWd1cmUgb3V0IHdoYXQgeW91
+ciBjb2RlIGlzIGZvci4KJmd0OyAKJmd0OyBJZiB3ZSBnZXQgaW50byBod3BvaXNvbl91c2Vy
+X21hcHBpbmdzIHdpdGggTUZfQUNUSU9OX1JFUVVJUkVEICpub3QqCiZndDsgc2V0IGluIGZs
+YWdzLCBmb3JjZV9lYXJseSBzaG91bGQgbm90IGJlIHNldCBhbmQgaXQgaXMgdG90YWxseSB2
+YWxpZAomZ3Q7IHRoYXQgY29sbGVjdF9wcm9jcyBhZGQgbm90aGluZyB0byB0byBraWxsLi4u
+CiZndDsgCgpIaSBKaWFxaQoKVGhhbmsgeW91IGZvciB0aGUgcmV2aWV3IGFuZCBmb3IgdGhl
+IGV4cGxhbmF0aW9uLiBJoa9kIGxpa2UgdG8gZG91YmxlLWNoZWNrIApteSB1bmRlcnN0YW5k
+aW5nIGFuZCBhc2sgZm9yIHlvdXIgZ3VpZGFuY2UuCgomZ3Q7ICZndDsgdG8gYmUgdW5tYXBw
+ZWQsIFNJR0tJTEwgb3IgU0lHQlVTIGNhbm5vdCBiZSBzZW50IHRvIHRoZSBwcm9jZXNzIHZp
+YQomZ3Q7IAomZ3Q7IHVubGVzcyBzb21lIHByb2Nlc3Mgb3B0LWVkIGluIE1DRV9LSUxMX0VB
+UkxZIGFuZCBjb2xsZWN0X3Byb2NzIHdpbGwKJmd0OyBmaW5kIHRoYXQgcHJvY2VzcyBpZiBp
+dCBtYXBwZWQgdGhlIHBvaXNvbmVkIHBhZ2UsIHJlZ2FyZGxlc3MgaWYKJmd0OyBmb3JjZV9l
+YXJseSBpcyAxIG9yIDAuCiZndDsgCiZndDsgSU9XIEkgZG9uJ3QgdGhpbmsgdGhlcmUgaXMg
+YW55IHJlYXNvbiAobm8gYnVnIHRvIGZpeCBhbmQgbm90aGluZyB0bwomZ3Q7IGltcHJvdmUp
+IGZvciB3aGF0IHlvdSBhcmUgdHJ5aW5nIHRvIGRvIGhlcmUuCiZndDsgCgpZb3VyIGV4cGxh
+bmF0aW9uIG9mIHRoZSBjb2xsZWN0X3Byb2NzIGNvbGxlY3Rpb24gZmxvdyB3YXMgZXh0cmVt
+ZWx5IGRldGFpbGVkIAphbmQgaGVscGZ1bC4gQWZ0ZXIgZGl2aW5nIGRlZXBlciBpbnRvIHRo
+ZSBjb2RlIG15c2VsZiwgSaGvZCBsaWtlIHRvIGRpc2N1c3MgCndpdGggeW91IGEgZmV3IHNj
+ZW5hcmlvcyBJoa9tIHBhcnRpY3VsYXJseSB3b3JyaWVkIGFib3V0IHdoZXJlIHRoaW5ncyBt
+aWdodCAKZ28gd3JvbmcuCgpGcm9tIHJlYWRpbmcgdGhlIGNvZGUsIG15IHVuZGVyc3RhbmRp
+bmcgb2YgdGhlIGZsb3cgaXM6CgogIC0gaHdwb2lzb25fdXNlcl9tYXBwaW5ncyBoYW5kbGVz
+IHBvaXNvbmVkIHBhZ2VzIGluIHR3byB3YXlzOgogICAgKDEpIG1hcmsgUFRFcyB3aXRoIGh3
+cG9pc29uIHNvIHRoYXQgbGF0ZXIgYWNjZXNzZXMgdHJpZ2dlciBTSUdCVVMsIG9yCiAgICAo
+MikgcHJvYWN0aXZlbHkgc2VuZCBTSUdCVVMvU0lHS0lMTCB0byB0ZXJtaW5hdGUgcHJvY2Vz
+c2VzLgoKICAtIFRoZSBzZXF1ZW5jZSBpczogIAogICAgICAgIGNvbGxlY3RfcHJvY3MgLSZn
+dDsgdW5tYXBfcG9pc29uZWRfZm9saW8gLSZndDsga2lsbF9wcm9jcwoKICAtIEZvciBraWxs
+X3Byb2NzIHRvIHNlbmQgc2lnbmFscywgdGhyZWUgY29uZGl0aW9ucyBtdXN0IGJlIHNhdGlz
+ZmllZDogIAogICAgICAgIGZvcmNla2lsbCA9IGZvbGlvX3Rlc3RfZGlydHkoZm9saW8pIHx8
+IChmbGFncyAmYW1wOyBNRl9NVVNUX0tJTEwpIHx8ICF1bm1hcF9zdWNjZXNzICAKICAgICAg
+ICBhbmQgYHRva2lsbGAgbXVzdCBub3QgYmUgZW1wdHkuCgpNeSBjb25jZXJuIGlzIHRoZSBm
+b2xsb3dpbmcgY29ybmVyIGNhc2U6CgogICogSWYgdW5tYXBfcG9pc29uZWRfZm9saW8oKSBm
+YWlscyBvbiBhIHBvaXNvbmVkIHBhZ2UsIGl0IG1heSBub3QgaW5zdGFsbAogICAgYSBod3Bv
+aXNvbiBQVEUgZW50cnkuICAKICAqIEFzIHlvdSBub3RlIElmIGNvbGxlY3RfcHJvY3MoKSBl
+YXJsaWVyIHJhbiB3aXRob3V0IE1GX0FDVElPTl9SRVFVSVJFRCAoYW5kIAogICAgc29tZSBw
+cm9jZXNzZXMgZGlkIG5vdCBvcHQgaW50byBNQ0VfS0lMTF9FQVJMWSksIGB0b2tpbGxgIGNh
+biByZW1haW4gZW1wdHkuCiAgKiBJbiB0aGlzIHNpdHVhdGlvbiwga2lsbF9wcm9jcygpIHdp
+bGwgbm90IGRlbGl2ZXIgYW55IHNpZ25hbCwgYW5kIGEKICAgIHByb2Nlc3MgY2FuIHN0aWxs
+IHJ1biB3aGlsZSB1c2luZyB0aGUgcG9pc29uZWQgcGFnZS4KCk15IHBhdGNoIHJldHJpZXMg
+Y29sbGVjdF9wcm9jcygpICh3aXRoIGZvcmNlX2Vhcmx5ID0gMSkgd2hlbgp1bm1hcF9wb2lz
+b25lZF9mb2xpbygpIGZhaWxzIGFuZCBgdG9raWxsYCBpcyBlbXB0eSwgZW5zdXJpbmcgcHJv
+Y2Vzc2VzIHRoYXQKc3RpbGwgaG9sZCB0aGUgbWFwcGluZyBhcmUgY29sbGVjdGVkIGFuZCBj
+YW4gcmVjZWl2ZSBTSUdCVVMvU0lHS0lMTC4gVGhhdAppcyB0aGUgbW90aXZhdGlvbiBmb3Ig
+dGhlIGNoYW5nZS4KCk15IHF1ZXN0aW9uIGlzOiAgCklzIHRoZXJlIGFscmVhZHkgYSBndWFy
+YW50ZWUgaW4gdGhlIGN1cnJlbnQgZGVzaWduIHRoYXQgZWl0aGVyIChhKSBhCmh3cG9pc29u
+IFBURSBlbnRyeSB3aWxsIGFsd2F5cyBiZSBpbnN0YWxsZWQsIG9yIChiKSBhIHByb2Nlc3Mg
+d2lsbCBhbHdheXMKYmUgY29sbGVjdGVkIGludG8gYHRva2lsbGAgaW4gdGhpcyB1bm1hcCBm
+YWlsdXJlIGNhc2U/ICAKCklmIHN1Y2ggYSBndWFyYW50ZWUgZXhpc3RzLCBJIG1heSBoYXZl
+IG1pc3VuZGVyc3Rvb2QgdGhlIGludGVuZGVkIGZsb3cgoaoKY291bGQgeW91IGhlbHAgY2xh
+cmlmeSB3aGVyZSB0aGF0IGhhcHBlbnMgaW4gdGhlIGNvZGU/IElmIG5vdCwgZG9lcyBteQph
+cHByb2FjaCBvZiByZXRyeWluZyBjb2xsZWN0X3Byb2NzIG1ha2Ugc2Vuc2U/CgpUaGFua3Mg
+YSBsb3QgZm9yIHRoZSBmZWVkYmFjayBhbmQgZ3VpZGFuY2UgoaogSaGvZCBsaWtlIHRvIGFs
+aWduIHdpdGggdGhlCmludGVuZGVkIHNlbWFudGljcyBhbmQgdXBkYXRlIHRoZSBwYXRjaCBh
+Y2NvcmRpbmdseS4KCiZndDsgJmd0OyBjb2xsZWN0X3Byb2NzLgomZ3Q7ICZndDsKJmd0OyAm
+Z3Q7IFRoaXMgcGF0Y2ggZml4ZXMgdGhlIGlzc3VlIGJ5IHJlLWV4ZWN1dGluZyBjb2xsZWN0
+X3Byb2NzIHdoZW4gdGhlIHRvX2tpbGwKJmd0OyAmZ3Q7IGxpc3QgaXMgZW1wdHkgYW5kIHVu
+bWFwIGZhaWxzLiBUaGlzIGNvbGxlY3RzIHByb2Nlc3NlcyB3aXRoIHVubWFwIGZhaWx1cmVz
+CiZndDsgJmd0OyBpbnRvIHRoZSB0b19raWxsIGxpc3QsIGFsbG93aW5nIFNJR0JVUyBvciBT
+SUdLSUxMIHRvIHRlcm1pbmF0ZSB0aGVtIGluCiZndDsgJmd0OyBzdWJzZXF1ZW50IGNvZGUu
+CiZndDsgJmd0OwomZ3Q7ICZndDsgVjI6CiZndDsgJmd0OyAgIC0gUmVzZW50IGFzIHBsYWlu
+IHRleHQgKHByZXZpb3VzIHZlcnNpb24gd2FzIEhUTUwpLgomZ3Q7ICZndDsgICAtIE5vIGZ1
+bmN0aW9uYWwgY2hhbmdlcy4KJmd0OyAmZ3Q7CiZndDsgJmd0OyBTaWduZWQtb2ZmLWJ5OiBT
+aGVuZ21pbmcgSHUgPGh1LnNoZW5nbWluZ0B6dGUuY29tLmNuPgomZ3Q7ICZndDsgLS0tCiZn
+dDsgJmd0OyAgbW0vbWVtb3J5LWZhaWx1cmUuYyB8IDUgKysrKy0KJmd0OyAmZ3Q7ICAxIGZp
+bGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pCiZndDsgJmd0Owom
+Z3Q7ICZndDsgZGlmZiAtLWdpdCBhL21tL21lbW9yeS1mYWlsdXJlLmMgYi9tbS9tZW1vcnkt
+ZmFpbHVyZS5jCiZndDsgJmd0OyBpbmRleCBhMjQ4MDZiYjhlODIuLjgxNTc4MjNjN2ZiNyAx
+MDA2NDQKJmd0OyAmZ3Q7IC0tLSBhL21tL21lbW9yeS1mYWlsdXJlLmMKJmd0OyAmZ3Q7ICsr
+KyBiL21tL21lbW9yeS1mYWlsdXJlLmMKJmd0OyAmZ3Q7IEBAIC0xNjAwLDkgKzE2MDAsMTIg
+QEAgc3RhdGljIGJvb2wgaHdwb2lzb25fdXNlcl9tYXBwaW5ncyhzdHJ1Y3QgZm9saW8gKmZv
+bGlvLCBzdHJ1Y3QgcGFnZSAqcCwKJmd0OyAmZ3Q7ICAgICAgICAgY29sbGVjdF9wcm9jcyhm
+b2xpbywgcCwgJmFtcDt0b2tpbGwsIGZsYWdzICZhbXA7IE1GX0FDVElPTl9SRVFVSVJFRCk7
+CiZndDsgJmd0OwomZ3Q7ICZndDsgICAgICAgICB1bm1hcF9zdWNjZXNzID0gIXVubWFwX3Bv
+aXNvbmVkX2ZvbGlvKGZvbGlvLCBwZm4sIGZsYWdzICZhbXA7IE1GX01VU1RfS0lMTCk7CiZn
+dDsgJmd0OyAtICAgICAgIGlmICghdW5tYXBfc3VjY2VzcykKJmd0OyAmZ3Q7ICsgICAgICAg
+aWYgKCF1bm1hcF9zdWNjZXNzKSB7CiZndDsgJmd0OyAgICAgICAgICAgICAgICAgcHJfZXJy
+KCIlI2x4OiBmYWlsZWQgdG8gdW5tYXAgcGFnZSAoZm9saW8gbWFwY291bnQ9JWQpXG4iLAom
+Z3Q7ICZndDsgICAgICAgICAgICAgICAgICAgICAgICBwZm4sIGZvbGlvX21hcGNvdW50KGZv
+bGlvKSk7CiZndDsgJmd0OyArICAgICAgICAgICAgICAgaWYgKGxpc3RfZW1wdHkoJmFtcDt0
+b2tpbGwpKQomZ3Q7ICZndDsgKyAgICAgICAgICAgICAgICAgICAgICAgY29sbGVjdF9wcm9j
+cyhmb2xpbywgcCwgJmFtcDt0b2tpbGwsIDEpOwomZ3Q7ICZndDsgKyAgICAgICB9CiZndDsg
+Jmd0OwomZ3Q7ICZndDsgICAgICAgICAvKgomZ3Q7ICZndDsgICAgICAgICAgKiB0cnlfdG9f
+dW5tYXAoKSBtaWdodCBwdXQgbWxvY2tlZCBwYWdlIGluIGxydSBjYWNoZSwgc28gY2FsbAom
+Z3Q7ICZndDsgLS0KJmd0OyAmZ3Q7IDIuMjUuMQoKQmVzdCByZWdhcmRzLCAgClNoZW5nbWlu
+ZyBIdTwvaHUuc2hlbmdtaW5nQHp0ZS5jb20uY24+PC9zaGVuZ21pbmdodTUxMkBxcS5jb20+
+PC9zaGVuZ21pbmdodTUxMkBxcS5jb20+PC9qaWFxaXlhbkBnb29nbGUuY29tPg==
 
-How do you think about to omit curly brackets for this if statement?
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/coding-style.rst?h=3Dv6.17-rc7#n197
-
-Regards,
-Markus
 
