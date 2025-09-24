@@ -4,153 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 475FBCAC5A5
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 15:11:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E34E0CAC5AE
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 15:22:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2CE8C8E0026; Wed, 24 Sep 2025 11:11:43 -0400 (EDT)
+	id 493EA8E001A; Wed, 24 Sep 2025 11:22:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2ABC48E0025; Wed, 24 Sep 2025 11:11:43 -0400 (EDT)
+	id 444D58E000F; Wed, 24 Sep 2025 11:22:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BC118E0026; Wed, 24 Sep 2025 11:11:43 -0400 (EDT)
+	id 333558E001A; Wed, 24 Sep 2025 11:22:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A6168E0025
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:11:43 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 912061408AC
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:11:42 +0000 (UTC)
-X-FDA: 83924483244.06.6ACC346
-Received: from postout2.mail.lrz.de (postout2.mail.lrz.de [129.187.255.138])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5875114000B
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:11:40 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=lmu.de header.s=lm-postout21 header.b="a TWQsAl";
-	spf=pass (imf23.hostedemail.com: domain of patrick.roy@campus.lmu.de designates 129.187.255.138 as permitted sender) smtp.mailfrom=patrick.roy@campus.lmu.de;
-	dmarc=pass (policy=none) header.from=lmu.de
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 201A38E000F
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:22:20 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C964611AFAC
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:22:18 +0000 (UTC)
+X-FDA: 83924509956.15.FBDFB9A
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 6D4C818000D
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:22:16 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YBFTC4KJ;
+	spf=pass (imf16.hostedemail.com: domain of gmonaco@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=gmonaco@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758726700;
+	s=arc-20220608; t=1758727336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s5H/qTs1nudTxJ8yEOOcf+EAL5JPehCIC+Q0Q8OSONs=;
-	b=OY5ROmBsYo8oIw+NHgAuUTWGdWma4AZ2p53VPIUvmFWmVBfVb0gGpPzkO4CdcKesoobl32
-	KOTciLV0OfiUFNA/Fknz0NeUcd3iOeRWmsUvdKevi/LzON7tnwPmXGkqwB/wl8/gxvHXlc
-	Hs1hXciEyT5y6CrjLH8lWet65AF6OZM=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=lmu.de header.s=lm-postout21 header.b="a TWQsAl";
-	spf=pass (imf23.hostedemail.com: domain of patrick.roy@campus.lmu.de designates 129.187.255.138 as permitted sender) smtp.mailfrom=patrick.roy@campus.lmu.de;
-	dmarc=pass (policy=none) header.from=lmu.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758726700; a=rsa-sha256;
+	bh=Bg2MsKKDFmCYY/YDryOM8vGO4DqIBOZHKhqnpmhTQOE=;
+	b=2lGC8rIYHQn9/N0Rw2O9Sk/nnnkHLYa5hFS4YUkzoKTF/qB3OkQKhuM6BhmD/JoSAaR96Z
+	AWJedxTjdsrZxq4V3CGdPB03oqa+Sd5MBwbTnoYCwQuEhXYGoDrLn9V3WaaI5a+iT1wo97
+	TDswvDYyIf1mwRy45rk/t142JmZwI3U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758727336; a=rsa-sha256;
 	cv=none;
-	b=SJP67JozC2o7y9f308VU4ey6S8yr8LqfjihYYw4iWJqp9wHMeNANvIoZ//veTSRftdkueN
-	mV6KtnuRmq0qi5gC/XlDJopE/8mAQrQyeTE0It5YzMbPQ3If3RADeZ3FijFyLRwaAasiTE
-	MB0JjvigXxWU3c+vcqmTi4THNp+R15w=
-Received: from lxmhs52.srv.lrz.de (localhost [127.0.0.1])
-	by postout2.mail.lrz.de (Postfix) with ESMTP id 4cX0gG6bRKzyY6;
-	Wed, 24 Sep 2025 17:11:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lmu.de; h=
-	content-transfer-encoding:mime-version:references:in-reply-to
-	:x-mailer:message-id:date:date:subject:subject:from:from
-	:received:received; s=lm-postout21; i=@campus.lmu.de; t=
-	1758726698; bh=s5H/qTs1nudTxJ8yEOOcf+EAL5JPehCIC+Q0Q8OSONs=; b=a
-	TWQsAlgrNglgs+ZOzs4A4g3yP0NbZA7xa7yJv1dQrtCrmPNR9oe2aPrP6n60uNyz
-	vdQKVtijKBOYPzJT4+4Eo1DeQGbmsib9LAJV8wIs4tZ3KA2jSK4w4sFOj4l7n92L
-	u4a34OujTQ0mUce9GnvVHv1Ju36UkjWAKtgGKmpdW1l48yBqv0jEkk0rqaob9iIz
-	Sd78DABKFMX2EhqblYSrO4tQQknZK7fBslY6F0D5ytFZk7xhWJ6UdwpdDHdpsHnS
-	LDfgecg4WG/t8ScywH3/ceR5IxRldot3Nfpj3JMQxHR54hahUTary03F315z2Dsu
-	QooZMSxMtaenvG8URuc5A==
-X-Virus-Scanned: by amavisd-new at lrz.de in lxmhs52.srv.lrz.de
-Received: from postout2.mail.lrz.de ([127.0.0.1])
- by lxmhs52.srv.lrz.de (lxmhs52.srv.lrz.de [127.0.0.1]) (amavis, port 20024)
- with LMTP id qNGZltS5ra0v; Wed, 24 Sep 2025 17:11:38 +0200 (CEST)
-Received: from spacestation.cable.virginm.net (oxfd-27-b2-v4wan-164230-cust474.vm42.cable.virginm.net [86.22.133.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by postout2.mail.lrz.de (Postfix) with ESMTPSA id 4cX0gC06QHzyXY;
-	Wed, 24 Sep 2025 17:11:34 +0200 (CEST)
-From: Patrick Roy <patrick.roy@campus.lmu.de>
-To: 
-Cc: Patrick Roy <roypat@amazon.co.uk>,
-	pbonzini@redhat.com,
-	corbet@lwn.net,
-	maz@kernel.org,
-	oliver.upton@linux.dev,
-	joey.gouly@arm.com,
-	suzuki.poulose@arm.com,
-	yuzenghui@huawei.com,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com,
-	luto@kernel.org,
-	peterz@infradead.org,
-	willy@infradead.org,
-	akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	song@kernel.org,
-	jolsa@kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	martin.lau@linux.dev,
-	eddyz87@gmail.com,
-	yonghong.song@linux.dev,
-	john.fastabend@gmail.com,
-	kpsingh@kernel.org,
-	sdf@fomichev.me,
-	haoluo@google.com,
-	jgg@ziepe.ca,
-	jhubbard@nvidia.com,
-	peterx@redhat.com,
-	jannh@google.com,
-	pfalcato@suse.de,
-	shuah@kernel.org,
-	seanjc@google.com,
-	kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	bpf@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	xmarcalx@amazon.co.uk,
-	kalyazin@amazon.co.uk,
-	jackabt@amazon.co.uk,
-	derekmn@amazon.co.uk,
-	tabba@google.com,
-	ackerleytng@google.com
-Subject: [PATCH v7 03/12] mm: introduce AS_NO_DIRECT_MAP
-Date: Wed, 24 Sep 2025 16:10:43 +0100
-Message-ID: <20250924151101.2225820-4-patrick.roy@campus.lmu.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250924151101.2225820-1-patrick.roy@campus.lmu.de>
-References: <20250924151101.2225820-1-patrick.roy@campus.lmu.de>
+	b=qkZqgSEQOBSOuxRHns+HY7+zB71QQv5ZYcyhQYuJ1VOl9SEOzeQtRtkTUhL6m90+NZIyY0
+	NUAM3BHcCulSuVrIR1eBsmSpIq9LGGP3yOG3SYfN+rrSdlpIUBWv0K6pFSNRzW9oR04PJn
+	+EprpIq3ZlbF3m/gCqwpTEqgkibHkeg=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YBFTC4KJ;
+	spf=pass (imf16.hostedemail.com: domain of gmonaco@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=gmonaco@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758727335;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Bg2MsKKDFmCYY/YDryOM8vGO4DqIBOZHKhqnpmhTQOE=;
+	b=YBFTC4KJ5D230joRZWMGVTIFe1dySJcTS2nk8Bgtkhcm7wWHSFmxfinxDoNX1garEJ/klQ
+	+0Yi/DujCf+EWcwGvMPY8/YDyCe19QThpZ47I4jDWY+tj3sOckGw9ShnZ1qyOVP11cXRHA
+	D9cYaRHNzPojyu1rX1b6l067e1l6W/k=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-672-i1X_p6s9Pu2nOeGXbhBWyg-1; Wed, 24 Sep 2025 11:22:14 -0400
+X-MC-Unique: i1X_p6s9Pu2nOeGXbhBWyg-1
+X-Mimecast-MFC-AGG-ID: i1X_p6s9Pu2nOeGXbhBWyg_1758727333
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3fba0d9eb87so1413f8f.0
+        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 08:22:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758727333; x=1759332133;
+        h=mime-version:user-agent:content-transfer-encoding:autocrypt
+         :references:in-reply-to:date:cc:to:from:subject:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Bg2MsKKDFmCYY/YDryOM8vGO4DqIBOZHKhqnpmhTQOE=;
+        b=S9zlw1l/TY5xpz4tJ+otIWBoxaEj/UF2YpE3ly7qEgclfbttw9faFtaksXLUKSPPSo
+         suk3mUOdghWaj979sK1ZfJa8BZ/4nqqiPEj6SYay4PZq51P9nt1q1iM2q2HB/mi1qr/y
+         KzgfUpRAyoSHcCwAxrtegUzSdMCKMbqwGtIsq5M5qTh9rFvMJ3tqNo24iy80BsBOS4cZ
+         MLkpKucG3qwFA1fCRKQovmDdBP/8IqE7GF+f7qh4UcBJgFA76mUNT73/3EFAs0doDXmB
+         w88p417qX1+Ri230bNCmMqBHP4cwYH8jgY7i1seQSZ11hq1z5rroTCWijPkgb/7Lkavb
+         sg2w==
+X-Forwarded-Encrypted: i=1; AJvYcCWziq8BkHwH3jGXvL5PU/kb8LkdQlmqtWD/oN9XH9ncfh01GtC2Jkz89a1+3KZr2LdWRxiZ4TffEA==@kvack.org
+X-Gm-Message-State: AOJu0Yyvghh/Q0287Do9coYQkGfJHL9ADtd3h0h9zckZzakZRoPVho30
+	Pe/wPAlqa0IzsPGpnbBUPcQFENMbzpVK1MamKXgZ7p5lfyL0TZiidl11P1uLqyzhk7HIUya6U4A
+	JnnerIhvT4H/ZSlnxR0vPm+3mkm5n46csiKTJEpXxWAgITTQU50sV
+X-Gm-Gg: ASbGncvxLsXXGMd14/WxefU2v9YQZ16Fuup0MTO7FzFqSHguAUgPEOJfUrxtJfXsUkL
+	QrLGRYOwZZGA5J0XPrvkNlZayHlDTyd0RlDcN7n+8BIhaYma4QILYop4I/Nn9bCItfKXqfOsjjo
+	y7FkjwxZu2l7yulYqMF549yvcaJEp25FMgqxMhUyU9Epu00PZm48MIMKsC6kNqT2jPPoRaJbq2k
+	XpeV9Yds+YcMOoVe0XXxS2dp5Tu6BA0eKwfmsrpAE9An0wypkG5fpWQGDnxksmUbq+lgasU839V
+	cshglBCXjjBIW8HMPMDhHYP31axJmtNc1rVV6sj9CQDI188Ywsj6+JC+fD1afZp69g==
+X-Received: by 2002:a05:6000:1ace:b0:3e7:6418:247b with SMTP id ffacd0b85a97d-40e458a9caemr329739f8f.10.1758727333012;
+        Wed, 24 Sep 2025 08:22:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHyXMiav/N/da9iJwE0NmEHYfqO6HQalEGMq0ozUxtHZDCD4jU1uW6JDuQDhvzuX2tQxnrSMw==
+X-Received: by 2002:a05:6000:1ace:b0:3e7:6418:247b with SMTP id ffacd0b85a97d-40e458a9caemr329704f8f.10.1758727332529;
+        Wed, 24 Sep 2025 08:22:12 -0700 (PDT)
+Received: from gmonaco-thinkpadt14gen3.rmtit.csb ([185.107.56.42])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3ee0fbffaeasm28554615f8f.62.2025.09.24.08.22.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Sep 2025 08:22:12 -0700 (PDT)
+Message-ID: <8e51adf20a9eafd3046c1189989f87734576bd57.camel@redhat.com>
+Subject: Re: [PATCH v2 2/4] rseq: Run the mm_cid_compaction from
+ rseq_handle_notify_resume()
+From: Gabriele Monaco <gmonaco@redhat.com>
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Ingo Molnar
+	 <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner
+	 <tglx@linutronix.de>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+  David Hildenbrand	 <david@redhat.com>, linux-mm@kvack.org, "Paul E.
+ McKenney" <paulmck@kernel.org>
+Date: Wed, 24 Sep 2025 17:22:09 +0200
+In-Reply-To: <d5183516-92ea-4a76-9506-2f7e4da0b0ad@efficios.com>
+References: <20250716160603.138385-6-gmonaco@redhat.com>
+	 <20250716160603.138385-8-gmonaco@redhat.com>
+	 <d5183516-92ea-4a76-9506-2f7e4da0b0ad@efficios.com>
+Autocrypt: addr=gmonaco@redhat.com; prefer-encrypt=mutual;
+ keydata=mDMEZuK5YxYJKwYBBAHaRw8BAQdAmJ3dM9Sz6/Hodu33Qrf8QH2bNeNbOikqYtxWFLVm0
+ 1a0JEdhYnJpZWxlIE1vbmFjbyA8Z21vbmFjb0BrZXJuZWwub3JnPoiZBBMWCgBBFiEEysoR+AuB3R
+ Zwp6j270psSVh4TfIFAmjKX2MCGwMFCQWjmoAFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgk
+ Q70psSVh4TfIQuAD+JulczTN6l7oJjyroySU55Fbjdvo52xiYYlMjPG7dCTsBAMFI7dSL5zg98I+8
+ cXY1J7kyNsY6/dcipqBM4RMaxXsOtCRHYWJyaWVsZSBNb25hY28gPGdtb25hY29AcmVkaGF0LmNvb
+ T6InAQTFgoARAIbAwUJBaOagAULCQgHAgIiAgYVCgkICwIEFgIDAQIeBwIXgBYhBMrKEfgLgd0WcK
+ eo9u9KbElYeE3yBQJoymCyAhkBAAoJEO9KbElYeE3yjX4BAJ/ETNnlHn8OjZPT77xGmal9kbT1bC1
+ 7DfrYVISWV2Y1AP9HdAMhWNAvtCtN2S1beYjNybuK6IzWYcFfeOV+OBWRDQ==
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5875114000B
-X-Stat-Signature: q9aoggxs4z4z4cdwejrchz4akruwgc55
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: P_ufZLXXOSXVcOlS2AMFW1H12X7LR4yRU48dS1dmZIE_1758727333
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 9zcxoxk3e4tnwhkaryiafwcjubrgxuzk
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758726700-71167
-X-HE-Meta: U2FsdGVkX19U3JKltK660F+39yIvgnvqgltM3s9Mjc86GunRnue7pLb0NzEYX1ClYGLOAZ/ZtxVTgN4Kc/kwO/xBnpT9z3f7oGnjF/7dxIO6/sG/0FDuU8LcVu3I9AcuVchyVxUOw1tucb9Vd4+LQK7oLgy76memrZFOVogbM4tUEsgYze6UuRhO7M8UdNwoisBdMTrKukDX6dgKeW5eCdXnAsrARQ9wvZ+vgiXIZuY66ya0uPtX+IIfLrVc8/GVhgsutyOtF00Mf6jSqEJVhLxdKkDP3YlsvSctWG76j7SEF7bJ+1t5LY+hsdyzBQvZpZcyWEfXiNWN9KTGuR/H5AFEw9P2oo2TDLBeeMA8a73Ydj/JI34+1DT+UkBuf+f8p/7QGZMaXU5kLd4s/hpAfU1AiDiJUfi+F9f/J0L8D60FGiIt6AURmlllRf/XO9/7QeKR1PhOgBZxxJjesx2nbfgGd95Gyrt2rRyN7u0PKICIRWZTcwkAqPmCmNyIjT+OL+bu4PHUnOhYGJdRa/aj0qljIfJgv2E5PcDebLGUiroGSeLmLCaD69siGqZC0vvcShj9mIzli/TQs/4ngfq+MgcZea29zxJjOgAQFO2PAlji5VqlRycLzvN3/THKqJsjymUv176lT0ZSVebW8h22/zbM89vsfAVyX91oj/FnR5Ru+GiSZiy8CDDXzfAYVX7PH0Av5Pxg5NQxI3jdF05Jhgc/esyq/dohxHCj1/ngG7DEyZriHHYijQECqxrJkCk52ZYQwhw+8gXpXRjzNcH/4ydf4cbzb8MgXFXR1wayIYgxZIGyq6vuBwPv+abExxKF2FL0rZo3Y/mfrZpSAIQW+e6crwjJN8BWVd0P4F3JAZd9GM8FHMxYDbKBa5CPRI+AAq1zx9yoP2g03EQxO1ryJORqi3usdWgqDEB3hIGK79dLBqL+Mk2y8izNjm+aI1QUmUAk1vGP2NhQ7BU7w8K
- 3e2H1KrX
- G/PXx6+Qwb/KChbwS1dsiUbN9YzopQfKhKdEB/Q4+Nmj1L4e7AIe6oiDElhutd71tE5Xz+APxwLpVMHrl0od4dzKaWLqr43zdWtGrlqy8oEhA6dZOVGnMZj4bLzf8xFFaZ04ypn7tFYGyYmvvKYO0/l52Mb0I/LcizTmcOtgNjx75Vvwd+e9JH8QhH87ZEEQ4FBP7HyNXm1QvnprqO/nGC1/0UrAywVmRzib3prlVAlmnaRXdI43QUqUkkkjTEoilDbNSPAG2+G1FGwJzDMZgaPEiJ+4w17/wscSR/0V3LmBhAx4l5+ODG8sBFx/pyX7H07l95mt1wsfGRFpGKT/MvG1Oz8MpJJms11FW
+X-Rspamd-Queue-Id: 6D4C818000D
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758727336-196787
+X-HE-Meta: U2FsdGVkX19qKjZawXTSJg59VtcP/rTl/92JDvr55oUjVbbbkVgM6TTYfI7iIuwe3rz36dmjYknI0/aDx7NgUjibrRiuIE6qvdsCkCluRT0pdNlor46/hL4dyDifWrtjtz2UXSEB89s1V9g7ZHPzRC2GWRYulrW7ZYCpuunqPgFz1zL8mqKk0OeM9MuFFcOfRht9R9ewvGEPFrKXsI0r2PEMoXV+DF3SNZ+1SP7zfea2h4p2iXwLMwJ9M8yqs4J/pajR6WrjaQYKnupo8/rqAAvO7yraQRXC/eUZR3kwqZq7UtpXOFv4NUf9Z+g0S35dTGIeHXtee0m8HThy5yujmTIpVo3cfsGFtD1a5/bZgdjK9zEdrHmJZmjZBfTxdqjQ4YzxSkEjfHoYcho3eji7yEuv6eIN6tlllllskhH1QkTb2SkReBXTN4yrRiAxQZN2nW5rMFXHF7+rbF0MFiO+4Yva+DEKfMRgHgS4VWYqP4P8k9frcgH9gTc1qjFziOdN08Wn2OWklSYTFHV0N8f58fnXywinbe8IzOfLTX9vykD1fhMdrtDrbEYSSlb+cnlVzkJUYUFoNbsSubVWgos9HQFCE3M0sS8xVkEkMpLyGo1awdsxa/P61ag1v0VYU9BhUGXE4Xra/uG6xxrqi8jDsw00EzzVvXTCgWCDbz0KnxSMyLviWWuQwCN7gzJC/DKrnygV/SVmVh0NU/4RuiYZ9lCpYIHBVEjg0bI/tObPrrVvNGCNdREzFqLztCdZ6Bp2BKHf4QYZkalGvFqsq0nErnMyuFR6NCUwPu4bOuryUUZy55Kt3KcQKUuxpONklCV3YYic+dcTJatJd9/0Tr5Ap++b8bCjkmSzdqHGnhIePAQDWXqlLpFO7kZCFi7wsIE4ZruenzeZLUXjXxzfzLguSLTG8Yu5bL6y6vy32aEki/goYDV2RgqkKR2bEmGAsAL8/2DqFsmRKK/0eKPIape
+ qMa/n/bv
+ 7oQgYMgYarN23hI/9gN1P90QcDo0Ia4Xj6rbQ1GbX+ry1pi4bE+0x1xsq0P+j1R0nH1IZzVPfQnPahR1zrdU7bQk+OwDtPTr5CewYngR7OPDhn42GNQmAVfPzMLWA0h0I9w4k/zC5E15MxBVPMbpQmsICqXAKS8phJiCDE9WgohKR49DxJlEaxszt+uaJHw4ukAhvJD/9tWiFZAJwuRiY/Es4MaTpqw+HMPLWf0mpukUWU9XbhqjBlLEoctJXHFiyczqHibjT0E2DOxZLQiyWv8Pb5rrbMJppo24jUeYz5rS1dE6JNlNGBgO1JUnGquhMzuAvPZzfpp4fwhn/r5zSYby05gps3l9xnkZE5BYo6KyQwZ2YeBOVcYUzCTVFYcUgHEvQ+JZ9UimcY0F6usQOXnno6+1Xbbz8+THZ6gsxjTFN2M1DZrRtkJCv/HYm+Y6ABR5DFVOEo96EnJLG7OOK6zlq2dd5dbKvDXpBc/LpLETlUELghUYPeftYMKpYG0BLLh6dLPH5xg6UIO5OjdO/l/UZAlxFVCZ6RPC0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -159,241 +144,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Patrick Roy <roypat@amazon.co.uk>
+On Tue, 2025-08-26 at 14:01 -0400, Mathieu Desnoyers wrote:
+> Your approach looks good, but please note that this will probably
+> need to be rebased on top of the rseq rework from Thomas Gleixner.
+>=20
+> Latest version can be found here:
+>=20
+> https://lore.kernel.org/lkml/20250823161326.635281786@linutronix.de/
 
-Add AS_NO_DIRECT_MAP for mappings where direct map entries of folios are
-set to not present . Currently, mappings that match this description are
-secretmem mappings (memfd_secret()). Later, some guest_memfd
-configurations will also fall into this category.
+I rebased and adapted the patches on the V4 of that series.
 
-Reject this new type of mappings in all locations that currently reject
-secretmem mappings, on the assumption that if secretmem mappings are
-rejected somewhere, it is precisely because of an inability to deal with
-folios without direct map entries, and then make memfd_secret() use
-AS_NO_DIRECT_MAP on its address_space to drop its special
-vma_is_secretmem()/secretmem_mapping() checks.
+To get close functionality I went back to the task_work and I'm scheduling =
+it
+from switches (rseq_sched_switch_event).
 
-This drops a optimization in gup_fast_folio_allowed() where
-secretmem_mapping() was only called if CONFIG_SECRETMEM=y. secretmem is
-enabled by default since commit b758fe6df50d ("mm/secretmem: make it on
-by default"), so the secretmem check did not actually end up elided in
-most cases anymore anyway.
+Quick recap:
+My series tries to reduce the latency caused by `task_mm_cid_work` on many-=
+CPU
+systems. While at it, it improves reliability for bursty tasks that can mis=
+s the
+tick.
+It reduces the latency by splitting the work in batches. This requires more
+reliability as compaction now needs more runs, which is achieved enqueuing =
+on
+switches instead of ticks.
 
-Use a new flag instead of overloading AS_INACCESSIBLE (which is already
-set by guest_memfd) because not all guest_memfd mappings will end up
-being direct map removed (e.g. in pKVM setups, parts of guest_memfd that
-can be mapped to userspace should also be GUP-able, and generally not
-have restrictions on who can access it).
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Patrick Roy <roypat@amazon.co.uk>
----
- include/linux/pagemap.h   | 16 ++++++++++++++++
- include/linux/secretmem.h | 18 ------------------
- lib/buildid.c             |  4 ++--
- mm/gup.c                  | 19 +++++--------------
- mm/mlock.c                |  2 +-
- mm/secretmem.c            |  8 ++------
- 6 files changed, 26 insertions(+), 41 deletions(-)
+While this solution works, my doubt is whether running something there is s=
+till
+acceptable, considering Thomas' effort is going in the opposite direction.
 
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 12a12dae727d..1f5739f6a9f5 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -211,6 +211,7 @@ enum mapping_flags {
- 				   folio contents */
- 	AS_INACCESSIBLE = 8,	/* Do not attempt direct R/W access to the mapping */
- 	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
-+	AS_NO_DIRECT_MAP = 10,	/* Folios in the mapping are not in the direct map */
- 	/* Bits 16-25 are used for FOLIO_ORDER */
- 	AS_FOLIO_ORDER_BITS = 5,
- 	AS_FOLIO_ORDER_MIN = 16,
-@@ -346,6 +347,21 @@ static inline bool mapping_writeback_may_deadlock_on_reclaim(struct address_spac
- 	return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
- }
- 
-+static inline void mapping_set_no_direct_map(struct address_space *mapping)
-+{
-+	set_bit(AS_NO_DIRECT_MAP, &mapping->flags);
-+}
-+
-+static inline bool mapping_no_direct_map(const struct address_space *mapping)
-+{
-+	return test_bit(AS_NO_DIRECT_MAP, &mapping->flags);
-+}
-+
-+static inline bool vma_has_no_direct_map(const struct vm_area_struct *vma)
-+{
-+	return vma->vm_file && mapping_no_direct_map(vma->vm_file->f_mapping);
-+}
-+
- static inline gfp_t mapping_gfp_mask(struct address_space * mapping)
- {
- 	return mapping->gfp_mask;
-diff --git a/include/linux/secretmem.h b/include/linux/secretmem.h
-index e918f96881f5..0ae1fb057b3d 100644
---- a/include/linux/secretmem.h
-+++ b/include/linux/secretmem.h
-@@ -4,28 +4,10 @@
- 
- #ifdef CONFIG_SECRETMEM
- 
--extern const struct address_space_operations secretmem_aops;
--
--static inline bool secretmem_mapping(struct address_space *mapping)
--{
--	return mapping->a_ops == &secretmem_aops;
--}
--
--bool vma_is_secretmem(struct vm_area_struct *vma);
- bool secretmem_active(void);
- 
- #else
- 
--static inline bool vma_is_secretmem(struct vm_area_struct *vma)
--{
--	return false;
--}
--
--static inline bool secretmem_mapping(struct address_space *mapping)
--{
--	return false;
--}
--
- static inline bool secretmem_active(void)
- {
- 	return false;
-diff --git a/lib/buildid.c b/lib/buildid.c
-index c4b0f376fb34..89e567954284 100644
---- a/lib/buildid.c
-+++ b/lib/buildid.c
-@@ -65,8 +65,8 @@ static int freader_get_folio(struct freader *r, loff_t file_off)
- 
- 	freader_put_folio(r);
- 
--	/* reject secretmem folios created with memfd_secret() */
--	if (secretmem_mapping(r->file->f_mapping))
-+	/* reject folios without direct map entries (e.g. from memfd_secret() or guest_memfd()) */
-+	if (mapping_no_direct_map(r->file->f_mapping))
- 		return -EFAULT;
- 
- 	r->folio = filemap_get_folio(r->file->f_mapping, file_off >> PAGE_SHIFT);
-diff --git a/mm/gup.c b/mm/gup.c
-index adffe663594d..75a0cffdf37d 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -11,7 +11,6 @@
- #include <linux/rmap.h>
- #include <linux/swap.h>
- #include <linux/swapops.h>
--#include <linux/secretmem.h>
- 
- #include <linux/sched/signal.h>
- #include <linux/rwsem.h>
-@@ -1234,7 +1233,7 @@ static int check_vma_flags(struct vm_area_struct *vma, unsigned long gup_flags)
- 	if ((gup_flags & FOLL_SPLIT_PMD) && is_vm_hugetlb_page(vma))
- 		return -EOPNOTSUPP;
- 
--	if (vma_is_secretmem(vma))
-+	if (vma_has_no_direct_map(vma))
- 		return -EFAULT;
- 
- 	if (write) {
-@@ -2736,7 +2735,7 @@ EXPORT_SYMBOL(get_user_pages_unlocked);
-  * This call assumes the caller has pinned the folio, that the lowest page table
-  * level still points to this folio, and that interrupts have been disabled.
-  *
-- * GUP-fast must reject all secretmem folios.
-+ * GUP-fast must reject all folios without direct map entries (such as secretmem).
-  *
-  * Writing to pinned file-backed dirty tracked folios is inherently problematic
-  * (see comment describing the writable_file_mapping_allowed() function). We
-@@ -2751,7 +2750,6 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
- {
- 	bool reject_file_backed = false;
- 	struct address_space *mapping;
--	bool check_secretmem = false;
- 	unsigned long mapping_flags;
- 
- 	/*
-@@ -2763,18 +2761,10 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
- 		reject_file_backed = true;
- 
- 	/* We hold a folio reference, so we can safely access folio fields. */
--
--	/* secretmem folios are always order-0 folios. */
--	if (IS_ENABLED(CONFIG_SECRETMEM) && !folio_test_large(folio))
--		check_secretmem = true;
--
--	if (!reject_file_backed && !check_secretmem)
--		return true;
--
- 	if (WARN_ON_ONCE(folio_test_slab(folio)))
- 		return false;
- 
--	/* hugetlb neither requires dirty-tracking nor can be secretmem. */
-+	/* hugetlb neither requires dirty-tracking nor can be without direct map. */
- 	if (folio_test_hugetlb(folio))
- 		return true;
- 
-@@ -2812,8 +2802,9 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
- 	 * At this point, we know the mapping is non-null and points to an
- 	 * address_space object.
- 	 */
--	if (check_secretmem && secretmem_mapping(mapping))
-+	if (mapping_no_direct_map(mapping))
- 		return false;
-+
- 	/* The only remaining allowed file system is shmem. */
- 	return !reject_file_backed || shmem_mapping(mapping);
- }
-diff --git a/mm/mlock.c b/mm/mlock.c
-index a1d93ad33c6d..36f5e70faeb0 100644
---- a/mm/mlock.c
-+++ b/mm/mlock.c
-@@ -474,7 +474,7 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 
- 	if (newflags == oldflags || (oldflags & VM_SPECIAL) ||
- 	    is_vm_hugetlb_page(vma) || vma == get_gate_vma(current->mm) ||
--	    vma_is_dax(vma) || vma_is_secretmem(vma) || (oldflags & VM_DROPPABLE))
-+	    vma_is_dax(vma) || vma_has_no_direct_map(vma) || (oldflags & VM_DROPPABLE))
- 		/* don't set VM_LOCKED or VM_LOCKONFAULT and don't count */
- 		goto out;
- 
-diff --git a/mm/secretmem.c b/mm/secretmem.c
-index 60137305bc20..f4d767c3fe2e 100644
---- a/mm/secretmem.c
-+++ b/mm/secretmem.c
-@@ -134,11 +134,6 @@ static int secretmem_mmap_prepare(struct vm_area_desc *desc)
- 	return 0;
- }
- 
--bool vma_is_secretmem(struct vm_area_struct *vma)
--{
--	return vma->vm_ops == &secretmem_vm_ops;
--}
--
- static const struct file_operations secretmem_fops = {
- 	.release	= secretmem_release,
- 	.mmap_prepare	= secretmem_mmap_prepare,
-@@ -156,7 +151,7 @@ static void secretmem_free_folio(struct folio *folio)
- 	folio_zero_segment(folio, 0, folio_size(folio));
- }
- 
--const struct address_space_operations secretmem_aops = {
-+static const struct address_space_operations secretmem_aops = {
- 	.dirty_folio	= noop_dirty_folio,
- 	.free_folio	= secretmem_free_folio,
- 	.migrate_folio	= secretmem_migrate_folio,
-@@ -205,6 +200,7 @@ static struct file *secretmem_file_create(unsigned long flags)
- 
- 	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
- 	mapping_set_unevictable(inode->i_mapping);
-+	mapping_set_no_direct_map(inode->i_mapping);
- 
- 	inode->i_op = &secretmem_iops;
- 	inode->i_mapping->a_ops = &secretmem_aops;
--- 
-2.51.0
+My tests don't show any significant performance difference, but I'd gladly =
+try
+different workloads.
+
+Any thoughts on this?
+
+If the approach still looks reasonable I can submit a proper series for rev=
+iew.
+
+You can find the series at:
+    git://git.kernel.org/pub/scm/linux/kernel/git/gmonaco/linux.git mm_cid_=
+batches_rebased
+
+Thanks,
+Gabriele
 
 
