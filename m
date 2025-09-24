@@ -4,116 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD91FCAC5AE
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 19:17:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 107D4CAC5AE
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 19:19:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1A978E0008; Wed, 24 Sep 2025 15:17:27 -0400 (EDT)
+	id 45BEC8E000C; Wed, 24 Sep 2025 15:19:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF2508E0001; Wed, 24 Sep 2025 15:17:27 -0400 (EDT)
+	id 40C038E0001; Wed, 24 Sep 2025 15:19:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D08AC8E0008; Wed, 24 Sep 2025 15:17:27 -0400 (EDT)
+	id 321DF8E000C; Wed, 24 Sep 2025 15:19:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BB5018E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:17:27 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 650DA1A015A
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 19:17:27 +0000 (UTC)
-X-FDA: 83925102534.14.CA63F71
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 790051C0009
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 19:17:25 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 20C3C8E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:19:32 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E82AE1DA170
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 19:19:31 +0000 (UTC)
+X-FDA: 83925107742.30.D076F83
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9D83D1C000D
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 19:19:29 +0000 (UTC)
 Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=J2u6q82c;
-	spf=pass (imf21.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758741445;
+	s=arc-20220608; t=1758741569;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i/oQJGNV1ovbEYyXr+Q20w5HwOCKHZUJ7HSCX77QoG0=;
-	b=NgyqApg6uEdhJmjlpgnH7+NWvght/jwjdMKPLn1y+/O5jPzrpYhHDlt5aTCjx/qDmf6BGm
-	MZUsR1edFzgA867LNxgqL1Qeo4nlIPiAAz8NLSK2fxzTEh8J7SSoSYoMgZqP2/ksphuNoY
-	X+2moUJkHmi5XkuNQsv6BppUuuNNBhg=
+	 in-reply-to:in-reply-to:references:references;
+	bh=0T0BEn3CGJdLUo/alIU+i1QAr4lyYS9YdnkHR5OSRG8=;
+	b=xiEtzTLPFAijlehC4bmDqSWq1u+ypWUya/3+1tqDFuxyQVqOyq5pO6e8LZIS2HexF2Axvd
+	kQZVoxLE+grZhPLFVBnJMnXoK5gYLYdDxINB3tzqyg7hfg+xWt0csl923TwWtS4f8PMkJ9
+	WBinMAPoitYJi8zEf0AqhuJ9wW7TlvQ=
 ARC-Authentication-Results: i=1;
 	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=J2u6q82c;
-	spf=pass (imf21.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758741445; a=rsa-sha256;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758741569; a=rsa-sha256;
 	cv=none;
-	b=1apxK+OVRKsoNm8C65VamoHXlZfmuU2PgMShgLelC+yuZUcaZqtxyjLwxVPqdBdQkB2n8H
-	PKjTHQYtQ0iAUmmc12MpKP9aq9bAj6NOsWjpmbHktk/hDr7KS/zdhg01wVVgKFAOxhoSa6
-	XAIgFg9PIUIJB5uMBdzGQXqFBXYhmRI=
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-62fa84c6916so16536a12.0
-        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 12:17:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758741444; x=1759346244; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=i/oQJGNV1ovbEYyXr+Q20w5HwOCKHZUJ7HSCX77QoG0=;
-        b=J2u6q82c4TOOgkqzNo+sQrkS9d6AJ9ShINjlIhOf9RAXBlGIfJe0/HcfhI+wzLkC3O
-         CeHgXlrGZcEJg5i6TXyRWlU3z8qGDGQII5NV7uaeOQ62YYB/q8smwYNtsokHbSrCLeRB
-         +62v0vZXmfViMxtDzovaMSNV2+0zhfgEJckK8Csnatmj+SD1UoHdVRAP4aEPVwADr4fc
-         d3G4k9hbA87zu96lvdD5qblMMSWDQP44H4pxscqFuBxDXwJ9lE61XXEhCX8pHm7+AiaV
-         yRUXOkHCIB7Dd7pGyGZMLsMZXhbdxbHBUsKc5Xw0220B8LwUK2QZ/ovlUAYXhBUguyIO
-         xJvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758741444; x=1759346244;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=i/oQJGNV1ovbEYyXr+Q20w5HwOCKHZUJ7HSCX77QoG0=;
-        b=a4K/JBcsNVVeuRBdpWg9dsXqyDiFgthfRhywRY8m/quPSeI71pE7WbkKMuUmpwu5kV
-         +wu5slh5ecXhWHsfos0v3kLGZ0O1CEtxeQ3tZWT7sL6wYLACT64501w6UnCqf25jX7pz
-         z/3GxsmrZllMG7dqK5BOpih10UD59ldL9FE1Zct+jOVTmr8QFzcVLgb362a2cjoqas7b
-         4Mk/XKdhIbJq7Jsd5gavDxe4993tziEisAg/vdCF1Ud+NQPY5d/33ST1ALjKoL7GdDSD
-         XTh/EoYi77qhCxnIzkOnGFmXoqKn5kTDjj0crSoUDs19SUKywVp6iMmmFZ/pGVUB0IV/
-         nFMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXJeP50DUJFmMYEPaMayOOBPGyXnbGcybTBbS72oSFl5GbdLBMebM/zhT1Ub29sOXWXaKCbIfiACg==@kvack.org
-X-Gm-Message-State: AOJu0Yz7eZPqdXyr6fkojtgfeUDco4j1liYfFibNlta7R+qpNJ3Jmojn
-	0Ul/1mzCKPHPFvbYASttVSTJq4zJC89QqdfE6g/JXXEMhG+BLHSL0fSRvQnXvQZSScvkSxSDaLe
-	UE+ZHoLTIg8UQG0pEAs5Ywdbr3cTzbrQwhvumyI2d
-X-Gm-Gg: ASbGncs9c7jHxT1oKSHWRlrE0TBGFCjxXv1gvF5POTvEbT3m4i88Dwd9UfaS++uCEVl
-	CuaDNVYBclx/DMUBkM0IvXvw7N/tQpnhBJOZ4bGVW9GZuIeLcCC5qf0GLmfI2toPtd8UR607cEX
-	5igbtTx+bTHvCE9tOAHdz0RpiQWlZkp9SnvchtXAbEev5Glf/scvNTJJHoAokIrRJgqZi8skHLU
-	W+Rx2R1lD/zFfwaYBoVtgEeMTlRhPciUjrmSOdiBTZu
-X-Google-Smtp-Source: AGHT+IEicMXXtlWGyN6G7V+npJLewUO9XO8YiJmcQ+jrZ8XvJO05E+8ZmlyznHeCsCR1BvtDkyC40A5meCL2FvxyVw8=
-X-Received: by 2002:aa7:d4ce:0:b0:62f:c78f:d0d4 with SMTP id
- 4fb4d7f45d1cf-6349bc5d2b5mr36890a12.6.1758741443542; Wed, 24 Sep 2025
- 12:17:23 -0700 (PDT)
+	b=YTsPKehvU9Z+7eiwh1Icba0hced1F41uboCXq7XoIQbv3cVoEhCzT8WqrXNhb2RNL9SWiP
+	AXDsfnwL0F1wEM258+pcPWRAP2A+DpfWqFhrl+qDbcm8tiGYLMR0b58YDiKXkmyE135lBU
+	BnHjx8/5ot5v7DTEpikBU41Ozv7cRI0=
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cX69D2dJ6z9sRy;
+	Wed, 24 Sep 2025 21:19:28 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id nqpn_EP-cTuc; Wed, 24 Sep 2025 21:19:28 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cX69D0pt8z9sRk;
+	Wed, 24 Sep 2025 21:19:28 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id CC7DE8B76C;
+	Wed, 24 Sep 2025 21:19:27 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id edNE7oeRg5Qo; Wed, 24 Sep 2025 21:19:27 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 135518B768;
+	Wed, 24 Sep 2025 21:19:25 +0200 (CEST)
+Message-ID: <fa2272b9-13f2-464f-bb95-72fd31f1dcf9@csgroup.eu>
+Date: Wed, 24 Sep 2025 21:19:25 +0200
 MIME-Version: 1.0
-References: <20250918055135.2881413-1-lokeshgidra@google.com>
- <20250918055135.2881413-2-lokeshgidra@google.com> <2c9df5ee-6109-4fa5-b895-ad8e47d34bee@redhat.com>
- <CA+EESO4h-_U=Xo3x0G_74t_qJQ54AZ4Qd2Ji437aMV8nDZ+tkw@mail.gmail.com> <5549ac3a-20cf-4959-ac53-0a89ed0eadd2@redhat.com>
-In-Reply-To: <5549ac3a-20cf-4959-ac53-0a89ed0eadd2@redhat.com>
-From: Lokesh Gidra <lokeshgidra@google.com>
-Date: Wed, 24 Sep 2025 12:17:11 -0700
-X-Gm-Features: AS18NWA_yx_FbzE9Cq77Vt-Azas1zBBSMX6lJsRJSsjkUoBpj9SIA6zlW2o2Yik
-Message-ID: <CA+EESO5e0gupVfM9NgWqx34oMRk1jGzsNfM=X3idPKaXkRL2fg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mm: always call rmap_walk() on locked folios
-To: David Hildenbrand <david@redhat.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, kaleshsingh@google.com, 
-	ngeoffray@google.com, jannh@google.com, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Harry Yoo <harry.yoo@oracle.com>, 
-	Peter Xu <peterx@redhat.com>, Suren Baghdasaryan <surenb@google.com>, Barry Song <baohua@kernel.org>, 
-	SeongJae Park <sj@kernel.org>, Dan Williams <dan.j.williams@intel.com>, 
-	Alistair Popple <apopple@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 790051C0009
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] drivers/base/node: merge unregister_one_node() and
+ unregister_node() to a single function.
+To: Donet Tom <donettom@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>, Oscar Salvador <osalvador@suse.de>
+Cc: Ritesh Harjani <ritesh.list@gmail.com>,
+ Aboorva Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, x86@kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Dave Jiang <dave.jiang@intel.com>
+References: <cover.1758736423.git.donettom@linux.ibm.com>
+ <c99d97e253378455f1b3b7bec5b0c830d4e73074.1758736423.git.donettom@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <c99d97e253378455f1b3b7bec5b0c830d4e73074.1758736423.git.donettom@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9D83D1C000D
+X-Stat-Signature: tapf19sdb8xj5xuqkt483rs5nc5t7zh9
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: hes1morennszedkwe7qxj8t1835whddy
-X-HE-Tag: 1758741445-308047
-X-HE-Meta: U2FsdGVkX1+HU3bb4HS1GzF39Cvn1CLNyGpj+ABfLG3URBG7C4yP7jreeuQnURQ4LHCSmkINZDmwAA/wEARxmejj+2+bFQQLZbWqYeVAhhtjlZPY6IsKCEemhvmBXyCn+vKqDrAM2OXizGQit02rs7HQSCLiULPg2Thh7/IxRfqOFhIbUhrCg3XfVsvMwVzIve9qlLuO7ab6nwmzXStbvMzNUoB+L+JScSmvJ8wfIyb/6dKCTVVeAsXER5gZdpOJyLfuiUg9KVwU4mTRPZ3eCt0ymWh6iCXXpeJYTXBJqzvnRRjdjV9oW9EvQ6AMSQIGdDZ9QfMC8LlncIxz9g7BZcwwshfVqNPXfQzZ73VVJuFDWqEOBIJ6IqvVFxHMQKwGgxsHtAV6e4YHJsqaxPF0XSvmaKn9M+xi8MEKHkugpiV1sqlxoe/D4vrac+5FfE06Um+qZch8rHkPCgHgiNe0ib0a3xNZtEkxk8iLWA4fc1BvD8N9KQQumcJ9Z8Oa5V8ZF3GMDDUxq+O8hO+/RNO3qRIiuVndpwJMcw9EnKs3ydIlXm4mWJ89oM+i4ebKImfEkpRfPWcmjcnq9jYtDQ7gDTy9nm+6K+CIqbYli0x+WOqndoBT0GW2ZPWY1Mu2kXtzwWwl3ATUGZywyZHqLJpZLuslQ/e3SeVq3hnT6nmHy/BtBFPkQEc5wG139yJlNuk+K9cxiIq1oH/CVCLv24m+Itmjh9Z55t4swtSj+AUGqYhTZxVvtMk4S2lTe22l7/qVSpeTv9WB9uIS97rYyrBc2dV47eXGm5jLW/cR6js5z2oxBQhrvuuSteXuzrqWYrds6mbHwIjdgXGftJJBVMJNRjs0M2zKM+SGmVdSiSxDqIx3/EvImU/hsEBeVPbvNQoBHU7PTfTMzJ3E1Ag9CioJmsqb6n8cKQAs/XiUOckgL88Liebv73on9mNSTWgBarKBjgoXeLJbc0NH1yqlDP+
- kP1T9tkZ
- /7dWRnwbARCCbSB2BclzFnp3IYVO8oNaGdPRYA44KFfFntHvij/OGreg24hJcLuB3V/kbAB5Kjj5qfqb15YTO3tD/MldbIheFn1aIE+rzakegGn1rCQoTlzJ53zEeBZL/Lb68OyFjMtP7V685XC2ZdlM3O4xYKKBxqZ8WSqo/Z7yDuvvQkl3K3L+5JGcf8D5b8AwUNv81D/i0dkexEHeKkboO7OIz5e2GL8WZvT58+nYfQ2FtynB1bawY4QDKrSec8LiQoVvzQ+1B/ZY=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758741569-923939
+X-HE-Meta: U2FsdGVkX18pjBTlSkn6MknIwqwI7l00AeYTQixY9e+b8W+9muesGVGzRg35ZaH0iCqdg+wnWyoB+cVjaCeOowyunRZFZwp26rldniwkjtyaw8o/OCHh9SJH5X2q4IHVI+8cvW5FDlQJ1qfzGPkDNISaA/QlcOro6HzwQXWDT8WDyeKJt7odPQ3DJYH6GaPkl9aVJILFalmiyInNgNH/BtiKJRqbmIMPOyfeZgkIsiBiCF6+qpYY+srxer1JHbHZZYKvtnkANECoZw5qDOHTrfOTvT0DmwkPf3QQQHF+c18kQ36w1+VqCC/3YpuuhUSJWqpduZY1kj6xgESzEBMcTuGzdQMoKjJilTBuoSGAD+kUt6mXO2cmQk0CSyQ7XrqlOwpsOIV5LQf2kUqP/OchiOduPc66Dg5NFbhrIRw5nWI/erkch0dnjdrioxbM5nw/0iTVx2JvdDHB+GIWNnHiMK/khE0/5VosxMMVDKuw4oaWKlQmk46Ot6jVB9YbREvVsPk/Y1Ph46af0D8Uadxz3Iuby0DVoXxohf1OSbOPqizdNsiXUw0xgt1XbhFHTetiYzlHNUbRSwrJvSNCtAT9t3gCFTbQPVRc3QDPFxL67iG+0iHcSStFROGIlz6J7pHkuGjTc5V9YYnQnwp1ctO/vaGYjA+zVIk5AuIdGNe77MLBAOLXOuMUVJ9LDznElO44CrRX4P31G6gZVEd2yvLJKjgEQV6lTOq3KV5sIehZmJr/Yy5T7bzVykinp/5R20bTqB4Wlp4H2MgvbxiWRn5lca5z8k5fx97LjZkIhSZ+8jQmmENyK5hZF//+cplr96mUtRkQeoDa8/wKamC7UZxhzC0u230nB+0YvwRW6WkEG+d49CQxrA2gEZWmabBpCdiH10nCDsw7zm9c1cQSMI2VAxOhKiNVeJdUpmpvQBmCIZwSN9I3msiDD7nB8i0IWH2TOtvGvJuUcx9+fpjRqEV
+ rQn6Q1ux
+ 3Yjx9Y3T/d9qy95uI9ZC9hnVFFtApFE99RbeWpT+JBgfuHWNXjiAOX9HLkStiBNjFLg8TEdAxfybxcO35VhaRjhH9ovYJvd4OVXB94/2I83uJdkPFTrZ+FuAElXDDNqhdAQqRGu6s0TAj+146ahJ/QEbXod5p6K3pSMUUoAEYv8IL7Rygs32XoierDAOavtpR/I46BziUmCSbPPokYP+ARVH3kp4YsjboAj+jLUPguQsyOTcZJ5WLz4+s42mvS+m18cypDlQixIlXxIlKq/yHpTWJtHSgUHUGRKDfOhIGEUdWC2sE6q3gB6RZ1mWHAwfpSD7T4Ce+6Xi3NwpuUh2bG7BWOVh8T9hATN8k7JmfjVDUKXk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,53 +109,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 24, 2025 at 3:00=E2=80=AFAM David Hildenbrand <david@redhat.com=
-> wrote:
->
-> >>
-> >> Is mf_generic_kill_procs()->collect_procs() problematic?
-> >>
-> >> The dax_lock_folio/dax_unlock_folio part confuses me: I think it only
-> >> locks an entry in the page cache but not the actual folio ("Lock the D=
-AX
-> >> entry corresponding to a folio")?
-> > Yeah. The name dax_lock_folio() gives an impression as if the folio is
-> > locked but it isn't :)
->
-> Sorry for the late reply, I saw you posted v2 in the meantime.
->
-> >
-> > IIUC, a dax folio can't have an anon_vma (folio->mapping is actually
-> > an address_space instead of anon_vma), right?
->
-> We have these weird device-private dax folios that are anonymous and
-> should have the anon_vma set up.
->
-> > So, I thought it wasn't
-> > required to actually lock the folio in this case. Please let me know
-> > if you want me to still lock the folio around collect_procs(), or add
-> > a comment?
->
-> I think we can end up reaching memory_failure_dev_pagemap() with an
-> anonymous dax folio.
->
-> Not sure if anything would prevent us into calling
->
-> mf_generic_kill_procs()->collect_procs()->collect_procs_anon()->folio_loc=
-k_anon_vma_read()
->
-I must be missing something but dax_lock_folio() dereferences
-folio->mapping (to get to host) without checking for
-FOLIO_MAPPING_FLAGS presence. If it were an anon folio, wouldn't that
-be a problem? And then in collect_procs() we obviously check for
-folio_test_anon() on the same folio before calling
-collect_procs_anon().
 
-> CCing Dan and AAlistair
->
-> --
-> Cheers
->
-> David / dhildenb
->
+
+Le 24/09/2025 à 20:40, Donet Tom a écrit :
+> unregister_one_node() and unregister_node() are small functions.
+> This patch merges them into a single function named unregister_node()
+> to improve code readability.
+
+Same comment than patch 1. It is not only because they are small that 
+you merge them, it is primarily because unregister_node() only has one 
+caller.
+
+> 
+> No functional changes are introduced.
+> 
+> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+> ---
+>   drivers/base/node.c  | 37 +++++++++++++++++--------------------
+>   include/linux/node.h |  6 ++----
+>   mm/memory_hotplug.c  |  4 ++--
+>   3 files changed, 21 insertions(+), 26 deletions(-)
+> 
+> diff --git a/drivers/base/node.c b/drivers/base/node.c
+> index eab620e29c78..d460c1675c77 100644
+> --- a/drivers/base/node.c
+> +++ b/drivers/base/node.c
+> @@ -638,23 +638,6 @@ static void node_device_release(struct device *dev)
+>   	kfree(to_node(dev));
+>   }
+>   
+> -/**
+> - * unregister_node - unregister a node device
+> - * @node: node going away
+> - *
+> - * Unregisters a node device @node.  All the devices on the node must be
+> - * unregistered before calling this function.
+> - */
+> -void unregister_node(struct node *node)
+> -{
+> -	hugetlb_unregister_node(node);
+> -	compaction_unregister_node(node);
+> -	reclaim_unregister_node(node);
+> -	node_remove_accesses(node);
+> -	node_remove_caches(node);
+> -	device_unregister(&node->dev);
+> -}
+> -
+>   struct node *node_devices[MAX_NUMNODES];
+>   
+>   /*
+> @@ -887,12 +870,26 @@ int register_node(int nid)
+>   	return error;
+>   }
+>   
+> -void unregister_one_node(int nid)
+> +/**
+> + * unregister_node - unregister a node device
+> + * @nid: nid of the node going away
+> + *
+> + * Unregisters the node device at node id  @nid.  All the devices on the
+> + * node must be unregistered before calling this function.
+> + */
+> +void unregister_node(int nid)
+>   {
+> -	if (!node_devices[nid])
+> +	struct node *node = node_devices[nid];
+> +
+> +	if (!node)
+>   		return;
+>   
+> -	unregister_node(node_devices[nid]);
+> +	hugetlb_unregister_node(node);
+> +	compaction_unregister_node(node);
+> +	reclaim_unregister_node(node);
+> +	node_remove_accesses(node);
+> +	node_remove_caches(node);
+> +	device_unregister(&node->dev);
+>   	node_devices[nid] = NULL;
+>   }
+>   
+> diff --git a/include/linux/node.h b/include/linux/node.h
+> index 4dcf876cd0b4..d721127964b3 100644
+> --- a/include/linux/node.h
+> +++ b/include/linux/node.h
+> @@ -124,8 +124,6 @@ static inline void register_memory_blocks_under_nodes(void)
+>   }
+>   #endif
+>   
+> -extern void unregister_node(struct node *node);
+> -
+>   struct node_notify {
+>   	int nid;
+>   };
+> @@ -169,7 +167,7 @@ static inline int hotplug_node_notifier(notifier_fn_t fn, int pri)
+>   extern void node_dev_init(void);
+>   /* Core of the node registration - only memory hotplug should use this */
+>   extern int register_node(int nid);
+> -extern void unregister_one_node(int nid);
+> +extern void unregister_node(int nid);
+
+No 'extern' on function prototypes.
+
+>   extern int register_cpu_under_node(unsigned int cpu, unsigned int nid);
+>   extern int unregister_cpu_under_node(unsigned int cpu, unsigned int nid);
+>   extern void unregister_memory_block_under_nodes(struct memory_block *mem_blk);
+> @@ -185,7 +183,7 @@ static inline int register_node(int nid)
+>   {
+>   	return 0;
+>   }
+> -static inline int unregister_one_node(int nid)
+> +static inline int unregister_node(int nid)
+>   {
+>   	return 0;
+>   }
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index 6c050d867031..94a8f6e8811a 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -1596,7 +1596,7 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+>   error:
+>   	if (new_node) {
+>   		node_set_offline(nid);
+> -		unregister_one_node(nid);
+> +		unregister_node(nid);
+>   	}
+>   error_memblock_remove:
+>   	if (IS_ENABLED(CONFIG_ARCH_KEEP_MEMBLOCK))
+> @@ -2201,7 +2201,7 @@ void try_offline_node(int nid)
+>   	 * node now.
+>   	 */
+>   	node_set_offline(nid);
+> -	unregister_one_node(nid);
+> +	unregister_node(nid);
+>   }
+>   EXPORT_SYMBOL(try_offline_node);
+>   
+
 
