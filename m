@@ -4,151 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F15DFCAC5AE
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 15:29:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 256BFCAC5A5
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Sep 2025 15:36:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B57A8E0015; Wed, 24 Sep 2025 11:29:19 -0400 (EDT)
+	id 835E68E001C; Wed, 24 Sep 2025 11:36:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58D3D8E000F; Wed, 24 Sep 2025 11:29:19 -0400 (EDT)
+	id 7E65E8E000F; Wed, 24 Sep 2025 11:36:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A3B78E0015; Wed, 24 Sep 2025 11:29:19 -0400 (EDT)
+	id 6AE4D8E001C; Wed, 24 Sep 2025 11:36:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 399248E000F
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:29:19 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C219A1408A5
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:29:18 +0000 (UTC)
-X-FDA: 83924527596.04.832FA4F
-Received: from fra-out-003.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-003.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.72.182.33])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 433B4100017
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:29:16 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b="d/v0uJyX";
-	spf=pass (imf05.hostedemail.com: domain of "prvs=355a74973=roypat@amazon.co.uk" designates 3.72.182.33 as permitted sender) smtp.mailfrom="prvs=355a74973=roypat@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 548088E000F
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 11:36:02 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1CF901A02B5
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:36:02 +0000 (UTC)
+X-FDA: 83924544564.14.56CD6C3
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf08.hostedemail.com (Postfix) with ESMTP id D8EE6160012
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 15:35:59 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CXdncvDW;
+	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758727756;
+	s=arc-20220608; t=1758728159;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xYwtDKmp/Zq0jOTCpG7R8cZcsQAosKrhHZ6MWIe4xuU=;
-	b=H9JpZlAX7JgEC7MjunowgNEQHzYIQlzdeFzt/1eIJat1+0od8pQm8iwxoX7jl3F2IiRERk
-	cJa1PaGDMBQljc39I/OlZu4GzI4FQk9weq/HN8dEJVxXP0sar7vMZFWXR9ffMbXjRrRWbX
-	KdYaUR1GX6+3XavXE4eTa8IizKsH6vE=
+	bh=LAyCGXo1P+EO9JKpvics0vv03BSPlHspewc/0vaRl1E=;
+	b=4bwyG9+/UyhKeTcQLg96zwHellN//QLSs0EDbdodG/6uij14mY/oDpIKL9r1E+s4JHapom
+	SvQjs3BDM7Fpa0+jiZ0nU7mUodeFi9coBoQ6V/BNHM1eszq90wJ4wkkX1tFaomcc5yiV95
+	3A2h3ODWJj1WdadewDz/GWM+x/5keoA=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b="d/v0uJyX";
-	spf=pass (imf05.hostedemail.com: domain of "prvs=355a74973=roypat@amazon.co.uk" designates 3.72.182.33 as permitted sender) smtp.mailfrom="prvs=355a74973=roypat@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758727756; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CXdncvDW;
+	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758728159; a=rsa-sha256;
 	cv=none;
-	b=YhsHkbEqOhcnHK0nhMruCbQaIZXWyqUa+AJoerI2aihe4o57SoNuc6IRQKnt+lJwXri7Cb
-	0WObBpokt9/FY2yq/U+mnWN5weIU2wK1ezuQsgUcUYMltgKqV4H23ibj+mQiF+JJNQNxRh
-	4Yj2hLwTpLHGSnVeeOOcRz181hpdzyM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1758727756; x=1790263756;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=xYwtDKmp/Zq0jOTCpG7R8cZcsQAosKrhHZ6MWIe4xuU=;
-  b=d/v0uJyXQ/W/HUYtT07fNKGmTGeZg6bQzA0vkgNx5p3rB1FOYpPTowX4
-   Pzf+OpbcF/9qsFVAQVk6/43ahglUyRjPReDg2KxlOBMu4EEQ0FeR6ys1k
-   MVeWgRuufTvpbCaz8e2axeJXigANMMYWjg1eW90kTtQNW00I0Xgr0Ar4t
-   LVpSekA5bgMlLg+Ak+t6zJSf4qgg4VxzoTm3z3cX8Fvn9ShLf9HINEAVM
-   4iQN6J8Plg0H3miUkDQG8Z+EQHl/mz0AVm6SFJ6hqtmIlU/rnLV3aguT1
-   jUUlQAYzvnXJGifE9Tme73jXeVnp07ECTwLAVxcRVAj0pmREN5Ck+Rqi3
-   w==;
-X-CSE-ConnectionGUID: H1Nwja16SO+mJPPrYIM6Uw==
-X-CSE-MsgGUID: 6BUVeHZ3T1iQWbqFFphHSA==
-X-IronPort-AV: E=Sophos;i="6.18,290,1751241600"; 
-   d="scan'208";a="2615965"
-Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
-  by internal-fra-out-003.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2025 15:29:14 +0000
-Received: from EX19MTAEUB002.ant.amazon.com [54.240.197.232:7826]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.45.166:2525] with esmtp (Farcaster)
- id f979d79c-010c-49b7-9e97-d5be296685f6; Wed, 24 Sep 2025 15:29:14 +0000 (UTC)
-X-Farcaster-Flow-ID: f979d79c-010c-49b7-9e97-d5be296685f6
-Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
- EX19MTAEUB002.ant.amazon.com (10.252.51.59) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Wed, 24 Sep 2025 15:29:13 +0000
-Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
- EX19D015EUB004.ant.amazon.com (10.252.51.13) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Wed, 24 Sep 2025 15:29:13 +0000
-Received: from EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a]) by
- EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a%3]) with mapi id
- 15.02.2562.020; Wed, 24 Sep 2025 15:29:13 +0000
-From: "Roy, Patrick" <roypat@amazon.co.uk>
-To: "patrick.roy@campus.lmu.de" <patrick.roy@campus.lmu.de>
-CC: "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
-	"ackerleytng@google.com" <ackerleytng@google.com>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "andrii@kernel.org"
-	<andrii@kernel.org>, "ast@kernel.org" <ast@kernel.org>, "bp@alien8.de"
-	<bp@alien8.de>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-	"catalin.marinas@arm.com" <catalin.marinas@arm.com>, "corbet@lwn.net"
-	<corbet@lwn.net>, "daniel@iogearbox.net" <daniel@iogearbox.net>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"david@redhat.com" <david@redhat.com>, "derekmn@amazon.co.uk"
-	<derekmn@amazon.co.uk>, "eddyz87@gmail.com" <eddyz87@gmail.com>,
-	"haoluo@google.com" <haoluo@google.com>, "hpa@zytor.com" <hpa@zytor.com>,
-	"Thomson, Jack" <jackabt@amazon.co.uk>, "jannh@google.com"
-	<jannh@google.com>, "jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com"
-	<jhubbard@nvidia.com>, "joey.gouly@arm.com" <joey.gouly@arm.com>,
-	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "jolsa@kernel.org"
-	<jolsa@kernel.org>, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
-	"kpsingh@kernel.org" <kpsingh@kernel.org>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "linux-fsdevel@vger.kernel.org"
-	<linux-fsdevel@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-kselftest@vger.kernel.org"
-	<linux-kselftest@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, "luto@kernel.org"
-	<luto@kernel.org>, "martin.lau@linux.dev" <martin.lau@linux.dev>,
-	"maz@kernel.org" <maz@kernel.org>, "mhocko@suse.com" <mhocko@suse.com>,
-	"mingo@redhat.com" <mingo@redhat.com>, "oliver.upton@linux.dev"
-	<oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"peterx@redhat.com" <peterx@redhat.com>, "peterz@infradead.org"
-	<peterz@infradead.org>, "pfalcato@suse.de" <pfalcato@suse.de>, "Roy, Patrick"
-	<roypat@amazon.co.uk>, "rppt@kernel.org" <rppt@kernel.org>, "sdf@fomichev.me"
-	<sdf@fomichev.me>, "seanjc@google.com" <seanjc@google.com>,
-	"shuah@kernel.org" <shuah@kernel.org>, "song@kernel.org" <song@kernel.org>,
-	"surenb@google.com" <surenb@google.com>, "suzuki.poulose@arm.com"
-	<suzuki.poulose@arm.com>, "tabba@google.com" <tabba@google.com>,
-	"tglx@linutronix.de" <tglx@linutronix.de>, "vbabka@suse.cz" <vbabka@suse.cz>,
-	"will@kernel.org" <will@kernel.org>, "willy@infradead.org"
-	<willy@infradead.org>, "x86@kernel.org" <x86@kernel.org>, "Cali, Marco"
-	<xmarcalx@amazon.co.uk>, "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>
-Subject: Re: [PATCH v7 00/12] Direct Map Removal Support for guest_memfd
-Thread-Topic: [PATCH v7 00/12] Direct Map Removal Support for guest_memfd
-Thread-Index: AQHcLWf7p6lrgf1yqEyGzQxUogXjVw==
-Date: Wed, 24 Sep 2025 15:29:13 +0000
-Message-ID: <20250924152912.11563-1-roypat@amazon.co.uk>
-References: <20250924151101.2225820-1-patrick.roy@campus.lmu.de>
-In-Reply-To: <20250924151101.2225820-1-patrick.roy@campus.lmu.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [172.19.88.180]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	b=PZfZW18NpDii7y2EyZmRrO5rBy3V/PBfcSoJ2AtcB7uw6PNKv1rciBk2psXROdeqIGuUB3
+	8NuB9cq2wZn6DusQC1cJHHUz2FWDXbI8WZeX8guoyt9QvXuGKfxCgbxDyef+T48Q38LNej
+	SHeZ+33WgsO+H420u/Ef00lKlWYo0/8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758728159;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=LAyCGXo1P+EO9JKpvics0vv03BSPlHspewc/0vaRl1E=;
+	b=CXdncvDWotT0X2Z2a3X9ojXD3DFhwq3qlHbscggvAWRHzeEfown2iJVVsSp5TvDMcUqOb3
+	oFVuq0P247Kgq9mof9S4A+PdvQ+SxaurSbRt7k90b04FUE2F74P1T5jwmKuinjn/84x+73
+	RJzIQDztVdIC8v3tzuzOg+N48pusNZQ=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-627-FawELbjZM5aCqcd2teKY4Q-1; Wed, 24 Sep 2025 11:35:57 -0400
+X-MC-Unique: FawELbjZM5aCqcd2teKY4Q-1
+X-Mimecast-MFC-AGG-ID: FawELbjZM5aCqcd2teKY4Q_1758728157
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3ee13baf21dso14110f8f.0
+        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 08:35:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758728156; x=1759332956;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LAyCGXo1P+EO9JKpvics0vv03BSPlHspewc/0vaRl1E=;
+        b=MAkPMepdi81Y2o6eA4HgedCBL5i4mwEEkBRSM76/J9GD6ju4GdG3SNZKr9ogYWmoyN
+         hOCeoogYUeGNUfxM3UbC1fTwtvWeHdjUn6t0Yc0i8jGmUPv/KiJLW6PWiPUb7Lb9dGiZ
+         l5Ss4UO/9pTW5to6FaqEy91q9M3QAOvuOFLq+b0BsO1ogasmMrz8n1V2/HAN27ODUk4o
+         RcRMRR1HWtHIl6AMaaINdn/QTw8Ry+Qd0wulOcDboAGKQ0KNZkehIPNm442nYCUOfFsH
+         PtQzpYkdXGJOJnwI4t44eqxxbRTdcSvGiJQM8pwInRZCnxwct4TIOClRJ1Ft1Zah+QD4
+         nQOA==
+X-Forwarded-Encrypted: i=1; AJvYcCXi1p1AB9B4DBq3zRfZmHi+101E0CPaLYwY5yytQ6XAEoZ1aGTU1T1YVofy4XM0H/ougkCvzKjcsg==@kvack.org
+X-Gm-Message-State: AOJu0YxqQ5sbCBAJciUO2AAE9yp9Yi5avXyxmVmHcSgYjc7HQ1j3hG0v
+	CApmPNoxJH+GZgpBNWCzeyvgWJQGpnlxLbFk7TxOtclevhbwxp88cfeS0Vx77LPIzE/iZUXKFDn
+	o16zSx4CZgcJFRTAsqE4YYAxFT3jP1Uv0t3TTbmBKG0w7VvfWlRcJ
+X-Gm-Gg: ASbGncvzhOUlzvySZMminRK1rLiJDFH8xv48vyLc1iVyjjzHQeu7ndGzlpOhQNpxlGk
+	l+UiozmrKr5oXixjlud1/yZOsX4I3Vd1uth57Hhc4wiP8Z++gEtYfUhRHg8xF3CVHf/IsmUYbPL
+	u2Mmhh13EeRiWZ/2/rgaUBYPKDPtHztOWl7An5jOO7pq1ZUXtPjEKioWzHW1Pmb0vhCJZMOk0tR
+	j3dZrZA9e0uoFDopG9b9KYQr7raErK4H8m1I3NJ2+Sb1dSkFMAPTfe4izt1E98HWyn8ouHYjTJ8
+	MEPkfVR1e26Sjs1PHFhnUolxU0byc9e2YCNgqUOQOcxVIF+ltQ5e3Mc1CNMgNfqTQ0kExtHervy
+	Zb/7lnnddTqnZqWRx51SpG7clsxwx5qjxSXmodxJqdTTYv4IYpPmQBO4llvfR2Jbtmw==
+X-Received: by 2002:a5d:64e3:0:b0:3f7:9dcf:c066 with SMTP id ffacd0b85a97d-40e49aa1238mr399441f8f.51.1758728156528;
+        Wed, 24 Sep 2025 08:35:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEwSsjpjzzXpCkKbUJHa5gYasxSGtyNZJegtW1mwoNm4LYZm7WRUs1eoF3xKALtC/ETkes1vg==
+X-Received: by 2002:a5d:64e3:0:b0:3f7:9dcf:c066 with SMTP id ffacd0b85a97d-40e49aa1238mr399410f8f.51.1758728156071;
+        Wed, 24 Sep 2025 08:35:56 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f14:2400:afc:9797:137c:a25b? (p200300d82f1424000afc9797137ca25b.dip0.t-ipconnect.de. [2003:d8:2f14:2400:afc:9797:137c:a25b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3ee0fbefd5csm30761348f8f.51.2025.09.24.08.35.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 24 Sep 2025 08:35:55 -0700 (PDT)
+Message-ID: <70522abd-c03a-43a9-a882-76f59f33404d@redhat.com>
+Date: Wed, 24 Sep 2025 17:35:54 +0200
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 433B4100017
+User-Agent: Mozilla Thunderbird
+Subject: Re: [syzbot] [mm?] WARNING in memory_failure
+To: Zi Yan <ziy@nvidia.com>
+Cc: syzbot <syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com>,
+ akpm@linux-foundation.org, linmiaohe@huawei.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, nao.horiguchi@gmail.com,
+ syzkaller-bugs@googlegroups.com
+References: <68d2c943.a70a0220.1b52b.02b3.GAE@google.com>
+ <ce93b55c-75a7-4b4d-a68b-9d80baf1578b@redhat.com>
+ <DB0E39CD-36A9-4929-BCC6-33F27E387AEA@nvidia.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <DB0E39CD-36A9-4929-BCC6-33F27E387AEA@nvidia.com>
+X-Mimecast-Spam-Score: 1
+X-Mimecast-MFC-PROC-ID: U83RZL_CxR3s46DGVLXWjoXMzdPeoOyA2eQ5JGQSQro_1758728157
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 3auerjw9zyhs6y9cj1rryskpwo5ecpyr
-X-HE-Tag: 1758727756-933767
-X-HE-Meta: U2FsdGVkX1+HrVehh7QQOYG+lUFF3xNPL0xbLhmQF4hiYba94v6Nv44cMcvv/AZa/ngexsR+RXSEMZXJhRm2fiAo8IMLNrADw/7dbgpXZskUZig+/1jYLag2+1RD4o9fMarfX3QYd92hs6YgeLlt25z5bFZOlDHb83Oky42YD21jYFhXCK6NgZGxwlLSSAF7eeNE4lBYvOszt5oe1QycTZzPhFXy2eL66JJPaC9+xt7v0Nti3ayGar2GMyWmyFsCYw/pmVDnrhBA0d/kx6YD7cSD2IBdeAL7kZH2mn7Lrny4QXNtACYq7FG+1/QYHj75PJqhVUbXk3qNmQaujSci632X55Ry9PZPAXGUrEt2N6R98JUpLRlZdrJESoTUJgUbETxRFzWMvbwfj0LUFE/KXxqs3hUYwHP6RrUNhqOBWhk1VtplWRU6HG5UlBCv1u3akc8FaJSLAFQwSjCJXrXcIG9tjvbspqVpgOE+fD4kx6aDmLieF7GnoD/ISDDr54Qbqb27IvOAkhLCNuP9VcjVA6qzGLmNv6yS9lYgY/EwFy1b8d1msXbVm4UFqiO1SIKPPZo0UCKYJiBbEW5BdZZwpvzs67nAoAvhMiInFIKgdlOgYEf7+MuKGGe5UsdKP+CBqrqopWnkmMOZgZ8uebDFZzh2rtmYYBRUpMDvX/kJb6NbRbefpR0/X3P51D4PmIwpll4Ke4biELpgH6WLgOlJt3KTK0xPEoPwS3QATMIpC1Bq71f4SrbmEW+V8oHdt5CMtJAFifu/lj2N2c+Dx1YHFINnc4v45kwXaWsRPqPxuLTM1Zkv56DX9L69+uQnGwpM5q+3GypaW5qoQ1t2UBvtA406j0UGJoFRz8YXEzotPFNe6JBRcenQ9G/kCCqIANqd+KiZ42Z4DvT3oy/SKcl/MFGNQRbvL681autS/wJ71oBSEspyKjSGlLUXPP32VkIbKXw0x/envG+KeV2WEHf
- pkTUU15M
- teJNPPjs8GPPRh2Y3HOcYDaeG3UV7MHP91Q+k8gFaO/4g2bOiAhjmGNkM0elTNMbA6n2A5V43m8irMLGr4Uaa4V2S35dfMWKW62ZyYZFIOy4oJ98RGNsAhhEnN/mMAgWgZ/7vYDZoQhdgEKLSO+P2vRBipNkMLMlLqvTxGhJnKU5GHVvLS8YFX7n+mue9K/yWAzx1zupkxeDmP1mrtwVI0sDdpv6TukJjk9mjSWj1W/BCHMENtUsFghNOk/nuToimRSwWXbCqfhiSUDRbEMGndS8mzvYZNaLN1sjP9KWBTbJalUsn079PJqXUphTW8KmOhaJgv1VnI0sB9swcvAfLYG3X4VnorUfGWJAHcBFbkJSvXo/6SnkDGLieaLtLYAJPPJ+5zYFSaz+2OjEm1ADcOtapO9CVWo8mvV02OqXf5/jrVKWyB13KamENbA5Ah6yp3cXMV/dhgfqE+r7aEDvZ4jgicO+fyE0D5A8Ln0xl9FEloVEX9tsEdb9Kib832QCFRPT49cIbqtVz7/pxKPIWAMVqk64qGuAHE7418IAFK273Ja9apjs1j8GB0viIqJHy81ufRyzv6LMphxVp1nPf0sEmZ4eRIRPWqLMu1SRsJnZWePSooKKV1S8AkahYVMj/+F6xFS1EIjmV9uhaDISvoAUnghrhqaQkUTT/LYdVWxLTL4SRSHyDz7U0CfVxy+iINCbD8WDTIYMmd/53isC6Ps0kwiW+e+wzeG079FKATNqkjF2pAFmRJcmiJzsOaiu7ZgjSQqMIqU+t+AHAwvriO3JMitwkmdzJjRjnskv9OomiS9dGoZxjV3NN2NKInpqZ1E2/xH6H0whJNvs=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D8EE6160012
+X-Stat-Signature: in6yoxn3cjdx7dd7oe6hk3trmg5msmh4
+X-HE-Tag: 1758728159-435220
+X-HE-Meta: U2FsdGVkX19m1BvVmds+ttqAIPHpPH7t6FKiZD65iN/cRufbyWVq2Df38wOUy6j2IP/XWoIZrf/Y7HmDpeILLgnd9/MEM4p/9CDA9Ukny56SamvvAsceSZCjcp6afnvFY2SVrOSH14XMIVIHFodZZbkoyrvft9j/e8ISEzWdQhuVBruNPdfG3H7eSFYcU4mJovm/R9v+9tjvt+Q6z7a4GEbB1JUy/Sjdi3f6O2bxx8elcaEXXbhc78gfXFQHGCOOIrDpQApJB7I40UEZtY/Q/9n5edDUlvHBCKk1uMqhbGWxnVeoT9SWDobdju9RzAU5BHwH4gAIcLi7Bdbj+akeJ1JHhfCUnDPGLMrmwXwjlglMBwkaUmCryNB7g9cKkJGpwpQT55z+m7Msxp6ZNQy9Wr8ceRUXsS8A/WUhq4AX6rdhl/PWWQzGjfH1LQEGbhWqZE+F+jr4Ly12mU/5kJYX0xXL/1loM7Imm4Oe930cwGnPoqj9aLleWh330c8g19qIAe7LhzxjJa+3q1NIJMFdCmswGF6lrOr8UO/SvV6UBaMvY4gz7ZuYmzMG6tKKfe6dsrzvj05r+C/GK+2wyHYJ5NSohIVFSmzTMwriqPF51tFgEyFnZlDRwW6P1NPntI2GMXpqvvVVP5wW1nEn9hHE/hnSfiLToQVFUL35w7aIlv9D90Rimpu2zB9jBNoz65MT65mjU9J3a3VBDoahXLP1R0tE+HtYyP87cp2VdGMLQay7W6aBbcsB7nv9jfq58FJo+RmXcVRjqjDLnyLq3n83iRZXmGk3HxxC/uprhrKIpHEwrLfBuFah8ZE8Y1dpbBxfdqxBfMYcDV5htcSWv9gjEul9EC4t45nB9+S9W3gAUOml5tGbxTi9NTNuR3kzgu20QiblXLuisf3b8Eq9AoDk3TOJfqC6Oj2UNADxqxRGiwpDcKVH6H3RWyqvkNiq2CY+L8AZfIDJMPfcZ+p3hvV
+ b6HXAscH
+ IHPXY/9rocihnD0F3IWWUILA4WCdgRS6BzkI5LKd2DaIKJH5B9y/qFeKQtv7M5WYkWJhjqFaV9hENHV32tMZH3vTDjMS1LgMb1RjhcXaF8YmOLTRvjsPtn+AogJWtl910FjoRn9L2ksmEwCseRnErHtoQS/3JTAFnpy4HKWrYU80mTVQB0RjDljb7C9dqF9wvKZMuCZkWzO/zSvjfvzDcSJ3/hwwXf8WWWsEqGSV6/3r+ps129MTUW5JNeaPHeiGgpNKDvzuDlhZrK1JfeqaA2HD9dz+HzNi671TvaW1Pf3SD6xCgbP9LSfwh9MqaDqBZtNF+JskWvqUPgbPyJS+j9QYzww==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -157,22 +180,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-_sigh_=0A=
-=0A=
-I tried to submit this iteration from a personal email, because amazon's ma=
-il=0A=
-server was scrambling the "From" header and I couldn't figure out why (and =
-also=0A=
-because I am leaving Amazon next month and wanted replies to go into an inb=
-ox=0A=
-to which I'll continue to have access). And then after posting the first 4=
-=0A=
-emails I hit "daily mail quota exceeded", and had to submit the rest of the=
-=0A=
-patch series from the amazon email anyway. Sorry about the resulting mess (=
-i=0A=
-think the threading got slightly messed up as a result of this). I'll somet=
-hing=0A=
-else out for the next iteration.=0A=
-=0A=
+On 24.09.25 17:03, Zi Yan wrote:
+> On 24 Sep 2025, at 7:32, David Hildenbrand wrote:
+> 
+>> On 23.09.25 18:22, syzbot wrote:
+>>> Hello,
+>>>
+>>> syzbot found the following issue on:
+>>>
+>>> HEAD commit:    b5db4add5e77 Merge branch 'for-next/core' into for-kernelci
+>>> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
+>>> console output: https://syzkaller.appspot.com/x/log.txt?x=10edb8e2580000
+>>> kernel config:  https://syzkaller.appspot.com/x/.config?x=d2ae34a0711ff2f1
+>>> dashboard link: https://syzkaller.appspot.com/bug?extid=e6367ea2fdab6ed46056
+>>> compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+>>> userspace arch: arm64
+>>> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14160f12580000
+>>> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1361627c580000
+>>>
+>>> Downloadable assets:
+>>> disk image: https://storage.googleapis.com/syzbot-assets/6eee2232d5c1/disk-b5db4add.raw.xz
+>>> vmlinux: https://storage.googleapis.com/syzbot-assets/a8b00f2f1234/vmlinux-b5db4add.xz
+>>> kernel image: https://storage.googleapis.com/syzbot-assets/fc0d466f156c/Image-b5db4add.gz.xz
+>>>
+>>> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+>>> Reported-by: syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com
+>>>
+>>> Injecting memory failure for pfn 0x104000 at process virtual address 0x20000000
+>>> ------------[ cut here ]------------
+>>> WARNING: CPU: 1 PID: 6700 at mm/memory-failure.c:2391 memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
+>>> Modules linked in:
+>>> CPU: 1 UID: 0 PID: 6700 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT
+>>> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/30/2025
+>>> pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+>>> pc : memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
+>>> lr : memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391
+>>> sp : ffff8000a41478c0
+>>> x29: ffff8000a41479a0 x28: 05ffc00000200868 x27: ffff700014828f20
+>>> x26: 1fffffbff8620001 x25: 05ffc0000020086d x24: 1fffffbff8620000
+>>> x23: fffffdffc3100008 x22: fffffdffc3100000 x21: fffffdffc3100000
+>>> x20: 0000000000000023 x19: dfff800000000000 x18: 1fffe00033793888
+>>> x17: ffff80008f7ee000 x16: ffff80008052aa64 x15: 0000000000000001
+>>> x14: 1fffffbff8620000 x13: 0000000000000000 x12: 0000000000000000
+>>> x11: ffff7fbff8620001 x10: 0000000000ff0100 x9 : 0000000000000000
+>>> x8 : ffff0000d7eedb80 x7 : ffff800080428910 x6 : 0000000000000000
+>>> x5 : 0000000000000001 x4 : 0000000000000001 x3 : ffff800080cf5438
+>>> x2 : 0000000000000001 x1 : 0000000000000040 x0 : 0000000000000000
+>>> Call trace:
+>>>    memory_failure+0x18ec/0x1db4 mm/memory-failure.c:2391 (P)
+>>>    madvise_inject_error mm/madvise.c:1475 [inline]
+>>>    madvise_do_behavior+0x2c8/0x7c4 mm/madvise.c:1875
+>>>    do_madvise+0x190/0x248 mm/madvise.c:1978
+>>>    __do_sys_madvise mm/madvise.c:1987 [inline]
+>>>    __se_sys_madvise mm/madvise.c:1985 [inline]
+>>>    __arm64_sys_madvise+0xa4/0xc0 mm/madvise.c:1985
+>>>    __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+>>>    invoke_syscall+0x98/0x254 arch/arm64/kernel/syscall.c:49
+>>>    el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
+>>>    do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
+>>>    el0_svc+0x5c/0x254 arch/arm64/kernel/entry-common.c:744
+>>>    el0t_64_sync_handler+0x84/0x12c arch/arm64/kernel/entry-common.c:763
+>>>    el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:596
+>>
+>> We're running into the
+>>
+>>          WARN_ON(folio_test_large(folio));
+>>
+>> in memory_failure().
+>>
+>> Which is weird because we have the
+>>
+>>          if (folio_test_large(folio)) {
+>>                  /*
+>>                   * The flag must be set after the refcount is bumped
+>>                   * otherwise it may race with THP split.
+>>                   * And the flag can't be set in get_hwpoison_page() since
+>>                   * it is called by soft offline too and it is just called
+>>                   * for !MF_COUNT_INCREASED.  So here seems to be the best
+>>                   * place.
+>>                   *
+>>                   * Don't need care about the above error handling paths for
+>>                   * get_hwpoison_page() since they handle either free page
+>>                   * or unhandlable page.  The refcount is bumped iff the
+>>                   * page is a valid handlable page.
+>>                   */
+>>                  folio_set_has_hwpoisoned(folio);
+>>                  if (try_to_split_thp_page(p, false) < 0) {
+>>                          res = -EHWPOISON;
+>>                          kill_procs_now(p, pfn, flags, folio);
+>>                          put_page(p);
+>>                          action_result(pfn, MF_MSG_UNSPLIT_THP, MF_FAILED);
+>>                          goto unlock_mutex;
+>>                  }
+>>                  VM_BUG_ON_PAGE(!page_count(p), p);
+>>                  folio = page_folio(p);
+>>          }
+>>
+>> before it.
+>>
+>> But likely that's what I raised to Zi Yan recently: if try_to_split_thp_page()->split_huge_page()
+>> silently decided to split to something that is not a small folio (the min_order_for_split() bit),
+>> this changed the semantics of the function.
+>>
+>> Likely split_huge_page() should have failed if the min_order makes us not split to order-0,
+>> or there would have to be some "parameter" that tells split_huge_page() what expectation (order) the
+>> callers has.
+>>
+>> We can check folio_test_large() after the split, but really, we should just not be splitting at
+>> all if it doesn't serve our purpose.
+> 
+> But LBS might want to split from a high order to fs min_order.
+
+Yes.
+
+> 
+> What I can think of is:
+> 0. split code always does a split to allowed minimal order,
+>     namely max(fs_min_order, order_from_caller);
+
+Wouldn't max mean "allowed maximum order" ?
+
+I guess what you mean is "split to this order or smaller" -- min?
+
+> 1. if split order cannot reach to order_from_caller, it just return fails,
+>     so most of the caller will know about it;
+
+Yes, I think this would be the case here: if we cannot split to order-0, 
+we can just fail right away.
+
+> 2. for LBS code, when it sees a split failure, it should check the resulting
+>     folio order against fs min_order. If the orders match, it regards it as
+>     a success.
+> 
+> At least, most of the code does not need to be LBS aware. WDYT?
+
+Is my understand correct that it's either that the caller wants to
+
+(a) Split to order-0 -- no larger folio afterwards.
+
+(b) Split to smallest order possible, which might be the mapping min order.
+
+If so, we could keep the interface simpler than allowing to specify 
+arbitrary orders as request.
+
+-- 
+Cheers
+
+David / dhildenb
+
 
