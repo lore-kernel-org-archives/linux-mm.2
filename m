@@ -4,118 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC467CAC5A7
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 17:26:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54D27CAC5B1
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 17:36:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D8B98E000D; Thu, 25 Sep 2025 13:26:55 -0400 (EDT)
+	id 953F68E0007; Thu, 25 Sep 2025 13:36:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B0328E0001; Thu, 25 Sep 2025 13:26:55 -0400 (EDT)
+	id 904E38E0001; Thu, 25 Sep 2025 13:36:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C5978E000D; Thu, 25 Sep 2025 13:26:55 -0400 (EDT)
+	id 841A98E0007; Thu, 25 Sep 2025 13:36:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B4678E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:26:55 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B3BD786DF3
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:26:54 +0000 (UTC)
-X-FDA: 83928452748.30.2787D29
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C594A120007
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:26:52 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fkT0JyNK;
-	spf=pass (imf29.hostedemail.com: domain of shy828301@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=shy828301@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 747D68E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:36:07 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2E3151DF901
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:36:07 +0000 (UTC)
+X-FDA: 83928475974.10.DEFF107
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E8E7880006
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:36:04 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="r/TftEX8";
+	spf=pass (imf02.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758821212;
+	s=arc-20220608; t=1758821765;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hxzv2cBWff/v6c1vesRxyiI+Yy9Izb2fQv+kxW/dGpA=;
-	b=4f0dPJcfkVONljBIdIzVYQPqclv6vFapP16RXNzQrqTDRP+ibS/b4Yw8Ee9QCvgbrYjeZ2
-	hx1ICsMghIaMs0zu/g8FpOeFNqg3ixM0zs3dRWv6y5xeW2V9EHnRs1b6In0auWGnUGHxLz
-	dGedaMzr+JNeUgbyLvpn6u+NqQCuG/M=
+	bh=at1PwGx0vPYImvsgpKTo5NgOyLGGTYB3k5Gr1wyD+V0=;
+	b=8RL5vzFnd92w+q99vH2ceUqVPDpMdDNHHvS2OJ6G6mVliKR9w+ljHvQecysCyJEREslFch
+	EbN7vCTxFJoxD6CjF2cWb3e4IQhjibHoakH6rJ3QBN8oGe0CzaSzV2EtR5va8u5QyMgBrS
+	TogirGsoNO8eIJK8rjPlPFwzkFJ/x6s=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fkT0JyNK;
-	spf=pass (imf29.hostedemail.com: domain of shy828301@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=shy828301@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758821212; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="r/TftEX8";
+	spf=pass (imf02.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758821765; a=rsa-sha256;
 	cv=none;
-	b=zEwGddn3o20bhcXBU1RCklCraPI9O1rofCEu2XHBk0FF7zCoa0fyQyqstXU1tbJ0PDPv1p
-	ZzjxPi1qDPP+rNNZxIFSPdL6D8wWlFTLusZOdX3uVFnPEfa+B+S4QHIxxxl7daScp/v0nt
-	PPw2YOMV6WaDHusagAhYLEldf8DMLjw=
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b2d92b52149so246871666b.1
-        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 10:26:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758821211; x=1759426011; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Hxzv2cBWff/v6c1vesRxyiI+Yy9Izb2fQv+kxW/dGpA=;
-        b=fkT0JyNK2zA3y9ySFh4dbAqF6ondq4lxmmHXqGan7I8Lb2CgQFtsUP0l+WcNPMe5UN
-         /JaegCRLR7oKg/JcM8tWtSq7ue88sl4nesYBd86r5n9JKU0GXlOCt8SB0dFWFY07NrYt
-         Hw1P66nqoGLtQdEk9+539qM+pwZgguAdqamgT9PovUk2noTdIVtSxaqe2pV+Y07uDh2g
-         BiPQPywHGHBfRamsUi0Lp80nRJbC88gvoBMGvJQGFBcn1RFkjSlVsDgk83jttnbBLoEG
-         qbpWGS0Fy8PkKPBHKhMjNctKaOCIhf9GUR39qfVi9vneDAn2sgUb5LDD0qIuoPon+0v6
-         47dA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758821211; x=1759426011;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Hxzv2cBWff/v6c1vesRxyiI+Yy9Izb2fQv+kxW/dGpA=;
-        b=CgnQS1aAWWZSK1olRWdkibfHybE3l5GqWLDnYVVMUYd5p9m8AjDJ4aXGK7LVMqlnTK
-         XHztuqCYHFuLWZ18cTbInEvOexPWpkvBViLFE0bhDNdC5qi3jhQewUZ9pXQzoFgH2JE+
-         zbiFl/pw1JWAj9ilHzU3wWrqiv1ISjeKDbf+YFzUxwQgddoxpx255is0uPTOZ9ulSgFo
-         xMLlduve0iIq1/BgD17pdZmRMa/m0TUbrEDBdecRWp3L5H/0kHsokRNk9u4S5lcuDfBH
-         qYAWoztX4rsWcl+H0qhLY/tRAVF3XfP6RXqKBmJrtJAXZtsYPC+nFji/rilgHZwRE17P
-         L53g==
-X-Forwarded-Encrypted: i=1; AJvYcCXefTrgRgK/NVR77Oj8ST/5iCUstVKvpdUPrjxXLDUd4wwiwA33JBFm9wcX5L9yEQxSo4ixOr8RHA==@kvack.org
-X-Gm-Message-State: AOJu0YzvRdLAJVlhXaDNNYs0EdebVeqxi+uxwl1Ybpaov5rmIvqw+5SJ
-	Vqi5lH5kaCCOeKwJZb/Ez+LbN/aEzIG7TSQr7ZnSLgNqIrgt/sledrnuDqqD/j/ZQp9spAiIqZ8
-	03xqe/9xnpLInVAY+KIU8yfTgaS4h/WE=
-X-Gm-Gg: ASbGncvmTh6AzHEmRmJ/KQTwkyk9lpvFqrYX9z4bzXmluXeVny6D1O3zSgqFzXTqrLi
-	WAdBnpWYseotIe5diLdyIFpzxKgmWoUbOMFfsRkozC4lAb+VndBMR/yFHuRVWVTiyQOygo/HF/u
-	kym67DQDvgOWti37P87pYmsau0TfDSTt0ZcfnCDsC2dLu13u7O3o/TjP4+lVKX0pCS0Qvrrko5K
-	+o=
-X-Google-Smtp-Source: AGHT+IEjzLFBbzflK4F+frlRfcbPaspWQC9oQPfqbZdjRXB0LrK0sUdF9qQBxVp9KRq1FroodJ/I2IDpzawl6coBJMs=
-X-Received: by 2002:a17:907:2da7:b0:b30:daf3:a5a0 with SMTP id
- a640c23a62f3a-b34bad2253cmr480436066b.42.1758821210852; Thu, 25 Sep 2025
- 10:26:50 -0700 (PDT)
+	b=5ZktkzuFPPZBK+2/Q7AuYLxCmMgF6KQVrHcdj8L8a0was9yVC4pJ6Toujg575FeGp2OVp2
+	Rkl3zamg+WodCP7CMO0Wb7foG9BSk8KsVbVA+Ky2XWfNxu/BYU7ufIv15TT1XZG50apo4+
+	GXdq6TNCPcGz/NFqEr64Lt7cTq1MtHw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7528D40BEA
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:36:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536A6C4CEF0
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:36:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758821763;
+	bh=6X+Kwq99hJ6RldFuwAIqGeWDneu3vOuSsUP6CqzbVfk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=r/TftEX8EQYkqXGinosO6v7+qLQSZOXcE9dnQBYpDp2u9Wh4HkKGsITtSdPYO6eH0
+	 XENj/ROS4rFfbRHo3by8it045lyMpNB5eVEvfBOAJztTy3pTLYdzgUK4UmLEp6k89j
+	 C3T8EXVe7RGe9Q8qH8kKLA85q170G+QKA40ZXkEoiqXTePUb92B4fPar7ecv4T+qbY
+	 UT9gIAlXrJBZ6CIF1++J2xHOq2Isg6iDiVkI3s19DFv1lYsHdEgNQJAydZ6wZ+Ztx3
+	 ElMyJRKcloqBy7Dy3B5HGqgnkWzl8FTT4ibZh1JXkuQT4sGNMJBIMxpNq3WeN5mop5
+	 Cm6+743FC0nFA==
+Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-63607a57bf2so120700d50.2
+        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 10:36:03 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWz8iyr1wtF9No1wFIvA1PdyrGrO4xxKt9BfatKRo0Lmc1IRFGie20RPg1y2RXvXbsk34aPvujw6g==@kvack.org
+X-Gm-Message-State: AOJu0YxbVJWeJc39hLCQzYh2te2bOYi5SAp9yjpglrCD3wFnUO5WajLD
+	zEkxsDSAtBSB52MCKvjndj+BMHvJfvDsW41J4ec1iiD4Qd2+pmDZjcfEE8tZfFFLky4dG6hquY2
+	ASF9iKPqjPdL6iRNJe1gm3zgN4HN+nwpge+T3jQY8sQ==
+X-Google-Smtp-Source: AGHT+IHiAaqrhjdBeWzemxxoy5Q/R4D0Bg1Krf9r3MkkhdAeLx/hi/f4ggBJoQJ1TWCnJxEIcknHVa4xwmbnHdx/DUg=
+X-Received: by 2002:a53:7212:0:b0:624:1660:ba01 with SMTP id
+ 956f58d0204a3-6361a82db92mr2632679d50.37.1758821762606; Thu, 25 Sep 2025
+ 10:36:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <68d2c943.a70a0220.1b52b.02b3.GAE@google.com> <ce93b55c-75a7-4b4d-a68b-9d80baf1578b@redhat.com>
- <DB0E39CD-36A9-4929-BCC6-33F27E387AEA@nvidia.com> <70522abd-c03a-43a9-a882-76f59f33404d@redhat.com>
- <B0781266-D168-4DCB-BFCE-3EA01F43F184@nvidia.com> <cad74ef8-3543-4fc5-a175-8fc23a88776a@redhat.com>
- <E82638DD-9E5D-4C69-AA0F-7DDC0E3D109B@nvidia.com> <fzfcprayhtwbyuauld5geudyzzrslcb3luaneejq4hyq2aqm3l@iwpn2n33gi3m>
- <80D4F8CE-FCFF-44F9-8846-6098FAC76082@nvidia.com> <CAHbLzkrstjnEVUzz2==A2Z+CJToOgU6YU2MasdK49o-0-jW2yw@mail.gmail.com>
- <ec108aa2-88ae-42bb-a64d-ef12867526c4@redhat.com>
-In-Reply-To: <ec108aa2-88ae-42bb-a64d-ef12867526c4@redhat.com>
-From: Yang Shi <shy828301@gmail.com>
-Date: Thu, 25 Sep 2025 10:26:39 -0700
-X-Gm-Features: AS18NWA7mmHpaW4unFP9jmKD9f1afbd8FCzR488IcF67iAHmHq3JAN9lKlZCtYo
-Message-ID: <CAHbLzkryOopTOJ1gXmQiveZtuDfqSyYTO5WsfvrFcNjiHJV3cw@mail.gmail.com>
-Subject: Re: [syzbot] [mm?] WARNING in memory_failure
-To: David Hildenbrand <david@redhat.com>
-Cc: Zi Yan <ziy@nvidia.com>, "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>, 
-	Luis Chamberlain <mcgrof@kernel.org>, 
-	syzbot <syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com>, 
-	akpm@linux-foundation.org, linmiaohe@huawei.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, nao.horiguchi@gmail.com, syzkaller-bugs@googlegroups.com
+References: <20250924181138.1762750-1-charan.kalla@oss.qualcomm.com>
+In-Reply-To: <20250924181138.1762750-1-charan.kalla@oss.qualcomm.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Thu, 25 Sep 2025 10:35:51 -0700
+X-Gmail-Original-Message-ID: <CACePvbW=-KZhU_qi4UUw7Pjbz4o=SQwHmQyEOkxhpMvdetbPCg@mail.gmail.com>
+X-Gm-Features: AS18NWCdaLC1Wp3RSMP0da3-Fs18-J7lkLeP98ZrcoaPfKuh1jdrt-Zu6iPTusQ
+Message-ID: <CACePvbW=-KZhU_qi4UUw7Pjbz4o=SQwHmQyEOkxhpMvdetbPCg@mail.gmail.com>
+Subject: Re: [PATCH V2] mm: swap: check for stable address space before
+ operating on the VMA
+To: Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
+Cc: david@redhat.com, Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, 
+	akpm@linux-foundation.org, shikemeng@huaweicloud.com, kasong@tencent.com, 
+	nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, 
+	zhangpeng.00@bytedance.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: C594A120007
+X-Rspamd-Queue-Id: E8E7880006
+X-Stat-Signature: eueb6t4xjmsj43o79go3gdxm5pexihog
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: x19bohi9cokk4gszqw6mgni5o5gjomun
-X-HE-Tag: 1758821212-563493
-X-HE-Meta: U2FsdGVkX1+21ycrEZTIPZXi/enY4+4tBx0Tl/oKUAmCzrP5O3lRasSH51AtVNgGNhgURshWtEj+1gZhSd6aTjamudY25V/YD8MeyNv0VBgFSpeRvOvjYZt5mrZwKpWMjbA1umO9MYavmBS5vq7orydks+jb0l2LhN+f6DhR0oZpH/qHljHZzhI96gjBKcCz1GQIReihAsKsu6+tD3md2r09iBfR9756t5KbTSaQnx5nKc1FKvwJzQt8IGsh6HAyTdVn1jW+VsfpUB7pXK1nFTrO5eiS0o1Es60B/aSiPvmomrytlrnopv8P+g6vOP+t+ppAzVljg/CdVvqdiS6yUdytw/rLz/vvAzgN/CEn789JovWXVwmsenjTPrkPqgTOCLMjKsGapreDCH+dGyETw/sBbLMwvQjAklpJFQVHnHwTaana3uSIVErSE7eKJZE9naZmyG5o8H4lKJi43/CO4ceX+KWUFEPNfEXWpJ5KJMcIufllWPT89Jkk+Zib30jt96FTGqw2CrejNG/5JpvU5FtoOjkOwCHSic7dkc8H0P84wN32kqIm/bVonaH4/a+uu33PXaI8ekSGzbcCwL8Tzo9qQwDbz5LxPxXXPGrMwgIS7WT0BmmiWznRe1DcWCfPjzAanYhHxJXfuxNC3WchInw3aGnssq0w69/rJpjgE95d4Vvh2z4OvsvsmrCsf8GPHuIGlmQNC5sOYb3eRByd3N83/uqbMr0yw8oH98azDNgBgTb6IaBGWHxPdLQEFQ+Pn52+ikNqjJQUjN3RUMlST/8aYWNX12abw2B4g2VYqgrNGTJpTPypYDzDuu3kJL/GtbPzW/pq131Jo1xzK66MTiIjmHdYBzCko2DipKyqQETkU0Kwi3C3dAZVPbk9B1h6S8wFi9nCkNj0ki9p8gLvmreAO8eq4UPaepW9BlJ/GdIdPulgjAuFCU51c3aP46tLzmU+bXzliuOGsZT4SpV
- kpafPoyW
- rOQ3UaGOf54XedsXLDB38zkNgH+S2pyjM34FgqBOyNU0v/luY5+J92+y8U1w/ecIhPe1Y7zd8C9v3s/Pbr+OBqgQqHPmsLpOoH56Y5CEqPWmIO/LrTi+Pv7GPQfIz16jAD9K/tPlq45yi5hws2NELQ+lsUyWVvlVS0J0yykO/TdVB1WIUKMqEZlmIXtEboBxDQhU+Q6hWXivRKy3DefIQ0L5qSPGwWWlj5TKArq/tcjG0aI3y6IgGsVejVl7D3gzJ+q8daVs/Tdl3eChiv6DN54J4V6CRZXt226Qwn0Bv/6QWnM2V4LsgQyPzu3+fU6Z6RqqDTUV5RcVIhCJO4UVRAhe1dYO1tjz7Vkj3YojVBgR0dh2xhPLZJzhMekCmJtDXJMs0JdmyeK9G/Zwm7Rhg4n79A9kD+OX2uBPCjG3QMi8l7tqzlwVJU/JQv6WyLkYtaJcea5PCjF5QYq+jkmukp5qiE/JFtgJWsxDF6uGzbHfSeIL+1SXiQdVoZN02dqGr0WMNioOsiABqU9Q+pW/LHXAjPhE5Wt/nlS06s00qG2ooSVZiTV+W+c4ZmmSCLIJ40QClvWeGwcV24uARXwZs+Qp4stm3K/H47Kn3EorQsxuQe9zpzWr6DBrByEKUf3nyc7zY
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758821764-639966
+X-HE-Meta: U2FsdGVkX19gyR/V7BNFZBOJLWtIhDzEWqQ6Tfj+k63/hf5sGnfHgHhZaHjhW+XtJBKhTHt54HMgdcQYA8LyFdb406j6Moi4WH0eGywMmzvlK9iEKrRRVThx2ZHY/BeHuDnTdjj0BWsUF5PIUapOlypckn3KXWMkhl2m9UVFf0dgO4r1bIEPZUiimilZeOyKg38RBJUXSYcZrN7yyq65CHyMVeK71c9ITjRp0ShmuOSBKodUqGhW82xnrBhMSBQTJuPUjIX9G65sz9YAEJF7QQuArjgNCPYYY/dJHKSn4zEY0hnmyvYCmGW84wnfQ9Wp/6I4Djdr1MGeOMWQK12i2bXUit51A4s5uzPPtFHkKbVn7ZWlxGe2N3UX5EyHsW0VscYciJK9xEGc1ltUy7hgdeswNO74PzGgSFL5FC38DQGr7O1Zm2wcvj2Apumye1l4EDeVaLt/pqAIR4ZITJo2HV5TxDM77gRUSGLLTDFDqauJ6R76Tg9oO5sJog9xyrg9lIFe9vEJRzhvj0iyZy8ux0nTH20EM8PYPCtC/AFDgU8xnOJmWJodwk2mV0FkTRHHD5k7HpnJ3yp311nTcOUitL5mg1MkInWNKNVvZG5sipCfHTh3m63JYee83R8Ph8MyDxEBess0l71IvWNCvrUyhtLtVulf782ijcveImKbgYU/G4GurUEUVK8/4Msm7Gf1rKVtWSogQlRq/fDuy44p8o7yA9b2w7+nZmImbO06WsEdk3EscVF3BU9SvphTFhTVp7E8TCZGHjiZF74UisSN6TUBrP09Nn+LXiDtqk3taedc1fLxucDaHlLYP/WGPn48oQJCDdklCOKuSomZ/Cs5z1FCnC4mU+v6Y8ZMEHVSpGl/1Y1+/XqYwagGBF2YPiSG7k4fFSKHAfJAS/k1PYz1M/Wx9TlNkNhVWBHkKFn5kb+1CVAGzDsm5HE2oVqrYBvobqbJzNyTYBmJ3jfx9qG
+ 34zWhUff
+ pow8RdhFgldUkJ/PeFzdWEGEocZf20WmxMlb/QdDW5pXLEfFKl2rWrVlb3g7BXuGYc8jLbwPS5m0q8jZnSC+9AQuKaisdjz7qwjvt0sTSYTkHVLFTZlldonckPGd9/pdHKagbHHvWBauQo8Tdhw0YUQsM0RgFEJbLpuiI//1uWVBjcN0Ihq0/HDz/Rf64t8ptRyvWtD0P853OeMhw7rorksQomkZL47PdHqTbhyCAvZhO+cIZJIq/f0hGbY+nv5wy44XgDJ2xOxHWtGnI1HTYCWqhqLtGipUZKovKI0T2eAnuAk/r6rA9nt1rhIax5R8+6OLE1CsfRMSSeyDfdbKBSHLQQP+9eRxVInGjYhd1ep4ofVMzI27yRrRq2qIVXxeoPsdtAkXxzcoqL3nz6lGD7c+s9TY/WUtjfDCG8S8EWyZORbScp+l4pXG3mg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,120 +107,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 25, 2025 at 9:48=E2=80=AFAM David Hildenbrand <david@redhat.com=
-> wrote:
->
-> On 25.09.25 18:23, Yang Shi wrote:
-> > On Thu, Sep 25, 2025 at 7:45=E2=80=AFAM Zi Yan <ziy@nvidia.com> wrote:
-> >>
-> >> On 25 Sep 2025, at 8:02, Pankaj Raghav (Samsung) wrote:
-> >>
-> >>>>>>
-> >>>>>> We might just need (a), since there is no caller of (b) in kernel,=
- except
-> >>>>>> split_folio_to_order() is used for testing. There might be future =
-uses
-> >>>>>> when kernel wants to convert from THP to mTHP, but it seems that w=
-e are
-> >>>>>> not there yet.
-> >>>>>>
-> >>>>>
-> >>>>> Even better, then maybe selected interfaces could just fail if the =
-min-order contradicts with the request to split to a non-larger (order-0) f=
-olio.
-> >>>>
-> >>>> Yep. Let=E2=80=99s hear what Luis and Pankaj will say about this.
-> >>>>
-> >>>>>
-> >>>>>>
-> >>>>>>
-> >>>>>> +Luis and Pankaj for their opinions on how LBS is going to use spl=
-it folio
-> >>>>>> to any order.
-> >>>>>>
-> >>>>>> Hi Luis and Pankaj,
-> >>>>>>
-> >>>>>> It seems that bumping split folio order from 0 to mapping_min_foli=
-o_order()
-> >>>>>> instead of simply failing the split folio call gives surprises to =
-some
-> >>>>>> callers and causes issues like the one reported by this email. I c=
-annot think
-> >>>>>> of any situation where failing a folio split does not work. If LBS=
- code
-> >>>>>> wants to split, it should supply mapping_min_folio_order(), right?=
- Does
-> >>>>>> such caller exist?
-> >>>>>>
-> >>>
-> >>> I am not aware of any place in the LBS path where we supply the
-> >>> min_order. truncate_inode_partial_folio() calls try_folio_split(), wh=
-ich
-> >>> takes care of splitting in min_order chunks. So we embedded the
-> >>> min_order in the MM functions that performs the split instead of the
-> >>> caller passing the min_order. Probably, that is why this problem is
-> >>> being exposed now where people are surprised by seeing a large folio
-> >>> even though they asked to split folios to order-0.
-> >>>
-> >>> As you concluded, we will not be breaking anything wrt LBS as we
-> >>> just refuse to split if it doesn't match the min_order. The only issu=
-e I
-> >>> see is we might be exacerbating ENOMEM errors as we are not splitting=
- as
-> >>> many folios with this change. But the solution for that is simple, ad=
-d
-> >>> more RAM to the system ;)
-> >>>
-> >>> Just for clarity, are we talking about changing the behaviour just th=
-e
-> >>> try_to_split_thp_page() function or all the split functions in huge_m=
-m.h?
-> >>
-> >> I want to change all the split functions in huge_mm.h and provide
-> >> mapping_min_folio_order() to try_folio_split() in truncate_inode_parti=
-al_folio().
-> >>
-> >> Something like below:
-> >>
-> >> 1. no split function will change the given order;
-> >> 2. __folio_split() will no longer give VM_WARN_ONCE when provided new_=
-order
-> >> is smaller than mapping_min_folio_order().
-> >>
-> >> In this way, for an LBS folio that cannot be split to order 0, split
-> >> functions will return -EINVAL to tell caller that the folio cannot
-> >> be split. The caller is supposed to handle the split failure.
-> >
-> > Other than making folio split more reliable, it seems like to me this
-> > bug report shows memory failure doesn't handle LBS folio properly. For
-> > example, if the block size <=3D order-0 page size (this should be alway=
-s
-> > true before LBS), memory failure should expect the large folio is
-> > split to order-0, then the poisoned order-0 page should be discarded
-> > if it is not dirty. The later access to the block will trigger a major
-> > fault.
->
-> Agreed that larger-folio support would be nice in memory-failure code,
-> but I recall some other areas we recently touched that are rather hairy.
-> (something around unmap_poisoned_folio()).
+?
 
-I had been busy on some arm64 stuff, I didn't follow up the recent
-development too closely, you meant this one?
-https://lore.kernel.org/linux-mm/20250627125747.3094074-3-tujinjiang@huawei=
-.com/
-
-It seems like we need more work to support large folio for memory failure.
-
-Thanks,
-Yang
-
+On Wed, Sep 24, 2025 at 11:12=E2=80=AFAM Charan Teja Kalla
+<charan.kalla@oss.qualcomm.com> wrote:
 >
-> The BUG at hand is that we changed splitting semantics without taking
-> care of the actual users.
+> It is possible to hit a zero entry while traversing the vmas in
+> unuse_mm() called from swapoff path and accessing it causes the
+> OOPS:
 >
+> Unable to handle kernel NULL pointer dereference at virtual address
+> 0000000000000446--> Loading the memory from offset 0x40 on the
+> XA_ZERO_ENTRY as address.
+> Mem abort info:
+>   ESR =3D 0x0000000096000005
+>   EC =3D 0x25: DABT (current EL), IL =3D 32 bits
+>   SET =3D 0, FnV =3D 0
+>   EA =3D 0, S1PTW =3D 0
+>   FSC =3D 0x05: level 1 translation fault
+>
+> The issue is manifested from the below race between the fork() on a
+> process and swapoff:
+> fork(dup_mmap())                        swapoff(unuse_mm)
+> ---------------                         -----------------
+> 1) Identical mtree is built using
+>    __mt_dup().
+>
+> 2) copy_pte_range()-->
+>         copy_nonpresent_pte():
+>        The dst mm is added into the
+>     mmlist to be visible to the
+>     swapoff operation.
+>
+> 3) Fatal signal is sent to the parent
+> process(which is the current during the
+> fork) thus skip the duplication of the
+> vmas and mark the vma range with
+> XA_ZERO_ENTRY as a marker for this process
+> that helps during exit_mmap().
+>
+>                                      4) swapoff is tried on the
+>                                         'mm' added to the 'mmlist' as
+>                                         part of the 2.
+>
+>                                      5) unuse_mm(), that iterates
+>                                         through the vma's of this 'mm'
+>                                         will hit the non-NULL zero entry
+>                                         and operating on this zero entry
+>                                         as a vma is resulting into the
+>                                         oops.
+>
+> The proper fix would be around not exposing this partially-valid tree to
+> others when droping the mmap lock, which is being solved with [1]. A
+> simpler solution would be checking for MMF_UNSTABLE, as it is set if
+> mm_struct is not fully initialized in dup_mmap().
+>
+> Thanks to Liam/Lorenzo/David for all the suggestions in fixing this
+> issue.
+>
+> [1] https://lore.kernel.org/all/20250815191031.3769540-1-Liam.Howlett@ora=
+cle.com/
+>
+> Fixes: d24062914837 ("fork: use __mt_dup() to duplicate maple tree in dup=
+_mmap()")
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
+> ---
+>
+> V1:
+>    -- Checking for xa_zero_entry() instead of most cleaner way of
+> checking for MMF_UNSTABLE
+>    -- https://lore.kernel.org/linux-mm/20250808092156.1918973-1-quic_char=
+ante@quicinc.com/
+>
+>  mm/swapfile.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 890b410d77b6..10760240a3a2 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -2389,6 +2389,8 @@ static int unuse_mm(struct mm_struct *mm, unsigned =
+int type)
+>         VMA_ITERATOR(vmi, mm, 0);
+>
+>         mmap_read_lock(mm);
+> +       if (check_stable_address_space(mm))
+> +               goto unlock;
+
+This is checking the MMF_UNSTABLE bit in the mm flags.
+What is the locking requirement for accessing the mm flags MMF_UNSTABLE bit=
+?
+Here we hold the mm mmap read lock.
+
+As far as I can tell, there are two paths that can set that bit.
+
+1) dup_mm()
+It holds the mm mmap write lock. This path is fine due to the write lock.
+So far the above race against dup_mm(), adding this  check is fine.
+
+2)  __oom_reap_task_mm()
+It holds the mmap read lock when setting the MMF_UNSTABLE as far as I can t=
+ell.
+So checking the MMF_UNSTABLE with another __oom_reap_task_mm() does
+not exclude each other.
+This is more of a question for oom reaping.
+Does MMF_UNSTABLE have the test vs set racing here? It seems this
+check does not protect against  __oom_reap_task_mm(). I have no idea
+if this race is triggerable. Just want someone else to double check if
+my understanding is correct or not.
+
+I can see this patch does protect the intended race in dup_mm() vs
+unuse_mm(), it adds value.
+
+Chris
+
+
+
+>         for_each_vma(vmi, vma) {
+>                 if (vma->anon_vma && !is_vm_hugetlb_page(vma)) {
+>                         ret =3D unuse_vma(vma, type);
+> @@ -2398,6 +2400,7 @@ static int unuse_mm(struct mm_struct *mm, unsigned =
+int type)
+>
+>                 cond_resched();
+>         }
+> +unlock:
+>         mmap_read_unlock(mm);
+>         return ret;
+>  }
 > --
-> Cheers
->
-> David / dhildenb
+> 2.34.1
 >
 
