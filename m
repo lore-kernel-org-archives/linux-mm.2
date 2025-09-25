@@ -4,91 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF15CCAC5B1
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 17:20:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75E00CAC5A7
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 17:23:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED9CF8E0003; Thu, 25 Sep 2025 13:20:53 -0400 (EDT)
+	id D0A638E000B; Thu, 25 Sep 2025 13:23:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB1018E0001; Thu, 25 Sep 2025 13:20:53 -0400 (EDT)
+	id CE1C48E0001; Thu, 25 Sep 2025 13:23:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEE968E0003; Thu, 25 Sep 2025 13:20:53 -0400 (EDT)
+	id C1F278E000B; Thu, 25 Sep 2025 13:23:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CD0408E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:20:53 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 920F8C047D
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:20:53 +0000 (UTC)
-X-FDA: 83928437586.02.DFE1996
-Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
-	by imf16.hostedemail.com (Postfix) with ESMTP id BB41B18000C
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:20:51 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=elijahs.space header.s=purelymail2 header.b=VhtuGPKN;
-	dkim=pass header.d=purelymail.com header.s=purelymail2 header.b="R4Pwbk/D";
-	spf=pass (imf16.hostedemail.com: domain of me@elijahs.space designates 34.202.193.197 as permitted sender) smtp.mailfrom=me@elijahs.space;
-	dmarc=pass (policy=reject) header.from=elijahs.space
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A5E218E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:23:16 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4C38EB9573
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:23:16 +0000 (UTC)
+X-FDA: 83928443592.03.E637D82
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2097A2001C
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:23:13 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf13.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758820851;
+	s=arc-20220608; t=1758820994;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mxL2goKemleRYcSYppLicJLKpdb0DPjV8PfpFSBecT0=;
-	b=aJMJvLqLyx22wqK6ps6I/Lu6JlXU0zZVLrQfw+5KZ6km3bPG2JhoR57/D6/SJGQgFYeVXP
-	7/T1nH/nRuAyq5WXmOjjw815+2/l0yBujaAwgN6QcGL5/9NpCydZpBxrPkl9MHP0zCl+c3
-	x4/gvdZVb0d0Gi/hU+0YtEf4GqIx8qE=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=elijahs.space header.s=purelymail2 header.b=VhtuGPKN;
-	dkim=pass header.d=purelymail.com header.s=purelymail2 header.b="R4Pwbk/D";
-	spf=pass (imf16.hostedemail.com: domain of me@elijahs.space designates 34.202.193.197 as permitted sender) smtp.mailfrom=me@elijahs.space;
-	dmarc=pass (policy=reject) header.from=elijahs.space
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758820851; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=EZaVI04tBI2okl4vEUcF/oxxN+zLScxOe7QzYcIDwi4=;
+	b=zKa/CUV1dzVxncX4sYT8w47baFE1vjZtSth3SJg7zlZK/jHXnap6JkqLS/PAV2lVWlO2jC
+	2mdFz6BDeY+PfIYP5BsDp7mW5VPuL74zrLsEpHWTNmJK88cgZAumK3B21k72YLUfKjpMy8
+	2+I7gw7oHWe33Mj8TIoCHld1xAwUHJc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758820994; a=rsa-sha256;
 	cv=none;
-	b=F0B40tO72aSIGVH/z95RhDlaCij9NjFBLuiaz2PwzOhmQfe51NwPWRoA3xlHhjE6w6U9dy
-	khkO/jhD2SVK/eWhd7UJ+k1GhuCL68lSPO4ZCtoh/sVXDjJ5LpZXpDdWCH7PTWcfj6OkdM
-	PSQwRZDgFTJ+M6psu7pIViItf6M8U/s=
-DKIM-Signature: a=rsa-sha256; b=VhtuGPKN+ofn4I8WGP0GkYmDMBmyLJdRXM8GhaHAkMsxRw8oMqH7q7350yJDTUbHyK1e+7b9vfft8bnL+YKirFTJD+l7eRwyNgxTqoOVpNfibMYy1i7OPrsmO0FikERsv1QzGycVfjTVLnK+38a7oofcABek8kvO1nH8m8Cue00F1BbCHr8OOsXjC8hO59i9VBmo/twYVWB4asO6+8QzpM/p0o5GVma+9okSV/0NHuGsnWVYBAxmEaK5elRhsVFm/arVDUC6qmzOJdCwlZViB3slKY2HQ3xUP3HdY5hkaJTj98lwuqhuCeoSJP0CwE7ZdVoOD4nJnF6HM/Xn0s3lQA==; s=purelymail2; d=elijahs.space; v=1; bh=97iUBxcczrc8d4ZjA8iMJpyUnogsQG3SuufPU6f2ca0=; h=Received:Date:Subject:To:From;
-DKIM-Signature: a=rsa-sha256; b=R4Pwbk/D+8Y/tpVxz1UD8WEKrmqbA1h2GH4KbnVGeeySbeDisfO8qO3fvelzJbOJ1GQM0IUB1lAcZqtoNhdWY9lsXo9bfhPHW31qumeUiphzJ1GQJXxxnsYwCtvZez47QBUsWLwtmtdU6pv/YmH7ioxgQPykEMFls79gAAuvo7LawcnDhTg9Zc0shEJbwCxlJjp+XwVfKqG1dGgmZu+gk0InSlSG2DACOjX4b6rkaVYaulLmCDOeOOxYA29hIeriQ6YgQA4cHtQCIYBt+Ebu+iRF0dPhPID5tumsI3rtrwN55+NOkja+EFaDwCb93TOgXu6BGvB9LMoq7et39OzB4Q==; s=purelymail2; d=purelymail.com; v=1; bh=97iUBxcczrc8d4ZjA8iMJpyUnogsQG3SuufPU6f2ca0=; h=Feedback-ID:Received:Date:Subject:To:From;
-Feedback-ID: 26912:4866:null:purelymail
-X-Pm-Original-To: linux-mm@kvack.org
-Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 1074361899;
-          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-          Thu, 25 Sep 2025 17:20:15 +0000 (UTC)
-Message-ID: <73d7d53f-439b-44a9-98ca-0b1c8fbc1661@elijahs.space>
-Date: Thu, 25 Sep 2025 10:20:13 -0700
+	b=w9FdF+lIoO/DkFNhUjkWzGkHUfWxe99meqMxpgpDtdFRp2hnaBs+zmksSvIEk+dOkS89aF
+	cLmFVEFRoiihcRSjnI6dnQL+LqklEN0zclWzy3DdfvS5fJrt8fXxbmxsXtHbfj9HYY7RN3
+	TuFCS7BDTL0m6J1FbYOEFsihVd8fDhQ=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf13.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cXgVL4L9xz67j73;
+	Fri, 26 Sep 2025 01:21:14 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 21E7F1402F0;
+	Fri, 26 Sep 2025 01:23:11 +0800 (CST)
+Received: from localhost (10.47.28.112) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 25 Sep
+ 2025 18:23:09 +0100
+Date: Thu, 25 Sep 2025 18:23:08 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Gregory Price <gourry@gourry.net>
+CC: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>, Wei Xu
+	<weixugc@google.com>, David Rientjes <rientjes@google.com>, Matthew Wilcox
+	<willy@infradead.org>, Bharata B Rao <bharata@amd.com>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<dave.hansen@intel.com>, <hannes@cmpxchg.org>, <mgorman@techsingularity.net>,
+	<mingo@redhat.com>, <peterz@infradead.org>, <raghavendra.kt@amd.com>,
+	<riel@surriel.com>, <sj@kernel.org>, <ying.huang@linux.alibaba.com>,
+	<ziy@nvidia.com>, <dave@stgolabs.net>, <nifan.cxl@gmail.com>,
+	<xuezhengchu@huawei.com>, <akpm@linux-foundation.org>, <david@redhat.com>,
+	<byungchul@sk.com>, <kinseyho@google.com>, <joshua.hahnjy@gmail.com>,
+	<yuanchu@google.com>, <balbirs@nvidia.com>, <alok.rathore@samsung.com>,
+	<yiannis@zptcorp.com>, "Adam Manzanares" <a.manzanares@samsung.com>
+Subject: Re: [RFC PATCH v2 0/8] mm: Hot page tracking and promotion
+ infrastructure
+Message-ID: <20250925182308.00001be4@huawei.com>
+In-Reply-To: <aNVohF0sPNZSuTgI@gourry-fedora-PF4VCD3F>
+References: <20250910144653.212066-1-bharata@amd.com>
+	<aMGbpDJhOx7wHqpo@casper.infradead.org>
+	<aMGg9AOaCWfxDfqX@gourry-fedora-PF4VCD3F>
+	<7e3e7327-9402-bb04-982e-0fb9419d1146@google.com>
+	<CAAPL-u-d6taxKZuhTe=T-0i2gdoDYSSqOeSVi3JmFt_dDbU4cQ@mail.gmail.com>
+	<20250917174941.000061d3@huawei.com>
+	<5A7E0646-0324-4463-8D93-A1105C715EB3@gmail.com>
+	<20250925160058.00002645@huawei.com>
+	<aNVbC2o8WlYKjEfL@gourry-fedora-PF4VCD3F>
+	<20250925162426.00007474@huawei.com>
+	<aNVohF0sPNZSuTgI@gourry-fedora-PF4VCD3F>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: slab: add basic slab module
-To: Danilo Krummrich <dakr@kernel.org>, Elijah Wright <git@elijahs.space>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Uladzislau Rezki <urezki@gmail.com>,
- linux-mm@kvack.org
-References: <20250924193643.4001-1-git@elijahs.space>
- <DD1SGLU4180C.361W5XLH76XNC@kernel.org>
-Content-Language: en-US
-From: Elijah <me@elijahs.space>
-In-Reply-To: <DD1SGLU4180C.361W5XLH76XNC@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: BB41B18000C
+X-Originating-IP: [10.47.28.112]
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
+X-Stat-Signature: ab9ikatwixdwp3nbt8uhxn9taqqrq9sf
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: zx3zr1ek44i5isfxcgdo6tu7qik1qwrr
-X-HE-Tag: 1758820851-249567
-X-HE-Meta: U2FsdGVkX1865cLENj+oclSW/WKe0GVPZ/ArJAMtx/hsbf/HVQmLOIkpKlv9QZYj8kMqX3jvgAoA7HbRJxCgsA7z6diE78YUWmcMrngnYO5/KzroDH+pNyUwfSutFj3u6409l0PVjZ5AIUzmdRm1s7GQUDpFyweyr+kqxqfZ+jXRFxAMvbVnqZ3AIBjrtwKScfXLEG2yKdbCZCbnRC91AqTXrJya7r4r3lG732wnDS41jbvTFr9C4Rk9M5iEriVWZm/pHVQxQ4oj2iJDuPKiqeRRVsv1Ub26M5D6+LXzCXF4TvETpbZlfl5otRivjeE+bD9e1RhlPHPaaec4wEqWluB44TprFcPesnMp9RFuQyizZns9+nJn/Pv7n5j/Eb6wtxqoU701uYX3LTE9ANaxRJwzdgiLLL8SJIhJBxlouHJcfsDjyC/uyAKirWpeWnfmwkVfWi4qV1oUtXhRvWpWcRxhQTOzBcHInCC32FfiG6dRL0IOyDyxMgZFIsqNscoQhsVHWtjsdYw/ha/4N0eE43NuVxNeTLwK2bNjS2YDgtBtY61ge/fttQmtx0d3Cl3QI393S2mPrCzl7G2hmmoKNnroWnanjoUbGTqZyf5HjYqxZr6RBv/fNosD2qrOo9FyvvBi35VLEaQzWeId9vSQnX7qR/7lG5a++bi++BORB1Q1U13r0VXlrEpHf/LmXo+himBow17yUFh+J4mIoxIwiLBQk1d6w5qTt7o1aEtywlu625AUTN4zbNz8sWBlVpaVfLzV6fQqaWJlgK++q9qzyvrjC2ZVrpahbRn5eyafWwCZAg9BoxiZfe4oRkeYDJqyoP6Ovj3pGbmvVt0Yam2tuziUIr/k5LmBG9J/HVzG6VQvNpVvrOc6B07phkapUOVI/Mor9sbZEJISbq52OXFCWmYGDwdveQpwy4+wpS2TMExbsPqs0qKtxacp7DZYV9qRrnCogCihdkNGQLLW/Np
- aW9we7o3
- LCYClmWcHDXCwzkoAG718iL3RFDFhlLUNdeSebZpnHjsQn3SuET10jfwWq/FQiQC51bX8+SXV8Zjqtxg+6nj1RuG8h2yIl7XwusXT2xNhLFw+gZrAdasi5XJ4UbJkepfIdy+F9MOsV4/4VOD3KB50RJnUPnsxpROcty+FuhCBf8PKClBDDmc8WykegNnT5SCT0AQDAe2UZJE4A2nhEVK54MhByQe2HP8Je5tx9NyTE73L0rJHMTxG62FAQZ1fovyJk7XgMf2fiBy5VUnkfYrZgJHQqcLWhiQwf490yrU9W1HKCQ4iPDH6MCzcd/jlwihRtKG8p/F5c4INqYLelfoGwrFozOzmVkfm40iq9WwKhfrvA4fDHkaHpBj/Wsf0weGiMB6uz1w8LwKNOjh1oNcbd/f5E/xgsJcdhMTyaiN1XpbCO9dKVfKexE4OaDUjDuDoJDJbBikoJ4+ESwOyvJ0oyWMuwegsWPLL2/uWh7dNefAptX6WgB+G3m46yDD79Uf2ZiIKJeEVwOqgv9jsZLDgII5XdURcrBJbHbOXCU0phPSy/+dU0AfH6PZcx6QDUMjG+nTUvhkyRAjpQJoS6PqaGkqc25ajwaWoyYbC+bUslXy4Pb3YhtcY5ZLRTQ==
+X-Rspamd-Queue-Id: 2097A2001C
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758820993-830395
+X-HE-Meta: U2FsdGVkX1/W2rRUFCDh925V6wJ+coxtzoMhs8WuUJ/7OHijPYN/xuwTbtLovlAMI0VS/+DJPDY4LGcQpPrh7x4ttdqdiUYVgeXVKLhGoxLZr9BjfygWevfqoUl3MIeB5sjcmHv8i5/9CFkSLNBNkcRr5x3SvE5BZkHk3/ATuebZHctkX7ugLd7plAemwwtbVpgldBAAq17QNRCFD0NRB8Wrc9d4YFyuagSN2hHsknt2/hdjrhqXe46fB5tPPHikjQ3PJpYTd3F1EVMY7tWzuuvUBJXKsihHLZ2xr9l9H+IBhNdF0gssFB72S6gOwJbPA47xwZb1zLLUTcdS6Kr8+3VEVwCl6Da63cGSUOChzRVd4GdjUBJ2OV38ti8mwg1ucl/HVZNBXyCc+Idwt+ZPs753I8WELskU43cTQyBZw6WcXS5ThBLke9kX9o4Yi16vRVP6iGNoJ3M7gMVzrd+2thGs7lzkIhIHNaAP4zvpfH5Jo8vdc90mQQu9Qfu3A22MMDJ/CjkXyt6zE2DM3APT3g3yK4bxkVzSmZ77s3fRoJxpRjGXv/X1tq4AiCTN5SKf2Xjl1w2kSayX+zhO94VCyDp7ZQUMsm9qAzdoi+i1EZqaug7J192WU0eLuUzmPwTdz48+X3LL+FdUm9prSgV4mpV7GfA4kkoylvBa4jJV6fDKUsXLWI0eRG9Elqj5eNcJD+hdREXwdBMKQYIl6b+5h9fIYnvXt+8siNhgE7B8vGfoWZFVpL0nLLHDhegq18N9fuCOvcPCtDP0C9Gww1AFoYRjkpp1OMaWxlzUwoUaqr41q+IL8qUPaQxYrxPll2B1pgenL1kyzuVBzHOusoxCqfF/TkPU+UB4cRyGoxbloj4Y6X50DiHneN21YGVQS2HVMX5pzaSdmF/h4hDRRcMv4crFxadtaTwGAtWz9bbEOW8M+mBEbFnWQZE2i7oES9OXQHRDTD96GUOdrxKVJtp
+ 0nA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,64 +111,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I was thinking of maybe creating something like KBox for kmem_cache but 
-I didn't want to touch allocator code yet, I figured I would just create 
-the groundwork for that to exist. rbtree.rs uses KBox now but I'm not 
-sure it should, at least if it's going to scale to many nodes
+On Thu, 25 Sep 2025 12:06:28 -0400
+Gregory Price <gourry@gourry.net> wrote:
 
-On 9/25/2025 2:54 AM, Danilo Krummrich wrote:
-> What's the motivation?
+> On Thu, Sep 25, 2025 at 04:24:26PM +0100, Jonathan Cameron wrote:
+> > The CoW thing only works because it's a permissions fault at point of
+> > asking for permission to write (so way before it goes into the cache).
+> > Then you can check margins to make sure you can still sink all outstanding
+> > writes if they become uncompressible and only let the write through if safe
+> > - if not promote some stuff before letting it proceed.
+> > Or you just promote on write and rely on the demotion path performing those
+> > careful checks later.
+> >  
 > 
-> I mean, we will need kmem_cache soon. But the users will all be drivers, e.g.
-> the GPU drivers that people work on currently.
+> Agreed.  The question is now whether you can actually enforce page table
+> bits not changing.  I think you'd need your own fault handling
+> infrastructure / driver for these pages.
 > 
-> Drivers shouldn't use "raw" allocators (such as Kmalloc [1] or Vmalloc [2]), but
-> the corresponding "managed" allocation primitives, such as KBox [3], VBox [4],
-> KVec, etc.
+> This does smell a lot like a kernel-internal dax allocation interface.
+> There was a bunch of talk about virtualizing zswap backends, so that
+> might be a nice place to look to insert this kind of hook.
 > 
-> Therefore, the code below shouldn't be used by drivers directly, hence the
-> question for motivation.
+> Then the device driver (which it will definitely need) would have to
+> field page faults accordingly.
 > 
-> In any case, kmem_cache is a special allocator (special as in it can have a
-> non-static lifetime in contrast to other kernel allocators) and should be
-> integrated with the existing infrastructure in rust/kernel/alloc/.
+> It feels much more natural to put this as a zswap/zram backend.
 > 
-> I think there are multiple options for that; (1) isn't really an option, but I
-> think it's good to mention anyways:
-> 
->    (1) Allow for non-zero sized implementations of the Allocator trait [3], such
->        that we can store a reference count to the KmemCache. This is necessary to
->        ensure that a Box<T, KmemCache> can't out-live the KmemCache itself.
-> 
->        The reason why I said it's not really an option is because it discards the
->        option for dynamic dispatch of the generic Box type.
-> 
->    (2) Same as (1), but with a custom Box type. This keeps dynamic dispatch for
->        the generic Box type (i.e. KBox, VBox, KVBox), but duplicates quite some
->        code and still doesn't allow for dynamic dispatch for the KmemCacheBox.
-> 
->    (3) Implement a macro to generate a custom KmemCache Allocator trait
->        implementation for every KmemCache instance with a static lifetime.
-> 
->        This makes KmemCache technically equivalent to the other allocators, such
->        as Kmalloc, etc. but obviously has the downside that the KmemCache might
->        live much longer than required.
-> 
->        Technically, most KmemCache instances live for the whole module lifetime,
->        so it might be fine though.
-> 
->        (This is what I think Alice proposed.)
-> 
->    (4) Solve the problem on the C side and let kmem_cache_alloc() take care of
->        acquiring a reference count to the backing kmem_cache. The main question
->        here would be where to store the pointer for decreasing the reference
->        count on kmem_cache_free().
-> 
->        Theoretically, it could be stored within the allocation itself, but it's a
->        bit of a yikes.
-> 
->        However, it would resolve all the mentioned problems above.
-> 
-> I'd like to see (3) or (4), also depending on what the MM folks think.
+Agreed.  I currently see two paths that are generic (ish).
+
+1. zswap route - faulting as you describe on writes.
+2. Fail safe route - Map compressible memory it into a VM (or application)
+   you don't mind killing if we loose that promotion race due to
+   pathological application.  The attacker only disturbs memory allocated
+   to that application / VM so the blast radius is contained.
+
+Jonathan
+
+> ~Gregory
 
 
