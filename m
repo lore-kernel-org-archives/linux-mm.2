@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5867CAC5A7
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 13:18:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0111DCAC5A7
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 13:18:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 525EE8E000D; Thu, 25 Sep 2025 09:18:52 -0400 (EDT)
+	id 59BBA8E000E; Thu, 25 Sep 2025 09:18:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D6858E0001; Thu, 25 Sep 2025 09:18:52 -0400 (EDT)
+	id 54B998E0001; Thu, 25 Sep 2025 09:18:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C5B38E000D; Thu, 25 Sep 2025 09:18:52 -0400 (EDT)
+	id 414878E000E; Thu, 25 Sep 2025 09:18:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 291158E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 09:18:52 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BA79411809E
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:18:51 +0000 (UTC)
-X-FDA: 83927827662.05.B0EA4DF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 09FC62000B
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:18:49 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LeLdhSJz;
-	spf=pass (imf13.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E6388E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 09:18:55 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EEFEF86308
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:18:54 +0000 (UTC)
+X-FDA: 83927827788.23.88EEEE8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 492661C0018
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:18:53 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Nyyiardu;
+	spf=pass (imf18.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758806330;
+	s=arc-20220608; t=1758806333;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RcuiztIFEoGn+vfcmn6N5S40mblq9Xpg+SXi0g0s58A=;
-	b=TKdkmYm5WwC+0VIjtg4llzhVby9PG59pU5Z1zNguoWvTZRwxZzDd5WL9CE8Uwth2xf/dWd
-	4g5Q0lEenyfgwJQN32XBWHQQrBKBboFNjZFTbShqSnh11SA4uN+vKzxpGA4hUroLlH9sEy
-	KfETFSVoGZT8x9hkqNtowuT0rq8ufCk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758806330; a=rsa-sha256;
+	bh=umpxH1rA0uc6khk9bUJY6s1FqGMiyqxhFpcVft9gd4I=;
+	b=F2CnIsJY9Xl8MBeBt+tTWFexCvhmaNPtQA1V+1BVht6wro09xc61jNPsmas7e3NEkuBUNe
+	VCf0JnuOyjpVxHkgE+4KProBLB1m8arhVd4dSC4FH1iBTjqAPtFwK/4BHHdejljNVc8R38
+	Nxg8LLGuP2q64FGVvsR50x3ucFGCh3s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758806333; a=rsa-sha256;
 	cv=none;
-	b=u63SoK4p3BEIogE732UCa/BCbp89YGNmZfeWxGYw8OcGzfFQCgYacMf+BunQ0C4aMi0CZU
-	DjrLJPjBiL2PRmk/yIgi13rDpWLTBTFly1DNsBGFRVFZx0MFJyPZPtTcSr7MNW4w5+8lcO
-	OPMpuJ8hMSrPPC35Q3p31Yi8XZ46dIY=
+	b=cv7ERj2uC+gclrm1mq1GYVGh54/YWPaSIF7yT2wiDXWCx5MqQ+/+7Py2elqKrJse6zLBxz
+	TbbzIRqDIPdoxmlpQ0rt7DzWfebDG0lLesWXkYI6kg6JEQ8SUktQJTUx9BlYYUy086NUjm
+	xQ3i/zNwf/xHvCQSWLlfT4sTxi0mJY4=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LeLdhSJz;
-	spf=pass (imf13.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Nyyiardu;
+	spf=pass (imf18.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1F6654070F;
-	Thu, 25 Sep 2025 13:18:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C8AC4CEF0;
-	Thu, 25 Sep 2025 13:18:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B58F26058A;
+	Thu, 25 Sep 2025 13:18:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDB3C4CEF7;
+	Thu, 25 Sep 2025 13:18:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758806329;
-	bh=zowH1OUef1vijrfUt/VMnvnpjJAgrGRYmdoRVaN/ufQ=;
+	s=k20201202; t=1758806332;
+	bh=J3JcsAko8zSIGuiXV9DflNw5AuJmzcXfJS1bY+J5d1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LeLdhSJzTPyKuawpr1Ogyun5PsDEujgdpes2x3sF7Q2hdgP6+/C0ykdzyLVk8BW17
-	 +zNlF5HOhxmkzIKcrAv+NlGrHsDf6UXSUlKKpukta8Q6Njomni/lrGrdq38v58zqpx
-	 twp63dLxXV28b9MIgm+4D+sm5Uv9TwGtkVBL0JuDkfnTAPo95x3pHbKOvSVobiE+0S
-	 yX3cz2NH7sXcsmG0yd7XC7xtVSMyByxZs3YCBmc+zBTpf5w/tvXPGPMvqhmee5EboM
-	 Of0Zgel4TF6IiKxtPt5mcchnWsifnyHQx3LRfvhVNiv2u2BE4Q/EJKZPVIiYOAtsUr
-	 H3aCqzL1mDdWw==
+	b=Nyyiardu2Jm2P99Ky9DPkc45OpBK6VXC2cDJ2ntyOymvqcGgd7qxrLq7aOKcpmvrB
+	 5XtWc3qlZGvSsKGzKNx+xxbBh9eXebQcre8M4Bb/SEeFez1GqGCqP9IYRto9erX4mA
+	 xMbo23J/F/gS9OYPIVigsvaRVXoubU6we02xEUbwHPq2xk6hXv4kjVijzWspwlc1DQ
+	 i35RE92E6sbTQMb59F66xvBBp/vg5DYOswYfaxASsoGs62yrjSwe8ELTEJGw6PkZ4a
+	 C+Bv9QieZeKuF7wRH7Mb2kELbArKXalgOTpImh/q8etNoCarPsndtLwMReFQauTWd0
+	 bwvkCQ5iBtzuQ==
 From: Leon Romanovsky <leon@kernel.org>
 To: Alex Williamson <alex.williamson@redhat.com>
 Cc: Leon Romanovsky <leonro@nvidia.com>,
@@ -87,22 +87,22 @@ Cc: Leon Romanovsky <leonro@nvidia.com>,
 	Sumit Semwal <sumit.semwal@linaro.org>,
 	Vivek Kasireddy <vivek.kasireddy@intel.com>,
 	Will Deacon <will@kernel.org>
-Subject: [PATCH v3 03/10] PCI/P2PDMA: Refactor to separate core P2P functionality from memory allocation
-Date: Thu, 25 Sep 2025 16:14:31 +0300
-Message-ID: <db592ba6c35fa44898224649222d6c666d44af0b.1758804980.git.leon@kernel.org>
+Subject: [PATCH v3 07/10] vfio/pci: Add dma-buf export config for MMIO regions
+Date: Thu, 25 Sep 2025 16:14:35 +0300
+Message-ID: <b3b718403b85e792ddc8a8a1c47ff214b416eb7b.1758804980.git.leon@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1758804980.git.leon@kernel.org>
 References: <cover.1758804980.git.leon@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 09FC62000B
-X-Stat-Signature: 7gjr8fhcsnm399yt789fsiozoin4uxue
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 492661C0018
+X-Stat-Signature: he8prq11s43xhcjqigp56h4txyf8ku7d
 X-Rspam-User: 
-X-HE-Tag: 1758806329-865213
-X-HE-Meta: U2FsdGVkX1/JqmxtAe+sU+EQdTibfG1nGIcRFSFrOBPjNDOAoXkDpBmN6ImZiAeGjii49OhxdnpSoWrN/xNNAr98rA1PU6KipublNTKvoYrlonUldtpaF+w6IQJvOODP6SrCWd/7Y9o5T/NGdalAHc6vT4SZMrI28Y5Tk3xFH+33034S5uih/fjMKSPd7gjzTYKZbHaNyqv6koV6TrfhZq3fBnxZfmdBUPSUmHWIU1eIeN1TY9gUR0LM74zHhwiZZXJw7Shr38UlhEz5KpEkhZRtZOBl/IHjLr+Em40i/0osGzwoF97mKy8t/zySAu4AM8En37KQRxgNtxw09O4KTMT3HlYPK6KpYCE/h7q70uYINBItMa6LQUF9IWhsJtAC7je0CLSaIQzScKzFhFepmBjfHgnrhvIAgBGf34XDhGCk6YrxiosoxaU4C2xReda+2oUHMV8WyHQ6WVj7G5i0hfr4EyqPoh6DAlPlV37JlxmUVlhMFbkWiKAipI4uHPc6+QB/ksscMKYuF6YWX3Nu0RP8lobeCcBJ6hOC4C2jrJ/7PePqGTWs/HCqoa//gZLCFuPsW3fNRO8lE6uQNPB9dWMjbwWT4/gqAG10IcqFXPIRPJCt5VieUKl/jgpna4mBj30bWEdSz9R07mZ4rVvcAJTK7MzOJIKV48lFjyr4UJuIScHu0PhmDG2hGh3m2NuTFX9TGxCA3Vdb+7nqAmyD9VZbjIn5ILdb8x6MYzdKjbP+Y5yypad0bz6L/PVp3EsF1mUc5NgHeNCh4Zj/kJmPmoh6blEfjGfBPZHsaE+F/mrTPA+Hz+MM7RWhpOEqbIQsqN+YDDe7m83UlU6ZuMXPL2qsASSi2hyFuDoeukoICToThPKiOlIyFNq/AR5301TrxImVdc8q5TZt2nb6pzpnvLzosflr+gJKhvTQ+AUmEoei6DF592RhyILEcpR4kFSW8QPHc7AHOZCiq166zre
- ZNJREFd/
- 1tp2hYyESox45KPMFg0xKrIvP+OikWOY8adIiSDaXhiF05sJTGVpfoSeMbJfXzRPrjLgOP7YPmshrIJg+n7weEebnltUKEmQBNbn7TMmmp5LygoSJAmx6gfunzyn7VgPu8JL5XGaHBgt7YiY1ttXNuN3E+sOlzvqfE2dmo1DKlQj9byfZV/qDvM32OWMbaBVAJtiXWBK6V951L5clP9iHhX/93gqXTIYc6Anzw9Ar3999FLg=
+X-HE-Tag: 1758806333-852227
+X-HE-Meta: U2FsdGVkX1/6N/l30BLQNurQI1nBnVmd1XFR74k20O2OS4DN5HF79w5BCEiGK14eGzwvhvidXJMcNuhnXw3XIxaMsJmB+p3vDuVhXQGNgAwgBhcoztJwaB8yBtS+OvYx81T1Qez/2r5CbGwtvTHBTyC9XvXd/QOJWSql2E9GCvx8TW/I2LIAUqOXvESdpP264a8ICiAhqeybIbNcNeufLL3e20i6TGJozf0JpirckTu2EnWkCiVgMl3SCSmOERn+DBXw+DhOycjE/CUg/46Sglhy2QT1ODGS/Ck8GrGl4H902JSmyHqG2n8XFFpDqHmzgNdNJBxeikzhbp3ZWzGFd9mDv2lg0gCKN0J3g5oqHdFqhSJj0+wz2KvjO1Oj8VMh1CGc+Z1vyqYm/D+avmWoYdNthZ6nYFbKZewpiOPIG/TUcCQd3wcOYzRiVd/mfZ0wpXp6CmJ/XMw3KOCUmOhwy+S0jfs92yOWxHebBPQZuaS607r09fYE6QcFx/Kgf2O68ThgqjgHGH1CXnYK/fCnu3ffHj6BGbTH7xP2vRAfogG5IpjTFiije7IbhXIzFNA5RYAm2QnKXh1NZ6Rvt0yGe/7Lnd6VIQLtbPJ9VgCCKwvYDzyzC+pM9dOsOUaSFtixQ0U+WqhKqB3Kmk2vaKUKeKnSLSmwyU0tSBOoPxlYWXAkNK/a7BZahBJ/0UpsjkyU2M2J5fGChh3EYkxX50wtIDVjGpG+ON9mw3itU9Zt35e2KFA4MwGx+SPg6cZbP/cHj5zBWNZtOLfF9gPLEwdCK0POzETRqGEaBS7aaSg97sZIdCCxUQzK0UTH0U6bXrpO53tB+J4I++mqbnivqzB9IhybCphV6mY6ceU58P4gzIuZJ4dzPFRvD4LN+qGkL/AgbNb/8WnyOYDxU71UWEfm6GUd8A46KatA6kclxR+3U/qyTKsvOLuXxjbbmoLXQja9W+zahTxfwRH8rOIWdTG
+ Jrcaqhkp
+ 82utsVmnY0utZcmc8zN03E/SGXr94gz9GboAOfKo3kHqlc36zXwMD0+P6aXsmWjBluwEGdKzdAv0JOommCU4drEhM9A3yUAkoeD6n/AUG14GIePwtAvZSobHiMVTp0F6JbFEaH6KLI2CwiF1+4CMwM9BYeTa57jtaMosTV6xJprBEWqSbNaT+Kt1jso1zpZThHgO9m7l9kkNsiAEJ7WGiwQlhdfZz7H7Otdd2HsirIrOx6zs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,298 +113,45 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Leon Romanovsky <leonro@nvidia.com>
 
-Refactor the PCI P2PDMA subsystem to separate the core peer-to-peer DMA
-functionality from the optional memory allocation layer. This creates a
-two-tier architecture:
-
-The core layer provides P2P mapping functionality for physical addresses
-based on PCI device MMIO BARs and integrates with the DMA API for
-mapping operations. This layer is required for all P2PDMA users.
-
-The optional upper layer provides memory allocation capabilities
-including gen_pool allocator, struct page support, and sysfs interface
-for user space access.
-
-This separation allows subsystems like VFIO to use only the core P2P
-mapping functionality without the overhead of memory allocation features
-they don't need. The core functionality is now available through the
-new pcim_p2pdma_provider() function that returns a p2pdma_provider
-structure.
+Add new kernel config which indicates support for dma-buf export
+of MMIO regions, which implementation is provided in next patches.
 
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- drivers/pci/p2pdma.c       | 140 ++++++++++++++++++++++++++++---------
- include/linux/pci-p2pdma.h |   6 ++
- 2 files changed, 112 insertions(+), 34 deletions(-)
+ drivers/vfio/pci/Kconfig | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-index 176a99232fdca..76496a5ab82e0 100644
---- a/drivers/pci/p2pdma.c
-+++ b/drivers/pci/p2pdma.c
-@@ -25,11 +25,12 @@ struct pci_p2pdma {
- 	struct gen_pool *pool;
- 	bool p2pmem_published;
- 	struct xarray map_types;
-+	struct p2pdma_provider mem[PCI_STD_NUM_BARS];
- };
+diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
+index 2b0172f546652..55ae888bf26ae 100644
+--- a/drivers/vfio/pci/Kconfig
++++ b/drivers/vfio/pci/Kconfig
+@@ -55,6 +55,26 @@ config VFIO_PCI_ZDEV_KVM
  
- struct pci_p2pdma_pagemap {
- 	struct dev_pagemap pgmap;
--	struct p2pdma_provider mem;
-+	struct p2pdma_provider *mem;
- };
+ 	  To enable s390x KVM vfio-pci extensions, say Y.
  
- static struct pci_p2pdma_pagemap *to_p2p_pgmap(struct dev_pagemap *pgmap)
-@@ -204,7 +205,7 @@ static void p2pdma_page_free(struct page *page)
- 	struct pci_p2pdma_pagemap *pgmap = to_p2p_pgmap(page_pgmap(page));
- 	/* safe to dereference while a reference is held to the percpu ref */
- 	struct pci_p2pdma *p2pdma = rcu_dereference_protected(
--		to_pci_dev(pgmap->mem.owner)->p2pdma, 1);
-+		to_pci_dev(pgmap->mem->owner)->p2pdma, 1);
- 	struct percpu_ref *ref;
- 
- 	gen_pool_free_owner(p2pdma->pool, (uintptr_t)page_to_virt(page),
-@@ -227,44 +228,97 @@ static void pci_p2pdma_release(void *data)
- 
- 	/* Flush and disable pci_alloc_p2p_mem() */
- 	pdev->p2pdma = NULL;
--	synchronize_rcu();
-+	if (p2pdma->pool)
-+		synchronize_rcu();
-+	xa_destroy(&p2pdma->map_types);
++config VFIO_PCI_DMABUF
++	bool "VFIO PCI extensions for DMA-BUF"
++	depends on VFIO_PCI_CORE
++	depends on PCI_P2PDMA && DMA_SHARED_BUFFER
++	default y
++	help
++	  Enable support for VFIO PCI extensions that allow exporting
++	  device MMIO regions as DMA-BUFs for peer devices to access via
++	  peer-to-peer (P2P) DMA.
 +
-+	if (!p2pdma->pool)
-+		return;
- 
- 	gen_pool_destroy(p2pdma->pool);
- 	sysfs_remove_group(&pdev->dev.kobj, &p2pmem_group);
--	xa_destroy(&p2pdma->map_types);
- }
- 
--static int pci_p2pdma_setup(struct pci_dev *pdev)
-+/**
-+ * pcim_p2pdma_provider - Get peer-to-peer DMA provider
-+ * @pdev: The PCI device to enable P2PDMA for
-+ * @bar: BAR index to get provider
-+ *
-+ * This function gets peer-to-peer DMA provider  and initializes
-+ * the peer-to-peer DMA infrastructure for a PCI device. It allocates
-+ * and sets up the necessary data structures to support P2PDMA operations,
-+ * including mapping type tracking.
-+ */
-+struct p2pdma_provider *pcim_p2pdma_provider(struct pci_dev *pdev, int bar)
- {
--	int error = -ENOMEM;
- 	struct pci_p2pdma *p2p;
-+	int i, ret;
++	  This feature enables a VFIO-managed PCI device to export a portion
++	  of its MMIO BAR as a DMA-BUF file descriptor, which can be passed
++	  to other userspace drivers or kernel subsystems capable of
++	  initiating DMA to that region.
 +
-+	if (!(pci_resource_flags(pdev, bar) & IORESOURCE_MEM))
-+		return NULL;
++	  Say Y here if you want to enable VFIO DMABUF-based MMIO export
++	  support for peer-to-peer DMA use cases.
 +
-+	p2p = rcu_dereference_protected(pdev->p2pdma, 1);
-+	if (p2p)
-+		/* PCI device was already initialized */
-+		return &p2p->mem[bar];
- 
- 	p2p = devm_kzalloc(&pdev->dev, sizeof(*p2p), GFP_KERNEL);
- 	if (!p2p)
--		return -ENOMEM;
-+		return ERR_PTR(-ENOMEM);
- 
- 	xa_init(&p2p->map_types);
-+	/*
-+	 * Iterate over all standard PCI BARs and record only those that
-+	 * correspond to MMIO regions. Skip non-memory resources (e.g. I/O
-+	 * port BARs) since they cannot be used for peer-to-peer (P2P)
-+	 * transactions.
-+	 */
-+	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
-+		if (!(pci_resource_flags(pdev, i) & IORESOURCE_MEM))
-+			continue;
- 
--	p2p->pool = gen_pool_create(PAGE_SHIFT, dev_to_node(&pdev->dev));
--	if (!p2p->pool)
--		goto out;
-+		p2p->mem[i].owner = &pdev->dev;
-+		p2p->mem[i].bus_offset =
-+			pci_bus_address(pdev, i) - pci_resource_start(pdev, i);
-+	}
- 
--	error = devm_add_action_or_reset(&pdev->dev, pci_p2pdma_release, pdev);
--	if (error)
--		goto out_pool_destroy;
-+	ret = devm_add_action_or_reset(&pdev->dev, pci_p2pdma_release, pdev);
-+	if (ret)
-+		goto out_p2p;
- 
--	error = sysfs_create_group(&pdev->dev.kobj, &p2pmem_group);
--	if (error)
-+	rcu_assign_pointer(pdev->p2pdma, p2p);
-+	return &p2p->mem[bar];
++	  If unsure, say N.
 +
-+out_p2p:
-+	devm_kfree(&pdev->dev, p2p);
-+	return ERR_PTR(ret);
-+}
-+EXPORT_SYMBOL_GPL(pcim_p2pdma_provider);
-+
-+static int pci_p2pdma_setup_pool(struct pci_dev *pdev)
-+{
-+	struct pci_p2pdma *p2pdma;
-+	int ret;
-+
-+	p2pdma = rcu_dereference_protected(pdev->p2pdma, 1);
-+	if (p2pdma->pool)
-+		/* We already setup pools, do nothing, */
-+		return 0;
-+
-+	p2pdma->pool = gen_pool_create(PAGE_SHIFT, dev_to_node(&pdev->dev));
-+	if (!p2pdma->pool)
-+		return -ENOMEM;
-+
-+	ret = sysfs_create_group(&pdev->dev.kobj, &p2pmem_group);
-+	if (ret)
- 		goto out_pool_destroy;
+ source "drivers/vfio/pci/mlx5/Kconfig"
  
--	rcu_assign_pointer(pdev->p2pdma, p2p);
- 	return 0;
- 
- out_pool_destroy:
--	gen_pool_destroy(p2p->pool);
--out:
--	devm_kfree(&pdev->dev, p2p);
--	return error;
-+	gen_pool_destroy(p2pdma->pool);
-+	p2pdma->pool = NULL;
-+	return ret;
- }
- 
- static void pci_p2pdma_unmap_mappings(void *data)
-@@ -276,7 +330,7 @@ static void pci_p2pdma_unmap_mappings(void *data)
- 	 * unmap_mapping_range() on the inode, teardown any existing userspace
- 	 * mappings and prevent new ones from being created.
- 	 */
--	sysfs_remove_file_from_group(&p2p_pgmap->mem.owner->kobj,
-+	sysfs_remove_file_from_group(&p2p_pgmap->mem->owner->kobj,
- 				     &p2pmem_alloc_attr.attr,
- 				     p2pmem_group.name);
- }
-@@ -295,6 +349,7 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
- 			    u64 offset)
- {
- 	struct pci_p2pdma_pagemap *p2p_pgmap;
-+	struct p2pdma_provider *mem;
- 	struct dev_pagemap *pgmap;
- 	struct pci_p2pdma *p2pdma;
- 	void *addr;
-@@ -312,15 +367,32 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
- 	if (size + offset > pci_resource_len(pdev, bar))
- 		return -EINVAL;
- 
--	if (!pdev->p2pdma) {
--		error = pci_p2pdma_setup(pdev);
-+	p2pdma = rcu_dereference_protected(pdev->p2pdma, 1);
-+	if (!p2pdma) {
-+		mem = pcim_p2pdma_provider(pdev, bar);
-+		if (IS_ERR(mem))
-+			return PTR_ERR(mem);
-+
-+		/*
-+		 * We checked validity of BAR prior to call
-+		 * to pcim_p2pdma_provider. It should never return NULL.
-+		 */
-+		if (WARN_ON(!mem))
-+			return -EINVAL;
-+
-+		error = pci_p2pdma_setup_pool(pdev);
- 		if (error)
- 			return error;
--	}
-+
-+		p2pdma = rcu_dereference_protected(pdev->p2pdma, 1);
-+	} else
-+		mem = &p2pdma->mem[bar];
- 
- 	p2p_pgmap = devm_kzalloc(&pdev->dev, sizeof(*p2p_pgmap), GFP_KERNEL);
--	if (!p2p_pgmap)
--		return -ENOMEM;
-+	if (!p2p_pgmap) {
-+		error = -ENOMEM;
-+		goto free_pool;
-+	}
- 
- 	pgmap = &p2p_pgmap->pgmap;
- 	pgmap->range.start = pci_resource_start(pdev, bar) + offset;
-@@ -328,9 +400,7 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
- 	pgmap->nr_range = 1;
- 	pgmap->type = MEMORY_DEVICE_PCI_P2PDMA;
- 	pgmap->ops = &p2pdma_pgmap_ops;
--	p2p_pgmap->mem.owner = &pdev->dev;
--	p2p_pgmap->mem.bus_offset =
--		pci_bus_address(pdev, bar) - pci_resource_start(pdev, bar);
-+	p2p_pgmap->mem = mem;
- 
- 	addr = devm_memremap_pages(&pdev->dev, pgmap);
- 	if (IS_ERR(addr)) {
-@@ -343,7 +413,6 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
- 	if (error)
- 		goto pages_free;
- 
--	p2pdma = rcu_dereference_protected(pdev->p2pdma, 1);
- 	error = gen_pool_add_owner(p2pdma->pool, (unsigned long)addr,
- 			pci_bus_address(pdev, bar) + offset,
- 			range_len(&pgmap->range), dev_to_node(&pdev->dev),
-@@ -359,7 +428,10 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
- pages_free:
- 	devm_memunmap_pages(&pdev->dev, pgmap);
- pgmap_free:
--	devm_kfree(&pdev->dev, pgmap);
-+	devm_kfree(&pdev->dev, p2p_pgmap);
-+free_pool:
-+	sysfs_remove_group(&pdev->dev.kobj, &p2pmem_group);
-+	gen_pool_destroy(p2pdma->pool);
- 	return error;
- }
- EXPORT_SYMBOL_GPL(pci_p2pdma_add_resource);
-@@ -1008,11 +1080,11 @@ void __pci_p2pdma_update_state(struct pci_p2pdma_map_state *state,
- {
- 	struct pci_p2pdma_pagemap *p2p_pgmap = to_p2p_pgmap(page_pgmap(page));
- 
--	if (state->mem == &p2p_pgmap->mem)
-+	if (state->mem == p2p_pgmap->mem)
- 		return;
- 
--	state->mem = &p2p_pgmap->mem;
--	state->map = pci_p2pdma_map_type(&p2p_pgmap->mem, dev);
-+	state->mem = p2p_pgmap->mem;
-+	state->map = pci_p2pdma_map_type(p2p_pgmap->mem, dev);
- }
- 
- /**
-diff --git a/include/linux/pci-p2pdma.h b/include/linux/pci-p2pdma.h
-index eef96636c67e6..476650ae8d4d8 100644
---- a/include/linux/pci-p2pdma.h
-+++ b/include/linux/pci-p2pdma.h
-@@ -27,6 +27,7 @@ struct p2pdma_provider {
- };
- 
- #ifdef CONFIG_PCI_P2PDMA
-+struct p2pdma_provider *pcim_p2pdma_provider(struct pci_dev *pdev, int bar);
- int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
- 		u64 offset);
- int pci_p2pdma_distance_many(struct pci_dev *provider, struct device **clients,
-@@ -45,6 +46,11 @@ int pci_p2pdma_enable_store(const char *page, struct pci_dev **p2p_dev,
- ssize_t pci_p2pdma_enable_show(char *page, struct pci_dev *p2p_dev,
- 			       bool use_p2pdma);
- #else /* CONFIG_PCI_P2PDMA */
-+static inline struct p2pdma_provider *pcim_p2pdma_provider(struct pci_dev *pdev,
-+							   int bar)
-+{
-+	return ERR_PTR(-EOPNOTSUPP);
-+}
- static inline int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar,
- 		size_t size, u64 offset)
- {
+ source "drivers/vfio/pci/hisilicon/Kconfig"
 -- 
 2.51.0
 
