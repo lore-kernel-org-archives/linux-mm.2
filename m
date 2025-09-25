@@ -4,122 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C26ABCAC5A5
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 06:29:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A14E8CAC5AA
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 07:03:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01B3B8E0007; Thu, 25 Sep 2025 02:29:50 -0400 (EDT)
+	id E76B98E0005; Thu, 25 Sep 2025 03:03:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F345B8E0001; Thu, 25 Sep 2025 02:29:49 -0400 (EDT)
+	id E26D08E0001; Thu, 25 Sep 2025 03:03:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E71DC8E0007; Thu, 25 Sep 2025 02:29:49 -0400 (EDT)
+	id D3CDB8E0005; Thu, 25 Sep 2025 03:03:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D454C8E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 02:29:49 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 497251A021B
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 06:29:49 +0000 (UTC)
-X-FDA: 83926796898.22.C796943
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6CE501C0006
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 06:29:46 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=JuorYGwQ;
-	spf=pass (imf21.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C11DB8E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 03:03:23 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4391414037D
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 07:03:23 +0000 (UTC)
+X-FDA: 83926881486.25.C590B53
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 83B4D16000C
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 07:03:21 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qHutfg7p;
+	spf=pass (imf08.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758781787;
+	s=arc-20220608; t=1758783801;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8V0lwTpuXsxcfHaxZsvIL+kGsolkwkY6GPwdx3nz5yU=;
-	b=IINQLBvoM4EtDCEOyYg0ewqoTe4Z5BFDPTNkgNCLg/KkTeLYwwnDimCKZI933tAf2FrAOd
-	O614D0VEhmE5k8TQoQxmuoIzq0h+fuUZ13ENsoa3jGi10KphUTkmdgdS1qRhIkJqMBQZgh
-	Ci+cCg2N4RV9AVVPj1nGkjUqnm05RR0=
+	bh=qEGnlGSl31sTqOX8g325Qy3BxJyeB03/i7rkS5ioaNU=;
+	b=3fjVdv5EhUvVOAQ+2UW3TBor4Q0j3PSlWDR97l5z4YuguLLzFdAs5/9hm5EHA6oTkjh/Fh
+	vGjJ7SGBDp0zcaIzYKBSqY7EtiO1jP6vEjg10tApyEvd8iLOGo8TyoTgpP3wd7WhMCVCrf
+	C6fNK0gYHOTVI7eLda7K61S/IC1Ddao=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=JuorYGwQ;
-	spf=pass (imf21.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758781787; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qHutfg7p;
+	spf=pass (imf08.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758783801; a=rsa-sha256;
 	cv=none;
-	b=i+TfH9wr6Ygvol+mwzWr9e8PVewxdZ+JpST3MS45uMaldohB86TJW40vLrLCwFg65+vp5Z
-	yJ/AEqSN2zfsA7WVdCq7gfOnZKYmQUmZDdmHtEly/uZCOseDsztFfAzpunedUtnAK6w82U
-	c+KpKAP81y/rRAZS8Kee1n9iR0lDZwo=
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-77f169d8153so705094b3a.3
-        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 23:29:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1758781785; x=1759386585; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8V0lwTpuXsxcfHaxZsvIL+kGsolkwkY6GPwdx3nz5yU=;
-        b=JuorYGwQrI2xJpceV+YQ4rHVbEWLr4fDPUuD4MTl4b7Cp1fWS0w0yhRw7g0jDfKbmC
-         LLVmNvSDouUjx8JjLb2HX3W2B0cmjcalZ8kAp2m+hCiultuy/znzx32d5mPr+Uh8WSTI
-         CpSe3h63qAQlYEjKLeGMKJHBTf8dP0DDJkE1UVQLI713cxAYZwKJa0PJHo2+ApYFPPUE
-         v3yfl4divBaB7Q+xVN9rX7Npo2BkQhbwT/stMaDT0TsUuW2MffHzZ3bN3QW80gHXlxQ4
-         VuOzc/4N1Hsb0zqfbznBT6f1nKsSLLU0kR0SLn1GTyRuPqLqtHuyc5ltfGGNJN/KmLJq
-         LC9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758781785; x=1759386585;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=8V0lwTpuXsxcfHaxZsvIL+kGsolkwkY6GPwdx3nz5yU=;
-        b=qPeD5OMXVzK5biP2IcRFNM+XI4uCpl9czszmPvIHDlJJPzFaTVwFIpS2Cz4076xUKU
-         UVpCERl6KY4MwqA4aEH8l7pXkYeG67Glvb1o3X6VAC1KpFe6MwDYV8bOBBzvRcKuCVv0
-         5ylswGCGjL+JHHfzhAgUHtGp2ucfvE5jzSk5QIRYQFjAXxYc03HX9a5Th0JwxEsxGvP6
-         HBVohEhF2YAhXD6TIB5RbXTgZTC4x4KNa2OQ566yaWrUF47qjbVEDt26WW+lQh2y1Xb/
-         BZ+K25Ht6V7RRk9u/pfRpRd1daVeu3SssmK2E5FlMu5tSkrfaurHr5idH/ooHk0KCP59
-         N5Yw==
-X-Forwarded-Encrypted: i=1; AJvYcCUZG09YB5NEtSnIJcX/pji76/Zj5lsuY9gKQmyKrSTuQQhnowRI84aQMCQoWcmOpo3lKUWPMbKs9Q==@kvack.org
-X-Gm-Message-State: AOJu0Yw7BzPG0Zsj5MJUXxuBSjOJHmGYWg/H3R32dUxBS+JHXoXKBMHG
-	J3PIDh9EcN5Nv02c4qTV07koyKIUZN6FI9l1CQl2kendBbW0DYmEiXCTDpwrmZnpth4=
-X-Gm-Gg: ASbGncua5unbBq0uaveU2vQlZlmtt+e5NeI0m2SzCL3ApO5jSalqXVEmkp02MW9HIbc
-	qQxnm0YsawuSCH/PsZQ5ddnyvYWaF4FGUQ8zx+MJmzwPKOkVkh8D++uXtibKk5V3a6cJb9QqILr
-	RlLsGm72tyoK8JUAZtMOAhOJHh/ct3cUZgn7Ad/4rl+hg0/aadqKs3pCMvjm/q8HC7BjYjIVTA+
-	/RB6V80bQchkzovLC6DKo03zhsAhfJmb7CW+mdhbRBzVGbvEeC8qdVR20eH4JnuQ/u974FKOWeJ
-	5BjYQRiZaqxfqy+kpxPui/u4j7TQjSTF0GasuLtfBLL92S3BJ3Nd1QFEjLF2UhUMGwHS6TnQMjk
-	GBb5CKyZGFbLV1AdYBijxhNIl/pltuO1Rp76Oqh3KNUDDehtC+FS3s8UU8g==
-X-Google-Smtp-Source: AGHT+IG1LqAYu9jhNBG55xyv+UGKIWKzgZ4CKtKvlXs/Xd5vgIieh3XV27iBoLmTtXwYy9tOxqb0JQ==
-X-Received: by 2002:a05:6a20:3ca2:b0:2d5:e559:d23a with SMTP id adf61e73a8af0-2e7d3db6116mr3182046637.55.1758781784872;
-        Wed, 24 Sep 2025 23:29:44 -0700 (PDT)
-Received: from [100.82.90.25] ([63.216.146.178])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-78102b2ec47sm961356b3a.50.2025.09.24.23.29.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Sep 2025 23:29:44 -0700 (PDT)
-Message-ID: <77114896-5a7a-413d-afa1-7d0a17312c99@bytedance.com>
-Date: Thu, 25 Sep 2025 14:29:32 +0800
+	b=T3qo0CPmilIsrPDfNxomgxd9nKyGK7nqbAFCUBzqoPRkMbzC2CynPZ+I8AKNcdTKHmN/vS
+	nO8hvxfExb4oH/neNO/SYSnpq5OVFo29qcm/H+D3YTtIrPxBtG+0n4GFlOyrfw1h5LdIm9
+	DjpDFkzZugznsIkZdIPAcwEebU76+Y4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 161F540817;
+	Thu, 25 Sep 2025 07:03:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 476E0C4CEF4;
+	Thu, 25 Sep 2025 07:03:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758783799;
+	bh=IfFjt1sIn89xjUeeoV2zJsvE3bTjSj86lJ2QWvNYz8w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qHutfg7p0MJiJzKdbXS/d6R3kdEqDhdXcGmgxvkwI4AM6XuKyeIpgR1GSCsEqIGVB
+	 9ZrAilO0Zj59EMAXR1lQlcpWEMA28nquUz1IKkduHGuS4dyD2OJmp5f3UxncKmQ8+I
+	 Dp30uxy2wGUYE3Hja5f4XS00BFzuj+WaXq60qYIzodUdV2tvE04uI5a85RPL6mAqR7
+	 MWKPSQplfkMcH9/nRS03UG60TJBwCq9ZQRhoS60sk8FdhiE0kifJqWTjrMUqN9REZV
+	 kUzpbXtt2XKNZVaDT/F1inIn9vj+we8Gfm9meFs0BUoq+pahNKDPioVkPIFajbcBnM
+	 waHnKaEouWGfQ==
+Date: Thu, 25 Sep 2025 10:03:14 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org, Logan Gunthorpe <logang@deltatee.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v2 03/10] PCI/P2PDMA: Refactor to separate core P2P
+ functionality from memory allocation
+Message-ID: <20250925070314.GA12165@unreal>
+References: <cover.1757589589.git.leon@kernel.org>
+ <1e2cb89ea76a92949d06a804e3ab97478e7cacbb.1757589589.git.leon@kernel.org>
+ <20250922150032.3e3da410.alex.williamson@redhat.com>
+ <20250923150414.GA2608121@nvidia.com>
+ <20250923113041.38bee711.alex.williamson@redhat.com>
+ <20250923174333.GE2608121@nvidia.com>
+ <20250923120932.47df57b2.alex.williamson@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] mm: thp: reparent the split queue during memcg
- offline
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-References: <cover.1758618527.git.zhengqi.arch@bytedance.com>
- <55370bda7b2df617033ac12116c1712144bb7591.1758618527.git.zhengqi.arch@bytedance.com>
- <aNP-rT1neQB0EdyQ@hyeyoo>
-From: Qi Zheng <zhengqi.arch@bytedance.com>
-In-Reply-To: <aNP-rT1neQB0EdyQ@hyeyoo>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6CE501C0006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250923120932.47df57b2.alex.williamson@redhat.com>
+X-Stat-Signature: zb4p9anepj4ig4fz1w1a6oxtbbzr8dmu
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: gnkugx6tjmgqqpyxxygou6qc8ri78wgn
-X-HE-Tag: 1758781786-915709
-X-HE-Meta: U2FsdGVkX19UAJymYA3bQYZYOBQAB3MHFWY2JKetJkwtUTv2dePehASv6u/GQvKgUb2t3Vs1pG/VOX3IvK7swPEjemdd7dA9CzJkYXo1kFIM8QTyok0p9BuLuoPZPuggUI9wSkXm+jchaTn3C72crky2i09lR117T28zbAFzNm4iffYMVd9fkH+Srl78490z4QSqguJUeuPdKSkuVlNSSnD3o+/YJ7ImKoDDDZcCW+SnlNTrqpuIVGaEiHMlIgaZsJj8fW1bzTiforPrAxZcXFzJNqbAhP6U1n18/vysB84DN8yI68Yv/3SZiMuBJn17fArN5Fd9bO9xJ8M+gy/7VGWFst6X8RWTKnAnODUHB7HFLMPFXXeoWoDLEcB/BPN/d8tGsOzj2OU2gD14o5jypgKUu14cBqgskFAoq8mMS3lTp7ea6kbKIXDS8ZGYq+v4tynV9zRB7LRo/0HIeY3404tLZCgpWdSb5VrI2oAbmNQ1IHG+YGOYmqGyvwj4U197UQfj1OtehWsAGsDXxl1Ev2d1+mPtRxRgm8OmeZCvppBGRNd4H3yMXXujM7JSqhpLI2Sv2lvh3HwupsBOK89q9CiwDyQzItk8CAe4ZRbPprzALp5+msuSTE4gLL+Tq6coedqiwQChyZbwN5DubILeVgc9VD9561rJ29iwj/FSgucaj3yvVoka0UetLJlFXNWghrL6pfQPRSliKg5rmhsccM2l+mCA6v8P6pfDBphT7Dqhb0qnwhBOMS6LWLEG5Y3l329J3vOiO0jFbvYJlckCP6OzFXFTbrlCaRxAyZdN3dDTafyQlNEwo2aa2E0nyLB60lkVqP0P488JgOf0gg3fHUnTDkwwhrRGjBOvOtN8fAyACE70iFq6b/VcWtBda8SiGFojGQhCMrCf/T2Rc+Znxe2GmjSTzGcJSQ0cOL3uCiBv9vN0sLQasyxWHCgfqZyHRqmxrpT9zJ59qZ0ZS22
- d+rHWUv+
- AGpbDB0ZRAx0sWeDEAwU/cb4Ubbhsiuoxk3ViMuxXV+MPEo63c8B+Ge+t3DhN1eODoHKTKp5zYS2afM8yD8YjsHF84OK7GicXowYInt89c3dtOAdqvi7Lbciq6dtc8AhXONE3Mekk6G0e7Cv8g+weA6Z3JW5lev/YEnTz5nsRp/QiTwoYVsKLZqfDYtiilDWCoWR959b22aNhhSpwDruMtyLdrEErUlk98wY93Q2rGHQVVC5ZyC/fPH6Rt0QqiukB+KgX3nfDSg5pslm7QSY9GeOfW9lC4nOItgGNijwaLtkHGsCCqJEotN0se+2HuVcY2Xkqtm52ouHTCdm+W5uwwYSX9ik7EQuObNDCuz/m7npX1EyGTONY479yu4axnT4b/TRgwIznworYYr0=
+X-Rspamd-Queue-Id: 83B4D16000C
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758783801-608269
+X-HE-Meta: U2FsdGVkX18nmf7cCuL0e+IOMbnoZOZv+/wWnxfh1Q7ttqjvx/Cv9GzOd+8HmrPSu5DNgupYHljvMYqGTY2yDXIa7xLVT1RRLCIIIPdLoXVfbJNVU0UbqHhdSNTCkLV2Uewun9KVL0b7iYpvWXsMSuKjWqmvdmIv+DrGFoVyOvzzeSvCEdA7a8JvErXXAQv1Uu33E8/BFnVfu7cYw1NyzrWoJbHsJn30XaP3hbcd63ZoNSwm/CEtnoeGomZhF4fPcOCV1bMcpOaqituuVVRdmDi0QGOd4aVBE0P+qLY4dBSQKhzwp8qGPaT6HmZuh/8NqkLYLKVRVpq/HRK9pFXGdvBsm3s9UYMeRpiKIdrceaGqGRWfmf21kqWkpV2ZnEUPbGfTiJr2Iz8cwWH+2CGiyat8ERqzelQbPe6Bj5YrX4XFsPemVOa+3+W31apGwuytgLpqbS8GE8P/pGxFLqZzQQ5hugttqAPA8aUYvCbS31f/PW5tvlKKrrJqEuYoKd1KatE0sJ/YAGpsrht8xgxiLk7FCwA79ndvLSQf8x3TDAwajQwLPGzjueuV6AbZENsLWdDaa6L/ngq/wZzGA7PGrajHjFGCM21RhTCMVXVIronhlOPo90VkdoicoJYqD2270JikYLAWZ1oBb6RxysaKdjwWTFKexlT4yWo+QFkHa1TBvH2q6J89qkTWJb0VabVPCNCcKBXFJqCFfGwQ8GmGww787gmrz1Ewcecw58ALoR7IVU7Az/TYyIaao+f6bxxFIyTXlhW0X8EEH8Gu6CI+vyAahkSP8oNE+s1uMD/KYVVsdIxWH008VRUFK9Nb4gZ0OzDsabAVP+cQNsGrGlP1R0s2tNjo0LQt9f7GjlI2gpru/Xl/4/PwNaiKkCSYrKv8oPvDepjS8Sel9u/HysVzWwjOiCVWeK2DbcRIapvSTAIDr/LBYkQcRxxke6hf+0zFuBBENHg4BQvF62/TVt4
+ IhE5rRmw
+ RC7AhB+Ro0T5yO5PdCs4walgvhcbShWuU3z3pB07ZceQjNG7qntMNyjlmtsJDLRqSM63YzhKJqKJryvAXpM50o37F0b3BkAB7B1n5fOrS/gOch/+BCYYY4BdEdcvJ+gPZdHNPnoZnWOx3/GWsgsCO9Q1HR8iGTMgRfU9qjNO/8f37ji0cahDtNYZxprvqxpfAFqcMAo/ILf8uU1p6lbfKdhF4HZ78W/NxkrUh6qapr0v/rUGpqk3lqApndZES9CxzTnXaQfj6zphrj7OuyCZSAOra5A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,124 +111,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Harry,
-
-On 9/24/25 10:22 PM, Harry Yoo wrote:
-> On Tue, Sep 23, 2025 at 05:16:25PM +0800, Qi Zheng wrote:
->> In the future, we will reparent LRU folios during memcg offline to
->> eliminate dying memory cgroups, which requires reparenting the split queue
->> to its parent.
->>
->> Similar to list_lru, the split queue is relatively independent and does
->> not need to be reparented along with objcg and LRU folios (holding
->> objcg lock and lru lock). So let's apply the same mechanism as list_lru
->> to reparent the split queue separately when memcg is offine.
->>
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> ---
->>   include/linux/huge_mm.h |  2 ++
->>   include/linux/mmzone.h  |  1 +
->>   mm/huge_memory.c        | 39 +++++++++++++++++++++++++++++++++++++++
->>   mm/memcontrol.c         |  1 +
->>   mm/mm_init.c            |  1 +
->>   5 files changed, 44 insertions(+)
->>
->> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
->> index f327d62fc9852..a0d4b751974d2 100644
->> --- a/include/linux/huge_mm.h
->> +++ b/include/linux/huge_mm.h
->> @@ -417,6 +417,7 @@ static inline int split_huge_page(struct page *page)
->>   	return split_huge_page_to_list_to_order(page, NULL, ret);
->>   }
->>   void deferred_split_folio(struct folio *folio, bool partially_mapped);
->> +void reparent_deferred_split_queue(struct mem_cgroup *memcg);
->>   
->>   void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
->>   		unsigned long address, bool freeze);
->> @@ -611,6 +612,7 @@ static inline int try_folio_split(struct folio *folio, struct page *page,
->>   }
->>   
->>   static inline void deferred_split_folio(struct folio *folio, bool partially_mapped) {}
->> +static inline void reparent_deferred_split_queue(struct mem_cgroup *memcg) {}
->>   #define split_huge_pmd(__vma, __pmd, __address)	\
->>   	do { } while (0)
->>   
->> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
->> index 7fb7331c57250..f3eb81fee056a 100644
->> --- a/include/linux/mmzone.h
->> +++ b/include/linux/mmzone.h
->> @@ -1346,6 +1346,7 @@ struct deferred_split {
->>   	spinlock_t split_queue_lock;
->>   	struct list_head split_queue;
->>   	unsigned long split_queue_len;
->> +	bool is_dying;
->>   };
->>   #endif
+On Tue, Sep 23, 2025 at 12:09:32PM -0600, Alex Williamson wrote:
+> On Tue, 23 Sep 2025 14:43:33 -0300
+> Jason Gunthorpe <jgg@nvidia.com> wrote:
 > 
-> The scheme in Muchun's version was:
+> > On Tue, Sep 23, 2025 at 11:30:41AM -0600, Alex Williamson wrote:
+> > > On Tue, 23 Sep 2025 12:04:14 -0300
+> > > Jason Gunthorpe <jgg@nvidia.com> wrote:
+> > >   
+> > > > On Mon, Sep 22, 2025 at 03:00:32PM -0600, Alex Williamson wrote:  
+> > > > > But then later in patch 8/ and again in 10/ why exactly do we cache
+> > > > > the provider on the vfio_pci_core_device rather than ask for it on
+> > > > > demand from the p2pdma?    
+> > > > 
+> > > > It makes the most sense if the P2P is activated once during probe(),
+> > > > it is just a cheap memory allocation, so no reason not to.
+> > > > 
+> > > > If you try to do it on-demand then it will require more locking.  
+> > > 
+> > > I'm only wondering about splitting to an "initialize/setup" function
+> > > where providers for each BAR are setup, and a "get provider" interface,
+> > > which doesn't really seem to be a hot path anyway.  Batching could
+> > > still be done to setup all BAR providers at once.  
+> > 
+> > I agree it is a weird interface, but it is close to the existing weird
+> > interface :\
 > 
-> retry:
-> queue = folio_split_queue(folio);
-> spin_lock(&queue->split_queue_lock);
-> if (folio_memcg(folio) != folio_split_queue_memcg(folio, queue)) {
->      /* split queue was reparented, retry */
->      spin_unlock(&queue->split_queue_lock);
->      goto retry;
-> }
-> /* now we have a stable mapping between the folio and the split queue */
-> spin_unlock(&queue->split_queue_lock);
+> Seems like it would help if we just positioned it as a "get provider
+> for BAR" function that happens to initialize all the providers on the
+> first call, rather than an "enable" function with some strange BAR
+> argument and provider return.  pcim_p2pdma_provider(pdev, bar)?
 > 
-> Oh, I see. We can't use this scheme yet because we don't reparent LRU
-> folios. (I was wondering why we're adding is_dying property)
+> It would at least make sense to me then to store the provider on the
+> vfio_pci_dma_buf object at the time of the get feature call rather than
+> vfio_pci_core_init_dev() though.  That would eliminate patch 08/ and
+> the inline #ifdefs.
 
-Right. And reparenting THP split queue independently can avoid the
-following situations:
-
-```
-acquire child and parent split_queue_lock
-acquire child and parent objcg_lock
-acquire child and parent lru lock
-
-reparent THP split queue
-reparent objcg
-reparent LRU folios
-
-release child and parent lru lock
-release child and parent objcg_lock
-release child and parent split_queue_lock
-```
+I'll change it now. If "enable" function goes to be "get" function, we
+won't need to store anything in vfio_pci_dma_buf too. At the end, we
+have exactly two lines "provider = priv->vdev->provider[priv->bar];",
+which can easily be changed to be "provider = pcim_p2pdma_provider(priv->vdev->pdev, priv->bar)"
 
 > 
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 48b51e6230a67..de7806f759cba 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -1094,9 +1094,15 @@ static struct deferred_split *folio_split_queue_lock(struct folio *folio)
->>   	struct deferred_split *queue;
+> > > However, the setup isn't really once per probe(), even in the case of a
+> > > new driver probing we re-use the previously setup providers.    
+> > 
+> > It uses devm to call pci_p2pdma_release() which NULL's pdev->p2pdma.
 > 
-> 
-> For now it's safe to not call rcu_read_lock() here because memcgs won't
-> disappear under us as long as there are folios to split (we don't reparent
-> LRU folios), right?
+> Ah, right.  So the /* PCI device was "rebound" to the driver */ comment
+> is further misleading, a new probe would do a new setup.  Thanks,
 
-Right. We will add rcu_read_lock() when reparenting LRU folios.
+I will fix the comment.
 
-Thanks,
-Qi
+Thanks
 
 > 
->>   	memcg = folio_memcg(folio);
->> +retry:
->>   	queue = memcg ? &memcg->deferred_split_queue :
->>   			&NODE_DATA(folio_nid(folio))->deferred_split_queue;
->>   	spin_lock(&queue->split_queue_lock);
->> +	if (unlikely(queue->is_dying == true)) {
->> +		spin_unlock(&queue->split_queue_lock);
->> +		memcg = parent_mem_cgroup(memcg);
->> +		goto retry;
->> +	}
->>   	return queue;
->>   }
+> Alex
 > 
-
 
