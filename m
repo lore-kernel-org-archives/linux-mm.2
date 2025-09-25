@@ -4,137 +4,186 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C602CAC5A5
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 12:30:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 003A7CAC5A7
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 12:33:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B46FA8E0006; Thu, 25 Sep 2025 08:30:24 -0400 (EDT)
+	id 5CF498E000D; Thu, 25 Sep 2025 08:33:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF7AA8E0001; Thu, 25 Sep 2025 08:30:24 -0400 (EDT)
+	id 5A8648E0001; Thu, 25 Sep 2025 08:33:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0D738E0006; Thu, 25 Sep 2025 08:30:24 -0400 (EDT)
+	id 495A18E000D; Thu, 25 Sep 2025 08:33:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CDE88E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 08:30:24 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 40919160188
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 12:30:24 +0000 (UTC)
-X-FDA: 83927705568.16.9DDFB5F
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 37E14180018
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 12:30:21 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=kB1WaJZi;
-	spf=pass (imf24.hostedemail.com: domain of andybnac@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=andybnac@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758803422;
+	by kanga.kvack.org (Postfix) with ESMTP id 36DBF8E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 08:33:30 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 051FB16014F
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 12:33:29 +0000 (UTC)
+X-FDA: 83927713380.07.4FAF637
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010054.outbound.protection.outlook.com [52.101.193.54])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5941440009
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 12:33:27 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=EbO1Bki1;
+	spf=pass (imf07.hostedemail.com: domain of jgg@nvidia.com designates 52.101.193.54 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758803607;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cpogRHSrLfl51nWywJppLMZXYXi2KQs1G3uCf0+H8cQ=;
-	b=HVAvpWqPlbZsbLmDCoE48FvNAITdjHwoD4xutQNqCu5xxdwKAgX65qcNZOsfvgULb0QTnR
-	zNlZf2XBUUcKhLjIrHJSrVcdLlAx94QMtpy9hqvcJjcywhH8p1CDXEpyqbHGo/oCG/Z6nJ
-	W9Gfwh3yQ4pKutm6XHrRxcHeRDZj4c4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758803422; a=rsa-sha256;
-	cv=none;
-	b=IKZyOTMSrD4r1y2aN16Nn1cUlqzWa0Q/l0Hhc5H6PHPb1pu86mvo1lXOQFToh7z/L0lKRx
-	eQ0o5GYte/y985G/cc7O3WWk/ILKN5vjMeuALkVofWqt0zkZoBrxJM9K7Yxfelg95QjirQ
-	C0bBgKm2TCWzBQijGyhrX2hp5VXozDQ=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=kB1WaJZi;
-	spf=pass (imf24.hostedemail.com: domain of andybnac@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=andybnac@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-61feb87fe26so1165421a12.1
-        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 05:30:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758803420; x=1759408220; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cpogRHSrLfl51nWywJppLMZXYXi2KQs1G3uCf0+H8cQ=;
-        b=kB1WaJZixjHCJzCz6pJhbflIf2g99uRKfnFu0QiHGmmlGwKYEBTeDBWbCyioaA1gju
-         4JI7AtXQ/9bQjjJ+yWbO0oOa4+R1ZHX1wbm72+KTh3SLQAlBIT0ikYByPpa2NsSS3qir
-         7r0J+6ykUjj9zGNlnQWXH/VE3rYtoQ3j0/suRbtSxfVsbPbpLzNZ1x9IeBU0nbboc3j/
-         /eYjKq4qoahgACs8HRWm0KGGrX+3vdwNqP+amlxJhV9iJn2yNgMv0bnKXkg3Yku6hziS
-         9lxWXlZ01szEHBfK23dnUoeMKWBtqW3daPq995uEOQHVBREDyTKOWdeot6qF72pZ6bzx
-         gR2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758803420; x=1759408220;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cpogRHSrLfl51nWywJppLMZXYXi2KQs1G3uCf0+H8cQ=;
-        b=QrgUmU4tXk83kKz/KnXmNigPbIL1ZT3XHdU73VVG97nqVVtBSGU4jUWoDxMK/e3nnG
-         Gz/ok5X7gxAts+UgUo+3A2CDWQq956rR2r4xRrcd7dHds/j15LxtX9wRoJaHXsG4YVe4
-         QHHyrBihAC0vPaDM3apynh+q0x4yJVRWBxTr2RGWMyZuJAA3r+UXBof+2Qb/SuL1VdMi
-         nQp0z7OHTrL8SAZvtkwX/FlWOskiWlDt7ZfJMyGE0eadmlEl83tl8sw6XXc0I0LrOX8L
-         md2ft8hVfMkyvSaIp8EaO1wR33RaYI4KPNwUoQrlMaMjU8f9CwKxVRahPG5GuKt3NdBN
-         eyIA==
-X-Forwarded-Encrypted: i=1; AJvYcCX1lFiKCiJMw20zpjwTchoERkJVCTmRCPnFTvuVopq5KjHNkLr7HQRMeTxnHxIdBIEZjKGABW1X6A==@kvack.org
-X-Gm-Message-State: AOJu0YxEbO9I94xdWxEuXoxCExxk7ChHvjOCqJRK1MDiYQyA9DDWFdSg
-	KmT7OB8Da6xQUrLsO4pEz72rb6I+N6T8yo1VO+W2o8LDruu7lzlfUj+aVm8AOzNsRjJd+WrSTSN
-	wy0g05GUaVBIANnI09BXDQEgT4C2aoNg=
-X-Gm-Gg: ASbGncv1rWhamHJF1zgka/Dl0QM+U1I666W84Xb0gSnk/hGt8NoxFS0dBpLdErOmoiK
-	Zidvdu0cygMdY3LgG8wFVMcKI5RQvPGuio+brl1stcRFXu3nKktoS3Hoh31pYks5dbI5rgXefeC
-	Krq1CiJ7VDUX1TR3VY3zapLh6DLij4/fUrB6e72KvwMJ/dn5VTOxR+KJsEeDxKJArnfErMr2FX9
-	kV9
-X-Google-Smtp-Source: AGHT+IGrMTtF3rO6PyqglimJ6kWsoCOnyf9RbZPnOG2/Nl32fMXOunJIE5E6zYa1d9+08xohVhzghLhulRn9g+pvf4U=
-X-Received: by 2002:a17:907:3f87:b0:b09:2331:f150 with SMTP id
- a640c23a62f3a-b34b84aba85mr396036566b.16.1758803420120; Thu, 25 Sep 2025
- 05:30:20 -0700 (PDT)
+	bh=W1vTfFAMLPczZJ2h5FrfB+3lC7NO+P+CoJbnSEtiyxc=;
+	b=SOSkByfXfC+G2ujQYaZ8nrX9WWhxaG4Yxj+iTMAaNMp+5I3vBuWEJEyGh4y2CnBIhJKnza
+	biFflSMe5jrbaVY0Mwth/WIwz1VgUOG1I2vD1NTrOxCkQRJV5bnQDfPeE4QScjABn7mBnP
+	+S8hCYa1LmNMi/vKa9i16hysx62GSwY=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=EbO1Bki1;
+	spf=pass (imf07.hostedemail.com: domain of jgg@nvidia.com designates 52.101.193.54 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758803607; a=rsa-sha256;
+	cv=pass;
+	b=oFrxGvNMbQFeCS4TEQVJfhGAoA/CHsg5oTlMci0+IrSas0GpPcfgU3IL3csABz5MW0sfs7
+	K1PCQ1R0+se8vr0xR+Kjl+z6JkYKbNwbJ3UNREe0I1awq/5r8qkhXFe0KiET7lRMGOBjp3
+	M/dT59IiCxSEq65aPUy0yb3ac1fKM/Y=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MtiTsUARaRSvoGehdp7HZNFnGNCCE4qdTq8tPC5XPf5NZoHmHYUBiADxJw1bBESHQxOLlgudsJpDVQ5F/xjWEZeZS7kakqTTQOT7o20JRZ3vDoL3OhCyrJ0bhix8XQhQSwa364Kte4t0Il73WXxR9nk/ojOKb/XmmBC8WJlwpaH6guzIpt13FmYKF0yILRVXzMaSDg2YF1M96/tyl2wUl4uKy/5u+GlekGG6VacuQYXF9mD3JUnbMpfYj7EoPMYSykPgVguJAQgmlKQAx4ovlOYKCNmS8AsdjI+WcWjYwqHXpnjptxXgebtK/xo0QdKtcRrJU6gF58TBiyT7rXYicg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=W1vTfFAMLPczZJ2h5FrfB+3lC7NO+P+CoJbnSEtiyxc=;
+ b=zUrRCq4VtKmxMduiF/9AwBVGiLyHC49o+zXRh2IWAD8ohqUgKd0krhjB09zywDzAtCycl+5cWHf+ThsOzRvGrw+u1jn5XkR/1d5r1/RBLDp4zL9gl1UQHL3V9cKf2qznECyxw3GywQrpj3sdfw2p3+knr/zAqz/skqFxQAyY7EVHY6SCp32mqkE4HVx3M6+H0/MlYK1yDrW91ueq260K7bzbLhh6wKmR46yh0v8mkqP2kkRF66DB9RXjVHzOdYfMV/ynbEIEgyCklrrhlWVFlKRZ9Ub3JtHINQ5p3uHmnJAzEEHwGr2akhJFpkIDKrBYeEe49a8jhAwpBzm59pAgxQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=W1vTfFAMLPczZJ2h5FrfB+3lC7NO+P+CoJbnSEtiyxc=;
+ b=EbO1Bki1U5yrv5XMRXCa8iKy3OxntQ26Yky7ESBK02yOns+5LqT9ndIbEcEaVr/XvAOvUgi+PQvPKhn9PniMKz6LwP7VkqyEwd+MrRp8vhZwhMCMioX7hD47jPmKf8n/HUXjj4JnHsAEIERxeSz5SX4bBZQnGern1cHn7nljWdu/T2fyTa4cHSfFo64q1eIeYT1peNrLwdzZ7/FQ2hnaJj2hXOECn7nQEPmZolb87rdM3ggw687Ncs3olUyASnwcfG1AOvxMk9hyyEdwxeGMiPL7C7sOjoV4oUvgJLv2G2SMMkxzoqT4Gsagf1upl6g5+F9Cu98DzXPLDLxdWXKpuA==
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com (2603:10b6:510:1d0::13)
+ by PH0PR12MB8152.namprd12.prod.outlook.com (2603:10b6:510:292::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.20; Thu, 25 Sep
+ 2025 12:33:23 +0000
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632]) by PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632%2]) with mapi id 15.20.9137.021; Thu, 25 Sep 2025
+ 12:33:23 +0000
+Date: Thu, 25 Sep 2025 09:33:20 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, Jason Miu <jasonmiu@google.com>,
+	Alexander Graf <graf@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>,
+	David Matlack <dmatlack@google.com>,
+	David Rientjes <rientjes@google.com>,
+	Joel Granados <joel.granados@kernel.org>,
+	Marcos Paulo de Souza <mpdesouza@suse.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Petr Mladek <pmladek@suse.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Steven Chen <chenste@linux.microsoft.com>,
+	Yan Zhao <yan.y.zhao@intel.com>, kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [RFC v1 0/4] Make KHO Stateless
+Message-ID: <20250925123320.GY2617119@nvidia.com>
+References: <20250917025019.1585041-1-jasonmiu@google.com>
+ <aNUJIsElr5L5uxNv@kernel.org>
+ <mafs05xd6d8f9.fsf@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <mafs05xd6d8f9.fsf@kernel.org>
+X-ClientProxiedBy: BY5PR17CA0006.namprd17.prod.outlook.com
+ (2603:10b6:a03:1b8::19) To PH7PR12MB5757.namprd12.prod.outlook.com
+ (2603:10b6:510:1d0::13)
 MIME-Version: 1.0
-References: <20250731-v5_user_cfi_series-v19-0-09b468d7beab@rivosinc.com>
- <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org> <aNQ7D6_ZYMhCdkmL@debug.ba.rivosinc.com>
-In-Reply-To: <aNQ7D6_ZYMhCdkmL@debug.ba.rivosinc.com>
-From: Andy Chiu <andybnac@gmail.com>
-Date: Thu, 25 Sep 2025 07:30:08 -0500
-X-Gm-Features: AS18NWByhWo0dHTSYL4t2oFRcok3gmrZ-pBxSOOqriMBIQLUznFC4iXNOpyJQRE
-Message-ID: <CAFTtA3Nxq0UmXcuN7jmQOiuTbrenKbR4ihH027ya1WWybgLq4Q@mail.gmail.com>
-Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
-To: Deepak Gupta <debug@rivosinc.com>
-Cc: Paul Walmsley <pjw@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Christian Brauner <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, Jann Horn <jannh@google.com>, 
-	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
-	richard.henderson@linaro.org, jim.shu@sifive.com, kito.cheng@sifive.com, 
-	charlie@rivosinc.com, atishp@rivosinc.com, evan@rivosinc.com, 
-	cleger@rivosinc.com, alexghiti@rivosinc.com, samitolvanen@google.com, 
-	broonie@kernel.org, rick.p.edgecombe@intel.com, 
-	rust-for-linux@vger.kernel.org, Zong Li <zong.li@sifive.com>, 
-	David Hildenbrand <david@redhat.com>, Heinrich Schuchardt <heinrich.schuchardt@canonical.com>, 
-	Florian Weimer <fweimer@redhat.com>, bharrington@redhat.com, 
-	Aurelien Jarno <aurel32@debian.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 8pq5tu5p4hzask9gaqsnmhk8pw73hbwe
-X-Rspamd-Queue-Id: 37E14180018
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5757:EE_|PH0PR12MB8152:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0fdcec7a-5e75-42c8-e81b-08ddfc2fb76e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?EGx3/GtrZlziD30e8nVWzkVFpPtcIyCQLO0wlAqhDnDLtOhEE6l2yA43V60B?=
+ =?us-ascii?Q?DhpI+tNFXzGZQeBf1iik9HpVWk7HYr+qXv/ImvLYt/Yh0Bw04AEvepXoUtxV?=
+ =?us-ascii?Q?BGAnxne1UPtC8XXQDAl8mPwav0Dvb1FC7zpdqGeJPSHUiqc+iGi52++NWHsX?=
+ =?us-ascii?Q?7xP6TuL86i4J8n1gaMTEcVI3oFL63zeurHJNyhVxMe6D62qCZT8LM1LgFnYS?=
+ =?us-ascii?Q?n5sXr/7xzIlrvbLTrOV8ZWnkCBo7Vi0GwpFr6vAdBV6+kyyBn2DjTeW9s7cF?=
+ =?us-ascii?Q?yO0eWLyEc0Fxa7LaiEbnhTPoHQghNgperyW/JvyZyTzzoVZoqKInxqNS1lfQ?=
+ =?us-ascii?Q?rxpXXxVfqcFBKhfeBw6fviaZ9zx2E6QLBExLytXN8VYJd+4s3JhBm6Q2M+3R?=
+ =?us-ascii?Q?7veoW1VmlQ2HE80EyepYIyzIbGc+4gfVIOMG2omt5QQrOgd8aaUwt4+rjumd?=
+ =?us-ascii?Q?BIrBhVSyghctRBiK/ShHlooRiBxLpSf82hwF3B0lDa/xr4bV7av9tddPR7Gs?=
+ =?us-ascii?Q?QlrMDsau0yq2W57ebvg56lmOholB/Ph4YFWgRlhImhh1GxY0/yah0v62/XWo?=
+ =?us-ascii?Q?uEHyf+S7l8k1Oh0vxY1rDLroV543Hiwd3Qrg4zcvwMQUpQDbp79UmsF4D5dF?=
+ =?us-ascii?Q?biVDorkVqU/tnk+HpoTapPNbgEKZRTXkkWV5qvfYtC9VPZz5foez+DwLd29X?=
+ =?us-ascii?Q?PmK32W1yFohoxkNgACfvYJ+RMuQApJk1Sn1XbbF8DDarkm2l8138hrJ09AEb?=
+ =?us-ascii?Q?r5gOs/0bmGSf/R9YvrYp/bDRlGSvVJ/1bxbvSyFwLLE7k8qL9NUd4hr0FsX/?=
+ =?us-ascii?Q?ew4J8gXnz4v5p19IFBg70NtQA6TieJKHeRpRKD802YSyKM6t9jzG/6yWGAdf?=
+ =?us-ascii?Q?Vkwusbjsmv2KDI/1mCtajnHl5JoLCKU/zIQtMkR86WAKlcyHOSE1cFoSM7A5?=
+ =?us-ascii?Q?dXLdV4Cp4wrN1hbnyGnWwsNn0f1fqbl2MJjuVzmhTyjFWQojoAwAwLp/WgQ+?=
+ =?us-ascii?Q?1Dofj3x6+uT6LDjrX+nEiXxUzdCFOiZoZcFENnUlQTDgXC3WxXm2ILfxarp9?=
+ =?us-ascii?Q?XX7SiaIwwD2FCuwBdgsKWZ5wgh8yq+w9qmka5hWHgclVZe+r3SuSBh9QtfqQ?=
+ =?us-ascii?Q?SqIE5Qb0qYuDxSrx6Bqhu2xEaiZXjgSfo8XIF8glv4tPWdjlzCJg5WLCzOmI?=
+ =?us-ascii?Q?wGlDhujF1ptouNLe+fQrHKSR1FIocO1b0NtTGLz5AEjs4fZuoo+6fnOrmCqk?=
+ =?us-ascii?Q?O1of9UCh+hlvIcj2IqApYV6xVOD1pABeHfDJXtd61ps152o/vF5UL1dM0yOk?=
+ =?us-ascii?Q?gVu042ds1P6DEhE1AET2GlARsu2Y9bxKiCynYx7Hpm70mtoVx5z6YZndk4LU?=
+ =?us-ascii?Q?lDGEP3bErLYZs/uxVE/PeZLLOgA4JJ/QISxYKLUAfjuAufXqieFEp51tHJzJ?=
+ =?us-ascii?Q?4PwRAQI+CoI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?u0Vh12yIXHvXgpNJZt3x7Cr+hJcMgeE1XwEPWkUlOk/RbwVpRHw696L98Mnk?=
+ =?us-ascii?Q?Hlk5l9IaLsvijbQAHPUQ3qQdWsfx5p4zcP9dQQ1S/XxxJ613cpoId58q/ZEO?=
+ =?us-ascii?Q?i6eQdKjWcZdMi9iegI4Pg/lfp+beBm0TbqQ8DhSaB94hmjRMdOkFtyhVB2LW?=
+ =?us-ascii?Q?pFvRGvaOD8H8mIcmQvmCRBnjuMJQxPbF0ZPJK3MTEtgoQBjiTiUJRuLbWd98?=
+ =?us-ascii?Q?nEkqkAlR4/pdWdWhmKj3yv+iBS5xrryrNfsazQ+jSfqBUXLuc+6ljhWmpOA+?=
+ =?us-ascii?Q?lrowr4c6Suo8RckmOzUaRBue/9/7b40CVso56treO2+/mIvJ2cLKLEboJWaA?=
+ =?us-ascii?Q?SYFNUGmBJu8Rgdlm1n5Pi0mYBu7rqG01mwctjIPitws/KzlrqFYiguHMLooi?=
+ =?us-ascii?Q?Yo9noLJucjlxCMJPw7D8tNhckXXfzlGq+VQFehR5DJql2s7lD5zGdjlxSdOt?=
+ =?us-ascii?Q?hqI5Al1eC8Q5Zf4v7Qpj6+xZBhZxb6/ge2oURRJgpBv38elecE2T7dBsXp0x?=
+ =?us-ascii?Q?VD+PIhz8tgovahfl5HxCabxrTyvLYVP0JJS+y5IJ9Yghkr7G/awtNb6bejyi?=
+ =?us-ascii?Q?mrXshgy1pSfrfYNmPJGhYMfSzl7+vsJ0rcjalVlF3et54IkJ0iau+gFT8Q0D?=
+ =?us-ascii?Q?CvEai7nIayNBmGZmFB3/dhQHxqTW3OOe3zT1KiD1W+CLFuRbEi7z20Cjv2Gi?=
+ =?us-ascii?Q?6iFyK/4hxNnt6H4nFljxIjLHpR6c0WsdO5XXJ9HrbLAFoY3cWukkec85hEWQ?=
+ =?us-ascii?Q?Xio0D3DUY0qOM8CAZEMNH+vNvu+g+lCzRB/sqQxriC6KxcaXRwRNqcEnWHEB?=
+ =?us-ascii?Q?5ENe1q+dm/NyGKmSqi3zEOj0aoEBlLjFjfboxb57Az7vZrv+wnklRzvoQDTW?=
+ =?us-ascii?Q?KycxWrfzxE+CQjDxKUcTfCQGqhvbxg/S9yAANgAE4JpybbC56+X8iWRXe6s0?=
+ =?us-ascii?Q?iHC6PnrRKmT9FZZ9tC0CQK5by96/9nCatIPBtwPiKNLTLRFzoUPB1nRCZLst?=
+ =?us-ascii?Q?+gKrM5Xx4PNgiEW1Gbn22ixWS27KQDF3e9TFI0polMOyuV0+SbMMSmVX/DqX?=
+ =?us-ascii?Q?Grq+dnXHk6EnTDZ4e3bc8xH6haQ3tC/dFL88O+0J86CuKWSJhJq6YLZdIZUg?=
+ =?us-ascii?Q?pkRBDlUXbtOsnJFalO7AJZiu6BboSRLwBUL6VH27wIzr3+OYw7BoBqX197CZ?=
+ =?us-ascii?Q?6+h1iQRUWCclC3nSaz42IU6+CZyP9bgmLwR3dfRVRE6NG1424lmyyP4e9dCa?=
+ =?us-ascii?Q?y+MLnauRQ3LTjLhBmtHAbPCgryuWI6TCyax8KmFutUv8t1DZ2qTLVoYbgwyO?=
+ =?us-ascii?Q?7fzD5TlBXhUltBEOqgrb1U5HzriEzSCVVJA9q8fS5gxVeuj9RmCii5tzl0Cq?=
+ =?us-ascii?Q?VJug76eiuyoGiERMoWiYqpwMNjjc8U3WItyS/hjMDTonwUr1q3B8oGILpAdT?=
+ =?us-ascii?Q?Hib9JbbCvpF79+n7H4T+R0zLKN+eezNY2teWTGrFX6I1uXc0vPnzNckuSowu?=
+ =?us-ascii?Q?QoSfuEE4pVnOtmvmAPPa2OF4rYyQiDbtreIrKwxNLqUMDS99nw3rUXJsBjGJ?=
+ =?us-ascii?Q?hyETTtJY9Ma0iuoaNQJTQvWuqmUifsJqsj/+HNmL?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0fdcec7a-5e75-42c8-e81b-08ddfc2fb76e
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5757.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2025 12:33:22.9119
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OszxEz/0mrLpI2dI4dLjUWiUE2cWoDLZm1I7C8uMXf5b8BGEv9Owxhv2MHdYje1k
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8152
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758803421-941000
-X-HE-Meta: U2FsdGVkX1+OC7XX48p/ydNGK6dLBCsSeZo5RLXr63IK1O1CJesTh7LwqFzcATcf05seUqVh5pgUz8ZUAMflgjGG4MYOjIe1qzhwzlKIiXuYG3e9hTMmpVy9iYfUEkZP1SxUirzIkAcWTfMmk8aFiUckhvIL7uH2jLDHHfPDyfuyea2uKkzRiRqw7YupA1iVaIlEsZJobtU72+tDKYZd2UlKCf6HRRWtYT5CDAFwVJNwR8JxVU0LWE2unHSOM+H+dJlzwIzKkyGze6Dh2F3OiPm1R+vcVyTnGJAj6NQiBxAUkFhAqjQCQ1sqVILLQ0saOrBDb0KyCLQiZl3hAsla6cNNikVrffiTMX7MhBbgHUbFxF3kDBxo/MYNz+RwTDjO1N7RKY87qEAvN6D/17EkTfF5Oc0O8KHHoc8I6uSLkyIYKV87TPE6CGUVAnV8L5piD7vhCPHIbDFrMcr+CE3Afy1acm1M2tyvHFgQ1r07mocfz+KNFWvoQLd/CcnRj+kjS/fP/4zujK0PI6WfSWNKS61+BzNj17G9Gmd3VRn87m9uYYkLh4870J5K3x/GBPsGOfXfVLukOiesfQ6yVnysAd5sHM/oro+SLIjDrs4ER5wQQRMxvlf2wWYcfh/2dfhaWypuhsnnAM6kSMwRDAZX1hiD30xSfxHdojnEyJ6+M4s2Cuns+cHwVQtj2h/AJuy+F9gLpTDvk47WCkV3uNC46J+8I/hDFBAEmvtWfupaEnMRPoE9PLv/9vVGQBU9seNVxPPhd0Pi39QLy+ahWBKZS3fYMUnhcQpsnHvoAwv7VmJfBrS0Ew+bwYJRvK0xq3h2tEmbO8pGDWyN931wsQ4V5bmzqWIFyft2ICsd/swqKPVh+HYBuQNBnjHRyI83BEStI0OyTXZnTJWEFwCTVVBvIsSUErLuXxEiYPye69TQgYnw5qyeM/Wp+RWPjbDoN4Bjnh4PdQ0P0kghopG/dhF
- 2OtQBCtE
- pfmYi3F2tQ/8ItfkO3nqxx3dZ1Y8hO0sFqa0+9zK3k5STZVMzVo+FLOfP6zdGodl+vrB1OszAvEn8I4e04wR8NNmSGFZcoX1QLi3U/DjvZVP7BL13hkXEx15yshGFmtgxWwVNSOHLmQf2GAlcGNrv+Sqs6kwS7JOwkDsDs7otE1EnoW+BmVqDra6UOzvN8sU4w67WagqHugP/gjfNKsG1IXXcIKayqs5g10bgr/dAtPluibftuZucfkciwud9LM/3dYeuEmPhft1+/BJ6WyPwkcCz3OqIcVQCaAJigYXU2fjXJ++ClqKIGg+0p+slJcMLGjJMCqswr4RmkOzbqhCB1mEAN0gjH0Ain2IMXH0wTfHKo5CpxiryoL2ACA5qXmlEmd6RmOS5YRRTJCj12e5ZD+Vohx/Ff+3sMkAnqVs0EybYVP9pyImcGBHLRaanGCle9iBQZPFvmWG7IhpY60hQYGWzUn27hZ8StKtM1TFfcROcmk4=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5941440009
+X-Stat-Signature: gzithtpj58qqrmkkrjpmwq5qwi8wfp7k
+X-HE-Tag: 1758803607-860236
+X-HE-Meta: U2FsdGVkX18bWB6SG5DuR83MIpgdFBLF6702liQRPwvtKFrd5HQViAY8hOBsg9xQkpdcCcgOux/vveaDcYupJ2X3XbGNTmJsi81vDvczLSPjaIgic6Vk0qJi1uAh6r9lzM3piDA4uPk+JUqjqKqss3UR4RfEkSQEW1OTlRwcudQLr4rdtu6iww7jTmIh6NCk/KPY2dcKGkT4ciY3cFrCk+9pAvLiO2dgZqiqy+pi1ij1GpD+6WuPch6XlagSKbWzgiG+3RUegzfrt+5HtCOW7VgNhxYUQ6pSOgZ5neaMJinRMhpZBZeWrXbhqAPVJOgJmT97CATKMBLR6CUC7x5i1nPTBBqWlmeVIgem8NQA2dfnZx8d9I9aO7aetKNFxXoN8B8CcRsmyrJYLTQenrm2e9xE+ldyuxS4Maoct0b6C7r2raQIbkPflKvq7J0fBHm0iTQUQpY8F2aQy4GgGpL/eXMHe7Q49WgbOkiE6oZD35BWF5kUjuOlCsEzsUiVZfAnVoIO4638hZh+RKJAFsE1ocJ8ToAkXMAc7vDpV1Wb5WSRxI5l6F1tT8Qw2nPBDSGqXH8sPiW8hBNjdAQXxU8ogm6AnTxUhjE2AsPlTMev2M5wmbD8/H6JHvrS2ng96GsQJbagwBOccVCQ5sAGuaoErDCFZisCPYPlVcT/M3mPXy3o54asC22ie7CAJo8mw/u2wxzumDmqbS2lscWQHiJq9stMC5Kaz2zCsb5sgm7M9PfEGOvz0PMBmrkX05PjSz6HKSv2BnyZW2Q88QXbijPXeeX/bHUicrvlkub7ea4l/OyO88RtDzu9urPOycoDqeE2JtTX1TzEwwvfGJas/+ue1uR5LFahEClJ5u1H9Nhqo4C1+pSzQN0CkVl71Jsmrg1VxBQs2e31g3dlm7G2lf+yNpruBhOUEavWwDB2Rv8LpIKAJOOhqrTMyA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,211 +192,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Deepak,
+On Thu, Sep 25, 2025 at 02:27:06PM +0200, Pratyush Yadav wrote:
+> I think the tables should be treated as the final serialized data
+> structure, and should get all the same properties that other KHO
+> serialization formats have like stable binary format, versioning, etc.
 
-On Wed, Sep 24, 2025 at 1:40=E2=80=AFPM Deepak Gupta <debug@rivosinc.com> w=
-rote:
->
-> On Wed, Sep 24, 2025 at 08:36:11AM -0600, Paul Walmsley wrote:
-> >Hi,
-> >
-> >On Thu, 31 Jul 2025, Deepak Gupta wrote:
-> >
-> >[ ... ]
-> >
-> >> vDSO related Opens (in the flux)
-> >> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >>
-> >> I am listing these opens for laying out plan and what to expect in fut=
-ure
-> >> patch sets. And of course for the sake of discussion.
-> >>
-> >
-> >[ ... ]
-> >
-> >> How many vDSOs
-> >> ---------------
-> >> Shadow stack instructions are carved out of zimop (may be operations) =
-and if CPU
-> >> doesn't implement zimop, they're illegal instructions. Kernel could be=
- running on
-> >> a CPU which may or may not implement zimop. And thus kernel will have =
-to carry 2
-> >> different vDSOs and expose the appropriate one depending on whether CP=
-U implements
-> >> zimop or not.
-> >
-> >If we merge this series without this, then when CFI is enabled in the
-> >Kconfig, we'll wind up with a non-portable kernel that won't run on olde=
-r
-> >hardware.  We go to great lengths to enable kernel binary portability
-> >across the presence or absence of other RISC-V extensions, and I think
-> >these CFI extensions should be no different.
-> >
-> >So before considering this for merging, I'd like to see at least an
-> >attempt to implement the dual-vDSO approach (or something equivalent)
-> >where the same kernel binary with CFI enabled can run on both pre-Zimop
-> >and post-Zimop hardware, with the existing userspaces that are common
-> >today.
->
-> Added some distro folks in this email chain.
->
-> After patchwork meeting today, I wanted to continue discussion here. So t=
-hanks
-> Paul for looking into it and initiating a discussion here.
->
-> This patch series has been in the queue for quite a long time and we have=
- had
-> deliberations on vDSO topic earlier as well and after those deliberations=
- it
-> was decided to go ahead with merge and it indeed was sent for 6.17 merge
-> window. Unfortunatley due to other unforeseen reasons, entirety of riscv
-> changes were not picked. So it's a bit disappointing to see back-paddling=
- on
-> this topic.
->
-> Anyways, we are here. So I'll provide a bit of context for the list about
-> deliberations and discussions we have been having for so many merge windo=
-ws.
-> This so that a holistic discussion can happen on this before we make a
-> decision.
->
-> Issue
-> =3D=3D=3D=3D=3D=3D
->
-> Instructions in RISC-V shadow stack extension (zicfiss - [1]) are carved =
-out of
-> "may be ops" aka zimop extension [2]. "may be ops" are illegal on non-RVA=
-23
-> hardware. This means any existing riscv CPU or future CPU which isn't RVA=
-23
-> compliant and not implementing zimop will treat these encodings as illega=
-l.
->
-> Current kernel patches enable shadow stack and landing pad support for
-> userspace using config `CONFIG_RISCV_USER_CFI`. If this config is selecte=
-d then
-> vDSO that will be exposed to user space will also have shadow stack
-> instructions in them. Kernel compiled with `CONFIG_RISCV_USER_CFI`, for s=
-ake of
-> this discussion lets call it RVA23 compiled kernel.
->
-> Issue that we discussed earlier and even today is "This RVA23 compiled ke=
-rnel
-> won't be able to support non-RVA23 userspace on non-RVA23 hardware becaus=
-e".
-> Please note that issue exists only on non-RVA23 hardware (which is existi=
-ng
-> hardware and future hardware which is not implementing zimop). RVA23 comp=
-iled
-> kernel can support any sort of userspace on RVA23 hardware.
->
->
-> Discussion
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> So the issue is not really shadow stack instructions but rather may be op
-> instructions in codegen (binaries and vDSO) which aren't hidden behind an=
-y
-> flag (to hide them if hardware doesn't support). And if I can narrow down
-> further, primary issue we are discussing is that if cfi is enabled during
-> kernel compile, it is bringing in a piece of code (vDSO) which won't work
-> on existing hardware. But the counter point is if someone were to deploy
-> RVA23 compiled kernel on non-RVA23 hardware, they must have compiled
-> rest of the userspace without shadow stack instructions in them for such
-> a hardware. And thus at this point they could simply choose *not* to turn=
- on
-> `CONFIG_RISCV_USER_CFI` when compiling such kernel. It's not that difficu=
-lt to
-> do so.
->
-> Any distro who is shipping userspace (which all of them are) along with k=
-ernel
-> will not be shipping two different userspaces (one with shadow stack and =
-one
-> without them). If distro are shipping two different userspaces, then they=
- might
-> as well ship two different kernels. Tagging some distro folks here to get=
- their
-> take on shipping different userspace depending on whether hardware is RVA=
-23 or
-> not. @Heinrich, @Florian, @redbeard and @Aurelien.
->
-> Major distro's have already drawn a distinction here that they will drop
-> support for hardware which isn't RVA23 for the sake of keeping binary
-> distribution simple.
->
-> Only other use case that was discussed of a powerful linux user who just =
-wants
-> to use a single kernel on all kinds of riscv hardware. I am imagining suc=
-h a
-> user knows enough about kernel and if is really dear to them, they can de=
-velop
-> their own patches and send it upstream to support their own usecase and w=
-e can
-> discuss them out. Current patchset don't prevent such a developer to send=
- such
-> patches upstream.
->
-> I heard the argument in meeting today that "Zbb" enabling works similar f=
-or
-> kernel today. I looked at "Zbb" enabling. It's for kernel usage and it's
-> surgically placed in kernel using asm hidden behind alternatives. vDSO is=
-n't
-> compiled with Zbb. Shadow stack instructions are part of codegen for C fi=
-les
-> compiled into vDSO.
->
-> Furthermore,
->
-> Kernel control flow integrity will introduce shadow stack instructions al=
-l
-> over the kernel binary. Such kernel won't be deployable on non-RVA23 hard=
-ware.
-> How to deal with this problem for a savvy kernel developer who wants to r=
-un
-> same cfi enabled kernel binary on multiple hardware?
->
-> Coming from engineering and hacker point of view, I understand the desire=
- here
-> but I still see that it's complexity enforced on rest of the kernel from =
-a user
-> base which anyways can achieve such goals. For majority of usecases, I do=
-n't
-> see a reason to increase complexity in the kernel for build, possibly run=
-time
-> patching and thus possibly introduce more issues and errors just for the =
-sake
-> of a science project.
->
-> Being said that, re-iterating that currently default for `CONFIG_RISCV_US=
-ER_CFI`
-> is "n" which means it won't be breaking anything unless a user opts "Y". =
-So even
-> though I really don't see a reason and usability to have complexity in ke=
-rnel to
-> carry multiple vDSOs, current patchsets are not a hinderance for such fut=
-ure
-> capability (because current default is No) and motivated developer is wel=
-come
-> to build on top of it. Bottomline is I don't see a reason to block curren=
-t
-> patchset from merging in v6.18.
+Right, that's how I see it too
 
-Sorry for reiterating, I have been gone for a while, so maybe I lost a
-bit of context.
-
-In that case, should we add a comment in the Kconfig that says "it
-breaks userspace on older-than RVA23 platforms"?
-
-Perhaps a very ugly way to make RVA23-compiled kernel compatible with
-pre-RVA23 platforms is to decode maybe-ops in the illegal exception
-handler...
-
-Btw, I don't think kenrel-level shadow stack should be an argument
-here, as kernel-level APIs are more flexible by nature.
-
-Thanks,
-Andy
+Jason
 
