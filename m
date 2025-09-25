@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 290D5CAC5AA
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 04:10:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32273CAC5A5
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 04:24:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12F288E0002; Thu, 25 Sep 2025 00:10:52 -0400 (EDT)
+	id 592FF8E0002; Thu, 25 Sep 2025 00:24:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1062B8E0001; Thu, 25 Sep 2025 00:10:52 -0400 (EDT)
+	id 543618E0001; Thu, 25 Sep 2025 00:24:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 043298E0002; Thu, 25 Sep 2025 00:10:52 -0400 (EDT)
+	id 432A78E0002; Thu, 25 Sep 2025 00:24:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E6F008E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 00:10:51 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7600D13A720
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 04:10:51 +0000 (UTC)
-X-FDA: 83926446702.13.FB50D8D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 77C832000B
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 04:10:49 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="I//p5kPq";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf13.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758773449; a=rsa-sha256;
-	cv=none;
-	b=TMvIOacFMZwez+LkmQuQ8+UM1Vyzub9Liow2EXpO7GpFJDUWRI/iEYDb5OD1GnkNxCN7hp
-	j2lWQ8t9yEN5PA7yw3Yyh4np6WT/K/z7GZwQKkW+dgCSzHcU3FgE+jcwbEipLo+L8ikDJT
-	h2E9swaxwt58DSEBVDra8AuF6AI9M7o=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="I//p5kPq";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf13.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 301CD8E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 00:24:26 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id ED0F5C02C9
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 04:24:25 +0000 (UTC)
+X-FDA: 83926480890.15.D6A692E
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 00EAA14000A
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 04:24:23 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IH+3UrSy;
+	spf=pass (imf09.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758773449;
+	s=arc-20220608; t=1758774264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DvoFTvZlcmAemIkYd04D5dHzwPYeJtJCVmi1qum8rrc=;
-	b=V0gtiSUJjDbFFgMSqzcq/8PLoY2NZlidN0s2fDCQiATPp3J6DvKKOvlnRYpkuk4BEt6hjB
-	oIcVsfRDptunBgwp2ngdV9vyVv2O9QcIakEDUfuygA6F8qUjT4ZSfSXx7ZsT3c9G5FG4M/
-	8dAPOMm3zuwycXTKXewlv9bjjEV93J0=
+	bh=QpiP/D2G28QjDj2DqXsA2N/V+R2J0bIHlMlyqcqfUBA=;
+	b=zB0pjBh0TYdSYUmX0MquZZiKHgQA5LoUyfq5+XWHRJO3u9m1uESlc4jH4+aJTWyVXaKA9a
+	q0O0AnEKDhfPpbWF7hWMBkXAq+xJfkf2azh3vpAs8lydxm8MdlevS0tX1CKpS2QE2Wua4O
+	o6A2w3I8phCTVvmWKRxP+0byJ9+jpDI=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IH+3UrSy;
+	spf=pass (imf09.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758774264; a=rsa-sha256;
+	cv=none;
+	b=vItfb53T7YlVDYD3ugkVJahwcC/H8Z+4uhl7CU5iwnnQge6K/sRXawyqCMjL1USs+01xoU
+	ua4iloWiSVRl31QMytmZfw2IEVRGDBs8ytdpNCvvKK9QyvjpSyb/TfB7dSdHEOVF4Mqxm/
+	f1hYngV2Jtczy5Cg9om5tC8HB5284mM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758773448;
+	s=mimecast20190719; t=1758774263;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DvoFTvZlcmAemIkYd04D5dHzwPYeJtJCVmi1qum8rrc=;
-	b=I//p5kPqXSXXrQV753hpLvXddSAZgkMo0ZzLzI4XRaZbnyHQ+BmBhiUdumVA/vvujvDTX3
-	BlXA4O1MWa2Y6gC5yxsnqedniK6cvCk9xveX13WAesB/+Wv514C4/0y1lm5lFJ5BM112bp
-	t911oASDu/pTq0v7r3w4kpgUPAzhEY0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=QpiP/D2G28QjDj2DqXsA2N/V+R2J0bIHlMlyqcqfUBA=;
+	b=IH+3UrSy+xijTDZjZow14yZmoy7QLe7F+cVZcdsqfA6ipYwYK10fkcTGB8tP2c8FCQwSUy
+	7thwyCCamcpMDjp6Wn5pPrGmfNp3bCVXY6wiNweOG2rnDXIst98gG1xlvXmQlG73Y/ddK3
+	BO7GFUS0m7a0TWtghvh3/S0HBOr8iUs=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-586-rkhpv2bGPt-2pDxrB1-_ZQ-1; Thu,
- 25 Sep 2025 00:10:44 -0400
-X-MC-Unique: rkhpv2bGPt-2pDxrB1-_ZQ-1
-X-Mimecast-MFC-AGG-ID: rkhpv2bGPt-2pDxrB1-_ZQ_1758773443
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-595-SNOQjPICO3Ot1cu1Wi2YmA-1; Thu,
+ 25 Sep 2025 00:23:43 -0400
+X-MC-Unique: SNOQjPICO3Ot1cu1Wi2YmA-1
+X-Mimecast-MFC-AGG-ID: SNOQjPICO3Ot1cu1Wi2YmA_1758774220
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 711A1180057A;
-	Thu, 25 Sep 2025 04:10:42 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A2DA619560A1;
+	Thu, 25 Sep 2025 04:23:39 +0000 (UTC)
 Received: from localhost (unknown [10.72.112.12])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C58E219560B1;
-	Thu, 25 Sep 2025 04:10:39 +0000 (UTC)
-Date: Thu, 25 Sep 2025 12:10:34 +0800
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F350C18003FC;
+	Thu, 25 Sep 2025 04:23:37 +0000 (UTC)
+Date: Thu, 25 Sep 2025 12:23:28 +0800
 From: Baoquan He <bhe@redhat.com>
 To: YoungJun Park <youngjun.park@lge.com>
 Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
@@ -81,25 +81,26 @@ Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
 	nphamcs@gmail.com
 Subject: Re: [PATCH] mm/swapfile.c: select the swap device with default
  priority round robin
-Message-ID: <aNTAutSpmStbvLip@MiWiFi-R3L-srv>
+Message-ID: <aNTDwFLkc6YnjPU7@MiWiFi-R3L-srv>
 References: <20250924091746.146461-1-bhe@redhat.com>
  <aNQTw2JRYfYDcafv@yjaykim-PowerEdge-T330>
+ <aNTAutSpmStbvLip@MiWiFi-R3L-srv>
 MIME-Version: 1.0
-In-Reply-To: <aNQTw2JRYfYDcafv@yjaykim-PowerEdge-T330>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+In-Reply-To: <aNTAutSpmStbvLip@MiWiFi-R3L-srv>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: oZABZ1hD2pZ_lSdzopBN_-dweJUl5tlxtkvwHegntHI_1758773443
+X-Mimecast-MFC-PROC-ID: SuF7ZLaUxBHV3UTr5bwe876JG2JC2biJBU29aWJG5pE_1758774220
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 77C832000B
-X-Stat-Signature: 8rjnkufgdcqu1yruym48w3spghri96pk
+X-Rspamd-Queue-Id: 00EAA14000A
 X-Rspam-User: 
-X-HE-Tag: 1758773449-844452
-X-HE-Meta: U2FsdGVkX18vOl/BzpBXigyc4NX9fZ3Zo4kktyVAfeLT7jEvu2bxxlY83RlJZnmhn6trXz4Xfq8VoRgT3kxqoRWB0pZ9yVE9kHkhdSr7uv9ap8NSs7CB7z4BwEzK2b/6zkNcO3EfgeCaumQ8a5p6KujtOGfSMOiHEEeuV72wkTkdi88jKpnfNDML/LJAWGW51CYIeCHe1ro8JY040knZkmzn/3Iyvbhfp77g2WK13RM1VuwvBwZ8DfMYJtwId2XngNdxRN9lNwde2kQeMMlTDlLByApWcpZOZMG6eVEyzx7/QMjHCXsfia6bGOpwdzAFhbhocgoTuBCE9ERfO4cABQODnWsjhmq8tngBCJQbH1Di8p85zUT+2vNN42Tc713wyuzPh8QSQPP3wka4pN47elEkVU27slEcGV75D2PYaIMZWIJlCX/GQHXHOqpNzXRMyavTax9GbB3vIP1GOpMYn4TTov3s7nqMqcAvptW68sCe5ejB4BK6XYeAik2yciEre67qjqlQ+a8vDC53f/qTpRf6gXL09iuJANGtjADxelADAi9Z6GFp0iek2G/sUR7JoEMxB8S6D6jw8wlOVCPkQTznEhGC75hcPI34xXZ/SOVv+yVnJFUpuyPnPuF01xyhnltz2ZNfNXuP/Vyb3iRToFf09BgbQImt897kh1vQbHLXsHwOWOJ4lP7Kzo1sHporS4N4tSBuUUbYjbUsOtDf15eGI3im+nwB7Hyz3wHVA/PEJ81DV0YM1ppyC6AdRys97lYqCWvvpxDM1y21FD/Kq1i7JMgp8z3S9Wag3Ip5tbzxI3P25kJy3WMXjUN764ab7QgH4BoDP6oAggskEdmfq7p7mw3IwVFeudcNf9K1dcTEqR2VLhis6BxUptom9UAgcP5V8cn7CuohXlf70lXHIB7Ixghly+YG4mgSeqdqUIuaqYvoOrdlICSns4OGELA2VcAaZaFOZWzSrRZiLdr
- E8nrtXYF
- LVNg2arzGYJ80uB9ua7BJZnpRgIiXvqEJtUcoXA0+zLJ4YDJfsmalx8lRMlHyRQQ8vOZB/I+z8jegsYNaVnn2YkKEhlaRAnReLzsvNsC1pSoP4UsB75hWFxTMFhlS/lkkq8ekQ0TLAX+aM73KSrM6fQNGoR5Ld8OaU1Em5xoqRV9Fx9WiGXNFiwtLrpQPq1eWQaSfyFHh3xoQLqZz5cmY8vfcWmjD6tNhVbwFFU9cGMfiVPwDYn6ZPb7YmgW72FWPG5HVQ2dN6FULBmdgQ2u0LJ4D0u1o/A5AGnSkUQiUvzJX99kXw7HGeNIzlF74UZQV4Jat3mRM+kcs9mhLlW5Ihj4HG32DEk6EZc1FXEerBBETFNTS5s4jFTC4KPyuPW922cF26795eDMvekT/Ru+ah+Dzf3XpR60H73o+hkHVPwKi6h/B8qIAyqj0zlimNJ0ILEeS
+X-Rspamd-Server: rspam07
+X-Stat-Signature: h6wxmjw3juyxdn7y4bq7mwbxckua5yiw
+X-HE-Tag: 1758774263-452815
+X-HE-Meta: U2FsdGVkX183IzjQ3WHbQib1GU9wnQpz+3Tx7WFVaHNlb3k0VZXSYV+cx+fcJ9bgK4bMEUa7WeQdwyUo888XZdlPqYcXbFa84v93mRtg9CrTNfHimnwEbUz9V26i8gN+dqbcNNW4SzFMP94FoK4CPxZjrkdE9YQ+bCOufQ5xBRcbzP+Uo0DLjGottldz52CkS136gAyUhugdgNuT2CcnP7LP9zIRGodfBu73XbUYAqiO2/ErT9N5fXKhGYZdl54AVqwOnAlx+FF4CFmBUdzdqcjmkXGi4V4kprQIPTnH/74T72DjU2AX6RdZf8wTp43VgGAr4N5V6FJo14Q3Lfqc2Ais6wNWNFRQIR47tkwlG1a7ou5hqRBu5PiZ0+YcTFNdIlS/VACaOvavbhaKipZXwcJNdDXqQe6V6Xp6iY6ZeK2J+I7IDJky4LAMJC+Pt0025c3QCVpc3hjVb205kbLkz9nhJk8lQ71lGzumrHpK4e22Y1SySxvWd6oNi/DhDRXvStguIALW3KITZ9z/wGyN0hIEg1MYVEg9PqgvGsTc8/LHZNSvLP7sC2M4sr+OKG4y05HBWr6PApgRPRpGvifbLaSDcMukZwJ+ECFTXILjHHaymb98s9Qr4XMoPULCTv10nDQolVHk1Rsh1p8ZI7+eLo6tOuoIlTr0Yl87k/rqP2GotgFpG7H6iIyGABTn53joVPznmTY53zzni4ztUTvLaroa4wSQQ2+u2WzZ6nZJ/L/Mh1jkl0LgIPhsj8ZHX/BJrjCzqgRujYX3TwDcSaUby0Q/1PdG+Pg3ffF9e9/Jx40/CLY9MrkLsJyZjMaURwwPLarWoE17kNMRM/WebKoFghpLP9apznFxpBMM62C36nvUbfRfgxIDJWEsdw7nHdWh4crWw7o9++3rNALNwmpA3oQBQhi/iNwXjwV2xuYQhLJy1yl0iQNgXCSSA2BQQVvKKKU4IK2t9FP9Qqg/jvE
+ 4uZq4DSk
+ G6lVcaQpcAY4CtQgVOccOj+bnUb3hbvFATGS7AcYrh3/EV/YaedIDof4FH1+W5QoH40Q4pOU9jBGC/yU0gzRfu8sehZvRgCEYAP5zhty12qXpwP8zZkcnB1pFhEIAdw4llZ723Xy+lCjV0o9jrlEmKv3W2PrVKK0KJovLrUlKR2KkRSaNnExRDSS4xnnGK0XxzOMUKDOx7rMpQK5mR42HDiKEwfpciQyExJhQ8AIW8v+qwtloGpxDV1/w60Ec+sP9TnAbXp08OrTgq1yK7vjGfZ88oiQeAfIqBvjrRrP2ZaapXx/lirQ7VQz+jbhwLpg0mJco0vGbEJhFx/o+FiGciPN10niigTQMBlOh00iKuNtQJJ/J80Tb0n9DGvrm+Hy9AQxyEjYtcD2T06pNdOg+F/wE7oz49HDQrUtCFgplBw4W7nhhLGYsax+W3ogbztixoxhHOlqPlVDCwpuKsCyK+CdUuNpWqo/m7zl1
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,16 +109,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/25/25 at 12:52am, YoungJun Park wrote:
-> On Wed, Sep 24, 2025 at 05:17:46PM +0800, Baoquan He wrote:
-> > -		lockdep_assert_held(&si->lock);
-> > +		//lockdep_assert_held(&si->lock);
-> >  		si->flags &= ~SWP_WRITEOK;
+On 09/25/25 at 12:10pm, Baoquan He wrote:
+> On 09/25/25 at 12:52am, YoungJun Park wrote:
+> > On Wed, Sep 24, 2025 at 05:17:46PM +0800, Baoquan He wrote:
+> > > -		lockdep_assert_held(&si->lock);
+> > > +		//lockdep_assert_held(&si->lock);
+> > >  		si->flags &= ~SWP_WRITEOK;
+> > 
+> > It seems that the commented line `//lockdep_assert_held(&si->lock);` 
+> > should be removed.
 > 
-> It seems that the commented line `//lockdep_assert_held(&si->lock);` 
-> should be removed.
+> Yes, it should be removed. During swapoff, si->lock is taken, while
+> during swap_range_alloc(), only ci-> is taken. Thanks.
 
-Yes, it should be removed. During swapoff, si->lock is taken, while
-during swap_range_alloc(), only ci-> is taken. Thanks.
+Sorry, I was wrong. That line should be kept. Because during swapoff(),
+we need hold si->lock when we call del_from_avail_list().
 
 
