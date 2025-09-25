@@ -4,96 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55A12CAC5A7
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 17:43:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC329CAC5A7
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 17:51:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F00B8E000A; Thu, 25 Sep 2025 13:43:15 -0400 (EDT)
+	id 24E728E000B; Thu, 25 Sep 2025 13:51:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A0C08E0001; Thu, 25 Sep 2025 13:43:15 -0400 (EDT)
+	id 1B0F88E0001; Thu, 25 Sep 2025 13:51:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78F1A8E000A; Thu, 25 Sep 2025 13:43:15 -0400 (EDT)
+	id 09FE48E0002; Thu, 25 Sep 2025 13:51:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 63EFC8E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:43:15 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0957C1A0450
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:43:15 +0000 (UTC)
-X-FDA: 83928493950.20.2DDAE96
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 71F1F14000B
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:43:13 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Unxgyn6m;
-	spf=pass (imf23.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E88418E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:51:24 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A5942B992F
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:51:24 +0000 (UTC)
+X-FDA: 83928514488.25.52EF8F2
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+	by imf11.hostedemail.com (Postfix) with ESMTP id BD4F140006
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:51:22 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=gIwt32te;
+	spf=pass (imf11.hostedemail.com: domain of 3GIHVaAgKCL0mdfnpdqejrrjoh.frpolqx0-ppnydfn.ruj@flex--jackmanb.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3GIHVaAgKCL0mdfnpdqejrrjoh.frpolqx0-ppnydfn.ruj@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758822193;
+	s=arc-20220608; t=1758822682;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iEajfTB1TGVaGyQKqPDxYXxgaXILGis08QBJBeset3M=;
-	b=GsOWGIB4/QpcFHa8VUEeNmYgX93gX0EBiv49lE4eAifylsdKF2iUdnKnf1EgHD8Vxs6P+H
-	Jz2hDK+uaKTyqgzhNd5ttdObh+6JPYVNjuG5mI4WetnN3AtScWQyd9GztPwZq9D3K8+e7v
-	nvYcf/6Lzsp3UFvpJiygKY25vGDgW1U=
+	bh=jpqAAvRRl8ijYNcMuZKa7G4PlR+tOnu+IYSl1u8opK4=;
+	b=2iU4KDuXdqpHcfQMs91O0eiOAjLrZJSTTPKD81AC2fLnDpAC/UsMh9DYVGlyaxsx4cWPeE
+	z/BMXL7GpVrU5I/HJDYUrfiYZ42F147Zyi1PcSQC4e36tdFCVp1ozc8hbZeP1vOkya6KE2
+	xe56+DcLNFEf+9QDFq3Fh3AZfHw/K2U=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Unxgyn6m;
-	spf=pass (imf23.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758822193; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=gIwt32te;
+	spf=pass (imf11.hostedemail.com: domain of 3GIHVaAgKCL0mdfnpdqejrrjoh.frpolqx0-ppnydfn.ruj@flex--jackmanb.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3GIHVaAgKCL0mdfnpdqejrrjoh.frpolqx0-ppnydfn.ruj@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758822682; a=rsa-sha256;
 	cv=none;
-	b=EsdG06dOprP9+PWKbl21XI+NjLkLyrgRNUhzG9euObGr9mDYHr9QtIWEzJ6w79TJGTHd4n
-	yd5vZQ9Nd6fZM8VvQ60J2DY60FerjzQfNRh6PNyLDlqi0HzNikZpDb870ssOo/Hg+x5HL0
-	u4GNKZk+ww4anP/Efr6oPOpLNEknx5U=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 59952611CD;
-	Thu, 25 Sep 2025 17:43:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B12C4CEF0;
-	Thu, 25 Sep 2025 17:43:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758822192;
-	bh=6dZOpQBW/lA06q/6Y0/CJJMMvmBCufgtJLcVYXd+Yfg=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=Unxgyn6m7xG/mtrp/KMSCQcwsdWhvmbLsFz1bfLIqPGVJCUcZWeuF+KwUFW26waeR
-	 8MQML/BxvpUuHYelcSdzftz1B00QmRjVh7LCS/lLBL9vxo+4VTdtiQbxIjlL74Vhp5
-	 0tJl1HChfVNE2/tfseyYLcAMEmYBJtdz5xIqcD6QUWoWtjOjMv20GxQiV+9BZ29xxz
-	 J3rohqJvaoADCqb2zpCatsovUTTVK6zeeqsLmciSTN0zjAWWMu5nwUCS2hcCyhluXL
-	 NZ3E/mUUDvBTzhSSDq1JncC8kE3n63LY7wnUeVGgIcpkD3pXbdjGPHK+vdN2QAYHlm
-	 Nmx3+nvqDOnow==
+	b=6Qx3bOZXF8iCES/btiq0Zkn+6MuDV7p9Qpv6ik/1Io1vdbQ2XVFMuxsTw0jYl8rkAhoUMo
+	BU4fje114yWHfdw1Nm6VEeFGAHiu2NUgY221i2nw0HlprHdXuhfxO8H03sSpm97u31/udG
+	bQameASCFlVNkfAa5i/ZcMX94HUqSlw=
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-62fce1f3fa8so1058391a12.3
+        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 10:51:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758822681; x=1759427481; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jpqAAvRRl8ijYNcMuZKa7G4PlR+tOnu+IYSl1u8opK4=;
+        b=gIwt32te30NbvmrMeYbEnhiMrNY+yd/mSozi0o5szrn0K9ej5i7UH1GJpxZOwsvhUA
+         zEQy3M4yGEa1c75DByROTGT18ItDxxKFr6M824nl8yLUnyhi/7kkHQWKE/oAnDyFECxF
+         A0m63cudT9/Xef4tbPH8s6yUrHoqLr0g5/YqhDZtA4C/tZMYOuVtWBoQKdh8QT8i4lAF
+         oFasxNlMThB+JKgAYIaH7cjPC8Fi191n32vlgfhdUEwRBeojoi61suDNDsNW5ncdWvp9
+         O/BLKwQQzmKaQQpyE2rE2PO4eSMExkf22N1kEtCHi+wS4OeEK/iZN5EKYnnnmRSQWZqe
+         /fLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758822681; x=1759427481;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jpqAAvRRl8ijYNcMuZKa7G4PlR+tOnu+IYSl1u8opK4=;
+        b=f5D2A0THWYyztzMnaPmjOepIqX4e/lEHfKnkoPCMKS8Ni/Gi7w0n+f+TVG/NmTpeOS
+         jzWWh8KoUtO+DSc4K8ODvsPime254dGOO8IJLmlyVzOsiM2ewO4INi+Is+A9hRgtW1Ac
+         HVSyWl3gMfHNOYfyLCnL/h/aDHc1tFh5E+mxdqlh4uJrGUhIj3nQ21hX+lHWNymW9yyO
+         ae7dz7VdrRLXv6DW+ij0K2dmKfRUOSiikYrdBBO+8TlxXTjOzCxTc2MzUhfrLFenHlQg
+         4bKJQMCgOuCFcaPfzTJ61V17ceRFrAYhmuSyp/lwWghrK8i2ga0sbXbtH1t1SCiPto3r
+         dYgw==
+X-Forwarded-Encrypted: i=1; AJvYcCW+ipgcnYWZVXYUqNMNixVJzxN1kPjQnCxHQvOuLmehzmkafnPGIyjmEsx7rDn0XFPM+Xsp1nUMhQ==@kvack.org
+X-Gm-Message-State: AOJu0YzNHOI/T1tC63MnbB2BMabitK4uBgIhdW4NeQM/LhLlzPkag6Pa
+	rCNURjnYZGR3CuPZfwIurOoU0qEjcxX+bJlgnE3t+WlYEISfaSVgcRN4f2E5cxXQuYn49auk7xq
+	pf4QQXddhwH79bQ==
+X-Google-Smtp-Source: AGHT+IEiFUjjNFB9hUrXlVQKck8BwlAQbc3hiE92OqPlhCkF8YWxZQAwFhYvcC8kcCf0XKrNjtXumE3uyphhJw==
+X-Received: from edsr23.prod.google.com ([2002:aa7:da17:0:b0:634:4c0d:974a])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:543:b0:62f:4b68:bfae with SMTP id 4fb4d7f45d1cf-6349fa8fcf7mr2697793a12.31.1758822680886;
+ Thu, 25 Sep 2025 10:51:20 -0700 (PDT)
+Date: Thu, 25 Sep 2025 17:51:19 +0000
+In-Reply-To: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 25 Sep 2025 19:43:06 +0200
-Message-Id: <DD22FI7F2ZHT.32SL8PXFZZHV3@kernel.org>
-Cc: "Elijah Wright" <git@elijahs.space>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Liam R.
- Howlett" <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>,
- <linux-mm@kvack.org>
-To: "Elijah" <me@elijahs.space>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH] rust: slab: add basic slab module
-References: <20250924193643.4001-1-git@elijahs.space>
- <DD1SGLU4180C.361W5XLH76XNC@kernel.org>
- <73d7d53f-439b-44a9-98ca-0b1c8fbc1661@elijahs.space>
-In-Reply-To: <73d7d53f-439b-44a9-98ca-0b1c8fbc1661@elijahs.space>
+References: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
+X-Mailer: aerc 0.20.1
+Message-ID: <DD22LSMJG70E.2N2B3FF1KKPUE@google.com>
+Subject: Re: [PATCH 00/21] mm: ASI direct map management
+From: Brendan Jackman <jackmanb@google.com>
+To: Brendan Jackman <jackmanb@google.com>, Andy Lutomirski <luto@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>
+Cc: <peterz@infradead.org>, <bp@alien8.de>, <dave.hansen@linux.intel.com>, 
+	<mingo@redhat.com>, <tglx@linutronix.de>, <akpm@linux-foundation.org>, 
+	<david@redhat.com>, <derkling@google.com>, <junaids@google.com>, 
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <reijiw@google.com>, 
+	<rientjes@google.com>, <rppt@kernel.org>, <vbabka@suse.cz>, <x86@kernel.org>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, <owner-linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: BD4F140006
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 71F1F14000B
-X-Stat-Signature: rfrg6ymfco3ke8557wpuubgszs75iqbf
-X-HE-Tag: 1758822193-62817
-X-HE-Meta: U2FsdGVkX1+NBYI130TYPwXuoDaD8SmpZx3cvJF7+QIE3RwULDDCDJYZdk3AngX2NON/VcCov05fkB4onfzvsKPpr531lHRpqhemvPFmmy03u6pbDHpUPW+P85bWKN3BAU/X34eY8uAzl/MPMiCsGxO1cAy8JRvfop3P7qKcIhfNbUtnikcwUOdYQkHAL0fayse6QhgrXcALFKG83hl8VADDDM3yBd1umtli57esC7h4OTbkZEIAafgLrt4ixcoggSgRrHL6LUzZoKi7M5RpFtAK/ui+covDND0NH26FmcvwEvsKDuUyahGYVP9Xbmu7hf0HlGDhjwCfcnnruqH3c//2CZeX6e7+Jl/ROA+kfyNjq7bS6VKQIijzmbim3GKIiV3WyumHqTSrzDzcRS2VZhXPPV+soUXIVciKECGieYBIU8i+V0EYHEe/D5gUAsG69d1lkl3DFlJC8lZZcpq7v79MHg/4iCr9Ra8ZhPEU27rUT8eJgMxuV0XPiTkQYmi9fSza0ZZ2E0d5W1DZW8RHEdkZNSneJIeV5CeS3jt6ErETuInKfORgzWvaRxg63UAVvMQThDFaoGvQ5kd0vcbzscHJ98emk1S9HNHWTXvYlMLmzUmHBE4jNIwOH6onsC4Bo52B7TS1dAafoazZ5IwMorPYQalI3/CEpxjAQ98iQbtiLzElexvDD6zwy5/FHCDMrqIXpFx8TBv0tFMW8fo1DDGG78Fz6eNFnrrOC4mNW9piAkpRFZdjuqPRhnHnmjn4tLZNwtGX/a5+36pnEL0teGKclM2Ri0yRoT631CAGmgzx5N7T2g16VcqkI+n4NDCYQwvH9OERlL1slt57wxxH/OI7D+W1bvXCFRYIriQqpVYUVWc0bnanrZSlxzi/Z7OD2Cy+Mj2oR68PclJBYnohKoUAaUFUmwnMth+gj/lWUOriEG10H+7nvYe5BQhyAPFfwT8o0bgA2Ivc6RxgInx
- km3bGqLc
- s1ef2eAChMuyJcpnGKhNdbWfcDf1joEXROJkPcQDu9dBiTX5xWGnahlo+bwKYz04AR/Z78pxoqbDpD1PqHVrxr5b2q13dt26GjxVHhR0HWnt/JxprfHAQX8Hv2vhPdgzTVMNG3dybuSGSHp6ce43ZMopRBZPO6/AKv387Ys4XKnE2UOXPULIp+b9zBtvmk1nvAUKRg5vIK84o98rqShrXbPv+AYSBNu0q5Cmq5eoul8rSV2odHDsR3zfUqf5o9TxVdc8lCoAsWy3/opD8+YR9d9Tdetg6k11mpRWsi6z1X6nfWcf7ROByod1vtwFNVyehIZ7GLTNotyA2zwml2P909WMUrTNYX4SHj4cYEfkYkPvQ+BWB8bUKqUF9qqNAEtW5xsWwfT16dfMOrmoe+/tOH1R+SQ==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: sgnpssnnzypy1fsm9imwyhwj3fokgyto
+X-HE-Tag: 1758822682-517205
+X-HE-Meta: U2FsdGVkX19RrqJ8DYc1/eJsAk6swR2Kxx/KwK3FXjAUd13RzCCrAJCwD4EJHXOaadnjTZ8ZytuybWgMaypk4cB4VPRFfqxD3ZOGapJJaLecLS1bqFbsegUnjhE/z2sPQflRFNBHVIVbqrTf1oBOVAapIL4FHumIfKDbSNN2GyCSUhYB78H0WNS2PaMkpg/b5oQEJnPCr937auBRRWOvIHE7e9NWtdBbo7cIKCqkNU/+C4wL1d/DqMBLUwIlW9+c5GLGdlb6GEXr3xLJFoMRO+YiCNfIg5TTemcdTynB8+wxhBwS4fvjHBbj0MWW5m8anNKeAhqk1ywtZ36VnM2MHVa0tGkyMQFeriMeH1hAGAPeCHeM9PsfTjNJs0nrFu7EF6O6ruvLpH8Zp/bCM8FhqU6GBH4WJFBNOVtby/WmJJaaQ5Jr+aTGhGYnNHSvBJo1U4B4sxXoMWoDc3fQFp59qu6+dvp93k9bbOfVw4WCNQH0LQCfV//tTY7mPiUUqaOmr6BC75v0x6LH+bRLgtSsj0KcsuxaH4QamfrchqsoHuCoNAoMTUpHXvqWZjMjMFekFfBt0XAezgfEze7hCn887hlT4ZcRWTizflvbtGBKDXPCthm0fvzVa99Aq4MZZaweYwpAlEQFA1/Kw2g6eOb+6T+RP7/AZctV7sDvlKltU/wE6dOQO2LiZJOGk/vCnq0Y7jT7ijjFxo3nF69BFgPxoRaReSvBRhO7kbDd9c7fu45Z6a/2p+EgjxNX1gOq4q7CbdpnL6iaSKT9+IEjVnS6IjbTRhnM9u8jp4jyBqFeNmmgCBqPzNDisiNkse9Wdmwmq03nkhEL3OlCOy+/jbVcAkN0TO0RgrbZUszrk9Fx1btGqjLWkC70iDop/Q+5P77siIzXim2w3VSOkZwioeQR72LLYzYuMx5klV5ygxGulf+SV4e0pwIybhMYL+QdEuQMTlHsfhQS4+OXn6PFXg+
+ U4AY6XSM
+ HDzfCiGJTS3cOU0rZjA+GiNhlp3xkIRyjQGdF9p+AcgmAVA1yH4jrOzH77wK4eSjWYQiD50o0awA1xG3YYeM3+r6Qodovm69KdQ6/gSGt0k/YgIzFzrbrg8ovsDpaVNKtBf4Fm4RRdqolecUpQEr71lpX6s8JhrSdLhK2WcKU5qw07u1G1LhFoxqD3ucrHe7qGj0EnY92PVi58wudfnnivvlqkk/fUXx9UBtC00S5A8mgubE0w0TobkdiV9iTDB5x4YxfB6cjxn3r2qM7zwzfOjiiJ52GKn/d2jYwjVcZ7M8GgK5KLzl0YEIk85NeZd4P5nlL+L7/uR43O5uF91ayiNq9ih9RU8evMbZXmndG5rnigGY07mxSt3MzHKAgZ5wS6MJGlcF51guywv1crFLfyf8CJByKUm9ugLFze4I2fkjGLvNwLnNecirsEQmgLXAmhvNRr5PoMR/6in2tmLSv1Tb3yJbNIbylA7hBIYBYvxOzd6a8/5tcyW4w1NQ1B1Zll2MX2V8pE9QM7nGWXxXULxCTdidzknSovyAvrVoXCf6C+pdK8Mn5wXegLqV10ZVjaWKakF8usnuYCrQaLsnCe3U6+oULy5ItE4OdbJ19BxLJq4r01NziMVKMCjjdaDkNe/0x2bfbfCXdYQ/MQv8IkFbNpBZK5ZWYrfccqNnJ3yrH2TaKMOFmdzDz/D3kpOgexBXWGw5XOh0+hBdyrhyu3gNU+w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,112 +118,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Sep 25, 2025 at 7:20 PM CEST, Elijah wrote:
+On Wed Sep 24, 2025 at 2:59 PM UTC, Brendan Jackman wrote:
 
-Please don't top post [1]; use interleaved style instead.
+> base-commit: bf2602a3cb2381fb1a04bf1c39a290518d2538d1
 
-[1] https://subspace.kernel.org/etiquette.html#do-not-top-post-when-replyin=
-g
+I forgot to mention that this is based on linux-next from 2025-09-22. I
+have pushed this series here:
 
-> I was thinking of maybe creating something like KBox for kmem_cache but=
-=20
-> I didn't want to touch allocator code yet, I figured I would just create=
-=20
-> the groundwork for that to exist. rbtree.rs uses KBox now but I'm not=20
-> sure it should, at least if it's going to scale to many nodes
+https://github.com/bjackman/linux/tree/asi/direct-map-v1
 
-Ok, so you want to support kmemcache for rbtree nodes. Ideally, you should =
-also
-have a use-case for that, but given that we'll also need kmemcache in other
-drivers (such as Nova) anyways, I think that's fine.
+And I'll be keeping this branch up-to-date between [PATCH] revisions as
+I respond to feedback (I've already pushed fixes for the build failures
+identified by the bot):
 
-However, in any case this should be integrated into the rust/kernel/alloc/
-infrastructure in one of the ways described below.
+https://github.com/bjackman/linux/tree/asi/direct-map
 
-As mentioned, I would like to see (3) or (4). (2) may be viable as well, bu=
-t I
-really hate the resulting code duplication (not having dynamic dispatch for=
- a
-kmemcache backed Box is probably not that big of a deal though).
+Also, someone pointed out that this post doesn't explain what ASI
+actually is. This information is all online if you chase my references,
+but so people don't have to do that, I will add something to
+Documentation/ for v2. 
 
-Anyways, I'd also like to hear some more opinions, especially regarding (4)=
-, as
-mentioned.
+For the benefit of anyone reading this version who isn't already
+familiar with ASI, I'm pasting my draft below. Let me know if I can
+clarify anything here.
 
-> On 9/25/2025 2:54 AM, Danilo Krummrich wrote:
->> What's the motivation?
->>=20
->> I mean, we will need kmem_cache soon. But the users will all be drivers,=
- e.g.
->> the GPU drivers that people work on currently.
->>=20
->> Drivers shouldn't use "raw" allocators (such as Kmalloc [1] or Vmalloc [=
-2]), but
->> the corresponding "managed" allocation primitives, such as KBox [3], VBo=
-x [4],
->> KVec, etc.
->>=20
->> Therefore, the code below shouldn't be used by drivers directly, hence t=
-he
->> question for motivation.
->>=20
->> In any case, kmem_cache is a special allocator (special as in it can hav=
-e a
->> non-static lifetime in contrast to other kernel allocators) and should b=
-e
->> integrated with the existing infrastructure in rust/kernel/alloc/.
->>=20
->> I think there are multiple options for that; (1) isn't really an option,=
- but I
->> think it's good to mention anyways:
->>=20
->>    (1) Allow for non-zero sized implementations of the Allocator trait [=
-3], such
->>        that we can store a reference count to the KmemCache. This is nec=
-essary to
->>        ensure that a Box<T, KmemCache> can't out-live the KmemCache itse=
-lf.
->>=20
->>        The reason why I said it's not really an option is because it dis=
-cards the
->>        option for dynamic dispatch of the generic Box type.
->>=20
->>    (2) Same as (1), but with a custom Box type. This keeps dynamic dispa=
-tch for
->>        the generic Box type (i.e. KBox, VBox, KVBox), but duplicates qui=
-te some
->>        code and still doesn't allow for dynamic dispatch for the KmemCac=
-heBox.
->>=20
->>    (3) Implement a macro to generate a custom KmemCache Allocator trait
->>        implementation for every KmemCache instance with a static lifetim=
-e.
->>=20
->>        This makes KmemCache technically equivalent to the other allocato=
-rs, such
->>        as Kmalloc, etc. but obviously has the downside that the KmemCach=
-e might
->>        live much longer than required.
->>=20
->>        Technically, most KmemCache instances live for the whole module l=
-ifetime,
->>        so it might be fine though.
->>=20
->>        (This is what I think Alice proposed.)
->>=20
->>    (4) Solve the problem on the C side and let kmem_cache_alloc() take c=
-are of
->>        acquiring a reference count to the backing kmem_cache. The main q=
-uestion
->>        here would be where to store the pointer for decreasing the refer=
-ence
->>        count on kmem_cache_free().
->>=20
->>        Theoretically, it could be stored within the allocation itself, b=
-ut it's a
->>        bit of a yikes.
->>=20
->>        However, it would resolve all the mentioned problems above.
->>=20
->> I'd like to see (3) or (4), also depending on what the MM folks think.
+Cheers,
+Brendan
+
+---
+
+=============================
+Address Space Isolation (ASI)
+=============================
+
+.. Warning::
+   ASI is incomplete. It is available to enable for testing but doesn't offer
+   security guarantees. See the "Status" section for details.
+
+Introduction
+============
+
+ASI is a mechanism to mitigate a broad class of CPU vulnerabilities. While the
+precise scope of these vulnerabilities is complex, ASI, when appropriately
+configured, mitigates most well-known CPU exploits.
+
+This class of vulnerabilities could be mitigated by the following *blanket
+mitigation*:
+
+1. Remove all potentially secret data from the attacker's address space (i.e.
+   enable PTI).
+
+2. Disable SMT.
+
+3. Whenever transitioning from an untrusted domain (i.e. a userspace processe or
+   a KVM guest) into a potential victim domain (in this case, the kernel), clear
+   all state from the branch predictor.
+
+4. Whenever transitionin from the victim domain into an untrusted domain, clear
+   all microarchitectural state that might be exploited to leak data from a
+   sidechannel (e.g. L1D$, load and store buffers, etc).
+
+The performance overhead of this mitigation is unacceptable for most use-cases. In the
+abstract, ASI works by doing these things, but only *selectively*.
+
+What ASI does
+=============
+
+Memory is divided into *sensitive* and *nonsensitive* memory. Sensitive memory
+refers to memory that might contain data the kernel is obliged to protect from
+an attacker. Specifically, this includes any memory that might contain user data
+or could be indirectly used to steal user data (such as keys). All other memory
+is nonsensitive.
+
+A new address space, called the *restricted address space*, is introduced, where
+sensitive memory is not mapped. The "normal" address space where everything is
+mapped (equivalent to the address space used by the kernel when ASI is disabled)
+is called the *unrestricted address space*. When the CPU enters the
+does so in the restricted address space (no sensitive memory mapped).
+
+If the kernel accesses sensitive memory, it triggers a page fault. In this page
+fault handler, the kernel transitions from the restricted to the unrestricted
+address space. At this point, a security boundary is crossed: just before the
+transition, the kernel flushes branch predictor state as it would in point
+3 of the blanket mitigation above. Furthermore, SMT is disabled (the sibling
+hyperthread is paused).
+
+.. Note::
+  Because the restricted -> unrestricted transition is triggered by a page
+  fault, it is totally automatic and transparent to the rest of the kernel.
+  Kernel code is not generally aware of memory sensitivity.
+
+Before returning to the untrusted domain, the kernel transitions back to the
+restricted address space. Immediately afterwards, it flushes any potential
+side-channels, like in step 4 of the blanket mitigation above. At this point SMT
+is also re-enabled.
+
+Why it works
+============
+
+In terms of security, this is equivalent to the blanket mitigation. However,
+instead of doing these expensive things on every transition into and out of the
+kernel, ASI does them only on transitions between its address spaces. Most
+entries to the kernel do not require access to any sensitive data. This means
+that a roundtrip can be performed without doing any of the flushes mentioned
+above.
+
+This selectivity means that much more aggressive mitigation techniques are
+available for a dramatically reduced performance cost. In turn, these more
+aggressive techniques tend to be more generic. For example, instead of needing
+to develop new microarchitecture-specific techniques to efficiently eliminate
+attacker "mistraining", ASI makes it viable to just use generic flush operations
+like IBPB.
+
+Status
+======
+
+ASI is currently still in active development. None of the features described
+above actually work yet.
+
+Prototypes only exist for ASI on x86 and in its initial development it will
+remain x86-specific. This is not fundamental to its design, it could eventually
+be extended for other architectures too as needed.
+
+Resources
+=========
+
+* Presentation at LSF/MM/BPF 2024, introducing ASI: https://www.youtube.com/watch?v=DxaN6X_fdlI
+
+* RFCs on LKML:
+  * `Junaid Shahid, 2022 <https://lore.kernel.org/all/20220223052223.1202152-1-junaids@google.com/>`__
+  * `Brendan Jackman, 2025 <https://lore.kernel.org/linux-mm/20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>`__
+
 
