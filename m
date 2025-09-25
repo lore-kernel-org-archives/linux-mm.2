@@ -4,171 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83BAACAC5A5
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 09:16:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD480CAC5A7
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 09:19:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A01B28E0005; Thu, 25 Sep 2025 05:16:33 -0400 (EDT)
+	id 044BD8E0007; Thu, 25 Sep 2025 05:19:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9640A8E0001; Thu, 25 Sep 2025 05:16:33 -0400 (EDT)
+	id F37C18E0001; Thu, 25 Sep 2025 05:19:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DE608E0005; Thu, 25 Sep 2025 05:16:33 -0400 (EDT)
+	id E27048E0007; Thu, 25 Sep 2025 05:19:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 64ECE8E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 05:16:33 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2640C13AE53
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 09:16:33 +0000 (UTC)
-X-FDA: 83927217066.11.EABF64A
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id ABE4018000B
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 09:16:30 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Sb2ZILoE;
-	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CD2788E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 05:19:43 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7F51586D68
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 09:19:43 +0000 (UTC)
+X-FDA: 83927225046.05.388AAEB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id E521914000A
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 09:19:41 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k0RZZ1Rb;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758791790;
+	s=arc-20220608; t=1758791981;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=toj2ZxJ2b4oOQ+sKDtWc0K+F9qjEsZY2B0GFhQ8OUJk=;
-	b=1flQq/m7IvSAXohwzEjev/4tOYStPbbiDCztCBW4aohFFNNUl/Amyfy5l+3s1PxgAqSls9
-	Ef7OY9NqLuRgdRabgwesULhmH7Ypnrcs8hf+pl5OpFLYQA0eTcpVfROV7tUIPseewEcz+o
-	Zmssujdv6/rxqHyGJvCoehrF+3uuBUs=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Sb2ZILoE;
-	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758791790; a=rsa-sha256;
+	bh=1vGy4r9I5hgyJ4PvKF1ULDLS+M/a8IQIyyw5mwU4gZA=;
+	b=ZP4mHVZupb1PiZfUL79UfCwX6G879qDa8MX3qU7ZM2oGm8Tr+GuRDeQ6AdUDO2jpvtBeNg
+	8w3sFqJOkA9QlasaZTwi3ZbkN0UbOsDjLEnBL3RKLrMhqqaM6lE/ctUwmqxAqSLMHluI7U
+	CgFtDk3jExdgyyR+zzRbtVNF+g7wz9s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758791982; a=rsa-sha256;
 	cv=none;
-	b=Uls7le2EQyTCDjhNVb2YrxHN7U/J9gD/PYk0k8fGKhZeaF1CT0s760015/bOPnnWWUDjtu
-	d8gHMmjGrbKYvwpjTd8uB9tyR5fhQOAcJdWOQChXE5wuzAT9npXA4hWWgIkYiErh+vO/bY
-	wlFuGaKy+XAAgUyF/cSvIhz6rgUrNBw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758791790;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=toj2ZxJ2b4oOQ+sKDtWc0K+F9qjEsZY2B0GFhQ8OUJk=;
-	b=Sb2ZILoE8vVsvABZDtP6UD5VEQ1PfwbC2txX+IQ9WPsQUr6yxq5eWNRyfKf2aQukF6aYoI
-	L4/5dIS8TA29gb7TVxevOaG1UnPdKOR6MHoWXinAwMsv7cK2v4szS09T8huFqbmsWnVX3m
-	yva0jJQ5r5uB3bvOGj04nozqXfwCv/c=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-148-YxmDGpBQOqGqgQULL8ZeGg-1; Thu, 25 Sep 2025 05:16:25 -0400
-X-MC-Unique: YxmDGpBQOqGqgQULL8ZeGg-1
-X-Mimecast-MFC-AGG-ID: YxmDGpBQOqGqgQULL8ZeGg_1758791784
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45cb604427fso4125255e9.1
-        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 02:16:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758791784; x=1759396584;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=toj2ZxJ2b4oOQ+sKDtWc0K+F9qjEsZY2B0GFhQ8OUJk=;
-        b=EOnU0JpdCTdF8GCM7wUzseMx9M51g5xtqylVpaRxbX9A+R3oRPsv4CN4Zk1RxP56X5
-         9xW6kEnv+IyTdagbDTsK2PQryIOf5wROCyQzkP3YfQHkoJaQ8m+LfrCUgWOJE9tpxABr
-         qE/bL0GVTEtBWHH9lAtxboURkbdn9ngixGOsBukzDc9SeBi4K4r5z+FMlzUUttH5PWd+
-         rqp35Q/JbqgW0A/xm7SMUoafjlUKI3MlS46Yv0xK33iQ/Kfq5/f6/3dJo1lSw+oXmzn9
-         Qu5rkOnyg0ABv/K7qQZXejqiXZMUVKsbxkpU2wMmvkkIONVsT9klwRkF6IUUR9QY6RYh
-         Ns8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU8tR2gzUxDJ63hmtzqwQK497ixM85hVEUyhJKS3VuMal/2KYQT8e8XaXjMhiemtauhkswZ4PPqBg==@kvack.org
-X-Gm-Message-State: AOJu0Yyp4xMlnHrPMv/7ukYFbiA5Hbb7V0qSR6ocapKeXLCnQ5WCheO8
-	smdw9CK7vIVwkmhXK/fLnqtl6ZMCQbldR7bSUryLXCLj4wZobBddL6nrXKmgh5H3wHSW+mFqgSz
-	vPYSUTV23qeazx2YAp50CvGRAZmo3yKokPOHy17Xi0re7WZbsqHoc
-X-Gm-Gg: ASbGncuXOvnmw9sjb79LJoIMj55plkygSUm14XDG7bk7OhPNwNL6cE0Bwe7LgVIwxJE
-	qA20Q1Yp0fGZoOKGXgYi6QbB7tKQETCWzpNbobfq4VlofFeKDzCUvF0vQh9YdunqF6C8z1MMwFe
-	LkDFzy0mWavztArL4NfEUi1/dDuVEmHj/JjOR+jGFQ7xu1CaAamzEE8DDLjGJH5T1Ty0tPUYSMa
-	LHqg9jlVA3navl+cZCtY9JO9EKYg8tGm9CE1SU/rwsjeDeEiADOsnnOaUw/G75BkPstmWCfKZ0/
-	Oop6pxq+RbsgkX+USZ6QO5+OTghnGRnOrssPpgxNr+0hCrEaJYCp55obBqFZqDKz9WSA7e4GEJo
-	48CsHYHz/h45mw8hzp3kjXd2RhkP7xOIGrT+Xv+5415YeLWeIkCvJmg4hO+O5QEYEgEq4
-X-Received: by 2002:a05:600c:4511:b0:46e:1d07:5cac with SMTP id 5b1f17b1804b1-46e3292451amr28057805e9.0.1758791784142;
-        Thu, 25 Sep 2025 02:16:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH2p4A+NW0u3h8NbGhux42vGg83SKSNp9azU3IZCNKQ1B2shvHwE4aZsxwTXhfaWI6hnLnTWQ==
-X-Received: by 2002:a05:600c:4511:b0:46e:1d07:5cac with SMTP id 5b1f17b1804b1-46e3292451amr28057545e9.0.1758791783682;
-        Thu, 25 Sep 2025 02:16:23 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f3f:f800:c101:5c9f:3bc9:3d08? (p200300d82f3ff800c1015c9f3bc93d08.dip0.t-ipconnect.de. [2003:d8:2f3f:f800:c101:5c9f:3bc9:3d08])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e33b9e8aesm24980165e9.4.2025.09.25.02.16.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Sep 2025 02:16:23 -0700 (PDT)
-Message-ID: <072b8684-47fe-4a2a-bf69-f6d348f0489b@redhat.com>
-Date: Thu, 25 Sep 2025 11:16:22 +0200
+	b=aKvwgcCbAMtIJkFo+0kLOLbBAAwTbA8gYaVSPvZZzFk8A6IpKk3WiMVzSDVFbvnD0swBZy
+	Lbv+xduKW9qq3Hz0HmWpe2VAJ1RZ82T/UFr5j3gc9edi8U9TwWoiMFttTm20fHBahcJvXu
+	4FjLkIwhYc2APbEOc57oYIRyecjk7Ug=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k0RZZ1Rb;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1EB4C6013C;
+	Thu, 25 Sep 2025 09:19:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96BDC4CEF0;
+	Thu, 25 Sep 2025 09:19:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758791980;
+	bh=AQqMJQUBDrq9kxPLr/qGEjxf9utS86NJR0MoZy6d1v4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=k0RZZ1RbKWAAkwlLtYKHcY7S4z/MVWCM50D//MM7NbnU4x0VQ104OQW68HBeAYRYE
+	 Gk60I4tro2JMqe3Qjc8LwqFxAq2mJlq+lKwYDTQWUkX3AkNoBii2ZDZfEvqZN3rEM3
+	 A3jYcewOMAlaG7c+WSx11wDrWKMqV5Bcp+7l8t8kM9isRSp+OuRBU+FwhwS9ueFh46
+	 0/QAkKl2M040I2KBKOwHwNMlJg2blEiveia9uQcZQJmWSKPe2WfUhlSKJLGTLszk2K
+	 Fb5QnhvksFC9LTB8hhqUzWg6e7ye1m3pyxoM4nRn+bZFFpXmDoPpHtCOVBTNV3MagN
+	 yOB/K5Ig541Lg==
+Date: Thu, 25 Sep 2025 12:19:30 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Jason Miu <jasonmiu@google.com>
+Cc: Alexander Graf <graf@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>,
+	David Matlack <dmatlack@google.com>,
+	David Rientjes <rientjes@google.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joel Granados <joel.granados@kernel.org>,
+	Marcos Paulo de Souza <mpdesouza@suse.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Petr Mladek <pmladek@suse.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Steven Chen <chenste@linux.microsoft.com>,
+	Yan Zhao <yan.y.zhao@intel.com>, kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [RFC v1 0/4] Make KHO Stateless
+Message-ID: <aNUJIsElr5L5uxNv@kernel.org>
+References: <20250917025019.1585041-1-jasonmiu@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: move rmap of mTHP upon CoW reuse
-To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org
-Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Lokesh Gidra <lokeshgidra@google.com>
-References: <20250925085429.41607-1-dev.jain@arm.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20250925085429.41607-1-dev.jain@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: bHIYGdlwdLCDXzEM2ZZxlZP0hOQCKag3YgaPPudZkck_1758791784
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: ABE4018000B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250917025019.1585041-1-jasonmiu@google.com>
+X-Stat-Signature: ic43bifj5ojw11tyrafqa4a4jtihdfd5
+X-Rspamd-Queue-Id: E521914000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ko569ar369wnd6duzepuumthnrgs8uai
-X-HE-Tag: 1758791790-544276
-X-HE-Meta: U2FsdGVkX1+SHHS5X4DHIG2xqirDE7U3epiRvAht3TXz07zMiQvTQqXenxMcgWEr4asTp/b5Uk4kwXdQBdRm28zMo31hqGO7ZASgJcbnIVoycqDAgyTevXjmVRTlnSSNqcac173Iq658/927W+ptzTq90drm/K8PXKm5PEsHgAS2ltteByA+XVlvmlF7m5/6mdUjvsRPLNdb4xKzHw2ZXc/7fszMNFYnBF7B5bEnt4OKUL2Aa/lVKelcV3hzvOIcRx/5pU1+29pNkY6iJvxxbMtwgC5o1D+N5QfAWJwvekE9+a3YTd4aDMtMrA0/KXVbkEBNO5wmIX/l9wR+xa5g4vapo5SIx2xplTxFrvBPPYgZe18EIWRHG05C8h/dHFTlXP7KaHYssUQtTli5cKY3bo4jPKyRwQC6HYAjm4PiXZjk0lq+wxXIHhN+eRluOWVqPnSoCh6iP98xhTCKiML9361B8OWg7i3ar2bl++9NmKfWshgEN9iZi0AzoOMrkH8N/6XlenrzQv8Yz7GZNsJEaxHkzNvzIobsNfdgN22n4vMAo4S5Shhk7NfH/YVdtaA+EnDsCPBEGIYOtNHbQ/R5+d6E69XJHw8hUm9U+9AENII0ZWQisLXWPOiCLQAB6dcDD+WBdo7LJsmaWcSs0BAfgPUPlQTcf5TIIRlXMSw2u45GZBqE+YMnNrRdMfGeZkwydUBpZIsI/3YfGWVrEekc3i6gsuXxAsYH8TWi2eUQX+HFqw48O9ZnhJvKGPdDt30b82rmmS5am/ugCBkuabqnhnJYocPjR+o9guwZk2b0NPbEsBSZTOv2pJAbS3dgb8tX2FSMJCLEitM+pPsOUcbnsArgE5YMrGZ1tFE62aIJgVkA4ulDvcSjSD3tTVTWi2h3u4KLopMAcSarrzDxg6qt/U8hCDkOvwi1SqZwKCCSy+Ivvqk7SFrGbjPFckdaO8LbWHtDmf6AJz0DFgN/QEE
- enFyoiNI
- +2OU8aIhXdaxzRj5ywCwvz0SZ8A485MZx0XQPokYq2XfKC2wd96dtuZTpHkX/F1fwjpIW0E1dG5uI58317joMBpCHGO6OiJU7S45DhTdX0orFK9Dw/B3/q7m43o95hGQ7lQe9mP/9JotPtn2KSVegTT0vZckflIraxJ6VOV8c3g9kdCemK5/rA+yKZEsoQJ+N4rng9eOxoNyRposOV4nu2xukfdXumBL88iwUto/rYyJeLfrvFMzq64hxR3apYjvG7vl9xPcZv0HFjNS3twgmUnnFahgRF8uFuf8TMBBETufrdPkWehKTgpnuh3T2Yx3zigDz+sb6y20QWvv8OX7pTIY7+TdzqG0Crlv22g+IKICBJP271c62MX4VEzj8LYwQw+5uIYEXfekvaj86gZNKXit5bP+dw0VL2woejUoczVCG7OhzbVDc1EY1GzaHQbSeZLfbM/bdcgZwbq4yZJASak/E9rtfDAwnvW9osiCCNpe2yze/gZb7oUHSyClybsdC07LkQetnVP8AeJDDZQilX7yipVq18emm1OHg
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1758791981-555017
+X-HE-Meta: U2FsdGVkX1+cZOnt/xlIHNAayxZTpMFrIM0sId+RbRVG3O5KX/MFY+WzYbKTe4XmAWJS3XXsYMc71+70W35glt/tNYUOoSDURmTP9bbmONdUeUAhgGFg/tgXiUfaDDS6O0Gj3i0glxF0QYoq0/TjG+BHJZHa8Vi8eHhZS08Nys+SxlA3JU4Jh0WfyIilCKl9kABb2hF0ZrZsAhAN/Zkx6y/ElWWe3RktTukyriMVGz6rVugRAgxdsYp8QrJ/XqIL8bCB0YjQySpJpX+RO8+KBj1stwRmVWfTUanl66FSjkCHzXeG5TuhNR1ziDMLCCmJjS8f6Z7Y2XBY0iUf0pIajwVNOFB6FWWTQ1CCzqmcZ9/veU9kcq8AAi78aGTbEUihoVbkUwVLRN4vtu5lcFP29oGSF3AX2XZkNEwEj8b4Kt8WMCKc/1dpZwMMl5uDdsjhuMuePiXeb7AnMp8BD3LAnqICGfChR1fISXJU5fzQovQXfoYgQK/qJhFNv8FKUxK5QXVU4gQu7wd2E+sMrC2pCeD2JZeO5mEwRz8Fu/gysxeILLdJMlH5uZmtccdYS+MBoKqd4v0ctLuKjebvc0m3FvoUgjNHam8/Wb7a8ECAhj2FYMYeTZ9r8JHf9e3LMJ+jqPD0LGkPYy5XgPVQvSSXFKlKG7A9O84Pav+gqx3ETCehKl0NOPPpbr/8yQptV/DA4m6cCfUGdVaj6R/drREw13SJyE1oR6CspFgFkNRUb3mJPgr90YacCa8IaSVXUVOtARvFoMVOh/c4MQbF+SDqSE+t+PW4B56wDLOa7VKba3OVfKHTHc/dpKGz016/MPKp/rw6upHG3iSHPtP9yaCxoaTI8KboA2pkaTMVkH6NnQjclOpJ2rKYu+YBfFTIiuJ1Vo5t3yAp2/ctURCm6vuNyNBu9Hb6tu3b3fY0VQFIKouZuO0CXopAmv5szDF9Yk0ikGbk09C35LoJY/yOOUl
+ OA4QOiLX
+ UcoDBpxY+MhIRzoHHRikSYh8H3ZAwQQZpWHW8wDkH19xPojPYzzoWdDZ2eu9iGDofI+tiX1NJaqDTKJC07DyLxCYFgn3v5RcIavImYb4/B4FXq4uFcU93wNXiBQP6kWzc5skESnEhymvqUmuVhxqRCFapMByzwaUwXEEFt7MOB9aEyum3ao9Fgo+HJ5/6jqXXv4Y5nyu55uroRJ1DIqYrLgckmouvIJrcVCjRHpiVNjawp6DKLwbQGCJGx5I8cL+lCdi6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -177,102 +104,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 25.09.25 10:54, Dev Jain wrote:
-> At wp-fault time, when we find that a folio is exclusively mapped, we move
-> folio->mapping to the faulting VMA's anon_vma, so that rmap overhead
-> reduces. This is currently done for small folios (base pages) and
-> PMD-mapped THPs. Do this for mTHP too.
+Hi Jason,
 
-I deliberately didn't add this back then because I was not able to 
-convince myself easily that it is ok in all corner cases. So this needs 
-some thought.
-
-
-We know that the folio is exclusively mapped to a single MM and that 
-there are no unexpected references from others (GUP pins, whatsoever).
-
-But a large folio might be
-
-(a) mapped into multiple VMAs (e.g., partial mprotect()) in the same MM
-(b) mapped into multiple page tables (e.g., mremap()) in the same MM
-
-Regarding (a), are we 100% sure that "vma->anon_vma" will be the same 
-for all VMAs? I would hope so, because we can only end up this way by 
-splitting a VMA that had an origin_vma->anon_vma.
-
-Once scenario I was concerned about is VM_DONTCOPY, where we don't end 
-up calling anon_vma_fork() for a VMA (but for another split one maybe). 
-But likely that case is fine, because we don't actually copy the PTEs in 
-the other case.
-
-
-Regarding (b), we could have a page table walker walk over the folio 
-(possibly inspecting folio->mapping) through a different page table.
-
-I think the problem I foresaw with that was regarding RMAP walks that 
-don't hold the folio lock: that problem might be solved with [1]. Not 
-sure if there is anybody else depending on folio->mapping not changing 
-while holding the PTL.
-
-[1] 
-https://lkml.kernel.org/r/20250918055135.2881413-2-lokeshgidra@google.com
-
-
-Regarding (b), I think I was also concerned about concurrent fork() at 
-some point where a single page table lock would not be sufficient, but 
-that cannot happen while we are processing a page fault, not even with 
-the VMA lock held (we fixed this at some point).
-
-If you take a look at dup_mmap(), we have this:
-
-for_each_vma(vmi, mpnt) {
-	...
-	vma_start_write(mpnt);
-
-
-So we allow concurrent page faults for non-processed VMAs IIRC. Maybe 
-that's a problem, maybe not. (my intuition told me: it's a problem). To 
-handle that, if required, we would just write-lock all VMAs upfront, 
-before doing any copying. (I suggested that in the past, I think there 
-is some smaller overhead involved with iterating VMAs twice).
-
-
-Long story short: you should do all of that investigation and understand 
-why it is okay and document it in a patch. :)
-
+On Tue, Sep 16, 2025 at 07:50:15PM -0700, Jason Miu wrote:
+> This series transitions KHO from an xarray-based metadata tracking
+> system with serialization to using page table like data structures
+> that can be passed directly to the next kernel.
 > 
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> ---
-> mm-selftests pass.
-> 
->   mm/memory.c | 5 +++++
->   1 file changed, 5 insertions(+)
-> 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 7e32eb79ba99..ec04d2cec6b1 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4014,6 +4014,11 @@ static bool __wp_can_reuse_large_anon_folio(struct folio *folio,
->   	 * an additional folio reference and never ended up here.
->   	 */
->   	exclusive = true;
-> +
-> +	if (folio_trylock(folio)) {
+> The key motivations for this change are to:
+> - Eliminate the need for data serialization before kexec.
+> - Remove the former KHO state machine by deprecating the finalize
+>   and abort states.
+> - Pass preservation metadata more directly to the next kernel via the FDT.
 
-We should likely do that only if the folio->mapping is not already 
-properly set up, not for each reuse of a page.
+If we pass the preservation metadata directly between the kernels, it means
+that any change to that data structure will break compatibility between the
+new and old kernels. With serialization this is less severe because a more
+recent kernel can relatively easy have backward compatible deserialization.
 
-> +		folio_move_anon_rmap(folio, vma);
-> +		folio_unlock(folio);
-> +	}
->   unlock:
->   	folio_unlock_large_mapcount(folio);
->   	return exclusive;
+I'm all for removing KHO state machine, but that does not necessarily mean
+we must remove the serialization of memory persistence metadata?
 
+For example, we can do the serialization at kernel_kexec() time and if we
+want to avoid memory allocations there we might preallocate pages for
+khoser_mem_chunk's as amount of bitmaps grow.
+
+It also would be interesting to see how much time is saved if we remove the
+serialization.
 
 -- 
-Cheers
-
-David / dhildenb
-
+Sincerely yours,
+Mike.
 
