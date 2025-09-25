@@ -4,78 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC70DCAC5AE
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 01:33:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C2EECAC5AE
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 01:38:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D17058E0007; Wed, 24 Sep 2025 21:33:06 -0400 (EDT)
+	id 50CB08E0008; Wed, 24 Sep 2025 21:38:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC7E08E0001; Wed, 24 Sep 2025 21:33:06 -0400 (EDT)
+	id 4BD4B8E0001; Wed, 24 Sep 2025 21:38:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C052D8E0007; Wed, 24 Sep 2025 21:33:06 -0400 (EDT)
+	id 3D2DB8E0008; Wed, 24 Sep 2025 21:38:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AF46B8E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 21:33:06 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6768FC022F
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 01:33:06 +0000 (UTC)
-X-FDA: 83926049172.15.5DB22C4
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 74CA74000B
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 01:33:03 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="gs9t0UX/";
-	spf=pass (imf27.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2C77F8E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 21:38:26 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D11DA1A025B
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 01:38:25 +0000 (UTC)
+X-FDA: 83926062570.08.F338DE3
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 833E58000A
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 01:38:22 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf02.hostedemail.com: domain of linmiaohe@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758763984;
+	s=arc-20220608; t=1758764303;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OEqXKabMS+n5lcYsCK3x2z307rhYH/2IG8dggufLCCA=;
-	b=4wD923kqW4rdbNlQHb+41ypxf+rUR4Pc0Vn7JuQm8wumt6Wn0RI91+cp4F23Ub/rnnELZb
-	tXIITnNR0cH6yrbbFXcitwn2ccVdD88DuGX7XuNUiQyOldr/XxxFotICUksXxfDmXDc9Ss
-	aw7c//dgS/txGU8T6LweS7DfxzMR/fA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758763984; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ryp1xLncQtEPwbkCyGjrMyDXNXZyAGz3HKpMUS7r6F8=;
+	b=rUMwhFwlsBozF5XJhtGbtISXeB6WVd8Y4BoMwSp6VqWgPyl2UnqsedjdeZjKLViOB6RLxI
+	qZKpH5zGTpd73p78RDKtK/NF4kGzQw0s87WDRfc3eMHJdozQIf3V2c9/qf3g1SfibHN6WP
+	M2go2J0RI4pq8mNcEwCISYp3Z+VR/lo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758764303; a=rsa-sha256;
 	cv=none;
-	b=oAdS+Gx/xyYokqkcaPdLRml/L+9SSfxakTALG9AG7nuY7+Iju7QnDHKB1qFtabAiPkuARZ
-	frj4wN2KOPeNbQICsHa21HS5XFSKOEWRpzqt3MmtvgZGFtWRdNUQuMMBpIiBrvlLaQ+TNO
-	ivgMGtPg8rW+9frrKz+9d1j+ZLSTtuc=
+	b=DhmRCOGHNgjTfRI1EhHvf1t0pXghKuXQmflLmbYMaXq6SgNnMqCXAIXLWjIanYauXWp1BH
+	dnVMJ4jhrt/ttNRtKg4vpBiJ+vdgGsG547N3k1HpH/aBl8uoLuBmYqM0rYVN41xOOAcCV1
+	t3ABXi3LZMuDmdaLRpeM1hU04WUEzTk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="gs9t0UX/";
-	spf=pass (imf27.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1758763980; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=OEqXKabMS+n5lcYsCK3x2z307rhYH/2IG8dggufLCCA=;
-	b=gs9t0UX/YvANEK3RexKKThxrBvm3M/qI+WQCyoElcKAXiaQEr6V4Y5cZYb2NWAutclhBLiPk4LFuPVIHe9i3d1n/7+TTDLI7Mn0QoxTACWx89XNxXRpnE1DqEPejba4I3vsuqL35MxVuRMaT92yRiQPxIZYZbFRHcWXUSwj2VX8=
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WolUMQn_1758763978 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 25 Sep 2025 09:32:59 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Zhu Haoran <zhr1502@sjtu.edu.cn>
-Cc: linux-mm@kvack.org
-Subject: Re: [Question] About memory.c: process_huge_page
-In-Reply-To: <20250924114619.2532-1-zhr1502@sjtu.edu.cn> (Zhu Haoran's message
-	of "Wed, 24 Sep 2025 19:46:03 +0800")
-References: <20250924114619.2532-1-zhr1502@sjtu.edu.cn>
-Date: Thu, 25 Sep 2025 09:32:58 +0800
-Message-ID: <87y0q3e2ph.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	imf02.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf02.hostedemail.com: domain of linmiaohe@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4cXGVj07Q5z1R97M;
+	Thu, 25 Sep 2025 09:35:09 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id 36E321A016C;
+	Thu, 25 Sep 2025 09:38:18 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 25 Sep 2025 09:38:18 +0800
+Received: from [10.173.125.236] (10.173.125.236) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 25 Sep 2025 09:38:17 +0800
+Subject: Re: [PATCH] mm/memory-failure: not select MEMORY_ISOLATION
+To: Xie Yuanbin <xieyuanbin1@huawei.com>
+CC: <will@kernel.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<nao.horiguchi@gmail.com>, <akpm@linux-foundation.org>, <david@redhat.com>,
+	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>
+References: <20250922143618.48640-1-xieyuanbin1@huawei.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <76680374-de67-0227-c553-7ef57178c165@huawei.com>
+Date: Thu, 25 Sep 2025 09:38:16 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 74CA74000B
-X-Stat-Signature: 11kxkxyn51gzc4ddryujsfj6jzgz1bda
+In-Reply-To: <20250922143618.48640-1-xieyuanbin1@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.125.236]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Stat-Signature: 4rubb5sgn7qsj6ht8qqjowk1yncs6jpm
 X-Rspam-User: 
-X-HE-Tag: 1758763983-809706
-X-HE-Meta: U2FsdGVkX19vrygso0r6HhYcZCfusTJ7JbzdZDKXCXFoBhMW3iLtko9Mz3u/C2qphWsAfTIOxaRBMQKCKM31hI3oS3sN50Nqn/PbSMsjvP953/q5zxh74CM1oER6h5qzPnPPqGm9j7x6/KoQYlUPJiHzyWjNAR7tYE0oRo+7jNNiruEw44n93dYOlUmOf/8NX+0c6yLVMzjnJ3FxEEH4ywxzI/JlWYdnOgJVr3ww4j8p0miKeID4Yw6cWwC4VY7MaCqsDivwBB0bWC0npGq79hMgGO4qLOAoVwnV2klly+sQE8y1Luwuzp05YlGgxS86gcedVqh3ijBbfL1fX4vK3vXOBd+gFlN2xvY9Zjzttf4cHND9j5kQRkK48RMlHcigePKHP4+erfCEbZrbr3aakkOmUW/bJIcBQuUj63LtSWZzoXFLff28qNeEBdiGu9D57Uy6scotKqxqZyCH4KM+w+wqZGvEA3DewHpEiJfvtrL97biAARyRFxSjaw2IfyLfVNpCvBKcHAhMJl1hFAtwDzowp+B86spOtO0EgY3QatYDYn69X4gQRJNt2ALlSxR7r4z8J4NzY/RKk/ajTfVTFPSlREsgLCvVbin+YZUiQWEsNXsXVwRu0V8v+FRHGiO1OVL6E+dFDvTTBevgUZJhvowN5I4h5wknCJY6UYhTctZnQ0YRx3MDEEL1AoDnSITDcxqJ6RJX8f8/QvsmGJ/PpRurK5lb/IO0JeAdhDLG8sX3+ax7zNF6AQ0Bh91FGhSjGCm292P7gMDkhsuupGT6Kd75WI7MBnK6qThczsjEggI/QAu+zX4R5udmBYFEg7d2U2yIMJkLdh0D53oKQAHr07iFBXPSpG0DXvb6FWbFM9R4KRDdm+kgjPK9rh5ESfJmhIUqa70QStSnvGkL9bS8AIqp0Fp3VRO+++qEeWq3A8iSyS6i4ou3N7SyIJhobO4dLGlM4fNSmpYHEVL6jfd
- z9Zpf89P
- fIzuhdo8929xDLu2xHwhkR/RFTlXVMvi+P7I120Tc5GwFnGH8bXf0SlLBH9FFTLD6pXDlOfwszeqnhJxd3HJsO9giQNSRSRqO1p2o1oDrl3PvuxX/5nFjuoiUCCw9f1JvyTyPhsawcNXEZYOHWd3KCnvM10I6FugZRpCdPUn18PVsZkzsz+/ZOvLwtvEmDH8s3RZDpbQ76JeZ/UbNXqnRkddoVFvtPtt6ryOLkCpt5hydgYv99jQUDqxi/X9URHGn/jSFA/itLGuUx9T7lXNtMV7I/H+6+wYXIsKaLMPJKtPV56xJIbDazF90zcU63+yJSF/q10TEU+DgSB9ZwC/5A+4jw3t+nqoHeiTEkV/My35R4ugtUG/obc3Ucg==
+X-Rspamd-Queue-Id: 833E58000A
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758764302-286622
+X-HE-Meta: U2FsdGVkX1/bvgCGuvUVe3eB7AuqDsgy9ou+wQknxSsix6Ky7zNsEGk/B02P312gFvVBG/+DyPm9fTnR7gTA5gUrWM2dLxbhEu61Dz1u1qSXc47oEzdivSzkXtHIsRbXE0hm3SRAR/tF7Z72JWFgA7/Pdpmv9tYRHvflW28Z46s3mTjMjAvLirkIgdgtafQHym+7CYP9iwl4+72IqCc7ZgUn3mdAf7CacoF/71HF6OlmFbd6dpNWKJsjyD0DTKm2l6Taur0G+36A/VSZOr5jpihOSX1V2QaYU3lU2hWrm8glhPSjsEgEjT3FQr62023FHbjxPZ5GIslQtZCsEPSKzLtSgXKA2sDRGnaZGghWlV+eKeaUHj+MwAWgnCMQpFjx4JBbwJ7JM5HEF7oInWYCDCY1/qxVHicuFyNLIt8jY20PVs7hId290rNieol+TbQmYGeRYwIyMK2azSihWESMHt64/5PKx9jj2Me4FxhbFt/HDs1hojGGpt5fp+4ZB6lGfUKZ5Ya4aIRRPCFP+BU6m8CpFVT8I/m9f7vyPQhOmOAySXctlOprk32AMOnUH4tig7FiZlDAD5CqvW76CZ2xl689dw/v2fho2tBBu3ueuvgI/qW7tel38LKzfUP/p3ZRBnuZnrJhcWjX/gpsp3IvIVl+TYdnir+nol2QtxNAuj1fJN8uJctbVoWbkNzntw8vU2knaRcw7aW4WP+LGc2APw6y+8WBHgH4vBFWM88sL05kPmP+PXozL7dBWtAMkkMWqOzir0sxjHhYX6A5Hjal9F02R0S6tsWK7XqVDU37gk5dKhI+3Zsm+Gw0jGJK+n0QdQTghmwPzuwafhiNcZG8cVXXhJvkX06EtOqUUfn5AME1XlBG6roQzQQ3slsXM2g1ijARvRhIxVnpH75rg1sZr9yfeE2yCHl2suCmO0AmUBUbo9snWqrGoG7egGgqUTwsgP10VBe7RWD9RNDZtd7
+ v4ShPH9J
+ Tx9av43xioaO1b9z+Y+f+losemBHjkFuYoi7fSPrRKc2b8dh99mYma8ZTssYEmyVVzeXouGZeYX9+4+Cnljn3K8TCnbRVc3o9ZKJSHkZLyfrGs9BuHd7carxe9hIXNyKvin3kyEAztSJCG8KgUuEhLI6axJ5nzqysZeB8BTcOi1/OCU/PJYM9KLvYoiEyhDmGzmKSLC14XG5UvkjrPpy4kpnRYlwu0V+jOi1LhZjgrH3i0LcROOkmPZugNmNTOO9cwvdwY4+8NOS5pt2GM+nN2TXSga+WKPBnfuN0J1Sj7KiSyQGdgmwHFZf8hqnsONhN4claC5Y5xtk7IYhrMBy8A9g5Ag==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -84,66 +99,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, Haoran,
+On 2025/9/22 22:36, Xie Yuanbin wrote:
+> We added that "select MEMORY_ISOLATION" in commit ee6f509c3274 ("mm:
+> factor out memory isolate functions").
+> However, in commit add05cecef80 ("mm: soft-offline: don't free target
+> page in successful page migration") we remove the need for it,
+> where we removed the calls to set_migratetype_isolate() etc.
+> 
+> What CONFIG_MEMORY_FAILURE soft-offline support wants is migrate_pages()
+> support. But that comes with CONFIG_MIGRATION.
+> And isolate_folio_to_list() has nothing to do with CONFIG_MEMORY_ISOLATION.
+> 
+> Therefore, we can remove "select MEMORY_ISOLATION" of MEMORY_FAILURE.
+> 
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
 
-Zhu Haoran <zhr1502@sjtu.edu.cn> writes:
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
 
-> Hi!
->
-> I recently noticed the process_huge_page function in memory.c, which was
-> intended to keep the cache hotness of target page after processing. I compared
-> the vm-scalability anon-cow-seq-hugetlb microbench using the default
-> process_huge_page and sequential processing (code posted below).
->
-> I ran test on epyc-7T83 with 36vCPUs and 64GB memory. Using default
-> process_huge_page, the avg bandwidth is 1148 mb/s. However sequential
-> processing yielded a better bandwidth of about 1255 mb/s and only
-> one-third cache-miss rate compared with default one.
->
-> The same test was run on epyc-9654 with 36vCPU and 64GB mem. The
-> bandwidth result was similar but the difference was smaller: 1170mb/s
-> for default and 1230 mb/s for sequential. Although we did find the cache
-> miss rate here did the reverse, since the sequential processing seen 3
-> times miss more than the default.
->
-> These result seem really inconsitent with the what described in your
-> patchset [1]. What factors might explain these behaviors?
-
-One possible difference is cache topology.  Can you try to bind the test
-process to the CPUs in one CCX (that is, share one LLC).  This make it
-possible to hit the local cache.
-
-> Thanks for your time.
->
-> [1] https://lkml.org/lkml/2018/5/23/1072
->
-> ---
-> Sincere,
-> Zhu Haoran
->
-> ---
->
-> static int process_huge_page(
->         unsigned long addr_hint, unsigned int nr_pages,
->         int (*process_subpage)(unsigned long addr, int idx, void *arg),
->         void *arg)
-> {
->     int i, ret;
->     unsigned long addr = addr_hint &
->         ~(((unsigned long)nr_pages << PAGE_SHIFT) - 1);
->
->     might_sleep();
->     for (i = 0; i < nr_pages; i++) {
->             cond_resched();
->             ret = process_subpage(addr + i * PAGE_SIZE, i, arg);
->             if (ret)
->                     return ret;
->     }
->
->     return 0;
-> }
-
----
-Best Regards,
-Huang, Ying
+Thanks.
+.
 
