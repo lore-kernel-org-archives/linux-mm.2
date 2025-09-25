@@ -4,105 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A14E8CAC5AA
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 07:03:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7EBFCAC5AA
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 07:32:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E76B98E0005; Thu, 25 Sep 2025 03:03:23 -0400 (EDT)
+	id BD9AB8E0002; Thu, 25 Sep 2025 03:32:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E26D08E0001; Thu, 25 Sep 2025 03:03:23 -0400 (EDT)
+	id B892C8E0001; Thu, 25 Sep 2025 03:32:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3CDB8E0005; Thu, 25 Sep 2025 03:03:23 -0400 (EDT)
+	id A9F698E0002; Thu, 25 Sep 2025 03:32:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C11DB8E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 03:03:23 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4391414037D
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 07:03:23 +0000 (UTC)
-X-FDA: 83926881486.25.C590B53
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 83B4D16000C
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 07:03:21 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qHutfg7p;
-	spf=pass (imf08.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 953A38E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 03:32:39 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 47AC7C01C7
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 07:32:39 +0000 (UTC)
+X-FDA: 83926955238.04.9765115
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6A0B220009
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 07:32:36 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=nGlhSU7U;
+	spf=pass (imf13.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758783801;
+	s=arc-20220608; t=1758785557;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qEGnlGSl31sTqOX8g325Qy3BxJyeB03/i7rkS5ioaNU=;
-	b=3fjVdv5EhUvVOAQ+2UW3TBor4Q0j3PSlWDR97l5z4YuguLLzFdAs5/9hm5EHA6oTkjh/Fh
-	vGjJ7SGBDp0zcaIzYKBSqY7EtiO1jP6vEjg10tApyEvd8iLOGo8TyoTgpP3wd7WhMCVCrf
-	C6fNK0gYHOTVI7eLda7K61S/IC1Ddao=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=yQVwO6hUbDs4yUnm9nVZ1yfHrPmI7sVRMQiWliYRxhs=;
+	b=EB6CNI8DowV7OOUpo8sAs4FKpkOq3ccI60geo7l4SRJ2IuQNUfa1caimE0JztcjKsSGV1V
+	7GLQnWDCUDxUSd7PI/9o3Zf7kMzcIB5ijljr+b9FU3uUolwJN3ova56cUYjzP56IyId8YL
+	j/0tD3h75NynJesGTowEVcblZehOYwI=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qHutfg7p;
-	spf=pass (imf08.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758783801; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=nGlhSU7U;
+	spf=pass (imf13.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758785557; a=rsa-sha256;
 	cv=none;
-	b=T3qo0CPmilIsrPDfNxomgxd9nKyGK7nqbAFCUBzqoPRkMbzC2CynPZ+I8AKNcdTKHmN/vS
-	nO8hvxfExb4oH/neNO/SYSnpq5OVFo29qcm/H+D3YTtIrPxBtG+0n4GFlOyrfw1h5LdIm9
-	DjpDFkzZugznsIkZdIPAcwEebU76+Y4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 161F540817;
-	Thu, 25 Sep 2025 07:03:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 476E0C4CEF4;
-	Thu, 25 Sep 2025 07:03:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758783799;
-	bh=IfFjt1sIn89xjUeeoV2zJsvE3bTjSj86lJ2QWvNYz8w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qHutfg7p0MJiJzKdbXS/d6R3kdEqDhdXcGmgxvkwI4AM6XuKyeIpgR1GSCsEqIGVB
-	 9ZrAilO0Zj59EMAXR1lQlcpWEMA28nquUz1IKkduHGuS4dyD2OJmp5f3UxncKmQ8+I
-	 Dp30uxy2wGUYE3Hja5f4XS00BFzuj+WaXq60qYIzodUdV2tvE04uI5a85RPL6mAqR7
-	 MWKPSQplfkMcH9/nRS03UG60TJBwCq9ZQRhoS60sk8FdhiE0kifJqWTjrMUqN9REZV
-	 kUzpbXtt2XKNZVaDT/F1inIn9vj+we8Gfm9meFs0BUoq+pahNKDPioVkPIFajbcBnM
-	 waHnKaEouWGfQ==
-Date: Thu, 25 Sep 2025 10:03:14 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Alex Williamson <alex.williamson@redhat.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-	kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org, Logan Gunthorpe <logang@deltatee.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v2 03/10] PCI/P2PDMA: Refactor to separate core P2P
- functionality from memory allocation
-Message-ID: <20250925070314.GA12165@unreal>
-References: <cover.1757589589.git.leon@kernel.org>
- <1e2cb89ea76a92949d06a804e3ab97478e7cacbb.1757589589.git.leon@kernel.org>
- <20250922150032.3e3da410.alex.williamson@redhat.com>
- <20250923150414.GA2608121@nvidia.com>
- <20250923113041.38bee711.alex.williamson@redhat.com>
- <20250923174333.GE2608121@nvidia.com>
- <20250923120932.47df57b2.alex.williamson@redhat.com>
+	b=VeeD+snqFBgKLfLRp134hCi92p4ZzG8nH1GvWuCFroCc/4X7PuC0+JKFDuM66vomtupdo7
+	rKuoqxqxnhIgIOzzC7eJTcQs/ctjFt1f3jUBmoLEyUsy36hsDU1rZNF6qBiRUAAuzJ/gdr
+	hPL1aoIh6IO4j+IuUVIukJ06YtK9I14=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1758785552; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=yQVwO6hUbDs4yUnm9nVZ1yfHrPmI7sVRMQiWliYRxhs=;
+	b=nGlhSU7UNpY7AMIJJjbT63ilyu9tAyM+KlOmO7NSEvUGYaDm6b/jnTwU5WUhCJ6Ni6vQtxsgg99HB/lk7H+CuC9cySADH3584PeyvaMMYT+hlpVByGkwP8iQg6XCJGNIZ7iRqI8CuK2JOWueO/QK8DjetEeYny0525kDd7+Upxc=
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WomvkLG_1758785549 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 25 Sep 2025 15:32:30 +0800
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+To: akpm@linux-foundation.org,
+	hannes@cmpxchg.org
+Cc: david@redhat.com,
+	mhocko@kernel.org,
+	zhengqi.arch@bytedance.com,
+	shakeel.butt@linux.dev,
+	lorenzo.stoakes@oracle.com,
+	hughd@google.com,
+	willy@infradead.org,
+	baolin.wang@linux.alibaba.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] optimize the logic for handling dirty file folios during reclaim
+Date: Thu, 25 Sep 2025 15:32:10 +0800
+Message-ID: <cover.1758785194.git.baolin.wang@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250923120932.47df57b2.alex.williamson@redhat.com>
-X-Stat-Signature: zb4p9anepj4ig4fz1w1a6oxtbbzr8dmu
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 6A0B220009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 83B4D16000C
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758783801-608269
-X-HE-Meta: U2FsdGVkX18nmf7cCuL0e+IOMbnoZOZv+/wWnxfh1Q7ttqjvx/Cv9GzOd+8HmrPSu5DNgupYHljvMYqGTY2yDXIa7xLVT1RRLCIIIPdLoXVfbJNVU0UbqHhdSNTCkLV2Uewun9KVL0b7iYpvWXsMSuKjWqmvdmIv+DrGFoVyOvzzeSvCEdA7a8JvErXXAQv1Uu33E8/BFnVfu7cYw1NyzrWoJbHsJn30XaP3hbcd63ZoNSwm/CEtnoeGomZhF4fPcOCV1bMcpOaqituuVVRdmDi0QGOd4aVBE0P+qLY4dBSQKhzwp8qGPaT6HmZuh/8NqkLYLKVRVpq/HRK9pFXGdvBsm3s9UYMeRpiKIdrceaGqGRWfmf21kqWkpV2ZnEUPbGfTiJr2Iz8cwWH+2CGiyat8ERqzelQbPe6Bj5YrX4XFsPemVOa+3+W31apGwuytgLpqbS8GE8P/pGxFLqZzQQ5hugttqAPA8aUYvCbS31f/PW5tvlKKrrJqEuYoKd1KatE0sJ/YAGpsrht8xgxiLk7FCwA79ndvLSQf8x3TDAwajQwLPGzjueuV6AbZENsLWdDaa6L/ngq/wZzGA7PGrajHjFGCM21RhTCMVXVIronhlOPo90VkdoicoJYqD2270JikYLAWZ1oBb6RxysaKdjwWTFKexlT4yWo+QFkHa1TBvH2q6J89qkTWJb0VabVPCNCcKBXFJqCFfGwQ8GmGww787gmrz1Ewcecw58ALoR7IVU7Az/TYyIaao+f6bxxFIyTXlhW0X8EEH8Gu6CI+vyAahkSP8oNE+s1uMD/KYVVsdIxWH008VRUFK9Nb4gZ0OzDsabAVP+cQNsGrGlP1R0s2tNjo0LQt9f7GjlI2gpru/Xl/4/PwNaiKkCSYrKv8oPvDepjS8Sel9u/HysVzWwjOiCVWeK2DbcRIapvSTAIDr/LBYkQcRxxke6hf+0zFuBBENHg4BQvF62/TVt4
- IhE5rRmw
- RC7AhB+Ro0T5yO5PdCs4walgvhcbShWuU3z3pB07ZceQjNG7qntMNyjlmtsJDLRqSM63YzhKJqKJryvAXpM50o37F0b3BkAB7B1n5fOrS/gOch/+BCYYY4BdEdcvJ+gPZdHNPnoZnWOx3/GWsgsCO9Q1HR8iGTMgRfU9qjNO/8f37ji0cahDtNYZxprvqxpfAFqcMAo/ILf8uU1p6lbfKdhF4HZ78W/NxkrUh6qapr0v/rUGpqk3lqApndZES9CxzTnXaQfj6zphrj7OuyCZSAOra5A==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: xsg8pndjrmffpya6bqbgdpt7yud3toyq
+X-HE-Tag: 1758785556-142859
+X-HE-Meta: U2FsdGVkX19cqxgYJ/P0HBl4oMk4rh4gnEcT/rL5lv16Unss84iCbgK+5u9PPLldkT7ouP2GwyYs5XEhy0BCRK8eqB1F+74cDdcJi5rYECgx9UoggRSVsAgA39GmH0FYrdCiVPG4UrOJ1Q5r+WWOSdS7lNi5IqHom2R6il105WIu2sFfksUKH7nffKuSJvtLBCYK/WUjLyDwDJCEeZs8bDmJWTyrRRxzPLQ7RUxo54Mr2RPE8EC7a5J6LMZCA5oMewYwNlmD6QEn8XQhf7okXLWj6yDvqCAR8sOOt4E+mkG1vCATQ8gnTuQsQiv3uO7uDJ1ppkalIKGsW5WKowL+jUN91BSdT0lDOq6VyqiLvEAYljaXmXX5P2piulSFjGgTolQhwZsHALkw0V88U4FA6S3dgA90lr7HUdoq6P3chDxpeXTpyBClgd/XPKuqkA99QaOCLA74gzWE5bOSk7QYM1UcNQ/xDX1PLn/3Ga5ZZmLvT6En1pSEqzD9dEqMpBO6LkVCTpqCgV1HAsd373MAUxz1zLCY9QiLzIRn57q2NEuMSPuPEMLpmOv9wCiWF/ENfw8aGdJsdlqKAwJJGgxPxdYeyOFblFTQIBYqG0Z/2X+6Xk+ocsS6aPgaoM1tgEzedm9efJlyShhg6zyvU9N+YPYxjfFqKGsjM8qGpMzxSUYd0x59Dec77Qi/zMfgnPc03y/tXMEVx4zmuCHTDMu1f+uHArKRaF+DIN9EZSfMJBHrMfWrSZvphl2APIGP7IF2Ekuy6yg39QUbIJsqss8oYNZ9OPoAnt9xKQxgcHWj3CpJjpwYX6HwHIHoNFLsl79HDR7a+eczlc08kwR7+ZYPVVR93IQNLZvOfhV1Wnnx+0ryGmXWdsjbfyccy4shp1Ct5fsvxqq4kN75Z5xI/8bb+CgwB6grm4WQmXjfZZpcP9Kww41PbMEF8G4YQosRQ2nuwklxsufAeY8qK9g+e1m
+ 75QbBC7/
+ FoGAqy3livO7YzU7s/7a4otKf9wtyRQixmdGcmqOlliTv4CSN8RcWH3hJcWI4vGrioRU6CZWuryEhOmlHn3p3g4OpoPsukXkZOSMtX8OL4Pi67EnlcZiCzkAlD1n4TNOJ47uKVbIu92gU0DbZCZe/+6shFH8eY4z6C59nU8TCZbsEKu7a4zAo1B6zbxNBXCIVsUfPkbLT1lbTC9ouwBF33SCDtxSxskEaxsN+63Kz6IJuWD1+dr2cZoNI2ZICDv7H/3KTmUlkQ5c98dJx82pRIe15lSQ0QlOkqJ1i2RN8O00t2KSYm5R/IdCVdy7y/NKy70Og
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,61 +91,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 23, 2025 at 12:09:32PM -0600, Alex Williamson wrote:
-> On Tue, 23 Sep 2025 14:43:33 -0300
-> Jason Gunthorpe <jgg@nvidia.com> wrote:
-> 
-> > On Tue, Sep 23, 2025 at 11:30:41AM -0600, Alex Williamson wrote:
-> > > On Tue, 23 Sep 2025 12:04:14 -0300
-> > > Jason Gunthorpe <jgg@nvidia.com> wrote:
-> > >   
-> > > > On Mon, Sep 22, 2025 at 03:00:32PM -0600, Alex Williamson wrote:  
-> > > > > But then later in patch 8/ and again in 10/ why exactly do we cache
-> > > > > the provider on the vfio_pci_core_device rather than ask for it on
-> > > > > demand from the p2pdma?    
-> > > > 
-> > > > It makes the most sense if the P2P is activated once during probe(),
-> > > > it is just a cheap memory allocation, so no reason not to.
-> > > > 
-> > > > If you try to do it on-demand then it will require more locking.  
-> > > 
-> > > I'm only wondering about splitting to an "initialize/setup" function
-> > > where providers for each BAR are setup, and a "get provider" interface,
-> > > which doesn't really seem to be a hot path anyway.  Batching could
-> > > still be done to setup all BAR providers at once.  
-> > 
-> > I agree it is a weird interface, but it is close to the existing weird
-> > interface :\
-> 
-> Seems like it would help if we just positioned it as a "get provider
-> for BAR" function that happens to initialize all the providers on the
-> first call, rather than an "enable" function with some strange BAR
-> argument and provider return.  pcim_p2pdma_provider(pdev, bar)?
-> 
-> It would at least make sense to me then to store the provider on the
-> vfio_pci_dma_buf object at the time of the get feature call rather than
-> vfio_pci_core_init_dev() though.  That would eliminate patch 08/ and
-> the inline #ifdefs.
+Since we no longer attempt to write back filesystem folios during reclaim,
+some logic for handling dirty file folios in the reclaim process also needs
+to be updated. Please check the details in each patch.
 
-I'll change it now. If "enable" function goes to be "get" function, we
-won't need to store anything in vfio_pci_dma_buf too. At the end, we
-have exactly two lines "provider = priv->vdev->provider[priv->bar];",
-which can easily be changed to be "provider = pcim_p2pdma_provider(priv->vdev->pdev, priv->bar)"
+Baolin Wang (2):
+  mm: vmscan: filter out the dirty file folios for node_reclaim()
+  mm: vmscan: simplify the logic for activating dirty file folios
 
-> 
-> > > However, the setup isn't really once per probe(), even in the case of a
-> > > new driver probing we re-use the previously setup providers.    
-> > 
-> > It uses devm to call pci_p2pdma_release() which NULL's pdev->p2pdma.
-> 
-> Ah, right.  So the /* PCI device was "rebound" to the driver */ comment
-> is further misleading, a new probe would do a new setup.  Thanks,
+ include/linux/mmzone.h |  4 ----
+ mm/vmscan.c            | 33 ++++++++-------------------------
+ 2 files changed, 8 insertions(+), 29 deletions(-)
 
-I will fix the comment.
+-- 
+2.43.7
 
-Thanks
-
-> 
-> Alex
-> 
 
