@@ -4,144 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3FEDCAC5A7
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 15:48:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C562CAC5A7
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 15:51:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 116F38E0005; Thu, 25 Sep 2025 11:48:04 -0400 (EDT)
+	id 5B1E68E0006; Thu, 25 Sep 2025 11:51:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C7CD8E0003; Thu, 25 Sep 2025 11:48:04 -0400 (EDT)
+	id 561D58E0003; Thu, 25 Sep 2025 11:51:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1F1A8E0005; Thu, 25 Sep 2025 11:48:03 -0400 (EDT)
+	id 4781F8E0006; Thu, 25 Sep 2025 11:51:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E33A58E0003
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 11:48:03 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 77831B80B0
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 15:48:03 +0000 (UTC)
-X-FDA: 83928203646.06.88FCC11
-Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 569804000A
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 15:48:01 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=flygoat.com header.s=fm2 header.b="O/GBpNmB";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="R 8oeF/I";
-	spf=pass (imf11.hostedemail.com: domain of jiaxun.yang@flygoat.com designates 103.168.172.157 as permitted sender) smtp.mailfrom=jiaxun.yang@flygoat.com;
-	dmarc=pass (policy=none) header.from=flygoat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 398428E0003
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 11:51:10 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D10801A0257
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 15:51:09 +0000 (UTC)
+X-FDA: 83928211458.12.2E5EEBD
+Received: from fra-out-012.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-012.esa.eu-central-1.outbound.mail-perimeter.amazon.com [52.57.120.243])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 441BB20015
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 15:51:07 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=OrGBQaD1;
+	spf=pass (imf03.hostedemail.com: domain of "prvs=3564eb46b=roypat@amazon.co.uk" designates 52.57.120.243 as permitted sender) smtp.mailfrom="prvs=3564eb46b=roypat@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758815281;
+	s=arc-20220608; t=1758815467;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N1iw8sDU7WMAuqpMUwFBLGexpGmPqRn3XcfCHZlM+x8=;
-	b=PZwhcrYH/iApvsoJ7l4Gf1rk5rc2Ol4cUZYX/sTu/etdS/Q5yHFpGKvbUgXZ0fjttrPzoS
-	Nkye81SZmZcgyx710lUMZmlKZzFaMLH3P1ug0871nJIzChc4mNZWGiYl8OHrXkWM5S+x5w
-	DwmeXgvwRne4z+1mIT96A6RF4KZkvl4=
+	bh=WShG4YI0EGKByiTLIIIv3ML54YmgGR7q846KIAo0FmA=;
+	b=TCyGwpx66z2ySsmjVpcXRiTnl8rzOVWI9ksyjjhN7HwWxNwB5744t//ODVPxZ4mh+GIXbz
+	GxTvqde1Z9awxfa7qpIoXkYNg+sts9WRo6ppohHZCXL9HYJ0KtV5T97bQR+8SZvwAhF7Sj
+	Aq77zUzxPAHw0LGeRhbWcWRIwPmS/AI=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=flygoat.com header.s=fm2 header.b="O/GBpNmB";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="R 8oeF/I";
-	spf=pass (imf11.hostedemail.com: domain of jiaxun.yang@flygoat.com designates 103.168.172.157 as permitted sender) smtp.mailfrom=jiaxun.yang@flygoat.com;
-	dmarc=pass (policy=none) header.from=flygoat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758815281; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=OrGBQaD1;
+	spf=pass (imf03.hostedemail.com: domain of "prvs=3564eb46b=roypat@amazon.co.uk" designates 52.57.120.243 as permitted sender) smtp.mailfrom="prvs=3564eb46b=roypat@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758815467; a=rsa-sha256;
 	cv=none;
-	b=MJfva0npy28t9JZAdTs02aqBlYV6zM2/Y9ol36o4NK3KapJgHWPVNTxI8UDbaQefruXSGq
-	05OpsMYM34BqtgMRDsaHb8UiC/98XgB5LmlBJHP4ZK2zPGtqNjIjeb5zwgzzfS5MtNyUTo
-	uA4y3BfT9mycU7/UoOV4L6WeRCPwQ1M=
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id A214414000B2;
-	Thu, 25 Sep 2025 11:48:00 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Thu, 25 Sep 2025 11:48:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1758815280;
-	 x=1758901680; bh=N1iw8sDU7WMAuqpMUwFBLGexpGmPqRn3XcfCHZlM+x8=; b=
-	O/GBpNmBS+Nf0OPIBgj2sj/PDCIKeC0j5S2VVZ/EOrg3RpCAU3O98ukVzvwuk6/A
-	IRP8G7IkQvw+wQgSi683mZspBDS2sdaxTOWNew9AG8gAxO1q3BfTDUMYR2B91vN+
-	W8UMVfnH1jI+IUfemiYRHmuBo66jnLXkG000inQvMG9kHmeL4C5yrhVl6iAwufAz
-	osUIrj/clxIP2LdhsYSzBv9WFn0hK5HqgSrW2AO/rAHksurVN9ggGKu5z+WkaVsr
-	SQhzVo4nAp5kXyaMci078CAXYEidGo9Wczj+iiHovW2kE8tSC6HwV3WSgBwjBq9O
-	GoXgOqEqXg+QIpwQPwR9Mw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1758815280; x=
-	1758901680; bh=N1iw8sDU7WMAuqpMUwFBLGexpGmPqRn3XcfCHZlM+x8=; b=R
-	8oeF/IhEmuwV1X10Hz/vmfXFPxZUoQodsiaYBo503hrl/K127xg28RinCpb4A1cJ
-	XsrQvIPnXKYvoSzPQcn6ZXvWXjveWVqGttjwiohRynGKnCftDj7Op7+NetzYzQH3
-	AvFbQNQ170uD3c7BHGOvQBJz+HJAT1n44ybrSejzLXgNGvaBOtK9TGdWsXuCM52A
-	Db2vYxAvJ4FjwF3frZQX6e93yhQQiAzvVefhRUzVHeAbm6iOkWo+kpfuhDVqHrEk
-	+gXknvR3vza7fruiTLX1HLeJAgyGAiYDoKfZKsIn6y1EAIzuhmyt30xK0Ncnon+H
-	Bduc7Ok85uxQyL1H36ALA==
-X-ME-Sender: <xms:L2TVaNqxig2ibN9a8thygIfSXKBuRM0_mG1WY_1p0xER15CC2rkuJg>
-    <xme:L2TVaN4bSMNyhV3UbGo-6kG4GKYyIj8W1aHCoIHk4qOU_57Yj8K1S_f4asbXHArxw
-    nJwdPumtYF5_UUF5w6she-zXai4bhDA27AXcZB240bGkuQzW5HpCY2X>
-X-ME-Received: <xmr:L2TVaDiVsxodL4LmNUkp1Z2bpAFsKaMx03h5euE3aWnJoE-fF0sgJpDQ5IBFw161mLC4Y8m6Mj4gSi13hHbjSrzELkqBDSoeX44>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdeiieeklecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenogfuuh
-    hsphgvtghtffhomhgrihhnucdlgeelmdenucfjughrpegtggfuhfgjffevgffkfhfvofes
-    thhqmhdthhdtjeenucfhrhhomheplfhirgiguhhnucgjrghnghcuoehjihgrgihunhdrhi
-    grnhhgsehflhihghhorghtrdgtohhmqeenucggtffrrghtthgvrhhnpedtueehheehgfff
-    teeiudehteeuieehfeehtdevhffhudelgeffueeivefghfffleenucffohhmrghinhepkh
-    gvrhhnvghlrdhorhhgpdhsohhurhgtvghfohhrghgvrdhnvghtpdhophgvnhgrmhhpphhr
-    ohhjvggtthdrohhrghdprghtlhgrshhsihgrnhdrnhgvthdplhifnhdrnhgvthenucevlh
-    hushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdr
-    higrnhhgsehflhihghhorghtrdgtohhmpdhnsggprhgtphhtthhopeduuddpmhhouggvpe
-    hsmhhtphhouhhtpdhrtghpthhtohepgihihihouhdrfigrnhhgtghonhhgsehgmhgrihhl
-    rdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtohepphgrshhhrgdrthgrthgrshhhihhnsehsohhlvggvnhdr
-    tghomhdprhgtphhtthhopegtfigrnhhgsehmuhhlthhikhgvrhhnvghlrdhiohdprhgtph
-    htthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthht
-    ohepsghhvgesrhgvughhrghtrdgtohhmpdhrtghpthhtohepghhrrghfsegrmhgriihonh
-    drtghomhdprhgtphhtthhopehrphhptheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
-    tghhrghnghihuhgrnhhlsehgohhoghhlvgdrtghomh
-X-ME-Proxy: <xmx:L2TVaL6rC81P2MnLeQXLG-DPDWw2kWRhEws9MeVzcsqmrt6QhTRU4Q>
-    <xmx:MGTVaAHvN7H1BeqiLDRqYpEyC7tOnofgGx_PI0QT-fZvWdLECM7W_w>
-    <xmx:MGTVaFIUqaXye2U6E0-brzIggOQ6bI-KMzsiTd-lQJqfbAI-Giqi0g>
-    <xmx:MGTVaFiMKBGmXSTda75Rh5rNw8QTnpQntpmbkkXqXWSzR1wb5nNdDA>
-    <xmx:MGTVaN_ntiCc4vGSs6_4JTLw3piLbXyzWXwKHEJrVUavoHdmSQVCW3Pi>
-Feedback-ID: ifd894703:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 25 Sep 2025 11:47:55 -0400 (EDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.100.1.1.5\))
-Subject: Re: [RFC Patch 0/7] kernel: Introduce multikernel architecture
- support
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-In-Reply-To: <20250918222607.186488-1-xiyou.wangcong@gmail.com>
-Date: Thu, 25 Sep 2025 23:47:43 +0800
-Cc: linux-kernel@vger.kernel.org,
- pasha.tatashin@soleen.com,
- Cong Wang <cwang@multikernel.io>,
- Andrew Morton <akpm@linux-foundation.org>,
- Baoquan He <bhe@redhat.com>,
- Alexander Graf <graf@amazon.com>,
- Mike Rapoport <rppt@kernel.org>,
- Changyuan Lyu <changyuanl@google.com>,
- kexec@lists.infradead.org,
- linux-mm@kvack.org
+	b=SyfcQaBm7nBGTe+UCoWjcMRbP4OT0vCHBKcaEt+C8khgDRW0aSOLxwPOvH9c4M+pQDgUwa
+	vBgOEEdnl71r/x9hlBqR0kRsW6KYm1a9PU1lT/+6hYtjYNxTPJRhGF2YfwYbmjgK9jLAN/
+	+okHRSW9hPJxKhh32CpvyDdmwmJbI2w=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
+  s=amazoncorp2; t=1758815467; x=1790351467;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=WShG4YI0EGKByiTLIIIv3ML54YmgGR7q846KIAo0FmA=;
+  b=OrGBQaD1K0Tub0lIPm1V2xXVtZGiV6LZgE71GIs66wDKgwYFaW6CPSBN
+   dkbZtcZyta38znezXBe4FopbFBUsNVjXleGx76ZmGiyv77IMmQRgQMJHT
+   RdncDh5BtoZ2uJt1eJOnbchve9qD1jNRGtncoH4DuhS/632Q+mQu9BJZA
+   S/DihZ8CdVYokvqUnAjfwlse6Vj5eg5NHBFRiP7ieJ4FXJFiogLYxk4Uc
+   w7U23cK5ZIpKzifsXSWoDWuYiVPZbscVbvFspTFGPzpKSg9RT2hh5qjOf
+   x48jHvYB8zOxH3ghoZnfJhRNqQakkynqTyxDfHIqH1ARnOa2e9tCvn2pJ
+   Q==;
+X-CSE-ConnectionGUID: MbVH1R0YThKQmA86zMa6Xg==
+X-CSE-MsgGUID: 2fM976tAQQK5Fw3KY2GCFw==
+X-IronPort-AV: E=Sophos;i="6.18,292,1751241600"; 
+   d="scan'208";a="2580762"
+Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
+  by internal-fra-out-012.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 15:50:57 +0000
+Received: from EX19MTAEUC002.ant.amazon.com [54.240.197.228:31648]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.9.61:2525] with esmtp (Farcaster)
+ id 1b0aa563-dc9d-47cc-b8c8-5261ca8f0b3b; Thu, 25 Sep 2025 15:50:57 +0000 (UTC)
+X-Farcaster-Flow-ID: 1b0aa563-dc9d-47cc-b8c8-5261ca8f0b3b
+Received: from EX19D015EUB001.ant.amazon.com (10.252.51.114) by
+ EX19MTAEUC002.ant.amazon.com (10.252.51.245) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Thu, 25 Sep 2025 15:50:54 +0000
+Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
+ EX19D015EUB001.ant.amazon.com (10.252.51.114) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Thu, 25 Sep 2025 15:50:53 +0000
+Received: from EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a]) by
+ EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a%3]) with mapi id
+ 15.02.2562.020; Thu, 25 Sep 2025 15:50:53 +0000
+From: "Roy, Patrick" <roypat@amazon.co.uk>
+To: "david@redhat.com" <david@redhat.com>
+CC: "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
+	"ackerleytng@google.com" <ackerleytng@google.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "andrii@kernel.org"
+	<andrii@kernel.org>, "ast@kernel.org" <ast@kernel.org>, "bp@alien8.de"
+	<bp@alien8.de>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+	"catalin.marinas@arm.com" <catalin.marinas@arm.com>, "corbet@lwn.net"
+	<corbet@lwn.net>, "daniel@iogearbox.net" <daniel@iogearbox.net>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"derekmn@amazon.co.uk" <derekmn@amazon.co.uk>, "eddyz87@gmail.com"
+	<eddyz87@gmail.com>, "haoluo@google.com" <haoluo@google.com>, "hpa@zytor.com"
+	<hpa@zytor.com>, "Thomson, Jack" <jackabt@amazon.co.uk>, "jannh@google.com"
+	<jannh@google.com>, "jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com"
+	<jhubbard@nvidia.com>, "joey.gouly@arm.com" <joey.gouly@arm.com>,
+	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "jolsa@kernel.org"
+	<jolsa@kernel.org>, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+	"kpsingh@kernel.org" <kpsingh@kernel.org>, "kvm@vger.kernel.org"
+	<kvm@vger.kernel.org>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>, "linux-fsdevel@vger.kernel.org"
+	<linux-fsdevel@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-kselftest@vger.kernel.org"
+	<linux-kselftest@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, "luto@kernel.org"
+	<luto@kernel.org>, "martin.lau@linux.dev" <martin.lau@linux.dev>,
+	"maz@kernel.org" <maz@kernel.org>, "mhocko@suse.com" <mhocko@suse.com>,
+	"mingo@redhat.com" <mingo@redhat.com>, "oliver.upton@linux.dev"
+	<oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"peterx@redhat.com" <peterx@redhat.com>, "peterz@infradead.org"
+	<peterz@infradead.org>, "pfalcato@suse.de" <pfalcato@suse.de>, "Roy, Patrick"
+	<roypat@amazon.co.uk>, "rppt@kernel.org" <rppt@kernel.org>, "sdf@fomichev.me"
+	<sdf@fomichev.me>, "seanjc@google.com" <seanjc@google.com>,
+	"shuah@kernel.org" <shuah@kernel.org>, "song@kernel.org" <song@kernel.org>,
+	"surenb@google.com" <surenb@google.com>, "suzuki.poulose@arm.com"
+	<suzuki.poulose@arm.com>, "tabba@google.com" <tabba@google.com>,
+	"tglx@linutronix.de" <tglx@linutronix.de>, "vbabka@suse.cz" <vbabka@suse.cz>,
+	"will@kernel.org" <will@kernel.org>, "willy@infradead.org"
+	<willy@infradead.org>, "x86@kernel.org" <x86@kernel.org>, "Cali, Marco"
+	<xmarcalx@amazon.co.uk>, "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>
+Subject: Re: [PATCH v7 06/12] KVM: guest_memfd: add module param for disabling
+ TLB flushing
+Thread-Topic: [PATCH v7 06/12] KVM: guest_memfd: add module param for
+ disabling TLB flushing
+Thread-Index: AQHcLjQso34Q5KN2CUWRdaSrXlVTqQ==
+Date: Thu, 25 Sep 2025 15:50:53 +0000
+Message-ID: <20250925155051.2959-1-roypat@amazon.co.uk>
+References: <cf57bdec-6a2d-4d6a-b27c-991a7e2833ab@redhat.com>
+In-Reply-To: <cf57bdec-6a2d-4d6a-b27c-991a7e2833ab@redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [172.19.88.180]
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <BC25CE95-75A1-48E7-86E7-4E5E933761B8@flygoat.com>
-References: <20250918222607.186488-1-xiyou.wangcong@gmail.com>
-To: Cong Wang <xiyou.wangcong@gmail.com>
-X-Mailer: Apple Mail (2.3864.100.1.1.5)
-X-Rspamd-Queue-Id: 569804000A
+MIME-Version: 1.0
+X-Rspamd-Queue-Id: 441BB20015
 X-Rspamd-Server: rspam05
-X-Stat-Signature: nyygk3cqx8en5rpe4don6ut4gte8ktpw
+X-Stat-Signature: 6o3mn8gusj5bzijpi6hx9msstjx8rqje
 X-Rspam-User: 
-X-HE-Tag: 1758815281-585486
-X-HE-Meta: U2FsdGVkX194waxVkAcHnzq5qNeyBSMLixIq8nKG7EsqkdkX+bd1lrBRvPMw3RSVY5vZrk3WS6Z89Orj2rklOfZkYUAIvFStPGjApPAB3b+QXzBRREI+anzLHdH96dGUVt/TGTZsxiBmpp2pfcH0YyjAQqQ/OHMTzrTGzWxHNHyb8rqroZdvgp88RBciaK3TIcTaaNCAQV5py2kTvRm1Za4hNRLd9BcJLiXlgOLmBMQNBLRw04E3qlHmsa8LzcsYlTyVPriM585T1WjXU42FjC6l/AtMSuo+/PcJdPj1BQXBrRpNybu+MlVB7yt5bbhz5OkptLfBFJ58R9pl9tS0M4+illGzc5iMHa9d8mAr/BkD8VX3/E7uJcQfcwo2Zj+IZjQ4+ltaX1yG/+pkMAqpOtD+etZmFcCvFv8cxuIRkPDkqZapyDmeRxAhElTzj9UJ9NzbidvEFMmL1KBmldhoSB+duy3I27liJNKvNQOqPB37Bp0fJPQLAigK2lpJkM/u7bkE8/fF7bAoNrMzNbylWyadcpubg/at7mSZtYG8tHI2zebbgMDJ0e/9RuD8ymYNEP59rHlbVTL+VBLht24vxbFz2mNVK2Z799pC41uGY1eE1SRYYl9o8MVAPSgU6I2KAtGdEsRW8RERfGpBNUwoZga2d8iNCthbJJC5eNISUhfWbeGdCLF0/RGHrkLk6ztwmKkWrULMmdGcGUg1Rzx9RMHvKFu+q3/dw1aEvT5Ad0qJc5bgdddswZ4HkN3q2WSAjzir9Is1Jq8/PY4MEXj/EnEDnYLB3Fy2AiIXdbENgv3HZCsiaCwMM+549Rf0ylGDVrffYRMziBYDRJ4Un8yaAiSdEW5HHqhxHtaYFFWKq7Ta5i477S3ugrMSb/nOOOWGV+MV6j0aPbrM1KvF0I6yStWlfEvQ5npP0N1eBTrSbfaKgP7Xwuv5fSvYr048bnqHd+Nv0QXXTr+2cRx7BwU
- niOyKoOY
- fcbnV4+ye1CtyS7HfowZMdTf3tNGPB8TG22NGBY8UifbuUqLFxSaPNZBspo8c4eNT+x9Wp+LxyVmmjwq2Ch+yjAq8JCQfcYGn0dvASyYyV9GJ28mpD65hKIZTJco6VUid4ve2KwGFKbmxrRDirLLqdW3cOD7WYI9ODEXoBu+N1+/jA6Y2rX22gYFZMpRdrPGAwQChtSc+DvqS/sde5peDAmdTFzCMUPpt3KMxOIDenxYA0Jb2w9Eycy2R3mI2I+ecwEPzBup/D7sH6j0nhYFWqjL/ZmZPPmxDUpVjrmsrKXB6rKTlKh7r+641uzm85jxE+ORE03GJ+meT9cTZuLxz1h6W+t6DsHxiwoKwyFnk/F02+Ojc5Y5dxmNvIi03ux+7jH8BEPhCOINmHijZY1AfK6Yk3fxjSeSj3YP4sN46ftcPyKgJ6CMoW7UZ3JCP3MqpQ2j1RX1w5Da7ZoaeVcDaxngJGVH92KTqTEhyQCTxu8rgP4HqJ0q9ojpIQCmpMtd63+t5KFBf9Y8R33pa07OHQs/uYI3Daz3PRErXytd/+CKnegNAAjr7OcJwEonkC5FbiqjenFd9NuRem2/AmrHm+65axSmqWvuUzgenr4yrPw6E+S+xeRZpyQgaJ4iGh0fQ7sJvmoxUKpeYj+iwXSGUWItxoA==
+X-HE-Tag: 1758815467-347618
+X-HE-Meta: U2FsdGVkX1/MtwpVnQ0xpPkesjrQ2QoRoTuF0/2s/+rhdhaNvKbOMS9b7P4/Jw86GDz4xUuaQO7JNoVn0/IyT2rdtjPV5hR7jS1QfPO1b17MlsBllxMhWNxYgS8EUDedmuY1tON2Pgs9MvCDJ2kVzY73GWAYAG6Zqrx+vAEZk2fohWGVCKrSO8vCl/GnZ/RL69iNXWYY924M8aGLT2v/VFYvKRfI4/phabXy4lgDmqZHnvFSH/f/qX0XcFkFJ3bnE3LaSuNosdslhiGFKVq5+6KkDODnUNJFC6YZ2G+U8mXCPMj3AgGaA4p1Mkoyl1PlnOCqFoXTTdoHpdGZichbaWo3zOx6XTIlezxAchIwvaYacGvm7iML5/Qb9IotcH874vvZ0aZ252AVzqau4rok8TS6ZzcrlTJXwzJ7W8rd4zcywCWQT5qa6kH8QIKUHNubnhPevAxkYCojjvR/U0/Q9ikSREcIc5HFmPBqEEa9sThFuBgtKI4pM7MMLuRv/Bzsl2Fxr1Fz5J+j7cbYijqNKxg1LZEw1TztO8pLPWQZs/Jm/rRTz8iY51Mt44w+1bNbHu1j3w/dwvCMlsXxsWVKGZ1eG0gkxG4WEOHMS3Usxks2pS5AXw4Qa6LYYPe7NmO8gWr5eS+XggHbWpYvhMBIU34/3CDGnnKAWoLxuVZi47VeesLdRU+pDiYEAVYDLEHnI5wmj4CQ55OpJXCycSE909a6V+GWriSh8EgjOcGp7e79Rd/+Akr/r+LSjbCJwcQgdpl9fK7DPyuvZix8XQsRKEt58/UbUaEG4GYLA1JAoPWWNdtG3sbzVcLGpo5Ao2VoapyzUtytOZ8FfMENi8Q5OtxSi/sizByuYMgl4y3lof5wK6jx0fZtWr1Yp/KbbSLGjOoXHx/DS46lp6uyOp1WjKs/eOAXAtfsz++O87Epdy3vEC10sCakce0M/zJ1wNykpFJ7mYMcMf6RUxWWPst
+ vQP1LV1K
+ R/DTNnSQHAHug3Hdr6T/DwH1+CV7T5vGjCazH6oSK1EEnmdFDa56YC/Q0Dq2CLrK+iRXFYsKcaOXZm8AV2rtqRPfsrCn6C83MWY1j4NroXvO4/muPA3h/dfmmJjC4erB9C8Ls0KPP9SxUZAWbUhonTo6Vr7G6IjfR1+evEvJtRBA+WV7cJyhi8j1V+SzmOmeRVAdXjIwgtKCPhcWln9dDPkmHYNNlJdR3iR6WnHXRvPZOPD/rwcQAgLvi27Sime+uD/amKr5DXEOnzRAeebamzLGvr9zLiTNcHLfn/6XJy0svxXtx+XMImjvPX2Xxj/rGCR45fzXeYrALZwgN6fdz+gfZOc43t6D9sZ5ohE97Ynll7jDFDednFuG7aSCgRdHSUIjHfk9UJtdH8rxgjkZRG8gzXb5y5XyWcv7Q5IqMetnEuyvgxJ26hdGJl23ZezU3A7WVye1ZL3YQyD2h24U89GoLUbWOvYVdUK6TLPg5xt8WSCHUzoqv4Z3YjSdZN+ca5N/VbUWjjP05pNthlgpcIKBeC5YjKKYqtl8buzEPilGcz1Pm6YiKJgT7JKbV8V6c5anDr8KP7ga8AxUakKSXWyCC8YM7YMtrK3JmrnCMerX+usDgkgraGPt8BQHeD1WsR1LYFa8yiy+l+g+a5OZebSEf/LVwLKxJJnkP5k3MHAj5vxJho3eitJtpUsiuIW9Di4DKso9xOTP8T7NaZrqiLvvH0/770Zd0is/pvLHWigRkpeFvvPVA+WZob+IpXuIAwuQoVzrTP7Mp009JAxF41KCuKgPk2xWVfhRFcCwEW86ASstjcbHCzBsEp399OfgkFJH6RtcOtG2OAJf/Rl/9JSN/dHJd/bythlHJJVvpiUABwFf0OhdS3gmBSA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,97 +158,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-> 2025=E5=B9=B49=E6=9C=8819=E6=97=A5 06:25=EF=BC=8CCong Wang =
-<xiyou.wangcong@gmail.com> =E5=86=99=E9=81=93=EF=BC=9A
->=20
-> This patch series introduces multikernel architecture support, =
-enabling
-> multiple independent kernel instances to coexist and communicate on a
-> single physical machine. Each kernel instance can run on dedicated CPU
-> cores while sharing the underlying hardware resources.
-
-Hi Cong,
-
-Sorry for chime in here, and thanks for brining replicated-kernel back =
-to the life.
-
-I have some experience on original Popcorn Linux [1] [2], which seems to =
-be the
-root of most code in this series, please see my comments below.
-
->=20
-> The multikernel architecture provides several key benefits:
-> - Improved fault isolation between different workloads
-> - Enhanced security through kernel-level separation
-
-I=E2=80=99d agree with Stefen=E2=80=99s comments [3], an "isolation=E2=80=9D=
- solution is critical for adaptation
-of multikernel OS, given that multi-tenant system is almost everywhere.
-
-Also allowing other kernel to inject IPI without any restriction can =
-impose DOS attack
-risk.
-
-> - Better resource utilization than traditional VM (KVM, Xen etc.)
-> - Potential zero-down kernel update with KHO (Kernel Hand Over)
->=20
-> Architecture Overview:
-> The implementation leverages kexec infrastructure to load and manage
-> multiple kernel images, with each kernel instance assigned to specific
-> CPU cores. Inter-kernel communication is facilitated through a =
-dedicated
-> IPI framework that allows kernels to coordinate and share information
-> when necessary.
->=20
-> Key Components:
-> 1. Enhanced kexec subsystem with dynamic kimage tracking
-> 2. Generic IPI communication framework for inter-kernel messaging
-
-I actually have concerns over inter-kernel communication. The origin =
-Popcorn
-IPI protocol, which seems to be inherited here, was designed as a =
-prototype,
-without much consideration on the ecosystem. It would be nice if we can =
-reused
-existing infra design for inter kernel communication.
-
-I would suggest look into OpenAMP [4] and remoteproc subsystem in =
-kernel. They
-already have mature solutions on communication between different kernels =
-over coherent
-memory and mailboxes (rpmsg [5] co). They also defined ELF extensions to =
-pass side band
-information for other kernel images.=20
-
-Linaro folks are also working on a new VirtIO transport called =
-virtio-msg [6], [7], which is designed
-with Linux-Linux hardware partitioning scenario in mind.
-
-> 3. Architecture-specific CPU bootstrap mechanisms (only x86 so far)
-> 4. Proc interface for monitoring loaded kernel instances
->=20
->=20
-
-[=E2=80=A6]
-
-Thanks
-- Jiaxun
-
-[1]: https://www.kernel.org/doc/ols/2014/ols2014-barbalace.pdf
-[2]: https://sourceforge.net/projects/popcornlinux/
-[3]: =
-https://lore.kernel.org/all/CAM_iQpXnHr7WC6VN3WB-+=3DCZGF5pyfo9y9D4MCc_Wwg=
-p29hBrw@mail.gmail.com/
-[4]: https://www.openampproject.org/
-[5]: https://docs.kernel.org/staging/rpmsg.html
-[6]: https://linaro.atlassian.net/wiki/spaces/HVAC/overview
-[7]: https://lwn.net/Articles/1031928/
-
->=20
->=20
-> --
-> 2.34.1
-
+On Thu, 2025-09-25 at 12:02 +0100, David Hildenbrand wrote:=0A=
+> On 24.09.25 17:22, Roy, Patrick wrote:=0A=
+>> Add an option to not perform TLB flushes after direct map manipulations.=
+=0A=
+>> TLB flushes result in a up to 40x elongation of page faults in=0A=
+>> guest_memfd (scaling with the number of CPU cores), or a 5x elongation=
+=0A=
+>> of memory population, which is inacceptable when wanting to use direct=
+=0A=
+>> map removed guest_memfd as a drop-in replacement for existing workloads.=
+=0A=
+>>=0A=
+>> TLB flushes are not needed for functional correctness (the virt->phys=0A=
+>> mapping technically stays "correct", the kernel should simply not use it=
+=0A=
+>> for a while), so we can skip them to keep performance in-line with=0A=
+>> "traditional" VMs.=0A=
+>>=0A=
+>> Enabling this option means that the desired protection from=0A=
+>> Spectre-style attacks is not perfect, as an attacker could try to=0A=
+>> prevent a stale TLB entry from getting evicted, keeping it alive until=
+=0A=
+>> the page it refers to is used by the guest for some sensitive data, and=
+=0A=
+>> then targeting it using a spectre-gadget.=0A=
+>>=0A=
+>> Cc: Will Deacon <will@kernel.org>=0A=
+>> Signed-off-by: Patrick Roy <roypat@amazon.co.uk>=0A=
+>> ---=0A=
+>>   include/linux/kvm_host.h | 1 +=0A=
+>>   virt/kvm/guest_memfd.c   | 3 ++-=0A=
+>>   virt/kvm/kvm_main.c      | 3 +++=0A=
+>>   3 files changed, 6 insertions(+), 1 deletion(-)=0A=
+>>=0A=
+>> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h=0A=
+>> index 73a15cade54a..4d2bc18860fc 100644=0A=
+>> --- a/include/linux/kvm_host.h=0A=
+>> +++ b/include/linux/kvm_host.h=0A=
+>> @@ -2298,6 +2298,7 @@ extern unsigned int halt_poll_ns;=0A=
+>>   extern unsigned int halt_poll_ns_grow;=0A=
+>>   extern unsigned int halt_poll_ns_grow_start;=0A=
+>>   extern unsigned int halt_poll_ns_shrink;=0A=
+>> +extern bool guest_memfd_tlb_flush;=0A=
+>>=0A=
+>>   struct kvm_device {=0A=
+>>       const struct kvm_device_ops *ops;=0A=
+>> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c=0A=
+>> index b7129c4868c5..d8dd24459f0d 100644=0A=
+>> --- a/virt/kvm/guest_memfd.c=0A=
+>> +++ b/virt/kvm/guest_memfd.c=0A=
+>> @@ -63,7 +63,8 @@ static int kvm_gmem_folio_zap_direct_map(struct folio =
+*folio)=0A=
+>>       if (!r) {=0A=
+>>               unsigned long addr =3D (unsigned long) folio_address(folio=
+);=0A=
+>>               folio->private =3D (void *) ((u64) folio->private & KVM_GM=
+EM_FOLIO_NO_DIRECT_MAP);=0A=
+>> -             flush_tlb_kernel_range(addr, addr + folio_size(folio));=0A=
+>> +             if (guest_memfd_tlb_flush)=0A=
+>> +                     flush_tlb_kernel_range(addr, addr + folio_size(fol=
+io));=0A=
+>>       }=0A=
+>>=0A=
+>>       return r;=0A=
+>> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c=0A=
+>> index b5e702d95230..753c06ebba7f 100644=0A=
+>> --- a/virt/kvm/kvm_main.c=0A=
+>> +++ b/virt/kvm/kvm_main.c=0A=
+>> @@ -95,6 +95,9 @@ unsigned int halt_poll_ns_shrink =3D 2;=0A=
+>>   module_param(halt_poll_ns_shrink, uint, 0644);=0A=
+>>   EXPORT_SYMBOL_GPL(halt_poll_ns_shrink);=0A=
+>>=0A=
+>> +bool guest_memfd_tlb_flush =3D true;=0A=
+>> +module_param(guest_memfd_tlb_flush, bool, 0444);=0A=
+> =0A=
+> The parameter name is a bit too generic. I think you somehow have to=0A=
+> incorporate the "direct_map" aspects.=0A=
+=0A=
+Fair :)=0A=
+=0A=
+> Also, I wonder if this could be a capability per vm/guest_memfd?=0A=
+=0A=
+I don't really have any opinions on how to expose this knob, but I=0A=
+thought capabilities should be additive? (e.g. we only have=0A=
+KVM_ENABLE_EXTENSION(), and then having a capability with a negative=0A=
+polarity "enable to _not_ do TLB flushes" is a bit weird in my head).=0A=
+Then again, if people are fine having TLB flushes be opt-in instead of=0A=
+opt-out (Will's comment on v6 makes me believe that the opt-out itself=0A=
+might already be controversial for arm64), a capability would work.=0A=
+=0A=
+> Then, you could also nicely document the semantics, considerations,=0A=
+> impact etc :)=0A=
+=0A=
+Yup, I got so lost in trying to figure out why flush_kernel_tlb_range()=0A=
+didnt refused to let itself be exported that docs slipped my mind haha.=0A=
+=0A=
+> -- =0A=
+> Cheers=0A=
+> =0A=
+> David / dhildenb=0A=
+> =0A=
+=0A=
+Best,=0A=
+Patrick=0A=
+=0A=
 
