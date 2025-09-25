@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 533B9CAC5B1
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 15:09:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D43FECAC5A7
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 15:18:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA5EE8E0006; Thu, 25 Sep 2025 11:09:05 -0400 (EDT)
+	id 2CD798E0008; Thu, 25 Sep 2025 11:18:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7DF58E0003; Thu, 25 Sep 2025 11:09:05 -0400 (EDT)
+	id 2A5168E0003; Thu, 25 Sep 2025 11:18:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 993A28E0006; Thu, 25 Sep 2025 11:09:05 -0400 (EDT)
+	id 1BA678E0008; Thu, 25 Sep 2025 11:18:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 87C368E0003
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 11:09:05 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5318316036F
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 15:09:05 +0000 (UTC)
-X-FDA: 83928105450.23.E2B7822
-Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 6BE11C0016
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 15:09:03 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="Ebxh3Az/";
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 09AD78E0003
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 11:18:36 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B3C401A0191
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 15:18:35 +0000 (UTC)
+X-FDA: 83928129390.01.C85460C
+Received: from mail-il1-f173.google.com (mail-il1-f173.google.com [209.85.166.173])
+	by imf28.hostedemail.com (Postfix) with ESMTP id CE9B8C0008
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 15:18:33 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="WeN/fhxW";
 	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.166.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758812943; a=rsa-sha256;
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.166.173 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758813513; a=rsa-sha256;
 	cv=none;
-	b=8Y8avI/PWmGNywgJdFZovdgF9dsI0rQwbWzUqXCOoT58bWrq/XgAeGFQxkuU6/w87ciRfw
-	YxC+CQTm8qMma3n0mNAJ1xmjqMltvH86/9VUcED7sczcAtqi8K2oziw6GQYye5ZhsSTmj8
-	mJgJfYKKcmLXumP+eicNetnRKBhf9eM=
+	b=D4tDmbicYChBqKj+rZUKx9Nfb9KsSp5utWC+oegBQrLqryt6aqHYsj0ob7eYWveeGQwc0x
+	gg9klAGMVIsVe390sk1u1Ey/1xDo6EKywVxWhdjwVvReXY4R9bgamYetmLGABfv70w0L0a
+	kltz+AK57Xt13OhJBkF6udFMc5esoeU=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="Ebxh3Az/";
+	imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="WeN/fhxW";
 	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.166.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.166.173 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758812943;
+	s=arc-20220608; t=1758813513;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mYDLI5mwI4uh21VH+pwIKDtJ5bbVvmfXzJZa+QgeupM=;
-	b=Kx9fO7mYBBU/ojRrEwRklfw1QHJgeHGZ+K5MTB9Mjz+Kg+YkfYMI2U0LifVmTBR9AYtscH
-	3Kjbiq7cyHz+ERG+QZLrFC6L0BKIbKY+e6ZkAJ+0v2LiyAxmwvrcJCacUrz5BtF1XYHTt+
-	EnFTZ+57FfX7++kZ6auRiKHc8GgMBMI=
-Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-4248b3204d4so4071755ab.3
-        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 08:09:03 -0700 (PDT)
+	bh=uTV7SOBwRvtCz9nLHK3fWm3pn4TCNp2vMjiqO7XDDco=;
+	b=5euaypvOBHeb/j/AW7rxS3WtxB/3nHSrV0LwZ5m8A8BQheTD+4QfpreVW1kucEPQ7u7kQ4
+	wAQ/w8MIATGL9SEhSOwibeoPgVVHvc/9KUF+mwaDW9WEIvQwXmizu1zZSowogujOfU9LFL
+	zr0h8WZgNbs7Bo2FgfzguQLc2lc2rQg=
+Received: by mail-il1-f173.google.com with SMTP id e9e14a558f8ab-4248b320541so11596685ab.1
+        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 08:18:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1758812942; x=1759417742; darn=kvack.org;
+        d=gourry.net; s=google; t=1758813513; x=1759418313; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mYDLI5mwI4uh21VH+pwIKDtJ5bbVvmfXzJZa+QgeupM=;
-        b=Ebxh3Az/EjONK4EKZcPEyWv2SeQyAYG04gPiPytwaMfod1whbP42VpM/Hp8baFQjb5
-         BTkmC8F14cixfyARdCXo1Igi7rMUEKE/SlxDIgSC+wd+FYVtbo9ttWDEde+yjyEjIiPQ
-         hPM1aQV2vgcP1AZMD6E3BBu+moQemivpxIzh0uLGDOxtVVWTgX+wFVARXbxdqTY65NU2
-         4qKryj80+CywAJq0DrsLwllrZ2Mw1IkifZXcAGMcRIu+aVKLp1C+ejchT53aVsCaafBv
-         JU2zWU3WEuPjGuYLa6s2yVFNMf8cTPZ2yWlh/v/0YY/xNppFRpKIH/NnM5lBjHt/F/u8
-         IMnA==
+        bh=uTV7SOBwRvtCz9nLHK3fWm3pn4TCNp2vMjiqO7XDDco=;
+        b=WeN/fhxWe3B+yFAiS6UAAv++ROIUFRm1aDLe0qYgo8ol63yhKhgikfCJB6GKgMkETR
+         NMXeXgiGNqShN8DEcnv3PluuCon4lomGWdOV1DpUxO/22s1zFGqbk154jZzEvW3xdwZa
+         NSUwi84l+8F6l81v7jf8jLLpZkQ90b1LwfLtNZ6X3xpPaxAWQ36A/rskvCQDTnu/9AsW
+         jGU9bmEogp9K+Zgbismb72120CcfemJbF8gOpkqZSLrw0OdZz4HlUT9OO8HI8qm4eCQq
+         C09JPRY+kBh1Rmt/Ym8YuUYIqNWlPvCTYgCR/afjkJzez+n++m+7de7zDhXk3hhYSJ1V
+         wZGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758812942; x=1759417742;
+        d=1e100.net; s=20230601; t=1758813513; x=1759418313;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mYDLI5mwI4uh21VH+pwIKDtJ5bbVvmfXzJZa+QgeupM=;
-        b=O9qLxC4x1PWYk5CVCEpSMOCCegpuPuJC6Gipygyi++vlkNY74uWbzAjXN/hvIezdr9
-         a1Rq/1+rswhgMXf7loSRmVqhBxC24ZHq/qApIl27+ZUnqMChGxYKrjyg+Uz7BbOHBsr2
-         cks2pa0D7nLtxhsb2q243Dx+6MpMX6G+ePG0iL+eyEgAU2PnAgdd0HYB1McF6ciOYbEv
-         0CFu61tMuXJugCiMpg3oei4rdL1eq63AOb6HYUr/dn6IeW9QjaeNSB9LaqiDdr1fdW22
-         ASv4WvPVOrLArXXoV/js4BkHxbOiNJPDhjTQ343bZtsnyHUNu8CpWXy5r2YM7/yvaGS6
-         uo5g==
-X-Forwarded-Encrypted: i=1; AJvYcCWkaKXE4D9ARpbgOSrxF+VCSvtxj9NNcF/KgGmPhsaY9FC3YrYGa4ux3ciP4o5O484dh+btjcFJBQ==@kvack.org
-X-Gm-Message-State: AOJu0YzCnVynAbAl9g4EjAhtPJ7hZmxY4znM0q0wezpFqnQ5vc4hWGKk
-	JeoUKBFxwXliBC/qBkk3Uezbbraqh7WI6A2RNPihNrPCt+3wQ1f7ijuNOMCmYKlkP4Q=
-X-Gm-Gg: ASbGncu/Z7pc70kC99PcScZHPCIDMwmktbJJTmdNuWcDTn6sOjLIAUgX7P9JdbYAMtR
-	YTA4beiyaGp5Pzn6V2BWczooGcF2xS2xJL+QLYGwsR9zfgZO5rvfatvcBc2u0cjIY3XMQvoAgE3
-	UyFhz8P40fF597SKomr1/+UmLVNUfGNZZOlodBiR3FA9mbhk+MMJgpkwPLRyjAqeg/kQfP8XTpU
-	guXi/vj59Rxb2W3svAYWNxqrSyCE2bJ+dJlix4FrNDWlTfr5df3Udo0C9/GR2X5jLDL9WrEYJPt
-	jgV9WdcCL5Kcx0DzhRrzj+P7yhcyc49Hg8Wg/+kKdp6nxQo7gkPMAroOIDh5VCmP8+DjW6Nw2yv
-	RF5/c/fnQHvgdGezDCKfgAdYlCh9Rek53l7Qks1BA42aQuNEKM/RDNcDuWP/subUg9X3OYoFdj/
-	0=
-X-Google-Smtp-Source: AGHT+IFJCD646Ie93Dsteh+N9Tg3N9mTKfy3p3JlRRzccID89obtfshwZ2kYW8ICweprqMFS2clcTA==
-X-Received: by 2002:a92:cd8c:0:b0:425:720f:deec with SMTP id e9e14a558f8ab-4259566e447mr49602485ab.31.1758812942274;
-        Thu, 25 Sep 2025 08:09:02 -0700 (PDT)
+        bh=uTV7SOBwRvtCz9nLHK3fWm3pn4TCNp2vMjiqO7XDDco=;
+        b=wuV6DkWIl3a2b7lJ5dzzjrU9zDWcJWkf+rg1X8ZmkqNGA2F1qMYO2YNlOARbNyo52i
+         D0MUbbGepTIAvdf9eFXuiqN8ev/442u0roRnNEhlFFil+PkscJvm6OT6qB58kDh14yCR
+         Zji4X9f3Np4APHSLULoE5pFRj6HG4kLhelnzArGp6U5XnLa3tMvqEDh/8Mmy46i3nUpp
+         rkrh2OSD36R1dmT8HcRRiSymYkrd/WS1CsgwPNyvaSrVMLqnKI+HxzJ/BIw2sQuYzJsM
+         gUtSRxp13PNS883zf72A4hj11ZHkwF/7a5PbJDiC2UkTYbTlabSH9jRp3poYJBTW/VxQ
+         c7JQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXP7JNGjp4r8vvNErDS9k0Ty0NyWa2F9sV+E9Qsz3MP20dM7ZaIdlOMMVwQzi+ccqHKAetbeoAh+Q==@kvack.org
+X-Gm-Message-State: AOJu0YxbIuiQloUySnHvZodRz8u0gRl9cSjZrgluR94ZIN+RZIdHocc5
+	1k392KqYJlL7IBu0XNJrtcGj0ggEibp+1sVuFhcguVMnAV5ctjxV+nA/OhYwRk8lZXI=
+X-Gm-Gg: ASbGncvicpS+fKBxtEwou+LREdZk6GBZRTvoHaDt2C+Z+mfT4/z1loIRopvsbFWVExd
+	f64BuF6+ID6UxUdGekxJ6v029sb9UPGAc6N/sGDzT3Ba6Z6CFR1+SWQqkhCHJ91mv2n4VHW50Sx
+	k+bpmtEIZZOR2l2PaniJjElY2WMP1dAaowckE2pXw+k+wtjOPrRzXXUXc6CJSovo/S0RwgcZYYU
+	OqOCLLNIbN5tfufW3g8wFN6JSMxzaVOhyw286cqotRgrW2YGC/NyQiqu5ON3tcpdANqpJJ78PHZ
+	mq6QSQ7t+68psORPwn/tTwBqR3wu3OzDBxVYro8/cYJxRQS1iloHARiqMB6JI3vrYyj22yM432+
+	dC92S8oCKObKiemEZ//ZCFyNYdIcZBiU1GRShcpseTlRbDQeY4gc+eeOmeBJD8f0O7Qb4qJkGek
+	M=
+X-Google-Smtp-Source: AGHT+IEE6BSjkeOHtrqgDMGp6UEs/8XlcmOungL2XSRC4po6mROif6Vk6dLzPa16z642TGp7LJtOhg==
+X-Received: by 2002:a05:6e02:3789:b0:424:7633:9e72 with SMTP id e9e14a558f8ab-42595653cb6mr54081225ab.30.1758813512638;
+        Thu, 25 Sep 2025 08:18:32 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F (50-32-2-77.vng01.dlls.pa.frontiernet.net. [50.32.2.77])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-56a6546198fsm878831173.21.2025.09.25.08.09.00
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-56a647da50fsm909985173.15.2025.09.25.08.18.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Sep 2025 08:09:01 -0700 (PDT)
-Date: Thu, 25 Sep 2025 11:08:59 -0400
+        Thu, 25 Sep 2025 08:18:32 -0700 (PDT)
+Date: Thu, 25 Sep 2025 11:18:29 -0400
 From: Gregory Price <gourry@gourry.net>
 To: Jonathan Cameron <jonathan.cameron@huawei.com>
 Cc: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>,
@@ -108,7 +108,7 @@ Cc: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>,
 	Adam Manzanares <a.manzanares@samsung.com>
 Subject: Re: [RFC PATCH v2 0/8] mm: Hot page tracking and promotion
  infrastructure
-Message-ID: <aNVbC2o8WlYKjEfL@gourry-fedora-PF4VCD3F>
+Message-ID: <aNVdRdXVzXSm_4SJ@gourry-fedora-PF4VCD3F>
 References: <20250910144653.212066-1-bharata@amd.com>
  <aMGbpDJhOx7wHqpo@casper.infradead.org>
  <aMGg9AOaCWfxDfqX@gourry-fedora-PF4VCD3F>
@@ -117,18 +117,19 @@ References: <20250910144653.212066-1-bharata@amd.com>
  <20250917174941.000061d3@huawei.com>
  <5A7E0646-0324-4463-8D93-A1105C715EB3@gmail.com>
  <20250925160058.00002645@huawei.com>
+ <aNVbC2o8WlYKjEfL@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250925160058.00002645@huawei.com>
+In-Reply-To: <aNVbC2o8WlYKjEfL@gourry-fedora-PF4VCD3F>
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6BE11C0016
-X-Stat-Signature: eha3go6fgzpx6rech9xfn457sptoiixh
+X-Rspamd-Queue-Id: CE9B8C0008
+X-Stat-Signature: r168uzs4ee1x8awnxu75pz9j4z9sa34q
 X-Rspam-User: 
-X-HE-Tag: 1758812943-616709
-X-HE-Meta: U2FsdGVkX1/e16ffOsLwVdG1Rg9x1bvP85H0xZmTHrZtxlRlHbfIjDkxcbLan+Zks1E3alVsiQTU/yu1RBoMp1c/RA1OJ9NVy6Y4UD8Ss5ERofJT+TLOj9yaiTKdfMPmPUr5SJ5veWZYoskBoDXKdMvgsZummBoNo1nTSVgqaQNzMG1tlEh7VONKNkXxCdyVmxrHO+wJL2WCF9u3gtzopygUsdX4K6aLuSe7AUWO60PsG5edmIlLVYwc/GJqU5HkCqyE2eGudV1syvXDNGX8dOnELsav5yh0E+fmW/9HhXvlmI4qcBE19kczat0N0egzMRAFCdDtS/YEtcdfA37dxhiWGnm1UTa8UCiXsxN3eMJNINddkIlPA3WtQEsplGRT29k6mqvau17z9rLq+xkpojHodM+o7SCdiHl9O6gQDJtMKh0ajDeJBC8waCw2hGDSgarKQP8pg+//wlDrwgrZvM6ptrJnzlXP3P7ogvWfc3N72eHDipEGWAh7VHkloxtESDmETSKXq7efWg/KAnsHhpQFzFZX7mcNB4XeNGtJZLnkF6QeaVg7T6BIIA+t+TdF1Esq5T6okNIprMPc25JYZ7xeZs+XmhM0awNhb9XXmM4a1sExaGjMNZBIwejQ/ZUkRB3YwH6rSSvN+OeKp4Ym3PEQ8apb0sIysF/VFoKD3RSAOOxd2+1dGX+WFWVdrN5w4c036xyog/x1GdJHyi3PWsxi2aXcJeBFRUWg4gTtk0zE/Ly/v33wlrKcw6f25A48D58SZWH3hNv1+vMt2xWu8Ea8/JLpPCEyHHiJLi1cEzrxfRYvnOaP2rJfncUJbtqooOa79HgZuWyVmVwczlR4gGy7OqBY8G9EPd3FburbICFgAMnDdaATWjne3h+1b0H4g90gdN06T98qVdrtK5Xyryiy0SsIxae+ztlCfMo3Sd33TOzk05bDhGAghjD1dIIzmiBkxdlP9nMbxUdQmhD
- WBtubDh4
- HKPMsFCmEFOEETpcbwcSeV04WElhl758Gz+tmVke7A9ANN1z1nJOl6WYVwnewSTodcKP5CCeGjezpb2h/QHsRIvOt1Vsm+CzskqRrB+qFEQgvP0Tvcv2LrQjU5l0L+2V05yZjKpQ7CujIa1IYwrKqarkNNvu6ajTWSm0Huhklrl16mz0XfoiReAKo/hgiAkyD/QiMeGb/rVRfOc2JLvgtV1mXPb7zG7YVUgP0aJW0DqG47DRQbivAavs391oGA7DGY8J2vIqz7mNc+1sE5G9GO5hrkjVt2yTtD5wtKt7+i5PNZ4rBXUW6cXtAhfXakHmH0zcEnNbaySMQk05BXoXoHFUYohqrlS6Eokuah4Wrl079Gsryhhfj0Ti4mJbb3bCaWXZZl9L9BsANH6BgXzmNusEcDzOED/GPA/diInbECtakREs=
+X-HE-Tag: 1758813513-457133
+X-HE-Meta: U2FsdGVkX1+046MDK4CSgKDayfxvnd9mXkxQfVxgjmG12EEQwhnMCl/8EUm1s9XF4no3QOYD9X7X18+qxCx7NmhjRPA1OfDZk5Js0FjhX8jZw1nvV6uN1KQz6xdIwuz4r53z3tHi63melhF294hoCqkp2euJ5SLOUTcvU6W6Wk574t5hSbUTTyoFTT9y11+rJB0Ztc4YRUBjrT+dPJiM2jnrq90pvpLVZ1alWZFotKBX41tuqLG00PSL8PctTD7PBkbe+urtAwoE6lgoWKiCu8SA7nLYHQ6rrg0pPS3YZdhmc9HasrehG0W0YLFSej6mzuMlqHpzSV7QgA4OrP04DJpSPDxyBb26ByOScRnOR8aIJGIq7jz1otVaWYRDLi5S4OkWnmHqu853m8aVCKVHPshhFZ/f7BxzSlBSxypuR9SrJF64bkUpX/+Ew76mUR3IrYZb8oeG5KzhBJ4sJ4v+QUUHkKzDOiSY/q00DlS8Zz3Ge0DDbU/Yy3vTzSUeXO35SzlOwwex4Z5pZhcRpO7xniGKiDNROT2kjJ08RiRt0B0mmPjhTQZTmWJQPv0voRh6ZMrwBpWqHHLLfB9FBu2uGNORe3NL0XY8g6oK8RgplWblDWQZ1R5jDa0EVVFUoryQwmWQQUUq9WHLWesMZ7a2MVkIZOl3wP4DrEOlNqZ3AIg9o3XKtYHLttDsckkcwK0OtSViXQJRNSXA6xGIAft/klhHKt1IsB2ZxLU9r33SJEmGU5gJBiTUocXXy+fVPcNxmntkm6OUhqmGjEQUQDAS3TEPkaP2n74eLsP5i8G7Ijw6UU1Wusi5PDfMttpw0z2m8Mct00tfEYAXtNzzmpeAcpFID6q16k0MusAFrBUNyLL3hQ9Gh9xpsjuFp6FVfW7IhHhzZHRRDMSB6FbBiMa4pR2B/luee9ua3LahnTOFoV3dqzOtegtdjzryik65JKOv+qfbsfwI9FcMD/7/0G0
+ vs3FW2by
+ Pe0aFMzUJKolhSnCVzraZKEPPSDusJYSFdifr85ddOA80Sz0acS8LmNy55nu8OidhHXIhIQpkKLgfxxLHHsLOtQV7J9BjXrFcDKKBcwBr/ZG8/nZHvGMSkbrZU8f3zHpP7g1bZfmbfXm8MkQl125zRLttYNQGn0ZpEX5KLovlHvODdWkZOiQVNrwiKmoMZrx6tbD/EGP3bp7v2lVuT+YgIMQltuXgPrA7C05VWfqLKosTwi7qt5J0UeyNhgor2Hbogwg2rKV5B34FyhztrQwviSbOaYzK8CWyHGoMIrgiWtj2XR5OpP2VbEJ5bIV8hLDTf+XzdpJfH0xAs3Hb4xSFidHRdQEju5Cf4f8XhKlZmkCSBWqQP+2b7GqZK0aBJBnyC+XAWl2T1zNoF8HgM8ouQEq5+g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,21 +138,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 25, 2025 at 04:00:58PM +0100, Jonathan Cameron wrote:
-> Now, if we can put this into a special pool where it is acceptable to drop the writes
-> and return poison (so the application crashes) then that may be fine.
+On Thu, Sep 25, 2025 at 11:08:59AM -0400, Gregory Price wrote:
+> On Thu, Sep 25, 2025 at 04:00:58PM +0100, Jonathan Cameron wrote:
+> > Now, if we can put this into a special pool where it is acceptable to drop the writes
+> > and return poison (so the application crashes) then that may be fine.
+> > 
+> > Or block writes.   Running compressed memory as read only CoW is one way to
+> > avoid this problem.
+> >
 > 
-> Or block writes.   Running compressed memory as read only CoW is one way to
-> avoid this problem.
+> This is an interesting thought.  If you drop a write and return poison,
+> can you instead handle the poison message as a fault and promote on
+> fault?  Then you might just be able to turn this whole thing into a
+> zswap backend that promotes on write.
 >
 
-This is an interesting thought.  If you drop a write and return poison,
-can you instead handle the poison message as a fault and promote on
-fault?  Then you might just be able to turn this whole thing into a
-zswap backend that promotes on write.
+I just realized this would require some mechanism to re-issue the write.
 
-Then you don't particular care about stronger isolation controls
-(except maybe keeping kernel memory out of those regions).
+So yeah, you'd have to do this via some some heroic page table
+enforcement.  The key observation here is that zswap hacks off all the
+page table entries - rather than leave them present and readable.  In
+this design, you want to leave them present and readable, and therefore
+need some way to prevent entries from changing out from under you.
 
-~Gregory
+> Then you don't particular care about stronger isolation controls
+> (except maybe keeping kernel memory out of those regions).
+> 
+> ~Gregory
 
