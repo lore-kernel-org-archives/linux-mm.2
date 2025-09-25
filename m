@@ -4,107 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35294CAC5AE
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 02:15:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52F19CAC5AE
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 02:17:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6EA358E0013; Wed, 24 Sep 2025 22:15:54 -0400 (EDT)
+	id 95F3B8E0005; Wed, 24 Sep 2025 22:17:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69B2A8E0001; Wed, 24 Sep 2025 22:15:54 -0400 (EDT)
+	id 90FC38E0001; Wed, 24 Sep 2025 22:17:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58F618E0013; Wed, 24 Sep 2025 22:15:54 -0400 (EDT)
+	id 7FE718E0005; Wed, 24 Sep 2025 22:17:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 435FC8E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 22:15:54 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E0AFF57CED
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 02:15:53 +0000 (UTC)
-X-FDA: 83926156986.08.054D028
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E15EA40006
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 02:15:51 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FyZ34axP;
-	spf=pass (imf04.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BD6C8E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 22:17:41 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 12DB1160217
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 02:17:41 +0000 (UTC)
+X-FDA: 83926161522.16.229A4AF
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 32A98100005
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 02:17:37 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=none;
+	spf=pass (imf05.hostedemail.com: domain of yintirui@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758766552;
+	s=arc-20220608; t=1758766659;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mhiDq3oRyeWoJQl8iGmzUt9VH+oSe7KCtXZQhcEdjgY=;
-	b=bp/l+Co1phCkltMK4hV5JjCbSdWRvGiMjEAHQQew7dnOWPp5k0x7AUtXbu/8eA0cfSwNpk
-	9EXsQ6fGtEkGDD5tp/85UQl8FXCYdpYFdfLJ8RYVEw4LJEdmsKS++bxEHapibPf56DtpSp
-	gKbhob3MYjI6sUVF4eZLCPMlssi/eHA=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FyZ34axP;
-	spf=pass (imf04.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758766552; a=rsa-sha256;
-	cv=none;
-	b=1ncKEGkc5Z/I6nypPu+ZDgmalsUDocwjjPH/0yo0B3Ou5y7EsM+2Y7l+O0zhyhDkVEu5EW
-	gGXCkldCNxr9qiARNEevoZh0eB1aJAxKUSNB0ycUCrhEoE5yp0T9HYawz6QxXf0Tv13PIW
-	uzJY+ui1ky4Osr0VPfM4EwiL5Xhnf2c=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758766551;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mhiDq3oRyeWoJQl8iGmzUt9VH+oSe7KCtXZQhcEdjgY=;
-	b=FyZ34axPjCP3DwWyI3ge58+fGu7+zAOMRJbZL/4/K7dPI9QIwAZm2LTsdYq1/ZLucVnw7H
-	RlXWiGYDUpd+Ivsixhiap7WwD6/DvMPhLLhJ7hzRnrxKx+9ONWnqtdSx0/HcUIeKN9ocXk
-	+vjxX7qytmFoztnBvBFSMwlG+va8ddg=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-538-FSD3UVg7PFynmdgqKiLj5g-1; Wed,
- 24 Sep 2025 22:15:47 -0400
-X-MC-Unique: FSD3UVg7PFynmdgqKiLj5g-1
-X-Mimecast-MFC-AGG-ID: FSD3UVg7PFynmdgqKiLj5g_1758766546
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F220C19560B4;
-	Thu, 25 Sep 2025 02:15:45 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.12])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C550E30001B5;
-	Thu, 25 Sep 2025 02:15:44 +0000 (UTC)
-Date: Thu, 25 Sep 2025 10:15:40 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com,
-	baohua@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	YoungJun Park <youngjun.park@lge.com>,
-	Aaron Lu <aaron.lu@intel.com>
-Subject: Re: [PATCH] mm/swapfile.c: select the swap device with default
- priority round robin
-Message-ID: <aNSlzHmwWWZhPK8K@MiWiFi-R3L-srv>
-References: <20250924091746.146461-1-bhe@redhat.com>
- <CACePvbUhnNUgqbTUrBYoMK-VeCB1Lntkeijof8ehOz77M8H6Bg@mail.gmail.com>
- <CACePvbXz-JQoC40rLzxQe+dvXe9B59sz5kt0eWDUZosRmh3d8A@mail.gmail.com>
+	bh=M+MrvNjbNMU5UdkWxgeYFdNRdUNRe55IPsqP6XzkkQw=;
+	b=ONzekv2aMvd/G6ebPRy/zag//IPFl3I3Er921oH2KFF9sNdKKLkPRLlrzK8eshPPKRmCTy
+	iB5ivSUPc5JPNtq6Xk1aDKD13fECyIO7TtDH+wdlgWcstK506OEN/nwWDna1fNmlzrvCSg
+	lJz4uO6nEBNW3KuYfdVl7iph2XnQ5a0=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=none;
+	spf=pass (imf05.hostedemail.com: domain of yintirui@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758766659; a=rsa-sha256;
+	cv=none;
+	b=YATln6isU13qTSOOx8VosgsCXzbF5wrO2fR6WHatv+egH32DXgqMSBkM3uBdflY/TGFwpB
+	zbEnUwOZ6Xv0/LneWe74wPQjBF+aroB6Nr6NJVeRe1PQt/qTn7HrkJ+RTzG85nAxSvkXVa
+	YD9EDkjpKcapWBsFGJWHnkFxoMy01/I=
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4cXHLG6dwBzTh3F;
+	Thu, 25 Sep 2025 10:12:54 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7EA3B180B63;
+	Thu, 25 Sep 2025 10:17:33 +0800 (CST)
+Received: from [10.174.179.35] (10.174.179.35) by
+ kwepemr500001.china.huawei.com (7.202.194.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 25 Sep 2025 10:17:31 +0800
+Message-ID: <620d202a-6078-4b5d-a42a-8a52543bc14a@huawei.com>
+Date: Thu, 25 Sep 2025 10:17:31 +0800
 MIME-Version: 1.0
-In-Reply-To: <CACePvbXz-JQoC40rLzxQe+dvXe9B59sz5kt0eWDUZosRmh3d8A@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Vc6nR_KpdOzlXKOc1MXlOT27v3zkOxDZO9CN3jukQxA_1758766546
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 2/2] mm: add PMD-level huge page support for
+ remap_pfn_range()
+To: Matthew Wilcox <willy@infradead.org>
+CC: <akpm@linux-foundation.org>, <david@redhat.com>,
+	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>, <ziy@nvidia.com>,
+	<baolin.wang@linux.alibaba.com>, <npache@redhat.com>, <ryan.roberts@arm.com>,
+	<dev.jain@arm.com>, <baohua@kernel.org>, <catalin.marinas@arm.com>,
+	<will@kernel.org>, <paul.walmsley@sifive.com>, <palmer@dabbelt.com>,
+	<aou@eecs.berkeley.edu>, <alex@ghiti.fr>, <anshuman.khandual@arm.com>,
+	<yangyicong@hisilicon.com>, <ardb@kernel.org>, <apopple@nvidia.com>,
+	<samuel.holland@sifive.com>, <luxu.kernel@bytedance.com>,
+	<abrestic@rivosinc.com>, <yongxuan.wang@sifive.com>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-riscv@lists.infradead.org>, <wangkefeng.wang@huawei.com>,
+	<chenjun102@huawei.com>
+References: <20250923133104.926672-1-yintirui@huawei.com>
+ <20250923133104.926672-3-yintirui@huawei.com>
+ <aNMhiZ4FiEE1Rk_T@casper.infradead.org>
+From: Yin Tirui <yintirui@huawei.com>
+In-Reply-To: <aNMhiZ4FiEE1Rk_T@casper.infradead.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.179.35]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
+X-Rspamd-Queue-Id: 32A98100005
+X-Stat-Signature: bmb6wxmhxzbirwa7aphc3r5dpmqqmwy9
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: E15EA40006
-X-Stat-Signature: onhsdj7w3aq1iumjkfks1phrnn1eihsf
-X-HE-Tag: 1758766551-343157
-X-HE-Meta: U2FsdGVkX18wGmCc+jFuSUiIgq3Rr6YrbXS5DQIhnwQCWcsXgDyyQuJkXrQqRQBcapNkFiOdzjObbLJtJhU/F/OG84c7H+0dwNnqFX122ItaSiWg3+UCs1h5CduAsDbXym1ml4aDyR6CTpvm34TrBtwksOii4/38jcyLjJoF2TQh3eT8pSr4JFiaxNZuLyYJp86l+YoWDo0/AY89FRaiy1sn2PSHIvPQT0QlNmUDY0HTsMGO7uJfDieqi7hy4B9ZHsl52ADCXjAIpgog+dzDaj4WqfgMLECSZlbup9GOcvfbCqAbyBG/tmcc1qtl5c7u+t8JihJzQE4ICBQYlvF/ro4qE7TZC8fHCEyjU0Xh7vwSmGH9lNNKamggapWWsr9Gvm8Aj4LoH+4C/E/FU6LBGjhxDIB/bdx/71Jcxx0pm/TEsU0X+c4w15ciX3LHtElr+GvaE/sk7Y6c1wnGt9ziz4t/S7DY++vRwFoOj9tQbm66rXMF1iKITrQA8JclH1AEtQGXgT85NCaN0s6M689xkuc0giGF+QLdczxaGjwubJQ5ophwx9DbV/mjYI19/XuD0Vetdrg8qTwJNTAtPTgEZ00yxWh/xywc6y0Po7FyhghobGjMddLHtCeZm2hciryBtP5Q98UKmI75OG4WRwJdf0c7x01RlR8jMMZP6alc9viuqP2UudrTTiUv0aZCkM4/+/DYJu/DaL957bWkg284w878IzFb9W1zAfGz6afYOFvoCupdfwG9NQfQAtihkFy93EXECSUUYum3jWm1pgrOM+7xEApMuE3eGCK+k2aOd627Nq/DVrGpT7doi22scXQ/G6vpFnngKiu06JSH0OP0OGMx1Wdqss19PL0Q+UR371YmnDQWC5qHG+GmQ3uM0cw8i0ihXHAGUqIK0MuaW/jVw9hVCJYzVWPPVeeCyZZfXciCn1CGlBZim9DrTMVaxWl8emqeLasy4wB8tsTreib
- TTU2+LTW
- qEtli2kyqBrtBH0GXUkLlQ15d/TBN3uNqn17UzZP1GRhmUTcqWRD42QF0Ke/FddDiyQkHrs3zammneexx3ll4TI26qJMYA7xOcEgsrneknpooVp5rtbSzWLAdWApnFu+tsYoc9FOkrxA15QnBY/OrL2RDvVV5JIrszRC4TPk4FbmJE3R7gHkgtM5WDPx2dZ6X/zO6tUMyjDhHSpdn8gJILzDLv0s/8pKoAu92qaOHrT3SMSfEga28WsYCJQ+uaa3Asm/4/B830Za2RBgmuTYoTQLA+qwFyrE96GKkiwwDWyqEhdbziepb2osAq4CD1QilE2XmZ5+8SuJxaAcSPl6bJDbQx92UGT8xkKP/1jlYegWdoTveD874MvOoctNW6qPM5VaJFnP8X1rff9cBXlzjTnGv+JfnpJt4zACizE2SCBk9qANGUuq5RHduro/yR1MUwYacvUMHRSWTAfUDh+ZE7eh8yfo0XHb7+F5sZCNTrjZ36MnQ0dP6GDYbjx9R48VufTnXT4PIWMgOkMY=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758766657-45712
+X-HE-Meta: U2FsdGVkX18cXhUxVrl+Qqzy3DLMrmczEhjFP1Nc62OobKTYLTp1j2nMPKFxrPTXM2FEKCj4k+Go3z+RV2NGtrYZLPaP/7b4PFFWYadOvZYWmuXYRAkbbHwikHog66nB4+IZOQ1Gtk49gHZkSaa5cnQW2uUMHU38xCrzIa4E3ziCP3XXGruFLOrFTpIuG52hX7x8hXlMKerDwqS3i2REP/MAx8UFm67q6KFx3ZN8mcZqJ29O1XRv+1HFhzJnJ+IsflsUZG74REjrYXPTZQIG0Oda8iUsbOfLje9cF+slzb0uyVJUJyf00R8XikRfpPjwRdudgXCj4I4nrMYg+xcYDp95bGu9h/9JYzBJDYdJEMY63yIHApmb6DGvY2wa6aXbgIzPMsoSNJDWnWlFrl0yFnxSxI1slZKRV7BcuO1uzRnxFXgSkg3g9tVnnPY7kPS9RdCnigukzqf9VctEkq7wPzxyYq1Mjveibx6zpfShRR3CGzPXTpfJZCFl6HxMXbND8KC6mzOBpTEoVDVEt0YH4/eF/w1JeqF8dkSWOsHfj00xfQxM6TFUMjEyYmN1PbF/mpSV+eU2MKAHQm/8xcdWd+6yvsSculEq10hghrX/AEtQ39DYQ4WeIws00Au5bbHJVquOkTV+STuRwuu8FwFqxX98UJQt+MYbS51OLXBJN+WFUnlG7Uaja1UO+h25r3Dcy/sHhGxY93TFgu4GfBcBE8ufNIzbmpUqHOM8DhGhHtuuzW1j0Sa8Pb5LclaxwwMuzFN5kQohm0WijuC07VX5+XRvO446Ro7obmDgJq9quw0N6HQo7qbquMGy+ZoyRNBsPYfEXRkmoAq/gnbhDTgcf4CyroKcOtuQufhWocDHFlGYitL0qNSdnEKIHHTPt28tm+BSCiQTPuyc7YzBy3SDN/jWyDu2YJyp2XO3ugAlKW7XMZvARdwgylBNRVpygWx6bz1sSdBfxPxmn0CgUpo
+ i1Klc2Gb
+ TB+njPYhYLopj3beVGn5zsQP7u2j1BFHZP+mIAJSX9V6Hv0bpAXJDZuTGU7Qg1u5ku2aMDD79KqPRXUtKCwjSM+PbTbaj7VkAOOH2YdC6xoooVXafVBo/h3IOR9L90Kv9viYfeOQF8ObHb6pw+xGyEltGQtX0hbbxli0kPhNY7aWUcO6Mm0n/+G9vEE5RU+u38GV5oPTu9EIqLDVPpUYB+J60YfBtaaYVNSqvvGrFdYKdT39e6+AB9CeIFbWnQAjCLgsk9P/fD0X1lPFaQ3NEmvVFhMh6uaOnWUodZsCNauQF7kEsaDIgyvd05QgrdITkXi2O0uFi+jxRcyJ+RXPmDdUGzEMgks5eP/Ua
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,34 +105,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/24/25 at 09:06am, Chris Li wrote:
-> On Wed, Sep 24, 2025 at 8:54 AM Chris Li <chrisl@kernel.org> wrote:
-> >
-> > Hi Baoquan,
-> >
-> > Very exciting numbers. I have always suspected the per node priority
-> > is not doing much contribution in the new swap allocator world. I did
-> > not expect it to have negative contributions.
-> >
-> > On Wed, Sep 24, 2025 at 2:18 AM Baoquan He <bhe@redhat.com> wrote:
-> > >
-> > > Currently, on system with multiple swap devices, swap allocation will
-> > > select one swap device according to priority. The swap device with the
-> > > highest priority will be chosen to allocate firstly.
-> > >
-> > > People can specify a priority from 0 to 32767 when swapon a swap device,
-> > > or the system will set it from -2 then downwards by default. Meanwhile,
-> > > on NUMA system, the swap device with node_id will be considered first
-> > > on that NUMA node of the node_id.
-> >
-> > That behavior was introduced by: a2468cc9bfdf ("swap: choose swap
-> > device according to numa node")
-> 
-> BTW, I noticed you did not CC Aaron Lu who introduced  a2468cc9bfdf. I
-> CC him here and give him a chance to test it in his environment to
-> defend his patch. Please CC him on the next version if his email does
-> not bounce.
 
-Sure, definitely we should CC Aaron. Thanks a lot for noticing.
+
+On 9/24/2025 6:39 AM, Matthew Wilcox wrote:
+> On Tue, Sep 23, 2025 at 09:31:04PM +0800, Yin Tirui wrote:
+>> +			entry = pte_clrhuge(pfn_pte(pmd_pfn(old_pmd), pmd_pgprot(old_pmd)));
+> 
+> This doesn't make sense.  And I'm not saying you got this wrong; I
+> suspect in terms of how things work today it's actually necessary.
+> But the way we handle this stuff is so insane.
+
+Thank you for pointing this out and the broader context.
+
+> 
+> pte_clrhuge() should not exist.  If we have a PTE, it can't have the
+> huge bit set, by definition (don't anybody mention hugetlbfs because
+> that is an entirely separate pile of broken horrors).  I understand what
+> you're trying to do here.  You want to construct a PTE that points to
+> the same address as the first page of the PMD and has the same
+> permissions.  But that *should* be written as:
+> 
+> 	entry = pfn_pte(pmd_pfn(old_pmd), pmd_pgprot(old_pmd)));
+> 
+> right?  Now, pmd_pgprot() might or might not want to return the huge bit
+> set.  I'm not sure.  Perhaps you could have a look through and figure it
+
+I've tested this on arm64, and pmd_pgprot() does return the huge bit 
+set, which is exactly why I added pte_clrhuge().
+
+> out.  But pfn_pte() should never return a PTE with the huge bit set.
+> So if it is set in the pgorot on entry, it should filter it out.
+> 
+> There are going to be consequences to this.  Maybe there's code
+> somewhere that relies on pfn_pte() returning a PTE with the huge bit
+> set.  Perhaps it's hugetlbfs.
+
+I'll try to refactor pfn_pte() and related functions to filter out the 
+huge bit set and test its impact on hugetlbfs.
+
+> 
+> But we have to start cleaning this garbage up.  I did some work with
+> e3981db444a0 and the commits leading up to that.  See
+> https://lkml.kernel.org/r/20250402181709.2386022-12-willy@infradead.org
+> 
+> I'd like pte_clrhuge() to be deleted from x86, not added to arm and
+> riscv.
+> 
+I completely agree with the goal of deleting pte_clrhuge() rather than 
+expanding it. I'll study your referenced work and align my approach with 
+your efforts.
+
+Would you recommend I address the pfn_pte() and related function 
+refactoring as part of this patch series, or should I submit it as a 
+separate patch series?
+
+-- 
+Best regards,
+Yin Tirui
 
 
