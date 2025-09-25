@@ -4,122 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33835CAC5BA
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 18:44:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4ED0DCAC5B9
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 18:46:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64D028E000B; Thu, 25 Sep 2025 14:44:52 -0400 (EDT)
+	id A701D8E000E; Thu, 25 Sep 2025 14:46:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6252D8E0001; Thu, 25 Sep 2025 14:44:52 -0400 (EDT)
+	id A21298E0001; Thu, 25 Sep 2025 14:46:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 513868E000B; Thu, 25 Sep 2025 14:44:52 -0400 (EDT)
+	id 8E8B58E000E; Thu, 25 Sep 2025 14:46:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 400D58E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 14:44:52 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EBB2814049A
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 18:44:51 +0000 (UTC)
-X-FDA: 83928649182.24.A013473
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 178E11C0007
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 18:44:49 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nsRtArcn;
-	spf=pass (imf18.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A5808E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 14:46:42 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2A2BE13A4E0
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 18:46:42 +0000 (UTC)
+X-FDA: 83928653844.23.B32A554
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E13F640013
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 18:46:39 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jVfBOaxV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=c+XpOmjC;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Ef+qXcgc;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0BFWXYIA;
+	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758825890;
+	s=arc-20220608; t=1758826000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1pd8ejEjzronLUI3XRPYabqh93pMkqarOd/GpoVCbhA=;
-	b=xXA7Qx1/UHqTGCNFHvV3TPW7dorxEA5l7d5pfXbb6cnaXRAgx10lwHJ836tWmRxYg27X3T
-	2+77O22hzDRWMDsWYFhDkGugioHTZkFCBK+Rgk6XBNyH9dXPwzDWIdJwXHGyWtiOutjJ8y
-	2O0wEc7CtAcGXigVBsRYy367R8FJwpk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758825890; a=rsa-sha256;
+	bh=Vm3JvwQjV/UqjTVcE+o2pRBJ3UDo+akHZgLnAEywFnU=;
+	b=7RvndH8SaYO+22KVW/pUgINj1sw7E+VdX3IQFa7U+OjOwHRouUs9q3EVMb29Jt3NtzA+1i
+	6WsCakwHqvXi0gkvltWztpoJZ3g/yQT5qeYKMQJs/BQvIYUcA2jgny5FCCFNxWwKzv8m/O
+	4qg+wICRG2+nWfuVsOqaxvBWXtb9cqs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758826000; a=rsa-sha256;
 	cv=none;
-	b=xJshVGAOi/5roKhixPOPbh/9ZidM/IAUBqoSe2yzahsOydG6ZBYCXvPECljAc9nL5m7qQN
-	n+XaJhaM2CBMMXD7F1+GvmV8eJTeM1km3x6ttN9JP8sv/5RHi/D0YmOg2H5hJb0GDicsiI
-	anRh931Lpqm0oZ5JizavpdC83U6L//Q=
+	b=1T4xPKYEtakdHYwuiXXB7YYD7T47IO0UxTaOFglKoqO6fQTgCNZijPHHHcWDp7HrtNDUeU
+	aRZeggjv76Adl1U8oh0Uhoh/RqpgtBCUGNvd0TMMR22W0fabV1b6PEgaHz9EzwxuaIW7SS
+	NTvElYpv5Ij6TQKzxRdK/UllF11IQp0=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nsRtArcn;
-	spf=pass (imf18.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-71d6083cc69so17662147b3.2
-        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 11:44:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758825889; x=1759430689; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1pd8ejEjzronLUI3XRPYabqh93pMkqarOd/GpoVCbhA=;
-        b=nsRtArcnwFjWbKIHxQ7EImI/4+bE+J6avf9sHLSHFvUK1Jz1isechVbXWpOx+3gNUv
-         j/wd4YjMyma0SqvdI3tkZfs3jAOrj0fvxZBW8Fh3mupjkoKaK1BIQaYoNcgTisJadAFZ
-         fMPOVFqkz7NjOW1FfyMQHkZneL0i+eSdtl8cdtRcFolgt4xEwqtNjNBHChiGQlj2M5eV
-         63JAs0tcZO3+aUkpW3slJ0U50ysuU/vBiysbl8Ls7c4g4X5Y9c+DGrD3EBNAyxA3gMve
-         BMujHLXSOlM/Z3P8Cs/LxtP4VPfXk5fYCca5KbJxi3EW1P2dlOG3sQfSS0FGePuhbxv5
-         mR6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758825889; x=1759430689;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1pd8ejEjzronLUI3XRPYabqh93pMkqarOd/GpoVCbhA=;
-        b=DgwJTzyHaVelC4Rs1o2w5ZMcNCKjfSz52EbCnD+l6PqaE71DpGrk66u+62UDw0vB0c
-         PR3+ADyeFv9TLv7EmLorCeifF/9MTr9OMWbO34VBHHjL0Q1fPS2Fb02/1S/QO7xPEpb4
-         nY/y7YnimA31TVfYPyLY2J0r5s1Q3shqE/+yflvm+tPCD7B3tOX/f3BNowtanrPbBvCz
-         l20GpwiJv8dzaHBE0MY+4EI89MnIcsJD1BECSXxzC0xDqLZWYP8Ja8xj0fc9aw4ewRV0
-         8CfAF+DqJkv+W1/gmhaJNyfUq31JpK4jUdEDuUVo4YzgVUvvqEliEz0bYEUS0MpHFEQY
-         4VsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU+1Bs7fZmClGSaZt+vfWwoJFlIYuMIAV49JFt+4MxNes1ISaiJpBOuOQelmksxktRZ/s59I5s9qQ==@kvack.org
-X-Gm-Message-State: AOJu0YwGXkLdmGT1SL4yM7vhO0qItykl/mCyzdPHwfyBM9r4SVgta234
-	a4xx0as1TNkNLMjuOU2zvmJxY3KNf4PI2QtuMa1QEVNAslkGV7538PCF
-X-Gm-Gg: ASbGncvUREz/R/ex91SbJXQ1SZymzUf1Fi1dIGxKinMuJBCFBPAwnZeDnvlf4rJY+nO
-	DJQRLIJ0Awz4jp2dKbRLkCf8OLm++n16QhTdir5fYnX3qDyqsdDwtc3vk0d1p54Rk5q3fDvQrH/
-	4HsDYg8M7Uu4IrBH13GzB+i0x2xdT7Q+iaJGkYTbVgsiAnhKBE44FdRLuPBalhMsb4iyWO9OiwF
-	SfOnoi+5+Hsr7hHIKD+c3uySyDNrsSMZYAFAsJ/sxKs2Mi+40T0mzP28PfyRkNE3b5UFMMP1a1j
-	UIiDgnWcZmqQyEBBZ6YBuztd6sGVeKeZQhI+8yi1MUVc9vHirsywy7ZcMh4sn51RLz1WwqKMUiL
-	j//KfYitCW8vDuv8scHxslol1GF+XqLv/5afE94MALMUoOMUzO6cLGA==
-X-Google-Smtp-Source: AGHT+IHpC9+Ql44BqP4ZDNZQjX7uQnXGh226uiJjuZb7wY6Cim2hKfCptNADi0/jHYRaQLJ4UcldeQ==
-X-Received: by 2002:a81:8a07:0:b0:739:7804:8014 with SMTP id 00721157ae682-764069fb3b9mr32273317b3.39.1758825888981;
-        Thu, 25 Sep 2025 11:44:48 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:54::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6361e916c8esm807433d50.5.2025.09.25.11.44.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Sep 2025 11:44:48 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Chris Mason <clm@fb.com>,
-	Kiryl Shutsemau <kirill@shutemov.name>,
-	Brendan Jackman <jackmanb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v2 2/4] mm/page_alloc: Perform appropriate batching in drain_pages_zone
-Date: Thu, 25 Sep 2025 11:44:46 -0700
-Message-ID: <20250925184446.200563-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <a84ede7d-60ad-3df9-77ae-cd0dbc545b85@gentwo.org>
-References: 
+	imf07.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jVfBOaxV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=c+XpOmjC;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Ef+qXcgc;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0BFWXYIA;
+	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D80A53F90E;
+	Thu, 25 Sep 2025 18:46:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1758825998; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Vm3JvwQjV/UqjTVcE+o2pRBJ3UDo+akHZgLnAEywFnU=;
+	b=jVfBOaxVvMAdBvV2urTjTfj4gYp+QqVAtVD+GoF7uG2DQhBQEu2MLXpd9sZ21j5ntFfcb1
+	T1S7xKcgaTfHIuCKVF8bNmmaqPbSCdI9KA0WIp/IFI1FO0VEdq+du+eCcOxVCHOPwt+JVn
+	buNfiN9o3COEilMlx55Jvdu+nJsQ3oQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1758825998;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Vm3JvwQjV/UqjTVcE+o2pRBJ3UDo+akHZgLnAEywFnU=;
+	b=c+XpOmjCDeAQ3/Erjd/FRQVLIKFRKcwn0l8yr5zH6dNFi3Xx0GSTdTk/0XtZPOOj3fK0er
+	q2CqEfyiOE5kU2AA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1758825997; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Vm3JvwQjV/UqjTVcE+o2pRBJ3UDo+akHZgLnAEywFnU=;
+	b=Ef+qXcgcTjDF9f5dtbRBT1s6aXO9psNfwJ6RDxq6vDfIWD9naK6johjZE3O7oiiYqN2nUp
+	BxMQqe39bGUCijYnt6ASV3ub9gofJIMXoawhSq/5X9pHIk+o4jYGXNB7hMCwRj8IcnpMLA
+	hUD3ppX/tdhNWNoq3nocWYQ9H/JzSL8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1758825997;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Vm3JvwQjV/UqjTVcE+o2pRBJ3UDo+akHZgLnAEywFnU=;
+	b=0BFWXYIAdZYvfVcKuHfnuBb7omxCt42fe9EjAQsNyr7xq2wce6Rz1NuBBkkuxayOljixot
+	OMYiUY912bipTpBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BDF00132C9;
+	Thu, 25 Sep 2025 18:46:37 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id /JsGLg2O1WjoEAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 25 Sep 2025 18:46:37 +0000
+Message-ID: <3bab750b-0aa5-4df5-9be1-9132c7980f2b@suse.cz>
+Date: Thu, 25 Sep 2025 20:46:37 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH follow-up] mm/thp: Requesting status update on alignment
+ performance configuration
+Content-Language: en-US
+To: siddhartha@kenip.in, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Dev Jain <dev.jain@arm.com>, linux-mm@kvack.org
+Cc: krill.shutemov@linux.intel.com
+References: <e3d003e7d0b7a5b0840f08cd7d630fe4@kenip.in>
+ <595a57cd68463194fb2d6f34e9366e38@vger.kernel.org>
+ <0197c80c5bc7989b858b79317a4fbc45@kenip.in>
+ <4ffd8306e524480d6dccca2bd9981091@linux.intel.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <4ffd8306e524480d6dccca2bd9981091@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Action: no action
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 178E11C0007
-X-Stat-Signature: g38wssd8hju5eh4z7kfjqufmuux7jueb
+X-Rspamd-Queue-Id: E13F640013
+X-Stat-Signature: wpnksophqrro5cw6gd58m96n3tf8rdtt
 X-Rspam-User: 
-X-HE-Tag: 1758825889-118329
-X-HE-Meta: U2FsdGVkX182GDAW54wMyIznlIRQulHhs+k3Yi/4N8aZ4OjjvcTDLPzFDTobxliqznQrbCyOaPjchh+1S6oDI02jxxy0k6EK4gKxktIvdJqC4YBQtaPnW1ApPzlST0LULTcRwsGRN9H8Rqbbah2Mh0yZHKXAO89RQ3Vs8W0c0OTxEkrnhBzVlB+rn5hgd3sQioRsP5ImXHlIsnKeqiDV/3YsD5Dz7hxqEm+iJvDyO2tiSu10s4ScthD276veKIPfjiOtR2xZDtTfVfccvks638Lw+jil31uRQxvqzDCkoHcOvEdq21LdhMsAv9lDuzNOQc9+gnoR3l/SO2agZgzbHPLFyYOFjWFjk5k/VSz52AFLIMXPFrVksDnk9opjtfgJxLAE/cq3BcuSoCjIxO33HMwgFNle/cSGzHF4nSwUuBRtWM3rFGGqkAm0xEgF3ZY4d9UqgHI6yaIQ1P8d8i83VbmJ4grL8OkhhhxXY3ZBVHySOMJFnxqH3x24MAkgh5FzMZWR9nlvA8KuEimmvsSb2hxtCgnmljYnz7N3ufp5Jka/OW/0XjvHNReEHKtU5vo87a1QVVSekpn7dIGbSTx3JpZVmN4QxkwpMzt8jkOt8NZUOaUjWVuC/tSdWKJ0NT8S8xe+wQ99Da5ADesniVEElz6nuWkr/wrds0G4UxaoMAYRLATQZRpecljExMhmEtqtSapvzPEcqdZjJpX2wYi/lYFU2l85DZZoUV3AWDRxVxcOCv2hSM5UYmZ2+a3mY7Ah0UM2gbxQso6DOSuEeV9Z63btSWsD39MT+x+Uyb9/Gykp29LTUQwdECRtKp3Sb5UYbVaYJ7xsPG0hFyCzMIIiqyHVNd/hNVCjRHxg/fQPcbWshzm/hAKU9Ve7m/e9t5nw6Od5wlgRX/CXxl8b8hR+iENajB22vJXJIGslHfXp7IPNJIVmIKUcLVtG2e6RSZdljuAUvFpASS53Pkzxf43
- PWMbSMm7
- 18Vbazz37Sut7K3hpTX6x7UK5cpeCknPp6mOK4pmuKySeF5Soj83elh1JnfecAa2iHXpF4wiltvCV7Qy+m7xB1EzJ3frJY3lALQUug1bigVqLOPUKzcrQovwuTJ4vEUJmKPDnjzpOu2xyxGCX7pgPlKkLTEvYc0/hPPjSf7m6QGZMD9pWS/1TDhg4FgihH7duVaw7XXA1qn0LkSMTfRj+fuykWnLXBfJVKNNos1m6VtPprpaGPtRopKmWvr8Pnbc9IXXiD4h5H0137+yriyH/akmy7MIi3oeZkOWO8dXDdphDHkxo0FA7A/lBYoR5eBErJtJVHlUOJilIaAerqzwJ7dXP9KPbISALwf8hrBvOM2/aD9u35gTDQUtRq4eLq7CVXUrUs33yFffxytVwIJp8KWS2zvL7Q7oGtXJ4Jb2PY2gzG4HeRobl+KHIHz8v5Q53wMzVG6roYgjEFuKhisoxVJmXbu3RkIb9kf5a7SUEw6kBso0HY7RBaM6R918xXMQx5OFrb9gbY4DkEQUOlp0YLLvVcLiGwSsBcdxxttl9Cn+icbzOya94R5qRcwSePPVUmXokwyyy9EyCmq71FsqaFXLPFEmKnCUsTv3HRKumioZk6EQafNXKPTyjTzjdtGoNwk62
+X-HE-Tag: 1758825999-498773
+X-HE-Meta: U2FsdGVkX188t+rs4aI2pOEyxN4rjunbgPIZa6a8PTvsoi9Zxz6GnMJA5zNL07WJkEYcuSJORHTJdV92n1ihjD50/dTltZpwEQyNY4gQAGaViaxixw62yswzOKPvLIV3DtQJQZ+fC3hiMmL0GfcvvA9eup0DouqNOxjq4QfkK8e4M3l8QTG3tTEXxsRFGMheqbb6ql+XS9DElaWX3vyZHB9hFR7RLon77Ja67i26dXBCKuFzgTQsde1vtckVO+JoOz6hDDDbb2G5wqHIrI/g9C2eylAezgLkLHQP/eoiwu4diT9Wr5aMcfWRn4LHjtIKApuUkKzPKCuyhNDH2GYppbPE2SWmZaQ+T7T57lcsv62lA+xfrAbxB2Ev7t7EndW9waPLlcQY81QdckCyXbjf3alTYPcpDkf2Su47QtjpcF71DIX02/YpMdDpI6lDuJ+YZmQCuGtx+UDff+EW3tY7FT1dNrH1KA9KrXKb24DAGEKX8TBerJ46NHK/pUd6GpcYFR/jl47wDH4SujM87x0bSTsEJcPc8XOwG9f/j4KoG2mn7i+GWMozL5xlP48nRunuzCEM1UTI6l6cypI3u+qrgC1pr0Dr16+3BWnOo0QHUDF2ukoulHM4VI6GkoH9RylwnvmvsJAFzjPErFU7ZGW6qrXySjroVP/RUmcabYtuB7xy8Gl4n+XzDc8tcMAYYHJsTns9JprrJ80CKsC2SHSbBorpuIchXFnQrxMOooKHyOxZB/x+EZehhZfGp11wJEmSOw3WwtT75W1mUIUdNIUF2sFau2kI0dqFaqMofHeUe8Wobc1OTddYlLAOWmf8zt5ORwn6YPwun5wLWFuYPl7GDPLOE+rxXLF00lePajAf2l/VDupNaRyW6iuDP6xTV2rz62JS796HEW1UIj59tIf8Yr8w7Cwz44Hoq4WarxmooRKNbyByJFLYfQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,98 +179,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 24 Sep 2025 16:09:47 -0700 (PDT) "Christoph Lameter (Ampere)" <cl@gentwo.org> wrote:
+It's rude to send emails with "request read receipt". Lorenzo explained that
+already in a response to your off-list e-mail week ago.
 
-> On Wed, 24 Sep 2025, Joshua Hahn wrote:
+On 9/25/25 15:54, siddhartha@kenip.in wrote:
+> On 2025-09-02 18:38, siddhartha@kenip.in wrote:
+>> On 2025-08-12 05:20, siddhartha@kenip.in wrote:
+>>> On 2025-08-12 03:44, siddhartha@kenip.in wrote:
+>>>> On 2025-07-28 16:30, Vlastimil Babka wrote:
+>>> **Pseudo-diff of relevant changes:**
+>>> ```diff
+>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>> index abcd1234efgh..ijkl5678mnop 100644
+>>> --- a/mm/huge_memory.c
+>>> +++ b/mm/huge_memory.c
+>>> @@ -102,6 +102,18 @@ static bool __thp_enabled = true;
+>>>  static bool __thp_defrag = true;
+>>> +/* New performance configuration toggle */
+>>> +static bool thp_performance_mode = false;
+>>> +
+>>> +static int __init setup_thp_performance(char *str)
+>>> +{
+>>> +       if (!str)
+>>> +               return 0;
+>>> +       if (!strcmp(str, "on"))
+>>> +               thp_performance_mode = true;
+>>> +       return 1;
+>>> +}
+>>> +__setup("thp_performance=", setup_thp_performance);
+>>> 
+>>>  static inline bool transparent_hugepage_enabled(struct vm_area_struct 
+>>> *vma)
+>>>  {
+>>> @@ -245,7 +257,12 @@ static bool hugepage_vma_check(struct 
+>>> vm_area_struct *vma,
+>>>         /* Existing allocation checks */
+>>> -       if (khugepaged_always())
+>>> -               return true;
+>>> +       if (thp_performance_mode)
+>>> +               return true; /* Aggressively prefer THP in performance 
+>>> mode */
+>>> +       if (khugepaged_always())
+>>> +               return true;
+>>> 
+>>>         /* Rest of allocation logic */
+>>>  }
+>>> 
+>>> Please Note:
+>>> 
+>>> This is a pseudo-diff since my initial work was developed on Intel
+>>> Developer Cloud workloads without a locally cloned copy of the exact
+>>> committed files.
+>>> 
+>>> If there’s interest, I can provide additional benchmark data and
+>>> extend the implementation to expose runtime toggling via
+>>> /sys/kernel/mm/transparent_hugepage/performance.
+
+Sorry, it's necessary to send a real patch, not a pseudo-patch, including
+the test results in its commit log.
+> I fully understand the complexities around VMA merging, Rik’s earlier 
+> patch,
+> and possible regressions noted with cactusBSSN and ebizzy workloads. 
+> However,
+> given the continued performance relevance to AI/ML inference pipelines, 
+> I
+> believe further testing and validation would help determine whether this 
+> knob
+> can be safely integrated (or adapted) for wider use.
 > 
-> > drain_pages_zone completely drains a zone of its pcp free pages by
-> > repeatedly calling free_pcppages_bulk until pcp->count reaches 0.
-> > In this loop, it already performs batched calls to ensure that
-> > free_pcppages_bulk isn't called to free too many pages at once, and
-> > relinquishes & reacquires the lock between each call to prevent
-> > lock starvation from other processes. 
+> Could you please share the **current status of testing or review** on 
+> this patch?
 
-Hello Christoph,
+We can't test or review a pseudo-patch. It's not even clear to me what it's
+trying to achieve.
 
-Thank you for your thoughtful review. 
+> If there are specific benchmarks, traces, or refinements needed from my 
+> side, I
+> would be happy to assist in generating or providing them.
 
-> drain_pages_zone() operates on a lock in a percpu area. The lock is
-> specific to a cpu and should not be contended in normal operatons unless
-> there is significant remote access to the per cpu queues.
+You said you saw improvements in some benchmarks, so re-evaluating them on
+current mainline with a real patch would be the way.
 
-When you say "the lock", I imagine you are referring to the pcp lock.
-However, there is one more lock that we have to think about, which is the
-zone lock which drain_pages_zone-->free_pcppages_bulk locks & frees. Perhaps
-I can be more explicit about this goal in the commit message.
-
-Actually, in the original version of this patch [1] the goal was to
-relieve the tension in the zone lock, but since it was a nested lock under
-the pcp lock, it was required to free both of these in order for the
-task to be rescheduled and other processes to come in and grab the zone lock.
-
-So from what I can understand, it seems like there truly is lock contention,
-just not on the pcp lock. Please let me know if I have an incorrect
-understanding of the code here.
-
-> This seems to be then from __drain_all_pages() running on multiple cpus
-> frequently. There is no point in concurrently draining the per cpu pages
-> of all processors from multiple remote processors and we have a
-> pcpu_drain_mutex to prevent that from happening.
-
-Agreed.
-
-> So we need an explanation as to why there is such high contention on the
-> lock first before changing the logic here.
+> I greatly appreciate your time and guidance on moving this forward.
 > 
-> The current logic seems to be designed to prevent the lock contention you
-> are seeing.
+> Thank you again for your support.
+> 
+> Best regards,
+> Siddhartha Sharma
+> siddhartha@kenip.in
 
-This is true, but my concern was mostly with the value that is being used
-for the batching (2048 seems too high). But as I explain below, it seems
-like the min(2048, count) operation is a no-op anyways, since it is never
-called with count > 1000 (at least from the benchmarks that I was running,
-on my machine).
-
-To demonstrate where the contention / offenders of trying to free too many
-pages at once, I compiled the upstream kernel and made a histogram of
-calls to free_pcppages_bulk where count > 1000.
-On the left is the value of count passed to the function, and on the right we
-have the frequency. This is on a 250G memory, 179G swap, 176 CPU machine,
-running a memory intensive task for ~12 minutes.
-
-free_frozen_page_commit
------------------------
-1000-1250| *          (3732)
-1250-1500| *          (3329)
-1500-1750| *          (3102)
-1750-2000| *          (2878)
-2000-2250| ********** (28456)
-
-decay_pcp_high
---------------
-1000-1250| ********** (837)
-1250-1500| ******     (540)
-1500-1750| ****       (337)
-1750-2000| **         (249)
-2000-2250| ******     (547)
-
-So it seems like drain_pages_zone does not even call free_pcppages_bulk with
-a high count. In fact, it seems like free_frozen_page_commit is truly the
-biggest offender here.
-
-When I was writing this patch, I was doing it for completeness and ensuring
-that all callers of free_pcppages_bulk have a limit to how many pages it
-can try to free at once.
-
-I am happy to drop this patch from v3, if you feel that it is an inappropriate
-change. From what I can see from the above numbers, it doesnt seem like
-there will be much impact on performance, anyways (at least on my machine,
-with the same benchmark. Perhaps bigger machines or more memory-intensive
-benchmarks will request for larger drains?)
-
-Thank you again for your review, and please feel free to correct me on anything
-that I may be understanding incorrectly. Have a great day!
-Joshua
-
-[1] https://lore.kernel.org/all/20250818185804.21044-1-joshua.hahnjy@gmail.com/
 
