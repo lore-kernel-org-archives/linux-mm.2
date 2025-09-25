@@ -4,116 +4,220 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56030CAC5B9
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 19:21:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0F73CAC5BA
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 19:28:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B369B8E0005; Thu, 25 Sep 2025 15:21:39 -0400 (EDT)
+	id 37EF18E0002; Thu, 25 Sep 2025 15:28:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE70D8E0001; Thu, 25 Sep 2025 15:21:39 -0400 (EDT)
+	id 32FB28E0001; Thu, 25 Sep 2025 15:28:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A23FD8E0005; Thu, 25 Sep 2025 15:21:39 -0400 (EDT)
+	id 1CFF68E0002; Thu, 25 Sep 2025 15:28:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 915A88E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 15:21:39 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4BDE411A2BE
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 19:21:39 +0000 (UTC)
-X-FDA: 83928741918.03.E3260C8
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 67D99C000C
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 19:21:37 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="uydwcB/o";
-	spf=pass (imf22.hostedemail.com: domain of axelrasmussen@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=axelrasmussen@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 04FC28E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 15:28:57 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9C15116048B
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 19:28:56 +0000 (UTC)
+X-FDA: 83928760272.05.C6232C0
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2C4632000E
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 19:28:54 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AV1u3umb;
+	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758828097;
+	s=arc-20220608; t=1758828534;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4KSInYs4mXvvEQV2faa9PQRc3LDjipVLXOYd/Cf2adE=;
-	b=asgKoPCMH74c+TP5rDkqCyxfD4Pi9/jHMUvNMLY47nYUAPxiMVIw9aD0nBzQlqz02BndYo
-	Cf66zdafm55lxRyOXvgso954fFG7YvnLUsUxnOqPkfw5al6u4MjorlLYTNo539Na571VXA
-	vqFSEgux6c0SgDN4s4SUYrU6yOyRFqc=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="uydwcB/o";
-	spf=pass (imf22.hostedemail.com: domain of axelrasmussen@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=axelrasmussen@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758828097; a=rsa-sha256;
+	bh=Bq7ppmqVgZHliLbZBRvvT4qAn03nm4JKVOlNO1X6M5U=;
+	b=N5Y4WHQTqimo3ueESqL8jH34n+3Wt8D2+mNiIiZa8NREM3mXSiINVN3OomSVDpMy8G4TuH
+	Hot31q2xoqBHjt1+ZyHInbGoZfRyXC+wNR3hYJOrn447KRYRgibyws86CPCAiDrQRKPKeY
+	OXW/y3lJ7GH4OIyUEcTMAjSV8jD3XV8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758828534; a=rsa-sha256;
 	cv=none;
-	b=48l59Se3AqJFtZfDzrZ4RjyusY9WqAUlte28ORb65UuKZLQa+JRyLdtaUB+a5T2+68Q46Z
-	ivejzoRwQhPxOD7owiU2uIU/IbqXpBZ9zrRZXhogkqLYbzsQSKdVjU5mDfpAndrX4glvU8
-	QP4obgL7zmjBwqBDzHfcsg7C9QN5YLw=
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-27d67abd215so47975ad.0
-        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 12:21:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758828096; x=1759432896; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4KSInYs4mXvvEQV2faa9PQRc3LDjipVLXOYd/Cf2adE=;
-        b=uydwcB/owjtb6YaNy8gvzJafd27KRWuCRlmWJ6hgp7Cy0NNdMFo8ePR0EPAl8B5JEe
-         wV7NWg/p1R2e7m75h6RgVHUGPdh0Pd3+iwtg+9rf+4TeIMULc3gpAAUDJGfSHPa6Ard8
-         goATdMyaLo84zhEx9IFJe/XW6B6lLmktugnmgGrCLs51LpoR7S6zrQ4rmUbakz6GAqZC
-         0HdxRiokleFBhksk6F/IQTd+gqP5OzXLNigwfTo/r1Qa0/ZU2OHzz4c+KLN69IPobTOa
-         BpjhgbhgXWhUcAyTpzKCvIQ/76+MkdNoaTD3KZY2ZsKzu5261tfilETIonvnQb1ZIxI8
-         vQHw==
+	b=e7FM1z4Y0cWYgfZdJIwS9WnF0UKiFsB+ow3KLT6kg3XVDFIOkTU3mRKRXLubNZO+8AAPvC
+	oQD+n9Ks+EDidyfGEyHrl2g+a+fpVyy6n6VMB3nyAC5ITn0ym573mEPYJt1RBL0YINHsTT
+	sQtsraVQSX4fx3crJZHdaZJ0y15ieoA=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AV1u3umb;
+	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758828533;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Bq7ppmqVgZHliLbZBRvvT4qAn03nm4JKVOlNO1X6M5U=;
+	b=AV1u3umb3hAJ0jcLxmdhLYawnY0G3iX1qbhr/VYpjd2MkS1bb516uC2cZCceG9a3Dfz0QQ
+	0L1P/WseG94jvUw92qeeP6wreJBTJL0QdHJSQ+NjosQXZkOorpwMjSWXdWELAX7B5Ab/Sk
+	Dz33CVrxT32WL8X1SGZiyFj1Olb8N7s=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-541-PuGnD7IMOUiezL7FQ3Tncg-1; Thu, 25 Sep 2025 15:28:52 -0400
+X-MC-Unique: PuGnD7IMOUiezL7FQ3Tncg-1
+X-Mimecast-MFC-AGG-ID: PuGnD7IMOUiezL7FQ3Tncg_1758828531
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45df7e734e0so7057425e9.0
+        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 12:28:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758828096; x=1759432896;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4KSInYs4mXvvEQV2faa9PQRc3LDjipVLXOYd/Cf2adE=;
-        b=nkL1Vn/tdEqzkHLXTNqBSbmMQ/ZYN1ws0NLCJ+r71ea2GdveyS6josvoQQ1goNBraG
-         Oz+zcdqgnXmbHvhS07WKqz4UwUIbSbDzMWegD/wDO0+OaiGF91eCjVv8oWuhWuvBOPf0
-         AJE8jM0pXpY9SezMv1DbKz6ddICmOSXDgFhZmoLPaypxzWk5Zvz9lFqyhGFnC5lWifHG
-         lFOaW0XPRMBw6adkXHAdgNKcDrZrTGIDGlBxlXRJvEoVlHmkaEcHCIat3cSRtCkbVeCd
-         Ahd/Y1iTaK0l6aYcx0L81/BcI3/nHB3AAhhx7VAfPehgqd8II6wbxSC5x/ULbmcrv2Em
-         noRg==
-X-Forwarded-Encrypted: i=1; AJvYcCXd5fqbYRPV77oeaiFpxtBJgINg5sTTVTsoXHyM+eq+iKaau64Ah+vbCTo0LWiedYoTGnEIQul/fA==@kvack.org
-X-Gm-Message-State: AOJu0Yz5DBUJhpuGn7Z6x+F0KhdhYw99n0jM4jEvrtz8mNp+ilg2375Q
-	4WI+ppfAy9xsN+wxErc4UKyS7hxQG2fjD7Jlj+Ms7dmzBF3vZF577nowtVb2Gum+W2VrnoyeDW0
-	LP4QLewxPfga0lkZ3/IvD1xdITxV5K7YsrKtvtVuf
-X-Gm-Gg: ASbGncvaRkdAK+dZKqNxQbtaDGdASIr9JL/SYmcIQ9i5XOcbdDNFPNX7Jhf9d9K0bOD
-	dIEPdGcxXUX8v3CXS+XN0CkDN+Vi/vVwEeFdTfSSDqJjDRGxj/dQAdqNl29nQAQYd75Rd9I96HQ
-	V7+jauHnjcKvOQIP9t1hhb5wXFNn0PbWJMFWRLTAWaVx8+WjnUzbWfQi9VVsJGrpv/vMr+UcJpT
-	9HvbA9If1wr65Y=
-X-Google-Smtp-Source: AGHT+IEHyCC5l5zRXUnglrcMD2BVXY2uit6gN5gY7fOxE5kSTzIT1h6Y1BWZWqAv3vrOknBKerOjea2dxQ5tvnhQUj4=
-X-Received: by 2002:a17:902:d4c8:b0:268:cc5:5e44 with SMTP id
- d9443c01a7336-27eecdd7ca5mr781105ad.6.1758828095779; Thu, 25 Sep 2025
- 12:21:35 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1758828531; x=1759433331;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Bq7ppmqVgZHliLbZBRvvT4qAn03nm4JKVOlNO1X6M5U=;
+        b=WTDtgbhvYW3l0zPcSjATDiogS/JQOlZomtTRvMAFP/R1OZFSJm/8+C28jrnwy91wUS
+         B8SL6LVzR8k9YRNa1gHLACMm4Rn5hW3jXluHNxGigwVJ4j1dHHP5BrFn1P26J5S5J4sl
+         JJEnBUZRAwBweKmxj3PXIS+k0533ktDS6GSAQz3J2Hr6JAHfUhNipd5YiJaAzBWV/cPh
+         C1V7SsWdT1zxYEDqL1NaYHldx0mpjuNJiFGn/XxS2weQ/8jbkWdxAVpiTOezYLWXhg3x
+         bO7j7HO5UX8HJYOtk/Ke5N80FIVH8rFjEVCjgRTtv99dlVI51/X145v0fbfUhAv8u0r+
+         TPRg==
+X-Forwarded-Encrypted: i=1; AJvYcCXyuPT/v5+Q3Ihy4uA/2FOQXR8Oc7CZPAQCoCQWHLKzaHlAzogy+jz+L/Tb9k3rKSGcX5c7UShOCw==@kvack.org
+X-Gm-Message-State: AOJu0YzrhSau3XFFZu1voWI3Cay/2TMY5m5TF/oEqdkGFrR1jcKTlus3
+	7wTJ6iwFJTL2x+7jh6TVzmvnelf2Q29Flrx0KI0peUMLgbbh3L41qZiIatBUgS6tyg8Hnn3FuBJ
+	sb3qRwksHzEAL1n9qHubDx/3A/Wmh5ICHaCbZFVvLSksc+nXMdwRi
+X-Gm-Gg: ASbGnctIptDvTVdBKl+u+11CCiZeAT8UOWDuqENIjXHRIBrieAZEM0UmUAnwqv3+j7t
+	qptTVV+9vBaxeak8Pg+r+tTjYoi+Yi3KETz0NDBOwhamQIoCGrKr6B3qx3BZoGQx1R0xlHIyFvQ
+	zcLbavFXvRb6V6BJjcrxOQf5KRp1EE5s7x1Pvcq6xFufEciIckO3E1ua825lWSyvDkSgEYfiSpS
+	cG4fxB+8cMeutyglPuAjoU7N61q2bqU6K03iGFGMwjfjSURreUN+/HLjrvYj2Yo4f9Wt9wcxPGJ
+	cyJVz0V4SB2S5NXPeFphnXkQnjJG3aEez4OdkPN67gtj4c/LB/stX6e8sXuqP8kb8alSe2opLA+
+	TAQc/YECMeEBLshdV31ZUlciH2Au2HZbGXotrWVGG8ZqFIC0DP9r/CyubbiBOmxMBaDG2
+X-Received: by 2002:a05:600c:a43:b0:45d:cfee:7058 with SMTP id 5b1f17b1804b1-46e329e4aa5mr41391155e9.22.1758828530786;
+        Thu, 25 Sep 2025 12:28:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEdB5XKgMH2Lxe6a6vu2Xy7Adch2dis5Y1Fy7OCZ/mT526GuwLzR5bO47EzrRa1c7ysWrxW0w==
+X-Received: by 2002:a05:600c:a43:b0:45d:cfee:7058 with SMTP id 5b1f17b1804b1-46e329e4aa5mr41390605e9.22.1758828530238;
+        Thu, 25 Sep 2025 12:28:50 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f3f:f800:c101:5c9f:3bc9:3d08? (p200300d82f3ff800c1015c9f3bc93d08.dip0.t-ipconnect.de. [2003:d8:2f3f:f800:c101:5c9f:3bc9:3d08])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fc749b8f9sm3988405f8f.50.2025.09.25.12.28.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Sep 2025 12:28:49 -0700 (PDT)
+Message-ID: <ff818815-8049-4595-9525-734245122443@redhat.com>
+Date: Thu, 25 Sep 2025 21:28:46 +0200
 MIME-Version: 1.0
-References: <1757967196.153116687@apps.rackspace.com> <CADrL8HWGcj1oANGY=qAzpYi_-E-Xbi=L28Bmyyf8H7auVix=QQ@mail.gmail.com>
- <1757977128.137610687@apps.rackspace.com> <CADrL8HX78-oh0k2qAgqPvNVAhi4ESYvjRsScPGR2P2Dts13Bfw@mail.gmail.com>
- <aMl4qLyNovWHhty9@x1.local> <1758037938.96199037@apps.rackspace.com>
- <aMmMnfU-Koopc9mL@x1.local> <1758043654.112619688@apps.rackspace.com>
- <CAJHvVciL-6OLMPDGQjZ=VGDwvwKJznq0BL49uSj+DSq63LOUYQ@mail.gmail.com>
- <1758052343.971831541@apps.rackspace.com> <CAJHvVchHKxiVKFjUz4ir4PVDvUihLhiSRMBWqpMEZfwLdereuA@mail.gmail.com>
- <1758306560.96630670@apps.rackspace.com>
-In-Reply-To: <1758306560.96630670@apps.rackspace.com>
-From: Axel Rasmussen <axelrasmussen@google.com>
-Date: Thu, 25 Sep 2025 12:20:58 -0700
-X-Gm-Features: AS18NWCXXIiBV8iJKBo3UDc5xHKLLzmPbV4WwSUzqQ7fFb7oBmO0qyDgstYUI5c
-Message-ID: <CAJHvVcj_gd=48k-dgbLeEoqn_f+QD-ifscu_DPvpAmPd1Kg=GA@mail.gmail.com>
-Subject: Re: PROBLEM: userfaultfd REGISTER minor mode on MAP_PRIVATE range fails
-To: "David P. Reed" <dpreed@deepplum.com>
-Cc: Peter Xu <peterx@redhat.com>, James Houghton <jthoughton@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 05/12] KVM: guest_memfd: Add flag to remove from direct
+ map
+To: "Roy, Patrick" <roypat@amazon.co.uk>
+Cc: "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
+ "ackerleytng@google.com" <ackerleytng@google.com>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "andrii@kernel.org" <andrii@kernel.org>, "ast@kernel.org" <ast@kernel.org>,
+ "bp@alien8.de" <bp@alien8.de>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+ "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+ "corbet@lwn.net" <corbet@lwn.net>,
+ "daniel@iogearbox.net" <daniel@iogearbox.net>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "derekmn@amazon.co.uk" <derekmn@amazon.co.uk>,
+ "eddyz87@gmail.com" <eddyz87@gmail.com>,
+ "haoluo@google.com" <haoluo@google.com>, "hpa@zytor.com" <hpa@zytor.com>,
+ "Thomson, Jack" <jackabt@amazon.co.uk>, "jannh@google.com"
+ <jannh@google.com>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
+ "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
+ "joey.gouly@arm.com" <joey.gouly@arm.com>,
+ "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
+ "jolsa@kernel.org" <jolsa@kernel.org>,
+ "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+ "kpsingh@kernel.org" <kpsingh@kernel.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+ "luto@kernel.org" <luto@kernel.org>,
+ "martin.lau@linux.dev" <martin.lau@linux.dev>,
+ "maz@kernel.org" <maz@kernel.org>, "mhocko@suse.com" <mhocko@suse.com>,
+ "mingo@redhat.com" <mingo@redhat.com>,
+ "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "peterx@redhat.com" <peterx@redhat.com>,
+ "peterz@infradead.org" <peterz@infradead.org>,
+ "pfalcato@suse.de" <pfalcato@suse.de>, "rppt@kernel.org" <rppt@kernel.org>,
+ "sdf@fomichev.me" <sdf@fomichev.me>, "seanjc@google.com"
+ <seanjc@google.com>, "shuah@kernel.org" <shuah@kernel.org>,
+ "song@kernel.org" <song@kernel.org>, "surenb@google.com"
+ <surenb@google.com>, "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
+ "tabba@google.com" <tabba@google.com>,
+ "tglx@linutronix.de" <tglx@linutronix.de>, "vbabka@suse.cz"
+ <vbabka@suse.cz>, "will@kernel.org" <will@kernel.org>,
+ "willy@infradead.org" <willy@infradead.org>, "x86@kernel.org"
+ <x86@kernel.org>, "Cali, Marco" <xmarcalx@amazon.co.uk>,
+ "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
+ "yuzenghui@huawei.com" <yuzenghui@huawei.com>
+References: <a02996f3-fdf4-4b5f-85b6-d79b948b3237@redhat.com>
+ <20250925155237.3928-1-roypat@amazon.co.uk>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250925155237.3928-1-roypat@amazon.co.uk>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: j8D2-amDBmQMXC74g57rrouYhYujQlkbkJoMc6qrkUs_1758828531
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: dt5hxb5cmxbwh3mxtyqt8ykhkbxd5fs6
+X-Rspamd-Queue-Id: 2C4632000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 67D99C000C
-X-Stat-Signature: otcztyap5gwsfsijsun1wj8jjsz5yrsd
-X-HE-Tag: 1758828097-277372
-X-HE-Meta: U2FsdGVkX18ZNF+DfOBJ1av59jUNVZ+GM9RoIqtfCJQDmoWtNHiMi5N0m9Dl4nfa1NUX2nT4UzGeKa+m4C2zbAiL/FYKRJws/zIAV/FugSCkLshPgGywd4CyOeew7sKPL3mxG2e1nYWeTg0cfRiQkM4r51kU0ZDR2jPvJludYjpddJC5zRsagh2vFV7FpACY2EfDcwKoEFWyBka9MqqyjniKH7VEcwywTQ71uqumPcwAzkwpSEHkapcYJJy2EZsSdGHAl27DBiMWxf6r09ETV5ZsmI55+ff8XfS4RwZTZ4W3F+hfowCw2OuB48RiVQbI7APpFvv7H/7lOQpm2rRJ4Qg4SKERjpxYoSO7xy/HT06FOCZxa8DBfOO/qY4o1+48gE0UuchQsu1tre36+FWueKqYreQ7/aIZ38cX8NE0GsGoa+47h/Sqa560A4nRVeqBL+Z18Y6O9PWP52Ph3n08BBFtETLX94sgUmcO0rcMgw9CYsAtEjWPKCOGCnvbzp7/CW9AObvaje+/aDW6YolMLhISb60HZcBWoz3VyTKEV6lG5alx+qCOI1A2pnD45AVp59o+p2sFHTddz6xhULKzsuobBCOW5T6r+jt8vUZu3HAtJwDq4LXILmx5+J62ceYCKg7zG4zAPHdal6tMcjmxb66JWiezyWHsb2p+HzFpUniaf5KhbgpvzlTTbUSch52Zh9zmIBMH0yf4sdwbyu4wk8kAWSRzqOFyYdcTY/O4Lz267q6/9McLrcQ6ITHXbLYquYx+eO2Bx+tWzgEEvqkz94WtBTHinWPJWLWJAi2RU2AAcU/I820oLwdkEG6g4VMhbujgmX/iJ7CV6RE1arlrYlr+Ur0OaKroY9iyZG24XLiRMXvIF0jwbXSM/oZNU9gVfcMJK9VYTwdQrAf92CI21dUrIaFboM+6PenHFMq/G615hNAvNx1dOp6tmQ0O8ITbWbcQP3OaG4Ti6TcQaUu
- LrW9StfF
- fD7//gSyY+29Ucmco/b7K41ECqe8oUDjhuL59GYSJVFl3Sit5dp0f3bdPy4Qg54RibItwKLiDIsLs7S/cbMS6pm9k3uWVdex4/FWxgF/uZQZA9KF81DxX4wXZrMhpdGKeeX6LFqGNNV/zPNmyu4CYfHGcd93QpWVpIcTsXWxGrkgxgnkKHoMaKMe5RuuyyEe1ZdEMNoZR2CNoZOxuw2L8sGNJf57Pn60J9wT2whObUEN23FWlaoc5/mM2L+U/UczldXQrJ3uW7CRePe9Z/SUUQuEf9zPbAJSr6p/mKfcRSYbbwYv6TxeTHfMZr/oiLOziQ1+G
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1758828534-793894
+X-HE-Meta: U2FsdGVkX1+OCVBS9ZyeylQPiQoH/urSogGFEkYastsIzAiNsLxN0Ke9jIK4zED2PCxP4S0FWCCy5TN4B7/it3Q5+3wOvPVlyC3d0/YaT8HKhaq7EfhXpPhW1WQ9Q8YEP+NHMMopzUDdexFX3QY+SmR8hZElqNNLeUsVkv9M4ZhkfxcZuHodq+L/fFVG+4cfok5aYQHdqGwBsQDfwC6dmBUE5vQyGmeMt9x8ih9ARblkzVzys2lpzbP6l34C9Ii5gkQ1/w6Lev//hswV/YOHm6rBJy6cNwwaRtgnukw30vlS0R/QRG7NDSgDsLA7YdwxZ1sd8R/QBJzGFAtE+Zj9yCOiWwShIEVjkBHv84hlduFdjSNilb1Ax2a7TdrYhlt87NcLiY4wzsicoGQG5UrhFotIQO0Hjoo5CK5J/1E/YUjHOh7jwXh95vswq1ZI32W+lV8YVJZl+kC+801+xsi1IuIv/ktfui3HaXGmLFVTtKrwstzeqoA7DlEYvzTmHCjeNjrv32REbMpAjJ9iO7eGRibrThuD+c66Bb7t9jbGXTm1h99Rzpl2DcVjtRZHldsMhcvTtp+7ugAqrut6UtUbn9hIBpNm7tU6YY1G18FCPtTvobwjcLqdVR9LcpRJlHak2ufFTGj6+oD8K59EwLK4uFKCj2H2niYQ8s0UXbvo+4dDYy8oLMrElhbW6Bi4gdEM9JhRDumu46hB0XRa2fCbxH5MdDosB6pZYGu0scBjUHAZAGXese5EADWeA3Ft7pPtJVmiofR/SwadCO423P+lyRkrB2gUBK5TB2snoZc4Y6kXJe8Gyp4tejZ1hgerivgj3xnVdMjZ3UXl9OBgXUOnUXmfbk/KBGI50bwmUP09uvLBGM7aAGMZQQmQsm3qBBVJsPPJiDwDoMNVwUZxrH59uMGz2BpR/gPTjv+Aq8xiIqEfbwpCBGZCLvVtGMF8KyRSIR+3FlN/JjNV2qJTEGG
+ cULtfS3e
+ nGrZM/sjz5P6pLDJGJj4gbXVEonoFlySAjjrVsUPZj7As479NTvaNJZ0NO5TNRtFTx+8V713102nztvYy87KryvH0DmQmmm5pmYQtS8QG+g/d0SBiu1+hwU9PfeoFAsruT+4rTKm9AyL+QRxJVYVlKf8pauG/WUR2DjaZIzV6Nddd2nWp3RT1JZfKve0qMfzpnWQFf4YVqk4sFN5Vq+4hvb0dJ4snRRTpf03+CIc5c1KJ2Gq3+J7tzddDc6BKu9BP48Vt9Rf/kZcOJ+7BOs/rD2A1MTZ2QZDvnh3t9LMK4y4M+IYlA4Bu8rQhmKrnhOCgnFWn6FGxiv6XDcGw06l7in9BcywSqFzl2nE6COPW2HOAmiSaUcmzpqAlUIjyoZ0vyaPA1pj3JtVBrNVUMekTfgvqYVt43mDtKpBZbGVsaqCCYjUJmagSmnm39krf0bH8neurP4LNivfYXrtNo+Cy1+zzLeivT3S3Yv+L0/lD1jXH1nuJrsIZJslY3+BlWQFXzei76+KyjbMwheN9meehLuy0aDbkQIucehsZEnRZsMq3ljjAloeKDKcNZ91CDDQhZdtok0BqWEplpwc/ixKvSHMSTLXkG6wi1ODPh6xuuKEDiVo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,184 +226,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 19, 2025 at 11:29=E2=80=AFAM David P. Reed <dpreed@deepplum.com=
-> wrote:
->
->
->
-> On Wednesday, September 17, 2025 12:13, "Axel Rasmussen" <axelrasmussen@g=
-oogle.com> said:
->
-> > On Tue, Sep 16, 2025 at 12:52=E2=80=AFPM David P. Reed <dpreed@deepplum=
-.com> wrote:
-> >>
-> >>
-> >>
-> >> On Tuesday, September 16, 2025 14:35, "Axel Rasmussen" <axelrasmussen@=
-google.com>
-> >> said:
-> >>
-> >> > On Tue, Sep 16, 2025 at 10:27=E2=80=AFAM David P. Reed <dpreed@deepp=
-lum.com>
-> >> wrote:
-> >> >
-> >> >> Than -
-> >> >>
-> >> >> Just to clarify -
-> >> >> Looking at the man page for UFFDIO_API, there are two "feature bits=
-" that
-> >> >> indicate cases where "minor" handling is now supported, and can be =
-enabled.
-> >> >> UFFD_FEATURE_MINOR_HUGETLBFS and UFFD_FEATURE_MINOR_SHMEM
-> >> >> In my reading of the documents, these seem to imply that before the=
-y were
-> >> >> added as new features, that MAP_PRIVATE|MAP_ANONYMOUS mappings were
-> >> >> supported, and that the "new" additions to the MINOR mode were just=
- for
-> >> >> HUGETLBFS and MAP_SHARED cases.
-> >> >>
-> >> >
-> >> > Actually minor fault support didn't exist at all before those two fe=
-atures
-> >> > were added. :)
-> >>
-> >> Thanks for commenting. I'm not sure that's exactly true. Why is SNMEM
-> >> (MAP_SHARED) supported, but not ordinary pages? I wasn't party to the =
-evolution
-> >> here, but so far no one has explained why there's a special difference=
- between
-> >> SHMEM and ordinary VMAs.
-> >
-> > I promise it's true, I wrote the UFFD minor fault handling feature. :)
-> OK, but I am still confused as to SHMEM VMAs are supported and non-SHMEM =
-are not, in the case of an anonymous mapped range.
->
-> >
-> > As for why... Like I said above, UFFD calls it a "minor" fault if the
-> > PTE doesn't exist, but the page already exists in the page cache. If
-> > the PTE does exist, you won't get either a minor *or* a missing fault.
-> > If the page does not already existing the page cache, you'll get a
-> > missing fault, not a minor fault.
-> I'm assuming that you understand there is a profound difference between t=
-he "page cache" and the "swap cache" in Linux. I am referring to what happe=
-ns when a page is in the swap cache, (which is primarily about anaonymous p=
-ages, but a weird corner case is that "tmpfs" is backed by the swap cache a=
-nd the swap system, not by the page cache).
->
-> The "historical reasons" for the swap cache not being the page cache weir=
-dly difficult to decode - I've spent a chunk of months trying to do histori=
-cal reasearch on how this came about, but more importantly, why. No luck on=
- the why. (And the main reason seems to be that, if I were to guess, that t=
-he folks who built it wanted to avoid using "inodes", which are required by=
- the whole page cache meechanism, perhaps because they thought inodes were =
-"expensive").
->
-> Anyway, I'm now understanding that UFFD's chosen a variant meaning of "mi=
-nor page fault" that seems tied to pages that are file backed or SHMEM.
->
-> A "swapped" page is anonymous by definition of what "swap" means in Linux=
-. In Unix and other systems, swapping was a generic term that included file=
--backed paging as well as non-file-backed pages.
->
-> Anyway, I'm quite puzzled why I can't seem to monitor MAP_PRIVATE|MAP_ANO=
-NYMOUS page faults with userfaultfd.  The reason I focus on CoW is that CoW=
- and fork() behavior is basically the only user visible difference between =
-MAP_PRIVATE and MAP_SHARED. And if you read random examples of how to use m=
-map(), quite often MAP_PRIVATE is suggested as if it were the "normal" usag=
-e (despite what happens on fork()).
+On 25.09.25 17:52, Roy, Patrick wrote:
+> On Thu, 2025-09-25 at 12:00 +0100, David Hildenbrand wrote:
+>> On 24.09.25 17:22, Roy, Patrick wrote:
+>>> Add GUEST_MEMFD_FLAG_NO_DIRECT_MAP flag for KVM_CREATE_GUEST_MEMFD()
+>>> ioctl. When set, guest_memfd folios will be removed from the direct map
+>>> after preparation, with direct map entries only restored when the folios
+>>> are freed.
+>>>
+>>> To ensure these folios do not end up in places where the kernel cannot
+>>> deal with them, set AS_NO_DIRECT_MAP on the guest_memfd's struct
+>>> address_space if GUEST_MEMFD_FLAG_NO_DIRECT_MAP is requested.
+>>>
+>>> Add KVM_CAP_GUEST_MEMFD_NO_DIRECT_MAP to let userspace discover whether
+>>> guest_memfd supports GUEST_MEMFD_FLAG_NO_DIRECT_MAP. Support depends on
+>>> guest_memfd itself being supported, but also on whether linux supports
+>>> manipulatomg the direct map at page granularity at all (possible most of
+>>> the time, outliers being arm64 where its impossible if the direct map
+>>> has been setup using hugepages, as arm64 cannot break these apart due to
+>>> break-before-make semantics, and powerpc, which does not select
+>>> ARCH_HAS_SET_DIRECT_MAP, though also doesn't support guest_memfd
+>>> anyway).
+>>>
+>>> Note that this flag causes removal of direct map entries for all
+>>> guest_memfd folios independent of whether they are "shared" or "private"
+>>> (although current guest_memfd only supports either all folios in the
+>>> "shared" state, or all folios in the "private" state if
+>>> GUEST_MEMFD_FLAG_MMAP is not set). The usecase for removing direct map
+>>> entries of also the shared parts of guest_memfd are a special type of
+>>> non-CoCo VM where, host userspace is trusted to have access to all of
+>>> guest memory, but where Spectre-style transient execution attacks
+>>> through the host kernel's direct map should still be mitigated.  In this
+>>> setup, KVM retains access to guest memory via userspace mappings of
+>>> guest_memfd, which are reflected back into KVM's memslots via
+>>> userspace_addr. This is needed for things like MMIO emulation on x86_64
+>>> to work.
+>>>
+>>> Direct map entries are zapped right before guest or userspace mappings
+>>> of gmem folios are set up, e.g. in kvm_gmem_fault_user_mapping() or
+>>> kvm_gmem_get_pfn() [called from the KVM MMU code]. The only place where
+>>> a gmem folio can be allocated without being mapped anywhere is
+>>> kvm_gmem_populate(), where handling potential failures of direct map
+>>> removal is not possible (by the time direct map removal is attempted,
+>>> the folio is already marked as prepared, meaning attempting to re-try
+>>> kvm_gmem_populate() would just result in -EEXIST without fixing up the
+>>> direct map state). These folios are then removed form the direct map
+>>> upon kvm_gmem_get_pfn(), e.g. when they are mapped into the guest later.
+>>>
+>>> Signed-off-by: Patrick Roy <roypat@amazon.co.uk>
+>>> ---
+>>>    Documentation/virt/kvm/api.rst    |  5 +++
+>>>    arch/arm64/include/asm/kvm_host.h | 12 ++++++
+>>>    include/linux/kvm_host.h          |  6 +++
+>>>    include/uapi/linux/kvm.h          |  2 +
+>>>    virt/kvm/guest_memfd.c            | 61 ++++++++++++++++++++++++++++++-
+>>>    virt/kvm/kvm_main.c               |  5 +++
+>>>    6 files changed, 90 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+>>> index c17a87a0a5ac..b52c14d58798 100644
+>>> --- a/Documentation/virt/kvm/api.rst
+>>> +++ b/Documentation/virt/kvm/api.rst
+>>> @@ -6418,6 +6418,11 @@ When the capability KVM_CAP_GUEST_MEMFD_MMAP is supported, the 'flags' field
+>>>    supports GUEST_MEMFD_FLAG_MMAP.  Setting this flag on guest_memfd creation
+>>>    enables mmap() and faulting of guest_memfd memory to host userspace.
+>>>
+>>> +When the capability KVM_CAP_GMEM_NO_DIRECT_MAP is supported, the 'flags' field
+>>> +supports GUEST_MEMFG_FLAG_NO_DIRECT_MAP. Setting this flag makes the guest_memfd
+>>> +instance behave similarly to memfd_secret, and unmaps the memory backing it from
+>>> +the kernel's address space after allocation.
+>>> +
+>>
+>> Do we want to document what the implication of that is? Meaning,
+>> limitations etc. I recall that we would need the user mapping for gmem
+>> slots to be properly set up.
+>>
+>> Is that still the case in this patch set?
+> 
+> The ->userspace_addr thing is the general requirement for non-CoCo VMs,
+> and not specific for direct map removal (e.g. I expect direct map
+> removal to just work out of the box for CoCo setups, where KVM already
+> cannot access guest memory, ignoring the question of whether direct map
+> removal is even useful for CoCo VMs). So I don't think it should be
+> documented as part of
+> KVM_CAP_GMEM_NO_DIRECT_MAP/GUEST_MEMFG_FLAG_NO_DIRECT_MAP (heh, there's
+> a typo I just noticed.
 
-You can monitor MAP_PRIVATE|MAP_ANONYMOUS faults with userfaultfd,
-it's just that they're missing faults, not minor in userfaultfd
-terminology, because resolving them requires a new page to be
-allocated (UFFDIO_COPY, not UFFDIO_CONTINUE). The only exception I can
-think of is swap faults, I could see anon swap faults (perhaps
-specifically when the page is in the swap cache?) being considered
-UFFD minor faults, but I would be curious to know what the use case is
-for that / why you would want to do that. The original use case for
-UFFD minor fault support was demand paging for VMs, where you have
-some kind of shared memory (shmem or hugetlb) where one side of the
-mapping is given to the VM, and the other side of the shared mapping
-is used by the hypervisor to populate guest memory on-demand in
-response to userfaultfd events.
+Okay I was rather wondering whether this will be the first patch set 
+where it is actually required to be set. In the basic mmap series, I am 
+not sure yet if we really depend on it (but IIRC we did document it, but 
+do no sanity checks etc).
 
-To me it's not intended userfaultfd minor events are generated for
-writeprotect faults, to me that's the domain of userfaultfd-wp, not
-minor faults. James might be right that these unintentionally trigger
-minor faults today, I would need to do some more reading of the code
-to be certain though.
+"MEMFG". Also "GMEM" needs to be "GUEST_MEMFD".
+> Will fix that), but rather as part of GUEST_MEMFD_FLAG_MMAP. I can add a
+> patch it there (or maybe send it separately, since FLAG_MMAP is already
+> in -next?).
 
->
-> >
-> > So "ordinary" VMAs are not supported because I don't think there is
-> > any way to create that condition with them? If you just
-> > mmap(MAP_ANON|MAP_PRIVATE), those pages will never be in the page
-> > cache, right? How would you go about doing so? You don't have an fd,
-> > you can't fallocate it. If you specified MAP_POPULATE, the PTEs would
-> > also be installed, so you just wouldn't get userfaults at all. If you
-> > create the mapping, then fork, then write to it in the child, I think
-> > the pages just get CoWed, I don't think userfaults are generated for
-> > that, because the PTE was already there (albeit, with RO permissions).
-> >
-> > I guess maybe a way to make progress here is, can you list out what
-> > sequence of steps you believe should result in a UFFD minor fault?
-> > Like (for example):
-> >
-> > fd =3D memfd_create()
-> > fallocate(fd, 0, 0, size)
-> > mmap(fd, MAP_PRIVATE)
-> > /* register mapping for UFFD minor faults */
-> > /* read or write to mapping */
-> >
-> > Now we get a minor fault.
-> >
-> >
-> >
-> >>
-> >> >
-> >> > You are right that userfaultfd's use of "minor fault" is (unfortunat=
-ely)
-> >> > slightly different from the meaning in other contexts. I think the m=
-ore
-> >> > normal meaning is, faults which do not incur I/O (i.e., swap faults =
-and
-> >> > file faults [i.e., faults on non-swap-backed pages] are major, other=
- faults
-> >> > are minor).
-> >> >
-> >> > For userfaultfd, a minor fault is a fault where the page already exi=
-sts in
-> >> > the page cache, but the page table entry wasn't setup. I don't think=
- that
-> >> > scenario can ever happen for anonymous, private mappings, so it does=
-n't
-> >> > really make sense to be able to register such mappings in this mode.=
- If you
-> >> > create a mapping with mmap(MAP_ANON|MAP_PRIVATE) and then access it =
-(read
-> >> > or write), that fault requires allocation of a new page, so userfaul=
-tfd
-> >> > does not consider that a "minor fault". My recollection though is if=
- you
-> >> > make a file on tmpfs or hugetlbfs, fallocate() it or whatever, and y=
-ou
-> >> > MAP_PRIVATE that file, *that* registration will work.
-> >> >
-> >> >
-> >> >>
-> >> >> It seems odd that anonymous page faults and COW would not be handle=
-d,
-> >> >> given that context.
-> >> >>
-> >> >> Anyway, that's unclear in any of the documentation. This just adds =
-to my
-> >> >> last response where I explain my use case.
-> >> >>
-> >> >>
-> >> >>
-> >> >
-> >>
-> >>
-> >
->
->
+Yes, it's in kvm/next and will go upstream soon.
+
+> 
+>>>    When the KVM MMU performs a PFN lookup to service a guest fault and the backing
+>>>    guest_memfd has the GUEST_MEMFD_FLAG_MMAP set, then the fault will always be
+>>>    consumed from guest_memfd, regardless of whether it is a shared or a private
+>>> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+>>> index 2f2394cce24e..0bfd8e5fd9de 100644
+>>> --- a/arch/arm64/include/asm/kvm_host.h
+>>> +++ b/arch/arm64/include/asm/kvm_host.h
+>>> @@ -19,6 +19,7 @@
+>>>    #include <linux/maple_tree.h>
+>>>    #include <linux/percpu.h>
+>>>    #include <linux/psci.h>
+>>> +#include <linux/set_memory.h>
+>>>    #include <asm/arch_gicv3.h>
+>>>    #include <asm/barrier.h>
+>>>    #include <asm/cpufeature.h>
+>>> @@ -1706,5 +1707,16 @@ void compute_fgu(struct kvm *kvm, enum fgt_group_id fgt);
+>>>    void get_reg_fixed_bits(struct kvm *kvm, enum vcpu_sysreg reg, u64 *res0, u64 *res1);
+>>>    void check_feature_map(void);
+>>>
+>>> +#ifdef CONFIG_KVM_GUEST_MEMFD
+>>> +static inline bool kvm_arch_gmem_supports_no_direct_map(void)
+>>> +{
+>>> +     /*
+>>> +      * Without FWB, direct map access is needed in kvm_pgtable_stage2_map(),
+>>> +      * as it calls dcache_clean_inval_poc().
+>>> +      */
+>>> +     return can_set_direct_map() && cpus_have_final_cap(ARM64_HAS_STAGE2_FWB);
+>>> +}
+>>> +#define kvm_arch_gmem_supports_no_direct_map kvm_arch_gmem_supports_no_direct_map
+>>> +#endif /* CONFIG_KVM_GUEST_MEMFD */
+>>>
+>>
+>> I strongly assume that the aarch64 support should be moved to a separate
+>> patch -- if possible, see below.
+>>
+>>>    #endif /* __ARM64_KVM_HOST_H__ */
+>>> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+>>> index 1d0585616aa3..73a15cade54a 100644
+>>> --- a/include/linux/kvm_host.h
+>>> +++ b/include/linux/kvm_host.h
+>>> @@ -731,6 +731,12 @@ static inline bool kvm_arch_has_private_mem(struct kvm *kvm)
+>>>    bool kvm_arch_supports_gmem_mmap(struct kvm *kvm);
+>>>    #endif
+>>>
+>>> +#ifdef CONFIG_KVM_GUEST_MEMFD
+>>> +#ifndef kvm_arch_gmem_supports_no_direct_map
+>>> +#define kvm_arch_gmem_supports_no_direct_map can_set_direct_map
+>>> +#endif
+>>
+>> Hm, wouldn't it be better to have an opt-in per arch, and really only
+>> unlock the ones we know work (tested etc), explicitly in separate patches.
+>>
+> 
+> Ack, can definitely do that. Something like
+> 
+> #ifndef kvm_arch_gmem_supports_no_direct_map
+> static inline bool kvm_arch_gmem_supports_no_direct_map()
+> {
+> 	return false;
+> }
+> #endif
+> 
+> and then actual definitions (in separate patches) in the arm64 and x86
+> headers?
+> 
+> On a related note, maybe PATCH 2 should only export
+> set_direct_map_valid_noflush() for the architectures on which we
+> actually need it? Which would only be x86, since arm64 doesnt allow
+> building KVM as a module, and nothing else supports guest_memfd right
+> now.
+
+Yes, that's probably best. Could be done in the same arch patch then.
+
+-- 
+Cheers
+
+David / dhildenb
+
 
