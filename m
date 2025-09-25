@@ -4,180 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A883FCAC5B0
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 11:07:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4633CCAC5A7
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 11:11:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F1D58E0013; Thu, 25 Sep 2025 07:07:07 -0400 (EDT)
+	id 9384C8E0015; Thu, 25 Sep 2025 07:11:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C9E08E0001; Thu, 25 Sep 2025 07:07:07 -0400 (EDT)
+	id 8E9B88E0001; Thu, 25 Sep 2025 07:11:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED3118E0013; Thu, 25 Sep 2025 07:07:06 -0400 (EDT)
+	id 7FF7A8E0015; Thu, 25 Sep 2025 07:11:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D79C28E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 07:07:06 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8ACA8B9B19
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 11:07:06 +0000 (UTC)
-X-FDA: 83927495652.21.151AE6D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 342E940017
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 11:07:04 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=V6A1FTI3;
-	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 65EA38E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 07:11:22 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1C75659031
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 11:11:22 +0000 (UTC)
+X-FDA: 83927506404.15.7A4AD65
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 064CF14000B
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 11:11:18 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf26.hostedemail.com: domain of zhengxinyu6@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=zhengxinyu6@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758798424;
+	s=arc-20220608; t=1758798680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9UDG3UtRC260Q/xWcr5X83IjVV0HFkPuvmSUV/vqtYc=;
-	b=WXxlmiD1JvEVaWANMVLhxkUSYJbhlKEkVxTJRIif2SYb/CjqTOU934x9os4DSHaK6esn8d
-	BxRf74swPeUkKK3ZWxF17bVPjdIKzWnCDfELiDvlPw87p0YgZJWMSjirg5p+kSiIXgCklW
-	+2vBlb1E9M+EB46vxWIFICui5qLg5Hc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758798424; a=rsa-sha256;
-	cv=none;
-	b=3uSN2SH7uKU6rmggmSFzRm2QFzeikx9HlrBS26ObrcAhchKVvDGT7ANPhZReYDjHgjlmHX
-	Y9WRyegvc7l/v/mB90H0yYjf+pRyuGw1hBPiJF5pWJFALmtsxMC95ft+kI9GEj8Mu9rjzt
-	IiXxRpKwp9kWMvPpS6nYtNBPt51CIME=
+	 in-reply-to:in-reply-to:references:references;
+	bh=NDdlOIZUGxlo6tDJG4OM5bp9O27Ymt8rz0nWhlWoZoE=;
+	b=4jbLCjhb58xPyXOQHwJE1CSpR8Ojsx5HsY15K8F2zCCebVSP4jPefaTMboi7nNTSDtHyuk
+	cXWw62Ac9LA3vFdwA4lhII9IlzbsMrhvK8SvYnYgRSB1vhLPfcf/xaZQW781eJcwbWK8yK
+	dHhQOP4hEdHj+qTF+93BLb9oeuDyvnk=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=V6A1FTI3;
-	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758798423;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=9UDG3UtRC260Q/xWcr5X83IjVV0HFkPuvmSUV/vqtYc=;
-	b=V6A1FTI331HxinC0ZKLmuxTmqweoxnr6skexSuWOrracgyRwfjxZxUMi7YFPGcxuoW/Gbq
-	uAy2WG0lsi6zx5sa6nOePuEw+cbwnULEGv2OScpnptLqFPiUrlcxG72GTrv94n/hngmir+
-	bkp2kwXcw7/cElLeVNiNeFhQPxrKorM=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-306-lQteg5dsOV2RutsjqDkSVA-1; Thu, 25 Sep 2025 07:07:02 -0400
-X-MC-Unique: lQteg5dsOV2RutsjqDkSVA-1
-X-Mimecast-MFC-AGG-ID: lQteg5dsOV2RutsjqDkSVA_1758798421
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-46e38bd6680so509005e9.1
-        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 04:07:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758798421; x=1759403221;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9UDG3UtRC260Q/xWcr5X83IjVV0HFkPuvmSUV/vqtYc=;
-        b=MTbRd2uw+NumZo6x0N8ysevDPk5Qsr1VBb2wykU4bMxIDGaNgLSnhfOKfpwDxEpYPm
-         OxKxjnfW5HmNB60kiUvdn/clUMEAQjEbbXOFyPiLPJPcUntMmeZHa54XF1cTR3OmoAYY
-         IskbSgBDGSQkieEzZmbOt5BapjF4LPtdXywBB/ptHPGiFnOXwu2U77ovxoZU9e83iGF1
-         peWEAVVjf+TpGboj3vwSv8tD1TuRH9I4/diHJxX9+i1Zkleffcv6VCG5yuf1pC2Ugx5t
-         qEPS2K+MSPm24Uc/xAdMZX8Tq/siYqJ3ajb3Ym3pOGLNXUi0z+C4RX1i+5riHQxgZ1Js
-         14pw==
-X-Forwarded-Encrypted: i=1; AJvYcCXFr6jPOLllPD0zVRAkN1VJ7hjEzNUrvWevrkB+ASYymZI1WzjeHHn5qA8+7P0cRsy0eMAlEUwvhQ==@kvack.org
-X-Gm-Message-State: AOJu0YznJNEMmi4e0h9hZIIUh8JQivJ6DLP5oxnQBf5Rykt/PDMLYFrZ
-	33KAJ3EW0pzTeYBOWPs9Ku6X6zwIKaMyXFhaoH4XOL8Nhhf4l2OnkqHO324BHiX464GJTALQLVT
-	WmsYgupI/XOjEiwEkBy+nm/Ed3Hc59NYytn3TRBT5KcQDikASB23W
-X-Gm-Gg: ASbGnctzMHr2aczH0We/MUvE0XLb5MRtdbC0z1ctV8heWHewftDTtmxpFMGRTMOP++2
-	tRcZeOdpZwSZCd3/9eQ8Ey4J9L/MMSEs/eZvI+UyMSkbW+6AqecrZbYT4kn+axQ2j0nogHcf4qU
-	DpxP9fvMXuixrfLjStG7XlzjZCUr41+TEOGn4F9Xjk1shMgBfEmXIvmK3d8Isu8yeQpENX0RXtA
-	2HQ/K2YGBFpOXq43JrRzSVLYdnMKzl5tmlIsr6+C22CgPrWQuyL8DDySHaMtmvCpsJQCMTS0JEk
-	UtXvSzr/t5ib989YPCXN/m7fdUnNwuk/wHJN+8trM53ZwCN0VWE5NusHxwBSz0JE480yCq/yHQ5
-	vyMdIem6nP5/BeEXApoOCP3PPTF5pRqfGl9tAnja87ZTlaznLiW29taIOdpXehhD5tCou
-X-Received: by 2002:a05:600d:108:20b0:46e:1cc6:25f2 with SMTP id 5b1f17b1804b1-46e329b2b17mr25844065e9.12.1758798420945;
-        Thu, 25 Sep 2025 04:07:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHK/Xlw6F+G3SF7DEkRQxLqqsR4p9KpsSWYAACG7TneRIoOHXtR7kgbnwym3WqTjLFGZCt2lg==
-X-Received: by 2002:a05:600d:108:20b0:46e:1cc6:25f2 with SMTP id 5b1f17b1804b1-46e329b2b17mr25843745e9.12.1758798420503;
-        Thu, 25 Sep 2025 04:07:00 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f3f:f800:c101:5c9f:3bc9:3d08? (p200300d82f3ff800c1015c9f3bc93d08.dip0.t-ipconnect.de. [2003:d8:2f3f:f800:c101:5c9f:3bc9:3d08])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e2a996bf1sm73938005e9.1.2025.09.25.04.06.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Sep 2025 04:06:59 -0700 (PDT)
-Message-ID: <7305f905-0f81-4268-a3b3-933ac00cdb6a@redhat.com>
-Date: Thu, 25 Sep 2025 13:06:58 +0200
+	imf26.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf26.hostedemail.com: domain of zhengxinyu6@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=zhengxinyu6@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758798680; a=rsa-sha256;
+	cv=none;
+	b=KAWXJIVWKME7Equ4bySwNQCpvsnmouGhsT11K48rm5VGMJV6uwfJiiSTSMLWQ0J/rAAUB4
+	GqGkWO4Jzqg4XZx9tdsxWMrbwTcWqdHWz76gJAEYBSlnilmijDsWj5Y8NYhLGRj2Grrx04
+	V6lT51em8ShUCmRFvf/Rfd7RRChQRrc=
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4cXWCH6TvDz24hsP;
+	Thu, 25 Sep 2025 19:07:39 +0800 (CST)
+Received: from dggpemr200006.china.huawei.com (unknown [7.185.36.167])
+	by mail.maildlp.com (Postfix) with ESMTPS id BBC1C140149;
+	Thu, 25 Sep 2025 19:11:14 +0800 (CST)
+Received: from [10.67.110.83] (10.67.110.83) by dggpemr200006.china.huawei.com
+ (7.185.36.167) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 25 Sep
+ 2025 19:11:14 +0800
+Message-ID: <eaee73bd-21cc-4da2-86a8-fe6a9576ab51@huawei.com>
+Date: Thu, 25 Sep 2025 19:11:13 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm: always call rmap_walk() on locked folios
-To: Lokesh Gidra <lokeshgidra@google.com>,
- Dan Williams <dan.j.williams@intel.com>, Alistair Popple <apopple@nvidia.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, kaleshsingh@google.com,
- ngeoffray@google.com, jannh@google.com,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Harry Yoo <harry.yoo@oracle.com>, Peter Xu <peterx@redhat.com>,
- Suren Baghdasaryan <surenb@google.com>, Barry Song <baohua@kernel.org>,
- SeongJae Park <sj@kernel.org>
-References: <20250918055135.2881413-1-lokeshgidra@google.com>
- <20250918055135.2881413-2-lokeshgidra@google.com>
- <2c9df5ee-6109-4fa5-b895-ad8e47d34bee@redhat.com>
- <CA+EESO4h-_U=Xo3x0G_74t_qJQ54AZ4Qd2Ji437aMV8nDZ+tkw@mail.gmail.com>
- <5549ac3a-20cf-4959-ac53-0a89ed0eadd2@redhat.com>
- <CA+EESO5e0gupVfM9NgWqx34oMRk1jGzsNfM=X3idPKaXkRL2fg@mail.gmail.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CA+EESO5e0gupVfM9NgWqx34oMRk1jGzsNfM=X3idPKaXkRL2fg@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: eLyvZXd9VK4TsE-TpOy8tVearDbGOSpteAAH9_cit2A_1758798421
-X-Mimecast-Originator: redhat.com
+Subject: Re: [BUG REPORT] mm/damon: softlockup when kdamond walk page with cpu
+ hotplug
+To: SeongJae Park <sj@kernel.org>
+CC: Andrew Morton <akpm@linux-foundation.org>, "Paul E . McKenney"
+	<paulmck@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+	<damon@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <zouyipeng@huawei.com>, Hugh Dickins
+	<hughd@google.com>
+References: <20250920104220.1399-1-sj@kernel.org>
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 342E940017
-X-Stat-Signature: xog7bdd5jd7phgeg8eurp9ri4boi6act
+From: Xinyu Zheng <zhengxinyu6@huawei.com>
+In-Reply-To: <20250920104220.1399-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.110.83]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ dggpemr200006.china.huawei.com (7.185.36.167)
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758798424-525438
-X-HE-Meta: U2FsdGVkX18S2YQuq0z/SThJ9x0OYix8r+Du626CT+is4AbyQhYsLsklZBfhoZmyTeKnGZlRyNwl5NfBXDKyTDrJJjCXEcKWZiyHCNILph09a0HeLU/wGeUJd1LC7N9nxilKFiTsyzS3FgXnOR05ZeqwKhs2IrXmWNbQUtC/VSVK/1cjCWsr6yHgriFomCNG2Ld/279ifmHGUA6cECeXNyaIAE+uHNZ5npYP/XbVv9OKla2LFuQFvooED91p4t8po+TuMe284bKrAhrJqLdUBQ6AqzXjbtZPovw9gwj4UgCltucBNN6kz4MJLeyLxhlSL8eU12rN5E72f2iPMHecRNH7/cDjY3FIrvuF7lH6Gb3Sj7Th/NfvBRteVKBQQWZtT/UG1wIi/XAmxkCxdOedfqw65SvGrVdVWtwJyDUigfHpZYFsGxuW5hrPs0VZre1NrKN2np0ut5ARYk69OoRchYJtmKrSTWnmPO/NDVW8Ls3C0IOf+GGfZ+ixw0OGwNsQauTr2/idJ0PC/brEvIDTSz1APdIS1MawlrENbSvhCaE32dtJclFflrur7esqcCANl8HdZ4gtGBGDZCQQDeVsMSeSJB01psOe4STQpEsJyk9D8mZnUekvptt7HGA4uIm43MfuJIyydrLAgs3MO44QvZ3uWJ+/Nnrspb1ZKaYEH/e8w+VJPlOHQAAPmB40ABCg861jSRnMyBeJTMETjD69CSQW5g/lBveVbdid2FSV85ddo7h5hDZDxvm1wqUqeDypkzco1kPSu5RMwNMd5AYNxg67WHkeTSC/GRobqhbEbrRzdq3AmSgClL8etP+UWcj3r2aMNydwhToeVxqpyenB3W4G2aRGlUoZjJ+vkU2qDCnwA03NjEA1mkkUwJcw7atvhYqNAA/zUSvgDR9QFQ67j/Is4EREKqHiVK9uOOhfVf1ixE7Z2EP4MytK/+1nkcbTEuXS2aivc6/u2xtd2RP
- sSmSSX+/
- jEp5pnN74BLC2qeGR6xY4JyRRdUqPCfwOPyPmVLXfGiI53wjoSHkfr6sM/BKf17+iXNZkziJ9AL8TcnSzda2FoPRDlAjgHFE9Yl3Ccd2Wq8FRmZPtOxMXUWUwRQpiukuZk6LE/BOfo2SwYjCbkmz7ObXK98CQtbTal9VClJUU6eMbSEqRcgkAoHfWhaqKe+STht2Nep29NUy/b5mpB1+z7X6DJCTGlNsF7rO6DlE5yP8mLa4YFbdfSD24iK4EFImHzDZ99kdCxy68Tg65KZFS/69Fl4N/wdNJjYu/0JW0Imdop4TliEqLFB1yBIPZvhIqSea5wLo83TrlVw+SGxidIGYP+LpTEM+S6txFXuDLSd4UpT09flLxT7im8nsfn3gM45p7feDzj53GELkECb4fM+cfidqvc49UYzUcGzK9B4LPvCrFxOpgxSPKMxSQTCIrLWYRhGITWDg5yCnzm52HykupPr8l7McRm+YHlgaqWEOsAmk=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 064CF14000B
+X-Stat-Signature: rwp9yduqinezepsyqn6zdpf6y18hwjd1
+X-HE-Tag: 1758798678-833784
+X-HE-Meta: U2FsdGVkX191j16V2LvA0iO6NCKl3o5rHfCAts9B039LMPaiTD/ie3t4OZZw0bd6Ts3VKDZxzhXBkPeTRE23K07B9ERnA7izMLq3GR+p0X0aguCvQdeq5UnYM3ZC9wwFKL6NvG16g/DAXtW0o4PHdcKSeveLsikGC6wNbUKH8OGxC71sR5IfdS9cBowUZRUAXfnw1/2OlY74cVp69+OPm2s7NKTdgfmKRR5wF1aXe2i5PCN/yV0G5+CQkq3w+9Lpne8aC6p/77I+7L5x6nRzFvuHIrnVGFezdgYDLa7dY+aSs3ho4lmM1phNYdAY6fFKJu3LUzs29+xqzqh8YamcH5ktWRcs+U1pwO7SBZyZiRtV4D6/ZK7+3zV3Sz17xn8+LU/BL6fZKS980ZDEACtt++YtMppnNOYH5f/fFVFvGm/nG3aKKnCeOAvXof4FQz4hM6WMjSuCvhdHDbhaNiScLOBvl1xOMn4qtcEetXNXjqcmUUtcfMV9+j+GSnJUSu4PpFFxrSixCW/FXqczwKj0InucKYKZnWAgbg68WnHav6JoWKH3ty/JpuggZfKKo0HVnX2fvD2/rHmwXcBra8WgnVUohd2hHtR+Tg8e3lM7I/U7MRRovcUEUayL9V+HNisgcHpzC2M/UjaNDuzmF79kED2acLYy0vrMjINTk2+kQ3TA8/zVUJ+a6u+eBbQ5gEr/sV/HOZgrT/754OKT/9bJXZ+9zvwi/jC4q1YpgzE8ye7QSHfArZa6YOGEbSiUtbT8LR0THlauWcflivyi3rCRj6AYk44EBlcJddztzDGjxooHjgU7s4lApe5g87G7zV1fx9raDqmF6cH2Gksk+YBDQDJcQ6XDpYgUFnR6S3QAkutjT+jA8LXHcVOfpJnXxxVX7TAf6G8E2hB87rj9gm3qTzCk6opgIGBPuxJAmLhs9K3LJjShNz+NVptORA77ibWbhTYCY6+1nTD2R7Cpx6E
+ jgbAV//0
+ OL2ZjLIvJDb8UulaCTu0lp/5+wkAxkzZU4jTtvH9HAqGNj4+dIyd97lN6ctDMoCJA03B69vNRMt8iuQb0no6Dqd6KSv1sJwdPB7An3WTtTv2HYnDRj6UceJuBU+qgmflIRZgvz4qHkRjESsjpecSGxuET9m7RM3CaVe6OYxSqZQtIay0J8JhNZgNvnC0JJAS7WQLcF5lxhob7KE5LALJPKrpmNedXIgPWYv0ToZ6ZJxEwoyq5C3f0m1feM6d0gtrbfLy3ZPJ+vm1NwiYMNpy82eCvXgefA7xKEyrt
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,59 +96,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 24.09.25 21:17, Lokesh Gidra wrote:
-> On Wed, Sep 24, 2025 at 3:00 AM David Hildenbrand <david@redhat.com> wrote:
+
+
+On 9/20/2025 6:42 PM, SeongJae Park wrote:
+> On Fri, 19 Sep 2025 20:56:56 -0700 (PDT) Hugh Dickins <hughd@google.com> wrote:
+> 
+>> On Thu, 18 Sep 2025, SeongJae Park wrote:
 >>
->>>>
->>>> Is mf_generic_kill_procs()->collect_procs() problematic?
->>>>
->>>> The dax_lock_folio/dax_unlock_folio part confuses me: I think it only
->>>> locks an entry in the page cache but not the actual folio ("Lock the DAX
->>>> entry corresponding to a folio")?
->>> Yeah. The name dax_lock_folio() gives an impression as if the folio is
->>> locked but it isn't :)
->>
->> Sorry for the late reply, I saw you posted v2 in the meantime.
->>
+>>> Hello,
 >>>
->>> IIUC, a dax folio can't have an anon_vma (folio->mapping is actually
->>> an address_space instead of anon_vma), right?
+>>> On Thu, 18 Sep 2025 03:00:29 +0000 Xinyu Zheng <zhengxinyu6@huawei.com> wrote:
+>>>
+>>>> A softlockup issue was found with stress test:
+> [...]
+>> This had me worried for a while: thought we might be needing to change
+>> lots of other places, and scatter cond_resched()s here and there.
 >>
->> We have these weird device-private dax folios that are anonymous and
->> should have the anon_vma set up.
+>> But no: no need for cond_resched()'s, this is all just a confusion about
+>> where pmd migration entries are handled: a pmd migration entry is accepted
+>> by pmd_trans_huge_lock(), but is not accepted by pmd_trans_huge().
 >>
->>> So, I thought it wasn't
->>> required to actually lock the folio in this case. Please let me know
->>> if you want me to still lock the folio around collect_procs(), or add
->>> a comment?
+>> See fs/proc/task_mmu.c for mm_walk examples of trying pmd_trans_huge_lock(),
+>> then pte_offset_map_lock() if it failed, or ACTION_AGAIN if that failed too.
 >>
->> I think we can end up reaching memory_failure_dev_pagemap() with an
->> anonymous dax folio.
+>> When I ACTION_AGAINed damon_mkold_pmd_entry() and damon_young_pmd_entry()
+>> in 6.5, I didn't realize that the pmd migration entries were reaching the
+>> pte_offset_map_lock(), with corrupt results (or did pmd_bad() filter them
+>> out? I didn't think so, but it'll take me too long now to work out whether
+>> a pmd migration entry counts as pmd_bad or not); but knew that the new
+>> pte_offset_map_lock() filtered them out safely if there was a race.
 >>
->> Not sure if anything would prevent us into calling
+>> But they've been reaching it without any race, so yes the ACTION_AGAIN
+>> would send the mm_walk back again and again for as long as the pmd
+>> migration entry remained there: not good, and Xinyu finds a lockup
+>> when hotplugging CPU without preemption.
+> 
+> Thank you for your detailed and kind explanation, Hugh!
+> 
 >>
->> mf_generic_kill_procs()->collect_procs()->collect_procs_anon()->folio_lock_anon_vma_read()
+>> My suggested patch below (please take it over SJ, and do with it what
+>> you will), converting damon_mkold_pmd_entry() and damon_young_pmd_entry()
+>> to use pmd_trans_huge_lock() as I'd been expecting, so handling the
+>> pmd migration entry up in that block.  (Side note: patch against 6.17-rc,
+>> but I see mm.git adds also a damos_va_stat_pmd_entry(), which would
+>> better be converted to the same pmd_trans_huge_lock() pattern -
+>> though I notice you're not setting ACTION_AGAIN in that one.)
 >>
-> I must be missing something but dax_lock_folio() dereferences
+>> But I have to admit, there's very little gained by using ACTION_AGAIN
+>> in these functions: it helps not to miss the range when racing against
+>> THP collapse or split, but you're already content to miss the extent
+>> if it has a pmd migration entry, and there can still be an instant when
+>> the range which used to have a page table does not yet show the THP.
+>>
+>> So if you prefer a smaller fix (but a larger source file!), just
+>> dropping the walk->action = ACTION_AGAIN lines should be good enough.
+> 
+> I agree all your points.
+> 
+> I'd prefer the smaller source file following your suggested change below (using
+> pmd_trans_huge_lock()) in long term.  But, for a short term, I'd prefer the
+> smaller fix (dropping walk->action = ACTION_AGAIN) since it should also be
+> merged into stable@, up to 6.5.y.
+> 
+> So, I'd like to suggest as following.  Let's drop the
+> 'walk->action = ACTION_AGAIN' like the below attached one, for now.  After it
+> is confirmed to fix the issue and merged into relevant trees including stable
+> trees, let's revisit the code to cleanup following pmd_trans_huge_lock()
+> pattern.
+> 
+> Please let me know if I'm missing something, or you have other opinions.
+> 
+> Xinyu, could you please test if the below attached patch fixes your issue and
+> let us know the result?
+> 
+> If Xinyu confirms the validity of the fix and no one objects to the above plan,
+> I will post the fix as a formal one with a better commit message.
+> 
 
-Maybe the code is missing something :)
+Hi, SJ. The below attached patch is works!
 
-> folio->mapping (to get to host) without checking for
-> FOLIO_MAPPING_FLAGS presence. If it were an anon folio, wouldn't that
-> be a problem? And then in collect_procs() we obviously check for
-> folio_test_anon() on the same folio before calling
-> collect_procs_anon().
+These days, I reproduced the same softlockup scenario for three times. 
+It can be reproduced around an hour when I increase the memory pressure.
+Then I patched the below fix, and ran the same testcase whole day, 
+softlock didn't trigger again.
 
-Right, if we reach dax_lock_folio() with an anon folio we are probably 
-already messing things up? Not sure if the "!dax_mapping(mapping)" would 
-save us, likely not, because it would be an anon_vma.
+Sorry for the long wait. Thanks again for your solution and explanation!
 
-Hopefully Dan+Alistair have a clue how this works and if it already 
-works as expected with device-private anon folios.
+> 
+> Thanks,
+> SJ
+> 
+> [...]
+> 
+> ==== >8 ====
+>  From 743cafda8982624229541741dbfe5ff252328ac0 Mon Sep 17 00:00:00 2001
+> From: SeongJae Park <sj@kernel.org>
+> Date: Sat, 20 Sep 2025 03:35:34 -0700
+> Subject: [PATCH] mm/damon/vaddr: do not try page table walk again
+> 
+> For a quick fix of a softlockup issue:
+> https://lore.kernel.org/20250918030029.2652607-1-zhengxinyu6@huawei.com
+> 
+> Signed-off-by: SeongJae Park <sj@kernel.org>
+> ---
+>  From 743cafda8982624229541741dbfe5ff252328ac0 Mon Sep 17 00:00:00 2001
+> From: SeongJae Park <sj@kernel.org>
+> Date: Sat, 20 Sep 2025 03:35:34 -0700
+> Subject: [PATCH] mm/damon/vaddr: do not try page table walk again
+> 
+> For a quick fix of a softlockup issue:
+> https://lore.kernel.org/20250918030029.2652607-1-zhengxinyu6@huawei.com
+> 
+> Signed-off-by: SeongJae Park <sj@kernel.org>
+> ---
+>   mm/damon/vaddr.c | 8 ++------
+>   1 file changed, 2 insertions(+), 6 deletions(-)
+> 
+> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+> index 8c048f9b129e..7e834467b2d8 100644
+> --- a/mm/damon/vaddr.c
+> +++ b/mm/damon/vaddr.c
+> @@ -328,10 +328,8 @@ static int damon_mkold_pmd_entry(pmd_t *pmd, unsigned long addr,
+>   	}
+>   
+>   	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
+> -	if (!pte) {
+> -		walk->action = ACTION_AGAIN;
+> +	if (!pte)
+>   		return 0;
+> -	}
+>   	if (!pte_present(ptep_get(pte)))
+>   		goto out;
+>   	damon_ptep_mkold(pte, walk->vma, addr);
+> @@ -481,10 +479,8 @@ static int damon_young_pmd_entry(pmd_t *pmd, unsigned long addr,
+>   #endif	/* CONFIG_TRANSPARENT_HUGEPAGE */
+>   
+>   	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
+> -	if (!pte) {
+> -		walk->action = ACTION_AGAIN;
+> +	if (!pte)
+>   		return 0;
+> -	}
+>   	ptent = ptep_get(pte);
+>   	if (!pte_present(ptent))
+>   		goto out;
 
--- 
-Cheers
 
-David / dhildenb
+Xinyu Zheng
 
 
