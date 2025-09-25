@@ -4,92 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69FFECAC5B0
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 22:11:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0345FCAC5B5
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 22:11:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90DA08E0003; Thu, 25 Sep 2025 18:11:39 -0400 (EDT)
+	id 42CC88E0007; Thu, 25 Sep 2025 18:11:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E5788E0001; Thu, 25 Sep 2025 18:11:39 -0400 (EDT)
+	id 3B9848E0001; Thu, 25 Sep 2025 18:11:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 822818E0003; Thu, 25 Sep 2025 18:11:39 -0400 (EDT)
+	id 0A8338E0007; Thu, 25 Sep 2025 18:11:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C06B8E0001
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EC7F78E0001
 	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 18:11:39 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 06819594A7
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 22:11:38 +0000 (UTC)
-X-FDA: 83929170318.23.AB81E07
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B504513B35D
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 22:11:39 +0000 (UTC)
+X-FDA: 83929170318.07.94407ED
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 60B9B100009
+	by imf03.hostedemail.com (Postfix) with ESMTP id 039D820012
 	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 22:11:37 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=LDlINN8O;
-	spf=pass (imf05.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=InjnGNFI;
+	spf=pass (imf03.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758838297;
+	s=arc-20220608; t=1758838298;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cV19K2kHwbzsptwnWHvhPs0HRaJ8ZbKRyVa4qDbsSX8=;
-	b=evMVsFDMTZA5XmQn4W06T1jQWJmCcxAA7xPoJyxMKW9qwW52e623oZqrIKjxLhPaO+4RU1
-	u94Efzbc/Wzf80NHlPj6CUUdj8TUWxBUnJDBO4AZX5cYboTzBAT3dGGsmAeNg6a86vf+Ts
-	g4f0TkdvQM9kf/Rtxgbp7LcmhoImxmA=
+	bh=GJH2ck5XEjk64tYSAUJ8Mmt99YWLK51DqiT3bpdAVPA=;
+	b=j7ePwvGODA/JkQwabxVyswGzGSDGqRxZXVul9AbN3+hhbGU9teAEIijKg+5v6aps7lwy3e
+	1cRh828L1h4wrBA/HvwVCJGIt8nMdykai88mfVub/DfJTmaOCvnl4J4edhpQX1dTbBgAOn
+	oH4X8tfSVlbZTk/HG4XpElb18V6qzNk=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=LDlINN8O;
-	spf=pass (imf05.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	imf03.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=InjnGNFI;
+	spf=pass (imf03.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758838297; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758838298; a=rsa-sha256;
 	cv=none;
-	b=Nzdm7xnB/JZpnuVep5BNlu3W1FY52+kE6sMX6CeZElewTCfbZDuEQx5P9/xkpN6Q2wlrEo
-	tvKrNkbW5hBxawYHc4A9YIj98W3FS4KhOGCBz6lMt8ppiJ4a5Ngq74YAaCk5MoK14TUeTw
-	GLBI5n3DPjQRJQgemwdNqIXWzLOs8Yc=
+	b=q7up1ImYVqLnh6MKK+BLfXSJqNk7+EWK6Csnw2EU0HK/jcU84wDeOyAiTCyCRAMh2xbMFT
+	MwTZ9oBe2y8fH/YoJdJxmWgF/RhcxReppHw0ZPmFctsV7I7hnR4i66u4hXKYJAGDfYLkY7
+	TcVtzPeCSEBjWAMJMnSNUlc+QqCM5GE=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	; s=mail; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
 	In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=cV19K2kHwbzsptwnWHvhPs0HRaJ8ZbKRyVa4qDbsSX8=; b=LDlINN8O1LAKs2p5yHxLeWpBOw
-	1/sCr+l5elgqI6Gv4YhA2Q05sQWwyTH3hXXFtaocpJjuPd99GX9HZdwZ6zi634uAZ/7Db0xPDpIdW
-	jdKHhbcSuKjMOAf1HnSDqANuFp3MpZsVtsPiEdit3k7viRy/62ZmD2YYsr9cr6eqJBzFXewZA4ysr
-	0d3kYU3u7rwwzI6NoZH4cqRRkRRwwbjcoftoaLuHWiioh51XJ5CAs47S/4/ru8oqX1ks6fGDWzCjS
-	8Fb2TakL10qWB/IpR7rJFhW4eOMbe8sTNLL2jgxWZtqhNlo/CS2/S/L2yQXr5JdQvLF5fwc7SWO0v
-	605RQA7w==;
+	bh=GJH2ck5XEjk64tYSAUJ8Mmt99YWLK51DqiT3bpdAVPA=; b=InjnGNFI7HfscQkEpKolRkt3hu
+	WYjmhUaN3ewDzXN71Pe6fy+3RPTlSXiwC1oIxmDA6tx5Rxnc2mVK5jCntHB7WhtfqhsK9Pn+2Yyjo
+	OTMaMNtCMI7k7yqr78xtQ9oiiWqx1Tw9ue1I3rBro+tgS2y/fdEZ+f+E+xs5j4Q+RAnq9kEQyzUbR
+	+kYSOGF4k+pVVCQKcRkKVHTqrh3+I77Ykj1TP8IvNlk7vGLIDGSxt0sMn80+4d37RKMY1+7wHaKlH
+	esASzAqtFJxvUqEYuNCEosGAoa9q9F+//5JVntfr6Fl4Ihn5M7DQLtLRWdXWwRLBImCbLWiyypxZK
+	BSfGCsnw==;
 Received: from [2601:18c:8180:83cc:5a47:caff:fe78:8708] (helo=fangorn)
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1v1uBA-000000008PK-1RQG;
-	Thu, 25 Sep 2025 18:11:08 -0400
-Date: Thu, 25 Sep 2025 18:11:06 -0400
+	id 1v1uBC-000000008PQ-0cEe;
+	Thu, 25 Sep 2025 18:11:10 -0400
+Date: Thu, 25 Sep 2025 18:11:09 -0400
 From: Rik van Riel <riel@surriel.com>
 To: Frank van der Linden <fvdl@google.com>
 Cc: akpm@linux-foundation.org, muchun.song@linux.dev, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, hannes@cmpxchg.org, david@redhat.com,
  roman.gushchin@linux.dev, kernel-team@meta.com
-Subject: [RFC PATCH 13/12] mm,cma: add compaction cma balance helper for
- direct reclaim
-Message-ID: <20250925181106.3924a90c@fangorn>
+Subject: [RFC PATCH 00/12] mm,cma: call CMA balancing from page reclaim code
+Message-ID: <20250925181109.11dd36e5@fangorn>
 In-Reply-To: <20250915195153.462039-1-fvdl@google.com>
 References: <20250915195153.462039-1-fvdl@google.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: agsipb4qr3nyo5ry9uuzn3hinkpwbth6
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 4xgj8ge9kkanbonzz793ndgs96d1zspu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 60B9B100009
+X-Rspamd-Queue-Id: 039D820012
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1758838297-587349
-X-HE-Meta: U2FsdGVkX19PC4Zd8yFsTZRreMcbTn/S9mUIrtQzmvKa/DwCPV8A/n9wyPJgV/7RrDb5X2DSVYMrTepr9lTm7RP5wMjdLxEsWRh3MXMrfVh0rD9ENUAEl+UqJZ2hB+6qDRtC+ixBSHuwIKzWO8bvAJDTep2NPjF9B1CH7YFw/SsQvB/Fua8aD5MaFGILizh1JHqiWpqcIfSRgs4ZknKSfTtLSDm20IKQFiomagqO+Oq98Sa7O6xXm6GNNT9sxhhhyRx86i2W1htjiPS7Eb8yB4HBX9I5zs7/hftfxn7/5Wxufzvzbhp0zJ4B0pXi52bdXEFj5mDlt/6CJWblwLjEZiA/E+LAXPNb19GRKs80yIZsS7iyaiSVAT7GmECcmpeWfw++ewgU3QmIxBsNMApaEVuJJxxX8/Peq3OatSWdNM90L2nk2CoEe2skMIyHttApPlgg0ctxzDrqOf4va2KF/A00CzBnuVohF17PMYZecwiiAvRkCFhLZTgY6pLdpMHp/hsdr7qXSz96X1N8Q1VH+aN1du29mWI0OSEKTD96WTubG4tFbPHCOhn0r/aCm5UM4tLr7ZB9ForEg+jSJO2w9M1ryXYTJOYEIlnOvLsEjfqNcW63QarkXHSt29qSHpo9TLg7Sj9Z1jWb8552L5FzAgNmgIDTBZdb++9Jd9TY4Nwsd6iqEveQTL4EJOte56raZUcpCXnoKD0L3bC9uInO4TAvlLTR79u3lXyQs8Uh6LS2aKgL955WQZ8oq49RgGvDNhvFZCbbn17xlKdd0rLCqiLvxZWI62lv39nM2ei9rdwjgUn2LKmlyvd1ehRSJnwABsAcpeW83ZK8dvE2CqNhTqcPU0UVfnWcimDVHrEu1K8sVxJ9D/cYOTYVNpVzeic+a+zk3Lv4gfPwdFaDy0WRg62QEGiyFYUTORodnHRhvBY13Y6LRoEgLBYL3BqhyVi44c+gOa/vV7KYPgTXUMx
- 8gx0477t
- G7BbFEfQg0CNx4QfFpgAe762cOAZwYDZmLrwh1zFah2VyabJtu/srQCq5UwJjTa/Q6uDyNZDAcyAmi1W1RgEniyBtrSy5gGEcX6fT2xeGVyxlPv7NcWeeT4IHGhz9Zp/cYXjoQXVUY7R+cBHmCYjImyqxld+pGbCr1mogecQ0zpXIPRIUE+V2eP6NnG+uZNOD0my0Xt33aVEX7E5MDEynRSCMSjLKmKnf44A4h8xpGmqMFZ4pIyq80Uc4kKjaN8D7LwfPzbbmZTi8up9l1filNLls4tS5k0p0zpVQ+Uj2AMdgEZXp8WXZZmI1SovGa6uDliZNHGedCrtYABg+U+tjja3OluK1zYjJANVyNipuDbdb3+7Z5iheG+wFjI2AgjhqJ0MOsBaRh/3Jw9Lzx6ZIFZgBt2fggqAbUK3y
+X-HE-Tag: 1758838297-375112
+X-HE-Meta: U2FsdGVkX1+3mqpvL5y1/noeDlfvpyT21FJ3bWPFjGak/9jCo3WXa5uWI/evXNAd4+OKLNjR7NFkYepKGwfuHeZq/DDzKGtWLfKj1qI1Y+IxZW61cDo9Tw8V4vOXZ01AgcurrWqo94lYq+judJLSFh1FzMupoWwdlmKxnWbPAWFolcWDHMF12xFyKfMsRspaXnV+H1fgIGmtQE6hzg6eHImWEY5YC1i/oBQnrrOK7Exi76XzRrwwpHkgdVCF6ReOCi/acHEBBmXL+tDCF3qbUg07aQpJuZkNCNW4H/s9UUkfXwA5kjLcQw57Ko4OgZe4j42RIVGLQkYpXAWkE1/LRvn4+EuY1RZqALHVDIN6FXqOMPMDG5SCanQfGVNRqfLOwKWfDcialmG/x1UwwnWjcTt7uyTX8vmqejAzw417nS3skPqa3WF2enFW2iPHogf0kFT8tjCIdJ20wSK+ws1oP1LnSYaWJ2toMtWueXvlG9clJSx9QtgbDyouyFEGmmopgtXJ7TvOCIpcYTPQ9Gu8uexoLL1srwFWNW5qwU0KLyQuEj/4vGUDkZUL4gNY/4HWLo9zTfFVVGNRUprePALfv4VyZVRiSypm/kE9QBKDaOAstaICfqT5zqbvHQ5PUA7Rx23sd4AIlB3bIsoCpVRihCEVPtQ+TsQZTiBGksG4qorHFzxtCXwSbcNpuNfiP0PUjc7UEaA1aIX0WOunEWCcPJveVGHDfkGl+VEZSb1oOv4v5yJkYuNbhIp7yjavJztjdJTUKYlAgaVURpa4gHZYOCEG3GFqR7K0oVPyOZXUpp2yObI2lGkY9CMqjQ7GMnCwLJW5+pLTEe5ecwWJycwy4qYpADeBPVpWKhimTG+f7gBkcSmTjDTxitS03xq3d2e1h/P8Fsa+Vdyh0YoT94BnWiC63g+jRHJ02wJGMZJF3GFCA4vF7lpfUfcfTEYuQpNVlFHR/pYwRmgWUrZabli
+ eNzVbwfn
+ Z1AYy2mtqmdLdJVa5szrDW9HpmuZauElBGaYta6dFlg5OgAZmts0HXY+/I3R9Gwuus/DnmS2krrVopf7t/esqoTmV4knXPwXce2NgwgsJPFEAicUYyftFYHM4qekNJGzREIQ04V0LXfE69Uz+KOHel9EcJ27ndkq2htwi2V0P8Rt9EHlCPtcnLX6Itrb7yhehJH+tXQ0s9ExWPx+ihnmUczv732zs9y61/4JPi01NRSSd2qfahSvYVwb09a+sB6v00UefAZNykebqMpBdOiwKaipB92b0YG/TAZPCGZo34jnZ8dklT2VMZT/22g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,116 +97,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 15 Sep 2025 19:51:41 +0000
-Frank van der Linden <fvdl@google.com> wrote:
+Call CMA balancing from the page reclaim code, if page reclaim
+is reclaiming pages that are unsuitable for the allocator.
 
-> This is an RFC on a solution to the long standing problem of OOMs
-> occuring when the kernel runs out of space for unmovable allocations
-> in the face of large amounts of CMA.
-
-In order to make the CMA balancing code useful without hugetlb involvement,
-eg. when simply allocating a !__GFP_MOVABLE allocation, I added two
-patches to invoke CMA balancing from the page reclaim code when needed.
-
-With these changes, we might no longer need to call the CMA balancing
-code from the hugetlb free path any more, and could potentially
-simplify some things in that area.
-
----8<---
-=46rom 99991606760fdf8399255d7fc1f21b58069a4afe Mon Sep 17 00:00:00 2001
-From: Rik van Riel <riel@meta.com>
-Date: Tue, 23 Sep 2025 10:01:42 -0700
-Subject: [PATCH 2/3] mm,cma: add compaction cma balance helper for direct r=
-eclaim
-
-Add a cma balance helper for the direct reclaim code, which does not
-balance CMA free memory all the way, but only a limited number of
-pages.
+To keep direct reclaim latencies low, kswapd will do CMA balancing
+whenever some of the reclaimed pages are unsuitable for the allocator
+that woke up kswapd, while the direct reclaimers will only do CMA
+balancing if most of the reclaimed pages are unsuitable.
 
 Signed-off-by: Rik van Riel <riel@surriel.com>
 ---
- mm/compaction.c | 20 ++++++++++++++++++--
- mm/internal.h   |  7 +++++++
- 2 files changed, 25 insertions(+), 2 deletions(-)
+ mm/vmscan.c | 31 ++++++++++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
 
-diff --git a/mm/compaction.c b/mm/compaction.c
-index 3200119b8baf..90478c29db60 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -2541,7 +2541,7 @@ isolate_free_cma_pages(struct compact_control *cc)
- 	cc->free_pfn =3D next_pfn;
- }
-=20
--static void balance_zone_cma(struct zone *zone, struct cma *cma)
-+static void balance_zone_cma(struct zone *zone, struct cma *cma, int targe=
-t)
- {
- 	struct compact_control cc =3D {
- 		.zone =3D zone,
-@@ -2613,6 +2613,13 @@ static void balance_zone_cma(struct zone *zone, stru=
-ct cma *cma)
- 		nr_pages =3D min(nr_pages, cma_get_available(cma));
- 	nr_pages =3D min(allocated_noncma, nr_pages);
-=20
-+	/*
-+	 * When invoked from page reclaim, use the provided target rather
-+	 * than the calculated one.
-+	 */
-+	if (target)
-+		nr_pages =3D target;
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index a48aec8bfd92..ec6bde5b07d3 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -168,6 +168,9 @@ struct scan_control {
+ 	/* Number of pages freed so far during a call to shrink_zones() */
+ 	unsigned long nr_reclaimed;
+ 
++	/* Number of pages reclaimed, but unsuitable to the allocator */
++	unsigned long nr_unsuitable;
 +
- 	for (order =3D 0; order < NR_PAGE_ORDERS; order++)
- 		INIT_LIST_HEAD(&cc.freepages[order]);
- 	INIT_LIST_HEAD(&cc.migratepages);
-@@ -2674,10 +2681,19 @@ void balance_node_cma(int nid, struct cma *cma)
- 		if (!populated_zone(zone))
- 			continue;
-=20
--		balance_zone_cma(zone, cma);
-+		balance_zone_cma(zone, cma, 0);
- 	}
+ 	struct {
+ 		unsigned int dirty;
+ 		unsigned int unqueued_dirty;
+@@ -1092,6 +1095,19 @@ static bool may_enter_fs(struct folio *folio, gfp_t gfp_mask)
+ 	return !data_race(folio_swap_flags(folio) & SWP_FS_OPS);
  }
-=20
-+void balance_cma_zonelist(struct zonelist *zonelist, int nr_pages)
+ 
++#ifdef CONFIG_CMA
++static bool unsuitable_folio(struct folio *folio, struct scan_control *sc)
 +{
-+	struct zoneref *z;
-+	struct zone *zone;
-+
-+	for_each_zone_zonelist(zone, z, zonelist, MAX_NR_ZONES - 1)
-+		balance_zone_cma(zone, NULL, nr_pages);
++	return gfp_migratetype(sc->gfp_mask) != MIGRATE_MOVABLE &&
++		folio_migratetype(folio) == MIGRATE_CMA;
 +}
++#else
++static bool unsuitable_folio(struct folio *folio, struct scan_control *sc)
++{
++	return false;
++}
++#endif
 +
- #endif /* CONFIG_CMA */
-=20
- static enum compact_result
-diff --git a/mm/internal.h b/mm/internal.h
-index 7dcaf7214683..5340b94683bf 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -942,6 +942,7 @@ struct cma;
- void *cma_reserve_early(struct cma *cma, unsigned long size);
- void init_cma_pageblock(struct page *page);
- void balance_node_cma(int nid, struct cma *cma);
-+void balance_cma_zonelist(struct zonelist *zonelist, int nr_pages);
- #else
- static inline void *cma_reserve_early(struct cma *cma, unsigned long size)
- {
-@@ -950,6 +951,12 @@ static inline void *cma_reserve_early(struct cma *cma,=
- unsigned long size)
- static inline void init_cma_pageblock(struct page *page)
- {
+ /*
+  * shrink_folio_list() returns the number of reclaimed pages
+  */
+@@ -1103,7 +1119,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 	struct folio_batch free_folios;
+ 	LIST_HEAD(ret_folios);
+ 	LIST_HEAD(demote_folios);
+-	unsigned int nr_reclaimed = 0, nr_demoted = 0;
++	unsigned int nr_reclaimed = 0, nr_demoted = 0, nr_unsuitable = 0;
+ 	unsigned int pgactivate = 0;
+ 	bool do_demote_pass;
+ 	struct swap_iocb *plug = NULL;
+@@ -1530,6 +1546,8 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 					 * leave it off the LRU).
+ 					 */
+ 					nr_reclaimed += nr_pages;
++					if (unsuitable_folio(folio, sc))
++						nr_unsuitable += nr_pages;
+ 					continue;
+ 				}
+ 			}
+@@ -1560,6 +1578,8 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 		 * all pages in it.
+ 		 */
+ 		nr_reclaimed += nr_pages;
++		if (unsuitable_folio(folio, sc))
++			nr_unsuitable += nr_pages;
+ 
+ 		folio_unqueue_deferred_split(folio);
+ 		if (folio_batch_add(&free_folios, folio) == 0) {
+@@ -1641,6 +1661,9 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 
+ 	if (plug)
+ 		swap_write_unplug(plug);
++
++	sc->nr_unsuitable += nr_unsuitable;
++
+ 	return nr_reclaimed;
  }
-+static inline void balance_node_cma(int nid, struct cma *cma)
-+{
-+}
-+static inline void balance_cma_zonelist(struct zonelist *zonelist, int nr_=
-pages)
-+{
-+}
- #endif
-=20
-=20
---=20
+ 
+@@ -6431,6 +6454,10 @@ static unsigned long do_try_to_free_pages(struct zonelist *zonelist,
+ 
+ 	delayacct_freepages_end();
+ 
++	/* Almost all memory reclaimed was unsuitable? Move data into CMA. */
++	if (sc->nr_unsuitable >= sc->nr_reclaimed - 2)
++		balance_cma_zonelist(zonelist, SWAP_CLUSTER_MAX);
++
+ 	if (sc->nr_reclaimed)
+ 		return sc->nr_reclaimed;
+ 
+@@ -7169,6 +7196,8 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
+ 	if (!sc.nr_reclaimed)
+ 		pgdat->kswapd_failures++;
+ 
++	if (sc.nr_unsuitable)
++		balance_node_cma(pgdat->node_id, NULL);
+ out:
+ 	clear_reclaim_active(pgdat, highest_zoneidx);
+ 
+-- 
 2.47.3
 
 
