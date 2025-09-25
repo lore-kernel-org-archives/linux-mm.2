@@ -4,86 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E20F6CAC5A5
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 00:52:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6799CAC5A5
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 01:02:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D76C8E000E; Wed, 24 Sep 2025 20:52:11 -0400 (EDT)
+	id B9BA88E0016; Wed, 24 Sep 2025 21:02:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 088048E0001; Wed, 24 Sep 2025 20:52:11 -0400 (EDT)
+	id B735F8E0001; Wed, 24 Sep 2025 21:02:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2E078E000E; Wed, 24 Sep 2025 20:52:10 -0400 (EDT)
+	id A88E28E0016; Wed, 24 Sep 2025 21:02:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E39C08E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 20:52:10 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 78D311DDCA7
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 00:52:10 +0000 (UTC)
-X-FDA: 83925946020.19.B5DDAF8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E0D1980009
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 00:52:08 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B03GPHqE;
-	spf=pass (imf02.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 954D18E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 21:02:04 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 159E61DCBA8
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 01:02:04 +0000 (UTC)
+X-FDA: 83925970968.14.EB21DE3
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0B33112000B
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 01:02:01 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nhhuSSxV;
+	spf=pass (imf29.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758761528;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1758762122;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wbgWx2FklFEBaLE/awcwgnEmo15Rtyo4cAaPuJ5wUR0=;
-	b=mqvBPxswx1eMGoNQiHHD0IxatG2OlGA3h6yyQ8OigemDg7wax0DDoJEN+juEyOWFTc6rjg
-	27WXxCXE3SMHQ1hjlSSIFQwaUh9oo9grJ/TY+LPyGdDQyrywzhLCdNLNwMkDarONui6K+C
-	7Z+47s75eFGCG9g5bauYzKOaIm73HUc=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B03GPHqE;
-	spf=pass (imf02.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758761528; a=rsa-sha256;
+	bh=UT/fz7W2Q59V6JjyRJ9jtQEWf+zMESy3JFVBEjGnVz0=;
+	b=ysAjBh2KRGSkmiGDxWom2ri4c4FZhus6DQ1YLvJQKpG+AM0q/XxzuN1wvbVz/PQr/WIwRe
+	nHLshjeYjqmpLelibt9yOJhHVYmWPqJS22fNI1LN/YYkiSucRuw6T+zzKhHDKh15RCXR+0
+	NYVk7np79/F4Dl7k7PIr3Qv6dB3P4dw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758762122; a=rsa-sha256;
 	cv=none;
-	b=w/e9vQvJd/18jWTTkxEKADK96ZSZia4XdS0rbiMZNBGGpWisSNp5ac6lcGGkZmVR8vB00n
-	GxZTAtACDjQuhKeINIqtkxDlz5DTDxpjaR8zHS42wh5xxWbvvAQ8RNomLZWJG31hqN4ai1
-	71XpTymxMjU79R1YVTSDURUCcwfhOFM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3FE67601F9;
-	Thu, 25 Sep 2025 00:52:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE021C4CEE7;
-	Thu, 25 Sep 2025 00:52:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758761527;
-	bh=4T9Uc1baOOm7aD/Y7ecu4SBOz/l6Ta2u4f5pFwwaU/E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B03GPHqEXFNSoAFj12gdqmEUDxjJgJlrNnFZRAMrjsiwN0DzlFF1/VsRgW70z6EmT
-	 B/xxKoU+TsbzKDQjgmwWVeMY6TUXrKxDoLUIeIOvAKT9ZmoxJGuGVaQJYmiVmlH9fM
-	 jo/b2zwOwm2e8CvYjMNhGwrEmy9kz8V4q59CTKnoXVMA5E4m2IrwWMEI4+sGVqDqYK
-	 ori3GPqOR9vpt6d1BKHYhihhQZmtEq08kZDFc87NkDcl2ix7XtUJRUAI11W7W8MmQ1
-	 uk6iI6zl9G4WKXV27Mu/zj7cZVqmP7wVEsuL9luxWtZlcm+Zwm5pZEaSBfCdvtEx4L
-	 KJASNC13sSt2Q==
-Date: Wed, 24 Sep 2025 14:52:06 -1000
-From: Tejun Heo <tj@kernel.org>
-To: Chenglong Tang <chenglongtang@google.com>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
-	roman.gushchin@linux.dev, linux-mm@kvack.org, lakitu-dev@google.com
-Subject: Re: [REGRESSION] workqueue/writeback: Severe CPU hang due to kworker
- proliferation during I/O flush and cgroup cleanup
-Message-ID: <aNSSNgUeMSTtlimW@slm.duckdns.org>
-References: <CAOdxtTZJqgDNMtqsq51hQ0azanFPLXHMAJ-mRhRS6yjzYhMf_A@mail.gmail.com>
+	b=yYvCJRtQOmaEkt7VZ0CkSCHxSBqPJg4IciCjFsRvpaXqdAIj6kZOemSS2dED344Wh6EnuN
+	aI3dOYNN/DI2u0MtUiPsVNjy877sfs0S1I6uEjke//coDDCNzIk19YG79aRM5LVUKFfbdO
+	xcKpR1PpUkWuxYbd5dluT8qc++dn4ds=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nhhuSSxV;
+	spf=pass (imf29.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b2fcfef5600so64680266b.3
+        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 18:02:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758762120; x=1759366920; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UT/fz7W2Q59V6JjyRJ9jtQEWf+zMESy3JFVBEjGnVz0=;
+        b=nhhuSSxV/DhPty4ezgGDZlLNxmNVrGxm2DP00nFJouK6Gkj1WA4NNKyI7xil1523e4
+         OhZbb7yCla51MyUIBOGbCPvJpVeXvuT4qOIFvM7S/2xa/X8he8z06KpXrx2yc+QT/ymS
+         LvtEvj3Fqo4aHbKCR5MS8DnZSAhfzjNID4aoJcif2Tgrwf2wgZXb+CXhD5a2bxE0jN5i
+         t1BcjyRMuM9tHJqkm/yWKDK4Vl8vFcM9edBGRjXexeYde5fDCbjs65KtTMTh5kaLAUro
+         YnCgcugE7kUhIebmqYOWR6H9h70WJyJn7fpAHA0SIY/yoI2fg9qqqEOxuohyJbDZq9l8
+         xNkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758762120; x=1759366920;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=UT/fz7W2Q59V6JjyRJ9jtQEWf+zMESy3JFVBEjGnVz0=;
+        b=J7giF7M4VMD8Q7UVJ5lPZtNw3Q7MVaDSoyrNkxL/oi8AbYiF7ooPmIpaN12xvxmNJg
+         hU9eMXNTG+6AAFYEN3ZFFLHigt3jw8I+omBK/cneHC1ss3mqrZ6V2KSJZoKNJwSO61u7
+         J7CpcX1iV+VIlS2JvUMeTK4GshfePIA2h6sA04HlkhS3aRZvPDmTZ99OhVPmLfne+PYJ
+         +Cc7a7gf2LUmHNm4aKqcxOy6cxutuMfxKYYrLweJfE01ZJDvdc1QvbfBv9Uc3cn6H1/L
+         1A6eiCTtDTSrcJAGYFIsDTah46Vsw1C010S3RXYQIaL2D9q7pB98zEmTdc0a6OiHPXyc
+         uk9w==
+X-Forwarded-Encrypted: i=1; AJvYcCXhILw7GepQhsC1YAB5rdfAitG5olq06r4S9jf9jNMuTZbg+AjUoAneRu7MH+t8j/wTGnHEHFQKFg==@kvack.org
+X-Gm-Message-State: AOJu0YxozeBgpFrmnRVv8xBicF55kiEac9MB01uZQTZ/Vd48blEte7hs
+	mdY7h1M3RwGWVTndzD4F/4OW1auJgSd/TFxlE+KQ57gHN4rAz3/QumQQ
+X-Gm-Gg: ASbGnctjktC/s5TEqWpSSXGu+rbP3Vjc7f0onbj01RwBKL3EY/SmtDGWsOkoEuHRgp6
+	yKECyKQkuMiU3qFX55Oby0iiUasl98wzgrjG3X4MATQdvX9ZicD4Es/GSfpbvv+dkyosGxsM5P8
+	iAwZJ15Y4cQt7s4p8zDIBA7YYP2vvo/8Ou6kaNo/WWUnik1vQUTe2YGiUfaBmEPZ5Hbn+Xnl9+4
+	EkhJUI9EgNJ66FsqGarYz4KcphYU1xE/9zFpdqLPAF/MQsbBbOGqFwr/oze1CBgPVNXgIJL5F2U
+	bVzTszHbRfj7xeQ8BUI49avr7+dofYYDu3y8oBAFKebakpvenuLSpzNa3YHBfMXMHxgsdnMtkf7
+	GFI6o+CKP8KVwh6zwifr/ZA==
+X-Google-Smtp-Source: AGHT+IGSwVZwfkijJ82DMmOlzOe1J4ZJJFXvzKoeU/M4Yrgt15c2Zwukdh41qG56Hw5/4H7YE2VnSw==
+X-Received: by 2002:a17:907:e895:b0:b24:6e6:7117 with SMTP id a640c23a62f3a-b34ba93a185mr185900466b.32.1758762120190;
+        Wed, 24 Sep 2025 18:02:00 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b353e5d155asm53519466b.6.2025.09.24.18.01.59
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 24 Sep 2025 18:01:59 -0700 (PDT)
+Date: Thu, 25 Sep 2025 01:01:59 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH v1] mm: convert folio_page() back to a macro
+Message-ID: <20250925010159.psdey3tir2wvlnoi@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250923140058.2020023-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAOdxtTZJqgDNMtqsq51hQ0azanFPLXHMAJ-mRhRS6yjzYhMf_A@mail.gmail.com>
-X-Rspamd-Queue-Id: E0D1980009
-X-Rspamd-Server: rspam05
-X-Stat-Signature: c4u6dmsh7ppioecorczwt5f8ds8wpjft
+In-Reply-To: <20250923140058.2020023-1-david@redhat.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Queue-Id: 0B33112000B
+X-Stat-Signature: 1u8p5qp4xeoyxtfh1p7gcekhe9c68h1a
 X-Rspam-User: 
-X-HE-Tag: 1758761528-214832
-X-HE-Meta: U2FsdGVkX1/xxBWoyYoJO02MgIWBgqgDjLdPKXz43MOqv40F4T+rjBWSRon1EEsXunTb1ANrXsTsq3IfSE/4ay6duWAp2pTt1/crhzZw3SNLpf7WWGa6cPzjANlIZU0JVQf7f9/zlj3ICjKvleO80GFNZP6+Sf/hE4jVkZ7LhqJ3XJk+a68dlyW6a2hwHCWVVW/0otMM4zcCY94JCJfeQam1yTsFURnw+P4K+TqTC1EouygFOUPnrz9CUn25uIB/+D2sCWDlvOnFytcd3NGzTvQT4ebTTKioB/Ui5rZjqKpDs60bXaL4sj0/42dfZEc9tgwME1jahVM+wQ9Mp15zji+nfogreVrOlkyC+GLeaJ0dT7cmL85GOXCI/DAJ09K2tZ81ApYJ7huvbtlTEc9Phwt0iUyFidIG6bgrkmVyYD21+upVvb7rh2gJUnDIqgLDlyy7vdX2v84aUs/4u49XV9ozyq4XedBW8EyUhQ1Y6YrTYmFzZj0dg4SBgAsiR09c0mre9ONDiUzdh+tl4RWeZANze4eAzHwRIvWqazOB3Tq6m6cP/1/uyq4jaevNJ/XvqVQK0baFZ9AO+bjHOmYJp7/9D229wETcRlIXcotSwRMMLhU69iUbnahEp7sqVBdJiMfg0/U4CDNSEfYLaGeyDk1NvuHB/ZSQY4EiIOAzBmgKQECJQsCsTtsxTgTUD+ifAS7dPbsLsQaK5ckLXc4ikLzmp8brcd6XcnPuaee3qi5TxBlNYule0GqEQ7UGmpRMZkV7jpHMzUeNGmNihPFI8z1vNAuj+DgiuB3nPykRo85/mLntU4PCf+t/l88Mf5rRRZL9EmL+kal9RrzaajW4HevILxhHDPzdhHlWMu2JW1n84mf9IZ0RykUVQ19OTSOoqP2HYNBEyZnKs8ToQrfsmxGtuojhI7giXJJxFzBnx1xOrar0CUhm8qasioRxIn1zVw2nRALmbFfFs2tYxgM
- 3EjTbDL2
- et+p2RYE+ImvDBB73Rro0Ay3ISrg69mwwyIWxGQJxoQbA9ZRDcOO7I+MzJciG+947U0mzlZY+bBDJlwwHnM1zwI2m6qDoh1/WfGMtlTAMLufRsNHX5LTSIXLzDXMUuVd/L9rMS8MJ2E5yHDjHm4irsobpW8nXO9htpeRsAkURbyEWmYDuk/VRPATil1qxFDOD8be9gL360OohgQy/YR7j/U5UKJG98cnezJcs4p5tMFSlf9U=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758762121-279575
+X-HE-Meta: U2FsdGVkX1/1CylQGQnOlPO6+FxNALgP9ijE4Qhi01QeN+SynAhx+9OmPAKCrmT01+kCdkPqr/tpEuyrebzhlObKOumGex0SIlVR351MqA5zDU6RPGr2LfyTbQ5FsCjekaJatRfXg9pF+TNn2G0uD6OH01OqzYNXIqy0+dPiGgJlx2DBLPSsfUmE3teF40Ejd8ThYv/0Zv6VAHWfauuG4ho7PaJGNvidgL8cPOllvt+IY5X9hcd/V48vpYDXXBWTVJcME3gVbO6APQdbJpEV0O3weFX0xzUNM5mVYo0dOsVD3lcR4u7En15+8o6i5jG18h1H+Yp03iFpD+m1gS21kHByyIvrBuFBPAAeFombWKp/8eCF/2deWuCaYXtZ9qdXovrqYP3a7UwnANh5iDTW2ZaHD7UZ4K7PMBfEMQHgP8W7AOrlU8h1cHpMXY9+Im83jfgugxH9BQf4OlKtaWzZOM0JAQM6ojUDW+yD6BBKZP0IFck3m7WqmKg+vr4hNCWItYRbW75pcekUE4LJQuz2svNYPBXCTCgp+s+SbkSxFLgFK31bQhUdbr2QNXv6QLDVM7gXY0scxwGZtz6NZxyvVCsn1dnLU7774xvNV7EZDBSQuvyvgpt10UOip2/emy4DHXAqGo3gaCSdCa2+VZnSht9y3Dk/mqqPst7Etr5OIGFqgMRMK4OZ/wKTifIbD2M0nz5z4RgKl9NPSSyJibtUUyskY4nQx2qcqJKrqa004O7tgv/Qh+LIQiC90jn2sJxSBO1YWfbgxZpRO1D+LamTyQwPTHFhvXXiG8IN0vp2cslz0R2C5ukrNvzYWrzfYtznL7AjlLLjiRoY7rUvGIh8NxjDzW7HXJXUNQ1myQeFlHGkEWG/4/N5+M+VLyMwPxuNCbcK8bYydzyX5ophQD9jyZ+hL8AUPL/yimPjrOmSFhD3ZgkIBHIUg1yYLUHTIKmWAP4CESPei07vZ8XJmcb
+ BKu6nrXo
+ UQDJf6yPt/rgbAstbUdF52A2jKGcAuHxrZRLJMPD8Up9GaCGtL5IgtGo1qTNa9G/U3UayT/pcpMNjS9RtjdS0clDhR/uS/Nch9s9VrpmQKJ5uRfKB3qEb/Ndncfrftv9cFqlgDbcJsIP0QUjnMc+BXyqwyhQwX7iMDKlhlPekHqHlVXpzFuuYtBGFWsTJAk324wEijI0u/VsC1xnrT8BIOIz+/OIZEmv5UNkLKvNxWYt1YjfZZ19DRmcfrLreOP1tnj6EGT+kER1Qpm5Xwl8ejD1Gnic1Cex3UWVpSDusIMZGTCZ8V81Bu2bOawWyT5itR15K2F3/9Z4LmcjjFRsfnHR3fhVokjEOU3blFJzkfqewG1qBjoJmUbiCBboJ4x9LLFM5qqWS573UlreS7p1vfhiTSaWZPtwEZ1ADszRLaUr9E0dptots1bxbYlyP2XVZUcTYdEnHrlUOLTjqq7tsxrkQKhX/FVmrMF5+V2m81oadNyz/f2+cQzajMuahJ6gw1C5QgPuukIL0TuwOkJhyGcAxzk0jKY7L5nZqPyME6K74vo+0TNGZgbvNzlOkJvMjYkOYeg/1lnu+W37HFYrIulDx+otQ2X1r8VQ9MEd4ShisbjtJywEvh+i51Xrqym5PHj69sI0PXFquL+85PC7YVDZt1Z5RIBznlmv+XI0fxZ4bXJVqHjFThGob554f4nnQMsMwFqK52f7ec6rBZaM2rS3R4QS6lgoYKHwRllnAx3AjJeNlEqeWU+PjHFIjI2e8jlHEt6Ud+vWBydB2ypVvPw+ZbftDmGPRHlJu41fb93d8IKG09/bl9zBcNc+Oxq2KWZUfS9whju0KjvD9L4xhE5i+zjwZ3vso4LO4ZAVF6PGlGEKbxn5SwshT9wehUZlNLNSpskr6UXYkdqxqwRz7mjBrA+WBZfpQRnns
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,38 +125,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 24, 2025 at 05:24:15PM -0700, Chenglong Tang wrote:
-> The kernel v6.1 is good. The hang is reliably triggered(over 80% chance) on
-> kernels v6.6 and 6.12 and intermittently on mainline(6.17-rc7) with the
-> following steps:
-> -
-> 
-> *Environment:* A machine with a fast SSD and a high core count (e.g.,
-> Google Cloud's N2-standard-128).
-> -
-> 
-> *Workload:* Concurrently generate a large number of files (e.g., 2 million)
-> using multiple services managed by systemd-run. This creates significant
-> I/O and cgroup churn.
-> -
-> 
-> *Trigger:* After the file generation completes, terminate the systemd-run
-> services.
-> -
-> 
-> *Result:* Shortly after the services are killed, the system's CPU load
-> spikes, leading to a massive number of kworker/+inode_switch_wbs threads
-> and a system-wide hang/livelock where the machine becomes unresponsive (20s
-> - 300s).
+On Tue, Sep 23, 2025 at 04:00:58PM +0200, David Hildenbrand wrote:
+>In commit 73b3294b1152 ("mm: simplify folio_page() and folio_page_idx()")
+>we converted folio_page() into a static inline function. However
+>briefly afterwards in commit a847b17009ec ("mm: constify highmem related
+>functions for improved const-correctness") we had to add some nasty
+>const-away casting to make the compiler happy when checking const
+>correctness.
+>
+>So let's just convert it back to a simple macro so the compiler can
+>check const correctness properly. There is the alternative of
+>using a _Generic() similar to page_folio(), but there is not a lot of
+>benefit compared to just using a simple macro.
+>
+>Cc: Andrew Morton <akpm@linux-foundation.org>
+>Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+>Cc: Vlastimil Babka <vbabka@suse.cz>
+>Cc: Mike Rapoport <rppt@kernel.org>
+>Cc: Suren Baghdasaryan <surenb@google.com>
+>Cc: Michal Hocko <mhocko@suse.com>
+>Signed-off-by: David Hildenbrand <david@redhat.com>
 
-Sounds like:
-
- http://lkml.kernel.org/r/20250912103522.2935-1-jack@suse.cz
-
-Can you see whether those patches resolve the problem?
-
-Thanks.
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
 
 -- 
-tejun
+Wei Yang
+Help you, Help me
 
