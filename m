@@ -4,98 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD480CAC5A7
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 09:19:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A4C6CAC5A7
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 09:32:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 044BD8E0007; Thu, 25 Sep 2025 05:19:44 -0400 (EDT)
+	id 878648E0005; Thu, 25 Sep 2025 05:32:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F37C18E0001; Thu, 25 Sep 2025 05:19:43 -0400 (EDT)
+	id 8503E8E0001; Thu, 25 Sep 2025 05:32:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E27048E0007; Thu, 25 Sep 2025 05:19:43 -0400 (EDT)
+	id 765BB8E0005; Thu, 25 Sep 2025 05:32:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CD2788E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 05:19:43 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7F51586D68
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 09:19:43 +0000 (UTC)
-X-FDA: 83927225046.05.388AAEB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E521914000A
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 09:19:41 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k0RZZ1Rb;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 653C78E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 05:32:01 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0BBA41DF5C7
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 09:32:01 +0000 (UTC)
+X-FDA: 83927256042.03.988FD0E
+Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E5E3FA000B
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 09:31:58 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="b /aB3D+";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=BcRz1qeR;
+	spf=pass (imf15.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.147 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758791981;
+	s=arc-20220608; t=1758792719;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1vGy4r9I5hgyJ4PvKF1ULDLS+M/a8IQIyyw5mwU4gZA=;
-	b=ZP4mHVZupb1PiZfUL79UfCwX6G879qDa8MX3qU7ZM2oGm8Tr+GuRDeQ6AdUDO2jpvtBeNg
-	8w3sFqJOkA9QlasaZTwi3ZbkN0UbOsDjLEnBL3RKLrMhqqaM6lE/ctUwmqxAqSLMHluI7U
-	CgFtDk3jExdgyyR+zzRbtVNF+g7wz9s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758791982; a=rsa-sha256;
-	cv=none;
-	b=aKvwgcCbAMtIJkFo+0kLOLbBAAwTbA8gYaVSPvZZzFk8A6IpKk3WiMVzSDVFbvnD0swBZy
-	Lbv+xduKW9qq3Hz0HmWpe2VAJ1RZ82T/UFr5j3gc9edi8U9TwWoiMFttTm20fHBahcJvXu
-	4FjLkIwhYc2APbEOc57oYIRyecjk7Ug=
+	bh=aERbHKCdQ96xhdh41Z7RoEt87xEaCiV0LCS3CvEY7do=;
+	b=WqIakr9IAiP3s9n6GvEViKkGKcg/LgoaDwyNC2A86I15L16JOrz+xYH6ID5j3sFdFTi5a7
+	asCXr/dntEkLPUVSeXNjA9yQUhlr+Y8W4kZDrDRhk65k1jcuDjxpDbjvpPd4IDPc9eeNoW
+	vsSYqGY1YaKZFqSWGuI+fcKrdn/h46g=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k0RZZ1Rb;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1EB4C6013C;
-	Thu, 25 Sep 2025 09:19:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96BDC4CEF0;
-	Thu, 25 Sep 2025 09:19:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758791980;
-	bh=AQqMJQUBDrq9kxPLr/qGEjxf9utS86NJR0MoZy6d1v4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k0RZZ1RbKWAAkwlLtYKHcY7S4z/MVWCM50D//MM7NbnU4x0VQ104OQW68HBeAYRYE
-	 Gk60I4tro2JMqe3Qjc8LwqFxAq2mJlq+lKwYDTQWUkX3AkNoBii2ZDZfEvqZN3rEM3
-	 A3jYcewOMAlaG7c+WSx11wDrWKMqV5Bcp+7l8t8kM9isRSp+OuRBU+FwhwS9ueFh46
-	 0/QAkKl2M040I2KBKOwHwNMlJg2blEiveia9uQcZQJmWSKPe2WfUhlSKJLGTLszk2K
-	 Fb5QnhvksFC9LTB8hhqUzWg6e7ye1m3pyxoM4nRn+bZFFpXmDoPpHtCOVBTNV3MagN
-	 yOB/K5Ig541Lg==
-Date: Thu, 25 Sep 2025 12:19:30 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Jason Miu <jasonmiu@google.com>
-Cc: Alexander Graf <graf@amazon.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>,
-	David Matlack <dmatlack@google.com>,
-	David Rientjes <rientjes@google.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Joel Granados <joel.granados@kernel.org>,
-	Marcos Paulo de Souza <mpdesouza@suse.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Petr Mladek <pmladek@suse.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Steven Chen <chenste@linux.microsoft.com>,
-	Yan Zhao <yan.y.zhao@intel.com>, kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC v1 0/4] Make KHO Stateless
-Message-ID: <aNUJIsElr5L5uxNv@kernel.org>
-References: <20250917025019.1585041-1-jasonmiu@google.com>
+	imf15.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="b /aB3D+";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=BcRz1qeR;
+	spf=pass (imf15.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.147 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758792719; a=rsa-sha256;
+	cv=none;
+	b=1v5/9OgH6UKJH5b0uTpGnwTqewZlScBQu709cG+GPWAjnQUpx67q4qbN2ycAk+uGrvrgAA
+	zRu244amxOXwq0c64PJ9CVzssQNDp4S9iHl0byJ8OWw5xQRf3+xJ2uRnTR5UmaJ5t7yPuS
+	AJ2QKggVgk3EL7MlsNBNf2a1S2VyPjA=
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfout.phl.internal (Postfix) with ESMTP id 301B4EC0178;
+	Thu, 25 Sep 2025 05:31:58 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Thu, 25 Sep 2025 05:31:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1758792718; x=
+	1758879118; bh=aERbHKCdQ96xhdh41Z7RoEt87xEaCiV0LCS3CvEY7do=; b=b
+	/aB3D+B2g5DAsdAHllxoECukzc4Mxr5x5e4f0oLVKgMMPE68+cz5jJK47NPl4OPx
+	cXNiqIsxOuD4ToAZUi7n4qAxpXYl2498cmFlJRzo6P4CTkLl5nuhQNTUNlneqwS1
+	HmCudPf8ul6qnYovoxm4Hmvjj8psY8eolNXTwriiFutSXMgWxokllWDHsf17kz+r
+	MjysJWO3ITjHiR6riM65DlH3lqt80koizhHpRsJUTNz8ODb50e67hpy7WhsuRsEw
+	Y2s+/YD4RtOUfS/RcSWhRpR1AAnaTnRRwycdqnXKbCy7eszuZnAmZnIcVHjOW/B0
+	7APl/EMdW8IEW0drZx4iw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1758792718; x=1758879118; bh=aERbHKCdQ96xhdh41Z7RoEt87xEaCiV0LCS
+	3CvEY7do=; b=BcRz1qeRU/Ax0KI320C6UCXKHbjbPCkM2yE89cLwJ9ydjr0jQrz
+	cG/5FRYt3/UIybLw8FjmzXKGut64bDi+FDFy5AZ07BT7ewoN4DFj+Y4gDGUEArWI
+	lzSBnzTTJ8NwBcYzJ3nltXnSL+rKrSLjaJhDheP1dGE1Lh2KRHg5/lWCGUqk9IlV
+	Tn/hNoOqCnbIvkD4oK/yID4vUmlDRoEvMN4mVpl0mkhQLAMxxi5IvyqMht+Xa0S4
+	y4/zXUEiB1e1nHt+zyZvsatuM5b3YZrVWGSY3PR4mKrGBk4Nbr7+t0uWtmbQL4dj
+	tWu+31W7UXyqjcSBfJQ5o7u+j57TY0iRSug==
+X-ME-Sender: <xms:DQzVaEd-Wyk8ljKKXYAOa1c4KbkABfsckvhDFhmJVUwrl0SlbnTwCw>
+    <xme:DQzVaHg_rmjwHNMrW24yTPudk_w8vYtJrYYlCUw5FxxIhXSDT6hvvyyUiagFGir4y
+    UhNu8x0ji4MUi6OXeDhq_2Ger9-citMZluTizbo-hp9XlWoz8T0aEw>
+X-ME-Received: <xmr:DQzVaKLaBU28rszoWr6_2Mi0RvmpJwlM66xDgIHqbR_Q34YjdDf7pZpYbU1eKw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdeiiedugecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
+    hhhuthhsvghmrghuuceokhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtf
+    frrghtthgvrhhnpeetgeegffdvteeifeekheeigeetgfeltedttdeggeeuffeluedtteef
+    vdeitedvffenucffohhmrghinhepphgrshhsrdhmmhenucevlhhushhtvghrufhiiigvpe
+    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghmohhvrdhn
+    rghmvgdpnhgspghrtghpthhtohepvddvpdhmohguvgepshhmthhpohhuthdprhgtphhtth
+    hopeguvghvrdhjrghinhesrghrmhdrtghomhdprhgtphhtthhopegrkhhpmheslhhinhhu
+    gidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepuggrvhhiugesrhgvughhrg
+    htrdgtohhmpdhrtghpthhtoheplhhorhgvnhiiohdrshhtohgrkhgvshesohhrrggtlhgv
+    rdgtohhmpdhrtghpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomh
+    dprhgtphhtthhopehvsggrsghkrgesshhushgvrdgtiidprhgtphhtthhopehrphhpthes
+    khgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhurhgvnhgssehgohhoghhlvgdrtghomh
+    dprhgtphhtthhopehmhhhotghkohesshhushgvrdgtohhm
+X-ME-Proxy: <xmx:DQzVaMpK_8EL7mbK3YoASnDh0nVDpZM2-IzxUWCWq18Q07scZaH4mA>
+    <xmx:DQzVaHrxQVuch9KFZf40FFYe-apLD-veYlmGbjtY1nhss52sVC2YJA>
+    <xmx:DQzVaCE07J1rW1n5MfJ1XcQ3nb0czFw5tCogZQfR8ZejrpDBH4lv5g>
+    <xmx:DQzVaJobkvW1bH52sIv3NRddghk7HQZwlQeSxp5dsftVRZ2kVyoNyg>
+    <xmx:DgzVaC-dUut48GdOheQTcCgeHRF3l8msugJNgRVX1IxW8DLOKtpIKUJY>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 25 Sep 2025 05:31:56 -0400 (EDT)
+Date: Thu, 25 Sep 2025 10:31:54 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Dev Jain <dev.jain@arm.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: move rmap of mTHP upon CoW reuse
+Message-ID: <427kxhljdcrn7thput727j6vpqvxtalistn6yoq6ykdpbe5435@sn7a4rh7zcdo>
+References: <20250925085429.41607-1-dev.jain@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250917025019.1585041-1-jasonmiu@google.com>
-X-Stat-Signature: ic43bifj5ojw11tyrafqa4a4jtihdfd5
-X-Rspamd-Queue-Id: E521914000A
+In-Reply-To: <20250925085429.41607-1-dev.jain@arm.com>
+X-Rspamd-Queue-Id: E5E3FA000B
+X-Stat-Signature: ezmeo38binh8meauen1ihrbmw5ojopcn
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758791981-555017
-X-HE-Meta: U2FsdGVkX1+cZOnt/xlIHNAayxZTpMFrIM0sId+RbRVG3O5KX/MFY+WzYbKTe4XmAWJS3XXsYMc71+70W35glt/tNYUOoSDURmTP9bbmONdUeUAhgGFg/tgXiUfaDDS6O0Gj3i0glxF0QYoq0/TjG+BHJZHa8Vi8eHhZS08Nys+SxlA3JU4Jh0WfyIilCKl9kABb2hF0ZrZsAhAN/Zkx6y/ElWWe3RktTukyriMVGz6rVugRAgxdsYp8QrJ/XqIL8bCB0YjQySpJpX+RO8+KBj1stwRmVWfTUanl66FSjkCHzXeG5TuhNR1ziDMLCCmJjS8f6Z7Y2XBY0iUf0pIajwVNOFB6FWWTQ1CCzqmcZ9/veU9kcq8AAi78aGTbEUihoVbkUwVLRN4vtu5lcFP29oGSF3AX2XZkNEwEj8b4Kt8WMCKc/1dpZwMMl5uDdsjhuMuePiXeb7AnMp8BD3LAnqICGfChR1fISXJU5fzQovQXfoYgQK/qJhFNv8FKUxK5QXVU4gQu7wd2E+sMrC2pCeD2JZeO5mEwRz8Fu/gysxeILLdJMlH5uZmtccdYS+MBoKqd4v0ctLuKjebvc0m3FvoUgjNHam8/Wb7a8ECAhj2FYMYeTZ9r8JHf9e3LMJ+jqPD0LGkPYy5XgPVQvSSXFKlKG7A9O84Pav+gqx3ETCehKl0NOPPpbr/8yQptV/DA4m6cCfUGdVaj6R/drREw13SJyE1oR6CspFgFkNRUb3mJPgr90YacCa8IaSVXUVOtARvFoMVOh/c4MQbF+SDqSE+t+PW4B56wDLOa7VKba3OVfKHTHc/dpKGz016/MPKp/rw6upHG3iSHPtP9yaCxoaTI8KboA2pkaTMVkH6NnQjclOpJ2rKYu+YBfFTIiuJ1Vo5t3yAp2/ctURCm6vuNyNBu9Hb6tu3b3fY0VQFIKouZuO0CXopAmv5szDF9Yk0ikGbk09C35LoJY/yOOUl
- OA4QOiLX
- UcoDBpxY+MhIRzoHHRikSYh8H3ZAwQQZpWHW8wDkH19xPojPYzzoWdDZ2eu9iGDofI+tiX1NJaqDTKJC07DyLxCYFgn3v5RcIavImYb4/B4FXq4uFcU93wNXiBQP6kWzc5skESnEhymvqUmuVhxqRCFapMByzwaUwXEEFt7MOB9aEyum3ao9Fgo+HJ5/6jqXXv4Y5nyu55uroRJ1DIqYrLgckmouvIJrcVCjRHpiVNjawp6DKLwbQGCJGx5I8cL+lCdi6
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758792718-799048
+X-HE-Meta: U2FsdGVkX1/OlrF5dDoCjHtYpJEdG9G+fDYZxql3CmtB4w/FwjUJhaQh2ww/ZCGOOxTRQeHQqO3wUoXG8JAQppW+c7zP3foVXDBuSjttgufPCqBUK/lEoBaO21v84QIWbrl72dD9BdbwmY3epCKR44C1uv4V9PJVW/gjh1e4qrkkyLc5JXiIRzfjakkmx4b9ahOhvxYMDTyDquAi2sCdt9bXOAyiNVlbTMcY9uzBtGbk6eSNaTGeJlHxgsSf+x0poqlmLjenNPHPr3q5nuwH90EwHJkO8Yxjm5sEfePWQM4RUxhsIug/Xy+39/DKsp4LOy9q+3SQo6kmiCqwvwEMnXyTIY4HtOLfLBS9Li0Av4y5XtJXtyuYS9C3BTk+Ird5JtHC1k+hxL3mdRkH/Xw25Y1EBXQ/Z1JpnC3zNDNvkjztCAR8Bt9SNDRFwNKw0vna35xgkagmAp/0mEHaj+uAP14Z8v/WGfFGZfjTvCSnIvmA/4HLgXGXqTzyfoXrPTXS37PnYebt4OfFEjjro5eNyoVGYOedwS7kTxaM9Tk0Th6kW+YWrXN+i8TsisKOKhRypMoYrFibE93LXB5G9Jh5LzpYeIiH0toBW+q4MucQXT4V+1l8jig3/TBPaV0L4a22XVLmu7fihx+myEL6RlI5yLJhE1V5qDkDV5DoYJCc8eLT1psKFJNc76VT2RDDdC/Dy2wTZzdlEcRlJQo1qeOvTTv0stxMDUU3d+hC9YKKv6hzIoWgDD6sY6anVFncOHQjhi7O2ackqPCG4InBhVzDxV4JlU279mHAD1c/ioy91qTpn6xjim8+guFFA3zW5FaPaQKvJ6Nyf5HJXes3qgw3fv5eLJ9mFf2gA5JMuAffVBNVUpC7EGfyOmYBerA4zcSpcG2szaCphQEeFMm4dJj0qAouo/YpaIRWqlAo3/8U7DT4icL86uRpAUmSggLhJnz5ydCTR5FN0TxPoKl3uWJ
+ lFcLcKky
+ yakgmjwEE3MD4qFunw8HfPAUJ8ZRXAWwe09UQJS8u26StH4XWgVZQFgwTYO2SNwPTzZBHwSNGygbBEHxiIECyeP61cCrHD/bApJyk23BmloKWpgbTeUuOZ4/yvZwu/31v/+/y5BAaFahLyAGwQf+/aCoVlFV0MmgcIHzmnqiyQKdcch7YXPsYOv50KifOrNgkvZXiKXlcZBxg7WEqBLByBQ4d6Psb2mzjdHF5Gdso52zSkYaWZfmp6DLqjorYXTrIX4Kfvk4zRpG4HKWTGYwZQpustKUgYLAKIAuh+iE1vCrMl6vJlX2oTyYd/+lmKjN9HclOk4NjZbyWnFQEIgVB/utGsYdfUOcjAQaWSNRXN/cGD7FEMIce9e7oSmXG4MS4VFymsS7k6CLSPgUniOuYtVczXamK2U9BDUxhfZLI5B9DMmdD3qG/dyt6jEQs6IOikhoDpxj5d/7wZyg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,35 +136,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jason,
-
-On Tue, Sep 16, 2025 at 07:50:15PM -0700, Jason Miu wrote:
-> This series transitions KHO from an xarray-based metadata tracking
-> system with serialization to using page table like data structures
-> that can be passed directly to the next kernel.
+On Thu, Sep 25, 2025 at 02:24:29PM +0530, Dev Jain wrote:
+> At wp-fault time, when we find that a folio is exclusively mapped, we move
+> folio->mapping to the faulting VMA's anon_vma, so that rmap overhead
+> reduces. This is currently done for small folios (base pages) and
+> PMD-mapped THPs. Do this for mTHP too.
 > 
-> The key motivations for this change are to:
-> - Eliminate the need for data serialization before kexec.
-> - Remove the former KHO state machine by deprecating the finalize
->   and abort states.
-> - Pass preservation metadata more directly to the next kernel via the FDT.
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
+> mm-selftests pass.
+> 
+>  mm/memory.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 7e32eb79ba99..ec04d2cec6b1 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4014,6 +4014,11 @@ static bool __wp_can_reuse_large_anon_folio(struct folio *folio,
+>  	 * an additional folio reference and never ended up here.
+>  	 */
+>  	exclusive = true;
+> +
+> +	if (folio_trylock(folio)) {
+> +		folio_move_anon_rmap(folio, vma);
+> +		folio_unlock(folio);
+> +	}
 
-If we pass the preservation metadata directly between the kernels, it means
-that any change to that data structure will break compatibility between the
-new and old kernels. With serialization this is less severe because a more
-recent kernel can relatively easy have backward compatible deserialization.
+Maybe take the folio lock earlier in wp_can_reuse_anon_folio() to cover
+large folio handling too and avoid trylock here.
 
-I'm all for removing KHO state machine, but that does not necessarily mean
-we must remove the serialization of memory persistence metadata?
+Something like this (untest):
 
-For example, we can do the serialization at kernel_kexec() time and if we
-want to avoid memory allocations there we might preallocate pages for
-khoser_mem_chunk's as amount of bitmaps grow.
-
-It also would be interesting to see how much time is saved if we remove the
-serialization.
-
+diff --git a/mm/memory.c b/mm/memory.c
+index 812a7d9f6531..d95cf670b6a8 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -3843,6 +3843,7 @@ static bool __wp_can_reuse_large_anon_folio(struct folio *folio,
+ 	 * an additional folio reference and never ended up here.
+ 	 */
+ 	exclusive = true;
++	folio_move_anon_rmap(folio, vma);
+ unlock:
+ 	folio_unlock_large_mapcount(folio);
+ 	return exclusive;
+@@ -3858,8 +3859,15 @@ static bool __wp_can_reuse_large_anon_folio(struct folio *folio,
+ static bool wp_can_reuse_anon_folio(struct folio *folio,
+ 				    struct vm_area_struct *vma)
+ {
+-	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && folio_test_large(folio))
+-		return __wp_can_reuse_large_anon_folio(folio, vma);
++	bool exclusive = false;
++
++	if (!folio_trylock(folio))
++		return false;
++
++	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && folio_test_large(folio)) {
++		exclusive = __wp_can_reuse_large_anon_folio(folio, vma);
++		goto unlock;
++	}
+ 
+ 	/*
+ 	 * We have to verify under folio lock: these early checks are
+@@ -3869,7 +3877,8 @@ static bool wp_can_reuse_anon_folio(struct folio *folio,
+ 	 * KSM doesn't necessarily raise the folio refcount.
+ 	 */
+ 	if (folio_test_ksm(folio) || folio_ref_count(folio) > 3)
+-		return false;
++		goto unlock;
++
+ 	if (!folio_test_lru(folio))
+ 		/*
+ 		 * We cannot easily detect+handle references from
+@@ -3877,23 +3886,23 @@ static bool wp_can_reuse_anon_folio(struct folio *folio,
+ 		 */
+ 		lru_add_drain();
+ 	if (folio_ref_count(folio) > 1 + folio_test_swapcache(folio))
+-		return false;
+-	if (!folio_trylock(folio))
+-		return false;
++		goto unlock;
++
+ 	if (folio_test_swapcache(folio))
+ 		folio_free_swap(folio);
+-	if (folio_test_ksm(folio) || folio_ref_count(folio) != 1) {
+-		folio_unlock(folio);
+-		return false;
+-	}
++	if (folio_test_ksm(folio) || folio_ref_count(folio) != 1)
++		goto unlock;
++
+ 	/*
+ 	 * Ok, we've got the only folio reference from our mapping
+ 	 * and the folio is locked, it's dark out, and we're wearing
+ 	 * sunglasses. Hit it.
+ 	 */
+ 	folio_move_anon_rmap(folio, vma);
++	exclusive = true;
++unlock:
+ 	folio_unlock(folio);
+-	return true;
++	return ret;
+ }
+ 
+ /*
 -- 
-Sincerely yours,
-Mike.
+  Kiryl Shutsemau / Kirill A. Shutemov
 
