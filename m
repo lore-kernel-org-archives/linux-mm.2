@@ -4,99 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D478CAC5AA
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 08:20:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1288CAC5AA
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 08:23:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1020D8E000E; Thu, 25 Sep 2025 04:20:07 -0400 (EDT)
+	id 354398E0008; Thu, 25 Sep 2025 04:23:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F31998E0001; Thu, 25 Sep 2025 04:20:06 -0400 (EDT)
+	id 304B38E0001; Thu, 25 Sep 2025 04:23:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E47B08E000E; Thu, 25 Sep 2025 04:20:06 -0400 (EDT)
+	id 1F3988E0008; Thu, 25 Sep 2025 04:23:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D1A9A8E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 04:20:06 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 951221403BF
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 08:20:06 +0000 (UTC)
-X-FDA: 83927074812.16.6DDC6B1
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 669D7C000E
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 08:20:04 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Abrd6Ses;
-	spf=pass (imf10.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B9E08E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 04:23:51 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DDEE51DF20E
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 08:23:50 +0000 (UTC)
+X-FDA: 83927084220.13.23C0009
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf08.hostedemail.com (Postfix) with ESMTP id A0EBB16000C
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 08:23:48 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LDcaqnpq;
+	spf=pass (imf08.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758788404;
+	s=arc-20220608; t=1758788628;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uQyATlrnC+wowTPbvk0SB6NXeUbtxy3oLcwFt8kaAo8=;
-	b=GKFsyHjVpAvXdM3G1Db+cw4dY9FTMkEw1doA/cL79CXtGL0JTMQ8/1EtUO7I3j34+d38Vx
-	pFpBAVL/sLXzreMdhkh3fMP9hQaKOTEd4i52zj6Gu03gHdLKu8raXChHsEHLeYAKEJPdP8
-	1KCtAwXEujzO2glqgDBsOe2eapcgBu4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758788404; a=rsa-sha256;
-	cv=none;
-	b=KjQe1/siPyPnufI6VrkQQRUuCeGLPzCkObYfMMgk0nSfVNGkbVI0elb5OfKLkbPkbUZl4D
-	M38Kw3jXSN4vmQ+VcsZSU1m3hYAKj79a+HJjgQbOoULJfTNYU9dslnvHUR3VqPgpfO03qu
-	qhwUYQ2GGPQrd5uIWiwZkPK70TvyyME=
+	bh=YhSbD5B6IBnwKu21md5JvzsTHBApvKSCpLrxMRXz0O0=;
+	b=pKit6IipMBaf0DogLLSZTVnOANdrXYqf4mKo/Tq2n1ZL0qxRckgDZ8tHIkWZpAbVrFjaak
+	P8Hyrai7YB3/lIT/+PKbkUnSO0hAcChU2aJD0snsqs+WqC3SrBkNtBAxDxMm8k7lrE6UO8
+	SqvbvCsIwsXsDjr905umSoZb34JMgt8=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Abrd6Ses;
-	spf=pass (imf10.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com;
+	imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LDcaqnpq;
+	spf=pass (imf08.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758788628; a=rsa-sha256;
+	cv=none;
+	b=o2KljilYKR2L5NtwiZyBUgyEKaK/GDLfxGgbzREIWBul+JFndyRjtf+Rc5n4SjWUkqbwdK
+	QcBeYCZ6glsMUeqXlkofbugZf70coIt0im4w1d/VaEzf3KDoaI+caukww6he1YEl+G8jhg
+	KnnvWd9LMpi5hsawuqLFlUQz6EWo1q4=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758788403;
+	s=mimecast20190719; t=1758788628;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uQyATlrnC+wowTPbvk0SB6NXeUbtxy3oLcwFt8kaAo8=;
-	b=Abrd6SesqHQmE/QjJSPEz418POuh2YxoqOJL0d/vUL6yOlBix1fw4wju2cI1P8hvwixTLp
-	+b4hU7T82xvwYDhWo2fjuI3Jxtkns1rq7UGlbQ+7OL+0r6r+NbqUo5uQczEQBCz3Zd1aay
-	QelxQVbaFNjgBpYR5cS5n7FFxx+j6QM=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=YhSbD5B6IBnwKu21md5JvzsTHBApvKSCpLrxMRXz0O0=;
+	b=LDcaqnpqTa1jnHB3FACsZsHUCPN5Xyb5WrOFBWeYI0VslRYp6Ac1dfF59QuAFS0WwnoKhB
+	+wh1y2r/Rxu+uOxzblYqnviNG22JOTZWU7fKpQCtM7DSnQnA7ke49wY6DMYD5RwrCx24Wu
+	C6Tf83rHdev638urXCSDOYrpBvSzL1M=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-183-j-dPxmm-OMWYa_OwYYI7Cw-1; Thu, 25 Sep 2025 04:20:02 -0400
-X-MC-Unique: j-dPxmm-OMWYa_OwYYI7Cw-1
-X-Mimecast-MFC-AGG-ID: j-dPxmm-OMWYa_OwYYI7Cw_1758788401
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45f2a1660fcso5747235e9.1
-        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 01:20:02 -0700 (PDT)
+ us-mta-84-oX_FSuXeNmKyEUC-Rvy23Q-1; Thu, 25 Sep 2025 04:23:46 -0400
+X-MC-Unique: oX_FSuXeNmKyEUC-Rvy23Q-1
+X-Mimecast-MFC-AGG-ID: oX_FSuXeNmKyEUC-Rvy23Q_1758788625
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3ee13e43dd9so291020f8f.1
+        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 01:23:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758788401; x=1759393201;
+        d=1e100.net; s=20230601; t=1758788625; x=1759393425;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=uQyATlrnC+wowTPbvk0SB6NXeUbtxy3oLcwFt8kaAo8=;
-        b=pZLrbNgOGFxc/STbAQkT91NVqD36o7YsUJLixFjS32w+Q3ZYmiLC7JVlN3/Y31dhw1
-         pkWq83Fm8ikd81FS5+Y76zsWq6OWQTHG+kvNm/+CEmGCyLXcJ5L7ssfLsG7btE73+hnA
-         ODWYJEqLcqY9/r4peYeE347vZ5M77XCJm1GG6i0nPaQofuiYUEcjcrJRZ19kEm5ec5Z0
-         8ACIwTSduj4iBsmLB3ZnBC8fOsA9frw3UK1SqoXqITpbyfzdFiMrlWcPvmXGemDhkvfc
-         v8zxA1XhRD6fE2LiPcCqT1GmTxexy8XXkzbMOz1E3Cd0Qey7dTCQq94k6z2y6l87dCdW
-         fW3w==
-X-Gm-Message-State: AOJu0YyHeZS9l4DxdbtVBIxvwF3wq42C8fn6buG0IPYQq/QP3OLYf+Na
-	KsKylMcdkBfEmflat4IGLthXS02XFfRTeZfAG6ddj+qyRo3eyszGiMDrSxt6o4CW0OjYEeMwwlG
-	CPnccVfLS+RvN6gP1qwz5j3xTS9yKXl+0FgD63G4tZ3TojM7oALiH
-X-Gm-Gg: ASbGnctoDdzSIrroKLtojev7WLUwAzXgNCe0tBcHCAZwIQgHhvj6iKe4z4jsrGKxSB5
-	DH3g0SLlHqBuNleJsbVk0dV+r+pY+027QiLOXH6DrW0daTwuQ6myQMZI9duoTn6s/HpBj3VKR9x
-	q4hCcI9gEfyyfn/lYu0mL/vkc4euIpwG1dmdIcnh3QjIzRh4dm+jMHvoAysNKcirnIXuJJDMAFa
-	WioLnirzZYExH1eX3GrDMR4rq5PVPH0ukJi5D1sRjaet/u9fNpNJsk0EY0icxfUMw2UVFFdXx2a
-	p6dRenciKaMOCL9TdK5WY16a4+N5elgYFfSwgX52yZIfCCxua/Vq9HS/w5FNX8xwP/OTdWylIGO
-	eGmDV0aowrFC8Bf9Fy+qPseP0jQ==
-X-Received: by 2002:a05:600c:1986:b0:45d:d8d6:7fcc with SMTP id 5b1f17b1804b1-46e32a057c2mr22542455e9.27.1758788401176;
-        Thu, 25 Sep 2025 01:20:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFbC+TtRneWX13e58C5C/EoikI53nXNNt4+T6sl+welA2z2gykiSxedmAf1xpwS0M/6obS7Zw==
-X-Received: by 2002:a05:600c:1986:b0:45d:d8d6:7fcc with SMTP id 5b1f17b1804b1-46e32a057c2mr22542205e9.27.1758788400656;
-        Thu, 25 Sep 2025 01:20:00 -0700 (PDT)
+        bh=YhSbD5B6IBnwKu21md5JvzsTHBApvKSCpLrxMRXz0O0=;
+        b=PGiJcCLABocQqhyv0R4SbsZ3DBnNVMuAX16ApFA/esuteo83HYRCMwXrpdWvmgX5/3
+         jWoEBqdmgCHu5oi0LKTkofGgkSLlbRTPhIMM7nHC/HC6+axYKaiFY526/LvM/GYYiewo
+         q+01cI9kUxWcGKGUJ33yjvDzE8Q98zL2c+YtvhcyWCSV8bcLp94hcrqXXhFJl42S9OxI
+         MC2Sp19s7LobVG3+ujspagOl16PGhZmQRXQO9GzeRwSx9rW5ZDukNzJWeMbXZa+rTHLx
+         7Agcfg7lquLeP7AFQgGERBWEpoTfaEAVx9BPaNtUqTdil3xUqT6uEIXU7frgVf1NFlMw
+         /ypQ==
+X-Gm-Message-State: AOJu0Yz4UrCZJuD361nKjrxIn/NOsnYD4tjSojoUOSQMLC13r6UiTPbR
+	+dxeMH8jADbsYiLiG6Uka75R4M8McSCHRabyyN0EVhwGeZps2OcUn0OunRUh21y1zytg8GyLvTu
+	gGk1dXJypFRcgLBUu4I9F4kLmGNduvcPvoT0sOUcK0HZNl/pubU9u
+X-Gm-Gg: ASbGncsSvLEON/T4yQF1OsfWmc5p6Ymj4yFpP2NaocfXpKHBVzKSzW9xb9Ai2RNsbHM
+	Le4qF5bM+HWwF2URYRvUDvOiogzCcakZCQ4S3PCCa1aloSJ4edUEfvc23N45O/Y3mZ6JQy2BAtA
+	P4bkj0EmwvdzF4TkQnv7il5DQRxNdz3Jk88PeSb+Y5Or0OJTrZZouYi8xZfiu6fvvtLgoMmagna
+	Samg6Od3vmTaDrgJxtQCWH23xKTuOiBKiUMRXCNl8HyEHCmBXe7fyDaCvyqCgTac7Jlk05ARZ+5
+	B5qI0VCx9Ny9/2A6fx+2+WWUBHZkd6aE/8v+sNqIhg5QPNw/MvrqbeuaYAJSMHUgtEqysSPwqS7
+	48gz2fR6upWsX/yxplHJkQuzbQQ==
+X-Received: by 2002:a05:6000:200b:b0:3eb:d906:e553 with SMTP id ffacd0b85a97d-40e4c1dd9ccmr2003053f8f.55.1758788625256;
+        Thu, 25 Sep 2025 01:23:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFkNiCkdhIZKuI0E4i9LV6sIBB71hg0FAowyLArQNJUOTpu9g8z2WgXGseImIfZM4zfRLDFzA==
+X-Received: by 2002:a05:6000:200b:b0:3eb:d906:e553 with SMTP id ffacd0b85a97d-40e4c1dd9ccmr2003044f8f.55.1758788624900;
+        Thu, 25 Sep 2025 01:23:44 -0700 (PDT)
 Received: from localhost (p200300d82f3ff800c1015c9f3bc93d08.dip0.t-ipconnect.de. [2003:d8:2f3f:f800:c101:5c9f:3bc9:3d08])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-40fb72fb71esm1915655f8f.1.2025.09.25.01.19.59
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-40fb89065b5sm1962986f8f.17.2025.09.25.01.23.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Sep 2025 01:20:00 -0700 (PDT)
+        Thu, 25 Sep 2025 01:23:44 -0700 (PDT)
 From: David Hildenbrand <david@redhat.com>
 To: stable@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -111,27 +111,26 @@ Cc: linux-mm@kvack.org,
 	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH 6.6.y 2/2] mm/migrate_device: don't add folio to be freed to LRU in migrate_device_finalize()
-Date: Thu, 25 Sep 2025 10:19:53 +0200
-Message-ID: <20250925081953.3752830-3-david@redhat.com>
+Subject: [PATCH 6.1.y 0/2] mm/migrate_device: don't add folio to be freed to LRU in migrate_device_finalize()
+Date: Thu, 25 Sep 2025 10:23:41 +0200
+Message-ID: <20250925082343.3771875-1-david@redhat.com>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250925081953.3752830-1-david@redhat.com>
-References: <2025022401-batting-december-cf51@gregkh>
- <20250925081953.3752830-1-david@redhat.com>
+In-Reply-To: <2025022402-footprint-usher-aa6e@gregkh>
+References: <2025022402-footprint-usher-aa6e@gregkh>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: GGPHkzZjGkMmUbBkLDJ1kgyn3NoaIOaiJRZBiRf6jjE_1758788401
+X-Mimecast-MFC-PROC-ID: bxBLK7Kdgan_r0trbIsJsCcgITt8qXsK633rjhQ38aU_1758788625
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: mwc4fjjrhwy4sx5ndphbfb7x4ia981aq
-X-Rspamd-Queue-Id: 669D7C000E
+X-Rspamd-Queue-Id: A0EBB16000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758788404-979383
-X-HE-Meta: U2FsdGVkX1+LB6Y9PjBqqdeaGTX+SlB5+Fsxyr6dp1rCILD7sathYG5iRrLLSFujwjIqB0iqjz9HELh/IjzJyemMyIjcfQFHm+StaVop8aqa1ExMufFJOyzhdy/uBYlW3sxDbrYGjWY4v1xbxDYXZv8tGkLslt9IUleh4Y+STk/iK2+b4REivOaZx5b88DQEpa4JcgtEZpKnaMrGsY4dEOgO+anwV6hvYG2zbh/+Q+d3Ut+PaSYq33Py/GCIWqqSQ7AGTWpG4SEjaB3mNitsBetB+8lNio0XPVkkorxjtpRv0u6McwZ7aTN0chRXFYthi8T2tBTszWIdzzzQkN+wYDpleZOXpakZIiugMbZtHiV6y8qTyZyEyH0JwLfFeUqexSGZXNRpJnBXIdJHfUASP4/NVxnsD6M4+v5uEDzbp7BATEcKnHjcgr6l+19vyzTxRlfiFJemAKn2q8BJpTJcYssqIQvDH7YmBLqMLMLpcnmpvubhBo6gxPj+0sPo/aRsE5e9OmdOMn+25GpaZXiFPkDAxZys3Dy9zVDekGUgMgE+nD6gu9anYMGINxlgR3zTkzsDE9gp0fToh6oV5k4B9D6f7doRzymggf8LzC00UDVNun8eP+7ceNfNwhRnCywta/E9yiB0VODa56SUh2FI4+6OnvOfcF/MFCgCN1LFAos0Vlj52NfcQRZVwHUFT+m11tddtzKjy4bv5rOdhoFBXqMxAEHnJ0eRpsx31bc33oh2WpG/Slp+JA9nTyJ1DHTIDi9raLCB1j16P1G7DNAjGgOstPAafSzD7IMNAvE7B70Oa80DhRjRikgZBWck3VTOt1kHTRjOr/Qkvk/tXGBbM1RtoBBlWc+/agWl9LuMnk4NBm4njvdgvaz2ucsDjDKplbqy2tiBynCTBtzdzQyMQEJMG6thpfMQV47OGGWE8waBg/UNVM+abdryextyjWrMIQRX2zCiH6LBAPTywEi
- 9W3GeDgk
- flq2+LX4JtApZt1SRU4qDWdplH8kdMInRezmDFbqem/5zRvICpuJ7RExPlvQzuwkvQ40OCfgdZaMf6tUukFX2OwpMHyYIIuT1fvy6t1usOmXMBGOMcx+ajTl2Ga1KgB4edTyePc+3+ckvjGyY9EsjEm3lYELLR5JgOzckkvcywpaf+MU6jZywEa8u/eBSlnm4TpJhB2qsGX6ToGEiw5fSLW66pcrlKr9P8MrHmuQfi3NN/M8vhvXOplvVRMs0V8ZdwNHcmgxngieuutFpWZi6cokNoVtqEuEmlgLx0+sYlTR3CU/xjXtX9KQ5ohfHZ2W4qRwG7LF022OXe/sVVYtaSmCD8OER31NBpMVL8eRQGChicmWbh/gchd0knF7FUvYl+Hzu/3kkFJXOY+lv2QrSLpsBNGv/rf7gnLwQOshKvVJ7pAUZjCgc4dlAF4/AwkDZmn80bqc5SIRzBi9uLA85KuAZ5I81m9bzF6hkSvoKOzFerhr66VqpzfN+MxIJntKzAO1n3y3ns7Z6E8c39pyDyn6ABxzry5B9aoQQXkhVC5RcjRv6NFd/xMm569mYM5vDro9P7NGVwAgyBf12wZB8LDcsa9ldWeYhrL+/gz6bL1wJsXa7fxiv0V9twXnZfw84PqsO92C/UecPYIagNlBzz8DMpE77yUyLOmBxIT/aTh+XsqldXts3NSGJWiYDiuToFscNY3p2xKnU9MXA4U9k+z2Vs3uhsca4V/xbxGBy2INk4YD0eGcxuQwL3KdzjTe0fhFc
+X-Rspamd-Server: rspam07
+X-Stat-Signature: mhmxu1ofz8nc4w8gpy4yiojxzaosgds8
+X-HE-Tag: 1758788628-404852
+X-HE-Meta: U2FsdGVkX1+LDWj8/3FM9ngR9D7hN5wiA65eHfv/uCnWJ6Gt8yk/pKQSkQq7kB3ENMAuDnuLl0kT3geQIl/i9+sQVt20M5P0exV3IHnKcZNPP9/rfTDN0fAlwQPe9TJETbnA90k6fuUKQwK6W9MbheMNx6SVzqoFD81A76IFqWYuMAm1vggogiuON22TughENsghl/g99IF1yTk1u9ORjAfBhvG60n4Qo4Db8azqc58lsviWlYI92khn4V7vZHlnnrUKbnEPUFpuvTEvLYXhdyHiRgPpghTw7GydF5yDl5fTNAZhMxzpqIl1jUUnIZWZMksbIKEPELWdx+f5WM9JaouCZCiOA8eMMgjQS4cnuZWKkLpWIlsIdywF4mYlvE/KIV/Z0Pm0UO/enhQsHmP4R9CaD2ajK6/E0AMPLdaQyPDkd4gUkqsWu+gPrnOornGZ5dIlbGOnw3zo/RX+7Eq5zadeojvXp5y7PYpMcgt4wSYB/Dl4IPeaCDoBFiVuhadWv/cE668UFuaBG+Q+4DSP7okDAwkRqiQ7VYvsZ6sq9D0nLD/OIaKcUcXeLxPU8oWSeNhBjM6K8Yp3h8V+DOiej0k1Q48x7eeQw7gangpM4JKjhhekfYLqbJZ9OO7wLFC7KZeI4jpFMF3PZX/ZKGGt1OoyaX2I9ogdhgGYJb/L+nEcXA+EnhYEq1B2/FlrEiiSxrcFNZ8mc1Qx+nvZW/ni7fmn+b8wYiKU2QYx9fWANdmQ3FX/ODNwptwusHrriHewnPQmWPYd52ZFwG/mmKEdWwf24xKVEalmfRJrrGDVI4ji/6KNAgDSc+n4GXF3VWLi3hZ3HOC6VgX/cLoJCNIU+Xl08N/moQLFt0azPATcUS/D63hIb4ZR3pPS/IjH+hZnkMv8Zm/kKQuzP3cN/EAotPrPtH8KSpKxrZgodTfe0fgcnQf9UacygbWleVYaj5CjiV6xthxhMnhb70STIB4
+ CKPZwMFz
+ Su3vxrGpOBktOrWoDS8TAGCU0b4OSMczM4rFNynwS3m5UcFTMP1sKRATDvCUMe8VdUlKM4uA4t6vQdtW60sfabXylVaqrlCtCVPox+2W1b6mp9tcH+vZtqr2ARpdezWHr7TvCzoyMpxAf/YjU9dYDsZNHrvwhYkTb15I6Uowx4QQIE/ZBjD9scPKMt1FSw0d8ReDOG/H2WX6aVzRo2D2UmM54p7/4YTy0JIig4uRRJkdpj8wEx6vamCe47UAHqvlr0ZXCEBVh7hSBueDunF91z1/fpCRVyFFvioiTH2/Efgj9NnF3h5MeQweAkc4UL5eHloR+xLa7zcCniNCofPE6AxsxTc3uhy8vyhW6I7bX2k/zgKXvD+XmmfgywwIIpCvicBUlPo5wjAvHTaI1fbwb0ahxlbIapimqryT8l2O9CpIhVAKGtysdUWoQfEW+Nhso5UOXE6lgYwq28L04/UjkEF4qvJsxUqdRuJzZ50BM7zeu9B2kFh+EE8sJq4p+tOt2U1SeG7BP+7NIs0bywlr5oA+sPPrbDuUFX1ysWXZqm6HcDgc5JrOKFK4D5T00D80Jl5wr3ZO8hv+Le6quunuIyWQmaZ1UiOYOGhwALNJL84dg98tLArhQqs9QoOMX5+Ns+sjDsky0iZWlRjQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,112 +139,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If migration succeeded, we called
-folio_migrate_flags()->mem_cgroup_migrate() to migrate the memcg from the
-old to the new folio.  This will set memcg_data of the old folio to 0.
+Just got reminded that I never did these backports.
 
-Similarly, if migration failed, memcg_data of the dst folio is left unset.
+Patch #1 is a clean cherry pick to make the fix in patch #2 easier to
+backport. One minor context conflict.
 
-If we call folio_putback_lru() on such folios (memcg_data == 0), we will
-add the folio to be freed to the LRU, making memcg code unhappy.  Running
-the hmm selftests:
+David Hildenbrand (1):
+  mm/migrate_device: don't add folio to be freed to LRU in
+    migrate_device_finalize()
 
-  # ./hmm-tests
-  ...
-  #  RUN           hmm.hmm_device_private.migrate ...
-  [  102.078007][T14893] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x7ff27d200 pfn:0x13cc00
-  [  102.079974][T14893] anon flags: 0x17ff00000020018(uptodate|dirty|swapbacked|node=0|zone=2|lastcpupid=0x7ff)
-  [  102.082037][T14893] raw: 017ff00000020018 dead000000000100 dead000000000122 ffff8881353896c9
-  [  102.083687][T14893] raw: 00000007ff27d200 0000000000000000 00000001ffffffff 0000000000000000
-  [  102.085331][T14893] page dumped because: VM_WARN_ON_ONCE_FOLIO(!memcg && !mem_cgroup_disabled())
-  [  102.087230][T14893] ------------[ cut here ]------------
-  [  102.088279][T14893] WARNING: CPU: 0 PID: 14893 at ./include/linux/memcontrol.h:726 folio_lruvec_lock_irqsave+0x10e/0x170
-  [  102.090478][T14893] Modules linked in:
-  [  102.091244][T14893] CPU: 0 UID: 0 PID: 14893 Comm: hmm-tests Not tainted 6.13.0-09623-g6c216bc522fd #151
-  [  102.093089][T14893] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-2.fc40 04/01/2014
-  [  102.094848][T14893] RIP: 0010:folio_lruvec_lock_irqsave+0x10e/0x170
-  [  102.096104][T14893] Code: ...
-  [  102.099908][T14893] RSP: 0018:ffffc900236c37b0 EFLAGS: 00010293
-  [  102.101152][T14893] RAX: 0000000000000000 RBX: ffffea0004f30000 RCX: ffffffff8183f426
-  [  102.102684][T14893] RDX: ffff8881063cb880 RSI: ffffffff81b8117f RDI: ffff8881063cb880
-  [  102.104227][T14893] RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000000
-  [  102.105757][T14893] R10: 0000000000000001 R11: 0000000000000002 R12: ffffc900236c37d8
-  [  102.107296][T14893] R13: ffff888277a2bcb0 R14: 000000000000001f R15: 0000000000000000
-  [  102.108830][T14893] FS:  00007ff27dbdd740(0000) GS:ffff888277a00000(0000) knlGS:0000000000000000
-  [  102.110643][T14893] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  [  102.111924][T14893] CR2: 00007ff27d400000 CR3: 000000010866e000 CR4: 0000000000750ef0
-  [  102.113478][T14893] PKRU: 55555554
-  [  102.114172][T14893] Call Trace:
-  [  102.114805][T14893]  <TASK>
-  [  102.115397][T14893]  ? folio_lruvec_lock_irqsave+0x10e/0x170
-  [  102.116547][T14893]  ? __warn.cold+0x110/0x210
-  [  102.117461][T14893]  ? folio_lruvec_lock_irqsave+0x10e/0x170
-  [  102.118667][T14893]  ? report_bug+0x1b9/0x320
-  [  102.119571][T14893]  ? handle_bug+0x54/0x90
-  [  102.120494][T14893]  ? exc_invalid_op+0x17/0x50
-  [  102.121433][T14893]  ? asm_exc_invalid_op+0x1a/0x20
-  [  102.122435][T14893]  ? __wake_up_klogd.part.0+0x76/0xd0
-  [  102.123506][T14893]  ? dump_page+0x4f/0x60
-  [  102.124352][T14893]  ? folio_lruvec_lock_irqsave+0x10e/0x170
-  [  102.125500][T14893]  folio_batch_move_lru+0xd4/0x200
-  [  102.126577][T14893]  ? __pfx_lru_add+0x10/0x10
-  [  102.127505][T14893]  __folio_batch_add_and_move+0x391/0x720
-  [  102.128633][T14893]  ? __pfx_lru_add+0x10/0x10
-  [  102.129550][T14893]  folio_putback_lru+0x16/0x80
-  [  102.130564][T14893]  migrate_device_finalize+0x9b/0x530
-  [  102.131640][T14893]  dmirror_migrate_to_device.constprop.0+0x7c5/0xad0
-  [  102.133047][T14893]  dmirror_fops_unlocked_ioctl+0x89b/0xc80
+Kefeng Wang (1):
+  mm: migrate_device: use more folio in migrate_device_finalize()
 
-Likely, nothing else goes wrong: putting the last folio reference will
-remove the folio from the LRU again.  So besides memcg complaining, adding
-the folio to be freed to the LRU is just an unnecessary step.
+ mm/migrate_device.c | 42 ++++++++++++++++++++----------------------
+ 1 file changed, 20 insertions(+), 22 deletions(-)
 
-The new flow resembles what we have in migrate_folio_move(): add the dst
-to the lru, remove migration ptes, unlock and unref dst.
 
-Link: https://lkml.kernel.org/r/20250210161317.717936-1-david@redhat.com
-Fixes: 8763cb45ab96 ("mm/migrate: new memory migration helper for use with device memory")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Cc: Jérôme Glisse <jglisse@redhat.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 41cddf83d8b00f29fd105e7a0777366edc69a5cf)
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- mm/migrate_device.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
-
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index 06a52612b2c45..f209dc512d821 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -839,20 +839,15 @@ void migrate_device_finalize(unsigned long *src_pfns,
- 			dst = src;
- 		}
- 
-+		if (!folio_is_zone_device(dst))
-+			folio_add_lru(dst);
- 		remove_migration_ptes(src, dst, false);
- 		folio_unlock(src);
--
--		if (folio_is_zone_device(src))
--			folio_put(src);
--		else
--			folio_putback_lru(src);
-+		folio_put(src);
- 
- 		if (dst != src) {
- 			folio_unlock(dst);
--			if (folio_is_zone_device(dst))
--				folio_put(dst);
--			else
--				folio_putback_lru(dst);
-+			folio_put(dst);
- 		}
- 	}
- }
+base-commit: 363a599da6d9d9aaeea97fceff615580e845c72b
 -- 
 2.51.0
 
