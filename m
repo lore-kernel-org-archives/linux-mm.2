@@ -4,99 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73FBCCAC5A5
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 08:20:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D478CAC5AA
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 08:20:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC1B88E000C; Thu, 25 Sep 2025 04:20:05 -0400 (EDT)
+	id 1020D8E000E; Thu, 25 Sep 2025 04:20:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C98E08E0001; Thu, 25 Sep 2025 04:20:05 -0400 (EDT)
+	id F31998E0001; Thu, 25 Sep 2025 04:20:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B61068E000C; Thu, 25 Sep 2025 04:20:05 -0400 (EDT)
+	id E47B08E000E; Thu, 25 Sep 2025 04:20:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A62C98E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 04:20:05 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5E223B90C3
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 08:20:05 +0000 (UTC)
-X-FDA: 83927074770.22.575040F
+	by kanga.kvack.org (Postfix) with ESMTP id D1A9A8E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 04:20:06 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 951221403BF
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 08:20:06 +0000 (UTC)
+X-FDA: 83927074812.16.6DDC6B1
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3160B40009
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 08:20:02 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bPQqEnOQ;
-	spf=pass (imf17.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 669D7C000E
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 08:20:04 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Abrd6Ses;
+	spf=pass (imf10.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758788403;
+	s=arc-20220608; t=1758788404;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dt/4W+oqi8hOmboeA6NMHOzDnnOSX/FWFcKdqFw6DIA=;
-	b=HVkTFwFPgJ1ChbDBwjsaXXqUgYh9kpw8wnIxx+tlHQ+VxZs4qQd5jEsfDBHHAf9qlTAA49
-	fenGq234315vByQRJX1Fjn2sxfkgNmzGBFcWGXd7t6SiSc0DJbIvUnoi1bC0ilHL9uxPL5
-	hssmMRABuhqSWGDezqanJwAiBsquXYk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758788403; a=rsa-sha256;
+	bh=uQyATlrnC+wowTPbvk0SB6NXeUbtxy3oLcwFt8kaAo8=;
+	b=GKFsyHjVpAvXdM3G1Db+cw4dY9FTMkEw1doA/cL79CXtGL0JTMQ8/1EtUO7I3j34+d38Vx
+	pFpBAVL/sLXzreMdhkh3fMP9hQaKOTEd4i52zj6Gu03gHdLKu8raXChHsEHLeYAKEJPdP8
+	1KCtAwXEujzO2glqgDBsOe2eapcgBu4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758788404; a=rsa-sha256;
 	cv=none;
-	b=fIBSKWD3nHNaNPQd6awzi6cd6ttrZaj0Afz7TkFlPiid9fK28U8mv0VjvMZjogfw/EmEoM
-	8A++i1/iLLrWM0TUmIB7aLP+ZzGOEl9mgnToe/uxRRbVSKvZQ0khrfGkaSCDjsBu+fIRbl
-	mVDOos3l59+0/PJ39xohwY3zJjdPmeA=
+	b=KjQe1/siPyPnufI6VrkQQRUuCeGLPzCkObYfMMgk0nSfVNGkbVI0elb5OfKLkbPkbUZl4D
+	M38Kw3jXSN4vmQ+VcsZSU1m3hYAKj79a+HJjgQbOoULJfTNYU9dslnvHUR3VqPgpfO03qu
+	qhwUYQ2GGPQrd5uIWiwZkPK70TvyyME=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bPQqEnOQ;
-	spf=pass (imf17.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Abrd6Ses;
+	spf=pass (imf10.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758788402;
+	s=mimecast20190719; t=1758788403;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dt/4W+oqi8hOmboeA6NMHOzDnnOSX/FWFcKdqFw6DIA=;
-	b=bPQqEnOQc4W1+1lBEDMVTwjg/Owpdgt8qEnH8u4F0Hv1G1hC9Ki08XVdwBifvUcbHGDdW0
-	U6cvZaUJvumPGzbT3ts0NclkxEZY73k5oOzQX8zBSwBhtMTRQkss98OFZIbjIjE8p3v71x
-	G9+AzJPesTmoL/UBWbDKmfeM9Yj/JdQ=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=uQyATlrnC+wowTPbvk0SB6NXeUbtxy3oLcwFt8kaAo8=;
+	b=Abrd6SesqHQmE/QjJSPEz418POuh2YxoqOJL0d/vUL6yOlBix1fw4wju2cI1P8hvwixTLp
+	+b4hU7T82xvwYDhWo2fjuI3Jxtkns1rq7UGlbQ+7OL+0r6r+NbqUo5uQczEQBCz3Zd1aay
+	QelxQVbaFNjgBpYR5cS5n7FFxx+j6QM=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-131-KgiPDppWNWWf2warNT6Ubg-1; Thu, 25 Sep 2025 04:20:00 -0400
-X-MC-Unique: KgiPDppWNWWf2warNT6Ubg-1
-X-Mimecast-MFC-AGG-ID: KgiPDppWNWWf2warNT6Ubg_1758788399
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3f7b5c27d41so310609f8f.0
-        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 01:20:00 -0700 (PDT)
+ us-mta-183-j-dPxmm-OMWYa_OwYYI7Cw-1; Thu, 25 Sep 2025 04:20:02 -0400
+X-MC-Unique: j-dPxmm-OMWYa_OwYYI7Cw-1
+X-Mimecast-MFC-AGG-ID: j-dPxmm-OMWYa_OwYYI7Cw_1758788401
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45f2a1660fcso5747235e9.1
+        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 01:20:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758788399; x=1759393199;
+        d=1e100.net; s=20230601; t=1758788401; x=1759393201;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dt/4W+oqi8hOmboeA6NMHOzDnnOSX/FWFcKdqFw6DIA=;
-        b=TBpKJDlvFJZDyVq0sbTbmGl648wIsD3m8FZNT9r++Veq3neHzjNRhZQgYjoXGMl1w3
-         c7beUp9J5sVbMeCis8L24LWZF1znjOpvEyQrFtARvcwuhHhsdRV58KtuVLoyDdbVwtHT
-         s2aXbUGk3qfsgh79ABxR1fbJbpVDk42abq76Ko3HsI76T4vNN4TarLBZ0isDftAzjx//
-         CmdFSktf14hHXM/4TXLPic+dTKlIg4DIylpUbwUeWtyNMvh2uzgZMuYTVaSpoFlybJis
-         pa7lPnnP3GrguBgP/Yl33rRcKWK+bzMIts4o62/fz6LflYFEoDnZukgyNAPtOa7mc4Tt
-         7FQg==
-X-Gm-Message-State: AOJu0Ywk0dYDHYRzcMBuyLi93KiLUyW1beLnfqi+fk++OtxzzkTUEaay
-	IXxY+37F6znrX+dzR81OYqkcqiRE99sjA0c2yOGhdDM5+0YcSi2t+5TJwfo91ElL1jbhRBZpfSG
-	or1pwjAK9B0CzZjhjOPuJDL5M0Sr54jY5U8y7erD64NfKtNblflU/
-X-Gm-Gg: ASbGnctGYiQTu6CaiMPf2AbpTlN8oEYietcQ84x9IixEa2WGoA8i9ZkE38LHOYkDKIS
-	RvKriBcDWEK1Hvqw7UvST4Ydcyv1gMAscIQVd0EDeZMDPoSKNJYByAN7LGICvQER2Sk50kbktLZ
-	x4ebIR+nlmcyuzVMU8bdzDKewx2dUHaks0/msCUa/7Oq5IJoJFsguF+WEsME59sXT4a5yMRYPis
-	UmlJEvHWN4YnQF7ZITcblQvAz5nlUWyVbjV97NqTbZE8eOz1151W628gfjfHwA+zjP6uraRfhkr
-	SJyhY9MuaaFN6V7ncI3t2rZ1wjpDjroJstUlUQ2yuzogCNKp7tpCrrDfWDtT4x+/7A1h7N7mLC8
-	B2GXADInC2age4omAZ2IL3I4iKA==
-X-Received: by 2002:a05:6000:610:b0:3ee:11d1:2a1e with SMTP id ffacd0b85a97d-40f5fea54d4mr1470390f8f.10.1758788399367;
-        Thu, 25 Sep 2025 01:19:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGCmL6IcJzR81nn1zjBi3mVjL9imP2afVOUxLsTA1aITrClZ80cCqOsn6rBksXQQny10pYe9A==
-X-Received: by 2002:a05:6000:610:b0:3ee:11d1:2a1e with SMTP id ffacd0b85a97d-40f5fea54d4mr1470343f8f.10.1758788398782;
-        Thu, 25 Sep 2025 01:19:58 -0700 (PDT)
+        bh=uQyATlrnC+wowTPbvk0SB6NXeUbtxy3oLcwFt8kaAo8=;
+        b=pZLrbNgOGFxc/STbAQkT91NVqD36o7YsUJLixFjS32w+Q3ZYmiLC7JVlN3/Y31dhw1
+         pkWq83Fm8ikd81FS5+Y76zsWq6OWQTHG+kvNm/+CEmGCyLXcJ5L7ssfLsG7btE73+hnA
+         ODWYJEqLcqY9/r4peYeE347vZ5M77XCJm1GG6i0nPaQofuiYUEcjcrJRZ19kEm5ec5Z0
+         8ACIwTSduj4iBsmLB3ZnBC8fOsA9frw3UK1SqoXqITpbyfzdFiMrlWcPvmXGemDhkvfc
+         v8zxA1XhRD6fE2LiPcCqT1GmTxexy8XXkzbMOz1E3Cd0Qey7dTCQq94k6z2y6l87dCdW
+         fW3w==
+X-Gm-Message-State: AOJu0YyHeZS9l4DxdbtVBIxvwF3wq42C8fn6buG0IPYQq/QP3OLYf+Na
+	KsKylMcdkBfEmflat4IGLthXS02XFfRTeZfAG6ddj+qyRo3eyszGiMDrSxt6o4CW0OjYEeMwwlG
+	CPnccVfLS+RvN6gP1qwz5j3xTS9yKXl+0FgD63G4tZ3TojM7oALiH
+X-Gm-Gg: ASbGnctoDdzSIrroKLtojev7WLUwAzXgNCe0tBcHCAZwIQgHhvj6iKe4z4jsrGKxSB5
+	DH3g0SLlHqBuNleJsbVk0dV+r+pY+027QiLOXH6DrW0daTwuQ6myQMZI9duoTn6s/HpBj3VKR9x
+	q4hCcI9gEfyyfn/lYu0mL/vkc4euIpwG1dmdIcnh3QjIzRh4dm+jMHvoAysNKcirnIXuJJDMAFa
+	WioLnirzZYExH1eX3GrDMR4rq5PVPH0ukJi5D1sRjaet/u9fNpNJsk0EY0icxfUMw2UVFFdXx2a
+	p6dRenciKaMOCL9TdK5WY16a4+N5elgYFfSwgX52yZIfCCxua/Vq9HS/w5FNX8xwP/OTdWylIGO
+	eGmDV0aowrFC8Bf9Fy+qPseP0jQ==
+X-Received: by 2002:a05:600c:1986:b0:45d:d8d6:7fcc with SMTP id 5b1f17b1804b1-46e32a057c2mr22542455e9.27.1758788401176;
+        Thu, 25 Sep 2025 01:20:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFbC+TtRneWX13e58C5C/EoikI53nXNNt4+T6sl+welA2z2gykiSxedmAf1xpwS0M/6obS7Zw==
+X-Received: by 2002:a05:600c:1986:b0:45d:d8d6:7fcc with SMTP id 5b1f17b1804b1-46e32a057c2mr22542205e9.27.1758788400656;
+        Thu, 25 Sep 2025 01:20:00 -0700 (PDT)
 Received: from localhost (p200300d82f3ff800c1015c9f3bc93d08.dip0.t-ipconnect.de. [2003:d8:2f3f:f800:c101:5c9f:3bc9:3d08])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-40fb72fb6b7sm2038140f8f.2.2025.09.25.01.19.57
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-40fb72fb71esm1915655f8f.1.2025.09.25.01.19.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Sep 2025 01:19:58 -0700 (PDT)
+        Thu, 25 Sep 2025 01:20:00 -0700 (PDT)
 From: David Hildenbrand <david@redhat.com>
 To: stable@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -111,27 +111,27 @@ Cc: linux-mm@kvack.org,
 	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH 6.6.y 1/2] mm: migrate_device: use more folio in migrate_device_finalize()
-Date: Thu, 25 Sep 2025 10:19:52 +0200
-Message-ID: <20250925081953.3752830-2-david@redhat.com>
+Subject: [PATCH 6.6.y 2/2] mm/migrate_device: don't add folio to be freed to LRU in migrate_device_finalize()
+Date: Thu, 25 Sep 2025 10:19:53 +0200
+Message-ID: <20250925081953.3752830-3-david@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250925081953.3752830-1-david@redhat.com>
 References: <2025022401-batting-december-cf51@gregkh>
  <20250925081953.3752830-1-david@redhat.com>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: uF4ikL_EI7We3TfuJ6KwwWgLFqlpJE_otxOI0KmO16s_1758788399
+X-Mimecast-MFC-PROC-ID: GGPHkzZjGkMmUbBkLDJ1kgyn3NoaIOaiJRZBiRf6jjE_1758788401
 X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Stat-Signature: wh1krsckj54um7z8o7xsuzgr9uhm7yyz
-X-Rspamd-Queue-Id: 3160B40009
+X-Stat-Signature: mwc4fjjrhwy4sx5ndphbfb7x4ia981aq
+X-Rspamd-Queue-Id: 669D7C000E
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1758788402-210576
-X-HE-Meta: U2FsdGVkX18pR1m8iF+rnNJRvcJ7pYMwTLijlleSCec684gCRpGCeDWqfAwaVZbKeGU7V4W8Vs3xNvsKrkTS+3JV4ZH0Op0Lzef23+6GCID9BCiOtpHTZ3okQZQnfHmkpVrOXQ0bVQQrh0H4B+SY/aElsa/1EEfBU8faccSI4HrOpZBG1E2jTKp01juS3m1htc1CNMcobWegN0Rhh5RFy7rr6aZ6STD/S9fCTzgtVuJvo1xHqb+gimUYN0cZ8UaBG5THQ4F63exILN95ZohuWVgca4cDFmfTuBOkRL7qMp8oBFCvvQWsQknyjJrSAynpQOWi16EJZiX9UKYQOlzjoHGKH6giJrR8qhu+dPb8qSgPHrsyaOymkWtxrkItQrnKefuwQsmLOjoWYOOSUtgB9X5NwKvV80j8+I4/Aep1UE5B0OU1wzej355RZe3cmZv/v/Dbj9dKuQdYNrihNwfW+QEZZpDn+zOQ/e4tpnYBP3yqzvA33lg2gx3P60s0KQLxgJWf63omTGJ4dnu2E80+3WxjEQynf//7nKjZe2rKSw06XckDf4oOq+nVtLCsfPnoOjBn+RYi82BWURlB5j3S76zNwVZhXyZtAyhd8Mh7B3m+gDpj4ORVa1cYjW7z9pTyDxdU2m5851C9gp5FQgcJJ89Qo9Jy5/Yxumu0vAyDjlXd8D0ivpzYRGBg2+gJ/faKZkIT7uaNkM+W8tEzEcsNlSEkH6rg9IjUfTTf9pIuU6TqeWtW/TCOs/c6ADoV/oz+59qd8I93iJUjnnFaLv6sxtPYeF2BZ9bYTH7NyVdYfro9lxyBkITWtEvDZwB5ONeaiCpWOCtjzVZ9bxFNebcz5dhFe48wwhknMJ/fKYAhCO5qRa0tzyhiw3C0sD09THEDuJzrudj1Kdyi14fHL+71PacuKZSYxtCL+qERDNQndoxOo6GsnLzfl65II/RqHwqrEUggO7ff/hOlB9X+PgD
- nfIbeCji
- SEAeimyQySCkVLTH3gJkpFbR1c38WLThgyX6pAELkToKbg7wamxIiRp1V0tt3W86i8+gt39AIii/Yr8QDJQ+syVN9AJljP0JkQF/VodY125b3n5WrGiNizvS/yH/qVlNqDz0XhfxQQxyrJf7pM9Fio1iA9BVrwVXBLMi4skVMs3AvJ8CIvWA65yQISz64HYKPcvnbbMalkbqXcBbJDrgOa2q+gzzrqkE8hTuynYmNLo3CxJjgUmiu2SmWRZuycYKNccH7RqNSoSnOCVV8I29+ku4DKQWHnIKsO8oE9x+dz5WuFCnn76D5uFlmO8Po1p+4tGLqd//Uy4Mx4+4pXIRwmfGS6ty5omW0GMZoZkKll3f9IpPLDFQm1l90pYiApWtd6sI4WnLowV0agkXVWaRgMqLOFFachu3EBkzUv+n5rh8gPoRpZZ/uTqxh+triGqjP/jQ4GZoxEfpyovZYeUWAWXhrLf5kzEe03yD3Rmia+XNYxzw+AB4T2bBQH+zmOlxbo64p7GYrpsPT3vERV4Bz7djKW34rhT2mZzjr1fSm64Et7yo3PWX4xiw498VhojWzNAH3TDcMhsPj0XWJvuZtT/DBJsPueEjhe9J3H9EH7vOIu6n7JjXIHUIJkZssd6apsAvoDNHpHvO3t51/vDhWlTABjz1p0+grzZY6gv8uUO27mcYCpysFUEuGZyEH/RTOhiWoQ56HREVMeB89QTZKt0larqa/OYMIG37jUSyzrtF+QyFRLEzTNnIzLAr5JlbWDpd5Rh3Qb9CEnccM3qavKRq1pBNGgx9K6xzhdaNAZZdVEE6Hz27ny6xcj9tHzFOhySPVXD1rHYta7aH1E9kMAnNuv4MdavowzXJxWAcLEYzeXVMdXPXmQnkPR8w/eZAxvJGmItLyiuGhs36/K3c7xDjDpqeLQbhP6CT3aOjJcKfXqcI=
+X-HE-Tag: 1758788404-979383
+X-HE-Meta: U2FsdGVkX1+LB6Y9PjBqqdeaGTX+SlB5+Fsxyr6dp1rCILD7sathYG5iRrLLSFujwjIqB0iqjz9HELh/IjzJyemMyIjcfQFHm+StaVop8aqa1ExMufFJOyzhdy/uBYlW3sxDbrYGjWY4v1xbxDYXZv8tGkLslt9IUleh4Y+STk/iK2+b4REivOaZx5b88DQEpa4JcgtEZpKnaMrGsY4dEOgO+anwV6hvYG2zbh/+Q+d3Ut+PaSYq33Py/GCIWqqSQ7AGTWpG4SEjaB3mNitsBetB+8lNio0XPVkkorxjtpRv0u6McwZ7aTN0chRXFYthi8T2tBTszWIdzzzQkN+wYDpleZOXpakZIiugMbZtHiV6y8qTyZyEyH0JwLfFeUqexSGZXNRpJnBXIdJHfUASP4/NVxnsD6M4+v5uEDzbp7BATEcKnHjcgr6l+19vyzTxRlfiFJemAKn2q8BJpTJcYssqIQvDH7YmBLqMLMLpcnmpvubhBo6gxPj+0sPo/aRsE5e9OmdOMn+25GpaZXiFPkDAxZys3Dy9zVDekGUgMgE+nD6gu9anYMGINxlgR3zTkzsDE9gp0fToh6oV5k4B9D6f7doRzymggf8LzC00UDVNun8eP+7ceNfNwhRnCywta/E9yiB0VODa56SUh2FI4+6OnvOfcF/MFCgCN1LFAos0Vlj52NfcQRZVwHUFT+m11tddtzKjy4bv5rOdhoFBXqMxAEHnJ0eRpsx31bc33oh2WpG/Slp+JA9nTyJ1DHTIDi9raLCB1j16P1G7DNAjGgOstPAafSzD7IMNAvE7B70Oa80DhRjRikgZBWck3VTOt1kHTRjOr/Qkvk/tXGBbM1RtoBBlWc+/agWl9LuMnk4NBm4njvdgvaz2ucsDjDKplbqy2tiBynCTBtzdzQyMQEJMG6thpfMQV47OGGWE8waBg/UNVM+abdryextyjWrMIQRX2zCiH6LBAPTywEi
+ 9W3GeDgk
+ flq2+LX4JtApZt1SRU4qDWdplH8kdMInRezmDFbqem/5zRvICpuJ7RExPlvQzuwkvQ40OCfgdZaMf6tUukFX2OwpMHyYIIuT1fvy6t1usOmXMBGOMcx+ajTl2Ga1KgB4edTyePc+3+ckvjGyY9EsjEm3lYELLR5JgOzckkvcywpaf+MU6jZywEa8u/eBSlnm4TpJhB2qsGX6ToGEiw5fSLW66pcrlKr9P8MrHmuQfi3NN/M8vhvXOplvVRMs0V8ZdwNHcmgxngieuutFpWZi6cokNoVtqEuEmlgLx0+sYlTR3CU/xjXtX9KQ5ohfHZ2W4qRwG7LF022OXe/sVVYtaSmCD8OER31NBpMVL8eRQGChicmWbh/gchd0knF7FUvYl+Hzu/3kkFJXOY+lv2QrSLpsBNGv/rf7gnLwQOshKvVJ7pAUZjCgc4dlAF4/AwkDZmn80bqc5SIRzBi9uLA85KuAZ5I81m9bzF6hkSvoKOzFerhr66VqpzfN+MxIJntKzAO1n3y3ns7Z6E8c39pyDyn6ABxzry5B9aoQQXkhVC5RcjRv6NFd/xMm569mYM5vDro9P7NGVwAgyBf12wZB8LDcsa9ldWeYhrL+/gz6bL1wJsXa7fxiv0V9twXnZfw84PqsO92C/UecPYIagNlBzz8DMpE77yUyLOmBxIT/aTh+XsqldXts3NSGJWiYDiuToFscNY3p2xKnU9MXA4U9k+z2Vs3uhsca4V/xbxGBy2INk4YD0eGcxuQwL3KdzjTe0fhFc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,93 +140,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
+If migration succeeded, we called
+folio_migrate_flags()->mem_cgroup_migrate() to migrate the memcg from the
+old to the new folio.  This will set memcg_data of the old folio to 0.
 
-Saves a couple of calls to compound_head() and remove last two callers of
-putback_lru_page().
+Similarly, if migration failed, memcg_data of the dst folio is left unset.
 
-Link: https://lkml.kernel.org/r/20240826065814.1336616-5-wangkefeng.wang@huawei.com
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Zi Yan <ziy@nvidia.com>
+If we call folio_putback_lru() on such folios (memcg_data == 0), we will
+add the folio to be freed to the LRU, making memcg code unhappy.  Running
+the hmm selftests:
+
+  # ./hmm-tests
+  ...
+  #  RUN           hmm.hmm_device_private.migrate ...
+  [  102.078007][T14893] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x7ff27d200 pfn:0x13cc00
+  [  102.079974][T14893] anon flags: 0x17ff00000020018(uptodate|dirty|swapbacked|node=0|zone=2|lastcpupid=0x7ff)
+  [  102.082037][T14893] raw: 017ff00000020018 dead000000000100 dead000000000122 ffff8881353896c9
+  [  102.083687][T14893] raw: 00000007ff27d200 0000000000000000 00000001ffffffff 0000000000000000
+  [  102.085331][T14893] page dumped because: VM_WARN_ON_ONCE_FOLIO(!memcg && !mem_cgroup_disabled())
+  [  102.087230][T14893] ------------[ cut here ]------------
+  [  102.088279][T14893] WARNING: CPU: 0 PID: 14893 at ./include/linux/memcontrol.h:726 folio_lruvec_lock_irqsave+0x10e/0x170
+  [  102.090478][T14893] Modules linked in:
+  [  102.091244][T14893] CPU: 0 UID: 0 PID: 14893 Comm: hmm-tests Not tainted 6.13.0-09623-g6c216bc522fd #151
+  [  102.093089][T14893] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-2.fc40 04/01/2014
+  [  102.094848][T14893] RIP: 0010:folio_lruvec_lock_irqsave+0x10e/0x170
+  [  102.096104][T14893] Code: ...
+  [  102.099908][T14893] RSP: 0018:ffffc900236c37b0 EFLAGS: 00010293
+  [  102.101152][T14893] RAX: 0000000000000000 RBX: ffffea0004f30000 RCX: ffffffff8183f426
+  [  102.102684][T14893] RDX: ffff8881063cb880 RSI: ffffffff81b8117f RDI: ffff8881063cb880
+  [  102.104227][T14893] RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000000
+  [  102.105757][T14893] R10: 0000000000000001 R11: 0000000000000002 R12: ffffc900236c37d8
+  [  102.107296][T14893] R13: ffff888277a2bcb0 R14: 000000000000001f R15: 0000000000000000
+  [  102.108830][T14893] FS:  00007ff27dbdd740(0000) GS:ffff888277a00000(0000) knlGS:0000000000000000
+  [  102.110643][T14893] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [  102.111924][T14893] CR2: 00007ff27d400000 CR3: 000000010866e000 CR4: 0000000000750ef0
+  [  102.113478][T14893] PKRU: 55555554
+  [  102.114172][T14893] Call Trace:
+  [  102.114805][T14893]  <TASK>
+  [  102.115397][T14893]  ? folio_lruvec_lock_irqsave+0x10e/0x170
+  [  102.116547][T14893]  ? __warn.cold+0x110/0x210
+  [  102.117461][T14893]  ? folio_lruvec_lock_irqsave+0x10e/0x170
+  [  102.118667][T14893]  ? report_bug+0x1b9/0x320
+  [  102.119571][T14893]  ? handle_bug+0x54/0x90
+  [  102.120494][T14893]  ? exc_invalid_op+0x17/0x50
+  [  102.121433][T14893]  ? asm_exc_invalid_op+0x1a/0x20
+  [  102.122435][T14893]  ? __wake_up_klogd.part.0+0x76/0xd0
+  [  102.123506][T14893]  ? dump_page+0x4f/0x60
+  [  102.124352][T14893]  ? folio_lruvec_lock_irqsave+0x10e/0x170
+  [  102.125500][T14893]  folio_batch_move_lru+0xd4/0x200
+  [  102.126577][T14893]  ? __pfx_lru_add+0x10/0x10
+  [  102.127505][T14893]  __folio_batch_add_and_move+0x391/0x720
+  [  102.128633][T14893]  ? __pfx_lru_add+0x10/0x10
+  [  102.129550][T14893]  folio_putback_lru+0x16/0x80
+  [  102.130564][T14893]  migrate_device_finalize+0x9b/0x530
+  [  102.131640][T14893]  dmirror_migrate_to_device.constprop.0+0x7c5/0xad0
+  [  102.133047][T14893]  dmirror_fops_unlocked_ioctl+0x89b/0xc80
+
+Likely, nothing else goes wrong: putting the last folio reference will
+remove the folio from the LRU again.  So besides memcg complaining, adding
+the folio to be freed to the LRU is just an unnecessary step.
+
+The new flow resembles what we have in migrate_folio_move(): add the dst
+to the lru, remove migration ptes, unlock and unref dst.
+
+Link: https://lkml.kernel.org/r/20250210161317.717936-1-david@redhat.com
+Fixes: 8763cb45ab96 ("mm/migrate: new memory migration helper for use with device memory")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Cc: Jérôme Glisse <jglisse@redhat.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 58bf8c2bf47550bc94fea9cafd2bc7304d97102c)
+(cherry picked from commit 41cddf83d8b00f29fd105e7a0777366edc69a5cf)
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- mm/migrate_device.c | 41 ++++++++++++++++++++++-------------------
- 1 file changed, 22 insertions(+), 19 deletions(-)
+ mm/migrate_device.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
 diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index 8ac1f79f754a2..06a52612b2c45 100644
+index 06a52612b2c45..f209dc512d821 100644
 --- a/mm/migrate_device.c
 +++ b/mm/migrate_device.c
-@@ -814,42 +814,45 @@ void migrate_device_finalize(unsigned long *src_pfns,
- 	unsigned long i;
- 
- 	for (i = 0; i < npages; i++) {
--		struct folio *dst, *src;
-+		struct folio *dst = NULL, *src = NULL;
- 		struct page *newpage = migrate_pfn_to_page(dst_pfns[i]);
- 		struct page *page = migrate_pfn_to_page(src_pfns[i]);
- 
-+		if (newpage)
-+			dst = page_folio(newpage);
-+
- 		if (!page) {
--			if (newpage) {
--				unlock_page(newpage);
--				put_page(newpage);
-+			if (dst) {
-+				folio_unlock(dst);
-+				folio_put(dst);
- 			}
- 			continue;
+@@ -839,20 +839,15 @@ void migrate_device_finalize(unsigned long *src_pfns,
+ 			dst = src;
  		}
  
--		if (!(src_pfns[i] & MIGRATE_PFN_MIGRATE) || !newpage) {
--			if (newpage) {
--				unlock_page(newpage);
--				put_page(newpage);
-+		src = page_folio(page);
-+
-+		if (!(src_pfns[i] & MIGRATE_PFN_MIGRATE) || !dst) {
-+			if (dst) {
-+				folio_unlock(dst);
-+				folio_put(dst);
- 			}
--			newpage = page;
-+			dst = src;
- 		}
- 
--		src = page_folio(page);
--		dst = page_folio(newpage);
++		if (!folio_is_zone_device(dst))
++			folio_add_lru(dst);
  		remove_migration_ptes(src, dst, false);
  		folio_unlock(src);
+-
+-		if (folio_is_zone_device(src))
+-			folio_put(src);
+-		else
+-			folio_putback_lru(src);
++		folio_put(src);
  
--		if (is_zone_device_page(page))
--			put_page(page);
-+		if (folio_is_zone_device(src))
-+			folio_put(src);
- 		else
--			putback_lru_page(page);
-+			folio_putback_lru(src);
- 
--		if (newpage != page) {
--			unlock_page(newpage);
--			if (is_zone_device_page(newpage))
--				put_page(newpage);
-+		if (dst != src) {
-+			folio_unlock(dst);
-+			if (folio_is_zone_device(dst))
-+				folio_put(dst);
- 			else
--				putback_lru_page(newpage);
-+				folio_putback_lru(dst);
+ 		if (dst != src) {
+ 			folio_unlock(dst);
+-			if (folio_is_zone_device(dst))
+-				folio_put(dst);
+-			else
+-				folio_putback_lru(dst);
++			folio_put(dst);
  		}
  	}
  }
