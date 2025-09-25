@@ -4,116 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09C79CAC5A7
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 14:49:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E938CAC5A7
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 14:51:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6830D8E0010; Thu, 25 Sep 2025 10:49:47 -0400 (EDT)
+	id C52108E0012; Thu, 25 Sep 2025 10:51:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65A8B8E0006; Thu, 25 Sep 2025 10:49:47 -0400 (EDT)
+	id C023A8E0006; Thu, 25 Sep 2025 10:51:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 597BA8E0010; Thu, 25 Sep 2025 10:49:47 -0400 (EDT)
+	id AF1008E0012; Thu, 25 Sep 2025 10:51:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 46B688E0006
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 10:49:47 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F3E151602C4
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 14:49:46 +0000 (UTC)
-X-FDA: 83928056772.05.E1CF07F
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 2585A4000C
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 14:49:44 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=k2g4U5yo;
-	spf=pass (imf07.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BF9D8E0006
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 10:51:03 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6BC04C034B
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 14:51:03 +0000 (UTC)
+X-FDA: 83928060006.24.BFE6601
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D4CF4C000E
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 14:51:01 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VIupcSCT;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758811785;
+	s=arc-20220608; t=1758811861;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=rovQXBMGlH+WdMko9tBwUJE7c1iL7Sj9W2ARd93iF4Q=;
-	b=RASsxPnFj1BMmklZCfs46VgET+vPFSS7dmthMscpSp58sAjCyUCzKCDhbK5H90WG9aYuNc
-	qL46RojQ/DCMvs4vVC/IvtboEa4WlRmvqy9nWUggw51p9H5pTWBNf5PAc//og/mFOJjKOA
-	ikj/qhur2wX/7qTNhXaey0XwNG4Nmco=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758811785; a=rsa-sha256;
-	cv=none;
-	b=637OlPecC76gxthe0jOtsDaM0LVUHZLms/hYo2GdvRKS739iCdg6ANjMobGdNk2tbbY8At
-	30OJ1dRZ+00qee+H2APkLFnywqH+TDhPlrYJlZbUl67GO6gcubyP5Qq/j0qYSHuL3VKoW/
-	sZLilpwUoVT2vMN6EQN8VvYsjy1HWbk=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+Nm7KkRF3KWMNrOa4fDQBFrmMYTVBsI2qgUFaE+AmVo=;
+	b=ocg1ipzjmGcFsY0AAd20WZFxrGuIYOxGBJlrGX+H9F32OuTvthQluuy4BevpkTgLztBR/o
+	hHYqmKf4gWnsAlyG8JamnQYgjwELTklQG/emSaXQbMe9TpjoiobGTpjoqHKefo+1bk5S7R
+	UtUpTvHw/rsUjdQo5s9IezDhntDRiGc=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=k2g4U5yo;
-	spf=pass (imf07.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-27d3540a43fso11737445ad.3
-        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 07:49:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758811784; x=1759416584; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=rovQXBMGlH+WdMko9tBwUJE7c1iL7Sj9W2ARd93iF4Q=;
-        b=k2g4U5yo9iBHVb5tYs+SjiCaomp/ZW6ldAv8o6Nj3hexsJsBLhebOMa2eQ5WuqNx6I
-         fMPuwA89PfxFPVdacX7X4pslccToGJ42iLba2ugEKurEbCaKP7s3RDXd+sthYgbRhGQu
-         GeYR1CGLpqWPKoiq7FtGtaK0jf2kR7EhT2fi+pqXi0//RlQkcoy0MbMA91c7pAS+n7jl
-         ll5G48l/rfxvHgku8kkByUYNaRMyYlGApwQSG6GD80HIhQOPHZgWDhiVckQEJdiRmbhS
-         3mZUG+5ZXf8jJ+OrPM4IkwbLZCzEmpfFsToatzZgU/lD9kdX7cnigtIeLOjI1BezViw1
-         YkjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758811784; x=1759416584;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rovQXBMGlH+WdMko9tBwUJE7c1iL7Sj9W2ARd93iF4Q=;
-        b=eZud7cy2aJYz0OJs0cTRNNa8IfFFf/nC9s45kXe8LzrdpGNFlOdy/QQw27ECMLQOps
-         la393/S3j0hRxmZoXu9wZIvRctat+S44QHAB9sJVUIFe01T3Rs2XDBDDnRS6fIE2mKFe
-         t7ggARY1/6tJDmZA99+12L3qkiTx9G0D3lgKBegNMyFUYilJ6TgptQmJcKbmF5VIa+ff
-         BT1X+xShrPsPf/T5o5FjnIegSGPWSl76uXBp4F8zbitj3a8AeIK4W7r0wnUZKS6IvdfM
-         6LV2E35bliKa2/ekTvVsU3/FrLWRc2bfi85GE1/3zZJlRJZaRmMhTL8wF86YlaxG2Lcq
-         nhfg==
-X-Forwarded-Encrypted: i=1; AJvYcCWbRTVKWMUN5GpCaVCZF/Mt9y0ohau4FuWoTHztWfoSfZe5LSgzxRxRgU/VAQ73bHwAZf0cu0k45g==@kvack.org
-X-Gm-Message-State: AOJu0Yxa82kA2CseNkrTjuKxVCa7ogRI8UBj+zIhltc4biejwhD0Bd8w
-	zU/KyWGJ6okoY2DKAQyD5dg24wW+IovnEisP9sXlIhvYqsDBkY03r/8h
-X-Gm-Gg: ASbGncsoQ67L6HQtT8q7qjRx9wXVBEmbO2JzG5AHmiDMpG5xvEYTg1REqjAKamDGmja
-	UuKRiS7igPdeGeKLWgNqe29njLnTGpWrUoKfrd5uPiScctTu6uvtZpDBy/Rum1o/hDc9hoc0dEZ
-	joqVcY4KKZF4ScG3yzC0N23rN8VuJVnUOv6BBhe+epgF5iMPDZKUv7fFZcHhdZpLy0GEe/OQWyz
-	fclFFpo7DoNcBoA+50hZxNaJDZCQRrzYg1fKt5xtmwyyMx6loHuO0XL9j1ozenTX1B7+FFtf8Gh
-	eX6n/8UfcHRWIRxmRdOpyGErAu+I6StYcXP0lhexPwlpZs6SXi66wLigZu2ob37ilzZqRnh5Cf+
-	Jk8MbkUnrg5r5hToPVaWumua7RSSm9zP7ecv1zV/heY1Kv/PvItnE38CcCN3OhnanTxSYnZJd/W
-	P6xpA=
-X-Google-Smtp-Source: AGHT+IHCZkipERRfFFQvCNVbKNbLe7gqjyfLJr0sdOftwhgT3H9vNK2pNjmfJvAfYa/v+uljVYabag==
-X-Received: by 2002:a17:902:f546:b0:273:240a:9b6f with SMTP id d9443c01a7336-27ed4a76ec0mr39941125ad.39.1758811783941;
-        Thu, 25 Sep 2025 07:49:43 -0700 (PDT)
-Received: from deepanshu-kernel-hacker.. ([2405:201:682f:3094:17a4:33dc:a325:4bce])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-27ed65e8e89sm28432605ad.0.2025.09.25.07.49.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Sep 2025 07:49:43 -0700 (PDT)
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-To: muchun.song@linux.dev,
-	osalvador@suse.de,
-	david@redhat.com
-Cc: akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
-Subject: [PATCH] hugetlbfs: skip VMAs without shareable locks in hugetlb_vmdelete_list
-Date: Thu, 25 Sep 2025 20:19:32 +0530
-Message-ID: <20250925144934.150299-1-kartikey406@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VIupcSCT;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758811861; a=rsa-sha256;
+	cv=none;
+	b=dmI2SDqxm2jvue5dUkHxpOAnlJEGNVnmfn93ikPq2Zzy4NgnY5qC459vj7CWHw85GoPrHs
+	bnOE6VitWV65AlZ2/pGqDaS5uWbAn8yh0GB+7vIe76/KeI0rHAB1cdv4be3r0mBh5TbCFJ
+	SCW8+oPB9lfKunjbymzCOpgo9knMRm4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 33CED605E9;
+	Thu, 25 Sep 2025 14:51:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53405C4CEF0;
+	Thu, 25 Sep 2025 14:50:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758811860;
+	bh=DG2szuPxxWOHgNT641pBDumcSqXth3pE37RvglgNcHg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VIupcSCTrVT0YiVHqMeNRGIe/vr4LAnwufvWyVQeLdEWcQwSFVC2jTtzVOn3K9btF
+	 omG8wlNRw5mDIWRVhKDd5bmAeX/nRPN++AytukjHVzHmIdqd3iMEzu4R1Y0ExOXnLF
+	 VmFIdOmH7Kv35IVJgOShYC/JYj8b4MSf4HrmePnC8ywzvjZUj7oF5C5gBjVRDWCq73
+	 N7uaKlPORfA0S9bpy4Tj+cBnOcNQut+e5rNeUMrzRCTdwzzCshobDgJDU1ila4SxrR
+	 S+0w79fE1fKKhWzORLWq++nfH+8LE6kmOrCrP7CvqBMysOuua3P4TzzBNXj922B2d2
+	 1yCq4SNlcdCMg==
+Date: Thu, 25 Sep 2025 17:50:53 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Alexander Potapenko <glider@google.com>, akpm@linux-foundation.org,
+	david@redhat.com, vbabka@suse.cz, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, elver@google.com, dvyukov@google.com,
+	kasan-dev@googlegroups.com, Aleksandr Nogikh <nogikh@google.com>
+Subject: Re: [PATCH v2] mm/memblock: Correct totalram_pages accounting with
+ KMSAN
+Message-ID: <aNVWzaxq82UI3wWO@kernel.org>
+References: <20250924100301.1558645-1-glider@google.com>
+ <20250925123759.59479-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 8obamk8ze8n3yrmnzirx5jg8q6zou7fs
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250925123759.59479-1-sj@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2585A4000C
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1758811784-675558
-X-HE-Meta: U2FsdGVkX1+BJN/ZNNGokwpXehDtj9SyEdTClK904Wtrpx4WldMrISqOTuF5DX53APx4j3bsb3Roh4LW3lpcddQrEmUl5mIYqot9A72PBK8UbVUFHxl10IyEfFHZo1WQp2QL4EsrN3unS5cMAc6FbdYTUEKO2V4AcwkY1/0CfgSCcftivT63bxaiFJcuQq1gs4RoC3swuksk0ZfuYFm+tuuBdLYyg5jlb7b5lvWHjG6x80Gc3weMQh5OAXfSRv924ZXeH2o+1Ri/Xnc5e8ViABBMkczwhkqhLjXY8WxuHgDo9CqKsXKRv4jHK+A5vOKVoUl1x5fyqYKurzOnnToIhWkM9jCbRAYSHbwZryVOJy6Xppp91f+QK9YccIaBWeajkxih1/nKBr9MTLb9yl87g2guCjxFo+wfabB+8OfHNoNbqDfWlOBorx0vqGavkXXxc2NvEZr7p6VBQBOY8nVm3LAeNz0qR27qNhE3XTJPyYIL/6RaqUhkrQoLrFS7GeLmhEKx19hk7iii3du5s0AJUCW02H7+uhqGrsc9qB9v90UBoJKgYYC6lzBLwNfYcR8uJm99B9PJCnOnzE8ORwT5rUJ5xibAOvzny97buEK43wWME6fDBnz0hv/W6C1olsDfowrUDwthuukrcUlObezyEFOtTUCQeDDH9c/mB6Gjg0Ov/5WBqrBnYrZ/1uYWQAjV076bLjDDGS6GQoUQPXBTzqXLbWPkMz0O/he9bmmhxBXyQa8hkCmcET9VMqAUMVzdPCeGhU1LaU8PDDkcOqkffNvd06Rq8THBbguqKVuRbG6smLWyY3us2BSqBjjGp46Fvu+l/LSqpe5KbyycDpzkeR4yTeCsbY1ORDkOhhFzYx9tPuGoepiusucO4D1W+EGc/lt3UPh7GP45sAPD4OD0IruylQBp0Jtyt/aMHq6G8qAqZVDq8moCt/hKsLH30044lKJbGYocnkMnC31W2ua
- WRYOJGu+
- bQmYFHd/6z/g4oIozCVQHgcr/rul0l/fuUnrG8RjX7AoP3k1dKdAAjnIOJGj5wYtpfkWX5+Hn9zuRQLvWLtOEPsP36VhK5WTA5nOTJVLeMpT2zWz7VH/tTeiY3kCgSsjFueIwr1Lo8Zds1B9JTaSF01IP/L7VnWD4F8IhSUKyGmYTNa10wZ0fz6fhNk2Jo8D0E0pP7Lzab6wQAB1iBLJBcGFmc5CEirSaRt/0ZdgKX1CyAl2N1l1WEobjT/LIj0YUCahJcNm1q4hG6BP0DXNLWXTJ5DaEe7DPiNh8UJIstdRkDBzlve2PzZXjuaBG9eT6aNv4/uqdNOXPrmV1QH/B74zogeTf8t4I6iBl+TjHBEjg5tmdV5BRrWK9I+foF9BBf9wnN0f/ceSYleDIomgLlHLhIj5/uhjJp2rlAu0QDI7X911NyUM5eFXOeSNXW7Z+gKGVLb1mruSznLWa4MbWIOnbUoRJpBKNuE4z+/Q5kaHJOW/QsbVBYjXpHlkRevIBHyMzfe/zTKUeiGMp0CK/g+gTNL4v5W/RK+LpEOgRcXDquyA1YygAueCPYMshJuE3wVpfUuUDV7JRT/WQ2lb6vAFlk4o8/DWZ8WMINUJEYbgfzOTNFOc0kGdRVPWEAvQsC/X+CprwLnirbuzoP+EEIIE7I9u6k1y6+MIcRCDKK583EDgJzj2mG8IZYO1lheNixpS6V5AT4Qbebu+fSkRTpZLrM1GCZaeCAsNzkW+fA3ueAFo=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: D4CF4C000E
+X-Stat-Signature: s6xbcyy6j8yechxrfcpi1k38koxpnxy1
+X-HE-Tag: 1758811861-438273
+X-HE-Meta: U2FsdGVkX18Lu5t9FUwQAG9I6A9xB5TPlMvadhQu7VwzCFvJfQ57Rp6x4JMdYue49HmqTvRb7P3OVKz2juq8UmeRYEMmBY+mJ13GgXeGNaXpF61S/Fa0c2DVhIrPLCqAozV89woFIqqI79HdO6h0W5D+LaNYZMe3x6A4kx3PNqoqL9N5bMpPHEXpwW9UFSi0lr1miWy+tcbm7E7zfrnV1qXN06/jth7m61iq77Qg/q+QSLFASLMBXsDZ1dxsgyukG3S1Bg3Aq4bLAvQPLf1epz2d7cCPW1vx5YRmJg0HsWfNrVUXj9stTJKz+oUUw5l2f8jB2gswPRu2MIpD9gmqHwdYUYbC0AEFeufkr3bAuqAeyMc6A0w05dkjpEgm64HzGdKgOKE2n9a+FwOBYhFOaZ6GraajuZtAQ/lH8hCJ2zGuJJHCQsdPud0QEprKBRi7lGV5hO2xTe7oBHqyJ83y8A11oFIXzrDz5hVyznMrqj4O/h4rwN5GSVAcQZ7VrCfZEPz+7PIziPGLi54VsVvLoD4jHPUCEPh3BCyy5jXWzgO1m2kUn7I7a5c5DcZtNu1W+JKR3da2/HW6E4ffjVsvC0kEKPeCbm0gN2SeTEmVASpEMY/H3jmME4SmBb9XwsL9hVJKFjAPRraeqGOjXmzqqfjPI2Y47EPADev0OocfJj6wKOT6MOOF+XekmyjjPdVDNQrR9xkguIHhIwHNx1DtN/ScfvlfQFC5LKt/sd4i2qogqRvP3hvrtJqpYZ9dClAas59YZKIofAzgy1Iui8lrneJ2RNchIEPhiS7pl0JPfX/RJo/i206BtVG28wUwuErXTwY0YoNfMt2/wzOf4nBByqJdgjUh3yXYSFVCHd8GsDR15FoJETk8widcJA3rPKNI48KuKBzGd09fK428NZj6Oq/QSMKJDNGty8AZ9RmvV9kBGm4vGyfqYl3KQ/SxXeNW5B8QwXBed860OoTxMI0
+ Yl/K2I76
+ G51BaK38/MtCvOYzYHev2rtJURbFvdvyzKfhuNPaJ9rNxnTI3O8CRYR7IzkN+bRzAuJkTCfXXSRvB7gW56v1VyzXutRXMrmbxd2udooy9QV0CXDc0vH/cHS40ZoCme/JXi3uJ4FJtNiE6c05r1Dvv2ehKZZGVTU/YLTs+s3Kp/bQ6ZhyOegjbGm1GDO3W8bNopKDfGSfm4FPPdkMgnASmBZvchP7K3t4bdVm4ZmbUjmOQPptc1KX3aPpDD9OnIJJFsrYY+ckB+RdKveBjBMQtNtuFdRxk4yvEOwRd3JayZGNXlhHJVJJe++o4QIhIcUnti56FmbyT8DtXmW5yCWxtPNKQd76T9/hpE9XH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,56 +95,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Sep 25, 2025 at 05:37:59AM -0700, SeongJae Park wrote:
+> Hello,
+> 
+> On Wed, 24 Sep 2025 12:03:01 +0200 Alexander Potapenko <glider@google.com> wrote:
+> 
+> > When KMSAN is enabled, `kmsan_memblock_free_pages()` can hold back pages
+> > for metadata instead of returning them to the early allocator. The callers,
+> > however, would unconditionally increment `totalram_pages`, assuming the
+> > pages were always freed. This resulted in an incorrect calculation of the
+> > total available RAM, causing the kernel to believe it had more memory than
+> > it actually did.
+> > 
+> > This patch refactors `memblock_free_pages()` to return the number of pages
+> > it successfully frees. If KMSAN stashes the pages, the function now
+> > returns 0; otherwise, it returns the number of pages in the block.
+> > 
+> > The callers in `memblock.c` have been updated to use this return value,
+> > ensuring that `totalram_pages` is incremented only by the number of pages
+> > actually returned to the allocator. This corrects the total RAM accounting
+> > when KMSAN is active.
+> > 
+> > Cc: Aleksandr Nogikh <nogikh@google.com>
+> > Fixes: 3c2065098260 ("init: kmsan: call KMSAN initialization routines")
+> > Signed-off-by: Alexander Potapenko <glider@google.com>
+> > Reviewed-by: David Hildenbrand <david@redhat.com>
+> [...]
+> > --- a/mm/mm_init.c
+> > +++ b/mm/mm_init.c
+> > @@ -2548,24 +2548,25 @@ void *__init alloc_large_system_hash(const char *tablename,
+> >  	return table;
+> >  }
+> >  
+> > -void __init memblock_free_pages(struct page *page, unsigned long pfn,
+> > -							unsigned int order)
+> > +unsigned long __init memblock_free_pages(struct page *page, unsigned long pfn,
+> > +					 unsigned int order)
+> >  {
+> >  	if (IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT)) {
+> >  		int nid = early_pfn_to_nid(pfn);
+> >  
+> >  		if (!early_page_initialised(pfn, nid))
+> > -			return;
+> > +			return 0;
+> >  	}
+> 
+> I found this patch on mm-new tree is making my test machine (QEMU) reports much
+> less MemTotal even though KMSAN is disabled.  And modifying the above part to
+> be considered as free success (returning '1UL << order') fixed my issue.
+> Because the commit message says the purpose of this change is only for
+> KMSAN-stashed memory, maybe the above behavior change is not really intended?
+> 
+> I'm not familiar with this code so I'm unsure if the workaround is the right
+> fix.  But since I have no time to look this in deep for now, reporting first
 
-hugetlb_vmdelete_list() uses trylock to acquire VMA locks during truncate
-operations. As per the original design in commit 40549ba8f8e0 ("hugetlb:
-use new vma_lock for pmd sharing synchronization"), if the trylock fails
-or the VMA has no lock, it should skip that VMA. Any remaining mapped
-pages are handled by remove_inode_hugepages() which is called after
-hugetlb_vmdelete_list() and uses proper lock ordering to guarantee
-unmapping success.
+With DEFERRED_STRUCT_PAGE_INIT we count totalram_pages in
+memblock_free_all() but actually free them in deferred_init_memmap() and
+deferred_grow_zone().
 
-Currently, when hugetlb_vma_trylock_write() returns success (1) for VMAs
-without shareable locks, the code proceeds to call unmap_hugepage_range().
-This causes assertion failures in huge_pmd_unshare() → hugetlb_vma_assert_locked()
-because no lock is actually held:
+So returning '1UL << order' is a correct workaround, but the proper fix
+should update totalram_pages in the deferred path IMHO.
 
-  WARNING: CPU: 1 PID: 6594 Comm: syz.0.28 Not tainted
-  Call Trace:
-   hugetlb_vma_assert_locked+0x1dd/0x250
-   huge_pmd_unshare+0x2c8/0x540
-   __unmap_hugepage_range+0x6e3/0x1aa0
-   unmap_hugepage_range+0x32e/0x410
-   hugetlb_vmdelete_list+0x189/0x1f0
-
-Fix by explicitly skipping VMAs without shareable locks after trylock
-succeeds, consistent with the original design where such VMAs are
-deferred to remove_inode_hugepages() for proper handling.
-
-Reported-by: syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=f26d7c75c26ec19790e7
-Fixes: 40549ba8f8e0 ("hugetlb: use new vma_lock for pmd sharing synchronization")
-Tested-by: syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
----
- fs/hugetlbfs/inode.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 9e0625167517..9ba98cab3388 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -487,7 +487,8 @@ hugetlb_vmdelete_list(struct rb_root_cached *root, pgoff_t start, pgoff_t end,
- 
- 		if (!hugetlb_vma_trylock_write(vma))
- 			continue;
--
-+		if (!__vma_shareable_lock(vma))
-+			continue;
- 		v_start = vma_offset_start(vma, start);
- 		v_end = vma_offset_end(vma, end);
- 
 -- 
-2.43.0
-
+Sincerely yours,
+Mike.
 
