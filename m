@@ -4,119 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59C09CAC5AA
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 04:35:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E9E9CAC5A5
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 04:36:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B2B708E0006; Thu, 25 Sep 2025 00:35:20 -0400 (EDT)
+	id D51F98E0007; Thu, 25 Sep 2025 00:36:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B03408E0001; Thu, 25 Sep 2025 00:35:20 -0400 (EDT)
+	id D29A58E0001; Thu, 25 Sep 2025 00:36:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F33F8E0006; Thu, 25 Sep 2025 00:35:20 -0400 (EDT)
+	id C3FC18E0007; Thu, 25 Sep 2025 00:36:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 89EC68E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 00:35:20 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3AF878591F
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 04:35:20 +0000 (UTC)
-X-FDA: 83926508400.06.E635CE0
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 54A7040006
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 04:35:18 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=qwjFdNsK;
-	spf=pass (imf04.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id AFE3C8E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 00:36:42 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 613C7119624
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 04:36:42 +0000 (UTC)
+X-FDA: 83926511844.01.AC9F1B1
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 7EB09A0016
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 04:36:40 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=g7oAUr5L;
+	spf=pass (imf15.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758774918;
+	s=arc-20220608; t=1758775000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9kzY7CwUVXANdLNDgqP+ogxGfetQO/MqEeAF5hYWfFE=;
-	b=ARnYYRasIghTtiFfkSuoYhPnR0RyfODQnlh9oPxsH7WRBr21dRRjILYrbkHdB94l2MKjDg
-	ZkJK2Hl5YBNCj1rEUxGwuBn89VMuu62LnUaXwIeh21yZi/Vb9eEZ5aSPxITUd0xejZLfrI
-	j0bP9JHRXQ8yexfbDRMLq3JT2qbfOS4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758774918; a=rsa-sha256;
+	bh=Fj8rGJkHIDlvRHZJmqpRK/hYu0VFRhdbohHYayA8boA=;
+	b=rdhtw6UppTVxlqAMnFKs8sPSqBWXdLblOK9j5KCAHBwxaGSlCN9Z8uuq+4ZuZyxL9lnQQK
+	YRsSirsyuCmfS3Q+S4dSNAP1F+Vc+5GG1JtJ3E+s9ef18Xfbtg3kimq7qZho/DTjjmK6vc
+	PtMA+NGOst/Alo6Sw4u/mugzwVBsszc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758775000; a=rsa-sha256;
 	cv=none;
-	b=Jp5X1MfTd0mThF+jZvnSUpqbxKAPAqHaSe4fpoFnYhP57HdpxnXMRT4qer7r62bDrhsAB/
-	UItQRq6o8aHxcjrJxVIpcaVa93qONKzH/g4xsku5aotQ83/CSqqB36YG1nVBbDCoGGpnYL
-	O+mGYZFgbCOmkvb0dlOscYHMg722Bq0=
+	b=MyKmKyig29xc6IZcVCF0vk3VmHSebwCm+P3KwBXaBN5DwOoR81XA04dZ1Jyw4jA1VDoVmP
+	xD3UGFSHCeTycYAHqWgRI2S6mo4w2HKI9G78D+ljILzdra2ubqAdVrwXa7JmC7LG/9BoXm
+	LcyA6YY+GREIwJk12Qduhd7RdU2ZnyU=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=qwjFdNsK;
-	spf=pass (imf04.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4bb7209ec97so896021cf.1
-        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 21:35:18 -0700 (PDT)
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=g7oAUr5L;
+	spf=pass (imf15.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-62fbc90e6f6so748382a12.3
+        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 21:36:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758774917; x=1759379717; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1758774999; x=1759379799; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9kzY7CwUVXANdLNDgqP+ogxGfetQO/MqEeAF5hYWfFE=;
-        b=qwjFdNsKh6Zwr+xu1BegVi+SebEZNNP1cUpAdevr9Zb7p0/EeHt8wuLwqSlXTdgKG+
-         U8A6glpJq0l4AXFYm7508WtmFuKTwhUNKYT4DAkSsf1jLH0wgbT+ywpWCH9H+pIKXTZY
-         cydx3dJlaZHKhoSrFrLS833iZDiaTaA56fXMVM2S1z1GfZE9sUMQc5Kk95Os1lOM9Ayk
-         J1IHGNRFVOq0EQhir2xbIKJBbmDkgkTatH7bUBgZoIOwMMGhR/p2AC3Q4qyffh5FWcWN
-         Hes3vzqUERKhM5b6u9dzaVQkRWfbCynidG+FjsJ4u7y5RDyu4fXZ2y9d2v+/jO5PPjKf
-         /3ng==
+        bh=Fj8rGJkHIDlvRHZJmqpRK/hYu0VFRhdbohHYayA8boA=;
+        b=g7oAUr5LWDWCgcB+mZAg9QajF0riqch96lp5/Qxig4CRAouQ5Ir+oAOiQqdwyxCzUc
+         Ev8ZOlRsUH5RtUv3yimB5jSHw4c7C0ujtFJf3PB4R2UHcNdTbrCAhod0vFWqiRUv7x62
+         jmStSLy6oc3ofJutEpdBYpPeOYP00bysPQ1+L1UfIvl5Tn9CTM5xojpwNdJBBqnlXsWn
+         h57VA37mQv3yWiI+940xdL5j71Qpof0eTFCRmz6rP66R1OarTiN0vAcfHy3Fe+5b75x3
+         H0NCv8QE/yDZ+ALnY3RBIC1tqJXEtT2ERr9I412NryPqyQh4mn/qadgF2tO+FROuQYiN
+         CtRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758774917; x=1759379717;
+        d=1e100.net; s=20230601; t=1758774999; x=1759379799;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9kzY7CwUVXANdLNDgqP+ogxGfetQO/MqEeAF5hYWfFE=;
-        b=rIKCqerfixg1dKnhI9FZkidl/y621974tz1z6qfwwDwMY8+y7czQV+r2Vn4JCMJCL4
-         xKkkX5ZVpbEfX5m6NMWn+eOyHAPBtaC7MQk6Gqp+PvhIOmeJfFLwxUHddylKdt3DKfAf
-         68ZS4mbVvt3pUrUBOoGjlJCKCbq40t4ysj45baieJSEKzFPYqMGIxExnUamWFXnfcqp+
-         RdHeiwU0HAiZ1p5tiT8BAOXmDAL42iXdI7CdkF2tRERiYQDCxfqZMiPkVy1wTCbbuOVn
-         IcxgVor8hROH4Xy1d5Zo//Bl2+CRnu5wVebyDKX5CEuh/d7wFDFPYBkvvXFpRBlVaTui
-         vDQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVhuzMtvWnwvFdAVpAMl1Ubj9/D7ITsAm8bt3PRftFhpu/3LhAJHHI6jEE4Tq5tmosqgIaEcFMO3A==@kvack.org
-X-Gm-Message-State: AOJu0YzPB0UcOKKjJx98IsEu7ZqXEehp95CZdHOH/n88MkZb6j93C0al
-	5HKHmueV9GQwJcU5wzFPvEUOg+pxGuXQjegl4z/BoA5D2ptuHNtTdWWSe7Bt4cdf/w4VtNHaXnR
-	xEcc2LeMVJlvCTsR721hBX80N9kqO38SFoY2pDfVn
-X-Gm-Gg: ASbGncsjYfo+95sMvyAJzWRJRJDLGN5uNa4S4NcvbIzSAygl6B7UQbeiiromUTGpQ0e
-	caPH8c+ifLUoHF8M5QBxK04ELyV8WINwPJEBh1gKTMiO6tXNknnlhSHgmfyn3b5lTzmpdTcWeza
-	uwnJ9RLpCY2SMsFdlP0BBQDD1CDuSZ+xG/iCXzNo8suQg/wyc6ruAQ1XrM7M0aqFNe5soSuUddZ
-	H3shqXNnZ6C
-X-Google-Smtp-Source: AGHT+IG2Wb4HjFvOv8a6AG2zR5eenW3JgqvDgAiLmpgs1ur/WRho1KcgKXqa3h838KFDGw4qBzVjvcxYxhIB91pQ1/k=
-X-Received: by 2002:ac8:58c6:0:b0:4b7:a203:259f with SMTP id
- d75a77b69052e-4da2c4c3cdamr3847801cf.6.1758774916900; Wed, 24 Sep 2025
- 21:35:16 -0700 (PDT)
+        bh=Fj8rGJkHIDlvRHZJmqpRK/hYu0VFRhdbohHYayA8boA=;
+        b=VT48reFcBUznAxXXEEKkXRPjY65mUwf2QVslJPJ9ltrE93DL7L42vBd9QCW+NVTCa7
+         ZZ6ZyVfwL+KezXk7cowpHa9XY7ozL6vWsF9LYSzkCIFqgg9clMDyl5aZE9JzmUkwdQtP
+         eLyCaOTenrLZzdt2f88Y2/9mAIWSDktdJK5uFGsTHMP8STke4Ktyj1qOlFGW0cwrzM5m
+         GpocxUQP5aYOKQXCcszHnzJIh7W26K3ukJrdHmVluZDgLH2tB6WnBDDa7sZTCKKp1B65
+         PCyqHGJARYa59jkQ5dp2nJJvSRDzo+FiL9f8ynNzhEA6sDF0revmh3xZ4tCoAjFFUyj9
+         1/yw==
+X-Gm-Message-State: AOJu0YzoaAGSn03/z2f7TiIlCU2KztlsPB/B45I6FCBdfdGVz12UqJwZ
+	iu/cI0dlnPYhCDLltG59LF2uQR9U4aPhwbol6AXRTDxDaB5RpO5/oESqhe1lqVwSpQPxUnWLnfj
+	yn8JSdWN4coCZv15INygzEPZ4+pAk/ZQ=
+X-Gm-Gg: ASbGncvQFqm2lX5BsPyJJQX55A1/01v/s2LQM8eWtkrFf4Q4QC6hZzAWZm7ohSJRGJ/
+	GQk8dkhLd7ICSmq6jlABWZSwxHMSmXI2Dp74ZS4XenNk8fU76ZR1QdlKgXxFiTxQDBjwxAb8eZo
+	dE2wqyQw41ayVb6frF+lEvgvDxXnQ15ppvgkwPCKOSp9w4S53d90MywANc9wbtFc54FWaxAVFW2
+	829MJo=
+X-Google-Smtp-Source: AGHT+IHF0DtgUGVgOvTfiiCPSq+YQg/mYlKm3uWFMnJ7A1YEowAH7OW0bylFs/noUifPfsqZhwJEkhAd9OP8JMoVpEY=
+X-Received: by 2002:a05:6402:1e8a:b0:62f:bc3f:abb8 with SMTP id
+ 4fb4d7f45d1cf-6349fa73e43mr1497315a12.24.1758774998606; Wed, 24 Sep 2025
+ 21:36:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250910-slub-percpu-caches-v8-0-ca3099d8352c@suse.cz>
- <20250910-slub-percpu-caches-v8-4-ca3099d8352c@suse.cz> <aMpxnACqmsQl-lp0@hyeyoo>
- <bbda8c25-b575-4e98-b1ae-b103c6598d38@suse.cz> <aMqcXyKRlZggLxu_@hyeyoo>
- <6f92eca3-863e-4b77-b2df-dc2752c0ff4e@suse.cz> <aMqyn6nenR8V_p1y@hyeyoo>
- <bf8b4741-1025-4cc8-b9ed-5b566bdcb2d7@suse.cz> <aMq40h5iOjj8K7cc@hyeyoo>
- <a32bd837-2597-43d0-9da3-1ce5a53b15f4@suse.cz> <40461105-a344-444f-834b-9559b6644710@suse.cz>
-In-Reply-To: <40461105-a344-444f-834b-9559b6644710@suse.cz>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 24 Sep 2025 21:35:05 -0700
-X-Gm-Features: AS18NWC2YAn9BnNHl94nFx70tYY9EGEqBv6dDxgACbFs-JBHOscSattKo4c2eH4
-Message-ID: <CAJuCfpG6CSm2iZ3jrwLQA4vVbTMvC=B37q10OL+wLzm-DSRhFw@mail.gmail.com>
-Subject: Re: [PATCH v8 04/23] slab: add sheaf support for batching kfree_rcu() operations
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Harry Yoo <harry.yoo@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Uladzislau Rezki <urezki@gmail.com>, 
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, rcu@vger.kernel.org, 
-	maple-tree@lists.infradead.org, "Paul E . McKenney" <paulmck@kernel.org>
+References: <20250924091746.146461-1-bhe@redhat.com>
+In-Reply-To: <20250924091746.146461-1-bhe@redhat.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Thu, 25 Sep 2025 12:36:02 +0800
+X-Gm-Features: AS18NWDnkSNo9X4bOFLyWd9jfUjiwD4zfCSHLBNqY9du9cNu4ZLiX0MPIsIow8M
+Message-ID: <CAMgjq7CtBRjwxCp=HvW5xZUGg-5MgKLOHy2tJ+0GC7KmA1BNjw@mail.gmail.com>
+Subject: Re: [PATCH] mm/swapfile.c: select the swap device with default
+ priority round robin
+To: Baoquan He <bhe@redhat.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org, 
+	baohua@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: i6hrkp3fpgu1b8kxsf8aiixux781urec
-X-Rspamd-Queue-Id: 54A7040006
+X-Stat-Signature: opo749jgo4dh3n8x38irkcoc5g8qcpi1
+X-Rspamd-Queue-Id: 7EB09A0016
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1758774918-885272
-X-HE-Meta: U2FsdGVkX1+qeGPCvfCv4gF8ciwuMKC2mushBQInKr2OMpcuQJgpq6BdrOpOxN789nt8XjCo7EEnwIGVoYOgIU5O1+cMK21Vf/15K11WMQ1LyszoqtU83ho0DQC+cPcnBP2isTa4ewLoZBbwfrhCMVhENHY0Iwd2yYIoNLg0J7AGcdE434pMGjq0MTOEDSFkECfYhNc6KEH7AFVfQIYpmadB3HZCTIYmX41g+8XXu0AvT3VAJNPmEUKjO86qRz1e2Z+mr+Qi2Io3fH+vIcHLbTrUK4dX95LUsNDKxk2thxzlXN1FC2ceUIXHBfJyQMMKM6tJwJBMUAv7XTSlJ+hpka+B/tNn4j0RXzPtG1xniK8/WirV/GTteLL3vrlE7FX7uPHjNFDEkqUsfZg92kv1w5MkXO4vE1PB5qOoNLqbrpbr5KMnTOHwqCGDZQF1OotDQJ8sGcau0O8b86hUwjGxsq1DuDTh++6rx6Wa4DqQIPv+0IofNicqPRCoTLUA9bQvJly5g78kKNE0Igyj2jQnpVgNjwl1NlCawGJfCpWmUOZOBMUXZjJYn2o6bljBO8vKxm+D3TtL/q7LtZMfrebod/ilf21AZCUKdr+/V5jGMHuDVPX0xJcAPmKOGdjmtAWA1La+W8iaHmUw6q76qIANBEL8AI0iyywIAWA3oUytCBwOE79LQqy3+Kgh5qU596kyLDqkp328CIE2h+0+NGh4VHnPED2zQ6z1dukABI61VirZTbHgm/m7jdNGxg9koQfQjsuSTfMo8aBv1MTKCahcIi2HvCoPurGa+t9GrpBOtVZTD+uX4z+meUa1XK2bbv6T3RD2NDIqlCo+sK6V0iKTc1wj6Qhrp5wFbiJtXz0pmESqod48KTZJ+cNO4Ns5XiNXlgrAV/24E8N7LlHh0SLaH11yV3UurnbaANyEnaNrA3I1JKj+JfYW1EuUUrtoPdlIpsBSFveAn2V16oMnfOy
- SMOkriud
- OfejOG62jluZfXMN5yixkiSk6nss3NbJwl/CFPgh63tgebFdPOWfW4UNFyuJ9Af/UZcyeVIjL+n1VTHz24vKoJZjLgbwkqwYR+jRujM5Wa2KSt5HYYes1mOIEgE5i8tPWQh3Tg0QTEgLwZG1DoYW3CQra2yC3ScrgmAh4A92PmgWpkoH30Jtq0RpH2EWlWDIGMyFhFLiEEMq4+rXaTfckb2e+vbKGgql8RnST11I8cuPLfu0=
+X-HE-Tag: 1758775000-331847
+X-HE-Meta: U2FsdGVkX1+4yvaIm8z4T0PSe2IcQ1yHluvOoudo7oW3KhrBQ1UW6eJVQxUrAEaBMxm/G7zgD4utRwd1HnWIIoCJ4W8m0gA7IXiZU22qtyqlBSE7uKkJWxtnH8MWFqp2CezRlwDz6nB3Ic7Gz9ohy7IWBvyC4EOetyKHo6bF0yCWPaUeFRkBjsPn8OadaHhxPBxvG5/2gITTj7QNQVTaTCSN7T+0Zu2nmoC4kD0jmsKUMv4V6vnJRp6GXRh85HBfaMnypKLdE3RFJZenoy0TEm1OkWf6hH54oHCSSOMT/LjnAjaoxYtzOQLl3fxB3E4EwewxvhzYLrJd+0BmtB6SmccoNsF3+MN27N22IDeYc/kb1hcaD5z0qfW1BwiXI5ClK4dmNM2hB+mQ5iX9Cnta8qn0neAVXR7s9ZtbEdb3S+k2Tr2ko4e/X2IUBoNKDlJs1hDQA/uO3T3+f6cgVf4by3hmWNIdu9Dx4yrmwpJZQaylazB63LcjDuYcc9Ji/MzsBhfi96DH9/V+S4/GXGbR+5ECmc+t4t0p1RZPj/lUtq0CD5G5UjzuMJ//NCj3cMC0StXN0q0ZJMmVIVtFLPJiMmmfNOacvYtTrN+mgaydNtoTqG7mMX7mFLn7z3JqpbfwHXeX8KvgRElcnJVnoBRE0+MIrJYRcNFndYznXJI4YKGazTq7ZehjQMHnlS7pZCPq1Hq7LgQJfG3Aq2WhNmaKO8PY9w1+2X5WJJQ9+exmPEQ0xJGbxxl7iiEyti7lveZAxui2oQZnzr9PphKNKBNcL51I9+3e6Apg3uTETr6v7ue6JzGaRrWqsjAQz/DTOae46/bL88gnvB5ktvOZ/5aTOkCcSnIJL5rqciTv7EDQm14bimKSRdLdPYguBIo/lRH/zrGRf+sDWv7nAWkyoGbTSak1cHCWnE7v79+qwYjIax+Lp77JbgCHkwzx9/i1Zka1fUBGnevCYBLZ9KEvq9K
+ R8rBNyE/
+ ON0z+txZ2uBoKvcymiRHNhaRkukK0RYetc1+IueKsxlCa0SGN46JH2fEVJKHGXUlyLe2TN6vKiiOd0gza2sqMmV3QzXDSjFUfwKeD3skX3z/GWCW04fMHtbDuL+kxzFWnFtuWi40I0C/wgedYuxYd6nXHcayN6mPtN1bSlOZUDozuQNlo3/r7kIQa8XpEybdZGyCMKq9oDxA7FDP6b6LO51n1Sp/MF8UGW68LLQFjgkJwZzQj4Xqugl++C8zIiM7ja7y7WvQEhCU1NHvDyxAb2p+YeVvwJ9wRvVP6VbZ+d/Xd/DpvWbNqm3pYrKN8BUDZjVTKt1rn7uUuL9LR6rGJFj1obkDA7G918j+0C95w0uP3NoU1GLys+sstaQ/7Mtxycrk9OiEGd7Osc3bttUdHabBU2w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,668 +116,200 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 18, 2025 at 1:09=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
-ote:
+On Wed, Sep 24, 2025 at 6:15=E2=80=AFPM Baoquan He <bhe@redhat.com> wrote:
 >
-> On 9/17/25 16:14, Vlastimil Babka wrote:
-> > On 9/17/25 15:34, Harry Yoo wrote:
-> >> On Wed, Sep 17, 2025 at 03:21:31PM +0200, Vlastimil Babka wrote:
-> >>> On 9/17/25 15:07, Harry Yoo wrote:
-> >>> > On Wed, Sep 17, 2025 at 02:05:49PM +0200, Vlastimil Babka wrote:
-> >>> >> On 9/17/25 13:32, Harry Yoo wrote:
-> >>> >> > On Wed, Sep 17, 2025 at 11:55:10AM +0200, Vlastimil Babka wrote:
-> >>> >> >> On 9/17/25 10:30, Harry Yoo wrote:
-> >>> >> >> > On Wed, Sep 10, 2025 at 10:01:06AM +0200, Vlastimil Babka wro=
-te:
-> >>> >> >> >> +                          sfw->skip =3D true;
-> >>> >> >> >> +                          continue;
-> >>> >> >> >> +                  }
-> >>> >> >> >>
-> >>> >> >> >> +                  INIT_WORK(&sfw->work, flush_rcu_sheaf);
-> >>> >> >> >> +                  sfw->skip =3D false;
-> >>> >> >> >> +                  sfw->s =3D s;
-> >>> >> >> >> +                  queue_work_on(cpu, flushwq, &sfw->work);
-> >>> >> >> >> +                  flushed =3D true;
-> >>> >> >> >> +          }
-> >>> >> >> >> +
-> >>> >> >> >> +          for_each_online_cpu(cpu) {
-> >>> >> >> >> +                  sfw =3D &per_cpu(slub_flush, cpu);
-> >>> >> >> >> +                  if (sfw->skip)
-> >>> >> >> >> +                          continue;
-> >>> >> >> >> +                  flush_work(&sfw->work);
-> >>> >> >> >> +          }
-> >>> >> >> >> +
-> >>> >> >> >> +          mutex_unlock(&flush_lock);
-> >>> >> >> >> +  }
-> >>> >> >> >> +
-> >>> >> >> >> +  mutex_unlock(&slab_mutex);
-> >>> >> >> >> +  cpus_read_unlock();
-> >>> >> >> >> +
-> >>> >> >> >> +  if (flushed)
-> >>> >> >> >> +          rcu_barrier();
-> >>> >> >> >
-> >>> >> >> > I think we need to call rcu_barrier() even if flushed =3D=3D =
-false?
-> >>> >> >> >
-> >>> >> >> > Maybe a kvfree_rcu()'d object was already waiting for the rcu=
- callback to
-> >>> >> >> > be processed before flush_all_rcu_sheaves() is called, and
-> >>> >> >> > in flush_all_rcu_sheaves() we skipped all (cache, cpu) pairs,
-> >>> >> >> > so flushed =3D=3D false but the rcu callback isn't processed =
-yet
-> >>> >> >> > by the end of the function?
-> >>> >> >> >
-> >>> >> >> > That sounds like a very unlikely to happen in a realistic sce=
-nario,
-> >>> >> >> > but still possible...
-> >>> >> >>
-> >>> >> >> Yes also good point, will flush unconditionally.
-> >>> >> >>
-> >>> >> >> Maybe in __kfree_rcu_sheaf() I should also move the call_rcu(..=
-.) before
-> >>> >> >> local_unlock().
-> >>> >> >>
-> >>> >> >> So we don't end up seeing a NULL pcs->rcu_free in
-> >>> >> >> flush_all_rcu_sheaves() because __kfree_rcu_sheaf() already set=
- it to NULL,
-> >>> >> >> but didn't yet do the call_rcu() as it got preempted after loca=
-l_unlock().
-> >>> >> >
-> >>> >> > Makes sense to me.
-> >>> >
-> >>> > Wait, I'm confused.
-> >>> >
-> >>> > I think the caller of kvfree_rcu_barrier() should make sure that it=
-'s invoked
-> >>> > only after a kvfree_rcu(X, rhs) call has returned, if the caller ex=
-pects
-> >>> > the object X to be freed before kvfree_rcu_barrier() returns?
-> >>>
-> >>> Hmm, the caller of kvfree_rcu(X, rhs) might have returned without fil=
-ling up
-> >>> the rcu_sheaf fully and thus without submitting it to call_rcu(), the=
-n
-> >>> migrated to another cpu. Then it calls kvfree_rcu_barrier() while ano=
-ther
-> >>> unrelated kvfree_rcu(X, rhs) call on the previous cpu is for the same
-> >>> kmem_cache (kvfree_rcu_barrier() is not only for cache destruction), =
-fills
-> >>> up the rcu_sheaf fully and is about to call_rcu() on it. And since th=
-at
-> >>> sheaf also contains the object X, we should make sure that is flushed=
-.
-> >>
-> >> I was going to say "but we queue and wait for the flushing work to
-> >> complete, so the sheaf containing object X should be flushed?"
-> >>
-> >> But nah, that's true only if we see pcs->rcu_free !=3D NULL in
-> >> flush_all_rcu_sheaves().
-> >>
-> >> You are right...
-> >>
-> >> Hmm, maybe it's simpler to fix this by never skipping queueing the wor=
-k
-> >> even when pcs->rcu_sheaf =3D=3D NULL?
-> >
-> > I guess it's simpler, yeah.
+> Currently, on system with multiple swap devices, swap allocation will
+> select one swap device according to priority. The swap device with the
+> highest priority will be chosen to allocate firstly.
 >
-> So what about this? The unconditional queueing should cover all races wit=
-h
-> __kfree_rcu_sheaf() so there's just unconditional rcu_barrier() in the en=
-d.
+> People can specify a priority from 0 to 32767 when swapon a swap device,
+> or the system will set it from -2 then downwards by default. Meanwhile,
+> on NUMA system, the swap device with node_id will be considered first
+> on that NUMA node of the node_id.
 >
-> From 0722b29fa1625b31c05d659d1d988ec882247b38 Mon Sep 17 00:00:00 2001
-> From: Vlastimil Babka <vbabka@suse.cz>
-> Date: Wed, 3 Sep 2025 14:59:46 +0200
-> Subject: [PATCH] slab: add sheaf support for batching kfree_rcu() operati=
-ons
+> In the current code, an array of plist, swap_avail_heads[nid], is used
+> to organize swap devices on each NUMA node. For each NUMA node, there
+> is a plist organizing all swap devices. The 'prio' value in the plist
+> is the negated value of the device's priority due to plist being sorted
+> from low to high. The swap device owning one node_id will be promoted to
+> the front position on that NUMA node, then other swap devices are put in
+> order of their default priority.
 >
-> Extend the sheaf infrastructure for more efficient kfree_rcu() handling.
-> For caches with sheaves, on each cpu maintain a rcu_free sheaf in
-> addition to main and spare sheaves.
+> E.g I got a system with 8 NUMA nodes, and I setup 4 zram partition as
+> swap devices.
 >
-> kfree_rcu() operations will try to put objects on this sheaf. Once full,
-> the sheaf is detached and submitted to call_rcu() with a handler that
-> will try to put it in the barn, or flush to slab pages using bulk free,
-> when the barn is full. Then a new empty sheaf must be obtained to put
-> more objects there.
+> Current behaviour:
+> their priorities will be(note that -1 is skipped):
+> NAME       TYPE      SIZE USED PRIO
+> /dev/zram0 partition  16G   0B   -2
+> /dev/zram1 partition  16G   0B   -3
+> /dev/zram2 partition  16G   0B   -4
+> /dev/zram3 partition  16G   0B   -5
 >
-> It's possible that no free sheaves are available to use for a new
-> rcu_free sheaf, and the allocation in kfree_rcu() context can only use
-> GFP_NOWAIT and thus may fail. In that case, fall back to the existing
-> kfree_rcu() implementation.
+> And their positions in the 8 swap_avail_lists[nid] will be:
+> swap_avail_lists[0]: /* node 0's available swap device list */
+> zram0   -> zram1   -> zram2   -> zram3
+> prio:1     prio:3     prio:4     prio:5
+> swap_avali_lists[1]: /* node 1's available swap device list */
+> zram1   -> zram0   -> zram2   -> zram3
+> prio:1     prio:2     prio:4     prio:5
+> swap_avail_lists[2]: /* node 2's available swap device list */
+> zram2   -> zram0   -> zram1   -> zram3
+> prio:1     prio:2     prio:3     prio:5
+> swap_avail_lists[3]: /* node 3's available swap device list */
+> zram3   -> zram0   -> zram1   -> zram2
+> prio:1     prio:2     prio:3     prio:4
+> swap_avail_lists[4-7]: /* node 4,5,6,7's available swap device list */
+> zram0   -> zram1   -> zram2   -> zram3
+> prio:2     prio:3     prio:4     prio:5
 >
-> Expected advantages:
-> - batching the kfree_rcu() operations, that could eventually replace the
->   existing batching
-> - sheaves can be reused for allocations via barn instead of being
->   flushed to slabs, which is more efficient
->   - this includes cases where only some cpus are allowed to process rcu
->     callbacks (Android)
-
-nit: I would say it's more CONFIG_RCU_NOCB_CPU related. Android is
-just an instance of that.
-
+> The adjustment for swap device with node_id intended to decrease the
+> pressure of lock contention for one swap device by taking different
+> swap device on different node. However, the adjustment is very
+> coarse-grained. On the node, the swap device sharing the node's id will
+> always be selected firstly by node's CPUs until exhausted, then next one.
+> And on other nodes where no swap device shares its node id, swap device
+> with priority '-2' will be selected firstly until exhausted, then next
+> with priority '-3'.
 >
-> Possible disadvantage:
-> - objects might be waiting for more than their grace period (it is
->   determined by the last object freed into the sheaf), increasing memory
->   usage - but the existing batching does that too.
+> This is the swapon output during the process high pressure vm-scability
+> test is being taken. It's clearly shown zram0 is heavily exploited until
+> exhausted.
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> [root@hp-dl385g10-03 ~]# swapon
+> NAME       TYPE      SIZE  USED PRIO
+> /dev/zram0 partition  16G 15.7G   -2
+> /dev/zram1 partition  16G  3.4G   -3
+> /dev/zram2 partition  16G  3.4G   -4
+> /dev/zram3 partition  16G  2.6G   -5
 >
-> Only implement this for CONFIG_KVFREE_RCU_BATCHED as the tiny
-> implementation favors smaller memory footprint over performance.
+> This is unreasonable because swap devices are assumed to have similar
+> accessing speed if no priority is specified when swapon. It's unfair and
+> doesn't make sense just because one swap device is swapped on firstly,
+> its priority will be higher than the one swapped on later.
 >
-> Also for now skip the usage of rcu sheaf for CONFIG_PREEMPT_RT as the
-> contexts where kfree_rcu() is called might not be compatible with taking
-> a barn spinlock or a GFP_NOWAIT allocation of a new sheaf taking a
-> spinlock - the current kfree_rcu() implementation avoids doing that.
+> So here change is made to select the swap device round robin if default
+> priority. In code, the plist array swap_avail_heads[nid] is replaced
+> with a plist swap_avail_head. Any device w/o specified priority will get
+> the same default priority '-1'. Surely, swap device with specified priori=
+ty
+> are always put foremost, this is not impacted. If you care about their
+> different accessing speed, then use 'swapon -p xx' to deploy priority for
+> your swap devices.
 >
-> Teach kvfree_rcu_barrier() to flush all rcu_free sheaves from all caches
-> that have them. This is not a cheap operation, but the barrier usage is
-> rare - currently kmem_cache_destroy() or on module unload.
+> New behaviour:
 >
-> Add CONFIG_SLUB_STATS counters free_rcu_sheaf and free_rcu_sheaf_fail to
-> count how many kfree_rcu() used the rcu_free sheaf successfully and how
-> many had to fall back to the existing implementation.
+> swap_avail_list: /* one global available swap device list */
+> zram0   -> zram1   -> zram2   -> zram3
+> prio:1     prio:1     prio:1     prio:1
 >
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+> This is the swapon output during the process high pressure vm-scability
+> being taken, all is selected round robin:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> [root@hp-dl385g10-03 linux]# swapon
+> NAME       TYPE      SIZE  USED PRIO
+> /dev/zram0 partition  16G 12.6G   -1
+> /dev/zram1 partition  16G 12.6G   -1
+> /dev/zram2 partition  16G 12.6G   -1
+> /dev/zram3 partition  16G 12.6G   -1
+>
+> With the change, we can see about 18% efficiency promotion as below:
+>
+> vm-scability test:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> Test with:
+> usemem --init-time -O -y -x -n 31 2G (4G memcg, zram as swap)
+>                            Before:          After:
+> System time:               637.92 s         526.74 s
+> Sum Throughput:            3546.56 MB/s     4207.56 MB/s
+> Single process Throughput: 114.40 MB/s      135.72 MB/s
+> free latency:              10138455.99 us   6810119.01 us
+>
+> Suggested-by: Chris Li <chrisl@kernel.org>
+> Signed-off-by: Baoquan He <bhe@redhat.com>
 > ---
->  mm/slab.h        |   3 +
->  mm/slab_common.c |  26 +++++
->  mm/slub.c        | 267 ++++++++++++++++++++++++++++++++++++++++++++++-
->  3 files changed, 294 insertions(+), 2 deletions(-)
+>  include/linux/swap.h | 11 +-----
+>  mm/swapfile.c        | 94 +++++++-------------------------------------
+>  2 files changed, 16 insertions(+), 89 deletions(-)
+
+Hi Baoquan,
+
+Thanks to the patch! The node plist thing always looked confusing to me.
+
 >
-> diff --git a/mm/slab.h b/mm/slab.h
-> index 206987ce44a4..e82e51c44bd0 100644
-> --- a/mm/slab.h
-> +++ b/mm/slab.h
-> @@ -435,6 +435,9 @@ static inline bool is_kmalloc_normal(struct kmem_cach=
-e *s)
->         return !(s->flags & (SLAB_CACHE_DMA|SLAB_ACCOUNT|SLAB_RECLAIM_ACC=
-OUNT));
->  }
->
-> +bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj);
-> +void flush_all_rcu_sheaves(void);
-> +
->  #define SLAB_CORE_FLAGS (SLAB_HWCACHE_ALIGN | SLAB_CACHE_DMA | \
->                          SLAB_CACHE_DMA32 | SLAB_PANIC | \
->                          SLAB_TYPESAFE_BY_RCU | SLAB_DEBUG_OBJECTS | \
-> diff --git a/mm/slab_common.c b/mm/slab_common.c
-> index e2b197e47866..005a4319c06a 100644
-> --- a/mm/slab_common.c
-> +++ b/mm/slab_common.c
-> @@ -1608,6 +1608,27 @@ static void kfree_rcu_work(struct work_struct *wor=
-k)
->                 kvfree_rcu_list(head);
->  }
->
-> +static bool kfree_rcu_sheaf(void *obj)
-> +{
-> +       struct kmem_cache *s;
-> +       struct folio *folio;
-> +       struct slab *slab;
-> +
-> +       if (is_vmalloc_addr(obj))
-> +               return false;
-> +
-> +       folio =3D virt_to_folio(obj);
-> +       if (unlikely(!folio_test_slab(folio)))
-> +               return false;
-> +
-> +       slab =3D folio_slab(folio);
-> +       s =3D slab->slab_cache;
-> +       if (s->cpu_sheaves)
-> +               return __kfree_rcu_sheaf(s, obj);
-> +
-> +       return false;
-> +}
-> +
->  static bool
->  need_offload_krc(struct kfree_rcu_cpu *krcp)
->  {
-> @@ -1952,6 +1973,9 @@ void kvfree_call_rcu(struct rcu_head *head, void *p=
-tr)
->         if (!head)
->                 might_sleep();
->
-> +       if (!IS_ENABLED(CONFIG_PREEMPT_RT) && kfree_rcu_sheaf(ptr))
-> +               return;
-> +
->         // Queue the object but don't yet schedule the batch.
->         if (debug_rcu_head_queue(ptr)) {
->                 // Probable double kfree_rcu(), just leak.
-> @@ -2026,6 +2050,8 @@ void kvfree_rcu_barrier(void)
->         bool queued;
->         int i, cpu;
->
-> +       flush_all_rcu_sheaves();
-> +
->         /*
->          * Firstly we detach objects and queue them over an RCU-batch
->          * for all CPUs. Finally queued works are flushed for each CPU.
-> diff --git a/mm/slub.c b/mm/slub.c
-> index cba188b7e04d..171273f90efd 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -367,6 +367,8 @@ enum stat_item {
->         ALLOC_FASTPATH,         /* Allocation from cpu slab */
->         ALLOC_SLOWPATH,         /* Allocation by getting a new cpu slab *=
-/
->         FREE_PCS,               /* Free to percpu sheaf */
-> +       FREE_RCU_SHEAF,         /* Free to rcu_free sheaf */
-> +       FREE_RCU_SHEAF_FAIL,    /* Failed to free to a rcu_free sheaf */
->         FREE_FASTPATH,          /* Free to cpu slab */
->         FREE_SLOWPATH,          /* Freeing not to cpu slab */
->         FREE_FROZEN,            /* Freeing to frozen slab */
-> @@ -461,6 +463,7 @@ struct slab_sheaf {
->                 struct rcu_head rcu_head;
->                 struct list_head barn_list;
->         };
-> +       struct kmem_cache *cache;
->         unsigned int size;
->         void *objects[];
->  };
-> @@ -469,6 +472,7 @@ struct slub_percpu_sheaves {
->         local_trylock_t lock;
->         struct slab_sheaf *main; /* never NULL when unlocked */
->         struct slab_sheaf *spare; /* empty or full, may be NULL */
-> +       struct slab_sheaf *rcu_free; /* for batching kfree_rcu() */
+> diff --git a/include/linux/swap.h b/include/linux/swap.h
+> index 3473e4247ca3..f72c8e5e0635 100644
+> --- a/include/linux/swap.h
+> +++ b/include/linux/swap.h
+> @@ -337,16 +337,7 @@ struct swap_info_struct {
+>         struct work_struct discard_work; /* discard worker */
+>         struct work_struct reclaim_work; /* reclaim worker */
+>         struct list_head discard_clusters; /* discard clusters list */
+> -       struct plist_node avail_lists[]; /*
+> -                                          * entries in swap_avail_heads,=
+ one
+> -                                          * entry per node.
+> -                                          * Must be last as the number o=
+f the
+> -                                          * array is nr_node_ids, which =
+is not
+> -                                          * a fixed value so have to all=
+ocate
+> -                                          * dynamically.
+> -                                          * And it has to be an array so=
+ that
+> -                                          * plist_for_each_* can work.
+> -                                          */
+> +       struct plist_node avail_list;   /* entry in swap_avail_head */
 >  };
 >
->  /*
-> @@ -2531,6 +2535,8 @@ static struct slab_sheaf *alloc_empty_sheaf(struct =
-kmem_cache *s, gfp_t gfp)
->         if (unlikely(!sheaf))
->                 return NULL;
+>  static inline swp_entry_t page_swap_entry(struct page *page)
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index b4f3cc712580..d8a54e5af16d 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -73,7 +73,7 @@ atomic_long_t nr_swap_pages;
+>  EXPORT_SYMBOL_GPL(nr_swap_pages);
+>  /* protected with swap_lock. reading in vm_swap_full() doesn't need lock=
+ */
+>  long total_swap_pages;
+> -static int least_priority =3D -1;
+> +#define DEF_SWAP_PRIO  -1
+>  unsigned long swapfile_maximum_size;
+>  #ifdef CONFIG_MIGRATION
+>  bool swap_migration_ad_supported;
+> @@ -102,7 +102,7 @@ static PLIST_HEAD(swap_active_head);
+>   * is held and the locking order requires swap_lock to be taken
+>   * before any swap_info_struct->lock.
+>   */
+> -static struct plist_head *swap_avail_heads;
+> +static PLIST_HEAD(swap_avail_head);
+>  static DEFINE_SPINLOCK(swap_avail_lock);
 >
-> +       sheaf->cache =3D s;
-> +
->         stat(s, SHEAF_ALLOC);
->
->         return sheaf;
-> @@ -2655,6 +2661,43 @@ static void sheaf_flush_unused(struct kmem_cache *=
-s, struct slab_sheaf *sheaf)
->         sheaf->size =3D 0;
->  }
->
-> +static void __rcu_free_sheaf_prepare(struct kmem_cache *s,
-> +                                    struct slab_sheaf *sheaf)
-> +{
-> +       bool init =3D slab_want_init_on_free(s);
-> +       void **p =3D &sheaf->objects[0];
-> +       unsigned int i =3D 0;
-> +
-> +       while (i < sheaf->size) {
-> +               struct slab *slab =3D virt_to_slab(p[i]);
-> +
-> +               memcg_slab_free_hook(s, slab, p + i, 1);
-> +               alloc_tagging_slab_free_hook(s, slab, p + i, 1);
-> +
-> +               if (unlikely(!slab_free_hook(s, p[i], init, true))) {
-> +                       p[i] =3D p[--sheaf->size];
-> +                       continue;
-> +               }
-> +
-> +               i++;
-> +       }
-> +}
-> +
-> +static void rcu_free_sheaf_nobarn(struct rcu_head *head)
-> +{
-> +       struct slab_sheaf *sheaf;
-> +       struct kmem_cache *s;
-> +
-> +       sheaf =3D container_of(head, struct slab_sheaf, rcu_head);
-> +       s =3D sheaf->cache;
-> +
-> +       __rcu_free_sheaf_prepare(s, sheaf);
-> +
-> +       sheaf_flush_unused(s, sheaf);
-> +
-> +       free_empty_sheaf(s, sheaf);
-> +}
-> +
->  /*
->   * Caller needs to make sure migration is disabled in order to fully flu=
-sh
->   * single cpu's sheaves
-> @@ -2667,7 +2710,7 @@ static void sheaf_flush_unused(struct kmem_cache *s=
-, struct slab_sheaf *sheaf)
->  static void pcs_flush_all(struct kmem_cache *s)
+>  static struct swap_info_struct *swap_info[MAX_SWAPFILES];
+> @@ -995,7 +995,6 @@ static unsigned long cluster_alloc_swap_entry(struct =
+swap_info_struct *si, int o
+>  /* SWAP_USAGE_OFFLIST_BIT can only be set by this helper. */
+>  static void del_from_avail_list(struct swap_info_struct *si, bool swapof=
+f)
 >  {
->         struct slub_percpu_sheaves *pcs;
-> -       struct slab_sheaf *spare;
-> +       struct slab_sheaf *spare, *rcu_free;
+> -       int nid;
+>         unsigned long pages;
 >
->         local_lock(&s->cpu_sheaves->lock);
->         pcs =3D this_cpu_ptr(s->cpu_sheaves);
-> @@ -2675,6 +2718,9 @@ static void pcs_flush_all(struct kmem_cache *s)
->         spare =3D pcs->spare;
->         pcs->spare =3D NULL;
->
-> +       rcu_free =3D pcs->rcu_free;
-> +       pcs->rcu_free =3D NULL;
-> +
->         local_unlock(&s->cpu_sheaves->lock);
->
->         if (spare) {
-> @@ -2682,6 +2728,9 @@ static void pcs_flush_all(struct kmem_cache *s)
->                 free_empty_sheaf(s, spare);
->         }
->
-> +       if (rcu_free)
-> +               call_rcu(&rcu_free->rcu_head, rcu_free_sheaf_nobarn);
-> +
->         sheaf_flush_main(s);
->  }
->
-> @@ -2698,6 +2747,11 @@ static void __pcs_flush_all_cpu(struct kmem_cache =
-*s, unsigned int cpu)
->                 free_empty_sheaf(s, pcs->spare);
->                 pcs->spare =3D NULL;
->         }
-> +
-> +       if (pcs->rcu_free) {
-> +               call_rcu(&pcs->rcu_free->rcu_head, rcu_free_sheaf_nobarn)=
-;
-> +               pcs->rcu_free =3D NULL;
-> +       }
->  }
->
->  static void pcs_destroy(struct kmem_cache *s)
-> @@ -2723,6 +2777,7 @@ static void pcs_destroy(struct kmem_cache *s)
+>         spin_lock(&swap_avail_lock);
+> @@ -1007,7 +1006,7 @@ static void del_from_avail_list(struct swap_info_st=
+ruct *si, bool swapoff)
+>                  * swap_avail_lock, to ensure the result can be seen by
+>                  * add_to_avail_list.
 >                  */
->
->                 WARN_ON(pcs->spare);
-> +               WARN_ON(pcs->rcu_free);
->
->                 if (!WARN_ON(pcs->main->size)) {
->                         free_empty_sheaf(s, pcs->main);
-> @@ -3780,7 +3835,7 @@ static bool has_pcs_used(int cpu, struct kmem_cache=
- *s)
->
->         pcs =3D per_cpu_ptr(s->cpu_sheaves, cpu);
->
-> -       return (pcs->spare || pcs->main->size);
-> +       return (pcs->spare || pcs->rcu_free || pcs->main->size);
->  }
->
->  /*
-> @@ -3840,6 +3895,77 @@ static void flush_all(struct kmem_cache *s)
->         cpus_read_unlock();
->  }
->
-> +static void flush_rcu_sheaf(struct work_struct *w)
-> +{
-> +       struct slub_percpu_sheaves *pcs;
-> +       struct slab_sheaf *rcu_free;
-> +       struct slub_flush_work *sfw;
-> +       struct kmem_cache *s;
-> +
-> +       sfw =3D container_of(w, struct slub_flush_work, work);
-> +       s =3D sfw->s;
-> +
-> +       local_lock(&s->cpu_sheaves->lock);
-> +       pcs =3D this_cpu_ptr(s->cpu_sheaves);
-> +
-> +       rcu_free =3D pcs->rcu_free;
-> +       pcs->rcu_free =3D NULL;
-> +
-> +       local_unlock(&s->cpu_sheaves->lock);
-> +
-> +       if (rcu_free)
-> +               call_rcu(&rcu_free->rcu_head, rcu_free_sheaf_nobarn);
-> +}
-> +
-> +
-> +/* needed for kvfree_rcu_barrier() */
-> +void flush_all_rcu_sheaves(void)
-> +{
-> +       struct slub_flush_work *sfw;
-> +       struct kmem_cache *s;
-> +       unsigned int cpu;
-> +
-> +       cpus_read_lock();
-> +       mutex_lock(&slab_mutex);
-> +
-> +       list_for_each_entry(s, &slab_caches, list) {
-> +               if (!s->cpu_sheaves)
-> +                       continue;
-> +
-> +               mutex_lock(&flush_lock);
-> +
-> +               for_each_online_cpu(cpu) {
-> +                       sfw =3D &per_cpu(slub_flush, cpu);
-> +
-> +                       /*
-> +                        * we don't check if rcu_free sheaf exists - raci=
-ng
-> +                        * __kfree_rcu_sheaf() might have just removed it=
-.
-> +                        * by executing flush_rcu_sheaf() on the cpu we m=
-ake
-> +                        * sure the __kfree_rcu_sheaf() finished its call=
-_rcu()
-> +                        */
-> +
-> +                       INIT_WORK(&sfw->work, flush_rcu_sheaf);
-> +                       sfw->skip =3D false;
+> -               lockdep_assert_held(&si->lock);
+> +               //lockdep_assert_held(&si->lock);
 
-I think you don't need this sfw->skip flag since you never skip anymore, ri=
-ght?
+If this needs to be removed, then it doesn't seem to comply with the
+comment above?
 
-> +                       sfw->s =3D s;
-> +                       queue_work_on(cpu, flushwq, &sfw->work);
-> +               }
-> +
-> +               for_each_online_cpu(cpu) {
-> +                       sfw =3D &per_cpu(slub_flush, cpu);
-> +                       if (sfw->skip)
-> +                               continue;
-> +                       flush_work(&sfw->work);
-
-I'm sure I'm missing something but why can't we execute call_rcu()
-from here instead of queuing the work which does call_rcu() and then
-flushing all the queued work? I'm sure you have a good reason which
-I'm missing.
-
-> +               }
-> +
-> +               mutex_unlock(&flush_lock);
-> +       }
-> +
-> +       mutex_unlock(&slab_mutex);
-> +       cpus_read_unlock();
-> +
-> +       rcu_barrier();
-> +}
-> +
->  /*
->   * Use the cpu notifier to insure that the cpu slabs are flushed when
->   * necessary.
-> @@ -5413,6 +5539,134 @@ bool free_to_pcs(struct kmem_cache *s, void *obje=
-ct)
->         return true;
->  }
->
-> +static void rcu_free_sheaf(struct rcu_head *head)
-> +{
-> +       struct slab_sheaf *sheaf;
-> +       struct node_barn *barn;
-> +       struct kmem_cache *s;
-> +
-> +       sheaf =3D container_of(head, struct slab_sheaf, rcu_head);
-> +
-> +       s =3D sheaf->cache;
-> +
-> +       /*
-> +        * This may remove some objects due to slab_free_hook() returning=
- false,
-> +        * so that the sheaf might no longer be completely full. But it's=
- easier
-> +        * to handle it as full (unless it became completely empty), as t=
-he code
-> +        * handles it fine. The only downside is that sheaf will serve fe=
-wer
-> +        * allocations when reused. It only happens due to debugging, whi=
-ch is a
-> +        * performance hit anyway.
-> +        */
-> +       __rcu_free_sheaf_prepare(s, sheaf);
-> +
-> +       barn =3D get_node(s, numa_mem_id())->barn;
-> +
-> +       /* due to slab_free_hook() */
-> +       if (unlikely(sheaf->size =3D=3D 0))
-> +               goto empty;
-> +
-> +       /*
-> +        * Checking nr_full/nr_empty outside lock avoids contention in ca=
-se the
-> +        * barn is at the respective limit. Due to the race we might go o=
-ver the
-> +        * limit but that should be rare and harmless.
-> +        */
-> +
-> +       if (data_race(barn->nr_full) < MAX_FULL_SHEAVES) {
-> +               stat(s, BARN_PUT);
-> +               barn_put_full_sheaf(barn, sheaf);
-> +               return;
-> +       }
-> +
-> +       stat(s, BARN_PUT_FAIL);
-> +       sheaf_flush_unused(s, sheaf);
-> +
-> +empty:
-> +       if (data_race(barn->nr_empty) < MAX_EMPTY_SHEAVES) {
-> +               barn_put_empty_sheaf(barn, sheaf);
-> +               return;
-> +       }
-> +
-> +       free_empty_sheaf(s, sheaf);
-> +}
-> +
-> +bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj)
-> +{
-> +       struct slub_percpu_sheaves *pcs;
-> +       struct slab_sheaf *rcu_sheaf;
-> +
-> +       if (!local_trylock(&s->cpu_sheaves->lock))
-> +               goto fail;
-> +
-> +       pcs =3D this_cpu_ptr(s->cpu_sheaves);
-> +
-> +       if (unlikely(!pcs->rcu_free)) {
-> +
-> +               struct slab_sheaf *empty;
-> +               struct node_barn *barn;
-> +
-> +               if (pcs->spare && pcs->spare->size =3D=3D 0) {
-> +                       pcs->rcu_free =3D pcs->spare;
-> +                       pcs->spare =3D NULL;
-> +                       goto do_free;
-> +               }
-> +
-> +               barn =3D get_barn(s);
-> +
-> +               empty =3D barn_get_empty_sheaf(barn);
-> +
-> +               if (empty) {
-> +                       pcs->rcu_free =3D empty;
-> +                       goto do_free;
-> +               }
-> +
-> +               local_unlock(&s->cpu_sheaves->lock);
-> +
-> +               empty =3D alloc_empty_sheaf(s, GFP_NOWAIT);
-> +
-> +               if (!empty)
-> +                       goto fail;
-> +
-> +               if (!local_trylock(&s->cpu_sheaves->lock)) {
-> +                       barn_put_empty_sheaf(barn, empty);
-> +                       goto fail;
-> +               }
-> +
-> +               pcs =3D this_cpu_ptr(s->cpu_sheaves);
-> +
-> +               if (unlikely(pcs->rcu_free))
-> +                       barn_put_empty_sheaf(barn, empty);
-> +               else
-> +                       pcs->rcu_free =3D empty;
-> +       }
-> +
-> +do_free:
-> +
-> +       rcu_sheaf =3D pcs->rcu_free;
-> +
-> +       rcu_sheaf->objects[rcu_sheaf->size++] =3D obj;
-
-nit: The above would result in OOB write if we ever reached here with
-a full rcu_sheaf (rcu_sheaf->size =3D=3D rcu_sheaf->sheaf_capacity) but I
-think it's impossible. You always start with an empty rcu_sheaf and
-objects are added only here with a following check for a full
-rcu_sheaf. I think a short comment clarifying that would be nice.
-
-> +
-> +       if (likely(rcu_sheaf->size < s->sheaf_capacity))
-> +               rcu_sheaf =3D NULL;
-> +       else
-> +               pcs->rcu_free =3D NULL;
-> +
-> +       /*
-> +        * we flush before local_unlock to make sure a racing
-> +        * flush_all_rcu_sheaves() doesn't miss this sheaf
-> +        */
-> +       if (rcu_sheaf)
-> +               call_rcu(&rcu_sheaf->rcu_head, rcu_free_sheaf);
-> +
-> +       local_unlock(&s->cpu_sheaves->lock);
-> +
-> +       stat(s, FREE_RCU_SHEAF);
-> +       return true;
-> +
-> +fail:
-> +       stat(s, FREE_RCU_SHEAF_FAIL);
-> +       return false;
-> +}
-> +
->  /*
->   * Bulk free objects to the percpu sheaves.
->   * Unlike free_to_pcs() this includes the calls to all necessary hooks
-> @@ -6909,6 +7163,11 @@ int __kmem_cache_shutdown(struct kmem_cache *s)
->         struct kmem_cache_node *n;
->
->         flush_all_cpus_locked(s);
-> +
-> +       /* we might have rcu sheaves in flight */
-> +       if (s->cpu_sheaves)
-> +               rcu_barrier();
-> +
->         /* Attempt to free all objects */
->         for_each_kmem_cache_node(s, node, n) {
->                 if (n->barn)
-> @@ -8284,6 +8543,8 @@ STAT_ATTR(ALLOC_PCS, alloc_cpu_sheaf);
->  STAT_ATTR(ALLOC_FASTPATH, alloc_fastpath);
->  STAT_ATTR(ALLOC_SLOWPATH, alloc_slowpath);
->  STAT_ATTR(FREE_PCS, free_cpu_sheaf);
-> +STAT_ATTR(FREE_RCU_SHEAF, free_rcu_sheaf);
-> +STAT_ATTR(FREE_RCU_SHEAF_FAIL, free_rcu_sheaf_fail);
->  STAT_ATTR(FREE_FASTPATH, free_fastpath);
->  STAT_ATTR(FREE_SLOWPATH, free_slowpath);
->  STAT_ATTR(FREE_FROZEN, free_frozen);
-> @@ -8382,6 +8643,8 @@ static struct attribute *slab_attrs[] =3D {
->         &alloc_fastpath_attr.attr,
->         &alloc_slowpath_attr.attr,
->         &free_cpu_sheaf_attr.attr,
-> +       &free_rcu_sheaf_attr.attr,
-> +       &free_rcu_sheaf_fail_attr.attr,
->         &free_fastpath_attr.attr,
->         &free_slowpath_attr.attr,
->         &free_frozen_attr.attr,
-> --
-> 2.51.0
->
->
+Here we are modifying si->flags, which is supposed to be protected by si lo=
+ck.
 
