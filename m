@@ -4,92 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DA5ACAC5B5
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 23:12:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2D63CAC5B0
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 23:12:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC6208E0002; Thu, 25 Sep 2025 19:12:41 -0400 (EDT)
+	id 2D7B68E000D; Thu, 25 Sep 2025 19:12:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9E268E0001; Thu, 25 Sep 2025 19:12:41 -0400 (EDT)
+	id 2AF748E0001; Thu, 25 Sep 2025 19:12:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DB188E0002; Thu, 25 Sep 2025 19:12:41 -0400 (EDT)
+	id 1C5A28E000D; Thu, 25 Sep 2025 19:12:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D2458E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 19:12:41 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3994D140535
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 23:12:41 +0000 (UTC)
-X-FDA: 83929324122.15.A7D965E
-Received: from techbitestudio.com (techbitestudio.com [75.119.147.106])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 3EB1E80006
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 23:12:39 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kenip.in header.s=mail header.b="jLwc/RBl";
-	spf=pass (imf02.hostedemail.com: domain of siddhartha@kenip.in designates 75.119.147.106 as permitted sender) smtp.mailfrom=siddhartha@kenip.in;
-	dmarc=pass (policy=none) header.from=kenip.in
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D4968E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 19:12:59 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B5E6C11A47A
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 23:12:58 +0000 (UTC)
+X-FDA: 83929324836.12.BBBAA8C
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 0457610000E
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 23:12:56 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Aaz8y2iL;
+	spf=pass (imf05.hostedemail.com: domain of 3d8zVaAYKCLQmYUhdWaiiafY.Wigfchor-ggepUWe.ila@flex--seanjc.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3d8zVaAYKCLQmYUhdWaiiafY.Wigfchor-ggepUWe.ila@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758841959;
+	s=arc-20220608; t=1758841977;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QEBQ6/ELXJAZ5se7bttErxxgSS3XE9f2oCgj3uJWK9Q=;
-	b=d3g8+NXtHdhpOpv3HOE7wIsH5GwCFlzrVoNKnHSMU+T19DQXfCspMeafpjm2+fIwS/yheT
-	6bb9foAcKUTKOtRtzxxPTNS5EI+3na3teMVCsw6VTsKa0kd6xHKcFQ0WhXMBUCehpL5UC8
-	EcZjrUb7zxpzK/KTEZU5qvAumjPHiGA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758841959; a=rsa-sha256;
-	cv=none;
-	b=D1W73NIsaXgpDU1L3Bshs4sTydvjFKJI/nbABzS5WHRhrvHTsjYZAMzfQA2Yw0S28Rj1gB
-	ZZGIKcTkNgMjzVXtuX+N7HHydtJJuGekqgain99Ny9AuR1+opCzUECAGQFQD0KxE60Syir
-	4JS0owBGcvZi3UEBe8nmKe73uyUO62c=
+	bh=XGCCSnKnyPGGdnUTp10aKL37FULfLm3dyeD1VoFdI2I=;
+	b=Hz0f9RuKuZATMBwmb4DVq+knHaHOT+TXhYzTXjVgf/4hVhBeYW/p7zPXLDRFN6LNpWMcP3
+	fiKoTugsH7GgvtAQnuai1Fmx6PkzG+9mAZYphFnuSdOLlZNG0rZSK7heIywuRhR5NO8d2k
+	of0kMbqg3NIfRVd6HHEGSF08a7Yp8rs=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kenip.in header.s=mail header.b="jLwc/RBl";
-	spf=pass (imf02.hostedemail.com: domain of siddhartha@kenip.in designates 75.119.147.106 as permitted sender) smtp.mailfrom=siddhartha@kenip.in;
-	dmarc=pass (policy=none) header.from=kenip.in
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=kenip.in;
-	 s=mail; h=Content-Transfer-Encoding:Content-Type:Message-ID:References:
-	In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=QEBQ6/ELXJAZ5se7bttErxxgSS3XE9f2oCgj3uJWK9Q=; b=jLwc/RBlIGMjCUKXSYtij8XtIY
-	e5JM18p5x2L82WCaziPMBKygTR99VQPapsnQel4sAd/awFCKbzdOyAso2WqgN6FxrRS/cEbeKmdh3
-	kciNn2Wlxpe4yT1auoWbKQV8Amo2jiopbCR/ekBsHV3TCAp/U2ChwgkSnYCoY3NHi3+I=;
-Received: from localhost ([127.0.0.1] helo=kenip.in)
-	by techbitestudio.com with esmtpa (Exim 4.93)
-	(envelope-from <siddhartha@kenip.in>)
-	id 1v1v8b-0003rl-2B; Fri, 26 Sep 2025 04:42:33 +0530
-MIME-Version: 1.0
-Date: Fri, 26 Sep 2025 04:42:32 +0530
-From: siddhartha@kenip.in
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Dev Jain
- <dev.jain@arm.com>, linux-mm@kvack.org, krill.shutemov@linux.intel.com
-Subject: Re: [PATCH follow-up] mm/thp: Requesting status update on alignment
- performance configuration
-In-Reply-To: <3bab750b-0aa5-4df5-9be1-9132c7980f2b@suse.cz>
-References: <e3d003e7d0b7a5b0840f08cd7d630fe4@kenip.in>
- <595a57cd68463194fb2d6f34e9366e38@vger.kernel.org>
- <0197c80c5bc7989b858b79317a4fbc45@kenip.in>
- <4ffd8306e524480d6dccca2bd9981091@linux.intel.com>
- <3bab750b-0aa5-4df5-9be1-9132c7980f2b@suse.cz>
-Message-ID: <3570b4b8e8df18f33d622552f11f346d@kenip.in>
-X-Sender: siddhartha@kenip.in
-X-Priority: 1 (Highest)
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3EB1E80006
-X-Stat-Signature: jk5bo3fwd48t6hh8rz3y7x1rd8tkpkgr
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Aaz8y2iL;
+	spf=pass (imf05.hostedemail.com: domain of 3d8zVaAYKCLQmYUhdWaiiafY.Wigfchor-ggepUWe.ila@flex--seanjc.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3d8zVaAYKCLQmYUhdWaiiafY.Wigfchor-ggepUWe.ila@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758841977; a=rsa-sha256;
+	cv=none;
+	b=vN+YsdM6U+4xm+8eBWH1MK77bu9Tw8JnLqo9iTWwA0eAuwtQECrZdZIinkvh3dAqbmcNl8
+	+AIg1tMh9QIJ1EbU0T3iJ8P/i1UL0FAUwy8diB/7L3etk+cz17xlfvUoBlLLeFL8bIzMMb
+	UY8B0NQyR+15li+tUWpa54OMK6l0x5Q=
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b5509ed1854so1015149a12.0
+        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 16:12:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758841976; x=1759446776; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=XGCCSnKnyPGGdnUTp10aKL37FULfLm3dyeD1VoFdI2I=;
+        b=Aaz8y2iLWer8JnkM3Qk1r/jgot2khwebMc2gdUO2x13QWpy8z/DJ025lReRVUmSpFx
+         N7vu4+6swpWeXEuAPyUulrChW58dYCF8zQBk6FVVwzDiO1mqzPPH4/zpvlZvi+9LNMvq
+         qdHQTaYoLEMVvXSUjl4rIS7jDSBnLoCjz/6b/kM3HusOZ2JVvN56YbiTBLsuKT27MLKd
+         19BYJHlFUjQsS+tK5rWU7yiKsMAGu+yfL3iYhTJV698c5/UgIiTZOyd/M4z+XEMMNkg6
+         3As4ry4HQ6aS6UtAZp8hYmVmIpW/BB5SzztO78F+PwCRTaXTA6i8k2tJaAVuUPaI7xsI
+         ceDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758841976; x=1759446776;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XGCCSnKnyPGGdnUTp10aKL37FULfLm3dyeD1VoFdI2I=;
+        b=NfulkpAcC2FGRWIMXQLzRODa7JWLWeHQ27ezjf5XbBDewTgv2tTJhWYOIs6IYGQE6K
+         w34Goi9W4SOcNs4JrtJc97OKDymtXLEYwVYabv6ueLh9foUzOFLbnzJOHaKMUw3K9+ku
+         Tb4WKg1RUNql2GtU7nsKvaZTMaWJYtMjMjAAtuCan5FmXmFg01z0zwbleMpt4Wgna7bU
+         +FerVe0obNCKPeXywTVBzN7Bn1q6D3m2icv2P1VUET6yjIdtOHz4tyIhrjMNw4/IZOf/
+         wLVLAloqVK4PAEseVTYc4SIxdnS3ygfgBmg6gL0vGSXH/NG2i2z+X2g4gj9N1ukaa8av
+         60Jg==
+X-Forwarded-Encrypted: i=1; AJvYcCX15eHUTZ8Xto0q+LGtutkclJQhZErspoWt5R0hOfEq6w+sNk+5lQSBdD3yp0aylVlrHedVR+E5FA==@kvack.org
+X-Gm-Message-State: AOJu0YwFKf/e9wgCUqBD9IfIUqIiO5HQgGwGHv9iQz9ALILNVWQSDT+a
+	dItIeQdCBpz0kpVuqwFHVPg51I78uWl94JEOql1eMFx00iBRLVvlxJwPs4U+BrXiRNPBgubZC18
+	xeEg3nA==
+X-Google-Smtp-Source: AGHT+IFE8gFtFdnHNmX2p6THQrFO41fYST4gwotcfBj6rGswgxHnE9CG8NuKci3w5GnRskLMvJFI/+Q8X0o=
+X-Received: from pjbjz6.prod.google.com ([2002:a17:90b:14c6:b0:330:9af8:3e1d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e883:b0:262:79a:93fb
+ with SMTP id d9443c01a7336-27ed4a7ecbdmr51468535ad.32.1758841975402; Thu, 25
+ Sep 2025 16:12:55 -0700 (PDT)
+Date: Thu, 25 Sep 2025 16:12:53 -0700
+In-Reply-To: <20250925230420.GC2617119@nvidia.com>
+Mime-Version: 1.0
+References: <20250827175247.83322-2-shivankg@amd.com> <20250827175247.83322-10-shivankg@amd.com>
+ <aNW1l-Wdk6wrigM8@google.com> <20250925230420.GC2617119@nvidia.com>
+Message-ID: <aNXMdSZkqDtsGRLm@google.com>
+Subject: Re: [PATCH kvm-next V11 7/7] KVM: guest_memfd: selftests: Add tests
+ for mmap and NUMA policy support
+From: Sean Christopherson <seanjc@google.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Shivank Garg <shivankg@amd.com>, willy@infradead.org, akpm@linux-foundation.org, 
+	david@redhat.com, pbonzini@redhat.com, shuah@kernel.org, vbabka@suse.cz, 
+	brauner@kernel.org, viro@zeniv.linux.org.uk, dsterba@suse.com, 
+	xiang@kernel.org, chao@kernel.org, jaegeuk@kernel.org, clm@fb.com, 
+	josef@toxicpanda.com, kent.overstreet@linux.dev, zbestahu@gmail.com, 
+	jefflexu@linux.alibaba.com, dhavale@google.com, lihongbo22@huawei.com, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, ziy@nvidia.com, matthew.brost@intel.com, 
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
+	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
+	tabba@google.com, ackerleytng@google.com, paul@paul-moore.com, 
+	jmorris@namei.org, serge@hallyn.com, pvorel@suse.cz, bfoster@redhat.com, 
+	vannapurve@google.com, chao.gao@intel.com, bharata@amd.com, nikunj@amd.com, 
+	michael.day@amd.com, shdhiman@amd.com, yan.y.zhao@intel.com, 
+	Neeraj.Upadhyay@amd.com, thomas.lendacky@amd.com, michael.roth@amd.com, 
+	aik@amd.com, kalyazin@amazon.com, peterx@redhat.com, jack@suse.cz, 
+	hch@infradead.org, cgzones@googlemail.com, ira.weiny@intel.com, 
+	rientjes@google.com, roypat@amazon.co.uk, chao.p.peng@intel.com, 
+	amit@infradead.org, ddutile@redhat.com, dan.j.williams@intel.com, 
+	ashish.kalra@amd.com, gshan@redhat.com, jgowans@amazon.com, 
+	pankaj.gupta@amd.com, papaluri@amd.com, yuzhao@google.com, 
+	suzuki.poulose@arm.com, quic_eberman@quicinc.com, 
+	linux-bcachefs@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+	linux-erofs@lists.ozlabs.org, linux-f2fs-devel@lists.sourceforge.net, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 X-Rspam-User: 
-X-HE-Tag: 1758841959-386021
-X-HE-Meta: U2FsdGVkX1+m5Z60KC78pbI8YeSycCB5Y78UXhEZ3ZlYP7/vXI3FgTpUHYgqbzKLni438wGDnP/o/Bp0gS5QJc8967czm8xhjr8G/FoEmfOVaMRJ/XxF2cb+Izzx9h+nmjYPa8u2udvka1lIu/yJ9SecRVWdxQGv3DeF7dUKbdQCgnfy33SUedtwGeEg0dr4BygcjdsZaB1imogzs6MuHyGetvYQiRtxVoIQH+272FfaTAlxhrUkw+fF/9J9+z/3b5j6sG+IFrS/KgXtz1umkS4zmNnZXS9WQLt+Pu3UbC0KaolJGpZEK5S1XNcWlW+4RG/FdZZefpy/lGKM3nnNIdD5LKOUJoVCFEU1SL3wm+O7kgVjZDgClO8aXwkZBO0Q/3ZCm0w9WQGuF91SCb83R+iAQv+TSIkTqAjx9L+xYFeKyLZpaAjMKTSIE4IZ6/OVbKF5mbwFdR3GKv/Zznll9TANk6hL6Mxo4srQFg7qLciQtclCbNRcjWZ8rEVmu61GRvTktpObUZq0hKzIxVPt21PrxjLHL2jf60ViRJVXWZSYgRFO6oGLwkY395zmc283va4ktjir0UdGLulQS+lL3Urz5KJv8BGt2MO+aJMRrM8UCn0+8XOH7F7rEkg3PJjsqeR/80yr7CDZ3StjsGJr6zzd+DTxTg7d15U21/pIA5X7KP0hPERnplhwn7zX1miKnfDXxdzwFyugH/2ue1EY4q4cZ29/5j9MfRUBGClAH9ZwKflK+FmlWp+w7omLPgYzh8sqLrQtNCIoP+z3o4WnKckJa79u3HCr+YdD6V6SCBD/sw42eJVjYOKtVP6K/vEaMzVA9D5ZLInn1HTVypb9W/BJq1AVWk1VKfhdqsRd6xnsobCOToQZpPCCC1S8bdf0/YkyIxZLn5AY1MQ+JJZp7Qq5S0626iY4GB04huK3u7c4ZbFM/ePZ7xYx4l0bCpem7hfdDC7G+5+jmq/qJqF
- qgXEpPA8
- EpIIIMCaTtfRv3r3GgbacO0vDilGIQklejCZbOoGGDJx/zzx1YR+XKS0VK+WtistUYZUfa9LSeh4NVK9kCnLZafg5yYS1Pmvtylf+FrKrCBhBdDhnMZgGHg0ddeJu3N/JHAX9At0zmW8kH4qeWxSPunsquTWZi3efXklFugYH0JEAWDCyAukdFw/0z67swqPqoKbhwShJHMg/xk1zd09bbGdjBHgeQWqX+v5rt5AHVByC84anxSp9Od2W5CSSsZ4RAgltI3irxwmFaGCV3JJ1yseMnw1476GQapTKtdAcqMW0jgrz0CU0AUiAvxZ9A6YktvSlxHNElgvltRJUdFXnaXDYTZk4qqb9rzXfmSodt1G1u27zTyhNWgZR/zv7GOLxBYP1CRzk0M7Cr6x7Dw8NbMrQN2fShcRLeIvNHJKZcCy9zTm2CEK47IPaEwWx94DrviSoJ4QQDdwJ7HY=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0457610000E
+X-Stat-Signature: 6t6fyufq1388n5b51gk3a1qouwjwwmyu
+X-HE-Tag: 1758841976-953821
+X-HE-Meta: U2FsdGVkX1/+CadBubiPiu6KrtalHxxfb5a+dEwCDtdjdpOvi+x4wtjIIQAGbCex2e+bcTFvSslv0iPaHW89EbqVOyGppLIWe7qLn4uEtU+4U6SWZ4s8KhtvFV1701X0i4U1VscL5f5fAFuWilooWlSKiTpbISoE8/JNgUd19zUgqI/4zkyzlu4kERCZeqotApS7z2MCqET0rbnJbBoMTK2VKLKLShBYufir2/A5o1QCHO4+iYxFD/DTEc9vz3TdwWn4357nmwX0CLwQrbbcDJ40rEYbXpfk5aFX9vUf7wsL2DkIUXnN+/BQZ90CGMbQNcG3SgcvCiFGV/355bpECnyj57F2BFYndbf6iMmZh1I01yJ2Q30c1sFzfbHeruLpPSU9diPbqI2BRD0s1sal+yjbN6mkHhe+Rb8nFWGfDVNuqL+S+YOF86MKeXdziDIamG2remKCiqnN4qfMYRIr/y9dVkN8lKToO6crgLicB5pq3svA3U83CCUD0wz1vXzpnQHhjX6Htz1NmHa5WI9T5ls4TM7rc0KtHDfekjpTL3ogpj/uZVLnxLt7RYMGWa0KtDJLxUCI5WcWjU+DAFl2vyDgkIuoNJcTmap61ffKfVUSF3ndU7LVqBtVLC0gL6jpv7li2oPXooTduCS9+ObKaa7iEA3ruTKdXOF7VbDRd9PQ8dvCBGuSNzH6tUpfghc8t1/y8aO6K17QynDPHVly8UdnDXdH9ARdLPV8ep4QJ3UtDF574avhvvGwItMpyaQUC6/B2Is7VvVjiGBGNCEFa1mKWoTT6pjIyfgBaPYigXw1pzIRCs/dis5682StPxvVwbPp0MZbdNtqm+a5kbZA2AwmLoenwVJWujj/CAHe/spynVOsmoVBOyE4QnDL9sb2a+dOx8Jse0ha7QTe6NWEFhus03uwGWpnD9ntlqj4d2gmoxGabSzzFMITQ6GgHuTyPuR1Er76M3tHNOzItHZ
+ r5yNsc6q
+ WnjwKWA48vXCGSzrh+TAosSGbTq0FpAVJB0927wUsUTStHa0ItbzBIV5zSfToS4evPeVgmlTeIsU9eEa6iaxaV5Z32h0JLiZnQI7+UOrNin8QzfN6Ztow+LDvl4/BWGCeo12QiR+n4Iq320hd5O0LjdVACxrtGG+/slNFMYKioxfwpm4xUJZLQcVsvehlzyMJwHbpM2WiXYXVDFLa1mWzhVZ236qA+6wnquE0/mLYphryi64FYK/tqYbHzNVkiTxSqirlg48wd1xvHN3Axum3/r+p/9Re94LcPrQUsf4bFgBgz0csulsx3BigLOJ/RHITpd9ZhZAbXDEqdIzvXfFAT9nPScP3eU/WP6EzycqFR8y3kmYqWBUs1HcvfzuH8ZDqIUTGEMjJPtqDQgbXrz84RGxGurWb6nBC6Cgf1TkbmjttMLLEw0wBGf19UATwx16ARSCFVWAMn8hE82b+smlm505+2A+8DxFzoqyt2Ux1FfWJlyBT00l55414OorzjN2LKRq0svwSw+PhH3kuzuSv+YDARSAZDbbQMWQKQClPYSuLbX8RtuE9IKBZvi30ziicQPHBWC0vPRYw/21kbEfU3iqY7WjEVv2gBN4ndFs+qgOiX7WEp7fKCvsDxZeEVsSAvdC2enpWdnBELy/kyc6eV7v0AS1tK6Arf1O+ua12H40mF8+W2GlrsnKdKsyUFAt9mWRtyKCYvvwx8HOhGtzCgnCbMett4OUXuDozoDoyVnd5WFZ0zJxC5xftnQu743p93iXlI0eZ9xoO+NXSjoipi0NYIczo4IzmdXLk2icN1vBiAiDKM/DP2Jkl3vm5BUgkJA7t
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,139 +136,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-09-26 00:16, Vlastimil Babka wrote:
-> It's rude to send emails with "request read receipt". Lorenzo explained 
-> that
-> already in a response to your off-list e-mail week ago.
+On Thu, Sep 25, 2025, Jason Gunthorpe wrote:
+> On Thu, Sep 25, 2025 at 02:35:19PM -0700, Sean Christopherson wrote:
+> > >  LDLIBS += -ldl
+> > > +LDLIBS += -lnuma
+> > 
+> > Hrm, this is going to be very annoying.  I don't have libnuma-dev installed on
+> > any of my <too many> systems, and I doubt I'm alone.  Installing the package is
+> > trivial, but I'm a little wary of foisting that requirement on all KVM developers
+> > and build bots.
 > 
-> On 9/25/25 15:54, siddhartha@kenip.in wrote:
->> On 2025-09-02 18:38, siddhartha@kenip.in wrote:
->>> On 2025-08-12 05:20, siddhartha@kenip.in wrote:
->>>> On 2025-08-12 03:44, siddhartha@kenip.in wrote:
->>>>> On 2025-07-28 16:30, Vlastimil Babka wrote:
->>>> **Pseudo-diff of relevant changes:**
->>>> ```diff
->>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->>>> index abcd1234efgh..ijkl5678mnop 100644
->>>> --- a/mm/huge_memory.c
->>>> +++ b/mm/huge_memory.c
->>>> @@ -102,6 +102,18 @@ static bool __thp_enabled = true;
->>>>  static bool __thp_defrag = true;
->>>> +/* New performance configuration toggle */
->>>> +static bool thp_performance_mode = false;
->>>> +
->>>> +static int __init setup_thp_performance(char *str)
->>>> +{
->>>> +       if (!str)
->>>> +               return 0;
->>>> +       if (!strcmp(str, "on"))
->>>> +               thp_performance_mode = true;
->>>> +       return 1;
->>>> +}
->>>> +__setup("thp_performance=", setup_thp_performance);
->>>> 
->>>>  static inline bool transparent_hugepage_enabled(struct 
->>>> vm_area_struct
->>>> *vma)
->>>>  {
->>>> @@ -245,7 +257,12 @@ static bool hugepage_vma_check(struct
->>>> vm_area_struct *vma,
->>>>         /* Existing allocation checks */
->>>> -       if (khugepaged_always())
->>>> -               return true;
->>>> +       if (thp_performance_mode)
->>>> +               return true; /* Aggressively prefer THP in 
->>>> performance
->>>> mode */
->>>> +       if (khugepaged_always())
->>>> +               return true;
->>>> 
->>>>         /* Rest of allocation logic */
->>>>  }
->>>> 
->>>> Please Note:
->>>> 
->>>> This is a pseudo-diff since my initial work was developed on Intel
->>>> Developer Cloud workloads without a locally cloned copy of the exact
->>>> committed files.
->>>> 
->>>> If there’s interest, I can provide additional benchmark data and
->>>> extend the implementation to expose runtime toggling via
->>>> /sys/kernel/mm/transparent_hugepage/performance.
+> Wouldn't it be great if the kselftest build system used something like
+> meson and could work around these little issues without breaking the
+> whole build ? :(
 > 
-> Sorry, it's necessary to send a real patch, not a pseudo-patch, 
-> including
-> the test results in its commit log.
->> I fully understand the complexities around VMA merging, Rik’s earlier
->> patch,
->> and possible regressions noted with cactusBSSN and ebizzy workloads.
->> However,
->> given the continued performance relevance to AI/ML inference 
->> pipelines,
->> I
->> believe further testing and validation would help determine whether 
->> this
->> knob
->> can be safely integrated (or adapted) for wider use.
->> 
->> Could you please share the **current status of testing or review** on
->> this patch?
+> Does anyone else think this?
 > 
-> We can't test or review a pseudo-patch. It's not even clear to me what 
-> it's
-> trying to achieve.
-> 
->> If there are specific benchmarks, traces, or refinements needed from 
->> my
->> side, I
->> would be happy to assist in generating or providing them.
-> 
-> You said you saw improvements in some benchmarks, so re-evaluating them 
-> on
-> current mainline with a real patch would be the way.
-> 
->> I greatly appreciate your time and guidance on moving this forward.
->> 
->> Thank you again for your support.
->> 
->> Best regards,
->> Siddhartha Sharma
->> siddhartha@kenip.in
+> Every time I try to build kselftsts I just ignore all the errors the
+> fly by because the one bit I wanted did build properly anyhow.
 
-Hello Vlastimil, Lorenzo, and all,
-
-Thank you for your feedback — and apologies for the “read receipt” flag, 
-I understand that was inappropriate for the list. My intention was only 
-to ensure
-my earlier follow-up wasn’t missed, not to be intrusive.
-
-To clarify: my original emails tried to outline observed performance 
-behavior when working with OpenVINO-based inference runs. The 
-pseudo-diff I shared was
-intended to explain the concept, but I now understand that without a 
-proper patch against current mainline it’s not actionable for you to 
-test or review.
-
-I will rebase my changes onto current mainline and submit a real patch 
-so it’s clear exactly what is being modified. That way, any evaluation 
-can be based on
-real code, not on assumptions or pseudo-code.
-
-Thank you again for pointing this out — I appreciate your patience, and 
-I’ll make sure the next iteration is a proper patch submission suitable 
-for review.
-
-I have opened a pull request in the openvino GitHub repository which I 
-also shared earlier but the guy who is supposed to review it is on a 
-sick leave, but I have seen some commits being merged recently so that's 
-a good sign. As soon as that's done with the review and I get the 
-developer cloud directory where it was originally worked upon, I will 
-share all the necessary details and the actual code.
-
-Thanks for your time and support, I really appreciate it!
-
-Best regards,
-Siddhartha Sharma
-
-
+I'm indifferent, as I literally never build all of kselftests, I just build KVM
+selftests.  But I'm probably in the minority for the kernel overall.
 
