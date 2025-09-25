@@ -4,101 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54D27CAC5B1
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 17:36:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55A12CAC5A7
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 17:43:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 953F68E0007; Thu, 25 Sep 2025 13:36:07 -0400 (EDT)
+	id 8F00B8E000A; Thu, 25 Sep 2025 13:43:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 904E38E0001; Thu, 25 Sep 2025 13:36:07 -0400 (EDT)
+	id 8A0C08E0001; Thu, 25 Sep 2025 13:43:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 841A98E0007; Thu, 25 Sep 2025 13:36:07 -0400 (EDT)
+	id 78F1A8E000A; Thu, 25 Sep 2025 13:43:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 747D68E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:36:07 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2E3151DF901
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:36:07 +0000 (UTC)
-X-FDA: 83928475974.10.DEFF107
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E8E7880006
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:36:04 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="r/TftEX8";
-	spf=pass (imf02.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 63EFC8E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:43:15 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0957C1A0450
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:43:15 +0000 (UTC)
+X-FDA: 83928493950.20.2DDAE96
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 71F1F14000B
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:43:13 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Unxgyn6m;
+	spf=pass (imf23.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758821765;
+	s=arc-20220608; t=1758822193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=at1PwGx0vPYImvsgpKTo5NgOyLGGTYB3k5Gr1wyD+V0=;
-	b=8RL5vzFnd92w+q99vH2ceUqVPDpMdDNHHvS2OJ6G6mVliKR9w+ljHvQecysCyJEREslFch
-	EbN7vCTxFJoxD6CjF2cWb3e4IQhjibHoakH6rJ3QBN8oGe0CzaSzV2EtR5va8u5QyMgBrS
-	TogirGsoNO8eIJK8rjPlPFwzkFJ/x6s=
+	bh=iEajfTB1TGVaGyQKqPDxYXxgaXILGis08QBJBeset3M=;
+	b=GsOWGIB4/QpcFHa8VUEeNmYgX93gX0EBiv49lE4eAifylsdKF2iUdnKnf1EgHD8Vxs6P+H
+	Jz2hDK+uaKTyqgzhNd5ttdObh+6JPYVNjuG5mI4WetnN3AtScWQyd9GztPwZq9D3K8+e7v
+	nvYcf/6Lzsp3UFvpJiygKY25vGDgW1U=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="r/TftEX8";
-	spf=pass (imf02.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Unxgyn6m;
+	spf=pass (imf23.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758821765; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758822193; a=rsa-sha256;
 	cv=none;
-	b=5ZktkzuFPPZBK+2/Q7AuYLxCmMgF6KQVrHcdj8L8a0was9yVC4pJ6Toujg575FeGp2OVp2
-	Rkl3zamg+WodCP7CMO0Wb7foG9BSk8KsVbVA+Ky2XWfNxu/BYU7ufIv15TT1XZG50apo4+
-	GXdq6TNCPcGz/NFqEr64Lt7cTq1MtHw=
+	b=EsdG06dOprP9+PWKbl21XI+NjLkLyrgRNUhzG9euObGr9mDYHr9QtIWEzJ6w79TJGTHd4n
+	yd5vZQ9Nd6fZM8VvQ60J2DY60FerjzQfNRh6PNyLDlqi0HzNikZpDb870ssOo/Hg+x5HL0
+	u4GNKZk+ww4anP/Efr6oPOpLNEknx5U=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7528D40BEA
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:36:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536A6C4CEF0
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:36:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 59952611CD;
+	Thu, 25 Sep 2025 17:43:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B12C4CEF0;
+	Thu, 25 Sep 2025 17:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758821763;
-	bh=6X+Kwq99hJ6RldFuwAIqGeWDneu3vOuSsUP6CqzbVfk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=r/TftEX8EQYkqXGinosO6v7+qLQSZOXcE9dnQBYpDp2u9Wh4HkKGsITtSdPYO6eH0
-	 XENj/ROS4rFfbRHo3by8it045lyMpNB5eVEvfBOAJztTy3pTLYdzgUK4UmLEp6k89j
-	 C3T8EXVe7RGe9Q8qH8kKLA85q170G+QKA40ZXkEoiqXTePUb92B4fPar7ecv4T+qbY
-	 UT9gIAlXrJBZ6CIF1++J2xHOq2Isg6iDiVkI3s19DFv1lYsHdEgNQJAydZ6wZ+Ztx3
-	 ElMyJRKcloqBy7Dy3B5HGqgnkWzl8FTT4ibZh1JXkuQT4sGNMJBIMxpNq3WeN5mop5
-	 Cm6+743FC0nFA==
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-63607a57bf2so120700d50.2
-        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 10:36:03 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWz8iyr1wtF9No1wFIvA1PdyrGrO4xxKt9BfatKRo0Lmc1IRFGie20RPg1y2RXvXbsk34aPvujw6g==@kvack.org
-X-Gm-Message-State: AOJu0YxbVJWeJc39hLCQzYh2te2bOYi5SAp9yjpglrCD3wFnUO5WajLD
-	zEkxsDSAtBSB52MCKvjndj+BMHvJfvDsW41J4ec1iiD4Qd2+pmDZjcfEE8tZfFFLky4dG6hquY2
-	ASF9iKPqjPdL6iRNJe1gm3zgN4HN+nwpge+T3jQY8sQ==
-X-Google-Smtp-Source: AGHT+IHiAaqrhjdBeWzemxxoy5Q/R4D0Bg1Krf9r3MkkhdAeLx/hi/f4ggBJoQJ1TWCnJxEIcknHVa4xwmbnHdx/DUg=
-X-Received: by 2002:a53:7212:0:b0:624:1660:ba01 with SMTP id
- 956f58d0204a3-6361a82db92mr2632679d50.37.1758821762606; Thu, 25 Sep 2025
- 10:36:02 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250924181138.1762750-1-charan.kalla@oss.qualcomm.com>
-In-Reply-To: <20250924181138.1762750-1-charan.kalla@oss.qualcomm.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Thu, 25 Sep 2025 10:35:51 -0700
-X-Gmail-Original-Message-ID: <CACePvbW=-KZhU_qi4UUw7Pjbz4o=SQwHmQyEOkxhpMvdetbPCg@mail.gmail.com>
-X-Gm-Features: AS18NWCdaLC1Wp3RSMP0da3-Fs18-J7lkLeP98ZrcoaPfKuh1jdrt-Zu6iPTusQ
-Message-ID: <CACePvbW=-KZhU_qi4UUw7Pjbz4o=SQwHmQyEOkxhpMvdetbPCg@mail.gmail.com>
-Subject: Re: [PATCH V2] mm: swap: check for stable address space before
- operating on the VMA
-To: Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
-Cc: david@redhat.com, Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, 
-	akpm@linux-foundation.org, shikemeng@huaweicloud.com, kasong@tencent.com, 
-	nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, 
-	zhangpeng.00@bytedance.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+	s=k20201202; t=1758822192;
+	bh=6dZOpQBW/lA06q/6Y0/CJJMMvmBCufgtJLcVYXd+Yfg=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=Unxgyn6m7xG/mtrp/KMSCQcwsdWhvmbLsFz1bfLIqPGVJCUcZWeuF+KwUFW26waeR
+	 8MQML/BxvpUuHYelcSdzftz1B00QmRjVh7LCS/lLBL9vxo+4VTdtiQbxIjlL74Vhp5
+	 0tJl1HChfVNE2/tfseyYLcAMEmYBJtdz5xIqcD6QUWoWtjOjMv20GxQiV+9BZ29xxz
+	 J3rohqJvaoADCqb2zpCatsovUTTVK6zeeqsLmciSTN0zjAWWMu5nwUCS2hcCyhluXL
+	 NZ3E/mUUDvBTzhSSDq1JncC8kE3n63LY7wnUeVGgIcpkD3pXbdjGPHK+vdN2QAYHlm
+	 Nmx3+nvqDOnow==
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: E8E7880006
-X-Stat-Signature: eueb6t4xjmsj43o79go3gdxm5pexihog
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 25 Sep 2025 19:43:06 +0200
+Message-Id: <DD22FI7F2ZHT.32SL8PXFZZHV3@kernel.org>
+Cc: "Elijah Wright" <git@elijahs.space>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>,
+ <linux-mm@kvack.org>
+To: "Elijah" <me@elijahs.space>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH] rust: slab: add basic slab module
+References: <20250924193643.4001-1-git@elijahs.space>
+ <DD1SGLU4180C.361W5XLH76XNC@kernel.org>
+ <73d7d53f-439b-44a9-98ca-0b1c8fbc1661@elijahs.space>
+In-Reply-To: <73d7d53f-439b-44a9-98ca-0b1c8fbc1661@elijahs.space>
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758821764-639966
-X-HE-Meta: U2FsdGVkX19gyR/V7BNFZBOJLWtIhDzEWqQ6Tfj+k63/hf5sGnfHgHhZaHjhW+XtJBKhTHt54HMgdcQYA8LyFdb406j6Moi4WH0eGywMmzvlK9iEKrRRVThx2ZHY/BeHuDnTdjj0BWsUF5PIUapOlypckn3KXWMkhl2m9UVFf0dgO4r1bIEPZUiimilZeOyKg38RBJUXSYcZrN7yyq65CHyMVeK71c9ITjRp0ShmuOSBKodUqGhW82xnrBhMSBQTJuPUjIX9G65sz9YAEJF7QQuArjgNCPYYY/dJHKSn4zEY0hnmyvYCmGW84wnfQ9Wp/6I4Djdr1MGeOMWQK12i2bXUit51A4s5uzPPtFHkKbVn7ZWlxGe2N3UX5EyHsW0VscYciJK9xEGc1ltUy7hgdeswNO74PzGgSFL5FC38DQGr7O1Zm2wcvj2Apumye1l4EDeVaLt/pqAIR4ZITJo2HV5TxDM77gRUSGLLTDFDqauJ6R76Tg9oO5sJog9xyrg9lIFe9vEJRzhvj0iyZy8ux0nTH20EM8PYPCtC/AFDgU8xnOJmWJodwk2mV0FkTRHHD5k7HpnJ3yp311nTcOUitL5mg1MkInWNKNVvZG5sipCfHTh3m63JYee83R8Ph8MyDxEBess0l71IvWNCvrUyhtLtVulf782ijcveImKbgYU/G4GurUEUVK8/4Msm7Gf1rKVtWSogQlRq/fDuy44p8o7yA9b2w7+nZmImbO06WsEdk3EscVF3BU9SvphTFhTVp7E8TCZGHjiZF74UisSN6TUBrP09Nn+LXiDtqk3taedc1fLxucDaHlLYP/WGPn48oQJCDdklCOKuSomZ/Cs5z1FCnC4mU+v6Y8ZMEHVSpGl/1Y1+/XqYwagGBF2YPiSG7k4fFSKHAfJAS/k1PYz1M/Wx9TlNkNhVWBHkKFn5kb+1CVAGzDsm5HE2oVqrYBvobqbJzNyTYBmJ3jfx9qG
- 34zWhUff
- pow8RdhFgldUkJ/PeFzdWEGEocZf20WmxMlb/QdDW5pXLEfFKl2rWrVlb3g7BXuGYc8jLbwPS5m0q8jZnSC+9AQuKaisdjz7qwjvt0sTSYTkHVLFTZlldonckPGd9/pdHKagbHHvWBauQo8Tdhw0YUQsM0RgFEJbLpuiI//1uWVBjcN0Ihq0/HDz/Rf64t8ptRyvWtD0P853OeMhw7rorksQomkZL47PdHqTbhyCAvZhO+cIZJIq/f0hGbY+nv5wy44XgDJ2xOxHWtGnI1HTYCWqhqLtGipUZKovKI0T2eAnuAk/r6rA9nt1rhIax5R8+6OLE1CsfRMSSeyDfdbKBSHLQQP+9eRxVInGjYhd1ep4ofVMzI27yRrRq2qIVXxeoPsdtAkXxzcoqL3nz6lGD7c+s9TY/WUtjfDCG8S8EWyZORbScp+l4pXG3mg==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 71F1F14000B
+X-Stat-Signature: rfrg6ymfco3ke8557wpuubgszs75iqbf
+X-HE-Tag: 1758822193-62817
+X-HE-Meta: U2FsdGVkX1+NBYI130TYPwXuoDaD8SmpZx3cvJF7+QIE3RwULDDCDJYZdk3AngX2NON/VcCov05fkB4onfzvsKPpr531lHRpqhemvPFmmy03u6pbDHpUPW+P85bWKN3BAU/X34eY8uAzl/MPMiCsGxO1cAy8JRvfop3P7qKcIhfNbUtnikcwUOdYQkHAL0fayse6QhgrXcALFKG83hl8VADDDM3yBd1umtli57esC7h4OTbkZEIAafgLrt4ixcoggSgRrHL6LUzZoKi7M5RpFtAK/ui+covDND0NH26FmcvwEvsKDuUyahGYVP9Xbmu7hf0HlGDhjwCfcnnruqH3c//2CZeX6e7+Jl/ROA+kfyNjq7bS6VKQIijzmbim3GKIiV3WyumHqTSrzDzcRS2VZhXPPV+soUXIVciKECGieYBIU8i+V0EYHEe/D5gUAsG69d1lkl3DFlJC8lZZcpq7v79MHg/4iCr9Ra8ZhPEU27rUT8eJgMxuV0XPiTkQYmi9fSza0ZZ2E0d5W1DZW8RHEdkZNSneJIeV5CeS3jt6ErETuInKfORgzWvaRxg63UAVvMQThDFaoGvQ5kd0vcbzscHJ98emk1S9HNHWTXvYlMLmzUmHBE4jNIwOH6onsC4Bo52B7TS1dAafoazZ5IwMorPYQalI3/CEpxjAQ98iQbtiLzElexvDD6zwy5/FHCDMrqIXpFx8TBv0tFMW8fo1DDGG78Fz6eNFnrrOC4mNW9piAkpRFZdjuqPRhnHnmjn4tLZNwtGX/a5+36pnEL0teGKclM2Ri0yRoT631CAGmgzx5N7T2g16VcqkI+n4NDCYQwvH9OERlL1slt57wxxH/OI7D+W1bvXCFRYIriQqpVYUVWc0bnanrZSlxzi/Z7OD2Cy+Mj2oR68PclJBYnohKoUAaUFUmwnMth+gj/lWUOriEG10H+7nvYe5BQhyAPFfwT8o0bgA2Ivc6RxgInx
+ km3bGqLc
+ s1ef2eAChMuyJcpnGKhNdbWfcDf1joEXROJkPcQDu9dBiTX5xWGnahlo+bwKYz04AR/Z78pxoqbDpD1PqHVrxr5b2q13dt26GjxVHhR0HWnt/JxprfHAQX8Hv2vhPdgzTVMNG3dybuSGSHp6ce43ZMopRBZPO6/AKv387Ys4XKnE2UOXPULIp+b9zBtvmk1nvAUKRg5vIK84o98rqShrXbPv+AYSBNu0q5Cmq5eoul8rSV2odHDsR3zfUqf5o9TxVdc8lCoAsWy3/opD8+YR9d9Tdetg6k11mpRWsi6z1X6nfWcf7ROByod1vtwFNVyehIZ7GLTNotyA2zwml2P909WMUrTNYX4SHj4cYEfkYkPvQ+BWB8bUKqUF9qqNAEtW5xsWwfT16dfMOrmoe+/tOH1R+SQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,136 +102,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-?
+On Thu Sep 25, 2025 at 7:20 PM CEST, Elijah wrote:
 
-On Wed, Sep 24, 2025 at 11:12=E2=80=AFAM Charan Teja Kalla
-<charan.kalla@oss.qualcomm.com> wrote:
->
-> It is possible to hit a zero entry while traversing the vmas in
-> unuse_mm() called from swapoff path and accessing it causes the
-> OOPS:
->
-> Unable to handle kernel NULL pointer dereference at virtual address
-> 0000000000000446--> Loading the memory from offset 0x40 on the
-> XA_ZERO_ENTRY as address.
-> Mem abort info:
->   ESR =3D 0x0000000096000005
->   EC =3D 0x25: DABT (current EL), IL =3D 32 bits
->   SET =3D 0, FnV =3D 0
->   EA =3D 0, S1PTW =3D 0
->   FSC =3D 0x05: level 1 translation fault
->
-> The issue is manifested from the below race between the fork() on a
-> process and swapoff:
-> fork(dup_mmap())                        swapoff(unuse_mm)
-> ---------------                         -----------------
-> 1) Identical mtree is built using
->    __mt_dup().
->
-> 2) copy_pte_range()-->
->         copy_nonpresent_pte():
->        The dst mm is added into the
->     mmlist to be visible to the
->     swapoff operation.
->
-> 3) Fatal signal is sent to the parent
-> process(which is the current during the
-> fork) thus skip the duplication of the
-> vmas and mark the vma range with
-> XA_ZERO_ENTRY as a marker for this process
-> that helps during exit_mmap().
->
->                                      4) swapoff is tried on the
->                                         'mm' added to the 'mmlist' as
->                                         part of the 2.
->
->                                      5) unuse_mm(), that iterates
->                                         through the vma's of this 'mm'
->                                         will hit the non-NULL zero entry
->                                         and operating on this zero entry
->                                         as a vma is resulting into the
->                                         oops.
->
-> The proper fix would be around not exposing this partially-valid tree to
-> others when droping the mmap lock, which is being solved with [1]. A
-> simpler solution would be checking for MMF_UNSTABLE, as it is set if
-> mm_struct is not fully initialized in dup_mmap().
->
-> Thanks to Liam/Lorenzo/David for all the suggestions in fixing this
-> issue.
->
-> [1] https://lore.kernel.org/all/20250815191031.3769540-1-Liam.Howlett@ora=
-cle.com/
->
-> Fixes: d24062914837 ("fork: use __mt_dup() to duplicate maple tree in dup=
-_mmap()")
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
-> ---
->
-> V1:
->    -- Checking for xa_zero_entry() instead of most cleaner way of
-> checking for MMF_UNSTABLE
->    -- https://lore.kernel.org/linux-mm/20250808092156.1918973-1-quic_char=
-ante@quicinc.com/
->
->  mm/swapfile.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 890b410d77b6..10760240a3a2 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -2389,6 +2389,8 @@ static int unuse_mm(struct mm_struct *mm, unsigned =
-int type)
->         VMA_ITERATOR(vmi, mm, 0);
->
->         mmap_read_lock(mm);
-> +       if (check_stable_address_space(mm))
-> +               goto unlock;
+Please don't top post [1]; use interleaved style instead.
 
-This is checking the MMF_UNSTABLE bit in the mm flags.
-What is the locking requirement for accessing the mm flags MMF_UNSTABLE bit=
-?
-Here we hold the mm mmap read lock.
+[1] https://subspace.kernel.org/etiquette.html#do-not-top-post-when-replyin=
+g
 
-As far as I can tell, there are two paths that can set that bit.
+> I was thinking of maybe creating something like KBox for kmem_cache but=
+=20
+> I didn't want to touch allocator code yet, I figured I would just create=
+=20
+> the groundwork for that to exist. rbtree.rs uses KBox now but I'm not=20
+> sure it should, at least if it's going to scale to many nodes
 
-1) dup_mm()
-It holds the mm mmap write lock. This path is fine due to the write lock.
-So far the above race against dup_mm(), adding this  check is fine.
+Ok, so you want to support kmemcache for rbtree nodes. Ideally, you should =
+also
+have a use-case for that, but given that we'll also need kmemcache in other
+drivers (such as Nova) anyways, I think that's fine.
 
-2)  __oom_reap_task_mm()
-It holds the mmap read lock when setting the MMF_UNSTABLE as far as I can t=
-ell.
-So checking the MMF_UNSTABLE with another __oom_reap_task_mm() does
-not exclude each other.
-This is more of a question for oom reaping.
-Does MMF_UNSTABLE have the test vs set racing here? It seems this
-check does not protect against  __oom_reap_task_mm(). I have no idea
-if this race is triggerable. Just want someone else to double check if
-my understanding is correct or not.
+However, in any case this should be integrated into the rust/kernel/alloc/
+infrastructure in one of the ways described below.
 
-I can see this patch does protect the intended race in dup_mm() vs
-unuse_mm(), it adds value.
+As mentioned, I would like to see (3) or (4). (2) may be viable as well, bu=
+t I
+really hate the resulting code duplication (not having dynamic dispatch for=
+ a
+kmemcache backed Box is probably not that big of a deal though).
 
-Chris
+Anyways, I'd also like to hear some more opinions, especially regarding (4)=
+, as
+mentioned.
 
-
-
->         for_each_vma(vmi, vma) {
->                 if (vma->anon_vma && !is_vm_hugetlb_page(vma)) {
->                         ret =3D unuse_vma(vma, type);
-> @@ -2398,6 +2400,7 @@ static int unuse_mm(struct mm_struct *mm, unsigned =
-int type)
->
->                 cond_resched();
->         }
-> +unlock:
->         mmap_read_unlock(mm);
->         return ret;
->  }
-> --
-> 2.34.1
->
+> On 9/25/2025 2:54 AM, Danilo Krummrich wrote:
+>> What's the motivation?
+>>=20
+>> I mean, we will need kmem_cache soon. But the users will all be drivers,=
+ e.g.
+>> the GPU drivers that people work on currently.
+>>=20
+>> Drivers shouldn't use "raw" allocators (such as Kmalloc [1] or Vmalloc [=
+2]), but
+>> the corresponding "managed" allocation primitives, such as KBox [3], VBo=
+x [4],
+>> KVec, etc.
+>>=20
+>> Therefore, the code below shouldn't be used by drivers directly, hence t=
+he
+>> question for motivation.
+>>=20
+>> In any case, kmem_cache is a special allocator (special as in it can hav=
+e a
+>> non-static lifetime in contrast to other kernel allocators) and should b=
+e
+>> integrated with the existing infrastructure in rust/kernel/alloc/.
+>>=20
+>> I think there are multiple options for that; (1) isn't really an option,=
+ but I
+>> think it's good to mention anyways:
+>>=20
+>>    (1) Allow for non-zero sized implementations of the Allocator trait [=
+3], such
+>>        that we can store a reference count to the KmemCache. This is nec=
+essary to
+>>        ensure that a Box<T, KmemCache> can't out-live the KmemCache itse=
+lf.
+>>=20
+>>        The reason why I said it's not really an option is because it dis=
+cards the
+>>        option for dynamic dispatch of the generic Box type.
+>>=20
+>>    (2) Same as (1), but with a custom Box type. This keeps dynamic dispa=
+tch for
+>>        the generic Box type (i.e. KBox, VBox, KVBox), but duplicates qui=
+te some
+>>        code and still doesn't allow for dynamic dispatch for the KmemCac=
+heBox.
+>>=20
+>>    (3) Implement a macro to generate a custom KmemCache Allocator trait
+>>        implementation for every KmemCache instance with a static lifetim=
+e.
+>>=20
+>>        This makes KmemCache technically equivalent to the other allocato=
+rs, such
+>>        as Kmalloc, etc. but obviously has the downside that the KmemCach=
+e might
+>>        live much longer than required.
+>>=20
+>>        Technically, most KmemCache instances live for the whole module l=
+ifetime,
+>>        so it might be fine though.
+>>=20
+>>        (This is what I think Alice proposed.)
+>>=20
+>>    (4) Solve the problem on the C side and let kmem_cache_alloc() take c=
+are of
+>>        acquiring a reference count to the backing kmem_cache. The main q=
+uestion
+>>        here would be where to store the pointer for decreasing the refer=
+ence
+>>        count on kmem_cache_free().
+>>=20
+>>        Theoretically, it could be stored within the allocation itself, b=
+ut it's a
+>>        bit of a yikes.
+>>=20
+>>        However, it would resolve all the mentioned problems above.
+>>=20
+>> I'd like to see (3) or (4), also depending on what the MM folks think.
 
