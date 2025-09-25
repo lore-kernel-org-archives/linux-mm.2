@@ -4,160 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DCD7CAC5BA
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 19:32:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BC59CAC5BA
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 19:35:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72F9D8E000C; Thu, 25 Sep 2025 15:32:34 -0400 (EDT)
+	id 9A5568E0002; Thu, 25 Sep 2025 15:35:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DFA28E0001; Thu, 25 Sep 2025 15:32:34 -0400 (EDT)
+	id 97DA38E0001; Thu, 25 Sep 2025 15:35:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5807E8E000C; Thu, 25 Sep 2025 15:32:34 -0400 (EDT)
+	id 86C218E0002; Thu, 25 Sep 2025 15:35:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 436F48E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 15:32:34 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CB12713B24C
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 19:32:33 +0000 (UTC)
-X-FDA: 83928769386.12.01B2811
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 771398E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 15:35:13 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1143F1A04C1
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 19:35:13 +0000 (UTC)
+X-FDA: 83928776106.09.6C05727
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 6A976120008
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 19:32:31 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="VPC/q4Ir";
-	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf12.hostedemail.com (Postfix) with ESMTP id E54E040006
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 19:35:10 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=V0OA8pQs;
+	spf=pass (imf12.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758828751;
+	s=arc-20220608; t=1758828911;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D5jCgvyWVjXaOxE5qhMkjeDubZJSnlT/2ztleqWrFCE=;
-	b=tW2OxUF8plvK+VjmZuKMvCDuqorRlVTUaryP+d+B24yA+T3Z8QbMM06MxgQ8J/SY0VicEf
-	sAlR3fTM583nts3xxv7uxMkRHpC9ICf++pLWLDvdQ5fZp2BMMVC12halFYFYXCaZ7Y3e/s
-	1dxeKcOQBNxDWPZ155Daxg2J+v3fHQs=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="VPC/q4Ir";
-	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758828751; a=rsa-sha256;
+	bh=VJwwywmn8MlVeferLmRGbOLpNjhdj0h30dn2f1aSujg=;
+	b=YxwdsY1GpGncxwCDXwiNOMeKhT1ZZ+TUpBGApxLCdhTDmThhR1LmrtnJI+1fggGx7DiNpz
+	X+k+YIGy7f7ijiuGzBBgveIl+bw1+VoQnW7J/EEJYVpP/6M0X3kVfcBC50orECp314B5lq
+	WH+DNYSFZd3//FymTu33MFBv2MyIBbw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758828911; a=rsa-sha256;
 	cv=none;
-	b=HT8By0MISzwjKRQHW4Hvv6vhTweAg6/ntqdZ65LzjioMrmlNfF4y0TpDeFvodAPa3Pi/3z
-	D+URfyK2gNMyVitepQ2sypu13RHTBSlqRzVbuRSh3zeQ7MuRe4De10sqB4bgwlxRfLlPas
-	FgrduF4mm9JjD6QIg2kmgDxPWVzk7ys=
+	b=ZnuwGXMKD0R2RHT/nN2VeueooVzUyBg6EaB7+wsgu9wuLa/T4b6eosXJHmm9qsFfhpxDzj
+	j97gj4DhiUD04SI/fvdFXbXGHIQPdzkm6ATNvKmpX5kWrQz5rvDNMZ1/i1R49i0kQhqNDS
+	EgYPm5kaDcR2+lGE0aj8Fofuxe4qp0Q=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=V0OA8pQs;
+	spf=pass (imf12.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758828750;
+	s=mimecast20190719; t=1758828910;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=D5jCgvyWVjXaOxE5qhMkjeDubZJSnlT/2ztleqWrFCE=;
-	b=VPC/q4IrPAbIk/S46tksLxrLnh+d4t1igIOUTnIkjkm1PqFaDWFzp1/cdg97WN9HiS5xIy
-	oRH9o59Ikn+Xna/Ve+8YJaD7bKKDNzv0jXmhQXPTYCbFOY1AlaMuliAsHb38IZ74l5v8dB
-	K2cezcHf6Syjr5OaxFqmX69Y+2Ys0SE=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=VJwwywmn8MlVeferLmRGbOLpNjhdj0h30dn2f1aSujg=;
+	b=V0OA8pQsRJu2iwwv3QXtn5Xj4KNfVUWs1zLoEncvcEPaj1Z2xjMGlLn80CwGe6eeayKHBS
+	yOGUyoyqxPpG6MoWd4TW5FzUbGzwJ0RYM/8JAVtnQlbx8tA/V6HvhOHveKLn8tl7yXZWsi
+	ZILcwXfTVMdCfs8OErYzK+vuRPm1yws=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-318-5fia2QDeO728YnK-10lH3A-1; Thu, 25 Sep 2025 15:32:28 -0400
-X-MC-Unique: 5fia2QDeO728YnK-10lH3A-1
-X-Mimecast-MFC-AGG-ID: 5fia2QDeO728YnK-10lH3A_1758828748
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45de27bf706so7825615e9.0
-        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 12:32:28 -0700 (PDT)
+ us-mta-98-9xTRVrPePCWoh2GH5LQpFQ-1; Thu, 25 Sep 2025 15:35:06 -0400
+X-MC-Unique: 9xTRVrPePCWoh2GH5LQpFQ-1
+X-Mimecast-MFC-AGG-ID: 9xTRVrPePCWoh2GH5LQpFQ_1758828905
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-46e25f5ed85so8676715e9.3
+        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 12:35:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758828748; x=1759433548;
+        d=1e100.net; s=20230601; t=1758828905; x=1759433705;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=D5jCgvyWVjXaOxE5qhMkjeDubZJSnlT/2ztleqWrFCE=;
-        b=FwrEswx7TAjcLqsK9hbOUb/XQPOiebvzAuX5G/BLCvicW47Rws8UC4U/xWZ4ImDvDU
-         aGmxPCgFzg+F2XPHOWHEStIassOsECdQyV74JfVxtU0SiTPDYF23uYdRyLTCDMScpKIe
-         j6o86DBT3qhSnBMiCMkVpxwLoKO0v4KwJ0LJ+fJNYl1+YD5qj4Y9wiDDUG6Q7PcFsI66
-         pIF7gd5xpNDnxSmSL9HYO5a9XpWsApSnSdRA5FXdHDdPLhm4rqrReW9U7XhA3UgEB+e7
-         39mGzil8ZAaNz4SZFlt+0y90W42HcjixTHFcc4DHRHSzVy6L5tDJi3wTSsmpSy5mLWeq
-         nHNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUS+naNNAX6e3tYYxYngT6taegAVkosnLxhbbFgyNjMjdHO5A073k/Uqt7nK4yKxfvJJ5LMHD/HlA==@kvack.org
-X-Gm-Message-State: AOJu0Yza0MzHbuLYrmSp++5BcdJcBMVFyx0z4t7SmZt97zVjOvdliuaw
-	Cl9xH6T5v9QZhcRpB5Fa5MROunKgDGjzVOtCuRZtunrQUc4Y/tBjcdZ+MGwVASrmFCSno9TZAFT
-	K+28nh7r1H7/0ZTDcwBlqV0k5aj93WjXxdReB6Gq7y1oB9Le8GK+D
-X-Gm-Gg: ASbGncvcWapgM7cvYErpVx3qgoZUvIGh6D16kYBG7w38cqD93Aerg8t6x+M77h8GH5r
-	vaCPmaxq5YDXRqvBCnGITS6DjZaEcTUMQGrQJWMZ6WyxxFYjOnObHpXFAghKffqoaENIxiJy7nz
-	isD5Xd8ZiZr6H3K48lFA61UTOiZB751KQkElzEtSLkZ162HPzzqWuzFJNtVzk1StCBq6ZpVDPze
-	EEFnFE1XwwUighkKHrsfeLk3F8IPNwlqWg4vCw9gze8cWvmAKLun1xtRPdaQXKNOw+fhlE0QTeY
-	G3Y32AtVq/s6g6aCigAmqeEWc1yW34qiuW9GqFVRUlOk8NtJ5rx5tXRwmVZAUofF9fOt2nST/Q0
-	Wfl8GBjvX2/vyNa9PAM8NJ1NQ+4OfAKttHXLARheCkOM8nQMDLTVlgyqJGZ40iUExH4Vf
-X-Received: by 2002:a05:6000:3102:b0:3f9:1571:fe04 with SMTP id ffacd0b85a97d-40e4b1a06b4mr4993220f8f.48.1758828747375;
-        Thu, 25 Sep 2025 12:32:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEFUL795NU1gcu1A2U+hWPDoMkyU660Ad1UyOUZxyr2NlakU+3syyUj7XJkeC88am/EkGOIvw==
-X-Received: by 2002:a05:6000:3102:b0:3f9:1571:fe04 with SMTP id ffacd0b85a97d-40e4b1a06b4mr4993145f8f.48.1758828746777;
-        Thu, 25 Sep 2025 12:32:26 -0700 (PDT)
+        bh=VJwwywmn8MlVeferLmRGbOLpNjhdj0h30dn2f1aSujg=;
+        b=Ic+Fn5dpnVBS+gKvwR/cqSvo/VrH6vj2/UUdM28Zq5dAfydTwvMIUnVrvDOY2SSXfW
+         8i4ZvDqMsZbyEotK/HIbj8m26bu6oyQ0ie7XJcVxzYqovFvAm+GHcX0S7EpVcgER8WAb
+         1HQSUpKFMA0RY6+vFcBKjRwMecSlKxlwN9u2kOqzr+iy5qHyTaNuceRfSnAkj9wqE5Tl
+         djPtOOH0/7H6QhCc/G7gzT6881X2xbJU+GNOSwHWqhtJcGETz2K8mISnw0mQBYSRTVeM
+         PUQnosjhlvCDSLnV2I7MZZtJeka3LfM/+sSNOiVpqLqlRbRRKBEqpn2lrKu7bJb/204/
+         SA9w==
+X-Gm-Message-State: AOJu0YwqyaW7lkcjQVCOkBItj4mHzJGhP2TwDPeH5j9ID9zuK8V4M6eD
+	WSqZ36OmqphioXoT9Q8Ph8GORkKUvowa5EKqCLehllua4zC2dTNG/b3jdXwCtx4qLCUUlhYtGNM
+	p9hX+QM/bP3p70DJzapvl5riB54t73kJoOBBOcmGk1l24eq6+9/bB
+X-Gm-Gg: ASbGnctnForiegNgakDxMNAL6am5TItJWGNok4tq6S0U6R+Pl1+HxiUBejRkXqXhbfJ
+	1iMSmsgP1zZUL7J5jCHiNVXYR+GWt/veEZpNkdVF02yCmPVIYNu+eiKWo2nMmFZbEhWH/diMG6S
+	y3pYpsYCdjHeaeSqZBhHQCax4xl8tI+t835irO0wFB1mZemRrnGt7VkUAPGMovKTD3EzzwE+l6C
+	IqmKk78kwoE51uusfo92FsMNr/82CEy1EkAmr+A924DPlmrtIxunQ7zOmng/zErn7+4D4N0byTa
+	CVoN9WZ4zZiOsoLphG2vo0h+rqf8ORHiLCVCeYn76MhZkGGvVFPmnqIp182Nr7nEWGq0KdDoxb8
+	kLSSqFFS7luho/epmFv7I7//m0m9PM9gcZR5tlJ3G5PkNNhw02yVH5zLGicoHVOJxvTDH
+X-Received: by 2002:a05:600c:c04b:10b0:46e:2d0d:8053 with SMTP id 5b1f17b1804b1-46e32a30481mr40382395e9.18.1758828904935;
+        Thu, 25 Sep 2025 12:35:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGd82MPk0+1Hmip3UQRbBk+SH7Cq3z6WmT4cbaRtBd04WMOf1YdLsAcp6Q0b+Vu83a2w7bdQg==
+X-Received: by 2002:a05:600c:c04b:10b0:46e:2d0d:8053 with SMTP id 5b1f17b1804b1-46e32a30481mr40382185e9.18.1758828904542;
+        Thu, 25 Sep 2025 12:35:04 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f3f:f800:c101:5c9f:3bc9:3d08? (p200300d82f3ff800c1015c9f3bc93d08.dip0.t-ipconnect.de. [2003:d8:2f3f:f800:c101:5c9f:3bc9:3d08])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-410f2007372sm3193903f8f.16.2025.09.25.12.32.24
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e2a9b6e1bsm99082945e9.10.2025.09.25.12.35.03
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Sep 2025 12:32:26 -0700 (PDT)
-Message-ID: <1b34dd89-cbbb-474e-be75-808e174c8ed9@redhat.com>
-Date: Thu, 25 Sep 2025 21:32:22 +0200
+        Thu, 25 Sep 2025 12:35:04 -0700 (PDT)
+Message-ID: <39f22c1a-705e-4e76-919a-2ca99d1ed7d6@redhat.com>
+Date: Thu, 25 Sep 2025 21:35:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 06/12] KVM: guest_memfd: add module param for disabling
- TLB flushing
-To: "Roy, Patrick" <roypat@amazon.co.uk>
-Cc: "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
- "ackerleytng@google.com" <ackerleytng@google.com>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "andrii@kernel.org" <andrii@kernel.org>, "ast@kernel.org" <ast@kernel.org>,
- "bp@alien8.de" <bp@alien8.de>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "corbet@lwn.net" <corbet@lwn.net>,
- "daniel@iogearbox.net" <daniel@iogearbox.net>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "derekmn@amazon.co.uk" <derekmn@amazon.co.uk>,
- "eddyz87@gmail.com" <eddyz87@gmail.com>,
- "haoluo@google.com" <haoluo@google.com>, "hpa@zytor.com" <hpa@zytor.com>,
- "Thomson, Jack" <jackabt@amazon.co.uk>, "jannh@google.com"
- <jannh@google.com>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
- "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
- "joey.gouly@arm.com" <joey.gouly@arm.com>,
- "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
- "jolsa@kernel.org" <jolsa@kernel.org>,
- "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
- "kpsingh@kernel.org" <kpsingh@kernel.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
- "luto@kernel.org" <luto@kernel.org>,
- "martin.lau@linux.dev" <martin.lau@linux.dev>,
- "maz@kernel.org" <maz@kernel.org>, "mhocko@suse.com" <mhocko@suse.com>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "peterx@redhat.com" <peterx@redhat.com>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "pfalcato@suse.de" <pfalcato@suse.de>, "rppt@kernel.org" <rppt@kernel.org>,
- "sdf@fomichev.me" <sdf@fomichev.me>, "seanjc@google.com"
- <seanjc@google.com>, "shuah@kernel.org" <shuah@kernel.org>,
- "song@kernel.org" <song@kernel.org>, "surenb@google.com"
- <surenb@google.com>, "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
- "tabba@google.com" <tabba@google.com>,
- "tglx@linutronix.de" <tglx@linutronix.de>, "vbabka@suse.cz"
- <vbabka@suse.cz>, "will@kernel.org" <will@kernel.org>,
- "willy@infradead.org" <willy@infradead.org>, "x86@kernel.org"
- <x86@kernel.org>, "Cali, Marco" <xmarcalx@amazon.co.uk>,
- "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
- "yuzenghui@huawei.com" <yuzenghui@huawei.com>
-References: <cf57bdec-6a2d-4d6a-b27c-991a7e2833ab@redhat.com>
- <20250925155051.2959-1-roypat@amazon.co.uk>
+Subject: Re: [PATCH v2 4/4] mm: thp: reparent the split queue during memcg
+ offline
+To: Qi Zheng <zhengqi.arch@bytedance.com>, hannes@cmpxchg.org,
+ hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev,
+ shakeel.butt@linux.dev, muchun.song@linux.dev, lorenzo.stoakes@oracle.com,
+ ziy@nvidia.com, harry.yoo@oracle.com, baolin.wang@linux.alibaba.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+References: <cover.1758618527.git.zhengqi.arch@bytedance.com>
+ <55370bda7b2df617033ac12116c1712144bb7591.1758618527.git.zhengqi.arch@bytedance.com>
+ <b041b58d-b0e4-4a01-a459-5449c232c437@redhat.com>
+ <46da5d33-20d5-4b32-bca5-466474424178@bytedance.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -203,21 +161,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20250925155051.2959-1-roypat@amazon.co.uk>
+In-Reply-To: <46da5d33-20d5-4b32-bca5-466474424178@bytedance.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: M6mL55qfm_YyfkBkDUOCXHGfDoZlOlSlcO1vGi5Lc_k_1758828748
+X-Mimecast-MFC-PROC-ID: ZULXtur0MlWqKB-ngo3NHT-TZ4BvGbwH3XJIgbCsKNc_1758828905
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 3eyt9zsoqzzmgpecw4toghfmd13eyxp6
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 6A976120008
-X-Stat-Signature: 8s5dqhqnxopdf3t5e616tmsysqa5tdc5
-X-HE-Tag: 1758828751-96382
-X-HE-Meta: U2FsdGVkX1/rkVacAHBkzKSHCO9NC9FvgMWzWM/JuO5E2Cy6RcWGnjqny/KdkPRQHigTcuPHIaCEmZWs4bdA+8B+L7KYwZ2z/YoEKbhYgzbw7KC+hRHqqknaRXEPDb6fK9FpIh/6w6IQOwcCVwC1w07z2Jw4yp3bq0Y7ipW1VLFzPe0JBkCay6RU8L5cjlf5vJT+WocGb6uh4sS0BO0714b1QuoAVvxviQ9wPUver571WkKzWYRO0OFCQnmqEn7s7YVhyAD9Fh/zXmsMPD7Gw48u7tScrKOBMZB1bpeLCrgi6TltOEO5BsCoy69qCrFmTeJ4EQPGf/afxGeaNxXk88etDahueyN9KX2D+hpYR7VoRcxxZWeBwNZk2NGQ+5ssR0MgPIbLEq5IRuHl4iq7V93IYLdKe/JY2k6LHOr08v04DAtLVcrPiD7przZT26rFeE3OgiZCqB9E268ro/qD57wDpxXD+vCBakXmuRPKgXOmg0wXDGQF8JPqVtLzNJHGHgCrOxjdMMyQQ2+PiYG6c64NwD2ZWhX8kOaDwhEAafHMfuGCkICmbooqUC8rCx4VXaZ1YYsRyHXEz0pL16E/T4rav9ERUKAP3ccOgwlM4J84an73wcy2Ij2Ecf/vYimrPamMUJnYVzcJ2AobA39PLDyqq2vnsoLCuTLqbFjqeMuN6ALfj0amyTpsLFzlRHAugCpkEWI4dRGWFJ7O7yY79YQlddJMZXkyeptl0yF3RCoo64L2F5oED8i8TrvPN0QTosMTTo0wM1OfNyCzLPbIaj+2JQu5h2p78VWpKy8GRusSzNYS+pQ/0QGYCQS27XioMxfw8EiRwY9Opi3J9Lfp9LhEpHjhHIX4TV61KWJxkocGmcUPWzlcVwSgZhuuZSWGKQ8GZDYQaDyrxoGu9HtsX6juZp4x47Lq+5X9v5hM1IiRKqwHFGGvp1Cl0Lyf05ziVF1LmI3P8GgqIDDU3Gg
- nXynmIXc
- 4r8yBkEgh1ID3n6/MH8gRGrfwq9wIsdvg0wqr3nQbcu2aCfiXjOQoe9K8DFezQmdvPKe2QYDAVLKgXkXzJcByWy8B/45Wn51lnI+TP0MeEyiHrteAjt2eVcPywj4okPXX7bn1H8lbZl3PVpGG2lco2yWAN0LbQeslmpwd1x4Gr4Eoq3V11m2OzDRukVBhumiPR3eVD0i88HVOIBtTPxVho2xP9NLIepHTlfOdK5yALw9NR0HQguOV46rLVIzKMjTg0Yy6XiEzfb5is2NFBrtVW0V2iMOmnCLTkgu7LaWScOWsqdQ/pv8YhmZ0HG6EJI58dMTLN+tNy8ACABJ1PVlbiMxIwBVHRYnMph/FDEX0+hfFYd9qMy6pH34RrmMio3cv0ZCkR/+4w/9c3ShlAhxXy2oXDxk79jh6qgXGQTNfdaqo76ZdQMKkahPPacf43C3/wvUtf5OpXKUe/MJD7xoTi0msYZHH9P5d6ORkfpm8mtkvayMx26IbrnI/MhhxsPumRURtFb0qe1tmWCg0mMvaJYA9NzaIIwKsR+psXYspeguxEFh1epU10DSG04tEG8h095JdPghBKWL6HnRwImvEN86b755K7RcFrtfNMAS23qOQUF5sL2O/B7FVQcBq4pABEBRTsBCOZ5ip4d40AGo+jWopzeUbvpAc2aEzrRDiVm7au1c=
+X-Rspamd-Queue-Id: E54E040006
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758828910-847133
+X-HE-Meta: U2FsdGVkX1/vHxLP/G2ofquyh/M8irphIeYxV39RgaJdlfIGM0Nkpe4aEFcHayYBPGUtT62yaPmcy9eAR6doo9eZQj1Tkhrd3hnfl5v/WNG1us+XjFGUyO2f56IHtHfBCJwuh9at8k6CpZei2Ze1Of35gfqKSf0A7KJaGkGZXZBXTBWzhk77TbL4meUXx6wX3KaphzKSdl/Ze4LUiaKr0XH4ik2GzJ0ogc1YNet5oCqsae0d0lJnZ9zWrVTojHb90VqOoZbjF4jJY9hbtwhp7CHFzrVao+a+jKySONDJCOB6aePZou8/T4ficopVE4yO4YBsNVeq/lqlN0Hr64P9iVXixEWaERtjUrawGh1TOy7eDB4MqlyW+W/DYygMYYvOUvqk/SBNiV1hxiMRN1ItVCIJZD+lL/tARWmZ3DEOloVTkNii0vBABrUn5jaVlmxVaUuvZHNcAlRKI8+ZAh94yoETvMumtishioAo6UQG1DVbImXFCy9oKNnV+yLT0yF/nPmvrrKGH8PMqOXfU1RtKiZ13nUDcRLDuEX3wyK5jngDm7s4pXM5IJQ7ctey3FKToYg4qKuaZanYh4AWzvgVncGIKGjoNN9jEydzl57U3bJ6A/FCCiS50nTSWjtJd9OHLwjR4g2blDv3ATE6WYHZ5gM2MiA+YjhaBSVe/HaZhnUWZ8hhzPj65hYswimXDAPvP7jIUKa7s9+xVVxbY2Zynfrq4QdSpdXoQ0prQ/FZG4U5vl0qTWvHDpR5EqOk1PAvgW/bd2EO1ODri/GEV/vvTniPMqw2oM7uRS+iuPxKza6iA70eIZUbvBahWVBRBz+sIxhmKuzEMrDDNBhOqGr5J4r/WjsFOcrKJ6oVloEq57Wbu75lQj9yMmo8wWkKJIxmMupqL1/ZVqyB5Sg89y4LiEID2Exbmn2Fx+LCLiSqJ2tmVsAHVMMQU0YSRfG02ag6Su2De0nQNXQlURPmDEa
+ Yg24+auh
+ 6dzYeBjZnAU4GPTVBCQ6oH+kNagIEUFwAnVQUNroUcm3+xp4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -226,95 +184,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 25.09.25 17:50, Roy, Patrick wrote:
-> On Thu, 2025-09-25 at 12:02 +0100, David Hildenbrand wrote:
->> On 24.09.25 17:22, Roy, Patrick wrote:
->>> Add an option to not perform TLB flushes after direct map manipulations.
->>> TLB flushes result in a up to 40x elongation of page faults in
->>> guest_memfd (scaling with the number of CPU cores), or a 5x elongation
->>> of memory population, which is inacceptable when wanting to use direct
->>> map removed guest_memfd as a drop-in replacement for existing workloads.
->>>
->>> TLB flushes are not needed for functional correctness (the virt->phys
->>> mapping technically stays "correct", the kernel should simply not use it
->>> for a while), so we can skip them to keep performance in-line with
->>> "traditional" VMs.
->>>
->>> Enabling this option means that the desired protection from
->>> Spectre-style attacks is not perfect, as an attacker could try to
->>> prevent a stale TLB entry from getting evicted, keeping it alive until
->>> the page it refers to is used by the guest for some sensitive data, and
->>> then targeting it using a spectre-gadget.
->>>
->>> Cc: Will Deacon <will@kernel.org>
->>> Signed-off-by: Patrick Roy <roypat@amazon.co.uk>
->>> ---
->>>    include/linux/kvm_host.h | 1 +
->>>    virt/kvm/guest_memfd.c   | 3 ++-
->>>    virt/kvm/kvm_main.c      | 3 +++
->>>    3 files changed, 6 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
->>> index 73a15cade54a..4d2bc18860fc 100644
->>> --- a/include/linux/kvm_host.h
->>> +++ b/include/linux/kvm_host.h
->>> @@ -2298,6 +2298,7 @@ extern unsigned int halt_poll_ns;
->>>    extern unsigned int halt_poll_ns_grow;
->>>    extern unsigned int halt_poll_ns_grow_start;
->>>    extern unsigned int halt_poll_ns_shrink;
->>> +extern bool guest_memfd_tlb_flush;
->>>
->>>    struct kvm_device {
->>>        const struct kvm_device_ops *ops;
->>> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
->>> index b7129c4868c5..d8dd24459f0d 100644
->>> --- a/virt/kvm/guest_memfd.c
->>> +++ b/virt/kvm/guest_memfd.c
->>> @@ -63,7 +63,8 @@ static int kvm_gmem_folio_zap_direct_map(struct folio *folio)
->>>        if (!r) {
->>>                unsigned long addr = (unsigned long) folio_address(folio);
->>>                folio->private = (void *) ((u64) folio->private & KVM_GMEM_FOLIO_NO_DIRECT_MAP);
->>> -             flush_tlb_kernel_range(addr, addr + folio_size(folio));
->>> +             if (guest_memfd_tlb_flush)
->>> +                     flush_tlb_kernel_range(addr, addr + folio_size(folio));
->>>        }
->>>
->>>        return r;
->>> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
->>> index b5e702d95230..753c06ebba7f 100644
->>> --- a/virt/kvm/kvm_main.c
->>> +++ b/virt/kvm/kvm_main.c
->>> @@ -95,6 +95,9 @@ unsigned int halt_poll_ns_shrink = 2;
->>>    module_param(halt_poll_ns_shrink, uint, 0644);
->>>    EXPORT_SYMBOL_GPL(halt_poll_ns_shrink);
->>>
->>> +bool guest_memfd_tlb_flush = true;
->>> +module_param(guest_memfd_tlb_flush, bool, 0444);
+On 25.09.25 08:11, Qi Zheng wrote:
+> Hi David,
+
+Hi :)
+
+[...]
+
+>>> +++ b/include/linux/mmzone.h
+>>> @@ -1346,6 +1346,7 @@ struct deferred_split {
+>>>        spinlock_t split_queue_lock;
+>>>        struct list_head split_queue;
+>>>        unsigned long split_queue_len;
+>>> +    bool is_dying;
 >>
->> The parameter name is a bit too generic. I think you somehow have to
->> incorporate the "direct_map" aspects.
+>> It's a bit weird to query whether the "struct deferred_split" is dying.
+>> Shouldn't this be a memcg property? (and in particular, not exist for
 > 
-> Fair :)
+> There is indeed a CSS_DYING flag. But we must modify 'is_dying' under
+> the protection of the split_queue_lock, otherwise the folio may be added
+> back to the deferred_split of child memcg.
+
+Is there no way to reuse the existing mechanisms, and find a way to have 
+the shrinker / queue locking sync against that?
+
+There is also the offline_css() function where we clear CSS_ONLINE. But 
+it happens after calling ss->css_offline(css);
+
+Being able to query "is the memcg going offline" and having a way to 
+sync against that would be probably cleanest.
+
+I'll let all the memcg people comment on how that could be done best.
+
 > 
->> Also, I wonder if this could be a capability per vm/guest_memfd?
+>> the pglist_data part where it might not make sense at all?).
 > 
-> I don't really have any opinions on how to expose this knob, but I
-> thought capabilities should be additive? (e.g. we only have
-> KVM_ENABLE_EXTENSION(), and then having a capability with a negative
-> polarity "enable to _not_ do TLB flushes" is a bit weird in my head).
+> Maybe:
+> 
+> #ifdef CONFIG_MEMCG
+>       bool is_dying;
+> #endif
+> 
 
-Well, you are enabling the "skip-tlbflush" feature :) So a kernel that 
-knows that extension could skip tlb flushes.
+Still doesn't quite look like it would belong here :(
 
-So I wouldn't see this as "perform-tlbflush" but "skip-tlbflush" / 
-"no-tlbflush"
+Also, is "dying" really the right terminology? It's more like "going 
+offline"?
 
-> Then again, if people are fine having TLB flushes be opt-in instead of
-> opt-out (Will's comment on v6 makes me believe that the opt-out itself
-> might already be controversial for arm64), a capability would work.
-
-Yeah, I think this definitely should be opt-in: opt-in to slightly less 
-security in a given timeframe by performing less tlb flushes.
+But then, the queue is not going offline, the memcg is ...
 
 -- 
 Cheers
