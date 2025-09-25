@@ -4,104 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97C76CAC5AE
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 00:29:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E20F6CAC5A5
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 00:52:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7AF08E0018; Wed, 24 Sep 2025 20:29:46 -0400 (EDT)
+	id 0D76C8E000E; Wed, 24 Sep 2025 20:52:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B042A8E0001; Wed, 24 Sep 2025 20:29:46 -0400 (EDT)
+	id 088048E0001; Wed, 24 Sep 2025 20:52:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CBAB8E0018; Wed, 24 Sep 2025 20:29:46 -0400 (EDT)
+	id F2E078E000E; Wed, 24 Sep 2025 20:52:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8632E8E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 20:29:46 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4E5A613A112
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 00:29:46 +0000 (UTC)
-X-FDA: 83925889572.27.45F51DB
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 87F5AC000D
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 00:29:44 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=KmFShdGV;
-	spf=pass (imf22.hostedemail.com: domain of chenglongtang@google.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=chenglongtang@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E39C08E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 20:52:10 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 78D311DDCA7
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 00:52:10 +0000 (UTC)
+X-FDA: 83925946020.19.B5DDAF8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E0D1980009
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 00:52:08 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B03GPHqE;
+	spf=pass (imf02.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758760184;
+	s=arc-20220608; t=1758761528;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=rGrJhkEhVL8fDzcbwtX0Nlx0/Ial1/o06KA95F1aKyE=;
-	b=yGN755xTCzUlGLhRn2P/6/9p/BKIDBRNv4pb2sBHacG15cS7BaXEGgsH9kDEJ08UenWHMK
-	eBs4aJv4GInKUsvv3VHb0/lPCdgU47tZmMyl9YiE5je6mCiL3cCCo7s6vhvAjcrPjkszmE
-	uMb+2TlSTiy5PWhLGWZ+w+VZqbJgczg=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=wbgWx2FklFEBaLE/awcwgnEmo15Rtyo4cAaPuJ5wUR0=;
+	b=mqvBPxswx1eMGoNQiHHD0IxatG2OlGA3h6yyQ8OigemDg7wax0DDoJEN+juEyOWFTc6rjg
+	27WXxCXE3SMHQ1hjlSSIFQwaUh9oo9grJ/TY+LPyGdDQyrywzhLCdNLNwMkDarONui6K+C
+	7Z+47s75eFGCG9g5bauYzKOaIm73HUc=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=KmFShdGV;
-	spf=pass (imf22.hostedemail.com: domain of chenglongtang@google.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=chenglongtang@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758760184; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B03GPHqE;
+	spf=pass (imf02.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758761528; a=rsa-sha256;
 	cv=none;
-	b=OPP0Tw2jcxkub+fzWBHlAIyZmCx9PnWwznRen0jmPbHbNpcaCzCeqf68L+OzxcXx/Sp58n
-	2C+5TBjb/FJIt3uJtxNvGdaayoJXuqs6z/OfwCkHrB7vrJspHY6iNVA8ZC5tQtYppfA6m6
-	WsY17p29wkXt4MaHH/RRPkhoLEX90ac=
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-57d97bac755so12376e87.0
-        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 17:29:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758760183; x=1759364983; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=rGrJhkEhVL8fDzcbwtX0Nlx0/Ial1/o06KA95F1aKyE=;
-        b=KmFShdGVHk+dhVFnIZhUwUbV3qnvLDZOCX7+nWbmaLS+J1lYcUNCCHXfW7qJHmwBsI
-         WIcBCYo6JMo+qUWPECW0yCWDtzxOGadU6GwSQtpmRUp99+uhfmwoeRBn6Lb+llBXo8zX
-         B+LIHfEVqzY+Xxob77NEY1znYTUDM7F3edTGmyb8S6GiepiMNSG550ot+6Px80mWbefm
-         A9/u0tlj1TI/HwV523ZyyJ556EgqODqfF4u7DvUKa+UPsRtQw9u7jttHYEQRAlaLuqVq
-         wYuhYZowWU3diAyhow4OSJYbInPVOpFx1X+sFj2UHCGGS5UABTb84bNJvt+XQyfXJ1WK
-         WSvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758760183; x=1759364983;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rGrJhkEhVL8fDzcbwtX0Nlx0/Ial1/o06KA95F1aKyE=;
-        b=QprphbrZi0c2h43wJOgk+yCoib3R5sQtHw/eL3zuutglIGjLSQO3ylsKpmnlLiPATM
-         DLnmeROFpjGnliHYPY6kkEYDeaNGQWbUibBoMSo+EHmK/FT2b8EcGnPTzYhDWJd5t6yt
-         KyfFYwIje8UwyDmKavLm57ROH47ufhz6y7+SQ7hPtXSrRyJ+1ywmoOUaZ1HvvnK7zrZu
-         jqdB5E/cUgEwcmhYYeL7p+fkTzghreTzgjts+QNackIE8lx7yzzgL9rJfjWHZiRC4L4z
-         aIpBsP5AMvZyytBrUE7agWotU408sWNxnT3AQk0cPGtoeWn8fQd/2xOSogurzxzHJiHh
-         zSlg==
-X-Forwarded-Encrypted: i=1; AJvYcCXH98AxlN8rm5ExPtgsEliUmDi2BGAdi6jskruy6UMVOdPIhHh3dNojH3RA1NWclj04eqX1vGnQOg==@kvack.org
-X-Gm-Message-State: AOJu0YwywvZysi3FQV6hTaSLJCSodj+uv5NwoPCC9DDMjHtzELYKF18x
-	xWQsEjZ13n/aNksUSVTQasQgg1E+Q/K/bCEKpk/WZQKEYz5CZ5heHacsQl2IRt6IxnodRVX3uIJ
-	d3ClZPOt3ElPAy5o3Kql6TapILJGKwpXAEDZ4Yc4H
-X-Gm-Gg: ASbGncs67wgpvopFEOKQaVLcRNoioLmrZ38kKjDf1nCWQRmiYoFjj9K6WfV2p05y6+f
-	aHMUlB5YKYi2za7Pfifbp50aOpEe67yfFH+HHWwwOm8dG+UqOPHidjKjZCPc8tn3vNRnCDIRwdU
-	C/OgGNI7VRTmeg9vBNFqsjjREaMrz5IRhMWAWkbRD8qqLv8nKLcGBv1CEI44+LvKacUOxMWrcIE
-	Idzc+pp88Bt1joGTZwTPfx8
-X-Google-Smtp-Source: AGHT+IF29hX9gih8LwttPUfoJ3ziAEqxYld5pZxsEuTKcsm+ojcC4pZPrneDxgNLw1hROYWi7BymTX+vJ5G4M6w8ZGA=
-X-Received: by 2002:a05:6512:6092:b0:576:4ceb:a167 with SMTP id
- 2adb3069b0e04-582b1552a7emr239612e87.5.1758760182481; Wed, 24 Sep 2025
- 17:29:42 -0700 (PDT)
-MIME-Version: 1.0
-From: Chenglong Tang <chenglongtang@google.com>
-Date: Wed, 24 Sep 2025 17:29:31 -0700
-X-Gm-Features: AS18NWBhdBOTvWF0Ty1kP-ZkTeb619FZATRTEkhft-g2-Fo8clpTokAq1JhLagM
-Message-ID: <CAOdxtTYQye1Rtp-sG48Re+_ihD637NDXTG_V_uLkerg=m1Nbtw@mail.gmail.com>
-Subject: [REGRESSION] workqueue/writeback: Severe CPU hang due to kworker
+	b=w/e9vQvJd/18jWTTkxEKADK96ZSZia4XdS0rbiMZNBGGpWisSNp5ac6lcGGkZmVR8vB00n
+	GxZTAtACDjQuhKeINIqtkxDlz5DTDxpjaR8zHS42wh5xxWbvvAQ8RNomLZWJG31hqN4ai1
+	71XpTymxMjU79R1YVTSDURUCcwfhOFM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3FE67601F9;
+	Thu, 25 Sep 2025 00:52:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE021C4CEE7;
+	Thu, 25 Sep 2025 00:52:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758761527;
+	bh=4T9Uc1baOOm7aD/Y7ecu4SBOz/l6Ta2u4f5pFwwaU/E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=B03GPHqEXFNSoAFj12gdqmEUDxjJgJlrNnFZRAMrjsiwN0DzlFF1/VsRgW70z6EmT
+	 B/xxKoU+TsbzKDQjgmwWVeMY6TUXrKxDoLUIeIOvAKT9ZmoxJGuGVaQJYmiVmlH9fM
+	 jo/b2zwOwm2e8CvYjMNhGwrEmy9kz8V4q59CTKnoXVMA5E4m2IrwWMEI4+sGVqDqYK
+	 ori3GPqOR9vpt6d1BKHYhihhQZmtEq08kZDFc87NkDcl2ix7XtUJRUAI11W7W8MmQ1
+	 uk6iI6zl9G4WKXV27Mu/zj7cZVqmP7wVEsuL9luxWtZlcm+Zwm5pZEaSBfCdvtEx4L
+	 KJASNC13sSt2Q==
+Date: Wed, 24 Sep 2025 14:52:06 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Chenglong Tang <chenglongtang@google.com>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
+	roman.gushchin@linux.dev, linux-mm@kvack.org, lakitu-dev@google.com
+Subject: Re: [REGRESSION] workqueue/writeback: Severe CPU hang due to kworker
  proliferation during I/O flush and cgroup cleanup
-To: stable@vger.kernel.org
-Cc: regressions@lists.linux.dev, tj@kernel.org, roman.gushchin@linux.dev, 
-	linux-mm@kvack.org, lakitu-dev@google.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 87F5AC000D
+Message-ID: <aNSSNgUeMSTtlimW@slm.duckdns.org>
+References: <CAOdxtTZJqgDNMtqsq51hQ0azanFPLXHMAJ-mRhRS6yjzYhMf_A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOdxtTZJqgDNMtqsq51hQ0azanFPLXHMAJ-mRhRS6yjzYhMf_A@mail.gmail.com>
+X-Rspamd-Queue-Id: E0D1980009
+X-Rspamd-Server: rspam05
+X-Stat-Signature: c4u6dmsh7ppioecorczwt5f8ds8wpjft
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: gtfc6pi6wxasaohzbzprgt85yweeyr43
-X-HE-Tag: 1758760184-653775
-X-HE-Meta: U2FsdGVkX19jLDA5gX+bn2rKJHzhOi689NMtb22JLe6pvxWYhJpWLMTkJC2j2eIB07JlJcx8D6Its8/BThZPhOq5X8/cEp3b/9LPkI+x7v+TNn/YbNEoT3FCPbZHBw+7VSIipjvVxPuzIV10+6AjistvstNpriGC/guTou9s5OlpUq/ixRfLBbjctGC4gAbf9ELSMYkUZnyHuvXg4Jx/+AcXxIxSZv72yhgjXzMLWAjiCA5Xjl5+wDkSv1VtqyiQ9IkSuDxWuyzSy98zMgXAV5qWDB0C8/D2YRPbijlMkXmozQC0qX71cdh9Om5BbuwHegz65zLATGb60lXx+CAYowO5ZzPKrVyMr9PXQPKN5VcELegqY14CaH2vF09QzR9sYPXLmNPdCQnO9tFE1obGXxZ10P5BVn4hDD8LEqDM74yWmSIiJHpbiVGEBLXDmIlME0AtFUhs3iJqIA5yCRpu1hNKIbvOpDegCHWP+ncGtqTWZ1XqvkTJDfpINggolQmAVr7bmBY4m1jysIbAL8+9DlHzfsZ7NQFo1odnDweCF6W3jTQpn22yVQNPIDKe/q1ni1P+7jFHcRoPzuVe5dhWSIowSIaC/ewMVV6a2QmPlbiowoyhAdQJJbLSKfSL2KqFt2KdemLQVmjFSxK5WVSGhcOaIu+IRyBUa+FnLmL4vj5mYKBUC8Mt/R+PdE9NKTEXfi80ltaMBYakt27p5KH/C6vz+OranSFLDKX8/S61lxkAPTBCYRc47C/Wm+aupszYQmG9JkuiAQefd31UoRdMvbmswvfg5IfdQCybhXRJPnjZME/qOOQn8NSon/tN/VVEVk42jzuqSol0XcO0XY549ePcsHuFw1uwwO/TiJ3S2DvGBhFFTkD9wGaNaUq1VXRVyifJfIJ7nKLImkNFUaYEg68eVSjbsCNkoNvzF91P0ddTUsQmq5hAmzYxjRcFEHaD5F6dn0wSE71ol+84ZfI
- zwT84iAq
- wEhTjB2/OIG9FuAP1kX1KfM7jFg/La7Ccf1DXKYihJHCSia02Oe7FxbUAJlVxkmQGrbcWRSiDMbe2/b5F5IZ0ayQK4XUczzGLbevKl6V7Fgxqb0lwVA371A4y5/Eex2RL9d6aqTvHATVM+eP8Ih3/jstG4tVjETocFD5JHCNDaIWg7tU5wV+LOz/foaeoNzd0iijOLvwSUp2buSEnceFfS5kTQUYaxUNrn6GF
+X-HE-Tag: 1758761528-214832
+X-HE-Meta: U2FsdGVkX1/xxBWoyYoJO02MgIWBgqgDjLdPKXz43MOqv40F4T+rjBWSRon1EEsXunTb1ANrXsTsq3IfSE/4ay6duWAp2pTt1/crhzZw3SNLpf7WWGa6cPzjANlIZU0JVQf7f9/zlj3ICjKvleO80GFNZP6+Sf/hE4jVkZ7LhqJ3XJk+a68dlyW6a2hwHCWVVW/0otMM4zcCY94JCJfeQam1yTsFURnw+P4K+TqTC1EouygFOUPnrz9CUn25uIB/+D2sCWDlvOnFytcd3NGzTvQT4ebTTKioB/Ui5rZjqKpDs60bXaL4sj0/42dfZEc9tgwME1jahVM+wQ9Mp15zji+nfogreVrOlkyC+GLeaJ0dT7cmL85GOXCI/DAJ09K2tZ81ApYJ7huvbtlTEc9Phwt0iUyFidIG6bgrkmVyYD21+upVvb7rh2gJUnDIqgLDlyy7vdX2v84aUs/4u49XV9ozyq4XedBW8EyUhQ1Y6YrTYmFzZj0dg4SBgAsiR09c0mre9ONDiUzdh+tl4RWeZANze4eAzHwRIvWqazOB3Tq6m6cP/1/uyq4jaevNJ/XvqVQK0baFZ9AO+bjHOmYJp7/9D229wETcRlIXcotSwRMMLhU69iUbnahEp7sqVBdJiMfg0/U4CDNSEfYLaGeyDk1NvuHB/ZSQY4EiIOAzBmgKQECJQsCsTtsxTgTUD+ifAS7dPbsLsQaK5ckLXc4ikLzmp8brcd6XcnPuaee3qi5TxBlNYule0GqEQ7UGmpRMZkV7jpHMzUeNGmNihPFI8z1vNAuj+DgiuB3nPykRo85/mLntU4PCf+t/l88Mf5rRRZL9EmL+kal9RrzaajW4HevILxhHDPzdhHlWMu2JW1n84mf9IZ0RykUVQ19OTSOoqP2HYNBEyZnKs8ToQrfsmxGtuojhI7giXJJxFzBnx1xOrar0CUhm8qasioRxIn1zVw2nRALmbFfFs2tYxgM
+ 3EjTbDL2
+ et+p2RYE+ImvDBB73Rro0Ay3ISrg69mwwyIWxGQJxoQbA9ZRDcOO7I+MzJciG+947U0mzlZY+bBDJlwwHnM1zwI2m6qDoh1/WfGMtlTAMLufRsNHX5LTSIXLzDXMUuVd/L9rMS8MJ2E5yHDjHm4irsobpW8nXO9htpeRsAkURbyEWmYDuk/VRPATil1qxFDOD8be9gL360OohgQy/YR7j/U5UKJG98cnezJcs4p5tMFSlf9U=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,103 +92,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Wed, Sep 24, 2025 at 05:24:15PM -0700, Chenglong Tang wrote:
+> The kernel v6.1 is good. The hang is reliably triggered(over 80% chance) on
+> kernels v6.6 and 6.12 and intermittently on mainline(6.17-rc7) with the
+> following steps:
+> -
+> 
+> *Environment:* A machine with a fast SSD and a high core count (e.g.,
+> Google Cloud's N2-standard-128).
+> -
+> 
+> *Workload:* Concurrently generate a large number of files (e.g., 2 million)
+> using multiple services managed by systemd-run. This creates significant
+> I/O and cgroup churn.
+> -
+> 
+> *Trigger:* After the file generation completes, terminate the systemd-run
+> services.
+> -
+> 
+> *Result:* Shortly after the services are killed, the system's CPU load
+> spikes, leading to a massive number of kworker/+inode_switch_wbs threads
+> and a system-wide hang/livelock where the machine becomes unresponsive (20s
+> - 300s).
 
-This is Chenglong from Google Container Optimized OS. I'm reporting a
-severe CPU hang regression that occurs after a high volume of file
-creation and subsequent cgroup cleanup.
+Sounds like:
 
-Through bisection, the issue appears to be caused by a chain reaction
-between three commits related to writeback, unbound workqueues, and
-CPU-hogging detection. The issue is greatly alleviated on the latest
-mainline kernel but is not fully resolved, still occurring
-intermittently (~1 in 10 runs).
+ http://lkml.kernel.org/r/20250912103522.2935-1-jack@suse.cz
 
-How to reproduce
+Can you see whether those patches resolve the problem?
 
-The kernel v6.1 is good. The hang is reliably triggered(over 80%
-chance) on kernels v6.6 and 6.12 and intermittently on
-mainline(6.17-rc7) with the following steps:
+Thanks.
 
-Environment: A machine with a fast SSD and a high core count (e.g.,
-Google Cloud's N2-standard-128).
-
-Workload: Concurrently generate a large number of files (e.g., 2
-million) using multiple services managed by systemd-run. This creates
-significant I/O and cgroup churn.
-
-Trigger: After the file generation completes, terminate the
-systemd-run services.
-
-Result: Shortly after the services are killed, the system's CPU load
-spikes, leading to a massive number of kworker/+inode_switch_wbs
-threads and a system-wide hang/livelock where the machine becomes
-unresponsive (20s - 300s).
-
-Analysis and Problematic Commits
-
-1. The initial commit: The process begins with a worker that can get
-stuck busy-waiting on a spinlock.
-
-Commit: ("writeback, cgroup: release dying cgwbs by switching attached inodes")
-
-Effect: This introduced the inode_switch_wbs_work_fn worker to clean
-up cgroup writeback structures. Under our test load, this worker
-appears to hit a highly contended wb->list_lock spinlock, causing it
-to burn 100% CPU without sleeping.
-
-2. The Kworker Explosion: A subsequent change misinterprets the
-spinning worker from Stage 1, leading to a runaway feedback loop of
-worker creation.
-
-Commit: 616db8779b1e ("workqueue: Automatically mark CPU-hogging work
-items CPU_INTENSIVE")
-
-Effect: This logic sees the spinning worker, marks it as
-CPU_INTENSIVE, and excludes it from concurrency management. To handle
-the work backlog, it spawns a new kworker, which then also gets stuck
-on the same lock, repeating the cycle. This directly causes the
-kworker count to explode from <50 to 100-2000+.
-
-3. The System-Wide Lockdown: The final piece allows this localized
-worker explosion to saturate the entire system.
-
-Commit: 8639ecebc9b1 ("workqueue: Implement non-strict affinity scope
-for unbound workqueues")
-
-Effect: This change introduced non-strict affinity as the default. It
-allows the hundreds of kworkers created in Stage 2 to be spread by the
-scheduler across all available CPU cores, turning the problem into a
-system-wide hang.
-
-Current Status and Mitigation
-
-Mainline Status: On the latest mainline kernel, the hang is far less
-frequent and the kworker counts are reduced back to normal (<50),
-suggesting other changes have partially mitigated the issue. However,
-the hang still occurs, and when it does, the kworker count still
-explodes (e.g., 300+), indicating the underlying feedback loop
-remains.
-
-Workaround: A reliable mitigation is to revert to the old workqueue
-behavior by setting affinity_strict to 1. This contains the kworker
-proliferation to a single CPU pod, preventing the system-wide hang.
-
-Questions
-
-Given that the issue is not fully resolved, could you please provide
-some guidance?
-
-1. Is this a known issue, and are there patches in development that
-might fully address the underlying spinlock contention or the kworker
-feedback loop?
-
-2. Is there a better long-term mitigation we can apply other than
-forcing strict affinity?
-
-Thank you for your time and help.
-
-Best regards,
-
-Chenglong
+-- 
+tejun
 
