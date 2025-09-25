@@ -4,103 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8456BCAC5B1
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 15:57:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE98CCAC5B1
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 16:06:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFD5E8E000D; Thu, 25 Sep 2025 11:57:26 -0400 (EDT)
+	id E5FEF8E0003; Thu, 25 Sep 2025 12:06:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAE398E0003; Thu, 25 Sep 2025 11:57:26 -0400 (EDT)
+	id E37AA8E0001; Thu, 25 Sep 2025 12:06:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9C168E000D; Thu, 25 Sep 2025 11:57:26 -0400 (EDT)
+	id D4CFA8E0003; Thu, 25 Sep 2025 12:06:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B6E0A8E0003
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 11:57:26 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5500B1401AA
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 15:57:26 +0000 (UTC)
-X-FDA: 83928227292.19.D535785
-Received: from 004.mia.mailroute.net (004.mia.mailroute.net [199.89.3.7])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 7B229C0004
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 15:57:24 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=3lNIDf7v;
-	spf=pass (imf28.hostedemail.com: domain of bvanassche@acm.org designates 199.89.3.7 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
-	dmarc=pass (policy=reject) header.from=acm.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C4C808E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 12:06:34 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 78B5E119D7B
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 16:06:34 +0000 (UTC)
+X-FDA: 83928250308.26.F193BBA
+Received: from mail-io1-f53.google.com (mail-io1-f53.google.com [209.85.166.53])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6AB1F1C0009
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 16:06:32 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=A7jwrnOt;
+	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.166.53 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758815844;
+	s=arc-20220608; t=1758816392;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oMhd05x9x0tqhBXT4WmE2ln8stlPQG2l6//8/VqTYig=;
-	b=OafBpQQ/uilULZrQFic6F5MDQSn9/sFZV0dgDILO8CsaxS4JitYowvpNd1jqgxCiTO6Trb
-	BVyOSUo6rQ1fB4v98hKq7eeWUR2GyCitF9kIXOuxCbx0NhmNynkYW31uzrtwzr2d/pPitg
-	O8dqoMS1iRZFO3Ng1Eu/sQvgofubenM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758815844; a=rsa-sha256;
-	cv=none;
-	b=OEE8guxa4ssD4qwVSvvNfMGoGexhEN/vXhvw68ouBHGXALcPu+gYuRQSYlGdLS9RasenQS
-	0YoD+tYwLJl+1ejtbFP5JRfSYQum7/UJ3AphfzCvN3onacH4jglWPYv8HXgAd4Ovr9eCa5
-	Pn183A4ParhHlWhLlKbzJdylHa/jVks=
+	bh=+yb6vceRuaH7iX55SPXoLoljlTLWExr/Ac2Cewgac2Y=;
+	b=0oZChaqToQvsbCP29M1f14mb7hIXTQ3EQ7frCEutqQqEr8NIyPbKSrcA8/qxvUGttETKKE
+	KuwQAbFHuWpTfoMseyWRMxFE26PUO0vvc1yIRw8e0nscItqs2lie/6UYwOYKUcnoWGPlVz
+	2gaW3vcIlhU64zSP8mtWTLi4pFhVUBg=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=3lNIDf7v;
-	spf=pass (imf28.hostedemail.com: domain of bvanassche@acm.org designates 199.89.3.7 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
-	dmarc=pass (policy=reject) header.from=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 004.mia.mailroute.net (Postfix) with ESMTP id 4cXddb4QcFzm10fx;
-	Thu, 25 Sep 2025 15:57:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1758815840; x=1761407841; bh=oMhd05x9x0tqhBXT4WmE2ln8
-	stlPQG2l6//8/VqTYig=; b=3lNIDf7vxDukhEwY745QPQncxYUtWSWnx+YuCZJ2
-	ioFsjKFelGmM3GkA6ZhXCsAJcUUU5DQKDFk5xOWhn5D2InHRKynPstX/OYS1ZHub
-	AEQNc62ighYT5fmrDOArIiH6OMyISaXCcTSkazZW45+9C/cVPGE3fVJwUJ+uAaxE
-	8cyWBxCCOFI3l8AbiQ8tNuxNESIrOF5/pcmyL/26HPJvM9CXP4hsxeNr9E7KGbVs
-	JdVTtuyQCALcAevFo/LDtbpVcHlzvJseGr67fUOCDRchDmwiknYCuTvcjN1/0rKj
-	+c7UfBHWk9N+9dJEIIc2PmitHNFqQ4uYLHZDuwgFPnz/8A==
-X-Virus-Scanned: by MailRoute
-Received: from 004.mia.mailroute.net ([127.0.0.1])
- by localhost (004.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id XGOV8JsgHmdF; Thu, 25 Sep 2025 15:57:20 +0000 (UTC)
-Received: from [100.119.48.131] (unknown [104.135.180.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 004.mia.mailroute.net (Postfix) with ESMTPSA id 4cXddF1vjbzm0pKm;
-	Thu, 25 Sep 2025 15:57:04 +0000 (UTC)
-Message-ID: <bc6fe04d-3245-40dd-aa30-c3a3acb670c2@acm.org>
-Date: Thu, 25 Sep 2025 08:57:03 -0700
+	imf21.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=A7jwrnOt;
+	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.166.53 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758816392; a=rsa-sha256;
+	cv=none;
+	b=FL5zd6U5ozS39ugR7sdosLZ9/Zmf41nXHGtXehy2b4AYzPIP7VBCBcJNWCaZflIKrlaB/w
+	rfmSf/jzssvQ8jK9mJPYYEOGA5LdS48JGrHQxiYd8OhnNWCM2DYWqOHxMa0kuknH79NvwM
+	fbjITnna2JB9d6/m5urhYWFw2Rw2kV4=
+Received: by mail-io1-f53.google.com with SMTP id ca18e2360f4ac-8936326129eso40919339f.2
+        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 09:06:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1758816391; x=1759421191; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+yb6vceRuaH7iX55SPXoLoljlTLWExr/Ac2Cewgac2Y=;
+        b=A7jwrnOtKfxYilDgPbjrvjo9vvVRCHtl3Sksa9EII22rxKyREuX3PdBBv86b7pc28v
+         sk+dwrjnrWq/XIYYEJ9wEhutmCoHgIXvoAYQ4hVDK2N3DWt0ejdWx1X216IPEn6DYNcS
+         Vij4H1XztI4eeEbKP7CxOUpX8hEf3OHW+FWG6AxdRhfbpBDhNv26aH4E9Qcae/LN1BvT
+         DzzYcDmZxZy62jWlkROsMMS1HjgNXxjsqMax5gk+bxU4HxqjRa9o1klAAHVVCaL57Ojo
+         2UBxqhiYyBcAjmdA7gYuZWDIvk0x+szLY9e05AOsqeZJbjMEi1PrTXbEm3VRQhxgg91X
+         EGgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758816391; x=1759421191;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+yb6vceRuaH7iX55SPXoLoljlTLWExr/Ac2Cewgac2Y=;
+        b=pGOc6sUs5bqgNA2AWDdG08bl3zLkkxTxAR5unICeu/i8bvEZwvS4GinsfhiPwFlIA7
+         fP6qFrX1SSVunbtugjDwc40StR/zuFUK7zK/Y6YQczsvhNTD3segvLXbI6gpS/riZzvn
+         EOQW3nQW0EiWQLWHC/gv0iyEZ0aK7E8Nh5LApJOQtbdIh1wwoF0XHMRPqYqkcyAVyowS
+         60XVk6NJvQiY2gDtIWZjSClvjZWnr7MpJPlOZq17VCclZ+ml50yOYLSwh0CO0gUBpPD7
+         Yv7tHZQb0Vlwc/EmeWxHtJXzE/mTdHgmsZKTR9/kMrZT4QlQWJFsSW3xGIBpXQyPeEML
+         1cgw==
+X-Forwarded-Encrypted: i=1; AJvYcCWxPD65yINOFV+LWRUfj5XUOQNKM2AtCZFoWVXdJZJT31896GpcDOCbNg4q/FNQzWhGRK8efjTrZw==@kvack.org
+X-Gm-Message-State: AOJu0YznLIHWD7QpqqeVHwUrjQmVz8ySFeeVY8hpuLQyF78Zqt1UIEkG
+	y0fzNe1fh+MdxjARb+1RV7LGiMWxE5QRaT6wxTekJe+L1uEiqcjyzTla+aQbDxVn5xM=
+X-Gm-Gg: ASbGncv/FbPaECwSiHzQCFO4kRGRFWsqs143Vk1lDadvBVVKpHM2G/ZROM+7ChE1eAt
+	BYt8TXoGXELniIG4fhslAi111K3wC9m2EpCw3EkL62CwwE4p38FG8ztFjd/1WIHmFqviXqd9oh9
+	18CX3PtNU0o4CUldkxGE0JE/sH/+ZkD77dhp2fc75i5cgszr9L3t4gBFBGXSeO3l12i9QCUpr6c
+	PZLsA3A8vGA8DTfS/HpkEzTObkUdXOZxKXb/jCpvMOIxNhOR4ZPbZvKz4nGiF92uerecxYaZuc7
+	LhdX1TBBZIZYILxvzNMeQBED/pHn/pzXX44PixJMO0E8JC/8OTo667y54yLiHkROBff8dws+D3q
+	R0H+b5H6RzyhzpS10V43SVxam33Q5cCEJAAJTGimhQORvoQVRmGTpKpgmZ2Z86amFfwuJSyAq+H
+	o=
+X-Google-Smtp-Source: AGHT+IHezaCibeMYUx2n4QIwepKBTAEGeWF/wdbRATNTTWqYlSWG7aBiY/OaNiXbiz5X0eqEvxW6Wg==
+X-Received: by 2002:a05:6602:14c2:b0:887:5cc8:fc1 with SMTP id ca18e2360f4ac-90168766a6bmr566009339f.13.1758816391165;
+        Thu, 25 Sep 2025 09:06:31 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (50-32-2-77.vng01.dlls.pa.frontiernet.net. [50.32.2.77])
+        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-903dbb2b459sm88516339f.0.2025.09.25.09.06.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Sep 2025 09:06:30 -0700 (PDT)
+Date: Thu, 25 Sep 2025 12:06:28 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>,
+	Wei Xu <weixugc@google.com>, David Rientjes <rientjes@google.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Bharata B Rao <bharata@amd.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, dave.hansen@intel.com, hannes@cmpxchg.org,
+	mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org,
+	raghavendra.kt@amd.com, riel@surriel.com, sj@kernel.org,
+	ying.huang@linux.alibaba.com, ziy@nvidia.com, dave@stgolabs.net,
+	nifan.cxl@gmail.com, xuezhengchu@huawei.com,
+	akpm@linux-foundation.org, david@redhat.com, byungchul@sk.com,
+	kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
+	balbirs@nvidia.com, alok.rathore@samsung.com, yiannis@zptcorp.com,
+	Adam Manzanares <a.manzanares@samsung.com>
+Subject: Re: [RFC PATCH v2 0/8] mm: Hot page tracking and promotion
+ infrastructure
+Message-ID: <aNVohF0sPNZSuTgI@gourry-fedora-PF4VCD3F>
+References: <20250910144653.212066-1-bharata@amd.com>
+ <aMGbpDJhOx7wHqpo@casper.infradead.org>
+ <aMGg9AOaCWfxDfqX@gourry-fedora-PF4VCD3F>
+ <7e3e7327-9402-bb04-982e-0fb9419d1146@google.com>
+ <CAAPL-u-d6taxKZuhTe=T-0i2gdoDYSSqOeSVi3JmFt_dDbU4cQ@mail.gmail.com>
+ <20250917174941.000061d3@huawei.com>
+ <5A7E0646-0324-4463-8D93-A1105C715EB3@gmail.com>
+ <20250925160058.00002645@huawei.com>
+ <aNVbC2o8WlYKjEfL@gourry-fedora-PF4VCD3F>
+ <20250925162426.00007474@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/10] blk-cgroup: use cgroup lock and rcu to protect
- iterating blkcg blkgs
-To: Yu Kuai <yukuai1@huaweicloud.com>, tj@kernel.org, ming.lei@redhat.com,
- nilay@linux.ibm.com, hch@lst.de, josef@toxicpanda.com, axboe@kernel.dk,
- akpm@linux-foundation.org, vgoyal@redhat.com
-Cc: cgroups@vger.kernel.org, linux-block@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, yukuai3@huawei.com,
- yi.zhang@huawei.com, yangerkun@huawei.com, johnny.chenyi@huawei.com
-References: <20250925081525.700639-1-yukuai1@huaweicloud.com>
- <20250925081525.700639-2-yukuai1@huaweicloud.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20250925081525.700639-2-yukuai1@huaweicloud.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: f6maw5nfyxr7ke58ucwzuya8ikpxn8t6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250925162426.00007474@huawei.com>
+X-Stat-Signature: pkujdmysafd8h448dy6cermszh6uqpso
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7B229C0004
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1758815844-770373
-X-HE-Meta: U2FsdGVkX1+b7A3baVrJAMX/coRpc6frSmC+JR9BlZPSf6d7X9Y1XMnjqWwL5WWqrC7p55Yz3lcZBujeF1ppxTcoxXYeVnsoOK7L0JBW3r2uUHAvFdPEMtKIvei2ev7XuexnIyLKILfxMatsgDA1hYpyp8vnEHrGSyGD7X0EOFawW4LXDPYrqpk6BYrOENHNk0xo+7WkB9OcIF5nsZEsCVpcgDvhXx4VFbSz8ZNZsPUvUqao9xGuOEprb60M+3UcUZBZa0ouuHL9LKyXxcM0PTYgKmwz85Y7Wk17ii9h4R50IvAz2ToG1riyeRRV1VCSU1QHU92Bk/T6axLZpB315NEhTc1u/fZDt3QV6Z7TzO4XCCwZxpiUoxpvXeb4XVEKy47VnV/BjYjGH42oEZzhVA19PEzoo4pYm3U2IS+zgW1YHpqvySBJqNBci/GvCD3ZHf1HpTk+yn0j0/gc/vVNDLe04Lz7PBd3U8eCWyzLaGDOCLJM1D2MmsZ99XywHUOoQ4+mD79xR5awapJHYYrZsnZGC5HipWdV50RaWWBqrSv5QqxSrMp/lDlNU8RwoDebXqGMzYZFyzraUrTf41myGflyBChRMXgsBc620OQyxB5WwxhfANjVXa2pZ8IJqtXYzWY9OvIwKhQu6bwm5UYVSIvOqvFnl9LobKcxQeV2oPepb7YZ4DbrBXXyzbxURcFpvhG2ssEp4hLAiPUZdUv3wEO4jfZQHGHT42klsDCG5aZoejK3hfFfJ42dcNwSBJiMYAy10a5A1nB9vvbQFaeLzY+mgQQeIw067BjupFA/YAzm5I68QVPQjaO7wOMj7Rompk8h4ClZQSo9nCgp5rsi4r48j/W+FDsphOSZ7WBMPg2QTZz0durSzuN4lozEVGIQ0yrdG2fPBuLJju4xsHgIbX5LXGzhN3PRLwQwucUewGUbcjS2WMlClSKFl3Eg/EmyZYleJzogTASkTVa4Jni
- ad1qvZ7B
- aVZfwRrAC6z4iVpuUGCdxZ0RqSl0vAxrCxpOrnbwI8x7gvzCIDBtiWB9LO77xsCoLE5hHLDxlfgN8Xf3gtpb11xINsmDVWqazcTSjWn0GZ1dY/WUs7gLzp4dnZfuO0WIDsXeOP8dADbZDq+ZX23jc74TaqTjdm+lDBfFDflqk+rg6J+zTtXql4sCUAUER4uR1wx5I5CZ2b8DeFWJ/wjAw4eZwoXgDCKaJH4SckwdIffXFv2kfA3vz5wcfWGrq5SHHUMzihlxM1x7Py3hcU20nv74H/p+OtSOJIIPY
+X-Rspamd-Queue-Id: 6AB1F1C0009
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758816392-381438
+X-HE-Meta: U2FsdGVkX1/N5Ny+vT1ttgHjARuaxZjsnLhQwnjZeU5mek8ha8Oi1qWYMVTvYWbi7wCtOzafaaz+wccVVZx7IOcaz1Klwnu70c+3WsIBw4+w1Phj21ETve1wemsboxzobKMAT4PVL67a3kCVQzV3Y2f+Y0ZdHYe6ihUczJIR5W7NaUl+iZcGyhKL21ZTzvMnyBYUo/RKuzrW72+HgAkTN+yU3Lr/24dO5qrAKY1mN2HsxfEevAPrwHwhHuonrEyJFN3C37R/gGLdtqzUIeVNFj90zqfXJpRr86H4L0W4jY20P0H0LtUtAq35rd2+hDldJzbBwc+CoMRb+qMlxt6RGfa89T8G1d679F+cLQ6PJb/gkuUdugoUoqvUz4YzNbvWVRFUsYGCgaFcp310ovB9RvMEGBwixvCSlkaTTiqUb2Fd0iBVhF+Re6+ZyDkV2163EhM4r0iozN1Ji6fE+MuK+bdYwMgyUoGIHop7VoLG3HPGmEvipA3Xg+/MBozvAePCLYQqBUV5QIXXGSp8ZaRVHh7f37X5Pb+cETDakV3bCbZcJ+1BlRei969dPxriAI2myC0GVto6q46kONmuSW7EEEdPrH8AjOZNRqG+8Mcv6PhugDvRUEWj/94pakscTL3ShpLlsxe9k95PrqfS+VlVWclSrHB8S3SlvyIYFyOxGcJGbgVgaJHVU1+vF8TwBLCaxzV+L9Re4Q0/s6FmYsthYv7REGkxJ4o3+ro6HnPu8L3FIfH+9ysmxZnHVd+XuL/yubBY3OkWM/uYBgjMcWPrLxWjvJSrxDIMpwBABVz4DuiNLBD92JpFsIy4cifjHIVRF398ICojWOm2n04R5eBx83b1USYnYu82PUTGC5QxpjavHqX/GjU/Vco2pj0ENwbKytullSZFJiitHbKl8lU8he1DMtFkBNyYxPUyFSVYlL8jsFO6hEiBC6Ab5j/sA8pToH3IbV48GD3+FjVfS3r
+ l6LUQfh7
+ kVqSy/iEStd71g3lcbKZ96jHfD1xENy0KlyqV7h0wRafx7O9ObbuiQ+/LWsTx1K2RtVTu6Z78UqpMNCtGnY3/A6piTKHHEO9zUN+NnfMqeAIgxk6K5+edSmzyw9iyOLCAdqQKKybDW3Eq1gp7JmxM3XRn9pvlbvoaRGn6NLbwEm6tNkOxzdaaV8+wDqIWKsJsOc7fKsC/37RDQkptFW95ntXBV1TaHCqGRs3yzzw8MhKDFJNkeh5qGb1HB82C/ZUKbDyzdHRsSnvvwxAHaSfRknL7JjebX6qN0ZeEplkM7HKyXAds+mUX1fmRbou+mFL5XpCOAzrH7peZz4+NSJJjBXW9+3BtPv+s+o/4+CNGPBRlcEtt3Kw3U2KzusRtHJFGUqTqEcEsOxVBRp7NcTeTkuGsiw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,17 +139,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/25/25 1:15 AM, Yu Kuai wrote:
-> It's safe to iterate blkgs with cgroup lock or rcu lock held, prevent
-> nested queue_lock under rcu lock, and prepare to convert protecting
-> blkcg with blkcg_mutex instead of queuelock.
+On Thu, Sep 25, 2025 at 04:24:26PM +0100, Jonathan Cameron wrote:
+> The CoW thing only works because it's a permissions fault at point of
+> asking for permission to write (so way before it goes into the cache).
+> Then you can check margins to make sure you can still sink all outstanding
+> writes if they become uncompressible and only let the write through if safe
+> - if not promote some stuff before letting it proceed.
+> Or you just promote on write and rely on the demotion path performing those
+> careful checks later.
+>
 
-Iterating blkgs without holding q->queue_lock is safe but accessing the
-blkg members without holding that lock is not safe since q->queue_lock
-is acquired by all code that modifies blkg members. Should perhaps a new
-spinlock be introduced to serialize blkg modifications?
+Agreed.  The question is now whether you can actually enforce page table
+bits not changing.  I think you'd need your own fault handling
+infrastructure / driver for these pages.
 
-Thanks,
+This does smell a lot like a kernel-internal dax allocation interface.
+There was a bunch of talk about virtualizing zswap backends, so that
+might be a nice place to look to insert this kind of hook.
 
-Bart.
+Then the device driver (which it will definitely need) would have to
+field page faults accordingly.
+
+It feels much more natural to put this as a zswap/zram backend.
+
+~Gregory
 
