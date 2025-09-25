@@ -4,101 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6820ACAC5B1
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 15:01:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C80ECAC5A7
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 15:06:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 563A38E000E; Thu, 25 Sep 2025 11:01:12 -0400 (EDT)
+	id CC36C8E0005; Thu, 25 Sep 2025 11:06:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5145D8E0006; Thu, 25 Sep 2025 11:01:12 -0400 (EDT)
+	id C74278E0003; Thu, 25 Sep 2025 11:06:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 403528E000E; Thu, 25 Sep 2025 11:01:12 -0400 (EDT)
+	id B62EE8E0005; Thu, 25 Sep 2025 11:06:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 278718E0006
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 11:01:12 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CD055589F0
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 15:01:11 +0000 (UTC)
-X-FDA: 83928085542.30.BC53489
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 55589140014
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 15:01:09 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id A41B68E0003
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 11:06:50 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3EB44139D7D
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 15:06:50 +0000 (UTC)
+X-FDA: 83928099780.18.66626C8
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 9356312001A
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 15:06:48 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=NfHcyDH0;
+	spf=pass (imf29.hostedemail.com: domain of 3hlrVaAYKCN0RD9MIBFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--seanjc.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3hlrVaAYKCN0RD9MIBFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758812469;
+	s=arc-20220608; t=1758812808;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L2VZMaI8H4SduB5mW2rT6I2nKRE53Z5dd56Ku5CZC1Y=;
-	b=nAvYyRvoO/j0G0iafz+MDymJjHm0AGa+4oDGUKMobUqNLPpj9ITItuCqsDfcCO6yc6f/1+
-	TT7GM32Cf5jwmUlIqKFyxHlKGH14nqQrnfd0u9eOqGbwfet+LB+WTPCS0nANl2+064bFEL
-	Og3jGBRiCkGYBdwppXK5H8lAx4MckYU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758812469; a=rsa-sha256;
-	cv=none;
-	b=HCHzI1bDjoIxbo4zR22ZaLM9G7+rsBFaxkUu97uyC3HyXeSYTpFpLQIST8pdaQF/egs5o8
-	AQpylN2ufudmeBtLdyxFmrHm2WiWnpmBF86IV+E5K8VvTrGu1p49mjox0AhvuAxA7IK9Ne
-	c/qb9IWLmcWbMmUNE+3Gt2xYExfPNzk=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Jh5MSqTLsjrp4fvoa9f2K3rue2zEjmwO4t9rR+bj9fI=;
+	b=ghCokYQ4kEcbw820BpcDjtdi9ldBirYT4rU6S/GZ/QqqZkWt3tculumzBGDMS3V6up6aRL
+	vXAQNgWByOTAYScRFCJaUxqys+PwM4T/s+jI7viIh7z65al7C5NKeLmI4wiTcwYpe+Fr27
+	XVKBPhdtvHxpVSrXimzJs8B/nWd1ux4=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cXcK72fQHz6M4l7;
-	Thu, 25 Sep 2025 22:58:03 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id AD7361402F2;
-	Thu, 25 Sep 2025 23:01:03 +0800 (CST)
-Received: from localhost (10.47.28.112) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 25 Sep
- 2025 16:01:02 +0100
-Date: Thu, 25 Sep 2025 16:00:58 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>
-CC: Wei Xu <weixugc@google.com>, David Rientjes <rientjes@google.com>, Gregory
- Price <gourry@gourry.net>, Matthew Wilcox <willy@infradead.org>, Bharata B
- Rao <bharata@amd.com>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<dave.hansen@intel.com>, <hannes@cmpxchg.org>, <mgorman@techsingularity.net>,
-	<mingo@redhat.com>, <peterz@infradead.org>, <raghavendra.kt@amd.com>,
-	<riel@surriel.com>, <sj@kernel.org>, <ying.huang@linux.alibaba.com>,
-	<ziy@nvidia.com>, <dave@stgolabs.net>, <nifan.cxl@gmail.com>,
-	<xuezhengchu@huawei.com>, <akpm@linux-foundation.org>, <david@redhat.com>,
-	<byungchul@sk.com>, <kinseyho@google.com>, <joshua.hahnjy@gmail.com>,
-	<yuanchu@google.com>, <balbirs@nvidia.com>, <alok.rathore@samsung.com>,
-	<yiannis@zptcorp.com>, Adam Manzanares <a.manzanares@samsung.com>
-Subject: Re: [RFC PATCH v2 0/8] mm: Hot page tracking and promotion
- infrastructure
-Message-ID: <20250925160058.00002645@huawei.com>
-In-Reply-To: <5A7E0646-0324-4463-8D93-A1105C715EB3@gmail.com>
-References: <20250910144653.212066-1-bharata@amd.com>
-	<aMGbpDJhOx7wHqpo@casper.infradead.org>
-	<aMGg9AOaCWfxDfqX@gourry-fedora-PF4VCD3F>
-	<7e3e7327-9402-bb04-982e-0fb9419d1146@google.com>
-	<CAAPL-u-d6taxKZuhTe=T-0i2gdoDYSSqOeSVi3JmFt_dDbU4cQ@mail.gmail.com>
-	<20250917174941.000061d3@huawei.com>
-	<5A7E0646-0324-4463-8D93-A1105C715EB3@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.47.28.112]
-X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
- dubpeml100005.china.huawei.com (7.214.146.113)
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 55589140014
-X-Stat-Signature: gjgrmphhrt5fw6ezp86aeydpfitdteb3
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=NfHcyDH0;
+	spf=pass (imf29.hostedemail.com: domain of 3hlrVaAYKCN0RD9MIBFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--seanjc.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3hlrVaAYKCN0RD9MIBFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758812808; a=rsa-sha256;
+	cv=none;
+	b=bqVfGbnLKRQ6U0cCQCyiEOfRS3EfFCY2y37ZUOWK8jbTtY//N7eBUHBiffLEq2t0draimO
+	OwUlBDQzCpOKwn5TNiMjRae7+HK1Acrm+fmV42i9hRDKyMtYeaoXrVvmx8TW1kZqjIjLq8
+	fCg7jMmwq5DtAsO/d238VLFPnWmkpAE=
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b55118e2d01so796209a12.1
+        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 08:06:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758812807; x=1759417607; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Jh5MSqTLsjrp4fvoa9f2K3rue2zEjmwO4t9rR+bj9fI=;
+        b=NfHcyDH0qmYl/KU82H5c26j6jAfWLhjQ9CyeE9JrWjs9O4CSc1Kq/755RAdRCk7y6d
+         uuw0ZB1gseFjBf62Se5OyjEjkkBzKmMTQmboKuWuTkTNBkHSqiRjp8/6Zn42G967rqTw
+         qexfRBFrv6g06T1jhRKsUmllIIDW6yM1TmY5sdf6aQ8R57T8PB3CTQZs7xi9J5HJAW7/
+         xIvLhIRDuV7R9P7ajBoysS/Ybh1MQ+q/G0hHq+KznJGUPYUpeHHJQUAkrwWINaFhWMCG
+         hVhXvtmth8EDdVZFr0XCigXp38HeImKBYuvGZfrTncliAT/KzX1LipWruIOQT7vjs7n5
+         cJoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758812807; x=1759417607;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Jh5MSqTLsjrp4fvoa9f2K3rue2zEjmwO4t9rR+bj9fI=;
+        b=OzxTFjiu1xMwtHhzmU3MMG1uIz76ZWlLaHbQE0b9haWx0nHgupfd+ZAFjObUgh0Sft
+         XV78L/Brtw3nL1GgH/KijGMqVu2UJtJwFRqeYrrXdvjF45E0fuPyIGYcPws+q8EGYC3X
+         g5E60hgjzS6XPN0loXwcBUjQ+nyaZOwsioFUFHHQ+aQJg01ttQ2c9rLsOR62Ohk5ATYm
+         6Y/HQytl+2CI12YjvptKRur6+AFHV60qjW/YdlX3N7WQ9ooqN2JvYG2sahEiCRJ1L/N8
+         oBtPSSbCCrLYZ9ZciyvMpAjybhoB+tx/nOmqix1tyguItTz/8MJB8tZpWv8B0EDvo17k
+         NUCw==
+X-Forwarded-Encrypted: i=1; AJvYcCUaqBhPhSQHAaa6cv0N9NbTumbdejc/IG4bqiUnUxjul6FVGIdXDJG0I8GZHkqxgILQMwzwYitrSw==@kvack.org
+X-Gm-Message-State: AOJu0Yxcxc4a1+PATbChnXfokvI8hsHRJxdThKDXuMcHSUR8Z1U0ls4C
+	7CUcrenfKPnzAL9Ds0bI2ccs2V325n1IKGU4vt+WEY/kIw4snhlDGZcqf1UNGwaz+rOtEH+esqT
+	MG46fFw==
+X-Google-Smtp-Source: AGHT+IEVcWsyGM1w0GH1nNrshkk20Pnc8ghwxFB8MAUOFgcR14npidYwrEDITe3+YHWa4Mb/5XspEYhl1Ac=
+X-Received: from pga11.prod.google.com ([2002:a05:6a02:4f8b:b0:b4c:213a:e7aa])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3282:b0:262:1611:6528
+ with SMTP id adf61e73a8af0-2e7cdda0840mr4939471637.29.1758812806367; Thu, 25
+ Sep 2025 08:06:46 -0700 (PDT)
+Date: Thu, 25 Sep 2025 08:06:44 -0700
+In-Reply-To: <3a82a197-495f-40c3-ae1b-500453e3d1ec@redhat.com>
+Mime-Version: 1.0
+References: <20250827175247.83322-2-shivankg@amd.com> <20250827175247.83322-7-shivankg@amd.com>
+ <diqztt1sbd2v.fsf@google.com> <aNSt9QT8dmpDK1eE@google.com>
+ <dc6eb85f-87b6-43a1-b1f7-4727c0b834cc@amd.com> <b67dd7cd-2c1c-4566-badf-32082d8cd952@redhat.com>
+ <aNVFrZDAkHmgNNci@google.com> <3a82a197-495f-40c3-ae1b-500453e3d1ec@redhat.com>
+Message-ID: <aNVahJkpJVVTVEkK@google.com>
+Subject: Re: [PATCH kvm-next V11 4/7] KVM: guest_memfd: Use guest mem inodes
+ instead of anonymous inodes
+From: Sean Christopherson <seanjc@google.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: Shivank Garg <shivankg@amd.com>, Ackerley Tng <ackerleytng@google.com>, willy@infradead.org, 
+	akpm@linux-foundation.org, pbonzini@redhat.com, shuah@kernel.org, 
+	vbabka@suse.cz, brauner@kernel.org, viro@zeniv.linux.org.uk, dsterba@suse.com, 
+	xiang@kernel.org, chao@kernel.org, jaegeuk@kernel.org, clm@fb.com, 
+	josef@toxicpanda.com, kent.overstreet@linux.dev, zbestahu@gmail.com, 
+	jefflexu@linux.alibaba.com, dhavale@google.com, lihongbo22@huawei.com, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, ziy@nvidia.com, matthew.brost@intel.com, 
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
+	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
+	tabba@google.com, paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com, 
+	pvorel@suse.cz, bfoster@redhat.com, vannapurve@google.com, chao.gao@intel.com, 
+	bharata@amd.com, nikunj@amd.com, michael.day@amd.com, shdhiman@amd.com, 
+	yan.y.zhao@intel.com, Neeraj.Upadhyay@amd.com, thomas.lendacky@amd.com, 
+	michael.roth@amd.com, aik@amd.com, jgg@nvidia.com, kalyazin@amazon.com, 
+	peterx@redhat.com, jack@suse.cz, hch@infradead.org, cgzones@googlemail.com, 
+	ira.weiny@intel.com, rientjes@google.com, roypat@amazon.co.uk, 
+	chao.p.peng@intel.com, amit@infradead.org, ddutile@redhat.com, 
+	dan.j.williams@intel.com, ashish.kalra@amd.com, gshan@redhat.com, 
+	jgowans@amazon.com, pankaj.gupta@amd.com, papaluri@amd.com, yuzhao@google.com, 
+	suzuki.poulose@arm.com, quic_eberman@quicinc.com, 
+	linux-bcachefs@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+	linux-erofs@lists.ozlabs.org, linux-f2fs-devel@lists.sourceforge.net, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 X-Rspam-User: 
-X-HE-Tag: 1758812469-687003
-X-HE-Meta: U2FsdGVkX1/BH/c6D5l9Z+7AM147IXTgqoVF5gO4Co79Cqeao4DTqIf3/rFZESvSNcRfpp0o3hzYtDpXMAed3hSjM/H1xE1xXsOLHbBXzq5rxliSN301CsVuj80lNcpuhWJpQneNjwyTxd6ZOVN2TL17geDtNzOv7luODh6+e2li2S/7UlAidDwqq42trwF0jX7cZEXvXzfsZE7z3668AvS72+7g48Svy77cHdy8ATGJkTdr7kVRmtfqkE6QJ9d62ecuggqa0hi7KrQPKxxiZFYM9ohsEKUfRDVlEGgY4sCxrjt54OKZmeqHMKfkD2UYHXCMIJIPWlYtt0DRQW79qJktuRbXmqnAc0bh/egfAEM0ZQ9RBiGzzcVdEECEwgMtcY/BTIhR2e3dg8tnmE9+exAT3hXwAUV1Mk4f6gWZ2RaDSjtW6VPUs0edb9k2kVFidcZtTNHx+VU2EJGB+Dru1xMkjkN8CvVQU5qP3OiJ3j9Gm+RKml0gx2k32AwkkIz7eXmPKYzVGoIVuZ0dvX1icmbPLMnheomwcEZx40v4Ou3EOOMS1d3kGYvN/XOXWHHfub0DeDPwwtjtOo6ibUnhWKjxaD/5kP61Zg9wE9Uf9o71YWjKbqZAMSciQyZympukxjcZl3vDv4q+UZrpyVJbHZlIW6kUkJI+7sAU3SaJSO1qvC/hMtkI7O53UVtN2zDSiUVk+aoa8YZBZ/e34HfmCMhQAiFH6D8Q4Q2PmSTd2GmvWFGF0GSGtMkSdWR+Qbg0rExvEcUGYReEQSNQGZK9KDdkxOJ4BnRxO+LZI4aOVmkJsSTe+DzItWOZz/4ItKfUP7VxHoJFsPdSne/aALXlnJ7SNLDD1IbYDCxqdPhWKwVB9TbEk/h+lT5aZjAFHDodJ6M4axv4EqXzU3XyYLTQa+PhJ1NvBs7pj+4i1KzJfsDGV0VsISBB5JDJEt5r9i85hWNkaqAETjOpFHhYryA
- z59+PSjQ
- e0ZqbDU2rF7rk2NHlNtb9151J65LqD+YF1mqDyKjgsCBXMKgVY7HNYnQ6VShjlAm+LYSPvt3q92DKa2VF55a/Fmb30F9EtLyacli9uKqJUWQEy4DrD9uKO2MY7y7baeGObR+Po5iLNvE0t1yBtq+ZnezlsAbdXq3kMxbbwolUJk8gqfNwdYQyAOv7T++Y6KRM38WlRDy/U4O1z8pifnjuA/RDw53cszjJ+e1rP1LdUt32Rt4giBSAbDX4Ln+tXnuSoX1nCGN0D0wkmwDQxZCoiWQlLyJexTHq6uaA35ngFjelpYl8nFFZ43INFRJuiJ+jBgOkjPFiJ45s8hFBA9rNU95G5IBdAcJWqrCeQypxg05x7GX5LxxosGG6tZBU59lu4VyIsDgVzI8PD9UbHYIUn3+RE0yGmxABcualabG7DJ+hDyQMKYzCublbIp0293oRmvkQ
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 9356312001A
+X-Stat-Signature: skbyinisz1iic96fs8ee7ngukuf1grr1
+X-HE-Tag: 1758812808-488927
+X-HE-Meta: U2FsdGVkX19WX7DU3IgVTx1XCxT6GfAhEd8PkjyE9MtzJFfeGm1NH/oviRtzceRqQKX9Ba8KJ6DpjThoEJ67Uq2+UvsvJzAkuDPq+I1Aj9Y5nFOIIV+eh1Nj5eBmXpNcUYeIoST6Fmy3Pkm11MAqG0SAQsM5EQnsDKrXRfoYkuuO+deFB+qnI+EqumlQAIWSNE5ZWLwVDjuAnSVJz1Ao1AnAZcg6Wo62sqoJC0hjNZ41k4HhsJf71jQf+B2MKJ7BTwzLGPTTugoITzOrbDtHmqNRCZ0qRQA84UhwAA0vmMi4gyxBdpC5MY1Zke14xB7i5PRtyuNoDAOv4LhLm2zHbo/C6Kpm9pfg4E1X9nyigaIXWSl/CJNO+x2cqOALuRu2kC5rJ88hPLutUK1JbWBdHn188HMCwLPIaoILhINmcP3juhm8UTvTFc7saG/Em7LPlRG1WfHcjSy6YoqDsVn01rlSxmeU6K75FVCMxMqcnH0o3VCx5mqQvR40UGrnjaH9LUnmkJcBjdTqu4yR+1Mnfu6wbMPuNw2k+T/edzvNSD6zrspUui/uuk141EF4rkQB4A602PGbK3LOKMgzyOnBbyWfFsuayCk+F2J4A/lwuJTCx0A/WiGr5snisNVlX38Ar2EWyHpUQ/0TSPTfh7pzrkLxCm0bpTRVf8xKCQasnXT2z9dVTaC9N0OKyhst0jMmpkxjyMWUlzgfg//ESPj6x1b1rTBOMoWPIOSD9iItv75EuHjHwxw4yeRR/rsJq7yCyuyKQ6xtiJaTyl21jCAcQk9imc9g0FAIksszmOH3o7aLK1HU7qeVIueMDahZiTBtTSSO/C0sAm+TM+9UZZq9WZlUMKTexl79e3cCk0FZvspf7mKEcsi/Y+5uuk0v/AzS3eBlgvNEdN/SELl8NRsehg4UTt5tsbHXNNYZ7lKnca2JmY7BAjGciGOWutE9lNOocchKKNirdG5aCrWlJ4U
+ HcNNyrLY
+ BP0Ev/5AjvnuSfcO2f4NKfm1t5+5oZd+Y+0Wiu9X6zWxD6SLtc4PccTWljt3/X2Kmb0T47cginsF4oxBbKGGiwNJ2OB+7C5TDb+SxpFPXVr+tymfBbFoTcpc6d/M95dTeOHxP8kT7Ge1NiJX3c1fZ+YM0195CqsUEL2FlUMWRjc8jfS2UI1Z+6HStk3Vpb2wmJONHxpL/YIreOeN3rhO2Ur9Ok7AbREfFa4+AZMpvuxF82J+BBCQK4Jss1f2zA2DMBMWv1ZSVJH3siviC8UL6BFWL3AclajLz/XTvhYCB78dDA+jJHhVwn+z1mx96HBSGc6vBSZmfaKNZSfRw6aR4UykBQ05KfZwYiB19HZeGRgpngUF4t8Tta+giCGWqU5v1s1nQhq+ufSRLMkIuSTJMAieHNwmaXhHQ9XYYI2KOi1rQCjsH1y8Myjtruj83s98TCHbpEHZLsOBTOWm6VgQNGpRJLXIGeVnxnHeI1weWfHOIJBGKQLOHCLlNXaUxsq26Ub0JErmlIvYbhuXDg9YFMxsLhQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,172 +137,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 25 Sep 2025 16:03:46 +0200
-Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com> wrote:
+On Thu, Sep 25, 2025, David Hildenbrand wrote:
+> On 25.09.25 15:41, Sean Christopherson wrote:
+> > Regarding timing, how much do people care about getting this into 6.18 in
+> > particular?
+> 
+> I think it will be beneficial if we start getting stuff upstream. But
+> waiting a bit longer probably doesn't hurt.
+> 
+> > AFAICT, this hasn't gotten any coverage in -next, which makes me a
+> > little nervous.
+> 
+> Right.
+> 
+> If we agree, then Shivank can just respin a new version after the merge
+> window.
 
-Hi Yiannis,
+Actually, if Shivank is ok with it, I'd be happy to post the next version(s).
+I'll be focusing on the in-place conversion support for the next 1-2 weeks, and
+have some (half-baked) refactoring changes to better leverage the inode support
+from this series.
 
-
-> > On 17 Sep 2025, at 18:49, Jonathan Cameron <jonathan.cameron@huawei.com=
-> wrote:
-> >=20
-> > On Tue, 16 Sep 2025 17:30:46 -0700
-> > Wei Xu <weixugc@google.com> wrote:
-> >  =20
-> >> On Tue, Sep 16, 2025 at 12:45=E2=80=AFPM David Rientjes <rientjes@goog=
-le.com> wrote: =20
-> >>>=20
-> >>> On Wed, 10 Sep 2025, Gregory Price wrote:
-> >>>  =20
-> >>>> On Wed, Sep 10, 2025 at 04:39:16PM +0100, Matthew Wilcox wrote:   =20
-> >>>>> On Wed, Sep 10, 2025 at 08:16:45PM +0530, Bharata B Rao wrote:   =20
-> >>>>>> This patchset introduces a new subsystem for hot page tracking
-> >>>>>> and promotion (pghot) that consolidates memory access information
-> >>>>>> from various sources and enables centralized promotion of hot
-> >>>>>> pages across memory tiers.   =20
-> >>>>>=20
-> >>>>> Just to be clear, I continue to believe this is a terrible idea and=
- we
-> >>>>> should not do this.  If systems will be built with CXL (and given t=
-he
-> >>>>> horrendous performance, I cannot see why they would be), the kernel
-> >>>>> should not be migrating memory around like this.   =20
-> >>>>=20
-> >>>> I've been considered this problem from the opposite approach since L=
-SFMM.
-> >>>>=20
-> >>>> Rather than decide how to move stuff around, what if instead we just
-> >>>> decide not to ever put certain classes of memory on CXL.  Right now,=
- so
-> >>>> long as CXL is in the page allocator, it's the wild west - any page =
-can
-> >>>> end up anywhere.
-> >>>>=20
-> >>>> I have enough data now from ZONE_MOVABLE-only CXL deployments on real
-> >>>> workloads to show local CXL expansion is valuable and performant eno=
-ugh
-> >>>> to be worth deploying - but the key piece for me is that ZONE_MOVABLE
-> >>>> disallows GFP_KERNEL.  For example: this keeps SLAB meta-data out of
-> >>>> CXL, but allows any given user-driven page allocation (including page
-> >>>> cache, file, and anon mappings) to land there.
-> >>>>  =20
-> >>>  =20
-> [snip]
-> >>> There's also some feature support that is possible with these CXL mem=
-ory
-> >>> expansion devices that have started to pop up in labs that can also
-> >>> drastically reduce overall TCO.  Perhaps Wei Xu, cc'd, will be able to
-> >>> chime in as well.
-> >>>=20
-> >>> This topic seems due for an alignment session as well, so will look t=
-o get
-> >>> that scheduled in the coming weeks if people are up for it.   =20
-> >>=20
-> >> Our experience is that workloads in hyper-scalar data centers such as
-> >> Google often have significant cold memory. Offloading this to CXL memo=
-ry
-> >> devices, backed by cheaper, lower-performance media (e.g. DRAM with
-> >> hardware compression), can be a practical approach to reduce overall
-> >> TCO. Page promotion and demotion are then critical for such a tiered
-> >> memory system. =20
-> >=20
-> > For the hardware compression devices how are you dealing with capacity =
-variation
-> > / overcommit?   =20
-> I understand that this is indeed one of the key questions from the upstre=
-am
-> kernel=E2=80=99s perspective.
-> So, I am jumping in to answer w.r.t. what we do in ZeroPoint; obviously I=
- can
-> not speak of other solutions/deployments. However, our HW interface follo=
-ws=20
-> existing open specifications from OCP=E2=80=8B [1], so what I am describi=
-ng below is
-> more widely applicable.
->=20
-> At a very high level, the way our HW works is that the DPA is indeed
-> overcommitted. Then, there is a control plane over CXL.io (PCIe) which
-> exposes the real remaining capacity, as well as some configurable
-> MSI-X interrupts that raise warnings when the capacity crosses over
-> certain configurable thresholds.
->=20
-> Last year I presented this interface in LSF/MM [2]. Based on the feedback=
- I
-> got there, we have an early prototype that acts as the *last* memory tier
-> before reclaim (kind of "compressed tier in lieu of discard" as was
-> suggested to me by Dan).
->=20
-> What is different from standard tiering is that the control plane is
-> checked on demotion to make sure there is still capacity left. If not, the
-> demotion fails. While this seems stable so far, a missing piece is to
-> ensure that this tier is mainly written by demotions and not arbitrary ke=
-rnel
-> allocations (at least as a starting point). I want to explore how mempoli=
-cies
-> can help there, or something of the sort that Gregory described.
->=20
-> This early prototype still needs quite some work in order to find the rig=
-ht
-> abstractions. Hopefully, I will be able to push an RFC in the near future
-> (a couple of months).
->=20
-> > Whilst there have been some discussions on that but without a
-> > backing store of flash or similar it seems to be challenging to use
-> > compressed memory in a tiering system (so as 'normalish' memory) unless=
- you
-> > don't mind occasionally and unexpectedly running out of memory (in nasty
-> > async ways as dirty cache lines get written back). =20
-> There =E2=80=8Bare several things that may be done on the device side. Fo=
-r now, I
-> think the kernel should be unaware of these. But with what I described
-> above, the goal is to have the capacity thresholds configured in a way
-> that we can absorb the occasional dirty cache lines that are written back.
-
-In worst case they are far from occasional. It's not hard to imagine a mali=
-cious
-program that ensures that all L3 in a system (say 256MiB+) is full of cache=
- lines
-from the far compressed memory all of which are changed in a fashion that m=
-akes
-the allocation much less compressible.  If you are doing compression at cac=
-he line
-granularity that's not so bad because it would only be 256MiB margin needed.
-If the system in question is doing large block side compression, say 4KiB.
-Then we have a 64x write amplification multiplier. If the virus is streamin=
-g over
-memory the evictions we are seeing at the result of new lines being fetched
-to be made much less compressible.
-
-Add a accelerator (say DPDK or other zero copy into userspace buffers) into=
- the
-mix and you have a mess. You'll need to be extremely careful with what goes
-in this compressed memory or hold enormous buffer capacity against fast
-changes in compressability.
-
-Key is that all software is potentially malicious (sometimes accidentally s=
-o ;)
-
-Now, if we can put this into a special pool where it is acceptable to drop =
-the writes
-and return poison (so the application crashes) then that may be fine.
-
-Or block writes.   Running compressed memory as read only CoW is one way to
-avoid this problem.
-
-
-> >=20
-> > Or do you mean zswap type use with a hardware offload of the actual
-> > compression? =20
-> I would categorize this as a completely different discussion (and product
-> line for us).
->=20
-> [1] https://www.opencompute.org/documents/hyperscale-tiered-memory-expand=
-er-specification-for-compute-express-link-cxl-1-pdf
-> [2] https://www.youtube.com/watch?v=3DtXWEbaJmZ_s
->=20
-> Thanks,
-> Yiannis
->=20
-> PS: Sending from a personal email address to avoid issues with
-> confidentiality footers of the corporate domain.
+I can also plop the first three patches (the non-KVM changes) in a topic branch
+straightaway, but not feed it into -next until the merge window closes.  The 0-day
+bots scrapes kvm-x86, so that'd get us some early build-bot exposure, and we can
+stop bugging the non-KVM folks.  Then when the dust settles on the KVM changes,
+I can throw them into the same topic branch.
 
