@@ -4,173 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CEBCCAC5A5
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 12:46:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CDF7CAC5A5
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 13:15:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 80D398E000B; Thu, 25 Sep 2025 08:46:02 -0400 (EDT)
+	id 3E69D8E0002; Thu, 25 Sep 2025 09:15:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E4F48E0001; Thu, 25 Sep 2025 08:46:02 -0400 (EDT)
+	id 3976D8E0001; Thu, 25 Sep 2025 09:15:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 713598E000B; Thu, 25 Sep 2025 08:46:02 -0400 (EDT)
+	id 285A48E0002; Thu, 25 Sep 2025 09:15:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 636068E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 08:46:02 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F3C37160138
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 12:46:01 +0000 (UTC)
-X-FDA: 83927744922.27.C03F849
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf02.hostedemail.com (Postfix) with ESMTP id AB0318000D
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 12:45:59 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LnfFiGMU;
-	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 123068E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 09:15:55 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AC22CB593F
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:15:54 +0000 (UTC)
+X-FDA: 83927820228.24.9E962C1
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4EB2440005
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:15:52 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=GrEMaNGl;
+	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758804359;
+	s=arc-20220608; t=1758806152;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tliHUGl1NX2itzYwArqZpvvubj/ojpB0Xta8m0g/P9c=;
-	b=AhFGPiL0BRMSYLcqSCTcH078TE6avV4ypu0qmkyHxOKDiPV/NBJu7VFhxd6Qv33oRREC3P
-	wzP/7IFIJjpDVr8PVG5cos3ArFWqc21EEBUPxGWbKV8UanEGOeOZRfx8NQiadDNeNRzW8r
-	c2Zg34WdqIqgSGB3tPe7gy8F1jdFkic=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LnfFiGMU;
-	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758804359; a=rsa-sha256;
+	bh=haNxC7jOxqQStDtZIrtiTowIq1hQumEfK7GJ5h6a3Z0=;
+	b=VFUvLhWj2YvG5KuNwhJlE1iop/c123MGIGssAzEn76f30wi5Wf+FyeolEDUfp1Dj9EA0gh
+	AKTXHyQW6WE/B0lmf1XYF0x8+GGd4gEua7DhEbO8jxwUMSpuQBwclXDPAfNRGGsV7iY4Ia
+	ciX4Bo+O3RLapnKq6i9Y9xHZu+jSXNE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758806152; a=rsa-sha256;
 	cv=none;
-	b=t3VyeiF4flIatkG1CMcGQY+1KDOfGKZRH/bVSMfng7JlV6yjUDqlh0W9TH1jGRD3v7Bryw
-	+5PXc4D3MXfwo51ke34ij+tDmcZajU0rOmjfFBJrUTfgCMw5iMshSbrc1fNZaziouushjq
-	mUc4lsR0TPclRc5skw8MV+7H+iVRFl8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758804359;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tliHUGl1NX2itzYwArqZpvvubj/ojpB0Xta8m0g/P9c=;
-	b=LnfFiGMUbLv1N5MjxyW8ABb+emaLyDtTaK6+lwfzJy7Xjv2kCkDGq4XQ7FfybYjRZsnzSx
-	0V6ViZK6rRLeU6MRU1N6Hp2svsGJV3TcQ+pACK++nqkp6kKcjCSWaLJXmbOzc92k3azGtY
-	5ALUqgMlpNtmMinyzm/FYhzNgwA0ZaE=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-206-gQdf-0oIOC6GjakDJCkq-Q-1; Thu, 25 Sep 2025 08:45:57 -0400
-X-MC-Unique: gQdf-0oIOC6GjakDJCkq-Q-1
-X-Mimecast-MFC-AGG-ID: gQdf-0oIOC6GjakDJCkq-Q_1758804356
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-46e39567579so187335e9.0
-        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 05:45:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758804356; x=1759409156;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tliHUGl1NX2itzYwArqZpvvubj/ojpB0Xta8m0g/P9c=;
-        b=Yc8s7JwoPMndsh6azhoJJphctpPBAMb8AmGhuT90sxUaew+P+NxbC0O1SzjANQdraR
-         DSXnDOgwHx+uUvSNrx6SBgMK5R2eG2kTZIatF96dIXPBa/2TkmXTAlEY87Lx2BXxNwfM
-         Sbtipb0WfrKB2maWL/6eps2TzaEmDlD83MQLhM/E0YJmf9syUIbbyjm8W0MPDiWSon5C
-         O0uC3H+iABEnTG3xKnTm8xhblDS8as8j9NX9wBmw2Vz5HAkVxvnM5rQHrRwRqTT9XDS3
-         GFOzeav8FRUlC0mAC69aP2pOzzjvtPxNbCAezx2u+awDuaK3DZCB/0Jw/b6ypzom2qHe
-         KhRw==
-X-Forwarded-Encrypted: i=1; AJvYcCUTPZ5TGZ0xaY+dUF5eJLXW93fAICwRS14zK6O+xXgm6k307nP4ZXrK5BVDS63d75g0hMcCEhub2g==@kvack.org
-X-Gm-Message-State: AOJu0YyLM+mYS8+9iZFZbLs3ZHBrRCoq3yX2fiZPAImEP6pZt2QMJ79m
-	32j52rouc3xXwo1tzLU8z6aa0BRJwqpwMR+DLWQ8hTkVr/hDhf7sEy/Z9ayWQw+1E76LA0LSo9/
-	GaJaTXUlhDioC2m6rGIq3hkPDvT7jX6E4ilN/ViF+GzXD0F/u7x6t
-X-Gm-Gg: ASbGnctuRA4se4EpdvBvwff5t9wPUookeST7zE0Vz1IiYh/V859b01WUSzBRnDqItza
-	yeQA1QuA9XGSUefwK1T9htJ8c60yI5zWW2/jy8zMhxWqOPKEKfuKERS3t5dOYtPBn1G2F6KC880
-	cq1VTpk0il3lje5Mg0X7xallqX4QY83b5KnXgWKT2e0v7oimdmwsOaanfZiDT4LS9Ed10HlJmoJ
-	hlo1rfTtiQ93wfx47aRCCXyOyIu2XDcREA0euxKQp1Gx8b3JpiFx8vCDfO7i1178O5XVtydM3wl
-	Wfm9Ayz8Hj8UJclEgqGViWOrKLI8kJifDRWffXPL5blZXDFkrYGrp/Upd3slJPgU+xgO8bx2w7o
-	JTGZPoMufjOYybmh6FEJj8i6G0xg4+MF/2Xix+NKREUjJM5pSrolVGvEIZzTqllFaZaZn
-X-Received: by 2002:a05:600c:4743:b0:459:d451:3364 with SMTP id 5b1f17b1804b1-46e329eb11cmr37972675e9.24.1758804356473;
-        Thu, 25 Sep 2025 05:45:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFJhKsYlnFC8iB/Ma/engXkSgdIOoZQ/qaChN82QOE7O7GuUbNoaCoYIvsSrrRCZmzhX+hwTQ==
-X-Received: by 2002:a05:600c:4743:b0:459:d451:3364 with SMTP id 5b1f17b1804b1-46e329eb11cmr37972425e9.24.1758804356075;
-        Thu, 25 Sep 2025 05:45:56 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f3f:f800:c101:5c9f:3bc9:3d08? (p200300d82f3ff800c1015c9f3bc93d08.dip0.t-ipconnect.de. [2003:d8:2f3f:f800:c101:5c9f:3bc9:3d08])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fb74e46bcsm2945522f8f.8.2025.09.25.05.45.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Sep 2025 05:45:55 -0700 (PDT)
-Message-ID: <43ae76b9-14e2-45b9-83b0-4e5fdb6bfb3e@redhat.com>
-Date: Thu, 25 Sep 2025 14:45:54 +0200
+	b=QbR9eVkc9jqFFbCpDNB6V9/Y9BGe0YHqRH/eBnvYUvgm6wALF8n8C7vhVc2/NtuFxKI8bZ
+	gB7SpFXt4rtdJ6q9Yk+irlqwp0IqJItgnvAT7UlbpZ8ERYIrogqmwRfKOoicthGwJB2XnG
+	NmYMiPCb3oalWuBShtyYUKrfxN71e5M=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=GrEMaNGl;
+	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758806152; x=1790342152;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=kMx3O1w40yOeQReQlt831IU30eN0/QVbXAiRTp2LOKk=;
+  b=GrEMaNGlE5JzjoKN1E5WTczQNXtnlOLytuF62vl/4mQO0JUiq6anDcGo
+   pMI3w2eZoeHtIwThuW4DqrLEnjKj1sD1NOzBz/zZTgWvCT15pD3GCDqq+
+   E/T0aao49DZv2niZuZL/OH1PXV9gr2MAj+YAFoWF6M1kJ+qY4KeZt3BMg
+   y0b+SXKJWwxjSvSLGl5Yld4TNqEh6HUs7ZdSz3OTha+QMuoSt1gWhKfsC
+   BhUbhVGOU5rJxlZTSLxi5lEuVy2jR75eJ4NZl+iruagpKMTLUYjx4XZGu
+   r0AYVqVy3ZofKP83m0XE3LoRYQt2RJSHjkS432Ue3Pezo4qTCQJUO/O/P
+   A==;
+X-CSE-ConnectionGUID: tLiqaiBiRhGhKtnYM+slGQ==
+X-CSE-MsgGUID: MU2IgEy5THSI80jKD0CkGw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11563"; a="86568030"
+X-IronPort-AV: E=Sophos;i="6.18,292,1751266800"; 
+   d="scan'208";a="86568030"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 06:15:50 -0700
+X-CSE-ConnectionGUID: qTgriWMkTjOhbLMgBGam6Q==
+X-CSE-MsgGUID: ffU6NF5xSM2kcjLDra7sWg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,292,1751266800"; 
+   d="scan'208";a="181614505"
+Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
+  by orviesa004.jf.intel.com with ESMTP; 25 Sep 2025 06:15:43 -0700
+Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v1lov-0005FF-0n;
+	Thu, 25 Sep 2025 13:15:40 +0000
+Date: Thu, 25 Sep 2025 21:15:18 +0800
+From: kernel test robot <lkp@intel.com>
+To: Brendan Jackman <jackmanb@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	peterz@infradead.org, bp@alien8.de, dave.hansen@linux.intel.com,
+	mingo@redhat.com, tglx@linutronix.de, akpm@linux-foundation.org,
+	david@redhat.com, derkling@google.com, junaids@google.com,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, reijiw@google.com,
+	rientjes@google.com, rppt@kernel.org, vbabka@suse.cz,
+	x86@kernel.org, yosry.ahmed@linux.dev
+Subject: Re: [PATCH 11/21] mm: introduce freetype_t
+Message-ID: <202509252109.X3oqS16b-lkp@intel.com>
+References: <20250924-b4-asi-page-alloc-v1-11-2d861768041f@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/memblock: Correct totalram_pages accounting with
- KMSAN
-To: SeongJae Park <sj@kernel.org>, Alexander Potapenko <glider@google.com>
-Cc: akpm@linux-foundation.org, vbabka@suse.cz, rppt@kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, elver@google.com,
- dvyukov@google.com, kasan-dev@googlegroups.com,
- Aleksandr Nogikh <nogikh@google.com>
-References: <20250925123759.59479-1-sj@kernel.org>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20250925123759.59479-1-sj@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: KTPIl93Mbaag43B7qpBYUrystiMLUJz9j4a-wRT4vaE_1758804356
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: AB0318000D
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250924-b4-asi-page-alloc-v1-11-2d861768041f@google.com>
+X-Stat-Signature: 53t77q4otr6zyh1m9imemn1hde5ozzgy
+X-Rspamd-Queue-Id: 4EB2440005
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: worztst6hrtbe6zgrmsnftd31xi8gc1o
-X-HE-Tag: 1758804359-867618
-X-HE-Meta: U2FsdGVkX1/dSrDldnpYou5lMSYWptKoEokCgi/Zg1uDH0tHgQbhsTc0bGckRYWIXsuVSbe1WIoZtn5DV/zUn02jsdpgeU/uzRW2cdv20fZd99AfAEEls4Rsw1LNRdlVRinf57dqsCMMywE1QLKbLhoVIrDeYefF1qh9kpl9Ly5n813nzPUCKdsvC2JEicbC6dbd0g56rLXmtn8h1Uq7nOQoaeuAXVaXNLjRmGE2i5gVTiHR4iysLy2WBz48d6fWlCuocaL3KQS3EgEgEFri1Js6NiE2DLgxIhYnJbXuMnDLX7oi3zebtQAehorlqYAIctetLz6RMMWuTrUutlI3sZZNgdCRE6SkmM6HJVldoA7nZJI64bHeAHWmagCqxwkmSOo7/NUeWZ7JC94J+VzIbRImwV8KF64cYv4jc2VWROYMRwDGZT0lTEPUqWo4Fe2Wlwsu5sbrg3MavcX2eRpG/ehaOeMeaqNGFPPTkeulqxe6FCfIVNLC75Gvq98WiCQQTaM0sU3lEUsfVVu2nWdfaP7lLveeA3SXzrt0zotc90g2ruCPdZgkGdQXUuF/HJ/h/v4Yic6uXC55V1SHlfJfHISXn5Fmgbo7EEuFDdW2OqC2LHCHfRSWU9F4odsa8kgoZTFmn10/qj7V6U+nmydOHLT77hYCWnvuYyQR9rLlcPWEkjmEwEOJYZv3ghhEOOVqDvL2WGt3A4SfrWCluDd/k3hquzs4IbsjiR03MUu0ivObYB1QWMFjZlWgUCbKG9iqP0+5h/wDoqaR2koAb1N7XeQsg9js680Fj/P89+16ToEI0h4JMB7mVRy36IYO3t28C0k9iBCNwITTnnzHfGieaXItVAGHDAD5K7G4tniZZ+6p519k1fz5hQRhhC/FF7aCxoJpO2PA7gXiTQb01U4ZMD0BvknSKyVzvDFpj8LHwflpszmOl77QSbTN0SzV4gwT8CT9O4rJf/Kz/rnCM5e
- vplAVu1s
- vedavaAVLqjtCrDC5Qmwf5UIsRRkAdZCmWc4kpoVio5a6XhNaBByiQ9hIDpkxPfy/0nv2elnhtvbUWpwooFtHzdrnKQFoOl5c8wUVuVEB8TukW1APnKNzgn3EDWWNjAEH4smuUiq12OpuaCTq9RYiFu9T4vq/3rKREQnRut9WNKtae+B76Yy6Sj5QWb/u/lR8fzG8IuBIcAcvwzhpfqmcqCP24SbufjycujcdUPbrcADfsQakRg3TW+Ctsqtm7UNSqY84eZXNIPiLc4kwW5wZdgejUwylV07WFXJ4JGjzOfm296/z7rXbD+w6Oqbpj//g2GEaVuHx62ohiqs1bqBWAlyU0d8+U1wS2dIQeU/7RP4cadns93sKIOl7d0UhCX0D2B/0+4tbfNYMq7jJfzldHZzQ5Rb73JYOWvn9am9yZ32kD4oEioECdmYfJm0OzJAEdAqQJwrdYK55xI6JSQRi6Y8zUhAy/tv1vViF9arq7rXe1JjRY3VawR2dLCSJcDimgN4J2rFxJxKW45J9cBvPQmWUABNB/+ezwoSZNfLlDZOqX3Wi9ulmf7qo7Lt5eA5uwMkZXN2p0lRxB6Hr6ROBnxGWnhXMekzG2wIH5Di3jKXMzt0=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1758806152-986222
+X-HE-Meta: U2FsdGVkX1/YxKj1/JgUJqBZk0ACl4qe7EXjSyoayHI3yfeKqtTrw7n8mszrMiGfoUlELxSQAnzOkCWb4DFWyRoARaa8noS3+3B6/vU0gl9J5Ebxq+wcFlTJUBF59LLqvNqgu67zao5d6IeTJE64x9HQLpq4nKQwyE7FW9z0IvfFNvRL2sEmVcDnhd1T5Jyx1BqciQyqBuwPnPB92YjS4cF9Y2nxEUAXhzfbiQybBugcXGdJNb5Y8DkHZRT6ReajwPhNEDAjyPCffd2CON2NcLLq9mBJmJ2O4bn4ZoHXRtlg2G2nIUBWmQgn6b6C+EOy56iDcB61HJn9+7s+nEhyyNhzT6dk3xXm7xpLrqdorVVuAeeeUeoV70GOp8xRrjD2KJ04/rv/vJ/U93O1vXUEFRyvWA/MSbDDcI8YyA6edio9gbR7zQjCzHgxZSb6+fg/Hx/u8T1jiyURTI2RpclTsVnPK7SlrIRRprR7M386Pf8GSl/qh7gQuFwXazAfaCd0UHN7QLX6XG3EFrcTENBMg2E/ovld7xmsOCwduRb36GaPpCT5gFyuChbUSsOJyCMkWDIn0uca2qz0WW3svBDKdCuT14qRGi+qECqPJmiI54vTAENklVR5lGaogOtOc3QXhck37m7VB5EGx8C2ZHX6/Ed76yOuldVJ1CV/mw3MeR3s0dVkBDY+hjhKsbvt8o8Q2quc4l1rGZGrKcD82QkADiyh/JHAzzNoxXiagA4EmjSDouOI5ql3e9hRdOnH+PORWgvdDx0+1bo+B3sZSg+fCloR2GkGtHuN7D/wLE5bjhiE+g8WWUjguOxjreOfzK9uSB188nft605zhF6nD+ovwDQnc9LA5K0VISILnLJqCqm9llI05LGFpVTLQimJCkVrThb30iQN114b0nUe+ZWJqHMYLI7wrrSiHWateG7R1tqOema7Zt0075OBU5wRh/mkxNLwnnZ58EA3WV6dmB2
+ ARW4oMsn
+ hTkxOZkk8REzz1AneEQ/FzoCK+gtsNk3GgYIcy/OzpPAM6Bm1fIyxj/Oo5BLzEytLfnaRYQJY75fXqF3L9LAFZGZ1AMqtPh6tFZGXBhshazSgGX1IhhKN1RDwVTfbS1O+b5xexr4y1tsMyBlv3vUZaYYVE28mrAQA0P8TuOWXCkZV2A/DFl+A7hO5ulEuxZ3Jp9eeMQlzOq89hbHUnU36SutwyghnJv9efyTUOtA4m5cxyPihIu34xt/k94+/dUiFnR0mPAKGA9lnhoBo5mZgPULzSdnc/ZNJA12NQ2sV5VyzP2vGRQqwFP2UZ7TE7PeZx+YqsL0Z/NIyuqoTAjkz7zlys7gstwPML0YYPQ+TvfuVcRkTcX55Ypd0oulsAF/l9narAQ/h6hM0Y57iCN6dbkXBFw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,65 +121,154 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 25.09.25 14:37, SeongJae Park wrote:
-> Hello,
-> 
-> On Wed, 24 Sep 2025 12:03:01 +0200 Alexander Potapenko <glider@google.com> wrote:
-> 
->> When KMSAN is enabled, `kmsan_memblock_free_pages()` can hold back pages
->> for metadata instead of returning them to the early allocator. The callers,
->> however, would unconditionally increment `totalram_pages`, assuming the
->> pages were always freed. This resulted in an incorrect calculation of the
->> total available RAM, causing the kernel to believe it had more memory than
->> it actually did.
->>
->> This patch refactors `memblock_free_pages()` to return the number of pages
->> it successfully frees. If KMSAN stashes the pages, the function now
->> returns 0; otherwise, it returns the number of pages in the block.
->>
->> The callers in `memblock.c` have been updated to use this return value,
->> ensuring that `totalram_pages` is incremented only by the number of pages
->> actually returned to the allocator. This corrects the total RAM accounting
->> when KMSAN is active.
->>
->> Cc: Aleksandr Nogikh <nogikh@google.com>
->> Fixes: 3c2065098260 ("init: kmsan: call KMSAN initialization routines")
->> Signed-off-by: Alexander Potapenko <glider@google.com>
->> Reviewed-by: David Hildenbrand <david@redhat.com>
-> [...]
->> --- a/mm/mm_init.c
->> +++ b/mm/mm_init.c
->> @@ -2548,24 +2548,25 @@ void *__init alloc_large_system_hash(const char *tablename,
->>   	return table;
->>   }
->>   
->> -void __init memblock_free_pages(struct page *page, unsigned long pfn,
->> -							unsigned int order)
->> +unsigned long __init memblock_free_pages(struct page *page, unsigned long pfn,
->> +					 unsigned int order)
->>   {
->>   	if (IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT)) {
->>   		int nid = early_pfn_to_nid(pfn);
->>   
->>   		if (!early_page_initialised(pfn, nid))
->> -			return;
->> +			return 0;
->>   	}
-> 
-> I found this patch on mm-new tree is making my test machine (QEMU) reports much
-> less MemTotal even though KMSAN is disabled.  And modifying the above part to
-> be considered as free success (returning '1UL << order') fixed my issue.
-> Because the commit message says the purpose of this change is only for
-> KMSAN-stashed memory, maybe the above behavior change is not really intended?
-> 
-> I'm not familiar with this code so I'm unsure if the workaround is the right
-> fix.  But since I have no time to look this in deep for now, reporting first.
+Hi Brendan,
 
-Good point, I think there is something off here.
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on bf2602a3cb2381fb1a04bf1c39a290518d2538d1]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Brendan-Jackman/x86-mm-asi-Add-CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION/20250924-230633
+base:   bf2602a3cb2381fb1a04bf1c39a290518d2538d1
+patch link:    https://lore.kernel.org/r/20250924-b4-asi-page-alloc-v1-11-2d861768041f%40google.com
+patch subject: [PATCH 11/21] mm: introduce freetype_t
+config: i386-buildonly-randconfig-001-20250925 (https://download.01.org/0day-ci/archive/20250925/202509252109.X3oqS16b-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250925/202509252109.X3oqS16b-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509252109.X3oqS16b-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> mm/compaction.c:2319:7: error: use of undeclared identifier 'migratetype'; did you mean 'migrate_pfn'?
+    2319 |                 if (migratetype == MIGRATE_MOVABLE &&
+         |                     ^~~~~~~~~~~
+         |                     migrate_pfn
+   include/linux/migrate.h:137:29: note: 'migrate_pfn' declared here
+     137 | static inline unsigned long migrate_pfn(unsigned long pfn)
+         |                             ^
+   1 error generated.
+
+
+vim +2319 mm/compaction.c
+
+facdaa917c4d5a3 Nitin Gupta        2020-08-11  2234  
+40cacbcb3240362 Mel Gorman         2019-03-05  2235  static enum compact_result __compact_finished(struct compact_control *cc)
+748446bb6b5a939 Mel Gorman         2010-05-24  2236  {
+8fb74b9fb2b182d Mel Gorman         2013-01-11  2237  	unsigned int order;
+fb432f7fe43d9fb Brendan Jackman    2025-09-24  2238  	const freetype_t freetype = cc->freetype;
+cb2dcaf023c2cf1 Mel Gorman         2019-03-05  2239  	int ret;
+748446bb6b5a939 Mel Gorman         2010-05-24  2240  
+753341a4b85ff33 Mel Gorman         2012-10-08  2241  	/* Compaction run completes if the migrate and free scanner meet */
+f2849aa09d4fbc4 Vlastimil Babka    2015-09-08  2242  	if (compact_scanners_met(cc)) {
+55b7c4c99f6a448 Vlastimil Babka    2014-01-21  2243  		/* Let the next compaction start anew. */
+40cacbcb3240362 Mel Gorman         2019-03-05  2244  		reset_cached_positions(cc->zone);
+55b7c4c99f6a448 Vlastimil Babka    2014-01-21  2245  
+62997027ca5b3d4 Mel Gorman         2012-10-08  2246  		/*
+62997027ca5b3d4 Mel Gorman         2012-10-08  2247  		 * Mark that the PG_migrate_skip information should be cleared
+accf62422b3a67f Vlastimil Babka    2016-03-17  2248  		 * by kswapd when it goes to sleep. kcompactd does not set the
+62997027ca5b3d4 Mel Gorman         2012-10-08  2249  		 * flag itself as the decision to be clear should be directly
+62997027ca5b3d4 Mel Gorman         2012-10-08  2250  		 * based on an allocation request.
+62997027ca5b3d4 Mel Gorman         2012-10-08  2251  		 */
+accf62422b3a67f Vlastimil Babka    2016-03-17  2252  		if (cc->direct_compaction)
+40cacbcb3240362 Mel Gorman         2019-03-05  2253  			cc->zone->compact_blockskip_flush = true;
+62997027ca5b3d4 Mel Gorman         2012-10-08  2254  
+c8f7de0bfae36e8 Michal Hocko       2016-05-20  2255  		if (cc->whole_zone)
+748446bb6b5a939 Mel Gorman         2010-05-24  2256  			return COMPACT_COMPLETE;
+c8f7de0bfae36e8 Michal Hocko       2016-05-20  2257  		else
+c8f7de0bfae36e8 Michal Hocko       2016-05-20  2258  			return COMPACT_PARTIAL_SKIPPED;
+bb13ffeb9f6bfeb Mel Gorman         2012-10-08  2259  	}
+748446bb6b5a939 Mel Gorman         2010-05-24  2260  
+facdaa917c4d5a3 Nitin Gupta        2020-08-11  2261  	if (cc->proactive_compaction) {
+facdaa917c4d5a3 Nitin Gupta        2020-08-11  2262  		int score, wmark_low;
+facdaa917c4d5a3 Nitin Gupta        2020-08-11  2263  		pg_data_t *pgdat;
+facdaa917c4d5a3 Nitin Gupta        2020-08-11  2264  
+facdaa917c4d5a3 Nitin Gupta        2020-08-11  2265  		pgdat = cc->zone->zone_pgdat;
+facdaa917c4d5a3 Nitin Gupta        2020-08-11  2266  		if (kswapd_is_running(pgdat))
+facdaa917c4d5a3 Nitin Gupta        2020-08-11  2267  			return COMPACT_PARTIAL_SKIPPED;
+facdaa917c4d5a3 Nitin Gupta        2020-08-11  2268  
+facdaa917c4d5a3 Nitin Gupta        2020-08-11  2269  		score = fragmentation_score_zone(cc->zone);
+8fbb92bd10be26d Kemeng Shi         2023-08-09  2270  		wmark_low = fragmentation_score_wmark(true);
+facdaa917c4d5a3 Nitin Gupta        2020-08-11  2271  
+facdaa917c4d5a3 Nitin Gupta        2020-08-11  2272  		if (score > wmark_low)
+facdaa917c4d5a3 Nitin Gupta        2020-08-11  2273  			ret = COMPACT_CONTINUE;
+facdaa917c4d5a3 Nitin Gupta        2020-08-11  2274  		else
+facdaa917c4d5a3 Nitin Gupta        2020-08-11  2275  			ret = COMPACT_SUCCESS;
+facdaa917c4d5a3 Nitin Gupta        2020-08-11  2276  
+facdaa917c4d5a3 Nitin Gupta        2020-08-11  2277  		goto out;
+facdaa917c4d5a3 Nitin Gupta        2020-08-11  2278  	}
+facdaa917c4d5a3 Nitin Gupta        2020-08-11  2279  
+21c527a3cba07f9 Yaowei Bai         2015-11-05  2280  	if (is_via_compact_memory(cc->order))
+56de7263fcf3eb1 Mel Gorman         2010-05-24  2281  		return COMPACT_CONTINUE;
+56de7263fcf3eb1 Mel Gorman         2010-05-24  2282  
+baf6a9a1db5a40e Vlastimil Babka    2017-05-08  2283  	/*
+efe771c7603bc52 Mel Gorman         2019-03-05  2284  	 * Always finish scanning a pageblock to reduce the possibility of
+efe771c7603bc52 Mel Gorman         2019-03-05  2285  	 * fallbacks in the future. This is particularly important when
+efe771c7603bc52 Mel Gorman         2019-03-05  2286  	 * migration source is unmovable/reclaimable but it's not worth
+efe771c7603bc52 Mel Gorman         2019-03-05  2287  	 * special casing.
+baf6a9a1db5a40e Vlastimil Babka    2017-05-08  2288  	 */
+ee0913c47196102 Kefeng Wang        2022-09-07  2289  	if (!pageblock_aligned(cc->migrate_pfn))
+baf6a9a1db5a40e Vlastimil Babka    2017-05-08  2290  		return COMPACT_CONTINUE;
+baf6a9a1db5a40e Vlastimil Babka    2017-05-08  2291  
+a211c6550efcc87 Johannes Weiner    2025-03-13  2292  	/*
+a211c6550efcc87 Johannes Weiner    2025-03-13  2293  	 * When defrag_mode is enabled, make kcompactd target
+a211c6550efcc87 Johannes Weiner    2025-03-13  2294  	 * watermarks in whole pageblocks. Because they can be stolen
+a211c6550efcc87 Johannes Weiner    2025-03-13  2295  	 * without polluting, no further fallback checks are needed.
+a211c6550efcc87 Johannes Weiner    2025-03-13  2296  	 */
+a211c6550efcc87 Johannes Weiner    2025-03-13  2297  	if (defrag_mode && !cc->direct_compaction) {
+a211c6550efcc87 Johannes Weiner    2025-03-13  2298  		if (__zone_watermark_ok(cc->zone, cc->order,
+a211c6550efcc87 Johannes Weiner    2025-03-13  2299  					high_wmark_pages(cc->zone),
+a211c6550efcc87 Johannes Weiner    2025-03-13  2300  					cc->highest_zoneidx, cc->alloc_flags,
+a211c6550efcc87 Johannes Weiner    2025-03-13  2301  					zone_page_state(cc->zone,
+a211c6550efcc87 Johannes Weiner    2025-03-13  2302  							NR_FREE_PAGES_BLOCKS)))
+a211c6550efcc87 Johannes Weiner    2025-03-13  2303  			return COMPACT_SUCCESS;
+a211c6550efcc87 Johannes Weiner    2025-03-13  2304  
+a211c6550efcc87 Johannes Weiner    2025-03-13  2305  		return COMPACT_CONTINUE;
+a211c6550efcc87 Johannes Weiner    2025-03-13  2306  	}
+a211c6550efcc87 Johannes Weiner    2025-03-13  2307  
+56de7263fcf3eb1 Mel Gorman         2010-05-24  2308  	/* Direct compactor: Is a suitable page free? */
+cb2dcaf023c2cf1 Mel Gorman         2019-03-05  2309  	ret = COMPACT_NO_SUITABLE_PAGE;
+fd37721803c6e73 Kirill A. Shutemov 2023-12-28  2310  	for (order = cc->order; order < NR_PAGE_ORDERS; order++) {
+40cacbcb3240362 Mel Gorman         2019-03-05  2311  		struct free_area *area = &cc->zone->free_area[order];
+8fb74b9fb2b182d Mel Gorman         2013-01-11  2312  
+fb432f7fe43d9fb Brendan Jackman    2025-09-24  2313  		/* Job done if page is free of the right freetype */
+fb432f7fe43d9fb Brendan Jackman    2025-09-24  2314  		if (!free_area_empty(area, freetype))
+cf378319d335663 Vlastimil Babka    2016-10-07  2315  			return COMPACT_SUCCESS;
+56de7263fcf3eb1 Mel Gorman         2010-05-24  2316  
+2149cdaef6c0eb5 Joonsoo Kim        2015-04-14  2317  #ifdef CONFIG_CMA
+2149cdaef6c0eb5 Joonsoo Kim        2015-04-14  2318  		/* MIGRATE_MOVABLE can fallback on MIGRATE_CMA */
+2149cdaef6c0eb5 Joonsoo Kim        2015-04-14 @2319  		if (migratetype == MIGRATE_MOVABLE &&
+fb432f7fe43d9fb Brendan Jackman    2025-09-24  2320  		    !free_areas_empty(area, MIGRATE_CMA))
+cf378319d335663 Vlastimil Babka    2016-10-07  2321  			return COMPACT_SUCCESS;
+2149cdaef6c0eb5 Joonsoo Kim        2015-04-14  2322  #endif
+2149cdaef6c0eb5 Joonsoo Kim        2015-04-14  2323  		/*
+2149cdaef6c0eb5 Joonsoo Kim        2015-04-14  2324  		 * Job done if allocation would steal freepages from
+fb432f7fe43d9fb Brendan Jackman    2025-09-24  2325  		 * other freetype buddy lists.
+2149cdaef6c0eb5 Joonsoo Kim        2015-04-14  2326  		 */
+fb432f7fe43d9fb Brendan Jackman    2025-09-24  2327  		if (find_suitable_fallback(area, order, freetype, true) >= 0)
+baf6a9a1db5a40e Vlastimil Babka    2017-05-08  2328  			/*
+fb432f7fe43d9fb Brendan Jackman    2025-09-24  2329  			 * Movable pages are OK in any pageblock of the right
+fb432f7fe43d9fb Brendan Jackman    2025-09-24  2330  			 * sensitivity. If we are * stealing for a
+fb432f7fe43d9fb Brendan Jackman    2025-09-24  2331  			 * non-movable allocation, make sure
+fa599c44987df43 Miaohe Lin         2022-04-28  2332  			 * we finish compacting the current pageblock first
+fa599c44987df43 Miaohe Lin         2022-04-28  2333  			 * (which is assured by the above migrate_pfn align
+fa599c44987df43 Miaohe Lin         2022-04-28  2334  			 * check) so it is as free as possible and we won't
+fa599c44987df43 Miaohe Lin         2022-04-28  2335  			 * have to steal another one soon.
+baf6a9a1db5a40e Vlastimil Babka    2017-05-08  2336  			 */
+baf6a9a1db5a40e Vlastimil Babka    2017-05-08  2337  			return COMPACT_SUCCESS;
+baf6a9a1db5a40e Vlastimil Babka    2017-05-08  2338  	}
+baf6a9a1db5a40e Vlastimil Babka    2017-05-08  2339  
+facdaa917c4d5a3 Nitin Gupta        2020-08-11  2340  out:
+cb2dcaf023c2cf1 Mel Gorman         2019-03-05  2341  	if (cc->contended || fatal_signal_pending(current))
+cb2dcaf023c2cf1 Mel Gorman         2019-03-05  2342  		ret = COMPACT_CONTENDED;
+cb2dcaf023c2cf1 Mel Gorman         2019-03-05  2343  
+cb2dcaf023c2cf1 Mel Gorman         2019-03-05  2344  	return ret;
+837d026d560c5ef Joonsoo Kim        2015-02-11  2345  }
+837d026d560c5ef Joonsoo Kim        2015-02-11  2346  
 
 -- 
-Cheers
-
-David / dhildenb
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
