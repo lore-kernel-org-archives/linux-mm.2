@@ -4,103 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61ABDCAC5A7
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 17:08:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF15CCAC5B1
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 17:20:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7703F8E0007; Thu, 25 Sep 2025 13:08:13 -0400 (EDT)
+	id ED9CF8E0003; Thu, 25 Sep 2025 13:20:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 748078E0001; Thu, 25 Sep 2025 13:08:13 -0400 (EDT)
+	id EB1018E0001; Thu, 25 Sep 2025 13:20:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 684CD8E0007; Thu, 25 Sep 2025 13:08:13 -0400 (EDT)
+	id DEE968E0003; Thu, 25 Sep 2025 13:20:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 593638E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:08:13 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F2C6E119E6B
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:08:12 +0000 (UTC)
-X-FDA: 83928405624.14.C795FB9
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 0F00C160015
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:08:10 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=yukuai.org.cn header.s=zmail header.b=l5sRIKuV;
-	spf=pass (imf08.hostedemail.com: domain of hailan@yukuai.org.cn designates 136.143.188.12 as permitted sender) smtp.mailfrom=hailan@yukuai.org.cn;
-	dmarc=permerror reason="Multiple policies defined in DNS" header.from=yukuai.org.cn (policy=permerror);
-	arc=pass ("zohomail.com:s=zohoarc:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758820091;
+	by kanga.kvack.org (Postfix) with ESMTP id CD0408E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:20:53 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 920F8C047D
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:20:53 +0000 (UTC)
+X-FDA: 83928437586.02.DFE1996
+Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
+	by imf16.hostedemail.com (Postfix) with ESMTP id BB41B18000C
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:20:51 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=elijahs.space header.s=purelymail2 header.b=VhtuGPKN;
+	dkim=pass header.d=purelymail.com header.s=purelymail2 header.b="R4Pwbk/D";
+	spf=pass (imf16.hostedemail.com: domain of me@elijahs.space designates 34.202.193.197 as permitted sender) smtp.mailfrom=me@elijahs.space;
+	dmarc=pass (policy=reject) header.from=elijahs.space
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758820851;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xh7K/XJFQ6KkEtm/OLCF3JPZG7ct8pPnp/RtlikI1UA=;
-	b=lJrRshqXRUNe4xlgqSDqC8r76e8J0VZAQXSjh+J88d6pyO+xOevF3QSyc0LfSeTyeVE0Lb
-	5FVTJZsEmH3Etm5X94eyBLjPLnigAM7w1PJ+mRbWsG/6aIWYQ2AuAHsXnEsR0ystJ9Nbpq
-	AsWO4adaSuWFkW1RSBH0xsaHu+xkypY=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=yukuai.org.cn header.s=zmail header.b=l5sRIKuV;
-	spf=pass (imf08.hostedemail.com: domain of hailan@yukuai.org.cn designates 136.143.188.12 as permitted sender) smtp.mailfrom=hailan@yukuai.org.cn;
-	dmarc=permerror reason="Multiple policies defined in DNS" header.from=yukuai.org.cn (policy=permerror);
-	arc=pass ("zohomail.com:s=zohoarc:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758820091; a=rsa-sha256;
-	cv=pass;
-	b=ZBPynKoujMkSZUUMzIXIzUal2MNAY6KFU9z09dlSVl0rrZKaJz8zDzLojCNzYZF+lvyJh3
-	3DhO2WXqz1pn5tFpgCRP8bg1KjY18XRy1/AlPvf0wFjFKAUe8s7961C9eLUcY6SIvNLW00
-	Wmx9j6W7ME6TuSYtppEPmD0G94LPN4A=
-ARC-Seal: i=1; a=rsa-sha256; t=1758820071; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=PE5glDIsYYr7d4pKIscD4HkL/+QqyqDxWnAkaQe/NBQ5PEk0Djp/pd3gdknSw5LJ7o2I1kp+xCG4qBtGlCPxIMdBMI0PK4TBNhiG1pcgKOgwku9ffJcNb2KvWK6Aa2X6twhan+OCCTljOGpq389Al6Ckk5OkKHCmGPIMG4zskFs=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1758820071; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=xh7K/XJFQ6KkEtm/OLCF3JPZG7ct8pPnp/RtlikI1UA=; 
-	b=FySJUk52uxt/fWGi5Ma/0yIkUjR5kRBlSaenMNSNfu/UTj+/vcfS+ZVU70Su6VMHRFs8nikDn/hOBEPF8Ut6vfz0M4AK7mLb/Tp7LUYA5sTfNcASQoT3qg/ySZWL8fAmWxZ+ZpvPj1Ay9IusATNIk6LjIxvl9umRhTTWQjGHask=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=yukuai.org.cn;
-	spf=pass  smtp.mailfrom=hailan@yukuai.org.cn;
-	dmarc=pass header.from=<hailan@yukuai.org.cn>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1758820071;
-	s=zmail; d=yukuai.org.cn; i=hailan@yukuai.org.cn;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=xh7K/XJFQ6KkEtm/OLCF3JPZG7ct8pPnp/RtlikI1UA=;
-	b=l5sRIKuV6EnO3zuk5usTtk3gAlssOPDKZAWjYt6QRJ7KxG0XlH5PAxSXZ9LV4L8P
-	K27KcsZ9I7CceXQPnIzcnspF6yfPE9rxBz/9as7VzwC+v/3j1BIDUEvB85CJyBaY2y6
-	Bslw0a+cYcqbdLEgq9iiIBPlUFpxQLnO7XTs2tbo=
-Received: by mx.zohomail.com with SMTPS id 1758820067677192.5730499183651;
-	Thu, 25 Sep 2025 10:07:47 -0700 (PDT)
-Message-ID: <01e7eccd-3529-4d12-8ad2-fd9e034a026d@yukuai.org.cn>
-Date: Fri, 26 Sep 2025 01:07:39 +0800
+	bh=mxL2goKemleRYcSYppLicJLKpdb0DPjV8PfpFSBecT0=;
+	b=aJMJvLqLyx22wqK6ps6I/Lu6JlXU0zZVLrQfw+5KZ6km3bPG2JhoR57/D6/SJGQgFYeVXP
+	7/T1nH/nRuAyq5WXmOjjw815+2/l0yBujaAwgN6QcGL5/9NpCydZpBxrPkl9MHP0zCl+c3
+	x4/gvdZVb0d0Gi/hU+0YtEf4GqIx8qE=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=elijahs.space header.s=purelymail2 header.b=VhtuGPKN;
+	dkim=pass header.d=purelymail.com header.s=purelymail2 header.b="R4Pwbk/D";
+	spf=pass (imf16.hostedemail.com: domain of me@elijahs.space designates 34.202.193.197 as permitted sender) smtp.mailfrom=me@elijahs.space;
+	dmarc=pass (policy=reject) header.from=elijahs.space
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758820851; a=rsa-sha256;
+	cv=none;
+	b=F0B40tO72aSIGVH/z95RhDlaCij9NjFBLuiaz2PwzOhmQfe51NwPWRoA3xlHhjE6w6U9dy
+	khkO/jhD2SVK/eWhd7UJ+k1GhuCL68lSPO4ZCtoh/sVXDjJ5LpZXpDdWCH7PTWcfj6OkdM
+	PSQwRZDgFTJ+M6psu7pIViItf6M8U/s=
+DKIM-Signature: a=rsa-sha256; b=VhtuGPKN+ofn4I8WGP0GkYmDMBmyLJdRXM8GhaHAkMsxRw8oMqH7q7350yJDTUbHyK1e+7b9vfft8bnL+YKirFTJD+l7eRwyNgxTqoOVpNfibMYy1i7OPrsmO0FikERsv1QzGycVfjTVLnK+38a7oofcABek8kvO1nH8m8Cue00F1BbCHr8OOsXjC8hO59i9VBmo/twYVWB4asO6+8QzpM/p0o5GVma+9okSV/0NHuGsnWVYBAxmEaK5elRhsVFm/arVDUC6qmzOJdCwlZViB3slKY2HQ3xUP3HdY5hkaJTj98lwuqhuCeoSJP0CwE7ZdVoOD4nJnF6HM/Xn0s3lQA==; s=purelymail2; d=elijahs.space; v=1; bh=97iUBxcczrc8d4ZjA8iMJpyUnogsQG3SuufPU6f2ca0=; h=Received:Date:Subject:To:From;
+DKIM-Signature: a=rsa-sha256; b=R4Pwbk/D+8Y/tpVxz1UD8WEKrmqbA1h2GH4KbnVGeeySbeDisfO8qO3fvelzJbOJ1GQM0IUB1lAcZqtoNhdWY9lsXo9bfhPHW31qumeUiphzJ1GQJXxxnsYwCtvZez47QBUsWLwtmtdU6pv/YmH7ioxgQPykEMFls79gAAuvo7LawcnDhTg9Zc0shEJbwCxlJjp+XwVfKqG1dGgmZu+gk0InSlSG2DACOjX4b6rkaVYaulLmCDOeOOxYA29hIeriQ6YgQA4cHtQCIYBt+Ebu+iRF0dPhPID5tumsI3rtrwN55+NOkja+EFaDwCb93TOgXu6BGvB9LMoq7et39OzB4Q==; s=purelymail2; d=purelymail.com; v=1; bh=97iUBxcczrc8d4ZjA8iMJpyUnogsQG3SuufPU6f2ca0=; h=Feedback-ID:Received:Date:Subject:To:From;
+Feedback-ID: 26912:4866:null:purelymail
+X-Pm-Original-To: linux-mm@kvack.org
+Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 1074361899;
+          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+          Thu, 25 Sep 2025 17:20:15 +0000 (UTC)
+Message-ID: <73d7d53f-439b-44a9-98ca-0b1c8fbc1661@elijahs.space>
+Date: Thu, 25 Sep 2025 10:20:13 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/10] blk-cgroup: use cgroup lock and rcu to protect
- iterating blkcg blkgs
-To: Bart Van Assche <bvanassche@acm.org>, Yu Kuai <yukuai1@huaweicloud.com>,
- tj@kernel.org, ming.lei@redhat.com, nilay@linux.ibm.com, hch@lst.de,
- josef@toxicpanda.com, axboe@kernel.dk, akpm@linux-foundation.org,
- vgoyal@redhat.com
-Cc: cgroups@vger.kernel.org, linux-block@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, yukuai3@huawei.com,
- yi.zhang@huawei.com, yangerkun@huawei.com, johnny.chenyi@huawei.com
-References: <20250925081525.700639-1-yukuai1@huaweicloud.com>
- <20250925081525.700639-2-yukuai1@huaweicloud.com>
- <bc6fe04d-3245-40dd-aa30-c3a3acb670c2@acm.org>
-From: Yu Kuai <hailan@yukuai.org.cn>
-In-Reply-To: <bc6fe04d-3245-40dd-aa30-c3a3acb670c2@acm.org>
+Subject: Re: [PATCH] rust: slab: add basic slab module
+To: Danilo Krummrich <dakr@kernel.org>, Elijah Wright <git@elijahs.space>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Uladzislau Rezki <urezki@gmail.com>,
+ linux-mm@kvack.org
+References: <20250924193643.4001-1-git@elijahs.space>
+ <DD1SGLU4180C.361W5XLH76XNC@kernel.org>
+Content-Language: en-US
+From: Elijah <me@elijahs.space>
+In-Reply-To: <DD1SGLU4180C.361W5XLH76XNC@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-X-Rspamd-Queue-Id: 0F00C160015
-X-Stat-Signature: 731yipococ44qh1gq8marcrkarwh7ytc
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: BB41B18000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758820090-454823
-X-HE-Meta: U2FsdGVkX19E3+duQ9l6qP9UBl8YpgtzMGSXnzf/J/aDz/Zr/D+cfSgmj9BIzdIKX636OW5kTXUtSlNqAsP6jn6f2naS62Ih4GqRQEUwgI10rApUwItUH4dB2NkmivWplSNru0LBSsLefTrMtllThEBPNj1DkGOolclvqk/hh3HQomddEtslwiZ1Ac0KmvuT1VAMwxepl/gMld7E5TBzDthFTA+O9iC1u/BNFfQzrpO7wLvZ2IjcgjjRRtl9x09mkCV7DUq3LheB9a25EnpwR1461TZEadXfljfLG+kBygXiruHla3QDHHTJ31AZjHi6KYoGlRI5nfS7YXj1O1AFQAb0RpBgqa0uUpHoFf6yJRKPIWXBimtb2Zaa+8ediaC4Ispbfl3Z8GCOujeCBvw8JtqhiJ5Az1/nT7o+aXlQdfxp8vmrLIEiFDxh5ja+juHPf2NRD5pRu0/HJ0crhIRpNaIi8dRuzfxStONlTBVMn7ZEU1SMRs+0Tcr03doMd19pefQ9qxQm0jv8S1RY2CcIxG8YMtfTQNOesvGwtXXmHUvyCQKY8Y0JdNhja6mLfg4bgxPNOl4dUj3hXjcOmuAJIqqECCGH91vo/+KPajqP+bTfDupDkL9pstbIZ9Nv4vxsPgX9RxD0WPHzsKNzxQOe0jvZCCHmEBY8TFvqTw+DIC4Ftx8orpaWscSFwLtvt7SqyvoYx0jIoNHzGIYCxvgDb+e3U6lHVO83F1u0sFfSoQ0dR1lnt1MhXRMVRszG3UK7bgGSSYbEjEh2t4U30deqiHlpZyutmPcwHXh8DuxxyhuYuN8/HtZnRw8MyvGZwYsLyrAQZ+FjpG5Rnx9hhww/G7Kt960M+xP1lEYAmyAHXoMtYI60ZzO35KJHFmqzdbSK7ALQJ3kVcG9xr6GX9/KHKH/gfFd3rnWz/IFOSVyLxlj5OoGZbh7YneB9nhfi2f/LVwRqF/u/HVyqwhO2a7C
- nYJKZdSz
- a7cLOwoeX6yLsBIQvUMTcIbvHeAg9/FzbpeQCcvhHsnDfohQ9pVfz7gx9seBPTYQNzjjB7zf9I/OLXqieh/zO1QhV/lNawfkNwnkkh8i+7KDLn27lHJzH5LYWq7i/evqPo0LWRlz/t1M6VPlgwZGYm5OhbszTFqP0zeYe6Yzfwx9biV7hO0K6Dy7FUheBy/3cRsI0zmssb2Qpbbkhpr+Yab7HC093jFxqD36h8ng8RDBCDtbL2ADnybi5asE2lIz3hrwNSvlGjaOcWE8mhjbLRMJ4ltAwKa50bExXqW6fXqfgDF/fFseCGVN7dOxdXs1BIwH+B/bDBpcX9lfxRXCq+AcSU6PVNjHihy+Lwrgu5AVLNaXx4PGR8ApsMsykMQW88cVLVu1Uk3ei5A3dbEq0gSp1BlCCDJXDd6bl2FzdJgbhpOPtUuzMOJ+SXILs0ucYtysimOw2hHmBKCVU06wUU5wt3w==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
+X-Rspamd-Server: rspam07
+X-Stat-Signature: zx3zr1ek44i5isfxcgdo6tu7qik1qwrr
+X-HE-Tag: 1758820851-249567
+X-HE-Meta: U2FsdGVkX1865cLENj+oclSW/WKe0GVPZ/ArJAMtx/hsbf/HVQmLOIkpKlv9QZYj8kMqX3jvgAoA7HbRJxCgsA7z6diE78YUWmcMrngnYO5/KzroDH+pNyUwfSutFj3u6409l0PVjZ5AIUzmdRm1s7GQUDpFyweyr+kqxqfZ+jXRFxAMvbVnqZ3AIBjrtwKScfXLEG2yKdbCZCbnRC91AqTXrJya7r4r3lG732wnDS41jbvTFr9C4Rk9M5iEriVWZm/pHVQxQ4oj2iJDuPKiqeRRVsv1Ub26M5D6+LXzCXF4TvETpbZlfl5otRivjeE+bD9e1RhlPHPaaec4wEqWluB44TprFcPesnMp9RFuQyizZns9+nJn/Pv7n5j/Eb6wtxqoU701uYX3LTE9ANaxRJwzdgiLLL8SJIhJBxlouHJcfsDjyC/uyAKirWpeWnfmwkVfWi4qV1oUtXhRvWpWcRxhQTOzBcHInCC32FfiG6dRL0IOyDyxMgZFIsqNscoQhsVHWtjsdYw/ha/4N0eE43NuVxNeTLwK2bNjS2YDgtBtY61ge/fttQmtx0d3Cl3QI393S2mPrCzl7G2hmmoKNnroWnanjoUbGTqZyf5HjYqxZr6RBv/fNosD2qrOo9FyvvBi35VLEaQzWeId9vSQnX7qR/7lG5a++bi++BORB1Q1U13r0VXlrEpHf/LmXo+himBow17yUFh+J4mIoxIwiLBQk1d6w5qTt7o1aEtywlu625AUTN4zbNz8sWBlVpaVfLzV6fQqaWJlgK++q9qzyvrjC2ZVrpahbRn5eyafWwCZAg9BoxiZfe4oRkeYDJqyoP6Ovj3pGbmvVt0Yam2tuziUIr/k5LmBG9J/HVzG6VQvNpVvrOc6B07phkapUOVI/Mor9sbZEJISbq52OXFCWmYGDwdveQpwy4+wpS2TMExbsPqs0qKtxacp7DZYV9qRrnCogCihdkNGQLLW/Np
+ aW9we7o3
+ LCYClmWcHDXCwzkoAG718iL3RFDFhlLUNdeSebZpnHjsQn3SuET10jfwWq/FQiQC51bX8+SXV8Zjqtxg+6nj1RuG8h2yIl7XwusXT2xNhLFw+gZrAdasi5XJ4UbJkepfIdy+F9MOsV4/4VOD3KB50RJnUPnsxpROcty+FuhCBf8PKClBDDmc8WykegNnT5SCT0AQDAe2UZJE4A2nhEVK54MhByQe2HP8Je5tx9NyTE73L0rJHMTxG62FAQZ1fovyJk7XgMf2fiBy5VUnkfYrZgJHQqcLWhiQwf490yrU9W1HKCQ4iPDH6MCzcd/jlwihRtKG8p/F5c4INqYLelfoGwrFozOzmVkfm40iq9WwKhfrvA4fDHkaHpBj/Wsf0weGiMB6uz1w8LwKNOjh1oNcbd/f5E/xgsJcdhMTyaiN1XpbCO9dKVfKexE4OaDUjDuDoJDJbBikoJ4+ESwOyvJ0oyWMuwegsWPLL2/uWh7dNefAptX6WgB+G3m46yDD79Uf2ZiIKJeEVwOqgv9jsZLDgII5XdURcrBJbHbOXCU0phPSy/+dU0AfH6PZcx6QDUMjG+nTUvhkyRAjpQJoS6PqaGkqc25ajwaWoyYbC+bUslXy4Pb3YhtcY5ZLRTQ==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,26 +97,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+I was thinking of maybe creating something like KBox for kmem_cache but 
+I didn't want to touch allocator code yet, I figured I would just create 
+the groundwork for that to exist. rbtree.rs uses KBox now but I'm not 
+sure it should, at least if it's going to scale to many nodes
 
-在 2025/9/25 23:57, Bart Van Assche 写道:
-> On 9/25/25 1:15 AM, Yu Kuai wrote:
->> It's safe to iterate blkgs with cgroup lock or rcu lock held, prevent
->> nested queue_lock under rcu lock, and prepare to convert protecting
->> blkcg with blkcg_mutex instead of queuelock.
->
-> Iterating blkgs without holding q->queue_lock is safe but accessing the
-> blkg members without holding that lock is not safe since q->queue_lock
-> is acquired by all code that modifies blkg members. Should perhaps a new
-> spinlock be introduced to serialize blkg modifications?
->
-No need for a new lock, I think blkcg->lock can do that.
+On 9/25/2025 2:54 AM, Danilo Krummrich wrote:
+> What's the motivation?
+> 
+> I mean, we will need kmem_cache soon. But the users will all be drivers, e.g.
+> the GPU drivers that people work on currently.
+> 
+> Drivers shouldn't use "raw" allocators (such as Kmalloc [1] or Vmalloc [2]), but
+> the corresponding "managed" allocation primitives, such as KBox [3], VBox [4],
+> KVec, etc.
+> 
+> Therefore, the code below shouldn't be used by drivers directly, hence the
+> question for motivation.
+> 
+> In any case, kmem_cache is a special allocator (special as in it can have a
+> non-static lifetime in contrast to other kernel allocators) and should be
+> integrated with the existing infrastructure in rust/kernel/alloc/.
+> 
+> I think there are multiple options for that; (1) isn't really an option, but I
+> think it's good to mention anyways:
+> 
+>    (1) Allow for non-zero sized implementations of the Allocator trait [3], such
+>        that we can store a reference count to the KmemCache. This is necessary to
+>        ensure that a Box<T, KmemCache> can't out-live the KmemCache itself.
+> 
+>        The reason why I said it's not really an option is because it discards the
+>        option for dynamic dispatch of the generic Box type.
+> 
+>    (2) Same as (1), but with a custom Box type. This keeps dynamic dispatch for
+>        the generic Box type (i.e. KBox, VBox, KVBox), but duplicates quite some
+>        code and still doesn't allow for dynamic dispatch for the KmemCacheBox.
+> 
+>    (3) Implement a macro to generate a custom KmemCache Allocator trait
+>        implementation for every KmemCache instance with a static lifetime.
+> 
+>        This makes KmemCache technically equivalent to the other allocators, such
+>        as Kmalloc, etc. but obviously has the downside that the KmemCache might
+>        live much longer than required.
+> 
+>        Technically, most KmemCache instances live for the whole module lifetime,
+>        so it might be fine though.
+> 
+>        (This is what I think Alice proposed.)
+> 
+>    (4) Solve the problem on the C side and let kmem_cache_alloc() take care of
+>        acquiring a reference count to the backing kmem_cache. The main question
+>        here would be where to store the pointer for decreasing the reference
+>        count on kmem_cache_free().
+> 
+>        Theoretically, it could be stored within the allocation itself, but it's a
+>        bit of a yikes.
+> 
+>        However, it would resolve all the mentioned problems above.
+> 
+> I'd like to see (3) or (4), also depending on what the MM folks think.
 
-Thanks,
-Kuai
-
-> Thanks,
->
-> Bart.
->
 
