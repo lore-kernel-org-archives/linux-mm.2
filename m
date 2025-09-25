@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4764CAC5A5
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 08:25:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3011ACAC5AA
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 08:26:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5193E8E0011; Thu, 25 Sep 2025 04:25:54 -0400 (EDT)
+	id 7595F8E0001; Thu, 25 Sep 2025 04:25:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 295A08E0018; Thu, 25 Sep 2025 04:25:54 -0400 (EDT)
+	id 475738E0014; Thu, 25 Sep 2025 04:25:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECA288E0014; Thu, 25 Sep 2025 04:25:53 -0400 (EDT)
+	id 1FCD98E0016; Thu, 25 Sep 2025 04:25:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B94DF8E0001
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DFDB88E0012
 	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 04:25:53 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4F6F01603AB
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AC0171DEFBF
 	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 08:25:53 +0000 (UTC)
-X-FDA: 83927089386.12.22D9CCF
+X-FDA: 83927089386.01.C681FF0
 Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 9BD8EC0004
+	by imf06.hostedemail.com (Postfix) with ESMTP id 5478D18000D
 	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 08:25:50 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	spf=pass (imf10.hostedemail.com: domain of yukuai1@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yukuai1@huaweicloud.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758788751; a=rsa-sha256;
-	cv=none;
-	b=cNi8TP8j7DB0XgXk+E2FbFzqWWUj2y/BUAFRCSvcRCjuhbdaik2Oz7n89RyBXE9DVZY5xz
-	rA1ZO0bM4llA3VJcSCjfmrCP4GG2AQLXRgdxm+k3xkYsxzwv7NEU9jGMychZ29x/Q28VfK
-	PHPyj5fBIKs/JFt4Q178MhIS19RuEwE=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of yukuai1@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yukuai1@huaweicloud.com
+Authentication-Results: imf06.hostedemail.com;
+	spf=pass (imf06.hostedemail.com: domain of yukuai1@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yukuai1@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758788751;
+	s=arc-20220608; t=1758788752;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kAQzNb78lo/I0F1yXjfnUQvl1j/GVijMVjlArmN9OYo=;
-	b=o/fdaTun/D+SdBeaTe61dtBdm+cpy/ORqzD7iOaGa9wxvh3QyXhJU9LVLiF/7IPo6Ke/pj
-	Iu4fyst6etiuwhAEakKzatRD6L9qEk6O28agROVBYHoJCh96zhh+2GJ1ac3mCxEOPsHckJ
-	5ykLw7OOlOMwi/hqvYmYrcO4UI4Mw5I=
+	bh=TaGAnb0jQxIUu9FI+O1KH7UMEAXTwVdyVgZ3u+pnfH0=;
+	b=bTaHxqDTNn1nC1k204R73UxmtI2Yzazr6QedS7sOB0G4gN+vyV2FF5UBiowBv9LRUMS/ht
+	cNIN7ja4BW2nfioNgVVPY9g5DD2+kVey1Vw1V8Out2POcPXHEeB/iNhG1a3VC/TjR6+LTC
+	S9PjUWwUvicwt6Z3C+1OXNzr0abvAKU=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of yukuai1@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yukuai1@huaweicloud.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758788752; a=rsa-sha256;
+	cv=none;
+	b=YFnzdbSofqUnhcEXPiMxZ5FUhfOdwwHL3/tGKi3MWZt7VXVaaL7fx1fbD02m2rzaP9ZS7i
+	GS2uYGnPwBCcknZHCmSUeMoeyAPhG3yf+a6KSSsiF6zDZnOo1wLrIHFNtDwpo7ttgFPJwJ
+	TBZbNoyo0nioWuLp4Pk05891G2dKUHI=
 Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4cXRcM1CcYzYQvYG
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 16:25:39 +0800 (CST)
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4cXRcL3fMbzYQvXb
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 16:25:38 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 2022E1A10D2
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 16:25:48 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTP id 71E071A10CA
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 16:25:47 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.175.104.67])
-	by APP4 (Coremail) with SMTP id gCh0CgCna2OH_NRodTcIAw--.12615S7;
+	by APP4 (Coremail) with SMTP id gCh0CgCna2OH_NRodTcIAw--.12615S6;
 	Thu, 25 Sep 2025 16:25:47 +0800 (CST)
 From: Yu Kuai <yukuai1@huaweicloud.com>
 To: tj@kernel.org,
@@ -73,41 +73,41 @@ Cc: cgroups@vger.kernel.org,
 	yi.zhang@huawei.com,
 	yangerkun@huawei.com,
 	johnny.chenyi@huawei.com
-Subject: [PATCH 03/10] blk-cgroup: don't nest queu_lock under rcu in bio_associate_blkg()
-Date: Thu, 25 Sep 2025 16:15:18 +0800
-Message-Id: <20250925081525.700639-4-yukuai1@huaweicloud.com>
+Subject: [PATCH 02/10] blk-cgroup: don't nest queue_lock under rcu in blkg_lookup_create()
+Date: Thu, 25 Sep 2025 16:15:17 +0800
+Message-Id: <20250925081525.700639-3-yukuai1@huaweicloud.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20250925081525.700639-1-yukuai1@huaweicloud.com>
 References: <20250925081525.700639-1-yukuai1@huaweicloud.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgCna2OH_NRodTcIAw--.12615S7
-X-Coremail-Antispam: 1UD129KBjvdXoWrKryrGry3KFWkur1rZF4kCrg_yoWkuFX_XF
-	1ku3sYgwn5A3W3try5ZF1YvFW8C3yqqr1qga4Y9a43Cry5AFZFgr9Fyw45ArW5Z3Z7Cryj
-	vrWDXr47Grn2gjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbkkFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUWwA2048vs2IY02
-	0Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xv
-	wVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM2
-	8EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AI
-	xVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20x
-	vE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xv
-	r2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04
-	v7MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
-	6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7
-	AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE
-	2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0x
-	vEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVj
-	vjDU0xZFpf9x0pRl_MsUUUUU=
+X-CM-TRANSID:gCh0CgCna2OH_NRodTcIAw--.12615S6
+X-Coremail-Antispam: 1UD129KBjvJXoWxCF4UKF4UuFyrKF15JFykuFg_yoW5ArWDpF
+	W3Xa9xC3y0qrW7uw43XFyqqw1S9a10qr15JFWxGw4fKF40qr1fXF13ur95ZF4S9FWxCr45
+	XF4Uta1DCr42kwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUmY14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
+	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+	Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJw
+	A2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS
+	0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2
+	IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0
+	Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2
+	xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
+	JVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67
+	kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY
+	6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42
+	IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIev
+	Ja73UjIFyTuYvjTRNiSHDUUUU
 X-CM-SenderInfo: 51xn3trlr6x35dzhxuhorxvhhfrp/
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9BD8EC0004
-X-Stat-Signature: t3mhj5cfdta3wmk7w8s9td4w7nqfga7n
+X-Rspamd-Queue-Id: 5478D18000D
+X-Stat-Signature: q1ynhujxc1hs81sigk5oyifxg8hojzo6
 X-Rspam-User: 
-X-HE-Tag: 1758788750-551934
-X-HE-Meta: U2FsdGVkX18BVDLZPxcGZW4eTdu0WEzDVF9pT0Hb+k0LfRTOYUlpoF9tdDEEa8cDI0AQt20O58aB2/hicDu06gClKu67L8suiszAcnhZieTEjP7Rcf0KnKAg0w1+oIaD6AQtz6qTJIjMi5Tvpv9pSWgy0NlrVbjtKcKE87wpaAsbCnWpchWa+IEBYsB9aZMvS7/DOtUqxI8RKed5v09BzT8MN6KUqgzN5Z861HcQtMJSAAROfnc09+5mUn9ATqGBxqK9IwmJtZSbKkhjsZJvp5q37geNjh7MjSV9vvgfQN+JSkD8i7zN0AcSLlsGzQcuoBpCq10PzBZcCVGs+UqSnMixmBJfqv58XlTJpvqHcUnhYByJWcss3Ehvgm4wPOGEUUKdYfFCuyKiZtEqIVux1UECxML0FQcuAWPSZ0i8QvkysC1m1FqQXhly/OmvbD7UnerFodS3FLOP6qm/PvUQmdXCjmJEoi7tDT29o3qElV/WMUDxtMK2vYMtxnCKUho8JXO0nne7vspg7YMJV+m/7xonFrj6ik8FHNbPN7zXqtLQs+HutltxSNvyhfI04JDPypWUigmz5EbwqlM8pSb+Hh6qCQ5sIBuTu5dSl/KBAVkKMpMAfhhU2eRNO7fWh3/WbvP8qsfdrakYqVK7uEJtfhWGjDXocyGR00JgqOtrUSuopOuJX0eAnTkKSwx/VZtpnSNdyTBugyKxHY5kI9GPJNAPQt4FZ5iTW7h3Y+K1OVzQpuuOC7DhQt+KCWM23iA/7PCbJuQM8deAjos5njYTjkxvS/xibwu1kjtKDzr1AF//A9jNXTYovrdkuZuMjVnetaaeP5snZQopxmvmdkW+/dP4bQtxpJxWGfH3vAWcYQyiRT59gLfVkpW1Rp0YdsBtId5uDRkQZjpF6hQ0TFB59iCfdm8udVmhl9iWC7/0UgjXzbCliV3v1gsCHXWpNW6OlmtDpyjZJ15DI6rnMss
- 2nDgdpVm
- AtuzWn+0NazygPwSJ3ijQ1Y/yFFcPd9qK/0MUAP7zwO0Y7kikJfS8RXq7HPDtDjNLqRjn6YZz9lY3ECLACLpgxYboP5C8GNEA/dFv0YH8lafjuklGib7VJ3+R2+ITFQH0RxgOXbmD/wSz+uM=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758788750-229539
+X-HE-Meta: U2FsdGVkX18xc9+Si20tSPnzCXw84tYG76YKnCaG21csCj0t9uV44X2Gkuq9/prsyhOkSSwt2020UDJrgiYHK6WmS75ksG/ghoPpFMlEUg3F/6bzIOLCoaobHMVvy4CR+zh/jhVluQ0uB36cAuGlygtUcGIQ4rzwt3z4Lv+AVLfolWMeWfFRsSHBzG3K1tMobXdGiKKC2eqkrKecF4I4EQHAUr5cyjukBAmCngOrXGrCNrkBh0rnwQUEXyknRbSxZkI3dkYgBPFYEpULc+XMblSl52Hb/SO8mubbu0T9l6to9/iIH7JmIYmPxmP8FuA/t84k0SykYKR1+y80AaTRvg5K0SY4BWv7O28y1UXAxQfSV4L9L8KEB/uG1ve/+bkbQTgzSKMfntp0v3sO2zg3iZ2Ec9fJubIoYxUVNNzQNkxPmvx9cMVPRCLajjR7nJNXM/xU/8GWmKxaianwxeQVpkz9Whny9MDzSJgoHyh0zUfcB1Vo6r1rImw4Nlnrl6BWvH4s5a6WMfK7qB6/WJxgg/5z6JnjFI8tMyLF7Vp6Cg7nUr8/dRmLjuMbPQIopjmsnZL35Ft2fjGGlB6xQG1mbhaNJ9oH62+gt4FvplK7Gxoc74EJWIueDDYv3mHcKJwbctTgSQ6/H+/yG2amnHp53/RPInqqJ7AzaKyloSGF0S+Ihz5yASPYQZPfOpgaj5hJpAyYvHVGsYip1B7Wd1Ga0wWrkaiSoioua57QCsuItgRBm+NuvJM6yhPOxVTAV+yoea77SbGCQQNIXpiODKEN3fbbBZUkhj/9+T4wv+pGiaxz+e+JjA24+yFYoV3pEvd7Fg3oX7JfD0PEM+IKSN+N70+hQf7KMkwU0XwqQ3Exk+g8XK3Wd7M3MFEhDKrPNLkf9PtIiQzsFH4FSuuXBAzDAsg2C0XSAG7RFqavbhEOL+GmPggYmKoG5YYtbHwgwKp88i3RUqB+v4llhdHo1qx
+ k+4TMcIO
+ 2Xh1Qkrt6pFqbbpSgzuf1Ul9RRVIYsPC5qmnS9A7/tpr9uxxGzJtrsXfUEPhGAAIxgyMrrxsBWMnLeuhpM+lHG+tirLeJ5WgDRwS6ecuxCWD4wzUO7bSNCxZNw36p1qrhwsMdETuyxu+n7MM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,48 +118,120 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Yu Kuai <yukuai3@huawei.com>
 
-If bio is already associated with blkg, blkcg is already pinned until
-bio is done, no need for rcu protection; Otherwise protect blkcg_css()
-with rcu independently. Prepare to convert protecting blkcg with
-blkcg_mutex instead of queue_lock.
+Changes to two step:
+
+1) hold rcu lock and do blkg_lookup() from fast path;
+2) hold queue_lock directly from slow path, and don't nest it under rcu
+   lock;
+
+Prepare to convert protecting blkcg with blkcg_mutex instead of
+queue_lock;
 
 Signed-off-by: Yu Kuai <yukuai3@huawei.com>
 ---
- block/blk-cgroup.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ block/blk-cgroup.c | 57 +++++++++++++++++++++++++++++-----------------
+ 1 file changed, 36 insertions(+), 21 deletions(-)
 
 diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-index 9ffc3195f7e4..53a64bfe4a24 100644
+index 2d767ae61d2f..9ffc3195f7e4 100644
 --- a/block/blk-cgroup.c
 +++ b/block/blk-cgroup.c
-@@ -2165,16 +2165,20 @@ void bio_associate_blkg(struct bio *bio)
- 	if (blk_op_is_passthrough(bio->bi_opf))
- 		return;
- 
--	rcu_read_lock();
+@@ -467,22 +467,17 @@ static struct blkcg_gq *blkg_lookup_create(struct blkcg *blkcg,
+ {
+ 	struct request_queue *q = disk->queue;
+ 	struct blkcg_gq *blkg;
+-	unsigned long flags;
 -
--	if (bio->bi_blkg)
-+	if (bio->bi_blkg) {
- 		css = bio_blkcg_css(bio);
--	else
-+		bio_associate_blkg_from_css(bio, css);
-+	} else {
-+		rcu_read_lock();
- 		css = blkcg_css();
-+		if (!css_tryget_online(css))
-+			css = NULL;
+-	WARN_ON_ONCE(!rcu_read_lock_held());
+ 
+-	blkg = blkg_lookup(blkcg, q);
+-	if (blkg)
+-		return blkg;
+-
+-	spin_lock_irqsave(&q->queue_lock, flags);
++	rcu_read_lock();
+ 	blkg = blkg_lookup(blkcg, q);
+ 	if (blkg) {
+ 		if (blkcg != &blkcg_root &&
+ 		    blkg != rcu_dereference(blkcg->blkg_hint))
+ 			rcu_assign_pointer(blkcg->blkg_hint, blkg);
+-		goto found;
 +		rcu_read_unlock();
++		return blkg;
+ 	}
++	rcu_read_unlock();
  
--	bio_associate_blkg_from_css(bio, css);
--
--	rcu_read_unlock();
-+		bio_associate_blkg_from_css(bio, css);
-+		if (css)
-+			css_put(css);
-+	}
+ 	/*
+ 	 * Create blkgs walking down from blkcg_root to @blkcg, so that all
+@@ -514,8 +509,6 @@ static struct blkcg_gq *blkg_lookup_create(struct blkcg *blkcg,
+ 			break;
+ 	}
+ 
+-found:
+-	spin_unlock_irqrestore(&q->queue_lock, flags);
+ 	return blkg;
  }
- EXPORT_SYMBOL_GPL(bio_associate_blkg);
  
+@@ -2077,6 +2070,18 @@ void blkcg_add_delay(struct blkcg_gq *blkg, u64 now, u64 delta)
+ 	atomic64_add(delta, &blkg->delay_nsec);
+ }
+ 
++static inline struct blkcg_gq *blkg_lookup_tryget(struct blkcg_gq *blkg)
++{
++retry:
++	if (blkg_tryget(blkg))
++		return blkg;
++
++	blkg = blkg->parent;
++	if (blkg)
++		goto retry;
++
++	return NULL;
++}
+ /**
+  * blkg_tryget_closest - try and get a blkg ref on the closet blkg
+  * @bio: target bio
+@@ -2089,20 +2094,30 @@ void blkcg_add_delay(struct blkcg_gq *blkg, u64 now, u64 delta)
+ static inline struct blkcg_gq *blkg_tryget_closest(struct bio *bio,
+ 		struct cgroup_subsys_state *css)
+ {
+-	struct blkcg_gq *blkg, *ret_blkg = NULL;
++	struct request_queue *q = bio->bi_bdev->bd_queue;
++	struct blkcg *blkcg = css_to_blkcg(css);
++	struct blkcg_gq *blkg;
+ 
+ 	rcu_read_lock();
+-	blkg = blkg_lookup_create(css_to_blkcg(css), bio->bi_bdev->bd_disk);
+-	while (blkg) {
+-		if (blkg_tryget(blkg)) {
+-			ret_blkg = blkg;
+-			break;
+-		}
+-		blkg = blkg->parent;
+-	}
++	blkg = blkg_lookup(blkcg, q);
++	if (likely(blkg))
++		blkg = blkg_lookup_tryget(blkg);
+ 	rcu_read_unlock();
+ 
+-	return ret_blkg;
++	if (blkg)
++		return blkg;
++
++	/*
++	 * Fast path failed, we're probably issuing IO in this cgroup the first
++	 * time, hold lock to create new blkg.
++	 */
++	spin_lock_irq(&q->queue_lock);
++	blkg = blkg_lookup_create(blkcg, bio->bi_bdev->bd_disk);
++	if (blkg)
++		blkg = blkg_lookup_tryget(blkg);
++	spin_unlock_irq(&q->queue_lock);
++
++	return blkg;
+ }
+ 
+ /**
 -- 
 2.39.2
 
