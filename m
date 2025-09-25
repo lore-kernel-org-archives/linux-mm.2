@@ -4,88 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 718B5CAC5B5
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 21:49:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69FFECAC5B0
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 22:11:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3BF38E0005; Thu, 25 Sep 2025 17:49:46 -0400 (EDT)
+	id 90DA08E0003; Thu, 25 Sep 2025 18:11:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A138F8E0001; Thu, 25 Sep 2025 17:49:46 -0400 (EDT)
+	id 8E5788E0001; Thu, 25 Sep 2025 18:11:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 929648E0005; Thu, 25 Sep 2025 17:49:46 -0400 (EDT)
+	id 822818E0003; Thu, 25 Sep 2025 18:11:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FBFF8E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:49:46 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3526611A424
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 21:49:46 +0000 (UTC)
-X-FDA: 83929115172.20.582C614
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 59A7C16000A
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 21:49:44 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ysJVlEj3;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C06B8E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 18:11:39 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 06819594A7
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 22:11:38 +0000 (UTC)
+X-FDA: 83929170318.23.AB81E07
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 60B9B100009
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 22:11:37 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=LDlINN8O;
+	spf=pass (imf05.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758836984;
+	s=arc-20220608; t=1758838297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wiDQFvJAljCK4pp3FCGWtDWjE6mJ7LJZ0uWcIsDBkcM=;
-	b=XRuOXFxEdEbZbym1GSop62SMpR1KP4GdKV5geSR077utZ/M8UbSWzVKy1eMjr3enc36KDk
-	pMao6mtk5E67YbP1Pg1CN8CR3ejAzJJfO662utv63Wcw9Qz85w2qrHiJOdInvwcvwcINQs
-	GKd0+VzrGQ4weiuMA0kzzSpnvOJcESQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758836984; a=rsa-sha256;
-	cv=none;
-	b=LCRJMd5DI921W+s5WxnISzFhpWUqP06UEgEptO+TE1ZK86ugrDMOuaFO2e/bzSpAKODJZX
-	Llajt9E+vyfDToJgkXaGy6aPb10ZAx+BqZfeAlj+WKC/t23zMIU3eaTj3+NthE7Ixd+Vp+
-	4CNW5Bp5G5WUYBurWJo0mihI1uqk8/Y=
+	bh=cV19K2kHwbzsptwnWHvhPs0HRaJ8ZbKRyVa4qDbsSX8=;
+	b=evMVsFDMTZA5XmQn4W06T1jQWJmCcxAA7xPoJyxMKW9qwW52e623oZqrIKjxLhPaO+4RU1
+	u94Efzbc/Wzf80NHlPj6CUUdj8TUWxBUnJDBO4AZX5cYboTzBAT3dGGsmAeNg6a86vf+Ts
+	g4f0TkdvQM9kf/Rtxgbp7LcmhoImxmA=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ysJVlEj3;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=LDlINN8O;
+	spf=pass (imf05.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
 	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E04BC44B28;
-	Thu, 25 Sep 2025 21:49:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6953BC4CEF0;
-	Thu, 25 Sep 2025 21:49:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1758836982;
-	bh=yea2XZBdKd29JLgdM6CX1rrbboEwDzwvwj7Fijsfs0k=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ysJVlEj3H84pHjMNJYPYrrzHWL47O/50ZHIBr3yLvdWQP/CArhHENoBvHRg4hUOhr
-	 IuMlSd3Yf79fPTmvIBPuLXHU6TqBiaI/O2kdPzDzNNEUgvGkt/B9JENnp/7ZFUysCQ
-	 AxA7KMh76CjtuPGer/mDvfyPtoSKtoij57MP18Vk=
-Date: Thu, 25 Sep 2025 14:49:41 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: syzbot ci <syzbot+ci74a400bb557985f4@syzkaller.appspotmail.com>
-Cc: david@redhat.com, kartikey406@gmail.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, muchun.song@linux.dev, osalvador@suse.de,
- syzbot@syzkaller.appspotmail.com, syzbot@lists.linux.dev,
- syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot ci] Re: hugetlbfs: skip VMAs without shareable locks in
- hugetlb_vmdelete_list
-Message-Id: <20250925144941.125467b7a7717211f6322482@linux-foundation.org>
-In-Reply-To: <68d5aee9.050a0220.25d7ab.008a.GAE@google.com>
-References: <20250925144934.150299-1-kartikey406@gmail.com>
-	<68d5aee9.050a0220.25d7ab.008a.GAE@google.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758838297; a=rsa-sha256;
+	cv=none;
+	b=Nzdm7xnB/JZpnuVep5BNlu3W1FY52+kE6sMX6CeZElewTCfbZDuEQx5P9/xkpN6Q2wlrEo
+	tvKrNkbW5hBxawYHc4A9YIj98W3FS4KhOGCBz6lMt8ppiJ4a5Ngq74YAaCk5MoK14TUeTw
+	GLBI5n3DPjQRJQgemwdNqIXWzLOs8Yc=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
+	In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=cV19K2kHwbzsptwnWHvhPs0HRaJ8ZbKRyVa4qDbsSX8=; b=LDlINN8O1LAKs2p5yHxLeWpBOw
+	1/sCr+l5elgqI6Gv4YhA2Q05sQWwyTH3hXXFtaocpJjuPd99GX9HZdwZ6zi634uAZ/7Db0xPDpIdW
+	jdKHhbcSuKjMOAf1HnSDqANuFp3MpZsVtsPiEdit3k7viRy/62ZmD2YYsr9cr6eqJBzFXewZA4ysr
+	0d3kYU3u7rwwzI6NoZH4cqRRkRRwwbjcoftoaLuHWiioh51XJ5CAs47S/4/ru8oqX1ks6fGDWzCjS
+	8Fb2TakL10qWB/IpR7rJFhW4eOMbe8sTNLL2jgxWZtqhNlo/CS2/S/L2yQXr5JdQvLF5fwc7SWO0v
+	605RQA7w==;
+Received: from [2601:18c:8180:83cc:5a47:caff:fe78:8708] (helo=fangorn)
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@surriel.com>)
+	id 1v1uBA-000000008PK-1RQG;
+	Thu, 25 Sep 2025 18:11:08 -0400
+Date: Thu, 25 Sep 2025 18:11:06 -0400
+From: Rik van Riel <riel@surriel.com>
+To: Frank van der Linden <fvdl@google.com>
+Cc: akpm@linux-foundation.org, muchun.song@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, hannes@cmpxchg.org, david@redhat.com,
+ roman.gushchin@linux.dev, kernel-team@meta.com
+Subject: [RFC PATCH 13/12] mm,cma: add compaction cma balance helper for
+ direct reclaim
+Message-ID: <20250925181106.3924a90c@fangorn>
+In-Reply-To: <20250915195153.462039-1-fvdl@google.com>
+References: <20250915195153.462039-1-fvdl@google.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: wtrne13ip8yboudtzujpi16rpjqr98y5
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: agsipb4qr3nyo5ry9uuzn3hinkpwbth6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 59A7C16000A
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1758836984-553084
-X-HE-Meta: U2FsdGVkX1+JPQgwkeTpvQZRusHUmK2g/GqFgX/ZU7JpI/cTs5areqIFqpQmv7dR007Lpl7XZ1ShMUnx/nN27T8mGScrjuZ3TTLKiJFW2Ii5bf6g7CqoSXGKwRm7g73BmRg1Qas5Js96+y3bg0Y8jdrINKZrItZbR9Y4rk2ixATdfcaPVcNZQAYFxZ9digvrFBgZ3ISazvzkEtLghoG9sMAwWvltjwXHXZeGrtsvCTsL7JFVzNV1f5ofsm5R4POyHs6i8EF1OCII/EM0ripXw3YlVN4jASrOXj/dW6fiS1y7Q96/rIs1tth/hEiUtzMQUcmh4wT+RdYhg+yND4vSNPbEcFoHIHKvZmYmkgtp/5cYki17BVns6hv6QcSn1hwKI1KnFk7sQWjgGLKmajPLovRzh8Shi8qUGrhyyeQgGTDu8BoraKCEBcJ9mBI2ckgA/3BnLry7ZGrduqt48wLk+AalxKHfVm5q7si4mPQ1sqsR6UfjIKCpgIW/7qinkyO08YqO3TfztCSIVTmqEgHoeJOfG5F1BXrTHqRjbRJ7OIQ1iHVL2HRi233gOFfTk+sImNuy7PawZ6jk6oHnCSz0uGkRmZ2rtAmQdL0Pkh3D2Ol3PrrVF2N79jDdIzWb81rMRcBDeFKchaIfbj7zM8qrFjkzDrnPB025XxuqU6nf1pUASKr5s0VxHOz/yg98tejC7IY1SwT+OF1KlKJZ1bQJ1qLJfgcQPZ5hdhB41eTLcDbYcqs3nFzwspJk0U6mKIkJSHTWtWhNCLkGtQcsZnBHeUEAFIjKdm7aZKOLAqnTqogP1oHWxqgSSRx8R+UU0AnvthWT9CZPbd/hSVBih1XpqVQ/2ZDOn8nUcZRGbGZFoiJUKDyzVymdrJhDlD7TYQi4CYMHtBk+OHnwUl5XYtdtSHHUMjOiQ1k1CiP7dhZ9tJ43jNQQD2tSUPp8TY3Br5snKQf+NBuGZ6sVS6/OxfG
- SnuTeSGS
- pX/AetuTEEc4ySvGbHCoJzk8kHPpB0C1XTiRtLt5g/hH/9cfiGFUVg+LAQEw4DzQi7+6r2rXcYnol1Z7xAxL1F3qyNCBtFtXbQd4q+YlmwYDbiF+Z5Ltk430r1o4YFZU/qlcf2kqYIWCOhFrAvlb7afqoAnhlMkM1m+ducjmcMd28/Zctb2EdnpKuSpevrZ44jSAWbooVuxgBcIW/OfSw267mwBSrZacg5MN7LgWFR/4kPoyxR1idqydRJ09BcCNiJfwJWlWuBaoPqw2bOiajEkZ+Om7IVKeZK8kFD6wSmVpCwDK4+u1QE5pAvdg3orpphWt1iWAueZtRnnaj76wa44yJ5YIyc2EJR3PQ4g9x+si89UyTbKaPncIuAESPvhyeAvCKM/1/ljKWfZxk9gbDybrUVrc89pWANyNbO0dquD+eTweDvanq0i5G1TAsxEP+qiqDaoUtghiaMBLPyT1fg5fC2s7sgz7XM2LRBuZb9NJly9dIFpAGTOWrAefeY7x7a+LL3rpY6G0itWrpn2KOq5oiOQC9kpjwMzv1uWX/cWItoLt2DqUbWtGXtZsxM6R7TEIpW6RKOtg81HSJjzYrVRD9HSuJq322ffncC7amywwFpf0=
+X-Rspamd-Queue-Id: 60B9B100009
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758838297-587349
+X-HE-Meta: U2FsdGVkX19PC4Zd8yFsTZRreMcbTn/S9mUIrtQzmvKa/DwCPV8A/n9wyPJgV/7RrDb5X2DSVYMrTepr9lTm7RP5wMjdLxEsWRh3MXMrfVh0rD9ENUAEl+UqJZ2hB+6qDRtC+ixBSHuwIKzWO8bvAJDTep2NPjF9B1CH7YFw/SsQvB/Fua8aD5MaFGILizh1JHqiWpqcIfSRgs4ZknKSfTtLSDm20IKQFiomagqO+Oq98Sa7O6xXm6GNNT9sxhhhyRx86i2W1htjiPS7Eb8yB4HBX9I5zs7/hftfxn7/5Wxufzvzbhp0zJ4B0pXi52bdXEFj5mDlt/6CJWblwLjEZiA/E+LAXPNb19GRKs80yIZsS7iyaiSVAT7GmECcmpeWfw++ewgU3QmIxBsNMApaEVuJJxxX8/Peq3OatSWdNM90L2nk2CoEe2skMIyHttApPlgg0ctxzDrqOf4va2KF/A00CzBnuVohF17PMYZecwiiAvRkCFhLZTgY6pLdpMHp/hsdr7qXSz96X1N8Q1VH+aN1du29mWI0OSEKTD96WTubG4tFbPHCOhn0r/aCm5UM4tLr7ZB9ForEg+jSJO2w9M1ryXYTJOYEIlnOvLsEjfqNcW63QarkXHSt29qSHpo9TLg7Sj9Z1jWb8552L5FzAgNmgIDTBZdb++9Jd9TY4Nwsd6iqEveQTL4EJOte56raZUcpCXnoKD0L3bC9uInO4TAvlLTR79u3lXyQs8Uh6LS2aKgL955WQZ8oq49RgGvDNhvFZCbbn17xlKdd0rLCqiLvxZWI62lv39nM2ei9rdwjgUn2LKmlyvd1ehRSJnwABsAcpeW83ZK8dvE2CqNhTqcPU0UVfnWcimDVHrEu1K8sVxJ9D/cYOTYVNpVzeic+a+zk3Lv4gfPwdFaDy0WRg62QEGiyFYUTORodnHRhvBY13Y6LRoEgLBYL3BqhyVi44c+gOa/vV7KYPgTXUMx
+ 8gx0477t
+ G7BbFEfQg0CNx4QfFpgAe762cOAZwYDZmLrwh1zFah2VyabJtu/srQCq5UwJjTa/Q6uDyNZDAcyAmi1W1RgEniyBtrSy5gGEcX6fT2xeGVyxlPv7NcWeeT4IHGhz9Zp/cYXjoQXVUY7R+cBHmCYjImyqxld+pGbCr1mogecQ0zpXIPRIUE+V2eP6NnG+uZNOD0my0Xt33aVEX7E5MDEynRSCMSjLKmKnf44A4h8xpGmqMFZ4pIyq80Uc4kKjaN8D7LwfPzbbmZTi8up9l1filNLls4tS5k0p0zpVQ+Uj2AMdgEZXp8WXZZmI1SovGa6uDliZNHGedCrtYABg+U+tjja3OluK1zYjJANVyNipuDbdb3+7Z5iheG+wFjI2AgjhqJ0MOsBaRh/3Jw9Lzx6ZIFZgBt2fggqAbUK3y
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,65 +98,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 25 Sep 2025 14:06:49 -0700 syzbot ci <syzbot+ci74a400bb557985f4@syzkaller.appspotmail.com> wrote:
+On Mon, 15 Sep 2025 19:51:41 +0000
+Frank van der Linden <fvdl@google.com> wrote:
 
-> syzbot ci has tested the following series
-> 
-> [v1] hugetlbfs: skip VMAs without shareable locks in hugetlb_vmdelete_list
-> https://lore.kernel.org/all/20250925144934.150299-1-kartikey406@gmail.com
-> * [PATCH] hugetlbfs: skip VMAs without shareable locks in hugetlb_vmdelete_list
-> 
-> and found the following issue:
-> WARNING: lock held when returning to user space in hugetlb_vmdelete_list
-> 
-> Full report is available here:
-> https://ci.syzbot.org/series/7d3a090c-ec8f-4d0c-8f7b-8797e63f1fde
-> 
-> ***
-> 
-> WARNING: lock held when returning to user space in hugetlb_vmdelete_list
-> 
-> tree:      torvalds
-> URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux
-> base:      07e27ad16399afcd693be20211b0dfae63e0615f
-> arch:      amd64
-> compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-> config:    https://ci.syzbot.org/builds/06671e7c-eebd-4d11-9f0d-d9dae5637c0a/config
-> C repro:   https://ci.syzbot.org/findings/75fcdb87-67fc-45ee-a70d-3064e8c1126c/c_repro
-> syz repro: https://ci.syzbot.org/findings/75fcdb87-67fc-45ee-a70d-3064e8c1126c/syz_repro
-> 
-> ================================================
-> WARNING: lock held when returning to user space!
-> syzkaller #0 Not tainted
+> This is an RFC on a solution to the long standing problem of OOMs
+> occuring when the kernel runs out of space for unmovable allocations
+> in the face of large amounts of CMA.
 
-um yes.  Presumably something like the below is needed.
+In order to make the CMA balancing code useful without hugetlb involvement,
+eg. when simply allocating a !__GFP_MOVABLE allocation, I added two
+patches to invoke CMA balancing from the page reclaim code when needed.
 
-I'm wondering how this passed runtime testing?
+With these changes, we might no longer need to call the CMA balancing
+code from the hugetlb free path any more, and could potentially
+simplify some things in that area.
 
-If resending, please let's add a comment telling readers why we're
-skipping !__vma_shareable_lock vmas.
+---8<---
+=46rom 99991606760fdf8399255d7fc1f21b58069a4afe Mon Sep 17 00:00:00 2001
+From: Rik van Riel <riel@meta.com>
+Date: Tue, 23 Sep 2025 10:01:42 -0700
+Subject: [PATCH 2/3] mm,cma: add compaction cma balance helper for direct r=
+eclaim
 
-I'll drop the patch, thanks.
+Add a cma balance helper for the direct reclaim code, which does not
+balance CMA free memory all the way, but only a limited number of
+pages.
 
---- a/fs/hugetlbfs/inode.c~hugetlbfs-skip-vmas-without-shareable-locks-in-hugetlb_vmdelete_list-fix
-+++ a/fs/hugetlbfs/inode.c
-@@ -488,7 +488,7 @@ hugetlb_vmdelete_list(struct rb_root_cac
- 		if (!hugetlb_vma_trylock_write(vma))
+Signed-off-by: Rik van Riel <riel@surriel.com>
+---
+ mm/compaction.c | 20 ++++++++++++++++++--
+ mm/internal.h   |  7 +++++++
+ 2 files changed, 25 insertions(+), 2 deletions(-)
+
+diff --git a/mm/compaction.c b/mm/compaction.c
+index 3200119b8baf..90478c29db60 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -2541,7 +2541,7 @@ isolate_free_cma_pages(struct compact_control *cc)
+ 	cc->free_pfn =3D next_pfn;
+ }
+=20
+-static void balance_zone_cma(struct zone *zone, struct cma *cma)
++static void balance_zone_cma(struct zone *zone, struct cma *cma, int targe=
+t)
+ {
+ 	struct compact_control cc =3D {
+ 		.zone =3D zone,
+@@ -2613,6 +2613,13 @@ static void balance_zone_cma(struct zone *zone, stru=
+ct cma *cma)
+ 		nr_pages =3D min(nr_pages, cma_get_available(cma));
+ 	nr_pages =3D min(allocated_noncma, nr_pages);
+=20
++	/*
++	 * When invoked from page reclaim, use the provided target rather
++	 * than the calculated one.
++	 */
++	if (target)
++		nr_pages =3D target;
++
+ 	for (order =3D 0; order < NR_PAGE_ORDERS; order++)
+ 		INIT_LIST_HEAD(&cc.freepages[order]);
+ 	INIT_LIST_HEAD(&cc.migratepages);
+@@ -2674,10 +2681,19 @@ void balance_node_cma(int nid, struct cma *cma)
+ 		if (!populated_zone(zone))
  			continue;
- 		if (!__vma_shareable_lock(vma))
--			continue;
-+			goto skip;
- 		v_start = vma_offset_start(vma, start);
- 		v_end = vma_offset_end(vma, end);
- 
-@@ -499,6 +499,7 @@ hugetlb_vmdelete_list(struct rb_root_cac
- 		 * vmas.  Therefore, lock is not held when calling
- 		 * unmap_hugepage_range for private vmas.
- 		 */
-+skip:
- 		hugetlb_vma_unlock_write(vma);
+=20
+-		balance_zone_cma(zone, cma);
++		balance_zone_cma(zone, cma, 0);
  	}
  }
-_
+=20
++void balance_cma_zonelist(struct zonelist *zonelist, int nr_pages)
++{
++	struct zoneref *z;
++	struct zone *zone;
++
++	for_each_zone_zonelist(zone, z, zonelist, MAX_NR_ZONES - 1)
++		balance_zone_cma(zone, NULL, nr_pages);
++}
++
+ #endif /* CONFIG_CMA */
+=20
+ static enum compact_result
+diff --git a/mm/internal.h b/mm/internal.h
+index 7dcaf7214683..5340b94683bf 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -942,6 +942,7 @@ struct cma;
+ void *cma_reserve_early(struct cma *cma, unsigned long size);
+ void init_cma_pageblock(struct page *page);
+ void balance_node_cma(int nid, struct cma *cma);
++void balance_cma_zonelist(struct zonelist *zonelist, int nr_pages);
+ #else
+ static inline void *cma_reserve_early(struct cma *cma, unsigned long size)
+ {
+@@ -950,6 +951,12 @@ static inline void *cma_reserve_early(struct cma *cma,=
+ unsigned long size)
+ static inline void init_cma_pageblock(struct page *page)
+ {
+ }
++static inline void balance_node_cma(int nid, struct cma *cma)
++{
++}
++static inline void balance_cma_zonelist(struct zonelist *zonelist, int nr_=
+pages)
++{
++}
+ #endif
+=20
+=20
+--=20
+2.47.3
 
 
