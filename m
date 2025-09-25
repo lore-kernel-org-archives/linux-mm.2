@@ -4,160 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CE53CAC5B9
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 18:11:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 337A7CAC5BA
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 18:15:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 897A98E0005; Thu, 25 Sep 2025 14:11:08 -0400 (EDT)
+	id 71A868E000C; Thu, 25 Sep 2025 14:15:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86F0D8E0001; Thu, 25 Sep 2025 14:11:08 -0400 (EDT)
+	id 6F2498E0001; Thu, 25 Sep 2025 14:15:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7367B8E0005; Thu, 25 Sep 2025 14:11:08 -0400 (EDT)
+	id 607798E000C; Thu, 25 Sep 2025 14:15:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CA978E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 14:11:08 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1857A58FB9
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 18:11:08 +0000 (UTC)
-X-FDA: 83928564216.09.C340940
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	by imf13.hostedemail.com (Postfix) with ESMTP id DA3DE20009
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 18:11:05 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=iODXrmuS;
-	spf=pass (imf13.hostedemail.com: domain of boqun.feng@gmail.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=boqun.feng@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 504348E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 14:15:32 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E17ACC048E
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 18:15:31 +0000 (UTC)
+X-FDA: 83928575262.26.27242C8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 2F3E5180008
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 18:15:29 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SBzzN4io;
+	spf=pass (imf06.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758823865;
+	s=arc-20220608; t=1758824130;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TbmL/lOVeBA4opARTfrAg3LXciWcnWLc1ZjFspAkmC0=;
-	b=FY9P4t/IG3JF7oKuRC+zY0CpdX8/tyryLF3yWG7d7+IaeatbVHDiIwoJKV8AnBdCD0IKv0
-	t7Sd04SSPS1gNyGGjg/9Gfb+vvYFxUzo3sJjz4vz9r/MRfT76BHhFCtJGnNmd9dWPuBL+x
-	fwhRpRwoBTjoASyHiPyCxBihuj39tTw=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=iODXrmuS;
-	spf=pass (imf13.hostedemail.com: domain of boqun.feng@gmail.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=boqun.feng@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758823865; a=rsa-sha256;
+	bh=9hNaUdCI2ZMhoByqtrdHE5BEoOcf7BwV0LLCMm1jFXg=;
+	b=Pm/adu00IlDTbWntpkQeCQ9zPCs5cvHaLHFwgkmmMra12sC/RXK8921a6Wze0LN3kcDGK8
+	z/2260LJP0e7jCBosb24xUc9VWMrbdc/zLuMrBaLi8T5RtDj2RNNtBlJD4VhK1jZWtB6sa
+	advysfmEzw/9JbDGSq0sMFDGmh3R5WM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758824130; a=rsa-sha256;
 	cv=none;
-	b=OxxaqK5uIfw4MF8SuA/WxQt8avYWOGGkjmQuWDviTD79SA1DBbleCaieW0vCC0IwFSYegy
-	b3DlNSQs5nQKSPipt+OWF8kXH0LW9m6YVPa4makzE7zyBetIVF9epyiqjIMl/HIoh++Zdx
-	fZkzF/3HZWSxCLHW0zb80ERVODsSOzA=
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8593bcdd909so129606385a.3
-        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 11:11:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758823865; x=1759428665; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:to:from:date:feedback-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TbmL/lOVeBA4opARTfrAg3LXciWcnWLc1ZjFspAkmC0=;
-        b=iODXrmuSTj2APWCjw+5YuCJ1pg7fZ8jU4wElBLrLGrpzGfNwdT/4PzOXCP6aHQ5ft2
-         bpqde+m7oTvBxS8R2QJO+TcIQ0hRxn4Y5wusrijd5A6ohBR/KdOkSQ1dQAZQYBuetRbI
-         v9oJkpmc3kQDedP/0gU7Mt/is5Cka86Esr8R7sxAaMRd7qvCWNypSq3XaEJODDiI8zdu
-         vC/5nxvDoteQUvOMZnhBHvwbixr/TpHRXlFPyR62zhY3vcQ5KK20YpdNNyxNDJpXXmBP
-         7gid+YfFDeB923PqulE8ioIR21GH4NSeCEwzTGG2JAClx5pl2E6i7nLgIMbzTeibaFCM
-         A/3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758823865; x=1759428665;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TbmL/lOVeBA4opARTfrAg3LXciWcnWLc1ZjFspAkmC0=;
-        b=LGgSRKk8fOgOvGGLlQw8rXXMWi48wBbgW78lMnUXQmrLOFhH8/DOr02E+8nDWqqQEd
-         BJHgSLpYl6mWJzwtToKRNhhCtsESTuEBe3zKB6TNZAmGpxs/Vx63UW01vkcjWiZo3RJj
-         RgFHyeJ2Xr8wb/iPjldqBaOfEeuXLtb11KjV2m+VaiFt8XZWZMMWVDKOD3j+34COERQG
-         xtFOKCXFLA+yxp4N+smhZYry2Ol88Es9xyMDcdgzwlZk2Azk0jXyCpWzoTpoEzgALIvw
-         GEH/L7xGiDqNzzyZNMYPPBJ7yjqvIbTwrNWxHtdpsMkBvU8jLzg+jUWbquyYeKJECL8T
-         lN2w==
-X-Forwarded-Encrypted: i=1; AJvYcCXhflk/cMotBh350s9yXXtPNDZNGtIzJW0z6K9Saxs6UsIGt+/I2sxMg0uIA821U4O+EuO0sak53A==@kvack.org
-X-Gm-Message-State: AOJu0Yzp+xznKJWo4AouHmqfMEVVAk4/lYHYPy1ZCjLglG+COxZtoOjN
-	UCJihjAsfeOC1mtR5jd90jBnxDH3Ahjhq8lMaHYk6gWhNpocj48KAPXQ
-X-Gm-Gg: ASbGncsRnUxmMBgqFxy22YMIZiK6m1JFL0EfIhKIjyaXnsBSufGfvliCPA1Ywo+bE1L
-	6uvcUQ59AopduZqcwP8OaA4/KudpGc+4vXoLLeLEJQ0iFSfC39KtS//tgvIJ6TTc5Z4YTmFSSFq
-	sD/4mw4Xx7PTnueuzJ2/Q8ntZ7+1sgbV46/P7UzwP/ZRfDBrPV3Iq4d7rnfsjhZxO3303tcnQcJ
-	pqWzcKV0LXKg1TK/Ze8Vs5R2+CJKGpqEMhR7ZnqJHYt43Zfgze2CPXtr8p1amnljiE9Hl6aYRum
-	PDyOrFiqHpnmnr9P+2o1WBh6oOZO/ZxQgM1vWwsq5V0hrupTj16MyFT/YCxlTAcCrLnndySsWQk
-	diDIk6iQrC3SVpvHLAKVG6zbE03iR0l/DEwVWQ1VLTI1sQt2iyEuy0mfm7Zwl0BXuLsf4O+tg4p
-	yOcjqeWEy69pqD
-X-Google-Smtp-Source: AGHT+IHQ4u8Q7QaxnbcTmiHnMGLELyzBn8pkY32qfCMHB+rNHNHO2LejsPVbJxF+ySJ7Pt/+BCn/6g==
-X-Received: by 2002:a05:620a:1792:b0:82b:2bad:ba33 with SMTP id af79cd13be357-85adeb4db0bmr521702985a.2.1758823864667;
-        Thu, 25 Sep 2025 11:11:04 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-85c288a0f7dsm150656185a.17.2025.09.25.11.11.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Sep 2025 11:11:04 -0700 (PDT)
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 7B3F1F40067;
-	Thu, 25 Sep 2025 14:11:03 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Thu, 25 Sep 2025 14:11:03 -0400
-X-ME-Sender: <xms:t4XVaLQLQLOTuSIt8T0l98KGsmwgKR6YsR-sHVTeEPg7a9LskEnVPg>
-    <xme:t4XVaOJK0yAo8fWjHvMaFD9w3J67qHPE_0NlLLXiDrpV9L93Aur3b0PTP3nIou2zq
-    n5zEYecLbdx5uxvJkgOdk4T0h20W5rPHHLyZyDR0RwmzVfXpyCg0zs>
-X-ME-Received: <xmr:t4XVaKGtTG-eqaEbtXpT3B2zaUU_n9zPwLom7qJ0uCvRGYOGOg28tNB1kecNKnrZVjbCKWVwa8Kf2BaSAi4w2_SkEiBJvoRY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdeijedujecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvuffkfhggtggujgesthdtrodttddtvdenucfhrhhomhepuehoqhhunhcuhfgv
-    nhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtthgvrh
-    hnpeeiffdviedtteehffduudfggfegvdejjeeiffehledtgefhheeuheetheelgeehffen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquh
-    hnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudej
-    jeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrd
-    hnrghmvgdpnhgspghrtghpthhtohepudelpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepug
-    grkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmvgesvghlihhjrghhshdrshhp
-    rggtvgdprhgtphhtthhopehgihhtsegvlhhijhgrhhhsrdhsphgrtggvpdhrtghpthhtoh
-    epohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhho
-    rhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvth
-    dprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgt
-    phhtthhopehlohhsshhinheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:t4XVaDRKB_rJV7LRbNXEmMVJHx1ePhimymx69BNbC-HcCA4Cp1WeIA>
-    <xmx:t4XVaLVZW5cawveE8GSq4O59KSo60xSBbBj6iBGeTMB692Gww_khmw>
-    <xmx:t4XVaKgtPULtCuugXC9lcymHz2Cs2zld4jMfZhxeQi-Dsn1861atNA>
-    <xmx:t4XVaMey4KPiqMAJQelWiRjjuc7kcYWMejJK4AUjsFSuX5ZmFWcv0w>
-    <xmx:t4XVaNcgdS2Ah1x-yaAI0g2TSFQ3rVMGUR9QSgz9gV-9RIsI8zDQkTWX>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 25 Sep 2025 14:11:02 -0400 (EDT)
-Date: Thu, 25 Sep 2025 11:11:01 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Danilo Krummrich <dakr@kernel.org>, Elijah <me@elijahs.space>,
-	Elijah Wright <git@elijahs.space>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org
+	b=aKiN1w216vouSZHYIOheIUPgyLLbW508MSqDSHC3C/t7txTsV7AlrZ+EvkjDPx5tDx5vys
+	RGaa4uOGc7GvpTfwdSYw8bJe/iSWQfxrLl+3R9qPbT5GOSEHvHwCqCKQxZc6OQeMprc8/g
+	VYE02d2fHW/rStiuWVZ7+TOuvEZl1oo=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SBzzN4io;
+	spf=pass (imf06.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2180644741;
+	Thu, 25 Sep 2025 18:15:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F585C4CEF0;
+	Thu, 25 Sep 2025 18:15:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758824129;
+	bh=OMdYq83OkDKRZw/s0mDBqBorGXDjzGEN2c30eHemUKI=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=SBzzN4iotExRcTbbma5iJDp7MBTjmmMi+tQHAjQzvsHtCym4Ru5wRiMbgImHdPZJF
+	 B+OvIroSkk2F73eg/cLAq5o+oS2m+qMINsm9df/Z0ymKrabIohccfOXrRu11ghovgk
+	 zskV/wwOWu2ygf9jLBU94isVGCa2IxTCOVxblHC2HlBE5JgM89BVCnTGucwqp+UXp3
+	 FDa+ke32ls4d2bqwiKyudpvvWkpd+CeGDBT8ZUe4VljXQHlzlyqNcuLCw4Es2yFatx
+	 R7xNiWJEW8Yxb9rTxi2e78G4Gb27LPIzMTvvUrJiXC6Xd5+3XoZqgBNKWV4cooRyXa
+	 ts+VNbcqrMMPg==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 25 Sep 2025 20:15:23 +0200
+Message-Id: <DD234804U7YK.3S2MBUJSFHF8J@kernel.org>
+Cc: "Elijah Wright" <git@elijahs.space>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>,
+ <linux-mm@kvack.org>
+To: "Elijah" <me@elijahs.space>
+From: "Danilo Krummrich" <dakr@kernel.org>
 Subject: Re: [PATCH] rust: slab: add basic slab module
-Message-ID: <aNWFtUGlPeIojFEp@tardis.local>
 References: <20250924193643.4001-1-git@elijahs.space>
  <DD1SGLU4180C.361W5XLH76XNC@kernel.org>
  <73d7d53f-439b-44a9-98ca-0b1c8fbc1661@elijahs.space>
  <DD22FI7F2ZHT.32SL8PXFZZHV3@kernel.org>
- <bypo74mzotejpsjdqd55sxygq3wjffnnimpm3vhm2xr5bddmen@lt6sr77ys73g>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bypo74mzotejpsjdqd55sxygq3wjffnnimpm3vhm2xr5bddmen@lt6sr77ys73g>
-X-Rspamd-Queue-Id: DA3DE20009
-X-Rspamd-Server: rspam05
-X-Stat-Signature: dtbsbzs6egg4rwpsqf5sk3mmrb73muhk
+ <6e9c820f-070b-409e-ac25-af96b8b962c6@elijahs.space>
+In-Reply-To: <6e9c820f-070b-409e-ac25-af96b8b962c6@elijahs.space>
+X-Stat-Signature: 6peostmxyguphk6fjmspegh45ka4a4qb
 X-Rspam-User: 
-X-HE-Tag: 1758823865-797468
-X-HE-Meta: U2FsdGVkX18e3SGQfDoQIkgsHGwIEapjHfP31NkvIqb8Ni6GAkfnssTy7Kxn000NgXWa/BSB8iQjAkjC0NR7XJKqBrLu+/inYbavNs+pMV03fty5IaB61cY2uGm2EcvutCoGs3ip2Fv8FN0izLrK/RRqQJEBGRvs1M79UV0emlRQZk0tqAKMCDJ7ZbkBf457AQRVY0VU8xiAPqirc/PqkOjwrSz96WtIUqu2T6NtNoAXoLLQzWBNNa4JXPt5tFWbnhMPrXDqr4Afs+Ei4d9sg+enz0cxYi8wPG5FVdre4dPJOfR4qMEeiI4F5mZrI8nSA5m+VXkxH5N5OaWyngL7kGPwfv9n3puwFmsrwZxpVTyYYNNyQeVoo0sBDT9IQCT1ntEINeBNKKiW1jyokUW1tlIcPsxXCoQesSZAn/okimejh61rM2hFXERIeApQjGTXfOOwvT1q9ieZPJ4uGQFZQKxEpXZ0qE9T4HD1u9ti8ehhnRNYVfBia4F4bJlwR1uxFdascEsXWue4dLwbkcfc+/lLKrWF/mqbGuxaqnn6vSNLToimJIwzi/A7jEfaYo88PIAf04yxoA6Aynn398HlTzzQVBVrO2+yfsqNwKGJn9fWWztYSIHFhOZc0BkwCat3/f5WhRxELEMLIkbINcu0kaQU7jNcGFtpYH6/LglDJGc4nt0RoiAoEg7onnzbJ2kBebjF9We4ka5TDZwUgzSy99hI1fAylWybwo9IoEuL8bPmzx8Qw07BNy+kYpQJIC3ZLBEOeDaoR1PJc9NEpx/QihusqKXMsloF/lsjcYYJYkJDrQNvstxOzQ2N/mNfCQ1r0EFYDY5Cffic2CVeOgOw/0Pq9Ys8JbckkGS/U651yBweAVvrEOi8YRWGPlXFVYJDp/+r48W0NevYtZ34jZyNsoxBOh/GHwwqrgAoi6yo8mJb4aQLEIf/INWvIMRLXVEmIx30frizPEWKoQSR5rY
- tcXc1k9b
- uGPEtX1CfZC6J/xOmewNzGk9W2G1KQzJ/E/vcVu4aG2bc0pEkGHZkj86zDBYW6+ynA9rwhnVZXgTE3WRw8WNRyUUV7VHvhfvIcFYKgSQRqj7gevIsdLjohZirU+XISw2jgECnJHPzZRuGzfZ/NqNmmw8cIbIHphAwnuyaotzGTJWdkwrRiSzceqn5FBSfd5oxp58YBE1X/Qx5KEVLXVzPUrTGTOj2QzOMn63xHGmo0JXLY1U0+LWKB2C+fKIirBNQVFZ8hySaYAZocdod2ZBUs6pFbMzj6y1aTOVVmeQzR8jlMwy1QqagVzS9yZ80hL/nQAaeXlosvkZoVgGJBl8dUoTAgsfA8JnUbomOoZ3RyOj4jPwQmN+PwlDSow9a2HMbOVMq1iWUdKjn5Z8jen/a8Pw8nceuiXMSO0dDjPUrcMfMO0Ksnv+itRZD2SK/RupPANnSJ2xMxDLZ9k8iWsB3jmtXf8d5Fkr9wOL15qDSi9MMKSrehFsEXUqbY9QdgIJ9NI/Z
+X-Rspamd-Queue-Id: 2F3E5180008
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758824129-280784
+X-HE-Meta: U2FsdGVkX1/7/JVQNOXzxUIEtygqYh+D3jf+hoU/Q3L2xXBPtTkNGP1pS09NWMQSpsGUuqgHMMSX475edh2uNz2w4LNGF1BlYzdoJl4LWOoyxdc/i07m6br80CB3molInB5uScrUEFbHzaWA0x+uBjgFyA5J+lzSVhG+NNRqCx/NbNDPcCAVoZitczQQ3mBQScvHfX8ZMRoRtvlrozi1xp2qxOrkCNdQW+fur2KPbAHSXU3X9taKzC5WsXCPK61Dd1lwxQOuorugycID10cqBPPHnDZrGib3UQqOqIdwZHfLcSGGAI+QcUrcv62xnTuPfe06SyYrSYz0v76sbF7RUYJQkcaM1mMjylGC8+iMe2cjVop1ALumZioXgiaSF++GEywfJIWZBOFYlazDnXRb0ZQXFNlGAx6XdNkyHDxnbKDaaVw953zTHAUJTJxDvZwBkt9SMRhTufaTAaSdbK1E0fgVavqQ37gwoHw7mcroKYNAKFvPwyIZVHFEUp4Ot2yfD8JU5TAj2TlhphuiV9/0Yygj4lMuaUJaVqVaeonyD18DHlS4nUKdtZApLX6cDaACckaX36IgtvfEy0qHIseg8YgfRQDddEKi3gK96NURQf97ss35maoy4oEa9DNdmx9gA6Xy5bn7vD21ET7yseJx+pSrSj/kklIFVGITwSdQjRxi+P4UgKiz9ezUq/VG3wH+OEi0mwiMwNwxuok7QG9TcD2eBZekkyUmpSL3ICdtp4DTj59v/H4GExuqAon7IAMgOGd7meEDk+WLu68Xyn2xp0AjL8A9okR2vvZqchEoh+yjk/kWtWvgtj2T5pgT+6S3M3EsD7Elbh088RCH8d94L//ROAeacrDiqiLTfy5UPMdO91QUzXefl/EnRtidcZQ5btzhqJUpFGHv4P023nx9b1KCBqTitne1UVHWZo7X2ZOuCbyc8h6IlkCffv4ZKhgKB0wNoFD72J+LdLPAz7/
+ ynj6B2fR
+ HvOJ57hmcFAf6VQ1NcyDy9xuz0X6jlAQEpdN/Y+/J0YHegcbZDFnexliDM7igHYGqF0j/8wBIt+YBZmStyGfOljl2lO4qhnwgQ5t0GPX5vSo7XBm8Mxa3AGLocjifxWjfdTwIzc387OpLkZPwHkRj5xIO/f5vyxqaF12E3yvNWh0kgybAcwDEbA4/3fvuVAvOngVE1N+wWhjHBNeh4hOxZ0v+wWmzo9Vara3Zph4jVOssI6b3fIqzn7D0T8HmCp4BR7bWLtwOFnXdMvYyl1rZ2MsBoVFF2sWaVkemQPTtH3FQArWA4cL+cygA2Cx7w4wTpiqhxSpHDcRMnev1zcNaqEiwP4wjPE/nsvzp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -166,41 +104,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 25, 2025 at 02:02:55PM -0400, Liam R. Howlett wrote:
-> * Danilo Krummrich <dakr@kernel.org> [250925 13:43]:
-> > On Thu Sep 25, 2025 at 7:20 PM CEST, Elijah wrote:
-> > 
-> 
-> ...
-> 
-> > 
-> > > I was thinking of maybe creating something like KBox for kmem_cache but 
-> > > I didn't want to touch allocator code yet, I figured I would just create 
-> > > the groundwork for that to exist. rbtree.rs uses KBox now but I'm not 
-> > > sure it should, at least if it's going to scale to many nodes
-> > 
-> > Ok, so you want to support kmemcache for rbtree nodes. Ideally, you should also
-> > have a use-case for that, but given that we'll also need kmemcache in other
-> > drivers (such as Nova) anyways, I think that's fine.
-> 
-> This seems different than what exists on the C side, at least to me.
-> The rbtree is implemented by embedding the links to the prev/next into
-> the struct which is using the tree.
-> 
-> The above sounds like the nodes of the rbtree are allocated on its own
-> and not part of another allocation on the rust side?
-> 
+On Thu Sep 25, 2025 at 8:05 PM CEST, Elijah wrote:
+> On 9/25/2025 10:43 AM, Danilo Krummrich wrote:
+>
+>  > Anyways, I'd also like to hear some more opinions, especially=20
+> regarding (4), as
+>  > mentioned.
+>
+> ok I just looked it over. I think (4) isn't really viable, the cache=20
+> pointer storage overhead is probably too much (in addition to some=20
+> complex issues).
 
-For current in-tree API, yes, because we have to start with something
-simple and the user (binder I believe?) doesn't require
-external-allocated nodes.
+Probably, given that kmemcache is meant to be used when we have a lot of (s=
+mall)
+allocations.
 
-Regards,
-Boqun
+However, I'd like to hear from the MM folks, if there may be options in the
+existing infrastructure, or if it's really a dead end.
 
-> That is, the kmemcache would allocate the struct that contains the
-> rbtree linkage (or nodes, I guess), but not the nodes alone.
-> 
-> Thanks,
-> Liam
+What are the other complex issues you are referring to?
+
+> I don't really like having a macro (so (3) basically)=20
+> and I think there are issues with non-static caches, I don't know=20
+> specifically though. obviously (1) doesn't work. (2) is exactly what I=20
+> was thinking specifically for rbtree. IMO the only useful options are=20
+> (2) and (3). I would say maybe implement (2) first and if you want=20
+> macro-generated ZST allocators they can wrap whatever that Box ends up=20
+> being.
+
+I'm not sold on duplicating the Box code just yet. What issues are you refe=
+rring
+to?
 
