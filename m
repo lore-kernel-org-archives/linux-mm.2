@@ -4,110 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B1A4CAC5AA
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 08:26:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31C0CCAC5AA
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 08:35:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E8788E001E; Thu, 25 Sep 2025 04:25:58 -0400 (EDT)
+	id 4CEC48E001A; Thu, 25 Sep 2025 04:35:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 975248E0019; Thu, 25 Sep 2025 04:25:58 -0400 (EDT)
+	id 4A6B38E0019; Thu, 25 Sep 2025 04:35:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 813688E001E; Thu, 25 Sep 2025 04:25:58 -0400 (EDT)
+	id 3BD2D8E001A; Thu, 25 Sep 2025 04:35:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 66D588E0019
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 04:25:58 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1B0ADC03B1
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 08:25:58 +0000 (UTC)
-X-FDA: 83927089596.29.D3FB605
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf10.hostedemail.com (Postfix) with ESMTP id ABB40C0002
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 08:25:55 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	spf=pass (imf10.hostedemail.com: domain of yukuai1@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yukuai1@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 290188E0019
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 04:35:51 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AAE8713AC60
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 08:35:50 +0000 (UTC)
+X-FDA: 83927114460.06.FE9B4E1
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B5B02A0004
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 08:35:48 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FchXrvra;
+	spf=pass (imf25.hostedemail.com: domain of ethan.w.s.graham@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=ethan.w.s.graham@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758788756;
+	s=arc-20220608; t=1758789348;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SU3lDS58AT5mbvz3hiXnBTSiE1+DTfV0RpmztIHwni4=;
-	b=uoGAjlxv+WF3j9oJoLL2meXJ2AX3oBTnx+Vk3mTj0kb1TFRCjYJh+n/Afa4zf1umJrYBOC
-	D0N+3kDtHvYODVKWW77Q+ToG7Cb+M2S6SZ3nmmU66vb0LUnq0ojMlTqKwn293qULY4rIgH
-	h4djPNiMgo87XJA1PkQuKJOeYyLsbvY=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of yukuai1@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yukuai1@huaweicloud.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758788756; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=MDyXKD1mpeXok68wul2g//tY5b9PgvJaaF56RchZKHQ=;
+	b=nh8894gC+DlfCtZ+8eBGM4O1RbsIvlGkCFLBf69wIOP85GBefinM/mmFFkoqUTWXoLBNTZ
+	PfafKzCKGJcJ+un5iLki0i2Arwu8RTDgqdhu8geXgpc5LQ5eMN++vKfw4aZ6kn9mPtO2em
+	4bCfRczXmr9HcBZ4XGneca75LeI+m3c=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758789348; a=rsa-sha256;
 	cv=none;
-	b=7UUa+FMxWHD06ZR4Lz/eTjVolMXO72SCfHTPG/GKHRe6CEk+3bvyua51t9xglLiZFfALn5
-	6DdF7O0I0VWjXVjPqHIzOZD9eQhauJMM9a0XnEayQFjMsLoPDWLbtJrb9rOwMd3m5EWtKY
-	Ii4YqHdNdGit0B2IncjJanJiPawSTWg=
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4cXRcP5DhNzYQvbT
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 16:25:41 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id A9AA41A121A
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 16:25:50 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.175.104.67])
-	by APP4 (Coremail) with SMTP id gCh0CgCna2OH_NRodTcIAw--.12615S11;
-	Thu, 25 Sep 2025 16:25:50 +0800 (CST)
-From: Yu Kuai <yukuai1@huaweicloud.com>
-To: tj@kernel.org,
-	ming.lei@redhat.com,
-	nilay@linux.ibm.com,
-	hch@lst.de,
-	josef@toxicpanda.com,
-	axboe@kernel.dk,
-	akpm@linux-foundation.org,
-	vgoyal@redhat.com
-Cc: cgroups@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	yukuai3@huawei.com,
-	yukuai1@huaweicloud.com,
-	yi.zhang@huawei.com,
-	yangerkun@huawei.com,
-	johnny.chenyi@huawei.com
-Subject: [PATCH 07/10] blk-cgroup: convert to protect blkgs with blkcg_mutex
-Date: Thu, 25 Sep 2025 16:15:22 +0800
-Message-Id: <20250925081525.700639-8-yukuai1@huaweicloud.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20250925081525.700639-1-yukuai1@huaweicloud.com>
-References: <20250925081525.700639-1-yukuai1@huaweicloud.com>
+	b=H/3W148dOr64aw/s3FbfBVPnsnNMOjkD4JsHdqyAkrO9SmFujpPYWZHn2Y03WJW6h4Q02r
+	BIzPzhU++w4kWlR4lAzjKYI7/N8XPrU/nh4ioP8UzqQnr7GWgSMdACefrNsRQSU4UKXlhb
+	qbyC+QgEDFCexkSiO1m0A8y9/kbA16I=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FchXrvra;
+	spf=pass (imf25.hostedemail.com: domain of ethan.w.s.graham@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=ethan.w.s.graham@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-24457f581aeso7792055ad.0
+        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 01:35:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758789347; x=1759394147; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MDyXKD1mpeXok68wul2g//tY5b9PgvJaaF56RchZKHQ=;
+        b=FchXrvrar1p61Zz9InVtnMyZjRxejbSSnV922xjP9GKwTSy1eYPUFVyI9Az6koLHHm
+         KAQTZ1LWSqB922IQrUVlqbdYUcLoXqLaxfXE9LYuuFxZp9PXvQYJX6Zhg8LNhEUKNken
+         /f2lepm6h+aorWLMMLXoyBsxycZp/RRTgGwcNsgAGutJhsk8VwHGkMA/ZZyHtuDOWlGW
+         SYlJ2uFY8kYDS3BbnoPlrjbo0ZGeOcDDwOAlNSvg53y9AjkM8TfNwvi7KRvMq05dIaLj
+         TvINlt6hBhM4uXtqEVIgd8L4GhzRz/uGsJvXkEFQRGy/xJxT/YRTW41edYt1cp7Po8e8
+         H9jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758789347; x=1759394147;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MDyXKD1mpeXok68wul2g//tY5b9PgvJaaF56RchZKHQ=;
+        b=HpnLH0Tc1qpECn49dO3e2lRVJ9Q7lJiEjQemz85HOAa67MZxyjdj7jqDwFyQWBnvSi
+         kA2pHmItfbCWtIQFywKsebzKwHdDi+WgS7brl4lzfCgbpnQgNF/52FH7vp01t1FvoBT5
+         oDP77aYuJ75fI3scaLXeZ2Y+Tv/lgbxbCy0liG19nBCH1Sub12/V+CfwWsyTpEyXLVaz
+         ta6P2ABmprGS3yxHiILYmL9yBJtefLD7xLhGnceKWxTBRUPtmZGo50AQgJzCowYpxhc1
+         06s4/1M+emjEGbwNk9a0oWAZ+R8CG7TCSPhkUmh5BiNlIImutQsRdU0Kw9pNHld2anvM
+         enMA==
+X-Forwarded-Encrypted: i=1; AJvYcCUPPj6OGgefNLpbNycYOZjp6BZGyQ4s23sRQHEWxlgSIO7w0GfPTk7Q//YwtUtdNk6aSgnKMdCN4A==@kvack.org
+X-Gm-Message-State: AOJu0YwJYJ0mpl3ZJRPXDLuOGl/fOp+xkCXQ0H8kIyMGM0XySOpaC2n/
+	m2S3zOtkb3mGW0u0EIQH15MtsrmdJbZUcG10JnZMjn9Inal51DXfYT9XdKdTnulZrha/+E6pavp
+	uzxU1OCO9DPwMwLFK2k0zlkC6wHg6wwU=
+X-Gm-Gg: ASbGncvGr9nek8XNTAp5POuOzSEBulN2snhofLYSoWI7N5F95cbiweNlow+QdV9gV2M
+	9+e//jqGvjKI1I1Uj0kznNsPxbmgSXyoyQpVcffRDjfW+sDYvBSpLK0oxBNX6XW6qh+n0LTVJE2
+	Poe+Bn6v6Eihn5pnockEuJyG9xBmcKjRaI1AYPqpo4cgl9GkMiHeGKXY4T7/ZsFUKDcKe69TqnF
+	RxLSuOVupNd45jWZKR4psS93wVznIOdHEYzQg==
+X-Google-Smtp-Source: AGHT+IFiKBS4LhKCc+e3TZ8akuJUR4dSaETLbnVbbjovQRnE+6jXoJciIAqdsOUJ/nrSn5d9rrftqE7Kz3oPsvH4jUY=
+X-Received: by 2002:a17:903:3201:b0:26e:146e:769c with SMTP id
+ d9443c01a7336-27ed4ad75c2mr30527635ad.52.1758789347230; Thu, 25 Sep 2025
+ 01:35:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgCna2OH_NRodTcIAw--.12615S11
-X-Coremail-Antispam: 1UD129KBjvAXoW3tF4kJFyfGFW3AF15KrWDtwb_yoW8GF13Ko
-	WfZ3yI93Z5Ww40qF93tr4qyrZ5C3ykK3yrXrn5Cr4rua1xJa4jv347JF13Ka4fuFySkr10
-	qFy8J3sYga18JF4Dn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UjIYCTnIWjp_UUUOV7AC8VAFwI0_Wr0E3s1l1xkIjI8I6I8E6xAIw20EY4v20xva
-	j40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l82xGYIkIc2x26280x7IE14v26r126s0DM28Irc
-	Ia0xkI8VCY1x0267AKxVW5JVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l
-	84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJV
-	WxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE
-	3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2I
-	x0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8
-	JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2
-	ka0xkIwI1lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Y
-	z7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zV
-	AF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1l
-	IxAIcVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r
-	1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIY
-	CTnIWIevJa73UjIFyTuYvjTRNdb1DUUUU
-X-CM-SenderInfo: 51xn3trlr6x35dzhxuhorxvhhfrp/
-X-Stat-Signature: aqougocejanm1e4rzb5fg38mwn7qmzd7
+References: <20250919145750.3448393-1-ethan.w.s.graham@gmail.com> <3562eeeb276dc9cc5f3b238a3f597baebfa56bad.camel@sipsolutions.net>
+In-Reply-To: <3562eeeb276dc9cc5f3b238a3f597baebfa56bad.camel@sipsolutions.net>
+From: Ethan Graham <ethan.w.s.graham@gmail.com>
+Date: Thu, 25 Sep 2025 10:35:36 +0200
+X-Gm-Features: AS18NWBFmYuT702hOj_C5JBwnZByzVghQRTr5ikBT0AN32tqz1vkZcQ1S7Omg5I
+Message-ID: <CANgxf6xOJgP6254S8EgSdiivrfE-aJDEQbDdXzWi7K4BCTdrXg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/10] KFuzzTest: a new kernel fuzzing framework
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: ethangraham@google.com, glider@google.com, andreyknvl@gmail.com, 
+	andy@kernel.org, brauner@kernel.org, brendan.higgins@linux.dev, 
+	davem@davemloft.net, davidgow@google.com, dhowells@redhat.com, 
+	dvyukov@google.com, elver@google.com, herbert@gondor.apana.org.au, 
+	ignat@cloudflare.com, jack@suse.cz, jannh@google.com, 
+	kasan-dev@googlegroups.com, kees@kernel.org, kunit-dev@googlegroups.com, 
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, lukas@wunner.de, rmoar@google.com, shuah@kernel.org, 
+	sj@kernel.org, tarasmadan@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B5B02A0004
+X-Stat-Signature: ft89k35dmxat4s86qowd5sqicc4mzoot
 X-Rspam-User: 
-X-Rspamd-Queue-Id: ABB40C0002
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758788755-730270
-X-HE-Meta: U2FsdGVkX19Ce6rYMKg7N/HCRJ6n02MBamhh/zhkpEBNQykSENH1YhnXGsDjassivFS0e+svFbKKPkNeECbQtCFWZX6Yn9B5wGg3dDW186eCpD4s3HUyYxg17ul2UfvH7mhncP0UO0kRXs/1jI5FlGv/DWhpdU1Hr1ibr2FfFYoi6VODGMphCo54MzHDMJrZxD6keHI1EUDVaUAfEWgw0H6jMS3z+vMtuZVEaCu6H1IEnciENliVU/E3NEu/uC1hRzwVzY1PQJpYI2RmgtdgB3DIKNTMzs6LW+N/Jz0hjQT7K7o4uaQiaFLSncrfzUd16oXvHCSgMmC598hEcKwGWjCm5BvzuKrX6vE+pjv7aoE40DLB1JC/A4UUr8RfmMTp1kEWA9rg2WtK0NriPA6TAPA/FJ/9AbeZbaYILqzoR8U9rLW+yphwZPYCgBHlEeOSkafFmWUhXmGrSATOcdJyQaotg/qZWmrQ0Ubdt6k/p06X8pL3nt3pFxA/HgMDDE7B6MxJhI7uwY2vV5q6UIce4zOF97zKxmonr96h+JSLXoXADnhuasfo8x+OW52cNnGMtSE8ew/tUtH5XS8zQrUghyCsmycafUPPSiYcveZHnppivJFQjnntwf/lYT1LTJFdwF0R4z//s7YlK7uOCqCuXpPh6R2S6Gs+2K6DmFonV6NOmUjxpX0Vd6un5oSSpeMDKDDW3gOWrdRjonsd3D/tVIS9zNV0ciugodZUD9cBr9/OT8EPn2sbAXxV9WAb+LGyTtWv52UNftdJAcxW7XOyrZcy2KSPb9+7Ep+wrl8hrUOVcJ5QLYu4YqvPa/Ss7IU3P7UY5JgoAlr5OT4vpNA5suIqpwWpbomFe+5xskqYDCWJiCAL3IOaOjrpq/6NQxvSj50KfbxcQuloFhO5gCbpyo+0i68v4QFqFWyBqhkl8RAO8KzkeoeZEMaCW9Vyh2hmyV8F+cbcEMBg1cLWvBB
- 2VjEDV4+
- lJbQrmdyY9kqVlj2CNIAGbbivbJlmD5EcDFmOFG3Ku64rSUvHLszzZZv9Od5vzZuPV8DWAX8q9vcnU4CzYBptkHX6AsOR99V+h2zQ98bHpVQRO3rANsik1gXWxxI6cbmF7cIA1Mpc/qO7vJw=
+X-HE-Tag: 1758789348-197230
+X-HE-Meta: U2FsdGVkX19nOhXRs2pXr75dWLf8DEcHsWgyN/BPL3NXHsJmRFhHBHTQfb9uslJ3xBsRES+meYW3esbgBBBYzYTeFebwgmfQ0Wq2qnbE8EIw7TuCnrXtAqeOufI64KJ+qpfxn/RbMkq25Gkhep6DtQ+guKmI6vtoSKubcXeU1ZLMA2HPxdLrvAVBzOVqZiJzv6UYo0WV7gufgpdJdlBPMmNaPe/M6ugRSxnIB38g9kwgpKLPvoKMOrZhpQWwcGuckBlHdt41cm5sBZ4IkIRjvJn9z0YVP+RgQsqetddwoIGQogVUoMTwAoRCAMrVTVB2F55gLTVtGpT1GE5XWdHmcl57p43TVKM9+HIGtpL6onPaoVhoRFNOyz5G2I/PqiowZazrTagfp1Un2PXWJpymm1cw9ZdVPm6yVb10sL/zrJQLIf7Kjmrvtua15XK9+7CpF8WLq3UesRM1tonSdf+6MXq9QP2pZCL5PSbkc4CsDQ2JnTkSlS7T+j7nUbXeaewWDX2qxXwwaJjBt61DIf4ewpsY4YRpb5nyfCkQmKetPf6q+sZhu7jl+R4TQazl8iUGSnvOdcaD/JQP7ErFBvIoQvvj7eF0Ig4kuDE2RyrPAzkNfyHR3WQSjQYnn4nXf1+IPtNAy9BjGHrWyUdMTaI3k56TOwh9E6dTMbaGuF2cK7RCYVnuWIKDIzQ0UQd4N/JXtHfB0QISk+cu2dIpp652F/85pPK7eD20qBBkDV+ZJyfxuZ0k5ZUgjlApSiPf5QS/AnEzLzOXj7IIaveD5qWstFUKtTett1zWBUYXKWZwCy6Yj+tLe0VWtQlKPcsZZJIUI76B22q47Qhh3uOnfVLo76z6kJE7Ajj9A3X4hr+AgXj7LRFGRT8xCkT1T1ya7jXJrtXFx3qmAZOaIBSw9H2QK1jDWe6TB5wkCgrCwSKspHAnASXbjG2HMX0dKpd7WWbdhMr++dDb3P9EkSvLBKG
+ g8seIYUY
+ VKNw2U7Y7BknpLURCg6IxMN8UpFLyOPNUP2+LmeAcuqn3nUGyOdHD4pSDlCHSKlLgLSRQAsNSBcSEWcoEagRAT4qLAN7qy3eMnXOOvQyTdhP2DjiXHqCQK0ME9oddN2+g/vKlfaYYncahgUgwmbec1/0ueuFuEExBPILXVr9+nfg5D5na15uJzEBXUL+jcCkBD0cBaNM3EFXvvmDAYZ9CxNhfCfWRn0zClNR6BfDq1EG7IHFMxNC14y7d1H5XTBTa/0nMyYnhP7jzNsqISxDJAXsHbdyb5OrgYX/UPJ5kYG7hn82xMACHGfButzspb4JintGaIuKKk0sUACuw8pCZAhr+j7zbeP53ucLPj8FQD4PPmEtiMoW6/Unb8390t1TaUL7wX14QoZxkdI4rVksKK1dpBvt+2l6+Apq14iwlNV0oH8p/e8DGA3/6QtA8HFY1jzOaZNAF/bdvfvDWX9WriiBxIhsd1rsRMtQr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,431 +123,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Yu Kuai <yukuai3@huawei.com>
+On Wed, Sep 24, 2025 at 2:52=E2=80=AFPM Johannes Berg <johannes@sipsolution=
+s.net> wrote:
+>
+> On Fri, 2025-09-19 at 14:57 +0000, Ethan Graham wrote:
+> >
+> > This patch series introduces KFuzzTest, a lightweight framework for
+> > creating in-kernel fuzz targets for internal kernel functions.
+> >
+> > The primary motivation for KFuzzTest is to simplify the fuzzing of
+> > low-level, relatively stateless functions (e.g., data parsers, format
+> > converters) that are difficult to exercise effectively from the syscall
+> > boundary. It is intended for in-situ fuzzing of kernel code without
+> > requiring that it be built as a separate userspace library or that its
+> > dependencies be stubbed out. Using a simple macro-based API, developers
+> > can add a new fuzz target with minimal boilerplate code.
+>
+> So ... I guess I understand the motivation to make this easy for
+> developers, but I'm not sure I'm happy to have all of this effectively
+> depend on syzkaller.
 
-With previous modifications, queue_lock no longer grabbed under other
-spinlocks and rcu for protecting blkgs, it's ok convert to blkcg_mutex
-directly.
+I would argue that it only depends on syzkaller because it is currently
+the only fuzzer that implements support for KFuzzTest. The communication
+interface itself is agnostic.
 
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
----
- block/bfq-cgroup.c  |   6 +--
- block/bfq-iosched.c |   8 ++--
- block/blk-cgroup.c  | 104 ++++++++++++++------------------------------
- block/blk-cgroup.h  |   6 +--
- 4 files changed, 42 insertions(+), 82 deletions(-)
+> You spelled out the process to actually declare a fuzz test, but you
+> never spelled out the process to actually run fuzzing against it. For
 
-diff --git a/block/bfq-cgroup.c b/block/bfq-cgroup.c
-index 9fb9f3533150..8af471d565d9 100644
---- a/block/bfq-cgroup.c
-+++ b/block/bfq-cgroup.c
-@@ -405,7 +405,7 @@ static void bfqg_stats_xfer_dead(struct bfq_group *bfqg)
- 
- 	parent = bfqg_parent(bfqg);
- 
--	lockdep_assert_held(&bfqg_to_blkg(bfqg)->q->queue_lock);
-+	lockdep_assert_held(&bfqg_to_blkg(bfqg)->q->blkcg_mutex);
- 
- 	if (unlikely(!parent))
- 		return;
-@@ -866,7 +866,7 @@ static void bfq_reparent_active_queues(struct bfq_data *bfqd,
-  *		    and reparent its children entities.
-  * @pd: descriptor of the policy going offline.
-  *
-- * blkio already grabs the queue_lock for us, so no need to use
-+ * blkio already grabs the blkcg_mtuex for us, so no need to use
-  * RCU-based magic
-  */
- static void bfq_pd_offline(struct blkg_policy_data *pd)
-@@ -1139,7 +1139,7 @@ static u64 bfqg_prfill_stat_recursive(struct seq_file *sf,
- 	struct cgroup_subsys_state *pos_css;
- 	u64 sum = 0;
- 
--	lockdep_assert_held(&blkg->q->queue_lock);
-+	lockdep_assert_held(&blkg->q->blkcg_mutex);
- 
- 	rcu_read_lock();
- 	blkg_for_each_descendant_pre(pos_blkg, pos_css, blkg) {
-diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
-index a77b98187370..4ffbe4383dd2 100644
---- a/block/bfq-iosched.c
-+++ b/block/bfq-iosched.c
-@@ -5266,7 +5266,7 @@ static void bfq_update_dispatch_stats(struct request_queue *q,
- 	 * In addition, the following queue lock guarantees that
- 	 * bfqq_group(bfqq) exists as well.
- 	 */
--	spin_lock_irq(&q->queue_lock);
-+	mutex_lock(&q->blkcg_mutex);
- 	if (idle_timer_disabled)
- 		/*
- 		 * Since the idle timer has been disabled,
-@@ -5285,7 +5285,7 @@ static void bfq_update_dispatch_stats(struct request_queue *q,
- 		bfqg_stats_set_start_empty_time(bfqg);
- 		bfqg_stats_update_io_remove(bfqg, rq->cmd_flags);
- 	}
--	spin_unlock_irq(&q->queue_lock);
-+	mutex_unlock(&q->blkcg_mutex);
- }
- #else
- static inline void bfq_update_dispatch_stats(struct request_queue *q,
-@@ -6218,11 +6218,11 @@ static void bfq_update_insert_stats(struct request_queue *q,
- 	 * In addition, the following queue lock guarantees that
- 	 * bfqq_group(bfqq) exists as well.
- 	 */
--	spin_lock_irq(&q->queue_lock);
-+	mutex_lock(&q->blkcg_mutex);
- 	bfqg_stats_update_io_add(bfqq_group(bfqq), bfqq, cmd_flags);
- 	if (idle_timer_disabled)
- 		bfqg_stats_update_idle_time(bfqq_group(bfqq));
--	spin_unlock_irq(&q->queue_lock);
-+	mutex_unlock(&q->blkcg_mutex);
- }
- #else
- static inline void bfq_update_insert_stats(struct request_queue *q,
-diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-index 795efb5ccb5e..280f29a713b6 100644
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -130,9 +130,7 @@ static void blkg_free_workfn(struct work_struct *work)
- 			blkcg_policy[i]->pd_free_fn(blkg->pd[i]);
- 	if (blkg->parent)
- 		blkg_put(blkg->parent);
--	spin_lock_irq(&q->queue_lock);
- 	list_del_init(&blkg->q_node);
--	spin_unlock_irq(&q->queue_lock);
- 	mutex_unlock(&q->blkcg_mutex);
- 
- 	blk_put_queue(q);
-@@ -372,7 +370,7 @@ static struct blkcg_gq *blkg_create(struct blkcg *blkcg, struct gendisk *disk,
- 	struct blkcg_gq *blkg;
- 	int i, ret;
- 
--	lockdep_assert_held(&disk->queue->queue_lock);
-+	lockdep_assert_held(&disk->queue->blkcg_mutex);
- 
- 	/* request_queue is dying, do not create/recreate a blkg */
- 	if (blk_queue_dying(disk->queue)) {
-@@ -457,7 +455,7 @@ static struct blkcg_gq *blkg_create(struct blkcg *blkcg, struct gendisk *disk,
-  * Lookup blkg for the @blkcg - @disk pair.  If it doesn't exist, try to
-  * create one.  blkg creation is performed recursively from blkcg_root such
-  * that all non-root blkg's have access to the parent blkg.  This function
-- * should be called under RCU read lock and takes @disk->queue->queue_lock.
-+ * should be called under RCU read lock and takes @disk->queue->blkcg_mutex.
-  *
-  * Returns the blkg or the closest blkg if blkg_create() fails as it walks
-  * down from root.
-@@ -517,7 +515,7 @@ static void blkg_destroy(struct blkcg_gq *blkg)
- 	struct blkcg *blkcg = blkg->blkcg;
- 	int i;
- 
--	lockdep_assert_held(&blkg->q->queue_lock);
-+	lockdep_assert_held(&blkg->q->blkcg_mutex);
- 	lockdep_assert_held(&blkcg->lock);
- 
- 	/*
-@@ -546,8 +544,8 @@ static void blkg_destroy(struct blkcg_gq *blkg)
- 
- 	/*
- 	 * Both setting lookup hint to and clearing it from @blkg are done
--	 * under queue_lock.  If it's not pointing to @blkg now, it never
--	 * will.  Hint assignment itself can race safely.
-+	 * under q->blkcg_mutex and blkcg->lock.  If it's not pointing to @blkg
-+	 * now, it never will. Hint assignment itself can race safely.
- 	 */
- 	if (rcu_access_pointer(blkcg->blkg_hint) == blkg)
- 		rcu_assign_pointer(blkcg->blkg_hint, NULL);
-@@ -567,25 +565,20 @@ static void blkg_destroy_all(struct gendisk *disk)
- 	int i;
- 
- restart:
--	spin_lock_irq(&q->queue_lock);
-+	mutex_lock(&q->blkcg_mutex);
- 	list_for_each_entry(blkg, &q->blkg_list, q_node) {
- 		struct blkcg *blkcg = blkg->blkcg;
- 
- 		if (hlist_unhashed(&blkg->blkcg_node))
- 			continue;
- 
--		spin_lock(&blkcg->lock);
-+		spin_lock_irq(&blkcg->lock);
- 		blkg_destroy(blkg);
--		spin_unlock(&blkcg->lock);
-+		spin_unlock_irq(&blkcg->lock);
- 
--		/*
--		 * in order to avoid holding the spin lock for too long, release
--		 * it when a batch of blkgs are destroyed.
--		 */
- 		if (!(--count)) {
- 			count = BLKG_DESTROY_BATCH_SIZE;
--			spin_unlock_irq(&q->queue_lock);
--			cond_resched();
-+			mutex_unlock(&q->blkcg_mutex);
- 			goto restart;
- 		}
- 	}
-@@ -603,7 +596,7 @@ static void blkg_destroy_all(struct gendisk *disk)
- 	}
- 
- 	q->root_blkg = NULL;
--	spin_unlock_irq(&q->queue_lock);
-+	mutex_unlock(&q->blkcg_mutex);
- }
- 
- static void blkg_iostat_set(struct blkg_iostat *dst, struct blkg_iostat *src)
-@@ -853,7 +846,7 @@ unsigned long __must_check blkg_conf_open_bdev_frozen(struct blkg_conf_ctx *ctx)
-  */
- int blkg_conf_prep(struct blkcg *blkcg, const struct blkcg_policy *pol,
- 		   struct blkg_conf_ctx *ctx)
--	__acquires(&bdev->bd_queue->queue_lock)
-+	__acquires(&bdev->bd_queue->blkcg_mutex)
- {
- 	struct gendisk *disk;
- 	struct request_queue *q;
-@@ -869,7 +862,6 @@ int blkg_conf_prep(struct blkcg *blkcg, const struct blkcg_policy *pol,
- 
- 	/* Prevent concurrent with blkcg_deactivate_policy() */
- 	mutex_lock(&q->blkcg_mutex);
--	spin_lock_irq(&q->queue_lock);
- 
- 	if (!blkcg_policy_enabled(q, pol)) {
- 		ret = -EOPNOTSUPP;
-@@ -895,23 +887,18 @@ int blkg_conf_prep(struct blkcg *blkcg, const struct blkcg_policy *pol,
- 			parent = blkcg_parent(parent);
- 		}
- 
--		/* Drop locks to do new blkg allocation with GFP_KERNEL. */
--		spin_unlock_irq(&q->queue_lock);
--
- 		new_blkg = blkg_alloc(pos, disk, GFP_NOIO);
- 		if (unlikely(!new_blkg)) {
- 			ret = -ENOMEM;
--			goto fail_exit;
-+			goto fail_unlock;
- 		}
- 
- 		if (radix_tree_preload(GFP_KERNEL)) {
- 			blkg_free(new_blkg);
- 			ret = -ENOMEM;
--			goto fail_exit;
-+			goto fail_unlock;
- 		}
- 
--		spin_lock_irq(&q->queue_lock);
--
- 		if (!blkcg_policy_enabled(q, pol)) {
- 			blkg_free(new_blkg);
- 			ret = -EOPNOTSUPP;
-@@ -935,15 +922,12 @@ int blkg_conf_prep(struct blkcg *blkcg, const struct blkcg_policy *pol,
- 			goto success;
- 	}
- success:
--	mutex_unlock(&q->blkcg_mutex);
- 	ctx->blkg = blkg;
- 	return 0;
- 
- fail_preloaded:
- 	radix_tree_preload_end();
- fail_unlock:
--	spin_unlock_irq(&q->queue_lock);
--fail_exit:
- 	mutex_unlock(&q->blkcg_mutex);
- 	/*
- 	 * If queue was bypassing, we should retry.  Do so after a
-@@ -967,11 +951,11 @@ EXPORT_SYMBOL_GPL(blkg_conf_prep);
-  * blkg_conf_ctx's initialized with blkg_conf_init().
-  */
- void blkg_conf_exit(struct blkg_conf_ctx *ctx)
--	__releases(&ctx->bdev->bd_queue->queue_lock)
-+	__releases(&ctx->bdev->bd_queue->blkcg_mutex)
- 	__releases(&ctx->bdev->bd_queue->rq_qos_mutex)
- {
- 	if (ctx->blkg) {
--		spin_unlock_irq(&bdev_get_queue(ctx->bdev)->queue_lock);
-+		mutex_unlock(&bdev_get_queue(ctx->bdev)->blkcg_mutex);
- 		ctx->blkg = NULL;
- 	}
- 
-@@ -1318,13 +1302,13 @@ static void blkcg_destroy_blkgs(struct blkcg *blkcg)
- 	while ((blkg = blkcg_get_first_blkg(blkcg))) {
- 		struct request_queue *q = blkg->q;
- 
--		spin_lock_irq(&q->queue_lock);
--		spin_lock(&blkcg->lock);
-+		mutex_lock(&q->blkcg_mutex);
-+		spin_lock_irq(&blkcg->lock);
- 
- 		blkg_destroy(blkg);
- 
--		spin_unlock(&blkcg->lock);
--		spin_unlock_irq(&q->queue_lock);
-+		spin_unlock_irq(&blkcg->lock);
-+		mutex_unlock(&q->blkcg_mutex);
- 
- 		blkg_put(blkg);
- 		cond_resched();
-@@ -1501,24 +1485,23 @@ int blkcg_init_disk(struct gendisk *disk)
- 	if (!new_blkg)
- 		return -ENOMEM;
- 
--	preloaded = !radix_tree_preload(GFP_KERNEL);
-+	mutex_lock(&q->blkcg_mutex);
-+	preloaded = !radix_tree_preload(GFP_NOIO);
- 
- 	/* Make sure the root blkg exists. */
--	/* spin_lock_irq can serve as RCU read-side critical section. */
--	spin_lock_irq(&q->queue_lock);
- 	blkg = blkg_create(&blkcg_root, disk, new_blkg);
- 	if (IS_ERR(blkg))
- 		goto err_unlock;
- 	q->root_blkg = blkg;
--	spin_unlock_irq(&q->queue_lock);
- 
- 	if (preloaded)
- 		radix_tree_preload_end();
-+	mutex_unlock(&q->blkcg_mutex);
- 
- 	return 0;
- 
- err_unlock:
--	spin_unlock_irq(&q->queue_lock);
-+	mutex_unlock(&q->blkcg_mutex);
- 	if (preloaded)
- 		radix_tree_preload_end();
- 	return PTR_ERR(blkg);
-@@ -1595,8 +1578,7 @@ int blkcg_activate_policy(struct gendisk *disk, const struct blkcg_policy *pol)
- 
- 	if (queue_is_mq(q))
- 		memflags = blk_mq_freeze_queue(q);
--retry:
--	spin_lock_irq(&q->queue_lock);
-+	mutex_lock(&q->blkcg_mutex);
- 
- 	/* blkg_list is pushed at the head, reverse walk to initialize parents first */
- 	list_for_each_entry_reverse(blkg, &q->blkg_list, q_node) {
-@@ -1605,36 +1587,17 @@ int blkcg_activate_policy(struct gendisk *disk, const struct blkcg_policy *pol)
- 		if (blkg->pd[pol->plid])
- 			continue;
- 
--		/* If prealloc matches, use it; otherwise try GFP_NOWAIT */
-+		/* If prealloc matches, use it */
- 		if (blkg == pinned_blkg) {
- 			pd = pd_prealloc;
- 			pd_prealloc = NULL;
- 		} else {
- 			pd = pol->pd_alloc_fn(disk, blkg->blkcg,
--					      GFP_NOWAIT);
-+					      GFP_NOIO);
- 		}
- 
--		if (!pd) {
--			/*
--			 * GFP_NOWAIT failed.  Free the existing one and
--			 * prealloc for @blkg w/ GFP_KERNEL.
--			 */
--			if (pinned_blkg)
--				blkg_put(pinned_blkg);
--			blkg_get(blkg);
--			pinned_blkg = blkg;
--
--			spin_unlock_irq(&q->queue_lock);
--
--			if (pd_prealloc)
--				pol->pd_free_fn(pd_prealloc);
--			pd_prealloc = pol->pd_alloc_fn(disk, blkg->blkcg,
--						       GFP_KERNEL);
--			if (pd_prealloc)
--				goto retry;
--			else
--				goto enomem;
--		}
-+		if (!pd)
-+			goto enomem;
- 
- 		spin_lock(&blkg->blkcg->lock);
- 
-@@ -1655,8 +1618,8 @@ int blkcg_activate_policy(struct gendisk *disk, const struct blkcg_policy *pol)
- 	__set_bit(pol->plid, q->blkcg_pols);
- 	ret = 0;
- 
--	spin_unlock_irq(&q->queue_lock);
- out:
-+	mutex_unlock(&q->blkcg_mutex);
- 	if (queue_is_mq(q))
- 		blk_mq_unfreeze_queue(q, memflags);
- 	if (pinned_blkg)
-@@ -1667,7 +1630,6 @@ int blkcg_activate_policy(struct gendisk *disk, const struct blkcg_policy *pol)
- 
- enomem:
- 	/* alloc failed, take down everything */
--	spin_lock_irq(&q->queue_lock);
- 	list_for_each_entry(blkg, &q->blkg_list, q_node) {
- 		struct blkcg *blkcg = blkg->blkcg;
- 		struct blkg_policy_data *pd;
-@@ -1683,7 +1645,7 @@ int blkcg_activate_policy(struct gendisk *disk, const struct blkcg_policy *pol)
- 		}
- 		spin_unlock(&blkcg->lock);
- 	}
--	spin_unlock_irq(&q->queue_lock);
-+
- 	ret = -ENOMEM;
- 	goto out;
- }
-@@ -1711,7 +1673,6 @@ void blkcg_deactivate_policy(struct gendisk *disk,
- 		memflags = blk_mq_freeze_queue(q);
- 
- 	mutex_lock(&q->blkcg_mutex);
--	spin_lock_irq(&q->queue_lock);
- 
- 	__clear_bit(pol->plid, q->blkcg_pols);
- 
-@@ -1728,7 +1689,6 @@ void blkcg_deactivate_policy(struct gendisk *disk,
- 		spin_unlock(&blkcg->lock);
- 	}
- 
--	spin_unlock_irq(&q->queue_lock);
- 	mutex_unlock(&q->blkcg_mutex);
- 
- 	if (queue_is_mq(q))
-@@ -2118,11 +2078,11 @@ static inline struct blkcg_gq *blkg_tryget_closest(struct bio *bio,
- 	 * Fast path failed, we're probably issuing IO in this cgroup the first
- 	 * time, hold lock to create new blkg.
- 	 */
--	spin_lock_irq(&q->queue_lock);
-+	mutex_lock(&q->blkcg_mutex);
- 	blkg = blkg_lookup_create(blkcg, bio->bi_bdev->bd_disk);
- 	if (blkg)
- 		blkg = blkg_lookup_tryget(blkg);
--	spin_unlock_irq(&q->queue_lock);
-+	mutex_unlock(&q->blkcg_mutex);
- 
- 	return blkg;
- }
-diff --git a/block/blk-cgroup.h b/block/blk-cgroup.h
-index 1cce3294634d..60c1da02f437 100644
---- a/block/blk-cgroup.h
-+++ b/block/blk-cgroup.h
-@@ -261,7 +261,7 @@ static inline struct blkcg_gq *blkg_lookup(struct blkcg *blkcg,
- 		return q->root_blkg;
- 
- 	blkg = rcu_dereference_check(blkcg->blkg_hint,
--			lockdep_is_held(&q->queue_lock));
-+			lockdep_is_held(&q->blkcg_mutex));
- 	if (blkg && blkg->q == q)
- 		return blkg;
- 
-@@ -345,8 +345,8 @@ static inline void blkg_put(struct blkcg_gq *blkg)
-  * @p_blkg: target blkg to walk descendants of
-  *
-  * Walk @c_blkg through the descendants of @p_blkg.  Must be used with RCU
-- * read locked.  If called under either blkcg or queue lock, the iteration
-- * is guaranteed to include all and only online blkgs.  The caller may
-+ * read locked.  If called under either blkcg->lock or q->blkcg_mutex, the
-+ * iteration is guaranteed to include all and only online blkgs.  The caller may
-  * update @pos_css by calling css_rightmost_descendant() to skip subtree.
-  * @p_blkg is included in the iteration and the first node to be visited.
-  */
--- 
-2.39.2
+Running the fuzzing is more of a tooling concern, and so instructions
+were left out here. For the interested, the syzkaller flow is described
+on GitHub: https://github.com/google/syzkaller/blob/master/docs/kfuzztest.m=
+d
 
+> the record, and everyone else who might be reading, here's my
+> understanding:
+>
+>  - the FUZZ_TEST() macro declares some magic in the Linux binary,
+>    including the name of the struct that describes the necessary input
+>
+>  - there's a parser in syzkaller (and not really usable standalone) that
+>    can parse the vmlinux binary (and doesn't handle modules) and
+>    generates descriptions for the input from it
+>
+>  - I _think_ that the bridge tool uses these descriptions, though the
+>    example you have in the documentation just says "use this command for
+>    this test" and makes no representation as to how the first argument
+>    to the bridge tool is created, it just appears out of thin air
+
+syzkaller doesn't use the bridge tool at all. Since a KFuzzTest target is
+invoked when you write encoded data into its debugfs input file, any
+fuzzer that is able to do this is able to fuzz it - this is what syzkaller
+does. The bridge tool was added to provide an out-of-the-box tool
+for fuzzing KFuzzTest targets with arbitrary data that doesn't depend
+on syzkaller at all.
+
+In the provided examples, the kfuzztest-bridge descriptions were
+hand-written, but it's also feasible to generate them with the ELF
+metadata in vmlinux. It would be easy to implement support for
+this in syzkaller, but then we would depend on an external tool
+for autogenerating these descriptions which we wanted to avoid.
+
+>
+>  - the bridge tool will then parse the description and use some random
+>    data to create the serialised data that's deserialized in the kernel
+>    and then passed to the test
+
+This is exactly right. It's not used by syzkaller, but this is how it's
+intended to work when it's used as a standalone tool, or for bridging
+between KFuzzTest targets and an arbitrary fuzzer that doesn't
+implement the required encoding logic.
+
+>    - side note: did that really have to be a custom serialization
+>      format? I don't see any discussion on that, there are different
+>      formats that exist already, I'd think?
+>
+>  - the test runs now, and may or may not crash, as you'd expect
+
+>
+> I was really hoping to integrate this with ARCH=3Dum and other fuzzers[1]=
+,
+> but ... I don't really think it's entirely feasible. I can basically
+> only require hard-coding the input description like the bridge tool
+> does, but that doesn't scale, or attempt to extract a few thousand lines
+> of code from syzkaller to extract the data...
+
+I would argue that integrating with other fuzzers is feasible, but it does
+require some if not a lot of work depending on the level of support. syzkal=
+ler
+already did most of the heavy lifting with smart input generation and mutat=
+ion
+for kernel functions, so the changes needed for KFuzzTest were mainly:
+
+- Dynamically discovering targets, but you could just as easily write a
+  syzkaller description for them.
+- Encoding logic for the input format.
+
+Assuming a fuzzer is able to generate C-struct inputs for a kernel function=
+,
+the only further requirement is being able to encode the input and write
+it into the debugfs input file. The ELF data extraction is a nice-to-have
+for sure, but it's not a strict requirement.
+
+>
+> [1] in particular honggfuzz as I wrote earlier, due to the coverage
+>     feedback format issues with afl++, but if I were able to use clang
+>     right now I could probably also make afl++ work in a similar way
+>     by adding support for --fsanitize-coverage=3Dtrace-pc-guard first.
+>
+>
+> I'm not even saying that you had many choices here, but it's definitely
+> annoying, at least to me, that all this infrastructure is effectively
+> dependent on syzkaller due to all of this. At the same time, yes, I get
+> that parsing dwarf and getting a description out is not an easy feat,
+> and without the infrastructure already in syzkaller it'd take more than
+> the ~1.1kLOC (and even that is not small) it has now.
+>
+>
+> I guess the biggest question to me is ultimately why all that is
+> necessary? Right now, there's only the single example kfuzztest that
+> even uses this infrastructure beyond a single linear buffer [2]. Where
+> is all that complexity even worth it? It's expressly intended for
+> simpler pieces of code that parse something ("data parsers, format
+> converters").
+
+You're right that the provided examples don't leverage the feature of
+being able to pass more complex nested data into the kernel. Perhaps
+for a future iteration, it might be worth adding a target for a function
+that takes more complex input. What do you think?
+
+I'm not sure how much of the kernel complexity really could be reduced
+if we decided to support only simpler inputs (e.g., linear buffers).
+It would certainly simplify the fuzzer implementation, but the kernel
+code would likely be similar if not the same.
 
