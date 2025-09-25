@@ -4,151 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5909CAC5B0
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 20:24:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC0C3CAC5B5
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 20:28:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 135948E000E; Thu, 25 Sep 2025 16:24:18 -0400 (EDT)
+	id 3FF648E0005; Thu, 25 Sep 2025 16:28:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10D918E0001; Thu, 25 Sep 2025 16:24:18 -0400 (EDT)
+	id 3D6E28E0001; Thu, 25 Sep 2025 16:28:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 023328E000E; Thu, 25 Sep 2025 16:24:17 -0400 (EDT)
+	id 2EC5E8E0005; Thu, 25 Sep 2025 16:28:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E1F1C8E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 16:24:17 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 70C1D11A3B1
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 20:24:17 +0000 (UTC)
-X-FDA: 83928899754.13.A2D4AC1
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4451A8000A
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 20:24:14 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Da12jCvK;
-	spf=pass (imf02.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DBB08E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 16:28:23 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BB02A86F92
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 20:28:22 +0000 (UTC)
+X-FDA: 83928910044.16.7EF0BB3
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+	by imf21.hostedemail.com (Postfix) with ESMTP id DAE501C0004
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 20:28:20 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cpbPBkts;
+	spf=pass (imf21.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758831855;
+	s=arc-20220608; t=1758832100;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=slC/4P0RsWxy7aIL8063QZr9t5aaGLRX+ts628BnJrU=;
-	b=O27bATEMHay1Jfwy7MdBJ/Z9lze7qdwVsyZG4MI5sPtTlIqFJtiUZ2AIh68nhKiIbJj6rf
-	dzHL/fWa0bq9IwwP9C0ZpQqqONMmz+aXKm2PBKNxpdQwoejqS5bdjt8aPKe0Srnb9ZR05Z
-	cbcqh1cOR7+q7pAlzbJqvNyVPonkL7I=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Da12jCvK;
-	spf=pass (imf02.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758831855; a=rsa-sha256;
+	bh=tVmWJqFwwC9UwpxqsqqkVVx9IUzg005YrMy6SZ7c5p8=;
+	b=Ep79G9BzWXWtK4rv/FESHnj6JTXjC+f8HIpfzjx6WXn+pEhjrqBs11vzUKRzM4M87wSZ4I
+	lLFFJQRvZC/l+/7MBy929NLrD8+717l7TPxkCHQfz8mqu2ySGPjMaZsj9kqUUk1amEKTfl
+	wFO5Wu+h9zRvdzXgZXHRDWXykSvU4Pc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758832100; a=rsa-sha256;
 	cv=none;
-	b=SJnVdaVp9C72dZOhg89omnppGyAEUhbGfdp53mPuokCZ04eDUBrO45oZ+3pmKf/2VJDZI5
-	hIhmfp9ztHEDcGXJDqDbabXH+fFyL6WPu0m6S1uhrXA2ga19LH37K8c5a7AuJ5fp6lJuZV
-	cHyuZoMvstzsHp4XGTHrWbcykRsiSC0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758831854; x=1790367854;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=slC/4P0RsWxy7aIL8063QZr9t5aaGLRX+ts628BnJrU=;
-  b=Da12jCvKxLXDQDu5nBnyRl7g3a/TqGaGDzPIBKXBVtt3WFH3FE4KKixF
-   v1vHMHehsusalX+lbJ95JB+Zk89EQVRG0MKCnjPQW2yEKBR72Iyjt4euE
-   Wg2+jS2x14SJUy2xcb7H6KWN0xJdLrr9YNb8qDgff4XzAQCBTpbglHBpI
-   ZSRaEZx9rRzVKXQiEkxUZ9YaKuFcsLdHbUmOI09TI2vXXOm/TpFB2qmFf
-   zW9ChVyMzXk+rTpJWBXfayo3ztHsOohHnbY06VHNCreP44lzuFDuBO6ie
-   CTkg6WliKimieQ9rLIgVPtfkoMJJ/HcmrxQnhPgnjGbUYKM44HV/tPd0F
-   g==;
-X-CSE-ConnectionGUID: Gt2hKC2nQZCiEZ7cegQ6Ng==
-X-CSE-MsgGUID: cRVwvffzSHacBX3Ck1my7g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="61085304"
-X-IronPort-AV: E=Sophos;i="6.18,293,1751266800"; 
-   d="scan'208";a="61085304"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 13:24:13 -0700
-X-CSE-ConnectionGUID: 6gr1JL/yQKiAf+2CVcC66A==
-X-CSE-MsgGUID: 4LgWa1IfS9mUPDKobq41Jg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,293,1751266800"; 
-   d="scan'208";a="176557599"
-Received: from ray2.jf.intel.com (HELO [10.24.81.144]) ([10.24.81.144])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 13:24:12 -0700
-Message-ID: <c04d4c9d-e868-4883-af92-26f142bc84be@intel.com>
-Date: Thu, 25 Sep 2025 13:24:12 -0700
+	b=hyabtC2JFFMikl9RQAe66l5bdcDA262MzvbOwEC2Rnz2h+fCya82yEOJKBfc1CEEy8SgW/
+	RKHLs39TYxuVCQO1xUc9ZSZaSqP4T9EKxtwtuX+uu2HDguGDvuqFvGqFwbCocZIMe9MAex
+	VnAm0P43uO9og2k8r+hB2DpjkAiMrQY=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cpbPBkts;
+	spf=pass (imf21.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-71d71bcac45so13680047b3.0
+        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:28:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758832100; x=1759436900; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tVmWJqFwwC9UwpxqsqqkVVx9IUzg005YrMy6SZ7c5p8=;
+        b=cpbPBktsBBGZjAZ/33SrqYC+yZdgTUTaQV939E1mRm7VFfuBmN+0P2bv6VsUha1Sm4
+         qkGDawFAUkw6WGIJkc6HTU7F7Hi5szvyx5xgyMd4R3SMGlQQeFUY7dF9xCdlAwPp8w5a
+         Sn06iCAcjxV5lveydt9DdEBGpK/lERp4Rs7AEITiJfRySn9PBRhPXWK1w+9weM0iDLrg
+         C49PtcpU29A8zqdyXTOXymgde0caxSvwRT/ARUm4CZp3aj0uFDuNmY/dfXnbIzOmOOnB
+         VKCiWKFm0ovTZaCIfl6L36iIGD7ZrrEUsblVSCARg0Iy15d99irygTUD2FcIS+UbaHOl
+         /YKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758832100; x=1759436900;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tVmWJqFwwC9UwpxqsqqkVVx9IUzg005YrMy6SZ7c5p8=;
+        b=CSDm07YMCkMC398Z09L5J6zPEXkRiyQeq487iF/Eo+cfRDzbCnZb/OrCL9VgEHOSdE
+         5YssYMJ+vgAzzHdtYLvpvZCsoPBbyVMRluKljXZBzraLX+Ya/rmkDhXQqMkDrAhDnCsh
+         R7DeYgclY7oW9yIOsf8etdDore7y97QS1tve6q+nAGeG4aaWw7oTRQjhILsveHj/7ToE
+         Xs+m7FUbGKQ0cR4aeFUHvxaiQ4Agjr+c2eZvbUQKMbvnnUZ/tZJJgXsnpFcAVpS2tYX5
+         31AdmHONflYHNK1FmUemK+gK0Yls0fSxjobZFxNrwhtJLgw7uYMV3/3um53MhjO6ngNo
+         +Zuw==
+X-Forwarded-Encrypted: i=1; AJvYcCVrFa258Xui/pyITk5GnqwtnFTKLqA9bD9clZenxW5fNO9y42ZtqwvvmTfNG2WDCqguEbVJpdIFEA==@kvack.org
+X-Gm-Message-State: AOJu0YzoDxhyc5i2e9V9ZQWcTtPyCMkNo62TzimUFuRR3yf5IhY48pBA
+	LeQr4FvqAZJzupmUPy2PGsdtNIwH2RhOMrHegW6QlylsN6k87cKNyxZK
+X-Gm-Gg: ASbGncui4favtoPn6/vbiU3fEf8u1AHXJuglp1gxyjNJZYb1tF8uS23YQAgU0taxJYT
+	1rTwwg0CjaWDCB3LgLs3vw7djcmMRs+v+PZlciye7AM7KxH5L2iIJJ3T78Wl9Zex0w9RdxG1uXq
+	+NIicYTkPLHi/iKlrtVTJFGo0sZH5Vpfa4d2G42WjF2XJNQhkQxZyJ0d+AzbZcqsGgi57jdK17a
+	9Tr9urFGG2JcNZhZ1drOAqmTBo9OFpYnvs46L28tIuQppYCxHnChk0YvQb55Doy1pfsFoeHS/zM
+	mufoPHMqXEd2JlokmWk+vYK4Xa+ampxhHkOHrUKtPNKFSgeFQz9f49rRFaTAMxe+AlYT6SyjVi9
+	QLSBoSkQy0UlljL9WkT4Ucwvvh11mHVbdAG44vNzh01uCLDPV45U4Hw==
+X-Google-Smtp-Source: AGHT+IGpvS9NECCBBaVDmxAL/wsGDeZWDGx2zhrz3DD3pXcGgle4QeL0zP/OkJY10O9P4DBKPWx/bg==
+X-Received: by 2002:a05:690e:4303:b0:633:a260:14a1 with SMTP id 956f58d0204a3-6361a735958mr2736330d50.18.1758832099499;
+        Thu, 25 Sep 2025 13:28:19 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:70::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-76884f52fdbsm4344417b3.6.2025.09.25.13.28.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Sep 2025 13:28:19 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Mauricio Faria de Oliveira <mfo@igalia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Oscar Salvador <osalvador@suse.de>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-dev@igalia.com
+Subject: Re: [PATCH 1/3] mm/page_owner: add option 'print_handle' for 'show_stacks'
+Date: Thu, 25 Sep 2025 13:28:16 -0700
+Message-ID: <20250925202817.795114-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250924174023.261125-2-mfo@igalia.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/8] Fix stale IOTLB entries for kernel address space
-To: Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Jann Horn <jannh@google.com>, Vasant Hegde <vasant.hegde@amd.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Alistair Popple <apopple@nvidia.com>,
- Peter Zijlstra <peterz@infradead.org>, Uladzislau Rezki <urezki@gmail.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Andy Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>
-Cc: iommu@lists.linux.dev, security@kernel.org, x86@kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20250919054007.472493-1-baolu.lu@linux.intel.com>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20250919054007.472493-1-baolu.lu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4451A8000A
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: kwqxpr9exj56zyp8ye1d6b41tjk4mjf8
+X-Rspamd-Queue-Id: DAE501C0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ighpchixsppzu1x1oz4ed859iewosmew
-X-HE-Tag: 1758831854-623201
-X-HE-Meta: U2FsdGVkX19QUgM0QXoCpq510hybx0Lqb+ipMdYAe8amvCHgSZ9LmiaCMJx7Zp7FNhh2n94KNe30pS02BJqe21uWXY2X5YqHHwenUQyL9wxikDt1x/R32bVnym2SKedw2ZikDBlfCCuWCw68X4wVwtQb3ijHrmmedFaL5YIT7l5Vq3btaIpg3jdajRsLNPASEwwZVWJHN1u2fEfDsONK5Yi+gJo6viKq8iGjnl+kMWaHWcdPTGM52Q/Q0ATuXRtRytSPDSmWs8h0QDvMFHB0M0nman9Zv3a4M5Sqdl0gusZSAzKDuVWwYVyG+BQeej9OGjkBQY0HHcfHjYN67L6fGNsQdKT4wAqb5pkT2Ko/66Xf51VruPVqspHd5ZquxSRnZsLQoavT00Dd8dNoJIMe60dnGb8WNBEklrNjdLI8x0bJLaxJWLg7fhty50bncTRxnyqNM3/l8FG/E6sQtzfs4TUScMrPFveTfktEG9RDRHnEEm+7Z0l68oznQS9A8tWV9CnXy7u4jtc7ojYAEI1oOkOh9W99bZ+iyKgZkwF+NaFO8XflO9AemM//4m//Fc4q/daNP2ePuYObSR3B5wGSpC7KbDHqXgyadZmRP6g9iYc4QQ1p6GeU9dy36xTNWvh9QINnRor5tJ37vy5B/4Y6My+YBduvmJIlht4VyyecHmjLVQSLwCHqdKUI1eFsTE18dLhccXZRi+g+0w9dCKS8mLorMAiCa9t43mNz9DjJdrSS662gMTN3HuHEXyGPkPjcEsyWoIpkJa1oNDOFxNYWCixabxN5QrcIejYY9CsanP1oFLZKlYwUGqrHXf965DL0gX4a++4QSJKZIDpybr6atwRZGLKAZrYtNt+MAJvT15E1HtdoSmZ3cXahYawcTPA49BT3NgHFsnbePE8otVN/C4OIhr0fVJ0yFr6bF1fGbq/8Sw+NfXeqoiIAlWiCiMTnmg7d8sc0ofCYjupFosc
- cofYQ/CB
- HHpjtr6DR1/9OxJE8hNkBvVQoAhP88Tv6RnAdzinzvn3mQdK8sHbqOSdOL3NWtOqPiooCWcTu7JF0MXG+wHgcHH1gvlmOUZXdn/yEUoAwKRper3BmLKgDfu0eJlGsp/ImBxzYZtBc6MGS/63naU2ZTn6Jo9diQPUFRm3IJgoo6DyLhq/9INrOrdA6Qf003axZLERNPzNrhRnMw5Y=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1758832100-251110
+X-HE-Meta: U2FsdGVkX19yOG8XGC8lkyRxa0+fAHMJ1wrtegyO8LaBKrdcFhcONjWs9JuZczbLSX3ZJ7jvROQ2C1NA4iYa6Pg/QaWDRzr7dvCgVFduZpUFtzdF9lCH+/P/ESt5yvuH3/PfDUfrRa8bECZDb/eU2Nc85mqLMfECRNr5idMJrIF0PakTw2ks1Zc6FYQZQ97ypYoBaUqnSyVlsL5bO7/6c5TqZatUWfWJLAWa3uqloZoXUSjg6ia/MmskX8GYXQjhWCmItgr0/9lw39B70f+SdDAJvadK5yNxv6IrmkkZy9nnYtVCm6ShKnmvm3CF7CBso9AUrDkOWgvy0adg3OE4Dq1JYwJy8hOtmqEwt9CckIvSIW/f1FfwX5nuKtgOo6N7oaOAN+FQW782+30EM7mlO2+WBxnTYBe7sw58rN4hXHDyEcWMKmFYSYomkGr+vrr6DBeG41ALaJG9HyJisXJi/k8AoibbtLXX+onisrjQrbj1AUJxtkIBKJspsTSXnNCpmT1/+JSDp9ht0FmPt4PFSacsYE4SRitC+qundOLkGKgaXOP8qaRKDuzkvbu1uHNmG5yW+Jpq5OTWQqn6xOTunTzgkBVQUbtDQHBNFhaPYIFtinvxnhHThkiAESyX4C6zdM2oPBUjf8QcpU32+1/AZrd2doPz/mNXNlXILnJ3p/o4uHBhtRX1YTBM6z++AauNW/ycoovio64qjhjkM441EbcpSEDYamcp4YuYCZGfTXK5imTd6RFbaPz7GmAlNJrcIkTzvlbUVYtUE02g8dJ3sCAjzw17OfMfhJbr9L7zSQm5x65xZf+phL6Fuj1y16NtUmNIWiyGWeKQVW/egPAc2M62rsnb9RF+981/35ej+JS2fyeC/nQQyyIQRicQqZRxM1J30vauZZF+qU0Qfb5uv+R2eg1xAAR635flQMUQ8/cBITTdI/SzRqofLgi4ByWjTJ/i7UQ3udv/QwDXt2X
+ /cWSE41K
+ J4cJEztTqQJIHAocjbYVYpoVtbZC5ZCTOSxDgGllCy/gGAquJAbA5p4DRxYLdzfF3sd/71WARk4gUZPBieb79sMwFi401wCdIVrLd7tIb2w5VpScXD5poMsmjC8HwsrzebEoU2BtFUXgoSkX4RHzbHQprUOKCTBR/YstTASimpW4CU+C8Hk0A7RHhaq55yE7ravoqcbZJWAaq068J+mQPrfktCS9HuwG0ZJB3R7tQRV5a+H+5TVsdUAEBNtST2QJNWSDquUtkXNQiZEzMmevTkGfajQfnUIWCeksqrBMHqoby5/lFJLKRoacZx6nViLA0bmVyUl7tmBwMnQ2P86hubZP3+iE6Gnk2n03kPnDaF6G0eOFY2M2oVzBB4BgzT37dhsKlHqIls7bugf91xVQNt+GAU/+TfFrOTAnwugjlsDfDvWdycO6WMmMkZg1K0juvkFI3lHjNc/n7q16QCD7cdpPRHNcdDSyBVJR3enoXmQn6ZTwEUFlBeT1ip2JgkzUrcip0Ti9lKUAf3j6nx/cfAMnYbYvdr7UciIceTof4Ppg0fAkXB+Idj+OXyf8onB6ziUuHh6DVFQ78y/qpxHz1VINIPVbeNiJEmv8jmhtlR5I1MMygPPCz1uJPxduUawhL9LeDXzmUYETkfkc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -157,14 +127,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/18/25 22:39, Lu Baolu wrote:
-> This solution introduces a deferred freeing mechanism for kernel page
-> table pages, which provides a safe window to notify the IOMMU to
-> invalidate its caches before the page is reused.
+On Wed, 24 Sep 2025 14:40:21 -0300 Mauricio Faria de Oliveira <mfo@igalia.com> wrote:
 
-I think all the activity has died down and I everyone seems happy enough
-with how this looks. Right?
+> For monitoring the memory usage per stack trace, it is more efficient to
+> use the handle number as unique identifier of a stack trace than to, for
+> example, read/hash all stack traces to uniquely identify them everytime.
+> 
+> The handle number is a unique identifier for stack traces in stackdepot.
+> 
+> This patch adds the option 'print_handle' to print the handle number of
+> stack traces in 'show_stacks'.
 
-So is this something we should prod Andrew to take through the mm tree,
-or is it x86-specific enough it should go through tip?
+> @@ -887,6 +887,7 @@ static void *stack_next(struct seq_file *m, void *v, loff_t *ppos)
+>  }
+>  
+>  static unsigned long page_owner_pages_threshold;
+> +static bool page_owner_print_handle;
+
+Hi Mauricio,
+
+Quick nit -- If I understand your cover letter correctly, you want
+page_owner_print_handle to be false by default, should we initialize this
+to false?
+
+Have a great day!
+Joshua
+
+Sent using hkml (https://github.com/sjp38/hackermail)
 
