@@ -4,114 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19A5CCAC5A7
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 16:15:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF344CAC5B1
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 16:23:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 599B08E000B; Thu, 25 Sep 2025 12:15:07 -0400 (EDT)
+	id 2519B8E000D; Thu, 25 Sep 2025 12:23:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 571348E0001; Thu, 25 Sep 2025 12:15:07 -0400 (EDT)
+	id 2290A8E0001; Thu, 25 Sep 2025 12:23:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AE098E000B; Thu, 25 Sep 2025 12:15:07 -0400 (EDT)
+	id 118608E000D; Thu, 25 Sep 2025 12:23:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 377B08E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 12:15:07 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 90966160405
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 16:15:05 +0000 (UTC)
-X-FDA: 83928271770.27.7CFB211
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	by imf22.hostedemail.com (Postfix) with ESMTP id AACA0C000D
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 16:15:03 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="W5cx/4w8";
-	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EE6CC8E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 12:23:23 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C15EB58ED3
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 16:23:21 +0000 (UTC)
+X-FDA: 83928292602.12.0DCA93F
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7696C40017
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 16:23:18 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=liIKkcX5;
+	spf=pass (imf04.hostedemail.com: domain of shy828301@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=shy828301@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758816903;
+	s=arc-20220608; t=1758817398;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Wvr92HsSMV0G5ym3tjKs8WEbL98VD0E3AvAM53My1hg=;
-	b=N+zP2rr6cL2ac3LT7P1jVE0vOqqijlqZl8gDuShU7sR8CSBwgPY52bj0vXcQ+0IqDq2Keo
-	Pzam2esQf+yCt4mWpON7syKiPPMw8eNaFOsHvICQXG35Vxb50u7wbBDYJSij5qY27Fkl0I
-	2x8rOfQAgjpiPS9w+5/PcqYv+aM/wVU=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="W5cx/4w8";
-	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758816903; a=rsa-sha256;
+	bh=sVLfD6QI3aBalttz5ofGckCWcaUeaFqR+l9M9pjcrz8=;
+	b=67hJF6cJhAZj+psq4QQTsiNUQJixPkC+S6Dw3YfP86PosMN/QAk3t2qhQwqpbJSm//GQbr
+	SUayXv5Vf0Lk/YeOJOzl9w7iCrwCbiW8IUB1Et3JWH+fffA8a/Lfv2NfPFE7Ha6hHExqN3
+	SejhXky9vp+H3uCwpLMp1VoBk11Rxtc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758817398; a=rsa-sha256;
 	cv=none;
-	b=Tf3J9Q4opDKU332SGUfEO8xHUkYJbEWJCvgzH42N27RQtYiNzZypqzt8MLdwDqwPiyMdol
-	jmW5XqT92P0If3LdBtNUY/0odqzQCXp+JygXr4RAgxLTelYsxoNyX/20clOKXtaPleMJb8
-	Enhc9hO4GRrgyWaxcQ6Gy1v8QM0AXGY=
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4b78657a35aso1295051cf.0
-        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 09:15:03 -0700 (PDT)
+	b=L2Z1OlBmacJ2A9bia4lOIs9T3yw1sVuPC1kFkzOzL8MhBJcXfM581h7HiBBriNZJMsRFJ7
+	YNWls0tCWG5eXiQ1joTE3f1GaigOtxW43ZfoFxzC2ByOxIAfCcxt+RSUYwuHqIRj2laz8h
+	2KGGiR4/UC283JAYVTaHBqzMXNJaWHA=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=liIKkcX5;
+	spf=pass (imf04.hostedemail.com: domain of shy828301@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=shy828301@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-62fa8d732daso2215041a12.3
+        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 09:23:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758816903; x=1759421703; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1758817397; x=1759422197; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Wvr92HsSMV0G5ym3tjKs8WEbL98VD0E3AvAM53My1hg=;
-        b=W5cx/4w8n10p9dpkbK8L/Pk/3bVhgbQULe04cI+T8sgLp19kgLDP88vqQjL+9eiKq7
-         AqZq4BqsjdbJ0vsYMktvHRkxSd6iWi65shcrgAqVHZDA23W183HutPUfEjBmdFk/7sqx
-         +3N3Mvp6LfYLaznKBQuTNGF466VlITajIRfC4TGujTFU59uZ5NAad04LvIEcJ3vKfoGL
-         9ucSaj/qzJXCmigMQxrzEuwpVqm67tyCDOUsyItNg09RoWgZwwtr5u9MzvG4b77TI0uC
-         /pUs6czQZYtEyZdTUYSZIHW7HL+otMr5QV6SWpXM5MZZS7wDHWybnihieSo+K5NIb3hh
-         ISEA==
+        bh=sVLfD6QI3aBalttz5ofGckCWcaUeaFqR+l9M9pjcrz8=;
+        b=liIKkcX5OSeKfKdWAaU346tv9Bjshx4vrPjXJCcE6/09x8KwBLTEoxtzYIViBaFVLF
+         2y8zd4qWZ4xnWUjE0X1FJ2xvzR0UktM6xEKcPRh4IZZrGBKXTmqWOVCySyATCnLrKyBk
+         n2/gZwcOoKMgWmKFIwVW75RLG6mzIV27BscmMOloSkA0k0gt7FcmKW4aD/YJVqsLlYbM
+         Xk+YZB8pE0FJHvcrBgETbyNGNggkrgw97UkZ/r3tVCHajMqnwKcZlcmf0HwinYC3U0R7
+         OFqbA/Xd9I+HUV6Zg0E0gNG5aM2drDEqcBkUWQfPs4yv3HrjkFk1NkYuZUGkNVA77LjH
+         CxqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758816903; x=1759421703;
+        d=1e100.net; s=20230601; t=1758817397; x=1759422197;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Wvr92HsSMV0G5ym3tjKs8WEbL98VD0E3AvAM53My1hg=;
-        b=b5fZZpiuAmsQuCnPWvpZcPdt4TIAvlysiQRFZFI46o1EWhIE9egk9JVmdZcFEYejmH
-         4j2XjVTE1dL6cshQsRB1srjm7UZJ0gZkSXeKBkdwyJ5XW1Hc9982fZ3g/wZ/A4rJzqmM
-         FUJnKuvLLveLUcOG8I8355TyhFXrqsro7per6CpQ1Mhnky2Dv/3rtdziHcWoScItA6WK
-         /7Frv+U4QiOAsjL7drYc0vpaXjkIxh+FyHKVXjATHZ43MHdtNg6rrXYCV3bzXtz/3dQ6
-         9caDS4pX//6uCNOo4iMKbiACFHjChXNBFNaIMFcd/RFqaxHTnQeo+mrdlWTvlzfNTjhw
-         tTvw==
-X-Forwarded-Encrypted: i=1; AJvYcCWjkgsXfm5eqRmThX7hJ2E2z8DGJgE5tdFIhRign2YHf2NkIFTdcNMDcmUj2Mk+kR9eK1h8kM15Gw==@kvack.org
-X-Gm-Message-State: AOJu0YxGLnm9Hk1PIMJjDdcVHyIpWWVZDt0zjL/m+UkcaFqbmnHFg9pc
-	nLZmd6dwrE65l0BkuGsQfu8AXb2GsYjKf0TNgiCBl035yFEtNY/T7f9ROU2d5Z+tSASQ2qgNkTv
-	Dbx5kKct+HJo0vjyIzCOgePbQTFMa6zvioMDdSEkA
-X-Gm-Gg: ASbGncsCgccUoeyDd2jP0wYKn66KmiiyV4aMdvY9V2D0/walmKZSZ5uqj7oAfpU39J0
-	Axthq3DopiuTxaUsKYsu7vBaBlqly1WVgYkpzwp+WGXjNieruyhIGqOClioJZhayPlPuTIgUy5y
-	cZPmLl+u+Z8IG0DDODbpRtvi9MwhA9pugFy/0cGG9v7idE/RU797aUP0kJGBQN0I0k+FU6GlE4w
-	CBjoRFinEAbJjjKIVufn7xzFmDMO4dRaCHUucCGgWeb6vMeGZj31Kk=
-X-Google-Smtp-Source: AGHT+IEZX3AIsjneqU2jkzMxfJ1rwKeMkyXol2y5mWE/WbUduMbZkhlHGcC/mN/j9JEB5vlP4XKLW47PV44WdfJ9t1E=
-X-Received: by 2002:a05:622a:38c:b0:4b7:9b7a:1cfc with SMTP id
- d75a77b69052e-4da2d8fb31emr8186661cf.10.1758816901473; Thu, 25 Sep 2025
- 09:15:01 -0700 (PDT)
+        bh=sVLfD6QI3aBalttz5ofGckCWcaUeaFqR+l9M9pjcrz8=;
+        b=FgPUK1udInh9KK+QsmYSWndFpAplZpAxxOZX8mS1NCv+5o8OYTZ1PrQI1o4J4nlTWW
+         hlYmvVFBv2oKVzZa1knmXU2nL3gr2+Io9KfBeEshCb41we6QjQUtPwC2v6mX/qsDNcrY
+         s+Xn+r7HikrGVm8DXGK0yRp+JQKRdFIyjcQXmFuhthQDAdzrAGlC6R5twmXfeM6ZuTkX
+         WDhLptJm5JjFgflbwuUltM0Egy0bUL1f6yYf8KmLZafGdMhWbZIf3I/N0Z74ZNy8oXLM
+         0yfMyioVnU4D/OwRyfjcOshesBpXROSDhHfe5JXa24pdY7lls23SO3Nq+rxRjCpVELk+
+         Lm5A==
+X-Forwarded-Encrypted: i=1; AJvYcCWpnudW7bA1Du6oNhYDh5PCvLhk0rr7KrSaSRr4mXbpBAC/QWne+Chpj5MjlrmB9n5kS+pc3Op77Q==@kvack.org
+X-Gm-Message-State: AOJu0YzzTdRgVpl4+KNbyA/acV8/xvLWUqp3hnerjA5FPzn7xJMi/zx/
+	wQEnI5/og6o62NC/6JjXt3/nQ3m7giv7MVsRuytVLXbOdDTIloH7QruPjp1vuwc79Jv46Ud1OFH
+	WYEnPCfPMdhbTkiDvZZj0Pa4JyJAZEj8=
+X-Gm-Gg: ASbGnctgtXUjCCvlJfE9KuesEIzzdckQR8wO3onq5PQIwWMqWeVhT5gnt3JLyciEPDx
+	jC0QJVuOHPBxsgsLfoS9/n0G1Dp6MVmCOxSRjyH07LLMRiqr45Nmk4kJqAHDvjR26UjpafTjx6Z
+	lnJhquN1v87t7CKhMp1HSS17JykShgSHgmjsxDkelrYC+q3sDHDd56VE/tkU9lByBVNL0mFtbSb
+	/UwzkJyk/zqhA==
+X-Google-Smtp-Source: AGHT+IHrLfqKU+fL92X7D5u431cMJZPJyrtVkhiVpqdBaM41xpe5f3nevQqNwe3zgdGq42HMPJgytQhdodbZUNRWfwg=
+X-Received: by 2002:a17:907:961f:b0:b04:c7c5:499d with SMTP id
+ a640c23a62f3a-b34be7cef09mr433129366b.47.1758817396702; Thu, 25 Sep 2025
+ 09:23:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250910-slub-percpu-caches-v8-0-ca3099d8352c@suse.cz> <20250910-slub-percpu-caches-v8-7-ca3099d8352c@suse.cz>
-In-Reply-To: <20250910-slub-percpu-caches-v8-7-ca3099d8352c@suse.cz>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 25 Sep 2025 09:14:50 -0700
-X-Gm-Features: AS18NWAvEId5a1XW0xii0HqSmARldJg6moJt7e5uwfO2hVBiihb1I0PmhdfuWc8
-Message-ID: <CAJuCfpHmDxgFj+Jh9+qK1nwnnGWGBvPYEFrLSdooCUy5ODRboA@mail.gmail.com>
-Subject: Re: [PATCH v8 07/23] slab: skip percpu sheaves for remote object freeing
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, 
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, rcu@vger.kernel.org, 
-	maple-tree@lists.infradead.org
+References: <68d2c943.a70a0220.1b52b.02b3.GAE@google.com> <ce93b55c-75a7-4b4d-a68b-9d80baf1578b@redhat.com>
+ <DB0E39CD-36A9-4929-BCC6-33F27E387AEA@nvidia.com> <70522abd-c03a-43a9-a882-76f59f33404d@redhat.com>
+ <B0781266-D168-4DCB-BFCE-3EA01F43F184@nvidia.com> <cad74ef8-3543-4fc5-a175-8fc23a88776a@redhat.com>
+ <E82638DD-9E5D-4C69-AA0F-7DDC0E3D109B@nvidia.com> <fzfcprayhtwbyuauld5geudyzzrslcb3luaneejq4hyq2aqm3l@iwpn2n33gi3m>
+ <80D4F8CE-FCFF-44F9-8846-6098FAC76082@nvidia.com>
+In-Reply-To: <80D4F8CE-FCFF-44F9-8846-6098FAC76082@nvidia.com>
+From: Yang Shi <shy828301@gmail.com>
+Date: Thu, 25 Sep 2025 09:23:05 -0700
+X-Gm-Features: AS18NWDY4BleLREPHkOm-WtFq5BXfe1lid1VqVLM4gXE_Ot-5sNbySege7rDVV0
+Message-ID: <CAHbLzkrstjnEVUzz2==A2Z+CJToOgU6YU2MasdK49o-0-jW2yw@mail.gmail.com>
+Subject: Re: [syzbot] [mm?] WARNING in memory_failure
+To: Zi Yan <ziy@nvidia.com>
+Cc: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>, David Hildenbrand <david@redhat.com>, 
+	Luis Chamberlain <mcgrof@kernel.org>, 
+	syzbot <syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com>, 
+	akpm@linux-foundation.org, linmiaohe@huawei.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, nao.horiguchi@gmail.com, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: td7xq5zs158dx48zauay88m7ssc77eud
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7696C40017
+X-Stat-Signature: 7hwkbebg36n1ka9hbwwjtu6ddus4kfx9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AACA0C000D
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758816903-239552
-X-HE-Meta: U2FsdGVkX1/3cLHS7X2hfZbtrgTl+Ng5cfpR+N3136ZlE8l6PsyBBakZ2JpD/hINjs52gddWbBAf11q3IlvhaINxVqFSpzu0yy92+8LnALnj3A1ikZjPdE2ud/TEY9LBh1Gx9EKmYdk7wqPXp1GKOagQZw2I/wAmntUXlABIL3SayuzJgG6eTsu4Y8jx9NM2Posi6LHdyucL/iAPbMIFfI/O5PKjULGE8gr8WopaZH6XowQRHeOg0SP9vN7aSwfsuiuLXn+ZXTMA3ClMPz9OHIwsuwh4p8VGFs6tkfpE1uckya3cicCIp4uf2BVJJ1Ti2i1nK3pSDzuLKuul/sLmv50ANn5KqXfOsiEAyu+YVqQ9W7GTb2Aqj29bX+ZLSaOKiszlsmKsjqUZGoeHOdcfFZ4NRrRwvNrkprraf3KV4jNSVPzpWRbhZ1u4b9nlHXJoUnGmE5FQf6u1BsLgxTuFSWFb6GTzk4emz1GWhUgGeanVNbMirbtaKLNCvdD8nzKhP50/ZQozWsng0SvcuF/5T3gqFZOqHx3GVEmQev9lS/omBZ00VcYvX6wC75UjHqC3u0wQwTWzkxS/ruoanwghllmav8WcM5Y+4h9MW0OUPgUN/b8pz827mMNkeG1MQGLYjS4c97HpcWkdZIDgOwaloriCS5N9/AOB0Kp46Yzzu7SbtGx5OrWltXdSDHZE8QlNedfkwa2JykeqMJWqMpOe4n4mv9oUG6y8f6bcmBewoGWTXYZxgwVhNC3AktTHIuGtxZqQP5R8v8GspCDd1P0gApzCQndmr4w8pA1YEWtDE1f8pZ0xFwqlcXDw3jmxi7j+SJwkjvIOPmeXHGMu54WyyiTPd74H4wtgeFUdDpblVnBFCM8A2nB6czBcuMblXqvWpMsyAhfCj2uEb7QRqBGSnAxPfKrm2gmC2RJWvtKi/KCWwaPQesgxsXVbW4eR4LfzQ5YlZVMM0JpSbmiF1UV
- lNp+bH2d
- hDDs7o+y902L+8HzoMrfGABn1GECcg7zpoYwu7cqo80aix8y5huQ7z6Fa20PcJj0YPeniFRInkHOZm1aVZEvXoJegkQcwTGQ//UlR8jROlHdBiTCRu01NbUzV88IhR1No8HGY1W2PXgKmTzoscOnFeGP82x/dCKT1qP21zqeGRIHkNbRqglhBkXKwFwxxv9H30p6xTGhalArIzIc=
+X-HE-Tag: 1758817398-170321
+X-HE-Meta: U2FsdGVkX1/0OzOVESguq0VJVvYTNTNjSAzSz2jBt/vrrCZO9JqVat31YA84Nn2Q0KhGD1JsKtwxIa1DgOt5GsgjW/UppMUjYRsglDlmEnUd4GNkNXYZ/ly9KG7NFvBftdC8uc05SVm0gqQc0i+zwS82AwtcgUYrStRht7r0nteiCYokONnv6Nym17igVUZve75nHzsmiHCj6ftr7BuM2+omRiMEGD+CawlX2gXLZPDi2sqdu5a95/u+OME0/WAbB5WPbCMZJcG236AAHsanqkWrq/o7E8QJrzGfpfvJP8+JEjuX59rKcNa0OA0sLtcFstKSuYAO0wqwWxNbNiN0P4h/TYV7MG9+F0h43zbo0CR9aKu/X3XjI2vvVEvtqiBYR0QtxP+F+B5UQx2SZEoMolW2s9kNVLXelafIvjgbDlxqHb0OVqnzT1A1S0Zo0nii6XgdfQTmEeCVTx7cp8rCC4jVBRmlaiFCNy/OP/eAa+m81A07bXj7QyVLhGalaujZ5sICk0OY4UX9lo3cDK+IwmWsbxLt2bjZAyXDgNXG/zyKJh61/kjzBbRxZ/ForOR4yjPgH9M7SeLK8xLSUAIiwejrwPWFq1r25B7nA0ZMkuy0Wzfoq7TyzlHhibr9gPOW111GgO38483w6SHBoOgcsMxg0oyVp/KEJ3Qwnk078oBMCR1gITN8LhJgvXIlTCd1FNMco7I0cyanOJUV4S4JiaUGCJriY8jVcLM+7h4NTcnGv21CcvwbDkE396DhsmjPVtQB/zg5xlswW2MdkEVnbZeUhcHpUWZgHxHfwbPHN3+LRCAlanpIME61f8tvcVwtsfHXvXoHtaDHOHo8lLOQtZlrSAa8ZjZOR/WjpjBJgbAXgLr2PahtADceY3VuTIlx71IGrSs5pSi2f6dfSKlyaXw/0FkAYIgUiVYkSJrb6YV32Ogy7FXHhkE9WBs/2aPb0hN57n/9tVhMn82Ofai
+ ziJVm6ue
+ uuhOjc0cEpcym90qPVthHZVhnMUGufR/cQNxWBe7ZSyFRbcotB+ChfSYYggQPsvQapjFdbn//LA0NRSmRJH9jTwdLgBafQjZZhaJzuNleL3E18buOINiLsmdQ+U1gKnpdseAPuH10lqHpVLXAMjnhwA2yhTOjflDmFOZxvtseu2Qd97EwAmzME3RgpOBPuVLGC3hg0qfg8LLqICmtDZYhS7P+KVaoCAoFZK0276ggDmuW5ybBDDIIg9keYiWwPpLWC4T38CU4XguK5oPqWRVIUwWP4TzpjeGbdXVRD4od4KiRiWxraIEz6lKQFPdv1Rv10Io8rlN126C2ydTrFUE+hY0Z9unGvvC0+lREq9KNJiVFHC140gsERp2Sdnfctdst9gSrgwUSinkJTD2UNWrvzlznsducblcxK6qYyXMhWPvCZQQiSo8oBqIsUzi1i/PEqq9LSZFGr90sJnLwDmPQZm9Ovw41N84vJMZqzoHOKDyfsiNbpfQR8HJ+v0uVRnte9FRHr/fO/VIe3Ai5HQie8SCjxDY2NLG+IWrK094bo6saNwjLm5vLKte1Aw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,178 +123,219 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 10, 2025 at 1:01=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
-ote:
+On Thu, Sep 25, 2025 at 7:45=E2=80=AFAM Zi Yan <ziy@nvidia.com> wrote:
 >
-> Since we don't control the NUMA locality of objects in percpu sheaves,
-> allocations with node restrictions bypass them. Allocations without
-> restrictions may however still expect to get local objects with high
-> probability, and the introduction of sheaves can decrease it due to
-> freed object from a remote node ending up in percpu sheaves.
+> On 25 Sep 2025, at 8:02, Pankaj Raghav (Samsung) wrote:
 >
-> The fraction of such remote frees seems low (5% on an 8-node machine)
-> but it can be expected that some cache or workload specific corner cases
-> exist. We can either conclude that this is not a problem due to the low
-> fraction, or we can make remote frees bypass percpu sheaves and go
-> directly to their slabs. This will make the remote frees more expensive,
-> but if if's only a small fraction, most frees will still benefit from
+> >>>>
+> >>>> We might just need (a), since there is no caller of (b) in kernel, e=
+xcept
+> >>>> split_folio_to_order() is used for testing. There might be future us=
+es
+> >>>> when kernel wants to convert from THP to mTHP, but it seems that we =
+are
+> >>>> not there yet.
+> >>>>
+> >>>
+> >>> Even better, then maybe selected interfaces could just fail if the mi=
+n-order contradicts with the request to split to a non-larger (order-0) fol=
+io.
+> >>
+> >> Yep. Let=E2=80=99s hear what Luis and Pankaj will say about this.
+> >>
+> >>>
+> >>>>
+> >>>>
+> >>>> +Luis and Pankaj for their opinions on how LBS is going to use split=
+ folio
+> >>>> to any order.
+> >>>>
+> >>>> Hi Luis and Pankaj,
+> >>>>
+> >>>> It seems that bumping split folio order from 0 to mapping_min_folio_=
+order()
+> >>>> instead of simply failing the split folio call gives surprises to so=
+me
+> >>>> callers and causes issues like the one reported by this email. I can=
+not think
+> >>>> of any situation where failing a folio split does not work. If LBS c=
+ode
+> >>>> wants to split, it should supply mapping_min_folio_order(), right? D=
+oes
+> >>>> such caller exist?
+> >>>>
+> >
+> > I am not aware of any place in the LBS path where we supply the
+> > min_order. truncate_inode_partial_folio() calls try_folio_split(), whic=
+h
+> > takes care of splitting in min_order chunks. So we embedded the
+> > min_order in the MM functions that performs the split instead of the
+> > caller passing the min_order. Probably, that is why this problem is
+> > being exposed now where people are surprised by seeing a large folio
+> > even though they asked to split folios to order-0.
+> >
+> > As you concluded, we will not be breaking anything wrt LBS as we
+> > just refuse to split if it doesn't match the min_order. The only issue =
+I
+> > see is we might be exacerbating ENOMEM errors as we are not splitting a=
+s
+> > many folios with this change. But the solution for that is simple, add
+> > more RAM to the system ;)
+> >
+> > Just for clarity, are we talking about changing the behaviour just the
+> > try_to_split_thp_page() function or all the split functions in huge_mm.=
+h?
+>
+> I want to change all the split functions in huge_mm.h and provide
+> mapping_min_folio_order() to try_folio_split() in truncate_inode_partial_=
+folio().
+>
+> Something like below:
+>
+> 1. no split function will change the given order;
+> 2. __folio_split() will no longer give VM_WARN_ONCE when provided new_ord=
+er
+> is smaller than mapping_min_folio_order().
+>
+> In this way, for an LBS folio that cannot be split to order 0, split
+> functions will return -EINVAL to tell caller that the folio cannot
+> be split. The caller is supposed to handle the split failure.
 
-s/if's/it's
+Other than making folio split more reliable, it seems like to me this
+bug report shows memory failure doesn't handle LBS folio properly. For
+example, if the block size <=3D order-0 page size (this should be always
+true before LBS), memory failure should expect the large folio is
+split to order-0, then the poisoned order-0 page should be discarded
+if it is not dirty. The later access to the block will trigger a major
+fault.
+But with LBS, the block size may be greater than order-0 page size, so
+the large folio is actually backed by one single block, so memory
+failure should discard the whole large folio instead of one order-0
+page in the large folio. IOW, memory failure should expect to see
+large folio.
 
-> the lower overhead of percpu sheaves.
->
-> This patch thus makes remote object freeing bypass percpu sheaves,
-> including bulk freeing, and kfree_rcu() via the rcu_free sheaf. However
-> it's not intended to be 100% guarantee that percpu sheaves will only
-> contain local objects. The refill from slabs does not provide that
-> guarantee in the first place, and there might be cpu migrations
-> happening when we need to unlock the local_lock. Avoiding all that could
-> be possible but complicated so we can leave it for later investigation
-> whether it would be worth it. It can be expected that the more selective
-> freeing will itself prevent accumulation of remote objects in percpu
-> sheaves so any such violations would have only short-term effects.
->
-> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Thanks,
+Yang
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-
-> ---
->  mm/slab_common.c |  7 +++++--
->  mm/slub.c        | 42 ++++++++++++++++++++++++++++++++++++------
->  2 files changed, 41 insertions(+), 8 deletions(-)
 >
-> diff --git a/mm/slab_common.c b/mm/slab_common.c
-> index 005a4319c06a01d2b616a75396fcc43766a62ddb..b6601e0fe598e24bd8d456dce=
-4fc82c65b342bfd 100644
-> --- a/mm/slab_common.c
-> +++ b/mm/slab_common.c
-> @@ -1623,8 +1623,11 @@ static bool kfree_rcu_sheaf(void *obj)
+> WDYT?
 >
->         slab =3D folio_slab(folio);
->         s =3D slab->slab_cache;
-> -       if (s->cpu_sheaves)
-> -               return __kfree_rcu_sheaf(s, obj);
-> +       if (s->cpu_sheaves) {
-> +               if (likely(!IS_ENABLED(CONFIG_NUMA) ||
-> +                          slab_nid(slab) =3D=3D numa_mem_id()))
-> +                       return __kfree_rcu_sheaf(s, obj);
-> +       }
->
->         return false;
+> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> index f327d62fc985..e15c3ca07e33 100644
+> --- a/include/linux/huge_mm.h
+> +++ b/include/linux/huge_mm.h
+> @@ -387,34 +387,16 @@ int folio_split(struct folio *folio, unsigned int n=
+ew_order, struct page *page,
+>   * Return: 0: split is successful, otherwise split failed.
+>   */
+>  static inline int try_folio_split(struct folio *folio, struct page *page=
+,
+> -               struct list_head *list)
+> +               struct list_head *list, unsigned int order)
+>  {
+> -       int ret =3D min_order_for_split(folio);
+> -
+> -       if (ret < 0)
+> -               return ret;
+> -
+> -       if (!non_uniform_split_supported(folio, 0, false))
+> +       if (!non_uniform_split_supported(folio, order, false))
+>                 return split_huge_page_to_list_to_order(&folio->page, lis=
+t,
+> -                               ret);
+> -       return folio_split(folio, ret, page, list);
+> +                               order);
+> +       return folio_split(folio, order, page, list);
 >  }
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 35274ce4e709c9da7ac8f9006c824f28709e923d..9699d048b2cd08ee75c4cc3d1=
-e460868704520b1 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -472,6 +472,7 @@ struct slab_sheaf {
->         };
->         struct kmem_cache *cache;
->         unsigned int size;
-> +       int node; /* only used for rcu_sheaf */
->         void *objects[];
->  };
+>  static inline int split_huge_page(struct page *page)
+>  {
+> -       struct folio *folio =3D page_folio(page);
+> -       int ret =3D min_order_for_split(folio);
+> -
+> -       if (ret < 0)
+> -               return ret;
+> -
+> -       /*
+> -        * split_huge_page() locks the page before splitting and
+> -        * expects the same page that has been split to be locked when
+> -        * returned. split_folio(page_folio(page)) cannot be used here
+> -        * because it converts the page to folio and passes the head
+> -        * page to be split.
+> -        */
+> -       return split_huge_page_to_list_to_order(page, NULL, ret);
+> +       return split_huge_page_to_list_to_order(page, NULL, 0);
+>  }
+>  void deferred_split_folio(struct folio *folio, bool partially_mapped);
 >
-> @@ -5828,7 +5829,7 @@ static void rcu_free_sheaf(struct rcu_head *head)
->          */
->         __rcu_free_sheaf_prepare(s, sheaf);
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 5acca24bbabb..faf5da459a4c 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3653,8 +3653,6 @@ static int __folio_split(struct folio *folio, unsig=
+ned int new_order,
 >
-> -       barn =3D get_node(s, numa_mem_id())->barn;
-> +       barn =3D get_node(s, sheaf->node)->barn;
->
->         /* due to slab_free_hook() */
->         if (unlikely(sheaf->size =3D=3D 0))
-> @@ -5914,10 +5915,12 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void=
- *obj)
->
->         rcu_sheaf->objects[rcu_sheaf->size++] =3D obj;
->
-> -       if (likely(rcu_sheaf->size < s->sheaf_capacity))
-> +       if (likely(rcu_sheaf->size < s->sheaf_capacity)) {
->                 rcu_sheaf =3D NULL;
-> -       else
-> +       } else {
->                 pcs->rcu_free =3D NULL;
-> +               rcu_sheaf->node =3D numa_mem_id();
-> +       }
->
->         local_unlock(&s->cpu_sheaves->lock);
->
-> @@ -5944,7 +5947,11 @@ static void free_to_pcs_bulk(struct kmem_cache *s,=
- size_t size, void **p)
->         bool init =3D slab_want_init_on_free(s);
->         unsigned int batch, i =3D 0;
->         struct node_barn *barn;
-> +       void *remote_objects[PCS_BATCH_MAX];
-> +       unsigned int remote_nr =3D 0;
-> +       int node =3D numa_mem_id();
->
-> +next_remote_batch:
->         while (i < size) {
->                 struct slab *slab =3D virt_to_slab(p[i]);
->
-> @@ -5954,7 +5961,15 @@ static void free_to_pcs_bulk(struct kmem_cache *s,=
- size_t size, void **p)
->                 if (unlikely(!slab_free_hook(s, p[i], init, false))) {
->                         p[i] =3D p[--size];
->                         if (!size)
-> -                               return;
-> +                               goto flush_remote;
-> +                       continue;
-> +               }
-> +
-> +               if (unlikely(IS_ENABLED(CONFIG_NUMA) && slab_nid(slab) !=
-=3D node)) {
-> +                       remote_objects[remote_nr] =3D p[i];
-> +                       p[i] =3D p[--size];
-> +                       if (++remote_nr >=3D PCS_BATCH_MAX)
-> +                               goto flush_remote;
->                         continue;
+>                 min_order =3D mapping_min_folio_order(folio->mapping);
+>                 if (new_order < min_order) {
+> -                       VM_WARN_ONCE(1, "Cannot split mapped folio below =
+min-order: %u",
+> -                                    min_order);
+>                         ret =3D -EINVAL;
+>                         goto out;
 >                 }
+> @@ -3986,11 +3984,6 @@ int min_order_for_split(struct folio *folio)
 >
-> @@ -6024,6 +6039,15 @@ static void free_to_pcs_bulk(struct kmem_cache *s,=
- size_t size, void **p)
->          */
->  fallback:
->         __kmem_cache_free_bulk(s, size, p);
-> +
-> +flush_remote:
-> +       if (remote_nr) {
-> +               __kmem_cache_free_bulk(s, remote_nr, &remote_objects[0]);
-> +               if (i < size) {
-> +                       remote_nr =3D 0;
-> +                       goto next_remote_batch;
-> +               }
-> +       }
+>  int split_folio_to_list(struct folio *folio, struct list_head *list)
+>  {
+> -       int ret =3D min_order_for_split(folio);
+> -
+> -       if (ret < 0)
+> -               return ret;
+> -
+>         return split_huge_page_to_list_to_order(&folio->page, list, ret);
 >  }
 >
->  #ifndef CONFIG_SLUB_TINY
-> @@ -6115,8 +6139,14 @@ void slab_free(struct kmem_cache *s, struct slab *=
-slab, void *object,
->         if (unlikely(!slab_free_hook(s, object, slab_want_init_on_free(s)=
-, false)))
->                 return;
+> diff --git a/mm/truncate.c b/mm/truncate.c
+> index 91eb92a5ce4f..1c15149ae8e9 100644
+> --- a/mm/truncate.c
+> +++ b/mm/truncate.c
+> @@ -194,6 +194,7 @@ bool truncate_inode_partial_folio(struct folio *folio=
+, loff_t start, loff_t end)
+>         size_t size =3D folio_size(folio);
+>         unsigned int offset, length;
+>         struct page *split_at, *split_at2;
+> +       unsigned int min_order;
 >
-> -       if (!s->cpu_sheaves || !free_to_pcs(s, object))
-> -               do_slab_free(s, slab, object, object, 1, addr);
-> +       if (s->cpu_sheaves && likely(!IS_ENABLED(CONFIG_NUMA) ||
-> +                                    slab_nid(slab) =3D=3D numa_mem_id())=
-) {
-> +               if (likely(free_to_pcs(s, object))) {
-
-nit: no need for curly braces here.
-
-> +                       return;
-> +               }
-> +       }
-> +
-> +       do_slab_free(s, slab, object, object, 1, addr);
->  }
+>         if (pos < start)
+>                 offset =3D start - pos;
+> @@ -223,8 +224,9 @@ bool truncate_inode_partial_folio(struct folio *folio=
+, loff_t start, loff_t end)
+>         if (!folio_test_large(folio))
+>                 return true;
 >
->  #ifdef CONFIG_MEMCG
+> +       min_order =3D mapping_min_folio_order(folio->mapping);
+>         split_at =3D folio_page(folio, PAGE_ALIGN_DOWN(offset) / PAGE_SIZ=
+E);
+> -       if (!try_folio_split(folio, split_at, NULL)) {
+> +       if (!try_folio_split(folio, split_at, NULL, min_order)) {
+>                 /*
+>                  * try to split at offset + length to make sure folios wi=
+thin
+>                  * the range can be dropped, especially to avoid memory w=
+aste
+> @@ -254,7 +256,7 @@ bool truncate_inode_partial_folio(struct folio *folio=
+, loff_t start, loff_t end)
+>                  */
+>                 if (folio_test_large(folio2) &&
+>                     folio2->mapping =3D=3D folio->mapping)
+> -                       try_folio_split(folio2, split_at2, NULL);
+> +                       try_folio_split(folio2, split_at2, NULL, min_orde=
+r);
 >
-> --
-> 2.51.0
+>                 folio_unlock(folio2);
+>  out:
+>
+>
+> Best Regards,
+> Yan, Zi
 >
 
