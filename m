@@ -4,103 +4,216 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A89DCAC5A7
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 15:24:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A39EBCAC5A7
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 15:27:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5743B8E000A; Thu, 25 Sep 2025 11:24:39 -0400 (EDT)
+	id EF15C8E0006; Thu, 25 Sep 2025 11:27:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 524278E0003; Thu, 25 Sep 2025 11:24:39 -0400 (EDT)
+	id EA2098E0003; Thu, 25 Sep 2025 11:27:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 412C28E000A; Thu, 25 Sep 2025 11:24:39 -0400 (EDT)
+	id D42608E0006; Thu, 25 Sep 2025 11:27:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 327958E0003
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 11:24:39 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CCA1986CAC
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 15:24:38 +0000 (UTC)
-X-FDA: 83928144636.17.22416E8
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6E0144000A
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 15:24:36 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758813877;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B9B698E0003
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 11:27:53 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 728291DF839
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 15:27:53 +0000 (UTC)
+X-FDA: 83928152826.27.0A7E9C0
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012032.outbound.protection.outlook.com [52.101.48.32])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 8332E120008
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 15:27:50 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=AjstX7gf;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf29.hostedemail.com: domain of ziy@nvidia.com designates 52.101.48.32 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758814070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jqkbb9J1eTg4e85EdHWQQmOla5K8ExohMtRGRdii/OE=;
-	b=HrsbQ20fsUcEu3XXguYt6sdmgu2LhlfyNaZzt3yPDd5w0m1b0Pdr7TwNQq8rl/opbUpxdd
-	MNHgu0jb5P9XGv+aoBsPIhzFjhouOTkuu85A57Lco402JSpCBAL7Ywckh8rbPBY6qRaczl
-	Oat09BIv+VRRysp3ARjwL06woO9YiKI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758813877; a=rsa-sha256;
-	cv=none;
-	b=CT+a0+jyRV1brwQ9nSPiSu8YELV61ASHM5BwMw81c8Um39QEucpCCy5/bZpJP6VLERrPRC
-	wnpq+6Wl/+3HMKErKERK7N6i2nFwj2T5vKnF4xWA+guvHSEkwTiQ31bEnKWfZL8vuOfBxR
-	qkWlFyZagbkU7nyVVV9JmPaqhqese9g=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cXcnx1bPbz6L5pY;
-	Thu, 25 Sep 2025 23:19:33 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1D1D71400CB;
-	Thu, 25 Sep 2025 23:24:31 +0800 (CST)
-Received: from localhost (10.47.28.112) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 25 Sep
- 2025 16:24:29 +0100
-Date: Thu, 25 Sep 2025 16:24:26 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Gregory Price <gourry@gourry.net>
-CC: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>, Wei Xu
-	<weixugc@google.com>, David Rientjes <rientjes@google.com>, Matthew Wilcox
-	<willy@infradead.org>, Bharata B Rao <bharata@amd.com>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<dave.hansen@intel.com>, <hannes@cmpxchg.org>, <mgorman@techsingularity.net>,
-	<mingo@redhat.com>, <peterz@infradead.org>, <raghavendra.kt@amd.com>,
-	<riel@surriel.com>, <sj@kernel.org>, <ying.huang@linux.alibaba.com>,
-	<ziy@nvidia.com>, <dave@stgolabs.net>, <nifan.cxl@gmail.com>,
-	<xuezhengchu@huawei.com>, <akpm@linux-foundation.org>, <david@redhat.com>,
-	<byungchul@sk.com>, <kinseyho@google.com>, <joshua.hahnjy@gmail.com>,
-	<yuanchu@google.com>, <balbirs@nvidia.com>, <alok.rathore@samsung.com>,
-	<yiannis@zptcorp.com>, "Adam Manzanares" <a.manzanares@samsung.com>
-Subject: Re: [RFC PATCH v2 0/8] mm: Hot page tracking and promotion
- infrastructure
-Message-ID: <20250925162426.00007474@huawei.com>
-In-Reply-To: <aNVbC2o8WlYKjEfL@gourry-fedora-PF4VCD3F>
-References: <20250910144653.212066-1-bharata@amd.com>
-	<aMGbpDJhOx7wHqpo@casper.infradead.org>
-	<aMGg9AOaCWfxDfqX@gourry-fedora-PF4VCD3F>
-	<7e3e7327-9402-bb04-982e-0fb9419d1146@google.com>
-	<CAAPL-u-d6taxKZuhTe=T-0i2gdoDYSSqOeSVi3JmFt_dDbU4cQ@mail.gmail.com>
-	<20250917174941.000061d3@huawei.com>
-	<5A7E0646-0324-4463-8D93-A1105C715EB3@gmail.com>
-	<20250925160058.00002645@huawei.com>
-	<aNVbC2o8WlYKjEfL@gourry-fedora-PF4VCD3F>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=msBaqe8V9S5Lx45j7lw6tGBteG9ZpwVzb4/oMm2edlc=;
+	b=dPzNowmcLtftjyktV6uJgmuhkmBg6czZD3bxstXgWAWtfksbdFyyIc8TXLbRqHID0J4X6E
+	Wz06xp9CVEC+L/zc+UxxcY53KkS3+AuonsnZc/HvtJ4aEsQL2/X2bP+1ROmPxU7sd+BNL8
+	15FwhJarA/8IknsRjtpoG+mWeIubTbg=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758814070; a=rsa-sha256;
+	cv=pass;
+	b=E/lf5i7UeSyWL9FhErvp4sY/52S28CD2FqWfXrGJfCjls9IoGxo9hQ4ClJUjXA/AbX40qd
+	ETFHqfRBABzwqCvqLuq+AxN4AtEXbdFPwWzRiRecZktjyrRTtbSqo+nRiyvLR7w8Sn31yR
+	687hUIXj1iA7F9aV2/IQlViuSzu7N8c=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=AjstX7gf;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf29.hostedemail.com: domain of ziy@nvidia.com designates 52.101.48.32 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lLZDtCKIGVU3p8Yw/u3+lu/07RyReBLePNqjYovx9m/HBToeV+mS+fV+Pog30+oMXam/HNt1zxkipgEpxwiYzdMCQrtb/Rfrchk1QnjqIt5Pb1WdPdkYgZMviPArOad2C+icSUF5iap+dJI06xJXiBP5pGIuY3hQsvr+i2+uRSOcu1GKSzPYnKUYk1C88B0ZDCjize5q2+aZxbhsg/BEGL8DWIsgh0i/fX9DKfH7hYKX6M2yUtLzhSFJnC1Fs6GA1NzCtE3vquh0cK2BI5lTs+ZSxSKPqPgZ1cedBkMSx40w7dPlqfggomLyYLp/VzAocjIyzLzci17nvCivb53uHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=msBaqe8V9S5Lx45j7lw6tGBteG9ZpwVzb4/oMm2edlc=;
+ b=Fp3LxsqdIMbV4El8cJpVWMYO6+9oVn/hdcWK9H2CNmE5U2h6d1f0ft6NrHOgvhUyVv9ne4Xdtl4NpJGnHJJ4eS/PC8D3ZqGJH3IAVcZuzC0rNHfMS3D9yaSDdrScT8Jwo0eduACIGDzlZNJgk9q/QudS/LwFzelB/vkRwNTj9fl5+VeyYNOcJ+Qcwt2vRVTwJo6wRNl/4VQUD3YCz1os5inJ1Tc+XnKt3JBdifKo/3Svib0lB7pubnGb7mWak+x6mMZheLKYpLtaJvn4e+91VXWNBvkQN4p1Mcwf4+hPfpb1BoQfkun1T+OX8BZU0LUBFcrM63imP8vwAN3rve1fuA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=msBaqe8V9S5Lx45j7lw6tGBteG9ZpwVzb4/oMm2edlc=;
+ b=AjstX7gf9D5YIofMFOtSe9LW/A3jIhBKUBDMeSd0n/Txg7FvrqfoWBKrowUupRxZ7kXjhQcriDv6ey+jjIW8jVDZTe/KtPFuzV4nOp3QHStLYa4riIeIRMBOh4RM9QNUAMrmTMXazBrLAZ6JClVKW63G5hEMdGoCXRvN+f0tveT1BJcz9/8Un7CV5Bvujd3ZZHeNl174Ndguw7kJTVyrpu+iThwnRKiwFynY/EaY6WzcZFV5oUx+BAS0OroJOCs3jW5DvfDek7LZtYl2V0CmJ2kutRh0TU/xyW/41sJ+Jt3g0O0536xcoTsHS9p73RxFaLTZ1EVozPHlmj09dt5Lsw==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ MW4PR12MB7240.namprd12.prod.outlook.com (2603:10b6:303:226::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.10; Thu, 25 Sep
+ 2025 15:27:42 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9160.010; Thu, 25 Sep 2025
+ 15:27:42 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Alistair Popple <apopple@nvidia.com>
+Cc: David Hildenbrand <david@redhat.com>, Balbir Singh <balbirs@nvidia.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, damon@lists.linux.dev,
+ dri-devel@lists.freedesktop.org, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
+ Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
+ =?utf-8?q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>
+Subject: Re: [v6 01/15] mm/zone_device: support large zone device private
+ folios
+Date: Thu, 25 Sep 2025 11:27:38 -0400
+X-Mailer: MailMate (2.0r6272)
+Message-ID: <7E859D31-9C00-4B08-84C8-2EC34D2B06FE@nvidia.com>
+In-Reply-To: <tz2rrz626f7667i2wtwb4pegqm4ga7sr2xfpzipy6y5qchxycb@acx2unx27zsi>
+References: <20250916122128.2098535-1-balbirs@nvidia.com>
+ <20250916122128.2098535-2-balbirs@nvidia.com>
+ <882D81FA-DA40-4FF9-8192-166DBE1709AF@nvidia.com>
+ <f026c5a1-ec51-4fa5-bc58-c2d690f9248c@nvidia.com>
+ <87F52459-85DC-49C3-9720-819FAA0D1602@nvidia.com>
+ <891b7840-3cde-49d0-bdde-8945e9767627@nvidia.com>
+ <c7a2ad6e-68cb-4689-b72e-6e7ebfcf5e64@redhat.com>
+ <4534DB6E-FF66-4412-B843-FB9BC5E52618@nvidia.com>
+ <tz2rrz626f7667i2wtwb4pegqm4ga7sr2xfpzipy6y5qchxycb@acx2unx27zsi>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: BN9P221CA0003.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:408:10a::25) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.28.112]
-X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
- dubpeml100005.china.huawei.com (7.214.146.113)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6E0144000A
-X-Stat-Signature: efgq5fs6x8nycohkiinem5beh51bz8iq
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|MW4PR12MB7240:EE_
+X-MS-Office365-Filtering-Correlation-Id: 61e8b91e-1a8d-4175-38bf-08ddfc481182
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?U1BkT05WT0MySjdjYmJkN0JUWWRoMnF1RFFGanlQOXVlQXFRVnJmOWxSQ0k0?=
+ =?utf-8?B?WnNoQ0luYUJLeXFIRkJ4aWVSSDJTUHZEN0JHZWZneFJKWkpkK3JSWFlKOGNp?=
+ =?utf-8?B?anNVQmZMVStpdjJacmJrbUlXQ1lZL0hvTERFbjhOOTl0Q0NYU3VWMkl0eE4r?=
+ =?utf-8?B?emczUU95UW12M29XU0xkamJHQUlkM2QwSldBcnJqSFd1U2I3TzZCclZzMUZl?=
+ =?utf-8?B?OUkwdDdWbGxVRDJKZ3VKZWoxWERSb3ZabG9BZVhpMFUwTW1ZT0VsV2NNNWJZ?=
+ =?utf-8?B?ZmYrVkdsYzl0VUNUb3ZVVkR5Z1VtRHdNYjZFcWdiMjdTOHFkdG1GbENWYTZI?=
+ =?utf-8?B?VXRQdklFSGlJMytjbFovK2lybXlSWTB3Yno0TFJYSHA1Z3RjaCtFeUxESE9P?=
+ =?utf-8?B?MFVTOFBkcUZrRTJ1TTdxQVBNd21mNkFvSTdPNnVpa3M4TWg2N1NzUm9MQ29y?=
+ =?utf-8?B?L1R4UWVhT000OFBvWnlOaktma1JkbUJJZWRoK0V6L1RacmVBNmhBZ1RMZVlx?=
+ =?utf-8?B?VUp3dkxlQ0M2WWVNUkRIR2p0RHRxdStUV25PZ25sNnNBcytkdnFxQVhXVVJK?=
+ =?utf-8?B?a1M3M0FEMzQ5WVkycGZtUWdJclZzNENGRVdYZzRWbDIwNVRuS1ZEU2FsRmZp?=
+ =?utf-8?B?c1VZd0VPbnl3dVNLcnJHY1V2S2xqSERwRTNNMEJ2cGJpM0JkYU1QTm1CTHQw?=
+ =?utf-8?B?RlZOdVhsM1VlVjYzcE9OTkJ0cklpRkdsZ1lPQktMbHh2V3F2by9tZXgwbHp2?=
+ =?utf-8?B?aFlMc2tVTHdRMUhrdXRkYW1Pbm00WDJaNlZvYXRleGlvN3FVMVdUSzc5bkw4?=
+ =?utf-8?B?b0FWc3lqNXFEY2UxTkNQUDdWR1l0dHhVYVFsLzRiaWt6Z3B5NG9XK3d1WCt0?=
+ =?utf-8?B?alNCWTREQ3RnOFRlWmpxMzRQT2pJNVB3b3FRWWJEdVptT0Q5ZlRMN3pHLzdw?=
+ =?utf-8?B?d3hrclN4Umx5a05DRTcxd1FMVnlIOGwzbEE5M0V5djViM0l1TUpLNUR3WU1P?=
+ =?utf-8?B?SnBOUE1lVjBXQloxaHdBUWt3TmVFcmFpamZjazFqSmtZczNPNGhON3VOa1Fm?=
+ =?utf-8?B?Y2ZqcFdlV1A4K3JuSU5MQU5GOHJqOFRubFRsU1ZuUENWUno3TW12QksxbEhM?=
+ =?utf-8?B?dzlGTXZOT0NadEpTWXRJaDdRb09DcEZnSGNwajhqRW9rNFZWWjFnMVlZZ1dw?=
+ =?utf-8?B?Und3MFlTRzFZbE5vNllBUG1manc1ZGxET1NqcjVrTFBGWnlGRERzSUg0Tk94?=
+ =?utf-8?B?c3lZM25XUUZYYmFqU05jSzlnbmExdnZ4RVFSVTBiQUxaOERPYjVGU0tHUWF2?=
+ =?utf-8?B?M1QvYXNtaFEzYW1PZ2pzN21LQnF5bCtPTUl5Y05MdjN0eDd3bVRnMlNxaTJD?=
+ =?utf-8?B?NWpDaFVVaXJNYkYydUI5SU9IRFZyUlNLYnBSd0p2QVAxNTNEWEwxVnNvTFFH?=
+ =?utf-8?B?WGppUHNOMlp2dmh2b2p0TXV5R1htRDJNaVRlOEJscXI5UEc3c09uZ2txZlpL?=
+ =?utf-8?B?N05wMHpBZlQ4OVYrQm84VStkR21FMTVxV2VYR01SZC9NR2tQcXVqRmJIK0Za?=
+ =?utf-8?B?UFBYdmJscVNHaEVScDUrSmdQbmwyUGl2N2wyL1BkL0ljVjVrTW5tNytNSlpo?=
+ =?utf-8?B?V1kvL3NiWkoxZjk3YWZJT2h6djZXNUNkQWRGWDlLY0ZVZkhMRklGVCtSM3Ni?=
+ =?utf-8?B?R3J1T0hMY1FiU0habjlyUjVldHBLTDZXL0ZmaWRoS2cxL3BSVjlpdVJIbnh2?=
+ =?utf-8?B?eDlIeUhhaHYreUFxYVU4NnZMQTBzQUJUazdNZDlvc1M4SDlLQkVETW9ZUFBU?=
+ =?utf-8?B?QUZSTlZUcUJ6QmdodlhNaHgwMXNBeUZlY1pVNjNmL09xd3A3UWhQUnExcUZI?=
+ =?utf-8?B?aWJzZ3dGNTNObDJFaWVyMTFSQ2htZGZtYlpMeUtRQnpTS1p3QzErNFRmZTQv?=
+ =?utf-8?Q?fs/ks6HOwto=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MnNXTitZa3F6azhaL205dVU2MG9JNHUwSlJGZ2tNTzE3bkRSRjY2TTMzb0VY?=
+ =?utf-8?B?YzFNV2pPQmdmVFRNNmJ1TWpvWWFHbWNyVld1TW01eVJuU2JIRldTdjlVNDBF?=
+ =?utf-8?B?Qnl5TDBhUnJRZ0t4OW9nelhBTll1VE93V1QvVTdkemN6RnZYblNadTU0a0Zx?=
+ =?utf-8?B?YklhN0pCSGVpQ25PSXZ5MXh0TEVWU3JQM1JGVDJkbnY4cjlnTVMxek56M2xt?=
+ =?utf-8?B?eVN6Yk1HTkcxcVlLeWxOSkF1ejc0eU5ianJMNmNIMmVYc1NrNmJQS2oyMkRn?=
+ =?utf-8?B?MWhSUnVkTmxWZGFTR0tOaHhGYXZhV2JQNDVQOE5MUEdvYTZhbzlCZEtiQjIx?=
+ =?utf-8?B?djdUNFFZSEJTaG1pRUlaSjFYWE9NL2t2SGZmY1Q2T29JN3dmNmhvVzFjSFFI?=
+ =?utf-8?B?NEhqNmpaVTdzZm9oRVQ5WVJhRHZRTmd2WlNLVndQTFNuMjhSMXhudHlwK05M?=
+ =?utf-8?B?MHp6UDlQRjFQWlM3QUFLeXdTOG84VlllZVlJNWFVSWd6bVFZS05WdHlOTnFa?=
+ =?utf-8?B?Zm84dHo0NFVtemlnT211b2Ixd3Voa01NS0x4enJuY25vTkxLV0hwTUZEM3JD?=
+ =?utf-8?B?ejQ5U3JYY2ducEpadDJJUjE0OUEwWFVPUkZaNU9JcnJuSWRpUjJYSFNRbmtD?=
+ =?utf-8?B?Y1U0cGVMbFkvZVlsdlRLTWJsVFU0Y1RBSDVmLzlCc1REWTRhWm9wdnJnWElD?=
+ =?utf-8?B?eWhsQTZmQzdXcCszUWs5WXZEeFdGaW5zSEE5cjVOMXEvZlV4d0h3VEYrVmNy?=
+ =?utf-8?B?cUhVSDdnQ1UzcjlCeCtyWGtnMjdlS05EVGNQUm15NnRWdUlRK2lWdGUxWWFK?=
+ =?utf-8?B?THV4d3poVUF5Nm56eGhzZWdLQ2xWV3dXSDhkcmFhTHo3OTR5Z3lPN296RWda?=
+ =?utf-8?B?VUZzZE5WbFBSYmZKQzc5emJvS1YxTitjRklNSGdUMmphZGc3L2FzQk43OTRP?=
+ =?utf-8?B?b1p4dXhJRjFoQTdCRFVDZWttWUZBblIzUWhUWnNjbk13ZHFVSHZPanZBTkVF?=
+ =?utf-8?B?WUZpTkdmcGNVMC80Z3E0ZVhQNDJPN2RSemVCbjJZSUo3eVYzczh0ME5jMyto?=
+ =?utf-8?B?Mm5KTG9HODlCbno5Qy83YVBjVWRNeXRML0tyRjB6cGVLOEJxS1pPTHpyYVd0?=
+ =?utf-8?B?aHFWdmhwVVpqalllZ0xaVnhQV1lteHBLdDNYVWt6V1JyYzJsUGJlbXM0Yzlr?=
+ =?utf-8?B?akFETDFFOE81eWYvVGhTRnZTU0xNUVlYTVo5U245S0pGaTFYTUN1YlBjQlFH?=
+ =?utf-8?B?U3NhWFVBMmlhTjZaRVh1Nm1rdVFxTDNKREZJMVE3VjZEd2xlVWNKWVZscmFL?=
+ =?utf-8?B?eWNrQmpEb0lYSUNneW1tTUQ3eTBnRWt2RnJYR2hzMlpyS3l0Qm9wbVR6MER6?=
+ =?utf-8?B?YmlvM3AwM3h3Q0tjbTZUSy8rU2Y0YXNndDNjdFVVczZ0d2xHQnRIejFkSU8x?=
+ =?utf-8?B?TkVjWWdYQW9XQjZlLzR5eWRxd0dnWWZvTVF1akxvY05zL0tZSzQwOGpkZG0x?=
+ =?utf-8?B?aTYxN2QzU2VKOXV1QVBsdkNibjduYk90blZNbU9xdS90Z2pGRFErMTM2U0tr?=
+ =?utf-8?B?bzN4ektsTVNrdWtxVXRVQ2dXNno3MTVPNVRrVmJobkUySVVMNFZNYUg3RFBZ?=
+ =?utf-8?B?SFNaOG5BdmFyeUlxaFFWM0psRDNPR2JDc1JXSmxUNEtNbm94d2hxSWczWXht?=
+ =?utf-8?B?WHREVGhvU2JIK3BFUzI3Wks3c1JleU9oN3RQTEN2M2VSS3lnNGNlSG1XWi9m?=
+ =?utf-8?B?SnBwY2tnaUlmUzZyRHR2M3J5YVZpSjdtQ2VTZExkWnVkU0hOMU1hSmg1b3lW?=
+ =?utf-8?B?R0NMVHV5ZE5wbERXbzdqQXBWR0VZV0xzSEZ3MEFCRit5emhUQS9Na3hEdkFp?=
+ =?utf-8?B?TnFabEoxNyswN09UbnQraEtzc1RKYTRzOFRiV2UxU0FjanhqTU5Zc1Vmc3A1?=
+ =?utf-8?B?ajVWZ3dTaDhuZjNjR3dEaTdhQUE5SmN0SXZEaS9TTlpPQXVmUzVtODFkeWdq?=
+ =?utf-8?B?ZitGU1JTNFJ1NFBQSnFRQUFpdWpLUU5yWUtJZWM0N2Y4UVV6NmQrS0hoeUtZ?=
+ =?utf-8?B?ZWw4NURrUzVqTXowLzZiUzdiNG8yWHlsRHRHZUJyenhzMW1leVJKS0xJbXZ2?=
+ =?utf-8?Q?LRK3nHqBwMf1CnrYLlxDPKDbo?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 61e8b91e-1a8d-4175-38bf-08ddfc481182
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2025 15:27:41.9746
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: woznbHDlNs/vo/Qvb3h0KGKbSka3u2TZkgHcWdfehLOgwuBMiCFaRbpZD94IEGOa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7240
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8332E120008
+X-Stat-Signature: uwyqteyppbzebicd4cfathuw6h9h1t1t
 X-Rspam-User: 
-X-HE-Tag: 1758813876-712373
-X-HE-Meta: U2FsdGVkX1+MzQa4pR7jqpsrwMuXF+952l5qNrTd52iutDTjPA2TCTvl9ZG7A00MRCfT9mWflH03ngENDvWiUuUGS//PS70wDBXA5jcasPHDgejPV5DJRebNEfmFpyKJOINTo7Eph653QEEmKMzBfDt4YgagbVKAuG1TPzHwjk944WFdiXfHBwAAfPsyyz3TtTRaxYR4C/9momj8v3m6uz7RahJHzONh0JsrtBAPZFuFec0hvlUJC9I2bmcVb0JWicsKSr80qZAFCQ8ODL0dLgQDzpB3X+ttHmyWtTMbGlOQlUwFe2wWn0sya7umUQT6vioumonu1RIsLND7mLEdjXIpvTuA+gUz2wH8M/fVGBUagnkHemfiPxZq7S5i/eQQsO1QyxQgEIEwLbbLrzmjAZ+AUu8KTzA79xD6tX328F6EBtNezCyZxPbb5srJvIkh39r06rxUutJptYuPO+Ovq2Uilh89uz+LY7GHdn6x9iYtj3IwcXIs5nzRjy0w06SeQ7QexBxYEDoVg8Z40KJkFaaHBMXFx9E65Vk8EHVP5S5SIowVhStV60EGfJl8kL5saPzyFm362xgv1tqMzAZmxPAd2N5u4OcIKWCtOolXGCkbnPP6j7BCosZgpCLQCkJSVzhdhb7ciZfPWKmmSNCfir3jLCQV40yqbSFCPVaE4/MLNxRLwa5MQH1nlAWO3JU7GF+BGkde0y4kwCuWSuTWYIw+O1N/QqXpK59GI0+GC4U+ZC26B1d+BEeu84MtwOa+lk+OGIfFbvzvzGCBUvVbjS4om22yAMOUHxOTB8lhWXm41cXNTJxa8KQ0cm3c98+XgHQ3KU7ZnccP0rADKI5MMwAT2dDRAylcfpDE9ASlTXlW47J6LxsTmA7v1qaRF8sPy+UDY96GlnG+1Ci72IFVLtwf8D858U1UqW1YY3cp1Pn6Lutn+6c4ILkus46sJb5qCeKTkrriX+WbCFkjaqX
- 4mQ==
+X-HE-Tag: 1758814070-392011
+X-HE-Meta: U2FsdGVkX187Ux95QoE72WDGaxybH/VP/j5D/wipwk4vjmOtgO4ALo8cV52QCYqtcVbHmQSwmXQpmaeCCQbvp3LgMsqWO/GbQt0O+yg2S3RSgKc6kqVMU7yB3RTDZRwVomhDYPoOwm0olA5ub5dSSrwHejLcW3YnPeULtLPwvJmUIYb0UpT1woGzq3zJw2xohZswgRQ+AiMnxMdL90WHyUDtN7MVEdBarC6pyYO8pB7DYT8qomM3OfNLiTDYVLnHoRv6sKgtT2Po2InpUOZyskRTiJjgoNujDhhrsx5v1xML5lxvs/B17o5E7LWtrDORxkNOW+ZXka/yA7VhTbTBRw4T2KziGZQN428ppkXEGQxVtx69GuqrbxRMswMzyWIYSgI+LTGSLtjgFDJskQtzUyRD1dLSY+2FxSCszZBsYGT/X/vz2XeOlKAryRd18bK+lxkDmJM0Q9At/QmjcFx+Qbs4mmt7LogQTLW1KAymiH8/jwzXxnCFSbaTeixsYOFZx4mVBK4F1by+SECmRENgdSEo8LfIqgsNswQ5iK5MAWeS2HrZnM1rnL68tPqxcgJsmM1jwWvACJnViEMGY4fzsAZCSgk6EN8TMkf45MgvrOgRgA4dZfrlisKiAXVVSvvRYFHJieMa1Tsm7Lq9bhfFMszxbMGniIDNM84b5v90KW1IGikZHK8Jn6PH01JQgDwvQbrpnA1EgIiZU5vCYcPtBzaeOlHnjO9VVhQ1Bd2uysQHmOMC7ntQMdHoIxB8HITtAYHa4rAFGX3vEBJkTC3eCYZq0TJFemQqa5QbL5F0W1ZXgD5G4o5ZrtAMWBZ6/w2el3KbKc7A+NtCoGijuSzdl2w/R/3xObqiexnwzBk9ZKOOADweNYuTaypRmePxXbyGZ5DdHuLgjfZkGtpOseaiYMVBHYuGGA2IWzNR9rQ69QI6dbX1ev7xhjbHIRRgfDNDW/w0XAH7pIpC+tgs021
+ Wkxg92tg
+ TtUtjtg6aCwqUmHdMXc3jOCNMrYufRZnOV6Ua1gsgSY+CplNthxwC/tEDqy9Yp2kMi2Gn8lPCtsS/F05890NCqhGwFLAUVwH7w4q35fsUuwcqSfOoKCnPDf4SlFFuU125rfvCcAVQ8dmJo6kXn5D69QCx07r4KgWsrNhWtdbuvMdHKR+Fas9p7lLqAy3qPKHyrv2V7P4i0S++ee6Y6HRcrhyJZV4lViV5sR1CShgQXkZjbsv3noL8nxh63yg6JPFo5hlmEztqqoMk2ho7Gf1OkIyzwrDfKLCxfHPNdHMNmrWmm4E52/1ZqYtGPlmY5dxUdpVl+Z6LyTkw95zOxDmgZXFC3jEyvIx5j92bejhzM8sn5Iehh/19FFxegcya+PX0+9ou7kaM6ec/EeQyNqZChtiLw6d0KmiYZ5tIl3rI1uQUKAIF1XJ2tyEArNZvPW6y+p6JXPC/7BcRQTokpPkZT72qV8fh4BZVvJbU7SvIu9T14n040pTIKTFKAJUkVuHG31YOPizqTu1b0usad5TP86mXRj1JehS7VoDvomJtK5O1vCSqU4ZMthqVknjsy8pQeBesEEapyzLrfmBj6dloVl8dNj+qpVX4yQUARXqghKG5qQWh6PqyJf26KObXuqY4YWL7PEcevPhcUC30sd9S0OlK9gcR6cInr7mDnWpxZtpNKokhuo6QAXXs5/2QOMqdUr3FXgNUm43XEoTxOy5p3oCVh82WJ21ia5GXsHNBVCO2MPjeJ2tLQIAovlFSIeVC5cXNmow0GNoFmySXKdd0wa8zJrMV47ZtuFIEhbrJPcNbIAEfJkwmEd1k1fzkIJcwz/K58gGmzQJmoARy+Evuyq1+nkwl2Nr6qket+m1BCaJ9tooMkvWZLd6ALgmBaL9c9vGBsf+UsA2NdgfUeHZN4zsTXvuT+c6hZ0xTw1RbqoKqwtA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,50 +222,384 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 25 Sep 2025 11:08:59 -0400
-Gregory Price <gourry@gourry.net> wrote:
+On 24 Sep 2025, at 19:45, Alistair Popple wrote:
 
-> On Thu, Sep 25, 2025 at 04:00:58PM +0100, Jonathan Cameron wrote:
-> > Now, if we can put this into a special pool where it is acceptable to drop the writes
-> > and return poison (so the application crashes) then that may be fine.
-> > 
-> > Or block writes.   Running compressed memory as read only CoW is one way to
-> > avoid this problem.
-> >  
-> 
-> This is an interesting thought.  If you drop a write and return poison,
-> can you instead handle the poison message as a fault and promote on
-> fault?  Then you might just be able to turn this whole thing into a
-> zswap backend that promotes on write.
+> On 2025-09-25 at 03:49 +1000, Zi Yan <ziy@nvidia.com> wrote...
+>> On 24 Sep 2025, at 7:04, David Hildenbrand wrote:
+>>
+>>> On 23.09.25 05:47, Balbir Singh wrote:
+>>>> On 9/19/25 23:26, Zi Yan wrote:
+>>>>> On 19 Sep 2025, at 1:01, Balbir Singh wrote:
+>>>>>
+>>>>>> On 9/18/25 12:49, Zi Yan wrote:
+>>>>>>> On 16 Sep 2025, at 8:21, Balbir Singh wrote:
+>>>>>>>
+>>>>>>>> Add routines to support allocation of large order zone device foli=
+os
+>>>>>>>> and helper functions for zone device folios, to check if a folio i=
+s
+>>>>>>>> device private and helpers for setting zone device data.
+>>>>>>>>
+>>>>>>>> When large folios are used, the existing page_free() callback in
+>>>>>>>> pgmap is called when the folio is freed, this is true for both
+>>>>>>>> PAGE_SIZE and higher order pages.
+>>>>>>>>
+>>>>>>>> Zone device private large folios do not support deferred split and
+>>>>>>>> scan like normal THP folios.
+>>>>>>>>
+>>>>>>>> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+>>>>>>>> Cc: David Hildenbrand <david@redhat.com>
+>>>>>>>> Cc: Zi Yan <ziy@nvidia.com>
+>>>>>>>> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+>>>>>>>> Cc: Rakie Kim <rakie.kim@sk.com>
+>>>>>>>> Cc: Byungchul Park <byungchul@sk.com>
+>>>>>>>> Cc: Gregory Price <gourry@gourry.net>
+>>>>>>>> Cc: Ying Huang <ying.huang@linux.alibaba.com>
+>>>>>>>> Cc: Alistair Popple <apopple@nvidia.com>
+>>>>>>>> Cc: Oscar Salvador <osalvador@suse.de>
+>>>>>>>> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>>>>>>>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>>>>>>> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+>>>>>>>> Cc: Nico Pache <npache@redhat.com>
+>>>>>>>> Cc: Ryan Roberts <ryan.roberts@arm.com>
+>>>>>>>> Cc: Dev Jain <dev.jain@arm.com>
+>>>>>>>> Cc: Barry Song <baohua@kernel.org>
+>>>>>>>> Cc: Lyude Paul <lyude@redhat.com>
+>>>>>>>> Cc: Danilo Krummrich <dakr@kernel.org>
+>>>>>>>> Cc: David Airlie <airlied@gmail.com>
+>>>>>>>> Cc: Simona Vetter <simona@ffwll.ch>
+>>>>>>>> Cc: Ralph Campbell <rcampbell@nvidia.com>
+>>>>>>>> Cc: Mika Penttil=C3=A4 <mpenttil@redhat.com>
+>>>>>>>> Cc: Matthew Brost <matthew.brost@intel.com>
+>>>>>>>> Cc: Francois Dugast <francois.dugast@intel.com>
+>>>>>>>> ---
+>>>>>>>>   include/linux/memremap.h | 10 +++++++++-
+>>>>>>>>   mm/memremap.c            | 34 +++++++++++++++++++++-------------
+>>>>>>>>   mm/rmap.c                |  6 +++++-
+>>>>>>>>   3 files changed, 35 insertions(+), 15 deletions(-)
+>>>>>>>>
+>>>>>>>> diff --git a/include/linux/memremap.h b/include/linux/memremap.h
+>>>>>>>> index e5951ba12a28..9c20327c2be5 100644
+>>>>>>>> --- a/include/linux/memremap.h
+>>>>>>>> +++ b/include/linux/memremap.h
+>>>>>>>> @@ -206,7 +206,7 @@ static inline bool is_fsdax_page(const struct =
+page *page)
+>>>>>>>>   }
+>>>>>>>>
+>>>>>>>>   #ifdef CONFIG_ZONE_DEVICE
+>>>>>>>> -void zone_device_page_init(struct page *page);
+>>>>>>>> +void zone_device_folio_init(struct folio *folio, unsigned int ord=
+er);
+>>>>>>>>   void *memremap_pages(struct dev_pagemap *pgmap, int nid);
+>>>>>>>>   void memunmap_pages(struct dev_pagemap *pgmap);
+>>>>>>>>   void *devm_memremap_pages(struct device *dev, struct dev_pagemap=
+ *pgmap);
+>>>>>>>> @@ -215,6 +215,14 @@ struct dev_pagemap *get_dev_pagemap(unsigned =
+long pfn);
+>>>>>>>>   bool pgmap_pfn_valid(struct dev_pagemap *pgmap, unsigned long pf=
+n);
+>>>>>>>>
+>>>>>>>>   unsigned long memremap_compat_align(void);
+>>>>>>>> +
+>>>>>>>> +static inline void zone_device_page_init(struct page *page)
+>>>>>>>> +{
+>>>>>>>> +	struct folio *folio =3D page_folio(page);
+>>>>>>>> +
+>>>>>>>> +	zone_device_folio_init(folio, 0);
+>>>>>>>
+>>>>>>> I assume it is for legacy code, where only non-compound page exists=
+?
+>>>>>>>
+>>>>>>> It seems that you assume @page is always order-0, but there is no c=
+heck
+>>>>>>> for it. Adding VM_WARN_ON_ONCE_FOLIO(folio_order(folio) !=3D 0, fol=
+io)
+>>>>>>> above it would be useful to detect misuse.
+>>>>>>>
+>>>>>>>> +}
+>>>>>>>> +
+>>>>>>>>   #else
+>>>>>>>>   static inline void *devm_memremap_pages(struct device *dev,
+>>>>>>>>   		struct dev_pagemap *pgmap)
+>>>>>>>> diff --git a/mm/memremap.c b/mm/memremap.c
+>>>>>>>> index 46cb1b0b6f72..a8481ebf94cc 100644
+>>>>>>>> --- a/mm/memremap.c
+>>>>>>>> +++ b/mm/memremap.c
+>>>>>>>> @@ -416,20 +416,19 @@ EXPORT_SYMBOL_GPL(get_dev_pagemap);
+>>>>>>>>   void free_zone_device_folio(struct folio *folio)
+>>>>>>>>   {
+>>>>>>>>   	struct dev_pagemap *pgmap =3D folio->pgmap;
+>>>>>>>> +	unsigned long nr =3D folio_nr_pages(folio);
+>>>>>>>> +	int i;
+>>>>>>>>
+>>>>>>>>   	if (WARN_ON_ONCE(!pgmap))
+>>>>>>>>   		return;
+>>>>>>>>
+>>>>>>>>   	mem_cgroup_uncharge(folio);
+>>>>>>>>
+>>>>>>>> -	/*
+>>>>>>>> -	 * Note: we don't expect anonymous compound pages yet. Once supp=
+orted
+>>>>>>>> -	 * and we could PTE-map them similar to THP, we'd have to clear
+>>>>>>>> -	 * PG_anon_exclusive on all tail pages.
+>>>>>>>> -	 */
+>>>>>>>>   	if (folio_test_anon(folio)) {
+>>>>>>>> -		VM_BUG_ON_FOLIO(folio_test_large(folio), folio);
+>>>>>>>> -		__ClearPageAnonExclusive(folio_page(folio, 0));
+>>>>>>>> +		for (i =3D 0; i < nr; i++)
+>>>>>>>> +			__ClearPageAnonExclusive(folio_page(folio, i));
+>>>>>>>> +	} else {
+>>>>>>>> +		VM_WARN_ON_ONCE(folio_test_large(folio));
+>>>>>>>>   	}
+>>>>>>>>
+>>>>>>>>   	/*
+>>>>>>>> @@ -456,8 +455,8 @@ void free_zone_device_folio(struct folio *foli=
+o)
+>>>>>>>>   	case MEMORY_DEVICE_COHERENT:
+>>>>>>>>   		if (WARN_ON_ONCE(!pgmap->ops || !pgmap->ops->page_free))
+>>>>>>>>   			break;
+>>>>>>>> -		pgmap->ops->page_free(folio_page(folio, 0));
+>>>>>>>> -		put_dev_pagemap(pgmap);
+>>>>>>>> +		pgmap->ops->page_free(&folio->page);
+>>>>>>>> +		percpu_ref_put_many(&folio->pgmap->ref, nr);
+>>>>>>>>   		break;
+>>>>>>>>
+>>>>>>>>   	case MEMORY_DEVICE_GENERIC:
+>>>>>>>> @@ -480,14 +479,23 @@ void free_zone_device_folio(struct folio *fo=
+lio)
+>>>>>>>>   	}
+>>>>>>>>   }
+>>>>>>>>
+>>>>>>>> -void zone_device_page_init(struct page *page)
+>>>>>>>> +void zone_device_folio_init(struct folio *folio, unsigned int ord=
+er)
+>>>>>>>>   {
+>>>>>>>> +	struct page *page =3D folio_page(folio, 0);
+>>>>>>>
+>>>>>>> It is strange to see a folio is converted back to page in
+>>>>>>> a function called zone_device_folio_init().
+>>>>>>>
+>>>>>>>> +
+>>>>>>>> +	VM_WARN_ON_ONCE(order > MAX_ORDER_NR_PAGES);
+>>>>>>>> +
+>>>>>>>>   	/*
+>>>>>>>>   	 * Drivers shouldn't be allocating pages after calling
+>>>>>>>>   	 * memunmap_pages().
+>>>>>>>>   	 */
+>>>>>>>> -	WARN_ON_ONCE(!percpu_ref_tryget_live(&page_pgmap(page)->ref));
+>>>>>>>> -	set_page_count(page, 1);
+>>>>>>>> +	WARN_ON_ONCE(!percpu_ref_tryget_many(&page_pgmap(page)->ref, 1 <=
+< order));
+>>>>>>>> +	folio_set_count(folio, 1);
+>>>>>>>>   	lock_page(page);
+>>>>>>>> +
+>>>>>>>> +	if (order > 1) {
+>
+> Why is this only called for order > 1 rather than order > 0 ?
+>
+>>>>>>>> +		prep_compound_page(page, order);
+>>>>>>>> +		folio_set_large_rmappable(folio);
+>>>>>>>> +	}
+>>>>>>>
+>>>>>>> OK, so basically, @folio is not a compound page yet when zone_devic=
+e_folio_init()
+>>>>>>> is called.
+>>>>>>>
+>>>>>>> I feel that your zone_device_page_init() and zone_device_folio_init=
+()
+>>>>>>> implementations are inverse. They should follow the same pattern
+>>>>>>> as __alloc_pages_noprof() and __folio_alloc_noprof(), where
+>>>>>>> zone_device_page_init() does the actual initialization and
+>>>>>>> zone_device_folio_init() just convert a page to folio.
+>>>>>>>
+>>>>>>> Something like:
+>>>>>>>
+>>>>>>> void zone_device_page_init(struct page *page, unsigned int order)
+>>>>>>> {
+>>>>>>> 	VM_WARN_ON_ONCE(order > MAX_ORDER_NR_PAGES);
+>>>>>>>
+>>>>>>> 	/*
+>>>>>>> 	 * Drivers shouldn't be allocating pages after calling
+>>>>>>> 	 * memunmap_pages().
+>>>>>>> 	 */
+>>>>>>>
+>>>>>>>      WARN_ON_ONCE(!percpu_ref_tryget_many(&page_pgmap(page)->ref, 1=
+ << order));
+>>>>>>> =09
+>>>>>>> 	/*
+>>>>>>> 	 * anonymous folio does not support order-1, high order file-backe=
+d folio
+>>>>>>> 	 * is not supported at all.
+>>>>>>> 	 */
+>
+> I guess that answers my question :-)
+>
+>>>>>>> 	VM_WARN_ON_ONCE(order =3D=3D 1);
+>>>>>>>
+>>>>>>> 	if (order > 1)
+>>>>>>> 		prep_compound_page(page, order);
+>>>>>>>
+>>>>>>> 	/* page has to be compound head here */
+>>>>>>> 	set_page_count(page, 1);
+>>>>>>> 	lock_page(page);
+>>>>>>> }
+>>>>>>>
+>>>>>>> void zone_device_folio_init(struct folio *folio, unsigned int order=
+)
+>>>>>>> {
+>>>>>>> 	struct page *page =3D folio_page(folio, 0);
+>>>>>>>
+>>>>>>> 	zone_device_page_init(page, order);
+>>>>>>> 	page_rmappable_folio(page);
+>>>>>>> }
+>>>>>>>
+>>>>>>> Or
+>>>>>>>
+>>>>>>> struct folio *zone_device_folio_init(struct page *page, unsigned in=
+t order)
+>>>>>>> {
+>>>>>>> 	zone_device_page_init(page, order);
+>>>>>>> 	return page_rmappable_folio(page);
+>>>>>>> }
+>>>>>>>
+>>>>>>>
+>>>>>>> Then, it comes to free_zone_device_folio() above,
+>>>>>>> I feel that pgmap->ops->page_free() should take an additional order
+>>>>>>> parameter to free a compound page like free_frozen_pages().
+>>>>>>>
+>>>>>>>
+>>>>>>> This is my impression after reading the patch and zone device page =
+code.
+>>>>>>>
+>>>>>>> Alistair and David can correct me if this is wrong, since I am new =
+to
+>>>>>>> zone device page code.
+>>>>>>> =09
+>>>>>>
+>>>>>> Thanks, I did not want to change zone_device_page_init() for several
+>>>>>> drivers (outside my test scope) that already assume it has an order =
+size of 0.
+>
+> It's a trivial change, so I don't think avoiding changes to other drivers=
+ should
+> be a concern.
+>
+>>>>>
+>>>>> But my proposed zone_device_page_init() should still work for order-0
+>>>>> pages. You just need to change call site to add 0 as a new parameter.
+>>>>>
+>>>>
+>>>> I did not want to change existing callers (increases testing impact)
+>>>> without a strong reason.
+>>>>
+>>>>>
+>>>>> One strange thing I found in the original zone_device_page_init() is
+>>>>> the use of page_pgmap() in
+>>>>> WARN_ON_ONCE(!percpu_ref_tryget_many(&page_pgmap(page)->ref, 1 << ord=
+er)).
+>>>>> page_pgmap() calls page_folio() on the given page to access pgmap fie=
+ld.
+>>>>> And pgmap field is only available in struct folio. The code initializ=
+es
+>>>>> struct page, but in middle it suddenly finds the page is actually a f=
+olio,
+>>>>> then treat it as a page afterwards. I wonder if it can be done better=
+.
+>>>>>
+>>>>> This might be a question to Alistair, since he made the change.
+>
+> Hello! I might be him :)
+>
+> I think this situation is just historical - when I originally wrote
+> zone_device_page_init() the pgmap was stored on the page rather than the =
+folio.
+> That only changed fairly recently with commit 82ba975e4c43 ("mm: allow co=
+mpound
+> zone device pages").
+>
+> The reason pgmap is now only available on the folio is described in the
+> commit log. The TLDR is switching FS DAX to use compound pages required
+> page->compound_head to be available for use, and that was being shared
+> with page->pgmap. So the solution was to move pgmap to the folio freeing =
+up
+> page->compound_head for use on tail pages.
+>
+> The whole percpu pgmap->ref could actually now go away - I've debated rem=
+oving
+> it but haven't found the motivation as it provides a small advantage on d=
+river
+> tear down. Basically it just tracks how many pages are allocated in the p=
+gmap
+> so drivers could use that to determine if they need to trigger migrations=
+ before
+> tearing down the pgmap.
+>
+> The alternative is just to loop over every page in the pgmap to ensure th=
+e
+> folio/page refcounts are 0 before tear down.
+>
+>>>>>
+>>>>
+>>>> I'll let him answer it :)
+>>>
+>>> Not him, but I think this goes back to my question raised in my other r=
+eply: When would we allocate "struct folio" in the future.
+>>>
+>>> If it's "always" then actually most of the zone-device code would only =
+ever operate on folios and never on pages in the future.
+>>>
+>>> I recall during a discussion at LSF/MM I raised that, and the answer wa=
+s (IIRC) that we will allocate "struct folio" as we will initialize the mem=
+map for dax.
+>
+> Sounds about right.
+>
+>>> So essentially, we'd always have folios and would never really have to =
+operate on pages.
+>
+> Yeah, I think I mentioned to Matthew at LSF/MM that I thought ZONE_DEVICE=
+ (and
+> in particular ZONE_DEVICE_PRIVATE) might be a good candidate to experimen=
+t with
+> removing struct pages entirely and switching to memdesc's or whatever. Be=
+cause
+> we should, in theory at least, only need to operate on folio's. But I'm s=
+till a
+> little vague on the details how that would actually work. It's been on my=
+ TODO
+> list for a while, so myabe I will try and look at it for LPC as a healthy=
+ bit of
+> conference driven development.
+>
+>> Hmm, then what is the point of having =E2=80=9Cstruct folio=E2=80=9D, wh=
+ich originally is
+>> added to save compound_head() calls, where everything is a folio in devi=
+ce
+>> private world? We might need DAX people to explain the rationale of
+>> =E2=80=9Calways struct folio=E2=80=9D.
+>
+> Longer term isn't there an aim to remove struct page? So I assumed moving=
+ to
 
-Poison only comes on subsequent read so you don't see anything
-at write (which are inherently asynchronous due to cache write back).
-There are only few ways to do writes that are allowed to fail (the 64 byte
-atomic deferrable write stuff) and I think on all architectures where
-they can even be pointed at main memory, they only defer if on uncacheable
-memory.
+Right. But my current impression based on my code reading and this patchset
+is that every device private page is a folio. To form a high order folio,
+each device private folio is converted to page, prep_compound*()=E2=80=99d,=
+ then
+converted back to folio. Based on what you said above, this weird conversio=
+n
+might be temporary until the code is switched to memdesc.
 
-Seeing poison on subsequent read is far too late to promote the page,
-you've lost the data.  The poison only works as ultimate safety gate. Also
-once you've tripped it the device probably needs to drop all write
-and return poison on all reads, not just the problem one (otherwise
-things might fail much later).
+I am looking forward to more details on how device private will be switched
+to memdesc from you. :)
 
-The CoW thing only works because it's a permissions fault at point of
-asking for permission to write (so way before it goes into the cache).
-Then you can check margins to make sure you can still sink all outstanding
-writes if they become uncompressible and only let the write through if safe
-- if not promote some stuff before letting it proceed.
-Or you just promote on write and rely on the demotion path performing those
-careful checks later.
-
-Jonathan
+> folio's was part of that effort. As you say though many of the clean-ups =
+thus
+> far related to switching ZONE_DEVICE to folios have indeed just been abou=
+t
+> removing compound_head() calls.
 
 
-> 
-> Then you don't particular care about stronger isolation controls
-> (except maybe keeping kernel memory out of those regions).
-> 
-> ~Gregory
 
+Best Regards,
+Yan, Zi
 
