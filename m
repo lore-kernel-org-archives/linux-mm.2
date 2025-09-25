@@ -4,113 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F1BACAC5B1
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 16:58:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61ABDCAC5A7
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 17:08:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC7D98E000A; Thu, 25 Sep 2025 12:58:47 -0400 (EDT)
+	id 7703F8E0007; Thu, 25 Sep 2025 13:08:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9E688E0001; Thu, 25 Sep 2025 12:58:47 -0400 (EDT)
+	id 748078E0001; Thu, 25 Sep 2025 13:08:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB41A8E000A; Thu, 25 Sep 2025 12:58:47 -0400 (EDT)
+	id 684CD8E0007; Thu, 25 Sep 2025 13:08:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B5A048E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 12:58:47 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 581EF160405
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 16:58:47 +0000 (UTC)
-X-FDA: 83928381894.10.D458655
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 57A244000A
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 16:58:45 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=T+7trI1H;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of chenglongtang@google.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=chenglongtang@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758819525; a=rsa-sha256;
-	cv=none;
-	b=7j0duUUp03wDh5y+O8S1YjNiRUi9oRrDSjNQnfMuqPMjUKsdXm7biVqty5z9oIFwmVyWKC
-	uHnl19/flTNunP/cCbSrhnednN0O0PT6UMjnbJTusmuIu228mBMQ2fn5AERT7v9ptT7mAW
-	kQxd2xF74NYTmK2t4yEJNFwfc70VKY8=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=T+7trI1H;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of chenglongtang@google.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=chenglongtang@google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758819525;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 593638E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:08:13 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F2C6E119E6B
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:08:12 +0000 (UTC)
+X-FDA: 83928405624.14.C795FB9
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0F00C160015
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:08:10 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=yukuai.org.cn header.s=zmail header.b=l5sRIKuV;
+	spf=pass (imf08.hostedemail.com: domain of hailan@yukuai.org.cn designates 136.143.188.12 as permitted sender) smtp.mailfrom=hailan@yukuai.org.cn;
+	dmarc=permerror reason="Multiple policies defined in DNS" header.from=yukuai.org.cn (policy=permerror);
+	arc=pass ("zohomail.com:s=zohoarc:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758820091;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yq6K8HIdEhD+E9swYwDQPb1XoskrFD+rIaFeN3MEj6U=;
-	b=dEjLs+01YN5S2oXaxefpQqNMNbPiNpHQ9cI/lvu3TQNI0vu7uiHpMPlS7i7LL/oKGS7L70
-	/vrZ2fSIjK7fT53B3/z4xA/GHpRi4jQuhiT084eromP1Bvi18f1em+yAq75c9VqbKQg9T6
-	TSVuTOliTbceyW0xDGJmcvI4ZzR3Pcs=
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-57dda094f6cso275e87.0
-        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 09:58:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758819523; x=1759424323; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Yq6K8HIdEhD+E9swYwDQPb1XoskrFD+rIaFeN3MEj6U=;
-        b=T+7trI1HACUPEvVPa60l93Fwvsc5W2hnaSrU2iAjqeQEMSPjtsLi4e229d35oJKj+8
-         W3gCFjOTTbKNjOzX+xtBArYbaGGC0InQXE/O0PcpprnEHeTWPse4DjAe9MVFXRCNtoJu
-         TEByHVjlu43b7SYa+Lu9Y08dQMjV4vFAQR1Ja/hwbHm34Q6OLz1MU62Wbsrx40MQYZC4
-         M1wAdc5oUep9es1KOjqhDYtik9S2Emf9X8qqxfVefhHXD22iBrAEW+LQKFzhdMYJ0Hji
-         ifuDhDDm/J2c9gRDqRacA4FbwAUfFnJAXfF7htzl0GtatlD1deaz95deON9BS26Xud13
-         JsMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758819523; x=1759424323;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Yq6K8HIdEhD+E9swYwDQPb1XoskrFD+rIaFeN3MEj6U=;
-        b=nDGTM+mHsdVPEg3MazUgv949z5cMqHjbkPr5QwZHMDKRaaZeSBWQfDq9+yQnZvCfcW
-         jaIi6suEe/vDSZ2W/5ZIymubJJSOOWHuQfiLrvEWDl/msYd/MyO/jmLBb5Q/AqCZaZyZ
-         XZOsVsAk3pjD5Dwpf19kyc/6ko/lbiolEVMC62FZn4gYRzduL98gtD3GvLDPZhAPunVR
-         r3QHrVwLcZSgWA0269rLfXPLAFY/ATCsfCO6hY1LrpwerJ/DHlUJ3heTNAmAT94kugn1
-         35QtSoXOwdcRzTQdZU34TQjkA1aljke1N4N5sIAqRt6cP3MiR8LdqbiADugq/lWDa8hr
-         fvRw==
-X-Forwarded-Encrypted: i=1; AJvYcCUOCFJjhMlhcd697MEb9jIEg92Ptd6xKRbDq+iWcM+xk24mXqdpOy0YkyCMYeLxIiHKDf8JdaExQA==@kvack.org
-X-Gm-Message-State: AOJu0YxM7uL0ZQymooK+DlfdKDhz2WjtvVZ8xIHVjlN2ej/RjmQ3NY4u
-	tUOy6z+WS9RbUnTm5gSz9OX/fQRgs20SMtUZNmCRmKX0Bl+JBIVpruudf2Wext7XHVxZ4hHCrkF
-	bNKsZrWVPDRKfvSjkfqz6fhXW45BHN92PT6mJ6kGI
-X-Gm-Gg: ASbGncuk8JptKUDXi6U5YElCAyZCaRS++hCn/mGZ6tPxsJ4SJ7gAwKfj93QnpPwspQR
-	Bx1jBU8iZ9AG248HSrjrWN+S+ZqsVo1cm4OV8B2LercHEROyvzatUI1vAeLjuIA4omwedObh6dX
-	+TUVXX43w8b+itFipkoXn2b3KggINePdDBgsWps0s5LnsyoqKi8fQTdfrIpgAdiyEjwmsK2ZDmC
-	DAi6AuLFvdO2lTedLLaP+XN
-X-Google-Smtp-Source: AGHT+IGJxwQPsa1HBrOtLrDgPHg2NyLPfDxj76oZhDbyhTXsObrV+BiQuT52NKznoNST7PhF7zcIbJIyyNp5aMzCq1I=
-X-Received: by 2002:ac2:5b81:0:b0:57b:f611:f918 with SMTP id
- 2adb3069b0e04-582b2a9560fmr321110e87.3.1758819523044; Thu, 25 Sep 2025
- 09:58:43 -0700 (PDT)
+	bh=xh7K/XJFQ6KkEtm/OLCF3JPZG7ct8pPnp/RtlikI1UA=;
+	b=lJrRshqXRUNe4xlgqSDqC8r76e8J0VZAQXSjh+J88d6pyO+xOevF3QSyc0LfSeTyeVE0Lb
+	5FVTJZsEmH3Etm5X94eyBLjPLnigAM7w1PJ+mRbWsG/6aIWYQ2AuAHsXnEsR0ystJ9Nbpq
+	AsWO4adaSuWFkW1RSBH0xsaHu+xkypY=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=yukuai.org.cn header.s=zmail header.b=l5sRIKuV;
+	spf=pass (imf08.hostedemail.com: domain of hailan@yukuai.org.cn designates 136.143.188.12 as permitted sender) smtp.mailfrom=hailan@yukuai.org.cn;
+	dmarc=permerror reason="Multiple policies defined in DNS" header.from=yukuai.org.cn (policy=permerror);
+	arc=pass ("zohomail.com:s=zohoarc:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758820091; a=rsa-sha256;
+	cv=pass;
+	b=ZBPynKoujMkSZUUMzIXIzUal2MNAY6KFU9z09dlSVl0rrZKaJz8zDzLojCNzYZF+lvyJh3
+	3DhO2WXqz1pn5tFpgCRP8bg1KjY18XRy1/AlPvf0wFjFKAUe8s7961C9eLUcY6SIvNLW00
+	Wmx9j6W7ME6TuSYtppEPmD0G94LPN4A=
+ARC-Seal: i=1; a=rsa-sha256; t=1758820071; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=PE5glDIsYYr7d4pKIscD4HkL/+QqyqDxWnAkaQe/NBQ5PEk0Djp/pd3gdknSw5LJ7o2I1kp+xCG4qBtGlCPxIMdBMI0PK4TBNhiG1pcgKOgwku9ffJcNb2KvWK6Aa2X6twhan+OCCTljOGpq389Al6Ckk5OkKHCmGPIMG4zskFs=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1758820071; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=xh7K/XJFQ6KkEtm/OLCF3JPZG7ct8pPnp/RtlikI1UA=; 
+	b=FySJUk52uxt/fWGi5Ma/0yIkUjR5kRBlSaenMNSNfu/UTj+/vcfS+ZVU70Su6VMHRFs8nikDn/hOBEPF8Ut6vfz0M4AK7mLb/Tp7LUYA5sTfNcASQoT3qg/ySZWL8fAmWxZ+ZpvPj1Ay9IusATNIk6LjIxvl9umRhTTWQjGHask=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=yukuai.org.cn;
+	spf=pass  smtp.mailfrom=hailan@yukuai.org.cn;
+	dmarc=pass header.from=<hailan@yukuai.org.cn>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1758820071;
+	s=zmail; d=yukuai.org.cn; i=hailan@yukuai.org.cn;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=xh7K/XJFQ6KkEtm/OLCF3JPZG7ct8pPnp/RtlikI1UA=;
+	b=l5sRIKuV6EnO3zuk5usTtk3gAlssOPDKZAWjYt6QRJ7KxG0XlH5PAxSXZ9LV4L8P
+	K27KcsZ9I7CceXQPnIzcnspF6yfPE9rxBz/9as7VzwC+v/3j1BIDUEvB85CJyBaY2y6
+	Bslw0a+cYcqbdLEgq9iiIBPlUFpxQLnO7XTs2tbo=
+Received: by mx.zohomail.com with SMTPS id 1758820067677192.5730499183651;
+	Thu, 25 Sep 2025 10:07:47 -0700 (PDT)
+Message-ID: <01e7eccd-3529-4d12-8ad2-fd9e034a026d@yukuai.org.cn>
+Date: Fri, 26 Sep 2025 01:07:39 +0800
 MIME-Version: 1.0
-References: <CAOdxtTZJqgDNMtqsq51hQ0azanFPLXHMAJ-mRhRS6yjzYhMf_A@mail.gmail.com>
- <aNSSNgUeMSTtlimW@slm.duckdns.org>
-In-Reply-To: <aNSSNgUeMSTtlimW@slm.duckdns.org>
-From: Chenglong Tang <chenglongtang@google.com>
-Date: Thu, 25 Sep 2025 09:58:31 -0700
-X-Gm-Features: AS18NWBXIryw_12tNJ7Zcnq0SWl772-SIFkfVkMUoyR0eC464fAlVAG0qvqtTdI
-Message-ID: <CAOdxtTan9jvwzbww0Jm6e4nOiCcwH8cvPHHXpNtRU6ZHUBg=4g@mail.gmail.com>
-Subject: Re: [REGRESSION] workqueue/writeback: Severe CPU hang due to kworker
- proliferation during I/O flush and cgroup cleanup
-To: Tejun Heo <tj@kernel.org>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev, 
-	roman.gushchin@linux.dev, linux-mm@kvack.org, lakitu-dev@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 57A244000A
-X-Stat-Signature: pjn4b6dbhr5rt4pao9b8jth3cyziysmb
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/10] blk-cgroup: use cgroup lock and rcu to protect
+ iterating blkcg blkgs
+To: Bart Van Assche <bvanassche@acm.org>, Yu Kuai <yukuai1@huaweicloud.com>,
+ tj@kernel.org, ming.lei@redhat.com, nilay@linux.ibm.com, hch@lst.de,
+ josef@toxicpanda.com, axboe@kernel.dk, akpm@linux-foundation.org,
+ vgoyal@redhat.com
+Cc: cgroups@vger.kernel.org, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, yukuai3@huawei.com,
+ yi.zhang@huawei.com, yangerkun@huawei.com, johnny.chenyi@huawei.com
+References: <20250925081525.700639-1-yukuai1@huaweicloud.com>
+ <20250925081525.700639-2-yukuai1@huaweicloud.com>
+ <bc6fe04d-3245-40dd-aa30-c3a3acb670c2@acm.org>
+From: Yu Kuai <hailan@yukuai.org.cn>
+In-Reply-To: <bc6fe04d-3245-40dd-aa30-c3a3acb670c2@acm.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
+X-Rspamd-Queue-Id: 0F00C160015
+X-Stat-Signature: 731yipococ44qh1gq8marcrkarwh7ytc
 X-Rspam-User: 
-X-HE-Tag: 1758819525-583551
-X-HE-Meta: U2FsdGVkX19Gz41XJVhyzcuWqnfCWc8VK6lErh6oKrQEn0h/625e6LstVheVBFacS3EobYmB/HBNOxCbHmHi7Wt7THf0vYNIiezxgHT+YShTVSdsx7lzpLjw061sx4nDJ5kXHbkNBL8ufuEwWkce33vuy/wGFtvgEAmoh+a9zFmn2hxMwU4McxpZwhlbrPwbvehpVj9r2K+uZ5INo1G5XNU/40LEXzlbmBlbaK7l0BSzx33T64kO4X5Jo5xPqqzyuGfIrVy7chYCW8ACFzd5Tt+jzuFs3fYSJHH5upeZeNtV3qF6ee7pDQwwZjn20kkAfBiaB0H2d3gT8P4fm/OOTKiy8bOrMp9D5QGThEN9y4vx+DEGkqHVR3YP/Ylpz5kGkjqvxOMPj0DWMjDVZ5G1ecuxYndz7wmbBXQ9K8Sa2daMGOi8yZBu/d2FoLHTg6FhnFkbevLnfFITQqRsfy+rdJ+egNlwMIGaor0IHEsxJlSnx/wM8Zk1CdP69803YCVZIDj30AqN1QnNpQjltSricRAunvxHluMEFk7XmXt1QntMe0X9kUfke40139OyJh2evWh4qPO3BiUN+xZb8rXFaZUM4LVrIqeGTO54JN3Wc9ZiaiNMD1BGA8w2MRpidbtwleQXeKBTrL2wC3oJgLZnkfXTsweZ9024M14oyaxCH5YzexEqJVdQ4/LVJ7tZg3bNpWeWC1qRXnVQwQyi4HVHDZTCSNLBXbeThk3ArqedSeyRZvH8Q9glqoBkUFMtrVlsdMfr9jHIuaGUjiUk4DXqhsotVJK3HyW8WYWDClhrea9vTj9g7KyGIBcqm510LP7hqXXos58lMUyWAehA8JrnmFF3jDnccTCn9JVo3kb3WChCW9WzS1q1Lf/TK2QLntbDyGHXELorUOPYmCVkLJBzwwZ/1YW3wUYc/QT+Hle6cHnS/Zi7wPYhisERkAY3NHsp9Ryc7W4LpDg00au2oWO
- e6hZbHd2
- man/byLfz+1KwT23VINGRhFB4rQFohIscdrAu+uYBXWq/vzlBsYo5TthqEthSPu+sqiaPH1JsMMheC8Jp0Y3QjqsFPRbrVIGEoBTZ+qn5bJqZWNVHd+a3us78dHto0UaBcXhlQ9NMN3gTVQ8nQx6wCrNAnHGF/uEBkEKRo3H9sJi7rTwVQgmpn5M+5pJd/FOu4lwi2yz6Db8wpBPf8vrfIqexdA==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758820090-454823
+X-HE-Meta: U2FsdGVkX19E3+duQ9l6qP9UBl8YpgtzMGSXnzf/J/aDz/Zr/D+cfSgmj9BIzdIKX636OW5kTXUtSlNqAsP6jn6f2naS62Ih4GqRQEUwgI10rApUwItUH4dB2NkmivWplSNru0LBSsLefTrMtllThEBPNj1DkGOolclvqk/hh3HQomddEtslwiZ1Ac0KmvuT1VAMwxepl/gMld7E5TBzDthFTA+O9iC1u/BNFfQzrpO7wLvZ2IjcgjjRRtl9x09mkCV7DUq3LheB9a25EnpwR1461TZEadXfljfLG+kBygXiruHla3QDHHTJ31AZjHi6KYoGlRI5nfS7YXj1O1AFQAb0RpBgqa0uUpHoFf6yJRKPIWXBimtb2Zaa+8ediaC4Ispbfl3Z8GCOujeCBvw8JtqhiJ5Az1/nT7o+aXlQdfxp8vmrLIEiFDxh5ja+juHPf2NRD5pRu0/HJ0crhIRpNaIi8dRuzfxStONlTBVMn7ZEU1SMRs+0Tcr03doMd19pefQ9qxQm0jv8S1RY2CcIxG8YMtfTQNOesvGwtXXmHUvyCQKY8Y0JdNhja6mLfg4bgxPNOl4dUj3hXjcOmuAJIqqECCGH91vo/+KPajqP+bTfDupDkL9pstbIZ9Nv4vxsPgX9RxD0WPHzsKNzxQOe0jvZCCHmEBY8TFvqTw+DIC4Ftx8orpaWscSFwLtvt7SqyvoYx0jIoNHzGIYCxvgDb+e3U6lHVO83F1u0sFfSoQ0dR1lnt1MhXRMVRszG3UK7bgGSSYbEjEh2t4U30deqiHlpZyutmPcwHXh8DuxxyhuYuN8/HtZnRw8MyvGZwYsLyrAQZ+FjpG5Rnx9hhww/G7Kt960M+xP1lEYAmyAHXoMtYI60ZzO35KJHFmqzdbSK7ALQJ3kVcG9xr6GX9/KHKH/gfFd3rnWz/IFOSVyLxlj5OoGZbh7YneB9nhfi2f/LVwRqF/u/HVyqwhO2a7C
+ nYJKZdSz
+ a7cLOwoeX6yLsBIQvUMTcIbvHeAg9/FzbpeQCcvhHsnDfohQ9pVfz7gx9seBPTYQNzjjB7zf9I/OLXqieh/zO1QhV/lNawfkNwnkkh8i+7KDLn27lHJzH5LYWq7i/evqPo0LWRlz/t1M6VPlgwZGYm5OhbszTFqP0zeYe6Yzfwx9biV7hO0K6Dy7FUheBy/3cRsI0zmssb2Qpbbkhpr+Yab7HC093jFxqD36h8ng8RDBCDtbL2ADnybi5asE2lIz3hrwNSvlGjaOcWE8mhjbLRMJ4ltAwKa50bExXqW6fXqfgDF/fFseCGVN7dOxdXs1BIwH+B/bDBpcX9lfxRXCq+AcSU6PVNjHihy+Lwrgu5AVLNaXx4PGR8ApsMsykMQW88cVLVu1Uk3ei5A3dbEq0gSp1BlCCDJXDd6bl2FzdJgbhpOPtUuzMOJ+SXILs0ucYtysimOw2hHmBKCVU06wUU5wt3w==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,172 +108,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Confirmed the patches worked for the mainline(6.17-rc7). But it's
-still flaky(1/13) if I simply apply the patches to v6.12.46.
+Hi,
 
-I think there should be some gap commits that I should apply as well.
+在 2025/9/25 23:57, Bart Van Assche 写道:
+> On 9/25/25 1:15 AM, Yu Kuai wrote:
+>> It's safe to iterate blkgs with cgroup lock or rcu lock held, prevent
+>> nested queue_lock under rcu lock, and prepare to convert protecting
+>> blkcg with blkcg_mutex instead of queuelock.
+>
+> Iterating blkgs without holding q->queue_lock is safe but accessing the
+> blkg members without holding that lock is not safe since q->queue_lock
+> is acquired by all code that modifies blkg members. Should perhaps a new
+> spinlock be introduced to serialize blkg modifications?
+>
+No need for a new lock, I think blkcg->lock can do that.
 
-Here is the diff between the two kernel versions after patches are applied:
+Thanks,
+Kuai
 
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index fad8ddfa622bb..62d85c5086ba1 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -65,7 +65,7 @@ struct wb_writeback_work {
-* timestamps written to disk after 12 hours, but in the worst case a
-* few inodes might not their timestamps updated for 24 hours.
-*/
--static unsigned int dirtytime_expire_interval =3D 12 * 60 * 60;
-+unsigned int dirtytime_expire_interval =3D 12 * 60 * 60;
-static inline struct inode *wb_inode(struct list_head *head)
-{
-@@ -290,6 +290,7 @@ void __inode_attach_wb(struct inode *inode, struct
-folio *folio)
-if (unlikely(cmpxchg(&inode->i_wb, NULL, wb)))
-wb_put(wb);
-}
-+EXPORT_SYMBOL_GPL(__inode_attach_wb);
-/**
-* inode_cgwb_move_to_attached - put the inode onto wb->b_attached list
-@@ -770,9 +771,8 @@ bool cleanup_offline_cgwb(struct bdi_writeback *wb)
-* writeback completion, wbc_detach_inode() should be called. This is used
-* to track the cgroup writeback context.
-*/
--static void wbc_attach_and_unlock_inode(struct writeback_control *wbc,
-- struct inode *inode)
-- __releases(&inode->i_lock)
-+void wbc_attach_and_unlock_inode(struct writeback_control *wbc,
-+ struct inode *inode)
-{
-if (!inode_cgwb_enabled(inode)) {
-spin_unlock(&inode->i_lock);
-@@ -802,24 +802,7 @@ static void wbc_attach_and_unlock_inode(struct
-writeback_control *wbc,
-if (unlikely(wb_dying(wbc->wb) && !css_is_dying(wbc->wb->memcg_css)))
-inode_switch_wbs(inode, wbc->wb_id);
-}
--
--/**
-- * wbc_attach_fdatawrite_inode - associate wbc and inode for fdatawrite
-- * @wbc: writeback_control of interest
-- * @inode: target inode
-- *
-- * This function is to be used by __filemap_fdatawrite_range(), which is a=
-n
-- * alternative entry point into writeback code, and first ensures @inode i=
-s
-- * associated with a bdi_writeback and attaches it to @wbc.
-- */
--void wbc_attach_fdatawrite_inode(struct writeback_control *wbc,
-- struct inode *inode)
--{
-- spin_lock(&inode->i_lock);
-- inode_attach_wb(inode, NULL);
-- wbc_attach_and_unlock_inode(wbc, inode);
--}
--EXPORT_SYMBOL_GPL(wbc_attach_fdatawrite_inode);
-+EXPORT_SYMBOL_GPL(wbc_attach_and_unlock_inode);
-/**
-* wbc_detach_inode - disassociate wbc from inode and perform foreign detect=
-ion
-@@ -1282,13 +1265,6 @@ static void bdi_split_work_to_wbs(struct
-backing_dev_info *bdi,
-}
-}
--static inline void wbc_attach_and_unlock_inode(struct writeback_control *w=
-bc,
-- struct inode *inode)
-- __releases(&inode->i_lock)
--{
-- spin_unlock(&inode->i_lock);
--}
--
-#endif /* CONFIG_CGROUP_WRITEBACK */
-/*
-@@ -2475,7 +2451,14 @@ static void wakeup_dirtytime_writeback(struct
-work_struct *w)
-schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
-}
--static int dirtytime_interval_handler(const struct ctl_table *table, int w=
-rite,
-+static int __init start_dirtytime_writeback(void)
-+{
-+ schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
-+ return 0;
-+}
-+__initcall(start_dirtytime_writeback);
-+
-+int dirtytime_interval_handler(const struct ctl_table *table, int write,
-void *buffer, size_t *lenp, loff_t *ppos)
-{
-int ret;
-@@ -2486,25 +2469,6 @@ static int dirtytime_interval_handler(const
-struct ctl_table *table, int write,
-return ret;
-}
--static const struct ctl_table vm_fs_writeback_table[] =3D {
-- {
-- .procname =3D "dirtytime_expire_seconds",
-- .data =3D &dirtytime_expire_interval,
-- .maxlen =3D sizeof(dirtytime_expire_interval),
-- .mode =3D 0644,
-- .proc_handler =3D dirtytime_interval_handler,
-- .extra1 =3D SYSCTL_ZERO,
-- },
--};
--
--static int __init start_dirtytime_writeback(void)
--{
-- schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
-- register_sysctl_init("vm", vm_fs_writeback_table);
-- return 0;
--}
--__initcall(start_dirtytime_writeback);
--
-/**
-* __mark_inode_dirty - internal function to mark an inode dirty
-*
-
-On Wed, Sep 24, 2025 at 5:52=E2=80=AFPM Tejun Heo <tj@kernel.org> wrote:
+> Thanks,
 >
-> On Wed, Sep 24, 2025 at 05:24:15PM -0700, Chenglong Tang wrote:
-> > The kernel v6.1 is good. The hang is reliably triggered(over 80% chance=
-) on
-> > kernels v6.6 and 6.12 and intermittently on mainline(6.17-rc7) with the
-> > following steps:
-> > -
-> >
-> > *Environment:* A machine with a fast SSD and a high core count (e.g.,
-> > Google Cloud's N2-standard-128).
-> > -
-> >
-> > *Workload:* Concurrently generate a large number of files (e.g., 2 mill=
-ion)
-> > using multiple services managed by systemd-run. This creates significan=
-t
-> > I/O and cgroup churn.
-> > -
-> >
-> > *Trigger:* After the file generation completes, terminate the systemd-r=
-un
-> > services.
-> > -
-> >
-> > *Result:* Shortly after the services are killed, the system's CPU load
-> > spikes, leading to a massive number of kworker/+inode_switch_wbs thread=
-s
-> > and a system-wide hang/livelock where the machine becomes unresponsive =
-(20s
-> > - 300s).
+> Bart.
 >
-> Sounds like:
->
->  http://lkml.kernel.org/r/20250912103522.2935-1-jack@suse.cz
->
-> Can you see whether those patches resolve the problem?
->
-> Thanks.
->
-> --
-> tejun
 
