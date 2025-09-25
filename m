@@ -4,161 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6978CAC5A5
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 11:03:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A883FCAC5B0
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 11:07:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E0618E0014; Thu, 25 Sep 2025 07:03:02 -0400 (EDT)
+	id 0F1D58E0013; Thu, 25 Sep 2025 07:07:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 490ED8E0001; Thu, 25 Sep 2025 07:03:02 -0400 (EDT)
+	id 0C9E08E0001; Thu, 25 Sep 2025 07:07:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 331AF8E0014; Thu, 25 Sep 2025 07:03:02 -0400 (EDT)
+	id ED3118E0013; Thu, 25 Sep 2025 07:07:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BE098E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 07:03:02 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BFB271A0463
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 11:03:01 +0000 (UTC)
-X-FDA: 83927485362.16.BECB36F
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 290841A0014
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 11:02:58 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=agBtVbfR;
-	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D79C28E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 07:07:06 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8ACA8B9B19
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 11:07:06 +0000 (UTC)
+X-FDA: 83927495652.21.151AE6D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 342E940017
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 11:07:04 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=V6A1FTI3;
+	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758798179;
+	s=arc-20220608; t=1758798424;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r/0to4OyeGm89Kw4M6wzRihwRzmpUZBpw2U3yaSo+SQ=;
-	b=r0MAHTn9jo2ypVB3JNakYHjptpo+EopsT1aTwubJfEbYj1otoMl28py+u42+ZJaTIZKqtG
-	tcVOXlwrLrfTAth0qGkmWNLjAx12EOdbikBrHrLhltXh6Wz3+zJGM5eA8cLyVAoBVKvLTN
-	kQTdZtKph7rUEJb2869D984s90wdWgg=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=agBtVbfR;
-	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758798179; a=rsa-sha256;
+	bh=9UDG3UtRC260Q/xWcr5X83IjVV0HFkPuvmSUV/vqtYc=;
+	b=WXxlmiD1JvEVaWANMVLhxkUSYJbhlKEkVxTJRIif2SYb/CjqTOU934x9os4DSHaK6esn8d
+	BxRf74swPeUkKK3ZWxF17bVPjdIKzWnCDfELiDvlPw87p0YgZJWMSjirg5p+kSiIXgCklW
+	+2vBlb1E9M+EB46vxWIFICui5qLg5Hc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758798424; a=rsa-sha256;
 	cv=none;
-	b=2+BOOOLbCtYedAkZpjznKrgRvZUXiy1SHMNk5bbyfDXJdvtFvqbsisGWPuOFvGWtsNzjWJ
-	9uJtJjntyuq1QqqWirJZWtG3Jnt/6zmPN09Lq9+QQ/egOAU6f0fImRdugVoUoq9RSMk0lr
-	LaPR4NdIGMpYosZSImKDMq78/J5wZok=
+	b=3uSN2SH7uKU6rmggmSFzRm2QFzeikx9HlrBS26ObrcAhchKVvDGT7ANPhZReYDjHgjlmHX
+	Y9WRyegvc7l/v/mB90H0yYjf+pRyuGw1hBPiJF5pWJFALmtsxMC95ft+kI9GEj8Mu9rjzt
+	IiXxRpKwp9kWMvPpS6nYtNBPt51CIME=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=V6A1FTI3;
+	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758798178;
+	s=mimecast20190719; t=1758798423;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=r/0to4OyeGm89Kw4M6wzRihwRzmpUZBpw2U3yaSo+SQ=;
-	b=agBtVbfR/CDX62ZoTjQe3JL2DvpN2tvcwRsuc9yztOA828Br8uHlzDG56G03045wsv/U/8
-	Typ9Sex658vDfJ509O5ol2e8YOCFIWXlwaGBxwOeXsdvKVJZpSuZ53LsjBKm7ehK8Mgi+4
-	qtg1lZOXLuEQoq+WBusxCzLO0WBEEk0=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=9UDG3UtRC260Q/xWcr5X83IjVV0HFkPuvmSUV/vqtYc=;
+	b=V6A1FTI331HxinC0ZKLmuxTmqweoxnr6skexSuWOrracgyRwfjxZxUMi7YFPGcxuoW/Gbq
+	uAy2WG0lsi6zx5sa6nOePuEw+cbwnULEGv2OScpnptLqFPiUrlcxG72GTrv94n/hngmir+
+	bkp2kwXcw7/cElLeVNiNeFhQPxrKorM=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-425-PyIpwf7pN_OlJz5DCzwLlg-1; Thu, 25 Sep 2025 07:02:57 -0400
-X-MC-Unique: PyIpwf7pN_OlJz5DCzwLlg-1
-X-Mimecast-MFC-AGG-ID: PyIpwf7pN_OlJz5DCzwLlg_1758798176
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-46e23a66122so5951195e9.0
-        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 04:02:57 -0700 (PDT)
+ us-mta-306-lQteg5dsOV2RutsjqDkSVA-1; Thu, 25 Sep 2025 07:07:02 -0400
+X-MC-Unique: lQteg5dsOV2RutsjqDkSVA-1
+X-Mimecast-MFC-AGG-ID: lQteg5dsOV2RutsjqDkSVA_1758798421
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-46e38bd6680so509005e9.1
+        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 04:07:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758798176; x=1759402976;
+        d=1e100.net; s=20230601; t=1758798421; x=1759403221;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=r/0to4OyeGm89Kw4M6wzRihwRzmpUZBpw2U3yaSo+SQ=;
-        b=fH8lNdjrNOiq8gcpmEOQt/lcVplN8oUAEZBJARGY8U+85TToPQH2cpf1Vx+Jr1OsQE
-         r6Z/l+BUkX56J2wnNYMRUoMIsrI4FhLcUbPEHbc7IlS/2r19ZAy8uNYUz/+uK27W7KpV
-         oH54c/A2ofwCImZszr7jZvYZ0FE0jdigksaPTaflw8QF3149VnGg2DX4m7lW4A6FLU24
-         UIizMffMsT7ku3WA5s9h6h+JEo9adgbtEodl1inWzby0ThGZ3Q4FiNufvnPi65bAJjk8
-         sHT43bSB7TQvdYxRE5JTWtJM3Y4ToABmVVn4G0m7As3GDHSWegF+g9xWjsl3/56cdfNE
-         qnBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXeSY4xZ9HrS5YSK64LlxHz3PhJ4e03yDb8NDcLGdj9+WUaEe0jRBNeX8vSl2AiZimIT6FDcrBg6A==@kvack.org
-X-Gm-Message-State: AOJu0YxakCUqWZkrLvcG3irLCRxXomFa37GVi8P0QthzoIt7f53gTDaU
-	e984CctUeXCxYtQguiD5n5AOPPUzs570HVTfhG0Wm49QsATC5TJV+NMASg0VetcgoFRLldhJvRR
-	UB+zhlGNAYe3Rz6Id1peo+klCPkXqzjojfgvN5ZpLaNzVxMC1caLh
-X-Gm-Gg: ASbGncuqzOnpXdtopde6hiAQd2qtYJUmLKyebL36Jp+jI7oUCjCiL1PfowpRS510eq6
-	h6o7AcOFVyC13aXsHBGoAdtKawMaBR6tQBqdESeaZ0DwylIai9gt+gAffx59xhiNL7PV90BAHCc
-	bw4OTQ0gpIV5uur/AU35k8p57hQolGd8pn/IOKJC7bA6wb/GV7FUz37iI7Qo2mDv96akyytOZCO
-	iZZXZ152cPfVlI9sj+n8VSoX2dtKeuo4VL7wNdenyAKfIXVkwhzK/ZqJxNvf/LpE7QQAw4VG70g
-	1hkMr1m5pXWw5EA6QLsoYJsdxgCHG4/QnUyaPQVmBHJ2jDgR5FHpcEHpvb6BLllc1ufwsFqEAG9
-	llKOCUqgOXFUS5/JC0ENKWHFQV+OiI4eON+H+hRrvaC0D7dq+BNk/NkmL40HdHpLv+vFY
-X-Received: by 2002:a5d:64e6:0:b0:3ea:6680:8fb5 with SMTP id ffacd0b85a97d-40e458a939fmr2659878f8f.2.1758798175635;
-        Thu, 25 Sep 2025 04:02:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHaRjs0B05ZyXvh1d6jlu1Ktfb++k8xqGa0tdnYe8v/SeU1yGa2CE1nYchZ3/8IlcM8uOiw9Q==
-X-Received: by 2002:a5d:64e6:0:b0:3ea:6680:8fb5 with SMTP id ffacd0b85a97d-40e458a939fmr2659768f8f.2.1758798174621;
-        Thu, 25 Sep 2025 04:02:54 -0700 (PDT)
+        bh=9UDG3UtRC260Q/xWcr5X83IjVV0HFkPuvmSUV/vqtYc=;
+        b=MTbRd2uw+NumZo6x0N8ysevDPk5Qsr1VBb2wykU4bMxIDGaNgLSnhfOKfpwDxEpYPm
+         OxKxjnfW5HmNB60kiUvdn/clUMEAQjEbbXOFyPiLPJPcUntMmeZHa54XF1cTR3OmoAYY
+         IskbSgBDGSQkieEzZmbOt5BapjF4LPtdXywBB/ptHPGiFnOXwu2U77ovxoZU9e83iGF1
+         peWEAVVjf+TpGboj3vwSv8tD1TuRH9I4/diHJxX9+i1Zkleffcv6VCG5yuf1pC2Ugx5t
+         qEPS2K+MSPm24Uc/xAdMZX8Tq/siYqJ3ajb3Ym3pOGLNXUi0z+C4RX1i+5riHQxgZ1Js
+         14pw==
+X-Forwarded-Encrypted: i=1; AJvYcCXFr6jPOLllPD0zVRAkN1VJ7hjEzNUrvWevrkB+ASYymZI1WzjeHHn5qA8+7P0cRsy0eMAlEUwvhQ==@kvack.org
+X-Gm-Message-State: AOJu0YznJNEMmi4e0h9hZIIUh8JQivJ6DLP5oxnQBf5Rykt/PDMLYFrZ
+	33KAJ3EW0pzTeYBOWPs9Ku6X6zwIKaMyXFhaoH4XOL8Nhhf4l2OnkqHO324BHiX464GJTALQLVT
+	WmsYgupI/XOjEiwEkBy+nm/Ed3Hc59NYytn3TRBT5KcQDikASB23W
+X-Gm-Gg: ASbGnctzMHr2aczH0We/MUvE0XLb5MRtdbC0z1ctV8heWHewftDTtmxpFMGRTMOP++2
+	tRcZeOdpZwSZCd3/9eQ8Ey4J9L/MMSEs/eZvI+UyMSkbW+6AqecrZbYT4kn+axQ2j0nogHcf4qU
+	DpxP9fvMXuixrfLjStG7XlzjZCUr41+TEOGn4F9Xjk1shMgBfEmXIvmK3d8Isu8yeQpENX0RXtA
+	2HQ/K2YGBFpOXq43JrRzSVLYdnMKzl5tmlIsr6+C22CgPrWQuyL8DDySHaMtmvCpsJQCMTS0JEk
+	UtXvSzr/t5ib989YPCXN/m7fdUnNwuk/wHJN+8trM53ZwCN0VWE5NusHxwBSz0JE480yCq/yHQ5
+	vyMdIem6nP5/BeEXApoOCP3PPTF5pRqfGl9tAnja87ZTlaznLiW29taIOdpXehhD5tCou
+X-Received: by 2002:a05:600d:108:20b0:46e:1cc6:25f2 with SMTP id 5b1f17b1804b1-46e329b2b17mr25844065e9.12.1758798420945;
+        Thu, 25 Sep 2025 04:07:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHK/Xlw6F+G3SF7DEkRQxLqqsR4p9KpsSWYAACG7TneRIoOHXtR7kgbnwym3WqTjLFGZCt2lg==
+X-Received: by 2002:a05:600d:108:20b0:46e:1cc6:25f2 with SMTP id 5b1f17b1804b1-46e329b2b17mr25843745e9.12.1758798420503;
+        Thu, 25 Sep 2025 04:07:00 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f3f:f800:c101:5c9f:3bc9:3d08? (p200300d82f3ff800c1015c9f3bc93d08.dip0.t-ipconnect.de. [2003:d8:2f3f:f800:c101:5c9f:3bc9:3d08])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fb72facf9sm2650164f8f.13.2025.09.25.04.02.51
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e2a996bf1sm73938005e9.1.2025.09.25.04.06.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Sep 2025 04:02:53 -0700 (PDT)
-Message-ID: <cf57bdec-6a2d-4d6a-b27c-991a7e2833ab@redhat.com>
-Date: Thu, 25 Sep 2025 13:02:51 +0200
+        Thu, 25 Sep 2025 04:06:59 -0700 (PDT)
+Message-ID: <7305f905-0f81-4268-a3b3-933ac00cdb6a@redhat.com>
+Date: Thu, 25 Sep 2025 13:06:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 06/12] KVM: guest_memfd: add module param for disabling
- TLB flushing
-To: "Roy, Patrick" <roypat@amazon.co.uk>
-Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "corbet@lwn.net" <corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>,
- "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
- "joey.gouly@arm.com" <joey.gouly@arm.com>,
- "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
- "yuzenghui@huawei.com" <yuzenghui@huawei.com>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "will@kernel.org" <will@kernel.org>, "tglx@linutronix.de"
- <tglx@linutronix.de>, "mingo@redhat.com" <mingo@redhat.com>,
- "bp@alien8.de" <bp@alien8.de>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "luto@kernel.org" <luto@kernel.org>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "willy@infradead.org" <willy@infradead.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
- "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
- "vbabka@suse.cz" <vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>,
- "surenb@google.com" <surenb@google.com>, "mhocko@suse.com"
- <mhocko@suse.com>, "song@kernel.org" <song@kernel.org>,
- "jolsa@kernel.org" <jolsa@kernel.org>, "ast@kernel.org" <ast@kernel.org>,
- "daniel@iogearbox.net" <daniel@iogearbox.net>,
- "andrii@kernel.org" <andrii@kernel.org>,
- "martin.lau@linux.dev" <martin.lau@linux.dev>,
- "eddyz87@gmail.com" <eddyz87@gmail.com>,
- "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
- "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
- "kpsingh@kernel.org" <kpsingh@kernel.org>, "sdf@fomichev.me"
- <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>,
- "jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
- "peterx@redhat.com" <peterx@redhat.com>, "jannh@google.com"
- <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>,
- "shuah@kernel.org" <shuah@kernel.org>, "seanjc@google.com"
- <seanjc@google.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
- "Cali, Marco" <xmarcalx@amazon.co.uk>,
- "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
- "Thomson, Jack" <jackabt@amazon.co.uk>,
- "derekmn@amazon.co.uk" <derekmn@amazon.co.uk>,
- "tabba@google.com" <tabba@google.com>,
- "ackerleytng@google.com" <ackerleytng@google.com>
-References: <20250924151101.2225820-4-patrick.roy@campus.lmu.de>
- <20250924152214.7292-1-roypat@amazon.co.uk>
- <20250924152214.7292-3-roypat@amazon.co.uk>
+Subject: Re: [PATCH 1/2] mm: always call rmap_walk() on locked folios
+To: Lokesh Gidra <lokeshgidra@google.com>,
+ Dan Williams <dan.j.williams@intel.com>, Alistair Popple <apopple@nvidia.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, kaleshsingh@google.com,
+ ngeoffray@google.com, jannh@google.com,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Harry Yoo <harry.yoo@oracle.com>, Peter Xu <peterx@redhat.com>,
+ Suren Baghdasaryan <surenb@google.com>, Barry Song <baohua@kernel.org>,
+ SeongJae Park <sj@kernel.org>
+References: <20250918055135.2881413-1-lokeshgidra@google.com>
+ <20250918055135.2881413-2-lokeshgidra@google.com>
+ <2c9df5ee-6109-4fa5-b895-ad8e47d34bee@redhat.com>
+ <CA+EESO4h-_U=Xo3x0G_74t_qJQ54AZ4Qd2Ji437aMV8nDZ+tkw@mail.gmail.com>
+ <5549ac3a-20cf-4959-ac53-0a89ed0eadd2@redhat.com>
+ <CA+EESO5e0gupVfM9NgWqx34oMRk1jGzsNfM=X3idPKaXkRL2fg@mail.gmail.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -204,21 +163,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20250924152214.7292-3-roypat@amazon.co.uk>
+In-Reply-To: <CA+EESO5e0gupVfM9NgWqx34oMRk1jGzsNfM=X3idPKaXkRL2fg@mail.gmail.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: EZ21WYbitOVRGIUJgcx1xktBb1Bf7GDYMlNXGYhWrLA_1758798176
+X-Mimecast-MFC-PROC-ID: eLyvZXd9VK4TsE-TpOy8tVearDbGOSpteAAH9_cit2A_1758798421
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 290841A0014
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 342E940017
+X-Stat-Signature: xog7bdd5jd7phgeg8eurp9ri4boi6act
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 3ndso8uedmsajdhex9jyhw1k3opr3b9p
-X-HE-Tag: 1758798178-146473
-X-HE-Meta: U2FsdGVkX18mTMg1wEPbuQkH8cGAo42IILjF2zPzaQ5t8l73gSzu5Nk3xsZq3eoZqpzfRcw4qt+8nKr6+VgfPOk8wE4lPTysnpTHOE/QqEXooO+0BE/5j/Q7fHzYZ/IcR4s3qUd4r9BR1aV0t0IFmMqbaZEy6K3is9+GlD4Y/QnXFiRYzQo+DHzxU4ywmUWy2pQsOZfd3ekN1rD7PYj2W+MU4slWA7nUh+so8om4ivSBljeN9b3ICwBMAfKK7M3KoTvjK2BJ8OsTtNwbWIPa7V/I7c1VWfFLPwhRp2Ba4lmVYgTfH4xI0L7aF9yrXUGI4bFjI1Z5KXRIFlzg4Dnetaka4CsOER9aNNn3N/kY71mGM3BqfHLjIYXwoC4sQDY8GArXaNMb4nzoUmB4oY4QYGe9yo7WBc0vTSsazeSpQoJ97FcW6dO06XRoU9HlLeQ/gSgTDXifsjQKyFAgrBnD0uSUPl8Qgz7NM1JB4/3L8YCwTTR2jObGM61tdvt/2rwVk0/g5Su78JLFoMAQkgj/SV9RCddpeYre0aqbX4E7QzxMcxdx2VVLlcoOK8bTZc41zxF9nPirqbYHDfKqBzOR4Re8KWXukeUUslbm4tUdkGeK4/MkpyDDI3cTCXXidqe0liIJMJFpADjR7CPAAwW/tbWzaR4dZge8utCIM3lELVAeH/YAYPn2jFl1sUAFmY5cOg6cZc1xiyo4EVzNfJYdtXRTeY/nHaCi4GIoTEshFtuEu8/YjbDHDHndCeW4fIUIZGzgCX4DK7VUy0TmEK6Yc0t7Fswfv/0a1v+3M80Nvfp37kmD0IyZz3+Hz5uxpRWSMRmr2uGJp0wRCCGk9h+ZmQ7EXJtAh08ZmXgNpBqU5KfEm0nh8bwofhUDN8sA0/2QppBmcjYvHGqYjzDa9IQ7KgQOkiICmpnfL/+QO4rZtFQ8aDyN+gmDhBlWkXTVQKl9cjXAOmFl85P0ZQKwlVO
- vSsubbw6
- eQ0b+eCwnC6nTg+LvA8dlGDJlO0JhI7vU1hjoGs5suOwi6Sa3J5vc2iIF1HoUbiVwx84FAhlq88hzHusP6fo3YuDwu96HR7GzMdIvY4KQ6b0Egkfh0GVlyF7AhkFuy85Ap2Fz0TtK35tutvNAOcMJoZDD9jbpSPAHKb2SNf75agjkyNUsfStNg3IZxjnTwanrKaYkwsx5fceefCHH+X9jtn1imFhpnXIPXZhGbmQGW+27/9WHL7+P6EofYS3JZMeFX5t/mzeOmNEd52N+mQfm3wpxniL4BfHFH6+7ArYvPnp1cv8CVZfN+pRLf3mN6PwmvUBuWeSDt82XHnvmI1sLevshuO8erUClth7jlT/MLKYP1xxYY6pJf0XLVYQCGGCPsfhFSSAjX4IIlROoVOyoVqRXOx2pyxacIiVI1kXH7to0UO/5dlBS0DObKvXXTC/bf/jpOqXpdCLc6/fTAM26tKmZm9VRSFNsiIN0T5KfNwez4Iy+nxMLagSRN5mNsCOsx2eSRAJcP1MpZYwuzTqEmKdbBK4eHMtPbHCpUCxnjVUkcE5p3RbEsouiayaPGku/okV3PboEsNqYN2bf7KlNQJmBChkBAKAsCG9MkeEn7Pw1owMZFWBVM96dUL2Z5fclPk52foEp/KusI5uE21G9oMqqk6OtKO10ARJFf6frcQclbgRHIIK6e86S6BfzYozJvhH0udlxmlSxvdJZPq4i5/Mos7aklyjKVnmK6mBGAvaE0974/kS6ryYfoouB2+5ZGq/FYCsU1NdC9vc+HJGA3IeXP6fCpQ/7CVzeillu2WC1XBY=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758798424-525438
+X-HE-Meta: U2FsdGVkX18S2YQuq0z/SThJ9x0OYix8r+Du626CT+is4AbyQhYsLsklZBfhoZmyTeKnGZlRyNwl5NfBXDKyTDrJJjCXEcKWZiyHCNILph09a0HeLU/wGeUJd1LC7N9nxilKFiTsyzS3FgXnOR05ZeqwKhs2IrXmWNbQUtC/VSVK/1cjCWsr6yHgriFomCNG2Ld/279ifmHGUA6cECeXNyaIAE+uHNZ5npYP/XbVv9OKla2LFuQFvooED91p4t8po+TuMe284bKrAhrJqLdUBQ6AqzXjbtZPovw9gwj4UgCltucBNN6kz4MJLeyLxhlSL8eU12rN5E72f2iPMHecRNH7/cDjY3FIrvuF7lH6Gb3Sj7Th/NfvBRteVKBQQWZtT/UG1wIi/XAmxkCxdOedfqw65SvGrVdVWtwJyDUigfHpZYFsGxuW5hrPs0VZre1NrKN2np0ut5ARYk69OoRchYJtmKrSTWnmPO/NDVW8Ls3C0IOf+GGfZ+ixw0OGwNsQauTr2/idJ0PC/brEvIDTSz1APdIS1MawlrENbSvhCaE32dtJclFflrur7esqcCANl8HdZ4gtGBGDZCQQDeVsMSeSJB01psOe4STQpEsJyk9D8mZnUekvptt7HGA4uIm43MfuJIyydrLAgs3MO44QvZ3uWJ+/Nnrspb1ZKaYEH/e8w+VJPlOHQAAPmB40ABCg861jSRnMyBeJTMETjD69CSQW5g/lBveVbdid2FSV85ddo7h5hDZDxvm1wqUqeDypkzco1kPSu5RMwNMd5AYNxg67WHkeTSC/GRobqhbEbrRzdq3AmSgClL8etP+UWcj3r2aMNydwhToeVxqpyenB3W4G2aRGlUoZjJ+vkU2qDCnwA03NjEA1mkkUwJcw7atvhYqNAA/zUSvgDR9QFQ67j/Is4EREKqHiVK9uOOhfVf1ixE7Z2EP4MytK/+1nkcbTEuXS2aivc6/u2xtd2RP
+ sSmSSX+/
+ jEp5pnN74BLC2qeGR6xY4JyRRdUqPCfwOPyPmVLXfGiI53wjoSHkfr6sM/BKf17+iXNZkziJ9AL8TcnSzda2FoPRDlAjgHFE9Yl3Ccd2Wq8FRmZPtOxMXUWUwRQpiukuZk6LE/BOfo2SwYjCbkmz7ObXK98CQtbTal9VClJUU6eMbSEqRcgkAoHfWhaqKe+STht2Nep29NUy/b5mpB1+z7X6DJCTGlNsF7rO6DlE5yP8mLa4YFbdfSD24iK4EFImHzDZ99kdCxy68Tg65KZFS/69Fl4N/wdNJjYu/0JW0Imdop4TliEqLFB1yBIPZvhIqSea5wLo83TrlVw+SGxidIGYP+LpTEM+S6txFXuDLSd4UpT09flLxT7im8nsfn3gM45p7feDzj53GELkECb4fM+cfidqvc49UYzUcGzK9B4LPvCrFxOpgxSPKMxSQTCIrLWYRhGITWDg5yCnzm52HykupPr8l7McRm+YHlgaqWEOsAmk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -227,76 +186,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 24.09.25 17:22, Roy, Patrick wrote:
-> Add an option to not perform TLB flushes after direct map manipulations.
-> TLB flushes result in a up to 40x elongation of page faults in
-> guest_memfd (scaling with the number of CPU cores), or a 5x elongation
-> of memory population, which is inacceptable when wanting to use direct
-> map removed guest_memfd as a drop-in replacement for existing workloads.
-> 
-> TLB flushes are not needed for functional correctness (the virt->phys
-> mapping technically stays "correct", the kernel should simply not use it
-> for a while), so we can skip them to keep performance in-line with
-> "traditional" VMs.
-> 
-> Enabling this option means that the desired protection from
-> Spectre-style attacks is not perfect, as an attacker could try to
-> prevent a stale TLB entry from getting evicted, keeping it alive until
-> the page it refers to is used by the guest for some sensitive data, and
-> then targeting it using a spectre-gadget.
-> 
-> Cc: Will Deacon <will@kernel.org>
-> Signed-off-by: Patrick Roy <roypat@amazon.co.uk>
-> ---
->   include/linux/kvm_host.h | 1 +
->   virt/kvm/guest_memfd.c   | 3 ++-
->   virt/kvm/kvm_main.c      | 3 +++
->   3 files changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 73a15cade54a..4d2bc18860fc 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -2298,6 +2298,7 @@ extern unsigned int halt_poll_ns;
->   extern unsigned int halt_poll_ns_grow;
->   extern unsigned int halt_poll_ns_grow_start;
->   extern unsigned int halt_poll_ns_shrink;
-> +extern bool guest_memfd_tlb_flush;
->   
->   struct kvm_device {
->   	const struct kvm_device_ops *ops;
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index b7129c4868c5..d8dd24459f0d 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -63,7 +63,8 @@ static int kvm_gmem_folio_zap_direct_map(struct folio *folio)
->   	if (!r) {
->   		unsigned long addr = (unsigned long) folio_address(folio);
->   		folio->private = (void *) ((u64) folio->private & KVM_GMEM_FOLIO_NO_DIRECT_MAP);
-> -		flush_tlb_kernel_range(addr, addr + folio_size(folio));
-> +		if (guest_memfd_tlb_flush)
-> +			flush_tlb_kernel_range(addr, addr + folio_size(folio));
->   	}
->   
->   	return r;
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index b5e702d95230..753c06ebba7f 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -95,6 +95,9 @@ unsigned int halt_poll_ns_shrink = 2;
->   module_param(halt_poll_ns_shrink, uint, 0644);
->   EXPORT_SYMBOL_GPL(halt_poll_ns_shrink);
->   
-> +bool guest_memfd_tlb_flush = true;
-> +module_param(guest_memfd_tlb_flush, bool, 0444);
+On 24.09.25 21:17, Lokesh Gidra wrote:
+> On Wed, Sep 24, 2025 at 3:00 AM David Hildenbrand <david@redhat.com> wrote:
+>>
+>>>>
+>>>> Is mf_generic_kill_procs()->collect_procs() problematic?
+>>>>
+>>>> The dax_lock_folio/dax_unlock_folio part confuses me: I think it only
+>>>> locks an entry in the page cache but not the actual folio ("Lock the DAX
+>>>> entry corresponding to a folio")?
+>>> Yeah. The name dax_lock_folio() gives an impression as if the folio is
+>>> locked but it isn't :)
+>>
+>> Sorry for the late reply, I saw you posted v2 in the meantime.
+>>
+>>>
+>>> IIUC, a dax folio can't have an anon_vma (folio->mapping is actually
+>>> an address_space instead of anon_vma), right?
+>>
+>> We have these weird device-private dax folios that are anonymous and
+>> should have the anon_vma set up.
+>>
+>>> So, I thought it wasn't
+>>> required to actually lock the folio in this case. Please let me know
+>>> if you want me to still lock the folio around collect_procs(), or add
+>>> a comment?
+>>
+>> I think we can end up reaching memory_failure_dev_pagemap() with an
+>> anonymous dax folio.
+>>
+>> Not sure if anything would prevent us into calling
+>>
+>> mf_generic_kill_procs()->collect_procs()->collect_procs_anon()->folio_lock_anon_vma_read()
+>>
+> I must be missing something but dax_lock_folio() dereferences
 
-The parameter name is a bit too generic. I think you somehow have to 
-incorporate the "direct_map" aspects.
+Maybe the code is missing something :)
 
-Also, I wonder if this could be a capability per vm/guest_memfd?
+> folio->mapping (to get to host) without checking for
+> FOLIO_MAPPING_FLAGS presence. If it were an anon folio, wouldn't that
+> be a problem? And then in collect_procs() we obviously check for
+> folio_test_anon() on the same folio before calling
+> collect_procs_anon().
 
-Then, you could also nicely document the semantics, considerations, 
-impact etc :)
+Right, if we reach dax_lock_folio() with an anon folio we are probably 
+already messing things up? Not sure if the "!dax_mapping(mapping)" would 
+save us, likely not, because it would be an anon_vma.
+
+Hopefully Dan+Alistair have a clue how this works and if it already 
+works as expected with device-private anon folios.
 
 -- 
 Cheers
