@@ -4,195 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E2DECAC5BA
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 18:28:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0088BCAC5BA
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 18:31:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 429CD8E0010; Thu, 25 Sep 2025 14:28:03 -0400 (EDT)
+	id 36F4E8E000C; Thu, 25 Sep 2025 14:31:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 401E98E0001; Thu, 25 Sep 2025 14:28:03 -0400 (EDT)
+	id 31FD28E0001; Thu, 25 Sep 2025 14:31:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EFF68E0010; Thu, 25 Sep 2025 14:28:03 -0400 (EDT)
+	id 20E1B8E000C; Thu, 25 Sep 2025 14:31:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DCBC8E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 14:28:03 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D128811A082
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 18:28:02 +0000 (UTC)
-X-FDA: 83928606804.14.3648D98
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf26.hostedemail.com (Postfix) with ESMTP id CFC0A14000F
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 18:27:59 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=TnVkZeCy;
-	spf=pass (imf26.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D1F98E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 14:31:27 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A8F79591DD
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 18:31:26 +0000 (UTC)
+X-FDA: 83928615372.07.5CD977D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id BAA4AC0016
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 18:31:24 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vIaraepL;
+	spf=pass (imf22.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758824880;
+	s=arc-20220608; t=1758825084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gllL0jFsSMTv+WKLgz1TzNrM4HELZ+1hcm3IMJUm3Jk=;
-	b=QMDCIZt6LdOn3COsQf9P74v71eGM06WyT7JedkdeXelhLEz02h0F7ZFSSp0jLGlKe+bFER
-	tLxixGX5IuSEv0ClVV5d8wqhcqF+mNOZUTMpEFPzwTPlmR+e7KRIoDCwm9Em6nUjpt2m8u
-	pL7buTHiGL0U1B3MD0V+h6UIBgv/BYk=
+	bh=4XKbKkKeuiRsGTfz4DsfSh4Ypm7GbrZRpxmZ5WAmi9o=;
+	b=l10NOXO+uypTnAEhCMCVSe5UqeBu5JwY+cmJ7njRAUwebZptPt47KC3Eu7BIYka4D9YAFA
+	/Dt4zqAeSgO2fqabn635u6M/aV3BxgcrefvRRirL6Fb41qC/gCqzG/F/fpwh1+lNK3q7mv
+	lc9ERsXCZEDRQoqwgA2OV5B5ZtJYMOU=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=TnVkZeCy;
-	spf=pass (imf26.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758824880; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vIaraepL;
+	spf=pass (imf22.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758825084; a=rsa-sha256;
 	cv=none;
-	b=lroy8R+1DPb/YJfw4t3vvMvTWXGtIF6yKYgIUSLGv+zmV5GLhzLlDYT2TzjgaBHmAblbfG
-	Qh+GQehRUHIK34Pzv/O5/6SEu+PhgiUR/5TTgLSdEMqycCK8RF0wHy12yF9wO/JRbeWNBN
-	iOaYdg9Q/JjNXNSjat3UxlhxPznYo9k=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758824880; x=1790360880;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=gllL0jFsSMTv+WKLgz1TzNrM4HELZ+1hcm3IMJUm3Jk=;
-  b=TnVkZeCyWUmzloGVxvu1+LPZPYu/t1GCxgqq0gdM2BT12NCFKcEyxtx6
-   C64FUzQ7cUWRvJbvNB94jq6GrMZH2rC+dTF69BUXKmOgbkXvNmLsmhG6L
-   trzUVQ6kZD8osK/F+bOCMH+6iUlqsP/PB6AQvMr+NGHKmcgdCSNMSUHAy
-   xYlsQMtrsgEGXM4c3Mk0Nsqy7tGY+Z3QvRBGGaNeMr4kHiwohqdmCYZwl
-   vJATxhdi583V/fX2YgmfE5rtUE+bg2XduvdibE/CiadOLmkq/dnrNcpTo
-   fY5lsgQdeLbHr1lhOftM6qjbe73yBUyVoYt5MSiVGrjMUdJxdEYyCSUfq
-   g==;
-X-CSE-ConnectionGUID: asE7GUFqSJKCwb0z5ltoBQ==
-X-CSE-MsgGUID: 66jb6kKSQWeXCbA2SgMNKg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="61206593"
-X-IronPort-AV: E=Sophos;i="6.18,293,1751266800"; 
-   d="scan'208";a="61206593"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 11:27:58 -0700
-X-CSE-ConnectionGUID: QhFvsIm2QUGJPg2v+owCag==
-X-CSE-MsgGUID: O2Oud7SaSaypMhr6Xe/2hA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,293,1751266800"; 
-   d="scan'208";a="208338229"
-Received: from unknown (HELO [10.24.81.144]) ([10.24.81.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 11:27:54 -0700
-Message-ID: <e25867b6-ffc0-4c7c-9635-9b3f47b186ca@intel.com>
-Date: Thu, 25 Sep 2025 11:27:53 -0700
+	b=F2A9T5ExwTUO9s5Rt6W2Q4qKfW63EBM2Immvn3MTeU+OWeNazny2UVy4woXw3fYDAaC+g5
+	3XZDOAYkRZswxRGHXxbekWkpbZtrJIlGbjF9wFUHRdKGvqJfs6g8T1rlLeeycabGtYwKwL
+	rIncCtqMysOQ/22Hvj7pHbp1j8+DNfE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 25B06611E0
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 18:31:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB997C113D0
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 18:31:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758825083;
+	bh=eH7Jke1MFZ9p/kAzSSfXnej5on7N11Odn96QlvlP6bM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=vIaraepLvp5WKFqRGAKV8k6YIURNLUQfkUziQGcdACfTAzuAV+pQtYAh1OSJdIEPQ
+	 8ktasQd7t0rjza0Rd4TP5xhFeHP7eIW6etdpy41Vkt4iiWba1Y7BoNCsijkb4Zwsx8
+	 rP6+HHu2K/MvUQ+m+BbwTI/QF80Ol+0qYTbrBes9NujM9kL2M/2d5vAlJ7Pnf+o6h5
+	 Zuh3egaitxsIDkcSF7iiPURrjBECU3a5kpwcsQ3kJ1/QGBUYdObWGzUTU9xq9xzLr7
+	 ifsbh/y5S+MqZHfAl0QoogTFJW5zz63xcZsE//jBhHC1++s7pkq5IZQ7gnEo/rpZKJ
+	 Ge9+QPgqMJQsg==
+Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-6348447d5easo198575d50.0
+        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 11:31:23 -0700 (PDT)
+X-Gm-Message-State: AOJu0YzRBvYd5gjlF3B8D8MphhcKNMM7vGS/JzoNKB3sbQeMT9p4/feg
+	5ZPugG7L0W4LlpmCQKukryg1txarhWGNsvIaqXdVpDeMADXIhs8DsYCukG8187ur1FpYkSJpmWL
+	OimV9MNPa077yZCXE7fN5K6pkUTfSDoWXcWYXL6VTJQ==
+X-Google-Smtp-Source: AGHT+IHtGubmSQQB2mLy1bepjDW1/vKA5uZdChGoF2qDjIZL/0CmuvZ+5BrBJxim0LL1K/gQe7xIrwbjz6M61rx9m0s=
+X-Received: by 2002:a53:7212:0:b0:624:1660:ba01 with SMTP id
+ 956f58d0204a3-6361a82db92mr2817347d50.37.1758825079500; Thu, 25 Sep 2025
+ 11:31:19 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 06/12] KVM: guest_memfd: add module param for disabling
- TLB flushing
-To: "Roy, Patrick" <roypat@amazon.co.uk>
-Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "corbet@lwn.net" <corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>,
- "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
- "joey.gouly@arm.com" <joey.gouly@arm.com>,
- "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
- "yuzenghui@huawei.com" <yuzenghui@huawei.com>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "will@kernel.org" <will@kernel.org>, "tglx@linutronix.de"
- <tglx@linutronix.de>, "mingo@redhat.com" <mingo@redhat.com>,
- "bp@alien8.de" <bp@alien8.de>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "luto@kernel.org" <luto@kernel.org>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "willy@infradead.org" <willy@infradead.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "david@redhat.com" <david@redhat.com>,
- "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
- "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
- "vbabka@suse.cz" <vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>,
- "surenb@google.com" <surenb@google.com>, "mhocko@suse.com"
- <mhocko@suse.com>, "song@kernel.org" <song@kernel.org>,
- "jolsa@kernel.org" <jolsa@kernel.org>, "ast@kernel.org" <ast@kernel.org>,
- "daniel@iogearbox.net" <daniel@iogearbox.net>,
- "andrii@kernel.org" <andrii@kernel.org>,
- "martin.lau@linux.dev" <martin.lau@linux.dev>,
- "eddyz87@gmail.com" <eddyz87@gmail.com>,
- "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
- "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
- "kpsingh@kernel.org" <kpsingh@kernel.org>, "sdf@fomichev.me"
- <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>,
- "jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
- "peterx@redhat.com" <peterx@redhat.com>, "jannh@google.com"
- <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>,
- "shuah@kernel.org" <shuah@kernel.org>, "seanjc@google.com"
- <seanjc@google.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
- "Cali, Marco" <xmarcalx@amazon.co.uk>,
- "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
- "Thomson, Jack" <jackabt@amazon.co.uk>,
- "derekmn@amazon.co.uk" <derekmn@amazon.co.uk>,
- "tabba@google.com" <tabba@google.com>,
- "ackerleytng@google.com" <ackerleytng@google.com>
-References: <20250924151101.2225820-4-patrick.roy@campus.lmu.de>
- <20250924152214.7292-1-roypat@amazon.co.uk>
- <20250924152214.7292-3-roypat@amazon.co.uk>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
- oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
- 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
- ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
- VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
- iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
- c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
- pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
- ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
- QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
- c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
- LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
- lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
- MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
- IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
- aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
- I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
- E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
- F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
- CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
- P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
- 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
- GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
- MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
- Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
- lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
- 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
- qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
- BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
- 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
- vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
- FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
- l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
- yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
- +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
- asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
- WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
- sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
- KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
- MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
- hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
- vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20250924152214.7292-3-roypat@amazon.co.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: CFC0A14000F
+References: <20250924091746.146461-1-bhe@redhat.com> <CACePvbUhnNUgqbTUrBYoMK-VeCB1Lntkeijof8ehOz77M8H6Bg@mail.gmail.com>
+ <CACePvbXz-JQoC40rLzxQe+dvXe9B59sz5kt0eWDUZosRmh3d8A@mail.gmail.com> <aNSlzHmwWWZhPK8K@MiWiFi-R3L-srv>
+In-Reply-To: <aNSlzHmwWWZhPK8K@MiWiFi-R3L-srv>
+From: Chris Li <chrisl@kernel.org>
+Date: Thu, 25 Sep 2025 11:31:07 -0700
+X-Gmail-Original-Message-ID: <CACePvbU7s_JTsOCJQVttvutf6cnw2GjpQqENakze18+hDSPd0w@mail.gmail.com>
+X-Gm-Features: AS18NWDjBR6NW54ts8KLw0-f5YiedWzcFxlWHwqk8BYd3RKA9BIFqxNx7Q8K1hU
+Message-ID: <CACePvbU7s_JTsOCJQVttvutf6cnw2GjpQqENakze18+hDSPd0w@mail.gmail.com>
+Subject: Re: [PATCH] mm/swapfile.c: select the swap device with default
+ priority round robin
+To: Baoquan He <bhe@redhat.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com, 
+	baohua@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
+	YoungJun Park <youngjun.park@lge.com>, Aaron Lu <aaron.lu@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: BAA4AC0016
 X-Rspamd-Server: rspam05
-X-Stat-Signature: yw6zuyqqybbounwrsoj59uukyqkhusqh
+X-Stat-Signature: cawaz4o9yioh9zn8cgs7kzqzsqaqyfkm
 X-Rspam-User: 
-X-HE-Tag: 1758824879-28472
-X-HE-Meta: U2FsdGVkX19wHhl+fqJWnK8A2UFvrMBk82fynOj0jRN0t89iHtwTxn6V8AtckYXBMYzbrd6ANu6zP7he/e2yiGNkulYMPPXfu+muwpTu29LH5abneb77MlE8BwiND1qZ4+7hyM0/lqpjqb3zrPHEEoQ5QzEotR5E1WqYwXJuqZwpAm7opB6pKFMNK6VO1nxrB2a5WpIZaxk3miy/ORSUjWsI/UseX0kvldcU9RPyyORJ0gYBpSUR5PDPLLUwBS0fCb5jUTytQ1iCyQkkC+cF6vfV8JxoT9wqvwL3vNrNDuUamRgqUF/DGLnkqiLpCVCu1AGADwWPACN2EipY7vWwKl/AGwWTfBGn2wz4aTJo43GwYjT/BTir0phbBI+o/8Cw05SaIVsrGWyBsiromXIsDIv4CbIU/UzxIhq5iliJuqWG9tC4qDpu64+9BpX5MAGyMNllfSgWgxLimncySQdVH/Od/SjVBIokglQeD0dXyOi8LjX4VrohP7tuLWYiPwQ4OCA1xa4YNvsltY9KAdal+dokkJ0W8jc28VW2/FmUVxerdbXlSadPVCiZS9Gh/MQC/GJrCCs0PljBjF4ZycSxd/xrHtxU09+IpkjA6az+ukoERsWl7+p0KHZQ9CzPFh2r4wAk4XtC7ev75RQkwUS+XSPeDOmwVZuABXorXQtp4yA4q9cpk+YN0/DrUJjc7w6vTvsIuraPr76Y79432w0DBmCMpMFC9CcM9ZwxfnukcLWT4sokj/TYpaWPV68OuUFyTPDZgg/277ZB2xH2QnQRqcoUMAJRMDiYaXNaU2HBK74WuJboIrL+TklhmS5Oh9SfhrG4JwA5ZE5IsxFqtrWHXWo4sse6Wf/yQ0woIfU0Vf3ikVmUY5OYUh3VvLQ+2FiNGGe9GUl0NYYuHsZtYVyxs1nJGvVAPW/1NRCc/YA8xpRxZRaNrO6BpC8b9oMXxuO+kKuWYrugBoA4y0ctOCC
- QBT4WCpf
- 1ull+iBGL8fYPxmPd7AJCBJAgxh844eGzsr3SDRVOcW/5tmUT0Ui9t8Aybc/7yFdrpgsLsre24ntV2Wfm7T+grBWjVnKtszDcFcvEbqdrPfRPuUzP5N0ghG8nyDcuneril1iZsec1v1HthBa8p6Q4g8L7RuVfA4UThncjO8Tukp4J2KUyrmHE8mHvsfws5Ra14WxZf8DXkTyeLFxngudIvVku/1w9x9lx64Xk9L6K9IP2Guh1ZIftbmmKs1MvX/Ybvsq2UdAGxouk5mjAh0cEWJ4XSb+iPQFc4WDCb6dBMaNilWwXOpZjMbcB5/ZJlkbxkVpcGVt+e1lwlxUeuIPsqOW34xO6NY75XufIvjixqG8Q54yYmHnwk9UVm0/tmOiULsJ+8BX/aPROF+EIaPWuXzwB4g==
+X-HE-Tag: 1758825084-510698
+X-HE-Meta: U2FsdGVkX1/dDS7vfQhwShcO8IyrEpfvOAi5IeeG6Uevowni6fe0HqrWU2DWBGAUSrJ39QoO2FaaHP9RDPaid6hF0fDFpdGN/Die53hqTwKNwBBRzfrPWi8fS9n/oEp9kjghWu21AoYpFTTPq6cnZtKpKqBbUAd043KmUSOMY+myZqFlfwa9iNOzD1mQcPWKtn2yoXofZ6W8uzdXbBXv9NEk9lJdX2AZaPSlMTb25hJkrTRVrMG+zpz0ZpB5v+XO1EBihMyTzFzVxrKsrz3UoGLy/HnmEVhtN+LXR84+/nOBiY22Bl/bnuiiZp9VnOK5Du3uKM4cSTNLtbz/STsjFGemxQVlYg2HSNx8++Xpb6sl02MTbJYoNFlyOqzm8A+NbEN0zACmFjBzD4S4dNEnvr/2hVbae3hWSRnJ3FBiIAWkknJXY8ASojMyaPP6Eqnk4ryHcaz5Gv1k5p2wC4Sfdp442Iz3NWWggnb8+ZoJYSENL9S9tLiaSCP1FwSZynm5dRo9PfPFjTncKrgnxvEKL5cCWGV0714SEo1FKBxGj4VjQtuFP78lEF50yAULpox2ue+A7RQzWB5g1M9EtTbHtkeASbKwBuprqO/6EUCnledERmS2n5wyrKBIJcYRqUkytJQ9a7vDRy5DSI7e4Qx387MORi/bbUfcealyz8muiCRWOODScbnzC5k82lBbQuJVW1HNOTxTp73fbQ/0WmbEYIripF/m/gZWTmFdZFxSBlHDBs33ixniTSPP0eaH9UKWItuABHZVPU1dwnllcblqC4O3ML3So3QkbgR537C33Jgkh6K56kB32LfJruivJgPpubhLR/iO9yPqIUnro7M/kvpH26XCWcwLIDAXZjAitB8V0/NbZKmdQjifSCMebobag6RR0OgIx6gl7Q85hSsEoHSv65r2i/rhPi/oAtMC1ts76Lc+YFyS6PGl6dNSjxOWvSOs2wI65EY1em824ea
+ SoUwdBL5
+ AYshx5BKOLMOYlJMYz2Mj5VxyPdH05ZN40lLaYMRTO5DxwyiFPOXVqvfc7k9HNNLKh6lB44hJWTLRHxmmYsArW4dHdB88kKgT+RVBqvduo0UlKdmcgF6zouDwrfuVCxzFRGv+XB3xQYfgIkg1/lGi0Gs6yC4J9uZ7PRTPabVEXfUJPiBigQeNbWGUe1MUfo2iwboaM+F+ZDSC7pT3vN7U/bw7Ol4X6k9hOL5mnJwWAIu71VWPeW/ZeEtqTh8kjePq9WRIU9cxsTEERYmOX/vHWSWq3g6z/ezaYNFWeztPOzAMTz8owcYPoPlDGLovSlPuZlmkcB1UCKHG/n0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -201,10 +106,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/24/25 08:22, Roy, Patrick wrote:
-> Add an option to not perform TLB flushes after direct map manipulations.
+On Wed, Sep 24, 2025 at 7:15=E2=80=AFPM Baoquan He <bhe@redhat.com> wrote:
+>
+> On 09/24/25 at 09:06am, Chris Li wrote:
+> > On Wed, Sep 24, 2025 at 8:54=E2=80=AFAM Chris Li <chrisl@kernel.org> wr=
+ote:
+> >
+> > BTW, I noticed you did not CC Aaron Lu who introduced  a2468cc9bfdf. I
+> > CC him here and give him a chance to test it in his environment to
+> > defend his patch. Please CC him on the next version if his email does
+> > not bounce.
+>
+> Sure, definitely we should CC Aaron. Thanks a lot for noticing.
 
-I'd really prefer this be left out for now. It's a massive can of worms.
-Let's agree on something that works and has well-defined behavior before
-we go breaking it on purpose.
+Hi Aaron,
+
+If you are reading this, please let us know. e.g. If you need some
+extra time to test it in your setup, that is totally understandable.
+The patch might make sense back then. The new swap allocator
+completely changed a lot of swap allocation behavior, so it is
+possible the situation changed, we don't need to carry it any more.
+
+Thanks
+
+Chris
 
