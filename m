@@ -4,153 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A923CAC5A7
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 13:22:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AECCCAC5A5
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 13:37:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2ED88E0001; Thu, 25 Sep 2025 09:22:18 -0400 (EDT)
+	id D8ED68E000B; Thu, 25 Sep 2025 09:37:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDF4F8E0014; Thu, 25 Sep 2025 09:22:18 -0400 (EDT)
+	id D66008E0008; Thu, 25 Sep 2025 09:37:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C86958E0001; Thu, 25 Sep 2025 09:22:18 -0400 (EDT)
+	id CA3488E000B; Thu, 25 Sep 2025 09:37:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B46018E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 09:22:18 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 660D057270
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:22:18 +0000 (UTC)
-X-FDA: 83927836356.08.CBE809A
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B1EAD140014
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:22:15 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=qiGxjWcH;
-	spf=pass (imf26.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B5C688E0007
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 09:37:21 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 66DA71601FC
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:37:21 +0000 (UTC)
+X-FDA: 83927874282.22.A3655EB
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf29.hostedemail.com (Postfix) with ESMTP id D34D112000C
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:37:18 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=UkJuCUSJ;
+	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758806535;
+	s=arc-20220608; t=1758807439;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ia1/4RPTVr5lEOH9EgydCuHgeKLgDIxOVSwAP9XSPBw=;
-	b=4/j2TeO+QWcXC/OtID0W0DarVeOoVtOtVK3E73WCq39waCj4izU7ukLkLxqKP/0VGhImkC
-	PGH254eFrBpJjzvu2FtvvohBEbuHcq4G0O7Mc2AgMTjN73OX/FLipnpsoEUpNXTXnqpvz8
-	7daW7gU6w78EffWuQUd+tv9tMIhZd/g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758806535; a=rsa-sha256;
-	cv=none;
-	b=ztgvkNpET701Uf7EaBL0pEliBOX/jEFCWpQyPmmZTa95j0CS6L34d8xEzhmpQ7w8+/fBb6
-	P6GvAfaiGm6yzenLex0PKPtzPflSuxerfszHBEr9p1fRg7HAtKoariWRbYFOegWsBSb31v
-	e4ysiWZPTymXz8kjU+1zdzgciAh5aBw=
+	bh=vnVD81UzFoKNHG1Xf5/z0C7K03T3UUQUF/YZIrNB2Hw=;
+	b=jeVU0DrHA3V9dqCxKftCI31JZbG5lbk8sQaiZv/UPtzNriBlV9JxoqF71tu8C9UCHsISxi
+	fY8e9OkLXeGsgfLRmv/qS9Gqgy4w+Ad9NAdDaDG1gQ8GiUvPdzmt4NALFZ25RS9t1lQs/Z
+	Kv/j39b3GGasPOfPWCbjb5vZqjRDHoM=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=qiGxjWcH;
-	spf=pass (imf26.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58P4O0A1021262;
-	Thu, 25 Sep 2025 13:22:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ia1/4R
-	PTVr5lEOH9EgydCuHgeKLgDIxOVSwAP9XSPBw=; b=qiGxjWcHB9EMO3wjfXOoNk
-	Mr9r8KQDe76QddxPs9VXdPfJQ9rO77jnLeVExDPYwKqOgYiMeUdPk5ZSsdGjxgyx
-	czyJDBxVBi4o7pYSS59eJvJJ7O/lCuZ1N/IaYa6CVkJRvHRKrHl2NsXm/Po+b9wv
-	WGT0SZTRVb1c1XMWbO4pzwKuTePt6SBVCVwlmGfqRrK+y2YK8oPwxd7UYWx49XME
-	Ahd8sNKw0oBgdfKUH5uR7veU3WNaO7SE1knduUZPS/RyaYLRYOsxVlLkeV8UPyGl
-	2pDnRhPuSt/7lkmyFfiQ9VwgKBS1r6iHywUlLpff4b4TgoGgCTDyMasppqKIECPg
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499hpqnbyv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Sep 2025 13:22:07 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58PDFLwJ022612;
-	Thu, 25 Sep 2025 13:22:06 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499hpqnbyr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Sep 2025 13:22:06 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58PCZZNN008826;
-	Thu, 25 Sep 2025 13:22:05 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49a6yy66wt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Sep 2025 13:22:05 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58PDM4Nh7471794
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 25 Sep 2025 13:22:04 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 31DAA58058;
-	Thu, 25 Sep 2025 13:22:04 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ADC445805D;
-	Thu, 25 Sep 2025 13:21:58 +0000 (GMT)
-Received: from [9.39.30.226] (unknown [9.39.30.226])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 25 Sep 2025 13:21:58 +0000 (GMT)
-Message-ID: <5fa436bd-2cea-4958-8a0a-ac636595a974@linux.ibm.com>
-Date: Thu, 25 Sep 2025 18:51:57 +0530
+	imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=UkJuCUSJ;
+	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758807439; a=rsa-sha256;
+	cv=none;
+	b=S9tUM9r3Mfi80ASvVJ6FRN1sLDFqMcItSz3LvI+fxhQnnAK0YaPZOBoCyPUaLjklwDlgBD
+	4yx13P6czouTjpnWiMEQ8l2/qmPNBLU/e14H96PuwPLTE3F+S6iYtWNU6FjkjN7tog9Vwf
+	0hc9M4T/I1VM1Dg2uELE1WQ6vBfkfhA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758807439; x=1790343439;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=1PwuzYRVc23Mq8CgsDZzvk5lpGEPYfH8eH4KmEqBYAc=;
+  b=UkJuCUSJAQKfJo2rkPDBc/469p+OVqSfQHSO+AaL+jqfw1noKNrameAD
+   rOGqYw9or8atMiHBv1/esMVipwJN7CCoTbXiAD0qDbjf8JE5e3XS5j/t+
+   KG8D4jPJnS+khG0TeSEkeOqr+kQv37l3WYdA/tVRjwo2yDnSHavEdVLvQ
+   8w+iA3qS/we8wbqFuq/ETYqbK5aE7I/CCYN76srPB4iXWcHB3JLs6uwLD
+   e+1CypMI8moBfOpTpH0lsDTBS3+IjBsqL5AmlwQB/qNesBjI8zTg6kqaU
+   bC+11yMA/9rG+k6g40TGF8rhnC1uWoWcJRlMpK80VcIrRxjH0DiLuXhsj
+   w==;
+X-CSE-ConnectionGUID: L2yEKD8CRfaenie4IVr5dA==
+X-CSE-MsgGUID: lxVkiYBLQROFamjM8l7hPA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64933484"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="64933484"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 06:37:17 -0700
+X-CSE-ConnectionGUID: RqjohgBhTrK2Brz6zCpW4A==
+X-CSE-MsgGUID: kePJyFd+RPis6CrCcuMkcQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,292,1751266800"; 
+   d="scan'208";a="177393010"
+Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
+  by orviesa008.jf.intel.com with ESMTP; 25 Sep 2025 06:37:10 -0700
+Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v1m9k-0005GJ-05;
+	Thu, 25 Sep 2025 13:37:08 +0000
+Date: Thu, 25 Sep 2025 21:36:47 +0800
+From: kernel test robot <lkp@intel.com>
+To: Brendan Jackman <jackmanb@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>
+Cc: oe-kbuild-all@lists.linux.dev, peterz@infradead.org, bp@alien8.de,
+	dave.hansen@linux.intel.com, mingo@redhat.com, tglx@linutronix.de,
+	akpm@linux-foundation.org, david@redhat.com, derkling@google.com,
+	junaids@google.com, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, reijiw@google.com, rientjes@google.com,
+	rppt@kernel.org, vbabka@suse.cz, x86@kernel.org,
+	yosry.ahmed@linux.dev
+Subject: Re: [PATCH 13/21] mm/page_alloc_test: unit test pindex helpers
+Message-ID: <202509252146.WmdVQlgy-lkp@intel.com>
+References: <20250924-b4-asi-page-alloc-v1-13-2d861768041f@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] drivers/base/node: merge register_one_node() and
- register_node() to a single function.
-To: Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Oscar Salvador <osalvador@suse.de>,
-        Ritesh Harjani <ritesh.list@gmail.com>,
-        Aboorva Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        linuxppc-dev@lists.ozlabs.org,
-        Christophe Leroy
- <christophe.leroy@csgroup.eu>,
-        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
-        x86@kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Danilo Krummrich <dakr@kernel.org>, Dave Jiang <dave.jiang@intel.com>
-References: <cover.1758736423.git.donettom@linux.ibm.com>
- <40257b5228dec05e5b252f02438608eb8d681a2d.1758736423.git.donettom@linux.ibm.com>
- <0de65980-4333-434a-ae7d-2b7be46c2cca@redhat.com>
- <aNUMnK23qKTjgEdO@kernel.org>
-Content-Language: en-US
-From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <aNUMnK23qKTjgEdO@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=FrEF/3rq c=1 sm=1 tr=0 ts=68d541ff cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=4V8e3p56BTpXgw00i4MA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: JxDWaNRkxF6Qy8ZF0itz_n9KFqDcMh5m
-X-Proofpoint-GUID: eFhaTNISHQyCqaBy1Lml0RWiZV5isRK0
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE5MDIyNCBTYWx0ZWRfX8HWeJU6DODxO
- mVDGFoZYhbxVlQ42sMVXhcMo1em/K1n/asrIZtm22eEauoGI2b+tljf5OPYm7mCo89NR0AiNVeA
- b5jCUQnfGSxBxmx3Ze5g9gKB5ZVRCq925XpPOgVE990hkJ1OGkeiUgBwSEw3MCJvsD4sJP/CgE7
- KmipbmGqy8j0TU3bqN5yDenmgBOqwd2838nYCAV989pTuQHkTCOhtJ5iRFnVDJQck6vCeyoo04G
- zluW2Ml2x6ZMSM+Su5PLZUsDK/tAU7bKf7VgB8uL13+TtySUavFIT7dfCcDAUsa/k+eZGEGZJmw
- KmcTgbAn7PVX6TY6pcwjxM+JNqY/FsdvpIgoDh4vyqsniAcKnvzrrVbleLD+hixPXdjqFolNu8R
- iSpNXE6i
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-25_01,2025-09-25_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 phishscore=0 priorityscore=1501 malwarescore=0 adultscore=0
- clxscore=1015 impostorscore=0 spamscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509190224
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B1EAD140014
-X-Stat-Signature: 4pbwkuozzgdeiutscegjxs44yn35mhcb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250924-b4-asi-page-alloc-v1-13-2d861768041f@google.com>
 X-Rspam-User: 
-X-HE-Tag: 1758806535-358920
-X-HE-Meta: U2FsdGVkX1+s2lqw6p8OW8+c6Ral2VbrXhaC5nA6KINzY79RiafJtqPBMG1+NI6uc2rUy2uU8+GjIn3Hf5k2SGwRVdjCJltsGULOeAJpKaOErQXzkaJrojVBu3TiLy9D8gKGQuzkj2MONX91aBbPPBFeisu4GH+acutNBMvs4dEkI39nQrLoT3LvJllsz93zEai1qk/6J/klgF3KyAFat3mVhQ2Ka0m/J7V2tov0pmvXTp5lrRs1UZZ98mMpCjKIqxOGgguQQZAT3dWc3eAUPxXTIFbzAUNWRPh03tV6+qsVfFkcdzQchGCy1kyceNd3eO0lFB8jgpb+mzaK5McUDTR/DiprH+2h61muJ6d/Z7peXQ78l3eDLn7768313lSWGCkeQz6/ujgUnUAm52gkl544vFmCcW+excJ0V+9UUezkaz4Ij4F9pyD8ikYYOFjgwoDRsS9XMqc8TGwExAB3Gh8MCSlAMSVckUPenMB9jQliPrH6tao5TO6erH0OTFzuSGxKkUWh0lKux51gStM2DV6/XplU7tAhtqjmhCPKaJDnGJ9+7cZ73v7f/FB8nWosE2Ww53UEMTPjKreXiVKP+2xV5gpvg3ZEBgXldVEsVfBc1thzKpqo3snMsoxCoabxzKa1BRhiRgg3wnLdfNzQRqYtgC2Cl+Eh7PBgMsTIyqZM9FlZGV9rCb1Y20/28KZwhwL/sFTPIjiCcFAnApNe9Qiz+yDxg44CIhNyQ3Ou1HJsLqVcT1/TI+43fKt/BNA/H20n6MAdqNWhcBOoil6e4KHeHEbk8+r78A+ETgEw5ib8jzMitc4hayCGwHXHB7eXNiSpn+U8Xn+QFoc0G7+J7Ra17V7zmSWRqJwkFHBCt5QUovvv2OwK8dzcvvcCdniZBDMr3G9hAvTTz3oUEILyUZmbzMydmfBZCfHvxF7rMYydGV8t6zPKnM9hJPb0cT8IsXkxLzqhJhnNgH8+P7C
- TB4hA0Av
- wiUWvjTZ5vNOesupS3H7PV4a1oHYpjikHR0TWkiqOXGxN5imcqlOualGw/lTSfWR5oeJg79Q/zM8oaJsM0+5xKi6C6R3lB1KjIZroa+pQP3vmFmCW+0uybKiZ2nBg+bi4WvalMPas3uVd0R5tH9Y9Kdx8av9IMg0+PlTko3VS6EyaTFrnQZAC93GhyW2mkEaang21xmxionAeXXP4tgJLxTWpPSRotJkPMTJ1zV43dBsqAtu7uGgDR9zaUyI57AQaBMAtqK7/Nt4goS3nB0cDG9gk8kqpi4HhlTEYX/93MTqPlJ6xAx71NPdbRZ3Olb2hbkI9yOKL6+GyoyZN0VUSjcRygtjlxu3nBEizeS90RZn6wutz45bMyMBWDg==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: D34D112000C
+X-Stat-Signature: yiyut6csmqo65n66hcbeux5id3daadys
+X-HE-Tag: 1758807438-694002
+X-HE-Meta: U2FsdGVkX1+fx5HMCGwLT3gA31Oam5ZTaVMu7dw7t2xfk6L1NIRu+H1GDV6MlYefraaSeq4TUl068dprDRdv1Y/NGDFE/5rzq9N70vnbKdP+K7BO3lAZGpB4bmFYL8ug9chR/pZs4ptg7A5U0vKWHZzwNK3Aa482eDQNdQw0L00EgJkKo91TOO8hWgssXkSxcEW6PwVFfwQEk5CI/dhiWmoqEOlMbR2X5lIyi/OPpd20VMZkjLL8aAb2+n4HTFgL8o4wbhDIz/7ZY2eGflkwfwSySh5siuoHIf2yuS09M8mxCYBXUb1VNB/+v3MOLfjuac0HsrDakpqUh036mFgCkX/vwHZlhEE53XHAOJewYHqJbHC9ip1LBXyJCQPF/ggqgARcxbk2IYGsHvxK2CuOSujP8ix9C5GWyv9lOcq6jJbnKguJ3eme/dpH0pZkaRjd1QYAXAlPJmbFtFsWfnCgWbvPJ2TKXxMDcT/uv3ZQ3Y8TOaOxZMg6WQr2TwV1OkTQBRkTBRaN45a07it8eD83N9H2RtXoYiIJTdpjg3EdkXGXWwfMqygMsSB9mtH9ab8NW5bXtUC61AtHAol1VSIBCSDRJ5R8Xfq/8IgRlWNnYRV8Xd+zbKr9Rh4GGfDcLdikf4DU97onq3PwcL47pcbrUdeEl+tvl4nZceJPQQOli1obqJ63Wg4/15bGExc8NQpwu+4EjDDQpo1TVHpKPCcljnxV9cpPSWKI6C3bE5iaYrO4cLba0S0E3N8Jy2zUFqw3lRxy9iqw/J1NRvHt+w7VLL7xWJA9cfwcaETGiN0NSlYgkFQ/z8VK/wQ5qPUTMH5fv0BH4yw3e4Qfx50z/ouuZIO5u5kb2gaDeuS/Oue07JzGlWElFsLubX04+YGnmbb3btgz+F4MctblDrBME2VGtuCWGZ0dpQHmLuSGbWGzn/1jD8uOB3HDz6HvTU5nDGZlxb4mSbftBnUkoriITNJ
+ 3sJED+qL
+ QBQABkdIUv4OU2p/8GWjZIYO8ric0ESQFSjXz8C9Tn+3swOC+jj4V9MRBtzwhygvV6ttVmVbz6TB2pydfL+yNVfZsJRgJIT7JDFksTkyZ45JuVfiMOWxS0CKqeF+XslJ6YS/vBXYNHq4ZeBn2IyBT/dYUcwFDLhWw36nfVCCt/I5achCULQQRngg8r9k7XuMXwE4UPXl500n+dwv9cYbRfz6Vi0kB2BbHRrvDLK62JSEVMXo2i3RHw5RVs8bODIcFJD83IE/QmrOtrYRrdtjlo7YFVjKmfPpgXTz9OhP+12hrvLPPp3MukekTW5wbnxqpL1+0nwbZh05qaUnO/UEqGqPzFpRurTaLLW5uCzIL9lQJ2OTvDU0absa0+K4bCDdlspQFQyC2ObNzKa4Ir8rCvHTTQA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -159,79 +121,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Brendan,
 
-On 9/25/25 3:04 PM, Mike Rapoport wrote:
-> On Thu, Sep 25, 2025 at 10:54:07AM +0200, David Hildenbrand wrote:
->> On 24.09.25 20:40, Donet Tom wrote:
->>> register_one_node() and register_node() are small functions.
->>> This patch merges them into a single function named register_node()
->>> to improve code readability.
->>>
->>> No functional changes are introduced.
->>>
->>> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
->>> ---
->> [...]
->>
->>>    /**
->>>     * unregister_node - unregister a node device
->>>     * @node: node going away
->>> @@ -869,7 +842,13 @@ void register_memory_blocks_under_node_hotplug(int nid, unsigned long start_pfn,
->>>    }
->>>    #endif /* CONFIG_MEMORY_HOTPLUG */
->>> -int register_one_node(int nid)
->>> +/*
->> We can directly convert this to proper kernel doc by using /**
->>
->>> + * register_node - Setup a sysfs device for a node.
->>> + * @nid - Node number to use when creating the device.
->>> + *
->>> + * Initialize and register the node device.
->> and briefly describing what the return value means
->>
->> "Returns 0 on success, ..."
-> For kernel-doc it should be
->
-> Return: 0 on success, ...
->
+kernel test robot noticed the following build errors:
 
-Sure I will change it.
+[auto build test ERROR on bf2602a3cb2381fb1a04bf1c39a290518d2538d1]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Brendan-Jackman/x86-mm-asi-Add-CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION/20250924-230633
+base:   bf2602a3cb2381fb1a04bf1c39a290518d2538d1
+patch link:    https://lore.kernel.org/r/20250924-b4-asi-page-alloc-v1-13-2d861768041f%40google.com
+patch subject: [PATCH 13/21] mm/page_alloc_test: unit test pindex helpers
+config: x86_64-buildonly-randconfig-006-20250925 (https://download.01.org/0day-ci/archive/20250925/202509252146.WmdVQlgy-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250925/202509252146.WmdVQlgy-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509252146.WmdVQlgy-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   mm/page_alloc_test.c: In function 'test_pindex_helpers':
+>> mm/page_alloc_test.c:19:30: error: implicit declaration of function 'pcp_allowed_order' [-Wimplicit-function-declaration]
+      19 |                         if (!pcp_allowed_order(order))
+         |                              ^~~~~~~~~~~~~~~~~
+>> mm/page_alloc_test.c:24:55: error: implicit declaration of function 'order_to_pindex' [-Wimplicit-function-declaration]
+      24 |                                 unsigned int pindex = order_to_pindex(ft, order);
+         |                                                       ^~~~~~~~~~~~~~~
+>> mm/page_alloc_test.c:44:45: error: implicit declaration of function 'pindex_to_order'; did you mean 'next_order'? [-Wimplicit-function-declaration]
+      44 |                                 got_order = pindex_to_order(pindex);
+         |                                             ^~~~~~~~~~~~~~~
+         |                                             next_order
 
 
->
->>> + */
->>> +int register_node(int nid)
->>>    {
->>>    	int error;
->>>    	int cpu;
->>> @@ -880,14 +859,23 @@ int register_one_node(int nid)
->>>    		return -ENOMEM;
->>>    	INIT_LIST_HEAD(&node->access_list);
->>> -	node_devices[nid] = node;
->>> -	error = register_node(node_devices[nid], nid);
->>> +	node->dev.id = nid;
->>> +	node->dev.bus = &node_subsys;
->>> +	node->dev.release = node_device_release;
->>> +	node->dev.groups = node_dev_groups;
->>> +
->>> +	error = device_register(&node->dev);
->>>    	if (error) {
->>> -		node_devices[nid] = NULL;
->> Wondering why we did have this temporary setting of the node_devices[] in
->> there. But I cannot immediately spot why it was required.
-> register_cpu_under_node() references node_devices, so that assignment can
-> be moved just before the loop that adds CPUs to node.
+vim +/pcp_allowed_order +19 mm/page_alloc_test.c
 
+     8	
+     9	/* This just checks for basic arithmetic errors. */
+    10	static void test_pindex_helpers(struct kunit *test)
+    11	{
+    12		unsigned long bitmap[bitmap_size(NR_PCP_LISTS)];
+    13	
+    14		/* Bit means "pindex not yet used". */
+    15		bitmap_fill(bitmap, NR_PCP_LISTS);
+    16	
+    17		for (unsigned int order = 0; order < NR_PAGE_ORDERS; order++) {
+    18			for (unsigned int mt = 0; mt < MIGRATE_PCPTYPES; mt++)  {
+  > 19				if (!pcp_allowed_order(order))
+    20					continue;
+    21	
+    22				for (int sensitive = 0; sensitive < NR_SENSITIVITIES; sensitive++) {
+    23					freetype_t ft = migrate_to_freetype(mt, sensitive);
+  > 24					unsigned int pindex = order_to_pindex(ft, order);
+    25					int got_order;
+    26	
+    27					KUNIT_ASSERT_LT_MSG(test, pindex, NR_PCP_LISTS,
+    28						"invalid pindex %d (order %d mt %d sensitive %d)",
+    29						pindex, order, mt, sensitive);
+    30					KUNIT_EXPECT_TRUE_MSG(test, test_bit(pindex, bitmap),
+    31						"pindex %d reused (order %d mt %d sensitive %d)",
+    32						pindex, order, mt, sensitive);
+    33	
+    34					/*
+    35					 * For THP, two migratetypes map to the
+    36					 * same pindex, just manually exclude one
+    37					 * of those cases.
+    38					 */
+    39					if (!(IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+    40					      order == HPAGE_PMD_ORDER &&
+    41					      mt == min(MIGRATE_UNMOVABLE, MIGRATE_RECLAIMABLE)))
+    42						clear_bit(pindex, bitmap);
+    43	
+  > 44					got_order = pindex_to_order(pindex);
+    45					KUNIT_EXPECT_EQ_MSG(test, order, got_order,
+    46						"roundtrip failed, got %d want %d (pindex %d mt %d sensitive %d)",
+    47						got_order, order, pindex, mt, sensitive);
+    48	
+    49				}
+    50			}
+    51		}
+    52	
+    53		KUNIT_EXPECT_TRUE_MSG(test, bitmap_empty(bitmap, NR_PCP_LISTS),
+    54			"unused pindices: %*pbl", NR_PCP_LISTS, bitmap);
+    55	}
+    56	
 
-Sure.
-
-Thank you
-
-
->   
->> -- 
->> Cheers
->>
->> David / dhildenb
->>
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
