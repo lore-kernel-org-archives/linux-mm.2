@@ -4,115 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CDF7CAC5A5
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 13:15:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D905CAC5A7
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 13:18:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E69D8E0002; Thu, 25 Sep 2025 09:15:55 -0400 (EDT)
+	id 65D9F8E0003; Thu, 25 Sep 2025 09:18:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3976D8E0001; Thu, 25 Sep 2025 09:15:55 -0400 (EDT)
+	id 60E398E0001; Thu, 25 Sep 2025 09:18:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 285A48E0002; Thu, 25 Sep 2025 09:15:55 -0400 (EDT)
+	id 4FD0A8E0003; Thu, 25 Sep 2025 09:18:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 123068E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 09:15:55 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AC22CB593F
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:15:54 +0000 (UTC)
-X-FDA: 83927820228.24.9E962C1
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4EB2440005
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:15:52 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=GrEMaNGl;
-	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 3C1AF8E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 09:18:31 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 03DB0140198
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:18:30 +0000 (UTC)
+X-FDA: 83927826822.04.96A0204
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 74FF840004
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:18:29 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tyMtduVm;
+	spf=pass (imf12.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758806152;
+	s=arc-20220608; t=1758806309;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=haNxC7jOxqQStDtZIrtiTowIq1hQumEfK7GJ5h6a3Z0=;
-	b=VFUvLhWj2YvG5KuNwhJlE1iop/c123MGIGssAzEn76f30wi5Wf+FyeolEDUfp1Dj9EA0gh
-	AKTXHyQW6WE/B0lmf1XYF0x8+GGd4gEua7DhEbO8jxwUMSpuQBwclXDPAfNRGGsV7iY4Ia
-	ciX4Bo+O3RLapnKq6i9Y9xHZu+jSXNE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758806152; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=QQDEM5zIBNnOPCZxgPAQYDOaZ7lSL6TtvAvS1Ebd+l8=;
+	b=v9PKRqFEYv3S9x/6HCgcwT1z1hXT5H9kV/drRLX1nt6VLDpLpQ+ot/CrIAfhpxvIPuVruI
+	ijxuX346zNK282oCPZXRMoM9PxW8wAAvGwKTjQ9H5pxSTOOiJoo9lAMMPk7SphaffeLPTW
+	43+Z3p+dyEln1B9CtFteIIPxPzjZwkI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758806309; a=rsa-sha256;
 	cv=none;
-	b=QbR9eVkc9jqFFbCpDNB6V9/Y9BGe0YHqRH/eBnvYUvgm6wALF8n8C7vhVc2/NtuFxKI8bZ
-	gB7SpFXt4rtdJ6q9Yk+irlqwp0IqJItgnvAT7UlbpZ8ERYIrogqmwRfKOoicthGwJB2XnG
-	NmYMiPCb3oalWuBShtyYUKrfxN71e5M=
+	b=uiRdSWirNAqaGoaSHtzpsm+fgxrZFQ7Kkcs0kPWUfQynT7qIA+IUKte6EAYrEBjxTo7vaQ
+	KjGfrShg9cVEmxpKClQ613D2uTHtjkOcin2DCfJXmbrtv9UU31i+6M83qWKnZW1YbTcBdn
+	vH4O9IBcMDRXa43Vbn3zQLDWctkqHYM=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=GrEMaNGl;
-	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758806152; x=1790342152;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=kMx3O1w40yOeQReQlt831IU30eN0/QVbXAiRTp2LOKk=;
-  b=GrEMaNGlE5JzjoKN1E5WTczQNXtnlOLytuF62vl/4mQO0JUiq6anDcGo
-   pMI3w2eZoeHtIwThuW4DqrLEnjKj1sD1NOzBz/zZTgWvCT15pD3GCDqq+
-   E/T0aao49DZv2niZuZL/OH1PXV9gr2MAj+YAFoWF6M1kJ+qY4KeZt3BMg
-   y0b+SXKJWwxjSvSLGl5Yld4TNqEh6HUs7ZdSz3OTha+QMuoSt1gWhKfsC
-   BhUbhVGOU5rJxlZTSLxi5lEuVy2jR75eJ4NZl+iruagpKMTLUYjx4XZGu
-   r0AYVqVy3ZofKP83m0XE3LoRYQt2RJSHjkS432Ue3Pezo4qTCQJUO/O/P
-   A==;
-X-CSE-ConnectionGUID: tLiqaiBiRhGhKtnYM+slGQ==
-X-CSE-MsgGUID: MU2IgEy5THSI80jKD0CkGw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11563"; a="86568030"
-X-IronPort-AV: E=Sophos;i="6.18,292,1751266800"; 
-   d="scan'208";a="86568030"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 06:15:50 -0700
-X-CSE-ConnectionGUID: qTgriWMkTjOhbLMgBGam6Q==
-X-CSE-MsgGUID: ffU6NF5xSM2kcjLDra7sWg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,292,1751266800"; 
-   d="scan'208";a="181614505"
-Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
-  by orviesa004.jf.intel.com with ESMTP; 25 Sep 2025 06:15:43 -0700
-Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v1lov-0005FF-0n;
-	Thu, 25 Sep 2025 13:15:40 +0000
-Date: Thu, 25 Sep 2025 21:15:18 +0800
-From: kernel test robot <lkp@intel.com>
-To: Brendan Jackman <jackmanb@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	peterz@infradead.org, bp@alien8.de, dave.hansen@linux.intel.com,
-	mingo@redhat.com, tglx@linutronix.de, akpm@linux-foundation.org,
-	david@redhat.com, derkling@google.com, junaids@google.com,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, reijiw@google.com,
-	rientjes@google.com, rppt@kernel.org, vbabka@suse.cz,
-	x86@kernel.org, yosry.ahmed@linux.dev
-Subject: Re: [PATCH 11/21] mm: introduce freetype_t
-Message-ID: <202509252109.X3oqS16b-lkp@intel.com>
-References: <20250924-b4-asi-page-alloc-v1-11-2d861768041f@google.com>
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tyMtduVm;
+	spf=pass (imf12.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B01716057F;
+	Thu, 25 Sep 2025 13:18:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E522DC4CEF0;
+	Thu, 25 Sep 2025 13:18:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758806308;
+	bh=jQzVVFrSJ7ucYZq15uO8/5+M3IU4mjEtHjNrG1vAE+o=;
+	h=From:To:Cc:Subject:Date:From;
+	b=tyMtduVmcBWMzBWiJspZLwmeJ2ceNqfCyWctxCHtsWpa33DUFzUSwR+lAYuXSkSbq
+	 7hyAzyHDnJmIUikYk3CItyM7Uh35bR2JxITeQkJhmDYCJYXHsKr+LGIuRm4+yXoCaD
+	 JZiNMdX+Zw0TOCsazhHYjXM8C1WC31w10xakUJdR/Vn7x+k3dTdJUf9G5Maob/fD4A
+	 26gabXuJymbyanTC7dVHAFcKpHr6e/oODVxTFeiHGn/xxwdP5aGAzn0HBac9BEnYEm
+	 arr3AcxqjEzjhe0bR+w8YwaGFfWHj/09uhM6APuXkZfWoicvjxRbdiHLgAavHVhOcQ
+	 +hGPrG6oy4xJQ==
+From: Leon Romanovsky <leon@kernel.org>
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	dri-devel@lists.freedesktop.org,
+	iommu@lists.linux.dev,
+	Jens Axboe <axboe@kernel.dk>,
+	Joerg Roedel <joro@8bytes.org>,
+	kvm@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-pci@vger.kernel.org,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH v3 00/10] vfio/pci: Allow MMIO regions to be exported through dma-buf
+Date: Thu, 25 Sep 2025 16:14:28 +0300
+Message-ID: <cover.1758804980.git.leon@kernel.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250924-b4-asi-page-alloc-v1-11-2d861768041f@google.com>
-X-Stat-Signature: 53t77q4otr6zyh1m9imemn1hde5ozzgy
-X-Rspamd-Queue-Id: 4EB2440005
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: dft4sn9ersqyjp8etaiktocpsiens3hc
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758806152-986222
-X-HE-Meta: U2FsdGVkX1/YxKj1/JgUJqBZk0ACl4qe7EXjSyoayHI3yfeKqtTrw7n8mszrMiGfoUlELxSQAnzOkCWb4DFWyRoARaa8noS3+3B6/vU0gl9J5Ebxq+wcFlTJUBF59LLqvNqgu67zao5d6IeTJE64x9HQLpq4nKQwyE7FW9z0IvfFNvRL2sEmVcDnhd1T5Jyx1BqciQyqBuwPnPB92YjS4cF9Y2nxEUAXhzfbiQybBugcXGdJNb5Y8DkHZRT6ReajwPhNEDAjyPCffd2CON2NcLLq9mBJmJ2O4bn4ZoHXRtlg2G2nIUBWmQgn6b6C+EOy56iDcB61HJn9+7s+nEhyyNhzT6dk3xXm7xpLrqdorVVuAeeeUeoV70GOp8xRrjD2KJ04/rv/vJ/U93O1vXUEFRyvWA/MSbDDcI8YyA6edio9gbR7zQjCzHgxZSb6+fg/Hx/u8T1jiyURTI2RpclTsVnPK7SlrIRRprR7M386Pf8GSl/qh7gQuFwXazAfaCd0UHN7QLX6XG3EFrcTENBMg2E/ovld7xmsOCwduRb36GaPpCT5gFyuChbUSsOJyCMkWDIn0uca2qz0WW3svBDKdCuT14qRGi+qECqPJmiI54vTAENklVR5lGaogOtOc3QXhck37m7VB5EGx8C2ZHX6/Ed76yOuldVJ1CV/mw3MeR3s0dVkBDY+hjhKsbvt8o8Q2quc4l1rGZGrKcD82QkADiyh/JHAzzNoxXiagA4EmjSDouOI5ql3e9hRdOnH+PORWgvdDx0+1bo+B3sZSg+fCloR2GkGtHuN7D/wLE5bjhiE+g8WWUjguOxjreOfzK9uSB188nft605zhF6nD+ovwDQnc9LA5K0VISILnLJqCqm9llI05LGFpVTLQimJCkVrThb30iQN114b0nUe+ZWJqHMYLI7wrrSiHWateG7R1tqOema7Zt0075OBU5wRh/mkxNLwnnZ58EA3WV6dmB2
- ARW4oMsn
- hTkxOZkk8REzz1AneEQ/FzoCK+gtsNk3GgYIcy/OzpPAM6Bm1fIyxj/Oo5BLzEytLfnaRYQJY75fXqF3L9LAFZGZ1AMqtPh6tFZGXBhshazSgGX1IhhKN1RDwVTfbS1O+b5xexr4y1tsMyBlv3vUZaYYVE28mrAQA0P8TuOWXCkZV2A/DFl+A7hO5ulEuxZ3Jp9eeMQlzOq89hbHUnU36SutwyghnJv9efyTUOtA4m5cxyPihIu34xt/k94+/dUiFnR0mPAKGA9lnhoBo5mZgPULzSdnc/ZNJA12NQ2sV5VyzP2vGRQqwFP2UZ7TE7PeZx+YqsL0Z/NIyuqoTAjkz7zlys7gstwPML0YYPQ+TvfuVcRkTcX55Ypd0oulsAF/l9narAQ/h6hM0Y57iCN6dbkXBFw==
+X-Rspamd-Queue-Id: 74FF840004
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758806309-906167
+X-HE-Meta: U2FsdGVkX1+Ck4CLW0t+eQLH2olhsBeI3ssrhNiS7S1JQuoMCwBWy6yCeYJYXF3u+hPLOX8lzxfVqiriTJ1CnfFlNcQoPnZSF5ndlc8HXm0tT+8uDTNYzIecKCFBO5rD6wby7EmLoBQAMxD/SpJ4bcrzUXKOfRrqjjGfTkOkaTFleEMF9S1CUaHD1iWgsktqnnAFMxBrQQvCACOPBo0reFek4TNSHRjLIoWI/5axdlLOckGT3en65f8r0hyOu+XueEsENqJkTqNT3YEkM1ve+zWp+3p09UFpbIFULcpot0AKB+/uI1XzaV2Fs8V2dYavsxU/1JMI6DWwWdeDzf7eqeROOH5AMris7XA7E1mYhAWcULx01GYUCRoGuPW0K3dX+PkPGKGBMwKrWSnt16+PPEpAyPW6OhTkcY3Df4pTMmByhL690WhOQd1U3D8uZmmAvgVNbZgP575UBfnrcnhD3BNC2XzgA5CGG2d2FCByp8pFQvw15O5y2b3y9dKadyq77cywR71TohVcir01ZOFDuW3o/Dc2hWC5eEEW4LmQuavlE4qPCeYYfoM1X05clwTetQQ+waRA5j08C5eTj6RR7mI2l/YIHW4RMxX4Zyh1bvCD9zsmc4Fc4ffahMuKO7PrmUN/GHaRmlEXu1gdds60RfTv09geyH28N0PUJmds2ZFnG7MkotW+Tcj6oF3CuGJCn0+0yoAOtch83nJF4sP04iykRDe+CM3GJy1alMRVHCCIyoatoXjb3/OkRNvp7jnZTS7F3JCHNszIqOzY3zG/ImxEZWfWhEc5b1dL4B3LJjak2PCEYs9UhWjKPhqKdex4Uqd80zGUz/QucCHJty4oBjdAcAQMWgSjLUwDQ2Q3WPJ/0qNEdjb0lOnKZfSrDOWvnX8RNo/tQR/d2rhNCbOJAbqQn6tX9FdY0QuSeTPiMu0vaIrGWJE7HAWNhfheaAStVLik6/R0SOICUZtMzUN
+ Y4ys6w6H
+ gFL+JcqAWv4OPGGYjb0aBeNDlqznzltOuE+D5/NXKOjZ3FANXJZMBDf6YF25ZC7qty1P5wKpJEJ86wfNE699s/ZxpUgliRwS+tKSp9hQ/JHg/aYNEF8gYRY6SHNjwwYRNAwR0qL3wFXArZPZubxbM/F4YObBrbsXQGwGW0CSkaK2eEfZLXdqG4zH/jTI2sY9fnTrf1iobhDVj8CAIunC8qEhBfc5ovXiBObcH5QOJUVYNqS1a60dTsyf53r10vWTCz22fiw6B19A0SaNF1dC4ch+flw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,154 +108,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Brendan,
+Changelog:
+v3:
+ * Changed pcim_p2pdma_enable() to be pcim_p2pdma_provider().
+ * Cache provider in vfio_pci_dma_buf struct instead of BAR index.
+ * Removed misleading comment from pcim_p2pdma_provider().
+ * Moved MMIO check to be in pcim_p2pdma_provider().
+v2: https://lore.kernel.org/all/cover.1757589589.git.leon@kernel.org/
+ * Added extra patch which adds new CONFIG, so next patches can reuse it.
+ * Squashed "PCI/P2PDMA: Remove redundant bus_offset from map state"
+   into the other patch.
+ * Fixed revoke calls to be aligned with true->false semantics.
+ * Extended p2pdma_providers to be per-BAR and not global to whole device.
+ * Fixed possible race between dmabuf states and revoke.
+ * Moved revoke to PCI BAR zap block.
+v1: https://lore.kernel.org/all/cover.1754311439.git.leon@kernel.org
+ * Changed commit messages.
+ * Reused DMA_ATTR_MMIO attribute.
+ * Returned support for multiple DMA ranges per-dMABUF.
+v0: https://lore.kernel.org/all/cover.1753274085.git.leonro@nvidia.com
 
-kernel test robot noticed the following build errors:
+---------------------------------------------------------------------------
+Based on "[PATCH v6 00/16] dma-mapping: migrate to physical address-based API"
+https://lore.kernel.org/all/cover.1757423202.git.leonro@nvidia.com/ series.
+---------------------------------------------------------------------------
 
-[auto build test ERROR on bf2602a3cb2381fb1a04bf1c39a290518d2538d1]
+This series extends the VFIO PCI subsystem to support exporting MMIO
+regions from PCI device BARs as dma-buf objects, enabling safe sharing of
+non-struct page memory with controlled lifetime management. This allows RDMA
+and other subsystems to import dma-buf FDs and build them into memory regions
+for PCI P2P operations.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Brendan-Jackman/x86-mm-asi-Add-CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION/20250924-230633
-base:   bf2602a3cb2381fb1a04bf1c39a290518d2538d1
-patch link:    https://lore.kernel.org/r/20250924-b4-asi-page-alloc-v1-11-2d861768041f%40google.com
-patch subject: [PATCH 11/21] mm: introduce freetype_t
-config: i386-buildonly-randconfig-001-20250925 (https://download.01.org/0day-ci/archive/20250925/202509252109.X3oqS16b-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250925/202509252109.X3oqS16b-lkp@intel.com/reproduce)
+The series supports a use case for SPDK where a NVMe device will be
+owned by SPDK through VFIO but interacting with a RDMA device. The RDMA
+device may directly access the NVMe CMB or directly manipulate the NVMe
+device's doorbell using PCI P2P.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509252109.X3oqS16b-lkp@intel.com/
+However, as a general mechanism, it can support many other scenarios with
+VFIO. This dmabuf approach can be usable by iommufd as well for generic
+and safe P2P mappings.
 
-All errors (new ones prefixed by >>):
+In addition to the SPDK use-case mentioned above, the capability added
+in this patch series can also be useful when a buffer (located in device
+memory such as VRAM) needs to be shared between any two dGPU devices or
+instances (assuming one of them is bound to VFIO PCI) as long as they
+are P2P DMA compatible.
 
->> mm/compaction.c:2319:7: error: use of undeclared identifier 'migratetype'; did you mean 'migrate_pfn'?
-    2319 |                 if (migratetype == MIGRATE_MOVABLE &&
-         |                     ^~~~~~~~~~~
-         |                     migrate_pfn
-   include/linux/migrate.h:137:29: note: 'migrate_pfn' declared here
-     137 | static inline unsigned long migrate_pfn(unsigned long pfn)
-         |                             ^
-   1 error generated.
+The implementation provides a revocable attachment mechanism using dma-buf
+move operations. MMIO regions are normally pinned as BARs don't change
+physical addresses, but access is revoked when the VFIO device is closed
+or a PCI reset is issued. This ensures kernel self-defense against
+potentially hostile userspace.
 
+The series includes significant refactoring of the PCI P2PDMA subsystem
+to separate core P2P functionality from memory allocation features,
+making it more modular and suitable for VFIO use cases that don't need
+struct page support.
 
-vim +2319 mm/compaction.c
+-----------------------------------------------------------------------
+The series is based originally on
+https://lore.kernel.org/all/20250307052248.405803-1-vivek.kasireddy@intel.com/
+but heavily rewritten to be based on DMA physical API.
+-----------------------------------------------------------------------
+The WIP branch can be found here:
+https://git.kernel.org/pub/scm/linux/kernel/git/leon/linux-rdma.git/log/?h=dmabuf-vfio-v3
 
-facdaa917c4d5a3 Nitin Gupta        2020-08-11  2234  
-40cacbcb3240362 Mel Gorman         2019-03-05  2235  static enum compact_result __compact_finished(struct compact_control *cc)
-748446bb6b5a939 Mel Gorman         2010-05-24  2236  {
-8fb74b9fb2b182d Mel Gorman         2013-01-11  2237  	unsigned int order;
-fb432f7fe43d9fb Brendan Jackman    2025-09-24  2238  	const freetype_t freetype = cc->freetype;
-cb2dcaf023c2cf1 Mel Gorman         2019-03-05  2239  	int ret;
-748446bb6b5a939 Mel Gorman         2010-05-24  2240  
-753341a4b85ff33 Mel Gorman         2012-10-08  2241  	/* Compaction run completes if the migrate and free scanner meet */
-f2849aa09d4fbc4 Vlastimil Babka    2015-09-08  2242  	if (compact_scanners_met(cc)) {
-55b7c4c99f6a448 Vlastimil Babka    2014-01-21  2243  		/* Let the next compaction start anew. */
-40cacbcb3240362 Mel Gorman         2019-03-05  2244  		reset_cached_positions(cc->zone);
-55b7c4c99f6a448 Vlastimil Babka    2014-01-21  2245  
-62997027ca5b3d4 Mel Gorman         2012-10-08  2246  		/*
-62997027ca5b3d4 Mel Gorman         2012-10-08  2247  		 * Mark that the PG_migrate_skip information should be cleared
-accf62422b3a67f Vlastimil Babka    2016-03-17  2248  		 * by kswapd when it goes to sleep. kcompactd does not set the
-62997027ca5b3d4 Mel Gorman         2012-10-08  2249  		 * flag itself as the decision to be clear should be directly
-62997027ca5b3d4 Mel Gorman         2012-10-08  2250  		 * based on an allocation request.
-62997027ca5b3d4 Mel Gorman         2012-10-08  2251  		 */
-accf62422b3a67f Vlastimil Babka    2016-03-17  2252  		if (cc->direct_compaction)
-40cacbcb3240362 Mel Gorman         2019-03-05  2253  			cc->zone->compact_blockskip_flush = true;
-62997027ca5b3d4 Mel Gorman         2012-10-08  2254  
-c8f7de0bfae36e8 Michal Hocko       2016-05-20  2255  		if (cc->whole_zone)
-748446bb6b5a939 Mel Gorman         2010-05-24  2256  			return COMPACT_COMPLETE;
-c8f7de0bfae36e8 Michal Hocko       2016-05-20  2257  		else
-c8f7de0bfae36e8 Michal Hocko       2016-05-20  2258  			return COMPACT_PARTIAL_SKIPPED;
-bb13ffeb9f6bfeb Mel Gorman         2012-10-08  2259  	}
-748446bb6b5a939 Mel Gorman         2010-05-24  2260  
-facdaa917c4d5a3 Nitin Gupta        2020-08-11  2261  	if (cc->proactive_compaction) {
-facdaa917c4d5a3 Nitin Gupta        2020-08-11  2262  		int score, wmark_low;
-facdaa917c4d5a3 Nitin Gupta        2020-08-11  2263  		pg_data_t *pgdat;
-facdaa917c4d5a3 Nitin Gupta        2020-08-11  2264  
-facdaa917c4d5a3 Nitin Gupta        2020-08-11  2265  		pgdat = cc->zone->zone_pgdat;
-facdaa917c4d5a3 Nitin Gupta        2020-08-11  2266  		if (kswapd_is_running(pgdat))
-facdaa917c4d5a3 Nitin Gupta        2020-08-11  2267  			return COMPACT_PARTIAL_SKIPPED;
-facdaa917c4d5a3 Nitin Gupta        2020-08-11  2268  
-facdaa917c4d5a3 Nitin Gupta        2020-08-11  2269  		score = fragmentation_score_zone(cc->zone);
-8fbb92bd10be26d Kemeng Shi         2023-08-09  2270  		wmark_low = fragmentation_score_wmark(true);
-facdaa917c4d5a3 Nitin Gupta        2020-08-11  2271  
-facdaa917c4d5a3 Nitin Gupta        2020-08-11  2272  		if (score > wmark_low)
-facdaa917c4d5a3 Nitin Gupta        2020-08-11  2273  			ret = COMPACT_CONTINUE;
-facdaa917c4d5a3 Nitin Gupta        2020-08-11  2274  		else
-facdaa917c4d5a3 Nitin Gupta        2020-08-11  2275  			ret = COMPACT_SUCCESS;
-facdaa917c4d5a3 Nitin Gupta        2020-08-11  2276  
-facdaa917c4d5a3 Nitin Gupta        2020-08-11  2277  		goto out;
-facdaa917c4d5a3 Nitin Gupta        2020-08-11  2278  	}
-facdaa917c4d5a3 Nitin Gupta        2020-08-11  2279  
-21c527a3cba07f9 Yaowei Bai         2015-11-05  2280  	if (is_via_compact_memory(cc->order))
-56de7263fcf3eb1 Mel Gorman         2010-05-24  2281  		return COMPACT_CONTINUE;
-56de7263fcf3eb1 Mel Gorman         2010-05-24  2282  
-baf6a9a1db5a40e Vlastimil Babka    2017-05-08  2283  	/*
-efe771c7603bc52 Mel Gorman         2019-03-05  2284  	 * Always finish scanning a pageblock to reduce the possibility of
-efe771c7603bc52 Mel Gorman         2019-03-05  2285  	 * fallbacks in the future. This is particularly important when
-efe771c7603bc52 Mel Gorman         2019-03-05  2286  	 * migration source is unmovable/reclaimable but it's not worth
-efe771c7603bc52 Mel Gorman         2019-03-05  2287  	 * special casing.
-baf6a9a1db5a40e Vlastimil Babka    2017-05-08  2288  	 */
-ee0913c47196102 Kefeng Wang        2022-09-07  2289  	if (!pageblock_aligned(cc->migrate_pfn))
-baf6a9a1db5a40e Vlastimil Babka    2017-05-08  2290  		return COMPACT_CONTINUE;
-baf6a9a1db5a40e Vlastimil Babka    2017-05-08  2291  
-a211c6550efcc87 Johannes Weiner    2025-03-13  2292  	/*
-a211c6550efcc87 Johannes Weiner    2025-03-13  2293  	 * When defrag_mode is enabled, make kcompactd target
-a211c6550efcc87 Johannes Weiner    2025-03-13  2294  	 * watermarks in whole pageblocks. Because they can be stolen
-a211c6550efcc87 Johannes Weiner    2025-03-13  2295  	 * without polluting, no further fallback checks are needed.
-a211c6550efcc87 Johannes Weiner    2025-03-13  2296  	 */
-a211c6550efcc87 Johannes Weiner    2025-03-13  2297  	if (defrag_mode && !cc->direct_compaction) {
-a211c6550efcc87 Johannes Weiner    2025-03-13  2298  		if (__zone_watermark_ok(cc->zone, cc->order,
-a211c6550efcc87 Johannes Weiner    2025-03-13  2299  					high_wmark_pages(cc->zone),
-a211c6550efcc87 Johannes Weiner    2025-03-13  2300  					cc->highest_zoneidx, cc->alloc_flags,
-a211c6550efcc87 Johannes Weiner    2025-03-13  2301  					zone_page_state(cc->zone,
-a211c6550efcc87 Johannes Weiner    2025-03-13  2302  							NR_FREE_PAGES_BLOCKS)))
-a211c6550efcc87 Johannes Weiner    2025-03-13  2303  			return COMPACT_SUCCESS;
-a211c6550efcc87 Johannes Weiner    2025-03-13  2304  
-a211c6550efcc87 Johannes Weiner    2025-03-13  2305  		return COMPACT_CONTINUE;
-a211c6550efcc87 Johannes Weiner    2025-03-13  2306  	}
-a211c6550efcc87 Johannes Weiner    2025-03-13  2307  
-56de7263fcf3eb1 Mel Gorman         2010-05-24  2308  	/* Direct compactor: Is a suitable page free? */
-cb2dcaf023c2cf1 Mel Gorman         2019-03-05  2309  	ret = COMPACT_NO_SUITABLE_PAGE;
-fd37721803c6e73 Kirill A. Shutemov 2023-12-28  2310  	for (order = cc->order; order < NR_PAGE_ORDERS; order++) {
-40cacbcb3240362 Mel Gorman         2019-03-05  2311  		struct free_area *area = &cc->zone->free_area[order];
-8fb74b9fb2b182d Mel Gorman         2013-01-11  2312  
-fb432f7fe43d9fb Brendan Jackman    2025-09-24  2313  		/* Job done if page is free of the right freetype */
-fb432f7fe43d9fb Brendan Jackman    2025-09-24  2314  		if (!free_area_empty(area, freetype))
-cf378319d335663 Vlastimil Babka    2016-10-07  2315  			return COMPACT_SUCCESS;
-56de7263fcf3eb1 Mel Gorman         2010-05-24  2316  
-2149cdaef6c0eb5 Joonsoo Kim        2015-04-14  2317  #ifdef CONFIG_CMA
-2149cdaef6c0eb5 Joonsoo Kim        2015-04-14  2318  		/* MIGRATE_MOVABLE can fallback on MIGRATE_CMA */
-2149cdaef6c0eb5 Joonsoo Kim        2015-04-14 @2319  		if (migratetype == MIGRATE_MOVABLE &&
-fb432f7fe43d9fb Brendan Jackman    2025-09-24  2320  		    !free_areas_empty(area, MIGRATE_CMA))
-cf378319d335663 Vlastimil Babka    2016-10-07  2321  			return COMPACT_SUCCESS;
-2149cdaef6c0eb5 Joonsoo Kim        2015-04-14  2322  #endif
-2149cdaef6c0eb5 Joonsoo Kim        2015-04-14  2323  		/*
-2149cdaef6c0eb5 Joonsoo Kim        2015-04-14  2324  		 * Job done if allocation would steal freepages from
-fb432f7fe43d9fb Brendan Jackman    2025-09-24  2325  		 * other freetype buddy lists.
-2149cdaef6c0eb5 Joonsoo Kim        2015-04-14  2326  		 */
-fb432f7fe43d9fb Brendan Jackman    2025-09-24  2327  		if (find_suitable_fallback(area, order, freetype, true) >= 0)
-baf6a9a1db5a40e Vlastimil Babka    2017-05-08  2328  			/*
-fb432f7fe43d9fb Brendan Jackman    2025-09-24  2329  			 * Movable pages are OK in any pageblock of the right
-fb432f7fe43d9fb Brendan Jackman    2025-09-24  2330  			 * sensitivity. If we are * stealing for a
-fb432f7fe43d9fb Brendan Jackman    2025-09-24  2331  			 * non-movable allocation, make sure
-fa599c44987df43 Miaohe Lin         2022-04-28  2332  			 * we finish compacting the current pageblock first
-fa599c44987df43 Miaohe Lin         2022-04-28  2333  			 * (which is assured by the above migrate_pfn align
-fa599c44987df43 Miaohe Lin         2022-04-28  2334  			 * check) so it is as free as possible and we won't
-fa599c44987df43 Miaohe Lin         2022-04-28  2335  			 * have to steal another one soon.
-baf6a9a1db5a40e Vlastimil Babka    2017-05-08  2336  			 */
-baf6a9a1db5a40e Vlastimil Babka    2017-05-08  2337  			return COMPACT_SUCCESS;
-baf6a9a1db5a40e Vlastimil Babka    2017-05-08  2338  	}
-baf6a9a1db5a40e Vlastimil Babka    2017-05-08  2339  
-facdaa917c4d5a3 Nitin Gupta        2020-08-11  2340  out:
-cb2dcaf023c2cf1 Mel Gorman         2019-03-05  2341  	if (cc->contended || fatal_signal_pending(current))
-cb2dcaf023c2cf1 Mel Gorman         2019-03-05  2342  		ret = COMPACT_CONTENDED;
-cb2dcaf023c2cf1 Mel Gorman         2019-03-05  2343  
-cb2dcaf023c2cf1 Mel Gorman         2019-03-05  2344  	return ret;
-837d026d560c5ef Joonsoo Kim        2015-02-11  2345  }
-837d026d560c5ef Joonsoo Kim        2015-02-11  2346  
+Thanks
+
+Leon Romanovsky (8):
+  PCI/P2PDMA: Separate the mmap() support from the core logic
+  PCI/P2PDMA: Simplify bus address mapping API
+  PCI/P2PDMA: Refactor to separate core P2P functionality from memory
+    allocation
+  PCI/P2PDMA: Export pci_p2pdma_map_type() function
+  types: move phys_vec definition to common header
+  vfio/pci: Add dma-buf export config for MMIO regions
+  vfio/pci: Enable peer-to-peer DMA transactions by default
+  vfio/pci: Add dma-buf export support for MMIO regions
+
+Vivek Kasireddy (2):
+  vfio: Export vfio device get and put registration helpers
+  vfio/pci: Share the core device pointer while invoking feature
+    functions
+
+ block/blk-mq-dma.c                 |   7 +-
+ drivers/iommu/dma-iommu.c          |   4 +-
+ drivers/pci/p2pdma.c               | 176 +++++++++----
+ drivers/vfio/pci/Kconfig           |  20 ++
+ drivers/vfio/pci/Makefile          |   2 +
+ drivers/vfio/pci/vfio_pci_config.c |  22 +-
+ drivers/vfio/pci/vfio_pci_core.c   |  58 +++--
+ drivers/vfio/pci/vfio_pci_dmabuf.c | 394 +++++++++++++++++++++++++++++
+ drivers/vfio/pci/vfio_pci_priv.h   |  23 ++
+ drivers/vfio/vfio_main.c           |   2 +
+ include/linux/pci-p2pdma.h         | 115 +++++----
+ include/linux/types.h              |   5 +
+ include/linux/vfio.h               |   2 +
+ include/linux/vfio_pci_core.h      |   4 +
+ include/uapi/linux/vfio.h          |  25 ++
+ kernel/dma/direct.c                |   4 +-
+ mm/hmm.c                           |   2 +-
+ 17 files changed, 741 insertions(+), 124 deletions(-)
+ create mode 100644 drivers/vfio/pci/vfio_pci_dmabuf.c
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.51.0
+
 
