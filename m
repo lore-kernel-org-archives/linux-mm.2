@@ -4,96 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDCE8CAC5BA
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 18:52:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31226CAC5BA
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 19:02:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 241C38E000F; Thu, 25 Sep 2025 14:52:53 -0400 (EDT)
+	id 5B2EB8E0008; Thu, 25 Sep 2025 15:02:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 219CA8E0001; Thu, 25 Sep 2025 14:52:53 -0400 (EDT)
+	id 563DF8E0001; Thu, 25 Sep 2025 15:02:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 156898E000F; Thu, 25 Sep 2025 14:52:53 -0400 (EDT)
+	id 452958E0008; Thu, 25 Sep 2025 15:02:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0695F8E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 14:52:53 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B0681B9707
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 18:52:52 +0000 (UTC)
-X-FDA: 83928669384.27.46FF9B3
-Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
-	by imf29.hostedemail.com (Postfix) with ESMTP id D9E12120004
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 18:52:50 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=elijahs.space header.s=purelymail2 header.b=VL0Rnr3C;
-	dkim=pass header.d=purelymail.com header.s=purelymail2 header.b=Gge1mCn7;
-	spf=pass (imf29.hostedemail.com: domain of me@elijahs.space designates 34.202.193.197 as permitted sender) smtp.mailfrom=me@elijahs.space;
-	dmarc=pass (policy=reject) header.from=elijahs.space
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3222D8E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 15:02:23 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BA0181A04BD
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 19:02:22 +0000 (UTC)
+X-FDA: 83928693324.29.4F52B6D
+Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
+	by imf10.hostedemail.com (Postfix) with ESMTP id B8077C001B
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 19:02:20 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Vv0ALtzl;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.166.172 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758826371;
+	s=arc-20220608; t=1758826940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0w+cnl/laqV4R+hmMmgCWTNT9XgwKK666GaukqY77w8=;
-	b=pxkqyAkgZrj60x1O6rl0SGUX2TduAVfZ53RXdQPhfi1SatgNWPFlawBDNg3sZGzMKNCx/O
-	rTpUkV+XeQ5pSjyADh5YVI3i1+RUqo45+VFmJ090yzHOysZhRvLYGWBfEicFhg2BF4Xc3o
-	d7FEW7bYf/tXwuANl/4Khr5Hs0/Wd1I=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=elijahs.space header.s=purelymail2 header.b=VL0Rnr3C;
-	dkim=pass header.d=purelymail.com header.s=purelymail2 header.b=Gge1mCn7;
-	spf=pass (imf29.hostedemail.com: domain of me@elijahs.space designates 34.202.193.197 as permitted sender) smtp.mailfrom=me@elijahs.space;
-	dmarc=pass (policy=reject) header.from=elijahs.space
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758826371; a=rsa-sha256;
+	bh=i5BGgKN1hYVlPuGDz0FxzI5j2NNaYJevvvmLa3nnM5k=;
+	b=B+nU6csA792kmGS/YFdv/HTVZo2cADxGW+dusMbociZOywbAlMX3mgXf+LQtIqdYx/ySuw
+	VbqGdjE7mQtgIVMZp8Byam/6Qs5bU3TiOTgFo0OF53W2XraVRHANL+0+PO8jIFC1QJq6+M
+	RbR3FZdchdmxplRUUyoYUc5p8STDu8E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758826940; a=rsa-sha256;
 	cv=none;
-	b=JmpCws1ZYIejh3LeBEgXijYhb4abullwcz9iSAAfc2rd0oNiALCTGW3si7AzNvOBoApLGs
-	ikbRSJjGzxe2g3OBVqlMrdIrSEf9+ge5RWs/28ZpzOkTIo1Mmnldwjju3HiOjI0Fr9n6GS
-	vcqYnd6SF0y1R0fFcHQ4YHZObdWCsos=
-DKIM-Signature: a=rsa-sha256; b=VL0Rnr3CT252ggiJajFl+wGy782COuKaCRn+M0Vx1ghE9d/7xxu3IyiO8W/Ir4CDeA32xB4C/vrzXsoxs77br6fib1WuFh+vNRj+y5lJLlUSlM7HRyb88WufKm4cazfNv5+9Sviocbw6NNuCJApMqGUlhwPX7i8N0oCzOddGxzquwRy8qfeT7NAxePZzqNV3W6ueRfWdvcnB2HYvkuQL4oeec+9dIcvi0ITBI0WGFieHGkDRi06mM13HtMaBx2HI6VzyDJMkLEJAIzhgpZklAiekRxeiYA+7GgsvG+SmE29MNE1CiljMx1y/KEfas2XtAUAM4qNI++Zar5V8gnLO7g==; s=purelymail2; d=elijahs.space; v=1; bh=py1R90auHUwRZcLSo/U4sqM+Pp8Fv3SpehMlnxzLw/4=; h=Received:Date:Subject:From:To;
-DKIM-Signature: a=rsa-sha256; b=Gge1mCn7UZnkjPpZQQY2BEihVNsQPCQVv8hJTjwZAahrf9Hw2bQTq3FnnXMZbyILiTqnV1J9SE8eEZJxZqbyianaOJ8oiwoHjkM/7nebnSy3gy1IHh5WF5pt6WydZrqRLFaqt6Da4ToRWfxVLGi/1uMmxvTbmWS5WbQiBJcJueNnplPhaXOXsOrJNFQDqO8uefITIGF0yZ/1ieL6GICKf1ItUrTQvw0D5mj1W8sHC11uw2/cIPK02Rpd3/uA0tM4lqIFdEdK7B87MaZau0TF/2hmtsP0F3bJ+PTkGaT8+0bG0YxrT44bY54tdf0CLvLCPBP0vGWp3ePE0Y8wLQxLcw==; s=purelymail2; d=purelymail.com; v=1; bh=py1R90auHUwRZcLSo/U4sqM+Pp8Fv3SpehMlnxzLw/4=; h=Feedback-ID:Received:Date:Subject:From:To;
-Feedback-ID: 26912:4866:null:purelymail
-X-Pm-Original-To: linux-mm@kvack.org
-Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id -567714660;
-          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-          Thu, 25 Sep 2025 18:52:20 +0000 (UTC)
-Message-ID: <bacf0774-2128-43e8-92cf-6754fb554824@elijahs.space>
-Date: Thu, 25 Sep 2025 11:52:18 -0700
+	b=VHy4mLVj3SjUexoGudWRDejb5T6NFiPNLFbEcqo6HQ5UHmT9+4MioFwfrMIZoznxiLOprH
+	B12Jh0km9MZgNtHUhILTk6hkPSMsAoajZ2yuekRMjIty1prG6V9Da061z1tKWrgQzIkNt4
+	IewZOJiyXV9LQxaPwYPPkKeAPCBCO5Q=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Vv0ALtzl;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.166.172 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-il1-f172.google.com with SMTP id e9e14a558f8ab-4258ac8f64dso11436035ab.0
+        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 12:02:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1758826939; x=1759431739; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=i5BGgKN1hYVlPuGDz0FxzI5j2NNaYJevvvmLa3nnM5k=;
+        b=Vv0ALtzlSUX5SeaNM7u0nbq/FMlihQSDmu2GLin1kcTAc4maO/M5AVbOsbvtlncWk4
+         CBzvaBVdtIcjQlnp4Fn1xKU81lK6yxlVJTPgjQfybAhZzj2SQrPKeIUEZLRs9hxmQGvm
+         035IWmgp/d9FkjRnDlCD+j/Tl6YM0jHGe8BkGq4AhtQQiWEmYGCCqMCz18FupozTbPIB
+         T7aUXcOJAp5Ix8hzlA47cA4MSP0BW1CVxNdGhGxu2ZJConOCrrG5YfI+6zeyDcLnyIDE
+         M/Dp61/rSNOMqQ9aNxi9OInyE1hxl6V/itGyOsVUARZPBrbxln0ts5C9q5BGwXMAQrUE
+         TXcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758826939; x=1759431739;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=i5BGgKN1hYVlPuGDz0FxzI5j2NNaYJevvvmLa3nnM5k=;
+        b=JVz7GOgdkIklUAml4Q7M5S4LxIe/zBFJBK21ihGeVdTfIbmvn5+MmRyBvxjXSgs5ML
+         ZL9IcqSPyrPhf5UyxQEX6N4eh+Kqqr7aI5R9ziaPmJXeSVCfnlk6tKMnMPn2KvOlOS/W
+         OnritK/A1iIkzmKHJfJvmWsIykrc0Qv1/ze2uSW+IPZOGBbIlBRaJYany9zBFYXSwZyq
+         TakM1Jq3t95xjDx6eYO93G+7H7hVk0TTXtRn9nTPy+JQ2A8z5Ia6XsksvG9WiTBfzVsa
+         A5WsyBIf9dsVpZ7a5fb+aVpOmLxC0Qx1mKTgNeS+APUIPOAGaVLhmjdOxeKTk7ytdGaS
+         ixeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU3jnmNhqa7WH74q4gne5mhxIXmq4Wj4FW3sjlBi/PB9GkZH1X5lAgm6/C8j7zwG9sWxi0lsG6uPw==@kvack.org
+X-Gm-Message-State: AOJu0YyrLvnvx4Jxz3IIma1SYsXzx+kLwnAVmb4gTdZt7CqS8yIWJzck
+	2FbanjbEb2h1PUwqMbA9X+jIcTkRe8VY/WoMPteU1c+Sz+P7Nu91RFL4cl9pwTgI0fc=
+X-Gm-Gg: ASbGncvW5ekq8iuZPg1tiLUoJ6iYFVRDNC5vwZOyGpBn20Ep05z29SyVBXG+hur+AVv
+	MxlvPA8wc0fhZbwJqqv8D+sAfkEZDgTYrydPXhCPDKnxDYyccJ6Zq0Q7rtbt7GF5zco60tQHslf
+	Oa3lPrFyDo1XGnyFCz8squTAr7AA4Tofl9DeFJu59H6iHyMtrik0HdwrgBEFC2lIJ4mtp9io5ZI
+	WLFFqjQb4lyQ+hRVjIZxgetlEJRPS031mNfmmY/8SNOA7UiGtf8vezk3GAt4J0vZz4jam6sTtOF
+	T40+WQNib9xFHaNxUB/9NXoVna5UuZAeV0kv7zT1soehkypJGaWjaheYij4xiW3k8egwxBeSBEz
+	H8O2VU32XHE1ctEnDk61/sbaqepnyJ4OW9CXDiLAFUqqgpiqbFCq1uZ754iTcke+K+HQJQz0p2Q
+	0=
+X-Google-Smtp-Source: AGHT+IElHzEjP4n2pPcMoIuxsAK3EgVQOeQkGgr0O77OUi809sXnbgs87TM+n1OoXUW5tPgUfSZIuQ==
+X-Received: by 2002:a05:6e02:482:b0:425:79b4:9ef6 with SMTP id e9e14a558f8ab-4259564482amr49397665ab.27.1758826939416;
+        Thu, 25 Sep 2025 12:02:19 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (50-32-2-77.vng01.dlls.pa.frontiernet.net. [50.32.2.77])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-56a6b152a0dsm1065149173.81.2025.09.25.12.02.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Sep 2025 12:02:18 -0700 (PDT)
+Date: Thu, 25 Sep 2025 15:02:16 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>,
+	Wei Xu <weixugc@google.com>, David Rientjes <rientjes@google.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Bharata B Rao <bharata@amd.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, dave.hansen@intel.com, hannes@cmpxchg.org,
+	mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org,
+	raghavendra.kt@amd.com, riel@surriel.com, sj@kernel.org,
+	ying.huang@linux.alibaba.com, ziy@nvidia.com, dave@stgolabs.net,
+	nifan.cxl@gmail.com, xuezhengchu@huawei.com,
+	akpm@linux-foundation.org, david@redhat.com, byungchul@sk.com,
+	kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
+	balbirs@nvidia.com, alok.rathore@samsung.com, yiannis@zptcorp.com,
+	Adam Manzanares <a.manzanares@samsung.com>
+Subject: Re: [RFC PATCH v2 0/8] mm: Hot page tracking and promotion
+ infrastructure
+Message-ID: <aNWRuKGurAntxhxG@gourry-fedora-PF4VCD3F>
+References: <aMGg9AOaCWfxDfqX@gourry-fedora-PF4VCD3F>
+ <7e3e7327-9402-bb04-982e-0fb9419d1146@google.com>
+ <CAAPL-u-d6taxKZuhTe=T-0i2gdoDYSSqOeSVi3JmFt_dDbU4cQ@mail.gmail.com>
+ <20250917174941.000061d3@huawei.com>
+ <5A7E0646-0324-4463-8D93-A1105C715EB3@gmail.com>
+ <20250925160058.00002645@huawei.com>
+ <aNVbC2o8WlYKjEfL@gourry-fedora-PF4VCD3F>
+ <20250925162426.00007474@huawei.com>
+ <aNVohF0sPNZSuTgI@gourry-fedora-PF4VCD3F>
+ <20250925182308.00001be4@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: slab: add basic slab module
-From: Elijah <me@elijahs.space>
-To: Danilo Krummrich <dakr@kernel.org>
-References: <20250924193643.4001-1-git@elijahs.space>
- <DD1SGLU4180C.361W5XLH76XNC@kernel.org>
- <73d7d53f-439b-44a9-98ca-0b1c8fbc1661@elijahs.space>
- <DD22FI7F2ZHT.32SL8PXFZZHV3@kernel.org>
- <6e9c820f-070b-409e-ac25-af96b8b962c6@elijahs.space>
- <DD234804U7YK.3S2MBUJSFHF8J@kernel.org>
- <74b3ef24-a307-4d3c-891a-8c5283448b20@elijahs.space>
-Content-Language: en-US
-Cc: Elijah Wright <git@elijahs.space>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Uladzislau Rezki <urezki@gmail.com>,
- linux-mm@kvack.org
-In-Reply-To: <74b3ef24-a307-4d3c-891a-8c5283448b20@elijahs.space>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D9E12120004
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250925182308.00001be4@huawei.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B8077C001B
+X-Stat-Signature: ob91861xkhtj6kjuo65jzwjwqbdsgfty
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: jm18ti1fdixjw84tbezz9eoc6k8h95nc
-X-HE-Tag: 1758826370-437688
-X-HE-Meta: U2FsdGVkX19bmwmc/zG2+Ts4Z0sxHAiLpgzQqZSBUE1eDGY5+Ydw7GrvpDi+l9c9d4RsoJE8MhiFKCh4s0lXauOZPeYfFcFJbaYRz86ilnLX8sKCvDXsg8GmMExHrR9iCzr+pYav1qvCI0vHPrQGr5SmdDnNRudVfdKtOB9E3Qk0yfU6DtiKBItPaIF9C6rdx3gV7fcuDqq6785vB84m8/sqrWTt1VnhE7bdjxMlIdBLi7KV5dsFI3hL2aDlEgLme65lXMJYfw2AAFpw3WZmohxLfRwfAaBpTFrBmBBeR5SbJbXc+tlXe4+qwb2U5sJEulYZo6aiylXh95G2KaC1ysK1VRe4EKA+mbUAn/wq/Qu4kXt8EiZI/8e7D+5rKqep4ya4fQZZ1bzi0UuZRLFO5Ag0YruLgtaR5tq9QoneCIDUYlmOoBU3XfBQvI6qEAD6LA9sxjau1koEnhbggSDLCYMAw28++I2tbj4RDENoBrcj400h3AJtxllljBYNsNsMZRUSKS7CVw+xeW1aSnPIu8uxpUwZF5P9nvbnbMCSiYWFAt9rFodXetsklVpZPG2wRLKW1VgVdt4JsARNCMFC6ysCZusD9xOr0K3bXYpzJKu7XygDZ1fEyBXOnC8XceKYQpCY11bYQWnA8mkOVwh8dvhyhyXUd00kyx+a2DNFyuscLm98uYNENEwEyix28F26/EX6RBZuEPWnMxt8trxarwgD270YHmvx32nMB72iSoLGIuZd0c12uSjYoCTDwkU8DQ+qAggCsOOF90XR5ybpRpVMbll/I0p15ydIqgWPtdqM3px3uwFwfbxfHxEtRwyzQADU+IuIahsrGCDTBfHg1toodlhj4ZVZlG2l4L0B3tLrhfRw3GqboKDSdUZ5OpydYo8UD+u8zDUUtJJgPe9BTM7ifsLaOTcJUVsPCUm7btZ/xLyZRSRtvTNN2xaDE1O2k0357tDfmcKy3GgJtPE
- lop0TQ9j
- yU9gI0n/DhhAaO3nMUkf721dtgVttrNrJrqXWndCpkaaxd6515c3kRlqxtkvbgtLn6yDbiCkYPbmzrVgi2bridStN+ABnZmYbwuXEUZ6KJY2cE7SGVT+ptO+KUNMIMdyrJK/D/bh8+3R6KkAxFsfqkzjSvVUQbymwEIK3a0CYpvaqL27EbuiSbIV/2y7AcFwg0VKQR01yIN7lJxwxO2nrgfBGyPr/Rh+56JOY9k8mPq3RNi799xFJ8kiNmImKOz22r6d6dylLv03jbM6F7464u5Ky+8q0ET2K0yaLuhYhwiVkqpVckmxULgcmceBb5a6uVaaCfPbCA0TjtM0S9FPgOiq46mOJkFob647midPoxehFTj/cB0/Q/natKYCFawe9YzhJZ8WF00KzEHuxxjdAifn2FSAFXbB181iOz9xqV+ufiQWKossmfOCrk2IcziW6xUsRzSxKBZ5xJwYvzE6X4Pq3WFKagYfffTwj8DJ0Wn4TkExIR9R43fW99Svzf9Z0Txk+muwbqTt9Lx4WtwbegDYZlmk+L0aPfqj1XJ8mHtl1SbKbQDwtHyQFVogG1Rt3zSA+S397aQpZRXar/YpBc1/Ev2J8v6WijUm6tAcTakw8rETaDislEEmDCg==
+X-HE-Tag: 1758826940-112025
+X-HE-Meta: U2FsdGVkX1+HneEMlWtVidTjFkofCCixWqaarkUJQGvwJEP4u8UBZ0GvH1P+QtT1qIogI3EFqxkw/DyUVkmGqfOIfW0AGSsSsQY3/WNEeNIa4rTPAF+0eFNroCeswsLVldQdaoBHLm8O2V6sBFVfbrsXvqCYiLscuR8iNPv8MhdeHzMDZNtSbXWkwAAbZE0CIkJbNhTcB7HOToo+DKFBSzdeeAX33IauQojzRH0T3RlbZxt5efOnuRk46lD8qCbcHlhdyS0EJrTORqBCXqRopjFrNNq0X0d1ZoGixq7T1cAQ0CCkxRPRTeDF0uErn/o2lsY6OTryPt4WDayhw0TuVtJ5GjNp95WGJ3xk4+FdVxrwy3oD7/CH21+P3x/uFZks3+Lun6YOqGiuT14G2rN8IM6redjaJ7dFrRdX4u7b8w0kgCugNJgGZeQxdM0/Y3tjAOW8frFTvGxOAfuS7O6HuMPdHISBmTg3CUe/pTp1c2k9bz5tFPtTWv1OdaDOT9Q6DJdFAG1VcpWj7BUzJu4nwCIx+z76ZPPlQtOWrhtV1nzKL9B3iVEsYRX2OCp4jCpT0GrH83KOATOwogQmOVkV0JfihMflvvw/BOmZJI7yJNqW/u3m87oSx+nv2fpes+8Oh678jCYp+CWHlKJ30UckNBCCHIW1vaYZ7XGZdSFwEG/ip12ubNyrwES9FR0RiYjn7+ZZ4VqRYGcIxV3mkpJutTQhlJy2rprF6MNGgjjpG49HcV4Q589d5QFQlcWlMIZTlsID46C/zwu4c2mWvufHakWI73aOhWMZsz8gjEIYOc9tc4ZfxiaJfcTtTmQKD83330I6aeLwdZR+cFoqCSzFMWH0NPylKJP298cCpiJz1nGnrG7NgIehXcVnu9p8O+DW39D4y+8BrFe4neFQBEjtDA+83vKMOjNd8QtcNXO2yhnS/VIjWD1BkqbjJhRLueWz+EjvwKEvyLALgpydIPh
+ yiRvGOzT
+ y55/DySQdVbrddZhOVWt1S/an0VcNkVIwBl/kLqwPuAju244fz5hvFQI9t+f+aRumylgkVllRcupaWpFJ1OmZjBcCSwZ593nzSqUeNAY0+vBHkcB7Ok3WzjVQjkyvx9QjoPChxTWAOE1Uqpr3m1awZvbnTxDHmjpHN/yXEW4Tnc5Udq/BYQcgKTo4D3WfQ2zEt8Yn6hdOUgXG9ipP/UXqC2Au1nLumrlnob4zB2EidybeJjMEMT4nfiy/WIwnAaCTPbZHIKrE5KNvHBmEFBUEXg/EeUcMJ/2wQ54Pe6HgEG9K6GcJfVahZMLH12dwPM70I0UaQBi+BRTkHYPkyq0Z6sPe3QTflrcGf36P958b0+QUnikG5CsETMMpqsIidPvLz6zm7ookjBufAhZHjCSQAqOk5ANQNqv2ZFgn0PFV1et5Lt+OiSYFAu6VJAfaYFONSlEdPXP1d+xXuTI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,22 +139,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/25/2025 11:51 AM, Elijah wrote:
-> On 9/25/2025 11:15 AM, Danilo Krummrich wrote:
->> What are the other complex issues you are referring to?
+On Thu, Sep 25, 2025 at 06:23:08PM +0100, Jonathan Cameron wrote:
+> On Thu, 25 Sep 2025 12:06:28 -0400
+> Gregory Price <gourry@gourry.net> wrote:
 > 
-> I think I misunderstood what was involved for (4). I was thinking of 
-> keeping the extra reference in the object but I think it can be done per 
-> CPU. I'm not totally sure how much would be changed in the kernel but no 
-> matter the implementation for (4) there will be some complexity
+> > It feels much more natural to put this as a zswap/zram backend.
+> > 
+> Agreed.  I currently see two paths that are generic (ish).
 > 
->> I'm not sold on duplicating the Box code just yet. What issues are you 
->> referring
->> to?
-> 
-> mainly where the cache isn't static. if you have kmem accounting enabled 
-> and a ZST that encodes the original cache's address then that would 
-> break, unless I'm misunderstanding (3), but that's just an example. I'm 
-> just thinking of potential code in the kernel now
+> 1. zswap route - faulting as you describe on writes.
 
+aaaaaaaaaaaaaaaaaaaaaaah but therein lies the rub
+
+The interposition point for zswap/zram is the PTE present bit being 
+hacked off to generate access faults.
+
+If you want any random VMA to be eligible for demotion into the
+tier, then you need to override that VMA's fault/protect hooks in its
+vm_area_struct.  This is idea is a non-starter.
+
+What you'd have to do is have those particular vm_area_struct's be
+provided by some special allocator that says the memory is eligible for
+demotion to compressed memory, and to route all faults through it.
+
+That looks a lot like hacking up mm internals to support a single
+hardware case.  Hard to justify.
+
+This may quite literally only be possible to do for for unmapped pages,
+which would limit the application to things like mm/filemap.c and making
+IO (read/write) calls faster.
+
+which - hey - maybe that's the best use-case anyway.  Have all the
+read-only compressible filecache you want.  At least you avoid touching
+disk.
+
+~Gregory
 
