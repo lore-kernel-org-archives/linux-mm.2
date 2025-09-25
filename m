@@ -4,126 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74C23CAC5A5
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 10:12:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 428DFCAC5A5
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 10:25:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9013A8E0005; Thu, 25 Sep 2025 06:12:11 -0400 (EDT)
+	id 8D2BF8E000A; Thu, 25 Sep 2025 06:25:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B1508E0001; Thu, 25 Sep 2025 06:12:11 -0400 (EDT)
+	id 8AA7A8E0001; Thu, 25 Sep 2025 06:25:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 778F58E0005; Thu, 25 Sep 2025 06:12:11 -0400 (EDT)
+	id 7998B8E000A; Thu, 25 Sep 2025 06:25:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 626BC8E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 06:12:11 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 15FA716040A
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 10:12:11 +0000 (UTC)
-X-FDA: 83927357262.11.84C173F
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 69CDF8E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 06:25:43 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0671E58E3B
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 10:25:43 +0000 (UTC)
+X-FDA: 83927391366.28.313986A
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C10DE1C0006
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 10:12:08 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eLAADUfA;
-	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 83DFD80008
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 10:25:40 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Le5YIHfK;
+	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758795128;
+	s=arc-20220608; t=1758795940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lG8Q/FN8wXVOGFD2S5MD44NnHhqfaQZRP/OiKpWlrJQ=;
-	b=2/Hlv6L7Oa6mPAHNpCGj1phsGSYGEDiuTHsrGjB3EDmPZCa9N1qT9ejyishZHk8BBGVpTc
-	Lu8SG09ijQwfa4Id8c9qAlfHGDc8aKwi1Nf2nXTcXJPpp7n24QJnLT6i6QlUOO/kt50vq/
-	Qa/5nAxbAiRzCQM1W7hzG6vLGG481sQ=
+	bh=Yn7KtJOI+OoVL/g0bXoboAmrO1BBc45RKDhcTRih648=;
+	b=dbI4UuxepUDBfcU3zPK9YtlyiZpIOe8yIESRJQWE7F8+eaO7T35zPYq2gEQLZfeHFZ2Enp
+	uOuirIwwSQJ4vn/CD7zrE0QyL3mI+v7pvTXCZfXQMCzcJad3fS906gGUJkR4LXuvI2Pu/T
+	aItxOoIZxYJwVU7DIsYzYw2x5gFCkiI=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eLAADUfA;
-	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Le5YIHfK;
+	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758795128; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758795940; a=rsa-sha256;
 	cv=none;
-	b=Zucxf+9NgvuYl+wSTIhb380CWqEHA+RUrOyx6c3pf4wdBVsauXb77uZmDSQf9TyJWcOHhQ
-	7kxOO9e/X7Q+pUtkr3ZLs8SoE1kzp/psvkmSpPA9Lx3hIgof0wKGhfuBwYuBhmMyL73/7r
-	B8RvWod6m0lEway2z1y9bwO8GS8ysRs=
+	b=Md7xoEACpOqwUn1t/Q6WGoaB41KEA/9S9AFU8Jq97wc1xoJDXExsIinSnM5Hjk7saBtFN2
+	G+ymvdjtEvKPNVOx31WsYxzp8RBXP/35DMzfmyy2uHKdmCrU1WjIQpf0tU4c2u20OgOs7F
+	D/REdY7IdRnd70qJxvqnY++aYJFV7yc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758795128;
+	s=mimecast20190719; t=1758795939;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=lG8Q/FN8wXVOGFD2S5MD44NnHhqfaQZRP/OiKpWlrJQ=;
-	b=eLAADUfAJq5+ihHEkscDUD8DDVbL/mjjMjmYcS3Ti/6DJjIctbiMfPOp0vtd7kOZc3yEyM
-	WzNEqAjroM/XbjcYCqKAubJej+0iVY7wnZ0KyRicD4NJKkiEtiJWJUeG7ww0Bb2wH62TwB
-	0P0ECkQiGL9e9ipdXhNbDe83MvLcxzE=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=Yn7KtJOI+OoVL/g0bXoboAmrO1BBc45RKDhcTRih648=;
+	b=Le5YIHfKTJ2Vw2xXcZn6js0oFKZTHOVXoiG0yVp4qgUAlzKp4st7V6a2cP1xe7UGElfVX/
+	KzJ22DU3talccGGE3uy+H8gRKPPBWjOdw9DDTsgXn41co/Fl+D6lYHHyi5yLyLRt+mTtE2
+	s+/FHWMSA9+ORP/YbskoQdoz8Kv4MWU=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-62-TyRU8rOPNTmdOtnFG0MjcA-1; Thu, 25 Sep 2025 06:12:01 -0400
-X-MC-Unique: TyRU8rOPNTmdOtnFG0MjcA-1
-X-Mimecast-MFC-AGG-ID: TyRU8rOPNTmdOtnFG0MjcA_1758795120
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45e037fd142so5870275e9.3
-        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 03:12:00 -0700 (PDT)
+ us-mta-692-xvyAnyNCM4Kj7ST7CL_IgA-1; Thu, 25 Sep 2025 06:25:38 -0400
+X-MC-Unique: xvyAnyNCM4Kj7ST7CL_IgA-1
+X-Mimecast-MFC-AGG-ID: xvyAnyNCM4Kj7ST7CL_IgA_1758795937
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3ecdb10a612so701974f8f.2
+        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 03:25:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758795120; x=1759399920;
+        d=1e100.net; s=20230601; t=1758795937; x=1759400737;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=lG8Q/FN8wXVOGFD2S5MD44NnHhqfaQZRP/OiKpWlrJQ=;
-        b=I/Z0kU7mZx7c/QGH4V1MOEWLszCwLCdq5iAWSlXsido+KHnXdXdy089dAfPEtoDdC1
-         HsAWTlDIPH97bz93MHp2xaXP081k08IdfODp8mgtNwB8iXMKdjLQE+Ys7XpkkCUmD3u1
-         9HO7EkfYkg4puj3UqJfig87T35Cm82/rMNXUcVbFqaBzAUcs9eV8W+OH9tl7Y6oq4xuB
-         4Db83BHaTmOzpSfzza1AGzbNC84TGFLscegrww67vyR0qKKo7NnDJ1sj27rMUKBaJ6F/
-         VZrDdnLh0szS7Ip7a5qWtFAkFiZOXV3zm2qGoqxWByIGETyOxXNSDwHOzFtAfQ4usbiQ
-         jjzw==
-X-Forwarded-Encrypted: i=1; AJvYcCXPx3/tp9J1iYEwLZ/jF0t6aJpV8EgJPukwooxyLuW0rlU/YKe6tv62rwEZrmyFwcajnMKnB8+qAQ==@kvack.org
-X-Gm-Message-State: AOJu0YxpiplHkjY48PSOCoxLII0RfZHY4Lfgbu2ypqng1qSwDK0lJkZ4
-	dkdJkpibDZM099ivglRLMKKOK7a0Xd3bcQs4ThJM2iZdadJN5Jw93JpFE8iU4RWnXb6kUX1ElY+
-	yGGR5El0tA5NVd/lINPfCxw9qaLYCPJnYCNYNbR6ZXIv10CXl/nIw
-X-Gm-Gg: ASbGncvVioiCvUh9LYQ9IZz5NjQBDl9zQa858td6xFYwRFebwsq0dM9wDiafJPCa87G
-	VGPF5r1odpAg4dhROalyQYo7MH7swkKx5DqS4tOASCvvdtnAxVy7xVrZO76R2UByNqQvvEAvHJc
-	ubzbj453poXR2XGiyqvl6z16ACFqm9teeVVni6whFnDlTf8JJOkw4ERTmJ333AAc3aNcoNZc73H
-	imkanuH9VPtNMD6QttXrmfDYZWHPYxOtK+oZr9eYj9YXnik1mAjlAwtpBk0biwZgTPAwPPyuNyk
-	gwPnLmbtiFZNy84y+/y+iYYKd4/2IoyV7fPLv7W2azS8F6zUZs0D8qrcoLWCTpHOZGm1z19pdi4
-	U/cIz6jgRccLHUEOxdvwRbl457i/RWtlAM3hetWL1LBIO3zhAu8Aq9ZzQ/8oFQYPbfdqH
-X-Received: by 2002:a05:600c:1ca5:b0:46e:2637:d182 with SMTP id 5b1f17b1804b1-46e32a08feamr34778065e9.28.1758795119593;
-        Thu, 25 Sep 2025 03:11:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGlNMDizXc3Rq/dhiO8rd/15mVcqt0iIObArVPXmOTFpH25amynq0pBhSR/qoFGTRlMvFSsQw==
-X-Received: by 2002:a05:600c:1ca5:b0:46e:2637:d182 with SMTP id 5b1f17b1804b1-46e32a08feamr34777545e9.28.1758795119112;
-        Thu, 25 Sep 2025 03:11:59 -0700 (PDT)
+        bh=Yn7KtJOI+OoVL/g0bXoboAmrO1BBc45RKDhcTRih648=;
+        b=D+37GEgAeqZUOWlgi7XfwGwkmoPyn+Dj4MIz1aQccRlM0+/uW6xbAopfxwIaDBE+04
+         Jp/OY7A09YX3KvqU861rQrs+gjOIEs6Ut2Qj/CLTvNhdkaSpqC8yOh/qvBpvXLbIOkKh
+         tGqISc/73Hs+zMWPcxVYgxXPne904ffqCS1xA8TTrQxd3i/zeMXDsvQLoPG1GOLi4InV
+         zr476uMkUdy2XLhu3MU8erNS2tSpHo1Ha0iEfYebeAFwklC8+4jGdhU0+l9KCYOmiIWV
+         hQOFpQIS9KGapT+ENGyk2g7nSnLg8XJjdkqWyASPbh3ESWb5F1sXTseMj2PAuVhwm6tf
+         QY5w==
+X-Forwarded-Encrypted: i=1; AJvYcCXCK2CP76IimtZpyJ2r1PY3RnV7AZPA+FzW0+29Sa1FT1rALBM3dE1sHPfQREg5DPUMCrDOssqfTw==@kvack.org
+X-Gm-Message-State: AOJu0YwIdgs/fr/K+xXrJtTXC00wIPkZujzxkCBzYVg3A0a7G3m7NkJa
+	Cslrh+60GDiXvf2yGheLaHHZzQLDYEfwc6ZlCs0goYteqaANokN71pkkZ5V/ifTw+GjeK/PKEmq
+	ziDNWDrTaG0/Jp4TCISQjQNpPPcZ0JpYYbInLGqpXZJgIRNEPrGnf
+X-Gm-Gg: ASbGncscm6Ly9EfsBW772FFydQs8hOjQC8lq2G2pW53BuZD5NEeya2vhP7A0Tz/pG40
+	KRRhVrPtjvV5bj81xEqWm6sgEXy4/OUE+pxIhnG6R5VaLYQvw35RG6hf2ztohrKCcRSszMzYqVF
+	aCbV97mFPEZpGzNxVq8U/dL2KBgIUq4zUWfz7zBGZE0PGtNbqSRRrNKy+LPFmbhdrN4DyP2lYQh
+	eoDd3wOkroEVM0VA7SbNG4X4C1c3/fEGKv/mIzCvtQuLxesirGCe7mifjRdt06L3OYYVMs3S1eV
+	Jnyd4iR61vyTudp2iTGoD7VnW8w8nGZyX+LaRaKwQwFI8A1MndGOA9FagyFygwj/V1FQYn3iKap
+	2meerTqhCBaqWW0mHvBgA86xrbatiPS1YbuVqQtepdcVOfyCsKZSBqGbwGUrKga9zIjE2
+X-Received: by 2002:a05:6000:22c2:b0:3d0:b3cc:c1ff with SMTP id ffacd0b85a97d-40e4b85109emr2653260f8f.39.1758795937457;
+        Thu, 25 Sep 2025 03:25:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGMY43SbBeTDqux7xNDlX/ZIG3DX+wQZ2EsWj+CndB3u6o8VAseXEawq3c7JdiIGuveFjJLZA==
+X-Received: by 2002:a05:6000:22c2:b0:3d0:b3cc:c1ff with SMTP id ffacd0b85a97d-40e4b85109emr2653200f8f.39.1758795936721;
+        Thu, 25 Sep 2025 03:25:36 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f3f:f800:c101:5c9f:3bc9:3d08? (p200300d82f3ff800c1015c9f3bc93d08.dip0.t-ipconnect.de. [2003:d8:2f3f:f800:c101:5c9f:3bc9:3d08])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e33b9eabbsm29826805e9.3.2025.09.25.03.11.57
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e330d1d2fsm14556705e9.3.2025.09.25.03.25.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Sep 2025 03:11:58 -0700 (PDT)
-Message-ID: <7fe72c55-fbf9-472e-8d10-5b6396994435@redhat.com>
-Date: Thu, 25 Sep 2025 12:11:56 +0200
+        Thu, 25 Sep 2025 03:25:36 -0700 (PDT)
+Message-ID: <c8259ec7-e31d-4771-96f9-e2fb6b573e85@redhat.com>
+Date: Thu, 25 Sep 2025 12:25:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [v6 07/15] mm/memory/fault: add THP fault handling for zone
- device private pages
-To: Balbir Singh <balbirs@nvidia.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Alistair Popple <apopple@nvidia.com>
-Cc: damon@lists.linux.dev, dri-devel@lists.freedesktop.org,
- Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Oscar Salvador <osalvador@suse.de>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
- =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Francois Dugast <francois.dugast@intel.com>
-References: <20250916122128.2098535-1-balbirs@nvidia.com>
- <20250916122128.2098535-8-balbirs@nvidia.com>
+Subject: Re: [PATCH v7 03/12] mm: introduce AS_NO_DIRECT_MAP
+To: Patrick Roy <patrick.roy@campus.lmu.de>
+Cc: Patrick Roy <roypat@amazon.co.uk>, pbonzini@redhat.com, corbet@lwn.net,
+ maz@kernel.org, oliver.upton@linux.dev, joey.gouly@arm.com,
+ suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com,
+ will@kernel.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, luto@kernel.org,
+ peterz@infradead.org, willy@infradead.org, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, song@kernel.org,
+ jolsa@kernel.org, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+ martin.lau@linux.dev, eddyz87@gmail.com, yonghong.song@linux.dev,
+ john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me,
+ haoluo@google.com, jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com,
+ jannh@google.com, pfalcato@suse.de, shuah@kernel.org, seanjc@google.com,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ kvmarm@lists.linux.dev, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, xmarcalx@amazon.co.uk,
+ kalyazin@amazon.co.uk, jackabt@amazon.co.uk, derekmn@amazon.co.uk,
+ tabba@google.com, ackerleytng@google.com
+References: <20250924151101.2225820-1-patrick.roy@campus.lmu.de>
+ <20250924151101.2225820-4-patrick.roy@campus.lmu.de>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -169,21 +171,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20250916122128.2098535-8-balbirs@nvidia.com>
+In-Reply-To: <20250924151101.2225820-4-patrick.roy@campus.lmu.de>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 5hIk93jDEh219x-Tq3HW9wQwBJpf-Y5NsZLgXhN-Wms_1758795120
+X-Mimecast-MFC-PROC-ID: heimoNDYWlRpf_jhjdnuH4kOK2OMHKrrGb0fTtLeOFU_1758795937
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C10DE1C0006
-X-Stat-Signature: 1aje59yb7ho74dq1jichei59a4eqmnz4
-X-HE-Tag: 1758795128-594705
-X-HE-Meta: U2FsdGVkX19sVX9Guuv5RN0dI0v4ZvyiBBVk2d6Hib+/lg4e82uXhHyh3JZovZLtmjc5/C6hcxNsr62ko8Y9oX3fyk9/mcJFJmcba+R1mUFtqlcWtyAmZ6UcAA8Xdncj7ZW/XwLl+Xyt7MqCfAwciTOoTNNzlPewiSa4aK89WkB3Ly4GGS3xymcLoTwucZmKFLDWFAiPlYd79hbtxSd4a1y2qQCPj/4hEcqBP/g5Iq+WHfiCoqHPhSlrWfk6AYhr6P99FaWym+FFHE0MYOw9xjGfsy7hVjyjDmxp9ppHMl0A1LzHsTpWRxtldEKr2glK+JnJF8b9d4lMkNLMhVlELSYqhhaaFz4DvvmPcnNjEh4diqXR0v/+Lsp8rRLQIUYgC2GLK4BxikrVgSEUR7ie5nTNrQla2sgwZZXIyaC5YMCRByDyLLnRn1TioPuxnoKDvCKyQYksIHRl7/HuIXf+rSbgBS4N1EYfHObjxHKPRrjjimekiG9uaElAKEahxmFVD71H+AciwYsE+SxPzX6SK55otvpaKQYrEh8mC2/lamdb5TPrcfnBYRrniZxWMwJrK1KtX6yq6AGwMCbi0taCRmiasdCZ5TgvfzHW9qv4cxbgl4N/8bIL6D1kwMydUieWu8eoA3oGcEvvrr/lcuTmDiP68aFVo6/6u+GnwnhqTuXEgsl3hll28QFSlpfjfDvgU5ONZ7d+fgufXFYBVgPw2zm8p2DjfhwVcAKQqntu6cUeDMO9v77Pr0NPXuwdiBHr/ylFJHrK4G5zWwRsX8jdQ1y1j33C70vclZ6kA1E1AdgoGbcE5eCylAb+UhLm1icxgslschnrxYOKpxbCvf4bquNre+LpWLQ+rAuGBXQtAeMlVMYVc8sP8Ea1yoZeIrOF2mmbBJEp5CAuqOyEXrDw3WdduZMojIMA0qx1QzzM/QhghVNEso4KnwSLsYnjcPh1XR0IEhjDhywRLiKne8b
- yQk4Wdyq
- HT31QiPSeMML0GCBtsjwbFcBtNonyCCgjjxqDpFf8wiM7KoYA4JHJuJZKS5xhNAMQeI6YrD2fX0hm4JnpdvJbaxbp6JrdBb+K+ZSlP2hbrkYefOzDDVllVgWgOQfWR/InWou6d5RVSWZcsxwtGzenITsiUISscKZW5fgfIBN/4PHMjFmf58GC9L0YWYPsbnobjGJGPC7bECTkhvkt6XRma9WILTMghXQdIZs421I2Kc+AyNgHAGZqVDJcjv1sKgtK69VxsdOo92TexAZtd3iNMxYXJVjtidfpVg2kC66zeAeAhI/OZrhr5i++FBpJQgq8MoYIMHhjbsvGnrQgeo/AOm9oruVzDWDbQ/r3ScdqsFtKyCo5b9likr0xmm8GrC4eHsChnDa2pKuQ5t1AUo1ybANAVYVIDcwe596UonC2ajaiY6i9nn54Ra/1uKOmCzgM7ptXAVDIm0FI4Q7nTgHOrDudFvxGKDzYH2j2OtGtFfJd5cE4tJePXmhnHvxJNyFeVJjM6yRmA4Q0z9Z95zPL26jxfLvuKnUZiQ9rWIO9WaI3GOJ1XAWUt+O1VcxNGO7JSlaltQ3lq1At0f0Dj7ChuZNhwU9w43kd4C9j0r03EghC4wDBvQDtylGRFFHES2VwKWfJkRIyrHMR6HEYFvuBVrlIM5Bv7QTAbjRkjReq7tf8KZlzaFuvj+9yFFqYjvuDc/3GZLqRPlSHNuhXR01eYTz5Hqn8lHPaB7qo9MyN3hkSoiU95oJpL6SZK1wPhifz8aTvCGnYp7giSLh2OgOrMj5Uo81U2Gr8v7UX
+X-Rspamd-Queue-Id: 83DFD80008
+X-Stat-Signature: 51odd5j5ibi9uuuzdfiphgp736wtfmbk
+X-HE-Tag: 1758795940-75380
+X-HE-Meta: U2FsdGVkX19EWXNknxsBgjQYe9+1x+ZGUfcU1iymdYdp8NK4AX+GIdVUOIpNlpU1obc5p+K74ctGRb9we9LC519+P5SPsh0pjvGweXDG3xjoqLTlOQjF9p+dSNHT3/hyMOVH1ngaIuolvVF6TA23Rui27deqUbONYpuywf3gBzepdukn3zU0r5bsXpx+up6GJ9L4v/ei3zvE8L89Ie7ckIiRqLtt3CBdbDSb1InW+GB1UQ9BZGgjuqqdKGGBtIIoe+PENnnYMThulgoiHuF7V9F7H/vW6OVHXoQsETO69j/RUlpg2JxdFcldxlrQdSQPdgk0hE48Lp8H+iPDjHiTgTBbwcr/0dhrEN8iMPhsE43MsBlfQk4jqfTg7gCydu37i8rozE3wp4ebE3ecpFBVOUsA+C0qn08q2L6IrSmJ5MDRb2kfiiyP+ef/hReVuZjxyHppp91dyDdHEiFvqkU2n4uR34XRxfGAV5/yPaR4ryjOdQR29Nw66CmyJcxkgRzin3VElvV6S/mEDjjC/vPVcaWOou93h/NPHEpBMXPRL1NJbi55egMDCbMtrU1dHfO1LcMJ/koUf7QrdH5FoXlLcYjcUtjkjneFxeaV7XmUMtQ4JXnTHdDSdy+yVS8U/HlSWIc21MFOLE8YJwtehtBbNY4v3qc5/CptQAhJD/GvhDURk8gSK24fZzUPZU2QSbqR2WdEci6Frz2rr61Kl8aiLIx42yhG7qcKyc+QDDR8K/N+SMyR0EMnjEYsVcNV4n16hiQYGz91ldfcamHqAS1pSDXV59/YpCMsD5opQ6XQnorK9XlyFkpp0xjKX5Kn5AKXZvyj+IssQS9ykO2rXpfAU3vXrNnRYbvVTP9iJ+DHJxl23QM/YwP8exLEot8l6QpQDkPM8jO4BCu6OTYglyi1KFXywzlRQKodY81GRrZGad6srIwX92+8CkcqXOzw8EKju0VcQj9saAHU1zrswPp
+ yT/i/LJL
+ HkV5yhN/tnub6qip2hQxgXeHNq8EmL69vsQlyHoGOiBLVUL12rTGGuhICn4/hXs2wKgOLCZVQUlNhahohQnWhYTAOOoOqARnWUYHbEe+MJV7iwhUIoJ1AU81T5Od+x6pkpgr6ks5b0RduJp0PYAQsncDfAuqiJ+UK9PTvdsLbvWr/irJv7TmQ+v8DzgOQHFIrvBLKgF2PLvrIcvWnEiEpOfR+v73IzkdhPK0Joz84ebugYQ88qtr2OkD3EbLOn3EIT94LG6Hyz4F/Clo2KArr6fRo3lQonlEFbXKcyArFABFK2+28hLx42ZSc5U8LrqGfOQikUKi/mVEyoyV10LC8O3X8tZSTL9mA+eMLPsmo3mKoYTML5vMRDwfe1Co3rJbHSstJY+iPRuQfU231Ei+HyAGYf90pd+F8jtWfG/1rK/CqpXIEL25dwOkDY2BxKt0DjCVRUs0R0mIvKPuHNlFamUbcssT8tVdWwOxkNNkZWMSv/F2kij+r7zlerPDRKSyReWZsBy4pH3nVhKBo8u5FN+Zr9k3BpIhqNbyhee9m9EOUivl7qqmtvMvfI5jq4qu0xgQ+xC7St6hGsVM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -192,114 +194,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 16.09.25 14:21, Balbir Singh wrote:
-> Implement CPU fault handling for zone device THP entries through
-> do_huge_pmd_device_private(), enabling transparent migration of
-> device-private large pages back to system memory on CPU access.
+On 24.09.25 17:10, Patrick Roy wrote:
+> From: Patrick Roy <roypat@amazon.co.uk>
 > 
-> When the CPU accesses a zone device THP entry, the fault handler calls the
-> device driver's migrate_to_ram() callback to migrate the entire large page
-> back to system memory.
+> Add AS_NO_DIRECT_MAP for mappings where direct map entries of folios are
+> set to not present . Currently, mappings that match this description are
+> secretmem mappings (memfd_secret()). Later, some guest_memfd
+> configurations will also fall into this category.
 > 
-> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-> Cc: Rakie Kim <rakie.kim@sk.com>
-> Cc: Byungchul Park <byungchul@sk.com>
-> Cc: Gregory Price <gourry@gourry.net>
-> Cc: Ying Huang <ying.huang@linux.alibaba.com>
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Cc: Nico Pache <npache@redhat.com>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: Dev Jain <dev.jain@arm.com>
-> Cc: Barry Song <baohua@kernel.org>
-> Cc: Lyude Paul <lyude@redhat.com>
-> Cc: Danilo Krummrich <dakr@kernel.org>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: Ralph Campbell <rcampbell@nvidia.com>
-> Cc: Mika Penttilä <mpenttil@redhat.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Francois Dugast <francois.dugast@intel.com>
+> Reject this new type of mappings in all locations that currently reject
+> secretmem mappings, on the assumption that if secretmem mappings are
+> rejected somewhere, it is precisely because of an inability to deal with
+> folios without direct map entries, and then make memfd_secret() use
+> AS_NO_DIRECT_MAP on its address_space to drop its special
+> vma_is_secretmem()/secretmem_mapping() checks.
+> 
+> This drops a optimization in gup_fast_folio_allowed() where
+> secretmem_mapping() was only called if CONFIG_SECRETMEM=y. secretmem is
+> enabled by default since commit b758fe6df50d ("mm/secretmem: make it on
+> by default"), so the secretmem check did not actually end up elided in
+> most cases anymore anyway.
+> 
+> Use a new flag instead of overloading AS_INACCESSIBLE (which is already
+> set by guest_memfd) because not all guest_memfd mappings will end up
+> being direct map removed (e.g. in pKVM setups, parts of guest_memfd that
+> can be mapped to userspace should also be GUP-able, and generally not
+> have restrictions on who can access it).
+> 
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Signed-off-by: Patrick Roy <roypat@amazon.co.uk>
 > ---
->   include/linux/huge_mm.h |  7 +++++++
->   mm/huge_memory.c        | 36 ++++++++++++++++++++++++++++++++++++
->   mm/memory.c             |  5 +++--
->   3 files changed, 46 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index f327d62fc985..2d669be7f1c8 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -496,6 +496,8 @@ static inline bool folio_test_pmd_mappable(struct folio *folio)
->   
->   vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf);
->   
-> +vm_fault_t do_huge_pmd_device_private(struct vm_fault *vmf);
-> +
->   extern struct folio *huge_zero_folio;
->   extern unsigned long huge_zero_pfn;
->   
-> @@ -671,6 +673,11 @@ static inline vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
->   	return 0;
->   }
->   
-> +static inline vm_fault_t do_huge_pmd_device_private(struct vm_fault *vmf)
-> +{
-> +	return 0;
-> +}
-> +
->   static inline bool is_huge_zero_folio(const struct folio *folio)
->   {
->   	return false;
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 5291ee155a02..90a1939455dd 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -1287,6 +1287,42 @@ static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
->   
->   }
->   
-> +vm_fault_t do_huge_pmd_device_private(struct vm_fault *vmf)
-> +{
-> +	struct vm_area_struct *vma = vmf->vma;
-> +	vm_fault_t ret = 0;
-> +	spinlock_t *ptl;
-> +	swp_entry_t swp_entry;
-> +	struct page *page;
-> +
-> +	if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
-> +		vma_end_read(vma);
-> +		return VM_FAULT_RETRY;
-> +	}
-> +
-> +	ptl = pmd_lock(vma->vm_mm, vmf->pmd);
-> +	if (unlikely(!pmd_same(*vmf->pmd, vmf->orig_pmd))) {
-> +		spin_unlock(ptl);
-> +		return 0;
-> +	}
-> +
-> +	swp_entry = pmd_to_swp_entry(vmf->orig_pmd);
-> +	page = pfn_swap_entry_to_page(swp_entry);
-> +	vmf->page = page;
-> +	vmf->pte = NULL;
-> +	if (trylock_page(vmf->page)) {
 
-We should be operating on a folio here. folio_trylock() + folio_get() + 
-folio_unlock() + folio_put().
+I enjoy seeing secretmem special-casing in common code go away.
 
-> +		get_page(page);
-> +		spin_unlock(ptl);
-> +		ret = page_pgmap(page)->ops->migrate_to_ram(vmf);
+[...]
 
-BTW, I was wondering whether it is really the right design to pass the 
-vmf here. Likely the const vma+addr+folio could be sufficient. I did not 
-look into all callbaks, though.
+>   
+>   	/*
+> @@ -2763,18 +2761,10 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
+>   		reject_file_backed = true;
+>   
+>   	/* We hold a folio reference, so we can safely access folio fields. */
+> -
+> -	/* secretmem folios are always order-0 folios. */
+> -	if (IS_ENABLED(CONFIG_SECRETMEM) && !folio_test_large(folio))
+> -		check_secretmem = true;
+> -
+> -	if (!reject_file_backed && !check_secretmem)
+> -		return true;
+> -
+
+Losing that optimization is not too bad I guess.
+
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers
