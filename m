@@ -4,126 +4,195 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B85EACAC5BA
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 18:26:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E2DECAC5BA
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 18:28:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F1B58E000F; Thu, 25 Sep 2025 14:26:17 -0400 (EDT)
+	id 429CD8E0010; Thu, 25 Sep 2025 14:28:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CA098E0001; Thu, 25 Sep 2025 14:26:17 -0400 (EDT)
+	id 401E98E0001; Thu, 25 Sep 2025 14:28:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F220F8E000F; Thu, 25 Sep 2025 14:26:16 -0400 (EDT)
+	id 2EFF68E0010; Thu, 25 Sep 2025 14:28:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DE1718E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 14:26:16 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9D6CBB99F5
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 18:26:16 +0000 (UTC)
-X-FDA: 83928602352.19.6A299BC
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B1F35140012
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 18:26:14 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=EJg4Lege;
-	spf=pass (imf23.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DCBC8E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 14:28:03 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D128811A082
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 18:28:02 +0000 (UTC)
+X-FDA: 83928606804.14.3648D98
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	by imf26.hostedemail.com (Postfix) with ESMTP id CFC0A14000F
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 18:27:59 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=TnVkZeCy;
+	spf=pass (imf26.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758824774;
+	s=arc-20220608; t=1758824880;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yh9nK5ND045N+FL5Ib8gPJReb2Q9R1K2+zjNC4yoXCc=;
-	b=pl3jJrk72bIsZAliQDs++ecntvOglr4Yuogj1R769oU2FOQDIP+RMc9MjOMDnaB6WK7Mak
-	Xpuqj/0NR2n7ZBPEP0IWVAeZ7liiazEHirnr6pkydP1z52+FrUK+hbOeinayKpMu6oSnYi
-	D0uu09+cwf0Ev19oHhlORd1AkX8kqH4=
+	bh=gllL0jFsSMTv+WKLgz1TzNrM4HELZ+1hcm3IMJUm3Jk=;
+	b=QMDCIZt6LdOn3COsQf9P74v71eGM06WyT7JedkdeXelhLEz02h0F7ZFSSp0jLGlKe+bFER
+	tLxixGX5IuSEv0ClVV5d8wqhcqF+mNOZUTMpEFPzwTPlmR+e7KRIoDCwm9Em6nUjpt2m8u
+	pL7buTHiGL0U1B3MD0V+h6UIBgv/BYk=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=EJg4Lege;
-	spf=pass (imf23.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758824774; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=TnVkZeCy;
+	spf=pass (imf26.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758824880; a=rsa-sha256;
 	cv=none;
-	b=wj6jQxpfoT/3FPTvtMHQdFwUU+4eJE+59MaF9Z9fOf/shJTCZwy/Vnftn73qJ6A+X6P/y6
-	8sHxaX6JTGrFkKfWu4gK65Sbypuyuu7pyZ4S2ExkggJ0gyLWYOqWaGmrLUALYX1v2ZPPv4
-	QKOkhjivMRBhwG73+VgDCWEZWLilWaI=
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-71d5fb5e34cso16648807b3.0
-        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 11:26:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758824774; x=1759429574; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yh9nK5ND045N+FL5Ib8gPJReb2Q9R1K2+zjNC4yoXCc=;
-        b=EJg4LegeWOUJeQyPllpTFq6/ASVtsXBUti1S+J2Zt+mF8aft7bvHNop2Tx7xoFzxcS
-         8Uc/H7egPnMYApOvi6CFHrYHHQmtzHrxAd+yxNKLM1YUZRRz3nSXHu5p44p9jNiobWze
-         O+bgeUo2VkdNRrSUuPLW4NdxIrJEGXj1WqHzxnq7Iq8D/nuzNYmz1m6L4Lvvg2LOMsnr
-         E6vCvgqGapK8Hz7GwDY6x33ry3jAogqYZ0/RIh5GenOmqhLYdeKZD6f702A32Es7vaEf
-         4+qzxDOdMYu+kryF3+8R4CLuMnmOGWP4B1OtcMTPKseelYpQm/erA0TEwT3EAPQYOb9k
-         QMwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758824774; x=1759429574;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yh9nK5ND045N+FL5Ib8gPJReb2Q9R1K2+zjNC4yoXCc=;
-        b=ARvJ9LYYVoiyIQ3g5Ses88NNvxlKkbx3Bh9AWq+ANd0oNrqneI/MtLoZ7BbQTVUryp
-         ElWYMwqLieypp0k7Yo8ToiO33z03U4fIT6x4yPv2M3ktBv3rIirqBm+JmstjO1Nq9qpl
-         iPD/po+hdEYiXrDhYoOBgIJwoFmTFZuG13I1VL05Kl4pvvZ/5Td4pfO3WjZzRp3WMlep
-         XADaQiPbo6oty5rKUmP1z4W1ydxWGNvIUHEsXIutlz05VaJ7ucatqhCPszO+0h+CTsHN
-         5mO+6/rwR5lRWMW4KurIBs00z/fgUYcZNnDYan0jOaMlg23xPzfS/Lt7+kADd+wEZWXv
-         OgLA==
-X-Forwarded-Encrypted: i=1; AJvYcCWJgpqfvTP08kDJLtiTiTrrG0Rpvqp5FuyhS5yDnAc7yXAV90VEWJAjup0mWWRt/XGmEs9YQBXYmQ==@kvack.org
-X-Gm-Message-State: AOJu0YyXBb4v+kdLum/R0rJN1yS1On89bf/OjuXAUnS9tQEB8juSju/z
-	0S5NO9Y4sNtiwjY9Cj0FsOsJ13jqScRl52zkdz3QkEuLg9j3uxl/FVNV
-X-Gm-Gg: ASbGncsTL5LiHZAkEkc2PEsibaFzh9Rx0LeVIlbvnhh2a5530EbJefucO3V0EJk7PHx
-	NkewV2YmRc2hkRScj0AbxwE2OnnVXUAop5gEpuH+dtNG/BKPZQXbiauErbwfeWnggUmuKtLwymX
-	o1sruMEi3lD4IGAGfER5YPtN4fC9W34CFiYeTUZuqtIUQuTHHIow8f+ibWpPjXyiTI7DFHxuB3/
-	Dcz4ru5D7wKbhB9OCibPYi/2WIE3ddxRrE5cHlkOHIvUQawn8qcJXVb1fzdnYmPKm8dD69SzrqT
-	NcpIrcP6466kO+6zd7yYr/zNq2abiwEORHU6yWOrOlI1BJOSZmmvcPHIYB4cOylYJMGI4i6v37F
-	UcMKS05fKDs0Ll4WTMp+fQgwUqWPLq24x3dUp1aDcddpejJxDLuIT9ZaVrYLyCZa4
-X-Google-Smtp-Source: AGHT+IF0DpIz7DGH5ZqEIt1BcjbnMswoUnU7/ApjqSwRCj4bn3gIocs3R28KhC8dB6+XVJWY1ddxHA==
-X-Received: by 2002:a05:690c:3702:b0:73c:7776:ce29 with SMTP id 00721157ae682-76553dd4e1amr32394917b3.10.1758824773525;
-        Thu, 25 Sep 2025 11:26:13 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:4c::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-765bb916b96sm6608427b3.5.2025.09.25.11.26.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Sep 2025 11:26:13 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Chris Mason <clm@fb.com>,
-	Kiryl Shutsemau <kirill@shutemov.name>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v2 1/4] mm/page_alloc/vmstat: Simplify refresh_cpu_vm_stats change detection
-Date: Thu, 25 Sep 2025 11:26:06 -0700
-Message-ID: <20250925182606.114616-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <fdb56260-8235-eb20-05cd-491fd512cec0@gentwo.org>
-References: 
+	b=lroy8R+1DPb/YJfw4t3vvMvTWXGtIF6yKYgIUSLGv+zmV5GLhzLlDYT2TzjgaBHmAblbfG
+	Qh+GQehRUHIK34Pzv/O5/6SEu+PhgiUR/5TTgLSdEMqycCK8RF0wHy12yF9wO/JRbeWNBN
+	iOaYdg9Q/JjNXNSjat3UxlhxPznYo9k=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758824880; x=1790360880;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=gllL0jFsSMTv+WKLgz1TzNrM4HELZ+1hcm3IMJUm3Jk=;
+  b=TnVkZeCyWUmzloGVxvu1+LPZPYu/t1GCxgqq0gdM2BT12NCFKcEyxtx6
+   C64FUzQ7cUWRvJbvNB94jq6GrMZH2rC+dTF69BUXKmOgbkXvNmLsmhG6L
+   trzUVQ6kZD8osK/F+bOCMH+6iUlqsP/PB6AQvMr+NGHKmcgdCSNMSUHAy
+   xYlsQMtrsgEGXM4c3Mk0Nsqy7tGY+Z3QvRBGGaNeMr4kHiwohqdmCYZwl
+   vJATxhdi583V/fX2YgmfE5rtUE+bg2XduvdibE/CiadOLmkq/dnrNcpTo
+   fY5lsgQdeLbHr1lhOftM6qjbe73yBUyVoYt5MSiVGrjMUdJxdEYyCSUfq
+   g==;
+X-CSE-ConnectionGUID: asE7GUFqSJKCwb0z5ltoBQ==
+X-CSE-MsgGUID: 66jb6kKSQWeXCbA2SgMNKg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="61206593"
+X-IronPort-AV: E=Sophos;i="6.18,293,1751266800"; 
+   d="scan'208";a="61206593"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 11:27:58 -0700
+X-CSE-ConnectionGUID: QhFvsIm2QUGJPg2v+owCag==
+X-CSE-MsgGUID: O2Oud7SaSaypMhr6Xe/2hA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,293,1751266800"; 
+   d="scan'208";a="208338229"
+Received: from unknown (HELO [10.24.81.144]) ([10.24.81.144])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 11:27:54 -0700
+Message-ID: <e25867b6-ffc0-4c7c-9635-9b3f47b186ca@intel.com>
+Date: Thu, 25 Sep 2025 11:27:53 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 06/12] KVM: guest_memfd: add module param for disabling
+ TLB flushing
+To: "Roy, Patrick" <roypat@amazon.co.uk>
+Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "corbet@lwn.net" <corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>,
+ "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+ "joey.gouly@arm.com" <joey.gouly@arm.com>,
+ "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
+ "yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+ "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+ "will@kernel.org" <will@kernel.org>, "tglx@linutronix.de"
+ <tglx@linutronix.de>, "mingo@redhat.com" <mingo@redhat.com>,
+ "bp@alien8.de" <bp@alien8.de>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+ "luto@kernel.org" <luto@kernel.org>,
+ "peterz@infradead.org" <peterz@infradead.org>,
+ "willy@infradead.org" <willy@infradead.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "david@redhat.com" <david@redhat.com>,
+ "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+ "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
+ "vbabka@suse.cz" <vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>,
+ "surenb@google.com" <surenb@google.com>, "mhocko@suse.com"
+ <mhocko@suse.com>, "song@kernel.org" <song@kernel.org>,
+ "jolsa@kernel.org" <jolsa@kernel.org>, "ast@kernel.org" <ast@kernel.org>,
+ "daniel@iogearbox.net" <daniel@iogearbox.net>,
+ "andrii@kernel.org" <andrii@kernel.org>,
+ "martin.lau@linux.dev" <martin.lau@linux.dev>,
+ "eddyz87@gmail.com" <eddyz87@gmail.com>,
+ "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
+ "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
+ "kpsingh@kernel.org" <kpsingh@kernel.org>, "sdf@fomichev.me"
+ <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>,
+ "jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
+ "peterx@redhat.com" <peterx@redhat.com>, "jannh@google.com"
+ <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>,
+ "shuah@kernel.org" <shuah@kernel.org>, "seanjc@google.com"
+ <seanjc@google.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+ "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+ "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+ "Cali, Marco" <xmarcalx@amazon.co.uk>,
+ "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+ "Thomson, Jack" <jackabt@amazon.co.uk>,
+ "derekmn@amazon.co.uk" <derekmn@amazon.co.uk>,
+ "tabba@google.com" <tabba@google.com>,
+ "ackerleytng@google.com" <ackerleytng@google.com>
+References: <20250924151101.2225820-4-patrick.roy@campus.lmu.de>
+ <20250924152214.7292-1-roypat@amazon.co.uk>
+ <20250924152214.7292-3-roypat@amazon.co.uk>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20250924152214.7292-3-roypat@amazon.co.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: CFC0A14000F
+X-Rspamd-Server: rspam05
+X-Stat-Signature: yw6zuyqqybbounwrsoj59uukyqkhusqh
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B1F35140012
-X-Stat-Signature: 9chrpn5f8i6g167nzsoufcnau1tcfo7q
-X-HE-Tag: 1758824774-738856
-X-HE-Meta: U2FsdGVkX186goyRiqJvioob+/n2+I2v6SXBvZfaoJpUoiOXhwLsjQXXLwf+iNfx4iXBvfB9LtMyONsR34p+wXRqYBRzM9u83dmdgdJ4Q7i0Npb9+ywDn0G11/EdvlY5Mk8jK0j7lDJDhWzFUayqqz6HTy7JEx6jVW3hhso3NzZYBCXZd2jMqnsYvpCNHLc+IyFiPrvUNKecWNY7PEmL/4QO2Ga4pHr0Kqcqsk5/2R9wfpP8rIlXq8JKwW1gMU/lcUadwtVwyhszSKtcVPx9hjIN+q8dc2GJfd3fnGOTXnmMWm0vEYyZxv0ElN+FmEXfOljymx9JiY2Et2c2V+XfxdiluoXCgk60DLW5Wfj6XM3bU0PtYRwjdSwcczNGmQjIx2tJRnhfeA37VgmvUFR9phcuyaZMZAdDfe5aFlHwQ0rs8w2SbIkMrETbEINHtkpSjnaoTLDwOMhoVKC7wUXtXbW7Ul9A/T10QvD70MkMDTI4k1ifzidrL9TnWpERaov+cYF24QXdY1OTmznGZK54LD+6m5mhketRFDfM7NW/4phe216yHwn3hQzzt5UpUKvZ8xxo1PyCl/XH2dpvI8ZzYJdutMG5WDYW3tGksCGTYdE+FbnhCprBYnMTP5Six00uQpaM7Lbc8abHt5ux1TCDS9z0paehhBK459VzWTo2WwDNxaJDratBbP03h/8HSGts9g8J+OKSS6INidMlvwDJE16Qzz8WS6MtiCcrqNZ5MwfJaA10mlPlSto2S7YLUQo1nwbjCRAZaGDR7fPgYTVrB2CZ9N68zy47bOdup0cecfsQurLkF1+KGaFDSgCsX1KKldHehLtktrVQ6S0EtF3AqgwcSq4Bt3jJwYSVQXe9WME+stqpXhRM+eXh6iluw+8dqhcq/jGgPtgP6Rni13Bh35GDL9X3ejXRuL59Q0bR7lQ7tQ3waPfZYmL+qFMnAAysyw710gWrvoSQ5jPcxhX
- FizrojDK
- LtF+S/7CwbhhSkLLUZAeXgpt5A+KlkUWNNRMpt8jBixISDW8n5x/Ut3LPxhVlGmV3u/jUL/pfOuRX7sK8qvGfURgopLBGrsCNoFNjjnap0mjmIfrfb4JoZwSAHUFXjGmw1RIK4UjIgPKSeMU3Vts75cc1/aS95djzR0iV+9k9jMpfnrFSarIRgdoCG0mQFF5taNhn0fAzCzClr7utiV1KuCFI0qo4TgormDnRwX9dWJrYnIbxJhI8h9IweJPhlBh4/KD79rqaNvEsy+T/XJ/s9Uegbi4+48tWh2CABi8BLobrw+j94/vskY8gRM835eGVXqGYQv1euP+wArkWBwnrOwp9bvKnWpWX4trqeLMO2KhBAfzpRQxU/aEJTbC5FYoDpj4ckIIY8KOAYVb/CU2QVYnPcIO6MeQWoth/JQAvoomoifx+9LL0Cmqr3i3Gmah23j6kSW2vt1AXi959szGXJFI4zNzdw7ALNJgbfljEdYjdlYt8OX335Kmal4nyESVduJzvUcltD6VWQUDBG5dXWdYbNzrw01z1d5XE82ZBGpWz8z6PohGtbpOF53ywsZOfaGtWqMW5NMVebHBJuIszXokG2nfva0guEmlxbRhsCvI8wwZVTK2X3PC+CVmhzqjAd0R1Qnornw7+4FI=
+X-HE-Tag: 1758824879-28472
+X-HE-Meta: U2FsdGVkX19wHhl+fqJWnK8A2UFvrMBk82fynOj0jRN0t89iHtwTxn6V8AtckYXBMYzbrd6ANu6zP7he/e2yiGNkulYMPPXfu+muwpTu29LH5abneb77MlE8BwiND1qZ4+7hyM0/lqpjqb3zrPHEEoQ5QzEotR5E1WqYwXJuqZwpAm7opB6pKFMNK6VO1nxrB2a5WpIZaxk3miy/ORSUjWsI/UseX0kvldcU9RPyyORJ0gYBpSUR5PDPLLUwBS0fCb5jUTytQ1iCyQkkC+cF6vfV8JxoT9wqvwL3vNrNDuUamRgqUF/DGLnkqiLpCVCu1AGADwWPACN2EipY7vWwKl/AGwWTfBGn2wz4aTJo43GwYjT/BTir0phbBI+o/8Cw05SaIVsrGWyBsiromXIsDIv4CbIU/UzxIhq5iliJuqWG9tC4qDpu64+9BpX5MAGyMNllfSgWgxLimncySQdVH/Od/SjVBIokglQeD0dXyOi8LjX4VrohP7tuLWYiPwQ4OCA1xa4YNvsltY9KAdal+dokkJ0W8jc28VW2/FmUVxerdbXlSadPVCiZS9Gh/MQC/GJrCCs0PljBjF4ZycSxd/xrHtxU09+IpkjA6az+ukoERsWl7+p0KHZQ9CzPFh2r4wAk4XtC7ev75RQkwUS+XSPeDOmwVZuABXorXQtp4yA4q9cpk+YN0/DrUJjc7w6vTvsIuraPr76Y79432w0DBmCMpMFC9CcM9ZwxfnukcLWT4sokj/TYpaWPV68OuUFyTPDZgg/277ZB2xH2QnQRqcoUMAJRMDiYaXNaU2HBK74WuJboIrL+TklhmS5Oh9SfhrG4JwA5ZE5IsxFqtrWHXWo4sse6Wf/yQ0woIfU0Vf3ikVmUY5OYUh3VvLQ+2FiNGGe9GUl0NYYuHsZtYVyxs1nJGvVAPW/1NRCc/YA8xpRxZRaNrO6BpC8b9oMXxuO+kKuWYrugBoA4y0ctOCC
+ QBT4WCpf
+ 1ull+iBGL8fYPxmPd7AJCBJAgxh844eGzsr3SDRVOcW/5tmUT0Ui9t8Aybc/7yFdrpgsLsre24ntV2Wfm7T+grBWjVnKtszDcFcvEbqdrPfRPuUzP5N0ghG8nyDcuneril1iZsec1v1HthBa8p6Q4g8L7RuVfA4UThncjO8Tukp4J2KUyrmHE8mHvsfws5Ra14WxZf8DXkTyeLFxngudIvVku/1w9x9lx64Xk9L6K9IP2Guh1ZIftbmmKs1MvX/Ybvsq2UdAGxouk5mjAh0cEWJ4XSb+iPQFc4WDCb6dBMaNilWwXOpZjMbcB5/ZJlkbxkVpcGVt+e1lwlxUeuIPsqOW34xO6NY75XufIvjixqG8Q54yYmHnwk9UVm0/tmOiULsJ+8BX/aPROF+EIaPWuXzwB4g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,34 +201,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 24 Sep 2025 15:51:58 -0700 (PDT) "Christoph Lameter (Ampere)" <cl@gentwo.org> wrote:
+On 9/24/25 08:22, Roy, Patrick wrote:
+> Add an option to not perform TLB flushes after direct map manipulations.
 
-> On Wed, 24 Sep 2025, Joshua Hahn wrote:
-> 
-> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> > index d1d037f97c5f..77e7d9a5f149 100644
-> > --- a/mm/page_alloc.c
-> > +++ b/mm/page_alloc.c
-> > @@ -2561,10 +2561,10 @@ static int rmqueue_bulk(struct zone *zone, unsigned int order,
-> >   * Called from the vmstat counter updater to decay the PCP high.
-> >   * Return whether there are addition works to do.
-> >   */
-> > -int decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
-> > +bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
-> >  {
-> >  	int high_min, to_drain, batch;
-> > -	int todo = 0;
-> > +	bool todo;
-> 
-> 	todo = false
-> 
-> is needed here.
-
-Hello Christoph,
-
-You're absolutely right, thank you for the catch! I'll fix this and send it
-out in v3. Have a great day!
-Joshua
-
-Sent using hkml (https://github.com/sjp38/hackermail)
+I'd really prefer this be left out for now. It's a massive can of worms.
+Let's agree on something that works and has well-defined behavior before
+we go breaking it on purpose.
 
