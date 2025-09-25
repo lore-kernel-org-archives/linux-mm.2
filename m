@@ -4,73 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE303CAC5A5
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 03:14:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EB95CAC5A5
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 03:38:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FBB48E000A; Wed, 24 Sep 2025 23:14:18 -0400 (EDT)
+	id 551A58E0008; Wed, 24 Sep 2025 23:38:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4ABF38E0001; Wed, 24 Sep 2025 23:14:18 -0400 (EDT)
+	id 501B78E0001; Wed, 24 Sep 2025 23:38:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E8838E000A; Wed, 24 Sep 2025 23:14:18 -0400 (EDT)
+	id 418398E0008; Wed, 24 Sep 2025 23:38:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C6F58E0001
-	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 23:14:18 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DFED5B7EC8
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 03:14:17 +0000 (UTC)
-X-FDA: 83926304154.24.5058556
-Received: from baidu.com (mx22.baidu.com [220.181.50.185])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 441DB40006
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 03:14:14 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CAD88E0001
+	for <linux-mm@kvack.org>; Wed, 24 Sep 2025 23:38:19 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 271191402BD
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 03:38:18 +0000 (UTC)
+X-FDA: 83926364676.02.0C8F1D1
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 14B424000A
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 03:38:15 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
 	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of wangfushuai@baidu.com designates 220.181.50.185 as permitted sender) smtp.mailfrom=wangfushuai@baidu.com;
-	dmarc=pass (policy=quarantine) header.from=baidu.com
+	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758770056;
+	s=arc-20220608; t=1758771496;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=or5IIOICvBG5fnofhCOKwPGI6eYQXIuJiw40NI9B7BU=;
-	b=hL9RGc94uen2dKENdvNBGa4jdhDYDgFUUQD2kv1H6yCHUAh4tqjdrj2n+I1R66i4IF02XE
-	eUDpNw41Vc7QjoBBKjeR4/vCxd6SSZw1ISn2CIrkNbIA3ydMhuauglp+SENTifoSFrtnVG
-	PRYoEjIyNutHMFeOZprE9MzskUZOgTQ=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of wangfushuai@baidu.com designates 220.181.50.185 as permitted sender) smtp.mailfrom=wangfushuai@baidu.com;
-	dmarc=pass (policy=quarantine) header.from=baidu.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758770056; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JvXvF7VVQY71/3uS6rM0osRXJnPvYQxh2yXralyNst4=;
+	b=Ch3tku8tNmAGOrnSHH569bpiAad+pUmi/seDV0a5cWCtXvJhRKfSf4p8XKGfOAaNT2HzTr
+	CLKD7WQAByul6P/NcqsxOTKcWuQfFo4iDovxQKHO0s7ChZH65qh2yiMgndgn9aUR/3XS2M
+	rCLaUvYNpzKHcCAglW8TMAOYlvFgrzw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758771496; a=rsa-sha256;
 	cv=none;
-	b=tYkGkJB9tISBz8RF9Tf25DGqKPCNtD4CLJcPM+4xUOvqOFXZwnZ6eYESXy3vdvydbyAltd
-	hBsn0JJqW7tdrKM2yiqQazn6sEluqXExLPXvHOT3o4ThCOalvy7kx8NnzodLjfFad2JDLp
-	YOoX5RUyzRtSPushxNmtQgM1t9AFxGk=
-From: Fushuai Wang <wangfushuai@baidu.com>
-To: <akpm@linux-foundation.org>, <david@redhat.com>, <xu.xin16@zte.com.cn>,
-	<chengming.zhou@linux.dev>
-CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<cuigaosheng1@huawei.com>, Fushuai Wang <wangfushuai@baidu.com>
-Subject: [PATCH] ksm: Fix potential NULL pointer dereference
-Date: Thu, 25 Sep 2025 11:13:58 +0800
-Message-ID: <20250925031358.80983-1-wangfushuai@baidu.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
+	b=x+1OMLRV7fbZawxqTlDWxpkv11ImkUo4FOLcPkBBTLu97kj87KxPmLITkHUQHt1DDPeGym
+	QRoCQndRnSOUq+OYmRw1xn2XmgDRk9pZdqCL8OLWoYSV5a2N3BoPaJ4D9dEiXg7ju1OPMJ
+	/eAimeQiUTuQgNAUzcHN6+vu9QLHChM=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=none;
+	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DE2CF1692;
+	Wed, 24 Sep 2025 20:38:06 -0700 (PDT)
+Received: from [10.164.18.52] (MacBook-Pro.blr.arm.com [10.164.18.52])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0B8973F66E;
+	Wed, 24 Sep 2025 20:38:13 -0700 (PDT)
+Message-ID: <731ea778-3a75-48ae-8281-4c280a379796@arm.com>
+Date: Thu, 25 Sep 2025 09:08:11 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.127.72.11]
-X-ClientProxiedBy: bjhj-exc8.internal.baidu.com (172.31.3.18) To
- bjkjy-exc17.internal.baidu.com (172.31.50.13)
-X-FEAS-Client-IP: 172.31.50.13
-X-FE-Policy-ID: 52:10:53:SYSTEM
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Question] About memory.c: process_huge_page
+To: "Huang, Ying" <ying.huang@linux.alibaba.com>,
+ Zhu Haoran <zhr1502@sjtu.edu.cn>
+Cc: linux-mm@kvack.org
+References: <20250924114619.2532-1-zhr1502@sjtu.edu.cn>
+ <87y0q3e2ph.fsf@DESKTOP-5N7EMDA>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <87y0q3e2ph.fsf@DESKTOP-5N7EMDA>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 14B424000A
+X-Stat-Signature: 31dfn3ro8htr7syrq3n3ryd7xjjbkpjm
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 441DB40006
-X-Stat-Signature: kiw19w4yes135pqfu6ddjguao8wu8y1x
-X-HE-Tag: 1758770054-796332
-X-HE-Meta: U2FsdGVkX1+pa4aYrskg6fH7iyTGIfOxRrzY57nVy2bnZ9YxLk2qyS2XgpvVIQgysMxxADhG8cDXc+6FIHAEhqr5eHRTfJhbLphnB2BjIzFcGkC0emjW8oqfbjGFHNK80sK/bgmkIXbIhJiL70XSK6ORdMRdA8r1D4kJ+SKNSEbeyx3ZLFZrrZlwSIObf5UfQ/GHLFs2onnaLPQ/qwaeTxY2+NzHbNVY+CQUynL1XnOwUxKh0a6uYJgydTXq8azEEalEMTnU7BG0g08hM8ZDzE5tqb1mCbW8Vi7yv0s4rqtiztyNE+NLEYnsZwOojFZMDS5hnrTx+0IT8bvePMK1Fd+B5vPGQaEmgyKNgs8ciDlp42rhVMeH5N/YSdbPmrX+j/w/bJo14xIk8StOzdahTgvl3W07Q2MmaYj1qwGI1QRyHnBwCoEtBomfyXTI+fnCeFjCxZ5wrVSltof8MpLjwoeNM1+UXUcZYUgw4EXJRD/Fm5Ng+6OC55CfaRtXT5RyJH2mBir+vNKQZiOnpgTvVeJzBmLgmY0A60ICaMbIZ7QADtFDBZ4au9yg7cGNJm7tSnHYT7dzbazHbLOmpmP1foQlG7jD+Z6pXsRNOFflm/azEN99mWs3nGESBauvgw6bXM1oU7NObcgZ6HY+ykcUGaOt2e0jk1YtoUCUl4YZPrs4UGiqWVreRaZHVxkkXPBlxb22AVyGmZc9fpRHqvdxZIKUUX++obSdWOi8kT6BszU9zdukARS03Bi1BQbsfJkPm4ILux/azHlAzo9hWHb6T63vOZnZeSC1kVM88rsvBlyECTDHWLBXZpxKL0rbo7KuEAeyAarPKdePmY1rSTFtmX1+qUrRxvl444oOywArGOsAel6dEEmT6MvqmiPAqs0U
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758771495-894908
+X-HE-Meta: U2FsdGVkX1/Hw/vLInC8SUR9xMbssjvkZG8hjsNobeDPBT3Hu/BFIhS7FSWGQNbvuEg9UYUWiVpDBzECaT8WEzTdLQ0a4SttRc+D8rLT53/9BmGx/SpggFaA1sAoYvNWHJCZSNxKmniQ+7qeDUrH1fvaOLGWV1qW6tPRitq1gDJAe11JFHrbGN5il9cI6qeUtzHqggo3b7GOcG7gLFSXdUZJ0unJ/RlRoTXA9O2ssD9+0rcSC4YsExSaYx7cbZgyKbOCOzyek+xe22PgzQ9cw+K5OCX46Ub5rHDqAKDTsDAR7+8CK3tu4BNWBPLc5b0cdvXn6t+DXVMdRHOb2DeTHfY5PCmsGIhU6bmVTYLFXaeJ1jrQjXPH/vVNOTtQGaePQarO56EZwHtMh8BoEkdVDZuaiDHhOxBmoguHkvdQLoZ33xZriZ+KsWVYTNOMXm20xUu9Wwb4P+K5OWumMG/WpaP5XJpskdxIzQuln6143z4Bkk1FVVxYnyZSmQ04Ko3oULVEmFDE6JYB2u0cuhj3YXuxW+vlP0An6v8kn8lPfDUhdXmrrDtsMkjoR3x/2grQ4a0zMxt2c64Z4vTKj52YgejgLMpmeZFw/1E++KeoRBn/Aq4bTTNTXlFq8S1aoEhNk/1vF6+iYg3Wm1ZEUhT4B1MjxXS5EVkfD9Pzbm+jx3kMmc9mWmGxnXkUaHTC4GZDwy0tuFu+o6Dc/qh6Ybc6G7jxlcxY41NvJs6o5A0FeBAM3/rXumTa28cshiz6dF0E2MddgZxOyWp4y3gehPy2mzMl56YdNejWZ2iPznWqLO2g2bVLW2FZEm+3yGt13LnJe06NrQzsqzocecEOPPGlg6PJoozOjg1lP+JdIWfTmQpYrgZ3TMi/xNTVLdjiStRKTjNI0OjrMB/0buOlbn/EzXTwdNi5gV1FM0Nmi8Evcpu3LaBJvW0ey5n8bFt/qjZ0/YURrW2Ume6pL8WxHwo
+ 5+eA0JI6
+ 69O+19w9obpUXiYlCTMZQehQy6WL/fcHXYJTV8KgztwKwc0B4JYnY1cmlHQ7IsCWsJiSD2hSal0VxcUrrT68CiO47lcSqqIbqIw6voT5a2g/Z7LffLGLqZINLH5dsO4fcl9fhVgL6U5cSF8jHoR7PE3ngNfkZxgkzO3F7BKE2Aq3p0Sx7JgWTef3uC+6N1aq5uXXDGAVUTYBFp7tso/HfBZFBQsML8yeQ20axeiJOBwBU6qdnavHTOEdY/A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -79,36 +86,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The stable_tree_search() function may return an error pointer
-(NULL or ERR_PTR(...)). The current code does not check for
-these cases before dereferencing the returned value.
 
-Gaosheng once added the necessary check in commit 98c3ca0015b8
-("ksm: convert cmp_and_merge_page() to use a folio"), but it seems
-the check was lost during the process of being merged into the
-mainline.
+On 25/09/25 7:02 am, Huang, Ying wrote:
+> Hi, Haoran,
+>
+> Zhu Haoran <zhr1502@sjtu.edu.cn> writes:
+>
+>> Hi!
+>>
+>> I recently noticed the process_huge_page function in memory.c, which was
+>> intended to keep the cache hotness of target page after processing. I compared
+>> the vm-scalability anon-cow-seq-hugetlb microbench using the default
+>> process_huge_page and sequential processing (code posted below).
+>>
+>> I ran test on epyc-7T83 with 36vCPUs and 64GB memory. Using default
+>> process_huge_page, the avg bandwidth is 1148 mb/s. However sequential
+>> processing yielded a better bandwidth of about 1255 mb/s and only
+>> one-third cache-miss rate compared with default one.
+>>
+>> The same test was run on epyc-9654 with 36vCPU and 64GB mem. The
+>> bandwidth result was similar but the difference was smaller: 1170mb/s
+>> for default and 1230 mb/s for sequential. Although we did find the cache
+>> miss rate here did the reverse, since the sequential processing seen 3
+>> times miss more than the default.
+>>
+>> These result seem really inconsitent with the what described in your
+>> patchset [1]. What factors might explain these behaviors?
+> One possible difference is cache topology.  Can you try to bind the test
+> process to the CPUs in one CCX (that is, share one LLC).  This make it
+> possible to hit the local cache.
 
-Fixes: 98c3ca0015b8 ("ksm: convert cmp_and_merge_page() to use a folio")
-Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
----
- mm/ksm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Hi, I just had a different question, why is the function sprinkled with
+cond_resched() in each loop, especially the last one in which we are calling
+it every iteration? I suppose one reason for slowdown may be this too.
 
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 160787bb121c..7aa9b2829a7b 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -2272,7 +2272,8 @@ static void cmp_and_merge_page(struct page *page, struct ksm_rmap_item *rmap_ite
- 
- 	/* Start by searching for the folio in the stable tree */
- 	kfolio = stable_tree_search(page);
--	if (&kfolio->page == page && rmap_item->head == stable_node) {
-+	if (!IS_ERR_OR_NULL(kfolio) && &kfolio->page == page &&
-+	    rmap_item->head == stable_node) {
- 		folio_put(kfolio);
- 		return;
- 	}
--- 
-2.36.1
-
+>
+>> Thanks for your time.
+>>
+>> [1] https://lkml.org/lkml/2018/5/23/1072
+>>
+>> ---
+>> Sincere,
+>> Zhu Haoran
+>>
+>> ---
+>>
+>> static int process_huge_page(
+>>          unsigned long addr_hint, unsigned int nr_pages,
+>>          int (*process_subpage)(unsigned long addr, int idx, void *arg),
+>>          void *arg)
+>> {
+>>      int i, ret;
+>>      unsigned long addr = addr_hint &
+>>          ~(((unsigned long)nr_pages << PAGE_SHIFT) - 1);
+>>
+>>      might_sleep();
+>>      for (i = 0; i < nr_pages; i++) {
+>>              cond_resched();
+>>              ret = process_subpage(addr + i * PAGE_SIZE, i, arg);
+>>              if (ret)
+>>                      return ret;
+>>      }
+>>
+>>      return 0;
+>> }
+> ---
+> Best Regards,
+> Huang, Ying
+>
 
