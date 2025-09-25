@@ -4,110 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E9E9CAC5A5
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 04:36:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F237CCAC5AA
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 05:01:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D51F98E0007; Thu, 25 Sep 2025 00:36:42 -0400 (EDT)
+	id 2DFCD8E0002; Thu, 25 Sep 2025 01:01:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D29A58E0001; Thu, 25 Sep 2025 00:36:42 -0400 (EDT)
+	id 2B79B8E0001; Thu, 25 Sep 2025 01:01:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3FC18E0007; Thu, 25 Sep 2025 00:36:42 -0400 (EDT)
+	id 1A6108E0002; Thu, 25 Sep 2025 01:01:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id AFE3C8E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 00:36:42 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 613C7119624
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 04:36:42 +0000 (UTC)
-X-FDA: 83926511844.01.AC9F1B1
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 7EB09A0016
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 04:36:40 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=g7oAUr5L;
-	spf=pass (imf15.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 077198E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 01:01:50 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8EC99B82AA
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 05:01:49 +0000 (UTC)
+X-FDA: 83926575138.21.73B57FF
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf10.hostedemail.com (Postfix) with ESMTP id EC64BC0002
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 05:01:46 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=oOx8wv3z;
+	spf=pass (imf10.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758775000;
+	s=arc-20220608; t=1758776507;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fj8rGJkHIDlvRHZJmqpRK/hYu0VFRhdbohHYayA8boA=;
-	b=rdhtw6UppTVxlqAMnFKs8sPSqBWXdLblOK9j5KCAHBwxaGSlCN9Z8uuq+4ZuZyxL9lnQQK
-	YRsSirsyuCmfS3Q+S4dSNAP1F+Vc+5GG1JtJ3E+s9ef18Xfbtg3kimq7qZho/DTjjmK6vc
-	PtMA+NGOst/Alo6Sw4u/mugzwVBsszc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758775000; a=rsa-sha256;
-	cv=none;
-	b=MyKmKyig29xc6IZcVCF0vk3VmHSebwCm+P3KwBXaBN5DwOoR81XA04dZ1Jyw4jA1VDoVmP
-	xD3UGFSHCeTycYAHqWgRI2S6mo4w2HKI9G78D+ljILzdra2ubqAdVrwXa7JmC7LG/9BoXm
-	LcyA6YY+GREIwJk12Qduhd7RdU2ZnyU=
+	bh=MN2tnAfnGlck7Rsei5B/P8+lpSp3GTi1Q+AmY1Zur1E=;
+	b=J2REB86GzHnN1Scqz/UwCQqX5B/l1ljc6q3TovrtaP6n3Rw7rbFDR2rgA+mBgUjEWJclDX
+	physMMZGyFNJciIogaIALMDQnTGzCv7J4usxA3FLhaMLRdzqzHgG8r1LtAvgsv0f263TUV
+	z8RviOLzkOXpYqFSiMahVeAC3Wl7Tpw=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=g7oAUr5L;
-	spf=pass (imf15.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-62fbc90e6f6so748382a12.3
-        for <linux-mm@kvack.org>; Wed, 24 Sep 2025 21:36:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758774999; x=1759379799; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Fj8rGJkHIDlvRHZJmqpRK/hYu0VFRhdbohHYayA8boA=;
-        b=g7oAUr5LWDWCgcB+mZAg9QajF0riqch96lp5/Qxig4CRAouQ5Ir+oAOiQqdwyxCzUc
-         Ev8ZOlRsUH5RtUv3yimB5jSHw4c7C0ujtFJf3PB4R2UHcNdTbrCAhod0vFWqiRUv7x62
-         jmStSLy6oc3ofJutEpdBYpPeOYP00bysPQ1+L1UfIvl5Tn9CTM5xojpwNdJBBqnlXsWn
-         h57VA37mQv3yWiI+940xdL5j71Qpof0eTFCRmz6rP66R1OarTiN0vAcfHy3Fe+5b75x3
-         H0NCv8QE/yDZ+ALnY3RBIC1tqJXEtT2ERr9I412NryPqyQh4mn/qadgF2tO+FROuQYiN
-         CtRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758774999; x=1759379799;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Fj8rGJkHIDlvRHZJmqpRK/hYu0VFRhdbohHYayA8boA=;
-        b=VT48reFcBUznAxXXEEKkXRPjY65mUwf2QVslJPJ9ltrE93DL7L42vBd9QCW+NVTCa7
-         ZZ6ZyVfwL+KezXk7cowpHa9XY7ozL6vWsF9LYSzkCIFqgg9clMDyl5aZE9JzmUkwdQtP
-         eLyCaOTenrLZzdt2f88Y2/9mAIWSDktdJK5uFGsTHMP8STke4Ktyj1qOlFGW0cwrzM5m
-         GpocxUQP5aYOKQXCcszHnzJIh7W26K3ukJrdHmVluZDgLH2tB6WnBDDa7sZTCKKp1B65
-         PCyqHGJARYa59jkQ5dp2nJJvSRDzo+FiL9f8ynNzhEA6sDF0revmh3xZ4tCoAjFFUyj9
-         1/yw==
-X-Gm-Message-State: AOJu0YzoaAGSn03/z2f7TiIlCU2KztlsPB/B45I6FCBdfdGVz12UqJwZ
-	iu/cI0dlnPYhCDLltG59LF2uQR9U4aPhwbol6AXRTDxDaB5RpO5/oESqhe1lqVwSpQPxUnWLnfj
-	yn8JSdWN4coCZv15INygzEPZ4+pAk/ZQ=
-X-Gm-Gg: ASbGncvQFqm2lX5BsPyJJQX55A1/01v/s2LQM8eWtkrFf4Q4QC6hZzAWZm7ohSJRGJ/
-	GQk8dkhLd7ICSmq6jlABWZSwxHMSmXI2Dp74ZS4XenNk8fU76ZR1QdlKgXxFiTxQDBjwxAb8eZo
-	dE2wqyQw41ayVb6frF+lEvgvDxXnQ15ppvgkwPCKOSp9w4S53d90MywANc9wbtFc54FWaxAVFW2
-	829MJo=
-X-Google-Smtp-Source: AGHT+IHF0DtgUGVgOvTfiiCPSq+YQg/mYlKm3uWFMnJ7A1YEowAH7OW0bylFs/noUifPfsqZhwJEkhAd9OP8JMoVpEY=
-X-Received: by 2002:a05:6402:1e8a:b0:62f:bc3f:abb8 with SMTP id
- 4fb4d7f45d1cf-6349fa73e43mr1497315a12.24.1758774998606; Wed, 24 Sep 2025
- 21:36:38 -0700 (PDT)
+	imf10.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=oOx8wv3z;
+	spf=pass (imf10.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758776507; a=rsa-sha256;
+	cv=none;
+	b=V1U4DCc0NiQEZgYaOj/XqlUfYIZn4ejqUSVKeT7PRgD5Ww85FHA7wjWyM3or7Cm3NgS9Lo
+	nfaCyaDJJrWgBWmA49fwauE/OFwJA6f8WCAFGHm4IWf/H4f/Nw1TWYJ3EVklwjpuuoppyo
+	QdGQaOx8yon8McRyMJoMUDdh1VTSnB8=
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58ONb1Bu031091;
+	Thu, 25 Sep 2025 05:01:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=MN2tnA
+	fnGlck7Rsei5B/P8+lpSp3GTi1Q+AmY1Zur1E=; b=oOx8wv3zKcKXmg69XMEaxA
+	yQhPWmgvd6JT8uZ2fPXKeeNEVKEOdqiArhmxWNOQTD6Dwr0WZBOK7CRMf8LYeMsH
+	gvM4LoLTBd0ZaBInmzgqu4H1RUYoSETQb0WBMwV8+HChRJx9Bw7LwOulNwStt7my
+	XPMy7djUy4rGCsJGfcH+NK0eo3E35L7/RQ3HYq4cbXqYaBiJwpaNMc07QG/udV7G
+	SFqyL65TOthCTJCssQ/pbj2CHn0sGobJ1pD2IKE2iK1qEoAd2iLQfmSV1IklEF+f
+	L2OXsLSKpjR8DgR2hVm74loyuh9Wk0G5EapmEaqnl2xu/F4F9wuMW4Kzia1/wE6w
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499jpkjuy3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 25 Sep 2025 05:01:36 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58P51Zvn015387;
+	Thu, 25 Sep 2025 05:01:35 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499jpkjuxu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 25 Sep 2025 05:01:35 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58P25AbO013638;
+	Thu, 25 Sep 2025 05:01:34 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49a8tjkvwr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 25 Sep 2025 05:01:34 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58P51XBv30737112
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 25 Sep 2025 05:01:33 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1CBD058054;
+	Thu, 25 Sep 2025 05:01:33 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3A57058062;
+	Thu, 25 Sep 2025 05:01:27 +0000 (GMT)
+Received: from [9.124.219.167] (unknown [9.124.219.167])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 25 Sep 2025 05:01:26 +0000 (GMT)
+Message-ID: <b68642ac-ca2a-4775-8a1f-02cf7681545e@linux.ibm.com>
+Date: Thu, 25 Sep 2025 10:31:25 +0530
 MIME-Version: 1.0
-References: <20250924091746.146461-1-bhe@redhat.com>
-In-Reply-To: <20250924091746.146461-1-bhe@redhat.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Thu, 25 Sep 2025 12:36:02 +0800
-X-Gm-Features: AS18NWDnkSNo9X4bOFLyWd9jfUjiwD4zfCSHLBNqY9du9cNu4ZLiX0MPIsIow8M
-Message-ID: <CAMgjq7CtBRjwxCp=HvW5xZUGg-5MgKLOHy2tJ+0GC7KmA1BNjw@mail.gmail.com>
-Subject: Re: [PATCH] mm/swapfile.c: select the swap device with default
- priority round robin
-To: Baoquan He <bhe@redhat.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org, 
-	baohua@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: opo749jgo4dh3n8x38irkcoc5g8qcpi1
-X-Rspamd-Queue-Id: 7EB09A0016
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] drivers/base/node: merge register_one_node() and
+ register_node() to a single function.
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@redhat.com>,
+        Oscar Salvador <osalvador@suse.de>
+Cc: Ritesh Harjani <ritesh.list@gmail.com>,
+        Aboorva Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org, Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>, x86@kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Danilo Krummrich <dakr@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Dave Jiang <dave.jiang@intel.com>
+References: <cover.1758736423.git.donettom@linux.ibm.com>
+ <40257b5228dec05e5b252f02438608eb8d681a2d.1758736423.git.donettom@linux.ibm.com>
+ <d168030f-388c-4f58-987f-648bba5b32f9@csgroup.eu>
+Content-Language: en-US
+From: Donet Tom <donettom@linux.ibm.com>
+In-Reply-To: <d168030f-388c-4f58-987f-648bba5b32f9@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=L50dQ/T8 c=1 sm=1 tr=0 ts=68d4ccb0 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=SjcnzaKMAlRwm5DwMEMA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDAxMCBTYWx0ZWRfX45B6zbHKyZRX
+ RmaE9tMomAboEh11SIIQtwrc5aIE5LDKAA58dbFTElPBqHQKJ7NBfOGtlARUrHTlT26gb9Pw02F
+ mlB2l9wylmVOfZJDugijAYYuRNhweOtKJ3K56tapJAiiS2IArxlJ9z0LS+7lkksQOrg5vRLjocF
+ OGHxulma3QNMQoZq87RBMKAlDVb4kkZbLrelLQzB3PfPJa+6QVnbMaHjqajt32ZZv5zNfZbwp1V
+ GoZbLSzxm7isGvzSK6umsibzLZg4p2OUaO9Wre4fd8kmn8J0X7HyEJPedmA3ptY3WuMhuBlgkUq
+ sl7HrAnOq/9PB5OxWnSLfeV6EoQo5DNxRXahaEPJM13wQSPbCgpbEdEngiQtjqGSJ1PPiFfUMP/
+ OxlrP/5s
+X-Proofpoint-ORIG-GUID: nDz6CfkzRf8RD5ZsudI_nJg10Yi4ws5Z
+X-Proofpoint-GUID: T2oKshh1afhTQ4fDnfTuV6XWrE2-IoOP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-24_07,2025-09-24_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 phishscore=0 impostorscore=0 spamscore=0
+ priorityscore=1501 suspectscore=0 clxscore=1015 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509200010
+X-Stat-Signature: wx8wwf3b5rszzjca9joaq56weawez1ky
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758775000-331847
-X-HE-Meta: U2FsdGVkX1+4yvaIm8z4T0PSe2IcQ1yHluvOoudo7oW3KhrBQ1UW6eJVQxUrAEaBMxm/G7zgD4utRwd1HnWIIoCJ4W8m0gA7IXiZU22qtyqlBSE7uKkJWxtnH8MWFqp2CezRlwDz6nB3Ic7Gz9ohy7IWBvyC4EOetyKHo6bF0yCWPaUeFRkBjsPn8OadaHhxPBxvG5/2gITTj7QNQVTaTCSN7T+0Zu2nmoC4kD0jmsKUMv4V6vnJRp6GXRh85HBfaMnypKLdE3RFJZenoy0TEm1OkWf6hH54oHCSSOMT/LjnAjaoxYtzOQLl3fxB3E4EwewxvhzYLrJd+0BmtB6SmccoNsF3+MN27N22IDeYc/kb1hcaD5z0qfW1BwiXI5ClK4dmNM2hB+mQ5iX9Cnta8qn0neAVXR7s9ZtbEdb3S+k2Tr2ko4e/X2IUBoNKDlJs1hDQA/uO3T3+f6cgVf4by3hmWNIdu9Dx4yrmwpJZQaylazB63LcjDuYcc9Ji/MzsBhfi96DH9/V+S4/GXGbR+5ECmc+t4t0p1RZPj/lUtq0CD5G5UjzuMJ//NCj3cMC0StXN0q0ZJMmVIVtFLPJiMmmfNOacvYtTrN+mgaydNtoTqG7mMX7mFLn7z3JqpbfwHXeX8KvgRElcnJVnoBRE0+MIrJYRcNFndYznXJI4YKGazTq7ZehjQMHnlS7pZCPq1Hq7LgQJfG3Aq2WhNmaKO8PY9w1+2X5WJJQ9+exmPEQ0xJGbxxl7iiEyti7lveZAxui2oQZnzr9PphKNKBNcL51I9+3e6Apg3uTETr6v7ue6JzGaRrWqsjAQz/DTOae46/bL88gnvB5ktvOZ/5aTOkCcSnIJL5rqciTv7EDQm14bimKSRdLdPYguBIo/lRH/zrGRf+sDWv7nAWkyoGbTSak1cHCWnE7v79+qwYjIax+Lp77JbgCHkwzx9/i1Zka1fUBGnevCYBLZ9KEvq9K
- R8rBNyE/
- ON0z+txZ2uBoKvcymiRHNhaRkukK0RYetc1+IueKsxlCa0SGN46JH2fEVJKHGXUlyLe2TN6vKiiOd0gza2sqMmV3QzXDSjFUfwKeD3skX3z/GWCW04fMHtbDuL+kxzFWnFtuWi40I0C/wgedYuxYd6nXHcayN6mPtN1bSlOZUDozuQNlo3/r7kIQa8XpEybdZGyCMKq9oDxA7FDP6b6LO51n1Sp/MF8UGW68LLQFjgkJwZzQj4Xqugl++C8zIiM7ja7y7WvQEhCU1NHvDyxAb2p+YeVvwJ9wRvVP6VbZ+d/Xd/DpvWbNqm3pYrKN8BUDZjVTKt1rn7uUuL9LR6rGJFj1obkDA7G918j+0C95w0uP3NoU1GLys+sstaQ/7Mtxycrk9OiEGd7Osc3bttUdHabBU2w==
+X-Rspamd-Queue-Id: EC64BC0002
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758776506-295530
+X-HE-Meta: U2FsdGVkX1+p+FSRiC/9jPP1qXDLkCXFf5pTeJWn9qOXs1nGHPmb2JCj8RNP4XsqzlBMKWGTIV5eFDxjjrhbLImRRRa45f38XeGgX+RnNW4zG1AOs8BIIBDZOuASS6nc7fJpzSl/Gw3A0FB9tnlxnq+59ofq8UXc6zNTFvoWxTnh1pLycyxR7u6lVuZZ/GYKNK6L+TvmwKw8aygTJpokKSWChTjGEsEr4XZLiGHIUMcrNDjUzN18NyjTzrSt9yeEHy+RXWX2kqNbcsr9ERinEPAh/tA056BtEJkbPALMWAJy3ZQABmpsD4hn6wCfdiUxFEryNsMIicn6UwsvbKmQ7kX6+rNF3kGS43VODLY4O7EVkciRSGoI13Zk2jj+ArKuBkXbSD0WlAhm8qq6EgDFfOjkDWHkn7BJEENo1g/1D2kcJ14nCV1gPvnck6YN92L+fc61KSiVTq4q1TGLP06o50Kdalvl/vJS+A6ENPuscqcMrl87kYSF8bWTA3qXMzKnduDgsFZRUxNmnI9EYDsFDIbTdfNv3rPU4zKHuLzzz4fMscIsY8IT0RIAwiDNDp60vH3bQYAFmjvQbRr99q9nOyDVQj6xHXEw6xUSs0Ghhwrhl+wcaZojSeDxRbYQacErPogRorcLJ0MTYruRQNN0PrabyO/hGD5bPzbjkYeA/vwAlGFjVnb3bJ/RMCqHFIHT4PADSDLFOiT3BJfdJBgjZWS9pAbnHrG/RWdmsvxSxxyvJ8tvZZeJ7zCEy1+SOmsN8PRHcCqcrlF/AWCUyT8y9h8X8mSY+RLZ6Bn0Yj+pUuzdMWU/QZG0ZGfzD41PNWYQ55T+69iSngXuOGvZ/QWxKgwonOVvP+gq7ZGOFXanhIEWB5erG9aapf1oLHH50O8PxCHy7gL34CjeVlEO15YSdXdFeZXYJegTF322neiJC6lIbdba+WoENhQHdt3OD8n5MiN5Ee+MIPpHrvklTkW
+ bbGpc/nU
+ Dk/MXWDM6grnLueBzb+Zso16C/gre7GWTSslOKGPkqUb68frZPyIaXNu0SMaNJnPH+GDjZndwRncrpqyQ+ADoxP3zyRmQzKmc7CsALX+ALueh1kuHu5Ag7MglsrjanqtxrxNkGu8Pd0vAfhq7+ObzYjAdxTc5CWoc8rMZQoEQognsXg3JtPFFZyIQJ2hd7F9TynE6sdvgFUPZX/GdQJEpI/KogqIL5mC9RLB1ISIRJGWTpeLPa5RYyIPOmb74kLS4V/cyRhQoAe3icrzcuYfeTe8EHBJcEbla+qZqmuZQELKYyMMBrCf5s9dtk+8UjZgNdW4xGgA9yiWiFVNAzgAsdKQdxHUTs1UXqd1PapwY2hPYQ/6Mua4C/aknf6jWKzDCBQtu6HIbXctwzsbn4X7BAPVvNBN9mpB7yaTWTPN0yXcBUoSFJeQXZT4ES1I6OW4OlvKtx79ovQCgx8Jw3NI/Hs+g5/2b2+F30HqE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,200 +158,239 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 24, 2025 at 6:15=E2=80=AFPM Baoquan He <bhe@redhat.com> wrote:
->
-> Currently, on system with multiple swap devices, swap allocation will
-> select one swap device according to priority. The swap device with the
-> highest priority will be chosen to allocate firstly.
->
-> People can specify a priority from 0 to 32767 when swapon a swap device,
-> or the system will set it from -2 then downwards by default. Meanwhile,
-> on NUMA system, the swap device with node_id will be considered first
-> on that NUMA node of the node_id.
->
-> In the current code, an array of plist, swap_avail_heads[nid], is used
-> to organize swap devices on each NUMA node. For each NUMA node, there
-> is a plist organizing all swap devices. The 'prio' value in the plist
-> is the negated value of the device's priority due to plist being sorted
-> from low to high. The swap device owning one node_id will be promoted to
-> the front position on that NUMA node, then other swap devices are put in
-> order of their default priority.
->
-> E.g I got a system with 8 NUMA nodes, and I setup 4 zram partition as
-> swap devices.
->
-> Current behaviour:
-> their priorities will be(note that -1 is skipped):
-> NAME       TYPE      SIZE USED PRIO
-> /dev/zram0 partition  16G   0B   -2
-> /dev/zram1 partition  16G   0B   -3
-> /dev/zram2 partition  16G   0B   -4
-> /dev/zram3 partition  16G   0B   -5
->
-> And their positions in the 8 swap_avail_lists[nid] will be:
-> swap_avail_lists[0]: /* node 0's available swap device list */
-> zram0   -> zram1   -> zram2   -> zram3
-> prio:1     prio:3     prio:4     prio:5
-> swap_avali_lists[1]: /* node 1's available swap device list */
-> zram1   -> zram0   -> zram2   -> zram3
-> prio:1     prio:2     prio:4     prio:5
-> swap_avail_lists[2]: /* node 2's available swap device list */
-> zram2   -> zram0   -> zram1   -> zram3
-> prio:1     prio:2     prio:3     prio:5
-> swap_avail_lists[3]: /* node 3's available swap device list */
-> zram3   -> zram0   -> zram1   -> zram2
-> prio:1     prio:2     prio:3     prio:4
-> swap_avail_lists[4-7]: /* node 4,5,6,7's available swap device list */
-> zram0   -> zram1   -> zram2   -> zram3
-> prio:2     prio:3     prio:4     prio:5
->
-> The adjustment for swap device with node_id intended to decrease the
-> pressure of lock contention for one swap device by taking different
-> swap device on different node. However, the adjustment is very
-> coarse-grained. On the node, the swap device sharing the node's id will
-> always be selected firstly by node's CPUs until exhausted, then next one.
-> And on other nodes where no swap device shares its node id, swap device
-> with priority '-2' will be selected firstly until exhausted, then next
-> with priority '-3'.
->
-> This is the swapon output during the process high pressure vm-scability
-> test is being taken. It's clearly shown zram0 is heavily exploited until
-> exhausted.
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> [root@hp-dl385g10-03 ~]# swapon
-> NAME       TYPE      SIZE  USED PRIO
-> /dev/zram0 partition  16G 15.7G   -2
-> /dev/zram1 partition  16G  3.4G   -3
-> /dev/zram2 partition  16G  3.4G   -4
-> /dev/zram3 partition  16G  2.6G   -5
->
-> This is unreasonable because swap devices are assumed to have similar
-> accessing speed if no priority is specified when swapon. It's unfair and
-> doesn't make sense just because one swap device is swapped on firstly,
-> its priority will be higher than the one swapped on later.
->
-> So here change is made to select the swap device round robin if default
-> priority. In code, the plist array swap_avail_heads[nid] is replaced
-> with a plist swap_avail_head. Any device w/o specified priority will get
-> the same default priority '-1'. Surely, swap device with specified priori=
-ty
-> are always put foremost, this is not impacted. If you care about their
-> different accessing speed, then use 'swapon -p xx' to deploy priority for
-> your swap devices.
->
-> New behaviour:
->
-> swap_avail_list: /* one global available swap device list */
-> zram0   -> zram1   -> zram2   -> zram3
-> prio:1     prio:1     prio:1     prio:1
->
-> This is the swapon output during the process high pressure vm-scability
-> being taken, all is selected round robin:
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> [root@hp-dl385g10-03 linux]# swapon
-> NAME       TYPE      SIZE  USED PRIO
-> /dev/zram0 partition  16G 12.6G   -1
-> /dev/zram1 partition  16G 12.6G   -1
-> /dev/zram2 partition  16G 12.6G   -1
-> /dev/zram3 partition  16G 12.6G   -1
->
-> With the change, we can see about 18% efficiency promotion as below:
->
-> vm-scability test:
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> Test with:
-> usemem --init-time -O -y -x -n 31 2G (4G memcg, zram as swap)
->                            Before:          After:
-> System time:               637.92 s         526.74 s
-> Sum Throughput:            3546.56 MB/s     4207.56 MB/s
-> Single process Throughput: 114.40 MB/s      135.72 MB/s
-> free latency:              10138455.99 us   6810119.01 us
->
-> Suggested-by: Chris Li <chrisl@kernel.org>
-> Signed-off-by: Baoquan He <bhe@redhat.com>
-> ---
->  include/linux/swap.h | 11 +-----
->  mm/swapfile.c        | 94 +++++++-------------------------------------
->  2 files changed, 16 insertions(+), 89 deletions(-)
 
-Hi Baoquan,
+On 9/25/25 12:45 AM, Christophe Leroy wrote:
+>
+>
+> Le 24/09/2025 à 20:40, Donet Tom a écrit :
+>> register_one_node() and register_node() are small functions.
+>> This patch merges them into a single function named register_node()
+>> to improve code readability.
+>
+> This is unclear.
+>
+> What it really does is it folds register_node() into its only caller 
+> which is register_one_node() and then it renames register_one_node() 
+> into register_node().
 
-Thanks to the patch! The node plist thing always looked confusing to me.
+Yes, you are right. I will add proper explanations in the next version.
 
 >
-> diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index 3473e4247ca3..f72c8e5e0635 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -337,16 +337,7 @@ struct swap_info_struct {
->         struct work_struct discard_work; /* discard worker */
->         struct work_struct reclaim_work; /* reclaim worker */
->         struct list_head discard_clusters; /* discard clusters list */
-> -       struct plist_node avail_lists[]; /*
-> -                                          * entries in swap_avail_heads,=
- one
-> -                                          * entry per node.
-> -                                          * Must be last as the number o=
-f the
-> -                                          * array is nr_node_ids, which =
-is not
-> -                                          * a fixed value so have to all=
-ocate
-> -                                          * dynamically.
-> -                                          * And it has to be an array so=
- that
-> -                                          * plist_for_each_* can work.
-> -                                          */
-> +       struct plist_node avail_list;   /* entry in swap_avail_head */
->  };
+>>
+>> No functional changes are introduced.
+>>
+>> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+>> ---
+>>   arch/powerpc/platforms/pseries/pci_dlpar.c |  2 +-
+>>   arch/x86/mm/numa.c                         |  4 +-
+>>   drivers/base/node.c                        | 52 +++++++++-------------
+>>   include/linux/node.h                       |  4 +-
+>>   mm/memory_hotplug.c                        |  4 +-
+>>   mm/mm_init.c                               |  2 +-
+>>   6 files changed, 28 insertions(+), 40 deletions(-)
+>>
+>> diff --git a/arch/powerpc/platforms/pseries/pci_dlpar.c 
+>> b/arch/powerpc/platforms/pseries/pci_dlpar.c
+>> index aeb8633a3d00..8c77ec7980de 100644
+>> --- a/arch/powerpc/platforms/pseries/pci_dlpar.c
+>> +++ b/arch/powerpc/platforms/pseries/pci_dlpar.c
+>> @@ -29,7 +29,7 @@ struct pci_controller *init_phb_dynamic(struct 
+>> device_node *dn)
+>>       nid = of_node_to_nid(dn);
+>>       if (likely((nid) >= 0)) {
+>>           if (!node_online(nid)) {
+>> -            if (register_one_node(nid)) {
+>> +            if (register_node(nid)) {
+>>                   pr_err("PCI: Failed to register node %d\n", nid);
+>>               } else {
+>>                   update_numa_distance(dn);
+>> diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+>> index c24890c40138..7a97327140df 100644
+>> --- a/arch/x86/mm/numa.c
+>> +++ b/arch/x86/mm/numa.c
+>> @@ -262,7 +262,7 @@ void __init init_gi_nodes(void)
+>>        * bringup_nonboot_cpus
+>>        *  cpu_up
+>>        *   __try_online_node
+>> -     *    register_one_node
+>> +     *    register_node
+>>        * because node_subsys is not initialized yet.
+>>        * TODO remove dependency on node_online
+>>        */
+>> @@ -303,7 +303,7 @@ void __init init_cpu_to_node(void)
+>>            * bringup_nonboot_cpus
+>>            *  cpu_up
+>>            *   __try_online_node
+>> -         *    register_one_node
+>> +         *    register_node
+>>            * because node_subsys is not initialized yet.
+>>            * TODO remove dependency on node_online
+>>            */
+>> diff --git a/drivers/base/node.c b/drivers/base/node.c
+>> index 6b6e55a98b79..eab620e29c78 100644
+>> --- a/drivers/base/node.c
+>> +++ b/drivers/base/node.c
+>> @@ -638,33 +638,6 @@ static void node_device_release(struct device *dev)
+>>       kfree(to_node(dev));
+>>   }
+>>   -/*
+>> - * register_node - Setup a sysfs device for a node.
+>> - * @num - Node number to use when creating the device.
+>> - *
+>> - * Initialize and register the node device.
+>> - */
+>> -static int register_node(struct node *node, int num)
+>> -{
+>> -    int error;
+>> -
+>> -    node->dev.id = num;
+>> -    node->dev.bus = &node_subsys;
+>> -    node->dev.release = node_device_release;
+>> -    node->dev.groups = node_dev_groups;
+>> -    error = device_register(&node->dev);
+>> -
+>> -    if (error) {
+>> -        put_device(&node->dev);
+>> -    } else {
+>> -        hugetlb_register_node(node);
+>> -        compaction_register_node(node);
+>> -        reclaim_register_node(node);
+>> -    }
+>> -
+>> -    return error;
+>> -}
+>> -
+>>   /**
+>>    * unregister_node - unregister a node device
+>>    * @node: node going away
+>> @@ -869,7 +842,13 @@ void 
+>> register_memory_blocks_under_node_hotplug(int nid, unsigned long 
+>> start_pfn,
+>>   }
+>>   #endif /* CONFIG_MEMORY_HOTPLUG */
+>>   -int register_one_node(int nid)
+>> +/*
+>> + * register_node - Setup a sysfs device for a node.
+>> + * @nid - Node number to use when creating the device.
+>> + *
+>> + * Initialize and register the node device.
+>> + */
+>> +int register_node(int nid)
+>>   {
+>>       int error;
+>>       int cpu;
+>> @@ -880,14 +859,23 @@ int register_one_node(int nid)
+>>           return -ENOMEM;
+>>         INIT_LIST_HEAD(&node->access_list);
+>> -    node_devices[nid] = node;
+>>   -    error = register_node(node_devices[nid], nid);
+>> +    node->dev.id = nid;
+>> +    node->dev.bus = &node_subsys;
+>> +    node->dev.release = node_device_release;
+>> +    node->dev.groups = node_dev_groups;
+>> +
+>> +    error = device_register(&node->dev);
+>>       if (error) {
+>> -        node_devices[nid] = NULL;
+>> +        put_device(&node->dev);
+>>           return error;
+>>       }
+>>   +    node_devices[nid] = node;
+>> +    hugetlb_register_node(node);
+>> +    compaction_register_node(node);
+>> +    reclaim_register_node(node);
+>> +
+>>       /* link cpu under this node */
+>>       for_each_present_cpu(cpu) {
+>>           if (cpu_to_node(cpu) == nid)
+>> @@ -980,7 +968,7 @@ void __init node_dev_init(void)
+>>        * to already created cpu devices.
+>>        */
+>>       for_each_online_node(i) {
+>> -        ret =  register_one_node(i);
+>> +        ret =  register_node(i);
+>>           if (ret)
+>>               panic("%s() failed to add node: %d\n", __func__, ret);
+>>       }
+>> diff --git a/include/linux/node.h b/include/linux/node.h
+>> index 2c7529335b21..4dcf876cd0b4 100644
+>> --- a/include/linux/node.h
+>> +++ b/include/linux/node.h
+>> @@ -168,7 +168,7 @@ static inline int 
+>> hotplug_node_notifier(notifier_fn_t fn, int pri)
+>>   #ifdef CONFIG_NUMA
+>>   extern void node_dev_init(void);
+>>   /* Core of the node registration - only memory hotplug should use 
+>> this */
+>> -extern int register_one_node(int nid);
+>> +extern int register_node(int nid);
 >
->  static inline swp_entry_t page_swap_entry(struct page *page)
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index b4f3cc712580..d8a54e5af16d 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -73,7 +73,7 @@ atomic_long_t nr_swap_pages;
->  EXPORT_SYMBOL_GPL(nr_swap_pages);
->  /* protected with swap_lock. reading in vm_swap_full() doesn't need lock=
- */
->  long total_swap_pages;
-> -static int least_priority =3D -1;
-> +#define DEF_SWAP_PRIO  -1
->  unsigned long swapfile_maximum_size;
->  #ifdef CONFIG_MIGRATION
->  bool swap_migration_ad_supported;
-> @@ -102,7 +102,7 @@ static PLIST_HEAD(swap_active_head);
->   * is held and the locking order requires swap_lock to be taken
->   * before any swap_info_struct->lock.
->   */
-> -static struct plist_head *swap_avail_heads;
-> +static PLIST_HEAD(swap_avail_head);
->  static DEFINE_SPINLOCK(swap_avail_lock);
+> extern keyword is pointless on functions prototypes.
 >
->  static struct swap_info_struct *swap_info[MAX_SWAPFILES];
-> @@ -995,7 +995,6 @@ static unsigned long cluster_alloc_swap_entry(struct =
-swap_info_struct *si, int o
->  /* SWAP_USAGE_OFFLIST_BIT can only be set by this helper. */
->  static void del_from_avail_list(struct swap_info_struct *si, bool swapof=
-f)
->  {
-> -       int nid;
->         unsigned long pages;
+> checkpatch.pl usually complains about that.
 >
->         spin_lock(&swap_avail_lock);
-> @@ -1007,7 +1006,7 @@ static void del_from_avail_list(struct swap_info_st=
-ruct *si, bool swapoff)
->                  * swap_avail_lock, to ensure the result can be seen by
->                  * add_to_avail_list.
->                  */
-> -               lockdep_assert_held(&si->lock);
-> +               //lockdep_assert_held(&si->lock);
+> I know previous prototype was extern and all surrounding also are, but 
+> it is not because mistakes were done in the past that you have to 
+> continue doing the same mistakes.
+>
 
-If this needs to be removed, then it doesn't seem to comply with the
-comment above?
+Thank you for the comment. I will address it in the next version.
 
-Here we are modifying si->flags, which is supposed to be protected by si lo=
-ck.
+
+>
+>
+>>   extern void unregister_one_node(int nid);
+>>   extern int register_cpu_under_node(unsigned int cpu, unsigned int 
+>> nid);
+>>   extern int unregister_cpu_under_node(unsigned int cpu, unsigned int 
+>> nid);
+>> @@ -181,7 +181,7 @@ extern int 
+>> register_memory_node_under_compute_node(unsigned int mem_nid,
+>>   static inline void node_dev_init(void)
+>>   {
+>>   }
+>> -static inline int register_one_node(int nid)
+>> +static inline int register_node(int nid)
+>>   {
+>>       return 0;
+>>   }
+>> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+>> index 0be83039c3b5..6c050d867031 100644
+>> --- a/mm/memory_hotplug.c
+>> +++ b/mm/memory_hotplug.c
+>> @@ -1311,7 +1311,7 @@ static int __try_online_node(int nid, bool 
+>> set_node_online)
+>>         if (set_node_online) {
+>>           node_set_online(nid);
+>> -        ret = register_one_node(nid);
+>> +        ret = register_node(nid);
+>>           BUG_ON(ret);
+>>       }
+>>   out:
+>> @@ -1542,7 +1542,7 @@ int add_memory_resource(int nid, struct 
+>> resource *res, mhp_t mhp_flags)
+>>           goto error_memblock_remove;
+>>       if (ret) {
+>>           node_set_online(nid);
+>> -        ret = register_one_node(nid);
+>> +        ret = register_node(nid);
+>>           if (WARN_ON(ret)) {
+>>               node_set_offline(nid);
+>>               goto error_memblock_remove;
+>> diff --git a/mm/mm_init.c b/mm/mm_init.c
+>> index df614556741a..e1a19a3dadd7 100644
+>> --- a/mm/mm_init.c
+>> +++ b/mm/mm_init.c
+>> @@ -1909,7 +1909,7 @@ void __init free_area_init(unsigned long 
+>> *max_zone_pfn)
+>>           free_area_init_node(nid);
+>>             /*
+>> -         * No sysfs hierarchy will be created via register_one_node()
+>> +         * No sysfs hierarchy will be created via register_node()
+>>            *for memory-less node because here it's not marked as 
+>> N_MEMORY
+>>            *and won't be set online later. The benefit is userspace
+>>            *program won't be confused by sysfs files/directories of
+>
+>
 
