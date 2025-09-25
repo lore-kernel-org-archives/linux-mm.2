@@ -4,115 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05500CAC5A7
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 13:37:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA7CFCAC5A5
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Sep 2025 13:38:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F40968E0007; Thu, 25 Sep 2025 09:37:21 -0400 (EDT)
+	id 136668E000F; Thu, 25 Sep 2025 09:38:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC9A28E000F; Thu, 25 Sep 2025 09:37:21 -0400 (EDT)
+	id 0E75A8E0008; Thu, 25 Sep 2025 09:38:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D17FD8E0007; Thu, 25 Sep 2025 09:37:21 -0400 (EDT)
+	id F3F1D8E000F; Thu, 25 Sep 2025 09:38:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B62F18E0008
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 09:37:21 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 632D284712
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:37:21 +0000 (UTC)
-X-FDA: 83927874282.25.234EE37
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B1AF31C0014
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:37:18 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ZmfNSaGR;
-	spf=pass (imf21.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E10638E0008
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 09:38:52 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8990114024E
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:38:52 +0000 (UTC)
+X-FDA: 83927878104.11.26C7D7E
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B1C8E20005
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 13:38:50 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Sy4kDA1c;
+	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758807439;
+	s=arc-20220608; t=1758807530;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Lisu6T/1EdLJ6jH1m/3ioLM+TiWwEq11PnkT01FtkJo=;
-	b=we4gWcUJ4hoooIrDJmaZHUpTdwszLGIPKbunWEDnZ7fHPFsmmHsCwtRNUPC9hp4cMHqwVi
-	8h8rWN0tzBASzzscxxhViri7/r0+MMrz8u1UFEAWc+ewmyh+NT5QFdxXZSwUbn6mN8HJZ4
-	pAO1nqqfVPGuFnUIrYcpIFVP8y9ZWZc=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ZmfNSaGR;
-	spf=pass (imf21.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758807439; a=rsa-sha256;
+	bh=8zdfa0TYqPEtG9KFxyYyvCSe3whEmUvkm9OuNg2EF/Q=;
+	b=B2WZ/qywOO9xq1MhAiXdQ6mUrPtvKmYrckXlzxTpJUCeEEtvhJiEjjWey8nZIWdFGH0W8C
+	d1I4Ixr5g65qIuVuRsj7CYInZiYumBfIX9EfJ4uGhHGvzZZk3/zzoeNfDiXwvRXdUEQITw
+	mv7yjvlUcNVX1KyUi66lw8d4HLtg45o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758807530; a=rsa-sha256;
 	cv=none;
-	b=xPtb/kj1M+GxI4u03/CA2Qn2kfdJDqxE7k1DxN66Gm0tDn8y4evzSZq5CZmNU3iyvU1dES
-	xofUbub/4cRpl2NB2G6w1qVzLAHd+GZaDugMBWfRJhxkFaW1EZno5UzbwGuNytL7z8NJU1
-	8I4blm6h9hxWphvsDzEXgJ5eklV1vBA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758807439; x=1790343439;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=LTr4oshAkMcVoBpx4J040ZcczOQeM7IvBewq8YixS1g=;
-  b=ZmfNSaGRI70tRhmKsFRFmwbjbWWXBIMbyH/F1xCiBWWpbmcsJJY0KBeW
-   Td1HcUePGqBBWbg6tm4Do+5QgMJQwrNasR2vkGfBof1ulqGe4XKtSxnTe
-   6gLVE68hL2NglkNncOgalo9bW+Wr7dMRZtKw1OTiXzC8kRTNL/5hv7RhE
-   uaxvMtT6bVCPoaR9gfXqTAazZifpgh5adI7D0OtwbUQAgu/YeycNVhKrj
-   d9qvh7646jmp0YgQQZYDDh/aozxxRzSPvdeXU4kkFDfp/si6bntNWcI2j
-   B+7FFJwIJiN4eoi823vnjVkcJlMDShAf1o94p2WrBKNTsMsXPzGnHc9V/
-   Q==;
-X-CSE-ConnectionGUID: kseVnEZGTMOtI1JD0Bht1w==
-X-CSE-MsgGUID: zmWkgzqiRBaDri+0FaBXWw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11563"; a="63755051"
-X-IronPort-AV: E=Sophos;i="6.18,292,1751266800"; 
-   d="scan'208";a="63755051"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 06:37:17 -0700
-X-CSE-ConnectionGUID: CAKflSAnTA2IHm58h9lsPQ==
-X-CSE-MsgGUID: mNkaVc6/T1Cn7dX6zZBZFg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,292,1751266800"; 
-   d="scan'208";a="176467467"
-Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
-  by orviesa006.jf.intel.com with ESMTP; 25 Sep 2025 06:37:11 -0700
-Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v1m9k-0005GH-01;
-	Thu, 25 Sep 2025 13:37:08 +0000
-Date: Thu, 25 Sep 2025 21:36:46 +0800
-From: kernel test robot <lkp@intel.com>
-To: Brendan Jackman <jackmanb@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>
-Cc: oe-kbuild-all@lists.linux.dev, bp@alien8.de,
-	dave.hansen@linux.intel.com, mingo@redhat.com, tglx@linutronix.de,
-	akpm@linux-foundation.org, david@redhat.com, derkling@google.com,
-	junaids@google.com, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, reijiw@google.com, rientjes@google.com,
-	rppt@kernel.org, vbabka@suse.cz, x86@kernel.org,
-	Yosry Ahmed <yosry.ahmed@linux.dev>
-Subject: Re: [PATCH 05/21] x86/mm/pat: mirror direct map changes to ASI
-Message-ID: <202509252153.JhjsdZ6c-lkp@intel.com>
-References: <20250924-b4-asi-page-alloc-v1-5-2d861768041f@google.com>
+	b=hliwCnwG/3mXBYkeHjtV9Zbd2NN4uoMbF++Dz6JzeijsUIPdsmAqHAaSsDoXSc4vSUx/rJ
+	Ks1Hm/Q54vrk0PKnEYzI9PpxcSDH4d7WM8bPrCiFIMGAUUoYDFq3JunDfyRyBJQCaH/8q2
+	jnjNX3C10a3IBEo67i8dkft4LDhZDIA=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Sy4kDA1c;
+	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4c73047a75cso385701cf.1
+        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 06:38:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758807530; x=1759412330; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8zdfa0TYqPEtG9KFxyYyvCSe3whEmUvkm9OuNg2EF/Q=;
+        b=Sy4kDA1c0ShlV6FnxU2q4Axe4HxlfanEA3DFQ07nhJyIScXNy/JBYRo1fkhmWZFlQX
+         gvh8pi7W5vJozyfBnGm3lfY85co7wiBD0NQ92DSjNGbhKBqIvbWn7zXwKjCRwMcL0T21
+         zKWrnVH6M86dXIN7vdKvVOzlbHou4FxYK5p8yxc64rPlKXnGdAkVgIkTRyXFmLnLnbmf
+         pHvj6cBpdcWfn0mLpwHrL9UrGpLZKQAi99zblKY5AoofE8yUPB7/ekEvhK/mEdFJPqQC
+         m1gtDcNnweF6y/JTZtUQeIUlJ8A7X+5sTiHuPYNoYySArTaLboZYoeFr57DRiIg4j+BP
+         +FXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758807530; x=1759412330;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8zdfa0TYqPEtG9KFxyYyvCSe3whEmUvkm9OuNg2EF/Q=;
+        b=eiqIlvYlDpdSGl77pv44HrAMDcESEpnG0NlDpMyq8PqJMNWTiWpMl+IzXVV/X7w3TU
+         yYK54uCEyHGhA9rI4L/I1cyqoNk79rwvkwo0C6DSA1eN5wpd+by6HvWFmA6S0nTMnF/R
+         YeAn7wT8wOqya9PtQyaY6U18dVKwHOLeM0EFsSh50CzmnHgJYRXgJH/Z3QN0NKT+mNwA
+         JX0/OSE3zgVabWh5whfRxebIN+C3Cz0Vn3vXIZfvjB411cXGJsu2KuBS7lOV3pqxknh7
+         uvAi2lL99N0rtNM0UkcoehzbM5lmenxYQ7dqe43eonKDrwpxsnSNp0M8tVpIdg1klh+g
+         AX+A==
+X-Forwarded-Encrypted: i=1; AJvYcCVGNuTQajTdf7huJ2nZwWwxNv7jOdF4pOapb/aYgSao6M4VGfNEEFJX7+8Vp7AF05vCnJnUbYY0Bw==@kvack.org
+X-Gm-Message-State: AOJu0YxPhAbwBqvLAbObqjXyTe0nGexjc8lA+ZmYGZI494uJPIb23wEH
+	ayAmGkk4H7p/uoOR9IkVuhW81DB3KN/44aQGRfkqehEOpcilfK3ZGdZMSGOOBQmsNG9g2xIF1As
+	c0c4M+fMs4ukPk/9THdd751Hd2AS4xrCdPV4Fv1qCyWk8/LKdswT/hXX1
+X-Gm-Gg: ASbGncuEzIX8wD1ULqNTx7UV+0k32NhqD7toY6f9jK+WNKXX1rAqi2s3/f4hOuaV3w2
+	M9+yi2GksCVsWqZULeQL9IKA+WmizLqb6m+pUP0RufdhFGYamahPB38qV0gBgEGLukE5DgnVggl
+	Ad4SnEwo77dOfiG5fhqIsMxqE0S3bWS7GwlXQiZJn3T0SiQMTCRneglftAP5vhLYsrGKQv9N4VA
+	BhV+iGyevtn
+X-Google-Smtp-Source: AGHT+IEgTKlFsxeZ6dECfIA8vaYS9lbWVQA8rwJ3bK+8a8wFRVfZ3eyxhkv/iJk2SxzK25JGLvnA23eNuxNHoASLYoE=
+X-Received: by 2002:ac8:5ac4:0:b0:4b3:19b2:d22 with SMTP id
+ d75a77b69052e-4da2e581313mr7284511cf.13.1758807529088; Thu, 25 Sep 2025
+ 06:38:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250924-b4-asi-page-alloc-v1-5-2d861768041f@google.com>
+References: <aMpxnACqmsQl-lp0@hyeyoo> <bbda8c25-b575-4e98-b1ae-b103c6598d38@suse.cz>
+ <aMqcXyKRlZggLxu_@hyeyoo> <6f92eca3-863e-4b77-b2df-dc2752c0ff4e@suse.cz>
+ <aMqyn6nenR8V_p1y@hyeyoo> <bf8b4741-1025-4cc8-b9ed-5b566bdcb2d7@suse.cz>
+ <aMq40h5iOjj8K7cc@hyeyoo> <a32bd837-2597-43d0-9da3-1ce5a53b15f4@suse.cz>
+ <40461105-a344-444f-834b-9559b6644710@suse.cz> <CAJuCfpG6CSm2iZ3jrwLQA4vVbTMvC=B37q10OL+wLzm-DSRhFw@mail.gmail.com>
+ <aNUCuvUh5Ugdnyxr@hyeyoo>
+In-Reply-To: <aNUCuvUh5Ugdnyxr@hyeyoo>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 25 Sep 2025 06:38:36 -0700
+X-Gm-Features: AS18NWA102fuUtgXI8FPHz-QxY1spX_4bosczi6wDVyCIxfHncVuKfAyhq5adzc
+Message-ID: <CAJuCfpFG0wzY24xyXBjdRsHK3zxbVskU3raoQXF9k-gfnZEntQ@mail.gmail.com>
+Subject: Re: [PATCH v8 04/23] slab: add sheaf support for batching kfree_rcu() operations
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Uladzislau Rezki <urezki@gmail.com>, 
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, rcu@vger.kernel.org, 
+	maple-tree@lists.infradead.org, "Paul E . McKenney" <paulmck@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B1C8E20005
+X-Stat-Signature: ie6nrdabnf5pyp8iimhm5pxzd3xuhumn
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B1AF31C0014
-X-Stat-Signature: cj15g34niibpo6tom4kqnorwc9k37pyh
-X-HE-Tag: 1758807438-767568
-X-HE-Meta: U2FsdGVkX19kYAGOy+pmbWkr7i3MKXEaB+bE8OGdwyqnuyuQlE/kJ7qLIYYNyxfvl6JFtDtd8YWImrIVvK9U4F/5KxqZlTX+0hlqZd950u5jlP+53rkDnhhvUSZNRlCTOjPyJCgdZQKesAfgqfGneo41v3Voa2p7LV9jrdCi70nh1snG54sCxHJ5OQBMRkCkcrzd0SKMk07yWNwM/cqOvj3cG6a0HDGNeYb8wADcn2Nj+sRfwFqzk40EPQX7OL5HocNupEnmV6/IW4lyg8uSxOWpofzEE1ZljSzpIj8EVJeHGLiu/oKOak5KX3cuLp7ivoVWYZZtv50vwNK9oz46wSOUGCfNjY6kw4jfAihDry0fbPb0XQAmo0z8hGEZGCLu4KWifo2YQ5yWKxPVjoZJZwfmLnVLryJtm3zlwx155JzhWLbyAPozeGS6zeIVZu4Wishq9fg4BkgMH3DUiZB/4rlROP81Itb3cPA6EYa4CtZ65dNaSZYB195yXum9rGtysSXRJfUeIv1s+CvcSyYyYt2N8Ys1OPyMdgqRQtgDQ/3LhpeFHsWYRoR0zmIGerQ4Xrbc9NfyvMeOq3kbffTqGA7Ia0ljQlUN8pF1Pey/ZRHLpE5xie04APMajoRyCzmiZYqKRPW5l+QGIiQ19xhbEdpETYXPSXmqinIiO1IHd4gEQQ3PYD5H51dhwLpbzT4zV0M9SInGLnb3CEq1BOuNpifVDgCLGEc0eNaxdVz8xUM86SbtY7ukLMHAbvibYl4N3nRgylO2aJR2o0oZh0mci/ssqgyIND4xSqcONm2f8aVNx5TpI/EQJ7nJIPjfNQ+OW9+xqrZX1z6TT46QbcqqGjrYynSoBp+zXFzUxL8jhJxiJnH0IYrA+z7eqL9uY13mIzUgUAI2E+jnJEYcSVkCafh/UqhTU1WaVJtJOjvWS39oZtVHo00juWfySSceEYlfE2waWt0G//NZM0ud+Ib
- w5iat9XU
- KfRcndjXllz8gqB2x1A9dog3JR2C6zeWa2Ig3H6NrZ8giPvvrECjA1FsD3p0kJEdHrzfcMQ7Qw8c+gjFaj7y23xueGfjh0KJqDW6wkcOnHQFnI9Ce8wDO9THkjb5DpdinNl8+j+SI3wpmB9g8KHzy5mIm6W4xU2Ru9P/csCrHTQ4Y4R0bmmnlhjthSNGUxbR4BNjEs2/BUZIpTFrQAKdxMLMzC3HcUUvMkzVruciMS5/qIjQ6S+m7TVnDzuFeXatBjJU+fnIYeEQ1aem+O9eGMiaF0eIH44ye+ph1iVjMVcGoqoXkYVBm/FtJ8Vevwpmn2039PCDeIVEXOPIwbjC6RQ+VWJlPGxjZQbql
+X-HE-Tag: 1758807530-210703
+X-HE-Meta: U2FsdGVkX1/YcegBXOMm8M1mrjmCRq3vOB5iCBQVeA75NMkMBsZXnte7oJg+TdYoU0tkB+BCg5Sfz1BnLuZdWv2An2Immw+GpKI0plSgqrKl6AjS7a9Rsys2/ydOyuqiwKvibb2Q1ywimLAbysPVL9uezhx5adHKSWdAOvVES5pCItNwp4RDiezcxzCjBUaMR77se80H3iND7Nn4GZheCB55iBy0GVOtqRWmkjWZrnlwFUni5bAqTwLf4jVqNgKOoQ19MWzAMADQcTx7wxAe7Qe1iB6BvDQeZPDQekk1Mk8i+f6x3yKZ7usaWdcRmlmAA7hncfhJks877X56GHeR+TWDgEFFmXIll6AYidvZZTzMcKgtWYQJMe8/MdhIEJT7Xfdrf464rsbe3XNhbPdxOqlR1cyj9NjrIUBeDTDIf7JndL1rGf2NEiF3QRYY/7u6ov8soK4GZLASwgh1A/1BXPnytudZP7WhD7x/5sGdoteltvyhUgtZfmr7xzfQY3/b1pIPWaVW8L7tEHH+zrmTrPbdsBXiaDf4jb69e2K1elGTYfmD0ygBw8Vfy1UuVwtPBljEx7cw1yzy/GHHWWPSD/xsRtbEL0Zyaa15wThic8b1Mry1lHUZlZ34zVn9721Le/zRd8xXdqXHkHQ64PxBUKephLina4X7BQHOokAe1kZCidsmCku+/v3aDIBm+3S5kCNNqKSWnTvqMwsiQG2ESz2zixuSRoj3Utk/IBou7Ud/8FVAczFtQuRGM3r4NhYfUkErJ96am6J3Dqzq826NbVcTie8BTeGkeJx42wGc6lC9xim75QKEvAjBmbgdOPOrRjIUM/8LiH1j8xc8vZK+6Jf65d6zvysw47stpoTcCEy0fVA6OOK1n7tDPAYjbFxv3KfgDmjnz4STNf/Wp6QS9IDsG2Ns+u33CGaSaBP0SqNpdRda9F15DrYj30Z7MVAG5wMWIvu1rttiWWUg5Pe
+ eEIjYnTX
+ V5uKouKtjYEIaxydYReaHzqxj2a5HevPqfNosKeH3wg9Lum27z7KOW/zvLElpFLwsPMfIEj01AR/Dd7pzlJ2JbGfuMbRYpLdMpH1Fn9LvvdwMTehvE3sBm3gwRS0gdp4dNejXSX1FwbSCe0tPfBFkpAuVUNz1LlRoXX2wE3YhJYp4lHriZYSvrAm6BLTmMQpAE3fyx3GqrmmBRBNQfJbP3xQZooKPmzzKawRgnXKWYtkV4Xu1rkraix3uepdmoPvwmVC0SnEYR9vZnOI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,59 +125,403 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Brendan,
+On Thu, Sep 25, 2025 at 1:52=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> wr=
+ote:
+>
+> On Wed, Sep 24, 2025 at 09:35:05PM -0700, Suren Baghdasaryan wrote:
+> > On Thu, Sep 18, 2025 at 1:09=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz=
+> wrote:
+> > >
+> > > On 9/17/25 16:14, Vlastimil Babka wrote:
+> > > > On 9/17/25 15:34, Harry Yoo wrote:
+> > > >> On Wed, Sep 17, 2025 at 03:21:31PM +0200, Vlastimil Babka wrote:
+> > > >>> On 9/17/25 15:07, Harry Yoo wrote:
+> > > >>> > On Wed, Sep 17, 2025 at 02:05:49PM +0200, Vlastimil Babka wrote=
+:
+> > > >>> >> On 9/17/25 13:32, Harry Yoo wrote:
+> > > >>> >> > On Wed, Sep 17, 2025 at 11:55:10AM +0200, Vlastimil Babka wr=
+ote:
+> > > >>> >> >> On 9/17/25 10:30, Harry Yoo wrote:
+> > > >>> >> >> > On Wed, Sep 10, 2025 at 10:01:06AM +0200, Vlastimil Babka=
+ wrote:
+> > > >>> >> >> >> +                          sfw->skip =3D true;
+> > > >>> >> >> >> +                          continue;
+> > > >>> >> >> >> +                  }
+> > > >>> >> >> >>
+> > > >>> >> >> >> +                  INIT_WORK(&sfw->work, flush_rcu_sheaf=
+);
+> > > >>> >> >> >> +                  sfw->skip =3D false;
+> > > >>> >> >> >> +                  sfw->s =3D s;
+> > > >>> >> >> >> +                  queue_work_on(cpu, flushwq, &sfw->wor=
+k);
+> > > >>> >> >> >> +                  flushed =3D true;
+> > > >>> >> >> >> +          }
+> > > >>> >> >> >> +
+> > > >>> >> >> >> +          for_each_online_cpu(cpu) {
+> > > >>> >> >> >> +                  sfw =3D &per_cpu(slub_flush, cpu);
+> > > >>> >> >> >> +                  if (sfw->skip)
+> > > >>> >> >> >> +                          continue;
+> > > >>> >> >> >> +                  flush_work(&sfw->work);
+> > > >>> >> >> >> +          }
+> > > >>> >> >> >> +
+> > > >>> >> >> >> +          mutex_unlock(&flush_lock);
+> > > >>> >> >> >> +  }
+> > > >>> >> >> >> +
+> > > >>> >> >> >> +  mutex_unlock(&slab_mutex);
+> > > >>> >> >> >> +  cpus_read_unlock();
+> > > >>> >> >> >> +
+> > > >>> >> >> >> +  if (flushed)
+> > > >>> >> >> >> +          rcu_barrier();
+> > > >>> >> >> >
+> > > >>> >> >> > I think we need to call rcu_barrier() even if flushed =3D=
+=3D false?
+> > > >>> >> >> >
+> > > >>> >> >> > Maybe a kvfree_rcu()'d object was already waiting for the=
+ rcu callback to
+> > > >>> >> >> > be processed before flush_all_rcu_sheaves() is called, an=
+d
+> > > >>> >> >> > in flush_all_rcu_sheaves() we skipped all (cache, cpu) pa=
+irs,
+> > > >>> >> >> > so flushed =3D=3D false but the rcu callback isn't proces=
+sed yet
+> > > >>> >> >> > by the end of the function?
+> > > >>> >> >> >
+> > > >>> >> >> > That sounds like a very unlikely to happen in a realistic=
+ scenario,
+> > > >>> >> >> > but still possible...
+> > > >>> >> >>
+> > > >>> >> >> Yes also good point, will flush unconditionally.
+> > > >>> >> >>
+> > > >>> >> >> Maybe in __kfree_rcu_sheaf() I should also move the call_rc=
+u(...) before
+> > > >>> >> >> local_unlock().
+> > > >>> >> >>
+> > > >>> >> >> So we don't end up seeing a NULL pcs->rcu_free in
+> > > >>> >> >> flush_all_rcu_sheaves() because __kfree_rcu_sheaf() already=
+ set it to NULL,
+> > > >>> >> >> but didn't yet do the call_rcu() as it got preempted after =
+local_unlock().
+> > > >>> >> >
+> > > >>> >> > Makes sense to me.
+> > > >>> >
+> > > >>> > Wait, I'm confused.
+> > > >>> >
+> > > >>> > I think the caller of kvfree_rcu_barrier() should make sure tha=
+t it's invoked
+> > > >>> > only after a kvfree_rcu(X, rhs) call has returned, if the calle=
+r expects
+> > > >>> > the object X to be freed before kvfree_rcu_barrier() returns?
+> > > >>>
+> > > >>> Hmm, the caller of kvfree_rcu(X, rhs) might have returned without=
+ filling up
+> > > >>> the rcu_sheaf fully and thus without submitting it to call_rcu(),=
+ then
+> > > >>> migrated to another cpu. Then it calls kvfree_rcu_barrier() while=
+ another
+> > > >>> unrelated kvfree_rcu(X, rhs) call on the previous cpu is for the =
+same
+> > > >>> kmem_cache (kvfree_rcu_barrier() is not only for cache destructio=
+n), fills
+> > > >>> up the rcu_sheaf fully and is about to call_rcu() on it. And sinc=
+e that
+> > > >>> sheaf also contains the object X, we should make sure that is flu=
+shed.
+> > > >>
+> > > >> I was going to say "but we queue and wait for the flushing work to
+> > > >> complete, so the sheaf containing object X should be flushed?"
+> > > >>
+> > > >> But nah, that's true only if we see pcs->rcu_free !=3D NULL in
+> > > >> flush_all_rcu_sheaves().
+> > > >>
+> > > >> You are right...
+> > > >>
+> > > >> Hmm, maybe it's simpler to fix this by never skipping queueing the=
+ work
+> > > >> even when pcs->rcu_sheaf =3D=3D NULL?
+> > > >
+> > > > I guess it's simpler, yeah.
+> > >
+> > > So what about this? The unconditional queueing should cover all races=
+ with
+> > > __kfree_rcu_sheaf() so there's just unconditional rcu_barrier() in th=
+e end.
+> > >
+> > > From 0722b29fa1625b31c05d659d1d988ec882247b38 Mon Sep 17 00:00:00 200=
+1
+> > > From: Vlastimil Babka <vbabka@suse.cz>
+> > > Date: Wed, 3 Sep 2025 14:59:46 +0200
+> > > Subject: [PATCH] slab: add sheaf support for batching kfree_rcu() ope=
+rations
+> > >
+> > > Extend the sheaf infrastructure for more efficient kfree_rcu() handli=
+ng.
+> > > For caches with sheaves, on each cpu maintain a rcu_free sheaf in
+> > > addition to main and spare sheaves.
+> > >
+> > > kfree_rcu() operations will try to put objects on this sheaf. Once fu=
+ll,
+> > > the sheaf is detached and submitted to call_rcu() with a handler that
+> > > will try to put it in the barn, or flush to slab pages using bulk fre=
+e,
+> > > when the barn is full. Then a new empty sheaf must be obtained to put
+> > > more objects there.
+> > >
+> > > It's possible that no free sheaves are available to use for a new
+> > > rcu_free sheaf, and the allocation in kfree_rcu() context can only us=
+e
+> > > GFP_NOWAIT and thus may fail. In that case, fall back to the existing
+> > > kfree_rcu() implementation.
+> > >
+> > > Expected advantages:
+> > > - batching the kfree_rcu() operations, that could eventually replace =
+the
+> > >   existing batching
+> > > - sheaves can be reused for allocations via barn instead of being
+> > >   flushed to slabs, which is more efficient
+> > >   - this includes cases where only some cpus are allowed to process r=
+cu
+> > >     callbacks (Android)
+> >
+> > nit: I would say it's more CONFIG_RCU_NOCB_CPU related. Android is
+> > just an instance of that.
+> >
+> > >
+> > > Possible disadvantage:
+> > > - objects might be waiting for more than their grace period (it is
+> > >   determined by the last object freed into the sheaf), increasing mem=
+ory
+> > >   usage - but the existing batching does that too.
+> > >
+> > > Only implement this for CONFIG_KVFREE_RCU_BATCHED as the tiny
+> > > implementation favors smaller memory footprint over performance.
+> > >
+> > > Also for now skip the usage of rcu sheaf for CONFIG_PREEMPT_RT as the
+> > > contexts where kfree_rcu() is called might not be compatible with tak=
+ing
+> > > a barn spinlock or a GFP_NOWAIT allocation of a new sheaf taking a
+> > > spinlock - the current kfree_rcu() implementation avoids doing that.
+> > >
+> > > Teach kvfree_rcu_barrier() to flush all rcu_free sheaves from all cac=
+hes
+> > > that have them. This is not a cheap operation, but the barrier usage =
+is
+> > > rare - currently kmem_cache_destroy() or on module unload.
+> > >
+> > > Add CONFIG_SLUB_STATS counters free_rcu_sheaf and free_rcu_sheaf_fail=
+ to
+> > > count how many kfree_rcu() used the rcu_free sheaf successfully and h=
+ow
+> > > many had to fall back to the existing implementation.
+> > >
+> > > Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+> > > ---
+> > >  mm/slab.h        |   3 +
+> > >  mm/slab_common.c |  26 +++++
+> > >  mm/slub.c        | 267 +++++++++++++++++++++++++++++++++++++++++++++=
++-
+> > >  3 files changed, 294 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/mm/slub.c b/mm/slub.c
+> > > index cba188b7e04d..171273f90efd 100644
+> > > --- a/mm/slub.c
+> > > +++ b/mm/slub.c
+>
+> [...snip...]
+>
+> > > @@ -3840,6 +3895,77 @@ static void flush_all(struct kmem_cache *s)
+> > >         cpus_read_unlock();
+> > >  }
+> > >
+> > > +static void flush_rcu_sheaf(struct work_struct *w)
+> > > +{
+> > > +       struct slub_percpu_sheaves *pcs;
+> > > +       struct slab_sheaf *rcu_free;
+> > > +       struct slub_flush_work *sfw;
+> > > +       struct kmem_cache *s;
+> > > +
+> > > +       sfw =3D container_of(w, struct slub_flush_work, work);
+> > > +       s =3D sfw->s;
+> > > +
+> > > +       local_lock(&s->cpu_sheaves->lock);
+> > > +       pcs =3D this_cpu_ptr(s->cpu_sheaves);
+> > > +
+> > > +       rcu_free =3D pcs->rcu_free;
+> > > +       pcs->rcu_free =3D NULL;
+> > > +
+> > > +       local_unlock(&s->cpu_sheaves->lock);
+> > > +
+> > > +       if (rcu_free)
+> > > +               call_rcu(&rcu_free->rcu_head, rcu_free_sheaf_nobarn);
+> > > +}
+> > > +
+> > > +
+> > > +/* needed for kvfree_rcu_barrier() */
+> > > +void flush_all_rcu_sheaves(void)
+> > > +{
+> > > +       struct slub_flush_work *sfw;
+> > > +       struct kmem_cache *s;
+> > > +       unsigned int cpu;
+> > > +
+> > > +       cpus_read_lock();
+> > > +       mutex_lock(&slab_mutex);
+> > > +
+> > > +       list_for_each_entry(s, &slab_caches, list) {
+> > > +               if (!s->cpu_sheaves)
+> > > +                       continue;
+> > > +
+> > > +               mutex_lock(&flush_lock);
+> > > +
+> > > +               for_each_online_cpu(cpu) {
+> > > +                       sfw =3D &per_cpu(slub_flush, cpu);
+> > > +
+> > > +                       /*
+> > > +                        * we don't check if rcu_free sheaf exists - =
+racing
+> > > +                        * __kfree_rcu_sheaf() might have just remove=
+d it.
+> > > +                        * by executing flush_rcu_sheaf() on the cpu =
+we make
+> > > +                        * sure the __kfree_rcu_sheaf() finished its =
+call_rcu()
+> > > +                        */
+> > > +
+> > > +                       INIT_WORK(&sfw->work, flush_rcu_sheaf);
+> > > +                       sfw->skip =3D false;
+> >
+> > I think you don't need this sfw->skip flag since you never skip anymore=
+, right?
+>
+> Yes, at least in flush_all_rcu_sheaves().
+> I'm fine with or without sfw->skip in this function.
+>
+> > > +                       sfw->s =3D s;
+> > > +                       queue_work_on(cpu, flushwq, &sfw->work);
+> > > +               }
+> > > +
+> > > +               for_each_online_cpu(cpu) {
+> > > +                       sfw =3D &per_cpu(slub_flush, cpu);
+> > > +                       if (sfw->skip)
+> > > +                               continue;
+> > > +                       flush_work(&sfw->work);
+> >
+> > I'm sure I'm missing something but why can't we execute call_rcu()
+> > from here instead of queuing the work which does call_rcu() and then
+> > flushing all the queued work? I'm sure you have a good reason which
+> > I'm missing.
+>
+> Because a local lock cannot be held by other CPUs, you can't take off the
+> rcu_free sheaf remotely and call call_rcu(). That's why the work is
+> queued on each CPU, ensuring the rcu_free sheaf is flushed by its local C=
+PU.
 
-kernel test robot noticed the following build warnings:
+Ah, yes, of course. I knew it was something obvious but my brain was
+too tired. Thanks for the explanation, Harry!
 
-[auto build test WARNING on bf2602a3cb2381fb1a04bf1c39a290518d2538d1]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Brendan-Jackman/x86-mm-asi-Add-CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION/20250924-230633
-base:   bf2602a3cb2381fb1a04bf1c39a290518d2538d1
-patch link:    https://lore.kernel.org/r/20250924-b4-asi-page-alloc-v1-5-2d861768041f%40google.com
-patch subject: [PATCH 05/21] x86/mm/pat: mirror direct map changes to ASI
-config: x86_64-buildonly-randconfig-002-20250925 (https://download.01.org/0day-ci/archive/20250925/202509252153.JhjsdZ6c-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250925/202509252153.JhjsdZ6c-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509252153.JhjsdZ6c-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   arch/x86/mm/pat/set_memory.c: In function 'mirror_asi_direct_map':
->> arch/x86/mm/pat/set_memory.c:1995:25: warning: variable 'asi_cpa' set but not used [-Wunused-but-set-variable]
-    1995 |         struct cpa_data asi_cpa = *cpa;
-         |                         ^~~~~~~
-
-
-vim +/asi_cpa +1995 arch/x86/mm/pat/set_memory.c
-
-  1988	
-  1989	/*
-  1990	 * Having updated the unrestricted PGD, reflect this change in the ASI
-  1991	 * restricted address space too.
-  1992	 */
-  1993	static inline int mirror_asi_direct_map(struct cpa_data *cpa, int primary)
-  1994	{
-> 1995		struct cpa_data asi_cpa = *cpa;
-  1996	
-  1997		if (!asi_enabled_static())
-  1998			return 0;
-  1999	
-  2000		/* Only need to do this for the real unrestricted direct map. */
-  2001		if ((cpa->pgd && cpa->pgd != init_mm.pgd) || !is_direct_map(*cpa->vaddr))
-  2002			return 0;
-  2003		VM_WARN_ON_ONCE(!is_direct_map(*cpa->vaddr + (cpa->numpages * PAGE_SIZE)));
-  2004	
-  2005		asi_cpa.pgd = asi_nonsensitive_pgd;
-  2006		asi_cpa.curpage = 0;
-  2007		return __change_page_attr(cpa, primary);
-  2008	}
-  2009	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>
+> > > +               }
+> > > +
+> > > +               mutex_unlock(&flush_lock);
+> > > +       }
+> > > +
+> > > +       mutex_unlock(&slab_mutex);
+> > > +       cpus_read_unlock();
+> > > +
+> > > +       rcu_barrier();
+> > > +}
+> > > +
+> > >  /*
+> > >   * Use the cpu notifier to insure that the cpu slabs are flushed whe=
+n
+> > >   * necessary.
+> > > +bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj)
+> > > +{
+> > > +       struct slub_percpu_sheaves *pcs;
+> > > +       struct slab_sheaf *rcu_sheaf;
+> > > +
+> > > +       if (!local_trylock(&s->cpu_sheaves->lock))
+> > > +               goto fail;
+> > > +
+> > > +       pcs =3D this_cpu_ptr(s->cpu_sheaves);
+> > > +
+> > > +       if (unlikely(!pcs->rcu_free)) {
+> > > +
+> > > +               struct slab_sheaf *empty;
+> > > +               struct node_barn *barn;
+> > > +
+> > > +               if (pcs->spare && pcs->spare->size =3D=3D 0) {
+> > > +                       pcs->rcu_free =3D pcs->spare;
+> > > +                       pcs->spare =3D NULL;
+> > > +                       goto do_free;
+> > > +               }
+> > > +
+> > > +               barn =3D get_barn(s);
+> > > +
+> > > +               empty =3D barn_get_empty_sheaf(barn);
+> > > +
+> > > +               if (empty) {
+> > > +                       pcs->rcu_free =3D empty;
+> > > +                       goto do_free;
+> > > +               }
+> > > +
+> > > +               local_unlock(&s->cpu_sheaves->lock);
+> > > +
+> > > +               empty =3D alloc_empty_sheaf(s, GFP_NOWAIT);
+> > > +
+> > > +               if (!empty)
+> > > +                       goto fail;
+> > > +
+> > > +               if (!local_trylock(&s->cpu_sheaves->lock)) {
+> > > +                       barn_put_empty_sheaf(barn, empty);
+> > > +                       goto fail;
+> > > +               }
+> > > +
+> > > +               pcs =3D this_cpu_ptr(s->cpu_sheaves);
+> > > +
+> > > +               if (unlikely(pcs->rcu_free))
+> > > +                       barn_put_empty_sheaf(barn, empty);
+> > > +               else
+> > > +                       pcs->rcu_free =3D empty;
+> > > +       }
+> > > +
+> > > +do_free:
+> > > +
+> > > +       rcu_sheaf =3D pcs->rcu_free;
+> > > +
+> > > +       rcu_sheaf->objects[rcu_sheaf->size++] =3D obj;
+> >
+> > nit: The above would result in OOB write if we ever reached here with
+> > a full rcu_sheaf (rcu_sheaf->size =3D=3D rcu_sheaf->sheaf_capacity) but=
+ I
+> > think it's impossible. You always start with an empty rcu_sheaf and
+> > objects are added only here with a following check for a full
+> > rcu_sheaf. I think a short comment clarifying that would be nice.
+>
+> Sounds good to me.
+>
+> --
+> Cheers,
+> Harry / Hyeonggon
+>
+> > > +
+> > > +       if (likely(rcu_sheaf->size < s->sheaf_capacity))
+> > > +               rcu_sheaf =3D NULL;
+> > > +       else
+> > > +               pcs->rcu_free =3D NULL;
+> > > +
+> > > +       /*
+> > > +        * we flush before local_unlock to make sure a racing
+> > > +        * flush_all_rcu_sheaves() doesn't miss this sheaf
+> > > +        */
+> > > +       if (rcu_sheaf)
+> > > +               call_rcu(&rcu_sheaf->rcu_head, rcu_free_sheaf);
+> > > +
+> > > +       local_unlock(&s->cpu_sheaves->lock);
+> > > +
+> > > +       stat(s, FREE_RCU_SHEAF);
+> > > +       return true;
+> > > +
+> > > +fail:
+> > > +       stat(s, FREE_RCU_SHEAF_FAIL);
+> > > +       return false;
+> > > +}
 
