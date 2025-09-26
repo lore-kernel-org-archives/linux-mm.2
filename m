@@ -4,150 +4,151 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4E6DCAC5B9
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 10:35:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E974FCAC5B9
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 10:53:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1365E8E0007; Fri, 26 Sep 2025 06:35:06 -0400 (EDT)
+	id 2EA348E0007; Fri, 26 Sep 2025 06:53:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10DD98E0001; Fri, 26 Sep 2025 06:35:06 -0400 (EDT)
+	id 29A6B8E0001; Fri, 26 Sep 2025 06:53:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 024178E0007; Fri, 26 Sep 2025 06:35:05 -0400 (EDT)
+	id 162388E0007; Fri, 26 Sep 2025 06:53:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E2F9D8E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 06:35:05 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8DD0E13B92A
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 10:35:05 +0000 (UTC)
-X-FDA: 83931043770.28.D338F1D
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	by imf21.hostedemail.com (Postfix) with ESMTP id ECA6E1C0006
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 10:35:02 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=jvVZBWId;
-	spf=pass (imf21.hostedemail.com: domain of pratyush.brahma@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=pratyush.brahma@oss.qualcomm.com;
-	dmarc=pass (policy=reject) header.from=qualcomm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 025278E0001
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 06:53:28 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9556A16062A
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 10:53:28 +0000 (UTC)
+X-FDA: 83931090096.01.29948F7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 10835180012
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 10:53:26 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uD1JE0tX;
+	spf=pass (imf24.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758882903;
+	s=arc-20220608; t=1758884007;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LTK3sm/WCTByH8AIKLDPZJb7elq6pcZttvHY7NDS8Ok=;
-	b=zp/F/X1tusZrj92T53L4LNr8kF5iks0j9AhGgQrfimYgI3WsN60pqmU5o36ZKJkj5VsLZZ
-	6Vk0qgy+T2LWudMOQYQdFtQ/RTVSXyM+idYCgqnKGG07Br3Rss18t4rCrxHTIldFbklnTS
-	SpSbx4c/h1APAkohxpP1KhCpSy7o/FI=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=jvVZBWId;
-	spf=pass (imf21.hostedemail.com: domain of pratyush.brahma@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=pratyush.brahma@oss.qualcomm.com;
-	dmarc=pass (policy=reject) header.from=qualcomm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758882903; a=rsa-sha256;
+	bh=rCfPCEzH7cCaK8RVMsErsR2iGgULDkGBQ/tpMFxAJv8=;
+	b=iC76uBmY6KTv38TgtaZwKb96v2c7A3DZMmghZMzJkShpB2xjo87ghT9Nmjijvmm8hOUD8i
+	PkPRFS96hE/JauPQ8uDpvsfT2zC769ACrFQk8yVzIwQSKMEQEmnYTJAQrACmkicvsaVlvz
+	MWYz2zHtneXu2/dlNgScxqkrbKuGVFA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758884007; a=rsa-sha256;
 	cv=none;
-	b=8geY4g+5dsj7KSAKu+WKrBtCsCtE88BkfeElJ3Fzzz4hoJUzhv0UsEp+EN93ho4nThm/lI
-	CDzx6vcJmK8p1HD7WRkTprMGGyDJX6M57MmWfu19EbZieyWNRzRHsPilL6g3Dx0+T6A1fz
-	WdxPiSck+Sx4LJTYijfxgBlt6x0ZL30=
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58Q8vbVK028798
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 10:35:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	LTK3sm/WCTByH8AIKLDPZJb7elq6pcZttvHY7NDS8Ok=; b=jvVZBWIdi2uklA/2
-	Nui3m46bmsA/VRCWndUve2+xIggfzREWuuuBMYuui524mRt2xvUKjvACwh4DEji0
-	vqIDfVabvyCR++3OBh1o2xWtwkgHxWOG/tyktmFEGMCPK4mMHiFH6SEQreJUuvG1
-	7x1zzPiwDynIy9rNrccvhXsbPbhYwax+2vBM87PP7WHrnbSlyukb1rK8ucQFHgB9
-	tg/xq4LT6LHaGEmaZPkBe51pEDSKCzXzrxSwu1l1h0SJ9Otvafnaeoqz+im9L7rB
-	pSYpNjkO7oR+fTLUIzVDUqEMSWrpKpW8GkSFJxwKLE2oVTmaDvNY1eSVlu3qhiIX
-	kA6e0g==
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49db322gfx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 10:35:01 +0000 (GMT)
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-269939bfccbso25011245ad.1
-        for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758882900; x=1759487700;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LTK3sm/WCTByH8AIKLDPZJb7elq6pcZttvHY7NDS8Ok=;
-        b=qRgwyqukAigifWQwFWFA1hJ8XBjKlv2/1z6BCIMq/BY1CAe5xZE6krY3C9ZqAw4Tr/
-         LOgQfObFET0bvbIgCq6aUMDmIXBdo1RVigwc0srV53ebXGxv++dLLa3SkVb+cerAKHMP
-         n3yex5SW4R3KkU3aBPQkpMDoXfcwdv3ehLUzTKcXhDqNt5jtB99UOoRXN4kG3JJgfROn
-         E7qMmM4scpfXLtag4kM+NZr+MeHSZfUi2n+oObBpMtPkNb808Sr5PAct9g48xqhwvVfy
-         kb2m7Ye8Ms9alZVaPOoMkqz48kSEQu8ihifJz2sd/YbiFAV+SYN4fvnGUz3qUinIQneQ
-         lteg==
-X-Gm-Message-State: AOJu0Yy46qXE3Zlo82bwa3+olirD4NVOrVCn5GRS4HIX4T5KWmAO7G0L
-	rKYRQn4fPi+fAq7OaZrnB4uD+vV7rLfMoOh5p+pBxcY0ySOlCgDA/o92jwZbowo26lzRjGLA8BP
-	6QqLzxCAM01iKA3eiButAhjcjYJ2mCBR01IfMerxZ03vn/+dIYlPRP4DYYG1otA==
-X-Gm-Gg: ASbGncvs+QR+AXYWXmhjJAOgN95EJRnYO7Gkaee0Ge+JHUfWK2cygKorhXwxyz/dvdf
-	S55yIFUp7CihOnvt0Izpv018KwQhRck/JztC1C3F6Xbb7My6isr32eTLav0YKO0rylzVIajP6d4
-	BI2wIjL18VSYLnC/fxdRDRqX/fgevwQMdFABBXW5pMRhkjBzrv2VaVpoJmPKNSAIJWi+4tDv3Jf
-	4EouxyUqlSVGB+wWGbmtphV2SXWEvrG4yB9xpTPhkn4yYuYZpgIjYrvw2xhgwZeBKlup1V8cQBs
-	RCIb4pdk7pJXj7WQtpFrfmyIJp80S71OAgYNJWDRBzM=
-X-Received: by 2002:a17:903:32d2:b0:265:89c:251b with SMTP id d9443c01a7336-27ed4a5a83amr75493285ad.29.1758882900058;
-        Fri, 26 Sep 2025 03:35:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGYtkjQ1vZXVrGcSLYgiOCZ+w7RpHML+kVAOdjCbUW2JzzLjV26JdqDt2s1DJCxrP6JlAynBw==
-X-Received: by 2002:a17:903:32d2:b0:265:89c:251b with SMTP id d9443c01a7336-27ed4a5a83amr75493035ad.29.1758882899481;
-        Fri, 26 Sep 2025 03:34:59 -0700 (PDT)
-Received: from hu-pbrahma-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-27ed6aca043sm48950175ad.138.2025.09.26.03.34.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Sep 2025 03:34:58 -0700 (PDT)
-From: pratyush.brahma@oss.qualcomm.com
-X-Google-Original-From: Pratyush
-Date: Fri, 26 Sep 2025 16:04:50 +0530
-Subject: [PATCH 2/2] mm/numa_emulation: Move the size calculation in
- split_nodes_interleave() to a separate function
+	b=DhQXmIGs3S5HU1pG2/hm5lGJ1uX0+w/i7dqlWzplzKUCttXywV7jCv007Zhc+K8jAr7uKH
+	a7RHue4YWyiBEuZcIzyqa/X2mcQm6nV7TtyirJm5QK0L/R7rgeCSZS6XgLi50u+ziH8cg0
+	sDz0vMv0m+802QHJEdKEU66OMjc6ukc=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uD1JE0tX;
+	spf=pass (imf24.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 024C461D1A;
+	Fri, 26 Sep 2025 10:53:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D44C4CEF4;
+	Fri, 26 Sep 2025 10:53:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758884005;
+	bh=7hmmYSJPRgv/HC65SCjVCWih93S3343uLCIvyfBCuoY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uD1JE0tXSNlpM8sPhyTXW479bU0LI8INqzK4TERYGl4X7uWhmA9lmVftkg1kWXZ5R
+	 77GIltP55fsK1VaNF04SNJorVj4he00rts0ps3WabgzU+pkpIwJ4s8I+R0hmUJnUtU
+	 RiaA5H5VESS2asBJWt7pSZgGaIv0Nm+KYRCGG+rPlSqbN+Dbh5Z/Txoz0wlINXpYEV
+	 XpuzK1hMtXmi8NPXs68yGAwo2DcoOz/MQPBrQn8al4WKuMkf07ZITw6sd0eQuO6+Q/
+	 NxEbMuIeeoejXQN3nR+oF+rAs5zBbLTi3No4iK9EUmEyBi7Uiryz2YSyhJ74rbGMLA
+	 g299/90nvCdmA==
+Date: Fri, 26 Sep 2025 11:53:12 +0100
+From: Will Deacon <will@kernel.org>
+To: Patrick Roy <patrick.roy@linux.dev>
+Cc: David Hildenbrand <david@redhat.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	"Roy, Patrick" <roypat@amazon.co.uk>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"corbet@lwn.net" <corbet@lwn.net>,
+	"maz@kernel.org" <maz@kernel.org>,
+	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+	"joey.gouly@arm.com" <joey.gouly@arm.com>,
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+	"catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+	"tglx@linutronix.de" <tglx@linutronix.de>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+	"luto@kernel.org" <luto@kernel.org>,
+	"peterz@infradead.org" <peterz@infradead.org>,
+	"willy@infradead.org" <willy@infradead.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
+	"vbabka@suse.cz" <vbabka@suse.cz>,
+	"rppt@kernel.org" <rppt@kernel.org>,
+	"surenb@google.com" <surenb@google.com>,
+	"mhocko@suse.com" <mhocko@suse.com>,
+	"song@kernel.org" <song@kernel.org>,
+	"jolsa@kernel.org" <jolsa@kernel.org>,
+	"ast@kernel.org" <ast@kernel.org>,
+	"daniel@iogearbox.net" <daniel@iogearbox.net>,
+	"andrii@kernel.org" <andrii@kernel.org>,
+	"martin.lau@linux.dev" <martin.lau@linux.dev>,
+	"eddyz87@gmail.com" <eddyz87@gmail.com>,
+	"yonghong.song@linux.dev" <yonghong.song@linux.dev>,
+	"john.fastabend@gmail.com" <john.fastabend@gmail.com>,
+	"kpsingh@kernel.org" <kpsingh@kernel.org>,
+	"sdf@fomichev.me" <sdf@fomichev.me>,
+	"haoluo@google.com" <haoluo@google.com>,
+	"jgg@ziepe.ca" <jgg@ziepe.ca>,
+	"jhubbard@nvidia.com" <jhubbard@nvidia.com>,
+	"peterx@redhat.com" <peterx@redhat.com>,
+	"jannh@google.com" <jannh@google.com>,
+	"pfalcato@suse.de" <pfalcato@suse.de>,
+	"shuah@kernel.org" <shuah@kernel.org>,
+	"seanjc@google.com" <seanjc@google.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+	"Cali, Marco" <xmarcalx@amazon.co.uk>,
+	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+	"Thomson, Jack" <jackabt@amazon.co.uk>,
+	"derekmn@amazon.co.uk" <derekmn@amazon.co.uk>,
+	"tabba@google.com" <tabba@google.com>,
+	"ackerleytng@google.com" <ackerleytng@google.com>
+Subject: Re: [PATCH v7 06/12] KVM: guest_memfd: add module param for
+ disabling TLB flushing
+Message-ID: <aNZwmPFAxm_HRYpC@willie-the-truck>
+References: <20250924151101.2225820-4-patrick.roy@campus.lmu.de>
+ <20250924152214.7292-1-roypat@amazon.co.uk>
+ <20250924152214.7292-3-roypat@amazon.co.uk>
+ <e25867b6-ffc0-4c7c-9635-9b3f47b186ca@intel.com>
+ <c1875a54-0c87-450f-9370-29e7ec4fea3d@redhat.com>
+ <82bff1c4-987f-46cb-833c-bd99eaa46e7a@intel.com>
+ <c79173d8-6f18-40fa-9621-e691990501e4@redhat.com>
+ <c88514c3-e15f-4853-8acf-15e7b4b979f4@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250926-numa-emu-v1-2-714f2691bf8b@oss.qualcomm.com>
-References: <20250926-numa-emu-v1-0-714f2691bf8b@oss.qualcomm.com>
-In-Reply-To: <20250926-numa-emu-v1-0-714f2691bf8b@oss.qualcomm.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
-X-Mailer: b4 0.15-dev-56183
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1758882892; l=2432;
- i=pratyush.brahma@oss.qualcomm.com; s=20250808; h=from:subject:message-id;
- bh=6Z5kcb9JsfpjcjQdv/MoBuJ6XffluCG6avEx/oaN/HQ=;
- b=WDB4CbmPf9+t07NRSzRna0kA3IFvZQpm86eRe7YQaFBfpUjLYjKGiVQzUNpLCeLKwgiNf6ra9
- wszmIyDEQngAyEYZMmJ40RRkI+UHA/KPUb4i/W+2ruGB4MtlUQjVlIT
-X-Developer-Key: i=pratyush.brahma@oss.qualcomm.com; a=ed25519;
- pk=ZeXF1N8hxU6j3G/ajMI+du/TVXMZQaXDwnJyznB69ms=
-X-Authority-Analysis: v=2.4 cv=ao6/yCZV c=1 sm=1 tr=0 ts=68d66c55 cx=c_pps
- a=cmESyDAEBpBGqyK7t0alAg==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=EUspDBNiAAAA:8 a=0kcytrBVAGx62Z4XyuQA:9
- a=QEXdDO2ut3YA:10 a=1OuFwYUASf3TG4hYMiVC:22
-X-Proofpoint-ORIG-GUID: zikKFGINhiJ00p93e39AP7nhyI85cd_F
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI1MDE3MiBTYWx0ZWRfX/uVezPVOqXla
- HMM7i9Qpjp1mi4KA95Gb6eZksfiXErlcchTwVykCAL1+TxzA0zdA8hVQvkdbe2bu+DHAZV8D8XT
- dCOfbAbPUk0WREJgI++zwSDipm8zF5gFdGAo4zVTsz4fTQBZcXmFMIUkKw3lAVPKYvAxTVjOa+x
- y3X5qURSsBlT9PSt3Y0+ZMSq2sCuT2cX1vx42dxfcadPQ4GJ8Uqg6POPv/hZuwxQD0MSVCpUmsb
- JS5wsX7avT71MFdGgHRah+f+tAUeIbRUDB4Asmqdqc4DlIYzrFvNBRMv9nWY5lmlCbBBqSaTw68
- zTTt3r+Kz8edq5zEtVa2Hga3uVGrByCZCEPkLzC2mtj4Ba7Hy12I+YFRC0DD+bFmtDCNJ79bxHr
- IzCWmQC/7Hf4vYTnKAQCCjeab70N9Q==
-X-Proofpoint-GUID: zikKFGINhiJ00p93e39AP7nhyI85cd_F
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-26_03,2025-09-26_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0 priorityscore=1501 suspectscore=0 phishscore=0
- adultscore=0 spamscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509250172
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c88514c3-e15f-4853-8acf-15e7b4b979f4@linux.dev>
+X-Rspamd-Queue-Id: 10835180012
+X-Stat-Signature: pp1ahyt6mdtrekdtgjp1et4zdzoprizb
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: ECA6E1C0006
-X-Stat-Signature: 5wnkkeo7nambq4mf7n5rbbydfuwyc99n
-X-HE-Tag: 1758882902-92316
-X-HE-Meta: U2FsdGVkX1+qPAG/sSw09CR4mhkvBHWlQu33Dgn8Np39cKYfYCw9JavyAMS+dNWWQRuT+qaqcrGhisCzvSFu4oSyL0mE+Npsltv16RoVOIeTulI3Gh9Sdmz5W6tTfim+QZMuZleOnPydE3AjsRliU0ojW1ZOK8OBcZ2BF/wiSHZeVJaCu0ZJuyM0qf3igTYfxGcA+Zl9pHUXFR19h9Jv7IqImQc3Q+cR6T9A/8GG5+St5wzbwYW3x3SwdG6KOUo89eOtVhutQmRqbUi6RIf3Ywxt+a0H/4nMPTc0U18oI/4XdMZiOlcuc1LLoGOjB5WdaairGEps8s8dAltTtm5Ohcl2Wai6g8lr3AZA1l2eJ+5T1CexcacMPCNBIs2F0Gui/InmvXFeZXvK27iuWAQP2FhwxldcpKExU6yYIvz0LjuEFnrFVQQ1l0H1N/8Q3jDN/4DqEDb9xJwYJZp4N8t/877zBuFYNCvlqAz5+rnbnAzWgDYXGofXuKZarxBym2o/v7kiO1QL/WQOxsZ1OrXWWPbYWTObMCTwik0GgaSVbKNdc+v2BkBeQMqmQeKH6f/WEU4sDGUHfuhHb2vzNx75iG/Dw/m9bS24EFPK7Tau7PEDiFAdTvdMbkzdj0QoldD334blaikmX9gPPsX4gIuDwt06clr1q/gE0DlGGrIpPETs9UzevuDST2LsAfoTbbnOxTSdAx0JpRV+QuQCnndrfJCGux2JspDcDj2FFNgeOuyh9dDalbNAQt7lvXxre5Rr3Oqjv0rysLT9sFJbFesXOtPUExINvt/2abG1LBILnF+SZZs4Ovb/9Sbf4NbPfj5+X0pYCrq0i0oXWMaHIdGIBGjZDUlNGuXcegR9IJuk/lLvlf/RbVY8Fp+yQdWOkP0MiT+4sfDg3K17PHdEhUE/C/hNxf7QtemTiu+e94wN5oCiWoa6S5Yp1UYYOzLwx1WGWFCkgQpZX3gB2Ifwkjq
- wA+Bbfbv
- EoEkQfcsg7NTzWWlSCOqE5c+aGGt+5K3o8TRK7z/uozqRkvA61DTkd7jcNiNSyLFipRkmdhQop/BJGO/OHkNRrkaqFgEG+KrtvOKQSsnHKOABkO8pbgGbuRlf0S7YZLE80D/1pcQxKmF52SACf7DxMi8OSfkInE8mMF/Z6ZgDzQJWQn6dcO7T6ibjCp8CwKcApCIVCRLF7L8Ir6ljq5A9VGRKkS8q/AA7vS3rl+q2Sf6q8f3sEmUU2qTaRd0pWIU9ETtT48/a0Wm5WiFmhjAiKREcr5kYfJ3NTwNVaOC8utkBYpw6GiZp0+g7stEgxTS6NHPe/uME103O8Qw/42h/HtKfiQB0WBRxP28+vWjIOB0vQz5z4LybaM4dvPDBjtiqqSou6VrpWXaTySs=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758884006-758585
+X-HE-Meta: U2FsdGVkX19McnlSZD4YG1v00X4oRtPJKlM9WRyFelnxSlaDkF+1RJAISClbkpIxSzxdj6poWlz9YaHAtjOCUAIIGpmAD5F+9Qkf0GXS8/MqgsR87yoFYj8sQHYg37GDL8fZU4cgaWAlmOqXc9pzoVlUjQVuYOgzyiEsXtZMnJujuqpkmb3Qt59TXj84E2Yp02lCTZ6jTZ0Qx3SUx6did12X+ul0E+QqsUe9UNOxllLXuRTdNcJdfNEzckp6JkucP4L/NEb8RZibNMyoin2c7MdsKUctdZ1l42UImRxgrxwucnYoTznQt3Qksj+0OQfF7DW1vZhKSbJWajldrfJxjjWvSCfQ0dgMWnbnLccQCYrF6CYuwXSEt0jmO9S3luLJoMyI5jXaU1q/7LzmnMsQ9wj9SFndATAocWq0LerOjZI/6LcKtvdo3I7Aq1SuMVDt2Ln6Ez+237OVtSFgiSTpevXbIT3XCH54i6Ew3zbIMSd4puupsn+qLKiSgyBbV1Gu20M2Uzz2TgguH8e0Eq91LmTG6oBARIjfPkeDnhREYA6W1BcRqlghE6NnziudikdGh0PcdnDanaa6b7DoneeUmt6D4TkM/1Uz3TfR22OB3eUKAnVkT71icFVEj3azz0xob0a5iLKLuWzsInubGjKAA6lzMW38gwCpl46YmLfUAZ4Q3vuAS4qsDAdYS6GSNTXdHhU8bXsOl6BOuNV9B9j3skoZzdvmjHbyJ/FYa46mpCoYwY8DvsQrST+PMPPDhTFgz4ZkDnd800342Alz/cczJXiQ/4SjP+86SK3OlhT1JSWBbbGBU8Inz3DfeNgllLyK294UDFLEnm5Xgt/yAiEyncYyGc2DuhZkYSbTPkRT4VEcRcjHxr6/bHyjD6DRo2cuN8+PAmsFcoTjkcuADVocwWJbHIqpCjD4Y5pstCSt3LjwVNHYyZ5yYZ42Pl3YYsrTnOJr4ot789ryscTWOmS
+ sMmsAGkp
+ KPuYKY/M08BaiBtZtwMYF1P50t1mWjn7NARWfLsan5xnhDScjqPMIrn0UBzj1gn51uDXKvNM0DCoerSZImLk6ZmCnaaJSEneFa1ty8ll8urpH5TqP+xClNOCiRHhbJivS8lhvfQhnzkurVqP2jq1XC4m0cjetJKTyAbpPhMO+Ub1JURKPuRI6Kq3DKghEoPlFl/B4MM1H8G7vDe+WwNwDBOLwaiFffXeydfhnqWrqtWsYL8a0k7ciftiFPiZRCuWJLmkDK0zvN7xqcPboQQjK8THYtoLyCLeNtmeKFbA5LgR4wd0GWamTE8544jmQJjkQ6wlcwtJZnT1/LP/WehSKCfxUQ7bBg9mzHlJbBZ65Aj0R4eAOiYOVXDXZgpNAb08f2P8caaSPYJGygpL+lJCxhbkMIn2y+Ceifwzr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -156,81 +157,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
+On Fri, Sep 26, 2025 at 10:46:15AM +0100, Patrick Roy wrote:
+> 
+> 
+> On Thu, 2025-09-25 at 21:13 +0100, David Hildenbrand wrote:
+> > On 25.09.25 21:59, Dave Hansen wrote:
+> >> On 9/25/25 12:20, David Hildenbrand wrote:
+> >>> On 25.09.25 20:27, Dave Hansen wrote:
+> >>>> On 9/24/25 08:22, Roy, Patrick wrote:
+> >>>>> Add an option to not perform TLB flushes after direct map manipulations.
+> >>>>
+> >>>> I'd really prefer this be left out for now. It's a massive can of worms.
+> >>>> Let's agree on something that works and has well-defined behavior before
+> >>>> we go breaking it on purpose.
+> >>>
+> >>> May I ask what the big concern here is?
+> >>
+> >> It's not a _big_ concern. 
+> > 
+> > Oh, I read "can of worms" and thought there is something seriously problematic :)
+> > 
+> >> I just think we want to start on something
+> >> like this as simple, secure, and deterministic as possible.
+> > 
+> > Yes, I agree. And it should be the default. Less secure would have to be opt-in and documented thoroughly.
+> 
+> Yes, I am definitely happy to have the 100% secure behavior be the
+> default, and the skipping of TLB flushes be an opt-in, with thorough
+> documentation!
+> 
+> But I would like to include the "skip tlb flushes" option as part of
+> this patch series straight away, because as I was alluding to in the
+> commit message, with TLB flushes this is not usable for Firecracker for
+> performance reasons :(
 
-The size calculation in split_nodes_interleave() has several nuances.
-Move it to a separate function to improve code modularity and
-simplify the readability of split_nodes_interleave().
+I really don't want that option for arm64. If we're going to bother
+unmapping from the linear map, we should invalidate the TLB.
 
-Signed-off-by: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
----
- mm/numa_emulation.c | 44 +++++++++++++++++++++++++++++---------------
- 1 file changed, 29 insertions(+), 15 deletions(-)
-
-diff --git a/mm/numa_emulation.c b/mm/numa_emulation.c
-index 2a335b3dd46a..882c349c2a0f 100644
---- a/mm/numa_emulation.c
-+++ b/mm/numa_emulation.c
-@@ -76,6 +76,34 @@ static int __init emu_setup_memblk(struct numa_meminfo *ei,
- 	return 0;
- }
- 
-+static void __init __calc_split_params(u64 addr, u64 max_addr,
-+		int nr_nodes, u64 *psize, int *pbig)
-+{
-+	u64 size, usable_size;
-+	int big;
-+
-+	/* total usable memory (skip holes) */
-+	usable_size  = max_addr - addr - mem_hole_size(addr, max_addr);
-+
-+	/*
-+	 * Calculate target node size.  x86_32 freaks on __udivdi3() so do
-+	 * the division in ulong number of pages and convert back.
-+	 */
-+	size = PFN_PHYS((unsigned long)(usable_size >> PAGE_SHIFT) / nr_nodes);
-+
-+	/*
-+	 * Calculate the number of big nodes that can be allocated as a result
-+	 * of consolidating the remainder.
-+	 */
-+	big = ((size & (FAKE_NODE_MIN_SIZE - 1UL)) * nr_nodes) / FAKE_NODE_MIN_SIZE;
-+
-+	/* Align the base size down to the minimum granularity */
-+	size = ALIGN_DOWN(size, FAKE_NODE_MIN_SIZE);
-+
-+	*psize = size;
-+	*pbig  = big;
-+}
-+
- /*
-  * Sets up nr_nodes fake nodes interleaved over physical nodes ranging from addr
-  * to max_addr.
-@@ -100,21 +128,7 @@ static int __init split_nodes_interleave(struct numa_meminfo *ei,
- 		nr_nodes = MAX_NUMNODES;
- 	}
- 
--	/*
--	 * Calculate target node size.  x86_32 freaks on __udivdi3() so do
--	 * the division in ulong number of pages and convert back.
--	 */
--	size = max_addr - addr - mem_hole_size(addr, max_addr);
--	size = PFN_PHYS((unsigned long)(size >> PAGE_SHIFT) / nr_nodes);
--
--	/*
--	 * Calculate the number of big nodes that can be allocated as a result
--	 * of consolidating the remainder.
--	 */
--	big = ((size & (FAKE_NODE_MIN_SIZE - 1UL)) * nr_nodes) /
--		FAKE_NODE_MIN_SIZE;
--
--	size = ALIGN_DOWN(size, FAKE_NODE_MIN_SIZE);
-+	__calc_split_params(addr, max_addr, nr_nodes, &size, &big);
- 	if (!size) {
- 		pr_err("Not enough memory for each node.  "
- 			"NUMA emulation disabled.\n");
-
--- 
-2.34.1
-
+Will
 
