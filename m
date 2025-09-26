@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF2D9CAC5B9
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 09:34:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DA1ECAC5B9
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 09:34:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 255C48E0010; Fri, 26 Sep 2025 05:34:44 -0400 (EDT)
+	id A6BB18E0011; Fri, 26 Sep 2025 05:34:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 205CC8E0001; Fri, 26 Sep 2025 05:34:44 -0400 (EDT)
+	id A1CFB8E0001; Fri, 26 Sep 2025 05:34:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F4CD8E0010; Fri, 26 Sep 2025 05:34:44 -0400 (EDT)
+	id 895F48E0011; Fri, 26 Sep 2025 05:34:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EFF3C8E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 05:34:43 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BBEAE11A208
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:34:43 +0000 (UTC)
-X-FDA: 83930891646.15.DF659D5
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf03.hostedemail.com (Postfix) with ESMTP id DC4E72000E
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:34:41 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XZbKk+vS;
-	spf=pass (imf03.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 704048E0001
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 05:34:51 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0E73D1DFF98
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:34:51 +0000 (UTC)
+X-FDA: 83930891982.23.776796C
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 21E8A180009
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:34:48 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QcFuqq5c;
+	spf=pass (imf16.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758879281;
+	s=arc-20220608; t=1758879289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QcUAVjuBCwqD/o526Djm1QGIR4OCMDMMqLBu73ohlCo=;
-	b=PmOGcosM2l6Bg8mg52sDfEquVTGKjkSQAQrBR0YNh6M1Dd17mI17S2L9iqYDVlxXDQGvTZ
-	b24OHrwnbWTFP28PM2crBl9Ceg0ucLedtlp77E5HMhlBgRfPldf7j5Pww9kP3Y5+xz6I38
-	7asA0UmoeT6XQsBpZndJJ03ZqkptU3s=
+	bh=oOprrquoKlbkEreJojZ4KykFg8G0TswcVk79ghRz+Tk=;
+	b=TlxPsS4SGS3E2DtSEEmcsr/GGEL4q5CVUsuEK74Z/8P/feFDJtkordjQa/89SvFZAP0NnV
+	SywUPUdLg3FjRXvdYlukT5OIV73d+lT4U5pGu7Qifw1gVapowOtIsze6uFmjwAdGXPSpKX
+	0AFJfyqq5FgY6TPT7pIsue37Tjo9StQ=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XZbKk+vS;
-	spf=pass (imf03.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QcFuqq5c;
+	spf=pass (imf16.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758879281; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758879289; a=rsa-sha256;
 	cv=none;
-	b=RXcUYXls98V1qyFQLEvbw0EETnkECQlvaiXTtYWrnRoBMOvHhcFD6QCyXinT/bx71J14xd
-	38yqab4tlKxlceupZxBvqER5bCmpKzU2SaVSlWP+gFEHpdbNPOxMAUMb0SbnFR0S/OcNlw
-	9mG5omAlCJJvGXgv2yQcdj+Jhz92aYE=
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-27eec33b737so9618035ad.1
-        for <linux-mm@kvack.org>; Fri, 26 Sep 2025 02:34:41 -0700 (PDT)
+	b=hVOeegAjkj+Uc1tikmaNG6H4y7rXBXzacafM02NPVDdI9WtK8erYQn+FObu5HuzgHX4Dp4
+	lusaM5FzEhYcxzdjkxA6jwomAl+C5o+oaX1mj+j1HkGgtfd8HMJikiNuXWfjEaqOpv6Ktw
+	kwLmrCqwG1RU9hrl0MlrVtnfwSv+S5g=
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b49c1c130c9so1407196a12.0
+        for <linux-mm@kvack.org>; Fri, 26 Sep 2025 02:34:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758879281; x=1759484081; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1758879288; x=1759484088; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QcUAVjuBCwqD/o526Djm1QGIR4OCMDMMqLBu73ohlCo=;
-        b=XZbKk+vStWgWrYxOPKstG6FiSEL0ipuuBP7qUWqJ8fPz/sX/OSToK4yg0xeVqihG5K
-         sdQdhI5DRGUoF5rHW+kjC3EiK8A+HfUwZEC+c7KSFhbuyALdSu3FleJn7mJ4TqT8788r
-         B5kfuXLIPcoJ3qfooDS0eRzNOVhMh6SY5McuW+ZzWFTaVn5F5kxkG5fUDaQqgoGlIHRD
-         NrZzdoAQ3MYWVyXwD+5j9A7JfighKS/xA76S3OjVsY5Ui8Xg7bELueZpbWVXd83Osstm
-         386u1ZEEDb/G4JBn2zVT5hVCDMXrUuEpn0w6Ixs1CT+jqCqVirj89AWgWq9cNeIphxld
-         tvEA==
+        bh=oOprrquoKlbkEreJojZ4KykFg8G0TswcVk79ghRz+Tk=;
+        b=QcFuqq5cm/G+ECUFBW7hWv8LDyo/vNSDwvcoljUBsPX2FIwSExLh2wkjCbf9OP3Gl1
+         gecb3zrP5EtAuXidTWTd35nm95kwmdYg9An2X8sfcIrg0oojRn4zXGD0nz51oRyLxXlk
+         tl+alfKlDjdSq8DFzA86ECeA4r3Ba5xYHKnAI4/bVCQNEdL/X4F61JpMMrkNlPNfRFIs
+         bZ1D5fFUd6nXwXppIskAErEr72GE7V6fVJfDhpX3Vz2HcCR2qESntbL7AejHt60Jei2J
+         ocZyI2nUmHsDJfHpMq4U/cdpBsXptwOXSyfwqaiakzVUn5Q5xc+3gOWkJS3hPllwBYG5
+         fPfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758879281; x=1759484081;
+        d=1e100.net; s=20230601; t=1758879288; x=1759484088;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QcUAVjuBCwqD/o526Djm1QGIR4OCMDMMqLBu73ohlCo=;
-        b=JHNxcZDhBB7Lp4I4FChqhaFg0CPQ5IBql8dCwGDzSCILocgLJGYvTLSGqT94iNW1HJ
-         H7PRVvn53y76Au5iPY095cnKXtrsZeyKsciPPcfIYI+8Mr+6CSQYOVjRbXnMeOdI8zvG
-         QySlIUtXs5DIwV36PU36s1ew3TSmkCfhwU1Q9jQNULGqrhC7BOKR9+85o2HOB4sJlOJf
-         TH0+5E8DzdDxzfCf0Xb3lafLK4P8R9wjkm9eZCWQyoGKcEMNNChOvHfuZwWcZEn9SSac
-         FBgIzGjIyBY7LJVZXzXLg6x/5UbFlV5VArwIUVyoz60O10GYjPmENk75iW8W2K4d+Cj3
-         wn9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXYah+mwvGC5xUbmtUEUTJLz94Wy4Vryw04HcOVpRfJs4eUP3Zc1ZcoW+z8iJ1/tZQWXOW9EFV+vw==@kvack.org
-X-Gm-Message-State: AOJu0YzuyuwXKrQgv10XCVCDb4mIlCNJwek42hJ+egb0FPInpScYrN24
-	6t4LtlyLponxDAYYnJZ6JHcHCv2I4VMBrTbbzQd9F3Laohr8RmpYlFK3
-X-Gm-Gg: ASbGncvOB4+8Zy6iJnJ+zk35oEyTopGDhv/Jm7ga6hLAZVnM11wPtgH+4VE60hN9yDW
-	RaXUhB/1ceQ0D0yu4ndEcSZXZAj5R11ZDZIFLcOFI3tS1R5psULS/GkNRH2mAtnTLoamFO6yv9R
-	G5DVTAFYUrj9b6IMjphDPWgFdenbqNDYoZUVielgHUt4BUBJFUpVY9navPibuilKNgfaT3/KoF0
-	nWsM/m/y/PUxGNa3l3K0gQv+zVxr1rd2II3V2ZdXT/Z4xLE+KmFixcpoydB19tecrd9nE5Hdn00
-	A8kIx5YOYKHxvFKJE58PwRq0XZjjBYFv5VWtt+upc8wdg9/zzAgoBkivvIsX1wlypIrenUdjamh
-	8kw49fCBtF4ICHYknRaMHVGgdQTB6RnbMksyLwvbIRPq1z5baMO0NU8CkqaD56hgAvQqr5Jn0zK
-	Zv3ztsxitPhtfn
-X-Google-Smtp-Source: AGHT+IHpTOJHleE7ACdFvjLA52er0X3g6rm9mXYHGB20zbDxAkuQgTkRYnpRqU5bnQ67XgLmD1Xa5Q==
-X-Received: by 2002:a17:903:19e6:b0:266:f01a:98c4 with SMTP id d9443c01a7336-27ed49dece8mr69854105ad.13.1758879280625;
-        Fri, 26 Sep 2025 02:34:40 -0700 (PDT)
+        bh=oOprrquoKlbkEreJojZ4KykFg8G0TswcVk79ghRz+Tk=;
+        b=Ie7092IPXzDFDMT4VXRMDpPk6CaCSVXEWSwrZDLfbfz9sanUOtoCQ+hk9WVUcu6Q9p
+         /cYB30avihQS8bsHqIOEwGIU7PSPZRh0JA9HX+ZyiYLHxIWQVxEhwUQEHU/nGgAEBYz2
+         paFX8+XAXpECaqL/xts4/CIzxCAaUUNgeFaZQGwIQ7UOrkQq5rum/rIpbhTCJHQgdvMy
+         DNy6EnHM/qN8ffrxGFbsHrlOma9VAPoZGKmZrIv6FR4GMLgl81wSF6RBmAyEzu6wFYc+
+         0pjpodUh47Icv+roVYi6AHZHl5UTaczSMakT3tiMQnnItmr5A1KXDZkKddj22VjXJ8NN
+         lxSw==
+X-Forwarded-Encrypted: i=1; AJvYcCV6UoKR6AgfmFcSBGJYe++9Aha9a6+rqzzc41yENv4YRSpAGK9nUSPwleAcFLVH4omyo9ia/fMg8w==@kvack.org
+X-Gm-Message-State: AOJu0YzhR576LwvtVOKL4yV+b0Kic+RxEXI36DETovz0Z17IQN94LWut
+	Zirov8Gymi6qHodP0QUuYldqTvBtTcXejq71c9IX+XCLPStJ+rlJ1ett
+X-Gm-Gg: ASbGncuiITSbG05862lhXzWYpyMWbKBIOIC0NQTpTsjrKjTw5N/tzXv03UDd+mxaReg
+	8MBF5KrLMvslC98SXqtNHkNbWCBvvz8Ujfas/ik4V1T627a47o5D0p2Fmm5y4u9CvlY48kDD8jE
+	Dcxa4TSd8wQmoAxc5IQVfu6E6ll7ym/Mf+9uAUbtO4S+K6YXIeT+OQAoVxb0rcgL78XIfR7fiR7
+	l/v4Yhmyy8s+g17hBxZ7m0c5Xidu+Jvmt6nvIJ3FwOuBbHsczWqJYN1OR00DRCo/64x0JwHCBlj
+	f1BLQLO19tGmS7ylFMOH+lxGk+tngukDkQxoJLnTnZcncUEtA/tN82qBANfiuhCDYZqe7i61ioV
+	A1P/xqtzr+/MeYVUr/Pat/utmB1vVY4WkCbU27MGqxcfzITNv9hrAY6iWVCU55rn1ZMNY5Wwgel
+	Jw4aUVy6JWAlqM
+X-Google-Smtp-Source: AGHT+IHyNvkqZ/H58qTgrC7RxZoAtdYJitsFBBvDlhUuvEFdmMnVmU2Ltz5BgywZtZV48lyMJHsZWw==
+X-Received: by 2002:a17:902:fb4b:b0:26a:b9b4:8342 with SMTP id d9443c01a7336-27ed49e9308mr63284705ad.25.1758879287971;
+        Fri, 26 Sep 2025 02:34:47 -0700 (PDT)
 Received: from localhost.localdomain ([2409:891f:1c21:566:e1d1:c082:790c:7be6])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-27ed66cda43sm49247475ad.25.2025.09.26.02.34.33
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-27ed66cda43sm49247475ad.25.2025.09.26.02.34.41
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 26 Sep 2025 02:34:40 -0700 (PDT)
+        Fri, 26 Sep 2025 02:34:47 -0700 (PDT)
 From: Yafang Shao <laoar.shao@gmail.com>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -120,22 +120,22 @@ Cc: bpf@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yafang Shao <laoar.shao@gmail.com>
-Subject: [PATCH v8 mm-new 06/12] mm: thp: enable THP allocation exclusively through khugepaged
-Date: Fri, 26 Sep 2025 17:33:37 +0800
-Message-Id: <20250926093343.1000-7-laoar.shao@gmail.com>
+Subject: [PATCH v8 mm-new 07/12] bpf: mark mm->owner as __safe_rcu_or_null
+Date: Fri, 26 Sep 2025 17:33:38 +0800
+Message-Id: <20250926093343.1000-8-laoar.shao@gmail.com>
 X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
 In-Reply-To: <20250926093343.1000-1-laoar.shao@gmail.com>
 References: <20250926093343.1000-1-laoar.shao@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: pchaw6mofuqkoszu51s3uymy1i8iqg4m
+X-Rspamd-Queue-Id: 21E8A180009
+X-Rspamd-Server: rspam05
+X-Stat-Signature: tsozu85ieo1anj739hidwidr4eghar78
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DC4E72000E
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758879281-107349
-X-HE-Meta: U2FsdGVkX19NI1LQ6gDYl1WC4FvpkrTIYkYiUjT3vA06Vs+8gw/XE54jFnW8rTfvt3Stg91Hmlsc/JTlTBG4x5MK7zQ6RxMvWneWefsbXttSwFXU41/zIkfKWzoiiDqg4S6GCzY2dRl0hf/kfeZF/8g+lyfCBRjcPMGzOaqvZHXKTrqengUU+YsqJE9t6EGZoGFsIrPqDhGWGlKziHrTRyozWfT95kZ0CosSLKAB2J1dGg4ZPUH45Qksoe/4OylkridQya9NwAJZ8KpMo1GX7Wgsr/sqoEN6tp2ltlWMiO26ltOYaTicO/rernihPp7U0whYjOawsdjsvrdwEK+OFo4w4kt2lyjiuU+U9tUQ6ekuiYo+6wmV0AGueWRf/RPwbtHCGJqUp36lHzkwWzTzmoZoEEgxHukHaaVvJeaaQWGi4X8guRRmO4IT3soOwnRCEfCsOm88KLEn6DEHFff2DFggI5RmolXCDZHaYTzVlvW2t5i617HbmOvYE9o5RV5fNvBuec//mbM8WwSGvtJubM+KqkTVla9/+ff5+b7I/1Qul2YDjJaCeCkG58I6z7hFVqakAicez7VrSGdkiiqVD7Bv2GZB0jhD94l763qxGb1EoHnLU9soQP7Md73gMiW2dTG6j3xw4+6XH+OtTW9MAoE6RhR/ZL34iSA/dwijfDc8X4ujzE9SqZNdPA7LeqsgOqO6JbyH1UhHnm+/fyRARqq2rDXSBxOh6JJeCpeRllS5A/JKaP1FAeClQduJwGgDWIf7NGHcchTho8o5vqwczUR2GKpqF/7nuM07xwQ4bkBNI3gIvnAZCuyQtQhK+aXQrLElaODa9Mt69ShO/XATdxhGts9UmM/c2rrJVzbe6hX6YoZ14pEpLRbvnEFkevQwfbjX5iPVNZnD2i49QDafaVC0OX1ICB+mWz0tq0/WvXKbQlK4FoNNY96nYzcxCxJzDA30ShzUQymMMudOEsT
- g5m+WM1d
- rATZcsO+UFSuTPVM+Nsq1XfP5VGLcNoY8fD6y73/INOojsQcvXASyIIjCVaI19/x1jBlEA8mVQOLoJtyV2Z/JkPi7at6NHzcQ8EM2P5QbF0w6163QMSfEXW1mysSmL386XPij9VgmSheQEv2aUIqdqwUzsw3+L2LtzzDxNuIeIB59QeSmkF8GHNryH9E1I71JmtI6VVM8MrhDpaB/DXy5BdwT/tKUf+ZQdakoKjcx06iFzSie3mXalHOoFFZ34h4qhAs20fEXXMFlZdnhMn11KnpAFzqC4w4a4i+YSNK3GNDTujk8lk62rGIxTnNCOhcRz8tJEh18mHtmae8Xov8gNlWaUhLFqIbc7NCEvuPNdwRX23R4q+oQAEuyCLi622o8hcgVEDJlV3P0lvzAbUJ2JN7Wkha2m7vamF8Y/CRMkJuOaP/T8o9qvPDVNoZod0XdUEMWKRkqr494/LWowyW1nhYI7Dr3onrduQSKTHj2U4WExro=
+X-HE-Tag: 1758879288-895521
+X-HE-Meta: U2FsdGVkX18IvLmAkbwMB6jT04lbdpP3Qa3kjIHtvtKqeOTvhjZjWiGKbpxpQsUDv8fcDTlsButAPoELE/fUt2Ui4M5jB2ozUN2aBeni4z7hdLVF8tb8GsYyEYzX7goNYPtKFzfvv5J/QevlU5GiJOKaCEsACwUkPZhieGFIAPauEiwsgl9yROQvDSlJWqSDk9hlEz222qYwaXFNNV+/z8pDmt1XhVqHLjgJXupxq5kJswXLQ54JmnrQjVPpuuqYqX5G1wD8dbstgHPYNHLETJ9L6uMz7Gvm4fjrdRI6ytE8Y2t2C2hZJfM8/J29BGnOJz/Yt5XLtxrltiNY0BrLVVi5VliT+mifNaZSwq1fhhKRFnzGFLn7fvBiN/YRXVuy3virame5NUdbFxy5/2alR7Sjpo6PQIQdAemALuJuHjBQe7MPqQ6gSbIgjI5CAFjUNHpXYncNnoK2ZmIffPijYHLJyFGYyJJCml5JY+CVXWqgF4vMPkbxlHqv9WRKxFruiP6F1ggqLk1+ZpgPq0QgRWEm4iOxBf2QzhlubpzS11Z+OUjWvSnkyfv+YT2SwrD6ma/5SMyyhXwzYj8NvmOY+DSFLzGi39OI/9GRslZxLyXgNlu+h+veqW5JavbKIPXNoBdfHZEJnCqSxgnxi1MGGL9gDX+kIIAck2ayb3ln3N6XaFrb16h89sypx5imhLP0ac2cEvRYSfet0C37pP0CFgzps7uM8CsNH7IDtFoup6W9831mzJncz48Dx8HEBNv+cmqz2ZU+UP/WHjFNRIlYwlDyeiu0SxWUJz3ZnIhv5FmFred6Dcrba4GsziZ41u9CWUii821sk5G0Iq4tb7Mt23KLwqDWbIrFCmuyf3E09HXA4VLoohCR36Q16Tz27RA13lrSzL/8n9u/ke9gHqBo39m+fAnILGpzpnKs0WEcvsGxqCWlUp+FIXPx9Cn8KwMPKRxW78DdztKtJHMK0FU
+ tMZDgOy4
+ lqDThb2bLiVhgFGCXqpznxYbkRLSzV1HObHJT1PVLVf8jafOt9zlvA8yq8N3ZsiyEhyVf7i9AV8YCUxq7n3dVLn0H19v6mQr5coo/Y4A2Z4zUQuI/wwvtYFr4z/Jqpk8iYc50HCOIcyyhWomrC5z2nhJoX9H9AG9e2aqvHNRFI++F8JXVSKF/4HC0yquob7FZDy2M2pWiCx6B2lhSVESDl9DLlTAP6cxK+Hx9O3LmGPwWuO+IhnKWdWdhWfNnFp9bEAJfmSUwD5cwxDO8ZdR10xkJvkhNbDAEXbMuxTfei3VuqqQvJIygyl3Hqtr1xNYRkDCZU3tUyasCPEWc6xKe+NGR218yIhwsOGEWmHNRheK+XqJo8zAHCXdUVQEx28Ac44XAUmeduqK8zb+Z5q1qzuUAqgC57AZRYKA3cGYivp0uUaZjncJekBwqfF36S4tho4pku52NrX44qsVhGShMM4u0huQNip80RAg9+Ub3reD5xfHljKDjR/fVNpO2hdfekYfWOMjfALSAlktpLgw+LUc8l/UGitXFYsQZKuV9LLH07DYOw4rAE9fF6u+oQOgSn7TPCjRESittE6+cLHXeUiMC/6gf5dDZUr5fcn9J1yoFs54M/4Ju3MdZyg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,72 +144,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-khugepaged_enter_vma() ultimately invokes any attached BPF function with
-the TVA_KHUGEPAGED flag set when determining whether or not to enable
-khugepaged THP for a freshly faulted in VMA.
+When CONFIG_MEMCG is enabled, we can access mm->owner under RCU. The
+owner can be NULL. With this change, BPF helpers can safely access
+mm->owner to retrieve the associated task from the mm. We can then make
+policy decision based on the task attribute.
 
-Currently, on fault, we invoke this in do_huge_pmd_anonymous_page(), as
-invoked by create_huge_pmd() and only when we have already checked to
-see if an allowable TVA_PAGEFAULT order is specified.
+The typical use case is as follows,
 
-Since we might want to disallow THP on fault-in but allow it via
-khugepaged, we move things around so we always attempt to enter
-khugepaged upon fault.
+  bpf_rcu_read_lock(); // rcu lock must be held for rcu trusted field
+  @owner = @mm->owner; // mm_struct::owner is rcu trusted or null
+  if (!@owner)
+      goto out;
 
-This change is safe because:
-- the checks for thp_vma_allowable_order(TVA_KHUGEPAGED) and
-  thp_vma_allowable_order(TVA_PAGEFAULT) are functionally equivalent
-- khugepaged operates at the MM level rather than per-VMA. The THP
-  allocation might fail during page faults due to transient conditions
-  (e.g., memory pressure), it is safe to add this MM to khugepaged for
-  subsequent defragmentation.
+  /* Do something based on the task attribute */
 
-While we could also extend prctl() to utilize this new policy, such a
-change would require a uAPI modification to PR_SET_THP_DISABLE.
+out:
+  bpf_rcu_read_unlock();
 
+Suggested-by: Andrii Nakryiko <andrii@kernel.org>
 Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Acked-by: Lance Yang <lance.yang@linux.dev>
+Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 ---
- mm/huge_memory.c |  1 -
- mm/memory.c      | 13 ++++++++-----
- 2 files changed, 8 insertions(+), 6 deletions(-)
+ kernel/bpf/verifier.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 08372dfcb41a..2b155a734c78 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1346,7 +1346,6 @@ vm_fault_t do_huge_pmd_anonymous_page(struct vm_fault *vmf)
- 	ret = vmf_anon_prepare(vmf);
- 	if (ret)
- 		return ret;
--	khugepaged_enter_vma(vma);
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index c4f69a9e9af6..d400e18ee31e 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -7123,6 +7123,9 @@ BTF_TYPE_SAFE_RCU(struct cgroup_subsys_state) {
+ /* RCU trusted: these fields are trusted in RCU CS and can be NULL */
+ BTF_TYPE_SAFE_RCU_OR_NULL(struct mm_struct) {
+ 	struct file __rcu *exe_file;
++#ifdef CONFIG_MEMCG
++	struct task_struct __rcu *owner;
++#endif
+ };
  
- 	if (!(vmf->flags & FAULT_FLAG_WRITE) &&
- 			!mm_forbids_zeropage(vma->vm_mm) &&
-diff --git a/mm/memory.c b/mm/memory.c
-index 58ea0f93f79e..64f91191ffff 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -6327,11 +6327,14 @@ static vm_fault_t __handle_mm_fault(struct vm_area_struct *vma,
- 	if (pud_trans_unstable(vmf.pud))
- 		goto retry_pud;
- 
--	if (pmd_none(*vmf.pmd) &&
--	    thp_vma_allowable_order(vma, TVA_PAGEFAULT, PMD_ORDER)) {
--		ret = create_huge_pmd(&vmf);
--		if (!(ret & VM_FAULT_FALLBACK))
--			return ret;
-+	if (pmd_none(*vmf.pmd)) {
-+		if (vma_is_anonymous(vma))
-+			khugepaged_enter_vma(vma);
-+		if (thp_vma_allowable_order(vma, TVA_PAGEFAULT, PMD_ORDER)) {
-+			ret = create_huge_pmd(&vmf);
-+			if (!(ret & VM_FAULT_FALLBACK))
-+				return ret;
-+		}
- 	} else {
- 		vmf.orig_pmd = pmdp_get_lockless(vmf.pmd);
- 
+ /* skb->sk, req->sk are not RCU protected, but we mark them as such
 -- 
 2.47.3
 
