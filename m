@@ -4,138 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33269CAC5BC
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 09:35:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55005CAC5AE
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 09:36:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BFD28E0016; Fri, 26 Sep 2025 05:35:28 -0400 (EDT)
+	id B0D708E0017; Fri, 26 Sep 2025 05:36:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 870118E0001; Fri, 26 Sep 2025 05:35:28 -0400 (EDT)
+	id AE4128E0001; Fri, 26 Sep 2025 05:36:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75F9E8E0016; Fri, 26 Sep 2025 05:35:28 -0400 (EDT)
+	id A20C58E0017; Fri, 26 Sep 2025 05:36:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F8998E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 05:35:28 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0ACEEBA727
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:35:28 +0000 (UTC)
-X-FDA: 83930893536.05.6C3DE28
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 1B619C0002
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:35:25 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=COO7cGcV;
-	spf=pass (imf10.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E1448E0001
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 05:36:33 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 67613BA782
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:36:33 +0000 (UTC)
+X-FDA: 83930896266.30.596FEB4
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 312CA140006
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:36:30 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oJC8G4Ls;
+	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758879326;
+	s=arc-20220608; t=1758879391;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=huK0MPI+64vH11fsWziyabmXxqecdshCDlVy93FTD7M=;
-	b=uIDVdJQAJ3EKca6CtWKdjRZoGZ5kL4/Wy/5WGa2tG+HutuREF60k3YXeYhUwIgm+sRAWuC
-	Q4RXaZxwRLm4I14sIEwJ2I3CcqM9A5nRloFb+N/fXOk+P9zEtAqVRj4WU3f4Asj1+ZiHaU
-	6YC31PcszOF8Ec6sdvLhEg0JeKz680w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758879326; a=rsa-sha256;
-	cv=none;
-	b=QCMHn7gI156jj7wuJRxsKVBDkZ0sYpvoF+CH5Oe2vheV310SiNy+BFXnuHH4UCK8boAZGg
-	8h8Tnb1R6NruRzr3KkTx/o6vVc6bOHSy5XxrolXlfXlMU0LfUn5keO1a96LemcYPRJ+zv4
-	an0WW5YwLnu25X68BTMdTaQsu1qpqig=
+	bh=1sF3mMFlEeo6+29CxldPU4wUsiArQVg+D2rLhiy93Ds=;
+	b=UKhPm8MLmK95nGzV9SIpNsh9PyrtJdD+bUZsuiGs37zGKcBojG02cGBFeXtuGzVV/kp12n
+	zsOERtUXlLlgXvqFGEx6qAFOecVD3WdK6GTRKRkca4iOzs+QNeEGENpwNmPbCNUE3XOth+
+	HMq1cr5vNyNeTwsGgl56x9aalpdIFcM=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=COO7cGcV;
-	spf=pass (imf10.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b553412a19bso1519868a12.1
-        for <linux-mm@kvack.org>; Fri, 26 Sep 2025 02:35:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758879325; x=1759484125; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=huK0MPI+64vH11fsWziyabmXxqecdshCDlVy93FTD7M=;
-        b=COO7cGcV5cYtL7eUaqswt0ox/EWI+myNTDDujzHQ4ruY+vMutPA+Hw27OIhpUL0Gyt
-         NwuiHbJtuxozjv+U84ViOLWqYmfdnLoQrew/msfT1K4OETM2BU2onxARg0JDnv5Nwj4r
-         SNtuZkCrL9gBdMRa6C3JypT07UpGj7BQtpaGHl0EXZkqVj4pHfT63rOw4KUOfGXrV7Q+
-         9Lw1y2mvU5ttm/Hc3tHKRBdhY7gCtN2zBm6fjYVdB+Sc6C6Sx/15Bf9YlwNeEPCbgf4o
-         eiCr40p2Qc6hXMYHxHDL2kQ2Q6WPvuAVtiHt2sFGLo5rJiFhe5ym34l4LsFa9Bza3+/b
-         2jgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758879325; x=1759484125;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=huK0MPI+64vH11fsWziyabmXxqecdshCDlVy93FTD7M=;
-        b=tEWOCnAg1zGaTfpCbJDK9Ek4W30B4YIukwSciO99YtPEL1dvLrNhTxEDMBOBd/Qqh1
-         APj86+CMfOdPeqzym6gewbQ1qdipW6iS2eCLFK+0kHs7pyN0p2XdWBZWralhjtCEcsn0
-         xO/VDId5Ej9Bs/WCXaOPCvfgRzo24d6YIsYLaeEVYtY6UXKrRShywtS8xzOHP6t8Fhjh
-         uGbCdYviim7RNCudOfzPeejpHQrFxtD2nh26FFfuyFT2ObBhOLcopJgOABKrILMCricp
-         aBFoVG4a1+3qxutWWnE4p2UfdxBfsF6RoKO5y/TkLCLV+oumy8bjnRfOiml/clEis7ai
-         FWlw==
-X-Forwarded-Encrypted: i=1; AJvYcCXjx+aJC8c9V5mqUMEHIzQZhSrNNQSaOQSjgDY1xB5EBmYh9PvM4kZK9+Lxrg2M4a4txhuEB7MzYw==@kvack.org
-X-Gm-Message-State: AOJu0Yw6IPmrSm8wP1KzAgs5Ougkrgu2pVPWDxMQVUXKFxWZ0iKJY/te
-	vSnBQaIFmbiJNu7R/OjFD2niV93fAWk/xZ5eKuExBrBkmSuFqeDB9fVj
-X-Gm-Gg: ASbGncuXsD5mfg2glDoqR6wDhmrId2wf6ci6z2nM0H06mPwtzfIfV6K3BpJQ9PmKD2g
-	0ib8fmaSNgszF/cbsuzyBseGUnYaMJLLyimtys96PPPJKImy4D1y2rIu6SngDeIvMmR/DfGrZgt
-	Xi8+lNxvg1oiewdeqp3hyRFuOI367t1E6ikzRoRD7ei8E952VQUwp73jcUh4MyQ80Uz+RxNayR3
-	2xsO8243vCpXmea2IH3NdGcVJFWoKir8LqucUtM5fLM+6pj8F7+K1tY0ZzZJFe/JRJ34rW1SRR8
-	BSUWVl43LuStJD+/hVNWchPC58F1z2cYxHpOT35VEt6D2h+7ty0wOA3NDKBwUTJczsANirML/Be
-	nL3/BwlHkWglvqIt4zFPWMlU3ExBEniiV13SqlUume0+tWwbwKEMz0DGO7NE/OHKL4qLYUiliVU
-	0IC9lCpMDoUWIG
-X-Google-Smtp-Source: AGHT+IGaBFISMjqZ56jhqOkqG6YgWjBFJGtoPxP49Jy/1yngaLT4ocjmKacYDQWcrmZR3MpcJrfLmA==
-X-Received: by 2002:a17:903:1c2:b0:26b:5346:5857 with SMTP id d9443c01a7336-27ed4a3719bmr75144915ad.24.1758879324875;
-        Fri, 26 Sep 2025 02:35:24 -0700 (PDT)
-Received: from localhost.localdomain ([2409:891f:1c21:566:e1d1:c082:790c:7be6])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-27ed66cda43sm49247475ad.25.2025.09.26.02.35.18
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 26 Sep 2025 02:35:24 -0700 (PDT)
-From: Yafang Shao <laoar.shao@gmail.com>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	hannes@cmpxchg.org,
-	usamaarif642@gmail.com,
-	gutierrez.asier@huawei-partners.com,
-	willy@infradead.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	ameryhung@gmail.com,
-	rientjes@google.com,
-	corbet@lwn.net,
-	21cnbao@gmail.com,
-	shakeel.butt@linux.dev,
-	tj@kernel.org,
-	lance.yang@linux.dev
-Cc: bpf@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yafang Shao <laoar.shao@gmail.com>
-Subject: [PATCH v8 mm-new 12/12] Documentation: add BPF-based THP policy management
-Date: Fri, 26 Sep 2025 17:33:43 +0800
-Message-Id: <20250926093343.1000-13-laoar.shao@gmail.com>
-X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
-In-Reply-To: <20250926093343.1000-1-laoar.shao@gmail.com>
-References: <20250926093343.1000-1-laoar.shao@gmail.com>
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oJC8G4Ls;
+	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758879391; a=rsa-sha256;
+	cv=none;
+	b=orfrCMMRUnaVe+wk1TThPWVaUJ2mRbd4L1nWUG5phbAvLDUSIoC5bkzGmJaFk1WgSO39u2
+	bPoOb/MHXCtyCEpdcItpdRO6WRxjKgW8VyM1ori2a+yMnyOr9HeHQx5CukTug+D+GIhmdi
+	HIT4PdPDA3jReGSj3HRDmTxxbtvcBrQ=
+X-Forwarded-Encrypted: i=1; AJvYcCU4TLKK4VIDnAu25IcP0E/5zyt1tTmzMsj/ZHkab3qc7sw8Syb4QRWSq2Yw7bxy8Q2CUn3yxkAy6Q==@kvack.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1758879387;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1sF3mMFlEeo6+29CxldPU4wUsiArQVg+D2rLhiy93Ds=;
+	b=oJC8G4LsmcpmbIhTFcy61QJ53LJPcfBtV8jcnETGA/Fs0aofTPXkowo07u6AU9j9gmYC/H
+	ASRkdeNF4F49LarBVsCZwIRfp2EjjNzY8Cx+us/aoGRJBQ7w6rCpHMgoim3m2QVimc6ge8
+	H2B0DiEUFeYavPMYEyDWdBC1QKGvieo=
+X-Gm-Message-State: AOJu0YzuLhL7m3Iawf7R1HxeRNU9cDr+71fHQIvlr9VGGRxOXRqJ9VWE
+	U6iuLBe6vQou7ehV33poBXsZXniqjT2tTweiwrQXzIePucUEo7Dp/vK00sc8bK1dKT5/CRt/Ryo
+	V4ga4PUAGxbvLk0V4BvlYgt4PgDIwbCk=
+X-Google-Smtp-Source: AGHT+IE0VoZpyXKMjv4jutuRolFREokOBBoRz0y1gxD6T4hKQcttqKKtNLh4/LwyPCc1DwqCjc/jIZgZwHPfVl/mBX8=
+X-Received: by 2002:ac8:7d15:0:b0:4b5:e63f:d5d8 with SMTP id
+ d75a77b69052e-4da4c77c756mr81466571cf.59.1758879385173; Fri, 26 Sep 2025
+ 02:36:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: pp85jjdwzrzsgbr8p53xanruqzhbnzqc
+References: <68d6364e.050a0220.3390a8.000d.GAE@google.com> <CANpmjNMA4sOXAUdCpDDYz-4D9F_BaTFF8DL3Vkhx=q7vPfYG+A@mail.gmail.com>
+In-Reply-To: <CANpmjNMA4sOXAUdCpDDYz-4D9F_BaTFF8DL3Vkhx=q7vPfYG+A@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+Date: Fri, 26 Sep 2025 17:35:48 +0800
+X-Gmail-Original-Message-ID: <CABzRoyZuU6WT_eN_gimpFNrA9cVpmTsKCG1f6Mi_KCmYy03C0A@mail.gmail.com>
+X-Gm-Features: AS18NWBk7yoZQ6JxZ96p9n__yfVmWuL-V3XgGu7UllO4xRF8xd7eIwb3A-ueoC8
+Message-ID: <CABzRoyZuU6WT_eN_gimpFNrA9cVpmTsKCG1f6Mi_KCmYy03C0A@mail.gmail.com>
+Subject: Re: [syzbot] [mm?] KCSAN: data-race in try_to_migrate_one / zap_page_range_single_batched
+To: Marco Elver <elver@google.com>
+Cc: syzbot <syzbot+60192c8877d0bc92a92b@syzkaller.appspotmail.com>, 
+	Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@redhat.com, 
+	harry.yoo@oracle.com, jannh@google.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, riel@surriel.com, 
+	syzkaller-bugs@googlegroups.com, vbabka@suse.cz
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 312CA140006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1B619C0002
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1758879325-703267
-X-HE-Meta: U2FsdGVkX18wcUDEFtBR34BLxacWBl7UKg9dLB8i/0i/nSVyT7/OHkgsUceZwsHU/dH3e2/GAWH/gRp/eZsh59r15WWNapAuqFa6RPrr9W0TPidGPX8iXvLcdSP9voGIk81LDsLf5kOLJcr+WLET6kK/r64tn1bStHYY2UPxSqpF+H9yK7XMuVLCl4D/tU0CU84VZ9tCcY5Y8kV9lV68GFcMRk8NVukvhw47iDDi+2yMIX/a5rxr06SLE02mqQoOyl9oWDIWQKeYejrsDH+GSuYUEkG7fzJsSkT60lzy8G6x5nkiTpMef3CEVLK0Z0gU9MSGv+1n/Xd5Rap+US/g7Qh8aB/JlhVr+PxhdtEEFZ2kCaT3SDx62dhlD2WfQE4vPNM2eozB34RiPAGUt1khzfW/sAr7qMWQOtsIgJ3fYpZFzxRcWLKe+B/iuvHQw2S55PIfrhNl2bqW3GwaClxqA5rPZvEpXDrtnPgm3/mNvSLbMniSyrucutiBGF6xwXuND3dbVdM5IPMSl/YMtspqBla/uTDuBbJ58A4WchP92akzLyFvlS3ybW6xYs6uQtiGoItdwN21W8hwnFl/JH9oXaLpFq2KMkFzdMrx5tWtzp92Pj6hqh6Xq4CulekpqwtHrGp5wbNpzu9e8qhzUMi1qp53W5tRsT33hnYv6Iz/kWXU2EV/9303Qz2EFGXf8N67u+g0YDScdD0+cPRgDbZC0LvePgq01p/7yOFH+MdSY+KYdwN/yHr8VnytfalJ01J12AxA8ChdfYgDufl2phq79K08GIM7wJR0qQ17kO3QZLj8FfVDvHI7BQOrPtmD8hotBbrN1chivHdG+e6HW8MrWs0g2Vpb3LXGrLEdhO2OHGfkJ7hUD5XbbLZNNGTNjRT6G1CobWCQuQWKkOUHB4u+8SYtF6kXCW08XFeDL3DqRAUzN7xH4ZvVmGCuCaVvrF53qS6gBR4UofYa7SubL6G
- SIUGaVIl
- Vct4qngc+s0qnJ+jxky1ai5D6Rq5JkZBYc3DQumjnLwp4mdgS9aS6srdwNY4kQN+QUDGysfQuyE55G22dLbNpxFSkMOlUgmwjmnsANCpXNnjscBbu1UrVzD4eAPQo3CbBRMU7nO2L7zas5O9XqUy676ISvb8uZpvk8xUz+9eA6NpZyszOdD5DS7bkruBTKTCUrT15fyfMB/2VxYBfeGB7H4rLOcDsqSiabyyHwdvbsmI1dj2VK+X/vgo/eNTh/GmQmp0SCLwBqBOwxLyxFek+dwdXs0wYUMg4eqPdmgitX3SqmHFTrgq8dfXwzIljtlIsyzp2S50XsZBwGtIZqL2CJ+lFq/cW+APInky+K9d4UcEOam5YVX79GfpUYB9SALJ0rj9XsSxLcLLBWGh42AwRupQ0JQi2ZNHDc8pv2n8XfTnd/X/X8GzmwT1VBJVgfBsfq3eDGAAdwpicrOo9CKBJTnw0F76at5TiaTn1w5VijFFuJY064MVL4RLqQEptSg4u+BAYIQVXcuVbkeU=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: cqm47t53brth9wx7oj83oqju64r38xm3
+X-HE-Tag: 1758879390-987546
+X-HE-Meta: U2FsdGVkX18gMa+ZG5T6Uu2M1iNvLjztmIvNeOYGwXz7lj2s+kT0wGdMlm40nwl8ONRAAZpKwVc+/4ujqHhYQkww4wwG8DKDFZ7bG755AB8QgHJAzKu+q4JckBNnxaavYV91UG7drKB6k+RFoVtI700yvObNPjlV1WDqwu1g0EgfExEGuyJ5MGsJbdmE42rG0COe0ZFT22MP32v6Sbiclm6Xe4PsgfkJ14e0IrRm6Ccj/kiZYu1YsjKoxoMWuvgZ2AxpW/8RI8UqKAe0CPM7bNcXgNBJwsjMaEDL78X2up2dZ05E6dpvFT93L4huPX2sCXg/5/aKOpkr0SGz4gRTEXujwRk+INzklhffYMl32HP6uGanGfrpCUQche8+G2qUMgWqgVhLhqk4lmT+Dm46/qGHQ4rsQjyLYZfMOzYqcnaoJywnIuNemr8RXoO/TvIDFioHPCiGCwctjhlO1HiFwpRcObS15WmMNpaNA/DVbupxB86U0zc0MBV+TFkY4HhnphwvT9O4dcJO5ecUvSR98mrnNVTtNTUK/bAAMi7W26FrDe/A+nQ1bmLaMN2ph2TuzSvfIzU+kBKWG6epwZ7RK5WHeTW9KkFVt4Unt/RjM/DTxRk0hcy7cORLXMQB7zX9ahDiNEHaTHgYKFCYhINhzOPOr95RZMBMstKVlaH0ysqg0gFXaDsrlDEoPSlzEclhs0p1Y8MKTZKm6H8HPbq0I8EbT/oxqAWg03TkhDFHQY3FP3j2mWsUP0Et7Nsn6QeU4yjrsrDgyOShDsa7+xvI1wA2BJyq5xDIT7Dx8ePV8Pax7Ur1fM/klkmZntmhBv0LYLK6xctZ7679JEZmdQLvKULZds6ki60B83fgqdfInbbDA+Dx8fpcVDiYFswh/3uGRORqYOjnNxbvKfDuPkbfe4fcxY7oSOJKfHRPo424Ev0WESp3OTXYkCoe4BY9/zZyTE02nDSNnYns3YdkUjN
+ o/fHHnTL
+ 8TyVS3nzRnCgRZZ+pyEM7CXSPZS1J7DdL5hDuunlCZypXvfayHYe094lRH5h1881mxX1ePk7lRnejp3lalRnoSVApKeoCIHk1mV/5FYCq9alakTu4bw6NpXWNnEt+JNjsy9VGVM7NwKrawknmuvJgEulAqcn1X7A2iw88R+aYnoCazWaRG/yrw6lyHBRXyA2CVqw/isyq5PWYp6SaDi0CLA9Um25kp5EPi1z25B6elttodpJAX9QjyDqlAU+lFxK2dQrcUiniaiAOwhgp1qvH6bAeYG4G3F9hzAfV1vod6OwJ5mzHB8cJfZ5KSf0CN1atOH0WyWWYZXSS26KC9B0LmdnkB8r3rUsLPi0dSEjlBl2t1LAmTIHIGOzyVVBIH6jvARmtwYxbd+I8pec4NuxP0U3Ia4zeVL3Ebu4enjSH3/nsrwGCXri369G+Z8APM9JRFtvfrY7P2Yeroqp7YDlSnPQalWHt3mrFXaFibntpBHeCn5ztzjU0ookuMYJDECYXRdYu7p/x46bFoW/NsI1c2IZE/4ciA/lG6gdBOS/4MacW+YbKVG4W7/jnC1xlq0ZCrhmXAtBGVQsDqfeqTD5o4Ar5znh7lWE1s5UgNGgfMRUU/B5UIGEsQ6yaVcUAGd0lkVqKBw2mdaz43OWGu08XcqEZM4qugWf2E+v5NKm699PIYUT/oMV/y3KP2PeSRUr01+x+5qRew0u1QzWXMJNgjPPagE1PMB+vJm3C9Y2Qh/Hyz5ltDlrbfSeBnwse8EKOOeRAlj4l835kVVzABmfdPNmNC09qz02XKyb50AbNJ9vyriQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,61 +102,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add the documentation.
+On Fri, Sep 26, 2025 at 2:55=E2=80=AFPM Marco Elver <elver@google.com> wrot=
+e:
+>
+> On Fri, 26 Sept 2025 at 08:44, syzbot
+> <syzbot+60192c8877d0bc92a92b@syzkaller.appspotmail.com> wrote:
+> >
+> > Hello,
+> >
+> > syzbot found the following issue on:
+> >
+> > HEAD commit:    cec1e6e5d1ab Merge tag 'sched_ext-for-6.17-rc7-fixes' o=
+f g..
+> > git tree:       upstream
+> > console output: https://syzkaller.appspot.com/x/log.txt?x=3D145d4f12580=
+000
+> > kernel config:  https://syzkaller.appspot.com/x/.config?x=3D6e0c213d073=
+5f5dd
+> > dashboard link: https://syzkaller.appspot.com/bug?extid=3D60192c8877d0b=
+c92a92b
+> > compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7=
+976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+> >
+> > Unfortunately, I don't have any reproducer for this issue yet.
+> >
+> > Downloadable assets:
+> > disk image: https://storage.googleapis.com/syzbot-assets/10b7c8fdfdec/d=
+isk-cec1e6e5.raw.xz
+> > vmlinux: https://storage.googleapis.com/syzbot-assets/cbecc36962db/vmli=
+nux-cec1e6e5.xz
+> > kernel image: https://storage.googleapis.com/syzbot-assets/214f107d0a3e=
+/bzImage-cec1e6e5.xz
+> >
+> > IMPORTANT: if you fix the issue, please add the following tag to the co=
+mmit:
+> > Reported-by: syzbot+60192c8877d0bc92a92b@syzkaller.appspotmail.com
+> >
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > BUG: KCSAN: data-race in try_to_migrate_one / zap_page_range_single_bat=
+ched
+> >
+> > write to 0xffff88810adfd798 of 8 bytes by task 13594 on cpu 1:
+> >  update_hiwater_rss include/linux/mm.h:2657 [inline]
+> >  try_to_migrate_one+0x918/0x16e0 mm/rmap.c:2455
+> >  __rmap_walk_file+0x1ec/0x2b0 mm/rmap.c:2905
+> >  try_to_migrate+0x1db/0x210 mm/rmap.c:-1
+> >  migrate_folio_unmap mm/migrate.c:1324 [inline]
+> >  migrate_pages_batch+0x6e1/0x1ae0 mm/migrate.c:1873
+> >  migrate_pages_sync mm/migrate.c:1996 [inline]
+> >  migrate_pages+0xf5f/0x1770 mm/migrate.c:2105
+> >  do_mbind mm/mempolicy.c:1539 [inline]
+> >  kernel_mbind mm/mempolicy.c:1682 [inline]
+> >  __do_sys_mbind mm/mempolicy.c:1756 [inline]
+> >  __se_sys_mbind+0x975/0xac0 mm/mempolicy.c:1752
+> >  __x64_sys_mbind+0x78/0x90 mm/mempolicy.c:1752
+> >  x64_sys_call+0x2932/0x2ff0 arch/x86/include/generated/asm/syscalls_64.=
+h:238
+> >  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+> >  do_syscall_64+0xd2/0x200 arch/x86/entry/syscall_64.c:94
+> >  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> >
+> > write to 0xffff88810adfd798 of 8 bytes by task 13595 on cpu 0:
+> >  update_hiwater_rss include/linux/mm.h:2657 [inline]
+> >  zap_page_range_single_batched+0x182/0x450 mm/memory.c:2007
+> >  zap_page_range_single mm/memory.c:2041 [inline]
+> >  unmap_mapping_range_vma mm/memory.c:4020 [inline]
+> >  unmap_mapping_range_tree+0xfd/0x160 mm/memory.c:4037
+> >  unmap_mapping_pages mm/memory.c:4103 [inline]
+> >  unmap_mapping_range+0xe4/0xf0 mm/memory.c:4140
+> >  shmem_fallocate+0x262/0x840 mm/shmem.c:3746
+> >  vfs_fallocate+0x3b6/0x400 fs/open.c:342
+> >  madvise_remove mm/madvise.c:1049 [inline]
+> >  madvise_vma_behavior+0x192d/0x1cf0 mm/madvise.c:1346
+> >  madvise_walk_vmas mm/madvise.c:1669 [inline]
+> >  madvise_do_behavior+0x5b7/0x970 mm/madvise.c:1885
+> >  do_madvise+0x10e/0x190 mm/madvise.c:1978
+> >  __do_sys_madvise mm/madvise.c:1987 [inline]
+> >  __se_sys_madvise mm/madvise.c:1985 [inline]
+> >  __x64_sys_madvise+0x64/0x80 mm/madvise.c:1985
+> >  x64_sys_call+0x1f1a/0x2ff0 arch/x86/include/generated/asm/syscalls_64.=
+h:29
+> >  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+> >  do_syscall_64+0xd2/0x200 arch/x86/entry/syscall_64.c:94
+> >  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> >
+> > value changed: 0x0000000000001645 -> 0x0000000000002165
+>
+> One of these writes is getting lost. Which means highwater_rss is
+> lossy/approximate - does it matter?
 
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
----
- Documentation/admin-guide/mm/transhuge.rst | 39 ++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+Yes. IMO, hiwater_rss being lossy is an acceptable trade-off for a
+non-critical accounting value. The patch[1] simply silences the KCSAN warni=
+ng.
 
-diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
-index 1654211cc6cf..fa03bcdb8854 100644
---- a/Documentation/admin-guide/mm/transhuge.rst
-+++ b/Documentation/admin-guide/mm/transhuge.rst
-@@ -738,3 +738,42 @@ support enabled just fine as always. No difference can be noted in
- hugetlbfs other than there will be less overall fragmentation. All
- usual features belonging to hugetlbfs are preserved and
- unaffected. libhugetlbfs will also work fine as usual.
-+
-+BPF-based THP adjustment
-+========================
-+
-+Overview
-+--------
-+
-+When the system is configured with "always" or "madvise" THP mode, a BPF program
-+can be used to adjust THP allocation policies dynamically. This enables
-+fine-grained control over THP decisions based on various factors including
-+workload identity, allocation context, and system memory pressure.
-+
-+Program Interface
-+-----------------
-+
-+This feature implements a struct_ops BPF program with the following interface::
-+
-+  int thp_get_order(struct vm_area_struct *vma,
-+                    enum tva_type type,
-+                    unsigned long orders);
-+
-+Parameters::
-+
-+  @vma: vm_area_struct associated with the THP allocation
-+  @type: TVA type for current @vma
-+  @orders: Bitmask of available THP orders for this allocation
-+
-+Return value::
-+
-+  The suggested THP order for allocation from the BPF program. Must be
-+  a valid, available order.
-+
-+Implementation Notes
-+--------------------
-+
-+This is currently an experimental feature.
-+CONFIG_BPF_THP_GET_ORDER_EXPERIMENTAL must be enabled to use it.
-+Only one BPF program can be attached at a time, but the program can be updated
-+dynamically to adjust policies without requiring affected tasks to be restarted.
--- 
-2.47.3
-
+[1] https://lore.kernel.org/linux-mm/20250926092426.43312-1-lance.yang@linu=
+x.dev/
 
