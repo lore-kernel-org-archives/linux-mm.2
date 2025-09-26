@@ -4,133 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF9E7CAC5AE
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 13:16:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14752CAC5B9
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 13:48:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 402678E000C; Fri, 26 Sep 2025 09:16:00 -0400 (EDT)
+	id 2C9798E0008; Fri, 26 Sep 2025 09:48:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B40B8E0001; Fri, 26 Sep 2025 09:16:00 -0400 (EDT)
+	id 2A1C58E0001; Fri, 26 Sep 2025 09:48:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 254458E000C; Fri, 26 Sep 2025 09:16:00 -0400 (EDT)
+	id 1B77B8E0008; Fri, 26 Sep 2025 09:48:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 148A38E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:16:00 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C417911AA82
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 13:15:59 +0000 (UTC)
-X-FDA: 83931449238.25.3C64B38
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 669E2180010
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 13:15:57 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=I8s2oBiz;
-	spf=pass (imf16.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 07ED58E0001
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:48:32 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AA5401A06AD
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 13:48:31 +0000 (UTC)
+X-FDA: 83931531222.22.02DF61F
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 5BD7614000B
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 13:48:29 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=none;
+	spf=pass (imf09.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758892557;
+	s=arc-20220608; t=1758894509;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lH43ym57j6oeb9QqSBHnLDAMK6emsEJ0+JYF/U+O3AU=;
-	b=6r6dslAV9Piux7Ak+ajtKD2MlaMRFHxIZpsKgphIEkyVa4UO04gP2Kwo7YQ+N4whRlQE6d
-	lc43MT62AtPpC00tR8S5h+VyqeyM+ARqbLIc+2FygZbuGufsvI0bAYdUqSb0pBY1oDtlKs
-	52LA/kfRrLjksYaYx32VXFF3QziCfxE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758892557; a=rsa-sha256;
-	cv=none;
-	b=OAbJ98rsEqfzShbmpVT4zdtA1CZPlLDm7q1nTDgLJsEJxoy+uWChsKSpMAuEuQHvzEwPUp
-	Cj+/lMMlTLflhVNcxuNfwjjPkkvZ4FEdCLIX40yOpGT4DG+9qSrqKMP1rUqc21dz2r+EyM
-	70mE1bWYy39uH4gp1f9UsvY4rVGcbs4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nHAzyB1ExayqfB1KvLcMUJ+iJCBNjh2z3jpPxeZ8LlU=;
+	b=THeccEtqsPJZmucc0jQMMbz/huwDpSch/bMA8GuliAk3vV/z3aHAC1wK28Hvn6T9AStZ7j
+	FkyVRQ4EFOmdO4WcsPiqxKCZmXiKZ4EJze4DGzsEQ29Rtm5ZxkLitwLSexzXhq4vlIUiJN
+	3dXsFAyt0mxGuVkhn5eq4Lt6UF3b+V4=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=I8s2oBiz;
-	spf=pass (imf16.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58Q7Va1M017943;
-	Fri, 26 Sep 2025 13:15:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=lH43ym57j6oeb9QqS
-	BHnLDAMK6emsEJ0+JYF/U+O3AU=; b=I8s2oBizyYzr8Gm62B9PYypKw4IMdmFsU
-	o7p2moc7cMcP6VHKAfySeaLp0lv74XjVcD7gtvNLKKPSy18AL+6+05Sy2N5bbauB
-	yT9QAE8iN38XrggyX+S7Cr0SII5E1cBnsdeveRdMMuWOi+X7CD4KKzVV8RanYD/F
-	wNQ6mEiVmwSzVzRN4hOg5EGy63HftyU8vOCgRTmx5/p2u3tDlppaSEwIUglqUs90
-	KnVpN/yMPjsojL7BvptMACjC63ZkvUzV0be3ymmFXgEleLUb4Qg//AZKxL14lNIX
-	t6IghYmkfAz9pKzzkMyb/yYiYbWJfP7KCunRrTW1aZ2JTZ1Grk4uw==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49dbbdcqcd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 26 Sep 2025 13:15:55 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58Q9qEa8023724;
-	Fri, 26 Sep 2025 13:15:54 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49ddbd3dsu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 26 Sep 2025 13:15:54 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58QDFoaU62521654
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 26 Sep 2025 13:15:50 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B9DEA20043;
-	Fri, 26 Sep 2025 13:15:50 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 90F2B20040;
-	Fri, 26 Sep 2025 13:15:50 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 26 Sep 2025 13:15:50 +0000 (GMT)
-From: Sumanth Korikkar <sumanthk@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@redhat.com>, linux-mm <linux-mm@kvack.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sumanth Korikkar <sumanthk@linux.ibm.com>
-Subject: [PATCH 4/4] mm/memory_hotplug: Remove MEM_PREPARE_ONLINE/MEM_FINISH_OFFLINE notifiers
-Date: Fri, 26 Sep 2025 15:15:27 +0200
-Message-ID: <20250926131527.3260733-5-sumanthk@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250926131527.3260733-1-sumanthk@linux.ibm.com>
-References: <20250926131527.3260733-1-sumanthk@linux.ibm.com>
+	imf09.hostedemail.com;
+	dkim=none;
+	spf=pass (imf09.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758894509; a=rsa-sha256;
+	cv=none;
+	b=av1xSENp4kjN2AkWMOvvPXwMJB6oR6Xzrs2TDb1iV4Gyyu43CgobAX+uxLgDqt1bMOy5FE
+	F952AVUS/J1JN/Fa/Qfe+6NnvjbF/RHaOvBaqqrxoS/07E/svsVlNT/pgI/GfZ8agJXBLp
+	OtSG9PXEeR1Ca2KeXY5PLRD1TLf/2sM=
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cYBkM2mswz9sTk;
+	Fri, 26 Sep 2025 15:48:27 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 5Q3lMEydGwPm; Fri, 26 Sep 2025 15:48:27 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cYBkM1Y8Xz9sTh;
+	Fri, 26 Sep 2025 15:48:27 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 2435C8B77A;
+	Fri, 26 Sep 2025 15:48:27 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id iuKruXyQLJPN; Fri, 26 Sep 2025 15:48:27 +0200 (CEST)
+Received: from [192.168.202.221] (unknown [192.168.202.221])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id CF6348B779;
+	Fri, 26 Sep 2025 15:48:25 +0200 (CEST)
+Message-ID: <3a1e75dd-6b39-4506-b4d7-806915d2a6fa@csgroup.eu>
+Date: Fri, 26 Sep 2025 15:48:24 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] mm/numa_emulation: Move the size calculation in
+ split_nodes_interleave() to a separate function
+To: pratyush.brahma@oss.qualcomm.com,
+ Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20250926-numa-emu-v1-0-714f2691bf8b@oss.qualcomm.com>
+ <20250926-numa-emu-v1-2-714f2691bf8b@oss.qualcomm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <20250926-numa-emu-v1-2-714f2691bf8b@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=F/Jat6hN c=1 sm=1 tr=0 ts=68d6920c cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=rQaNfnSK3a-WYbhgV1gA:9
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI1MDE3NCBTYWx0ZWRfX0hjtkqhGmUCt
- bd6Gg5GGexm8M2i0HtXWlmTWzhEURzPt1XNWNjmCJ5adV5cp0mBi4Kdnii373Dlp/G7wao2fxBK
- y/r7EJuNQ5Y+2MTYEFMVGXje5u5w+bpDsvLajE3c/yEuawpqOYdusFm57fuNiyI15+eBTslD3ji
- PxxBO2/uOXhTVcc1qHEzlpWpJf1Dx887sSE6sLsEpLj/GCVO76gUDUtcUvB4G+Q6DKXY2inSJn0
- Y6ZOsa6v5BYqHqpC3UycwArZQQ5dNN6UGkuviMFoEaI2a/j8xNKCa6eM3h66WhF9exHgQTT87XD
- LPtM1Kid7COtUzHeU5Uiy5n3cOPkqUCo9EDlGiwQWaPwkOo1Vxejz5C+K8Y+N6fSpOGcnETGQlT
- q2x9FWA7lZZFj2SIy/dd24pOFZqcfQ==
-X-Proofpoint-GUID: M4_GZJeR_0qDItlTmbLDGVsgp0Ovpx-3
-X-Proofpoint-ORIG-GUID: M4_GZJeR_0qDItlTmbLDGVsgp0Ovpx-3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-26_04,2025-09-26_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 priorityscore=1501 malwarescore=0 spamscore=0 phishscore=0
- lowpriorityscore=0 clxscore=1015 adultscore=0 bulkscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509250174
-X-Rspamd-Queue-Id: 669E2180010
-X-Stat-Signature: 19ngqhbe3xwgfo4j3u6e1p1p7ba1tpeo
+X-Rspamd-Queue-Id: 5BD7614000B
+X-Stat-Signature: 7ke6bnc1npyj1igm33nbtp75jjkyr4e5
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758892557-5237
-X-HE-Meta: U2FsdGVkX1+HzAT694QRE2Q1df9rHPGuk0C5nGmq2aLZ8YKtoWI5+hlO2LcLiUgtWiSrxnAS7EFrv296BnMGgUdtiIeLntl3df5n1oXIhwMCX8c7Qqz7s3JxriJIo1Aca4yk+yjeCwCoNicMCrFDu+fYLAagoF9SwdptTVaRSuan0OmDiRPytN5jw9jvxG6zrU0IEMiFfnK4nrOCANH6rTJ4mg6yQYtdAZgn2mTK4gngLhZhE1VQu8Jhogij6NgBD6/EgOArB6bVE3ZWLE5hHydPulWn5N4Ndo90URVTV+0gB1zbjUKfnqBbuFn4IkLqFNLzsoYViXOKWVStyAoYzDvL+lnlae9Inkk2J0LXZJpT3zs4REZYw5T4D67WGYAiq8+D3D+llU8K+wrGpLjUqtc68ZWzHZsEceLroWIyVJ3ovR/6YZoCgyZYmCrc6zEQhF0ejNFrfJJNWoCPQDXk0Ii+U1UKfZwqpBnXK6vud1eBY5hDHaAjxWSZ8EHcav21L/kXeIrv1e5BsHPwKFwIGTmoXBKnKP1EZwi42xZ7HBxdnQeQHoIrdzN3eGW3l2wtPu9pMX1pBVFvpO2vXynGj7HMLzBoKsSp/P9mhD7rDRZsXyze3g4d095VuDn4rW3GTPcP36pE6xBYA9u9p9cRmGdyth8CubH1vSC2iMIfbt/sDXddr3CBfb+e9lZHAPvAk9mS83j1vPpR0Jsg2cP0OXFcBbVc9snMAUVkwFtsGABo7Gkuwa/yDCGDABJEp8ONczARYxU6hvsJ/3fAxAwvvN+c71CLySx+uvy+9hyM6ojV7FAV/rHa9kMY1hb21j9HfP6JgUuSR3NHeX5DOOc3Kscxkgdp8b8h8/Ew3yb4heX1XnoJq2PA0sB9nOZ1nHeVYkg/ohJ4NmoOq/H626VzW9hIp2zNifX625CDQclfG/RDv3ChpAD7bdM6pCZcUCPpWMmDdPc2BX16k5sFfUZ
- 8uhOf4R0
- HLrK8D6Vhp5gDAugUDklCn5RNd+eSMVnAEI4xV0EZQA9j0LYP+tKmGLJCMrVOSDMiNq396jyHmQovFhnrtUUVRMtZaPEdyHPjovr1aNfr7ijkgg9vuq4AgdQ7teTCR4z3HsKRB+VDZYeB1yQQzTPg0CHqWGWkM41Tdksia8Nx1xaAQJdyKJswBFAByMgT00JhUFqldt1MjnaRtUM6Gajr4I3L4TDCNFRnNJUP+s+vTWxZPaV+5EtG20cT8BuIARk80CdTSoUAMpDaIxyX77/ksfKWJA==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758894509-516683
+X-HE-Meta: U2FsdGVkX1/nfUyMtRASu06puyEG7p9VDV6LdIxgDtC8AFtrW0k6C6O+nIR/cDWN7hJoNI3tIV3TfIUUy2OUSpDai2iRkpmv9qhWOgw9Xg4otrcqEefYX789VKKYltwHJ2GOAEm093myUijgllpwr4XwlEFxOX2Qeww2upZDZZ0up4ocsMvlr3xXraVRfFvPJ7ZFZMQf9jBQLSQcC7WkEnVKoJ9JdllEP9+OthGesLm8ofZXHnCFMk6kPdX2aoL9ngAijk18TL19Mof5yC7s5rAnLtvIo9jtiO+6IVLWqZDkGppZd48iqE+cGeHtesPLITBVUyqYksKLoiSWWcOed0M8G7l9qKiQ406MaeesJKk6e+C4KYspYrVQlqqnzLDZjMKN+IGf4ysWGB2YTTno7ar4igc6sJFGso816sroyo+cBy+nfK7sR8KIs9DDhyVo8gIlACZE3c/Zxtgmc4vHC3vj6CCQdugmv+ycWfkFPMCaloFck8aAihuEdjOwAkbAB7euPlg3CsIQbvpFMjPcwbdP/b25FTh34A6hjzENNC3ey9t0PgTFIkCwurB+e86jL69em6+U0zkFAtRqf+ijMp3hsh8NsX01KI5zVt/A5X7ytWn0hMYGjD2mrnE+z3uYb5qx9zwx8P2nR+I6LUOPvHlgT9MRcvVhktP+1rvgD6Je9rdT22fB39PaxS3JnWaD/eDA/yMt/uNruioUlJqqUFg16pAMpqnQKwMoTbTnHLb2mQb3K4zQf3fG9OJf7Lk2kJcXNBAK5RwXvss7q2cRUP1tl4SjcXfJlpwBTm78TihYiSXW9oS6lIdLvB/NJe9W62RVcjsGHsPlCBDt0bbBXgcGSeGugQvowVTZZfOHyieaRG/jNrS/f1KZGJPh4KhTNx4JNZ7qRcNaNa5vvF2iM1E+nX1AaMOTkPIcer2MjYBEmp5aZRigTv43JX7HplyvjEDiByWkVe8C5QDFgIs
+ 5cI/fCiC
+ ccTsNnawJwXJ+u2NuOXEIITvlyW9ghccvBlh41ndKJ9gXcGuiJExsHja2EDOaI+KiPDRAU5KINcT0SjtbsDVEYxeHHJeN/qCpooKCpPb7YUNnqOrD7/SmRA9m1n85NoOpzsaNiQVsGjnI86grUoV3vdrS8a4FqsIH9lxbfS6Q/8NvIKAnaixjO/8w63UaMiMJTgf7TMn5quKRv7SvBNLRwNY4Re2c2foak1nOcmgynbq+7vYkl1XGsf54SnjgeralIZN5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,239 +101,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-MEM_PREPARE_ONLINE/MEM_FINISH_OFFLINE memory notifiers were introduced
-to prepare the transition of memory to and from a physically accessible
-state. This enhancement was crucial for implementing the "memmap on memory"
-feature for s390.
 
-With introduction of dynamic (de)configuration of hotpluggable memory,
-memory can be brought to accessible state before add_memory(). Memory
-can be brought to inaccessible state before remove_memory(). Hence,
-there is no need of MEM_PREPARE_ONLINE/MEM_FINISH_OFFLINE memory
-notifiers anymore.
 
-This basically reverts commit
-c5f1e2d18909 ("mm/memory_hotplug: introduce MEM_PREPARE_ONLINE/MEM_FINISH_OFFLINE notifiers")
-Additionally, apply minor adjustments to the function parameters of
-move_pfn_range_to_zone() and mhp_supports_memmap_on_memory() to ensure
-compatibility with the latest branch.
+Le 26/09/2025 à 12:34, pratyush.brahma@oss.qualcomm.com a écrit :
+> From: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
+> 
+> The size calculation in split_nodes_interleave() has several nuances.
+> Move it to a separate function to improve code modularity and
+> simplify the readability of split_nodes_interleave().
+> 
+> Signed-off-by: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
+> ---
+>   mm/numa_emulation.c | 44 +++++++++++++++++++++++++++++---------------
+>   1 file changed, 29 insertions(+), 15 deletions(-)
+> 
+> diff --git a/mm/numa_emulation.c b/mm/numa_emulation.c
+> index 2a335b3dd46a..882c349c2a0f 100644
+> --- a/mm/numa_emulation.c
+> +++ b/mm/numa_emulation.c
+> @@ -76,6 +76,34 @@ static int __init emu_setup_memblk(struct numa_meminfo *ei,
+>   	return 0;
+>   }
+>   
+> +static void __init __calc_split_params(u64 addr, u64 max_addr,
+> +		int nr_nodes, u64 *psize, int *pbig)
+> +{
+> +	u64 size, usable_size;
+> +	int big;
+> +
+> +	/* total usable memory (skip holes) */
+> +	usable_size  = max_addr - addr - mem_hole_size(addr, max_addr);
+> +
+> +	/*
+> +	 * Calculate target node size.  x86_32 freaks on __udivdi3() so do
+> +	 * the division in ulong number of pages and convert back.
+> +	 */
+> +	size = PFN_PHYS((unsigned long)(usable_size >> PAGE_SHIFT) / nr_nodes);
+> +
+> +	/*
+> +	 * Calculate the number of big nodes that can be allocated as a result
+> +	 * of consolidating the remainder.
+> +	 */
+> +	big = ((size & (FAKE_NODE_MIN_SIZE - 1UL)) * nr_nodes) / FAKE_NODE_MIN_SIZE;
+> +
+> +	/* Align the base size down to the minimum granularity */
+> +	size = ALIGN_DOWN(size, FAKE_NODE_MIN_SIZE);
+> +
+> +	*psize = size;
+> +	*pbig  = big;
 
-Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
----
- drivers/base/memory.c          | 23 +----------------------
- include/linux/memory.h         |  9 ---------
- include/linux/memory_hotplug.h | 18 +-----------------
- include/linux/memremap.h       |  1 -
- mm/memory_hotplug.c            | 17 +++--------------
- mm/sparse.c                    |  3 +--
- 6 files changed, 6 insertions(+), 65 deletions(-)
+Having to return simple type values through pointers is usually the 
+start of proplems.Whenever possible you shouldn't returning simple types 
+via pointers.
 
-diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-index 5c6c1d6bb59f..67a41575ac77 100644
---- a/drivers/base/memory.c
-+++ b/drivers/base/memory.c
-@@ -226,7 +226,6 @@ static int memory_block_online(struct memory_block *mem)
- 	unsigned long start_pfn = section_nr_to_pfn(mem->start_section_nr);
- 	unsigned long nr_pages = PAGES_PER_SECTION * sections_per_block;
- 	unsigned long nr_vmemmap_pages = 0;
--	struct memory_notify arg;
- 	struct zone *zone;
- 	int ret;
- 
-@@ -246,19 +245,9 @@ static int memory_block_online(struct memory_block *mem)
- 	if (mem->altmap)
- 		nr_vmemmap_pages = mem->altmap->free;
- 
--	arg.altmap_start_pfn = start_pfn;
--	arg.altmap_nr_pages = nr_vmemmap_pages;
--	arg.start_pfn = start_pfn + nr_vmemmap_pages;
--	arg.nr_pages = nr_pages - nr_vmemmap_pages;
- 	mem_hotplug_begin();
--	ret = memory_notify(MEM_PREPARE_ONLINE, &arg);
--	ret = notifier_to_errno(ret);
--	if (ret)
--		goto out_notifier;
--
- 	if (nr_vmemmap_pages) {
--		ret = mhp_init_memmap_on_memory(start_pfn, nr_vmemmap_pages,
--						zone, mem->altmap->inaccessible);
-+		ret = mhp_init_memmap_on_memory(start_pfn, nr_vmemmap_pages, zone);
- 		if (ret)
- 			goto out;
- 	}
-@@ -280,11 +269,7 @@ static int memory_block_online(struct memory_block *mem)
- 					  nr_vmemmap_pages);
- 
- 	mem->zone = zone;
--	mem_hotplug_done();
--	return ret;
- out:
--	memory_notify(MEM_FINISH_OFFLINE, &arg);
--out_notifier:
- 	mem_hotplug_done();
- 	return ret;
- }
-@@ -297,7 +282,6 @@ static int memory_block_offline(struct memory_block *mem)
- 	unsigned long start_pfn = section_nr_to_pfn(mem->start_section_nr);
- 	unsigned long nr_pages = PAGES_PER_SECTION * sections_per_block;
- 	unsigned long nr_vmemmap_pages = 0;
--	struct memory_notify arg;
- 	int ret;
- 
- 	if (!mem->zone)
-@@ -329,11 +313,6 @@ static int memory_block_offline(struct memory_block *mem)
- 		mhp_deinit_memmap_on_memory(start_pfn, nr_vmemmap_pages);
- 
- 	mem->zone = NULL;
--	arg.altmap_start_pfn = start_pfn;
--	arg.altmap_nr_pages = nr_vmemmap_pages;
--	arg.start_pfn = start_pfn + nr_vmemmap_pages;
--	arg.nr_pages = nr_pages - nr_vmemmap_pages;
--	memory_notify(MEM_FINISH_OFFLINE, &arg);
- out:
- 	mem_hotplug_done();
- 	return ret;
-diff --git a/include/linux/memory.h b/include/linux/memory.h
-index 40eb70ccb09d..e42534b5c5ec 100644
---- a/include/linux/memory.h
-+++ b/include/linux/memory.h
-@@ -96,17 +96,8 @@ int set_memory_block_size_order(unsigned int order);
- #define	MEM_GOING_ONLINE	(1<<3)
- #define	MEM_CANCEL_ONLINE	(1<<4)
- #define	MEM_CANCEL_OFFLINE	(1<<5)
--#define	MEM_PREPARE_ONLINE	(1<<6)
--#define	MEM_FINISH_OFFLINE	(1<<7)
- 
- struct memory_notify {
--	/*
--	 * The altmap_start_pfn and altmap_nr_pages fields are designated for
--	 * specifying the altmap range and are exclusively intended for use in
--	 * MEM_PREPARE_ONLINE/MEM_FINISH_OFFLINE notifiers.
--	 */
--	unsigned long altmap_start_pfn;
--	unsigned long altmap_nr_pages;
- 	unsigned long start_pfn;
- 	unsigned long nr_pages;
- };
-diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-index 23f038a16231..f2f16cdd73ee 100644
---- a/include/linux/memory_hotplug.h
-+++ b/include/linux/memory_hotplug.h
-@@ -58,22 +58,6 @@ typedef int __bitwise mhp_t;
-  * implies the node id (nid).
-  */
- #define MHP_NID_IS_MGID		((__force mhp_t)BIT(2))
--/*
-- * The hotplugged memory is completely inaccessible while the memory is
-- * offline. The memory provider will handle MEM_PREPARE_ONLINE /
-- * MEM_FINISH_OFFLINE notifications and make the memory accessible.
-- *
-- * This flag is only relevant when used along with MHP_MEMMAP_ON_MEMORY,
-- * because the altmap cannot be written (e.g., poisoned) when adding
-- * memory -- before it is set online.
-- *
-- * This allows for adding memory with an altmap that is not currently
-- * made available by a hypervisor. When onlining that memory, the
-- * hypervisor can be instructed to make that memory available, and
-- * the onlining phase will not require any memory allocations, which is
-- * helpful in low-memory situations.
-- */
--#define MHP_OFFLINE_INACCESSIBLE	((__force mhp_t)BIT(3))
- 
- /*
-  * Extended parameters for memory hotplug:
-@@ -123,7 +107,7 @@ extern void adjust_present_page_count(struct page *page,
- 				      long nr_pages);
- /* VM interface that may be used by firmware interface */
- extern int mhp_init_memmap_on_memory(unsigned long pfn, unsigned long nr_pages,
--				     struct zone *zone, bool mhp_off_inaccessible);
-+				     struct zone *zone);
- extern void mhp_deinit_memmap_on_memory(unsigned long pfn, unsigned long nr_pages);
- extern int online_pages(unsigned long pfn, unsigned long nr_pages,
- 			struct zone *zone, struct memory_group *group);
-diff --git a/include/linux/memremap.h b/include/linux/memremap.h
-index 4aa151914eab..7467035d4f29 100644
---- a/include/linux/memremap.h
-+++ b/include/linux/memremap.h
-@@ -25,7 +25,6 @@ struct vmem_altmap {
- 	unsigned long free;
- 	unsigned long align;
- 	unsigned long alloc;
--	bool inaccessible;
- };
- 
- /*
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 74318c787715..db95933daa4c 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1088,7 +1088,7 @@ void adjust_present_page_count(struct page *page, struct memory_group *group,
- }
- 
- int mhp_init_memmap_on_memory(unsigned long pfn, unsigned long nr_pages,
--			      struct zone *zone, bool mhp_off_inaccessible)
-+			      struct zone *zone)
- {
- 	unsigned long end_pfn = pfn + nr_pages;
- 	int ret, i;
-@@ -1097,15 +1097,6 @@ int mhp_init_memmap_on_memory(unsigned long pfn, unsigned long nr_pages,
- 	if (ret)
- 		return ret;
- 
--	/*
--	 * Memory block is accessible at this stage and hence poison the struct
--	 * pages now.  If the memory block is accessible during memory hotplug
--	 * addition phase, then page poisining is already performed in
--	 * sparse_add_section().
--	 */
--	if (mhp_off_inaccessible)
--		page_init_poison(pfn_to_page(pfn), sizeof(struct page) * nr_pages);
--
- 	move_pfn_range_to_zone(zone, pfn, nr_pages, NULL, MIGRATE_UNMOVABLE,
- 			       false);
- 
-@@ -1444,7 +1435,7 @@ static void remove_memory_blocks_and_altmaps(u64 start, u64 size)
- }
- 
- static int create_altmaps_and_memory_blocks(int nid, struct memory_group *group,
--					    u64 start, u64 size, mhp_t mhp_flags)
-+					    u64 start, u64 size)
- {
- 	unsigned long memblock_size = memory_block_size_bytes();
- 	u64 cur_start;
-@@ -1460,8 +1451,6 @@ static int create_altmaps_and_memory_blocks(int nid, struct memory_group *group,
- 		};
- 
- 		mhp_altmap.free = memory_block_memmap_on_memory_pages();
--		if (mhp_flags & MHP_OFFLINE_INACCESSIBLE)
--			mhp_altmap.inaccessible = true;
- 		params.altmap = kmemdup(&mhp_altmap, sizeof(struct vmem_altmap),
- 					GFP_KERNEL);
- 		if (!params.altmap) {
-@@ -1547,7 +1536,7 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
- 	 */
- 	if ((mhp_flags & MHP_MEMMAP_ON_MEMORY) &&
- 	    mhp_supports_memmap_on_memory()) {
--		ret = create_altmaps_and_memory_blocks(nid, group, start, size, mhp_flags);
-+		ret = create_altmaps_and_memory_blocks(nid, group, start, size);
- 		if (ret)
- 			goto error;
- 	} else {
-diff --git a/mm/sparse.c b/mm/sparse.c
-index e6075b622407..24323122f6cb 100644
---- a/mm/sparse.c
-+++ b/mm/sparse.c
-@@ -951,8 +951,7 @@ int __meminit sparse_add_section(int nid, unsigned long start_pfn,
- 	 * Poison uninitialized struct pages in order to catch invalid flags
- 	 * combinations.
- 	 */
--	if (!altmap || !altmap->inaccessible)
--		page_init_poison(memmap, sizeof(struct page) * nr_pages);
-+	page_init_poison(memmap, sizeof(struct page) * nr_pages);
- 
- 	ms = __nr_to_section(section_nr);
- 	set_section_nid(section_nr, nid);
--- 
-2.48.1
+Your function is void, it could return size instead.
+
+And big seems independant, could be returned by another function.
+
+> +}
+> +
+>   /*
+>    * Sets up nr_nodes fake nodes interleaved over physical nodes ranging from addr
+>    * to max_addr.
+> @@ -100,21 +128,7 @@ static int __init split_nodes_interleave(struct numa_meminfo *ei,
+>   		nr_nodes = MAX_NUMNODES;
+>   	}
+>   
+> -	/*
+> -	 * Calculate target node size.  x86_32 freaks on __udivdi3() so do
+> -	 * the division in ulong number of pages and convert back.
+> -	 */
+> -	size = max_addr - addr - mem_hole_size(addr, max_addr);
+> -	size = PFN_PHYS((unsigned long)(size >> PAGE_SHIFT) / nr_nodes);
+> -
+> -	/*
+> -	 * Calculate the number of big nodes that can be allocated as a result
+> -	 * of consolidating the remainder.
+> -	 */
+> -	big = ((size & (FAKE_NODE_MIN_SIZE - 1UL)) * nr_nodes) /
+> -		FAKE_NODE_MIN_SIZE;
+> -
+> -	size = ALIGN_DOWN(size, FAKE_NODE_MIN_SIZE);
+> +	__calc_split_params(addr, max_addr, nr_nodes, &size, &big);
+>   	if (!size) {
+>   		pr_err("Not enough memory for each node.  "
+>   			"NUMA emulation disabled.\n");
+> 
 
 
