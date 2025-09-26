@@ -4,91 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02215CAC5AC
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 09:01:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A94ECAC5AC
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 09:01:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 593B98E0007; Fri, 26 Sep 2025 05:01:07 -0400 (EDT)
+	id E20148E0008; Fri, 26 Sep 2025 05:01:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56B958E0001; Fri, 26 Sep 2025 05:01:07 -0400 (EDT)
+	id DD12E8E0001; Fri, 26 Sep 2025 05:01:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AA158E0007; Fri, 26 Sep 2025 05:01:07 -0400 (EDT)
+	id D0E688E0008; Fri, 26 Sep 2025 05:01:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 38FAC8E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 05:01:07 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E95C813B7A8
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:01:06 +0000 (UTC)
-X-FDA: 83930806932.10.0542038
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 4A00240017
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:01:05 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PYXlLIdd;
-	spf=pass (imf01.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id BF72D8E0001
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 05:01:36 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3A77B873D3
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:01:36 +0000 (UTC)
+X-FDA: 83930808192.20.6C044BE
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	by imf11.hostedemail.com (Postfix) with ESMTP id EF49840003
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:01:33 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=szeredi.hu header.s=google header.b=cO5PlMgx;
+	spf=pass (imf11.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.160.173 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
+	dmarc=pass (policy=quarantine) header.from=szeredi.hu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758877265;
+	s=arc-20220608; t=1758877294;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1gAmHQm9uWAyxumfLUr6FGzFWyjSxL56uS3VHpLy/kU=;
-	b=GQHI7Sgz7tqfJE6n1rJBgmtMk7m4c6q9k2J5KqydGTXHsgZx5Zl7cyf+4/x8KY4G1qaP1n
-	0CsvEu8DRGoC39AShUkgKNGsD3i82ZRP1Si6qQRCrvcaAPaTmxNlYi0cn+yugeZGMeLoKk
-	l3ivCG4Fe+xZr8hdmoS51D2DOpXwCsg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758877265; a=rsa-sha256;
+	bh=G/GFYlKX8sXH9/MVnPU5JNJW5GLLJS28gOFEuvHHi/s=;
+	b=6Z46fEv8mxevaL/wwMcgP/YhZVt9jmg9L0v+1oOeC2QPmNGRdqm32IR8NnKtgJxmLXv9PE
+	LFwGUgHFt7kEZCSifn1nCQLHp/T50rCoT01i9mnnSTbnQuZkmtzJ75nGrxBGH+EZZO9gAg
+	NhYbepKkYRDsSoUx+DB3yp0SxXG17dU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758877294; a=rsa-sha256;
 	cv=none;
-	b=gs8kIWE3IuaPaA653x0dXOhBN0S2mCE6DXUmSCn7v44Oo4sZxHMGC1EDmJa2ozAtDrP4bH
-	mSi7ORMClDGQ3F33VUE0AXT6Rv2fp3yQapfhtTh4BgKcyvl18zzf68hVpNPHMq4PN5EcJp
-	972wiyv999xcvByND8dNMN/RBZFL5xE=
+	b=m9y0Cy30TxLLlsF93fdWIQ+SsACe6W4hQbQe6TPHC4ckfI18nSLGWZIdxTlpZh79grrULO
+	+5/rx9BP2vQ9p03GrbRtvDIP9GZkWZSMctv5XZh+Rz/FOQCWBx+z2m70L0CP+0q752UUUs
+	R5vqOnJ4E8zzH+J/c81Vyw6oznWHuCU=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PYXlLIdd;
-	spf=pass (imf01.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 51F4A61C5D;
-	Fri, 26 Sep 2025 09:01:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D609C4CEF7;
-	Fri, 26 Sep 2025 09:01:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758877264;
-	bh=aoHwYNOokXAGRoK1jVhoOEMXZxjxQdbdW4MEf+flVRI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PYXlLIddG5o643w4XSILB/DoVovDl52dYTyTwheDRkfqFKsWIjSGiO1YNg/QQF2DF
-	 Yy3+XfHgVG7ufU9kDESkrPZtZ6d/r8e83/Aj5zIqDus2HtsWqRFwB9E0CxVP8MKee2
-	 59c7jKvWqAeGCPutnOJk6ZvBchzEXqTLA3H+kihwDIrfq00kEMsqu6qC+xkBL2o175
-	 kBmYzKALzV+ZE6VrCqMcG2Lv1rU3A3JU+Yacg3ihF6q+O2+LyoeI2zBr1XyYSxfrQb
-	 O5V93ifpDrkxRLTFW/Zx4by2jpfsBs5VFWTN2ctdyNRWtKWc+c7oNeRitDnaHZehYI
-	 3YYdR/mFK1Ayw==
-Date: Fri, 26 Sep 2025 12:01:00 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: linux-kernel@vger.kernel.org, pasha.tatashin@soleen.com,
-	Cong Wang <cwang@multikernel.io>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>, Alexander Graf <graf@amazon.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Changyuan Lyu <changyuanl@google.com>, kexec@lists.infradead.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC Patch 0/7] kernel: Introduce multikernel architecture
- support
-Message-ID: <aNZWTB_AbK1qtacy@kernel.org>
-References: <20250918222607.186488-1-xiyou.wangcong@gmail.com>
+	imf11.hostedemail.com;
+	dkim=pass header.d=szeredi.hu header.s=google header.b=cO5PlMgx;
+	spf=pass (imf11.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.160.173 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
+	dmarc=pass (policy=quarantine) header.from=szeredi.hu
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4b548745253so30201351cf.0
+        for <linux-mm@kvack.org>; Fri, 26 Sep 2025 02:01:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google; t=1758877293; x=1759482093; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=G/GFYlKX8sXH9/MVnPU5JNJW5GLLJS28gOFEuvHHi/s=;
+        b=cO5PlMgx3tLYKLx0s5Oew6A4BgYm0dLoaV/QFrH9mHF8nFEp+5jaUEteyTzCQXlKZZ
+         iuEvHqYAMOh+GXPPX7btnO0rUzHLIf/77DqsL62DIkStlwYNWabFyVOBixgZ7vTmsQek
+         /MR+3eJamh5YQ85UircWoDEQniVgujCj1X+UY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758877293; x=1759482093;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=G/GFYlKX8sXH9/MVnPU5JNJW5GLLJS28gOFEuvHHi/s=;
+        b=n264ZoN/Khn6X7sr5No3CxZektab2ad0Jk/+NEhvnw/w7ggnXIbIA92XgfEAnr/rnX
+         MeEFH+Y1eQL2d3wogmJp90WDxoxPa/Sc3vI4MgQyULtHxHzp4iHZAt0PlrCC91UMJVhC
+         7d8krpA7OutZXTZyQO5BXx90reh9dxhQYblnW4/UDHJiRC8YG4isH6h/UnPR2t02Mzls
+         HdqPW9hHv86S71/wg6gaTwv/QPcLLTvjb0RdS8ehtBj3hg919MgtqR0K9yITR50Q4WVT
+         jX3nUn+Ub0Um0FrA5VtChYsprUg839VJTxvyO3S6lddVKNfmV8wg/YEHfuFOFBEHX3Yg
+         U0Qw==
+X-Forwarded-Encrypted: i=1; AJvYcCXDPqYjlpuXAVZeMwibyLQxY64A+xeX8aNPSGtbNVLcTCdNV0pqopL8anbDzkD5lia0HcNXk7dN4w==@kvack.org
+X-Gm-Message-State: AOJu0Ywl1awfKccE3jHuzbQkDUCYNy59ljJljngZPBBv4CD7zevzltNu
+	g5Tw9vpBGBjWewAIvwczaPkx2oxvYZg8rWUoGPUHf5oya5CuUtbpcI89hu9eRWGCbGnbmQi0SDT
+	kKHsEgcE4VzfBzQOoK6p9YHqUq5CmqzwQmFswnJ0OXg==
+X-Gm-Gg: ASbGncsGF+DO1Bu7cGqUdVEttT+2KkjaA9D7vorz7VqwjeKtrS8qsnen722zA+kJo1b
+	sFbDoCb1Z3H4DaXi44nA4ek9NxFatek1eLujsizdVSwVw4Q6seh59CSQP56IHv7DmG5VFVNhNQS
+	0G/VLZh808+tzbwt+hQ/BXihftk/Txhq1xCRncP4IvL8ljElrUzSyVvTZdFL080jwq2MlHIYEpb
+	ZqNq0JNjdSQi+v6VoWGZ4bgVaf6Xa3WYKZF5/FUC6pFPuiWkg==
+X-Google-Smtp-Source: AGHT+IHzalmSFeS2hW534mTf27M196Uxb8VIlcKO6L9aIo/0iAFRQkxP8597Cv2HReRDKaD5Ym4wy+usutK7h7mOOb4=
+X-Received: by 2002:ac8:5fd3:0:b0:4b7:ac70:d7ee with SMTP id
+ d75a77b69052e-4da47c0570cmr76627321cf.14.1758877292711; Fri, 26 Sep 2025
+ 02:01:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250918222607.186488-1-xiyou.wangcong@gmail.com>
-X-Rspamd-Queue-Id: 4A00240017
-X-Stat-Signature: 3p593xt16zyjmtzbuzqc7ui7k8ys99j1
+References: <20250925224404.2058035-1-joannelkoong@gmail.com>
+In-Reply-To: <20250925224404.2058035-1-joannelkoong@gmail.com>
+From: Miklos Szeredi <miklos@szeredi.hu>
+Date: Fri, 26 Sep 2025 11:01:21 +0200
+X-Gm-Features: AS18NWDzpmIFyfqJed-8UXKwoNHRrfCxmto9gvn_Hs3Vc9F5z9XP26K83W96iB4
+Message-ID: <CAJfpegvM48p__QALuxH_PBGcyNR2JYvJCav4Ug05SZYg1ZSRgw@mail.gmail.com>
+Subject: Re: [PATCH] fuse: fix readahead reclaim deadlock
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: linux-fsdevel@vger.kernel.org, osandov@fb.com, kernel-team@meta.com, 
+	Matthew Wilcox <willy@infradead.org>, linux-mm <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: oh6b6t5e6nym74a3pgjd7gp8cyd94wuc
+X-Rspamd-Queue-Id: EF49840003
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758877265-702115
-X-HE-Meta: U2FsdGVkX18W/suvd9NkjO75xG8I+qEdGMNuNR/ebRQVx2crUp+Ft1gIlYJ6Pcc2aZXeNZAwIIWkCk0wZYyK+/SMs+HGJh82tMvHCvNq2GVoyl6hu17bbxvP7cziyP/AFnSbOrgd67/Z8+MO+BAYVqcPpu9kmnHLe0fXjWUYwjlQtC3ZHzt3a4Mw0Gs9PrPiNARHPmHFeMcgqAtAhF/LD9SQ7jPd5gG5fkFu5LI7vtejdAGYr+NC5aNxaDMIRkRarlR4hRIr+ytEi7Hj265vU58VQJtWWmumj6W+sJt7DJSXpUTq1yiV1e1TR3qeAsT+lkJ5SNKWGVvGt7RAvM97IRH2kven8yVDCt/vobj552k6g/7fIb5uc0GOCOYrqjktYH2VqajKCyYQJef6WvSbPDgNpWzwDTt1baZmN2f/z3bDKOLPO3g9f+CdAVnHFkPosybnK7JYJO+JuuuXg9w+8PyjcJRL01OzQKQO0wZ/wMTXhMNJBeQfcTSbpAzWzXv9nTU6UMIBjmG4GYjHazMpdKVjkN7sCuATya2EmFtHhj9GPfghIta4HQ3q8dnB0eE8k1Gubl210XHhE7YDLCFWsxgQpwEVffdeEfwEvP1y528cx1xS2UVP9wa+YaNSe2biPP6mUuZkWs/GKuFUFTKNm3KkbkQjhZiSJvh17e8ksVvZDqgZWXk8zbc3nq/Ny3OUElHUAzH9K/vvu9jVGp2dB2gx8MMOJPeaRW78+l7O+iZWiVMJGgUjsI8ibDcM82I400/2KNV8mwESxBgLg7RtAKxsIttt/f9E2Z1HOQXsYXfbgOw7torOV/cR50WncxR3F/ztk6m8Mqun4qAtlpLIZJABHX4AFusNqBrpCNlwJgZlTwMeeCZvmw51DqpYiFb5bR4QogyGSX0VjrnUCfsWoJ1ZGlDrnCjOcpZXOIQG3V5qHWUnfv6ienH2LiuETVraXpiu9OZvU2J/R9LZNfo
- 7aT9Rd8D
- k+CYjOcMOnv88z/5N/Nc1YUU78Y89jjdul7aBpVS6rGLq2fRjOzUd/0BEk1rFxrR+2ZJA2YiBtsjAhFSyleO9Iowq/dknKCh9x8QR1bFJg+B44i1OIkQvXO70xv1PFMw+C+DAdK+tmnonlHn7FhyeGzPgDldlE9lAGGMjszI+EUDuxaDvt4SCAxTVZXMQ1282YgcxC7/SZoEyYdidO5AJ3u7b/fPuijDn7ejqCJpACzQ97H2z/sQ3GpXyV5d631/5iijDbY0G4pwv7WEzxWKya217zvNbKhpkt2fbnpcVtxAvX/rCd6CbaFxLuT7p/0JB/3WMIFlFq2tBGJPvIoX106uhSDgnVhfjGYaQsN8Dw6s72iQeAJkvH4C5+6W21J9qgNMUs3q8/uffJrGqwOdGk475G2vouWyQg5bsvezjv5tGzXh1Nf+qKR6XM6Ez6bwPfL8JpiMCrRhCJ10wGdJHcMdITQU1BJnZ6NA5V5M45nNdfxjlpUT/kYTqOQ==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1758877293-859845
+X-HE-Meta: U2FsdGVkX18kYR6A/wkoeCA+WpHTenYXn4q3hTewbiGwlR1a3bIEVbgm/e+WTqulh7aM1AcUh4GcOE1P2VI/g+T6gZMPXLHt+aj7oCpIGbrNJjYznVf/DVfj7jOPaS7NqiIGBhGu7UMykwnrF+/S1hbZLRGi9FC1TrQNHBcd9i1fXhn0uaKSFUaZhehOJ+Fg8IolHYrU9F34YikcCyRdyBH8/AVNZKyy/FxRPJMB4bisYogEEbVyUo429SmjlaelQVw6Wjg93HKaJ0XDyHxg5XFR2GPM1DfP9g8JS4wpvoTEEQovT59sxCrpPmsaAopko0k0bFstjuFx1x7kqyZPODZtznd47x4NJg2d/Z0XtUlcDHhrM3YeuzL6QvD3kQbPM4LNEhOPYfODp1Ld2V0n4TYTx97qVc7+1MPc/tn6G2iiBuR7QT3WUgZicY+1IC+QnE3DpBgDQvQ6cpwrVRF3g4EuJ5CqRdVzCcKZ6THsBPge/UoxogpMevGsQo8g4OUtnv/WGQPmwQmqvCgaapvnaZPb+Cxl4eVx4yGDWA5Y3n44wt56yvJZa3NDM+uS/mh0B5yUw73KQzDZgjzhkZ8Bkf5+zxupKxmHbGVLlYBvdCdcBNuA+Yu28QSec7RkFMm+/be+UGdfspt9YTtP51flxsPQwFLKFo8m4WqcbvWYnBM5mbLSWHTK9LuaQD+zZOOkYdyxaWhs7EbXqWrBYYCgK8T4rrFWF8RpZJvX1V6iKJUGRE6TTWlmXyMQwcOqW+ZiRYN8QZcYTOzoHr/XepqG+RztVv5V8UJKJLeAVYtnYco8Vjl2iSrHdMSmOH+kQneGv1McNj7VFOpdIbI0/8Infwg2dNsZjDtmiYvxITeZTzyVjS8rwdL4TtQrvTs+vbGYZ9neiV3u3O6ThX0VrqIepv96XHenYK03S3vsmp1fbVJ6WYizBphsKFhNpolLcnY02U8PwLfs9aeoCW5eQUZ
+ zXTmdkBp
+ lzgMhrgY6Qt58zFgz3BDy2dCsBirmehxM3YyDN3WcJ4FtRVj+x+JJ44rQA5pndH8JU5avjJICQV9pCq64VV3rA2tpReobW4e3p86FYWxhcEO3zS/c+099Cr/7Uwblt7/AXF+0mCGw/lMv1NJeuO8uclivm5Hyl1sJnzwnlhRkVY1YIufp4I1eS17DC9bLPhtBodP2TuAcu9JLSrdTRzOr9xs4JmORyC0kaJsl
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,59 +110,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 18, 2025 at 03:25:59PM -0700, Cong Wang wrote:
-> This patch series introduces multikernel architecture support, enabling
-> multiple independent kernel instances to coexist and communicate on a
-> single physical machine. Each kernel instance can run on dedicated CPU
-> cores while sharing the underlying hardware resources.
-> 
-> The multikernel architecture provides several key benefits:
-> - Improved fault isolation between different workloads
-> - Enhanced security through kernel-level separation
-> - Better resource utilization than traditional VM (KVM, Xen etc.)
-> - Potential zero-down kernel update with KHO (Kernel Hand Over)
+On Fri, 26 Sept 2025 at 00:45, Joanne Koong <joannelkoong@gmail.com> wrote:
+>
+> A deadlock can occur if the server triggers reclaim while servicing a
+> readahead request, and reclaim attempts to evict the inode of the file
+> being read ahead:
+>
+> >>> stack_trace(1504735)
+>  folio_wait_bit_common (mm/filemap.c:1308:4)
+>  folio_lock (./include/linux/pagemap.h:1052:3)
+>  truncate_inode_pages_range (mm/truncate.c:336:10)
+>  fuse_evict_inode (fs/fuse/inode.c:161:2)
+>  evict (fs/inode.c:704:3)
+>  dentry_unlink_inode (fs/dcache.c:412:3)
+>  __dentry_kill (fs/dcache.c:615:3)
+>  shrink_kill (fs/dcache.c:1060:12)
+>  shrink_dentry_list (fs/dcache.c:1087:3)
+>  prune_dcache_sb (fs/dcache.c:1168:2)
+>  super_cache_scan (fs/super.c:221:10)
+>  do_shrink_slab (mm/shrinker.c:435:9)
+>  shrink_slab (mm/shrinker.c:626:10)
+>  shrink_node (mm/vmscan.c:5951:2)
+>  shrink_zones (mm/vmscan.c:6195:3)
+>  do_try_to_free_pages (mm/vmscan.c:6257:3)
+>  do_swap_page (mm/memory.c:4136:11)
+>  handle_pte_fault (mm/memory.c:5562:10)
+>  handle_mm_fault (mm/memory.c:5870:9)
+>  do_user_addr_fault (arch/x86/mm/fault.c:1338:10)
+>  handle_page_fault (arch/x86/mm/fault.c:1481:3)
+>  exc_page_fault (arch/x86/mm/fault.c:1539:2)
+>  asm_exc_page_fault+0x22/0x27
+>
+> During readahead, the folio is locked. When fuse_evict_inode() is
+> called, it attempts to remove all folios associated with the inode from
+> the page cache (truncate_inode_pages_range()), which requires acquiring
+> the folio lock. If the server triggers reclaim while servicing a
+> readahead request, reclaim will block indefinitely waiting for the folio
+> lock, while readahead cannot relinquish the lock because it is itself
+> blocked in reclaim, resulting in a deadlock.
+>
+> The inode is only evicted if it has no remaining references after its
+> dentry is unlinked. Since readahead is asynchronous, it is not
+> guaranteed that the inode will have any references at this point.
+>
+> This fixes the deadlock by holding a reference on the inode while
+> readahead is in progress, which prevents the inode from being evicted
+> until readahead completes. Additionally, this also prevents a malicious
+> or buggy server from indefinitely blocking kswapd if it never fulfills a
+> readahead request.
 
-This list is like asking AI to list benefits, or like the whole cover
-letter has that type of feel.
+I don't see a better way to fix this, but Cc-ing Willy as the
+readahead/mm expert.
 
-I'd probably work on benchmarks and other types of tests that can
-deliver comparative figures, and show data that addresses workloads
-with KVM, namespaces/cgroups and this, reflecting these qualities.
+> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> Reported-by: Omar Sandoval <osandov@fb.com>
 
-E.g. consider "Enhanced security through kernel-level separation".
-It's a pre-existing feature probably since dawn of time. Any new layer
-makes obviously more complex version "kernel-level separation". You'd
-had to prove that this even more complex version is more secure than
-pre-existing science.
+This is not a new bug, right?  So at least add a
 
-kexec and its various corner cases and how this patch set addresses
-them is the part where I'm most lost.
+Cc: stable@vger.kernel.org
 
-If I look at one of multikernel distros (I don't know any other
-tbh) that I know it's really VT-d and that type of hardware
-enforcement that make Qubes shine:
+Thanks,
+Miklos
 
-https://www.qubes-os.org/
-
-That said, I did not look how/if this is using CPU virtualization
-features as part of the solution, so correct me if I'm wrong.
-
-I'm not entirely sure whether this is aimed to be alternative to
-namespaces/cgroups or vms but more in the direction of Solaris Zones
-would be imho better alternative at least for containers because
-it saves the overhead of an extra kernel. There's also a patch set
-for this:
-
-https://lwn.net/Articles/780364/?ref=alian.info
-
-VM barrier combined with IOMMU is pretty strong and hardware
-enforced, and with polished configuration it can be fairly
-performant (e.g. via page cache bypass and stuff like that)
-so really the overhead that this is fighting against is 
-context switch overhead.
-
-In security I don't believe this has any realistic chances to
-win over VMs and IOMMU...
-
-BR, Jarkko
+> ---
+>  fs/fuse/file.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/fs/fuse/file.c b/fs/fuse/file.c
+> index f1ef77a0be05..8e759061b843 100644
+> --- a/fs/fuse/file.c
+> +++ b/fs/fuse/file.c
+> @@ -893,6 +893,7 @@ static void fuse_readpages_end(struct fuse_mount *fm, struct fuse_args *args,
+>         if (ia->ff)
+>                 fuse_file_put(ia->ff, false);
+>
+> +       iput(inode);
+>         fuse_io_free(ia);
+>  }
+>
+> @@ -973,6 +974,12 @@ static void fuse_readahead(struct readahead_control *rac)
+>                 ia = fuse_io_alloc(NULL, cur_pages);
+>                 if (!ia)
+>                         break;
+> +               /*
+> +                *  Acquire the inode ref here to prevent reclaim from
+> +                *  deadlocking. The ref gets dropped in fuse_readpages_end().
+> +                */
+> +               igrab(inode);
+> +
+>                 ap = &ia->ap;
+>
+>                 while (pages < cur_pages) {
+> --
+> 2.47.3
+>
 
