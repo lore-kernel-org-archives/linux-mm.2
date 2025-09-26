@@ -4,75 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F218CAC5B9
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 12:28:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AF57CAC5B9
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 12:39:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 763278E000D; Fri, 26 Sep 2025 08:27:59 -0400 (EDT)
+	id 77D968E0005; Fri, 26 Sep 2025 08:39:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7139B8E0001; Fri, 26 Sep 2025 08:27:59 -0400 (EDT)
+	id 72E4E8E0001; Fri, 26 Sep 2025 08:39:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 629238E000D; Fri, 26 Sep 2025 08:27:59 -0400 (EDT)
+	id 6446E8E0005; Fri, 26 Sep 2025 08:39:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 52A008E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 08:27:59 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EB162C0693
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 12:27:58 +0000 (UTC)
-X-FDA: 83931328236.04.39F7DD5
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D8848E0001
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 08:39:12 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D6CC0140301
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 12:39:11 +0000 (UTC)
+X-FDA: 83931356502.14.7CD12E2
 Received: from smtp232.sjtu.edu.cn (smtp232.sjtu.edu.cn [202.120.2.232])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 2C33440012
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 12:27:55 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	spf=pass (imf04.hostedemail.com: domain of zhr1502@sjtu.edu.cn designates 202.120.2.232 as permitted sender) smtp.mailfrom=zhr1502@sjtu.edu.cn
+	by imf20.hostedemail.com (Postfix) with ESMTP id 126D61C0013
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 12:39:08 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	spf=pass (imf20.hostedemail.com: domain of zhr1502@sjtu.edu.cn designates 202.120.2.232 as permitted sender) smtp.mailfrom=zhr1502@sjtu.edu.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758889677;
+	s=arc-20220608; t=1758890350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
 	bh=sbyhiI0JrW4vjFyQ/wlshJhratpquAgd2j/gXw9N3Kc=;
-	b=aCNFqAktGFrSsOW2POJZ7bCoXt6cQ4sURjVUiweLiy2MANpM2bwREwPEutUHXfiQTwxYNE
-	ETHJfkGeKkNWR6IzB8MEDVa6Dnr/whcllPUKCzoKUzXK7/0gU9Avvx9xXhANSFji4Rb2+S
-	lsB7vhu7Iy+wem6bXNb3G8KJgyXR/rg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758889677; a=rsa-sha256;
-	cv=none;
-	b=7/QJTUZLDvDNnIQtgELyqIVPOU/90e8qGWKhnU5/FRdOUKnmwDPZ9H6bZLy8qkyWhxYq6X
-	/v/HZ6O9Svip6qV1be1of8lMi7J7tVwe0iwEgZOedkuxi3XrTf0sszZcWK8/40JHorlNj5
-	vwDpnHmpd1DZn90z8HPU6Yb5TNY+s+o=
+	b=3ROuaKw3Mai84+aDxSX3rZIhZbQk6W3LLwT7LToiMDodI0pVaiFlvpZ8YMhViHZDj/U0oP
+	K+QiXLAT+GmGj/jJ9g2w0UZ/rWy4m1PzxVfGKMznLBmA7/9WhYD7GjUzVKYjeGAhHuS1BZ
+	O53feHSz0WdENHiwLpUcsgYcaaL3VTM=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
+	imf20.hostedemail.com;
 	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of zhr1502@sjtu.edu.cn designates 202.120.2.232 as permitted sender) smtp.mailfrom=zhr1502@sjtu.edu.cn;
-	dmarc=none
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of zhr1502@sjtu.edu.cn designates 202.120.2.232 as permitted sender) smtp.mailfrom=zhr1502@sjtu.edu.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758890350; a=rsa-sha256;
+	cv=none;
+	b=PPg/rp9jyKVc3RufFaF6/G+FL2f2pJpd84Vw8XW/U/n4ji2A3G5rLe9AUwkYA8vAIwV1cx
+	M1ZUhQZR53q/4vFD50P9BHvJ5O7tTvFBrCPJXiIBY9bbONtQ4B8gPQODBP4RhyLnVQaukk
+	nEnpwxiPEIJPHkGsuAMyW6HxqWbKXn0=
 Received: from proxy188.sjtu.edu.cn (smtp188.sjtu.edu.cn [202.120.2.188])
-	by smtp232.sjtu.edu.cn (Postfix) with ESMTPS id 1A016124B5B6D;
-	Fri, 26 Sep 2025 20:27:51 +0800 (CST)
+	by smtp232.sjtu.edu.cn (Postfix) with ESMTPS id E96E0124B5B46;
+	Fri, 26 Sep 2025 20:39:03 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.181.220.127])
-	by proxy188.sjtu.edu.cn (Postfix) with ESMTPSA id 05C2B37C999;
-	Fri, 26 Sep 2025 20:27:50 +0800 (CST)
+	by proxy188.sjtu.edu.cn (Postfix) with ESMTPSA id D2ADE37C999;
+	Fri, 26 Sep 2025 20:39:03 +0800 (CST)
 From: Zhu Haoran <zhr1502@sjtu.edu.cn>
 To: ying.huang@linux.alibaba.com
 Cc: linux-mm@kvack.org,
 	zhr1502@sjtu.edu.cn,
 	dev.jain@arm.com
 Subject: Re: [Question] About memory.c: process_huge_page
-Date: Fri, 26 Sep 2025 20:27:35 +0800
-Message-ID: <20250926122735.25478-1-zhr1502@sjtu.edu.cn>
+Date: Fri, 26 Sep 2025 20:38:54 +0800
+Message-ID: <20250926123854.26224-1-zhr1502@sjtu.edu.cn>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <87y0q3e2ph.fsf@DESKTOP-5N7EMDA>
 References: <87y0q3e2ph.fsf@DESKTOP-5N7EMDA>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rfkztkmqb8otmgjfws1frkfon4ijdif9
-X-Rspamd-Queue-Id: 2C33440012
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758889675-735066
-X-HE-Meta: U2FsdGVkX1+YhOARWH/gvF+76lWgANo7zn65eTILQvtIjx7YZNEXiosFwC6aytC3l61/ZVUEcWtbvPgPNh5/kV1xXRO7/lAZUZRs6Q5/uwdUkakHQJYJiYbA2ZpS0cINSJ/89MNHQM5OCshZxAVEU6IFr8rNfKxcW9t9WFD8Ymm1mIlXryQmg7T7r9ZtOoYvYLuf3LaaqS2AZTYZXXmGnMXmYV64J2GK/zIk1JbUJ+fNrI7jtlsXIgji+HCQcDVzE42FAH3Yi3P4SvM/KjmNWOkbPIudCCJONaihmk8pTij2joh3S4DGncuX7diwS1K2DU+m/v80WEsrn6M57Kgw+OYMxEQRPKAW5lZe4qX4uadJPw/yQiyH5CJvFrE7hAKut7lI52kZfS4L+Zr9QSDDyv1U0jqblwPi462r4YOBR6cFmN6RfVF0AUAMdeaTuW+NHLSNiF398aD7gYeQZbwgI/k3VcC/3tCXtF1VY7ijrjJ5A1ht0T3x4li4WwEmaYkMDR6BEHb2lzxbgkEScJC/wzDe3QJOCcQac4bcGP0HTVAe+gqP6ewrD11dWHJljUeiP+ORoiQpD88pNSCd1+5ruOkpzNDf0qWoIeOXKOrSJym5lkPzd5XnUK+Xe0nDdRWplsIRcxD201SDxiAYh3BH921CuT1EVP5WFLJ5V/EO3ZP5TbGu8g4WXrw970Em7AKOBJuOTFYFttqWBpPEcXqQCdCPbw76UwYvY81gmdhCujeJDb1jfCOvdfVbxaEVn37fkEYpqN0huQ2DG19rquaktZOFDWquvzx3HrCP8YhsGWm4c0JPMHDNKrRyNs68rFD9QQ9H2sP7ux04zCrqVRt91S2IwyjkqKRzeUgDbSHLRKlyCxtW4a2H569YM1Wtco11+1M7TRFNxzQmGJuBXilHx45Jv/mQ7o3ASIFDWcVTLGkQcYNNfbORdKGtsxgpXCmmQOQSbCZzn9MmgqolEKC
- 98wl6LJn
- t1gxzjoODlreBR8ldO6h3zDeXDV8hju8cQUvwwckdIluKQjo6+N9xdjA/JpinIMxVNaJbogdgifn/QZOxjtTjQjBfvY/c0eiP9Y9bCUu82Kkx44v8FeTFLiCItWYJrYL2EJlMtrPN9uunOhuT0sUUYxgPcUNasRLol2csDENir7mPdtjSAxWq4A9b+bQKw3TCfm7Z
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 126D61C0013
+X-Stat-Signature: rfkztkmqb8otmgjfws1frkfon4ijdif9
+X-HE-Tag: 1758890348-748030
+X-HE-Meta: U2FsdGVkX1+0FW+qBsk/fuCYT86WWumsEhcdh6NUqpwrCD532vhQfHCJfcNRFBCkeyuFeEsA1UT9G/MBofqc8S3PRLe/L0u4HVDwm5hIZtcxaHzlcgrPEobcjy3RQLlltIesxpj0LLeZt0f9c9shgMFOqG37mopBfkuvy+VUz9YzxAS0VQFscs79C1tvbrbUCmMjJ4chXfWnDSwo2bANySb4Std6sgNDcBwZVyFBJiR6cQSXjxNwpVmu/DvVsvWJrBG0jyLwCnYSVWMl8iYp401CQko0XP/Q1xX4D8OAf9y9/s03fHuMYOpAXqLt27E+SsfmPyjrufhw5zLhTr9kdO/Pluo6awDfH7vYOz++d115ORPcoApZGKbHbocsNRd21v2eoSljNIYRF5fQ3NBNw/GdZJktbQcK6eflMMcJMugpupWD/BvpYeGSuIRbkUEZm+wSJmgrjzH7oVgmm3+y76Me/dmOsKC6ckaKoZAcc2JTnm9SrntffH5H84wMnX4/bO2jX5lRwVwjoSskZygNm7tox/S1RkU85V3bfP47Zaj3cY6J3JFLugiL8NuZD49//xSvHqkXYpeiOoL4uLh5WfQ64Z6W7IksoKM3g+NIh/WHqU4HAZrPy7JmjzZMt7gzKcb6vYgfZAp+eIofYGsLFNkO4UcZVAKggqQ8Dsdy/sxMzdH0jEwWD9zqGTHREX+POfvKgtur41FW7nybxAiN/AzhWcnXJDc7vDaWeGjDpqsO1HNf/HUzMdBrssWPB6yp+Fjq62NKvRXhRd0aM3eS9lUT0IwTIH1k2v2pWVQEPFIL8LJsKW2FlJPUsxr0GpThS0ACe5kn9yvP8M5JX8dBRVkRD18TGN1Zh/pMVSvBDR6I8JONfvMZeKP9XNI6Ek0+a5s6P9Mu2padKosNbyAEtJlPJZ+eRFMxGZ1/nd9efSxLkLhUnzA1C5FpuFwnx97G6DCPfnLdO9bB0A9ykOf
+ QkVm78VJ
+ Dnh7KLcHMvOPOhaPKEK0ix2xLajyCk0Twztwm3InqytMAbM/4jf9M5H8sBbZB2+tFQ2jUjdiQHBap1Ptfj++lPd7cinP3t1FH/2rkU2/W0tPinyNF76y2yWYy21M5kml8lXdi9ICVVmQG5SL+6+lLlB063MgWL0G+3DPvnqyEsSRfWzpL3mXI6ksTuvO8oAx+4xZe
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
