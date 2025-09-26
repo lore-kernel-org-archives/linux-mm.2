@@ -4,86 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10437CAC5AE
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 17:37:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB162CAC5AE
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 17:50:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64CC38E0003; Fri, 26 Sep 2025 13:37:18 -0400 (EDT)
+	id 0C4CE8E0003; Fri, 26 Sep 2025 13:50:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FD4E8E0001; Fri, 26 Sep 2025 13:37:18 -0400 (EDT)
+	id 09CCA8E0001; Fri, 26 Sep 2025 13:50:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 512DA8E0003; Fri, 26 Sep 2025 13:37:18 -0400 (EDT)
+	id F1B568E0003; Fri, 26 Sep 2025 13:50:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C9548E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 13:37:18 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CD2C0C0701
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 17:37:17 +0000 (UTC)
-X-FDA: 83932107714.22.882244C
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D9D688E0001
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 13:50:09 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8A8E41A0721
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 17:50:09 +0000 (UTC)
+X-FDA: 83932140138.25.856A213
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 4279C40007
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 17:37:16 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TH102F6o;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id BEAF7180011
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 17:50:07 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="iP/0kHkA";
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758908236;
+	s=arc-20220608; t=1758909008;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eVASRafy5IRhgS7dpWbuydt1VpODBCiTk13uxR1IIdE=;
-	b=iG2EG2gAd7xSR4ZC1bKuCb6BEeTgE3Kbl4h/Rez7WdBDLY1SzkTEJjeCP2345opWYPUq3y
-	f2Y9Zxr+ElVwcqZsj1Y8MxE5y5uuLf0uIUXThVKaNd+SmtpgDuF2BN80BCozimFJOGH9jr
-	g2qK6LKAGvORubAaHG0weBZM9G4OliM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758908236; a=rsa-sha256;
+	bh=Kg1pw56CZO1jFQNT/WXskMh/z0sxgn09NbpPNb5SaOo=;
+	b=FqAKK4l4W3MGGq5wSToHy0/afMfu6h0Dl9zljVIK59EBvbSZC6fO725zwjPJEQsCEFZkKz
+	zw8X4HjvrXT58TtHldq1dXTUlfF5T2Ud2sFcHQM0CXG3QTxAq5dKIMnJRx4g3VKHWTWVEN
+	JZEqUPPTA2F2nHrwV9ZZT7aaK/iKsW8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758909008; a=rsa-sha256;
 	cv=none;
-	b=sAG7z8XS2WHRY39YnHwDZgEhr9CFvKNu8u2Ow/KqtYnODmQS/FpN5zsBpDNIczCW86WIqo
-	DDEiZx9U7+27xTpqAyqG5atkB6EPpqQ2pB5qj81iK/+hzWoXzSZL51nN7VNHOzyDXEaVJU
-	o5dixPgiFGPcck9kc56mAXLjyQ3ccB4=
+	b=trp344i/CLCiec3EpwRmBpvxyO9FGyMvVNWuTtA8wn8R6H/f7Y82BN8wEUuVOqXmXpqb/C
+	hK0z43vnFGGEVYK0Sd0N7zSaoY5DDUx7ejlTktp+mztkq/rAy7a4fDCEp16KMbvWE8hDdU
+	ohZN4/1Xr9WH+fG8JQiSD7UcwZsUME0=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TH102F6o;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="iP/0kHkA";
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E6AAB4407A;
-	Fri, 26 Sep 2025 17:37:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A4DC4CEF4;
-	Fri, 26 Sep 2025 17:37:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9B0334323B;
+	Fri, 26 Sep 2025 17:50:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC5FC4CEF4;
+	Fri, 26 Sep 2025 17:50:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758908234;
-	bh=ZIQTWbCZfR8FK3ub+elpIulA3vUSjsCf39jPCJHyQVw=;
+	s=k20201202; t=1758909006;
+	bh=SNVyu5gv5hl8E6Qx2wc/yrakuqwwjH4Ub9je2xkzgaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TH102F6oqAMPPmeCl7hONVN1DFJjSrbO+wD+LsFns14LvciCBESGX5ckHOI1bgxIs
-	 0ErX1wonsGiKcr53AAQQcVN+BWxfIzcWNsc6N+161F8JPWbaE4wID26bls5hoe7Z8w
-	 69R1mYo5eSck/oQoeSItuoq93FmsTdbWOU7AY/bLmMPM3DOPEF5p5zBbgFc3ddcEJF
-	 H0TjCe1HzpEnmR3tE/NqvQJWYIiubHQPcL+/dZ6BoTKq8PcZCkB5fvvcdEo7dF628A
-	 S9Z6ZwjgUKAT1mqB9qLg9TL6cVKMKNN00kDvyMaXKfUAepx3Cv4/nAWmJ0oc/g8eAc
-	 puhVplwvfh8Jw==
+	b=iP/0kHkAX2Ih1cjA6REv4/yQ/PVDQLisR/NNCt3epWOJp4WR6kWUJN/yZ9paUrlTq
+	 QOT8HRoKT6acsywhGEG6G83EZqi0f5E3Ql0m4tfodVM2sVSnCNIlGfXLXuQj/7rY5s
+	 14dD8pJ5yXexC0GAyCwJIvxlo1wBR6TnPpvGKg6GdkXTkgg0GCwKdy/1yZpLiLpukD
+	 lI1Yrandmm1t1SbyfKYzOdUX1WdTo65t/lOpXO7W0h35vgCj4oeU/gbJKwQlWJ40qK
+	 wZARlWd05vyx1cx8OEaxwmqy8kQ8VUvLVZrtIcXEToAdBMT8TO0FpEmrsKte6s4C/e
+	 d4JCzshH5uDmw==
 From: SeongJae Park <sj@kernel.org>
-To: Enze Li <lienze@kylinos.cn>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Chris Mason <clm@fb.com>,
+	Kiryl Shutsemau <kirill@shutemov.name>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	enze.li@gmx.com
-Subject: Re: [RFC PATCH 0/2] DAMON: add priority-based scheme application control
-Date: Fri, 26 Sep 2025 10:37:12 -0700
-Message-Id: <20250926173712.53778-1-sj@kernel.org>
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 1/4] mm/page_alloc/vmstat: Simplify refresh_cpu_vm_stats change detection
+Date: Fri, 26 Sep 2025 10:50:04 -0700
+Message-Id: <20250926175004.54610-1-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <87bjmxvqve.fsf@>
+In-Reply-To: <20250924204409.1706524-2-joshua.hahnjy@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4279C40007
-X-Stat-Signature: 4g6y54pof8j5dffheyxmamn9jjp7agtd
+X-Stat-Signature: doizm9t6nr9io18d43fnisjk6oq8ps8j
 X-Rspam-User: 
-X-HE-Tag: 1758908236-137897
-X-HE-Meta: U2FsdGVkX18NuOyT9ph/7rgtLbV2PCq1O80WeAFgNgUeDBTLSQqkBbkMRYBSmCaOPK8/NcReJpMhAOXRQbuXZgeDXcG76x8+S8WD5Ry/fTd7R0z8UZpm2SVzL4vOqzj4441t8tcf87LC/oh6GBW9eEvTPgFhnMM+DM0Ir22iAv1TWXefTtvxsm4IYXXjTakLE2GxOu4IiWjsIXx0C+3tSBFJ8Fa1mTd6I8/ahBTgTJTzczq/sORejbzzbxyPxn299Myjo7fl7sTMWhI4qHjejT+nQhCD20BuS3yCYy2oEu2tq9Fy1PaVAS8SKEnw7BmpDfEPEdGLGgFSlT0n0sY8wRfDFxn75tujdBfapGEVTbhRC6HkLtkqAhc92r7l++HBHjaTqNuu7RkvoOS7t7Ou+qM9XY4dfbdaCWVzwzx2J4UOo/3ZMQVQ72X6CTF9Zu/OKnl2L6MP3tg0VVbwA7C0soREdQSAniFx1fRXJhLcfu7Kz4DNw4X68lISXNPZvBOWcVhcXDJKohVZ3KRktqmHkjCyUfy59POZOxL81L7RVBeHKz2TxtiryWyEU6VhhZWaSWoDPUYsi0vps28Tad0OpF5LmONlUEFVEUJq+Fa7TY0YUzmCdUdLuivHocjUvcFsw0Jn+2LNANegP52VfHmQptmMDK6hWYMtnP86UtBGs2OnLRhLZ7e1scPDtf1vbTM5+jxULaGv44JqKkO4tqki+0iknWno4lLcnF+Dax2P14AYey80AYEMhGGH99UBjWGBldcqqqKOSt9CgDpRbLvMpo/dXh8OCIo0I5DPbpF4Kd1XXfSzunrA2P0cJzw2cjpv/xBXJmhiJJAyVbZ4SlHkGzhP4L/qH956NkoSnPVwkG41blEwAt1hcqSIVu6hcQPmd/BxxrxFPJuu9o0rim20F9xwbhrdZS0rpoOJ2EAKPlROpin9JFZvAQ==
+X-Rspamd-Queue-Id: BEAF7180011
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758909007-55895
+X-HE-Meta: U2FsdGVkX190YU6NSt7zBLaIL5JwEnHpI9AzP4/JBzc1n2jcZ4RS62fC+7VjDj77D/WyJHMFzWtnv0UUcLOWRD65n9+NPTbW/K+n2CPG/5oL0oAetg9iDKmMCULJkci8z8A+SPOIA5sTAwHR74lU0hQjRT4spbDpjS7UZnlYWYirMD8hMo1qu6m33lCLJP+z4X4pLmWej8B/0CC+3pnNTHeb/xbTlcIta+TlDzBJ9gfKMdCeboToLs3cVk1xohsIFNvO5iO10KfrLdK3IwzMyCBfH8tVlw+keT2jZuTf6EZms+fnwIZzqhy5TeKhVnEJ/iyD9DhFsgTNFbnMGQ66abM6P9UBZuSPQS3w7wjNliZInkzRgukgODsXZEjfP6nPBc3gE9QGuBqP6JfCK7y3tMu8MVZeqQG2stXg5vxqR7lRejAJB6kGqX3jmPfI+EWnryAB/sPhP0Aual2ymXSjewYlpGAzNhSp+D8T6x4aI0vYHf4OeFZgEfUlorrda4EZTB4TYGONz1BVS1nr+2+KOwjXtljDMwB2cimM8LbBSwccGy6Icie5gqYygmUsZBW46i7CNPWRiEqo4fdAKLTjeumGJS9B++vZDE1HsXybgAxKFWVHsLUM8laHCkGkjOI4/9b7iSuWdmdLCvghDZCMwNq158he15+/eOxKqXgHf9C+nWmaq6Kkdhzo3cfb96jL9KrnYRQzgGDxrX4C+mLLzzO3AY4Oh7+rx8LnsESnJLkbYP6PcF7pJF7uQVMA7VWy/sm2cvd6pUyA0qSrZF7gUZW3QA5bfn2/D1/Ae0233NspfqS07Ci6kmr6chjQcgy5abCvxjU4RcJJSkdPCg3o6tnT/RY1pFZiaOYjjlYXivGIaFtfKemw4KKPdtYjRgQP+bwAClwPV9YrMSwCyPmHhXedv9NTJqwv6jq4t7F56kyORc0L72mKb+laUbr+wCxWRVFmFf+3Z1JGhGBvO1Y
+ 8GDXnqoV
+ 5/aFlm3GuZf08OyZqpL9dBoaIHXMzqp+v0mo0n/oqB7V3St84pwUX0MA2WaSWOQWhf4o6NoTqF+88zFelhLt8XuPJRRbO2bsbuQxSBoiFAdpLnj2zG/Gk6GQotZkG038M6AW+K93WNOXODzd6FLILrAtCuPLDADnmadwJwfi21KLqLdpMVLETychQ+aPq1PaTUgTO88b+am2cGicP84TOBEjXgg/DlRWiBrKK+AjHI224fnxHNKxC0PH9wwbImPzKAnm+2muNbdPzVSGflG3WtiAea3H/+bQZyPlPzaRJdgvc9dD/tm3lWcaR5ACUQUfzQPWRX6ZOBI6tab6w8SKoXYKQW2Imf6F4GHTFt36a5UqQccf6+PILFQIuGRL4dxm8vncm
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,64 +106,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 26 Sep 2025 11:23:33 +0800 Enze Li <lienze@kylinos.cn> wrote:
+On Wed, 24 Sep 2025 13:44:05 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
 
-> Hello SJ,
+> Currently, refresh_cpu_vm_stats returns an int, indicating how many
+> changes were made during its updates. Using this information, callers
+> like vmstat_update can heuristically determine if more work will be done
+> in the future.
 > 
-> On Mon, Sep 22 2025 at 06:01:32 AM -0700, SeongJae Park wrote:
+> However, all of refresh_cpu_vm_stats's callers either (a) ignore the
+> result, only caring about performing the updates, or (b) only care about
+> whether changes were made, but not *how many* changes were made.
 > 
-> > Hello Enze,
-> >
-> > On Mon, 22 Sep 2025 18:10:20 +0800 Enze Li <lienze@kylinos.cn> wrote:
-> >
-> >> This patchset introduces a priority mechanism for DAMON's scheme
-> >> application, allowing users to specify the relative importance of
-> >> monitored processes.  The changes ensure that higher-priority targets
-> >> receive more frequent memory management operations while maintaining
-> >> fairness across all monitored processes.
-> >
-> > Thank you for this patchset.
-> >
-> > There are features for monitoring target-based DAMOS filtering
-> > (DAMOS_FILTER_TYPE_TARGET) and per-scheme applying time interval
-> > (apply_interval_us).  Couldn't those be used for your purpose?
-> >
+> Simplify the code by returning a bool instead to indicate if updates
+> were made.
 > 
-> Sorry for the delay.  I've been testing it for the past few days.
+> In addition, simplify fold_diff and decay_pcp_high to return a bool
+> for the same reason.
+> 
+> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> ---
+>  include/linux/gfp.h |  2 +-
+>  mm/page_alloc.c     |  8 ++++----
+>  mm/vmstat.c         | 26 +++++++++++++-------------
+>  3 files changed, 18 insertions(+), 18 deletions(-)
+> 
+> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+> index 5ebf26fcdcfa..63c72cb1d117 100644
+> --- a/include/linux/gfp.h
+> +++ b/include/linux/gfp.h
+> @@ -386,7 +386,7 @@ extern void free_pages(unsigned long addr, unsigned int order);
+>  #define free_page(addr) free_pages((addr), 0)
+>  
+>  void page_alloc_init_cpuhp(void);
+> -int decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp);
+> +bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp);
+>  void drain_zone_pages(struct zone *zone, struct per_cpu_pages *pcp);
+>  void drain_all_pages(struct zone *zone);
+>  void drain_local_pages(struct zone *zone);
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index d1d037f97c5f..77e7d9a5f149 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -2561,10 +2561,10 @@ static int rmqueue_bulk(struct zone *zone, unsigned int order,
+>   * Called from the vmstat counter updater to decay the PCP high.
+>   * Return whether there are addition works to do.
+>   */
+> -int decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
+> +bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
+>  {
+>  	int high_min, to_drain, batch;
+> -	int todo = 0;
+> +	bool todo;
 
-No worry, take your time! :)
-
-> 
-> The combination of schemes and filters does indeed emulate a
-> priority-like mechanism quite effectively.  This is a fantastic feature!
-> It's exactly what I needed for managing my workload's priorities.
-
-Thank you for letting me know it works for you!
+I know you and others already found 'todo' should be initialized. :)
 
 [...]
-> I've been wondering, though -- for users seeking a simpler interface,
-> could we allow them to define a basic priority value and let the kernel
-> handle the resource distribution automatically?  This would require the
-> DAMON system to intelligently translate a user-defined priority value
-> into appropriate internal operations based on current system resources.
-> WDYT?
+> diff --git a/mm/vmstat.c b/mm/vmstat.c
+> index 71cd1ceba191..1f74a3517ab2 100644
+> --- a/mm/vmstat.c
+> +++ b/mm/vmstat.c
+[...]
+> @@ -839,7 +839,7 @@ static int refresh_cpu_vm_stats(bool do_pagesets)
+>  		if (do_pagesets) {
+>  			cond_resched();
+>  
+> -			changes += decay_pcp_high(zone, this_cpu_ptr(pcp));
+> +			changed |= decay_pcp_high(zone, this_cpu_ptr(pcp));
 
-I agree the priority based interface could be better and easier to use than the
-target filter + apply_interval combination, for some people.  That said, the
-user interface for achieving the same goal already exists.  I think adding
-another user interface here could be a duplicate that only increases maintenace
-burden.  Particularly because we need to support every user interface of the
-kernel for long term, the burden may be not that cheap.
+I'm not a fan of bit operations unless it provides clear benefits.
+What about below?
 
-And I think the kernel ABI is not necessarily the only single place that can be
-modified to help users.  Users are recommended to use DAMON user-space tool
-(damo) rather than directly using DAMON sysfs ABI.  So I think we could add
-priority based interface as another wrapper of the target filter +
-apply_interval combination, on DAMON user-space tool.
+    if (decay_pcp_high(zone, this_cpu_ptr(pcp)) && !changed)
+    	changed = truee;
+
+Just a personal and trivial taste.  No strong opinion.  If you don't strongly
+feel my suggestion is better, please keep the original code.
+
+>  #ifdef CONFIG_NUMA
+>  			/*
+>  			 * Deal with draining the remote pageset of this
+> @@ -861,13 +861,13 @@ static int refresh_cpu_vm_stats(bool do_pagesets)
+>  			}
+>  
+>  			if (__this_cpu_dec_return(pcp->expire)) {
+> -				changes++;
+> +				changed = true;
+>  				continue;
+>  			}
+>  
+>  			if (__this_cpu_read(pcp->count)) {
+>  				drain_zone_pages(zone, this_cpu_ptr(pcp));
+> -				changes++;
+> +				changed = true;
+>  			}
+>  #endif
+>  		}
+> @@ -887,8 +887,8 @@ static int refresh_cpu_vm_stats(bool do_pagesets)
+>  		}
+>  	}
+>  
+> -	changes += fold_diff(global_zone_diff, global_node_diff);
+> -	return changes;
+> +	changed |= fold_diff(global_zone_diff, global_node_diff);
+> +	return changed;
+
+Ditto.
+
+>  }
+>  
+>  /*
+> -- 
+> 2.47.3
+
+Other than the above trivial things, all looks good to me :)
 
 
 Thanks,
 SJ
-
-[...]
 
