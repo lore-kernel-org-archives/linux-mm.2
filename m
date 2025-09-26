@@ -4,75 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33C1BCAC5B5
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 03:35:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8297FCAC5B5
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 03:35:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BDDF8E0018; Thu, 25 Sep 2025 23:35:22 -0400 (EDT)
+	id 88D6F8E0019; Thu, 25 Sep 2025 23:35:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46EDA8E0019; Thu, 25 Sep 2025 23:35:22 -0400 (EDT)
+	id 83D858E0013; Thu, 25 Sep 2025 23:35:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 298BC8E0018; Thu, 25 Sep 2025 23:35:22 -0400 (EDT)
+	id 6427F8E001A; Thu, 25 Sep 2025 23:35:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1455C8E0013
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A7E38E0013
 	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 23:35:22 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DDA1F1A054C
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CF0D611A4AE
 	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:21 +0000 (UTC)
-X-FDA: 83929986042.05.B01A6DD
+X-FDA: 83929986042.09.35E5952
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf15.hostedemail.com (Postfix) with ESMTP id DFD94A0007
+	by imf29.hostedemail.com (Postfix) with ESMTP id A2E1D120009
 	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:19 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=c1llFKE0;
-	spf=pass (imf15.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ZF3cp2lN;
+	spf=pass (imf29.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758857720;
+	s=arc-20220608; t=1758857719;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SZV6gmFDjAgsmH8wXBQd2uT3uPOIgvz/RFVUDESjZ90=;
-	b=CXg5Xch1jMQj1Z6Uyw+Oqd5evRKJl1gF/cY1FNEbUA+sWLI5rCRmvuufpuD13LgwwX7ITv
-	Wq7NwIYudc47nRWzslO7JqYnSUlq9KnL3GZ2tbtSfTThm7QoZLRoIfa2krCRV51Ye+MyWq
-	khk693Gg90ksq2pwrarI7ehcMktgWZs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758857720; a=rsa-sha256;
-	cv=none;
-	b=1Us0vUqoSlaZ2Q0rfozBsiwbUTQiZDR3ONN8SFyEYwo/eqvuGdkEJzBEQ4nf0yo9DeGSmL
-	C6Edf6Rc8uevvyyFxJenqgA1abjUIKZVeG+jhBJ5F18ZQ6K7kRBRFRHfpHVMUMa5BeSsib
-	gxnl5q2mQE7ixUDw/vNgDLcZp1S7nO0=
+	bh=o7wftOFX6uIqRCqELL2jztJ7JXaVKa3cVa3hGo6RP3Y=;
+	b=QUmCTu/A9DFgqHEYPMmDzbpRP0zhr0Az8ahbKeRet0p8rYH8h+my7d0T7BUPqlOp/0DHlQ
+	eTL2jQcyK+O0o+BCqEfn8/k/jB4ahEYrKR0Xn+p7MnVpnsd+TQmgIaUIyc6nB4iJX5o9Bt
+	exKJNv7zbbe00BNU9g1KexW0FezfVps=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=c1llFKE0;
-	spf=pass (imf15.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ZF3cp2lN;
+	spf=pass (imf29.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758857719; a=rsa-sha256;
+	cv=none;
+	b=u9ORYgZm0OxyfR1NbOgnf7z+/43Y/3BNV7PN6dNgvNkzpKynWFFfVM7NcYaksvbBQzHP5y
+	x6nwfG5aDow07+1QRTVUlKBx/HnjsV/Rqa+NUlYDWQm5FGYBg4tfXYneuqzPBEAan4YPV1
+	4ySUlWBxXhKVYXPt9kDL6tfZmrCBCvA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1758857720; x=1790393720;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=RdtG4oYnaUiZ1ttzY4avkjog/6/16IXF7YMAS9x4VlM=;
-  b=c1llFKE0+q0gOllMFDYb+ww/83tcKiPNfgWOdML3YV4hgBW+y6odCXl1
-   NPsTrJRVJlSEXdn/zFsDJVN1u3oztRXB5YjFVDXEBKsS/jHvC6Kpz4jNM
-   kBzZQ4cOIZKsDeOiWeFyFyS22z8xuMoYRHMAhLmNRy8IU7fX97yjxU31I
-   CYkvN3eN/h6h7Fi10qHOJo5u84fntdbqNecoYsJ3nXtJhAxFcTgAGwDPP
-   +9kShga1sILa99aYonSoug3ws5Awvx0rSsJE13YAxNAnFc496zTCze1hd
-   SyRSmBdwF9SZxLERh52AK1X46MBwakFKvTP0Md1lguWQY9LA8sc3GwyJU
+  bh=dRlpVlM91EY2UmAflAtlYIoSrF1HS7+q+5czUjAJLDU=;
+  b=ZF3cp2lNsZI0iqaoUqdKg78YkFiOb6G+feJxGQK2zFZoiLpxIVULpTp4
+   DX0hjb8lBwFHRqmnXIeFGFBdV6z80nKGL1QrMOCYmUigXQ35brampg3+q
+   2p6VHeKWZ7GwGvtAv4B1Y8C4vyiXQ69W1XpXniJSRkBZPjWhyTLo3+NL0
+   EMGnZUWOOojJUL3Hi6ItWSnVy2y65hnTSofVE3MBzRrCWLbu7r0l2PEP8
+   RYDniGA8rnygglQLMorOjZgTtyvRSJ5gr2hINRtrbWLJOSuKYWTk0aCKO
+   S/tXoHLQMeECQZ2Vb+uoLFlcM5uUQUzT6x6hRveR35XrFUMZCSB35E+BQ
    g==;
-X-CSE-ConnectionGUID: fWvPGNz5RZ+7S827dP58uA==
-X-CSE-MsgGUID: I3vJ72HGRXyl8kdtOY3r4Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="63819627"
+X-CSE-ConnectionGUID: O/zkcdi3QP+llxxYMRPAFQ==
+X-CSE-MsgGUID: G3cWoy/ZRjybf49rI6bGug==
+X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="63819618"
 X-IronPort-AV: E=Sophos;i="6.18,294,1751266800"; 
-   d="scan'208";a="63819627"
+   d="scan'208";a="63819618"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
   by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 20:35:07 -0700
-X-CSE-ConnectionGUID: cAKDv1LcRUqGg49d9GbJ8g==
-X-CSE-MsgGUID: YeuClNc0QHeBobxThiltsw==
+X-CSE-ConnectionGUID: xkKr1NNhQJW1leB93+byNQ==
+X-CSE-MsgGUID: 60oS/FuYTWqw+ZeslG2Hig==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,294,1751266800"; 
-   d="scan'208";a="214636602"
+   d="scan'208";a="214636598"
 Received: from jf5300-b11a338t.jf.intel.com ([10.242.51.115])
   by orviesa001.jf.intel.com with ESMTP; 25 Sep 2025 20:35:06 -0700
 From: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
@@ -102,20 +102,22 @@ To: linux-kernel@vger.kernel.org,
 Cc: wajdi.k.feghali@intel.com,
 	vinodh.gopal@intel.com,
 	kanchana.p.sridhar@intel.com
-Subject: [PATCH v12 17/23] crypto: iaa - Submit the two largest source buffers first in decompress batching.
-Date: Thu, 25 Sep 2025 20:34:56 -0700
-Message-Id: <20250926033502.7486-18-kanchana.p.sridhar@intel.com>
+Subject: [PATCH v12 16/23] crypto: iaa - Disable iaa_verify_compress by default.
+Date: Thu, 25 Sep 2025 20:34:55 -0700
+Message-Id: <20250926033502.7486-17-kanchana.p.sridhar@intel.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
 References: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: yatbijhj6pnxpskmxwmsyrri74gxat8a
-X-Rspamd-Queue-Id: DFD94A0007
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758857719-2629
-X-HE-Meta: U2FsdGVkX18gI9o5wGJuYAqd83DYa1OuY4kZx6y+nB9IIZIMDGVWLwzr3VLjNx+qQBfUBCvKqwNi8/p1KWhe8obWDDgEQql4JVTakCyOz1yU1XPLdYmXM7GA60Z3TEGS6b69ZH7MHOSnClLAB4gWf1MdGY9gt0641aIsW2oN2HKNZcdOC+YpcellEfjv1WfgPSzWdnMaJdhLBlm8iQUrKX/W6tr56Xa9a+eahRKm6ThWuWhcODJUaPi0Z1gDiKSbWYfTYf2rTceISy8D9kMQA0v6e9tq+P+C9+BZmTjiYKGl+iYSJ740WfNQ3Ndak4/8qfoR3n1cdvNpLeiBBX4ZHKD6E2Zz7QlxqWQFcqOwGQYS7d/B9B7H6WRaiqwHeoizLP3pxnIzZPu+7eOZs6Tja2MHLjfuppanXAbrbh7wau4FFzJD71KjJVYRgJMrG7BV+dppNl0qOSNu/TwImoB5KLQ7cf2lNOqoxIUDADI0tHcDR3xlF+srAp1M448wpHZYZT9qH+7YIiUI3ZjwLVYYr0OD4/mvtJ0LIXa9mWgECvxTyKf9Scaldam6B20Um3d0p59z515ulQhD5o7uKpLnVXF4w6wiARSTBpDU3YaPBbM8TNiFTaZpz14LVbDe0wl3zAc9IhIvZ4zxTUUiSlNEdAIghBFR5xQ3lMccRBJ9mGGT/3V/mnOIyUqzNazMScSX1vkep5/4B6YUlfeGp5kSn0li4qLnXKbsQqMxasBRnUcD0EpwXhyj9dbMv6dB7/jpi+WekqAFPOAe/AoH5M5U1bYxn/r03mIi8x6Ut+Z4rbZaZcQXIhZTaSVOKuqI0Wlh6Hj7jXJQTV9L7EeKb1hlxmH3XgChIMAbgAqgBkshkF1GGMrwdNX+X89Jap6IVDxg
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: A2E1D120009
+X-Stat-Signature: qecjy99hy9q8umfz6wy8zjgq3kfgatrh
+X-HE-Tag: 1758857719-106287
+X-HE-Meta: U2FsdGVkX1/uB91UuMiLw4z3l3yJqYzjj5A2Rwe0K9jixBBdxcliFM6W07/iuaSJk+MM4kWzG6LvsaKSNY9koehK/igbHSQyPA1QnubqspjSBxrkxwhfMQY+w1GWZkN05lr9XCWFkNTlbt0uBu/vUqsk2tBMZp8YPIgsv8QU70OroWW2qlER36so1Cin0i+Atdnvr65cORJF4lO63wTckuDYaHgWnuZ0FKsA4Sm4mptjqHW6uYZu1oURf6y4n7+LkSK4kPeFIuDGouNecUU0Q/RqrtiYYCqWic4N/xMGrWRPxmoVmRayVaZKRoT6EZ+YEQqk7n5Gm8JcDQ81D9Emy1d1GwlYuJin39FD19yirFxIj2887Sv5kEEL+9cC/vlB2jJds9b7rLwwwaQn/DH/rtlodbdsfovWkPWz4f7a7YxLEzNlhUE0DMrQ9yMa7WjmBuukJafbrOBsxybltQPBOiRxgW9Uwwsl77gjx8/c4W7UXsYFk8bg5/tgcpche77CvgxJoy6E1qfDBxmT/CgMcXajqgMgsonuD3tXho9YmuIAhPoS3lfFNUJp0WqQ5LZwL49YqtSdH3BsBPqv7V8yNMJEKR2nteqw5jgT0pXFNiliun4+T6w7nUu5Kf3Unpa2J5wbRQR6G0a4KwpneT6W8Rie7QEqEKdsAOXYYOdRNdx5PelBhQO4LT7v1/sAdlGSeAL2q1uTC/jjloTWypo2dxQXZXWx3xgxnXIVeyIks/fsNUaxprK6ZqyGtWSkw5TvQolvLSSFPHWl48bB5Ps4eiHAmDSz7EIkwwQ3oxpR0y3PLDBDUQO5YpjRb49PKQUCom3fNVD+gR9Cg4Zy7DdMMoZpWQUDxPnjS2KN+G8X6iJrFfLk2PE/aCSSGRcVKbEz1LtVmwz3/4ayHjc/wXp5ZrPBSHo+7a2TQvBHgtgy9+8tCa+9N2RCW1kT4uD87slX6tCxpsRisBeqppnNuyM
+ VGvozbTe
+ VN0mwgucn9Q5J93vfqT5eR9M9bVXQg21srxop9Dur0sMYk5/3/4tBCGkgXKH+eORYpBgleMbH/vcbqN6+khwrAyqyWCtnCtwlaWE98h+bVy5OcSsUZOy4FV+Tc6Fl7tVaNrb671ObU80WQcGHBv/+cvNcH/1A0jpy4qvUtG7Pj9mWDFmFT8KO3RpCN2Ak3DRUJCowSukjqpnMuuYLlWPPP6Z7HkBnLJmjkC6F
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,121 +126,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch finds the two largest source buffers in a given decompression
-batch, and submits them first to the IAA decompress engines.
+This patch makes it easier for IAA hardware acceleration in the iaa_crypto
+driver to be loaded by default with "iaa_verify_compress" disabled, to
+facilitate performance comparisons with software compressors (which also
+do not run compress verification by default). Earlier, iaa_crypto compress
+verification used to be enabled by default.
 
-This improves decompress batching latency because the hardware has a
-head start on decompressing the highest latency source buffers in the
-batch. Workload performance is also significantly improved as a result
-of this optimization.
+The iaa_crypto driver documentation has been updated with this change.
+
+With this patch, if users want to enable compress verification, they can do
+so with these steps:
+
+  1) disable all the IAA device/wq bindings that happen at boot time
+  2) rmmod iaa_crypto
+  3) modprobe iaa_crypto
+  4) echo 1 > /sys/bus/dsa/drivers/crypto/verify_compress
+  5) re-run initialization of the IAA devices and wqs
 
 Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
 ---
- drivers/crypto/intel/iaa/iaa_crypto_main.c | 61 +++++++++++++++++++++-
- 1 file changed, 59 insertions(+), 2 deletions(-)
+ Documentation/driver-api/crypto/iaa/iaa-crypto.rst | 2 +-
+ drivers/crypto/intel/iaa/iaa_crypto_main.c         | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/Documentation/driver-api/crypto/iaa/iaa-crypto.rst b/Documentation/driver-api/crypto/iaa/iaa-crypto.rst
+index d5e610ef4612..81a7dbd15f8b 100644
+--- a/Documentation/driver-api/crypto/iaa/iaa-crypto.rst
++++ b/Documentation/driver-api/crypto/iaa/iaa-crypto.rst
+@@ -239,7 +239,7 @@ The available attributes are:
+ 
+       echo 0 > /sys/bus/dsa/drivers/crypto/verify_compress
+ 
+-    The default setting is '1' - verify all compresses.
++    The default setting is '0' - to not verify compresses.
+ 
+   - sync_mode
+ 
 diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-index 5b933c138e50..0669ae155e90 100644
+index c4f40984e9bf..5b933c138e50 100644
 --- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
 +++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-@@ -2379,6 +2379,36 @@ static int iaa_comp_acompress_batch(
- 	return err;
- }
+@@ -120,7 +120,7 @@ static bool iaa_distribute_decomps;
+ static bool iaa_distribute_comps = true;
  
-+/*
-+ * Find the two largest source buffers in @slens for a decompress batch,
-+ * and pass their indices back in @idx_max and @idx_next_max.
-+ *
-+ * Returns true if there is no second largest source buffer, only a max buffer.
-+ */
-+static bool decomp_batch_get_max_slens_idx(
-+	struct iaa_req *reqs[],
-+	int nr_pages,
-+	int *idx_max,
-+	int *idx_next_max)
-+{
-+	int i, max_i = 0, next_max_i = 0;
-+
-+	for (i = 0; i < nr_pages; ++i) {
-+		if (reqs[i]->slen >= reqs[max_i]->slen) {
-+			next_max_i = max_i;
-+			max_i = i;
-+		} else if ((next_max_i == max_i) ||
-+			   (reqs[i]->slen > reqs[next_max_i]->slen)) {
-+			next_max_i = i;
-+		}
-+	}
-+
-+	*idx_max = max_i;
-+	*idx_next_max = next_max_i;
-+
-+	return (next_max_i == max_i);
-+}
-+
- /**
-  * This API provides IAA decompress batching functionality for use by swap
-  * modules.
-@@ -2401,12 +2431,13 @@ static int iaa_comp_adecompress_batch(
- 	unsigned int unit_size)
- {
- 	struct iaa_batch_ctx *cpu_ctx = raw_cpu_ptr(iaa_batch_ctx);
-+	bool max_processed = false, next_max_processed = false;
- 	int nr_reqs = parent_req->dlen / unit_size;
- 	int errors[IAA_CRYPTO_MAX_BATCH_SIZE];
-+	int i = 0, max_i, next_max_i, err = 0;
- 	bool decompressions_done = false;
- 	struct scatterlist *sg;
- 	struct iaa_req **reqs;
--	int i, err = 0;
+ /* Verify results of IAA compress or not */
+-static bool iaa_verify_compress = true;
++static bool iaa_verify_compress;
  
- 	mutex_lock(&cpu_ctx->mutex);
- 
-@@ -2425,11 +2456,28 @@ static int iaa_comp_adecompress_batch(
- 
- 	iaa_set_req_poll(reqs, nr_reqs, true);
- 
-+	/*
-+	 * Get the indices of the two largest decomp buffers in the batch.
-+	 * Submit them first. This improves latency of the batch.
-+	 */
-+	next_max_processed = decomp_batch_get_max_slens_idx(reqs, nr_reqs,
-+							    &max_i, &next_max_i);
-+
-+	i = max_i;
-+
- 	/*
- 	 * Prepare and submit the batch of iaa_reqs to IAA. IAA will process
- 	 * these decompress jobs in parallel.
- 	 */
--	for (i = 0; i < nr_reqs; ++i) {
-+	for (; i < nr_reqs; ++i) {
-+		if ((i == max_i) && max_processed)
-+			continue;
-+		if ((i == next_max_i) && max_processed && next_max_processed)
-+			continue;
-+
-+		if (max_processed && !next_max_processed)
-+			i = next_max_i;
-+
- 		errors[i] = iaa_comp_adecompress(ctx, reqs[i]);
- 
- 		/*
-@@ -2444,6 +2492,15 @@ static int iaa_comp_adecompress_batch(
- 		} else {
- 			*parent_req->dlens[i] = reqs[i]->dlen;
- 		}
-+
-+		if (i == max_i) {
-+			max_processed = true;
-+			i = -1;
-+		}
-+		if (i == next_max_i) {
-+			next_max_processed = true;
-+			i = -1;
-+		}
- 	}
- 
- 	/*
+ /*
+  * The iaa crypto driver supports three 'sync' methods determining how
 -- 
 2.27.0
 
