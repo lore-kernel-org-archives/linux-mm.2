@@ -4,139 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3120CAC5BB
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 21:17:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BDC9CAC5B8
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 22:00:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 622A18E0013; Fri, 26 Sep 2025 17:17:08 -0400 (EDT)
+	id A57578E000D; Fri, 26 Sep 2025 18:00:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AC0A8E0001; Fri, 26 Sep 2025 17:17:08 -0400 (EDT)
+	id A2EC78E0001; Fri, 26 Sep 2025 18:00:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44C588E0013; Fri, 26 Sep 2025 17:17:08 -0400 (EDT)
+	id 91D6A8E000D; Fri, 26 Sep 2025 18:00:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 32EF98E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 17:17:08 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7EE448E0001
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 18:00:23 -0400 (EDT)
 Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0C63CC0643
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 21:17:06 +0000 (UTC)
-X-FDA: 83932661652.25.71D9A4B
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 306C811ACBB
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 22:00:23 +0000 (UTC)
+X-FDA: 83932770726.25.7A1FA67
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf07.hostedemail.com (Postfix) with ESMTP id D0F7840006
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 21:17:03 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KhEXZkyl;
-	spf=pass (imf07.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	by imf22.hostedemail.com (Postfix) with ESMTP id DD82EC000E
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 22:00:20 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=T+HBKtGx;
+	spf=pass (imf22.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758921423;
+	s=arc-20220608; t=1758924021;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FqvR9YQdn+VFm/f2VVsLMnfIc9MZ41bG1PMJxJgeG0M=;
-	b=QBtKcGmHfbJYINF5EUuIWad733FBxiSSLy/5BlkGZhZbr8UYHH2C+a0UHRLNkefxc7t+xP
-	l0mnDOt9m/AdGsnMomXBy2QJ0ftGs+MKT4xBJW8Ekk+har9TZy3B4v2L8hiiX+RFVuabnS
-	LasE9viiNFw4XhuSTmljwURh9LYC36E=
+	bh=fHus9Nwm7AbTe+6Nurck5vYYCcXMmbdwrVgh9usCgx8=;
+	b=PqPyBxvwFmQI3YhGJa4diwiRybyv2X0VLgAUmz7U4EcxnPOjF6dDNFFkrL83zhunfVKvM7
+	JMdK7p8lY64ijGcl+D1poCd6RJLst2HvshIAmvu2kfcHEvAMmr2iI6VuSfYSEc3jWSnRzA
+	RGpdTnHdVAHes9U6LlgWeyBow4AeHhU=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KhEXZkyl;
-	spf=pass (imf07.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=T+HBKtGx;
+	spf=pass (imf22.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758921423; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758924021; a=rsa-sha256;
 	cv=none;
-	b=RcAqCjXPL5qwWaDp4kepmXmpKPBUrIijv78U3PMk3aK6PsY33uFChUnhepIk+VhzFX0aZu
-	XVQIFJR3Lwi0TjrepjN/h9rDtTdMZeiB2hCN+76/M7TffTXNnrnB+PUUDsCviWVkRaDmXv
-	Ec7bwzm8VlgWw0/o8PXARfEuo8teWI0=
+	b=j3PyUrItTeOFenTv4+WdnmqSlOb5rVVzXZpaS9dIi/FUXVkA5MriJSzZ+etbQeAv5fqM/8
+	H93y9wekkHsV8JEyegeaMQcdnWe6ryP0Tq7vRTfvlrH71pc47zXZRNbP09s2+9Yz5DbNKZ
+	3/vKuzD5m10mHWrKkoZ+tg0IrbJHsgU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758921423;
+	s=mimecast20190719; t=1758924020;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FqvR9YQdn+VFm/f2VVsLMnfIc9MZ41bG1PMJxJgeG0M=;
-	b=KhEXZkyl2obz64Et4pTYBXCUVxmE+0LziuDbMtRvYN8Wv/3Du3+N2ax/lps0g/HzHqE4dU
-	asc9BEDGyHO5kdVtc49WtJF/ZCKliKFH41guYBtqaaletiMAmV07HkvbUqefGaDyneQgDp
-	yLvvYLnIz86ryfkGnAsVAa1C0b0VnRM=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=fHus9Nwm7AbTe+6Nurck5vYYCcXMmbdwrVgh9usCgx8=;
+	b=T+HBKtGxW57Q2irFFXoq9/kiB05SEW41U7U7qTfzA27nUH8u0OMcVuBMmMLDmV8OtaUqhy
+	lnu9yUn9/mNOUkpnjRnX4nwSMt2KD7HzkwWIA5AXWQkbcP4LB/v4HYd+HYHm042j0u0xWc
+	u9+jRSBWeo+7ISBEUVC7wTMz90rzduA=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-531-AFSUETs8MfWu2IlaRjgGKg-1; Fri, 26 Sep 2025 17:17:01 -0400
-X-MC-Unique: AFSUETs8MfWu2IlaRjgGKg-1
-X-Mimecast-MFC-AGG-ID: AFSUETs8MfWu2IlaRjgGKg_1758921421
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-85dd8633b1bso469029785a.1
-        for <linux-mm@kvack.org>; Fri, 26 Sep 2025 14:17:01 -0700 (PDT)
+ us-mta-627-f7AhjV1wM-eXFP8XOepWsg-1; Fri, 26 Sep 2025 18:00:18 -0400
+X-MC-Unique: f7AhjV1wM-eXFP8XOepWsg-1
+X-Mimecast-MFC-AGG-ID: f7AhjV1wM-eXFP8XOepWsg_1758924018
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8589058c6d1so345399785a.3
+        for <linux-mm@kvack.org>; Fri, 26 Sep 2025 15:00:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758921421; x=1759526221;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FqvR9YQdn+VFm/f2VVsLMnfIc9MZ41bG1PMJxJgeG0M=;
-        b=jYjbKI1rNnH0rkg0SwPU5lfz/Xecaytkc7XLpcTxE8o4rGejS1a9iQfzWndB1UbzaM
-         4EJJUVCExEiu08zqNK5HTzGtUrMj25gNqMXVfRbdz+pR1QywLQ20RDaGM5vtdpZk0YV/
-         0v1GItfe0cPkUgqk0fPX+2x6hoIBWMIAL5WLjI6NT88ijVJ0olWU+OMRMQibSOuwuZxt
-         qwsOlyy3zupCW8PQSedUpWhk9SS4WuZ0hnGSf6AHpYyAxfA15vsETuECOhidP6F5P+P9
-         aLahq2C2A9QF82IeRIkZCMfflz6cGO86aWcenWqblemJ/O7lOE2uknYTbZX7ZlXDZsj1
-         uv4Q==
-X-Gm-Message-State: AOJu0YxTX7lFloIgUCy4fT8PGafSTpktTCUuiSMxWflJLRbALBjByL/0
-	/DMS4R3PLc553D1ua3BNZ42hUgA0l+YQI+Orwx29mnu8KiCX7IaJn3Gl/O3An6OjLs+mu/FGap0
-	qe3/r4i4Rc136sLcDe8oiUWdgjexTK6GQ5rzkZa8H6Bk1Rc9ATcJnrUHb3/GAXDAfH8ETjbbgbT
-	Z3Z+DtoLiLJ0PskeR4vKwY9ZkVmtphv6SVuw==
-X-Gm-Gg: ASbGncsog5mS5Iiyft4IAVzJ8JoukcJ2NXgGAOQba+3o3iwuawbQ+hJ+qMxal/MX6Rg
-	q5QxNEr/Z4ZUQP6eRY1+7XcnzTNyKEstupm/gGS74gHrNUz6XBcGTxqTOR+DV8yWntIuGJohC9o
-	yW39wuI9IDWdA0x98JY1+c9SGlSY/Q8ROrvtdYUIOMdykxQZpsGHNxjb4JMXSWZZOJz8AbNA+TA
-	llLwE4nBA9h5zVoQRrpZg22T7dFggW73zs5S807hC8AGzosVbNZkuY3mE1OLx7V2eo6QQDjhvjQ
-	3L1qyw6vtGRv/b6UEEYakWUVuaoquw==
-X-Received: by 2002:a05:620a:3f97:b0:828:b2ab:a50e with SMTP id af79cd13be357-86462eacc0bmr141588085a.31.1758921420931;
-        Fri, 26 Sep 2025 14:17:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHgGSOUpzMqnLYfIUEw5sRaIdJx67JoUnQ561pUdKycpRK3QjpqhNcQ0PgHJkIkBHHGJBGvTw==
-X-Received: by 2002:a05:620a:3f97:b0:828:b2ab:a50e with SMTP id af79cd13be357-86462eacc0bmr141581285a.31.1758921420264;
-        Fri, 26 Sep 2025 14:17:00 -0700 (PDT)
-Received: from x1.com ([142.188.210.50])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-86042e32249sm210604785a.44.2025.09.26.14.16.58
+        d=1e100.net; s=20230601; t=1758924018; x=1759528818;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fHus9Nwm7AbTe+6Nurck5vYYCcXMmbdwrVgh9usCgx8=;
+        b=inz0WmqjSj0X9QS8+n9Z2UCPmcSNf/TLwOtazUKciWhvj6ik+8VM3cCxr0O+PZoOVY
+         Bk2JgiNB5SoBmPbIaS49yxF70S0xmGV1dIM7qgj8zv/E/eSFCX8VQ0PHy1blH5NCBb6V
+         mdiIf52io2RlHjU6v3ik7PixZBAZNOiruFKx715HS4PC+KWptsG/ghfxmmWp7KlF3VJZ
+         p33Ou2x+iaKPFuf98ZPhJl0v6GGvNB85JXYItcEFbh9XHPN82VqhqA3IHaPOCnJ+wnmW
+         HamRCHIhWux9tEbl6JEuzh+JXOp6cdpa40N+B8KAdQabv/jKqrdDJjaItUlRJRUwBFdh
+         Dfgw==
+X-Forwarded-Encrypted: i=1; AJvYcCVwIb0+8I+yCqYhwz6a4fQ9Ba0zf/eEFJJaYMHmbHttamBCWkmgItCcN2ZTE8eTgfKaX85vRucg2w==@kvack.org
+X-Gm-Message-State: AOJu0Yw3TQMSmvczRDc64c8X5CQ7glCZVdXb7OJEYbEFl7ElvJFYb5W5
+	WONZ5jy6Gxw0LY1Qr3kmuhvhFnC07bl3iZjcwE6w9zyDGvi541gh3O5EPg8cQXvtMu5iLxl5j6u
+	CvY8v1Dv5NBsMInyHHtZrPHkhkhzdGo7UUvl+9Q3o4myZyIDSvOiV
+X-Gm-Gg: ASbGncuBdWVDAyOUJZkqk9QpeA8VWCzBBMh8/TAm6zykxWm0Y9bf7+3gWHCP1RmVlce
+	U0tDayV+T3yh5rpCGRr4jW3v7ZkT40fy2NbGegREBfYlm9FxBv2jrjnySAByCdMyOC/jLRogoqV
+	S/A9CeCru4222+O5MZAXTJbXAyccTIX45a+k822xC+J4Q06Pi2rN/AWNuU447/u4tXHlhDhJuIZ
+	BtsIp3EtdxYtZIH3kE4OCBjjCylUC+FiiYL33URo8p4HEaGyTNWOY+ZIm5J5np4uotky89gPfRu
+	+Gf3Ps9+TTPPnpqQocyUAZAzO8s+qN/H
+X-Received: by 2002:a05:620a:3950:b0:84a:2c73:7534 with SMTP id af79cd13be357-85adf3e7e31mr1152212385a.7.1758924018046;
+        Fri, 26 Sep 2025 15:00:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGiEIFT6Y43UZ9lV42YbkkbGE0+hlc6c8wgWuacmAg98vw0vIVR278rBAv47JnGCCo4FF5UNQ==
+X-Received: by 2002:a05:620a:3950:b0:84a:2c73:7534 with SMTP id af79cd13be357-85adf3e7e31mr1152208085a.7.1758924017616;
+        Fri, 26 Sep 2025 15:00:17 -0700 (PDT)
+Received: from x1.local ([142.188.210.50])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4db09f19dc9sm32373711cf.11.2025.09.26.15.00.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Sep 2025 14:16:59 -0700 (PDT)
+        Fri, 26 Sep 2025 15:00:16 -0700 (PDT)
+Date: Fri, 26 Sep 2025 18:00:15 -0400
 From: Peter Xu <peterx@redhat.com>
-To: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Axel Rasmussen <axelrasmussen@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	James Houghton <jthoughton@google.com>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Ujwal Kundur <ujwal.kundur@gmail.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	peterx@redhat.com,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Hugh Dickins <hughd@google.com>,
-	Suren Baghdasaryan <surenb@google.com>
-Subject: [PATCH v3 3/4] mm/hugetlb: Support vm_uffd_ops API
-Date: Fri, 26 Sep 2025 17:16:49 -0400
-Message-ID: <20250926211650.525109-4-peterx@redhat.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250926211650.525109-1-peterx@redhat.com>
-References: <20250926211650.525109-1-peterx@redhat.com>
+To: Axel Rasmussen <axelrasmussen@google.com>
+Cc: James Houghton <jthoughton@google.com>,
+	"David P. Reed" <dpreed@deepplum.com>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Subject: Re: PROBLEM: userfaultfd REGISTER minor mode on MAP_PRIVATE range
+ fails
+Message-ID: <aNcM7yqj36u37LFv@x1.local>
+References: <CADrL8HWGcj1oANGY=qAzpYi_-E-Xbi=L28Bmyyf8H7auVix=QQ@mail.gmail.com>
+ <1757977128.137610687@apps.rackspace.com>
+ <CADrL8HX78-oh0k2qAgqPvNVAhi4ESYvjRsScPGR2P2Dts13Bfw@mail.gmail.com>
+ <aMl4qLyNovWHhty9@x1.local>
+ <1758037938.96199037@apps.rackspace.com>
+ <aMmMnfU-Koopc9mL@x1.local>
+ <1758043654.112619688@apps.rackspace.com>
+ <CAJHvVciL-6OLMPDGQjZ=VGDwvwKJznq0BL49uSj+DSq63LOUYQ@mail.gmail.com>
+ <CADrL8HWS7h0e0AcjbE0npoVwqvWK6c_aqML4T+MJnTkCz5AcNg@mail.gmail.com>
+ <CAJHvVcjznC9KdMDMLPCP7W5Aq_u3GobPVZQoUF=wrhUN3OL9VQ@mail.gmail.com>
 MIME-Version: 1.0
+In-Reply-To: <CAJHvVcjznC9KdMDMLPCP7W5Aq_u3GobPVZQoUF=wrhUN3OL9VQ@mail.gmail.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: yL5ahMDCTisiG0QEqw2adpFQleL7i4bnlNWmyQuswVU_1758921421
+X-Mimecast-MFC-PROC-ID: P0iKZdbqBbO7-cDltXlsUgKjjxpL6ZNJSogzxFwsXmo_1758924018
 X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Queue-Id: D0F7840006
-X-Rspamd-Server: rspam05
-X-Stat-Signature: o9hjfguknen17wsw761qcy4r6rytbfmu
+X-Rspamd-Queue-Id: DD82EC000E
 X-Rspam-User: 
-X-HE-Tag: 1758921423-354062
-X-HE-Meta: U2FsdGVkX1+JrVvU/ilwRXwuBaYBEzEo31TqiiZkXVPRbDuRcsU2iqd+Cz5PKzFs/WDTFa02vrKmX2d4qGSk1lD9LfPkveLUJKIuwn882iOaJ0xlViNSIaetpcwqgr4588dy32o6cWQ3RDe16asBd1MdaVTIyFSMG3LeB90jENEedH7ADoV5HgzX6KDNoGeFhadY0KUnu5lJNLVx88atHioOEVmZsLH4XfXnVO0EKn7hThFheVNSHVGvwGsX0nNeJtv6zWOeu9uyavq37/hRbk1tiKYRL7x4mMIOO3fRHuqwMgNueGtkcJXqrrDN/ZocjtxUDypq4NDw6cjk8mubAnu9h7fvqH+UK5rTkNasqIbo3wRHG6BoLdcLBhTRK0DlE9KbgZ4uLZRQVOTnpToRiMKbId3kiXR91VXF6jn72udJj8uT+GSdw8mK2Xrlg4onlUxdZO+jspb1qvrbXM11ENLfIHp7Qu49Z6/9PMpbUqicRUDivsH5eQL5YySKTQTPdCDxblEpbaDLWIADtiI/7Nk4FdQNRvvr676UiY7kctHVaRSgTYc5kjNtqPUOzzupHFYIwQIsJ1qOWUu4+Hlo39YIVjxqnR+O8nHDkNjJUgjutS8TrKN2j8GFH+sZcq7DkgXoKwBgmD61I5eohFyo7DZktRPLcBwp7CyCB61dSH8HId3EP1REOJLg+9JfkVB2ZFpiQ0hYOf8QwVBbMbqctZAPjrppNmfpcBZ88vO1RqPTiKoV5jTbgwCqHEZkaUCjjfxtIWwMJNpipqU3vLcKkgNM+jnUBx/Eq62ckITKfPwQdscgFfwNVCge5lSn8IJG4AlXpXY0zlxJz4vmsKqGxcll21t0V8+7C/yh63/F2qGiD9ig2Lj1HLdIQhhyQeXPlzfuOBrkIwIQBCNfFFRa/HmBcdWfcnob5++KqYQnnsbckkRgjw3+VzBmvf/J7ee/1NN36CH30+z8eroRR3w
- u4YPxBR4
- Oai4S5a+rIOCSnSl2AZTiqlsPjy8sBTL7wStom/1aU3eg9KVZFvNSpRAfiqZ0AHOI86jyuBpA9pmAWqZZntl3QQYIx8Ko/ifrLc7eFEY3iBoqMNNWmO7s+J5on4co+eLAwY4jzzj01QQMEvzD3b0uPIbUDq8NY9cJoW2Wsh3PFAFZ2Joe63gP7eRkHY8vHX6gbd4uZnVTUcKHLOn6E/2VyjB1hk0cEIO7FuH6WcrImSpNxUypz6HYXh+ZbIwRKk2VTjzj9omoPpJn5TjkFRBUDr4o7zQB68t2hCqjuU//gFn47zuXqtwxCS82gFbam4d3/Q2juAHmPnr7B6YcM6Qi9WJO4OByn5C7chy4I4xfzpfgqb2sYAjt+jdU2jnWzDKRrtq6C663rwMCrXTM5OV2Ys1NqANQ/c2kQp4JxDVipPCJpFiAIxLOV8lA37LWTJoIf1xhEQYECx07ywG3fPrPvhgU8rIibDdaonRpdivbE/fYvv71TwREVjt/waxTXJ5kIJaYayXL5DgLmO/xVV8nPktvlAxhEVlGRZDvGCRd2Ryoo7O8LUE3eVYNUxCC8YC11v9dsZpNK7Mg/sThwi3Qb+c7mEY8O2dMQ3UkpVk0pNjZ5snwXKieb/vl92xZIs7SoBm8
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 9kwn9a4ooipfrrur3tpqq7hqjs8dcykh
+X-HE-Tag: 1758924020-281811
+X-HE-Meta: U2FsdGVkX18BkAfamT4GHO60Lp72Rllfw04/K2XDhZVEwjy/XLXFMsAcu4NjVIe7ZECOeXrMOKHsM8ljE5LEQvT8ky7TtGHCJkM4GNwJuiHu830AUwZW8eO/RWNyjJua2j3HQijlHP+khWKEOUdK9cdFnft5SFB/BJW+P6ojhn0Bv8AMTIVog0EvNhOdEFYiya7jo0y+elRqMFC2nIc0ElNvkD8buo4B6aZaT/DpmetWHibc9z03IwQ3QiGelSvs2qfHYzbyCIRms7/T01+v/ykh+5mmgBxgh18nQC5XuFFgErTAoUxG1vYbbM+lkOgXQSxYTqjVEL/Af1MIkY5QxKjtyR6U4qf4OEHv22jkfBBojrBw7DzQNOMDFWoU08xEqcS60o8QuQyI0SV2Pbx4wLE7/cxi8ZPRijy/h52s6ElsvbOYYq2tihb1N/SN5JKL7DVGZH3khnKbaHP7equ2P+CLU2sqnyZXGDlIdiBDK50QdTz902LZKBt7DAFPza9hily0f6tl6HaCwF3kPtn8GH/TCA91qNh+wpJ54we5TGPZxyrI/OPmSTSMKKrLkK3N/jtV+JvTpPCRIgHm5UOnVbJdnjEtK0Ivq7wmmkshE7ohCJw1IXOIP1okw+Wei7RiF+Jusogu1KIg7beWp6sNhmLhcTMHxRldgBobNG0wtC/rnbO+WtzUsr4OU1X6PY6ox5TMWIf2eC4jOU+4LahsqUfTa4TTG2bl8tJEmBjjOV0OoWxgTsSzwWaGi9pqh6ZLj91paR7yuCd4RZXh6fXOBTo54WHZ0o3g9IwPt/iOCXZaA8WXEMbu9od+ljHXalrq4sLaFcRIYhdIALUqBphd78AgwceIFR/GkfOkjARHkgLwPovivpU1YdkALBxL8GuTOz+0k9SanYf5pG+SEwIxmvPnMhdp1C2sgMx10+pU6Akv4Lxu1+R1I7k6tpZ69tnDxsBh/zgNBrHHh+cbyI+
+ 26vG1k36
+ HKbHOyicL0djl9yAcPebtubY08oCA6oLksjaPeuDsDbcVM/hySTpNdBrHeBTvmxJkY6nCfxRBMGWj4US0e9iwDtVceO/PWYYzzoYVyXbNKKJeKyRyGrHSqmXEmVk35lj5SrBSQ12g3KRXUL8+ez9eIu+7WwghHpRCltTnzoukkGRo32eKJxuISmHQAkKu6/ieKGxDySgem4of1sxKauf98ICCC/INqz3lVIiyVQtAevrg/lMp7AK6cgETc+j5FNATcA3SQVYVCxhXQBB99a9No75dhQgm7jOiWlgkVSloS/Y8idnqpQUH1i1pR0BEUMohvlgT2CBo5TY+DaTKxmb8Y14KZCFSHxXDGXvYxBaQD8ogXka/lE1xjawJnIhFtyFuIfffhh9LqhnPJNogiCRrmPtVM+BoEeYLbfTxLTkQELTQ+hcG3yBw2/2O3K1UYIUSRCzjUj4orCY/qGAIWxOfhI8Hg4Ajo4CJU3F1oDlVLLwPoV5kr0d/MYdGsIeTxtisRFWXOePPoKJCu645/MG0CFjn7uhIoZeTIJOX6BK1uukjaR3yqtWBtujZyPsWvAAivBCInWMFCInGpbx6bSgSITA0g4gSPwikB9PDPRDNDu6k/QU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,59 +140,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add support for the new vm_uffd_ops API for hugetlb.  Note that this only
-introduces the support, the API is not yet used by core mm.
+On Tue, Sep 16, 2025 at 03:04:46PM -0700, Axel Rasmussen wrote:
+> On Tue, Sep 16, 2025 at 12:11 PM James Houghton <jthoughton@google.com>
+> wrote:
+> 
+> > On Tue, Sep 16, 2025 at 11:35 AM Axel Rasmussen
+> > <axelrasmussen@google.com> wrote:
+> > >
+> > >
+> > >
+> > > On Tue, Sep 16, 2025 at 10:27 AM David P. Reed <dpreed@deepplum.com>
+> > wrote:
+> > >>
+> > >> Than -
+> > >>
+> > >> Just to clarify -
+> > >> Looking at the man page for UFFDIO_API, there are two "feature bits"
+> > that indicate cases where "minor" handling is now supported, and can be
+> > enabled.
+> > >> UFFD_FEATURE_MINOR_HUGETLBFS and UFFD_FEATURE_MINOR_SHMEM
+> > >> In my reading of the documents, these seem to imply that before they
+> > were added as new features, that MAP_PRIVATE|MAP_ANONYMOUS mappings were
+> > supported, and that the "new" additions to the MINOR mode were just for
+> > HUGETLBFS and MAP_SHARED cases.
+> > >
+> > >
+> > > Actually minor fault support didn't exist at all before those two
+> > features were added. :)
+> > >
+> > > You are right that userfaultfd's use of "minor fault" is (unfortunately)
+> > slightly different from the meaning in other contexts. I think the more
+> > normal meaning is, faults which do not incur I/O (i.e., swap faults and
+> > file faults [i.e., faults on non-swap-backed pages] are major, other faults
+> > are minor).
+> > >
+> > > For userfaultfd, a minor fault is a fault where the page already exists
+> > in the page cache, but the page table entry wasn't setup. I don't think
+> > that scenario can ever happen for anonymous, private mappings, so it
+> > doesn't really make sense to be able to register such mappings in this
+> > mode. If you create a mapping with mmap(MAP_ANON|MAP_PRIVATE) and then
+> > access it (read or write), that fault requires allocation of a new page, so
+> > userfaultfd does not consider that a "minor fault". My recollection though
+> > is if you make a file on tmpfs or hugetlbfs, fallocate() it or whatever,
+> > and you MAP_PRIVATE that file, *that* registration will work.
+> >
+> > Ah! You're right... MAP_PRIVATE *is* supported (for tmpfs and
+> > hugetlbfs only), and UFFDIO_CONTINUE will, upon finding the page in
+> > the page cache, install a RO PTE for it.
+> >
+> 
+> Why does it have to be RO? I think it depends on the PROT_ flag you
+> specified when you created the private mapping.
 
-Due to legacy reasons, it's still not trivial to move hugetlb completely to
-the API (like shmem).  But it will still use uffd_features and uffd_ioctls
-properly on the API because that's pretty general.
+It needs to be RO because we're installing a page cache into a PRIVATE
+mapping, hence we don't want the private mapper to update the page cache,
+we want the 1st write to CoW there.  I believe you wrote the code. :)
 
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Acked-by: Mike Rapoport <rppt@kernel.org>
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- mm/hugetlb.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+Relevant lines in mfill_atomic_install_pte():
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index cb5c4e79e0b8f..b6eb92828ee15 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5492,6 +5492,22 @@ static vm_fault_t hugetlb_vm_op_fault(struct vm_fault *vmf)
- 	return 0;
- }
- 
-+#ifdef CONFIG_USERFAULTFD
-+static const struct vm_uffd_ops hugetlb_uffd_ops = {
-+	.uffd_features	=	__VM_UFFD_FLAGS,
-+	/* _UFFDIO_ZEROPAGE not supported */
-+	.uffd_ioctls	=	BIT(_UFFDIO_COPY) |
-+				BIT(_UFFDIO_WRITEPROTECT) |
-+				BIT(_UFFDIO_CONTINUE) |
-+				BIT(_UFFDIO_POISON),
-+	/*
-+	 * Hugetlbfs still has its own hard-coded handler in userfaultfd,
-+	 * due to limitations similar to vm_operations_struct.fault().
-+	 * TODO: generalize it to use the API functions.
-+	 */
-+};
-+#endif
-+
- /*
-  * When a new function is introduced to vm_operations_struct and added
-  * to hugetlb_vm_ops, please consider adding the function to shm_vm_ops.
-@@ -5505,6 +5521,9 @@ const struct vm_operations_struct hugetlb_vm_ops = {
- 	.close = hugetlb_vm_op_close,
- 	.may_split = hugetlb_vm_op_split,
- 	.pagesize = hugetlb_vm_op_pagesize,
-+#ifdef CONFIG_USERFAULTFD
-+	.userfaultfd_ops = &hugetlb_uffd_ops,
-+#endif
- };
- 
- static pte_t make_huge_pte(struct vm_area_struct *vma, struct folio *folio,
+	if (page_in_cache && !vm_shared)
+		writable = false;
+
+> 
+> 
+> >
+> > But what happens when the write comes after installing the RO PTE? My
+> > reading of the code today makes me think that we'd get a minor
+> > userfault and then be unable to continue...! (The only reasonable
+> > behavior is that CoW is done without triggering a userfault... I
+> > assumed/thought this was the behavior today. I wish I had time to test
+> > this -- I hope I'm misreading it.)
+> >
+> 
+> It's possible my memory is wrong, but I don't think UFFD minor fault
+> handling really interacts with CoW faults. IOW, I think you get a UFFD
+> minor fault when the PTE is missing, not when it's RO resulting in CoW. I
+> think there we just CoW the page as per normal and no fault is reported via
+> UFFD?
+
+Yes, even though I don't think PRIVATE is a goal for minor fault, IIUC we
+support it, a CoW should be a follow up if the minor fault is triggered
+from a write.  If it's a read, then RO entry should start to work.
+
+Thanks,
+
 -- 
-2.50.1
+Peter Xu
 
 
