@@ -4,87 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9373CAC5B8
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 16:21:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEAF5CAC5AE
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 16:29:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FC9B8E0008; Fri, 26 Sep 2025 12:21:33 -0400 (EDT)
+	id 125A28E0005; Fri, 26 Sep 2025 12:29:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D41D8E0001; Fri, 26 Sep 2025 12:21:33 -0400 (EDT)
+	id 0FE1F8E0001; Fri, 26 Sep 2025 12:29:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1110F8E0008; Fri, 26 Sep 2025 12:21:33 -0400 (EDT)
+	id 03A368E0005; Fri, 26 Sep 2025 12:29:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 005038E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 12:21:32 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A77635A89D
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 16:21:32 +0000 (UTC)
-X-FDA: 83931916824.23.E0C7DCF
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E772E8E0001
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 12:29:57 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 821441A01D2
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 16:29:57 +0000 (UTC)
+X-FDA: 83931938034.08.D9573FF
 Received: from gentwo.org (gentwo.org [62.72.0.81])
-	by imf23.hostedemail.com (Postfix) with ESMTP id ECA20140011
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 16:21:30 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gentwo.org header.s=default header.b=CNm+PbEE;
-	spf=pass (imf23.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id E296AA0016
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 16:29:55 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gentwo.org header.s=default header.b=skDDhUwp;
+	spf=pass (imf15.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org;
 	dmarc=pass (policy=reject) header.from=gentwo.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758903691;
+	s=arc-20220608; t=1758904196;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i37nP5Fsob6v27s2uWqZghUanMjCFkgfqQelus7jYZk=;
-	b=QICAkriG8/JSxkCZJGjS5GDjzEIewlZEMQIttbPXlT0eqgKReUxwG/z6FcnzRj3XpHZAf0
-	oJIbk9qjj1IKm93SE2q4H6jif1Jy1U4o8/8cQAaYncNI1kdLBF4aUXiueZglEmlBEJc9Bh
-	wl0zuCMb1bG+oxZu0LUXDWG4nOqIUvg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758903691; a=rsa-sha256;
+	bh=pXZMnjw+Sy9OuF5bFWxCBJB/q1PalvTkN3dKPnTWL5s=;
+	b=y7YZy4i8m5Zqp6ZngI4eh5hhBb2s0tUTHu7683itkEaJwz0C1/bS+dAxEFjtb/vnn+HnB8
+	voGf7cXT8H5KhfTA7UmC0kXdHOw0UXHQ4yowyRoQVqeWNPQOTYSW59U3GKbQs/NCOZSD5Q
+	KlXKnN9UbR0XV5BwAAoZ4A7NaAHKnZE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758904196; a=rsa-sha256;
 	cv=none;
-	b=CLZ8AQLar7NPzmIbfDJnWeaDG+iTveO3gFvKtiVbY9K7ujHiakhZ8AIg10cwkix2aoZrnJ
-	sk2CRdPc5YHK3h3Zc78auyienCGJC6I69Kq2CMbhcDvCUtdgFnzL9SVMYUuJX9pIwRPMvz
-	Hs0amrsSOqdkkNTLMDqOoEXBUogP0gw=
+	b=ibQ5zfeTnAW937EAX9puZgRKjeNE3HXYiHLxHJkwfQurm9Tabqugw+td037JhUSrFjJJOj
+	OBusd5tYvMKuLwV0/TIRrGiWCQxuengJn+XU7lcvVP1Lor83yCdBgaPZwxyA7U2+ulGDO2
+	Wrgiowq8qim6y5ftBE7c9vMzqD+U524=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gentwo.org header.s=default header.b=CNm+PbEE;
-	spf=pass (imf23.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gentwo.org header.s=default header.b=skDDhUwp;
+	spf=pass (imf15.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org;
 	dmarc=pass (policy=reject) header.from=gentwo.org
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gentwo.org;
-	s=default; t=1758903689;
-	bh=i37nP5Fsob6v27s2uWqZghUanMjCFkgfqQelus7jYZk=;
+	s=default; t=1758904194;
+	bh=pXZMnjw+Sy9OuF5bFWxCBJB/q1PalvTkN3dKPnTWL5s=;
 	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=CNm+PbEEeiWQMTxOz2g7X7Au3srI3fYV/lCulXVwtRi05x++a4eF8ooa+ce/5xE7g
-	 E9c9TU3m9EGg1Pbf4ecSNQ0MvpmA5cPENTB4M4Tv+X19WgwsqZE/99sPQs5do3TCxO
-	 lqQoJCT7a6lUS7J6HoRAN4xbqW/8AZbxkI6Xp1DM=
+	b=skDDhUwpJ28QhFf/DSEnPG5i/j3L4lkVN7HJLxmnX4uQxrTIFaawx6ZJ0RYaqdB8P
+	 TX2qnBt3jCnEEZntTEo9pqbumFSpzucw40GmAk3mt2XUuX0BlDUT7m+kowp6/xsUBs
+	 Vt5Gf6ITs6DFEN4o42ynwJyrLtOXnNVSwUntSpBs=
 Received: by gentwo.org (Postfix, from userid 1003)
-	id A72E0402AD; Fri, 26 Sep 2025 09:21:29 -0700 (PDT)
+	id C2062402AD; Fri, 26 Sep 2025 09:29:54 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-	by gentwo.org (Postfix) with ESMTP id A5BD44028E;
-	Fri, 26 Sep 2025 09:21:29 -0700 (PDT)
-Date: Fri, 26 Sep 2025 09:21:29 -0700 (PDT)
+	by gentwo.org (Postfix) with ESMTP id C0E204028E;
+	Fri, 26 Sep 2025 09:29:54 -0700 (PDT)
+Date: Fri, 26 Sep 2025 09:29:54 -0700 (PDT)
 From: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-cc: Andrew Morton <akpm@linux-foundation.org>, 
-    Johannes Weiner <hannes@cmpxchg.org>, Chris Mason <clm@fb.com>, 
-    Kiryl Shutsemau <kirill@shutemov.name>, 
-    Brendan Jackman <jackmanb@google.com>, Michal Hocko <mhocko@suse.com>, 
-    Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
-    Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-    kernel-team@meta.com
-Subject: Re: [PATCH v2 2/4] mm/page_alloc: Perform appropriate batching in
- drain_pages_zone
-In-Reply-To: <20250925184446.200563-1-joshua.hahnjy@gmail.com>
-Message-ID: <567be36f-d4ef-e5bc-e11c-3718272d3dfe@gentwo.org>
-References: <20250925184446.200563-1-joshua.hahnjy@gmail.com>
+To: Yang Shi <yang@os.amperecomputing.com>
+cc: muchun.song@linux.dev, osalvador@suse.de, david@redhat.com, 
+    akpm@linux-foundation.org, catalin.marinas@arm.com, will@kernel.org, 
+    carl@os.amperecomputing.com, linux-mm@kvack.org, 
+    linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: hugetlb: avoid soft lockup when mprotect with
+ PROT_MTE
+In-Reply-To: <20250926162034.1785899-1-yang@os.amperecomputing.com>
+Message-ID: <1038c7c7-81d6-f273-6fa1-93eb7206d5ed@gentwo.org>
+References: <20250926162034.1785899-1-yang@os.amperecomputing.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Queue-Id: ECA20140011
-X-Stat-Signature: 638mgewuidja1nib5a73xdghi9jjcw7u
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E296AA0016
+X-Stat-Signature: ubqjpj89i41ii4xin3j8a691usezh6w6
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758903690-990969
-X-HE-Meta: U2FsdGVkX19eiqL95ngUkoiSgS6ZN01EErvXncQh6GVmyl2GMto9b+gFvuviCmjIzLhYEAKobRHTMJRceotkBrcs5SPta6dSIim4oLhijbVxWxh+7ZpM/nYY7qpDI/8K5uAjozUVozAwcBhJgo7yBSmsDJvUmtHkMH8HaieZ8bql6YfBTI9YZdJeT/wzmgCicTdA42ux6FKHaXMuKb9u2umcRty/wv5ujigiZwZnwNDnWHx+94vh0zCsPuLIhMYQXn85XWUmfRbIfmeeivvV3FztyV2CYKYasE+3t7JbfTzay7ilzBFeFqaPyeMPoAGAo7u7WwoSF8D1uCqkDMvgbMqbTyrHyPDVUur8c+r2ak3KQxInCbEAFT3QNAreJM4EC14x7RZ69578n0BgE+H0CxNOGUcF0oPXHOmcIM/5wVgZqVR7z7r4u0LtNBvMsp/TPYSmYq4GRorZJmgC1jSlPsvrSbeLPQ8U233WlTrikpqJqYoY1e8E/vH8E2hcMkHMu9rZbH197vByZUbUT4Fl/kYJiTW/4hyks4v8WaWnd+eH1UWeunwNM498FratbTxayPt5NjKhqJuim2EhyenmlJu5z9GD4KbObWuXHz/dQYIfSnZi49SH1uCsC7XXCmmY4lcMOSoT07fTQ7WuvhVzGCx0hA06/fHlE3enZC6Nc0tyuidB0DzrzYwoDcdiZEI/Icp+UCFdyuUHcYGukUsPnBeDT9kxE0+CMUXewqJ26s6c7OTV95rIkmH2DrPJZWZ4bGGfDGnOd+Rdomtt5nmcVb82PH+34KAgV64wmsH4lq9MY3maOiiXw7RAiSiDyYk3DSQC35UINIkuPg6+vvMzvTzto71yS5/SjCofKewf5pV7bfIao0QJjD4KeBJJEyQpwwZpy2FnFhsgFa/Un2MUEVWM63MZSnLDHTrXXgDFPiDVruJfQS0PEm3GLHXULOoCwSmppTcrqtotyFoAzjI
- CL8/yPEX
- ThWv6Wn4oCiUkFsINhOjevZfzLNKe5g4fmtH/kM9Ki5xHPMESPqBcJsYpXhNOxHTDIEruZDVLtIdyYbpghFQ74aIn3zLLLsvI6ZQnWBzbTSejhu7SgZvTlGTcwKiHbOYuuW2YozVsUbM7jPc/zpHaTHwWnE6yuXI3kqssKedZIzFIsxAaRPfy0h+Vt7oO07x4zXb0svWrTQ2UL7DqFlHzEfs9sUkh87eOpwmAYO0BBJIMbeLvPbwZLNtCgcyTk+WjfPKa+9KB5A43E8z0sOrWbkGvz5ZYPkzK/kxUyAEa4VV11/igJ3D5FMAOYWi4swrxmBfbnMhh0vv0n3E4Y46XsCNuok+l8WH22komK39Xxi9uuMA=
+X-HE-Tag: 1758904195-783521
+X-HE-Meta: U2FsdGVkX19dT0FrdELH3t/xUmD2doSmHK5NDOsa2hP2NkgekCiF6hhk8dVtvZ7cmiZyzt5rMyAgP05a2vWMtTN+WfZTDowA5lSn90FMSY4d6PXjMGcLr4NMT/ayMkO9x9mR3T1FJts2GRoY3AJsyL8Tr17UPd2qRBB/f6XfGx+LARyGmG3tFUJe/oWfOKrsiN4jjDll2caPqiKmG7yYhQo14F2yIPWmFd998FjAJMUAmTISUllUEOTx3mZ7XdjxDCWubPkDL6MoSuznVdPVch6MvKfzuVxcxrh5/GIrtXqdJi6SKKfy0YgjpS9Emy0Rip2dlifccJ5vMlIKLSVlwHHJusluoLq4e2AAj75bRLVJ6SemH740/qfFq6WCfwZxbWkWs2BSQoiDaE5V3a8EB1o0693PJBJjiRUdYH3Gzf+xzkmuUvSEYRz4nt1E29ysG493u1rmHNmAKKKWAZtR7i3gmM/2d4rXQwpusSyS5uO78h84a85SrKuu0vv4Dy/KSuSOhkbmj1qikS5ZH02mpoAXBiYsbLGpGTmsbleXH7gTjoVgbZxknj53uyx8kj60KnWixl1qmvJeVkYKj/ZN6WO+OMNQT3SdYFwPODYYZnZAe08GRxZwWQiBWVvd3db1IvIOLnMazbBXAiwMNZPbMJAjHZGNZEo64jdl4vEpOSHBApB9l5rftKBkjpe68i+F2kv5dZK0eEe6Pp4XhHc8Ao+RPsZSTYpibXgi3LOkz8Dp9HwSMP78ERkjTv0TmKXvDpTwJX5Dt/ea5TgMIGrQWQ9PsHgC/xSVDu3gc0xzYPWjWntHSr+9HIDthlyFZnD4cJOn9GkuCZj2wber6hzZjcr5XxBkMWFjVYNZYa/Wywx4PyiJn4AS3bxb893iG37C3RtRYy+byh1s3dDtbyw6jlJ9R1Otx02mEDfhio/JWiSdjPHvqJkKJQSdngpG5dxVaClTQMhA9R+Hwhj8c1y
+ WnWUDf5d
+ CqQqboVI2+1spID6bv8ESB8/L79wIcVHEkr/63/2TksQsLwcW4CS1Fl/lNG5QEK4a5tYvERVFDjNFBZ+UjOPeIHNVpHMh7F1fkpHcUw2tXuszwI1uIGmHsTZKubpAW5yZ1bshfEBxDzf+MrLFkBBTVAvUVANtYjeUgxjVCH5xWlwHST1XJQcdxP6qLJoC7GRpqW8wj6wEc0l043BCtw7Sp4q3Snh3weG6U3BFImHkv5I9zWf+aoF2H/KnVyKz9d7D4CGeMrrh0KvLNFMsizr0Yrclt/Ek27j8hVbvpYkygYOinZaQpEGSYirP5g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,44 +90,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 25 Sep 2025, Joshua Hahn wrote:
+On Fri, 26 Sep 2025, Yang Shi wrote:
 
-> > So we need an explanation as to why there is such high contention on the
-> > lock first before changing the logic here.
-> >
-> > The current logic seems to be designed to prevent the lock contention you
-> > are seeing.
->
-> This is true, but my concern was mostly with the value that is being used
-> for the batching (2048 seems too high). But as I explain below, it seems
-> like the min(2048, count) operation is a no-op anyways, since it is never
-> called with count > 1000 (at least from the benchmarks that I was running,
-> on my machine).
+> When calling mprotect() with PROT_MTE, kernel will initialize MTE tags
+> for every single page in the affected area. Soft lockup was observed
+> when doing this for large HugeTLB memory area in our customer's workload
+> (~300GB memory):
 
+AFAICT this is a bug fix. The hugetlb path should be doing a
+cond_resched() like the base page code does.
 
-The problem is that you likely increase zone lock contention with a
-reduced batch size.
+It is not MTE specific. If other processing takes a long time in the loop
+(setting up terabyte size mappings for hugetlb for example) then the
+softlockup could also be triggered on non MTE workloads.
 
-Actually that there is a lock in the pcp structure is weird and causes
-cacheline bouncing on such hot paths. Access should be only from the cpu
-that owns this structure. Remote cleaning (if needed) can be triggered via
-IPIs.
-
-This is the way it used to be and the way it was tested for high core
-counts years ago.
-
-You seem to run 176 cores here so its similar to what we tested way back
-when. If all cores are accessing the pcp structure then you have
-significant cacheline bouncing. Removing the lock and going back to the
-IPI solution would likely remove the problem.
-
-The cachelines of the allocator per cpu structures are usually very hot
-and should only be touched in rare circumstances from other cpus.
-
-Having a loop over all processors accessing all the hot percpus structurs
-is likely causing significant performance issues and therefore the issues
-that you are seeing here.
-
-
+Reviewed-by: Christoph Lameter (Ampere) <cl@gentwo.org>
 
 
