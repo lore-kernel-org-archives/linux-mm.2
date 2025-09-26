@@ -4,95 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14752CAC5B9
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 13:48:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 672C2CAC5B9
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 14:01:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C9798E0008; Fri, 26 Sep 2025 09:48:32 -0400 (EDT)
+	id B26BD8E0007; Fri, 26 Sep 2025 10:01:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A1C58E0001; Fri, 26 Sep 2025 09:48:32 -0400 (EDT)
+	id AFDE58E0001; Fri, 26 Sep 2025 10:01:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B77B8E0008; Fri, 26 Sep 2025 09:48:32 -0400 (EDT)
+	id 9EC518E0007; Fri, 26 Sep 2025 10:01:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 07ED58E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:48:32 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AA5401A06AD
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 13:48:31 +0000 (UTC)
-X-FDA: 83931531222.22.02DF61F
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5BD7614000B
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 13:48:29 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu
+	by kanga.kvack.org (Postfix) with ESMTP id 871F98E0001
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 10:01:48 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 126FD14071E
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 14:01:48 +0000 (UTC)
+X-FDA: 83931564696.03.62BFBFF
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 29122100021
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 14:01:45 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=T0wSIy6E;
+	spf=pass (imf05.hostedemail.com: domain of 3yJzWaAgKCKkSJLTVJWKPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3yJzWaAgKCKkSJLTVJWKPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758894509;
+	s=arc-20220608; t=1758895306;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nHAzyB1ExayqfB1KvLcMUJ+iJCBNjh2z3jpPxeZ8LlU=;
-	b=THeccEtqsPJZmucc0jQMMbz/huwDpSch/bMA8GuliAk3vV/z3aHAC1wK28Hvn6T9AStZ7j
-	FkyVRQ4EFOmdO4WcsPiqxKCZmXiKZ4EJze4DGzsEQ29Rtm5ZxkLitwLSexzXhq4vlIUiJN
-	3dXsFAyt0mxGuVkhn5eq4Lt6UF3b+V4=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=KSgSv5ivUBDbWRK+2F3rymI1CRou1bjS7ledl+wX67k=;
+	b=CbQeLOlGUf7fb3gBng7WsubUMTsdbLK5pX1qgsu8lGHFf7UQFBRgPOM3U0fNNeqmkm4826
+	L3A4FnRCugtMm9bB6Mraoao2tX4KKU3ID1XD+qP8J2wg44YYkAwxFDpTr++ZS0hZZI3BiP
+	sbXfYpTYGG9hfK8F1zDAEBJThJ1KKi8=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758894509; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=T0wSIy6E;
+	spf=pass (imf05.hostedemail.com: domain of 3yJzWaAgKCKkSJLTVJWKPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3yJzWaAgKCKkSJLTVJWKPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758895306; a=rsa-sha256;
 	cv=none;
-	b=av1xSENp4kjN2AkWMOvvPXwMJB6oR6Xzrs2TDb1iV4Gyyu43CgobAX+uxLgDqt1bMOy5FE
-	F952AVUS/J1JN/Fa/Qfe+6NnvjbF/RHaOvBaqqrxoS/07E/svsVlNT/pgI/GfZ8agJXBLp
-	OtSG9PXEeR1Ca2KeXY5PLRD1TLf/2sM=
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cYBkM2mswz9sTk;
-	Fri, 26 Sep 2025 15:48:27 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 5Q3lMEydGwPm; Fri, 26 Sep 2025 15:48:27 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cYBkM1Y8Xz9sTh;
-	Fri, 26 Sep 2025 15:48:27 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 2435C8B77A;
-	Fri, 26 Sep 2025 15:48:27 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id iuKruXyQLJPN; Fri, 26 Sep 2025 15:48:27 +0200 (CEST)
-Received: from [192.168.202.221] (unknown [192.168.202.221])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id CF6348B779;
-	Fri, 26 Sep 2025 15:48:25 +0200 (CEST)
-Message-ID: <3a1e75dd-6b39-4506-b4d7-806915d2a6fa@csgroup.eu>
-Date: Fri, 26 Sep 2025 15:48:24 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mm/numa_emulation: Move the size calculation in
- split_nodes_interleave() to a separate function
-To: pratyush.brahma@oss.qualcomm.com,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20250926-numa-emu-v1-0-714f2691bf8b@oss.qualcomm.com>
- <20250926-numa-emu-v1-2-714f2691bf8b@oss.qualcomm.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <20250926-numa-emu-v1-2-714f2691bf8b@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5BD7614000B
-X-Stat-Signature: 7ke6bnc1npyj1igm33nbtp75jjkyr4e5
+	b=2a9WZX+Tsy3DmuWefqe9FCmhWq6quF5MEsyx6DHCMdNGrN40ZW2AUl1YdCv1qqcGzm0tUS
+	cPO162dewGzPi78H+UfR43qxK5eVxn+1JOKPwRevxkq7UR4N+Gwc6YQ10VN+DGdKcF5dVQ
+	Gj4nrRafsM+GDABNlJU6Zez3eXyOwfE=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-46e19f9d18cso13544115e9.1
+        for <linux-mm@kvack.org>; Fri, 26 Sep 2025 07:01:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758895304; x=1759500104; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KSgSv5ivUBDbWRK+2F3rymI1CRou1bjS7ledl+wX67k=;
+        b=T0wSIy6EIXmAk4XXjPpB6PvFBrw0d9AYoe3P3CQjFMMkGPeKxaALAj/ULf56mA6/QX
+         T3CkfNi6psJG35SWHnAEp4RZupmhVapNc8aBoutqhGrSRoc83+pcYHVxy1KWbzxea03O
+         KQqlnFYxvvTmUdqK2B1zG9YCyLaLzxCWpUEkvrhL4x73IMRCTv/OgWld9P+cg5YXZJmH
+         t1ZtgIvlkahaOMEnXNmpfDSx9u1yCEfFDJgeNDlRo+7bL8DHHCYYtwB5v9udnIZULkvc
+         qveJbINjLQx7UGAryePaRDvDQjO0P4AxqMWQMewYSlKLkk6MI1rFsDUazgw8DMnxkuXb
+         cChQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758895304; x=1759500104;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KSgSv5ivUBDbWRK+2F3rymI1CRou1bjS7ledl+wX67k=;
+        b=TwNjZ679fovfdPxZ7Dr7m7ULC/Gy9pDH4aTszDRPwROP7nt0zk79EmKbaEmWtsFFZg
+         D91TbvbWhS7MoaZ3CpQ/W1qJO8T7r+dLPlG0wiTEFmymx5+qIaGH/7uXDXC8EvM0D1s/
+         NaLT0cuXoLHDivcx3frT5JlyEqaB2xs7TPsCDz3osyy+QYUKpKzu310jeOvt899fGmK9
+         6GVqwL+01gbm6bwj++AQhHhseq5DPuE1a87jIcOStzFDqPNwiPaAZ/ch0xujmUxWavDf
+         o7QjfRBX6Sym2XzqgDUX51V0p9fikUAxNwVwwuvySoh3iqi/LMxyjZ/TVlr/7/AnKdep
+         PpGw==
+X-Forwarded-Encrypted: i=1; AJvYcCXngDxmh/ohyjNti8PjriZ0ib+jypu3NMMGlvOtMKZcvnkzaY0GFhKsC4oex3CqGPXvDzgEmgxuow==@kvack.org
+X-Gm-Message-State: AOJu0YzPDDE8sKJp0Wr6NSNuKaG25riTp+Z/u/sDsJpyY10090wbDHqt
+	oBE4f2Vcl7SCxyn6cmXIcU2vcqhXnyinWDqHx6NIyvcBf2IJqvM0na7V1qpF1vUMLAsbMpa3yvS
+	lbR1S/XoPQWfNyw==
+X-Google-Smtp-Source: AGHT+IEvfWDrFOP5KGjT6l+Sxo3xsiKTHK/jbv85LMBQuJJQFm85+HVdoMS8MFmzfToSyWmUwPyLPGVrMe82gA==
+X-Received: from wmbdv25.prod.google.com ([2002:a05:600c:6219:b0:45b:7fa6:f2ef])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:a08c:b0:46e:37a7:48d1 with SMTP id 5b1f17b1804b1-46e37a74bc9mr51778605e9.34.1758895304152;
+ Fri, 26 Sep 2025 07:01:44 -0700 (PDT)
+Date: Fri, 26 Sep 2025 14:01:43 +0000
+In-Reply-To: <20250924204409.1706524-3-joshua.hahnjy@gmail.com>
+Mime-Version: 1.0
+References: <20250924204409.1706524-1-joshua.hahnjy@gmail.com> <20250924204409.1706524-3-joshua.hahnjy@gmail.com>
+X-Mailer: aerc 0.20.1
+Message-ID: <DD2SCJF0CLN5.1824PA58HFFZF@google.com>
+Subject: Re: [PATCH v2 2/4] mm/page_alloc: Perform appropriate batching in drain_pages_zone
+From: Brendan Jackman <jackmanb@google.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>
+Cc: Chris Mason <clm@fb.com>, Kiryl Shutsemau <kirill@shutemov.name>, Michal Hocko <mhocko@suse.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>, 
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <kernel-team@meta.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 29122100021
+X-Stat-Signature: 83544o5ybgpijmzw1tm31brig5qgnn9y
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1758894509-516683
-X-HE-Meta: U2FsdGVkX1/nfUyMtRASu06puyEG7p9VDV6LdIxgDtC8AFtrW0k6C6O+nIR/cDWN7hJoNI3tIV3TfIUUy2OUSpDai2iRkpmv9qhWOgw9Xg4otrcqEefYX789VKKYltwHJ2GOAEm093myUijgllpwr4XwlEFxOX2Qeww2upZDZZ0up4ocsMvlr3xXraVRfFvPJ7ZFZMQf9jBQLSQcC7WkEnVKoJ9JdllEP9+OthGesLm8ofZXHnCFMk6kPdX2aoL9ngAijk18TL19Mof5yC7s5rAnLtvIo9jtiO+6IVLWqZDkGppZd48iqE+cGeHtesPLITBVUyqYksKLoiSWWcOed0M8G7l9qKiQ406MaeesJKk6e+C4KYspYrVQlqqnzLDZjMKN+IGf4ysWGB2YTTno7ar4igc6sJFGso816sroyo+cBy+nfK7sR8KIs9DDhyVo8gIlACZE3c/Zxtgmc4vHC3vj6CCQdugmv+ycWfkFPMCaloFck8aAihuEdjOwAkbAB7euPlg3CsIQbvpFMjPcwbdP/b25FTh34A6hjzENNC3ey9t0PgTFIkCwurB+e86jL69em6+U0zkFAtRqf+ijMp3hsh8NsX01KI5zVt/A5X7ytWn0hMYGjD2mrnE+z3uYb5qx9zwx8P2nR+I6LUOPvHlgT9MRcvVhktP+1rvgD6Je9rdT22fB39PaxS3JnWaD/eDA/yMt/uNruioUlJqqUFg16pAMpqnQKwMoTbTnHLb2mQb3K4zQf3fG9OJf7Lk2kJcXNBAK5RwXvss7q2cRUP1tl4SjcXfJlpwBTm78TihYiSXW9oS6lIdLvB/NJe9W62RVcjsGHsPlCBDt0bbBXgcGSeGugQvowVTZZfOHyieaRG/jNrS/f1KZGJPh4KhTNx4JNZ7qRcNaNa5vvF2iM1E+nX1AaMOTkPIcer2MjYBEmp5aZRigTv43JX7HplyvjEDiByWkVe8C5QDFgIs
- 5cI/fCiC
- ccTsNnawJwXJ+u2NuOXEIITvlyW9ghccvBlh41ndKJ9gXcGuiJExsHja2EDOaI+KiPDRAU5KINcT0SjtbsDVEYxeHHJeN/qCpooKCpPb7YUNnqOrD7/SmRA9m1n85NoOpzsaNiQVsGjnI86grUoV3vdrS8a4FqsIH9lxbfS6Q/8NvIKAnaixjO/8w63UaMiMJTgf7TMn5quKRv7SvBNLRwNY4Re2c2foak1nOcmgynbq+7vYkl1XGsf54SnjgeralIZN5
+X-HE-Tag: 1758895305-509619
+X-HE-Meta: U2FsdGVkX1/RZT/PjVBFNX+6BkPAyq5gKKDXi//k7xK/gJp8ImOwGZgudsvvHUNQFybNpe5PtWCALMchnfev7GgC0zQ1PRAZjM7MHmeaVg7fkjexSkYxbD3XYvxi/Km9ZURiArubMXfOfHtjCYxQDYyB3d05p1A7Ayh2jmbIRazdB3wsghCZ8a0+JylqwdcU2R0dbcuZnYSNWz7Lu9cTm32epEYImkyGGulkaLh4ynaFn6qONRBFPSoyWk6PLfrTk/jnDkHP1ZkDxi768R2O4VX7ExhJUZQmBTo4b9LpjWgFWWaIbOhxto0gWnDmPlO9TIP1KyOup8C7leoICZQJQSf25NY++vQ8sho2CPHta17voYvAH/YqkgDDHkm0fUbY6b+EBlop55uoqi5ovak1l2e0zsMv8I1QqCpAgBqpMzin7+f748zaAbEJV/V9v0GkVbcm+shmuyo9LeXMoRuddCazV/Cs5A4PQrCf9A25Xu/MJpGgED1Sh8e2lowTDXdEgqPt+ExFaE9NsWpYAZLV1EwbtbKaFkMnLKyHCS5T0aPu8HVXFykGzmMgiYkLvTZKhAorQ/7S/ADlkta6tU5mL/wHKgNpHV9h3Sazz+8UFXkoMZkJLF47OMNjgnsL8Fm5x7KaX+0/2s3s+5qmM57jZKBU08Lua4+u5MUrVHVDLMroLIGo+rzQ1HN9xtupx7xi5G8gVBMpjM0nGlUrJB+xOEGqifiOwJo2QykYF5eJoEDMAXNcv4bMJLFjcZmVhDq/iP0MeAMdNTTVF+Jgh+taqnU46Kvs4ZeF80/7xeDEUCpcQNy3DvOU1/Yf8MmkGfTqmuRWODTDLHwJ0R1Eb3SnnSv/D5LMuCnDszr1t/wXjvip1woDQnP1rXoLHsGeFg84/j8iSIzBHF9Y/9fRtKbV958RUzITr7DQX728545vPipbXIAew2wLqJo2XNYo+k2zARE9srasvHgimstBaMc
+ dd8lc5E0
+ 05QKawm5Fp/eVUVPg8wMwifk5H/VdxvQ4Ty+xkIj45i/X2g8PSS71kJc63rm834bD+kkEOepFv5JEuUn9uHIhNQrDDwHzxOeyW7IdLyGvXxl7Tu6IcfkrIVN3lbO665ucPh8Yto8ThoHVwdUSPX1uTdAGl8e8CjHB10QGfdk3YNURDzTTryrzsAgxDZnu2xehgtRfJ9eqaada+h+l4VNJWCYCQhA98CsCeWKLZRKtnaKU478S02rTnRVATL3IG8UUX5Z2Ui2Ub0pdygop8mxFOzNIhMQjeovMZ1Sa17bYBg2CNaNL4TvtupIzsBJZe7FRisZ35gzhvFjXtORvxr3wiiGL1yl/2pTAn0YRkAZW+pUl2+idMHq2SQ48fGE1MjJ4N3sdYcvJgnTk4hVJTLvQCgdkoKulvPmDyaW0HEP5W6BiF/W6Z7xErBDHc4uClTA/bGlziMMDKLiSQoi86CoWc5Z6LxXRmvEHccmrq2RPnIKDTgtm/j7CneL11AO++VZYGxZF9wtmtPdxzUDzIWVJD6az3XXFV/1brUgRvV6giICFdaMsPAyBlY4ZU2tHQ0OeJZXf100QOrNw0cLfkQKdbFuDc/wv+WbBApIX1iKqRXyS0HeaNQbvWKBLyAJVPtpxqAh9sAQe402/MwiCdFh7LknxP1C1FpXH4H10QoQ9BjAPXsCfuktM8T3fK92bWDzR31bnWZk4tpV5J5RKBcHVHNHFPw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,91 +111,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed Sep 24, 2025 at 8:44 PM UTC, Joshua Hahn wrote:
+> drain_pages_zone completely drains a zone of its pcp free pages by
+> repeatedly calling free_pcppages_bulk until pcp->count reaches 0.
+> In this loop, it already performs batched calls to ensure that
+> free_pcppages_bulk isn't called to free too many pages at once, and
+> relinquishes & reacquires the lock between each call to prevent
+> lock starvation from other processes.
+>
+> However, the current batching does not prevent lock starvation. The
+> current implementation creates batches of
+> pcp->batch << CONFIG_PCP_BATCH_SCALE_MAX, which has been seen in
+> Meta workloads to be up to 64 << 5 == 2048 pages.
+>
+> While it is true that CONFIG_PCP_BATCH_SCALE_MAX is a config and
+> indeed can be adjusted by the system admin to be any number from
+> 0 to 6, it's default value of 5 is still too high to be reasonable for
+> any system.
+>
+> Instead, let's create batches of pcp->batch pages, which gives a more
+> reasonable 64 pages per call to free_pcppages_bulk. This gives other
+> processes a chance to grab the lock and prevents starvation. Each
+> individual call to drain_pages_zone may take longer, but we avoid the
+> worst case scenario of completely starving out other system-critical
+> threads from acquiring the pcp lock while 2048 pages are freed
+> one-by-one.
 
+Hey Joshua, do you know why pcp->batch is a factor here at all? Until
+now I never really noticed it. I thought that this field was a kinda
+dynamic auto-tuning where we try to make the pcplists a more aggressive
+cache when they're being used a lot and then shrink them down when the
+allocator is under less load. But I don't have a good intuition for why
+that's relevant to drain_pages_zone(). Something to do with the amount
+of lock contention we expect?
 
-Le 26/09/2025 à 12:34, pratyush.brahma@oss.qualcomm.com a écrit :
-> From: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
-> 
-> The size calculation in split_nodes_interleave() has several nuances.
-> Move it to a separate function to improve code modularity and
-> simplify the readability of split_nodes_interleave().
-> 
-> Signed-off-by: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
+Unless I'm just being stupid here, maybe a chance to add commentary.
+
+>
+> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 > ---
->   mm/numa_emulation.c | 44 +++++++++++++++++++++++++++++---------------
->   1 file changed, 29 insertions(+), 15 deletions(-)
-> 
-> diff --git a/mm/numa_emulation.c b/mm/numa_emulation.c
-> index 2a335b3dd46a..882c349c2a0f 100644
-> --- a/mm/numa_emulation.c
-> +++ b/mm/numa_emulation.c
-> @@ -76,6 +76,34 @@ static int __init emu_setup_memblk(struct numa_meminfo *ei,
->   	return 0;
->   }
->   
-> +static void __init __calc_split_params(u64 addr, u64 max_addr,
-> +		int nr_nodes, u64 *psize, int *pbig)
-> +{
-> +	u64 size, usable_size;
-> +	int big;
-> +
-> +	/* total usable memory (skip holes) */
-> +	usable_size  = max_addr - addr - mem_hole_size(addr, max_addr);
-> +
-> +	/*
-> +	 * Calculate target node size.  x86_32 freaks on __udivdi3() so do
-> +	 * the division in ulong number of pages and convert back.
-> +	 */
-> +	size = PFN_PHYS((unsigned long)(usable_size >> PAGE_SHIFT) / nr_nodes);
-> +
-> +	/*
-> +	 * Calculate the number of big nodes that can be allocated as a result
-> +	 * of consolidating the remainder.
-> +	 */
-> +	big = ((size & (FAKE_NODE_MIN_SIZE - 1UL)) * nr_nodes) / FAKE_NODE_MIN_SIZE;
-> +
-> +	/* Align the base size down to the minimum granularity */
-> +	size = ALIGN_DOWN(size, FAKE_NODE_MIN_SIZE);
-> +
-> +	*psize = size;
-> +	*pbig  = big;
+>  mm/page_alloc.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 77e7d9a5f149..b861b647f184 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -2623,8 +2623,7 @@ static void drain_pages_zone(unsigned int cpu, struct zone *zone)
+>  		spin_lock(&pcp->lock);
+>  		count = pcp->count;
+>  		if (count) {
+> -			int to_drain = min(count,
+> -				pcp->batch << CONFIG_PCP_BATCH_SCALE_MAX);
+> +			int to_drain = min(count, pcp->batch);
 
-Having to return simple type values through pointers is usually the 
-start of proplems.Whenever possible you shouldn't returning simple types 
-via pointers.
+We actually don't need the min() here as free_pcppages_bulk() does that
+anyway. Not really related to the commit but maybe worth tidying that
+up.
 
-Your function is void, it could return size instead.
+Also, it seems if we drop the BATCH_SCALE_MAX logic the inside of the
+loop is now very similar to drain_zone_pages(), maybe time to have them
+share some code and avoid the confusing name overlap? drain_zone_pages()
+reads pcp->count without the lock or READ_ONCE() though, I assume that's
+coming from an assumption that pcp is owned by the current CPU and
+that's the only one that modifies it? Even if that's accurate it seems
+like an unnecessary optimisation to me.
 
-And big seems independant, could be returned by another function.
-
-> +}
-> +
->   /*
->    * Sets up nr_nodes fake nodes interleaved over physical nodes ranging from addr
->    * to max_addr.
-> @@ -100,21 +128,7 @@ static int __init split_nodes_interleave(struct numa_meminfo *ei,
->   		nr_nodes = MAX_NUMNODES;
->   	}
->   
-> -	/*
-> -	 * Calculate target node size.  x86_32 freaks on __udivdi3() so do
-> -	 * the division in ulong number of pages and convert back.
-> -	 */
-> -	size = max_addr - addr - mem_hole_size(addr, max_addr);
-> -	size = PFN_PHYS((unsigned long)(size >> PAGE_SHIFT) / nr_nodes);
-> -
-> -	/*
-> -	 * Calculate the number of big nodes that can be allocated as a result
-> -	 * of consolidating the remainder.
-> -	 */
-> -	big = ((size & (FAKE_NODE_MIN_SIZE - 1UL)) * nr_nodes) /
-> -		FAKE_NODE_MIN_SIZE;
-> -
-> -	size = ALIGN_DOWN(size, FAKE_NODE_MIN_SIZE);
-> +	__calc_split_params(addr, max_addr, nr_nodes, &size, &big);
->   	if (!size) {
->   		pr_err("Not enough memory for each node.  "
->   			"NUMA emulation disabled.\n");
-> 
-
+Cheers,
+Brendan
 
