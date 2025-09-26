@@ -4,104 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A94ECAC5AC
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 09:01:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D357ACAC5AE
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 09:14:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E20148E0008; Fri, 26 Sep 2025 05:01:36 -0400 (EDT)
+	id 037878E000B; Fri, 26 Sep 2025 05:14:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD12E8E0001; Fri, 26 Sep 2025 05:01:36 -0400 (EDT)
+	id F23748E0001; Fri, 26 Sep 2025 05:14:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0E688E0008; Fri, 26 Sep 2025 05:01:36 -0400 (EDT)
+	id E12358E000B; Fri, 26 Sep 2025 05:14:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BF72D8E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 05:01:36 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3A77B873D3
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:01:36 +0000 (UTC)
-X-FDA: 83930808192.20.6C044BE
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	by imf11.hostedemail.com (Postfix) with ESMTP id EF49840003
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:01:33 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=szeredi.hu header.s=google header.b=cO5PlMgx;
-	spf=pass (imf11.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.160.173 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
-	dmarc=pass (policy=quarantine) header.from=szeredi.hu
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CCA4B8E0001
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 05:14:51 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4C27616060A
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:14:51 +0000 (UTC)
+X-FDA: 83930841582.02.660DD43
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 942F9A000A
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:14:49 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=IL1CK0h0;
+	spf=pass (imf25.hostedemail.com: domain of 3h1nWaAsKCOACEMGTNGaVPIIQQING.EQONKPWZ-OOMXCEM.QTI@flex--ackerleytng.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3h1nWaAsKCOACEMGTNGaVPIIQQING.EQONKPWZ-OOMXCEM.QTI@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758877294;
+	s=arc-20220608; t=1758878089;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G/GFYlKX8sXH9/MVnPU5JNJW5GLLJS28gOFEuvHHi/s=;
-	b=6Z46fEv8mxevaL/wwMcgP/YhZVt9jmg9L0v+1oOeC2QPmNGRdqm32IR8NnKtgJxmLXv9PE
-	LFwGUgHFt7kEZCSifn1nCQLHp/T50rCoT01i9mnnSTbnQuZkmtzJ75nGrxBGH+EZZO9gAg
-	NhYbepKkYRDsSoUx+DB3yp0SxXG17dU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758877294; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=xzlecSBlGNy5Hb7DuTGlXytPmBFktseBO6e58xwE2NU=;
+	b=B1D/AfHBeeTeFZXoGeUdUEeZhh8F7dw2wQp+f3zWA8oq2TQ9vsZW/nD7YbI1H+RL9zn+xO
+	HpDfRHxn+N/3fPLgG9lgvOHbI3l+05dpgNjZ6uY6XS6PWhppphWNngRTH6lScvW8cCYMvS
+	77qeW0dXJ2vOhHxZJO9itziryIGO24s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758878089; a=rsa-sha256;
 	cv=none;
-	b=m9y0Cy30TxLLlsF93fdWIQ+SsACe6W4hQbQe6TPHC4ckfI18nSLGWZIdxTlpZh79grrULO
-	+5/rx9BP2vQ9p03GrbRtvDIP9GZkWZSMctv5XZh+Rz/FOQCWBx+z2m70L0CP+0q752UUUs
-	R5vqOnJ4E8zzH+J/c81Vyw6oznWHuCU=
+	b=pHCVwvCI54fmr0adicExZNmPj7JpFWIKj0OPFzuDk46sHegz5auNmwQJXmSQ+DK2QCeKNt
+	/sSp9q6QqAArCl44L2zVRSkKVEW1gXa2C60AzGTqHWSpr2R6/tD+nyuLvTIsigStQKkDqo
+	1m3+RzLRabhCGsHSZm/jCEu5TpGlmA0=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=szeredi.hu header.s=google header.b=cO5PlMgx;
-	spf=pass (imf11.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.160.173 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
-	dmarc=pass (policy=quarantine) header.from=szeredi.hu
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4b548745253so30201351cf.0
-        for <linux-mm@kvack.org>; Fri, 26 Sep 2025 02:01:33 -0700 (PDT)
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=IL1CK0h0;
+	spf=pass (imf25.hostedemail.com: domain of 3h1nWaAsKCOACEMGTNGaVPIIQQING.EQONKPWZ-OOMXCEM.QTI@flex--ackerleytng.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3h1nWaAsKCOACEMGTNGaVPIIQQING.EQONKPWZ-OOMXCEM.QTI@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b5509ed1854so1331710a12.0
+        for <linux-mm@kvack.org>; Fri, 26 Sep 2025 02:14:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google; t=1758877293; x=1759482093; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=G/GFYlKX8sXH9/MVnPU5JNJW5GLLJS28gOFEuvHHi/s=;
-        b=cO5PlMgx3tLYKLx0s5Oew6A4BgYm0dLoaV/QFrH9mHF8nFEp+5jaUEteyTzCQXlKZZ
-         iuEvHqYAMOh+GXPPX7btnO0rUzHLIf/77DqsL62DIkStlwYNWabFyVOBixgZ7vTmsQek
-         /MR+3eJamh5YQ85UircWoDEQniVgujCj1X+UY=
+        d=google.com; s=20230601; t=1758878088; x=1759482888; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=xzlecSBlGNy5Hb7DuTGlXytPmBFktseBO6e58xwE2NU=;
+        b=IL1CK0h07Q+/N941kFTx0hChVnZ43wzg97trnVmmQWmATdaodf0j9gp+yA3k46Y8Mq
+         /Q7RnxYEcmw5Wj7dHjwTffy8/TmpetbPTPaEkZlaB6nIDOjSKpTw9mFJBWVNRHJRV5li
+         vvsfDQqpMt38K8s8xsifM1fWdwsxVw3EBUZt60be2iiJByVuPoLasINzEuveehTD7Lno
+         hqvMgLJeEz+s4VBhtzSR+dXbk1g5/OoS+la9aWqZWywrF9aatDWmGWUEvsf5X+o+7gjt
+         pPygHeUpcRMkerfxELmmDq1rA+K36PUx/YHdN/OEOBjA2iW2tXNhpVInZylu/Y2jjwcL
+         QcyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758877293; x=1759482093;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=G/GFYlKX8sXH9/MVnPU5JNJW5GLLJS28gOFEuvHHi/s=;
-        b=n264ZoN/Khn6X7sr5No3CxZektab2ad0Jk/+NEhvnw/w7ggnXIbIA92XgfEAnr/rnX
-         MeEFH+Y1eQL2d3wogmJp90WDxoxPa/Sc3vI4MgQyULtHxHzp4iHZAt0PlrCC91UMJVhC
-         7d8krpA7OutZXTZyQO5BXx90reh9dxhQYblnW4/UDHJiRC8YG4isH6h/UnPR2t02Mzls
-         HdqPW9hHv86S71/wg6gaTwv/QPcLLTvjb0RdS8ehtBj3hg919MgtqR0K9yITR50Q4WVT
-         jX3nUn+Ub0Um0FrA5VtChYsprUg839VJTxvyO3S6lddVKNfmV8wg/YEHfuFOFBEHX3Yg
-         U0Qw==
-X-Forwarded-Encrypted: i=1; AJvYcCXDPqYjlpuXAVZeMwibyLQxY64A+xeX8aNPSGtbNVLcTCdNV0pqopL8anbDzkD5lia0HcNXk7dN4w==@kvack.org
-X-Gm-Message-State: AOJu0Ywl1awfKccE3jHuzbQkDUCYNy59ljJljngZPBBv4CD7zevzltNu
-	g5Tw9vpBGBjWewAIvwczaPkx2oxvYZg8rWUoGPUHf5oya5CuUtbpcI89hu9eRWGCbGnbmQi0SDT
-	kKHsEgcE4VzfBzQOoK6p9YHqUq5CmqzwQmFswnJ0OXg==
-X-Gm-Gg: ASbGncsGF+DO1Bu7cGqUdVEttT+2KkjaA9D7vorz7VqwjeKtrS8qsnen722zA+kJo1b
-	sFbDoCb1Z3H4DaXi44nA4ek9NxFatek1eLujsizdVSwVw4Q6seh59CSQP56IHv7DmG5VFVNhNQS
-	0G/VLZh808+tzbwt+hQ/BXihftk/Txhq1xCRncP4IvL8ljElrUzSyVvTZdFL080jwq2MlHIYEpb
-	ZqNq0JNjdSQi+v6VoWGZ4bgVaf6Xa3WYKZF5/FUC6pFPuiWkg==
-X-Google-Smtp-Source: AGHT+IHzalmSFeS2hW534mTf27M196Uxb8VIlcKO6L9aIo/0iAFRQkxP8597Cv2HReRDKaD5Ym4wy+usutK7h7mOOb4=
-X-Received: by 2002:ac8:5fd3:0:b0:4b7:ac70:d7ee with SMTP id
- d75a77b69052e-4da47c0570cmr76627321cf.14.1758877292711; Fri, 26 Sep 2025
- 02:01:32 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250925224404.2058035-1-joannelkoong@gmail.com>
-In-Reply-To: <20250925224404.2058035-1-joannelkoong@gmail.com>
-From: Miklos Szeredi <miklos@szeredi.hu>
-Date: Fri, 26 Sep 2025 11:01:21 +0200
-X-Gm-Features: AS18NWDzpmIFyfqJed-8UXKwoNHRrfCxmto9gvn_Hs3Vc9F5z9XP26K83W96iB4
-Message-ID: <CAJfpegvM48p__QALuxH_PBGcyNR2JYvJCav4Ug05SZYg1ZSRgw@mail.gmail.com>
-Subject: Re: [PATCH] fuse: fix readahead reclaim deadlock
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: linux-fsdevel@vger.kernel.org, osandov@fb.com, kernel-team@meta.com, 
-	Matthew Wilcox <willy@infradead.org>, linux-mm <linux-mm@kvack.org>
+        d=1e100.net; s=20230601; t=1758878088; x=1759482888;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xzlecSBlGNy5Hb7DuTGlXytPmBFktseBO6e58xwE2NU=;
+        b=ZlrMvgPuWx1YQPw2WM400VTr7wm+GN4nAWVBuQV4C1EBcQnkWFuWiO9wyAGVem2ufE
+         MzcBw2/ooRXNv7PDoF3w6eJHOANb9JFOFH2wwqazU5AEKRpuNH3czB/NC1sOBQWBHdZn
+         bgPJnEGtE+AL2pGruz00J73A7CtWfJoyjIqC8qxXURlZ54lccYKzn4d2oTpiQybYBdSc
+         pmf+xX6H15HkNQ8Uy+PhFOLH9eyuEvfR9Bi8kNwPjzupJ7fWwF6CMw3mwoe1yt68ASRM
+         GIOWzP1txIw2eTvHGI7HnfwH461rxtRw6BV1WTA9JWM7UaazaSdDiLK3ltyNvVeFgmTP
+         /xOA==
+X-Forwarded-Encrypted: i=1; AJvYcCWdcbjwfjaRCDDVLCoeKeJw/C3x9OdaNECNK2Wzsk2btO9t61XGUqtUvaWs7673VC+EEmQ9vCQmMA==@kvack.org
+X-Gm-Message-State: AOJu0YwOSuKpcwd++pHSlNaOSktyMU0UJgksCwrkhpEnRZjY/4S4CTQj
+	UYAcE6iDF40KyygV7VYBlYoa3zw1fnmjGW0uTrddUMTkLlYCoIhfpyRRnrfVg19ANTQAv5t8ESQ
+	vi8+6KlwfA6lv4UMKYtyvAPgK3w==
+X-Google-Smtp-Source: AGHT+IEx8E9cWhlfu1Vxq2AQuNomZgiEGJpm7W9AMx7sfDI2/uhsc96oawFywv4yb5EYZvdHJHPDXZqYAh60qO9vkw==
+X-Received: from plxq5.prod.google.com ([2002:a17:902:dac5:b0:268:eb:3b3b])
+ (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:902:ef09:b0:276:76e1:2e84 with SMTP id d9443c01a7336-27ed4a06b49mr70346315ad.3.1758878087498;
+ Fri, 26 Sep 2025 02:14:47 -0700 (PDT)
+Date: Fri, 26 Sep 2025 09:14:45 +0000
+In-Reply-To: <aDfT35EsYP/Byf7Z@yzhao56-desk.sh.intel.com> (message from Yan
+ Zhao on Thu, 29 May 2025 11:26:23 +0800)
+Mime-Version: 1.0
+Message-ID: <diqzcy7d60e2.fsf@google.com>
+Subject: Re: [RFC PATCH v2 39/51] KVM: guest_memfd: Merge and truncate on fallocate(PUNCH_HOLE)
+From: Ackerley Tng <ackerleytng@google.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	x86@kernel.org, linux-fsdevel@vger.kernel.org, aik@amd.com, 
+	ajones@ventanamicro.com, akpm@linux-foundation.org, amoorthy@google.com, 
+	anthony.yznaga@oracle.com, anup@brainfault.org, aou@eecs.berkeley.edu, 
+	bfoster@redhat.com, binbin.wu@linux.intel.com, brauner@kernel.org, 
+	catalin.marinas@arm.com, chao.p.peng@intel.com, chenhuacai@kernel.org, 
+	dave.hansen@intel.com, david@redhat.com, dmatlack@google.com, 
+	dwmw@amazon.co.uk, erdemaktas@google.com, fan.du@intel.com, fvdl@google.com, 
+	graf@amazon.com, haibo1.xu@intel.com, hch@infradead.org, hughd@google.com, 
+	ira.weiny@intel.com, isaku.yamahata@intel.com, jack@suse.cz, 
+	james.morse@arm.com, jarkko@kernel.org, jgg@ziepe.ca, jgowans@amazon.com, 
+	jhubbard@nvidia.com, jroedel@suse.de, jthoughton@google.com, 
+	jun.miao@intel.com, kai.huang@intel.com, keirf@google.com, 
+	kent.overstreet@linux.dev, kirill.shutemov@intel.com, liam.merwick@oracle.com, 
+	maciej.wieczor-retman@intel.com, mail@maciej.szmigiero.name, maz@kernel.org, 
+	mic@digikod.net, michael.roth@amd.com, mpe@ellerman.id.au, 
+	muchun.song@linux.dev, nikunj@amd.com, nsaenz@amazon.es, 
+	oliver.upton@linux.dev, palmer@dabbelt.com, pankaj.gupta@amd.com, 
+	paul.walmsley@sifive.com, pbonzini@redhat.com, pdurrant@amazon.co.uk, 
+	peterx@redhat.com, pgonda@google.com, pvorel@suse.cz, qperret@google.com, 
+	quic_cvanscha@quicinc.com, quic_eberman@quicinc.com, 
+	quic_mnalajal@quicinc.com, quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, 
+	quic_svaddagi@quicinc.com, quic_tsoni@quicinc.com, richard.weiyang@gmail.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, roypat@amazon.co.uk, 
+	rppt@kernel.org, seanjc@google.com, shuah@kernel.org, steven.price@arm.com, 
+	steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com, 
+	thomas.lendacky@amd.com, usama.arif@bytedance.com, vannapurve@google.com, 
+	vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com, 
+	wei.w.wang@intel.com, will@kernel.org, willy@infradead.org, 
+	xiaoyao.li@intel.com, yilun.xu@intel.com, yuzenghui@huawei.com, 
+	zhiquan1.li@intel.com
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: oh6b6t5e6nym74a3pgjd7gp8cyd94wuc
-X-Rspamd-Queue-Id: EF49840003
+X-Rspamd-Queue-Id: 942F9A000A
+X-Stat-Signature: ehgqq595y4wwm6p8ox1n384t8cpooz9s
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758877293-859845
-X-HE-Meta: U2FsdGVkX18kYR6A/wkoeCA+WpHTenYXn4q3hTewbiGwlR1a3bIEVbgm/e+WTqulh7aM1AcUh4GcOE1P2VI/g+T6gZMPXLHt+aj7oCpIGbrNJjYznVf/DVfj7jOPaS7NqiIGBhGu7UMykwnrF+/S1hbZLRGi9FC1TrQNHBcd9i1fXhn0uaKSFUaZhehOJ+Fg8IolHYrU9F34YikcCyRdyBH8/AVNZKyy/FxRPJMB4bisYogEEbVyUo429SmjlaelQVw6Wjg93HKaJ0XDyHxg5XFR2GPM1DfP9g8JS4wpvoTEEQovT59sxCrpPmsaAopko0k0bFstjuFx1x7kqyZPODZtznd47x4NJg2d/Z0XtUlcDHhrM3YeuzL6QvD3kQbPM4LNEhOPYfODp1Ld2V0n4TYTx97qVc7+1MPc/tn6G2iiBuR7QT3WUgZicY+1IC+QnE3DpBgDQvQ6cpwrVRF3g4EuJ5CqRdVzCcKZ6THsBPge/UoxogpMevGsQo8g4OUtnv/WGQPmwQmqvCgaapvnaZPb+Cxl4eVx4yGDWA5Y3n44wt56yvJZa3NDM+uS/mh0B5yUw73KQzDZgjzhkZ8Bkf5+zxupKxmHbGVLlYBvdCdcBNuA+Yu28QSec7RkFMm+/be+UGdfspt9YTtP51flxsPQwFLKFo8m4WqcbvWYnBM5mbLSWHTK9LuaQD+zZOOkYdyxaWhs7EbXqWrBYYCgK8T4rrFWF8RpZJvX1V6iKJUGRE6TTWlmXyMQwcOqW+ZiRYN8QZcYTOzoHr/XepqG+RztVv5V8UJKJLeAVYtnYco8Vjl2iSrHdMSmOH+kQneGv1McNj7VFOpdIbI0/8Infwg2dNsZjDtmiYvxITeZTzyVjS8rwdL4TtQrvTs+vbGYZ9neiV3u3O6ThX0VrqIepv96XHenYK03S3vsmp1fbVJ6WYizBphsKFhNpolLcnY02U8PwLfs9aeoCW5eQUZ
- zXTmdkBp
- lzgMhrgY6Qt58zFgz3BDy2dCsBirmehxM3YyDN3WcJ4FtRVj+x+JJ44rQA5pndH8JU5avjJICQV9pCq64VV3rA2tpReobW4e3p86FYWxhcEO3zS/c+099Cr/7Uwblt7/AXF+0mCGw/lMv1NJeuO8uclivm5Hyl1sJnzwnlhRkVY1YIufp4I1eS17DC9bLPhtBodP2TuAcu9JLSrdTRzOr9xs4JmORyC0kaJsl
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758878089-324097
+X-HE-Meta: U2FsdGVkX18H0T//n/SRvz1aEluJnCjJ8rgBJ1wzPltyJalUMrSIr6zd0IjrdAno5MH4pcH/FHLjny1jS80OHB0QqgtxIhB7IHj6qaMKJt7ujfU/J9WHS069spwT91Em4W5oxU1av+v/C5P+bMLGqfNoSFbaUkTnLd8n/OYaeeZPaGG5KJrcdRpDIZUPv4jkdrbhEjnaUD8A7wE3gNn2VP7J+wx8o6K9npyufIcjsvucManIhyW0UwaTo50gS7aM89cL0bv2t7ltTKsMxgeTigLrqlUPKdjVNkOxS8+ZtX7/yxIJG8jv2IA0kfdlh96UEDrhyEEHnm8S+L/z40ERRvoQXqjG2K4QzYLPJiApxvtWz8OO+fzL6vqjRJ7aiaB7s7m08UOLnczc4k7NsOqUCywQsbRVjFr6J5A96L1r+XCVYBpWtrwSkapRCf99rFMTXTTZHV7X1JuxjCk0IGvLFGNell5enekm0bLpA9u3fxdmQoSihz6/fVR0tvx9Bg5aqluv/ZA3pmHWHxSD1LcULMxHBksv9XhSFk/GdDYw1arOBLCpcpkcHTfC5uEuETU1ppz+hYKGEHqrZ5i4nG85uY91Xna+iDasue/K6ObP2Ignf3A5mapUxa7O2M2b326W692oTpN9DxJW1hPd4bVfTgl+o3m+wPTWWUX+Pd+lbLvIa1CFQgTmQs4YhCvuXAXPiQzCUG4/PzXgGfLMPiNCejERvUTy5Dyvn8DraJf7bgGd/BzuSUxWtIRmwjZy73O7IQhoNO67j5mB1HI6WebrS9vTqd13Y6TLr2ZXwP/WCeh2RTiS8yH/0ixjrGh+CKNpVQtBd+C1wddAhyIcHwNWuaPAoE34AbKR2AYx14IEzl2T2IBkjn2Q2+q9gswPdFodwUfJ+61FevRqQdeSz6noMuiBifALbJO/hC8q0e/6sMC7MTEbEkrikvhpYXtydUuCeVrYQifSsiR2LLo1Viu
+ aD8z9Ktj
+ YF5gi4gQ2NSt/dSffxRlCwtl21Ak8N1sTdJD3tgerEnYeWG0Bi1jx5yb61+wZCh32aRlxmAkXeJfIQFlhIPwkcrOeFRBaTI7fZr2ukpgSAlxDvEINL/tZuTq9YhFFOqNtmJEsC3mo/7pubNTBElM2CRfPTIRMI64ccMB4oH4B9go7h/IJkWhA+atoWi3isq5fBNlrTT12v9a3oqMNaX7d+KiFPcLq7Jq/TZGpxuKOXH5Gf3Y0LnaqRhs8kJpY3hmEzkOL8+iginBBXM4GqEvMMDlwNKAPtHdDvTQ5UjEjivqlD/UU0H/bLmbbf1xIRzwxE5BtPMjh7JwMDt7bXFyhQQr7xZ5CG94v4iB2vesPVEF+wi1MbeIHqBxqs7MDtZMR2vXrTtMuQjtEEqcKnJbkBS+BqLvVXvF3fo4oeNRrs6lvpzf8ekaXcVjBAKI3opgwfNtl1DznLtnfh5EOrgR5XguTQONg0oMuf3dKfdv1UkVDJf8l8akgtHK+SW5PvAABCWtM7mayLi0CDE9/FGsz8l338MoZJ9//RNq41oCxZ2AQ7KaeQ59wvPYj3qMlNiJUvTDJMF2hdbbNe5qoRZVu4jVpbDfRgzddPg8XYl1MzOTzMUf01iNoh5Lbv5UofsB74x5D6bFayfS/GVKaB7pDjoaJJ6DHFzjGOZwkSXhV0jVFCCgSmhW0EQaIOIqmc3TWOpUU2IQb2Cp0Cr3yRxq5MN0/hpQNgxGiY1p+p3fDaxq35DJbfUoHsSmwDkpgZgZXmO9MzKJgmOMz1zCiSFjiAz4VJcoS+R+2GlOTEZjPptxduU8NgFFYhTNXN7vb4Inq1xFkIALFmkbPolRNBmzDa7latfVTvGQGPQriRyMvqFton4uuubL8rSz6SQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,98 +137,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 26 Sept 2025 at 00:45, Joanne Koong <joannelkoong@gmail.com> wrote:
->
-> A deadlock can occur if the server triggers reclaim while servicing a
-> readahead request, and reclaim attempts to evict the inode of the file
-> being read ahead:
->
-> >>> stack_trace(1504735)
->  folio_wait_bit_common (mm/filemap.c:1308:4)
->  folio_lock (./include/linux/pagemap.h:1052:3)
->  truncate_inode_pages_range (mm/truncate.c:336:10)
->  fuse_evict_inode (fs/fuse/inode.c:161:2)
->  evict (fs/inode.c:704:3)
->  dentry_unlink_inode (fs/dcache.c:412:3)
->  __dentry_kill (fs/dcache.c:615:3)
->  shrink_kill (fs/dcache.c:1060:12)
->  shrink_dentry_list (fs/dcache.c:1087:3)
->  prune_dcache_sb (fs/dcache.c:1168:2)
->  super_cache_scan (fs/super.c:221:10)
->  do_shrink_slab (mm/shrinker.c:435:9)
->  shrink_slab (mm/shrinker.c:626:10)
->  shrink_node (mm/vmscan.c:5951:2)
->  shrink_zones (mm/vmscan.c:6195:3)
->  do_try_to_free_pages (mm/vmscan.c:6257:3)
->  do_swap_page (mm/memory.c:4136:11)
->  handle_pte_fault (mm/memory.c:5562:10)
->  handle_mm_fault (mm/memory.c:5870:9)
->  do_user_addr_fault (arch/x86/mm/fault.c:1338:10)
->  handle_page_fault (arch/x86/mm/fault.c:1481:3)
->  exc_page_fault (arch/x86/mm/fault.c:1539:2)
->  asm_exc_page_fault+0x22/0x27
->
-> During readahead, the folio is locked. When fuse_evict_inode() is
-> called, it attempts to remove all folios associated with the inode from
-> the page cache (truncate_inode_pages_range()), which requires acquiring
-> the folio lock. If the server triggers reclaim while servicing a
-> readahead request, reclaim will block indefinitely waiting for the folio
-> lock, while readahead cannot relinquish the lock because it is itself
-> blocked in reclaim, resulting in a deadlock.
->
-> The inode is only evicted if it has no remaining references after its
-> dentry is unlinked. Since readahead is asynchronous, it is not
-> guaranteed that the inode will have any references at this point.
->
-> This fixes the deadlock by holding a reference on the inode while
-> readahead is in progress, which prevents the inode from being evicted
-> until readahead completes. Additionally, this also prevents a malicious
-> or buggy server from indefinitely blocking kswapd if it never fulfills a
-> readahead request.
+Yan Zhao <yan.y.zhao@intel.com> writes:
 
-I don't see a better way to fix this, but Cc-ing Willy as the
-readahead/mm expert.
+> On Wed, May 28, 2025 at 09:39:35AM -0700, Ackerley Tng wrote:
+>> Yan Zhao <yan.y.zhao@intel.com> writes:
+>> 
+>> > On Wed, May 14, 2025 at 04:42:18PM -0700, Ackerley Tng wrote:
+>> >> Merge and truncate on fallocate(PUNCH_HOLE), but if the file is being
+>> >> closed, defer merging to folio_put() callback.
+>> >> 
+>> >> Change-Id: Iae26987756e70c83f3b121edbc0ed0bc105eec0d
+>> >> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+>> >> ---
+>> >>  virt/kvm/guest_memfd.c | 76 +++++++++++++++++++++++++++++++++++++-----
+>> >>  1 file changed, 68 insertions(+), 8 deletions(-)
+>> >> 
+>> >> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+>> >> index cb426c1dfef8..04b1513c2998 100644
+>> >> --- a/virt/kvm/guest_memfd.c
+>> >> +++ b/virt/kvm/guest_memfd.c
+>> >> @@ -859,6 +859,35 @@ static int kvm_gmem_restructure_folios_in_range(struct inode *inode,
+>> >>  	return ret;
+>> >>  }
+>> >>  
+>> >> +static long kvm_gmem_merge_truncate_indices(struct inode *inode, pgoff_t index,
+>> >> +					   size_t nr_pages)
+>> >> +{
+>> >> +	struct folio *f;
+>> >> +	pgoff_t unused;
+>> >> +	long num_freed;
+>> >> +
+>> >> +	unmap_mapping_pages(inode->i_mapping, index, nr_pages, false);
+>> >> +
+>> >> +	if (!kvm_gmem_has_safe_refcount(inode->i_mapping, index, nr_pages, &unused))
+>> 
+>> Yan, thank you for your reviews!
+>> 
 
-> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> Reported-by: Omar Sandoval <osandov@fb.com>
+Thanks again for your reviews. I would like to respond to this since I'm
+finally getting back to this part.
 
-This is not a new bug, right?  So at least add a
+>> > Why is kvm_gmem_has_safe_refcount() checked here, but not in
+>> > kvm_gmem_zero_range() within kvm_gmem_truncate_inode_range() in patch 33?
+>> >
+>> 
+>> The contract for guest_memfd with HugeTLB pages is that if holes are
+>> punched in any ranges less than a full huge page, no pages are removed
+>> from the filemap. Those ranges are only zeroed.
+>> 
+>> In kvm_gmem_zero_range(), we never remove any folios, and so there is no
+>> need to merge. If there's no need to merge, then we don't need to check
+>> for a safe refcount, and can just proceed to zero.
+> However, if there are still extra ref count to a shared page, its content will
+> be zeroed out.
+>
 
-Cc: stable@vger.kernel.org
+I believe this topic is kind of overtaken by events. IIUC the current
+upstream stance is that for guest_memfd we're not allowing hole-punching
+of pages for huge pages, so once a HugeTLB guest_memfd is requested,
+hole punching of less than the requested HugeTLB size will result in
+-EINVAL being returned to userspace.
 
-Thanks,
-Miklos
+>> 
+>> kvm_gmem_merge_truncate_indices() is only used during hole punching and
+>> not when the file is closed. Hole punch vs file closure is checked using
+>> mapping_exiting(inode->i_mapping).
+>> 
+>> During a hole punch, we will only allow truncation if there are no
+>> unexpected refcounts on any subpages, hence this
+>> kvm_gmem_has_safe_refcount() check.
+> Hmm, I couldn't find a similar refcount check in hugetlbfs_punch_hole().
+> Did I overlook it?
+>
+> So, why does guest_memfd require this check when punching a hole?
+>
 
-> ---
->  fs/fuse/file.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+There's no equivalent check in HugeTLBfs.
+
+For guest_memfd, we want to defer merging to the kernel worker as little
+as possible, hence we want to merge before truncating. Checking for
+elevated refcounts is a prerequisite for merging, not directly for hole
+punching.
+
+>> >> +		return -EAGAIN;
+>> >> +
+>> >
+>> > Rather than merging the folios, could we simply call kvm_gmem_truncate_indices()
+>> > instead?
+>> >
+>> > num_freed = kvm_gmem_truncate_indices(inode->i_mapping, index, nr_pages);
+>> > return num_freed;
+>> >
+>> 
+>> We could do this too, but then that would be deferring the huge page
+>> merging to the folio_put() callback and eventually the kernel worker
+>> thread.
+> With deferring the huge page merging to folio_put(), a benefit is that
+> __kvm_gmem_filemap_add_folio() can be saved for the merged folio. This function
+> is possible to fail and is unnecessary for punch hole as the folio will be
+> removed immediately from the filemap in truncate_inode_folio().
 >
-> diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-> index f1ef77a0be05..8e759061b843 100644
-> --- a/fs/fuse/file.c
-> +++ b/fs/fuse/file.c
-> @@ -893,6 +893,7 @@ static void fuse_readpages_end(struct fuse_mount *fm, struct fuse_args *args,
->         if (ia->ff)
->                 fuse_file_put(ia->ff, false);
 >
-> +       iput(inode);
->         fuse_io_free(ia);
->  }
+
+That is a good point! Definitely sounds good to defer this to folio_put().
+
+>> My goal here is to try to not to defer merging and freeing as much as
+>> possible so that most of the page/memory operations are
+>> synchronous, because synchronous operations are more predictable.
+>> 
+>> As an example of improving predictability, in one of the selftests, I do
+>> a hole punch and then try to allocate again. Because the merging and
+>> freeing of the HugeTLB page sometimes takes too long, the allocation
+>> sometimes fails: the guest_memfd's subpool hadn't yet received the freed
+>> page back. With a synchronous truncation, the truncation may take
+>> longer, but the selftest predictably passes.
+> Maybe check if guestmem_hugetlb_handle_folio_put() is invoked in the
+> interrupt context, and, if not, invoke the guestmem_hugetlb_cleanup_folio()
+> synchronously?
 >
-> @@ -973,6 +974,12 @@ static void fuse_readahead(struct readahead_control *rac)
->                 ia = fuse_io_alloc(NULL, cur_pages);
->                 if (!ia)
->                         break;
-> +               /*
-> +                *  Acquire the inode ref here to prevent reclaim from
-> +                *  deadlocking. The ref gets dropped in fuse_readpages_end().
-> +                */
-> +               igrab(inode);
-> +
->                 ap = &ia->ap;
 >
->                 while (pages < cur_pages) {
-> --
-> 2.47.3
->
+
+I think this is a good idea. I would like to pursue this in a future
+revision of a patch series.
+
+It seems like the use of in_atomic() is strongly discouraged, do you
+have any tips on how to determine if folio_put() is being called from
+atomic context?
+
+>> 
+>> [...snip...]
+>> 
 
