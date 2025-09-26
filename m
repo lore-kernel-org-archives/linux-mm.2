@@ -4,96 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0B16CAC5BB
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 19:18:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 469AACAC5B8
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 19:30:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 200D18E0005; Fri, 26 Sep 2025 15:18:01 -0400 (EDT)
+	id 6FFC38E0005; Fri, 26 Sep 2025 15:30:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18AD68E0001; Fri, 26 Sep 2025 15:18:01 -0400 (EDT)
+	id 6D5F08E0001; Fri, 26 Sep 2025 15:30:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 07A728E0005; Fri, 26 Sep 2025 15:18:01 -0400 (EDT)
+	id 5EB7C8E0005; Fri, 26 Sep 2025 15:30:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E8AF38E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 15:18:00 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8C910BB590
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 19:18:00 +0000 (UTC)
-X-FDA: 83932361520.04.94EDFC7
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf13.hostedemail.com (Postfix) with ESMTP id A4A8420009
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 19:17:57 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=K5uNgAWd
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E9928E0001
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 15:30:03 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CD2CA87ACE
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 19:30:02 +0000 (UTC)
+X-FDA: 83932391844.10.74CD3D3
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0E3778000A
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 19:30:00 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NB22SQja;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf02.hostedemail.com: domain of cmirabil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=cmirabil@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758915001; a=rsa-sha256;
+	cv=none;
+	b=jqA5DdQujDDNfXVYsWxUh6wsGNWdIhm5Pk5aI1JRpOai8mQSpnwOmQUhJu4fms0lahj0vY
+	oraH7TzN3ZbaIDsrNUy5wmkPQeJFXzKLTMqn2qGwmx68JDiV94BbNgVOKp6srLmNNIQ1Q9
+	FMsX8+hPKfR67M0SZFwp8keiWJEPt/M=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NB22SQja;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf02.hostedemail.com: domain of cmirabil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=cmirabil@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758914278;
+	s=arc-20220608; t=1758915001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yhLPxwL+DQHqKGTW1ubEYzyPgce3kGbV8vk9hn+L5lY=;
-	b=wXOr8dlQo3zZYxOiYfkQEkbym2V5VYDBtysb7mtTcpIxw+wB1HjGAgdlZbzdm9eB7ps0kx
-	E7ypkkc0aJ3IKG4vt+NJyVTF7NDsarhAMbwHDt4upg3I6CUrchs+8SCRvXjwOCeeInVABN
-	ESnPHkR1RVy4ice3dmPNEBmHdnQnNRI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758914278; a=rsa-sha256;
-	cv=none;
-	b=oV2slaIOFJDLeYJSG30C4DHqcJpDwn5qnlDzUX4iIwNMZZYnsNuOzISdOi1a4P110bDwll
-	1zkuNhWidCrHJaAEKlvj8a3nqcGUCVmuGfvSYQYgi6WCGI4Ea7kvtEATbcXwiJ9shkUhfM
-	8H02Jcf+Cpf2VIPg5DbtoFFavhXGPlU=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=K5uNgAWd;
-	spf=none (imf13.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=yhLPxwL+DQHqKGTW1ubEYzyPgce3kGbV8vk9hn+L5lY=; b=K5uNgAWdwN9hMMfTQv1hxsa30n
-	VLs5wbbT9ezEb4qbUhg6z5vLWUbhU7Pdwm48QOEYhV+8p4XQKXQEs+cJSVcsPkO5s+L43+QMUgwgQ
-	B3o6Cq4F+78eC97uURqPOdc0y14x4M0G8kBR8/AbflwMdadWJ5QhiL1jubP9yrKTTOOpA5K/UewAg
-	RGVTzjzCg9BZMwMYple2oYAu6nfAbTU3Mzx7VTXYJwJEyeLIAlJs9R5i8MvnEceGJcGEoZ2xgVQ89
-	ksMAJym7/p2wfU75+a/y3s5k6AXqv6iKgFO2VhpBjbY+5KmgfQ2cWJZr7k9QKdrLe7CnTMoSPFXl9
-	5ehk4QeA==;
-Received: from [50.53.25.54] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v2Dww-00000003suW-2zZW;
-	Fri, 26 Sep 2025 19:17:46 +0000
-Message-ID: <a5015724-a799-4151-bcc4-000c2c5c7178@infradead.org>
-Date: Fri, 26 Sep 2025 12:17:45 -0700
+	bh=qJkwxIyAJhe7Z2sYVZyMCylwQN+VGhF0dp+d12hJfX4=;
+	b=WUuYRag5i070FADdlZjECAAnrXZBEnuU7pSlthTiYYTLAkqTPTES1DhVhckiYU6NLPbT6e
+	g5/6+81ddlYRTTHxDgTkOv4DevvV83XqAZkAhERIz7du0uvnlFC5MllKbuaEq8qdWc1ImH
+	FlWUWV/nKaM9naIa7yfD2u+CouBlfI0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758915000;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qJkwxIyAJhe7Z2sYVZyMCylwQN+VGhF0dp+d12hJfX4=;
+	b=NB22SQjanoadAjwM2pKOYYLwzzBVqM2bShSWyjGl01kJ95VYbpyv6F9Wa6fL0uMgvDAFFh
+	ii/rdy8O7ZUPoQdoQDqCMhqnvOmRS+dDOfq9f1VxD3SLHjrK0jZgUI1s9ERPZMoiHg8M/k
+	/RzXc8qdJ6M2LbaSNdBMfZ3nRmqrGV8=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-281-OaejFLB4NsC5vBb4BATwog-1; Fri,
+ 26 Sep 2025 15:29:53 -0400
+X-MC-Unique: OaejFLB4NsC5vBb4BATwog-1
+X-Mimecast-MFC-AGG-ID: OaejFLB4NsC5vBb4BATwog_1758914988
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EAFCA1800365;
+	Fri, 26 Sep 2025 19:29:45 +0000 (UTC)
+Received: from cmirabil.redhat.com (unknown [10.22.90.77])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 572901800115;
+	Fri, 26 Sep 2025 19:29:34 +0000 (UTC)
+From: Charles Mirabile <cmirabil@redhat.com>
+To: pjw@kernel.org
+Cc: Liam.Howlett@oracle.com,
+	a.hindborg@kernel.org,
+	akpm@linux-foundation.org,
+	alex.gaynor@gmail.com,
+	alexghiti@rivosinc.com,
+	aliceryhl@google.com,
+	alistair.francis@wdc.com,
+	andybnac@gmail.com,
+	aou@eecs.berkeley.edu,
+	arnd@arndb.de,
+	atishp@rivosinc.com,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	bp@alien8.de,
+	brauner@kernel.org,
+	broonie@kernel.org,
+	charlie@rivosinc.com,
+	cleger@rivosinc.com,
+	conor+dt@kernel.org,
+	conor@kernel.org,
+	corbet@lwn.net,
+	dave.hansen@linux.intel.com,
+	david@redhat.com,
+	debug@rivosinc.com,
+	devicetree@vger.kernel.org,
+	ebiederm@xmission.com,
+	evan@rivosinc.com,
+	gary@garyguo.net,
+	hpa@zytor.com,
+	jannh@google.com,
+	jim.shu@sifive.com,
+	kees@kernel.org,
+	kito.cheng@sifive.com,
+	krzk+dt@kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org,
+	lorenzo.stoakes@oracle.com,
+	lossin@kernel.org,
+	mingo@redhat.com,
+	ojeda@kernel.org,
+	oleg@redhat.com,
+	palmer@dabbelt.com,
+	paul.walmsley@sifive.com,
+	peterz@infradead.org,
+	richard.henderson@linaro.org,
+	rick.p.edgecombe@intel.com,
+	robh@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	samitolvanen@google.com,
+	shuah@kernel.org,
+	tglx@linutronix.de,
+	tmgross@umich.edu,
+	vbabka@suse.cz,
+	x86@kernel.org,
+	zong.li@sifive.com
+Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
+Date: Fri, 26 Sep 2025 15:29:19 -0400
+Message-ID: <20250926192919.349578-1-cmirabil@redhat.com>
+In-Reply-To: <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org>
+References: <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 mm-new 04/12] mm: thp: add support for BPF based THP
- order selection
-To: Usama Arif <usamaarif642@gmail.com>, Yafang Shao <laoar.shao@gmail.com>,
- akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, hannes@cmpxchg.org, gutierrez.asier@huawei-partners.com,
- willy@infradead.org, ast@kernel.org, daniel@iogearbox.net,
- andrii@kernel.org, ameryhung@gmail.com, rientjes@google.com, corbet@lwn.net,
- 21cnbao@gmail.com, shakeel.butt@linux.dev, tj@kernel.org,
- lance.yang@linux.dev
-Cc: bpf@vger.kernel.org, linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250926093343.1000-1-laoar.shao@gmail.com>
- <20250926093343.1000-5-laoar.shao@gmail.com>
- <073d5246-6da7-4abb-93d6-38d814daedcc@gmail.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <073d5246-6da7-4abb-93d6-38d814daedcc@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A4A8420009
-X-Stat-Signature: ga47fc5broo8dyyqaiosrbg5a9nfoa6s
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0E3778000A
+X-Stat-Signature: aby3facjr7k45xpbojof6hso4ee6f3qj
 X-Rspam-User: 
-X-HE-Tag: 1758914277-719722
-X-HE-Meta: U2FsdGVkX19ecuwurnmPVDfVstLYI9NGfxotiCK+JL0wAdah2hnuY+qAlQhJpBuXKlJGA0Ubt+YY03CzpuPf3QvmAHwuECNrdXgGcd662fEws6GOm+JyH94tLO21u4nbxydlrRg9oEvB3yiPDj4SOdyHGbyShRbXVGF9dGfa26KweeyZn97SUEKiaCUhyADS7lkMl9QpqV/+F+hnhqVbJklA+0oisDKWY0kZO6sjGWOhknDS4K1yAyEQUCrQijxAepjwlvQPsc2TcLHJ2pgQlCFiFhuB0UxIenMhoD99HzJGE3cnLBNXe83e7c+aUhS6csyLNRsiHcnBcRkhfcIFVOaDx+Uvo8hkz8UvJP3ewnv0w3jlcXYARlKkhARJK866wtc+NsQ3pLNGJG/JvGMmCfCtf21ZyhPwJvXMR0kJ/AsPyl8lo+FixLNXx4exD04l9N74nltkTuLJWd3CSH5kKgS64fCiL38GW7Ll4vx9z+DdwsQGP0jZ99IMg036YF/BkEgVZoy0p67Ln+1PjjKYUeeGhtmZg0juH+eMRn5t37CeOoqBrO2hqkO38+K+qOzGiTK0tXX49JSKpRu7JSi7uaR5RKLVryRV01gp019eXAQIV+8dfA8D0kI2sLocEMTAd97Osc6gyColB9pQbltARH75GWNsZwo5pPq8ldhDyylCBL76ucq4g+y7T8UaRPjG9+AzWAmEtVi8sOzQxPLL0adMK5ia8EW3cDoQs0QKPdwGWWVxY3pjCIAaMr2wTwkSS5kk+LXRWFaT0znTbDsSRHm0Fxb0JOJrc91rVfN6j9TjcxJMr8iAtErIWsAP4b/X9BojLD0tqDifjxIj7B9sUq0CESRraOmlFzprQfC0wUXSD5TjZ/jXmOb7BwxBvisLtMwPsqev1/ZFPMhT0iPsBlA0qzAvKwf53Q9Latn8GkgwkeUdhbCiaOrcJCmOMW62we1tJPsqom03BoVzEoW
- h5hZ+Od/
- v+hSzF9RcNKDGoE5FGVNyx8S5PFB36j4IGn0P+bE+x23NpVoikbZFmee0TuZdGFvHj+4/qTRFo6g7Y5HD2Z/MrgeWOFslsJz1/rSC4spsHPhUZ944T3TlfqoWczXzySZZ2vb5lu/zcYmamwxm59PYzCEb/nsPC5A/WfQ9g4mliTeDupCXU9GKwYAtNB5bIiQhqywk+/GYGPd2kQCzNA9Kaq8KcEqGYL/TFRpVYB8bnZJINfgQLVAP7qVp6n61eC3bWIizhzGA6UlwbQBs2RCRih+hydCf/PIOOpck
+X-HE-Tag: 1758915000-444743
+X-HE-Meta: U2FsdGVkX1/FaQJBnxFZ0o6h75Z3Qbo+gImAXFyhPOtFazS0N1jsiLqLZ0Ct/6+uvUNm68hTP+Sa9ccglm5DbCdrqde4GVRY2lfArrRJtD7ONOSBDxfgptgDUNNW4gsNQjYo8UBbcxyruAD644x7d1Yb50JJvwkzueX/VJh/6oselSBYiCTq28USRTAB/yjrCfztrwtRG9H/mrOOKIG3m0nB5tgzeM15h9b8HvycilL3pGb3OlDicMTJUNObo6iHEHrYusbVuN0QG1QoCvythKlgT5v87H+w1KmHd+NOPyK8zlkaK41+p+euDGvxgrQvcPcVcQDWMUZIdYY7LI26GshRdu0yk236eUHpjW4PybuJcQYk9tSuBpTmf+tVIHjcLr7VYF3VMgyGggrM1qInzdRtxndpeu6pwn7GXhypVwgdUMjYIA+FgeF3d+dSN30jr+RzLw1DXAzvzwZIVPBUQaMYjeCUNMCBxpMUUhxlyzbf2oi1Iasd3CcLuH2wu/7Vt3Qdi17DFd3VtTwJ2kUUEPJnd7BTfJc+2GWCOhYlK6p4//UvKak2hp28e65TWhNjNn5UmyQqQ0ETQbKlsojCmy+ST16IBx3eHW0n2TmpgkX5SNdx+S5fE4NfLPTwDb+EhKFqsW3gcDsuBsRTEy+vLAkzXs8zIR2y1fBhQEzQmBb2H972axG6+poyxtGTGBHBQDf+jmeXI2jRq49zrDfX4RU4aqOUlsajXmlWHXO/vDiCr+v5ojXggeDfw4H6IswDPl++soesgyq3NP0l7GooHbGvZNWLw7g7lJNaakdMUvmwDlpvYJnxZNd8RANZhSgJngLh0G3zHWVRXryV8EDRNqf5YIn+q/7LrdyqNzUCpbs8YCR9TYk4D+GCvycMxdFZ1u+Z+fLvx17VDKcw1Jsz7t4TwEjR5qSG1bpymbxZ0uRFAzr1K36+DlKnWe+LOuC0YmiAdKyI1e8UADCSyTb
+ kTSg6Ztk
+ V3V7/Wsvkrn9tEAeKW7rjHrv6T8W09bu9M66/Iovu8Bjke0XoPkFnjs2INvmSxd+Dcn8O6NfDs22qqm9tPkof/CBY5x86qPiGoBndoaavXMvfrE14SWq0ptVpx4nXQ1bLiRuPedyWB9GelLCR7CoHJFJR8hc97Qo+X4goZI7PaLjtS4RKHEVlM46GMYax6ygpXFwf58fRn/usRSMn7kXXUE7ylI80ubQ83D0QXBj3xuF8lkheD7FU3TuFRiCK6rmi9mPz+DSYCibX9gc8FYE4QntGWteSCvNaf0rQ7D7kAdq9PavQ5snHesWB63QOL2eiqe23JOhAuJ4bINZslXGnDijfs8R8LPfov2SgszVyplNinHPuqiOEb5Cw4FyRsgodMfN6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,35 +160,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi - 
 
+Hoping that I got everything right with git-send-email so that this is
+delivered alright...
 
-On 9/26/25 8:13 AM, Usama Arif wrote:
->> +config BPF_THP_GET_ORDER_EXPERIMENTAL
->> +	bool "BPF-based THP order selection (EXPERIMENTAL)"
->> +	depends on TRANSPARENT_HUGEPAGE && BPF_SYSCALL
->> +
->> +	help
->> +	  Enable dynamic THP order selection using BPF programs. This
->> +	  experimental feature allows custom BPF logic to determine optimal
->> +	  transparent hugepage allocation sizes at runtime.
->> +
->> +	  WARNING: This feature is unstable and may change in future kernel
->> +	  versions.
->> +
-> I am assuming this series opens up the possibility of additional hooks being added in
-> the future. Instead of naming this BPF_THP_GET_ORDER_EXPERIMENTAL, should we
-> name it BPF_THP? Otherwise we will end up with 1 Kconfig option per hook, which
-> is quite bad.
+Wanted to jump in to head off a potential talking past one another / 
+miscommunication situation I see here.
+
+On Wed, Sep 24, 2025 at 08:36:11AM -0600, Paul Walmsley wrote:
+> Hi,
 > 
-> Also It would be really nice if we dont put "EXPERIMENTAL" in the name of the defconfig.
-> If its decided that its not experimental anymore without any change to the code needed,
-> renaming the defconfig will break it for everyone.
+> On Thu, 31 Jul 2025, Deepak Gupta wrote:
+> 
+> [ ... ]
+> 
+> > vDSO related Opens (in the flux)
+> > =================================
+> > 
+> > I am listing these opens for laying out plan and what to expect in future
+> > patch sets. And of course for the sake of discussion.
+> > 
+> 
+> [ ... ]
+> 
+> > How many vDSOs
+> > ---------------
+> > Shadow stack instructions are carved out of zimop (may be operations) and if CPU
+> > doesn't implement zimop, they're illegal instructions. Kernel could be running on
+> > a CPU which may or may not implement zimop. And thus kernel will have to carry 2
+> > different vDSOs and expose the appropriate one depending on whether CPU implements
+> > zimop or not.
+> 
+> If we merge this series without this, then when CFI is enabled in the 
+> Kconfig, we'll wind up with a non-portable kernel that won't run on older 
+> hardware.  We go to great lengths to enable kernel binary portability 
+> across the presence or absence of other RISC-V extensions, and I think 
+> these CFI extensions should be no different.
 
-s/defconfig/Kconfig symbol/
+That is not true, this series does not contain the VDSO changes so it can
+be merged as is.
 
-Otherwise agreed.
-Thanks.
--- 
-~Randy
+> 
+> So before considering this for merging, I'd like to see at least an 
+> attempt to implement the dual-vDSO approach (or something equivalent) 
+> where the same kernel binary with CFI enabled can run on both pre-Zimop 
+> and post-Zimop hardware, with the existing userspaces that are common 
+> today.
+
+I agree that when the VDSO patches are submitted for inclusion they should
+be written in a way that avoids limiting the entire kernel to either
+pre-Zimop or post-Zimop hardware based on the config, but I think it
+should be quite possible to perform e.g. runtime patching of the VDSO
+to replace the Zimop instructions with nops if the config is enabled but
+the hardware does not support Zimop.
+
+However, that concern should not hold up this patch series. Raise it again
+when the VDSO patches are posted.
+
+> 
+> thanks Deepak,
+> 
+> - Paul
+
+Best - Charlie
 
 
