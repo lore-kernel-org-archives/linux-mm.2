@@ -4,75 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A6BBCAC5B5
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 03:35:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A986CAC5BA
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 03:35:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F9F88E0014; Thu, 25 Sep 2025 23:35:19 -0400 (EDT)
+	id 000BF8E0015; Thu, 25 Sep 2025 23:35:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A92E8E0013; Thu, 25 Sep 2025 23:35:19 -0400 (EDT)
+	id EF4838E0016; Thu, 25 Sep 2025 23:35:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 249EA8E0014; Thu, 25 Sep 2025 23:35:19 -0400 (EDT)
+	id D6DBD8E0015; Thu, 25 Sep 2025 23:35:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E2588E0013
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id BFD6D8E0013
 	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 23:35:19 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CC67EC0568
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:18 +0000 (UTC)
-X-FDA: 83929985916.07.516AEF2
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 83CFFC055D
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:19 +0000 (UTC)
+X-FDA: 83929985958.16.DB9B17C
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B0CA0C0004
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:16 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hTRZSwRv;
-	spf=pass (imf28.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 67F59120007
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:17 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=eVcXkwPw;
+	spf=pass (imf29.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758857716;
+	s=arc-20220608; t=1758857717;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eX8UsgwzY7WbpyA/jTTT8eTtd67A6JRzRgg054s+cmQ=;
-	b=oqjOcd0/EV0yNZG5QiaTTEiiZ0qc7FLvJxDNjGqPnNqxurEZjZfiUH2FWN6M89i2qq8qfy
-	acpYdGjh/0phVP2Kqa+q3n02/zhkkG3qs+VaMi8cx9iAmn6lfhL8kgYUAWkLjF5KhIQmc5
-	5gUtip8ahceLl1/zN90IJkjJ9O546sM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758857716; a=rsa-sha256;
-	cv=none;
-	b=RQjn0f3RuoITB71k/OFaVWWZgSgO4o+EsMN3CQbNitCRd+Xy/C88FeQRqNpwHKUT4MpCNU
-	KWS+aKwNA51oER+uUm4v9JllAuA5LTvVCU1DPNxFADLpGkn6qUejP/eyFXAUC55XR+HWLi
-	+v2NHvmyuk65jL13bPlmhTa/gXu32Ow=
+	bh=EotO0tDseM7PN0vvFSN+GHcuIuXQW2PhfsEVnTRNFtY=;
+	b=pUuVOI4KQ5W3aRZWrG765gehvATdnVcu9hnySdg5imamXmd8Xwma+5fm3f8jHIlghdQteV
+	FKjlMS1SlVttShuBxr7HcqBcFo17Fzz2G6MYe1L/E2kakcaPdWzy/RvGIK8LKWk1E8Wd8Z
+	2sChfvjfpTdgXIf2BakA9LforYJBFzw=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hTRZSwRv;
-	spf=pass (imf28.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=eVcXkwPw;
+	spf=pass (imf29.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758857717; a=rsa-sha256;
+	cv=none;
+	b=Jat4PkkOMpDPBV1h3GUS4x+7rgeOK/KEIEi3EY7Fetf41BLy3Bfoik43hTjCJBlQMxpbH8
+	or644FM0yDBonRgN/WweWb0Erwuoy3AgnhgHPrKZbzPPySSwJMxaMAPlQGLX9MVZ41pDxT
+	yfSQaVVv28Lz9WZ5oyYmlQC6veWYWWk=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758857717; x=1790393717;
+  t=1758857718; x=1790393718;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=O6Y/KqSHNNgjHA7lJ/nseE1s3+rHj9XrHsce22HNXnk=;
-  b=hTRZSwRvT61+umwC7epBfzlt1vkBlUCVGQdWnrH+CYg/ZpiaxMHPILEG
-   GezS0l03+wo/rSb4kMmdL0EVzS70hs03q3NwKXiN1oIIxENvvTt8O5Aot
-   T45V4C/SgZj/QEQ7D/B2qhEwdhnVlNedQucDg3ZfhV3eFehFTXwZje24U
-   JrA7S+YFiza5MzQJRQoQQRu/8Ul7GFckn3VY7eepQZWtBjR7Xpe+8nLHU
-   g6hd1tt/G5JGhTk6uNVpxQe9XZP4KvpV46KtHbHCdWC2P4N8WsBG06m+D
-   1fQ+gA097S1lCu+YKExOYNrlkFRtQOkWtjdGL9ZuQmbYiwxt5ley9cAqE
-   Q==;
-X-CSE-ConnectionGUID: ojyQIfwqTKq1aNlA8vnkUA==
-X-CSE-MsgGUID: +EepdAuUQQeOVufMzEZERA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="63819549"
+  bh=pwC8gGnN93tPpG8XUySSvRTzqGEe+iI+19bkiX/xCZY=;
+  b=eVcXkwPwXC1ZAWodootBfgJOqApNS+Vmh5/OriaiCKDY1621+uKfW5aE
+   R9oQoOxxjduu8TEL91zm0uFj/Q2BARncKVLQS9pAcXg/JuqASd+t6GB+f
+   liaBY2QBgOSL+nVZ6CmF7oB3AGUDpeL1OXGazy2fi41At20Hlz0K1pDYe
+   6Z9TY9RD4aef873r7xs51gfV5fEZy1es6znTI9bHuEKAvS/2geP9214/L
+   dCp5epku1UimNoDexstyQbahBPyFuTo/4ULOC4tH72Sqro/vsdP22rPlg
+   83nvAlKEWOw2Uuk/evzp4nUtMKH7Z1GyhYHf4uwLJfw5oXLmsWoPtPX4C
+   A==;
+X-CSE-ConnectionGUID: AYacaFeoRG2tTpfnCY/fiA==
+X-CSE-MsgGUID: tbpVgCCjQH228NeiuHuD0Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="63819563"
 X-IronPort-AV: E=Sophos;i="6.18,294,1751266800"; 
-   d="scan'208";a="63819549"
+   d="scan'208";a="63819563"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
   by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 20:35:06 -0700
-X-CSE-ConnectionGUID: AFxCyJRuTT65k9GCwiosJw==
-X-CSE-MsgGUID: +ZdoxfwoQgS5NAUBnswviQ==
+X-CSE-ConnectionGUID: 5JNP4bi0RRaUIOdbR0R7xg==
+X-CSE-MsgGUID: wIVCNUzbRyyBSK7y3Qvb8g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,294,1751266800"; 
-   d="scan'208";a="214636583"
+   d="scan'208";a="214636587"
 Received: from jf5300-b11a338t.jf.intel.com ([10.242.51.115])
   by orviesa001.jf.intel.com with ESMTP; 25 Sep 2025 20:35:05 -0700
 From: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
@@ -102,22 +102,22 @@ To: linux-kernel@vger.kernel.org,
 Cc: wajdi.k.feghali@intel.com,
 	vinodh.gopal@intel.com,
 	kanchana.p.sridhar@intel.com
-Subject: [PATCH v12 12/23] crypto: iaa - Enablers for submitting descriptors then polling for completion.
-Date: Thu, 25 Sep 2025 20:34:51 -0700
-Message-Id: <20250926033502.7486-13-kanchana.p.sridhar@intel.com>
+Subject: [PATCH v12 13/23] crypto: acomp - Define a unit_size in struct acomp_req to enable batching.
+Date: Thu, 25 Sep 2025 20:34:52 -0700
+Message-Id: <20250926033502.7486-14-kanchana.p.sridhar@intel.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
 References: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B0CA0C0004
-X-Stat-Signature: hwozfcum3qu13i3a76pty8691ifsks7o
 X-Rspam-User: 
-X-HE-Tag: 1758857716-791216
-X-HE-Meta: U2FsdGVkX19Xro7uuCCnUKEb/XRoX2mxJelcNQB15dUTV/f/83CkrLXV0KxgKJrsVqdhRDk56lK+A5Rhnck4uU6SY3y13Gp37XDxHhb/nA3KsIbKgc86clJSX8q4F0tAK5hN6H4YyB4P7XsJtHZeCNfZ4m0m6/MI8rDPb+4+IWyU7+4CmyTpkAUPvnZo4t1OVlRgfTLRt+trKBGltMKsA5oaNBQ6o4IdPa13ANhgXfFnrutERF39+Xos9r/mHOF743+jateIW1xhlUl4zIJZ3JqW88X4LerYFhPvVgYcl+edqfcAru15nzq9dGng0C/FsCGNH2+spsS+nNdKm3A9ts5bVTofZYl0jyEgs127Kz4UuP4reFmjqoJJ/fUodlgF4oXvxC6ozf5KL0gU1wXOENyuwhljzsflBxFEJ6Zp92tROuTrqZbUTNkGYXeU6X9oLSf7dXqN9LGVQQNO7J+Z26KxYJ9M6vLXS8H347mRa8LC+uiKYuXnFfSxbhHfge5yC+Q6fpLk1LBZnriS0Fvq//ZPZL6vINq7A/FmCJ2FYaEv4mtjO2SjOOOZhCChWrn1hjKHkefTpS2V/8GHguTlLKZkBiDMPj+aLdhZzf+B4rExLzGqhGkou1tXhFJFYfPAfx7uFQHA2F/ABiwgpKrZldbBpUNnWPQ1o+eUdUiHDkprTxsW7GflyByHEll3Atoi/8hGXTYFQKE4XOXY2Z5o6HIhamTEtBHAH1wKigj1Su5WQeV16EGK0GzObWK2YHB0JSVLimN10h0bLy/DWo5sHqVhNvs9C/BUqVRzpDoLcQmsbtjfI0w32SgxL0hCOskBrYHOB3o1U5fczsCFT8aANjEgwxjt4S1ZV4JU+JVsmljRNT8kb3cJB00BDjjCBuPzGBBOSnmiO8Nn6bK9qRdnUzhK3sX6vG+zWtbYz/aLa7ca9ht8ho+hx5dFQQgjv6Zaj3gOqyICfSk5imYEz60
- Lyaf2jNb
- JA+eaMvrnIsTZBhD5jhbiNbN2wcXq5RpXgu+QIMUdFIarrf0kM5JCu1RIhHZeObJ0QGMH0qOMxDLQYtafoMBIBaMvtpA7Iu7GA1FuklveKubMcgu2U4Rg1rBNQBZAOjheUB5Vp0iKwntsmVaOGk8A0RBS9ScNPrlsGgSTFKaV3uEqSEUVIlBt/ha9HA==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 67F59120007
+X-Stat-Signature: bkjgmucm8dx1bo38ypaxppcq93xa8muz
+X-HE-Tag: 1758857717-85372
+X-HE-Meta: U2FsdGVkX1/VZg1Zn4JKW++wjyDKY0/Ovt80jd5IO+d0BbcFmaUjqs9v51tMH4uMsI1+lYa0LrqazxKR8WCl0dVAeoDSvBq75UtLxkG9XE6y4eykcb3OzakIMRC4wV8j4zmwFypqJMnUJ+l90wkIYmYehTwAv61fZjEnk3uvJdISKRPO+WtKhyCvK0rsEvEfGkpDa//rkwhOTqq5F1604L0vgBOFzohivBksypEvj9BSl71lDQr8rj+8vEuVYn2CpCCREBFu43DbGTSZcJkj0UR1RoLeq8ku6YYGIb4HoZoPTelkkAXYgs+5Mn9J2UhI4iHMOOqP8A02BYg7JywFmHBBROhTbDpk5VLYChXrGkYjhUNNUKvtUggsbrlo9vpENmNwUQubMC6HY7ga8Ra3HBq0ROnfHjYlAG/Lifh/yaSTHbnRekepLL/G6rjs0gaXadZIoh2/7j/nI8CAF71yDTeD5MgnGp2YG0OELuD934GoFWD5FUOUYzp6uIbOjks7jx52vVGe4ShLCqlPYxib3ORIKYcGamKq/noFqWDd4QoLsaFG4+GlHrbeFKmYq9FbcNy2S7flHI/5jB7/1xl7JSygwZudJSf57YvOpxPB/2sOq2l6xRkDCrxINW8hDRx54gEeLxM21+6IMc2UxTKhCEjq79ij9tKyJ4iU+56dZ+R8+eM6r3NkU09lP5aSeTTHH5HAvHqlBEeXPV/M0RJD57jPagZr/0M7wEQ3wDkbXGRzfjgxuqxwXTJpYJtGoQ4wB0BoNebAsinFbwIoii8TmNIsLMPzEDstgpXJ3Q+9iD7dIUiPvc7WMhuVTSNAnbl67mmBijEkcKmvw64xsHGd+h/VwQi56nvu/7G5rstCLLI4LwTGFzn2+hnR5p1f3PAG8RMM03QilNwImflR+iQq24YaU/f1mI6DekvhlbYQQMpo+m06W+dMncjjp4tRXqjUSUDCnz4cHhe+e23CmsR
+ LePJKCQV
+ 6SEklViBJfrXEpls4Cwd1RTsf3IjnD8D3I94E57XbX307E+rvUECJcJDRubDyahlsgWg1gIaosI3LI5n5EN2ZGXqSrbupK7ZpNAqxbajzQn1ghAOueyjPYzO+3rDeCDw4v8OV3I6vk5wGmfFkSNmq4dmLIL2CnqlgyYIhyU73uaGZRn5Ui2NNTl7Ct2wfALXgoX3DVz2Zr/ZY5a+ATs8Pesk/FbamNzL1gF/qZn9GRHxy0FrJYPqTCf6bCqn3OZwMKoFOy3AHeAgIn4qM3m02JQvtaJZE/XggmBDe
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,202 +126,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch adds capabilities in the IAA driver for kernel users to avail
-of the benefits of compressing/decompressing multiple jobs in parallel
-using IAA hardware acceleration, without the use of interrupts. Instead,
-this is accomplished using an async "submit-poll" mechanism.
+We add a new @unit_size data member to struct acomp_req along with a
+helper function acomp_request_set_unit_size() for kernel modules to set
+the unit size to use while breaking down the request's src/dst
+scatterlists.
 
-To achieve this, we break down a compress/decompress job into two
-separate activities if the driver is configured for non-irq async mode:
+An acomp_alg can implement batching by using the @req->unit_size to
+break down the SG lists passed in via @req->dst and/or @req->src, to
+submit individual @req->slen/@req->unit_size compress jobs or
+@req->dlen/@req->unit_size decompress jobs, for batch compression and
+batch decompression respectively.
 
-1) Submit a descriptor after caching the "idxd_desc" descriptor in the
-   req->drv_data, and return -EINPROGRESS.
-2) Poll: Given a request, retrieve the descriptor and poll its completion
-   status for success/error.
+In case of batch compression, the folio's pages for the batch can be
+retrieved from the @req->src scatterlist by using an struct sg_page_iter
+after determining the number of pages as @req->slen/@req->unit_size.
 
-This is enabled by the following additions in the driver:
-
-1) The idxd_desc is cached in the "drv_data" member of "struct iaa_req".
-
-2) IAA_REQ_POLL_FLAG: if set in the iaa_req's flags, this tells
-   the driver that it should submit the descriptor and return
-   -EINPROGRESS. If not set, the driver will proceed to call
-   check_completion() in fully synchronous mode, until the hardware
-   returns a completion status.
-
-3) iaa_comp_poll() procedure: This routine is intended to be called
-   after submission returns -EINPROGRESS. It will check the completion
-   status once, and return -EAGAIN if the job has not completed. If the
-   job has completed, it will return the completion status.
-
-The purpose of this commit is to allow kernel users of iaa_crypto, such
-as zswap, to be able to invoke the crypto_acomp_compress() API in fully
-synchronous mode for sequential/non-batching use cases (i.e. today's
-status-quo), wherein zswap calls:
-
-  crypto_wait_req(crypto_acomp_compress(req), wait);
-
-and to non-instrusively invoke the fully asynchronous batch
-compress/decompress functionality that will be introduced in subsequent
-patches. Both use cases need to reuse same code paths in the driver to
-interface with hardware: the IAA_REQ_POLL_FLAG allows this
-shared code to determine whether we need to process an iaa_req
-synchronously/asynchronously. The idea is to simplify iaa_crypto's
-sequential/batching interfaces for use by zswap and zram.
-
-Thus, regardless of the iaa_crypto driver's 'sync_mode' setting, it
-can still be forced to use synchronous mode by *not setting* the
-IAA_REQ_POLL_FLAG in iaa_req->flags: this is the default to support
-sequential use cases in zswap today.
-
-When IAA batching functionality is introduced subsequently, it will set
-the IAA_REQ_POLL_FLAG for the requests in a batch. We will submit the
-descriptors for each request in the batch in iaa_[de]compress(), and
-return -EINPROGRESS. The hardware will begin processing each request as
-soon as it is submitted, essentially all compress/decompress jobs will
-be parallelized. The polling function, "iaa_comp_poll()", will retrieve
-the descriptor from each iaa_req->drv_data to check its completion
-status. This enables the iaa_crypto driver to implement true async
-"submit-polling" for parallel compressions and decompressions in the IAA
-hardware accelerator.
-
-To summarize, both these conditions need to be met for a request to be
-processed in fully async submit-poll mode:
-
- 1) use_irq should be "false"
- 2) iaa_req->flags & IAA_REQ_POLL_FLAG should be "true"
-
+Suggested-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
 ---
- drivers/crypto/intel/iaa/iaa_crypto.h      |  6 ++
- drivers/crypto/intel/iaa/iaa_crypto_main.c | 71 +++++++++++++++++++++-
- 2 files changed, 75 insertions(+), 2 deletions(-)
+ include/crypto/acompress.h | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/drivers/crypto/intel/iaa/iaa_crypto.h b/drivers/crypto/intel/iaa/iaa_crypto.h
-index 190157967e3b..1cc383c94fb8 100644
---- a/drivers/crypto/intel/iaa/iaa_crypto.h
-+++ b/drivers/crypto/intel/iaa/iaa_crypto.h
-@@ -41,6 +41,12 @@
- 					 IAA_DECOMP_CHECK_FOR_EOB | \
- 					 IAA_DECOMP_STOP_ON_EOB)
+diff --git a/include/crypto/acompress.h b/include/crypto/acompress.h
+index 9eacb9fa375d..0f1334168f1b 100644
+--- a/include/crypto/acompress.h
++++ b/include/crypto/acompress.h
+@@ -79,6 +79,7 @@ struct acomp_req_chain {
+  * @dvirt:	Destination virtual address
+  * @slen:	Size of the input buffer
+  * @dlen:	Size of the output buffer and number of bytes produced
++ * @unit_size:  Unit size for the request for use in batching
+  * @chain:	Private API code data, do not use
+  * @__ctx:	Start of private context data
+  */
+@@ -94,6 +95,7 @@ struct acomp_req {
+ 	};
+ 	unsigned int slen;
+ 	unsigned int dlen;
++	unsigned int unit_size;
  
-+/*
-+ * If set, the driver must have a way to submit the req, then
-+ * poll its completion status for success/error.
-+ */
-+#define IAA_REQ_POLL_FLAG		0x00000002
-+
- /* Representation of IAA workqueue */
- struct iaa_wq {
- 	struct list_head	list;
-diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-index f5abad950371..7395822430b1 100644
---- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
-+++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-@@ -1891,13 +1891,14 @@ static int iaa_compress(struct iaa_compression_ctx *ctx, struct iaa_req *req,
- 					  ctx->mode, iaa_device->compression_modes[ctx->mode]);
+ 	struct acomp_req_chain chain;
  
- 	if (likely(!ctx->use_irq)) {
-+		req->drv_data = idxd_desc;
- 		iaa_submit_desc_movdir64b(wq, idxd_desc);
- 
- 		/* Update stats */
- 		update_total_comp_calls();
- 		update_wq_comp_calls(wq);
- 
--		if (ctx->async_mode)
-+		if (req->flags & IAA_REQ_POLL_FLAG)
- 			return -EINPROGRESS;
- 
- 		ret = check_completion(dev, idxd_desc->iax_completion, true, false);
-@@ -1979,13 +1980,14 @@ static int iaa_decompress(struct iaa_compression_ctx *ctx, struct iaa_req *req,
- 	desc = iaa_setup_decompress_hw_desc(idxd_desc, src_addr, slen, dst_addr, *dlen);
- 
- 	if (likely(!ctx->use_irq)) {
-+		req->drv_data = idxd_desc;
- 		iaa_submit_desc_movdir64b(wq, idxd_desc);
- 
- 		/* Update stats */
- 		update_total_decomp_calls();
- 		update_wq_decomp_calls(wq);
- 
--		if (ctx->async_mode)
-+		if (req->flags & IAA_REQ_POLL_FLAG)
- 			return -EINPROGRESS;
- 
- 		ret = check_completion(dev, idxd_desc->iax_completion, false, false);
-@@ -2188,6 +2190,71 @@ static int iaa_comp_adecompress(struct iaa_compression_ctx *ctx, struct iaa_req
- 	return ret;
+@@ -328,9 +330,43 @@ static inline void acomp_request_set_callback(struct acomp_req *req,
+ {
+ 	flgs &= ~CRYPTO_ACOMP_REQ_PRIVATE;
+ 	flgs |= req->base.flags & CRYPTO_ACOMP_REQ_PRIVATE;
++	req->unit_size = 0;
+ 	crypto_request_set_callback(&req->base, flgs, cmpl, data);
  }
  
-+static int __maybe_unused iaa_comp_poll(struct iaa_compression_ctx *ctx, struct iaa_req *req)
++/**
++ * acomp_request_set_unit_size() -- Sets the unit size for the request.
++ *
++ * As suggested by Herbert Xu, this is a new helper function that enables
++ * batching for zswap, IPComp, etc.
++ *
++ * Example usage model:
++ *
++ * A module like zswap that wants to use batch compression of @nr_pages with
++ * crypto_acomp must create an output SG table for the batch, initialized to
++ * contain @nr_pages SG lists. Each scatterlist is mapped to the nth
++ * destination buffer for the batch.
++ *
++ * An acomp_alg can implement batching by using the @req->unit_size to
++ * break down the SG lists passed in via @req->dst and/or @req->src, to
++ * submit individual @req->slen/@req->unit_size compress jobs or
++ * @req->dlen/@req->unit_size decompress jobs, for batch compression and
++ * batch decompression respectively.
++ *
++ * This API must be called after acomp_request_set_callback(),
++ * which sets @req->unit_size to 0.
++ *
++ * @du would be PAGE_SIZE for zswap, it could be the MTU for IPsec.
++ *
++ * @req:	asynchronous compress request
++ * @du:		data unit size of the input buffer scatterlist.
++ */
++static inline void acomp_request_set_unit_size(struct acomp_req *req,
++					       unsigned int du)
 +{
-+	struct idxd_desc *idxd_desc;
-+	struct idxd_device *idxd;
-+	struct iaa_wq *iaa_wq;
-+	struct pci_dev *pdev;
-+	struct device *dev;
-+	struct idxd_wq *wq;
-+	bool compress_op;
-+	int ret;
-+
-+	idxd_desc = req->drv_data;
-+	if (!idxd_desc)
-+		return -EAGAIN;
-+
-+	compress_op = (idxd_desc->iax_hw->opcode == IAX_OPCODE_COMPRESS);
-+	wq = idxd_desc->wq;
-+	iaa_wq = idxd_wq_get_private(wq);
-+	idxd = iaa_wq->iaa_device->idxd;
-+	pdev = idxd->pdev;
-+	dev = &pdev->dev;
-+
-+	ret = check_completion(dev, idxd_desc->iax_completion, compress_op, true);
-+	if (ret == -EAGAIN)
-+		return ret;
-+	if (ret)
-+		goto out;
-+
-+	req->dlen = idxd_desc->iax_completion->output_size;
-+
-+	/* Update stats */
-+	if (compress_op) {
-+		update_total_comp_bytes_out(req->dlen);
-+		update_wq_comp_bytes(wq, req->dlen);
-+	} else {
-+		update_total_decomp_bytes_in(req->slen);
-+		update_wq_decomp_bytes(wq, req->slen);
-+	}
-+
-+	if (compress_op && ctx->verify_compress) {
-+		dma_addr_t src_addr, dst_addr;
-+
-+		req->compression_crc = idxd_desc->iax_completion->crc;
-+
-+		dma_sync_sg_for_device(dev, req->dst, 1, DMA_FROM_DEVICE);
-+		dma_sync_sg_for_device(dev, req->src, 1, DMA_TO_DEVICE);
-+
-+		src_addr = sg_dma_address(req->src);
-+		dst_addr = sg_dma_address(req->dst);
-+
-+		ret = iaa_compress_verify(ctx, req, wq, src_addr, req->slen,
-+					  dst_addr, req->dlen);
-+	}
-+
-+out:
-+	/* caller doesn't call crypto_wait_req, so no acomp_request_complete() */
-+	dma_unmap_sg(dev, req->dst, 1, DMA_FROM_DEVICE);
-+	dma_unmap_sg(dev, req->src, 1, DMA_TO_DEVICE);
-+
-+	idxd_free_desc(idxd_desc->wq, idxd_desc);
-+	percpu_ref_put(&iaa_wq->ref);
-+
-+	return ret;
++	req->unit_size = du;
 +}
 +
- static void compression_ctx_init(struct iaa_compression_ctx *ctx, enum iaa_mode mode)
- {
- 	ctx->mode = mode;
+ /**
+  * acomp_request_set_params() -- Sets request parameters
+  *
 -- 
 2.27.0
 
