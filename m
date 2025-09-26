@@ -4,113 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70ED8CAC5AE
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 15:36:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A93A8CAC5B8
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 15:38:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C90BD8E0013; Fri, 26 Sep 2025 11:36:26 -0400 (EDT)
+	id 0D6FC8E0014; Fri, 26 Sep 2025 11:38:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C68CE8E0001; Fri, 26 Sep 2025 11:36:26 -0400 (EDT)
+	id 087A18E0001; Fri, 26 Sep 2025 11:38:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA5568E0013; Fri, 26 Sep 2025 11:36:26 -0400 (EDT)
+	id EB85D8E0014; Fri, 26 Sep 2025 11:38:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A7A968E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 11:36:26 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 53B818503E
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 15:36:26 +0000 (UTC)
-X-FDA: 83931803172.22.6C8FCC9
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D52C18E0001
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 11:38:54 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7649213BA7B
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 15:38:54 +0000 (UTC)
+X-FDA: 83931809388.01.40C49C7
 Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 643E018000C
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 15:36:24 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=JXbjeVAg;
-	spf=pass (imf06.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 98384C000E
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 15:38:52 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=BOgSjGGS;
+	spf=pass (imf10.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758900984;
+	s=arc-20220608; t=1758901132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OZSv7jCMIO3/8aLO/JxtF9r3uIns87B1XPQ7ZuJUAZ8=;
-	b=g/dpopnXNdyvWGPQidMhLvyrK+qxZKQi9aS0KPtGq1holnVDfLCBY9i984BvodRtxWpEeE
-	TdGA9eyEJQD5KzpZ8ohhgZTZGsO3pUY0CDiaD+CBWKYYrNuz8RiVIcZQQLOSknq+UICw2h
-	oTJDCgOBs2gsgZiYVnBBvCzzgak5Kxw=
+	bh=lXzocX6ZDXcHxojnIagSNZA3qKAOhB8e13p864rbCw0=;
+	b=GrFznYJFvZmc/7iBQDJpQbzOx7L5J6VxrkxsHjm37cws7cBTgQCURm52FlAUKQi8frEbRb
+	QFOjrZSCpiibuMVTIUe3DnkBirZFA6ou11siHYEog0KWaUT7PRxGbvLfAIRyga4XVCINKy
+	fO5PFnd9uVUaXTDiCj3Jmsu92AQMEmQ=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=JXbjeVAg;
-	spf=pass (imf06.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=BOgSjGGS;
+	spf=pass (imf10.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758900984; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758901132; a=rsa-sha256;
 	cv=none;
-	b=dHXytlNv1YYUkLJBiTbn89bc3VgUvOmgIVNi0jfPN+EXFN5SiVZr12UhfW+FXCz7CqGQAb
-	fjrdNmhkmOL570AJPozXSa1E/f30lOeOB6GrelArQUWXWgo6IOMu8PKiVDx7Ttf91cwqGb
-	zHuHDu5J4H1aphfah0Cmfzy7KVBAqgw=
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4de60f19a57so253711cf.0
-        for <linux-mm@kvack.org>; Fri, 26 Sep 2025 08:36:24 -0700 (PDT)
+	b=hdIXTI77xsNSEaC+gonMB18ZSK8RF37rKWhNGW0zj0RROyY1lEpGi2nVusNVoXans63AvJ
+	Sok4/pKBTpfWRb9PY5RAJToN3F3JpaYVgsnzYJKfkl2GymY39DO10S2anP1Z7i86Y740KH
+	XgnsfxwosYZLCwSaYyrOP35NzxCL+i8=
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4c73047a75cso193081cf.1
+        for <linux-mm@kvack.org>; Fri, 26 Sep 2025 08:38:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758900983; x=1759505783; darn=kvack.org;
+        d=google.com; s=20230601; t=1758901132; x=1759505932; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OZSv7jCMIO3/8aLO/JxtF9r3uIns87B1XPQ7ZuJUAZ8=;
-        b=JXbjeVAgTQRMPQ6gw4f58I/SpMyPOp9c47dZPINoonFCaie9tqVxhgp8KU7kJqCyTS
-         ZN7ri++L+pj1ChblafsDgfTrN+ogw+OPvdslNpm4prFZIRObdpzu23dqZLAyjS2/WaI2
-         LdTadWAkVm/jlm7bfuk+iDPhBtWum3OGRxCSfrqHF5dpWKdC61yw4rgIfCvK6xXD7t8n
-         WzwA7Y6mf8csE3QJFbtkLKNbrZpePIC+VXOi3fynZr20sNPLKmtAtswv8Qy3MnbdsQuR
-         2jalLc+IjBIMN4/tIUSDstvEBiFQkvImb0iOJOYRxlOnlGiImoqFEI8xmJy5ZQpTyCtZ
-         MIVQ==
+        bh=lXzocX6ZDXcHxojnIagSNZA3qKAOhB8e13p864rbCw0=;
+        b=BOgSjGGSftfDfa1Wi6ALFIKJVlIKIBrpAGEGiaOaRBO8gYuM+vucStemB0SWSeW63S
+         /TyDexVQrZwknC3b2fEv/UzI4xe9PYza4rG5RJiJf7zbXj23wrITyQ1Y8eeJP+/NeaJe
+         vfbMeEFRb9uioppICxAsVj6aZietAXKii2VbYcxV3tJZ5k3eckFkeiWK4hBWV8/0lbXB
+         mgKmmCUtuRVZ9L8UFihmrgmiiSInxsskmU5rnTTCJ+uPD9I9XJwd7/KbsxxiSVc9pM8/
+         FS9oC10c0WKzlIsXf2Uk35H+f6QIkgYoGjgytGEn6Wx+Wtx7YbhhY0DCg7kPCLalxbhp
+         dDhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758900983; x=1759505783;
+        d=1e100.net; s=20230601; t=1758901132; x=1759505932;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OZSv7jCMIO3/8aLO/JxtF9r3uIns87B1XPQ7ZuJUAZ8=;
-        b=bGldsm0A/O+q8Xe7dmC4fvkXBnmjkBLHlqP5MUoeAPqqrLxqFq2oLWS43ALGJqVmPs
-         TixZ4EMnLCh+jfE+inf2OfI/ygEnnHIO999YqcVavYxJrEHvSNAJ+ZTPecI0TY4jXTpF
-         89rqa3hA5e0Qu1nhovlWlCn+e2+Wj+7jsOKLvROCnXEgt39yzkXmFCPEyKS7pRaKNBgg
-         sfT72KKG7/E5expP2zugv1nT8H/i0ovnh1/+ZKM4450VNRqHpwzI1SkmpxLVeH0vvKNN
-         xjpO7YdWb87iWkAi/DBAv7nO10KcW1JQhUhgWIYXW5zdFVNesCqCVmVfDy6NfmcK+qGS
-         s2pA==
-X-Forwarded-Encrypted: i=1; AJvYcCUy+AsYZCaMJ4KGpM/ZTtG3/6FAqQaJ8PQrePsW5FmXZxmqZtpfuLQklSJVu+0vqi2pTK6uXYL24A==@kvack.org
-X-Gm-Message-State: AOJu0YyA3J8pRX8mTe2PEh7+3TldB5FHkZH2IjNvfpwvily+oDVohAg7
-	Bfx0pD5urbG7CE4iJdc4y6V4fLPLbnrzBfMghMq5G77CkM8nGMOO2AcKgtPRTGBAKzfWT1jVU4z
-	zSmEBMjvIPG7cEMiObNBxwUdgFAYo5qxbQyEalKYi
-X-Gm-Gg: ASbGnctvXImG+lL8r49r5b1wECQHjnmin1vfV7O8kfpsZktUuISfizfOl+7dnPvF4WS
-	E3yWX2xBBlAykilUlJ7DU9V/lQTjDtQqYN31JiA59RyvCsFU2jTfxjeISNueEaDa/yXwLQ/TBV1
-	w/ADL1rQni4scMYTbSIPA/lXVNmhPM3Tq5GdrJQRkIYJpA/wmg6uJLmq2ctAIYkFLMPk1g/gnHA
-	DJUDTTF1vMvyunlnUi4Rqk=
-X-Google-Smtp-Source: AGHT+IEI/jk3UcCkf9eM5O2gzijjqrX9cyj5UxKnCeRHeu/NPv0BxP2Itgt6Aa8b5z+x4oXG2jQMDdeupRKQ2GBDutE=
+        bh=lXzocX6ZDXcHxojnIagSNZA3qKAOhB8e13p864rbCw0=;
+        b=a61eq8W8eG4eGhPwBD+vqmpQcEJ81L4CvAgWlkkcQ3MdEkMpqqOAavXkg4JTP0t1I7
+         8ca6QhQ4OY7or7VW4Fhv7cWwo+JLdqg/m4Bhqp9dmiMLPWYfMpqS+kDp5D//RaPOMuuq
+         7zZ/MzecmGv/qSi2XsS49yUTPT1W5HwNAykFflhAE51OgzMrJ+qqsx+zGYJ1+3p7e0Lo
+         T/N8TDyfETvA54QrpjOTFcphwK+jNu44/XyUk13RmlWOI+Av9HUt1vSirjfKtiztRUC/
+         WhQpurc7QR8WbJEZboJjQrv3yc48utkJ8Cmdkqrp0GinTyEHk/TYTxILKcigFL7lixtT
+         vPzA==
+X-Forwarded-Encrypted: i=1; AJvYcCVT/qS0yLzeG9LfZA59PYEQiSWde4bWBIZSJk25ESvgljqX+nGOpu0l+zXcMYjfB002gd+eleQo0w==@kvack.org
+X-Gm-Message-State: AOJu0YygTHmVgAi0SJOFtDrWnim08uBwIh3gAvTAmZcwSE7pE9TVGEuJ
+	bosCYbPs8+NjK8SS/cK0YsMCUNn0MctA7j03tEJI8rpcb9k64SlKHDQxr0H0ZYYv3ZF3HMCaxOg
+	po1nSX/28rFjedWzfx2g4F3iJIQVFaqBsGVl0P/Yg
+X-Gm-Gg: ASbGncvaaAIfU2A0vQbUcuYK+Ozbk6nl3bg0Atg6PPNSXzYoT8HbDWbW789TITwRYn+
+	evOuSBlwuDhXa+lEdZlENXFnLWF01YVwp9GDn7ONkufLFDaXH6snUjdh2/F11OHA9Kb6u/kxiX8
+	qfdpQXY8llwt/6iYJ6dQmOpp/96BkDADUGi5CuPZa0NeJ+qewLk2qkcBYsR+nQYj1awcwFTWi46
+	w8VeQ7VxDlQ
+X-Google-Smtp-Source: AGHT+IGUxL+Ts8nZMxqg7rMa5w9X1kAO9wkdvMmX92FoJO/bv4bqeUj1oEI2kGl0p735VGIj1Vtf4Ntxfyo6WGTFanA=
 X-Received: by 2002:a05:622a:14c:b0:4b7:9b06:ca9f with SMTP id
- d75a77b69052e-4dd1675a20amr6239261cf.2.1758900982412; Fri, 26 Sep 2025
- 08:36:22 -0700 (PDT)
+ d75a77b69052e-4dd1675a20amr6251731cf.2.1758901130945; Fri, 26 Sep 2025
+ 08:38:50 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250926080659.741991-1-ranxiaokai627@163.com> <96d00a94-1a4b-4378-8d89-0554f89778e1@suse.cz>
-In-Reply-To: <96d00a94-1a4b-4378-8d89-0554f89778e1@suse.cz>
+References: <202509171214.912d5ac-lkp@intel.com> <b7d4cf85-5c81-41e0-9b22-baa9a7e5a0c4@suse.cz>
+ <ead41e07-c476-4769-aeb6-5a9950737b98@suse.cz> <CAADnVQJYn9=GBZifobKzME-bJgrvbn=OtQJLbU+9xoyO69L8OA@mail.gmail.com>
+ <ce3be467-4ff3-4165-a024-d6a3ed33ad0e@suse.cz> <CAJuCfpGLhJtO02V-Y+qmvzOqO2tH5+u7EzrCOA1K-57vPXhb+g@mail.gmail.com>
+ <CAADnVQLPq=puz04wNCnUeSUeF2s1SwTUoQvzMWsHCVhjFcyBeg@mail.gmail.com>
+ <CAJuCfpGA_YKuzHu0TM718LFHr92PyyKdD27yJVbtvfF=ZzNOfQ@mail.gmail.com>
+ <CAADnVQKt5YVKiVHmoB7fZsuMuD=1+bMYvCNcO0+P3+5rq9JXVw@mail.gmail.com>
+ <7a3406c6-93da-42ee-a215-96ac0213fd4a@suse.cz> <CAADnVQKrLbOxav0+H5LsESa_d_c8yBGfPdRDJzkz6yjeQf9WdA@mail.gmail.com>
+In-Reply-To: <CAADnVQKrLbOxav0+H5LsESa_d_c8yBGfPdRDJzkz6yjeQf9WdA@mail.gmail.com>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 26 Sep 2025 08:36:11 -0700
-X-Gm-Features: AS18NWDFkKvKtLcxfc1dJhlxjz81QX6DLo5WA6zWZ5CPFfbG2tUlSc1PeLBvbDE
-Message-ID: <CAJuCfpHhOohLKDkVKiY11tHnuKLr1C=ffVqUY3BpV+30kDZjgQ@mail.gmail.com>
-Subject: Re: [PATCH linux-next] alloc_tag: Fix boot failure due to NULL
- pointer dereference
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: ranxiaokai627@163.com, akpm@linux-foundation.org, cl@gentwo.org, 
-	rientjes@google.com, roman.gushchin@linux.dev, harry.yoo@oracle.com, 
-	usamaarif642@gmail.com, shakeel.butt@linux.dev, hannes@cmpxchg.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ran.xiaokai@zte.com.cn
+Date: Fri, 26 Sep 2025 08:38:39 -0700
+X-Gm-Features: AS18NWDgSteTnQAeHe58pnPN5CXO_C6LUnKFpTmB_8Hvkh2DQsaUFE0c0GhVrg0
+Message-ID: <CAJuCfpG7Gf3_P6gKrUa+3iNZgq7SNd7nZa7Uq1P+v3FVHnL4QA@mail.gmail.com>
+Subject: Re: [linux-next:master] [slab] db93cdd664: BUG:kernel_NULL_pointer_dereference,address
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>, kernel test robot <oliver.sang@intel.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Harry Yoo <harry.yoo@oracle.com>, oe-lkp@lists.linux.dev, 
+	kbuild test robot <lkp@intel.com>, kasan-dev <kasan-dev@googlegroups.com>, 
+	"open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>, linux-mm <linux-mm@kvack.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 643E018000C
-X-Stat-Signature: gzea8837grwepccfxqeq49r1pfcpchcb
+X-Rspamd-Queue-Id: 98384C000E
+X-Stat-Signature: jok97tpn89665xwk91njfmugr3fy8hep
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1758900984-513485
-X-HE-Meta: U2FsdGVkX19f6fIg2PnmHxkIvHWa83383SGI4hb3ej2XppYWL6j4CEVnoIrwPnBf6+CaHZFvwupqJ+V9b0OxsamruoPufwL9+jQK/5K5VsXDi2xVyjktjlygZg6oySip3MJcikzaLzZiivdofyUWUM7ZDcE9mh2XV00DMdDaywjZpXbMwiSir5jWjC66+yEx7gc4UX/zxt8fKHZN46yiTHDElVXX6LqSARYwfcCn0k10bl/AbFWu9rVfUalJlVT01W6X5B7xzyKoAWeaVjMw7CAaAFVBiiEYOkAzbZpdYgQGmKYFlbhlUGk7NldSTXQ/e7n9Y+dt17Gm2teRYogxLBEwe894+PQaTuXrreOeFDS7JbsnP34N5Dn1njdF+ZvhkmT3ubNkCMnU0SF/RUnphG30XyhKylcyPnnNcV1K6NYgCKbI+66E5crnguWrHUvDmDUFsAyELnOdHRhtC/KPKJnlJXRnxLPcaKnsQi126dOOCsSv9h88hQobnQQ4ouYOXYJp9oBZbDAgIAqEiTDINE99e2joS/Cn2vaKIzQsYX2vfeTYGJmWBiz81NnC5dZPC20fBaasPgtEIO4e0hHV5Pab9cX4orRTjzw2Hu4UtKchdzGHmUb0caoX9sQz295A4G3eyxEg0ZV+ATQEWUEMsDLLUqi6OxB69MckOiWe2ctZZUJA3w/p9YM9+Z8fS3G4YheGwboHGkpC4S9ji4sBublrltBZHQNHZV+gI/ib3y+4sdiU6ReDMGsFq2nBqweLNLlJeDJWepx8oUH67vdrwbW9KVWH6MfOnKjc1F8M9A3LxFyibPbZXkukWp+yFYKAmSOXMNGOaFqn6cfW+XV4C3qPa09s9G6Ys/dEgt6W5DppcHHSSLHa3BhpF95PhfGk0km7JJo8cjQr5/nVlL86+OPpyRfnBbXtD7UtSA3GLmuuAxfe27B3WmnboX/6thUEV1YrObUgu3E5vlb3FR0
- KP+J6w7g
- 0I0hUH9zkiB9+B0hWbmkBL/1AJ65VEVDwTPUfMhDn5oxfW34qSW2hSrtjn0AZDBpbytVVJIGBbIFt1xMOQSy/KsbED38n0sPhLIE3HG5gXFNvYqRKc6C1OsP/zB2nqWZpacMZJ82N9LsRwqg1cL4PF087s7C8l8aX6OVf6VE13GljRrC41HJeLXfVGfpKyTD4bmbwx7yeunSnAEelQUvNmMf0UnVg6n4E/q5dG5CZFN5oJ+TTyozkoKZov2f1/rP/EXEOY+rG1le76kGUkcFk9E/YQPilUknSjvih1YVystLeEq8b69oileFabxyW+qxVIcXDxx2HT4zpHgD8bTeynwjLF48P84vpRNpe
+X-HE-Tag: 1758901132-750341
+X-HE-Meta: U2FsdGVkX19Zms8VVTUlrXSkgzXQDGv9yS4fhgxm9fdB2sEgYj1kkCDlOrMn6W7sf73+MSYQMwnQNRQn8rDh7c0rw20+zYyKEDPmaCFDo5AL+dtO5ulH95+00COIBE6Mt0I2uu1C4FUqRr3DC+yV9aUDGtxKQDT6uUoZYlGiyOflUSVet7o/VraXYHMSZHs4v/onKgI3nhDBprK38Gg79DWWew+ApHzKN6TWN9+h4lgSRLglo+79CEFxvIEeZmPuJO2aYfRRsS/A4rpqje+wZGOfldkVbFSjbleuEDXS9xTeNrq7S0ZaZBdMXIEnVJELunoRrzkkWOm3WBqu7kW3MKn3oVy9FppNWNxsOF2RNgCpXzOH1j2W5VB0KpVccag3lIMTbyaThBfGUVUinKb+EOet/LKMQ6p9xpB73grjbiEukMqyS35XAArrvLfYT5a4qaoFbhsOf8f+uSjJg1IBz3mZqltPYvAsLqbzbaK/M3wAsSC5YmQvdqY2h/sfCZuL2swkWX70jj0K8F0GIDCefrQMtAZ+UDcxB4TmRFXTsrCEW/NtZ63qDml6CleIpGX5Vb2jmZL8OWn4W+BqCZ1L1oT9qHjw/xmTesJs/aNKQnU2sbi55HjgGwcOdYMmc2EpLD2Lmu7HFHsqlBGRsytCcIEWNdgyAjDVDU3St7Ikux7+wzpLPDyI0H6K4acKG5+4WlmVOzPlS21H2bZGR6RZS+uwvpgvWyL1247SNzeEviP/i2QclvyxGQ8Rxva9i7Q3BFCrnH9+QQ9Z+eB9On9dQO0969G/ymug8jMeYIbl9ExmBCAd/JaoK4Ej3ivcUn/g48Wb/vwsnzVQUKV6/YJTeHqTINLUh83SOnW1ErJ3Y4Bc2vLN5pVTLTZUfu/2NOI/SJDx6l3vGl1Z3paJaASu0P3arzxQw/Sfgh+859iVpFzq9hdopakxHU3aYK/zw1cJH5jrTVsSYBKYVref5CR
+ maSTfx0b
+ lPFw/B0Bsj77qhyReUtp48jKHHHpW9LGPiK8JcVEDuztfjrjPblotWtOet0ctPA/I3Zt1HDj1VpzorX+FhvKYgszjnBfkOR3dWRDSltySk6zz7PUTqE/inubARWQkrR3mXdks20/aAkWSuNOlOaPszhQMc15fROXsokjTXBVm6vf6DjPk8N2++QyHUD/bAvTN9JZLZ9oTrswShvk7FBT1pgO4e4M8nEVv5U6VxI3vl5k8109EnqIvq3BYLKHsDi4TQhDS7QqSrJoeZBkeFMMyXtDYv9KEqsJ39G2XBKfKfEno2ZtnAJYcGoW7f9+obOnyfEiZMgvLC9yKzwSvCAwNUIcK3i3LeS7DDd5Lqq2QeRlX7pM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,112 +124,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 26, 2025 at 5:48=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
-ote:
+On Fri, Sep 26, 2025 at 8:30=E2=80=AFAM Alexei Starovoitov
+<alexei.starovoitov@gmail.com> wrote:
 >
-> On 9/26/25 10:06, ranxiaokai627@163.com wrote:
-> > From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> On Fri, Sep 26, 2025 at 1:25=E2=80=AFPM Vlastimil Babka <vbabka@suse.cz> =
+wrote:
 > >
-> > There is a boot failure when both CONFIG_DEBUG_KMEMLEAK and
-> > CONFIG_MEM_ALLOC_PROFILING are enabled.
-> >
-> > BUG: kernel NULL pointer dereference, address: 0000000000000000
-> > RIP: 0010:__alloc_tagging_slab_alloc_hook+0x181/0x2f0
-> > Call Trace:
-> >  kmem_cache_alloc_noprof+0x1c8/0x5c0
-> >  __alloc_object+0x2f/0x290
-> >  __create_object+0x22/0x80
-> >  kmemleak_init+0x122/0x190
-> >  mm_core_init+0xb6/0x160
-> >  start_kernel+0x39f/0x920
-> >  x86_64_start_reservations+0x18/0x30
-> >  x86_64_start_kernel+0x104/0x120
-> >  common_startup_64+0x12c/0x138
-> >
-> > In kmemleak, mem_pool_alloc() directly calls kmem_cache_alloc_noprof(),
-> > as a result, the alloc_tag structure associated with object_cache is no=
+> > On 9/19/25 20:31, Alexei Starovoitov wrote:
+> > > On Fri, Sep 19, 2025 at 8:01=E2=80=AFAM Suren Baghdasaryan <surenb@go=
+ogle.com> wrote:
+> > >>
+> > >> >
+> > >> > I would not. I think adding 'boot or not' logic to these two
+> > >> > will muddy the waters and will make the whole slab/page_alloc/memc=
+g
+> > >> > logic and dependencies between them much harder to follow.
+> > >> > I'd either add a comment to alloc_slab_obj_exts() explaining
+> > >> > what may happen or add 'boot or not' check only there.
+> > >> > imo this is a niche, rare and special.
+> > >>
+> > >> Ok, comment it is then.
+> > >> Will you be sending a new version or Vlastimil will be including tha=
 t
-> > defined neither initialized. So current->alloc_tag is NULL,
-> > leading to a null pointer dereference.
->
-> Agree with Harry. This should be enough:
->
-> "as a result, current->alloc_tag is NULL, leading to a null pointer
-> dereference."
-
-Yes, that's much more clear.
-
->
-> > Move the checks for SLAB_NO_OBJ_EXT, SLAB_NOLEAKTRACE, and
-> > __GFP_NO_OBJ_EXT to the parent function __alloc_tagging_slab_alloc_hook=
-()
-> > to fix this.
+> > >> in his fixup?
+> > >
+> > > Whichever way. I can, but so far Vlastimil phrasing of comments
+> > > were much better than mine :) So I think he can fold what he prefers.
 > >
-> > Also this distinguishes the SLAB_NOLEAKTRACE case between the actual me=
-mory
-> > allocation failures case, make CODETAG_FLAG_INACCURATE more accurate.
-
-Awsome!
-
->
-> Good point.
->
-> > Fixes: b9e2f58ffb84 ("alloc_tag: mark inaccurate allocation counters in=
- /proc/allocinfo output")
->
-> That's in mm-stable so the fix should go there (probably too late to fold
-> now) if it's to be in the merge window PR.
->
-> > Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
->
-> Acked-by: Vlastimil Babka <vbabka@suse.cz>
-
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-
-Thanks for the fix!
-
->
-> > ---
-> >  mm/slub.c | 18 +++++++++---------
-> >  1 file changed, 9 insertions(+), 9 deletions(-)
+> > I'm adding this. Hopefully we'll be able to make sheaves the only percp=
+u
+> > caching layer in SLUB in the (near) future, and then requirement for
+> > cmpxchg16b for allocations will be gone.
 > >
 > > diff --git a/mm/slub.c b/mm/slub.c
-> > index 867a07260acf..09cbe580842c 100644
+> > index 9f1054f0b9ca..f9f7f3942074 100644
 > > --- a/mm/slub.c
 > > +++ b/mm/slub.c
-> > @@ -2197,15 +2197,6 @@ prepare_slab_obj_exts_hook(struct kmem_cache *s,=
- gfp_t flags, void *p)
-> >  {
-> >       struct slab *slab;
-> >
-> > -     if (!p)
-> > -             return NULL;
-> > -
-> > -     if (s->flags & (SLAB_NO_OBJ_EXT | SLAB_NOLEAKTRACE))
-> > -             return NULL;
-> > -
-> > -     if (flags & __GFP_NO_OBJ_EXT)
-> > -             return NULL;
-> > -
-> >       slab =3D virt_to_slab(p);
-> >       if (!slab_obj_exts(slab) &&
-> >           alloc_slab_obj_exts(slab, s, flags, false)) {
-> > @@ -2223,6 +2214,15 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cach=
-e *s, void *object, gfp_t flags)
-> >  {
-> >       struct slabobj_ext *obj_exts;
-> >
-> > +     if (!object)
-> > +             return;
+> > @@ -2089,6 +2089,13 @@ int alloc_slab_obj_exts(struct slab *slab, struc=
+t kmem_cache *s,
+> >         gfp &=3D ~OBJCGS_CLEAR_MASK;
+> >         /* Prevent recursive extension vector allocation */
+> >         gfp |=3D __GFP_NO_OBJ_EXT;
 > > +
-> > +     if (s->flags & (SLAB_NO_OBJ_EXT | SLAB_NOLEAKTRACE))
-> > +             return;
-> > +
-> > +     if (flags & __GFP_NO_OBJ_EXT)
-> > +             return;
-> > +
-> >       obj_exts =3D prepare_slab_obj_exts_hook(s, flags, object);
-> >       /*
-> >        * Currently obj_exts is used only for allocation profiling.
+> > +       /*
+> > +        * Note that allow_spin may be false during early boot and its
+> > +        * restricted GFP_BOOT_MASK. Due to kmalloc_nolock() only suppo=
+rting
+> > +        * architectures with cmpxchg16b, early obj_exts will be missin=
+g for
+> > +        * very early allocations on those.
+> > +        */
 >
+> lgtm. Maybe add a sentence about future sheaves plan, so it's clear
+> that there is a path forward and above won't stay forever.
+
+LGTM as well. Thanks!
 
