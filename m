@@ -4,117 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37024CAC5B8
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 16:41:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FA46CAC5AE
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 16:47:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 781768E000E; Fri, 26 Sep 2025 12:41:14 -0400 (EDT)
+	id B5F2F8E0010; Fri, 26 Sep 2025 12:47:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 759458E0001; Fri, 26 Sep 2025 12:41:14 -0400 (EDT)
+	id B11F38E0001; Fri, 26 Sep 2025 12:47:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66E438E000E; Fri, 26 Sep 2025 12:41:14 -0400 (EDT)
+	id A4CDB8E0010; Fri, 26 Sep 2025 12:47:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 51CD28E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 12:41:14 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 111EE43C98
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 16:41:14 +0000 (UTC)
-X-FDA: 83931966468.17.86D0885
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 0B765180015
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 16:41:11 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="QDyk/ZYG";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758904872; a=rsa-sha256;
-	cv=none;
-	b=AxOh7P841q3plK6dDvONLyfXbdjGMUPSjwdexfS/qwA2OsVy+x5TdHK/pjzbSaeZdntGkM
-	vW6sWB7EUhvdDA4+CYCYyY333jnu5IWSG9xR3IEp/LPWtVzTr50dZIoZEkt9vKEsr1wl44
-	cASpSIWE4NLhOkWH2RMSY81dmnF5nq4=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="QDyk/ZYG";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 910698E0001
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 12:47:31 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2FB5311ABC1
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 16:47:31 +0000 (UTC)
+X-FDA: 83931982302.14.7F7445C
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	by imf01.hostedemail.com (Postfix) with ESMTP id CAA0F40011
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 16:47:28 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=ljXSG67H;
+	spf=pass (imf01.hostedemail.com: domain of mfo@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=mfo@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758904872;
+	s=arc-20220608; t=1758905249;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OhK/I355tEzWCZLpIKaGMRHfbyhnGIybWqmQS9Bgtnk=;
-	b=EQOHrnGbKx6o7UhPUM6wDLJppKxJDuADnHUSqhLpGvOis5DEkDW2Sthu46Jd5Dt5XjmWVG
-	tn335o+ekCyGVwiO58LVJDXwXHAeEjHrpxZ5a5uRAEhCybhqtSCEAVMdNCrKJpBhD2ZsYx
-	QXQQY04F2r2UuHzKOJgXfXoS0CoGFLY=
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b3727611d76so270829266b.2
-        for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:41:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758904870; x=1759509670; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OhK/I355tEzWCZLpIKaGMRHfbyhnGIybWqmQS9Bgtnk=;
-        b=QDyk/ZYGC6wATOJogJskeTjsR2z1YMwi2S1zO+yJv5nINzhdCweO5Tts1s2yuian9F
-         abj119OhJt9EpH+kbWxb5wLJyQD+cBmZHg8Pqbv/Kwsq5afT8GhdroP2z3Ohwvx5PhyT
-         7W7IJKSQ/bK9LVufJv3MtChhhGXGfwtDOiJahdP3iSD6F0zESnRU2j1Xg/Zg9CnaMdfu
-         4XewFvcJxZF4z1g1mVaoNGQ9qvI6FQRmWO+OaLOuKhPURSamfiIij60i/sIaQmlJ9dMX
-         bZ8siNFqtFrKNidg/qeBK5E8ZBsB4UwKc8KUS3aJDUo9FX816AXM0Br1hyjxzUPkQnLZ
-         S+Ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758904870; x=1759509670;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OhK/I355tEzWCZLpIKaGMRHfbyhnGIybWqmQS9Bgtnk=;
-        b=aIf0Mix0ru+cYN+EKu/VQbC5VVYmlA/FmzRIuOo4FkhFTCKrZmazfzh+1DJt4a2jN0
-         1VzFrrx9tb+JrENWKOvoAaKx8jb+m8APTMH1FBWJoDzTQI3n2HF20TkONHwe8+W7DnZI
-         tIjvIybWf1dlUJ5XiLvuyrQFOhvCJ8YOb0VgWlEVPHoOMvA8AAf9PUiQttBGyM1iw0ED
-         NJrVU54fv5Yi/uVDA3oIcM8lFfMjN/iAp3o5Bbzh7MAa+IIzrC6VgepS/LalNY2I6tDy
-         SKIW32dH+ZEBj3t6NJsEYAsD5BurYSItrElH8l31V5NMQvVYNspW0uIm9CoqXZ0k9/bz
-         tEbA==
-X-Forwarded-Encrypted: i=1; AJvYcCWo5pVxbdrI8vfM6n9J0fkj+bD26SgfVwFXOaX5y/tNsFk5cyUOguH0HtYpK4yvRlSc+tzwf9Ajag==@kvack.org
-X-Gm-Message-State: AOJu0YxfIF6ZRuoVEqif/nv1IDB3R1ovlagFtI99FwwEihVDxKeSXc3K
-	MN/I6KT7ZLogLa0VO2OgcX/Jg+U7hPJkZDvM4hWfkWImuq1aWWMMtF7wfy1FXtjm3BOH+9cJUYO
-	S0Lm3N24s9xUVzQQsYyGJ0jDsh39JJJw=
-X-Gm-Gg: ASbGncvJMgM5yz8y1j5K/dEB/tEZcK2II4Q5YNdVtXfF/FZm4idaW09UytZvdEseLfv
-	4WrycLPbhm8FIyuxMDgHmpwJKpxUFFqFmU/zTIpxa04mIlMQFnFONb6ireYhejohZEpK18MwgIB
-	EqepBLztNLElLShp932gAKXqPUq/J5S6/uTklaX8nLKjIA4bQ9s6mU8PQis8ySkTsoWI2OjerHg
-	RxjQv/srh/YsS3qPmBY3actT8miZqMwpfthFwYnYHjRET+Hmhye3Tk=
-X-Google-Smtp-Source: AGHT+IGiAgB3Cp3l/+LWlbB0J5SQqcA//CNAV4YTQyXTFqA9cx49Yh6QtYgAgO3MbSqw95Dgnu0URBo7YFe9FVeY/8Q=
-X-Received: by 2002:a17:907:86a9:b0:b3a:1300:e8e4 with SMTP id
- a640c23a62f3a-b3a13102ed4mr8997966b.12.1758904870081; Fri, 26 Sep 2025
- 09:41:10 -0700 (PDT)
+	bh=kkJDBXqcTBkhFi7bi5uYOrbxPVdpxGs1mDpjP3yjmjA=;
+	b=JYMiux2pL0DBXfnoA+tAGeqFPKt2Q/f/caTf56amtzlCQcQuQcYoipHqfrNSt0gW42blMf
+	7GDLB4rfoFlhCrP2vWEcUaIb+F1dK3y2wDUwYl2pBDl1HvbwFpMV7iGNzCcDwEmDPYBbCt
+	Rf/8jlGUIoMOGV51hd8ZJfhawmidJzw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758905249; a=rsa-sha256;
+	cv=none;
+	b=zMXTmGdDwxoCflG1MyHozlOXLs7kaHTirGurkgoXCvbf8CTGCTzSW79PrpthGmrSLugGYp
+	awBznDcEK+FRK8yK5COpo1CKJfvyMvaf64FLTYjgvFh2FbuOi+HHqdpBXbQkuUIgi4zjBg
+	TR0eFLuCCe6olSeppxtt1lhDx3QdKKg=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=ljXSG67H;
+	spf=pass (imf01.hostedemail.com: domain of mfo@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=mfo@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:Message-ID:References:
+	In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=kkJDBXqcTBkhFi7bi5uYOrbxPVdpxGs1mDpjP3yjmjA=; b=ljXSG67HJCSdMt+v99g66xPI3h
+	mzfwaGEtzzmi0+C17cEPOGCSKs0fLLtWDnqW5sPYZfVSzrIFsfBiRXOIgZ6uW2iGiJrwY2kJw9eQP
+	BCjpT3v4Qwknyx2U0KBL+TL6I9udxPEhyonFAm+ttIGYKPYAKLF03L71FgAxoZOW3IwRrL3vQcwPb
+	CPh72OQkpjtqMCr+v5eY7TUECiQLBC8/fXowZcWCBXDUMUwArKSlCayGPccdoI1khlWcmRIS7/TMi
+	drF6o5nlIKcpu6CKIwqDkjBRzKP9Ja4dPVp71DTtODpM0seNR+3oexWxXNlsVbUglrawv6kIw1r5l
+	gJC5XADw==;
+Received: from maestria.local.igalia.com ([192.168.10.14] helo=mail.igalia.com)
+	by fanzine2.igalia.com with esmtps 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1v2BbK-000jlo-5o; Fri, 26 Sep 2025 18:47:18 +0200
+Received: from webmail.service.igalia.com ([192.168.21.45])
+	by mail.igalia.com with esmtp (Exim)
+	id 1v2BbH-00FPgX-8f; Fri, 26 Sep 2025 18:47:18 +0200
+Received: from localhost ([127.0.0.1] helo=webmail.igalia.com)
+	by webmail with esmtp (Exim 4.96)
+	(envelope-from <mfo@igalia.com>)
+	id 1v2BbG-00BzAS-2B;
+	Fri, 26 Sep 2025 18:47:15 +0200
 MIME-Version: 1.0
-References: <20250924204409.1706524-2-joshua.hahnjy@gmail.com> <202509260132.awvdNKqF-lkp@intel.com>
-In-Reply-To: <202509260132.awvdNKqF-lkp@intel.com>
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-Date: Fri, 26 Sep 2025 12:40:58 -0400
-X-Gm-Features: AS18NWAvPCxQoYx4Q1NMydC8ffwXDXCS1U2zPQc-T1l-6SyQtlRE3k2R9alT660
-Message-ID: <CAN+CAwNBg+3RwAsBxOEMk6aK+tb2O45wfnJxBdxRPSBi+vHEUg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] mm/page_alloc/vmstat: Simplify refresh_cpu_vm_stats
- change detection
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: oe-kbuild@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, lkp@intel.com, oe-kbuild-all@lists.linux.dev, 
-	Linux Memory Management List <linux-mm@kvack.org>, Chris Mason <chris.mason@fusionio.com>, 
-	Kiryl Shutsemau <kirill@shutemov.name>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Brendan Jackman <jackmanb@google.com>, David Hildenbrand <david@redhat.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko <mhocko@suse.com>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0B765180015
-X-Stat-Signature: khaia3ud3c1r56j5c4eigsnfe76ry75n
+Date: Fri, 26 Sep 2025 13:47:15 -0300
+From: Mauricio Faria de Oliveira <mfo@igalia.com>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka
+ <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>, Suren Baghdasaryan
+ <surenb@google.com>, Brendan Jackman <jackmanb@google.com>, Johannes Weiner
+ <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kernel-dev@igalia.com
+Subject: Re: [PATCH 0/3] mm/page_owner: add options 'print_handle' and
+ 'print_stack' for 'show_stacks'
+In-Reply-To: <aNY49sdoFVe03m_Y@tiehlicka>
+References: <20250924174023.261125-1-mfo@igalia.com>
+ <aNVpFn9W0jYYr9vs@tiehlicka> <4c2a467113efd085530eb055e4a4e1fe@igalia.com>
+ <aNY49sdoFVe03m_Y@tiehlicka>
+Message-ID: <d9af42d5cb9d427632087c5f51e50501@igalia.com>
+X-Sender: mfo@igalia.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: CAA0F40011
+X-Stat-Signature: md8jkbgd7rjot3og5pzminh5esq8r9se
 X-Rspam-User: 
-X-HE-Tag: 1758904871-816247
-X-HE-Meta: U2FsdGVkX197RDnnG7Mg1PQ265GpetEulDldpl7UbiA+DQZbAOyWhep4hfEi83167weEy+BvumVKVO6HCTuHucDYNrA/eFtZJezhBRyQ+hKRNKOIWu3GGhpJFs7Wwc7Y5sVCh1vtihw2tUhPVTiP6/XluJyxSMzaPtdlZvL/8s46qEPyWEbKr5o28IUcJxU8hxGiIY+26UObEdfDyex7sr2A4OFUFDgufgmImsHp4YIUMsyOVgffxWwmio5LO8CjMqvhrbHMpdYSmzWK2bSJXlyBm3pjvqiBFe5t6OldSy99vorDOj0prw/oeAtZSmPy51QktWShuSlwlbN08+U+9L3Db5/CGhUEcszqVmTKCMfvi08U6raSzHayJWeTQaENFmJWlI4n5O3asM9CEofJNIkE20WUpLJGjl6vkr+pc0sn8sR9whm/nQMLSsd4nHYSlHtwhr66dF6mgxT7QixPnqHUI7bPYI4Ya9Ga0XNKwev83PFS8eOM7tSvZldfREe3khMkssh11r7MBTIgnuI5sVMcf5sGI6Oj+4zpGWW+qVZVq4jeoxMUXHS/SR9lglsNz+gmM5T66JrFMh+HegMaC8+j38LD3BjQcZ9vXcifQ/gnvgqmWpyrOIE9LepFLVAjupdg4K/IthBz5acdSNOgLxb3i4yWNwbGjc7VL6zkbR/tQ9OWlCw6yn9UppNyASsylZBv0M1ZQjS+aiUbwyjU/AXwRwY57HuJvp8P6JEwsKYkiAquvN4BkfeNVW7ay4soMfNiXYeS/cKQK9X4w5MoFyKK++DFk0rL3xnFPbpQr5ZMwlyoZeQHccFvF+ySCF+eOeTS448CF1CU2yHgO11ERSS0iOmQmllqFHPVQ8rMtAp8Euph4wmiDo5UX7suRB5Aqi0zLj/rnExMgVEdnZm2ysHNdadUEfQfsJgrhEvHMywLhsXjrKPjV1BbUTTheWeZDfcA/zBssQNytMAjKdd
- KM84NC9B
- wU7lkswbusZX69r/s5nfw7NELd2nVVJYyg/Hc4dRAF0NNOA+OOej4UmXpI0KvtNbv0/YkUQjzDBoEyDbOihgq6I4MidKKiKu12wrDfQLn4ZLqD1qDBzEq2gW3+acEtTGy+8MWM7G5QJ318gmHezETGSzCYZAgeqn/7pv7YI+Hi7WjdYqL6pXetJwAiu+ZAvxgaZ4BHBzpV6IYvC+p++q0LEk3C2q+ZxllKTq9ZE8gtnZlrQpF1P1uN0fGSNtWnHwitnMeGoY4O97TqFklMSAy68aytxKj9VbhY25wNONqDJ7NIPOqis3SR7NIrsxK5Y3YqekrDj2/sZFmEtJv68L5CvrUYuU/jwDS9Va5Qgft5HML7FULLBrL5T6RhkoocIo0Df8SUvNZjdKzpWTaQ0ydAVik2WPfiu1MSqUsiJdCsZz7PciqmwsQvtU1LNBIAviPPp+mdwbTZ/13sCS334Z4dqQbSNhwSZH+aOYZRrWqY8qaASJPysTtrsdxSystZYLCXytnmG7Gy2Paj+0UDMC/Xxrjjw7buP0lSV5wbdeH2HKyIO6WvtvSMAkRuVeXIC6uHkr4l2a9s4an6m2K1CeGb0up0xMwKqO1ywZw35UBbg/Y6kU=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758905248-537281
+X-HE-Meta: U2FsdGVkX18O6pAhCk0y+k34VBVc2aArlZglmrmpj1+Up7GYm+rFzGPmHEH5idp42THfP43WRX9zenGAa8NWVhTEGHcgvWMSfwGMthelar7Uh2mX7L3/ecZCfS8gbiJoKw68tLeqSa/mWx31zfqC9rfSlw9kKkl4fWunEYYlttKyeOxFFmsknST2GBUAFgbC55RqL/gHV5G0icCLd1jPF/0r/Ql0UDlpZka/9+dBpvgBp/rQ4jrg1OBQJIKROp/ZDhRtyqly/1xU25X/B6nXjI63q086Le1A/GLZ6htWo63z0HyocGPCa+vsJvbbTSMj9fvlAQJmJw2zyMxTinkD5dzzml+AXOrd4SOmkfyWMxD7fR00yPJ1E/1iRYDCyBU4Pv6CfItJUcmyOTISYo/f10CIA59uzPGStWgo6XjkWCC5d7cVCTpU4vjlNRJ7hS9ORpGmh0hY7JVgOkYpiZXBCPXWexrO8G1IJIVX4g5b59jwiZ5AUoLShF+/GAlHC6VYQofhpomKBA5bMd1lfDfpiSIFiCdSw/wFmTsoSk5vw6nZ9Ac8v1tNHPXPpdZ3IbkV8YBDv9bUw5k+buzHX9GvcYrtfVnXtgM0Bpzg0crH+mBef2PmU4p6in7RWj34GXPbIHUfugIessK2M1fxqrY6fKrEGgd3ahQjEaI+ILLAospb9t+rtX3upsOiSErW1FziCNnEZ/sqM+Up33s+54akuWE6I+8mB3z1kHOCwFOiFeqWqNFmOUvfXY/CgdgS168cI/FX/O4cYrNI5m9zx6ktzXGpEPS8pzKm9i47uz+bgw7MlzsE64J1fcK1l1idY58MaVCIfh/01O/Na6f+ZBsxjwppsqL7iWrVNSt5pCXqb4D/wNWPsTALvOuxRpi4nV2sv+ZzmbRh2hsPuw1p+INGzJS9jKfyS5ugaXhGj38uURNr2vHMTiByh2h+hAAbmqVNEYwvbIlEtn2QIQIvR56
+ zcNF1yTU
+ zIdzs0Fmqd2LDwAYIFTNfYWlI0F8Af4H8FYxIs7BEvnXtuJZCN8ZXkEwpZ4VKZsZnW5i1MxQtItHkZ7pL5TEoT4GPJhyAxZ8r/jm7H0Z+YQEFUIccpakZ47QH08J5Pu3F7xMWeagcuYfsoXo3tWpd/DO09aCfsdkM1QhuyoPJZTC0AXVwZt3W6/JUBR/KjUH2eIvfvosEqYTINwnSgpu8UOGJedB1RYr5c0hy332XjslF939zg5X+Nnj95A0amPRtKIs+fBxY1L1wH2KdMXEs8nUUbQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,51 +108,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Dan,
+On 2025-09-26 03:55, Michal Hocko wrote:
+> On Thu 25-09-25 16:38:46, Mauricio Faria de Oliveira wrote:
+>> On 2025-09-25 13:08, Michal Hocko wrote:
+> [...]
+>> > Could you elaborate some more on why the performance really matters here?
+>> 
+>> Sure.
+>> 
+>> One reason is optimizing data processing.
+>> 
+>> Currently, the step to obtain the key of a strack trace (e.g., hashing)
+>> incurs
+>> a considerable work (done for all stack traces, on every sample) that
+>> actually
+>> is duplicated work (the same result for each stack trace, on every
+>> sample).
+> 
+> OK, that was not really clear to me but the above seems to suggest that
+> by hashing you really mean hashing in the userspace when trying to
+> create a key so that you can watch memory consumption trends per stack
+> trace (hash in this case) without post processing.
 
-On Fri, Sep 26, 2025 at 11:34=E2=80=AFAM Dan Carpenter <dan.carpenter@linar=
-o.org> wrote:
->
-> Hi Joshua,
->
-> kernel test robot noticed the following build warnings:
->
-> url:    https://github.com/intel-lab-lkp/linux/commits/Joshua-Hahn/mm-pag=
-e_alloc-vmstat-Simplify-refresh_cpu_vm_stats-change-detection/20250925-0445=
-32
-> base:   097a6c336d0080725c626fda118ecfec448acd0f
-> patch link:    https://lore.kernel.org/r/20250924204409.1706524-2-joshua.=
-hahnjy%40gmail.com
-> patch subject: [PATCH v2 1/4] mm/page_alloc/vmstat: Simplify refresh_cpu_=
-vm_stats change detection
-> config: mips-randconfig-r073-20250925 (https://download.01.org/0day-ci/ar=
-chive/20250926/202509260132.awvdNKqF-lkp@intel.com/config)
-> compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project c=
-afc064fc7a96b3979a023ddae1da2b499d6c954)
->
-> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
-ion of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> | Closes: https://lore.kernel.org/r/202509260132.awvdNKqF-lkp@intel.com/
->
-> smatch warnings:
-> mm/page_alloc.c:2591 decay_pcp_high() error: uninitialized symbol 'todo'.
->
-> vim +/todo +2591 mm/page_alloc.c
->
-> 06fb80866d37b0 Joshua Hahn    2025-09-24  2564  bool decay_pcp_high(struc=
-t zone *zone, struct per_cpu_pages *pcp)
-> 51a755c56dc05a Ying Huang     2023-10-16  2565  {
-> 51a755c56dc05a Ying Huang     2023-10-16  2566          int high_min, to_=
-drain, batch;
-> 06fb80866d37b0 Joshua Hahn    2025-09-24  2567          bool todo;
->
-> needs to be initialized to false.
+Yes.
 
-Thank you for the catch, I think Christoph also pointed out the same
-thing earlier.
-I'll be sure to fix this up in the next version! Have a great day!
-Joshua
+> Stating that more explicitly in the changelog along with an example on
+> how you are using this would be really helpful. 
+
+Sure. Thanks for pointing that out, and making the effort to understand.
+
+> When the interface was originally introduced the primary usecase was to
+> examine biggest memory consumers - e.g. when memory counters do not add
+> up to counters that track most common users (e.g. userspace memory, slab
+> caches etc.). In those case you need to see those stack traces as those
+> are giving you the most valuable information.
+> 
+> I can see you are coming from a different direction and you want to
+> collect data repeatedly and watch for trends rather than analyzing a
+> particular situation. This seems like a useful usecase in itself.
+
+Precisely. I can make that more explicit in the changelog as well.
+
+> My main question is whether this should squashed into the existing file
+> with a rather strange semantic of controling the file content depending
+> on a different file content. Instead, would it make more sense to add
+> two more files, one to display your requested key:value data and another
+> to resolve key -> stack trace?
+
+I see your point. Either way works for me, honestly.
+Let me justify the current way, but it's certainly OK to change it, if
+that is preferred.
+
+The use of option files has precedents in page_owner itself
+(count_threshould) and ftrace (/sys/kernel/debug/trace/options/*).
+
+The use of output files needs more code/complexity for a similar result,
+AFAICT (I actually started it this way, but changed it to minimize
+changes). 
+The reason is debugfs_create_bool() is more specialized/simpler to
+handle than debugfs_create_file().
+
+It ends up with a similar pattern in a common "__stack_print()" to avoid
+duplicate code (conditions on parameters to configure the output), and
+it adds:
+- 2 ops structs per file (file_operations and seq_operations, as in
+'show_stacks'), for plumbing different behaviors down to different
+functions, to call the common function with different parameters.
+- It should be possible to reduce it with private fields (from
+debugfs_create_file(data) to seq_file.private), however, since
+seq_file.private is used (iterator in stack_start|next()), this needs
+more code: a new struct for the private field (to store the current
+iterator and add the new parameters).
+
+So, I went for the (IMHO) simpler and smaller implementation with option
+files instead of output files.
+
+Please let me know which way is preferred, and I'll send v2 with that
+(in addition to the changelog suggestions).
+
+Thanks,
+
+-- 
+Mauricio
 
