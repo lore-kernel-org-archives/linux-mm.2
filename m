@@ -4,75 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 035A3CAC5B5
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 03:35:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F362CAC5BA
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 03:35:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57F2F8E0005; Thu, 25 Sep 2025 23:35:10 -0400 (EDT)
+	id AFDD88E0007; Thu, 25 Sep 2025 23:35:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 556748E0001; Thu, 25 Sep 2025 23:35:10 -0400 (EDT)
+	id A84718E0001; Thu, 25 Sep 2025 23:35:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41EBA8E0005; Thu, 25 Sep 2025 23:35:10 -0400 (EDT)
+	id 8B1CF8E0007; Thu, 25 Sep 2025 23:35:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 228708E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 23:35:10 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AAE42BA2EF
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:09 +0000 (UTC)
-X-FDA: 83929985538.02.B1F2B43
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 72A388E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 23:35:11 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3662511A4AE
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:11 +0000 (UTC)
+X-FDA: 83929985622.25.D517573
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B0E4FC0004
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:06 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=oDb+DtlB;
-	spf=pass (imf28.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 1297BA000B
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:08 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hwYZbXQ8;
+	spf=pass (imf15.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758857707;
+	s=arc-20220608; t=1758857709;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=kKSGCqHt8/tyiw9vgDpmIRa68ZFsqzRb48BYZUImv7U=;
-	b=KmXLIgftpgxFrGQhb4YCA5tntlKqHV7K9dQ/LK/sOW+6oJf+VgAn043lwm/z4noOxlAlbP
-	ecKCCz2ATFGc0R81I+CtpGKEW8kxd7wuXMMY57QEfCYp3eDj9valgCkXJvNabkDw5xuqDQ
-	bfdfATvbKKQxPbcTyWLR4ocMIwZ2tBc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758857707; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TRL4qNaUlJXNf5drOtpZbCa2oIULGvIW1YNmy9LXvJk=;
+	b=UCdNCwhJuahUrQmGrpSA/fWsIiNaA/jSbbmySrJoIlFPn1aEv1rNHgnZcLAk5q88bzLLs1
+	QWdHFFVO16MBlc9njzHDaiBtKJqbbrrXjAVLdf/agK4yyk/RMEjx3f822Og8o51JUTtQu8
+	qHAFhEZeynRxHpdJwUHfEK/RyqxRN3s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758857709; a=rsa-sha256;
 	cv=none;
-	b=aN0J0T37/VklKSLhma7sfQ3Z4Yrhppn3Gu9rmdMK21lp9hstKfcbLQympSoR1e3exYjwFQ
-	Ip+m166Jfi0pcFta9p/AKmCXRxkQrj7RkJ40JKiIiLDTw9GkEqOvTPN6iCE9WkM8q7NxAy
-	l2r/g91TlH4FRh4Wjy4sXGPuglbng9w=
+	b=ZQd1nRGzResrZksNYu95+afPWc8hJruE0rTTwMddbzO7HFHKpPmTBcUTCxDYdWeGiw//4E
+	N5h3Z8JL4ju1tHGMWZCmwBtHb6yd/ZUawm5dK0wfyOtb/CfYimLIw7RvZgkqcOH6X0ZK+y
+	J30ihpAQ7Pn9g1OgzUPy8Q9EeuEvMuY=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=oDb+DtlB;
-	spf=pass (imf28.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hwYZbXQ8;
+	spf=pass (imf15.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758857707; x=1790393707;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=+TjA12X49TPvhzpMGTehrIkb0T34P6drPBGLV7IftZY=;
-  b=oDb+DtlBmfWlPAqBN19CNnZ0XJ4uOiJ2l0deP5bBsX6ZPtKahbcMI0he
-   HlnJhjM1kutpT7eOpd5H0uyycU6cOsFOiurDr7Z+N8AmC30ilDb8oCX1Z
-   elIVtzYikNwOPzxpt8FxgbgL4uv7r2HH4lisX/4HcUkSaNYAf3dsi7i6T
-   tYBE/i7onHUiey7/qyJ1/P2fXpTyfHl0UP9EBFHVBqxeH5SPrJUNq4P9C
-   2m48bXfJCreB+Mw5rPvvEXGXEEHRF/uMnH2IT1sJR14JbuGGaEOhKXLNg
-   YmwiRHSG3iMM8L1Dww847ofnLgFGWhBJ1MTNJuMNMyvk0z3es4pU5I3V1
-   w==;
-X-CSE-ConnectionGUID: M6Ec7VCSTwKAGDwu9jdU0Q==
-X-CSE-MsgGUID: w/Gr85y7QIeatemBO4YzIg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="63819386"
+  t=1758857709; x=1790393709;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=3XujNYoirJUorvuc2BHSGKLalfO6Ya+rGo10gIQ2mcM=;
+  b=hwYZbXQ8m6JkaY1P0fd3HXAQ9ufDbZUqQez/6qxBhEtmvqOcOzy9SxD+
+   St4cQHXcAnTgNsJogoz7zzkLLaPQlTY/Cs40j17k4aompwLLs8mUuv4Bj
+   GA9w9XKOQoAN4mYbgj3kzlM4fxk1McPQzRDzE4D1Wv2vViwzSXhvyKZQ/
+   uifGhzN/FUsfsg30XXltWzIwbZqGxO/R7Mu4iK6x/QNnGw4VK0LKXc+VS
+   V59vcXBWuIV4BaSKGJhpYyOaXt8Cgu5P2Jjf1Sr3aSDgC4Au/KejItVQ0
+   qMk6/xOYCLEjzLbcLKD+WPn4NU3HwlFfIfbZd0CuwfjtDhYqdNaAW0zNf
+   Q==;
+X-CSE-ConnectionGUID: 5Gfm0UwEQ4Ws42mvedpNlQ==
+X-CSE-MsgGUID: eLpQveNZSn28kTYEBUhc9w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="63819430"
 X-IronPort-AV: E=Sophos;i="6.18,294,1751266800"; 
-   d="scan'208";a="63819386"
+   d="scan'208";a="63819430"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 20:35:03 -0700
-X-CSE-ConnectionGUID: VwgNdcG6QAeeyBwPHDuB7A==
-X-CSE-MsgGUID: 1KGfrvOgTGylu94CvqyrWg==
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 20:35:05 -0700
+X-CSE-ConnectionGUID: x2unOBg2RKaxJBUhmqjT/Q==
+X-CSE-MsgGUID: 2e+E1IytTi6NYpk5SU4bzg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,294,1751266800"; 
-   d="scan'208";a="214636544"
+   d="scan'208";a="214636549"
 Received: from jf5300-b11a338t.jf.intel.com ([10.242.51.115])
   by orviesa001.jf.intel.com with ESMTP; 25 Sep 2025 20:35:02 -0700
 From: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
@@ -102,20 +102,20 @@ To: linux-kernel@vger.kernel.org,
 Cc: wajdi.k.feghali@intel.com,
 	vinodh.gopal@intel.com,
 	kanchana.p.sridhar@intel.com
-Subject: [PATCH v12 00/23] zswap compression batching with optimized iaa_crypto driver
-Date: Thu, 25 Sep 2025 20:34:39 -0700
-Message-Id: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
+Subject: [PATCH v12 02/23] crypto: iaa - New architecture for IAA device WQ comp/decomp usage & core mapping.
+Date: Thu, 25 Sep 2025 20:34:41 -0700
+Message-Id: <20250926033502.7486-3-kanchana.p.sridhar@intel.com>
 X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
+References: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B0E4FC0004
-X-Stat-Signature: h9xxwom6ybepytdhfg7biwnw9jfs1ra6
+X-Stat-Signature: exqdkotubhpxrn6ar9jb888s13b59thh
+X-Rspamd-Queue-Id: 1297BA000B
 X-Rspam-User: 
-X-HE-Tag: 1758857706-37389
-X-HE-Meta: U2FsdGVkX18Lu9RU/K6VfGSvQC1rfb0nnc2Qa0tOhCXUt2/MOlLUY/caXxWobBc0d8frCO8Vd9AXIHcOs6zJGi+uudv2Us8nEf40ixsfKiE58rS5ZGN1d90KusiM60tcwXoapCkesU1yCpzxAGYLvl7S2fQMwx3iN3uWwTDr1k9AXeL2NJxNeYYHP3+cp1nY+eY0ZwsaJFS4V5pYx2PjJmUVsLkDi4c0+ZsdsQLsx/MOX1Is02Q9sRB1kOtgqopgvmZzxesspj7a//hcNawJewboH4eEaPeaWNzMm6ScBhtgyMb8jQ3h+0CRdG8J3yfFSlwq8JWg0dPaILWUgo40hBH6tPSR81HzYWg6shHmcGGrPXrkHf9SyiE3g2baVYPNXP5IFsIo4npJWN8/aVesiDwnjfuSzEwO+9C/foTnVFlgzxfiKxzOCFc7kVs9k5ualKZ/phduZETT9U/eCCJFDgBXK58ti8DTbIzTLWEhmTLkYPALziwg+DBtK/a5sgl2hat0xuLASFsTu+zCIbY/rRj4u8Hw1g1rl/Fv0CSc2ON1/VFlTcRRqNk6t3yV+n+JAwr+EslM0ZwrBqRO+eI55c0mFYohFJf+7EsDr+uEbwJwqW0pBlFlAc2Pix6uhYqzr8NLLoFGG5bA1FgcUYyngIeyXmDSrKs1uoUdwUJI8jfkvvLF9B8raFCY7YZ/IUTUjBPEo+D7fk9Eu0g4P+JKOQrCjQcLynyGZ96bqTF80+3rpGruNMPddElhKUJluNYlreFDD81Z+8kLUKEl35Cj/+iaeNmIAwKJGgev3UW2Y9tCPWaRDUXCDmxUkX77OTizvnWAEKR3nfzjKoE/WUIIShe82T9pLVqH0YpsHqX2fsY/IUoyeZdY1fTTw8ddsYEVSvywIwaT8ZzTnWdPLa7AXzeV2om2xbo+KJnmUr7LViQGPIP2sfE19Kwa2jPqnZMEYXNtLAtBXNeEyDfTZo/
- JFK2VyoK
- KaIvi/rtSWYSIMOeKm9cBIQRlUCVF1W90gr8SKh8uuIvluFkgOP6jTANHH6c8rzht+pvf6bXu4swxVZPX03vcBZuAKHtg5O2ls18WgT6NQux2qgQxN1Lax45YUa8oAidTghBG7FQah4PtHfQJnenmGIDFDFW23MgeDInz6uHgmdFE1WGe2LFkWduM4Z1BTFGNERM06JpKxQad2ADk0rHjcJ6Ymfh0XXJ2eFL20stsJG+/93A=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1758857708-724089
+X-HE-Meta: U2FsdGVkX19YgRdVEQ96ZUXLzNHMZ+JSCLMpYAAiRTw5DA9UdFqYSYIi8mSY0b5ulLdVBeVUaQ2N8e4VYHmm77wrW6SLvQu7DJcG491qXDd7td8cu+u+NWhkLjCdQyfUJ/TqXGDG3GJU41xvH/486MQ/HzOLfZO3Vd9K8+kCDJAs1ZWaJWy1H1h47YgyFx3XbUn6A5E+/A0i2RKLb0j8pOyXr8ZT8Bj0R8Cuj2Sgpx8v7udQ7Kw6gKcyQgTxXUyH8xkdSbchEKlwuO/cMCkJHXHn0zj3dSG43opSa2vWGQ/7tIHclDjz8i0HijDm/Nt80+wJss0JcayOwOswEIXunHT7gnSBUlxbcuj8IDSwscelNxhhu9I45a+IqhzcIEs8MiIdxBPJoNUv7JjJAGOVdKycoSO8saiF8kOog9RzZ3fffFVubtk7EmrXHNYo//PVmXQgvxddAZc04dUPll2uRVm1UrUqMWy9m1pOSqEq2ezSM8rdEgfvMNuNqzHlzDDvoqoxzgkZHQ8kmFNzRBnoQVfiPFP8fgAxctwrgi3BaBWWKmerQhd6cVetIpHhx4eErtFKkn2X1RbAUD+CYA3NOZmMRozy4RFz1oiGvmaMGheeSs5ixMm40q2uH1G4EovcGh5MMOTZWYpHg8/lwQntHXPmMNJatTB1oJZWoUzp6jAUFIb781uMR2ujsZ9cEleAlzHgM9pOGL8btsgLzZGX1Ga2fSdy0mrsbCtAejO6YywnAMig5HvrZR5cGKqEtgBO4qQ1x42/gEBXoYMUibXZAEXMNSv2U4q3aoEZu+VvB7VAWM9tvzb5n44jeAtw2IL3mCC9Nq1e9K7cRsSLRgr6dg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,1610 +124,1737 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-v12: zswap compression batching with optimized iaa_crypto driver
-
-Based on Herbert's suggestions, the most significant change in v12 is, the
-batching interfaces from zswap to crypto, from crypto to iaa_crypto, and
-the batching implementation within iaa_crypto now use the folio directly as the
-source (sg_page_iter for retrieving pages) and destination SG lists. A unit_size
-has been added to struct acomp_req, with kernel users such as zswap using the
-new acomp_request_set_unit_size() API to set the unit size to use while breaking
-down the request's src/dst scatterlists. zswap sets the unit-size to PAGE_SIZE.
-
-Following Andrew's suggestion, the next two paragraphs emphasize generality and
-alignment with current kernel efforts.
-
-Architectural considerations for the zswap batching framework:
-==============================================================
-We have designed the zswap batching framework to be
-hardware-agnostic. It has no dependencies on Intel-specific features and
-can be leveraged by any hardware accelerator or software-based
-compressor. In other words, the framework is open and inclusive by
-design.
-
-Other ongoing work that can use batching:
-=========================================
-This patch-series demonstrates the performance benefits of compress
-batching when used in zswap_store() of large folios. shrink_folio_list()
-"reclaim batching" of any-order folios is the next major work that uses
-this zswap compress batching framework: our testing of kernel_compilation
-with writeback and the zswap shrinker indicates 10X fewer pages get
-written back when we reclaim 32 folios as a batch, as compared to one
-folio at a time: this is with deflate-iaa and with zstd. We expect to
-submit a patch-series with this data and the resulting performance
-improvements shortly. Reclaim batching relieves memory pressure faster
-than reclaiming one folio at a time, hence alleviates the need to scan
-slab memory for writeback.
-
-Many thanks to Nhat for suggesting ideas on using batching with the
-ongoing kcompressd work, as well as beneficially using decompression
-batching & block IO batching to improve zswap writeback efficiency.
-
-Experiments with kernel compilation benchmark (allmod config) that
-combine zswap compress batching, reclaim batching, swapin_readahead()
-decompression batching of prefetched pages, and writeback batching show
-that 0 pages are written back to disk with deflate-iaa and zstd. For
-comparison, the baselines for these compressors see 200K-800K pages
-written to disk.
-
-To summarize, these are future clients of the batching framework:
-
-   - shrink_folio_list() reclaim batching of multiple folios:
-       Implemented, will submit patch-series.
-   - zswap writeback with decompress batching:
-       Implemented, will submit patch-series.
-   - zram:
-       Implemented, will submit patch-series.
-   - kcompressd:
-       Not yet implemented.
-   - file systems:
-       Not yet implemented.
-   - swapin_readahead() decompression batching of prefetched pages:
-       Implemented, will submit patch-series.
-
-
-iaa_crypto Driver Rearchitecting and Optimizations:
-===================================================
-
-The most significant highlight of v11 is a new, lightweight and highly
-optimized iaa_crypto driver, resulting directly in the latency and
-throughput improvements noted later in this cover letter.
-
- 1) Better stability, more functionally versatile to support zswap and
-    zram with better performance on different Intel platforms.
-
-    a) Patches 0002, 0005 and 0010 together resolve a race condition in
-       mainline v6.15, reported from internal validation, when IAA
-       wqs/devices are disabled while workloads are using IAA.
-
-    b) Patch 0002 introduces a new architecture for mapping cores to
-       IAAs based on packages instead of NUMA nodes, and generalizing
-       how WQs are used: as package level shared resources for all
-       same-package cores (default for compress WQs), or dedicated to
-       mapped cores (default for decompress WQs). Further, users are
-       able to configure multiple WQs and specify how many of those are
-       for compress jobs only vs. decompress jobs only. sysfs iaa_crypto
-       driver parameters can be used to change the default settings for
-       performance tuning.
-
-    c) idxd descriptor allocation moved from blocking to non-blocking
-       with retry limits and mitigations if limits are exceeded.
-
-    d) Code cleanup for readability and clearer code flow.
-
-    e) Fixes IAA re-registration errors upon disabling/enabling IAA wqs
-       and devices that exists in the mainline v6.15.
-
-    f) Rearchitecting iaa_crypto to be independent of crypto_acomp to
-       enable a zram/zcomp backend_deflate_iaa.c, while fully supporting
-       the crypto_acomp interfaces for zswap. A new
-       include/linux/iaa_comp.h is added.
-
-    g) New Dynamic compression mode for Granite Rapids to get better
-       compression ratio by echo-ing 'deflate-iaa-dynamic' as the zswap
-       compressor.
-
-    h) New crypto_acomp API crypto_acomp_batch_size() that will return
-       the driver's max batch size if the driver has registered a batch_size
-       that's greater than 1; or 1 if there is no driver specific definition of
-       batch_size.
-
-       Accordingly, iaa_crypto sets the acomp_alg batch_size to its internal
-       IAA_CRYPTO_MAX_BATCH_SIZE for fixed and dynamic modes.
-
-    i) A versatile set of interfaces independent of crypto_acomp for use
-       in developing a zram zcomp backend for iaa_crypto.
-
- 2) Performance optimizations (please refer to the latency data per
-    optimization in the commit logs):
-
-    a) Distributing [de]compress jobs in round-robin manner to available
-       IAAs on package.
-
-    b) Replacing the compute-intensive iaa_wq_get()/iaa_wq_put() with a
-       percpu_ref in struct iaa_wq, thereby eliminating acquiring a
-       spinlock in the fast path, while using a combination of the
-       iaa_crypto_enabled atomic with spinlocks in the slow path to
-       ensure the compress/decompress code sees a consistent state of the
-       wq tables.
-       
-    c) Directly call movdir64b for non-irq use cases, i.e., the most
-       common usage. Avoid the overhead of irq-specific computes in
-       idxd_submit_desc() to gain latency.
-
-    d) Batching of compressions/decompressions using async submit-poll
-       mechanism to derive the benefits of hardware parallelism.
-
-    e) Batching compressors need to manage their own "requests"
-       abstraction, and remove this driver-specific aspect from being
-       managed by kernel users such as zswap. iaa_crypto maintains
-       per-CPU "struct iaa_req **reqs" to submit multiple jobs to the
-       hardware accelerator to run in parallel.
-
-    f) Modifies the iaa_crypto batching API and their implementation to expect a
-       src SG list that contains the batch's pages and a dst SG list that has
-       multiple scatterlists for the batch's output buffers. 
-
-    g) Submit the two largest data buffers first for decompression
-       batching, so that the longest running jobs get a head start,
-       reducing latency for the batch.
-
-
-Main Changes in Zswap Compression Batching:
-===========================================
-
- Note to zswap maintainers:
- --------------------------
- Patches 20 and 21 can be reviewed and improved/merged independently
- of this series, since they are zswap centric. These 2 patches help
- batching but the crypto_acomp_batch_size() from the iaa_crypto commits
- in this series is not a requirement, unlike patches 22-23.
- 
- 1) v12 preserves the pool acomp_ctx resources creation/deletion
-    simplification of v11, namely, lasting from pool creation-deletion,
-    persisting through CPU hot[un]plug operations. Further, zswap no
-    longer needs to create multiple "struct acomp_req" in the per-CPU
-    acomp_ctx. zswap only needs to manage multiple "u8 **buffers".
-
- 2) We store the compressor's batch-size (@pool->compr_batch_size) and
-    the batch-size to use during compression batching
-    (@pool->store_batch_size) directly in struct zswap_pool for quick
-    retrieval in the zswap_store() fast path.
-
- 3) Optimizations to not cause regressions in software compressors with
-    the introduction of the new unified zswap_compress() framework that
-    implements compression batching for all compressors. These optimizations
-    help recover the performance for non-batching compressors:
-
-    a) kmem_cache_alloc_bulk(), kmem_cache_free_bulk() to allocate/free
-       batch zswap_entry-s. These kmem_cache API allow allocator
-       optimizations with internal locks for multiple allocations.
-
-    b) Writes to the zswap_entry right after it is allocated without
-       modifying the publishing order. This avoids different code blocks
-       in zswap_store_pages() having to bring the zswap_entries to the
-       cache for writing, potentially evicting other working set
-       structures, impacting performance.
-
-    c) ZSWAP_MAX_BATCH_SIZE is used as the batch-size for software
-       compressors, since this gives the best performance with zstd.
-
-    d) More likely()/unlikely() annotations to try and minimize branch
-       mis-predicts.
-
- 4) During pool creation, these key additions are allocated as part of the
-    per-CPU acomp_ctx so as to recover performance with the new, generalized SG
-    lists based zswap_compress() batching interface:
-
-    a) An sg_table "acomp_ctx->sg_outputs" is allocated to contain the
-       compressor's batch-size number of SG lists that will contain the
-       destination buffers/lengths after batch compression.
-
-    b) The per-CPU destination buffers are mapped to the per-CPU SG lists: this
-       needs to be done only once, and optimizes performance.
-
-    c) Only for batching compressors, extra memory is allocated in the
-       acomp_req, so as to avail of struct acomp_req's "void *__ctx[]" to store
-       pool->compr_batch_size number of int pointers to the
-       acomp_ctx->sg_outputs-sgl's component scatterlists. This is also added
-       to optimize/recover performance by avoiding traversing the sg_outputs per
-       batch compress call. Without this optimization, it is difficult to
-       realize the benefits of batching within large folios.
-
- 5) Finally, zswap_compress() has been re-written to incorporate Herbert's
-    suggestions to use source folios and output SG lists for batching. The new
-    zswap_compress() code has been made as generic to software and batching
-    compressors as possible, so that it is easy to read and maintain. The
-    recent changes related to PAGE_SIZE dst buffers, zsmalloc and incompressible
-    pages have been incorporated into the batched zswap_compress() as well! To
-    resolve regressions with zstd, I took the liberty of not explicitly checking
-    for dlen == 0 and dlen > PAGE_SIZE (as is assumed in the mainline); instead,
-    expecting that a negative err value will be returned by the software
-    compressor in such cases.
-
-
-Compression Batching:
-=====================
-
-This patch-series introduces batch compression of pages in large folios to
-improve zswap swapout latency. It preserves the existing zswap protocols
-for non-batching software compressors by calling crypto_acomp sequentially
-per page in the batch. Additionally, in support of hardware accelerators
-that can process a batch as an integral unit, the patch-series allows
-zswap to call crypto_acomp without API changes, for compressors
-that intrinsically support batching. The zswap_compress() code has very minimal
-special casing for software/batching compressors.
-
-The patch series provides a proof point by using the Intel Analytics
-Accelerator (IAA) for implementing the compress/decompress batching API
-using hardware parallelism in the iaa_crypto driver and another proof point
-with a sequential software compressor, zstd.
-
-SUMMARY:
-========
-
-  The first proof point is to test with IAA using a sequential call (fully
-  synchronous, compress one page at a time) vs. a batching call (fully
-  asynchronous, submit a batch to IAA for parallel compression, then poll for
-  completion statuses).
-  
-    The performance testing data with 30 usemem processes/64K folios
-    shows 49% throughput gains and 25% elapsed/sys time reductions with
-    deflate-iaa; and 1% sys time reduction with zstd for a small
-    throughput increase. For PMD folios, a 55% throughput gain and 15%
-    elapsed/sys time reduction is seen.
-
-    Kernel compilation test with 64K folios using 32 threads and the
-    zswap shrinker_enabled set to "N", demonstrates similar
-    improvements: zswap_store() large folios using IAA compress batching
-    improves the workload performance by 6.1% and reduces sys time by
-    1% as compared to IAA sequential. For zstd, compress batching
-    improves workload performance by 7.8% and reduces sys time by
-    2.8% as compared to sequentially calling zswap_compress() per page
-    in a folio.
-
-    The main takeaway from usemem, a workload that is mostly compression
-    dominated (very few swapins) is that the higher the number of batches,
-    such as, with larger folios, the more the benefit of batching cost
-    amortization, as shown by the PMD usemem data. This aligns well with the
-    future direction for batching.
-
-  The second proof point is to make sure that software algorithms such as
-  zstd do not regress. The data indicates that for sequential software
-  algorithms a performance gain is achieved. 
-  
-    With the performance optimizations implemented in patches 22-23 of v12:
-    *  zstd usemem metrics with 64K folios are within range of variation
-       with a slight sys time improvement. zstd usemem30 throughput with PMD
-       folios increases by 1%, workload performance improves by 6% and sys time
-       reduces by 8%.
-
-    *  With kernel compilation, I used zstd without the zswap shrinker to enable
-       more direct comparisons with the changes in this series. Subsequent patch
-       series I expect to submit in collaboration with Nhat, will enable the
-       zswap shrinker to quantify the benefits of decompression batching during
-       writeback. With this series' compression batching within large folios, we
-       get a 1%-2.8% reduction in sys time, a 6.1%-7.8% improvement in workload
-       performance with 64K folios for deflate-iaa/zstd respectively.
-
-    These optimizations pertain to ensuring common code paths, removing
-    redundant branches/computes, selectively annotating branches with
-    likely()/unlikely() compiler directives to minimize branch
-    mis-prediction penalty. Additionally, using the batching code for
-    non-batching compressors to sequentially compress/store batches of up
-    to ZSWAP_MAX_BATCH_SIZE pages seems to help, most likely due to
-    cache locality of working set structures such as the array of
-    zswap_entry-s for the batch.
-  
-    Our internal validation of zstd with the batching interface vs. IAA with
-    the batching interface on Emerald Rapids has shown that IAA
-    compress/decompress batching gives 21.3% more memory savings as compared
-    to zstd, for 5% performance loss as compared to the baseline without any
-    memory pressure. IAA batching demonstrates more than 2X the memory
-    savings obtained by zstd at this 95% performance KPI.
-    The compression ratio with IAA is 2.23, and with zstd 2.96. Even with
-    this compression ratio deficit for IAA, batching is extremely
-    beneficial. As we improve the compression ratio of the IAA accelerator,
-    we expect to see even better memory savings with IAA as compared to
-    software compressors.
-    
-
-  Batching Roadmap:
-  =================
-
-  1) Compression batching within large folios (this series).
-  
-  2) zswap writeback decompression batching:
-
-     This is being co-developed with Nhat Pham, and shows promising
-     results. We plan to submit an RFC shortly.
-
-  3) Reclaim batching of hybrid folios:
-  
-     We can expect to see even more significant performance and throughput
-     improvements if we use the parallelism offered by IAA to do reclaim
-     batching of 4K/large folios (really any-order folios), and using the
-     zswap_store() high throughput compression pipeline to batch-compress
-     pages comprising these folios, not just batching within large
-     folios. This is the reclaim batching patch 13 in v1, which we expect
-     to submit in a separate patch-series. As mentioned earlier, reclaim
-     batching reduces the # of writeback pages by 10X for zstd and
-     deflate-iaa.
-
-  4) swapin_readahead() decompression batching:
-
-     We have developed a zswap load batching interface to be used
-     for parallel decompression batching, using swapin_readahead().
-  
-  These capabilities are architected so as to be useful to zswap and
-  zram. We have integrated these components with zram and expect to submit an
-  RFC soon.
-
- 
-  v12 Performance Summary:
-  ========================
-
-  This is a performance testing summary of results with usemem30
-  (30 usemem processes running in a cgroup limited at 150G, each trying to
-   allocate 10G).
-
-  usemem30 with 64K folios:
-  =========================
-  
-     zswap shrinker_enabled = N.
-  
-     -----------------------------------------------------------------------
-                     mm-unstable-9-18-2025             v12
-     -----------------------------------------------------------------------
-     zswap compressor          deflate-iaa     deflate-iaa   IAA Batching
-                                                                 vs.
-                                                             IAA Sequential
-     -----------------------------------------------------------------------
-     Total throughput (KB/s)     7,191,949      10,702,115        49%
-     Average throughput (KB/s)     239,731         356,737        49%     
-     elapsed time (sec)              93.21           69.98       -25%      
-     sys time (sec)               2,190.52        1,651.51       -25%      
-     -----------------------------------------------------------------------
-    
-     -----------------------------------------------------------------------
-                     mm-unstable-9-18-2025             v12    
-     -----------------------------------------------------------------------
-     zswap compressor                 zstd            zstd   v12 zstd    
-                                                             improvement  
-     -----------------------------------------------------------------------
-     Total throughput (KB/s)     6,258,312       6,269,511     0.2%
-     Average throughput (KB/s)     208,610         208,983     0.2% 
-     elapsed time (sec)             100.01          100.50     0.5%
-     sys time (sec)               2,505.14        2,490.00      -1%         
-     -----------------------------------------------------------------------
-
-
-  usemem30 with 2M folios:
-  ========================
-  
-     -----------------------------------------------------------------------
-                     mm-unstable-9-18-2025             v12
-     -----------------------------------------------------------------------
-     zswap compressor          deflate-iaa     deflate-iaa   IAA Batching
-                                                                 vs.
-                                                             IAA Sequential
-     -----------------------------------------------------------------------
-     Total throughput (KB/s)     7,237,676      11,228,928      55%
-     Average throughput (KB/s)     241,255         374,297      55% 
-     elapsed time (sec)              82.26           69.30     -16%
-     sys time (sec)               1,901.90        1,634.78     -14%
-     -----------------------------------------------------------------------
-  
-     -----------------------------------------------------------------------
-                     mm-unstable-9-18-2025             v12      
-     -----------------------------------------------------------------------
-     zswap compressor                 zstd            zstd   v12 zstd           
-                                                             improvement
-     -----------------------------------------------------------------------
-     Total throughput (KB/s)     6,796,376       6,865,781     1.0%
-     Average throughput (KB/s)     226,545         228,859     1.0% 
-     elapsed time (sec)              94.07           88.80      -6%
-     sys time (sec)               2,261.67        2,082.91      -8%
-     -----------------------------------------------------------------------
-
-
-  This is a performance testing summary of results with
-  kernel_compilation test (allmod config, 32 cores, cgroup limited to 2G).
-
-  zswap shrinker_enabled = N.
-  
-  kernel_compilation with 64K folios:
-  ===================================
-
-     --------------------------------------------------------------------------
-               mm-unstable-9-18-2025             v12
-     --------------------------------------------------------------------------
-     zswap compressor    deflate-iaa     deflate-iaa    IAA Batching
-                                                             vs.
-                                                        IAA Sequential
-     --------------------------------------------------------------------------
-     real_sec                 874.74          821.59      -6.1%
-     sys_sec                3,834.35        3,791.12        -1%
-     --------------------------------------------------------------------------
-
-     --------------------------------------------------------------------------
-               mm-unstable-9-18-2025             v12
-     --------------------------------------------------------------------------
-     zswap compressor           zstd            zstd    Improvement
-     --------------------------------------------------------------------------
-     real_sec                 925.08          853.14      -7.8%
-     sys_sec                5,318.65        5,172.23      -2.8%
-     --------------------------------------------------------------------------
-
-
-  kernel_compilation with PMD folios:
-  ===================================
-
-     --------------------------------------------------------------------------
-               mm-unstable-9-18-2025             v12
-     --------------------------------------------------------------------------
-     zswap compressor    deflate-iaa     deflate-iaa    IAA Batching
-                                                             vs.
-                                                        IAA Sequential
-     --------------------------------------------------------------------------
-     real_sec                 808.10          794.85      -1.6%
-     sys_sec                4,351.01        4,266.95        -2%
-     --------------------------------------------------------------------------
- 
- 
-     --------------------------------------------------------------------------
-              mm-unstable-9-18-2025             v12
-     --------------------------------------------------------------------------
-     zswap compressor          zstd            zstd    Improvement
-     --------------------------------------------------------------------------
-     real_sec                848.06          845.42       -0.3%
-     sys_sec               5,898.58        5,741.31       -2.7%
-     --------------------------------------------------------------------------
-
-
-
-DETAILS:
-========
-
-(A) From zswap's perspective, the most significant changes are:
-===============================================================
-
-1) A unified zswap_compress() API is added to compress multiple
-   pages:
-
-   - If the compressor has multiple acomp requests, i.e., internally
-     supports batching, crypto_acomp_batch_compress() is called. If all
-     pages are successfully compressed, or, if folio writeback is enabled, the
-     batch is stored in zsmalloc, preserving latest mm-stable behavior.
-   
-   - If the compressor can only compress one page at a time, each page
-     is compressed and stored sequentially.
-
-   Many thanks to Yosry for this suggestion, because it is an essential
-   component of unifying common code paths between sequential/batching
-   compressions.
-
-   Overall, the likely()/unlikely() annotations prevent regressions with
-   software compressors like zstd, and generally improve non-batching
-   compressors' performance with the batching code by 1% to 8%.
-
-2) A new zswap_store_pages() is added, that stores multiple pages in a
-   folio in a range of indices. This is an extension of the earlier
-   zswap_store_page(), except it operates on a batch of pages.
-
-3) zswap_store() is modified to store the folio's pages in batches
-   by calling zswap_store_pages(). If the compressor supports batching,
-   the folio will be compressed in batches of
-   "pool->compr_batch_size". If the compressor does not support
-   batching, the folio will be compressed in batches of
-   ZSWAP_MAX_BATCH_SIZE pages, where each page in the batch is
-   compressed sequentially. We see better performance by processing
-   the folio in batches of ZSWAP_MAX_BATCH_SIZE, due to cache locality
-   of working set structures such as the array of zswap_entry-s for the
-   batch.
-
-   Many thanks to Yosry and Johannes for steering towards a common
-   design and code paths for sequential and batched compressions (i.e.,
-   for software compressors and hardware accelerators such as IAA). As per
-   Yosry's suggestion in v8, the "batch_size" is an attribute of the
-   compressor/pool, and hence is stored in struct zswap_pool instead of
-   in struct crypto_acomp_ctx.
-
-4) Simplifications to the acomp_ctx resources allocation/deletion
-   vis-a-vis CPU hot[un]plug. This further improves upon v8 of this
-   patch-series based on the discussion with Yosry, and formalizes the
-   lifetime of these resources from pool creation to pool
-   deletion. zswap does not register a CPU hotplug teardown
-   callback. The acomp_ctx resources will persist through CPU
-   online/offline transitions. The main changes made to avoid UAF/race
-   conditions, and correctly handle process migration, are:
-
-   a) No acomp_ctx mutex locking in zswap_cpu_comp_prepare().
-   b) No CPU hotplug teardown callback, no acomp_ctx resources deleted.
-   c) New acomp_ctx_dealloc() procedure that cleans up the acomp_ctx
-      resources, and is shared by
-      zswap_cpu_comp_prepare()/zswap_pool_create() error handling and
-      zswap_pool_destroy().
-   d) The zswap_pool node list instance is removed right after the node
-      list add function in zswap_pool_create().
-   e) We directly call mutex_[un]lock(&acomp_ctx->mutex) in
-      zswap_[de]compress(). acomp_ctx_get_cpu_lock()/acomp_ctx_put_unlock()
-      are deleted.
-
-   The commit log of patch 0020 has a more detailed analysis.
-
-
-(B) Main changes in crypto_acomp and iaa_crypto:
-================================================
-
-1) A new architecture is introduced for IAA device WQs' usage as:
-   - compress only
-   - decompress only
-   - generic, i.e., both compress/decompress.
-
-   Further, IAA devices/wqs are assigned to cores based on packages
-   instead of NUMA nodes.
-
-   The WQ rebalancing algorithm that is invoked as WQs are
+This patch re-architects the iaa_crypto driver in three main aspects, to
+make it more robust, stable, generic and functionally versatile to
+support zswap users on platforms with different number of cores/IAAs
+running workloads with different swap characteristics, and most
+importantly, better performance.
+
+ Summary of latency improvement for large folio compression:
+ ===========================================================
+ When measured in zswap using a simple madvise workload, where 64K
+ Folios are stored using IAA batch compressions, this is how the
+ per-page compress latency changes just by setting the
+ "distribute_comps" driver parameter to "1":
+
+   --------------------------------------------------------------
+   zswap compressor: deflate-iaa
+   64K Folios: zswap_store() latency normalized to per-page
+   --------------------------------------------------------------
+                                         p50 (ns)     p99 (ns)
+   --------------------------------------------------------------
+   Sequential store                         3,503        3,695
+   Batch compress, distribute_comps=0       1,356        1,384
+   Batch compress, distribute_comps=1         706          763
+   --------------------------------------------------------------
+
+The rearchitecting aspects are:
+
+A) Map IAA devices/wqs to cores based on packages instead of NUMA.
+
+B) The WQ rebalancing algorithm that is invoked as WQs are
    discovered/deleted has been made very general and flexible so that
-   the user can control exactly how IAA WQs are used. In addition to the
-   user being able to specify a WQ type as comp/decomp/generic, the user
-   can also configure if WQs need to be shared among all same-package
-   cores, or, whether the cores should be divided up amongst the
-   available IAA devices.
+   the user can control exactly how IAA WQs are used, for optimizing
+   performance.
 
-   If distribute_[de]comps is enabled, from a given core's perspective,
-   the iaa_crypto driver will distribute comp/decomp jobs among all
-   devices' WQs in round-robin manner. This improves batching latency
-   and can improve compression/decompression throughput for workloads
-   that see a lot of swap activity.
+C) Additionally, the "iaa_crypto_enabled" driver global has been
+   modified to be an atomic, and used for synchronization between
+   dynamic/asynchronous WQ discovery/deletion and the fundamental
+   routines comp_wq_table_next_wq() and decomp_wq_table_next_wq() that
+   are queried by compress/decompress job submissions.
 
-   The commit log of patch 0002 provides more details on new iaa_crypto
-   driver parameters added, along with recommended settings (defaults
-   are optimal settings).
-
-2) Compress/decompress batching are implemented using
-   crypto_acomp_[de]compress() with SG lists used as the batching interface.
-
-
-(C) The patch-series is organized as follows:
-=============================================
-
- 1) crypto acomp & iaa_crypto driver enablers for batching: Relevant
-    patches are tagged with "crypto:" in the subject:
-
-    Patch 1) Reorganizes the iaa_crypto driver code into logically related
-             sections and avoids forward declarations, in order to facilitate
-             subsequent iaa_crypto patches. This patch makes no
-             functional changes.
-
-    Patch 2) Makes an infrastructure change in the iaa_crypto driver
-             to map IAA devices/work-queues to cores based on packages
-             instead of NUMA nodes. This doesn't impact performance on
-             the Sapphire Rapids system used for performance
-             testing. However, this change fixes functional problems we
-             found on Granite Rapids during internal validation, where the
-             number of NUMA nodes is greater than the number of packages,
-             which was resulting in over-utilization of some IAA devices
-             and non-usage of other IAA devices as per the current NUMA
-             based mapping infrastructure.
-
-             This patch also develops a new architecture that
-             generalizes how IAA device WQs are used. It enables
-             designating IAA device WQs as either compress-only or
-             decompress-only or generic. Once IAA device WQ types are
-             thus defined, it also allows the configuration of whether
-             device WQs will be shared by all cores on the package, or
-             used only by "mapped cores" obtained by a simple allocation
-             of available IAAs to cores on the package.
-
-             As a result of the overhaul of wq_table definition,
-             allocation and rebalancing, this patch eliminates
-             duplication of device WQs in per-CPU wq_tables, thereby
-             saving 140MiB on a 384 cores dual socket Granite Rapids server
-             with 8 IAAs.
-
-             Regardless of how the user has configured the WQs' usage,
-             the next WQ to use is obtained through a direct look-up in
-             per-CPU "cpu_comp_wqs" and "cpu_decomp_wqs" structures so
-             as to minimize latency in the critical path driver compress
-             and decompress routines.
-
-    Patch 3) Code cleanup, consistency of function parameters.
-
-    Patch 4) Makes a change to iaa_crypto driver's descriptor allocation,
-             from blocking to non-blocking with retries/timeouts and
-             mitigations in case of timeouts during compress/decompress
-             ops. This prevents tasks getting blocked indefinitely, which
-             was observed when testing 30 cores running workloads, with
-             only 1 IAA enabled on Sapphire Rapids (out of 4). These
-             timeouts are typically only encountered, and associated
-             mitigations exercised, only in configurations with 1 IAA
-             device shared by 30+ cores.
-
-    Patch 5) Optimize iaa_wq refcounts using a percpu_ref instead of
-             spinlocks and "int refcount".
-
-    Patch 6) Code simplification and restructuring for understandability
-             in core iaa_compress() and iaa_decompress() routines.
-
-    Patch 7) Refactor hardware descriptor setup to their own procedures
-             to reduce code clutter.
-
-    Patch 8) Simplify and optimize (i.e. reduce computes) job submission
-             for the most commonly used non-irq async mode by directly
-             calling movdir64b.
-
-    Patch 9) Deprecate exporting symbols for adding IAA compression
-             modes.
-
-    Patch 10) All dma_map_sg() calls will pass in 1 for the nents instead of
-              sg_nents(), for these main reasons: performance; no existing
-              iaa_crypto use cases that allow multiple SG lists to be mapped for
-              dma at once; facilitates new SG lists batching interface through
-              crypto.
-
-    Patch 11) Rearchitect iaa_crypto to be agnostic of crypto_acomp for
-              it be usable in both zswap and zram. crypto_acomp interfaces are
-              maintained as earlier, for use in zswap.
-
-    Patch 12) Descriptor submit and polling mechanisms, enablers for batching.
-
-    Patch 13) Define a unit_size in struct acomp_req to enable batching, and
-              provides acomp_request_set_unit_size() for use by kernel modules.
-
-    Patch 14) Implement IAA batching of compressions and decompressions
-              for deriving hardware parallelism.
-
-    Patch 15) Enables the "async" mode, sets it as the default.
-
-    Patch 16) Disables verify_compress by default.
-
-    Patch 17) Decompress batching optimization: Find the two largest
-              buffers in the batch and submit them first.
-             
-    Patch 18) Add a new Dynamic compression mode that can be used on
-              Granite Rapids.
-
-    Patch 19) Add a batch_size data member to structs acomp_alg/crypto_acomp and
-              a crypto_acomp_batch_size() API that returns the compressor's
-              batch-size, if it has defined one; 1 otherwise. Add the definition
-              of batch_size to iaa_crypto acomp_algs.
-
- 2) zswap modifications to enable compress batching in zswap_store()
-    of large folios (including pmd-mappable folios):
-
-    Patch 20) Simplifies the zswap_pool's per-CPU acomp_ctx resource
-              management and lifetime to be from pool creation to pool
-              deletion.
-
-    Patch 21) Uses IS_ERR_OR_NULL() in zswap_cpu_comp_prepare() to check for
-              valid acomp/req, thereby making it consistent with the resource
-              de-allocation code.
-
-    Patch 22) Defines a zswap-specific ZSWAP_MAX_BATCH_SIZE (currently set
-              as 8U) to denote the maximum number of acomp_ctx batching
-              resources to allocate, thus limiting the amount of extra
-              memory used for batching. Further, the "struct
-              crypto_acomp_ctx" is modified to contain multiple buffers.
-              New "u8 compr_batch_size" and "u8 store_batch_size" members are
-              added to "struct zswap_pool" to track the number of dst
-              buffers associated with the compressor (more than 1 if
-              the compressor supports batching) and the unit for storing
-              large folios using compression batching respectively.
-
-              Modifies zswap_store() to store the folio in batches of
-              pool->store_batch_size by calling a new zswap_store_pages() that
-              takes a range of indices in the folio to be stored.
-              zswap_store_pages() pre-allocates zswap entries for the batch,
-              calls zswap_compress() for each page in this range, and stores
-              the entries in xarray/LRU.
-
-    Patch 23) Introduces a new unified batching implementation of
-              zswap_compress() for compressors that do and do not support
-              batching. This eliminates code duplication and facilitates
-              maintainability of the code with the introduction of compress
-              batching. Further, there are many optimizations to this common
-              code that result in workload throughput and performance
-              improvements with software compressors and hardware accelerators
-              such as IAA.
-
-              zstd performance is better or on par with mm-unstable. We
-              see impressive throughput/performance improvements with
-              IAA and zstd batching vs. no-batching.
-
-
-With v12 of this patch series, the IAA compress batching feature will be
-enabled seamlessly on Intel platforms that have IAA by selecting
-'deflate-iaa' as the zswap compressor, and using the iaa_crypto 'async'
-sync_mode driver attribute (the default).
-
-
-System setup for testing:
-=========================
-Testing of this patch-series was done with mm-unstable as of 9-18-2025,
-commit 1f98191f08b4, without and with this patch-series. Data was
-gathered on an Intel Sapphire Rapids (SPR) server, dual-socket 56 cores
-per socket, 4 IAA devices per socket, each IAA has total 128 WQ entries,
-503 GiB RAM and 525G SSD disk partition swap. Core frequency was fixed
-at 2500MHz.
-
-Other kernel configuration parameters:
-
-    zswap compressor  : zstd, deflate-iaa
-    zswap allocator   : zsmalloc
-    vm.page-cluster   : 0
-
-IAA "compression verification" is disabled and IAA is run in the async
-mode (the defaults with this series).
-
-I ran experiments with these workloads:
-
-1) usemem 30 processes with zswap shrinker_enabled=N. Two sets of
-   experiments, one with 64K folios, another with PMD folios.
-
-2) Kernel compilation allmodconfig with 2G max memory, 32 threads, with
-   zswap shrinker_enabled=N to test batching performance impact in
-   isolation. Two sets of experiments, one with 64K folios, another with PMD
-   folios.
-
-IAA configuration is done by a CLI: script is included at the end of the
-cover letter.
-
-
-Performance testing (usemem30):
+Description/motivation for (A):
 ===============================
-The vm-scalability "usemem" test was run in a cgroup whose memory.high
-was fixed at 150G. There is no swap limit set for the cgroup. 30 usemem
-processes were run, each allocating and writing 10G of memory, and
-sleeping for 10 sec before exiting:
+This patch modifies the algorithm for mapping available IAA devices and
+WQs to cores based on packages instead of NUMA nodes. This leads to a
+more realistic mapping of IAA devices as compression/decompression
+resources for a package, rather than for a NUMA node. This also resolves
+problems that were observed during internal validation on Intel Granite
+Rapids platforms with many more NUMA nodes than packages: for such
+cases, the earlier NUMA based allocation caused some IAAs to be
+over-subscribed and some to not be utilized at all.
 
- usemem --init-time -w -O -b 1 -s 10 -n 30 10g
- echo 0 > /sys/module/zswap/parameters/shrinker_enabled
+As a result of this change from NUMA to packages, some of the core
+functions used by the iaa_crypto driver's "probe" and "remove" API
+have been re-written. The new infrastructure maintains a static mapping
+of wqs per IAA device, in the "struct iaa_device" itself. The earlier
+implementation would allocate memory per-cpu for this data, which never
+changes once the IAA devices/wqs have been initialized.
 
- IAA WQ Configuration (script is iincluded at the end of the cover
- letter):
+Two main outcomes from this new iaa_crypto driver infrastructure are:
 
-   ./enable_iaa.sh -d 4 -q 1
-   
- This enables all 4 IAAs on the socket, and configures 1 WQ per IAA
- device, each containing 128 entries. The driver distributes compress
- jobs from each core to wqX.0 of all same-package IAAs in a
- round-robin manner. Decompress jobs are send to the wqX.0 of the
- mapped IAA device.
+ 1) Resolves "task blocked for more than x seconds" errors observed during
+    internal validation on Intel systems with the earlier NUMA node based
+    mappings, which was root-caused to the non-optimal IAA-to-core mappings
+    described earlier.
 
- Since usemem has significantly more swapouts than swapins, this
- configuration is the most optimal.
+ 2) Results in a NUM_THREADS factor reduction in memory footprint cost of
+    initializing IAA devices/wqs, due to eliminating the per-cpu copies of
+    each IAA device's wqs. On a 384 cores Intel Granite Rapids server with
+    8 IAA devices, this saves 140MiB.
 
- 64K folios: usemem30: deflate-iaa:
- ==================================
+An auxiliary change included in this patch is that the driver's "nr_iaa",
+"nr_iaa_per_package" and "cpus_per_iaa" global variables are made
+atomic, because iaa_crypto_probe() and iaa_crypto_remove() change the
+values of these variables asynchronously and concurrently as wqs get
+added/deleted and rebalance_wq_table() is called. This change allows the
+rebalance_wq_table() code to see consistent values of the number of IAA
+devices.
 
- -------------------------------------------------------------------------------
-                    mm-unstable-9-18-2025             v12
- -------------------------------------------------------------------------------
- zswap compressor             deflate-iaa     deflate-iaa    IAA Batching
-                                                                 vs.
-                                                             IAA Sequential
- -------------------------------------------------------------------------------
- Total throughput (KB/s)        7,191,949     10,702,115         49%
- Avg throughput (KB/s)            239,731        356,737         49%       
- elapsed time (sec)                 93.21          69.98        -25%      
- sys time (sec)                  2,190.52       1,651.51        -25%      
-                                                                        
- -------------------------------------------------------------------------------
- memcg_high                     1,056,505      1,320,579                
- memcg_swap_fail                    3,966            321                
- 64kB_swpout_fallback               3,965            321                
- zswpout                       61,577,440     71,448,317                
- zswpin                               488            141                
- pswpout                                0              0                
- pswpin                                 0              0                
- ZSWPOUT-64kB                   3,844,593      4,465,129                
- SWPOUT-64kB                            0              0
- pgmajfault                         2,786          2,454
- zswap_reject_compress_fail             0              0
- zswap_reject_reclaim_fail              0              0
- IAA incompressible pages               0              0
- -------------------------------------------------------------------------------
+Description/motivation for (B):
+===============================
+This builds upon the package-based driver infrastructure, to provide
+more flexibility in using particular WQs for compress-only or
+decompress-only jobs. It also introduces the notion of using all the IAA
+devices on a package as resources that are shared by all cores on the
+package: this significantly improves batching (to be added in subsequent
+patches) latency and compress/decompress throughput. sysfs driver
+paramters provide configurability of these features.
 
+Two main concepts are introduced as part of the rebalancing changes:
 
- 2M folios: usemem30: deflate-iaa:
- =================================
+ 1) An IAA WQ can be used for specific ops, that determines a WQ "type"
+    for the iaa_crypto driver to submit compress/decompress jobs:
 
- -------------------------------------------------------------------------------
-                    mm-unstable-9-18-2025             v12
- -------------------------------------------------------------------------------
- zswap compressor             deflate-iaa     deflate-iaa     IAA Batching
-                                                                  vs.
-                                                              IAA Sequential
- -------------------------------------------------------------------------------
- Total throughput (KB/s)        7,237,676      11,228,928        55%
- Avg throughput (KB/s)            241,255         374,297        55%
- elapsed time (sec)                 82.26           69.30       -16%     
- sys time (sec)                  1,901.90        1,634.78       -14%     
-                                                               
- -------------------------------------------------------------------------------
- memcg_high                       100,141         119,644     
- memcg_swap_fail                      356              12     
- thp_swpout_fallback                  356              12     
- zswpout                       63,470,927      71,773,688     
- zswpin                               455             169     
- pswpout                                0               0     
- pswpin                                 0               0     
- ZSWPOUT-2048kB                   123,610         140,169     
- thp_swpout                             0               0     
- pgmajfault                         2,743           2,471
- zswap_reject_compress_fail             0               0
- zswap_reject_reclaim_fail              0               0
- IAA incompressible pages               0               0
- -------------------------------------------------------------------------------
+    - compress only
+    - decompress only
+    - generic, i.e, for both compresses and decompresses
 
+    The WQ type is decided based on the number of WQs configured for a
+    given IAA device, and the new "g_comp_wqs_per_iaa" driver parameter.
 
- 64K folios: usemem30: zstd:
- ===========================
+ 2) An IAA WQ can be mapped to cores using either of the following
+    balancing techniques:
 
- -------------------------------------------------------------------------------
-                    mm-unstable-9-18-2025             v12        
- -------------------------------------------------------------------------------
- zswap compressor                    zstd            zstd        v12 zstd    
-                                                                 improvement  
- -------------------------------------------------------------------------------
- Total throughput (KB/s)        6,258,312       6,269,511        0.2%
- Avg throughput (KB/s)            208,610         208,983        0.2%       
- elapsed time (sec)                100.01          100.50        0.5%
- sys time (sec)                  2,505.14        2,490.00         -1%
-                                                         
- -------------------------------------------------------------------------------
- memcg_high                     1,071,250       1,043,886
- memcg_swap_fail                    2,251              73
- 64kB_swpout_fallback               2,251              73
- zswpout                       49,491,137      49,693,220
- zswpin                               455             179
- pswpout                                0               0
- pswpin                                 0               0
- ZSWPOUT-64kB                   3,090,904       3,105,690
- SWPOUT-64kB                            0               0
- pgmajfault                         2,780           2,456
- zswap_reject_compress_fail             0               0
- zswap_reject_reclaim_fail              0               0
- -------------------------------------------------------------------------------
+    a) Shared by all cores on a package. The iaa_crypto driver will
+       dispatch compress/decompress jobs to all WQs of the same type,
+       across all IAA devices on the package:
+       - IAA compress jobs will be distributed to all same-package IAA
+         compress-only/generic WQs.
+       - IAA decompress jobs will be distributed to all same-package IAA
+         decompress-only/generic WQs.
 
+    b) Handles compress/decompress jobs only from "mapped cores", i.e.,
+       the cores derived by evenly dividing the number of IAAs among the
+       number of cores, per package.
 
- 2M folios: usemem30: zstd:
- ==========================
+Server setups that are moderately to highly contended can benefit from
+(2.a). When the mix of workloads running on a system need high compress
+throughput, and have relatively lower decompress activity, (2.b) might
+be more optimal.
 
- -------------------------------------------------------------------------------
-                    mm-unstable-9-18-2025             v12      
- -------------------------------------------------------------------------------
- zswap compressor                    zstd            zstd        v12 zstd           
-                                                                 improvement
- -------------------------------------------------------------------------------
- Total throughput (KB/s)        6,796,376       6,865,781        1.0%
- Avg throughput (KB/s)            226,545         228,859        1.0%    
- elapsed time (sec)                 94.07           88.80         -6%
- sys time (sec)                  2,261.67        2,082.91         -8%
-                                                         
- -------------------------------------------------------------------------------
- memcg_high                        89,582          88,103
- memcg_swap_fail                       14              56
- thp_swpout_fallback                   14              56
- zswpout                       48,846,660      48,000,106
- zswpin                                58             266
- pswpout                                0               0
- pswpin                                 0               0
- ZSWPOUT-2048kB                    95,388          93,692
- thp_swpout                             0               0
- pgmajfault                         2,348           2,557
- zswap_reject_compress_fail             0               0
- zswap_reject_reclaim_fail              0               0
- -------------------------------------------------------------------------------
+These approaches can be accomplished with the following new iaa_crypto
+driver parameters. These parameters are global settings and will apply
+to all IAAs on a package, interpreted in the context of the number of
+WQs configured per IAA device.
 
+ g_comp_wqs_per_iaa:
+ ===================
+   Number of compress-only WQs. The default is 1, but is applicable only
+   if the device has more than 1 WQ. If the device has exactly 1 WQ
+   configured, "g_comp_wqs_per_iaa" is a don't care.
 
-Performance testing (Kernel compilation, allmodconfig):
-=======================================================
+   If the IAA device has more than "g_comp_wqs_per_iaa" WQs configured,
+   the last "g_comp_wqs_per_iaa" number of WQs will be considered as
+   "compress only". The remaining WQs will be considered as
+   "decompress only".
 
-The experiments with kernel compilation test use 32 threads and build
-the "allmodconfig" that takes ~14 minutes, and has considerable
-swapout/swapin activity. The cgroup's memory.max is set to 2G. zswap
-writeback is not enabled so as to isolate the performance impact of only large
-folio batch compression.
+   If the device has less than or equal to "g_comp_wqs_per_iaa" WQs, all
+   the device's WQs will be considered "generic", i.e., the driver will
+   submit compress and decompress jobs to all the WQs configured for the
+   device.
 
- echo 0 > /sys/module/zswap/parameters/shrinker_enabled
+   For e.g., if an IAA "X" has 2 WQs, this will set up 1 decompress WQ and
+   1 compress WQ:
 
- IAA WQ Configuration (script is at the end of the cover letter):
+     echo 1 > /sys/bus/dsa/drivers/crypto/g_comp_wqs_per_iaa
 
-   ./enable_iaa.sh -d 4 -q 2
-   
- This enables all 4 IAAs on the socket, and configures 2 WQs per IAA,
- each containing 64 entries. The driver sends decompresses to wqX.0 of
- the mapped IAA device, and distributes compresses to wqX.1 of all
- same-package IAAs in a round-robin manner.
+     wqX.0: decompress jobs only.
+     wqX.1: compress jobs only.
 
- 64K folios: Kernel compilation/allmodconfig: deflate-iaa:
- =========================================================
+   This setting would typically benefit workloads that see a high
+   level of compress and decompress activity.
 
- -------------------------------------------------------------------------------
-                    mm-unstable-9-18-2025             v12
- -------------------------------------------------------------------------------
- zswap compressor             deflate-iaa     deflate-iaa    IAA Batching
-                                                                 vs.
-                                                             IAA Sequential
- -------------------------------------------------------------------------------
- real_sec                          874.74          821.59        -6.1%
- user_sec                       15,701.49       15,718.29 
- sys_sec                         3,834.35        3,791.12          -1%
- -------------------------------------------------------------------------------
- Max_Res_Set_Size_KB            1,871,264       1,872,780 
- -------------------------------------------------------------------------------
- memcg_high                             0               0         
- memcg_swap_fail                        0               0         
- 64kB_swpout_fallback                   0               0         
- zswpout                       91,614,674     103,057,250         
- zswpin                        27,028,688      30,946,488         
- pswpout                                0               0         
- pswpin                                 0               0         
- ZSWPOUT-64kB                   3,007,705       3,337,682         
- SWPOUT-64kB                            0               0 
- pgmajfault                    28,697,315      32,778,092 
- zswap_reject_compress_fail             0               0 
- zswap_reject_reclaim_fail              0               0 
- IAA incompressible pages             440             239  
- -------------------------------------------------------------------------------
+   If an IAA has 1 WQ, that WQ will be considered "generic": the driver
+   will submit compress and decompress jobs to the same WQ (this is
+   independent of the "g_comp_wqs_per_iaa" setting):
 
+     wqX.0: compress and decompress jobs.
 
- 2M folios: Kernel compilation/allmodconfig: deflate-iaa:
- ========================================================
+   This would typically benefit workloads that see significant cold
+   memory being reclaimed, and consequently, high swapout and low swapin
+   activity.
 
- -------------------------------------------------------------------------------
-                    mm-unstable-9-18-2025             v12
- -------------------------------------------------------------------------------
- zswap compressor             deflate-iaa     deflate-iaa    IAA Batching
-                                                                 vs.
-                                                             IAA Sequential
- -------------------------------------------------------------------------------
- real_sec                          808.10          794.85         -1.6%
- user_sec                       15,807.59       15,794.49  
- sys_sec                         4,351.01        4,266.95           -2%
- -------------------------------------------------------------------------------
- Max_Res_Set_Size_KB            1,871,100       1,874,684  
- -------------------------------------------------------------------------------
- memcg_high                             0               0     
- memcg_swap_fail                        0               0     
- thp_swpout_fallback                    0               0     
- zswpout                      109,563,983     111,586,692          
- zswpin                        38,396,482      39,089,000     
- pswpout                                0               0     
- pswpin                                 0               0     
- ZSWPOUT-2048kB                    16,661          17,020     
- thp_swpout                             0               0     
- pgmajfault                    39,727,295      40,433,559  
- zswap_reject_compress_fail             0               0  
- zswap_reject_reclaim_fail              0               0  
- IAA incompressible pages             531             317  
- -------------------------------------------------------------------------------
-         
-        
-With the iaa_crypto driver changes for non-blocking descriptor allocations,
-no timeouts-with-mitigations were seen in compress/decompress jobs, for all
-of the above experiments.
+ distribute_comps:
+ =================
+   Distribute compressions to all IAAs on package (default is Y).
 
+   Assuming the WQ type has been established as
+   compress-only/decompress-only/generic, this setting will determine if
+   the driver will distribute compress jobs to all IAAs on a package
+   (default behavior) or not.
 
- 64K folios: Kernel compilation/allmodconfig: zstd:
- ==================================================
+   If this is turned off, the driver will dispatch compress jobs to a
+   given IAA "compression enabled" WQ only from cores that are mapped to
+   that IAA using an algorithm that evenly distributes IAAs per package
+   to cores per package. For e.g., on a Sapphire Rapids server with
+   56-physical-cores and 4 IAAs per package, with Hyperthreading, 28
+   logical cores will be assigned to each IAA. With the
+   "distribute_comps" driver parameter turned off, the driver will send
+   compress jobs only to it's assigned IAA device.
 
- -------------------------------------------------------------------------------
-                    mm-unstable-9-18-2025             v12
- -------------------------------------------------------------------------------
- zswap compressor                    zstd            zstd    Improvement
- -------------------------------------------------------------------------------
- real_sec                          925.08          853.14       -7.8%
- user_sec                       15,708.03       15,703.87
- sys_sec                         5,318.65        5,172.23       -2.8%
- -------------------------------------------------------------------------------
- Max_Res_Set_Size_KB            1,874,060       1,874,276
- -------------------------------------------------------------------------------
- memcg_high                             0               0        
- memcg_swap_fail                        0               0        
- 64kB_swpout_fallback                   0               0        
- zswpout                       80,735,528      78,500,218        
- zswpin                        24,155,464      22,898,395        
- pswpout                                0               0        
- pswpin                                 0               0        
- ZSWPOUT-64kB                   2,580,722       2,489,796        
- SWPOUT-64kB                            0               0
- pgmajfault                    25,564,063      24,223,218
- zswap_reject_compress_fail             0               0
- zswap_reject_reclaim_fail              0               0
- -------------------------------------------------------------------------------
+   Enabling "distribute_comps" would typically benefit workloads in
+   terms of batch compress latency and throughput.
 
+ distribute_decomps:
+ ===================
+   Distribute decompressions to all IAAs on package (default is N).
 
- 2M folios: Kernel compilation/allmodconfig: zstd:
- =================================================
+   Assuming the WQ type has been established as
+   compress-only/decompress-only/generic, this setting will determine if
+   the driver will distribute decompress jobs to all IAAs on a package
+   (default behavior) or not.
 
- -------------------------------------------------------------------------------
-                    mm-unstable-9-18-2025             v12
- -------------------------------------------------------------------------------
- zswap compressor                    zstd            zstd    Improvement
- -------------------------------------------------------------------------------
- real_sec                          848.06          845.42       -0.3%
- user_sec                       15,822.19       15,826.68
- sys_sec                         5,898.58        5,741.31       -2.7%
- -------------------------------------------------------------------------------
- Max_Res_Set_Size_KB            1,872,888       1,874,684
- -------------------------------------------------------------------------------
- memcg_high                             0               0   
- memcg_swap_fail                        0               0   
- thp_swpout_fallback                    0               0   
- zswpout                       91,399,677      87,856,850        
- zswpin                        29,871,078      28,452,891   
- pswpout                                0               0   
- pswpin                                 0               0   
- ZSWPOUT-2048kB                    12,130          11,968   
- thp_swpout                             0               0   
- pgmajfault                    30,723,070      29,308,735
- zswap_reject_compress_fail             0               0
- zswap_reject_reclaim_fail              0               0
- -------------------------------------------------------------------------------
+   We recommend leaving this parameter at its default setting of "N".
+   Enabling "distribute_decomps = Y" can be evaluated for workloads that
+   are sensitive to p99 decompress latency, and see a high level of
+   compress and decompress activity (for e.g. warm memory reclaim/swapin).
 
+Recommended settings for best compress/decompress latency, throughput
+and hence memory savings for a moderately contended server, are:
 
-IAA configuration script "enable_iaa.sh":
-=========================================
+   2 WQs per IAA
+   g_comp_wqs_per_iaa = 1 (separate WQ for comps/decomps per IAA)
+   distribute_decomps = N
+   distribute_comps = Y
 
- Acknowledgements: Binuraj Ravindran and Rakib Al-Fahad.
+For systems that have one IAA device, the distribute_[de]comps settings
+will be a no-op. Even for such systems, as long as considerable swapout
+and swapin activity is expected, we recommend setting up 2 WQs
+for the IAA, one each for compressions/decompressions. If swapouts are
+significantly more than swapins, 1 WQ would be a better configuration,
+as mentioned earlier.
 
- Usage:
- ------
+ Examples:
+ =========
+   For a Sapphire Rapids server with 2 packages, 56 cores and 4 IAAs per
+   package, each IAA has 2 WQs, and these settings are in effect:
 
-   ./enable_iaa.sh -d <num_IAAs> -q <num_WQs_per_IAA>
+     echo 1 > /sys/bus/dsa/drivers/crypto/g_comp_wqs_per_iaa
+     echo 1 > /sys/bus/dsa/drivers/crypto/distribute_comps
+     echo 0 > /sys/bus/dsa/drivers/crypto/distribute_decomps
 
+     wqX.0: decompress jobs only.
+     wqX.1: compress jobs only.
 
- #---------------------------------<cut here>----------------------------------
- #!/usr/bin/env bash
- #SPDX-License-Identifier: BSD-3-Clause
- #Copyright (c) 2025, Intel Corporation
- #Description: Configure IAA devices
+   Compress jobs from all cores on package-0 will be distributed in
+   round-robin manner to [iax1, iax3, iax5, iax7]'s wqX.1, to maximize
+   compression throughput/latency/memory savings:
+
+     wq1.1
+     wq3.1
+     wq5.1
+     wq7.1
+
+   Likewise, compress jobs from all cores on package-1 will be
+   distributed in round-robin manner to [iax9, iax11, iax13, iax15]'s
+   wqX.1, to maximize compression throughput/latency/memory savings for
+   workloads running on package-1:
+
+     wq9.1
+     wq11.1
+     wq13.1
+     wq15.1
+
+   Decompress jobs will be submitted from mapped logical cores only, as
+   follows:
+
+     package-0:
+
+       CPU   0-13,112-125   14-27,126-139  28-41,140-153  42-55,154-167
+       IAA:  iax1           iax3           iax5           iax7
+       WQ:   wq1.0          wq3.0          wq5.0          wq7.0
+
+     package-1:
+
+       CPU   56-69,168-181  70-83,182-195  84-97,196-209   98-111,210-223
+       IAA:  iax9           iax11          iax13           iax15
+       WQ:   wq9.0          wq11.0         wq13.0          wq15.0
+
+IAA WQs can be configured using higher level scripts as described in
+Documentation/driver-api/crypto/iaa/iaa-crypto.rst. This documentation
+has been updated for the above new parameters.
+
+Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
+---
+ .../driver-api/crypto/iaa/iaa-crypto.rst      | 136 +++
+ drivers/crypto/intel/iaa/iaa_crypto.h         |  18 +-
+ drivers/crypto/intel/iaa/iaa_crypto_main.c    | 889 ++++++++++++++----
+ 3 files changed, 872 insertions(+), 171 deletions(-)
+
+diff --git a/Documentation/driver-api/crypto/iaa/iaa-crypto.rst b/Documentation/driver-api/crypto/iaa/iaa-crypto.rst
+index f815d4fd8372..0ff4ec603b43 100644
+--- a/Documentation/driver-api/crypto/iaa/iaa-crypto.rst
++++ b/Documentation/driver-api/crypto/iaa/iaa-crypto.rst
+@@ -290,6 +290,142 @@ The available attributes are:
+     'sync' mode. This is to ensure correct iaa_crypto behavior until true
+     async polling without interrupts is enabled in iaa_crypto.
  
- VERIFY_COMPRESS_PATH="/sys/bus/dsa/drivers/crypto/verify_compress"
++  - g_comp_wqs_per_iaa
++
++    Number of compress-only WQs. The default is 1, but is applicable only
++    if the device has more than 1 WQ. If the device has exactly 1 WQ
++    configured, "g_comp_wqs_per_iaa" is a don't care.
++
++    If the IAA device has more than "g_comp_wqs_per_iaa" WQs configured,
++    the last "g_comp_wqs_per_iaa" number of WQs will be considered as
++    "compress only". The remaining WQs will be considered as "decomp only".
++
++    If the device has less than or equal to "g_comp_wqs_per_iaa" WQs, all
++    the device's WQs will be considered "generic", i.e., the driver will
++    submit compress and decompress jobs to all the WQs configured for the
++    device.
++
++    For e.g., if an IAA "X" has 2 WQs, this will set up 1 decompress WQ and
++    1 compress WQ::
++
++      echo 1 > /sys/bus/dsa/drivers/crypto/g_comp_wqs_per_iaa
++
++     wqX.0: decompress jobs only.
++     wqX.1: compress jobs only.
++
++    This setting would typically benefit workloads that see a high
++    level of compress and decompress activity.
++
++    If an IAA has 1 WQ, that WQ will be considered "generic": the driver
++    will submit compress and decompress jobs to the same WQ (this is
++    independent of the "g_comp_wqs_per_iaa" setting):
++
++     wqX.0: compress and decompress jobs.
++
++    This would typically benefit workloads that see significant cold
++    memory being reclaimed, and consequently, high swapout and low swapin
++    activity.
++
++  - distribute_comps
++
++    Distribute compressions to all IAAs on package (default is Y).
++
++    Assuming the WQ type has been established as
++    compress-only/decompress-only/generic, this setting will determine if
++    the driver will distribute compress jobs to all IAAs on a package
++    (default behavior) or not.
++
++    If this is turned off, the driver will dispatch compress jobs to a
++    given IAA "compression enabled" WQ only from cores that are mapped to
++    that IAA using an algorithm that evenly distributes IAAs per package
++    to cores per package. For e.g., on a Sapphire Rapids server with
++    56-physical-cores and 4 IAAs per package, with Hyperthreading, 28
++    logical cores will be assigned to each IAA. With the
++    "distribute_comps" driver parameter turned off, the driver will send
++    compress jobs only to it's assigned IAA device.
++
++    Enabling "distribute_comps" would typically benefit workloads in
++    terms of batch compress latency and throughput.
++
++  - distribute_decomps
++
++    Distribute decompressions to all IAAs on package (default is Y).
++
++    Assuming the WQ type has been established as
++    compress-only/decompress-only/generic, this setting will determine if
++    the driver will distribute decompress jobs to all IAAs on a package
++    (default behavior) or not.
++
++    Enabling "distribute_decomps" would typically benefit workloads that
++    see a high level of compress and decompress activity, especially
++    p99 decompress latency.
++
++    Recommended settings for best compress/decompress latency, throughput
++    and hence memory savings for a moderately contended server that
++    has more than 1 IAA device enabled on a given package:
++
++      2 WQs per IAA
++      g_comp_wqs_per_iaa = 1 (separate WQ for comps/decomps per IAA)
++      distribute_decomps = Y
++      distribute_comps = Y
++
++    For a system that has only 1 IAA device enabled on a given package,
++    the recommended settings are:
++
++      1 WQ per IAA
++      g_comp_wqs_per_iaa = 0 (same WQ for comps/decomps)
++      distribute_decomps = N
++      distribute_comps = N
++
++    Examples:
++
++    For a Sapphire Rapids server with 2 packages, 56 cores and 4 IAAs per
++    package, each IAA has 2 WQs, and these settings are in effect::
++
++      echo 1 > /sys/bus/dsa/drivers/crypto/g_comp_wqs_per_iaa
++      echo 1 > /sys/bus/dsa/drivers/crypto/distribute_comps
++      echo 0 > /sys/bus/dsa/drivers/crypto/distribute_decomps
++
++    This enables the following behavior:
++
++      wqX.0: decompress jobs only.
++      wqX.1: compress jobs only.
++
++    Compress jobs from all cores on package-0 will be distributed in
++    round-robin manner to [iax1, iax3, iax5, iax7]'s wqX.1, to maximize
++    compression throughput/latency/memory savings:
++
++      wq1.1
++      wq3.1
++      wq5.1
++      wq7.1
++
++    Likewise, compress jobs from all cores on package-1 will be
++    distributed in round-robin manner to [iax9, iax11, iax13, iax15]'s
++    wqX.1, to maximize compression throughput/latency/memory savings for
++    workloads running on package-1:
++
++      wq9.1
++      wq11.1
++      wq13.1
++      wq15.1
++
++    Decompress jobs will be submitted from mapped logical cores only, as
++    follows:
++
++      package-0:
++
++        CPU   0-13,112-125   14-27,126-139  28-41,140-153  42-55,154-167
++        IAA:  iax1           iax3           iax5           iax7
++        WQ:   wq1.0          wq3.0          wq5.0          wq7.0
++
++      package-1:
++
++        CPU   56-69,168-181  70-83,182-195  84-97,196-209   98-111,210-223
++        IAA:  iax9           iax11          iax13           iax15
++        WQ:   wq9.0          wq11.0         wq13.0          wq15.0
++
++
+ .. _iaa_default_config:
  
- iax_dev_id="0cfe"
- num_iaa=$(lspci -d:${iax_dev_id} | wc -l)
- sockets=$(lscpu | grep Socket | awk '{print $2}')
- echo "Found ${num_iaa} instances in ${sockets} sockets(s)"
+ IAA Default Configuration
+diff --git a/drivers/crypto/intel/iaa/iaa_crypto.h b/drivers/crypto/intel/iaa/iaa_crypto.h
+index 56985e395263..549ac98a9366 100644
+--- a/drivers/crypto/intel/iaa/iaa_crypto.h
++++ b/drivers/crypto/intel/iaa/iaa_crypto.h
+@@ -46,6 +46,7 @@ struct iaa_wq {
+ 	struct idxd_wq		*wq;
+ 	int			ref;
+ 	bool			remove;
++	bool			mapped;
  
- #  The same number of devices will be configured in each socket, if there
- #  are  more than one socket.
- #  Normalize with respect to the number of sockets.
- device_num_per_socket=$(( num_iaa/sockets ))
- num_iaa_per_socket=$(( num_iaa / sockets ))
+ 	struct iaa_device	*iaa_device;
  
- iaa_wqs=2
- verbose=0
- iaa_engines=8
- mode="dedicated"
- wq_type="kernel"
- iaa_crypto_mode="async"
- verify_compress=0
+@@ -63,6 +64,13 @@ struct iaa_device_compression_mode {
+ 	dma_addr_t			aecs_comp_table_dma_addr;
+ };
  
++struct wq_table_entry {
++	struct idxd_wq	**wqs;
++	unsigned int	max_wqs;
++	unsigned int	n_wqs;
++	unsigned int	cur_wq;
++};
++
+ /* Representation of IAA device with wqs, populated by probe */
+ struct iaa_device {
+ 	struct list_head		list;
+@@ -73,19 +81,15 @@ struct iaa_device {
+ 	int				n_wq;
+ 	struct list_head		wqs;
  
- # Function to handle errors
- handle_error() {
-     echo "Error: $1"
-     exit 1
++	struct wq_table_entry		*generic_wq_table;
++	struct wq_table_entry		*comp_wq_table;
++
+ 	atomic64_t			comp_calls;
+ 	atomic64_t			comp_bytes;
+ 	atomic64_t			decomp_calls;
+ 	atomic64_t			decomp_bytes;
+ };
+ 
+-struct wq_table_entry {
+-	struct idxd_wq **wqs;
+-	int	max_wqs;
+-	int	n_wqs;
+-	int	cur_wq;
+-};
+-
+ #define IAA_AECS_ALIGN			32
+ 
+ /*
+diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
+index 760997eee8fe..c6db721eaa79 100644
+--- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
++++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
+@@ -23,32 +23,86 @@
+ #define pr_fmt(fmt)			"idxd: " IDXD_SUBDRIVER_NAME ": " fmt
+ 
+ #define IAA_ALG_PRIORITY               300
++#define MAX_PKG_IAA   8
++#define MAX_IAA_WQ    8
+ 
+ /**************************************
+  * Driver internal global variables.
+  **************************************/
+ 
+ /* number of iaa instances probed */
+-static unsigned int nr_iaa;
++static atomic_t nr_iaa = ATOMIC_INIT(0);
+ static unsigned int nr_cpus;
+-static unsigned int nr_nodes;
+-static unsigned int nr_cpus_per_node;
++static unsigned int nr_packages;
++static unsigned int nr_cpus_per_package;
++static atomic_t nr_iaa_per_package = ATOMIC_INIT(0);
+ 
+ /* Number of physical cpus sharing each iaa instance */
+-static unsigned int cpus_per_iaa;
++static atomic_t cpus_per_iaa = ATOMIC_INIT(0);
+ 
+-/* Per-cpu lookup table for balanced wqs */
+-static struct wq_table_entry __percpu *wq_table;
++/* Per-cpu lookup table for decomp wqs. */
++static struct wq_table_entry __percpu *cpu_decomp_wqs;
++
++/* Per-cpu lookup table for comp wqs. */
++static struct wq_table_entry __percpu *cpu_comp_wqs;
++
++/* All decomp wqs from IAAs on a package. */
++static struct wq_table_entry **pkg_global_decomp_wqs;
++/* All comp wqs from IAAs on a package. */
++static struct wq_table_entry **pkg_global_comp_wqs;
+ 
+ LIST_HEAD(iaa_devices);
+ DEFINE_MUTEX(iaa_devices_lock);
+ 
+-/* If enabled, IAA hw crypto algos are registered, unavailable otherwise */
+-static bool iaa_crypto_enabled;
++/*
++ * If enabled, IAA hw crypto algos are registered, unavailable otherwise:
++ *
++ * We use the atomic @iaa_crypto_enabled to know if the per-CPU
++ * compress/decompress wq tables have been setup successfully.
++ * Since @iaa_crypto_enabled is atomic, the core functions that
++ * return a wq for compression/decompression, namely,
++ * comp_wq_table_next_wq() and decomp_wq_table_next_wq() will
++ * test this atomic before proceeding to query the per-cpu wq tables.
++ *
++ * These events will set @iaa_crypto_enabled to 1:
++ * - Successful rebalance_wq_table() after individual wq addition/removal.
++ *
++ * These events will set @iaa_crypto_enabled to 0:
++ * - Error during rebalance_wq_table() after individual wq addition/removal.
++ * - check_completion() timeouts.
++ * - @nr_iaa is 0.
++ * - module cleanup.
++ */
++static atomic_t iaa_crypto_enabled = ATOMIC_INIT(0);
++
++/*
++ * First wq probed, to use until @iaa_crypto_enabled is 1:
++ *
++ * The first wq probed will be entered in the per-CPU comp/decomp wq tables
++ * until the IAA compression modes are registered. This is done to facilitate
++ * the compress/decompress calls from the crypto testmgr resulting from
++ * calling crypto_register_acomp().
++ *
++ * With the new dynamic package-level rebalancing of WQs being
++ * discovered asynchronously and concurrently with tests
++ * triggered from device registration, this is needed to
++ * determine when it is safe for the rebalancing of decomp/comp
++ * WQs to de-allocate the per-package WQs and re-allocate them
++ * based on the latest number of IAA devices and WQs.
++ */
++static struct idxd_wq *first_wq_found;
++DEFINE_MUTEX(first_wq_found_lock);
++
+ static bool iaa_crypto_registered;
+ 
+ static struct iaa_compression_mode *iaa_compression_modes[IAA_COMP_MODES_MAX];
+ 
++/* Distribute decompressions across all IAAs on the package. */
++static bool iaa_distribute_decomps;
++
++/* Distribute compressions across all IAAs on the package. */
++static bool iaa_distribute_comps = true;
++
+ /* Verify results of IAA compress or not */
+ static bool iaa_verify_compress = true;
+ 
+@@ -86,6 +140,9 @@ static bool async_mode;
+ /* Use interrupts */
+ static bool use_irq;
+ 
++/* Number of compress-only wqs per iaa*/
++static unsigned int g_comp_wqs_per_iaa = 1;
++
+ /**************************************************
+  * Driver attributes along with get/set functions.
+  **************************************************/
+@@ -102,7 +159,7 @@ static ssize_t verify_compress_store(struct device_driver *driver,
+ 
+ 	mutex_lock(&iaa_devices_lock);
+ 
+-	if (iaa_crypto_enabled)
++	if (atomic_read(&iaa_crypto_enabled))
+ 		goto out;
+ 
+ 	ret = kstrtobool(buf, &iaa_verify_compress);
+@@ -166,7 +223,7 @@ static ssize_t sync_mode_store(struct device_driver *driver,
+ 
+ 	mutex_lock(&iaa_devices_lock);
+ 
+-	if (iaa_crypto_enabled)
++	if (atomic_read(&iaa_crypto_enabled))
+ 		goto out;
+ 
+ 	ret = set_iaa_sync_mode(buf);
+@@ -179,6 +236,87 @@ static ssize_t sync_mode_store(struct device_driver *driver,
+ }
+ static DRIVER_ATTR_RW(sync_mode);
+ 
++static ssize_t g_comp_wqs_per_iaa_show(struct device_driver *driver, char *buf)
++{
++	return sprintf(buf, "%u\n", g_comp_wqs_per_iaa);
++}
++
++static ssize_t g_comp_wqs_per_iaa_store(struct device_driver *driver,
++				   const char *buf, size_t count)
++{
++	int ret = -EBUSY;
++
++	mutex_lock(&iaa_devices_lock);
++
++	if (atomic_read(&iaa_crypto_enabled))
++		goto out;
++
++	ret = kstrtouint(buf, 10, &g_comp_wqs_per_iaa);
++	if (ret)
++		goto out;
++
++	ret = count;
++out:
++	mutex_unlock(&iaa_devices_lock);
++
++	return ret;
++}
++static DRIVER_ATTR_RW(g_comp_wqs_per_iaa);
++
++static ssize_t distribute_decomps_show(struct device_driver *driver, char *buf)
++{
++	return sprintf(buf, "%d\n", iaa_distribute_decomps);
++}
++
++static ssize_t distribute_decomps_store(struct device_driver *driver,
++					const char *buf, size_t count)
++{
++	int ret = -EBUSY;
++
++	mutex_lock(&iaa_devices_lock);
++
++	if (atomic_read(&iaa_crypto_enabled))
++		goto out;
++
++	ret = kstrtobool(buf, &iaa_distribute_decomps);
++	if (ret)
++		goto out;
++
++	ret = count;
++out:
++	mutex_unlock(&iaa_devices_lock);
++
++	return ret;
++}
++static DRIVER_ATTR_RW(distribute_decomps);
++
++static ssize_t distribute_comps_show(struct device_driver *driver, char *buf)
++{
++	return sprintf(buf, "%d\n", iaa_distribute_comps);
++}
++
++static ssize_t distribute_comps_store(struct device_driver *driver,
++				      const char *buf, size_t count)
++{
++	int ret = -EBUSY;
++
++	mutex_lock(&iaa_devices_lock);
++
++	if (atomic_read(&iaa_crypto_enabled))
++		goto out;
++
++	ret = kstrtobool(buf, &iaa_distribute_comps);
++	if (ret)
++		goto out;
++
++	ret = count;
++out:
++	mutex_unlock(&iaa_devices_lock);
++
++	return ret;
++}
++static DRIVER_ATTR_RW(distribute_comps);
++
+ /****************************
+  * Driver compression modes.
+  ****************************/
+@@ -464,32 +602,81 @@ static void remove_device_compression_modes(struct iaa_device *iaa_device)
+  * allocate/init/query/deallocate devices/wqs.
+  ***********************************************************/
+ 
+-static struct iaa_device *iaa_device_alloc(void)
++static struct iaa_device *iaa_device_alloc(struct idxd_device *idxd)
+ {
+ 	struct iaa_device *iaa_device;
++	struct wq_table_entry *wqt;
+ 
+ 	iaa_device = kzalloc(sizeof(*iaa_device), GFP_KERNEL);
+ 	if (!iaa_device)
+-		return NULL;
++		goto err;
++
++	iaa_device->idxd = idxd;
++
++	/* IAA device's generic/decomp wqs. */
++	iaa_device->generic_wq_table = kzalloc(sizeof(struct wq_table_entry), GFP_KERNEL);
++	if (!iaa_device->generic_wq_table)
++		goto err;
++
++	wqt = iaa_device->generic_wq_table;
++
++	wqt->wqs = kcalloc(iaa_device->idxd->max_wqs, sizeof(struct idxd_wq *), GFP_KERNEL);
++	if (!wqt->wqs)
++		goto err;
++
++	wqt->max_wqs = iaa_device->idxd->max_wqs;
++	wqt->n_wqs = 0;
++
++	/*
++	 * IAA device's comp wqs (optional). If the device has more than
++	 * "g_comp_wqs_per_iaa" WQs configured, the last "g_comp_wqs_per_iaa"
++	 * number of WQs will be considered as "comp only". The remaining
++	 * WQs will be considered as "decomp only".
++	 * If the device has <= "g_comp_wqs_per_iaa" WQs, all the
++	 * device's WQs will be considered "generic", i.e., cores can submit
++	 * comp and decomp jobs to all the WQs configured for the device.
++	 */
++	iaa_device->comp_wq_table = kzalloc(sizeof(struct wq_table_entry), GFP_KERNEL);
++	if (!iaa_device->comp_wq_table)
++		goto err;
++
++	wqt = iaa_device->comp_wq_table;
++
++	wqt->wqs = kcalloc(iaa_device->idxd->max_wqs, sizeof(struct idxd_wq *), GFP_KERNEL);
++	if (!wqt->wqs)
++		goto err;
++
++	wqt->max_wqs = iaa_device->idxd->max_wqs;
++	wqt->n_wqs = 0;
+ 
+ 	INIT_LIST_HEAD(&iaa_device->wqs);
+ 
+ 	return iaa_device;
++
++err:
++	if (iaa_device) {
++		if (iaa_device->generic_wq_table) {
++			kfree(iaa_device->generic_wq_table->wqs);
++			kfree(iaa_device->generic_wq_table);
++		}
++		kfree(iaa_device->comp_wq_table);
++		kfree(iaa_device);
++	}
++
++	return NULL;
  }
  
- # Process arguments
+ static struct iaa_device *add_iaa_device(struct idxd_device *idxd)
+ {
+ 	struct iaa_device *iaa_device;
  
- while getopts "d:hm:q:vD" opt; do
-   case $opt in
-     d)
-       device_num_per_socket=$OPTARG
-       ;;
-     m)
-       iaa_crypto_mode=$OPTARG
-       ;;
-     q)
-       iaa_wqs=$OPTARG
-       ;;
-     D)
-       verbose=1
-       ;;
-     v)
-       verify_compress=1
-       ;;
-     h)
-       echo "Usage: $0 [-d <device_count>][-q <wq_per_device>][-v]"
-       echo "       -d - number of devices"
-       echo "       -q - number of WQs per device"
-       echo "       -v - verbose mode"
-       echo "       -h - help"
-       exit
-       ;;
-     \?)
-       echo "Invalid option: -$OPTARG" >&2
-       exit
-       ;;
-   esac
- done
+-	iaa_device = iaa_device_alloc();
++	iaa_device = iaa_device_alloc(idxd);
+ 	if (!iaa_device)
+ 		return NULL;
  
- LOG="configure_iaa.log"
+-	iaa_device->idxd = idxd;
+-
+ 	list_add_tail(&iaa_device->list, &iaa_devices);
  
- # Update wq_size based on number of wqs
- wq_size=$(( 128 / iaa_wqs ))
+-	nr_iaa++;
++	atomic_inc(&nr_iaa);
  
- # Take care of the enumeration, if DSA is enabled.
- dsa=`lspci | grep -c 0b25`
- # set first,step counters to correctly enumerate iax devices based on
- # whether running on guest or host with or without dsa
- first=0
- step=1
- [[ $dsa -gt 0 && -d /sys/bus/dsa/devices/dsa0 ]] && first=1 && step=2
- echo "first index: ${first}, step: ${step}"
+ 	return iaa_device;
+ }
+@@ -509,7 +696,7 @@ static void del_iaa_device(struct iaa_device *iaa_device)
+ {
+ 	list_del(&iaa_device->list);
  
+-	nr_iaa--;
++	atomic_dec(&nr_iaa);
+ }
  
- #
- # Switch to software compressors and disable IAAs to have a clean start
- #
- COMPRESSOR=/sys/module/zswap/parameters/compressor
- last_comp=`cat ${COMPRESSOR}`
- echo lzo > ${COMPRESSOR}
+ static void free_iaa_device(struct iaa_device *iaa_device)
+@@ -518,6 +705,17 @@ static void free_iaa_device(struct iaa_device *iaa_device)
+ 		return;
  
- echo "Disable IAA devices before configuring"
+ 	remove_device_compression_modes(iaa_device);
++
++	if (iaa_device->generic_wq_table) {
++		kfree(iaa_device->generic_wq_table->wqs);
++		kfree(iaa_device->generic_wq_table);
++	}
++
++	if (iaa_device->comp_wq_table) {
++		kfree(iaa_device->comp_wq_table->wqs);
++		kfree(iaa_device->comp_wq_table);
++	}
++
+ 	kfree(iaa_device);
+ }
  
- for ((i = ${first}; i < ${step} * ${num_iaa}; i += ${step})); do
-     for ((j = 0; j < ${iaa_wqs}; j += 1)); do
-         cmd="accel-config disable-wq iax${i}/wq${i}.${j} >& /dev/null"
-        [[ $verbose == 1 ]] && echo $cmd; eval $cmd
-      done
-     cmd="accel-config disable-device iax${i} >& /dev/null"
-     [[ $verbose == 1 ]] && echo $cmd; eval $cmd
- done
+@@ -576,7 +774,7 @@ static void del_iaa_wq(struct iaa_device *iaa_device, struct idxd_wq *wq)
  
- rmmod iaa_crypto
- modprobe iaa_crypto
+ 			dev_dbg(dev, "removed wq %d from iaa_device %d, n_wq %d, nr_iaa %d\n",
+ 				wq->id, iaa_device->idxd->id,
+-				iaa_device->n_wq, nr_iaa);
++				iaa_device->n_wq, atomic_read(&nr_iaa));
  
- # apply crypto parameters
- echo $verify_compress > ${VERIFY_COMPRESS_PATH} || handle_error "did not change verify_compress"
- # Note: This is a temporary solution for during the kernel transition.
- if [ -f /sys/bus/dsa/drivers/crypto/g_comp_wqs_per_iaa ];then
-     echo 1 > /sys/bus/dsa/drivers/crypto/g_comp_wqs_per_iaa || handle_error "did not set g_comp_wqs_per_iaa"
- elif [ -f /sys/bus/dsa/drivers/crypto/g_wqs_per_iaa ];then
-     echo 1 > /sys/bus/dsa/drivers/crypto/g_wqs_per_iaa || handle_error "did not set g_wqs_per_iaa"
- fi
- if [ -f /sys/bus/dsa/drivers/crypto/g_consec_descs_per_gwq ];then
-     echo 1 > /sys/bus/dsa/drivers/crypto/g_consec_descs_per_gwq || handle_error "did not set g_consec_descs_per_gwq"
- fi
- echo ${iaa_crypto_mode} > /sys/bus/dsa/drivers/crypto/sync_mode || handle_error "could not set sync_mode"
+ 			if (iaa_device->n_wq == 0)
+ 				del_iaa_device(iaa_device);
+@@ -588,6 +786,7 @@ static void del_iaa_wq(struct iaa_device *iaa_device, struct idxd_wq *wq)
+ static void remove_iaa_wq(struct idxd_wq *wq)
+ {
+ 	struct iaa_device *iaa_device;
++	unsigned int num_pkg_iaa = 0;
  
+ 	list_for_each_entry(iaa_device, &iaa_devices, list) {
+ 		if (iaa_has_wq(iaa_device, wq)) {
+@@ -596,12 +795,20 @@ static void remove_iaa_wq(struct idxd_wq *wq)
+ 		}
+ 	}
  
+-	if (nr_iaa) {
+-		cpus_per_iaa = (nr_nodes * nr_cpus_per_node) / nr_iaa;
+-		if (!cpus_per_iaa)
+-			cpus_per_iaa = 1;
+-	} else
+-		cpus_per_iaa = 1;
++	if (atomic_read(&nr_iaa)) {
++		atomic_set(&cpus_per_iaa, (nr_packages * nr_cpus_per_package) / atomic_read(&nr_iaa));
++		if (!atomic_read(&cpus_per_iaa))
++			atomic_set(&cpus_per_iaa, 1);
++
++		num_pkg_iaa = atomic_read(&nr_iaa) / nr_packages;
++		if (!num_pkg_iaa)
++			num_pkg_iaa = 1;
++	} else {
++		atomic_set(&cpus_per_iaa, 1);
++		num_pkg_iaa = 1;
++	}
++
++	atomic_set(&nr_iaa_per_package, num_pkg_iaa);
+ }
  
- echo "Configuring ${device_num_per_socket} device(s) out of $num_iaa_per_socket per socket"
- if [ "${device_num_per_socket}" -le "${num_iaa_per_socket}" ]; then
-     echo "Configuring all devices"
-     start=${first}
-     end=$(( ${step} * ${device_num_per_socket} ))
- else
-    echo "ERROR: Not enough devices"
-    exit
- fi
+ static void __free_iaa_wq(struct iaa_wq *iaa_wq)
+@@ -635,6 +842,7 @@ static int save_iaa_wq(struct idxd_wq *wq)
+ 	struct pci_dev *pdev;
+ 	struct device *dev;
+ 	int ret = 0;
++	unsigned int num_pkg_iaa = 0;
  
+ 	list_for_each_entry(iaa_device, &iaa_devices, list) {
+ 		if (iaa_device->idxd == wq->idxd) {
+@@ -687,12 +895,19 @@ static int save_iaa_wq(struct idxd_wq *wq)
+ 		}
+ 	}
  
- #
- # enable all iax devices and wqs
- #
- for (( socket = 0; socket < ${sockets}; socket += 1 )); do
- for ((i = ${start}; i < ${end}; i += ${step})); do
+-	if (WARN_ON(nr_iaa == 0))
++	if (WARN_ON(atomic_read(&nr_iaa) == 0))
+ 		return -EINVAL;
  
-     echo "Configuring iaa$i on socket ${socket}"
+-	cpus_per_iaa = (nr_nodes * nr_cpus_per_node) / nr_iaa;
+-	if (!cpus_per_iaa)
+-		cpus_per_iaa = 1;
++	atomic_set(&cpus_per_iaa, (nr_packages * nr_cpus_per_package) / atomic_read(&nr_iaa));
++	if (!atomic_read(&cpus_per_iaa))
++		atomic_set(&cpus_per_iaa, 1);
++
++	num_pkg_iaa = atomic_read(&nr_iaa) / nr_packages;
++	if (!num_pkg_iaa)
++		num_pkg_iaa = 1;
++
++	atomic_set(&nr_iaa_per_package, num_pkg_iaa);
++
+ out:
+ 	return 0;
+ }
+@@ -748,105 +963,284 @@ static int iaa_wq_put(struct idxd_wq *wq)
+  * Mapping IAA devices and wqs to cores with per-cpu wq_tables.
+  ***************************************************************/
  
-     for ((j = 0; j < ${iaa_engines}; j += 1)); do
-         cmd="accel-config config-engine iax${i}/engine${i}.${j} --group-id=0"
-         [[ $verbose == 1 ]] && echo $cmd; eval $cmd
-     done
+-static void wq_table_free_entry(int cpu)
++/*
++ * Given a cpu, find the closest IAA instance.
++ */
++static inline int cpu_to_iaa(int cpu)
+ {
+-	struct wq_table_entry *entry = per_cpu_ptr(wq_table, cpu);
++	int package_id, base_iaa, iaa = 0;
++
++	if (!nr_packages || !atomic_read(&nr_iaa_per_package) || !atomic_read(&nr_iaa))
++		return -1;
++
++	package_id = topology_logical_package_id(cpu);
++	base_iaa = package_id * atomic_read(&nr_iaa_per_package);
++	iaa = base_iaa + ((cpu % nr_cpus_per_package) / atomic_read(&cpus_per_iaa));
  
-     # Config  WQs
-     for ((j = 0; j < ${iaa_wqs}; j += 1)); do
-         # Config WQ: group 0,  priority=10, mode=shared, type = kernel name=kernel, driver_name=crypto
-         cmd="accel-config config-wq iax${i}/wq${i}.${j} -g 0 -s ${wq_size} -p 10 -m ${mode} -y ${wq_type} -n iaa_crypto${i}${j} -d crypto"
-         [[ $verbose == 1 ]] && echo $cmd; eval $cmd
-      done
+-	kfree(entry->wqs);
+-	memset(entry, 0, sizeof(*entry));
++	pr_debug("cpu = %d, package_id = %d, base_iaa = %d, iaa = %d",
++		 cpu, package_id, base_iaa, iaa);
++
++	if (iaa >= 0 && iaa < atomic_read(&nr_iaa))
++		return iaa;
++
++	return (atomic_read(&nr_iaa) - 1);
+ }
  
-     # Enable Device and WQs
-     cmd="accel-config enable-device iax${i}"
-     [[ $verbose == 1 ]] && echo $cmd; eval $cmd
+-static void wq_table_clear_entry(int cpu)
++static void free_wq_tables(void)
+ {
+-	struct wq_table_entry *entry = per_cpu_ptr(wq_table, cpu);
++	if (cpu_decomp_wqs) {
++		free_percpu(cpu_decomp_wqs);
++		cpu_decomp_wqs = NULL;
++	}
  
-     for ((j = 0; j < ${iaa_wqs}; j += 1)); do
-         cmd="accel-config enable-wq iax${i}/wq${i}.${j}"
-         [[ $verbose == 1 ]] && echo $cmd; eval $cmd
-      done
+-	entry->n_wqs = 0;
+-	entry->cur_wq = 0;
+-	memset(entry->wqs, 0, entry->max_wqs * sizeof(struct idxd_wq *));
++	if (cpu_comp_wqs) {
++		free_percpu(cpu_comp_wqs);
++		cpu_comp_wqs = NULL;
++	}
++
++	pr_debug("freed comp/decomp wq tables\n");
+ }
  
- done
-     start=$(( start + ${step} * ${num_iaa_per_socket} ))
-     end=$(( start + (${step} * ${device_num_per_socket}) ))
- done
+-static void clear_wq_table(void)
++static void pkg_global_wqs_dealloc(void)
+ {
+-	int cpu;
++	int i;
  
- # Restore the last compressor
- echo "$last_comp" > ${COMPRESSOR}
+-	for (cpu = 0; cpu < nr_cpus; cpu++)
+-		wq_table_clear_entry(cpu);
++	if (pkg_global_decomp_wqs) {
++		for (i = 0; i < nr_packages; ++i) {
++			kfree(pkg_global_decomp_wqs[i]->wqs);
++			kfree(pkg_global_decomp_wqs[i]);
++		}
++		kfree(pkg_global_decomp_wqs);
++		pkg_global_decomp_wqs = NULL;
++	}
  
- # Check if the configuration is correct
- echo "Configured IAA devices:"
- accel-config list | grep iax
+-	pr_debug("cleared wq table\n");
++	if (pkg_global_comp_wqs) {
++		for (i = 0; i < nr_packages; ++i) {
++			kfree(pkg_global_comp_wqs[i]->wqs);
++			kfree(pkg_global_comp_wqs[i]);
++		}
++		kfree(pkg_global_comp_wqs);
++		pkg_global_comp_wqs = NULL;
++	}
+ }
  
- #---------------------------------<cut here>----------------------------------
-
-
-Changes since v11:
-==================
-1) Rebased to mm-unstable as of 9-18-2025, commit 1f98191f08b4.
-2) Incorporated Herbert's suggestions on submitting the folio as the source and 
-   SG lists for the destination to create the compress batching interface from
-   zswap to crypto.
-3) As per Herbert's suggestion, added a new unit_size member to struct
-   acomp_req, along with a acomp_request_set_unit_size() API for kernel modules
-   to set the unit size to use while breaking down the request's src/dst
-   scatterlists.
-4) Implemented iaa_crypto batching using the new SG lists based architecture and
-   crypto interfaces.
-5) To make the SG lists based approach functional and performant for IAA, I have
-   changed all the calls to dma_map_sg() to use nents of 1. This should not be a
-   concern, since it eliminates redundant computes to scan an SG list with only
-   one scatterlist for existing kernel users, i.e. zswap with the
-   zswap_compress() modifications in this series. This will continue to hold
-   true with the zram IAA batching support I am developing. There are no kernel
-   use cases for the iaa_crypto driver that will break this assumption.
-6) Addressed Herbert's comment about batch_size being a statically defined data
-   member in struct acomp_alg and struct crypto_acomp.
-7) Addressed Nhat's comment about VM_WARN_ON_ONCE(nr_pages >
-   ZSWAP_MAX_BATCH_SIZE) in zswap_store_pages().
-8) Nhat's comment about deleting struct swap_batch_decomp_data is automatically
-   addressed by the SG lists based rewrite of the crypto batching interface.
-9) Addressed Barry's comment about renaming pool->batch_size to
-   pool->store_batch_size.
-10) Incorporated Barry's suggestion to merge patches that introduce data members
-    to structures and/or API and their usage.
-11) Added performance data to patch 0023's commit log, as suggested by Barry.
-
-Changes since v10:
-==================
-1) Rebased to mm-unstable as of 7-30-2025, commit 01da54f10fdd.
-2) Added change logging in patch 0024 on there being no Intel-specific
-   dependencies in the batching framework, as suggested by
-   Andrew Morton. Thanks Andrew!
-3) Added change logging in patch 0024 on other ongoing work that can use
-   batching, as per Andrew's suggestion. Thanks Andrew!
-4) Added the IAA configuration script in the cover letter, as suggested
-   by Nhat Pham. Thanks Nhat!
-5) As suggested by Nhat, dropped patch 0020 from v10, that moves CPU
-   hotplug procedures to pool functions.
-6) Gathered kernel_compilation 'allmod' config performance data with
-   writeback and zswap shrinker_enabled=Y.
-7) Changed the pool->batch_size for software compressors to be
-   ZSWAP_MAX_BATCH_SIZE since this gives better performance with the zswap
-   shrinker enabled.
-8) Was unable to replicate in v11 the issue seen in v10 with higher
-   memcg_swap_fail than in the baseline, with usemem30/zstd.
-
-Changes since v9:
-=================
-1) Rebased to mm-unstable as of 6-24-2025, commit 23b9c0472ea3.
-2) iaa_crypto rearchitecting, mainline race condition fix, performance
-   optimizations, code cleanup.
-3) Addressed Herbert's comments in v9 patch 10, that an array based
-   crypto_acomp interface is not acceptable.
-4) Optimized the implementation of the batching zswap_compress() and
-   zswap_store_pages() added in v9, to recover performance when
-   integrated with the changes in commit 56e5a103a721 ("zsmalloc: prefer
-   the the original page's node for compressed data").
-
-Changes since v8:
-=================
-1) Rebased to mm-unstable as of 4-21-2025, commit 2c01d9f3c611.
-2) Backported commits for reverting request chaining, since these are
-   in cryptodev-2.6 but not yet in mm-unstable: without these backports,
-   deflate-iaa is non-functional in mm-unstable:
-   commit 64929fe8c0a4 ("crypto: acomp - Remove request chaining")
-   commit 5976fe19e240 ("Revert "crypto: testmgr - Add multibuffer acomp
-                         testing"")
-   Backported this hotfix as well:
-   commit 002ba346e3d7 ("crypto: scomp - Fix off-by-one bug when
-   calculating last page").
-3) crypto_acomp_[de]compress() restored to non-request chained
-   implementations since request chaining has been removed from acomp in
-   commit 64929fe8c0a4 ("crypto: acomp - Remove request chaining").
-4) New IAA WQ architecture to denote WQ type and whether or not a WQ
-   should be shared among all package cores, or only to the "mapped"
-   ones from an even cores-to-IAA distribution scheme.
-5) Compress/decompress batching are implemented in iaa_crypto using new
-   crypto_acomp_batch_compress()/crypto_acomp_batch_decompress() API.
-6) Defines a "void *data" in struct acomp_req, based on Herbert advising
-   against using req->base.data in the driver. This is needed for async
-   submit-poll to work.
-7) In zswap.c, moved the CPU hotplug callbacks to reside in "pool
-   functions", per Yosry's suggestion to move procedures in a distinct
-   patch before refactoring patches.
-8) A new "u8 nr_reqs" member is added to "struct zswap_pool" to track
-   the number of requests/buffers associated with the per-cpu acomp_ctx,
-   as per Yosry's suggestion.
-9) Simplifications to the acomp_ctx resources allocation, deletion,
-   locking, and for these to exist from pool creation to pool deletion,
-   based on v8 code review discussions with Yosry.
-10) Use IS_ERR_OR_NULL() consistently in zswap_cpu_comp_prepare() and
-    acomp_ctx_dealloc(), as per Yosry's v8 comment.
-11) zswap_store_folio() is deleted, and instead, the loop over
-    zswap_store_pages() is moved inline in zswap_store(), per Yosry's
-    suggestion.
-12) Better structure in zswap_compress(), unified procedure that
-    compresses/stores a batch of pages for both, non-batching and
-    batching compressors. Renamed from zswap_batch_compress() to
-    zswap_compress(): Thanks Yosry for these suggestions.
-
-
-Changes since v7:
-=================
-1) Rebased to mm-unstable as of 3-3-2025, commit 5f089a9aa987.
-2) Changed the acomp_ctx->nr_reqs to be u8 since ZSWAP_MAX_BATCH_SIZE is
-   defined as 8U, for saving memory in this per-cpu structure.
-3) Fixed a typo in code comments in acomp_ctx_get_cpu_lock():
-   acomp_ctx->initialized to acomp_ctx->__online.
-4) Incorporated suggestions from Yosry, Chengming, Nhat and Johannes,
-   thanks to all!
-   a) zswap_batch_compress() replaces zswap_compress(). Thanks Yosry
-      for this suggestion!
-   b) Process the folio in sub-batches of ZSWAP_MAX_BATCH_SIZE, regardless
-      of whether or not the compressor supports batching. This gets rid of
-      the kmalloc(entries), and allows us to allocate an array of
-      ZSWAP_MAX_BATCH_SIZE entries on the stack. This is implemented in
-      zswap_store_pages().
-   c) Use of a common structure and code paths for compressing a folio in
-      batches, either as a request chain (in parallel in IAA hardware) or
-      sequentially. No code duplication since zswap_compress() has been
-      replaced with zswap_batch_compress(), simplifying maintainability.
-5) A key difference between compressors that support batching and
-   those that do not, is that for the latter, the acomp_ctx mutex is
-   locked/unlocked per ZSWAP_MAX_BATCH_SIZE batch, so that decompressions
-   to handle page-faults can make progress. This fixes the zstd kernel
-   compilation regression seen in v7. For compressors that support
-   batching, for e.g. IAA, the mutex is locked/released once for storing
-   the folio.
-6) Used likely/unlikely compiler directives and prefetchw to restore
-   performance with the common code paths.
-
-Changes since v6:
-=================
-1) Rebased to mm-unstable as of 2-27-2025, commit d58172d128ac.
-
-2) Deleted crypto_acomp_batch_compress() and
-   crypto_acomp_batch_decompress() interfaces, as per Herbert's
-   suggestion. Batching is instead enabled by chaining the requests. For
-   non-batching compressors, there is no request chaining involved. Both,
-   batching and non-batching compressions are accomplished by zswap by
-   calling:
-
-   crypto_wait_req(crypto_acomp_compress(acomp_ctx->reqs[0]), &acomp_ctx->wait);
-
-3) iaa_crypto implementation of batch compressions/decompressions using
-   request chaining, as per Herbert's suggestions.
-4) Simplification of the acomp_ctx resource allocation/deletion with
-   respect to CPU hot[un]plug, to address Yosry's suggestions to explore the
-   mutex options in zswap_cpu_comp_prepare(). Yosry, please let me know if
-   the per-cpu memory cost of this proposed change is acceptable (IAA:
-   64.8KB, Software compressors: 8.2KB). On the positive side, I believe
-   restarting reclaim on a CPU after it has been through an offline-online
-   transition, will be much faster by not deleting the acomp_ctx resources
-   when the CPU gets offlined.
-5) Use of lockdep assertions rather than comments for internal locking
-   rules, as per Yosry's suggestion.
-6) No specific references to IAA in zswap.c, as suggested by Yosry.
-7) Explored various solutions other than the v6 zswap_store_folio()
-   implementation, to fix the zstd regression seen in v5, to attempt to
-   unify common code paths, and to allocate smaller arrays for the zswap
-   entries on the stack. All these options were found to cause usemem30
-   latency regression with zstd. The v6 version of zswap_store_folio() is
-   the only implementation that does not cause zstd regression, confirmed
-   by 10 consecutive runs, each giving quite consistent latency
-   numbers. Hence, the v6 implementation is carried forward to v7, with
-   changes for branching for batching vs. sequential compression API
-   calls.
-
-
-Changes since v5:
-=================
-1) Rebased to mm-unstable as of 2-1-2025, commit 7de6fd8ab650.
-
-Several improvements, regression fixes and bug fixes, based on Yosry's
-v5 comments (Thanks Yosry!):
-
-2) Fix for zstd performance regression in v5.
-3) Performance debug and fix for marginal improvements with IAA batching
-   vs. sequential.
-4) Performance testing data compares IAA with and without batching, instead
-   of IAA batching against zstd.
-5) Commit logs/zswap comments not mentioning crypto_acomp implementation
-   details.
-6) Delete the pr_info_once() when batching resources are allocated in
-   zswap_cpu_comp_prepare().
-7) Use kcalloc_node() for the multiple acomp_ctx buffers/reqs in
-   zswap_cpu_comp_prepare().
-8) Simplify and consolidate error handling cleanup code in
-   zswap_cpu_comp_prepare().
-9) Introduce zswap_compress_folio() in a separate patch.
-10) Bug fix in zswap_store_folio() when xa_store() failure can cause all
-    compressed objects and entries to be freed, and UAF when zswap_store()
-    tries to free the entries that were already added to the xarray prior
-    to the failure.
-11) Deleting compressed_bytes/bytes. zswap_store_folio() also comprehends
-    the recent fixes in commit bf5eaaaf7941 ("mm/zswap: fix inconsistency
-    when zswap_store_page() fails") by Hyeonggon Yoo.
-
-iaa_crypto improvements/fixes/changes:
-
-12) Enables asynchronous mode and makes it the default. With commit
-    4ebd9a5ca478 ("crypto: iaa - Fix IAA disabling that occurs when
-    sync_mode is set to 'async'"), async mode was previously just sync. We
-    now have true async support.
-13) Change idxd descriptor allocations from blocking to non-blocking with
-    timeouts, and mitigations for compress/decompress ops that fail to
-    obtain a descriptor. This is a fix for tasks blocked errors seen in
-    configurations where 30+ cores are running workloads under high memory
-    pressure, and sending comps/decomps to 1 IAA device.
-14) Fixes a bug with unprotected access of "deflate_generic_tfm" in
-    deflate_generic_decompress(), which can cause data corruption and
-    zswap_decompress() kernel crash.
-15) zswap uses crypto_acomp_batch_compress() with async polling instead of
-    request chaining for slightly better latency. However, the request
-    chaining framework itself is unchanged, preserved from v5.
-
-
-Changes since v4:
-=================
-1) Rebased to mm-unstable as of 12-20-2024, commit 5555a83c82d6.
-2) Added acomp request chaining, as suggested by Herbert. Thanks Herbert!
-3) Implemented IAA compress batching using request chaining.
-4) zswap_store() batching simplifications suggested by Chengming, Yosry and
-   Nhat, thanks to all!
-   - New zswap_compress_folio() that is called by zswap_store().
-   - Move the loop over folio's pages out of zswap_store() and into a
-     zswap_store_folio() that stores all pages.
-   - Allocate all zswap entries for the folio upfront.
-   - Added zswap_batch_compress().
-   - Branch to call zswap_compress() or zswap_batch_compress() inside
-     zswap_compress_folio().
-   - All iterations over pages kept in same function level.
-   - No helpers other than the newly added zswap_store_folio() and
-     zswap_compress_folio().
-
-
-Changes since v3:
-=================
-1) Rebased to mm-unstable as of 11-18-2024, commit 5a7056135bb6.
-2) Major re-write of iaa_crypto driver's mapping of IAA devices to cores,
-   based on packages instead of NUMA nodes.
-3) Added acomp_has_async_batching() API to crypto acomp, that allows
-   zswap/zram to query if a crypto_acomp has registered batch_compress and
-   batch_decompress interfaces.
-4) Clear the poll bits on the acomp_reqs passed to
-   iaa_comp_a[de]compress_batch() so that a module like zswap can be
-   confident about the acomp_reqs[0] not having the poll bit set before
-   calling the fully synchronous API crypto_acomp_[de]compress().
-   Herbert, I would appreciate it if you can review changes 2-4; in patches
-   1-8 in v4. I did not want to introduce too many iaa_crypto changes in
-   v4, given that patch 7 is already making a major change. I plan to work
-   on incorporating the request chaining using the ahash interface in v5
-   (I need to understand the basic crypto ahash better). Thanks Herbert!
-5) Incorporated Johannes' suggestion to not have a sysctl to enable
-   compress batching.
-6) Incorporated Yosry's suggestion to allocate batching resources in the
-   cpu hotplug onlining code, since there is no longer a sysctl to control
-   batching. Thanks Yosry!
-7) Incorporated Johannes' suggestions related to making the overall
-   sequence of events between zswap_store() and zswap_batch_store() similar
-   as much as possible for readability and control flow, better naming of
-   procedures, avoiding forward declarations, not inlining error path
-   procedures, deleting zswap internal details from zswap.h, etc. Thanks
-   Johannes, really appreciate the direction!
-   I have tried to explain the minimal future-proofing in terms of the
-   zswap_batch_store() signature and the definition of "struct
-   zswap_batch_store_sub_batch" in the comments for this struct. I hope the
-   new code explains the control flow a bit better.
-
-
-Changes since v2:
-=================
-1) Rebased to mm-unstable as of 11-5-2024, commit 7994b7ea6ac8.
-2) Fixed an issue in zswap_create_acomp_ctx() with checking for NULL
-   returned by kmalloc_node() for acomp_ctx->buffers and for
-   acomp_ctx->reqs.
-3) Fixed a bug in zswap_pool_can_batch() for returning true if
-   pool->can_batch_comp is found to be equal to BATCH_COMP_ENABLED, and if
-   the per-cpu acomp_batch_ctx tests true for batching resources having
-   been allocated on this cpu. Also, changed from per_cpu_ptr() to
-   raw_cpu_ptr().
-4) Incorporated the zswap_store_propagate_errors() compilation warning fix
-   suggested by Dan Carpenter. Thanks Dan!
-5) Replaced the references to SWAP_CRYPTO_SUB_BATCH_SIZE in comments in
-   zswap.h, with SWAP_CRYPTO_BATCH_SIZE.
-
-Changes since v1:
-=================
-1) Rebased to mm-unstable as of 11-1-2024, commit 5c4cf96cd702.
-2) Incorporated Herbert's suggestions to use an acomp_req flag to indicate
-   async/poll mode, and to encapsulate the polling functionality in the
-   iaa_crypto driver. Thanks Herbert!
-3) Incorporated Herbert's and Yosry's suggestions to implement the batching
-   API in iaa_crypto and to make its use seamless from zswap's
-   perspective. Thanks Herbert and Yosry!
-4) Incorporated Yosry's suggestion to make it more convenient for the user
-   to enable compress batching, while minimizing the memory footprint
-   cost. Thanks Yosry!
-5) Incorporated Yosry's suggestion to de-couple the shrink_folio_list()
-   reclaim batching patch from this series, since it requires a broader
-   discussion.
-
-
-I would greatly appreciate code review comments for the iaa_crypto driver
-and mm patches included in this series!
-
-Thanks,
-Kanchana
-
-
-
-Kanchana P Sridhar (23):
-  crypto: iaa - Reorganize the iaa_crypto driver code.
-  crypto: iaa - New architecture for IAA device WQ comp/decomp usage &
-    core mapping.
-  crypto: iaa - Simplify, consistency of function parameters, minor
-    stats bug fix.
-  crypto: iaa - Descriptor allocation timeouts with mitigations.
-  crypto: iaa - iaa_wq uses percpu_refs for get/put reference counting.
-  crypto: iaa - Simplify the code flow in iaa_compress() and
-    iaa_decompress().
-  crypto: iaa - Refactor hardware descriptor setup into separate
-    procedures.
-  crypto: iaa - Simplified, efficient job submissions for non-irq mode.
-  crypto: iaa - Deprecate exporting add/remove IAA compression modes.
-  crypto: iaa - Expect a single scatterlist for a [de]compress request's
-    src/dst.
-  crypto: iaa - Rearchitect the iaa_crypto driver to be usable by zswap
-    and zram.
-  crypto: iaa - Enablers for submitting descriptors then polling for
-    completion.
-  crypto: acomp - Define a unit_size in struct acomp_req to enable
-    batching.
-  crypto: iaa - IAA Batching for parallel compressions/decompressions.
-  crypto: iaa - Enable async mode and make it the default.
-  crypto: iaa - Disable iaa_verify_compress by default.
-  crypto: iaa - Submit the two largest source buffers first in
-    decompress batching.
-  crypto: iaa - Add deflate-iaa-dynamic compression mode.
-  crypto: acomp - Add crypto_acomp_batch_size() to get an algorithm's
-    batch-size.
-  mm: zswap: Per-CPU acomp_ctx resources exist from pool creation to
-    deletion.
-  mm: zswap: Consistently use IS_ERR_OR_NULL() to check acomp_ctx
-    resources.
-  mm: zswap: zswap_store() will process a large folio in batches.
-  mm: zswap: Batched zswap_compress() with compress batching of large
-    folios.
-
- .../driver-api/crypto/iaa/iaa-crypto.rst      |  168 +-
- crypto/acompress.c                            |    1 +
- crypto/testmgr.c                              |   10 +
- crypto/testmgr.h                              |   74 +
- drivers/crypto/intel/iaa/Makefile             |    4 +-
- drivers/crypto/intel/iaa/iaa_crypto.h         |   60 +-
- .../intel/iaa/iaa_crypto_comp_dynamic.c       |   22 +
- drivers/crypto/intel/iaa/iaa_crypto_main.c    | 2936 ++++++++++++-----
- drivers/crypto/intel/iaa/iaa_crypto_stats.c   |    8 +
- drivers/crypto/intel/iaa/iaa_crypto_stats.h   |    2 +
- include/crypto/acompress.h                    |   63 +
- include/crypto/internal/acompress.h           |    3 +
- include/linux/iaa_comp.h                      |  122 +
- mm/zswap.c                                    |  766 +++--
- 14 files changed, 3181 insertions(+), 1058 deletions(-)
- create mode 100644 drivers/crypto/intel/iaa/iaa_crypto_comp_dynamic.c
- create mode 100644 include/linux/iaa_comp.h
-
+-static void free_wq_table(void)
++static bool pkg_global_wqs_alloc(void)
+ {
+-	int cpu;
++	int i;
++
++	pkg_global_decomp_wqs = kcalloc(nr_packages, sizeof(*pkg_global_decomp_wqs), GFP_KERNEL);
++	if (!pkg_global_decomp_wqs)
++		return false;
++
++	for (i = 0; i < nr_packages; ++i) {
++		pkg_global_decomp_wqs[i] = kzalloc(sizeof(struct wq_table_entry), GFP_KERNEL);
++		if (!pkg_global_decomp_wqs[i])
++			goto err;
++
++		pkg_global_decomp_wqs[i]->wqs = kcalloc(MAX_PKG_IAA * MAX_IAA_WQ, sizeof(struct idxd_wq *), GFP_KERNEL);
++		if (!pkg_global_decomp_wqs[i]->wqs)
++			goto err;
++
++		pkg_global_decomp_wqs[i]->max_wqs = MAX_PKG_IAA * MAX_IAA_WQ;
++	}
++
++	pkg_global_comp_wqs = kcalloc(nr_packages, sizeof(*pkg_global_comp_wqs), GFP_KERNEL);
++	if (!pkg_global_comp_wqs)
++		goto err;
++
++	for (i = 0; i < nr_packages; ++i) {
++		pkg_global_comp_wqs[i] = kzalloc(sizeof(struct wq_table_entry), GFP_KERNEL);
++		if (!pkg_global_comp_wqs[i])
++			goto err;
+ 
+-	for (cpu = 0; cpu < nr_cpus; cpu++)
+-		wq_table_free_entry(cpu);
++		pkg_global_comp_wqs[i]->wqs = kcalloc(MAX_PKG_IAA * MAX_IAA_WQ, sizeof(struct idxd_wq *), GFP_KERNEL);
++		if (!pkg_global_comp_wqs[i]->wqs)
++			goto err;
++
++		pkg_global_comp_wqs[i]->max_wqs = MAX_PKG_IAA * MAX_IAA_WQ;
++	}
+ 
+-	free_percpu(wq_table);
++	return true;
+ 
+-	pr_debug("freed wq table\n");
++err:
++	pkg_global_wqs_dealloc();
++	return false;
+ }
+ 
+ static int alloc_wq_table(int max_wqs)
+ {
+-	struct wq_table_entry *entry;
+-	int cpu;
+-
+-	wq_table = alloc_percpu(struct wq_table_entry);
+-	if (!wq_table)
++	cpu_decomp_wqs = alloc_percpu_gfp(struct wq_table_entry, GFP_KERNEL | __GFP_ZERO);
++	if (!cpu_decomp_wqs)
+ 		return -ENOMEM;
+ 
+-	for (cpu = 0; cpu < nr_cpus; cpu++) {
+-		entry = per_cpu_ptr(wq_table, cpu);
+-		entry->wqs = kcalloc(max_wqs, sizeof(*entry->wqs), GFP_KERNEL);
+-		if (!entry->wqs) {
+-			free_wq_table();
+-			return -ENOMEM;
+-		}
++	cpu_comp_wqs = alloc_percpu_gfp(struct wq_table_entry, GFP_KERNEL | __GFP_ZERO);
++	if (!cpu_comp_wqs)
++		goto err;
+ 
+-		entry->max_wqs = max_wqs;
+-	}
++	if (!pkg_global_wqs_alloc())
++		goto err;
+ 
+ 	pr_debug("initialized wq table\n");
+ 
+ 	return 0;
++
++err:
++	free_wq_tables();
++	return -ENOMEM;
++}
++
++/*
++ * The caller should have established that device_iaa_wqs is not empty,
++ * i.e., every IAA device in "iaa_devices" has at least one WQ.
++ */
++static void add_device_wqs_to_wq_table(struct wq_table_entry *dst_wq_table,
++				       struct wq_table_entry *device_wq_table)
++{
++	int i;
++
++	for (i = 0; i < device_wq_table->n_wqs; ++i)
++		dst_wq_table->wqs[dst_wq_table->n_wqs++] = device_wq_table->wqs[i];
++}
++
++static bool reinit_pkg_global_wqs(bool comp)
++{
++	int cur_iaa = 0, pkg = 0;
++	struct iaa_device *iaa_device;
++	struct wq_table_entry **pkg_wqs = comp ? pkg_global_comp_wqs : pkg_global_decomp_wqs;
++
++	for (pkg = 0; pkg < nr_packages; ++pkg)
++		pkg_wqs[pkg]->n_wqs = 0;
++
++	pkg = 0;
++
++one_iaa_special_case:
++	/* Re-initialize per-package wqs. */
++	list_for_each_entry(iaa_device, &iaa_devices, list) {
++		struct wq_table_entry *device_wq_table = comp ?
++			((iaa_device->comp_wq_table->n_wqs > 0) ?
++				iaa_device->comp_wq_table : iaa_device->generic_wq_table) :
++			iaa_device->generic_wq_table;
++
++		if (pkg_wqs[pkg]->n_wqs + device_wq_table->n_wqs > pkg_wqs[pkg]->max_wqs) {
++			pkg_wqs[pkg]->wqs = krealloc(pkg_wqs[pkg]->wqs,
++						     ksize(pkg_wqs[pkg]->wqs) +
++						     max((MAX_PKG_IAA * MAX_IAA_WQ), iaa_device->n_wq) * sizeof(struct idxd_wq *),
++						     GFP_KERNEL | __GFP_ZERO);
++			if (!pkg_wqs[pkg]->wqs)
++				return false;
++
++			pkg_wqs[pkg]->max_wqs = ksize(pkg_wqs[pkg]->wqs)/sizeof(struct idxd_wq *);
++		}
++
++		add_device_wqs_to_wq_table(pkg_wqs[pkg], device_wq_table);
++
++		pr_debug("pkg_global_%s_wqs[%d] has %u n_wqs %u max_wqs",
++			 (comp ? "comp" : "decomp"), pkg, pkg_wqs[pkg]->n_wqs, pkg_wqs[pkg]->max_wqs);
++
++		if (++cur_iaa == atomic_read(&nr_iaa_per_package)) {
++			if (++pkg == nr_packages)
++				break;
++			cur_iaa = 0;
++			if (atomic_read(&nr_iaa) == 1)
++				goto one_iaa_special_case;
++		}
++	}
++
++	return true;
+ }
+ 
+-static void wq_table_add(int cpu, struct idxd_wq *wq)
++static void create_cpu_wq_table(int cpu, struct wq_table_entry *wq_table, bool comp)
+ {
+-	struct wq_table_entry *entry = per_cpu_ptr(wq_table, cpu);
++	struct wq_table_entry *entry = comp ?
++		per_cpu_ptr(cpu_comp_wqs, cpu) :
++		per_cpu_ptr(cpu_decomp_wqs, cpu);
++
++	if (!atomic_read(&iaa_crypto_enabled)) {
++		mutex_lock(&first_wq_found_lock);
++
++		BUG_ON(!first_wq_found && !wq_table->n_wqs);
++
++		if (!first_wq_found)
++			first_wq_found = wq_table->wqs[0];
++
++		mutex_unlock(&first_wq_found_lock);
+ 
+-	if (WARN_ON(entry->n_wqs == entry->max_wqs))
++		entry->wqs = &first_wq_found;
++		entry->max_wqs = 1;
++		entry->n_wqs = 1;
++		entry->cur_wq = 0;
++		pr_debug("%s: cpu %d: added %u first_wq_found for %s wqs up to wq %d.%d\n", __func__,
++			 cpu, entry->n_wqs, comp ? "comp":"decomp",
++			 entry->wqs[entry->n_wqs - 1]->idxd->id,
++			 entry->wqs[entry->n_wqs - 1]->id);
+ 		return;
++	}
++
++	entry->wqs = wq_table->wqs;
++	entry->max_wqs = wq_table->max_wqs;
++	entry->n_wqs = wq_table->n_wqs;
++	entry->cur_wq = 0;
++
++	if (entry->n_wqs)
++		pr_debug("%s: cpu %d: added %u iaa %s wqs up to wq %d.%d: entry->max_wqs = %u\n", __func__,
++			 cpu, entry->n_wqs, comp ? "comp":"decomp",
++			 entry->wqs[entry->n_wqs - 1]->idxd->id, entry->wqs[entry->n_wqs - 1]->id,
++			 entry->max_wqs);
++}
++
++static void set_cpu_wq_table_start_wq(int cpu, bool comp)
++{
++	struct wq_table_entry *entry = comp ?
++		per_cpu_ptr(cpu_comp_wqs, cpu) :
++		per_cpu_ptr(cpu_decomp_wqs, cpu);
++	unsigned int num_pkg_iaa = atomic_read(&nr_iaa_per_package);
++
++	int start_wq = (entry->n_wqs / num_pkg_iaa) * (cpu_to_iaa(cpu) % num_pkg_iaa);
++
++	if ((start_wq >= 0) && (start_wq < entry->n_wqs))
++		entry->cur_wq = start_wq;
++}
+ 
+-	entry->wqs[entry->n_wqs++] = wq;
++static void create_cpu_wq_table_from_pkg_wqs(bool comp)
++{
++	int cpu;
+ 
+-	pr_debug("%s: added iaa wq %d.%d to idx %d of cpu %d\n", __func__,
+-		 entry->wqs[entry->n_wqs - 1]->idxd->id,
+-		 entry->wqs[entry->n_wqs - 1]->id, entry->n_wqs - 1, cpu);
++	/*
++	 * All CPU on the same package share the same "package global"
++	 * [de]comp_wqs.
++	 */
++	for (cpu = 0; cpu < nr_cpus; cpu += nr_cpus_per_package) {
++		int package_id = topology_logical_package_id(cpu);
++		struct wq_table_entry *pkg_wq_table = comp ?
++			((pkg_global_comp_wqs[package_id]->n_wqs > 0) ?
++				pkg_global_comp_wqs[package_id] : pkg_global_decomp_wqs[package_id])
++			: pkg_global_decomp_wqs[package_id];
++		int pkg_cpu;
++
++		for (pkg_cpu = cpu; pkg_cpu < cpu + nr_cpus_per_package; ++pkg_cpu) {
++			/* Initialize decomp/comp wq_table for CPU. */
++			create_cpu_wq_table(pkg_cpu, pkg_wq_table, comp);
++			/* Stagger the starting WQ in the package WQ table, for each CPU. */
++			set_cpu_wq_table_start_wq(pkg_cpu, comp);
++		}
++	}
+ }
+ 
+-static int wq_table_add_wqs(int iaa, int cpu)
++static int add_mapped_device_wq_table_for_cpu(int iaa, int cpu, bool comp)
+ {
+ 	struct iaa_device *iaa_device, *found_device = NULL;
+-	int ret = 0, cur_iaa = 0, n_wqs_added = 0;
+-	struct idxd_device *idxd;
+-	struct iaa_wq *iaa_wq;
+-	struct pci_dev *pdev;
+-	struct device *dev;
++	struct wq_table_entry *device_wq_table;
++	int ret = 0, cur_iaa = 0;
+ 
+ 	list_for_each_entry(iaa_device, &iaa_devices, list) {
+-		idxd = iaa_device->idxd;
+-		pdev = idxd->pdev;
+-		dev = &pdev->dev;
+-
+ 		if (cur_iaa != iaa) {
+ 			cur_iaa++;
+ 			continue;
+ 		}
+ 
+ 		found_device = iaa_device;
+-		dev_dbg(dev, "getting wq from iaa_device %d, cur_iaa %d\n",
++		dev_dbg(&found_device->idxd->pdev->dev,
++			"getting wq from iaa_device %d, cur_iaa %d\n",
+ 			found_device->idxd->id, cur_iaa);
+ 		break;
+ 	}
+@@ -861,93 +1255,219 @@ static int wq_table_add_wqs(int iaa, int cpu)
+ 		}
+ 		cur_iaa = 0;
+ 
+-		idxd = found_device->idxd;
+-		pdev = idxd->pdev;
+-		dev = &pdev->dev;
+-		dev_dbg(dev, "getting wq from only iaa_device %d, cur_iaa %d\n",
++		dev_dbg(&found_device->idxd->pdev->dev,
++			"getting wq from only iaa_device %d, cur_iaa %d\n",
+ 			found_device->idxd->id, cur_iaa);
+ 	}
+ 
+-	list_for_each_entry(iaa_wq, &found_device->wqs, list) {
+-		wq_table_add(cpu, iaa_wq->wq);
+-		pr_debug("rebalance: added wq for cpu=%d: iaa wq %d.%d\n",
+-			 cpu, iaa_wq->wq->idxd->id, iaa_wq->wq->id);
+-		n_wqs_added++;
++	device_wq_table = comp ?
++		((found_device->comp_wq_table->n_wqs > 0) ?
++			found_device->comp_wq_table : found_device->generic_wq_table) :
++		found_device->generic_wq_table;
++
++	create_cpu_wq_table(cpu, device_wq_table, comp);
++
++out:
++	return ret;
++}
++
++static void create_cpu_wq_table_from_mapped_device(bool comp)
++{
++	int cpu, iaa;
++
++	for (cpu = 0; cpu < nr_cpus; cpu++) {
++		iaa = cpu_to_iaa(cpu);
++		pr_debug("rebalance: cpu=%d iaa=%d\n", cpu, iaa);
++
++		if (WARN_ON(iaa == -1)) {
++			pr_debug("rebalance (cpu_to_iaa(%d)) failed!\n", cpu);
++			return;
++		}
++
++		if (WARN_ON(add_mapped_device_wq_table_for_cpu(iaa, cpu, comp))) {
++			pr_debug("could not add any wqs of iaa %d to cpu %d!\n", iaa, cpu);
++			return;
++		}
++	}
++}
++
++static int map_iaa_device_wqs(struct iaa_device *iaa_device)
++{
++	struct wq_table_entry *generic, *for_comps;
++	int ret = 0, n_wqs_added = 0;
++	struct iaa_wq *iaa_wq;
++
++	generic = iaa_device->generic_wq_table;
++	for_comps = iaa_device->comp_wq_table;
++
++	list_for_each_entry(iaa_wq, &iaa_device->wqs, list) {
++		if (iaa_wq->mapped && ++n_wqs_added)
++			continue;
++
++		pr_debug("iaa_device %p: processing wq %d.%d\n", iaa_device, iaa_device->idxd->id, iaa_wq->wq->id);
++
++		if ((!n_wqs_added || ((n_wqs_added + g_comp_wqs_per_iaa) < iaa_device->n_wq)) &&
++			(generic->n_wqs < generic->max_wqs)) {
++
++			generic->wqs[generic->n_wqs++] = iaa_wq->wq;
++			pr_debug("iaa_device %p: added decomp wq %d.%d\n", iaa_device, iaa_device->idxd->id, iaa_wq->wq->id);
++		} else {
++			if (WARN_ON(for_comps->n_wqs == for_comps->max_wqs))
++				break;
++
++			for_comps->wqs[for_comps->n_wqs++] = iaa_wq->wq;
++			pr_debug("iaa_device %p: added comp wq %d.%d\n", iaa_device, iaa_device->idxd->id, iaa_wq->wq->id);
++		}
++
++		iaa_wq->mapped = true;
++		++n_wqs_added;
+ 	}
+ 
+-	if (!n_wqs_added) {
+-		pr_debug("couldn't find any iaa wqs!\n");
++	if (!n_wqs_added && !iaa_device->n_wq) {
++		pr_debug("iaa_device %d: couldn't find any iaa wqs!\n", iaa_device->idxd->id);
+ 		ret = -EINVAL;
+-		goto out;
+ 	}
+-out:
++
+ 	return ret;
+ }
+ 
++static void map_iaa_devices(void)
++{
++	struct iaa_device *iaa_device;
++
++	list_for_each_entry(iaa_device, &iaa_devices, list) {
++		BUG_ON(map_iaa_device_wqs(iaa_device));
++	}
++}
++
+ /*
+- * Rebalance the wq table so that given a cpu, it's easy to find the
+- * closest IAA instance.  The idea is to try to choose the most
+- * appropriate IAA instance for a caller and spread available
+- * workqueues around to clients.
++ * Rebalance the per-cpu wq table based on available IAA devices/WQs.
++ * Three driver parameters control how this algorithm works:
++ *
++ * - g_comp_wqs_per_iaa:
++ *
++ *   If multiple WQs are configured for a given device, this setting determines
++ *   the number of WQs to be used as "compress only" WQs. The remaining WQs will
++ *   be used as "decompress only WQs".
++ *   Note that the comp WQ can be the same as the decomp WQ, for e.g., if
++ *   g_comp_wqs_per_iaa is 0 (regardless of the # of available WQs per device), or,
++ *   if there is only 1 WQ configured for a device (regardless of
++ *   g_comp_wqs_per_iaa).
++ *
++ * - distribute_decomps, distribute_comps:
++ *
++ *   If this is enabled, all [de]comp WQs found from the IAA devices on a
++ *   package, will be aggregated into pkg_global_[de]comp_wqs, then assigned to
++ *   each CPU on the package.
++ *
++ * Note:
++ * -----
++ * rebalance_wq_table() will return true if it was able to successfully
++ * configure comp/decomp wqs for all CPUs, without changing the
++ * @iaa_crypto_enabled atomic. The caller can re-enable the use of the wq
++ * tables after rebalance_wq_table() returns true, by setting the
++ * @iaa_crypto_enabled atomic to 1.
++ * In case of any errors, the @iaa_crypto_enabled atomic will be set to 0,
++ * and rebalance_wq_table() will return false.
+  */
+-static void rebalance_wq_table(void)
++static bool rebalance_wq_table(void)
+ {
+-	const struct cpumask *node_cpus;
+-	int node_cpu, node, cpu, iaa = 0;
++	int cpu;
+ 
+-	if (nr_iaa == 0)
+-		return;
++	if (atomic_read(&nr_iaa) == 0)
++		goto err;
+ 
+-	pr_debug("rebalance: nr_nodes=%d, nr_cpus %d, nr_iaa %d, cpus_per_iaa %d\n",
+-		 nr_nodes, nr_cpus, nr_iaa, cpus_per_iaa);
++	map_iaa_devices();
+ 
+-	clear_wq_table();
++	pr_info("rebalance: nr_packages=%d, nr_cpus %d, nr_iaa %d, nr_iaa_per_package %d, cpus_per_iaa %d\n",
++		nr_packages, nr_cpus, atomic_read(&nr_iaa),
++		atomic_read(&nr_iaa_per_package), atomic_read(&cpus_per_iaa));
+ 
+-	if (nr_iaa == 1) {
+-		for_each_possible_cpu(cpu) {
+-			if (WARN_ON(wq_table_add_wqs(0, cpu)))
+-				goto err;
+-		}
++	if (iaa_distribute_decomps) {
++		/* Each CPU uses all IAA devices on package for decomps. */
++		if (!reinit_pkg_global_wqs(false))
++			goto err;
++		create_cpu_wq_table_from_pkg_wqs(false);
++	} else {
++		/*
++		 * Each CPU uses the decomp WQ on the mapped IAA device using
++		 * a balanced mapping of cores to IAA.
++		 */
++		create_cpu_wq_table_from_mapped_device(false);
++	}
+ 
+-		return;
++	if (iaa_distribute_comps) {
++		/* Each CPU uses all IAA devices on package for comps. */
++		if (!reinit_pkg_global_wqs(true))
++			goto err;
++		create_cpu_wq_table_from_pkg_wqs(true);
++	} else {
++		/*
++		 * Each CPU uses the comp WQ on the mapped IAA device using
++		 * a balanced mapping of cores to IAA.
++		 */
++		create_cpu_wq_table_from_mapped_device(true);
+ 	}
+ 
+-	for_each_node_with_cpus(node) {
+-		cpu = 0;
+-		node_cpus = cpumask_of_node(node);
++	/* Verify that each cpu has comp and decomp wqs.*/
++	for (cpu = 0; cpu < nr_cpus; cpu++) {
++		struct wq_table_entry *entry = per_cpu_ptr(cpu_decomp_wqs, cpu);
+ 
+-		for_each_cpu(node_cpu, node_cpus) {
+-			iaa = cpu / cpus_per_iaa;
+-			if (WARN_ON(wq_table_add_wqs(iaa, node_cpu)))
+-				goto err;
+-			cpu++;
++		if (!entry->wqs || !entry->n_wqs) {
++			pr_err("%s: cpu %d does not have decomp_wqs", __func__, cpu);
++			goto err;
++		}
++
++		entry = per_cpu_ptr(cpu_comp_wqs, cpu);
++		if (!entry->wqs || !entry->n_wqs) {
++			pr_err("%s: cpu %d does not have comp_wqs", __func__, cpu);
++			goto err;
+ 		}
+ 	}
+ 
+-	return;
++	pr_debug("Finished rebalance decomp/comp wqs.");
++	return true;
++
+ err:
+-	pr_debug("could not add any wqs for iaa %d to cpu %d!\n", iaa, cpu);
++	atomic_set(&iaa_crypto_enabled, 0);
++	pr_debug("Error during rebalance decomp/comp wqs.");
++	return false;
+ }
+ 
+ /***************************************************************
+  * Assign work-queues for driver ops using per-cpu wq_tables.
+  ***************************************************************/
+ 
+-static struct idxd_wq *wq_table_next_wq(int cpu)
++static struct idxd_wq *decomp_wq_table_next_wq(int cpu)
+ {
+-	struct wq_table_entry *entry = per_cpu_ptr(wq_table, cpu);
++	struct wq_table_entry *entry = per_cpu_ptr(cpu_decomp_wqs, cpu);
++	struct idxd_wq *wq;
++
++	if (!atomic_read(&iaa_crypto_enabled))
++		return NULL;
++
++	wq = entry->wqs[entry->cur_wq];
+ 
+-	if (++entry->cur_wq >= entry->n_wqs)
++	if (++entry->cur_wq == entry->n_wqs)
+ 		entry->cur_wq = 0;
+ 
+-	if (!entry->wqs[entry->cur_wq])
++	return wq;
++}
++
++static struct idxd_wq *comp_wq_table_next_wq(int cpu)
++{
++	struct wq_table_entry *entry = per_cpu_ptr(cpu_comp_wqs, cpu);
++	struct idxd_wq *wq;
++
++	if (!atomic_read(&iaa_crypto_enabled))
+ 		return NULL;
+ 
+-	pr_debug("%s: returning wq at idx %d (iaa wq %d.%d) from cpu %d\n", __func__,
+-		 entry->cur_wq, entry->wqs[entry->cur_wq]->idxd->id,
+-		 entry->wqs[entry->cur_wq]->id, cpu);
++	wq = entry->wqs[entry->cur_wq];
+ 
+-	return entry->wqs[entry->cur_wq];
++	if (++entry->cur_wq == entry->n_wqs)
++		entry->cur_wq = 0;
++
++	return wq;
+ }
+ 
+ /*************************************************
+@@ -985,7 +1505,7 @@ static inline int check_completion(struct device *dev,
+ 			dev_err(dev, "%s completion timed out - "
+ 				"assuming broken hw, iaa_crypto now DISABLED\n",
+ 				op_str);
+-			iaa_crypto_enabled = false;
++			atomic_set(&iaa_crypto_enabled, 0);
+ 			ret = -ETIMEDOUT;
+ 			goto out;
+ 		}
+@@ -1501,18 +2021,13 @@ static int iaa_comp_acompress(struct acomp_req *req)
+ 
+ 	compression_ctx = crypto_tfm_ctx(tfm);
+ 
+-	if (!iaa_crypto_enabled) {
+-		pr_debug("iaa_crypto disabled, not compressing\n");
+-		return -ENODEV;
+-	}
+-
+ 	if (!req->src || !req->slen) {
+ 		pr_debug("invalid src, not compressing\n");
+ 		return -EINVAL;
+ 	}
+ 
+ 	cpu = get_cpu();
+-	wq = wq_table_next_wq(cpu);
++	wq = comp_wq_table_next_wq(cpu);
+ 	put_cpu();
+ 	if (!wq) {
+ 		pr_debug("no wq configured for cpu=%d\n", cpu);
+@@ -1599,18 +2114,13 @@ static int iaa_comp_adecompress(struct acomp_req *req)
+ 	struct device *dev;
+ 	struct idxd_wq *wq;
+ 
+-	if (!iaa_crypto_enabled) {
+-		pr_debug("iaa_crypto disabled, not decompressing\n");
+-		return -ENODEV;
+-	}
+-
+ 	if (!req->src || !req->slen) {
+ 		pr_debug("invalid src, not decompressing\n");
+ 		return -EINVAL;
+ 	}
+ 
+ 	cpu = get_cpu();
+-	wq = wq_table_next_wq(cpu);
++	wq = decomp_wq_table_next_wq(cpu);
+ 	put_cpu();
+ 	if (!wq) {
+ 		pr_debug("no wq configured for cpu=%d\n", cpu);
+@@ -1725,6 +2235,8 @@ static int iaa_register_compression_device(void)
+ 
+ static int iaa_unregister_compression_device(void)
+ {
++	atomic_set(&iaa_crypto_enabled, 0);
++
+ 	if (iaa_crypto_registered)
+ 		crypto_unregister_acomp(&iaa_acomp_fixed_deflate);
+ 
+@@ -1746,10 +2258,13 @@ static int iaa_crypto_probe(struct idxd_dev *idxd_dev)
+ 	if (data->type != IDXD_TYPE_IAX)
+ 		return -ENODEV;
+ 
++	mutex_lock(&iaa_devices_lock);
++
+ 	mutex_lock(&wq->wq_lock);
+ 
+ 	if (idxd_wq_get_private(wq)) {
+ 		mutex_unlock(&wq->wq_lock);
++		mutex_unlock(&iaa_devices_lock);
+ 		return -EBUSY;
+ 	}
+ 
+@@ -1771,8 +2286,6 @@ static int iaa_crypto_probe(struct idxd_dev *idxd_dev)
+ 		goto err;
+ 	}
+ 
+-	mutex_lock(&iaa_devices_lock);
+-
+ 	if (list_empty(&iaa_devices)) {
+ 		ret = alloc_wq_table(wq->idxd->max_wqs);
+ 		if (ret)
+@@ -1784,24 +2297,33 @@ static int iaa_crypto_probe(struct idxd_dev *idxd_dev)
+ 	if (ret)
+ 		goto err_save;
+ 
+-	rebalance_wq_table();
++	if (!rebalance_wq_table()) {
++		dev_dbg(dev, "%s: IAA rebalancing device wq tables failed\n", __func__);
++		goto err_register;
++	}
++	atomic_set(&iaa_crypto_enabled, 1);
+ 
+ 	if (first_wq) {
+-		iaa_crypto_enabled = true;
+ 		ret = iaa_register_compression_device();
+ 		if (ret != 0) {
+-			iaa_crypto_enabled = false;
+ 			dev_dbg(dev, "IAA compression device registration failed\n");
+ 			goto err_register;
+ 		}
++
++		if (!rebalance_wq_table()) {
++			dev_dbg(dev, "%s: Rerun after registration: IAA rebalancing device wq tables failed\n", __func__);
++			goto err_register;
++		}
++		atomic_set(&iaa_crypto_enabled, 1);
++
+ 		try_module_get(THIS_MODULE);
+ 
+ 		pr_info("iaa_crypto now ENABLED\n");
+ 	}
+ 
+-	mutex_unlock(&iaa_devices_lock);
+ out:
+ 	mutex_unlock(&wq->wq_lock);
++	mutex_unlock(&iaa_devices_lock);
+ 
+ 	return ret;
+ 
+@@ -1810,9 +2332,8 @@ static int iaa_crypto_probe(struct idxd_dev *idxd_dev)
+ 	free_iaa_wq(idxd_wq_get_private(wq));
+ err_save:
+ 	if (first_wq)
+-		free_wq_table();
++		free_wq_tables();
+ err_alloc:
+-	mutex_unlock(&iaa_devices_lock);
+ 	idxd_drv_disable_wq(wq);
+ err:
+ 	wq->type = IDXD_WQT_NONE;
+@@ -1827,13 +2348,17 @@ static void iaa_crypto_remove(struct idxd_dev *idxd_dev)
+ 	struct iaa_wq *iaa_wq;
+ 	bool free = false;
+ 
++	atomic_set(&iaa_crypto_enabled, 0);
+ 	idxd_wq_quiesce(wq);
+ 
+-	mutex_lock(&wq->wq_lock);
+ 	mutex_lock(&iaa_devices_lock);
++	mutex_lock(&wq->wq_lock);
+ 
+ 	remove_iaa_wq(wq);
+ 
++	if (!rebalance_wq_table())
++		pr_debug("%s: IAA rebalancing device wq tables failed\n", __func__);
++
+ 	spin_lock(&idxd->dev_lock);
+ 	iaa_wq = idxd_wq_get_private(wq);
+ 	if (!iaa_wq) {
+@@ -1856,18 +2381,22 @@ static void iaa_crypto_remove(struct idxd_dev *idxd_dev)
+ 	}
+ 
+ 	idxd_drv_disable_wq(wq);
+-	rebalance_wq_table();
+ 
+-	if (nr_iaa == 0) {
+-		iaa_crypto_enabled = false;
+-		free_wq_table();
++	if (atomic_read(&nr_iaa) == 0) {
++		atomic_set(&iaa_crypto_enabled, 0);
++		pkg_global_wqs_dealloc();
++		free_wq_tables();
++		BUG_ON(!list_empty(&iaa_devices));
++		INIT_LIST_HEAD(&iaa_devices);
+ 		module_put(THIS_MODULE);
+ 
+ 		pr_info("iaa_crypto now DISABLED\n");
++	} else {
++		atomic_set(&iaa_crypto_enabled, 1);
+ 	}
+ out:
+-	mutex_unlock(&iaa_devices_lock);
+ 	mutex_unlock(&wq->wq_lock);
++	mutex_unlock(&iaa_devices_lock);
+ }
+ 
+ static enum idxd_dev_type dev_types[] = {
+@@ -1890,16 +2419,12 @@ static struct idxd_device_driver iaa_crypto_driver = {
+ static int __init iaa_crypto_init_module(void)
+ {
+ 	int ret = 0;
+-	int node;
++
++	INIT_LIST_HEAD(&iaa_devices);
+ 
+ 	nr_cpus = num_possible_cpus();
+-	for_each_node_with_cpus(node)
+-		nr_nodes++;
+-	if (!nr_nodes) {
+-		pr_err("IAA couldn't find any nodes with cpus\n");
+-		return -ENODEV;
+-	}
+-	nr_cpus_per_node = nr_cpus / nr_nodes;
++	nr_cpus_per_package = topology_num_cores_per_package();
++	nr_packages = topology_max_packages();
+ 
+ 	ret = iaa_aecs_init_fixed();
+ 	if (ret < 0) {
+@@ -1913,6 +2438,27 @@ static int __init iaa_crypto_init_module(void)
+ 		goto err_driver_reg;
+ 	}
+ 
++	ret = driver_create_file(&iaa_crypto_driver.drv,
++				&driver_attr_g_comp_wqs_per_iaa);
++	if (ret) {
++		pr_debug("IAA g_comp_wqs_per_iaa attr creation failed\n");
++		goto err_g_comp_wqs_per_iaa_attr_create;
++	}
++
++	ret = driver_create_file(&iaa_crypto_driver.drv,
++				 &driver_attr_distribute_decomps);
++	if (ret) {
++		pr_debug("IAA distribute_decomps attr creation failed\n");
++		goto err_distribute_decomps_attr_create;
++	}
++
++	ret = driver_create_file(&iaa_crypto_driver.drv,
++				 &driver_attr_distribute_comps);
++	if (ret) {
++		pr_debug("IAA distribute_comps attr creation failed\n");
++		goto err_distribute_comps_attr_create;
++	}
++
+ 	ret = driver_create_file(&iaa_crypto_driver.drv,
+ 				 &driver_attr_verify_compress);
+ 	if (ret) {
+@@ -1938,6 +2484,15 @@ static int __init iaa_crypto_init_module(void)
+ 	driver_remove_file(&iaa_crypto_driver.drv,
+ 			   &driver_attr_verify_compress);
+ err_verify_attr_create:
++	driver_remove_file(&iaa_crypto_driver.drv,
++			   &driver_attr_distribute_comps);
++err_distribute_comps_attr_create:
++	driver_remove_file(&iaa_crypto_driver.drv,
++			   &driver_attr_distribute_decomps);
++err_distribute_decomps_attr_create:
++	driver_remove_file(&iaa_crypto_driver.drv,
++			   &driver_attr_g_comp_wqs_per_iaa);
++err_g_comp_wqs_per_iaa_attr_create:
+ 	idxd_driver_unregister(&iaa_crypto_driver);
+ err_driver_reg:
+ 	iaa_aecs_cleanup_fixed();
+@@ -1956,6 +2511,12 @@ static void __exit iaa_crypto_cleanup_module(void)
+ 			   &driver_attr_sync_mode);
+ 	driver_remove_file(&iaa_crypto_driver.drv,
+ 			   &driver_attr_verify_compress);
++	driver_remove_file(&iaa_crypto_driver.drv,
++			   &driver_attr_distribute_comps);
++	driver_remove_file(&iaa_crypto_driver.drv,
++			   &driver_attr_distribute_decomps);
++	driver_remove_file(&iaa_crypto_driver.drv,
++			   &driver_attr_g_comp_wqs_per_iaa);
+ 	idxd_driver_unregister(&iaa_crypto_driver);
+ 	iaa_aecs_cleanup_fixed();
+ 
 -- 
 2.27.0
 
