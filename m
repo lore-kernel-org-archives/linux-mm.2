@@ -4,75 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AF57CAC5B9
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 12:39:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46E76CAC5AE
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 12:41:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 77D968E0005; Fri, 26 Sep 2025 08:39:12 -0400 (EDT)
+	id 70CBA8E0005; Fri, 26 Sep 2025 08:41:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72E4E8E0001; Fri, 26 Sep 2025 08:39:12 -0400 (EDT)
+	id 6BE388E0001; Fri, 26 Sep 2025 08:41:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6446E8E0005; Fri, 26 Sep 2025 08:39:12 -0400 (EDT)
+	id 5D31A8E0005; Fri, 26 Sep 2025 08:41:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D8848E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 08:39:12 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D6CC0140301
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 12:39:11 +0000 (UTC)
-X-FDA: 83931356502.14.7CD12E2
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 49D088E0001
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 08:41:14 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DDCA211AA72
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 12:41:13 +0000 (UTC)
+X-FDA: 83931361626.26.6BD59E0
 Received: from smtp232.sjtu.edu.cn (smtp232.sjtu.edu.cn [202.120.2.232])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 126D61C0013
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 12:39:08 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	spf=pass (imf20.hostedemail.com: domain of zhr1502@sjtu.edu.cn designates 202.120.2.232 as permitted sender) smtp.mailfrom=zhr1502@sjtu.edu.cn
+	by imf03.hostedemail.com (Postfix) with ESMTP id D40FC20009
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 12:41:11 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	spf=pass (imf03.hostedemail.com: domain of zhr1502@sjtu.edu.cn designates 202.120.2.232 as permitted sender) smtp.mailfrom=zhr1502@sjtu.edu.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758890350;
+	s=arc-20220608; t=1758890472;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sbyhiI0JrW4vjFyQ/wlshJhratpquAgd2j/gXw9N3Kc=;
-	b=3ROuaKw3Mai84+aDxSX3rZIhZbQk6W3LLwT7LToiMDodI0pVaiFlvpZ8YMhViHZDj/U0oP
-	K+QiXLAT+GmGj/jJ9g2w0UZ/rWy4m1PzxVfGKMznLBmA7/9WhYD7GjUzVKYjeGAhHuS1BZ
-	O53feHSz0WdENHiwLpUcsgYcaaL3VTM=
+	bh=KtwijDnWeLaURebu0PF6d6AnAKiQIa3FOb/9y1gQBiE=;
+	b=s9w8NYNNtL/VUBdypv9eVohQjJS9OeitO+YXcYI1XPtxz8QRgH9teJIQhAZ1QCAjN+f4p1
+	Z727QvuwqLARivCGzpZ/7E7TbjbkVYvbSATBK/BQYCzBO1aGfV5UjBTc9+Oez1yeqBythk
+	+rlo0PpeXDNwW/sSiV13h489SGY5+tA=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
+	imf03.hostedemail.com;
 	dkim=none;
 	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of zhr1502@sjtu.edu.cn designates 202.120.2.232 as permitted sender) smtp.mailfrom=zhr1502@sjtu.edu.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758890350; a=rsa-sha256;
+	spf=pass (imf03.hostedemail.com: domain of zhr1502@sjtu.edu.cn designates 202.120.2.232 as permitted sender) smtp.mailfrom=zhr1502@sjtu.edu.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758890472; a=rsa-sha256;
 	cv=none;
-	b=PPg/rp9jyKVc3RufFaF6/G+FL2f2pJpd84Vw8XW/U/n4ji2A3G5rLe9AUwkYA8vAIwV1cx
-	M1ZUhQZR53q/4vFD50P9BHvJ5O7tTvFBrCPJXiIBY9bbONtQ4B8gPQODBP4RhyLnVQaukk
-	nEnpwxiPEIJPHkGsuAMyW6HxqWbKXn0=
+	b=Lfywhw515nUldAoRpklCMRawRzhcvbzhDXcmHM8YZAu7Vl9aFsV7XhzwCQVOFb2epSAWCs
+	W2FsHrZmzUA3vCeVO3jPJgsgbPOgO3b3O0fjdQi8Nm49zUMcftuxtnRiNqdOU39BPxe9P8
+	yfLFT5v4F51tMycuc2yHp0w7XVGG+KA=
 Received: from proxy188.sjtu.edu.cn (smtp188.sjtu.edu.cn [202.120.2.188])
-	by smtp232.sjtu.edu.cn (Postfix) with ESMTPS id E96E0124B5B46;
-	Fri, 26 Sep 2025 20:39:03 +0800 (CST)
+	by smtp232.sjtu.edu.cn (Postfix) with ESMTPS id 05EE1124B5B46;
+	Fri, 26 Sep 2025 20:41:08 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.181.220.127])
-	by proxy188.sjtu.edu.cn (Postfix) with ESMTPSA id D2ADE37C999;
-	Fri, 26 Sep 2025 20:39:03 +0800 (CST)
+	by proxy188.sjtu.edu.cn (Postfix) with ESMTPSA id D95B137C99C;
+	Fri, 26 Sep 2025 20:41:07 +0800 (CST)
 From: Zhu Haoran <zhr1502@sjtu.edu.cn>
-To: ying.huang@linux.alibaba.com
+To: dev.jain@arm.com
 Cc: linux-mm@kvack.org,
-	zhr1502@sjtu.edu.cn,
-	dev.jain@arm.com
+	ying.huang@linux.alibaba.com,
+	zhr1502@sjtu.edu.cn
 Subject: Re: [Question] About memory.c: process_huge_page
-Date: Fri, 26 Sep 2025 20:38:54 +0800
-Message-ID: <20250926123854.26224-1-zhr1502@sjtu.edu.cn>
+Date: Fri, 26 Sep 2025 20:40:59 +0800
+Message-ID: <20250926124059.26620-1-zhr1502@sjtu.edu.cn>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <87y0q3e2ph.fsf@DESKTOP-5N7EMDA>
-References: <87y0q3e2ph.fsf@DESKTOP-5N7EMDA>
+In-Reply-To: <731ea778-3a75-48ae-8281-4c280a379796@arm.com>
+References: <731ea778-3a75-48ae-8281-4c280a379796@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 186u9oj7ne1t1jtmipoedh34mfrz1xd5
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 126D61C0013
-X-Stat-Signature: rfkztkmqb8otmgjfws1frkfon4ijdif9
-X-HE-Tag: 1758890348-748030
-X-HE-Meta: U2FsdGVkX1+0FW+qBsk/fuCYT86WWumsEhcdh6NUqpwrCD532vhQfHCJfcNRFBCkeyuFeEsA1UT9G/MBofqc8S3PRLe/L0u4HVDwm5hIZtcxaHzlcgrPEobcjy3RQLlltIesxpj0LLeZt0f9c9shgMFOqG37mopBfkuvy+VUz9YzxAS0VQFscs79C1tvbrbUCmMjJ4chXfWnDSwo2bANySb4Std6sgNDcBwZVyFBJiR6cQSXjxNwpVmu/DvVsvWJrBG0jyLwCnYSVWMl8iYp401CQko0XP/Q1xX4D8OAf9y9/s03fHuMYOpAXqLt27E+SsfmPyjrufhw5zLhTr9kdO/Pluo6awDfH7vYOz++d115ORPcoApZGKbHbocsNRd21v2eoSljNIYRF5fQ3NBNw/GdZJktbQcK6eflMMcJMugpupWD/BvpYeGSuIRbkUEZm+wSJmgrjzH7oVgmm3+y76Me/dmOsKC6ckaKoZAcc2JTnm9SrntffH5H84wMnX4/bO2jX5lRwVwjoSskZygNm7tox/S1RkU85V3bfP47Zaj3cY6J3JFLugiL8NuZD49//xSvHqkXYpeiOoL4uLh5WfQ64Z6W7IksoKM3g+NIh/WHqU4HAZrPy7JmjzZMt7gzKcb6vYgfZAp+eIofYGsLFNkO4UcZVAKggqQ8Dsdy/sxMzdH0jEwWD9zqGTHREX+POfvKgtur41FW7nybxAiN/AzhWcnXJDc7vDaWeGjDpqsO1HNf/HUzMdBrssWPB6yp+Fjq62NKvRXhRd0aM3eS9lUT0IwTIH1k2v2pWVQEPFIL8LJsKW2FlJPUsxr0GpThS0ACe5kn9yvP8M5JX8dBRVkRD18TGN1Zh/pMVSvBDR6I8JONfvMZeKP9XNI6Ek0+a5s6P9Mu2padKosNbyAEtJlPJZ+eRFMxGZ1/nd9efSxLkLhUnzA1C5FpuFwnx97G6DCPfnLdO9bB0A9ykOf
- QkVm78VJ
- Dnh7KLcHMvOPOhaPKEK0ix2xLajyCk0Twztwm3InqytMAbM/4jf9M5H8sBbZB2+tFQ2jUjdiQHBap1Ptfj++lPd7cinP3t1FH/2rkU2/W0tPinyNF76y2yWYy21M5kml8lXdi9ICVVmQG5SL+6+lLlB063MgWL0G+3DPvnqyEsSRfWzpL3mXI6ksTuvO8oAx+4xZe
+X-Rspamd-Queue-Id: D40FC20009
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758890471-859045
+X-HE-Meta: U2FsdGVkX18p9sWtEKI1hpfDulGihTQ0E8lle4wTaiNPGCfkpVfmQwPtYqciCwq5XBo6LP/yAko6yCkrexh7RSm5fQu0iAirtpu/6ofRI7efWfVJGklM7+ETECiZ31JiTgd9Xtx42tKlfP2KNtm00e4sLhdf1gFmmJEMAPyF2WRWG0h/x02b7Aw6KNoTBZeVBatujCJWqTHVBHKH56YbeUYkhlPUThwlV/vdXe30ctQCKDULLbQKpB9zjjRI0TcOif7dtCd0bEpIoqoPips8l5TEYJwqsyWAhgNU3lGgmE62Dh9ueDePo01hsvs/2ZK5LGCSjFriXacgec/xzhMJaykSTSeA2w5N9Nl/mlMJ1cuvxjUD7/xa5CW0asKxpdr2Dnc7q0P65gr15utWl6GSh5XjLuTB+J/T3eaEeXmgMEbBifCLxN3x8UE5P5FeYqoehfQO8KToNbz+J2pdLq3BXy3oBF0rJt0UswZjvPZlwpFN+Q4usneMALrbbbhIS2MCAfxRZzy4ZMFJlJJZqTnkrT+DKTLZ00rS1Cgg6NaemE4Ly7RZOU+qioMuGyWtueLchp8GiMaQhyxvH7G+eb1oz8Yt5HTSu3spCq+vrGSAxzHDug4enfag0C7ReZXomkdHr04zA+1ggdMP7yVVWLXQcJkZGfOo+C3OUZhPQOZslwoDJX4iGRGMh25jQZrH3/uWKuoqu4NEFWPck/i4AghpyM7HdR4HfELKcv3It5Ifz0r0apKKKXKNNtG+rZFt3ftC98sn5lJFfdqxI0QLMCAInNssOdofcOTDj8X+5k8t4gVukKzlH+n0UUdjsZz0ZwEgLr3EZ2pWhx2nW/6xxmZBVvjXwYNnYypurERyFHtJLpvake8L2fQCQ7BnOlgLuaEeFYLrT+wL8/q8vjP+B65LWfkSMnGmwqezRJPYnk4n1d4jVEzBs9fgfUAMbgVzzbtNwlpPn9zFiNRul9ugZbK
+ TFloTPRe
+ MMj+PTWZV2K0RQWldOlaEHwbaaUyY47EWqzt1Km2V7rAHNdUhu8m7seTyUpbkRzHTXSOOY/efrMj8yhlAbU+TRuWRScI7+My+A2IeS96zRYK9SCjhU6OmMppv/Matk5FGUPZRsNk7xIcz4a1bysv98MyaWvs5neLcuUc2lzuAkW79gD1Y80L45dmC41fEklCAxYeoKhcz02wpi8bgu3PVHYxF9I7/dwsskJ8mM7oS4K0/7Rc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -81,65 +81,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Huang, Ying" <ying.huang@linux.alibaba.com> writes:
->Hi, Haoran,
+Dev Jain <dev.jain@arm.com> writes:
+>On 25/09/25 7:02 am, Huang, Ying wrote:
+>> Hi, Haoran,
+>>
+>> Zhu Haoran <zhr1502@sjtu.edu.cn> writes:
+>>
+>>> Hi!
+>>>
+>>> I recently noticed the process_huge_page function in memory.c, which was
+>>> intended to keep the cache hotness of target page after processing. I compared
+>>> the vm-scalability anon-cow-seq-hugetlb microbench using the default
+>>> process_huge_page and sequential processing (code posted below).
+>>>
+>>> I ran test on epyc-7T83 with 36vCPUs and 64GB memory. Using default
+>>> process_huge_page, the avg bandwidth is 1148 mb/s. However sequential
+>>> processing yielded a better bandwidth of about 1255 mb/s and only
+>>> one-third cache-miss rate compared with default one.
+>>>
+>>> The same test was run on epyc-9654 with 36vCPU and 64GB mem. The
+>>> bandwidth result was similar but the difference was smaller: 1170mb/s
+>>> for default and 1230 mb/s for sequential. Although we did find the cache
+>>> miss rate here did the reverse, since the sequential processing seen 3
+>>> times miss more than the default.
+>>>
+>>> These result seem really inconsitent with the what described in your
+>>> patchset [1]. What factors might explain these behaviors?
+>> One possible difference is cache topology.  Can you try to bind the test
+>> process to the CPUs in one CCX (that is, share one LLC).  This make it
+>> possible to hit the local cache.
 >
->Zhu Haoran <zhr1502@sjtu.edu.cn> writes:
->
->> Hi!
->>
->> I recently noticed the process_huge_page function in memory.c, which was
->> intended to keep the cache hotness of target page after processing. I compared
->> the vm-scalability anon-cow-seq-hugetlb microbench using the default
->> process_huge_page and sequential processing (code posted below).
->>
->> I ran test on epyc-7T83 with 36vCPUs and 64GB memory. Using default
->> process_huge_page, the avg bandwidth is 1148 mb/s. However sequential
->> processing yielded a better bandwidth of about 1255 mb/s and only
->> one-third cache-miss rate compared with default one.
->>
->> The same test was run on epyc-9654 with 36vCPU and 64GB mem. The
->> bandwidth result was similar but the difference was smaller: 1170mb/s
->> for default and 1230 mb/s for sequential. Although we did find the cache
->> miss rate here did the reverse, since the sequential processing seen 3
->> times miss more than the default.
->>
->> These result seem really inconsitent with the what described in your
->> patchset [1]. What factors might explain these behaviors?
->
->One possible difference is cache topology.  Can you try to bind the test
->process to the CPUs in one CCX (that is, share one LLC).  This make it
->possible to hit the local cache.
+>Hi, I just had a different question, why is the function sprinkled with
+>cond_resched() in each loop, especially the last one in which we are calling
+>it every iteration? I suppose one reason for slowdown may be this too.
 
-Thank you for the suggestion.
-
-I reduced the test to 16 vCPUs and bound them to one CCX on the epyc-9654. The
-rerun results are:
-
-                     sequential    process_huge_page
-BW (MB/s)                523.88               531.60   ( + 1.47%)
-user cachemiss           0.318%               0.446%   ( +40.25%)
-kernel cachemiss         1.405%              18.406%   ( + 1310%)
-usertime                  26.72                18.76   ( -29.79%)
-systime                   35.97                42.64   ( +18.54%)
-
-I was able to reproduce the much lower user time, but the bw gap is still not
-that significant as in your patch. It was bottlenecked by kernel cache-misses
-and execution time. One possible explanation is that AMD has less aggressive
-cache prefetcher, which fails to predict the access pattern of current
-process_huge_page in kernel. To verify that I ran a microbench that iterates
-through 4K pages in sequential/reverse order and access each page in seq/rev
-order (4 combinations in total).
-
-cachemiss rate
-                  seq-seq  seq-rev  rev-seq  rev-rev
-epyc-9654           0.08%    1.71%    1.98%    0.09%
-epyc-7T83           1.07%   13.64%    6.23%    1.12%
-i5-13500H          27.08%   28.87%   29.57%   25.35%
-
-I also ran the anon-cow-seq on my laptop i5-13500H and all metrics aligned well
-with your patch. So I guess this could be the root cause why AMD won't benefit
-from the patch?
+However, whether it is process_huge_page or sequential processing, the
+implementation always performs cond_resched before each process_subpage. Seems
+no difference.
 
 >> Thanks for your time.
 >>
@@ -152,28 +130,27 @@ from the patch?
 >> ---
 >>
 >> static int process_huge_page(
->>         unsigned long addr_hint, unsigned int nr_pages,
->>         int (*process_subpage)(unsigned long addr, int idx, void *arg),
->>         void *arg)
+>>          unsigned long addr_hint, unsigned int nr_pages,
+>>          int (*process_subpage)(unsigned long addr, int idx, void *arg),
+>>          void *arg)
 >> {
->>     int i, ret;
->>     unsigned long addr = addr_hint &
->>         ~(((unsigned long)nr_pages << PAGE_SHIFT) - 1);
+>>      int i, ret;
+>>      unsigned long addr = addr_hint &
+>>          ~(((unsigned long)nr_pages << PAGE_SHIFT) - 1);
 >>
->>     might_sleep();
->>     for (i = 0; i < nr_pages; i++) {
->>             cond_resched();
->>             ret = process_subpage(addr + i * PAGE_SIZE, i, arg);
->>             if (ret)
->>                     return ret;
->>     }
+>>      might_sleep();
+>>      for (i = 0; i < nr_pages; i++) {
+>>              cond_resched();
+>>              ret = process_subpage(addr + i * PAGE_SIZE, i, arg);
+>>              if (ret)
+>>                      return ret;
+>>      }
 >>
->>     return 0;
+>>      return 0;
 >> }
->
->---
->Best Regards,
->Huang, Ying
+> ---
+> Best Regards,
+> Huang, Ying
 
 ---
 Sincere,
