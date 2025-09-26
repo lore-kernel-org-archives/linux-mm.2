@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8484CAC5BA
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 03:35:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33C1BCAC5B5
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 03:35:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72DA98E0017; Thu, 25 Sep 2025 23:35:21 -0400 (EDT)
+	id 4BDDF8E0018; Thu, 25 Sep 2025 23:35:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DDFD8E0013; Thu, 25 Sep 2025 23:35:21 -0400 (EDT)
+	id 46EDA8E0019; Thu, 25 Sep 2025 23:35:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5AE638E0017; Thu, 25 Sep 2025 23:35:21 -0400 (EDT)
+	id 298BC8E0018; Thu, 25 Sep 2025 23:35:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 359D58E0013
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 23:35:21 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0A8F01DC2E5
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1455C8E0013
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 23:35:22 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DDA1F1A054C
 	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:21 +0000 (UTC)
-X-FDA: 83929986042.07.E6A8C76
+X-FDA: 83929986042.05.B01A6DD
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf28.hostedemail.com (Postfix) with ESMTP id EF2CBC0004
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:18 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Knxes3Ld;
-	spf=pass (imf28.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	by imf15.hostedemail.com (Postfix) with ESMTP id DFD94A0007
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:19 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=c1llFKE0;
+	spf=pass (imf15.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758857719;
+	s=arc-20220608; t=1758857720;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ARda8hP3cceGELENrFFfq0gkkw4v8WqvDaZnw/4sIH0=;
-	b=MdLs4mjRTBZ1geNwQiO/k5qy7QJ/JzwW745G3NdLdeLpktJEIIoArxR3MrMq9za0y8Ze80
-	dSzQvUrl0+TXmwc2dSRJfOq1EPIaQ8UoaOH65q/3G6o/FxtXVEsGlXplV4aVwVfm1hGUge
-	RkagwSD9aEtzSk9OJa2iz4saNxD4bCE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758857719; a=rsa-sha256;
+	bh=SZV6gmFDjAgsmH8wXBQd2uT3uPOIgvz/RFVUDESjZ90=;
+	b=CXg5Xch1jMQj1Z6Uyw+Oqd5evRKJl1gF/cY1FNEbUA+sWLI5rCRmvuufpuD13LgwwX7ITv
+	Wq7NwIYudc47nRWzslO7JqYnSUlq9KnL3GZ2tbtSfTThm7QoZLRoIfa2krCRV51Ye+MyWq
+	khk693Gg90ksq2pwrarI7ehcMktgWZs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758857720; a=rsa-sha256;
 	cv=none;
-	b=mS4IatO270Fqom7GqVcBV1zNP0ElVOTGoI/FI5/bBMNaxXjawcEtxxtwIeGokNrHkvsUq+
-	vbM6Z5mfjJqBtadMp2icLmmsUpcqpAzlH4w+hYC+oIY4bHcrRbXxF/38tS/uWjHV9r5FAe
-	umeRYxdmOfIDXxzT3VoCju70JmQRfAo=
+	b=1Us0vUqoSlaZ2Q0rfozBsiwbUTQiZDR3ONN8SFyEYwo/eqvuGdkEJzBEQ4nf0yo9DeGSmL
+	C6Edf6Rc8uevvyyFxJenqgA1abjUIKZVeG+jhBJ5F18ZQ6K7kRBRFRHfpHVMUMa5BeSsib
+	gxnl5q2mQE7ixUDw/vNgDLcZp1S7nO0=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Knxes3Ld;
-	spf=pass (imf28.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=c1llFKE0;
+	spf=pass (imf15.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758857719; x=1790393719;
+  t=1758857720; x=1790393720;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=+uznglJhVLAkGBIwRR16VJzAmGsqt4JlgKBPGDbBxF4=;
-  b=Knxes3LdH97otFRCJFgIWrrcgEpyklNtlx1qOi9XKFrhC1EkSSEPNXpq
-   8rj+C/T3gWinmwq0FMxd9nkV9FhQwshTnw2bh78s8GMb97CP/ztdwe1Qw
-   gsUOgEfB0SVhEv6fEMeOSkClBLf2Ssfwr+Loh2w2CF7VBvvkhTHXBHn+0
-   8QiLvVExKD8V44byiyentnEtl7t/aaGocsqQa9DK+csDKMMvUz3kl2s0O
-   TwVgl5asnTY5iYGNm3Y89UJ6H5JdjevwHtuA5O4ZIKWlg1Js4YJdDwZOJ
-   jhXu9yOWVlTfstxKpfCVGMjyDGEQ9uVz2l6rFaWpkLfAKiaohRut1a+eD
+  bh=RdtG4oYnaUiZ1ttzY4avkjog/6/16IXF7YMAS9x4VlM=;
+  b=c1llFKE0+q0gOllMFDYb+ww/83tcKiPNfgWOdML3YV4hgBW+y6odCXl1
+   NPsTrJRVJlSEXdn/zFsDJVN1u3oztRXB5YjFVDXEBKsS/jHvC6Kpz4jNM
+   kBzZQ4cOIZKsDeOiWeFyFyS22z8xuMoYRHMAhLmNRy8IU7fX97yjxU31I
+   CYkvN3eN/h6h7Fi10qHOJo5u84fntdbqNecoYsJ3nXtJhAxFcTgAGwDPP
+   +9kShga1sILa99aYonSoug3ws5Awvx0rSsJE13YAxNAnFc496zTCze1hd
+   SyRSmBdwF9SZxLERh52AK1X46MBwakFKvTP0Md1lguWQY9LA8sc3GwyJU
    g==;
-X-CSE-ConnectionGUID: 8fhUXdDfR4iVQo3iDspLUg==
-X-CSE-MsgGUID: pU/QnDJ/Q4CDanCgSyLpgQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="63819600"
+X-CSE-ConnectionGUID: fWvPGNz5RZ+7S827dP58uA==
+X-CSE-MsgGUID: I3vJ72HGRXyl8kdtOY3r4Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="63819627"
 X-IronPort-AV: E=Sophos;i="6.18,294,1751266800"; 
-   d="scan'208";a="63819600"
+   d="scan'208";a="63819627"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 20:35:06 -0700
-X-CSE-ConnectionGUID: igqGqvaHSDWQ8xow2+RIQA==
-X-CSE-MsgGUID: uN+xYXNsTeCmj2a2HrhHZw==
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 20:35:07 -0700
+X-CSE-ConnectionGUID: cAKDv1LcRUqGg49d9GbJ8g==
+X-CSE-MsgGUID: YeuClNc0QHeBobxThiltsw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,294,1751266800"; 
-   d="scan'208";a="214636595"
+   d="scan'208";a="214636602"
 Received: from jf5300-b11a338t.jf.intel.com ([10.242.51.115])
-  by orviesa001.jf.intel.com with ESMTP; 25 Sep 2025 20:35:05 -0700
+  by orviesa001.jf.intel.com with ESMTP; 25 Sep 2025 20:35:06 -0700
 From: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -102,22 +102,20 @@ To: linux-kernel@vger.kernel.org,
 Cc: wajdi.k.feghali@intel.com,
 	vinodh.gopal@intel.com,
 	kanchana.p.sridhar@intel.com
-Subject: [PATCH v12 15/23] crypto: iaa - Enable async mode and make it the default.
-Date: Thu, 25 Sep 2025 20:34:54 -0700
-Message-Id: <20250926033502.7486-16-kanchana.p.sridhar@intel.com>
+Subject: [PATCH v12 17/23] crypto: iaa - Submit the two largest source buffers first in decompress batching.
+Date: Thu, 25 Sep 2025 20:34:56 -0700
+Message-Id: <20250926033502.7486-18-kanchana.p.sridhar@intel.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
 References: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: EF2CBC0004
-X-Stat-Signature: m9e3rrfsoen8htkbgmybdywak7gkc7bi
+X-Stat-Signature: yatbijhj6pnxpskmxwmsyrri74gxat8a
+X-Rspamd-Queue-Id: DFD94A0007
 X-Rspam-User: 
-X-HE-Tag: 1758857718-176442
-X-HE-Meta: U2FsdGVkX19CACEZ1HQ5FQ7i1l3QN3BwB4qf4uTatfP2KQsJOJvIB/jMB3s06WiXk63RhUjapaqYFpXu794i5WGxPSlJMfIjhofW+LBNpIxIbVxGJtTB6ERehb5z/C4fXn+tlyqrVcU7uYVJfwxLa+eKvI8d4jHphKWj5GQA/Uc1zMlVgTpG6AuIBiBivhC1LmP2NGOG8Dh4XB8+m3HtbQFDp5OTzLKuDX+ur1lnIVET3xr/Hj+kjlJOF/fRNi1yMBpVNc9/yQytLKdDVzb4+ICVc+vAe5K7iE0f89Wj5FNhmrd6cufMUNMzJ/wstLQGg8RUZI+3fuEsGqjZtQ2/p7aAAddMkKzrsActrAp3fY+/s74kNgOFiRHk5taUPqStN1J/EOazJ4BkF2oJTpYORBmgZ9Zyu2NY318sT6mU/+6d8VObTcPznKdzSsZlpfvj5FCosD+03UB5+cFuCSUKU9RS5p6P+6XatVvWxGIqisQYy2MkGWoHLkE30cd66pT7XhbwgObANWsEJg0N/ESs/AvgyCLAJHao/7SCjM0U8DFlkltl+NWqmKZm7/wGjr0sC21MzxXRP1catj1emLgQRKVkhF12+wpfaOeUHOx3O7YdmS9SFavXu7odfxmpfNH8/8unP6Hd/bU1JdSvmF53QaUqLh8p34gEbu1fdWcFXtw5480Tfl9nYqKKOAEpYOL+zyYQF9IdpDEm8HKuq9j/aMeoOMaopJKq0kMrkgQlL9ADgAr0avx7et76fY5Jhp3MTAqcXtYZOQq9HelK5aK2csjHa+jjwXH7r8nhD2v1buqol/nQxF42U6V9wzrM8S/cuH9t5cqsQ+WGmqE5NCxQAwSp6njKiA2sNTM3W4FgCWsgR/hvEfEILNd7qou/GgzKsnrunfmSgY5ORfff8qSz5CryLJOtzQ/gBzno1a65it4JuWAGBl/V8R9weVJ07CbmYdq5Ac4Gin1fBR4jELx
- v1zHCQoK
- vHas4mrv8mftl5Ggwy7idTrj7fAtWPgbxEUboYcJgBT4VXAUixjUinxtoBwqxK4SThqss7Xu7u5T5rIiEfZEHFMy+RkcbuLloKPa+xpeKAja52CJbwbQbOe5fFFinthtbFPpDfaQdm1vIGxqlilutiFMiKxvmnoO3RiB2z/yS4Hvz2i40j/YBx61+ow==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1758857719-2629
+X-HE-Meta: U2FsdGVkX18gI9o5wGJuYAqd83DYa1OuY4kZx6y+nB9IIZIMDGVWLwzr3VLjNx+qQBfUBCvKqwNi8/p1KWhe8obWDDgEQql4JVTakCyOz1yU1XPLdYmXM7GA60Z3TEGS6b69ZH7MHOSnClLAB4gWf1MdGY9gt0641aIsW2oN2HKNZcdOC+YpcellEfjv1WfgPSzWdnMaJdhLBlm8iQUrKX/W6tr56Xa9a+eahRKm6ThWuWhcODJUaPi0Z1gDiKSbWYfTYf2rTceISy8D9kMQA0v6e9tq+P+C9+BZmTjiYKGl+iYSJ740WfNQ3Ndak4/8qfoR3n1cdvNpLeiBBX4ZHKD6E2Zz7QlxqWQFcqOwGQYS7d/B9B7H6WRaiqwHeoizLP3pxnIzZPu+7eOZs6Tja2MHLjfuppanXAbrbh7wau4FFzJD71KjJVYRgJMrG7BV+dppNl0qOSNu/TwImoB5KLQ7cf2lNOqoxIUDADI0tHcDR3xlF+srAp1M448wpHZYZT9qH+7YIiUI3ZjwLVYYr0OD4/mvtJ0LIXa9mWgECvxTyKf9Scaldam6B20Um3d0p59z515ulQhD5o7uKpLnVXF4w6wiARSTBpDU3YaPBbM8TNiFTaZpz14LVbDe0wl3zAc9IhIvZ4zxTUUiSlNEdAIghBFR5xQ3lMccRBJ9mGGT/3V/mnOIyUqzNazMScSX1vkep5/4B6YUlfeGp5kSn0li4qLnXKbsQqMxasBRnUcD0EpwXhyj9dbMv6dB7/jpi+WekqAFPOAe/AoH5M5U1bYxn/r03mIi8x6Ut+Z4rbZaZcQXIhZTaSVOKuqI0Wlh6Hj7jXJQTV9L7EeKb1hlxmH3XgChIMAbgAqgBkshkF1GGMrwdNX+X89Jap6IVDxg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,84 +124,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch enables the 'async' sync_mode in the driver. Further, it sets
-the default sync_mode to 'async', which makes it easier for IAA hardware
-acceleration in the iaa_crypto driver to be loaded by default in the most
-efficient/recommended 'async' mode for parallel
-compressions/decompressions, namely, asynchronous submission of
-descriptors, followed by polling for job completions. Earlier, the
-"sync" mode used to be the default.
+This patch finds the two largest source buffers in a given decompression
+batch, and submits them first to the IAA decompress engines.
 
-The iaa_crypto driver documentation has been updated with these
-changes.
-
-This way, anyone who wants to use IAA for zswap/zram can do so after
-building the kernel, and without having to go through these steps to use
-async mode:
-
-  1) disable all the IAA device/wq bindings that happen at boot time
-  2) rmmod iaa_crypto
-  3) modprobe iaa_crypto
-  4) echo async > /sys/bus/dsa/drivers/crypto/sync_mode
-  5) re-run initialization of the IAA devices and wqs
+This improves decompress batching latency because the hardware has a
+head start on decompressing the highest latency source buffers in the
+batch. Workload performance is also significantly improved as a result
+of this optimization.
 
 Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
 ---
- Documentation/driver-api/crypto/iaa/iaa-crypto.rst | 11 ++---------
- drivers/crypto/intel/iaa/iaa_crypto_main.c         |  4 ++--
- 2 files changed, 4 insertions(+), 11 deletions(-)
+ drivers/crypto/intel/iaa/iaa_crypto_main.c | 61 +++++++++++++++++++++-
+ 1 file changed, 59 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/driver-api/crypto/iaa/iaa-crypto.rst b/Documentation/driver-api/crypto/iaa/iaa-crypto.rst
-index 0ff4ec603b43..d5e610ef4612 100644
---- a/Documentation/driver-api/crypto/iaa/iaa-crypto.rst
-+++ b/Documentation/driver-api/crypto/iaa/iaa-crypto.rst
-@@ -272,7 +272,7 @@ The available attributes are:
-       echo async_irq > /sys/bus/dsa/drivers/crypto/sync_mode
- 
-     Async mode without interrupts (caller must poll) can be enabled by
--    writing 'async' to it (please see Caveat)::
-+    writing 'async' to it::
- 
-       echo async > /sys/bus/dsa/drivers/crypto/sync_mode
- 
-@@ -281,14 +281,7 @@ The available attributes are:
- 
-       echo sync > /sys/bus/dsa/drivers/crypto/sync_mode
- 
--    The default mode is 'sync'.
--
--    Caveat: since the only mechanism that iaa_crypto currently implements
--    for async polling without interrupts is via the 'sync' mode as
--    described earlier, writing 'async' to
--    '/sys/bus/dsa/drivers/crypto/sync_mode' will internally enable the
--    'sync' mode. This is to ensure correct iaa_crypto behavior until true
--    async polling without interrupts is enabled in iaa_crypto.
-+    The default mode is 'async'.
- 
-   - g_comp_wqs_per_iaa
- 
 diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-index 0a620f2dc58e..c4f40984e9bf 100644
+index 5b933c138e50..0669ae155e90 100644
 --- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
 +++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-@@ -152,7 +152,7 @@ static bool iaa_verify_compress = true;
-  */
+@@ -2379,6 +2379,36 @@ static int iaa_comp_acompress_batch(
+ 	return err;
+ }
  
- /* Use async mode */
--static bool async_mode;
-+static bool async_mode = true;
- /* Use interrupts */
- static bool use_irq;
++/*
++ * Find the two largest source buffers in @slens for a decompress batch,
++ * and pass their indices back in @idx_max and @idx_next_max.
++ *
++ * Returns true if there is no second largest source buffer, only a max buffer.
++ */
++static bool decomp_batch_get_max_slens_idx(
++	struct iaa_req *reqs[],
++	int nr_pages,
++	int *idx_max,
++	int *idx_next_max)
++{
++	int i, max_i = 0, next_max_i = 0;
++
++	for (i = 0; i < nr_pages; ++i) {
++		if (reqs[i]->slen >= reqs[max_i]->slen) {
++			next_max_i = max_i;
++			max_i = i;
++		} else if ((next_max_i == max_i) ||
++			   (reqs[i]->slen > reqs[next_max_i]->slen)) {
++			next_max_i = i;
++		}
++	}
++
++	*idx_max = max_i;
++	*idx_next_max = next_max_i;
++
++	return (next_max_i == max_i);
++}
++
+ /**
+  * This API provides IAA decompress batching functionality for use by swap
+  * modules.
+@@ -2401,12 +2431,13 @@ static int iaa_comp_adecompress_batch(
+ 	unsigned int unit_size)
+ {
+ 	struct iaa_batch_ctx *cpu_ctx = raw_cpu_ptr(iaa_batch_ctx);
++	bool max_processed = false, next_max_processed = false;
+ 	int nr_reqs = parent_req->dlen / unit_size;
+ 	int errors[IAA_CRYPTO_MAX_BATCH_SIZE];
++	int i = 0, max_i, next_max_i, err = 0;
+ 	bool decompressions_done = false;
+ 	struct scatterlist *sg;
+ 	struct iaa_req **reqs;
+-	int i, err = 0;
  
-@@ -206,7 +206,7 @@ static int set_iaa_sync_mode(const char *name)
- 		async_mode = false;
- 		use_irq = false;
- 	} else if (sysfs_streq(name, "async")) {
--		async_mode = false;
-+		async_mode = true;
- 		use_irq = false;
- 	} else if (sysfs_streq(name, "async_irq")) {
- 		async_mode = true;
+ 	mutex_lock(&cpu_ctx->mutex);
+ 
+@@ -2425,11 +2456,28 @@ static int iaa_comp_adecompress_batch(
+ 
+ 	iaa_set_req_poll(reqs, nr_reqs, true);
+ 
++	/*
++	 * Get the indices of the two largest decomp buffers in the batch.
++	 * Submit them first. This improves latency of the batch.
++	 */
++	next_max_processed = decomp_batch_get_max_slens_idx(reqs, nr_reqs,
++							    &max_i, &next_max_i);
++
++	i = max_i;
++
+ 	/*
+ 	 * Prepare and submit the batch of iaa_reqs to IAA. IAA will process
+ 	 * these decompress jobs in parallel.
+ 	 */
+-	for (i = 0; i < nr_reqs; ++i) {
++	for (; i < nr_reqs; ++i) {
++		if ((i == max_i) && max_processed)
++			continue;
++		if ((i == next_max_i) && max_processed && next_max_processed)
++			continue;
++
++		if (max_processed && !next_max_processed)
++			i = next_max_i;
++
+ 		errors[i] = iaa_comp_adecompress(ctx, reqs[i]);
+ 
+ 		/*
+@@ -2444,6 +2492,15 @@ static int iaa_comp_adecompress_batch(
+ 		} else {
+ 			*parent_req->dlens[i] = reqs[i]->dlen;
+ 		}
++
++		if (i == max_i) {
++			max_processed = true;
++			i = -1;
++		}
++		if (i == next_max_i) {
++			next_max_processed = true;
++			i = -1;
++		}
+ 	}
+ 
+ 	/*
 -- 
 2.27.0
 
