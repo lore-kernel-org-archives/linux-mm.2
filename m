@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19F5ECAC5B0
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 03:35:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A6BBCAC5B5
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 03:35:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04A998E000E; Thu, 25 Sep 2025 23:35:18 -0400 (EDT)
+	id 3F9F88E0014; Thu, 25 Sep 2025 23:35:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F25F98E0014; Thu, 25 Sep 2025 23:35:17 -0400 (EDT)
+	id 3A92E8E0013; Thu, 25 Sep 2025 23:35:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1F478E000E; Thu, 25 Sep 2025 23:35:17 -0400 (EDT)
+	id 249EA8E0014; Thu, 25 Sep 2025 23:35:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A63308E000E
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 23:35:17 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 836CEBA2E3
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:17 +0000 (UTC)
-X-FDA: 83929985874.16.2B958FC
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E2588E0013
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 23:35:19 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CC67EC0568
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:18 +0000 (UTC)
+X-FDA: 83929985916.07.516AEF2
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9A346A0007
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:15 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=GGY8paAI;
-	spf=pass (imf15.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	by imf28.hostedemail.com (Postfix) with ESMTP id B0CA0C0004
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:16 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hTRZSwRv;
+	spf=pass (imf28.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758857715;
+	s=arc-20220608; t=1758857716;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WTUIrmbHpwYn4cveCkSP3iLYZRp1BZXyN/59/DoY/4Y=;
-	b=5UgyAxBFyj0+WrLmzFuPkT5jIurALMsSC1ToVjy+yoa0ihiYG9VCGAFa4Oht0kr3DlawSO
-	uV4TZvc5xXToqU7rvqKxfLwNN4jcoftWkGjDr6EuHNtRx2ix6+z1egkhkrXeiBftIiB72y
-	0o9TU7zil1/5vGdtnSArtX1CWMimpDI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758857715; a=rsa-sha256;
+	bh=eX8UsgwzY7WbpyA/jTTT8eTtd67A6JRzRgg054s+cmQ=;
+	b=oqjOcd0/EV0yNZG5QiaTTEiiZ0qc7FLvJxDNjGqPnNqxurEZjZfiUH2FWN6M89i2qq8qfy
+	acpYdGjh/0phVP2Kqa+q3n02/zhkkG3qs+VaMi8cx9iAmn6lfhL8kgYUAWkLjF5KhIQmc5
+	5gUtip8ahceLl1/zN90IJkjJ9O546sM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758857716; a=rsa-sha256;
 	cv=none;
-	b=LG7dnp0PPk12TOgRfugGv+Hjvu2I6ClWt/eN+k5zM5jEFz0IAUuKkXVbV5G10XxVyBsAJp
-	VxYxWn/e3GyLqd+slKBVqWkopat/HA91VdG+Rui7TaXKebZ/rFp8LmtSDNfK3o1xsfky8i
-	wz6AHAkN9MJEtc+nOEQC/gN3bOhhv3Q=
+	b=RQjn0f3RuoITB71k/OFaVWWZgSgO4o+EsMN3CQbNitCRd+Xy/C88FeQRqNpwHKUT4MpCNU
+	KWS+aKwNA51oER+uUm4v9JllAuA5LTvVCU1DPNxFADLpGkn6qUejP/eyFXAUC55XR+HWLi
+	+v2NHvmyuk65jL13bPlmhTa/gXu32Ow=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=GGY8paAI;
-	spf=pass (imf15.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hTRZSwRv;
+	spf=pass (imf28.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758857716; x=1790393716;
+  t=1758857717; x=1790393717;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=YeucmBW4uE3v66fZdWNHbrEXnqb/5N0a3izK6ymDr0I=;
-  b=GGY8paAIaitSk/F+vmjTKg+g6AqSocBT5sEDg2AebaZSIieMnsxKh2Mq
-   vc2M84EWEsAXYjGqE1alzqQZjyWM+r2RW7S8/FFXDDB/p296HrKBz1dpW
-   jBLeZrBuPgWnirZ9k9qmQPFbWkFLky1kePkv5o5/4bpN6R9NJwCv5KFIy
-   YBCo4pDisE46bVC6QKI9inxYfZILmvcPuCSDzUqJGBDhWkmT6ESliOSZV
-   imOn5P5pNUYaEYDQsFstU291FYfHQq4c9YQU6+iwGLm0NA0kBY7d70CZS
-   bCqBQYcZLjUNuHZGsHkuJK4uR67B5HgQDvtAMkgx2a+bMA/gUgND/qPUY
-   w==;
-X-CSE-ConnectionGUID: 1DGXhhVjRvKi17H34Z4xLw==
-X-CSE-MsgGUID: 6g/16qCcT+WybnMq/zWQnQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="63819529"
+  bh=O6Y/KqSHNNgjHA7lJ/nseE1s3+rHj9XrHsce22HNXnk=;
+  b=hTRZSwRvT61+umwC7epBfzlt1vkBlUCVGQdWnrH+CYg/ZpiaxMHPILEG
+   GezS0l03+wo/rSb4kMmdL0EVzS70hs03q3NwKXiN1oIIxENvvTt8O5Aot
+   T45V4C/SgZj/QEQ7D/B2qhEwdhnVlNedQucDg3ZfhV3eFehFTXwZje24U
+   JrA7S+YFiza5MzQJRQoQQRu/8Ul7GFckn3VY7eepQZWtBjR7Xpe+8nLHU
+   g6hd1tt/G5JGhTk6uNVpxQe9XZP4KvpV46KtHbHCdWC2P4N8WsBG06m+D
+   1fQ+gA097S1lCu+YKExOYNrlkFRtQOkWtjdGL9ZuQmbYiwxt5ley9cAqE
+   Q==;
+X-CSE-ConnectionGUID: ojyQIfwqTKq1aNlA8vnkUA==
+X-CSE-MsgGUID: +EepdAuUQQeOVufMzEZERA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="63819549"
 X-IronPort-AV: E=Sophos;i="6.18,294,1751266800"; 
-   d="scan'208";a="63819529"
+   d="scan'208";a="63819549"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 20:35:05 -0700
-X-CSE-ConnectionGUID: /bspJ5WQSiWc8d4EuZm2iw==
-X-CSE-MsgGUID: MXWsdFXuSoCqOvxAuuj0xw==
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 20:35:06 -0700
+X-CSE-ConnectionGUID: AFxCyJRuTT65k9GCwiosJw==
+X-CSE-MsgGUID: +ZdoxfwoQgS5NAUBnswviQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,294,1751266800"; 
-   d="scan'208";a="214636577"
+   d="scan'208";a="214636583"
 Received: from jf5300-b11a338t.jf.intel.com ([10.242.51.115])
-  by orviesa001.jf.intel.com with ESMTP; 25 Sep 2025 20:35:04 -0700
+  by orviesa001.jf.intel.com with ESMTP; 25 Sep 2025 20:35:05 -0700
 From: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -102,20 +102,22 @@ To: linux-kernel@vger.kernel.org,
 Cc: wajdi.k.feghali@intel.com,
 	vinodh.gopal@intel.com,
 	kanchana.p.sridhar@intel.com
-Subject: [PATCH v12 10/23] crypto: iaa - Expect a single scatterlist for a [de]compress request's src/dst.
-Date: Thu, 25 Sep 2025 20:34:49 -0700
-Message-Id: <20250926033502.7486-11-kanchana.p.sridhar@intel.com>
+Subject: [PATCH v12 12/23] crypto: iaa - Enablers for submitting descriptors then polling for completion.
+Date: Thu, 25 Sep 2025 20:34:51 -0700
+Message-Id: <20250926033502.7486-13-kanchana.p.sridhar@intel.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
 References: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 8ungx36okbdft5r16s5nydz5prq5fyg6
-X-Rspamd-Queue-Id: 9A346A0007
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B0CA0C0004
+X-Stat-Signature: hwozfcum3qu13i3a76pty8691ifsks7o
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758857715-964665
-X-HE-Meta: U2FsdGVkX18l5ZaSzznDK0K6WI5/qANNsZnLCzfyIsdtprRzGm6Bb+gouXRrjdWFrw+e69+JJ/nWSlwbYwqleDp90F15VB5y7Qw/pkXDlb0hZVxHRknc3iNF2kdYzxxXkbcK2kboFRRsVDLsxIL7s/edFjyQGhef6fO2WvzsKe0MuMiRgvgvrPbLEqJkbrZ80D8wJ4Qm9dcG3J5xhDTZ9Fv15Z19zCrT5Bjm9AgV3MlFwrJ8ZiVGehkNXBcjKalotSnQ+plknZinXRZwqE8vqosAuUPxk+U04Cg8Qe/znR7hCHjk1hcZm0TVX915fJCr3S86FgjcME/nQEWtAOJmlYKw7F4bULK35d+zmuX13Zoa4+uzX2OZ28alCQtJPu5l1ABImrxBk5vECk+1VBl/5DR2q7JCYLSqIG4a0RPyW7V8vNlsOYgQEEHyb1y89D6uIw9F71/WiEDEgnfbVXY3u3Py8IBEeL5a6AkU7dJmQDTGEiBWej99g1F5A0mDPygHslJYUup6GwelDWka1poqwOff9yKQ0MGL+1vIorhJ5Jn+x1QxQdYaVIoGud8+B9KkvtuFB6Je02hhywrRYA58R8butdgKidX02hx84+nu/T+6bcgwuPEBzory66KQQfNNjcgj0GqHXzW5rXyITSbAOXVa9N0Nzj5GpL8o0R7wIgC4I4CqmeBm5vKepdvO/tOOvb5GVRe3gT+eP9uDk4txDR0K1Hhg6a5oqbj72tudFlm7B/D7JHJM+w8GvEStERqlo5MxjwygNHUzj/bivlZFhrIukyHkRWtnzAr+aYaNZMQLD4WrRhDlDe8/YpzaJse9ZY+kktoM2zTDcRypYMjOcFcseeqQYEUMeW5PZZF7UXcnpsUWGtA3gb0OcqhJu+Ox
+X-HE-Tag: 1758857716-791216
+X-HE-Meta: U2FsdGVkX19Xro7uuCCnUKEb/XRoX2mxJelcNQB15dUTV/f/83CkrLXV0KxgKJrsVqdhRDk56lK+A5Rhnck4uU6SY3y13Gp37XDxHhb/nA3KsIbKgc86clJSX8q4F0tAK5hN6H4YyB4P7XsJtHZeCNfZ4m0m6/MI8rDPb+4+IWyU7+4CmyTpkAUPvnZo4t1OVlRgfTLRt+trKBGltMKsA5oaNBQ6o4IdPa13ANhgXfFnrutERF39+Xos9r/mHOF743+jateIW1xhlUl4zIJZ3JqW88X4LerYFhPvVgYcl+edqfcAru15nzq9dGng0C/FsCGNH2+spsS+nNdKm3A9ts5bVTofZYl0jyEgs127Kz4UuP4reFmjqoJJ/fUodlgF4oXvxC6ozf5KL0gU1wXOENyuwhljzsflBxFEJ6Zp92tROuTrqZbUTNkGYXeU6X9oLSf7dXqN9LGVQQNO7J+Z26KxYJ9M6vLXS8H347mRa8LC+uiKYuXnFfSxbhHfge5yC+Q6fpLk1LBZnriS0Fvq//ZPZL6vINq7A/FmCJ2FYaEv4mtjO2SjOOOZhCChWrn1hjKHkefTpS2V/8GHguTlLKZkBiDMPj+aLdhZzf+B4rExLzGqhGkou1tXhFJFYfPAfx7uFQHA2F/ABiwgpKrZldbBpUNnWPQ1o+eUdUiHDkprTxsW7GflyByHEll3Atoi/8hGXTYFQKE4XOXY2Z5o6HIhamTEtBHAH1wKigj1Su5WQeV16EGK0GzObWK2YHB0JSVLimN10h0bLy/DWo5sHqVhNvs9C/BUqVRzpDoLcQmsbtjfI0w32SgxL0hCOskBrYHOB3o1U5fczsCFT8aANjEgwxjt4S1ZV4JU+JVsmljRNT8kb3cJB00BDjjCBuPzGBBOSnmiO8Nn6bK9qRdnUzhK3sX6vG+zWtbYz/aLa7ca9ht8ho+hx5dFQQgjv6Zaj3gOqyICfSk5imYEz60
+ Lyaf2jNb
+ JA+eaMvrnIsTZBhD5jhbiNbN2wcXq5RpXgu+QIMUdFIarrf0kM5JCu1RIhHZeObJ0QGMH0qOMxDLQYtafoMBIBaMvtpA7Iu7GA1FuklveKubMcgu2U4Rg1rBNQBZAOjheUB5Vp0iKwntsmVaOGk8A0RBS9ScNPrlsGgSTFKaV3uEqSEUVIlBt/ha9HA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,174 +126,202 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The calls to dma_map_sg() were passing sg_nents() for the @nents
-parameter, then error-ing out if more than one @nr_sgs were
-returned. Furthermore, there are no use-cases for iaa_crypto that allow
-multiple SG lists to be mapped for dma at once.
+This patch adds capabilities in the IAA driver for kernel users to avail
+of the benefits of compressing/decompressing multiple jobs in parallel
+using IAA hardware acceleration, without the use of interrupts. Instead,
+this is accomplished using an async "submit-poll" mechanism.
 
-Moreover, as per Herbert's direction in [1] for the batching API from
-higher mm layers to interface with crypto using SG lists, batching
-within iaa_crypto will rely on there being exactly one SG list per
-"unit" of [de]compression in a batch, where the component SG lists are
-obtained by breaking down the @req->src and @req->dst.
+To achieve this, we break down a compress/decompress job into two
+separate activities if the driver is configured for non-irq async mode:
 
-Given all of the above, this patch simplifies the design by expecting
-only 1 @nents in req->src and req->dst, which aligns with current and
-batching use cases that will be developed in subsequent patches.
+1) Submit a descriptor after caching the "idxd_desc" descriptor in the
+   req->drv_data, and return -EINPROGRESS.
+2) Poll: Given a request, retrieve the descriptor and poll its completion
+   status for success/error.
 
-This alleviates the latency penalty of calling sg_nents() per
-[de]compress op submitted to the hardware.
+This is enabled by the following additions in the driver:
 
-Some unlikely() annotations are added to conditionals in the core
-[de]compress routines to further improve latency per op.
+1) The idxd_desc is cached in the "drv_data" member of "struct iaa_req".
 
-[1]: https://lore.kernel.org/all/aJ7Fk6RpNc815Ivd@gondor.apana.org.au/T/#m99aea2ce3d284e6c5a3253061d97b08c4752a798
+2) IAA_REQ_POLL_FLAG: if set in the iaa_req's flags, this tells
+   the driver that it should submit the descriptor and return
+   -EINPROGRESS. If not set, the driver will proceed to call
+   check_completion() in fully synchronous mode, until the hardware
+   returns a completion status.
+
+3) iaa_comp_poll() procedure: This routine is intended to be called
+   after submission returns -EINPROGRESS. It will check the completion
+   status once, and return -EAGAIN if the job has not completed. If the
+   job has completed, it will return the completion status.
+
+The purpose of this commit is to allow kernel users of iaa_crypto, such
+as zswap, to be able to invoke the crypto_acomp_compress() API in fully
+synchronous mode for sequential/non-batching use cases (i.e. today's
+status-quo), wherein zswap calls:
+
+  crypto_wait_req(crypto_acomp_compress(req), wait);
+
+and to non-instrusively invoke the fully asynchronous batch
+compress/decompress functionality that will be introduced in subsequent
+patches. Both use cases need to reuse same code paths in the driver to
+interface with hardware: the IAA_REQ_POLL_FLAG allows this
+shared code to determine whether we need to process an iaa_req
+synchronously/asynchronously. The idea is to simplify iaa_crypto's
+sequential/batching interfaces for use by zswap and zram.
+
+Thus, regardless of the iaa_crypto driver's 'sync_mode' setting, it
+can still be forced to use synchronous mode by *not setting* the
+IAA_REQ_POLL_FLAG in iaa_req->flags: this is the default to support
+sequential use cases in zswap today.
+
+When IAA batching functionality is introduced subsequently, it will set
+the IAA_REQ_POLL_FLAG for the requests in a batch. We will submit the
+descriptors for each request in the batch in iaa_[de]compress(), and
+return -EINPROGRESS. The hardware will begin processing each request as
+soon as it is submitted, essentially all compress/decompress jobs will
+be parallelized. The polling function, "iaa_comp_poll()", will retrieve
+the descriptor from each iaa_req->drv_data to check its completion
+status. This enables the iaa_crypto driver to implement true async
+"submit-polling" for parallel compressions and decompressions in the IAA
+hardware accelerator.
+
+To summarize, both these conditions need to be met for a request to be
+processed in fully async submit-poll mode:
+
+ 1) use_irq should be "false"
+ 2) iaa_req->flags & IAA_REQ_POLL_FLAG should be "true"
 
 Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
 ---
- drivers/crypto/intel/iaa/iaa_crypto_main.c | 54 +++++++++++-----------
- 1 file changed, 27 insertions(+), 27 deletions(-)
+ drivers/crypto/intel/iaa/iaa_crypto.h      |  6 ++
+ drivers/crypto/intel/iaa/iaa_crypto_main.c | 71 +++++++++++++++++++++-
+ 2 files changed, 75 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/crypto/intel/iaa/iaa_crypto.h b/drivers/crypto/intel/iaa/iaa_crypto.h
+index 190157967e3b..1cc383c94fb8 100644
+--- a/drivers/crypto/intel/iaa/iaa_crypto.h
++++ b/drivers/crypto/intel/iaa/iaa_crypto.h
+@@ -41,6 +41,12 @@
+ 					 IAA_DECOMP_CHECK_FOR_EOB | \
+ 					 IAA_DECOMP_STOP_ON_EOB)
+ 
++/*
++ * If set, the driver must have a way to submit the req, then
++ * poll its completion status for success/error.
++ */
++#define IAA_REQ_POLL_FLAG		0x00000002
++
+ /* Representation of IAA workqueue */
+ struct iaa_wq {
+ 	struct list_head	list;
 diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-index dd7c4831e092..16b071058f2b 100644
+index f5abad950371..7395822430b1 100644
 --- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
 +++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-@@ -1514,11 +1514,11 @@ static int iaa_remap_for_verify(struct device *dev, struct iaa_wq *iaa_wq,
- 	int ret = 0;
- 	int nr_sgs;
+@@ -1891,13 +1891,14 @@ static int iaa_compress(struct iaa_compression_ctx *ctx, struct iaa_req *req,
+ 					  ctx->mode, iaa_device->compression_modes[ctx->mode]);
  
--	dma_unmap_sg(dev, req->dst, sg_nents(req->dst), DMA_FROM_DEVICE);
--	dma_unmap_sg(dev, req->src, sg_nents(req->src), DMA_TO_DEVICE);
+ 	if (likely(!ctx->use_irq)) {
++		req->drv_data = idxd_desc;
+ 		iaa_submit_desc_movdir64b(wq, idxd_desc);
+ 
+ 		/* Update stats */
+ 		update_total_comp_calls();
+ 		update_wq_comp_calls(wq);
+ 
+-		if (ctx->async_mode)
++		if (req->flags & IAA_REQ_POLL_FLAG)
+ 			return -EINPROGRESS;
+ 
+ 		ret = check_completion(dev, idxd_desc->iax_completion, true, false);
+@@ -1979,13 +1980,14 @@ static int iaa_decompress(struct iaa_compression_ctx *ctx, struct iaa_req *req,
+ 	desc = iaa_setup_decompress_hw_desc(idxd_desc, src_addr, slen, dst_addr, *dlen);
+ 
+ 	if (likely(!ctx->use_irq)) {
++		req->drv_data = idxd_desc;
+ 		iaa_submit_desc_movdir64b(wq, idxd_desc);
+ 
+ 		/* Update stats */
+ 		update_total_decomp_calls();
+ 		update_wq_decomp_calls(wq);
+ 
+-		if (ctx->async_mode)
++		if (req->flags & IAA_REQ_POLL_FLAG)
+ 			return -EINPROGRESS;
+ 
+ 		ret = check_completion(dev, idxd_desc->iax_completion, false, false);
+@@ -2188,6 +2190,71 @@ static int iaa_comp_adecompress(struct iaa_compression_ctx *ctx, struct iaa_req
+ 	return ret;
+ }
+ 
++static int __maybe_unused iaa_comp_poll(struct iaa_compression_ctx *ctx, struct iaa_req *req)
++{
++	struct idxd_desc *idxd_desc;
++	struct idxd_device *idxd;
++	struct iaa_wq *iaa_wq;
++	struct pci_dev *pdev;
++	struct device *dev;
++	struct idxd_wq *wq;
++	bool compress_op;
++	int ret;
++
++	idxd_desc = req->drv_data;
++	if (!idxd_desc)
++		return -EAGAIN;
++
++	compress_op = (idxd_desc->iax_hw->opcode == IAX_OPCODE_COMPRESS);
++	wq = idxd_desc->wq;
++	iaa_wq = idxd_wq_get_private(wq);
++	idxd = iaa_wq->iaa_device->idxd;
++	pdev = idxd->pdev;
++	dev = &pdev->dev;
++
++	ret = check_completion(dev, idxd_desc->iax_completion, compress_op, true);
++	if (ret == -EAGAIN)
++		return ret;
++	if (ret)
++		goto out;
++
++	req->dlen = idxd_desc->iax_completion->output_size;
++
++	/* Update stats */
++	if (compress_op) {
++		update_total_comp_bytes_out(req->dlen);
++		update_wq_comp_bytes(wq, req->dlen);
++	} else {
++		update_total_decomp_bytes_in(req->slen);
++		update_wq_decomp_bytes(wq, req->slen);
++	}
++
++	if (compress_op && ctx->verify_compress) {
++		dma_addr_t src_addr, dst_addr;
++
++		req->compression_crc = idxd_desc->iax_completion->crc;
++
++		dma_sync_sg_for_device(dev, req->dst, 1, DMA_FROM_DEVICE);
++		dma_sync_sg_for_device(dev, req->src, 1, DMA_TO_DEVICE);
++
++		src_addr = sg_dma_address(req->src);
++		dst_addr = sg_dma_address(req->dst);
++
++		ret = iaa_compress_verify(ctx, req, wq, src_addr, req->slen,
++					  dst_addr, req->dlen);
++	}
++
++out:
++	/* caller doesn't call crypto_wait_req, so no acomp_request_complete() */
 +	dma_unmap_sg(dev, req->dst, 1, DMA_FROM_DEVICE);
 +	dma_unmap_sg(dev, req->src, 1, DMA_TO_DEVICE);
- 
--	nr_sgs = dma_map_sg(dev, req->src, sg_nents(req->src), DMA_FROM_DEVICE);
--	if (nr_sgs <= 0 || nr_sgs > 1) {
-+	nr_sgs = dma_map_sg(dev, req->src, 1, DMA_FROM_DEVICE);
-+	if (unlikely(nr_sgs <= 0 || nr_sgs > 1)) {
- 		dev_dbg(dev, "verify: couldn't map src sg for iaa device %d,"
- 			" wq %d: ret=%d\n", iaa_wq->iaa_device->idxd->id,
- 			iaa_wq->wq->id, ret);
-@@ -1530,13 +1530,13 @@ static int iaa_remap_for_verify(struct device *dev, struct iaa_wq *iaa_wq,
- 		" req->slen %d, sg_dma_len(sg) %d\n", *src_addr, nr_sgs,
- 		req->src, req->slen, sg_dma_len(req->src));
- 
--	nr_sgs = dma_map_sg(dev, req->dst, sg_nents(req->dst), DMA_TO_DEVICE);
--	if (nr_sgs <= 0 || nr_sgs > 1) {
-+	nr_sgs = dma_map_sg(dev, req->dst, 1, DMA_TO_DEVICE);
-+	if (unlikely(nr_sgs <= 0 || nr_sgs > 1)) {
- 		dev_dbg(dev, "verify: couldn't map dst sg for iaa device %d,"
- 			" wq %d: ret=%d\n", iaa_wq->iaa_device->idxd->id,
- 			iaa_wq->wq->id, ret);
- 		ret = -EIO;
--		dma_unmap_sg(dev, req->src, sg_nents(req->src), DMA_FROM_DEVICE);
-+		dma_unmap_sg(dev, req->src, 1, DMA_FROM_DEVICE);
- 		goto out;
- 	}
- 	*dst_addr = sg_dma_address(req->dst);
-@@ -1704,14 +1704,14 @@ static void iaa_desc_complete(struct idxd_desc *idxd_desc,
- 			err = -EIO;
- 		}
- 
--		dma_unmap_sg(dev, ctx->req->dst, sg_nents(ctx->req->dst), DMA_TO_DEVICE);
--		dma_unmap_sg(dev, ctx->req->src, sg_nents(ctx->req->src), DMA_FROM_DEVICE);
-+		dma_unmap_sg(dev, ctx->req->dst, 1, DMA_TO_DEVICE);
-+		dma_unmap_sg(dev, ctx->req->src, 1, DMA_FROM_DEVICE);
- 
- 		goto out;
- 	}
- err:
--	dma_unmap_sg(dev, ctx->req->dst, sg_nents(ctx->req->dst), DMA_FROM_DEVICE);
--	dma_unmap_sg(dev, ctx->req->src, sg_nents(ctx->req->src), DMA_TO_DEVICE);
-+	dma_unmap_sg(dev, ctx->req->dst, 1, DMA_FROM_DEVICE);
-+	dma_unmap_sg(dev, ctx->req->src, 1, DMA_TO_DEVICE);
- out:
- 	if (ret != 0)
- 		dev_dbg(dev, "asynchronous compress failed ret=%d\n", ret);
-@@ -2014,8 +2014,8 @@ static int iaa_comp_acompress(struct acomp_req *req)
- 
- 	dev = &wq->idxd->pdev->dev;
- 
--	nr_sgs = dma_map_sg(dev, req->src, sg_nents(req->src), DMA_TO_DEVICE);
--	if (nr_sgs <= 0 || nr_sgs > 1) {
-+	nr_sgs = dma_map_sg(dev, req->src, 1, DMA_TO_DEVICE);
-+	if (unlikely(nr_sgs <= 0 || nr_sgs > 1)) {
- 		dev_dbg(dev, "couldn't map src sg for iaa device %d,"
- 			" wq %d: ret=%d\n", iaa_wq->iaa_device->idxd->id,
- 			iaa_wq->wq->id, ret);
-@@ -2024,8 +2024,8 @@ static int iaa_comp_acompress(struct acomp_req *req)
- 	}
- 	src_addr = sg_dma_address(req->src);
- 
--	nr_sgs = dma_map_sg(dev, req->dst, sg_nents(req->dst), DMA_FROM_DEVICE);
--	if (nr_sgs <= 0 || nr_sgs > 1) {
-+	nr_sgs = dma_map_sg(dev, req->dst, 1, DMA_FROM_DEVICE);
-+	if (unlikely(nr_sgs <= 0 || nr_sgs > 1)) {
- 		dev_dbg(dev, "couldn't map dst sg for iaa device %d,"
- 			" wq %d: ret=%d\n", iaa_wq->iaa_device->idxd->id,
- 			iaa_wq->wq->id, ret);
-@@ -2051,18 +2051,18 @@ static int iaa_comp_acompress(struct acomp_req *req)
- 		if (ret)
- 			dev_dbg(dev, "asynchronous compress verification failed ret=%d\n", ret);
- 
--		dma_unmap_sg(dev, req->dst, sg_nents(req->dst), DMA_TO_DEVICE);
--		dma_unmap_sg(dev, req->src, sg_nents(req->src), DMA_FROM_DEVICE);
-+		dma_unmap_sg(dev, req->dst, 1, DMA_TO_DEVICE);
-+		dma_unmap_sg(dev, req->src, 1, DMA_FROM_DEVICE);
- 
- 		goto out;
- 	}
- 
--	if (ret)
-+	if (unlikely(ret))
- 		dev_dbg(dev, "asynchronous compress failed ret=%d\n", ret);
- 
--	dma_unmap_sg(dev, req->dst, sg_nents(req->dst), DMA_FROM_DEVICE);
-+	dma_unmap_sg(dev, req->dst, 1, DMA_FROM_DEVICE);
- err_map_dst:
--	dma_unmap_sg(dev, req->src, sg_nents(req->src), DMA_TO_DEVICE);
-+	dma_unmap_sg(dev, req->src, 1, DMA_TO_DEVICE);
- out:
- 	percpu_ref_put(&iaa_wq->ref);
- 
-@@ -2095,8 +2095,8 @@ static int iaa_comp_adecompress(struct acomp_req *req)
- 
- 	dev = &wq->idxd->pdev->dev;
- 
--	nr_sgs = dma_map_sg(dev, req->src, sg_nents(req->src), DMA_TO_DEVICE);
--	if (nr_sgs <= 0 || nr_sgs > 1) {
-+	nr_sgs = dma_map_sg(dev, req->src, 1, DMA_TO_DEVICE);
-+	if (unlikely(nr_sgs <= 0 || nr_sgs > 1)) {
- 		dev_dbg(dev, "couldn't map src sg for iaa device %d,"
- 			" wq %d: ret=%d\n", iaa_wq->iaa_device->idxd->id,
- 			iaa_wq->wq->id, ret);
-@@ -2105,8 +2105,8 @@ static int iaa_comp_adecompress(struct acomp_req *req)
- 	}
- 	src_addr = sg_dma_address(req->src);
- 
--	nr_sgs = dma_map_sg(dev, req->dst, sg_nents(req->dst), DMA_FROM_DEVICE);
--	if (nr_sgs <= 0 || nr_sgs > 1) {
-+	nr_sgs = dma_map_sg(dev, req->dst, 1, DMA_FROM_DEVICE);
-+	if (unlikely(nr_sgs <= 0 || nr_sgs > 1)) {
- 		dev_dbg(dev, "couldn't map dst sg for iaa device %d,"
- 			" wq %d: ret=%d\n", iaa_wq->iaa_device->idxd->id,
- 			iaa_wq->wq->id, ret);
-@@ -2120,12 +2120,12 @@ static int iaa_comp_adecompress(struct acomp_req *req)
- 	if (ret == -EINPROGRESS)
- 		return ret;
- 
--	if (ret != 0)
-+	if (unlikely(ret != 0))
- 		dev_dbg(dev, "asynchronous decompress failed ret=%d\n", ret);
- 
--	dma_unmap_sg(dev, req->dst, sg_nents(req->dst), DMA_FROM_DEVICE);
-+	dma_unmap_sg(dev, req->dst, 1, DMA_FROM_DEVICE);
- err_map_dst:
--	dma_unmap_sg(dev, req->src, sg_nents(req->src), DMA_TO_DEVICE);
-+	dma_unmap_sg(dev, req->src, 1, DMA_TO_DEVICE);
- out:
- 	percpu_ref_put(&iaa_wq->ref);
- 
++
++	idxd_free_desc(idxd_desc->wq, idxd_desc);
++	percpu_ref_put(&iaa_wq->ref);
++
++	return ret;
++}
++
+ static void compression_ctx_init(struct iaa_compression_ctx *ctx, enum iaa_mode mode)
+ {
+ 	ctx->mode = mode;
 -- 
 2.27.0
 
