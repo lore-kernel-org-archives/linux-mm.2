@@ -4,115 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F532CAC5B0
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 03:33:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E083CAC5B0
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 03:35:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 923898E0003; Thu, 25 Sep 2025 23:33:13 -0400 (EDT)
+	id CFA728E0006; Thu, 25 Sep 2025 23:35:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FB998E0001; Thu, 25 Sep 2025 23:33:13 -0400 (EDT)
+	id C35078E0001; Thu, 25 Sep 2025 23:35:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 810C48E0003; Thu, 25 Sep 2025 23:33:13 -0400 (EDT)
+	id AAE278E0006; Thu, 25 Sep 2025 23:35:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E23E8E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 23:33:13 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0CD1F595B9
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:33:13 +0000 (UTC)
-X-FDA: 83929980666.17.5345EAC
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4062C1C000C
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:33:11 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lIm6gK6X;
-	spf=pass (imf21.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 96CA28E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 23:35:10 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 537841A054B
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:10 +0000 (UTC)
+X-FDA: 83929985580.29.34FC8ED
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 2DF1A120007
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:07 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=jWd8fQMh;
+	spf=pass (imf29.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758857591;
+	s=arc-20220608; t=1758857708;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=swasiKAy9erpXahrURLh1edzUqPTKg8IFE0nB6K/KGE=;
-	b=U1QaSizQY0q4RZGWIfzzvb446ESxwIu/aD5aOT/kGdQvtmA/9qAYrkmhx1PvDCUPMpPSQo
-	U+3Ez0LIIN2j5dsiZCJWXC1Lg+5Zc+ZZXQGiLMqLoiu7ZCZUyqBCR1nUD/wPvy7w4FIoPQ
-	nwuNQZuliwAHJDlc4t4NjX9eFvmlVD8=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mlSLbNh2vxvBsNaU0oxGR7LVTpTFiQwEkO+7KdxkxNU=;
+	b=0X7U96bqmQFg5J0lmAFXev2nTdoty2MfKL8FrCQVNZvfegMvSqV6NvufuDDJKHM6VKLCGw
+	poypokOwbfnmU9F8an88jaU/JHhlbq82FH5EeSsVgfyD19/FvSgyaTCip1tMHEdWcjWuVG
+	GYx2MMM2HsyJMfr7LDXQt720LrjirqE=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lIm6gK6X;
-	spf=pass (imf21.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758857591; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=jWd8fQMh;
+	spf=pass (imf29.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758857708; a=rsa-sha256;
 	cv=none;
-	b=7beCl23rShoNUfEOdHmY6sB0DrfZBjASK9PqCCd+XF244Jj241eBY+QP0oilsrKjppeKY3
-	jjO6GZDc5Ivz5MDXgEUaAi37taPOuiimFdmhxXxNmTuedP5TyJFq4OVhPQnsNAZCQ3/SPk
-	jsolC07MgXhKcSWToQ+dVdVZcWIPbFg=
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-25669596921so17967035ad.1
-        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 20:33:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758857590; x=1759462390; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=swasiKAy9erpXahrURLh1edzUqPTKg8IFE0nB6K/KGE=;
-        b=lIm6gK6XkRzTVpPXNUdHWGAaCbL2ub0CvCMyHfeTPPE1ijZTo9AcQJDZsVG2Nxt8Kl
-         zPnOu9XGWwoXDXiIB00bfN/douPHjpppIN9AQHHJmcdBu89bayWHiYgUqljqF2whYL1W
-         EwknrlaMfqCDz6+xS2JInxMJlGM48JhN8tJWVMmRI+S2I2g6LSeus7O2oalQlFTLNOQ5
-         6teLtbHyDBcpWOEEhSVZLjGanEohGFy8TcCGHbpYQohPBTu+eFVhh1MrCBXCp4T663yA
-         p9lXGllvFXZRRlM4iaHQ/fU/hweCyu5mmw3GKvoi/v7pwAQ3T/u8cETUyCA86TrRUAHI
-         /wGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758857590; x=1759462390;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=swasiKAy9erpXahrURLh1edzUqPTKg8IFE0nB6K/KGE=;
-        b=QZRXTCLJd9b8ETtt8jpOpuEIS609JiHgVTRPbDpUtdtn8s8FJ4XVxM7Mq+x1zuB6B/
-         Q/mx2gH4yXTKWBPhAXxsu/HWffBu9v/QG5XTUIzbHFdHS4A9fWQy83UllinevRSiSgIx
-         /6N8zTTPxRqPjbKpRlHDhaFofoc05yxDKC0FXoGwvCGX18gig//lAXpuEZvlXku0ZNOM
-         j4D0XhPzlHyieZ1wAzwT2+mJz/B3Tz1mAh91Ru1M9Al7c8fPLCgBeZFNANBtxOtyGj2b
-         hnoEIXDlNZ2EzG5lZd0WvUstgLMJGlSTY1qGfs5Kidjvb/oiFK1ibsKd94zcCDn7bamw
-         pwPg==
-X-Gm-Message-State: AOJu0YyINa6Zdonqu+Pgu/VnZLLlwSY6LrU9gtk+hMCpLCyGiSpxZ/J6
-	/TbuhLJY4l/N+shN3YyaL4k9vNW/yrvS/WTL4eH+J5kGhChYLJLh+eCM
-X-Gm-Gg: ASbGncs4vW/VJnJG6x9kgjE5fWe/vsSyMpeJk71JB4eclyNxj4S52MxNntzjbkKdarq
-	6OTrFFIGD+IrIqQoZhSU+YzK06HdNaHoUUd98FqP7LmSo7I1pYouD2UubtP16x8/LpPJGs8JnQA
-	i7/jQKmKpFFySbvzaaZkn1Vb6Y/kB89uZrdzyPJLH3eUtzodiBiAp4l6PMJ1SUC/8Vx+YMRElV0
-	7QgN2wvaK/InjltZt7GipKYDt8WhZRT9ibuZ+GroAb9DStOCwPROOMEs3nYwjIguDD6r9kxFrF5
-	m2mnz1O2SZ+2brvOCTXZufSFsJ5kw0SPh94MOlWwKdekg0t9T7mB2hKVeDuq17sX5VP9sqHRDDa
-	vvwXROCbspCGFB4uED2OAzqpunlbiE/BlZWQ9MJWyk5tpLaqD9icFDcehik7nMCVSmYF+ZJBV7m
-	sRVM0=
-X-Google-Smtp-Source: AGHT+IGVib1Wn8HeC0syL4GXw8dpS7EKsj57MJdQZoUqPJPbWnjFKnxPMpLvgZM17uyJ+TvLTPKElg==
-X-Received: by 2002:a17:903:244b:b0:27e:ef35:2dbf with SMTP id d9443c01a7336-27eef3530ecmr12593585ad.30.1758857589845;
-        Thu, 25 Sep 2025 20:33:09 -0700 (PDT)
-Received: from deepanshu-kernel-hacker.. ([2405:201:682f:3094:a5a4:3d95:4e23:c62c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-27ed6882227sm39830265ad.82.2025.09.25.20.33.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Sep 2025 20:33:09 -0700 (PDT)
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-To: muchun.song@linux.dev,
-	osalvador@suse.de,
-	david@redhat.com,
-	akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
-Subject: [PATCH v2] hugetlbfs: skip VMAs without shareable locks in hugetlb_vmdelete_list
-Date: Fri, 26 Sep 2025 09:02:54 +0530
-Message-ID: <20250926033255.10930-1-kartikey406@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	b=5/tJLoETnqAXvuSJU2AkUsMEQCC8+2c1pLtal5Xd/I5ELmPjmQT0ONHF0yZutTlHk/eb04
+	fP7ia1WxLUIeL6Y4FIr1tS2YSDMiBUkx2/YW6z5TkWH+n9h/hxdLtRbD9CsqHUWiiTZ7k4
+	DzWNsm5fIR0Vyd2GNp90HvdR0KX4lhU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758857708; x=1790393708;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=wd7fVPxR6RBZDaBBnSS4xf4KqsHFpNau8JbUhMchEpE=;
+  b=jWd8fQMhxEcy2tKXCYm6SlXqHZvYk3ddoNe0meTpOTTPmW+gr7Nc4/UG
+   W8XdINs3YqMmcOu4mQ3OPYbnONiCGbLzEtwspGnBlVZhSu14ntBJiTFGw
+   OrkeSRvIFrV80GKUaRRBF5lx34fbljAI5qEXokVJo+mr8tF4MVSZ1SlNj
+   ostaXRnNE9rg2hQtvpahtG+tnUKyn1Im0z/FP4mZSqdPaUyCoDidvjCRR
+   MzFBXgqwhNayP1CQPCZ0tNoDTgtezc2VAdCg8gsBuypJWoiIxAdlwZQXT
+   PA/kULbZLlSqTGfe0z7dbmCgiuBadZG8ZSf20aVTxj7n1aFzB7j3M84Kq
+   g==;
+X-CSE-ConnectionGUID: 1gN/2/6hRXujlJ4lGqd8dw==
+X-CSE-MsgGUID: LlZyECU+R/2t39GFAz7VIg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="63819435"
+X-IronPort-AV: E=Sophos;i="6.18,294,1751266800"; 
+   d="scan'208";a="63819435"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 20:35:05 -0700
+X-CSE-ConnectionGUID: +EGlOjRNRo+zmsaE28U3tQ==
+X-CSE-MsgGUID: LvlZUYaBQeOZdYF/jnSQ6Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,294,1751266800"; 
+   d="scan'208";a="214636552"
+Received: from jf5300-b11a338t.jf.intel.com ([10.242.51.115])
+  by orviesa001.jf.intel.com with ESMTP; 25 Sep 2025 20:35:03 -0700
+From: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
+To: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	hannes@cmpxchg.org,
+	yosry.ahmed@linux.dev,
+	nphamcs@gmail.com,
+	chengming.zhou@linux.dev,
+	usamaarif642@gmail.com,
+	ryan.roberts@arm.com,
+	21cnbao@gmail.com,
+	ying.huang@linux.alibaba.com,
+	akpm@linux-foundation.org,
+	senozhatsky@chromium.org,
+	sj@kernel.org,
+	kasong@tencent.com,
+	linux-crypto@vger.kernel.org,
+	herbert@gondor.apana.org.au,
+	davem@davemloft.net,
+	clabbe@baylibre.com,
+	ardb@kernel.org,
+	ebiggers@google.com,
+	surenb@google.com,
+	kristen.c.accardi@intel.com,
+	vinicius.gomes@intel.com
+Cc: wajdi.k.feghali@intel.com,
+	vinodh.gopal@intel.com,
+	kanchana.p.sridhar@intel.com
+Subject: [PATCH v12 03/23] crypto: iaa - Simplify, consistency of function parameters, minor stats bug fix.
+Date: Thu, 25 Sep 2025 20:34:42 -0700
+Message-Id: <20250926033502.7486-4-kanchana.p.sridhar@intel.com>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
+References: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4062C1C000C
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 931nqy9o6515sdyyrbnsrmgso41f4tgc
 X-Rspam-User: 
-X-HE-Tag: 1758857591-173414
-X-HE-Meta: U2FsdGVkX1+GepfeYAN5TFqRFU4tQwnt+2zDr1ljJ2PeOjqIGGs5WEq3BqJ18sqZaPL2OPYozCC4lxajZD5yMd1kFswvDrtk+iMkLIlZ66Ip7Uk1gqQyV+m5nQTAO8rOAZB2jG1lAmBpk+CJJKE6d/PgGJGspYxu7LTjF/m9TZcmU2Fsc71s+jhW4FX7lwWgWu4dUTXVvukdgrwoPCOeEOKkvmktAYDQoEhsKaF2SVgGPRimBLTRmuJYFzlhW9GZAxAmiLQbe3BBSStlxvNXt0tkSzOnhy9NJn+jj4yB3sLeCmIHnJl7z0GCiAtgcLCEnlW1DYp3NFWmL8iqQwVU98Fvly4RjTassm7f7bB5PN3XYMT8ry8PZHIEfy0zR+SEC1rgx5QdQOs74RUBZvpvwEgXIo6ZPFlHc/lVqcjO/iMQsXeFKt9Jql9sDbFw+9viUn3+pr0bqR4sCHc6myoDf4OAVDWozFcUcXYQgCksBLaZXzcOcD/pJho2UA6mS0wUQP5jV6NgkufBULzL/JMeXWXE99kl96SWLspnepw0AQ7SKEAJW1jIQUPoci8fhSTC8duB8Hh11F8zz2GXkg4AiK4Qva/007HwLi/Gmk8Yp6Scs2EEqAQrWt0Eqb1PcYi8keYb4Tvcxqn2bZ4+LDiHaYiQ+2HJDyIxcBTFZaMumUKRBYNj+O23WEqCPQRU0k6mkSPtWaPDw7/SpJxwnkwbsbwA7tkqsfUVOkqFk92GIs2u5E48gexxMj7XVrb2E0jLsQM/P1D2July6BGSxPGEggh3cRl+8kb0x/PTPr4nwgaIkGM3YYKUb81dX6/GrFAQ+hKMIRFwrlM8OT4ZkPW0JO3Ku8lklcuo4HRo5a6DLxmrqjyz9TLrg2I0/mK+kU67mEXgl/IpiDfEZCZVLcSnCUK4kemXi0JPxchQ5auS3v39zbn8O7pKGQhLoSsoTJ2ROa0EbRO73r2hZKbcsGQ
- P6r2bKRZ
- pH/iMMTAq0bxm44qMWtYJ6HZGm4QJT7i1Ey11WDy9YrDM7gGaiOB/tpgrDc5sKmliv6WPW5QXLotiHk5kLxtluHs8m5+StNp0zYSItDzf+ENiwDilefOBi3dr1TVXIrBEe+nwRy/aiRzslYHORji8Q2u1I6fp8q0cMxzxySwyaaI24eNDzDVqfcM/puveohxi5VIyfA4/82JOQTPeqIn/Sx6VrD3knNVx8EANYQm9rY91a9lgZTVaV3+7l/kZdHQ7tCMS9Bt01apCEDBlqIBIwrS80SMSCRNZNCmTcrP1n6RcMacmdmUqGcsz34AlDzu2IUp01Pic2JhHkppmESZ3iuwaqv++W5HxDuaAl/8EplJMWbpNZnqiOwIMz9Bfcmdtl8LDrYxD6ePqhEy8VH0NIzkdoUK35ehElUJxhQK9wANE3ZS29eqS0x8YHzGSCeBzGvvrt8tbwhxEvkutGxwwRDF+Qn+tSUrzi3F8TWUQQc2/yaetDkaaXReLqh6TY/tzlhfoNqS/mEHm2fia2Njisa6ZO6ZGeY+wUKyDz+AVetzuSJvi6hBra3jJYFVKlCY9f3u/l8ISYRjzf4gIN0W9w8eF5xWoMnNSRIHVmPUp/ayiMIwpVslS21a+K85WmiJw8DavyJ6043HS9UvDPkxzqSiIyJkCDx/WDHVIwN96+OzLJZpO2Roob2ktlkXZLt2LJspEpOYyQv6jG3vKTwWo1Y8NGj1IauWVA4pBI4SQi1EQni9+l4iOzhvgpxvfKBh4YGABz1KmFtFEDwD/CHfPgRrmUWXMqN66dbtpP5NK5nJGgQI=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 2DF1A120007
+X-Stat-Signature: iri3ngb9tauy6sew5z6di9o1689irztm
+X-HE-Tag: 1758857707-568823
+X-HE-Meta: U2FsdGVkX183ys3BdcaqCdZfjPXne8IhPRrGMSWlrbNmHcI0ezE/8QmIR5oFDAzWgGpfCyoqhS3YCpAz54PU6r9s/u506U/gM3jpYkqZEiwf/RQiXCcgnaBEtYKIwchNsky+0ut1b65hYoIQDIcVHJsrCgwPCk0cx6kXwUkuz6H8kpoQyH7Hg5ErsY7lZxQofY86LQyVOcBOcuMWQaws5V4BMSu++q/lyg55klO/3AjKw9/Z35/H67vdpsHD/41zy64AtF9RDqY+Qowx0vzeUar9WqJ7p++Lbu5NTm6ZuLIcVFCB1tbzNAfUd3xhpfxhc0LCRjN9vQYPGw5LOuCK9EQdysiTG/DQIXivs4oLbqgnVyt4fbba+5eIa5J1LZdbNYQdOa6BQ6L6ie3tIng3Phym6VO3oZR31BotHbYIT4T2f7bDCJVQ72YV2Cmu2XT9+XU+a63TiLqLDz9a+c8wtZ2F/F0tbF+K1gqDqq2k3wInkGwpHus1mQmjy7Q3vAJMj7DPGwVOW7rBDof5CU26hbj/Ra2NrThRgbX3Acm3zl0GT9fi0Gb2fupXYLKeBRLx1+MJR3vMjt1+MsK3heHONWwJPbUoTHqzSwwlt6ou15YCvB0bol3lRaF9oF19+u9ZXuc7MtoCxDNNxPQiqz3w9JfR7VHuTxTerrQuXCe3bLR0uA0J6HqiXl3madaHOC82iNlTpUD8dgsML7v9u0z4Hd3b+U6LKehKQKgIzLqzC+mEe23ZjJfjNBhEYECAtqLcbvpsvssO3omYOMYgvw58CJ77Y/1oX9ul5GqFbkjCEz4R2oqPTlJ9zbbC716EzqCcOAAgKg+yCJgzDQA6DUxTl0gzuYNRE4YNZCrXIg1tONxMp5kksE2I7vd9X3Hh+31ftsZxLZnGURldofFVPU7FN6fiE/ACyxlAOwCMBecSLX+s3WQLQBmMxDMtGVVLAwhXmNfbxJNKbfVbyEV8/yv
+ ZKNUJ2ti
+ 57NRF2w6KrNo3fTegqsQycrfDFbr0sWWaW9SkwEYpUmq1k5sWTGbXNKqFum25xj57uUNmyAUytYad1TVZbi2PIKmrr/UQprwQvSSDWnC+VmGPVPdoI9p0eE2wjtLLk56EYz9wCFGhV+4zfkqClJjaPwZmrb5+9uFCMiU9xzTNibLsGzokRPP1GbIPUg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,73 +126,295 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-hugetlb_vmdelete_list() uses trylock to acquire VMA locks during truncate
-operations. As per the original design in commit 40549ba8f8e0 ("hugetlb:
-use new vma_lock for pmd sharing synchronization"), if the trylock fails
-or the VMA has no lock, it should skip that VMA. Any remaining mapped
-pages are handled by remove_inode_hugepages() which is called after
-hugetlb_vmdelete_list() and uses proper lock ordering to guarantee
-unmapping success.
+This patch further simplifies the code in some places and makes it more
+consistent and readable:
 
-Currently, when hugetlb_vma_trylock_write() returns success (1) for VMAs
-without shareable locks, the code proceeds to call unmap_hugepage_range().
-This causes assertion failures in huge_pmd_unshare() → hugetlb_vma_assert_locked()
-because no lock is actually held:
+1) Change iaa_compress_verify() @dlen parameter to be a value instead of
+   a pointer, because @dlen's value is only read, not modified by this
+   procedure.
 
-  WARNING: CPU: 1 PID: 6594 Comm: syz.0.28 Not tainted
-  Call Trace:
-   hugetlb_vma_assert_locked+0x1dd/0x250
-   huge_pmd_unshare+0x2c8/0x540
-   __unmap_hugepage_range+0x6e3/0x1aa0
-   unmap_hugepage_range+0x32e/0x410
-   hugetlb_vmdelete_list+0x189/0x1f0
+2) Simplify the success/error return paths in iaa_compress(),
+   iaa_decompress() and iaa_compress_verify().
 
-Fix by using goto to ensure locks acquired by trylock are always released, even
-when skipping VMAs without shareable locks.
+3) Delete dev_dbg() statements to make the code more readable.
 
-Reported-by: syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=f26d7c75c26ec19790e7
-Fixes: 40549ba8f8e0 ("hugetlb: use new vma_lock for pmd sharing synchronization")
-Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+4) Change return value from descriptor allocation failures to be
+   -ENODEV, for better maintainability.
 
+5) Fix a minor statistics bug in iaa_decompress(), with the
+   decomp_bytes getting updated in case of errors.
+
+Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
 ---
-Changes in v2:
-- Use goto to unlock after trylock, avoiding lock leaks (Andrew Morton)
-- Add comment explaining why non-shareable VMAs are skipped (Andrew Morton)
----
- fs/hugetlbfs/inode.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/crypto/intel/iaa/iaa_crypto_main.c | 107 +++++----------------
+ 1 file changed, 22 insertions(+), 85 deletions(-)
 
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 9e0625167517..9fa7c72ac1a6 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -488,6 +488,14 @@ hugetlb_vmdelete_list(struct rb_root_cached *root, pgoff_t start, pgoff_t end,
- 		if (!hugetlb_vma_trylock_write(vma))
- 			continue;
+diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
+index c6db721eaa79..ed3325bb3291 100644
+--- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
++++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
+@@ -1590,7 +1590,7 @@ static int iaa_remap_for_verify(struct device *dev, struct iaa_wq *iaa_wq,
+ static int iaa_compress_verify(struct crypto_tfm *tfm, struct acomp_req *req,
+ 			       struct idxd_wq *wq,
+ 			       dma_addr_t src_addr, unsigned int slen,
+-			       dma_addr_t dst_addr, unsigned int *dlen)
++			       dma_addr_t dst_addr, unsigned int dlen)
+ {
+ 	struct iaa_device_compression_mode *active_compression_mode;
+ 	struct iaa_compression_ctx *ctx = crypto_tfm_ctx(tfm);
+@@ -1614,10 +1614,8 @@ static int iaa_compress_verify(struct crypto_tfm *tfm, struct acomp_req *req,
  
-+		/*
-+		 * Skip VMAs without shareable locks. Per the design in commit
-+		 * 40549ba8f8e0, these will be handled by remove_inode_hugepages()
-+		 * called after this function with proper locking.
-+		 */
-+		if (!__vma_shareable_lock(vma))
-+			goto skip;
-+
- 		v_start = vma_offset_start(vma, start);
- 		v_end = vma_offset_end(vma, end);
- 
-@@ -498,7 +506,8 @@ hugetlb_vmdelete_list(struct rb_root_cached *root, pgoff_t start, pgoff_t end,
- 		 * vmas.  Therefore, lock is not held when calling
- 		 * unmap_hugepage_range for private vmas.
- 		 */
--		hugetlb_vma_unlock_write(vma);
-+skip:
-+		hugetlb_vma_unlock_write(vma);
+ 	idxd_desc = idxd_alloc_desc(wq, IDXD_OP_BLOCK);
+ 	if (IS_ERR(idxd_desc)) {
+-		dev_dbg(dev, "idxd descriptor allocation failed\n");
+-		dev_dbg(dev, "iaa compress failed: ret=%ld\n",
+-			PTR_ERR(idxd_desc));
+-		return PTR_ERR(idxd_desc);
++		dev_dbg(dev, "iaa compress_verify failed: idxd descriptor allocation failure: ret=%ld\n", PTR_ERR(idxd_desc));
++		return -ENODEV;
  	}
+ 	desc = idxd_desc->iax_hw;
+ 
+@@ -1629,19 +1627,11 @@ static int iaa_compress_verify(struct crypto_tfm *tfm, struct acomp_req *req,
+ 	desc->priv = 0;
+ 
+ 	desc->src1_addr = (u64)dst_addr;
+-	desc->src1_size = *dlen;
++	desc->src1_size = dlen;
+ 	desc->dst_addr = (u64)src_addr;
+ 	desc->max_dst_size = slen;
+ 	desc->completion_addr = idxd_desc->compl_dma;
+ 
+-	dev_dbg(dev, "(verify) compression mode %s,"
+-		" desc->src1_addr %llx, desc->src1_size %d,"
+-		" desc->dst_addr %llx, desc->max_dst_size %d,"
+-		" desc->src2_addr %llx, desc->src2_size %d\n",
+-		active_compression_mode->name,
+-		desc->src1_addr, desc->src1_size, desc->dst_addr,
+-		desc->max_dst_size, desc->src2_addr, desc->src2_size);
+-
+ 	ret = idxd_submit_desc(wq, idxd_desc);
+ 	if (ret) {
+ 		dev_dbg(dev, "submit_desc (verify) failed ret=%d\n", ret);
+@@ -1664,14 +1654,10 @@ static int iaa_compress_verify(struct crypto_tfm *tfm, struct acomp_req *req,
+ 		goto err;
+ 	}
+ 
+-	idxd_free_desc(wq, idxd_desc);
+-out:
+-	return ret;
+ err:
+ 	idxd_free_desc(wq, idxd_desc);
+-	dev_dbg(dev, "iaa compress failed: ret=%d\n", ret);
+ 
+-	goto out;
++	return ret;
  }
  
+ static void iaa_desc_complete(struct idxd_desc *idxd_desc,
+@@ -1751,7 +1737,7 @@ static void iaa_desc_complete(struct idxd_desc *idxd_desc,
+ 		}
+ 
+ 		ret = iaa_compress_verify(ctx->tfm, ctx->req, iaa_wq->wq, src_addr,
+-					  ctx->req->slen, dst_addr, &ctx->req->dlen);
++					  ctx->req->slen, dst_addr, ctx->req->dlen);
+ 		if (ret) {
+ 			dev_dbg(dev, "%s: compress verify failed ret=%d\n", __func__, ret);
+ 			err = -EIO;
+@@ -1777,7 +1763,7 @@ static void iaa_desc_complete(struct idxd_desc *idxd_desc,
+ 	iaa_wq_put(idxd_desc->wq);
+ }
+ 
+-static int iaa_compress(struct crypto_tfm *tfm,	struct acomp_req *req,
++static int iaa_compress(struct crypto_tfm *tfm, struct acomp_req *req,
+ 			struct idxd_wq *wq,
+ 			dma_addr_t src_addr, unsigned int slen,
+ 			dma_addr_t dst_addr, unsigned int *dlen)
+@@ -1804,9 +1790,9 @@ static int iaa_compress(struct crypto_tfm *tfm,	struct acomp_req *req,
+ 
+ 	idxd_desc = idxd_alloc_desc(wq, IDXD_OP_BLOCK);
+ 	if (IS_ERR(idxd_desc)) {
+-		dev_dbg(dev, "idxd descriptor allocation failed\n");
+-		dev_dbg(dev, "iaa compress failed: ret=%ld\n", PTR_ERR(idxd_desc));
+-		return PTR_ERR(idxd_desc);
++		dev_dbg(dev, "iaa compress failed: idxd descriptor allocation failure: ret=%ld\n",
++			PTR_ERR(idxd_desc));
++		return -ENODEV;
+ 	}
+ 	desc = idxd_desc->iax_hw;
+ 
+@@ -1832,21 +1818,8 @@ static int iaa_compress(struct crypto_tfm *tfm,	struct acomp_req *req,
+ 		idxd_desc->crypto.src_addr = src_addr;
+ 		idxd_desc->crypto.dst_addr = dst_addr;
+ 		idxd_desc->crypto.compress = true;
+-
+-		dev_dbg(dev, "%s use_async_irq: compression mode %s,"
+-			" src_addr %llx, dst_addr %llx\n", __func__,
+-			active_compression_mode->name,
+-			src_addr, dst_addr);
+ 	}
+ 
+-	dev_dbg(dev, "%s: compression mode %s,"
+-		" desc->src1_addr %llx, desc->src1_size %d,"
+-		" desc->dst_addr %llx, desc->max_dst_size %d,"
+-		" desc->src2_addr %llx, desc->src2_size %d\n", __func__,
+-		active_compression_mode->name,
+-		desc->src1_addr, desc->src1_size, desc->dst_addr,
+-		desc->max_dst_size, desc->src2_addr, desc->src2_size);
+-
+ 	ret = idxd_submit_desc(wq, idxd_desc);
+ 	if (ret) {
+ 		dev_dbg(dev, "submit_desc failed ret=%d\n", ret);
+@@ -1859,7 +1832,6 @@ static int iaa_compress(struct crypto_tfm *tfm,	struct acomp_req *req,
+ 
+ 	if (ctx->async_mode) {
+ 		ret = -EINPROGRESS;
+-		dev_dbg(dev, "%s: returning -EINPROGRESS\n", __func__);
+ 		goto out;
+ 	}
+ 
+@@ -1877,15 +1849,10 @@ static int iaa_compress(struct crypto_tfm *tfm,	struct acomp_req *req,
+ 
+ 	*compression_crc = idxd_desc->iax_completion->crc;
+ 
+-	if (!ctx->async_mode)
+-		idxd_free_desc(wq, idxd_desc);
+-out:
+-	return ret;
+ err:
+ 	idxd_free_desc(wq, idxd_desc);
+-	dev_dbg(dev, "iaa compress failed: ret=%d\n", ret);
+-
+-	goto out;
++out:
++	return ret;
+ }
+ 
+ static int iaa_decompress(struct crypto_tfm *tfm, struct acomp_req *req,
+@@ -1914,10 +1881,10 @@ static int iaa_decompress(struct crypto_tfm *tfm, struct acomp_req *req,
+ 
+ 	idxd_desc = idxd_alloc_desc(wq, IDXD_OP_BLOCK);
+ 	if (IS_ERR(idxd_desc)) {
+-		dev_dbg(dev, "idxd descriptor allocation failed\n");
+-		dev_dbg(dev, "iaa decompress failed: ret=%ld\n",
++		ret = -ENODEV;
++		dev_dbg(dev, "%s: idxd descriptor allocation failed: ret=%ld\n", __func__,
+ 			PTR_ERR(idxd_desc));
+-		return PTR_ERR(idxd_desc);
++		return ret;
+ 	}
+ 	desc = idxd_desc->iax_hw;
+ 
+@@ -1941,21 +1908,8 @@ static int iaa_decompress(struct crypto_tfm *tfm, struct acomp_req *req,
+ 		idxd_desc->crypto.src_addr = src_addr;
+ 		idxd_desc->crypto.dst_addr = dst_addr;
+ 		idxd_desc->crypto.compress = false;
+-
+-		dev_dbg(dev, "%s: use_async_irq compression mode %s,"
+-			" src_addr %llx, dst_addr %llx\n", __func__,
+-			active_compression_mode->name,
+-			src_addr, dst_addr);
+ 	}
+ 
+-	dev_dbg(dev, "%s: decompression mode %s,"
+-		" desc->src1_addr %llx, desc->src1_size %d,"
+-		" desc->dst_addr %llx, desc->max_dst_size %d,"
+-		" desc->src2_addr %llx, desc->src2_size %d\n", __func__,
+-		active_compression_mode->name,
+-		desc->src1_addr, desc->src1_size, desc->dst_addr,
+-		desc->max_dst_size, desc->src2_addr, desc->src2_size);
+-
+ 	ret = idxd_submit_desc(wq, idxd_desc);
+ 	if (ret) {
+ 		dev_dbg(dev, "submit_desc failed ret=%d\n", ret);
+@@ -1968,7 +1922,6 @@ static int iaa_decompress(struct crypto_tfm *tfm, struct acomp_req *req,
+ 
+ 	if (ctx->async_mode) {
+ 		ret = -EINPROGRESS;
+-		dev_dbg(dev, "%s: returning -EINPROGRESS\n", __func__);
+ 		goto out;
+ 	}
+ 
+@@ -1990,23 +1943,19 @@ static int iaa_decompress(struct crypto_tfm *tfm, struct acomp_req *req,
+ 		}
+ 	} else {
+ 		req->dlen = idxd_desc->iax_completion->output_size;
++
++		/* Update stats */
++		update_total_decomp_bytes_in(slen);
++		update_wq_decomp_bytes(wq, slen);
+ 	}
+ 
+ 	*dlen = req->dlen;
+ 
+-	if (!ctx->async_mode)
++err:
++	if (idxd_desc)
+ 		idxd_free_desc(wq, idxd_desc);
+-
+-	/* Update stats */
+-	update_total_decomp_bytes_in(slen);
+-	update_wq_decomp_bytes(wq, slen);
+ out:
+ 	return ret;
+-err:
+-	idxd_free_desc(wq, idxd_desc);
+-	dev_dbg(dev, "iaa decompress failed: ret=%d\n", ret);
+-
+-	goto out;
+ }
+ 
+ static int iaa_comp_acompress(struct acomp_req *req)
+@@ -2053,9 +2002,6 @@ static int iaa_comp_acompress(struct acomp_req *req)
+ 		goto out;
+ 	}
+ 	src_addr = sg_dma_address(req->src);
+-	dev_dbg(dev, "dma_map_sg, src_addr %llx, nr_sgs %d, req->src %p,"
+-		" req->slen %d, sg_dma_len(sg) %d\n", src_addr, nr_sgs,
+-		req->src, req->slen, sg_dma_len(req->src));
+ 
+ 	nr_sgs = dma_map_sg(dev, req->dst, sg_nents(req->dst), DMA_FROM_DEVICE);
+ 	if (nr_sgs <= 0 || nr_sgs > 1) {
+@@ -2066,9 +2012,6 @@ static int iaa_comp_acompress(struct acomp_req *req)
+ 		goto err_map_dst;
+ 	}
+ 	dst_addr = sg_dma_address(req->dst);
+-	dev_dbg(dev, "dma_map_sg, dst_addr %llx, nr_sgs %d, req->dst %p,"
+-		" req->dlen %d, sg_dma_len(sg) %d\n", dst_addr, nr_sgs,
+-		req->dst, req->dlen, sg_dma_len(req->dst));
+ 
+ 	ret = iaa_compress(tfm, req, wq, src_addr, req->slen, dst_addr,
+ 			   &req->dlen);
+@@ -2083,7 +2026,7 @@ static int iaa_comp_acompress(struct acomp_req *req)
+ 		}
+ 
+ 		ret = iaa_compress_verify(tfm, req, wq, src_addr, req->slen,
+-					  dst_addr, &req->dlen);
++					  dst_addr, req->dlen);
+ 		if (ret)
+ 			dev_dbg(dev, "asynchronous compress verification failed ret=%d\n", ret);
+ 
+@@ -2146,9 +2089,6 @@ static int iaa_comp_adecompress(struct acomp_req *req)
+ 		goto out;
+ 	}
+ 	src_addr = sg_dma_address(req->src);
+-	dev_dbg(dev, "dma_map_sg, src_addr %llx, nr_sgs %d, req->src %p,"
+-		" req->slen %d, sg_dma_len(sg) %d\n", src_addr, nr_sgs,
+-		req->src, req->slen, sg_dma_len(req->src));
+ 
+ 	nr_sgs = dma_map_sg(dev, req->dst, sg_nents(req->dst), DMA_FROM_DEVICE);
+ 	if (nr_sgs <= 0 || nr_sgs > 1) {
+@@ -2159,9 +2099,6 @@ static int iaa_comp_adecompress(struct acomp_req *req)
+ 		goto err_map_dst;
+ 	}
+ 	dst_addr = sg_dma_address(req->dst);
+-	dev_dbg(dev, "dma_map_sg, dst_addr %llx, nr_sgs %d, req->dst %p,"
+-		" req->dlen %d, sg_dma_len(sg) %d\n", dst_addr, nr_sgs,
+-		req->dst, req->dlen, sg_dma_len(req->dst));
+ 
+ 	ret = iaa_decompress(tfm, req, wq, src_addr, req->slen,
+ 			     dst_addr, &req->dlen);
 -- 
-2.43.0
+2.27.0
+
 
