@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44BA8CAC5B5
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 03:35:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96F89CAC5BA
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 03:36:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B572C8E0013; Thu, 25 Sep 2025 23:35:24 -0400 (EDT)
+	id 1FD618E001D; Thu, 25 Sep 2025 23:35:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ADC4D8E001D; Thu, 25 Sep 2025 23:35:24 -0400 (EDT)
+	id 1B68D8E001B; Thu, 25 Sep 2025 23:35:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 754198E0013; Thu, 25 Sep 2025 23:35:24 -0400 (EDT)
+	id EA7258E001D; Thu, 25 Sep 2025 23:35:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 57BB68E001B
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 23:35:24 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2059EBA2EF
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:24 +0000 (UTC)
-X-FDA: 83929986168.28.495C97D
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D68028E001B
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 23:35:25 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9A066160545
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:25 +0000 (UTC)
+X-FDA: 83929986210.06.880DB3E
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf29.hostedemail.com (Postfix) with ESMTP id F038A120008
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:21 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=QeaCwDX4;
-	spf=pass (imf29.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 7293AC0004
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:23 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=e3wsa5JW;
+	spf=pass (imf28.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758857722;
+	s=arc-20220608; t=1758857723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+HTB1fCiz0NaiCmDM+Gs6d0aPMBfNtKtDfuiG0d2AtY=;
-	b=xJQfnqL+4ASXlAdlqjCAhvQuVbQjrq4o07KWB+VXO+qk4VbeoWkmC2UbCy08s4y8m9gMi5
-	V9BPRWTPj8ps/MCCRD3I69N9/JIcbESz8w4m1vGsvBr+wOJr6Q4YzmZw8uX7uCaAmBzTHw
-	r+pEUiCdJzg1XeRhTKAylVlw3mA4XhA=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=QeaCwDX4;
-	spf=pass (imf29.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758857722; a=rsa-sha256;
+	bh=yJ4PgW5PTTBAdi/vB3nZWEul2SCx7fImbg/aa5faLtA=;
+	b=IUkk3xiKGSzvzrNGPV/q1FhtMm/lUI/oAseh/5Z7nbvFFDNkYE0Yi1du57nFSibIRfVKtK
+	oyxdVy+OQ5wcv7gJv4fJ4LS5IY9KXE78QWi+64jNKLOTVg0EIzAuEnZec5iHyJT92Rn9q+
+	+NgCl+EYBBrxBqRhdljJwNKcTsYuYOc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758857723; a=rsa-sha256;
 	cv=none;
-	b=jAXuGXs2JCdlLAsPjRABNZjTKuZHiSuZBWV6DWMWjeMOmucpL4TaePed/VosrSltPG3j38
-	bg3LAZEz9jcOZAmho/ZoVUVr86wPU0boAB/d5B9LLTzmqY9qxSUjXgq7h5f252ydnYAVN2
-	dyH5Dxx05otV66ez1CDGUMnDSJXJ8T4=
+	b=C/TAzigFQQJgJuv44NpMI1Wv60tUCnqWs92RojRskD8sgSj2mXO2E3JiNO2eS7imk6Y3VP
+	oGNNs+NnGC9GB/DfRMPbwHhgzt3oY7xuHi1vwWcFr7hO8UbJqY97Wh1PDrjU+FAZji5hiJ
+	R8Sg/xvbdujv1mrVFmS8tC00XM6+xPI=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=e3wsa5JW;
+	spf=pass (imf28.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758857722; x=1790393722;
+  t=1758857724; x=1790393724;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=8zO287VZ8tZ+k+EEFCCO9Fum+HPgmZKBhvlLu2+6EXc=;
-  b=QeaCwDX4YE4GsQ8+pRatXDnSt/wxYsGc5/iDtKB25mUkcjdygDWckssz
-   x4ZRdllDEzwh8veMyWiJX4JQOdF620qAt/hGv8IpdYm+ZJPHksKxy9P/h
-   BOUbqDSEju/YYMulkPFLW8oXIPEt/M7RhZ24A2sNUWIJd9Ci1PkBA7Zwf
-   1H5Y3PQOkAgpvJWUPUP/BScKLb7tWGrymLq6sAWg9qHm9hTG8sYxs5bhn
-   UPxjAlpA9/sNKPSxN09e3NAaDgJRARs7zmox9Kl+ds1nxH0hMcSnxAy8x
-   2JWILOXsRK6vWnToF9rZH7KX4rwSstFGegrcJIdhax3xBfJGXFbwU2PHy
-   Q==;
-X-CSE-ConnectionGUID: VqANCCs0QT6KyMojCaypJg==
-X-CSE-MsgGUID: dCRKvkZJSOOzEeC+PRJ64A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="63819648"
+  bh=hZGN6xEotmZo6YeZgYvHqSvus949RdI129rpxv5A790=;
+  b=e3wsa5JW2JO+WbwZz3TNIH3V8OdlZoIwWRnxrU6nXPE5nGrb7RnZ5Kc+
+   9+9K/Qo4Aehb6IL5LMJypbi4zYHtFHQsaATvUFHiRSmVFajEBI/jY1xno
+   F7Y/oAbrX50G8Tl8k/jqzSUD/IPO8lbqUfsv6xt5GNhhjhQbi1ZDpcAcC
+   BFBOVbUBFZG0mommJNYw6RMvsG8k62su7MrInH5cbMeF4g4MW/09FVpd0
+   Qm/lFKj2nBmQvsy3lg53GkifSnKCZ46+1RaoR3yBhJBQKGSiVGz7wBcNP
+   412KFxax7SbuE22rg9MalX0JQFwUKT6ljxLJaAG0+/O11FfPHpwfQndCU
+   A==;
+X-CSE-ConnectionGUID: F64LEwxnTHqZlgyAaY2BAw==
+X-CSE-MsgGUID: Xuai8IcqTTOunhjtesSOUA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="63819687"
 X-IronPort-AV: E=Sophos;i="6.18,294,1751266800"; 
-   d="scan'208";a="63819648"
+   d="scan'208";a="63819687"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
   by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 20:35:07 -0700
-X-CSE-ConnectionGUID: L8b29UPGQ+iHnCb3FvLCxg==
-X-CSE-MsgGUID: LaW3gcQfRke+KlzqwXJc/w==
+X-CSE-ConnectionGUID: wVuklESySoW+bjcdUaKEpg==
+X-CSE-MsgGUID: awoYk1RmRJmb0Cdwz6hcrw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,294,1751266800"; 
-   d="scan'208";a="214636606"
+   d="scan'208";a="214636615"
 Received: from jf5300-b11a338t.jf.intel.com ([10.242.51.115])
-  by orviesa001.jf.intel.com with ESMTP; 25 Sep 2025 20:35:06 -0700
+  by orviesa001.jf.intel.com with ESMTP; 25 Sep 2025 20:35:07 -0700
 From: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -102,22 +102,22 @@ To: linux-kernel@vger.kernel.org,
 Cc: wajdi.k.feghali@intel.com,
 	vinodh.gopal@intel.com,
 	kanchana.p.sridhar@intel.com
-Subject: [PATCH v12 18/23] crypto: iaa - Add deflate-iaa-dynamic compression mode.
-Date: Thu, 25 Sep 2025 20:34:57 -0700
-Message-Id: <20250926033502.7486-19-kanchana.p.sridhar@intel.com>
+Subject: [PATCH v12 21/23] mm: zswap: Consistently use IS_ERR_OR_NULL() to check acomp_ctx resources.
+Date: Thu, 25 Sep 2025 20:35:00 -0700
+Message-Id: <20250926033502.7486-22-kanchana.p.sridhar@intel.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
 References: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7293AC0004
+X-Stat-Signature: 6cctpu155zzrfyx7t3rz9wuqrhy9sykq
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: F038A120008
-X-Stat-Signature: krpjzg5qunxrgu45jg6zoz7ghxc156fh
-X-HE-Tag: 1758857721-120169
-X-HE-Meta: U2FsdGVkX18NHWZOa6nI64DvR40KDf5PqM20W1+FepAq4V6zDGHO9L8FdSfoA1turNAPjJAM/mkjjgh33zjUjDqj+3Kjn0+XYGmsb72+xypcjFYdCqEmBPH5bAQDKFBt0dR2mWb0WZCTSL+QLWoq9OSJPtAIH7IGX+rwDv71N58bQXWsBQ7188qT81cSdJMXq9Qn06OX8Gk/oZEaQOLUxjy31zgvbM5lAv8it+G081p+xFpvQBIvTAL9b/vHdrKZKB1ENfkepFdpEsfzJOmHZ+KKAkiwuxOTyaSyMMiBmFjV/XgkOZgwn30UYaGsKI31aoLHsgDAFbNZ8uFzQH8oD2BIV6S7IUZs3FUIfuhOYRz6zL8PtxJpNUCSH6uxB9219XM6dIp+7LrUQxsI9tD1mzQLa5CJIOcL7XL1dlaCv0AHi2P2dB62RSO50nqoGxRLvlz+8tZRNA800SzOigA1kthScDR3L53jAzN+eKNvmDgMJa3efV0iAcOlE+g7vlp3MLwDzk+KS0s7Ti1T7SH5pM6Mee3CIVoDP50rGf1KLkA79zFclkkzCXkCaBX9xKglx0wUeVYjDjF4s7+9q1nszGeZQIqtVieJHJl5jhIfEICR6kFowyEBjGSYws0wGlX6HHKBAtwJ+yzcgdlMCGynL6+3wEQPq0a+fE4iseZkMRLDMnLYe0jKHstovgV3kBVd9+MdMxTa6NNAl62gipmH6IZCcrWJRKxZ04pIUB8o9HpvswQm5Y2NK3J5x2E0epBGaZNVYDAGCXT/oyD8UqM2eYC2n/Sn9HvquvlIfSQrsChHQsGLFdWx98Q1rWX9VUITkPhrFr/1QCcOKYdXxaCWXdlFNuaJVFF5KuBlPRXEp30gNiL775OXV39luicSJzCSoKmk5xHgtU1FCtf5fCfZgeNxMJb3jKgMi2z8qbYZ7e7KL7C6syOHgYRcCi/SYh4d3xksXqAceCzFs7I5LNy
- jBiidpBz
- SJfeXrn22TKeNQHjJL8tnSJw9bQ1icD9wx6XKnBjmqtgLjlmMcR0x67GAf2vK04d3C9KfMMaWaiw+PqDVwF4E3BiByflXPbDPkxrAGFQUBisNsqoCxE87KpvVUQfIJVzMhda4vRxF3pIcdtU=
+X-HE-Tag: 1758857723-444419
+X-HE-Meta: U2FsdGVkX1/4rfR1kaUAbPFSfcffwPlmbXRRjDiWL6Ms0uOLQf9LCrSp0gwrC+MPom5T4oURT9bDvX6tCQBj+lOMF/OgU6ueaf0YdKyEuySv8lrD6Jh/dkHJU1mvXhHJjCyfT+6HGnXWo8L56PDeGHJ1WlDAf/L1NhmvDXIMvrkVKynYAKHka+zaule5MIyhx4worIEysbLldMw2ZkbM+0XsPlUZE7tMXAHaWMnv+ofdbcvDf2oSp1dpFNFbWciYbpxuDqcrWbov9BfC/NUeqlgj7xDxwAPp1lNDgXyKR6QGEN5vn2WvNnzLw+ECjU9bW2ypxgAu1+PIwYbkF5YUz0if2Fg1JcNnFP4YHZoo76zcTCcc1pXOpJ1d4Nm436gtFWjV5ybfKlT2T60MScGZapYyUnqPymnmLqfxbqbWWnotqz9sjh+Ps1D9MhhUTFliEoBo/9xg9cRp0ERDHkuBhLxbLic282Dh/o/kTwU74CShMlYRyNvNE6SyghVIZvF6ANYeb+tmh0sZTeau+pcVt2OMYqafXgm2EwEtcDBu3gQvgBnG4tgkPUux8XLyUZO3G3Lz5EpuPmrtkoejuIY/hEj42U/BOiJhfUe8zHIDQtanC5GQ6zzXfUXydGodR2PdTjPymD6zF9uxW9gkM+laeu68SvfD4NWAK0oGQlpugQ/55IX8UY/v2YE5jJIs+IXWb+afsgynO3SNrJQlpif/DMTy9WQxYKqRJRBDDM+MVopQzp1snoF72wFmcpfcBp3tSEpdrYhm9A6hFlHjJd5HsgI0FHVtSWO/ZCoBecJwXRMV0P6Wtc2zge+92arMxTYhQVueJJd76XPXYfClScK9x7BQsFxdqX2i+DVSFCc0UNyPkIDmhujR6ix1it2I8ldaUWep0VPVCVTFHEle0MPPrxlrg1tTaSg9yi5fC7cRhXUZUmRAbrstWKxbnH50024cIqe1xHH/sYcMPtiAAEG
+ rq/BPSNT
+ PjveaRqzl1BjFXWIvQgbHXupfA78/V/mrP8l/Jks5RHpD6CuEzuIhM1lmVhTAfFqUMxs42rkS9DuYIQBnHZsFwNDPA3Ehpjk1nFRGcNnY1sCuz1jIQP/rYTxypGLVl3ZcBJvUuQ8dpfYzP9cBq06ZrqIsMxAOhRuVAJ+turM8te+eQ8D9NaGXxqxBEgHYD+WddNKwrAE4Ao8v38CnG4o/wooTmJx4frL0m4tYjCHLwiaORV2In5cXyLVszJGJq9IQB2fc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,562 +126,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Some versions of Intel IAA support dynamic compression where the hardware
-dynamically computes the Huffman tables and generates a Deflate header
-if the input size is no larger than 4KB. This patch will use IAA for
-dynamic compression if an appropriate IAA is present and the input size is
-not too big. If an IAA is not present, the algorithm will not
-be available. Otherwise, if the size of the input is greater than
-PAGE_SIZE, zlib is used to do the compression. If the algorithm is
-selected, IAA will be used for decompression. If the compressed stream
-contains a reference whose distance is greater than 4KB, hardware
-decompression will fail, and the decompression will be done with zlib.
+This patch uses IS_ERR_OR_NULL() in zswap_cpu_comp_prepare() to check
+for valid acomp/req, thereby making it consistent with
+acomp_ctx_dealloc().
 
-Intel IAA dynamic compression results in a compression ratio that is
-better than or equal to the currently supported "fixed" compression mode
-on the same data set. Compressing a data set of 4300 4KB pages sampled
-from SPEC CPU17 workloads produces a compression ratio of 3.14 for IAA
-dynamic compression and 2.69 for IAA fixed compression.
+This is based on this earlier comment [1] from Yosry, when reviewing v8.
 
-If an appropriate IAA exists, dynamic mode can be chosen as the IAA
-compression mode by selecting the corresponding algorithm.
+[1] https://patchwork.kernel.org/comment/26282128/
 
-For example, to use IAA dynamic mode in zswap:
-
-      echo deflate-iaa-dynamic > /sys/module/zswap/parameters/compressor
-
-This patch also adds a deflate_generic_compress() fallback when dynamic
-mode is selected and the input size is over 4KB; along with stats
-support that will count these software fallback calls as
-"total_sw_comp_calls" in the driver's global_stats.
-
-Furthermore, we define IAA_DYN_ALLOC_DESC_COMP_TIMEOUT as 2000 for
-dynamic mode compression on Granite Rapids.
-
-Signed-off-by: Andre Glover <andre.glover@linux.intel.com>
 Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
 ---
- .../driver-api/crypto/iaa/iaa-crypto.rst      | 21 ++++
- crypto/testmgr.c                              | 10 ++
- crypto/testmgr.h                              | 74 ++++++++++++++
- drivers/crypto/intel/iaa/Makefile             |  2 +-
- drivers/crypto/intel/iaa/iaa_crypto.h         |  5 +
- .../intel/iaa/iaa_crypto_comp_dynamic.c       | 22 +++++
- drivers/crypto/intel/iaa/iaa_crypto_main.c    | 98 +++++++++++++++++--
- drivers/crypto/intel/iaa/iaa_crypto_stats.c   |  8 ++
- drivers/crypto/intel/iaa/iaa_crypto_stats.h   |  2 +
- include/linux/iaa_comp.h                      |  5 +-
- 10 files changed, 236 insertions(+), 11 deletions(-)
- create mode 100644 drivers/crypto/intel/iaa/iaa_crypto_comp_dynamic.c
+ mm/zswap.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/driver-api/crypto/iaa/iaa-crypto.rst b/Documentation/driver-api/crypto/iaa/iaa-crypto.rst
-index 81a7dbd15f8b..e841a33564db 100644
---- a/Documentation/driver-api/crypto/iaa/iaa-crypto.rst
-+++ b/Documentation/driver-api/crypto/iaa/iaa-crypto.rst
-@@ -33,6 +33,8 @@ compresses and decompresses.
- Currently, there is only one compression modes available, 'fixed'
- mode.
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 27665eaa3f89..3b3716808d7d 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -807,7 +807,7 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
+ 		return ret;
  
-+'dynamic' mode is available on certain generations of IAA hardware.
-+
- The 'fixed' compression mode implements the compression scheme
- specified by RFC 1951 and is given the crypto algorithm name
- 'deflate-iaa'.  (Because the IAA hardware has a 4k history-window
-@@ -43,6 +45,25 @@ the IAA fixed mode deflate algorithm is given its own algorithm name
- rather than simply 'deflate').
+ 	acomp_ctx->acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_node(cpu));
+-	if (IS_ERR(acomp_ctx->acomp)) {
++	if (IS_ERR_OR_NULL(acomp_ctx->acomp)) {
+ 		pr_err("could not alloc crypto acomp %s : %ld\n",
+ 				pool->tfm_name, PTR_ERR(acomp_ctx->acomp));
+ 		ret = PTR_ERR(acomp_ctx->acomp);
+@@ -816,7 +816,7 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
+ 	acomp_ctx->is_sleepable = acomp_is_async(acomp_ctx->acomp);
  
- 
-+The 'dynamic' compression mode implements a compression scheme where
-+the IAA hardware will internally do one pass through the data, compute the
-+Huffman tables and generate a Deflate header, then automatically do a
-+second pass through the data, generating the final compressed output. IAA
-+dynamic compression can be used if an appropriate IAA is present and the
-+input size is not too big.  If an appropriate IAA is not present, the
-+algorithm will not be available. Otherwise, if the size of the input is too
-+big, zlib is used to do the compression. If the algorithm is selected,
-+IAA will be used for decompression. If the compressed stream contains a
-+reference whose distance is greater than 4KB, hardware decompression will
-+fail, and the decompression will be done with zlib. If an appropriate IAA
-+exists, 'dynamic' compression, it is implemented by the
-+'deflate-iaa-dynamic' crypto algorithm.
-+
-+A zswap device can select the IAA 'dynamic' mode represented by
-+selecting the 'deflate-iaa-dynamic' crypto compression algorithm::
-+
-+  # echo deflate-iaa-dynamic> /sys/module/zswap/parameters/compressor
-+
- Config options and other setup
- ==============================
- 
-diff --git a/crypto/testmgr.c b/crypto/testmgr.c
-index ee33ba21ae2b..d0f271ea1201 100644
---- a/crypto/testmgr.c
-+++ b/crypto/testmgr.c
-@@ -4665,6 +4665,16 @@ static const struct alg_test_desc alg_test_descs[] = {
- 				.decomp = __VECS(deflate_decomp_tv_template)
- 			}
- 		}
-+	}, {
-+		.alg = "deflate-iaa-dynamic",
-+		.test = alg_test_comp,
-+		.fips_allowed = 1,
-+		.suite = {
-+			.comp = {
-+				.comp = __VECS(deflate_iaa_dynamic_comp_tv_template),
-+				.decomp = __VECS(deflate_iaa_dynamic_decomp_tv_template)
-+			}
-+		}
- 	}, {
- 		.alg = "dh",
- 		.test = alg_test_kpp,
-diff --git a/crypto/testmgr.h b/crypto/testmgr.h
-index 32d099ac9e73..42db2399013e 100644
---- a/crypto/testmgr.h
-+++ b/crypto/testmgr.h
-@@ -34575,6 +34575,80 @@ static const struct comp_testvec deflate_decomp_tv_template[] = {
- 	},
- };
- 
-+static const struct comp_testvec deflate_iaa_dynamic_comp_tv_template[] = {
-+	{
-+		.inlen	= 70,
-+		.outlen	= 46,
-+		.input	= "Join us now and share the software "
-+			"Join us now and share the software ",
-+		.output = "\x85\xca\xc1\x09\x00\x20\x08\x05"
-+			  "\xd0\x55\xfe\x3c\x6e\x21\x64\xd8"
-+			  "\x45\x21\x0d\xd7\xb7\x26\xe8\xf8"
-+			  "\xe0\x91\x2f\xc3\x09\x98\x17\xd8"
-+			  "\x06\x42\x79\x0b\x52\x05\xe1\x33"
-+			  "\xeb\x81\x3e\xe5\xa2\x01",
-+	}, {
-+		.inlen	= 191,
-+		.outlen	= 121,
-+		.input	= "This document describes a compression method based on the DEFLATE"
-+			"compression algorithm.  This document defines the application of "
-+			"the DEFLATE algorithm to the IP Payload Compression Protocol.",
-+		.output = "\x5d\x8d\xc1\x0d\xc2\x30\x10\x04"
-+			  "\x5b\xd9\x0a\xd2\x03\x82\x20\x21"
-+			  "\xf1\xf0\x23\x0d\x5c\xec\x0b\xb6"
-+			  "\x64\xfb\x2c\xdf\xf1\xa0\x7b\x12"
-+			  "\x3e\x58\x79\xae\x76\x67\x76\x89"
-+			  "\x49\x11\xc4\xbf\x0b\x57\x43\x60"
-+			  "\xf5\x3d\xad\xac\x20\x78\x29\xad"
-+			  "\xb3\x6a\x92\x8a\xc2\x16\x25\x60"
-+			  "\x25\xe5\x80\x3d\x5b\x64\xdc\xe6"
-+			  "\xfb\xf3\xb2\xcc\xe3\x8c\xf2\x4b"
-+			  "\x7a\xb2\x58\x26\xe0\x2c\xde\x52"
-+			  "\xdd\xb5\x07\x48\xad\xe5\xe4\xc9"
-+			  "\x0e\x42\xb6\xd1\xf5\x17\xc0\xe4"
-+			  "\x57\x3c\x1c\x1c\x7d\xb2\x50\xc0"
-+			  "\x75\x38\x72\x5d\x4c\xbc\xe4\xe9"
-+			  "\x0b",
-+	},
-+};
-+
-+static const struct comp_testvec deflate_iaa_dynamic_decomp_tv_template[] = {
-+	{
-+		.inlen	= 121,
-+		.outlen	= 191,
-+		.input	= "\x5d\x8d\xc1\x0d\xc2\x30\x10\x04"
-+			  "\x5b\xd9\x0a\xd2\x03\x82\x20\x21"
-+			  "\xf1\xf0\x23\x0d\x5c\xec\x0b\xb6"
-+			  "\x64\xfb\x2c\xdf\xf1\xa0\x7b\x12"
-+			  "\x3e\x58\x79\xae\x76\x67\x76\x89"
-+			  "\x49\x11\xc4\xbf\x0b\x57\x43\x60"
-+			  "\xf5\x3d\xad\xac\x20\x78\x29\xad"
-+			  "\xb3\x6a\x92\x8a\xc2\x16\x25\x60"
-+			  "\x25\xe5\x80\x3d\x5b\x64\xdc\xe6"
-+			  "\xfb\xf3\xb2\xcc\xe3\x8c\xf2\x4b"
-+			  "\x7a\xb2\x58\x26\xe0\x2c\xde\x52"
-+			  "\xdd\xb5\x07\x48\xad\xe5\xe4\xc9"
-+			  "\x0e\x42\xb6\xd1\xf5\x17\xc0\xe4"
-+			  "\x57\x3c\x1c\x1c\x7d\xb2\x50\xc0"
-+			  "\x75\x38\x72\x5d\x4c\xbc\xe4\xe9"
-+			  "\x0b",
-+		.output	= "This document describes a compression method based on the DEFLATE"
-+			"compression algorithm.  This document defines the application of "
-+			"the DEFLATE algorithm to the IP Payload Compression Protocol.",
-+	}, {
-+		.inlen	= 46,
-+		.outlen	= 70,
-+		.input	= "\x85\xca\xc1\x09\x00\x20\x08\x05"
-+			  "\xd0\x55\xfe\x3c\x6e\x21\x64\xd8"
-+			  "\x45\x21\x0d\xd7\xb7\x26\xe8\xf8"
-+			  "\xe0\x91\x2f\xc3\x09\x98\x17\xd8"
-+			  "\x06\x42\x79\x0b\x52\x05\xe1\x33"
-+			  "\xeb\x81\x3e\xe5\xa2\x01",
-+		.output	= "Join us now and share the software "
-+			"Join us now and share the software ",
-+	},
-+};
-+
- /*
-  * LZO test vectors (null-terminated strings).
-  */
-diff --git a/drivers/crypto/intel/iaa/Makefile b/drivers/crypto/intel/iaa/Makefile
-index ebfa1a425f80..96f22cd39924 100644
---- a/drivers/crypto/intel/iaa/Makefile
-+++ b/drivers/crypto/intel/iaa/Makefile
-@@ -7,6 +7,6 @@ ccflags-y += -I $(srctree)/drivers/dma/idxd -DDEFAULT_SYMBOL_NAMESPACE='"CRYPTO_
- 
- obj-$(CONFIG_CRYPTO_DEV_IAA_CRYPTO) := iaa_crypto.o
- 
--iaa_crypto-y := iaa_crypto_main.o iaa_crypto_comp_fixed.o
-+iaa_crypto-y := iaa_crypto_main.o iaa_crypto_comp_fixed.o iaa_crypto_comp_dynamic.o
- 
- iaa_crypto-$(CONFIG_CRYPTO_DEV_IAA_CRYPTO_STATS) += iaa_crypto_stats.o
-diff --git a/drivers/crypto/intel/iaa/iaa_crypto.h b/drivers/crypto/intel/iaa/iaa_crypto.h
-index db1e50574662..5a8dec3be9fa 100644
---- a/drivers/crypto/intel/iaa/iaa_crypto.h
-+++ b/drivers/crypto/intel/iaa/iaa_crypto.h
-@@ -19,12 +19,15 @@
- 
- #define IAA_COMP_FLUSH_OUTPUT		BIT(1)
- #define IAA_COMP_APPEND_EOB		BIT(2)
-+#define IAA_COMP_GEN_HDR_1_PASS		(BIT(12) | BIT(13))
- 
- #define IAA_COMPLETION_TIMEOUT		1000000
- 
- #define IAA_ALLOC_DESC_COMP_TIMEOUT	   1000
- #define IAA_ALLOC_DESC_DECOMP_TIMEOUT	    500
- 
-+#define IAA_DYN_ALLOC_DESC_COMP_TIMEOUT	   2000
-+
- #define IAA_ANALYTICS_ERROR		0x0a
- #define IAA_ERROR_DECOMP_BUF_OVERFLOW	0x0b
- #define IAA_ERROR_COMP_BUF_OVERFLOW	0x19
-@@ -134,6 +137,8 @@ struct aecs_comp_table_record {
- 
- int iaa_aecs_init_fixed(void);
- void iaa_aecs_cleanup_fixed(void);
-+int iaa_aecs_init_dynamic(void);
-+void iaa_aecs_cleanup_dynamic(void);
- 
- typedef int (*iaa_dev_comp_init_fn_t) (struct iaa_device_compression_mode *mode);
- typedef int (*iaa_dev_comp_free_fn_t) (struct iaa_device_compression_mode *mode);
-diff --git a/drivers/crypto/intel/iaa/iaa_crypto_comp_dynamic.c b/drivers/crypto/intel/iaa/iaa_crypto_comp_dynamic.c
-new file mode 100644
-index 000000000000..3a93d7913443
---- /dev/null
-+++ b/drivers/crypto/intel/iaa/iaa_crypto_comp_dynamic.c
-@@ -0,0 +1,22 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright(c) 2023 Intel Corporation. All rights rsvd. */
-+
-+#include "idxd.h"
-+#include "iaa_crypto.h"
-+
-+int iaa_aecs_init_dynamic(void)
-+{
-+	int ret;
-+
-+	ret = add_iaa_compression_mode("dynamic", NULL, 0, NULL, 0, NULL, NULL);
-+
-+	if (!ret)
-+		pr_debug("IAA dynamic compression mode initialized\n");
-+
-+	return ret;
-+}
-+
-+void iaa_aecs_cleanup_dynamic(void)
-+{
-+	remove_iaa_compression_mode("dynamic");
-+}
-diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-index 0669ae155e90..cbe3a2457253 100644
---- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
-+++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-@@ -102,10 +102,12 @@ DEFINE_MUTEX(first_wq_found_lock);
- 
- const char *iaa_compression_mode_names[IAA_COMP_MODES_MAX] = {
- 	"fixed",
-+	"dynamic",
- };
- 
- const char *iaa_compression_alg_names[IAA_COMP_MODES_MAX] = {
- 	"deflate-iaa",
-+	"deflate-iaa-dynamic",
- };
- 
- static struct iaa_compression_mode *iaa_compression_modes[IAA_COMP_MODES_MAX];
-@@ -1482,6 +1484,23 @@ static int deflate_generic_decompress(struct iaa_req *req)
- 	return ret;
- }
- 
-+static int deflate_generic_compress(struct iaa_req *req)
-+{
-+	ACOMP_REQUEST_ON_STACK(fbreq, deflate_crypto_acomp);
-+	int ret;
-+
-+	acomp_request_set_callback(fbreq, 0, NULL, NULL);
-+	acomp_request_set_params(fbreq, req->src, req->dst, req->slen,
-+				 PAGE_SIZE);
-+
-+	ret = crypto_acomp_compress(fbreq);
-+	req->dlen = fbreq->dlen;
-+
-+	update_total_sw_comp_calls();
-+
-+	return ret;
-+}
-+
- static __always_inline void acomp_to_iaa(struct acomp_req *areq,
- 					 struct iaa_req *req,
- 					 struct iaa_compression_ctx *ctx)
-@@ -1808,9 +1827,13 @@ iaa_setup_compress_hw_desc(struct idxd_desc *idxd_desc,
- 	desc->src1_size = slen;
- 	desc->dst_addr = (u64)dst_addr;
- 	desc->max_dst_size = dlen;
--	desc->flags |= IDXD_OP_FLAG_RD_SRC2_AECS;
--	desc->src2_addr = active_compression_mode->aecs_comp_table_dma_addr;
--	desc->src2_size = sizeof(struct aecs_comp_table_record);
-+	if (mode == IAA_MODE_DYNAMIC) {
-+		desc->compr_flags |= IAA_COMP_GEN_HDR_1_PASS;
-+	} else {
-+		desc->flags |= IDXD_OP_FLAG_RD_SRC2_AECS;
-+		desc->src2_addr = active_compression_mode->aecs_comp_table_dma_addr;
-+		desc->src2_size = sizeof(struct aecs_comp_table_record);
-+	}
- 	desc->completion_addr = idxd_desc->compl_dma;
- 
- 	return desc;
-@@ -2064,6 +2087,9 @@ static int iaa_comp_acompress(struct iaa_compression_ctx *ctx, struct iaa_req *r
- 		return -EINVAL;
- 	}
- 
-+	if (ctx->mode == IAA_MODE_DYNAMIC && req->slen > PAGE_SIZE)
-+		return deflate_generic_compress(req);
-+
- 	cpu = get_cpu();
- 	wq = comp_wq_table_next_wq(cpu);
- 	put_cpu();
-@@ -2546,7 +2572,9 @@ static int iaa_comp_adecompress_batch(
- static void compression_ctx_init(struct iaa_compression_ctx *ctx, enum iaa_mode mode)
- {
- 	ctx->mode = mode;
--	ctx->alloc_comp_desc_timeout = IAA_ALLOC_DESC_COMP_TIMEOUT;
-+	ctx->alloc_comp_desc_timeout = (mode == IAA_MODE_DYNAMIC ?
-+					IAA_DYN_ALLOC_DESC_COMP_TIMEOUT :
-+					IAA_ALLOC_DESC_COMP_TIMEOUT);
- 	ctx->alloc_decomp_desc_timeout = IAA_ALLOC_DESC_DECOMP_TIMEOUT;
- 	ctx->verify_compress = iaa_verify_compress;
- 	ctx->async_mode = async_mode;
-@@ -2760,6 +2788,30 @@ static struct acomp_alg iaa_acomp_fixed_deflate = {
- 	}
- };
- 
-+static int iaa_comp_init_dynamic(struct crypto_acomp *acomp_tfm)
-+{
-+	struct crypto_tfm *tfm = crypto_acomp_tfm(acomp_tfm);
-+	struct iaa_compression_ctx *ctx = crypto_tfm_ctx(tfm);
-+
-+	ctx = iaa_ctx[IAA_MODE_DYNAMIC];
-+
-+	return 0;
-+}
-+
-+static struct acomp_alg iaa_acomp_dynamic_deflate = {
-+	.init			= iaa_comp_init_dynamic,
-+	.compress		= iaa_comp_acompress_main,
-+	.decompress		= iaa_comp_adecompress_main,
-+	.base			= {
-+		.cra_name		= "deflate",
-+		.cra_driver_name	= "deflate-iaa-dynamic",
-+		.cra_flags		= CRYPTO_ALG_ASYNC,
-+		.cra_ctxsize		= sizeof(struct iaa_compression_ctx),
-+		.cra_module		= THIS_MODULE,
-+		.cra_priority		= IAA_ALG_PRIORITY + 1,
-+	}
-+};
-+
- /*******************************************
-  * Implement idxd_device_driver interfaces.
-  *******************************************/
-@@ -2779,7 +2831,7 @@ static void iaa_unregister_compression_device(void)
- 	num_iaa_modes_registered = 0;
- }
- 
--static int iaa_register_compression_device(void)
-+static int iaa_register_compression_device(struct idxd_device *idxd)
- {
- 	struct iaa_compression_mode *mode;
- 	int i, idx;
-@@ -2788,6 +2840,13 @@ static int iaa_register_compression_device(void)
- 		iaa_mode_registered[i] = false;
- 		mode = find_iaa_compression_mode(iaa_compression_mode_names[i], &idx);
- 		if (mode) {
-+			/* Header Generation Capability is required for the dynamic algorithm. */
-+			if ((!strcmp(mode->name, "dynamic")) && !idxd->hw.iaa_cap.header_gen) {
-+				if (num_iaa_modes_registered > 0)
-+					--num_iaa_modes_registered;
-+				continue;
-+			}
-+
- 			iaa_ctx[i] = kmalloc(sizeof(struct iaa_compression_ctx), GFP_KERNEL);
- 			if (!iaa_ctx[i])
- 				goto err;
-@@ -2805,7 +2864,7 @@ static int iaa_register_compression_device(void)
- 	return -ENODEV;
- }
- 
--static int iaa_register_acomp_compression_device(void)
-+static int iaa_register_acomp_compression_device(struct idxd_device *idxd)
- {
- 	int ret = -ENOMEM;
- 
-@@ -2819,8 +2878,19 @@ static int iaa_register_acomp_compression_device(void)
- 		goto err_fixed;
- 	}
- 
-+	if (iaa_mode_registered[IAA_MODE_DYNAMIC]) {
-+		ret = crypto_register_acomp(&iaa_acomp_dynamic_deflate);
-+		if (ret) {
-+			pr_err("deflate algorithm acomp dynamic registration failed (%d)\n", ret);
-+			goto err_dynamic;
-+		}
-+	}
-+
- 	return 0;
- 
-+err_dynamic:
-+	crypto_unregister_acomp(&iaa_acomp_fixed_deflate);
-+
- err_fixed:
- 	if (!IS_ERR_OR_NULL(deflate_crypto_acomp)) {
- 		crypto_free_acomp(deflate_crypto_acomp);
-@@ -2839,6 +2909,9 @@ static void iaa_unregister_acomp_compression_device(void)
- 	if (iaa_mode_registered[IAA_MODE_FIXED])
- 		crypto_unregister_acomp(&iaa_acomp_fixed_deflate);
- 
-+	if (iaa_mode_registered[IAA_MODE_DYNAMIC])
-+		crypto_unregister_acomp(&iaa_acomp_dynamic_deflate);
-+
- 	if (!IS_ERR_OR_NULL(deflate_crypto_acomp)) {
- 		crypto_free_acomp(deflate_crypto_acomp);
- 		deflate_crypto_acomp = NULL;
-@@ -2906,13 +2979,13 @@ static int iaa_crypto_probe(struct idxd_dev *idxd_dev)
- 	atomic_set(&iaa_crypto_enabled, 1);
- 
- 	if (first_wq) {
--		ret = iaa_register_compression_device();
-+		ret = iaa_register_compression_device(idxd);
- 		if (ret != 0) {
- 			dev_dbg(dev, "IAA compression device registration failed\n");
- 			goto err_register;
- 		}
- 
--		ret = iaa_register_acomp_compression_device();
-+		ret = iaa_register_acomp_compression_device(idxd);
- 		if (ret != 0) {
- 			dev_dbg(dev, "IAA compression device acomp registration failed\n");
- 			goto err_register;
-@@ -3063,6 +3136,12 @@ static int __init iaa_crypto_init_module(void)
- 		goto err_aecs_init;
- 	}
- 
-+	ret = iaa_aecs_init_dynamic();
-+	if (ret < 0) {
-+		pr_debug("IAA dynamic compression mode init failed\n");
-+		goto err_dynamic;
-+	}
-+
- 	ret = idxd_driver_register(&iaa_crypto_driver);
- 	if (ret) {
- 		pr_debug("IAA wq sub-driver registration failed\n");
-@@ -3164,6 +3243,8 @@ static int __init iaa_crypto_init_module(void)
- err_g_comp_wqs_per_iaa_attr_create:
- 	idxd_driver_unregister(&iaa_crypto_driver);
- err_driver_reg:
-+	iaa_aecs_cleanup_dynamic();
-+err_dynamic:
- 	iaa_aecs_cleanup_fixed();
- err_aecs_init:
- 
-@@ -3188,6 +3269,7 @@ static void __exit iaa_crypto_cleanup_module(void)
- 	driver_remove_file(&iaa_crypto_driver.drv,
- 			   &driver_attr_g_comp_wqs_per_iaa);
- 	idxd_driver_unregister(&iaa_crypto_driver);
-+	iaa_aecs_cleanup_dynamic();
- 	iaa_aecs_cleanup_fixed();
- 
- 	pr_debug("cleaned up\n");
-diff --git a/drivers/crypto/intel/iaa/iaa_crypto_stats.c b/drivers/crypto/intel/iaa/iaa_crypto_stats.c
-index f5cc3d29ca19..42aae8a738ac 100644
---- a/drivers/crypto/intel/iaa/iaa_crypto_stats.c
-+++ b/drivers/crypto/intel/iaa/iaa_crypto_stats.c
-@@ -19,6 +19,7 @@
- 
- static atomic64_t total_comp_calls;
- static atomic64_t total_decomp_calls;
-+static atomic64_t total_sw_comp_calls;
- static atomic64_t total_sw_decomp_calls;
- static atomic64_t total_comp_bytes_out;
- static atomic64_t total_decomp_bytes_in;
-@@ -43,6 +44,11 @@ void update_total_decomp_calls(void)
- 	atomic64_inc(&total_decomp_calls);
- }
- 
-+void update_total_sw_comp_calls(void)
-+{
-+	atomic64_inc(&total_sw_comp_calls);
-+}
-+
- void update_total_sw_decomp_calls(void)
- {
- 	atomic64_inc(&total_sw_decomp_calls);
-@@ -174,6 +180,8 @@ static int global_stats_show(struct seq_file *m, void *v)
- 		   atomic64_read(&total_comp_calls));
- 	seq_printf(m, "  total_decomp_calls: %llu\n",
- 		   atomic64_read(&total_decomp_calls));
-+	seq_printf(m, "  total_sw_comp_calls: %llu\n",
-+		   atomic64_read(&total_sw_comp_calls));
- 	seq_printf(m, "  total_sw_decomp_calls: %llu\n",
- 		   atomic64_read(&total_sw_decomp_calls));
- 	seq_printf(m, "  total_comp_bytes_out: %llu\n",
-diff --git a/drivers/crypto/intel/iaa/iaa_crypto_stats.h b/drivers/crypto/intel/iaa/iaa_crypto_stats.h
-index 3787a5f507eb..6e0c6f9939bf 100644
---- a/drivers/crypto/intel/iaa/iaa_crypto_stats.h
-+++ b/drivers/crypto/intel/iaa/iaa_crypto_stats.h
-@@ -11,6 +11,7 @@ void	iaa_crypto_debugfs_cleanup(void);
- void	update_total_comp_calls(void);
- void	update_total_comp_bytes_out(int n);
- void	update_total_decomp_calls(void);
-+void	update_total_sw_comp_calls(void);
- void	update_total_sw_decomp_calls(void);
- void	update_total_decomp_bytes_in(int n);
- void	update_completion_einval_errs(void);
-@@ -29,6 +30,7 @@ static inline void	iaa_crypto_debugfs_cleanup(void) {}
- static inline void	update_total_comp_calls(void) {}
- static inline void	update_total_comp_bytes_out(int n) {}
- static inline void	update_total_decomp_calls(void) {}
-+static inline void	update_total_sw_comp_calls(void) {}
- static inline void	update_total_sw_decomp_calls(void) {}
- static inline void	update_total_decomp_bytes_in(int n) {}
- static inline void	update_completion_einval_errs(void) {}
-diff --git a/include/linux/iaa_comp.h b/include/linux/iaa_comp.h
-index 7b765760485c..ec28a9d9f2b4 100644
---- a/include/linux/iaa_comp.h
-+++ b/include/linux/iaa_comp.h
-@@ -12,7 +12,8 @@
- 
- enum iaa_mode {
- 	IAA_MODE_FIXED = 0,
--	IAA_MODE_NONE = 1,
-+	IAA_MODE_DYNAMIC = 1,
-+	IAA_MODE_NONE = 2,
- };
- 
- struct iaa_req {
-@@ -56,7 +57,7 @@ extern int iaa_comp_decompress_batch(
- #else /* CONFIG_CRYPTO_DEV_IAA_CRYPTO */
- 
- enum iaa_mode {
--	IAA_MODE_NONE = 1,
-+	IAA_MODE_NONE = 2,
- };
- 
- struct iaa_req {};
+ 	acomp_ctx->req = acomp_request_alloc(acomp_ctx->acomp);
+-	if (!acomp_ctx->req) {
++	if (IS_ERR_OR_NULL(acomp_ctx->req)) {
+ 		pr_err("could not alloc crypto acomp_request %s\n",
+ 		       pool->tfm_name);
+ 		goto fail;
 -- 
 2.27.0
 
