@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71AE0CAC5AC
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 06:44:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CC46CAC5AE
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 06:45:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 595508E0002; Fri, 26 Sep 2025 02:44:33 -0400 (EDT)
+	id 522A78E0003; Fri, 26 Sep 2025 02:45:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 545A88E0001; Fri, 26 Sep 2025 02:44:33 -0400 (EDT)
+	id 4F9F98E0001; Fri, 26 Sep 2025 02:45:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45BA88E0002; Fri, 26 Sep 2025 02:44:33 -0400 (EDT)
+	id 40FAF8E0003; Fri, 26 Sep 2025 02:45:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3211F8E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 02:44:33 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C8509C05A2
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 06:44:32 +0000 (UTC)
-X-FDA: 83930462784.28.D0D7357
-Received: from mail-io1-f78.google.com (mail-io1-f78.google.com [209.85.166.78])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 192CC140006
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 06:44:30 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3040C8E0001
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 02:45:32 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D680A16058A
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 06:45:31 +0000 (UTC)
+X-FDA: 83930465262.18.A3A5AE5
+Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 3C5C6A0011
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 06:45:30 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
 	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of 3TjbWaAkbAGERXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.78 as permitted sender) smtp.mailfrom=3TjbWaAkbAGERXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf25.hostedemail.com: domain of 3iTbWaAkbAJwOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.208 as permitted sender) smtp.mailfrom=3iTbWaAkbAJwOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758869071;
+	s=arc-20220608; t=1758869130;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=ML2Io1cPjRbrmnvCa63vi8bMKEa3pezrQiaB8ZHL8bE=;
-	b=I3BBCTxfeQs/EVXkpblZMDgxuN4sVzCkeaN5fLH2tx7e3tZR2ksv47OJ7O4ohZL0a+G8hv
-	a4q42VXknZgLEaSj3F777mmKJkGYTMHusl8Gh++znvrqeGY7nKYkbFHAdQkjwaecmSpW/r
-	MOPE0nLvL8Db42KfVcsKYwGB4Ms/6aQ=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of 3TjbWaAkbAGERXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.78 as permitted sender) smtp.mailfrom=3TjbWaAkbAGERXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758869071; a=rsa-sha256;
+	 references; bh=1veCcU3mH9oLnhdNlf6mJUGV7a4TAFPi+gLi5uVhv0M=;
+	b=H/sqbQB6NS2eyIxz0D+62xwASJtsHhO2TRqr4d+Fuyy5xGLKYhmwPwyhFkpoi7jm5FCswp
+	7WB7kN48Bw4VxaNMw2CO6u0nmC9prInW5+/6SG3ooctm609SQ88Km34FBG/F1DLQ/3HDID
+	cYNCOLXOwLzA564z67sNgsK/e40WIKQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758869130; a=rsa-sha256;
 	cv=none;
-	b=7n9L36pSUIHVm710qzRGFxEtSPcGzV2sUWKSj5bzhjbo8yGiQlduYAHIz10N5KJFNRdF53
-	DM4jQFRNxkxILKR4IloJu15hBvUO8kSG6/hqGmWSfQXQRMUF+AWYUn6HqrHAIOiTqUfWm0
-	EwuJWJatQ7YvFs/t0fDGWzwc4Te+fD4=
-Received: by mail-io1-f78.google.com with SMTP id ca18e2360f4ac-90efeb58159so67142939f.0
-        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 23:44:30 -0700 (PDT)
+	b=pbxRfvOT8ZKmEy7tAn7RXLmt29dMoHJMC8kER+w3ic8rZegiuzpu9ZitYE2wNJC1y/P2oU
+	eG5sGhxBecBLzGZck0t5aKA5HaRVhmFGBJ3q87YST/Qf+zG1FZ/sk9TngkVZF+yLRCn/FV
+	pZzxrAAZBbdZavaBm2VZudT+lMxqMZw=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf25.hostedemail.com: domain of 3iTbWaAkbAJwOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.208 as permitted sender) smtp.mailfrom=3iTbWaAkbAJwOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-42640cbf7f2so32208705ab.2
+        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 23:45:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758869070; x=1759473870;
+        d=1e100.net; s=20230601; t=1758869129; x=1759473929;
         h=to:from:subject:message-id:date:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ML2Io1cPjRbrmnvCa63vi8bMKEa3pezrQiaB8ZHL8bE=;
-        b=Y0kyjG2tudpItg8qGe3X05kp75JqdiA1rbHja5pzBP6CSuFLIIRc2SbcboGyGD7HCS
-         NjcEMYjj25tojcgSEAtFyn7N6r4vxWp/8oqm6+zTn+zF2Zx1O4l8BWbE1SvhUi+z7q8T
-         B+eQoAfLyDEL3zjFvt0T+QfCkb6l2Gb/aZh1LAzjQDa61zaPXDosQN8LxHwLqoFSVqG0
-         zJR7KnV55DvXD6MfF3uN7e6bx6pNM8JzZbcctr99MSqYWWWqRAWff4lxYPNpY0Ce2fc2
-         hnAz5Reeygp+qt6rp2T4PYUQn0a6Vhzs5FRZzLqiqC6u5XeIYgTe9ghzTGZXMDVu0nej
-         EMPg==
-X-Forwarded-Encrypted: i=1; AJvYcCVxlDX4eXXMHpK+g1/BnI0JDPvmoribn+G1VPwItiQnwI4Ke9y/iqFqEiPikUKRoB/oM/nwHoZpUw==@kvack.org
-X-Gm-Message-State: AOJu0YxZadBzHHaZDThJxJvRSwbH87jAZMxQDLngQsjTsJaRIhEcL79H
-	VEsxAMKeRuJ0QEcJjNRkTEb9kG45MYLW3skxJSpFF0CaTxEIpnRE/yGFv0/n/qAuAoMqHDfyKan
-	hEg56JKzJ9cZqwLS3d+He0aorKoLDe2cB6OLRQAfMhv9/xvUBF8j+DghEXy0=
-X-Google-Smtp-Source: AGHT+IEh0ISwvbUJiv+mpukhrPiqeMyVANfxx6o4d/yrYP7YDpxEDyf7zuRPEIGw30+QVeJNnc0H2Lq5Lr+uCQozfoYv21+QTlnw
+        bh=1veCcU3mH9oLnhdNlf6mJUGV7a4TAFPi+gLi5uVhv0M=;
+        b=Yli+ulyYNM+6FHgPnmlJPcS0RbJ+bM3bgqBMzodpGutK7F1jMnHROYryI07NQbooVx
+         vdQYAIdtFPVmtVmK5OeTco/JTRfEkby4zbW1Rf4QcTJ4XE3pYLDskk97YLDkj0dgxPfJ
+         bKfejXMY1H2E8r8ZE6vtvMoBseeVWixerWP8IV9ZPRIrXDmdhyFhYUiFUZ+GfkdCuIaV
+         xnpkE/1YFrIgjFj5rzT41GTjiAAD2OannSUotYAAqG8AFfy7bcE6jeyxBIdD3kUk4ncV
+         OIJM0W2wNoTTkxcMd1wgmYTt0FyMiYnFWZBBRYUChzuxSXZgZ+rojjvu7AiVjfXoZLTb
+         FtKg==
+X-Forwarded-Encrypted: i=1; AJvYcCW6r7qpUsKX0FNAZ00xPdsavR4A82GODHN4PXq2jV+oM11L4HLrc5rq4sM0fq/BJekd5O9fpL71FA==@kvack.org
+X-Gm-Message-State: AOJu0YwSxent57QxtMWu/7G7zdur7zuK4fTXpJZXWad0Kgi8TRhJaeDI
+	lK5pB/bBDIiS/0Bh1eCh0ER7aWNdSdVeVAwMQR3+CstvCdSPegsfOP+iPK4CLB28MrfKPlT+jV0
+	met+U1LjM2axJvvn6WMLeQ61t1Nq55iB8heuwtclTTIGnZA6BUzCOiqwktjE=
+X-Google-Smtp-Source: AGHT+IGt9fmY+fMre+iBYy4LP8OBoS/OyInBYpNKNG9zH0SZ97oV98zut4bI7DGrK0yZbXbA8dni2nbYBirwgoVX3tXsVCJw/Ahb
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:214f:b0:425:8744:de7d with SMTP id
- e9e14a558f8ab-4259566cf61mr88463325ab.30.1758869070198; Thu, 25 Sep 2025
- 23:44:30 -0700 (PDT)
-Date: Thu, 25 Sep 2025 23:44:30 -0700
+X-Received: by 2002:a05:6e02:490d:b0:418:84eb:ea20 with SMTP id
+ e9e14a558f8ab-4259562f43bmr90064995ab.15.1758869129365; Thu, 25 Sep 2025
+ 23:45:29 -0700 (PDT)
+Date: Thu, 25 Sep 2025 23:45:29 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68d6364e.050a0220.3390a8.000d.GAE@google.com>
-Subject: [syzbot] [mm?] KCSAN: data-race in try_to_migrate_one / zap_page_range_single_batched
-From: syzbot <syzbot+60192c8877d0bc92a92b@syzkaller.appspotmail.com>
-To: Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@redhat.com, 
-	harry.yoo@oracle.com, jannh@google.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, riel@surriel.com, 
-	syzkaller-bugs@googlegroups.com, vbabka@suse.cz
+Message-ID: <68d63689.050a0220.25d7ab.00d9.GAE@google.com>
+Subject: [syzbot] [mm?] KCSAN: data-race in try_to_compact_pages / try_to_compact_pages
+From: syzbot <syzbot+20dd68d4ba19e8242c26@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, hannes@cmpxchg.org, jackmanb@google.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com, 
+	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@suse.cz, 
+	ziy@nvidia.com
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 192CC140006
+X-Stat-Signature: bk5ay47rrt8mdojd7hiweor4jp6g378s
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: y68phkhxkegg7bwce6614m7gqy1cc8yk
-X-HE-Tag: 1758869070-730788
-X-HE-Meta: U2FsdGVkX1+8VYGoTe4R2v8gX0lXPM9+M73b6qWM2yrkq/LZ5m7vGaTCVz4vWxSg4DQ068YbWrGmakO6TQu4hUmsPB9T+wTMudNyOt+lcJkLjyWqqil1NxxGErhjw/3o95llaqk+bkrbTC9lNm6BOHPyaoAUM18OUFLIo+u4Bj0hePjQ2/4dNrGSzDATx/57lVVvux3J1xTXlwkBQwn2upgsgdUnR+5a6v2Rt1NVZjIdFMMEpI+dR8TDt/tzMxfVelwmhwixW1jn7W3JnNM3/yMpAk1XETOU0IwJsv4P28FXxlakhj398F7ssiaH1TMFSywXsh8S83Bc0azDHsp6iDFopnFi00vBwBrVStLObQQSwddzS24sFwVlFltUPusmNmTcut9/kLQOnDUtMMmwI0iz15aF6amYa+IxGf1FvI9/Tv2qnfNJACPez7x/xmPJ2p9XPYOOMYY0OljctuBmYj83qNy6AhDC7e7QI8ddPVyDpH9zsYPZ6PjTnRltph985uCMJh/4QLOv+wePsjPo99MgWFp8uqRcQAARW4n5L763cl7PrhaWJsr21Nm+g1/QGOdUhVJhe1ZFlp+wG8rayVsCj7LHrdFdiIsFTXT12We8g3H+RRL/n2nTvXCI+RKHrisB1QoNsh5xHOyL7SIUVMAGeDUOq1sD2nUSM5u+Hph0TA1tDRsvOHOl3/HJkPScZVOkKZy/0eRxxQAVQgwF6qSdZ9YyhTLyAQolUifY3K4kCT1323LcsX4EoLzHhyshEj3JOQLnXksTYEjzaP/n25PHXycbqeZOILBFK4CZUcSP/4ciHVB4L2dBzCdMHMak1fkeKhkZXaGTD9zgtsv9wV1voTcmqo+Tq42D2lPaEH8TgOgGyBUcFyekT2xMwbFkEf+qwoKMvRtmMDATcGbdewFvb8vkmq+NVs5K8MpskC52yUNNsOr6vddBmH3JYyp1vjcU6iPV6shNN6KFKdQ
- VPLpm/vk
- i/cyfBrp2P+51fZACEmxTlFscci5ezsP40tu1UExrLThzuF2awqhDTGKoqDaXMjVI0aHEvoSc9aRJRKrz7oSCOlE4t2JcIAh5sjEN1pJ8mafSBpNiNyRUKb1hG4BbYhLP9n0WhPRaphkgkbek/srUT+shTDTSAJwxArUN3AqkEBp2D2xMtPw1YOxPQgmLsmxWj8E1zS3mwvsbhscy50NV2YKxceIQx+dEceZ5lSkigipIBy+yjrDwoEM14P6kA+lI7ZppUMl1B473eQQ2SNU/3l4tmhVdGsM1FfNrqpjr36T65gwaAiaVWgzOq9GoMhtg3axDDwYwy2oyeO49LaSRf32/shZsHu5ZVxg+fMIesqwwSnZPYoHFFuFcbKkeFemMkLyU/4WkUly/Ts18x8Y1GMKGGVFo5dhVcfnGfBvW/DoZti7omgZs6RWAWaDDUpbaWXXba23WkfGi8UT8shP3TY7xBMJW/16Y7+YbjoX912hO+WUHIY7gJVl5UCrL2N/EvwqEOzZPaTSdXV4xcgK1RBCydGC8D2A5zyhWaKtVn5j3Sez4HieQNsCVlNe8LPcbujXfXzFCbC+O0s1y5YJ4w99iO+a1kQD1/3GCn0gARx0v6jIagAbqwfR9ZJKj/XHWG1yOMHcMrIiS8GNyPX6CXufDhr6CxqWNHZrM3JWBO/Dcrp+8uKRj+l3dCwTbS91mNDU5UEe7CUkUJZguLYczAvksvebon6dnLJyXuKI2WX2j9/WgTxAbiX9ljiUjf9SGkpWQES8/Qa4SacB+tMSz5IGZJWlNzImN+v0CSm3/KCfX1cZhYLIloPTxqpl3CxKumIS2bq46VFvnWgGUfUM1U+fgupvTPIcb8f/d5sutkWCby/9lxcCpCQw4kF384ZTcJleW7geScNbxeSnZHqEIIaZCXrrTXDXhJnKwD8Lf9j/YHhC6zK27YRgB51AQ08CbeNC3SEd1DhCyOuQzZ7mR2lp7hhrY
- oDt5KQLt
- LGvOhKdZhr+g/GZo/lxHDzVW6HBduEM1tqduHShIIVvkFu3AeQ864sC94/Wg7T5r1VHeAKLbcgQuPk79KkL0yZ1EA1GigLuVg10qv95fBvFpBN2ZdPhrrwB8e2cPCTmmlac1DUup3GWUCWoFUclLPEVOpF2NyY6FMfKuaWsRjTP/dZHmsfUkOxF3TnA8500cdbrtDT+nEsWDvSVIgbQmhOBBTwkEGiQlsMPrCM+Egtir1cctommQ1puSu4xtaexC5UPRQuUSg6aLA64um5TD3iwAVFH4m2j4Rx6+zxNWvx4PBBpqhah4XpdF8+dhO/G+8TiReoAj/aqkSHukBy7i9yf3HXSqyuHmt41BN8Pu3hM/ogH4ExAse7AgstWWYXYPj1L6SWG7K2bQn8WQJwVHRdx4/YxIW+7N3BtV4zyOPMSJMAHrvNijLaWvpVmGZgPsBW2RLcp81gOVWRXbasPYpSC2Uz9mH8JZI1r3x0BBILYgEEr/UOk4iQql6B47YrQb
+X-Rspamd-Queue-Id: 3C5C6A0011
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758869130-292966
+X-HE-Meta: U2FsdGVkX19rEdyhsc5+80KeoUY2iO7UqyjQ0z7fm6RlUKiTQ+HprT61fSsc/5iE6BsQ7tHaX5Tnq5Ag3npO95CJm2rpsRJAksRCaH/qrB2TChUUgr5lsk518IcoTuF7Trn80i5dDPks2wNX3gyY2s7gO9+q11lp9HMwtd5G+DXJconjHLNnhZLSGI6qu9/iVeri0SGLioeT5UMf81nPz4QM4qz9AI+uVMnIezOfYt4GmFZtKlKWQHXmYBpsdEIe2Xg9jBeSOmR3UEHxNB3dDKl/IFQ4BRppqCPMr2OXi2bh8KayF/kz5fYpt+OWEJCoxBCVcmqe16xwXSTaqyfAyK3xJcAQveola3TD0aVejKtBegaayN8TfnSF/EKIY7SsVtAqY5UFP0CvhboEOiaQr9jaIcFcIpR0qX5yMoMcuCuPj5qH8xwWCEuZCxbah73ztQsp8p4HvgVtFlXDK0F9PvRBBi8fGw07A27L9y90wfl02futvsYRqK6M8BnmL5o+b6C/oQ10bH4oh7gAjxMUoktZ1ECPa5qMPHekmg0L/1IMXCIGcZScvmpu3LkAdKVapys38/jaUAVv07k91QlzYNsPqtkSLhdov89cwjDKBlph4QABJULKX1h/aQ2Q4wckZikIJBCdNk3XhIv+muJyaLUaj1rueG6+HeL2JBggx8K+5UXWX9jRfWLOcz2V6J6LxsgjE/05Q1rcv+om6XhcL0vHmT778damA2l52YN2wP8KxjmCTPrPTxsShA+US6cE1oMJSj6rsL+IK73albw6lHTT5vSEj5D+DfwoZdq1lAC5liwRX7PQFHwkOsGbuT2+DLByh9qTSBxi+cXPA1FZWtnhvQ4zFQHQ8ugwMxXI9FxWqeibRZxENFwa320v6veUJi5d+zl1LttjmnMYoNEcqlRs+TDzhE0wn27o86eUsqGKTH8dRwwCZFUYGCIULXXXgj4ky+aBLpam51Fi3o+
+ E2LWMGoQ
+ B48AsAGGWKMi/8QgeEfVrAfV2pHARAnYKW8OVXdedJYTR1PUQ/ntQpuDoxDNEGWMJDsuZZhVFpHFQNfIK+hjeuYxo2aP8tAN/kH4+akE+K/Y3mk0fdzONtfbF9mC46U/66mu9V4xgDsK8Ml4QcbacTVmnGw593CJbe/+e7vuHYyOPFbQA9UALDSaJBS/WW645jN0aKRMBF38H9rNkYh3vvGp75gShcB1sjmT1bKr4RIrXofiY4AyE0VVB+Xthm4A/3tHlwAqqhIqW7vtYsR/S22t8nYbyRSNq7UBBtaD57giNVqUzUPbWkJwASKvuh5w7EsN+HRQHs3yloMWEbbvvLfYZSfgMQPZNUclubqVULVH4qxkahw662Sd9Xkiwv2qVmjF4VSGmIFQrcDO6ktZrrqbr2VW251CxVWy0bYAwLxUaWamHmEm7QxfSs0q691DkYhS/KyjbF5E9aDBfVxViaItKKVONuEjfr6xIywtSL/Fs8ChKJ02L6FrrqJEd8KQqplmBR80DsPEG7cj6UPrCks7eob/6eghhaBYm/BbU+gMIBcEK2CqlXZvvo9h4v60bDR3kETeQtfMMZnW2SqVNqRmSw7iTXq4Vg+dRYEvHAwkBKai6O/o2vk/nl1b0xZbIhsA680rW2MWqal5tns0AzNjIUbm0uM0gXU3rUNPcZHURuLb/T5/2nFVuqOKAhXsWidWKi7/jVR+2RgzzR4+ufkUtTwzSoxHJ/JULJ/oVvO2UEE1ftkGg5XkR6QUmxJbWPrStkWzgXP7gX8Or1kyuyWNw4kdchnx0fin3etv3X/kKnokBW6UH1RPcCwQOT1sExXN2t8JepQkFSpiuVdYbLlLrik7f7ZyMTEGQW9xw/Jszit1HcNadvHV/ECU42kM9S3tPFSKd3qi71/XaUQ6Pnclrrs/NVjU4BByW8DAHGPxBohaNOj1WRge2AqI0FZLGMHSMOkx82O2hPYMcoIPOBRk9ucrF
+ YqH2LW7i
+ IDpoG3gzF3lXBDmb3Jm4ra01Pdhx/WytNLeMjkK/pMiUxAaLOj+p9MaIbSZKjLqdHwuNKFTnu14I4T3U6MT/lAVuElegbmXEYoBHxzvJXD/q13SLB8yx2YVw9W9zc1qpxMaz2hy/qvEegXcdUrnF5JYgEqtcsPeZ5yHb78Facy+NuoysqYz9Z/x0ZD1840/ILTIksYjblJwggmAADHh9GGar9p0R/wr0Xdst5ik4ZZGX51dqjXkBSBl7nYq351EhKgfCdUbmX9zJBT1QlOpw3/NSIgDaSyw3K+/cjsvWdPSSsU5fqNDJPJT5NUTz6MrFjCOWd0AJcuwU8+lLw9q9loTK+nNRoQrVf7KFlPPC33hGecVMRB+SS5bfzAeLwiJscAod19fdS9GeDElTEubzFT37eaVg/Mm9Fl79MR907PWGeEX17/2quoA0uxs9HMNBfH5EuXJ6fOYHndxpBcOUMhFQJF/pimzJjq2jekuZfrzAYnAZtkFDR97AyBKRB6v/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,9 +104,9 @@ syzbot found the following issue on:
 
 HEAD commit:    cec1e6e5d1ab Merge tag 'sched_ext-for-6.17-rc7-fixes' of g..
 git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=145d4f12580000
+console output: https://syzkaller.appspot.com/x/log.txt?x=12448f12580000
 kernel config:  https://syzkaller.appspot.com/x/.config?x=6e0c213d0735f5dd
-dashboard link: https://syzkaller.appspot.com/bug?extid=60192c8877d0bc92a92b
+dashboard link: https://syzkaller.appspot.com/bug?extid=20dd68d4ba19e8242c26
 compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
 
 Unfortunately, I don't have any reproducer for this issue yet.
@@ -117,58 +117,75 @@ vmlinux: https://storage.googleapis.com/syzbot-assets/cbecc36962db/vmlinux-cec1e
 kernel image: https://storage.googleapis.com/syzbot-assets/214f107d0a3e/bzImage-cec1e6e5.xz
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+60192c8877d0bc92a92b@syzkaller.appspotmail.com
+Reported-by: syzbot+20dd68d4ba19e8242c26@syzkaller.appspotmail.com
 
 ==================================================================
-BUG: KCSAN: data-race in try_to_migrate_one / zap_page_range_single_batched
+BUG: KCSAN: data-race in try_to_compact_pages / try_to_compact_pages
 
-write to 0xffff88810adfd798 of 8 bytes by task 13594 on cpu 1:
- update_hiwater_rss include/linux/mm.h:2657 [inline]
- try_to_migrate_one+0x918/0x16e0 mm/rmap.c:2455
- __rmap_walk_file+0x1ec/0x2b0 mm/rmap.c:2905
- try_to_migrate+0x1db/0x210 mm/rmap.c:-1
- migrate_folio_unmap mm/migrate.c:1324 [inline]
- migrate_pages_batch+0x6e1/0x1ae0 mm/migrate.c:1873
- migrate_pages_sync mm/migrate.c:1996 [inline]
- migrate_pages+0xf5f/0x1770 mm/migrate.c:2105
- do_mbind mm/mempolicy.c:1539 [inline]
- kernel_mbind mm/mempolicy.c:1682 [inline]
- __do_sys_mbind mm/mempolicy.c:1756 [inline]
- __se_sys_mbind+0x975/0xac0 mm/mempolicy.c:1752
- __x64_sys_mbind+0x78/0x90 mm/mempolicy.c:1752
- x64_sys_call+0x2932/0x2ff0 arch/x86/include/generated/asm/syscalls_64.h:238
+read-write to 0xffff88823fffacf0 of 4 bytes by task 6757 on cpu 1:
+ compaction_deferred mm/compaction.c:149 [inline]
+ try_to_compact_pages+0x1be/0x940 mm/compaction.c:2838
+ __alloc_pages_direct_compact+0x65/0x1d0 mm/page_alloc.c:4066
+ __alloc_pages_slowpath+0x360/0x5f0 mm/page_alloc.c:4787
+ __alloc_frozen_pages_noprof+0x270/0x360 mm/page_alloc.c:5161
+ alloc_pages_mpol+0xb3/0x250 mm/mempolicy.c:2416
+ alloc_frozen_pages_noprof+0x90/0x110 mm/mempolicy.c:2487
+ ___kmalloc_large_node+0x52/0x100 mm/slub.c:4317
+ __kmalloc_large_node_noprof+0x16/0xa0 mm/slub.c:4348
+ __do_kmalloc_node mm/slub.c:4364 [inline]
+ __kmalloc_noprof+0x2ab/0x3e0 mm/slub.c:4388
+ kmalloc_noprof include/linux/slab.h:909 [inline]
+ kmalloc_array_noprof include/linux/slab.h:948 [inline]
+ io_vec_realloc io_uring/rsrc.c:1327 [inline]
+ io_import_reg_vec+0x645/0xe80 io_uring/rsrc.c:1520
+ io_sendmsg_zc+0x91/0x550 io_uring/net.c:1545
+ __io_issue_sqe+0xfb/0x2e0 io_uring/io_uring.c:1771
+ io_issue_sqe+0x53/0x970 io_uring/io_uring.c:1794
+ io_queue_sqe io_uring/io_uring.c:2023 [inline]
+ io_submit_sqe io_uring/io_uring.c:2283 [inline]
+ io_submit_sqes+0x675/0x1060 io_uring/io_uring.c:2396
+ __do_sys_io_uring_enter io_uring/io_uring.c:3463 [inline]
+ __se_sys_io_uring_enter+0x1c1/0x1b70 io_uring/io_uring.c:3397
+ __x64_sys_io_uring_enter+0x78/0x90 io_uring/io_uring.c:3397
+ x64_sys_call+0x2de1/0x2ff0 arch/x86/include/generated/asm/syscalls_64.h:427
  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
  do_syscall_64+0xd2/0x200 arch/x86/entry/syscall_64.c:94
  entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-write to 0xffff88810adfd798 of 8 bytes by task 13595 on cpu 0:
- update_hiwater_rss include/linux/mm.h:2657 [inline]
- zap_page_range_single_batched+0x182/0x450 mm/memory.c:2007
- zap_page_range_single mm/memory.c:2041 [inline]
- unmap_mapping_range_vma mm/memory.c:4020 [inline]
- unmap_mapping_range_tree+0xfd/0x160 mm/memory.c:4037
- unmap_mapping_pages mm/memory.c:4103 [inline]
- unmap_mapping_range+0xe4/0xf0 mm/memory.c:4140
- shmem_fallocate+0x262/0x840 mm/shmem.c:3746
- vfs_fallocate+0x3b6/0x400 fs/open.c:342
- madvise_remove mm/madvise.c:1049 [inline]
- madvise_vma_behavior+0x192d/0x1cf0 mm/madvise.c:1346
- madvise_walk_vmas mm/madvise.c:1669 [inline]
- madvise_do_behavior+0x5b7/0x970 mm/madvise.c:1885
- do_madvise+0x10e/0x190 mm/madvise.c:1978
- __do_sys_madvise mm/madvise.c:1987 [inline]
- __se_sys_madvise mm/madvise.c:1985 [inline]
- __x64_sys_madvise+0x64/0x80 mm/madvise.c:1985
- x64_sys_call+0x1f1a/0x2ff0 arch/x86/include/generated/asm/syscalls_64.h:29
+write to 0xffff88823fffacf0 of 4 bytes by task 6696 on cpu 0:
+ compaction_deferred mm/compaction.c:150 [inline]
+ try_to_compact_pages+0x207/0x940 mm/compaction.c:2838
+ __alloc_pages_direct_compact+0x65/0x1d0 mm/page_alloc.c:4066
+ __alloc_pages_slowpath+0x360/0x5f0 mm/page_alloc.c:4787
+ __alloc_frozen_pages_noprof+0x270/0x360 mm/page_alloc.c:5161
+ alloc_pages_mpol+0xb3/0x250 mm/mempolicy.c:2416
+ alloc_frozen_pages_noprof+0x90/0x110 mm/mempolicy.c:2487
+ ___kmalloc_large_node+0x52/0x100 mm/slub.c:4317
+ __kmalloc_large_node_noprof+0x16/0xa0 mm/slub.c:4348
+ __do_kmalloc_node mm/slub.c:4364 [inline]
+ __kmalloc_noprof+0x2ab/0x3e0 mm/slub.c:4388
+ kmalloc_noprof include/linux/slab.h:909 [inline]
+ kmalloc_array_noprof include/linux/slab.h:948 [inline]
+ io_vec_realloc io_uring/rsrc.c:1327 [inline]
+ io_import_reg_vec+0x645/0xe80 io_uring/rsrc.c:1520
+ io_sendmsg_zc+0x91/0x550 io_uring/net.c:1545
+ __io_issue_sqe+0xfb/0x2e0 io_uring/io_uring.c:1771
+ io_issue_sqe+0x53/0x970 io_uring/io_uring.c:1794
+ io_queue_sqe io_uring/io_uring.c:2023 [inline]
+ io_submit_sqe io_uring/io_uring.c:2283 [inline]
+ io_submit_sqes+0x675/0x1060 io_uring/io_uring.c:2396
+ __do_sys_io_uring_enter io_uring/io_uring.c:3463 [inline]
+ __se_sys_io_uring_enter+0x1c1/0x1b70 io_uring/io_uring.c:3397
+ __x64_sys_io_uring_enter+0x78/0x90 io_uring/io_uring.c:3397
+ x64_sys_call+0x2de1/0x2ff0 arch/x86/include/generated/asm/syscalls_64.h:427
  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
  do_syscall_64+0xd2/0x200 arch/x86/entry/syscall_64.c:94
  entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-value changed: 0x0000000000001645 -> 0x0000000000002165
+value changed: 0x00000005 -> 0x00000004
 
 Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 UID: 0 PID: 13595 Comm: syz.1.3492 Tainted: G        W           syzkaller #0 PREEMPT(voluntary) 
-Tainted: [W]=WARN
+CPU: 0 UID: 0 PID: 6696 Comm: syz.2.1234 Not tainted syzkaller #0 PREEMPT(voluntary) 
 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/18/2025
 ==================================================================
 
