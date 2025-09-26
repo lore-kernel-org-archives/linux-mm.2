@@ -4,125 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 389AFCAC5BC
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 14:11:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29E2BCAC5AE
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 14:14:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71D218E0007; Fri, 26 Sep 2025 10:11:48 -0400 (EDT)
+	id 685278E0008; Fri, 26 Sep 2025 10:14:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CD968E0001; Fri, 26 Sep 2025 10:11:48 -0400 (EDT)
+	id 65D138E0001; Fri, 26 Sep 2025 10:14:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BC4F8E0007; Fri, 26 Sep 2025 10:11:48 -0400 (EDT)
+	id 572BF8E0008; Fri, 26 Sep 2025 10:14:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 472C68E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 10:11:48 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EEE8F11AB13
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 14:11:47 +0000 (UTC)
-X-FDA: 83931589854.02.79AE78C
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C5F0B4000A
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 14:11:45 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=np2puoCs;
-	spf=pass (imf11.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 43D908E0001
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 10:14:00 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E8A25BAED1
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 14:13:59 +0000 (UTC)
+X-FDA: 83931595398.27.89F1582
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 95618100009
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 14:13:57 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gHVwjqSn;
+	spf=pass (imf14.hostedemail.com: domain of alex.williamson@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=alex.williamson@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758895905;
+	s=arc-20220608; t=1758896037;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ny7pIQ2SCuYpPr5sAoZMtmx+LX6//dYVYgLJ9SYLcgQ=;
-	b=6kahh0T34YnDvyR6waQoSB+8eAa5wd282Vo4zH5hgZ9Q1iTpbp1ByEwtKMIju4OGkerXM4
-	QXBJEYsQ88rggFQe5j7GGpE7QENbqiU8l5rtx9Ht0OUvTYvILb6+XzuUv6nyqe4dtlmDfw
-	id7pPOpSOum0bhb2KUtI7zwZLqQTu7g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758895905; a=rsa-sha256;
+	bh=qYsj9+8I0Zx27jHpluvCkiN1087KEQYq4tnoUW0GI60=;
+	b=ruIcEzMIque9Yk+WWUJQUIWizoP5bWClHVyWXkbBrL6BsptYuefZs3rXWg8ZsN3qSZy0K6
+	lV72oEUZafxljo2c4Y/IRMw5JKkyDDrPOnS/aEwkr1KZ7bB6RF9qrYHSbTxwrPOZFY01OW
+	/8QZL3UX0LsSbeVk5D/g3Udo5Uo53B4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758896037; a=rsa-sha256;
 	cv=none;
-	b=Tl7HIh2lF8CT3GdY20jp/BuqIp0HECCyttUTTGqsogUllCSjkXkV6bZGWH+1siupxU/Nfn
-	Xp5x3NY7cb0khJZxDB69rv/IypcyCiVjCgp/SseXUFbbeHAzEPSEsHOBiBXlfubcIce2+6
-	PBl4G0dwpP5/k5gRTonbFhkyQOWXs1w=
+	b=taJtikXLWrKBorY7HMGn376cD0DndQuUcXNKSOo75eMzHZCfjStivQs8z90NpW7rOGJqD3
+	Dy5nQvmMgy4LlYotxtZWj1S/xtp68BKua9C87i7kGM1CHF9kJHEw6kUOOSDalP+v4Klxvv
+	wZRVC729b69l+r8A5c20dywD3EgmBnk=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=np2puoCs;
-	spf=pass (imf11.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-46b303f755aso20051385e9.1
-        for <linux-mm@kvack.org>; Fri, 26 Sep 2025 07:11:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758895904; x=1759500704; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ny7pIQ2SCuYpPr5sAoZMtmx+LX6//dYVYgLJ9SYLcgQ=;
-        b=np2puoCsC2/Nn5RI/jDUhrREPY4d03BgUfR2bRdSexBJLf4K7gMdBFMPxQyosYrlSE
-         qPp6Vq5qS1ueKx5Yx7z45Ap4Vw5vawJeaQO+B6mKvFemsQWmt/vuN44pTTUttCZ2NqFv
-         q3tnB214PS+oItpFkOh0k/SR0ILiuFltU1Z+dQSOXxMa1m4kE328uK/1OSmangFy9/xn
-         UKmv+PvCrmuFWphLPR83ilnFlGoe9+VxRVi95BF0MvbL5/NRnFkc2nNg06bm4SJs//Lc
-         wT6xoy29UVwzBY0obc4UfYy0vj3ZoXMDtvjg1ouTyQjaOnetUOUg9T114NDWpcpvnIoU
-         JIMg==
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gHVwjqSn;
+	spf=pass (imf14.hostedemail.com: domain of alex.williamson@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=alex.williamson@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758896037;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qYsj9+8I0Zx27jHpluvCkiN1087KEQYq4tnoUW0GI60=;
+	b=gHVwjqSnXHb7EcJVuSmAxGBysXD143Lr4ddT0yPGVYq0bulfIVfDe4saImNhK1Ega1SpMe
+	adMFy3rw6dWXEC+IWPYR5qfoLDraWP1ocaOKOJRDZn63MqqxOJlKbBcEoftPzPfdhdylqD
+	o19bIJvR3L8p3tUan0kn1ll7EXnADBQ=
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com
+ [209.85.166.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-421-an6V6gN-NAitWlcNtKoepA-1; Fri, 26 Sep 2025 10:13:55 -0400
+X-MC-Unique: an6V6gN-NAitWlcNtKoepA-1
+X-Mimecast-MFC-AGG-ID: an6V6gN-NAitWlcNtKoepA_1758896034
+Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-4264c256677so5962805ab.3
+        for <linux-mm@kvack.org>; Fri, 26 Sep 2025 07:13:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758895904; x=1759500704;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ny7pIQ2SCuYpPr5sAoZMtmx+LX6//dYVYgLJ9SYLcgQ=;
-        b=tuKE/t4fL4Md/eUSHloFnjepgkQ8no205n+aOVMLio5VSauXMoUkFgpuu2Mndmrkm9
-         TtOib2W4f9hGTK2dpdw2yeGmhu/YEGZ55pn0IrJ3KIM7USUk3U2GEQTaY7d8PTQb6EVy
-         CeIRSOOwF6Y0bY0qCM3vC+FI6CXx44Fp8SAY7zTVRPA5YgCox/gr9A+P/oLmoaqIn1Jq
-         a8DkCQdGM1UkseBsVXMYtEScRD3+EmUoo8qeDk6vltMUzQomT6O9Jp2TN5lz3V/ikvfq
-         tTmTTlFPDgn/VEF6p9Qm6IpRFlPGmSJ57G1GpmVy+U5KBFezfih6wRDDrno9N4T5DHsr
-         X2rA==
-X-Forwarded-Encrypted: i=1; AJvYcCVDFLn42y22a7l5Fkza0gIkRi4zWzOuHPoMg7HvQqb7bPFetUmVEYZRnq0VcalO5CbeEnxdXqVXMg==@kvack.org
-X-Gm-Message-State: AOJu0YwD67TJen11avdVHQBt1AdBKXLbvXvR/slo6aJpp15kGSnV8IIV
-	HrXp4absVswGW0tZm4Lfwb7N+LhGPPCPA167a4f4gBBgUTbw26LjbpQJ
-X-Gm-Gg: ASbGncsFDfLM0AlXAaVjPitW9GhYXyNw9ATuU2mXggiX111/fCOZPXyoo7EzoTkKeKv
-	CxK1V/juJ6BiZMd4xG/pTi7qcYz3T4k/OYv1MWOzXHus+zrUCcrmE1+jXKWNJuxs8qgEbQJ8kcr
-	yigAJJG099vdd+WNBntCtV1Oz7cao47v7mdvgbMnoNY3rrqyXg3z/ScoFAOw2lm9bkCro9ILpMl
-	ACVqCPl78izIrA1XV12gnsOAlMjYbc8Bx1KpRkrzjfNpnVjIrsVZEamd0C9OhgL5Aq3HxrUWGCn
-	0wq0obZVzNN1qi2siGG/ToQV7OwEudLcQoEndeoR9RQUdb7E2+MuaUEsZxDBMXaKjxDZlH6LbVE
-	uZrUKKXooXXOR40g/huTkIFnw2oricVwcSB2gC2+r21uaMdFBTAmwgjlvYfXe3Na1OTeuO+fEFx
-	bclZkd46SMbvsZCZ5G+rlB8xizGMoBWcFaqg==
-X-Google-Smtp-Source: AGHT+IGIsygixbycwSxGEYYSjqdX4hw6Wrb2gEHvzCCx3um4Q8sxCxU/06IukXa1VlsWWUmFmo66KA==
-X-Received: by 2002:a05:600c:4fca:b0:46d:45e:350a with SMTP id 5b1f17b1804b1-46e329fb93bmr92609295e9.17.1758895903786;
-        Fri, 26 Sep 2025 07:11:43 -0700 (PDT)
-Received: from ?IPV6:2a02:6b6f:e750:1b00:1cfc:9209:4810:3ae5? ([2a02:6b6f:e750:1b00:1cfc:9209:4810:3ae5])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e32bd6360sm39873825e9.1.2025.09.26.07.11.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 Sep 2025 07:11:43 -0700 (PDT)
-Message-ID: <34a9440f-b0c4-4f76-a2ac-f88b54c2242e@gmail.com>
-Date: Fri, 26 Sep 2025 15:11:42 +0100
+        d=1e100.net; s=20230601; t=1758896034; x=1759500834;
+        h=content-transfer-encoding:mime-version:organization:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qYsj9+8I0Zx27jHpluvCkiN1087KEQYq4tnoUW0GI60=;
+        b=rnHjwnpTfVuScQwj00gsaU/Nn5kPO7P8iBqY94B6xikrmfOxUO4kxrjfj5ziQBHrRo
+         cRM05kWsDX2an3OAhoIIn6ojW+lnVBVdBYc+5kjpeDUitPW9eS8eyfiHunOWXMZ8gC6Y
+         fKA8x1Gc91s6254e2xX85bWrTsbY67Pt8UNfILOspEcDhU3lxzipMrnRMP6nV2M0P34D
+         mtpQa8smu1iqw7fkhbXw5OlITHDCWCQZiFuQlF6cZczP4njiNH8lDUuVCVz6sXf/LR2w
+         d1aLftmPdJRHqOMru+Ydhwdzh7dItzTrnPC+mjCAZ3BOecUUA64t2OWFNXTI+uHYf8qo
+         n1fw==
+X-Forwarded-Encrypted: i=1; AJvYcCU53vQOGSaRHot54FnAPBkmdyrISjldS5mx53PT/RVQJFGdY/93M3m7M+d6DoN5uqa0U5HlS6mfiQ==@kvack.org
+X-Gm-Message-State: AOJu0YxIJ67kYoxbG+GymEh2eHJGHI6sGoVHEPSrbjYJs0ETSYsY6y/s
+	//N+KAWRtTFNVkzuEHy2tIYu3wedR2aeLk2ZXoJI/cLiaG0nWzJTfA8VzGjtuO73jOwZL+FX0Ao
+	AvL6knjYQ1U7B8QyigBjJPgkQqhduHJo+VB3TrUiFc9Sp/UWeCTrf
+X-Gm-Gg: ASbGncvjy0nJmnCk76zHaG+2eCl9IFiEZWqNPumaPAOOX/tuITBjSO03t9vMO/p8zo+
+	iPsOTHbkS3KS+1O5JJpbhHkBp/ti+QXP18OJzCOA7cKVXaf1S2rxKx5njGhJWGa+yDQGjkvbi2K
+	XzVbomsBJZ6YFoVdUIwVeLf3+DI1ZTCWHpC62lXoIupHwJDVKF061FWERzBCxWMnoZUpPdzTdPj
+	pmIy4sWhcv90R8EyO4qfq8eGJXxCEvu4wA/YxeeA4A7wNKClLg1iKP/wNypv1VIeO+XUDwbrTa9
+	ka69DYaPYHk4RMZd499k1ktJTWvDKyfH1WGTmUxDY7I=
+X-Received: by 2002:a05:6e02:1b08:b0:424:6c8e:6187 with SMTP id e9e14a558f8ab-425955e4dfdmr37293865ab.2.1758896034434;
+        Fri, 26 Sep 2025 07:13:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEHfT8sSg9RrO7oeIo38sP5Lm5q3G5XmCIbUcAskNNx/V0hMD+Gb0yPcLZiy3wfp8DzV0Dz7Q==
+X-Received: by 2002:a05:6e02:1b08:b0:424:6c8e:6187 with SMTP id e9e14a558f8ab-425955e4dfdmr37293545ab.2.1758896033974;
+        Fri, 26 Sep 2025 07:13:53 -0700 (PDT)
+Received: from redhat.com ([38.15.36.11])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-56a6a5b1ec5sm1833727173.67.2025.09.26.07.13.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Sep 2025 07:13:52 -0700 (PDT)
+Date: Fri, 26 Sep 2025 08:13:50 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Leon Romanovsky <leon@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, Bjorn Helgaas <bhelgaas@google.com>, Christian
+ =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+ dri-devel@lists.freedesktop.org, iommu@lists.linux.dev, Jens Axboe
+ <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>, kvm@vger.kernel.org,
+ linaro-mm-sig@lists.linaro.org, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-mm@kvack.org, linux-pci@vger.kernel.org, Logan Gunthorpe
+ <logang@deltatee.com>, Marek Szyprowski <m.szyprowski@samsung.com>, Robin
+ Murphy <robin.murphy@arm.com>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v2 03/10] PCI/P2PDMA: Refactor to separate core P2P
+ functionality from memory allocation
+Message-ID: <20250926081350.16bb66c8.alex.williamson@redhat.com>
+In-Reply-To: <20250925230236.GB2617119@nvidia.com>
+References: <cover.1757589589.git.leon@kernel.org>
+	<1e2cb89ea76a92949d06a804e3ab97478e7cacbb.1757589589.git.leon@kernel.org>
+	<20250922150032.3e3da410.alex.williamson@redhat.com>
+	<20250923150414.GA2608121@nvidia.com>
+	<20250923113041.38bee711.alex.williamson@redhat.com>
+	<20250923174333.GE2608121@nvidia.com>
+	<20250923120932.47df57b2.alex.williamson@redhat.com>
+	<20250925070314.GA12165@unreal>
+	<20250925115308.GT2617119@nvidia.com>
+	<20250925163131.22a2c09b.alex.williamson@redhat.com>
+	<20250925230236.GB2617119@nvidia.com>
+Organization: Red Hat
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 mm-new 01/12] mm: thp: remove disabled task from
- khugepaged_mm_slot
-Content-Language: en-GB
-To: Yafang Shao <laoar.shao@gmail.com>, akpm@linux-foundation.org,
- david@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, hannes@cmpxchg.org,
- gutierrez.asier@huawei-partners.com, willy@infradead.org, ast@kernel.org,
- daniel@iogearbox.net, andrii@kernel.org, ameryhung@gmail.com,
- rientjes@google.com, corbet@lwn.net, 21cnbao@gmail.com,
- shakeel.butt@linux.dev, tj@kernel.org, lance.yang@linux.dev
-Cc: bpf@vger.kernel.org, linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250926093343.1000-1-laoar.shao@gmail.com>
- <20250926093343.1000-2-laoar.shao@gmail.com>
-From: Usama Arif <usamaarif642@gmail.com>
-In-Reply-To: <20250926093343.1000-2-laoar.shao@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: zk5PvTmSAM5U5SeJF-sHtSPwTcCZAd-6iiN22mRvqrI_1758896034
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: C5F0B4000A
-X-Stat-Signature: horhdhct3z7bqiqaf7hkd6t7mynoejef
+X-Stat-Signature: sgiz4ditgn7hw77akk6r988eprec7rp6
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758895905-607471
-X-HE-Meta: U2FsdGVkX19wGf9ZJC98Rg7p3YS5K7VgJ/lv0eZa4mzLgt7N+9OCDun6i71pprR8pCFaOGx7LcmIrK6E5lGkAqKqKuUjZxLagZkWqHr0swklXr166sOaert9xNP92NGW0XproOMlunjvtHx2+69N+dfSzqI/YCT2A3rFsIF3uywCL5lJ7Vt0eposTedXs4geqa2T3p4mbRgGBxC9LifAAlNSlJSO0CwZpT4iJW3wGoD/Z1npZLoT7ezz4RJj+/9qIF1QH17YRJ1GLNc+xtyQL/4R5gdNaEkNmjBoz8WkLlrMqmDnRYRD0rmb8iZIhC4VIbIPK3CLey2Wo70PqJbpXDx3L7ihNw2cPPBRAJg5G6lK6KKm0IBzeGJv18DEWsAR6Q7PKXsXnfaEQJ49F99xiZ6LbTgCPWCIOu32NTX6qNrBWZONEuZCsdbYE2uAqlwzjHNMPUk1AW8DEZr/B+AsKVS5Edi1xqQrf+1nF+2BCvyfcInneyRjbEuUYaPqEi4SSnKWkuj3Ng6g+aNZXj+8rBNsUBL7HVyskvscngylmPxf5YaKUBNYo10MrkWgXqKXd5FvvsMO/Hy2bxqOh81vWUIByOYblHhtDfmZxyyjFrnNj1RrAQPHko0wNZLoR2A2XCfcY/6nwk+wqk4RtGdc+gPI5WAQpJ2jYi2vh4k53uII5sLXFuHOVfOe7TnnAfY7NK9hrW6f4UUpkqYyf3fIhkvrsMy7lDj5LpHlgRlgMd72js4wy/KqVv3OTqlrTGst1pqTVY8J8IGDRp1zkZPS6006RiHvhEfaadkYbL4e07eI8oJvVyAai4D5q4ZrPr4a3hDiGb5wCZmXGVFDnJt/1dswCXl32WHXCmVK3aEYGtRDzO8s4OKdU28ss4CXj1FZknXlmpOkdK6CJZ0e45cBsYzwA6URitfJmfKUUYo0vs+WRrG785IkNsukjwFgwXsIc/Q4q3f/ubGMGmYns7i
- SDWjmQld
- i0VtkFE2SNIHRrSX915XT6UBIXKY7dkBBJYci+UPUwe/4UaWgWzhzP1TdbmIAPfcEUD2QfIN395WHvnVdZbQSSRCjNJkw1RRomAL2QECGmdBGA5Of8BM63n7q9CGG8ihusrI3QTfErOErJMPL6ngTqNi4DHfDvU9ab+4jmny6/w261eg8gvEOCt5FVGmDpmV+WPAWviPXHojn9IquBACD0I7Ui5HoDY1mYvTcpgbQCDdox4wKUlysQBTqia1ikj1xkeiwskj+cWvNwmMt0Cu+fiew5b5x9XWEYs508DmiwdwYiWs5TQDMSgzk9HuGKOCTJqPI9/X10a6/i73OIqdwz6S6oYADOOegp/FbEgUYpEnQoAYg24RFOw4ziCpugEsPJ7fKKziw6PuMS7ln4HIrHcu4znWauPXYIcgXcxcayp1e5+1oXN+JMEaKqvLkdbWBVCy5PqtWBGKeEVdPwcleVD8Trsve+57wXkk9R3PjomHg4avC9PZNDxp0gpvatqW05rFQNI4apqBQWIfYW1oyCscdyZ6swLMGLXgxq6QdXtcXT7XsgrL7LmRAdlijDPBHNFSlrefFFHF/uAi154q+gfKUUmyvE2xfzukqOGILxM8IP4/k7D2tghJNdc5PK7/81Lp8K/vj1CKxal0=
+X-Rspamd-Queue-Id: 95618100009
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758896037-397944
+X-HE-Meta: U2FsdGVkX1+AXNLozVf8aXX40F02p/EcMp0BF0ZgzdCh5EFlAkJ8vohTIzShtLFTmV4/wJKtvGr3V618UA+xfQ5VbEQwjJldVAE++x1C0VM4m2x+lVqENx5SQKbGS+NtWixo8kIdUabVHHevx1UFzuNYywZqzDbLmHITZicLS/BoA6P/I33KyPmurLjmStiKKYXw7j8ifNeOQn+FQVotomx3WzeeXY4S0GT8XLudC9sNzU545OMj6OaHtEzJDD9BAcA5an5nitFgWSa8YFgDEnaISzWfAL8FlKc15zKa7TLio3G3pnTQRcIQwuMJSa9CrfuNedEITvNSCQ4TFuD+tF/HmbujHPeeh6b3uEXKL3x8g0vQW0gBGFun5xGSTwvjB7Lvi3L8EkOnrDC6N08hIdMGStpMAnKfYhZT0W5+2ZTqfoJjGplGN1NXDst10DZN3zjRaXDT27ZS81V2XHiGxc7dUdxEFQiHtqWdcM180+UMCK9soHfmZRsJEalx2ZbpT2Gy+eQKpeMdKqSX1/3r0thc2By0i+QNbB6d/wrIyE4SNLrq4QdtNaHrGDO/fQzelL+i2DlkvYskX+wOhnXxeskqcA1f1+l7Ne3NEZdtvELefFe98zTwmUItlWhprAqH1svTJYBor/FaDh4mQ9RqEShW8q7+XXq0lx/E0rixZ2ckAWGtqhmfCxhNiwQE7D0T8prfwzPq1ZpTnRTJBoxxJ4zorDPmw51cmy9YWHhhKn0xkuUf6QR6H3KQOqHESSA8CL4SiMhQXAtHThhZXJOJRN0jhIKR3i+305CcvKmgbemB/+aOiTFosF3Rq/H/A5Hu+pbFwavcLqL/Z3RHCZFYtt6oAsvx+sCYso1phVnhN2FyhS1+WljZAJLYuzFBoV+ZovUfquXGJtDbpyPK1RPs/JKVlp9fuNhcYnF7GEro1rexIl0EZeKHvutDVN14NU2MVxY9vv6oARQQO9Ss3uG
+ lTjNVvaz
+ JcSqvsd7qlCTqdflxkt5lNfK8MK+5LCPHleQc7ElHBi3k6YNEp04AGC7BzRa4bcAMwzXSSM4d/UELfQDpawFtqgGLSK8400eCO1rXv/73DuovyrpBBbJKDlP9z4xSOIPpymZDaHajKIY896qcs9Tq/514bZ3kxlcncQ9bycf3qrxE83+6gmVqHYXSZZ0cz70Q3lkNMNB/XRm9b+WArGKqsB+R7jnmiRZsPYbNV2TnWI0dc5yo9zPDgXiNk3pJUMNpPDBTjbXLQvv0W5OL/d68F1q5syO6lMWLKZ58djvaQEbBQvxDvlHXWwx7VDJgCRey7F1Prd3IY0ko/8uAsyjvvgeBYpOMiSdlkk+wPHc7eLvKpr/obTxzV8EdHCN1E4jG+3Df441bmGq5xQKyANEp0mqEIy6ylNxBOHsft49eEiGAglA2bl5AjVdmnRG16A0gz734KcPC5JwNdZB+90Nj/9RVMzlhJNaY3whfHD2wyULoRkmxOM35/qSdmqZjSrkjqSd2ySPPDEJw9HmJSa31/PChKw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,206 +149,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, 25 Sep 2025 20:02:36 -0300
+Jason Gunthorpe <jgg@nvidia.com> wrote:
 
-
-On 26/09/2025 10:33, Yafang Shao wrote:
-> Since a task with MMF_DISABLE_THP_COMPLETELY cannot use THP, remove it from
-> the khugepaged_mm_slot to stop khugepaged from processing it.
+> On Thu, Sep 25, 2025 at 04:31:31PM -0600, Alex Williamson wrote:
+> > On Thu, 25 Sep 2025 08:53:08 -0300
+> > Jason Gunthorpe <jgg@nvidia.com> wrote:
+> >   
+> > > On Thu, Sep 25, 2025 at 10:03:14AM +0300, Leon Romanovsky wrote:
+> > >   
+> > > > > It would at least make sense to me then to store the provider on the
+> > > > > vfio_pci_dma_buf object at the time of the get feature call rather than
+> > > > > vfio_pci_core_init_dev() though.  That would eliminate patch 08/ and
+> > > > > the inline #ifdefs.    
+> > > > 
+> > > > I'll change it now. If "enable" function goes to be "get" function, we
+> > > > won't need to store anything in vfio_pci_dma_buf too. At the end, we
+> > > > have exactly two lines "provider = priv->vdev->provider[priv->bar];",
+> > > > which can easily be changed to be "provider = pcim_p2pdma_provider(priv->vdev->pdev, priv->bar)"    
+> > > 
+> > > Not without some kind of locking change. I'd keep the
+> > > priv->vdev->provider[priv->bar] because setup during probe doesn't
+> > > need special locking.  
+> > 
+> > Why do we need to store the provider on the vfio_pci_core_device at
+> > probe though, we can get it later via pcim_p2pdma_provider().   
 > 
-> After this change, the following semantic relationship always holds:
+> Because you'd need some new locking to prevent races.
+
+The race is avoided if we simply call pcim_p2pdma_provider() during
+probe.  We don't need to save the returned provider.  That's where it
+seems like pulling the setup out to a separate function would eliminate
+this annoying BAR# arg.
+ 
+> Besides, the model here should be to call the function once during
+> probe and get back the allocated provider. The fact internally it is
+> kind of nutzo still shouldn't leak out as a property of the ABI.
 > 
->   MMF_VM_HUGEPAGE is set     == task is in khugepaged mm_slot
->   MMF_VM_HUGEPAGE is not set == task is not in khugepaged mm_slot
-> 
-> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-> Acked-by: Lance Yang <lance.yang@linux.dev>
-> ---
->  include/linux/khugepaged.h |  4 ++++
->  kernel/sys.c               |  7 ++++--
->  mm/khugepaged.c            | 49 ++++++++++++++++++++------------------
->  3 files changed, 35 insertions(+), 25 deletions(-)
-> 
+> I would like to remove this weird behavior where it caches things
+> inside the struct device. That's not normal for an API to do that, it
+> is only done for the genalloc path that this doesn't use.
 
+My goal in caching the provider on the vfio p2pdma object was to avoid
+caching it on the vfio_pci_core_device, but now we're storing it on the
+struct device, the vfio_pci_core_device, AND the vfio p2pdma object.
+Given the current state that it's stored on the struct device, I think
+we only need a setup call during probe (that could be stubbed out
+rather than #ifdef'd), then cache the provider on the vfio p2pdma
+object when a dmabuf is configured.  Thanks,
 
-Hi Yafang,
-
-Thanks for the patch! Sorry wasnt able to review the previous revisions.
-
-I think it would be good to separate this patch out of the series?
-It would make the review of this series shorter and this patch can be merged independently.
-
-In the commit message, we also need to write explicitly that when prctl
-PR_SET_THP_DISABLE is cleared, the mm is added back for khugepaged to consider.
-
-Could you also mention in the commit message why the BUG was turned into WARN?
-
-Thanks!
-
-> diff --git a/include/linux/khugepaged.h b/include/linux/khugepaged.h
-> index eb1946a70cff..f14680cd9854 100644
-> --- a/include/linux/khugepaged.h
-> +++ b/include/linux/khugepaged.h
-> @@ -15,6 +15,7 @@ extern void __khugepaged_enter(struct mm_struct *mm);
->  extern void __khugepaged_exit(struct mm_struct *mm);
->  extern void khugepaged_enter_vma(struct vm_area_struct *vma,
->  				 vm_flags_t vm_flags);
-> +extern void khugepaged_enter_mm(struct mm_struct *mm);
->  extern void khugepaged_min_free_kbytes_update(void);
->  extern bool current_is_khugepaged(void);
->  extern int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
-> @@ -42,6 +43,9 @@ static inline void khugepaged_enter_vma(struct vm_area_struct *vma,
->  					vm_flags_t vm_flags)
->  {
->  }
-> +static inline void khugepaged_enter_mm(struct mm_struct *mm)
-> +{
-> +}
->  static inline int collapse_pte_mapped_thp(struct mm_struct *mm,
->  					  unsigned long addr, bool install_pmd)
->  {
-> diff --git a/kernel/sys.c b/kernel/sys.c
-> index a46d9b75880b..2c445bf44ce3 100644
-> --- a/kernel/sys.c
-> +++ b/kernel/sys.c
-> @@ -8,6 +8,7 @@
->  #include <linux/export.h>
->  #include <linux/mm.h>
->  #include <linux/mm_inline.h>
-> +#include <linux/khugepaged.h>
->  #include <linux/utsname.h>
->  #include <linux/mman.h>
->  #include <linux/reboot.h>
-> @@ -2479,7 +2480,7 @@ static int prctl_set_thp_disable(bool thp_disable, unsigned long flags,
->  	/* Flags are only allowed when disabling. */
->  	if ((!thp_disable && flags) || (flags & ~PR_THP_DISABLE_EXCEPT_ADVISED))
->  		return -EINVAL;
-> -	if (mmap_write_lock_killable(current->mm))
-> +	if (mmap_write_lock_killable(mm))
->  		return -EINTR;
->  	if (thp_disable) {
->  		if (flags & PR_THP_DISABLE_EXCEPT_ADVISED) {
-> @@ -2493,7 +2494,9 @@ static int prctl_set_thp_disable(bool thp_disable, unsigned long flags,
->  		mm_flags_clear(MMF_DISABLE_THP_COMPLETELY, mm);
->  		mm_flags_clear(MMF_DISABLE_THP_EXCEPT_ADVISED, mm);
->  	}
-> -	mmap_write_unlock(current->mm);
-> +
-> +	khugepaged_enter_mm(mm);
-> +	mmap_write_unlock(mm);
->  	return 0;
->  }
->  
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 7ab2d1a42df3..f47ac8c19447 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -396,15 +396,10 @@ void __init khugepaged_destroy(void)
->  	kmem_cache_destroy(mm_slot_cache);
->  }
->  
-> -static inline int hpage_collapse_test_exit(struct mm_struct *mm)
-> -{
-> -	return atomic_read(&mm->mm_users) == 0;
-> -}
-> -
->  static inline int hpage_collapse_test_exit_or_disable(struct mm_struct *mm)
->  {
-> -	return hpage_collapse_test_exit(mm) ||
-> -		mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);
-> +	return !atomic_read(&mm->mm_users) ||			/* exit */
-> +		mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);  /* disable */
->  }
->  
->  static bool hugepage_pmd_enabled(void)
-> @@ -437,7 +432,7 @@ void __khugepaged_enter(struct mm_struct *mm)
->  	int wakeup;
->  
->  	/* __khugepaged_exit() must not run from under us */
-> -	VM_BUG_ON_MM(hpage_collapse_test_exit(mm), mm);
-> +	VM_WARN_ON_ONCE(hpage_collapse_test_exit_or_disable(mm));
->  	if (unlikely(mm_flags_test_and_set(MMF_VM_HUGEPAGE, mm)))
->  		return;
->  
-> @@ -460,14 +455,25 @@ void __khugepaged_enter(struct mm_struct *mm)
->  		wake_up_interruptible(&khugepaged_wait);
->  }
->  
-> +void khugepaged_enter_mm(struct mm_struct *mm)
-> +{
-> +	if (mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm))
-> +		return;
-> +	if (mm_flags_test(MMF_VM_HUGEPAGE, mm))
-> +		return;
-> +	if (!hugepage_pmd_enabled())
-> +		return;
-> +
-> +	__khugepaged_enter(mm);
-> +}
-> +
->  void khugepaged_enter_vma(struct vm_area_struct *vma,
->  			  vm_flags_t vm_flags)
->  {
-> -	if (!mm_flags_test(MMF_VM_HUGEPAGE, vma->vm_mm) &&
-> -	    hugepage_pmd_enabled()) {
-> -		if (thp_vma_allowable_order(vma, vm_flags, TVA_KHUGEPAGED, PMD_ORDER))
-> -			__khugepaged_enter(vma->vm_mm);
-> -	}
-> +	if (!thp_vma_allowable_order(vma, vm_flags, TVA_KHUGEPAGED, PMD_ORDER))
-> +		return;
-> +
-> +	khugepaged_enter_mm(vma->vm_mm);
->  }
->  
->  void __khugepaged_exit(struct mm_struct *mm)
-> @@ -491,7 +497,7 @@ void __khugepaged_exit(struct mm_struct *mm)
->  	} else if (slot) {
->  		/*
->  		 * This is required to serialize against
-> -		 * hpage_collapse_test_exit() (which is guaranteed to run
-> +		 * hpage_collapse_test_exit_or_disable() (which is guaranteed to run
->  		 * under mmap sem read mode). Stop here (after we return all
->  		 * pagetables will be destroyed) until khugepaged has finished
->  		 * working on the pagetables under the mmap_lock.
-> @@ -1429,16 +1435,13 @@ static void collect_mm_slot(struct mm_slot *slot)
->  
->  	lockdep_assert_held(&khugepaged_mm_lock);
->  
-> -	if (hpage_collapse_test_exit(mm)) {
-> +	if (hpage_collapse_test_exit_or_disable(mm)) {
->  		/* free mm_slot */
->  		hash_del(&slot->hash);
->  		list_del(&slot->mm_node);
->  
-> -		/*
-> -		 * Not strictly needed because the mm exited already.
-> -		 *
-> -		 * mm_flags_clear(MMF_VM_HUGEPAGE, mm);
-> -		 */
-> +		/* If the mm is disabled, this flag must be cleared. */
-> +		mm_flags_clear(MMF_VM_HUGEPAGE, mm);
->  
->  		/* khugepaged_mm_lock actually not necessary for the below */
->  		mm_slot_free(mm_slot_cache, slot);
-> @@ -1749,7 +1752,7 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
->  		if (find_pmd_or_thp_or_none(mm, addr, &pmd) != SCAN_SUCCEED)
->  			continue;
->  
-> -		if (hpage_collapse_test_exit(mm))
-> +		if (hpage_collapse_test_exit_or_disable(mm))
->  			continue;
->  		/*
->  		 * When a vma is registered with uffd-wp, we cannot recycle
-> @@ -2500,9 +2503,9 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
->  	VM_BUG_ON(khugepaged_scan.mm_slot != slot);
->  	/*
->  	 * Release the current mm_slot if this mm is about to die, or
-> -	 * if we scanned all vmas of this mm.
-> +	 * if we scanned all vmas of this mm, or if this mm is disabled.
->  	 */
-> -	if (hpage_collapse_test_exit(mm) || !vma) {
-> +	if (hpage_collapse_test_exit_or_disable(mm) || !vma) {
->  		/*
->  		 * Make sure that if mm_users is reaching zero while
->  		 * khugepaged runs here, khugepaged_exit will find
+Alex
 
 
