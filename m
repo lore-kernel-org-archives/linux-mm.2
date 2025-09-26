@@ -4,92 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CC46CAC5AE
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 06:45:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7814CAC5AE
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 06:48:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 522A78E0003; Fri, 26 Sep 2025 02:45:32 -0400 (EDT)
+	id E76288E0005; Fri, 26 Sep 2025 02:48:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F9F98E0001; Fri, 26 Sep 2025 02:45:32 -0400 (EDT)
+	id E27108E0001; Fri, 26 Sep 2025 02:48:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40FAF8E0003; Fri, 26 Sep 2025 02:45:32 -0400 (EDT)
+	id D3C858E0005; Fri, 26 Sep 2025 02:48:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3040C8E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 02:45:32 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D680A16058A
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 06:45:31 +0000 (UTC)
-X-FDA: 83930465262.18.A3A5AE5
-Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 3C5C6A0011
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 06:45:30 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf25.hostedemail.com: domain of 3iTbWaAkbAJwOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.208 as permitted sender) smtp.mailfrom=3iTbWaAkbAJwOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C5AF08E0001
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 02:48:25 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4EED9BA57B
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 06:48:25 +0000 (UTC)
+X-FDA: 83930472570.05.173890F
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 78F92160004
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 06:48:23 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=IHCWaIM7;
+	spf=pass (imf08.hostedemail.com: domain of elver@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758869130;
+	s=arc-20220608; t=1758869303;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=1veCcU3mH9oLnhdNlf6mJUGV7a4TAFPi+gLi5uVhv0M=;
-	b=H/sqbQB6NS2eyIxz0D+62xwASJtsHhO2TRqr4d+Fuyy5xGLKYhmwPwyhFkpoi7jm5FCswp
-	7WB7kN48Bw4VxaNMw2CO6u0nmC9prInW5+/6SG3ooctm609SQ88Km34FBG/F1DLQ/3HDID
-	cYNCOLXOwLzA564z67sNgsK/e40WIKQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758869130; a=rsa-sha256;
-	cv=none;
-	b=pbxRfvOT8ZKmEy7tAn7RXLmt29dMoHJMC8kER+w3ic8rZegiuzpu9ZitYE2wNJC1y/P2oU
-	eG5sGhxBecBLzGZck0t5aKA5HaRVhmFGBJ3q87YST/Qf+zG1FZ/sk9TngkVZF+yLRCn/FV
-	pZzxrAAZBbdZavaBm2VZudT+lMxqMZw=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=aJgWHabvDduY7CKx07HtPWunby2WlRQjkpPq1jpmCK4=;
+	b=r9gLcSOn+zJkFYFRfJckzsLZZimerZjGp808mleuHlXHZtNFL2Zqh3xz6cAv4VBWdP5uTx
+	sKYX2JZMPZ+jWnyVjJN+oyMWQUpvuZ0pF7hxk8SfNFVWpQLxcbQWrAYkOeP9y0Y+lT4rII
+	1AGfio65z6s1gbk4qrNVGxvwxnnoPLk=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf25.hostedemail.com: domain of 3iTbWaAkbAJwOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.208 as permitted sender) smtp.mailfrom=3iTbWaAkbAJwOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-42640cbf7f2so32208705ab.2
-        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 23:45:29 -0700 (PDT)
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=IHCWaIM7;
+	spf=pass (imf08.hostedemail.com: domain of elver@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758869303; a=rsa-sha256;
+	cv=none;
+	b=tzmTDxOtDIY5rZCzsmYNOEoYZ+x7UfYQpX0GMZee1X5uKyhzSLvxryfaari2gS8LQuXJ/r
+	hhbCBMM4jR2+DLPFUHbwBDbBQ/rdUZW+vl+2X3CtkiA9WiAJTI+4rO2q+re4Fyd8E5FhFj
+	eAcpFiJhudEUnLcchIHHI84D1L82WDo=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-267facf9b58so14015705ad.2
+        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 23:48:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758869302; x=1759474102; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=aJgWHabvDduY7CKx07HtPWunby2WlRQjkpPq1jpmCK4=;
+        b=IHCWaIM7RNjcou0co7ksdT07uuSEGMfb089XumZlwfkmb4lwzzWj10UPJtR89ZGsOs
+         KCYeJHX2wSh6I402KUcbQGto1XUjMDCcBTEtL2zK2j5b1s+U+Vu33w5CuteYW7WzQoqA
+         +jaGEbxmb7gTtVaqNBCd0E5D1Wn3ERmPVcbouCpHjZId61+xUknQq/fsnfzi47lUK6pX
+         0kwW4fxCe67qMGEfDKLcOi6Gu8IplYIM5bAhJt5Ul8bjIfvQczZjvhqpS1EiY0OuNtGa
+         vyzqaufqAjGccFjVewB7BkrqqVA+1DIjr0Z3lBBPEvGWUM9zMqf0vijQsYd0Vta3bzH6
+         /pSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758869129; x=1759473929;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1veCcU3mH9oLnhdNlf6mJUGV7a4TAFPi+gLi5uVhv0M=;
-        b=Yli+ulyYNM+6FHgPnmlJPcS0RbJ+bM3bgqBMzodpGutK7F1jMnHROYryI07NQbooVx
-         vdQYAIdtFPVmtVmK5OeTco/JTRfEkby4zbW1Rf4QcTJ4XE3pYLDskk97YLDkj0dgxPfJ
-         bKfejXMY1H2E8r8ZE6vtvMoBseeVWixerWP8IV9ZPRIrXDmdhyFhYUiFUZ+GfkdCuIaV
-         xnpkE/1YFrIgjFj5rzT41GTjiAAD2OannSUotYAAqG8AFfy7bcE6jeyxBIdD3kUk4ncV
-         OIJM0W2wNoTTkxcMd1wgmYTt0FyMiYnFWZBBRYUChzuxSXZgZ+rojjvu7AiVjfXoZLTb
-         FtKg==
-X-Forwarded-Encrypted: i=1; AJvYcCW6r7qpUsKX0FNAZ00xPdsavR4A82GODHN4PXq2jV+oM11L4HLrc5rq4sM0fq/BJekd5O9fpL71FA==@kvack.org
-X-Gm-Message-State: AOJu0YwSxent57QxtMWu/7G7zdur7zuK4fTXpJZXWad0Kgi8TRhJaeDI
-	lK5pB/bBDIiS/0Bh1eCh0ER7aWNdSdVeVAwMQR3+CstvCdSPegsfOP+iPK4CLB28MrfKPlT+jV0
-	met+U1LjM2axJvvn6WMLeQ61t1Nq55iB8heuwtclTTIGnZA6BUzCOiqwktjE=
-X-Google-Smtp-Source: AGHT+IGt9fmY+fMre+iBYy4LP8OBoS/OyInBYpNKNG9zH0SZ97oV98zut4bI7DGrK0yZbXbA8dni2nbYBirwgoVX3tXsVCJw/Ahb
+        d=1e100.net; s=20230601; t=1758869302; x=1759474102;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aJgWHabvDduY7CKx07HtPWunby2WlRQjkpPq1jpmCK4=;
+        b=era0EeHfaBJU54xZWgEOZJQmTsqqz3/8/94AyDEX7Fr0yTvOMlPnf7zxTIFk5+n4ry
+         OgWX3TZq1Qjgl6yP9t30KgaeQaag/NKHrPWgsTbClHBLZYhKG7vMfeUpUE0vA+YmiAqe
+         P8rYvK6avw005srMlRgc8A7Ccit0IqVgMmXOg9tk2DOesBrOFVlUGboeGsN/hBAKgO/I
+         QaH8coCGpV976Oh+pzeQi+enuRiWKGgpi9QzG5uXh5XyCZhQGI1X4aCD3TZyexPJQ/au
+         MFH1D8f+PiI+OlXYu6/T9OTxXtpT9kKu/f/bEvZBB0G9zPyrja3DuxTRAnjg2r1eIh9g
+         aNGA==
+X-Forwarded-Encrypted: i=1; AJvYcCX0/40Uz4zARPOzjmrf98WthWJPVk6HoAQWNFpE4LwJYNQKyGphoIuYdGpDcOj/IEDtKF0z6oCEyA==@kvack.org
+X-Gm-Message-State: AOJu0Yz+kr7C3WabqROq/HkdE/K7S7nnPnYvpStL1n8plBsC9bghkaGQ
+	e81V2kyu6+73IQU1FPlDuVsk7ZsFQRIxd5wVGqBtqed/BmCKCuO9yXFBiTVvlCg5c0tdSSN6wLm
+	RljYrRc3X9P0a1r+EeH7OXTHm9lwZVYtZe9lpSV7x
+X-Gm-Gg: ASbGncvUpjw/6BPZqEDk+TUI0fm0Gokw2J+V5N6JbO6jAJF7ZUmXT4/l+4O3Ni5ZN8P
+	HjrBuUFlp8Cqen9ABnM6MLQBNwlgACl416aVGGlZYClhwKQpNeqXhn9vDUfvuIRs0KVGNyD96ww
+	sPzbPpXsE39wT56bwdM/jvua5MfqjwoVa2II5FJ52Nfw5vRc3+2BqsIt8A9xe2LjOf54wJzfhmn
+	6x2rGfFHqgkZtXGfmMFJrj9LzbTFP6YlLLbwqhz79OMqg==
+X-Google-Smtp-Source: AGHT+IFQ5dcE8jI9jLYWO3ZIojoAEp7kw7htpHJSMwq3UBPFdCKdp/gCcYtzso7T+qMu7jMyGkvqB3ynpVlhrrLt0JA=
+X-Received: by 2002:a17:902:f78a:b0:27f:1c1a:ee57 with SMTP id
+ d9443c01a7336-27f1c1af218mr11140145ad.16.1758869302047; Thu, 25 Sep 2025
+ 23:48:22 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:490d:b0:418:84eb:ea20 with SMTP id
- e9e14a558f8ab-4259562f43bmr90064995ab.15.1758869129365; Thu, 25 Sep 2025
- 23:45:29 -0700 (PDT)
-Date: Thu, 25 Sep 2025 23:45:29 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68d63689.050a0220.25d7ab.00d9.GAE@google.com>
-Subject: [syzbot] [mm?] KCSAN: data-race in try_to_compact_pages / try_to_compact_pages
-From: syzbot <syzbot+20dd68d4ba19e8242c26@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, hannes@cmpxchg.org, jackmanb@google.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com, 
-	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@suse.cz, 
-	ziy@nvidia.com
+References: <68d6364e.050a0220.3390a8.000d.GAE@google.com>
+In-Reply-To: <68d6364e.050a0220.3390a8.000d.GAE@google.com>
+From: Marco Elver <elver@google.com>
+Date: Fri, 26 Sep 2025 08:47:45 +0200
+X-Gm-Features: AS18NWDuKHZOuTTHwXeZU7Mpq5jZFUp5-2GMJyGgVogYWdeZQykYphkIZQwvd7M
+Message-ID: <CANpmjNMA4sOXAUdCpDDYz-4D9F_BaTFF8DL3Vkhx=q7vPfYG+A@mail.gmail.com>
+Subject: Re: [syzbot] [mm?] KCSAN: data-race in try_to_migrate_one / zap_page_range_single_batched
+To: syzbot <syzbot+60192c8877d0bc92a92b@syzkaller.appspotmail.com>
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@redhat.com, 
+	harry.yoo@oracle.com, jannh@google.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, riel@surriel.com, 
+	syzkaller-bugs@googlegroups.com, vbabka@suse.cz
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: bk5ay47rrt8mdojd7hiweor4jp6g378s
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3C5C6A0011
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1758869130-292966
-X-HE-Meta: U2FsdGVkX19rEdyhsc5+80KeoUY2iO7UqyjQ0z7fm6RlUKiTQ+HprT61fSsc/5iE6BsQ7tHaX5Tnq5Ag3npO95CJm2rpsRJAksRCaH/qrB2TChUUgr5lsk518IcoTuF7Trn80i5dDPks2wNX3gyY2s7gO9+q11lp9HMwtd5G+DXJconjHLNnhZLSGI6qu9/iVeri0SGLioeT5UMf81nPz4QM4qz9AI+uVMnIezOfYt4GmFZtKlKWQHXmYBpsdEIe2Xg9jBeSOmR3UEHxNB3dDKl/IFQ4BRppqCPMr2OXi2bh8KayF/kz5fYpt+OWEJCoxBCVcmqe16xwXSTaqyfAyK3xJcAQveola3TD0aVejKtBegaayN8TfnSF/EKIY7SsVtAqY5UFP0CvhboEOiaQr9jaIcFcIpR0qX5yMoMcuCuPj5qH8xwWCEuZCxbah73ztQsp8p4HvgVtFlXDK0F9PvRBBi8fGw07A27L9y90wfl02futvsYRqK6M8BnmL5o+b6C/oQ10bH4oh7gAjxMUoktZ1ECPa5qMPHekmg0L/1IMXCIGcZScvmpu3LkAdKVapys38/jaUAVv07k91QlzYNsPqtkSLhdov89cwjDKBlph4QABJULKX1h/aQ2Q4wckZikIJBCdNk3XhIv+muJyaLUaj1rueG6+HeL2JBggx8K+5UXWX9jRfWLOcz2V6J6LxsgjE/05Q1rcv+om6XhcL0vHmT778damA2l52YN2wP8KxjmCTPrPTxsShA+US6cE1oMJSj6rsL+IK73albw6lHTT5vSEj5D+DfwoZdq1lAC5liwRX7PQFHwkOsGbuT2+DLByh9qTSBxi+cXPA1FZWtnhvQ4zFQHQ8ugwMxXI9FxWqeibRZxENFwa320v6veUJi5d+zl1LttjmnMYoNEcqlRs+TDzhE0wn27o86eUsqGKTH8dRwwCZFUYGCIULXXXgj4ky+aBLpam51Fi3o+
- E2LWMGoQ
- B48AsAGGWKMi/8QgeEfVrAfV2pHARAnYKW8OVXdedJYTR1PUQ/ntQpuDoxDNEGWMJDsuZZhVFpHFQNfIK+hjeuYxo2aP8tAN/kH4+akE+K/Y3mk0fdzONtfbF9mC46U/66mu9V4xgDsK8Ml4QcbacTVmnGw593CJbe/+e7vuHYyOPFbQA9UALDSaJBS/WW645jN0aKRMBF38H9rNkYh3vvGp75gShcB1sjmT1bKr4RIrXofiY4AyE0VVB+Xthm4A/3tHlwAqqhIqW7vtYsR/S22t8nYbyRSNq7UBBtaD57giNVqUzUPbWkJwASKvuh5w7EsN+HRQHs3yloMWEbbvvLfYZSfgMQPZNUclubqVULVH4qxkahw662Sd9Xkiwv2qVmjF4VSGmIFQrcDO6ktZrrqbr2VW251CxVWy0bYAwLxUaWamHmEm7QxfSs0q691DkYhS/KyjbF5E9aDBfVxViaItKKVONuEjfr6xIywtSL/Fs8ChKJ02L6FrrqJEd8KQqplmBR80DsPEG7cj6UPrCks7eob/6eghhaBYm/BbU+gMIBcEK2CqlXZvvo9h4v60bDR3kETeQtfMMZnW2SqVNqRmSw7iTXq4Vg+dRYEvHAwkBKai6O/o2vk/nl1b0xZbIhsA680rW2MWqal5tns0AzNjIUbm0uM0gXU3rUNPcZHURuLb/T5/2nFVuqOKAhXsWidWKi7/jVR+2RgzzR4+ufkUtTwzSoxHJ/JULJ/oVvO2UEE1ftkGg5XkR6QUmxJbWPrStkWzgXP7gX8Or1kyuyWNw4kdchnx0fin3etv3X/kKnokBW6UH1RPcCwQOT1sExXN2t8JepQkFSpiuVdYbLlLrik7f7ZyMTEGQW9xw/Jszit1HcNadvHV/ECU42kM9S3tPFSKd3qi71/XaUQ6Pnclrrs/NVjU4BByW8DAHGPxBohaNOj1WRge2AqI0FZLGMHSMOkx82O2hPYMcoIPOBRk9ucrF
- YqH2LW7i
- IDpoG3gzF3lXBDmb3Jm4ra01Pdhx/WytNLeMjkK/pMiUxAaLOj+p9MaIbSZKjLqdHwuNKFTnu14I4T3U6MT/lAVuElegbmXEYoBHxzvJXD/q13SLB8yx2YVw9W9zc1qpxMaz2hy/qvEegXcdUrnF5JYgEqtcsPeZ5yHb78Facy+NuoysqYz9Z/x0ZD1840/ILTIksYjblJwggmAADHh9GGar9p0R/wr0Xdst5ik4ZZGX51dqjXkBSBl7nYq351EhKgfCdUbmX9zJBT1QlOpw3/NSIgDaSyw3K+/cjsvWdPSSsU5fqNDJPJT5NUTz6MrFjCOWd0AJcuwU8+lLw9q9loTK+nNRoQrVf7KFlPPC33hGecVMRB+SS5bfzAeLwiJscAod19fdS9GeDElTEubzFT37eaVg/Mm9Fl79MR907PWGeEX17/2quoA0uxs9HMNBfH5EuXJ6fOYHndxpBcOUMhFQJF/pimzJjq2jekuZfrzAYnAZtkFDR97AyBKRB6v/
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 78F92160004
+X-Stat-Signature: 3ycpojqer3mt34ppb4nkgcgqnf71pgpr
+X-HE-Tag: 1758869303-941035
+X-HE-Meta: U2FsdGVkX18PzJAAc9LNlCRPnm6Ovy6fR6cewwTwLSeliZlsVLbNZi/Q+ycQmFFzKKcCIhfytYyew4LtOFwEeSGdTaj0QEm+cgQ61spPByIJOZ5mG4vfxUA1RfryNFupHbPeIeHsXRUVWYNZPVw8bJ8aHMWaA00z6U+uGaxAV30BsfLZgJeSGUl5Qro5KSyP80fqs2yEQaN/F+cYDymutTXqy1Mz/KMVt/D7c7JIdOqpZWv48gMEbAV2Qj+x7XHpoqPQa0T5rOy0Xt/SX1bB0WW8PtpsmcattfnatZeYrdXHMCerA44zKjEQ1Ed0xjmhLp+5yPo22PEt3Ccx/5fv6/5oRoDZDmoROlh18qjdAaJXH9DkeKWdTobS5HOZhZ8TMQTDo+jxa7Y6V2tKTCaeEILRqU8D9fUDCO1E3M/HdysCgx7AE5+TR1FdiB8n9IySXtbq1FdYZZGoCpNr2jn9fv8AEx5Jczivq32uRXoCC543IhM7bTBDsNvlOVR0t18nwJTx++ZO9VNfTcaDfWRDCWKB7kVTlk4xHnzbnV3iX1yV7jMwsgaidjuORwXR9VPSKBpV6p3AEH2hAaGz4RsjoSS2ClHoAjtK3wiVKnBhM/YtQHm/g7QwQmc6A0pKMouSdCcwUdxq5xixc4hpoD6/0DwCpOUPPnPVwSiU0GXc0jgic3txEaddO5x8LhLGpPA7igZEukqRfI3Ac8msbsMHQOfAaDD5niySbYRIeBC6X9Evkya1j2pL4Ya0Y6XSV3Y0d74/6TcqXhLZm4xzxdmtIphUsNjY5kxvt6RlM6miebmJWMvdEjog4izC8oJti7Sj/JRrfHQmT82vcjveeFP/hspvtsi1LXuukCXTeyXmL4KqwSbvA43wMYxrktfp2G2m/vaxmDePyCKGUx7sNiKJHR5GKUN9JGQnKi9Xx6ogkeIJIyJr3Okbr1fiI7E73SYsj4iZXyn4LOPc1q4ImT0
+ m2m13YGR
+ KKEkvf99PxmDk0qG/ijGQUWcmgFtI/QqX98EMOgU8ArspUrT4sAqG0wvCrdy5gIXhp+/rxlJ1NQtHbh6PEhT/ivnkpRVhbMllXRKEXwTzZ2QSRGdkRnSyqeN34xnpBKjjERMEZ1akel20Nd/uLMFH+XWbdj9Q6GXcnRTsBLqaaQmXIQXbSGxA/tf9Mw/2LLSzE24XBuBkN6dKjz2uKg2XkH9egEggz0Nz7YBnzGdLyaNnnX/FwhuofYCazjNyOdeIxsMWxvF9lTfWLv6Qpd0jb91ntxjG36TI2ixurjgLoaSO192u4A6LyU0B5Ls6CUOnPUi+KTfeRikPAwWBtbeym9uQIloj29LOCbz342jIouUvmXuVopHAzSIsNNYeZXWv6uzC0Q9wE4386EWH1xRn89J+1+n/waLUL859C6b/BO1U7ykS1R5R+0EZAmaJZAht/EqFrenKa1lQPWdjhTaQQFhHHVDeY3LUBVBOP++XtPONXB7n1ZAaIWKC+arrEzja56BjxCDfbdlyEzcvVxVOlT5FCJVDFq3/Xr1WDMhweuuQIvYxMY6YNpNKw3JlU1JBx+p5NciBcB5OT78pHX54gBHdalo+8S2Vl7HQomFVuygU1EwK33Pp/B6dWsIkAzfh/zg0e/F/eMkRfFHzx94YYPT1riZ+sPghIch7TyXD9DDXcQ9YOa58hy3LpIfG6oJ4nKNhhSukceZ3taZrwI8fKyfGoqcw/SK95aPFv2bqfhTOfEftoPeUCIeRHkiYM3fF4IIDCUCFPXNA1DAXbr810ipLfkKLlL6nJ1XyHcUmBdWTPs61n9GYKjKeVGzEVymMRIDj+Qb4KUnRZUJrc1+5V7SPQg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,116 +115,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Fri, 26 Sept 2025 at 08:44, syzbot
+<syzbot+60192c8877d0bc92a92b@syzkaller.appspotmail.com> wrote:
+>
+> Hello,
+>
+> syzbot found the following issue on:
+>
+> HEAD commit:    cec1e6e5d1ab Merge tag 'sched_ext-for-6.17-rc7-fixes' of g..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=145d4f12580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=6e0c213d0735f5dd
+> dashboard link: https://syzkaller.appspot.com/bug?extid=60192c8877d0bc92a92b
+> compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+>
+> Unfortunately, I don't have any reproducer for this issue yet.
+>
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/10b7c8fdfdec/disk-cec1e6e5.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/cbecc36962db/vmlinux-cec1e6e5.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/214f107d0a3e/bzImage-cec1e6e5.xz
+>
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+60192c8877d0bc92a92b@syzkaller.appspotmail.com
+>
+> ==================================================================
+> BUG: KCSAN: data-race in try_to_migrate_one / zap_page_range_single_batched
+>
+> write to 0xffff88810adfd798 of 8 bytes by task 13594 on cpu 1:
+>  update_hiwater_rss include/linux/mm.h:2657 [inline]
+>  try_to_migrate_one+0x918/0x16e0 mm/rmap.c:2455
+>  __rmap_walk_file+0x1ec/0x2b0 mm/rmap.c:2905
+>  try_to_migrate+0x1db/0x210 mm/rmap.c:-1
+>  migrate_folio_unmap mm/migrate.c:1324 [inline]
+>  migrate_pages_batch+0x6e1/0x1ae0 mm/migrate.c:1873
+>  migrate_pages_sync mm/migrate.c:1996 [inline]
+>  migrate_pages+0xf5f/0x1770 mm/migrate.c:2105
+>  do_mbind mm/mempolicy.c:1539 [inline]
+>  kernel_mbind mm/mempolicy.c:1682 [inline]
+>  __do_sys_mbind mm/mempolicy.c:1756 [inline]
+>  __se_sys_mbind+0x975/0xac0 mm/mempolicy.c:1752
+>  __x64_sys_mbind+0x78/0x90 mm/mempolicy.c:1752
+>  x64_sys_call+0x2932/0x2ff0 arch/x86/include/generated/asm/syscalls_64.h:238
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>  do_syscall_64+0xd2/0x200 arch/x86/entry/syscall_64.c:94
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>
+> write to 0xffff88810adfd798 of 8 bytes by task 13595 on cpu 0:
+>  update_hiwater_rss include/linux/mm.h:2657 [inline]
+>  zap_page_range_single_batched+0x182/0x450 mm/memory.c:2007
+>  zap_page_range_single mm/memory.c:2041 [inline]
+>  unmap_mapping_range_vma mm/memory.c:4020 [inline]
+>  unmap_mapping_range_tree+0xfd/0x160 mm/memory.c:4037
+>  unmap_mapping_pages mm/memory.c:4103 [inline]
+>  unmap_mapping_range+0xe4/0xf0 mm/memory.c:4140
+>  shmem_fallocate+0x262/0x840 mm/shmem.c:3746
+>  vfs_fallocate+0x3b6/0x400 fs/open.c:342
+>  madvise_remove mm/madvise.c:1049 [inline]
+>  madvise_vma_behavior+0x192d/0x1cf0 mm/madvise.c:1346
+>  madvise_walk_vmas mm/madvise.c:1669 [inline]
+>  madvise_do_behavior+0x5b7/0x970 mm/madvise.c:1885
+>  do_madvise+0x10e/0x190 mm/madvise.c:1978
+>  __do_sys_madvise mm/madvise.c:1987 [inline]
+>  __se_sys_madvise mm/madvise.c:1985 [inline]
+>  __x64_sys_madvise+0x64/0x80 mm/madvise.c:1985
+>  x64_sys_call+0x1f1a/0x2ff0 arch/x86/include/generated/asm/syscalls_64.h:29
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>  do_syscall_64+0xd2/0x200 arch/x86/entry/syscall_64.c:94
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>
+> value changed: 0x0000000000001645 -> 0x0000000000002165
 
-syzbot found the following issue on:
-
-HEAD commit:    cec1e6e5d1ab Merge tag 'sched_ext-for-6.17-rc7-fixes' of g..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=12448f12580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=6e0c213d0735f5dd
-dashboard link: https://syzkaller.appspot.com/bug?extid=20dd68d4ba19e8242c26
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/10b7c8fdfdec/disk-cec1e6e5.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/cbecc36962db/vmlinux-cec1e6e5.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/214f107d0a3e/bzImage-cec1e6e5.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+20dd68d4ba19e8242c26@syzkaller.appspotmail.com
-
-==================================================================
-BUG: KCSAN: data-race in try_to_compact_pages / try_to_compact_pages
-
-read-write to 0xffff88823fffacf0 of 4 bytes by task 6757 on cpu 1:
- compaction_deferred mm/compaction.c:149 [inline]
- try_to_compact_pages+0x1be/0x940 mm/compaction.c:2838
- __alloc_pages_direct_compact+0x65/0x1d0 mm/page_alloc.c:4066
- __alloc_pages_slowpath+0x360/0x5f0 mm/page_alloc.c:4787
- __alloc_frozen_pages_noprof+0x270/0x360 mm/page_alloc.c:5161
- alloc_pages_mpol+0xb3/0x250 mm/mempolicy.c:2416
- alloc_frozen_pages_noprof+0x90/0x110 mm/mempolicy.c:2487
- ___kmalloc_large_node+0x52/0x100 mm/slub.c:4317
- __kmalloc_large_node_noprof+0x16/0xa0 mm/slub.c:4348
- __do_kmalloc_node mm/slub.c:4364 [inline]
- __kmalloc_noprof+0x2ab/0x3e0 mm/slub.c:4388
- kmalloc_noprof include/linux/slab.h:909 [inline]
- kmalloc_array_noprof include/linux/slab.h:948 [inline]
- io_vec_realloc io_uring/rsrc.c:1327 [inline]
- io_import_reg_vec+0x645/0xe80 io_uring/rsrc.c:1520
- io_sendmsg_zc+0x91/0x550 io_uring/net.c:1545
- __io_issue_sqe+0xfb/0x2e0 io_uring/io_uring.c:1771
- io_issue_sqe+0x53/0x970 io_uring/io_uring.c:1794
- io_queue_sqe io_uring/io_uring.c:2023 [inline]
- io_submit_sqe io_uring/io_uring.c:2283 [inline]
- io_submit_sqes+0x675/0x1060 io_uring/io_uring.c:2396
- __do_sys_io_uring_enter io_uring/io_uring.c:3463 [inline]
- __se_sys_io_uring_enter+0x1c1/0x1b70 io_uring/io_uring.c:3397
- __x64_sys_io_uring_enter+0x78/0x90 io_uring/io_uring.c:3397
- x64_sys_call+0x2de1/0x2ff0 arch/x86/include/generated/asm/syscalls_64.h:427
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xd2/0x200 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-write to 0xffff88823fffacf0 of 4 bytes by task 6696 on cpu 0:
- compaction_deferred mm/compaction.c:150 [inline]
- try_to_compact_pages+0x207/0x940 mm/compaction.c:2838
- __alloc_pages_direct_compact+0x65/0x1d0 mm/page_alloc.c:4066
- __alloc_pages_slowpath+0x360/0x5f0 mm/page_alloc.c:4787
- __alloc_frozen_pages_noprof+0x270/0x360 mm/page_alloc.c:5161
- alloc_pages_mpol+0xb3/0x250 mm/mempolicy.c:2416
- alloc_frozen_pages_noprof+0x90/0x110 mm/mempolicy.c:2487
- ___kmalloc_large_node+0x52/0x100 mm/slub.c:4317
- __kmalloc_large_node_noprof+0x16/0xa0 mm/slub.c:4348
- __do_kmalloc_node mm/slub.c:4364 [inline]
- __kmalloc_noprof+0x2ab/0x3e0 mm/slub.c:4388
- kmalloc_noprof include/linux/slab.h:909 [inline]
- kmalloc_array_noprof include/linux/slab.h:948 [inline]
- io_vec_realloc io_uring/rsrc.c:1327 [inline]
- io_import_reg_vec+0x645/0xe80 io_uring/rsrc.c:1520
- io_sendmsg_zc+0x91/0x550 io_uring/net.c:1545
- __io_issue_sqe+0xfb/0x2e0 io_uring/io_uring.c:1771
- io_issue_sqe+0x53/0x970 io_uring/io_uring.c:1794
- io_queue_sqe io_uring/io_uring.c:2023 [inline]
- io_submit_sqe io_uring/io_uring.c:2283 [inline]
- io_submit_sqes+0x675/0x1060 io_uring/io_uring.c:2396
- __do_sys_io_uring_enter io_uring/io_uring.c:3463 [inline]
- __se_sys_io_uring_enter+0x1c1/0x1b70 io_uring/io_uring.c:3397
- __x64_sys_io_uring_enter+0x78/0x90 io_uring/io_uring.c:3397
- x64_sys_call+0x2de1/0x2ff0 arch/x86/include/generated/asm/syscalls_64.h:427
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xd2/0x200 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-value changed: 0x00000005 -> 0x00000004
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 UID: 0 PID: 6696 Comm: syz.2.1234 Not tainted syzkaller #0 PREEMPT(voluntary) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/18/2025
-==================================================================
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+One of these writes is getting lost. Which means highwater_rss is
+lossy/approximate - does it matter?
 
