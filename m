@@ -4,140 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E989BCAC5AE
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 09:46:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88689CAC5B9
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 09:46:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E1748E0007; Fri, 26 Sep 2025 05:46:26 -0400 (EDT)
+	id E592B8E0008; Fri, 26 Sep 2025 05:46:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B8C48E0001; Fri, 26 Sep 2025 05:46:26 -0400 (EDT)
+	id E30558E0001; Fri, 26 Sep 2025 05:46:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CEF48E0007; Fri, 26 Sep 2025 05:46:26 -0400 (EDT)
+	id D1F078E0008; Fri, 26 Sep 2025 05:46:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A4A08E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 05:46:26 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C6C90C0610
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:46:25 +0000 (UTC)
-X-FDA: 83930921130.08.E8A4005
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf11.hostedemail.com (Postfix) with ESMTP id BD2E240002
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:46:23 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YNZESI5h;
-	spf=pass (imf11.hostedemail.com: domain of patrick.roy@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=patrick.roy@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C006B8E0001
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 05:46:53 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7889B1DFE6F
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:46:53 +0000 (UTC)
+X-FDA: 83930922306.13.B7C4BCE
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 832FE4000B
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 09:46:50 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="P0bjGCp/";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gFFgjL4p;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="P0bjGCp/";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gFFgjL4p;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758879984;
+	s=arc-20220608; t=1758880011;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wL/DKY7lmmAFsSL3d0RvnMPd7olra+yxGHLjKGhoofY=;
-	b=VWK7v3roaTDyOlr6GpzmTy7T/IZjP/7idckE8rpJh138IA+eRLvGWAjh0llMDINUL26q40
-	CL5/vGQGSTUxxMOTUD1QnHrl6otrwLP751czuHvbus0IMCoFes9je4k0Zi4j9NRWvX2t/v
-	ad3q3/BbNOGWkWQJIpN5ywJcDk/qUGw=
+	bh=0FTHG5VPu023TpqFFP4aeKMhpYwa8T0tvJRQfdx1F98=;
+	b=P3UpiueHu9XpYthPhQiCDQXIlKgK5B13HwWvT1ypAIxNuImSqvzBffZp01WNG4mImH4dqm
+	sQ7t/hIo//4ZYQGcDAjKClmO7Vqm3/jsFHhmx/YToyoeU4zyxlmWUijCUzWMvGqlzalSNf
+	hzuu+dND692HTO0RjH26YkncLKXcF8o=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YNZESI5h;
-	spf=pass (imf11.hostedemail.com: domain of patrick.roy@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=patrick.roy@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758879984; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="P0bjGCp/";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gFFgjL4p;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="P0bjGCp/";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gFFgjL4p;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758880011; a=rsa-sha256;
 	cv=none;
-	b=1ubsHAjy41w6uIO3Gge5WO/JesMhaOMtScjkdDB/6ogapvkdDZIMxFnpSgnxZVRjFlKF+v
-	MiJDMZbIZfTKeSTTC+zWm1aSrIdb4o/ja1PiiCbCCnxeEVeLFyFQZaRyGWneRLCzTDNeo1
-	ehZUEPb6foyPr1FmO+okS2/SBQyva2k=
-Message-ID: <c88514c3-e15f-4853-8acf-15e7b4b979f4@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758879980;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	b=Et8nK9BeMohBT3RWVwbi2Pv530u6Uk6IKMMZaXvRXis83pfxWsuFqJXgwGajQLVaA3U39R
+	Xp2Gwu+XNcS4d9YVxly/ivO28A0q9Er+++E8uC7d3aNqQnQInJQkFEx6FyYY8acf2cTarx
+	lgUf7gvqiZ4L/lFzu9ACe6F1jun3QIE=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 130742408A;
+	Fri, 26 Sep 2025 09:46:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1758880000; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wL/DKY7lmmAFsSL3d0RvnMPd7olra+yxGHLjKGhoofY=;
-	b=YNZESI5h/jXNDiLLb7j86+j+TkXx1nKw543VaKtpr8w5CCCBn8PBOYUz9LE0gA3VqxAeTq
-	vk8gHrlHjKvE2h5y4LlVK9XHV23gdoSJUvecSr6p74DcXM6u9ckDN633ckuAjfmHnKaOOB
-	P/laAqnp0QFmiI8hpwCxa0nGYMdpMzQ=
-Date: Fri, 26 Sep 2025 10:46:15 +0100
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0FTHG5VPu023TpqFFP4aeKMhpYwa8T0tvJRQfdx1F98=;
+	b=P0bjGCp/UYqjSJ0ZN/1YOb6qLOmH8JRj7qtNBB2LALa99JynIxZKszeTFeh/Qwp4wTyJuL
+	JQIK/wasKd8Ksa6DU2bm++LMpdXFQmvZxCCf/xEA/gZuTGCwbGVhxh/8P+X1fmZNjKNbc6
+	W9Ys2ViQODHk6CzS8aT/3qVg2RR1jgo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1758880000;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0FTHG5VPu023TpqFFP4aeKMhpYwa8T0tvJRQfdx1F98=;
+	b=gFFgjL4pbQAoOPk39RBp6E9pKc08ohddq/g+moLf7n+aM004quj2iz0Ku4oj5TpsFCCer7
+	QLyGAqFA2Rij9zDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1758880000; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0FTHG5VPu023TpqFFP4aeKMhpYwa8T0tvJRQfdx1F98=;
+	b=P0bjGCp/UYqjSJ0ZN/1YOb6qLOmH8JRj7qtNBB2LALa99JynIxZKszeTFeh/Qwp4wTyJuL
+	JQIK/wasKd8Ksa6DU2bm++LMpdXFQmvZxCCf/xEA/gZuTGCwbGVhxh/8P+X1fmZNjKNbc6
+	W9Ys2ViQODHk6CzS8aT/3qVg2RR1jgo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1758880000;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0FTHG5VPu023TpqFFP4aeKMhpYwa8T0tvJRQfdx1F98=;
+	b=gFFgjL4pbQAoOPk39RBp6E9pKc08ohddq/g+moLf7n+aM004quj2iz0Ku4oj5TpsFCCer7
+	QLyGAqFA2Rij9zDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DB7761373E;
+	Fri, 26 Sep 2025 09:46:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id U1F4NP9g1miREAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 26 Sep 2025 09:46:39 +0000
+Message-ID: <7c41eaf6-d0d1-495c-865d-21cbdceb23b7@suse.cz>
+Date: Fri, 26 Sep 2025 11:46:39 +0200
 MIME-Version: 1.0
-Subject: Re: [PATCH v7 06/12] KVM: guest_memfd: add module param for disabling
- TLB flushing
-To: David Hildenbrand <david@redhat.com>, Dave Hansen
- <dave.hansen@intel.com>, "Roy, Patrick" <roypat@amazon.co.uk>
-Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "corbet@lwn.net" <corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>,
- "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
- "joey.gouly@arm.com" <joey.gouly@arm.com>,
- "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
- "yuzenghui@huawei.com" <yuzenghui@huawei.com>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "will@kernel.org" <will@kernel.org>, "tglx@linutronix.de"
- <tglx@linutronix.de>, "mingo@redhat.com" <mingo@redhat.com>,
- "bp@alien8.de" <bp@alien8.de>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "luto@kernel.org" <luto@kernel.org>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "willy@infradead.org" <willy@infradead.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
- "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
- "vbabka@suse.cz" <vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>,
- "surenb@google.com" <surenb@google.com>, "mhocko@suse.com"
- <mhocko@suse.com>, "song@kernel.org" <song@kernel.org>,
- "jolsa@kernel.org" <jolsa@kernel.org>, "ast@kernel.org" <ast@kernel.org>,
- "daniel@iogearbox.net" <daniel@iogearbox.net>,
- "andrii@kernel.org" <andrii@kernel.org>,
- "martin.lau@linux.dev" <martin.lau@linux.dev>,
- "eddyz87@gmail.com" <eddyz87@gmail.com>,
- "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
- "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
- "kpsingh@kernel.org" <kpsingh@kernel.org>, "sdf@fomichev.me"
- <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>,
- "jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
- "peterx@redhat.com" <peterx@redhat.com>, "jannh@google.com"
- <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>,
- "shuah@kernel.org" <shuah@kernel.org>, "seanjc@google.com"
- <seanjc@google.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
- "Cali, Marco" <xmarcalx@amazon.co.uk>,
- "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
- "Thomson, Jack" <jackabt@amazon.co.uk>,
- "derekmn@amazon.co.uk" <derekmn@amazon.co.uk>,
- "tabba@google.com" <tabba@google.com>,
- "ackerleytng@google.com" <ackerleytng@google.com>
-References: <20250924151101.2225820-4-patrick.roy@campus.lmu.de>
- <20250924152214.7292-1-roypat@amazon.co.uk>
- <20250924152214.7292-3-roypat@amazon.co.uk>
- <e25867b6-ffc0-4c7c-9635-9b3f47b186ca@intel.com>
- <c1875a54-0c87-450f-9370-29e7ec4fea3d@redhat.com>
- <82bff1c4-987f-46cb-833c-bd99eaa46e7a@intel.com>
- <c79173d8-6f18-40fa-9621-e691990501e4@redhat.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Patrick Roy <patrick.roy@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] mm: silence data-race in update_hiwater_rss
+To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org
+Cc: elver@google.com, Liam.Howlett@oracle.com, david@redhat.com,
+ harry.yoo@oracle.com, jannh@google.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, lorenzo.stoakes@oracle.com, riel@surriel.com,
+ syzkaller-bugs@googlegroups.com,
+ syzbot+60192c8877d0bc92a92b@syzkaller.appspotmail.com
+References: <20250926092426.43312-1-lance.yang@linux.dev>
 Content-Language: en-US
-In-Reply-To: <c79173d8-6f18-40fa-9621-e691990501e4@redhat.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20250926092426.43312-1-lance.yang@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Action: no action
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BD2E240002
-X-Stat-Signature: oc3b1g7jwnn1c191ifrpfh15t1z4bgf9
-X-HE-Tag: 1758879983-110893
-X-HE-Meta: U2FsdGVkX1+X+fyFzbaBlINxOle78q6/XIfh7jg036w3D99ZjuOmR1NeZDq0rOMFGc7FgrLax3ZKEzBZLeb/a3qvnoDb/WqQra8EVQh22zv9PZqn5QJeDsvuv7pC1pDpK9qqx1vt9eV58tpfysjWOSij+wdAdNHF38GHGxENkcvXYbz2tHSxlCo95ffG5GtwrXnQR9jxA6UIHCU2Xo5Rqmbwku/JCO0o/6qtNWAJnffxSQoTIqCJZXh+epu89YzPagE02cXhgcYqFWCnbuNmsetFvaKVrVXYauIkxJf1CkMv7GS+olLtfDCRZpL3yAdiGHtFsq4cCIiDn9KUf3IjXy2MIIq5JnoOVvhBDJHvb/B4ekpkrBXznfFtATmbrw+sn86B3TPLQv75/fa/TCfXkj5k4aK311MPQqcZO7+o3gIysbbe5fWpZbzNM46URyUg2qWP5jTUGZLImgV4wl577pNp98DI6usFHlGwyiCSsleh1ZDtXUtGkLuJU1CCVLd8QpsVpoLvUi9CWJVKIDb2XSUY45DSJGcKPKd4mClMMzGF1GP3bjJgwax2YKDjr2Dy+rL0SFQrMdQTy8JWoon74Z7V3Z9/GnyXCBF13YsQ+TnGyAHPdl15Xx5ubMmptADe5cQdxZ2f04Pana49dbzazz2Dtl9rIvkVRvzgfOovspy54EjY9qX25p6bVamLgX9aJ/Xd5C9WcyIf/h3WcsdT9NS1a3YTxdzTXL1Hl2NKJvZdV0ZfROoa4SA0meEpjfxZLEDggGwC1UXUWtHE9mQG/akyVHP1HY2U79YVD9aH736DDMhUszYSMzhQX1i40xMvAUdQZvVXBN5xyBP8x0RKh0969mncIVl/ft8nJdd0eFLqO/ErgIt4KGhRf++CZ7iBgrPi9a4iRijfoAOKnNpfluuRkVfKlN/jmjnRFkuKN5HbA3RjBSdio7BEs0/OnEzukI0lYZpsgKFvN2xlrjb
- uFaL5N2V
- WEbukszub2OJ+c0MVeZoM4zACLEqHIWSHZg3Q2RrzQcjleD478Z7t6LRpNVh3Kb5mTahzj27VqJe634Ib2V4/qS2qigvi03MOTDxNfMnqAdUdHZ6MD94MT2MzmaigtEpWqFvcs4r/Cta+l2ljBWvQt8Jf5KXF4/Q1suMBOexAs0qUtpL97uxzM6wWItZOD884Au2ktVZzje2GQpanPRovvwB4gM2v7pZGa9g3ZoYs8nHhX7yIf95YfGdkTLcqc+Omn4XV4xj8097ttu7wkTyLyqhaaMUh1NaKkGdsh2Y8LyOpQCjypuBlJbSWhq1qM8UPMq94lP0YvqpgaLaa+KSeR3jwWmSRsbkZ6BZPo9Oi74I0N5VgW7XrLY7MxQ==
+X-Rspamd-Queue-Id: 832FE4000B
+X-Stat-Signature: 6ke8y1j3geh8h5x1ksuwexrmhdhmx8st
+X-HE-Tag: 1758880010-128303
+X-HE-Meta: U2FsdGVkX1+/6y+HkKIHsDbtnzhPQXAgclU5t+IkBwKpVNOnDADA3mulmxYDs8IQghN3X5SmeuOXdoUZh16LjiTTiAeDt/jpd/GC1x2CtMjaRq6CNWf2kR5tHiHsPFXJXKMSNz6RKQneh0bwJj5x3+TN1J/ioyvYEFgXwKxRZ673h4K3TpXnWCRLkrv4QBuMmJx+oKDz/qudUffx1kMv9aGLkrbZPbRJnKjbtLZc/MJZgCYOZ2r0Iu1ORO4XM/8IbDlRfMdbNEj/+uhTRqo1JAO1Eyx08+ScfT9cyFv6UtT5T9JdPs0aIpCgreu9uw8Af4oZLyU42bn3UW+qyNbwDfAPWPd8mhh+/cY69oB2ePTcAf77frdUcj12qn4zEzZDSLqLzIf8gdoeSLAYXRUvNUzo33NSz6lGHNllaSWc9TiE1Ml2XBR+WwvTFnAasI8eU1SI96GCODGMAu/w4dqQHaGXeyoOCdnl4My+Dk8mnEGNCPp5bru1oqasyv1VurIuFJK3hSBTt3YVt3R4kVYJyAgo9Xt71WdTI4KsYWP57W329Dvr8tqIVNVH67NgBv99+b+SazfPRHeG++C8r25pQmRkKUOEt0KJncCtvsZJFk2hjcLUcbDf+AjnL73tgZm4eaco+RfpHt/QFLp4axOgqUd5zNE+on03AGj9HOz2rwWg6VlyrxREmvKTn0HSwV75YupvoWlOSqNeV17tnJNzovtM+u6paKQykhTaUOiTQ7/0GuCIgnNyb9Q1WgLwk3X37/F6g5Gps2N0Mv1DDwi/sSbC66xcyPpNHzMzSGOUnpjMQF9q9HcK5n01+2isWkLH7UJKKOzKAa3QVNF3JgIutCr4DNC/lEm0DS3920e3KDT5rbpIUM1ZO0rjickXNyOcG2s89No8/XjRaOs/7ph8wRDIEttagN13+Au0RopWyHQ3OlfzTPp5yLIt8jnrr9mdYM5Kr7MxpyJK1V+WR4g
+ xVTy+bam
+ R2m/XBch4xcSZDaTqhzKKeWWekMd9rDc8BJoNb2xN8lHVh3+oC7s6BBP4wSAiGu3f+F+/8XRroHjxmeBDtdwFV/thz3VEyJA+yZlyrztEAKMzDaJH3eVM1QBCWwOGqqa10w6FjdVwJM4Iq+JiCDgoQoaizXNTNfUr0hsTOuDtD5cCwh5HGiOyh/hcDGiRu1pPfc6KKGqE8CbI5DtxEkpH3eOL1EMsQjWlTMPkhoEFNa7sdG1wl+VVQxgT0nZfltoNHue/4vkloB30TIiMOZk9peOUA2gIatgOd+AutUIlEPmGgenp7ZSpVCezIMNQKqTWcdY39LUV4rc83v5xsOxNDjNBIDxUrp3PkwOWieCZ9H0eYYNSV6KoLs3V79gZJ4bkye4VFdGJNa9DngSQakG+4ci64xaq8863s5o/VsmoKd09lJoeVw0PuNZQ8ZFPhT7p94H5/Cbf0pTrhktUW3qJHoh1pLwAGp89qW6SENM4+OyuKobdBVRUFiB2TWEgnI97t6PAdX4alYLKhum9GCszocb82eGtJ190KfRa7+F5CQKqZZzljnK6ZR3/R0CreeuAm+Pd
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,48 +180,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On Thu, 2025-09-25 at 21:13 +0100, David Hildenbrand wrote:
-> On 25.09.25 21:59, Dave Hansen wrote:
->> On 9/25/25 12:20, David Hildenbrand wrote:
->>> On 25.09.25 20:27, Dave Hansen wrote:
->>>> On 9/24/25 08:22, Roy, Patrick wrote:
->>>>> Add an option to not perform TLB flushes after direct map manipulations.
->>>>
->>>> I'd really prefer this be left out for now. It's a massive can of worms.
->>>> Let's agree on something that works and has well-defined behavior before
->>>> we go breaking it on purpose.
->>>
->>> May I ask what the big concern here is?
->>
->> It's not a _big_ concern. 
+On 9/26/25 11:24, Lance Yang wrote:
+> From: Lance Yang <lance.yang@linux.dev>
 > 
-> Oh, I read "can of worms" and thought there is something seriously problematic :)
+> KCSAN reports a data race on mm_cluster.hiwater_rss, which can be accessed
+> concurrently from various paths like page migration and memory unmapping
+> without synchronization.
 > 
->> I just think we want to start on something
->> like this as simple, secure, and deterministic as possible.
+> Since hiwater_rss is a statistical field for accounting purposes, this data
+> race is benign. Annotate both the read and write accesses with data_race()
+> to make KCSAN happy.
 > 
-> Yes, I agree. And it should be the default. Less secure would have to be opt-in and documented thoroughly.
+> Reported-by: syzbot+60192c8877d0bc92a92b@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/linux-mm/68d6364e.050a0220.3390a8.000d.GAE@google.com
+> Signed-off-by: Lance Yang <lance.yang@linux.dev>
 
-Yes, I am definitely happy to have the 100% secure behavior be the
-default, and the skipping of TLB flushes be an opt-in, with thorough
-documentation!
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-But I would like to include the "skip tlb flushes" option as part of
-this patch series straight away, because as I was alluding to in the
-commit message, with TLB flushes this is not usable for Firecracker for
-performance reasons :(
-
->>
->> Let's say that with all the unmaps that load_unaligned_zeropad() faults
->> start to bite us. It'll take longer to find them if the TLB isn't flushed.
->>
->> Basically, it'll make the bad things happen sooner rather than later.
+> ---
+>  include/linux/mm.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Agreed.
-> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 6b6c6980f46c..dd93335e3a13 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2757,7 +2757,7 @@ static inline void update_hiwater_rss(struct mm_struct *mm)
+>  	unsigned long _rss = get_mm_rss(mm);
+>  
+>  	if (data_race(mm->hiwater_rss) < _rss)
+> -		(mm)->hiwater_rss = _rss;
+> +		data_race(mm->hiwater_rss = _rss);
+>  }
+>  
+>  static inline void update_hiwater_vm(struct mm_struct *mm)
 
-Best,
-Patrick
 
