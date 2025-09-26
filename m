@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A0CCCAC5B0
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 03:35:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44BA8CAC5B5
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 03:35:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 902F18E001C; Thu, 25 Sep 2025 23:35:24 -0400 (EDT)
+	id B572C8E0013; Thu, 25 Sep 2025 23:35:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B3D78E001B; Thu, 25 Sep 2025 23:35:24 -0400 (EDT)
+	id ADC4D8E001D; Thu, 25 Sep 2025 23:35:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66A138E001C; Thu, 25 Sep 2025 23:35:24 -0400 (EDT)
+	id 754198E0013; Thu, 25 Sep 2025 23:35:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 42D278E0013
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 57BB68E001B
 	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 23:35:24 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 137421A054E
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2059EBA2EF
 	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:24 +0000 (UTC)
-X-FDA: 83929986168.02.AA7FC31
+X-FDA: 83929986168.28.495C97D
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 0303AA0007
+	by imf29.hostedemail.com (Postfix) with ESMTP id F038A120008
 	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:21 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=l29NVBpG;
-	spf=pass (imf15.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=QeaCwDX4;
+	spf=pass (imf29.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1758857722;
@@ -34,45 +34,45 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qr8rhSuk7mPSVbR6fVIS8G3J6eM6aaTMvHeRaP8hnUo=;
-	b=oAmTe5BsnJBq4oIZNc8JtXwm8b488Z3KXJ4a4Lt8xMwuBOJzc/GhIRfa2pMB9dlAIBeMXb
-	9JRLpn8N7EKX1iNyMQmZ7z2r3X8NesDSeI3gnyBlfgGeHf3pJH7ceHdsXh1F3we+s8Dd/K
-	M9CI+5jYIpzmzbcAvZVpYFbuO3MeunI=
+	bh=+HTB1fCiz0NaiCmDM+Gs6d0aPMBfNtKtDfuiG0d2AtY=;
+	b=xJQfnqL+4ASXlAdlqjCAhvQuVbQjrq4o07KWB+VXO+qk4VbeoWkmC2UbCy08s4y8m9gMi5
+	V9BPRWTPj8ps/MCCRD3I69N9/JIcbESz8w4m1vGsvBr+wOJr6Q4YzmZw8uX7uCaAmBzTHw
+	r+pEUiCdJzg1XeRhTKAylVlw3mA4XhA=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=QeaCwDX4;
+	spf=pass (imf29.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758857722; a=rsa-sha256;
 	cv=none;
-	b=ZwQF0+YFH8czxsdkzAzF7dQapEKKAUmIeGCOBw/Vz2hYij2bMjwkD83uoD3z627Ym1BCx6
-	vbdS+s6e4FP6+RCJiSz0vk6vOSz06Qj3uhEdGmjK9ymvEHg9vHYVs8YNmFjkQ6VwAxYAbe
-	sf1+ecRhE4RpdYTgZU4Jranz/6uyIYU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=l29NVBpG;
-	spf=pass (imf15.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	b=jAXuGXs2JCdlLAsPjRABNZjTKuZHiSuZBWV6DWMWjeMOmucpL4TaePed/VosrSltPG3j38
+	bg3LAZEz9jcOZAmho/ZoVUVr86wPU0boAB/d5B9LLTzmqY9qxSUjXgq7h5f252ydnYAVN2
+	dyH5Dxx05otV66ez1CDGUMnDSJXJ8T4=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1758857722; x=1790393722;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=01Lb8LwYMfR+RTbgHusuGCF48WnuBxBCxoCOmtG+hkw=;
-  b=l29NVBpGNPaT6a2kVvr+Wcdszw/AfSZyWAT5unDPgO/n/CY0nXpmrDzx
-   XwRZAz2+lHr0JZ/PKy7+FV+TaAoqjX4jNiE0fWi3zP3QILi7p91BQ2ul+
-   3ft1qP9Rfl7XCwI31opt7jBjvfeZxj4KMTVP0gZOYPhZGseqAqX6BadYF
-   SfPmphU3K8+PUjX2RfTMouMvilugMDadmSaZAUYgbIP1CdGlC8jWaz29O
-   uW99hH5edPiGOm5CcjlST0/xYKQ+Y70/36Yr30JHakJTF7IrSRduuNNp9
-   Ofd/M06ywG4uFqRgJZuD0WYeY4y+asNIgFqPqEl/O1Kw9n4sI1vaBvNNZ
-   g==;
-X-CSE-ConnectionGUID: 9g17AmfvQ+Sn87ci1xKs0A==
-X-CSE-MsgGUID: 97j0BNpTTcaINO8SkM9oDg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="63819675"
+  bh=8zO287VZ8tZ+k+EEFCCO9Fum+HPgmZKBhvlLu2+6EXc=;
+  b=QeaCwDX4YE4GsQ8+pRatXDnSt/wxYsGc5/iDtKB25mUkcjdygDWckssz
+   x4ZRdllDEzwh8veMyWiJX4JQOdF620qAt/hGv8IpdYm+ZJPHksKxy9P/h
+   BOUbqDSEju/YYMulkPFLW8oXIPEt/M7RhZ24A2sNUWIJd9Ci1PkBA7Zwf
+   1H5Y3PQOkAgpvJWUPUP/BScKLb7tWGrymLq6sAWg9qHm9hTG8sYxs5bhn
+   UPxjAlpA9/sNKPSxN09e3NAaDgJRARs7zmox9Kl+ds1nxH0hMcSnxAy8x
+   2JWILOXsRK6vWnToF9rZH7KX4rwSstFGegrcJIdhax3xBfJGXFbwU2PHy
+   Q==;
+X-CSE-ConnectionGUID: VqANCCs0QT6KyMojCaypJg==
+X-CSE-MsgGUID: dCRKvkZJSOOzEeC+PRJ64A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="63819648"
 X-IronPort-AV: E=Sophos;i="6.18,294,1751266800"; 
-   d="scan'208";a="63819675"
+   d="scan'208";a="63819648"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
   by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 20:35:07 -0700
-X-CSE-ConnectionGUID: RCx4hUprT/ulKFB3pSElZw==
-X-CSE-MsgGUID: 5/k0k+9YSQmn9BNskB7LKA==
+X-CSE-ConnectionGUID: L8b29UPGQ+iHnCb3FvLCxg==
+X-CSE-MsgGUID: LaW3gcQfRke+KlzqwXJc/w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,294,1751266800"; 
-   d="scan'208";a="214636612"
+   d="scan'208";a="214636606"
 Received: from jf5300-b11a338t.jf.intel.com ([10.242.51.115])
   by orviesa001.jf.intel.com with ESMTP; 25 Sep 2025 20:35:06 -0700
 From: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
@@ -102,20 +102,22 @@ To: linux-kernel@vger.kernel.org,
 Cc: wajdi.k.feghali@intel.com,
 	vinodh.gopal@intel.com,
 	kanchana.p.sridhar@intel.com
-Subject: [PATCH v12 20/23] mm: zswap: Per-CPU acomp_ctx resources exist from pool creation to deletion.
-Date: Thu, 25 Sep 2025 20:34:59 -0700
-Message-Id: <20250926033502.7486-21-kanchana.p.sridhar@intel.com>
+Subject: [PATCH v12 18/23] crypto: iaa - Add deflate-iaa-dynamic compression mode.
+Date: Thu, 25 Sep 2025 20:34:57 -0700
+Message-Id: <20250926033502.7486-19-kanchana.p.sridhar@intel.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
 References: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: tqmqkswtarh1iyjis1ycjw9gkzz58n71
-X-Rspamd-Queue-Id: 0303AA0007
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758857721-856656
-X-HE-Meta: U2FsdGVkX18tDgdnXk7OP2nKQhQ3QPLOovm2YHUTv33mpd+WviNgXJAshZxv0lzjf71rnoDSC63lT9G3W1vLLbIwi1u6RZPeBiirLXA9D3hbLBySqqGD0K0uXbZO1xWeEGP4oAziFwfPdyLVfymRhl97Qk/D/OFbVpzVDZApR6KWwD3qAURs285fBebMSvAlEKQ9nD5nNMU3HRIC+3S+0x+DKD6+8fAU25xAvOYNosqAkh9TTYk543KYYDCPcyrNxE/1P4xtySFeDcDWXs+M5/5iM+u77KKIvQ+6g+vS1c6nZ5sxbaDrvLH5h9guZZymJYFCKbSZro2c8UHq2CjNgzQ7NKqnS7YYy+8JAHw6K6MqWrOAfv/fhEO/Y8SZgQ2rMEXJgpH9elJUzek/kYI17RoJjI0yv5hukY3I0i8tl2bfLQZTaU5+GE8asTzbi6KtB7A5SEiKrLNFMkSIYWwgJOS2fJY8GjGyz7vAto0dIZqrLMjEO5L7nt3agEbR/fsZG8JIt4ILCjH/zic6PpBEG9xhuG3+4ArjPuyK7kh4V0wrgGd5y/YzegexT0cH92hJOHNyJhqAOVjmU0OLQ9sjFbB3mvSTfcz5qM/hoIIiiLwPRW+CQvbQKGlrhsDxqLZgFdWU7gVDOkbCBnCzlt3uib2qod836Q5HUm+6nB5ZRnpc3NuzQIJ5vQcXr+mzjq+djt8H81UUVS9hDvQ9xnFutMn8ruP1iEvD5ZKqy0gkQcJ2s031BsDnBgh+PRxlnL6hQxJCm8OXk+tUIBzOdexzB/b33FXQD6kMj41F+Dw3xLAhddFf7SGIJxP9rE7anxGx8DyuyARmtmAcCfMzitjfNw+C10FvjuXk2+wddSQcaXf9ylHqwDrZ7rjstUwZimgh1XOVCUKGiVb24cmZfdN26KV+TPsbrXMImYipAnzUESL9QOucNDMxSQ==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: F038A120008
+X-Stat-Signature: krpjzg5qunxrgu45jg6zoz7ghxc156fh
+X-HE-Tag: 1758857721-120169
+X-HE-Meta: U2FsdGVkX18NHWZOa6nI64DvR40KDf5PqM20W1+FepAq4V6zDGHO9L8FdSfoA1turNAPjJAM/mkjjgh33zjUjDqj+3Kjn0+XYGmsb72+xypcjFYdCqEmBPH5bAQDKFBt0dR2mWb0WZCTSL+QLWoq9OSJPtAIH7IGX+rwDv71N58bQXWsBQ7188qT81cSdJMXq9Qn06OX8Gk/oZEaQOLUxjy31zgvbM5lAv8it+G081p+xFpvQBIvTAL9b/vHdrKZKB1ENfkepFdpEsfzJOmHZ+KKAkiwuxOTyaSyMMiBmFjV/XgkOZgwn30UYaGsKI31aoLHsgDAFbNZ8uFzQH8oD2BIV6S7IUZs3FUIfuhOYRz6zL8PtxJpNUCSH6uxB9219XM6dIp+7LrUQxsI9tD1mzQLa5CJIOcL7XL1dlaCv0AHi2P2dB62RSO50nqoGxRLvlz+8tZRNA800SzOigA1kthScDR3L53jAzN+eKNvmDgMJa3efV0iAcOlE+g7vlp3MLwDzk+KS0s7Ti1T7SH5pM6Mee3CIVoDP50rGf1KLkA79zFclkkzCXkCaBX9xKglx0wUeVYjDjF4s7+9q1nszGeZQIqtVieJHJl5jhIfEICR6kFowyEBjGSYws0wGlX6HHKBAtwJ+yzcgdlMCGynL6+3wEQPq0a+fE4iseZkMRLDMnLYe0jKHstovgV3kBVd9+MdMxTa6NNAl62gipmH6IZCcrWJRKxZ04pIUB8o9HpvswQm5Y2NK3J5x2E0epBGaZNVYDAGCXT/oyD8UqM2eYC2n/Sn9HvquvlIfSQrsChHQsGLFdWx98Q1rWX9VUITkPhrFr/1QCcOKYdXxaCWXdlFNuaJVFF5KuBlPRXEp30gNiL775OXV39luicSJzCSoKmk5xHgtU1FCtf5fCfZgeNxMJb3jKgMi2z8qbYZ7e7KL7C6syOHgYRcCi/SYh4d3xksXqAceCzFs7I5LNy
+ jBiidpBz
+ SJfeXrn22TKeNQHjJL8tnSJw9bQ1icD9wx6XKnBjmqtgLjlmMcR0x67GAf2vK04d3C9KfMMaWaiw+PqDVwF4E3BiByflXPbDPkxrAGFQUBisNsqoCxE87KpvVUQfIJVzMhda4vRxF3pIcdtU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,461 +126,562 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch simplifies the zswap_pool's per-CPU acomp_ctx resource
-management. Similar to the per-CPU acomp_ctx itself, the per-CPU
-acomp_ctx's resources' (acomp, req, buffer) lifetime will also be from
-pool creation to pool deletion. These resources will persist through CPU
-hotplug operations. The zswap_cpu_comp_dead() teardown callback has been
-deleted from the call to
-cpuhp_setup_state_multi(CPUHP_MM_ZSWP_POOL_PREPARE). As a result, CPU
-offline hotplug operations will be no-ops as far as the acomp_ctx
-resources are concerned.
+Some versions of Intel IAA support dynamic compression where the hardware
+dynamically computes the Huffman tables and generates a Deflate header
+if the input size is no larger than 4KB. This patch will use IAA for
+dynamic compression if an appropriate IAA is present and the input size is
+not too big. If an IAA is not present, the algorithm will not
+be available. Otherwise, if the size of the input is greater than
+PAGE_SIZE, zlib is used to do the compression. If the algorithm is
+selected, IAA will be used for decompression. If the compressed stream
+contains a reference whose distance is greater than 4KB, hardware
+decompression will fail, and the decompression will be done with zlib.
 
-This commit refactors the code from zswap_cpu_comp_dead() into a
-new function acomp_ctx_dealloc() that preserves the IS_ERR_OR_NULL()
-checks on acomp_ctx, req and acomp from the existing mainline
-implementation of zswap_cpu_comp_dead(). acomp_ctx_dealloc() is called
-to clean up acomp_ctx resources from all these procedures:
+Intel IAA dynamic compression results in a compression ratio that is
+better than or equal to the currently supported "fixed" compression mode
+on the same data set. Compressing a data set of 4300 4KB pages sampled
+from SPEC CPU17 workloads produces a compression ratio of 3.14 for IAA
+dynamic compression and 2.69 for IAA fixed compression.
 
-1) zswap_cpu_comp_prepare() when an error is encountered,
-2) zswap_pool_create() when an error is encountered, and
-3) from zswap_pool_destroy().
+If an appropriate IAA exists, dynamic mode can be chosen as the IAA
+compression mode by selecting the corresponding algorithm.
 
-The main benefit of using the CPU hotplug multi state instance startup
-callback to allocate the acomp_ctx resources is that it prevents the
-cores from being offlined until the multi state instance addition call
-returns.
+For example, to use IAA dynamic mode in zswap:
 
-  From Documentation/core-api/cpu_hotplug.rst:
+      echo deflate-iaa-dynamic > /sys/module/zswap/parameters/compressor
 
-    "The node list add/remove operations and the callback invocations are
-     serialized against CPU hotplug operations."
+This patch also adds a deflate_generic_compress() fallback when dynamic
+mode is selected and the input size is over 4KB; along with stats
+support that will count these software fallback calls as
+"total_sw_comp_calls" in the driver's global_stats.
 
-Furthermore, zswap_[de]compress() cannot contend with
-zswap_cpu_comp_prepare() because:
+Furthermore, we define IAA_DYN_ALLOC_DESC_COMP_TIMEOUT as 2000 for
+dynamic mode compression on Granite Rapids.
 
-  - During pool creation/deletion, the pool is not in the zswap_pools
-    list.
-
-  - During CPU hot[un]plug, the CPU is not yet online, as Yosry pointed
-    out. zswap_cpu_comp_prepare() will be executed on a control CPU,
-    since CPUHP_MM_ZSWP_POOL_PREPARE is in the PREPARE section of "enum
-    cpuhp_state". Thanks Yosry for sharing this observation!
-
-  In both these cases, any recursions into zswap reclaim from
-  zswap_cpu_comp_prepare() will be handled by the old pool.
-
-The above two observations enable the following simplifications:
-
- 1) zswap_cpu_comp_prepare(): CPU cannot be offlined. Reclaim cannot use
-    the pool. Considerations for mutex init/locking and handling
-    subsequent CPU hotplug online-offlines:
-
-    Should we lock the mutex of current CPU's acomp_ctx from start to
-    end? It doesn't seem like this is required. The CPU hotplug
-    operations acquire a "cpuhp_state_mutex" before proceeding, hence
-    they are serialized against CPU hotplug operations.
-
-    If the process gets migrated while zswap_cpu_comp_prepare() is
-    running, it will complete on the new CPU. In case of failures, we
-    pass the acomp_ctx pointer obtained at the start of
-    zswap_cpu_comp_prepare() to acomp_ctx_dealloc(), which again, can
-    only undergo migration. There appear to be no contention scenarios
-    that might cause inconsistent values of acomp_ctx's members. Hence,
-    it seems there is no need for mutex_lock(&acomp_ctx->mutex) in
-    zswap_cpu_comp_prepare().
-
-    Since the pool is not yet on zswap_pools list, we don't need to
-    initialize the per-CPU acomp_ctx mutex in zswap_pool_create(). This
-    has been restored to occur in zswap_cpu_comp_prepare().
-
-    zswap_cpu_comp_prepare() checks upfront if acomp_ctx->acomp is
-    valid. If so, it returns success. This should handle any CPU
-    hotplug online-offline transitions after pool creation is done.
-
- 2) CPU offline vis-a-vis zswap ops: Let's suppose the process is
-    migrated to another CPU before the current CPU is dysfunctional. If
-    zswap_[de]compress() holds the acomp_ctx->mutex lock of the offlined
-    CPU, that mutex will be released once it completes on the new
-    CPU. Since there is no teardown callback, there is no possibility of
-    UAF.
-
- 3) Pool creation/deletion and process migration to another CPU:
-
-    - During pool creation/deletion, the pool is not in the zswap_pools
-      list. Hence it cannot contend with zswap ops on that CPU. However,
-      the process can get migrated.
-
-      Pool creation --> zswap_cpu_comp_prepare()
-                                --> process migrated:
-                                    * CPU offline: no-op.
-                                    * zswap_cpu_comp_prepare() continues
-                                      to run on the new CPU to finish
-                                      allocating acomp_ctx resources for
-                                      the offlined CPU.
-
-      Pool deletion --> acomp_ctx_dealloc()
-                                --> process migrated:
-                                    * CPU offline: no-op.
-                                    * acomp_ctx_dealloc() continues
-                                      to run on the new CPU to finish
-                                      de-allocating acomp_ctx resources
-                                      for the offlined CPU.
-
- 4) Pool deletion vis-a-vis CPU onlining:
-    To prevent possibility of race conditions between
-    acomp_ctx_dealloc() freeing the acomp_ctx resources and the initial
-    check for a valid acomp_ctx->acomp in zswap_cpu_comp_prepare(), we
-    need to delete the multi state instance right after it is added, in
-    zswap_pool_create().
-
- Summary of changes based on the above:
- --------------------------------------
- 1) Zero-initialization of pool->acomp_ctx in zswap_pool_create() to
-    simplify and share common code for different error handling/cleanup
-    related to the acomp_ctx.
-
- 2) Remove the node list instance right after node list add function
-    call in zswap_pool_create(). This prevents race conditions between
-    CPU onlining after initial pool creation, and acomp_ctx_dealloc()
-    freeing the acomp_ctx resources.
-
- 3) zswap_pool_destroy() will call acomp_ctx_dealloc() to de-allocate
-    the per-CPU acomp_ctx resources.
-
- 4) Changes to zswap_cpu_comp_prepare():
-
-    a) Check if acomp_ctx->acomp is valid at the beginning and return,
-       because the acomp_ctx is already initialized.
-    b) Move the mutex_init to happen in this procedure, before it
-       returns.
-    c) All error conditions handled by calling acomp_ctx_dealloc().
-
- 5) New procedure acomp_ctx_dealloc() for common error/cleanup code.
-
- 6) No more multi state instance teardown callback. CPU offlining is a
-    no-op as far as acomp_ctx resources are concerned.
-
- 7) Delete acomp_ctx_get_cpu_lock()/acomp_ctx_put_unlock(). Directly
-    call mutex_lock(&acomp_ctx->mutex)/mutex_unlock(&acomp_ctx->mutex)
-    in zswap_[de]compress().
-
-The per-CPU memory cost of not deleting the acomp_ctx resources upon CPU
-offlining, and only deleting them when the pool is destroyed, is as
-follows, on x86_64:
-
-    IAA with 8 dst buffers for batching:    64.34 KB
-    Software compressors with 1 dst buffer:  8.28 KB
-
+Signed-off-by: Andre Glover <andre.glover@linux.intel.com>
 Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
 ---
- mm/zswap.c | 194 +++++++++++++++++++++++++----------------------------
- 1 file changed, 93 insertions(+), 101 deletions(-)
+ .../driver-api/crypto/iaa/iaa-crypto.rst      | 21 ++++
+ crypto/testmgr.c                              | 10 ++
+ crypto/testmgr.h                              | 74 ++++++++++++++
+ drivers/crypto/intel/iaa/Makefile             |  2 +-
+ drivers/crypto/intel/iaa/iaa_crypto.h         |  5 +
+ .../intel/iaa/iaa_crypto_comp_dynamic.c       | 22 +++++
+ drivers/crypto/intel/iaa/iaa_crypto_main.c    | 98 +++++++++++++++++--
+ drivers/crypto/intel/iaa/iaa_crypto_stats.c   |  8 ++
+ drivers/crypto/intel/iaa/iaa_crypto_stats.h   |  2 +
+ include/linux/iaa_comp.h                      |  5 +-
+ 10 files changed, 236 insertions(+), 11 deletions(-)
+ create mode 100644 drivers/crypto/intel/iaa/iaa_crypto_comp_dynamic.c
 
-diff --git a/mm/zswap.c b/mm/zswap.c
-index c1af782e54ec..27665eaa3f89 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -242,6 +242,30 @@ static inline struct xarray *swap_zswap_tree(swp_entry_t swp)
- **********************************/
- static void __zswap_pool_empty(struct percpu_ref *ref);
+diff --git a/Documentation/driver-api/crypto/iaa/iaa-crypto.rst b/Documentation/driver-api/crypto/iaa/iaa-crypto.rst
+index 81a7dbd15f8b..e841a33564db 100644
+--- a/Documentation/driver-api/crypto/iaa/iaa-crypto.rst
++++ b/Documentation/driver-api/crypto/iaa/iaa-crypto.rst
+@@ -33,6 +33,8 @@ compresses and decompresses.
+ Currently, there is only one compression modes available, 'fixed'
+ mode.
  
-+/*
-+ * The per-cpu pool->acomp_ctx is zero-initialized on allocation. This makes
-+ * it easy for different error conditions/cleanup related to the acomp_ctx
-+ * to be handled by acomp_ctx_dealloc():
-+ * - Errors during zswap_cpu_comp_prepare().
-+ * - Partial success/error of cpuhp_state_add_instance() call in
-+ *   zswap_pool_create(). Only some cores could have executed
-+ *   zswap_cpu_comp_prepare(), not others.
-+ * - Cleanup acomp_ctx resources on all cores in zswap_pool_destroy().
-+ */
-+static void acomp_ctx_dealloc(struct crypto_acomp_ctx *acomp_ctx)
++'dynamic' mode is available on certain generations of IAA hardware.
++
+ The 'fixed' compression mode implements the compression scheme
+ specified by RFC 1951 and is given the crypto algorithm name
+ 'deflate-iaa'.  (Because the IAA hardware has a 4k history-window
+@@ -43,6 +45,25 @@ the IAA fixed mode deflate algorithm is given its own algorithm name
+ rather than simply 'deflate').
+ 
+ 
++The 'dynamic' compression mode implements a compression scheme where
++the IAA hardware will internally do one pass through the data, compute the
++Huffman tables and generate a Deflate header, then automatically do a
++second pass through the data, generating the final compressed output. IAA
++dynamic compression can be used if an appropriate IAA is present and the
++input size is not too big.  If an appropriate IAA is not present, the
++algorithm will not be available. Otherwise, if the size of the input is too
++big, zlib is used to do the compression. If the algorithm is selected,
++IAA will be used for decompression. If the compressed stream contains a
++reference whose distance is greater than 4KB, hardware decompression will
++fail, and the decompression will be done with zlib. If an appropriate IAA
++exists, 'dynamic' compression, it is implemented by the
++'deflate-iaa-dynamic' crypto algorithm.
++
++A zswap device can select the IAA 'dynamic' mode represented by
++selecting the 'deflate-iaa-dynamic' crypto compression algorithm::
++
++  # echo deflate-iaa-dynamic> /sys/module/zswap/parameters/compressor
++
+ Config options and other setup
+ ==============================
+ 
+diff --git a/crypto/testmgr.c b/crypto/testmgr.c
+index ee33ba21ae2b..d0f271ea1201 100644
+--- a/crypto/testmgr.c
++++ b/crypto/testmgr.c
+@@ -4665,6 +4665,16 @@ static const struct alg_test_desc alg_test_descs[] = {
+ 				.decomp = __VECS(deflate_decomp_tv_template)
+ 			}
+ 		}
++	}, {
++		.alg = "deflate-iaa-dynamic",
++		.test = alg_test_comp,
++		.fips_allowed = 1,
++		.suite = {
++			.comp = {
++				.comp = __VECS(deflate_iaa_dynamic_comp_tv_template),
++				.decomp = __VECS(deflate_iaa_dynamic_decomp_tv_template)
++			}
++		}
+ 	}, {
+ 		.alg = "dh",
+ 		.test = alg_test_kpp,
+diff --git a/crypto/testmgr.h b/crypto/testmgr.h
+index 32d099ac9e73..42db2399013e 100644
+--- a/crypto/testmgr.h
++++ b/crypto/testmgr.h
+@@ -34575,6 +34575,80 @@ static const struct comp_testvec deflate_decomp_tv_template[] = {
+ 	},
+ };
+ 
++static const struct comp_testvec deflate_iaa_dynamic_comp_tv_template[] = {
++	{
++		.inlen	= 70,
++		.outlen	= 46,
++		.input	= "Join us now and share the software "
++			"Join us now and share the software ",
++		.output = "\x85\xca\xc1\x09\x00\x20\x08\x05"
++			  "\xd0\x55\xfe\x3c\x6e\x21\x64\xd8"
++			  "\x45\x21\x0d\xd7\xb7\x26\xe8\xf8"
++			  "\xe0\x91\x2f\xc3\x09\x98\x17\xd8"
++			  "\x06\x42\x79\x0b\x52\x05\xe1\x33"
++			  "\xeb\x81\x3e\xe5\xa2\x01",
++	}, {
++		.inlen	= 191,
++		.outlen	= 121,
++		.input	= "This document describes a compression method based on the DEFLATE"
++			"compression algorithm.  This document defines the application of "
++			"the DEFLATE algorithm to the IP Payload Compression Protocol.",
++		.output = "\x5d\x8d\xc1\x0d\xc2\x30\x10\x04"
++			  "\x5b\xd9\x0a\xd2\x03\x82\x20\x21"
++			  "\xf1\xf0\x23\x0d\x5c\xec\x0b\xb6"
++			  "\x64\xfb\x2c\xdf\xf1\xa0\x7b\x12"
++			  "\x3e\x58\x79\xae\x76\x67\x76\x89"
++			  "\x49\x11\xc4\xbf\x0b\x57\x43\x60"
++			  "\xf5\x3d\xad\xac\x20\x78\x29\xad"
++			  "\xb3\x6a\x92\x8a\xc2\x16\x25\x60"
++			  "\x25\xe5\x80\x3d\x5b\x64\xdc\xe6"
++			  "\xfb\xf3\xb2\xcc\xe3\x8c\xf2\x4b"
++			  "\x7a\xb2\x58\x26\xe0\x2c\xde\x52"
++			  "\xdd\xb5\x07\x48\xad\xe5\xe4\xc9"
++			  "\x0e\x42\xb6\xd1\xf5\x17\xc0\xe4"
++			  "\x57\x3c\x1c\x1c\x7d\xb2\x50\xc0"
++			  "\x75\x38\x72\x5d\x4c\xbc\xe4\xe9"
++			  "\x0b",
++	},
++};
++
++static const struct comp_testvec deflate_iaa_dynamic_decomp_tv_template[] = {
++	{
++		.inlen	= 121,
++		.outlen	= 191,
++		.input	= "\x5d\x8d\xc1\x0d\xc2\x30\x10\x04"
++			  "\x5b\xd9\x0a\xd2\x03\x82\x20\x21"
++			  "\xf1\xf0\x23\x0d\x5c\xec\x0b\xb6"
++			  "\x64\xfb\x2c\xdf\xf1\xa0\x7b\x12"
++			  "\x3e\x58\x79\xae\x76\x67\x76\x89"
++			  "\x49\x11\xc4\xbf\x0b\x57\x43\x60"
++			  "\xf5\x3d\xad\xac\x20\x78\x29\xad"
++			  "\xb3\x6a\x92\x8a\xc2\x16\x25\x60"
++			  "\x25\xe5\x80\x3d\x5b\x64\xdc\xe6"
++			  "\xfb\xf3\xb2\xcc\xe3\x8c\xf2\x4b"
++			  "\x7a\xb2\x58\x26\xe0\x2c\xde\x52"
++			  "\xdd\xb5\x07\x48\xad\xe5\xe4\xc9"
++			  "\x0e\x42\xb6\xd1\xf5\x17\xc0\xe4"
++			  "\x57\x3c\x1c\x1c\x7d\xb2\x50\xc0"
++			  "\x75\x38\x72\x5d\x4c\xbc\xe4\xe9"
++			  "\x0b",
++		.output	= "This document describes a compression method based on the DEFLATE"
++			"compression algorithm.  This document defines the application of "
++			"the DEFLATE algorithm to the IP Payload Compression Protocol.",
++	}, {
++		.inlen	= 46,
++		.outlen	= 70,
++		.input	= "\x85\xca\xc1\x09\x00\x20\x08\x05"
++			  "\xd0\x55\xfe\x3c\x6e\x21\x64\xd8"
++			  "\x45\x21\x0d\xd7\xb7\x26\xe8\xf8"
++			  "\xe0\x91\x2f\xc3\x09\x98\x17\xd8"
++			  "\x06\x42\x79\x0b\x52\x05\xe1\x33"
++			  "\xeb\x81\x3e\xe5\xa2\x01",
++		.output	= "Join us now and share the software "
++			"Join us now and share the software ",
++	},
++};
++
+ /*
+  * LZO test vectors (null-terminated strings).
+  */
+diff --git a/drivers/crypto/intel/iaa/Makefile b/drivers/crypto/intel/iaa/Makefile
+index ebfa1a425f80..96f22cd39924 100644
+--- a/drivers/crypto/intel/iaa/Makefile
++++ b/drivers/crypto/intel/iaa/Makefile
+@@ -7,6 +7,6 @@ ccflags-y += -I $(srctree)/drivers/dma/idxd -DDEFAULT_SYMBOL_NAMESPACE='"CRYPTO_
+ 
+ obj-$(CONFIG_CRYPTO_DEV_IAA_CRYPTO) := iaa_crypto.o
+ 
+-iaa_crypto-y := iaa_crypto_main.o iaa_crypto_comp_fixed.o
++iaa_crypto-y := iaa_crypto_main.o iaa_crypto_comp_fixed.o iaa_crypto_comp_dynamic.o
+ 
+ iaa_crypto-$(CONFIG_CRYPTO_DEV_IAA_CRYPTO_STATS) += iaa_crypto_stats.o
+diff --git a/drivers/crypto/intel/iaa/iaa_crypto.h b/drivers/crypto/intel/iaa/iaa_crypto.h
+index db1e50574662..5a8dec3be9fa 100644
+--- a/drivers/crypto/intel/iaa/iaa_crypto.h
++++ b/drivers/crypto/intel/iaa/iaa_crypto.h
+@@ -19,12 +19,15 @@
+ 
+ #define IAA_COMP_FLUSH_OUTPUT		BIT(1)
+ #define IAA_COMP_APPEND_EOB		BIT(2)
++#define IAA_COMP_GEN_HDR_1_PASS		(BIT(12) | BIT(13))
+ 
+ #define IAA_COMPLETION_TIMEOUT		1000000
+ 
+ #define IAA_ALLOC_DESC_COMP_TIMEOUT	   1000
+ #define IAA_ALLOC_DESC_DECOMP_TIMEOUT	    500
+ 
++#define IAA_DYN_ALLOC_DESC_COMP_TIMEOUT	   2000
++
+ #define IAA_ANALYTICS_ERROR		0x0a
+ #define IAA_ERROR_DECOMP_BUF_OVERFLOW	0x0b
+ #define IAA_ERROR_COMP_BUF_OVERFLOW	0x19
+@@ -134,6 +137,8 @@ struct aecs_comp_table_record {
+ 
+ int iaa_aecs_init_fixed(void);
+ void iaa_aecs_cleanup_fixed(void);
++int iaa_aecs_init_dynamic(void);
++void iaa_aecs_cleanup_dynamic(void);
+ 
+ typedef int (*iaa_dev_comp_init_fn_t) (struct iaa_device_compression_mode *mode);
+ typedef int (*iaa_dev_comp_free_fn_t) (struct iaa_device_compression_mode *mode);
+diff --git a/drivers/crypto/intel/iaa/iaa_crypto_comp_dynamic.c b/drivers/crypto/intel/iaa/iaa_crypto_comp_dynamic.c
+new file mode 100644
+index 000000000000..3a93d7913443
+--- /dev/null
++++ b/drivers/crypto/intel/iaa/iaa_crypto_comp_dynamic.c
+@@ -0,0 +1,22 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright(c) 2023 Intel Corporation. All rights rsvd. */
++
++#include "idxd.h"
++#include "iaa_crypto.h"
++
++int iaa_aecs_init_dynamic(void)
 +{
-+	if (IS_ERR_OR_NULL(acomp_ctx))
-+		return;
++	int ret;
 +
-+	if (!IS_ERR_OR_NULL(acomp_ctx->req))
-+		acomp_request_free(acomp_ctx->req);
++	ret = add_iaa_compression_mode("dynamic", NULL, 0, NULL, 0, NULL, NULL);
 +
-+	if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
-+		crypto_free_acomp(acomp_ctx->acomp);
++	if (!ret)
++		pr_debug("IAA dynamic compression mode initialized\n");
 +
-+	kfree(acomp_ctx->buffer);
++	return ret;
 +}
 +
- static struct zswap_pool *zswap_pool_create(char *compressor)
- {
- 	struct zswap_pool *pool;
-@@ -263,19 +287,43 @@ static struct zswap_pool *zswap_pool_create(char *compressor)
++void iaa_aecs_cleanup_dynamic(void)
++{
++	remove_iaa_compression_mode("dynamic");
++}
+diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
+index 0669ae155e90..cbe3a2457253 100644
+--- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
++++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
+@@ -102,10 +102,12 @@ DEFINE_MUTEX(first_wq_found_lock);
  
- 	strscpy(pool->tfm_name, compressor, sizeof(pool->tfm_name));
+ const char *iaa_compression_mode_names[IAA_COMP_MODES_MAX] = {
+ 	"fixed",
++	"dynamic",
+ };
  
--	pool->acomp_ctx = alloc_percpu(*pool->acomp_ctx);
-+	/* Many things rely on the zero-initialization. */
-+	pool->acomp_ctx = alloc_percpu_gfp(*pool->acomp_ctx,
-+					   GFP_KERNEL | __GFP_ZERO);
- 	if (!pool->acomp_ctx) {
- 		pr_err("percpu alloc failed\n");
- 		goto error;
- 	}
+ const char *iaa_compression_alg_names[IAA_COMP_MODES_MAX] = {
+ 	"deflate-iaa",
++	"deflate-iaa-dynamic",
+ };
  
--	for_each_possible_cpu(cpu)
--		mutex_init(&per_cpu_ptr(pool->acomp_ctx, cpu)->mutex);
--
-+	/*
-+	 * This is serialized against CPU hotplug operations. Hence, cores
-+	 * cannot be offlined until this finishes.
-+	 * In case of errors, we need to goto "ref_fail" instead of "error"
-+	 * because there is no teardown callback registered anymore, for
-+	 * cpuhp_state_add_instance() to de-allocate resources as it rolls back
-+	 * state on cores before the CPU on which error was encountered.
-+	 */
- 	ret = cpuhp_state_add_instance(CPUHP_MM_ZSWP_POOL_PREPARE,
- 				       &pool->node);
-+
-+	/*
-+	 * We only needed the multi state instance add operation to invoke the
-+	 * startup callback for all cores without cores getting offlined. Since
-+	 * the acomp_ctx resources will now only be de-allocated when the pool
-+	 * is destroyed, we can safely remove the multi state instance. This
-+	 * minimizes (but does not eliminate) the possibility of
-+	 * zswap_cpu_comp_prepare() being invoked again due to a CPU
-+	 * offline-online transition. Removing the instance also prevents race
-+	 * conditions between CPU onlining after initial pool creation, and
-+	 * acomp_ctx_dealloc() freeing the acomp_ctx resources.
-+	 * Note that we delete the instance before checking the error status of
-+	 * the node list add operation because we want the instance removal even
-+	 * in case of errors in the former.
-+	 */
-+	cpuhp_state_remove_instance(CPUHP_MM_ZSWP_POOL_PREPARE, &pool->node);
-+
- 	if (ret)
--		goto error;
-+		goto ref_fail;
- 
- 	/* being the current pool takes 1 ref; this func expects the
- 	 * caller to always add the new pool as the current pool
-@@ -291,7 +339,8 @@ static struct zswap_pool *zswap_pool_create(char *compressor)
- 	return pool;
- 
- ref_fail:
--	cpuhp_state_remove_instance(CPUHP_MM_ZSWP_POOL_PREPARE, &pool->node);
-+	for_each_possible_cpu(cpu)
-+		acomp_ctx_dealloc(per_cpu_ptr(pool->acomp_ctx, cpu));
- error:
- 	if (pool->acomp_ctx)
- 		free_percpu(pool->acomp_ctx);
-@@ -322,9 +371,13 @@ static struct zswap_pool *__zswap_pool_create_fallback(void)
- 
- static void zswap_pool_destroy(struct zswap_pool *pool)
- {
-+	int cpu;
-+
- 	zswap_pool_debug("destroying", pool);
- 
--	cpuhp_state_remove_instance(CPUHP_MM_ZSWP_POOL_PREPARE, &pool->node);
-+	for_each_possible_cpu(cpu)
-+		acomp_ctx_dealloc(per_cpu_ptr(pool->acomp_ctx, cpu));
-+
- 	free_percpu(pool->acomp_ctx);
- 
- 	zs_destroy_pool(pool->zs_pool);
-@@ -736,39 +789,39 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
- {
- 	struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
- 	struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool->acomp_ctx, cpu);
--	struct crypto_acomp *acomp = NULL;
--	struct acomp_req *req = NULL;
--	u8 *buffer = NULL;
--	int ret;
-+	int ret = -ENOMEM;
- 
--	buffer = kmalloc_node(PAGE_SIZE, GFP_KERNEL, cpu_to_node(cpu));
--	if (!buffer) {
--		ret = -ENOMEM;
--		goto fail;
--	}
-+	/*
-+	 * The per-CPU pool->acomp_ctx is zero-initialized on allocation.
-+	 * Even though we delete the multi state instance right after successful
-+	 * addition of the instance in zswap_pool_create(), we cannot eliminate
-+	 * the possibility of the CPU going through offline-online transitions.
-+	 * If this does happen, we check if the acomp_ctx has already been
-+	 * initialized, and return.
-+	 */
-+	if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
-+		return 0;
- 
--	acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_node(cpu));
--	if (IS_ERR(acomp)) {
-+	acomp_ctx->buffer = kmalloc_node(PAGE_SIZE, GFP_KERNEL, cpu_to_node(cpu));
-+	if (!acomp_ctx->buffer)
-+		return ret;
-+
-+	acomp_ctx->acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_node(cpu));
-+	if (IS_ERR(acomp_ctx->acomp)) {
- 		pr_err("could not alloc crypto acomp %s : %ld\n",
--				pool->tfm_name, PTR_ERR(acomp));
--		ret = PTR_ERR(acomp);
-+				pool->tfm_name, PTR_ERR(acomp_ctx->acomp));
-+		ret = PTR_ERR(acomp_ctx->acomp);
- 		goto fail;
- 	}
-+	acomp_ctx->is_sleepable = acomp_is_async(acomp_ctx->acomp);
- 
--	req = acomp_request_alloc(acomp);
--	if (!req) {
-+	acomp_ctx->req = acomp_request_alloc(acomp_ctx->acomp);
-+	if (!acomp_ctx->req) {
- 		pr_err("could not alloc crypto acomp_request %s\n",
- 		       pool->tfm_name);
--		ret = -ENOMEM;
- 		goto fail;
- 	}
- 
--	/*
--	 * Only hold the mutex after completing allocations, otherwise we may
--	 * recurse into zswap through reclaim and attempt to hold the mutex
--	 * again resulting in a deadlock.
--	 */
--	mutex_lock(&acomp_ctx->mutex);
- 	crypto_init_wait(&acomp_ctx->wait);
- 
- 	/*
-@@ -776,81 +829,17 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
- 	 * crypto_wait_req(); if the backend of acomp is scomp, the callback
- 	 * won't be called, crypto_wait_req() will return without blocking.
- 	 */
--	acomp_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
-+	acomp_request_set_callback(acomp_ctx->req, CRYPTO_TFM_REQ_MAY_BACKLOG,
- 				   crypto_req_done, &acomp_ctx->wait);
- 
--	acomp_ctx->buffer = buffer;
--	acomp_ctx->acomp = acomp;
--	acomp_ctx->is_sleepable = acomp_is_async(acomp);
--	acomp_ctx->req = req;
--	mutex_unlock(&acomp_ctx->mutex);
-+	mutex_init(&acomp_ctx->mutex);
- 	return 0;
- 
- fail:
--	if (acomp)
--		crypto_free_acomp(acomp);
--	kfree(buffer);
-+	acomp_ctx_dealloc(acomp_ctx);
+ static struct iaa_compression_mode *iaa_compression_modes[IAA_COMP_MODES_MAX];
+@@ -1482,6 +1484,23 @@ static int deflate_generic_decompress(struct iaa_req *req)
  	return ret;
  }
  
--static int zswap_cpu_comp_dead(unsigned int cpu, struct hlist_node *node)
--{
--	struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
--	struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool->acomp_ctx, cpu);
--	struct acomp_req *req;
--	struct crypto_acomp *acomp;
--	u8 *buffer;
--
--	if (IS_ERR_OR_NULL(acomp_ctx))
--		return 0;
--
--	mutex_lock(&acomp_ctx->mutex);
--	req = acomp_ctx->req;
--	acomp = acomp_ctx->acomp;
--	buffer = acomp_ctx->buffer;
--	acomp_ctx->req = NULL;
--	acomp_ctx->acomp = NULL;
--	acomp_ctx->buffer = NULL;
--	mutex_unlock(&acomp_ctx->mutex);
--
--	/*
--	 * Do the actual freeing after releasing the mutex to avoid subtle
--	 * locking dependencies causing deadlocks.
--	 */
--	if (!IS_ERR_OR_NULL(req))
--		acomp_request_free(req);
--	if (!IS_ERR_OR_NULL(acomp))
--		crypto_free_acomp(acomp);
--	kfree(buffer);
--
--	return 0;
--}
--
--static struct crypto_acomp_ctx *acomp_ctx_get_cpu_lock(struct zswap_pool *pool)
--{
--	struct crypto_acomp_ctx *acomp_ctx;
--
--	for (;;) {
--		acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
--		mutex_lock(&acomp_ctx->mutex);
--		if (likely(acomp_ctx->req))
--			return acomp_ctx;
--		/*
--		 * It is possible that we were migrated to a different CPU after
--		 * getting the per-CPU ctx but before the mutex was acquired. If
--		 * the old CPU got offlined, zswap_cpu_comp_dead() could have
--		 * already freed ctx->req (among other things) and set it to
--		 * NULL. Just try again on the new CPU that we ended up on.
--		 */
--		mutex_unlock(&acomp_ctx->mutex);
--	}
--}
--
--static void acomp_ctx_put_unlock(struct crypto_acomp_ctx *acomp_ctx)
--{
--	mutex_unlock(&acomp_ctx->mutex);
--}
--
- static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 			   struct zswap_pool *pool)
- {
-@@ -863,7 +852,9 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 	u8 *dst;
- 	bool mapped = false;
- 
--	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
-+	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
-+	mutex_lock(&acomp_ctx->mutex);
++static int deflate_generic_compress(struct iaa_req *req)
++{
++	ACOMP_REQUEST_ON_STACK(fbreq, deflate_crypto_acomp);
++	int ret;
 +
- 	dst = acomp_ctx->buffer;
- 	sg_init_table(&input, 1);
- 	sg_set_page(&input, page, PAGE_SIZE, 0);
-@@ -927,7 +918,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 	else if (alloc_ret)
- 		zswap_reject_alloc_fail++;
++	acomp_request_set_callback(fbreq, 0, NULL, NULL);
++	acomp_request_set_params(fbreq, req->src, req->dst, req->slen,
++				 PAGE_SIZE);
++
++	ret = crypto_acomp_compress(fbreq);
++	req->dlen = fbreq->dlen;
++
++	update_total_sw_comp_calls();
++
++	return ret;
++}
++
+ static __always_inline void acomp_to_iaa(struct acomp_req *areq,
+ 					 struct iaa_req *req,
+ 					 struct iaa_compression_ctx *ctx)
+@@ -1808,9 +1827,13 @@ iaa_setup_compress_hw_desc(struct idxd_desc *idxd_desc,
+ 	desc->src1_size = slen;
+ 	desc->dst_addr = (u64)dst_addr;
+ 	desc->max_dst_size = dlen;
+-	desc->flags |= IDXD_OP_FLAG_RD_SRC2_AECS;
+-	desc->src2_addr = active_compression_mode->aecs_comp_table_dma_addr;
+-	desc->src2_size = sizeof(struct aecs_comp_table_record);
++	if (mode == IAA_MODE_DYNAMIC) {
++		desc->compr_flags |= IAA_COMP_GEN_HDR_1_PASS;
++	} else {
++		desc->flags |= IDXD_OP_FLAG_RD_SRC2_AECS;
++		desc->src2_addr = active_compression_mode->aecs_comp_table_dma_addr;
++		desc->src2_size = sizeof(struct aecs_comp_table_record);
++	}
+ 	desc->completion_addr = idxd_desc->compl_dma;
  
--	acomp_ctx_put_unlock(acomp_ctx);
-+	mutex_unlock(&acomp_ctx->mutex);
- 	return comp_ret == 0 && alloc_ret == 0;
+ 	return desc;
+@@ -2064,6 +2087,9 @@ static int iaa_comp_acompress(struct iaa_compression_ctx *ctx, struct iaa_req *r
+ 		return -EINVAL;
+ 	}
+ 
++	if (ctx->mode == IAA_MODE_DYNAMIC && req->slen > PAGE_SIZE)
++		return deflate_generic_compress(req);
++
+ 	cpu = get_cpu();
+ 	wq = comp_wq_table_next_wq(cpu);
+ 	put_cpu();
+@@ -2546,7 +2572,9 @@ static int iaa_comp_adecompress_batch(
+ static void compression_ctx_init(struct iaa_compression_ctx *ctx, enum iaa_mode mode)
+ {
+ 	ctx->mode = mode;
+-	ctx->alloc_comp_desc_timeout = IAA_ALLOC_DESC_COMP_TIMEOUT;
++	ctx->alloc_comp_desc_timeout = (mode == IAA_MODE_DYNAMIC ?
++					IAA_DYN_ALLOC_DESC_COMP_TIMEOUT :
++					IAA_ALLOC_DESC_COMP_TIMEOUT);
+ 	ctx->alloc_decomp_desc_timeout = IAA_ALLOC_DESC_DECOMP_TIMEOUT;
+ 	ctx->verify_compress = iaa_verify_compress;
+ 	ctx->async_mode = async_mode;
+@@ -2760,6 +2788,30 @@ static struct acomp_alg iaa_acomp_fixed_deflate = {
+ 	}
+ };
+ 
++static int iaa_comp_init_dynamic(struct crypto_acomp *acomp_tfm)
++{
++	struct crypto_tfm *tfm = crypto_acomp_tfm(acomp_tfm);
++	struct iaa_compression_ctx *ctx = crypto_tfm_ctx(tfm);
++
++	ctx = iaa_ctx[IAA_MODE_DYNAMIC];
++
++	return 0;
++}
++
++static struct acomp_alg iaa_acomp_dynamic_deflate = {
++	.init			= iaa_comp_init_dynamic,
++	.compress		= iaa_comp_acompress_main,
++	.decompress		= iaa_comp_adecompress_main,
++	.base			= {
++		.cra_name		= "deflate",
++		.cra_driver_name	= "deflate-iaa-dynamic",
++		.cra_flags		= CRYPTO_ALG_ASYNC,
++		.cra_ctxsize		= sizeof(struct iaa_compression_ctx),
++		.cra_module		= THIS_MODULE,
++		.cra_priority		= IAA_ALG_PRIORITY + 1,
++	}
++};
++
+ /*******************************************
+  * Implement idxd_device_driver interfaces.
+  *******************************************/
+@@ -2779,7 +2831,7 @@ static void iaa_unregister_compression_device(void)
+ 	num_iaa_modes_registered = 0;
  }
  
-@@ -939,7 +930,8 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 	int decomp_ret = 0, dlen = PAGE_SIZE;
- 	u8 *src, *obj;
+-static int iaa_register_compression_device(void)
++static int iaa_register_compression_device(struct idxd_device *idxd)
+ {
+ 	struct iaa_compression_mode *mode;
+ 	int i, idx;
+@@ -2788,6 +2840,13 @@ static int iaa_register_compression_device(void)
+ 		iaa_mode_registered[i] = false;
+ 		mode = find_iaa_compression_mode(iaa_compression_mode_names[i], &idx);
+ 		if (mode) {
++			/* Header Generation Capability is required for the dynamic algorithm. */
++			if ((!strcmp(mode->name, "dynamic")) && !idxd->hw.iaa_cap.header_gen) {
++				if (num_iaa_modes_registered > 0)
++					--num_iaa_modes_registered;
++				continue;
++			}
++
+ 			iaa_ctx[i] = kmalloc(sizeof(struct iaa_compression_ctx), GFP_KERNEL);
+ 			if (!iaa_ctx[i])
+ 				goto err;
+@@ -2805,7 +2864,7 @@ static int iaa_register_compression_device(void)
+ 	return -ENODEV;
+ }
  
--	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
-+	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
-+	mutex_lock(&acomp_ctx->mutex);
- 	obj = zs_obj_read_begin(pool->zs_pool, entry->handle, acomp_ctx->buffer);
+-static int iaa_register_acomp_compression_device(void)
++static int iaa_register_acomp_compression_device(struct idxd_device *idxd)
+ {
+ 	int ret = -ENOMEM;
  
- 	/* zswap entries of length PAGE_SIZE are not compressed. */
-@@ -970,7 +962,7 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+@@ -2819,8 +2878,19 @@ static int iaa_register_acomp_compression_device(void)
+ 		goto err_fixed;
+ 	}
  
- read_done:
- 	zs_obj_read_end(pool->zs_pool, entry->handle, obj);
--	acomp_ctx_put_unlock(acomp_ctx);
-+	mutex_unlock(&acomp_ctx->mutex);
++	if (iaa_mode_registered[IAA_MODE_DYNAMIC]) {
++		ret = crypto_register_acomp(&iaa_acomp_dynamic_deflate);
++		if (ret) {
++			pr_err("deflate algorithm acomp dynamic registration failed (%d)\n", ret);
++			goto err_dynamic;
++		}
++	}
++
+ 	return 0;
  
- 	if (!decomp_ret && dlen == PAGE_SIZE)
- 		return true;
-@@ -1796,7 +1788,7 @@ static int zswap_setup(void)
- 	ret = cpuhp_setup_state_multi(CPUHP_MM_ZSWP_POOL_PREPARE,
- 				      "mm/zswap_pool:prepare",
- 				      zswap_cpu_comp_prepare,
--				      zswap_cpu_comp_dead);
-+				      NULL);
- 	if (ret)
- 		goto hp_fail;
++err_dynamic:
++	crypto_unregister_acomp(&iaa_acomp_fixed_deflate);
++
+ err_fixed:
+ 	if (!IS_ERR_OR_NULL(deflate_crypto_acomp)) {
+ 		crypto_free_acomp(deflate_crypto_acomp);
+@@ -2839,6 +2909,9 @@ static void iaa_unregister_acomp_compression_device(void)
+ 	if (iaa_mode_registered[IAA_MODE_FIXED])
+ 		crypto_unregister_acomp(&iaa_acomp_fixed_deflate);
  
++	if (iaa_mode_registered[IAA_MODE_DYNAMIC])
++		crypto_unregister_acomp(&iaa_acomp_dynamic_deflate);
++
+ 	if (!IS_ERR_OR_NULL(deflate_crypto_acomp)) {
+ 		crypto_free_acomp(deflate_crypto_acomp);
+ 		deflate_crypto_acomp = NULL;
+@@ -2906,13 +2979,13 @@ static int iaa_crypto_probe(struct idxd_dev *idxd_dev)
+ 	atomic_set(&iaa_crypto_enabled, 1);
+ 
+ 	if (first_wq) {
+-		ret = iaa_register_compression_device();
++		ret = iaa_register_compression_device(idxd);
+ 		if (ret != 0) {
+ 			dev_dbg(dev, "IAA compression device registration failed\n");
+ 			goto err_register;
+ 		}
+ 
+-		ret = iaa_register_acomp_compression_device();
++		ret = iaa_register_acomp_compression_device(idxd);
+ 		if (ret != 0) {
+ 			dev_dbg(dev, "IAA compression device acomp registration failed\n");
+ 			goto err_register;
+@@ -3063,6 +3136,12 @@ static int __init iaa_crypto_init_module(void)
+ 		goto err_aecs_init;
+ 	}
+ 
++	ret = iaa_aecs_init_dynamic();
++	if (ret < 0) {
++		pr_debug("IAA dynamic compression mode init failed\n");
++		goto err_dynamic;
++	}
++
+ 	ret = idxd_driver_register(&iaa_crypto_driver);
+ 	if (ret) {
+ 		pr_debug("IAA wq sub-driver registration failed\n");
+@@ -3164,6 +3243,8 @@ static int __init iaa_crypto_init_module(void)
+ err_g_comp_wqs_per_iaa_attr_create:
+ 	idxd_driver_unregister(&iaa_crypto_driver);
+ err_driver_reg:
++	iaa_aecs_cleanup_dynamic();
++err_dynamic:
+ 	iaa_aecs_cleanup_fixed();
+ err_aecs_init:
+ 
+@@ -3188,6 +3269,7 @@ static void __exit iaa_crypto_cleanup_module(void)
+ 	driver_remove_file(&iaa_crypto_driver.drv,
+ 			   &driver_attr_g_comp_wqs_per_iaa);
+ 	idxd_driver_unregister(&iaa_crypto_driver);
++	iaa_aecs_cleanup_dynamic();
+ 	iaa_aecs_cleanup_fixed();
+ 
+ 	pr_debug("cleaned up\n");
+diff --git a/drivers/crypto/intel/iaa/iaa_crypto_stats.c b/drivers/crypto/intel/iaa/iaa_crypto_stats.c
+index f5cc3d29ca19..42aae8a738ac 100644
+--- a/drivers/crypto/intel/iaa/iaa_crypto_stats.c
++++ b/drivers/crypto/intel/iaa/iaa_crypto_stats.c
+@@ -19,6 +19,7 @@
+ 
+ static atomic64_t total_comp_calls;
+ static atomic64_t total_decomp_calls;
++static atomic64_t total_sw_comp_calls;
+ static atomic64_t total_sw_decomp_calls;
+ static atomic64_t total_comp_bytes_out;
+ static atomic64_t total_decomp_bytes_in;
+@@ -43,6 +44,11 @@ void update_total_decomp_calls(void)
+ 	atomic64_inc(&total_decomp_calls);
+ }
+ 
++void update_total_sw_comp_calls(void)
++{
++	atomic64_inc(&total_sw_comp_calls);
++}
++
+ void update_total_sw_decomp_calls(void)
+ {
+ 	atomic64_inc(&total_sw_decomp_calls);
+@@ -174,6 +180,8 @@ static int global_stats_show(struct seq_file *m, void *v)
+ 		   atomic64_read(&total_comp_calls));
+ 	seq_printf(m, "  total_decomp_calls: %llu\n",
+ 		   atomic64_read(&total_decomp_calls));
++	seq_printf(m, "  total_sw_comp_calls: %llu\n",
++		   atomic64_read(&total_sw_comp_calls));
+ 	seq_printf(m, "  total_sw_decomp_calls: %llu\n",
+ 		   atomic64_read(&total_sw_decomp_calls));
+ 	seq_printf(m, "  total_comp_bytes_out: %llu\n",
+diff --git a/drivers/crypto/intel/iaa/iaa_crypto_stats.h b/drivers/crypto/intel/iaa/iaa_crypto_stats.h
+index 3787a5f507eb..6e0c6f9939bf 100644
+--- a/drivers/crypto/intel/iaa/iaa_crypto_stats.h
++++ b/drivers/crypto/intel/iaa/iaa_crypto_stats.h
+@@ -11,6 +11,7 @@ void	iaa_crypto_debugfs_cleanup(void);
+ void	update_total_comp_calls(void);
+ void	update_total_comp_bytes_out(int n);
+ void	update_total_decomp_calls(void);
++void	update_total_sw_comp_calls(void);
+ void	update_total_sw_decomp_calls(void);
+ void	update_total_decomp_bytes_in(int n);
+ void	update_completion_einval_errs(void);
+@@ -29,6 +30,7 @@ static inline void	iaa_crypto_debugfs_cleanup(void) {}
+ static inline void	update_total_comp_calls(void) {}
+ static inline void	update_total_comp_bytes_out(int n) {}
+ static inline void	update_total_decomp_calls(void) {}
++static inline void	update_total_sw_comp_calls(void) {}
+ static inline void	update_total_sw_decomp_calls(void) {}
+ static inline void	update_total_decomp_bytes_in(int n) {}
+ static inline void	update_completion_einval_errs(void) {}
+diff --git a/include/linux/iaa_comp.h b/include/linux/iaa_comp.h
+index 7b765760485c..ec28a9d9f2b4 100644
+--- a/include/linux/iaa_comp.h
++++ b/include/linux/iaa_comp.h
+@@ -12,7 +12,8 @@
+ 
+ enum iaa_mode {
+ 	IAA_MODE_FIXED = 0,
+-	IAA_MODE_NONE = 1,
++	IAA_MODE_DYNAMIC = 1,
++	IAA_MODE_NONE = 2,
+ };
+ 
+ struct iaa_req {
+@@ -56,7 +57,7 @@ extern int iaa_comp_decompress_batch(
+ #else /* CONFIG_CRYPTO_DEV_IAA_CRYPTO */
+ 
+ enum iaa_mode {
+-	IAA_MODE_NONE = 1,
++	IAA_MODE_NONE = 2,
+ };
+ 
+ struct iaa_req {};
 -- 
 2.27.0
 
