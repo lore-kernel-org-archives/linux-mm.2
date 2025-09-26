@@ -4,111 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75250CAC5BB
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 19:54:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BD81CAC5BB
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 19:57:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBA8D8E000D; Fri, 26 Sep 2025 15:54:44 -0400 (EDT)
+	id BA9148E000E; Fri, 26 Sep 2025 15:57:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C64F68E0001; Fri, 26 Sep 2025 15:54:44 -0400 (EDT)
+	id B81008E0001; Fri, 26 Sep 2025 15:57:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B53BE8E000D; Fri, 26 Sep 2025 15:54:44 -0400 (EDT)
+	id A963A8E000E; Fri, 26 Sep 2025 15:57:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A1C7E8E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 15:54:44 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 52CFE1407B3
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 19:54:44 +0000 (UTC)
-X-FDA: 83932454088.05.48DBEE0
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5EC164000F
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 19:54:42 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=TBjfehUd;
-	spf=pass (imf04.hostedemail.com: domain of chenglongtang@google.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=chenglongtang@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9664B8E0001
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 15:57:47 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3C70811AC2A
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 19:57:47 +0000 (UTC)
+X-FDA: 83932461774.20.E5A1CAA
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 3DB8C1C0004
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 19:57:45 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=rivosinc.com header.s=google header.b=A6Qzr069;
+	spf=pass (imf21.hostedemail.com: domain of debug@rivosinc.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
+	dmarc=pass (policy=none) header.from=rivosinc.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758916482;
+	s=arc-20220608; t=1758916665;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U1S6qVc8zFJzoJotfzJqFzUNbTwzB+Ke9Kbshsqdjck=;
-	b=sHppHN3dzyKQZb/ClWnE5d+51mKUD9//Zx0c9AJCWPVAHdnFI1Qt7q5y8K/+UXvz+fFBnf
-	EfJhq0OQc9t2qa0Sp+zWHPXItWnL9yrYsqK6+PS4goqKnwxcy/gd18Vah0Y2+dlZYC5BEz
-	kO28pPKafejyH03dTrQl7gf8z7IIuyw=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=TBjfehUd;
-	spf=pass (imf04.hostedemail.com: domain of chenglongtang@google.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=chenglongtang@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758916482; a=rsa-sha256;
+	bh=zASiJDz4r3vYQO3vYDYkcyVx79ekhPk89WizJj5Iigg=;
+	b=PJrm2rmoWmgvXISD+DZvAULTG+LvWRgbL0nDm1ulpzC7Zu7qSxji8mVxouVLKfAUjUozjL
+	OYwEUh5GfJr11ipOXFsjiIaIF1rFqsymNcZ26Qvk4GPxvARCSija2Guv8azE1fKCAWTTgj
+	KeP2A4UranaAFNe6wxfYpOqWrlXqCWI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758916665; a=rsa-sha256;
 	cv=none;
-	b=uAXNo9X5kZGU1wVBeQduBU0FqlyDB1pMs3KKJ5KyRq9m7B6oYGAXAeGDzMTtn/9h9ZGEHr
-	/D2zmJvUPjfbMmyXfztjzaq34SUuZqg8ulsreEAE+mLT0FOYmkXzKlz7c6MUetLfUVZSnH
-	G1pDGsVK7IKhk5Ayr8ViICLNIVofy4I=
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-57dda094f6cso1681e87.0
-        for <linux-mm@kvack.org>; Fri, 26 Sep 2025 12:54:41 -0700 (PDT)
+	b=cajFPUH3RSEd9fXPPpQWZ4J/IIa2cW9Cn6oEpf6uQtaTe67tZNOpe5FLDOBqhf1XzcNUBD
+	4j8PjNj4E7wUbvjHvGFUU/1KQwvCdYXD58tnzbH9w55mRGQQmERQ6heo+8N1rOMr+/fPXR
+	EIHAcaOBUFcHwOkkCPSQ6U69L1k59CA=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=rivosinc.com header.s=google header.b=A6Qzr069;
+	spf=pass (imf21.hostedemail.com: domain of debug@rivosinc.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
+	dmarc=pass (policy=none) header.from=rivosinc.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-27c369f898fso29094305ad.3
+        for <linux-mm@kvack.org>; Fri, 26 Sep 2025 12:57:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758916481; x=1759521281; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=U1S6qVc8zFJzoJotfzJqFzUNbTwzB+Ke9Kbshsqdjck=;
-        b=TBjfehUdooS9vMltmUOFl/PrCf/jHqODgrIm7Hw37yv0o7I44Z8FjUvaZaDiMqV/PC
-         RYIrq0xTTPU2oaAm7xQ5/+8IJaMdD/LztttGVkIqXkyDbgQa8QrJnx0dSyLNRilBNn7o
-         HgDg+4nKC+ZqTfp9sDtcmR6CUa26JUzqTkdQ+Qz0heGhQXKV5KXVY9ocipG+B6rCbi8z
-         OavX0Tla6VLU7vT2gDSr7Xer91PzXC7LXQH8WfYUNkmLPyJFj0nEuD7oYRNvR3CjalYp
-         FqADOrJogXzsVZoWEkttW3eLPMHrfsQN3JN8KkcKng0dqt8DFz/PDSEYIGf474wmscdW
-         dZUA==
+        d=rivosinc.com; s=google; t=1758916664; x=1759521464; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zASiJDz4r3vYQO3vYDYkcyVx79ekhPk89WizJj5Iigg=;
+        b=A6Qzr0692vof7orptEazP5CycfcycYDU9kAjMOzY5YSZUC+RHBzJl+8uTkKfk/vgCK
+         KHv4Mi0e8PdM2KB7h9R9WP/FcxtkYByF3N2QoJr6FJeOAX8AGNtJaUN8XpMK1CAhzoii
+         lvMlnDsUS6lkIG1IUHEMCSEQmvufsp4weiHUxCmAGbJklgHUX+dazHIT/dI7D/JIxUjQ
+         3FefBbzWN+vv/J7P7JFe05s+R0Y21LX2tGQVxluimrFUgRQOytx2dp5df1x4iMg3Ano3
+         nTWtvXmyN2B5eVmJkD90Q6fBNNaoE0IuLy3Hc5Gri6E6f6Fimr0PScVmz9qkR+ROlAYa
+         oTtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758916481; x=1759521281;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=U1S6qVc8zFJzoJotfzJqFzUNbTwzB+Ke9Kbshsqdjck=;
-        b=KVQITRS0foIbup9iOqde5AedaQQ/XlvsT0HmJuNJhCDXmvPHpOFm1wub5lmuP8VWqN
-         Eycx3mNWgTIGtBa+QTRKT3UgS2lFqEMnWqzGj0w8u5Vjz0rr1idP8A3xTZ0ctvkY64rb
-         k8CNd9p5g0mUamQUHAH78HuDeIy6BqIgy5brFJ1X3BH1dH8554QDj5juuqgzfVHRUiKg
-         EcLFpYfmX3Y7dN799CWV9Nrq+RBmgG79aWEQcK2YhJVIkDlpheuDWj2ISQD+CnHN2e2g
-         59GFCu1kPevGm0//Qazk1mzAwRztfBp3L7OpTIPP1bB+2VxrJnosnyHDcjmaEW7R0HNK
-         jx8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV/jjsk68UkfLbVpjnzOT3MNoIkpS0XzBunxwmqgyKcieQalwfZYdeQQ7f+Wl9cZuVtcNGEDOFQNw==@kvack.org
-X-Gm-Message-State: AOJu0Yw9Gyc1Du9y0CjUbZwvSD9IIXqpZCl5j4Zm8u4v8x8Fv7Vz3sHw
-	xm0iJkiJPBBboE1LA19ZCNbkyqfcrrzPaawXcbqGGnKHmcr3il8aVoO21QM0aWT7tbxQFRKvrGe
-	UqVrrTRoJRbOh0RR66EhJDdOZ6jepboiZyyk3JRE1jCOBFyVt2g4sn50OVcHqDualw+4=
-X-Gm-Gg: ASbGncvDjBDJaBE7wVm07zEjTLeA5zR11jxr/2z+JbgyrHBg0ZQOq8S0VZA6I/mcP26
-	CqSxR2nM8yoE/45w4S7RzYPe54znbxO4JGE7DEN9u55gufuySav/SuQjKXQnQGvuWoHPWK2ZqKJ
-	NuxtAeNAdHIPyyg7K31yMSw+rCoyMOHSu9DYH+tcNC5uzuEcl+ZzNxv1Iot4ZX4eaxFP11kbW2c
-	wSz1SrLDJZ5+AYZofXCEZ61
-X-Google-Smtp-Source: AGHT+IF9p/Vk9hBagqlH0ejW1INRFKq9VFCCHdEBxMHhLNqOc29Rt7OYge24foh+THkGfa5X+tEs//zmFLcC0ULmHb8=
-X-Received: by 2002:a05:6512:4c7:b0:55f:6aa7:c20 with SMTP id
- 2adb3069b0e04-584326d10c5mr428290e87.2.1758916480268; Fri, 26 Sep 2025
- 12:54:40 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1758916664; x=1759521464;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zASiJDz4r3vYQO3vYDYkcyVx79ekhPk89WizJj5Iigg=;
+        b=YNBhRGmRuI7CqoWvx8uiHVtlcz2s43Olrvf6SutXlz2GPM44F9tAOZuIT9m1jYonKe
+         3oiXoxIuDj4zatj/2qzvImkmRT/5x8vkr3chUo4V4MM32axfEtLrncp4IxBb6nv9mwBH
+         9djZkPe/GloUe/L2IWZWbK61maIJLtFAxCLkeb0nTJ2HcUV5Z5Y+6XeKVqSPqWC6CVVI
+         mzVnPJk3ReJbDIAexmtbAGjdAHtrxwyKZLwLUXqA6dG9Fl5xW1M4eYuHGOP/xTps1OjR
+         6+wwsbWheocWvBPcE0aqfCo//XauphcidaSXkSvsGat+PKlaReuOaAIdVWeWxiSSzbnK
+         pQeg==
+X-Forwarded-Encrypted: i=1; AJvYcCVYkKSyqKm+yMa/7mAqqY4nNmO/oUWJIRJ/ydCBwqllTgFryb+47jGNs24RcGRZyAXs9JcVfU58PQ==@kvack.org
+X-Gm-Message-State: AOJu0YztBod3sFdaEFlrWwpkcF7puRyMBYi+ezg7v/Q0qzTsH55SGlFb
+	ui1RMb+k/uhPEzsxSZSHY7DBvQFWQ3V8v55SUDneIcv5DSyb8xKpKiBdlXxHCcnJwGU=
+X-Gm-Gg: ASbGncuy5AQiBjLbdNljo7yY1o9q75QgYgKbJaBYOVOrs5kgts/amEKJVcQLIuamNQn
+	ZfQ1t4EJB7DsGyBHexPyjck+x8L+R0/7OiRLTJ7v3g1l2yhlnI8NrfoSf0aiPFflpZ+9hUxw0BZ
+	jlX9mAe2g+aAoqFauExJvqM1Z7hof4JUKifWqd2AQVIROHJv8LiBbS5AI5ib+I6X/Q0DCoCMxg3
+	zNK1xkeRW9iKjib8GFAuAYGUSBsDJx4VjOwLZQ4dksjvMcIUP5fmBeWqKM5h9w0Tcta8EeJjOM8
+	UMcg7ANT6rRu4JxCswf2Sc1n/sZuLobDn5sXbJTlyhqYSvQsrrXZYOvpHG3uydBKPvb8BWAucA/
+	0idh7v0iZE8/qKpPriZFQrzqCxbl8jk6HHpuLiK8h3lADppvSsvztew==
+X-Google-Smtp-Source: AGHT+IHlUtnIvbNYTp+NBwFL5kAnFfogcOgIaJtDWQxwNZ7YmExERR63uIq8FMCY+Zw0lEPHKpWKJg==
+X-Received: by 2002:a17:903:28c:b0:26f:f489:bba6 with SMTP id d9443c01a7336-27ed4a5ec62mr76915745ad.50.1758916664000;
+        Fri, 26 Sep 2025 12:57:44 -0700 (PDT)
+Received: from debug.ba.rivosinc.com ([64.71.180.162])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-27ed66d43ecsm62938985ad.24.2025.09.26.12.57.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Sep 2025 12:57:43 -0700 (PDT)
+Date: Fri, 26 Sep 2025 12:57:40 -0700
+From: Deepak Gupta <debug@rivosinc.com>
+To: Charles Mirabile <cmirabil@redhat.com>
+Cc: pjw@kernel.org, Liam.Howlett@oracle.com, a.hindborg@kernel.org,
+	akpm@linux-foundation.org, alex.gaynor@gmail.com,
+	alexghiti@rivosinc.com, aliceryhl@google.com,
+	alistair.francis@wdc.com, andybnac@gmail.com, aou@eecs.berkeley.edu,
+	arnd@arndb.de, atishp@rivosinc.com, bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com, bp@alien8.de, brauner@kernel.org,
+	broonie@kernel.org, charlie@rivosinc.com, cleger@rivosinc.com,
+	conor+dt@kernel.org, conor@kernel.org, corbet@lwn.net,
+	dave.hansen@linux.intel.com, david@redhat.com,
+	devicetree@vger.kernel.org, ebiederm@xmission.com,
+	evan@rivosinc.com, gary@garyguo.net, hpa@zytor.com,
+	jannh@google.com, jim.shu@sifive.com, kees@kernel.org,
+	kito.cheng@sifive.com, krzk+dt@kernel.org,
+	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org, lorenzo.stoakes@oracle.com,
+	lossin@kernel.org, mingo@redhat.com, ojeda@kernel.org,
+	oleg@redhat.com, palmer@dabbelt.com, paul.walmsley@sifive.com,
+	peterz@infradead.org, richard.henderson@linaro.org,
+	rick.p.edgecombe@intel.com, robh@kernel.org,
+	rust-for-linux@vger.kernel.org, samitolvanen@google.com,
+	shuah@kernel.org, tglx@linutronix.de, tmgross@umich.edu,
+	vbabka@suse.cz, x86@kernel.org, zong.li@sifive.com
+Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
+Message-ID: <aNbwNN_st4bxwdwx@debug.ba.rivosinc.com>
+References: <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org>
+ <20250926192919.349578-1-cmirabil@redhat.com>
 MIME-Version: 1.0
-References: <CAOdxtTYQye1Rtp-sG48Re+_ihD637NDXTG_V_uLkerg=m1Nbtw@mail.gmail.com>
-In-Reply-To: <CAOdxtTYQye1Rtp-sG48Re+_ihD637NDXTG_V_uLkerg=m1Nbtw@mail.gmail.com>
-From: Chenglong Tang <chenglongtang@google.com>
-Date: Fri, 26 Sep 2025 12:54:29 -0700
-X-Gm-Features: AS18NWAn31xRvapqJUiXH-hfN9tbWp6MkQfkrW8U3FsmNfI4-_A_-vBbYm2-64Q
-Message-ID: <CAOdxtTYKrMhjW9JiOCDBia+s=2tob1HF6yfAytYnajYsSoX5Kg@mail.gmail.com>
-Subject: Re: [REGRESSION] workqueue/writeback: Severe CPU hang due to kworker
- proliferation during I/O flush and cgroup cleanup
-To: stable@vger.kernel.org
-Cc: regressions@lists.linux.dev, tj@kernel.org, roman.gushchin@linux.dev, 
-	linux-mm@kvack.org, lakitu-dev@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: o1msp5fcupn18kmcse7xp9n3djpa9k47
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20250926192919.349578-1-cmirabil@redhat.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3DB8C1C0004
+X-Stat-Signature: okajbcbmzzegeizwsnokfngmakkt1pz4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5EC164000F
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758916482-798649
-X-HE-Meta: U2FsdGVkX18ihxOjfCgB670PHZ8xIzmVU4aHNO0IBCHBaMuUZ8ZNl+/8NN/aJHUTt6EEQXB8IggaYcxbbrVFNpacIP5Oiij0bF5HrjXMSTsh/Qm0h/vupr0/I1zkYCh1TERx/N5/VSdxVpixJYaQlRJuNu6ISmbLwya7Fe9rXYqQdlPcBSx7JTqxzgM5zjRLbvnkf1kRo8//saefsTFpRRN7FuHrQcGPmOqfGneTqJ2rI/xG65gygsKP/w6beYj1vAH5ws0MRCIdvJokRTA5PRm2J4KyyjgM7nKnUFCNjRfdgQIbjjC/qMXqo0PnTbni8keyWCa323m14ng4MXYq8ROBNu7fLvkTcYvbRRqwleS50dGqbqqt/SqRAP36H0c+n903Ez8NOD3ZHNXOQ5dMhpRdeZlzvi6jM/I/O7T50fxhRurDDHW2F1Haf5k1qSVye1HXv5jO7gFSkgn9KmaXTMsnqIJCisZMXV8EVyl6VZG+Wko1emRntF5A/P7QNpARYECUEkJZkvYcophu7aJnEDcyJl5pZYofX31hidOA5yN28s8Bf3ADJCR8IqO7vhEnufUot1GgrRrd7WnlLO2P9D2QTD4fI6PSmQKjgiw0HL2XOQTvPlAIm8rp/x16jcvD+/pUtfcf8pbAb8Xo4MlMLnGMiRdxayuN4iWkKarR6hqzDPnigDa3D4Ld4Lbm/VeONalWiNTTWcxW26ltSvQ6UjifAPMtmNaO9HdIDvvJtbAm/msS6zBVrN3YRucFh/GfhAwav2I0NYSoNPO3JRk62RIN+g/zrGLUG6wpCRPI/uVNYsNwe+kxZ4KkSVx4uWQVYsNEjreffqvU3upd9efFdwVQa56EsNdUoY5kD/3R70YsWOzp8XehXwTS3JieDbg+3KxLUlcxRgRMBUUrjij7ZMJJHHFWCYv0ils4wk2io4i02mYF7JeH1jUJfzkEYVwo5KXnb4/KXVTPqSaGhQZ
- JYidXWjh
- h37Pa7+J1peZYMwvBfmhiLQj4TV1Aj1ybLlSlqqEGUnTYdi4mU4NBnHX7hjOly5gqUMEIWyiVnIgB4yNvvtTsHXrBjSlYKz2Jc2sSduzdOy+ZOepoeiKdrQCG+DrzOkknY4dnjgZhcet4XirONrnLqvClaVbqyNyRO4jXmxWrm/X5QNbZ72EourHXQ4WdUozkp31H6IBN/Ywh2x64Dpp60xQQjE+fvs0COBQamguY2aRG2R+mleAyciHL2Za/Qob0SHyXmbmAthOvi3Jg8OuwpWzFmg==
+X-HE-Tag: 1758916665-420205
+X-HE-Meta: U2FsdGVkX185mGhBZ6RQ29+39fM9tkV0P92ZUV/nXctyvsdfcBSiNUeGNjDkBoVvx/zd5ReAog9ILotH03KrhoWCXXJPV365MTzYPZhBtPm1Zmc1I9wpg2qLkzszN/dhRjL/BrAnu6clohYafMmdxJA3nYgMII5LX0t7TAPSPmVsd7tK8DDRk9lwPqfKgu40gmC8+9us7ueZmuIRpLy5FSfoDE6WGPm6h7ZuTGb3DsCMJVqrlv8CnPzBp/sN3qsfMVuiSAzhMGcrxL9PgQA1BD33hpKN/StvaWXBfjZs/ZvmqBvJKV/zDOcVjFkEQVrUqwq2iBKWS2kM6XavphPEzcqCsCKVvGgFHS09GKYDEaTOhPxK1X+fyLkr8WqMer+9bb1tRhImFShnCl97Y3NPvvlMGDINXh4skXcNDed95+ZVJpCkokOMpWf78ZtXq1KWjtdtZ+dXAIHk5ssMapD37L+EnQDphEupnpCh/TUbTm5TY8nYBPr5npdgz50Z4c83AwRA7sZKMAnfP3DQH5oVB8sg/cF54KThLMlEj9VyAoOHi0QGuns+GcSSiiXpaGQYRXOBwiHLW6DTkCHE7cHLLVHEHc3YP+yt088qGNkb2vtFXTL1lZFAiUDVjTeqXQOq/1qXXRARAsvW33Oeu7S8x+WEed1Gvlc2YHp7lDg5BeqbvvKNDyUxG0LqEI7gVIpY5SzU+pKgIutuud6P156ogH3Qp30GHVjQFAmekBAUoNawu+WalDC5wfVEiTcwXdW8Ezyt3c6Z+KM2Ld62DxP6IpIck7yqqaXVgs8l/TBYD3exOO2bUx1pXggRer6AOuJYcgZGpoMvAZnQc1t1g+ARGNztK3PJs43XJyJ/0FnKTBMZRaycvP6tPHI+Y5AHmHrMmV4tECoaQRFUNMofjra16HcJ4wjJjw2movV+5IhaVV3tGJJF77qtksY11FAnqLkBk9k+7nmnxlAXpZvp+/X
+ 6VgJFHq/
+ noDjHZVHDeUPjLav5JZxcZ/QQ5K5LxaTafJXUUHJV7c79x6uGYkqPslBaQgWGsbQlRwN4Jvb+WE079ySt6OsfmzcfhWq30z1S/ipYcrIbcnIsZifNMUzRPYr+ytHetohT+jLci0scsaLPuqBFCg2GVvr2/YsFjCxiWfbJW94/Nod05U7xIlHq1T/Fa6MWRXrsU/KKJy7+LUVP9SAb2i3CYwLfaRg3eGHunez42z4fNQLEECpiZULhq78+5l0TLE3M7I656gcOM5hPualBFykqmfjsC8qK6i5nk2bn3WXvqg1RegXxRCzW/RV/HVCAgHITRLY2pfdmA/8E2wWCVYgTLopw3GXGf7QqrQRdAMPgDFXTYe9ayhed7w63LwSMy9qzV6s+lsR4vmwWlzo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,115 +140,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Just did more testing here. Confirmed that the system hang's still
-there but less frequently(6/40) with the patches
-http://lkml.kernel.org/r/20250912103522.2935-1-jack@suse.cz appied to
-v6.17-rc7. In the bad instances, the kworker count climbed to over
-600+ and caused the hang over 80+ seconds.
+Hi Charles,
 
-So I think the patches didn't fully solve the issue.
+Thanks for response. Rest inline
 
-On Wed, Sep 24, 2025 at 5:29=E2=80=AFPM Chenglong Tang <chenglongtang@googl=
-e.com> wrote:
+On Fri, Sep 26, 2025 at 03:29:19PM -0400, Charles Mirabile wrote:
+>Hi -
 >
-> Hello,
+>Hoping that I got everything right with git-send-email so that this is
+>delivered alright...
 >
-> This is Chenglong from Google Container Optimized OS. I'm reporting a
-> severe CPU hang regression that occurs after a high volume of file
-> creation and subsequent cgroup cleanup.
+>Wanted to jump in to head off a potential talking past one another /
+>miscommunication situation I see here.
 >
-> Through bisection, the issue appears to be caused by a chain reaction
-> between three commits related to writeback, unbound workqueues, and
-> CPU-hogging detection. The issue is greatly alleviated on the latest
-> mainline kernel but is not fully resolved, still occurring
-> intermittently (~1 in 10 runs).
+>On Wed, Sep 24, 2025 at 08:36:11AM -0600, Paul Walmsley wrote:
+>> Hi,
+>>
+>> On Thu, 31 Jul 2025, Deepak Gupta wrote:
+>>
+>> [ ... ]
+>>
+>> > vDSO related Opens (in the flux)
+>> > =================================
+>> >
+>> > I am listing these opens for laying out plan and what to expect in future
+>> > patch sets. And of course for the sake of discussion.
+>> >
+>>
+>> [ ... ]
+>>
+>> > How many vDSOs
+>> > ---------------
+>> > Shadow stack instructions are carved out of zimop (may be operations) and if CPU
+>> > doesn't implement zimop, they're illegal instructions. Kernel could be running on
+>> > a CPU which may or may not implement zimop. And thus kernel will have to carry 2
+>> > different vDSOs and expose the appropriate one depending on whether CPU implements
+>> > zimop or not.
+>>
+>> If we merge this series without this, then when CFI is enabled in the
+>> Kconfig, we'll wind up with a non-portable kernel that won't run on older
+>> hardware.  We go to great lengths to enable kernel binary portability
+>> across the presence or absence of other RISC-V extensions, and I think
+>> these CFI extensions should be no different.
 >
-> How to reproduce
+>That is not true, this series does not contain the VDSO changes so it can
+>be merged as is.
+
+Look at patch 23/27. It does have vDSO change. Although shadow stack
+instruction are inserted as compiled flag for vDSO only when cfi config is
+selected by user. Right now default is "No". So it won't impact anyone unles
+user explicitly says "Yes".
+
 >
-> The kernel v6.1 is good. The hang is reliably triggered(over 80%
-> chance) on kernels v6.6 and 6.12 and intermittently on
-> mainline(6.17-rc7) with the following steps:
+>>
+>> So before considering this for merging, I'd like to see at least an
+>> attempt to implement the dual-vDSO approach (or something equivalent)
+>> where the same kernel binary with CFI enabled can run on both pre-Zimop
+>> and post-Zimop hardware, with the existing userspaces that are common
+>> today.
 >
-> Environment: A machine with a fast SSD and a high core count (e.g.,
-> Google Cloud's N2-standard-128).
+>I agree that when the VDSO patches are submitted for inclusion they should
+>be written in a way that avoids limiting the entire kernel to either
+>pre-Zimop or post-Zimop hardware based on the config, but I think it
+>should be quite possible to perform e.g. runtime patching of the VDSO
+>to replace the Zimop instructions with nops if the config is enabled but
+>the hardware does not support Zimop.
+
+Why kernel need to do this extra work of carry two binaries and patching it
+runtime?
+
+If for instance we do this, and then this allow this kernel to be taken to
+pre-Zimop hardware, it is assumed that entire userspace for such hardware
+was compiled without shadow stack (thus no zimop). In that case, kernel
+should have been compiled without CFI option.
+
+Just for sake of thought exercise, let's say Fedora 43 is first release with
+RVA23 compatiblity (zimop and shadow stack), there is no way this and future
+release will be able to run on pre-zimop hardware. Unless redhat is going to
+start two different binary distribution. One for pre-zimop and one for
+post-zimop. If that would be the case, then compiling two different kernel for
+such two different hardware would be least of the worry.
+
+Only other usecase is of a seasoned kernel developer or build your own stuff
+in embedded environment, those users can anyways are advanced users. But it
+forces complexity on rest of kernel. There will be more extensions taking zimop
+encodings in future, we will end up patching vDSO and keep this complexity
+while rest of the userspace will not be patched and will be separate binary
+distribution (if OS distros endup distributing multiple binaries per release)
+
 >
-> Workload: Concurrently generate a large number of files (e.g., 2
-> million) using multiple services managed by systemd-run. This creates
-> significant I/O and cgroup churn.
+>However, that concern should not hold up this patch series. Raise it again
+>when the VDSO patches are posted.
+
+As I said earlier, these changes default cfi config to No. So whenever this
+is selected "Yes" by a distro, they can drive such patches (if there is a real
+need)
+
 >
-> Trigger: After the file generation completes, terminate the
-> systemd-run services.
+>>
+>> thanks Deepak,
+>>
+>> - Paul
 >
-> Result: Shortly after the services are killed, the system's CPU load
-> spikes, leading to a massive number of kworker/+inode_switch_wbs
-> threads and a system-wide hang/livelock where the machine becomes
-> unresponsive (20s - 300s).
+>Best - Charlie
 >
-> Analysis and Problematic Commits
->
-> 1. The initial commit: The process begins with a worker that can get
-> stuck busy-waiting on a spinlock.
->
-> Commit: ("writeback, cgroup: release dying cgwbs by switching attached in=
-odes")
->
-> Effect: This introduced the inode_switch_wbs_work_fn worker to clean
-> up cgroup writeback structures. Under our test load, this worker
-> appears to hit a highly contended wb->list_lock spinlock, causing it
-> to burn 100% CPU without sleeping.
->
-> 2. The Kworker Explosion: A subsequent change misinterprets the
-> spinning worker from Stage 1, leading to a runaway feedback loop of
-> worker creation.
->
-> Commit: 616db8779b1e ("workqueue: Automatically mark CPU-hogging work
-> items CPU_INTENSIVE")
->
-> Effect: This logic sees the spinning worker, marks it as
-> CPU_INTENSIVE, and excludes it from concurrency management. To handle
-> the work backlog, it spawns a new kworker, which then also gets stuck
-> on the same lock, repeating the cycle. This directly causes the
-> kworker count to explode from <50 to 100-2000+.
->
-> 3. The System-Wide Lockdown: The final piece allows this localized
-> worker explosion to saturate the entire system.
->
-> Commit: 8639ecebc9b1 ("workqueue: Implement non-strict affinity scope
-> for unbound workqueues")
->
-> Effect: This change introduced non-strict affinity as the default. It
-> allows the hundreds of kworkers created in Stage 2 to be spread by the
-> scheduler across all available CPU cores, turning the problem into a
-> system-wide hang.
->
-> Current Status and Mitigation
->
-> Mainline Status: On the latest mainline kernel, the hang is far less
-> frequent and the kworker counts are reduced back to normal (<50),
-> suggesting other changes have partially mitigated the issue. However,
-> the hang still occurs, and when it does, the kworker count still
-> explodes (e.g., 300+), indicating the underlying feedback loop
-> remains.
->
-> Workaround: A reliable mitigation is to revert to the old workqueue
-> behavior by setting affinity_strict to 1. This contains the kworker
-> proliferation to a single CPU pod, preventing the system-wide hang.
->
-> Questions
->
-> Given that the issue is not fully resolved, could you please provide
-> some guidance?
->
-> 1. Is this a known issue, and are there patches in development that
-> might fully address the underlying spinlock contention or the kworker
-> feedback loop?
->
-> 2. Is there a better long-term mitigation we can apply other than
-> forcing strict affinity?
->
-> Thank you for your time and help.
->
-> Best regards,
->
-> Chenglong
 
