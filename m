@@ -4,75 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C0AFCAC5B5
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 03:35:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2A6ACAC5BA
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 03:35:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C36A88E0001; Thu, 25 Sep 2025 23:35:13 -0400 (EDT)
+	id 9C6068E000D; Thu, 25 Sep 2025 23:35:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0CD78E000C; Thu, 25 Sep 2025 23:35:13 -0400 (EDT)
+	id 974D38E000C; Thu, 25 Sep 2025 23:35:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B01B58E0001; Thu, 25 Sep 2025 23:35:13 -0400 (EDT)
+	id 88BBB8E000D; Thu, 25 Sep 2025 23:35:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C3408E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 23:35:13 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 75A858E000C
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 23:35:14 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 686E587623
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:13 +0000 (UTC)
-X-FDA: 83929985706.20.A1D55AE
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 49042876BD
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:14 +0000 (UTC)
+X-FDA: 83929985748.20.0C2AF09
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 6EF60A0007
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:11 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=c5zzU8yH;
-	spf=pass (imf15.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 3C8AEC0004
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 03:35:12 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=TqxbjgWP;
+	spf=pass (imf28.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758857711;
+	s=arc-20220608; t=1758857712;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H1LGV2K0VDuDvJmKeBmuKX/qMY5r8bTe7gMXseZ2flc=;
-	b=iE0VRcIaqvYviZJNUfSbitpeu+ab1rUzQoPMynBdV7nRHJY/oU7+3ue04W8Nu1MqwG/DwX
-	gdE6Q9s8j2UVb8Wlt1elNkOnc/8KYlliHfKnEhBTZAtC0ioC7474WyTS5NZYWOA/2KJhpt
-	rvKdphNCTNBbkZZ1A1akelussv/subM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758857711; a=rsa-sha256;
+	bh=858jfz83lf2dK5sf5puAI0ZdMQu8FVFL5vISb3tcIU8=;
+	b=ncM75eaRIJK/qnbxz0yscz/tk/Jikva5Zb3sDtc6tyVSEHtrdv49Yh3S3FeSeMTlNvviCB
+	KRcjGFhZB6G2x4G0KoXuF1wfB7pzsfKefQSqDdvXqdmOyMk99g6IYvEopmZcioNPRW3b+L
+	5uLlhaRa4gRriDC2I2pX1HP0fDChWXY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758857712; a=rsa-sha256;
 	cv=none;
-	b=xNtLOSJgzZgGruFu7xiQ/tyhVmHkFu1+BW/qLlX44kwqRpXlbiRLlt0ikJqgUJAEncjej+
-	+bp99oVGoY4yA/5tiRY97Kcb0lcSBLS38cFnZrguFn+rE+wZB3T0E8wsXxdGQVch5TQ7d7
-	nIHmklyLK5fW5kghs//zvNMzjpNc89o=
+	b=mGZox7UcoyMD6uMYNNOZ8AsDiY6+1dip8tbCO/Y6zTmlbsIBYQSZmJx8RaPUaJpOe2BSQs
+	m73oXt7dW51T8aUSlMzAMCB6ciu2hHpTVetGMF4cu3fxY23YCAyLnzXBFA5qTK7I6DJO2c
+	tbK4Qj+BINeeEV1lVVxnFHwEIk0Llxc=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=c5zzU8yH;
-	spf=pass (imf15.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=TqxbjgWP;
+	spf=pass (imf28.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1758857712; x=1790393712;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=W3aURnxCmj1la91C1akYQZ8M4BvNi+tJIJrf7rRX5u8=;
-  b=c5zzU8yHSVkbqs+qjnDP4CacxlBDsgL5/mKxtXSOsUu/3/rXoj08VfIw
-   wJj3oLd/OAZwXrb1UlRDEisp0GJnh9WFWEWGRU9TglvS8i+L0X0fmvpuy
-   k8latV/Bb5A0WvocxeGKSJXppCbcIm7XH85m9/4DdbFvXnN744ZJsEFtt
-   9rzLVsq8Ny48YHEqiMhGmAO5/xNEGdDnEYXKC6zdv3a7/iu+U2pYf/qpW
-   mvSRnam4Rbdyuk1XPSoJmW/bd8yNrTwZ7pzWl13nJ62y+/kmqyecUNEe9
-   4HGI7HlHiilt/weBFKm0F5FTVnd89vIadyWXiZItG2RlEY/AaImWHHkdh
-   Q==;
-X-CSE-ConnectionGUID: d+Ym2GrlRK2SGwonb/j8xg==
-X-CSE-MsgGUID: VD+LuzTvRne8O02TyvidBA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="63819476"
+  bh=ABrWTOP2f/rtttjKCvKr6tV1H34crqihnx6D1RT2A1I=;
+  b=TqxbjgWPCOtCjafkMzhuym9sqTIrAWd2EI+OIpVL0BoRid6Jo44USJCn
+   rO9lNQR8XK1fF6RUWnNe+XbHa4Vyf4nZNifZLwSZmNenKuJ+SHqSkTxmh
+   viPxaFpe6DgWf6DVInmBYpDSHPL4N/tGBhqxPu02ROstId+XejCtVYVBH
+   EGiOw2As4i5Yn8x48S3zoMEiB0+st3Ch7L8mN6T375uHBhHTAccWSxRKw
+   7nfzwPLWxmLaMKjsoM0qu2yuUTyYsbrxHn2CzNmtSw9Etp0Ot2PEQqhxI
+   8wNhYnkYRPAW09pREuqjUKWOyy0twjM08pXblznxa4KjY4qW7KgJYagBK
+   g==;
+X-CSE-ConnectionGUID: hHDexuiDSaeqpiYadjeJzA==
+X-CSE-MsgGUID: sPN06oOfRfWljr1X+B+Vvw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="63819488"
 X-IronPort-AV: E=Sophos;i="6.18,294,1751266800"; 
-   d="scan'208";a="63819476"
+   d="scan'208";a="63819488"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
   by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 20:35:05 -0700
-X-CSE-ConnectionGUID: PDSLPQf9RoGS/IJCefj2Ow==
-X-CSE-MsgGUID: Ktg6tixmRPq8dew9KQqPkQ==
+X-CSE-ConnectionGUID: vWeSZrnxQDS2LHhJdcvsXA==
+X-CSE-MsgGUID: gfY3r1/0RoWmrVc8P/eIIQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,294,1751266800"; 
-   d="scan'208";a="214636557"
+   d="scan'208";a="214636565"
 Received: from jf5300-b11a338t.jf.intel.com ([10.242.51.115])
   by orviesa001.jf.intel.com with ESMTP; 25 Sep 2025 20:35:03 -0700
 From: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
@@ -102,20 +102,22 @@ To: linux-kernel@vger.kernel.org,
 Cc: wajdi.k.feghali@intel.com,
 	vinodh.gopal@intel.com,
 	kanchana.p.sridhar@intel.com
-Subject: [PATCH v12 04/23] crypto: iaa - Descriptor allocation timeouts with mitigations.
-Date: Thu, 25 Sep 2025 20:34:43 -0700
-Message-Id: <20250926033502.7486-5-kanchana.p.sridhar@intel.com>
+Subject: [PATCH v12 06/23] crypto: iaa - Simplify the code flow in iaa_compress() and iaa_decompress().
+Date: Thu, 25 Sep 2025 20:34:45 -0700
+Message-Id: <20250926033502.7486-7-kanchana.p.sridhar@intel.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
 References: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 44n7usoxpsimmf8hne998kdtf3ur3nyo
-X-Rspamd-Queue-Id: 6EF60A0007
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3C8AEC0004
+X-Stat-Signature: naozsowa4snip7hfzi3kazjpcxq6oo4y
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758857711-861958
-X-HE-Meta: U2FsdGVkX1/uz8I1JjjnItyqUYepM6qzaufbX4iX7kJ6Dr2g6cuC2oX2L9034AFE/KnS7JkAGpV35gCQOgEgHRz41waQUhyqEp27CU/hTQIzo2Tfw242muSwje2IC6NPWPSYFq1RUyUYPmuNhl7tpv6RYW583j//U4/E+55FOnvxB9fLVte355JmYHEtOX3t63Y1fgDgfXHxb6ii5XNXz9fgq3TYXqSzNCax7VZSxAH/7vFblYgy5jrCeokQ/cDfRef8xeJL/o0AgYpuaicDwi1Rc2AeA1uTOK2BEa29niaq1RMv7Ch7pYpghy87G3d7BM0TUvP1T2DHiOR7b1b1Eg6kO7k5imHBX8zZYOBUInU7fROT2JtWWqbS52wS6MoV6BV2ACzki/CeNLpsIJjVbJ1LZAkrzkhff6MzgaPogZXQZ6wI87zeRu1rLRb6kErMMvNM4RkUo7Donh+9cNL3t1kWUcRa0hyShp898/BVh26VEkHxMCbzwm2Jqx+hdhUBX5O2/fudNzser95amPgy8nNFZCSF6vc604hJrgRLnzDiTUw/JxqGQqgpZ3J/qD6xwc8CLIAa6Sg67Y/vNsvunN+SJIm6lxnRf01KI5QadzaBzU13lxwgFyAqIN08Zyhj7L5VBOEOksaXWs1NkSGXX+QVB24BCHmPOsawCkHPrwsnTBYJtWLzwjmkRYlw2NwDhtd2qw0W+zrI54H6hbgT1zwMhGUzFN/WFG7No7zqJe/z8ARWjdkAyFxy5xCHt578doETCRFF9PJ7k5+P3QeZ5dmngK89NktiQf7RwK760dv1iMuB5ytBDp/0/suG1VXSUVkJm7UcB+dO1/5+6adKrOrgHRQXUTCmOhKnAThv74YU/g3ARL1ACyMHnJHPOPVb
+X-HE-Tag: 1758857712-87823
+X-HE-Meta: U2FsdGVkX1+Pc0dTtwWrL6+6UFdV7WZUtgamEn5v0GxbJJo1u+uw+MiunLIlVwglHkHJqWo8MRq3xtn1ggluUkNChXjs8QlHXD2FjS32FKgxjHcc7Xjim75ZKsRgBdrLts6mwzazKIva2E4CKH5pxqhUoBc+SeP7fRpy7OiKNQdQ8grr94mHVKu2UmSMCQy5e1AAspu6CexZxSdpH0I6LCejVgsW57JoJbgSpDR0uNNxaaJaHii5++rz3cik6U1+eKaRoqg7L28OVxoUdulFxQSyFsnrVEg/KqGBSiZywplgvplTBNxnUMvEU0/yoYEpLURsSUVPcNLDlFuC1k8Z+B5ZdNyVayH9t123fLSOwA309oPe0B0e/KsMHkchCxhSXI6JTtPgSmAM2E0jgZBETusWXFBu8laOFT6dUjuzrUqzhjaepNMc3yuFargpL0d4JIY2wgagMlHNv8D4VhSKWIFlqrNcrmfmAiBEGx6ayaPXmifuVer215+0DrjsbDMZ+sMPmDOLYlM9E6DdaGz4+zd7gsDyzqY/JcP6jaLzzClrJCoOQ7VXjeKtjhTvgZzOI+XJY+0g9xYLTqwo88L6piJZdz4QRYWsnGh6MtqbiiyfwO22Ufal0vOC2MPKA3xrqUGZa5hd23GBVTXvnfI+XHy1iMIDFYOcYSVrR88oz5SIw0ufFG/C6+sLQca+kNdjgKCNG42SZubduPJ/fzFHY77dfO3cW572yJfvG9iwKq5qooU1MpsKOXebwYl+s+3QDkz0zfBtWNbq8RMR3W3bNzGJMbMT3rhMHtcgdKzhylrnLZqwiD13LbLQ1dP0C+A7WCaKAMRTlokRLgx9LN0PJQnTcWq+2LfIyLC6Q34+K8Oqh9O5Sw/YIgTdz71U9SIGx6RBgM8rtLP8FG8+ggkjX34M9mrNjpvmznZU3jHpn5PaXMVUJlg8xDgQhWUEi9C/i4+Jyce2wG1uWJzHGbP
+ HlIcxg0k
+ XRDJ5e0N3A6nr205nCdvHFclYJVz3papASNaBAKFh1/ZHNwq/xHOtk895vsAjERjFGkx1vtUWTVsGGClsAWh5RdM+NrrZZcmAa8Z08COMsoW3ajZnMBdOGaOvsT7FtOVvsBmGmGmxLyZXnVlgzFtNWl2y6KomXew3toFDYIVa1Dw/CG9TW+sF0JZvsFwR7DGtQCPkOKAs1Ycb7QUUr9TQXFx3GODdp76s1b2K
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,205 +126,189 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch modifies the descriptor allocation from blocking to
-non-blocking with bounded retries or "timeouts".
+This commit simplifies and streamlines the logic in the core
+iaa_compress() and iaa_decompress() routines, eliminates branches, etc.
 
-This is necessary to prevent task blocked errors in high contention
-scenarios, for instance, when the platform has only 1 IAA device
-enabled. With 1 IAA device enabled per package on a dual-package
-Sapphire Rapids with 56 cores/package, there are 112 logical cores
-mapped to this single IAA device. In this scenario, the task blocked
-errors can occur because idxd_alloc_desc() is called with
-IDXD_OP_BLOCK. With batching, multiple descriptors will need to be
-allocated per batch. Any process that is able to do so, can cause
-contention for allocating descriptors for all other processes that share
-the use of the same sbitmap_queue. Under IDXD_OP_BLOCK, this causes
-compress/decompress jobs to stall in stress test scenarios
-(e.g. zswap_store() of 2M folios).
-
-In order to make the iaa_crypto driver be more fail-safe, this commit
-implements the following:
-
-1) Change compress/decompress descriptor allocations to be non-blocking
-   with retries ("timeouts").
-2) Return compress error to zswap if descriptor allocation with timeouts
-   fails during compress ops. zswap_store() will return an error and the
-   folio gets stored in the backing swap device.
-3) Fallback to software decompress if descriptor allocation with timeouts
-   fails during decompress ops.
-
-With these fixes, there are no task blocked errors seen under stress
-testing conditions, and no performance degradation observed.
+This makes it easier to add improvements such as polling for job
+completions, essential to accomplish batching with hardware
+parallelism.
 
 Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
 ---
- drivers/crypto/intel/iaa/iaa_crypto.h      |  5 ++
- drivers/crypto/intel/iaa/iaa_crypto_main.c | 58 +++++++++++++++-------
- 2 files changed, 44 insertions(+), 19 deletions(-)
+ drivers/crypto/intel/iaa/iaa_crypto_main.c | 114 ++++++++++++---------
+ 1 file changed, 67 insertions(+), 47 deletions(-)
 
-diff --git a/drivers/crypto/intel/iaa/iaa_crypto.h b/drivers/crypto/intel/iaa/iaa_crypto.h
-index 549ac98a9366..cc76a047b54a 100644
---- a/drivers/crypto/intel/iaa/iaa_crypto.h
-+++ b/drivers/crypto/intel/iaa/iaa_crypto.h
-@@ -21,6 +21,9 @@
- 
- #define IAA_COMPLETION_TIMEOUT		1000000
- 
-+#define IAA_ALLOC_DESC_COMP_TIMEOUT	   1000
-+#define IAA_ALLOC_DESC_DECOMP_TIMEOUT	    500
-+
- #define IAA_ANALYTICS_ERROR		0x0a
- #define IAA_ERROR_DECOMP_BUF_OVERFLOW	0x0b
- #define IAA_ERROR_COMP_BUF_OVERFLOW	0x19
-@@ -141,6 +144,8 @@ enum iaa_mode {
- 
- struct iaa_compression_ctx {
- 	enum iaa_mode	mode;
-+	u16		alloc_comp_desc_timeout;
-+	u16		alloc_decomp_desc_timeout;
- 	bool		verify_compress;
- 	bool		async_mode;
- 	bool		use_irq;
 diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-index ed3325bb3291..1169cd44c8e7 100644
+index 5cb7c930158e..38b4be0c10b0 100644
 --- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
 +++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-@@ -1596,7 +1596,8 @@ static int iaa_compress_verify(struct crypto_tfm *tfm, struct acomp_req *req,
- 	struct iaa_compression_ctx *ctx = crypto_tfm_ctx(tfm);
- 	u32 *compression_crc = acomp_request_ctx(req);
- 	struct iaa_device *iaa_device;
--	struct idxd_desc *idxd_desc;
-+	struct idxd_desc *idxd_desc = ERR_PTR(-EAGAIN);
-+	u16 alloc_desc_retries = 0;
- 	struct iax_hw_desc *desc;
- 	struct idxd_device *idxd;
- 	struct iaa_wq *iaa_wq;
-@@ -1612,7 +1613,11 @@ static int iaa_compress_verify(struct crypto_tfm *tfm, struct acomp_req *req,
+@@ -1792,7 +1792,34 @@ static int iaa_compress(struct crypto_tfm *tfm, struct acomp_req *req,
+ 	desc->src2_size = sizeof(struct aecs_comp_table_record);
+ 	desc->completion_addr = idxd_desc->compl_dma;
  
- 	active_compression_mode = get_iaa_device_compression_mode(iaa_device, ctx->mode);
- 
--	idxd_desc = idxd_alloc_desc(wq, IDXD_OP_BLOCK);
-+	while ((idxd_desc == ERR_PTR(-EAGAIN)) && (alloc_desc_retries++ < ctx->alloc_decomp_desc_timeout)) {
-+		idxd_desc = idxd_alloc_desc(wq, IDXD_OP_NONBLOCK);
-+		cpu_relax();
-+	}
-+
- 	if (IS_ERR(idxd_desc)) {
- 		dev_dbg(dev, "iaa compress_verify failed: idxd descriptor allocation failure: ret=%ld\n", PTR_ERR(idxd_desc));
- 		return -ENODEV;
-@@ -1772,7 +1777,8 @@ static int iaa_compress(struct crypto_tfm *tfm, struct acomp_req *req,
- 	struct iaa_compression_ctx *ctx = crypto_tfm_ctx(tfm);
- 	u32 *compression_crc = acomp_request_ctx(req);
- 	struct iaa_device *iaa_device;
--	struct idxd_desc *idxd_desc;
-+	struct idxd_desc *idxd_desc = ERR_PTR(-EAGAIN);
-+	u16 alloc_desc_retries = 0;
- 	struct iax_hw_desc *desc;
- 	struct idxd_device *idxd;
- 	struct iaa_wq *iaa_wq;
-@@ -1788,7 +1794,11 @@ static int iaa_compress(struct crypto_tfm *tfm, struct acomp_req *req,
- 
- 	active_compression_mode = get_iaa_device_compression_mode(iaa_device, ctx->mode);
- 
--	idxd_desc = idxd_alloc_desc(wq, IDXD_OP_BLOCK);
-+	while ((idxd_desc == ERR_PTR(-EAGAIN)) && (alloc_desc_retries++ < ctx->alloc_comp_desc_timeout)) {
-+		idxd_desc = idxd_alloc_desc(wq, IDXD_OP_NONBLOCK);
-+		cpu_relax();
-+	}
-+
- 	if (IS_ERR(idxd_desc)) {
- 		dev_dbg(dev, "iaa compress failed: idxd descriptor allocation failure: ret=%ld\n",
- 			PTR_ERR(idxd_desc));
-@@ -1863,7 +1873,8 @@ static int iaa_decompress(struct crypto_tfm *tfm, struct acomp_req *req,
- 	struct iaa_device_compression_mode *active_compression_mode;
- 	struct iaa_compression_ctx *ctx = crypto_tfm_ctx(tfm);
- 	struct iaa_device *iaa_device;
--	struct idxd_desc *idxd_desc;
-+	struct idxd_desc *idxd_desc = ERR_PTR(-EAGAIN);
-+	u16 alloc_desc_retries = 0;
- 	struct iax_hw_desc *desc;
- 	struct idxd_device *idxd;
- 	struct iaa_wq *iaa_wq;
-@@ -1879,12 +1890,17 @@ static int iaa_decompress(struct crypto_tfm *tfm, struct acomp_req *req,
- 
- 	active_compression_mode = get_iaa_device_compression_mode(iaa_device, ctx->mode);
- 
--	idxd_desc = idxd_alloc_desc(wq, IDXD_OP_BLOCK);
-+	while ((idxd_desc == ERR_PTR(-EAGAIN)) && (alloc_desc_retries++ < ctx->alloc_decomp_desc_timeout)) {
-+		idxd_desc = idxd_alloc_desc(wq, IDXD_OP_NONBLOCK);
-+		cpu_relax();
-+	}
-+
- 	if (IS_ERR(idxd_desc)) {
- 		ret = -ENODEV;
- 		dev_dbg(dev, "%s: idxd descriptor allocation failed: ret=%ld\n", __func__,
- 			PTR_ERR(idxd_desc));
--		return ret;
-+		idxd_desc = NULL;
-+		goto fallback_software_decomp;
- 	}
- 	desc = idxd_desc->iax_hw;
- 
-@@ -1913,7 +1929,7 @@ static int iaa_decompress(struct crypto_tfm *tfm, struct acomp_req *req,
- 	ret = idxd_submit_desc(wq, idxd_desc);
- 	if (ret) {
- 		dev_dbg(dev, "submit_desc failed ret=%d\n", ret);
--		goto err;
-+		goto fallback_software_decomp;
- 	}
- 
- 	/* Update stats */
-@@ -1926,19 +1942,21 @@ static int iaa_decompress(struct crypto_tfm *tfm, struct acomp_req *req,
- 	}
- 
- 	ret = check_completion(dev, idxd_desc->iax_completion, false, false);
-+
-+fallback_software_decomp:
- 	if (ret) {
--		dev_dbg(dev, "%s: check_completion failed ret=%d\n", __func__, ret);
--		if (idxd_desc->iax_completion->status == IAA_ANALYTICS_ERROR) {
-+		dev_dbg(dev, "%s: desc allocation/submission/check_completion failed ret=%d\n", __func__, ret);
-+		if (idxd_desc && idxd_desc->iax_completion->status == IAA_ANALYTICS_ERROR) {
- 			pr_warn("%s: falling back to deflate-generic decompress, "
- 				"analytics error code %x\n", __func__,
- 				idxd_desc->iax_completion->error_code);
--			ret = deflate_generic_decompress(req);
--			if (ret) {
--				dev_dbg(dev, "%s: deflate-generic failed ret=%d\n",
--					__func__, ret);
--				goto err;
--			}
--		} else {
+-	if (ctx->use_irq) {
++	if (likely(!ctx->use_irq)) {
++		ret = idxd_submit_desc(wq, idxd_desc);
++		if (ret) {
++			dev_dbg(dev, "submit_desc failed ret=%d\n", ret);
++			goto out;
 +		}
 +
-+		ret = deflate_generic_decompress(req);
++		/* Update stats */
++		update_total_comp_calls();
++		update_wq_comp_calls(wq);
 +
++		if (ctx->async_mode)
++			return -EINPROGRESS;
++
++		ret = check_completion(dev, idxd_desc->iax_completion, true, false);
 +		if (ret) {
-+			pr_err("%s: iaa decompress failed: deflate-generic fallback error ret=%d\n",
-+			       __func__, ret);
- 			goto err;
++			dev_dbg(dev, "check_completion failed ret=%d\n", ret);
++			goto out;
++		}
++
++		*dlen = idxd_desc->iax_completion->output_size;
++
++		/* Update stats */
++		update_total_comp_bytes_out(*dlen);
++		update_wq_comp_bytes(wq, *dlen);
++
++		*compression_crc = idxd_desc->iax_completion->crc;
++	} else {
+ 		desc->flags |= IDXD_OP_FLAG_RCI;
+ 
+ 		idxd_desc->crypto.req = req;
+@@ -1800,40 +1827,23 @@ static int iaa_compress(struct crypto_tfm *tfm, struct acomp_req *req,
+ 		idxd_desc->crypto.src_addr = src_addr;
+ 		idxd_desc->crypto.dst_addr = dst_addr;
+ 		idxd_desc->crypto.compress = true;
+-	}
+-
+-	ret = idxd_submit_desc(wq, idxd_desc);
+-	if (ret) {
+-		dev_dbg(dev, "submit_desc failed ret=%d\n", ret);
+-		goto err;
+-	}
+ 
+-	/* Update stats */
+-	update_total_comp_calls();
+-	update_wq_comp_calls(wq);
++		ret = idxd_submit_desc(wq, idxd_desc);
++		if (ret) {
++			dev_dbg(dev, "submit_desc failed ret=%d\n", ret);
++			goto out;
++		}
+ 
+-	if (ctx->async_mode) {
+-		ret = -EINPROGRESS;
+-		goto out;
+-	}
++		/* Update stats */
++		update_total_comp_calls();
++		update_wq_comp_calls(wq);
+ 
+-	ret = check_completion(dev, idxd_desc->iax_completion, true, false);
+-	if (ret) {
+-		dev_dbg(dev, "check_completion failed ret=%d\n", ret);
+-		goto err;
++		return -EINPROGRESS;
+ 	}
+ 
+-	*dlen = idxd_desc->iax_completion->output_size;
+-
+-	/* Update stats */
+-	update_total_comp_bytes_out(*dlen);
+-	update_wq_comp_bytes(wq, *dlen);
+-
+-	*compression_crc = idxd_desc->iax_completion->crc;
+-
+-err:
+-	idxd_free_desc(wq, idxd_desc);
+ out:
++	idxd_free_desc(wq, idxd_desc);
++
+ 	return ret;
+ }
+ 
+@@ -1888,7 +1898,22 @@ static int iaa_decompress(struct crypto_tfm *tfm, struct acomp_req *req,
+ 	desc->src1_size = slen;
+ 	desc->completion_addr = idxd_desc->compl_dma;
+ 
+-	if (ctx->use_irq) {
++	if (likely(!ctx->use_irq)) {
++		ret = idxd_submit_desc(wq, idxd_desc);
++		if (ret) {
++			dev_dbg(dev, "submit_desc failed ret=%d\n", ret);
++			goto fallback_software_decomp;
++		}
++
++		/* Update stats */
++		update_total_decomp_calls();
++		update_wq_decomp_calls(wq);
++
++		if (ctx->async_mode)
++			return -EINPROGRESS;
++
++		ret = check_completion(dev, idxd_desc->iax_completion, false, false);
++	} else {
+ 		desc->flags |= IDXD_OP_FLAG_RCI;
+ 
+ 		idxd_desc->crypto.req = req;
+@@ -1896,25 +1921,20 @@ static int iaa_decompress(struct crypto_tfm *tfm, struct acomp_req *req,
+ 		idxd_desc->crypto.src_addr = src_addr;
+ 		idxd_desc->crypto.dst_addr = dst_addr;
+ 		idxd_desc->crypto.compress = false;
+-	}
+ 
+-	ret = idxd_submit_desc(wq, idxd_desc);
+-	if (ret) {
+-		dev_dbg(dev, "submit_desc failed ret=%d\n", ret);
+-		goto fallback_software_decomp;
+-	}
++		ret = idxd_submit_desc(wq, idxd_desc);
++		if (ret) {
++			dev_dbg(dev, "submit_desc failed ret=%d\n", ret);
++			goto fallback_software_decomp;
++		}
+ 
+-	/* Update stats */
+-	update_total_decomp_calls();
+-	update_wq_decomp_calls(wq);
++		/* Update stats */
++		update_total_decomp_calls();
++		update_wq_decomp_calls(wq);
+ 
+-	if (ctx->async_mode) {
+-		ret = -EINPROGRESS;
+-		goto out;
++		return -EINPROGRESS;
+ 	}
+ 
+-	ret = check_completion(dev, idxd_desc->iax_completion, false, false);
+-
+ fallback_software_decomp:
+ 	if (ret) {
+ 		dev_dbg(dev, "%s: desc allocation/submission/check_completion failed ret=%d\n", __func__, ret);
+@@ -1929,7 +1949,7 @@ static int iaa_decompress(struct crypto_tfm *tfm, struct acomp_req *req,
+ 		if (ret) {
+ 			pr_err("%s: iaa decompress failed: deflate-generic fallback error ret=%d\n",
+ 			       __func__, ret);
+-			goto err;
++			goto out;
  		}
  	} else {
-@@ -2119,6 +2137,8 @@ static int iaa_comp_adecompress(struct acomp_req *req)
+ 		req->dlen = idxd_desc->iax_completion->output_size;
+@@ -1941,10 +1961,10 @@ static int iaa_decompress(struct crypto_tfm *tfm, struct acomp_req *req,
  
- static void compression_ctx_init(struct iaa_compression_ctx *ctx)
- {
-+	ctx->alloc_comp_desc_timeout = IAA_ALLOC_DESC_COMP_TIMEOUT;
-+	ctx->alloc_decomp_desc_timeout = IAA_ALLOC_DESC_DECOMP_TIMEOUT;
- 	ctx->verify_compress = iaa_verify_compress;
- 	ctx->async_mode = async_mode;
- 	ctx->use_irq = use_irq;
-@@ -2133,10 +2153,10 @@ static int iaa_comp_init_fixed(struct crypto_acomp *acomp_tfm)
- 	struct crypto_tfm *tfm = crypto_acomp_tfm(acomp_tfm);
- 	struct iaa_compression_ctx *ctx = crypto_tfm_ctx(tfm);
+ 	*dlen = req->dlen;
  
--	compression_ctx_init(ctx);
--
- 	ctx->mode = IAA_MODE_FIXED;
- 
-+	compression_ctx_init(ctx);
+-err:
++out:
+ 	if (idxd_desc)
+ 		idxd_free_desc(wq, idxd_desc);
+-out:
 +
- 	return 0;
+ 	return ret;
  }
  
 -- 
