@@ -4,120 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1944BCAC5B0
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 00:25:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD172CAC5B0
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Sep 2025 00:57:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF2738E0003; Thu, 25 Sep 2025 20:25:48 -0400 (EDT)
+	id E2BDA8E0005; Thu, 25 Sep 2025 20:57:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECAA38E0001; Thu, 25 Sep 2025 20:25:48 -0400 (EDT)
+	id E03D38E0001; Thu, 25 Sep 2025 20:57:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDF918E0003; Thu, 25 Sep 2025 20:25:48 -0400 (EDT)
+	id D40698E0005; Thu, 25 Sep 2025 20:57:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C9F0B8E0001
-	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 20:25:48 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5CAF7140550
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 00:25:48 +0000 (UTC)
-X-FDA: 83929508376.17.A00AE05
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 533F640004
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 00:25:46 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VIxMBxPU;
-	spf=pass (imf17.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C29FB8E0001
+	for <linux-mm@kvack.org>; Thu, 25 Sep 2025 20:57:15 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6A70C1A052C
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 00:57:15 +0000 (UTC)
+X-FDA: 83929587630.13.CE95D68
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 65C33A000B
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 00:57:10 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	spf=pass (imf15.hostedemail.com: domain of yukuai1@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yukuai1@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758846346;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1758848233;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NMC81w+JaNK7q2bunYAj8hHN6HLRojIWD4Z/O2pUXCA=;
-	b=c5EVq6xA9pWUX2HsfhCSFQnNbUnjiQsCUUm9IHdLbbHNuDd0ZQIOm3arrmCDiGIR22ZHNS
-	i/tI27R+FTWfhmSn+hK+mwr9Fkl92y8T7rZnpW97ecIxsPZ3XVDGa4zPMRnkeFe3Ntqtn2
-	5dLEFgiXlwuLBW3udGhE4yvtNX6jmAM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758846346; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gut5QdVHleVAE4JMNc1T+4Doox7jadS8HP+I0a2MTT0=;
+	b=eP6QqLJbkzmXM1BXQxgtnh4f/nIGOa7vfsNd6et6uzXPlI/5+hB6t0wyw18iguxsI/7JnU
+	taL15Yv5v00F4Z3MsM9/BvUuQ0LkuN2xQjhIByayvYW0azI1Eysgvcst313A1v7tzPXJU2
+	1pAwnzz+TQtwC0BOn21vewz3vRlBB3g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758848233; a=rsa-sha256;
 	cv=none;
-	b=M+4BaXUCHq8lZvIR+SmazoacC/F6JtgEWEZq9Af+0KJU2x/TJzdSIeAQN9B9FVrfvvqDNl
-	9eAiur8dkjcl1cDzNAU+A2kzmjof/Be2iG44uG2si0IjmZaYryWuHpwlB7W8f2OyZtPAXq
-	czWzaT9P1XYj2qdmXpmUjJwu8jVAjYc=
+	b=pjB3P3cPf9g46Jb8pDlRL3jnU/twKuQM028r69WqECBMoYf6cqo6+b/iZm4efeHm00PT3+
+	YL8v2AEWWVkwYfNbX/h43V8w3kB+s2KzHq/54tVBpe2kH1vV60JO4JjXp32t6l1nQZVfQt
+	msahxN1ZqNIxnpskSo4cgVB3ZjtPVLk=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VIxMBxPU;
-	spf=pass (imf17.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b30ead58e0cso273924866b.0
-        for <linux-mm@kvack.org>; Thu, 25 Sep 2025 17:25:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758846345; x=1759451145; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NMC81w+JaNK7q2bunYAj8hHN6HLRojIWD4Z/O2pUXCA=;
-        b=VIxMBxPU6xDYaHi8RhOXYd8q+156QmjHy4jXkzCtO67lQPaQnRxpbgKaZyYQS549Io
-         d0NTkjX5larD7r9wAQNYM6dFNIwosyKb5W7HlnEuhnX8zuFapbQ/FliiFTjN/ve3LqfY
-         cA51cYGq/bWyUTE2G5W4siHffkryOmZlXDlebaiTnZbekutFSY0e/T+9p9prRFeh2Zud
-         u+bWHjBXks3GJ7G431yscLl3pgobsN/tqwsOROPo9QDyXo8RkocnbWEjJKC6w5ukRcUZ
-         mTOR6B/CAOR7lQZz+tNud90kZTEa+ez/ySQqd8yrKxK349YoZqSbwNfdiNfpovlZgLyE
-         kdMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758846345; x=1759451145;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NMC81w+JaNK7q2bunYAj8hHN6HLRojIWD4Z/O2pUXCA=;
-        b=FYXUAXnfknRzIjJotazDcJNe8HGf3I+BWb+/0yOdyZr7s4cpI5dsdN9eVepB0Zi8tB
-         VgGPPV9/JJz/F3wnGeBdoUG+w73dHM4kvA9cl8vd5lsfOivxuht4zvbTjRtqOs8z/Quy
-         ypF1Q7UJ2kaYiq1mlv/7FmykEWoQQgGxZdGoDunPOiwLqy5YNMwxQFUAKYLIV5LeEoKD
-         lTsgp1HNEY91ozK4UfnjpwqR9s5/IgiFU3QHVxl9woM8Q1IRVeJIYEb8XUW77db/aeut
-         xBqlC8Vszci4Jp7solviMC4d7cLFp7OVjXEbcpweRkU2UctiFnIXE92Sx8jYh1kcmm7R
-         kcpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXPfBC4Sk/9DukTnrSwR6WwHaejZUkIp5ry6HaA3C01bvV1elXNhBSNoCaMqCqDHUq5J0E7ucPlCA==@kvack.org
-X-Gm-Message-State: AOJu0Yz4tG1KRDU5FnNWckTgE9Eaxo2p0Qyjjld9pK43r/eY7+f03XZ+
-	fcILnF283B/yRK9apH7ezJdWcc5ojaIhSpSuOMMfV6qTdL+EmvnY48cv
-X-Gm-Gg: ASbGncsngQOBMFK7SJYEhHIVMGKYx8EMf0oMkc53OEO007pTeB88pNqDTEsq4X541ea
-	px1srquxpTM7FGlShLjMkeOpCgZDXPK9mRDpLE5qVtK2EF5V3sbwbEAcVGcwHjWOUXrj8NPWNwS
-	Q6w8CCYT1CgTH/7lvhqECqxBEEsnPnZRBTOuCePyg7Ujn7ZH1Opr6jxWdon0zlPi+Bv55qONXZR
-	BiTgjlw0VRITGp/APPsW+sFdJMlAqxybkMuWmMlWhH1ry4a6hoPx4/iY8+gpTpRMUWaK7m+XX8T
-	kqc9VPRNR9S7R44dnlyBzj/Ui6EUMcykivNwePYYg33tUx62mFN41y0QCrODboFkHRJb/UHSbLx
-	MN/uXO8kwkLjJ+CADnRv0d8eSP6TaYhWixEg3
-X-Google-Smtp-Source: AGHT+IFrncgRgp1cO6kD9iqXJ1acMD+hFDb5TMf4B2VASiURfzNNm3MkxN444XZaQPI6JQA/i5XruA==
-X-Received: by 2002:a17:907:7e88:b0:b0f:a22a:4c3c with SMTP id a640c23a62f3a-b34bb41ad93mr619135966b.48.1758846344556;
-        Thu, 25 Sep 2025 17:25:44 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b353e5d2ddfsm260259566b.14.2025.09.25.17.25.43
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 25 Sep 2025 17:25:44 -0700 (PDT)
-Date: Fri, 26 Sep 2025 00:25:43 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: SeongJae Park <sj@kernel.org>, Alexander Potapenko <glider@google.com>,
-	akpm@linux-foundation.org, david@redhat.com, vbabka@suse.cz,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, elver@google.com,
-	dvyukov@google.com, kasan-dev@googlegroups.com,
-	Aleksandr Nogikh <nogikh@google.com>
-Subject: Re: [PATCH v2] mm/memblock: Correct totalram_pages accounting with
- KMSAN
-Message-ID: <20250926002543.fwkf5qldhkapcmqr@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250924100301.1558645-1-glider@google.com>
- <20250925123759.59479-1-sj@kernel.org>
- <aNVWzaxq82UI3wWO@kernel.org>
+	imf15.hostedemail.com;
+	dkim=none;
+	spf=pass (imf15.hostedemail.com: domain of yukuai1@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yukuai1@huaweicloud.com;
+	dmarc=none
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4cXsc80GbfzYQv5r
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 08:56:56 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 219641A0ACF
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 08:57:06 +0800 (CST)
+Received: from [10.174.179.143] (unknown [10.174.179.143])
+	by APP4 (Coremail) with SMTP id gCh0CgBHCmLf5NVoUKZVAw--.24830S3;
+	Fri, 26 Sep 2025 08:57:05 +0800 (CST)
+Subject: Re: [PATCH 01/10] blk-cgroup: use cgroup lock and rcu to protect
+ iterating blkcg blkgs
+To: Yu Kuai <hailan@yukuai.org.cn>, Bart Van Assche <bvanassche@acm.org>,
+ Yu Kuai <yukuai1@huaweicloud.com>, tj@kernel.org, ming.lei@redhat.com,
+ nilay@linux.ibm.com, hch@lst.de, josef@toxicpanda.com, axboe@kernel.dk,
+ akpm@linux-foundation.org, vgoyal@redhat.com
+Cc: cgroups@vger.kernel.org, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, yi.zhang@huawei.com,
+ yangerkun@huawei.com, johnny.chenyi@huawei.com,
+ "yukuai (C)" <yukuai3@huawei.com>
+References: <20250925081525.700639-1-yukuai1@huaweicloud.com>
+ <20250925081525.700639-2-yukuai1@huaweicloud.com>
+ <bc6fe04d-3245-40dd-aa30-c3a3acb670c2@acm.org>
+ <01e7eccd-3529-4d12-8ad2-fd9e034a026d@yukuai.org.cn>
+From: Yu Kuai <yukuai1@huaweicloud.com>
+Message-ID: <688275d5-fbb4-08b3-45e1-798ad8cf77fc@huaweicloud.com>
+Date: Fri, 26 Sep 2025 08:57:03 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aNVWzaxq82UI3wWO@kernel.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Queue-Id: 533F640004
-X-Stat-Signature: y876kewtu1gh1g3i64tbsrfhfuzwf6ay
+In-Reply-To: <01e7eccd-3529-4d12-8ad2-fd9e034a026d@yukuai.org.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgBHCmLf5NVoUKZVAw--.24830S3
+X-Coremail-Antispam: 1UD129KBjvdXoWruF1rXF15Ar4kuw1rAr1UKFg_yoWftwbEva
+	n0y3s7Gw15Wwnaq3WrGrnxJFZ5Ka18XryUCF48AFW7twnxAa45G3ZrurWxZFZYka1qywn2
+	gr1ku348Jr4aqjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbfAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
+	6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kI
+	c2xKxwCYjI0SjxkI62AI1cAE67vIY487MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7V
+	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
+	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6x
+	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
+	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
+	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7sRidbbtUUUUU==
+X-CM-SenderInfo: 51xn3trlr6x35dzhxuhorxvhhfrp/
+X-Rspamd-Queue-Id: 65C33A000B
+X-Stat-Signature: gudff933bih3h5ed5en6izqjp3athg7t
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1758846346-272627
-X-HE-Meta: U2FsdGVkX18izIXTzE0vPdA8ZPmoB2aUyeGAVVNp7pmWhUsoFZ60P045SPR23wknB3aRCbG/JWDLOdVoyPdvC9LLtVE4ajMsKe9Ovgw00DkpepeAa80IzQKclJCk2Odm6tZnD9rV8G8yclJ/CQ2WVpi/HizMjMF1AVkUoaqI36nA1C74wimW7xQozbb7+QNDs4DiFz4pGKxn06manl4ofCNDfeP/ovgzOdOyEXa+MnTNErtxrwna+it7ynNcbwuw9r9MqmSDIQuUy+oZKnAJVecsxDA1l9RE0u/QM4PE3khZE6ajZVJIjCYglIC7p9LJdHVvgK9Wz4oNtmS1ux91bjkrrgD6eeRXbEUOkTFBz00feeKcxTOWyIRZ9TNWqHmaqFiGqbDsxCypzRHHFb+DGadVAs2MItF2Kl/0WxOEuDN6tcoAxbeMAInxxeiDjrFajY2H0Fg3P+ZOc7WKtd/vVFAJtWidq/YIS0KdRW9yl61Bi4vfLES2Fv8bxPhjhr/qho8SMMz/EzuLjOmqqTAWtC0pKTTBCl83BRHbXhB/vDH1NCijccc4jFXdIxTQfJ8bh4Ov5zyigqlfbiwE+MsbuIGXCtyrg7gA/WClsbYIEPwFf5b3ml9x6Sso0j2zXe9E5FYyYGoXLeOzEzuUWdijAD57jMw8g8nposRmBz25HQXMxEsYLCphK3KS6VVW9nK1+J+mQ79f7TiPCi0Kdiud0tBdylXXWh0B6H3oxdNv4elWVgoYM+/kaiPiu6h/G28tCyt2pgZ+1Ey0u8KLdX6Qg9D7PP81x6gmUGCcQy7YMwzpRDGqZGtfiE1vCdQpnJESrj8iqweojz0PUhdzPfShpGKdI392bMUlszQLZBYZ+wxHNHkqTnJY2lnRh+0n7hvUdXFJjWj+9mRRvVNuDrvH2ITvXTfsS4MqpfzfBKnA8Gjs5on9yqCd5q1+RREcOAlaxG26SfSBTpB+H9dqTnw
- wXhtVR8b
- pHObM+lOieadS8LrtXgW4pxJevCVFIwuwNc8ko6sCS+CMVDTAYMmX9zb35BafsmBaGB18XEpSSQCL58KpCIFuE4+i1XX8iHssF3ePxJNJaAeuCYDhAdmBfRGXn2FkCu89uCkWqlinB4/9f3F3s4bxNSNUgKkgttYFJ8hEaugElL+Lix0CHd7lK5IA5G0E56U5c5VPyTL7Ms72Q8eKOxdsNc0FBSAADs7tZKi9CWkEHDlLha3jo989gSo2BjTXDx09CQ4E1r9L4rAUbiuSeCragzpBmr9fb+fskk+/60B5LFTm+OtuaW997WMYH395X7/DEg1K9ElHThpBpfeHo7gea4O+foVoLYZfoLSlCadi9W5Gfx4r25EG2EWjwZcHwVlWeKUkearacLVlz/xWAnqNqP0CeQLiCLSiJvOIf0qqNLzNf4sIxE7S3ExqVM7gLYCzXmFbEolmfQfmlKuD9zwQj+/vqPZ8HuEbNcynKc9OLQk0xnEIfv/ndfg+SrDD02pyssA9vXYjuqbKgcBRB9IraXMYXpko3ntCJT6VJDRQ3Gpa8Z5OxCAaftmyFlvS7zmmlontU42ktijeg4XrA5Z8AkY8BtHzF2FURvOF5EDN1kpJ+BMAD24wMfv72JyPoJa7K5cjOrG2zD58Bvc0OO4C6IfznNuyH3ZGpQ8a3dG+ExufAXB1e06ho2t11rgwECjNIX1YLHJB/VkOusD/goNuaurwM2gynpr3HqsM2VpEznwW399E8fFwHnCeq7iCm/GRey3NZc587HRJonUkn4tOOiiU/g==
+X-HE-Tag: 1758848230-674514
+X-HE-Meta: U2FsdGVkX19S2U7MeaJs3psoGCBLq0DsaXyttG51VQTqpCSauyB+Zgr5w6itp2cSvgG5cppVqTDy7QmyCtFIiFvbDKi8Z14PMD0tHrzCcGvZYj6jvBH4Wyf6V/q3eY2u2CH+WwBy3EJXuRNZHqB82mi8jh2lnDMh6OyhLAi8KxgWwSbPO5zjcZYNDVY2+/MfVwbiP1/pvkrnbD6G6Poca74OIgOUdoP9hyyHvsj8jpNdNenH/GGbbG2CLnENq342ugMassqz1wXxHh1qwAchVT7CBAVG7sUp/Yxt3lcMIxfGUw4FnzIKe7hBr5rfJ5VXTKF/zCn8YSsBHczlEH10hoTkhB7wuc+HZXVauscWoiKcgo7WmmE4iLD6O9cwQxASKvSOBtN/JAu3mA3JAM5N3o6eU9BcpLEjQfDVLPhBSLwRU7l+hGpN5p0oX74bG4k07tE2o/mvrgHHVkM/E0+7JbVJ29DJaiC5W+tUwKlB+8OGEGhI+8XaUyjJ5/gkE0w2mg2c/focTLQgSia/tnuAE6vTnLVHVCJseU50kV2JdI7xmFSSzgIr87GYvlajQVIpkRt7+YOTHDOPeGbDBcc3SrjBqYC61Cx7mopV44vH7i23HRmrA/02OA82+YkAhGEvfydQQfuFEggknFRKfilEyZAi7lMdcoOnmhh8eaArTPCOIGKqa62bPsHyYLowJiwABKAUMKYZlTSIErQy7kiyjgPEa/iBtGsvNllOJ/CVs6ztfFT6dyIOoKxWRkMNGLOqvgbQW9Uw1z+4kKRd670VY2LXsJxYUUELSUWDWAAT54jjkOWti1j/OX9YDP3FaE75c3X+RHLebVrRrYTfeTiuMHDcGXFel4YB94w7f1smFvP4kePLuliDPRzjIHFwmUEovJdA4b9HH2/WKK/F/9v2abcPAP66aJjKxQZiljlbqfuFd0hOMETpN1wvK9mqzHh4MOqFP/YP6+P+zvt2JJ2
+ bJKfoFym
+ H965Ob0Qt6zbl8Q4E2Ii1KR0EKjH0Wa3l2gzOoPkzywykRdA/SWhdeYNzYNOfplZ0quoonOqbe+mB9WKix/b7KAnCkXrPokcNB+Qwj1jCFrPOeJwB70IbY07vhpwFOevK8ysU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,90 +113,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 25, 2025 at 05:50:53PM +0300, Mike Rapoport wrote:
->On Thu, Sep 25, 2025 at 05:37:59AM -0700, SeongJae Park wrote:
->> Hello,
->> 
->> On Wed, 24 Sep 2025 12:03:01 +0200 Alexander Potapenko <glider@google.com> wrote:
->> 
->> > When KMSAN is enabled, `kmsan_memblock_free_pages()` can hold back pages
->> > for metadata instead of returning them to the early allocator. The callers,
->> > however, would unconditionally increment `totalram_pages`, assuming the
->> > pages were always freed. This resulted in an incorrect calculation of the
->> > total available RAM, causing the kernel to believe it had more memory than
->> > it actually did.
->> > 
->> > This patch refactors `memblock_free_pages()` to return the number of pages
->> > it successfully frees. If KMSAN stashes the pages, the function now
->> > returns 0; otherwise, it returns the number of pages in the block.
->> > 
->> > The callers in `memblock.c` have been updated to use this return value,
->> > ensuring that `totalram_pages` is incremented only by the number of pages
->> > actually returned to the allocator. This corrects the total RAM accounting
->> > when KMSAN is active.
->> > 
->> > Cc: Aleksandr Nogikh <nogikh@google.com>
->> > Fixes: 3c2065098260 ("init: kmsan: call KMSAN initialization routines")
->> > Signed-off-by: Alexander Potapenko <glider@google.com>
->> > Reviewed-by: David Hildenbrand <david@redhat.com>
->> [...]
->> > --- a/mm/mm_init.c
->> > +++ b/mm/mm_init.c
->> > @@ -2548,24 +2548,25 @@ void *__init alloc_large_system_hash(const char *tablename,
->> >  	return table;
->> >  }
->> >  
->> > -void __init memblock_free_pages(struct page *page, unsigned long pfn,
->> > -							unsigned int order)
->> > +unsigned long __init memblock_free_pages(struct page *page, unsigned long pfn,
->> > +					 unsigned int order)
->> >  {
->> >  	if (IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT)) {
->> >  		int nid = early_pfn_to_nid(pfn);
->> >  
->> >  		if (!early_page_initialised(pfn, nid))
->> > -			return;
->> > +			return 0;
->> >  	}
->> 
->> I found this patch on mm-new tree is making my test machine (QEMU) reports much
->> less MemTotal even though KMSAN is disabled.  And modifying the above part to
->> be considered as free success (returning '1UL << order') fixed my issue.
->> Because the commit message says the purpose of this change is only for
->> KMSAN-stashed memory, maybe the above behavior change is not really intended?
->> 
->> I'm not familiar with this code so I'm unsure if the workaround is the right
->> fix.  But since I have no time to look this in deep for now, reporting first
->
->With DEFERRED_STRUCT_PAGE_INIT we count totalram_pages in
->memblock_free_all() but actually free them in deferred_init_memmap() and
->deferred_grow_zone().
->
->So returning '1UL << order' is a correct workaround, but the proper fix
->should update totalram_pages in the deferred path IMHO.
->
+Hi,
 
-Maybe I did something similar at [1].
+在 2025/09/26 1:07, Yu Kuai 写道:
+> Hi,
+> 
+> 在 2025/9/25 23:57, Bart Van Assche 写道:
+>> On 9/25/25 1:15 AM, Yu Kuai wrote:
+>>> It's safe to iterate blkgs with cgroup lock or rcu lock held, prevent
+>>> nested queue_lock under rcu lock, and prepare to convert protecting
+>>> blkcg with blkcg_mutex instead of queuelock.
+>>
+>> Iterating blkgs without holding q->queue_lock is safe but accessing the
+>> blkg members without holding that lock is not safe since q->queue_lock
+>> is acquired by all code that modifies blkg members. Should perhaps a new
+>> spinlock be introduced to serialize blkg modifications?
 
-But this hit a problem for shmem, since shmem_fill_super() use
-totalram_pages(). And before DEFERRED_STRUCT_PAGE_INIT finish, the size is too
-small, so it can't boot up.
+Actually, only blkcg_print_blkgs() is using rcu in this patch, and take
+a look at the callers, I don't see anyone have to hold queue_lock. Can
+you explain in detail which field from blkg is problematic in this
+patch?
 
-Per my understanding, shmem_fill_super() could be invoked after
-memblock_discard(), so it is not proper to refactor to get ram size from
-memblock.
+Thanks,
+Kuai
 
-Could we adjust shmem_default_max_blocks/shmem_default_max_inodes use memblock
-at boot stage and use totalram_pages() after system is fully up? Or any other
-suggestions?
+>>
+> No need for a new lock, I think blkcg->lock can do that.
+> 
+> Thanks,
+> Kuai
+> 
+>> Thanks,
+>>
+>> Bart.
+>>
+> .
+> 
 
-[1]: http://lkml.kernel.org/r/20240726003612.5578-1-richard.weiyang@gmail.com
-
->-- 
->Sincerely yours,
->Mike.
-
--- 
-Wei Yang
-Help you, Help me
 
