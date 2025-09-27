@@ -4,115 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8F90CAC5BB
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Sep 2025 01:17:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FBE8CAC5B9
+	for <linux-mm@archiver.kernel.org>; Sat, 27 Sep 2025 04:31:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18D598E0003; Fri, 26 Sep 2025 21:17:24 -0400 (EDT)
+	id A48608E0003; Sat, 27 Sep 2025 00:31:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 164BC8E0001; Fri, 26 Sep 2025 21:17:24 -0400 (EDT)
+	id 9D24E8E0001; Sat, 27 Sep 2025 00:31:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A2038E0003; Fri, 26 Sep 2025 21:17:24 -0400 (EDT)
+	id 8729A8E0003; Sat, 27 Sep 2025 00:31:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ED3078E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 21:17:23 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EC949C04CF
-	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 01:17:22 +0000 (UTC)
-X-FDA: 83933267124.15.2132C77
-Received: from mail-il1-f175.google.com (mail-il1-f175.google.com [209.85.166.175])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1F5E94000C
-	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 01:17:20 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="4kG/5kb7";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf07.hostedemail.com: domain of surenb@google.com designates 209.85.166.175 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758935841; a=rsa-sha256;
-	cv=none;
-	b=kKieChK7cTfo13kBYwZ2Y4vwtsCzt7YX+pL8jt5ZIqYu2HqFZLwnVgZBdOcWE+Y0ZxcwER
-	1eCntwOEPIBJm95iJQw6gF3NjTOexTD4VPENsORpm/JWuusOSNKGhPftL2+BYbDaw6748t
-	p+zjceKQDSZ75Ziuiw9sDnhZPyXNa8s=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="4kG/5kb7";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf07.hostedemail.com: domain of surenb@google.com designates 209.85.166.175 as permitted sender) smtp.mailfrom=surenb@google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 66D2A8E0001
+	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 00:31:21 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D6B681A0802
+	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 04:31:20 +0000 (UTC)
+X-FDA: 83933755920.30.1510C9A
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0782C2000B
+	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 04:31:17 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kis2mXHj;
+	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758935841;
+	s=arc-20220608; t=1758947479;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JP6jNuOzuaZrN4jqHuCq7vrrzkS8UserW/hueLrBex8=;
-	b=IRoYAK9qzsichNrt6O8eZkpvt77rB+lE+zAwNN3m7Rp3bGneQh/FBzEMS1P8uk0sxbLmOy
-	CclM0UlsHuqo38bBUayViboI0PdMqB5TmWb3l4ZQbGJ+cOBl5YRe2/P7fYxyZYPgSqoyI/
-	/F+nRai1vAwi+ZISWMwyWjrzs19HVcg=
-Received: by mail-il1-f175.google.com with SMTP id e9e14a558f8ab-42451cc9deaso57775ab.1
-        for <linux-mm@kvack.org>; Fri, 26 Sep 2025 18:17:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758935840; x=1759540640; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JP6jNuOzuaZrN4jqHuCq7vrrzkS8UserW/hueLrBex8=;
-        b=4kG/5kb7sAJ3fa7jU4SbLf5TAZHPOOwTSdRkyfyEfC4npcjcL6mrUe/jZ7OYG8ZFA2
-         tdjAUL1Pi7L4C/sRf5tgpWlSdJPQCKXgzqDpclGG6stCV8S0HyIX/5+x3+9ZvIaAfQlb
-         2cGYuFpjkWWtvohHU+9aq+NxXHYzbg0lP1GlRXH2dPQ2wpclH1+jnFPMxRTS+KBxJmhk
-         I3guQGXiF3l+iKVRG0CrUa7dj8KRTyvkAvlvyE8QhiCDqZ9SehXtaZhC6RufS5/s9ljs
-         2RDPICYfUVaespRbh7ChYQ6Ci6dNneqy3V9Zzx8gXniRsrpcFnWeY2Y0e7+9keLfemQJ
-         axqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758935840; x=1759540640;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JP6jNuOzuaZrN4jqHuCq7vrrzkS8UserW/hueLrBex8=;
-        b=QYihzwN9dGuIzPSuKoDHd6knR8MBMHK0XduG+r9XEA0kipYjGDrvEOArxvita0Juwx
-         EN/V4SwsOYZc5gSquQBWgOrlQgXvQepHL5j2LMyJB18fLr/wVIOmG1Ay9frjRXqrFgs5
-         PbqLFPKoqC2WzmyKB83+BkrtNkHUFuah5meRq9rPjCwFByUGo0BoOAYZJCrlF39VdqMP
-         +oTK5Q8z3uhXSz4VvpANiG46LoJTIbB04lx48rI2QFo44bdKcpL+TyHXRNlAIfu3LVDB
-         KAV3PdxncKxf0f1DwehOPSH+hkZFsnwZkSwbwFXX+lRHrSztQY0Sz1wP7I0pbwZFqd9m
-         5A4w==
-X-Forwarded-Encrypted: i=1; AJvYcCUpn6nlCKs8Hc1/b/w33n6pZllu/EuNXn7o2cDaDRLq4pFqjyxnLLPsTJPqS/8XNmmW814aCv+MjA==@kvack.org
-X-Gm-Message-State: AOJu0YxR7DydA5dFGWCO7+G9fAyDl+8FtcYOCLwf8LCM7KICrfUPGbUE
-	PxxzRhknImkD+sbCLGf8Eg9ttukFffuro0mbREZmNVZuMN8T/TXNUxdB9A6aCtn1NiyG9AIddZ5
-	JPQ6pNkrU2yi979mYzMq70xMThpOwcKt/JW9jb6Wb
-X-Gm-Gg: ASbGncss5V6S+v0CPhf34bRxn88ob1Rhzzz0klP8/5ps3JpDBA9HOWZuNwq4lS/ZYPr
-	8iE8To6D7Uvd2dGmbCONe1nL7vpCoQGSbUULDzNER55ItUe0H5yzqlq6DF4V8UlqeyQZaLHj0C2
-	QBPwhihyjYbkCN99YNOHe2Ct2HNDA/ZtH7teOqZU2e6dE1xXhfPUwNae/3jSBQ257slk02bF8Kj
-	4mTXXVBeqwc
-X-Google-Smtp-Source: AGHT+IGpoONlCIOAmMBpkfhbwwmRo6WPxhB3OyNDNkTIiNF4jxrBqrGuAWP/ZktJKaI8KQeNzgcj6VefKfyiJbBSYPU=
-X-Received: by 2002:a05:6e02:2589:b0:425:7759:802b with SMTP id
- e9e14a558f8ab-42865823250mr3145845ab.3.1758935839686; Fri, 26 Sep 2025
- 18:17:19 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250910-slub-percpu-caches-v8-0-ca3099d8352c@suse.cz> <20250910-slub-percpu-caches-v8-22-ca3099d8352c@suse.cz>
-In-Reply-To: <20250910-slub-percpu-caches-v8-22-ca3099d8352c@suse.cz>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 26 Sep 2025 18:17:08 -0700
-X-Gm-Features: AS18NWC10t7P1-gbNUaB2koz9Kn412M7cqwnvwuIUDJz-je5B49gAVgPRT2D2pk
-Message-ID: <CAJuCfpGhv15YLyAm7X63t5gT9hkw+6PK3GZbWmOTng+AG7rEsg@mail.gmail.com>
-Subject: Re: [PATCH v8 22/23] maple_tree: Add single node allocation support
- to maple state
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, 
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, rcu@vger.kernel.org, 
-	maple-tree@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1F5E94000C
-X-Stat-Signature: 6o1bd8krsnx4nrkocygyah8s3zpt6w9f
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=AD+GDe6dkb6CAirbse8oNyim1mCbH34F/z7cVK1RJp0=;
+	b=jiu1bwJIOUMaGQU213Fd5/TxP5OyLzz6bZ/Fyps/hIT+lroof3NVgguKsxcRTD5hBK9YwZ
+	1RZbASGzQLRgJUHZFh1GBsJUq+65qAjKBzDRdBLyIsTGZzoDqS8EY6dFIz6C4ms+R7L3uw
+	wxJuA7ecs1QsZqtDQPe6/RyI/FK3zaQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758947479; a=rsa-sha256;
+	cv=none;
+	b=8D3L0+mU3W1dWmcqZRgN0bm29D+SY55w2xQgGCC4IABprysRpQFvIQfe6ps3gj0KwnzSSh
+	qjkpQXGYHt4jZPLFV4e26hu8/2SJuyO0Qsqp3Wb1mcB2KRLWm0SyZKxOxjzGxeN2qSyutK
+	juw/gN6ZEAuuutGBx2UybtalmdFWmNY=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kis2mXHj;
+	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758947478; x=1790483478;
+  h=date:from:to:cc:subject:message-id;
+  bh=mQXVNR89QmIlz+Istp3l46pb5zGAxFAQPT5fzVMJHss=;
+  b=kis2mXHjWq0ln/B9TUvg723FJzagFsfJhqfj/7J8fkZUPas/wVI+cbia
+   7ObUTVuClN0nViGX2aQ3tAWrSXxCjYKQuVAseB/ySaxMh3Q9aKIe+sKiq
+   YRmGjOSsGwEqMKFaVYHD12lS9xudfvMYYB+utijq0BL9f7RVRkWknAOo4
+   sUQ0QF+gBDPDtxtmP+O3T8cc1yN8eFgFDE3didUwfiOnPBuGSFynLVfoO
+   5DDpJS5AjcCp57H1eBCe0a9MjL+e2TgwHAhoWzk0NxJKXDCqKxNlKHv0x
+   9YgyZ3RxsYx44P9A2es2t+72E9UOb5ZS0RvNC06uecXsEC+2nGNdjpjVS
+   g==;
+X-CSE-ConnectionGUID: Ka36PPIKSLmdeeCfHAFyww==
+X-CSE-MsgGUID: YZjsmFoHRvuEeD8sftHlFg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11565"; a="71958582"
+X-IronPort-AV: E=Sophos;i="6.18,296,1751266800"; 
+   d="scan'208";a="71958582"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2025 21:31:16 -0700
+X-CSE-ConnectionGUID: kQY0LDwDSj25lUJbEE+g9g==
+X-CSE-MsgGUID: 54renw8pQAei6juK/4wGtg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,296,1751266800"; 
+   d="scan'208";a="178173225"
+Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
+  by fmviesa008.fm.intel.com with ESMTP; 26 Sep 2025 21:31:14 -0700
+Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v2MaV-0006mz-2r;
+	Sat, 27 Sep 2025 04:31:11 +0000
+Date: Sat, 27 Sep 2025 12:30:12 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>,
+ Mark Brown <broonie@kernel.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 262858079afde6d367ce3db183c74d8a43a0e83f
+Message-ID: <202509271226.X0pWIs0Z-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0782C2000B
+X-Stat-Signature: ci9fd1n9asqwg914a6c9hdghpn8ab9tf
 X-Rspam-User: 
-X-HE-Tag: 1758935840-274888
-X-HE-Meta: U2FsdGVkX19w1Wc46gtplnK7pIuwew4lpHF+JyDZ6hi4te67TQ9JMt0H2t6J9ITuQoQkH0Ug6fjfla4/d87Xd/Lq4X1QyOmXBztarw2iU8mxSYAGAmLsC41n014x+HFgMNUCIpB6GEHfvsRAMQ6q31B2XYVLir4A+Vka8T6ktsoyElo4Tr8UQVhXzVKkLfJYyQodKuuBlLqKDkZvMLPe7dQicb7dZBIG+YWsfu5zHZyx04SQjHgQ/hELD5yGS0/2q0Ajq7kMTh7qbb02Y0TvPAKFce6t5uxe7XiOOZSDQ5Tvk/6ZTtRXV/ZtWyhOIegd83bFN5ze3/YoOan4ib1DlQH+V5EbkAVT71+FsJdiIej4HyV6CpMO7hiAudohviAcsQtQRFaDjr0+tTYSl1N1doly9trMOmQE4uY6LzDmOgayUnnjEfm3FMNjkffdjof3YoSFIhGOP0nl9jP5fbeF5r4M10jvnJ3VQv/CIGVjrwE65o8SgDutCW6PSreOcCHkdysHlxoBH77tTvtFqvUbAQ8Xdx5qAFaWTH4Xy/87XMa90TPRV0Iv5MWR1m1cCHCeg6V64dShqNf60qRSBpjWBTP1PGtJRNLxuSr27//rxeH+0S84JwBCxJlkVUDRabuZUKWYVe1jF0UlRO0FYH0zmp2TjhPkdnW3u0WFfzaWqSJOvXyHIO0xQgkd1g11HhU5j0swqeTn8cptP8pisN8X2NCoGDQePk4St3uiBAsJR9IUhCe6p9xvGDoz0YxrJymLb6UoNeVet1T5vw5hJpB25QrUaa/XfUQjufsC6z9TTSYN5OL29OOO4cFcOQ/Ov7zP1zN5Oz/nmCBTNIRdbnfn6fPIiyHBW5+j6oUiO5yU0F1hc6hAPpglhBpdMuwRqrvrctzpJ+eHWb+V5QaJnpkF7Nx64YlG78t5Dg3wrJ0F7kHe4UjaOon4lUT/lC9cyOgZ+HvBVwxrGiZ+m4mOBFM
- qxigNrYL
- 6vOouW/OhoR8CyP8yajBW0QPQT2ABsiDes/FqsXs7j/G3S1+y76W4SJp4NIcDc2epavkDnpwIekSy95jb67xefYtgf6ZHPiA0yVkbYvqVQyaxpbZIS42rl8DB9RHaWFnwqaCX0sdjSFCUMt1e2v2pWcTM7t8Pf0nUaUzcbOxhHtgA4CY6MBv9jOu8F9ghykZKOa2qmroQFMdWJSFF+vXtD8DPy/wu5VsaV8ySQKTAJLyCAzQ+GzI4zVcZfqKeFfSZ3zQQJWagzRm6q9Y=
+X-HE-Tag: 1758947477-407954
+X-HE-Meta: U2FsdGVkX199aJHaryZZr4PwJRryoRc67wdh6VkJFvkZ6mzKMcGemG4TXSSy5/RgCgWH13GnrDodQ6wNLVXyRYXHoTMZ6gsv97h6Ybd7zinoI/rOi/G2pVpK6jAwkbl3WBO/S1imOBE2ST/cKaZJc+AaHVze9z+prgpe5OOz0Nmwrxzk2204J+G7sPdkOp/bgUet6LYwYHd1VquhmtzE/A6rPVImz7tz6DIZWMQFtv2i71JR8rm4gqIepcY32wFmxBBtAALpIeWHIi2fFtq7/75WmtbM68jOAt7zB0Bh2GW73W3ucN590PYq75YoHIqj3bmDQedM1R6TKKIE2NO9SlrRxglT1y7Ob+Yd35pUOu1SFbQ/hwGOihDHuOeBbJ3K4zFrFpW3csfpTnSd3sxDMHv9m3ex1vEc/f3NQUNgbcJRXiD8BkrAcRoreo4RH6OKQUTLyNdEOkrybY/I+AEYWPNlHSeErpct0yvVNhI/2B01Kf0FWbMYBuyATveRXqIasdKGt8tWkNy+qeS7GbrIUBrUhFjmLEr2xmj7xyEtzyG5busHyzOOrN8fQpBVLEGVYwL3rtbXYDfO2bgT6VnBhvpH4ZfQZGrUJepdUxVoMAkNB/6LN6CHKVBW4RXLa8NzPPzbQkG9lvpLpim9c2TjAGPm/oMBrQo85qur0wYhJP6S+pUcKAL44q1RgQJlKDj6OlvC7vgoKJPRQ7iKL30xwSehTDes7WaRr64RCpEMQxZJOrc5r+VBBI1rg71p7ATY5zmIy4Pm9v88L7xNQdxNhiKYPe63o1H8KQK+FZADgBLfjb9jVFJ+eAzP3Y25Jn7bv3KoyzoV5bRGxvglHBY+BKm3xdqyaOpldckBauqlNWcVI+VgJkwCuDupo36CwRpcr+NPOI3UPFQOWQNcdvkksQgtHOD/3aw8IDCa50YX3OY7ysT3DHQvMH3x4LUGAa/QYI2M3JoXfkBUrbCur2+
+ pHapS1DI
+ hfGqVjQ5w6UCGPaAJ8QXuAcLu9lqYInlrn4SGvyQ5lWby6aka0mHs8KkbH18Zu64uAmxr5Tn++HEn2h6oZsHUXGnEIAbU543//IUQXwAVrhS3ZkiDqyY5P9uWW0mp92m31TxpdWJYzR5d1twepKRDTtfU3AYurLpBi636iuegL+3zD9DspLmdgtcA+g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,189 +102,1093 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 10, 2025 at 1:01=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
-ote:
->
-> From: "Liam R. Howlett" <Liam.Howlett@Oracle.com>
->
-> The fast path through a write will require replacing a single node in
-> the tree.  Using a sheaf (32 nodes) is too heavy for the fast path, so
-> special case the node store operation by just allocating one node in the
-> maple state.
->
-> Signed-off-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-> ---
->  include/linux/maple_tree.h       |  4 +++-
->  lib/maple_tree.c                 | 47 ++++++++++++++++++++++++++++++++++=
-+-----
->  tools/testing/radix-tree/maple.c |  9 ++++++--
->  3 files changed, 51 insertions(+), 9 deletions(-)
->
-> diff --git a/include/linux/maple_tree.h b/include/linux/maple_tree.h
-> index 166fd67e00d882b1e6de1f80c1b590bba7497cd3..562a1e9e5132b5b1fa8f8402a=
-7cadd8abb65e323 100644
-> --- a/include/linux/maple_tree.h
-> +++ b/include/linux/maple_tree.h
-> @@ -443,6 +443,7 @@ struct ma_state {
->         unsigned long min;              /* The minimum index of this node=
- - implied pivot min */
->         unsigned long max;              /* The maximum index of this node=
- - implied pivot max */
->         struct slab_sheaf *sheaf;       /* Allocated nodes for this opera=
-tion */
-> +       struct maple_node *alloc;       /* allocated nodes */
->         unsigned long node_request;
->         enum maple_status status;       /* The status of the state (activ=
-e, start, none, etc) */
->         unsigned char depth;            /* depth of tree descent during w=
-rite */
-> @@ -491,8 +492,9 @@ struct ma_wr_state {
->                 .status =3D ma_start,                                    =
- \
->                 .min =3D 0,                                              =
- \
->                 .max =3D ULONG_MAX,                                      =
- \
-> -               .node_request=3D 0,                                      =
- \
->                 .sheaf =3D NULL,                                         =
- \
-> +               .alloc =3D NULL,                                         =
- \
-> +               .node_request=3D 0,                                      =
- \
->                 .mas_flags =3D 0,                                        =
- \
->                 .store_type =3D wr_invalid,                              =
- \
->         }
-> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-> index a3fcb20227e506ed209554cc8c041a53f7ef4903..a912e6a1d4378e72b967027b6=
-0f8f564476ad14e 100644
-> --- a/lib/maple_tree.c
-> +++ b/lib/maple_tree.c
-> @@ -1073,16 +1073,23 @@ static int mas_ascend(struct ma_state *mas)
->   *
->   * Return: A pointer to a maple node.
->   */
-> -static inline struct maple_node *mas_pop_node(struct ma_state *mas)
-> +static __always_inline struct maple_node *mas_pop_node(struct ma_state *=
-mas)
->  {
->         struct maple_node *ret;
->
-> +       if (mas->alloc) {
-> +               ret =3D mas->alloc;
-> +               mas->alloc =3D NULL;
-> +               goto out;
-> +       }
-> +
->         if (WARN_ON_ONCE(!mas->sheaf))
->                 return NULL;
->
->         ret =3D kmem_cache_alloc_from_sheaf(maple_node_cache, GFP_NOWAIT,=
- mas->sheaf);
-> -       memset(ret, 0, sizeof(*ret));
->
-> +out:
-> +       memset(ret, 0, sizeof(*ret));
->         return ret;
->  }
->
-> @@ -1093,9 +1100,34 @@ static inline struct maple_node *mas_pop_node(stru=
-ct ma_state *mas)
->   */
->  static inline void mas_alloc_nodes(struct ma_state *mas, gfp_t gfp)
->  {
-> -       if (unlikely(mas->sheaf)) {
-> -               unsigned long refill =3D mas->node_request;
-> +       if (!mas->node_request)
-> +               return;
-> +
-> +       if (mas->node_request =3D=3D 1) {
-> +               if (mas->sheaf)
-> +                       goto use_sheaf;
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 262858079afde6d367ce3db183c74d8a43a0e83f  Add linux-next specific files for 20250926
 
-Hmm, I don't get the above logic. One node is requested and instead of
-using possibly available mas->alloc, we jump to using mas->sheaf and
-freeing mas->alloc... That does not sound efficient. What am I
-missing?
+Error/Warning (recently discovered and may have been fixed):
 
-> +
-> +               if (mas->alloc)
-> +                       return;
->
-> +               mas->alloc =3D mt_alloc_one(gfp);
-> +               if (!mas->alloc)
-> +                       goto error;
-> +
-> +               mas->node_request =3D 0;
-> +               return;
-> +       }
-> +
-> +use_sheaf:
-> +       if (unlikely(mas->alloc)) {
-> +               kfree(mas->alloc);
-> +               mas->alloc =3D NULL;
-> +       }
-> +
-> +       if (mas->sheaf) {
-> +               unsigned long refill;
-> +
-> +               refill =3D mas->node_request;
->                 if(kmem_cache_sheaf_size(mas->sheaf) >=3D refill) {
->                         mas->node_request =3D 0;
->                         return;
-> @@ -5180,8 +5212,11 @@ void mas_destroy(struct ma_state *mas)
->         mas->node_request =3D 0;
->         if (mas->sheaf)
->                 mt_return_sheaf(mas->sheaf);
-> -
->         mas->sheaf =3D NULL;
-> +
-> +       if (mas->alloc)
-> +               kfree(mas->alloc);
-> +       mas->alloc =3D NULL;
->  }
->  EXPORT_SYMBOL_GPL(mas_destroy);
->
-> @@ -5816,7 +5851,7 @@ bool mas_nomem(struct ma_state *mas, gfp_t gfp)
->                 mas_alloc_nodes(mas, gfp);
->         }
->
-> -       if (!mas->sheaf)
-> +       if (!mas->sheaf && !mas->alloc)
->                 return false;
->
->         mas->status =3D ma_start;
-> diff --git a/tools/testing/radix-tree/maple.c b/tools/testing/radix-tree/=
-maple.c
-> index 72a8fe8e832a4150c6567b711768eba6a3fa6768..83260f2efb1990b71093e4569=
-50069c24d75560e 100644
-> --- a/tools/testing/radix-tree/maple.c
-> +++ b/tools/testing/radix-tree/maple.c
-> @@ -35085,10 +35085,15 @@ static unsigned char get_vacant_height(struct m=
-a_wr_state *wr_mas, void *entry)
->
->  static int mas_allocated(struct ma_state *mas)
->  {
-> +       int total =3D 0;
-> +
-> +       if (mas->alloc)
-> +               total++;
-> +
->         if (mas->sheaf)
-> -               return kmem_cache_sheaf_size(mas->sheaf);
-> +               total +=3D kmem_cache_sheaf_size(mas->sheaf);
->
-> -       return 0;
-> +       return total;
->  }
->  /* Preallocation testing */
->  static noinline void __init check_prealloc(struct maple_tree *mt)
->
-> --
-> 2.51.0
->
+    https://lore.kernel.org/oe-kbuild-all/202509101930.OsSQJxIP-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202509181807.I4frBSXx-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202509190505.fKGvEJRa-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202509190923.UgSxMzx5-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202509192136.CR5pSGKJ-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202509211250.mD8JS2nu-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202509231815.d1EjWp8Y-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202509240828.ng1OXTUj-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202509251326.SYA3QL9j-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202509252250.uv5q12aK-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202509260906.O3Ra2nGg-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202509270428.FZaO2PPq-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202509112313.0XfkfKPl-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202509121952.ChfqonoQ-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202509122123.Tv76XiqQ-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202509122328.JDGUFyAN-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202509250925.4L4JQTtn-lkp@intel.com
+
+    Documentation/.renames.txt: warning: ignored by one of the .gitignore files
+    ERROR: modpost: "__ffsdi2" [drivers/spi/spi-amlogic-spifc-a4.ko] undefined!
+    arch/arm/boot/dts/nxp/imx/imx6dl-colibri-aster.dtb: stmpe811@41 (st,stmpe811): 'blocks', 'id', 'irq-trigger', 'stmpe_adc' do not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nxp/imx/imx6dl-colibri-eval-v3.dtb: stmpe811@41 (st,stmpe811): 'blocks', 'id', 'irq-trigger', 'stmpe_adc' do not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nxp/imx/imx6dl-colibri-iris-v2.dtb: stmpe811@41 (st,stmpe811): 'blocks', 'id', 'irq-trigger', 'stmpe_adc' do not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nxp/imx/imx6dl-colibri-iris.dtb: stmpe811@41 (st,stmpe811): 'blocks', 'id', 'irq-trigger', 'stmpe_adc' do not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nxp/imx/imx6dl-skov-revc-lt2.dtb: switch@0 (microchip,ksz8873): Unevaluated properties are not allowed ('interrupt', 'pinctrl-names' were unexpected)
+    arch/arm/boot/dts/nxp/imx/imx6dl-skov-revc-lt2.dtb: switch@0 (microchip,ksz8873): pinctrl-names: ['default'] is too short
+    arch/arm/boot/dts/nxp/imx/imx6dl-skov-revc-lt6.dtb: switch@0 (microchip,ksz8873): Unevaluated properties are not allowed ('interrupt', 'pinctrl-names' were unexpected)
+    arch/arm/boot/dts/nxp/imx/imx6dl-skov-revc-lt6.dtb: switch@0 (microchip,ksz8873): pinctrl-names: ['default'] is too short
+    arch/arm/boot/dts/nxp/imx/imx6q-apalis-eval-v1.2.dtb: stmpe811@41 (st,stmpe811): 'blocks', 'id', 'irq-trigger' do not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nxp/imx/imx6q-apalis-eval.dtb: stmpe811@41 (st,stmpe811): 'blocks', 'id', 'irq-trigger' do not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.1.dtb: stmpe811@41 (st,stmpe811): 'blocks', 'id', 'irq-trigger' do not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora.dtb: stmpe811@41 (st,stmpe811): 'blocks', 'id', 'irq-trigger' do not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nxp/imx/imx6q-nitrogen6_max.dtb: i2c-mux-2 (i2c-mux-gpio): Unevaluated properties are not allowed ('i2c2mux@1', 'i2c2mux@2' were unexpected)
+    arch/arm/boot/dts/nxp/imx/imx6q-nitrogen6_max.dtb: i2c-mux-3 (i2c-mux-gpio): Unevaluated properties are not allowed ('i2c3mux@1' was unexpected)
+    arch/arm/boot/dts/nxp/imx/imx6q-novena.dtb: stmpe811@44 (st,stmpe811): 'blocks', 'id', 'irq-gpio', 'irq-trigger' do not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nxp/imx/imx6q-novena.dtb: stmpe811@44 (st,stmpe811): touchscreen: Unevaluated properties are not allowed ('st,adc-freq', 'st,mod-12b', 'st,ref-sel', 'st,sample-time' were unexpected)
+    arch/arm/boot/dts/nxp/imx/imx6q-skov-revc-lt2.dtb: switch@0 (microchip,ksz8873): Unevaluated properties are not allowed ('interrupt', 'pinctrl-names' were unexpected)
+    arch/arm/boot/dts/nxp/imx/imx6q-skov-revc-lt2.dtb: switch@0 (microchip,ksz8873): pinctrl-names: ['default'] is too short
+    arch/arm/boot/dts/nxp/imx/imx6q-skov-revc-lt6.dtb: switch@0 (microchip,ksz8873): Unevaluated properties are not allowed ('interrupt', 'pinctrl-names' were unexpected)
+    arch/arm/boot/dts/nxp/imx/imx6q-skov-revc-lt6.dtb: switch@0 (microchip,ksz8873): pinctrl-names: ['default'] is too short
+    arch/arm/boot/dts/nxp/imx/imx6q-skov-reve-mi1010ait-1cp1.dtb: switch@0 (microchip,ksz8873): Unevaluated properties are not allowed ('interrupt', 'pinctrl-names' were unexpected)
+    arch/arm/boot/dts/nxp/imx/imx6q-skov-reve-mi1010ait-1cp1.dtb: switch@0 (microchip,ksz8873): pinctrl-names: ['default'] is too short
+    arch/arm/boot/dts/nxp/imx/imx6qp-nitrogen6_max.dtb: i2c-mux-2 (i2c-mux-gpio): Unevaluated properties are not allowed ('i2c2mux@1', 'i2c2mux@2' were unexpected)
+    arch/arm/boot/dts/nxp/imx/imx6qp-nitrogen6_max.dtb: i2c-mux-3 (i2c-mux-gpio): Unevaluated properties are not allowed ('i2c3mux@1' was unexpected)
+    arch/arm/boot/dts/nxp/imx/imx7d-nitrogen7.dtb: touchscreen@48 (ti,tsc2004): 'wakeup-gpios' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nxp/imx/imx7ulp-com.dtb: clock-controller@40410000 (fsl,imx7ulp-smc1): '#clock-cells' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nxp/imx/imx7ulp-evk.dtb: clock-controller@40410000 (fsl,imx7ulp-smc1): '#clock-cells' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/freescale/imx8mp-skov-basic.dtb: switch@5f (microchip,ksz9893): Unevaluated properties are not allowed ('pinctrl-names' was unexpected)
+    arch/arm64/boot/dts/freescale/imx8mp-skov-basic.dtb: switch@5f (microchip,ksz9893): pinctrl-names: ['default'] is too short
+    arch/arm64/boot/dts/freescale/imx8mp-skov-revb-hdmi.dtb: switch@5f (microchip,ksz9893): Unevaluated properties are not allowed ('pinctrl-names' was unexpected)
+    arch/arm64/boot/dts/freescale/imx8mp-skov-revb-hdmi.dtb: switch@5f (microchip,ksz9893): pinctrl-names: ['default'] is too short
+    arch/arm64/boot/dts/freescale/imx8mp-skov-revb-lt6.dtb: switch@5f (microchip,ksz9893): Unevaluated properties are not allowed ('pinctrl-names' was unexpected)
+    arch/arm64/boot/dts/freescale/imx8mp-skov-revb-lt6.dtb: switch@5f (microchip,ksz9893): pinctrl-names: ['default'] is too short
+    arch/arm64/boot/dts/freescale/imx8mp-skov-revb-mi1010ait-1cp1.dtb: switch@5f (microchip,ksz9893): Unevaluated properties are not allowed ('pinctrl-names' was unexpected)
+    arch/arm64/boot/dts/freescale/imx8mp-skov-revb-mi1010ait-1cp1.dtb: switch@5f (microchip,ksz9893): pinctrl-names: ['default'] is too short
+    arch/arm64/boot/dts/freescale/imx8mp-skov-revc-bd500.dtb: switch@5f (microchip,ksz9893): Unevaluated properties are not allowed ('pinctrl-names' was unexpected)
+    arch/arm64/boot/dts/freescale/imx8mp-skov-revc-bd500.dtb: switch@5f (microchip,ksz9893): pinctrl-names: ['default'] is too short
+    arch/arm64/boot/dts/freescale/imx8mp-skov-revc-tian-g07017.dtb: switch@5f (microchip,ksz9893): Unevaluated properties are not allowed ('pinctrl-names' was unexpected)
+    arch/arm64/boot/dts/freescale/imx8mp-skov-revc-tian-g07017.dtb: switch@5f (microchip,ksz9893): pinctrl-names: ['default'] is too short
+    arch/arm64/boot/dts/mediatek/mt8173-elm-hana-rev7.dtb: pinctrl@1000b000 (mediatek,mt8173-pinctrl): 'aud_i2s2', 'i2c0', 'i2c1', 'i2c2', 'i2c3', 'i2c4', 'i2c6', 'mmc0', 'mmc0default', 'mmc1', 'mmc1default', 'mmc3', 'mmc3default', 'nor', 'rt5650_irq', 'spi1', 'trackpad_irq', 'usb', 'xxx' do not match any of the regexes: '^pinctrl-[0-9]+$', 'pins$'
+    arch/arm64/boot/dts/mediatek/mt8173-elm-hana.dtb: pinctrl@1000b000 (mediatek,mt8173-pinctrl): 'aud_i2s2', 'i2c0', 'i2c1', 'i2c2', 'i2c3', 'i2c4', 'i2c6', 'mmc0', 'mmc0default', 'mmc1', 'mmc1default', 'mmc3', 'mmc3default', 'nor', 'rt5650_irq', 'spi1', 'trackpad_irq', 'usb', 'xxx' do not match any of the regexes: '^pinctrl-[0-9]+$', 'pins$'
+    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pinctrl@1000b000 (mediatek,mt8173-pinctrl): 'aud_i2s2', 'i2c0', 'i2c1', 'i2c2', 'i2c3', 'i2c4', 'i2c6', 'mmc0', 'mmc0default', 'mmc1', 'mmc1default', 'mmc3', 'mmc3default', 'nor', 'rt5650_irq', 'spi1', 'trackpad_irq', 'usb', 'xxx' do not match any of the regexes: '^pinctrl-[0-9]+$', 'pins$'
+    arch/arm64/boot/dts/mediatek/mt8183-evb.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-burnet.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-cozmo.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-fennel-sku1.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-fennel-sku6.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-fennel-sku7.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-fennel14-sku2.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-fennel14.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-juniper-sku16.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-kappa.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-kenzo.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-makomo-sku0.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-makomo-sku1.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-pico.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-pico6.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-willow-sku0.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-willow-sku1.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-kakadu-sku22.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-kakadu.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-katsu-sku32.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-katsu-sku38.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-kodama-sku16.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-kodama-sku272.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-kodama-sku288.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-kodama-sku32.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-krane-sku0.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-kukui-krane-sku176.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/mediatek/mt8183-pumpkin.dtb: audio-controller@11220000 (mediatek,mt8183-audiosys): 'mt8183-afe-pcm' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/rockchip/rk3588-jaguar-ethernet-switch.dtb: switch@5f (microchip,ksz9896): Unevaluated properties are not allowed ('pinctrl-names' was unexpected)
+    arch/arm64/boot/dts/rockchip/rk3588-jaguar-ethernet-switch.dtb: switch@5f (microchip,ksz9896): pinctrl-names: ['default'] is too short
+    drivers/char/tpm/tpm_loongson.c:48:10: error: incompatible function pointer types initializing 'int (*)(struct tpm_chip *, u8 *, size_t, size_t)' (aka 'int (*)(struct tpm_chip *, unsigned char *, unsigned long, unsigned long)') with an expression of type 'int (struct tpm_chip *, u8 *, size_t)' (aka 'int (struct tpm_chip *, unsigned char *, unsigned long)') [-Wincompatible-function-pointer-types]
+    drivers/firewire/core-transaction.c:1255: undefined reference to `__aeabi_uldivmod'
+    drivers/i3c/master/adi-i3c-master.c:134:18: warning: variable 'm' set but not used [-Wunused-but-set-variable]
+    drivers/i3c/master/adi-i3c-master.c:134:25: warning: variable 'm' set but not used [-Wunused-but-set-variable]
+    include/linux/kernel.h:334:46: error: called object 'strlen' is not a function or function pointer
+
+Unverified Error/Warning (likely false positive, kindly check if interested):
+
+    drivers/gpu/drm/xe/xe_bo.c:2468 xe_bo_create_pin_range_novm() error: uninitialized symbol 'bo'.
+    drivers/gpu/drm/xe/xe_bo.c:2553 xe_bo_create_pin_map_at_novm() error: uninitialized symbol 'bo'.
+    drivers/gpu/drm/xe/xe_pxp_submit.c:133 allocate_gsc_client_resources() error: uninitialized symbol 'bo'.
+    fs/btrfs/extent_io.c:401 find_lock_delalloc_range() error: we previously assumed 'fs_info' could be null (see line 378)
+    kernel/power/energy_model.c:649 em_dev_register_pd_no_update() error: we previously assumed 'dev->em_pd' could be null (see line 594)
+
+Error/Warning ids grouped by kconfigs:
+
+recent_errors
+|-- alpha-allnoconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- alpha-allyesconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|-- alpha-defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- alpha-randconfig-r112-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|-- arc-allmodconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|   |-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|   `-- include-linux-kernel.h:error:called-object-strlen-is-not-a-function-or-function-pointer
+|-- arc-allnoconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- arc-allyesconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|   |-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|   `-- include-linux-kernel.h:error:called-object-strlen-is-not-a-function-or-function-pointer
+|-- arc-defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- arc-randconfig-001-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|-- arc-randconfig-002-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|-- arm-allmodconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- ERROR:__ffsdi2-drivers-spi-spi-amlogic-spifc-a4.ko-undefined
+|   `-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|-- arm-allnoconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- arm-allyesconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- arm-linux-gnueabi-ld:spi-amlogic-spifc-a4.c:(.text.aml_sfc_set_bus_width):undefined-reference-to-__ffsdi2
+|   |-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|   `-- spi-amlogic-spifc-a4.c:(.text.aml_sfc_set_bus_width):undefined-reference-to-__ffsdi2
+|-- arm-defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- arm-exynos_defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- arm-gemini_defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- arm-randconfig-001-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- arm-randconfig-002-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- arm-randconfig-003-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-firewire-core-transaction.c:undefined-reference-to-__aeabi_uldivmod
+|   `-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|-- arm-randconfig-004-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|-- arm-randconfig-051-20250927
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-aster.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-eval-v3.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-iris-v2.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-iris.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt2.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt2.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt6.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt6.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-eval-v1..dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-eval.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-ixora-v1..dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-ixora.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c2mux-i2c2mux-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c3mux-was-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-novena.dtb:stmpe811-(st-stmpe811):blocks-id-irq-gpio-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-novena.dtb:stmpe811-(st-stmpe811):touchscreen:Unevaluated-properties-are-not-allowed-(-st-adc-freq-st-mod-12b-st-ref-sel-st-sample-time-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt2.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt2.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt6.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt6.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-reve-mi1010ait-1cp1.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-reve-mi1010ait-1cp1.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6qp-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c2mux-i2c2mux-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6qp-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c3mux-was-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx7d-nitrogen7.dtb:touchscreen-(ti-tsc2004):wakeup-gpios-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx7ulp-com.dtb:clock-controller-(fsl-imx7ulp-smc1):clock-cells-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx7ulp-evk.dtb:clock-controller-(fsl-imx7ulp-smc1):clock-cells-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-ls-ls1021a-qds.dtb:flash-(atmel-at45db021d):Unevaluated-properties-are-not-allowed-(-spi-cpha-spi-cpol-were-unexpected)
+|   `-- arch-arm-boot-dts-nxp-ls-ls1021a-qds.dtb:memory-controller-(fsl-ifc):board-control:Unevaluated-properties-are-not-allowed-(-address-cells-size-cells-bank-width-compatible-device-width-mdio-mux-ranges-
+|-- arm-randconfig-052-20250927
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-aster.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-eval-v3.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-iris-v2.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-iris.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt2.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt2.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt6.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt6.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-eval-v1..dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-eval.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-ixora-v1..dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-ixora.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c2mux-i2c2mux-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c3mux-was-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-novena.dtb:stmpe811-(st-stmpe811):blocks-id-irq-gpio-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-novena.dtb:stmpe811-(st-stmpe811):touchscreen:Unevaluated-properties-are-not-allowed-(-st-adc-freq-st-mod-12b-st-ref-sel-st-sample-time-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt2.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt2.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt6.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt6.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-reve-mi1010ait-1cp1.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-reve-mi1010ait-1cp1.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6qp-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c2mux-i2c2mux-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6qp-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c3mux-was-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx7d-nitrogen7.dtb:touchscreen-(ti-tsc2004):wakeup-gpios-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx7ulp-com.dtb:clock-controller-(fsl-imx7ulp-smc1):clock-cells-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx7ulp-evk.dtb:clock-controller-(fsl-imx7ulp-smc1):clock-cells-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-ls-ls1021a-qds.dtb:flash-(atmel-at45db021d):Unevaluated-properties-are-not-allowed-(-spi-cpha-spi-cpol-were-unexpected)
+|   `-- arch-arm-boot-dts-nxp-ls-ls1021a-qds.dtb:memory-controller-(fsl-ifc):board-control:Unevaluated-properties-are-not-allowed-(-address-cells-size-cells-bank-width-compatible-device-width-mdio-mux-ranges-
+|-- arm-randconfig-053-20250927
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-aster.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-eval-v3.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-iris-v2.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-iris.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt2.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt2.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt6.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt6.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-eval-v1..dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-eval.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-ixora-v1..dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-ixora.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c2mux-i2c2mux-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c3mux-was-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-novena.dtb:stmpe811-(st-stmpe811):blocks-id-irq-gpio-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-novena.dtb:stmpe811-(st-stmpe811):touchscreen:Unevaluated-properties-are-not-allowed-(-st-adc-freq-st-mod-12b-st-ref-sel-st-sample-time-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt2.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt2.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt6.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt6.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-reve-mi1010ait-1cp1.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-reve-mi1010ait-1cp1.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6qp-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c2mux-i2c2mux-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6qp-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c3mux-was-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx7d-nitrogen7.dtb:touchscreen-(ti-tsc2004):wakeup-gpios-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx7ulp-com.dtb:clock-controller-(fsl-imx7ulp-smc1):clock-cells-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx7ulp-evk.dtb:clock-controller-(fsl-imx7ulp-smc1):clock-cells-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-ls-ls1021a-qds.dtb:flash-(atmel-at45db021d):Unevaluated-properties-are-not-allowed-(-spi-cpha-spi-cpol-were-unexpected)
+|   `-- arch-arm-boot-dts-nxp-ls-ls1021a-qds.dtb:memory-controller-(fsl-ifc):board-control:Unevaluated-properties-are-not-allowed-(-address-cells-size-cells-bank-width-compatible-device-width-mdio-mux-ranges-
+|-- arm-randconfig-054-20250927
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-aster.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-eval-v3.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-iris-v2.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-iris.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt2.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt2.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt6.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt6.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-eval-v1..dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-eval.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-ixora-v1..dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-ixora.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c2mux-i2c2mux-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c3mux-was-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-novena.dtb:stmpe811-(st-stmpe811):blocks-id-irq-gpio-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-novena.dtb:stmpe811-(st-stmpe811):touchscreen:Unevaluated-properties-are-not-allowed-(-st-adc-freq-st-mod-12b-st-ref-sel-st-sample-time-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt2.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt2.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt6.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt6.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-reve-mi1010ait-1cp1.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-reve-mi1010ait-1cp1.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6qp-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c2mux-i2c2mux-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6qp-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c3mux-was-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx7d-nitrogen7.dtb:touchscreen-(ti-tsc2004):wakeup-gpios-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx7ulp-com.dtb:clock-controller-(fsl-imx7ulp-smc1):clock-cells-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx7ulp-evk.dtb:clock-controller-(fsl-imx7ulp-smc1):clock-cells-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-ls-ls1021a-qds.dtb:flash-(atmel-at45db021d):Unevaluated-properties-are-not-allowed-(-spi-cpha-spi-cpol-were-unexpected)
+|   `-- arch-arm-boot-dts-nxp-ls-ls1021a-qds.dtb:memory-controller-(fsl-ifc):board-control:Unevaluated-properties-are-not-allowed-(-address-cells-size-cells-bank-width-compatible-device-width-mdio-mux-ranges-
+|-- arm-randconfig-055-20250927
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-aster.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-eval-v3.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-iris-v2.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-iris.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt2.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt2.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt6.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt6.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-eval-v1..dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-eval.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-ixora-v1..dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-ixora.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c2mux-i2c2mux-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c3mux-was-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-novena.dtb:stmpe811-(st-stmpe811):blocks-id-irq-gpio-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-novena.dtb:stmpe811-(st-stmpe811):touchscreen:Unevaluated-properties-are-not-allowed-(-st-adc-freq-st-mod-12b-st-ref-sel-st-sample-time-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt2.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt2.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt6.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt6.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-reve-mi1010ait-1cp1.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-reve-mi1010ait-1cp1.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6qp-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c2mux-i2c2mux-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6qp-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c3mux-was-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx7d-nitrogen7.dtb:touchscreen-(ti-tsc2004):wakeup-gpios-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx7ulp-com.dtb:clock-controller-(fsl-imx7ulp-smc1):clock-cells-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx7ulp-evk.dtb:clock-controller-(fsl-imx7ulp-smc1):clock-cells-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-ls-ls1021a-qds.dtb:flash-(atmel-at45db021d):Unevaluated-properties-are-not-allowed-(-spi-cpha-spi-cpol-were-unexpected)
+|   `-- arch-arm-boot-dts-nxp-ls-ls1021a-qds.dtb:memory-controller-(fsl-ifc):board-control:Unevaluated-properties-are-not-allowed-(-address-cells-size-cells-bank-width-compatible-device-width-mdio-mux-ranges-
+|-- arm-spear3xx_defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- arm64-allmodconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|-- arm64-allnoconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- arm64-defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- arm64-randconfig-001-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|-- arm64-randconfig-002-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- arm64-randconfig-003-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- arm64-randconfig-004-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- arm64-randconfig-051-20250927
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-basic.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-basic.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-hdmi.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-hdmi.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-lt6.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-lt6.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-mi1010ait-1cp1.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-mi1010ait-1cp1.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-bd500.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-bd500.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-tian-g07017.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-tian-g07017.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-marvell-mmp-pxa1908-samsung-coreprimevelte.dtb:clock-controller-(marvell-pxa1908-apmu):compatible:oneOf-conditional-failed-one-must-be-fixed:
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana-rev7.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_ir
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi1-tra
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-evb.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-burnet.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-cozmo.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-damu.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel-sku1.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel-sku6.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel-sku7.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel14-sku2.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel14.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-juniper-sku16.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-kappa.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-kenzo.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-makomo-sku0.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-makomo-sku1.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-pico.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-pico6.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-willow-sku0.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-willow-sku1.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kakadu-sku22.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kakadu.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-katsu-sku32.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-katsu-sku38.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kodama-sku16.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kodama-sku272.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kodama-sku288.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kodama-sku32.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-krane-sku0.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-krane-sku176.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-pumpkin.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-rockchip-rk3588-jaguar-ethernet-switch.dtb:switch-5f-(microchip-ksz9896):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   `-- arch-arm64-boot-dts-rockchip-rk3588-jaguar-ethernet-switch.dtb:switch-5f-(microchip-ksz9896):pinctrl-names:default-is-too-short
+|-- arm64-randconfig-052-20250927
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-basic.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-basic.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-hdmi.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-hdmi.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-lt6.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-lt6.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-mi1010ait-1cp1.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-mi1010ait-1cp1.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-bd500.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-bd500.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-tian-g07017.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-tian-g07017.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-marvell-mmp-pxa1908-samsung-coreprimevelte.dtb:clock-controller-(marvell-pxa1908-apmu):compatible:oneOf-conditional-failed-one-must-be-fixed:
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana-rev7.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_ir
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi1-tra
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-evb.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-burnet.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-cozmo.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-damu.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel-sku1.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel-sku6.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel-sku7.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel14-sku2.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel14.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-juniper-sku16.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-kappa.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-kenzo.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-makomo-sku0.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-makomo-sku1.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-pico.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-pico6.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-willow-sku0.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-willow-sku1.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kakadu-sku22.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kakadu.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-katsu-sku32.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-katsu-sku38.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kodama-sku16.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kodama-sku272.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kodama-sku288.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kodama-sku32.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-krane-sku0.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-krane-sku176.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-pumpkin.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-rockchip-rk3588-jaguar-ethernet-switch.dtb:switch-5f-(microchip-ksz9896):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   `-- arch-arm64-boot-dts-rockchip-rk3588-jaguar-ethernet-switch.dtb:switch-5f-(microchip-ksz9896):pinctrl-names:default-is-too-short
+|-- arm64-randconfig-053-20250927
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-basic.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-basic.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-hdmi.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-hdmi.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-lt6.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-lt6.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-mi1010ait-1cp1.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-mi1010ait-1cp1.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-bd500.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-bd500.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-tian-g07017.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-tian-g07017.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-marvell-mmp-pxa1908-samsung-coreprimevelte.dtb:clock-controller-(marvell-pxa1908-apmu):compatible:oneOf-conditional-failed-one-must-be-fixed:
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana-rev7.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_ir
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi1-tra
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-evb.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-burnet.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-cozmo.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-damu.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel-sku1.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel-sku6.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel-sku7.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel14-sku2.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel14.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-juniper-sku16.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-kappa.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-kenzo.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-makomo-sku0.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-makomo-sku1.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-pico.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-pico6.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-willow-sku0.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-willow-sku1.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kakadu-sku22.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kakadu.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-katsu-sku32.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-katsu-sku38.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kodama-sku16.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kodama-sku272.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kodama-sku288.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kodama-sku32.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-krane-sku0.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-krane-sku176.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-pumpkin.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-rockchip-rk3588-jaguar-ethernet-switch.dtb:switch-5f-(microchip-ksz9896):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   `-- arch-arm64-boot-dts-rockchip-rk3588-jaguar-ethernet-switch.dtb:switch-5f-(microchip-ksz9896):pinctrl-names:default-is-too-short
+|-- arm64-randconfig-054-20250927
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-basic.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-basic.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-hdmi.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-hdmi.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-lt6.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-lt6.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-mi1010ait-1cp1.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-mi1010ait-1cp1.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-bd500.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-bd500.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-tian-g07017.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-tian-g07017.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-marvell-mmp-pxa1908-samsung-coreprimevelte.dtb:clock-controller-(marvell-pxa1908-apmu):compatible:oneOf-conditional-failed-one-must-be-fixed:
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana-rev7.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_ir
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi1-tra
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-evb.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-burnet.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-cozmo.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-damu.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel-sku1.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel-sku6.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel-sku7.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel14-sku2.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel14.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-juniper-sku16.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-kappa.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-kenzo.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-makomo-sku0.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-makomo-sku1.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-pico.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-pico6.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-willow-sku0.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-willow-sku1.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kakadu-sku22.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kakadu.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-katsu-sku32.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-katsu-sku38.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kodama-sku16.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kodama-sku272.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kodama-sku288.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kodama-sku32.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-krane-sku0.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-krane-sku176.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-pumpkin.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-rockchip-rk3588-jaguar-ethernet-switch.dtb:switch-5f-(microchip-ksz9896):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   `-- arch-arm64-boot-dts-rockchip-rk3588-jaguar-ethernet-switch.dtb:switch-5f-(microchip-ksz9896):pinctrl-names:default-is-too-short
+|-- arm64-randconfig-055-20250927
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-basic.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-basic.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-hdmi.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-hdmi.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-lt6.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-lt6.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-mi1010ait-1cp1.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-mi1010ait-1cp1.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-bd500.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-bd500.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-tian-g07017.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-tian-g07017.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-marvell-mmp-pxa1908-samsung-coreprimevelte.dtb:clock-controller-(marvell-pxa1908-apmu):compatible:oneOf-conditional-failed-one-must-be-fixed:
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana-rev7.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_ir
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi1-tra
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-evb.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-burnet.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-cozmo.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-damu.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel-sku1.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel-sku6.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel-sku7.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel14-sku2.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-fennel14.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-juniper-sku16.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-kappa.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-kenzo.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-makomo-sku0.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-makomo-sku1.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-pico.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-pico6.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-willow-sku0.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-jacuzzi-willow-sku1.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kakadu-sku22.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kakadu.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-katsu-sku32.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-katsu-sku38.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kodama-sku16.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kodama-sku272.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kodama-sku288.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-kodama-sku32.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-krane-sku0.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-kukui-krane-sku176.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-mediatek-mt8183-pumpkin.dtb:audio-controller-(mediatek-mt8183-audiosys):mt8183-afe-pcm-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm64-boot-dts-rockchip-rk3588-jaguar-ethernet-switch.dtb:switch-5f-(microchip-ksz9896):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   `-- arch-arm64-boot-dts-rockchip-rk3588-jaguar-ethernet-switch.dtb:switch-5f-(microchip-ksz9896):pinctrl-names:default-is-too-short
+|-- arm64-randconfig-r132-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- hexagon-allmodconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|   `-- drivers-mfd-tps6594-core.c:error:call-to-undeclared-function-FIELD_GET-ISO-C99-and-later-do-not-support-implicit-function-declarations
+|-- hexagon-allnoconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- hexagon-allyesconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|   `-- drivers-mfd-tps6594-core.c:error:call-to-undeclared-function-FIELD_GET-ISO-C99-and-later-do-not-support-implicit-function-declarations
+|-- hexagon-defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- hexagon-randconfig-001-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|   `-- drivers-mfd-tps6594-core.c:error:call-to-undeclared-function-FIELD_GET-ISO-C99-and-later-do-not-support-implicit-function-declarations
+|-- hexagon-randconfig-002-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-mfd-tps6594-core.c:error:call-to-undeclared-function-FIELD_GET-ISO-C99-and-later-do-not-support-implicit-function-declarations
+|-- i386-allmodconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|-- i386-allnoconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- i386-allyesconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|-- i386-buildonly-randconfig-001-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- i386-buildonly-randconfig-002-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- i386-buildonly-randconfig-003-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-mfd-tps6594-core.c:error:call-to-undeclared-function-FIELD_GET-ISO-C99-and-later-do-not-support-implicit-function-declarations
+|-- i386-buildonly-randconfig-004-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- i386-buildonly-randconfig-005-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|-- i386-buildonly-randconfig-006-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-mfd-tps6594-core.c:error:call-to-undeclared-function-FIELD_GET-ISO-C99-and-later-do-not-support-implicit-function-declarations
+|-- i386-defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- i386-randconfig-061-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- i386-randconfig-062-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- i386-randconfig-063-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-gpu-drm-amd-amdgpu-amdgpu_userq_fence.c:sparse:sparse:incompatible-types-in-comparison-expression-(different-address-spaces):
+|-- i386-randconfig-141-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-gpu-drm-xe-xe_bo.c-xe_bo_create_novm()-error:uninitialized-symbol-bo-.
+|   |-- drivers-gpu-drm-xe-xe_bo.c-xe_bo_create_pin_map_at_novm()-error:uninitialized-symbol-bo-.
+|   |-- drivers-gpu-drm-xe-xe_bo.c-xe_bo_create_pin_range_novm()-error:uninitialized-symbol-bo-.
+|   |-- drivers-gpu-drm-xe-xe_bo.c-xe_gem_create_ioctl()-error:uninitialized-symbol-bo-.
+|   |-- drivers-gpu-drm-xe-xe_dma_buf.c-xe_dma_buf_init_obj()-error:uninitialized-symbol-bo-.
+|   |-- drivers-gpu-drm-xe-xe_pxp_submit.c-allocate_gsc_client_resources()-error:uninitialized-symbol-bo-.
+|   `-- drivers-gpu-drm-xe-xe_vm.c-new_vma()-error:uninitialized-symbol-vma-.
+|-- loongarch-allmodconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-char-tpm-tpm_loongson.c:error:incompatible-function-pointer-types-initializing-int-(-)(struct-tpm_chip-u8-size_t-size_t)-(aka-int-(-)(struct-tpm_chip-unsigned-char-unsigned-long-unsigned-long)
+|   `-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|-- loongarch-allnoconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- loongarch-allyesconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-char-tpm-tpm_loongson.c:error:incompatible-function-pointer-types-initializing-int-(-)(struct-tpm_chip-u8-size_t-size_t)-(aka-int-(-)(struct-tpm_chip-unsigned-char-unsigned-long-unsigned-long)
+|   `-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|-- loongarch-defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- loongarch-randconfig-001-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|-- loongarch-randconfig-002-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-char-tpm-tpm_loongson.c:error:incompatible-function-pointer-types-initializing-int-(-)(struct-tpm_chip-u8-size_t-size_t)-(aka-int-(-)(struct-tpm_chip-unsigned-char-unsigned-long-unsigned-long)
+|   `-- drivers-mfd-tps6594-core.c:error:call-to-undeclared-function-FIELD_GET-ISO-C99-and-later-do-not-support-implicit-function-declarations
+|-- m68k-allmodconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|-- m68k-allnoconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- m68k-allyesconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|-- m68k-defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- m68k-randconfig-r111-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|-- microblaze-allmodconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|   |-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|   `-- include-linux-kernel.h:error:called-object-strlen-is-not-a-function-or-function-pointer
+|-- microblaze-allnoconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- microblaze-allyesconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|   |-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|   `-- include-linux-kernel.h:error:called-object-strlen-is-not-a-function-or-function-pointer
+|-- microblaze-defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- microblaze-randconfig-r133-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|-- mips-allnoconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- mips-allyesconfig
+|   |-- (.head.text):relocation-truncated-to-fit:R_MIPS_26-against-kernel_entry
+|   |-- (.ref.text):relocation-truncated-to-fit:R_MIPS_26-against-start_secondary
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|   |-- mips-linux-ld:spi-amlogic-spifc-a4.c:(.text.aml_sfc_set_bus_width):undefined-reference-to-__ffsdi2
+|   `-- spi-amlogic-spifc-a4.c:(.text.aml_sfc_set_bus_width):undefined-reference-to-__ffsdi2
+|-- nios2-allnoconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- nios2-defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- nios2-randconfig-002-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- openrisc-allnoconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- openrisc-allyesconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|   |-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|   `-- include-linux-kernel.h:error:called-object-strlen-is-not-a-function-or-function-pointer
+|-- openrisc-defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- parisc-allmodconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|   |-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|   `-- include-linux-kernel.h:error:called-object-strlen-is-not-a-function-or-function-pointer
+|-- parisc-allnoconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- parisc-allyesconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|   |-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|   `-- include-linux-kernel.h:error:called-object-strlen-is-not-a-function-or-function-pointer
+|-- parisc-defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- parisc-randconfig-001-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|-- parisc-randconfig-002-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|-- parisc64-defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- powerpc-allmodconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|-- powerpc-allnoconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- powerpc-allyesconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|-- powerpc-lite5200b_defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- powerpc-randconfig-001-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- powerpc-randconfig-002-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-mfd-tps6594-core.c:error:call-to-undeclared-function-FIELD_GET-ISO-C99-and-later-do-not-support-implicit-function-declarations
+|-- powerpc-randconfig-003-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|-- powerpc64-randconfig-001-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-mfd-tps6594-core.c:error:call-to-undeclared-function-FIELD_GET-ISO-C99-and-later-do-not-support-implicit-function-declarations
+|-- powerpc64-randconfig-002-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|-- powerpc64-randconfig-003-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|-- riscv-allmodconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|-- riscv-allnoconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- riscv-allyesconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|-- riscv-defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- riscv-randconfig-001-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- riscv-randconfig-002-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- s390-allmodconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|-- s390-allnoconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- s390-allyesconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|-- s390-debug_defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- s390-defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- s390-randconfig-001-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-mfd-tps6594-core.c:error:call-to-undeclared-function-FIELD_GET-ISO-C99-and-later-do-not-support-implicit-function-declarations
+|-- s390-randconfig-002-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-mfd-tps6594-core.c:error:call-to-undeclared-function-FIELD_GET-ISO-C99-and-later-do-not-support-implicit-function-declarations
+|-- sh-allmodconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|   |-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|   `-- include-linux-kernel.h:error:called-object-strlen-is-not-a-function-or-function-pointer
+|-- sh-allnoconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- sh-allyesconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|   |-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|   `-- include-linux-kernel.h:error:called-object-strlen-is-not-a-function-or-function-pointer
+|-- sh-defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- sh-randconfig-001-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|-- sh-randconfig-002-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|-- sh-rsk7264_defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- sparc-alldefconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- sparc-allmodconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|   |-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|   `-- include-linux-kernel.h:error:called-object-strlen-is-not-a-function-or-function-pointer
+|-- sparc-allnoconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- sparc-defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- sparc-randconfig-001-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- sparc-randconfig-002-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|-- sparc64-defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- sparc64-randconfig-001-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|-- sparc64-randconfig-002-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- um-allmodconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|-- um-allnoconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- um-allyesconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|-- um-defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- um-i386_defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- um-randconfig-001-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- um-randconfig-002-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- um-randconfig-r121-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- um-x86_64_defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- x86_64-allnoconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- x86_64-allyesconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|-- x86_64-buildonly-randconfig-001-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- x86_64-buildonly-randconfig-002-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-mfd-tps6594-core.c:error:call-to-undeclared-function-FIELD_GET-ISO-C99-and-later-do-not-support-implicit-function-declarations
+|-- x86_64-buildonly-randconfig-003-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-mfd-tps6594-core.c:error:call-to-undeclared-function-FIELD_GET-ISO-C99-and-later-do-not-support-implicit-function-declarations
+|-- x86_64-buildonly-randconfig-004-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|-- x86_64-buildonly-randconfig-005-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|-- x86_64-buildonly-randconfig-006-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- x86_64-defconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- x86_64-randconfig-121-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- x86_64-randconfig-122-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- x86_64-randconfig-123-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- x86_64-randconfig-161-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- fs-btrfs-extent_io.c-find_lock_delalloc_range()-error:we-previously-assumed-fs_info-could-be-null-(see-line-)
+|   `-- kernel-power-energy_model.c-em_dev_register_pd_no_update()-error:we-previously-assumed-dev-em_pd-could-be-null-(see-line-)
+|-- x86_64-randconfig-r122-20250927
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- x86_64-rhel-9.4-rust
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- xtensa-allnoconfig
+|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|-- xtensa-allyesconfig
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   |-- drivers-i3c-master-adi-i3c-master.c:warning:variable-m-set-but-not-used
+|   |-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+|   `-- include-linux-kernel.h:error:called-object-strlen-is-not-a-function-or-function-pointer
+|-- xtensa-randconfig-001-20250927
+|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+`-- xtensa-randconfig-002-20250927
+    |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
+    `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+
+elapsed time: 746m
+
+configs tested: 159
+configs skipped: 5
+
+tested configs:
+alpha                             allnoconfig    clang-22
+alpha                             allnoconfig    gcc-15.1.0
+alpha                            allyesconfig    clang-19
+alpha                            allyesconfig    gcc-15.1.0
+alpha                               defconfig    gcc-15.1.0
+arc                              allmodconfig    clang-19
+arc                              allmodconfig    gcc-15.1.0
+arc                               allnoconfig    clang-22
+arc                               allnoconfig    gcc-15.1.0
+arc                              allyesconfig    clang-19
+arc                              allyesconfig    gcc-15.1.0
+arc                                 defconfig    gcc-15.1.0
+arc                   randconfig-001-20250927    gcc-10.5.0
+arc                   randconfig-002-20250927    gcc-13.4.0
+arm                              allmodconfig    clang-19
+arm                              allmodconfig    gcc-15.1.0
+arm                               allnoconfig    clang-22
+arm                              allyesconfig    clang-19
+arm                              allyesconfig    gcc-15.1.0
+arm                                 defconfig    clang-22
+arm                          exynos_defconfig    clang-22
+arm                          gemini_defconfig    clang-20
+arm                   randconfig-001-20250927    clang-18
+arm                   randconfig-002-20250927    clang-16
+arm                   randconfig-003-20250927    gcc-8.5.0
+arm                   randconfig-004-20250927    gcc-10.5.0
+arm                        spear3xx_defconfig    clang-17
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    clang-22
+arm64                             allnoconfig    gcc-15.1.0
+arm64                               defconfig    gcc-15.1.0
+arm64                 randconfig-001-20250927    gcc-8.5.0
+arm64                 randconfig-002-20250927    gcc-11.5.0
+arm64                 randconfig-003-20250927    clang-22
+arm64                 randconfig-004-20250927    gcc-9.5.0
+csky                              allnoconfig    clang-22
+csky                              allnoconfig    gcc-15.1.0
+csky                                defconfig    gcc-15.1.0
+csky                  randconfig-001-20250927    gcc-15.1.0
+csky                  randconfig-002-20250927    gcc-13.4.0
+hexagon                          allmodconfig    clang-17
+hexagon                          allmodconfig    clang-19
+hexagon                           allnoconfig    clang-22
+hexagon                          allyesconfig    clang-19
+hexagon                          allyesconfig    clang-22
+hexagon                             defconfig    clang-22
+hexagon               randconfig-001-20250927    clang-22
+hexagon               randconfig-002-20250927    clang-22
+i386                             allmodconfig    gcc-14
+i386                              allnoconfig    gcc-14
+i386                             allyesconfig    gcc-14
+i386        buildonly-randconfig-001-20250927    clang-20
+i386        buildonly-randconfig-002-20250927    gcc-14
+i386        buildonly-randconfig-003-20250927    clang-20
+i386        buildonly-randconfig-004-20250927    clang-20
+i386        buildonly-randconfig-005-20250927    gcc-12
+i386        buildonly-randconfig-006-20250927    clang-20
+i386                                defconfig    clang-20
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-22
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20250927    gcc-15.1.0
+loongarch             randconfig-002-20250927    clang-18
+m68k                             allmodconfig    clang-19
+m68k                             allmodconfig    gcc-15.1.0
+m68k                              allnoconfig    gcc-15.1.0
+m68k                             allyesconfig    clang-19
+m68k                             allyesconfig    gcc-15.1.0
+m68k                                defconfig    gcc-15.1.0
+microblaze                       allmodconfig    clang-19
+microblaze                       allmodconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                       allyesconfig    clang-19
+microblaze                       allyesconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    gcc-11.5.0
+nios2                               defconfig    gcc-15.1.0
+nios2                 randconfig-001-20250927    gcc-9.5.0
+nios2                 randconfig-002-20250927    gcc-11.5.0
+openrisc                          allnoconfig    gcc-15.1.0
+openrisc                         allyesconfig    gcc-15.1.0
+openrisc                            defconfig    gcc-15.1.0
+parisc                           allmodconfig    gcc-15.1.0
+parisc                            allnoconfig    gcc-15.1.0
+parisc                           allyesconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                randconfig-001-20250927    gcc-9.5.0
+parisc                randconfig-002-20250927    gcc-11.5.0
+parisc64                            defconfig    gcc-15.1.0
+powerpc                          allmodconfig    gcc-15.1.0
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc                          allyesconfig    clang-22
+powerpc                          allyesconfig    gcc-15.1.0
+powerpc                   lite5200b_defconfig    clang-22
+powerpc               randconfig-001-20250927    gcc-13.4.0
+powerpc               randconfig-002-20250927    clang-22
+powerpc               randconfig-003-20250927    gcc-8.5.0
+powerpc64             randconfig-001-20250927    clang-22
+powerpc64             randconfig-002-20250927    gcc-15.1.0
+powerpc64             randconfig-003-20250927    gcc-12.5.0
+riscv                            allmodconfig    clang-22
+riscv                            allmodconfig    gcc-15.1.0
+riscv                             allnoconfig    gcc-15.1.0
+riscv                            allyesconfig    clang-16
+riscv                            allyesconfig    gcc-15.1.0
+riscv                               defconfig    clang-22
+riscv                 randconfig-001-20250927    clang-22
+riscv                 randconfig-002-20250927    gcc-15.1.0
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-22
+s390                             allyesconfig    gcc-15.1.0
+s390                          debug_defconfig    gcc-15.1.0
+s390                                defconfig    clang-22
+s390                  randconfig-001-20250927    clang-22
+s390                  randconfig-002-20250927    clang-22
+sh                               allmodconfig    gcc-15.1.0
+sh                                allnoconfig    gcc-15.1.0
+sh                               allyesconfig    gcc-15.1.0
+sh                                  defconfig    gcc-15.1.0
+sh                    randconfig-001-20250927    gcc-15.1.0
+sh                    randconfig-002-20250927    gcc-15.1.0
+sh                          rsk7264_defconfig    gcc-15.1.0
+sparc                            alldefconfig    gcc-15.1.0
+sparc                            allmodconfig    gcc-15.1.0
+sparc                             allnoconfig    gcc-15.1.0
+sparc                               defconfig    gcc-15.1.0
+sparc                 randconfig-001-20250927    gcc-11.5.0
+sparc                 randconfig-002-20250927    gcc-11.5.0
+sparc64                             defconfig    clang-20
+sparc64               randconfig-001-20250927    gcc-15.1.0
+sparc64               randconfig-002-20250927    gcc-8.5.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-22
+um                               allyesconfig    clang-19
+um                               allyesconfig    gcc-14
+um                                  defconfig    clang-22
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20250927    gcc-14
+um                    randconfig-002-20250927    clang-22
+um                           x86_64_defconfig    clang-22
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20250927    gcc-14
+x86_64      buildonly-randconfig-002-20250927    clang-20
+x86_64      buildonly-randconfig-003-20250927    clang-20
+x86_64      buildonly-randconfig-004-20250927    gcc-14
+x86_64      buildonly-randconfig-005-20250927    gcc-14
+x86_64      buildonly-randconfig-006-20250927    clang-20
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-20
+x86_64                               rhel-9.4    clang-20
+x86_64                          rhel-9.4-func    clang-20
+x86_64                    rhel-9.4-kselftests    clang-20
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    gcc-15.1.0
+xtensa                randconfig-001-20250927    gcc-8.5.0
+xtensa                randconfig-002-20250927    gcc-10.5.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
