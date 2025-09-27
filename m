@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBA13CAC5BC
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Sep 2025 00:45:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93649CAC5BB
+	for <linux-mm@archiver.kernel.org>; Sat, 27 Sep 2025 00:45:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9AA8B8E000C; Fri, 26 Sep 2025 20:45:48 -0400 (EDT)
+	id C1B688E000E; Fri, 26 Sep 2025 20:45:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 982F18E0001; Fri, 26 Sep 2025 20:45:48 -0400 (EDT)
+	id BC98B8E0001; Fri, 26 Sep 2025 20:45:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 848BD8E000C; Fri, 26 Sep 2025 20:45:48 -0400 (EDT)
+	id 9CDC58E0001; Fri, 26 Sep 2025 20:45:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 730E08E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 20:45:48 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3067E13B341
+	by kanga.kvack.org (Postfix) with ESMTP id 88C378E0001
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 20:45:50 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4FA8343F66
+	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 00:45:50 +0000 (UTC)
+X-FDA: 83933187660.07.F264C67
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 766FAA0008
 	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 00:45:48 +0000 (UTC)
-X-FDA: 83933187576.15.C42B962
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 646E44000F
-	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 00:45:46 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=c0JE5mo9;
-	spf=pass (imf04.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=aSuM5ldE;
+	spf=pass (imf25.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758933946;
+	s=arc-20220608; t=1758933948;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:
 	 references:references:dkim-signature;
-	bh=/5FG41K89lO5oG83hm4CDr9+9moNc+nZhDoahezjEWM=;
-	b=1dimMMsAlx2Fh87LfgKdTqG5msyIpDrUTDMW3BvfN9N8vN1ym+22NgTp1MEnPaqcuxTiL2
-	zoL1+vr+MFhsqPneDAr+cgvIvGyFsG0ht4eNLpuflKGSYRNfRnfeFtEK6c+VWOHehF30g5
-	O3zfaCbrYhDxmSSfC+dBK1/8GjkdSDk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758933946; a=rsa-sha256;
+	bh=CDNg+3k8YEV1iewYvnHtCnRi+L/Q+TBL3sW8ermuGNE=;
+	b=NG3vMnEkq/kduBTp6BkPJC+OccAwlz4WtkEn0Fz3D061f7sL84GdLS1owCYpfoxGLKAfe2
+	M2jlHNvEn81PtoMcN6HFSS2MP2JfDuGADIcaeF9vOekzER84w1q6OHgbXCdxA1BKUs6h1p
+	bY83myV2icpWkcGyIL68pmQp1ocBow4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758933948; a=rsa-sha256;
 	cv=none;
-	b=Up792ij0F1/5HP2ADp39dmj9z8DUBGyX17KbzyrwGPU1MhwGtj/eY5waELnRn6+E++xJ2F
-	wsZatRy291cal5+ZL+wYsNgLCDB9aK7nLd9OEeJjhv1c/MBxAKJNANDyHnXcceh1jfYv3X
-	7baiQgpkzYZhX8orSW1gEryThRRbbfE=
+	b=H8nNHA6SfgwoPXCGKyaX4QBLuPvjVT1GpOg8aD3vhDb5xpgt75MTq4TRMk8bAeekIcTob2
+	zaSqtI3FvWQge84qfKOAkLDDKYXn81rwhUxF47cRBNJsb7DsJS8HYYzZGNH428fXiSl6W0
+	tqQG2CJ8ASKMES7sNqqyPw4Q3H98baE=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=c0JE5mo9;
-	spf=pass (imf04.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=aSuM5ldE;
+	spf=pass (imf25.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6318855a83fso5026064a12.2
-        for <linux-mm@kvack.org>; Fri, 26 Sep 2025 17:45:46 -0700 (PDT)
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-63163a6556bso5974591a12.1
+        for <linux-mm@kvack.org>; Fri, 26 Sep 2025 17:45:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758933945; x=1759538745; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1758933947; x=1759538747; darn=kvack.org;
         h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=/5FG41K89lO5oG83hm4CDr9+9moNc+nZhDoahezjEWM=;
-        b=c0JE5mo91h0izvFCkohyGuxadljaW1HhhC4fLKiWT5Bqwf2xKr6c1D8lupQ9JuzDQz
-         TgRq648rujydypiltPO5no1z1Ehk8hE2AVEwOnLl+a0fWjar/keoyjP7AAngdahg5qQi
-         8H/QqvI3LjxGDpsolf/LkJTNNcglEl0dNJUvPTjMc6hluQ1eoHomm2+bOZHE3Mtmzq2H
-         2sEvCo4Am/Y6r8l6hqApDlnZ7gE6KCOrMXdpuBiXZ62z18udJJ7u4hYogrrmJeWpzrze
-         ei8dypV6uDRtr0g2aMA+AWHBUVLIWZU3WSFt9y+QXFnS1KfAiEM89ZsfGdM0p2Fyp+It
-         qGzg==
+        bh=CDNg+3k8YEV1iewYvnHtCnRi+L/Q+TBL3sW8ermuGNE=;
+        b=aSuM5ldEhF6QIZxFAw6hvg+nui5fqFvZGE4QQRMxPYKDWFc8hUh3FTh+t7YK8BGXPl
+         k8iBP2fvM/NeesYjiVffYYfYtY2K7GM+3tNr0IaSmoqC0f8nAhCmc1B97Utq3v7QEGlz
+         XMapHMFdkad3PTcuKV4Fy+q0RCEI/s9zK5Gng33ksyJPbxp10eOzzqLZ2ENWALagVPOp
+         IOMXejL7RDDc0rAQlJGzVc5AprMKumjZYpSnZA4x6vA2p6oia/0lyccSkUv+lwyvYO5V
+         vuW7n036qj3hlnSLvF/SjjKwoUCLaxWj1VKVddbOj7255u1G/tAmw6c2Hj+AOXfTROLs
+         QWpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758933945; x=1759538745;
+        d=1e100.net; s=20230601; t=1758933947; x=1759538747;
         h=references:in-reply-to:message-id:date:subject:cc:to:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/5FG41K89lO5oG83hm4CDr9+9moNc+nZhDoahezjEWM=;
-        b=mu36Rs3K4L/LPRuL6eg2RROsgrfUSqgSnL51gzpAkuYECIAqxYgU8texPJEMjxSh+R
-         tjI/eTTASCNCsE1owjwfLrjM+USmemvq2bVcgsm02afM8Q4fUFyqUD9shZEs2mXnZwyx
-         RCs308EBOnohw8CBYoz1eSJnDLdNSauUrhJHv7hFO3rrrpx02jAdWdUFeIq6vhEIbMnT
-         Rgd5cU48KFrL2kUaSmh3+Hs0oO4VsODFfnVpIBR1BLZbap4gAvC/6V1De2KIiT5efCYk
-         h26QnDK44NzOsQpn9o61Cfji8GMx3S02bAhNSHpb3M2X+KXF2fbb7RHuU9q6j7jP24m4
-         dZQg==
-X-Gm-Message-State: AOJu0Yz9gxNtS27v8ASvfulLpALb56WZ/x6nuZwP28+Pi7k3NEXYQNRp
-	LBpJ1o26stuE8jTUGeUMn1mWwSmFIZeI4o0B17n6VtuaUiw2YJluob8P
-X-Gm-Gg: ASbGnctbLOcdRLWbuhB+FMwv2HPR3dcjF3afYixhyijS7tqCNy3qwRi3oeLehQquBqK
-	9btDVTgC3r9CuwS+SvU8In7yQAz9RePDfanm8h2Q0azFbfMzPSgy42LXlBF8w1w6KYnt3ZsHTFf
-	J2YHgwPUcRr8pFIV8crn//YGg6jTHvW9sih7NE97v+4z0WhK68cFCb6pS4s/DV6wyzYpHdKElyr
-	6gzjV83B5ux/tZxEzX7Idlm6g22/i+mfMFUo1eQPinGYX8sKUrINNi7vB4UmWrdmR8a9MXo7DcO
-	g8NdlQGfd30jQlTUjbIDGb13MjGtQkcAa81U859LneBW2vHRxb5gaLVwmP0J7NwKEKJEderHRA9
-	6kBrojwSWl8ACHU7mqSwxxL7GIw==
-X-Google-Smtp-Source: AGHT+IG+A2jrDm4SeRfG9NugvqZeF2atCvx2NJE1pL+eFC3Ecetq29GQPPBv6lCP3hzY5S7VLAA70A==
-X-Received: by 2002:a05:6402:3059:b0:62f:620a:6a17 with SMTP id 4fb4d7f45d1cf-6349fa87835mr7097427a12.26.1758933944813;
-        Fri, 26 Sep 2025 17:45:44 -0700 (PDT)
+        bh=CDNg+3k8YEV1iewYvnHtCnRi+L/Q+TBL3sW8ermuGNE=;
+        b=WJ+J/0RwwquBX0mhEo9aytfTkmiUUxqPEEpd45fA6WzOd0ohb1T3qdL1POBVPRaxsv
+         Ak/p64rQ+hZhlAq7E4bcGoicUDVZl0u4GSN7RoVuk1gl2jyr3q+VOyTD10k50LRMWnPI
+         Mk6cuEJHRTM+MIuBj++KYp5CS9UjzY2Q3fcOqC2wkDq6EEOtwrkRbGFSGUnDHWNSfGdS
+         RQ2z10a6TfppOm/x9eeQmh6oqASwNq3aCKqRLDQlUTysXZiCuDNZkofxQ1vU3yT32koe
+         NOvfLjPsd17L9hWimIXl6k2w1qV8fCnPiXkIdM3ilIpwJXRz3j2fSO+8eDa+aKHCYE+c
+         rEog==
+X-Gm-Message-State: AOJu0Yzzoal+FsOtE0xSugCPIWcRDzNAl9PjcDFrE58a3EdzY5NYFTkP
+	pD/NCssH0ALzMROvyvXq7k3ASYPap8i24M8OkuNAtig2B9YYLOfEuEf5C1Ijuw==
+X-Gm-Gg: ASbGncvZwm1KvxNjTBssxG5T8Mn77Lce70hPeuLOsDIIwcgOdo+lAziJ2EvcCNaAusF
+	QF/TIhS3+mx67iFfUu3r8dyuubQrLQxObi83+DNr43KjSEEjqXv+KN077PsoXFAM8uXYrc95flk
+	Ltfpbk74Kii1G4UkW3t1ctxPQKF5B0SOF4Hd3yWe9Fc+tPqn2FuEw1T3hmrrRscPmnhkcoMyfoX
+	vqD7LvO2lAy5HpIF92hdNkjW6E9is0NkwPJCduDFd4H9QXTQHRjGsCWm08XO8oLTcx166q7ctj4
+	ZZvAfH/IaXFQJy1v3zXj/9TatMegIVsI1OUZC9wZouQIczvO7JOeC0RZHP+et6APvQZuj4d9jwq
+	/bGOOioW6LOSH/+wW1Ng73OORWg==
+X-Google-Smtp-Source: AGHT+IF8rVuBw/E2bC3JgzNw7zXqqqNP3Y4/pPOXCrBuPpfvtXc+S9F04BanVfN5NM1MGFaJ4CHRuQ==
+X-Received: by 2002:a05:6402:160c:b0:62f:41d3:ece7 with SMTP id 4fb4d7f45d1cf-6349fa1b9a4mr6174352a12.14.1758933946955;
+        Fri, 26 Sep 2025 17:45:46 -0700 (PDT)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-634a3b0595fsm3630833a12.52.2025.09.26.17.45.43
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-634c28f1149sm1321018a12.7.2025.09.26.17.45.45
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 26 Sep 2025 17:45:44 -0700 (PDT)
+        Fri, 26 Sep 2025 17:45:45 -0700 (PDT)
 From: Wei Yang <richard.weiyang@gmail.com>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -104,21 +104,21 @@ To: akpm@linux-foundation.org,
 Cc: linux-mm@kvack.org,
 	Wei Yang <richard.weiyang@gmail.com>,
 	Kiryl Shutsemau <kirill@shutemov.name>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [Patch v4 1/2] mm/ksm: don't call mm_slot_entry() when the slot is NULL
-Date: Sat, 27 Sep 2025 00:45:38 +0000
-Message-Id: <20250927004539.19308-2-richard.weiyang@gmail.com>
+	SeongJae Park <sj@kernel.org>
+Subject: [Patch v4 2/2] mm/khugepaged: remove definition of struct khugepaged_mm_slot
+Date: Sat, 27 Sep 2025 00:45:39 +0000
+Message-Id: <20250927004539.19308-3-richard.weiyang@gmail.com>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20250927004539.19308-1-richard.weiyang@gmail.com>
 References: <20250927004539.19308-1-richard.weiyang@gmail.com>
-X-Rspamd-Queue-Id: 646E44000F
-X-Stat-Signature: fjbpqonp6jcc74t9rkcq4fafa8ck36ay
+X-Stat-Signature: 9a5wfona678p61gfjzxf13rxx1h4atxq
+X-Rspamd-Queue-Id: 766FAA0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758933946-757244
-X-HE-Meta: U2FsdGVkX18z7ygCGXR1Z/YS/dHROzuLrv3YZvJ2dYxscLz/WG5fQ2S67Xple5laDCQg7zo4zQ+nXyTZmoD3iEIY2qO0k5qmuITh0qW69GYrpwTDsjujdBKPbDnlQMINcLxYXz8Gz158yzQn3ETSyTK8ORccYhB79BY05ZTPYb2kEe/jSLuIyNMTkPjeScd+fZ5hjLoGT8M4cOPo6zwaTQ5MDLj1p9c0uCHPlDnMgiWDCEcPo86e4qNbry9B98VNHU31hizCyH6eNViMdgMw85cWNIZagmza4OSBGc0Oog07EKgWCbKtRzFzTdQe+oywrXGnCrcRc/P177kkAniOURDPShHLpxckhThV7lJD872GIymxsD1ItWNko2bqBfND5Icq+MKqdGgbdq9Om1yfPLUU8hH4h8sCUkr6PnJM5DBmbVKeyAXRcv/myK0Fjo8nup3Z7yKH3Vf8VVroL7wxWNEttV+ByXDDtCVj8s4OYlGCTTX+k0cOQaSeGYTTitOPaYLz83LEPhomLn4hDB2M7cxDJ90MsBdVLWBolFEPzQQh3pN0jeIgJqcaPyK1Z+bgBaOQ3jqH7I026BOlRhWbVAjT7k1fq82aA8ZtLlRRfclzJBHq9uriB1bZttS2o1QmF9NSPV5qBW9evN57ecevuuoK1KKGtiPcVgbH8cfpTA69QDf/FtTDxMSVbf8oU+ute87snCMXiEGIreg4krRNUwfzvB7ZTXUjlRxuxg7D4ivMk/71UH9E0LSyA4j4PkgC5GCGAxLa7pdqRmZh4PCRqkowQvG6kus8MAR/qdVWsB+p5ZdMj8Z3h+MQ41OmMY8YQtQVEA2N4vjHzUlm9kouSpfArxpBO/BooK5GT9tWau2ttww+pL+dbjZJE16VLoMs/gsr/5HcJE0jYMNq18xVw98vBfnX5C3tgm/KJ2qS0vk9V6I+MKHXV29o/kZXZFUANR3qYEVGOvju1Aw7cRx
- +lJTaxcK
- 6I8o242Ff/S4LT95mWM4gP5y0VTHGGA7h4QUU6rVGWoHxC6LETehxJAKWkT7x+L6oQTLrdUzhNT/N/G8OAFnCNzY41HOPZCivcgm01fFzSyDvRh5hbmMolH1Pe9AQe5Hrp+mawA5Yi6WwEydMx1vp0vYE5oWBFBrDYbPRDhwjo5ksF+FC1Wpioi0rzDgl+YzXCMLdmpNyCJJyqxx1OK/790UBNQjGN6ZyPqvD4Dw6jStAjx2a2ulW7c65jsHo5Oxc99gXCRVsluF8Dda3DuzlX2lLDA6NJ9zS4yyEORkAA6DVEv4T+I8YvUgn19qneKNGlmyPajP0+Chu7GYE16lCL+PI05c04LliaiifJemYm/qIdLXslXgbNlGMpymdLckcEWjU/QFqSmxhYqjyWTK3qxkCFHfiFlk0EOX59xY90rnwAhFNMSoPv78CVy5WGo+dXmxaZr2rcIJ3kl9b44Ndxm9BjynSIm6DHllgSm8VsUyJLxxpXNo2Jk7zE/T+I+MUt5rok7xpbf93SJcg4tQk+7ZVd5ZjbV2A0Cj0rlp6YphJ4tAgxVFnyPU4yqt0Y/oTwA9LiWA6TEQ0H6C4tdML7lTmhAUYjelLFGNiVWIzqmjqMZoxL8GkCX4I23FO0UUJq62+N4ONBscU/+jqtO+K70fWqmBS/ZnCjeJ2XtECLRwLLSav3a+U3MV++yePNiYAB8w8fSu1Q5FzkFcV+MJoL3cRZumjSSC1RxlTl04NqGwPkDOuaaXGjAnGkc4Y5i2m3Eo89rgiCteZacKreNxnXtCP4vkxJ7KtO5HTqNt7XXhGPnV94tmTCXSmag==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1758933948-629147
+X-HE-Meta: U2FsdGVkX1907YJEZxq08MmJhN64QkqGzutcvNHivVlWK+6Qx+6fMEOco9KiF4RA8yvniCEfYijo7MWwH0laLex4dNnwPwQeoQtZhXJ9IgqSehOCmPNd6vuWxVe1XdIavMfzwoIp6N4P0n01fJay9FADQTnV8Pb4PRYmvC6kglgNM1ahSkibB/XI70TtHRIpaVO0otcNgGlZvrJ2r3o9S9hxUkcm4PpFNveq2NMLYX9OhC4ngg3QT6jb4hMd44KU1d00NHU6Iv+NIXVcsahqKN8gDz2FXTAfq9qNsqb41KcoQRQzfb8K2BK9NSvyF4YOURVq8PfwzVsPUfEQUrlBZDFBHSkfZnq6UjF4yPYawibOaPD6JDNVqDc12Stx29EYZ4VbXc/Ce3QXFgaf15fINOxRBmiOWTCF9w0Y2AuHJxK42DpBgDSPn/OPA0A5pSg5EwStsjeHI0iFMO4kAn/bl8n51sGwM+HlvxCjTNeKwzKqA3ZpWRD2o2cJ4mhpXfSgIRWTL0FVpcnozfWFGDNphEvMN6h/YDOGuQXd0oU0LB+G/AyubMGT0KiobvBUcDbYL39tbz7nI+47gIqlHsjaAwVgVylX57yrLWtv9Eaei3C6N1qyD7lSqsyfM2loIfM8ZIinNqBqRrb64MwB89NkgcFcXF63yRq/2mDxd4ksUvn7pEKXse3GA4Lrt2Mc+d+mV0b3H1u4SFYZoBMsLWZcsMyipCAvg2t+cRA5qQHFRN4/ltdVBf4q91Y7X2j/y88iG7cQXZ5RC3jUk3IrMzDYOwjrQzUWSVmhy+w0N7osT6K17iuoJ7LnPvqubYJeQRVtaN1qljmQMblVcQFPEfOhMXBhYfTidkhzE8pgza0A04NTkORrFuflamApRFmFrH3hkRUCN6Hg0w4sWiuA1IqE4Sft71A6klml4pTJXG43D+jvAES0Yd5vB3KYOOsoggwZSiyTatpJ16VO/9TDZft
+ jNxCHpzo
+ WGw+bGjNG6oy6fp0VMLHB0wR8u9zCVofDYh1beE1RsP0jo79Q6M/ZOoqCYRZea1s6Nv5vLEarYrhzq2FgC7vg5r1AvpPYV+JJgUe3O/pRxWsnYVAOtTmm5x7GckhFIfg95aVChUFX1LLqN1a0YgEJnSHF7YVMvE+f5Dlmnuw8YQWmugEgEyA144e0cWbT5h7bUmilOOFznmkePkIrKJVIq4oWxpst0Ci58wjbJA8UT0JGW6HzNHat0IY2fNImGdRD0D4GHpq9O/LXwBD5hEVlsuPDh3EB/3oXiAevSyKx1vL39L3ChjyeyHkh4f6XAbQ8VrTqy7WmQlya2ZYRokw6wqhUXYVzX6sE9hbABvDuqLbAI+f8Ty7modNfQ+OEvwm8tuwMwyTNr/RDEJ9e613XIRWO3/zNutmKXI5cFd0iySo8FHmdYtAfwaa676fp1vQHx6qWVabq+x4xLGrsKUSZ15smg5m/3OceKRAj2Fhd4LdJP8aovnSM/rKiPaM822auMEnpnnAUXZNCDiIwfhRiDy0mUkmoqftyTG64qiSUDO4d+myx7mtNwDoxphm+8Xc8A67LvXum6lh6HNjlG2jOuKEXxRYMHkG7yMxdvtshCYzBeiDSmWWa2P69EKp/o29besVH9Pnl490HZnnU123UFKLUWrCT0LiDArZqaG2SOqKzEtHp6dr3pCwRLR5z6+nqT37iIDJN/Rht50IhDzNTI38xDDrSsCUw20BUynKuDBB0gNzXNGXaElO+6/f3JuWoGcqY+HiEm/2bEHg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,83 +127,221 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When using mm_slot in ksm, there is code like:
+Current code calls mm_slot_entry() even when we don't have a valid slot,
+which is not future proof. Currently, this is not a problem because
+"slot" is the first member in struct khugepaged_mm_slot.
 
-     slot = mm_slot_lookup(mm_slots_hash, mm);
-     mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
-     if (mm_slot && ..) {
-     }
+While struct khugepaged_mm_slot is just a wrapper of struct mm_slot, there
+is no need to define it.
 
-The mm_slot_entry() won't return a valid value if slot is NULL generally.
-But currently it works since slot is the first element of struct
-ksm_mm_slot.
-
-To reduce the ambiguity and make it robust, only call mm_slot_entry()
-when we have a valid slot.
+Remove the definition of struct khugepaged_mm_slot, so there is not chance
+to miss use mm_slot_entry().
 
 Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Acked-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Cc: Lance Yang <lance.yang@linux.dev>
 Cc: David Hildenbrand <david@redhat.com>
 Cc: Dev Jain <dev.jain@arm.com>
-Cc: Lance Yang <lance.yang@linux.dev>
 Cc: Kiryl Shutsemau <kirill@shutemov.name>
 Cc: xu xin <xu.xin16@zte.com.cn>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Nico Pache <npache@redhat.com>
 
 ---
 v3:
-  * adjust subject and changelog based on David's comment
-  * use invert style for coding suggested by Kiryl
-  * drop RB and Ack-by
+  * adjust changelog
+  * rename the slab cache to "mm_slot"
 v2:
-  * fix uninitialized mm_slot
+  * fix a PF reported by SeongJae, where slot is changed to next one
 ---
- mm/ksm.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ mm/khugepaged.c | 55 ++++++++++++++++---------------------------------
+ 1 file changed, 18 insertions(+), 37 deletions(-)
 
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 2dbe92e3dd52..7bc726b50b2f 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -2921,7 +2921,7 @@ int __ksm_enter(struct mm_struct *mm)
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 204ce3059267..67540078083b 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -103,14 +103,6 @@ struct collapse_control {
+ 	nodemask_t alloc_nmask;
+ };
  
- void __ksm_exit(struct mm_struct *mm)
+-/**
+- * struct khugepaged_mm_slot - khugepaged information per mm that is being scanned
+- * @slot: hash lookup from mm to mm_slot
+- */
+-struct khugepaged_mm_slot {
+-	struct mm_slot slot;
+-};
+-
+ /**
+  * struct khugepaged_scan - cursor for scanning
+  * @mm_head: the head of the mm list to scan
+@@ -121,7 +113,7 @@ struct khugepaged_mm_slot {
+  */
+ struct khugepaged_scan {
+ 	struct list_head mm_head;
+-	struct khugepaged_mm_slot *mm_slot;
++	struct mm_slot *mm_slot;
+ 	unsigned long address;
+ };
+ 
+@@ -384,7 +376,7 @@ int hugepage_madvise(struct vm_area_struct *vma,
+ 
+ int __init khugepaged_init(void)
  {
--	struct ksm_mm_slot *mm_slot;
-+	struct ksm_mm_slot *mm_slot = NULL;
+-	mm_slot_cache = KMEM_CACHE(khugepaged_mm_slot, 0);
++	mm_slot_cache = KMEM_CACHE(mm_slot, 0);
+ 	if (!mm_slot_cache)
+ 		return -ENOMEM;
+ 
+@@ -438,7 +430,6 @@ static bool hugepage_pmd_enabled(void)
+ 
+ void __khugepaged_enter(struct mm_struct *mm)
+ {
+-	struct khugepaged_mm_slot *mm_slot;
  	struct mm_slot *slot;
- 	int easy_to_free = 0;
+ 	int wakeup;
  
-@@ -2936,17 +2936,20 @@ void __ksm_exit(struct mm_struct *mm)
+@@ -447,12 +438,10 @@ void __khugepaged_enter(struct mm_struct *mm)
+ 	if (unlikely(mm_flags_test_and_set(MMF_VM_HUGEPAGE, mm)))
+ 		return;
  
- 	spin_lock(&ksm_mmlist_lock);
- 	slot = mm_slot_lookup(mm_slots_hash, mm);
+-	mm_slot = mm_slot_alloc(mm_slot_cache);
+-	if (!mm_slot)
++	slot = mm_slot_alloc(mm_slot_cache);
 +	if (!slot)
-+		goto unlock;
- 	mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
--	if (mm_slot && ksm_scan.mm_slot != mm_slot) {
--		if (!mm_slot->rmap_list) {
--			hash_del(&slot->hash);
--			list_del(&slot->mm_node);
--			easy_to_free = 1;
--		} else {
--			list_move(&slot->mm_node,
--				  &ksm_scan.mm_slot->slot.mm_node);
--		}
-+	if (ksm_scan.mm_slot == mm_slot)
-+		goto unlock;
-+	if (!mm_slot->rmap_list) {
-+		hash_del(&slot->hash);
-+		list_del(&slot->mm_node);
-+		easy_to_free = 1;
-+	} else {
-+		list_move(&slot->mm_node,
-+			  &ksm_scan.mm_slot->slot.mm_node);
- 	}
-+unlock:
- 	spin_unlock(&ksm_mmlist_lock);
+ 		return;
  
- 	if (easy_to_free) {
+-	slot = &mm_slot->slot;
+-
+ 	spin_lock(&khugepaged_mm_lock);
+ 	mm_slot_insert(mm_slots_hash, mm, slot);
+ 	/*
+@@ -480,14 +469,12 @@ void khugepaged_enter_vma(struct vm_area_struct *vma,
+ 
+ void __khugepaged_exit(struct mm_struct *mm)
+ {
+-	struct khugepaged_mm_slot *mm_slot;
+ 	struct mm_slot *slot;
+ 	int free = 0;
+ 
+ 	spin_lock(&khugepaged_mm_lock);
+ 	slot = mm_slot_lookup(mm_slots_hash, mm);
+-	mm_slot = mm_slot_entry(slot, struct khugepaged_mm_slot, slot);
+-	if (mm_slot && khugepaged_scan.mm_slot != mm_slot) {
++	if (slot && khugepaged_scan.mm_slot != slot) {
+ 		hash_del(&slot->hash);
+ 		list_del(&slot->mm_node);
+ 		free = 1;
+@@ -496,9 +483,9 @@ void __khugepaged_exit(struct mm_struct *mm)
+ 
+ 	if (free) {
+ 		mm_flags_clear(MMF_VM_HUGEPAGE, mm);
+-		mm_slot_free(mm_slot_cache, mm_slot);
++		mm_slot_free(mm_slot_cache, slot);
+ 		mmdrop(mm);
+-	} else if (mm_slot) {
++	} else if (slot) {
+ 		/*
+ 		 * This is required to serialize against
+ 		 * hpage_collapse_test_exit() (which is guaranteed to run
+@@ -1432,9 +1419,8 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 	return result;
+ }
+ 
+-static void collect_mm_slot(struct khugepaged_mm_slot *mm_slot)
++static void collect_mm_slot(struct mm_slot *slot)
+ {
+-	struct mm_slot *slot = &mm_slot->slot;
+ 	struct mm_struct *mm = slot->mm;
+ 
+ 	lockdep_assert_held(&khugepaged_mm_lock);
+@@ -1451,7 +1437,7 @@ static void collect_mm_slot(struct khugepaged_mm_slot *mm_slot)
+ 		 */
+ 
+ 		/* khugepaged_mm_lock actually not necessary for the below */
+-		mm_slot_free(mm_slot_cache, mm_slot);
++		mm_slot_free(mm_slot_cache, slot);
+ 		mmdrop(mm);
+ 	}
+ }
+@@ -2394,7 +2380,6 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+ 	__acquires(&khugepaged_mm_lock)
+ {
+ 	struct vma_iterator vmi;
+-	struct khugepaged_mm_slot *mm_slot;
+ 	struct mm_slot *slot;
+ 	struct mm_struct *mm;
+ 	struct vm_area_struct *vma;
+@@ -2405,14 +2390,12 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+ 	*result = SCAN_FAIL;
+ 
+ 	if (khugepaged_scan.mm_slot) {
+-		mm_slot = khugepaged_scan.mm_slot;
+-		slot = &mm_slot->slot;
++		slot = khugepaged_scan.mm_slot;
+ 	} else {
+ 		slot = list_first_entry(&khugepaged_scan.mm_head,
+ 				     struct mm_slot, mm_node);
+-		mm_slot = mm_slot_entry(slot, struct khugepaged_mm_slot, slot);
+ 		khugepaged_scan.address = 0;
+-		khugepaged_scan.mm_slot = mm_slot;
++		khugepaged_scan.mm_slot = slot;
+ 	}
+ 	spin_unlock(&khugepaged_mm_lock);
+ 
+@@ -2510,7 +2493,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+ breakouterloop_mmap_lock:
+ 
+ 	spin_lock(&khugepaged_mm_lock);
+-	VM_BUG_ON(khugepaged_scan.mm_slot != mm_slot);
++	VM_BUG_ON(khugepaged_scan.mm_slot != slot);
+ 	/*
+ 	 * Release the current mm_slot if this mm is about to die, or
+ 	 * if we scanned all vmas of this mm.
+@@ -2522,16 +2505,14 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+ 		 * mm_slot not pointing to the exiting mm.
+ 		 */
+ 		if (!list_is_last(&slot->mm_node, &khugepaged_scan.mm_head)) {
+-			slot = list_next_entry(slot, mm_node);
+-			khugepaged_scan.mm_slot =
+-				mm_slot_entry(slot, struct khugepaged_mm_slot, slot);
++			khugepaged_scan.mm_slot = list_next_entry(slot, mm_node);
+ 			khugepaged_scan.address = 0;
+ 		} else {
+ 			khugepaged_scan.mm_slot = NULL;
+ 			khugepaged_full_scans++;
+ 		}
+ 
+-		collect_mm_slot(mm_slot);
++		collect_mm_slot(slot);
+ 	}
+ 
+ 	return progress;
+@@ -2618,7 +2599,7 @@ static void khugepaged_wait_work(void)
+ 
+ static int khugepaged(void *none)
+ {
+-	struct khugepaged_mm_slot *mm_slot;
++	struct mm_slot *slot;
+ 
+ 	set_freezable();
+ 	set_user_nice(current, MAX_NICE);
+@@ -2629,10 +2610,10 @@ static int khugepaged(void *none)
+ 	}
+ 
+ 	spin_lock(&khugepaged_mm_lock);
+-	mm_slot = khugepaged_scan.mm_slot;
++	slot = khugepaged_scan.mm_slot;
+ 	khugepaged_scan.mm_slot = NULL;
+-	if (mm_slot)
+-		collect_mm_slot(mm_slot);
++	if (slot)
++		collect_mm_slot(slot);
+ 	spin_unlock(&khugepaged_mm_lock);
+ 	return 0;
+ }
 -- 
 2.34.1
 
