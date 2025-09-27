@@ -4,101 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03A26CAC5BB
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Sep 2025 00:15:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28370CAC5BB
+	for <linux-mm@archiver.kernel.org>; Sat, 27 Sep 2025 00:28:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C3388E000E; Fri, 26 Sep 2025 20:15:06 -0400 (EDT)
+	id 4F37A8E0007; Fri, 26 Sep 2025 20:28:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59A808E0001; Fri, 26 Sep 2025 20:15:06 -0400 (EDT)
+	id 4A3F38E0001; Fri, 26 Sep 2025 20:28:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D6ED8E000E; Fri, 26 Sep 2025 20:15:06 -0400 (EDT)
+	id 393358E0007; Fri, 26 Sep 2025 20:28:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C5498E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 20:15:06 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C6F471607C7
-	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 00:15:05 +0000 (UTC)
-X-FDA: 83933110170.10.E678578
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C0A7C40006
-	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 00:15:03 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FBHRle6u;
-	spf=pass (imf27.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2717A8E0001
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 20:28:48 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AE3365A100
+	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 00:28:47 +0000 (UTC)
+X-FDA: 83933144694.03.1E8CAE3
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C97B514000D
+	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 00:28:45 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Uq2fgt+n;
+	spf=pass (imf26.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758932103;
+	s=arc-20220608; t=1758932925;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N66RsVJXiBlbb/QUvbgFl1wdvUWyCT2EtGwfeQOPWPQ=;
-	b=PMC0aLYta2PbTSgRZnThtlNIj/WgbdtcLg2Q59bMxoHkxhGQ/i6LTRB50YLv6UvYqduxR6
-	LtB6FsVIDnFlq0I9fodA39Ehi5anzHOyO91KX98tb34KdbIHYVkJbaTVg4YDcr3P+lLMca
-	RJbogB0WzzKKTcivPbj5Ng+DAB5l9kM=
+	bh=0lL1xNsKEteMXMKmX3O4zRiD5wAUnbo9gdCrODnH6YU=;
+	b=kVZSTwg0GO+MI6bs31xx0Xd7hfdNm5+dRjcs20q39HMzvBreebPAm41nF2iAYkvfKnkWar
+	U1HSdFapHkcHYWUBeADh6Phb1hh/Mb7slVOPGGugw6igC7nCROAciuC+Bo47dGqnNSSByv
+	RJLpBgInqvqiG1iPU3Qzi0yT8IBzDN4=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FBHRle6u;
-	spf=pass (imf27.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758932103; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Uq2fgt+n;
+	spf=pass (imf26.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758932925; a=rsa-sha256;
 	cv=none;
-	b=7pa1/bFMibbL7LGL/uq0Oza6Yv1Eh08jB7uxeZdD4riKIvrnq7X1f6y+H0tIByntOclJmx
-	VchmAO4JK6ozLj5Q343oeiiEG5GDy6CukPBIxxlCniH3IWN2AL1HAzwvmem0Soi6YV1w8a
-	ix1Ep3gjcDxb1MLnnq80sdHBNULy3Lk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758932103;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N66RsVJXiBlbb/QUvbgFl1wdvUWyCT2EtGwfeQOPWPQ=;
-	b=FBHRle6uHZmunC1jrZXK2b5hjHlxRh/PAzyd1x9ig1uo8ZEN054WNHB7SgidcaqjmRKbkU
-	huMKsU2ugaMx5EHiVpPEziV02Ok7a8YsZY81C1Qdso9y46idi11cBWHWh0eFG6gjs/PBUs
-	ltVL3IF/0VXaDsPmKQsLga14aHckxU4=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-653-uzcTgOE-PMW5d9qd8F_NVg-1; Fri,
- 26 Sep 2025 20:14:57 -0400
-X-MC-Unique: uzcTgOE-PMW5d9qd8F_NVg-1
-X-Mimecast-MFC-AGG-ID: uzcTgOE-PMW5d9qd8F_NVg_1758932096
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 83C1D1956086;
-	Sat, 27 Sep 2025 00:14:55 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.10])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E5AC1180047F;
-	Sat, 27 Sep 2025 00:14:53 +0000 (UTC)
-Date: Sat, 27 Sep 2025 08:14:49 +0800
-From: Baoquan He <bhe@redhat.com>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
-	youngjun.park@lge.com, aaron.lu@intel.com, baohua@kernel.org,
-	shikemeng@huaweicloud.com, nphamcs@gmail.com
-Subject: Re: [PATCH v2 0/1] mm/swapfile.c: select the swap device with
- default priority round robin
-Message-ID: <aNcseZC+9ao3KK9z@fedora>
-References: <20250926155504.5122-1-bhe@redhat.com>
+	b=KF/huYGm0TxCd3Ldt5H1DQ6gL79H0z6U/hZj8ytyNn72oOc/fIt3rGOwDZ7LO3h2cQTqi7
+	MtbLHHpvm1tmnffrei/0o9+Pqa5SFozejeNNM1Oe2jhtXwY5xD0YrAU21L8l4VD4JHZhNb
+	TqcW2vrNSgyEuhDLvLLtgbN8MRaFwas=
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4de66881569so149901cf.0
+        for <linux-mm@kvack.org>; Fri, 26 Sep 2025 17:28:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758932925; x=1759537725; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0lL1xNsKEteMXMKmX3O4zRiD5wAUnbo9gdCrODnH6YU=;
+        b=Uq2fgt+nctSbwMKJuEu64GRyi0pL+TN8v1kcbEm89qs/8JBmxNlFiMtIe+7XG9n0ly
+         1+560rQMHGaiiP1FKkiqMk8cuWq4ZBp2zvnnLbznlNPuRwBrDgotwZizfwLVmOAoySRW
+         2zGcMLMszuoEITFQPPx7z3QPuxr+lA/80hJ+mJjxFwFbHc0MYKqOKKM/zYbexAGolsTK
+         02pbuTqiJ/SH/bUTJotSOE4cFBIWnhhsNA2hxK7eac3WDwd/ldhUgYniQKljdM6KoONy
+         DuiC1UP/e98g9dQPTudYEFFRzfKo31jnoZ/oxJv5JIWvR9F6+r2yEJHMTyEjiSSTLZ8+
+         7Dew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758932925; x=1759537725;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0lL1xNsKEteMXMKmX3O4zRiD5wAUnbo9gdCrODnH6YU=;
+        b=X7H+DX7XNaMD9ttsqzZEh1g6UFkFeiCeXVBImBZ4qTnReasi4C3SKbKLfZp8QIadha
+         5MqLP8d89i6zRh9bZ+l9w+WFQx3dervUCzxOKir6gRjktqDGn6dtCiyl7ZYMeKlAiRp0
+         VrDNwwTgkuUZKeo/0r6anNVyZUC/9yd6uZtCqTexGGBkDsjl/0ZCDmKDyahaltIVpTBA
+         MID87kLGclTBS77FIUaKt5926Ts+l9lMVh+PL91vS8B8rzBLaPBx8zaQ8+Escr7OCbpP
+         0p50X1btcL209ZUgRiv8XTtX7VTRoOUzNQxnGly0LrXeaPHZvO3dFY6iwhR6M1ZcFd8h
+         T9+w==
+X-Forwarded-Encrypted: i=1; AJvYcCVwAVhoPvK3rNvqm/ObBckBACuvMNLdbt3o7/BcrQVyUmpoxSbnZ0uw9vr2oajo/mFeObHDk8iacA==@kvack.org
+X-Gm-Message-State: AOJu0YysDDKYQJKlrIKY/TpRAtXAw0spbxiGzK6/el8ARXKudGlGUSP3
+	5bS5HJfIaQJPRjjCPYvpDsBvh0vxFx78Y8fsq6RBAaU1pHDe/BSWVk3wsZEDg+ISLZqMb0qBlYE
+	IdEgW6983viLYd4g66q3WyQS5XBXLJU7wYPjL+8Cg
+X-Gm-Gg: ASbGncvaCOzykP6TOPg8Fzp4AJvfXtMg0bcbac+QVsTlHVmzMbyaDdJS3sxuqHuFOWg
+	VNCG0LSbiSTJB9cCoc/t5/np/UxEyCe5XJ8fFTuv+Gp5KAW2MCu8pqZarPP5zBrpWsuk+c0nrPr
+	YhVTwc1+X6Ey/WyQ5U1FJL7n6EqwyGwY0E8g40YlYEkgMwFqabTCCbSpqrIkA8+Gr0vDKZ8SNs0
+	d/gOQVEruwj
+X-Google-Smtp-Source: AGHT+IH5IFJR77Y9edST6Xxl+0Cot4RzHoKBIGdLSAKbGPf4fsdiUsyYbAo8BpYxzO/JKdii+i+G1WOVfpK48XW3h2k=
+X-Received: by 2002:a05:622a:2cd:b0:4b0:f1f3:db94 with SMTP id
+ d75a77b69052e-4dec6b1f86cmr2934011cf.5.1758932924368; Fri, 26 Sep 2025
+ 17:28:44 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20250926155504.5122-1-bhe@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: TmKCiN-X1LzdCjFkUIVDp96NSupAU0iwZ27y_V9fr6Y_1758932096
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20250910-slub-percpu-caches-v8-0-ca3099d8352c@suse.cz> <20250910-slub-percpu-caches-v8-20-ca3099d8352c@suse.cz>
+In-Reply-To: <20250910-slub-percpu-caches-v8-20-ca3099d8352c@suse.cz>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Fri, 26 Sep 2025 17:28:33 -0700
+X-Gm-Features: AS18NWANsOMOuXdXD-T691vO4VKx0kp2e8h8yCDMUhco_cBrMY2tOuwxOaQ01iY
+Message-ID: <CAJuCfpEQzHM8hwTLXj8evuWHcUWvsM+HecwkLgP3i-A30rAtHQ@mail.gmail.com>
+Subject: Re: [PATCH v8 20/23] tools/testing: Add support for prefilled slab sheafs
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, 
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, rcu@vger.kernel.org, 
+	maple-tree@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: C97B514000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C0A7C40006
-X-Stat-Signature: 44meqnrty8ao7oxytzxmb8y6dhcy58m7
-X-HE-Tag: 1758932103-767234
-X-HE-Meta: U2FsdGVkX196C+CY9SHKOPaLwXixTcdQeiiMLV1QEke233YeiwtQBbxWVhHOO/8QMX3TUgOR2oN1tHw2qC007w4NHwr7dkMB195H5DRmjjlceZE7MgS4O7CdzD15VMdY+0M0d2ElWRE3XhpDwrK2NJb2Q2SX9lTWWGPD4/+Ud1dJUg8AzDJo6Qq1JuvhkGP4Sm/E8KyIFz41C3CFbUUTrfa94Bu/lXxFXKfaQll/1XkuhdNpVTQOVbzzNEQsotfSkSpfKqaKrU/SYhiHoODp5EPDvDHr5Ukr5UhZbRpy7Cjs35NjlEGwNQAcg6nRe8Ri9+hhJ1Hwd0a/G9TuIAZjAMJflI8MGa3c8c8dQx+5ZlUa9dRUcyj87HIBFXmY1gawhvMwwI5CqNAqD5elwBG8tN932Ie6sZZ8fk4J65sdIfL4xTd+rVsKJFhXd+tTG/JV8e1zyY9AMF3bkbqtA1oDaabNzfdN6dxv1Wl+MyNy8CnAchwLKIrvSKnofxWPPjwsoVFhmnRCjMRjl+pc7wkn9H6YPhehEBiA99Z2LNBa7pqlmwJxnAdnR3KWPCYU2XySiwo7EWXj8Np9Qu46Zgu0b8BLjBx+syAXgZkM+JV7+WZ9w3hGhlVUBMMaqbcZN3qnPVQT7zglTtVrudv4K1FvC+rldFoGK5mAwHjay0anso5eiXdxUjbHGi6DJsPr07DZ6d/+Ir8djkGQQENR9FPzmjWQ6q6Vy0nkIG6fEXbWaAIlMBSkLTEWAWrC8coKf10lyItSWBN4O/IcBfjkH9FJPPHuv7fTtayKRDkU57XreCumcJsv49/OEEHQdfFMIwmBpPmvcZUcJrqmF4onsTvpi3x7aRKiK8dbHaYQpDceNYmfSdnamrUYTju/wHlNFSpHoYIj4IS2Pug/RJTzUXKnxndEuVHvGOgmOedrmjUFX/solmnWDw8x7cFg5Y0Tt6jMxxpAiB5w83NhnGc0YMg
- WkXgO70I
- GNfx5Gvfu3AQKiRXhq9GxUTwyyUPO+NoHXNydQ2X1QCi/TDPJJEV5CyfzKLl+C/d135Pgd/XlI32OQlAWSRB49U5x3zTH21J+ru73Z33K1HQL+6OiZT1inGqMWLsQIQgEjZl5nb3jhvtb8+7LW2RXJbPbQqDSYi4IvnuTj0ERCFHU+PGwpnhBpC8kNGkOMANES74hZaxWfdxjSEVY4C+MoCwUxtoq0HnYGtXeWRdVRfJ7nQd35RuR3qjlCxkfjadVD/N9Kl2iFOAlf3uXLgs0jVL093AIEAtaxouQC+6VZMxKRMOeKKyo6k+aRaDJiOSk4tmCP2TT5SmZeBo9h8euoVtImfXH7TAeNrc3gOUDYlLU/0WMnSJpbPY6SgwkZq8vonpZBEh86/YkK1ZaaaNyYKMFqg==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 8fswoaobfr4gmtgztobpi7bsw8tzk19j
+X-HE-Tag: 1758932925-472231
+X-HE-Meta: U2FsdGVkX19IL0QFEXvo3sZtrYGOR2z3kQKDZOyjZeEzd3fdzfBDCq7pv02E6+ZlrZOyydIG8K+rwEvIVM1wgTqM8LDjFBbctJn4S7SO4jNg0YVwclIdZt0Yvjxq9YpbrNe2S1qXRQeE0mJog3CJZQG+mVSMUwrcPEnB0GZ5F2FRqpKLfCFehpVPM7m0QAh8OWeyKaNnOayBegMJBatxbKu6E5bwwhwa4OQ1/qC+JWyumFnJXboOYCdWvya5fXidQ1A1B6bYmn7/385rChHsDHFjSkSts9eXXF+pn840BgYrc1wYou2JBvEIEOURYPtt9F9XQ97YIJPS4ox9ANGBWMJXaDrNcPdkINPlGG4Jb4uYPUyursUn4Ow/bkofrtWAh3nannZdRmWparXPRz0SrvgZTKWIxiov3vIsP6xvjY7MkXwZy2ycjTbvKHXc/zQAZk9oa1FrxTEUtFjmj2VGREUauoa2J1Qn/QP+N29HsEWSlzYiQeve5u8DeDDxD4xS2YS76/9W2xxzmsoKCkgkfRVhv9hA4vY5E5XukzuwjDdj6I7iJqS/FXt9xqWZePPFtoXUEvDmFXSefsnKIH2R8btbplE6eWDS6hgnCxP72xEjNkMN7LAEnPrrfQSPwrHcv52Af8kAahrLoRasaaZ/LG7fJVAJmjEQqEKTW+qKdxgA/SCcd8ms9sEt//pVXUaUZ9SHYpyCHKINA8Hpg2k6sTxUlp6Cci/RxWa/DtqOc/3Dqc2ajBC6FPlTYCQAwKRAEc+qQoigJEq/CyBywsyBx9WJwF1v6oVY6gini1bfc6eEWRQW6GTgrr8feWVhlialRFZ1PnuMvFtsBAtBgL1QRlopdnXNtBrstaSPodNJoZ/eijPDzm0PJ5go2XVKGrA/yWJDRAFfegwOK8Abky77fQqeVhbhG/OK3Rd+xlCQ9ekeHXe2H8oPJL6rxALc672lCUzEOmCpEDcuydKr/8Q
+ Nw98Ua3G
+ M6SM2Wd3uQ2xdBBu7fHpMT7zvmW99miONCKaS9AN8I7a4XPpzTCyBDVrst50zbeTs6J86JFJXJKFkxzFEpP8QyNleEpoAioF9elJ+QUaXevi6vHqQWBGdkQ8ykGpTnLjq+4X3PamLHgSlZnr9TdKwFv9cZcHidTcxP68yox8bjADrObn0yk3LjJ0L8yHroZmH9IqwIRo3OCcMYYM1HLGXtrhe24U8MYP+j5jVfwpSm9+bFZUd0pPQ+REUIg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,63 +120,191 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/26/25 at 11:55pm, Baoquan He wrote:
-> The detailed information about patch can be found in patch log. Here I
-> would like to add testing related information.
-> 
->  On my system, it has 8 nodes, 64G RAM. So I created 4 zram devices of
-> size 16G. Doing this because I can't find system with 4 free SSD disk
-                                                        ~~~~~~~
-This description is misleading, testing this patch needs multiple SSD
-disks, 2 disks is enough, more is better. Sorry I was dizzy when posting
-last night.
+On Wed, Sep 10, 2025 at 1:01=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
+ote:
+>
+> From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+>
+> Add the prefilled sheaf structs to the slab header and the associated
+> functions to the testing/shared/linux.c file.
+>
+> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 
-> which can be used as swap devices. And nowadays, swap, zram become more
-> and more popular, even default setup, so I create zram to test patch.
-> # free -h
->                total        used        free      shared  buff/cache   available
-> Mem:            62Gi       1.6Gi        61Gi       4.8Mi       276Mi        61Gi
-> Swap:           63Gi          0B        63Gi
-> 
-> 1) create zram
-> #My fedora will add one zram0 by default, I reset it because the zram size if not enough
-                                                                             ~s/if/is/
-> swapoff /dev/zram0 
-> 
-> cd /sys/block/
-> echo 1 > zram0/reset
-> cat /sys/class/zram-control/hot_add
-> cat /sys/class/zram-control/hot_add
-> cat /sys/class/zram-control/hot_add
->  
-> echo 16G > zram0/disksize 
-> echo 16G > zram1/disksize 
-> echo 16G > zram2/disksize
-> echo 16G > zram3/disksize 
->  
-> mkswap /dev/zram0
-> mkswap /dev/zram1
-> mkswap /dev/zram2
-> mkswap /dev/zram3
->  
-> swapon /dev/zram0
-> swapon /dev/zram1
-> swapon /dev/zram2
-> swapon /dev/zram3
-> 
-> 2) Create memcg with 4G (this avoids noise from other anon process in system)
-                                                        ~~~~~~~~~~~
-                                      it should be anon mem regions from other process
-> cd /sys/fs/cgroup/
-> mkdir testing
-> echo 4G > testing/memory.max
-> echo 3G > testing/memory.high
-> 
-> 3) Run usemem in memcg
-> cgexec -g memory:testing ~/vm-scalability/usemem --init-time -O -y -x -n 31 2G > ~/vm-scalability/temp.txt
-> 
-> The usemem output is not easy to understand, I will attach my draft
-> script in thread for easing result collecting and statistics.
-> 
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
+> ---
+>  tools/include/linux/slab.h   | 28 ++++++++++++++
+>  tools/testing/shared/linux.c | 89 ++++++++++++++++++++++++++++++++++++++=
+++++++
+>  2 files changed, 117 insertions(+)
+>
+> diff --git a/tools/include/linux/slab.h b/tools/include/linux/slab.h
+> index c5c5cc6db5668be2cc94c29065ccfa7ca7b4bb08..94937a699402bd1f31887dfb5=
+2b6fd0a3c986f43 100644
+> --- a/tools/include/linux/slab.h
+> +++ b/tools/include/linux/slab.h
+> @@ -123,6 +123,18 @@ struct kmem_cache_args {
+>         void (*ctor)(void *);
+>  };
+>
+> +struct slab_sheaf {
+> +       union {
+> +               struct list_head barn_list;
+> +               /* only used for prefilled sheafs */
+> +               unsigned int capacity;
+> +       };
+> +       struct kmem_cache *cache;
+> +       unsigned int size;
+> +       int node; /* only used for rcu_sheaf */
+> +       void *objects[];
+> +};
+> +
+>  static inline void *kzalloc(size_t size, gfp_t gfp)
+>  {
+>         return kmalloc(size, gfp | __GFP_ZERO);
+> @@ -173,5 +185,21 @@ __kmem_cache_create(const char *name, unsigned int s=
+ize, unsigned int align,
+>  void kmem_cache_free_bulk(struct kmem_cache *cachep, size_t size, void *=
+*list);
+>  int kmem_cache_alloc_bulk(struct kmem_cache *cachep, gfp_t gfp, size_t s=
+ize,
+>                           void **list);
+> +struct slab_sheaf *
+> +kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int s=
+ize);
+> +
+> +void *
+> +kmem_cache_alloc_from_sheaf(struct kmem_cache *s, gfp_t gfp,
+> +               struct slab_sheaf *sheaf);
+> +
+> +void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
+> +               struct slab_sheaf *sheaf);
+> +int kmem_cache_refill_sheaf(struct kmem_cache *s, gfp_t gfp,
+> +               struct slab_sheaf **sheafp, unsigned int size);
+> +
+> +static inline unsigned int kmem_cache_sheaf_size(struct slab_sheaf *shea=
+f)
+> +{
+> +       return sheaf->size;
+> +}
+>
+>  #endif         /* _TOOLS_SLAB_H */
+> diff --git a/tools/testing/shared/linux.c b/tools/testing/shared/linux.c
+> index 97b8412ccbb6d222604c7b397c53c65618d8d51b..4ceff7969b78cf8e33cd1e021=
+c68bc9f8a02a7a1 100644
+> --- a/tools/testing/shared/linux.c
+> +++ b/tools/testing/shared/linux.c
+> @@ -137,6 +137,12 @@ void kmem_cache_free_bulk(struct kmem_cache *cachep,=
+ size_t size, void **list)
+>         if (kmalloc_verbose)
+>                 pr_debug("Bulk free %p[0-%zu]\n", list, size - 1);
+>
+> +       if (cachep->exec_callback) {
+> +               if (cachep->callback)
+> +                       cachep->callback(cachep->private);
+> +               cachep->exec_callback =3D false;
+> +       }
+> +
+>         pthread_mutex_lock(&cachep->lock);
+>         for (int i =3D 0; i < size; i++)
+>                 kmem_cache_free_locked(cachep, list[i]);
+> @@ -242,6 +248,89 @@ __kmem_cache_create_args(const char *name, unsigned =
+int size,
+>         return ret;
+>  }
+>
+> +struct slab_sheaf *
+> +kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int s=
+ize)
+> +{
+> +       struct slab_sheaf *sheaf;
+> +       unsigned int capacity;
+> +
+> +       if (s->exec_callback) {
+> +               if (s->callback)
+> +                       s->callback(s->private);
+> +               s->exec_callback =3D false;
+> +       }
+> +
+> +       capacity =3D max(size, s->sheaf_capacity);
+> +
+> +       sheaf =3D calloc(1, sizeof(*sheaf) + sizeof(void *) * capacity);
+> +       if (!sheaf)
+> +               return NULL;
+> +
+> +       sheaf->cache =3D s;
+> +       sheaf->capacity =3D capacity;
+> +       sheaf->size =3D kmem_cache_alloc_bulk(s, gfp, size, sheaf->object=
+s);
+> +       if (!sheaf->size) {
+> +               free(sheaf);
+> +               return NULL;
+> +       }
+> +
+> +       return sheaf;
+> +}
+> +
+> +int kmem_cache_refill_sheaf(struct kmem_cache *s, gfp_t gfp,
+> +                struct slab_sheaf **sheafp, unsigned int size)
+> +{
+> +       struct slab_sheaf *sheaf =3D *sheafp;
+> +       int refill;
+> +
+> +       if (sheaf->size >=3D size)
+> +               return 0;
+> +
+> +       if (size > sheaf->capacity) {
+> +               sheaf =3D kmem_cache_prefill_sheaf(s, gfp, size);
+> +               if (!sheaf)
+> +                       return -ENOMEM;
+> +
+> +               kmem_cache_return_sheaf(s, gfp, *sheafp);
+> +               *sheafp =3D sheaf;
+> +               return 0;
+> +       }
+> +
+> +       refill =3D kmem_cache_alloc_bulk(s, gfp, size - sheaf->size,
+> +                                      &sheaf->objects[sheaf->size]);
+> +       if (!refill)
+> +               return -ENOMEM;
+> +
+> +       sheaf->size +=3D refill;
+> +       return 0;
+> +}
+> +
+> +void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
+> +                struct slab_sheaf *sheaf)
+> +{
+> +       if (sheaf->size)
+> +               kmem_cache_free_bulk(s, sheaf->size, &sheaf->objects[0]);
+> +
+> +       free(sheaf);
+> +}
+> +
+> +void *
+> +kmem_cache_alloc_from_sheaf(struct kmem_cache *s, gfp_t gfp,
+> +               struct slab_sheaf *sheaf)
+> +{
+> +       void *obj;
+> +
+> +       if (sheaf->size =3D=3D 0) {
+> +               printf("Nothing left in sheaf!\n");
+> +               return NULL;
+> +       }
+> +
+> +       obj =3D sheaf->objects[--sheaf->size];
+> +       sheaf->objects[sheaf->size] =3D NULL;
+> +
+> +       return obj;
+> +}
+> +
+>  /*
+>   * Test the test infrastructure for kem_cache_alloc/free and bulk counte=
+rparts.
+>   */
+>
+> --
+> 2.51.0
+>
 
