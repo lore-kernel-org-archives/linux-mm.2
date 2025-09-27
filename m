@@ -4,105 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0FD9CAC5B0
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Sep 2025 07:57:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 845B6CAC5B9
+	for <linux-mm@archiver.kernel.org>; Sat, 27 Sep 2025 08:07:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDBEA8E0002; Sat, 27 Sep 2025 03:57:16 -0400 (EDT)
+	id D1CCF8E0003; Sat, 27 Sep 2025 04:07:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB5C18E0001; Sat, 27 Sep 2025 03:57:16 -0400 (EDT)
+	id CCC2A8E0001; Sat, 27 Sep 2025 04:07:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC9318E0002; Sat, 27 Sep 2025 03:57:16 -0400 (EDT)
+	id B94128E0003; Sat, 27 Sep 2025 04:07:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AC4DB8E0001
-	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 03:57:16 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 45B1EC0623
-	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 07:57:16 +0000 (UTC)
-X-FDA: 83934274872.16.5D46D0D
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C91E240005
-	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 07:57:12 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=XNToOZUB;
-	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C2B08E0001
+	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 04:07:53 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4023211A628
+	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 08:07:53 +0000 (UTC)
+X-FDA: 83934301626.26.A757BF8
+Received: from mail-pf1-f195.google.com (mail-pf1-f195.google.com [209.85.210.195])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 760BBA0008
+	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 08:07:51 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Xb4R7Bu6;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of jianyungao89@gmail.com designates 209.85.210.195 as permitted sender) smtp.mailfrom=jianyungao89@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758960471; a=rsa-sha256;
+	cv=none;
+	b=7RuuBAGVVHq35JYAe9nlSHZKzZitA9KexP9Dpw7UkBMUYwf1gVV+xRtq2zaOGvRcVPcg8D
+	oVBLsugKSQv5EsRen8Pkk7ZAnOq4bm373aMPIY1J0RXtsxZPPq/mjewr3pHdHuHopg7Vpq
+	809pPB6xy07ON30g7YJt35+9TGOfnP8=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Xb4R7Bu6;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of jianyungao89@gmail.com designates 209.85.210.195 as permitted sender) smtp.mailfrom=jianyungao89@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758959834;
+	s=arc-20220608; t=1758960471;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ETg3VIwap483E01V+VbhlJ1wQH7xyZjf058RiPBSSOM=;
-	b=Ax1Awtk2/HgvXZeoMZyB4ysF+epfV2myk1djzZcofAWAFVJ5DbXcpf+ZcNzPB3dxm8tLcj
-	yCNln5a3BVCrMPdTIBVjnwcdxzx/VV+8NjVBSTZ624uOda+bR3dTDtFA3FDleJOsZxvzz9
-	6ti6GLVEgScd9EQY88pQQYYyBg/o484=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=XNToOZUB;
-	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758959834; a=rsa-sha256;
-	cv=none;
-	b=Eyn31Nt0WVHJqGH+PguQUwzBRtIFclJS4RSYmbpPI2j9AzzaE3sYTSMmh9LdSJb85rXv9w
-	WNd4zW6tChIFBSndOjwEQmU+tjpQfUkBDBGeRbEFBQjubPDVRj/RR7YxMJmPI82fnvJ4HU
-	/Fij+Vz8G53lBbZklEIGmvxNTzRZY2E=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758959833; x=1790495833;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3kN1snQSfXQgSzhlScazdwzv5am8mNjFcM/6vLXUSkQ=;
-  b=XNToOZUBRbyK8QuwgzOULwVG2GpTy4kb26BPPzukJX/mThb0FFTEIia6
-   DEymTsweHSleya1o/wOg7y98XfII9+Q34Jjj99B8frNlUMScrPVvYS1Nz
-   Dgepv1yP9TyUCaiH7azDQuj4iTFLq77yHX/dOwkPHVPFg3Sm8a6xD+BjJ
-   k5Zx+0DRSOMwgvjAin1fbMJf4QLx9ijAW05V9IQbk3aDoc80YSzNh5Rhc
-   2jOvMyizVzjSxazV3MFUt2nNVyaOMLlWCrXCkkQsOp1Bl8nu8BF6MVGjK
-   R8ohV6rn6z5HnlWFuUMJVrlDkIsq/g+cV5UzCSgqn5sEAb5HD8S8nSPGM
-   g==;
-X-CSE-ConnectionGUID: zWzaGdT1SsWzPQP/stVnPg==
-X-CSE-MsgGUID: ERIsWe1oQn69lSrmNta/+g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11565"; a="48843020"
-X-IronPort-AV: E=Sophos;i="6.18,297,1751266800"; 
-   d="scan'208";a="48843020"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2025 00:57:10 -0700
-X-CSE-ConnectionGUID: dYD6ObKjT7m1hTj/oazEBA==
-X-CSE-MsgGUID: Dr+/R4KpT+CgVTC63ou3cw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,297,1751266800"; 
-   d="scan'208";a="201474063"
-Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
-  by fmviesa002.fm.intel.com with ESMTP; 27 Sep 2025 00:57:04 -0700
-Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v2Pni-0006tb-2b;
-	Sat, 27 Sep 2025 07:57:02 +0000
-Date: Sat, 27 Sep 2025 15:56:10 +0800
-From: kernel test robot <lkp@intel.com>
-To: Baoquan He <bhe@redhat.com>, linux-mm@kvack.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
-	youngjun.park@lge.com, aaron.lu@intel.com, baohua@kernel.org,
-	shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	Baoquan He <bhe@redhat.com>
-Subject: Re: [PATCH v2 1/1] mm/swapfile.c: select the swap device with
- default priority round robin
-Message-ID: <202509271545.8d7xtJIA-lkp@intel.com>
-References: <20250926155504.5122-2-bhe@redhat.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=2pnX7Z7v528RTOngSyYskOdERrXRUZlzBZkjWOik6R8=;
+	b=5bRRSHGtzf0pPQOTmEEtcmm56z4F8x0j9d0TjcTA0NSmBC/cHMDTGIkbCDTG6n1jtlnlqZ
+	jGWH53WwOiMw70eJiJs352gejvcUqMgwhSCJGQkUg2GPUzmsJV0lcrcpxLU9e7UDfDk5yl
+	dTvL7gGKd1bdu6ACIqgVhOzEb3SEFQI=
+Received: by mail-pf1-f195.google.com with SMTP id d2e1a72fcca58-7811fa91774so981936b3a.0
+        for <linux-mm@kvack.org>; Sat, 27 Sep 2025 01:07:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758960470; x=1759565270; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2pnX7Z7v528RTOngSyYskOdERrXRUZlzBZkjWOik6R8=;
+        b=Xb4R7Bu6uW6v9FKvAC8gxFKuyDEUSm2RChT/DJZXczhZahVmfFnBMSu1zuLAS9ofz4
+         4O3vVHkI97GjijSsCcCHwDulHv7Y9NxQFzBanoXky//GY9ITYWHu9GecgXGM1EZewReb
+         hKl3PTE3xTdUTq/snF/80RzNcpIYuHSYZEBfFNJExnP2GbZ8Mr0WIRZGwwtJkgu+QcIv
+         DIZ3BJHnxDcM3zX23eq4R0ywcn2vyXuOFk68rV5cfC+tMUwYYzQZ/M8wa6iCL1BB5YkF
+         kgsR5eeTz9p+Q/LBiOpioPmp4hv/x3fxTxwvAO9m8W8b0ljg3Nk0d6iGweV0c8xiggu0
+         NTeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758960470; x=1759565270;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2pnX7Z7v528RTOngSyYskOdERrXRUZlzBZkjWOik6R8=;
+        b=UwAPVk964DvEgMhg//EdO96rCFTLyBrt6asWPmAietO8Ny7Tt/TDmKgJu6GwAr0Kum
+         v32FmiToAvNAbuQOUENnkrHBJb8xqvPCfWOpL0j8qezcl3kfpWRgABHPOciQ7DTBADhd
+         m0qEyaFRw0RfA+bH5PBP82QgtDZF89tzyOQiilMvWwj6QnoDb8qvHdgka+WNM6VdzKdR
+         avWPTT4gFmvd5blFiD8rjKIIFubjcPRxaKcj1JZt+EEnTwJems+g2QA31MJ0DZgbH4sD
+         e7g3EqWnZ6HRcnwquyoDVNP6ZbYXmULr5aKY3Pc5mW7F5kf47HqJcZDqFycSfKmLRsFC
+         YlDw==
+X-Gm-Message-State: AOJu0YynXqFvnfvnM6CrjHuWjczE72muEzZuWRBgnW9iDE4HFgDP4gjN
+	78hTsOjCEDjVS1fHhSlftJQFINt1UXWzhpxvsBO7LLMWGhoRa1M7WDWBB54e3EBp
+X-Gm-Gg: ASbGnctGmAwzFcUpNT+hKlxfY8LoyfwPKtQLIC04ogrr5ocCr2mlWBbxuzdtbP5Vnks
+	jPFXhVBA/k0MW6qa0whlQb5TZv2RILsmaaNrB0btsi1r/mAU8bDI0f2NyZBCmPeKpB43GEsNBCg
+	9h/zp8ex3kkcq5ORgQvcXpUfzkZ3DlYF07QvFTpT4IaSaJlu15r5OpzWg06KcAyMWzZJ7YH1jGd
+	OX2383ftxXAU72VBGKgH4CDIFX7NEjiWEZg8+O5oaFpq5R9ucqaXzTIb8V06DahUtRd6/BJ+2Qd
+	8WJFhmVUcU+JDAvRgn+kudbb5d/x2o3AqsW+aSCSoKyhb63eRefv4h++I2p8SLYbyYuK07Tl5Ms
+	FiltgJDbBGpJJ7aPZtJLmIBTaPgWx+Y9HunjUAdCW
+X-Google-Smtp-Source: AGHT+IHa8OtN7NuIoR42xaLkir4lydhP4OP69ifxN66GwwvL4dolRG1B/QZf4EvOu693LGSGG6zhKg==
+X-Received: by 2002:a05:6a00:14c5:b0:781:d163:ce41 with SMTP id d2e1a72fcca58-781d163d14bmr599623b3a.11.1758960469954;
+        Sat, 27 Sep 2025 01:07:49 -0700 (PDT)
+Received: from E07P150077.ecarx.com.cn ([103.52.189.21])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7810cfdb99fsm4744233b3a.31.2025.09.27.01.07.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 27 Sep 2025 01:07:49 -0700 (PDT)
+From: "jianyun.gao" <jianyungao89@gmail.com>
+To: linux-mm@kvack.org
+Cc: "jianyun.gao" <jianyungao89@gmail.com>,
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Kairui Song <kasong@tencent.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Chris Li <chrisl@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	damon@lists.linux.dev (open list:DATA ACCESS MONITOR),
+	linux-kernel@vger.kernel.org (open list),
+	kasan-dev@googlegroups.com (open list:KMSAN)
+Subject: [PATCH] mm: Fix some typos in mm module
+Date: Sat, 27 Sep 2025 16:06:34 +0800
+Message-Id: <20250927080635.1502997-1-jianyungao89@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250926155504.5122-2-bhe@redhat.com>
-X-Stat-Signature: 9ddnx613r6uex5gtosoi1agaj1z31r7n
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 760BBA0008
+X-Stat-Signature: ff1nec7fhds76i3htqf5mngn9efqywz7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C91E240005
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758959832-502722
-X-HE-Meta: U2FsdGVkX1/Nyj8mkxwXPAeOYFFyUKjBLl6th9wzZx8Yu4Z1dJlSkQiEhQjZMrCIDDRW6sxdFnUDD7fT9987uC94w/t//LJV/0M7Q6evywu9pPpexxi4+RRWzczilA1hdxMnQI8pFmaO+NxP28c/2dVcN9/zvvCRy3xs9X5KNpwkQgYHjatxOPuIovuiOJIK8SuGK77aShVsjuiDWPkhkcJPt+Yk+2pEM1HxGhfpPb5IXs42ZzwT3OM2gPJHKzDLdq9uCRQQTDlswJA0jahIO1Jqssk0+h8FKqvssbcFA/26hL+InT+xFsAQR5c9JvXShHqnrcFzHLjBCc3AYChcVkL1LjJFKQ2lc+UuTuVb22/1w1wNUoXYHB8uVtjJfoIddWbvJgq6REQDFPTnxWH/l7qhvY11s6UTDlbrC01Yk0CYjiR9CmsOhulu7YAdhKKlCOYLaC1BmcKrAGKFr5eRYiQGNlBVU/xqk9igy/Ra0AdPLjU2RKF/Ml6EUCw9oZm0vMldXKZlrmgV5MRRfXMz++lNeob93SV+A1BpWRKQ0F2VdZhOqKCFrQRwYXbDsi8FXs1Q9WCfmhmGONhTBf9e7el91zt2sXkc/uCvYhtnrbXdUsd2X8TZ2mF2mGzxamUQKx9tq+vKK6ufVBk98fnUiuIBdYCAPX2broW4873tKfiezv9b6yiu2o8VecjmsNZMDcnIeINXIBr8vRog6cJRQWBZ28M/Bw4F1GdDnrxsZH9FkIY79iaTbQhMJt1eFf8XNNL/Zgx4pFK04MLLbM7gOQby84CbP0H1DNuQEJPpgGAkwIOjKBCDwveGJT78KswePeGuPHHDNIHWeRHhGItGCgSWPyur9SvltRJMcpJjTuh/lMWeEfEsHCzVB/9OsoZikNXLfbS/qIMFrix5QFdZoOIVIZC2o4gSjcDlb3WCj0kEy+5pKYwpWW6yG6Vm8/R/4DMWZbzksQpEVhxmX+E
- I/UwMyBH
- QMDvMWZZMk3e1KsQ8m6UtNDcZj3crPrcQ+d9BHWlQdpU8EFfWOYlE4YKD+9aIJR/DPI6ZaOPnj4rjSxlLJN18fsaynle1VwUIRT8kLqT4/B7fuzFH4SmyKMIs0VPhtGCV2IhoyEFJjFr1Ik99KI1KILPQ5GshSXFY/ran0eqi+jwXlqdpWNMNzj6DZW74/v9UM9EVBereIkON2y2pCgbEDfdYpk+KlZzQqB3ArEqRTLZc9n9IfWjA+sylHgaF6a0TBf/TQuG/mJv8nAww87H6JMSa3+36SVFufGt8Zsikb+LrnBFlR0r6YW6XRuj0/zsQGiXNfwq5fqPetIq6W3Y/kXz38onA8mR/2/0zpXHEjYUKpBOTCGya+HCnJqK45pH65BeUDn6rFNo2Z77zy9HEpmdhUjXr+Oap3dBI
+X-HE-Tag: 1758960471-318962
+X-HE-Meta: U2FsdGVkX1+v33iiWWPZDhTVOKOWlIbQIp84OAjf1JVgrc1sQGuTMFqnKW80Z59wJ/ch0Jv+98KomoJzFZUjkirGchqD0R5r1RZzHj0BsdOGPz9eMar2OWJF1ctCE5cQqCcPUL445AeUBvlIijK9cX19q9PbRJbFAuvj/qHGH5dJabzguWa1YaZmi8CRiaccpTwm5KD0lAYinmj0LYXx8d7szdGlb0zVbtXXd53oioY+JQrPpwhoZzrm2WhpR5+Pm2I9uiZAwN5jLNKqgsVoELcQgpE1Ie+IHo9ZUG5ddnPDWEfDGGKz+KOjmo569jH9pyyS6OcreN+ITgqrrWg5/ye0jhAp7+1MOn0KOkZtMV1Y+IWEfhYhPABauDo/bLqWir2Oh7yIyLIfbySQKeTUpQ9Bv2DcW1ZNPvem89KAbOTSJhWUFDrAAXKo1dmH6bRR/ZbqqiakGpSy3/ChEU+ykA8xp/dkxyun3eAV0nP1vTbo97oGTTMN+wOEZYTjYm5yT7TVYSCQk2C0RTuNn4CqAfOt4ne+OArWqBtUXm5TG+peHtNH6bMsYPycBTiDK5jpbj0eOa2pHAyL/78zzxWxSrEk7CAIX7w9I3/e+4noCUlgarDbrbmRxYv/0167HU9FT+i0X6GZfwOnFXpYGeFJnIfiIZQSXIHHCH6xpSGULnyhoLutomnaUSlMIE3tI67O78/m7wtx4t/zEpzlXQKvc5XMiAb9pExOvjTQSszp8P1hiXfQWLxFq/7AIg5LGzbgDTYZEI/pLuoK18+Yw+gZgpn5SNs8KISsJuru17U/t62LTyHO+DNRuhZrJCDoFPr2xXEZbTmPu06xgPvaAvyMe1IJv3KuZvvw3nuSa7ci4u3v/VUygVtTRlWw5QihWXcbUwtlOi/vv4+wLImt4K2Utpgqknvc9V4lPF1ZNsRcE0cISysz44Z9SymSbTfvTAXFmKqKBF8R/ubGVMG3/eH
+ khY3PBz1
+ zZPSKe73TaIzd5w2+yDOa6RwKq2DUiU2QS1KRqkDNL3QlyOZKHIU79l1Sfmq2+kXAW8mSPS1aBNEPSMgMVGzIH1JZbF2yftb8ViCkuAFzy/PL7alaaeXFAGMDmlgKZeUfaD8XByJsGZQYtZyiFTyLypoqzVu80svqHWXoNzyufL4fTbWSc53DqTlRLTaPdK6+tbI8p0FsBVHIkkvrchZazpaIcZVZMumjzsEoAdYroknt02McLCgUm+z96MiZCp77Q611eR1UFu7kroxkbEwd9e/jQ1jWHi753gpi00XsChs/ljWE8sGH6TjhXvByjUKGQIGPsDTZpyoTtr3Qlhp+8YqIgxmdpxv0eXMuMNCx2nRrHxl6PM35ilO7w5/8qAmIFp4ZXr13wFyha/7n7I4rObflCdhbRJtwYJL+QdTKCFEzBD8KspxFt2INF+U4kyokFQZyIx2WiN/z6wkGOHsCmP0YcMHF5ldJQDhHv7CcL9f4QYdTmNTNVO8yww==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,153 +145,216 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Baoquan,
+Below are some typos in the code comments:
 
-kernel test robot noticed the following build errors:
+  intevals ==> intervals
+  addesses ==> addresses
+  unavaliable ==> unavailable
+  facor ==> factor
+  droping ==> dropping
+  exlusive ==> exclusive
+  decription ==> description
+  confict ==> conflict
+  desriptions ==> descriptions
+  otherwize ==> otherwise
+  vlaue ==> value
+  cheching ==> checking
+  exisitng ==> existing
+  modifed ==> modified
 
-[auto build test ERROR on linus/master]
-[also build test ERROR on v6.17-rc7 next-20250926]
-[cannot apply to akpm-mm/mm-everything]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Just fix it.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Baoquan-He/mm-swapfile-c-select-the-swap-device-with-default-priority-round-robin/20250926-235740
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20250926155504.5122-2-bhe%40redhat.com
-patch subject: [PATCH v2 1/1] mm/swapfile.c: select the swap device with default priority round robin
-config: x86_64-buildonly-randconfig-002-20250927 (https://download.01.org/0day-ci/archive/20250927/202509271545.8d7xtJIA-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250927/202509271545.8d7xtJIA-lkp@intel.com/reproduce)
+Signed-off-by: jianyun.gao <jianyungao89@gmail.com>
+---
+ mm/damon/sysfs.c  | 2 +-
+ mm/gup.c          | 2 +-
+ mm/kmsan/core.c   | 2 +-
+ mm/ksm.c          | 2 +-
+ mm/memory-tiers.c | 2 +-
+ mm/memory.c       | 4 ++--
+ mm/secretmem.c    | 2 +-
+ mm/slab_common.c  | 2 +-
+ mm/slub.c         | 2 +-
+ mm/swapfile.c     | 2 +-
+ mm/userfaultfd.c  | 2 +-
+ mm/vma.c          | 4 ++--
+ 12 files changed, 14 insertions(+), 14 deletions(-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509271545.8d7xtJIA-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> mm/swapfile.c:2550:24: error: use of undeclared identifier 'swap_active_head'; did you mean 'swap_avail_head'?
-    2550 |         plist_add(&si->list, &swap_active_head);
-         |                               ^~~~~~~~~~~~~~~~
-         |                               swap_avail_head
-   mm/swapfile.c:99:19: note: 'swap_avail_head' declared here
-      99 | static PLIST_HEAD(swap_avail_head);
-         |                   ^
-   mm/swapfile.c:2655:27: error: use of undeclared identifier 'swap_active_head'; did you mean 'swap_avail_head'?
-    2655 |         plist_for_each_entry(p, &swap_active_head, list) {
-         |                                  ^~~~~~~~~~~~~~~~
-         |                                  swap_avail_head
-   include/linux/plist.h:173:30: note: expanded from macro 'plist_for_each_entry'
-     173 |          list_for_each_entry(pos, &(head)->node_list, mem.node_list)
-         |                                     ^
-   include/linux/list.h:770:30: note: expanded from macro 'list_for_each_entry'
-     770 |         for (pos = list_first_entry(head, typeof(*pos), member);        \
-         |                                     ^
-   include/linux/list.h:612:14: note: expanded from macro 'list_first_entry'
-     612 |         list_entry((ptr)->next, type, member)
-         |                     ^
-   include/linux/list.h:601:15: note: expanded from macro 'list_entry'
-     601 |         container_of(ptr, type, member)
-         |                      ^
-   include/linux/container_of.h:20:26: note: expanded from macro 'container_of'
-      20 |         void *__mptr = (void *)(ptr);                                   \
-         |                                 ^
-   mm/swapfile.c:99:19: note: 'swap_avail_head' declared here
-      99 | static PLIST_HEAD(swap_avail_head);
-         |                   ^
-   mm/swapfile.c:2655:27: error: use of undeclared identifier 'swap_active_head'; did you mean 'swap_avail_head'?
-    2655 |         plist_for_each_entry(p, &swap_active_head, list) {
-         |                                  ^~~~~~~~~~~~~~~~
-         |                                  swap_avail_head
-   include/linux/plist.h:173:30: note: expanded from macro 'plist_for_each_entry'
-     173 |          list_for_each_entry(pos, &(head)->node_list, mem.node_list)
-         |                                     ^
-   include/linux/list.h:770:30: note: expanded from macro 'list_for_each_entry'
-     770 |         for (pos = list_first_entry(head, typeof(*pos), member);        \
-         |                                     ^
-   include/linux/list.h:612:14: note: expanded from macro 'list_first_entry'
-     612 |         list_entry((ptr)->next, type, member)
-         |                     ^
-   note: (skipping 2 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:507:63: note: expanded from macro '__same_type'
-     507 | #define __same_type(a, b) __builtin_types_compatible_p(typeof(a), typeof(b))
-         |                                                               ^
-   include/linux/build_bug.h:77:50: note: expanded from macro 'static_assert'
-      77 | #define static_assert(expr, ...) __static_assert(expr, ##__VA_ARGS__, #expr)
-         |                                                  ^
-   include/linux/build_bug.h:78:56: note: expanded from macro '__static_assert'
-      78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-         |                                                        ^
-   mm/swapfile.c:99:19: note: 'swap_avail_head' declared here
-      99 | static PLIST_HEAD(swap_avail_head);
-         |                   ^
-   mm/swapfile.c:2655:27: error: use of undeclared identifier 'swap_active_head'; did you mean 'swap_avail_head'?
-    2655 |         plist_for_each_entry(p, &swap_active_head, list) {
-         |                                  ^~~~~~~~~~~~~~~~
-         |                                  swap_avail_head
-   include/linux/plist.h:173:30: note: expanded from macro 'plist_for_each_entry'
-     173 |          list_for_each_entry(pos, &(head)->node_list, mem.node_list)
-         |                                     ^
-   include/linux/list.h:770:30: note: expanded from macro 'list_for_each_entry'
-     770 |         for (pos = list_first_entry(head, typeof(*pos), member);        \
-         |                                     ^
-   include/linux/list.h:612:14: note: expanded from macro 'list_first_entry'
-     612 |         list_entry((ptr)->next, type, member)
-         |                     ^
-   note: (skipping 2 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:507:63: note: expanded from macro '__same_type'
-     507 | #define __same_type(a, b) __builtin_types_compatible_p(typeof(a), typeof(b))
-         |                                                               ^
-   include/linux/build_bug.h:77:50: note: expanded from macro 'static_assert'
-      77 | #define static_assert(expr, ...) __static_assert(expr, ##__VA_ARGS__, #expr)
-         |                                                  ^
-   include/linux/build_bug.h:78:56: note: expanded from macro '__static_assert'
-      78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-         |                                                        ^
-   mm/swapfile.c:99:19: note: 'swap_avail_head' declared here
-      99 | static PLIST_HEAD(swap_avail_head);
-         |                   ^
-   mm/swapfile.c:2655:27: error: use of undeclared identifier 'swap_active_head'; did you mean 'swap_avail_head'?
-    2655 |         plist_for_each_entry(p, &swap_active_head, list) {
-         |                                  ^~~~~~~~~~~~~~~~
-         |                                  swap_avail_head
-   include/linux/plist.h:173:30: note: expanded from macro 'plist_for_each_entry'
-     173 |          list_for_each_entry(pos, &(head)->node_list, mem.node_list)
-         |                                     ^
-   include/linux/list.h:771:32: note: expanded from macro 'list_for_each_entry'
-     771 |              !list_entry_is_head(pos, head, member);                    \
-         |                                       ^
-   include/linux/list.h:761:30: note: expanded from macro 'list_entry_is_head'
-     761 |         list_is_head(&pos->member, (head))
-         |                                     ^
-   mm/swapfile.c:99:19: note: 'swap_avail_head' declared here
-      99 | static PLIST_HEAD(swap_avail_head);
-         |                   ^
-   mm/swapfile.c:2677:23: error: use of undeclared identifier 'swap_active_head'; did you mean 'swap_avail_head'?
-    2677 |         plist_del(&p->list, &swap_active_head);
-         |                              ^~~~~~~~~~~~~~~~
-         |                              swap_avail_head
-
-
-vim +2550 mm/swapfile.c
-
-eb085574a7526c Ying Huang           2019-07-11  2542  
-b85508d7de901c Barry Song           2024-08-08  2543  static void _enable_swap_info(struct swap_info_struct *si)
-eb085574a7526c Ying Huang           2019-07-11  2544  {
-b85508d7de901c Barry Song           2024-08-08  2545  	atomic_long_add(si->pages, &nr_swap_pages);
-b85508d7de901c Barry Song           2024-08-08  2546  	total_swap_pages += si->pages;
-40531542e28324 Cesar Eduardo Barros 2011-03-22  2547  
-adfab836f4908d Dan Streetman        2014-06-04  2548  	assert_spin_locked(&swap_lock);
-5b648db56b50e1 Baoquan He           2025-09-26  2549  
-b85508d7de901c Barry Song           2024-08-08 @2550  	plist_add(&si->list, &swap_active_head);
-c70699e555537b Ma Wupeng            2023-06-27  2551  
-b228386cf237e6 Kairui Song          2025-01-14  2552  	/* Add back to available list */
-b228386cf237e6 Kairui Song          2025-01-14  2553  	add_to_avail_list(si, true);
-cf0cac0a093415 Cesar Eduardo Barros 2012-12-11  2554  }
-cf0cac0a093415 Cesar Eduardo Barros 2012-12-11  2555  
-
+diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+index c96c2154128f..25ff8bd17e9c 100644
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1232,7 +1232,7 @@ enum damon_sysfs_cmd {
+ 	DAMON_SYSFS_CMD_UPDATE_SCHEMES_EFFECTIVE_QUOTAS,
+ 	/*
+ 	 * @DAMON_SYSFS_CMD_UPDATE_TUNED_INTERVALS: Update the tuned monitoring
+-	 * intevals.
++	 * intervals.
+ 	 */
+ 	DAMON_SYSFS_CMD_UPDATE_TUNED_INTERVALS,
+ 	/*
+diff --git a/mm/gup.c b/mm/gup.c
+index 0bc4d140fc07..6ed50811da8f 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2730,7 +2730,7 @@ EXPORT_SYMBOL(get_user_pages_unlocked);
+  *
+  *  *) ptes can be read atomically by the architecture.
+  *
+- *  *) valid user addesses are below TASK_MAX_SIZE
++ *  *) valid user addresses are below TASK_MAX_SIZE
+  *
+  * The last two assumptions can be relaxed by the addition of helper functions.
+  *
+diff --git a/mm/kmsan/core.c b/mm/kmsan/core.c
+index 1ea711786c52..1bb0e741936b 100644
+--- a/mm/kmsan/core.c
++++ b/mm/kmsan/core.c
+@@ -33,7 +33,7 @@ bool kmsan_enabled __read_mostly;
+ 
+ /*
+  * Per-CPU KMSAN context to be used in interrupts, where current->kmsan is
+- * unavaliable.
++ * unavailable.
+  */
+ DEFINE_PER_CPU(struct kmsan_ctx, kmsan_percpu_ctx);
+ 
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 160787bb121c..edd6484577d7 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -389,7 +389,7 @@ static unsigned long ewma(unsigned long prev, unsigned long curr)
+  * exponentially weighted moving average. The new pages_to_scan value is
+  * multiplied with that change factor:
+  *
+- *      new_pages_to_scan *= change facor
++ *      new_pages_to_scan *= change factor
+  *
+  * The new_pages_to_scan value is limited by the cpu min and max values. It
+  * calculates the cpu percent for the last scan and calculates the new
+diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
+index 0382b6942b8b..f97aa5497040 100644
+--- a/mm/memory-tiers.c
++++ b/mm/memory-tiers.c
+@@ -519,7 +519,7 @@ static inline void __init_node_memory_type(int node, struct memory_dev_type *mem
+ 	 * for each device getting added in the same NUMA node
+ 	 * with this specific memtype, bump the map count. We
+ 	 * Only take memtype device reference once, so that
+-	 * changing a node memtype can be done by droping the
++	 * changing a node memtype can be done by dropping the
+ 	 * only reference count taken here.
+ 	 */
+ 
+diff --git a/mm/memory.c b/mm/memory.c
+index 0ba4f6b71847..d6b0318df951 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4200,7 +4200,7 @@ static inline bool should_try_to_free_swap(struct folio *folio,
+ 	 * If we want to map a page that's in the swapcache writable, we
+ 	 * have to detect via the refcount if we're really the exclusive
+ 	 * user. Try freeing the swapcache to get rid of the swapcache
+-	 * reference only in case it's likely that we'll be the exlusive user.
++	 * reference only in case it's likely that we'll be the exclusive user.
+ 	 */
+ 	return (fault_flags & FAULT_FLAG_WRITE) && !folio_test_ksm(folio) &&
+ 		folio_ref_count(folio) == (1 + folio_nr_pages(folio));
+@@ -5274,7 +5274,7 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
+ 
+ /**
+  * set_pte_range - Set a range of PTEs to point to pages in a folio.
+- * @vmf: Fault decription.
++ * @vmf: Fault description.
+  * @folio: The folio that contains @page.
+  * @page: The first page to create a PTE for.
+  * @nr: The number of PTEs to create.
+diff --git a/mm/secretmem.c b/mm/secretmem.c
+index 60137305bc20..a350ca20ca56 100644
+--- a/mm/secretmem.c
++++ b/mm/secretmem.c
+@@ -227,7 +227,7 @@ SYSCALL_DEFINE1(memfd_secret, unsigned int, flags)
+ 	struct file *file;
+ 	int fd, err;
+ 
+-	/* make sure local flags do not confict with global fcntl.h */
++	/* make sure local flags do not conflict with global fcntl.h */
+ 	BUILD_BUG_ON(SECRETMEM_FLAGS_MASK & O_CLOEXEC);
+ 
+ 	if (!secretmem_enable || !can_set_direct_map())
+diff --git a/mm/slab_common.c b/mm/slab_common.c
+index bfe7c40eeee1..9ab116156444 100644
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -256,7 +256,7 @@ static struct kmem_cache *create_cache(const char *name,
+  * @object_size: The size of objects to be created in this cache.
+  * @args: Additional arguments for the cache creation (see
+  *        &struct kmem_cache_args).
+- * @flags: See the desriptions of individual flags. The common ones are listed
++ * @flags: See the descriptions of individual flags. The common ones are listed
+  *         in the description below.
+  *
+  * Not to be called directly, use the kmem_cache_create() wrapper with the same
+diff --git a/mm/slub.c b/mm/slub.c
+index d257141896c9..5f2622c370cc 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2412,7 +2412,7 @@ bool slab_free_hook(struct kmem_cache *s, void *x, bool init,
+ 		memset((char *)kasan_reset_tag(x) + inuse, 0,
+ 		       s->size - inuse - rsize);
+ 		/*
+-		 * Restore orig_size, otherwize kmalloc redzone overwritten
++		 * Restore orig_size, otherwise kmalloc redzone overwritten
+ 		 * would be reported
+ 		 */
+ 		set_orig_size(s, x, orig_size);
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index b4f3cc712580..b55f10ec1f3f 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -1545,7 +1545,7 @@ static bool swap_entries_put_map_nr(struct swap_info_struct *si,
+ 
+ /*
+  * Check if it's the last ref of swap entry in the freeing path.
+- * Qualified vlaue includes 1, SWAP_HAS_CACHE or SWAP_MAP_SHMEM.
++ * Qualified value includes 1, SWAP_HAS_CACHE or SWAP_MAP_SHMEM.
+  */
+ static inline bool __maybe_unused swap_is_last_ref(unsigned char count)
+ {
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index aefdf3a812a1..333f4b8bc810 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1508,7 +1508,7 @@ static int validate_move_areas(struct userfaultfd_ctx *ctx,
+ 
+ 	/*
+ 	 * For now, we keep it simple and only move between writable VMAs.
+-	 * Access flags are equal, therefore cheching only the source is enough.
++	 * Access flags are equal, therefore checking only the source is enough.
+ 	 */
+ 	if (!(src_vma->vm_flags & VM_WRITE))
+ 		return -EINVAL;
+diff --git a/mm/vma.c b/mm/vma.c
+index 3b12c7579831..2e127fa97475 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -109,7 +109,7 @@ static inline bool is_mergeable_vma(struct vma_merge_struct *vmg, bool merge_nex
+ static bool is_mergeable_anon_vma(struct vma_merge_struct *vmg, bool merge_next)
+ {
+ 	struct vm_area_struct *tgt = merge_next ? vmg->next : vmg->prev;
+-	struct vm_area_struct *src = vmg->middle; /* exisitng merge case. */
++	struct vm_area_struct *src = vmg->middle; /* existing merge case. */
+ 	struct anon_vma *tgt_anon = tgt->anon_vma;
+ 	struct anon_vma *src_anon = vmg->anon_vma;
+ 
+@@ -798,7 +798,7 @@ static bool can_merge_remove_vma(struct vm_area_struct *vma)
+  * Returns: The merged VMA if merge succeeds, or NULL otherwise.
+  *
+  * ASSUMPTIONS:
+- * - The caller must assign the VMA to be modifed to @vmg->middle.
++ * - The caller must assign the VMA to be modified to @vmg->middle.
+  * - The caller must have set @vmg->prev to the previous VMA, if there is one.
+  * - The caller must not set @vmg->next, as we determine this.
+  * - The caller must hold a WRITE lock on the mm_struct->mmap_lock.
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
 
