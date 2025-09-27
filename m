@@ -4,114 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 486F5CAC5B8
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Sep 2025 00:07:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03A26CAC5BB
+	for <linux-mm@archiver.kernel.org>; Sat, 27 Sep 2025 00:15:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BE638E0007; Fri, 26 Sep 2025 20:07:02 -0400 (EDT)
+	id 5C3388E000E; Fri, 26 Sep 2025 20:15:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86EB08E0001; Fri, 26 Sep 2025 20:07:02 -0400 (EDT)
+	id 59A808E0001; Fri, 26 Sep 2025 20:15:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75DF38E0007; Fri, 26 Sep 2025 20:07:02 -0400 (EDT)
+	id 4D6ED8E000E; Fri, 26 Sep 2025 20:15:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EF458E0001
-	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 20:07:02 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2478B13BC57
-	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 00:07:02 +0000 (UTC)
-X-FDA: 83933089884.08.7C11CB8
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 3CFB7140002
-	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 00:06:59 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=NrunUux+;
-	spf=pass (imf09.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C5498E0001
+	for <linux-mm@kvack.org>; Fri, 26 Sep 2025 20:15:06 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C6F471607C7
+	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 00:15:05 +0000 (UTC)
+X-FDA: 83933110170.10.E678578
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf27.hostedemail.com (Postfix) with ESMTP id C0A7C40006
+	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 00:15:03 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FBHRle6u;
+	spf=pass (imf27.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758931619;
+	s=arc-20220608; t=1758932103;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=29URIb6wX4cuu5zaywUpqrFkDEdk6T+tY2Shq6upRwU=;
-	b=FapMKXPXluPhcZkE4+dgb2MJNk0rpC5OTIUak+EbfNwqIM8Gx+L+VNlYT//q2GEp/TVOx2
-	zIXpKR6G0rdj0wChLOCZM44m7nJG88CyrKPoQfeiSq+gSkspU0K6R2nhuL00HuFVHTl3SQ
-	YK+2/itW5lDFghUqpBlebiBLpVxbkwU=
+	bh=N66RsVJXiBlbb/QUvbgFl1wdvUWyCT2EtGwfeQOPWPQ=;
+	b=PMC0aLYta2PbTSgRZnThtlNIj/WgbdtcLg2Q59bMxoHkxhGQ/i6LTRB50YLv6UvYqduxR6
+	LtB6FsVIDnFlq0I9fodA39Ehi5anzHOyO91KX98tb34KdbIHYVkJbaTVg4YDcr3P+lLMca
+	RJbogB0WzzKKTcivPbj5Ng+DAB5l9kM=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=NrunUux+;
-	spf=pass (imf09.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758931619; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FBHRle6u;
+	spf=pass (imf27.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758932103; a=rsa-sha256;
 	cv=none;
-	b=hcIvWKor7Q2tpy7pHhj2sPF9LbV7Ma8/4G6IuOXoCVyikO9Ulk87XjGTPpg8n4LcQt/7Wa
-	hoFAt/zsPH9OlBVLLHZ8rRGW7hm6zsZaP+yJv6/Sl1XgZ9m80n44AJqegkZOAJ0nYJxRNr
-	GQXBJty2KmoIXGWiBnvcNfR506SAa9s=
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4de66881569so147031cf.0
-        for <linux-mm@kvack.org>; Fri, 26 Sep 2025 17:06:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758931618; x=1759536418; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=29URIb6wX4cuu5zaywUpqrFkDEdk6T+tY2Shq6upRwU=;
-        b=NrunUux+Iw84MPSvtCyullFcg8WktsTxdpx505X2y4MpAOLJGR03ZFNSiFZROfFmaf
-         mPE8QKdIxotCF9U5w+gsMrbmapQ/nxvuyvP1r8AuYiwEjiltmgrWM2Ts2Jd49HerazZS
-         Op9Kjr1KvLmAJBNL4QDqy1wgnxv3OMx6+bKmqMDF9MFkEWIWG8YrJ9glpXl4+cB0TyGl
-         4dFhgVoRtFx5a07p+CJAQZIuaQ0/qhUTLT/MHUzIYrj94uURKmksWoKsWGvR+sFz6csJ
-         5KAdXksK6x/ExIQBAG5RYSTZqLc5yc7BgCcbk2lebpB3E26Oh5KE6ZnYkXquKWVhamps
-         0+CQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758931618; x=1759536418;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=29URIb6wX4cuu5zaywUpqrFkDEdk6T+tY2Shq6upRwU=;
-        b=W481VHk094bXuKVTZq5E9PStNbmnPPdi6vis0K7lx7htfeBdiadkhPJ7Ql6xQWVUhC
-         LMbfmR8zWh4o4LBImpu7izy1dVEzHHIoxZKaT3wLNwewmvykYxYQVoOyA8aEadtcya6l
-         00CWbd/t/3D0dSO8QY6veHt4gYT4dD5ln7lUZ5MmlLRnlAdH+sOJD3p2Y9O9KDEoYbm/
-         rdGYxpZbIH6dhs8rZJB7I7XcbiKoEYGfLXYyX98Lrqg15MmkJCcWR8ALrOeA7BezsP8e
-         tpSlbaJoW/GR5nZXd1hqao7iwgoRRYla+RfCquGl3ednK7awAzl7khSuAj7Jc/2MPZJa
-         qRCA==
-X-Forwarded-Encrypted: i=1; AJvYcCV+qSjP37w2imV3tfRfbU7BvvG6lAhQ3SULALFXJzz8T9wCu0pp7O2Q5b31XxRCnyzMPNyYHnNxmA==@kvack.org
-X-Gm-Message-State: AOJu0Yy9sm+qxAe6KB4MbYgBNsVgud6VWuvttJ3n+Lc+Bbbn1ndC4GC1
-	pPauO2EPY+YUjFwsIm6Cxpel4TKnN+sIegg1Arez2WiNpeRXfoRQkV2vzh4iKZuO4+xokZbFq+8
-	rYH9CMU3LtWkL7c7hceeVYIMNsmNsAADykSbqpHgJ
-X-Gm-Gg: ASbGnctU0/h8WQz4tx/tOxVBvx5KyL8ZZXb0A30qfjmQp+5i0apn/xiN2KUhvDuGUr9
-	rVivyf26OY5d4eyirY4ZPmG27YSZxXZHfvgWK35+tUxc+Gfq/+KORKmszHh72FWZd7/8uCTayq9
-	D9p4L8mtBzsjb8FRKlcnOwf+VXoYjS9yvgTrHYPhn1YoDif48/+u9IBx1n3cfvKYScZuFeghBNv
-	eER0/2sKrCd
-X-Google-Smtp-Source: AGHT+IFLiPgOBV8XSsUKwdgG6fhVNyESUNEXNTrbN+fpy6JAU34fytC+R1DM6IrlpNVPcOxzkPi/LyegQctKAtiDAEI=
-X-Received: by 2002:a05:622a:594:b0:4b5:d6bb:f29b with SMTP id
- d75a77b69052e-4dd1814d209mr9393231cf.8.1758931617891; Fri, 26 Sep 2025
- 17:06:57 -0700 (PDT)
+	b=7pa1/bFMibbL7LGL/uq0Oza6Yv1Eh08jB7uxeZdD4riKIvrnq7X1f6y+H0tIByntOclJmx
+	VchmAO4JK6ozLj5Q343oeiiEG5GDy6CukPBIxxlCniH3IWN2AL1HAzwvmem0Soi6YV1w8a
+	ix1Ep3gjcDxb1MLnnq80sdHBNULy3Lk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758932103;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N66RsVJXiBlbb/QUvbgFl1wdvUWyCT2EtGwfeQOPWPQ=;
+	b=FBHRle6uHZmunC1jrZXK2b5hjHlxRh/PAzyd1x9ig1uo8ZEN054WNHB7SgidcaqjmRKbkU
+	huMKsU2ugaMx5EHiVpPEziV02Ok7a8YsZY81C1Qdso9y46idi11cBWHWh0eFG6gjs/PBUs
+	ltVL3IF/0VXaDsPmKQsLga14aHckxU4=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-653-uzcTgOE-PMW5d9qd8F_NVg-1; Fri,
+ 26 Sep 2025 20:14:57 -0400
+X-MC-Unique: uzcTgOE-PMW5d9qd8F_NVg-1
+X-Mimecast-MFC-AGG-ID: uzcTgOE-PMW5d9qd8F_NVg_1758932096
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 83C1D1956086;
+	Sat, 27 Sep 2025 00:14:55 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.10])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E5AC1180047F;
+	Sat, 27 Sep 2025 00:14:53 +0000 (UTC)
+Date: Sat, 27 Sep 2025 08:14:49 +0800
+From: Baoquan He <bhe@redhat.com>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
+	youngjun.park@lge.com, aaron.lu@intel.com, baohua@kernel.org,
+	shikemeng@huaweicloud.com, nphamcs@gmail.com
+Subject: Re: [PATCH v2 0/1] mm/swapfile.c: select the swap device with
+ default priority round robin
+Message-ID: <aNcseZC+9ao3KK9z@fedora>
+References: <20250926155504.5122-1-bhe@redhat.com>
 MIME-Version: 1.0
-References: <20250910-slub-percpu-caches-v8-0-ca3099d8352c@suse.cz> <20250910-slub-percpu-caches-v8-19-ca3099d8352c@suse.cz>
-In-Reply-To: <20250910-slub-percpu-caches-v8-19-ca3099d8352c@suse.cz>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 26 Sep 2025 17:06:46 -0700
-X-Gm-Features: AS18NWCLx8WOW3heEQMMsOLSgr3nS73twxKZ6ISWcyS9VFRYNVbTzAIxYGqOzSQ
-Message-ID: <CAJuCfpEJ=-=NqmbZpQOGKsxfW1DQsn3_gusQxeJG8E6hVthgmQ@mail.gmail.com>
-Subject: Re: [PATCH v8 19/23] maple_tree: Replace mt_free_one() with kfree()
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, 
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, rcu@vger.kernel.org, 
-	maple-tree@lists.infradead.org, Pedro Falcato <pfalcato@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250926155504.5122-1-bhe@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: TmKCiN-X1LzdCjFkUIVDp96NSupAU0iwZ27y_V9fr6Y_1758932096
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3CFB7140002
-X-Stat-Signature: xrwomozc6kpkhniutxupbrig8b5o8dn6
-X-HE-Tag: 1758931619-388159
-X-HE-Meta: U2FsdGVkX18+IDhCmRSvYRpf/xFmtejsZUtjlYTigwjNI3/tcCtHMLzbODO3m6Hc2X+QL3Z1lfl26SkmOT8zyOhrj7iK+orkxbrypY4/ljKAlUeGIuJMtQlHImebyjtN3P6qz32POwK4Ms9BlTNgQEhPjGc7pLe/DsvdaaQtmqYKPzUiZdEUWmwospFXiRl7Rbv84hpPOH8Wxd6nW4EYuD9rt5xUp5lI8W6RXUeAyY0HE9fMvHHtWH9bgGeEKbeura4wIO1vbDy8mBnQZmae5qov3F8tgTnQjLfSPfcPwvRjTgTPNWXDC7CL0i2EaH++hYhiM5zboqBgXkqPWfS6pHxPml/J7ek0MDEYh+TumUjF8aLxcVZI/jEusDkRaS/xZqy6+ZBPuYLDomUIqUr8/rRFYHqd4lMR1rOBiitc50dNUbP3Z1BKIzKNb7iuKyca2v9gq5lEvgDFBxxKsri0IghDHwxw1KezQQKM+0SLoasNSt7u8sEYvxW25hpX2NKE4bLriEc4mwqYehsiWaAruaJaauv0418LPQTgy/jT6Hz1mySfrLeszgif9TnSxD/WfkwZtNDY5DGtBX81PkZ3GOMo7//GO/pFttyfxCGI/WLLhVbFWrRPb+tSQ/LjOzY1Uh41LffXJ9Jgqa81T2uQ9eOeKwJsi38s6tZzCT2+pmP9PxUy9V6YIMJJCn1fruQZ54FylTOxsZ227rWjBrWPLXzCYtPkLu57JF8LEIKOFu2KBL/Zn8yjPcyooxeQMTq+t7ANyKfvbhZx5Nyd/5iia7ow5qRKfeRMjI7TGTswDJYAYzyOGocH+QfwimLLHtAyVPRgLkTWB9ttBHtF4AQALGKVAZyk3EgDsOpCX98lJ0OgBda/KbgNnCve0o1V/7M9hUkUMEEFlxXMzMPYjsgUFpJScG/gC6q6wI4tRAsduKd+cPaLlO/Ye0127ge7WUV3PdnNbjN2DvXGGLDaYRX
- D5aJ/zrn
- mDdg5t9zqCTJLL9gBjhPU8zz/SpsT48QYAqc4MkFsWXAH2ur1flb/INzQ6U3TeM4NY9GbaQp8eYDcSp4Hosl5wPhGnQJMYGEXvClkmstqLhbgwuozVor7+OdPUd212gogv8cOwdrEAkfGiOvHkQsKx+/mWXfPxte4te+mFTTclaQXnmFKc/dfLDPCM/sY6jYASLOKdwK9DfNYCI8ZlYERCbuvI1xHLzYQmx7CMJ6N76v5etNZWecdTK69bg6nEsfQk5YwJY/MWNIGf6dzDUUAkhHrKJg7lozAFAm4w03IoutlrtM=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C0A7C40006
+X-Stat-Signature: 44meqnrty8ao7oxytzxmb8y6dhcy58m7
+X-HE-Tag: 1758932103-767234
+X-HE-Meta: U2FsdGVkX196C+CY9SHKOPaLwXixTcdQeiiMLV1QEke233YeiwtQBbxWVhHOO/8QMX3TUgOR2oN1tHw2qC007w4NHwr7dkMB195H5DRmjjlceZE7MgS4O7CdzD15VMdY+0M0d2ElWRE3XhpDwrK2NJb2Q2SX9lTWWGPD4/+Ud1dJUg8AzDJo6Qq1JuvhkGP4Sm/E8KyIFz41C3CFbUUTrfa94Bu/lXxFXKfaQll/1XkuhdNpVTQOVbzzNEQsotfSkSpfKqaKrU/SYhiHoODp5EPDvDHr5Ukr5UhZbRpy7Cjs35NjlEGwNQAcg6nRe8Ri9+hhJ1Hwd0a/G9TuIAZjAMJflI8MGa3c8c8dQx+5ZlUa9dRUcyj87HIBFXmY1gawhvMwwI5CqNAqD5elwBG8tN932Ie6sZZ8fk4J65sdIfL4xTd+rVsKJFhXd+tTG/JV8e1zyY9AMF3bkbqtA1oDaabNzfdN6dxv1Wl+MyNy8CnAchwLKIrvSKnofxWPPjwsoVFhmnRCjMRjl+pc7wkn9H6YPhehEBiA99Z2LNBa7pqlmwJxnAdnR3KWPCYU2XySiwo7EWXj8Np9Qu46Zgu0b8BLjBx+syAXgZkM+JV7+WZ9w3hGhlVUBMMaqbcZN3qnPVQT7zglTtVrudv4K1FvC+rldFoGK5mAwHjay0anso5eiXdxUjbHGi6DJsPr07DZ6d/+Ir8djkGQQENR9FPzmjWQ6q6Vy0nkIG6fEXbWaAIlMBSkLTEWAWrC8coKf10lyItSWBN4O/IcBfjkH9FJPPHuv7fTtayKRDkU57XreCumcJsv49/OEEHQdfFMIwmBpPmvcZUcJrqmF4onsTvpi3x7aRKiK8dbHaYQpDceNYmfSdnamrUYTju/wHlNFSpHoYIj4IS2Pug/RJTzUXKnxndEuVHvGOgmOedrmjUFX/solmnWDw8x7cFg5Y0Tt6jMxxpAiB5w83NhnGc0YMg
+ WkXgO70I
+ GNfx5Gvfu3AQKiRXhq9GxUTwyyUPO+NoHXNydQ2X1QCi/TDPJJEV5CyfzKLl+C/d135Pgd/XlI32OQlAWSRB49U5x3zTH21J+ru73Z33K1HQL+6OiZT1inGqMWLsQIQgEjZl5nb3jhvtb8+7LW2RXJbPbQqDSYi4IvnuTj0ERCFHU+PGwpnhBpC8kNGkOMANES74hZaxWfdxjSEVY4C+MoCwUxtoq0HnYGtXeWRdVRfJ7nQd35RuR3qjlCxkfjadVD/N9Kl2iFOAlf3uXLgs0jVL093AIEAtaxouQC+6VZMxKRMOeKKyo6k+aRaDJiOSk4tmCP2TT5SmZeBo9h8euoVtImfXH7TAeNrc3gOUDYlLU/0WMnSJpbPY6SgwkZq8vonpZBEh86/YkK1ZaaaNyYKMFqg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,82 +107,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 10, 2025 at 1:01=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
-ote:
->
-> From: Pedro Falcato <pfalcato@suse.de>
->
-> kfree() is a little shorter and works with kmem_cache_alloc'd pointers
-> too. Also lets us remove one more helper.
->
-> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+On 09/26/25 at 11:55pm, Baoquan He wrote:
+> The detailed information about patch can be found in patch log. Here I
+> would like to add testing related information.
+> 
+>  On my system, it has 8 nodes, 64G RAM. So I created 4 zram devices of
+> size 16G. Doing this because I can't find system with 4 free SSD disk
+                                                        ~~~~~~~
+This description is misleading, testing this patch needs multiple SSD
+disks, 2 disks is enough, more is better. Sorry I was dizzy when posting
+last night.
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> which can be used as swap devices. And nowadays, swap, zram become more
+> and more popular, even default setup, so I create zram to test patch.
+> # free -h
+>                total        used        free      shared  buff/cache   available
+> Mem:            62Gi       1.6Gi        61Gi       4.8Mi       276Mi        61Gi
+> Swap:           63Gi          0B        63Gi
+> 
+> 1) create zram
+> #My fedora will add one zram0 by default, I reset it because the zram size if not enough
+                                                                             ~s/if/is/
+> swapoff /dev/zram0 
+> 
+> cd /sys/block/
+> echo 1 > zram0/reset
+> cat /sys/class/zram-control/hot_add
+> cat /sys/class/zram-control/hot_add
+> cat /sys/class/zram-control/hot_add
+>  
+> echo 16G > zram0/disksize 
+> echo 16G > zram1/disksize 
+> echo 16G > zram2/disksize
+> echo 16G > zram3/disksize 
+>  
+> mkswap /dev/zram0
+> mkswap /dev/zram1
+> mkswap /dev/zram2
+> mkswap /dev/zram3
+>  
+> swapon /dev/zram0
+> swapon /dev/zram1
+> swapon /dev/zram2
+> swapon /dev/zram3
+> 
+> 2) Create memcg with 4G (this avoids noise from other anon process in system)
+                                                        ~~~~~~~~~~~
+                                      it should be anon mem regions from other process
+> cd /sys/fs/cgroup/
+> mkdir testing
+> echo 4G > testing/memory.max
+> echo 3G > testing/memory.high
+> 
+> 3) Run usemem in memcg
+> cgexec -g memory:testing ~/vm-scalability/usemem --init-time -O -y -x -n 31 2G > ~/vm-scalability/temp.txt
+> 
+> The usemem output is not easy to understand, I will attach my draft
+> script in thread for easing result collecting and statistics.
+> 
 
-> ---
->  lib/maple_tree.c | 13 ++++---------
->  1 file changed, 4 insertions(+), 9 deletions(-)
->
-> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-> index c706e2e48f884fd156e25be2b17eb5e154774db7..0439aaacf6cb1f39d0d23af2e=
-2a5af1d27ab32be 100644
-> --- a/lib/maple_tree.c
-> +++ b/lib/maple_tree.c
-> @@ -177,11 +177,6 @@ static inline int mt_alloc_bulk(gfp_t gfp, size_t si=
-ze, void **nodes)
->         return kmem_cache_alloc_bulk(maple_node_cache, gfp, size, nodes);
->  }
->
-> -static inline void mt_free_one(struct maple_node *node)
-> -{
-> -       kmem_cache_free(maple_node_cache, node);
-> -}
-> -
->  static inline void mt_free_bulk(size_t size, void __rcu **nodes)
->  {
->         kmem_cache_free_bulk(maple_node_cache, size, (void **)nodes);
-> @@ -5092,7 +5087,7 @@ static void mt_free_walk(struct rcu_head *head)
->         mt_free_bulk(node->slot_len, slots);
->
->  free_leaf:
-> -       mt_free_one(node);
-> +       kfree(node);
->  }
->
->  static inline void __rcu **mte_destroy_descend(struct maple_enode **enod=
-e,
-> @@ -5176,7 +5171,7 @@ static void mt_destroy_walk(struct maple_enode *eno=
-de, struct maple_tree *mt,
->
->  free_leaf:
->         if (free)
-> -               mt_free_one(node);
-> +               kfree(node);
->         else
->                 mt_clear_meta(mt, node, node->type);
->  }
-> @@ -5385,7 +5380,7 @@ void mas_destroy(struct ma_state *mas)
->                         mt_free_bulk(count, (void __rcu **)&node->slot[1]=
-);
->                         total -=3D count;
->                 }
-> -               mt_free_one(ma_mnode_ptr(node));
-> +               kfree(ma_mnode_ptr(node));
->                 total--;
->         }
->
-> @@ -6373,7 +6368,7 @@ static void mas_dup_free(struct ma_state *mas)
->         }
->
->         node =3D mte_to_node(mas->node);
-> -       mt_free_one(node);
-> +       kfree(node);
->  }
->
->  /*
->
-> --
-> 2.51.0
->
 
