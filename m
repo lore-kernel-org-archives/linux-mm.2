@@ -4,115 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80B42CAC5B8
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Sep 2025 19:30:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADE9FCAC5B8
+	for <linux-mm@archiver.kernel.org>; Sat, 27 Sep 2025 19:42:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B30A28E0002; Sat, 27 Sep 2025 15:30:12 -0400 (EDT)
+	id 99DBF8E0003; Sat, 27 Sep 2025 15:42:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB9418E0001; Sat, 27 Sep 2025 15:30:12 -0400 (EDT)
+	id 94E838E0001; Sat, 27 Sep 2025 15:42:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 980B28E0002; Sat, 27 Sep 2025 15:30:12 -0400 (EDT)
+	id 864238E0003; Sat, 27 Sep 2025 15:42:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D6D08E0001
-	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 15:30:12 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E499687CBA
-	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 19:30:11 +0000 (UTC)
-X-FDA: 83936021022.09.E402F98
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5834280006
-	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 19:30:09 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="hcg9T7n/";
-	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 6F47B8E0001
+	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 15:42:38 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1776E5BA5F
+	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 19:42:38 +0000 (UTC)
+X-FDA: 83936052396.19.8446B1F
+Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 5E66118000B
+	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 19:42:36 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BQxHLX6G;
+	spf=pass (imf16.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.217.48 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759001410;
+	s=arc-20220608; t=1759002156;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/2mkC74ampDMutYNklgYO35/nFK5XdJ3ovitb5wQLVg=;
-	b=5IyzhLhZrWuUanLwTs2LCGLMoYeinpjc6vh4P6PaTM/P8kGiIBxyVsPdRoIL9nIQwKKW6f
-	yUZswWmd6yjDTA8c8nILQ05yjT7owxh0dPlNiwvVt8A6yeY5Cc/tqG/iS0UjZvosrluD5i
-	lSSHaeEgsS7ouB21kz34qXQ6GgkgpB8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759001410; a=rsa-sha256;
+	bh=6xQ9bzFk69iukmKUY25ufCAqjrKMzVtKfHbiTqiaUsA=;
+	b=X2fGMaXKcumfRqrQrHFJjkW0QrAS6XzGtiCxugaBWqeyqmPRx7QjhO1C583L0+dY9nD6YT
+	CSWT0GbDgc5LicME7S+JC0ThRvaw/W4mzd19aXH/b6w6PT8vbHYwEz1xR3Z8V2QpNE5jRJ
+	TalVvw3k8KlpeY0RRsG/0U1bL6ekL9o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759002156; a=rsa-sha256;
 	cv=none;
-	b=F8lLzi1034BLMHBo0/QR7jdWzLjeBXaqjg+1RytHZ06S9kz5JZCFvbME5ll+cc0FzDpCp2
-	yxmNMoukkmDqMoQo87hwhNP+Geo1o5jQz0KXETgtv5xFB33Z8PByYR2YMGPmT0OjgQuxng
-	IY2AJ4XMWEidli+HrGSGf5g4ETz1nZE=
+	b=HgJQO4lW5Ep7IEP9obeaQB38he3vmXhY6/AlKvE697quXI/35Zhn/vFs8ZkLIbZzcWm0k6
+	giH6LCfy5KoaHQ6KnBkkUmUPOwuRDTovUmi2UY0g5Hq/4kfGq+r7eoyAC8gJ6TIDOK8Mv6
+	ycyKKAib7Na7k9LRZJmeAewHML1gv9A=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="hcg9T7n/";
-	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759001409; x=1790537409;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ZmqKSfvKG8Sl31zQDeeEeXhIAVgZkEJsrGTFgAnGr9Q=;
-  b=hcg9T7n/367CVYc/J8/Tm1MhX9Kt3nW58O81ky1kACM9pwL7RfjjirQk
-   3f82BXr1b1NB2N0qjkfS/mb592/vCXx9WvgZvcSgcWll6vy2NwpN/zfeB
-   BE7OpqotUHDHZy8NW0cva5V62YqWD0GX8mZVIJR94gwxS0oYW6+hUNMZ8
-   862XGj6AlJtlNE2OIJuSDsJxdqieQJGCp7VoPtZC08JIqn0Nf7O+bSLBa
-   qmdskLL7nMAw/3WVFA3y+AQAyJsSf25VeYJ9dG3lPzgo41jbxjo5Cf+/u
-   07QEq0hGaWgAw35NVqWq5bmythqMk3A5Jr2YELIruUR+LtajLoAmV7axI
-   A==;
-X-CSE-ConnectionGUID: I5Kfb8hTTsCdhYA46PrN0w==
-X-CSE-MsgGUID: 2InTt+9lSCq2Yj1Tno/W0Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11566"; a="48862119"
-X-IronPort-AV: E=Sophos;i="6.18,298,1751266800"; 
-   d="scan'208";a="48862119"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2025 12:30:07 -0700
-X-CSE-ConnectionGUID: sGeoqd44RgymTRqe2XoVgg==
-X-CSE-MsgGUID: R+Dp0UylSICLl5YeQhgHnQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,298,1751266800"; 
-   d="scan'208";a="182175568"
-Received: from igk-lkp-server01.igk.intel.com (HELO 0e586ad5e7f7) ([10.91.175.65])
-  by orviesa004.jf.intel.com with ESMTP; 27 Sep 2025 12:30:00 -0700
-Received: from kbuild by 0e586ad5e7f7 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1v2acH-000000005YD-3TdQ;
-	Sat, 27 Sep 2025 19:29:57 +0000
-Date: Sat, 27 Sep 2025 21:29:35 +0200
-From: kernel test robot <lkp@intel.com>
-To: Brendan Jackman <jackmanb@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, bp@alien8.de,
-	dave.hansen@linux.intel.com, mingo@redhat.com, tglx@linutronix.de,
-	akpm@linux-foundation.org, david@redhat.com, derkling@google.com,
-	junaids@google.com, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, reijiw@google.com, rientjes@google.com,
-	rppt@kernel.org, vbabka@suse.cz, x86@kernel.org,
-	yosry.ahmed@linux.dev
-Subject: Re: [PATCH 03/21] x86/mm: factor out phys_pgd_init()
-Message-ID: <202509272136.N4ELb64u-lkp@intel.com>
-References: <20250924-b4-asi-page-alloc-v1-3-2d861768041f@google.com>
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BQxHLX6G;
+	spf=pass (imf16.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.217.48 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-583a520bd81so1445333137.2
+        for <linux-mm@kvack.org>; Sat, 27 Sep 2025 12:42:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759002155; x=1759606955; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6xQ9bzFk69iukmKUY25ufCAqjrKMzVtKfHbiTqiaUsA=;
+        b=BQxHLX6Ga5S1hova0/VfE6YFdQg6kFr4Mmn2EnQcw1rwoOUwnrpuTCe7bS4QPqLJ2l
+         Agy5WFDeWp36XESIfthTbShDSV21rXmOuVMzFabXFLkdOnWuPMMijQKhHDlJcxrbUCUV
+         sARpYwILiqGE/CP/OPy31oL/g/+Frf8UQE15IZ5o9anOzaEYTU7XCTRAjXbmbc8lIpum
+         aSET3iVgwY74zE1e13mmUAIsq4M+WwMLVyyJyih22WbWwMPrX4+YUrkCafrJBw/bvQrO
+         QBr5oxlGcJJw5F2UQ/9JV4kPHxuqZ4ChrayfLoU6uCxI4ANIXNCnwhzkCfzcmFQNdZTu
+         ilMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759002155; x=1759606955;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6xQ9bzFk69iukmKUY25ufCAqjrKMzVtKfHbiTqiaUsA=;
+        b=Om8wvzlXJalQ9rSQaR4wsDMUby24Gc3w825cnZu96L/66ebCtephO7RjAo94BSSBoz
+         1GqqH/xqHnyxoqjfSVl23njwbv8CJJFTX9VlYoaoaDg6l0yf7AxqhjlAgv/e0xg7dvbo
+         HXR2rHrPy0ioweZf3Tm4fBpgifxywRHAFJ7r/CFbxb0Jn+n9MR7v+U0zyZga5lIdUQT4
+         Zr/nGrJwTibaLrjeLrU/Pp9MsY+t2vG+q5Y+55k4Wm93f3U5yrzXS+2264kZVcVDLBsX
+         U4Lc4HnxhVWr2QouinVjh1in36wENvGZ+Yt+c2w6wDNG2Yub49AvNFaG8FRqRhE1gyo4
+         zbnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUsY/bMc5BNKyVtEtG28ZiGPW/DNMncFb4+4ELsqqujTqnfJfOFtnpDy73w/eB5Rvrgzo/OSIm+kA==@kvack.org
+X-Gm-Message-State: AOJu0YypQpelaPdrBuw0TSZDhAgV4RPd4YpZ8AiaEOCFKz73rATXDtoD
+	IqCsJ4otjnN4cZEfLMvFs4Cr5BROmUauLAO/gG+pm220mytzpjGJ7UWaBceCg0joj+i6hnAtgL0
+	j2nivFMvvUSp5bW/8yjCh8HHaGzZDMg8=
+X-Gm-Gg: ASbGnctNSOHwhiHfhMI0BY5JxmOSMIv/fWpOxDLJZ0LEUHKGrH+mB2xOcQuxZ2GVYwW
+	8s1TLM+gTSbstJg4iaNKl5YS8vVX2uLLhwatU7vjYJtvt0Kqe2rVstOVYkDsX4VjsSaHhGLalNV
+	PEqMSKuNcOw3L6YP90cKqLnrzNa0S7Oz4fP77p5HI4pNnwJnW9gKIBq0APalNZM/I2uu5jTLxmP
+	UhbOdCTI2YyrGVAxn5M5CmHslZkjHNM4maAbmW7aICOxEVh11Q=
+X-Google-Smtp-Source: AGHT+IGglDo1/gdOcNhsuSzZl7FEO053NNm+ZSGFGErw4ULSPn8POBz7Kmhwj8faLx+8S9aP6qgFUy5HNQzHFDYGmS0=
+X-Received: by 2002:a05:6102:6499:10b0:5b9:c38a:c4f9 with SMTP id
+ ada2fe7eead31-5b9c3a94dcbmr1525519137.31.1759002155340; Sat, 27 Sep 2025
+ 12:42:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250924-b4-asi-page-alloc-v1-3-2d861768041f@google.com>
-X-Stat-Signature: x3i8qhxih54zk7p7zpkhphwk19x3nwbe
+References: <20250918222607.186488-1-xiyou.wangcong@gmail.com>
+ <20250919212650.GA275426@fedora> <CAM_iQpXnHr7WC6VN3WB-+=CZGF5pyfo9y9D4MCc_Wwgp29hBrw@mail.gmail.com>
+ <20250922142831.GA351870@fedora> <CAM_iQpWO71vSV_0qXiUYeKYZMYF0xWNz8MrUVRkqKwDEtQvKqA@mail.gmail.com>
+ <20250923170545.GA509965@fedora> <3b1a1b17-9a93-47c6-99a1-43639cd05cbf@redhat.com>
+ <20250924125101.GA562097@fedora> <CAM_iQpWRZ-vihMEa=k-j9EYN9itUeZLhZ14AoCvZ9mturFxAyw@mail.gmail.com>
+ <20250924190316.GA8709@fedora>
+In-Reply-To: <20250924190316.GA8709@fedora>
+From: Cong Wang <xiyou.wangcong@gmail.com>
+Date: Sat, 27 Sep 2025 12:42:23 -0700
+X-Gm-Features: AS18NWCeP2cGzDoATwSVHNUS5qX7kDmrKwGEMa7Qt3ofJhYYTiaA4U-AxyJEbYo
+Message-ID: <CAM_iQpXnvyZWrv4W45SBTDV-tCXU4Fz1=S8z_0s5en+U29vSZQ@mail.gmail.com>
+Subject: Re: [RFC Patch 0/7] kernel: Introduce multikernel architecture support
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, 
+	pasha.tatashin@soleen.com, Cong Wang <cwang@multikernel.io>, 
+	Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, 
+	Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, Changyuan Lyu <changyuanl@google.com>, 
+	kexec@lists.infradead.org, linux-mm@kvack.org, multikernel@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 4gr1u5t8sjggf5f7ut5x373sf7pueng6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5834280006
+X-Rspamd-Queue-Id: 5E66118000B
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1759001409-193246
-X-HE-Meta: U2FsdGVkX18mYYjceaSc2Lwb3LIxKnmJvpZ7HtQQKjmxYrQBzOlDdH29EseHUHaXDB5/8HcqwNdKFyzcunOVLfiWl/u6g1YKnctXC34RwFruGc40TImv8JXIEXGuaKjmz37XoXYrkvYBchVN2oikc47tiV6V2Il40DRGPHvhPIJhH91xNkJH5z39/mAkop17xRSQZyaq36Wc+ohBxVXz4O7e68CheZF0W9dqs6uaLWFC/V11rPQRZ2KvKxLG+4ep+jUlEcn6drp+xXPQUI0HQhHMcNvCs3B6pO/10N/BjcGlOrjTdzEJ5Ws+MptdgYrOBeLgcHI7U7Db50UqmlZIZyZWrbb6s4DAS+DPUfyoFdU1N8W+6L9k3456WiEbqTv+IUu/APHH8EkflXxzgJ5WH72cjZiaoN0uTkoSCd2MGHwQbSG0WQy5lYWSmihjSUEViCv7u5IUY00j9qm2HlZDlBUGq7y/VQPj4FcKoJvya6V7Kh6tkjFA8IW5Lhgxl/QztbNf+UXuPBlD9FUamSxDnWw7lnKLLTDUmMUOLW259oCNakqugMRVosIoR4EYaPkDPl4ArduYxIRP2bo2EVzCM9WX1W+ZNBkRpqT/JjlbqrAnPbITrsFORz7g3e239dXCTJ+03bLO+veqd0lCWfe57vu/bbR05zYc7DlOXouw8qt3f3BkmnFSW0QIXEDLB9l3ntD/FBo+JzCGKns5O+aUqIEyfIB75MuZCaLhDWbJZ8wRn/xvLdUUKbmC2GkMdd2DXkSsXHAGMNjScow+A20BbPzg7bqzcFZMUt6GzanclzIqF1vvaDhIzB3c27nMZpYgKzuLEDFMr7NSGLxirY6UBtiPJlAlXswkyKWEaPRHI4UEka+/2b8yAVwVSfZ8oHEX+xhchwbxwA5AEYm1GE8MXQcRo8AEg/LTDWQBrBcndTYa+m+Pl9+6Tf2kE4OXvTEtmx1bayezhJ3Re/uBghg
- RjkMpbAJ
- J6cjr6FmI1Fr219ebMdYIsXqU10qzuVlmQ2x7pERwTfLkUfpDvnvtXjynDYo6KD2utdlzNoBCjGXhPEwai9R+p8CSkRDQ3IgfEbAXWf/FbygLdRkwV4AKW4B6WLaSxil7tuxoRYE+eCTH91f2Obnqq+aFdaZ9peLfbtPL09pizhAKzz5efrFJruI7jdejSZEsE3LHpo7LBVxbYzu/GZbUfgStKQFVTTBU/YmmOabywxVXNeQb79SeetuY2I17FNrqTREWhg+b54TuG6FOvIx+qou42mr1Zk8wjrGi2IvCJupUzvWPz+eScUawWmOtwy2llV9lv8iylUqhGXDTGrObtmLj7Hm7pcOSZDX9uSSvXQO6FTOUwaflJSPeLtYeCwT99YVR9XalzixUWIhef/g6TtesQg==
+X-HE-Tag: 1759002156-39364
+X-HE-Meta: U2FsdGVkX1/0dOefG/f+T6VdBCVkP7q6N+69F79gRCOqNfwLDPXG+UnbSBiHphN5/20aCi2F0cgLglYSHi+HU2EbrBpeuWkbiqhSnYoZiPnbomV3lR1ktg6cdDSvXyE0hmIk3R9OaLwQyi6Aqx5yzsaxlitGv79CT9fxT8Ppikr0NquONt8Hkl7nqFlqpVejmKPsfefDIukDajtVAPBmwBl2wFsgKNizsLAabnT26Ox5SxaeB0c40yLDfqrM41/N9rPWBHIJ4ce1Fpma809zQYuoF4AMjU4LLZYm2OdHRZQdAw72WAfwQ0mnQazfrgkRu5kl/KnkPvvaY12L8Mem+o/FHi4+IZHX6cocYnJHzRi5dendMLifGEn/XyqS1Khff0h7QkYy8VVTt504ZbvoPWE6i8Ph6SN1jpfgoQ6d2mLjxKqnAMG+mj1320u8Ny2ocGgEvZx1Yhv7B588uMT2ks+FV2YvDMAcWP2Bk/HpMYUEFk9IJ8JY2KealNLRfTv5fXQn/VfeyfX9cbTAx4H3bgb+86TR9YiLtc102sJJBpjKXibyiLq8UxM4pPzCviRDGtY0nxXUcK+JApcpkO/mjXbLxOmE1wr6KoMItDQh7njrbHDGCh6M57wKbnjW5BBUzUXL7aWICBYtwKNM5vbaIcgEosmZ2ytF1Ym1KknInLnhUFvKQDwn7gxNLIr5PrJRYDUdUQx1XQiOxYYKfq1fs7YgX266KHWaKKA9FJoyfDE303YDFWFJJy0yI0yNbvE0DcKiCjvbw/YisKpdS16MMAyo6nALwzfzA8g3UIGIDAEVPuZqIwoLHxU21+v1BpxvZmrMHsKXwvw5+6Ytjb3MGF9rKrPUz8QSHFUBPpZpw2BAF9QDadTqlkJHB44CR9woB7RYXGTi74AlLnHszPYty51VN7697J7TkvUPUKnztPcm8luLRuf102HbhNlH7IlMZvOUqSSSHMKbzuMt0E1
+ 9pBeTbaZ
+ V7BW6Bk2W9Y+vocFlzLI0qALBMS3gcdQtIDfdd1k2J6mQPBA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,84 +124,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Brendan,
+On Wed, Sep 24, 2025 at 12:03=E2=80=AFPM Stefan Hajnoczi <stefanha@redhat.c=
+om> wrote:
+>
+> Thanks, that gives a nice overview!
+>
+> I/O Resource Allocation part will be interesting. Restructuring existing
+> device drivers to allow spawned kernels to use specific hardware queues
+> could be a lot of work and very device-specific. I guess a small set of
+> devices can be supported initially and then it can grow over time.
 
-kernel test robot noticed the following build warnings:
+My idea is to leverage existing technologies like XDP, which
+offers huge benefits here:
 
-[auto build test WARNING on bf2602a3cb2381fb1a04bf1c39a290518d2538d1]
+1) It is based on shared memory (although it is virtual)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Brendan-Jackman/x86-mm-asi-Add-CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION/20250924-230633
-base:   bf2602a3cb2381fb1a04bf1c39a290518d2538d1
-patch link:    https://lore.kernel.org/r/20250924-b4-asi-page-alloc-v1-3-2d861768041f%40google.com
-patch subject: [PATCH 03/21] x86/mm: factor out phys_pgd_init()
-config: x86_64-kexec (https://download.01.org/0day-ci/archive/20250927/202509272136.N4ELb64u-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250927/202509272136.N4ELb64u-lkp@intel.com/reproduce)
+2) Its API's are user-space API's, which is even stronger for
+kernel-to-kernel sharing, this possibly avoids re-inventing
+another protocol.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509272136.N4ELb64u-lkp@intel.com/
+3) It provides eBPF.
 
-All warnings (new ones prefixed by >>):
+4) The spawned kernel does not require any hardware knowledge,
+just pure XDP-ringbuffer-based software logic.
 
->> arch/x86/mm/init_64.c:747:23: warning: variable 'vaddr_start' set but not used [-Wunused-but-set-variable]
-     747 |         unsigned long vaddr, vaddr_start, vaddr_end, vaddr_next, paddr_last;
-         |                              ^
-   1 warning generated.
+But it also has limitations:
 
+1) xdp_md is too specific for networking, extending it to storage
+could be very challenging. But we could introduce a SDP for
+storage to just mimic XDP.
 
-vim +/vaddr_start +747 arch/x86/mm/init_64.c
+2) Regardless, we need a doorbell anyway. IPI is handy, but
+I hope we could have an even lighter one. Or more ideally,
+redirecting the hardware queue IRQ into each target CPU.
 
-7e82ea946ae4d0 arch/x86/mm/init_64.c Kirill A. Shutemov  2017-06-06  742  
-eccd906484d1cd arch/x86/mm/init_64.c Brijesh Singh       2019-04-17  743  static unsigned long __meminit
-46b7f8ebabd0a2 arch/x86/mm/init_64.c Brendan Jackman     2025-09-24  744  phys_pgd_init(pgd_t *pgd_page, unsigned long paddr_start, unsigned long paddr_end,
-46b7f8ebabd0a2 arch/x86/mm/init_64.c Brendan Jackman     2025-09-24  745  	      unsigned long page_size_mask, pgprot_t prot, bool init, bool *pgd_changed)
-^1da177e4c3f41 arch/x86_64/mm/init.c Linus Torvalds      2005-04-16  746  {
-59b3d0206d74a7 arch/x86/mm/init_64.c Thomas Garnier      2016-06-21 @747  	unsigned long vaddr, vaddr_start, vaddr_end, vaddr_next, paddr_last;
-^1da177e4c3f41 arch/x86_64/mm/init.c Linus Torvalds      2005-04-16  748  
-46b7f8ebabd0a2 arch/x86/mm/init_64.c Brendan Jackman     2025-09-24  749  	*pgd_changed = false;
-46b7f8ebabd0a2 arch/x86/mm/init_64.c Brendan Jackman     2025-09-24  750  
-59b3d0206d74a7 arch/x86/mm/init_64.c Thomas Garnier      2016-06-21  751  	paddr_last = paddr_end;
-59b3d0206d74a7 arch/x86/mm/init_64.c Thomas Garnier      2016-06-21  752  	vaddr = (unsigned long)__va(paddr_start);
-59b3d0206d74a7 arch/x86/mm/init_64.c Thomas Garnier      2016-06-21  753  	vaddr_end = (unsigned long)__va(paddr_end);
-59b3d0206d74a7 arch/x86/mm/init_64.c Thomas Garnier      2016-06-21  754  	vaddr_start = vaddr;
-^1da177e4c3f41 arch/x86_64/mm/init.c Linus Torvalds      2005-04-16  755  
-59b3d0206d74a7 arch/x86/mm/init_64.c Thomas Garnier      2016-06-21  756  	for (; vaddr < vaddr_end; vaddr = vaddr_next) {
-46b7f8ebabd0a2 arch/x86/mm/init_64.c Brendan Jackman     2025-09-24  757  		pgd_t *pgd = pgd_offset_pgd(pgd_page, vaddr);
-f2a6a7050109e0 arch/x86/mm/init_64.c Kirill A. Shutemov  2017-03-17  758  		p4d_t *p4d;
-44df75e629106e arch/x86_64/mm/init.c Matt Tolentino      2006-01-17  759  
-59b3d0206d74a7 arch/x86/mm/init_64.c Thomas Garnier      2016-06-21  760  		vaddr_next = (vaddr & PGDIR_MASK) + PGDIR_SIZE;
-4f9c11dd49fb73 arch/x86/mm/init_64.c Jeremy Fitzhardinge 2008-06-25  761  
-7e82ea946ae4d0 arch/x86/mm/init_64.c Kirill A. Shutemov  2017-06-06  762  		if (pgd_val(*pgd)) {
-7e82ea946ae4d0 arch/x86/mm/init_64.c Kirill A. Shutemov  2017-06-06  763  			p4d = (p4d_t *)pgd_page_vaddr(*pgd);
-7e82ea946ae4d0 arch/x86/mm/init_64.c Kirill A. Shutemov  2017-06-06  764  			paddr_last = phys_p4d_init(p4d, __pa(vaddr),
-59b3d0206d74a7 arch/x86/mm/init_64.c Thomas Garnier      2016-06-21  765  						   __pa(vaddr_end),
-eccd906484d1cd arch/x86/mm/init_64.c Brijesh Singh       2019-04-17  766  						   page_size_mask,
-c164fbb40c43f8 arch/x86/mm/init_64.c Logan Gunthorpe     2020-04-10  767  						   prot, init);
-4f9c11dd49fb73 arch/x86/mm/init_64.c Jeremy Fitzhardinge 2008-06-25  768  			continue;
-4f9c11dd49fb73 arch/x86/mm/init_64.c Jeremy Fitzhardinge 2008-06-25  769  		}
-4f9c11dd49fb73 arch/x86/mm/init_64.c Jeremy Fitzhardinge 2008-06-25  770  
-7e82ea946ae4d0 arch/x86/mm/init_64.c Kirill A. Shutemov  2017-06-06  771  		p4d = alloc_low_page();
-7e82ea946ae4d0 arch/x86/mm/init_64.c Kirill A. Shutemov  2017-06-06  772  		paddr_last = phys_p4d_init(p4d, __pa(vaddr), __pa(vaddr_end),
-c164fbb40c43f8 arch/x86/mm/init_64.c Logan Gunthorpe     2020-04-10  773  					   page_size_mask, prot, init);
-8ae3a5a8dff2c9 arch/x86/mm/init_64.c Jan Beulich         2008-08-21  774  
-8ae3a5a8dff2c9 arch/x86/mm/init_64.c Jan Beulich         2008-08-21  775  		spin_lock(&init_mm.page_table_lock);
-ed7588d5dc6f5e arch/x86/mm/init_64.c Kirill A. Shutemov  2018-05-18  776  		if (pgtable_l5_enabled())
-eccd906484d1cd arch/x86/mm/init_64.c Brijesh Singh       2019-04-17  777  			pgd_populate_init(&init_mm, pgd, p4d, init);
-7e82ea946ae4d0 arch/x86/mm/init_64.c Kirill A. Shutemov  2017-06-06  778  		else
-eccd906484d1cd arch/x86/mm/init_64.c Brijesh Singh       2019-04-17  779  			p4d_populate_init(&init_mm, p4d_offset(pgd, vaddr),
-eccd906484d1cd arch/x86/mm/init_64.c Brijesh Singh       2019-04-17  780  					  (pud_t *) p4d, init);
-eccd906484d1cd arch/x86/mm/init_64.c Brijesh Singh       2019-04-17  781  
-8ae3a5a8dff2c9 arch/x86/mm/init_64.c Jan Beulich         2008-08-21  782  		spin_unlock(&init_mm.page_table_lock);
-46b7f8ebabd0a2 arch/x86/mm/init_64.c Brendan Jackman     2025-09-24  783  		*pgd_changed = true;
-46b7f8ebabd0a2 arch/x86/mm/init_64.c Brendan Jackman     2025-09-24  784  	}
-46b7f8ebabd0a2 arch/x86/mm/init_64.c Brendan Jackman     2025-09-24  785  
-46b7f8ebabd0a2 arch/x86/mm/init_64.c Brendan Jackman     2025-09-24  786  	return paddr_last;
-^1da177e4c3f41 arch/x86_64/mm/init.c Linus Torvalds      2005-04-16  787  }
-9b861528a8012e arch/x86/mm/init_64.c Haicheng Li         2010-08-20  788  
+>
+> This also reminds me of VFIO/mdev devices, which would be another
+> solution to the same problem, but equally device-specific and also a lot
+> of work to implement the devices that spawned kernels see.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Right.
+
+I prototyped VFIO on my side with AI, but failed with its complex PCI
+interface. And the spawn kernel still requires hardware knowledge
+to interpret PCI BAR etc..
+
+Regards,
+Cong Wang
 
