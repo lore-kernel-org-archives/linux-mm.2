@@ -4,110 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 195FCCAC5BB
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 13:21:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E084CAC5B5
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 13:53:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DBC18E0006; Sun, 28 Sep 2025 09:21:06 -0400 (EDT)
+	id 331F88E0003; Sun, 28 Sep 2025 09:53:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68CB88E0001; Sun, 28 Sep 2025 09:21:06 -0400 (EDT)
+	id 2E2FF8E0001; Sun, 28 Sep 2025 09:53:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A2AF8E0006; Sun, 28 Sep 2025 09:21:06 -0400 (EDT)
+	id 1F8648E0003; Sun, 28 Sep 2025 09:53:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 46A298E0001
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 09:21:06 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DE4054C108
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 13:21:05 +0000 (UTC)
-X-FDA: 83938719690.23.FA32061
-Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
-	by imf01.hostedemail.com (Postfix) with ESMTP id E483F4000A
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 13:21:03 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DMOGpfW8;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of jianyungao89@gmail.com designates 209.85.214.193 as permitted sender) smtp.mailfrom=jianyungao89@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759065664; a=rsa-sha256;
-	cv=none;
-	b=D3UA//6kuqkHYn6UyqI77li8Q3jP8vkpcShk0nFXSAQQcKAMjFFyaVuwEHqQER+g5Ci5fJ
-	j2P9ekB0Ia/7K+CN7eY2UrSP6kJTeztRWNM1/H6KxOega47WAoOGm5m3ua8h7N5ukV0a0V
-	3Fgjs66p05gql3NKZ8xwFLccXkM41g4=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DMOGpfW8;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of jianyungao89@gmail.com designates 209.85.214.193 as permitted sender) smtp.mailfrom=jianyungao89@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E5398E0001
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 09:53:56 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 734BA82E7B
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 13:53:55 +0000 (UTC)
+X-FDA: 83938802430.06.C0BD665
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 6ADC0C0008
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 13:53:53 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759065664;
+	s=arc-20220608; t=1759067633;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vuyN8LaIynLMOcVVAC8DjDfcTekaNgJ1YBpvc463uzg=;
-	b=TFZneKQMLgYpQ869WPUt0w9Us4rlPD1inicy7/rtGToItGRN43oVpOEphxBXHiVR+siLb4
-	mHH8zHZL4f/sk7E6tkfxjKKOlZf7O5/4Mo2spYxGj3mAdQo7rplJztIuxXwIsJKFg1kx6Q
-	oEtqCFjT0EpkU1BtdoA/5GF5q3LS+YE=
-Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-2680cf68265so31738595ad.2
-        for <linux-mm@kvack.org>; Sun, 28 Sep 2025 06:21:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759065663; x=1759670463; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vuyN8LaIynLMOcVVAC8DjDfcTekaNgJ1YBpvc463uzg=;
-        b=DMOGpfW8D5awql1p75POPjf2/MNoKIVzs8drIIJZipTH1URI0+0WgZe1yuhxJGM88U
-         LRUiLHJdiZU15G4w7TY2oSmvsCHieORMO5JNMm+kjhqGfIONDmIsabl7MpcakQrzRE24
-         vAx28hIjqRaLq9YimD7DVoZHo5y4J6YS1uJEDkaaJgNVD9vVZ64GrwbgDfFJ6AWm0dz6
-         pPUKMAQaMyfGa553EOwkfFfnc3vDDEwO4MbB+aRuTSzXNXeav6TgHvMQewOWSNaJIX1c
-         OjzIlbTXqq+9JIXnvoWrBxjVp0NT4l7T2nefGrvLXzW5RtxEY4zSamFYEz5PvOVp7bUY
-         WrDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759065663; x=1759670463;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vuyN8LaIynLMOcVVAC8DjDfcTekaNgJ1YBpvc463uzg=;
-        b=CvTMRgS5w6+o7WDCcZ5tniCJQYYMEgac6z0ps3CQQtx8wV8FM0HsJsWYznJemQPlgX
-         vFnsLa8Q6qa81hh4+a2MpndcxoZr2kbn2SlpbP80zrm15HlAqf91dK9knCaGIN1KgPlk
-         1dyCcHTTagn3LCw8mUP2Z0M6z3TpdCyop0To1pxfCB2OhmrhEmO9Xf8uH/bZwkWtwGd/
-         X/unHPUmcLWvl7zYhFtFunUiBkLRyBYLRkzeo+8iLz1b+cm+MFmXgThUsXhyL8zr/4Fa
-         gv9snWhtVsV4pOJAtSGGzFRrb3gu4U4LrlUHGrr3Cp5KozZgQuE1UsDuEUip9omEMZlB
-         jlQQ==
-X-Gm-Message-State: AOJu0Ywt1Ik9PzS3Yx80zUpyslb/uiW+h50ZegqlCRsYcr5GJ5Ljp7Z6
-	tcFinIWc5HNYDEh1Qm0v14hcIPKAy6syGluNHqiZgtW28xDnf7Zq9ZR8QvzZUKZk18WynWKeSiP
-	ORLwXIEmS06u5SQjPzujnRCpucRA9jKo=
-X-Gm-Gg: ASbGncvy0EnqQjkXTmXpGkSeyUZ75WcereXpjTsVwY//mWhFZSyl0h8RpMGHLoiAujC
-	zlj+TsM/0dz6j6hFAAY9B8HesLBWKQ0LLlC+61204386Xloy/0lyQUoSA7Lb6mjTeXW3YapYKif
-	NIeC/Z0h81IAIbuQbgtno/NzjT39ALkphoqUUj4SzC0qhQd/Oe7AySkE96+nwhae76cwFOaq0yI
-	cM/Cfw=
-X-Google-Smtp-Source: AGHT+IFRY7I1KjBJHD7Gi4iDoz0ScrOwSI8gibtvMBpXyv84g3To5Nz+4EvBusFuikjVvBGDoVwGH9iWdxQZsANhsOE=
-X-Received: by 2002:a17:902:dac2:b0:260:3c5d:9c2 with SMTP id
- d9443c01a7336-27ed4a93585mr142568915ad.48.1759065662606; Sun, 28 Sep 2025
- 06:21:02 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references;
+	bh=q4BAbC+YrY4QIrrWFrLnzxWXP3+n6iKlcqstcDYpuuA=;
+	b=AmgJy+aRXzOk1QbWxxGfLAFObGxP9g7GtaNb1glrUiS/PN+PwWyTX0Kl8q0Ny/EDnFS38I
+	dspxapUJDfdaHni2NyQia9BhzrCeoDgC5hj2ZLTok8Blkuu7+sQWUO3IRSRSny2yqG33FL
+	WkelU/Nf0im9JZ6JGPcbSH0CinCCI78=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759067633; a=rsa-sha256;
+	cv=none;
+	b=NxWPscaRB4IZ/jZIByge3jsbWlsYpC1Pvq/Qa1Duol3M1ZOTXgsOAw1thOfy6II+Qpj+2S
+	4isL+l1hhSclqN6A6YMeqnMBJh6pwSJYzsaLennMWHtpzQF2JGtVfWUBHiQ9CxQPpCtFhy
+	sHkjRgAsY+VQeBzUBkL/m29LjP95qY8=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 45808150C;
+	Sun, 28 Sep 2025 06:53:44 -0700 (PDT)
+Received: from [10.163.64.48] (unknown [10.163.64.48])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E28B73F66E;
+	Sun, 28 Sep 2025 06:53:45 -0700 (PDT)
+Message-ID: <c3817e55-4f86-4677-9275-9e08d68a0ed3@arm.com>
+Date: Sun, 28 Sep 2025 19:23:42 +0530
 MIME-Version: 1.0
-References: <20250927064926.1496579-1-jianyungao89@gmail.com> <933cfdc7-9e3f-4dec-a5d9-bb193b0b7f13@arm.com>
-In-Reply-To: <933cfdc7-9e3f-4dec-a5d9-bb193b0b7f13@arm.com>
-From: Jianyun Gao <jianyungao89@gmail.com>
-Date: Sun, 28 Sep 2025 21:20:54 +0800
-X-Gm-Features: AS18NWD5h28x_EqzgNeA5bm5R8WhOU4cAhQuKUd1TqaJB4e2HcCJNRb3F5Oq-pY
-Message-ID: <CAHP3+4DpW1R4nP2c5JOK_==zDXBRkHyJggBp4KrCxv7dPfb3Eg@mail.gmail.com>
-Subject: Re: [PATCH] mm/hugetlb: Fix some typos in hugetlb module
-To: Dev Jain <dev.jain@arm.com>
-Cc: linux-mm@kvack.org, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@redhat.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E483F4000A
-X-Stat-Signature: qckug5jd6bjtpm7uu98o43mopdd4yzce
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Patch v4 1/2] mm/ksm: don't call mm_slot_entry() when the slot
+ is NULL
+To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ xu.xin16@zte.com.cn, chengming.zhou@linux.dev
+Cc: linux-mm@kvack.org, Kiryl Shutsemau <kirill@shutemov.name>,
+ Dan Carpenter <dan.carpenter@linaro.org>
+References: <20250927004539.19308-1-richard.weiyang@gmail.com>
+ <20250927004539.19308-2-richard.weiyang@gmail.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20250927004539.19308-2-richard.weiyang@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 6ADC0C0008
 X-Rspam-User: 
-X-HE-Tag: 1759065663-675353
-X-HE-Meta: U2FsdGVkX18UefStynTwZiGo5LEnkIhUQkbLFv4JS3GBc3XgKboE1/rS+M2F2ksa6gmtqnzr1OXuvNLQaWvUuIX6p1nIdrUjTD1J7le6dpb8vO+qZOfx0kUvjU5RLQhLgyGcftjaJ/8VB5IBHv28ZnUJuGHtnySAs8GpZmD++HAD1dWggFibnmDqhw6LJcKyRXfe4NuH9tjVwKvvZcB7ACad4o8K7Ac79CJYXUSpCYu5LqjMhhYyJYIDvSSZbLZNSilLgwGRSbZ5b9C0pzHHVOh1S5c8BY3lHC/wLi5yZUk2JMeFHkpK60AuN2QEaFcqwT7SX03o1JWogWfFdqgHF1i5/WH/ExLMyr0MJ4639yTOJVfJmeb7j8NEV13L0WEQ5Oe+42y6Q2V78xbbbMfWGSR2USRBOPiDnN4EtT3O4kL6Fw1IjROfoiBoB4xaveJ9lRsX6tySDxAbh/fnfKQJULGuOGZmbmxJ6Y1uTS41XOATijHk2VS7c/Fdl3ZhzK6Xa5w8YsW8u/AtLnkBqS7XjDmQnviVuqL06ffu7igUq9syaObYtNw8zq8EP/pp+3irJ+BK3iJoU0qDGkWh0VqJgO5dqFNgdfw9b39T1gXn33gmO2Fu7Pv3UXR7ycYBdJyjaRD6YjXnQ8IOJMx11QRO3ismaeHZhzLSzHXbDe3U8O08qqH77oOYLr3AvpCHKBGQL0XczlJcTUU+yaAKfQ7lrG0mUTLXZVfYphS53N8AY2gAzsvzqnADTyT4u3D5AAURmDZfdyOzojcHjDG/K3kHMRu5jDDkvi4wUaKJYj3mvF8BmB47BWXN9L5LxUXEk9M9UTP0IVZhGUyiKJpeB1c/WACpsDgc8VZdSeqizagZ5tvTk9B652Cll0u35Xn7ZWNdrk3uERXhhgh/1yCbkdZIWoHBhHNAh+JR9E9hNHaPdFf1s8uQTXfVOt7+2UZ1d7+i0mWR7WXiEh1LaEDWlx5
- BxlBs07Q
- poV9eVusdSwyeOOohUEB5K768xI5IaOjFMOE7ga1sMEZjAyw+vdqta7kqEnlzNnYoKbHgd/llLh6aB68bPJMMjfUHRzqdc196X0KFomJTxCh+YlsuBGs6+3mHYypz7rktg2NTikjnJVE2235aKnXyHg2LQnJosN0inb94LJfbVzvnqitHbD74UvpRonmDlQR2yVCEw+D+X6XerRrlY4pL1fguwxl2Ps+3MUJ15X1ZJD6sE27d2M8Y9UZtPcpV3QhiBXneIIDhzUnqXVdqPdZDj24c8NOgkUKT4kkBL/dEFLzw5mXoic9ukV8cjJ374VV87yeiQYCOJRvVUMB6vmw2MXB6mbttknYEH5AS1wCvXwR9JFK6BjUinzbPjDO2BVld9nT7xHxkroO/m4inljXaX+SupDlaIPj+bV0LwuLUuityw/4hbQllfrOvWp8Yaox0/TOXeq6hkoqflqWL0axVrWNM/mU/wfn2dEZ/FZo1u4Dnb2shOIj3Fee0Ri1sqkTnCO5cOKlL7ncCV3LggHERQliBFA==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: nni4kkj516y1noyhu1ymu5zcgxftfkcc
+X-HE-Tag: 1759067633-558631
+X-HE-Meta: U2FsdGVkX1/Vp5wYaAMEr7U7tV/KOvCDkaMKftYacqJaXZWlBzpMGGqiKKEo97GUBVrw6RguCnZjwZ48+MwucRVV5zCnPcE4nmB5VesZBlxOMtHZC96y9TLgINI3TLU7q+dfxW2Mo911PYGLUNijejvlIcyHyNM/pPUxRc5wAeoLWbghG0S+gNoXMa0C91vyKnGbXs1KIyi2pj1DI/AeT77Dd55mdgzTGHsCg/JDT8yaIRuhM+/DzuDlB978EAsubE9MJCtvS1gon/luIwgXkpB6FMo3FHdWlNENBwYV7aNAeZG9FANyib+IVbu5v66uKteTzY1Lf1auOUSVBhqKcpuubezY+wXuPy0SuvBguwHs/5e6Qhb6VZxwrZmdk//7H822qvqQLdXgbiumJdHjMeaCGnGlzVpnxiFYaznqI2cJJxyYWEd8zFHNdQqHi4slX/az2oxT8AzsGk6VNiZ9kpHCfNhsCcg71mEOCfOB0pAr8OpZppQoJVnNQZeup6gG/K6YTRt9i3J/RRTks2Gbho4xIEhl9sT3HXpJAjO8B8jqgDsG+uCgqqzN7Fy4kqhwqg1m3UcPtCJuJ8mxj91F+jmi3zQNYdJ4Twk0xyP0rzRC1fSJatM51T9/cHz0vUiD3gIQJLtbrTxl6SCTf2JhsWbAqEsuPqsQj6vxgypCzHgIWWlUBnIozwMZQn8lVN7t1p+/20D8ru00TuriV+5f69/4Vw/sR4DmzATFabqxe9f9U/EJlgzdMteGlx+QVLjtZnZa4clEFifVs7vpVItoKSYR71R6szaG1jzoUrGG9hEtA9A5NG11KEYUrzi3tZraSTFvszaVvFyZj8CvWArA9RevAWZlKLMWhEM6DXB2RLVq5vB6OkqoGD+At3B+lB8P5WF1tf/TpQbF/VIMApYi+eSqZmEUysO7k7BjXlIUZoZocwmD5w0Y3JI/yqiuqA+oFqkpzCjBscerz6R3Ov4
+ EiM7tlDi
+ QEYKDvXfxawwlNBl8qdDNKoP+xEWim9irG7NxAeGT2dm+/tlJclMAaiIggecOtZT2+wav9GbRUCI6B2NKQbAE8gEm0gMYYNi100Bxo3FnmXtmNWJG6PYQRPrnQex4gvuixkwQMc9o/olnMEQSsYBlx1kzij20ZRUhmy0aA57PGcidJe1kgjJ9qlUUf1lPksM8o5Lb9EGaREXHpVrDFUGgCv/ShARS1wB455JggFtbqug1+V0jNSBIN+KjtX3Azmd8t4/AW32a7mSjjYujOF759uhrh84z4/ugfLWkrlCMqqmYhze047SVqHreKBxI4hU5kqBAtu31SJBevVPLLM/Dg21tKRLsJyzzvSYr18o+aLPJKuSGUsZ4SzB0jfxV08pRgDxvY4kH1qwYW9312iqXUsQ5QfPsQwPk5Wg+StCn8lblGMr3wdwCaamoZbabEiLznECQeZdS4VP3X36OVDtc6bVkcbXb25k3KIy67pt9xHHMuDw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,121 +91,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Sep 28, 2025 at 8:56=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
->
->
-> On 27/09/25 12:19 pm, jianyun.gao wrote:
-> > There are som typos in the code comments as follows:
-> >
-> >    differenciate =3D=3D> differentiate
-> >    refernece =3D=3D> reference
-> >    permissons =3D=3D> permissions
-> >    indepdenent =3D=3D> independent
-> >    Spliting =3D=3D> Splitting
-> >
-> > Just fix it.
-> >
-> > Signed-off-by: jianyun.gao <jianyungao89@gmail.com>
-> > ---
-> >   mm/hugetlb.c         | 6 +++---
-> >   mm/hugetlb_vmemmap.c | 6 +++---
-> >   2 files changed, 6 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> > index eed59cfb5d21..8ff9edd09504 100644
-> > --- a/mm/hugetlb.c
-> > +++ b/mm/hugetlb.c
-> > @@ -2954,7 +2954,7 @@ typedef enum {
-> >        * NOTE: This is mostly identical to MAP_CHG_NEEDED, except
-> >        * that currently vma_needs_reservation() has an unwanted side
-> >        * effect to either use end() or commit() to complete the
-> > -      * transaction.  Hence it needs to differenciate from NEEDED.
-> > +      * transaction.  Hence it needs to differentiate from NEEDED.
-> >        */
-> >       MAP_CHG_ENFORCED =3D 2,
-> >   } map_chg_state;
-> > @@ -5998,7 +5998,7 @@ void __unmap_hugepage_range(struct mmu_gather *tl=
-b, struct vm_area_struct *vma,
-> >       /*
-> >        * If we unshared PMDs, the TLB flush was not recorded in mmu_gat=
-her. We
-> >        * could defer the flush until now, since by holding i_mmap_rwsem=
- we
-> > -      * guaranteed that the last refernece would not be dropped. But w=
-e must
-> > +      * guaranteed that the last reference would not be dropped. But w=
-e must
-> >        * do the flushing before we return, as otherwise i_mmap_rwsem wi=
-ll be
-> >        * dropped and the last reference to the shared PMDs page might b=
-e
-> >        * dropped as well.
-> > @@ -7179,7 +7179,7 @@ long hugetlb_change_protection(struct vm_area_str=
-uct *vma,
-> >               } else if (unlikely(is_pte_marker(pte))) {
-> >                       /*
-> >                        * Do nothing on a poison marker; page is
-> > -                      * corrupted, permissons do not apply.  Here
-> > +                      * corrupted, permissions do not apply.  Here
->
-> Can also fix the extra space between "apply" and "Here".
 
-Sure, I will fix it in the next patch.
+On 27/09/25 6:15 am, Wei Yang wrote:
+> When using mm_slot in ksm, there is code like:
+>
+>       slot = mm_slot_lookup(mm_slots_hash, mm);
+>       mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
+>       if (mm_slot && ..) {
+>       }
+>
+> The mm_slot_entry() won't return a valid value if slot is NULL generally.
+> But currently it works since slot is the first element of struct
+> ksm_mm_slot.
+>
+> To reduce the ambiguity and make it robust, only call mm_slot_entry()
+> when we have a valid slot.
+>
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Cc: Lance Yang <lance.yang@linux.dev>
+> Cc: Kiryl Shutsemau <kirill@shutemov.name>
+> Cc: xu xin <xu.xin16@zte.com.cn>
+> Cc: Dan Carpenter <dan.carpenter@linaro.org>
+> Cc: Chengming Zhou <chengming.zhou@linux.dev>
+>
+> ---
+> v3:
+>    * adjust subject and changelog based on David's comment
+>    * use invert style for coding suggested by Kiryl
+>    * drop RB and Ack-by
+> v2:
+>    * fix uninitialized mm_slot
+> ---
 
->
-> >                        * pte_marker_uffd_wp()=3D=3Dtrue implies !poison
-> >                        * because they're mutual exclusive.
-> >                        */
-> > diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-> > index ba0fb1b6a5a8..e6f79b2c63ee 100644
-> > --- a/mm/hugetlb_vmemmap.c
-> > +++ b/mm/hugetlb_vmemmap.c
-> > @@ -75,7 +75,7 @@ static int vmemmap_split_pmd(pmd_t *pmd, struct page =
-*head, unsigned long start,
-> >       if (likely(pmd_leaf(*pmd))) {
-> >               /*
-> >                * Higher order allocations from buddy allocator must be =
-able to
-> > -              * be treated as indepdenent small pages (as they can be =
-freed
-> > +              * be treated as independent small pages (as they can be =
-freed
-> >                * individually).
-> >                */
-> >               if (!PageReserved(head))
-> > @@ -684,7 +684,7 @@ static void __hugetlb_vmemmap_optimize_folios(struc=
-t hstate *h,
-> >               ret =3D hugetlb_vmemmap_split_folio(h, folio);
-> >
-> >               /*
-> > -              * Spliting the PMD requires allocating a page, thus lets=
- fail
-> > +              * Splitting the PMD requires allocating a page, thus let=
-s fail
->
-> lets -> let's or let us
+Reviewed-by: Dev Jain <dev.jain@arm.com>
 
-Okay, I will also fix it in the next patch.
-
->
-> >                * early once we encounter the first OOM. No point in ret=
-rying
-> >                * as it can be dynamically done on remap with the memory
-> >                * we get back from the vmemmap deduplication.
-> > @@ -715,7 +715,7 @@ static void __hugetlb_vmemmap_optimize_folios(struc=
-t hstate *h,
-> >               /*
-> >                * Pages to be freed may have been accumulated.  If we
-> >                * encounter an ENOMEM,  free what we have and try again.
-> > -              * This can occur in the case that both spliting fails
-> > +              * This can occur in the case that both splitting fails
-> >                * halfway and head page allocation also failed. In this
-> >                * case __hugetlb_vmemmap_optimize_folio() would free mem=
-ory
-> >                * allowing more vmemmap remaps to occur.
->
-> As Wei says, this patch can be merged with the earlier, thanks.
->
-Get it, I will merge this patch to the next one.
-Thank you very much for your review!
 
