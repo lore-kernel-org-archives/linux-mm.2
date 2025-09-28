@@ -4,108 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1326BCAC5B5
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 08:15:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FE22CAC5BB
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 10:08:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18ABD8E0003; Sun, 28 Sep 2025 04:15:21 -0400 (EDT)
+	id D68298E0003; Sun, 28 Sep 2025 06:08:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1625D8E0001; Sun, 28 Sep 2025 04:15:21 -0400 (EDT)
+	id D18FF8E0001; Sun, 28 Sep 2025 06:08:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A0EC8E0003; Sun, 28 Sep 2025 04:15:21 -0400 (EDT)
+	id C2E918E0003; Sun, 28 Sep 2025 06:08:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E61F18E0001
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 04:15:20 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 84C91BC3E6
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 08:15:20 +0000 (UTC)
-X-FDA: 83937949200.12.07AB2AA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id CD7A7C0002
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 08:15:18 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KMtmLekY;
-	spf=pass (imf28.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AB2ED8E0001
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 06:08:08 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 44E60160952
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 10:08:08 +0000 (UTC)
+X-FDA: 83938233456.29.5C09B85
+Received: from smtp232.sjtu.edu.cn (smtp232.sjtu.edu.cn [202.120.2.232])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6AFC11C000A
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 10:08:05 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	spf=pass (imf21.hostedemail.com: domain of zhr1502@sjtu.edu.cn designates 202.120.2.232 as permitted sender) smtp.mailfrom=zhr1502@sjtu.edu.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759047319;
+	s=arc-20220608; t=1759054086;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dxEgGzJalYLYRxam3UhasqEjzLOp6l9WnegrxeAbWKg=;
-	b=H9z9ZGsAtNwdy5q1D89psXewaWc5EEC+qhUAzQD5+7gL5HGCardmhoNZMLnOLKrQNJLD6u
-	hnEAs6BgO7SzRmcrXkBVYkzM9ASYLto6axPqItuqY4OoMiGFsVhW63h/oL2NqrF4DlKoIr
-	slEEIXfS3ce+2d00Y1sY+FbhVbg9svA=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=idADV7fzvxthMB1CG8R7EiIcBYdljtWuNqoLdsSm+Vk=;
+	b=QlA+eUUK0fKK380Jps+5CbnR2qr/bWwtzwY3ESlEwo4sgh4yH4VY4euZ8eppSxdfIk510c
+	wWgk6hgxJA8n9Xf+5Mgl4Rk0J34bdQGq+7Z4m1/Hlr3Wj3HqjTKb9zzL5Qi3F69EGW42ZD
+	MT27R+sXZ54Fl4taXGRSMkrUPvmT9E8=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KMtmLekY;
-	spf=pass (imf28.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759047319; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of zhr1502@sjtu.edu.cn designates 202.120.2.232 as permitted sender) smtp.mailfrom=zhr1502@sjtu.edu.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759054086; a=rsa-sha256;
 	cv=none;
-	b=s9U0YVx+NRuuj5x53qgdbiCrcbeu2mOEM3TpKRkrsO/xy67ioqgKUDChAzZnksF8Y5SyFT
-	SvOvM9ghWB7NWz9bY8dmpsQpLkmxWGC24C7r0ng33ZAsTD3FBcUGPaS5RsVMp0fKb2Dz9W
-	5Js2aUN91w47OmJxJUveGNO/ok4Q5uQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5CFB043587;
-	Sun, 28 Sep 2025 08:15:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 846E1C4CEF0;
-	Sun, 28 Sep 2025 08:15:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759047317;
-	bh=de9qzleZA+R2N/Kmiw9QQMnYG50hXtyYa8gfYsMACWk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KMtmLekYVZUE7aRFSU9mkhSkk4d2ntkHA9S03kyf74bsqgqfKRQVhafqnCSWyOedv
-	 j3ALK52bH8Ib0Qcjq73RywxOiTyDmFQWvZrSLzgQu7h6BfCe96um8PU6yXa3j1+99V
-	 FGKhJMG48c569FGlH//UPB1ED5dl4Ifq6JGVIKZvrAca3dREYBHHST1Q5so4+z4eaY
-	 ccYycjRt92s6L0ewEIaOyQRQPsYgpAgUNUX7hHBLNc2rys8+IT/z1BVurmh2ZP0TbU
-	 V0pJks/SLiWWs/cl5dVESCI2dRN+y9HXnOHfSrklek/YOtBiMhW81kGRirOKn9C5ba
-	 xbPCNcierbgCQ==
-Date: Sun, 28 Sep 2025 11:15:12 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Alex Williamson <alex.williamson@redhat.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-	kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org, Logan Gunthorpe <logang@deltatee.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v2 03/10] PCI/P2PDMA: Refactor to separate core P2P
- functionality from memory allocation
-Message-ID: <20250928081512.GD12165@unreal>
-References: <20250922150032.3e3da410.alex.williamson@redhat.com>
- <20250923150414.GA2608121@nvidia.com>
- <20250923113041.38bee711.alex.williamson@redhat.com>
- <20250923174333.GE2608121@nvidia.com>
- <20250923120932.47df57b2.alex.williamson@redhat.com>
- <20250925070314.GA12165@unreal>
- <20250925115308.GT2617119@nvidia.com>
- <20250925163131.22a2c09b.alex.williamson@redhat.com>
- <20250925230236.GB2617119@nvidia.com>
- <20250926081350.16bb66c8.alex.williamson@redhat.com>
+	b=oU/IcdYijw0WNBbGhvT0C5w2WNZ6oKbcd/7pSgOBvi0FNmAhLctFfjk4QHiR2Ej3NGmi3Q
+	pWsZXMbsCqni9i0nxgQ61/H659GSPyqdmpazI9s5Wkfztz9GiOPd1YXR8DynAhGx+Q+SSv
+	sf+cEkPMiiS/tPge69LWfxihy/dobec=
+Received: from proxy188.sjtu.edu.cn (smtp188.sjtu.edu.cn [202.120.2.188])
+	by smtp232.sjtu.edu.cn (Postfix) with ESMTPS id 251D0123BCAC3;
+	Sun, 28 Sep 2025 18:08:00 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.181.220.127])
+	by proxy188.sjtu.edu.cn (Postfix) with ESMTPSA id C4F9B37CAB1;
+	Sun, 28 Sep 2025 18:07:58 +0800 (CST)
+From: Zhu Haoran <zhr1502@sjtu.edu.cn>
+To: ying.huang@linux.alibaba.com
+Cc: dev.jain@arm.com,
+	linux-mm@kvack.org,
+	zhr1502@sjtu.edu.cn
+Subject: Re: [Question] About memory.c: process_huge_page
+Date: Sun, 28 Sep 2025 18:07:44 +0800
+Message-ID: <20250928100744.16307-1-zhr1502@sjtu.edu.cn>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <873487v1uj.fsf@DESKTOP-5N7EMDA>
+References: <873487v1uj.fsf@DESKTOP-5N7EMDA>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250926081350.16bb66c8.alex.williamson@redhat.com>
-X-Rspamd-Queue-Id: CD7A7C0002
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 53zbnkmkeapqgab5fcxjsib1ptnwmeu5
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1759047318-709779
-X-HE-Meta: U2FsdGVkX18MfOIrFVJ+XQ/R+bOE+1+rLl0DWTuJFglOC6OJy41raIPG9QQrp1yZ0ilWkdN34g7eU8wrcjYkvyYvq5XlrVIaAeUS4iL3MbilSB90wRhZPHG4AGW/e50572TNKYhzRf6ZPj28Vusk2kWirtpjQ+a5EL3ryyPlmofRXAj8DeocfZ/sWfnIpWEQx7mqjqi5GIKxyPPtpI0QLxIG6qa+9okcggCoFzUX+tR05L2bhaXlmHMHwqtQ7oLOMZIb1cDNWe4c+0lIYmlEskKM0KOc3BU4lEXX1MK9OBftfJ1wJ0estJAcRvAxJcnQ9SnuH2fL7ofR8VV3mgGCjT6A7pjtgqB0m6rAaaY886vP9l0lJAq47mq8epkBO0ok7LKJRl7M4dioX82x6w6hwG9/03UBT6gYuVxHHnuGZ4z63g0rY6f+WJ4pvRz7lwrrVYj/Xa3e2JEuQLexmaAn1YYFkK89dAunBtF4XgPC3TC1jrJGFYw0/j02mIEIkkLu/hA2x52dJFpzN3LVA6C24ziShoDSneR7SJdt3RIpgLa2cbYaW/bwYR8xrH8SIPn3UEDnE8csQnrAOVc5/f/uv22NdzlHM/GpRQUjJU+j0EPWPHRhoBjFF5GhA8KTQmfYVgkGl666QkNVUD7IE54y6zdTfgRpZmo12oZmKui/GzWITsPgaaKAx4DfITF4Ru5Im86lbvvmVJrHF/jh3vdy4sNqzE8Y2aiKVLyxfVPZMCM6uErrGMhmL6Ab7r75lVpMd/o7k9A5FuXCumi1cY8QDXZA/XsZ/r6HMvcJ8j4FFtTcZxeWNDeSK9jzno5NXYIWZWFZfkMoPH+D191NQ7x5lB2xKPjas9hbOZ6nQqOR4i3yd3a+qmGGGgyt7GwLynjwAmaJAE1EP74/+UTpjn4kSwc1SxLRlkuW7MP59izZLlzWP3PbexL6Cbej+j9Bb+98a1bU/V2BAGoGINEnuZB
- lsKJ3bnA
- ofKgSp2SwtQLqD3FYoV44Pioqy12gTf7Sfu3kKFdE8sN78qiy8IL24HP/qJ/ypoiYSk3tMtcJbNzNOVu/qclpu2XjmzuhQiox6EFaVT0bBKNYRAvzwTPv6oEGkMtHLdewBiNbwJzgbiTUjX6HSoN2CUFRcN/+5wL7SvShV/WjBQG6npv6pPlCSzOcse6KL5XPm5uqYi6IZ5A/Dz3yvDk+Rt5ExZkmRU8wdasR8KbRGVzdfUZmFjIihShQ5nyfQoDxp8ORs04J0jcwRnQMEkxjoiezDw==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 6AFC11C000A
+X-Stat-Signature: 1ywqi3498e47mtkb45rk379mm5gjkpzh
+X-HE-Tag: 1759054085-790481
+X-HE-Meta: U2FsdGVkX1+x74F3lhX9OWTd/AsI8r8xrbrYHTD9YMfRmmJsBQyekFNdt2IDcUgW2biunICc1fCD/ECMHJv/7q2iGzZLPZfOacUNF0uaerz1eSpAmXVP/L79al6ipUCFYn9bLaJyUCGpwzyBqCxcaqASXXOovkldWCMD+YYJa+l/S63XeoIDZEX61qNwkoDlcMap0EN+q+/aTtoX4YLoxPup0nDap7cuZlXCDWzNe33P9GmM99JRrnUHzg9uo2j0UROigDjGofjblkQ0sYzJCoJpAUBDJftw5kwDvQYU4MolO3iQjnNivMcRPwST7btL31krN+6FT116r3MEys+t2c2qRuuLziYc3oPJKoAxEFv0eKtzy3pfS3UveKJF/RSH0CtedIiiZVJKIeCdFpaOmcLT+aR3VaRm7bKUT+Yr7rmx2+0dDdV9gQZBjsOVSnlAEsFttcYYP3I/n5nAbnma0PamDAd3FSZWYD5/YAZdE6DyBONq9w4ILq0ohx4LrPqja+hht2UXCzAQC/XTCgHWPGGwFWJmNd881OblCI2uY1HuuzOey5Anzt2JrSyTSMwcpcWJWd9vw0z4yAVZCSPs9b63w0zFaSdBKJFcIqjt9aYz1bdVPyK5o8jrli2gcHe6V+imEExOalb1lp2V5+VZ39nztgsV/HZLID0JNKEnlKIaatf5YSnO6x5afLXp03bLyjzd57AJWAPUC+/HYj232adyFSJOPrG4tzQtDPw6RBOfZQ0tzD3iNMmWUZOqEznmIztWvczDp3Px4GcpX6tUUFsSN6+lwP1eyY7L34ZR2tG7405I4pGBn39dncnkyOnQa1jkqU8DvLj+wOTWF0uTUx6+KupWhOOP1GzEoGjUQOBBl83dm9cZ+FVqkTeH7TaKr3CTngLuNcKExDjgn/ZGlf98yt2QruSlPbZbfPZBtEQQRYrgcm5hP/EeClJpaHB4ngOPIDFEI4nIjme1Kp5
+ NEpLfR4m
+ TxjedE9LFofe6v2vCoNjPTLDtbKmxeyCbDGAsWnLjvzs7+w2Jh2CstrCMX41fopbmYBcAUXtmwxC6Pmy/w87aRCbhL2bBNvdt6mkTFDpMX1Yom7ureIg2USSiRKipMviJM/epRnZncNqzTZbRBH2V2Y52B1Y4+2zgXLnUDSOorF5MGEi5fIMqVQuaeb6ffWZJzm++
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,61 +81,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 26, 2025 at 08:13:50AM -0600, Alex Williamson wrote:
-> On Thu, 25 Sep 2025 20:02:36 -0300
-> Jason Gunthorpe <jgg@nvidia.com> wrote:
-> 
-> > On Thu, Sep 25, 2025 at 04:31:31PM -0600, Alex Williamson wrote:
-> > > On Thu, 25 Sep 2025 08:53:08 -0300
-> > > Jason Gunthorpe <jgg@nvidia.com> wrote:
-> > >   
-> > > > On Thu, Sep 25, 2025 at 10:03:14AM +0300, Leon Romanovsky wrote:
-> > > >   
-> > > > > > It would at least make sense to me then to store the provider on the
-> > > > > > vfio_pci_dma_buf object at the time of the get feature call rather than
-> > > > > > vfio_pci_core_init_dev() though.  That would eliminate patch 08/ and
-> > > > > > the inline #ifdefs.    
-> > > > > 
-> > > > > I'll change it now. If "enable" function goes to be "get" function, we
-> > > > > won't need to store anything in vfio_pci_dma_buf too. At the end, we
-> > > > > have exactly two lines "provider = priv->vdev->provider[priv->bar];",
-> > > > > which can easily be changed to be "provider = pcim_p2pdma_provider(priv->vdev->pdev, priv->bar)"    
-> > > > 
-> > > > Not without some kind of locking change. I'd keep the
-> > > > priv->vdev->provider[priv->bar] because setup during probe doesn't
-> > > > need special locking.  
-> > > 
-> > > Why do we need to store the provider on the vfio_pci_core_device at
-> > > probe though, we can get it later via pcim_p2pdma_provider().   
-> > 
-> > Because you'd need some new locking to prevent races.
-> 
-> The race is avoided if we simply call pcim_p2pdma_provider() during
-> probe.  We don't need to save the returned provider.  That's where it
-> seems like pulling the setup out to a separate function would eliminate
-> this annoying BAR# arg.
->  
-> > Besides, the model here should be to call the function once during
-> > probe and get back the allocated provider. The fact internally it is
-> > kind of nutzo still shouldn't leak out as a property of the ABI.
-> > 
-> > I would like to remove this weird behavior where it caches things
-> > inside the struct device. That's not normal for an API to do that, it
-> > is only done for the genalloc path that this doesn't use.
-> 
-> My goal in caching the provider on the vfio p2pdma object was to avoid
-> caching it on the vfio_pci_core_device, but now we're storing it on the
-> struct device, the vfio_pci_core_device, AND the vfio p2pdma object.
-> Given the current state that it's stored on the struct device, I think
-> we only need a setup call during probe (that could be stubbed out
-> rather than #ifdef'd), then cache the provider on the vfio p2pdma
-> object when a dmabuf is configured.  Thanks,
+"Huang, Ying" <ying.huang@linux.alibaba.com> writes:
+>Zhu Haoran <zhr1502@sjtu.edu.cn> writes:
+>
+>> "Huang, Ying" <ying.huang@linux.alibaba.com> writes:
+>>>Hi, Haoran,
+>>>
+>>>Zhu Haoran <zhr1502@sjtu.edu.cn> writes:
+>>>
+>>>> Hi!
+>>>>
+>>>> I recently noticed the process_huge_page function in memory.c, which was
+>>>> intended to keep the cache hotness of target page after processing. I compared
+>>>> the vm-scalability anon-cow-seq-hugetlb microbench using the default
+>>>> process_huge_page and sequential processing (code posted below).
+>>>>
+>>>> I ran test on epyc-7T83 with 36vCPUs and 64GB memory. Using default
+>>>> process_huge_page, the avg bandwidth is 1148 mb/s. However sequential
+>>>> processing yielded a better bandwidth of about 1255 mb/s and only
+>>>> one-third cache-miss rate compared with default one.
+>>>>
+>>>> The same test was run on epyc-9654 with 36vCPU and 64GB mem. The
+>>>> bandwidth result was similar but the difference was smaller: 1170mb/s
+>>>> for default and 1230 mb/s for sequential. Although we did find the cache
+>>>> miss rate here did the reverse, since the sequential processing seen 3
+>>>> times miss more than the default.
+>>>>
+>>>> These result seem really inconsitent with the what described in your
+>>>> patchset [1]. What factors might explain these behaviors?
+>>>
+>>>One possible difference is cache topology.  Can you try to bind the test
+>>>process to the CPUs in one CCX (that is, share one LLC).  This make it
+>>>possible to hit the local cache.
+>>
+>> Thank you for the suggestion.
+>>
+>> I reduced the test to 16 vCPUs and bound them to one CCX on the epyc-9654. The
+>> rerun results are:
+>>
+>>                      sequential    process_huge_page
+>> BW (MB/s)                523.88               531.60   ( + 1.47%)
+>> user cachemiss           0.318%               0.446%   ( +40.25%)
+>> kernel cachemiss         1.405%              18.406%   ( + 1310%)
+>> usertime                  26.72                18.76   ( -29.79%)
+>> systime                   35.97                42.64   ( +18.54%)
+>>
+>> I was able to reproduce the much lower user time, but the bw gap is still not
+>> that significant as in your patch. It was bottlenecked by kernel cache-misses
+>> and execution time. One possible explanation is that AMD has less aggressive
+>> cache prefetcher, which fails to predict the access pattern of current
+>> process_huge_page in kernel. To verify that I ran a microbench that iterates
+>> through 4K pages in sequential/reverse order and access each page in seq/rev
+>> order (4 combinations in total).
+>>
+>> cachemiss rate
+>>                   seq-seq  seq-rev  rev-seq  rev-rev
+>> epyc-9654           0.08%    1.71%    1.98%    0.09%
+>> epyc-7T83           1.07%   13.64%    6.23%    1.12%
+>> i5-13500H          27.08%   28.87%   29.57%   25.35%
+>>
+>> I also ran the anon-cow-seq on my laptop i5-13500H and all metrics aligned well
+>> with your patch. So I guess this could be the root cause why AMD won't benefit
+>> from the patch?
+>
+>The cache size per process needs to be checked too.  The smaller the
+>cache size per process, the more the benefit.
 
-I can do it.
+Right. I tuned down the task number to run anon-cow-seq on Intel Core so that
+per-task cache size could be larger. The benefit has indeed dropped.
 
-Thanks
+1.125MB cache per task
+              sequential     process_huge_page
+Amean              664.7                 740.1 (+11.34%)
 
-> 
-> Alex
-> 
+2MB cache per task
+              sequential     process_huge_page
+Amean             1287.9                1350.5 ( +4.86%)
+
+4.5MB cache per task
+              sequential     process_huge_page
+Amean             1373.2                1406.3 ( +2.41%)
+
+9MB cache per task
+              sequential     process_huge_page
+Amean             2149.0                2070.4 ( -3.66%)
+
+On epyc platform, 7T83 has 4MB per-process cache size and 9654 has only 2MB. On
+9654 there was only slightly improvement but on 7T83 we even observe ~10%
+regression with process_huge_page.
+
+Do you think this performance issue is worth addressing, especially for AMD? or
+acceptable as an architecture difference.
+
+>>>> Thanks for your time.
+>>>>
+>>>> [1] https://lkml.org/lkml/2018/5/23/1072
+>>>>
+>>>> ---
+>>>> Sincere,
+>>>> Zhu Haoran
+>>>>
+>>>> ---
+>>>>
+>>>> static int process_huge_page(
+>>>>         unsigned long addr_hint, unsigned int nr_pages,
+>>>>         int (*process_subpage)(unsigned long addr, int idx, void *arg),
+>>>>         void *arg)
+>>>> {
+>>>>     int i, ret;
+>>>>     unsigned long addr = addr_hint &
+>>>>         ~(((unsigned long)nr_pages << PAGE_SHIFT) - 1);
+>>>>
+>>>>     might_sleep();
+>>>>     for (i = 0; i < nr_pages; i++) {
+>>>>             cond_resched();
+>>>>             ret = process_subpage(addr + i * PAGE_SIZE, i, arg);
+>>>>             if (ret)
+>>>>                     return ret;
+>>>>     }
+>>>>
+>>>>     return 0;
+>>>> }
+
+---
+Sincere,
+Zhu Haoran
 
