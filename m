@@ -4,85 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E084CAC5B5
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 13:53:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C12F4CAC5B5
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 14:09:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 331F88E0003; Sun, 28 Sep 2025 09:53:56 -0400 (EDT)
+	id 0E2778E0003; Sun, 28 Sep 2025 10:09:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E2FF8E0001; Sun, 28 Sep 2025 09:53:56 -0400 (EDT)
+	id 093948E0001; Sun, 28 Sep 2025 10:09:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F8648E0003; Sun, 28 Sep 2025 09:53:56 -0400 (EDT)
+	id EEB008E0003; Sun, 28 Sep 2025 10:09:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E5398E0001
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 09:53:56 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 734BA82E7B
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 13:53:55 +0000 (UTC)
-X-FDA: 83938802430.06.C0BD665
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 6ADC0C0008
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 13:53:53 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DA55A8E0001
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 10:09:05 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 77C54140119
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 14:09:05 +0000 (UTC)
+X-FDA: 83938840650.04.680EE0D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D01EC14000D
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 14:09:03 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="pWef6/N6";
+	spf=pass (imf26.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759067633;
+	s=arc-20220608; t=1759068544;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=q4BAbC+YrY4QIrrWFrLnzxWXP3+n6iKlcqstcDYpuuA=;
-	b=AmgJy+aRXzOk1QbWxxGfLAFObGxP9g7GtaNb1glrUiS/PN+PwWyTX0Kl8q0Ny/EDnFS38I
-	dspxapUJDfdaHni2NyQia9BhzrCeoDgC5hj2ZLTok8Blkuu7+sQWUO3IRSRSny2yqG33FL
-	WkelU/Nf0im9JZ6JGPcbSH0CinCCI78=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759067633; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=j+pnhhVPwQtp2ob0Ljz0ZqQa+RW/VO+kIfI/fInRQ3g=;
+	b=FirQayjiaRyqgTTho9XYLn7+BKqzXTrA8/teIr0hBGkP0S4JwXCpicvFCZSe2lMAzhrLjk
+	5VbHMUx7IAygoAA11/dEs+z4dzOBFGIk4EZ0vTC/Y5DqM/2b+S+imgCPkwY7bfK14FR3TW
+	jrLGMMNr3qRIKxShRD/oJOEjUZ0B6ic=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759068544; a=rsa-sha256;
 	cv=none;
-	b=NxWPscaRB4IZ/jZIByge3jsbWlsYpC1Pvq/Qa1Duol3M1ZOTXgsOAw1thOfy6II+Qpj+2S
-	4isL+l1hhSclqN6A6YMeqnMBJh6pwSJYzsaLennMWHtpzQF2JGtVfWUBHiQ9CxQPpCtFhy
-	sHkjRgAsY+VQeBzUBkL/m29LjP95qY8=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 45808150C;
-	Sun, 28 Sep 2025 06:53:44 -0700 (PDT)
-Received: from [10.163.64.48] (unknown [10.163.64.48])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E28B73F66E;
-	Sun, 28 Sep 2025 06:53:45 -0700 (PDT)
-Message-ID: <c3817e55-4f86-4677-9275-9e08d68a0ed3@arm.com>
-Date: Sun, 28 Sep 2025 19:23:42 +0530
+	b=47SszaB9LCPHT1ze9L28d11Fo0yCH3uJ0tLtMhBoY8aARO/1Lg4MKL/LZrVuSYtr1qBRKx
+	KPf+Tu/I7ixDmqS73mHJIXtTd2qtFwFRyrZtXcamcrOFrnndHuwXU8P6akSyflQ2fOlaH3
+	TOKDrI9Vyr/iLxRbwePC1D+tgSEC8Fc=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="pWef6/N6";
+	spf=pass (imf26.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 814F141707;
+	Sun, 28 Sep 2025 14:09:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4016C4CEF0;
+	Sun, 28 Sep 2025 14:09:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759068542;
+	bh=oLopCkmGri793JE1kd5+sWMGisCseqI+NsmBu5y90K8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pWef6/N61eoFufqCle9xI0T0DU1bauI9krI9XxIo4sI9ZseI9gcbbjFFi85JiVBWr
+	 Q9j6FIA0BDuoMchOPOT45kc3k+akgS6Sg4iLtLIRzFv7D4eRCKzAmPobCJsOTPNn3m
+	 pTcS3BoqIJHTA8qrudy3uv1tjeVATtPSfcZ5htEpV+INz42ZaIhk0vULPa9+OJ69MZ
+	 D/bYvDjucs1IZi9Ff7HIRr5UoXOsM0UNBjQdfrFdHNIBnS4GXv+XYPkCJGWuh2xUZA
+	 f4lEbio8+Vt1GziYj++Ta3tzjnqYUtkCZ/F78PzZUzi7pOXAtgRcdWbIYrT0JlRFbP
+	 l1TlMqccYnL7g==
+Date: Sun, 28 Sep 2025 17:08:57 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Cong Wang <xiyou.wangcong@gmail.com>
+Cc: linux-kernel@vger.kernel.org, pasha.tatashin@soleen.com,
+	Cong Wang <cwang@multikernel.io>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>, Alexander Graf <graf@amazon.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Changyuan Lyu <changyuanl@google.com>, kexec@lists.infradead.org,
+	linux-mm@kvack.org, multikernel@lists.linux.dev
+Subject: Re: [RFC Patch 0/7] kernel: Introduce multikernel architecture
+ support
+Message-ID: <aNlBeSpNCvqKXBWm@kernel.org>
+References: <20250918222607.186488-1-xiyou.wangcong@gmail.com>
+ <aNZWTB_AbK1qtacy@kernel.org>
+ <CAM_iQpWBHWscTbuUm54G3tvqf-EQhSYaFJqEJD4M73doeH=TKQ@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v4 1/2] mm/ksm: don't call mm_slot_entry() when the slot
- is NULL
-To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
- david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- xu.xin16@zte.com.cn, chengming.zhou@linux.dev
-Cc: linux-mm@kvack.org, Kiryl Shutsemau <kirill@shutemov.name>,
- Dan Carpenter <dan.carpenter@linaro.org>
-References: <20250927004539.19308-1-richard.weiyang@gmail.com>
- <20250927004539.19308-2-richard.weiyang@gmail.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20250927004539.19308-2-richard.weiyang@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6ADC0C0008
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAM_iQpWBHWscTbuUm54G3tvqf-EQhSYaFJqEJD4M73doeH=TKQ@mail.gmail.com>
+X-Stat-Signature: tzmp97d4uwojxmrmpwt7uzuaxn8j55d4
+X-Rspamd-Queue-Id: D01EC14000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: nni4kkj516y1noyhu1ymu5zcgxftfkcc
-X-HE-Tag: 1759067633-558631
-X-HE-Meta: U2FsdGVkX1/Vp5wYaAMEr7U7tV/KOvCDkaMKftYacqJaXZWlBzpMGGqiKKEo97GUBVrw6RguCnZjwZ48+MwucRVV5zCnPcE4nmB5VesZBlxOMtHZC96y9TLgINI3TLU7q+dfxW2Mo911PYGLUNijejvlIcyHyNM/pPUxRc5wAeoLWbghG0S+gNoXMa0C91vyKnGbXs1KIyi2pj1DI/AeT77Dd55mdgzTGHsCg/JDT8yaIRuhM+/DzuDlB978EAsubE9MJCtvS1gon/luIwgXkpB6FMo3FHdWlNENBwYV7aNAeZG9FANyib+IVbu5v66uKteTzY1Lf1auOUSVBhqKcpuubezY+wXuPy0SuvBguwHs/5e6Qhb6VZxwrZmdk//7H822qvqQLdXgbiumJdHjMeaCGnGlzVpnxiFYaznqI2cJJxyYWEd8zFHNdQqHi4slX/az2oxT8AzsGk6VNiZ9kpHCfNhsCcg71mEOCfOB0pAr8OpZppQoJVnNQZeup6gG/K6YTRt9i3J/RRTks2Gbho4xIEhl9sT3HXpJAjO8B8jqgDsG+uCgqqzN7Fy4kqhwqg1m3UcPtCJuJ8mxj91F+jmi3zQNYdJ4Twk0xyP0rzRC1fSJatM51T9/cHz0vUiD3gIQJLtbrTxl6SCTf2JhsWbAqEsuPqsQj6vxgypCzHgIWWlUBnIozwMZQn8lVN7t1p+/20D8ru00TuriV+5f69/4Vw/sR4DmzATFabqxe9f9U/EJlgzdMteGlx+QVLjtZnZa4clEFifVs7vpVItoKSYR71R6szaG1jzoUrGG9hEtA9A5NG11KEYUrzi3tZraSTFvszaVvFyZj8CvWArA9RevAWZlKLMWhEM6DXB2RLVq5vB6OkqoGD+At3B+lB8P5WF1tf/TpQbF/VIMApYi+eSqZmEUysO7k7BjXlIUZoZocwmD5w0Y3JI/yqiuqA+oFqkpzCjBscerz6R3Ov4
- EiM7tlDi
- QEYKDvXfxawwlNBl8qdDNKoP+xEWim9irG7NxAeGT2dm+/tlJclMAaiIggecOtZT2+wav9GbRUCI6B2NKQbAE8gEm0gMYYNi100Bxo3FnmXtmNWJG6PYQRPrnQex4gvuixkwQMc9o/olnMEQSsYBlx1kzij20ZRUhmy0aA57PGcidJe1kgjJ9qlUUf1lPksM8o5Lb9EGaREXHpVrDFUGgCv/ShARS1wB455JggFtbqug1+V0jNSBIN+KjtX3Azmd8t4/AW32a7mSjjYujOF759uhrh84z4/ugfLWkrlCMqqmYhze047SVqHreKBxI4hU5kqBAtu31SJBevVPLLM/Dg21tKRLsJyzzvSYr18o+aLPJKuSGUsZ4SzB0jfxV08pRgDxvY4kH1qwYW9312iqXUsQ5QfPsQwPk5Wg+StCn8lblGMr3wdwCaamoZbabEiLznECQeZdS4VP3X36OVDtc6bVkcbXb25k3KIy67pt9xHHMuDw=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1759068543-929883
+X-HE-Meta: U2FsdGVkX1/xZcLQvAWNw8hEfpZA4o/3CYpttTwKyudZ7RInZr7oaSCXwD7PRW2IHyENaK+aJQ0aamMELgIfdzrSH5p+iaZr7yvoXzYroWfuxWmRiKdk5LNhIuMwazJ0Cl93al5aj44SZEpUo6pcheSWvi0YhClZNTq46E0IsXeozBhxkXnXbh7MsKLpiyEbyxoU6NJ8XtNQjwazY6ecpEtl6ycWKfX01OiZwy+QSkHJsX5I8FS7AyXjLOG5fYxJk8Pm8IBD5gyPWCJGVmIj6A+qHWdO6/TSCZxMyVS04NriCaVYTMTdBURty5BNho1TrXiqsvO22N6CzQfhzAkqzjJpUv6mHgZkP6lOtZbf283/FyWFG2GQv4AYhke+ynGaL4O49enp3I9KpGOgANRriabo9w/9WHly/MeA4/MEYWJX0LTSi4us4h4qaOxLf1aiN4wFb6swmp3NQKa75GHirEkmMzgjulsH3ompo09lqkiiWt5oy3NfyR/+sbNOAtDLny1qTetDopZb7L/CFbruY1mpmOxeGBj9tosju4dlPgLSCK0NNYjhM0j73FrBfwiUmu9EHJLJePioWkcCtBWhx7upEr2Pbty7IaMykiv9IjL4Uevnu5ssaxwow6eP8TFQZthkCq7PoiNxApUvN9uJQ0jIWOTy5BSyJ5o0vSJuzME9YNTVZJ7sOD5rI4PKq2jGKYLAt9fTLJj1RIf1rAwnvgJCD5SXiiphhTt56T7WyVSY56qwU8+RRuUKbl381dEbyGZl3Y/IvGrCkhZIyhHBpKagYiLtMedqGP12irbz8LFTr8Kuc6opXCQ+K6jDtmsFX279ud3JnV3B57oZYcJNoG5nM/qMmD4NgeVI0VeQ3kNhk85H476NfAIQttHwZNe/ZnvWEoIWukka0EeFgJVu2Z1i9HDFm0qnL7DDfvjQJfOcw3vLYIxbNnZI9JphXQAN/+0MTkU8xxmiid++iKX
+ jeWfyEbR
+ 4Wi+GT4BRLu/ZcxB1GYD7vsG2PJxhIhsOLny0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,40 +101,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sat, Sep 27, 2025 at 01:27:04PM -0700, Cong Wang wrote:
+> On Fri, Sep 26, 2025 at 2:01 AM Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> >
+> > On Thu, Sep 18, 2025 at 03:25:59PM -0700, Cong Wang wrote:
+> > > This patch series introduces multikernel architecture support, enabling
+> > > multiple independent kernel instances to coexist and communicate on a
+> > > single physical machine. Each kernel instance can run on dedicated CPU
+> > > cores while sharing the underlying hardware resources.
+> > >
+> > > The multikernel architecture provides several key benefits:
+> > > - Improved fault isolation between different workloads
+> > > - Enhanced security through kernel-level separation
+> > > - Better resource utilization than traditional VM (KVM, Xen etc.)
+> > > - Potential zero-down kernel update with KHO (Kernel Hand Over)
+> >
+> > This list is like asking AI to list benefits, or like the whole cover
+> > letter has that type of feel.
+> 
+> Sorry for giving you that feeling. Please let me know how I can
+> improve it for you.
 
-On 27/09/25 6:15 am, Wei Yang wrote:
-> When using mm_slot in ksm, there is code like:
->
->       slot = mm_slot_lookup(mm_slots_hash, mm);
->       mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
->       if (mm_slot && ..) {
->       }
->
-> The mm_slot_entry() won't return a valid value if slot is NULL generally.
-> But currently it works since slot is the first element of struct
-> ksm_mm_slot.
->
-> To reduce the ambiguity and make it robust, only call mm_slot_entry()
-> when we have a valid slot.
->
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Dev Jain <dev.jain@arm.com>
-> Cc: Lance Yang <lance.yang@linux.dev>
-> Cc: Kiryl Shutsemau <kirill@shutemov.name>
-> Cc: xu xin <xu.xin16@zte.com.cn>
-> Cc: Dan Carpenter <dan.carpenter@linaro.org>
-> Cc: Chengming Zhou <chengming.zhou@linux.dev>
->
-> ---
-> v3:
->    * adjust subject and changelog based on David's comment
->    * use invert style for coding suggested by Kiryl
->    * drop RB and Ack-by
-> v2:
->    * fix uninitialized mm_slot
-> ---
+There is no evidence of any of these benefits. That's the central
+issue. You pretty much must give quantatitve proof of any of these
+claims or the benefit is imaginary.
 
-Reviewed-by: Dev Jain <dev.jain@arm.com>
+> 
+> >
+> > I'd probably work on benchmarks and other types of tests that can
+> > deliver comparative figures, and show data that addresses workloads
+> > with KVM, namespaces/cgroups and this, reflecting these qualities.
+> 
+> Sure, I think performance comes after usability, not vice versa.
+> 
+> 
+> >
+> > E.g. consider "Enhanced security through kernel-level separation".
+> > It's a pre-existing feature probably since dawn of time. Any new layer
+> > makes obviously more complex version "kernel-level separation". You'd
+> > had to prove that this even more complex version is more secure than
+> > pre-existing science.
+> 
+> Apologize for this. Do you mind explaining why this is more complex
+> than the KVM/Qemu/vhost/virtio/VDPA stack?
 
+KVM does not complicate kernel level separation or access control per
+kernel instance at all. A guest in the end of the day is just a fancy
+executable.
+
+This feature on the other hand intervenes various easily breaking code
+paths.
+
+> 
+> >
+> > kexec and its various corner cases and how this patch set addresses
+> > them is the part where I'm most lost.
+> 
+> Sorry for that. I will post Youtube videos to explain kexec in detail,
+> please follow our Youtube channel if you are interested. (I don't
+> want to post a link here in case people think I am promoting my
+> own interest, please email me privately.)
+
+Here I have to say that posting a youtube link to LKML is of your
+own interest is not unacceptable as far as I'm concerned :-)
+
+That said, I don't promise that I will watch any of the Youtube
+videos posted either here or privately. All the quantitative
+proof should be embedded to patches.
+
+> 
+> >
+> > If I look at one of multikernel distros (I don't know any other
+> > tbh) that I know it's really VT-d and that type of hardware
+> > enforcement that make Qubes shine:
+> >
+> > https://www.qubes-os.org/
+> >
+> > That said, I did not look how/if this is using CPU virtualization
+> > features as part of the solution, so correct me if I'm wrong.
+> 
+> Qubes OS is based on Xen:
+> https://en.wikipedia.org/wiki/Qubes_OS
+
+
+Yes, and it works great, and has much stronger security metrics than
+this could ever reach, and that is quantitative fact, thanks to great
+technologies such as VT-d :-)
+
+This is why I'm repeating the requirement for quantitative proof. We
+have already great solutions to most what this can do so building
+evidence of usefulness is the huge stretch this patch set should
+make it.
+
+Nothing personal, but with the current basically just claims, I don't
+believe in this. That said, by saying this I don't I'd pick my soccer
+no. If there is enough evidence, I'm always ready to turn my opinion
+180 degrees.
+
+> 
+> >
+> > I'm not entirely sure whether this is aimed to be alternative to
+> > namespaces/cgroups or vms but more in the direction of Solaris Zones
+> > would be imho better alternative at least for containers because
+> > it saves the overhead of an extra kernel. There's also a patch set
+> > for this:
+> >
+> > https://lwn.net/Articles/780364/?ref=alian.info
+> 
+> Solaris Zones also share a single kernel. Or maybe I guess
+> you meant Kernel Zones? Isn't it a justification for our multikernel
+> approach for Linux? :-)
+> 
+> BTW, it is less flexible since it completely isolates kernels
+> without inter-kernel communication. With our design, you can
+> still choose not to use inter-kernel IPI's, which turns dynamic
+> into static.
+> 
+> >
+> > VM barrier combined with IOMMU is pretty strong and hardware
+> > enforced, and with polished configuration it can be fairly
+> > performant (e.g. via page cache bypass and stuff like that)
+> > so really the overhead that this is fighting against is
+> > context switch overhead.
+> >
+> > In security I don't believe this has any realistic chances to
+> > win over VMs and IOMMU...
+> 
+> I appreciate you sharing your opinions. I hope my information
+> helps.
+
+I'd put strong focus on getting the figures aside with the claims :-)
+
+> 
+> Regards,
+> Cong Wang
+
+BR, Jarkko
 
