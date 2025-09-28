@@ -4,100 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82DA7CAC5B5
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 14:42:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB2A7CAC5B5
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 14:47:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFC398E0008; Sun, 28 Sep 2025 10:41:59 -0400 (EDT)
+	id 182528E000A; Sun, 28 Sep 2025 10:47:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BACC98E0001; Sun, 28 Sep 2025 10:41:59 -0400 (EDT)
+	id 132BA8E0001; Sun, 28 Sep 2025 10:47:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC2898E0008; Sun, 28 Sep 2025 10:41:59 -0400 (EDT)
+	id 06FE08E000A; Sun, 28 Sep 2025 10:47:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A54E8E0001
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 10:41:59 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3DBF052538
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 14:41:59 +0000 (UTC)
-X-FDA: 83938923558.22.7E48BE0
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E9BF78E0001
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 10:47:49 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 85217833DA
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 14:47:49 +0000 (UTC)
+X-FDA: 83938938258.05.762D4ED
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 5AEB6180008
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 14:41:57 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m0Iw+J01;
-	spf=pass (imf16.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id EFDB2140006
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 14:47:47 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CvPXqnCr;
+	spf=pass (imf09.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759070517;
+	s=arc-20220608; t=1759070868;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AxygTYPsyDIO3n3TnSdkY5wM9WsVygTw8LCKh40a5Zo=;
-	b=iEY+fKRqRblsFFT/hgfclVIu3MO2uWRHp0/oxhEkzzCFyhhMrZ7AlhJzSDEH7PE5ZOk65p
-	frKVJ9CD4mE2puM6YIC1xLi0SnTx/OqePramDJR4OYIDTiCqN3vfIUgOOB4AApNucg9zF1
-	U4TYL415NZEZ39nBLiGT9+pPMidXhHM=
+	bh=e76/sEkLu8XYQWEzrfvHrEYuju5sMDvZ0c0Z+MNAFRM=;
+	b=5XZe7psjC3MBO54gqAPkGZIHQ+VTGyfvi7ALxBWmTUlRgm1x9nnGn25l3ITodppOdCLzzp
+	q1qHNQhBJ9UNJWcOnfvmiP9tGyWmYdrL1oCWMlCxSj1ufDpJgOtOdCBHaaeRwXCf2Orjp1
+	RABBMQR2MmQMoZ65pAkKcj4AmcpijpI=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m0Iw+J01;
-	spf=pass (imf16.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CvPXqnCr;
+	spf=pass (imf09.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759070517; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759070868; a=rsa-sha256;
 	cv=none;
-	b=OLDBx1g7Itd0+fz8eDo7ZKFOdg0C7K2MDmQE0UgfHdXnMCErMLKQndOp21ickSONOBA2tf
-	SDZn+Fbnn57tHkhFFtkBJOT3wi5RTQlSNOXKGdlIRGRmAFROKftGkbcwf/3GOrPtkjhkGe
-	xJubpHHHPerf4IP3NM6fibEfbkSC/Qk=
+	b=HfLHqCNLLOF6hesvFn0WDVwNgKTeU4FQBFhDx9EDOhl2rQayzcx9dr68z8vTPhxZ7uzkJg
+	KeO3/vSZ7WxDDOxPmuIQ1rxaL5Oxm2pjcICXMLsrRxxKjcgPUB/Fgxrxjue4yHVzhNIm/V
+	lP0amNKisgTFC4ek5nIboE1OzLBHm8k=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9018F62175;
-	Sun, 28 Sep 2025 14:41:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAF9C4CEF5;
-	Sun, 28 Sep 2025 14:41:55 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4B4B562175;
+	Sun, 28 Sep 2025 14:47:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C93ADC4CEF0;
+	Sun, 28 Sep 2025 14:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759070516;
-	bh=SzzdI+GX07mAERTWzTnj3dkki2cHhdg6x0GIVS4BA9c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m0Iw+J01S0fGdnbq0MAZ6PTKcjL5BY1ZlP4amzY+Kn/GmtCBnY9dg7UsSWwM1Yorm
-	 Cd2dsk1mHNjW5aDtyRHfS5v+K5t2fQOYDgVR5NhZ53bD4iWJOh9aqzXG45qM4Blxir
-	 0emDc2Vs5ir0T7W06O8Fnia5yaxbnYy1kEdS1AL2SWBMsPd+xvmeAr2t1russfADFJ
-	 LmwTnZaw7OCcQLjHiCJtpMNOS8JnuYDb2HudfgMCMcvg9vgongLpQPlPYArVRORTR/
-	 sLwXxYgBzKeBbQ30FVP+VRBHnkyPf4N2ZhvocRvD2jIuO43CU8/sbkK4yek2c/W59H
-	 iH7YAtiOApm1A==
-Date: Sun, 28 Sep 2025 17:41:52 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: "Christoph Lameter (Ampere)" <cl@gentwo.org>,
-	linux-kernel@vger.kernel.org, pasha.tatashin@soleen.com,
-	Cong Wang <cwang@multikernel.io>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>, Alexander Graf <graf@amazon.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Changyuan Lyu <changyuanl@google.com>, kexec@lists.infradead.org,
-	linux-mm@kvack.org, multikernel@lists.linux.dev
-Subject: Re: [RFC Patch 0/7] kernel: Introduce multikernel architecture
- support
-Message-ID: <aNlJMAHhFE-O3IX9@kernel.org>
-References: <20250918222607.186488-1-xiyou.wangcong@gmail.com>
- <78127855-104f-46e2-e5d2-52c622243b08@gentwo.org>
- <CAM_iQpU2QucTR7+6TwE9yKb+QZg5u_=r9O_tMfsn7Ss7kJbd9A@mail.gmail.com>
- <aNZh3uDdORZ5mfSD@kernel.org>
- <CAM_iQpWXFQwtayT7Zv7iJd7zQZ=rX_P1ZK2P11-6ohRhLpg7Xw@mail.gmail.com>
- <aNlErhpO1g17gdgM@kernel.org>
- <aNlH6-hFc6OmDF_e@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aNlH6-hFc6OmDF_e@kernel.org>
-X-Rspamd-Queue-Id: 5AEB6180008
-X-Stat-Signature: 86dyxa5bgsjkmtzmstxab3ebtg7nex4z
+	s=k20201202; t=1759070867;
+	bh=vvNwfQ/2Efdxogg3wf2Xq+cs+e22mGauJxHdeTezgIo=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=CvPXqnCrkzZPSVVaZJKnQZOCfXZvPQAiWaz7udbp3rkaHKddCoEDBU5xg6BP9g9sS
+	 NEZ8+LLM6bS4O57MhmCgoMguvqYfPXcb3iVLE/LQ0F2T2ESOVD4CIvZYeqah6aNoFm
+	 acZdXEQCH5F5SPtOKSxUPXwJ54Xq9m2rZG5gUhwIpg4xADsqrvuNBUQaGpwj08V9Fr
+	 1y/4J1PYCL/aCunNd0CmYa0odmBx/ThHY8IBSZKVwSaa33W81hfzZlOXjwn9Z2987C
+	 CMAyiKgmFJqbbjmKEkMjX/z3ChWec6QnGiFL61d8LinWqtsT4rYIujULfvBxrm8t1f
+	 WHM1yv80HwxYA==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 28 Sep 2025 16:47:42 +0200
+Message-Id: <DD4IKU7O94WN.2VALE9M80XGQ7@kernel.org>
+Subject: Re: [PATCH] rust: slab: add basic slab module
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>,
+ <linux-mm@kvack.org>
+To: "Elijah Wright" <git@elijahs.space>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250924193643.4001-1-git@elijahs.space>
+ <DD1SGLU4180C.361W5XLH76XNC@kernel.org>
+In-Reply-To: <DD1SGLU4180C.361W5XLH76XNC@kernel.org>
+X-Rspamd-Queue-Id: EFDB2140006
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1759070517-317767
-X-HE-Meta: U2FsdGVkX19T3KGTvVLeMnKLVRTf/t7wQycXZi7JK/KXjpaCXrz+0cUx2sosx6wnlkWrAffWhCi4ZH9DNa1MOGRN2HHaE/QjViGVPF2rttL8Mz3k640SKcFuJx0tHwiKtExmAfbCdGIuLRMSSbx71hqbgdjSr07fkeBY+qTEYyzLKPRYWdxINgK6DBpLMfTxe91oy+psfYy5OuRNUSLmVfZGFB4Wk9PaW4vpSXcosatrYyfDsdxUb4ancX06jHs9H6FRfoiEa3GhaTPmf418Qnpl0dFuUAfX+6h3P+Ww/OZxE4GgJgw5QmNXKso/tkt0SxObcDkTeteosksKLj916yTJAZz7tsvy6edljDPDFYPmBLst8C/VYLFrw1IB2KH1wk+q4i9nH7sHAz4/QB7ij7qypJzD6LCN7Pdf5b7xdtq18keXU8C7uhJQyteOlw9EuxLs2sIZdAxE2homm25okbUTQCiImbjAhjfJhmhuS2+mXC50RSAQT50Ggj1uJqp+NiNZTOxDdzwDPjd7AgcD0RZr81EfY3PVSJB1fE77P1yM5iY+DTnG2JRrJfPAcpzIDvJVdQArXa0hJAbLnJUnN/+lnv1iZNsTVQw5IcsHBRKki0llvraSSFh4LsRxGtB2eCl8ke0/hE9YhiV6R9R6G4g79M6Xi5d9Pk0lgNPZNcSnfzrAYCfcwkaZg2CLBkODA4WP0tbRclPDPpB+F36rQZlAGbNMPTcVZxNVT6zu3bFG2hY8RzQrY+K0X2Y5aiN2MyhxKs+4Q8k3ZL0y/ZpUgIhWQ/LJ5IRLnZad8H0dPpa83r2UAmoZrrcCiMbQTFFhr8uGrKCSKdZmIlQbUK/HArYB9JWbEIg71P6pb/PNpv+mo9Z0Cj2cq03knPPvRHQNtyeztVtyzzXUMhFOT1qloflXIBOVJsx0S/zaCLBG+pxq/1+nH4G/6RgbOnNkeKGFeM5bcxziXvqlMyKo1b7
- q3TydVKA
- NAow6sj+Ds+Xp72DDuO4PVBAknS9YpSeeM1UwLx7zv5u8fm8FG+SIZsWuH+ZnZhBZq9VO0HNhPkhXbL0v0OpEKT4pDNcEGKRZmO9ycRiBPUIVmYuL+FLowFBR3FnWQ0SG4dJDUXiMTmV4dCv1hEzDRO4pPYZTJXr3cjPiml8uoMEEnovQ6HuDHuYb14VnJSpAxYir2kkR+nhzN8N9qyi50wBe8qaH4yAsAIZWmnPTdxjUE4Dz+58c2TzWpSD2aSy3y8W9ynoY/bV8hayOJePq0o/QXeJpctu7UJTLEWipxvZs+nasH0qT5Qq3DpqPXAK6M10S1GUInkQq2uwF6mUR3HN3lY8KwqlCwT0P5uc+qOpdHzMhBfs+3fqmJsfEuaTpVhbAf1qZRFwB9PlYHFG5x6O1wBgtW1JmeXggCvIafKNAyq3BSt8LePwlfw==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: xyic7h6ih1x45thx58iyye4w96bytegz
+X-HE-Tag: 1759070867-580581
+X-HE-Meta: U2FsdGVkX199lIz9omsmug9orYyAFQdqmhQEceHqZfzoDnDnjRDbX5jWc0nquSIwQhqAgeYec8Bgh15HJTVos7wrre5BhBJjVxbhcNutuCb5v0RiDxvV19ZvOm/M+80inOjWHaRhwpR1p8iPR8oU9eorJQfdkNACEzcj2vdwYXU/5A7eTOgX1RbZkvuFaGNKEP+9cZnvd+RI/i7FPUPUdzl+rIIiXjMSqiL9dmHxGWqgefA1V7ohKx7z9jyaLhtQ4/grQSweGDM+fYi29LyajCDwTjx7zbDakVKUoSP10F397isrEFmA9MpExlUzgwrk4PkiHi4w5HFrZ9++TkunpOb0cp5iMlgJVUu/LdEjGqcCFaLR7Z3zEQGUWESFA/t1/UJOror+F1i63an3EjkXobvDvwsUPbuLe6y/4Cw+XVph0PALEjya8akXwGZGSS3IFq/EXpkIJ12nVtTmfrjUmKuu5ZkOVBZJCThfwbWQ/KFPLFnAXJsL9wYXYioYmWEKLLKMmnRgFN9cBLv4nGbR/GKRkIG2r5dEedbvKxVsRiZkzsOScBnnUfA1fuIP6P6euQ36ty4VmWv24tp2Rhxh1pasEDNSdBODPRebxMuQ9cYUzqROEpVp2DkXvkn6dAJx03h/BesvPXbXbHALI2HjznsVnBhznBKOvAl4fa5o4w4l/8ONFJ2CGlod7XTY2Lwwq5/ljGSFbJO4AP7q5rI9+kqmK4npnWD1PGr5RxFk+T148lEmEUfj3fi/ulm4oi2Hbshiv8+C9S2Vc6D99Mtc0l1+xXwDrZVvz9VKCg6Stwih02/pEJHKtxYqEAlKSmhajGAlRWrEfW133dv4IyIDTZmDw2z3WYL0muEnrOnfHQE8BOY6xca7f37R4UNnxJxRt5uI/G4KipPtlwCl4EejJT5NYAN5yZ4Rh6kSXXb5CgWAZCIOwt0bmg1g8y6QLPb+glsyEjeIdJstwdB5yMe
+ B/9ssnl0
+ RZbYXIhSjFry5Rm/sW7a7WJPn5yCBV1nvtsK+Psel6THOJK7GkZUauEdM0eEJBaxH3NFtnWG95T5S1HvV95DobDB/tcsxHnVJQKVSEqxJ4I+r/jtRBsewQSEsL1679X3Jwk0Y2lBnnZfL6Q5YOZTN5/jJzRZ2lMQic1syvOm+ZtirTbnyJ11hFZY2tPVuiHNduou9kN5ec3DmRXZgPq6cGmEbWQSOrsIynzi+CVKvR5G4ly1u+bDuEuAuhZwhESoUMPycZaIOUW63+Okh3B8GEt/lSIIgmW0AakvQlsjqUrXa8GN6F5Qu9wFeZPoaZclfnE8UKO69UmMv+DCenSyL6SSZM4ygQF1KHIZf
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,63 +101,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Sep 28, 2025 at 05:36:32PM +0300, Jarkko Sakkinen wrote:
-> On Sun, Sep 28, 2025 at 05:22:43PM +0300, Jarkko Sakkinen wrote:
-> > On Sat, Sep 27, 2025 at 01:43:23PM -0700, Cong Wang wrote:
-> > > On Fri, Sep 26, 2025 at 2:50 AM Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> > > >
-> > > > On Wed, Sep 24, 2025 at 11:39:44AM -0700, Cong Wang wrote:
-> > > > > On Wed, Sep 24, 2025 at 10:51 AM Christoph Lameter (Ampere)
-> > > > > <cl@gentwo.org> wrote:
-> > > > > > AFAICT various contemporary Android deployments do the multiple kernel
-> > > > > > approach in one way or another already for security purposes and for
-> > > > > > specialized controllers. However, the multi kernel approaches are often
-> > > > > > depending on specialized and dedicated hardware. It may be difficult to
-> > > > > > support with a generic approach developed here.
-> > > > >
-> > > > > You are right, the multikernel concept is indeed pretty old, the BarrelFish
-> > > > > OS was invented in around 2009. Jailhouse was released 12 years ago.
-> > > > > There are tons of papers in this area too.
-> > > >
-> > > > Jailhouse is quite nice actually. Perhaps you should pick that up
-> > > > instead, and start refining and improving it? I'd be interested to test
-> > > > refined jailhouse patches. It's also easy build test images having the
-> > > > feature both with BuildRoot and Yocto.
-> > > 
-> > > Static partitioning is not a bad choice, except it is less flexible. We can't
-> > > get dynamic resource allocation with just static partitioning, but we can
-> > > easily get static partitioning with dynamic allocation, in fact, it should be
-> > > the default case.
-> > > 
-> > > In my own opinion, the reason why containers today are more popular
-> > > than VM's is not just performance, it is elasticity too. Static partitioning
-> > > is essentially against elasticity.
-> > 
-> > How do you make a popularity comparison between VMs and containers, and
-> > what does the word "popularity" means in the context? The whole world
-> > runs basically runs with guest VMs (just go to check AWS, Azure, Oracle
-> > Cloud and what not).
-> > 
-> > The problem in that argument is that there is no problem.
-> 
-> If I was working on such a feature I would probably package it for e.g,
-> BuildRoot with BR2_EXTERNAL type of Git and create a user space that
-> can run some test and benchmarks that actually highlight the benefits.
-> 
-> Then, I would trash the existing cover letter with something with clear
-> problem statement and motivation instead of whitepaper alike claims.
-> 
-> We can argue to the eterenity with qualitative aspects of any feature
-> but it is the quantitative proof that actually drives things forward.
+On Thu Sep 25, 2025 at 11:54 AM CEST, Danilo Krummrich wrote:
+>   (3) Implement a macro to generate a custom KmemCache Allocator trait
+>       implementation for every KmemCache instance with a static lifetime.
 
-I'd also carefully check as per modifying kexec that more complex use
-cases are compatible such as IMA. I don't know if there is an issue with
-secure boot but I'd make sure that there is no friction with it either.
+Thinking about it a bit more, I think we should go with option (3) for now.
 
-There's also shared security related hardware resources such as TPM,
-and in this context two instances end up thus sharing it for e.g.
-measurements, and that type of cross-communication could have 
-unpredictable consequences (would need to be checked).
+With its only limitation being that it always binds the lifetime of a kmemc=
+ache
+to the module lifetime, it still seems to be the best option, considering t=
+hat
+the alternatives require additional synchronization in hot paths, may *sile=
+ntly*
+leak the kmemcache, cause significant code duplication or break dynamic
+dispatch.
 
-BR, Jarkko
+Tieing the kmemcache to the module lifetime should cover the vast majority =
+of
+use-cases; should we ever really need something else we can still revisit t=
+he
+options.
+
+Thanks,
+Danilo
 
