@@ -4,104 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 796D8CAC5B5
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 06:47:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1326BCAC5B5
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 08:15:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BAD78E0002; Sun, 28 Sep 2025 02:47:18 -0400 (EDT)
+	id 18ABD8E0003; Sun, 28 Sep 2025 04:15:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66BA38E0001; Sun, 28 Sep 2025 02:47:18 -0400 (EDT)
+	id 1625D8E0001; Sun, 28 Sep 2025 04:15:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 581818E0002; Sun, 28 Sep 2025 02:47:18 -0400 (EDT)
+	id 0A0EC8E0003; Sun, 28 Sep 2025 04:15:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 45F478E0001
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 02:47:18 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C4842BC1EF
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 06:47:17 +0000 (UTC)
-X-FDA: 83937727314.10.097D7F7
-Received: from www3141.sakura.ne.jp (www3141.sakura.ne.jp [49.212.207.181])
-	by imf29.hostedemail.com (Postfix) with ESMTP id DEE61120004
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 06:47:14 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redadmin.org header.s=20231208space header.b=G5FUZBjF;
-	spf=pass (imf29.hostedemail.com: domain of weibu@redadmin.org designates 49.212.207.181 as permitted sender) smtp.mailfrom=weibu@redadmin.org;
-	arc=pass ("redadmin.org:s=20231208space:i=1");
-	dmarc=pass (policy=none) header.from=redadmin.org
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759042036;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E61F18E0001
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 04:15:20 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 84C91BC3E6
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 08:15:20 +0000 (UTC)
+X-FDA: 83937949200.12.07AB2AA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id CD7A7C0002
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 08:15:18 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KMtmLekY;
+	spf=pass (imf28.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1759047319;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=t6ustQj7Xfe3HKiERNgrVHhh1pz2uVuazT2CqYYtX+I=;
-	b=JWQ5caxX+jtyJTpAhwGysLCVO4lqyNBKkPpIXwKt0EiKvL0m2aFXQ3pG24KzvnhMxS2U+W
-	GsHRloKvvDr4qlnZq4YfXWTW6Jc/keNjao1g7PIILiLujr5z/duesadIQQr7fQv0pk6apA
-	mPl0oCauNrCRhlXWpZMr1XC8ztygFyI=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redadmin.org header.s=20231208space header.b=G5FUZBjF;
-	spf=pass (imf29.hostedemail.com: domain of weibu@redadmin.org designates 49.212.207.181 as permitted sender) smtp.mailfrom=weibu@redadmin.org;
-	arc=pass ("redadmin.org:s=20231208space:i=1");
-	dmarc=pass (policy=none) header.from=redadmin.org
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1759042036; a=rsa-sha256;
-	cv=pass;
-	b=Y2LgxLTx2E8BtBlZuhFptKF4RMshGT4vVC4o4akVLiTpZC8AlU7+lAR8G6T1fVk9K+riiM
-	Q4UYFkUynXsXA9VnFhD4/jR5gEcACa8jqsBNrZR2P8y+9NQ7ugDcE52Kdn2CbkTbDLgVcT
-	s1oC3UQkTmkenZVblvkRjcnLwcqyb+8=
-Received: from www.redadmin.org (ag129037.ppp.asahi-net.or.jp [157.107.129.37])
-	(authenticated bits=0)
-	by www3141.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58S6kw0D051679
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Sun, 28 Sep 2025 15:46:58 +0900 (JST)
-	(envelope-from weibu@redadmin.org)
-Received: from localhost (localhost [127.0.0.1])
-	by www.redadmin.org (Postfix) with ESMTP id EA234109EFD83;
-	Sun, 28 Sep 2025 15:46:57 +0900 (JST)
-X-Virus-Scanned: amavis at redadmin.org
-Received: from www.redadmin.org ([127.0.0.1])
- by localhost (redadmin.org [127.0.0.1]) (amavis, port 10024) with ESMTP
- id SgMd9GkpPodp; Sun, 28 Sep 2025 15:46:53 +0900 (JST)
-Received: by www.redadmin.org (Postfix, from userid 1000)
-	id 7E3BC109F2881; Sun, 28 Sep 2025 15:46:53 +0900 (JST)
-ARC-Seal: i=1; a=rsa-sha256; d=redadmin.org; s=20231208space; t=1759042013;
-	cv=none; b=j+K2CKhOHrESoUHYiYOGxBoYd5j9Ey0b6TSHGOxPbSiDseNnNGvgsXvcfWta2V+MU1Agxf+CPR7Uhi+35UPwn+JFaE+fsnU8LoWnkw6vR7YREyEKo0GK8tMeSdMuxgXO53Z1jwL/tWOb29VErxX0nrrIru5g8denNRxDV2eXnZk=
-ARC-Message-Signature: i=1; a=rsa-sha256; d=redadmin.org; s=20231208space;
-	t=1759042013; c=relaxed/relaxed;
-	bh=t6ustQj7Xfe3HKiERNgrVHhh1pz2uVuazT2CqYYtX+I=;
-	h=DKIM-Filter:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding; b=HMt32kzNplHxRIZjrssxUZ4FLxqJNmv/Zxj87Y/1ubBx/yWTTGSsij6tm2TCUjyrkSreUm8oIzzBduDm2lR/NU6Ax06vX5BLfBFTkz8D3+RektbLNRRGwQnM16ADFqO0JWlqJQSg0l8mcDzqEemXh+pymgcw+Y9FaWl0Hm7+Jq8=
-ARC-Authentication-Results: i=1; www.redadmin.org
-DKIM-Filter: OpenDKIM Filter v2.11.0 www.redadmin.org 7E3BC109F2881
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redadmin.org;
-	s=20231208space; t=1759042013;
-	bh=t6ustQj7Xfe3HKiERNgrVHhh1pz2uVuazT2CqYYtX+I=;
-	h=From:To:Cc:Subject:Date:From;
-	b=G5FUZBjF1himgrUO+Abz5dIhQRc4vg2jEbeUDp7PUr7P124LRQKP9/cvRKq2gTzYD
-	 omm6HWFpg90h5Rzy8H6iN6l3ASPQBU0vN69rVdTHFM43IfqsEV2IpYkpz1wlLjXZ8q
-	 bYVsJ7nlNChytAX04H5zYyeONUVWQOsXUrnY2U3o=
-From: Akiyoshi Kurita <weibu@redadmin.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Jonathan Corbet <corbet@lwn.net>, damon@lists.linux.dev,
-        linux-doc@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Akiyoshi Kurita <weibu@redadmin.org>
-Subject: [PATCH] docs: admin-guide/mm/damon: Correct typo "directores"
-Date: Sun, 28 Sep 2025 15:46:51 +0900
-Message-ID: <20250928064651.281325-1-weibu@redadmin.org>
-X-Mailer: git-send-email 2.47.3
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=dxEgGzJalYLYRxam3UhasqEjzLOp6l9WnegrxeAbWKg=;
+	b=H9z9ZGsAtNwdy5q1D89psXewaWc5EEC+qhUAzQD5+7gL5HGCardmhoNZMLnOLKrQNJLD6u
+	hnEAs6BgO7SzRmcrXkBVYkzM9ASYLto6axPqItuqY4OoMiGFsVhW63h/oL2NqrF4DlKoIr
+	slEEIXfS3ce+2d00Y1sY+FbhVbg9svA=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KMtmLekY;
+	spf=pass (imf28.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759047319; a=rsa-sha256;
+	cv=none;
+	b=s9U0YVx+NRuuj5x53qgdbiCrcbeu2mOEM3TpKRkrsO/xy67ioqgKUDChAzZnksF8Y5SyFT
+	SvOvM9ghWB7NWz9bY8dmpsQpLkmxWGC24C7r0ng33ZAsTD3FBcUGPaS5RsVMp0fKb2Dz9W
+	5Js2aUN91w47OmJxJUveGNO/ok4Q5uQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5CFB043587;
+	Sun, 28 Sep 2025 08:15:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 846E1C4CEF0;
+	Sun, 28 Sep 2025 08:15:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759047317;
+	bh=de9qzleZA+R2N/Kmiw9QQMnYG50hXtyYa8gfYsMACWk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KMtmLekYVZUE7aRFSU9mkhSkk4d2ntkHA9S03kyf74bsqgqfKRQVhafqnCSWyOedv
+	 j3ALK52bH8Ib0Qcjq73RywxOiTyDmFQWvZrSLzgQu7h6BfCe96um8PU6yXa3j1+99V
+	 FGKhJMG48c569FGlH//UPB1ED5dl4Ifq6JGVIKZvrAca3dREYBHHST1Q5so4+z4eaY
+	 ccYycjRt92s6L0ewEIaOyQRQPsYgpAgUNUX7hHBLNc2rys8+IT/z1BVurmh2ZP0TbU
+	 V0pJks/SLiWWs/cl5dVESCI2dRN+y9HXnOHfSrklek/YOtBiMhW81kGRirOKn9C5ba
+	 xbPCNcierbgCQ==
+Date: Sun, 28 Sep 2025 11:15:12 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org, Logan Gunthorpe <logang@deltatee.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v2 03/10] PCI/P2PDMA: Refactor to separate core P2P
+ functionality from memory allocation
+Message-ID: <20250928081512.GD12165@unreal>
+References: <20250922150032.3e3da410.alex.williamson@redhat.com>
+ <20250923150414.GA2608121@nvidia.com>
+ <20250923113041.38bee711.alex.williamson@redhat.com>
+ <20250923174333.GE2608121@nvidia.com>
+ <20250923120932.47df57b2.alex.williamson@redhat.com>
+ <20250925070314.GA12165@unreal>
+ <20250925115308.GT2617119@nvidia.com>
+ <20250925163131.22a2c09b.alex.williamson@redhat.com>
+ <20250925230236.GB2617119@nvidia.com>
+ <20250926081350.16bb66c8.alex.williamson@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: DEE61120004
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250926081350.16bb66c8.alex.williamson@redhat.com>
+X-Rspamd-Queue-Id: CD7A7C0002
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 53zbnkmkeapqgab5fcxjsib1ptnwmeu5
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: frc1mb4q5uqtfgw8qpedqwarerbnxeih
-X-HE-Tag: 1759042034-132110
-X-HE-Meta: U2FsdGVkX1/uMrqhsmYQOqdd2SR83hb00rLgrx/TVGLrliFPKfurCHi3dANlHOUKb6FrR7o/9iJBV2keZJw9ZAKmyPr2vRw99p/U+x1qDcWC4e3OmqogJmqY4f+7iN5slk0LxiKmJEZY+Sy04W1C2Nl+yxAUg/1knXBLhoGSdBoZJPZ9zfIwdnZTRVaZMroQUKVwWy4TeyzGf6KwFTVs9aT52nMhWUja021BJDhZyXuiZ2Bw8r6duqCl16hbPhzkhZ9d5SsLW40cxG5lyEYcOfEANEV0TjjxPOiq4itOYGCdQ98v5xuQWw/r6kNxsMT0RjTq1Lv4DZGjKHp5jM4nXEcXc9RtzSQpt/QKib0w6ZfPIHVYSUHBIBvz2CI6kNVSfvwj3j4wNkGNgPbc4EJGLYEbcW/grERi0Q3SHbCkvVKgK/iRHW+19+zV7GAm0X5ULZ+QgtoguNmGNNfP6MTcdqivpmvh/aPhP3rMg2qKCPwyzngMnxU+GdJT9Wpjl7byNUsNpiJhdMSGS6bbxpSRPhfIom+4MBuI5pPvL8s/V6JgfWZHYC0+A8o7vRvfN6xmKj6Lkg+TxD7GaQVZ81k9qAs14iM7knX2hI3kOwzNVopFhrbb1/gFwO4hYVbNGIzjQkPsBXGSXZL0pt81ySWbZGo6shA9413e7+zMDQeaNkLV5a+E8tbqgxr/lddAip6q//KMQy3oz5z38MpLGWozLRU9bDjiz0Zus0qxOgdMPihcmxx5FGKagWmGvnd4cdhlpPZ1BeahMxuRozk6v1QmqvkCu23m8jTBfcnn3COPdm9IR6rJW5qoadyxRRToUcG615rVKjIdYDRY+uybh1WOJMgtCvPgoSFwqpPxKyTchBqXM+YmJ4xay3oMApH8xM7FacxuUb0PKlS+5T2lqITfPi8wWlIBaSBU4osovCvynA9aSlGyw6hlYp8vZ/HzYmbCyc6sXL84bw7WF8T5Kkr
- MHn22u9/
- B+R7IIFILcl9Dp8x2t636mU0MkQUk0uLfZ9lqAN2c8VfoZKLyt+w4peFNhCaC5FKFxRzOG4fWLKlsCGbWW/Dkxoqsh/96emaJoVh5w+DlsnyMTECzME3jMb0qGM0T5qu7cijBmsO91ATDC1Aa4SL2H3spjhHZ9HxDvytRHmQlN5TnPehKqBnAHSiCGnfM9cFBHAH5tAlL0oheYY/Bl7lpQCEYibLbL9tE+rqKxbR3bEUCEiq9UTR3i6rBT+yFL3TNvJcCj/Rn+vJSJCpyLInCQJ+AcGKVUbGeP5RfIvZLqYUOqGxNJ1Yr4G+9PV7UACj/LWGmL03H4lTJeGqdnvsT/MMgDI3ISaScXyQR+vZwISVX6eisLb8mpoI97rHa5HJXVoNJI2VAItNyZKhKNlOmQ+EcWwbzZ4GM4JEK47e0Un64R4CaRaMcyiYhzKTWHkovq/U2WLViBm0ZSE5yJ5JWmftsD4fe8XtXLzPJVWR2F6rLuRuqC1lhyA6YCw==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.015384, version=1.2.4
+X-HE-Tag: 1759047318-709779
+X-HE-Meta: U2FsdGVkX18MfOIrFVJ+XQ/R+bOE+1+rLl0DWTuJFglOC6OJy41raIPG9QQrp1yZ0ilWkdN34g7eU8wrcjYkvyYvq5XlrVIaAeUS4iL3MbilSB90wRhZPHG4AGW/e50572TNKYhzRf6ZPj28Vusk2kWirtpjQ+a5EL3ryyPlmofRXAj8DeocfZ/sWfnIpWEQx7mqjqi5GIKxyPPtpI0QLxIG6qa+9okcggCoFzUX+tR05L2bhaXlmHMHwqtQ7oLOMZIb1cDNWe4c+0lIYmlEskKM0KOc3BU4lEXX1MK9OBftfJ1wJ0estJAcRvAxJcnQ9SnuH2fL7ofR8VV3mgGCjT6A7pjtgqB0m6rAaaY886vP9l0lJAq47mq8epkBO0ok7LKJRl7M4dioX82x6w6hwG9/03UBT6gYuVxHHnuGZ4z63g0rY6f+WJ4pvRz7lwrrVYj/Xa3e2JEuQLexmaAn1YYFkK89dAunBtF4XgPC3TC1jrJGFYw0/j02mIEIkkLu/hA2x52dJFpzN3LVA6C24ziShoDSneR7SJdt3RIpgLa2cbYaW/bwYR8xrH8SIPn3UEDnE8csQnrAOVc5/f/uv22NdzlHM/GpRQUjJU+j0EPWPHRhoBjFF5GhA8KTQmfYVgkGl666QkNVUD7IE54y6zdTfgRpZmo12oZmKui/GzWITsPgaaKAx4DfITF4Ru5Im86lbvvmVJrHF/jh3vdy4sNqzE8Y2aiKVLyxfVPZMCM6uErrGMhmL6Ab7r75lVpMd/o7k9A5FuXCumi1cY8QDXZA/XsZ/r6HMvcJ8j4FFtTcZxeWNDeSK9jzno5NXYIWZWFZfkMoPH+D191NQ7x5lB2xKPjas9hbOZ6nQqOR4i3yd3a+qmGGGgyt7GwLynjwAmaJAE1EP74/+UTpjn4kSwc1SxLRlkuW7MP59izZLlzWP3PbexL6Cbej+j9Bb+98a1bU/V2BAGoGINEnuZB
+ lsKJ3bnA
+ ofKgSp2SwtQLqD3FYoV44Pioqy12gTf7Sfu3kKFdE8sN78qiy8IL24HP/qJ/ypoiYSk3tMtcJbNzNOVu/qclpu2XjmzuhQiox6EFaVT0bBKNYRAvzwTPv6oEGkMtHLdewBiNbwJzgbiTUjX6HSoN2CUFRcN/+5wL7SvShV/WjBQG6npv6pPlCSzOcse6KL5XPm5uqYi6IZ5A/Dz3yvDk+Rt5ExZkmRU8wdasR8KbRGVzdfUZmFjIihShQ5nyfQoDxp8ORs04J0jcwRnQMEkxjoiezDw==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,33 +114,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The word "directores" is a typo in usage.rst. Correct it to
-"directories" to improve documentation clarity.
+On Fri, Sep 26, 2025 at 08:13:50AM -0600, Alex Williamson wrote:
+> On Thu, 25 Sep 2025 20:02:36 -0300
+> Jason Gunthorpe <jgg@nvidia.com> wrote:
+> 
+> > On Thu, Sep 25, 2025 at 04:31:31PM -0600, Alex Williamson wrote:
+> > > On Thu, 25 Sep 2025 08:53:08 -0300
+> > > Jason Gunthorpe <jgg@nvidia.com> wrote:
+> > >   
+> > > > On Thu, Sep 25, 2025 at 10:03:14AM +0300, Leon Romanovsky wrote:
+> > > >   
+> > > > > > It would at least make sense to me then to store the provider on the
+> > > > > > vfio_pci_dma_buf object at the time of the get feature call rather than
+> > > > > > vfio_pci_core_init_dev() though.  That would eliminate patch 08/ and
+> > > > > > the inline #ifdefs.    
+> > > > > 
+> > > > > I'll change it now. If "enable" function goes to be "get" function, we
+> > > > > won't need to store anything in vfio_pci_dma_buf too. At the end, we
+> > > > > have exactly two lines "provider = priv->vdev->provider[priv->bar];",
+> > > > > which can easily be changed to be "provider = pcim_p2pdma_provider(priv->vdev->pdev, priv->bar)"    
+> > > > 
+> > > > Not without some kind of locking change. I'd keep the
+> > > > priv->vdev->provider[priv->bar] because setup during probe doesn't
+> > > > need special locking.  
+> > > 
+> > > Why do we need to store the provider on the vfio_pci_core_device at
+> > > probe though, we can get it later via pcim_p2pdma_provider().   
+> > 
+> > Because you'd need some new locking to prevent races.
+> 
+> The race is avoided if we simply call pcim_p2pdma_provider() during
+> probe.  We don't need to save the returned provider.  That's where it
+> seems like pulling the setup out to a separate function would eliminate
+> this annoying BAR# arg.
+>  
+> > Besides, the model here should be to call the function once during
+> > probe and get back the allocated provider. The fact internally it is
+> > kind of nutzo still shouldn't leak out as a property of the ABI.
+> > 
+> > I would like to remove this weird behavior where it caches things
+> > inside the struct device. That's not normal for an API to do that, it
+> > is only done for the genalloc path that this doesn't use.
+> 
+> My goal in caching the provider on the vfio p2pdma object was to avoid
+> caching it on the vfio_pci_core_device, but now we're storing it on the
+> struct device, the vfio_pci_core_device, AND the vfio p2pdma object.
+> Given the current state that it's stored on the struct device, I think
+> we only need a setup call during probe (that could be stubbed out
+> rather than #ifdef'd), then cache the provider on the vfio p2pdma
+> object when a dmabuf is configured.  Thanks,
 
-Signed-off-by: Akiyoshi Kurita <weibu@redadmin.org>
----
- Documentation/admin-guide/mm/damon/usage.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I can do it.
 
-diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/a=
-dmin-guide/mm/damon/usage.rst
-index ff3a2dda1f02..5cd42d428c89 100644
---- a/Documentation/admin-guide/mm/damon/usage.rst
-+++ b/Documentation/admin-guide/mm/damon/usage.rst
-@@ -357,7 +357,7 @@ The directory for the :ref:`quotas <damon_design_damos_=
-quotas>` of the given
- DAMON-based operation scheme.
-=20
- Under ``quotas`` directory, four files (``ms``, ``bytes``,
--``reset_interval_ms``, ``effective_bytes``) and two directores (``weights`=
-` and
-+``reset_interval_ms``, ``effective_bytes``) and two directories (``weights=
-`` and
- ``goals``) exist.
-=20
- You can set the ``time quota`` in milliseconds, ``size quota`` in bytes, a=
-nd
---=20
-2.47.3
+Thanks
 
+> 
+> Alex
+> 
 
