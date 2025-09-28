@@ -4,97 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B47ECAC5BB
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 17:44:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D383DCAC5B5
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 21:55:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 61D448E0007; Sun, 28 Sep 2025 13:44:31 -0400 (EDT)
+	id C49358E0003; Sun, 28 Sep 2025 17:55:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CE3D8E0001; Sun, 28 Sep 2025 13:44:31 -0400 (EDT)
+	id C20ED8E0001; Sun, 28 Sep 2025 17:55:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E3928E0007; Sun, 28 Sep 2025 13:44:31 -0400 (EDT)
+	id B36478E0003; Sun, 28 Sep 2025 17:55:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BC628E0001
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 13:44:31 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E5465160147
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 17:44:30 +0000 (UTC)
-X-FDA: 83939383500.30.8697233
-Received: from mail-io1-f77.google.com (mail-io1-f77.google.com [209.85.166.77])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 345C51C0006
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 17:44:29 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of 3_HPZaAkbAJcJPQB1CC5I1GG94.7FF7C5LJ5I3FEK5EK.3FD@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.77 as permitted sender) smtp.mailfrom=3_HPZaAkbAJcJPQB1CC5I1GG94.7FF7C5LJ5I3FEK5EK.3FD@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A0AB58E0001
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 17:55:20 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2E4DD1A01C3
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 21:55:20 +0000 (UTC)
+X-FDA: 83940015600.10.9DC0764
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3EE901A0004
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 21:55:18 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=UuXlS1H5;
+	spf=pass (imf19.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759081469;
+	s=arc-20220608; t=1759096518;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=JfHz+kVBBN6qxDi9w6vxoz4MHOeNlBqzhi/tIoFuRPE=;
-	b=R5hNpFWE9R+hPgqlP0vcMDczw0TPSEmXKuJCQai6U+BV43qE6it44eOLVxFwpAuTMlFslt
-	bD0AJu3h3t2LcauU6GbJNZJ9VBdL/JvB5KWxIfXXF3pHThUFxGdaVu5p7VCsOorY5spjtA
-	3qanE8OdPM/yA+7mhprGUtStluz3P1E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759081469; a=rsa-sha256;
-	cv=none;
-	b=Fg9HWWx521n7F9vrqowIK3rsBIMm70rk88kiAMONpdPwdttQwDd0fb+v7CaDOCpusYyQPB
-	L4lhvdSOYYTitASaNwSs2iHatLdDnHx+a5vSUktekr33rAclLD6jeM9Y16dtyRq1lWNcCU
-	LFqGAG27dJwaqyIWg+8as3YW5gps+k0=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pMA3FY1cLbcNhfw1XHhs0JDOqj11mx6kBKtX7cr5kdQ=;
+	b=BuWrcs65HJ8xT30mMgu1BtuLrNLlxEsYaHV8pfsFpOg25JKtAwA6wApJrp59626DcTn9BM
+	g06Beot8G4+2bKVyr3lwYIkJQCYNIV92smbpFYg6HAB37jQKNCWhZgi+SSqxpxEp0bJ2Dk
+	AsP/YiXgCPowjrDNfEiPTZi9nwJ3fgY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of 3_HPZaAkbAJcJPQB1CC5I1GG94.7FF7C5LJ5I3FEK5EK.3FD@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.77 as permitted sender) smtp.mailfrom=3_HPZaAkbAJcJPQB1CC5I1GG94.7FF7C5LJ5I3FEK5EK.3FD@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-Received: by mail-io1-f77.google.com with SMTP id ca18e2360f4ac-8ccb7d90c82so472512539f.2
-        for <linux-mm@kvack.org>; Sun, 28 Sep 2025 10:44:28 -0700 (PDT)
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=UuXlS1H5;
+	spf=pass (imf19.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759096518; a=rsa-sha256;
+	cv=none;
+	b=HBWC6CHXUQdfx+psdTGva9jGA+jj2CsVv3S0gbbvFdiAB0sQMr/YMxhrQqM2imNLH8DUOP
+	OI0scbEWEYXDy84MEC8EPMY/x8jUvPeHfyR3gETuiOnWaAp2d22Kq9cISVLFoaCdONEvJW
+	eyJ4b3OhsJqAw0SGw7GFLiZbcEt18ww=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-46e2b7eee0dso71365e9.1
+        for <linux-mm@kvack.org>; Sun, 28 Sep 2025 14:55:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1759096516; x=1759701316; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pMA3FY1cLbcNhfw1XHhs0JDOqj11mx6kBKtX7cr5kdQ=;
+        b=UuXlS1H5p8gT6YFGuLOQWcejLjbQvOuxyBuNk/PupAUXcla9KfkENMXx7beWnwn2mm
+         bf9N41w7sWI0ypL8ZbWMTlS7q3RR+hDrSTAKeqY28JGsfZG2faFc3w6A3MAu1LgnLCvx
+         vUkUc0HJQEBMxwsxGuYYhidZMmgZ80fbCUg2SsJ7i9GR0ITtwUi5JItf0A1J8XGr1rEM
+         2yVYXIFC2Mv21y8OizzQtFYirfG2bYg/SOqQDJFw3czRpZrAwJIt/TbwU4vWn90G+ulF
+         TO1oK/EZ+P3MuT1mTbXnEiujqn58MPkW26Uj/RH1wSZgu8De74ch61fG7k2Gl/CufkQ+
+         7gtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759081468; x=1759686268;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JfHz+kVBBN6qxDi9w6vxoz4MHOeNlBqzhi/tIoFuRPE=;
-        b=gcb9IS0I3OnuaJ1qWmqbGZ53vs36pRXDlPKg8MufS+vMVy0Xzviy3LRHFO13Wjh6Mc
-         bFWzBNrMggNQsBVjKZ2RKXCyhEVN2iNWbRsdA7+SW6Oc46kpdwiHb0mqOYHVjh6qkWyO
-         s0AJg01Xykbi39phr1yWURz3pSYm8tbU2LxxGIUHPTI0uiQHiY7mBzJrtIU07A7EhrSU
-         Xuk3nHTAmL0cux7JlApP5IUOhrfecYBmG5WvmUQu3/RQjrcAdOLo4x6RCjUfJC/RHExO
-         x0S9g2F00i2uayWTUzX1SYZBl/2ljpHjRdfvEJ57pn/tWw7J9PAcdaz2NvjIQi3cqwto
-         c+iw==
-X-Forwarded-Encrypted: i=1; AJvYcCUSXtP8ZSADOkG36jBmQSWTrHSueewaaJRkCF+HKcA3a5KtsOdThgXjHjPbS7S6PMrLO6ig9/DzQQ==@kvack.org
-X-Gm-Message-State: AOJu0YwfrZrF+VLT/inpxrbHpdUaZ9NtjuPVWiMFTH/mmCkLzhC0k8oX
-	ItPTJTGLWW6rjLmJuv6+CvdP8GeMzBOA6VnBBoGwpgV/GBIzqmIug+FczukUG51v/mLi6quffXA
-	SESYjNB7mpP5vGCXxMlbmN0WtEzHRDwIKaVyueYtUw2qymN0rGDmxr+7ZGiI=
-X-Google-Smtp-Source: AGHT+IFMLHheYfBzpYXH2L+A8ieG9iaNLiHGhD/LJKn1x6lDumvntoi3looYvzugPONUK1RFSwCI0/btp5SXrDxyLfRc9saqMxq8
+        d=1e100.net; s=20230601; t=1759096516; x=1759701316;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pMA3FY1cLbcNhfw1XHhs0JDOqj11mx6kBKtX7cr5kdQ=;
+        b=qM7yNY8fxCy2zVuh1pmCSJe+mbgQvMbhxDPFQ5rJieYF8/qc7VnnU/LxaJDqIgHpqv
+         LIXMWkWCvl55SqnCCx9Z6JPqdWNtZeHNk8SbDM768JRUQaf9O3RWY4BA41dTpMfSPN5b
+         bTpdUTfVD9rtUSgCTTvTr/FKt/FJo0mkTZEB5pLumTyB9wpVV8lowOAaFcXSyVgHoz+F
+         /8iaccbB9YZnw4FE6FB0hjOtWwNzUGoGdcHcmTfhXWWc8UDBNaSoCA09ckiNTFkaFAps
+         twh+aV5COW70Uan06l6r/jDlDW+ZilbgjQAN4v1ehfuHmlOJb8vF6iNWFxApgHwdf9XG
+         9UFg==
+X-Forwarded-Encrypted: i=1; AJvYcCV2L3QezjQcJuw0wYq5KVV0ThK1msOh6cF/5lhqRlnghiUSJIg/JB96Os1U+hOC8Ff8LwwKj97LpA==@kvack.org
+X-Gm-Message-State: AOJu0Yw/G1NbYaTz2t2h9s+aOohS2vMk6OIuM/6+BQHmYDwTrl+PvvjH
+	hXgJSIyviyFly6kqBbpAeUYDc+52+iwWa7HblC1NanrWTTk1C5T83OzWdUYb6Tzd5E62mzgy80t
+	NCIqRwbqKNWMo8maXi6EtJcf9gGFAUIXd1C+2oV8a
+X-Gm-Gg: ASbGncuZXVD+aZrcB+vDK4kaPkGxlCEjdZZKdYiFActXJ2dTAVcL/iLe2GrHgt6Znzx
+	+dRvAb7x6zwqNW9laMC47nwseCnQPpplaQRFBNMG5ePkofTcwb2ISfb+8uSVZR7xpIKVNX1c4nm
+	hzahgAkep/qlNVw+7Z2BTQJFshlwzAKRmts/6veaJs88HorkPM50gtSq4gZuCugq1gXVlr5PLNp
+	IjJHdGfHKYCUH2bwgGBvAGTKuQJMNvJryVXruma
+X-Google-Smtp-Source: AGHT+IGuuHuV6NhRdtb2XbDDFb64hZXsw9U4K9RD49mZlUNSm0AUIK8jLtLvPojHIhekgdfDaYZhLDQcukon9pUOy4U=
+X-Received: by 2002:a05:600c:1687:b0:453:672b:5b64 with SMTP id
+ 5b1f17b1804b1-46e3af88c70mr4043975e9.2.1759096516280; Sun, 28 Sep 2025
+ 14:55:16 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:12cc:b0:428:c370:d972 with SMTP id
- e9e14a558f8ab-428c370dba4mr79681495ab.7.1759081468228; Sun, 28 Sep 2025
- 10:44:28 -0700 (PDT)
-Date: Sun, 28 Sep 2025 10:44:28 -0700
-In-Reply-To: <6861c281.a70a0220.3b7e22.0ab8.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68d973fc.a00a0220.102ee.002b.GAE@google.com>
-Subject: Re: [syzbot] [mm?] WARNING in xfs_init_fs_context
-From: syzbot <syzbot+359a67b608de1ef72f65@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, apopple@nvidia.com, baohua@kernel.org, 
-	byungchul@sk.com, cem@kernel.org, david@fromorbit.com, david@redhat.com, 
-	gourry@gourry.net, harry.yoo@oracle.com, joshua.hahnjy@gmail.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-xfs@vger.kernel.org, 
-	matthew.brost@intel.com, mhocko@suse.com, penguin-kernel@i-love.sakura.ne.jp, 
-	rakie.kim@sk.com, syzkaller-bugs@googlegroups.com, vbabka@suse.cz, 
-	willy@infradead.org, ying.huang@linux.alibaba.com, ziy@nvidia.com
+References: <20250928032842.1399147-1-qiuxu.zhuo@intel.com>
+In-Reply-To: <20250928032842.1399147-1-qiuxu.zhuo@intel.com>
+From: Jiaqi Yan <jiaqiyan@google.com>
+Date: Sun, 28 Sep 2025 14:55:04 -0700
+X-Gm-Features: AS18NWCZXYADEm26_yLS0Zgi7PqfD8kDWiEzPUFTAPAgj2X_CDKkUG2kA8H6SOk
+Message-ID: <CACw3F50ijQ20Vg8ycMROSCccf_XtjB_fFvLGxvQZ7eaNQoLwGQ@mail.gmail.com>
+Subject: Re: [PATCH 1/1] mm: prevent poison consumption when splitting THP
+To: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com, 
+	linmiaohe@huawei.com, tony.luck@intel.com, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	nao.horiguchi@gmail.com, farrah.chen@intel.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Andrew Zaborowski <andrew.zaborowski@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 345C51C0006
-X-Stat-Signature: ka18zd9i8mekissdq5rhh4awnb73ahfr
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 3EE901A0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1759081469-86646
-X-HE-Meta: U2FsdGVkX1/j+R1MwdviadWvL9IUsgvKzOzpLxsPz+1s29Fqt59ebVk4eCJalVloyZO7OTCq9Hcfa9/XtdRT84OI2sDEyHax3mWmqDP2r/xVwG4LpYP7E4zhsHUmAqvlEY3fLmorRIdsQi/oVXIwxwgnhZ/od2LlTB6grKNUTAuc4pR27ypct/KW+LopVcSdqSKZC+Nb3lzpMIfzQNEHiq5TqD0GWzz3ovuSzkHiZrbcRn6KB83o1CYPNiSnhvlTn5Mwg09KitgbBBqVcZ5/MBVHT7bdYWEcwz9gKZ2XVWDjOgfhNkVnAiOYxUmfVD6Y38SRQJRNXsmbBIj7UezEOZzon1/IFb8aJz/ev4vc4hfpGet5q0/vDxKyHB+aFlqxpJxA0dBYAtbYp1XpUfTN7Cd3kz52IJlsBRay1hIz3Kuv/N3d/HCNvdFWsXH3LkBj3e9P/vQCzRHcaSYPrG8xTsb6/DrPCx+/B6Z2WjFxTMbOsEJng60rhfUWHVXUtiXsWtgpt6t/8Nfsu6vnwFspbcKQtHwsvSVu5B8oUvdZYBnmwDZkGP59pwm1ugO5ofVbBb6MDqe/PAmkGQng0rCLZ4+0zPKRqcd6BOQfw/YVLHhF3fIykOoiIkx6VpbTVRnmDoiOtuCFaFonjXUvi2Yy7HD7C1A0pQRbKejqvjhX7yep6+iU+YTFKSS03voa1Gpq943+2pAbVOemCOA0VMV4bwVtvtxZVSTe8N+C+QTwwO2dtzP9mSOnvGPycewT4bcSEyqSfp8HcusYoYdOdlcjMBz/ESxf4RCDISLn4eXZ1olEpT0OOD47oTk+LwrFTKdxhpIueLu1jjve5FV2OGt/kA0HpesLPda0028kPAp4NoqiArwWcmHDDopM449qsbEWDS2uSXr2y7HlBR9lcaBbylnZX9aAEBo9HQhm8kui5Uhw4YN7bvtqIwvbz+WoEcyVTtVQHBy7yFAL4Xo1V17
- TLfAGD8X
- rmxkYcYUqvNE1g9bnqVn3OK1GRYYDy9IKiMduXv99SjsoT1H5++U4T7nXicLWXM0TTxBO+1kFiUgC6R0mKfJYYQ/7n7QT4APv1jPJlvAClmDImrdre5swgDrjVXrUwP5bENydUBJChlFubiuHYwUvLS43WwWp/DLsIlQGEGElAxUhpHoD+MVYjtsDJkn4GceSD8ZdrOw9rWWmgBU7vc+s6pRk6Y3tOdaGK6rmpI76razG4tlyb6zoA9rebrYJPtainR4YF91IbfOpS9hOwDINlpYsV8F9b8pwopjFwp4/8q281Eecuq1BT/V6D3jAtcUis4HUhudNrhswmRocQoFLMTzvLiwzDYHTslztW+YXeoFw7BFOCWsxHsPhubiEnXjxSXYtpgJ/Tk8T9im4MJxSqNZYU2gPARz/gP0wwzQinEZATNDYFj8Sms8+3CaHzjMqKD+C/V4RPLeA0qE0HRo/8ZcI5orTnt9bgVnZtFcGdwWgAopHySfgujqJ7HpRo9id1JybEsUi5sJ5xIfD7C/qhkrFpwAEg2WNnV1TeNGPfiJnQvixOgFiTNF5HLwp3MKlwAn4gNmBcNm+gU2CKS8I7ub/oremDj6N5iyvRkv/fiWiplflM6t5iYj65ekJjE8aStPXo3fShq4RNheV/an9M00pds9dEOZ0jk0vSOksXaGa98tQzL97xXlbdcbqDoXNmoqN+L/5Dgum9PgaoH6KY1K4T/5F0woW6uBxdVsaV7zAYphulEmpg068nRWyMlRrudStKiez0y8RblWr/mQkSUOqxWJOHUexL3Yk+NvifipLSnEsbCmz8eswAZQCUaf8xeTBguK14YYARyM1jXrWNWlCVjTqreMOvMVqFmWNcjkQTJBM5z70WauAR5biFyNAzvU/BR3erkpXjccvbZMsysTBa3VGB9dSBdCGnR0UK0HDjajzPnrGVuXQ/hjcJZ9HLQPmyL4kv5C22kS/myXKwn0SB413
- hiaUp+LJ
- /DDno3y0mkWWsaqIP+j+3nKzoe2VDhn79lfr46o/CYSmQ8GaL+u6Axhkeutf4TZQMqHSgwX0D+PfuL3mLYeYNw6QJl5OvwXGUbz4DIAwgoRfTUx4zFPtoxaYx9HpabGFEqkedALl1gLmGqEsIErcrvODpeWZJl49z0H1sSPrJTZdBSfJFjRvLx3RA3jZw8uadtnAWAtkNEtBSNxBPliL6FSlIFV6ijTbgW7p4VGeBcGx4OzgxUqvN3Cv8ev43bdXV4nbab0cRL39BPbGHGEGt6IjVEvcyca8SjmVeRFlUjpqloknjvxqvx8WAkCmCDqZOPSsSiD+L4IDh9SuneQT0RYMeVnWyQmBE3B9AHAl2D3cAsYSdHDVlCbom/hArC7TehiF/szsUZv19bTs7zJWabZq7pl34+Zb2QnrFHYnwHDXlM4lMA2R8nbJ6PeVH0aP
+X-Rspamd-Server: rspam07
+X-Stat-Signature: phzb6s5cku3qix6td7cscofkn9uge8an
+X-HE-Tag: 1759096518-653674
+X-HE-Meta: U2FsdGVkX1+VLYO+rCIgkES26zOMjW3Zb802C2e/T0RhTIBFGGkQPga2AvVJyl6SygHPBONPVPSS4pXYs4bySss6MELv6cDnpjbdQ7tVPf4CcY/YQnAsIwl2Trni97MN/88CUiNRZH45ys0mbc9VF1Yd6+2JXpZ1thFxVWKIxPc239qCDmEQBFRIo25xXDxs+VvCaXfDfCJoverHmoJ7wvM9w3s8COl+2h10lZIgyBRW7NEbekozY3uOIv7GCPgeFA9EsabdGGSKeqjsAol4vDubX7MNbQbO0g1usQjXNwZEO+VJo5m6TYRM54D1VwAw5+8iuOIot2rriEK/1AvHxEVmrgNpjSY19A2um+KVX1m2YBJ9yRDt9ikKzcRqfMKFChn4FHYnkHPN7IO/yp3O/cMAhME8WSnKBCGARJuxo+r8vv2rVGU9okJrZ5mi4N9T/IVMM1ethru8RWcjC9xBScFCpW6HK3bs+fLPFBGUUVj5hrvjncuPjYIbXSZjVvwMITfElJXBqyR38G1xX2kBrG73J0YJBfsSCySKBNOavFUfcaPet2um7wLbacfFDART4DRIKS9xP8jipYCdmLC4Qw5ygjRXK53hNKYO0HwlL40mwoSYM416ruzzTlaK4MD78LfobAZ8y00R8MqFkLED+530Z8kllaDpp38vGNQfMyoHTFHZe1LIDiOocY/L8571GofRi/LXU3yoKjFgLcVpf60P1T+eh5wRfeyvZRqKtJZloPctOXxLWAjpcoX6F1vmDU4tcKQ8ksV6MVV/c1GcD6CRvSL3VcqnUtsUkrudDHcnUd6kqgsaa4BfhAYbOw3s94tK+DagyR6mCTUDF9mf6BE076t3M5w7J/k5KrhBiDRBb/GtCpP5VcWenSRoYqZMF6m52yUGc7Bxtvko3ZfuxiGeL8NpD3aA31rOtU1NPPUZfVGKqxT09IhMLu0RJc8tx5mUZ8RYrT1RNZy+p1P
+ 1xtj5uRa
+ GCW0NZgrSNBRmcQdBkZLJCj7M/UbcD6ACpBcgwwEqUG+veF1NW3xmoa2plmIE9YO7HmRDqnyKWavtFMUD/Y/Di4f1b67lWxYHzh3Ka0G/9ksmUeoYgLWopdYWWAemMmx1ZpVuzk3gDIC3ncUKYwV6kQKLczsAewoA10XkW6oykXA+Kt2ZxsQV0KNeOcgBWEKqKhhXi8U1+ktdlAVGpWS20au3koaqbBNtU2u/aLvJYp0ixwmgRWHfISVW+LCPhplIJtCiPjQfcmAdGAkajqN5zlVD++JtSExA7XjdSvyxT4hmtho6EWyxfkSzcQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,79 +120,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot has found a reproducer for the following issue on:
+On Sat, Sep 27, 2025 at 8:30=E2=80=AFPM Qiuxu Zhuo <qiuxu.zhuo@intel.com> w=
+rote:
+>
+> From: Andrew Zaborowski <andrew.zaborowski@intel.com>
+>
+> When performing memory error injection on a THP (Transparent Huge Page)
+> mapped to userspace on an x86 server, the kernel panics with the followin=
+g
+> trace. The expected behavior is to terminate the affected process instead
+> of panicking the kernel, as the x86 Machine Check code can recover from a=
+n
+> in-userspace #MC.
+>
+>   mce: [Hardware Error]: CPU 0: Machine Check Exception: f Bank 3: bd8000=
+0000070134
+>   mce: [Hardware Error]: RIP 10:<ffffffff8372f8bc> {memchr_inv+0x4c/0xf0}
+>   mce: [Hardware Error]: TSC afff7bbff88a ADDR 1d301b000 MISC 80 PPIN 1e7=
+41e77539027db
+>   mce: [Hardware Error]: PROCESSOR 0:d06d0 TIME 1758093249 SOCKET 0 APIC =
+0 microcode 80000320
+>   mce: [Hardware Error]: Run the above through 'mcelog --ascii'
+>   mce: [Hardware Error]: Machine check: Data load in unrecoverable area o=
+f kernel
+>   Kernel panic - not syncing: Fatal local machine check
+>
+> The root cause of this panic is that handling a memory failure triggered =
+by
+> an in-userspace #MC necessitates splitting the THP. The splitting process
+> employs a mechanism, implemented in try_to_map_unused_to_zeropage(), whic=
+h
+> reads the sub-pages of the THP to identify zero-filled pages. However,
+> reading the sub-pages results in a second in-kernel #MC, occurring before
+> the initial memory_failure() completes, ultimately leading to a kernel
+> panic. See the kernel panic call trace on the two #MCs.
+>
+>   First Machine Check occurs // [1]
+>     memory_failure()         // [2]
+>       try_to_split_thp_page()
+>         split_huge_page()
+>           split_huge_page_to_list_to_order()
+>             __folio_split()  // [3]
+>               remap_page()
+>                 remove_migration_ptes()
+>                   remove_migration_pte()
+>                     try_to_map_unused_to_zeropage()
 
-HEAD commit:    51a24b7deaae Merge tag 'trace-tools-v6.17-rc5' of git://gi..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1268bf12580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=bf99f2510ef92ba5
-dashboard link: https://syzkaller.appspot.com/bug?extid=359a67b608de1ef72f65
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11a20334580000
+Just an observation: Unfortunately THP only has PageHasHWPoisoned and
+don't know the exact HWPoisoned page. Otherwise, we may still use
+zeropage for these not HWPoisoned.
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-51a24b7d.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/2d2422223a2d/vmlinux-51a24b7d.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/3f33b7e0feca/bzImage-51a24b7d.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/345ccb8f827e/mount_8.gz
-  fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=161e6ae2580000)
+>                       memchr_inv()                   // [4]
+>                         Second Machine Check occurs  // [5]
+>                           Kernel panic
+>
+> [1] Triggered by accessing a hardware-poisoned THP in userspace, which is
+>     typically recoverable by terminating the affected process.
+>
+> [2] Call folio_set_has_hwpoisoned() before try_to_split_thp_page().
+>
+> [3] Pass the RMP_USE_SHARED_ZEROPAGE remap flag to remap_page().
+>
+> [4] Re-access sub-pages of the hw-poisoned THP in the kernel.
+>
+> [5] Triggered in-kernel, leading to a panic kernel.
+>
+> In Step[2], memory_failure() sets the has_hwpoisoned flag on the THP,
+> right before calling try_to_split_thp_page(). Fix this panic by not
+> passing the RMP_USE_SHARED_ZEROPAGE flag to remap_page() in Step[3]
+> if the THP has the has_hwpoisoned flag set. This prevents access to
+> sub-pages of the poisoned THP for zero-page identification, avoiding
+> a second in-kernel #MC that would cause kernel panic.
+>
+> [ Qiuxu: Re-worte the commit message. ]
+>
+> Reported-by: Farrah Chen <farrah.chen@intel.com>
+> Signed-off-by: Andrew Zaborowski <andrew.zaborowski@intel.com>
+> Tested-by: Farrah Chen <farrah.chen@intel.com>
+> Tested-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+> Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+> Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+> ---
+>  mm/huge_memory.c    | 3 ++-
+>  mm/memory-failure.c | 6 ++++--
+>  2 files changed, 6 insertions(+), 3 deletions(-)
+>
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 9c38a95e9f09..1568f0308b90 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3588,6 +3588,7 @@ static int __folio_split(struct folio *folio, unsig=
+ned int new_order,
+>                 struct list_head *list, bool uniform_split)
+>  {
+>         struct deferred_split *ds_queue =3D get_deferred_split_queue(foli=
+o);
+> +       bool has_hwpoisoned =3D folio_test_has_hwpoisoned(folio);
+>         XA_STATE(xas, &folio->mapping->i_pages, folio->index);
+>         struct folio *end_folio =3D folio_next(folio);
+>         bool is_anon =3D folio_test_anon(folio);
+> @@ -3858,7 +3859,7 @@ static int __folio_split(struct folio *folio, unsig=
+ned int new_order,
+>         if (nr_shmem_dropped)
+>                 shmem_uncharge(mapping->host, nr_shmem_dropped);
+>
+> -       if (!ret && is_anon)
+> +       if (!ret && is_anon && !has_hwpoisoned)
+>                 remap_flags =3D RMP_USE_SHARED_ZEROPAGE;
+>         remap_page(folio, 1 << order, remap_flags);
+>
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index df6ee59527dd..3ba6fd4079ab 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -2351,8 +2351,10 @@ int memory_failure(unsigned long pfn, int flags)
+>                  * otherwise it may race with THP split.
+>                  * And the flag can't be set in get_hwpoison_page() since
+>                  * it is called by soft offline too and it is just called
+> -                * for !MF_COUNT_INCREASED.  So here seems to be the best
+> -                * place.
+> +                * for !MF_COUNT_INCREASED.
+> +                * It also tells split_huge_page() to not bother using
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+359a67b608de1ef72f65@syzkaller.appspotmail.com
+nit: it may confuse readers of split_huge_page when they didn't see
+any check on the hwpoison flag. So from readability PoV, it may be
+better to refer to this in a more generic term like the "following THP
+splitting process" (I would prefer this), or to point precisely to
+__folio_split.
 
-loop0: detected capacity change from 0 to 32768
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 6463 at mm/page_alloc.c:4619 __alloc_pages_slowpath+0xcb3/0xce0 mm/page_alloc.c:4619
-Modules linked in:
-CPU: 0 UID: 0 PID: 6463 Comm: syz.0.279 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:__alloc_pages_slowpath+0xcb3/0xce0 mm/page_alloc.c:4619
-Code: d8 48 c1 e8 03 0f b6 04 08 84 c0 75 2e f6 43 01 08 48 8b 14 24 0f 84 a2 f3 ff ff 90 0f 0b 90 e9 99 f3 ff ff e8 3e 9e 64 09 90 <0f> 0b 90 f7 c5 00 04 00 00 75 bc 90 0f 0b 90 eb b6 89 d9 80 e1 07
-RSP: 0018:ffffc9000e2ff8f0 EFLAGS: 00010246
-RAX: 97af8c55b4e88b00 RBX: 0000000000000002 RCX: dffffc0000000000
-RDX: ffffc9000e2ffa00 RSI: 0000000000000002 RDI: 0000000000048cc0
-RBP: 0000000000048cc0 R08: ffff88805ffd7297 R09: 1ffff1100bffae52
-R10: dffffc0000000000 R11: ffffed100bffae53 R12: ffffc9000e2ffa00
-R13: 1ffff92001c5ff3c R14: 0000000000048cc0 R15: dffffc0000000000
-FS:  00007fb4ec9696c0(0000) GS:ffff88808d007000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fb4ebb72b60 CR3: 00000000516af000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- __alloc_frozen_pages_noprof+0x319/0x370 mm/page_alloc.c:5161
- alloc_pages_mpol+0x232/0x4a0 mm/mempolicy.c:2416
- alloc_slab_page mm/slub.c:2492 [inline]
- allocate_slab+0xd9/0x370 mm/slub.c:2668
- new_slab mm/slub.c:2714 [inline]
- ___slab_alloc+0xbeb/0x1420 mm/slub.c:3901
- __slab_alloc mm/slub.c:3992 [inline]
- __slab_alloc_node mm/slub.c:4067 [inline]
- slab_alloc_node mm/slub.c:4228 [inline]
- __kmalloc_cache_noprof+0x296/0x3d0 mm/slub.c:4402
- kmalloc_noprof include/linux/slab.h:905 [inline]
- kzalloc_noprof include/linux/slab.h:1039 [inline]
- xfs_init_fs_context+0x54/0x500 fs/xfs/xfs_super.c:2278
- alloc_fs_context+0x64e/0x7d0 fs/fs_context.c:318
- do_new_mount+0x16f/0x9e0 fs/namespace.c:3787
- do_mount fs/namespace.c:4136 [inline]
- __do_sys_mount fs/namespace.c:4347 [inline]
- __se_sys_mount+0x317/0x410 fs/namespace.c:4324
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fb4ebb9066a
-Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb a6 e8 de 1a 00 00 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fb4ec968e68 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
-RAX: ffffffffffffffda RBX: 00007fb4ec968ef0 RCX: 00007fb4ebb9066a
-RDX: 0000200000009600 RSI: 0000200000009640 RDI: 00007fb4ec968eb0
-RBP: 0000200000009600 R08: 00007fb4ec968ef0 R09: 0000000000200800
-R10: 0000000000200800 R11: 0000000000000246 R12: 0000200000009640
-R13: 00007fb4ec968eb0 R14: 0000000000009644 R15: 00002000000002c0
- </TASK>
+Everything else looks good to me.
 
+Reviewed-by: Jiaqi Yan <jiaqiyan@google.com>
 
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+> +                * the shared zeropage -- the all-zeros check would
+> +                * consume the poison.  So here seems to be the best plac=
+e.
+>                  *
+>                  * Don't need care about the above error handling paths f=
+or
+>                  * get_hwpoison_page() since they handle either free page
+> --
+> 2.43.0
+>
+>
 
