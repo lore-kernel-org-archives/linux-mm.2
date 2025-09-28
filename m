@@ -4,75 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FE22CAC5BB
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 10:08:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58AA0CAC5BB
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 11:17:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D68298E0003; Sun, 28 Sep 2025 06:08:08 -0400 (EDT)
+	id 1CA088E0003; Sun, 28 Sep 2025 07:17:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D18FF8E0001; Sun, 28 Sep 2025 06:08:08 -0400 (EDT)
+	id 1A1288E0001; Sun, 28 Sep 2025 07:17:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2E918E0003; Sun, 28 Sep 2025 06:08:08 -0400 (EDT)
+	id 0DE358E0003; Sun, 28 Sep 2025 07:17:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AB2ED8E0001
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 06:08:08 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 44E60160952
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 10:08:08 +0000 (UTC)
-X-FDA: 83938233456.29.5C09B85
-Received: from smtp232.sjtu.edu.cn (smtp232.sjtu.edu.cn [202.120.2.232])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6AFC11C000A
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 10:08:05 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	spf=pass (imf21.hostedemail.com: domain of zhr1502@sjtu.edu.cn designates 202.120.2.232 as permitted sender) smtp.mailfrom=zhr1502@sjtu.edu.cn
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EF8CF8E0001
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 07:17:31 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9F43B160966
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 11:17:31 +0000 (UTC)
+X-FDA: 83938408302.11.C802177
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 4FC7610000C
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 11:17:27 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=gZieUkdA;
+	spf=pass (imf14.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759054086;
+	s=arc-20220608; t=1759058250;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=idADV7fzvxthMB1CG8R7EiIcBYdljtWuNqoLdsSm+Vk=;
-	b=QlA+eUUK0fKK380Jps+5CbnR2qr/bWwtzwY3ESlEwo4sgh4yH4VY4euZ8eppSxdfIk510c
-	wWgk6hgxJA8n9Xf+5Mgl4Rk0J34bdQGq+7Z4m1/Hlr3Wj3HqjTKb9zzL5Qi3F69EGW42ZD
-	MT27R+sXZ54Fl4taXGRSMkrUPvmT9E8=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of zhr1502@sjtu.edu.cn designates 202.120.2.232 as permitted sender) smtp.mailfrom=zhr1502@sjtu.edu.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759054086; a=rsa-sha256;
+	 in-reply-to:references:dkim-signature;
+	bh=BgJ4Bk/AgLj8OXwTMGRn+fyRsVHIEGunbuVkNEAkF+E=;
+	b=0sb7MOOogy87pD1hDIV9Ypnm9qiXZ05gupZe4aL2DqH4FamSWrJ0/d16ALpzNCu2h/At9P
+	XXvorujt/jcB0y7RlPSLsYmMJwQ1/U6SzhsXh1q+7aP51RA2a9tjMkbibCnBeHBxWp/6dj
+	VjJfUVh6c90yZGjKUQ3KU5ceC648G2k=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759058250; a=rsa-sha256;
 	cv=none;
-	b=oU/IcdYijw0WNBbGhvT0C5w2WNZ6oKbcd/7pSgOBvi0FNmAhLctFfjk4QHiR2Ej3NGmi3Q
-	pWsZXMbsCqni9i0nxgQ61/H659GSPyqdmpazI9s5Wkfztz9GiOPd1YXR8DynAhGx+Q+SSv
-	sf+cEkPMiiS/tPge69LWfxihy/dobec=
-Received: from proxy188.sjtu.edu.cn (smtp188.sjtu.edu.cn [202.120.2.188])
-	by smtp232.sjtu.edu.cn (Postfix) with ESMTPS id 251D0123BCAC3;
-	Sun, 28 Sep 2025 18:08:00 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.181.220.127])
-	by proxy188.sjtu.edu.cn (Postfix) with ESMTPSA id C4F9B37CAB1;
-	Sun, 28 Sep 2025 18:07:58 +0800 (CST)
-From: Zhu Haoran <zhr1502@sjtu.edu.cn>
-To: ying.huang@linux.alibaba.com
-Cc: dev.jain@arm.com,
-	linux-mm@kvack.org,
-	zhr1502@sjtu.edu.cn
-Subject: Re: [Question] About memory.c: process_huge_page
-Date: Sun, 28 Sep 2025 18:07:44 +0800
-Message-ID: <20250928100744.16307-1-zhr1502@sjtu.edu.cn>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <873487v1uj.fsf@DESKTOP-5N7EMDA>
-References: <873487v1uj.fsf@DESKTOP-5N7EMDA>
+	b=PsyZLpcKL1X2lameaYGEkrQ3Grsz495q5ZpqnN9UvytySfpYZzF+5EW+WEqmiWaljZem+x
+	Uw9ZRMin/ZAIUQxR+6WrQ5jMxq9Sg6HRFOVw5UiHT4NaP+QE+puA9pwEe4n44oA893Plmn
+	MIAhoIqHEF/BXJnrqRjUr+Ea5Utko04=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=gZieUkdA;
+	spf=pass (imf14.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b54a74f9150so3176276a12.0
+        for <linux-mm@kvack.org>; Sun, 28 Sep 2025 04:17:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1759058246; x=1759663046; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BgJ4Bk/AgLj8OXwTMGRn+fyRsVHIEGunbuVkNEAkF+E=;
+        b=gZieUkdAV8R/Fxi5PRV1MFYFjpiqDk09E2+DAVO2zZu712VkBHYfyHr6eHYfn5yoBL
+         BlARK/ZG5F4mupga32Hq0PAWH2NY6yEY9wf3LVKu6/kikklQJf29oTN40qQL8/KPD2BF
+         dkS44Gwa8QJ8l8YiaesCftUnmVatRNMPrQZaMV8skFV2CqctkTFsFHfDBSNRYyvijMRA
+         HiipOEK19AI7aL1pUHH4l/K2L1LGdeTSBNimuXuxE2zLkKNz9v+3g7irLSqpIN7L5Tl5
+         4G0PZ4eEUNJHWsB/WERrVGQr6HLZv3fNVxu8FL2P8o0dRB3MNrdxeoz9Wpp/rRGRTxh/
+         0smQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759058246; x=1759663046;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BgJ4Bk/AgLj8OXwTMGRn+fyRsVHIEGunbuVkNEAkF+E=;
+        b=c4/XktNCCDHBcw/HI3PXTrkDvpUgmpE+ocIOwmSy/Vcc2pKdWNRYoPhby4Q0jvR1ml
+         tVX+25d+3FmWRHZFMmHeKNtDhWRP7QoAX1KfqMSomQuZ6tI++lWDpVR7gjnX6tQm0aOX
+         HDWb1jOBwv27ZYqaAPvBVu1Hpnsq6vQ4BuagBlslVOD258aag+OeeNw1cdTxnTGk4tg9
+         Uq39yAo44eT03Re2i/9XVXNu+pB82axt6YRjEtql27ySYAIeY8z/RQ0ig/M3hfZvhWgc
+         PBowr0l1JSLGpbj/Irkf0ZArEuWNZ48AK3yIZfBT4UXdNR4Bdcwa+FMasbgbgQfLqh4m
+         gmjg==
+X-Gm-Message-State: AOJu0YyVuk8Cy+oHCqW5qqjPECqet4piWPIhZ2T2HWfwKqrzstnAboSx
+	xhxpje6jbKRmgcBq/XLguN4caGh+YGfY6X2biQthE2foio6Bl+xqgrpaggC6zOz9R2o=
+X-Gm-Gg: ASbGncsAdNPCponIvRtFZyN1zRtBXOOM4Q/XAUgecYfNRK2sZ4IDc8KQng/tduHkQyH
+	nb0zWiB7LLrRT8TzyxY7oM61W4S8YjxQ5422uzUAdUNOAcVXauevCXvsr4veKqkZHab8e1XXY6M
+	GBOtMzTc+7o3C0s5YW9WpKbk5ENXbkQj0uI4YS2856Fpw6Zteo7mKgEknybvlkUBTndIWYv1ioo
+	rIwVKJ0hiIjfsOyQpG969Z/IuwVVVhmCEpfBiIFtdGmJ9H3cm2zVu22A3BGOljUvdLYRfZAnxzp
+	qXY9SPpMgpNZReabjMsPtPHjKYDumZAA1ts2DLLUgVG3ZO+2HxP754oZ/B8DuYHD915J43jYP9R
+	QRmngBXdcJaHDeDVBRSqfL3VCOTxebMELTf3FxuN+FIgTBcLeOaGRVho8K68JmHR6m8hB8I0f29
+	YD
+X-Google-Smtp-Source: AGHT+IEIBgcE97CoXC2cuv8USSawi1baX2mBvmMGwoHiSnGzF1+jN6Y2AS3XpbKZjXh6B6f41EZZsg==
+X-Received: by 2002:a17:903:1b28:b0:269:ba8b:8476 with SMTP id d9443c01a7336-27ed4aea2abmr148101555ad.56.1759058245920;
+        Sun, 28 Sep 2025 04:17:25 -0700 (PDT)
+Received: from G7HT0H2MK4.bytedance.net ([139.177.225.231])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b57c55a2c45sm8687451a12.45.2025.09.28.04.17.17
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 28 Sep 2025 04:17:25 -0700 (PDT)
+From: Qi Zheng <zhengqi.arch@bytedance.com>
+To: hannes@cmpxchg.org,
+	hughd@google.com,
+	mhocko@suse.com,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	harry.yoo@oracle.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v3 0/4] reparent the THP split queue
+Date: Sun, 28 Sep 2025 19:16:58 +0800
+Message-ID: <cover.1759056506.git.zhengqi.arch@bytedance.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4FC7610000C
+X-Stat-Signature: aw933yxk1m5zskkcw7ambk7517pdqitr
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 6AFC11C000A
-X-Stat-Signature: 1ywqi3498e47mtkb45rk379mm5gjkpzh
-X-HE-Tag: 1759054085-790481
-X-HE-Meta: U2FsdGVkX1+x74F3lhX9OWTd/AsI8r8xrbrYHTD9YMfRmmJsBQyekFNdt2IDcUgW2biunICc1fCD/ECMHJv/7q2iGzZLPZfOacUNF0uaerz1eSpAmXVP/L79al6ipUCFYn9bLaJyUCGpwzyBqCxcaqASXXOovkldWCMD+YYJa+l/S63XeoIDZEX61qNwkoDlcMap0EN+q+/aTtoX4YLoxPup0nDap7cuZlXCDWzNe33P9GmM99JRrnUHzg9uo2j0UROigDjGofjblkQ0sYzJCoJpAUBDJftw5kwDvQYU4MolO3iQjnNivMcRPwST7btL31krN+6FT116r3MEys+t2c2qRuuLziYc3oPJKoAxEFv0eKtzy3pfS3UveKJF/RSH0CtedIiiZVJKIeCdFpaOmcLT+aR3VaRm7bKUT+Yr7rmx2+0dDdV9gQZBjsOVSnlAEsFttcYYP3I/n5nAbnma0PamDAd3FSZWYD5/YAZdE6DyBONq9w4ILq0ohx4LrPqja+hht2UXCzAQC/XTCgHWPGGwFWJmNd881OblCI2uY1HuuzOey5Anzt2JrSyTSMwcpcWJWd9vw0z4yAVZCSPs9b63w0zFaSdBKJFcIqjt9aYz1bdVPyK5o8jrli2gcHe6V+imEExOalb1lp2V5+VZ39nztgsV/HZLID0JNKEnlKIaatf5YSnO6x5afLXp03bLyjzd57AJWAPUC+/HYj232adyFSJOPrG4tzQtDPw6RBOfZQ0tzD3iNMmWUZOqEznmIztWvczDp3Px4GcpX6tUUFsSN6+lwP1eyY7L34ZR2tG7405I4pGBn39dncnkyOnQa1jkqU8DvLj+wOTWF0uTUx6+KupWhOOP1GzEoGjUQOBBl83dm9cZ+FVqkTeH7TaKr3CTngLuNcKExDjgn/ZGlf98yt2QruSlPbZbfPZBtEQQRYrgcm5hP/EeClJpaHB4ngOPIDFEI4nIjme1Kp5
- NEpLfR4m
- TxjedE9LFofe6v2vCoNjPTLDtbKmxeyCbDGAsWnLjvzs7+w2Jh2CstrCMX41fopbmYBcAUXtmwxC6Pmy/w87aRCbhL2bBNvdt6mkTFDpMX1Yom7ureIg2USSiRKipMviJM/epRnZncNqzTZbRBH2V2Y52B1Y4+2zgXLnUDSOorF5MGEi5fIMqVQuaeb6ffWZJzm++
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1759058247-108334
+X-HE-Meta: U2FsdGVkX1/vqC49PrhYOKVX04VkvzcRyhPGU8PqXLLl9dKZKkCPcG9HFcoIRrwyUoPVsCDnYWgx/GrYcbIMsAHozPVhjfQXGM4hdzA08rWHpQMdLoZQvLye+r7wQye17avOrz0tGxF7V8Wbt+8hIadntvQ1kGee8sZ8RjfBaOSKh/1p11CqE8ed8NNpaN22QcBPtCG4Xklv90Y+tpomgp/+aUbzeu/KD641lFBk8uCqJZkkP42yEGL0yCRrSQ2QE2AlVdUohUvos9rYrbkehi/6Pra3fHOCf1kGsDtwxkZCH7WHtf5YomOjNaPhy6w/6G4gqNp0u2eq5E0/PUNomulU3om+MdC0Yf4DuyEyvIy14TGTZ4mAg3gsr1IY2+BcXEqR7uaxJUbscmwpsgBXj81IHpkzFt6lDegJG6BZ/W7bDcl1GW01MTEmRXpdMLHShNJqpuKbQL8bol6vrGAPBRybZ6+BRPrlS6i2DcB6of1xHRZb+56Pq+6ZWHeuKPJEqhU5evzXBsEgWBfZnLcgdW0GQziSgqwMThMd4SyKQo72GgAlBSotRYaKZLCg0jtVF92Ame2S5GT8HbeBKfHC0tHm0IeXZUzxNpwBl8kDRCREKBA71dvDk85UFRB/SX9YUK087l8MsVWRKefKWIRdN6Ecf1yTpHrEvAEILVruglVhoniWqDHsqFWRkVO/5xmzeZuNmV1n+BNJ2XqgWUgmtDkDSTgWsIN4rywaYMpKejxY96a06SdRgQfqRaxsoN5KKXuct7RoRGS0xBjxYhCWLVBNtnspH+NbWoSUr3S5Yd/G81lHnLsCHgZKZ6w9+zwqIZ2J0U7VpXCmFoe+MUxVuBGh6eJhjOj+tScQTweQye2bPnKVvcm3N6tFPcyKXLJhnhgt/D0+Gf9TEfxM47ym4vF1sZ1Vd3tK9nxubh8qnk5aiMTyXyo+N7PZZnu0AeQ53PnpQb1tiPUrQPIv8kO
+ /1PiLSL4
+ GLQrA1GPyf0rV7f/7JiXK6xBmI8/9CqjuSECu87M1H8oUGvgDYAUqPTzzV1Vj4r9jYX63zB1D0p/oHxq3oCgdAMyBdvGkNEfKLox514gaJEcvTATkJZtc+10Jdr/cd6ur+9bfhgj/udEmD1kfOvHoITeWV58+IIw7k4wEUD/tpBMyKefXnYw/+n96dKSiictMNmPLJa07x5ehnyFk9Kep5USdU1+z4EriQol8X4SFFXlxqnIxoVmgOuVJazcfan0rxgtdklYoPAR/8Ju4GghLANK76bCBiyVnRCrZSWXOEKhgblDQ6N3bEjxqjm6sG7Cc2X7fpGmaxAjfkiY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -81,129 +134,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Huang, Ying" <ying.huang@linux.alibaba.com> writes:
->Zhu Haoran <zhr1502@sjtu.edu.cn> writes:
->
->> "Huang, Ying" <ying.huang@linux.alibaba.com> writes:
->>>Hi, Haoran,
->>>
->>>Zhu Haoran <zhr1502@sjtu.edu.cn> writes:
->>>
->>>> Hi!
->>>>
->>>> I recently noticed the process_huge_page function in memory.c, which was
->>>> intended to keep the cache hotness of target page after processing. I compared
->>>> the vm-scalability anon-cow-seq-hugetlb microbench using the default
->>>> process_huge_page and sequential processing (code posted below).
->>>>
->>>> I ran test on epyc-7T83 with 36vCPUs and 64GB memory. Using default
->>>> process_huge_page, the avg bandwidth is 1148 mb/s. However sequential
->>>> processing yielded a better bandwidth of about 1255 mb/s and only
->>>> one-third cache-miss rate compared with default one.
->>>>
->>>> The same test was run on epyc-9654 with 36vCPU and 64GB mem. The
->>>> bandwidth result was similar but the difference was smaller: 1170mb/s
->>>> for default and 1230 mb/s for sequential. Although we did find the cache
->>>> miss rate here did the reverse, since the sequential processing seen 3
->>>> times miss more than the default.
->>>>
->>>> These result seem really inconsitent with the what described in your
->>>> patchset [1]. What factors might explain these behaviors?
->>>
->>>One possible difference is cache topology.  Can you try to bind the test
->>>process to the CPUs in one CCX (that is, share one LLC).  This make it
->>>possible to hit the local cache.
->>
->> Thank you for the suggestion.
->>
->> I reduced the test to 16 vCPUs and bound them to one CCX on the epyc-9654. The
->> rerun results are:
->>
->>                      sequential    process_huge_page
->> BW (MB/s)                523.88               531.60   ( + 1.47%)
->> user cachemiss           0.318%               0.446%   ( +40.25%)
->> kernel cachemiss         1.405%              18.406%   ( + 1310%)
->> usertime                  26.72                18.76   ( -29.79%)
->> systime                   35.97                42.64   ( +18.54%)
->>
->> I was able to reproduce the much lower user time, but the bw gap is still not
->> that significant as in your patch. It was bottlenecked by kernel cache-misses
->> and execution time. One possible explanation is that AMD has less aggressive
->> cache prefetcher, which fails to predict the access pattern of current
->> process_huge_page in kernel. To verify that I ran a microbench that iterates
->> through 4K pages in sequential/reverse order and access each page in seq/rev
->> order (4 combinations in total).
->>
->> cachemiss rate
->>                   seq-seq  seq-rev  rev-seq  rev-rev
->> epyc-9654           0.08%    1.71%    1.98%    0.09%
->> epyc-7T83           1.07%   13.64%    6.23%    1.12%
->> i5-13500H          27.08%   28.87%   29.57%   25.35%
->>
->> I also ran the anon-cow-seq on my laptop i5-13500H and all metrics aligned well
->> with your patch. So I guess this could be the root cause why AMD won't benefit
->> from the patch?
->
->The cache size per process needs to be checked too.  The smaller the
->cache size per process, the more the benefit.
+Changes in v3:
+ - use css_is_dying() in folio_split_queue_lock*() to check if memcg is dying
+   (David Hildenbrand, Shakeel Butt and Zi Yan)
+ - modify the commit message in [PATCH v2 4/4]
+   (Roman Gushchin)
+ - fix the build error in [PATCH v2 4/4]
+ - collect Acked-bys and Reviewed-bys
+ - rebase onto the next-20250926
 
-Right. I tuned down the task number to run anon-cow-seq on Intel Core so that
-per-task cache size could be larger. The benefit has indeed dropped.
+Changes in v2:
+ - fix build errors in [PATCH 2/4] and [PATCH 4/4]
+ - some cleanups for [PATCH 3/4] (suggested by David Hildenbrand)
+ - collect Acked-bys and Reviewed-bys
+ - rebase onto the next-20250922
 
-1.125MB cache per task
-              sequential     process_huge_page
-Amean              664.7                 740.1 (+11.34%)
+Hi all,
 
-2MB cache per task
-              sequential     process_huge_page
-Amean             1287.9                1350.5 ( +4.86%)
+In the future, we will reparent LRU folios during memcg offline to eliminate
+dying memory cgroups, which requires reparenting the THP split queue to its
+parent memcg.
 
-4.5MB cache per task
-              sequential     process_huge_page
-Amean             1373.2                1406.3 ( +2.41%)
+Similar to list_lru, the split queue is relatively independent and does not need
+to be reparented along with objcg and LRU folios (holding objcg lock and lru
+lock). Therefore, we can apply the same mechanism as list_lru to reparent the
+split queue first when memcg is offine.
 
-9MB cache per task
-              sequential     process_huge_page
-Amean             2149.0                2070.4 ( -3.66%)
+The first three patches in this series are separated from the series
+"Eliminate Dying Memory Cgroup" [1], mainly to do some cleanup and preparatory
+work.
 
-On epyc platform, 7T83 has 4MB per-process cache size and 9654 has only 2MB. On
-9654 there was only slightly improvement but on 7T83 we even observe ~10%
-regression with process_huge_page.
+The last patch reparents the THP split queue to its parent memcg during memcg
+offline.
 
-Do you think this performance issue is worth addressing, especially for AMD? or
-acceptable as an architecture difference.
+Comments and suggestions are welcome!
 
->>>> Thanks for your time.
->>>>
->>>> [1] https://lkml.org/lkml/2018/5/23/1072
->>>>
->>>> ---
->>>> Sincere,
->>>> Zhu Haoran
->>>>
->>>> ---
->>>>
->>>> static int process_huge_page(
->>>>         unsigned long addr_hint, unsigned int nr_pages,
->>>>         int (*process_subpage)(unsigned long addr, int idx, void *arg),
->>>>         void *arg)
->>>> {
->>>>     int i, ret;
->>>>     unsigned long addr = addr_hint &
->>>>         ~(((unsigned long)nr_pages << PAGE_SHIFT) - 1);
->>>>
->>>>     might_sleep();
->>>>     for (i = 0; i < nr_pages; i++) {
->>>>             cond_resched();
->>>>             ret = process_subpage(addr + i * PAGE_SIZE, i, arg);
->>>>             if (ret)
->>>>                     return ret;
->>>>     }
->>>>
->>>>     return 0;
->>>> }
+Thanks,
+Qi
 
----
-Sincere,
-Zhu Haoran
+[1]. https://lore.kernel.org/all/20250415024532.26632-1-songmuchun@bytedance.com/
+
+Muchun Song (3):
+  mm: thp: replace folio_memcg() with folio_memcg_charged()
+  mm: thp: introduce folio_split_queue_lock and its variants
+  mm: thp: use folio_batch to handle THP splitting in
+    deferred_split_scan()
+
+Qi Zheng (1):
+  mm: thp: reparent the split queue during memcg offline
+
+ include/linux/huge_mm.h    |   4 +
+ include/linux/memcontrol.h |  10 ++
+ mm/huge_memory.c           | 236 ++++++++++++++++++++++++++-----------
+ mm/memcontrol.c            |   1 +
+ 4 files changed, 179 insertions(+), 72 deletions(-)
+
+-- 
+2.20.1
+
 
