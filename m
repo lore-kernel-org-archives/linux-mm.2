@@ -4,122 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23863CAC5B5
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 04:49:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C8FFCAC5B5
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 04:52:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8D048E0003; Sun, 28 Sep 2025 00:49:24 -0400 (EDT)
+	id 36FFC8E0005; Sun, 28 Sep 2025 00:52:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3DA88E0001; Sun, 28 Sep 2025 00:49:24 -0400 (EDT)
+	id 347BE8E0001; Sun, 28 Sep 2025 00:52:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D2BFA8E0003; Sun, 28 Sep 2025 00:49:24 -0400 (EDT)
+	id 25D728E0005; Sun, 28 Sep 2025 00:52:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B95768E0001
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 00:49:24 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 52324BC372
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 04:49:24 +0000 (UTC)
-X-FDA: 83937430248.07.5396F5D
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 877B3100009
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 04:49:22 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 12FBC8E0001
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 00:52:19 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A31D7160934
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 04:52:18 +0000 (UTC)
+X-FDA: 83937437556.26.9CFBCB4
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 0543D40005
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 04:52:16 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
 	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
 	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759034962;
+	s=arc-20220608; t=1759035137;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=DyUaaqdWAgLg9ININm7xedY+UnymRaRfwlVA8p6wolQ=;
-	b=TcdYkdc4hz150EKXsAxxy2dpBHJ/DBhOZqsTLTPXxOTcGxyWDum+nkDdZ9W40TVn+v1BZX
-	ZSveannaB4lz3Jy54IhWuVTl6TrlfPrJqs9YDnuxoJm/R9oliyahxdDsqwfkDg0mRVX9n4
-	z0SftgWpSVVM8SGIF3wwPspHRteRdR0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759034962; a=rsa-sha256;
-	cv=none;
-	b=F0QI4hVDqW40HVbotTCTSgqyWFcMrTx2fJwAwUZbj46DZrGMvuUQLdOnad52ZmEYGUqoN/
-	3cQr9tIgX7BZ1Wk5ACk/UEPggkOQrEdx7xXlZNxunhz6mi0zfDvRr/cSsZQEy5NhyrKfKP
-	RnGAzlTq1AFvTAPbKGYxdkki7UNNwmQ=
+	 in-reply-to:references; bh=MDeTOOsx+C00FUGoSTYTsfkYGe7/IDMgbdTfsuLqCIw=;
+	b=TGcbQYr7iiTLZc+5GQR0JX/QC6shOP5kCnxT1Li9eixuKxCUfvGgesnjtva1KZWZnBIjVH
+	FBgU4QXLBJC4azdGXUz64eCwdC/tkOVx28Wm5PkDdwkKxlBJb8rOlqsA1aNd0GlcMOFkXd
+	eGTo80wfVDL+M5A619s4Xf2OwoiBqj0=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
+	imf12.hostedemail.com;
 	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
 	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3c68ac7e18aso2299978f8f.2
-        for <linux-mm@kvack.org>; Sat, 27 Sep 2025 21:49:22 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759035137; a=rsa-sha256;
+	cv=none;
+	b=sFdAVrEazoXe4VGGJT1j8IFDbhkO9dUVdCUEKczaPp0EAxP/ye4jzuaBfUoYCXbWs9pZC3
+	lZp4VVFnr3viEM9NOBEczp1JM1aZQegFe7yeTlkZ4EZ+/HyXjo8tKYhu+f2u1K4sl1b3on
+	HzsWblUcThMGXQyMy51kh6CdxEiS0vs=
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3ee13baf2e1so2669229f8f.3
+        for <linux-mm@kvack.org>; Sat, 27 Sep 2025 21:52:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759034961; x=1759639761;
+        d=1e100.net; s=20230601; t=1759035135; x=1759639935;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=DyUaaqdWAgLg9ININm7xedY+UnymRaRfwlVA8p6wolQ=;
-        b=maEwpcDj3aXrBLjefLfHVPrLPNEh1/uK4yTl31irM2f819A6TclBzdAIi3+o3Uvrdf
-         o1q7/QmxJ5M4tgcc8wl7NtcXrzjGV3T5XtmBLwCPuo6lrt0RfnGp5AVyeiql8Q0lnPc1
-         RUgfVY7U6kLnU28kWWD1MaQhNHZqfVcXk7lKSv+JtbqvctOJrMLkfBpEVE4hjm//pclT
-         dNBelfjz6nhcHiPAHVkRmJ+39UP+9iCRhAi2m7uzNoY7xf4KTooyjQsuYtoxHBxGnBWL
-         BxRNosAGy/dQ/0Sy1g+UcoHJtda9KIoY53dj7fW55DXDkLHeLXIId9PnBo71k8hooLQx
-         2wAw==
-X-Forwarded-Encrypted: i=1; AJvYcCXmLUba6nJ3uP+1kLDNW3qOVyT/t51ZIilStUnbXFXzo8nOeO6cETkU2Z2ZsdJ+gGAea2Dr8Ji10A==@kvack.org
-X-Gm-Message-State: AOJu0Yzh6OB1hsRT2puRd1d2X/2Mped5olIyytBslmr4r9JBCHufQrYy
-	MXZfhP3OoMVe3ISNzxn6/a/fR/SoyT2Q7vBvwPzXjlfv1e3O851+/4Ad
-X-Gm-Gg: ASbGncs8Ie8wdowk57mO16DNo593LHVDpBNiWAJ3R8OsZOKge6vgcwzsCwlET8Ftl89
-	dzgkMykPIkVPUP7uhFCiHd/9aXZNxvv4n+vaQ96oJuTkDXRa8+OsTtZpws8ubvg/1vLn+wbzlTm
-	GBlC5Q5jCAUBTjfeyJzgLJAkkx56piNzUBZ8Qieti9iEwnGw1EyWBglAtglk2bZgrJEZUuRHy0u
-	V+tHh/I6+mYix4GB/UCzUCpJd774xbJRoxawqz7xqmidFj5uYpM703RbmC/VBW5NVnMJBkSMMEP
-	TUWad3cCJY2TirIFmIUEy0qTWY34U66OLLaolJaxt/0KAK//Zs6buFEMfR7Nssnt7Mt63EPpkWF
-	YJOFaknnkWS2dd14pKvmTqVT9FRkex83MQA==
-X-Google-Smtp-Source: AGHT+IFtXLQOdcvQ7Xjrg3v0c2+UOl4vx5bR+h7AWQ6ssWZLLcWyTpq2xRAkUoQVnuyBrbH3ylk2aQ==
-X-Received: by 2002:a05:6000:2dc9:b0:3ec:ce37:3a6a with SMTP id ffacd0b85a97d-40e4458ce65mr11243196f8f.22.1759034960758;
-        Sat, 27 Sep 2025 21:49:20 -0700 (PDT)
+        bh=MDeTOOsx+C00FUGoSTYTsfkYGe7/IDMgbdTfsuLqCIw=;
+        b=DDn+PX+HW+weefBCun4DK/UHBHlkjeNoWl0yuYE5ZEY8vguaQzuqV4YtJpiMAmk4/o
+         MKWjzJj+2mSPL+P4ssT1vVlxvknaIPmnduLXCPmz8OsuFobHhgWS4MqlzC/2b/xIHpA8
+         RzUaHTSQijs29Qs5PUKQgPGk4diFLoDeHiqbIl2mtNbWBS4UU9B07NgL7UqnwfsuftIM
+         LuShfO7O8j5gsXNFE5Z7bGk3fslyP1A9JwD/PmWbB4UzLOm0vt8sUXGrRb2Rz7doMuBF
+         zAcdYF4y09NpJxdaWVYwPeQsWGJPLngvBAvWEqXAQjVldiib3Y0Xt7P0w1luBz5k0Dm9
+         l7KQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVHfeTcLYQCKi2+NZxGR0JiXF8gBb5IgR03hhZbGRvaE4P7VUe/tfJljhITqLt9KlzkBbELR4/LIg==@kvack.org
+X-Gm-Message-State: AOJu0YxPF20fG/2EJxIxEoPwzLebxa+LXYdyc2lhVWMTNdD/oyINFMf5
+	8Nn/UwpZR5XibrsUtjbCZNLBF9UwNih616DDqisAYuS9Qvp8rxGMiV8r
+X-Gm-Gg: ASbGncvOiJqbJlkOjBRMR0A+pb55/DZtzHR7lNS5J24ubIlOLHIrEs0ZATPw2DxrDj0
+	P40eg/Ak5Q97AFMGR3YsiuqfMkamTfRE45e7bZD0VjCW5phJI8mSvtSwE2zGK99DfV0oi4KeJjq
+	2004i/oTsdB542Icy9o4qzCyL/qRGM7C3Mj9yZOLl9Vr8XgmWNQuVEsxIdEJV8iM2WzGCHK4WeF
+	2E1Uadp8i5NpKl/yp3r+LfhehqGL6E1BBt5KY4Wu+5kZkCWB6lL+1sGmmgAIqPoG993MDzksO71
+	4FKTggbfz9Dmgf8pVmj6UPh6ZEIKMHo0bP6uq1t0qKe+YUbohNtcL4Sy93ZThP0d+SfPT6HbpfE
+	4qIYsf+a1GYgi
+X-Google-Smtp-Source: AGHT+IHVzH6CutqdZ2xPOWXvoxdwHZpW8hcV6MdTmJ329VCEuu3lj8BtnISnCCqCDPg2So93Cnj9wg==
+X-Received: by 2002:a05:6000:22c2:b0:3ea:3b7b:80bb with SMTP id ffacd0b85a97d-40e4ce4c5f2mr10247690f8f.58.1759035135383;
+        Sat, 27 Sep 2025 21:52:15 -0700 (PDT)
 Received: from EBJ9932692.tcent.cn ([2a09:0:1:2::302c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fb8811946sm13119628f8f.18.2025.09.27.21.49.10
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fc5602efdsm13539465f8f.34.2025.09.27.21.52.12
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 27 Sep 2025 21:49:20 -0700 (PDT)
+        Sat, 27 Sep 2025 21:52:15 -0700 (PDT)
 From: Lance Yang <lance.yang@linux.dev>
 To: akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com
-Cc: ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	baohua@kernel.org,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	npache@redhat.com,
-	riel@surriel.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	harry.yoo@oracle.com,
-	jannh@google.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	usamaarif642@gmail.com,
-	yuzhao@google.com,
+	david@redhat.com
+Cc: xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev,
+	ran.xiaokai@zte.com.cn,
+	yang.yang29@zte.com.cn,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	ioworker0@gmail.com,
-	stable@vger.kernel.org,
 	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH 1/1] mm/rmap: fix soft-dirty bit loss when remapping zero-filled mTHP subpage to shared zeropage
-Date: Sun, 28 Sep 2025 12:48:55 +0800
-Message-ID: <20250928044855.76359-1-lance.yang@linux.dev>
+Subject: [PATCH 1/1] mm/ksm: fix spurious soft-dirty bit on zero-filled page merging
+Date: Sun, 28 Sep 2025 12:52:07 +0800
+Message-ID: <20250928045207.78546-1-lance.yang@linux.dev>
 X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 877B3100009
-X-Stat-Signature: ikidbi7sy191xjdqxq4ginh749d89qse
 X-Rspam-User: 
-X-HE-Tag: 1759034962-697206
-X-HE-Meta: U2FsdGVkX1/hQY1X9hKmY5TRd4Y9h+dtNpOKjSIerw34dzq2auvGGDnQgh/UcYHGq7lCLWIZ2HHNCKREC71DixXhN8Bb7E1LQ8LdMvAUfRSB7CaWHZNpDNs9+QQvgyrjg0oxpGoSWo52dIOgV/Hwjl48DFec43pnOxK5p/s0eAFPrArEa2M8ZSBWDRJkyrMw/b0kwmLoZ0nkwDg5VEYFw30fzWiqtj3Al8gq5B+LVJCyzkrD/UtW7TcfAFxHkj6hvWGPzP1OcjVmdU8ykSp+BZuQMBehQ3w/lO98E+XIoFh8eg/Jgbfw6zFGapnLHu/uQYGYJmUAsEoym6nmJtqDqmfMk7s1TpoKidAbdRZ9eKHy2GWUcx7kdmbHkj2xoDA5aN/b5caYS+9M+WG5PnVUx7lbQm2GU2bUZZSuPOzhoFIWqfvHNpsrLWeS3QV74erQp3+S+e6zQzjhVcNjuRX0CnnPtuuwqc44tcl75utfab9Asn8wTCfQOITXUHeRZ5BhHH4oGhdxtPAp6CwMjyxpI38atwoaMB3/Vt02rUbonlUQG/XvWecNhfLNB53bq4pwMSeT3FDVYN54ld9lplerjz3VCnHLPdyFPOejKht5F8PxsrZXNkbKMEhWJKnwfTpgmoP1+hQVQyPo5NLLb4/oxbcvHTYJJxYsh9+Nzoojoek7XzlFqx6ol44EgZ7Oxho8mdFB5VRN7E99QUo7HA3C/p6p2ixuaDwrQxWm+i1UuAP5puPua4QbDaSNKnbgXYISE7L2dX75EGaSyjpxprWG0Jfbt8j7F5JizxkjVgsPSoZ0agwMNMX/nPjaaHqE3v/V4regJ5YKxcAFND03Ghlelbt7fTRD7Hq2f6wIfvqCH22tXHEjR8lQSaICc9qLGGVPwRjVU5yeHqazYqUl1a2qfzkI8S3qqU9EIB2I3QjE84L8wF2Wq/+5sqOZgE7a1Dw2qPH38yfBIV9ikgSNseZ
- gGPWM+7H
- oYeJCyTLc/yD4qkMzvmqG1gBMwvidUXk8nWwyILZYet3D6vrHP6SaZrDxEkSKKi82bkcPxARES/lLSzrbTEn6qMmBGy2RPU0UfvxE7e0Nw3K5PZQFbUpbLhDJdL9dHazWrImeEdWyiDnGjx8xWga60PaJp5JCzMsgffKo1X9lGrm5xRncDfRl5LpZl4+HKU/yNw5OS/nPX++XOsfgOML+kFuK2V6ukdJOzkv5J9Vy9vr9LP5tImhKC5lh27iGOcjUDD5TRZSGWVahvMOhsXA17q2hk1BGEVVoG3v/Q2bLUfccs82InZyLxGzUzNU4vzfyoqqy3rypjgYXIvRWkD8dEH1R+79H9fyNRKsDaYnmoTN+8LkZjeHY9tquiFDUlk+s2Qk80w6dvABN9SX19PhCUNDi174xgQxO1CFIt9FfKIM575uFsLy72Pyh5I2XD3NqkeN8JKO4sire71XpbN60TCkwbOHME6veHSQmVxfV61CFpbMv1ZK/QKNQRVtlDycrMpOW
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0543D40005
+X-Stat-Signature: aetjmottigfo5ay6jfow4sbt8qawjqwb
+X-HE-Tag: 1759035136-384493
+X-HE-Meta: U2FsdGVkX18nloFaEpuUoj5EgXzkWvl/NIMPx4XbX6OLe5m1r+Z802TwujTnFcQzMiFCcmAcANZddXT/dNlWmLkSJAARp9qeRwSqlNfvjdfk8ug2BC42bsX4l5AoUvQcWiKoZhj6iCXpjPdx84PPhUg5kNDeFK+xo49HSW9gy5p8VBc8lRG+u3vrTS5Ao2BtP1XdBVvnliFaiMLL+/6MLQCyT5BZ8qbaNwso/FSHGmV4IyhsOuNRG8HFu+VJga/Xx12u4nrFmXJ/40cMnOY+LdiM2JuWO4FatoNSJXYO6p8/oPgeTy+5dZ3PWObQZe5AOJ643zuNE/+p31Dg8zey76b19PpV4O3bmeK2S5bxmWQKR0JYBsW8IEifeHMLrkliUIra7JsqJdnqG7ghW+ey6WGsKz9dw+FNC0h3Xz3oNhFHDA7qhh7uOovR1MJisiRe2RXoRBfEcg/vtczu8g2diWMntHgfVXe4ISW1xVn5UCwUlIreaGAGYe0eR1H3bEkHXZGwzygYww+UjFGcckAqYV8jSy/oIJSDhhBF26BfiEOtqRwWMCrUTA7Nze2lkcszcotYiLpPHnC6qEV/yTFUvw6u+DIdjZQ3GGTWdvwdQJJW/13qX438iC+hSMnES3enZyUqk0G6/zCw8iFwNM4s8QPdJRl75ycSMb5nJBLMahhspDlACoW0j312Mfe4a5avJWuNEc4z08F39olJekeZFM+RL0zMM6G9y0SDEKF5n0cZPMmG3P6kYDVeZ7DXGGVBXqZMtsjyimjC/JozgowH1p5eKCpdTLjZmOzibJ1D7Iw6wNb1IYJc9tOruHb0o9zTmhquUhIKlaGJBvYq4rgg4fUKSx0nXgu9CZJQe+C3OYmErbzdFBmEEyvS0h6ad1YLEdmjPKeFnu6H/27/fwzFJReVpAsZFcCEJiiG3kSFSOR6gJMhmZh2/nUmBjeifcLN863RjMFI5E9NmOwWrBW
+ 9J7yBi9N
+ JI+y+kxYhE8UGnv2Rfw55zcyAsI1NSqGstF3XPiAGEmYLqqDi3VxZy2WndGtvmXRLJusH4Wf4hWX59xBYQsudptQfThXCTrGkp3eH/10Mpco/COXoYhDnRHd0bQjiwRyQ5XZiixvP/GURXpO3cOYxuWaKqc0v9V4ffEIYcHwD+UdQRFOye2UeaxX5iQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,39 +112,38 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Lance Yang <lance.yang@linux.dev>
 
-When splitting an mTHP and replacing a zero-filled subpage with the shared
-zeropage, try_to_map_unused_to_zeropage() currently drops the soft-dirty
-bit.
+When KSM merges a zero-filled page with the shared zeropage, it uses
+pte_mkdirty() to mark the new PTE for internal accounting. However,
+pte_mkdirty() unconditionally sets both the hardware dirty bit and the
+soft-dirty bit.
 
-For userspace tools like CRIU, which rely on the soft-dirty mechanism for
-incremental snapshots, losing this bit means modified pages are missed,
-leading to inconsistent memory state after restore.
+This behavior causes false positives in userspace tools like CRIU that
+rely on the soft-dirty mechanism for tracking memory changes.
 
-Preserve the soft-dirty bit from the old PTE when creating the zeropage
-mapping to ensure modified pages are correctly tracked.
+So, preserve the correct state by reading the old PTE under the page
+table lock and explicitly clearing the soft-dirty bit from the new PTE
+if the original was not soft-dirty.
 
-Cc: <stable@vger.kernel.org>
-Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
+Fixes: 79271476b336 ("ksm: support unsharing KSM-placed zero pages")
 Signed-off-by: Lance Yang <lance.yang@linux.dev>
 ---
- mm/migrate.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ mm/ksm.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index ce83c2c3c287..bf364ba07a3f 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -322,6 +322,10 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
- 
- 	newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
- 					pvmw->vma->vm_page_prot));
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 04019a15b25d..e34516b8fbe4 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -1403,6 +1403,9 @@ static int replace_page(struct vm_area_struct *vma, struct page *page,
+ 		 * the dirty bit in zero page's PTE is set.
+ 		 */
+ 		newpte = pte_mkdirty(pte_mkspecial(pfn_pte(page_to_pfn(kpage), vma->vm_page_prot)));
++		if (!pte_soft_dirty(ptep_get(ptep)))
++			newpte = pte_clear_soft_dirty(newpte);
 +
-+	if (pte_swp_soft_dirty(ptep_get(pvmw->pte)))
-+		newpte = pte_mksoft_dirty(newpte);
-+
- 	set_pte_at(pvmw->vma->vm_mm, pvmw->address, pvmw->pte, newpte);
- 
- 	dec_mm_counter(pvmw->vma->vm_mm, mm_counter(folio));
+ 		ksm_map_zero_page(mm);
+ 		/*
+ 		 * We're replacing an anonymous page with a zero page, which is
 -- 
 2.49.0
 
