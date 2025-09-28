@@ -4,118 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16693CAC5BC
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 02:36:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9F15CAC5B0
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 02:56:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3534B8E0007; Sat, 27 Sep 2025 22:36:13 -0400 (EDT)
+	id C7A4E8E0008; Sat, 27 Sep 2025 22:56:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FC658E0001; Sat, 27 Sep 2025 22:36:13 -0400 (EDT)
+	id C508D8E0001; Sat, 27 Sep 2025 22:56:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EB938E0007; Sat, 27 Sep 2025 22:36:13 -0400 (EDT)
+	id B66638E0008; Sat, 27 Sep 2025 22:56:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BDB68E0001
-	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 22:36:13 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A7A37C090F
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 02:36:12 +0000 (UTC)
-X-FDA: 83937094584.11.C004091
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	by imf22.hostedemail.com (Postfix) with ESMTP id DA086C000C
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 02:36:10 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UyfbxVuE;
-	spf=pass (imf22.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.49 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A4B6E8E0001
+	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 22:56:22 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5FFA916069D
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 02:56:22 +0000 (UTC)
+X-FDA: 83937145404.22.80267C8
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 6E790120007
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 02:56:19 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Oad5CTon;
+	spf=pass (imf29.hostedemail.com: domain of wuyifeng10@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=wuyifeng10@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759026970;
+	s=arc-20220608; t=1759028180;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+gaDCzK/mppvE+TbZ3WPtXIvdSdoczZCrzHaCPLwFrU=;
-	b=Mz959uZ7oGujJStJ034o/yfxB89OM0JmryFfbdASL7aT8UwZ6q/K6HliXkTPv/b80M7+rZ
-	uHCRDmQf9gOKWFindbd8IdCHwkI7G5+32Aqpx2E61BUDZ7mmDtZ5SKv8dliLDx/wq8wJT2
-	ckz5fImKj0PPS9v+nKHPkBDJ2DM9/pM=
+	bh=7ReN4RalhyqYDHTLM2Xmxafnn7ELIZ78nRRZkoXRYIc=;
+	b=AmKZiQzt7vlZ0Hjz1ODEy/n2LGdF7IZcpUUgpb5twySQ7LimbDjlZyuLAPYNe8CKIhjI4s
+	J6Ufuq8ussREGNMbYDlskBokwlTB/SDslA7246BFXZqUB9+7sedxXYdkaQ44geuxzEEizi
+	dSy9d+uBDLxER3JIfylzYVEelQm2xh8=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UyfbxVuE;
-	spf=pass (imf22.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.49 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759026970; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Oad5CTon;
+	spf=pass (imf29.hostedemail.com: domain of wuyifeng10@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=wuyifeng10@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759028180; a=rsa-sha256;
 	cv=none;
-	b=AElrl4/RbJ1CAGReJAnnpPwQ3gjD20zwaMfdKfFm7T/KpA2IJQcOKF9oHSUGxk7xWng4hU
-	vUMxcyyE2hvv9KB/D5PUVMsR9TGZSkS8sXg6G3eizzioiKixbBHZ8t+piaLJ1WOMREWcAv
-	p2k1r4Nk7t4TdZjC4HQufH852Wl8yx8=
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-795773ac2a2so29732926d6.1
-        for <linux-mm@kvack.org>; Sat, 27 Sep 2025 19:36:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759026970; x=1759631770; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+gaDCzK/mppvE+TbZ3WPtXIvdSdoczZCrzHaCPLwFrU=;
-        b=UyfbxVuEKjJTAD06euUhKD4YQsTaswRFNHR1xPAn+XGlNXdGehIxlZQ//HQZWF27Xx
-         iu01ik42hou5o7cBIw5SRxqmjedwa13FnFUgvDQp47C3VZqardQPoRoNXhZXXLDjzaS4
-         t9rINm1HEFxog/SiMlrrrIjMoyYXbFNPwJ+BfYl8s6pr599md5KBh2MUdcICEkicBIbm
-         FAPAJiRvFGFPp6renpb3OPHgF5AmkNMZjE9ZPDr3BhkHw5stjWWIX+Lf0UNuy4p4G8oj
-         cF3f7vBuOkVQNjOh8xnULGf39aK8x5UMakm8aSV6VRJbeoeVwzV6Jw/XOWSX/6JkYdzJ
-         XoqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759026970; x=1759631770;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+gaDCzK/mppvE+TbZ3WPtXIvdSdoczZCrzHaCPLwFrU=;
-        b=KuA5RWN0Cw7by8JFkxrNSQZc5SFE1CdeDXqb6ZvgJzYTJN0F2IVJ1IZaW4gTRh1185
-         mrclqkvo4OYz2msvpCQjcxKt9qKNdWNl8RjAw9YC8MlviEUlx2aq5a7IYr+fyxiq+ZnQ
-         +6HIZm8II2rKZdu7oYxZmGCQSS1N95H1JBql5/mmyRUyGY+5a7ybYVzDkFnHlPaR48ze
-         SOm5K7tGecv/WYKvqJgBEswWoO8SFF25ZIjKRivKJXkAQgjapCUij1UZvgzaZ+DhbiX4
-         auolhX0UC7SHXPImnvTKoHz0fX+bbY1Ge+jLVRMdELisxkm52qjloqpYB5UDg2E1equo
-         RoIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX/uOzOG/v0OOsH2JWD2tafxBc0MxD4J3cdFIUD0A2P8sJhNt63/tRy4PIQNMbYQlUvJdo3P+yKqw==@kvack.org
-X-Gm-Message-State: AOJu0YxTM1+gZnl0gIhEFwIIQb23exchBvQGwWdaQhMd+nJGBw2xUFVA
-	akPT+jx/iJpy07zPb7tJx3YGCUK+E3BBmhGVevrPK+dUtrhbhzPTG93Kg0cFF1YwwpuXhKEu35x
-	LaXhMqla06491mA20AKmFdnYxHiTi+70=
-X-Gm-Gg: ASbGncvJnEHwudJdoS2Q+Vg18LOwz52ig6wdQzsxhlWf4gR1ZqIRIs8pf1Cey9ULWQB
-	6BsTmegb9Kml/yXz1bnhaRC2vovErVZPJ5Po/U24beZTvMAR5fQhxHdMGE5AAQDE2bj8BwPiIPf
-	cdq8JDtzCYQDRvSiLZ5ZjbCExauSYc8Q5IRQxRGK+FCR6gBPprXlTW2bnSURRTy+KFDFEXdVjC0
-	In7xCw/wlcDOjOlqklMCACpkAlmvoBd2mvg7nBpyjF9Kqx8Qa8=
-X-Google-Smtp-Source: AGHT+IEzrIRNkapYZtuzG9WFj/jlawGAcqNjlZSzbgOX3dCv7E2T+yBJS3MoM5SUVq717wHU1xry8WXSW8zEZoWw0ng=
-X-Received: by 2002:a05:6214:d09:b0:82d:f77f:28c3 with SMTP id
- 6a1803df08f44-82df77f34ebmr78705576d6.30.1759026969739; Sat, 27 Sep 2025
- 19:36:09 -0700 (PDT)
+	b=qpAEO0BMtD76M0hsC/qpwnoFMhA05FEnQJ+T9z20V9y3408P+8GuLMpJ533Poq1mgEbpLO
+	RuBQLNNnD3nChRiBOjrj04+ti5r3Kd9O5Tc02PhOO0bTs5m7+V6R25ncMthao3NmbkN4O4
+	pUESP+47X/MKaTAWlsjE9gxvsjzL+s0=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=7ReN4RalhyqYDHTLM2Xmxafnn7ELIZ78nRRZkoXRYIc=;
+	b=Oad5CTonG2nrxjl4e5L/879r+lw9KXelukEMaPk0naMZCFa+YAnxiqRPoS9DLFykw+nreDqaf
+	L1SH42XrfQik3YunE4I3AKxdGRRKiDRl7owakId7NmgJj85WxAWyheYK3yG0NfTJoalkpJ7zVHZ
+	DgQWvYUNXUMUP9oAzz7qFaA=
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4cZ8921SX0z12LcH;
+	Sun, 28 Sep 2025 10:56:22 +0800 (CST)
+Received: from kwepemr200005.china.huawei.com (unknown [7.202.195.182])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9D71C180B5A;
+	Sun, 28 Sep 2025 10:56:14 +0800 (CST)
+Received: from [10.174.184.156] (10.174.184.156) by
+ kwepemr200005.china.huawei.com (7.202.195.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sun, 28 Sep 2025 10:56:13 +0800
+Message-ID: <446875b6-36da-412b-9281-4e111f0ddff4@huawei.com>
+Date: Sun, 28 Sep 2025 10:56:13 +0800
 MIME-Version: 1.0
-References: <20250926093343.1000-1-laoar.shao@gmail.com> <20250926093343.1000-3-laoar.shao@gmail.com>
- <146b95bd-e0f0-4e6b-a9fa-5a8f11355268@gmail.com>
-In-Reply-To: <146b95bd-e0f0-4e6b-a9fa-5a8f11355268@gmail.com>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Sun, 28 Sep 2025 10:35:33 +0800
-X-Gm-Features: AS18NWBmL8y2V1x6RK8Hi5Yh_Mzxczyqhv8V1kW5X07v9F-7y38eCcLmLbTOSok
-Message-ID: <CALOAHbAGPZX+V4CBRyGhHtQ2mVFJWD4CUX+9Fujp-JAiK426Xg@mail.gmail.com>
-Subject: Re: [PATCH v8 mm-new 02/12] mm: thp: remove vm_flags parameter from khugepaged_enter_vma()
-To: Usama Arif <usamaarif642@gmail.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, hannes@cmpxchg.org, gutierrez.asier@huawei-partners.com, 
-	willy@infradead.org, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
-	ameryhung@gmail.com, rientjes@google.com, corbet@lwn.net, 21cnbao@gmail.com, 
-	shakeel.butt@linux.dev, tj@kernel.org, lance.yang@linux.dev, 
-	bpf@vger.kernel.org, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Yang Shi <shy828301@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Question] Is flush_cache_page() in wp_page_reuse() really
+ necessary?
+From: "wuyifeng (C)" <wuyifeng10@huawei.com>
+To: <david@redhat.com>, <akpm@linux-foundation.org>,
+	<lorenzo.stoakes@oracle.com>
+CC: <linux-mm@kvack.org>, <lorenzo.stoakes@oracle.com>,
+	<Liam.Howlett@oracle.com>
+References: <4343116e-03d2-45dc-8ad4-12835477537e@huawei.com>
+In-Reply-To: <4343116e-03d2-45dc-8ad4-12835477537e@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: DA086C000C
-X-Stat-Signature: rwppxsn1o4z3p68p73ig9fz6rtxi83z7
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.184.156]
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemr200005.china.huawei.com (7.202.195.182)
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1759026970-339729
-X-HE-Meta: U2FsdGVkX1/P7hbZTiYqa0T3iIqvEulqktVFCvO7zMPJE8q8SAVVDnEiCEjEE5aV5QTaKdTJ78zmy+x7xeNMPTWBe0Dy6tKB++x6gCxPrkbxOZX2VB4jRilOHOfq6NLEjGNfBfuvFahb0MphfkNAShJmfO01bhmBCwZYtF/4L299OhtStzKPVZy+pO2GSZ9Dra7fkhLMS9gXGCOTSvubbWHxoEplWdgSukCCyJk1KBuVhsDewIE2DQ037NhL80iTWk0qJbWaRaFe2uvwARURPklS8BVPV8wFI1oLb9tweCq6+BB/qr21OStCN6vnr/jb9T89LqeQBi8SU7irXTjqo8DGuszki0cNW7Aw8sgBVYaWCZAJ1KGP5JTY95T+1p4/HuyV3wJmOovOr0RrBHJ7xGtQ8pRHFnPapRblI0Y6GbAAZjvAdrwojFDuNTCY0EebpgGIHAwIaaeODeplMhyORYVINwnVxmfcIJMEDhbfddAkmw9AE2FkN2jQ/8MmuuqnKWZ0LaJ69zf3j2WQi/Qt34s7sOgHPeJQVOfc6vNWhzu+Bty24FqzeF3vkRPOW/2Nh9imbo/gK/NXGUxYpFM2HxEGxAVGltT7wALNUJrXZ883O09AZW+IvHNNSKIVwUHBRb+LjJsmzzqNgbekp0ULDoyTE5daGAPqeJcmVQLGQT1xnfwejTt2QcTJqGZUFUVUkJDQL0DDL88os0ExuSKndiJ5wNCMo84R3gNh7aYWeV6DpXJo9DvFQrCrvmSBYLyGFh6DDNJFxRDUqCMatZLO9c75pLfMlxWxI0uypaYoxKRq8iJnuqoGK+YOPhN2t0qzif/4G8HM84BIsK/a1Quj57BXYMBUc580WcVFYIYL+pNrgzMkLZolqQwHjjd18cKIKcUA8CQ0NlA8ljvsIDfBZHwr6lrlem1LKfX2/sIacD1KHkpR1zQGPYJoawYy2XWtpuwIQjSLyk74TOQmqWt
- hQIB6pGq
- 8Iw524W0aUs5R4chCvgFANaQiGvHPIzzrvzN7puzavYGVK6Oe+5cedxJ/KBvUvnpZLxAuvEGdmhr23KkStlUIHf2vV3D0lwiI06zHdIEghereIdGuVTITtXU2PQ/ZArRd6gYV2QlsHKT9ESp63PTbh6FU1S1WiXeiZDuQUF6iP5PCHeBaii+m+qmm5LyNXV6RJen6+WDcZ4Jsb3zgOAL+m/7up7QOz5bZLY3Qe4b9GVpgDRITkYI6Njuf1VBfUh+fOUpsu+/wOkkDHWcZBWpvgruqC+2Md0P5J25Y9LHSBdMc9ViPwFN4J7qcjwplgrpWpw7ueNliV0KUK7EdtYmtikNE73dNlUEMqQ85Nt2ZbqZg2yCAuUeIDzXN6n3VX1jAIxIkl1AtPX509zXGpXL/kRTWc9T6DhbO3RQcrNKT82y3w8U=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 6E790120007
+X-Stat-Signature: 4juucka95ibq6sacp74xzztckcp6xtwr
+X-HE-Tag: 1759028179-895219
+X-HE-Meta: U2FsdGVkX19Ak0o4LuP/snWkbGyKu4FTY8FDBVX2Qgp1V/sIqHlYjdysqqsrFiKVb9eOK3dgDSdtTF7Swhv+PzpR3jqFirzFoYU2f+ppFuZy2VkOunw2pJHXeCbXF0tt5wZdm+JVckcm8GUGUW5W73PRTYxQIv3CFZvK/8B7x+naWpegcbyeacaLf87MiJXFQJBQVEPzBIuvC5mBM/tOQcR0PRQnGDa86QeGNNkbr7VxLwWdWhEEJgRmNyemwA7zYwGF/5NCh59/Gs4Twmh6y+hqs76A63WEFzfRTwPdwlmU8DlGJXzp3ZZVuJpfm+inyLLkMJzj4cK8Yt3H5K3JpYgltBtRATqNIZUnv9ZooNyucsOqUr5M8ulQWVNKApxVViUs7b1wsCaN1MRufhSG/qF8BWnvksby8IQRUEWzTfhTKQCNjy45YjOZk9mDgorPl9Xsx0qcfxMSuM0kRDaShh5b+1ezQugcw7kXTv7pg1kE7p9zgPr9aFFQahyTgkiLwgkELRUKipp3wQqpsmpbEUdiSzlZs7VMmGYW9EulpoGwDetzDnJuS/yMqjliEe4VHl0ZkhI0p310E8oGHC6kliprNvHY/lXKTEZV180m7/Yv3foscimdG2cs3IJrujHlcZfTcIA2Pt0LYPvIbqcGQXprERjoH8OpZxBSC10jEYre9OaG+JARUD61xFTrRAVc3mjxZ49XxYpwj6lr4bKEqxH40iQotkUirccCs37FeN2GiWhp0UtW6r8jh2TwdzNL1vuzNzKtVR0jpIcY0THNDExmLPq1y6a/KCQqIQ4AmMJADmoB7hrGvPs0c7yv064hAtC692iHOCx0E30uh4mFUjQtVLQCt4tl7npX73gddkWgR1aW6WHuGgVp0msOECmdTA1l+hcYfYPAUFt9UAvPbpwLZLcv82ETcKvBjlrjfJW8Vhyo5t3rx9dz2GqWyxqudrP98gCJkQ5l9nrG/dK
+ 2ygN6ZWI
+ qBOFs/TIs3nrflNTMwh78+CriRP7FIFWJrJXy570mfQbRn4Byn1Go9lRiThG+2Vy7JNl3reiYph6umQ4ijCXojj/d7z0paHgkxKLwIOCLpaKDnmXTbjgT4KEfVlaCwwHB9X+n4sUMLOd8xojNt/4Pv/bN8QWoEDfxO4EBEXG3z2gK82I+fHZny1IWkm3N2vseyuFu32EvSYKwdiwrQa66UpReV0tlT6QZ7BZF6YdLd+9QrgnaM5qBJSceQiz5oOKlUpIC3tc03DBDm9c+tMbx5pagAtNI3onuVENhDpfvYbjY6CPs9gjN/1AUCczOEhfqiA5aClXRIe0AYWQLmOq3xb5jGVi4xazPn6pYGGfMIHqbNMN5ZUINDshsAvaf88ndXmTvd1K1m3qB6el0wTEjTniO/Q8pMt6LxU+eNFFSYi4VcFM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,72 +100,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 26, 2025 at 10:50=E2=80=AFPM Usama Arif <usamaarif642@gmail.com=
-> wrote:
->
->
->
-> On 26/09/2025 10:33, Yafang Shao wrote:
-> > The khugepaged_enter_vma() function requires handling in two specific
-> > scenarios:
-> > 1. New VMA creation
-> >   When a new VMA is created, if vma->vm_mm is not present in
-> >   khugepaged_mm_slot, it must be added. In this case,
-> >   khugepaged_enter_vma() is called after vma->vm_flags have been set,
-> >   allowing direct use of the VMA's flags.
-> > 2. VMA flag modification
-> >   When vma->vm_flags are modified (particularly when VM_HUGEPAGE is set=
-),
-> >   the system must recheck whether to add vma->vm_mm to khugepaged_mm_sl=
-ot.
-> >   Currently, khugepaged_enter_vma() is called before the flag update, s=
-o
-> >   the call must be relocated to occur after vma->vm_flags have been set=
-.
-> >
-> > Additionally, khugepaged_enter_vma() is invoked in other contexts, such=
- as
-> > during VMA merging. However, these calls are unnecessary because the
-> > existing VMA already ensures that vma->vm_mm is registered in
-> > khugepaged_mm_slot. While removing these redundant calls represents a
-> > potential optimization, that change should be addressed separately.
-> > Because VMA merging only occurs when the vm_flags of both VMAs are
-> > identical (excluding special flags like VM_SOFTDIRTY), we can safely us=
-e
-> > target->vm_flags instead.
-> >
->
-> The patch looks good to me, but if we are sure that khugepaged_enter_vma
-> is not needed in VMA merging case,
+I have traced this back to the 2.6 kernel, and observed that the
+`flush_cache_page` interface has already been present in the
+reuse-related logic since then.
 
-Calling khugepaged_enter_vma() is unnecessary during VMA merging
-because it's already handled: for non-anonymous VMAs, it's called upon
-creation, and for anonymous VMAs, it's handled at page fault.
+It appears that this part has not
+received much attention over time, and the invocation of
+`flush_cache_page` here may indeed be redundant?
 
-> we should remove it in this patch itself.
-
-I'd prefer to handle this cleanup separately. The goal is to keep the
-THP changes minimal, even though I've already made significant
-modifications ;-)
-
-> If the reason we are removing what flags are being considered when callin=
-g
-> khugepaged_enter_vma in VMA merging case is because the calls are unneces=
-sary,
-
-Actually, the rationale is that the flags can be removed because:
-
- Because VMA merging only occurs when the vm_flags of both VMAs are
- identical (excluding special flags like VM_SOFTDIRTY), we can safely use
- target->vm_flags instead.
-
-I will update the commit log to clarify this point.
-
-> then we should just remove the calls and not modify them
-> (if its safe and functionally correct :))
-
-
---=20
-Regards
-Yafang
+code in do_wp_page (linux 2.6):
+	/* reuse the old page */
+	if (PageAnon(old_page) && !TestSetPageLocked(old_page)) {
+		int reuse = can_share_swap_page(old_page);
+		unlock_page(old_page);
+		if (reuse) {
+			flush_cache_page(vma, address, pfn);
+			entry = maybe_mkwrite(pte_mkyoung(pte_mkdirty(pte)),
+					      vma);
+			ptep_set_access_flags(vma, address, page_table, entry, 1);
+			update_mmu_cache(vma, address, entry);
+			lazy_mmu_prot_update(entry);
+			pte_unmap(page_table);
+			spin_unlock(&mm->page_table_lock);
+			return VM_FAULT_MINOR|VM_FAULT_WRITE;
+		}
+	}
+在 2025/9/26 15:39, wuyifeng (C) 写道:
+> Hi Linux MM developers,
+> 
+> I am reviewing the page fault handling code in the memory management
+> subsystem and came across a point that puzzled me regarding the use of
+> flush_cache_page().
+> 
+> When I referred to Documentation/core-api/cachetlb.rst, it describes a
+> typical sequence in a page fault scenario:
+> 
+> flush_cache_page(vma, addr, pfn);
+> set_pte(pte_pointer, new_pte_val);
+> flush_tlb_page(vma, addr);
+> 
+> 
+> That is, first the CPU cache is flushed, then the PTE is updated, and
+> finally the TLB is flushed for the corresponding virtual address. This
+> makes sense: when the virtual-to-physical mapping changes, flushing the
+> CPU cache is necessary to prevent stale or corrupted cache from affecting
+> the new mapping.
+> 
+> However, in wp_page_reuse(), the virtual-to-physical mapping does
+> not change. The function looks like this:
+> 
+> static inline void wp_page_reuse(struct vm_fault *vmf)
+> {
+>     struct vm_area_struct *vma = vmf->vma;
+>     struct page *page = vmf->page;
+>     pte_t entry;
+> 
+>     if (page)
+>         page_cpupid_xchg_last(page, (1 << LAST_CPUPID_SHIFT) - 1);
+> 
+>     flush_cache_page(vma, vmf->address, pte_pfn(vmf->orig_pte));
+>     entry = pte_mkyoung(vmf->orig_pte);
+>     entry = maybe_mkwrite(pte_mkdirty(entry), vma);
+>     if (ptep_set_access_flags(vma, vmf->address, vmf->pte, entry, 1))
+>         update_mmu_cache(vma, vmf->address, vmf->pte);
+> }
+> 
+> 
+> Since the mapping itself does not change, I am puzzled whether this
+> flush_cache_page() call is actually necessary.
+> 
+> A similar situation appears in do_huge_pmd_wp_page(), which handles
+> huge pages. When the system reaches the reuse branch after the relevant
+> checks, the code looks like this:
+> 
+> reuse:
+> 	entry = pmd_mkyoung(orig_pmd);
+> 	entry = maybe_pmd_mkwrite(pmd_mkdirty(entry), vma);
+> 	if (pmdp_set_access_flags(vma, haddr, vmf->pmd, entry, 1))
+> 		update_mmu_cache_pmd(vma, vmf->address, vmf->pmd);
+> 
+> 
+> Here, flush_cache_page() is not called. Instead, the code relies on
+> updating PMD access flags and calling update_mmu_cache_pmd() to refresh
+> the TLB.
+> 
+> So my questions are:
+> 
+> Is the flush_cache_page() call in wp_page_reuse() actually
+> necessary?
+> 
+> If it is necessary, why is flush_cache_page() not required in the
+> reuse branch of do_huge_pmd_wp_page() for huge pages?
+> 
+> I would greatly appreciate your reply. Thank you very much!
+> 
+> Best regards,
+> [wuyifeng]
 
