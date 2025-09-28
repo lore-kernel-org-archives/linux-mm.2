@@ -4,118 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C152CCAC5BD
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 02:22:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2619FCAC5BD
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 02:22:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 246A18E0003; Sat, 27 Sep 2025 22:22:17 -0400 (EDT)
+	id 8134B8E0006; Sat, 27 Sep 2025 22:22:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21D468E0001; Sat, 27 Sep 2025 22:22:17 -0400 (EDT)
+	id 7EB7B8E0001; Sat, 27 Sep 2025 22:22:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 159D88E0003; Sat, 27 Sep 2025 22:22:17 -0400 (EDT)
+	id 6D9DF8E0006; Sat, 27 Sep 2025 22:22:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 032218E0001
-	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 22:22:17 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 88FC544224
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 02:22:16 +0000 (UTC)
-X-FDA: 83937059472.05.F9958C1
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	by imf01.hostedemail.com (Postfix) with ESMTP id B408840003
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 02:22:14 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="M/aZzLzU";
-	spf=pass (imf01.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B2918E0001
+	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 22:22:45 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 10B2344224
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 02:22:45 +0000 (UTC)
+X-FDA: 83937060690.21.F43C252
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E45C5A0002
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 02:22:42 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=i3m4zRGd;
+	spf=pass (imf25.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759026134;
+	s=arc-20220608; t=1759026163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rDD4e48s5XfMjI/dpKcLLXxzREK+rG19jnnaqnwWIvw=;
-	b=rSmldGjkI1+h6YBnYnD6MTCVRal3ChIb7Ra1ihIsHCSsccRPS9SuP/Yzm4Wi7Rsh4LnXPf
-	uEucC/DOqhzk7/0VMm1D0i3SxcPGivZwPw5oUVLPPyVZf4N09Cx27XezfkBDKDwVTCkdrN
-	8YDu8SLVmL18PX4lM6sEuzZ8Du2D6Is=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="M/aZzLzU";
-	spf=pass (imf01.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759026134; a=rsa-sha256;
+	bh=4l33LFaBlP7W725XV6EhCal5Ct1v4pxHGZqU1d/s068=;
+	b=XLYCH3B4D4g5aBmVsgS4aW/322ju5cUrZTMGrqe3qFXKrMGzlFy0A/9wlTKElLFuTBHi3m
+	Btzev8uqq77h4dSJ8ADmqm8MyFD3UR+jhDfJl4xdIout3Gd4W4LatBNse8FlsSPSmb3BaN
+	+guCiS3y3VqT1SS6jQook0DKmeQp1IA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759026163; a=rsa-sha256;
 	cv=none;
-	b=5HuaYhZ6hJhZoen/VnaYB+LJylv9KbB6BYyMEKj1DXz1M+h1CjhRDgVwtEEVHwGQyEXJH+
-	LgvJqmG9Sm5HT/psXUbXRwNNK9gYnR5Oz+cmhdsMHbpxxtoBwYwXa/crW15CEmec8O3ZiI
-	PfbofXTgI9aE4Sazw6CD/prwActrGDg=
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-7ea50f94045so42492276d6.1
-        for <linux-mm@kvack.org>; Sat, 27 Sep 2025 19:22:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759026134; x=1759630934; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rDD4e48s5XfMjI/dpKcLLXxzREK+rG19jnnaqnwWIvw=;
-        b=M/aZzLzU8k4FBgmS7QG93yo8FYIsMDNgopWk05pNFVl4UGqzKY4lsHEdG0sD0coqgY
-         gEISSuIHxBKNclQ48iOnz6iEWcyOHaUYtU1goKkR8mAYRUhFkuRe5iLeSMd4hUzg5yHs
-         8Wyvvde/t7vb97+Vz61PMUUWNgD4GIb3kzukTwoV8y+vnWTorMUAJFKzQmk+LmRXvBkQ
-         Dbe/OI9JVPUnoFLhhnlWnKK2xzc3xHzLgJWKYacXdbzbJ6X58Rn5JBwTlJQxSnLor/Qe
-         9cQa7r2bEGjMjzjQTmnep8oqx0ce/6nf4iVHNKQBwZGjXfeT9dVNlJZHmZfd04b5uFxX
-         6WSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759026134; x=1759630934;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rDD4e48s5XfMjI/dpKcLLXxzREK+rG19jnnaqnwWIvw=;
-        b=lliHJD3thAgtg6SUh5MPG2JSyJ57W9LM9Xbk/ZjwDzBp80syeSMRB4CfKBqH4jUfSD
-         j3W52Mq3ygCfkmbEJNEFxTUyuF3+PAh8pXUvoFiPkE31Q7A2ZsBaxLBH+N71GMY4l9BJ
-         QjAXz56enLrWADInFHZRMmbfILM7o+4MMXZvhtcbS6uvjZH586AEEudKyIAxfTVR4FHa
-         VreTmitRbmHa/ZWCSEfI2F10jwZZJotuKso7QxMhK04JlNmAeLsEseSP5Tmg9V34/XoR
-         U+5KxvNI4fvfYo8iZvQutfyq/ES9uPiQ7/vWgo6+H285fIzpMcA7/Hhz1Q78MjcZwKE/
-         4UoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVlwwl4QtGe9/uST8+kHrnuuPV2uQh/o//9xeAUAQgxCYrE2morS5S8uhiXQ36pQNrNRizJMHvs0Q==@kvack.org
-X-Gm-Message-State: AOJu0Yz2Lmix5QwUbheplcTAS23cAmRguEwy36LZym/LmDCIqen3OsuG
-	2BBdDsSonjB+t4/6Sedss/renUIgNRC8N5gfGesCv2vz25r2mWAjSMOfR+UgVYCES4L4YdSbltO
-	q3ryPwuWR9z5zpVEZmr/HW4x2vWrTtso=
-X-Gm-Gg: ASbGncstFjG8XNfdqIep1Bv8v7S2uVtZM54N6vlroaHC83cEkjRjgkjt1NAsqK+2MNi
-	yIJU1lQgbGz0QKsPJGM9h01tvPh5PkdshP1cVRM3fUrrOPAEGfV9CKaQm+821h0HJzGZlS8Bzge
-	KGD4nX/El/wZ6VXpNSlYVAkuWPaCzu6UZvSeTWNWwkRyrrYiysDPShUYIsRotuNmZW76zGcRU6A
-	S1HpLlYWW+AbwlygM3RDtEdAZ9WbH6btVHiFEdz
-X-Google-Smtp-Source: AGHT+IFyNx87WkucEh4IUe144Snnrs8UIvE2HHg9WmEgjBihbVbfffswex+Qoi5vAf0JBbS7kN+nkcwu/mGzgjpLhIk=
-X-Received: by 2002:a05:6214:518a:b0:78d:4452:754d with SMTP id
- 6a1803df08f44-800f448ed2amr147929456d6.13.1759026133538; Sat, 27 Sep 2025
- 19:22:13 -0700 (PDT)
+	b=m4l15fn+mmj6PxpQMM4Es1xnf6XgKP4eSG7yFwFAG8eMJPE0hL0adY6BeukpE0hum+WCL0
+	5RLibasuIc/rybNRtLJQXLCbLUBr3gPQQAG5+HhyaTYV9jBx2D+8C5uACD84D9FTV16o8r
+	xc3wKlWbvLyTfCDcQsJnf6CNdUptpU4=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=i3m4zRGd;
+	spf=pass (imf25.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1759026162;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4l33LFaBlP7W725XV6EhCal5Ct1v4pxHGZqU1d/s068=;
+	b=i3m4zRGdpq1/ph6PWtMuo0kFR8tnEDWp7011dpTgWWG3rs2B/jqH8yDG7rdf+zoxp5KOBK
+	MKrow33b1eijj7uQz2Gzb+ulopvZnC3Q4z4rwjU05oVr540mJrJ1S+JgKzAczY6O8w0Z0z
+	OcZA3HiLmXUnHn0NknS15lEO+bZl33s=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-433-UM5FlzYWPwGc3XX-OFD-XA-1; Sat,
+ 27 Sep 2025 22:22:39 -0400
+X-MC-Unique: UM5FlzYWPwGc3XX-OFD-XA-1
+X-Mimecast-MFC-AGG-ID: UM5FlzYWPwGc3XX-OFD-XA_1759026157
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DC40E1800576;
+	Sun, 28 Sep 2025 02:22:35 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.162])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 81D7E1800576;
+	Sun, 28 Sep 2025 02:22:32 +0000 (UTC)
+Date: Sun, 28 Sep 2025 10:22:28 +0800
+From: Baoquan He <bhe@redhat.com>
+To: kernel test robot <lkp@intel.com>
+Cc: linux-mm@kvack.org, oe-kbuild-all@lists.linux.dev,
+	akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
+	youngjun.park@lge.com, aaron.lu@intel.com, baohua@kernel.org,
+	shikemeng@huaweicloud.com, nphamcs@gmail.com
+Subject: Re: [PATCH v2 1/1] mm/swapfile.c: select the swap device with
+ default priority round robin
+Message-ID: <aNib5FROJYwjcsa1@fedora>
+References: <20250926155504.5122-2-bhe@redhat.com>
+ <202509280002.NWLixh90-lkp@intel.com>
 MIME-Version: 1.0
-References: <20250926093343.1000-1-laoar.shao@gmail.com> <20250926093343.1000-2-laoar.shao@gmail.com>
- <34a9440f-b0c4-4f76-a2ac-f88b54c2242e@gmail.com>
-In-Reply-To: <34a9440f-b0c4-4f76-a2ac-f88b54c2242e@gmail.com>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Sun, 28 Sep 2025 10:21:37 +0800
-X-Gm-Features: AS18NWCHyMM-LHN0Py29bv_E4OCzemb4p3lZQK86XhDW5EVePduz12uMvfCrD14
-Message-ID: <CALOAHbD8tup+4DbQ6tMzDxk=XkhW1t6B2L8+k8nP-1wg2zoXqA@mail.gmail.com>
-Subject: Re: [PATCH v8 mm-new 01/12] mm: thp: remove disabled task from khugepaged_mm_slot
-To: Usama Arif <usamaarif642@gmail.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, hannes@cmpxchg.org, gutierrez.asier@huawei-partners.com, 
-	willy@infradead.org, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
-	ameryhung@gmail.com, rientjes@google.com, corbet@lwn.net, 21cnbao@gmail.com, 
-	shakeel.butt@linux.dev, tj@kernel.org, lance.yang@linux.dev, 
-	bpf@vger.kernel.org, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: jh4ax86e4iybguwzqhgepcrsbgocczar
+In-Reply-To: <202509280002.NWLixh90-lkp@intel.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 1WZdCgxqL6BG-4BjRy60GZvXKHWpvfV6S0xHyWRMSVE_1759026157
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E45C5A0002
+X-Stat-Signature: woro1b7z1a6jgztbsmqrb1xj8bt6hig9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B408840003
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1759026134-792839
-X-HE-Meta: U2FsdGVkX19b2HjTfti5UgWbmI0fsPuKB8YD7tYVcvoN/y0w6PjD6QXEnDPXGeOeTIxiyC2stOSDEwOhrQaXsHuIKsWBPQlBFEA6gocHJCldXbzsqcSWU1K5A9T/UQrYyourSB3iZGHQ0l23i9BI4FTQbZynEF58pJzJ0UD74B+bBQ+2sHLDwpyuqqW8L7LK4D4Dc9KKKHRQxi9v21qGmViISqJvURUaTdejgh0gspAigS6VIjXGqTp0m10TwpUlLIsVh/h5BDeg/fk1Y/jZL8ERZZxbRb9RbhZVv5ICKWYqwwoPYkHY3g3gkhEYaaTNoeD4FygaYWqRNB9ZUheizpFtvpkwYzsA/uAndIJBTR+Imx3+6VycytPCfVR4duZaul7I0RZWZgTSoyjjoKp2zooXzloNRFkglbgxn4R2MTEz9pDZe4ifi6TESrFdNx6AspLefG5q4nIqvh9X2CDDwhNFi/idGGSa6+1evJ1kElkc1oALgymUMM2706AwXyk2bkXoK/0wTdVZxivlUGslq73QkBI+gXsiCPJZpv9k/yu7hQiMcWvRL4wI7QbkDx/urDAlE7eFTR1CqJSyu7PD52uWRX2CsXAsKsb25Jab/hJTM70TZBmfCZ9XrEnHQ+PfWtszWMCVPewT6O9VqK4jZF54iNpX+qcKkuxLIK3IicaNfWEtLAH5n2xoUDsQ2g+mkKgi2zb7YDV1HaRJP6OP5+vFtLgCD7cvJdidYpYC8myrKe89/jJvCgvYmZaqhzWkYjm74STpwvkYwSl7koX3FRbakHL/9U1iVOLAluhaTlgJBmGoZAJqcwdhzLSR/Cw/zva/vqT8F8iqm7fdBuhkQvZM+67IQbxJtWRPzkG/HkI+qjXcC2YZb5Xh9vs334/iDtHfdH0Lbcr5cD3sQE35Dv/sOvQJYbuCZdqdyVSk7PW3t/PRNAnSXyxZP1YYgfCwpS1wE8UNzipMlZ7agKl
- 3JrnfcYO
- sd+GJJh1kdamxx79w5ZdGADdZM46Y3m8Ie82vDGzc623fhMHEQF8HfAFBRqYXCqPIc8GJKUUMZOqaUpc+Lpq2STc+R5bU+eVdmwmDGmirgzW8c6lIpsgU1sybbwRLAVgcwx+uZ1QLSkHB2KyqnraaLdDAgWsc5HBpvmYHq8UrRSsqnz6ccUfG2IeaXnviyLNAM6nbCRsJ3T3wzhTeVE2l+FUZR/oVxbf4de7w+HDgov1s8MmORO0Ogi/b6STHbbEP++6riGgLIRz2dHKAX1CSz6rrZ29deA9HEteCCW9j5lPGYPjBT7JCLh9KczzBiL3pl1KbqTqgfK9jOSFFUUU3Nr6+je5WLTnbZkvwDvc3HfTexwFxgMbfYbTwDFPtQ70daMwolmmjsmktf3GYZfbU8GtIR8yCa/+6cpIMDdSM4hE9AXf9lk0F/qX2ptnPb9RdCKWL+LzKNr3ymtFzkhYq1q+OpVm2QdBhYZujkSvQwX96WI4=
+X-HE-Tag: 1759026162-603468
+X-HE-Meta: U2FsdGVkX1+ievRKN8BNoY9J5CTjlQGKgfjr86nQmzhWqinGriXHvt9LKo29TsZUVKj37PGmVokaZ9jsceUYAR3tTs3CsJXkICn4N2cM037ZrAzfX96NBTG7Ddyz97G7dQXfUc9Y8/4j+D3pBIXB9NaVN2wblu44IGaKH2sGcc+OG1A8HU93gQd3t+lFDut6FF7YoUPifBuF5NhPpKfD57gwtjbhHEWb7d66UhH4W/FWnYH5UDwDbC19sbWU+yzCpiPN6obd890KRL1bOjEwUis2D6GI21q+wPEMh4dj81mwW7y9KLAC4yLlK1op6DuhuWLGXUoRUOBbX3EW2w26qhIePjCKOlCZMKtiQXFUBs8FJjiTnmvxDtuSHYYaPMqQEYHWB2yeHAF1DgbrNlw63ooUPC0cwRRMHmCGT24Ypt3tlpKg8SfnPCY0gsPHVipW8C8cdGk2ycLFnJifxnXOluoXfjKTvrPtxXYwH7ywXO1ydakY/eatb/d9zHwyIZmcKuD+YTfTmYVoIRenspXBsca4I8HQ5Bgpa5d8MflAnPZ2MaDk9Pyzgu+fB4iDK5Ka6EeUZsbhb8Brv7vcEPTFgoNdqbCkl4vjs5lfEIQ7dndBedig4nHLhst58MkWTg/1DwqGmPZ9haBh366c3c90s7C0JYbXi8KEV56diBwdYgpTXaYoWCtJjPlUlU2b93WMOSZ1H8Yob899na/ncZt7CIHWrtOhOu8RIYT4So+qblf1+4YH2hehKM7Amjp6kpaAenC6qjduFJJW6/PUEOJi0Cc2esUV/Mmj2AAJ9mPXRJpG4k+GBQ0BfrDEYn8MPp6w4zlTaxswBLfqkvpAQWHnVHUTbb8jytHVZaJv3ho3mCRlDZCPvaanbcHsGUgHHlmJJ7J3t1d2+xRri4W7qStBFwprOScQprfHeIX2XYpWNsCd9QN6pwkSR/dfnUH8CyM7PArLlch8tusuVW/9GAy
+ vwi6tXrx
+ +PGGn7iYKRlARerwBL93GztDWAkhHfO8POu/If+ei0uKESp30ITU4QA2nm/RO+vpFA4obkmELZCqTKmR51sUlgueFBrdO3WDxwhC2Q5MVM8JjwXZTbjnoyNnbEQtzJVEi7HU+5bdAW3qnq1r47SUjjcuyGSAGgQ0realU5otYY2qGXm/jjliCsxaLCaj/7aMHWPYKANM3YEW1DfO5qRkmfHE1/1xccVna3tgv33dP1bDES0M24lPYgec7/+c+ZJzw1QUZevnSFieCbYBdaFHKU3NtIoQwxrRHpBpXE4QurfSHHUDkYbFSoFMWqCJUoAQm9KdiLRgbgxOAE4zkhExxqD0JFH8k3dwOexn8qQv2YE6oz3Z2TRDmJ2Mu6f6muGC4mDrKkXOHFO95Z8fuhx/jvDStWrCswIzANrYn76cnZBHI5NP4yT4Uads6pkLqFalLvyCcaoNuW5JbO+kf3cM19G5y3JPVL3Gypng07k5RIMLSIacFeR4LWQiTWD89aP88dIFv6DvfFVbm0d10UaTZn7dC5BwgOj3w2GPInJKG/ZOHNZ0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,61 +109,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 26, 2025 at 10:11=E2=80=AFPM Usama Arif <usamaarif642@gmail.com=
-> wrote:
->
->
->
-> On 26/09/2025 10:33, Yafang Shao wrote:
-> > Since a task with MMF_DISABLE_THP_COMPLETELY cannot use THP, remove it =
-from
-> > the khugepaged_mm_slot to stop khugepaged from processing it.
-> >
-> > After this change, the following semantic relationship always holds:
-> >
-> >   MMF_VM_HUGEPAGE is set     =3D=3D task is in khugepaged mm_slot
-> >   MMF_VM_HUGEPAGE is not set =3D=3D task is not in khugepaged mm_slot
-> >
-> > Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-> > Acked-by: Lance Yang <lance.yang@linux.dev>
-> > ---
-> >  include/linux/khugepaged.h |  4 ++++
-> >  kernel/sys.c               |  7 ++++--
-> >  mm/khugepaged.c            | 49 ++++++++++++++++++++------------------
-> >  3 files changed, 35 insertions(+), 25 deletions(-)
-> >
->
->
-> Hi Yafang,
->
-> Thanks for the patch! Sorry wasnt able to review the previous revisions.
->
-> I think it would be good to separate this patch out of the series?
+On 09/28/25 at 01:14am, kernel test robot wrote:
+> Hi Baoquan,
+> 
+> kernel test robot noticed the following build warnings:
+> 
+> [auto build test WARNING on linus/master]
+> [also build test WARNING on v6.17-rc7 next-20250926]
+> [cannot apply to akpm-mm/mm-everything]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Baoquan-He/mm-swapfile-c-select-the-swap-device-with-default-priority-round-robin/20250926-235740
+> base:   linus/master
+> patch link:    https://lore.kernel.org/r/20250926155504.5122-2-bhe%40redhat.com
+> patch subject: [PATCH v2 1/1] mm/swapfile.c: select the swap device with default priority round robin
+> config: sparc-randconfig-001-20250927 (https://download.01.org/0day-ci/archive/20250928/202509280002.NWLixh90-lkp@intel.com/config)
+> compiler: sparc64-linux-gcc (GCC) 11.5.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250928/202509280002.NWLixh90-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202509280002.NWLixh90-lkp@intel.com/
+> 
+> All warnings (new ones prefixed by >>):
+> 
+>    mm/swapfile.c: In function '_enable_swap_info':
+>    mm/swapfile.c:2550:31: error: 'swap_active_head' undeclared (first use in this function); did you mean 'swap_avail_head'?
+>     2550 |         plist_add(&si->list, &swap_active_head);
+>          |                               ^~~~~~~~~~~~~~~~
+>          |                               swap_avail_head
 
-right. This commit is independent of this series. I will send it seperately=
-.
+Sorry, I mistakenly removed the definition of swap_avail_head. I planned
+to remove swap_avail_head in later work, but mixed the draft code to
+this patch. I will post v3 to split patch as Chris suggested, will fix
+it this at the same time. Thanks for reporting this, please drop this v2
+patch from testing.
 
-> It would make the review of this series shorter and this patch can be mer=
-ged independently.
->
-> In the commit message, we also need to write explicitly that when prctl
-> PR_SET_THP_DISABLE is cleared, the mm is added back for khugepaged to con=
-sider.
+>    mm/swapfile.c:2550:31: note: each undeclared identifier is reported only once for each function it appears in
+>    In file included from include/linux/list.h:5,
+>                     from include/linux/wait.h:7,
+>                     from include/linux/wait_bit.h:8,
+>                     from include/linux/fs.h:7,
+>                     from include/linux/highmem.h:5,
+>                     from include/linux/bvec.h:10,
+>                     from include/linux/blk_types.h:10,
+>                     from include/linux/blkdev.h:9,
+>                     from mm/swapfile.c:9:
+>    mm/swapfile.c: In function '__do_sys_swapoff':
+>    mm/swapfile.c:2655:34: error: 'swap_active_head' undeclared (first use in this function); did you mean 'swap_avail_head'?
+>     2655 |         plist_for_each_entry(p, &swap_active_head, list) {
+>          |                                  ^~~~~~~~~~~~~~~~
+>    include/linux/container_of.h:20:33: note: in definition of macro 'container_of'
+>       20 |         void *__mptr = (void *)(ptr);                                   \
+>          |                                 ^~~
+>    include/linux/list.h:612:9: note: in expansion of macro 'list_entry'
+>      612 |         list_entry((ptr)->next, type, member)
+>          |         ^~~~~~~~~~
+>    include/linux/list.h:770:20: note: in expansion of macro 'list_first_entry'
+>      770 |         for (pos = list_first_entry(head, typeof(*pos), member);        \
+>          |                    ^~~~~~~~~~~~~~~~
+>    include/linux/plist.h:173:10: note: in expansion of macro 'list_for_each_entry'
+>      173 |          list_for_each_entry(pos, &(head)->node_list, mem.node_list)
+>          |          ^~~~~~~~~~~~~~~~~~~
+>    mm/swapfile.c:2655:9: note: in expansion of macro 'plist_for_each_entry'
+>     2655 |         plist_for_each_entry(p, &swap_active_head, list) {
+>          |         ^~~~~~~~~~~~~~~~~~~~
+>    In file included from include/linux/init.h:5,
+>                     from include/linux/printk.h:6,
+>                     from include/asm-generic/bug.h:22,
+>                     from arch/sparc/include/asm/bug.h:25,
+>                     from include/linux/bug.h:5,
+>                     from include/linux/vfsdebug.h:5,
+>                     from include/linux/fs.h:5,
+>                     from include/linux/highmem.h:5,
+>                     from include/linux/bvec.h:10,
+>                     from include/linux/blk_types.h:10,
+>                     from include/linux/blkdev.h:9,
+>                     from mm/swapfile.c:9:
+>    include/linux/compiler_types.h:507:27: error: expression in static assertion is not an integer
+>      507 | #define __same_type(a, b) __builtin_types_compatible_p(typeof(a), typeof(b))
+>          |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>    include/linux/build_bug.h:78:56: note: in definition of macro '__static_assert'
+>       78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
+>          |                                                        ^~~~
+>    include/linux/container_of.h:21:9: note: in expansion of macro 'static_assert'
+>       21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
+>          |         ^~~~~~~~~~~~~
+>    include/linux/container_of.h:21:23: note: in expansion of macro '__same_type'
+>       21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
+>          |                       ^~~~~~~~~~~
+>    include/linux/list.h:601:9: note: in expansion of macro 'container_of'
+>      601 |         container_of(ptr, type, member)
+>          |         ^~~~~~~~~~~~
+>    include/linux/list.h:612:9: note: in expansion of macro 'list_entry'
+>      612 |         list_entry((ptr)->next, type, member)
+>          |         ^~~~~~~~~~
+>    include/linux/list.h:770:20: note: in expansion of macro 'list_first_entry'
+>      770 |         for (pos = list_first_entry(head, typeof(*pos), member);        \
+>          |                    ^~~~~~~~~~~~~~~~
+>    include/linux/plist.h:173:10: note: in expansion of macro 'list_for_each_entry'
+>      173 |          list_for_each_entry(pos, &(head)->node_list, mem.node_list)
+>          |          ^~~~~~~~~~~~~~~~~~~
+>    mm/swapfile.c:2655:9: note: in expansion of macro 'plist_for_each_entry'
+>     2655 |         plist_for_each_entry(p, &swap_active_head, list) {
+>          |         ^~~~~~~~~~~~~~~~~~~~
+>    mm/swapfile.c: In function '__has_usable_swap':
+>    mm/swapfile.c:3835:35: error: 'swap_active_head' undeclared (first use in this function); did you mean 'swap_avail_head'?
+>     3835 |         return !plist_head_empty(&swap_active_head);
+>          |                                   ^~~~~~~~~~~~~~~~
+>          |                                   swap_avail_head
+> >> mm/swapfile.c:3836:1: warning: control reaches end of non-void function [-Wreturn-type]
+>     3836 | }
+>          | ^
+> 
+> 
+> vim +3836 mm/swapfile.c
+> 
+> a2468cc9bfdff6 Aaron Lu    2017-09-06  3831  
+> 2cf855837b89d9 Tejun Heo   2018-07-03  3832  #if defined(CONFIG_MEMCG) && defined(CONFIG_BLK_CGROUP)
+> 0ff67f990bd457 Kairui Song 2025-03-14  3833  static bool __has_usable_swap(void)
+> 0ff67f990bd457 Kairui Song 2025-03-14  3834  {
+> 0ff67f990bd457 Kairui Song 2025-03-14  3835  	return !plist_head_empty(&swap_active_head);
+> 0ff67f990bd457 Kairui Song 2025-03-14 @3836  }
+> 0ff67f990bd457 Kairui Song 2025-03-14  3837  
+> 
+> -- 
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
+> 
 
-ack.
-
->
-> Could you also mention in the commit message why the BUG was turned into =
-WARN?
->
-
-I believe we should replace VM_BUG_ON_MM() with VM_WARN_ON_MM() [0]. A
-warning is sufficient for debugging in this context.
-
-[0] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/Documentation/process/deprecated.rst#n32
-
---=20
-Regards
-Yafang
 
