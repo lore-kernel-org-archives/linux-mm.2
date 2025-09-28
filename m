@@ -4,109 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3216CAC5BE
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 02:14:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C152CCAC5BD
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 02:22:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB6368E0007; Sat, 27 Sep 2025 22:14:18 -0400 (EDT)
+	id 246A18E0003; Sat, 27 Sep 2025 22:22:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E66B58E0001; Sat, 27 Sep 2025 22:14:18 -0400 (EDT)
+	id 21D468E0001; Sat, 27 Sep 2025 22:22:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D55CF8E0007; Sat, 27 Sep 2025 22:14:18 -0400 (EDT)
+	id 159D88E0003; Sat, 27 Sep 2025 22:22:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C2A9C8E0001
-	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 22:14:18 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 032218E0001
+	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 22:22:17 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8EC811DFFDC
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 02:14:18 +0000 (UTC)
-X-FDA: 83937039396.05.3DFFEB7
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 6C86A14000B
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 02:14:16 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=U8sNe1ax;
-	spf=pass (imf26.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 88FC544224
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 02:22:16 +0000 (UTC)
+X-FDA: 83937059472.05.F9958C1
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B408840003
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 02:22:14 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="M/aZzLzU";
+	spf=pass (imf01.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759025656;
+	s=arc-20220608; t=1759026134;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bwDr3PouvP/EeDq2K4EHSkDIu+fg6YmrhdjsgwEyJh4=;
-	b=qQ7fTcKny4cKKkInz5ptzpaZBV0rGOf8yGzYWCASkLxMSWq8U4j8nTize0cm329KryKXbG
-	DBMartAYqxJrBeuFLoY/KsuuOs4lf0M8MLzkODuGf/GYhXdmz7QiZqF2boELqtSwV+PYEJ
-	6QFs0c2dU9DtFuHtP9DsL51GhbCYt7k=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759025656; a=rsa-sha256;
-	cv=none;
-	b=uf163SQHRGJBZuoejGwDAoJ3nt6BEFI2qMrAIkip1+zQ5IG2xhsBRcrAxzjAeXX8UDE22D
-	kJ2lxsdFlfkdPtsrDnqv2cUqU7YflSIybR1tVAhP8+aBJI+sFYaSJf1GyHhe8i9OF+EjZo
-	yQK982oYcgqiDy6Bm7AZNLDOQ5Tsnb8=
+	bh=rDD4e48s5XfMjI/dpKcLLXxzREK+rG19jnnaqnwWIvw=;
+	b=rSmldGjkI1+h6YBnYnD6MTCVRal3ChIb7Ra1ihIsHCSsccRPS9SuP/Yzm4Wi7Rsh4LnXPf
+	uEucC/DOqhzk7/0VMm1D0i3SxcPGivZwPw5oUVLPPyVZf4N09Cx27XezfkBDKDwVTCkdrN
+	8YDu8SLVmL18PX4lM6sEuzZ8Du2D6Is=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=U8sNe1ax;
-	spf=pass (imf26.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759025655;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bwDr3PouvP/EeDq2K4EHSkDIu+fg6YmrhdjsgwEyJh4=;
-	b=U8sNe1axXOXEeEILiV7KOCnesK/kzCBpUNx1Fm0HEMyXJuoPHz8tp4kqisSY40V1LEC9d9
-	3TpFbfgj0K8mrDb/Z3CkhydDwKxlWlxyoLumXIKvjer0b27QtxgL/3J5GbfhjM+GhJ5Mdf
-	zb8Yr+7igf0dvlAqLjola5AC0AY0ztI=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-344-8bPjHn8APVeOhiWxnx4G3w-1; Sat,
- 27 Sep 2025 22:14:12 -0400
-X-MC-Unique: 8bPjHn8APVeOhiWxnx4G3w-1
-X-Mimecast-MFC-AGG-ID: 8bPjHn8APVeOhiWxnx4G3w_1759025651
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 29E0B1800366;
-	Sun, 28 Sep 2025 02:14:10 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.162])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D5C931956056;
-	Sun, 28 Sep 2025 02:14:07 +0000 (UTC)
-Date: Sun, 28 Sep 2025 10:14:03 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com,
-	baohua@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	YoungJun Park <youngjun.park@lge.com>
-Subject: Re: [PATCH] mm/swapfile.c: select the swap device with default
- priority round robin
-Message-ID: <aNiZ68Cv/XytUNHY@fedora>
-References: <20250924091746.146461-1-bhe@redhat.com>
- <CACePvbUhnNUgqbTUrBYoMK-VeCB1Lntkeijof8ehOz77M8H6Bg@mail.gmail.com>
- <aNShH7WWxuBEvIuh@MiWiFi-R3L-srv>
- <CACePvbU485gPMEvBeK2CN4Ept-zS3ZYXfcVC8Fbk83saX_2dzQ@mail.gmail.com>
- <aNaxvEiMgh+EqGjt@fedora>
- <CACePvbUusk1D_=bTuzB_brDNgpgmbbKUxr1fXD-EExGp=A_=dw@mail.gmail.com>
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="M/aZzLzU";
+	spf=pass (imf01.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759026134; a=rsa-sha256;
+	cv=none;
+	b=5HuaYhZ6hJhZoen/VnaYB+LJylv9KbB6BYyMEKj1DXz1M+h1CjhRDgVwtEEVHwGQyEXJH+
+	LgvJqmG9Sm5HT/psXUbXRwNNK9gYnR5Oz+cmhdsMHbpxxtoBwYwXa/crW15CEmec8O3ZiI
+	PfbofXTgI9aE4Sazw6CD/prwActrGDg=
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-7ea50f94045so42492276d6.1
+        for <linux-mm@kvack.org>; Sat, 27 Sep 2025 19:22:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759026134; x=1759630934; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rDD4e48s5XfMjI/dpKcLLXxzREK+rG19jnnaqnwWIvw=;
+        b=M/aZzLzU8k4FBgmS7QG93yo8FYIsMDNgopWk05pNFVl4UGqzKY4lsHEdG0sD0coqgY
+         gEISSuIHxBKNclQ48iOnz6iEWcyOHaUYtU1goKkR8mAYRUhFkuRe5iLeSMd4hUzg5yHs
+         8Wyvvde/t7vb97+Vz61PMUUWNgD4GIb3kzukTwoV8y+vnWTorMUAJFKzQmk+LmRXvBkQ
+         Dbe/OI9JVPUnoFLhhnlWnKK2xzc3xHzLgJWKYacXdbzbJ6X58Rn5JBwTlJQxSnLor/Qe
+         9cQa7r2bEGjMjzjQTmnep8oqx0ce/6nf4iVHNKQBwZGjXfeT9dVNlJZHmZfd04b5uFxX
+         6WSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759026134; x=1759630934;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rDD4e48s5XfMjI/dpKcLLXxzREK+rG19jnnaqnwWIvw=;
+        b=lliHJD3thAgtg6SUh5MPG2JSyJ57W9LM9Xbk/ZjwDzBp80syeSMRB4CfKBqH4jUfSD
+         j3W52Mq3ygCfkmbEJNEFxTUyuF3+PAh8pXUvoFiPkE31Q7A2ZsBaxLBH+N71GMY4l9BJ
+         QjAXz56enLrWADInFHZRMmbfILM7o+4MMXZvhtcbS6uvjZH586AEEudKyIAxfTVR4FHa
+         VreTmitRbmHa/ZWCSEfI2F10jwZZJotuKso7QxMhK04JlNmAeLsEseSP5Tmg9V34/XoR
+         U+5KxvNI4fvfYo8iZvQutfyq/ES9uPiQ7/vWgo6+H285fIzpMcA7/Hhz1Q78MjcZwKE/
+         4UoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVlwwl4QtGe9/uST8+kHrnuuPV2uQh/o//9xeAUAQgxCYrE2morS5S8uhiXQ36pQNrNRizJMHvs0Q==@kvack.org
+X-Gm-Message-State: AOJu0Yz2Lmix5QwUbheplcTAS23cAmRguEwy36LZym/LmDCIqen3OsuG
+	2BBdDsSonjB+t4/6Sedss/renUIgNRC8N5gfGesCv2vz25r2mWAjSMOfR+UgVYCES4L4YdSbltO
+	q3ryPwuWR9z5zpVEZmr/HW4x2vWrTtso=
+X-Gm-Gg: ASbGncstFjG8XNfdqIep1Bv8v7S2uVtZM54N6vlroaHC83cEkjRjgkjt1NAsqK+2MNi
+	yIJU1lQgbGz0QKsPJGM9h01tvPh5PkdshP1cVRM3fUrrOPAEGfV9CKaQm+821h0HJzGZlS8Bzge
+	KGD4nX/El/wZ6VXpNSlYVAkuWPaCzu6UZvSeTWNWwkRyrrYiysDPShUYIsRotuNmZW76zGcRU6A
+	S1HpLlYWW+AbwlygM3RDtEdAZ9WbH6btVHiFEdz
+X-Google-Smtp-Source: AGHT+IFyNx87WkucEh4IUe144Snnrs8UIvE2HHg9WmEgjBihbVbfffswex+Qoi5vAf0JBbS7kN+nkcwu/mGzgjpLhIk=
+X-Received: by 2002:a05:6214:518a:b0:78d:4452:754d with SMTP id
+ 6a1803df08f44-800f448ed2amr147929456d6.13.1759026133538; Sat, 27 Sep 2025
+ 19:22:13 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CACePvbUusk1D_=bTuzB_brDNgpgmbbKUxr1fXD-EExGp=A_=dw@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: I-qULwOJIeSe35ggakax8h3Bs0hdz4NnK_5Rj8fCgbc_1759025651
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6C86A14000B
-X-Stat-Signature: d8yd45gwp7em7bck1aoesztw5h5xeiok
+References: <20250926093343.1000-1-laoar.shao@gmail.com> <20250926093343.1000-2-laoar.shao@gmail.com>
+ <34a9440f-b0c4-4f76-a2ac-f88b54c2242e@gmail.com>
+In-Reply-To: <34a9440f-b0c4-4f76-a2ac-f88b54c2242e@gmail.com>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Sun, 28 Sep 2025 10:21:37 +0800
+X-Gm-Features: AS18NWCHyMM-LHN0Py29bv_E4OCzemb4p3lZQK86XhDW5EVePduz12uMvfCrD14
+Message-ID: <CALOAHbD8tup+4DbQ6tMzDxk=XkhW1t6B2L8+k8nP-1wg2zoXqA@mail.gmail.com>
+Subject: Re: [PATCH v8 mm-new 01/12] mm: thp: remove disabled task from khugepaged_mm_slot
+To: Usama Arif <usamaarif642@gmail.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, hannes@cmpxchg.org, gutierrez.asier@huawei-partners.com, 
+	willy@infradead.org, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
+	ameryhung@gmail.com, rientjes@google.com, corbet@lwn.net, 21cnbao@gmail.com, 
+	shakeel.butt@linux.dev, tj@kernel.org, lance.yang@linux.dev, 
+	bpf@vger.kernel.org, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: jh4ax86e4iybguwzqhgepcrsbgocczar
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1759025656-417529
-X-HE-Meta: U2FsdGVkX1/eR3aZEJ9svi5pIQVRwD3YHH+SztMQ5kyDAQRZhvarNQeWVTC9i/oAIHh9ep/e3sD4zy8YpNm7+y6KFRsAb4jua00zLVidbFPuN+bbxZH8rdL+eqRL0qqxvCIqgpUSzfX5hod1CjhyAy0C3tdTtqkwP304vny+cAsTCpgm1d1a/BIS18O+0eS6E/UP6f6xC+qKsXxHuWUXxhPJCwdkLJno34739RROf/xh46ZZCOrK+CZLERS60JOn3SH8Vw62qsu4ClNq+ybUtsvwiYxy2bWqy9g66y0M7bOx2LqAa0qExvfwdvfWOKGozu7jiKultJhmo6Cuerl5o0T+D95a07T+apAAZCBVUDjB1p68073Ex+obwBJLoW0mrXkgEOVi1lel9kLa41HU67Un4EY+jRH0NuRWC4OcTgv/DGiCcIcT5uLDcSzybc60N/zEGGm84cTzrLwAfUvjtkpb31HNeopp67sD2QQKM1yplQsAo4wqRu2XidZG7d4UfJFxQJ2hEYeXXXJ7Ji7cv37oZWxYR8W7soTErxUaQLFf5hPlWKJNjGvmqEDeZJUFxt9Mw3ZOoCjhyGaRLlPdbowJJX/FkdD2/dEJgJ1QSzNFVnVo3KE5IfbY+xrj59MpZ68AzqLejNmKdq/wLiZ316AmPs52JU3v8XxuHwY/2fNKWdXYWPyGgAy5aJGL/7B7R292TTsl5y88hTMSb7o0JwQUCjgOqvkymSEA6OZm9fE+j50RyfuxggkTThCE6WBD1lrrws2e2bAi/DUpf5yjUyTSP8xk7C4sb5xcnr6WljlTBfSvKKYhj5izRyp5YNcT3F/inIYxinLhX1QNKYw+px8YTQjpgOSgAaVE3KTEIOIG88qixdccuGAbfJ/+/o/+0acynm3aSxBLaEvVv7HCfnoW1iwfGXFy8kl/FG4VTiNpOwo67oz9X7V1Hu4rBgo8+xcR7SKJUlLsCKOTHrQ
- FZF7WTXJ
- EeAnEjtxmK7WhZsCytDD+ZrAIW5zSU3s9Tz4n/ieu9VjDLtc6NZALTHaR35TI507lSethan9Ph2AsFxf3qXVyzX677qtGZwUSQD/GKh7pBugxkiG00tSNExdEeuFUjUdXC+85qCxJdabfx3W+EsNHSff6nlqug9Q2NhUj+mu/FOo8UWYHJRphT5GzsvWoxP2L3pApCeUybBoqXzHWWXzAlqwrSMbQ8yIHoytp57ZO31yOEpR9+d2v82s2NctGi72SssVzHrHuOR3P0A5wcXf7ZiKlnUOjZt3MnsSudfEo+KaDgzi0ZIlwT8nBS2P9fpyqluh2gqKWnFlm4vSqXmbuLKxPt5EwPEUXtzWlhzK1zaqNrr0sjxaURuiTAkNR7ERBb4+Exs5wgLSOH6YGIyIBe/jYIm53CxpLe4BEGTp3F8mCHpF/b2X+ErODAkgPIaAa/uwEHhmCk/6c/Lc=
+X-Rspamd-Queue-Id: B408840003
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1759026134-792839
+X-HE-Meta: U2FsdGVkX19b2HjTfti5UgWbmI0fsPuKB8YD7tYVcvoN/y0w6PjD6QXEnDPXGeOeTIxiyC2stOSDEwOhrQaXsHuIKsWBPQlBFEA6gocHJCldXbzsqcSWU1K5A9T/UQrYyourSB3iZGHQ0l23i9BI4FTQbZynEF58pJzJ0UD74B+bBQ+2sHLDwpyuqqW8L7LK4D4Dc9KKKHRQxi9v21qGmViISqJvURUaTdejgh0gspAigS6VIjXGqTp0m10TwpUlLIsVh/h5BDeg/fk1Y/jZL8ERZZxbRb9RbhZVv5ICKWYqwwoPYkHY3g3gkhEYaaTNoeD4FygaYWqRNB9ZUheizpFtvpkwYzsA/uAndIJBTR+Imx3+6VycytPCfVR4duZaul7I0RZWZgTSoyjjoKp2zooXzloNRFkglbgxn4R2MTEz9pDZe4ifi6TESrFdNx6AspLefG5q4nIqvh9X2CDDwhNFi/idGGSa6+1evJ1kElkc1oALgymUMM2706AwXyk2bkXoK/0wTdVZxivlUGslq73QkBI+gXsiCPJZpv9k/yu7hQiMcWvRL4wI7QbkDx/urDAlE7eFTR1CqJSyu7PD52uWRX2CsXAsKsb25Jab/hJTM70TZBmfCZ9XrEnHQ+PfWtszWMCVPewT6O9VqK4jZF54iNpX+qcKkuxLIK3IicaNfWEtLAH5n2xoUDsQ2g+mkKgi2zb7YDV1HaRJP6OP5+vFtLgCD7cvJdidYpYC8myrKe89/jJvCgvYmZaqhzWkYjm74STpwvkYwSl7koX3FRbakHL/9U1iVOLAluhaTlgJBmGoZAJqcwdhzLSR/Cw/zva/vqT8F8iqm7fdBuhkQvZM+67IQbxJtWRPzkG/HkI+qjXcC2YZb5Xh9vs334/iDtHfdH0Lbcr5cD3sQE35Dv/sOvQJYbuCZdqdyVSk7PW3t/PRNAnSXyxZP1YYgfCwpS1wE8UNzipMlZ7agKl
+ 3JrnfcYO
+ sd+GJJh1kdamxx79w5ZdGADdZM46Y3m8Ie82vDGzc623fhMHEQF8HfAFBRqYXCqPIc8GJKUUMZOqaUpc+Lpq2STc+R5bU+eVdmwmDGmirgzW8c6lIpsgU1sybbwRLAVgcwx+uZ1QLSkHB2KyqnraaLdDAgWsc5HBpvmYHq8UrRSsqnz6ccUfG2IeaXnviyLNAM6nbCRsJ3T3wzhTeVE2l+FUZR/oVxbf4de7w+HDgov1s8MmORO0Ogi/b6STHbbEP++6riGgLIRz2dHKAX1CSz6rrZ29deA9HEteCCW9j5lPGYPjBT7JCLh9KczzBiL3pl1KbqTqgfK9jOSFFUUU3Nr6+je5WLTnbZkvwDvc3HfTexwFxgMbfYbTwDFPtQ70daMwolmmjsmktf3GYZfbU8GtIR8yCa/+6cpIMDdSM4hE9AXf9lk0F/qX2ptnPb9RdCKWL+LzKNr3ymtFzkhYq1q+OpVm2QdBhYZujkSvQwX96WI4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,51 +124,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/26/25 at 09:46pm, Chris Li wrote:
-> On Fri, Sep 26, 2025 at 8:31 AM Baoquan He <bhe@redhat.com> wrote:
-> > On 09/25/25 at 11:25am, Chris Li wrote:
-> > > Just curious, is setting to "-1" matches to kernel behavior before
-> > > a2468cc9bfdf, if not what is the behavior before a2468cc9bfdf.
+On Fri, Sep 26, 2025 at 10:11=E2=80=AFPM Usama Arif <usamaarif642@gmail.com=
+> wrote:
+>
+>
+>
+> On 26/09/2025 10:33, Yafang Shao wrote:
+> > Since a task with MMF_DISABLE_THP_COMPLETELY cannot use THP, remove it =
+from
+> > the khugepaged_mm_slot to stop khugepaged from processing it.
 > >
-> > It should be like below. It's not a real output, I made the data to show
-> > what it looks like.
+> > After this change, the following semantic relationship always holds:
 > >
-> > # swapon
-> > NAME       TYPE      SIZE  USED PRIO
-> > /dev/zram0 partition  16G 15.8G   -1
-> > /dev/zram1 partition  16G    0B   -2
-> > /dev/zram2 partition  16G    0B   -3
-> > /dev/zram3 partition  16G    0B   -4
+> >   MMF_VM_HUGEPAGE is set     =3D=3D task is in khugepaged mm_slot
+> >   MMF_VM_HUGEPAGE is not set =3D=3D task is not in khugepaged mm_slot
 > >
-> > I just apply this patch and set the priority to emulate the kerel
-> > behavirour before a2468cc9bfdf. In kernel before a2468cc9bfdf, it sets
-> > priority to swap device from -1 downwards. There's only one
-> > swap_avail_head plist for all CPUs. The behaviour is very much like below:
+> > Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+> > Acked-by: Lance Yang <lance.yang@linux.dev>
+> > ---
+> >  include/linux/khugepaged.h |  4 ++++
+> >  kernel/sys.c               |  7 ++++--
+> >  mm/khugepaged.c            | 49 ++++++++++++++++++++------------------
+> >  3 files changed, 35 insertions(+), 25 deletions(-)
 > >
-> > [root@hp-dl385g10-03 ~]# swapon
-> > NAME       TYPE      SIZE  USED PRIO
-> > /dev/zram0 partition  16G    0B    0
-> > /dev/zram1 partition  16G    0B    1
-> > /dev/zram2 partition  16G    0B    2
-> > /dev/zram3 partition  16G 14.3G    3
-> 
-> I see, in that case it is not a simple revert. It is revert plus a
-> change to make the default to use round robin. I suggest you split the
-> patch into two parts, one is the conceptual clean revert, back to the
-> pre a2468cc9bfdf without behavior change. Then the second one is
-> changed to the round robin. That will make your behavior change more
-> obvious.
+>
+>
+> Hi Yafang,
+>
+> Thanks for the patch! Sorry wasnt able to review the previous revisions.
+>
+> I think it would be good to separate this patch out of the series?
 
-Make senses, I will make v3 to split it.
+right. This commit is independent of this series. I will send it seperately=
+.
 
-> 
-> I suspect that even pre a2468cc9bfdf, the round robin might outperform
-> per node priority already. Which means there exists a much simpler
-> solution all alone. Even though I am curious, I am not demanding the
-> answer from you. Your test data against the latest kernel, which shows
-> great performance improvement is good enough. We don't have to test
-> that really old kernel.
+> It would make the review of this series shorter and this patch can be mer=
+ged independently.
+>
+> In the commit message, we also need to write explicitly that when prctl
+> PR_SET_THP_DISABLE is cleared, the mm is added back for khugepaged to con=
+sider.
 
-Yeah, I agree. Just nobody realize it then.
+ack.
 
+>
+> Could you also mention in the commit message why the BUG was turned into =
+WARN?
+>
+
+I believe we should replace VM_BUG_ON_MM() with VM_WARN_ON_MM() [0]. A
+warning is sufficient for debugging in this context.
+
+[0] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/Documentation/process/deprecated.rst#n32
+
+--=20
+Regards
+Yafang
 
