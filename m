@@ -4,82 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45EA6CAC5BB
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 05:46:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 796D8CAC5B5
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 06:47:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A6098E0003; Sun, 28 Sep 2025 01:46:16 -0400 (EDT)
+	id 6BAD78E0002; Sun, 28 Sep 2025 02:47:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 655678E0001; Sun, 28 Sep 2025 01:46:16 -0400 (EDT)
+	id 66BA38E0001; Sun, 28 Sep 2025 02:47:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56AC08E0003; Sun, 28 Sep 2025 01:46:16 -0400 (EDT)
+	id 581818E0002; Sun, 28 Sep 2025 02:47:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FA558E0001
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 01:46:16 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D8D1A5BC1F
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 05:46:15 +0000 (UTC)
-X-FDA: 83937573510.29.CB6895B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 3A3AF4000A
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 05:46:14 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WDbfj2zt;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759038374;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 45F478E0001
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 02:47:18 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C4842BC1EF
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 06:47:17 +0000 (UTC)
+X-FDA: 83937727314.10.097D7F7
+Received: from www3141.sakura.ne.jp (www3141.sakura.ne.jp [49.212.207.181])
+	by imf29.hostedemail.com (Postfix) with ESMTP id DEE61120004
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 06:47:14 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=redadmin.org header.s=20231208space header.b=G5FUZBjF;
+	spf=pass (imf29.hostedemail.com: domain of weibu@redadmin.org designates 49.212.207.181 as permitted sender) smtp.mailfrom=weibu@redadmin.org;
+	arc=pass ("redadmin.org:s=20231208space:i=1");
+	dmarc=pass (policy=none) header.from=redadmin.org
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1759042036;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=G2VW10Nkm+tMOpRHphUloTZs01Qk9bI/UgJB5+clMeU=;
-	b=3UZtJX8pdUCF7hpkQxCjB0aw7BGQe8FgAwokzeP20nk4EBPJ4IsuM6bl94RQDSk5bkxQF6
-	LJdx1QF46VfnAFpk0ElQ+J8dyWZBT1kE25x5FEEZu42w9EANmvi6ckf4JUuvGhsVbNvNS8
-	boz5V49mXxeUWBN8lcenPiKmjwbadKI=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WDbfj2zt;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759038374; a=rsa-sha256;
-	cv=none;
-	b=0QdyxqObB+xnDgQn23Sb29ozay05opL/TyyXZ+U18l6U3OvPQCzUHRS2Iya85EIQsMipZi
-	+FQUlpUOtXW4EnT9DwpCS2ej6FlGlV0GzQ/4ONuWCQ7Ja/dkYcVTQSp1gA9BXLSzZBtscs
-	K+rfyLZa9/AKFwjedaNJ9EJyDl0vaPM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 48242620F5;
-	Sun, 28 Sep 2025 05:46:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B263AC4CEF0;
-	Sun, 28 Sep 2025 05:46:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1759038372;
-	bh=Yrgs1IXkVh2mOgB8ie3jgcyYGEi6ekHFtSCD0+MwkqY=;
-	h=Date:From:To:Cc:Subject:From;
-	b=WDbfj2ztOtV4NlsL9ez32BiVdOiKXt86eXAyZo2D2zRM3aRbIICte+x8e85O2xARf
-	 JYP4PB/Vc9Zy4myie62kILbRd+wv6tObTAoVukB31exS8w5krIgiqYnpSo5AMyaKCJ
-	 7DMHPUQR4u0fLTcgk9HRsZvY9eoI5xw0bnHNukzg=
-Date: Sat, 27 Sep 2025 22:46:12 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: [GIT PULL] hotfixes for 6.17
-Message-Id: <20250927224612.fffdf688aa7be4206a4a3ff1@linux-foundation.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=t6ustQj7Xfe3HKiERNgrVHhh1pz2uVuazT2CqYYtX+I=;
+	b=JWQ5caxX+jtyJTpAhwGysLCVO4lqyNBKkPpIXwKt0EiKvL0m2aFXQ3pG24KzvnhMxS2U+W
+	GsHRloKvvDr4qlnZq4YfXWTW6Jc/keNjao1g7PIILiLujr5z/duesadIQQr7fQv0pk6apA
+	mPl0oCauNrCRhlXWpZMr1XC8ztygFyI=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=redadmin.org header.s=20231208space header.b=G5FUZBjF;
+	spf=pass (imf29.hostedemail.com: domain of weibu@redadmin.org designates 49.212.207.181 as permitted sender) smtp.mailfrom=weibu@redadmin.org;
+	arc=pass ("redadmin.org:s=20231208space:i=1");
+	dmarc=pass (policy=none) header.from=redadmin.org
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1759042036; a=rsa-sha256;
+	cv=pass;
+	b=Y2LgxLTx2E8BtBlZuhFptKF4RMshGT4vVC4o4akVLiTpZC8AlU7+lAR8G6T1fVk9K+riiM
+	Q4UYFkUynXsXA9VnFhD4/jR5gEcACa8jqsBNrZR2P8y+9NQ7ugDcE52Kdn2CbkTbDLgVcT
+	s1oC3UQkTmkenZVblvkRjcnLwcqyb+8=
+Received: from www.redadmin.org (ag129037.ppp.asahi-net.or.jp [157.107.129.37])
+	(authenticated bits=0)
+	by www3141.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58S6kw0D051679
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Sun, 28 Sep 2025 15:46:58 +0900 (JST)
+	(envelope-from weibu@redadmin.org)
+Received: from localhost (localhost [127.0.0.1])
+	by www.redadmin.org (Postfix) with ESMTP id EA234109EFD83;
+	Sun, 28 Sep 2025 15:46:57 +0900 (JST)
+X-Virus-Scanned: amavis at redadmin.org
+Received: from www.redadmin.org ([127.0.0.1])
+ by localhost (redadmin.org [127.0.0.1]) (amavis, port 10024) with ESMTP
+ id SgMd9GkpPodp; Sun, 28 Sep 2025 15:46:53 +0900 (JST)
+Received: by www.redadmin.org (Postfix, from userid 1000)
+	id 7E3BC109F2881; Sun, 28 Sep 2025 15:46:53 +0900 (JST)
+ARC-Seal: i=1; a=rsa-sha256; d=redadmin.org; s=20231208space; t=1759042013;
+	cv=none; b=j+K2CKhOHrESoUHYiYOGxBoYd5j9Ey0b6TSHGOxPbSiDseNnNGvgsXvcfWta2V+MU1Agxf+CPR7Uhi+35UPwn+JFaE+fsnU8LoWnkw6vR7YREyEKo0GK8tMeSdMuxgXO53Z1jwL/tWOb29VErxX0nrrIru5g8denNRxDV2eXnZk=
+ARC-Message-Signature: i=1; a=rsa-sha256; d=redadmin.org; s=20231208space;
+	t=1759042013; c=relaxed/relaxed;
+	bh=t6ustQj7Xfe3HKiERNgrVHhh1pz2uVuazT2CqYYtX+I=;
+	h=DKIM-Filter:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding; b=HMt32kzNplHxRIZjrssxUZ4FLxqJNmv/Zxj87Y/1ubBx/yWTTGSsij6tm2TCUjyrkSreUm8oIzzBduDm2lR/NU6Ax06vX5BLfBFTkz8D3+RektbLNRRGwQnM16ADFqO0JWlqJQSg0l8mcDzqEemXh+pymgcw+Y9FaWl0Hm7+Jq8=
+ARC-Authentication-Results: i=1; www.redadmin.org
+DKIM-Filter: OpenDKIM Filter v2.11.0 www.redadmin.org 7E3BC109F2881
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redadmin.org;
+	s=20231208space; t=1759042013;
+	bh=t6ustQj7Xfe3HKiERNgrVHhh1pz2uVuazT2CqYYtX+I=;
+	h=From:To:Cc:Subject:Date:From;
+	b=G5FUZBjF1himgrUO+Abz5dIhQRc4vg2jEbeUDp7PUr7P124LRQKP9/cvRKq2gTzYD
+	 omm6HWFpg90h5Rzy8H6iN6l3ASPQBU0vN69rVdTHFM43IfqsEV2IpYkpz1wlLjXZ8q
+	 bYVsJ7nlNChytAX04H5zYyeONUVWQOsXUrnY2U3o=
+From: Akiyoshi Kurita <weibu@redadmin.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        Jonathan Corbet <corbet@lwn.net>, damon@lists.linux.dev,
+        linux-doc@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Akiyoshi Kurita <weibu@redadmin.org>
+Subject: [PATCH] docs: admin-guide/mm/damon: Correct typo "directores"
+Date: Sun, 28 Sep 2025 15:46:51 +0900
+Message-ID: <20250928064651.281325-1-weibu@redadmin.org>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 3A3AF4000A
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 7q9dtfcrsf9ujzwpqpgqy8ppc9zik9ft
+X-Rspamd-Queue-Id: DEE61120004
 X-Rspam-User: 
-X-HE-Tag: 1759038374-864825
-X-HE-Meta: U2FsdGVkX18tKNxkL77PQW5Z0s3X5nvWmUMnNsCHxqq7zvbwa0VVp2s3DOHS/GOJwnFk1EI1DIgW/piEMIRtkm63dK05EmZns1hVYMtNJU2cpoLijB670bxDIkZlLLT+q9/XS+6K49MGqE6MKcpjbz6hYLw5VGai2o2guIREAUMG8bnWm/nj8jouWqKDLZRBBJ1ihJ3SKzniK77lZrG0oLLWmNGJZjDzrL+CcacPlZ9Bc/jXn0opYCOBMWjG8VkPQ/tueOrb6rFHfqsbv9G8TAHrEebsHUT676GjUGFLhDPEAc9j6XobqIicv2vlC3ezeioN816PHR39h/3cBvq5xpDl9v+ScWdPAr/9LalL4RXyg6+NqDuHcKYkZjpLyqtZc9/kwDK5lrvTPbAD5M5aPiPOtnz1kbQdV/L70M2HCd8kCNDDl8TDn76KupBjF5NBXAcHd2tYzkvlWYNZb/yg83NBQq3JU1E6KZVaBa8XdfQYw2XKTxJaDKJhWZVbGGxf1oIDPrwbZYWqHo5PwTtqTQwEUTCfCS6wQx5RTeatub3iH+q5r2jN/RKyQK+MzrOr2VnIGJpGq/HLz4G6s1YQhpnm5a5gr64w6/fVxLs+WthYLnahApIS3sba08Eu6x+62NVfZ8OrTYDAgWbkx6f0W6ojEVXbwlYAFcjmPU180P6t24MwcR+WwXplL3GDj0aZFsL09SjK1wecLRNhaphqJ5FumZVzVaiRyXGnfFSZyizOpxYHl8Ph7BDm9vieD5EuNz6D1AkPRwqUtqoyXuiwBocsVO/ObFTL97PCJJ1I45FHRGITTVnTbbaT2wQ0M7VbQYI7n1LxaAU4HmdehHUZrpZxAKoegG1iCjnKFLugQ5sfP9HZZj2CcExduRh0rMChqrzaBAYdnsGEiKP1hKYab+8yAelr8WbBkb11m9R3sykJpXiji35+8tWrB1S+HeoQdU1jTHdZ7JfXINGI6Vo
- fNCgnJlP
- ZxQ9idJOjtLov+8M7M1RXOo8YHNN8RHgCpBtYiRtHfoqmxayIHWxcvuMYupsi8YXz8LZHI1HDFnTyaV1Ua5uZFuKuIGxYFsxTfkKm4EWzR19npEpHFULfrZPRbaEBHyEytGBp1A2Hjrog9HhevSMt9MwSlF80dFNWMnPDDl3zzRrnNXeo21mEx9jvQF2zhNUXIt158x1lu3gL9nKZArju0k9ddEzxFn2IUqL232aIjxaQMsyWBRwgrgim/0g14e70+w8MuKDyCylrurE=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam07
+X-Stat-Signature: frc1mb4q5uqtfgw8qpedqwarerbnxeih
+X-HE-Tag: 1759042034-132110
+X-HE-Meta: U2FsdGVkX1/uMrqhsmYQOqdd2SR83hb00rLgrx/TVGLrliFPKfurCHi3dANlHOUKb6FrR7o/9iJBV2keZJw9ZAKmyPr2vRw99p/U+x1qDcWC4e3OmqogJmqY4f+7iN5slk0LxiKmJEZY+Sy04W1C2Nl+yxAUg/1knXBLhoGSdBoZJPZ9zfIwdnZTRVaZMroQUKVwWy4TeyzGf6KwFTVs9aT52nMhWUja021BJDhZyXuiZ2Bw8r6duqCl16hbPhzkhZ9d5SsLW40cxG5lyEYcOfEANEV0TjjxPOiq4itOYGCdQ98v5xuQWw/r6kNxsMT0RjTq1Lv4DZGjKHp5jM4nXEcXc9RtzSQpt/QKib0w6ZfPIHVYSUHBIBvz2CI6kNVSfvwj3j4wNkGNgPbc4EJGLYEbcW/grERi0Q3SHbCkvVKgK/iRHW+19+zV7GAm0X5ULZ+QgtoguNmGNNfP6MTcdqivpmvh/aPhP3rMg2qKCPwyzngMnxU+GdJT9Wpjl7byNUsNpiJhdMSGS6bbxpSRPhfIom+4MBuI5pPvL8s/V6JgfWZHYC0+A8o7vRvfN6xmKj6Lkg+TxD7GaQVZ81k9qAs14iM7knX2hI3kOwzNVopFhrbb1/gFwO4hYVbNGIzjQkPsBXGSXZL0pt81ySWbZGo6shA9413e7+zMDQeaNkLV5a+E8tbqgxr/lddAip6q//KMQy3oz5z38MpLGWozLRU9bDjiz0Zus0qxOgdMPihcmxx5FGKagWmGvnd4cdhlpPZ1BeahMxuRozk6v1QmqvkCu23m8jTBfcnn3COPdm9IR6rJW5qoadyxRRToUcG615rVKjIdYDRY+uybh1WOJMgtCvPgoSFwqpPxKyTchBqXM+YmJ4xay3oMApH8xM7FacxuUb0PKlS+5T2lqITfPi8wWlIBaSBU4osovCvynA9aSlGyw6hlYp8vZ/HzYmbCyc6sXL84bw7WF8T5Kkr
+ MHn22u9/
+ B+R7IIFILcl9Dp8x2t636mU0MkQUk0uLfZ9lqAN2c8VfoZKLyt+w4peFNhCaC5FKFxRzOG4fWLKlsCGbWW/Dkxoqsh/96emaJoVh5w+DlsnyMTECzME3jMb0qGM0T5qu7cijBmsO91ATDC1Aa4SL2H3spjhHZ9HxDvytRHmQlN5TnPehKqBnAHSiCGnfM9cFBHAH5tAlL0oheYY/Bl7lpQCEYibLbL9tE+rqKxbR3bEUCEiq9UTR3i6rBT+yFL3TNvJcCj/Rn+vJSJCpyLInCQJ+AcGKVUbGeP5RfIvZLqYUOqGxNJ1Yr4G+9PV7UACj/LWGmL03H4lTJeGqdnvsT/MMgDI3ISaScXyQR+vZwISVX6eisLb8mpoI97rHa5HJXVoNJI2VAItNyZKhKNlOmQ+EcWwbzZ4GM4JEK47e0Un64R4CaRaMcyiYhzKTWHkovq/U2WLViBm0ZSE5yJ5JWmftsD4fe8XtXLzPJVWR2F6rLuRuqC1lhyA6YCw==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.015384, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,69 +109,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+The word "directores" is a typo in usage.rst. Correct it to
+"directories" to improve documentation clarity.
 
-Linus, please merge this batch of hotfixes.
+Signed-off-by: Akiyoshi Kurita <weibu@redadmin.org>
+---
+ Documentation/admin-guide/mm/damon/usage.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-It's rather late in proceedings, sorry.  The world wouldn't end if you
-held this off for 6.18-rc1.
-
-Thanks.
-
-
-The following changes since commit ce4be9e4307c5a60701ff6e0cafa74caffdc54ce:
-
-  zram: fix slot write race condition (2025-09-15 20:01:45 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-st=
-able-2025-09-27-22-35
-
-for you to fetch changes up to 7e89979f6695fb56e8739b7d19614256e637131d:
-
-  include/linux/pgtable.h: convert arch_enter_lazy_mmu_mode() and friends t=
-o static inlines (2025-09-25 16:10:35 -0700)
-
-----------------------------------------------------------------
-7 hotfixes.  4 are cc:stable and the remainder address post-6.16 issues or
-aren't considered necessary for -stable kernels.  6 of these fixes are for
-MM.
-
-All singletons, please see the changelogs for details.
-
-----------------------------------------------------------------
-Akinobu Mita (1):
-      mm/damon/sysfs: do not ignore callback's return value in damon_sysfs_=
-damon_call()
-
-Andrew Morton (1):
-      include/linux/pgtable.h: convert arch_enter_lazy_mmu_mode() and frien=
-ds to static inlines
-
-Bence Cs=F3k=E1s (1):
-      mailmap: add entry for Bence Cs=F3k=E1s
-
-Eric Biggers (1):
-      kmsan: fix out-of-bounds access to shadow memory
-
-Jakub Acs (1):
-      fs/proc/task_mmu: check p->vec_buf for NULL
-
-Jane Chu (1):
-      mm/hugetlb: fix copy_hugetlb_page_range() to use ->pt_share_count
-
-Jinjiang Tu (1):
-      mm/hugetlb: fix folio is still mapped when deleted
-
- .mailmap                 |  1 +
- fs/hugetlbfs/inode.c     | 10 ++++++----
- fs/proc/task_mmu.c       |  3 +++
- include/linux/mm_types.h |  5 +++++
- include/linux/pgtable.h  |  6 +++---
- mm/damon/sysfs.c         |  4 +++-
- mm/hugetlb.c             | 15 +++++----------
- mm/kmsan/core.c          | 10 +++++++---
- mm/kmsan/kmsan_test.c    | 16 ++++++++++++++++
- 9 files changed, 49 insertions(+), 21 deletions(-)
+diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/a=
+dmin-guide/mm/damon/usage.rst
+index ff3a2dda1f02..5cd42d428c89 100644
+--- a/Documentation/admin-guide/mm/damon/usage.rst
++++ b/Documentation/admin-guide/mm/damon/usage.rst
+@@ -357,7 +357,7 @@ The directory for the :ref:`quotas <damon_design_damos_=
+quotas>` of the given
+ DAMON-based operation scheme.
+=20
+ Under ``quotas`` directory, four files (``ms``, ``bytes``,
+-``reset_interval_ms``, ``effective_bytes``) and two directores (``weights`=
+` and
++``reset_interval_ms``, ``effective_bytes``) and two directories (``weights=
+`` and
+ ``goals``) exist.
+=20
+ You can set the ``time quota`` in milliseconds, ``size quota`` in bytes, a=
+nd
+--=20
+2.47.3
 
 
