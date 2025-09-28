@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43248CAC5BB
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 14:22:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06414CAC5B5
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 14:36:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DB048E0006; Sun, 28 Sep 2025 10:22:46 -0400 (EDT)
+	id 1687E8E0007; Sun, 28 Sep 2025 10:36:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B2DD8E0001; Sun, 28 Sep 2025 10:22:46 -0400 (EDT)
+	id 140128E0001; Sun, 28 Sep 2025 10:36:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C81C8E0006; Sun, 28 Sep 2025 10:22:46 -0400 (EDT)
+	id 07D1D8E0007; Sun, 28 Sep 2025 10:36:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BFA18E0001
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 10:22:46 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0ABA91A011B
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 14:22:46 +0000 (UTC)
-X-FDA: 83938875132.15.CA6495E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 5B64CC000C
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 14:22:44 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TIaEscUT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759069364; a=rsa-sha256;
-	cv=none;
-	b=DeO8/GEEqtHl/NwU0vxIVKdq0NrLYkInB2XrMmlbPz+/RKtt1i151TIwKf7V2HHAsGoGn8
-	omdaeAr1QxTjkSdAIXZ+9g6dqVQQMWY3TdiszOUYfAorLfDyp6qVEVhMFMdxTkQ//xOpio
-	9YcHeLFLellr03/lie5JxjwibiI0EyI=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TIaEscUT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E65CB8E0001
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 10:36:34 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 743DA83CD2
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 14:36:34 +0000 (UTC)
+X-FDA: 83938909908.21.6D16058
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 00C4D14000C
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 14:36:32 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=phvoTT7U;
+	spf=pass (imf26.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759069364;
+	s=arc-20220608; t=1759070193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=40XsfutwklaTrh/ktA8dOMMeeLMpZtvmLMYd8gv8sBc=;
-	b=H67ELV7dlf770vJlro/Km3e+lL8sWn3MWTNZVgoA2i/aJy0NnkEqlzbApoBkEHsGvpHFx6
-	yIBAANB2vCQykoaRX1C+6xQZ/DXqqkF3JGPK4XhnHzSq0KN+suxFiaZ0nyrEliBKNBapbH
-	ROKfaSwm5BEqx/ckll8zpJ8yaCibPV4=
+	bh=gvzJto+15P7BALZuWOJuYOnk2NcAl2NBEH3Q0XdVu7Q=;
+	b=F+5In9mutyrEV6wErfwkNETgESDsIqsWTigfqK77JGpwv6j+2XVNLx9SRMYDUdGzyL8Lot
+	Kcs3KeXJvREb+ksNtr2IJqoCiDdw807EvJoC86nbiit2udZTbh5di2EzvmNEOQrc1RZxba
+	64NVmURhFmndLdWOtCS2+xbMKrg6MVg=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=phvoTT7U;
+	spf=pass (imf26.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759070193; a=rsa-sha256;
+	cv=none;
+	b=A6EzLi0IKbub8ZwT3/NzoJqvTATzzC3Ojh9Y56QmI/HzGmBMVAsZ4sgeVLo9ImRE7c4PEE
+	XaGrdt2s6XYLpMQ8nlfn7MIQkpqcxy8uk8BGdnApf9B8fH/Xh1ptTb972eLpgJAV5Ohwst
+	yPm8n8qDJPMplRtLRrAjbxItdshY4aQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4319644260;
-	Sun, 28 Sep 2025 14:22:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BA39C4CEF0;
-	Sun, 28 Sep 2025 14:22:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2A5F960281;
+	Sun, 28 Sep 2025 14:36:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72425C4CEF0;
+	Sun, 28 Sep 2025 14:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759069363;
-	bh=Wg1xrNCbGg8db7MqipyCxrrsmMoVbFCLhcRL36NHECw=;
+	s=k20201202; t=1759070191;
+	bh=xjQLvrKt9akl9GuheEGr+P2uPV9FsTvq0tDl6rUUN+o=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TIaEscUT6E8LJ+NgIrEGjJB2yfmv0DOXQQ3iMgMZewcagvseJj47Zq7TbBcssaQgr
-	 rGIH8EVofkWfFbNGyD9UNbpBzi0pz53pYgVouaJYpMKlmDvy9TBwMU+olwn269wf9J
-	 T41s4Q3jouYy2lr5tDBEQeiT/eoFSGDOpL0XPUbw3HPWZzVFw+J1z4pE4VH/K+coWe
-	 +c/sMEtUxdRwap2G1mPwgXnfFvVaq8LZWqUcrV5n0ZbIzim4JDZucgNI0bkZKhnNWH
-	 GRpY/iuBWdp1Ds9iYdYd19AHQgmgAmb9vfi62Kfzhqnu81lPLCvD1oo91CKyc1gyRj
-	 N9WRiNJ694s/w==
-Date: Sun, 28 Sep 2025 17:22:38 +0300
+	b=phvoTT7UCIJjosOrV+WiY/ecV/D1sXuKIFi3R8TrX2Pns5qbLfpmiAmNrA1RZGaPg
+	 aQNii2M3zKe1t490lqauPgolU6NFPn5TBq/jSXWYFKAML2rCg7S9JJcIxzp0UE+9Ph
+	 CKQdGxwbd3IRDhNVmUgS2dI5aKBcNxHp4aEHDaU9Wn9Yw1aApFd42OrD9JXzLUyU0u
+	 tnIlR+X9Y6Yh2G0h3/7z74HnJBmr8P4JBm/0wxUIWtpEsU3KqAsSqC9OeTqRM6wJPd
+	 C6QbDTQRHb/y8jMJ5M3AqrL2+yFENt7MSaboP7shXcD/8B6u7lsh3qrgdTrd+Il1yB
+	 IrPvpXWO85q1A==
+Date: Sun, 28 Sep 2025 17:36:27 +0300
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: Cong Wang <xiyou.wangcong@gmail.com>
 Cc: "Christoph Lameter (Ampere)" <cl@gentwo.org>,
@@ -77,25 +77,26 @@ Cc: "Christoph Lameter (Ampere)" <cl@gentwo.org>,
 	linux-mm@kvack.org, multikernel@lists.linux.dev
 Subject: Re: [RFC Patch 0/7] kernel: Introduce multikernel architecture
  support
-Message-ID: <aNlErhpO1g17gdgM@kernel.org>
+Message-ID: <aNlH6-hFc6OmDF_e@kernel.org>
 References: <20250918222607.186488-1-xiyou.wangcong@gmail.com>
  <78127855-104f-46e2-e5d2-52c622243b08@gentwo.org>
  <CAM_iQpU2QucTR7+6TwE9yKb+QZg5u_=r9O_tMfsn7Ss7kJbd9A@mail.gmail.com>
  <aNZh3uDdORZ5mfSD@kernel.org>
  <CAM_iQpWXFQwtayT7Zv7iJd7zQZ=rX_P1ZK2P11-6ohRhLpg7Xw@mail.gmail.com>
+ <aNlErhpO1g17gdgM@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAM_iQpWXFQwtayT7Zv7iJd7zQZ=rX_P1ZK2P11-6ohRhLpg7Xw@mail.gmail.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5B64CC000C
-X-Stat-Signature: ofjwc5woty7rozn8chs7wnktbc1s4xjh
+In-Reply-To: <aNlErhpO1g17gdgM@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1759069364-945927
-X-HE-Meta: U2FsdGVkX1+IhtjYFl8DVT7oQEvdduU3m35/xpzctsDjViqv2W+f4/vhTHzej6UBgnpgPLli60Z23hN6u4kkRj4qqkdgdJs3yknWO+e5xcsvgPvMMj6M49x6cBSKPmFMUXcYTlyn+E+8Ax0tI3irQKmPew18uBsDCWO3SOsqxAudjaXFzb3hD/TUHuXtEnXd0scPZvFe9yR7Frqrbgy1NXpSJ06uHKsb1hOBZEJxcLijq+IrC7l1fBu7EeiyD8TtITznswd38AyGJyaLKcvnqz5Ud6VlVH0dhV3bCTTsZoGFQs37OrugUtymr80m8zu66kqdKq/AfNvx1CQujpsYCIcOOvC6uBMxPXlBHPsFXh7LXdWm3d7ZxH29osd8MDbLxINaCug3qPPaonRa+Sw90K8FQAAzU3zInM64E3+w5xAsuUFVPpX7ejXAO26O9XbDexafPeLR9jlg6D5lpiLtWEjirE65gmdlkB0ajH0WhVYsEGypwrue8xt7RfemQWvfDvrYXlqwZLHu2MqloOjnhFYfpjMBDn5OGJJ8+x59iacLpCBmiqseofoT45pgS7k9mA/dJF+t9HlDv77mRmPUMqfMFmEwNXSd5tgeWR68DFv5afFcuso2YNZF+GwaPfjsM5tBV0HeFXVr2poC7M48ew5cJIniRhqyxhOgGoXgQCaKKU9tm2aNy3NZ5pJRKnC1PMjUkjyE+bDEl/JuYfZrnWRgJNWLReK74LV+lt1JEMWJerdr62SD6t+e0sJja1rzFZsukQ/jhJZxZElrAGfFbsFTXPDDJsCvvtn2t0j26uRiNtTS5q5OP7W4FUrKmVArPuzG8Z/P6Kt1g3cv0GCee3Umt2+A4hmYbVYFFSpde7Lpfnb+kJn7rZu6kG0qZS8xvrNEaZQIhV5ce0hVh+R0evuqWi3dJJU/IhewfqIGJKj2KwjIKy3cKMY5/YUMjoJSvGgcvRZ+d1a45ddH8Js
- ZHexEuHA
- f8jizpTrXkVNwvtO5Fy5LijTHJu86+iTdstsnL+lJpbbyDz9MTnSfCGheqy/eUEXLurq4AlI2Bh7JyRpwWabPIwgw5LG9fuDGMuTEoPvSDqiQ99mjAIFRrcScEXPHt176QjIru/V0P38jW21/HTl0zBkatExD6hbo2rODkLe5AUFuA2UeS/5n7gQD+yckBfIH2uxdA8y0/imyYcS9o2pUloOT6HBNq1VYQn9AlQ+fEwJExPMfNqB0vO9uxxi3WfBiNUlbaLpjSa98Ieofo0GB/d0u2681JSn3S/TpTuMnTRBi3aB4z+JURlY3CCHTByP6NY1ZyJ/qnddPu0wHGTzSAAEFl+XBt7y/9y/9QkXD/mteUzdOrQLjhJ36uz07cFeqfjKLO2IGWdUHIwX1BjTylC6SWYdIzB+aNenB6QYO7B8oAzmRcxcBA6th7A==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 00C4D14000C
+X-Stat-Signature: i913qdeqf43ahwi67kfzebs78wc8551b
+X-HE-Tag: 1759070192-458547
+X-HE-Meta: U2FsdGVkX19JeVrAS7geMTRMFp+/ygawl+nfGoscLEH0bC382n0DbSR7ShgRb/XE93uXlk+QoyER+Ex+CGw41CSA9wHaIUcWdziIXSkOTSRjThH4jxdwezDEniCpIewVHt6ca5hpcRXD89CBELtlto3K4wLmb9xUKuSpO5XwhBzonb7OS0R9RMB5u3b2xZxzm8KtEOby/3ima5PBOk2ioef+EZqwCu9Hmz6WADeIEmTQuZE4WhZbMeb0PLPF+fAOaPX6xwSqON6RFkKaL9FhfYfLZlZpqAUqloQcBwoPjyMcdw7a7tPss+0Ghm/OnaAcIltU4vFKq9YJDCJJdixrlgun1aHMc3plOEGYF0Tt+boX84Hr1IdaVFx3EVX82zReQG+VKllQhZUaAuyb453zY/ASFek8qfCKhAkUH/vgfAPnuiKiEskrd56+alHbi9RW7izAvNjCKcSl+DwiCfd6g9D6haF38iKmai8yOVpkJNK28+BVhE3iIJJ/HUtL8XLXrsXHjbE56+6Lkcom5MGiqfJ61XM58/PH18wR1jxsdXZrcgaRjKNCm06K+sXPm9+7vDh9PX1Vd1dnb3nlKEgld1erFWWKM91CMYboNzOTB6Ru7syUxpYx4Iqss0xHLdJQy4/mZL9H2WZt9fV2lkEj65uIaartb59y6t/AOQ1ly4u8HfgyDN+pcUR3JgxM8KE1GlrvimUvxbSUTALHTqJZ4W4lzgs960FrXXQRjGpE4jC1jCgflo2zOkwkc0yq0/e0f/Cb41dog8OLQqwB5PDZuUBLrYNwScfZoSGFJP3ME0jm0XX8IvqN5QNuW9U8sfEoUHHTz32inu4GvypNNyDg+IiqyW7sIvLogIJtuQre6tRovCGKhDVjEfuKeBupBnY/rYckQdiFf1r+lNlivIe00TED2l7V3J3jK9Te9RBO7q2CYq9ax609zYuLEud43dmkCQgI/q40s3U4/ms/K7e
+ /ffOo2vU
+ fIPisIRUxRubw3GOVj/JHPvL6Zw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,42 +105,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 27, 2025 at 01:43:23PM -0700, Cong Wang wrote:
-> On Fri, Sep 26, 2025 at 2:50 AM Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> >
-> > On Wed, Sep 24, 2025 at 11:39:44AM -0700, Cong Wang wrote:
-> > > On Wed, Sep 24, 2025 at 10:51 AM Christoph Lameter (Ampere)
-> > > <cl@gentwo.org> wrote:
-> > > > AFAICT various contemporary Android deployments do the multiple kernel
-> > > > approach in one way or another already for security purposes and for
-> > > > specialized controllers. However, the multi kernel approaches are often
-> > > > depending on specialized and dedicated hardware. It may be difficult to
-> > > > support with a generic approach developed here.
+On Sun, Sep 28, 2025 at 05:22:43PM +0300, Jarkko Sakkinen wrote:
+> On Sat, Sep 27, 2025 at 01:43:23PM -0700, Cong Wang wrote:
+> > On Fri, Sep 26, 2025 at 2:50 AM Jarkko Sakkinen <jarkko@kernel.org> wrote:
 > > >
-> > > You are right, the multikernel concept is indeed pretty old, the BarrelFish
-> > > OS was invented in around 2009. Jailhouse was released 12 years ago.
-> > > There are tons of papers in this area too.
-> >
-> > Jailhouse is quite nice actually. Perhaps you should pick that up
-> > instead, and start refining and improving it? I'd be interested to test
-> > refined jailhouse patches. It's also easy build test images having the
-> > feature both with BuildRoot and Yocto.
+> > > On Wed, Sep 24, 2025 at 11:39:44AM -0700, Cong Wang wrote:
+> > > > On Wed, Sep 24, 2025 at 10:51 AM Christoph Lameter (Ampere)
+> > > > <cl@gentwo.org> wrote:
+> > > > > AFAICT various contemporary Android deployments do the multiple kernel
+> > > > > approach in one way or another already for security purposes and for
+> > > > > specialized controllers. However, the multi kernel approaches are often
+> > > > > depending on specialized and dedicated hardware. It may be difficult to
+> > > > > support with a generic approach developed here.
+> > > >
+> > > > You are right, the multikernel concept is indeed pretty old, the BarrelFish
+> > > > OS was invented in around 2009. Jailhouse was released 12 years ago.
+> > > > There are tons of papers in this area too.
+> > >
+> > > Jailhouse is quite nice actually. Perhaps you should pick that up
+> > > instead, and start refining and improving it? I'd be interested to test
+> > > refined jailhouse patches. It's also easy build test images having the
+> > > feature both with BuildRoot and Yocto.
+> > 
+> > Static partitioning is not a bad choice, except it is less flexible. We can't
+> > get dynamic resource allocation with just static partitioning, but we can
+> > easily get static partitioning with dynamic allocation, in fact, it should be
+> > the default case.
+> > 
+> > In my own opinion, the reason why containers today are more popular
+> > than VM's is not just performance, it is elasticity too. Static partitioning
+> > is essentially against elasticity.
 > 
-> Static partitioning is not a bad choice, except it is less flexible. We can't
-> get dynamic resource allocation with just static partitioning, but we can
-> easily get static partitioning with dynamic allocation, in fact, it should be
-> the default case.
+> How do you make a popularity comparison between VMs and containers, and
+> what does the word "popularity" means in the context? The whole world
+> runs basically runs with guest VMs (just go to check AWS, Azure, Oracle
+> Cloud and what not).
 > 
-> In my own opinion, the reason why containers today are more popular
-> than VM's is not just performance, it is elasticity too. Static partitioning
-> is essentially against elasticity.
+> The problem in that argument is that there is no problem.
 
-How do you make a popularity comparison between VMs and containers, and
-what does the word "popularity" means in the context? The whole world
-runs basically runs with guest VMs (just go to check AWS, Azure, Oracle
-Cloud and what not).
+If I was working on such a feature I would probably package it for e.g,
+BuildRoot with BR2_EXTERNAL type of Git and create a user space that
+can run some test and benchmarks that actually highlight the benefits.
 
-The problem in that argument is that there is no problem.
+Then, I would trash the existing cover letter with something with clear
+problem statement and motivation instead of whitepaper alike claims.
+
+We can argue to the eterenity with qualitative aspects of any feature
+but it is the quantitative proof that actually drives things forward.
 
 BR, Jarkko
 
