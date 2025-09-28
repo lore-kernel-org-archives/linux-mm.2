@@ -4,95 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB2A7CAC5B5
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 14:47:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73351CAC5BB
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 14:51:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 182528E000A; Sun, 28 Sep 2025 10:47:50 -0400 (EDT)
+	id CD4868E0006; Sun, 28 Sep 2025 10:51:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 132BA8E0001; Sun, 28 Sep 2025 10:47:50 -0400 (EDT)
+	id CABF98E0001; Sun, 28 Sep 2025 10:51:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06FE08E000A; Sun, 28 Sep 2025 10:47:50 -0400 (EDT)
+	id BE8FF8E0006; Sun, 28 Sep 2025 10:51:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E9BF78E0001
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 10:47:49 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 85217833DA
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 14:47:49 +0000 (UTC)
-X-FDA: 83938938258.05.762D4ED
+	by kanga.kvack.org (Postfix) with ESMTP id AF7B58E0001
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 10:51:06 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 764191D8B3E
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 14:51:06 +0000 (UTC)
+X-FDA: 83938946532.16.17469F0
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id EFDB2140006
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 14:47:47 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CvPXqnCr;
-	spf=pass (imf09.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf17.hostedemail.com (Postfix) with ESMTP id EA44340002
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 14:51:04 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p1lrDqVG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759071065; a=rsa-sha256;
+	cv=none;
+	b=OKS5bTIPP3iRdv4xjE0soXjC8uPNO9dgDrdoltIkR+hzpLLEOsY3e+nEmv59kagxEdyJj9
+	V4bTwUTCSPsKGZ/wCjlXgm1VeU3W8BR4Q3MWAZnWMPU41pIJN7baTDJSQx3bd9iyNJNaPw
+	dn4/zA6EclJ8waZBHX7KiaYcHYJIS7Q=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p1lrDqVG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759070868;
+	s=arc-20220608; t=1759071065;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e76/sEkLu8XYQWEzrfvHrEYuju5sMDvZ0c0Z+MNAFRM=;
-	b=5XZe7psjC3MBO54gqAPkGZIHQ+VTGyfvi7ALxBWmTUlRgm1x9nnGn25l3ITodppOdCLzzp
-	q1qHNQhBJ9UNJWcOnfvmiP9tGyWmYdrL1oCWMlCxSj1ufDpJgOtOdCBHaaeRwXCf2Orjp1
-	RABBMQR2MmQMoZ65pAkKcj4AmcpijpI=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CvPXqnCr;
-	spf=pass (imf09.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759070868; a=rsa-sha256;
-	cv=none;
-	b=HfLHqCNLLOF6hesvFn0WDVwNgKTeU4FQBFhDx9EDOhl2rQayzcx9dr68z8vTPhxZ7uzkJg
-	KeO3/vSZ7WxDDOxPmuIQ1rxaL5Oxm2pjcICXMLsrRxxKjcgPUB/Fgxrxjue4yHVzhNIm/V
-	lP0amNKisgTFC4ek5nIboE1OzLBHm8k=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Jm40kIh6FnXnSS2R1qDI68TzWDyOgXZmgtX1QKTvOGA=;
+	b=6bz3WLNEkhXAWfnNMLItCQjAF5hjLg5goOHacQeWirdqIZB1oBzIV61YZlKMz1RP6FREAU
+	mBFaKxWFQ3vAF17kQuzwa1w1m9XQ7jRKbPgyUQKYo/+3xLciTcJdox6G4bO35A8PZowDDY
+	QN3A2kk5TORv9Dm8xXzurI6TEjeXXGY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4B4B562175;
-	Sun, 28 Sep 2025 14:47:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C93ADC4CEF0;
-	Sun, 28 Sep 2025 14:47:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0363A62175;
+	Sun, 28 Sep 2025 14:51:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12B8C4CEF0;
+	Sun, 28 Sep 2025 14:51:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759070867;
-	bh=vvNwfQ/2Efdxogg3wf2Xq+cs+e22mGauJxHdeTezgIo=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=CvPXqnCrkzZPSVVaZJKnQZOCfXZvPQAiWaz7udbp3rkaHKddCoEDBU5xg6BP9g9sS
-	 NEZ8+LLM6bS4O57MhmCgoMguvqYfPXcb3iVLE/LQ0F2T2ESOVD4CIvZYeqah6aNoFm
-	 acZdXEQCH5F5SPtOKSxUPXwJ54Xq9m2rZG5gUhwIpg4xADsqrvuNBUQaGpwj08V9Fr
-	 1y/4J1PYCL/aCunNd0CmYa0odmBx/ThHY8IBSZKVwSaa33W81hfzZlOXjwn9Z2987C
-	 CMAyiKgmFJqbbjmKEkMjX/z3ChWec6QnGiFL61d8LinWqtsT4rYIujULfvBxrm8t1f
-	 WHM1yv80HwxYA==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 28 Sep 2025 16:47:42 +0200
-Message-Id: <DD4IKU7O94WN.2VALE9M80XGQ7@kernel.org>
-Subject: Re: [PATCH] rust: slab: add basic slab module
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Liam R.
- Howlett" <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>,
- <linux-mm@kvack.org>
-To: "Elijah Wright" <git@elijahs.space>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250924193643.4001-1-git@elijahs.space>
- <DD1SGLU4180C.361W5XLH76XNC@kernel.org>
-In-Reply-To: <DD1SGLU4180C.361W5XLH76XNC@kernel.org>
-X-Rspamd-Queue-Id: EFDB2140006
+	s=k20201202; t=1759071063;
+	bh=VONrYQxoP8oMQLxNnSkk6QmAw8wYtiFvRYSA+pjUd/Y=;
+	h=From:To:Cc:Subject:Date:From;
+	b=p1lrDqVGm2h+IqmbzC4UeijKf/SHWc96sqEQB14/cn33jk/4ux8kg2qVwIdK4UCpD
+	 IMdOltqVGarClLfgYb5XVTOwWA+k8XuhwlcMjKhmhXpYAfmib613trJBppLraR6Wu8
+	 c2kfH5kMirZCHheP+4wFCx7QF/33w6BTMVk7ga7F7wtVipUwR6ihbsyuG20ou8kDk1
+	 n7Yk0lGafNQ2GKdPzJIcwuNthHp5p1B2AtWUTZz/ZrBu585+LFPUMVt4+9TRGc2k8d
+	 iS7qUSt1b8trgjdkGXO9SBYuFHbCnFJCHOBZgNPacPxJDLTo6w3CwRMHhp3uvPGGod
+	 1b5YsB3cm6Bbg==
+From: Leon Romanovsky <leon@kernel.org>
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	dri-devel@lists.freedesktop.org,
+	iommu@lists.linux.dev,
+	Jens Axboe <axboe@kernel.dk>,
+	Joerg Roedel <joro@8bytes.org>,
+	kvm@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-pci@vger.kernel.org,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH v4 00/10] vfio/pci: Allow MMIO regions to be exported through dma-buf
+Date: Sun, 28 Sep 2025 17:50:10 +0300
+Message-ID: <cover.1759070796.git.leon@kernel.org>
+X-Mailer: git-send-email 2.51.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: EA44340002
+X-Stat-Signature: 7gx73dx31131umd3yceqahhrigjaiodw
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: xyic7h6ih1x45thx58iyye4w96bytegz
-X-HE-Tag: 1759070867-580581
-X-HE-Meta: U2FsdGVkX199lIz9omsmug9orYyAFQdqmhQEceHqZfzoDnDnjRDbX5jWc0nquSIwQhqAgeYec8Bgh15HJTVos7wrre5BhBJjVxbhcNutuCb5v0RiDxvV19ZvOm/M+80inOjWHaRhwpR1p8iPR8oU9eorJQfdkNACEzcj2vdwYXU/5A7eTOgX1RbZkvuFaGNKEP+9cZnvd+RI/i7FPUPUdzl+rIIiXjMSqiL9dmHxGWqgefA1V7ohKx7z9jyaLhtQ4/grQSweGDM+fYi29LyajCDwTjx7zbDakVKUoSP10F397isrEFmA9MpExlUzgwrk4PkiHi4w5HFrZ9++TkunpOb0cp5iMlgJVUu/LdEjGqcCFaLR7Z3zEQGUWESFA/t1/UJOror+F1i63an3EjkXobvDvwsUPbuLe6y/4Cw+XVph0PALEjya8akXwGZGSS3IFq/EXpkIJ12nVtTmfrjUmKuu5ZkOVBZJCThfwbWQ/KFPLFnAXJsL9wYXYioYmWEKLLKMmnRgFN9cBLv4nGbR/GKRkIG2r5dEedbvKxVsRiZkzsOScBnnUfA1fuIP6P6euQ36ty4VmWv24tp2Rhxh1pasEDNSdBODPRebxMuQ9cYUzqROEpVp2DkXvkn6dAJx03h/BesvPXbXbHALI2HjznsVnBhznBKOvAl4fa5o4w4l/8ONFJ2CGlod7XTY2Lwwq5/ljGSFbJO4AP7q5rI9+kqmK4npnWD1PGr5RxFk+T148lEmEUfj3fi/ulm4oi2Hbshiv8+C9S2Vc6D99Mtc0l1+xXwDrZVvz9VKCg6Stwih02/pEJHKtxYqEAlKSmhajGAlRWrEfW133dv4IyIDTZmDw2z3WYL0muEnrOnfHQE8BOY6xca7f37R4UNnxJxRt5uI/G4KipPtlwCl4EejJT5NYAN5yZ4Rh6kSXXb5CgWAZCIOwt0bmg1g8y6QLPb+glsyEjeIdJstwdB5yMe
- B/9ssnl0
- RZbYXIhSjFry5Rm/sW7a7WJPn5yCBV1nvtsK+Psel6THOJK7GkZUauEdM0eEJBaxH3NFtnWG95T5S1HvV95DobDB/tcsxHnVJQKVSEqxJ4I+r/jtRBsewQSEsL1679X3Jwk0Y2lBnnZfL6Q5YOZTN5/jJzRZ2lMQic1syvOm+ZtirTbnyJ11hFZY2tPVuiHNduou9kN5ec3DmRXZgPq6cGmEbWQSOrsIynzi+CVKvR5G4ly1u+bDuEuAuhZwhESoUMPycZaIOUW63+Okh3B8GEt/lSIIgmW0AakvQlsjqUrXa8GN6F5Qu9wFeZPoaZclfnE8UKO69UmMv+DCenSyL6SSZM4ygQF1KHIZf
+X-HE-Tag: 1759071064-864422
+X-HE-Meta: U2FsdGVkX1+syXrhUmWHk7LOsCE1s51QCXEw+Pomba3fFxZkBFNKI27+n8XVDHrc/HXG+wJwUsP/fjGyAIeHqs1ZYDJcBnWgyu4qalvijQW05E9vBvVWI5Rg6prF4SvjD47L+VEJ7/tqxszKU6PyK8Id9j/ES/Pzz4SATILdJMjnYJB0jRzZ+L1S8DUXe2N2elEiiLHYdaH3emvFPDqCVY5IUQEOak3pSICXWqRAxNYnNVBmuDW13qmWZuoCMoIAaExMmWFGC8GhhSf6pzmRkrb1GK4iScTQQV6S2aZpSOZ7SCqff5C/h0qvo3sJ9NHAYfUCH5/1ZCEmJE1yoR6RUclZqo3mJT+ohYy0ljqmxrNASCKFI1chN0t4qabi+8q/u/DZDJYk4OnW4oLZdYcUWa1FmVSkxTj5ExMXIvMP993lhlKsc49vrN/W2LKN3GDXQbvsnCcJziiSpXT0+NPc0TwnZZ4NYwtDIkpp9iJLQ0W8nmOjszmhS6JRBMEFIUT9T9ubDRweQQL1Vv4VcQnRwmtF+qSZ5OqB4S2xsrqlJlSItS9gBKcR6oogvO/4ow2Vqn0mM1URWFHc6Dva2Y4PoaV7FHJX2lLJhpU3YpRkPUHzbxvG7xqDAURPZu6rm1xdblpJ9HJKM0PNbnlchyf/OuGFErr5dPPwwFs7bKrFBQUOa5bi+bAsoZoyI+fNoDIhYn1jzODtYL8j3LHOzyYswwgVugTMFWCcguSFrGo5nWvXVFFlSti6vFHbMVj7PZ9NzLkGKFV6ABOlACSPa3kt5yYe80HHbrU6aQvp+LeBPdbegYCo6webpM7bRQ+jKphP6yTuFHOM5EvLV6i2sAOVYGMjNKYYc0Z0GepV84Say/Qhl+DQIKAi2tDFi5X+7WhPrW729G4fGmkwEYAYVC0eYNHtxrkPf1htXn4WeLC2CLBWR1g8oudY2my+JtrQZwnz5WqDHBmIvbGwVSgmR3N
+ Eu2VOO1I
+ mkh8mDse9cDHOhJxYfobUNnrYkb9LFtWcxDr4KGIpfbhCXWuURsuAGSIQ1wmv+lr8gKx3h+Gr22fsscz34bY18O/ayOPQH8GYgrESeIt6Shiqw2zfY79ttcelcb5HOIyNy/93x5uoHLNbU5AsW2sub574hp+AitX5AM72mnQ7debVWuUyagq9fWZwrQGZtX+f1jSfXL1VTqSF5+gPTm5uCgNjqwV7OtE3h+Iu6zXGfAazbAKdY6wlZfxSjwTc605/v5ONPypgF3X1DVAtWtOwpIOdrg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,27 +108,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Sep 25, 2025 at 11:54 AM CEST, Danilo Krummrich wrote:
->   (3) Implement a macro to generate a custom KmemCache Allocator trait
->       implementation for every KmemCache instance with a static lifetime.
+Changelog:
+v4:
+ * Split pcim_p2pdma_provider() to two functions, one that initializes
+   array of providers and another to return right provider pointer.
+v3: https://lore.kernel.org/all/cover.1758804980.git.leon@kernel.org
+ * Changed pcim_p2pdma_enable() to be pcim_p2pdma_provider().
+ * Cache provider in vfio_pci_dma_buf struct instead of BAR index.
+ * Removed misleading comment from pcim_p2pdma_provider().
+ * Moved MMIO check to be in pcim_p2pdma_provider().
+v2: https://lore.kernel.org/all/cover.1757589589.git.leon@kernel.org/
+ * Added extra patch which adds new CONFIG, so next patches can reuse it.
+ * Squashed "PCI/P2PDMA: Remove redundant bus_offset from map state"
+   into the other patch.
+ * Fixed revoke calls to be aligned with true->false semantics.
+ * Extended p2pdma_providers to be per-BAR and not global to whole device.
+ * Fixed possible race between dmabuf states and revoke.
+ * Moved revoke to PCI BAR zap block.
+v1: https://lore.kernel.org/all/cover.1754311439.git.leon@kernel.org
+ * Changed commit messages.
+ * Reused DMA_ATTR_MMIO attribute.
+ * Returned support for multiple DMA ranges per-dMABUF.
+v0: https://lore.kernel.org/all/cover.1753274085.git.leonro@nvidia.com
 
-Thinking about it a bit more, I think we should go with option (3) for now.
+---------------------------------------------------------------------------
+Based on "[PATCH v6 00/16] dma-mapping: migrate to physical address-based API"
+https://lore.kernel.org/all/cover.1757423202.git.leonro@nvidia.com/ series.
+---------------------------------------------------------------------------
 
-With its only limitation being that it always binds the lifetime of a kmemc=
-ache
-to the module lifetime, it still seems to be the best option, considering t=
-hat
-the alternatives require additional synchronization in hot paths, may *sile=
-ntly*
-leak the kmemcache, cause significant code duplication or break dynamic
-dispatch.
+This series extends the VFIO PCI subsystem to support exporting MMIO
+regions from PCI device BARs as dma-buf objects, enabling safe sharing of
+non-struct page memory with controlled lifetime management. This allows RDMA
+and other subsystems to import dma-buf FDs and build them into memory regions
+for PCI P2P operations.
 
-Tieing the kmemcache to the module lifetime should cover the vast majority =
-of
-use-cases; should we ever really need something else we can still revisit t=
-he
-options.
+The series supports a use case for SPDK where a NVMe device will be
+owned by SPDK through VFIO but interacting with a RDMA device. The RDMA
+device may directly access the NVMe CMB or directly manipulate the NVMe
+device's doorbell using PCI P2P.
 
-Thanks,
-Danilo
+However, as a general mechanism, it can support many other scenarios with
+VFIO. This dmabuf approach can be usable by iommufd as well for generic
+and safe P2P mappings.
+
+In addition to the SPDK use-case mentioned above, the capability added
+in this patch series can also be useful when a buffer (located in device
+memory such as VRAM) needs to be shared between any two dGPU devices or
+instances (assuming one of them is bound to VFIO PCI) as long as they
+are P2P DMA compatible.
+
+The implementation provides a revocable attachment mechanism using dma-buf
+move operations. MMIO regions are normally pinned as BARs don't change
+physical addresses, but access is revoked when the VFIO device is closed
+or a PCI reset is issued. This ensures kernel self-defense against
+potentially hostile userspace.
+
+The series includes significant refactoring of the PCI P2PDMA subsystem
+to separate core P2P functionality from memory allocation features,
+making it more modular and suitable for VFIO use cases that don't need
+struct page support.
+
+-----------------------------------------------------------------------
+The series is based originally on
+https://lore.kernel.org/all/20250307052248.405803-1-vivek.kasireddy@intel.com/
+but heavily rewritten to be based on DMA physical API.
+-----------------------------------------------------------------------
+The WIP branch can be found here:
+https://git.kernel.org/pub/scm/linux/kernel/git/leon/linux-rdma.git/log/?h=dmabuf-vfio-v4
+
+Thanks
+
+Leon Romanovsky (8):
+  PCI/P2PDMA: Separate the mmap() support from the core logic
+  PCI/P2PDMA: Simplify bus address mapping API
+  PCI/P2PDMA: Refactor to separate core P2P functionality from memory
+    allocation
+  PCI/P2PDMA: Export pci_p2pdma_map_type() function
+  types: move phys_vec definition to common header
+  vfio/pci: Add dma-buf export config for MMIO regions
+  vfio/pci: Enable peer-to-peer DMA transactions by default
+  vfio/pci: Add dma-buf export support for MMIO regions
+
+Vivek Kasireddy (2):
+  vfio: Export vfio device get and put registration helpers
+  vfio/pci: Share the core device pointer while invoking feature
+    functions
+
+ block/blk-mq-dma.c                 |   7 +-
+ drivers/iommu/dma-iommu.c          |   4 +-
+ drivers/pci/p2pdma.c               | 177 +++++++++----
+ drivers/vfio/pci/Kconfig           |  20 ++
+ drivers/vfio/pci/Makefile          |   2 +
+ drivers/vfio/pci/vfio_pci_config.c |  22 +-
+ drivers/vfio/pci/vfio_pci_core.c   |  56 ++--
+ drivers/vfio/pci/vfio_pci_dmabuf.c | 398 +++++++++++++++++++++++++++++
+ drivers/vfio/pci/vfio_pci_priv.h   |  23 ++
+ drivers/vfio/vfio_main.c           |   2 +
+ include/linux/pci-p2pdma.h         | 120 +++++----
+ include/linux/types.h              |   5 +
+ include/linux/vfio.h               |   2 +
+ include/linux/vfio_pci_core.h      |   3 +
+ include/uapi/linux/vfio.h          |  25 ++
+ kernel/dma/direct.c                |   4 +-
+ mm/hmm.c                           |   2 +-
+ 17 files changed, 750 insertions(+), 122 deletions(-)
+ create mode 100644 drivers/vfio/pci/vfio_pci_dmabuf.c
+
+-- 
+2.51.0
+
 
