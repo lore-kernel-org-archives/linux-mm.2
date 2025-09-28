@@ -4,115 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5C90CAC5B0
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Sep 2025 20:43:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A30C6CAC5BD
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 00:48:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C98F78E0006; Sat, 27 Sep 2025 16:43:38 -0400 (EDT)
+	id 633828E0002; Sat, 27 Sep 2025 20:48:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C70458E0001; Sat, 27 Sep 2025 16:43:38 -0400 (EDT)
+	id 5C33C8E0001; Sat, 27 Sep 2025 20:48:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BACF68E0006; Sat, 27 Sep 2025 16:43:38 -0400 (EDT)
+	id 4ABC18E0002; Sat, 27 Sep 2025 20:48:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A65B68E0001
-	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 16:43:38 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7149643B3F
-	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 20:43:38 +0000 (UTC)
-X-FDA: 83936206116.26.F5AB55D
-Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8CFF0C0004
-	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 20:43:36 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cV9AXyMD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.217.50 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759005816; a=rsa-sha256;
-	cv=none;
-	b=UkmPkvZxU9KE4zwhJbS7KZO4gf3EoqpwwHptOmKA2h3biN/cWzRqQR0/qA71g7UeCqB9kT
-	qfi2NBr9FQUBJUE0up0WVVnby+MlDuzasyD0MNO8xHpruiA5ZtgrPhN8AKLUCSvjc4z0SP
-	HbzMmw8PYHIHFrDHNxKcP1hJ6w4RamM=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cV9AXyMD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.217.50 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EAE78E0001
+	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 20:48:46 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B6EA787D49
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 00:48:45 +0000 (UTC)
+X-FDA: 83936823810.06.3D64D22
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 9F9E2180007
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 00:48:42 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=K54xC4pN;
+	spf=pass (imf06.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759005816;
+	s=arc-20220608; t=1759020524;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UvNClLKNNn9rK6Vik019kICWDMo2uNNhdQgjV8A+LJY=;
-	b=AN4Db24MKdwQMLycXfa78ZWo73QIIVtgP91AsiE8Dxi1XotWN+s4dmQpJlKjatBkp/Gg/S
-	zX8cJVuQkIH2Ri4ULGZq0B6A6D5v0cHzMFKIPOVVBPf4AT5WnOz8CTf3i1Nkofq3bSCrRt
-	d2KRshT/Yd/X3lkkiDSt98+CClPgLbc=
-Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-55716f2d3b9so2704340137.1
-        for <linux-mm@kvack.org>; Sat, 27 Sep 2025 13:43:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759005815; x=1759610615; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UvNClLKNNn9rK6Vik019kICWDMo2uNNhdQgjV8A+LJY=;
-        b=cV9AXyMDUW6cSnOAllknrsXcrmKFbxTyrfuKjmyRmNmdQkkmURWkJwtjVQm4uiygVq
-         5Itks2ZU1wbdP4zgWjgYd2rnvH+/QfvOtMqYGApgrLDFUt9lV8+U1XRrvSiqqAovgETX
-         5F/AvggoTxDHk4pOjFUlC4+iL7qHNmZ6euw8IA1DxUr7mTN4ETnrI+vNILnVmnSyYK1+
-         wseetdduuXKpCaxU6wlm0bu1H00KahpXkfe8NsJ1SmMxDBg2hXbdkHz0k8ccMl08dUdx
-         Uq6l80wujjIDNC5NNFGS826E11lD+2vGh+M2cnC8nlCiK/EH50YM/elJkZ0Habiy2ZA7
-         tXwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759005815; x=1759610615;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UvNClLKNNn9rK6Vik019kICWDMo2uNNhdQgjV8A+LJY=;
-        b=kumYYZ9b7vf7wU7uqj+cKtwFXO3LUrzy87IY9YpPhQaNZvZIEwRu5KAKRF84+KjLRf
-         oEd3Wb6CezuF8IZM58kgvSdnnD7LGQS/cYLUqvb0amlDGy3OIZ+iwTPFOJSbAA9L8XUO
-         bCADMMrRKG76gWzlBOyQIJNM9QPTTvnSeOijjYbgMIZfVvWcp2iC+i1bF4xY6aEd1oEN
-         lXFQOPq3rRsjnY8nPCt2NvV95fuSUg6I7rXnSWUAnOBmeaU6FlEfOqGYMQKu5rQDNCG1
-         2+hLE7wLBmOipY3gZm9832J0xpcWx6XubSDWPoVq19S3clhBQ9VDHk4eTKGGi0zTsaM2
-         ai4A==
-X-Forwarded-Encrypted: i=1; AJvYcCUJQCQTeJwMxs+DCaqseXZF2s3He6DZP9BtQsqhnVsCV1f6T7Rf2iVwikaJhkMvo2q90tC9Juf8iw==@kvack.org
-X-Gm-Message-State: AOJu0YzA1HVdYz1dufObSwH/yIxkoJAIpuoJo623SP0a9hjjjcYHBAX/
-	XhqCMdm1ntD0Y3taPS2nxev+Qz5Vj0pJCEAICNvMzILM3Is1BtJuep9P1IE/hdGwO/8cIDDrWA5
-	tS7yZ9Fjj4SBgvSlRkj9UamMUR6R9kNM=
-X-Gm-Gg: ASbGncs9jJ5iA7YZevxkMHZhNkBl3RjDorjGdpIACNeMT0+GsewKHn50Q6kLkDsXRJs
-	Ko3Ngl7wo+N7LumgZU0LX4wRbkH8+F2HyjB/qUJIHcKnnWeSaGYw1e3guC1ZLVb0+Dzv3Qjfyay
-	i13sYCuD7m+ckKa5osnid/CCdOh3ATHfJOlBdfzEdn3fYtCJnZrJJs8+Li3ijQ6lIsvDRJjG9AC
-	tdU3+cBPeZpcvOHpw+6q77abJNExxmii34YpTXv
-X-Google-Smtp-Source: AGHT+IGYQ8cZXq6p06Ik0TDBdufn7B3v54OBWxKvQ9AFYTgNeyye8BPJ3qw2CKkk7AUAcaDd0Kb3KEG7ImktB5zLhBw=
-X-Received: by 2002:a05:6102:2924:b0:52d:1b06:5e34 with SMTP id
- ada2fe7eead31-5b2826795b7mr3196814137.10.1759005815440; Sat, 27 Sep 2025
- 13:43:35 -0700 (PDT)
+	bh=upns7Ns8u6T0BIQB/mEinck47CH4eR87XBgIuH7v8IE=;
+	b=HFsO5rQKd5d99G1pfoCkWBNJr5Y+/1yK5zfWTedj9VxvKs1iLBUlrwrR2PDZQQBz7AQY1/
+	qk+8AVBbd5YCIiXxgXUSSl7blfDjGq7IpWds4ZWWSmh6+xFOHbMZcrG60P+ucgS/dw6fpK
+	PB6XZrXeSrB7PKWWmUWrNjt+G7u2N5s=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=K54xC4pN;
+	spf=pass (imf06.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759020524; a=rsa-sha256;
+	cv=none;
+	b=j2FWrPqpXDYwypzXuEKjzHKM3EG5xIrf0bJhOFifN8ioSxZzCF77ZrCgsYQ1NPQshgJTma
+	AXovsYTGG/1FxQ711A17zR9aDAi7m47O3rLG+6ZccXxaVRlzoIr7pYz4pIa6bS3veNx72G
+	btetbcvgmCexdbOB98Wum9KBrY+KKak=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1759020519; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=upns7Ns8u6T0BIQB/mEinck47CH4eR87XBgIuH7v8IE=;
+	b=K54xC4pNWUgtZw+plOnSKlia56KYlVV3w3nJY+m0nNMZxdFUsvBZfB7sN3U5Y4DQmMCycgTOn8/0x0E+MfFuhxKX+ShBwkmcTrrSqx5UzCvhBXrjanBOHIH+KNs/zqAgGTIc4jsUtIutoQFpJtTrdiuFq9rYgA1xZWKpzyhUmtI=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WowZE6d_1759020517 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Sun, 28 Sep 2025 08:48:38 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Zhu Haoran <zhr1502@sjtu.edu.cn>
+Cc: linux-mm@kvack.org,  dev.jain@arm.com
+Subject: Re: [Question] About memory.c: process_huge_page
+In-Reply-To: <20250926122735.25478-1-zhr1502@sjtu.edu.cn> (Zhu Haoran's
+	message of "Fri, 26 Sep 2025 20:27:35 +0800")
+References: <87y0q3e2ph.fsf@DESKTOP-5N7EMDA>
+	<20250926122735.25478-1-zhr1502@sjtu.edu.cn>
+Date: Sun, 28 Sep 2025 08:48:36 +0800
+Message-ID: <873487v1uj.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-References: <20250918222607.186488-1-xiyou.wangcong@gmail.com>
- <78127855-104f-46e2-e5d2-52c622243b08@gentwo.org> <CAM_iQpU2QucTR7+6TwE9yKb+QZg5u_=r9O_tMfsn7Ss7kJbd9A@mail.gmail.com>
- <aNZh3uDdORZ5mfSD@kernel.org>
-In-Reply-To: <aNZh3uDdORZ5mfSD@kernel.org>
-From: Cong Wang <xiyou.wangcong@gmail.com>
-Date: Sat, 27 Sep 2025 13:43:23 -0700
-X-Gm-Features: AS18NWBZ4NYpS8oIgxtkL6K4jFZHcC-C1DNvJN4aikZTVbjqp7kQjMuXYe8nY8M
-Message-ID: <CAM_iQpWXFQwtayT7Zv7iJd7zQZ=rX_P1ZK2P11-6ohRhLpg7Xw@mail.gmail.com>
-Subject: Re: [RFC Patch 0/7] kernel: Introduce multikernel architecture support
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: "Christoph Lameter (Ampere)" <cl@gentwo.org>, linux-kernel@vger.kernel.org, pasha.tatashin@soleen.com, 
-	Cong Wang <cwang@multikernel.io>, Andrew Morton <akpm@linux-foundation.org>, 
-	Baoquan He <bhe@redhat.com>, Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
-	Changyuan Lyu <changyuanl@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org, 
-	multikernel@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8CFF0C0004
-X-Stat-Signature: s6juxqwsj456woqaqazhhmt7bd8r5fbr
+Content-Type: text/plain; charset=ascii
 X-Rspam-User: 
-X-HE-Tag: 1759005816-670407
-X-HE-Meta: U2FsdGVkX19D7ZByfN+VLolximwrMBtjB4S4DXStDrGWB32ZGJ2++G77DtF/x8ptjaHHSMkPbqMy8N1zC6FnOckD37eb8W2AoaPpyVvCeLFBYgWMxHo8GMB6x9nXq+GC+qFdtyUGPnxDRGo2j00I2YVZZqG4lxupXMG9HGUC7tWTTGoWpbqneTPmfPi5F7jgPPqbxG1hN0p6L77WU/TOzvhbqAbk36zg1xIOzm2sLZFis/LzBmIbPrk7dq/S5/XpcbE220tQ2iTgJxzfLZkS50FP0uLnjft8RoLPzmmwqQ9EDDv30rlfagA4kXOGdcPRmwoWVoNLMASI2+45eI9H19YGV1VlRgCVS7i/vozKM4IcF/HKHNn00ZDwZYMUao+TZ8ffLWWItBgfv5tzIypy6/n4dqHmlPCn/2wpTO9s8o1hu4xSE2jTqT2ZVfgjm5Vt/TKcZgFC7btL7BvyBrRUMs0nKm37QOiuHjVVV34sK9uWrJzp2Ij2A1fecVWmjUzz0w700eCl/zRJ+Gb9mrtunG4JUC+NJkmsponeK6a3G2udH6LuwX8RA7PtTlPLa+qdUE22bWswUXFYW70ab3jrXskHpuQvAbbnExcI76aI12CUSgw0XOc9uJZKdhpkjtFWe+g/HVsCTATX+M+oH5F2PjDKBugGe3jTL6kZ7aKm9vw+7GBbA1FvPoLeaPU/YkLwBoavkH0j74sb9buZGzQgBp523j1o/8KoMxx3KFT1fDz7Q9mkyXk8Dlwv1xxVuAs0RF3v+a56V9x/wFtxHzTh6en0EmQ8qkGIE9vs8caX4Fa1vM8jMlFE3WF5zEyjI2kuGRM8VWroyG3duETaqeqyf43DZPa3zKDVIeEKfK+HudIdE9VoWW5f4LOlCdVzzHzIFaofVYUZgw8LQ9socJAgsUAokI6sj8dbY2RTZL8+IdSyQnvmF5gPD/Ed+o/h7aI92VegSCIxSXVB2u/9FuT
- GqKM6vNK
- HCblV53n7Lth8UoQhK7uwbNHn+7XDJPxqu3145t2E2RqUBbkc2SahVcwaiP6bYmGHTsEydvCnWMzMIqA52EnpEuoG+PZbRd7+Cwgpdj04byhI5PVuNLAMM3g37yH3II/K3fnJeFeBZOVk1P/AIAH+dJkbBF3j5I7lmhAXRP0Nr2LFFkXSJX0fR4OqPBk814w0vzf/RKYtdP/OAN4XupymltpkzpMXUW8Y9+ZztnSVyqQ7AYSuCoBA4BFfXmzDlHzNc6qds4OMMBeEhiqzhGulPGk1AoksdbETP7h8hq70Jb6vbBz8PXPrqEQ7KuJ+UBRbLJDGJvqoxcp6fdo+Rb9YlObRdrH5guAFxjZb7h3Wl6OnS9eXB/F4zb7xsNNl7OxdMlqElMSeGSOV6wgf8Q+UhsdFP8LJivzwWHoURbpfP3oMk9RPyRddYPBhs10T8LhrasIE5jMHTQU/5CABcgccbiMT0dP3GzYT43rb+od7nIyKktFv7hyLnRZ/6A==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 9F9E2180007
+X-Stat-Signature: 7ufdoxkjw77ohngozz65179fb3p3wddg
+X-HE-Tag: 1759020522-642552
+X-HE-Meta: U2FsdGVkX1/1dDD4nsBPnZ834samBAr8zKheXz1yGZTibhrXItKuoMCjQo5+HV8enSTFTLBJB8Fhh+MfXqhp4NIM3d+thyDtjMoTq7xCDacq/ucXbd80PV4vCZf4rjUHMuB7P42FnTdhUCfdlEBBGZR8MAgefQ+6I2mHW74vFUnQvIL0a8Atr1OvdHAivmemEFP1rVTxPjMZAcRJ4jYGArGM5MWcvNa4Szk7RN3M9MT4f55Fp9SUR+42Is68pbMBcGr3dsEBktFN5pR0ge6Ffb4eehNZjDpbnPfZuY4pgZWJ9hatmQx3h95hP4nQuuN2hfKcNzM0M36RfaoF6yaFjtGiuYWsZs/rewKmR9wxFxstRThdf0wSTTtQfV/LbmiPc8X/aoaf8QhexoG0W8Y/6pwiAMZwF4+J7UBqho/UOK1ROPH6cnlhPj9B1WkcpsA3qIAEgh0obNY1FGyuWPQPrFgASnJZ/jnLiwM0pCW5xHHQ2JePCvwbL/c7RI3bytLGwtSmXZMfpmP86O+yutrx+RFLuvDiyFboZSUaovk1u3DdyQ1TudLUijRc6qUM7Dst596HCMqX+FhryYA1XMIpJTgIeTcV6UhGbx4zZB21sXfvLB1g3OECyOiArmOHRh19EdN7LST/zymVjB1j0AxU4SH/19pmJYSRjHogWGRiD8y333VDfHFwTzAexiGkzz9XBhh8hT1eUM5ti6/GV1I+D67yy1c9frXKxuEikDzfdoYnTfvTnI5OZE3Qk1Wd8ISJSmMwukEav+Zuc6jh387dwEhC1lRcCMcT1StZEGyiLbC1q5q3U56Hlkslhyxm2Z7sTbFv44UrcfJUKErH5dupJTlONcTiembxdc7a0diuIZ/IuGCuaxFcb0Q9xXMcXs3DQHOTICMtye6WPcsW9um1IBK/qPXd6sK1ZCSkX8ciDFtps08hjy0VpQ9GAVhjrBOJ3xfEGrNa0mSQ77GdWPb
+ EhJtST66
+ LFCsh4x64dbz96PfnwZtjD8IPXfohWaG1GKXlUs+sgSDnjp+zuLRsYcbyY/fy6Ivg6MzpMuT2ZqDtIa+IOm3kw3iP260qCV62PjjcoRXozt9nWC4Qvh9f9bdhcFRuVE27UxnIdoSd8JU3uJZXzUxKuncvnBCcVwiZcpfu4JLkvYshB5fgqNLezRMhURazQaVcAPWfbOJIsKnkuvOZhfatTjlf4HZclu8GWUQCxL+LL1joS7W/LxnSkhMKwjJj6EBAxCFIOsmPfMscbvaPXrJ1xykns5v1ikF8djrVSiWdMZvk1VhZH/9qRW/8VffGK07F8SRYZ2pq1s4gdzp2Bkie627sEtCJCjPsLSGaC+jiliOegfk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,79 +85,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 26, 2025 at 2:50=E2=80=AFAM Jarkko Sakkinen <jarkko@kernel.org>=
- wrote:
+Zhu Haoran <zhr1502@sjtu.edu.cn> writes:
+
+> "Huang, Ying" <ying.huang@linux.alibaba.com> writes:
+>>Hi, Haoran,
+>>
+>>Zhu Haoran <zhr1502@sjtu.edu.cn> writes:
+>>
+>>> Hi!
+>>>
+>>> I recently noticed the process_huge_page function in memory.c, which was
+>>> intended to keep the cache hotness of target page after processing. I compared
+>>> the vm-scalability anon-cow-seq-hugetlb microbench using the default
+>>> process_huge_page and sequential processing (code posted below).
+>>>
+>>> I ran test on epyc-7T83 with 36vCPUs and 64GB memory. Using default
+>>> process_huge_page, the avg bandwidth is 1148 mb/s. However sequential
+>>> processing yielded a better bandwidth of about 1255 mb/s and only
+>>> one-third cache-miss rate compared with default one.
+>>>
+>>> The same test was run on epyc-9654 with 36vCPU and 64GB mem. The
+>>> bandwidth result was similar but the difference was smaller: 1170mb/s
+>>> for default and 1230 mb/s for sequential. Although we did find the cache
+>>> miss rate here did the reverse, since the sequential processing seen 3
+>>> times miss more than the default.
+>>>
+>>> These result seem really inconsitent with the what described in your
+>>> patchset [1]. What factors might explain these behaviors?
+>>
+>>One possible difference is cache topology.  Can you try to bind the test
+>>process to the CPUs in one CCX (that is, share one LLC).  This make it
+>>possible to hit the local cache.
 >
-> On Wed, Sep 24, 2025 at 11:39:44AM -0700, Cong Wang wrote:
-> > On Wed, Sep 24, 2025 at 10:51=E2=80=AFAM Christoph Lameter (Ampere)
-> > <cl@gentwo.org> wrote:
-> > > AFAICT various contemporary Android deployments do the multiple kerne=
-l
-> > > approach in one way or another already for security purposes and for
-> > > specialized controllers. However, the multi kernel approaches are oft=
-en
-> > > depending on specialized and dedicated hardware. It may be difficult =
-to
-> > > support with a generic approach developed here.
-> >
-> > You are right, the multikernel concept is indeed pretty old, the Barrel=
-Fish
-> > OS was invented in around 2009. Jailhouse was released 12 years ago.
-> > There are tons of papers in this area too.
+> Thank you for the suggestion.
 >
-> Jailhouse is quite nice actually. Perhaps you should pick that up
-> instead, and start refining and improving it? I'd be interested to test
-> refined jailhouse patches. It's also easy build test images having the
-> feature both with BuildRoot and Yocto.
-
-Static partitioning is not a bad choice, except it is less flexible. We can=
-'t
-get dynamic resource allocation with just static partitioning, but we can
-easily get static partitioning with dynamic allocation, in fact, it should =
-be
-the default case.
-
-In my own opinion, the reason why containers today are more popular
-than VM's is not just performance, it is elasticity too. Static partitionin=
-g
-is essentially against elasticity.
-
-More fundamentally, it is based on VMCS, which essentially requires
-a hypervisor:
-https://github.com/siemens/jailhouse/blob/master/hypervisor/control.c
-
+> I reduced the test to 16 vCPUs and bound them to one CCX on the epyc-9654. The
+> rerun results are:
 >
-> It would take me like half'ish day to create build target for it.
+>                      sequential    process_huge_page
+> BW (MB/s)                523.88               531.60   ( + 1.47%)
+> user cachemiss           0.318%               0.446%   ( +40.25%)
+> kernel cachemiss         1.405%              18.406%   ( + 1310%)
+> usertime                  26.72                18.76   ( -29.79%)
+> systime                   35.97                42.64   ( +18.54%)
 >
-> > Dual-kernel systems, whether using virtualization or firmware, are inde=
-ed
-> > common at least for automotives today. This is a solid justification of=
- its
-> > usefulness and real-world practice.
+> I was able to reproduce the much lower user time, but the bw gap is still not
+> that significant as in your patch. It was bottlenecked by kernel cache-misses
+> and execution time. One possible explanation is that AMD has less aggressive
+> cache prefetcher, which fails to predict the access pattern of current
+> process_huge_page in kernel. To verify that I ran a microbench that iterates
+> through 4K pages in sequential/reverse order and access each page in seq/rev
+> order (4 combinations in total).
 >
-> OK so neither virtualization nor firmware are well defined here.
-> Firmware e.g. can mean anything fro pre-bootloader to full operating
-> system depending on context or who you ask.
+> cachemiss rate
+>                   seq-seq  seq-rev  rev-seq  rev-rev
+> epyc-9654           0.08%    1.71%    1.98%    0.09%
+> epyc-7T83           1.07%   13.64%    6.23%    1.12%
+> i5-13500H          27.08%   28.87%   29.57%   25.35%
 >
-> It's also pretty hard to project why VMs are bad for cars, and
-> despite lacking experience with building operating systems for
-> cars, I'd like to believe that the hardware enforcement that VT-x
-> and VT-d type of technologies bring is actually great for cars.
->
-> It's like every other infosec con where someone is hacking a car,
-> and I seen even people who've participated to hackatons by car
-> manufacturers. That industry is improving gradually and the
-> challenge would be to create hard evidence that this brings
-> better isolation than VM based solutions..
+> I also ran the anon-cow-seq on my laptop i5-13500H and all metrics aligned well
+> with your patch. So I guess this could be the root cause why AMD won't benefit
+> from the patch?
 
-In case it is still not clear: No one wants to stop you from using a
-VM. In fact, at least in theory, you could use a VM inside a multikernel.
-Just like today we can still run a container in a VM (Kata Container).
+The cache size per process needs to be checked too.  The smaller the
+cache size per process, the more the benefit.
 
-Your choice is always on the table.
+>>> Thanks for your time.
+>>>
+>>> [1] https://lkml.org/lkml/2018/5/23/1072
+>>>
+>>> ---
+>>> Sincere,
+>>> Zhu Haoran
+>>>
+>>> ---
+>>>
+>>> static int process_huge_page(
+>>>         unsigned long addr_hint, unsigned int nr_pages,
+>>>         int (*process_subpage)(unsigned long addr, int idx, void *arg),
+>>>         void *arg)
+>>> {
+>>>     int i, ret;
+>>>     unsigned long addr = addr_hint &
+>>>         ~(((unsigned long)nr_pages << PAGE_SHIFT) - 1);
+>>>
+>>>     might_sleep();
+>>>     for (i = 0; i < nr_pages; i++) {
+>>>             cond_resched();
+>>>             ret = process_subpage(addr + i * PAGE_SIZE, i, arg);
+>>>             if (ret)
+>>>                     return ret;
+>>>     }
+>>>
+>>>     return 0;
+>>> }
 
-I hope this helps.
-
-Regards,
-Cong Wang
+---
+Best Regards,
+Huang, Ying
 
