@@ -4,136 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5C29CAC5B0
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 01:29:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6419DCAC5B0
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 01:32:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E59DC8E0003; Sat, 27 Sep 2025 21:29:47 -0400 (EDT)
+	id BC7D48E0005; Sat, 27 Sep 2025 21:32:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0A3D8E0001; Sat, 27 Sep 2025 21:29:47 -0400 (EDT)
+	id B78F08E0001; Sat, 27 Sep 2025 21:32:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF9208E0003; Sat, 27 Sep 2025 21:29:47 -0400 (EDT)
+	id A8E348E0005; Sat, 27 Sep 2025 21:32:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BD6768E0001
-	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 21:29:47 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 43E0B440F8
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 01:29:47 +0000 (UTC)
-X-FDA: 83936927214.04.593AD7A
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4FB7D180007
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 01:29:45 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nUk51kTF;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759022985; a=rsa-sha256;
-	cv=none;
-	b=rkyJYUFBRmNS/hbOfJadC+UT1AVJA3te7P2/r4WghpEwK0YA9w6tKqkpzWAcqxcNZuNp93
-	FDqj+3ke4AZXCXm3Y6m9W091KhXWwWu6kabCOfAvDtyM1miOUln2PlVnMOveH83ke7r02D
-	8caNwlZ7XvLYLs+F4PTvk7j7oByDJKQ=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nUk51kTF;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 993518E0001
+	for <linux-mm@kvack.org>; Sat, 27 Sep 2025 21:32:49 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3283511B032
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 01:32:49 +0000 (UTC)
+X-FDA: 83936934858.24.9385389
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 3A56814000B
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 01:32:46 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Hm2WjVyb;
+	spf=pass (imf26.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759022985;
+	s=arc-20220608; t=1759023167;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qaaA7VF/d1dd6Y2aehhgBQqzOxirTeBTgDR7whafJPs=;
-	b=OaO2n9GCPeoLT1jBuHg3SNNEM/Uyfs9puR+9IQS5MseibUvDSfwJYIkgCq4DnGQcGCv4u3
-	IQmdtxkOEgHLfUyngrMOHnqOa9NzBb+/KPyNA01bmKN7jNUngk6EBb5pgrpAGRecXacPX0
-	rOpyj5OQPs/qT08XwO3ozvmjxck62e8=
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6349e3578adso6421354a12.1
-        for <linux-mm@kvack.org>; Sat, 27 Sep 2025 18:29:44 -0700 (PDT)
+	bh=BNO5RZIiIrulzG4VB12ipNMyH0eEypFH/dltlbXSWN4=;
+	b=uFB0VUUghnLWFc/lGBS/zYPJwsJVTaAGSb8ynPY09DjUlQY/saljfp8neWSYetNnzVBKaL
+	MMyBhqqGq4GIj5jf0XAW9PA0C/V6S9A2QRJfkZDkYdppNqHOGM8rJbqQflpxG+GAbo4PjT
+	8/RywvASVnBPCaTdYrQjvbSholhgyL0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759023167; a=rsa-sha256;
+	cv=none;
+	b=X/8nPJQhirZy2unAWVPNHd68B25nMSm3Qq4iAW4RaiY9gtrGFN9SlIRpL7Rzc2uHlGPzfX
+	f0NqGo77/tDZf2U7a105A9SL6349FJHtPSAUSmmGZ2CDjugkFHu5j/gbcohRTMJULRileB
+	0XzYmg0tglqAbvmfXHBpbCkf5zpsWfA=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Hm2WjVyb;
+	spf=pass (imf26.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b3d5088259eso11939866b.1
+        for <linux-mm@kvack.org>; Sat, 27 Sep 2025 18:32:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759022984; x=1759627784; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1759023165; x=1759627965; darn=kvack.org;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qaaA7VF/d1dd6Y2aehhgBQqzOxirTeBTgDR7whafJPs=;
-        b=nUk51kTF4PG9fHW8uC2y2SjTNsh9DTTqvgSZTwi8HrdQ5+ZDg4PV3VsgMjkCSYiLNP
-         EroYaHnNEd+7CkJS5/mTFPP6ytOpqRNPy+s0foHPxfBEUXCadAazUlRqW3dOFGA7Zr1V
-         n0VWJoY++IwHoGYUkYXUvOyG84Id0Bq4ooPDTUugwIUwtLVnt2TJTkgDUZk9cvfGTJER
-         y2TIG+xDdtOUmMBQmG9DkvBpr5AXbF1wYBI7y/TuMABeNixNzDhNsla9QcdJC4BjmLc1
-         +k6uEm0Ju+Y+/YbdCllQmS/uBGasLKp9D657bOGtzkK3zE4BO3tyEw2uo9wZh1vEMXPf
-         xU+Q==
+        bh=BNO5RZIiIrulzG4VB12ipNMyH0eEypFH/dltlbXSWN4=;
+        b=Hm2WjVyb3Dygm5908Glg2lHgTKpVcO/zGbavz9elieUJcplwC39SkQ9j1hHPcP4AHm
+         mloIe5X6WlXm6462cjPY/FrWJ7gqA5GQNJsr013dwel0WTip1DnqM207zxNtb2qo0wmR
+         pp/nSFPXIQDEUTnk2bn+1QzLB9gXvr57sT41nKZCgftfSbSUzgTPhJbX13+5K3Fhg9S7
+         owHas6yb96USmAsYSc9cAGr8RGXsCD6+yqO7cNFdJEtlNDLzvApc6I9jcQnAgQGBzYMD
+         tyffcaaiW7K0fxNOO/VuWLonKtFsD99OdT8LGffvLE/E8I6XuN+Q/+4/Z/LoeFiX1MQz
+         7ckg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759022984; x=1759627784;
+        d=1e100.net; s=20230601; t=1759023165; x=1759627965;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=qaaA7VF/d1dd6Y2aehhgBQqzOxirTeBTgDR7whafJPs=;
-        b=p0SSILVpO05lYh7bBzUAQYtPHwDB6IqjQLEap0eYdAZtS1EIYrWmC3nHZ3t49zvblD
-         gA3o6zTv8fFlNPWVRu6HVxpr/j4Q66OI3CdgoqFH4HfTXZY7vVFnKAvwxvk8APH1Pl/e
-         EelwstSb3X5PysN2F+mHDMRSdlLQY8PlFEulXzdekauUrYpYzin8Bjqf3S2jA3vxWqQ7
-         okgSYbKLMqBZU7+39Ootmhexweav9JMiN5NBFKiOBII8VhJuw0lw4z8aJEamT1ZjdJVl
-         WPhFEJ3a6KlnjXBvDq6BT7UV2UPveR9zaMd7YXgzULNEqbklsmA1eEsf4y9Jj4IjodQ7
-         x4aA==
-X-Gm-Message-State: AOJu0YxG2A4dAlnD2B8FDxZ2xREMnYM+H3S1qiUKfpAsx/f+lJ0tuFRH
-	PYYGvAAtaRrMf9TizYV5hijEewW4GMNGqRUCrIiP9HG24qFOYVLn7wI7
-X-Gm-Gg: ASbGnctHGNERcUYERbCMNEx8u3aej7K5/OfR9WbYT6OjafLMN9KJ4XJwfRC+ZOBD7RI
-	sd0EusjfZZiL+znka/ZBmXBUXXRfTSiH3MigVOEt0hz/QfNmY1se3ZZKXVx9UiSUqkI/KExzdMB
-	QFfosS/TibRubbzoVSA4qmThhI7RZEt/3ELA9zx4tEeA539G5CTfjhD0zVIBnC3h3qHEiOL/5+X
-	7Z2LtCaj6QAvh8aOFfJnFwAf7w2rH6Qu7oOLdniSylrdjqnpalyV3PlqXWTM+g69Hu5R9Fsd9Ja
-	wdUPx26Mgyaio0PsVWGSqYtwmaFYNa8eGRgUHYG21lR7iQ8jXwWggE+4mnNIkEU+7KAQEW5HDiS
-	obO2jpdIff+OwE/x93rIrwl8r3Q==
-X-Google-Smtp-Source: AGHT+IH8PMCyGq17Grbmlu3IHSZf8Q6pFvykXtFEHcjxN4vNb3KgLD91h4nEUAxKcQcxVpCFfsUfRw==
-X-Received: by 2002:a05:6402:44c3:b0:62f:ce89:606f with SMTP id 4fb4d7f45d1cf-6349f9ef17cmr9469195a12.12.1759022983448;
-        Sat, 27 Sep 2025 18:29:43 -0700 (PDT)
+        bh=BNO5RZIiIrulzG4VB12ipNMyH0eEypFH/dltlbXSWN4=;
+        b=KGiTp/CUv4wm9fN1SFbIbvh3966uDEJOg0i4aIIwHeAo5oMs6DsWGYBUgtxM0GX7Ra
+         qqXN2xAGk1X8fxCTXHCZ6YH3nzHoHA8jxrO2tnwyy9p8RMM+G7yBEijHoF9CwLawCZyd
+         PFWMKgv+5GkGngerHayl3BfG7mLzypKGg6cim+AZ1FiSv195O38ciIpFD0QI4g5qKCZq
+         jgT3e7kmFfspPaOxjHR4l0KpbPdl0fhLL4sfoxzGloBMXnExmgBc6gFxDuWaFtHueaxN
+         gl8+GNnEUbKuWb65PjD58IN4hJX5V+J760tu5GfupNzT8YR0ASN/XHkgWncwl2KH+uyB
+         tJUg==
+X-Gm-Message-State: AOJu0Yz6yWkOyEng+ER373YvOWaTtrshSR9zIHHOIwLpRuNg8OQEft6Q
+	0VMx9I8P0rxmlEoWlwkPyxoTQc2xEcWBH9589lAQLORAZYGpmw/cbG9k
+X-Gm-Gg: ASbGncuUiO0GpYOlBuwZwJnyB5Y10ahmNP4wuua0oxzu2rcoGdnHlD1AtmnztYlWxyg
+	YFVgHWGxnjl5nDrAhHcEH5KXAB6Qm/YljxBipqe+lPkG6i35ayBydjx02dwk9UMg0Wbr6VDgiu6
+	cCbk4L5S7BQ2+Xs9A7im8LwSOti+paz+VhQyCW7Hd7CL5MecguCsi5fMd7FQF98OXvsMWl+7tCv
+	HnSVcLDedR3nKieLxUi9MloBgQCZnlvRk7Y80VShLhOJgW8bTDQ0uiRC3LCRk15eGM8Q3WGkIyv
+	sVpjAu2ocblPyijTJFwX5Xf0IQtwyx+Z+ZNJ5WGuv7PvM0st/kKmlzq0seX0GHf1eQqmYkSsEh5
+	Cd8L44lyzCoSz0pWXnqdMMzHDqQ==
+X-Google-Smtp-Source: AGHT+IF+0HY03khXHDHlsMivMc7NYqE4StkORboEozoeR1pyX7fRDWSjBmKKhZE6NSjOa1T9ZS12Sg==
+X-Received: by 2002:a17:907:3f10:b0:b10:4355:2e63 with SMTP id a640c23a62f3a-b34bc67ad82mr1406794766b.46.1759023165482;
+        Sat, 27 Sep 2025 18:32:45 -0700 (PDT)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-634bf4a5351sm3206980a12.43.2025.09.27.18.29.42
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b35446f5c36sm657584166b.54.2025.09.27.18.32.44
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 27 Sep 2025 18:29:42 -0700 (PDT)
-Date: Sun, 28 Sep 2025 01:29:41 +0000
+        Sat, 27 Sep 2025 18:32:45 -0700 (PDT)
+Date: Sun, 28 Sep 2025 01:32:44 +0000
 From: Wei Yang <richard.weiyang@gmail.com>
 To: "jianyun.gao" <jianyungao89@gmail.com>
-Cc: linux-mm@kvack.org, SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+Cc: linux-mm@kvack.org, Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
 	David Hildenbrand <david@redhat.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Xu Xin <xu.xin16@zte.com.cn>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
-	Chris Li <chrisl@kernel.org>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"open list:DATA ACCESS MONITOR" <damon@lists.linux.dev>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:KMSAN" <kasan-dev@googlegroups.com>
-Subject: Re: [PATCH] mm: Fix some typos in mm module
-Message-ID: <20250928012941.wildyant57igw7zi@master>
+	Andrew Morton <akpm@linux-foundation.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] mm/hugetlb: Fix some typos in hugetlb module
+Message-ID: <20250928013244.qzevjut7gbxdbyli@master>
 Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250927080635.1502997-1-jianyungao89@gmail.com>
+References: <20250927064926.1496579-1-jianyungao89@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250927080635.1502997-1-jianyungao89@gmail.com>
+In-Reply-To: <20250927064926.1496579-1-jianyungao89@gmail.com>
 User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4FB7D180007
-X-Stat-Signature: wqgsbdkdtqwer7guxuouqftssgur57ta
+X-Rspamd-Queue-Id: 3A56814000B
+X-Stat-Signature: m6dgz48ke5t36b1xw7jc1o3n3km7h3og
 X-Rspam-User: 
-X-HE-Tag: 1759022985-617542
-X-HE-Meta: U2FsdGVkX1/hyoxtEKRUBw61euqVJ61bwJydUGwJQ8y1bmyDKxhnypFj+ok5LbzZtzmVqR05/xXGe6A6LsT3zq9/3IxCPEoONk0tBBoHlg4t2KkqNaA0+pZ6lO66MSKEucUwAobVPuqjzIXdhwqiDGw1zw0StVn73OSmnSjmLxXZAy7YuJBAuGpgxOrciHEjs/0KbKZqIpqhvBTs2EhCQ32Wb2P9pcqBpIj37/sm5/wWoxonRhe6eyMcjsQ5DRFrV83BrbRTGUXpoxeLq/CQ1HTTGKmS2qqc0XK75yVIFu+Q6GDYbl7Q8Ob3jk0bvAmIvDgA4c9+9Fmpokyu+wu3xYrjNNuH4hPPOsuflLATTjvGfd4TswF3lFBAGkybeSE2yV7SzwQLike/YxvJQdnaT80JVv5Sae+L7LQKzzGaE/Rcss4J/nQu1T0dQoHKnn/qkK97u1Pbsq+7hzqePdYKHhlLbH8X+aG2HtFGwXZ1U4uSZI5xz0Qwa//CPFf2cEI2g0SjmN3BUR6Iwe2obfXGt55eUoIiVuAlz8vjGwIbtzEX95zWlFZGIzyW5N4wakzCmPOZq7xrf0Xvz9os321WPZH5S4/HeqEULg5M4k0n1r9W0fF4jl4mliMOMo/ggpDlV1ex/r9+S+dMBRNtLKHisRR3qqV5eHsw7l1ighQbTWZxf9GHvBA19Bm1vHAn4BJ0Or8GoaBQ2Vwx0ytQIYivmLWwOS86eU1oRknwOmhxmqG2MMlt0xJ7cv6Gd2kzOOEDrHQs/TGNn2Kgg4s884C/MlOGIBAQE8zkd5O8G+ZdhfQsqIgxJH2QhBlejtR+l3SDYeK4oOCn3PkH6XvlCNCl9cxq1gTRCtPvM96GTpzqIGPubGCsGvd6B1AXWu8VIYW113nyafz3CyPFZ0ba9wB+yj18wOHOhaV7zoKjCptPFvsrrugHlvUNw86B1t8E4zrhzr8QEvWhmDosNEOnqHr
- AAGeqnw+
- Ytu/xVUlpeeaNRpZqdEO64dvCmYXUytmikFth5u+a6Uw+2avuXhEVv8GGd6Infdpa/1po2fJwvbRiZTddZB7Ba93YmqDb0HpWrkxgB0E/OVpXG2vy0mzldVatjeAkwk6OiG2AFmwOXEBUEAyAPULRzk+crgvZNwt3ux2Gf6WEEO4NbHLF2h3tUjAQZD15DISJ/aDCQbCua0omtvorAyLtKadJEpAVXpAEV/Gi9qpTa6zz7uo66hBFS4u3St2r0FSt8azzIcLuKR1KWWpzAfLqCkiqp91PPMhx7Y7Ny6bi4BuAZ2IEtt4m3jRTKWv9y9iZhjzPzo8ThUvny12LCtSoSZeQkchh5rLiUI4L0Sfwu8CY8dNd/+dbfC5YqtRahYwFOtHF4KhgkEbqJBdOoDFZeqTPDboW03f7iJ8V1PNIYlSH9hgrzzzovxQ3BpmjwekLKVh0UQbAL9MzjIc1n1KZUBZhnO+1domKYdxKIkb4gX1k5AXjDm17m7LB9L0SSS2OIV+rbb/BBY8/HD+PZoYKbWxfLt0rLg88TMyVaGmp/c8zj6LqB0y+JcjssNf4vjzIf9SMw8oEa715NoTmQU17tNpjPKUOUBAFHD/WhD34clGXwGniBmw4jfoCq4PMNx45shX5WgMI/DyqpnrbEhTspcXdWtpp4BtBXeO97tSZEpDCfwO6qTo9920nmA==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1759023166-418513
+X-HE-Meta: U2FsdGVkX1/5XeiJWeVggErTW8FufuQ8jzfe46AHr4gZemcWc9gyc5XD0xE/BrpKSETp93RXGUvZTb9iCRAn+4iljhwTCr5Hvxs2EprCDB4vvYG7O4AucHbP4DCvwHE0HD6FgbBKRY7IZ/mDJ39d9Vk8xlb+w5+MPrQCFLnhrU0zEBxyMnvrknN5WaHJ+pKpnJCpMDMrSW2yJv7/N7AdLRBW3KQNuMNCF38ABGSsMgy3V6xY32JFI5G17PHx9z75mROUfD/S7vt+7VXbMCpH0PwkFdUd8bFtk2B+yTPpz1Weq3uE9WKrdRO9AWkyhoVzNbAscXnRUhVvh9PZsn/msk+VDWhGUtfrYbws25nx8hb2MicYwinAVnZFfJIgEz7F4dKQmdCzhcRuGcYVwmN47HL+/BiJu9UowspERE4DyXFuyj4FLVAnBuMt5vwSkYbVDogaNZjS+EMx9xXZK/HUTMNwiRENqTKQGqYusKSRunZZjLqZREBgGpoCCIyWvsQiDcqRoga62F+CyTBH68J4eCsnqC5N/zBhM2R0EZRvLnHDNgZwK2q5O/nwKzZ9IaW9wFE3/uHHm5jBDW7C2k4PGR2IVncWAcZ/tebImBrP6reae0ykrVZont5xiHUkR4svJt5UFU+hkE8iVVLSHl2qvlRpllYyVzij3//0/0EGy2Y22glaIAhdhDoitUgeq9c+X6Rbnv3c4Um6nHJS8DkMIT8znfp6ZgvAOmQV1h9r8D/hlj1NVAzYZG74Tl/1OoYWsMeiwBTiXsM2d47tIj4OcJWk8GPzV6MWgFjKJsWFVAUL17gdnzli5Ezy1p94UJ5jqCgCybv973UCVTdIF9PENVuFrLfWLGg4KH0DLJCGWEdR+xXFNe5vaqF344TGGO4ZotLsrhfoxKsRV51hRe4/tp/pQGLjmeFEWJ1EEBNomv1wh642Lm/btNQ0GmsidWQ2MhD86YFXMymw5sEoFPQ
+ to8IDe2U
+ gW3r5sELWTa3bisKSB2S1s6Gc4n11QA8XgmFPF9yh1yZL2mCIpoegEGJ0AZflDcDFVRDH5ApCGUerfijdHzCksghW9qKOVUVAdFAdwereWYJzo6y2TVMBfEexBzEGtHjPTkMFGdWa/1mbZbQ0s5PjLSdnvhHdXcbaQmYS8Tz4EQYpVoNynYs2CIVD858UX6SGmQC6n+wP/uXKlQ9FCIG/jgdTrGspl1nxoqWKRecCcXfO7K3vDB7IL82qsvxt04G2nZT1XqtX3JDS6y2WL5fcnv7FXdA8/f8dYdBawczaNzRYuXOnHsltJ6AYoXD+rlNInUvGUP6Aq5mR6076U/8+Ul6AJ9qydOwOWyCpUp6VXlxMoN3KyZYifdybOjdy0SNZ5DnjGZLYZYgv/WwVrv7D3XJNdR65th2SfnSFWR1CaXhWVLXb5/3nH2E790EaufDzNvzQUVXKTDP5ikMN2ZZCBSkHXSD+rrh+ALx7xId4ozIWNXPP/TD5ZvOUWKBp+1cNkyNSzc8Mv3KNjh2AG9McoeZNMZBbF+/4HycmI5Y3UcFD4abDlQfsk77RLonCaBP4Vh8sQQiAu/QECqa1eN+9ZP9duW+jrUwjzhp62JoOoyoglZkm+aaCpprtCEsLKBUwtlO13OAZ8C4LDPcDsSyPA+UWhD65uWH8mHGW
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,31 +122,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 27, 2025 at 04:06:34PM +0800, jianyun.gao wrote:
->Below are some typos in the code comments:
+On Sat, Sep 27, 2025 at 02:49:26PM +0800, jianyun.gao wrote:
+>There are som typos in the code comments as follows:
 >
->  intevals ==> intervals
->  addesses ==> addresses
->  unavaliable ==> unavailable
->  facor ==> factor
->  droping ==> dropping
->  exlusive ==> exclusive
->  decription ==> description
->  confict ==> conflict
->  desriptions ==> descriptions
->  otherwize ==> otherwise
->  vlaue ==> value
->  cheching ==> checking
->  exisitng ==> existing
->  modifed ==> modified
+>  differenciate ==> differentiate
+>  refernece ==> reference
+>  permissons ==> permissions
+>  indepdenent ==> independent
+>  Spliting ==> Splitting
 >
 >Just fix it.
 >
 >Signed-off-by: jianyun.gao <jianyungao89@gmail.com>
 
-LGTM, thanks.
+The change looks good.
 
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+But maybe we can merge it with the next one you sent? They both belongs to mm.
 
 -- 
 Wei Yang
