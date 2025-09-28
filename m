@@ -4,135 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C63C1CAC5BB
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 15:09:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB5F7CAC5BB
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 16:01:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D26438E0015; Sun, 28 Sep 2025 11:09:35 -0400 (EDT)
+	id 2A2058E0002; Sun, 28 Sep 2025 12:01:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD6E28E0001; Sun, 28 Sep 2025 11:09:35 -0400 (EDT)
+	id 279B48E0001; Sun, 28 Sep 2025 12:01:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9E9D8E0015; Sun, 28 Sep 2025 11:09:35 -0400 (EDT)
+	id 18FA68E0002; Sun, 28 Sep 2025 12:01:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A47DE8E0001
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 11:09:35 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 57CDD1D9262
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 15:09:35 +0000 (UTC)
-X-FDA: 83938993110.09.C04531E
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D1B3A10000D
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 15:09:32 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Gg4EgO6D;
-	spf=pass (imf14.hostedemail.com: domain of nilay@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=nilay@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 020D08E0001
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 12:01:17 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 78BB5160146
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 16:01:17 +0000 (UTC)
+X-FDA: 83939123394.29.E73C885
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	by imf09.hostedemail.com (Postfix) with ESMTP id D4E7E140012
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 16:01:14 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=kHQMOjAt;
+	spf=pass (imf09.hostedemail.com: domain of charan.kalla@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=charan.kalla@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759072173;
+	s=arc-20220608; t=1759075275;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JNpeYR+IfQUFp0FlIyW2XW1Up7YQWvi6w8S3hBXfZ0Q=;
-	b=WC3slEy38YD/4bN/3aED/bbWy2eDmqBTYpvGbWYdq5bU2WnDjptrjbotGvMYC0u5MPRNnZ
-	mG1FeWo5ZxxeWw/Qh8vkV8pdMpiQ+eIT86sOcjHTfHVV98ufK2WqIpoqOZG4SAiJXkt+pS
-	8hOW2LBp1bJ2jvXugT32jpjuzvaQXag=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759072173; a=rsa-sha256;
-	cv=none;
-	b=O/GrX02SthavqtBLwRMLzEyXOdoETvk21Kajen3i3tnTN2rMSfzQelTIYDBryUyur29j+j
-	ZYR/xhdELI3fe/1re6tfHxAr7qk1/Q8ptiEYnZY1SBUmPy6h13/gdhOmIfnBXJhjCq4+WV
-	B9rPg6xVkoxw/1ACKP1+NN1vNuNHIjQ=
+	bh=cPFVpHWsZToVkjvByN8+NS0wTPCw0JUGnzSj+xr+rBc=;
+	b=HxTIARIg/AMvFzAX5XEOLjVSbm2IGuTr4vHCSnkvC/bYVM0oyqBCbX4Ix2SMPU6lJ+j9dG
+	9XWT636zNj+bOc6cJkbnW3hal+sE2M4Vf3vfFeSiMPYh8/CWELU9U3XVRufPmJcQsz4YDD
+	+5+VjHeYHG0t1dnjxOfzMK3A+n8zPdY=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Gg4EgO6D;
-	spf=pass (imf14.hostedemail.com: domain of nilay@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=nilay@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58S7U4t2026791;
-	Sun, 28 Sep 2025 15:09:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=JNpeYR
-	+IfQUFp0FlIyW2XW1Up7YQWvi6w8S3hBXfZ0Q=; b=Gg4EgO6DgbVe6ofWZakAQF
-	z4nxx0jfYGogJddxFPpBL2fm/ntBC8aWHuye7HTJunxC5SxziH2k9lrBxxwywh6S
-	vS4vLitQNTFxjK/tpvvfYhFfzw05r580deVaVoJ6argfAi1fcqb/Ld7DwbTU2jjh
-	r9rsX6fGlWS1Yv/BlSKpcA/XxI5AC2+Kb2XxOrlLiABr+s66GJHaTtZYkDSJKATP
-	R8bQU1JhIHt3GUMXXV90kC99uu1EdcKn2WQqBORmiUlSlzDAuga3sGAOQlTece/f
-	49XWqgDxK+DsHNkkIqFrfT4xArJCwak99qKpbHiHOwX3vNqvhwvkqcPfN79P+7SQ
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49e7ktx0d5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 28 Sep 2025 15:09:30 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58SCCvRv003314;
-	Sun, 28 Sep 2025 15:09:29 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49etmxj80x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 28 Sep 2025 15:09:29 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58SF9T6N27656782
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 28 Sep 2025 15:09:29 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1CE0358045;
-	Sun, 28 Sep 2025 15:09:29 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C56C158052;
-	Sun, 28 Sep 2025 15:09:23 +0000 (GMT)
-Received: from [9.43.71.234] (unknown [9.43.71.234])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 28 Sep 2025 15:09:23 +0000 (GMT)
-Message-ID: <d9548c38-9e33-48c2-9ecc-b942a84dcfaa@linux.ibm.com>
-Date: Sun, 28 Sep 2025 20:39:20 +0530
+	imf09.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=kHQMOjAt;
+	spf=pass (imf09.hostedemail.com: domain of charan.kalla@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=charan.kalla@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759075275; a=rsa-sha256;
+	cv=none;
+	b=Ll8o1YPAq5mWg/EUO9WjpKbS0Fjl4D/ft6KIG0oYI7II6YLm6XTPYpAICzmlUHoMmaqbOW
+	mMVpWY+nmyX3S2ex5cLjROHfE/pms5eoDg5j/hMRxLd+WZzJyyBzvL3a9aoOWn3lyuOSCa
+	BjhwolLN8GuAmQTPRf9tiJhQjUlbpAc=
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58SAi82S028278
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 16:01:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	cPFVpHWsZToVkjvByN8+NS0wTPCw0JUGnzSj+xr+rBc=; b=kHQMOjAt18xVyxOZ
+	Gx0lnuqw/oQviTlDkFSmNPUNaSCs2b6RG3JLGtfnQOdI6UHNGdcS6BCJOYgoAhlq
+	MhjsfZCZJsw+SAbucEoNdAls4Qvjl4j/a/XbbpQbgLmn4d8zXY7GcUKEavklstNt
+	hDxzje0IKWnDSUxLs04YX6mncsUcqdCVl0fGA0W3DitbLH00E4zZm6anmLEEMCTt
+	OOqvBM3uCDqCo95O7Q00J+9VtmoTViL6pqirZjIC24CeLNmyYVyLhvbXeJrajPKK
+	Gk25qJKuc+C0op4E4BhXGDCYTEAJJ5EFPh9wEadmz1kHa0FsZVEZcXxsTkBqnyR+
+	eE/KMA==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49e6x5k0wt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 16:01:13 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2699ebc0319so38878135ad.3
+        for <linux-mm@kvack.org>; Sun, 28 Sep 2025 09:01:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759075272; x=1759680072;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cPFVpHWsZToVkjvByN8+NS0wTPCw0JUGnzSj+xr+rBc=;
+        b=nOjSP7X40xRkL+c9WXdZPMWo3JukVPArsIHSX/lHgncLZ+gZvHCv/uQ+UG+b0KBlZn
+         5Bi9O8DcykMIKuUDEbQRGsUVve6dxUT5onGGfjH1yr7+Vu1cO66t7gev56bi8v70t8dc
+         V5FrTVDgrX02X2VQnw9bkClCcFzb4YnUWInzKC62N/8qyxoLIF4Vsqd+MAJRgeHrlbHr
+         xyiGfUIdPKByHmwX6mog3o3vwyavj8pTtiJteBJupMLYQGL4OT20SyLexiGAxddevYGi
+         mFbBdM+zfOFC2QOWsk3BWA8JN6QlZYAo9Ym4FZCXYB+7CXT+FoH+VP2ev+g6ne2elco4
+         ld4w==
+X-Forwarded-Encrypted: i=1; AJvYcCVlcyobqRDqVKwXpSrj7TQAfKDcMmYcUtOY0UlilBr+XDy9D3dEYtRRT/ucE/2W7I77pRqvInjnwA==@kvack.org
+X-Gm-Message-State: AOJu0YyFSiLLGYwxOKfvUfHAMOKIlzEtNyttRarNlm8tRXMZ1zzgAwHb
+	NsOUq/+/IUOkPSDGP5u6a2gQ6ZoC3DGMu6JcWmZp/JcW8ren3as0J6yjcmVYMgicPmnh9UNYDHA
+	5A2LxNjrBGxvqz9MijIDV9TKPtu6khqBaMREGUeqn5rCfkjkHcOaR3A==
+X-Gm-Gg: ASbGnctQM4Ee4Fbnh4Hq8DzImHkMS49H3bk7D0cdngkLTpuqbMfgPXGtGKBLGMX5z42
+	YqdwlNWony82fqsI8IeHRGV9pOYwt2zZ3S9Jq0b1kWCX9kvII+hdVmfhhWE75OPScX0a1c+eE3A
+	vNhT/j19edHH9vL3bdTc3BbwZrMGQfA0saHpOSq9WuNkZzpsFFtKwXuGtTv8noopE24UduBWuYi
+	lyHkXMtNHZIiNxSX2mThBpg4miuHmk/Xx9pPYBjwyhM7pH9y1YfwOFrNSFcaiIX/V1bwbHjA4ai
+	GDwblCwYiPEw9hLDvGehigd7gPg0EJTtf0hIUFqAYbo6ynok3h3m+/vZOQqzOcgkq7GFqg==
+X-Received: by 2002:a17:902:da2d:b0:269:8fa3:c227 with SMTP id d9443c01a7336-27ed4a06e11mr127912585ad.8.1759075272315;
+        Sun, 28 Sep 2025 09:01:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEKu+Mjlu4lZU0z3b0X20n3n0XWiHLgmlWPxFZKPAgl2BOGgx6FGTyHcwjgZgfLcJLNliYZPQ==
+X-Received: by 2002:a17:902:da2d:b0:269:8fa3:c227 with SMTP id d9443c01a7336-27ed4a06e11mr127912335ad.8.1759075271816;
+        Sun, 28 Sep 2025 09:01:11 -0700 (PDT)
+Received: from [192.168.1.5] ([136.185.249.89])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-27ed68821a0sm106708625ad.85.2025.09.28.09.01.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 28 Sep 2025 09:01:11 -0700 (PDT)
+Message-ID: <a3b3f044-5a84-44e6-a2f1-0e590a9beed6@oss.qualcomm.com>
+Date: Sun, 28 Sep 2025 21:31:05 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] Double-free in blk_mq_free_sched_tags() after commit
- f5a6604f7a44
-To: Ming Lei <ming.lei@redhat.com>, Niklas Fischer <niklas@niklasfi.de>
-Cc: linux-mm@kvack.org, linux-block@vger.kernel.org, vbabka@suse.cz,
-        akpm@linux-foundation.org, axboe@kernel.dk
-References: <37087b24-24f7-46a9-95c4-2a2f3dced09b@niklasfi.de>
- <CAFj5m9K+ct=ioJUz8v78Wr_myC7pjVnB1SAKRXc-CLysHV_5ww@mail.gmail.com>
+Subject: Re: [PATCH V2] mm: swap: check for stable address space before
+ operating on the VMA
+To: Barry Song <21cnbao@gmail.com>, Chris Li <chrisl@kernel.org>
+Cc: david@redhat.com, Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com,
+        akpm@linux-foundation.org, shikemeng@huaweicloud.com,
+        kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com,
+        zhangpeng.00@bytedance.com, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org
+References: <20250924181138.1762750-1-charan.kalla@oss.qualcomm.com>
+ <CACePvbW=-KZhU_qi4UUw7Pjbz4o=SQwHmQyEOkxhpMvdetbPCg@mail.gmail.com>
+ <CAGsJ_4zhL=4qJDmGA5E-z7=VixkUXOi+qBnN3S-WWH2UbYj=ZA@mail.gmail.com>
 Content-Language: en-US
-From: Nilay Shroff <nilay@linux.ibm.com>
-In-Reply-To: <CAFj5m9K+ct=ioJUz8v78Wr_myC7pjVnB1SAKRXc-CLysHV_5ww@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+From: Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
+In-Reply-To: <CAGsJ_4zhL=4qJDmGA5E-z7=VixkUXOi+qBnN3S-WWH2UbYj=ZA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=T7WBjvKQ c=1 sm=1 tr=0 ts=68d94faa cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=BNlTfnLp_OdMHRcVVn4A:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
- a=HhbK4dLum7pmb74im6QT:22 a=pHzHmUro8NiASowvMSCR:22 a=Ew2E2A-JSTLzCXPT_086:22
-X-Proofpoint-GUID: OUPLr9phSgYtTV7jg1Aq2OZUhzGes3_m
-X-Proofpoint-ORIG-GUID: OUPLr9phSgYtTV7jg1Aq2OZUhzGes3_m
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDAyNSBTYWx0ZWRfXx2ileBIFQfyt
- MTweuzUniWlioSf9ptg9rzOr3DPcLp5rnPZ1DxGjR4YOHVg8n8okNlzreGYIjTB/vueABS0ay1u
- I914xBZFgQvKlpan6zDV03iPgcUozEIHx+D/SS2SI7EgJ/nIMggaa3Dhmdiw92fv49L9rqURoWT
- Xqj/+9ZkmZhhqBq+6fyz/Ug6K6qvEEdsuLnqJcJjmLKDCqZNsNNA5MS6svlFZa1nun2W4PrKL03
- v5n5hx3gR4r6SKoDtd8b/cGm8E0/a4XtOOOsnFTVbN7XGq5o6Wl2cd6Utv6XMbY1720wwaEdne+
- gz79d0+jczXD2EP6syUfv1HMFsOagLfnntVggC0lqh+RoxfmiRNcforXgl12mzLfEbMV6GGsbmF
- 8e1oTYDknkPigXYoovbz3kOJn2jGCw==
+X-Proofpoint-GUID: WkrosaAt3TUgHxXly_gv4C67fPkt0d0H
+X-Proofpoint-ORIG-GUID: WkrosaAt3TUgHxXly_gv4C67fPkt0d0H
+X-Authority-Analysis: v=2.4 cv=ZtPg6t7G c=1 sm=1 tr=0 ts=68d95bc9 cx=c_pps
+ a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=FbHnbG6Tk0goxvMXmgMzoQ==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=9XW7_0HgatEhwW1_NykA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=GvdueXVYPmCkWapjIL-Q:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDAxOCBTYWx0ZWRfXxV0PE+YCGTnl
+ R+DEDjbsCSjXw5bWgfhN628KWkbLR2rgmHeDNEAw4r3ddKd5e42cqK5zH0DQj5pnNrscO2vgS2M
+ BqygXb8Oi6VDIMba6Hwk63WQS2hw3qwPBT+Y7etIkt0RFk84h4Upibd3FJ9oLf6uBX5bd+ayxLv
+ TniV3OdXTUGU2O7U4Ov9vct1uyMWyPcsfHFRTJNxER7EsUrHoVYt+Wx+b25MqrfCpTNagY+Dics
+ YACz10Imvh6EZC15mLrDUhMFZwJWglILxtslIsawlWyHqUuMve035vigxDp+Sk4aNu1LX3TxAkf
+ Jaziyy7PYBE3Pw0eDmeQdwFEW235mUuYjiWzmduMpsrggu64DuJ80SWPnF+NIN5xDFA50eRSVdZ
+ hBFCFMvCOgYblX0aAAbP7oumGFKO0w==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-28_05,2025-09-26_01,2025-03-28_01
+ definitions=2025-09-28_06,2025-09-26_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1011 spamscore=0 suspectscore=0 priorityscore=1501
- bulkscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0
+ impostorscore=0 spamscore=0 priorityscore=1501 malwarescore=0 bulkscore=0
+ suspectscore=0 clxscore=1015 lowpriorityscore=0 adultscore=0 phishscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509270025
-X-Stat-Signature: dqiymujkjetew5fxrbh9dcmk9b63pcxt
-X-Rspamd-Queue-Id: D1B3A10000D
+ reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509270018
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1759072172-753510
-X-HE-Meta: U2FsdGVkX18JIQNpwOF1mFovJII2HCnO9TdzCG8m1unQvTZZFBisgtdQUId6aXWO5vWrzZBe+Loo0ogXWpIDMqL+4q1IgXbhEljkiVnwol8TYYPMQMsWpoUPe9TcE5/7YAcZihtFR3EKhjd9269aihjpPT5aRW5QvkvG8YxG5SOBPm318G9iKGZikwpY8YL4CS6Z6ZlFf4/lnS6pt+bcX+8N2OPgkZObzkKyhZ93xXgApo2zScTaSyxnQID7gnH27iQ+G2sHX+Bm5o14uOVnNq6cnGBxjq+BdjkOJUAoHrUGnkfxxwuiY6RhM7zcnaXyFG+tNIRp2Lr6jzpOo+26L1hm3fygccqFkmPNyy6qKwCrMLuCr+HAH75MN7XnxsWPL8fKYxbk2iZNH4ZRelCl34q724AGgCWjrx3og01xRRaW/sjGcBm7124gDGxiNp9AzV1znv+AMD8pE/3+++bn9PPmJ9iqqu5p4AIzMi8RIj6dsTByVy0r/WXK/pMJY4fwXLMLQISJ4GjjSmBDc+cfXQcN1yLshgOcJX9L2PUignN9lZGtpAnXebYwByYI5jHAPn9azlEuBuCZk/BnolXh+wXf85ZbYXVs1lGHh37B0QnwOaI652CiR8/YFQ4eY+v4G4edgSUfnEIvsO20fE/rI3+rV8u8r5IyQnysBzSIUni/Grsn4tO72FMXFxBFu6/R2qg+8mnjRn8F6zlExOce7T/+zpVTn4Gw3g0JSpnb9XYBhzYi1NBE0lNddaKDVYPqxSBD1C//6s4kma09IaiHRzETl2LqUlXdneKm+y3XjwYXOIsQ+6X0ZN+1mL7HFEjXuh1rtDpCsOX9KV7MQ4/8SBumBNNYppoIieFz4g3ASWC32h0c4hpuSvTFo2kzYx3DlbtcAxlYnmbV0e7Y7AQGIZ5pYCLILAsQ1lkM88AVuv0175Y7Gj1Ow4P2Cq0yiG/Iqg2ggIeuZgxYze05/LE
- mU4/WOjG
- TwgsRngETWOzgv7Dojc499aolqchakrAkLcp2IG8nuj6AALc1KrBzoz0LNQmZ3dMEOhOzAV0mm/u0DiGLBlgGghGKj3wzvOdcbLejRHHnMU2xlinSkf7CQsbPDhit+47tfK8Ek9rQEVKT8eGOOL6+m/DI9MYrMtblvxKTMltT/PgRnx93X3Hgubp0YcL1QuNhkrkV4Ddz/z2+/CuhO6UyVFZAZnhZA3KNrGHGvljUqyohKzNiE3w3WWJgF672ZQosA+o2QnGdew7dPuVtsKLJxX5Fgvm+Nm5Fc+3oiatgNhaIL7q/OeooRTShJE7vNtxLxnB7
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: D4E7E140012
+X-Stat-Signature: 8x3fx6qanqj695whxsd9xwqtudsb3s5t
+X-HE-Tag: 1759075274-621768
+X-HE-Meta: U2FsdGVkX1+ceXmPLHFP0B6bRoyIifKdDfBNWAblmNZtykdl1G82L0Bp3AW++McJ+RmXW/8WUFVlYgyMJQr5XS8yPK7gDV2UFDHIEAl3fuLd6s08RsgjKzB1E012WOeWkbfApnaVHh9LeKyQIhaqn91vm1xagO+D3A1vPT2+wvua+bWLZGMlvNmqf822wKRMhJd4u485NMjcJcExwnhpRLmmf/CdFh9/UMnEJZf1+7aIXjhN05/0ty9AnZ8Q3dyuPG6pACFRtbif0IQrtmK1js+StYG++Ryp7Mpk34Qpi6rFBS5RvtNU0JNne0WiaiOw7qDV+z/IBxbIEJjT+0h3bH5+Tydl6Shb8gqa4DCP2ILMLQdfQpRmyKaFczHi0QZyQRDtP0F1pYWGz9wMnp+io5VjTGTR3MQv1xhHj21qwSqTaCCMnNfxVnDHrgP45/0EonPVIMKDwFJGWl3rmSFoL4dvtosmbKmxFPduUCM8R2CVDvD6bn9oQmjjku3X1aBjbUqS5Vo71Igh8ZM1mFHElhFnNH4ZfYFVORBN7CwD3MYPiTHV60kvWJxpoNjWYyRVp5Ix4t3o0Y26FyKQdE80nSWPD6OXp4zo+ALJAq0VHcYrM8qPa6Qpn2sEq7b9ux9e3SR2hFeY5ac6z6Y1/MCr4e2hc41qMwHAUs4ylGnPb+84+RWci2QoDN68BpHZR0qzUwpQXc57Q6B5nbgVPvb+oKTgOP8UZZAwuFX4kdzhwWMDRu91pxEWjBx0RTXHGD0i/MCeIwqNzPIUlfK9KHWZ97Fg6WeHOTAx8xX9WCbsNnlBorg9S9voAmiImwYZGUBBlvgnto/e9wVPsi3DW5wRLuRXT+Kw/eam6bKyta3CiMyRYOGqbRObru8t0IGwr6fchsjomm4OY+i1wBn1TNMo0Ln4DpxEpekjiaJjcNKW8PLgQvH0dMOtT/TWhx+9zueG3a88izsqRVveqSe7zy8
+ 6VLLs+lS
+ 3ttqBN7GUgpfkbAu/OzjT6gVvC2ZuGSlOcRZeAZ/0aZG0sXrnPq7abLseiXPO14pKa6QmQMsM8B14j6e/xsD3+eiyyqmFggQ4TfUQievaGd4244ZyV806Wnm6nb5z973xfwuRx7gfHPW0ZnlKJD+ESmLPBwDUBF8TgAZXlxGMZjyggQMp+vsUpi8aTiYsnXLp+SxdtYmfrVZYgn0oi35vBK0RsUOl1c+2rmjketreJIr0oBasAadGt7ZGYF8o1MPB3W9h5AnA0gHi+9YoYQhyRwqRsrNx1Y0Z/TwfquhUOnxZkzeYKDIPAnZ99xQF0GDJ7eRsCs+d6zckg0V9sUNvRDPH3w7cEOshfwzOXRG4Vu9Cm6W7qH8QEAyriFEq2/enfnzuRlS12vJUTos7MbQ/XR8UDUyJJmT8kkKs8/kiGX3dxvpAavqamlB6hKxnyn2vFPR5F7hF++BcfDjwHcMPjPB+8Y7g1HHJkZvT1bCWNbHU43U=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,63 +155,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Thanks Barry/Chris for checking it.
 
+On 9/26/2025 2:00 PM, Barry Song wrote:
+>> 2)  __oom_reap_task_mm()
+>> It holds the mmap read lock when setting the MMF_UNSTABLE as far as I can tell.
+>> So checking the MMF_UNSTABLE with another __oom_reap_task_mm() does
+>> not exclude each other.
+>> This is more of a question for oom reaping.
+>> Does MMF_UNSTABLE have the test vs set racing here? It seems this
+>> check does not protect against  __oom_reap_task_mm(). I have no idea
+>> if this race is triggerable. Just want someone else to double check if
+>> my understanding is correct or not.
+> I haven’t actually run the code.
+> My guess is there’s a race when checking MMF_UNSTABLE against the
+> OOM reaper. I think it’s fine either way—whether we skip an OOM-reaped
+> mm upfront or take a middle path—since the OOM reaper will handle those
+> PTEs with the PTL just like unuse_pte() does and eventually free the mm
+> of the reaped process. It’s probably better to skip it early and avoid
+> unnecessary unuse_pte() calls.
+> 
 
-On 9/28/25 6:48 PM, Ming Lei wrote:
-> On Sun, Sep 28, 2025 at 8:18 PM Niklas Fischer <niklas@niklasfi.de> wrote:
->>
->> Hello,
->>
->> I'm reporting a kernel crash that occurs during boot on systems with
->> multiple storage devices. The issue manifests as a double-free bug in
->> the SLUB allocator, triggered by block layer elevator switching code.
->>
->> === Problem Summary ===
->>
->> The system crashes during early boot when udev configures I/O schedulers
->> on multiple storage devices. The crash occurs in mm/slub.c with a
->> double-free detection, traced back to blk_mq_free_sched_tags().
->>
->> === Crash Details ===
->>
->> Multiple crashes occur during boot, showing a severe race condition.
->> Seven separate kernel oops/panics are observed:
->>
->> * Oops #1 (CPU 13, PID 928): General protection fault in
->> kfree+0x69/0x3b0 - corrupted address 0x14b9d856a995288
->> * Oops #2-4, #6-7 (multiple CPUs/PIDs): kernel BUG at mm/slub.c:546 in
->> __slab_free+0x111/0x2a0 - SLUB double-free detection
->> * Oops #5 (CPU 1, PID 952): General protection fault in kfree+0x69/0x3b0
->>     - corrupted address 0x2480af562995288
->>
->> All crashes share the same call stack pattern:
->>
->> elv_iosched_store+0x149/0x180
->> elevator_change+0xdb/0x180
->> elevator_change_done+0x4a/0x1f0
->> blk_mq_free_sched_tags+0x34/0x70
->> blk_mq_free_tags+0x4b/0x60
->> kfree+0x334/0x3b0  <-- crash here
->>
->> === Bisection Results ===
->>
->> I bisected the issue to this commit:
->>
->> commit f5a6604f7a4405450e4a1f54e5430f47290c500f
+I am sorry that I can't really see any stability issue b/n oom reaper 
+and unuse_mm(), but yes that unnecessary unuse_pte() calls, as Barry 
+mentioned, after reaping.
+
+>> I can see this patch does protect the intended race in dup_mm() vs
+>> unuse_mm(), it adds value.
+> This also seems to add values for OOM-reaped processes to avoid a
+> useless unuse(), in case we aren’t skipping this mm right now. I’m
+> not sure if we’ve been skipping OOM-reaped processes elsewhere.
 > 
-> It should be solved by the following commit:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/axboe/linux-block.git/commit/?h=for-6.18/block&id=ba28afbd9eff2a6370f23ef4e6a036ab0cfda409
-> 
-> Thanks,
-> 
-Oh, I hadn’t noticed this message before sending my previous email.
-It’s quite possible that this could address the observed symptom, though 
-I didn’t see any traces of nr_request being modified in the provided 
-dmesg.txt. Nonetheless, this change could be a potential fix and may be
-worth trying out in a custom kernel.
+I don't see any explicit flags that tells the process is already 
+oom-reaped/under it. There is MMF_OOM_REAP_QUEUED, but this doesn't tell 
+if it is already reaped.
+
+If the unnecessary calls to unuse_vma() is really of a concern, then 
+check the MMF_UNSTABLE while traversing VMA may be a solution but this 
+looks ugly.
+
+> Hi Charan, do you have any observations on this? If an additional value is
+> added, could we record it in the changelog? Otherwise, can we add some
+> description in the changelog to address Chris’ concern?
+I do see that Chris ask can go as completely different change as the 
+mentioned problem exist even before this change, please CMIW.
 
 Thanks,
---Nilay
-
+Charan
 
