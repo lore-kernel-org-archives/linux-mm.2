@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAAF3CAC5B5
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 14:51:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFA5BCCA468
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Sep 2025 14:51:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13C958E0011; Sun, 28 Sep 2025 10:51:37 -0400 (EDT)
+	id 2C38C8E0012; Sun, 28 Sep 2025 10:51:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1148B8E0001; Sun, 28 Sep 2025 10:51:37 -0400 (EDT)
+	id 29AE08E0001; Sun, 28 Sep 2025 10:51:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02A6C8E0011; Sun, 28 Sep 2025 10:51:36 -0400 (EDT)
+	id 1D83F8E0012; Sun, 28 Sep 2025 10:51:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E65378E0001
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 10:51:36 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AE85D1A0129
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 14:51:36 +0000 (UTC)
-X-FDA: 83938947792.29.2710000
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 09AC1C0002
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 14:51:34 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="UBRwus1/";
-	spf=pass (imf10.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0ED428E0001
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 10:51:40 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DB0F01154D7
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 14:51:39 +0000 (UTC)
+X-FDA: 83938947918.23.8109041
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 790F6A0005
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 14:51:38 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Q1BG/dW3";
+	spf=pass (imf15.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759071095;
+	s=arc-20220608; t=1759071098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a/q/puD8z9+rPZ0inzplpCRfxORdYIOwWjZSQ2//C4w=;
-	b=mG0LFSQimIB4wZfbhXX0KuOCVWNXLA4JrqRkw/d5C4HeizvHzdD1w0uLSzkqSgSRu1IP4W
-	hh4HedeiHqfWFijBMXrHT5K4D5eYGcWIk+2Lxx9Bwu9eOw/10ohEGo9tDi8k/jgW35w9TP
-	uzKGAXJWEP3Q8hc76qZq75TXgFjZ8v4=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="UBRwus1/";
-	spf=pass (imf10.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759071095; a=rsa-sha256;
+	bh=tA+pURzqrNEZhUDHHPxAYRzq93MCO5mLdmdOPxsOTvo=;
+	b=QV1EgGZEiJchJ0AtFCxQzcp4Ui+wldQDyZ5WOQSbbN8X8ftsGRfB6B0DvgR1f4ETD/zIWW
+	Q6s6G9J3f3mDgZvUQbWofahEkcdjV378AGT5mh5ydAwPEKdPSKW8t17SQJrmxrrTziSMJe
+	yEGBIZbJ4p6FUATyKDhaKJ/4UNDRI1o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759071098; a=rsa-sha256;
 	cv=none;
-	b=QVneXAAEAn5G13O21g5CZT2lWrYdaQbyYmWb3TJV8/KMi9KLwIEMerq72RoFDe5+HnCv+H
-	D9N7CudkZCwCEl4U2q8hRm9eyMVIM+paKWeBO+tz1AghY3gc9+4VHg0FG5rK3AQ+Zf3n5A
-	+7fnvNYdqdjn2/DtUTJTAxhYKye234A=
+	b=JWi0OVnUz/alIaeEM3z08XAkqr15yLN2kq49Mn6kqgeT/bBlwfS1u/m9AfcDqNXQzyQdxl
+	UmFZX6v6n8va/QKoMImpkuhfYmQJc8xqNZN/pGMuF0O0N9cChvW/7x31XYVJ9X144Iu5S9
+	5BbfUHcGeXhKp2/tyEzG+YCUsM2bgbw=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Q1BG/dW3";
+	spf=pass (imf15.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 21C5443C1C;
-	Sun, 28 Sep 2025 14:51:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 891ADC4CEF5;
-	Sun, 28 Sep 2025 14:51:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E64B86218A;
+	Sun, 28 Sep 2025 14:51:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 118CEC4CEF0;
+	Sun, 28 Sep 2025 14:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759071094;
-	bh=i2Y3vHfToIEFk8anTKMUMMKTS0c/P1FR6mu/WmchJQI=;
+	s=k20201202; t=1759071097;
+	bh=isdw6kZ8FFhWQVC3bDpjETrpal4zAOBPlSaTyAj5wzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UBRwus1/5hOpa4vk81wm9MxjKf8WAb0q0h9O54wziTSKlVqUj/C3OYZVG2SnRm8i3
-	 QMj5RJDrypo6saaeQTrEKQDZ85SrFP1dONGmajlOskmu2aLJ3Nqlro0gq5rUwcHYmr
-	 jD+sJOvqWTiJ/k9/7ySAgVoKzDQL8bfTsckPJa4Ue4JshqoiuqiZKCBv+PkWtu3dPh
-	 rNkgNK8Z/J0h/HLqk5SRUEKLzk1PVjgE5dI/8c/cGqgzF3HxzXGYLDF5KIzIvpeTQD
-	 ubLhjVgqeo+fXJTdZ30f0d8Dg70rXL/8YrhUa0zRePoFNA+tdy1/t0gNUSBIWxS+3M
-	 QCyP5jWuTAyig==
+	b=Q1BG/dW3MMEpKiBoxWpHfJqeMARlzNFZH44gJGE3WyaIqYUkpbkLrHOlNjgBk8l3B
+	 K79RMwWDzKY9rwjxPRcXy+IWOatSDlm0WNCw9SnR+YljlPfMOgczoa5nlI7oUgi7Sj
+	 UQAoXR3lLhNAd0YivYU3cm4zqXVUpMn2Y5wPoKBwqj8Pvyo9MmIssqLjzYZbl2Wzp4
+	 DMImFauKBxnBz2yeyVgCUoUHvRQWeQqZ5Mfg1IpzBlT0lABuFhG+ttMofLklUfjaoB
+	 mOqn1C7RPLvoON1fae2FqTHSG3ZYzdIqtmvqYciR2Ym3gUFFXWQQfLhFTObif1nKU/
+	 kgGPoeD+32EDg==
 From: Leon Romanovsky <leon@kernel.org>
 To: Alex Williamson <alex.williamson@redhat.com>
 Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
@@ -86,22 +86,22 @@ Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
 	Robin Murphy <robin.murphy@arm.com>,
 	Sumit Semwal <sumit.semwal@linaro.org>,
 	Will Deacon <will@kernel.org>
-Subject: [PATCH v4 09/10] vfio/pci: Share the core device pointer while invoking feature functions
-Date: Sun, 28 Sep 2025 17:50:19 +0300
-Message-ID: <25c45db4338d9d51294cd0b6d1c4c2cc0e43966c.1759070796.git.leon@kernel.org>
+Subject: [PATCH v4 06/10] vfio: Export vfio device get and put registration helpers
+Date: Sun, 28 Sep 2025 17:50:16 +0300
+Message-ID: <40c2a8507c5314f5008e07f4632a7dce3faf69e4.1759070796.git.leon@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1759070796.git.leon@kernel.org>
 References: <cover.1759070796.git.leon@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 09AC1C0002
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 790F6A0005
+X-Stat-Signature: jdzt57tp6te63oj5zq61yb7xfuo4z17g
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: p4hmdntdry6r7fj7b8jjk1dwh6994twm
-X-HE-Tag: 1759071094-904424
-X-HE-Meta: U2FsdGVkX19MyLkDRKlds4zkhgXZifl1uBRW+AizOvkO/qze+ay35Dwh+ODk0/QDnSLOev2n7sO94t3jEOORr1HGN/s/0RLDuTmMMVWYeadkJMXnfKlBDZOeNkbg9nAKKzjCN2w9vrt9ooSlSrbgMn6PpN0iDBXQYa8ae0Vs6rxT/tI+UihhyvRCWKz7jqTw9oBuTwmMS51xOMh3tZMmrA0NSjF7UBgQvNb5LjaVqrwXrJmqRwn4xoe9yX3FB66PX2ooV5isuDwF4ozBTbtwFh8tbBcCk8xqDolluwpzIOnGjsFcXagVicS+Ri5h1/bGoGK0iMa2nZk1pqCSyCTxdwSywWxKqVnY8zLP34MEy4GhsJc1rhWTmXmAScrWkwnv7cpApuWDVYGVfCTJX0mEkVxQ9lSK1qt0OKmxHAIS9QBGXp9C2bsB/IwCXpj3h4Kr3hs7maa+Mc9NvWiQ8qgARzWOQVLlWHaQdPwKx33aYbmHQFCAqSyiG/zgBUi9NOdjawQL9C6N6fzgIVgooDRNZXuMhWIHyyiG0yhd/nHn/t8CemyVhICbxxSDA+svg32vhE7cjFJIb0Bet/JYGA2de6n0o2YTtKu8cxp48DsYxSjMpKaZnfKHrQ+o88KIhb64uv3mlyAzJhOmNWg1PND3UVwRZ5n+KAQYMpkpCj5m4UlQkVyu70qlzizkYb3NjN5+X+T6rNfwbtYs+O59giw669BdYIibtX20XQz2NFuqGrBvfgBHe1Co2o+AdBnlyyuqeo5oSkHMxArMaoy3Imy85Gz7ZI6PIEg6gZTx+wqFJ9cX6yn0N/9IvJu+5UaPnkCZFQezvPRSBFERTT5o0KwZxX04f5iIDNmJAWCQBF5HnqXtN3HA0wqPUwVnjKqjgpxOvbZVPtJP+VzdUgYchNq6cciOxZTFXhEYZ77dtY/3GLr69Auv5O/eOjpy7KB7UQ5zxU/VJnU5eFQUX0xy+qO
- kXzOKBaK
- gAt8K408rKt5yUm2pA2QBls/8gTTdPjg9YwCyLIrEuVwAtVak7Sfx3DbGCHsm+LHSg+haDTBFMdj6VhQV/woOdahRCRBcqUAQNpxwGAxrt6bmf7ZgM02Qm8DDfC2IcrlGBKWf4gYgrkoKd54B46X5rAWiEZh0xWt5O+H9jzq+v6pGgpeP/emLO1PzcM5wS2mtrftyZyY7I7K5YBRkFrTmG9adnTZ47U/5nPY+dViZgzvrf0UyWfzuB2l3htGFtSqshGrA
+X-HE-Tag: 1759071098-238842
+X-HE-Meta: U2FsdGVkX18yHnc7OKeV7otpURlGXPOZlvo10X8pzXLTJBt+GJb00dHQrE4D4nKBe+9uBtfcUTkugWb1/d5E1TN54/CoxWw9FzUJIOtPCeBQ4R+xrVFVzWrNoyTzDaqXc7QeCap5srKAqBZmk8bjn3oa/s2QCmn+Nt9av4c7GD0EZ+8KpU7CQGtOJ3K6fv2xHsFbhPzoQuZEK/Pg8D1hPDRaQGYmQZJVLYOOR5hl0H4hqd7K1FHmqU2yO4bPsVQ7r+j97KxTWEDfIqHgBJIgn5M0fnka3nLhLb+Cc7df2vpkYxcXCIT0bFO7oW8rB7ytN66Enf5UZmemm9Csk+x4w4sRcwej2Xs+7mitvVYzkImF626e3bOzeQ9Kfg+vHf0MfXmoWnRWI4p3yvdfWbPUmDhaCm+WuvwrYyxxtwX4ikmXlfhhGomtra9Aln3IHbTXK3zOYNaJQBYtEWE4e3k1SFhsCCbOiI2Zod1yLEWlCbKxbIjHLYM6GzAXzxiJFWGvCf7hAHLVHh6xTzTpuf/zr49ZFG6yn3yt4x+keiFdo+ikvEervZpNuqXT7E0/5XMuKfmPtFruv34P3aV5ry3R1jBC4DpPLXrMzdMqe+dMO2POxz2FZ3H5zJOZgktRulPTRjI0pM68Wf5Mlm9hHJQW3ZOVgo7jKZuFNIZc+QbP2cgjQBRQKW0YDm7U2qUrOmpQdF6sb4cB5pKWOZVBn+Nor0wEFKsT9CGPW4Qzmn2OE8M9ctc9NnyDvA0CaptT9LHMu0DP2cIyFDAWSw8QP59vOPmEEGdsdw6+sCFLL69RHukd2ux4bWhT2UyQKi0TqOO2SLhu6OjNm2Cd4PENTxkMfPpUzr2G/ByCCTSaQocM0fVRVmgh9rAunwUGhkrQbtpZ1SEAZBF/IXesBlJWJcBorwGxTawVQBtdbjSs8nmLZTFxIMWqdkikOluU5rrrZ+fOSdZfxvLl4rB5UWdz5jA
+ Pb/afXcq
+ HU5x7cEiG10OQOMdTnScrgNIw5R3H2c5Mq7mZgg1qAAarmAk17G4/I05/Xikf3xAvgeTMxfCTCR3C9BP5CD5yjCIDsd/Pk2/DcD0gHUBIng5D9DfqZw9U2F5KiA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,100 +112,48 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Vivek Kasireddy <vivek.kasireddy@intel.com>
 
-There is no need to share the main device pointer (struct vfio_device *)
-with all the feature functions as they only need the core device
-pointer. Therefore, extract the core device pointer once in the
-caller (vfio_pci_core_ioctl_feature) and share it instead.
+These helpers are useful for managing additional references taken
+on the device from other associated VFIO modules.
 
+Original-patch-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- drivers/vfio/pci/vfio_pci_core.c | 30 +++++++++++++-----------------
- 1 file changed, 13 insertions(+), 17 deletions(-)
+ drivers/vfio/vfio_main.c | 2 ++
+ include/linux/vfio.h     | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 608af135308e..0c39368280d7 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -302,11 +302,9 @@ static int vfio_pci_runtime_pm_entry(struct vfio_pci_core_device *vdev,
- 	return 0;
+diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+index 5046cae05222..2f0dcec67ffe 100644
+--- a/drivers/vfio/vfio_main.c
++++ b/drivers/vfio/vfio_main.c
+@@ -171,11 +171,13 @@ void vfio_device_put_registration(struct vfio_device *device)
+ 	if (refcount_dec_and_test(&device->refcount))
+ 		complete(&device->comp);
  }
++EXPORT_SYMBOL_GPL(vfio_device_put_registration);
  
--static int vfio_pci_core_pm_entry(struct vfio_device *device, u32 flags,
-+static int vfio_pci_core_pm_entry(struct vfio_pci_core_device *vdev, u32 flags,
- 				  void __user *arg, size_t argsz)
+ bool vfio_device_try_get_registration(struct vfio_device *device)
  {
--	struct vfio_pci_core_device *vdev =
--		container_of(device, struct vfio_pci_core_device, vdev);
- 	int ret;
- 
- 	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SET, 0);
-@@ -323,12 +321,10 @@ static int vfio_pci_core_pm_entry(struct vfio_device *device, u32 flags,
+ 	return refcount_inc_not_zero(&device->refcount);
  }
++EXPORT_SYMBOL_GPL(vfio_device_try_get_registration);
  
- static int vfio_pci_core_pm_entry_with_wakeup(
--	struct vfio_device *device, u32 flags,
-+	struct vfio_pci_core_device *vdev, u32 flags,
- 	struct vfio_device_low_power_entry_with_wakeup __user *arg,
- 	size_t argsz)
- {
--	struct vfio_pci_core_device *vdev =
--		container_of(device, struct vfio_pci_core_device, vdev);
- 	struct vfio_device_low_power_entry_with_wakeup entry;
- 	struct eventfd_ctx *efdctx;
- 	int ret;
-@@ -379,11 +375,9 @@ static void vfio_pci_runtime_pm_exit(struct vfio_pci_core_device *vdev)
- 	up_write(&vdev->memory_lock);
- }
+ /*
+  * VFIO driver API
+diff --git a/include/linux/vfio.h b/include/linux/vfio.h
+index eb563f538dee..217ba4ef1752 100644
+--- a/include/linux/vfio.h
++++ b/include/linux/vfio.h
+@@ -297,6 +297,8 @@ static inline void vfio_put_device(struct vfio_device *device)
+ int vfio_register_group_dev(struct vfio_device *device);
+ int vfio_register_emulated_iommu_dev(struct vfio_device *device);
+ void vfio_unregister_group_dev(struct vfio_device *device);
++bool vfio_device_try_get_registration(struct vfio_device *device);
++void vfio_device_put_registration(struct vfio_device *device);
  
--static int vfio_pci_core_pm_exit(struct vfio_device *device, u32 flags,
-+static int vfio_pci_core_pm_exit(struct vfio_pci_core_device *vdev, u32 flags,
- 				 void __user *arg, size_t argsz)
- {
--	struct vfio_pci_core_device *vdev =
--		container_of(device, struct vfio_pci_core_device, vdev);
- 	int ret;
- 
- 	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SET, 0);
-@@ -1476,11 +1470,10 @@ long vfio_pci_core_ioctl(struct vfio_device *core_vdev, unsigned int cmd,
- }
- EXPORT_SYMBOL_GPL(vfio_pci_core_ioctl);
- 
--static int vfio_pci_core_feature_token(struct vfio_device *device, u32 flags,
--				       uuid_t __user *arg, size_t argsz)
-+static int vfio_pci_core_feature_token(struct vfio_pci_core_device *vdev,
-+				       u32 flags, uuid_t __user *arg,
-+				       size_t argsz)
- {
--	struct vfio_pci_core_device *vdev =
--		container_of(device, struct vfio_pci_core_device, vdev);
- 	uuid_t uuid;
- 	int ret;
- 
-@@ -1507,16 +1500,19 @@ static int vfio_pci_core_feature_token(struct vfio_device *device, u32 flags,
- int vfio_pci_core_ioctl_feature(struct vfio_device *device, u32 flags,
- 				void __user *arg, size_t argsz)
- {
-+	struct vfio_pci_core_device *vdev =
-+		container_of(device, struct vfio_pci_core_device, vdev);
-+
- 	switch (flags & VFIO_DEVICE_FEATURE_MASK) {
- 	case VFIO_DEVICE_FEATURE_LOW_POWER_ENTRY:
--		return vfio_pci_core_pm_entry(device, flags, arg, argsz);
-+		return vfio_pci_core_pm_entry(vdev, flags, arg, argsz);
- 	case VFIO_DEVICE_FEATURE_LOW_POWER_ENTRY_WITH_WAKEUP:
--		return vfio_pci_core_pm_entry_with_wakeup(device, flags,
-+		return vfio_pci_core_pm_entry_with_wakeup(vdev, flags,
- 							  arg, argsz);
- 	case VFIO_DEVICE_FEATURE_LOW_POWER_EXIT:
--		return vfio_pci_core_pm_exit(device, flags, arg, argsz);
-+		return vfio_pci_core_pm_exit(vdev, flags, arg, argsz);
- 	case VFIO_DEVICE_FEATURE_PCI_VF_TOKEN:
--		return vfio_pci_core_feature_token(device, flags, arg, argsz);
-+		return vfio_pci_core_feature_token(vdev, flags, arg, argsz);
- 	default:
- 		return -ENOTTY;
- 	}
+ int vfio_assign_device_set(struct vfio_device *device, void *set_id);
+ unsigned int vfio_device_set_open_count(struct vfio_device_set *dev_set);
 -- 
 2.51.0
 
