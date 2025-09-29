@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC45FCAC5BC
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 01:05:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E60C4CAC5B5
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 01:05:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F02F8E0021; Sun, 28 Sep 2025 21:04:52 -0400 (EDT)
+	id E11598E0022; Sun, 28 Sep 2025 21:04:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DD7B8E0006; Sun, 28 Sep 2025 21:04:52 -0400 (EDT)
+	id D50628E0006; Sun, 28 Sep 2025 21:04:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A50C8E0021; Sun, 28 Sep 2025 21:04:51 -0400 (EDT)
+	id B7A9A8E0022; Sun, 28 Sep 2025 21:04:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D091A8E0006
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 21:04:51 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AB567C01FD
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C8AF8E0006
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 21:04:53 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 67ACB57688
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 01:04:53 +0000 (UTC)
+X-FDA: 83940493266.12.0C52B3B
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 86E542000C
 	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 01:04:51 +0000 (UTC)
-X-FDA: 83940493182.25.0BAA5A0
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E54CF2000B
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 01:04:49 +0000 (UTC)
 Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=RxxFXmVk;
-	spf=pass (imf13.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=iFQfpr0B;
+	spf=pass (imf13.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759107889;
+	s=arc-20220608; t=1759107891;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RJ45Fu6tAabGvmgrZwCPQgADOSMlHUCADrVKHKVQoCI=;
-	b=tmlS5cYuBroZNpRe5oRK5cyhRrY7+rGeGr2pbrHHyyk0WP4ifRChoP6yzS2buVLv0hodgH
-	4UHnUGptjrwyP4lrWKvuMPCz/HfYIST2u3el2CXBMNXhAw5l6mxNmv7cMY/9hIgcXwOqM0
-	ooIP+k9ROD9sWqM1ifA7YtU4TgI3NMQ=
+	bh=qnDErCVzLoc/L71Odr4fuNY8x0m/A8ysS1VGAup5oYo=;
+	b=7DAHH2rC47sei5qheACAp3cPEZPmpjqtBCrcYjnvtWalBw8WGMydD3hVzhT/xW+oU+gEcI
+	8eeBiA+5DScd6zPohW7S8z4OAoEorGLey+GaAnPl5N1VOKJDzmZz1U1+W8K/pNxaXFUXCn
+	ZE+dT21t0saYYCBUvMkXnnyaU5UntXA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759107891; a=rsa-sha256;
+	cv=none;
+	b=mEZGL3FtH+SI0T9ZbpxTV1DpHKv45QEU5iiY+rWZE0cDKcuoG+zEH3+jO/GkuWv3CKyOX9
+	+/zhqvS3WlQun1q0t/JmguQkH9rkhBR94wuLmTR9/wlEFsnUEga2o2w1fcon+m7+kbHkVZ
+	aNaLw4SkqAoskBOk9mCdNMAzuGVkLsY=
 ARC-Authentication-Results: i=1;
 	imf13.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=RxxFXmVk;
-	spf=pass (imf13.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=iFQfpr0B;
+	spf=pass (imf13.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759107889; a=rsa-sha256;
-	cv=none;
-	b=TtSHmcH6QYJGLh5NvYyoxGpdOe4QPBnZCxDjATZDzQMWTZIrMvSp66ysl+mcehWL7lsKVh
-	D/NP4Z4SSSn3C7ISEAcPezEvpVngOopDVLfFmCZlqLaSmNqCKEc/Dg7GACrIGilhigkkoL
-	0NECPsFDxFnWwKjozNFJmIh4sfcREYQ=
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4db385e046dso34199651cf.0
-        for <linux-mm@kvack.org>; Sun, 28 Sep 2025 18:04:49 -0700 (PDT)
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4e06163d9e9so7334981cf.3
+        for <linux-mm@kvack.org>; Sun, 28 Sep 2025 18:04:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1759107889; x=1759712689; darn=kvack.org;
+        d=soleen.com; s=google; t=1759107890; x=1759712690; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=RJ45Fu6tAabGvmgrZwCPQgADOSMlHUCADrVKHKVQoCI=;
-        b=RxxFXmVkpDq0qAhRQ8tGDdoPnUdHh6VJr88H37YPqayZ3eLRrT6nPycxtEkXp8tVQJ
-         yZsdQTCX1L7DwlIeFfVd13TbvTXEsYJ0AY/kAUVKOeMWHoir2Obj17u/THW6R0PjfH2p
-         B4+oMSNF4l4SwkHudx+B+bL1+tXBdxHNH7+A9YNU8ym1CAFp1XQ8f2OU6UoWVhoin6hM
-         RiVhDXOH6O3GV0gh/Nbx2mOPKsqQ0s0QlBhZifwZy8CB6ZuBdmYomvt3XBCLWkNoylCy
-         gOJ5GmRrvRP4qgFoAThEBSTMoWaKl7n7B1V7oYQFAY6ZBKJPfKqrXc4NdhauRYQI5IG6
-         qBiA==
+        bh=qnDErCVzLoc/L71Odr4fuNY8x0m/A8ysS1VGAup5oYo=;
+        b=iFQfpr0BxaQ8HwbLvs++1OI9yMLahTPqnxnklnX0+YdAINje5ZBin6dwiOkFtt6Y8O
+         or2wUtBRSnTAQySlfltq/4WpKKqxhbVsR2lEnqL3QvkiLUrDzRHXfo+fcLMJSUtYUV2u
+         /8S9juWzF+BLpBsP5n1berhW/8vuYTOHUx9adHfrEHBlafuEkBAOZzs1Kf0Vr4XbU4lF
+         4Ga6IoQarJKprZ33hqd4mLVyS7/IpcljLCi2MOiFHcE0EZpNMg9yTtdTP8bAf0G2fqci
+         ZTHztNhhsoP96HzJfw+0NLZEpQHxUTasY1M7GPXzmanhrAkjWuTS4MovDnT1zmZsZyrG
+         pqmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759107889; x=1759712689;
+        d=1e100.net; s=20230601; t=1759107891; x=1759712691;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=RJ45Fu6tAabGvmgrZwCPQgADOSMlHUCADrVKHKVQoCI=;
-        b=fgbxoixnt+5LfBiBTv3JMrQiPPBQ+qy4vhAo5V4f+EIMYiYu093XjQ8l3GJZvktKPB
-         S7qzShghfbZJgz2l9g5Nxf/t7QWdFFfYBCvJnU1X8ishd555CSnINaU1Iyf+RMkkSzED
-         QfYLr2j+8NEvhCSYSTYNpbRGLD9sfCK/vW5d9IP9fWmkdSY4+wyfY68LR3fIq+Mx/d/K
-         0MoJiJyJyC+2TeImjj/5ViHgmpHaFKoMAoNf2Zm/RX8O62lbmoWbwrIYLzQG+ZPj3II3
-         GCSKJi+ad9JYc56u3iRtA28jxBRHdgZRIVnorPFXPu6CgDxEwBzbtW86EE6Lqx10jGJM
-         fFsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU5XlsLhXEBvL8c5Lv67Q3JTEHT/YxSOHzUs2WukmTaVUyugoAXLdClaDjcqJiVi56XYW/UaEs4WQ==@kvack.org
-X-Gm-Message-State: AOJu0YyIko6GzZkor0orFWiDD/Do5ctUB7CFEBbdXm8J85+9lqLfHQLh
-	3Uzh0k/OCDtFmht5MoPQO0X1yKiBAIBp2ZmONJU07i61ngxyJeo3Tgi7nERuOsBlE8M=
-X-Gm-Gg: ASbGnctz1cthd+z6YPjlAhL937eTlmu8BvAZbpAXrFndG9QAH5VmkEwo+FlusfIFYwb
-	gaquTroKG3/1FyYHsf4PAXiekwANoX8cTFgySOh4qJ3iOf5ati5vHZ6AheJ4/zStaVyIJrxxcIJ
-	mFwa1lrMFBos61tlPkA3Ot1NFOO/GV918H05PxLQR17tLoB8zqM+kOT71efvlt7wlvEb0CTbFot
-	VLed6c3Aatjk3qJI/DjN9KugnnqSHvH7EFpyCZZ+NNsKRFRyGvdpjfnqNN6H/k4B8pjqxv+zgMr
-	9Tj0YV5n2lANdANo5JBlgGqo0koFMqzLT6DiDD4uC/CK1d+kqo3QIEllJP7M0dLZcfIs+3DZ+Ol
-	sqiPJZoJamZ2BtlYxRzqcRhhInXDui4U+K9GHa6Ges1w+IfK4EvoOrrV0v1XMrKWRdgFZipdjKC
-	iJmjaeETBbXY6NnqFlPA==
-X-Google-Smtp-Source: AGHT+IHY12mDEvSS4c6BYDbWBSp3AujLQ3K0TRMk1C+DYz/5jFy/PbxR43Ax3YllToE+repLGKruxQ==
-X-Received: by 2002:a05:622a:5987:b0:4d9:5efc:2dce with SMTP id d75a77b69052e-4da47827704mr211866571cf.11.1759107888907;
-        Sun, 28 Sep 2025 18:04:48 -0700 (PDT)
+        bh=qnDErCVzLoc/L71Odr4fuNY8x0m/A8ysS1VGAup5oYo=;
+        b=vZUWh3tfZHh7yk+0yje6oZ61XgXpH96VvRB9NtTOgFGgRw/99eHo8qd1ukO8o8NvFo
+         Rhc3aglfARiOEDXMeY0+1bDIRyQIASHh6ye7qXq2bc54x1eI14qOgQH0rtCDNe3Nnq2l
+         468qPbJQqHztgOp9hz3m0j71fyuxzZLS4SbzTtnmmzNyQf23FjGCtS9d50yDjf1UJLpO
+         dqnaMQKiwO6k0SCKGFDa7OwhB3a5GTxj1YaadrGUeSPPjip2Qmfyor4Rly0Ub7001zTc
+         FyCO2/dEKR6HeeOYhKrTKV+oTdELtaX1jHipkyE+7heMdWr1O6QieegfyzdGO3ViBCQo
+         PKtw==
+X-Forwarded-Encrypted: i=1; AJvYcCWkhYL4u/YDbbSK5hA9icapRycr0IALacxZz6Tiue6d06au89nthptGcxpQsyguLx7h8tX+jhoigg==@kvack.org
+X-Gm-Message-State: AOJu0YzaqUzBfjCzE5O3Nk1m+sQqakpPNIEqipVcy5YYiGpiNvxt9V3m
+	4+kerr6Zg5H/xG1G3kD2P0me32Q5djHiUD2jy5i883ffPEyrSGXnuL088dMqxUfvXk0=
+X-Gm-Gg: ASbGncv5qK4WZTPKtOWdm4CJP0SfUqCYykPs3y4trhNMeFq1u7T9Vj3Vo6O41s2nfJy
+	TbDiwvkDV3AXvGFXgyQpntbaHuousIFSd89iTz0L4CnaXKIzpXqFDpcex4guGJqWLf7TS9n39ci
+	CPXuIJ+STmocSqmuo2Kj1um3MTe8skaC9cap2eMte8KXq7bRG1KXAsrUkIEx9HzntkB92AoMfcv
+	Ddfp4wqUkdlMque1F+mQNhAH8LKQ8kMwUNrxhHrUrseqIkdHYBbLfDIEuKLaASJgeeJE0PRw4Pq
+	hwh163JdOf4Z647Z2rbaKO5YZkUSpdkwQuPSucJpDoNkf4pvaYYsfxXQb6C6VFdl8RYUCrVim7N
+	i22rgAZup/G1tmONofxsSPKaADYO9VOSSbzfX7zdpN3VN8oanMoCY0s91teb1JjoUS8eqTAhT2B
+	ggYkqwrMM=
+X-Google-Smtp-Source: AGHT+IGxz4bz/Ulq2oqYfhk12cyeqtFbLsr8uDXkWRvJE5REk0ihSw3RWoQtagO38Ya8siWyMamt7g==
+X-Received: by 2002:ac8:7d8e:0:b0:4d0:7fc9:5c6 with SMTP id d75a77b69052e-4da4b42cbfcmr192806211cf.50.1759107890439;
+        Sun, 28 Sep 2025 18:04:50 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (53.47.86.34.bc.googleusercontent.com. [34.86.47.53])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4db0c0fbe63sm64561521cf.23.2025.09.28.18.04.47
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4db0c0fbe63sm64561521cf.23.2025.09.28.18.04.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Sep 2025 18:04:48 -0700 (PDT)
+        Sun, 28 Sep 2025 18:04:49 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: pratyush@kernel.org,
 	jasonmiu@google.com,
@@ -168,22 +168,22 @@ To: pratyush@kernel.org,
 	skhawaja@google.com,
 	chrisl@kernel.org,
 	steven.sistare@oracle.com
-Subject: [PATCH v4 25/30] docs: add documentation for memfd preservation via LUO
-Date: Mon, 29 Sep 2025 01:03:16 +0000
-Message-ID: <20250929010321.3462457-26-pasha.tatashin@soleen.com>
+Subject: [PATCH v4 26/30] selftests/liveupdate: Add multi-kexec session lifecycle test
+Date: Mon, 29 Sep 2025 01:03:17 +0000
+Message-ID: <20250929010321.3462457-27-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.51.0.536.g15c5d4f767-goog
 In-Reply-To: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
 References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E54CF2000B
-X-Stat-Signature: zmdd7cpj9o7tw438b9fcqs7z9u8jygni
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 86E542000C
+X-Stat-Signature: yu7nas7gytzccm4539mw8jgrq3dt4k8o
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1759107889-593905
-X-HE-Meta: U2FsdGVkX1+Bnkndu+PHsSPrESVVxhwOmaK6/HULtgUtp59mJPGJp4oZeG5Gs+KmT3qrXecx8h3/I5HVNy30825NsX3MJRNN/x6HyQNAOg9qZn2SY2rJPNwgkJscO5RXO/mE9W8oj5vKCPeavpwCYreajdZ5X94B/94jABama0W7QipdT7wqwaSb+mzI52rbzwWWclPamxMGXCh6Wa6b/9ihU6Z2j+d+tThoTCY5kx5R+kOdWECewGYNqf2WtxPTKVU+rIQH0wS1CTTYOjkll50PKpGuDp0bWeudSTam0W+cNkStO9+fcEmeL8XU5sPdjAR0bt4TOet+lydAhO1QMLQrOGiMigYN5JIL7SqTgW63qLNtnl9eLfquw0BE0VptNuuaqZle9yvbcv5J9lFpZ77/Swokz5tYKpb7AtSAV3ZKRITMMoLpHJsHsM85ndq6ZVK0/C2r8k0jdRFXZkraF86rxmrP2KS6QkOmsgkqaUUp+kE0078K4FrPMitjq1nUEtgQNv4lgaEyt/+/GRe3wn/+W0wg7u1avT+azes/w2beiNYgUVtHmxj9d9Z9/tPZS0C4sxuDt2h9w0/Xf8XZdby8o54Dqxh0h9lqAGmzguskPVFqoA6czfvoicSCr0r0o8EogJOERzRg1ORbEj1IsuumAil59VQbx9NhMSxVpMDCLBj6v7ygokGcU+VtI6vZEtOlEf4X4hqjey7QFI5AzdX+r+s45GSkhZfIeEqxlyHSYLj6M5cIWBgPx732/vgKPWiRmwNhnkjmxHcsT6UR/f4wgb4NWzCP4/7GbvHTPa3A+5tCgoF/dgTTzctRVQYe+3zqW2joMglYsMwN5VM6yoVKrITblcFuzg0aQOvp8wPMb3nksk7JOG+FyUcB2OVtb4YGGGP0s1Ctl3iRq75TmPHUtZ0atfscCpDkpGMsLKSdyFKzh9xUx71llto5KFaKSboEFnJ/DWtVU3QQ+kV
- nNBIgiOW
- P1MtneH1bYY06X0zPwtSRqTyo8jlRwxMTY/xGCSE6/NgjfCvcTRIJJVPCUMlO00I0EBqCIMe8ilGVCBaDXQyvOjeYfSlIC5E4c8uD8rwGl8J6INInWr8okm4R2J/uKwWk+1QVFJWdxWVklh+0bz2RMZZTbUkbr+Ise9XN6yzaJdSKr00RFV/M4EhsrDVUZyoKnSU2mL9P3rpnFi0DmFrJaaWojAPmDwsufLwGizoRBdTxAI+R1xEBdcworyWdGsw60aEa9U8fAnfVZDxvR3taDF4Ch6Ah/JanASRfNO3l3N9JEttAS8l+LtZA/SilWduYTKJmGV8W1HoNxXvb6QYs52Hd60RS39CIviBYWoNPMRde8XyQcLFWc6u+W5Qu/gLOjTRq
+X-HE-Tag: 1759107891-338338
+X-HE-Meta: U2FsdGVkX1+s6GHk55zQPlbaL8l/41j2lSW94VrcdSsvLeKeLToFOxelpbL3lDJ84w4xgoJLNqC9GrbsG5/IDj7JLIiRvaxczYJnkkIgfqzw1+bY9AC2W041lDWil28pyxkFB2UtOKBj8dAx3O92OzHYmAuyDOFAgarDFcEFHgusPD2wlXx+Fb3J18o1GOGuTylPi/nlz5MjGSj09tNm3hH5AMLTSCCh29oR2kwx6Ifb3nsreLHXSzVueS3kN6LvvmElc2OyttVa7vVQJngzlHdr4iNWp1ZfVH2bk5CxL3nwBGzr5W2/sszSDTEK3dJkpqY8/pyfKaYQtOzJ4FMauCHBJlmt3/A+hXnyZyILMjUOvLrskZZ3FeaCFptlppYnJ1S2TcgkY5bD3i3412cupS5LlvstPRY6gR2VRRiqtZQxmfA/49RBi29NihixSgxc+LT0XPki06+Vvnd8Na379cdqSnLKgzyabpojRFOL/oYV1atu3cogVff81I0PiP3JepNr5BVi1rkkyMjHK70p9q7s0pigczf1+WaYLHOzYUYl+AY6b6da0pxc5X2yeW72/vivvZjSa8Sl4eBFxDDpM15hDIAeHpYLJMWnSd6kD59xSKqRneqB68DAJjAhEFRt0gLGp1dRYGA60Vh8hyxGHG26UM55XKUJZQWLVg6pDaoRFj35l/kDgKVR1Z104FbuQi7RmdoRgb6jxW8khqQgA3omEDHM1PQGhnhck/ADL8jvZ/1nAT5bkKSHgpUDXU5/8/FhwbnKKchD/Ve9zAU1PHo3Gi1472msPMs890l39z+wU0DisvWtg07fWvkJ3zAcHN1S/EbWxs1FxXmVzD07dllBALxVXSxx+eE/E4M9bjghD3nuno7CLLUiLXnuhZ8s6G4huBLnDR9Y14ltSKIDc9nTwXTMBXC8i7amkAF758I/dNFb2t0by04kP+0ditw25ny1pdYG/HHeUDLwcuU
+ upIHUf0o
+ U6wwWwBZPMjeyJyV1XmYMG3pgerAo3KjK5mHo2Tr2cqfZJoNgB1voqS/1NtvMyRlSHK7CcccykvZcP8l7iE0hDu0YsVBa+X1BN9OiNtjpCIPWSK3VQADJ3L07gd0L1P4W2Zju/ATD7U/NImlr6IFfif5sEpUR+Ys3gArIrGSG+AOqdbRNxM/Ig1NDRmdEgGHmNoGhXNVUBr9oCVB0tROr718dEe7jii77dQCOE3braB5Wz/TV7ATYA9IIDxhscqY/gtF1e+DJLr+Jh3eiEzGP0fdW80Ule4HwKZ8+pMLlDCGc09FvHzJ08qrEW70ms9Zn3uZcsrGYrHbc4WW09paEJX99kLicXsforjnA35+TmYbh1t5hD87+psGhzrUJpHf0TXZGBnf4i+X8qEzeH6ZZBBcuRg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -192,209 +192,670 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Pratyush Yadav <ptyadav@amazon.de>
+Introduce multi-stage selftest, luo_multi_kexec, to validate the
+end-to-end lifecycle of Live Update Orchestrator sessions
+across multiple kexec reboots.
 
-Add the documentation under the "Preserving file descriptors" section of
-LUO's documentation. The doc describes the properties preserved,
-behaviour of the file under different LUO states, serialization format,
-and current limitations.
+The test operates in three stages, using a preserved memfd within a
+dedicated "state_session" to track its progress across reboots. This
+avoids reliance on filesystem flags and tests the core preservation
+mechanism itself.
 
-Signed-off-by: Pratyush Yadav <ptyadav@amazon.de>
+The test validates the following critical LUO functionalities:
+
+1. Initial Preservation (Stage 1 -> 2):
+- Creates multiple sessions (session-A, session-B, session-C) and
+  populates them with memfd files containing unique data.
+- Triggers a global LIVEUPDATE_PREPARE event and executes the first
+  kexec.
+
+2. Intermediate State Management (Stage 2 -> 3):
+- After the first reboot, it verifies that all sessions were correctly
+  preserved.
+- It then tests divergent session lifecycles:
+  - Session A: Is retrieved and explicitly finalized with a
+    per-session LIVEUPDATE_FINISH event. This validates that a finished
+    session is not carried over to the next kexec.
+  - Session B: Is retrieved but left open. This validates that an
+    active, retrieved session is correctly re-preserved during the next
+    global PREPARE.
+  - Session C: Is deliberately not retrieved. This validates that the
+    global LIVEUPDATE_FINISH event correctly identifies and cleans up
+    stale, unreclaimed sessions.
+- The state-tracking memfd is updated by un-preserving and re-preserving
+  it, testing in-place modification of a session's contents.
+- A global FINISH followed by a global PREPARE is triggered before the
+  second kexec.
+
+3. Final Verification (Stage 3):
+- After the second reboot, it confirms the final state:
+  - Asserts that session-B (the re-preserved session) and the updated
+    state session have survived.
+  - Asserts that session-A (explicitly finished) and session-C
+    (unreclaimed) were correctly cleaned up and no longer exist.
+
+Example output:
+
+root@debian-vm:~/liveupdate$ ./luo_multi_kexec
+LUO state is NORMAL. Starting Stage 1.
+[STAGE 1] Creating state file for next stage (2)...
+[STAGE 1] Setting up Sessions A, B, C for first kexec...
+  - Session 'session-A' created.
+  - Session 'session-B' created.
+  - Session 'session-C' created.
+[STAGE 1] Triggering global PREPARE...
+[STAGE 1] Executing kexec...
+<---- cut reboot messages ---->
+Debian GNU/Linux 12 debian-vm ttyS0
+
+debian-vm login: root (automatic login)
+
+root@debian-vm:~$ cd liveupdate/
+root@debian-vm:~/liveupdate$ ./luo_multi_kexec
+LUO state is UPDATED. Restoring state to determine stage...
+State file indicates we are entering Stage 2.
+[STAGE 2] Partially reclaiming and preparing for second kexec...
+  - Verifying session 'session-A'...
+    Success. All files verified.
+  - Verifying session 'session-B'...
+    Success. All files verified.
+  - Finishing state session to allow modification...
+  - Updating state file for next stage (3)...
+  - Session A verified. Sending per-session FINISH.
+  - Session B verified. Keeping FD open for next kexec.
+  - NOT retrieving Session C to test global finish cleanup.
+[STAGE 2] Triggering global FINISH...
+[STAGE 2] Triggering global PREPARE for next kexec...
+[STAGE 2] Executing second kexec...
+<---- cut reboot messages ---->
+Debian GNU/Linux 12 debian-vm ttyS0
+
+debian-vm login: root (automatic login)
+
+root@debian-vm:~$ cd liveupdate/
+root@debian-vm:~/liveupdate$ ./luo_multi_kexec
+LUO state is UPDATED. Restoring state to determine stage...
+State file indicates we are entering Stage 3.
+[STAGE 3] Final verification...
+[STAGE 3] Verifying surviving sessions...
+  - Verifying session 'session-B'...
+    Success. All files verified.
+[STAGE 3] Verifying Session A was cleaned up...
+  Success. Session A not found as expected.
+[STAGE 3] Verifying Session C was cleaned up...
+  Success. Session C not found as expected.
+[STAGE 3] Triggering final global FINISH...
+
+--- TEST PASSED ---
+
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- Documentation/core-api/liveupdate.rst   |   7 ++
- Documentation/mm/index.rst              |   1 +
- Documentation/mm/memfd_preservation.rst | 138 ++++++++++++++++++++++++
- MAINTAINERS                             |   1 +
- 4 files changed, 147 insertions(+)
- create mode 100644 Documentation/mm/memfd_preservation.rst
+ tools/testing/selftests/liveupdate/.gitignore |   1 +
+ tools/testing/selftests/liveupdate/Makefile   |  31 +++
+ .../testing/selftests/liveupdate/do_kexec.sh  |   6 +
+ .../selftests/liveupdate/luo_multi_kexec.c    | 182 +++++++++++++
+ .../selftests/liveupdate/luo_test_utils.c     | 241 ++++++++++++++++++
+ .../selftests/liveupdate/luo_test_utils.h     |  51 ++++
+ 6 files changed, 512 insertions(+)
+ create mode 100755 tools/testing/selftests/liveupdate/do_kexec.sh
+ create mode 100644 tools/testing/selftests/liveupdate/luo_multi_kexec.c
+ create mode 100644 tools/testing/selftests/liveupdate/luo_test_utils.c
+ create mode 100644 tools/testing/selftests/liveupdate/luo_test_utils.h
 
-diff --git a/Documentation/core-api/liveupdate.rst b/Documentation/core-api/liveupdate.rst
-index 7c1c3af6f960..b44710d75088 100644
---- a/Documentation/core-api/liveupdate.rst
-+++ b/Documentation/core-api/liveupdate.rst
-@@ -23,6 +23,13 @@ LUO Preserving File Descriptors
- .. kernel-doc:: kernel/liveupdate/luo_file.c
-    :doc: LUO file descriptors
+diff --git a/tools/testing/selftests/liveupdate/.gitignore b/tools/testing/selftests/liveupdate/.gitignore
+index af6e773cf98f..de7ca45d3892 100644
+--- a/tools/testing/selftests/liveupdate/.gitignore
++++ b/tools/testing/selftests/liveupdate/.gitignore
+@@ -1 +1,2 @@
+ /liveupdate
++/luo_multi_kexec
+diff --git a/tools/testing/selftests/liveupdate/Makefile b/tools/testing/selftests/liveupdate/Makefile
+index 2a573c36016e..1cbc816ed5c5 100644
+--- a/tools/testing/selftests/liveupdate/Makefile
++++ b/tools/testing/selftests/liveupdate/Makefile
+@@ -1,7 +1,38 @@
+ # SPDX-License-Identifier: GPL-2.0-only
++
++KHDR_INCLUDES ?= -I../../../usr/include
+ CFLAGS += -Wall -O2 -Wno-unused-function
+ CFLAGS += $(KHDR_INCLUDES)
++LDFLAGS += -static
++
++# --- Test Configuration (Edit this section when adding new tests) ---
++LUO_SHARED_SRCS := luo_test_utils.c
++LUO_SHARED_HDRS += luo_test_utils.h
++
++LUO_MANUAL_TESTS += luo_multi_kexec
++
++TEST_FILES += do_kexec.sh
  
-+The following types of file descriptors can be preserved
+ TEST_GEN_PROGS += liveupdate
+ 
++# --- Automatic Rule Generation (Do not edit below) ---
 +
-+.. toctree::
-+   :maxdepth: 1
++TEST_GEN_PROGS_EXTENDED += $(LUO_MANUAL_TESTS)
 +
-+   ../mm/memfd_preservation
++# Define the full list of sources for each manual test.
++$(foreach test,$(LUO_MANUAL_TESTS), \
++	$(eval $(test)_SOURCES := $(test).c $(LUO_SHARED_SRCS)))
 +
- Public API
- ==========
- .. kernel-doc:: include/linux/liveupdate.h
-diff --git a/Documentation/mm/index.rst b/Documentation/mm/index.rst
-index ba6a8872849b..7aa2a8886908 100644
---- a/Documentation/mm/index.rst
-+++ b/Documentation/mm/index.rst
-@@ -48,6 +48,7 @@ documentation, or deleted if it has served its purpose.
-    hugetlbfs_reserv
-    ksm
-    memory-model
-+   memfd_preservation
-    mmu_notifier
-    multigen_lru
-    numa
-diff --git a/Documentation/mm/memfd_preservation.rst b/Documentation/mm/memfd_preservation.rst
-new file mode 100644
-index 000000000000..3fc612e1288c
++# This loop automatically generates an explicit build rule for each manual test.
++# It includes dependencies on the shared headers and makes the output
++# executable.
++# Note the use of '$$' to escape automatic variables for the 'eval' command.
++$(foreach test,$(LUO_MANUAL_TESTS), \
++	$(eval $(OUTPUT)/$(test): $($(test)_SOURCES) $(LUO_SHARED_HDRS) \
++		$(call msg,LINK,,$$@) ; \
++		$(Q)$(LINK.c) $$^ $(LDLIBS) -o $$@ ; \
++		$(Q)chmod +x $$@ \
++	) \
++)
++
+ include ../lib.mk
+diff --git a/tools/testing/selftests/liveupdate/do_kexec.sh b/tools/testing/selftests/liveupdate/do_kexec.sh
+new file mode 100755
+index 000000000000..bb396a92c3b8
 --- /dev/null
-+++ b/Documentation/mm/memfd_preservation.rst
-@@ -0,0 +1,138 @@
-+.. SPDX-License-Identifier: GPL-2.0-or-later
++++ b/tools/testing/selftests/liveupdate/do_kexec.sh
+@@ -0,0 +1,6 @@
++#!/bin/sh
++# SPDX-License-Identifier: GPL-2.0
++set -e
 +
-+==========================
-+Memfd Preservation via LUO
-+==========================
++kexec -l -s --reuse-cmdline /boot/bzImage
++kexec -e
+diff --git a/tools/testing/selftests/liveupdate/luo_multi_kexec.c b/tools/testing/selftests/liveupdate/luo_multi_kexec.c
+new file mode 100644
+index 000000000000..1f350990ee67
+--- /dev/null
++++ b/tools/testing/selftests/liveupdate/luo_multi_kexec.c
+@@ -0,0 +1,182 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +
-+Overview
-+========
++/*
++ * Copyright (c) 2025, Google LLC.
++ * Pasha Tatashin <pasha.tatashin@soleen.com>
++ */
 +
-+Memory file descriptors (memfd) can be preserved over a kexec using the Live
-+Update Orchestrator (LUO) file preservation. This allows userspace to transfer
-+its memory contents to the next kernel after a kexec.
++#include "luo_test_utils.h"
 +
-+The preservation is not intended to be transparent. Only select properties of
-+the file are preserved. All others are reset to default. The preserved
-+properties are described below.
++#define KEXEC_SCRIPT "./do_kexec.sh"
 +
-+.. note::
-+   The LUO API is not stabilized yet, so the preserved properties of a memfd are
-+   also not stable and are subject to backwards incompatible changes.
++#define NUM_SESSIONS 3
 +
-+.. note::
-+   Currently a memfd backed by Hugetlb is not supported. Memfds created
-+   with ``MFD_HUGETLB`` will be rejected.
++/* Helper to set up one session and all its files */
++static void setup_session(int luo_fd, struct session_info *s, int session_idx)
++{
++	int i;
 +
-+Preserved Properties
-+====================
++	snprintf(s->name, sizeof(s->name), "session-%c", 'A' + session_idx);
 +
-+The following properties of the memfd are preserved across kexec:
++	s->fd = luo_create_session(luo_fd, s->name);
++	if (s->fd < 0)
++		fail_exit("luo_create_session for %s", s->name);
 +
-+File Contents
-+  All data stored in the file is preserved.
++	for (i = 0; i < 2; i++) {
++		s->file_tokens[i] = (session_idx * 100) + i;
++		snprintf(s->file_data[i], sizeof(s->file_data[i]),
++			 "Data for %.*s-File%d",
++			 (int)sizeof(s->name), s->name, i);
 +
-+File Size
-+  The size of the file is preserved. Holes in the file are filled by allocating
-+  pages for them during preservation.
++		if (create_and_preserve_memfd(s->fd, s->file_tokens[i],
++					      s->file_data[i]) < 0)
++			fail_exit("create_and_preserve_memfd for token %d",
++				  s->file_tokens[i]);
++	}
++}
 +
-+File Position
-+  The current file position is preserved, allowing applications to continue
-+  reading/writing from their last position.
++/* Run before the first kexec */
++static void run_stage_1(int luo_fd)
++{
++	struct session_info sessions[NUM_SESSIONS] = {0};
++	int i;
 +
-+File Status Flags
-+  memfds are always opened with ``O_RDWR`` and ``O_LARGEFILE``. This property is
-+  maintained.
++	ksft_print_msg("[STAGE 1] Creating state file for next stage (2)...\n");
++	create_state_file(luo_fd, 2);
 +
-+Non-Preserved Properties
-+========================
++	ksft_print_msg("[STAGE 1] Setting up Sessions A, B, C for first kexec...\n");
++	for (i = 0; i < NUM_SESSIONS; i++) {
++		setup_session(luo_fd, &sessions[i], i);
++		ksft_print_msg("  - Session '%s' created.\n", sessions[i].name);
++	}
 +
-+All properties which are not preserved must be assumed to be reset to default.
-+This section describes some of those properties which may be more of note.
++	ksft_print_msg("[STAGE 1] Triggering global PREPARE...\n");
++	if (luo_set_global_event(luo_fd, LIVEUPDATE_PREPARE) < 0)
++		fail_exit("luo_set_global_event(PREPARE)");
 +
-+``FD_CLOEXEC`` flag
-+  A memfd can be created with the ``MFD_CLOEXEC`` flag that sets the
-+  ``FD_CLOEXEC`` on the file. This flag is not preserved and must be set again
-+  after restore via ``fcntl()``.
++	ksft_print_msg("[STAGE 1] Executing kexec...\n");
++	if (system(KEXEC_SCRIPT) != 0)
++		fail_exit("kexec script failed");
 +
-+Seals
-+  File seals are not preserved. The file is unsealed on restore and if needed,
-+  must be sealed again via ``fcntl()``.
++	/* Should not be reached */
++	sleep(10);
++	exit(EXIT_FAILURE);
++}
 +
-+Behavior with LUO states
-+========================
++/* Run after first kexec, before second kexec */
++static void run_stage_2(int luo_fd, int state_session_fd)
++{
++	struct session_info sessions[NUM_SESSIONS] = {0};
++	int session_fd_A;
 +
-+This section described the behavior of the memfd in the different LUO states.
++	ksft_print_msg("[STAGE 2] Partially reclaiming and preparing for second kexec...\n");
 +
-+Normal Phase
-+  During the normal phase, the memfd can be marked for preservation using the
-+  ``LIVEUPDATE_SESSION_PRESERVE_FD`` ioctl. The memfd acts as a regular memfd
-+  during this phase with no additional restrictions.
++	reinit_all_sessions(sessions, NUM_SESSIONS);
 +
-+Prepared Phase
-+  After LUO enters ``LIVEUPDATE_STATE_PREPARED``, the memfd is serialized and
-+  prepared for the next kernel. During this phase, the below things happen:
++	session_fd_A = verify_session_and_get_fd(luo_fd, &sessions[0]);
++	verify_session_and_get_fd(luo_fd, &sessions[1]);
 +
-+  - All the folios are pinned. If some folios reside in ``ZONE_MIGRATE``, they
-+    are migrated out. This ensures none of the preserved folios land in KHO
-+    scratch area.
-+  - Pages in swap are swapped in. Currently, there is no way to pass pages in
-+    swap over KHO, so all swapped out pages are swapped back in and pinned.
-+  - The memfd goes into "frozen mapping" mode. The file can no longer grow or
-+    shrink, or punch holes. This ensures the serialized mappings stay in sync.
-+    The file can still be read from or written to or mmap-ed.
++	ksft_print_msg("  - Finishing state session to allow modification...\n");
++	if (luo_set_session_event(state_session_fd, LIVEUPDATE_FINISH) < 0)
++		fail_exit("luo_set_session_event(FINISH) for state_session");
 +
-+Freeze Phase
-+  Updates the current file position in the serialized data to capture any
-+  changes that occurred between prepare and freeze phases. After this, the FD is
-+  not allowed to be accessed.
++	ksft_print_msg("  - Updating state file for next stage (3)...\n");
++	update_state_file(state_session_fd, 3);
 +
-+Restoration Phase
-+  After being restored, the memfd is functional as normal with the properties
-+  listed above restored.
++	ksft_print_msg("  - Session A verified. Sending per-session FINISH.\n");
++	if (luo_set_session_event(session_fd_A, LIVEUPDATE_FINISH) < 0)
++		fail_exit("luo_set_session_event(FINISH) for Session A");
++	close(session_fd_A);
 +
-+Cancellation
-+  If the liveupdate is cancelled after going into prepared phase, the memfd
-+  functions like in normal phase.
++	ksft_print_msg("  - Session B verified. Its FD will be auto-closed for next kexec.\n");
++	ksft_print_msg("  - NOT retrieving Session C to test global finish cleanup.\n");
 +
-+Serialization format
-+====================
++	ksft_print_msg("[STAGE 2] Triggering global FINISH...\n");
++	if (luo_set_global_event(luo_fd, LIVEUPDATE_FINISH) < 0)
++		fail_exit("luo_set_global_event(FINISH)");
 +
-+The state is serialized in an FDT with the following structure::
++	ksft_print_msg("[STAGE 2] Triggering global PREPARE for next kexec...\n");
++	if (luo_set_global_event(luo_fd, LIVEUPDATE_PREPARE) < 0)
++		fail_exit("luo_set_global_event(PREPARE)");
 +
-+  /dts-v1/;
++	ksft_print_msg("[STAGE 2] Executing second kexec...\n");
++	if (system(KEXEC_SCRIPT) != 0)
++		fail_exit("kexec script failed");
 +
-+  / {
-+      compatible = "memfd-v1";
-+      pos = <current_file_position>;
-+      size = <file_size_in_bytes>;
-+      folios = <array_of_preserved_folio_descriptors>;
-+  };
++	sleep(10);
++	exit(EXIT_FAILURE);
++}
 +
-+Each folio descriptor contains:
++/* Run after second kexec */
++static void run_stage_3(int luo_fd)
++{
++	struct session_info sessions[NUM_SESSIONS] = {0};
++	int ret;
 +
-+- PFN + flags (8 bytes)
++	ksft_print_msg("[STAGE 3] Final verification...\n");
 +
-+  - Physical frame number (PFN) of the preserved folio (bits 63:12).
-+  - Folio flags (bits 11:0):
++	reinit_all_sessions(sessions, NUM_SESSIONS);
 +
-+    - ``PRESERVED_FLAG_DIRTY`` (bit 0)
-+    - ``PRESERVED_FLAG_UPTODATE`` (bit 1)
++	ksft_print_msg("[STAGE 3] Verifying surviving sessions...\n");
++	/* Session B */
++	verify_session_and_get_fd(luo_fd, &sessions[1]);
 +
-+- Folio index within the file (8 bytes).
++	ksft_print_msg("[STAGE 3] Verifying Session A was cleaned up...\n");
++	ret = luo_retrieve_session(luo_fd, sessions[0].name);
++	if (ret != -ENOENT)
++		fail_exit("Expected ENOENT for Session A, but got %d", ret);
++	ksft_print_msg("  Success. Session A not found as expected.\n");
 +
-+Limitations
-+===========
++	ksft_print_msg("[STAGE 3] Verifying Session C was cleaned up...\n");
++	ret = luo_retrieve_session(luo_fd, sessions[2].name);
++	if (ret != -ENOENT)
++		fail_exit("Expected ENOENT for Session C, but got %d", ret);
++	ksft_print_msg("  Success. Session C not found as expected.\n");
 +
-+The current implementation has the following limitations:
++	ksft_print_msg("[STAGE 3] Triggering final global FINISH...\n");
++	if (luo_set_global_event(luo_fd, LIVEUPDATE_FINISH) < 0)
++		fail_exit("luo_set_global_event(FINISH)");
 +
-+Size
-+  Currently the size of the file is limited by the size of the FDT. The FDT can
-+  be at of most ``MAX_PAGE_ORDER`` order. By default this is 4 MiB with 4K
-+  pages. Each page in the file is tracked using 16 bytes. This limits the
-+  maximum size of the file to 1 GiB.
++	ksft_print_msg("\n--- MULTI-KEXEC TEST PASSED ---\n");
++}
 +
-+See Also
-+========
++int main(int argc, char *argv[])
++{
++	enum liveupdate_state state;
++	int luo_fd, stage = 0;
 +
-+- :doc:`Live Update Orchestrator </core-api/liveupdate>`
-+- :doc:`/core-api/kho/concepts`
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a17e4e077174..a9941e920ef6 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14438,6 +14438,7 @@ L:	linux-kernel@vger.kernel.org
- S:	Maintained
- F:	Documentation/ABI/testing/sysfs-kernel-liveupdate
- F:	Documentation/core-api/liveupdate.rst
-+F:	Documentation/mm/memfd_preservation.rst
- F:	Documentation/userspace-api/liveupdate.rst
- F:	include/linux/liveupdate.h
- F:	include/uapi/linux/liveupdate.h
++	luo_fd = luo_open_device();
++	if (luo_fd < 0) {
++		ksft_exit_skip("Failed to open %s. Is the luo module loaded?\n",
++			       LUO_DEVICE);
++	}
++
++	if (luo_get_global_state(luo_fd, &state) < 0)
++		fail_exit("luo_get_global_state");
++
++	if (state == LIVEUPDATE_STATE_NORMAL) {
++		ksft_print_msg("LUO state is NORMAL. Starting Stage 1.\n");
++		run_stage_1(luo_fd);
++	} else if (state == LIVEUPDATE_STATE_UPDATED) {
++		int state_session_fd;
++
++		ksft_print_msg("LUO state is UPDATED. Restoring state to determine stage...\n");
++		state_session_fd = restore_and_read_state(luo_fd, &stage);
++		if (state_session_fd < 0)
++			fail_exit("Could not restore test state");
++
++		if (stage == 2) {
++			ksft_print_msg("State file indicates we are entering Stage 2.\n");
++			run_stage_2(luo_fd, state_session_fd);
++		} else if (stage == 3) {
++			ksft_print_msg("State file indicates we are entering Stage 3.\n");
++			run_stage_3(luo_fd);
++		} else {
++			fail_exit("Invalid stage found in state file: %d",
++				  stage);
++		}
++	}
++
++	close(luo_fd);
++	ksft_exit_pass();
++}
+diff --git a/tools/testing/selftests/liveupdate/luo_test_utils.c b/tools/testing/selftests/liveupdate/luo_test_utils.c
+new file mode 100644
+index 000000000000..c0840e6e66fd
+--- /dev/null
++++ b/tools/testing/selftests/liveupdate/luo_test_utils.c
+@@ -0,0 +1,241 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++/*
++ * Copyright (c) 2025, Google LLC.
++ * Pasha Tatashin <pasha.tatashin@soleen.com>
++ */
++
++#define _GNU_SOURCE
++
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <fcntl.h>
++#include <unistd.h>
++#include <sys/ioctl.h>
++#include <sys/syscall.h>
++#include <sys/mman.h>
++#include <errno.h>
++#include <stdarg.h>
++
++#include "luo_test_utils.h"
++#include "../kselftest.h"
++
++/* The fail_exit function is now a macro in the header. */
++
++int luo_open_device(void)
++{
++	return open(LUO_DEVICE, O_RDWR);
++}
++
++int luo_create_session(int luo_fd, const char *name)
++{
++	struct liveupdate_ioctl_create_session arg = { .size = sizeof(arg) };
++
++	snprintf((char *)arg.name, LIVEUPDATE_SESSION_NAME_LENGTH, "%.*s",
++		 LIVEUPDATE_SESSION_NAME_LENGTH - 1, name);
++	if (ioctl(luo_fd, LIVEUPDATE_IOCTL_CREATE_SESSION, &arg) < 0)
++		return -errno;
++	return arg.fd;
++}
++
++int luo_retrieve_session(int luo_fd, const char *name)
++{
++	struct liveupdate_ioctl_retrieve_session arg = { .size = sizeof(arg) };
++
++	snprintf((char *)arg.name, LIVEUPDATE_SESSION_NAME_LENGTH, "%.*s",
++		 LIVEUPDATE_SESSION_NAME_LENGTH - 1, name);
++	if (ioctl(luo_fd, LIVEUPDATE_IOCTL_RETRIEVE_SESSION, &arg) < 0)
++		return -errno;
++	return arg.fd;
++}
++
++int create_and_preserve_memfd(int session_fd, int token, const char *data)
++{
++	struct liveupdate_session_preserve_fd arg = { .size = sizeof(arg) };
++	long page_size = sysconf(_SC_PAGE_SIZE);
++	void *map = MAP_FAILED;
++	int mfd = -1, ret = -1;
++
++	mfd = memfd_create("test_mfd", 0);
++	if (mfd < 0)
++		return -errno;
++
++	if (ftruncate(mfd, page_size) != 0)
++		goto out;
++
++	map = mmap(NULL, page_size, PROT_WRITE, MAP_SHARED, mfd, 0);
++	if (map == MAP_FAILED)
++		goto out;
++
++	snprintf(map, page_size, "%s", data);
++	munmap(map, page_size);
++
++	arg.fd = mfd;
++	arg.token = token;
++	if (ioctl(session_fd, LIVEUPDATE_SESSION_PRESERVE_FD, &arg) < 0)
++		goto out;
++
++	ret = 0; /* Success */
++out:
++	if (ret != 0 && errno != 0)
++		ret = -errno;
++	if (mfd >= 0)
++		close(mfd);
++	return ret;
++}
++
++int restore_and_verify_memfd(int session_fd, int token,
++			     const char *expected_data)
++{
++	struct liveupdate_session_restore_fd arg = { .size = sizeof(arg) };
++	long page_size = sysconf(_SC_PAGE_SIZE);
++	void *map = MAP_FAILED;
++	int mfd = -1, ret = -1;
++
++	arg.token = token;
++	if (ioctl(session_fd, LIVEUPDATE_SESSION_RESTORE_FD, &arg) < 0)
++		return -errno;
++	mfd = arg.fd;
++
++	map = mmap(NULL, page_size, PROT_READ, MAP_SHARED, mfd, 0);
++	if (map == MAP_FAILED)
++		goto out;
++
++	if (expected_data && strcmp(expected_data, map) != 0) {
++		ksft_print_msg("Data mismatch for token %d!\n", token);
++		ret = -EINVAL;
++		goto out_munmap;
++	}
++
++	ret = mfd; /* Success, return the new fd */
++out_munmap:
++	munmap(map, page_size);
++out:
++	if (ret < 0 && errno != 0)
++		ret = -errno;
++	if (ret < 0 && mfd >= 0)
++		close(mfd);
++	return ret;
++}
++
++int luo_set_session_event(int session_fd, enum liveupdate_event event)
++{
++	struct liveupdate_session_set_event arg = { .size = sizeof(arg) };
++
++	arg.event = event;
++	return ioctl(session_fd, LIVEUPDATE_SESSION_SET_EVENT, &arg);
++}
++
++int luo_set_global_event(int luo_fd, enum liveupdate_event event)
++{
++	struct liveupdate_ioctl_set_event arg = { .size = sizeof(arg) };
++
++	arg.event = event;
++	return ioctl(luo_fd, LIVEUPDATE_IOCTL_SET_EVENT, &arg);
++}
++
++int luo_get_global_state(int luo_fd, enum liveupdate_state *state)
++{
++	struct liveupdate_ioctl_get_state arg = { .size = sizeof(arg) };
++
++	if (ioctl(luo_fd, LIVEUPDATE_IOCTL_GET_STATE, &arg) < 0)
++		return -errno;
++	*state = arg.state;
++	return 0;
++}
++
++void create_state_file(int luo_fd, int next_stage)
++{
++	char buf[32];
++	int state_session_fd;
++
++	state_session_fd = luo_create_session(luo_fd, STATE_SESSION_NAME);
++	if (state_session_fd < 0)
++		fail_exit("luo_create_session failed");
++
++	snprintf(buf, sizeof(buf), "%d", next_stage);
++	if (create_and_preserve_memfd(state_session_fd,
++				      STATE_MEMFD_TOKEN, buf) < 0) {
++		fail_exit("create_and_preserve_memfd failed");
++	}
++}
++
++int restore_and_read_state(int luo_fd, int *stage)
++{
++	char buf[32] = {0};
++	int state_session_fd, mfd;
++
++	state_session_fd = luo_retrieve_session(luo_fd, STATE_SESSION_NAME);
++	if (state_session_fd < 0)
++		return state_session_fd;
++
++	mfd = restore_and_verify_memfd(state_session_fd, STATE_MEMFD_TOKEN,
++				       NULL);
++	if (mfd < 0)
++		fail_exit("failed to restore state memfd");
++
++	if (read(mfd, buf, sizeof(buf) - 1) < 0)
++		fail_exit("failed to read state mfd");
++
++	*stage = atoi(buf);
++
++	close(mfd);
++	return state_session_fd;
++}
++
++void update_state_file(int session_fd, int next_stage)
++{
++	char buf[32];
++	struct liveupdate_session_unpreserve_fd arg = { .size = sizeof(arg) };
++
++	arg.token = STATE_MEMFD_TOKEN;
++	if (ioctl(session_fd, LIVEUPDATE_SESSION_UNPRESERVE_FD, &arg) < 0)
++		fail_exit("unpreserve failed");
++
++	snprintf(buf, sizeof(buf), "%d", next_stage);
++	if (create_and_preserve_memfd(session_fd, STATE_MEMFD_TOKEN, buf) < 0)
++		fail_exit("create_and_preserve failed");
++}
++
++void reinit_all_sessions(struct session_info *sessions, int num)
++{
++	int i, j;
++
++	for (i = 0; i < num; i++) {
++		snprintf(sessions[i].name, sizeof(sessions[i].name),
++			 "session-%c", 'A' + i);
++		for (j = 0; j < 2; j++) {
++			sessions[i].file_tokens[j] = (i * 100) + j;
++			snprintf(sessions[i].file_data[j],
++				 sizeof(sessions[i].file_data[j]),
++				 "Data for %.*s-File%d",
++				 LIVEUPDATE_SESSION_NAME_LENGTH,
++				 sessions[i].name, j);
++		}
++	}
++}
++
++int verify_session_and_get_fd(int luo_fd, struct session_info *s)
++{
++	int i, session_fd;
++
++	ksft_print_msg("  - Verifying session '%s'...\n", s->name);
++
++	session_fd = luo_retrieve_session(luo_fd, s->name);
++	if (session_fd < 0)
++		fail_exit("luo_retrieve_session for %s", s->name);
++
++	for (i = 0; i < 2; i++) {
++		int mfd = restore_and_verify_memfd(session_fd,
++						   s->file_tokens[i],
++						   s->file_data[i]);
++		if (mfd < 0) {
++			fail_exit("restore_and_verify_memfd for token %d",
++				  s->file_tokens[i]);
++		}
++		close(mfd);
++	}
++	ksft_print_msg("    Success. All files verified.\n");
++	return session_fd;
++}
+diff --git a/tools/testing/selftests/liveupdate/luo_test_utils.h b/tools/testing/selftests/liveupdate/luo_test_utils.h
+new file mode 100644
+index 000000000000..e30cfcb0a596
+--- /dev/null
++++ b/tools/testing/selftests/liveupdate/luo_test_utils.h
+@@ -0,0 +1,51 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++/*
++ * Copyright (c) 2025, Google LLC.
++ * Pasha Tatashin <pasha.tatashin@soleen.com>
++ */
++
++#ifndef LUO_TEST_UTILS_H
++#define LUO_TEST_UTILS_H
++
++#include <errno.h>
++#include <string.h>
++#include <linux/liveupdate.h>
++#include "../kselftest.h"
++
++#define LUO_DEVICE "/dev/liveupdate"
++#define STATE_SESSION_NAME "state_session"
++#define STATE_MEMFD_TOKEN 999
++
++#define MAX_FILES_PER_SESSION 5
++
++struct session_info {
++	char name[LIVEUPDATE_SESSION_NAME_LENGTH];
++	int fd;
++	int file_tokens[MAX_FILES_PER_SESSION];
++	char file_data[MAX_FILES_PER_SESSION][128];
++};
++
++#define fail_exit(fmt, ...)						\
++	ksft_exit_fail_msg("[%s] " fmt " (errno: %s)\n",		\
++			   __func__, ##__VA_ARGS__, strerror(errno))
++
++int luo_open_device(void);
++
++int luo_create_session(int luo_fd, const char *name);
++int luo_retrieve_session(int luo_fd, const char *name);
++
++int create_and_preserve_memfd(int session_fd, int token, const char *data);
++int restore_and_verify_memfd(int session_fd, int token, const char *expected_data);
++int verify_session_and_get_fd(int luo_fd, struct session_info *s);
++
++int luo_set_session_event(int session_fd, enum liveupdate_event event);
++int luo_set_global_event(int luo_fd, enum liveupdate_event event);
++int luo_get_global_state(int luo_fd, enum liveupdate_state *state);
++
++void create_state_file(int luo_fd, int next_stage);
++int restore_and_read_state(int luo_fd, int *stage);
++void update_state_file(int session_fd, int next_stage);
++void reinit_all_sessions(struct session_info *sessions, int num);
++
++#endif /* LUO_TEST_UTILS_H */
 -- 
 2.51.0.536.g15c5d4f767-goog
 
