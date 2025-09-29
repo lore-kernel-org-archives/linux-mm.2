@@ -4,139 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B8BECAC5B0
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 07:17:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43F91CAC5B0
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 07:22:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B4798E0027; Mon, 29 Sep 2025 03:17:00 -0400 (EDT)
+	id A18C58E0028; Mon, 29 Sep 2025 03:22:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48B9F8E0002; Mon, 29 Sep 2025 03:17:00 -0400 (EDT)
+	id 9F0238E0002; Mon, 29 Sep 2025 03:22:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A1688E0027; Mon, 29 Sep 2025 03:17:00 -0400 (EDT)
+	id 92CF08E0028; Mon, 29 Sep 2025 03:22:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 21FA48E0002
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 03:17:00 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C9E1DC0292
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 07:16:59 +0000 (UTC)
-X-FDA: 83941430958.27.5D7498F
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 6CBAF40005
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 07:16:57 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=FFMLOviD;
-	spf=pass (imf17.hostedemail.com: domain of pratyush.brahma@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=pratyush.brahma@oss.qualcomm.com;
-	dmarc=pass (policy=reject) header.from=qualcomm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 813E48E0002
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 03:22:56 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 28F28C0286
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 07:22:56 +0000 (UTC)
+X-FDA: 83941445952.07.B40B4CF
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 440EF40006
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 07:22:54 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VYslHZ0S;
+	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759130217;
+	s=arc-20220608; t=1759130574;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+Jh7BHlQDk/uoU1C2uWfr20rSCKWIl/AF6JGIQF/PdI=;
-	b=TmVW9c93dqgpQlMgF1nZs3CnkUFR6QyJAN4TlQz8+IwJinYZZDlV6h2XGT6YccIsdW0kOK
-	HjS/FxSQAjXP3/nAqE2fG/w6Xm5hu+DPBNzees0cUpkznc8AoC5vHMCUNDI2WbWPlKePHB
-	WSKl2G8OSXZOQNRP5DRnZqurSDRK7Wk=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=FFMLOviD;
-	spf=pass (imf17.hostedemail.com: domain of pratyush.brahma@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=pratyush.brahma@oss.qualcomm.com;
-	dmarc=pass (policy=reject) header.from=qualcomm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759130217; a=rsa-sha256;
+	bh=496tR+1nCfJ5pMJ3flSASce4X+8Hs2xr9YohPB9v6U8=;
+	b=RcpUppJMIjCIj1BwUXhb5G9BByH50xUwKSEaCjBl/wO86Wsb+j5dspgDB+TzS0yowTnppK
+	f7wszc+cyuAFERyuwmgwpcpbAxZWrOCX9Yi+Z+slg7uq2Myp++2OAw3Nn1z9WifhrDRRy3
+	1q6Bty8EqxnQx4eu0CsDX8PXmD9Kn2g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759130574; a=rsa-sha256;
 	cv=none;
-	b=RIMc1KxMevDtOJS0MBQ23L+i+xb0ooHH92Kit2AkgVhAlLhBSLKhK4MuIsD4ziP+LgBqZ/
-	fA/WlL0MdV8WXJnVNUJGkoGrfuwyIHDlRTUcwMNb93NqhAXxrYAa+vyj4MRE7Lwb7SQC61
-	oPgQB1DXHjU0Z6nDCSYNKG5tp3ifR9w=
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58SMtDr7008908
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 07:16:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=+Jh7BHlQDk/uoU1C2uWfr20r
-	SCKWIl/AF6JGIQF/PdI=; b=FFMLOviDk7qTWU70W+8SBzUFAZFrMbeig+VArlJw
-	y9cF41cs3pIB/XiU0/tSBgf2Hz2NEpjOXnd/IvuefrKeS3IIh1+T0qs+SFLr8epW
-	bujNdTY6KkSNkkKLBw/fkdVXZDCPrTowIhPt8FyZT02/JhrD1qRkjiTHq6aTGrsG
-	eixrS3QOlS3zRxwXYeL+bxcoKRmULLQ9eT7psLJIIJAtsVFi7pOZT+hBod4lGN9b
-	Ew2BspI7ZRkfQLK6W4BRIrA6/w5kqvy5WH4XxuleDL2R/7ChQ9AFoCzbtb/fcztF
-	PpJ3dahkDi/xSYzcsF88qlW8vmA+Cg4oAjYK7lMq64iNbg==
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49e78fv9h9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 07:16:56 +0000 (GMT)
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2681623f927so40978065ad.0
-        for <linux-mm@kvack.org>; Mon, 29 Sep 2025 00:16:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759130215; x=1759735015;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+Jh7BHlQDk/uoU1C2uWfr20rSCKWIl/AF6JGIQF/PdI=;
-        b=lXsaOhC/tfnUM2dA1HLjDoQQePAX0aDX9T5Cdq6wvgg9qVaDq3+bErhkHLkpEEYmGF
-         wErxlnQuKIvrHXMmaJQqi1AUtPXa+e6FZtzFY/L+0sJDv9m+MTBFGU86fPG+OI06Rtuk
-         8cJc23tkyLFc/0i/IqxHx5YFpfmO1A2hB8qRHWkT7F5Vz2EHuKZektd5Loz6GXMQW3jg
-         2QyRj/mqrhJJBjVRs8DGDcfWt0oFDarFg2gv0KQc9yBA2QpC/RMRkDU37/4PK8y7BXvy
-         6/EbCTHCMGDNsZw3SKcSx1wLkyvuMGdpHNo0h+HI/AKpQdHRiuN0RE3NfFJN41y4d7dB
-         1Zhw==
-X-Forwarded-Encrypted: i=1; AJvYcCUVDqQZoJgwyp8wlA4+IQrMBgNRfw+pLbF5RryxMUn3HVzwuPA54CY+pW2C+mgN9f9EjhWPqNNshQ==@kvack.org
-X-Gm-Message-State: AOJu0YznD9xrfoykTRnFxAB8Cl+kCJ2t8OAFLoGuACrhbHHDAmLEhmiL
-	etRwWOKb2LA9j2Lu4BuCZMK9JdexQvCOJ6CaoMzNKohAohJcm6BmwMaz/eLAaLR2Ix7MeEE6VvQ
-	aFaAUfN9AcWkBq0wjOr82b/OlQRncjuiiLw/aE3B/7WGNsnBqEux0OCkpZaJ57ShoI14Xyo9cwI
-	ULnMUb+jgErkn/zm3Wdw+xHM4M2IwR
-X-Gm-Gg: ASbGncuubOrqSZ1eHZ/WDqQqqoQZS2ndVz7ojqGxpuzOqGRH68FU7ME4Y7nPAIFap64
-	cLKmxKYOLHtlOVSx89F4LrSixJfu68u1DCe9zlZzKg75Ix3P9pELoQqj5kN+XJ/tsuFIe/21wRp
-	rwhgF6FX0CNNQ+KCVI2ms9qDQ=
-X-Received: by 2002:a17:902:e5c7:b0:24b:1589:5054 with SMTP id d9443c01a7336-27ed4a29670mr158672685ad.23.1759130214772;
-        Mon, 29 Sep 2025 00:16:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG+lMJG6VZ3WEs92+B+sNQaSSEOImGLTGVCqFHVy/OIrnif5wovwToazkXNgFwmrvkJFIsA3AOQFilAJae6PrM=
-X-Received: by 2002:a17:902:e5c7:b0:24b:1589:5054 with SMTP id
- d9443c01a7336-27ed4a29670mr158672295ad.23.1759130214231; Mon, 29 Sep 2025
- 00:16:54 -0700 (PDT)
+	b=BdBRghvYBct9ur8+HmneZT12tiflJKN8rRfyy3KGrErKZLtzDkQrgaGqM3fv1GukzdndWO
+	+oOvaW5LKyg/Nk8fe2IO+fCCbRhfbU4Nupr8cIslvs9c88yqYCA2zfEps/Dn78z6Wy6ivz
+	zMH2m+4co4N+xaSxI37AIQ1yYfAL3G8=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VYslHZ0S;
+	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <08a4f0b2-1735-4e3b-9f61-d55e45e8ec86@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1759130571;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=496tR+1nCfJ5pMJ3flSASce4X+8Hs2xr9YohPB9v6U8=;
+	b=VYslHZ0SqUSQSRUI8LkqSa1EC3AisZePf4ZJzWMHfC02EaHIkI9ZXeUF/4HzNIL3jIrqe2
+	mbsc9HhAiRNJUl7tBA0kVCnsbte9jCiKP3iRYGU8CW6aw/citZryM34Od2wQMQvxN/28Qn
+	g3LWMqieR6IJpupFArem/kJUcklhqn0=
+Date: Mon, 29 Sep 2025 15:22:33 +0800
 MIME-Version: 1.0
-References: <20250926-numa-emu-v1-0-714f2691bf8b@oss.qualcomm.com>
- <20250926-numa-emu-v1-2-714f2691bf8b@oss.qualcomm.com> <3a1e75dd-6b39-4506-b4d7-806915d2a6fa@csgroup.eu>
-In-Reply-To: <3a1e75dd-6b39-4506-b4d7-806915d2a6fa@csgroup.eu>
-From: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
-Date: Mon, 29 Sep 2025 12:46:43 +0530
-X-Gm-Features: AS18NWAOhuYe9Aa3EyliLPNXdM_ie7T126jaEW_4cr0Yk3sWnv7vjobjcIas5Zo
-Message-ID: <CALzOmR06+7wz1mF4PcA5oYn-1HJg7ZEn0WzCQyCrUK3WZT1E9g@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mm/numa_emulation: Move the size calculation in
- split_nodes_interleave() to a separate function
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: multipart/alternative; boundary="000000000000888241063feb6b32"
-X-Authority-Analysis: v=2.4 cv=DZAaa/tW c=1 sm=1 tr=0 ts=68da3268 cx=c_pps
- a=cmESyDAEBpBGqyK7t0alAg==:117 a=yJojWOMRYYMA:10 a=1UX6Do5GAAAA:8
- a=EUspDBNiAAAA:8 a=bplrAKsiAicH8rB66usA:9 a=QEXdDO2ut3YA:10
- a=GGEzqWFZrqF5wQro_C8A:9 a=wD75jqPagPSrfxgV:21 a=lqcHg5cX4UMA:10
- a=1OuFwYUASf3TG4hYMiVC:22 a=Et2XPkok5AAZYJIKzHr1:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDAyMiBTYWx0ZWRfX9f30xTk3D5C0
- eVyinGTWZIPdijDKPwgzIUSKiU5didb7moNrE/opI80V5Lfr23T8U+FX9jqwDw2pELSLyNq/1Oa
- SW/S6Q5L0T4oCbhIWTiC7JaUbEVAsIbLbDO2pzdBnYvwGXa5gwtRz7gUf4ANOs5YabMDQuk9bLx
- FKJC5fkHSmCFOKFCYtHCcG1nfEzPA9Ng+SCBjZ4BZhyYsi01B+74XtPdZvjELBbD1V40HQrhggY
- d9thgf344qkovJVowDM89wlIOPX2kT56BRiO2UFJAuQBo8JkcXyc8mE5atazrIrxKZwTwMziubr
- UvdGvhKkREhE+UHYHe85MKCFkfZdUJ46nTaA/C1XX650Ip5LINsRnJZNSX6PS00mucBkYJIPpzL
- B8pVMysCdDmy8PF8p2voUnyvME0TwA==
-X-Proofpoint-GUID: dJc28wkc53kjkzi0t21ei7ritou1z781
-X-Proofpoint-ORIG-GUID: dJc28wkc53kjkzi0t21ei7ritou1z781
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-29_02,2025-09-29_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 bulkscore=0 clxscore=1015 adultscore=0
- impostorscore=0 priorityscore=1501 lowpriorityscore=0 suspectscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2509150000
- definitions=main-2509270022
-X-Rspamd-Queue-Id: 6CBAF40005
+Subject: Re: [PATCH v3 4/4] mm: thp: reparent the split queue during memcg
+ offline
+To: Muchun Song <muchun.song@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, david@redhat.com,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1759056506.git.zhengqi.arch@bytedance.com>
+ <2ddd0c184829e65c5b3afa34e93599783e7af3d4.1759056506.git.zhengqi.arch@bytedance.com>
+ <2EC0CBCD-73FD-400A-921A-EAB45B21ACB8@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <2EC0CBCD-73FD-400A-921A-EAB45B21ACB8@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 440EF40006
+X-Stat-Signature: b1hbfhq589akomcro8ybzrnd4k91pn81
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 1nst7jetfoobqiy7c9p47a15o1qp5fkp
-X-HE-Tag: 1759130217-381729
-X-HE-Meta: U2FsdGVkX18DYy33mcQg/In+eU5AlsIyYhoeFZNl/J25Frks1Os2H0InprGMi+aem3s2BCoivnaZ17ufgKb1FYLe107gLhbfof1IG42uU7aALVSYVRTIzsFytYabfze97CLyAMq7RTjPouUJ/0C3Mk7mBkxzLieQGWp7dD1GUZyckcBayDH0TgVPj+RJgJ6oo6b8/8jvPCpZIz7XtZ5Co3EupSzVbQEeDyRR5SLEY+IW7EAwWvA3CekYsWx+WRXI4GHCbjrLn9e4A0/F1bhFxpLj0NaBW56sGZmcoyKFY02z0lxV7Ld7oZEZSYeKY7gsgAqRs+pX5An4BQJUIHqSj+FCuLH2U1JgEXA7CvuQ670XrVNvq4odFqNIVx+Q8r5P5MpVxwJT1koBkauugOuOQueTg47rCo4Nwcftihtj5RpkRqqXQ5h3FXabs4SE0BG2BjhGWviZauD4YwRAxOL1DgYM9FqAQ8CtNptmnoab59SjHNsawc2gje2of4Q/PRvTXx2KleQfAdO2UcHVuueO/QFL8Ut2pVM85xwH6JcASf7k4WUofHku29E2HOEavoCaL/UQCuPPGcQx5Gn9T4jKTr8PygSjVIRF2pmNj1FsnCEHEHbp67Hj1GbGWhV7TaaVe5eTn7BVi7WrbOGakv3IWw/MoHc2jlIePw77zGQr5dp3xkbQvrdqN6CEASKPDTYpSBdBv/eOehHXXvGjx/d+RvFbENDLbTd/Qj/tdeuBkdHSjVuDI6e1UKeoNn0tMBIud0r24axkrz+B2+J7uxxFTgQ8huRTb7MVdCN+VnnGiksxcs0cRbNcPsG27+Q1jQYusNMm0piMsmnEXInOSsEFmHdzzLFlj24et8zrxZR41hfjjYmCPd/PaBXPCRPjv5pANlcYVde2eTJVrB9sD0DrGYZkJpl5ya7xoE56DECF8RTDgLyw2rczmTDSRPpha7/G+Jyfztr9PYAIuLww0V7
- JVhkuQ1G
- xlIzos5a4IaAlcPua9hQyx2i1gKnjPYt26tkfCpqu1wTMjvb7C7rLAHspSBxvZ5YFkmUI9PA/umreLtxm3eMXnHHJkbczDpDDY4sI2/J47iRvd9uOXc+qp8JOWHezhWLYCIvNaFxB3ANhW6TNqMD6UuassfXHq42S4EwWxOgTzhgEmK0O/Tj1kPrtFkvVMSEscqmnuMY5sa9OXoyGXBGKnzQHzLJGHBsDBXGgSDrT6C86xHCSNUSzhxdAcL4t6fSyXEzinItOD6pK1fJwpN7NlY1KrGUgIjmfHZb40BdoEqF6vKPVvAz3yTRh/vQRZCXIPACoKThsM9e35sXWE7bpbDJ3ZkUA9M3hDJb7DLJdqK2z6qdBJaEbPoeuJQP0m+tNoVENvBzo2EkNGnPGn2O4l4jO5iyqERAAPJ9H73MHI43jAXi4FdHHSh8Hl0cm+Wu/jVOX+OD+lwFlKKFZo9a1+aW1sKqcMbSAtZPf8OhahKxZFxYpsZaGSN1qffOlhVbeoVZm7dmOq+OXTZ5jk5QhH5m259ClHQwj09VveBsj6KRzubng3qiBuoYFMcHirpPV19lb91xilS7K89I3cBN+tKJehbjbHclmL75myTynJom1jLNs42dg2ntp5R+qdJSunWri
+X-HE-Tag: 1759130574-853816
+X-HE-Meta: U2FsdGVkX1/hYAy6wjfv5rbd+NX9MIrYy9l0mSLLwN13OgyAfOxWshiEBPCtWaQRTkAIWTLhNkUXcIyOir8bujgwIUZflG8Q28dfiZWpgEihp+iGda3EgDqj4GnPXP3OKEMgg3aTNBL8/6I9UwOHVIMFP0b0RcG0vNS6ydcgUFe/Dw3wH0xemkFwQo8/SlwZy/fdgpn/Fn6QoUBCjFswcTFP2E1LSmwKO4ldt++31ApAyPgLbapkOINGnBD232bonIGV/0gb1pVrx45md5b3TB+HHMB4DumtXWaflQycS34Omg5dKoNgagIwPYUNsL2UK7PXSgBjaiHawYtEBiTouPMZBiVVifK3UCXFLl0KsctdxUv45KW3kvdY633OzevTr8gMdVMtztAyNr8u3P89YHA90D604kXjvFPt3QOq3D/keHfPMxka23jTNGAB0foESUHqebxx7LpxpbbZhvFf1am94u1X9NEqA9zJIFTLcCQYe3kElCNfyylWNfWzwbRjiB+/C49WSilaUFBY56f+P3aV8gMtgULheKgnkJZBkPoNeflb72umdtcmjWk1caU/G6zfHVl+dKLCHNtqUi+9T9j3AlSzKwizKpjgzKGCpDoGgdPjHjdWg8Sq0r2QzzhSHTJSKWjiwWnmAPuKcqH3Ga7VpTb9Kphc5NI55H3mfIJqtASUlUwU6zdSg0MrKc9gOkWfI09sRhb8xTQH0M3iEpouTzlsR1UDF0r041Q+PwLSMv/p8ql3iHzoW9gKJRtYy2pR2hSCmh3Q0rVmWAJpIaShSTZaRRh6gnz1n37jnfG8jxRHYk8oXNywmQZ0xgsiFQwEUp9NcclT/DXdUHYyCjuQzT7Bwf5QuWIQIs5aI+c0QgaCrAns8ETwzXMV/Adz1BOQeJV97xtG9AuupvBwDa2Sk21Ck6nV5lGOkcR2sLt8gL50JgDaQT/mMniXr9meklxUbIQe1Bkgyw/Woy2
+ DBntgupV
+ QHCAeotJDeiUy1u8BN2grB/VDIOWt3Jx7lHPXa7VgBiv0bK5yohYp5uedtMdD4tlnGusTjqb3ZGwI+7ZtPr+oqvZr4vgTzsauTdjFQuu3YMHnItUmCv6O5XvJL6ABd0WphEUWZ3vJ5Md0JUubgz4CiqFDuz2BA/HW4Jm9L+kgGTMimbVy9feefWNYGVbrVgvKhfi77rqpRfzixfdXWInsMxx6v2cS1btAInXmRFdKWdMjK9yVZLzJZs1nuoBYqi0nlCc1Px1XFitIN+Y=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,215 +98,226 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---000000000000888241063feb6b32
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 26, 2025 at 7:50=E2=80=AFPM Christophe Leroy <
-christophe.leroy@csgroup.eu> wrote:
->
->
->
-> Le 26/09/2025 =C3=A0 12:34, pratyush.brahma@oss.qualcomm.com a =C3=A9crit=
- :
-> > From: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
-> >
-> > The size calculation in split_nodes_interleave() has several nuances.
-> > Move it to a separate function to improve code modularity and
-> > simplify the readability of split_nodes_interleave().
-> >
-> > Signed-off-by: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
-> > ---
-> >   mm/numa_emulation.c | 44 +++++++++++++++++++++++++++++---------------
-> >   1 file changed, 29 insertions(+), 15 deletions(-)
-> >
-> > diff --git a/mm/numa_emulation.c b/mm/numa_emulation.c
-> > index 2a335b3dd46a..882c349c2a0f 100644
-> > --- a/mm/numa_emulation.c
-> > +++ b/mm/numa_emulation.c
-> > @@ -76,6 +76,34 @@ static int __init emu_setup_memblk(struct
-numa_meminfo *ei,
-> >       return 0;
-> >   }
-> >
-> > +static void __init __calc_split_params(u64 addr, u64 max_addr,
-> > +             int nr_nodes, u64 *psize, int *pbig)
-> > +{
-> > +     u64 size, usable_size;
-> > +     int big;
-> > +
-> > +     /* total usable memory (skip holes) */
-> > +     usable_size  =3D max_addr - addr - mem_hole_size(addr, max_addr);
-> > +
-> > +     /*
-> > +      * Calculate target node size.  x86_32 freaks on __udivdi3() so d=
-o
-> > +      * the division in ulong number of pages and convert back.
-> > +      */
-> > +     size =3D PFN_PHYS((unsigned long)(usable_size >> PAGE_SHIFT) /
-nr_nodes);
-> > +
-> > +     /*
-> > +      * Calculate the number of big nodes that can be allocated as a
-result
-> > +      * of consolidating the remainder.
-> > +      */
-> > +     big =3D ((size & (FAKE_NODE_MIN_SIZE - 1UL)) * nr_nodes) /
-FAKE_NODE_MIN_SIZE;
-> > +
-> > +     /* Align the base size down to the minimum granularity */
-> > +     size =3D ALIGN_DOWN(size, FAKE_NODE_MIN_SIZE);
-> > +
-> > +     *psize =3D size;
-> > +     *pbig  =3D big;
->
-> Having to return simple type values through pointers is usually the
-> start of proplems.Whenever possible you shouldn't returning simple types
-> via pointers.
-Thanks Christophe for your comments. Can you please help me understand what
-kind of
-problems can we run into so I can be mindful of this going forward?
->
-> Your function is void, it could return size instead.
-Sure, it can be done.
->
-> And big seems independant, could be returned by another function.
-Had included big in this function as it was calculated before we align the
-size to
-FAKE_NODE_MIN_SIZE. If we move the calculation of big to a separate
-function,
-it would compute the value after the alignment of size, which would always
-render
-big as zero, wouldn't it?
 
-And if I move the calculation of big to a separate function which takes in
-the precomputed
-size value as input and call it within the new helper, then I would still
-have to return big
-from this new helper, won't I?
+On 9/29/25 2:20 PM, Muchun Song wrote:
+> 
+> 
+>> On Sep 28, 2025, at 19:45, Qi Zheng <qi.zheng@linux.dev> wrote:
+>>
+>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>
+>> Similar to list_lru, the split queue is relatively independent and does
+>> not need to be reparented along with objcg and LRU folios (holding
+>> objcg lock and lru lock). So let's apply the same mechanism as list_lru
+>> to reparent the split queue separately when memcg is offine.
+>>
+>> This is also a preparation for reparenting LRU folios.
+>>
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> ---
+>> include/linux/huge_mm.h |  4 ++++
+>> mm/huge_memory.c        | 46 +++++++++++++++++++++++++++++++++++++++++
+>> mm/memcontrol.c         |  1 +
+>> 3 files changed, 51 insertions(+)
+>>
+>> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+>> index f327d62fc9852..0c211dcbb0ec1 100644
+>> --- a/include/linux/huge_mm.h
+>> +++ b/include/linux/huge_mm.h
+>> @@ -417,6 +417,9 @@ static inline int split_huge_page(struct page *page)
+>> 	return split_huge_page_to_list_to_order(page, NULL, ret);
+>> }
+>> void deferred_split_folio(struct folio *folio, bool partially_mapped);
+>> +#ifdef CONFIG_MEMCG
+>> +void reparent_deferred_split_queue(struct mem_cgroup *memcg);
+>> +#endif
+>>
+>> void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
+>> 		unsigned long address, bool freeze);
+>> @@ -611,6 +614,7 @@ static inline int try_folio_split(struct folio *folio, struct page *page,
+>> }
+>>
+>> static inline void deferred_split_folio(struct folio *folio, bool partially_mapped) {}
+>> +static inline void reparent_deferred_split_queue(struct mem_cgroup *memcg) {}
+>> #define split_huge_pmd(__vma, __pmd, __address) \
+>> 	do { } while (0)
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index bb32091e3133e..5fc0caca71de0 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -1094,9 +1094,22 @@ static struct deferred_split *folio_split_queue_lock(struct folio *folio)
+>> 	struct deferred_split *queue;
+>>
+>> 	memcg = folio_memcg(folio);
+>> +retry:
+>> 	queue = memcg ? &memcg->deferred_split_queue :
+>> 			&NODE_DATA(folio_nid(folio))->deferred_split_queue;
+>> 	spin_lock(&queue->split_queue_lock);
+>> + 	/*
+>> +	 * Notice:
+>> +	 * 1. The memcg could be NULL if cgroup_disable=memory is set.
+>> +	 * 2. There is a period between setting CSS_DYING and reparenting
+>> +	 *    deferred split queue, and during this period the THPs in the
+>> +	 *    deferred split queue will be hidden from the shrinker side.
 
-Please let me know if I am missing something.
->
-> > +}
-> > +
-> >   /*
-> >    * Sets up nr_nodes fake nodes interleaved over physical nodes
-ranging from addr
-> >    * to max_addr.
-> > @@ -100,21 +128,7 @@ static int __init split_nodes_interleave(struct
-numa_meminfo *ei,
-> >               nr_nodes =3D MAX_NUMNODES;
-> >       }
-> >
-> > -     /*
-> > -      * Calculate target node size.  x86_32 freaks on __udivdi3() so d=
-o
-> > -      * the division in ulong number of pages and convert back.
-> > -      */
-> > -     size =3D max_addr - addr - mem_hole_size(addr, max_addr);
-> > -     size =3D PFN_PHYS((unsigned long)(size >> PAGE_SHIFT) / nr_nodes)=
-;
-> > -
-> > -     /*
-> > -      * Calculate the number of big nodes that can be allocated as a
-result
-> > -      * of consolidating the remainder.
-> > -      */
-> > -     big =3D ((size & (FAKE_NODE_MIN_SIZE - 1UL)) * nr_nodes) /
-> > -             FAKE_NODE_MIN_SIZE;
-> > -
-> > -     size =3D ALIGN_DOWN(size, FAKE_NODE_MIN_SIZE);
-> > +     __calc_split_params(addr, max_addr, nr_nodes, &size, &big);
-> >       if (!size) {
-> >               pr_err("Not enough memory for each node.  "
-> >                       "NUMA emulation disabled.\n");
-> >
->
+The shrinker side can find this deferred split queue by traversing
+memcgs, so we should check CSS_DYING after we acquire child
+split_queue_lock in :
 
---000000000000888241063feb6b32
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+deferred_split_scan
+--> spin_lock_irqsave(&ds_queue->split_queue_lock, flags);
+     if (css_is_dying(&memcg->css))
+     --> retry to get parent split_queue_lock
 
-<div dir=3D"ltr"><br><br>On Fri, Sep 26, 2025 at 7:50=E2=80=AFPM Christophe=
- Leroy &lt;<a href=3D"mailto:christophe.leroy@csgroup.eu">christophe.leroy@=
-csgroup.eu</a>&gt; wrote:<br>&gt;<br>&gt;<br>&gt;<br>&gt; Le 26/09/2025 =C3=
-=A0 12:34, <a href=3D"mailto:pratyush.brahma@oss.qualcomm.com">pratyush.bra=
-hma@oss.qualcomm.com</a> a =C3=A9crit :<br>&gt; &gt; From: Pratyush Brahma =
-&lt;<a href=3D"mailto:pratyush.brahma@oss.qualcomm.com">pratyush.brahma@oss=
-.qualcomm.com</a>&gt;<br>&gt; &gt;<br>&gt; &gt; The size calculation in spl=
-it_nodes_interleave() has several nuances.<br>&gt; &gt; Move it to a separa=
-te function to improve code modularity and<br>&gt; &gt; simplify the readab=
-ility of split_nodes_interleave().<br>&gt; &gt;<br>&gt; &gt; Signed-off-by:=
- Pratyush Brahma &lt;<a href=3D"mailto:pratyush.brahma@oss.qualcomm.com">pr=
-atyush.brahma@oss.qualcomm.com</a>&gt;<br>&gt; &gt; ---<br>&gt; &gt; =C2=A0=
- mm/numa_emulation.c | 44 +++++++++++++++++++++++++++++---------------<br>&=
-gt; &gt; =C2=A0 1 file changed, 29 insertions(+), 15 deletions(-)<br>&gt; &=
-gt;<br>&gt; &gt; diff --git a/mm/numa_emulation.c b/mm/numa_emulation.c<br>=
-&gt; &gt; index 2a335b3dd46a..882c349c2a0f 100644<br>&gt; &gt; --- a/mm/num=
-a_emulation.c<br>&gt; &gt; +++ b/mm/numa_emulation.c<br>&gt; &gt; @@ -76,6 =
-+76,34 @@ static int __init emu_setup_memblk(struct numa_meminfo *ei,<br>&g=
-t; &gt; =C2=A0 =C2=A0 =C2=A0 return 0;<br>&gt; &gt; =C2=A0 }<br>&gt; &gt; =
-=C2=A0<br>&gt; &gt; +static void __init __calc_split_params(u64 addr, u64 m=
-ax_addr,<br>&gt; &gt; + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 int nr_no=
-des, u64 *psize, int *pbig)<br>&gt; &gt; +{<br>&gt; &gt; + =C2=A0 =C2=A0 u6=
-4 size, usable_size;<br>&gt; &gt; + =C2=A0 =C2=A0 int big;<br>&gt; &gt; +<b=
-r>&gt; &gt; + =C2=A0 =C2=A0 /* total usable memory (skip holes) */<br>&gt; =
-&gt; + =C2=A0 =C2=A0 usable_size =C2=A0=3D max_addr - addr - mem_hole_size(=
-addr, max_addr);<br>&gt; &gt; +<br>&gt; &gt; + =C2=A0 =C2=A0 /*<br>&gt; &gt=
-; + =C2=A0 =C2=A0 =C2=A0* Calculate target node size. =C2=A0x86_32 freaks o=
-n __udivdi3() so do<br>&gt; &gt; + =C2=A0 =C2=A0 =C2=A0* the division in ul=
-ong number of pages and convert back.<br>&gt; &gt; + =C2=A0 =C2=A0 =C2=A0*/=
-<br>&gt; &gt; + =C2=A0 =C2=A0 size =3D PFN_PHYS((unsigned long)(usable_size=
- &gt;&gt; PAGE_SHIFT) / nr_nodes);<br>&gt; &gt; +<br>&gt; &gt; + =C2=A0 =C2=
-=A0 /*<br>&gt; &gt; + =C2=A0 =C2=A0 =C2=A0* Calculate the number of big nod=
-es that can be allocated as a result<br>&gt; &gt; + =C2=A0 =C2=A0 =C2=A0* o=
-f consolidating the remainder.<br>&gt; &gt; + =C2=A0 =C2=A0 =C2=A0*/<br>&gt=
-; &gt; + =C2=A0 =C2=A0 big =3D ((size &amp; (FAKE_NODE_MIN_SIZE - 1UL)) * n=
-r_nodes) / FAKE_NODE_MIN_SIZE;<br>&gt; &gt; +<br>&gt; &gt; + =C2=A0 =C2=A0 =
-/* Align the base size down to the minimum granularity */<br>&gt; &gt; + =
-=C2=A0 =C2=A0 size =3D ALIGN_DOWN(size, FAKE_NODE_MIN_SIZE);<br>&gt; &gt; +=
-<br>&gt; &gt; + =C2=A0 =C2=A0 *psize =3D size;<br>&gt; &gt; + =C2=A0 =C2=A0=
- *pbig =C2=A0=3D big;<br>&gt;<br>&gt; Having to return simple type values t=
-hrough pointers is usually the<br>&gt; start of proplems.Whenever possible =
-you shouldn&#39;t returning simple types<br>&gt; via pointers.<br>Thanks Ch=
-ristophe for your comments. Can you please help me understand what kind of<=
-br>problems can we run into so I can be mindful of this going forward?<br>&=
-gt;<br>&gt; Your function is void, it could return size instead.<br>Sure, i=
-t can be done.<br>&gt;<br>&gt; And big seems independant, could be returned=
- by another function.<br>Had included big in this function as it was calcul=
-ated before we align the size to <br>FAKE_NODE_MIN_SIZE. If we move the cal=
-culation of big to a separate function,<br>it would compute the value after=
- the alignment of size, which would always render<br>big as zero, wouldn&#3=
-9;t it?<br><br>And if I move the calculation of big to a separate function =
-which takes in the precomputed<br>size value as input and call it within th=
-e new helper, then I would still have to return big<br><div>from this new h=
-elper, won&#39;t I?</div><div><br></div><div>Please let me know if I am mis=
-sing something.</div>&gt;<br>&gt; &gt; +}<br>&gt; &gt; +<br>&gt; &gt; =C2=
-=A0 /*<br>&gt; &gt; =C2=A0 =C2=A0* Sets up nr_nodes fake nodes interleaved =
-over physical nodes ranging from addr<br>&gt; &gt; =C2=A0 =C2=A0* to max_ad=
-dr.<br>&gt; &gt; @@ -100,21 +128,7 @@ static int __init split_nodes_interle=
-ave(struct numa_meminfo *ei,<br>&gt; &gt; =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 nr_nodes =3D MAX_NUMNODES;<br>&gt; &gt; =C2=A0 =C2=A0 =C2=
-=A0 }<br>&gt; &gt; =C2=A0<br>&gt; &gt; - =C2=A0 =C2=A0 /*<br>&gt; &gt; - =
-=C2=A0 =C2=A0 =C2=A0* Calculate target node size. =C2=A0x86_32 freaks on __=
-udivdi3() so do<br>&gt; &gt; - =C2=A0 =C2=A0 =C2=A0* the division in ulong =
-number of pages and convert back.<br>&gt; &gt; - =C2=A0 =C2=A0 =C2=A0*/<br>=
-&gt; &gt; - =C2=A0 =C2=A0 size =3D max_addr - addr - mem_hole_size(addr, ma=
-x_addr);<br>&gt; &gt; - =C2=A0 =C2=A0 size =3D PFN_PHYS((unsigned long)(siz=
-e &gt;&gt; PAGE_SHIFT) / nr_nodes);<br>&gt; &gt; -<br>&gt; &gt; - =C2=A0 =
-=C2=A0 /*<br>&gt; &gt; - =C2=A0 =C2=A0 =C2=A0* Calculate the number of big =
-nodes that can be allocated as a result<br>&gt; &gt; - =C2=A0 =C2=A0 =C2=A0=
-* of consolidating the remainder.<br>&gt; &gt; - =C2=A0 =C2=A0 =C2=A0*/<br>=
-&gt; &gt; - =C2=A0 =C2=A0 big =3D ((size &amp; (FAKE_NODE_MIN_SIZE - 1UL)) =
-* nr_nodes) /<br>&gt; &gt; - =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 FAKE=
-_NODE_MIN_SIZE;<br>&gt; &gt; -<br>&gt; &gt; - =C2=A0 =C2=A0 size =3D ALIGN_=
-DOWN(size, FAKE_NODE_MIN_SIZE);<br>&gt; &gt; + =C2=A0 =C2=A0 __calc_split_p=
-arams(addr, max_addr, nr_nodes, &amp;size, &amp;big);<br>&gt; &gt; =C2=A0 =
-=C2=A0 =C2=A0 if (!size) {<br>&gt; &gt; =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 pr_err(&quot;Not enough memory for each node. =C2=A0&quot;<br=
->&gt; &gt; =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 &quot;NUMA emulation disabled.\n&quot;);<br>&gt; &gt;<br>&gt;=
-</div>
+So during this period, we use parent split_queue_lock to protect
+child deferred split queue. It's a little weird, but it's safe.
 
---000000000000888241063feb6b32--
+>> +	 */
+>> + 	if (unlikely(memcg && css_is_dying(&memcg->css))) {
+>> + 		spin_unlock(&queue->split_queue_lock);
+>> + 		memcg = parent_mem_cgroup(memcg);
+>> + 		goto retry;
+>> + 	}
+>>
+>> 	return queue;
+>> }
+>> @@ -1108,9 +1121,15 @@ folio_split_queue_lock_irqsave(struct folio *folio, unsigned long *flags)
+>> 	struct deferred_split *queue;
+>>
+>> 	memcg = folio_memcg(folio);
+>> +retry:
+>> 	queue = memcg ? &memcg->deferred_split_queue :
+>> 			&NODE_DATA(folio_nid(folio))->deferred_split_queue;
+>> 	spin_lock_irqsave(&queue->split_queue_lock, *flags);
+>> + 		if (unlikely(memcg && css_is_dying(&memcg->css))) {
+>> + 		spin_unlock_irqrestore(&queue->split_queue_lock, *flags);
+>> + 		memcg = parent_mem_cgroup(memcg);
+>> + 		goto retry;
+>> + 	}
+>>
+>> 	return queue;
+>> }
+>> @@ -4275,6 +4294,33 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+>> 	return split;
+>> }
+>>
+>> +#ifdef CONFIG_MEMCG
+>> +void reparent_deferred_split_queue(struct mem_cgroup *memcg)
+>> +{
+>> + 	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
+>> + 	struct deferred_split *ds_queue = &memcg->deferred_split_queue;
+>> + 	struct deferred_split *parent_ds_queue = &parent->deferred_split_queue;
+>> + 	int nid;
+>> +
+>> + 	spin_lock_irq(&ds_queue->split_queue_lock);
+>> + 	spin_lock_nested(&parent_ds_queue->split_queue_lock, SINGLE_DEPTH_NESTING);
+>> +
+>> + 	if (!ds_queue->split_queue_len)
+>> + 		goto unlock;
+>> +
+>> + 	list_splice_tail_init(&ds_queue->split_queue, &parent_ds_queue->split_queue);
+>> + 	parent_ds_queue->split_queue_len += ds_queue->split_queue_len;
+>> + 	ds_queue->split_queue_len = 0;
+>> +
+>> + 	for_each_node(nid)
+>> + 		set_shrinker_bit(parent, nid, shrinker_id(deferred_split_shrinker));
+>> +
+>> +unlock:
+>> + 	spin_unlock(&parent_ds_queue->split_queue_lock);
+>> + 	spin_unlock_irq(&ds_queue->split_queue_lock);
+>> +}
+>> +#endif
+>> +
+>> #ifdef CONFIG_DEBUG_FS
+>> static void split_huge_pages_all(void)
+>> {
+>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+>> index e090f29eb03bd..d03da72e7585d 100644
+>> --- a/mm/memcontrol.c
+>> +++ b/mm/memcontrol.c
+>> @@ -3887,6 +3887,7 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
+>> 	zswap_memcg_offline_cleanup(memcg);
+>>
+>> 	memcg_offline_kmem(memcg);
+>> + 	reparent_deferred_split_queue(memcg);
+> 
+> Since the dying flag of a memcg is not set under split_queue_lock,
+> two threads holding different split_queue_locks (e.g., one for the
+> parent memcg and one for the child) can concurrently manipulate the
+> same split-queue list of a folio. I think we should take the same
+
+If we ensure that we will check CSS_DYING every time we take the
+split_queue_lock, then the lock protecting deferred split queue
+must be the same lock.
+
+To be more clear, consider the following case:
+
+CPU0              CPU1              CPU2
+
+                   folio_split_queue_lock
+                   --> get child queue and lock
+
+set CSS_DYING
+
+                                     deferred_split_scan
+                   unlock child queue lock
+                                     --> acquire child queue lock
+                                         ***WE SHOULD CHECK CSS_DYING 
+HERE***
+	
+
+reparent spilt queue
+
+The deferred_split_scan() is problematic now, I will fix it as follow:
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 5fc0caca71de0..9f1f61e7e0c8e 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -4208,6 +4208,7 @@ static unsigned long deferred_split_scan(struct 
+shrinker *shrink,
+         struct folio *folio, *next;
+         int split = 0, i;
+         struct folio_batch fbatch;
++       struct mem_cgroup *memcg;
+
+  #ifdef CONFIG_MEMCG
+         if (sc->memcg)
+@@ -4217,6 +4218,11 @@ static unsigned long deferred_split_scan(struct 
+shrinker *shrink,
+         folio_batch_init(&fbatch);
+  retry:
+         spin_lock_irqsave(&ds_queue->split_queue_lock, flags);
++       if (sc->memcg && css_is_dying(&sc->memcg->css)) {
++               spin_unlock_irqrestore(&ds_queue->split_queue_lock, flags);
++               memcg = parent_mem_cgroup(sc->memcg);
++ 
+spin_lock_irqsave(&memcg->deferred_split_queue.split_queue_lock, flags);
++       }
+         /* Take pin on all head pages to avoid freeing them under us */
+         list_for_each_entry_safe(folio, next, &ds_queue->split_queue,
+                                                         _deferred_list) {
+
+Of course I'll add helper functions and do some cleanup.
+
+Thanks,
+Qi
+
+
+> solution like list_lru does to fix this.
+> 
+> Muchun,
+> Thanks.
+> 
+> 
+>> 	reparent_shrinker_deferred(memcg);
+>> 	wb_memcg_offline(memcg);
+>> 	lru_gen_offline_memcg(memcg);
+>> -- 
+>> 2.20.1
+>>
+> 
+
 
