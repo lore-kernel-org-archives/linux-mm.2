@@ -4,239 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41158CAC5B5
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 13:28:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62EE7CAC5B0
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 13:47:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86D9D8E0012; Mon, 29 Sep 2025 09:28:01 -0400 (EDT)
+	id B0B0C8E0003; Mon, 29 Sep 2025 09:47:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 845218E0002; Mon, 29 Sep 2025 09:28:01 -0400 (EDT)
+	id AE2808E0002; Mon, 29 Sep 2025 09:47:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E58D8E0012; Mon, 29 Sep 2025 09:28:01 -0400 (EDT)
+	id 9F8848E0003; Mon, 29 Sep 2025 09:47:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E4AB8E0002
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 09:28:01 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DDADD1A039D
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 13:28:00 +0000 (UTC)
-X-FDA: 83942365920.17.435364E
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 9DE35C000A
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 13:27:56 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="FDQFFQ/Y";
-	spf=pass (imf10.hostedemail.com: domain of qiuxu.zhuo@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=qiuxu.zhuo@intel.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759152477;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E5DF8E0002
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 09:47:56 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1C508B8F5E
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 13:47:56 +0000 (UTC)
+X-FDA: 83942416152.23.A098ECC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 1D31E180004
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 13:47:53 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=P4mbpEoA;
+	spf=pass (imf24.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1759153674;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MBdvrfqWiqmxXwhhkFroymK27sgegmw4J6WLKD42sqo=;
-	b=1fhFEJ7QqhaSVTnbtj5KepIvSBqUazSw1RluB58O4tcc+WcxloVoB78uE8KNzSyKPgZ76+
-	uu3M+i4YjUHfyLqdYAA3+HCC+BuHhpF7VUjYIR5nuuKol4/7M+iJ1kuoVHA5lF9BJWDlFs
-	Ck6NOGQgZ2+v0tGZqQ3N87c6rjFptow=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1759152477; a=rsa-sha256;
-	cv=pass;
-	b=8J6e1+nowLlRBc7cB6IebehNWf/2lTn90q2ONG2Gp9hHJAAsFWUpxocKS3JqKi/1ycoEuY
-	T5hYi78tOeEKpkFqLoxuJkFf5ynszyUgAzA7AfNGpvSMbAgy5nR4ePVz2ROwuIMG6PTl/P
-	AWYhboOquWxow/w3uvShaRhcqwmdgzA=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="FDQFFQ/Y";
-	spf=pass (imf10.hostedemail.com: domain of qiuxu.zhuo@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=qiuxu.zhuo@intel.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759152477; x=1790688477;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=MBdvrfqWiqmxXwhhkFroymK27sgegmw4J6WLKD42sqo=;
-  b=FDQFFQ/YCLj2ia4KupB4ya+TUfYVQ6hakfklZOA1dw0OlCNFr7rCmEE7
-   FY0V02xzT6uyP2jE3Q3Y90LGG5BKvO6IT3NGuchem82iOBDyGwXOKAmiK
-   +u9dtCiRl5rNpmJRAI8dNyqT9dfMQCMMNHSNjbqiFhHBr40NVrQoXTE0R
-   GWhexX3dI1pYnl1tapuuRRxqmFY6RoV02QeAiBNlI35al2MDJQST3tW9A
-   nm68fPXJmhB9yqCJniaEADSQtCxam/1+dk9h+T92aRNi2UyTCOZn29AtY
-   bnhNGKz26TLuvvwcNCUqCBg+BPo9Ce8/sGgTY9Zx7hL2wBycrdry5n27w
-   Q==;
-X-CSE-ConnectionGUID: iChv1ehxQv+BRdPO6wufsg==
-X-CSE-MsgGUID: X+HamW7BSR+wVISgFdvGug==
-X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="72493601"
-X-IronPort-AV: E=Sophos;i="6.18,301,1751266800"; 
-   d="scan'208";a="72493601"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2025 06:27:56 -0700
-X-CSE-ConnectionGUID: zrwnF3+TSySSwjlElDhpDg==
-X-CSE-MsgGUID: 9j1zGLLfQLKY9g0KVQ19sw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,301,1751266800"; 
-   d="scan'208";a="183487598"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2025 06:27:54 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Mon, 29 Sep 2025 06:27:53 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Mon, 29 Sep 2025 06:27:53 -0700
-Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.45) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Mon, 29 Sep 2025 06:27:53 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BTtGZsE6RzZCbdAV0c8B1Ouz8r7mLJ8MgAlQ85nGjV31tzLBgw7mCgTZi8gFxZL1cNUgz4+DcrUMHNqYYftwnD7wSFgzhBVMErM9jWnZwjTR5y/OlYlgjYqR11Ze3kN4jVxf7u7QwoHKHgmfKrjT7BXbUsSneoHRiZnZKReclqqO46nJ+iZ4fqMmQMnIRHX6n8EJj1D1RWZdpbxc7bqIkLSTyyJtxuebAMvJLAnk2UOI6FesduN3BISPzwAPpQPBpA13A8Jco+h5AZkJ5v9aptFZa1zs+vp1Af/3vwGjmm2yCK9URPlsdmzgZPETQJhXA7uCLqtwcHHQpHZxlMmcnA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MBdvrfqWiqmxXwhhkFroymK27sgegmw4J6WLKD42sqo=;
- b=LnyGbUKiRzJQAOA9209hTfw7n3PJb0JWKZudD8B3j/86R/2uuZoREsLIQFx9K+MpfUEWoM/lvNzmy8HahDXL52cZMZfNUFMDFhLWhJx6cNBKfpxPIHSI7dz/046cywUCoseen6Ib9tDcA9PSmCAnHVbDexMkUFm/ZTFNRxkIpKKePEpjbP+ta38zBuUIlTiJfTm9ERATcs5N5W+Ikb9zzHjAJkyJaIZsmpu3aOUiY7sxg7TbKBLX22VTNE3i9s9clIwMBxOC/VAiiXkwmw1ay1iCLZycmPH1Bqe/afeCVNW+rYJhCM1SrwixUG5IvlGh3ZdUGnY0L1l5GD+wHm6LIQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SA1PR11MB7130.namprd11.prod.outlook.com (2603:10b6:806:29f::10)
- by SA2PR11MB4794.namprd11.prod.outlook.com (2603:10b6:806:f9::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.17; Mon, 29 Sep
- 2025 13:27:51 +0000
-Received: from SA1PR11MB7130.namprd11.prod.outlook.com
- ([fe80::fc98:7fe:bac0:f2d4]) by SA1PR11MB7130.namprd11.prod.outlook.com
- ([fe80::fc98:7fe:bac0:f2d4%5]) with mapi id 15.20.9094.021; Mon, 29 Sep 2025
- 13:27:51 +0000
-From: "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>
-To: Jiaqi Yan <jiaqiyan@google.com>
-CC: "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"david@redhat.com" <david@redhat.com>, "lorenzo.stoakes@oracle.com"
-	<lorenzo.stoakes@oracle.com>, "linmiaohe@huawei.com" <linmiaohe@huawei.com>,
-	"Luck, Tony" <tony.luck@intel.com>, "ziy@nvidia.com" <ziy@nvidia.com>,
-	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "npache@redhat.com"
-	<npache@redhat.com>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
-	"dev.jain@arm.com" <dev.jain@arm.com>, "baohua@kernel.org"
-	<baohua@kernel.org>, "nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
-	"Chen, Farrah" <farrah.chen@intel.com>, "linux-mm@kvack.org"
-	<linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Andrew Zaborowski
-	<andrew.zaborowski@intel.com>
-Subject: RE: [PATCH 1/1] mm: prevent poison consumption when splitting THP
-Thread-Topic: [PATCH 1/1] mm: prevent poison consumption when splitting THP
-Thread-Index: AQHcMChLk4bOL1ruf0K10LKRmZ1XGrSpJMYAgAECE3A=
-Date: Mon, 29 Sep 2025 13:27:51 +0000
-Message-ID: <SA1PR11MB7130ABC25E060D2CC4749E45891BA@SA1PR11MB7130.namprd11.prod.outlook.com>
-References: <20250928032842.1399147-1-qiuxu.zhuo@intel.com>
- <CACw3F50ijQ20Vg8ycMROSCccf_XtjB_fFvLGxvQZ7eaNQoLwGQ@mail.gmail.com>
-In-Reply-To: <CACw3F50ijQ20Vg8ycMROSCccf_XtjB_fFvLGxvQZ7eaNQoLwGQ@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR11MB7130:EE_|SA2PR11MB4794:EE_
-x-ms-office365-filtering-correlation-id: 62506935-17a3-429a-b032-08ddff5bfd37
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016|38070700021;
-x-microsoft-antispam-message-info: =?utf-8?B?VFdzVTRaNG15c0pJZy9xa1FGL0JOVmtLUmQ5Y2dMZno4WVRtVWtiaHd0OWQz?=
- =?utf-8?B?akcvMi81SU0zalVjeTVjZ2xJSVFyWmlqbnE2OTBBd2F3TmgwRXBjTDhKYkto?=
- =?utf-8?B?cDRCbkxlRCt3cG9VSm5pNEFYZnh5R3k5emhsbjdvUiswZVJ1ODVGd2NIRXFS?=
- =?utf-8?B?aEY1eXZacmtmdmNoTHJJWkErNXFia3BWdHNaWllPU0FZUVVWYkE2MTlHY1Fy?=
- =?utf-8?B?OW4yTlJpYm5EMWtlcEpJa2h2M3JWREdTVUJBUExJTkRsWS9rSWp2aVc3MGRI?=
- =?utf-8?B?RVdFZjNCVWZrdXhnSVd1Sk41bzNOZHFDTGh6QmZKdHpFd3VqRkNmenlOSzM0?=
- =?utf-8?B?ZytXbnZEMEJKL1diWm40c0xUazdVMFRYZnVtc01vUkR4TlhKNFZSRHB1dmV0?=
- =?utf-8?B?MzRGaFU3RWNlaUpNMTVTUExFbFNzOHRCUk5ETVppNlcwS29HUkFEK3NPSk8v?=
- =?utf-8?B?UUFUYUZWeFlWS2d2eHI3YnpBcEppeWpBNWxQZG9QQURBc1hiQ0dyTk9kcG5Y?=
- =?utf-8?B?T083enhLU3pzczg2TzVieVc5L3ViU1A1YzZMbUdiOWxBSHNsZXluUE42bVRV?=
- =?utf-8?B?NVFyU2pIUlVubi85aGNhZFlPUUFNTnRtRlVObloyeldzcEJncVhYS0lZYUtY?=
- =?utf-8?B?UHY0Si9MdmNWcjc4eUNrM0tvOE5pSnVJUlM3QktzY3NlWVVWNDVpNEFhUFFZ?=
- =?utf-8?B?MG41UE5KVzVqUVVmVnBBVnFZOS9LM2JCblgwTUwvc2s5dVB6WEdpZ0Qrd0dQ?=
- =?utf-8?B?b2xVWnBrLzdHdkFLRGVDVUlUMytVU2lOankxdFZ0L00xb3lnRkM2QlBaUUJ1?=
- =?utf-8?B?VTU3YmU1cWpzRy9FVk0zL2MzWGdsTGJhTDRWZjBRNkdsNjlOR1UwSHRsRFJP?=
- =?utf-8?B?b0hHbW55VFJOL0tlUnY5VXFRR1hDdG4ybVVLanJGMEV1SEZOVlVVKzN2NHZK?=
- =?utf-8?B?OVlmSGIyZis2WDdaa3R6Mjh0aUZKOFI1c0V6VkRVZ3h5VEFMcHZ3T0d1OUlX?=
- =?utf-8?B?ZjFhZElEMzQrQ0hnU3lMenVHcFpYMGZ4ODd2WXdHcXljRmJlSVF6T0EvZVJs?=
- =?utf-8?B?OURsRVpqK0liYTlScWRFL0JkUzYzK3k3Q2NyL3MvRC9xZERCYjBSa0ViZm92?=
- =?utf-8?B?dUZsNnZHSHhENWRmenFlRzVaNlVmdVJTR1g1eGgwNi8xTkp4Mk83NmRmMWsr?=
- =?utf-8?B?Z2lJOGM1dlY0UkgzampyREdnclBjVXJWeFZkREg5MU9oSnpkblQyNHdjQUtk?=
- =?utf-8?B?VUdEVGNzVkxQSkp6M1hGL2hHc0tzZXN4cG5MSkx3RkFLcTUreVhjMkpqdXhm?=
- =?utf-8?B?YXZNVjNhekdUTnNGd1p6Z3FxVDh4Ulk4N2wyZkl4NFI4dGlYQndWVnFDOWoz?=
- =?utf-8?B?TFdWc0svc1NFaHM5aXh2RUNCb1ZhZzkwaitTSjdFN0NUOVB6bTF0eWMvVDMy?=
- =?utf-8?B?Zi9HckM4Q0NjYkVSVEZPN0lCTXJ3cG1EMFJidElaRnRPYzJCNkJUUHlBWWVz?=
- =?utf-8?B?Vk1NTUtlUVZsT2YyQmxrdzU3akNHMlJXdnBFRmxST2pBU01EdElYMzVzZlB3?=
- =?utf-8?B?R2JyTXlPamlseGVGMzVBcnhUVXRqRmgrV2tpN29UYmpXd0EweVVJRmxRakc0?=
- =?utf-8?B?M2hwQWlKMllRamlVT3ZkYmZaaTNZK1FaTzhBVmhMSGFkS25UZGhOZVhDRlRy?=
- =?utf-8?B?aHFWMWh0bGxZZ1BRdzkwa2dYb0dia0ZZVzZGb3NvcW1OQSt0VHR1N1BoMDBG?=
- =?utf-8?B?SjgxQlpkTUN5NlpjYWszSUpieUhhR2FrMGsrYlYwUW9SMnFOR081dVYxNFlZ?=
- =?utf-8?B?eDVZU1FWUWNTMEtNQi9pN0o2R2Q1SVhiMUJESVYwYitzdVlpZWt0ZnRZQTV3?=
- =?utf-8?B?UWd4MTdkUjdPaDNjMHhxS0NmK2FDSlFrNzNNQ1FySDJUNWVMY0JlUXNyWk1N?=
- =?utf-8?B?Qmg2RFBZRUlLYUE1YmJuM3dFaXRoWjFhZUhNWk13RWd0VUEwS1ZjWEZrRTJV?=
- =?utf-8?B?STRJSVN1MDFvQmt5TERLOWVZZnBTTHdDeDN6bVBlNjVBd0RaWDZQV21WcTI3?=
- =?utf-8?Q?KWn5vI?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR11MB7130.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dkZKTU1oamlIRUVvdVp2Tm5QbGR4MUVVRmxqU1BaT3Z0YjVPaVZsZjJjaVBX?=
- =?utf-8?B?Z0NncW1TV1Z2RnNJVFRFZVREVjRVUTNmbmV0TmVFeWs5SEtzZWJudkphWDdF?=
- =?utf-8?B?WFo1TjBBeGludG9SMkwzbWc3SnpQVktjNUViZnNHeXRoS2EzTVhvL3N5UWlG?=
- =?utf-8?B?RFRJZ1BQaEJRWEo4bjVTdFNpc0xMaDAxUDlybXlUUkk0c3pPYjlHK0FFYTdv?=
- =?utf-8?B?ZTJVM09ad2wxcExRU0k3dHlEelNJaDlDSENDbjdTT2J5RVYrOXMxWWhaZ1dz?=
- =?utf-8?B?VUNmOXdBMlRjY3p3V1g3SSswMVQrdWErNnM1YndiaXNXd0RXaVQ0TnplM3Ni?=
- =?utf-8?B?cC81YnlDNURsOXBXQ1RwWmorQWhUd2ZycTliU3VidXJxZ1NVc2xwZHFkRkJM?=
- =?utf-8?B?UzFCUGExTzRhT3FHTUFNOGNTYS9PRVNkUVlkaE1vcjI1QlZoTFo3V1Y5N3JH?=
- =?utf-8?B?ZmV0YXNzM1RxU3BoUXo5VjdKcjZLd0xRV1hCLzA4Zng3MitnUFYzaW9RWFJ5?=
- =?utf-8?B?TGhWWWcrTmlNWHNiSng3bVN0dkVubndhMUNUVVNQTWVnazVtYklvbU00ZnBj?=
- =?utf-8?B?VXNQbk04WldXcTdYNEtNRGYzZlhTWlRmK3dLYWVnelpsK21ZaGk5eFlJRU8r?=
- =?utf-8?B?ai9rdXp0ak9nMTdSRldXK21qUDIycW9CV1FMTW5qdVdtMHNtQjdXa3FuTTgr?=
- =?utf-8?B?YkVjZHF4Z0N2eEpEZGY3em5XWmtKQ1g2NHNZYkFtRUlFdUc0QzREbHVscmI5?=
- =?utf-8?B?TWVmNzhxYk14VkUzNDBGcW9DRmlXbC9EUDZkUU5TR0xIQy9hT1dVN1JFVU1w?=
- =?utf-8?B?RDdsTjhPclBRZm1hU1luSmt2NUVwOVJmSDJnRUpramZ4S1lhNnF3RzJIRXdU?=
- =?utf-8?B?NDdvclRib3BDS3VKanVCOWl0STBHOWpsRmFYbXIrc0ZZSFo2YUZUTGlDODNv?=
- =?utf-8?B?TFhRVVI1WG9DcjU4d0xoVTlyOGU1STlKbThQbEhOUzVWZHFTdExrclNtWXVJ?=
- =?utf-8?B?VFVhSGJldkpIblUzVHowV1JicU5HSUlNKytrM1FTMzA4OHYrMHVlWEZ1Mm82?=
- =?utf-8?B?N1oxM0VNT0NYWkduV0xlUnFYT0pReEtYZXZvOVE3aE43dlhGZ0pQWFM1bCti?=
- =?utf-8?B?Wld5Y1FPN1lRYURhb3REWjVEOHVua2lpUU04ZnAzL2V3dHVEYkhPOHFYcUh2?=
- =?utf-8?B?TmR5Tjh1eDNzeURtMWNjSk03bHR5aXNjYkhKb2VKdnBucytCMncxU25qVmlm?=
- =?utf-8?B?dFJ4RFRFWTVrOGRNck9KVXpUTm9YSThYci8yU01MVmtVMXF2OU5HTTVySG1X?=
- =?utf-8?B?UFlWTGFIeDFtQmZxSVpERGM5WkhMSUlROGI2Q3F0YkxFdFprY0RLSUpWTVVt?=
- =?utf-8?B?Q2hoVnJ6T3RlbFV3TTdaZGdiemNRSHNUQXBjQUZBelZTcUEvS3pxbnpXWU5U?=
- =?utf-8?B?TFVBZDZtUld6YVR2cWwzTzdhUnppMGc0cW1sUlIyMjBlQnZkbTFkSDZ5YmNZ?=
- =?utf-8?B?OVFxRTUxaGR6eDIrQmxRK2ZTMVNvaXMwRlRYZlNjNlpJaEZuZ2E4bHNlckRj?=
- =?utf-8?B?VVNjblBPOCtvMDM3NjlOcWxodUZ2VlNxd2c3RXcrTkEvNjlJcFBoTlRCRTNE?=
- =?utf-8?B?VnJzMFRQTFBMNEVtandVTVFTaFpVSTVHOEFnT3JGb29tdWpmUHhNRnFmTWo3?=
- =?utf-8?B?ZWc0bEpkSDJHa2x4WlloWlUvMzlISGNqYkZOaWxSZnF1ODhNVmVxNUd6NkVv?=
- =?utf-8?B?YndRdjdISGZoaHFranBIU2pEMjR4aFFJdWdWRUJicGFjRlZaaWt0T0RuMlVD?=
- =?utf-8?B?NDI2dEpEWkV2SEk0MEx1c1E3ZkFTTGJuWlFGdEhhK2gwelZIeEtFZXdFL09H?=
- =?utf-8?B?b0gwOFNiOWUxbTJvV0JZc0dZUkdhWjErS3F2Zy94U1VGT21BbVBSVkNMemJW?=
- =?utf-8?B?NVRPakdmTHZFdUE4SGxGeE9zK3dCbEhiTUtlVXR4WGVBMi9KMXk4U1VHMEFZ?=
- =?utf-8?B?NUd4cXdMdUR0TjlsYVFldFNQWDNVc3hxbFlBaUlabnFERVRmR0JtRUNyeFk0?=
- =?utf-8?B?b2FXTHNTVWkyL3lBSzJDd0JJWVQrVmhNaE44TnR2bVZ0TUdzN0ZnRkQvSWV4?=
- =?utf-8?Q?jPAFlyBnMyewK0Gjw0yTN0vwr?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=7ea3/G61V6ZRYlB9brYL6UtCCXC//ALvHbNNNSv7z5c=;
+	b=KUupQmiR93tA4OeDiLLsVV26CDU3ASQucf6O4DpNv5lsxdDZGBMW8Z6dEFHu7k7uuWHtWC
+	bG+Yo22ar1Poqd01OkOURmaoG184SdJZcGF66ynd8wWeia8TY2kLlbYZEMhHsEVtsl04Fk
+	EYZBN6FQ5vHKOwdbKkI4aGhk4PgVTjc=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=P4mbpEoA;
+	spf=pass (imf24.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759153674; a=rsa-sha256;
+	cv=none;
+	b=gJS8qcir6T9L0j18jwRvbg8rDG2HTetvKLghtZHLvj4gOsp5BKa55BbRgcRuTqvGIOupjD
+	8BR6w+AGn+Urx95q5AMP0UYM1ycl6hesyhi3V3OUwDKv1XQLKK1qmHQjcpMT9xNXo6sWXM
+	eetIuONW4cTaiEftoBe3HEg/cI0GxQY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C48D743231;
+	Mon, 29 Sep 2025 13:47:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 792A6C113D0;
+	Mon, 29 Sep 2025 13:47:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1759153672;
+	bh=i8zaHMXkUiuMsK9+mWP4UUkYicXM43y26XFQuvBxK6k=;
+	h=Subject:To:Cc:From:Date:In-Reply-To:From;
+	b=P4mbpEoAYh0FExO0pYBgz83ozM9K7YeV/UjPBj/4DnjuGIiAkZLV7Q58Lc2zL4uvr
+	 pw/1c6cI1Y6uguYc/kGQ7PEbGEOb93fSur0gut3jW+QEYDrJ6Np4rNSosMK6WMiryc
+	 KE5aI3y6r//p2srKbbw29IWNgID61dGTXvCPY1J0=
+Subject: Patch "minmax: add in_range() macro" has been added to the 6.1-stable tree
+To: 20230206140639.538867-5-fengwei.yin@intel.com,
+	David.Laight@ACULAB.COM, Rodrigo.Siqueira@amd.com,
+	Xinhui.Pan@amd.com, adilger.kernel@dilger.ca, agk@redhat.com,
+	airlied@gmail.com, akpm@linux-foundation.org,
+	alexander.deucher@amd.com, alexandre.torgue@foss.st.com,
+	amd-gfx@lists.freedesktop.org, andrii@kernel.org,
+	andriy.shevchenko@linux.intel.com, anton.ivanov@cambridgegreys.com,
+	artur.paszkiewicz@intel.com, ast@kernel.org, bp@alien8.de,
+	brian.starkey@arm.com, christian.koenig@amd.com, clm@fb.com,
+	coreteam@netfilter.org, daniel@ffwll.ch, daniel@iogearbox.net,
+	dave.hansen@linux.intel.com, davem@davemloft.net,
+	dm-devel@redhat.com, dmitry.baryshkov@linaro.org,
+	dmitry.torokhov@gmail.com, dri-devel@lists.freedesktop.org,
+	dsahern@kernel.org, dsterba@suse.com, dushistov@mail.ru,
+	edumazet@google.com, evan.quan@amd.com, farbere@amazon.com,
+	fei1.li@intel.com, freedreno@lists.freedesktop.org, fw@strlen.de,
+	gregkh@linuxfoundation.org, haoluo@google.com,
+	harry.wentland@amd.com, hdegoede@redhat.com,
+	herve.codina@bootlin.com, hpa@zytor.co, m@kvack.org, jack@suse.com,
+	james.morse@arm.com, james.qian.wang@arm.com, jdelvare@suse.com,
+	jejb@linux.ibm.com, jernej.skrabec@gmail.com, jmaloy@redhat.com,
+	joabreu@synopsys.com, johannes@sipsolutions.net,
+	john.fastabend@gmail.com, jolsa@kernel.org, josef@toxicpanda.com,
+	kadlec@netfilter.org, keescook@chromium.org, kpsingh@kernel.org,
+	krzysztof.kozlowski@linaro.org, kuba@kernel.org,
+	linus.walleij@linaro.org, linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org, linux-staging@lists.linux.dev,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-sunxi@lists.linux.dev, linux-um@lists.infradead.org,
+	linux@armlinux.org.uk, linux@rasmusvillemoes.dk, linux@roeck-us.net,
+	liviu.dudau@arm.com, luc.vanoostenryck@gmail.com, luto@kernel.org,
+	maarten.lankhorst@linux.intel.com, malattia@linux.it,
+	markgross@kernel.org, martin.lau@linux.dev,
+	martin.petersen@oracle.com, maz@kernel.org, mchehab@kernel.org,
+	mcoquelin.stm32@gmail.com, mhiramat@kernel.org,
+	mihail.atanassov@arm.com, minchan@kernel.org, mingo@redhat.com,
+	mripard@kernel.org, mykolal@fb.com, ngu@kvack.org, pta@vflare.org,
+	pabeni@redhat.com, pablo@netfilter.org, peppe.cavallaro@st.com,
+	peterz@infradead.org, pmladek@suse.com, qiuxu.zhuo@intel.com,
+	quic_abhinavk@quicinc.com, quic_akhilpo@quicinc.com,
+	rajur@chelsio.com, richard@nod.at, robdclark@gmail.com,
+	rostedt@goodmis.org, rric@kernel.org, ruanjinjie@huawei.com,
+	sakari.ailus@linux.intel.com, samuel@sholland.org, sashal@kernel.org,
+	sdf@google.com, sean@poorly.run, senozhatsky@chromium.org,
+	shuah@kernel.org, snitzer@kernel.org, song@kernel.org,
+	sunpeng.li@amd.com, tglx@linutronix.de,
+	tipc-discussion@lists.sourceforge.net, tony.luck@intel.com,
+	tytso@mit.edu, tzimmermann@suse.de, wad@chromium.org, wens@csie.org,
+	willy@infradead.org, x86@kernel.org, yhs@fb.com,
+	ying.xue@windriver.com, yoshfuji@linux-ipv6.org
+Cc: <stable-commits@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 29 Sep 2025 15:47:49 +0200
+In-Reply-To: <20250924202320.32333-2-farbere@amazon.com>
+Message-ID: <2025092949-untapped-factoid-73cc@gregkh>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB7130.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 62506935-17a3-429a-b032-08ddff5bfd37
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Sep 2025 13:27:51.1019
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: NsEZa0bMkeA1cUIzmw0whkG6zQTqK4JQ/DSj0kZMC4Ku+Qj1sx5ZX6IYNSgd6uMg6wMQHBahNFJzasBS6R/TgQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB4794
-X-OriginatorOrg: intel.com
-X-Stat-Signature: jw5uunipfj1s95kc9bwpseteoh4b8gqc
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+X-Patchwork-Hint: ignore 
+X-Rspamd-Queue-Id: 1D31E180004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9DE35C000A
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1759152476-118115
-X-HE-Meta: U2FsdGVkX19WHRdR8B5JTxsf07cbQyVdwzfovOghcJdwpugRqC3/Uov5DRYncvoXqip1gSYJar9koBu0DS1W+QKXXivg/H85eNCZAqEOpynAPjjCWhIB0R8EsNmlg7dq3AObmKEZBT4n8acAoakKdknjtD6+ar4AlGF3d6aBdnhUaFn887aQsH4oYgqI9f7XRWwikT3+uaASOnZEGAFU9RBE5hpbVlEzMAj99O2wjxpAEnbAziczEfRYR92L+QhRxnTIimDxiEsrOMfwqUrxaNtOjI6n/7ldhoqVpBwcGHjCyI/q2leO9WqnkbweufVDm09lL75+K9MLM6EcrDKiSqWaV1JFFQojpMr7LnaWBcs0isKjUyYqFMyj+fxKXyPXP+7lQQ6xm/UrH+yM0dLwhtsGbl/6bDaisrv0pRZwYxqvHONG5JDPbcgWt5BXfkqaCZ+uNikkso6pW+R+58sbdFSV88sjNhvb1crLsAW1beH21Fd4Z4qPvX1QkSz8/5kQFu4VpHTt1xWd0Cy68RqxHHBfvJfBkvJEkZrFwuSWtz7IkSoXrxYheDRmoeolO7TaGZoV4IQD6Q8FCXPlyGI8f8UZj1WVd0AeSMVMvQkDiVKpmbaC0Os+7xAXltyej2SJw980SVn5MwnxK9BQmdkYZH+XcWLBdTN+GmkCpWdn6H7lTwOYQDgBixXTvCfdV+BOlpXROmKrGVqZizvA2zBvE9lwD0V00zfe6jV3HCWgHuYShsO38GSAK+RVRim2I6zO30xKXPnvrLnpxPWs4tlnDl61dpi62738GFaaz3xtpnIkCH0vzC18LyemLgr9kG1ofxXmrlas10DFHx3Ql+3zaQNJI62vEScechEzqR+BcCEhn5USwUAx+405RxGaqa7sEJ5XKrz9/1akKAhHPyDvGnuQYvft60mx4LwP+kG1ht16wlH2if39a5HaOxB+86CMzpuZuPbtq14iXd7b/T4
- PFuiVowm
- Df3bSiX3yCJVixHKqM3dbiLeqrUX/AG9OxYB5IJcS3s0u+fqqFSQLut/HSww7q1mG0T5JcYYIThvzIzAkzokoCqJYGQgtuvUmIVOCN0ndx0jrvzHPTaUaFQDiGYbUP8A2zb/v823M7oEL8tENztB2zb1JLTIF/3iYP1uycD7SEo2NaWmUhuzOOwKERmHrUIBJbbQh0UW7iDfuWSMLAAHzGAedgEYU3HbHU+MSrXyPAtnDUn8ADOL54YJOqezVF5K6qplGjy2c3jEdN9OKPin5B7DdhJoI2+edSKEOlvLzy2heLUh+2XyTVbCBoJog8y7g6Cdyam9itbBiuTvxXC97veGv9MFtvDSe9E0oAqANU6W9XrIlMqEVf32txdK0ofdru18Zk14L/tj1tpYPVtHr2MAakY0RYWfn5Qx+z/VbiIeNHO7z2Z2oe5Eep9WZcV6E6srd1Rego61cORX/+ElfoJNO5F+crR5LkkzzbhCzdI9Q6Q/0D0wMnYBLPWeXinShuV9uHbJ9MV0JLX1imt7UmwAwBpH9Tii6Lavh4t85UsxYLcTmwqyKhOoigIk+UCSn27+XObr85/ZoCH3btTirFtRwDEV/yJkcYw9PyuJ1GaBHXqNfcNVp8Wao05YXgjBFt3TQYxPT7hsb4ze8XJxoC/bcUiEfXi5dxQ+9/zII79YdUsMkYIzAtCAgdfMfQVia5r8yL9pBcPpPs2ZhZFbq2EaBAg==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: f1xwys3kcm7w3yorzqwricin5dp9xyrk
+X-HE-Tag: 1759153673-441791
+X-HE-Meta: U2FsdGVkX19SzE74LQ6sC1ZshxSOzCK4ZCGo0JyI7vbJVkeMdipridVSlTghLcwzQyrRTQvYpLpqt2VeOIQzeQgRpauDWzd5DYhdXYh7eBgNvDpSdm0a9I50AYjKG/lXi3FAWB0UUuzPDSULKn3N8atP6dJ+Q537kuIUSEV8mzZTrqmVTCPygjPsu+A7A7QVbwrIRbhtVprfyQlSC08MOB1F9xOdLACNH4CwxgZy9UThFcTcfGK498Nj+jBjKD2RTfJS0IX13qaHhlgOPAHvO/3cTPlBIjeZHVguDqnytmi8hCz1lzCYXoJ7KOFwytXQdPULJKkBAGctanxvucjyMlULnE1MUNpoAYqT4h922lm8yJGs1WCxPV8iBS6o0EpfTOQmUx5eHAFipHNUg650YWSAzsx8wrXtZyGaX762crL3uRFOcLMPqtBGdxswJ6Vpb6Uty7DkeeA11qYxsiG3nGVKPRcmSqhr9rqZTGbfTF6VUz/BbBTXILAYpSz4EB6pcQEBr9KJXojwLPahwHSjjj9Baa0ZYXFiHaizREhrA0NWH14lxxzajRcvXMTP9EfxiQHywUtT/vUG+nHzu9RvD/mYJySUOVMAKfkOpi+xj2yS9wGo41duBwNfGrlYbU/1n3uoyFpZbeWgk4g7DQkE/vzfZDdLHJ8oKYL6RONvKb59kHrKe/BKRgCsb5FPX1BdytLA9SSK10qwe0qnCxvRgGizacHXkc5fJo19Z8Rul+30uxzFywf8+4FVhYiHXVElm6FDFjiaXXgzxRJvdTdKuX76SiOZf6ZNh+B+U2ZmvvfjqzzeYZyMYa3lcBVMSzJqUQus3CnlfMFLy0ejLsU8bJov4d12Y4zZpAtAxhhCDL9vUSZilJdv6W4wenSWzkYxKJE2J7FzGpJ4P622t3g69jSoPINPGwPsQQPvy+8NOY90dSgzkd3VN9QjGbtqsr3MPgGHPlR6TaXMZBA2HMn
+ vQ9UI5Mt
+ uv9uOjJqTDR3d6VjHxFp9qMYvs+tz1qYK1lvtGYIySlk39S+5upbQNnk0vtIAHH5tjYbL/+Yhpq9g5P9x8DjK8frIxFCwT+mKRCo1V9l84gYhATzw1QHD+oBXj49MH9k5yJ8WogVJ2/n0gMZa6MW4z1qGf8nnp5Rfm9Sb2aPwkAr30zjcb3y5au4iEv+CpKGLMFvbLeCxj1rSWCe+a4XlsL1N0fsN3kVuMsnV7OWyg77L1KqUpKNEvrIk8GURLmO+cJvf8e/bvUTRiDG5/QVG6ALyNZn1j4M86KbFzsLPXp40geFopRDcgAm7f7cCS0Abvw+UFeJBjb0aEBcusf4ldJks3MRjdn4lA5pjdKp/I4A2BxjKAVZIbfRtDfgKmLOAcWe6+PUtP1gWye7dNFt5Pf+6En++wZD6/4BLzJ0rJ8XuCkfGcSOs9KaYNeP9piOve2cYVTAdDZE/VtGVD8TivGbMLhzCicPAtfdop45nPHHuuhL45yF+LxwcE9M8Acubuk+/HKZpjJRHoQOb60EMegj82N0FlFYLpq2brNKoXUkM7AL0dP91nk+xVpByjV8NSNXRJU4L4QDQGNx3uRkdK2Orv5lklg5e/d0KpVDIIuJEeqos+WzzvN+JipE3BRVc1T9KLWYblHUJZwNgOyFW4mES9K+3tP9EoM3GDba/LXK+kUYiRh115u81s6jXuhcZAmLSer4G3fXq1bBzXAqRWTv7FV96k1FSOxdaAnYyzb67I+w4EojuTBZ7aI0h4co3rsZsOrn9mznAeaL4lulth++AV47bSN/PqCHnOQqEEnyF4gdAKH4fW7MkXsVQpuOYVQkzYjU99B8Oq/ud+AvK/oTmQLxudckXW8jtxkp24bmgy1Q4OQoABQTQklbaxjFm4mzhi5jOgqtqq/jqdThK4tr1IOIfhQmiON3Nn/gd31/1agc3oFznTK2rXTF0/rQrTX40rymRgKtWTzdfrhFQaYTwde4l
+ YQNLns3o
+ bJUeILUnaRy5n7M6uhVfhP43HLWrtRVzH1DkiJmvN1zQuva/51TkV1gvalUY5AVFI1EoBUAmsvAfCYOoCd2ktV/fWPdhH2pAABQxOJOu+LOKKqouIvvk35yzekBPtLwE3Iy5K9/22EyhmsNImXYWBmbbkTlRs8/IfxjPekb9MlQe/HTAr4UniobQXdFW4pH5D/BAoEv4h4HWQ3QuuvZZW56NDZ8oQJI+MTEyQrUvx+Y+VeiE/iuJzUyiusLOH0DF/XljHbkcjtr8MKZR+JhbgkV7V6wnzx6czS8pnNI+VTdHoxrlFHJJYnZ1ylKVYCZzBmF0hx8UVWmBnU59aBxlIQ8HVRevfj9nCgVHOkAYwtCZqcEqanBo17Q4jUyA1JPNSNPrsPu6rlsaDcHE5QqJT4JQFT/ceeO3QQQzpz7uEB94zdH87DxflOjXqIHArV9ONNPBEURFa+yho6KmBMeolNpPsSwVfGqb6zK2F5aOaloQVNRV+U28T6pEF4x62sbkfG/d+nICKXX3gx0xQIdV7zW+fh+DcGJZSTb8d4hAL5IQzavK5KNzBDl+v2n5gg33JckV8t8mIJSrLwdIpoloVG3cCfx1GUojCZnqkEdS4RIDTTfQ1guIbdsWvf8w7ILZlqR2phgHoH24ECdeHJBh7SuckYhUSqvJ8yips9KEhj4lKoBTYp1/bYiTRDZ53ne4wkfH37EPJamHe1QvpuNHDQmuvY39WeB1ySL/GEZn5wJEm/KeIo/K7d6Fd8YMp8K647ZbyXC2Hsj82Q7A/Z5+pbpEWqhvta9jVT4a+L+wATJw3FuxPaza1kFUlSNNnp936ni0rjEVj+9uIvx7SPKogPkZrY9khulme6jIjhjwp22VP1g+Y6ikVdBRK/DtyUbNVGcSj2kwIckWl0bpUd02RhwP4yjwROabOlOGIXRL+Sr47xtp2aGk/YG7hUkeA3tfJhF4nNUJ1iOZTxqUnEKs5GP8ydAxg
+ 4CR3f1r8
+ pDsrpjSPnwCVYoiovJ8Pv9D+S7a4IwCsGN0B84RoGe78928kKUvxLvzxUlq/VJwbRB69zO2qYgmJXiQOxb6nuhgKVJ9VOaGUfw8ef+0S2LxEAB390l54BLs3fb0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -245,43 +142,508 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-SGkgSmlhcWksDQoNCj4gRnJvbTogSmlhcWkgWWFuIDxqaWFxaXlhbkBnb29nbGUuY29tPg0KPiBb
-Li4uXQ0KPiA+ICAgRmlyc3QgTWFjaGluZSBDaGVjayBvY2N1cnMgLy8gWzFdDQo+ID4gICAgIG1l
-bW9yeV9mYWlsdXJlKCkgICAgICAgICAvLyBbMl0NCj4gPiAgICAgICB0cnlfdG9fc3BsaXRfdGhw
-X3BhZ2UoKQ0KPiA+ICAgICAgICAgc3BsaXRfaHVnZV9wYWdlKCkNCj4gPiAgICAgICAgICAgc3Bs
-aXRfaHVnZV9wYWdlX3RvX2xpc3RfdG9fb3JkZXIoKQ0KPiA+ICAgICAgICAgICAgIF9fZm9saW9f
-c3BsaXQoKSAgLy8gWzNdDQo+ID4gICAgICAgICAgICAgICByZW1hcF9wYWdlKCkNCj4gPiAgICAg
-ICAgICAgICAgICAgcmVtb3ZlX21pZ3JhdGlvbl9wdGVzKCkNCj4gPiAgICAgICAgICAgICAgICAg
-ICByZW1vdmVfbWlncmF0aW9uX3B0ZSgpDQo+ID4gICAgICAgICAgICAgICAgICAgICB0cnlfdG9f
-bWFwX3VudXNlZF90b196ZXJvcGFnZSgpDQo+IA0KPiBKdXN0IGFuIG9ic2VydmF0aW9uOiBVbmZv
-cnR1bmF0ZWx5IFRIUCBvbmx5IGhhcyBQYWdlSGFzSFdQb2lzb25lZCBhbmQNCj4gZG9uJ3Qga25v
-dyB0aGUgZXhhY3QgSFdQb2lzb25lZCBwYWdlLiBPdGhlcndpc2UsIHdlIG1heSBzdGlsbCB1c2UN
-Cj4gemVyb3BhZ2UgZm9yIHRoZXNlIG5vdCBIV1BvaXNvbmVkLg0KPiANCg0KVGhhbmtzIGZvciBj
-YXRjaGluZyB0aGlzLiANCg0KTWlhb2hlIG1lbnRpb25lZCBpbiBhbm90aGVyIGUtbWFpbCB0aGF0
-IHRoZXJlIHdhcyBhbsKgSFdQb2lzb25lZCBmbGFnIGZvciB0aGUgcmF3IGVycm9yIDRLIHBhZ2Uu
-DQpXZSBjb3VsZCB1c2UgdGhhdCBmbGFnIGp1c3QgdG8gc2tpcCB0aGF0IHJhdyBlcnJvciBwYWdl
-IGFuZCBzdGlsbCB1c2UgdGhlIHplcm9wYWdlIGZvciBvdGhlcg0KaGVhbHRoeSBzdWItcGFnZXMu
-IEknbGwgdHJ5IHRoYXQuDQoNCj4gPiAgICAgICAgICAgICAgICAgICAgICAgbWVtY2hyX2ludigp
-ICAgICAgICAgICAgICAgICAgIC8vIFs0XQ0KPiA+ICAgICAgICAgICAgICAgICAgICAgICAgIFNl
-Y29uZCBNYWNoaW5lIENoZWNrIG9jY3VycyAgLy8gWzVdDQo+ID4gICAgICAgICAgICAgICAgICAg
-ICAgICAgICBLZXJuZWwgcGFuaWMNCj4gPg0KPiBbLi4uXQ0KPiA+IC0tLSBhL21tL21lbW9yeS1m
-YWlsdXJlLmMNCj4gPiArKysgYi9tbS9tZW1vcnktZmFpbHVyZS5jDQo+ID4gQEAgLTIzNTEsOCAr
-MjM1MSwxMCBAQCBpbnQgbWVtb3J5X2ZhaWx1cmUodW5zaWduZWQgbG9uZyBwZm4sIGludCBmbGFn
-cykNCj4gPiAgICAgICAgICAgICAgICAgICogb3RoZXJ3aXNlIGl0IG1heSByYWNlIHdpdGggVEhQ
-IHNwbGl0Lg0KPiA+ICAgICAgICAgICAgICAgICAgKiBBbmQgdGhlIGZsYWcgY2FuJ3QgYmUgc2V0
-IGluIGdldF9od3BvaXNvbl9wYWdlKCkgc2luY2UNCj4gPiAgICAgICAgICAgICAgICAgICogaXQg
-aXMgY2FsbGVkIGJ5IHNvZnQgb2ZmbGluZSB0b28gYW5kIGl0IGlzIGp1c3QgY2FsbGVkDQo+ID4g
-LSAgICAgICAgICAgICAgICAqIGZvciAhTUZfQ09VTlRfSU5DUkVBU0VELiAgU28gaGVyZSBzZWVt
-cyB0byBiZSB0aGUgYmVzdA0KPiA+IC0gICAgICAgICAgICAgICAgKiBwbGFjZS4NCj4gPiArICAg
-ICAgICAgICAgICAgICogZm9yICFNRl9DT1VOVF9JTkNSRUFTRUQuDQo+ID4gKyAgICAgICAgICAg
-ICAgICAqIEl0IGFsc28gdGVsbHMgc3BsaXRfaHVnZV9wYWdlKCkgdG8gbm90IGJvdGhlciB1c2lu
-Zw0KPiANCj4gbml0OiBpdCBtYXkgY29uZnVzZSByZWFkZXJzIG9mIHNwbGl0X2h1Z2VfcGFnZSB3
-aGVuIHRoZXkgZGlkbid0IHNlZSBhbnkgY2hlY2sNCj4gb24gdGhlIGh3cG9pc29uIGZsYWcuIFNv
-IGZyb20gcmVhZGFiaWxpdHkgUG9WLCBpdCBtYXkgYmUgYmV0dGVyIHRvIHJlZmVyIHRvIHRoaXMN
-Cj4gaW4gYSBtb3JlIGdlbmVyaWMgdGVybSBsaWtlIHRoZSAiZm9sbG93aW5nIFRIUCBzcGxpdHRp
-bmcgcHJvY2VzcyIgKEkgd291bGQNCj4gcHJlZmVyIHRoaXMpLCBvciB0byBwb2ludCBwcmVjaXNl
-bHkgdG8gX19mb2xpb19zcGxpdC4NCj4gDQoNCk9LLiBJJ2xsIHVwZGF0ZSB0aGlzIGNvbW1lbnQg
-aW4gdjIuDQoNCj4gRXZlcnl0aGluZyBlbHNlIGxvb2tzIGdvb2QgdG8gbWUuDQo+IA0KPiBSZXZp
-ZXdlZC1ieTogSmlhcWkgWWFuIDxqaWFxaXlhbkBnb29nbGUuY29tPg0KDQpUaGFua3MuDQoNCi1R
-aXV4dQ0K
+
+This is a note to let you know that I've just added the patch titled
+
+    minmax: add in_range() macro
+
+to the 6.1-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+
+The filename of the patch is:
+     minmax-add-in_range-macro.patch
+and it can be found in the queue-6.1 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.
+
+
+From prvs=3555e8f33=farbere@amazon.com Wed Sep 24 22:24:47 2025
+From: Eliav Farber <farbere@amazon.com>
+Date: Wed, 24 Sep 2025 20:23:02 +0000
+Subject: minmax: add in_range() macro
+To: <linux@armlinux.org.uk>, <richard@nod.at>, <anton.ivanov@cambridgegreys.com>, <johannes@sipsolutions.net>, <dave.hansen@linux.intel.com>, <luto@kernel.org>, <peterz@infradead.org>, <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>, <x86@kernel.org>, <hpa@zytor.com>, <tony.luck@intel.com>, <qiuxu.zhuo@intel.com>, <mchehab@kernel.org>, <james.morse@arm.com>, <rric@kernel.org>, <harry.wentland@amd.com>, <sunpeng.li@amd.com>, <Rodrigo.Siqueira@amd.com>, <alexander.deucher@amd.com>, <christian.koenig@amd.com>, <Xinhui.Pan@amd.com>, <airlied@gmail.com>, <daniel@ffwll.ch>, <evan.quan@amd.com>, <james.qian.wang@arm.com>, <liviu.dudau@arm.com>, <mihail.atanassov@arm.com>, <brian.starkey@arm.com>, <maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>, <tzimmermann@suse.de>, <robdclark@gmail.com>, <quic_abhinavk@quicinc.com>, <dmitry.baryshkov@linaro.org>, <sean@poorly.run>, <jdelvare@suse.com>, <linux@roeck-us.net>, <linus.walleij@linaro.org>, <dmitry.torokhov@gmail.com>
+ , <maz@k
+ ernel.org>, <wens@csie.org>, <jernej.skrabec@gmail.com>, <samuel@sholland.org>, <agk@redhat.com>, <snitzer@kernel.org>, <dm-devel@redhat.com>, <rajur@chelsio.com>, <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>, <peppe.cavallaro@st.com>, <alexandre.torgue@foss.st.com>, <joabreu@synopsys.com>, <mcoquelin.stm32@gmail.com>, <krzysztof.kozlowski@linaro.org>, <malattia@linux.it>, <hdegoede@redhat.com>, <markgross@kernel.org>, <artur.paszkiewicz@intel.com>, <jejb@linux.ibm.com>, <martin.petersen@oracle.com>, <sakari.ailus@linux.intel.com>, <gregkh@linuxfoundation.org>, <fei1.li@intel.com>, <clm@fb.com>, <josef@toxicpanda.com>, <dsterba@suse.com>, <jack@suse.com>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>, <dushistov@mail.ru>, <luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <mhiramat@kernel.org>, <pmladek@suse.com>, <senozhatsky@chromium.org>, <andriy.shevchenko@linux.intel.com>, <linux@rasmusvillemoes.dk>, <minchan@kernel.org>, <ngupta
+ @vflare.
+ org>, <akpm@linux-foundation.org>, <yoshfuji@linux-ipv6.org>, <dsahern@kernel.org>, <pablo@netfilter.org>, <kadlec@netfilter.org>, <fw@strlen.de>, <jmaloy@redhat.com>, <ying.xue@windriver.com>, <andrii@kernel.org>, <mykolal@fb.com>, <ast@kernel.org>, <daniel@iogearbox.net>, <martin.lau@linux.dev>, <song@kernel.org>, <yhs@fb.com>, <john.fastabend@gmail.com>, <kpsingh@kernel.org>, <sdf@google.com>, <haoluo@google.com>, <jolsa@kernel.org>, <shuah@kernel.org>, <keescook@chromium.org>, <wad@chromium.org>, <willy@infradead.org>, <farbere@amazon.com>, <sashal@kernel.org>, <ruanjinjie@huawei.com>, <quic_akhilpo@quicinc.com>, <David.Laight@ACULAB.COM>, <herve.codina@bootlin.com>, <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>, <linux-um@lists.infradead.org>, <linux-edac@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>, <linux-arm-msm@vger.kernel.org>, <freedreno@lists.freedesktop.org>, <linux-hwmon@vger.kernel.org>, <linux-i
+ nput@vge
+ r.kernel.org>, <linux-sunxi@lists.linux.dev>, <linux-media@vger.kernel.org>, <netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>, <platform-driver-x86@vger.kernel.org>, <linux-scsi@vger.kernel.org>, <linux-staging@lists.linux.dev>, <linux-btrfs@vger.kernel.org>, <linux-ext4@vger.kernel.org>, <linux-sparse@vger.kernel.org>, <linux-mm@kvack.org>, <netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>, <tipc-discussion@lists.sourceforge.net>, <bpf@vger.kernel.org>, <linux-kselftest@vger.kernel.org>, <stable@vger.kernel.org>
+Message-ID: <20250924202320.32333-2-farbere@amazon.com>
+
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+
+[ Upstream commit f9bff0e31881d03badf191d3b0005839391f5f2b ]
+
+Patch series "New page table range API", v6.
+
+This patchset changes the API used by the MM to set up page table entries.
+The four APIs are:
+
+    set_ptes(mm, addr, ptep, pte, nr)
+    update_mmu_cache_range(vma, addr, ptep, nr)
+    flush_dcache_folio(folio)
+    flush_icache_pages(vma, page, nr)
+
+flush_dcache_folio() isn't technically new, but no architecture
+implemented it, so I've done that for them.  The old APIs remain around
+but are mostly implemented by calling the new interfaces.
+
+The new APIs are based around setting up N page table entries at once.
+The N entries belong to the same PMD, the same folio and the same VMA, so
+ptep++ is a legitimate operation, and locking is taken care of for you.
+Some architectures can do a better job of it than just a loop, but I have
+hesitated to make too deep a change to architectures I don't understand
+well.
+
+One thing I have changed in every architecture is that PG_arch_1 is now a
+per-folio bit instead of a per-page bit when used for dcache clean/dirty
+tracking.  This was something that would have to happen eventually, and it
+makes sense to do it now rather than iterate over every page involved in a
+cache flush and figure out if it needs to happen.
+
+The point of all this is better performance, and Fengwei Yin has measured
+improvement on x86.  I suspect you'll see improvement on your architecture
+too.  Try the new will-it-scale test mentioned here:
+https://lore.kernel.org/linux-mm/20230206140639.538867-5-fengwei.yin@intel.com/
+You'll need to run it on an XFS filesystem and have
+CONFIG_TRANSPARENT_HUGEPAGE set.
+
+This patchset is the basis for much of the anonymous large folio work
+being done by Ryan, so it's received quite a lot of testing over the last
+few months.
+
+This patch (of 38):
+
+Determine if a value lies within a range more efficiently (subtraction +
+comparison vs two comparisons and an AND).  It also has useful (under some
+circumstances) behaviour if the range exceeds the maximum value of the
+type.  Convert all the conflicting definitions of in_range() within the
+kernel; some can use the generic definition while others need their own
+definition.
+
+Link: https://lkml.kernel.org/r/20230802151406.3735276-1-willy@infradead.org
+Link: https://lkml.kernel.org/r/20230802151406.3735276-2-willy@infradead.org
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/arm/mm/pageattr.c                                     |    6 +-
+ drivers/gpu/drm/arm/display/include/malidp_utils.h         |    2 
+ drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c |   24 +++++------
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c                      |    6 --
+ drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c            |   18 ++++----
+ drivers/virt/acrn/ioreq.c                                  |    4 -
+ fs/btrfs/misc.h                                            |    2 
+ fs/ext2/balloc.c                                           |    2 
+ fs/ext4/ext4.h                                             |    2 
+ fs/ufs/util.h                                              |    6 --
+ include/linux/minmax.h                                     |   27 +++++++++++++
+ lib/logic_pio.c                                            |    3 -
+ net/netfilter/nf_nat_core.c                                |    6 +-
+ net/tipc/core.h                                            |    2 
+ net/tipc/link.c                                            |   10 ++--
+ tools/testing/selftests/bpf/progs/get_branch_snapshot.c    |    4 -
+ 16 files changed, 65 insertions(+), 59 deletions(-)
+
+--- a/arch/arm/mm/pageattr.c
++++ b/arch/arm/mm/pageattr.c
+@@ -25,7 +25,7 @@ static int change_page_range(pte_t *ptep
+ 	return 0;
+ }
+ 
+-static bool in_range(unsigned long start, unsigned long size,
++static bool range_in_range(unsigned long start, unsigned long size,
+ 	unsigned long range_start, unsigned long range_end)
+ {
+ 	return start >= range_start && start < range_end &&
+@@ -63,8 +63,8 @@ static int change_memory_common(unsigned
+ 	if (!size)
+ 		return 0;
+ 
+-	if (!in_range(start, size, MODULES_VADDR, MODULES_END) &&
+-	    !in_range(start, size, VMALLOC_START, VMALLOC_END))
++	if (!range_in_range(start, size, MODULES_VADDR, MODULES_END) &&
++	    !range_in_range(start, size, VMALLOC_START, VMALLOC_END))
+ 		return -EINVAL;
+ 
+ 	return __change_memory_common(start, size, set_mask, clear_mask);
+--- a/drivers/gpu/drm/arm/display/include/malidp_utils.h
++++ b/drivers/gpu/drm/arm/display/include/malidp_utils.h
+@@ -35,7 +35,7 @@ static inline void set_range(struct mali
+ 	rg->end   = end;
+ }
+ 
+-static inline bool in_range(struct malidp_range *rg, u32 v)
++static inline bool malidp_in_range(struct malidp_range *rg, u32 v)
+ {
+ 	return (v >= rg->start) && (v <= rg->end);
+ }
+--- a/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c
++++ b/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c
+@@ -305,12 +305,12 @@ komeda_layer_check_cfg(struct komeda_lay
+ 	if (komeda_fb_check_src_coords(kfb, src_x, src_y, src_w, src_h))
+ 		return -EINVAL;
+ 
+-	if (!in_range(&layer->hsize_in, src_w)) {
++	if (!malidp_in_range(&layer->hsize_in, src_w)) {
+ 		DRM_DEBUG_ATOMIC("invalidate src_w %d.\n", src_w);
+ 		return -EINVAL;
+ 	}
+ 
+-	if (!in_range(&layer->vsize_in, src_h)) {
++	if (!malidp_in_range(&layer->vsize_in, src_h)) {
+ 		DRM_DEBUG_ATOMIC("invalidate src_h %d.\n", src_h);
+ 		return -EINVAL;
+ 	}
+@@ -452,14 +452,14 @@ komeda_scaler_check_cfg(struct komeda_sc
+ 	hsize_out = dflow->out_w;
+ 	vsize_out = dflow->out_h;
+ 
+-	if (!in_range(&scaler->hsize, hsize_in) ||
+-	    !in_range(&scaler->hsize, hsize_out)) {
++	if (!malidp_in_range(&scaler->hsize, hsize_in) ||
++	    !malidp_in_range(&scaler->hsize, hsize_out)) {
+ 		DRM_DEBUG_ATOMIC("Invalid horizontal sizes");
+ 		return -EINVAL;
+ 	}
+ 
+-	if (!in_range(&scaler->vsize, vsize_in) ||
+-	    !in_range(&scaler->vsize, vsize_out)) {
++	if (!malidp_in_range(&scaler->vsize, vsize_in) ||
++	    !malidp_in_range(&scaler->vsize, vsize_out)) {
+ 		DRM_DEBUG_ATOMIC("Invalid vertical sizes");
+ 		return -EINVAL;
+ 	}
+@@ -574,13 +574,13 @@ komeda_splitter_validate(struct komeda_s
+ 		return -EINVAL;
+ 	}
+ 
+-	if (!in_range(&splitter->hsize, dflow->in_w)) {
++	if (!malidp_in_range(&splitter->hsize, dflow->in_w)) {
+ 		DRM_DEBUG_ATOMIC("split in_w:%d is out of the acceptable range.\n",
+ 				 dflow->in_w);
+ 		return -EINVAL;
+ 	}
+ 
+-	if (!in_range(&splitter->vsize, dflow->in_h)) {
++	if (!malidp_in_range(&splitter->vsize, dflow->in_h)) {
+ 		DRM_DEBUG_ATOMIC("split in_h: %d exceeds the acceptable range.\n",
+ 				 dflow->in_h);
+ 		return -EINVAL;
+@@ -624,13 +624,13 @@ komeda_merger_validate(struct komeda_mer
+ 		return -EINVAL;
+ 	}
+ 
+-	if (!in_range(&merger->hsize_merged, output->out_w)) {
++	if (!malidp_in_range(&merger->hsize_merged, output->out_w)) {
+ 		DRM_DEBUG_ATOMIC("merged_w: %d is out of the accepted range.\n",
+ 				 output->out_w);
+ 		return -EINVAL;
+ 	}
+ 
+-	if (!in_range(&merger->vsize_merged, output->out_h)) {
++	if (!malidp_in_range(&merger->vsize_merged, output->out_h)) {
+ 		DRM_DEBUG_ATOMIC("merged_h: %d is out of the accepted range.\n",
+ 				 output->out_h);
+ 		return -EINVAL;
+@@ -866,8 +866,8 @@ void komeda_complete_data_flow_cfg(struc
+ 	 * input/output range.
+ 	 */
+ 	if (dflow->en_scaling && scaler)
+-		dflow->en_split = !in_range(&scaler->hsize, dflow->in_w) ||
+-				  !in_range(&scaler->hsize, dflow->out_w);
++		dflow->en_split = !malidp_in_range(&scaler->hsize, dflow->in_w) ||
++				  !malidp_in_range(&scaler->hsize, dflow->out_w);
+ }
+ 
+ static bool merger_is_available(struct komeda_pipeline *pipe,
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -680,12 +680,6 @@ struct block_header {
+ 	u32 data[];
+ };
+ 
+-/* this should be a general kernel helper */
+-static int in_range(u32 addr, u32 start, u32 size)
+-{
+-	return addr >= start && addr < start + size;
+-}
+-
+ static bool fw_block_mem(struct a6xx_gmu_bo *bo, const struct block_header *blk)
+ {
+ 	if (!in_range(blk->addr, bo->iova, bo->size))
+--- a/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
++++ b/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
+@@ -2126,7 +2126,7 @@ static const struct ethtool_ops cxgb_eth
+ 	.set_link_ksettings = set_link_ksettings,
+ };
+ 
+-static int in_range(int val, int lo, int hi)
++static int cxgb_in_range(int val, int lo, int hi)
+ {
+ 	return val < 0 || (val <= hi && val >= lo);
+ }
+@@ -2162,19 +2162,19 @@ static int cxgb_siocdevprivate(struct ne
+ 			return -EINVAL;
+ 		if (t.qset_idx >= SGE_QSETS)
+ 			return -EINVAL;
+-		if (!in_range(t.intr_lat, 0, M_NEWTIMER) ||
+-		    !in_range(t.cong_thres, 0, 255) ||
+-		    !in_range(t.txq_size[0], MIN_TXQ_ENTRIES,
++		if (!cxgb_in_range(t.intr_lat, 0, M_NEWTIMER) ||
++		    !cxgb_in_range(t.cong_thres, 0, 255) ||
++		    !cxgb_in_range(t.txq_size[0], MIN_TXQ_ENTRIES,
+ 			      MAX_TXQ_ENTRIES) ||
+-		    !in_range(t.txq_size[1], MIN_TXQ_ENTRIES,
++		    !cxgb_in_range(t.txq_size[1], MIN_TXQ_ENTRIES,
+ 			      MAX_TXQ_ENTRIES) ||
+-		    !in_range(t.txq_size[2], MIN_CTRL_TXQ_ENTRIES,
++		    !cxgb_in_range(t.txq_size[2], MIN_CTRL_TXQ_ENTRIES,
+ 			      MAX_CTRL_TXQ_ENTRIES) ||
+-		    !in_range(t.fl_size[0], MIN_FL_ENTRIES,
++		    !cxgb_in_range(t.fl_size[0], MIN_FL_ENTRIES,
+ 			      MAX_RX_BUFFERS) ||
+-		    !in_range(t.fl_size[1], MIN_FL_ENTRIES,
++		    !cxgb_in_range(t.fl_size[1], MIN_FL_ENTRIES,
+ 			      MAX_RX_JUMBO_BUFFERS) ||
+-		    !in_range(t.rspq_size, MIN_RSPQ_ENTRIES,
++		    !cxgb_in_range(t.rspq_size, MIN_RSPQ_ENTRIES,
+ 			      MAX_RSPQ_ENTRIES))
+ 			return -EINVAL;
+ 
+--- a/drivers/virt/acrn/ioreq.c
++++ b/drivers/virt/acrn/ioreq.c
+@@ -351,7 +351,7 @@ static bool handle_cf8cfc(struct acrn_vm
+ 	return is_handled;
+ }
+ 
+-static bool in_range(struct acrn_ioreq_range *range,
++static bool acrn_in_range(struct acrn_ioreq_range *range,
+ 		     struct acrn_io_request *req)
+ {
+ 	bool ret = false;
+@@ -389,7 +389,7 @@ static struct acrn_ioreq_client *find_io
+ 	list_for_each_entry(client, &vm->ioreq_clients, list) {
+ 		read_lock_bh(&client->range_lock);
+ 		list_for_each_entry(range, &client->range_list, list) {
+-			if (in_range(range, req)) {
++			if (acrn_in_range(range, req)) {
+ 				found = client;
+ 				break;
+ 			}
+--- a/fs/btrfs/misc.h
++++ b/fs/btrfs/misc.h
+@@ -8,8 +8,6 @@
+ #include <linux/math64.h>
+ #include <linux/rbtree.h>
+ 
+-#define in_range(b, first, len) ((b) >= (first) && (b) < (first) + (len))
+-
+ static inline void cond_wake_up(struct wait_queue_head *wq)
+ {
+ 	/*
+--- a/fs/ext2/balloc.c
++++ b/fs/ext2/balloc.c
+@@ -36,8 +36,6 @@
+  */
+ 
+ 
+-#define in_range(b, first, len)	((b) >= (first) && (b) <= (first) + (len) - 1)
+-
+ struct ext2_group_desc * ext2_get_group_desc(struct super_block * sb,
+ 					     unsigned int block_group,
+ 					     struct buffer_head ** bh)
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -3804,8 +3804,6 @@ static inline void set_bitmap_uptodate(s
+ 	set_bit(BH_BITMAP_UPTODATE, &(bh)->b_state);
+ }
+ 
+-#define in_range(b, first, len)	((b) >= (first) && (b) <= (first) + (len) - 1)
+-
+ /* For ioend & aio unwritten conversion wait queues */
+ #define EXT4_WQ_HASH_SZ		37
+ #define ext4_ioend_wq(v)   (&ext4__ioend_wq[((unsigned long)(v)) %\
+--- a/fs/ufs/util.h
++++ b/fs/ufs/util.h
+@@ -11,12 +11,6 @@
+ #include <linux/fs.h>
+ #include "swab.h"
+ 
+-
+-/*
+- * some useful macros
+- */
+-#define in_range(b,first,len)	((b)>=(first)&&(b)<(first)+(len))
+-
+ /*
+  * functions used for retyping
+  */
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -5,6 +5,7 @@
+ #include <linux/build_bug.h>
+ #include <linux/compiler.h>
+ #include <linux/const.h>
++#include <linux/types.h>
+ 
+ /*
+  * min()/max()/clamp() macros must accomplish three things:
+@@ -192,6 +193,32 @@
+  */
+ #define clamp_val(val, lo, hi) clamp_t(typeof(val), val, lo, hi)
+ 
++static inline bool in_range64(u64 val, u64 start, u64 len)
++{
++	return (val - start) < len;
++}
++
++static inline bool in_range32(u32 val, u32 start, u32 len)
++{
++	return (val - start) < len;
++}
++
++/**
++ * in_range - Determine if a value lies within a range.
++ * @val: Value to test.
++ * @start: First value in range.
++ * @len: Number of values in range.
++ *
++ * This is more efficient than "if (start <= val && val < (start + len))".
++ * It also gives a different answer if @start + @len overflows the size of
++ * the type by a sufficient amount to encompass @val.  Decide for yourself
++ * which behaviour you want, or prove that start + len never overflow.
++ * Do not blindly replace one form with the other.
++ */
++#define in_range(val, start, len)					\
++	((sizeof(start) | sizeof(len) | sizeof(val)) <= sizeof(u32) ?	\
++		in_range32(val, start, len) : in_range64(val, start, len))
++
+ /**
+  * swap - swap values of @a and @b
+  * @a: first value
+--- a/lib/logic_pio.c
++++ b/lib/logic_pio.c
+@@ -20,9 +20,6 @@
+ static LIST_HEAD(io_range_list);
+ static DEFINE_MUTEX(io_range_mutex);
+ 
+-/* Consider a kernel general helper for this */
+-#define in_range(b, first, len)        ((b) >= (first) && (b) < (first) + (len))
+-
+ /**
+  * logic_pio_register_range - register logical PIO range for a host
+  * @new_range: pointer to the IO range to be registered.
+--- a/net/netfilter/nf_nat_core.c
++++ b/net/netfilter/nf_nat_core.c
+@@ -242,7 +242,7 @@ static bool l4proto_in_range(const struc
+ /* If we source map this tuple so reply looks like reply_tuple, will
+  * that meet the constraints of range.
+  */
+-static int in_range(const struct nf_conntrack_tuple *tuple,
++static int nf_in_range(const struct nf_conntrack_tuple *tuple,
+ 		    const struct nf_nat_range2 *range)
+ {
+ 	/* If we are supposed to map IPs, then we must be in the
+@@ -291,7 +291,7 @@ find_appropriate_src(struct net *net,
+ 				       &ct->tuplehash[IP_CT_DIR_REPLY].tuple);
+ 			result->dst = tuple->dst;
+ 
+-			if (in_range(result, range))
++			if (nf_in_range(result, range))
+ 				return 1;
+ 		}
+ 	}
+@@ -523,7 +523,7 @@ get_unique_tuple(struct nf_conntrack_tup
+ 	if (maniptype == NF_NAT_MANIP_SRC &&
+ 	    !(range->flags & NF_NAT_RANGE_PROTO_RANDOM_ALL)) {
+ 		/* try the original tuple first */
+-		if (in_range(orig_tuple, range)) {
++		if (nf_in_range(orig_tuple, range)) {
+ 			if (!nf_nat_used_tuple(orig_tuple, ct)) {
+ 				*tuple = *orig_tuple;
+ 				return;
+--- a/net/tipc/core.h
++++ b/net/tipc/core.h
+@@ -197,7 +197,7 @@ static inline int less(u16 left, u16 rig
+ 	return less_eq(left, right) && (mod(right) != mod(left));
+ }
+ 
+-static inline int in_range(u16 val, u16 min, u16 max)
++static inline int tipc_in_range(u16 val, u16 min, u16 max)
+ {
+ 	return !less(val, min) && !more(val, max);
+ }
+--- a/net/tipc/link.c
++++ b/net/tipc/link.c
+@@ -1624,7 +1624,7 @@ next_gap_ack:
+ 					  last_ga->bgack_cnt);
+ 			}
+ 			/* Check against the last Gap ACK block */
+-			if (in_range(seqno, start, end))
++			if (tipc_in_range(seqno, start, end))
+ 				continue;
+ 			/* Update/release the packet peer is acking */
+ 			bc_has_acked = true;
+@@ -2252,12 +2252,12 @@ static int tipc_link_proto_rcv(struct ti
+ 		strncpy(if_name, data, TIPC_MAX_IF_NAME);
+ 
+ 		/* Update own tolerance if peer indicates a non-zero value */
+-		if (in_range(peers_tol, TIPC_MIN_LINK_TOL, TIPC_MAX_LINK_TOL)) {
++		if (tipc_in_range(peers_tol, TIPC_MIN_LINK_TOL, TIPC_MAX_LINK_TOL)) {
+ 			l->tolerance = peers_tol;
+ 			l->bc_rcvlink->tolerance = peers_tol;
+ 		}
+ 		/* Update own priority if peer's priority is higher */
+-		if (in_range(peers_prio, l->priority + 1, TIPC_MAX_LINK_PRI))
++		if (tipc_in_range(peers_prio, l->priority + 1, TIPC_MAX_LINK_PRI))
+ 			l->priority = peers_prio;
+ 
+ 		/* If peer is going down we want full re-establish cycle */
+@@ -2300,13 +2300,13 @@ static int tipc_link_proto_rcv(struct ti
+ 		l->rcv_nxt_state = msg_seqno(hdr) + 1;
+ 
+ 		/* Update own tolerance if peer indicates a non-zero value */
+-		if (in_range(peers_tol, TIPC_MIN_LINK_TOL, TIPC_MAX_LINK_TOL)) {
++		if (tipc_in_range(peers_tol, TIPC_MIN_LINK_TOL, TIPC_MAX_LINK_TOL)) {
+ 			l->tolerance = peers_tol;
+ 			l->bc_rcvlink->tolerance = peers_tol;
+ 		}
+ 		/* Update own prio if peer indicates a different value */
+ 		if ((peers_prio != l->priority) &&
+-		    in_range(peers_prio, 1, TIPC_MAX_LINK_PRI)) {
++		    tipc_in_range(peers_prio, 1, TIPC_MAX_LINK_PRI)) {
+ 			l->priority = peers_prio;
+ 			rc = tipc_link_fsm_evt(l, LINK_FAILURE_EVT);
+ 		}
+--- a/tools/testing/selftests/bpf/progs/get_branch_snapshot.c
++++ b/tools/testing/selftests/bpf/progs/get_branch_snapshot.c
+@@ -15,7 +15,7 @@ long total_entries = 0;
+ #define ENTRY_CNT 32
+ struct perf_branch_entry entries[ENTRY_CNT] = {};
+ 
+-static inline bool in_range(__u64 val)
++static inline bool gbs_in_range(__u64 val)
+ {
+ 	return (val >= address_low) && (val < address_high);
+ }
+@@ -31,7 +31,7 @@ int BPF_PROG(test1, int n, int ret)
+ 	for (i = 0; i < ENTRY_CNT; i++) {
+ 		if (i >= total_entries)
+ 			break;
+-		if (in_range(entries[i].from) && in_range(entries[i].to))
++		if (gbs_in_range(entries[i].from) && gbs_in_range(entries[i].to))
+ 			test1_hits++;
+ 		else if (!test1_hits)
+ 			wasted_entries++;
+
+
+Patches currently in stable-queue which might be from farbere@amazon.com are
+
+queue-6.1/minmax-fix-indentation-of-__cmp_once-and-__clamp_once.patch
+queue-6.1/minmax-add-in_range-macro.patch
+queue-6.1/minmax-deduplicate-__unconst_integer_typeof.patch
+queue-6.1/minmax-introduce-min-max-_array.patch
 
