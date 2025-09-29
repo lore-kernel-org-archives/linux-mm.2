@@ -4,128 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BE6ECAC5B5
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 07:05:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A2FFCAC5B0
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 07:14:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B78AF8E0003; Mon, 29 Sep 2025 03:05:53 -0400 (EDT)
+	id A2C2A8E0014; Mon, 29 Sep 2025 03:14:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B29A08E0002; Mon, 29 Sep 2025 03:05:53 -0400 (EDT)
+	id 9B5F38E0002; Mon, 29 Sep 2025 03:14:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3F3F8E0003; Mon, 29 Sep 2025 03:05:53 -0400 (EDT)
+	id 87D908E0014; Mon, 29 Sep 2025 03:14:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 924B58E0002
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 03:05:53 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 300ED57F30
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 07:05:53 +0000 (UTC)
-X-FDA: 83941402986.30.CE08AFB
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 72AB28E0002
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 03:14:17 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 099891602A3
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 07:14:17 +0000 (UTC)
+X-FDA: 83941424154.11.6C557DF
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf20.hostedemail.com (Postfix) with ESMTP id BF8131C000F
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 07:05:50 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KTjatXcQ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EdTVebLP;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KTjatXcQ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EdTVebLP;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by imf23.hostedemail.com (Postfix) with ESMTP id 91536140005
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 07:14:14 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qvsOAoWu;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5B2rxinS;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qvsOAoWu;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5B2rxinS;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759130055; a=rsa-sha256;
+	cv=none;
+	b=n5Hk+i5D1ixshWiJeqzl0+HYKI5yP7MHqkIRUyXWOYd/rnEZ6Mkxz8eD7puHjL6Dgg21s6
+	CVxthL4j11HouXSPjIbpz5xHygcn0dbngVzzARxR+QViAs3g8TQZOblH1JZ+kVv9bdwn5T
+	vniQU/wzoHB8nS8ibpgoKPvF95RnxGk=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qvsOAoWu;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5B2rxinS;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qvsOAoWu;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5B2rxinS;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759129551;
+	s=arc-20220608; t=1759130055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tNpRu4Z2OugfjqfNcQiZeCEO6pYjWJtUETttpSuKeCU=;
-	b=jdjykF+NIqxVjKlwdoh3O6kY9g5fVogKZe69apCFOjxcrkbxY/LFA6+LWbsbp2w2ILIWKt
-	hS3fnCvGrwsOIY4lZupdeoZZUM5HwQ++3aoTbxlpqY9lQyzc35CYsh9hN0hzgCGihv/5jr
-	9R65wzv0FePnxcEGF85IxHzuq6llSnw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759129551; a=rsa-sha256;
-	cv=none;
-	b=0MQq8ZgTidiA2HaL0yb0Hl12FVnQug+AO0SC8lHt4xQ1V16Ic6Rl6x7SRLMyJGZTwDBSIJ
-	R/Kq/sAEY0jkJNzPRd1I+L6Qy0ywMQtwzaL6ODk3SDeUwIylW+385uI3YQfcn87KuQl9te
-	EuWIxr4YMdlzRo1JAAV4nDh69+5m9IU=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KTjatXcQ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EdTVebLP;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KTjatXcQ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EdTVebLP;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	bh=B9AaWbGFpDWZOYuqnMD+7E3e81CpVcwRgDIw1Tv8xGA=;
+	b=ZJAhUfCzK6DVo/3JZeOOCYXCsVyYBRlrjFzHxrOp4shEMnC/T9GLzWG175GNKeYJd26YpA
+	kAL5pXlS5Ljw15GRQLr0Bc7/xTV+RSExCWw2X7Dor/rDzVsxbdK97fN6YTzydJv2iFXEW3
+	PLv1BUOrj2wMearwVFzyYG2oR/hCm6s=
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id F2F2B30567;
-	Mon, 29 Sep 2025 07:05:45 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 5703430724;
+	Mon, 29 Sep 2025 07:14:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759129546; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1759130051; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tNpRu4Z2OugfjqfNcQiZeCEO6pYjWJtUETttpSuKeCU=;
-	b=KTjatXcQdqXr+nYbhxwh+pR/Sq08Red373ivaGssSgf2D7VDXSR0UKecI6noeSRKhSgH5u
-	yZ88CEcwiXlef3yxrTP24rReS2mfq9zlEKfHlMDO/s31If0sVAD4iMfUrH/E0vlnseLfGd
-	W2tVjP2By3YI8HLwulydXN4yDSN+viM=
+	bh=B9AaWbGFpDWZOYuqnMD+7E3e81CpVcwRgDIw1Tv8xGA=;
+	b=qvsOAoWuHXrgPiL1hl4YuWa0RQ2Goaa/WbIFQSpa+PIJoYmJ4aOmK+aMBlXU46o8YDL45M
+	OyowUg5+U0yK6sV1BbT2PT9csKVa4jiu6GuIcgqwTSHYju/nvlGGjZsIVvlXCsOEGYkTKq
+	7srPzGVjV++WEYMA9cRAAvAVRexLgAk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759129546;
+	s=susede2_ed25519; t=1759130051;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tNpRu4Z2OugfjqfNcQiZeCEO6pYjWJtUETttpSuKeCU=;
-	b=EdTVebLPxPU3FldFp8y8Qqmu1iZ4BN8ljDY8UZMc+4UWvq3kTG8jVN2xqvEUVu3TdPsa8U
-	aw6tM+gssYwttPBg==
+	bh=B9AaWbGFpDWZOYuqnMD+7E3e81CpVcwRgDIw1Tv8xGA=;
+	b=5B2rxinSiVE1mrpqSY34o7rYAstH4wwgQkmBv+ZCpaXndS0At+AZEQLClO0TiwGklysWX2
+	VF4121wvhXczWTAw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759129546; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1759130051; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tNpRu4Z2OugfjqfNcQiZeCEO6pYjWJtUETttpSuKeCU=;
-	b=KTjatXcQdqXr+nYbhxwh+pR/Sq08Red373ivaGssSgf2D7VDXSR0UKecI6noeSRKhSgH5u
-	yZ88CEcwiXlef3yxrTP24rReS2mfq9zlEKfHlMDO/s31If0sVAD4iMfUrH/E0vlnseLfGd
-	W2tVjP2By3YI8HLwulydXN4yDSN+viM=
+	bh=B9AaWbGFpDWZOYuqnMD+7E3e81CpVcwRgDIw1Tv8xGA=;
+	b=qvsOAoWuHXrgPiL1hl4YuWa0RQ2Goaa/WbIFQSpa+PIJoYmJ4aOmK+aMBlXU46o8YDL45M
+	OyowUg5+U0yK6sV1BbT2PT9csKVa4jiu6GuIcgqwTSHYju/nvlGGjZsIVvlXCsOEGYkTKq
+	7srPzGVjV++WEYMA9cRAAvAVRexLgAk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759129546;
+	s=susede2_ed25519; t=1759130051;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tNpRu4Z2OugfjqfNcQiZeCEO6pYjWJtUETttpSuKeCU=;
-	b=EdTVebLPxPU3FldFp8y8Qqmu1iZ4BN8ljDY8UZMc+4UWvq3kTG8jVN2xqvEUVu3TdPsa8U
-	aw6tM+gssYwttPBg==
+	bh=B9AaWbGFpDWZOYuqnMD+7E3e81CpVcwRgDIw1Tv8xGA=;
+	b=5B2rxinSiVE1mrpqSY34o7rYAstH4wwgQkmBv+ZCpaXndS0At+AZEQLClO0TiwGklysWX2
+	VF4121wvhXczWTAw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C20DB13782;
-	Mon, 29 Sep 2025 07:05:45 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3554C13782;
+	Mon, 29 Sep 2025 07:14:11 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id PbGhLskv2mj+FAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 29 Sep 2025 07:05:45 +0000
-Message-ID: <3d54a546-77dd-4913-bcd0-7472aec8f53c@suse.cz>
-Date: Mon, 29 Sep 2025 09:05:45 +0200
+	id oteeDMMx2migFwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 29 Sep 2025 07:14:11 +0000
+Message-ID: <a6de773c-77f4-4f2b-b8fa-464493ca7c75@suse.cz>
+Date: Mon, 29 Sep 2025 09:14:10 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [syzbot] [mm?] WARNING in xfs_init_fs_context
-To: Christoph Hellwig <hch@infradead.org>,
- syzbot <syzbot+359a67b608de1ef72f65@syzkaller.appspotmail.com>
-Cc: akpm@linux-foundation.org, apopple@nvidia.com, baohua@kernel.org,
- byungchul@sk.com, cem@kernel.org, david@fromorbit.com, david@redhat.com,
- gourry@gourry.net, harry.yoo@oracle.com, joshua.hahnjy@gmail.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-xfs@vger.kernel.org,
- matthew.brost@intel.com, mhocko@suse.com,
- penguin-kernel@i-love.sakura.ne.jp, rakie.kim@sk.com,
- syzkaller-bugs@googlegroups.com, willy@infradead.org,
- ying.huang@linux.alibaba.com, ziy@nvidia.com
-References: <6861c281.a70a0220.3b7e22.0ab8.GAE@google.com>
- <68d973fc.a00a0220.102ee.002b.GAE@google.com>
- <aNop4ZBrfuqrX40Y@infradead.org>
+Subject: Re: [PATCH] rust: slab: add basic slab module
 Content-Language: en-US
+To: Danilo Krummrich <dakr@kernel.org>, Elijah Wright <git@elijahs.space>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org
+References: <20250924193643.4001-1-git@elijahs.space>
+ <DD1SGLU4180C.361W5XLH76XNC@kernel.org>
+ <DD4IKU7O94WN.2VALE9M80XGQ7@kernel.org>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -166,17 +166,17 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <aNop4ZBrfuqrX40Y@infradead.org>
+In-Reply-To: <DD4IKU7O94WN.2VALE9M80XGQ7@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: BF8131C000F
-X-Stat-Signature: yrfbxeqzfqpcjymmhgmi69mt7yar1a5e
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 91536140005
+X-Stat-Signature: d67ux1eyjm5yj7ehsna9omk5r1ppnhsb
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1759129550-190608
-X-HE-Meta: U2FsdGVkX1+MQm9vdyauiCWuREcgX6+n1T7Cj/aBw7JtDaOw0tR5b7MIUKl34XHqQcXvfAjrcKK6KnSJxEeEsERjffnWMxjcCl94xrlCLRSP7Z+Zf1GenQ+qWWgwFvlkfPd6p+kGGCpObu4Rfyhb+tKXAHAFwL1j//z3nHA+s/QW7eNrvPI+K4J1FQWa4oaW/6VOS61hgK1vqNesn2JvTyTeIOVUfX4u5FTz7JX9eLYnlyGgNswxfTtc0hajnX1Xj6tD6Pg2JWgi86tTMfrULe7xk07lUvsJjGEdm3ER2KDD+kO0FHy3w+z9pjdnnRfqHl2+XiHv4psfqRpVOpEZYFYjMYVK10TntTP0un/ceH0UqXjyeBv60LXDjVWIAeeGpJMCbhjUDB6ZEPcu8K7qAlRj+J77VF9yQYt+bPc1/CyQtXsldhyKaX0yTLHqvMOorQw5+g+AFYCQQ3ltRKt2SfpNRc2j8CSNlgjB3gnfLZkJfxZ4HjbUW8EjFnM8XibRLjziq6TFUPB1eWhcmjWrGc6gA2RD6kQpY4UymgXME3ltEjUIAuxbOs62A6Dd+Lm+ZSAGLuovm9wSOqfA9WtpdXNdZHJOTNLRkKU5VJquosBliZG08Cz/IuqA9qlc983KV3izSUzu39M5oxt5RxZnMpQGoDHpdz4yDN2POKmnwwz6bUpEK6TY6vnPZTRmyXAjshC1qSCC6hv1ymScs/v09SpOe/6uJD2ZDuzSmVRnoaGe8dPJe55oqjDXpISnn4SE/9MSqpytwFZsrh7loRM8dCQb7+W9f4AUwAkIL94dKPLS7Ovd1JnaFsV717AlToKgxqXQV+7/2MztxYUyWTjaHTZEePwLCcls9v4w/4fMNkwRIK6Mt7pc5Us2+HhK6cVeJVVqMBi2dOe/ZscBvZXdFXD3ri77e4nkC5bEM8JiAII2VjOMaswUvPTJHKrwskUn3luZNcww7Pe1yKHeWfZ
- XRpki0qU
- 4jOUSgM2uhUkBtKjw6dTTcolCVjM9MjioT7BWNM+qS0Tc/l+JVdhF9YrxFiv0GhIk48lJ+ooQmkQhZ39h6LzSLLmCsJW+0DxEKgcX9p9kbnc8VQiDSmZy9uJkyUEnUw+GMdxchvjr/9hocBqbPYAUy+jr+y71dhoJu1j+p6rkdZiy4GyOT1eBhPbTq0tOuuKFEgbwioSTvrb/OO3vLyhCcTImhaNl4tCUbT7gBTtZOCDsdIPfTLrrEFpAV0rYDqjnp+EZmjBzmd0s1GsA6GLgIYRHJ9jbDvqvU6l2LUOjLIAFyb9rP/WLsAU9fVGVUm0Ds/U67vujK61qZBpIWW+hA0o87KDUJnxwzvaPuSXsv+SbmNfXlTwwY36TabGEdCpjTVvZSluhfaSnmuX9jxpjdhXMguAPh5EiivVnK2kBScX6NhvfQAiQh1EWIgMPUpuFgNgrKpRn/jKAk33sS9kfdrDC1LQ0XFFmE6Q6
+X-HE-Tag: 1759130054-392926
+X-HE-Meta: U2FsdGVkX1/HT3eg4/NL+hf4zUEwYWuHI2rq6nHKwTmZna5fdfVzBdt+DUSGVwj87Ztmo4ktwojzZK18xSpdwATzFFimta6o9imrN1IUrL3qchKmrdpOyrehtjCynQIRVgeCAFUEoh2zun4ztV3EknWNw4aSBoi6ra6Hl85i/UM3b3EQEXmBt6LkZT6mJ9g9klAPoiu/xPYeeFU8lNxXCFmwYx8MA7W3BckcPav8TfHFYU5TldFsQKbcihAl/i6qkJ8sYktZsma4pNT5tZ7i2uwtqOg2DsWXQTq0rNj9VjcVb8OZgjnxoO9vz6f9rCoMob8leM8OEs0u5sWI2CS5ZdR6JFHxxrtWvTQmNWAWZnzjNpsEgA0sQWgaqQzTvfxXR/vYVy23YfmQsFz4OBtlzp38INgP6iKXsmFDWrsy1u19yMtfkLpbzFJAiFIBAVIaYYEqBHdDAUtrE5BSy7mqC288D26irCl5UyMZKpmQ8PGmw6VIehkHntwVGOa9tiSaoIY+zMf1h68zLS+z1YbtrNrWxaCgdmEz7uh4lezFb5D+M5AWWa5SXvozoL4SPbdK4VZO61t/uxFaI/Uqah0UX+/f+yxxBdJcZDonw7V8PjgiVJCGcWva8Blbi7ctqWb8jirFEJSN+UPhqKU05QhwkVaR70hG0YCR/aHQbfev9IwBBmNO8lxvS25emYLz6fV+G3vrmWHyqHjVojnhW1LsFaEH4j/Vvtqrl71hXjmvIzhIsnUEcMmHNcM/puniDbNXM6Y5eqNhOtejDuWRD5FqKyy9mIk2heYz48gloCl4NqNJRjPUWPqRjKzWxwICO9rbCL8vI0lPx7k6u9VyCik58WtKUNUhPdIm/anJROUaw9yKAb+zyNAYU3Wrj673BuiwnmigzBLN+n4Gm/BYvXfAG/B4lxV95WNWTcoGdMvfhW253mLZkAI7bU+kolX2+pTOxmqC5Jk9laKOm8EASCA
+ F1821Se6
+ OjmWMKrWRULbykCuW239KNURBQFfUWyD5/chxEjfqGr8K8bccsoMUFQYRPITC2e2P5XChDdimnO+9GsRlmySntHPZE4OGav4RFffEzYmuYzEkTAuofvWN9Z12GlgR/cbZx7cRDgCcHHTJMnki45jsTkKRrAkRX0AP/AyYGlMshnDcUl969TU13Vg5/ZboLDZi4RlSa61MB8vjkXQTKXOz5PXPBp3s5B+l+87vV9CL3IoAjcsjgziBPYhZSJwBEE/6+8mJ42WJQFJudZimUTO2ntSbViXSgxP3LaENkVNmBNaJzNJ0iBG4S5bvAw++wlQnjNc+8p8z+hkPuxgvThrSh4aZZCq861Ts+0G/kquxk52q1vM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,31 +185,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/29/25 08:40, Christoph Hellwig wrote:
-> This looks like slub turning a < PAGE_SIZE allocation into a order > 0
-> folio allocation, which the page allocator then complains about.
-
-It's order-1 to order-2 but in principle yes.
-
-> We'll either need to make slab not propagate < PAGE_SIZE allocations
-> to order > 0 page allocation
-
-It normally doesn't, but enabling debugging stuff can do that. In this case
-it seems to be KASAN, but could be also slub's own redzones etc.
-
-, or make the page allocator handle the
-> latter.
-
-It handles it, but warns you're doing something you shouldn't, as
-__GFP_NOFAIL allocations shouldn't be large. We could just silence it if
-it's due to debugging. SLUB could check if page allocation is bloated due to
-debugging and there's __GFP_NOFAIL, and then add an extra gfp flag to
-silence the warning. We could use __GFP_NOWARN with the risk of someone else
-combining __GFP_NOFAIL and __GFP_NOWARN to silence this. Or invent some
-other internal flag, but there's not many bits left.
-
-> And XFS shouldn't need the NOFAIL allocation here, but this will break
-> things elsewhere as well.
+On 9/28/25 16:47, Danilo Krummrich wrote:
+> On Thu Sep 25, 2025 at 11:54 AM CEST, Danilo Krummrich wrote:
+>>   (3) Implement a macro to generate a custom KmemCache Allocator trait
+>>       implementation for every KmemCache instance with a static lifetime.
 > 
+> Thinking about it a bit more, I think we should go with option (3) for now.
+> 
+> With its only limitation being that it always binds the lifetime of a kmemcache
+> to the module lifetime, it still seems to be the best option, considering that
+> the alternatives require additional synchronization in hot paths, may *silently*
+> leak the kmemcache, cause significant code duplication or break dynamic
+> dispatch.
+> 
+> Tieing the kmemcache to the module lifetime should cover the vast majority of
+> use-cases; should we ever really need something else we can still revisit the
+> options.
+
+Sounds good.
+
+> Thanks,
+> Danilo
 
 
