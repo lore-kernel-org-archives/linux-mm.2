@@ -4,100 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E109CAC5B0
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 21:17:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29B94CAC5B9
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 21:18:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFB558E0025; Mon, 29 Sep 2025 17:17:53 -0400 (EDT)
+	id 86B778E002A; Mon, 29 Sep 2025 17:18:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E850A8E0002; Mon, 29 Sep 2025 17:17:53 -0400 (EDT)
+	id 842C18E0002; Mon, 29 Sep 2025 17:18:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4DC48E0025; Mon, 29 Sep 2025 17:17:53 -0400 (EDT)
+	id 7801C8E002A; Mon, 29 Sep 2025 17:18:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BA9528E0002
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 17:17:53 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 765A51404F8
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 21:17:53 +0000 (UTC)
-X-FDA: 83943550026.20.D451A73
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 68DB98E0002
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 17:18:01 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1DE9DB946E
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 21:18:01 +0000 (UTC)
+X-FDA: 83943550362.24.4CA5D8C
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 32BF1A0016
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 21:17:51 +0000 (UTC)
+	by imf15.hostedemail.com (Postfix) with ESMTP id E87ADA001A
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 21:17:58 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eSzIvrH3;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="RkrDBj/m";
 	spf=pass (imf15.hostedemail.com: domain of alex.williamson@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=alex.williamson@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759180671;
+	s=arc-20220608; t=1759180679;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pary30BmU4/NqakwYdG1eNkY0RiL1NyFW4TmIsuJ5GE=;
-	b=rrKVMb6pLzfn00HteG38k+1oRN7Xeb27DmK0gtl9170DFEizENvQ3F2JmkAPCOC5+ZnGkQ
-	u6XLbO2HnPeIU4WrfDDShmo7GWWVHIViDeDnSBG4lg5kRO/IRsSTExq1aDtA4joYakeNRb
-	uYdlHqi0rA+y94JADQ5orJBsp/SBV1o=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759180671; a=rsa-sha256;
+	bh=tBEzt7vDi7cQon8pe4PxgzLkANUC3bHfRN0ntBJldU8=;
+	b=XFUhs4FFXPKMUSNbuRsZJR9zcdUfWtY5e2X1eS8sB+v2r3ZloljxaasXERemBg+6KzeRsS
+	FiyAadZX9LRVR8jw72ndGuiJVWNyL9ksdFV2KXfxLD4zzAWK6ojxWk9Z/E4RzJ34lCNsva
+	nR/BmIE0V4w5gmH2PSHXUqhIiOQToWA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759180679; a=rsa-sha256;
 	cv=none;
-	b=IMJfugS2BipxARVhfVcFJSziKj9VUwAGRzXiIvJ4sRvKDX0/m6JpRR5bdtnVCkSC0TuEa5
-	vt8mLBDnEVkZmpZjMWlPeH7WNUa5EzaQcecXA7kDvs1AmKtZHtTJ2OMDE6Zhs8fWWXjYf/
-	dvsfohfQBBXEZix6MXATx1/tefE1MwQ=
+	b=M5h4htvboW6k04XTL/dR6rZSZZn6lFlnkU1AQLAwV3MpK3PHLtTe2w98p/LI4y2XF9YtJX
+	WOAQfQ8fYeDMCtmR3MkoIGbsV4zdJPHKUMNN0k061Y6QsDwZw2h1nGzyTUqQmIl3q7202A
+	g9ZI+pPw7waOnnGm4OGHuATEwE2Sj5w=
 ARC-Authentication-Results: i=1;
 	imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eSzIvrH3;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="RkrDBj/m";
 	spf=pass (imf15.hostedemail.com: domain of alex.williamson@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=alex.williamson@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759180670;
+	s=mimecast20190719; t=1759180676;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pary30BmU4/NqakwYdG1eNkY0RiL1NyFW4TmIsuJ5GE=;
-	b=eSzIvrH3TgR0u/E7xT35nD+af8z61fl3d06j8oab4bPnIAOmHnplVN848Li+daD8aG2NUl
-	eo9ppaNIkhWD0cfULhpqQAOKXbhi3NB/3F3Q77eGKJqGllFgASG+czUoRAp9Mk3BRKkKmM
-	PaGkjgchT4tV6RFaWyNW7XHFmxsUftE=
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
- [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=tBEzt7vDi7cQon8pe4PxgzLkANUC3bHfRN0ntBJldU8=;
+	b=RkrDBj/mQQk4PuIztoKVAa3F2+AgcdomwVixFGYufQg5Deu8Zu98l2VqcGwMvtnlXwzK2H
+	cG9/BomPpzqSUCEikh5TuwzGREP/mQVr8dmbK1XBjwWdJsIQZE0NO5BIWnnTE64b90C+eF
+	fxqqlsuusBPTCfMUM0qyIVLL7DJf8y0=
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com
+ [209.85.166.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-610-kS1B4gpvOjimKQFeukoh4g-1; Mon, 29 Sep 2025 17:17:49 -0400
-X-MC-Unique: kS1B4gpvOjimKQFeukoh4g-1
-X-Mimecast-MFC-AGG-ID: kS1B4gpvOjimKQFeukoh4g_1759180668
-Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-42b2a51fab6so3496305ab.0
-        for <linux-mm@kvack.org>; Mon, 29 Sep 2025 14:17:49 -0700 (PDT)
+ us-mta-694-JnWIcOpMNuinSdJghUovPg-1; Mon, 29 Sep 2025 17:17:53 -0400
+X-MC-Unique: JnWIcOpMNuinSdJghUovPg-1
+X-Mimecast-MFC-AGG-ID: JnWIcOpMNuinSdJghUovPg_1759180673
+Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-42b18fa4b81so5192905ab.1
+        for <linux-mm@kvack.org>; Mon, 29 Sep 2025 14:17:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759180668; x=1759785468;
+        d=1e100.net; s=20230601; t=1759180673; x=1759785473;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=pary30BmU4/NqakwYdG1eNkY0RiL1NyFW4TmIsuJ5GE=;
-        b=xKWFXbcfFh45M5mECg1/jLl9El5Qb7WNLvSg6WPj9DTkSCJFnTnDpYktJLEvRvMU30
-         QocFqb4AmnYF6uQOV9u3mA52cBp0SdFb32lB2oLph8IbaxdUfZz8wAE28yXdqW2EWI4o
-         S4cbe4mJtJAaC5sL7inkyG6q5NwdEyXWVJkFJwuGlurcbQE28S7BmYzZl6iX2kClnui8
-         s0CwsaQBM/5F3SzEUhAan+Z7FOVvPv9ew+VBqV4CknXi3+swLd3lQLGAzZFQL6qB9AMU
-         LkaBg3fVPDfrJMph3DkECZx5izsxbZKzb4+NfonFEDO8jNdSMBjUw/oZV1lm4p5eqw/i
-         vcrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU9jcFsqQmJeDqLnzHQ39Zny+ZmL/cqYpCWsEDDdiHUK9b7n7gXEkf1WpQ/IqnG2NtJhK9TXGMnJQ==@kvack.org
-X-Gm-Message-State: AOJu0YyehVCMxgxX0ZEb6ZgAEjiB3WxmB1n+wFdv6CifIKyE4zYsrnFq
-	SXjA2iCpJJ3Y6Ks0ZBWhYcccCw//QEoq+6DVfO0V/OCn+qoXVHK/bTEN3U9CJX58yCrsYg5n+xV
-	LSoopnpBR+WPw0Zv9yGmPh7cKj+8N/Zu/FKGBAFlkoAU3JM+whR9m
-X-Gm-Gg: ASbGncvuSSDgW2U0YuPyc87sagyomWr81cvnpUVmjDFWp3SFQuhUZSB76Xf3Brn6iwz
-	3fmUOzLKNeUxgyPLjHvPcl1rxdlvYDUdO2YKJRMTaArTTgKQOe2Onm3z2ijfBgnnqYS7QkB5JRH
-	ir4pQM9d/jkQTR14Lw4DooFtMJVljnjGWZz2ZdNhfyiSoCGQ6EZozXVK87MkjiDfBXZdk7Ra3Wb
-	i8JUDWkEbREPv13IprZiO/zrRfV2BYqM1AA8B7hde6FrSoo9V8DEOQElBOREvEs21yX7M3o/Pow
-	olfc2XGPkrQmEUw0N2c+iAPqH+sVhpGFTbJZl8yzsWA=
-X-Received: by 2002:a05:6e02:1b08:b0:424:6c8e:6187 with SMTP id e9e14a558f8ab-425955e4dfdmr95833755ab.2.1759180668374;
-        Mon, 29 Sep 2025 14:17:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHE31/4ZuuqxcHY5C8RvKg6dnDpxm6QWjHiIpet9IRXNGlsIsGmjCxy18kHCIW8dgbK0MWZ9w==
-X-Received: by 2002:a05:6e02:1b08:b0:424:6c8e:6187 with SMTP id e9e14a558f8ab-425955e4dfdmr95833605ab.2.1759180667942;
-        Mon, 29 Sep 2025 14:17:47 -0700 (PDT)
+        bh=tBEzt7vDi7cQon8pe4PxgzLkANUC3bHfRN0ntBJldU8=;
+        b=WhTbqquWUFXU6D/gs/g8ymAdaCalCcW+6ifZyzBtyatfoZw0tX8tTVUiBHK24I1nQh
+         lSSHTTwppojin6ZrfezRqxif9UDgys1FpiSW5fvsLcVVHKguzSh/b9Vm4B8y2P51w+J1
+         gRH3kIAuNQzb5vMHl5DfHo+YqKbGnTZ4axP5MAqMqJbUvxPkuoAeVxuTYLhMX3aNkL6i
+         O/vzyn5cqVk4ibmlawYkFmEVNPBwyzgXKUcdTzP/3unz9SRtis6bDHmYVfoXuOErFFYA
+         O6C+bSr11O1COKZqo+OTuVrJup/cN+fVgKT3JfFBXyPU7SQK6YjqEDE49r6w7Ccal3SG
+         AVzw==
+X-Forwarded-Encrypted: i=1; AJvYcCVw553ZFwXL4UqjJ/A5x6ainRKNfB5sNZsbmRC4TWGs0CXuV6sxAo5EjuBrYlYcb0Zs3weHQztzmQ==@kvack.org
+X-Gm-Message-State: AOJu0YxoHujsxaP+klVf9LNJxOclWvCN9izaDBZYNZ8gr6g7soGW90nz
+	PQR4kN9O/z66us0lIAEo7wCMi0Jnz9uj36W1DtWgF/C3DxSAGla+vW7WqsXZOnusPLDn9tmYusy
+	mIJmbkD9dvLoxPgzXBVUfINUv7RDu3BmL8yzmvjBb7lkBqdHzPWJF
+X-Gm-Gg: ASbGncvCt9veaSxHG06iLWKIpFawmD31K5lMnP+INk7S+38vtLlqgbmiu2akEhgurbC
+	GmKY9S1tcaCBAF3rOSMQCCIgFwUtRjV9ewrLLGTAwIFX8o3ernPJWGb1Kac4YV0eSK7a5k6S9qf
+	A3eVzejhPFDuOfcl8QQnNPbExZVvuHimFguH6Ctv35b4Sz4SgdS52Gn4n9UQZtYZTYBF9AJjuzG
+	zJIotN3i0y7cKoHu4XY9J+FCFkrXxWB25aMyDScNnbJgnoEIahyo0DH+SfRt5iYCfhvLbthXXv0
+	qpkrj3xj55UFIAtvmPuSXYiTG85MzvSSfl0Js8mOSMM=
+X-Received: by 2002:a05:6e02:1523:b0:425:9068:4ff with SMTP id e9e14a558f8ab-425955c8eb5mr97782485ab.1.1759180672735;
+        Mon, 29 Sep 2025 14:17:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFTF4nahZRRX2gicTqxhxWdWKeUzRDCgsQQuCRfxHGJ4HNrczL75firr5hrFe4LKeaKRuPCNA==
+X-Received: by 2002:a05:6e02:1523:b0:425:9068:4ff with SMTP id e9e14a558f8ab-425955c8eb5mr97782155ab.1.1759180672251;
+        Mon, 29 Sep 2025 14:17:52 -0700 (PDT)
 Received: from redhat.com ([38.15.36.11])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-5753c50a188sm920778173.31.2025.09.29.14.17.46
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-425c05476fasm62141985ab.43.2025.09.29.14.17.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Sep 2025 14:17:46 -0700 (PDT)
-Date: Mon, 29 Sep 2025 15:17:45 -0600
+        Mon, 29 Sep 2025 14:17:51 -0700 (PDT)
+Date: Mon, 29 Sep 2025 15:17:49 -0600
 From: Alex Williamson <alex.williamson@redhat.com>
 To: Leon Romanovsky <leon@kernel.org>
 Cc: Leon Romanovsky <leonro@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
@@ -112,27 +112,27 @@ Cc: Leon Romanovsky <leonro@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
  <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, Sumit
  Semwal <sumit.semwal@linaro.org>, Vivek Kasireddy
  <vivek.kasireddy@intel.com>, Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v4 08/10] vfio/pci: Enable peer-to-peer DMA transactions
- by default
-Message-ID: <20250929151745.439be1ec.alex.williamson@redhat.com>
-In-Reply-To: <ac8c6ccd792e79f9424217d4bca23edd249916ca.1759070796.git.leon@kernel.org>
+Subject: Re: [PATCH v4 10/10] vfio/pci: Add dma-buf export support for MMIO
+ regions
+Message-ID: <20250929151749.2007b192.alex.williamson@redhat.com>
+In-Reply-To: <53f3ea1947919a5e657b4f83e74ca53aa45814d4.1759070796.git.leon@kernel.org>
 References: <cover.1759070796.git.leon@kernel.org>
-	<ac8c6ccd792e79f9424217d4bca23edd249916ca.1759070796.git.leon@kernel.org>
+	<53f3ea1947919a5e657b4f83e74ca53aa45814d4.1759070796.git.leon@kernel.org>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: qsCgLiSsEGAHe-YKdKCsY5cF3TC9ov0EPkTRPj6sJ6g_1759180668
+X-Mimecast-MFC-PROC-ID: Fb6qiBjhLYGdzzlrX7AT-U8S50dIosaT5HclIEgTJ7k_1759180673
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 32BF1A0016
-X-Stat-Signature: 7kju7c16691i5556bonh6a7yiap4n1zj
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E87ADA001A
+X-Stat-Signature: 5fwcrbpwsqjs94xpe7gc3ngkn3j7inf8
 X-Rspam-User: 
-X-HE-Tag: 1759180671-851806
-X-HE-Meta: U2FsdGVkX1/GrJ0tfIR23JEBK9MtQh501JX07keUu3mtMOvk+jhzXTlv6OHOAnO/Jy8zPxksE35Snf593c/S9IBaM5iqeMKCn8P1W6gfSU/np6+vbyMOH0srB2uFiSbxVKkbG3T6YBBsGW5+5t8tixFfTyrJhR8WvWYacigNSNAdQh14dSRQM6VHWalBDbHkGAV20UvYVP4XdrAInxMT+WHVv8P53W5E5UYGP/9YOxMC74yyCl+ZXfL4tNuDrUEvPf7lj2bq9YSe23FB0jnRxA4IuLWc5WFhkfKrQ2WJk4aS4ZYlF3RhiaWNKnMgpxJ5aCJmQTkNXOvvP8Lie13BogMubgNaF8wAvjIFPth+OmbdsMTJ/eWUnvGy4DPkOzrATktoOhyKD7tk2ZUXgyW/E4HGe0GbDnNx0HJ6HUUSgXCSm2MfCxNsQSn8SqSKB+MVSuboQA5qCyfshulm5b8Uu3wHAsuhf84BhzK+6KOvBPBWSzvusoYOFeHUJ5g/hfB0oj8k7e1BEs+5lYWIPO3OvSZIILygo0jYCWZQTXPW0NEgxCr/McTd+CTp019xjM17iAVHAQV8iHXjD7nTzsLdUgA9XL+m4QRsg95RqFckfVM5zZj3Qu9vfNlzYoyOd9BuoyDOmoUDPZgYqPHO9kyjwU2bsejqb7HeYZzdz/+IyDZA5/M3sVscFxrR96VR5uOYuICLR9k+4P55T6/1semArHm3JA/EVioN+LwqnwtXWqWpmiSvAytQf5YLCWRMmYQN40lycTT/JmGVveuZtFc7q36RYYijcF86LDB1wTj9Arhhr4Ni0VJzzQVTYmLnYP/qE53PYHbFA6zE8PReMdSA4oSwfTHyDXDZlSOQeztj77i9mq4ol/mgcZM3mizQY9aFP1V4Gz/g6S/fKXMP/ry8gByAVtYUKqGqFcS1pkyvgPQKB/LJ7zLo79FOLb4K5OYihvKJrvT/vC00quy4hSn
- c74gGPkj
- Vq7jyD6HrgG263m+Kog6d/KirF+oaGV9FmmfDAfyK4HAZHFWS5ZUZTypMvuyCM320KBq2c/FRXAZbrqXmOfZ4WvoayFMJqVoszeePYLfxL3ZPJZYllKkVx64yEE1YZFuAWAL5r0jjxf/DvX1gQtCjkPEheyu5Mf9q1wrLF2Oli4Klh1Trr624+ERiXchk6Bk2odMwZCKDKsej0djd8cRSY5fFqJuqUwnLTgtAWhQnzNQ+/BFfi6ovUeQp5qQnaiswM6WbvvVwNj5KRj9kDY7wPSPAriyuVRrioO6wLR35ZXyo4sSDouX5skI59Mys11MBJljWqj9V2/pexpPLk2j3A7jDww0JXV27rRdD6FcK2HEO9k5l4m6G5Wdfx8H3V5QOH/b2U1hqyMU0bA8QNhQrjcU7+jAREVbcbF1aelcDmo0MKuZL8Pzw01gpff3B1PGjhCsL7bwVENYMT5L3Y46Kb4qc3GuWIn9JWxqTn4Ffci8JR7w=
+X-HE-Tag: 1759180678-657283
+X-HE-Meta: U2FsdGVkX18Zunlpwp+8BvuQv6CJ0s3dP2YAUXWf2BUNFNsLsV9TL/OnjEP+VV4HCTddesgr7ehcxQ9mNLgYprBiYhO59zHuPMd2R5e+8p7382FP05pPZDPFN5GU4dt4plhELC6u27ZyY3u2t9UQlD9Y4tSqwjtB7BAHt3fRaXaezKe2dzzFzDHhEuJ1PnJEFgpve87kEw+1uq9KyW6FgfIlvfsHIQR3ZdorlthwWPC1JA0+Yd2Pdew6m5TKjge9enI3My5hUgL0DzRHoa2qTD9ojxMbUcGwe8sGipI0LNjzyjU2C4IloYYETobJ0yqPJ70OEQBlw8WwViPr8lz1oyB/emGQSOM2Ffk3nkpCPo+jqOtLsCIZUxLZC+d2mHXrNyG9mNXaqVetv1/aNvSNFd/3orsp+gfpu7E1xFLkUbQymeOOkyla+cI2Leg0CVLdcy7hwYoOhRKR1nMH2F82V1KdjqrOx7W9/fEzQ9qUfjt/G+2emveM8VCWGo93hsZyHkL5m4AW0Q3jPLUFxUWKwxPM2D2eLWSxm4T7YDbQG1F9j24jwBSpd01KlxsytH7dg/sQgG33hq9B/fUBecBdeppr1S579qsaa3vxlPoVZsgyMq1zNQ2UqufVHhLWFeFni9hPEXhtHKGoxztzPuqyuWAa4IdthOK66BawynD6r4gkyCj3hJa/nK+WxDO+xY6PvXAbqpwJ4gPCIjaUoCZkRrBE9aTkaw8cDYWkgRsfDVqNwt7YHYX0DZlC1GR2DC0TIAL/sWlkWoAgFbtde9JDtc2HI5KDjmz6WHnSBYmzA4FmyEb9iuAvUaKwOlWrJDZtVabdBeN3JHx/AV6XnIegWGuREzs7XaNagXs2QvNhTGE3GvyiGODISBcxog+ot4XWxItuwbYWtfQpLbdZjrXmSR0LZeD4uI2/3bb5Q8XFdrP86mMpHs/8cWCcn3S4Iz/PzgmI0Ojh6vyJ6UCKX5W
+ zsPaM3pT
+ 1wQ2wBECPwPCSdaKbyY8iXawy0t8q/fyFz1JDr8bk6NxA7Cpq1KrodUNjHymE5j0gIFV+skH7TXibhS8DLaa4nuMLdGdl3fXK0yrgiBDOiMc/kCPWnmIQAbd3ITksakYP5VQMQiQmFKGI0l5CrNJn8Zbr42ORu+Uj+JcvntD/JPdKdCYO1xAXKDe+awOjuCN8SzyoPovbVYebhpLfNYB13K4M3Hy4C2KtftHcXhO/4hbOZ7N3yqTn+pMSauaDwuukBt0nUbV8IYPECrEIdm2zUftIWHYhK2C3d8mGAFZ36VqkWZmrmg+EcPxk7FdLJCyv8LcVhdb2FZ2AhDCvJqdevMErs/o3Q43dJO1Z0WcY3B7+5BwTfyQzQqay7A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,58 +141,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 28 Sep 2025 17:50:18 +0300
+On Sun, 28 Sep 2025 17:50:20 +0300
 Leon Romanovsky <leon@kernel.org> wrote:
+> +static int validate_dmabuf_input(struct vfio_pci_core_device *vdev,
+> +				 struct vfio_device_feature_dma_buf *dma_buf,
+> +				 struct vfio_region_dma_range *dma_ranges,
+> +				 struct p2pdma_provider **provider)
+> +{
+> +	struct pci_dev *pdev = vdev->pdev;
+> +	u32 bar = dma_buf->region_index;
+> +	resource_size_t bar_size;
+> +	u64 sum;
+> +	int i;
+> +
+> +	if (dma_buf->flags)
+> +		return -EINVAL;
+> +	/*
+> +	 * For PCI the region_index is the BAR number like  everything else.
+> +	 */
+> +	if (bar >= VFIO_PCI_ROM_REGION_INDEX)
+> +		return -ENODEV;
+> +
+> +	*provider = pcim_p2pdma_provider(pdev, bar);
+> +	if (!provider)
 
-> From: Leon Romanovsky <leonro@nvidia.com>
-> 
-> Make sure that all VFIO PCI devices have peer-to-peer capabilities
-> enables, so we would be able to export their MMIO memory through DMABUF,
-> 
-> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> ---
->  drivers/vfio/pci/vfio_pci_core.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index 7dcf5439dedc..608af135308e 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -28,6 +28,9 @@
->  #include <linux/nospec.h>
->  #include <linux/sched/mm.h>
->  #include <linux/iommufd.h>
-> +#ifdef CONFIG_VFIO_PCI_DMABUF
-> +#include <linux/pci-p2pdma.h>
-> +#endif
->  #if IS_ENABLED(CONFIG_EEH)
->  #include <asm/eeh.h>
->  #endif
-> @@ -2085,6 +2088,7 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
->  {
->  	struct vfio_pci_core_device *vdev =
->  		container_of(core_vdev, struct vfio_pci_core_device, vdev);
-> +	int __maybe_unused ret;
->  
->  	vdev->pdev = to_pci_dev(core_vdev->dev);
->  	vdev->irq_type = VFIO_PCI_NUM_IRQS;
-> @@ -2094,6 +2098,11 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
->  	INIT_LIST_HEAD(&vdev->dummy_resources_list);
->  	INIT_LIST_HEAD(&vdev->ioeventfds_list);
->  	INIT_LIST_HEAD(&vdev->sriov_pfs_item);
-> +#ifdef CONFIG_VFIO_PCI_DMABUF
-> +	ret = pcim_p2pdma_init(vdev->pdev);
+This needs to be IS_ERR_OR_NULL() or the function needs to settle on a
+consistent error return value regardless of CONFIG_PCI_P2PDMA.
+
+> +		return -EINVAL;
+> +
+> +	bar_size = pci_resource_len(pdev, bar);
+
+We get to this feature via vfio_pci_core_ioctl_feature(), which is used
+by several variant drivers, some of which mangle the BAR size exposed
+to the user, ex. hisi_acc.  I'm afraid this might actually be giving
+dmabuf access to a portion of the BAR that isn't exposed otherwise.
+
+> +	for (i = 0; i < dma_buf->nr_ranges; i++) {
+> +		u64 offset = dma_ranges[i].offset;
+> +		u64 len = dma_ranges[i].length;
+> +
+> +		if (!PAGE_ALIGNED(offset) || !PAGE_ALIGNED(len))
+> +			return -EINVAL;
+> +
+> +		if (check_add_overflow(offset, len, &sum) || sum > bar_size)
+> +			return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
+> +				  struct vfio_device_feature_dma_buf __user *arg,
+> +				  size_t argsz)
+> +{
+> +	struct vfio_device_feature_dma_buf get_dma_buf = {};
+> +	struct vfio_region_dma_range *dma_ranges;
+> +	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
+> +	struct p2pdma_provider *provider;
+> +	struct vfio_pci_dma_buf *priv;
+> +	int ret;
+> +
+> +	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_GET,
+> +				 sizeof(get_dma_buf));
+> +	if (ret != 1)
+> +		return ret;
+> +
+> +	if (copy_from_user(&get_dma_buf, arg, sizeof(get_dma_buf)))
+> +		return -EFAULT;
+> +
+> +	if (!get_dma_buf.nr_ranges)
+> +		return -EINVAL;
+> +
+> +	dma_ranges = memdup_array_user(&arg->dma_ranges, get_dma_buf.nr_ranges,
+> +				       sizeof(*dma_ranges));
+> +	if (IS_ERR(dma_ranges))
+> +		return PTR_ERR(dma_ranges);
+> +
+> +	ret = validate_dmabuf_input(vdev, &get_dma_buf, dma_ranges, &provider);
 > +	if (ret)
 > +		return ret;
-> +#endif
->  	init_rwsem(&vdev->memory_lock);
->  	xa_init(&vdev->ctx);
->  
 
-What breaks if we don't test the return value and remove all the
-#ifdefs?  The feature call should fail if we don't have a provider but
-that seems more robust than failing to register the device.  Thanks,
+goto err_free_ranges;
 
+Thanks,
 Alex
 
 
