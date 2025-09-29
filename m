@@ -4,88 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BABF4CAC5B0
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 03:36:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21064CAC5B0
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 04:44:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED2F58E0027; Sun, 28 Sep 2025 23:36:23 -0400 (EDT)
+	id 09DEE8E0003; Mon, 29 Sep 2025 00:44:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAB0A8E0003; Sun, 28 Sep 2025 23:36:23 -0400 (EDT)
+	id 0766D8E0002; Mon, 29 Sep 2025 00:44:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE8158E0027; Sun, 28 Sep 2025 23:36:23 -0400 (EDT)
+	id EF5458E0003; Mon, 29 Sep 2025 00:44:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CE06C8E0003
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 23:36:23 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 77CC0139F1C
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 03:36:23 +0000 (UTC)
-X-FDA: 83940875046.21.1549BB3
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DC18F8E0002
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 00:44:25 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4FA3B84724
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 04:44:25 +0000 (UTC)
+X-FDA: 83941046490.30.F1C2024
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 50C9080007
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 03:36:21 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 3D4E6140002
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 04:44:23 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
 	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759116981;
+	s=arc-20220608; t=1759121063;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JGDnRdobfQCA94hTso0Evwk2L7bqYVznDxPJPTdsSGU=;
-	b=aFxxuDdcur8yXA285OcrbYWwNqAxlJPP4KOB1HzVlpNxNlJTC3uode2NgXxS8Wx5JV78Wr
-	+16Ui3wPkV3JRpQWlPzOLDTAx7X25EibNj2D1mUP8m0//vJxleGrxFJEkSSoARJ5kTtNBp
-	JUMOke47LEQjG5OBb6fK3QcJNmW2OMY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759116981; a=rsa-sha256;
+	bh=9km3TTOsFYsfDyai+3IcmTkqC5YN4/2Z0p8DX5JCU2k=;
+	b=aIby1RtztHPc55CPan87IOqJrjEvAkHcjlZCPdD5Czu6bdK6DoDLcG375d2oieANZoax2k
+	N9tEq5O094hbfDUB/FV5Xcb3W/pjJwKVbQ6s4KioSInQ45yvXmgqnw23Rpjsvnf5gtdu2B
+	EFoMY1ywtUoKbE4gCVOUCBD7Zivl8yw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759121063; a=rsa-sha256;
 	cv=none;
-	b=IKiuVxnbUinJO6ouFqxDghiu6yo9xvxuTQ86RuQG1ZwGWt4tDiBV4tQIGtrN8qKRrRvKRW
-	O5NZGBay6xUjJtvSvSYq18pbpDxY/zfCttuQhyFjquHoF/y+04v9Sa+WphuYz0LsIgZ6eJ
-	YiMLIkoYwsnpoIFph9XZ/6aenlAzxIk=
+	b=tN3vky4993q8dH4mhGewvNIcpgq+6msLqh4QuKs3DZ+b0eyMCPSGLBxilyObWYFUktXFNv
+	KEr7wzFDxAbuo6TZqBeZMW9qNDMLw+KjBRD79E/1NFfEUHIVt3UcsOzQViSY1TbfpEE5c0
+	04Y/FLH0VcKmcrJC7LjHxIn1eES1UHk=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
+	imf09.hostedemail.com;
 	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E8E6514BF;
-	Sun, 28 Sep 2025 20:36:11 -0700 (PDT)
-Received: from [10.164.18.53] (unknown [10.164.18.53])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 06E033F5A1;
-	Sun, 28 Sep 2025 20:36:09 -0700 (PDT)
-Message-ID: <1d7fed49-f67b-4a70-bc67-7643e2db4e99@arm.com>
-Date: Mon, 29 Sep 2025 09:06:06 +0530
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2AA0C150C;
+	Sun, 28 Sep 2025 21:44:14 -0700 (PDT)
+Received: from [10.164.18.53] (MacBook-Pro.blr.arm.com [10.164.18.53])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 37BD83F66E;
+	Sun, 28 Sep 2025 21:44:13 -0700 (PDT)
+Message-ID: <2065263d-a2c0-437e-a096-695c6d17f97a@arm.com>
+Date: Mon, 29 Sep 2025 10:14:10 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: Fix some typos in mm module
-To: Jianyun Gao <jianyungao89@gmail.com>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org,
- bhe@redhat.com, chengming.zhou@linux.dev, chrisl@kernel.org, cl@gentwo.org,
- damon@lists.linux.dev, david@redhat.com, dvyukov@google.com,
- elver@google.com, glider@google.com, harry.yoo@oracle.com, jannh@google.com,
- jgg@ziepe.ca, jhubbard@nvidia.com, kasan-dev@googlegroups.com,
- kasong@tencent.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, mhocko@suse.com, nphamcs@gmail.com,
- peterx@redhat.com, pfalcato@suse.de, rientjes@google.com,
- roman.gushchin@linux.dev, rppt@kernel.org, shikemeng@huaweicloud.com,
- sj@kernel.org, surenb@google.com, vbabka@suse.cz, xu.xin16@zte.com.cn
-References: <3c3f9032-18ac-4229-b010-b8b95a11d2a4@arm.com>
- <20250929002608.1633825-1-jianyungao89@gmail.com>
+Subject: Re: [PATCH 1/1] mm/rmap: fix soft-dirty bit loss when remapping
+ zero-filled mTHP subpage to shared zeropage
+To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org,
+ david@redhat.com, lorenzo.stoakes@oracle.com
+Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, baohua@kernel.org,
+ ryan.roberts@arm.com, npache@redhat.com, riel@surriel.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, harry.yoo@oracle.com,
+ jannh@google.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com, usamaarif642@gmail.com,
+ yuzhao@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ ioworker0@gmail.com, stable@vger.kernel.org
+References: <20250928044855.76359-1-lance.yang@linux.dev>
 Content-Language: en-US
 From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20250929002608.1633825-1-jianyungao89@gmail.com>
+In-Reply-To: <20250928044855.76359-1-lance.yang@linux.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 50C9080007
-X-Stat-Signature: b8aeq8trb3g4e17d9nbyyfo84t57c6q3
+X-Rspamd-Queue-Id: 3D4E6140002
+X-Stat-Signature: mk86tj5fdjsx56aikh75owrfjooo4w4k
 X-Rspam-User: 
-X-HE-Tag: 1759116981-981241
-X-HE-Meta: U2FsdGVkX1+s9dE8RrX15nithkWFxhMKA/ZVhCx1ASqO1vLaxlMO5E0aNwHePKIQEbWCfeI2LCmxVgbpKTjQMHNvxvjHb9JAPmfaOfiSS/Hzemqpb9Qnoxm8FBMQ1IpYJy2nMF+nV6962bReZdN1bPDbSAWbyDLSIbL9e5WilUDoul24wgCZ14wPqoFXJ5TLfklh8R4rCF2toM8Abo+k1KCHICbZkpeAyaKwLmsSYEOCcZBlyNg6wHfZrhS/L9iOogxJEjnT6uy1pGD3boOmsk8U1zu/VPfgephcBBca6xZCaMl1yn2+eXJk7dtFZUuHAOpjI3hKECGafdIs6TrdIGf2dWiss/ELsGbDvh2izlAER78vxjvR2cswmK1Efo3/asWLKTdbl2zFuJI2oWFY+9uNGNYpnGiyR9mBiwDif8bsL/+WSuBB34+Ugz4oZn1bxS3Ke3e3hkmP0bGL6tT60bLcGq1bFInKt6CP2/DQIehBADjE3E5fTS4p57lSrx0HELFVhxZahGxEDqqp7Z2e/5vEtDfDhtthdjS2dBIyUG9iKG8fRVvLJbs1zBg836u92S3vKwATe0/mED5XLgd+C7kJgBPkuVB25emQGtx9OfU1/fDcoRra5hn1njTTXqOjlE0OfT9FdcLhUnwsGZp+vPgxB3XlBEI/+o6JFfT1iBYiRsl0xkk3f0VA0h+M09/0vHQFD4Mig6Drd7XoFBjIWlj8HlR86sV6UeJHH1/j/tqiMyaW8yBx6H9JJYzg5UCWcguCfGF9/JiOoz2v5DJ3F/xA3WLYkUx4MIToC3TwI7HxpEg5ntyN5v0PzS1LxpzxIivxq1korlb/lYtswLM9V7dvsKiWnRPt0/hx6r71gqsrZwS1BIo8YTr/OEFRvCbnFuoq45h6NjJ5L/wsFWekDYSCwh8opzLprHqoGghcImzisIDkYg12F/7OZ9rzE/KjHAK7AlH6Dyx1jBeNYUs
- kQc3XlIQ
- qyBBJ3glJDIZf3tVzISaMEndAaZBUgQLNsrKu8+hRtG6uJM/tERjImS0B3CzOamv2xedFTYTo3aJ9wKTBDs4ys7wJvhtu5C8Y1cSlJXhhiGZWcWdEQs89QAXsqBIxdJQBJbCGG+ZmwLNkWP/wsGG664bu4P5ZLEtdoC2A0eL8NWoynzy4uP3Q/zliAELg5UkrSR4WvahwS+WOkdy3OHwOrT9ReL7x3H8juy4NJTWGW0UAuMCL18dlXuHGleu+jWshSe7F
+X-HE-Tag: 1759121063-747084
+X-HE-Meta: U2FsdGVkX1+WvNbNpAoAq99o451Fu+uW9x/2ITF7/Q9lxm34hsRGKYZLduLCyqwyVcoFgAogghYUW/hFIBuVCi7OBqgGZai9Gf5CGBf6s8l9JiYW1Ea+1lVXMp3JhfQjyMVSptxYUqg8cVU+w2PjeDQFlufmndfcwjXXHIEkMPvDFX8+L/c1L2b95b5aSh8if9IyccISdewaguVKLuXvMaSt66ywJ9hcNRWqfmup3Ja3OuKMxVSx6ob081Ehzim7UOxYdriTA6PadLSC13SqnWmI9HqtNHJr2hK8Aaa5+RBCQSCK4ASd/Dgk0z+0s70Zz3q3IanvkdVJi2f6d4cP5+ORhmGVHgvhZg18+PqdRZmAAPyzFVsuAzaUq9xYaSYX4Qte0i92wNrvihd7EjAohkcxwjCDZijPV7uMpSJaTrA6puy9H2y+RPAGYxsY4oS922NhFd9m9wrxX1ZUWx8g5E+3v/Aa6CwKJFlDi08qE8rrc+PXuWg0k7IEdQjhdmT0Mu1LzhNKVTBfDtU51nlK8j0+jk4v21hvkdmAINSGOtM7jLv7xR/KFweGKGcUfH/oWWI45mJQxWspearE3iSMyqHutsjLwnOKBCOlyvuCRdhdTPJLPsMJQB00ODk/yFrGcpis0cHdmFCiG2bvUD+8yTUVNFZ9bfLF0d7iJvN/5dRgAgI43uHmPhQ7PyEsC7iq/UsfiORawvrwaegnDecexWZWZu7Jnf0FQazN/KGBS5Y1Yh87ep10G/uMrfQ3lsMLNqokuT4hmCJGFUQ9AFZOJs7dT99ey6UNfYocW0OlmtAiE37PelK3yLpEbEzpoVtgJppgOzpcJDm4KJ/+uUrZqyBC8pFllHjcEhF1hNTdBbJWp7vgcEmwqOw2AGb1vI+573Qgl9v4Qjjc8XXC75lmuQYFPwprgaPzjXjA4BVVPGc9VptdpNjizQD0h0gFUZ5TqAmXmhZf95QoctCOuJQ
+ Fygs1LeD
+ tmhugu2XSy5TagLj5+IxSvmNZIVguWpu3UE4UD4rZpmw6p+6QnOnkGu68HLewq3NBlB4k8EMwqgoexQuCIMqVauMAobXQy1LhnAYIIix8GePIZ0tclkD/Dvzrs+yK9mkyXzGod0ImwwDVjeFiorVsiX0qJ7cAYX2fUiCX7irK+XpQXj8l7jkrywwgA48ElyIzUjpy06RWrxe7DfrxU4gUhyuNkIZC5X2gTmoIZIiHiQ1hb/E=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,39 +94,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On 29/09/25 5:56 am, Jianyun Gao wrote:
-> From: "jianyun.gao" <jianyungao89@gmail.com>
+On 28/09/25 10:18 am, Lance Yang wrote:
+> From: Lance Yang <lance.yang@linux.dev>
 >
-> Below are some typos in the code comments:
+> When splitting an mTHP and replacing a zero-filled subpage with the shared
+> zeropage, try_to_map_unused_to_zeropage() currently drops the soft-dirty
+> bit.
 >
->    intevals ==> intervals
->    addesses ==> addresses
->    unavaliable ==> unavailable
->    facor ==> factor
->    droping ==> dropping
->    exlusive ==> exclusive
->    decription ==> description
->    confict ==> conflict
->    desriptions ==> descriptions
->    otherwize ==> otherwise
->    vlaue ==> value
->    cheching ==> checking
->    exisitng ==> existing
->    modifed ==> modified
->    differenciate ==> differentiate
->    refernece ==> reference
->    permissons ==> permissions
->    indepdenent ==> independent
->    spliting ==> splitting
+> For userspace tools like CRIU, which rely on the soft-dirty mechanism for
+> incremental snapshots, losing this bit means modified pages are missed,
+> leading to inconsistent memory state after restore.
 >
-> Just fix it.
+> Preserve the soft-dirty bit from the old PTE when creating the zeropage
+> mapping to ensure modified pages are correctly tracked.
 >
-> Signed-off-by: jianyun.gao <jianyungao89@gmail.com>
+> Cc: <stable@vger.kernel.org>
+> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
+> Signed-off-by: Lance Yang <lance.yang@linux.dev>
 > ---
+>   mm/migrate.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+>
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index ce83c2c3c287..bf364ba07a3f 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -322,6 +322,10 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
+>   
+>   	newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
+>   					pvmw->vma->vm_page_prot));
+> +
+> +	if (pte_swp_soft_dirty(ptep_get(pvmw->pte)))
+> +		newpte = pte_mksoft_dirty(newpte);
+> +
+>   	set_pte_at(pvmw->vma->vm_mm, pvmw->address, pvmw->pte, newpte);
+>   
+>   	dec_mm_counter(pvmw->vma->vm_mm, mm_counter(folio));
 
-A patch is never sent as a reply to a mail - please send it as a
-separate email from next time.
+I think this should work.
 
-Reviewed-by: Dev Jain <dev.jain@arm.com>
+You can pass old_pte = ptep_get(pvmw->pte) to this function to avoid calling ptep_get()
+multiple times.
 
 
