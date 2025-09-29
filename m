@@ -4,94 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4508CAC5B5
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 08:52:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26307CAC5B0
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 09:27:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C17BD8E0012; Mon, 29 Sep 2025 04:52:12 -0400 (EDT)
+	id 31AEB8E0014; Mon, 29 Sep 2025 05:27:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC9278E0002; Mon, 29 Sep 2025 04:52:12 -0400 (EDT)
+	id 2F2C18E0002; Mon, 29 Sep 2025 05:27:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADEBF8E0012; Mon, 29 Sep 2025 04:52:12 -0400 (EDT)
+	id 1BAB38E0014; Mon, 29 Sep 2025 05:27:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9663E8E0002
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 04:52:12 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 277E61602D3
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 08:52:12 +0000 (UTC)
-X-FDA: 83941670904.14.7C65119
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 0E7741C0004
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 08:52:08 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=QnXKp6qk;
-	spf=pass (imf20.hostedemail.com: domain of wuyifeng10@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=wuyifeng10@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 043A78E0002
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 05:27:35 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 84920B6910
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 09:27:34 +0000 (UTC)
+X-FDA: 83941760028.17.6871091
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3DD4F1A0002
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 09:27:31 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bkgRotVV;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=C7v1FoqY;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bkgRotVV;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=C7v1FoqY;
+	spf=pass (imf19.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759135929;
+	s=arc-20220608; t=1759138052;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ox5XqYTkHSlNm09+TIgA/LRiQ/Rrg11FqwzTsBJu9zo=;
-	b=msumVkVIOEKS1hwshrcS5rndm+FA6OkbMu5qbvrI/R4rn7SYpwNQNmfhZ7bHm+Sh4niPfx
-	jDKmPRY5bdMtXBaauepiYn8cAVDPi8A5cJg+2VCRXU90ZZnzDEEGXOsDua0QDPYOIjgLDd
-	eRazVZ0G8yqqk+rimHsa8fNL+//JR/s=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=QnXKp6qk;
-	spf=pass (imf20.hostedemail.com: domain of wuyifeng10@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=wuyifeng10@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759135929; a=rsa-sha256;
+	bh=THAGxl1trzNBHfjS0/K74QzBCVdosk64YkSPhfoLeBg=;
+	b=iNjmsfkOPapAeyEhrMBN4Tsob8132WixRrYyUAJsJKGpjoLypVuBgGDZ/VnOx5Jbv1hsHh
+	CkiSvIOftyOGzP4tiUZog20NVpQzaPliAdBV/9DOXFC7OGCJdO8fFkxKZEypHT4t8rG9Gd
+	2PbMAEsY6vRiwpLcP9HZzdukwUDvrtk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759138052; a=rsa-sha256;
 	cv=none;
-	b=1x4UH8ELtmJexOIGg1EyvNIz4j2JUzypuis1Am+y4fIpwXhbrsHxJLv234m650GVcmc35/
-	om0NPnS9f023Z0EN7YRYGTt6mhRaVFi01h+7EWcNG5l7BgUCb4hZSP8uWLICKFLJEjh7Qc
-	H65wr8cDf1VbxOGwrSXok0e+sFe4BBc=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=Ox5XqYTkHSlNm09+TIgA/LRiQ/Rrg11FqwzTsBJu9zo=;
-	b=QnXKp6qkX9nqEDsRjTKpTIMo8JydC8A86hWzAXXSXJM01TfubjoJ3wY7qb/Rg3K24ZYv97dZm
-	PdyHh+bvYnmxZ2N/QaAKUMW7W1FMrTNtq8ePbT/nhfOTqch75B5ybjarSEAyr44XqUIkat3ICv8
-	eXCrKH0PdYUDyzI2S+zxhog=
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4cZw0n6xz7z1prLv;
-	Mon, 29 Sep 2025 16:51:53 +0800 (CST)
-Received: from kwepemr200005.china.huawei.com (unknown [7.202.195.182])
-	by mail.maildlp.com (Postfix) with ESMTPS id C1B431400D4;
-	Mon, 29 Sep 2025 16:52:04 +0800 (CST)
-Received: from [10.174.184.156] (10.174.184.156) by
- kwepemr200005.china.huawei.com (7.202.195.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 29 Sep 2025 16:52:04 +0800
-Message-ID: <a0184970-f614-4e78-9952-f75737a45418@huawei.com>
-Date: Mon, 29 Sep 2025 16:52:03 +0800
+	b=qx8Cr6WfG3KWoWXL42w1iB8QbsQCrOkNr0jycGVpoHIqThvLc94vEt5cJ8TN/6IUulo+Kb
+	3ay+g65dw0ExZqURv4R7Oo5fVjUQeJkhQvrakU60rATJYAUqGwSuJOETumt5YSoCmQK2H+
+	0XSd7cwGT0mmpcbCEq/doO6bHHTYscM=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bkgRotVV;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=C7v1FoqY;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bkgRotVV;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=C7v1FoqY;
+	spf=pass (imf19.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 3922E2099A;
+	Mon, 29 Sep 2025 09:27:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1759138050; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=THAGxl1trzNBHfjS0/K74QzBCVdosk64YkSPhfoLeBg=;
+	b=bkgRotVVMBWn6oomD82XK13KXxaLnMiyRpu5U+STT7FwHdQh4yaUREvUo2XPmYR8P61Y86
+	KoQK5dMP0GG8bz5e22YjbeaEdAgtQeeLoBm8eXBZ4wtmtadXc7sGeXoOnyRqFUyTR/U4m5
+	mPqvjlrFbxc2jo9sRzoPEAmjA7s7NnE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1759138050;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=THAGxl1trzNBHfjS0/K74QzBCVdosk64YkSPhfoLeBg=;
+	b=C7v1FoqYE59RN5ryAIF6wzn0ovidI+j/mVDXSdP8PTXrizDKGI9wi07tXmoTggbv8abPHV
+	TlYrovP5EuUOUkCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1759138050; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=THAGxl1trzNBHfjS0/K74QzBCVdosk64YkSPhfoLeBg=;
+	b=bkgRotVVMBWn6oomD82XK13KXxaLnMiyRpu5U+STT7FwHdQh4yaUREvUo2XPmYR8P61Y86
+	KoQK5dMP0GG8bz5e22YjbeaEdAgtQeeLoBm8eXBZ4wtmtadXc7sGeXoOnyRqFUyTR/U4m5
+	mPqvjlrFbxc2jo9sRzoPEAmjA7s7NnE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1759138050;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=THAGxl1trzNBHfjS0/K74QzBCVdosk64YkSPhfoLeBg=;
+	b=C7v1FoqYE59RN5ryAIF6wzn0ovidI+j/mVDXSdP8PTXrizDKGI9wi07tXmoTggbv8abPHV
+	TlYrovP5EuUOUkCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8F0BC13782;
+	Mon, 29 Sep 2025 09:27:29 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id yposIAFR2mh0SAAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Mon, 29 Sep 2025 09:27:29 +0000
+Date: Mon, 29 Sep 2025 11:27:27 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Yang Shi <yang@os.amperecomputing.com>
+Cc: muchun.song@linux.dev, david@redhat.com, akpm@linux-foundation.org,
+	catalin.marinas@arm.com, will@kernel.org,
+	carl@os.amperecomputing.com, cl@gentwo.org, linux-mm@kvack.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: hugetlb: avoid soft lockup when mprotect with
+ PROT_MTE
+Message-ID: <aNpQ_-uwp7gQDH__@localhost.localdomain>
+References: <20250926162034.1785899-1-yang@os.amperecomputing.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] mm: Is flush_cache_page() in wp_page_reuse() really
- necessary?
-To: David Hildenbrand <david@redhat.com>, <akpm@linux-foundation.org>,
-	<lorenzo.stoakes@oracle.com>
-CC: <baohua@kernel.org>, <linux-mm@kvack.org>
-References: <7a217590-1e37-4d80-9c5c-1f7d2c2b556c@huawei.com>
- <f775b4a3-77c4-46a8-92e2-17308097df3e@redhat.com>
-From: "wuyifeng (C)" <wuyifeng10@huawei.com>
-In-Reply-To: <f775b4a3-77c4-46a8-92e2-17308097df3e@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.184.156]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemr200005.china.huawei.com (7.202.195.182)
-X-Rspamd-Queue-Id: 0E7741C0004
-X-Stat-Signature: sx1jpowc5y6i8wjhsq38qtda6b148gnt
+In-Reply-To: <20250926162034.1785899-1-yang@os.amperecomputing.com>
+X-Rspamd-Action: no action
+X-Stat-Signature: 76pfsykn15q4dwybwwwsat11rss6ty4o
+X-Rspamd-Queue-Id: 3DD4F1A0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1759135928-565586
-X-HE-Meta: U2FsdGVkX19OvXF6ULxDUT3IvXikzLgAN+JPSbm8Me8YIpRNn1MySw3f0+9LU9dxW3ZM4lx14AIBKCkgWEhX5vQV7tUfD9HNJlSX3GFYw83bCt/tNormiytAGJO47Yb7YovZhun2MwVAiwforaqOmA79Uyk9jQb8+OMZ0NvEgouNw/EA3DpKO5l2vd/qHXdH/hEKl3Msdc77rhQGdxnbIhxDogBRzIVRfYcxecZ9vZHO8vWkvbpgE2RwGE/PaoPzbFaqzzNpg/8FJMLoHPDBkAbCk4Gsn5bA27CASXca84FtL52u0OQt8a3Og3sCj0+zra+BjQB+n1wb4NuRYfZUxoZOVKSFsERHMziFCMn848y+idEpMkNncEAUxQy0EHIuJOl1+2zdYr3SGgX6C8Kz3+h2mgXLCxRUj12VxhCv+5jJM29Kotua19MwwO7fdFU+5KrcEAtgvL1P8H4u3+/bTBM4mRgFcKV+ctBYwTnqnTHEwFnaRluIQt+SNX+qNXFLehQJbsj2fo7ZShaN9LQzPKf97BO4x83ea0J+aegUDlccuSGxEodHIV4FI+8obJESwi/kCEytKymoTfgBqDY3oJnV8dK3bIZOFjlVjG/x+xmlU+FHmsZHSNAcabC+LQOiDseRnsVWCZXXUKM850FwM164ZndBa6pXeD5dqpBCxdCspE5+pZPx8MAMgSW1nKPQ/No3/k5qC3yP3yApKes1wjS/StZSqIE0mdy3+1mZxlcNCDZuwxN+VxvrJAYiV9nXfwhiU6jz4VPNHrPfw9urCblCr4mDozkartckzejtQyuz8byKiT7hIlq7vzO1fLzbknii/lJ8fSVEigVktRHXZbPwTzELzcFZqwfN32cyjpISPamS6Cz8SJmhneHMza5YCBDByRqV2bxR1B/SFyfoSO7OxPJE6OOaRS4SddvVLLGFQNLbl4mmH3mL7H6bLZO90d6+wVaSNCWppaNU/Hh
- 4bnQXY+E
- F7qYg8nNAKowwkFdUZgkryg8Y4DiQjZxwYSBNfq3XGob/tkRkNzzfD5Qps39F1w86SAYlkrbLzvjv1V+m0Yjdzw8yWum6SVjpiS9HWbDJVNvRXPL2F86QvvrEOlnWcDHVPneDoG91qRXjvaFy5vEnskLBrlUpnI6oHVMyV/AR4CBFKSBhIziizuLAGt3XMrHponzLhE8F3gF0BB+u7xYe3E6ZUMY6e1SUW15aLK7fB0zCP32jst1BJ4p6pB4JOgZ3WRE8VhPJ5FscEoMZ1xQ+dTehv1Y5eRvZmU2LG8gdq4gL4AmfyFOcm5ueX7EegSM6X5abu6CIP6Ma6zM2bbrhKQu20SvBPHrcx03zSSiifKdep1WFJboHMQX+gGnCvFauy+BXEcbf5tXXIY1cqXZQqrQsQs+M3mqfuCd+XENHrgS5Fuc=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1759138051-337882
+X-HE-Meta: U2FsdGVkX1+TS9ycGmAlzRjGGoKW2tlw9eWLwdzHWutFKY4zKXfa5h2Ragt2I3HnGAzrWdZa0QGPjOyOssgtfYlkN+Nzqjzl9f/ZIe0Fy5nltDFMVFmyG5nCvWJbaETrb/0S3mZS9WVGb1PZ0TIVv+7/JCUhLCcalhK7TjxzJnqowChb5qmomsgZWnysRxw6PZQmaHaHyiA+SOCOTiIKg5EAEjU1r21h9gEaj/fq5AoPdQxGFH8SgjMjSweQwIqP/4cjWcpq0nfs39VwMOLrOFi8wrHoKp2HhRpX2XH6v/gljP2rEen/1NAR9nVqWRyW6bbz089Bw0g76t/RtfwgXMKSpgPj6AYtcc6heTLXf+FOFhs1eLyPepG0jZZHPDAcz12j1PbZS5lfOPQu2sR74ux4r+p3c3D2y5De7oKOLxM8PPetqPLtALpw7pZG/U/jeHj21ILSXaZ9lazFMLukcrjTPEhiMYwV0t8GksO0v2Tv6aYezNBtR3oJCmPER3zZNorNk2oCOC4genpdhWjRTlP2Px4SzWsxfn0a7DJs8k27SKMNC/QkcKqtWgzVtnUOUW4zGRRupt1KY+yjctDHeeIKGMlyJC+2F+vUshM2gPE0Imta0KToV3aQFnqCY3kNzARJWhU36XxWbGBACZCMeyEvDhxzSCOx52RvaVVCdofr9u/yh7MmyFal/tXgxX5iKhzLG89bATr8OaXp6a3fJjFT70zZOBixrd+TaTjXl09eTqt+jHSEl6mTce9/mxnwoLu/WhLzPBo3gRChB6TyVl+TtldzI3kuBfHA8qW5Kf788rjslY3u5UELxVV8HiKIwHmQuABXamBMVH2l4z0PL/J18gv47dIGp8436CoB0q5LHR+j1d7NPHfBgv0zpI3kpdf2NwyFIScuKEi3P9whvruJl7YtxKaXPvixMowJE8jOJygXq1xWiV4rBdQ+Re/cxBU4XBn92x3CCWp5OYU
+ kVbX5TQg
+ MDZ6OYbGH8yD25Ib2Xh8GzT2SpcN5/C4iRQLmFTUzEXNs38F+Fg74X6W5GqS3SlH3rre1dj+9l7/KT+miJeFWJ/PBr2Jbryj0yg5yCg1lvgAPSKXLZUHvRa/+WJRchfESU/Am1JUVIJvJjXzlpHaXFtPFsl4cbKXQrx6wGPoYk4TdA443cXQk0eGYrQQzFd5x8hJo3XHtomw05Qifyd5yfGjKn9aSgp9o9PnQPnfMoB7AnXloISpp/JT5I6H2+CSuSiZqpCafOLsz4GveF10D/7ncrffoNJ4zi6VMTUV8y98gP2h5ri8gF9akkpQC5Xd+lp6Xh67SSx4W3JqLDFmAFNpXONF3QyhG3U62xRCoFS/etIpI+jl/wb/JusPJMAiYiaLxe5yMeZaasXMFE61VuRxw7sQx/GtfKSdU34N2lZBYXclt638gd5Qk7aKvHMrmYB1Q1hRDqKobD9ey59fGR7WEcw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,99 +140,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks for your reply and the pointers. I went through the kernel arch/ code
-and looked into architectures that support PMD-level THP, such as arm64 and
-x86_64 etc. I found that their flush_cache_page() implementations are all nop.
+On Fri, Sep 26, 2025 at 09:20:34AM -0700, Yang Shi wrote:
+> When calling mprotect() with PROT_MTE, kernel will initialize MTE tags
+> for every single page in the affected area. Soft lockup was observed
+> when doing this for large HugeTLB memory area in our customer's workload
+> (~300GB memory):
+> 
+> watchdog: BUG: soft lockup - CPU#98 stuck for 23s! [t2_new_sysv:126916]
+> 
+> CPU: 98 PID: 126916 Comm: t2_new_sysv Kdump: loaded Not tainted 6.17-rc7
+> Hardware name: GIGACOMPUTING R2A3-T40-AAV1/Jefferson CIO, BIOS 5.4.4.1 07/15/2025
+> pstate: 20400009 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> pc�: mte_clear_page_tags+0x14/0x24
+> lr�: mte_sync_tags+0x1c0/0x240
+> sp�: ffff80003150bb80
+> x29: ffff80003150bb80 x28: ffff00739e9705a8 x27: 0000ffd2d6a00000
+> x26: 0000ff8e4bc00000 x25: 00e80046cde00f45 x24: 0000000000022458
+> x23: 0000000000000000 x22: 0000000000000004 x21: 000000011b380000
+> x20: ffff000000000000 x19: 000000011b379f40 x18: 0000000000000000
+> x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+> x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+> x11: 0000000000000000 x10: 0000000000000000 x9 : ffffc875e0aa5e2c
+> x8�: 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
+> x5�: fffffc01ce7a5c00 x4 : 00000000046cde00 x3 : fffffc0000000000
+> x2�: 0000000000000004 x1 : 0000000000000040 x0 : ffff0046cde7c000
+> 
+> Call trace:
+> ��mte_clear_page_tags+0x14/0x24
+> ��set_huge_pte_at+0x25c/0x280
+> ��hugetlb_change_protection+0x220/0x430
+> ��change_protection+0x5c/0x8c
+> ��mprotect_fixup+0x10c/0x294
+> ��do_mprotect_pkey.constprop.0+0x2e0/0x3d4
+> ��__arm64_sys_mprotect+0x24/0x44
+> ��invoke_syscall+0x50/0x160
+> ��el0_svc_common+0x48/0x144
+> ��do_el0_svc+0x30/0xe0
+> ��el0_svc+0x30/0xf0
+> ��el0t_64_sync_handler+0xc4/0x148
+> ��el0t_64_sync+0x1a4/0x1a8
+> 
+> Soft lockup is not triggered with THP or base page because there is
+> cond_resched() called for each PMD size.
+> 
+> So add cond_resched() for hugetlb to avoid soft lockup.
+> 
+> Fixes: 25c17c4b55de ("hugetlb: arm64: add mte support")
+> Tested-by: Carl Worth <carl@os.amperecomputing.com>
+> Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
 
-More precisely, for modern cache architectures (VIPT no-alias, PIPT),
-flush_cache_page() is nop.
+Acked-by: Oscar Salvador <osalvador@suse.de>
 
-So the call in wp_page_reuse() looks more like a historical artifact, and it’s
-hard to judge whether it was strictly necessary.
+> ---
+>  mm/hugetlb.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index cb5c4e79e0b8..fe6606d91b31 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -7242,6 +7242,8 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
+>  						psize);
+>  		}
+>  		spin_unlock(ptl);
+> +
+> +		cond_resched();
+>  	}
+>  	/*
+>  	 * Must flush TLB before releasing i_mmap_rwsem: x86's huge_pmd_unshare
+> -- 
+> 2.47.0
+> 
 
-I really appreciate your clarifications!
-
-Best regards,
-Wuyifeng
-
-在 2025/9/29 16:09, David Hildenbrand 写道:
-> On 29.09.25 09:29, wuyifeng (C) wrote:
->> Hi Linux MM developers,
-> 
-> Hi,
-> 
->>
->> I am reviewing the page fault handling code in the memory management
->> subsystem and came across a point that puzzled me regarding the use of
->> flush_cache_page().
->>
->> When I referred to Documentation/core-api/cachetlb.rst, it describes a
->> typical sequence in a page fault scenario:
->>
->> flush_cache_page(vma, addr, pfn);
->> set_pte(pte_pointer, new_pte_val);
->> flush_tlb_page(vma, addr);
->>
-> 
-> The number of archs that actually implement flush_cache_page() is limited, so likely there is not a lot of interest around optimizing some out.
-> 
->>
->> That is, first the CPU cache is flushed, then the PTE is updated, and
->> finally the TLB is flushed for the corresponding virtual address. This
->> makes sense: when the virtual-to-physical mapping changes, flushing the
->> CPU cache is necessary to prevent stale or corrupted cache from affecting
->> the new mapping.
->>
->> However, in wp_page_reuse(), the virtual-to-physical mapping does
->> not change. The function looks like this:
->>
->> static inline void wp_page_reuse(struct vm_fault *vmf)
->> {
->>      struct vm_area_struct *vma = vmf->vma;
->>      struct page *page = vmf->page;
->>      pte_t entry;
->>
->>      if (page)
->>          page_cpupid_xchg_last(page, (1 << LAST_CPUPID_SHIFT) - 1);
->>
->>      flush_cache_page(vma, vmf->address, pte_pfn(vmf->orig_pte));
->>      entry = pte_mkyoung(vmf->orig_pte);
->>      entry = maybe_mkwrite(pte_mkdirty(entry), vma);
->>      if (ptep_set_access_flags(vma, vmf->address, vmf->pte, entry, 1))
->>          update_mmu_cache(vma, vmf->address, vmf->pte);
->> }
-> 
-> Note that an "old" PTE might, depending on the arch, not actually have the hw-present bit set, so next access would trigger a page fault to maintain the clean/old PTE bit in software.
-> 
-> So it could easily be that we are transitioning from non-hw-present to hw-present here.
-> 
-> If that requires a flush_cache_page(), I really don't know :)
-> 
->>
->>
->> Since the mapping itself does not change, I am puzzled whether this
->> flush_cache_page() call is actually necessary.
-> 
-> Same here. I have no idea if the scenario described above would require it, or only when we are changing something present to something non-present or differently-present.
-> 
->>
->> A similar situation appears in do_huge_pmd_wp_page(), which handles
->> huge pages. When the system reaches the reuse branch after the relevant
->> checks, the code looks like this:
->>
->> reuse:
->>     entry = pmd_mkyoung(orig_pmd);
->>     entry = maybe_pmd_mkwrite(pmd_mkdirty(entry), vma);
->>     if (pmdp_set_access_flags(vma, haddr, vmf->pmd, entry, 1))
->>         update_mmu_cache_pmd(vma, vmf->address, vmf->pmd);
->>
->>
->> Here, flush_cache_page() is not called. Instead, the code relies on
->> updating PMD access flags and calling update_mmu_cache_pmd() to refresh
->> the TLB.
-> 
-> Does any architecture that cares about flush_cache_page() actually support PMD THPs?
-> 
-> I mean, looking at mm/khugepaged.c, I cannot spot any flush_cache_*(). Maybe it's implicit, but my best guess is that no architecture that supports THPs really requires it?
-> 
+-- 
+Oscar Salvador
+SUSE Labs
 
