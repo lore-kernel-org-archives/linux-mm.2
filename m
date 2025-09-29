@@ -4,115 +4,209 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9EF2CCA468
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 20:05:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65C89CAC5B9
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 20:15:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 111C28E0028; Mon, 29 Sep 2025 16:05:00 -0400 (EDT)
+	id AC6AF8E0029; Mon, 29 Sep 2025 16:15:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E8E78E0002; Mon, 29 Sep 2025 16:05:00 -0400 (EDT)
+	id A9D9E8E0002; Mon, 29 Sep 2025 16:15:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECC518E0028; Mon, 29 Sep 2025 16:04:59 -0400 (EDT)
+	id 98C1C8E0029; Mon, 29 Sep 2025 16:15:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D7AF88E0002
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 16:04:59 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9B5FEC04DE
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 20:04:59 +0000 (UTC)
-X-FDA: 83943366318.17.7C35ECE
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 9D49F140002
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 20:04:57 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=bPPFqQz0;
-	spf=pass (imf09.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759176297;
+	by kanga.kvack.org (Postfix) with ESMTP id 868C28E0002
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 16:15:40 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3C0F511A3B2
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 20:15:40 +0000 (UTC)
+X-FDA: 83943393240.14.02B6241
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013052.outbound.protection.outlook.com [40.93.201.52])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 7D7AC40018
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 20:15:37 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=eShUf25T;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.52 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1759176937;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XPuj1ke6+vJY7BigIJs2C7hDSb3Iaudp1LjYRO2k/xc=;
-	b=vficyFZikF4A6P8VvCYiuxYd8X2ihGtAlYVhvR5XaHx4b0OxIQumQiREFTl1HSrkU8cSIF
-	57MD/UPwxUTFaSeHKuQKMSd/kMgDoAvduA6BK3dAMEN4c/12INY5jY2VPglltBc5aBaMhj
-	h9zlir9zNc68hCnjDW43XcMHEdBXtAY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759176297; a=rsa-sha256;
-	cv=none;
-	b=79+IoGuHhHN6X07awhDeEwhBdUU5iFN0+fTfNRVetQZ0/IR2UgEGGy9l4hxllpJuG8EEeq
-	6QE8+vzHZtDbjokfnnvCvBfoWHaUG4TMLR6Hta05a7NOcBZVK7jsalPMAmjBkVCS6/hPo0
-	vE84ZHtMjr3i2R9oUIVlVP8EBsX8QgM=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=bPPFqQz0;
-	spf=pass (imf09.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1759176295;
-	bh=xQ/mZxaSllKAi+O3LeitaKzfoEEyb0serr2sHxkUVHo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bPPFqQz0vREC0Hqc0Qd0LG8oOfUapTSwVKKahr4bhHav1/MhtEeGwPWTu7oaiBqhg
-	 eLP2BAymbI9383oWnI09v6kgk9VTJ0h2+h14xuzUBmlzoenOip2ORZVFHPP07ZjYp0
-	 8lYfM7BEQ0JQ6qjAHXtwEWpqXbCbhpqZ64SBK3y1pwtV+rhTOFSzMpNSF+/cHHFnUp
-	 IiGjfRkGxJ+sFEQYZJtIrj29P9iZlZlMiy4b8kafAX+EUCO3n76pu/8MTD1wQDw+vZ
-	 RNm8zWPXRfSZvLKsF+8/edV5lbdZorbNBKPaM1NEZ/hqK5MKMJ+alX9N1eatYKuzSw
-	 Xh75Ox1J9f4XA==
-Received: from debian-rockchip-rock5b-rk3588.. (unknown [IPv6:2a01:e0a:5e3:6100:826d:bc07:e98c:84a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: loicmolinari)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id DB3ED17E153A;
-	Mon, 29 Sep 2025 22:04:54 +0200 (CEST)
-From: =?UTF-8?q?Lo=C3=AFc=20Molinari?= <loic.molinari@collabora.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Rob Herring <robh@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Melissa Wen <mwen@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	=?UTF-8?q?Lo=C3=AFc=20Molinari?= <loic.molinari@collabora.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	=?UTF-8?q?Miko=C5=82aj=20Wasiak?= <mikolaj.wasiak@intel.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Nitin Gote <nitin.r.gote@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org,
-	linux-mm@kvack.org,
-	kernel@collabora.com
-Subject: [PATCH 8/8] drm/panfrost: Introduce huge tmpfs mount point option
-Date: Mon, 29 Sep 2025 22:03:16 +0200
-Message-ID: <20250929200316.18417-9-loic.molinari@collabora.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20250929200316.18417-1-loic.molinari@collabora.com>
-References: <20250929200316.18417-1-loic.molinari@collabora.com>
-MIME-Version: 1.0
+	bh=FP7dE6KgjnLyOzkWzEVCroBnpKRUiJUCOiBRM4MZ1t8=;
+	b=708FffwF2nMbFnlFZhZ/afSVf6j2uqTlRo2rHzQqGt4J4hkZrNp/3JSwVm5enP6A+smW78
+	5D3q1zRsjU+DQjfyqN/WZR/tNhZzppoPGUC6z8tFZ9VFqynTzMfv+zrTLqy2OdQG+4vEjV
+	4mQeyqbK+8GNCLDXTV/OwnCn231mdAs=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1759176937; a=rsa-sha256;
+	cv=pass;
+	b=K9Y766A5DayoB448w7x7aHoAcRcMog/Iq691mYgaS7KhTcos0om3wo0JrrXJHMIccuVzZy
+	vQxacOg3kt18rL/uAHcAbbHFYNBK49/+/k+YNkBMlWZfQKvFKeOHo/t9pQfE5AHgXIfhEa
+	AiqCDYkRet09d7TaD6HWnFlmlozSbeU=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=eShUf25T;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.52 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xHex5BWXBjCNsklAXfG1ZKzq3wMA4mBc7djPjizgFDDqxriTdOSI+r0wz+uHH9itqKO+4ed6ot057Bcz0dHgccRyGeqdmXv0toViaDK5gZWPVKeo/Ou7SVvkUm7FVG7MV25ZT8NF2cfWtnbDNlakIk043xcPfVWRKUhvrx0RpeUCCKCk2gPvdfEW1ALYduk4jxB81hy0tCsRpJBprWjtp8dzaBjQQSUsofbCvzxLT6l6kRhvFae8tfxJoex+2mUGe9vvdz3B1ib3GLOxrDfjwqwbFskWna+UUWjxn0nIbOQopensnhIqHnzCmD66/oVSR218P1iEP6DJi0kJtXw2fw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FP7dE6KgjnLyOzkWzEVCroBnpKRUiJUCOiBRM4MZ1t8=;
+ b=I2vmut6OTfTk9ba/02rdFznJkLjTrXMQqIZRyugPTbUQmyFG79GgtPkQAEdBK2zxxlypN5bvXysLsSPrFyEmW+ufj5yWD5kG5/lkRGDWN67kFg0Z3VpXZ3bGvO8QeyqbJPS5JTDDhrsusEGt0jGkVn+V+6Ya7k4HNn0nvjs/xBSUdESnzrO4o05GPL6BwdPbfOqfAdvVklKcqdpnKlY8WYgEbZxZ5RdjVh/5XtM2PxGfwV5wSmJF0eEuXMX1WQQ9Kl9Rh/7YC2FjRN8mYt0GTboqpwbjv/jTwHKr4znkbRFTsZOjf/t4cx3z1hYcS+aJBK5i/cotg13rC5yIh6O1Lg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FP7dE6KgjnLyOzkWzEVCroBnpKRUiJUCOiBRM4MZ1t8=;
+ b=eShUf25TXsxwyDgPLBVG8w5gDaSCLj138AnAJXjxmVXg/xA/GC+iLiKPUxzmBTfPPDNzoQihl3uhvv9ec4J3G5kQR3L2s8innFf/Oy53VpR+IQX54sKq4HaQhe6Jp6ngEGZcMZKJRCldactIKWXZw2xWb0klf/VXdlzFTHcU7W6+fSzlg0hzktEYJSWUxCIRUsLA7GNhw01cbvRWF4dDfjOsJA8xYQU3upZdByUbCcJpssGQy+k5OH5DOgkdqbVI6Me7oEBoASJYi0qM+VZcBzM86zW4IJ1ZpkjLVSRdhpoDnZAdh+KULXmo8LczDGdDnL4ffuFK2mLyZhD13hY7HQ==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ CH3PR12MB9454.namprd12.prod.outlook.com (2603:10b6:610:1c7::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.9; Mon, 29 Sep
+ 2025 20:15:34 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9160.015; Mon, 29 Sep 2025
+ 20:15:33 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: jane.chu@oracle.com
+Cc: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
+ David Hildenbrand <david@redhat.com>, Luis Chamberlain <mcgrof@kernel.org>,
+ syzbot <syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com>,
+ akpm@linux-foundation.org, linmiaohe@huawei.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, nao.horiguchi@gmail.com,
+ syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [mm?] WARNING in memory_failure
+Date: Mon, 29 Sep 2025 16:15:30 -0400
+X-Mailer: MailMate (2.0r6283)
+Message-ID: <92AF859E-AA5F-4470-B1F9-0DEC3F7030B8@nvidia.com>
+In-Reply-To: <c61ca94b-5b19-4c69-b2a1-d11a5301c6bb@oracle.com>
+References: <68d2c943.a70a0220.1b52b.02b3.GAE@google.com>
+ <ce93b55c-75a7-4b4d-a68b-9d80baf1578b@redhat.com>
+ <DB0E39CD-36A9-4929-BCC6-33F27E387AEA@nvidia.com>
+ <70522abd-c03a-43a9-a882-76f59f33404d@redhat.com>
+ <B0781266-D168-4DCB-BFCE-3EA01F43F184@nvidia.com>
+ <cad74ef8-3543-4fc5-a175-8fc23a88776a@redhat.com>
+ <E82638DD-9E5D-4C69-AA0F-7DDC0E3D109B@nvidia.com>
+ <fzfcprayhtwbyuauld5geudyzzrslcb3luaneejq4hyq2aqm3l@iwpn2n33gi3m>
+ <80D4F8CE-FCFF-44F9-8846-6098FAC76082@nvidia.com>
+ <w2kwxcd6br6h4tdn6xigtuf73qklt6jhxvhtcwp7idugycgxlv@vqjx26vrnwu5>
+ <594350a0-f35d-472b-9261-96ce2715d402@oracle.com>
+ <7577871f-06be-492d-b6d7-8404d7a045e0@oracle.com>
+ <c61ca94b-5b19-4c69-b2a1-d11a5301c6bb@oracle.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9D49F140002
-X-Stat-Signature: dmrxn76rqjmsc7i5hdyxnejuincz1bab
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: BL0PR1501CA0032.namprd15.prod.outlook.com
+ (2603:10b6:207:17::45) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|CH3PR12MB9454:EE_
+X-MS-Office365-Filtering-Correlation-Id: d1b0b310-70fe-446b-5018-08ddff94f207
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?R0JadkIyRkFvdGVueTlLSkNJT0tjQU5HREVqUitYbTJLamhkWmtQZDhJMmdB?=
+ =?utf-8?B?NTFpL05wTDlobGxKaytWRDNkaGhIdjdRSXlrQ3VXdSt2VWhabUVVdm1pSzEw?=
+ =?utf-8?B?WkI4SnRtRGg2OVg4aEIvVVIrTFVXZlVGSDQwS3VNejV3NnZucHRONlBhbU1X?=
+ =?utf-8?B?dUZuUXEyTXRkT01KNWZzU05OMW9yQmdUUm5keEM5L1lkcHQ2NFNLeG95QThH?=
+ =?utf-8?B?V3J1cmFDcEdzUzdkalVBME9VeGMyZXFmemhCQWFRdE45dVVCYmIvbEpscjJ1?=
+ =?utf-8?B?NFpDMkpQY0RUeG5OWHRvQnh0bnhNckFvSHRNUDNnQzJBdE51K1c3TmNBWFRG?=
+ =?utf-8?B?eS9IOG55QzU5N3lzMm8reWFXc0NTVDZ3d0xzakE1TUFNSGV6bmk0QU9OS0hO?=
+ =?utf-8?B?UFUwQWFZQ01pQXhhZVF4aFlSSXV0SmhBSWRDaS9lcGVoaEFXaVZjeU9mSGlU?=
+ =?utf-8?B?dHZoWWpEcnlQRkFtR1krbWQ4bGpsOTlwUnpZeXAyT3dTd2oycmsrTk1MOVor?=
+ =?utf-8?B?LzZRelJ1dDJaT2JsbDlwamRvZEdlK3pBN0d3akhWYS9HeDU1ald4ckRITk82?=
+ =?utf-8?B?RURsODQzVmVwdEgvZSswTGlzQ1ZDUTdQaG9tWnJ3RnNqK2NRbjM0dkVYQno0?=
+ =?utf-8?B?K2tjRk55V0w1TnhxRnpCU1dENjVQMWp0eVpBZ25IUGZHaDFTUXVIRSsrb2oz?=
+ =?utf-8?B?ZTZTbGkwUWNpTmRzTi9WQ3BrL2NaNkw3VjNROVpCZmUweFhtbUwzV0pkSk5j?=
+ =?utf-8?B?bE5SRFh3NzJXNDAyVktzd3AxTmdIU3NGRi9tMmlwdEFjKzNPbjd6SDNoYkta?=
+ =?utf-8?B?eGtjTzhJOFpycWdnU1Z5RVhOUEJiaDZ5N2RaUllIazBnOW1MdzhPcDNpNk1U?=
+ =?utf-8?B?aTEwejZnUDFxZmJsNFdFWDZUeG4rNkR5RUttV1hRZ1BaRHZPUXFFdTVXSS9o?=
+ =?utf-8?B?bmwxWkVKOUJTMjZzb2g0QWdsS1ZvZHE2NkZEUjY4K2VMQUhpMFdHcGRtOWRP?=
+ =?utf-8?B?clMwVzlMRFNCdGk5MTUxbjltTUxWSS9jRmRsdSs4NUtnUFpkc0h1aWs5NExX?=
+ =?utf-8?B?bzE1dU1DTkozYU5OT0xYYTNndVFyaWY0WXNKUjJwWnd3Y1VxanFoR1g3dEwr?=
+ =?utf-8?B?US9KUXQxL1FlOFQvMzlEdVRmdWwvN3VWdWUyMzNWcjdGTUl1OCtCQWVlZ1E0?=
+ =?utf-8?B?b3VNOEZreFFCLzFueUNFd21BOXRCVmJCRXhjY3FjTEhPcWRrL3ZGc1JWUmow?=
+ =?utf-8?B?UFlwRHhScFN3aklLRTFvL3J6ZmFGenBzbDcyUnVGZUE2T29Eb295bS9XQWJO?=
+ =?utf-8?B?cW9Jem9hRGdwb0pCVWk0SmU4ZG9LK3R1Q3ZzRFU3ZDdPaStpY3ZlcjMzQmt5?=
+ =?utf-8?B?ZXRVMG9kYytRem0zZ1hXMVh0VUVHWXUvTmp3eDFFb1NKdVY3Rmd0bTJFNUtv?=
+ =?utf-8?B?cU9VeGxDMFdrUnFaMy9iWFRkcjA5WUVCNm1WSGN2cjArai9DR1N5a0g1ZFZp?=
+ =?utf-8?B?dy9uQUduaWJQbk4rL0E5Z25mdzFhRjBDc2M1VU1WZlV4dDJqMVdSMEM5N0Rq?=
+ =?utf-8?B?U1RyNjRseVJhVFVKRWJXQmd3Ty80NjB1QUZIMW93Q1h1azVIOHc3VUdTUHlI?=
+ =?utf-8?B?TitTT0tGTWJsR3RHRzB2dnZIZlY1SERLOGpsNGdFaFNlMGNYVENZRXpybEk1?=
+ =?utf-8?B?VjI4eE9Bc2NTTmppTWZFdGZpeWtUM25SeHNpdFlRVUM4c2RtR2t5OFFLUG9Z?=
+ =?utf-8?B?WDFKbmNvVHEyeXVMUDRiVTZNS0xMMFdzN0pkaFFZLzdXd3ZvNklqM0Fna05U?=
+ =?utf-8?B?WnVTV2cwR1A3UkFhWVl5ODRUc28rdWVNMzZ0K2hmOVZNSVRGZ1hkdDF4Nzdo?=
+ =?utf-8?B?aUQ3RXZKWTNoUDBxNlR6by9qYnB2Q3BZd2lOMXlRU3Z0aU81cXRlQWMzUDUz?=
+ =?utf-8?Q?6vXNUxMM8OTMqKeD+nhtGfHCs9ZHQjUd?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Ylc3WDJOdHNQcnBZWVA5WjJkMUVsM2xXK2p4UUN2UitQbHdnR214eWpST2xi?=
+ =?utf-8?B?VHIwdWVzRDdCbk90S2FDUVBVbWJIeDIwRTdneU9NLzI3SlF2aDVsSWk5RUR1?=
+ =?utf-8?B?RHhCa2ZrNy96NmoxSzRTdTdDeXhhOXVGV3lpUk4wWHNQN2d4YnBoMWdSQnNo?=
+ =?utf-8?B?YjZ5WnZlMTM4ZzY4c21HemdJSHN5STg3V0Q3S2loVnRkYzBUdzNJTThkUDJ1?=
+ =?utf-8?B?b211NVJxeDZXdUhabndUQXgzT2xVUDdSbG1HSFhKS0hUeDlYd21NNU5qOXdQ?=
+ =?utf-8?B?OVJvTUUxN0RsYWEzdU5FTXJBRW1RdkN4cTN6dUE3RzR6cmpoVHdxMHFLSnFi?=
+ =?utf-8?B?MUxxT0ptYlJ0UW5WbHlxMml3TkN0VDFrWXlBcXJZTE1qOVE0S2RvTVpqdVFo?=
+ =?utf-8?B?djJnNWNvaHVmU2FVWGw1ZXhPSEIzVjBwTDF1WHZtZW1kRnZIY3dwSVFibW4x?=
+ =?utf-8?B?TWtnSFJSbkppaE1PaVBsR0FHVE1EWmFjUStpUDIxSkQ4ek5tcGYyS3RwL2JY?=
+ =?utf-8?B?NzliU1JkeERRbGJjUlovbEVvQU5DNnUxZVJMOWIyZ0V3bFVWSGdoeWZxY3FE?=
+ =?utf-8?B?RElvRHhnaXBKQ0EzRjZXWjFrT0xHQVp2QzZRNHdPZXFKNWl2QnRwdXM5WVNG?=
+ =?utf-8?B?aHlJNmZsWHE4RzVTVjRldjMyMis1b1BuMUR4VUVIMjdMd000UERqc1NLb0xt?=
+ =?utf-8?B?THBwei8yQW5uLzJiR3YreUdmeHZ5UlQwekRLaG51ekZsRGlqNVBqNklwbFZN?=
+ =?utf-8?B?QWxEclNDWmsydk9wVUltTVh1QmpjZUp6Z0xFL1RYYWpUaWdxV3hGSkgyYUpX?=
+ =?utf-8?B?MUREZ0pMalMxMVdkVGJrQ2J2MWU0MjRnSXNaUGxEaWFEMXhsQWlpRjU0ZHdw?=
+ =?utf-8?B?WndPQXJKM2loS0RFM3Z1b3RCcGpYZU9MaDJ4VHI4VllJSWN1UlRlakg5TVBP?=
+ =?utf-8?B?alFqeFlnd3pBejNDRVdpMHRCYyt3RklENkc5SzFJS2hzSlhrRW1OdDEzRmxN?=
+ =?utf-8?B?Y0h6VjF4ZDUwUXdncWhlaC9qSXM1V3FhSkovUDZHR29WcEt5YVAzNEtsRFNy?=
+ =?utf-8?B?eTI1ZVRFUGVLQ1JWeHFKaWhzOFJ1SkxwK0s5eUkvb1NNK1pZN2hkcXA4QmFX?=
+ =?utf-8?B?NER3R3pqTG5iU1BhVW4wTEVRVkx3YW9zb1FDR08ram1acGdSYWpqeFBUaHV1?=
+ =?utf-8?B?VHpuMkRocFlDVXpQRFducm0rUVpXQkx2d2lWOVVESWJoUWdibDJNTjRtNjhF?=
+ =?utf-8?B?ZU92eGZmb3pVdnNrZWp0bjFZSWxUZHlWdGJGTkQ4TTJYdjVuc3RiYlNzOVhM?=
+ =?utf-8?B?c2xsTjkxWDR6SzRZbUNTeEJvM1dETURLckFmaW5RQldoaEwrdHZqQ0QwWG43?=
+ =?utf-8?B?bDFEOXJUV0xGeVNVUU1jd2I1a0VGdjJJUFcra3dockZmREJMSjd6YitNcmw0?=
+ =?utf-8?B?OVBVVkhDRCtGQ1AvN2N4RHFPSUgzeWY5YkN5VnpBVnNTdTkrakFnVkxXYm9C?=
+ =?utf-8?B?NFdaTHFSOWdpMzlMUUI0a2V6cy85enlhTDBheE4wSlp0MEgybzZYQlFmK3ow?=
+ =?utf-8?B?TkhKUDROWG1sNGpmKzgrSlhkb0JzcmFZN2J2TWtxV3JOMEJXSHEwdXZVVnVo?=
+ =?utf-8?B?UVdTZ3NQdVdyQWQ5bXR4Tkcyb01QY0dnZDZQMkVHdWVSV1NEWjlqYlJjU0Rs?=
+ =?utf-8?B?bTdDaW5wMWovME44NXBsektNQmhLTndML0J4dlhGT1hkU1JUa2IyTWRQa3ZF?=
+ =?utf-8?B?WVpXaTJEaXo3bk90Tmh3dnZ2K0tnU1NvRW1IK21EYzJKaDNrbSt5RmN0T3lK?=
+ =?utf-8?B?SUtqQkEvcjZveXV0VW5HQlRpWkJDdXFYMHdldGQxeUN6NUkydEZhMk5NUXZC?=
+ =?utf-8?B?YTNUbnAyRkNDVGhieEJOakZoSUdJRnNWV2lrakVrS3FvWkJkTi9uQ01aZnJR?=
+ =?utf-8?B?di9nb1l0aDlRWUlBb1JJV25HTWEzR3gycUtuNEMrLzdldFNveWlNdUE5NkFC?=
+ =?utf-8?B?Si96cnMzMzZtdnM3eDMzU3Z4eE1BR0JaZERuR3EzOXNOVUhNN013c0hRTHpr?=
+ =?utf-8?B?anNxN2Q5elI5TEZzZVVwSCs1ZXhweDJsanRucEVXNG1kaE42bmQzdWtSdzd6?=
+ =?utf-8?Q?XQ3KlnuoZPUzDnV/+X+o8qiqZ?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d1b0b310-70fe-446b-5018-08ddff94f207
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2025 20:15:33.8843
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gNq4gRDoaAw3pFpWd8sEP3Aw+/HNrj70imwzSMQQ+mSjw41OJajax9b33JUbC3dC
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9454
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7D7AC40018
+X-Stat-Signature: tsb3uwsm8xiwb6oiourrsd4aupj8wx4e
 X-Rspam-User: 
-X-HE-Tag: 1759176297-251080
-X-HE-Meta: U2FsdGVkX1/IYpC9fRVdnQ6kJr2agHX3CEMHqNnrwAtE+66SV7slZVhMY2ZVC44BTa3gwvYot6I79QXcgswsBi3tmn//98Wijt7nCGan7HUoLh/XNFBzrIKM+IqNooJ9FCrYEvhnefyGpgg0ZR0JgzOkuk2fRqEE1ujF8q97ZrUCA947Tcn+rvL1iKvAK3XTsx7NBShC0EwkHS6sctaCrbRxZKF24lMiIerCDNmpftGqqicnaogyQTnLl2xkZlVT84CxynOcuTpWk3ZZcEliTYY8FBuDFLhF7WOrnImSIXsUTUs+G1pbqcve4lfVEQq09icI+UBqJahTlt4Og1ZgxYtUg+sb8NpizOiNZDAj1e1NwunwgF/QAYzEZG2FtBsDiuFl5AgzsMD7kbop/FVFcLCS6UWq4WD1gcfdT8rq4xiehGVSwuHapdtE6E0bCYzs5PECRf6EVS4vBBAT4voVBXBoRCO/XUXiKTwUhs3pnf93IEXnAZ4SDr/c9VjFfWQ2EVICohWUrJ1F2vF9KjYe7PO15pF9IywhJ61L2sjMrEynmgDIU3+bl6Nj5Adzng/EctQkXxs3Bd/mQGdXMrkeGLWEPhZlXQFfONiUPu+M5rVxyZ8pA1yEPrmXvNnbFRaPUA3U8XNWUe8TFIouhw/pmxVXkzPyX14uLsYLhiR9qnEf9rHRcsRMQ3XqQ+BQinxl/BUP/kA5dr7l/OZF78B0kfDgEokDxgkBTy2FZrF+DiUjyOu1fmrsYGjcqw+Uv3e6633a2dKhnfiasC3pfwnndYd9JAfLB0Eg/7knA/iTmBRi+FxAFBaw7Loqtq12jR/Af9fU0LzqY3AQ08hKY9lHXtAdQsW//PT7QG3h4ewvBjHF9l/iScMSh9V/caZ9aC3l1+QYPtaAeek+d7hMSjjYOsotQwoxC3U4Mp58PdotYGIfw5z8TyC3yM+ETS7vU7BsgYWRZrjugJEyohwNEPD
- Wjh1zyJ/
- bUcbT81NKy/Hm3/nk3M/8/78Zm1+mVPFe0R+QX8k7VEoJxSZutgeEsRd3maW50MLG4hrqlg7q3U+nnj2llCLR4YN1VDHP2DVprokVJaSsjlFKaWAoKtmbs3wXCsFD+ORXexew9HZmcf/YVgimfb0rTlEG81MppiHi9urqfSt19Fpndt4KS/snsPRtL40ZU0ANRuMZkOLHtcXvQYTfbeidIhqX4ldE2SxAa3Jv+VSX2Ui6mF/gsYSo2pmUaFRwTI3+VEdKDHViLHH8HU2fErZVTdXwlOs4uiiXyS/NM15RdYP7ms47wfza9TZD+MNal8ivRiON77uh/lC82N5qmUl2LgV5HaP9FiFIx+3H7LsTSbdXKKQrYFnWv8IYcVA3EaOt3KrHoannp2edDaajV/3m/WDncZGQs/KKtaEDqo88VdkIsLfgVRHZO0r1Eg==
+X-HE-Tag: 1759176937-405855
+X-HE-Meta: U2FsdGVkX195Nq9y8X8azu1Bh9STFL9D1/9iF0MH1vRPIbpupD3FSjmA800sxn9BHctirMmyjMQcWN562wu9iGWLnv6/qTbz/7c3Gr0Yf7BJ0HMnJi+pbL/n48aX6F2aTOfOsybCPLLr6TrIhqzLFF5wjR361EOrOOMOvRZYvpY1Oz+J80DYmHm7OZpy+y/3U7R1EHp5opogEvlXpUi0Sb3WyGdtV9VNtNUsDb09yMOaIgxbHy09XntBrVl3SjCQln2xhDNwxdyY4aMq0+cCIpm3fL4mw3BWGnPk8lEYNMQJmjOPrHA94SYjvZsjvlxZiMYFmIfT+KD3DEXRvVqkpXClJD8mMCZPclX/sAlBvDhA4hk8aRKtrh7qBsxw17mBR98WHabumioZ6E61qKgso+NgyPeYsUDhUvrPUfcN+b/bGvWNUz7FlK9pyI4HNkeG+4BumbXsYcUMGacYtlShfWDje2NTIB0G+/OzOjJ29wtJTYxUf5Ue3JRpRh/YhMiTHpv5ZrtpIkx1jI7l5eFzZl+tV99jgTEViWCCFkS0S3hD/2b+rr5cBGmh7pZ+ZFtUUjmT0UGLCtGbbfUMwmq3SzI8pc3KoKy3PAQyRcrse/emjyVItiJ+4zZhl8gJ71vz8PLfQ0CDXcGxJkrdBxalCgyWfbYSikWcGv9XS2i7nZToq1RJwdbIoUykxe+lOjUAZxI/pqpzKtF7hfhVchb3uQt+PdsYnUvyvRaUnFidsgEnaEvzq+m6A9pfRw2QDhig2ToVxZ1nnUZ/0iLTr0jFv5daLIh2ln7ENtkb/PYnGTuCl5TvVibT6dH6cAcoFp5zoGZkJPSF49eq0PNozg89a2f5uLJe+F19w3HdBM+jkpsJmZ8XtlxCV2DjX3rsAfOz22j7+B/6FaRGqLYrrwxunXmrXMVBKw7sC5Ro2Jdq7ttqAt9LYkPHJc5is+EX+FnRJUhwqq14KXisSHlAcpd
+ M2a7+Iog
+ R0gwyxaT75G+WHsSvlML74uZ/uyBDDcYXbGOwu9G2j/ebl+WgTyOQMtMgcLRagulsyXOS3K9ikDvac4nfXs1ExJAlFsGuw6fZERnDo+ZY8b6HSYqA6KbcZq7rbg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,178 +215,234 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce the 'panfrost.transparent_hugepage' boolean module parameter
-(false by default). When the parameter is set to true, a new tmpfs
-mount point is created and mounted using the 'huge=within_size'
-option. It's then used at GEM object creation instead of the default
-'shm_mnt' mount point in order to enable Transparent Hugepage (THP)
-for the object (without having to rely on a system wide parameter).
+On 29 Sep 2025, at 14:23, jane.chu@oracle.com wrote:
 
-Signed-off-by: Loïc Molinari <loic.molinari@collabora.com>
----
- drivers/gpu/drm/panfrost/panfrost_device.c |  4 +++
- drivers/gpu/drm/panfrost/panfrost_device.h |  2 ++
- drivers/gpu/drm/panfrost/panfrost_drv.c    |  6 +++++
- drivers/gpu/drm/panfrost/panfrost_drv.h    | 11 ++++++++
- drivers/gpu/drm/panfrost/panfrost_gem.c    | 29 +++++++++++++++++++++-
- drivers/gpu/drm/panfrost/panfrost_gem.h    |  3 +++
- 6 files changed, 54 insertions(+), 1 deletion(-)
- create mode 100644 drivers/gpu/drm/panfrost/panfrost_drv.h
+> On 9/29/2025 10:49 AM, jane.chu@oracle.com wrote:
+>>
+>> On 9/29/2025 10:29 AM, jane.chu@oracle.com wrote:
+>>>
+>>> On 9/29/2025 4:08 AM, Pankaj Raghav (Samsung) wrote:
+>>>>>
+>>>>> I want to change all the split functions in huge_mm.h and provide
+>>>>> mapping_min_folio_order() to try_folio_split() in truncate_inode_part=
+ial_folio().
+>>>>>
+>>>>> Something like below:
+>>>>>
+>>>>> 1. no split function will change the given order;
+>>>>> 2. __folio_split() will no longer give VM_WARN_ONCE when provided new=
+_order
+>>>>> is smaller than mapping_min_folio_order().
+>>>>>
+>>>>> In this way, for an LBS folio that cannot be split to order 0, split
+>>>>> functions will return -EINVAL to tell caller that the folio cannot
+>>>>> be split. The caller is supposed to handle the split failure.
+>>>>
+>>>> IIUC, we will remove warn on once but just return -EINVAL in __folio_s=
+plit()
+>>>> function if new_order < min_order like this:
+>>>> ...
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 min_order =3D mapping_min_f=
+olio_order(folio->mapping);
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (new_order < min_order) =
+{
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 VM=
+_WARN_ONCE(1, "Cannot split mapped folio below min- order: %u",
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 min_order);
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret=
+ =3D -EINVAL;
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 got=
+o out;
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>>> ...
+>>>
+>>> Then the user process will get a SIGBUS indicting the entire huge page =
+at higher order -
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 folio_set_has_hwpoisoned(folio);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (try_to_split_thp_page(p, false) < 0) {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ res =3D -EHWPOISON;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ kill_procs_now(p, pfn, flags, folio);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ put_page(p);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ action_result(pfn, MF_MSG_UNSPLIT_THP, MF_FAILED);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ goto unlock_mutex;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 VM_BUG_ON_PAGE(!page_count(p), p);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 folio =3D page_folio(p);
+>>>
+>>> the huge page is not usable any way, kind of similar to the hugetlb pag=
+e situation: since the page cannot be splitted, the entire page is marked u=
+nusable.
+>>>
+>>> How about keep the current huge page split code as is, but change the M=
+- F code to recognize that in a successful splitting case, the poisoned pag=
+e might just be in a lower folio order, and thus, deliver the SIGBUS ?
+>>>
+>>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+>>> index a24806bb8e82..342c81edcdd9 100644
+>>> --- a/mm/memory-failure.c
+>>> +++ b/mm/memory-failure.c
+>>> @@ -2291,7 +2291,9 @@ int memory_failure(unsigned long pfn, int flags)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * page is a valid handlable page.
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 folio_set_has_hwpoisoned(folio);
+>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 if (try_to_split_thp_page(p, false) < 0) {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 ret =3D try_to_split_thp_page(p, false);
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 folio =3D page_folio(p);
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 if (ret < 0 || folio_test_large(folio)) {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ res =3D -EHWPOISON;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ kill_procs_now(p, pfn, flags, folio);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ put_page(p);
+>>> @@ -2299,7 +2301,6 @@ int memory_failure(unsigned long pfn, int flags)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ goto unlock_mutex;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 VM_BUG_ON_PAGE(!page_count(p), p);
+>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 folio =3D page_folio(p);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>>
+>>> thanks,
+>>> -jane
+>>
+>> Maybe this is better, in case there are other reason for split_huge_page=
+() to return -EINVAL.
+>>
+>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+>> index a24806bb8e82..2bfa05acae65 100644
+>> --- a/mm/memory-failure.c
+>> +++ b/mm/memory-failure.c
+>> @@ -1659,9 +1659,10 @@ static int identify_page_state(unsigned long pfn,=
+ struct page *p,
+>>  =C2=A0static int try_to_split_thp_page(struct page *page, bool release)
+>>  =C2=A0{
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int ret;
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int new_order =3D min_order_for_sp=
+lit(page_folio(page));
+>>
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 lock_page(page);
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret =3D split_huge_page(page);
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret =3D split_huge_page_to_list_to=
+_order(page, NULL, new_order);
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unlock_page(page);
+>>
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (ret && release)
+>> @@ -2277,6 +2278,7 @@ int memory_failure(unsigned long pfn, int flags)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 folio_unlock(folio);
+>>
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (folio_test_large(folio))=
+ {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 int ret;
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 /*
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 * The flag must be set after the refcount is bu=
+mped
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 * otherwise it may race with THP split.
+>> @@ -2291,7 +2293,9 @@ int memory_failure(unsigned long pfn, int flags)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 * page is a valid handlable page.
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 folio_set_has_hwpoisoned(folio);
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 if (try_to_split_thp_page(p, false) < 0) {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 ret =3D try_to_split_thp_page(p, false);
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 folio =3D page_folio(p);
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 if (ret < 0 || folio_test_large(folio)) {
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 res =
+=3D -EHWPOISON;
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kill_=
+procs_now(p, pfn, flags, folio);
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 put_p=
+age(p);
+>> @@ -2299,7 +2303,6 @@ int memory_failure(unsigned long pfn, int flags)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto =
+unlock_mutex;
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 }
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 VM_BUG_ON_PAGE(!page_count(p), p);
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 folio =3D page_folio(p);
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*
+>> @@ -2618,7 +2621,8 @@ static int soft_offline_in_use_page(struct page *p=
+age)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
+>>
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!huge && folio_test_larg=
+e(folio)) {
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 if (try_to_split_thp_page(page, true)) {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 if ((try_to_split_thp_page(page, true)) ||
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 folio_test_=
+large(page_folio(page))) {
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pr_in=
+fo("%#lx: thp split failed\n", pfn);
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 retur=
+n -EBUSY;
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 }
+>
 
-diff --git a/drivers/gpu/drm/panfrost/panfrost_device.c b/drivers/gpu/drm/panfrost/panfrost_device.c
-index 04bec27449cb..8f551c598a5c 100644
---- a/drivers/gpu/drm/panfrost/panfrost_device.c
-+++ b/drivers/gpu/drm/panfrost/panfrost_device.c
-@@ -12,6 +12,7 @@
- #include "panfrost_device.h"
- #include "panfrost_devfreq.h"
- #include "panfrost_features.h"
-+#include "panfrost_gem.h"
- #include "panfrost_issues.h"
- #include "panfrost_gpu.h"
- #include "panfrost_job.h"
-@@ -266,6 +267,8 @@ int panfrost_device_init(struct panfrost_device *pfdev)
- 	if (err)
- 		goto out_job;
- 
-+	panfrost_gem_init(pfdev);
-+
- 	return 0;
- out_job:
- 	panfrost_job_fini(pfdev);
-@@ -288,6 +291,7 @@ int panfrost_device_init(struct panfrost_device *pfdev)
- 
- void panfrost_device_fini(struct panfrost_device *pfdev)
- {
-+	panfrost_gem_fini(pfdev);
- 	panfrost_perfcnt_fini(pfdev);
- 	panfrost_job_fini(pfdev);
- 	panfrost_mmu_fini(pfdev);
-diff --git a/drivers/gpu/drm/panfrost/panfrost_device.h b/drivers/gpu/drm/panfrost/panfrost_device.h
-index 1e73efad02a8..b8f368aef9e4 100644
---- a/drivers/gpu/drm/panfrost/panfrost_device.h
-+++ b/drivers/gpu/drm/panfrost/panfrost_device.h
-@@ -177,6 +177,8 @@ struct panfrost_device {
- 		spinlock_t lock;
- 	} cycle_counter;
- 
-+	struct vfsmount *huge_mnt;
-+
- #ifdef CONFIG_DEBUG_FS
- 	struct panfrost_device_debugfs debugfs;
- #endif
-diff --git a/drivers/gpu/drm/panfrost/panfrost_drv.c b/drivers/gpu/drm/panfrost/panfrost_drv.c
-index 22350ce8a08f..e376e70a3379 100644
---- a/drivers/gpu/drm/panfrost/panfrost_drv.c
-+++ b/drivers/gpu/drm/panfrost/panfrost_drv.c
-@@ -862,6 +862,12 @@ static const struct drm_driver panfrost_drm_driver = {
- #endif
- };
- 
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+bool panfrost_transparent_hugepage;
-+module_param_named(transparent_hugepage, panfrost_transparent_hugepage, bool, 0400);
-+MODULE_PARM_DESC(transparent_hugepage, "Use a dedicated tmpfs mount point with Transparent Hugepage enabled (false = default)");
-+#endif
-+
- static int panfrost_probe(struct platform_device *pdev)
- {
- 	struct panfrost_device *pfdev;
-diff --git a/drivers/gpu/drm/panfrost/panfrost_drv.h b/drivers/gpu/drm/panfrost/panfrost_drv.h
-new file mode 100644
-index 000000000000..60454611b6a6
---- /dev/null
-+++ b/drivers/gpu/drm/panfrost/panfrost_drv.h
-@@ -0,0 +1,11 @@
-+// SPDX-License-Identifier: GPL-2.0 or MIT
-+/* Copyright 2025 Amazon.com, Inc. or its affiliates */
-+
-+#ifndef __PANFROST_DRV_H__
-+#define __PANFROST_DRV_H__
-+
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+extern bool panfrost_transparent_hugepage;
-+#endif
-+
-+#endif
-diff --git a/drivers/gpu/drm/panfrost/panfrost_gem.c b/drivers/gpu/drm/panfrost/panfrost_gem.c
-index 85d6289a6eda..e560934bbf76 100644
---- a/drivers/gpu/drm/panfrost/panfrost_gem.c
-+++ b/drivers/gpu/drm/panfrost/panfrost_gem.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- /* Copyright 2019 Linaro, Ltd, Rob Herring <robh@kernel.org> */
-+/* Copyright 2025 Amazon.com, Inc. or its affiliates */
- 
- #include <linux/cleanup.h>
- #include <linux/err.h>
-@@ -9,9 +10,34 @@
- 
- #include <drm/panfrost_drm.h>
- #include "panfrost_device.h"
-+#include "panfrost_drv.h"
- #include "panfrost_gem.h"
- #include "panfrost_mmu.h"
- 
-+void panfrost_gem_init(struct panfrost_device *pfdev)
-+{
-+	struct vfsmount *huge_mnt;
-+
-+	if (!panfrost_transparent_hugepage)
-+		return;
-+
-+	huge_mnt = drm_gem_shmem_huge_mnt_create("within_size");
-+	if (IS_ERR(huge_mnt)) {
-+		drm_warn(pfdev->ddev, "Can't use Transparent Hugepage (%ld)\n",
-+			 PTR_ERR(huge_mnt));
-+		return;
-+	}
-+
-+	pfdev->huge_mnt = huge_mnt;
-+
-+	drm_info(pfdev->ddev, "Using Transparent Hugepage\n");
-+}
-+
-+void panfrost_gem_fini(struct panfrost_device *pfdev)
-+{
-+	drm_gem_shmem_huge_mnt_free(pfdev->huge_mnt);
-+}
-+
- #ifdef CONFIG_DEBUG_FS
- static void panfrost_gem_debugfs_bo_add(struct panfrost_device *pfdev,
- 					struct panfrost_gem_object *bo)
-@@ -305,6 +331,7 @@ struct drm_gem_object *panfrost_gem_create_object(struct drm_device *dev, size_t
- struct panfrost_gem_object *
- panfrost_gem_create(struct drm_device *dev, size_t size, u32 flags)
- {
-+	struct panfrost_device *pfdev = dev->dev_private;
- 	struct drm_gem_shmem_object *shmem;
- 	struct panfrost_gem_object *bo;
- 
-@@ -312,7 +339,7 @@ panfrost_gem_create(struct drm_device *dev, size_t size, u32 flags)
- 	if (flags & PANFROST_BO_HEAP)
- 		size = roundup(size, SZ_2M);
- 
--	shmem = drm_gem_shmem_create(dev, size);
-+	shmem = drm_gem_shmem_create_with_mnt(dev, size, pfdev->huge_mnt);
- 	if (IS_ERR(shmem))
- 		return ERR_CAST(shmem);
- 
-diff --git a/drivers/gpu/drm/panfrost/panfrost_gem.h b/drivers/gpu/drm/panfrost/panfrost_gem.h
-index 8de3e76f2717..0e874d3c1363 100644
---- a/drivers/gpu/drm/panfrost/panfrost_gem.h
-+++ b/drivers/gpu/drm/panfrost/panfrost_gem.h
-@@ -124,6 +124,9 @@ drm_mm_node_to_panfrost_mapping(struct drm_mm_node *node)
- 	return container_of(node, struct panfrost_gem_mapping, mmnode);
- }
- 
-+void panfrost_gem_init(struct panfrost_device *pfdev);
-+void panfrost_gem_fini(struct panfrost_device *pfdev);
-+
- struct drm_gem_object *panfrost_gem_create_object(struct drm_device *dev, size_t size);
- 
- struct drm_gem_object *
--- 
-2.47.3
+What you are proposing here is basically split_huge_page_to_min_order().
+I can add that as a second patch.
 
+> In soft offline, better to check if (min_order_for_split > 0), no need to=
+ split, just return for now ...
+
+OK. I can do that too.
+
+Thank you for the input.
+
+
+Best Regards,
+Yan, Zi
 
