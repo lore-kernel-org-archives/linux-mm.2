@@ -4,168 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0499CAC5B5
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 10:21:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 063FCCAC5B0
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 10:29:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF6028E0012; Mon, 29 Sep 2025 06:21:19 -0400 (EDT)
+	id 247138E0028; Mon, 29 Sep 2025 06:29:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA50D8E0002; Mon, 29 Sep 2025 06:21:19 -0400 (EDT)
+	id 21EE58E0002; Mon, 29 Sep 2025 06:29:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C44D28E0012; Mon, 29 Sep 2025 06:21:19 -0400 (EDT)
+	id 0E7428E0028; Mon, 29 Sep 2025 06:29:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A48B68E0002
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 06:21:19 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5349813A88C
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 10:21:19 +0000 (UTC)
-X-FDA: 83941895478.07.01772CF
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EFA018E0002
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 06:29:42 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A2EC21199A9
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 10:29:42 +0000 (UTC)
+X-FDA: 83941916604.14.B1BC18B
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C17E3C0004
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 10:21:16 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="I/2ztV8i";
-	spf=pass (imf10.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 3903D4000F
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 10:29:40 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Wid7aqin;
+	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759141277;
+	s=arc-20220608; t=1759141780;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z3YKN3zIRZfonnEHUxLu7FAkkWR5YdTCLJYZ6VEYM8Y=;
-	b=Hj1DVARME5Nju32WuM95p+VUUSFxrTNrbwo1H9VH6RbP4N9tISH/KcHXXaQzSsKLkt96jy
-	GbjzJMhRq9VtNgpeDhFF53ickcDSSMv0a4vjTl0shmpdporSX5+vqJP7XTr1SlParxUvxX
-	Tv31+F5Wbr8OHkTMAuVftcrrbIapBdc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759141277; a=rsa-sha256;
+	bh=WXWt4HHulcMFjL1Aq+0YxiHfHwYLE0hFtn8pXo5MFNg=;
+	b=IYJZfoOv9/iLyOBuFJfcZKNF/l0U88z0AqLthQS19fU4hdlkSkMWf0H8aKfTKFNXemcuRN
+	zvKiyIRINGfA3fiI2FjSHgacJ2coIGT7zcjXei2wu8TO0tB9eAj+JGMVqZZs2pmuG2m7e+
+	yxGbD0pmyPkM5IleIvpojNEp0QTCNSQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759141780; a=rsa-sha256;
 	cv=none;
-	b=ZrfKu2wY9Tb7J5XagTtI1MIm+6adsqotzT1vjubRW0ME54gaj8HT1RKZJWnIEfVGp7Siwq
-	bGMQG+6bUMTrbqC3tUv6tsGK9qwfcyl+a5p6QBA4StQ7O/WADLImQaT56SRHXMH5Baazh3
-	7l12bj2BCsIn/A8C+pMr2K00BO29Vvs=
+	b=BCr9OONdZ+uDc7H6qDj+jufhsAg7hg19mFGDYL9n3g41b9j+sgD1sDXFPATt3is+UdZPGT
+	RHM/jL1ekhUPVvtxDdYb4XVEaXSQrwYBh6BgJGE5XqzNTD2Syha6Iow+bzDbeJxB9fGyfW
+	AL94XfWKLuFjeErxNrkmGmM0j7aduNE=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="I/2ztV8i";
-	spf=pass (imf10.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Wid7aqin;
+	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759141276;
+	s=mimecast20190719; t=1759141779;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Z3YKN3zIRZfonnEHUxLu7FAkkWR5YdTCLJYZ6VEYM8Y=;
-	b=I/2ztV8iLJgHykIkti2567/E+eovdeTL+W4TL7WAgUCJfirK80rfu/CuTT5D46iVNMZmwF
-	MmSqUBpwb+9qpa1jCMdaxstQXFCas9ucWviQYe6QjfowCYv8FLMIEp5A+pfFVaE0IZw9qy
-	JKxg2k511TiN57lChuu5Sb+ZYIm8oYI=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=WXWt4HHulcMFjL1Aq+0YxiHfHwYLE0hFtn8pXo5MFNg=;
+	b=Wid7aqinmg2iLXj3HURYCA7PZkqnly0f09e0aUuZ4Krwl7ma3Jq6yORHxKSyMJxPSKrtrU
+	IKS/larvDdwcJvzR7M2XzB0lr8ovpj9rsTm6LB4amGaPF3AVPrdEIrHnWb65QmzbmVXia9
+	uhGfyCRPrOLDwbpGmYMTn9/9xR7CpWI=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-386-5cGpY31zP6KO-pkaxYxs1w-1; Mon, 29 Sep 2025 06:21:14 -0400
-X-MC-Unique: 5cGpY31zP6KO-pkaxYxs1w-1
-X-Mimecast-MFC-AGG-ID: 5cGpY31zP6KO-pkaxYxs1w_1759141273
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3ef21d77d2eso2377595f8f.1
-        for <linux-mm@kvack.org>; Mon, 29 Sep 2025 03:21:14 -0700 (PDT)
+ us-mta-88-JAAolGJJPialFAqUeswjHw-1; Mon, 29 Sep 2025 06:29:37 -0400
+X-MC-Unique: JAAolGJJPialFAqUeswjHw-1
+X-Mimecast-MFC-AGG-ID: JAAolGJJPialFAqUeswjHw_1759141776
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3ef21d77d2eso2382895f8f.1
+        for <linux-mm@kvack.org>; Mon, 29 Sep 2025 03:29:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759141273; x=1759746073;
+        d=1e100.net; s=20230601; t=1759141776; x=1759746576;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Z3YKN3zIRZfonnEHUxLu7FAkkWR5YdTCLJYZ6VEYM8Y=;
-        b=bnb1+bdU6+gfoanbvRBEDh8LQb5VrWB/xBrzbfuV7Wlust4GZdFrhk6FjwhmqD6Zf3
-         9y9dE0Z+5cU3ic1iR6j5VsWdP4Uof8BowXxrVyX/lao/ox48GlximK7ZndMy2es7Vvz6
-         kpTEib2qlCRqxkRRa3Iu34+LnQo+l8YPcpHAm9LsscafPeSlyR1wKPX7Mk7vYiVCJwJ5
-         q+W8+ha/NOrWZkNA+dZS8hrpJQrg397xN0gHj/RY64OgUEYwlJfqtZ6A8E0O2yXMec7q
-         sGi7d9ng7VTPlujzQhEpSsH0ALmN5EvXk8JNi0oX0DFbb7Eqv6UuJjmvcLSNn4GLlyCj
-         rQTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWbOXvexa8FFQvZ4DAKiE/JDZYrOukH9VeEnb0rxGSmcKyd9PiNO4ATvL/XsegZItwEQXsW+9FOOg==@kvack.org
-X-Gm-Message-State: AOJu0YxfpzGmm9XZTo8YnkMtOQLibfU+fP3T44S3tKBnV+Sl1s0FTDKX
-	TiV7ca0REMPVHWGVRVylV8tUgT5z8cVBqXx7xmDCZcRoElDKIU0hb0pUrRTHSPkCGGQNWGfVkft
-	sfvtKBKi6xrTQMEoYtwQB6X8I9T0On95bPn+dgK3DDuROK1JyymEI
-X-Gm-Gg: ASbGnct0xp1Y6Exqhjb2d4GmwyZfJI7F0Zb4ZzOwDpqrP77bJ0X0TcR9q/JphB9InLn
-	wA5/MJvK28bj1AqWopmKsa1JqZ+o53T4Io+Wor3GvEWZWbTIcAP6hu878rbdxZf47mehCPREXhx
-	06NTLpS6AujZ6R9kPi4/euYu1bN+uOBzY++t8TyBWkwHTsRH7nBlCf5ASeOTpQcsJA8ABY+EF/h
-	7srjzPrIV7KEx3cE7GPnmMJ9DCPZWAk0ktEgBKq2DrB0PUPopjHeDtmSFJoR+g6KWCQygog2gEr
-	FBQjKgkgr9deGUxHr2ERCy26hjcAE0I/2jAor7wBKK5tDKyT5CAqvANsn9pDCvuJ0XJkGRFj
-X-Received: by 2002:a05:6000:2410:b0:3ec:d80d:e59b with SMTP id ffacd0b85a97d-40e4354d936mr17146000f8f.10.1759141273236;
-        Mon, 29 Sep 2025 03:21:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHseD/VRuRD8/5XkmKc+WsswLQN2PeBfIKRcSn+dzEpfuntBaoyeW14SJHlBROwxevLjLT9Aw==
-X-Received: by 2002:a05:6000:2410:b0:3ec:d80d:e59b with SMTP id ffacd0b85a97d-40e4354d936mr17145899f8f.10.1759141272561;
-        Mon, 29 Sep 2025 03:21:12 -0700 (PDT)
-Received: from [192.168.3.141] (p4ff1fa94.dip0.t-ipconnect.de. [79.241.250.148])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fc5603161sm17745080f8f.35.2025.09.29.03.21.10
+        bh=WXWt4HHulcMFjL1Aq+0YxiHfHwYLE0hFtn8pXo5MFNg=;
+        b=P0BYEMbOvFCF0ObmDJ8QejXWlw7Xr9PmK9Vo28YsoZ/mWmGp08vPv9tgiIR9YBRiQf
+         T2NV+HZg6m1sqgSQx9qvA8UZTF7Z4uoVk+eHShWmlgWGg04mF7fSCk/h5dfCPKjC59AL
+         rnEIEPzFLmBplLvJOdqY7Q6B/HX/htywl8XtEEwSnxVDlZOsEk6jd/QksyiZOxiCrujk
+         +gyn3Yf3e53L65Sl2eANwHb2UcM8WqdzCuL8shtF7QhhIfXh4jBh42ljGChwmWqQDJk6
+         cWX2tDRD6knzc0HqDHaVZxz7OKP9aYwo7Bk9nKddqtZd5/cy3q+vl0Xfs7HAYJXnuiGr
+         h/iA==
+X-Forwarded-Encrypted: i=1; AJvYcCX8UXneKb+gdzAOKwN5fWKSTM9Q7jxFjMKeqEPyytZb7rTKmrCHveEUDIcJDWPsWFlSaLfliZlfuQ==@kvack.org
+X-Gm-Message-State: AOJu0YyKBF68q6mGWyT5lQft9WFdm2vnRSk6ntesWtzeXgcCa48fKH7B
+	PWRgJAgiZQuMHL8oE5uQ8SjJZ8+Ur2X+iDhfQMwzokvgcU7rKMyvptLZIevXU6YxyZzlql74YK/
+	akqKtAR37sPqnYvp4jo1b0FaD8ocONDhT8O9JG5Z7ydgPIYXVxQpim1ohyUFY05M=
+X-Gm-Gg: ASbGncuiBYVvPNKe5dkuGb5EfWlcCev4YSyIITXNx31vdRHd8GnUOr3SNvOcUlv0bmX
+	EtpeuXbeAVUKHpRb07k0D4unO/y33HWQr7xnMMLHQXyBJDGZvVnoAPj8w/qFGc1ldvQd+Mtw9AW
+	8HopJk1zIafHCILPrra1PHECoEJb5WLauzaJOlF8t0v9NWmB0t0qoovLkjO2W0BzDhOyRJk44wH
+	iXTtF9j8JSFWPPwy6yOAEQ/Tln+i4ZKM7V62h+wBExjlTrOWfJDq4yK66GDnrekBMHwpk52Rk1m
+	61YaxLflgZlov+LUyHudF5nTImMqpFjEqOrYLH6XfixuwlWVtyxeSbmi7Ak3TRxMoC45Yf6skUn
+	wSWeQt1wakpQ+doJWz+3mPHA1JUxBLo5W6J9bl1F/sUe16r2IeXSVvicEG6rrSSWMRg==
+X-Received: by 2002:a05:6000:2907:b0:3eb:bbd9:9c08 with SMTP id ffacd0b85a97d-40e499acbc1mr14205635f8f.46.1759141776224;
+        Mon, 29 Sep 2025 03:29:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFpBPmaV6bO3po2pQHWtcJCjnCiYBuNOTjULPKnCP+e6Ia2o8aSMMd4yg5DwnQ5GTdH7hrSzg==
+X-Received: by 2002:a05:6000:2907:b0:3eb:bbd9:9c08 with SMTP id ffacd0b85a97d-40e499acbc1mr14205609f8f.46.1759141775809;
+        Mon, 29 Sep 2025 03:29:35 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f05:e100:526f:9b8:bd2a:2997? (p200300d82f05e100526f09b8bd2a2997.dip0.t-ipconnect.de. [2003:d8:2f05:e100:526f:9b8:bd2a:2997])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fb72fb017sm17722543f8f.3.2025.09.29.03.29.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Sep 2025 03:21:11 -0700 (PDT)
-Message-ID: <f13e06f3-3c7b-4993-b33a-a6921c14231b@redhat.com>
-Date: Mon, 29 Sep 2025 12:20:57 +0200
+        Mon, 29 Sep 2025 03:29:35 -0700 (PDT)
+Message-ID: <d7012c9c-f4a9-4d49-a921-2cc175f3411d@redhat.com>
+Date: Mon, 29 Sep 2025 12:29:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 06/12] KVM: guest_memfd: add module param for disabling
- TLB flushing
-To: Patrick Roy <patrick.roy@linux.dev>, Will Deacon <will@kernel.org>
-Cc: Dave Hansen <dave.hansen@intel.com>, "Roy, Patrick"
- <roypat@amazon.co.uk>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "corbet@lwn.net" <corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>,
- "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
- "joey.gouly@arm.com" <joey.gouly@arm.com>,
- "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
- "yuzenghui@huawei.com" <yuzenghui@huawei.com>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "luto@kernel.org" <luto@kernel.org>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "willy@infradead.org" <willy@infradead.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
- "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
- "vbabka@suse.cz" <vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>,
- "surenb@google.com" <surenb@google.com>, "mhocko@suse.com"
- <mhocko@suse.com>, "song@kernel.org" <song@kernel.org>,
- "jolsa@kernel.org" <jolsa@kernel.org>, "ast@kernel.org" <ast@kernel.org>,
- "daniel@iogearbox.net" <daniel@iogearbox.net>,
- "andrii@kernel.org" <andrii@kernel.org>,
- "martin.lau@linux.dev" <martin.lau@linux.dev>,
- "eddyz87@gmail.com" <eddyz87@gmail.com>,
- "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
- "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
- "kpsingh@kernel.org" <kpsingh@kernel.org>, "sdf@fomichev.me"
- <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>,
- "jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
- "peterx@redhat.com" <peterx@redhat.com>, "jannh@google.com"
- <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>,
- "shuah@kernel.org" <shuah@kernel.org>, "seanjc@google.com"
- <seanjc@google.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
- "Cali, Marco" <xmarcalx@amazon.co.uk>,
- "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
- "Thomson, Jack" <jackabt@amazon.co.uk>,
- "derekmn@amazon.co.uk" <derekmn@amazon.co.uk>,
- "tabba@google.com" <tabba@google.com>,
- "ackerleytng@google.com" <ackerleytng@google.com>
-References: <20250924151101.2225820-4-patrick.roy@campus.lmu.de>
- <20250924152214.7292-1-roypat@amazon.co.uk>
- <20250924152214.7292-3-roypat@amazon.co.uk>
- <e25867b6-ffc0-4c7c-9635-9b3f47b186ca@intel.com>
- <c1875a54-0c87-450f-9370-29e7ec4fea3d@redhat.com>
- <82bff1c4-987f-46cb-833c-bd99eaa46e7a@intel.com>
- <c79173d8-6f18-40fa-9621-e691990501e4@redhat.com>
- <c88514c3-e15f-4853-8acf-15e7b4b979f4@linux.dev>
- <aNZwmPFAxm_HRYpC@willie-the-truck>
- <5d11b5f7-3208-4ea8-bbff-f535cf62d576@redhat.com>
- <be89abc6-97ca-47d8-b8e7-95f58ab9cc67@linux.dev>
+Subject: Re: [PATCH mm-new 1/1] mm/khugepaged: abort collapse scan on non-swap
+ entries
+To: Lance Yang <lance.yang@linux.dev>
+Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, dev.jain@arm.com, hughd@google.com,
+ ioworker0@gmail.com, kirill@shutemov.name, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, mpenttil@redhat.com, npache@redhat.com,
+ ryan.roberts@arm.com, ziy@nvidia.com, richard.weiyang@gmail.com,
+ akpm@linux-foundation.org
+References: <20250924100207.28332-1-lance.yang@linux.dev>
+ <1282de5a-3dce-443d-91d1-111103140973@redhat.com>
+ <69621b58-5142-48ea-9dd8-6baed69e50f8@linux.dev>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -211,21 +160,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <be89abc6-97ca-47d8-b8e7-95f58ab9cc67@linux.dev>
+In-Reply-To: <69621b58-5142-48ea-9dd8-6baed69e50f8@linux.dev>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: xtulb0GBg_iVOmDW1jRGdirOMUwHPJinERK-37vnkRI_1759141273
+X-Mimecast-MFC-PROC-ID: nSJoutkJNZxqUeTlIbpJgpSeNMyBMdmLPnRMNoXO134_1759141776
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: no6qqigjzpygpz4fyg5og7rr973omrqj
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3903D4000F
+X-Stat-Signature: nh7fsbxetggnzneyo9hiy61ggpf8afhd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C17E3C0004
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1759141276-934977
-X-HE-Meta: U2FsdGVkX18EKJxTuqj8lPqqH5wjvqudvKwfnEOBuF8imSImju9+pTJHyIp59+g3tM0jDGu3GKdA4HgjGjHKwORTHkl897PAS7nMoBqzBy0S3adMirIITb6NPVGVVU1vehyvugZ7OzXYA3Kfu58hgZ2/IsUmxj/RmS5Jldi5eilymO6ObLpp0etTVXFW1QE7Ir7pJ1L14T6kDhpmyvZQRvyUJEqBBToSsTY5AG1gJ2yYBO2YsB12P7f6J5lM5OUo3PdaasQL2idX96cy5XbZeyx7eSMH4MJNLxOTSW2plEQfGSVEbwZMWEe93HEJ3wRJ1M9btDDiZ92l4n5pAemGQXRclBMm3epZ6hgcZ6iZtktYrnxFvRnjEiFKb0+OT8hk6oVbgJpILFNBZKv1QKNmjBYA3TWc3Usjk7rNs9Heq+lXVj4oLjM5Rvbq2h6bSRi35riGY+V9JtIq6WnLDDJ965rqIdggvlO0tU3NqiFYopr9AdDS+fM/L+kBVxfARJ1y2Z8v8PY9HpnCgmz5zA/mMJbohLiCI0sDROym+io5D81HaiVcyfiF1BKRhI+AOstqhHFr3pZS2ddR7uSE+qsWRfdxar2x/gmTqP3xyXwpIg7SLk2YJ1aCggXiRZK0Mk1Sj7pz8MJ6nVp4ZYFkmvuNN+AGFUh9DPYiZKr+hzC6kJAy3B8VwUVCsQxBL8k7vBx7ujMSOxrGRMs5cmXUeajkH2Zsfni2D2Gnan2QgkPi37ZDaTOd4gnnaJLX4ALC6XQ3w6Gf60oaaZE6Cv7oAohW/gwwtybXBtJ4/9qgZm4BsyxWOv9KM7XsDj88Z+fmuxYjGsY5ag3xTCSWoElvF6w2BgS4vAKk1b+rPnWmCR9voLxNqxMyPtyL7db5dSPDRK2dgN95i9/e9C2KIC1HSBQAwpsSnRP2VA5B0RD4gpDv7kCk35hXitSx7KOtt2bOKwdrjzcCHCcBm77C3uVBtkD
- Nyg0N4RM
- t4kVBPigCdp4Y6ebgNT7d3o5suhYZs3rZEtmUm8mAy2N8o81zrVywbCo1MI2ta03Q1ArStHhEWlC8rmNd02DZ+QZ4JCGXXiSGs0K1E0cwIeulcVy4zDbMeZnwdurH6EHOtaakE6UuQYZrbHvOQzu9mw0XaSiLNAyJgnC2wn66d03fwksmryKyvTViK1g7oY1GyV2JmH9m6M7RihfLhWELNWWhy+37bTogn+sK80rxV6chwvq6VeblFI/NK781gxXQx/hZIVohYaYhLG1bFlW5vZ35fs0GJx+IElEHGSVn56rDle6LpXk7zb+b2K0Ysj+ACyFGLc5b06WqEvL+mmaUJb4yHiN1F1fTAp+NF0rR+2yNYJYAR50lzGNiNzc0lMVPDWx5d/8aDOSjuryFrR9KycPoXfJykzZDVlu58koLqr/+/8iKahBjS56SUm+otC+oxqhRFatMMJejDz8HCwsOGbMyWh8InXGlUi0jPLtgndencyFBYI3QJBcb5r6Kc08Xw7Xttij9K9sKfhm2BcQYgdOUFiwui6+5YON2HLYflBGu/ZyBlFzJSMKKPWSQeZ9syRPtbqAnowHWKmUMAoY9Vb7RTuQQ7YhcLAVRTwHqDW1c4pQ/OmNAmB0bcgZgFFYPlYMFox7nToGraqzjaluKDadqN8qg4kf1wEaXuivdK/KErJDrbPSokl0a5A==
+X-HE-Tag: 1759141780-748535
+X-HE-Meta: U2FsdGVkX1/neTXkTSShU/vh5fL0fb15OufxT9BQmSuttUWMZVW/Fa0IqbzG/73Qc+CAs4p3OU8MvX4X6mzeS1rDL2/2U+8CCip0t+j0y8MGi4zbZNoUGcz4AUQy/XAdJ2LuYSgws550TDfdQF974CzthZM40pyFQCZxFv+fnY5ZCOdxQmilojg3apZRj7kHO2b6nDjJGG+thE/ehHvqpNfKLtWUd2w7U+0T/2pKAj4ZNfgFzMQWO2v8jcj59tGZ3gwFbiT48RyycKIzAwpXZDl07dNWdBXyMb2ElYH7krvzm4NIzdkLKnKrjri0ThDoO9Wm+e4IFfzluJqeuqDah1Pps8ZcSSVA5y8PJWRdPqsK0rxzDawLT2m6K6UfNaS2RT05hXnvFwOYKBmwHPPc5vaKH6njbm4ZNP0TsQu/EsUSz8IACZ1pcfLL65hxnAxRDPTAtSQQ34HELf/5dNef9r2dYslNrlPdB3bXHvq0E7tr72skuT7TPWk/VtS4uA87nBXAJ0nAPMBJ432M2LlAkWD1lKW18Sb2CEdtjUZCY3kvnq/CxZ5WDNzMJKTL+cc0BBtdT6kjuSDJEJuQiutLHlQoGJKhjz6Qqtn52op5F9hzCIcvRJXqBHupco25iGAEeVGpaiwfpVWyiy8Rhn7R8oRZEMHszj+IhihyRPfhFOxMyd7Nv5LMG81mgQsLXy9Gj1MZgPxXZ+gBjsyMdIFx/WHiHi1IBLi6g1sWiPxdilJj2bJD0x1h6SjkZDzKFLNPpn/oJqVakL8B6Cxy/fu9Dh3RcpaR3gMY8ga5o0YGVCZfVgJk75oAs7+kgJfVxHbEa/sMYArB/hc6Mx9tUclj/qmm00onH9fh0JbrGN925m485CeJvFrcjUgQBzHjhAo31R8Jk1csRvjRhP8THi93Uo46BvuXDJqB8we8dRYwZJalNqPc8eaH3hhKQk/0JWuPx2RGYPtjdieCIUeBjdA
+ qW3exB2H
+ jxtwmFL39J9U7MNWWz23W6XYdpVkZrtnny4B0J0qrTmbDavKRLjJtY4BepsmrKggPw+rcDe+Nz8YfPy0PkmHYvT6/wwX1LoWeKFQmR15LKCIfrzfi/0cYysFxsG/GdA9hXIosj4aTcLcFVSt4s+G5Z5f8l/bEAipjNcU0rQS2wI2QCE8gJoEKt++fjDN8mBq52JfyKqR8o9nL/tBjmrN1PYJVvTfhLvG2CutpkZPZaf6ucF/5pKuQUioAMEmW5HFnRYai1vLOMNnycbvuey84wWWbstNLF5YNwMzmie2c/32Xzid5dMOB3gkPnC6oNP6F97x9woBiH1bl+UVrK4iazb70H2J8zdiW2tmrJCvV7J9k/5HVIoJSODBAZRxZ9gNqCa9QCok0f8RF7yRg/uSxp4itC8qLP/Y+L9v3g7lD6Mk6OjKSYMhAQbggB47ls9TpHfa/vpzwPotF/479E6DEHSbMCKGDtBNtTCthfrMoG8IIv3s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -234,114 +183,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 27.09.25 09:38, Patrick Roy wrote:
+On 24.09.25 13:47, Lance Yang wrote:
 > 
 > 
-> On Fri, 2025-09-26 at 21:09 +0100, David Hildenbrand wrote:
->> On 26.09.25 12:53, Will Deacon wrote:
->>> On Fri, Sep 26, 2025 at 10:46:15AM +0100, Patrick Roy wrote:
->>>>
->>>>
->>>> On Thu, 2025-09-25 at 21:13 +0100, David Hildenbrand wrote:
->>>>> On 25.09.25 21:59, Dave Hansen wrote:
->>>>>> On 9/25/25 12:20, David Hildenbrand wrote:
->>>>>>> On 25.09.25 20:27, Dave Hansen wrote:
->>>>>>>> On 9/24/25 08:22, Roy, Patrick wrote:
->>>>>>>>> Add an option to not perform TLB flushes after direct map manipulations.
->>>>>>>>
->>>>>>>> I'd really prefer this be left out for now. It's a massive can of worms.
->>>>>>>> Let's agree on something that works and has well-defined behavior before
->>>>>>>> we go breaking it on purpose.
->>>>>>>
->>>>>>> May I ask what the big concern here is?
->>>>>>
->>>>>> It's not a _big_ concern.
->>>>>
->>>>> Oh, I read "can of worms" and thought there is something seriously problematic :)
->>>>>
->>>>>> I just think we want to start on something
->>>>>> like this as simple, secure, and deterministic as possible.
->>>>>
->>>>> Yes, I agree. And it should be the default. Less secure would have to be opt-in and documented thoroughly.
->>>>
->>>> Yes, I am definitely happy to have the 100% secure behavior be the
->>>> default, and the skipping of TLB flushes be an opt-in, with thorough
->>>> documentation!
->>>>
->>>> But I would like to include the "skip tlb flushes" option as part of
->>>> this patch series straight away, because as I was alluding to in the
->>>> commit message, with TLB flushes this is not usable for Firecracker for
->>>> performance reasons :(
+> On 2025/9/24 18:10, David Hildenbrand wrote:
+>> On 24.09.25 12:02, Lance Yang wrote:
+>>> From: Lance Yang <lance.yang@linux.dev>
 >>>
->>> I really don't want that option for arm64. If we're going to bother
->>> unmapping from the linear map, we should invalidate the TLB.
+>>> The existing check in hpage_collapse_scan_pmd() is specific to uffd-wp
+>>> markers. Other special markers (e.g., GUARD, POISONED) would not be
+>>> caught
+>>> early, leading to failures deeper in the swap-in logic.
+>>>
+>>> hpage_collapse_scan_pmd()
+>>>    `- collapse_huge_page()
+>>>        `- __collapse_huge_page_swapin() -> fails!
+>>>
+>>> As David suggested[1], this patch skips any such non-swap entries early.
+>>> If a special marker is found, the scan is aborted immediately with the
+>>> SCAN_PTE_NON_PRESENT result, as Lorenzo suggested[2], avoiding wasted
+>>> work.
 >>
->> Reading "TLB flushes result in a up to 40x elongation of page faults in
->> guest_memfd (scaling with the number of CPU cores), or a 5x elongation
->> of memory population,", I can understand why one would want that optimization :)
->>
->> @Patrick, couldn't we use fallocate() to preallocate memory and batch the TLB flush within such an operation?
->>
->> That is, we wouldn't flush after each individual direct-map modification but after multiple ones part of a single operation like fallocate of a larger range.
->>
->> Likely wouldn't make all use cases happy.
->>
+>> Note that I suggested to skip all non-present entries except swap
+>> entries, which includes migration entries, hwpoisoned entries etc.
 > 
-> For Firecracker, we rely a lot on not preallocating _all_ VM memory, and
-> trying to ensure only the actual "working set" of a VM is faulted in (we
-> pack a lot more VMs onto a physical host than there is actual physical
-> memory available). For VMs that are restored from a snapshot, we know
-> pretty well what memory needs to be faulted in (that's where @Nikita's
-> write syscall comes in), so there we could try such an optimization. But
-> for everything else we very much rely on the on-demand nature of guest
-> memory allocation (and hence direct map removal). And even right now,
-> the long pole performance-wise are these on-demand faults, so really, we
-> don't want them to become even slower :(
-
-Makes sense. I guess even without support for large folios one could 
-implement a kind of "fault" around: for example, on access to one addr, 
-allocate+prepare all pages in the same 2 M chunk, flushing the tlb only 
-once after adjusting all the direct map entries.
-
+> Oops, I completely misunderstood your suggestion :(
 > 
-> Also, can we really batch multiple TLB flushes as you suggest? Even if
-> pages are at consecutive indices in guest_memfd, they're not guaranteed
-> to be continguous physically, e.g. we couldn't just coalesce multiple
-> TLB flushes into a single TLB flush of a larger range.
-
-Well, you there is the option on just flushing the complete tlb of 
-course :) When trying to flush a range you would indeed run into the 
-problem of flushing an ever growing range.
-
+> It should be to handle all special non-present entries (migration,
+> hwpoison, markers), not just a specific type of marker ...
 > 
-> There's probably other things we can try. Backing guest_memfd with
-> hugepages would reduce the number TLB flushes by 512x (although not all
-> users of Firecracker at Amazon [can] use hugepages).
-
-Right.
-
+> How about this version, which handles all non-swap entries as you
+> suggested?
 > 
-> And I do still wonder if it's possible to have "async TLB flushes" where
-> we simply don't wait for the IPI (x86 terminology, not sure what the
-> mechanism on arm64 is). Looking at
-> smp_call_function_many_cond()/invlpgb_kernel_range_flush() on x86, it
-> seems so? Although seems like on ARM it's actually just handled by a
-> single instruction (TLBI) and not some interprocess communication
-> thingy. Maybe there's a variant that's faster / better for this usecase?
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 7ab2d1a42df3..27f432e7f07c 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -1284,7 +1284,23 @@ static int hpage_collapse_scan_pmd(struct
+> mm_struct *mm,
+>           for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+>                _pte++, addr += PAGE_SIZE) {
+>                   pte_t pteval = ptep_get(_pte);
+> -               if (is_swap_pte(pteval)) {
+> +               if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
+> +                       ++none_or_zero;
+> +                       if (!userfaultfd_armed(vma) &&
+> +                           (!cc->is_khugepaged ||
+> +                            none_or_zero <= khugepaged_max_ptes_none)) {
+> +                               continue;
+> +                       } else {
+> +                               result = SCAN_EXCEED_NONE_PTE;
+> +                               count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
+> +                               goto out_unmap;
+> +                       }
+> +               } else if (!pte_present(pteval)) {
+> +                       if (non_swap_entry(pte_to_swp_entry(pteval))) {
+> +                               result = SCAN_PTE_NON_PRESENT;
+> +                               goto out_unmap;
+> +                       }
+> +
+>                           ++unmapped;
+>                           if (!cc->is_khugepaged ||
+>                               unmapped <= khugepaged_max_ptes_swap) {
+> @@ -1293,7 +1309,7 @@ static int hpage_collapse_scan_pmd(struct
+> mm_struct *mm,
+>                                    * enabled swap entries.  Please see
+>                                    * comment below for pte_uffd_wp().
+>                                    */
+> -                               if (pte_swp_uffd_wp_any(pteval)) {
+> +                               if (pte_swp_uffd_wp(pteval)) {
+>                                           result = SCAN_PTE_UFFD_WP;
+>                                           goto out_unmap;
+>                                   }
+> @@ -1304,18 +1320,6 @@ static int hpage_collapse_scan_pmd(struct
+> mm_struct *mm,
+>                                   goto out_unmap;
+>                           }
+>                   }
+> -               if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
+> -                       ++none_or_zero;
+> -                       if (!userfaultfd_armed(vma) &&
+> -                           (!cc->is_khugepaged ||
+> -                            none_or_zero <= khugepaged_max_ptes_none)) {
+> -                               continue;
+> -                       } else {
+> -                               result = SCAN_EXCEED_NONE_PTE;
+> -                               count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
+> -                               goto out_unmap;
+> -                       }
+> -               }
+>                   if (pte_uffd_wp(pteval)) {
 
-Right, some architectures (and IIRC also x86 with some extension) are 
-able to flush remote TLBs without IPIs.
-
-Doing a quick search, there seems to be some research on async TLB 
-flushing, e.g., [1].
-
-In the context here, I wonder whether an async TLB flush would be 
-significantly better than not doing an explicit TLB flush: in both 
-cases, it's not really deterministic when the relevant TLB entries will 
-vanish: with the async variant it might happen faster on average I guess.
-
-
-[1] https://cs.yale.edu/homes/abhishek/kumar-taco20.pdf
+ From a quick glimpse, this should work. And as raised, we might be able 
+to unify later the scanning with the almost-duplicated code when we do 
+the second scan.
 
 -- 
 Cheers
