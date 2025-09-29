@@ -4,117 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EAB9CAC5B0
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 05:30:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92A2DCAC5B5
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 06:15:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D2448E0003; Mon, 29 Sep 2025 01:30:51 -0400 (EDT)
+	id A1D408E0003; Mon, 29 Sep 2025 02:15:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6836D8E0002; Mon, 29 Sep 2025 01:30:51 -0400 (EDT)
+	id 9F4838E0002; Mon, 29 Sep 2025 02:15:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54A9E8E0003; Mon, 29 Sep 2025 01:30:51 -0400 (EDT)
+	id 930BD8E0003; Mon, 29 Sep 2025 02:15:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 397DA8E0002
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 01:30:51 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AE1C7B7D3E
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 05:30:50 +0000 (UTC)
-X-FDA: 83941163460.01.F1801A2
-Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C90F44000A
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 05:30:48 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FDA48E0002
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 02:15:34 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F19DA13A336
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 06:15:33 +0000 (UTC)
+X-FDA: 83941276146.11.B6FE490
+Received: from mail-il1-f206.google.com (mail-il1-f206.google.com [209.85.166.206])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 3CA4F4000E
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 06:15:32 +0000 (UTC)
 Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=EkThpBh3;
-	spf=pass (imf04.hostedemail.com: domain of jthoughton@google.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=jthoughton@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of 3AyTaaAkbAAIu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.206 as permitted sender) smtp.mailfrom=3AyTaaAkbAAIu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759123848;
+	s=arc-20220608; t=1759126532;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H6RpQue8OwKA5zQcpcRYCFi/JKqNnjRsrmsTTJodjmk=;
-	b=FpW46zMvlYTcVPYKaAQeWrMu3r3KEJ9OIS2vxGYvH061s1vm6+TxNZw5vNL7lCwUSn6dfx
-	ga8aL6laP0AX6rPo6mS8rGxBSdCMEhcRnWGCByIpnsfN9sOfDbvNj2tlMjFA31NqeFksco
-	XADh/E6iUL33eJV4dZBhUL6606c0Wsw=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=ynvbnWA1ecixqyan+LgmS5er8JTbSbCELgH2Iyhty4U=;
+	b=mxLK1nxrbFYc/moVBgCaN+akIHpWpJgTUZRVXzguAaGuQK+sNzs3kfm/K/d+DplhJuS7Q1
+	/5tWJ02p46ptMHikOVVPT1Vxc1xIcRTU5efFuvuflFWbI42LPgU3r790bSM6sZ9T4/or8n
+	/XhGSGVg9bB4QbjtsB9Weu5xsP+dRRU=
 ARC-Authentication-Results: i=1;
 	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=EkThpBh3;
-	spf=pass (imf04.hostedemail.com: domain of jthoughton@google.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=jthoughton@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759123848; a=rsa-sha256;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of 3AyTaaAkbAAIu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.206 as permitted sender) smtp.mailfrom=3AyTaaAkbAAIu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759126532; a=rsa-sha256;
 	cv=none;
-	b=irrAiiFqveuhKLZ7MAx1GomEWlBTEma9h+f/Z5kA4WEuQRl5uPT+4qG5Uuapmos4tOo7zE
-	l7sYVxJ6OxVCWZWS8evagCfI8c4rGTBYRlPHm6NcSQ0HGrUEOgpqtxCU1WNfE1aNV90IyP
-	okobQOq1lqmL1jLCP9C1W7V7RtpBSvM=
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-6354a4b4871so3803271d50.2
-        for <linux-mm@kvack.org>; Sun, 28 Sep 2025 22:30:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1759123848; x=1759728648; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H6RpQue8OwKA5zQcpcRYCFi/JKqNnjRsrmsTTJodjmk=;
-        b=EkThpBh3bGHdaXCNLnjOiwdob20Us1RTbOUM5nudOFAOpS7J9b7FY8lchzhgOOPkx0
-         PXkTZTV5WDwjGBuZ9wIdjX91Pq2ydc6gx2VNUmdzr6hvQiN+7kA5kqRei/qnzQ/j9Xgr
-         DaUhul/NMFJapS+at8/WVrnurE1d7YG6X5PCGZgd0QKaF/sgrjM6+kIzciv5VQ+Gm9jV
-         W4KHU1UVEJYwJY93miGap/E6CPUI4LSbU+zoz+XelW/cdgLmmrxxmHJ/szgDEwAUuhi7
-         vrZnr6F2urXhwUEjkLCOOKynFnnWBx9P8Q8pnyUjZLhHMpoDyH541Gsx/K/QcznKTi18
-         BIrA==
+	b=BAM/A/g9BQ6eXT/1qyveBvvG9iUIk0gChD+uFFtQ3u/siDIvWzx8+kj+XZxvyijEy/97qA
+	ZsEzL0hwGYWbewXzm6hfyV7s9T7zypZK9+GiwT0wIeLSNy70uAMkDue1tLUJZxye/XX1ph
+	aKSnVg7/iVziC6EoCE+C9tbQZl1BGUo=
+Received: by mail-il1-f206.google.com with SMTP id e9e14a558f8ab-42594b7f324so79600205ab.1
+        for <linux-mm@kvack.org>; Sun, 28 Sep 2025 23:15:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759123848; x=1759728648;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=H6RpQue8OwKA5zQcpcRYCFi/JKqNnjRsrmsTTJodjmk=;
-        b=BclT+XKuGTkVpW8CzMRYwhcVV+ijdLfCszz8Y3UMHRGq5HgMxDai+0rx0z7VBq+f8H
-         Z9V88GRk3HGM+1/dEXB/gLd78f/zIgpSEoZXW4JbDN0LFrML+Jqj8VlDJ8PEv9M5uFQW
-         v8gV9T058jOl+e/KKXB/Aj140e5fgTWYzIo7IFE+UuhVn9bDzP1cqdyrBmE9jrFUN1g+
-         1g5B5/tIrZOnXgV2mYkW+rCVGHYhtyN8Kune8+sB08N8yoczhhA6K2TKlxqm7SZvkjqq
-         euGurCB4sTl9j+YtApUhtvk1o+2dc4b4VptV5jVgkz0n6ba9KJVTJP+zNNwgoKAOcgKN
-         QHpA==
-X-Forwarded-Encrypted: i=1; AJvYcCXna7vxiqfhNMncnfE8VNE5rvmAn7mxmr25rdGCOc/yya4wd9gnn8UJVvLAZrG3ctvsu+DWmSc/Hg==@kvack.org
-X-Gm-Message-State: AOJu0YzJwlzC/8eeJYtKc2N8ilWJ5Mg1UUOdB0FOjgjFlpKONGC9zsr2
-	AsHnBOsuoyOqVPjseYt/mDoK2IvIdT7HlybP6yKg+BW3jiBVMaAPRoiD2eRWbGnmcmqcgXEPfa7
-	+Osl0hV0VdM3NHVqA6UMAolERsScbz6PK6Nt/W8QTGE1ELpX7CzwCDiYhYQo=
-X-Gm-Gg: ASbGncuWuAfbfM5Zy3mST9/EIOw4jQ8LJCb0x+6565kLBudKHgwB+Pu4B8aZD7EJwoI
-	eaBZhNBImj0o57MgxD/EuCjb+YgQFSVUL6flwQl8j7u1w/5zr23sM9D75S85IAS43qV0u/KNhfi
-	k3am2GCfpD9CLsgHLNaBBa4Z0VeSh1fn4pBp/ipulgROGCfVXh0u0J3BqQ+77mxs3OX8VAjU30C
-	jafu0GSgQTUhPSMkE4ziQmmVA==
-X-Google-Smtp-Source: AGHT+IGzHKJ7xHU3naTUQkRjp7yIyNsupo8BklnNDDQzGwoTBHcFOvT48upAsARg3m/lEoftd7Vapu9fQiwGfx5uQB0=
-X-Received: by 2002:a05:690e:1509:b0:635:4ece:2411 with SMTP id
- 956f58d0204a3-6361a8a2f8amr16801592d50.49.1759123847547; Sun, 28 Sep 2025
- 22:30:47 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1759126531; x=1759731331;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ynvbnWA1ecixqyan+LgmS5er8JTbSbCELgH2Iyhty4U=;
+        b=CaRPkTTAd6/QQhIvk5kxXfbnkzZfpMmnWLEGOYFN8MYQ6prTdld9LuUbx8DH1/B8CI
+         TjRcimjvXMtFy554rhmrsrYQpYsOyf9yB7HZ16EZSRoaOBFtYRlbP8zztwuYRHutLvFz
+         /QDs2LyVXK2c0LvkMrAYG1FgHRVZNc5HWjQrn2PWCJ4lBngNNOQMOsn+BrP6t/dV9/Pq
+         B8EMCL8eDcVJA9feMCRItr0vMIQLoZQ7dbW2aFyjY32i3g3ol2sQsEsn4QWjov38VnVt
+         RGdvWL+dRqfQsgTx7xAlaDorFUlJU1An7tqkSSCmAvHPuD3le4hFgdGVr4UVRIjr/T4v
+         8v/w==
+X-Forwarded-Encrypted: i=1; AJvYcCW4B/g40R3LBRjw4LtQopXqbTThcYQ0JmcoqB/CrNPiBnxM/iZhH3YnI8yDFSiXH5AO5PK7CE7ulg==@kvack.org
+X-Gm-Message-State: AOJu0YysPy1pHyTn7xFObTRldUlKgCITrGlsp6NiAkMrORfUUZnoaRJM
+	Kxht9wNSlecmFFBUxmtqM7dxVkxw/NjXI/ULFI6ALYoWcKyC+GpP3xhiB0J+QEoHJbGgMxqbe1s
+	2OsQ+gbOc4qe/1+7o3DHjfafR2gPE2zMyuUY3pOh/09S2WbRHtIq9QOjsCqo=
+X-Google-Smtp-Source: AGHT+IELWwS0rgE9wNS6ZYg47pA+bZQLopq4RjKUbbwL/D4BniubNK9se99xRR6L4DLDgdY3JKoOc3xWMYyuI6qVNKBnMO2RhLKU
 MIME-Version: 1.0
-References: <1757967196.153116687@apps.rackspace.com> <CADrL8HWGcj1oANGY=qAzpYi_-E-Xbi=L28Bmyyf8H7auVix=QQ@mail.gmail.com>
- <1757977128.137610687@apps.rackspace.com> <CADrL8HX78-oh0k2qAgqPvNVAhi4ESYvjRsScPGR2P2Dts13Bfw@mail.gmail.com>
- <aMl4qLyNovWHhty9@x1.local> <1758037938.96199037@apps.rackspace.com>
- <aMmMnfU-Koopc9mL@x1.local> <1758043654.112619688@apps.rackspace.com>
- <CAJHvVciL-6OLMPDGQjZ=VGDwvwKJznq0BL49uSj+DSq63LOUYQ@mail.gmail.com>
- <1758052343.971831541@apps.rackspace.com> <CAJHvVchHKxiVKFjUz4ir4PVDvUihLhiSRMBWqpMEZfwLdereuA@mail.gmail.com>
- <1758306560.96630670@apps.rackspace.com> <CAJHvVcj_gd=48k-dgbLeEoqn_f+QD-ifscu_DPvpAmPd1Kg=GA@mail.gmail.com>
- <1758998720.44976697@apps.rackspace.com>
-In-Reply-To: <1758998720.44976697@apps.rackspace.com>
-From: James Houghton <jthoughton@google.com>
-Date: Sun, 28 Sep 2025 22:30:10 -0700
-X-Gm-Features: AS18NWCAE9ldDAqVUvYjUE-2to0WXry3BcEeBojlBq2sKNq_5zKucI1FOeTlSh4
-Message-ID: <CADrL8HW0eNsHnEsEdKYRNvFRBMvrDMrHawa55Kik9QFeVNEwgA@mail.gmail.com>
-Subject: Re: PROBLEM: userfaultfd REGISTER minor mode on MAP_PRIVATE range fails
-To: "David P. Reed" <dpreed@deepplum.com>
-Cc: Axel Rasmussen <axelrasmussen@google.com>, Peter Xu <peterx@redhat.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+X-Received: by 2002:a05:6e02:3808:b0:425:8bfc:b7da with SMTP id
+ e9e14a558f8ab-42873f48613mr113571065ab.7.1759126531257; Sun, 28 Sep 2025
+ 23:15:31 -0700 (PDT)
+Date: Sun, 28 Sep 2025 23:15:31 -0700
+In-Reply-To: <0000000000000189dc0621b5e193@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68da2403.a00a0220.102ee.0036.GAE@google.com>
+Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in x64_sys_call
+From: syzbot <syzbot+65203730e781d98f23a0@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, andrii@kernel.org, ast@kernel.org, bp@alien8.de, 
+	bpf@vger.kernel.org, daniel@iogearbox.net, dave.hansen@linux.intel.com, 
+	dvyukov@google.com, eddyz87@gmail.com, elver@google.com, glider@google.com, 
+	haoluo@google.com, hpa@zytor.com, john.fastabend@gmail.com, jolsa@kernel.org, 
+	kasan-dev@googlegroups.com, kpsingh@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-usb@vger.kernel.org, luto@kernel.org, 
+	martin.lau@linux.dev, mingo@redhat.com, netdev@vger.kernel.org, 
+	sdf@fomichev.me, song@kernel.org, syzkaller-bugs@googlegroups.com, 
+	tglx@linutronix.de, x86@kernel.org, yonghong.song@linux.dev
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: C90F44000A
-X-Rspamd-Server: rspam05
-X-Stat-Signature: qqzpp9ktqnhyhr45eyqno44p8aqwyfih
+X-Rspamd-Queue-Id: 3CA4F4000E
 X-Rspam-User: 
-X-HE-Tag: 1759123848-511640
-X-HE-Meta: U2FsdGVkX19KESKH04NnrkBtJoGUhQUjCEKR6kBDxR9iMIymA32YF7e5FX6MEBBFbQ1dagTjtVLEVQKNy/y2553a+oPpHJ9mF8JRILd8F+U6/k6F59EAtnQ1D4BEcWhPKAp8CYKNnbyjwNHp4wmaP607mLM5JLwm7PXbZadXstHWvWmZ1mxHs1boaizrX02ioH7/KO6UJ673WgUvEWrbu5W38XIjsZDoPoDgvpbQTqAaJavlDGUjH1ZTOPinmC5wBwzJbqdF+O9sZx74o4Pw9h98qrrRTpOITP7GRwSg8AethhqfSvbblnIA7MJukH8vopz3oxaZoXL0rLFSrn/x/tv8CvAzMwkZ6xe88+PmhIljf71izWYZDzJ4Wmx4GfqOZNHcTRmrY1eMA2gN+HE81ve7Yw1A9dWawxWrXYEPfJpC24PLSPEex3BJTxZB1TCQ1Z2DmL2AgGUeMq5Ypg3Ldyan0dpXKjvwcT6fNxak5cdncH9uOjzgeyPlHUuRh4fBwOrgrfqk+/qPnLf/XYpoH7QMqwhfei5u+X7qMumJuJ2xT6Z3R5SIy+78KZSZzEw4NKgdpTB6Np0+T7u8Cc7F0sUc0q1/Kq71kUW4ayaXYF0bY8HGycB+jI6wwm8fmKEKEGqztte3pcvBUVMkNCgAD5CInFpiavu8oQJFK9AXpzTSZQCsWrxtUmi77dULyFN5rH3mJ+VZ5jGtSDrf2UvD2ho5xgDu4YpGKR3hgHk8AsfqMNOk2iDZ3RMq3EPgWH3rIF8FXmhEh4xWbuCpQYhhVHpr1xRLBz+4VKonS077jTXRqodJ29iE/bgK74tS3TQeOQxab+kRx9YTAWV5czUBe7LD1t9bNeXL6WDq5SY3R1jHFHH1ECrgSPsrbGucZcQEYUd8qd4g/VWpBY/zHB/YVlUbY9M0g6QGtemdWssB+EPfe/ch398hHtfjflPNgpE4CT0fSvWtVksnpeBY+Fx
- LyBW22vE
- I+W3+4iLLrlEs+ZYH0F7enbxDJErNHQsBMI+NxfFWsiwik72yK8Sk5pVLPc8w5moaONIlc7ZiveF4QkKsuHtz5jsi2cf4JBfW692oKirtUlNIyEFhgrnZ4OL1E31dM2p3Dfmb+N+RQdRVCzZmFG5ccuxaD7w669U7YXpW8qTsgCom/H3ndUTsM5qlAKt6QLHxg2GyRJCYUj7xi1qe55mjktzcrCF/k1LUb6zQ5OEDSfcj07+rerwfwQu/ViXyfP35quXRHSqV8AkDDnh4sPRVy9/sh6TPV4lRfjDxdbPraeTsmGeNvkla1gXYLBuGGkQPOS5QoD4Dpd28E1I1S79QXdb/Ww==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: qkr1pxg3qakizu5f9w3fjq45bafz64d9
+X-HE-Tag: 1759126532-345059
+X-HE-Meta: U2FsdGVkX1/VJ3bV6U/oSRGPiUL7lyK3TCMn8KdqTNrW3gh40/WCbytmUWPqTkc1FN9liE9F3tN/rXhRxqeHvetlEFboqEYyYA94fGRy0Kj90ettRQbUCQGEZpFG+IOFcTfDUXz+mv4E269PmWPPR8HPOd0Tj687b93R2wEuTe4igj0bl3osLeKHyNacKPq3l7KIu3hry6ANVIkFGBSqWnmGnc1psvyyu/aPuo56DF85h5jxyb0+xRcjTG8J+K4tihQfxpMEEtgpNMOLCy48AVUDQ5lugeew7GNWWnK6z38l4P9vEQcjFFy8Cu7adyg7CYT2aNbtZkO1cKqWvQHSue5zkO9M1Y1A9RtI5SGB5XGYGy0/oiRrEoZa/j6lCipdjtdN8I8xnHD/Ac3hZWQflUw3NN6ZbaE3RbVnr78o84p/Bd4gR9A9u445qdw/NxyTIboqK4d/cRmSRHxbkMoGQfYMQwrgAteMCTclo9Gxm06fMte2k3u2cJsGLpPhG7NywfofbuyHKVXmb2iz0SDDQBmqSiJygokfaTF15dW1U4grG37m7Xfefnw5e2BW7h3ks7wgtD8udh8JU2OWCr5KXe0AMncqxG+9q2kKWuCjqW/w3DfifQu+7XVZNnf+2MUFkfS/IZqTsnu7in3xW0KVBDXJg/xcE+OjjpwNLlvMg8QnK4lXDx5VHHLxOzaZ+onAVHH6dGnt7Kw4QgozPxGRJ86GMxyl55Lkufrld1ZamWNXll1UpUl6nf2Qf2HbeImrlNgiFzhTC5RX5UaV+OZ5UhSnw2H9XM0lEVJE8tAZ62bmURnWjw4jTE5YM6uycpBkHpHc7qcFrQYSRoxJh3shmh3i/fIkvCfvOR3mpg394IZ/zNBff818S4Wr0/+nPqvIn9M4r9+h2KPIjxG8A9F2MN54isZse/DWonUb1yXzBDYzPO5rNEqzqqZdl7S2UkM35yhzjR89SmSb6jNWR1e
+ ZMqFWy0g
+ KKXLIAt0svi1pcYCQa1/79o4PkEvqRsY/0C0YQMqQaoLBZz981dxKPiaNpWOPH+ptOHh6eJOyiw4rAAeuYWDxrc68LMpocfIKkTiV0TwGzMM8jqko6w2UJLSS79MrFksvOqa00BOAtHo4cwNTN/+6mwme49pUmPSeLtlFIFnoMWcjZNUnEzE4X6DgpHiL6Na3KUYIXiS9jWJmaF9p9JKAoiW8s8fAc5oBfcXc1W9w3WPLFEIKzhk93/niqdolPjXbPQX2zJfvrUmf02tgWQZ+lDCvdZw78H4owW+MyLU77iIj0OQB6wx+2PiD5A4N3UelCM3YHpQ3uH+JcwDi6whY2XpmFvYAz3CmIC1iXey0zlJQsteuzXuto5wlYVhl05TTL8aPNA5ACFy5nWnsT5aq6tjhIlqWgKPC9+4MIsxFOaoRnm6MpAIq9f1O94JYqHExYVGqRro8DxELnfA7DSbAMOupyTxXNDowHnNrmGWnpCQ/wr1I54brv+4KuwdZqYmBmcYrL4WdC6fxQKk9CW2G4Isq8/uzkl9tiHAYWFOseYSu21P3lvUCk/DHuqa5h32eGcN0lnyiyilBYVXe3e3Z2DPtEQ+9ZumyDTU5BqGKX16e48PQQ23jw/pMmkGljME8ZyAgmVOTacAriH0Zv0EHjA/SecuOrG6r7kj6vBaE8utnPnv2rVYRceAD55+Vpl6HHfgRrDg0WRaI/kUW6SegN0JHIxeDCV/xpRIYB2AveX+P/3eTxaIpwgHXVs0lXHqV/3ial8Yw3ZYsb2fJj8TxPC2vgvWMiyWsSeQpBRASsUww9hwvxV255ynRPZyuk3BO9COjtPMmwj4j5TDJNI0vZyQetaL/jfshMGzEfEjtwx9uQDxRxUNbAPKamQhn5jDz9F+IX1JpLWcIPdIqQ0poEbEjw9AoLNkENuKTMdsTXscOxE3dGKMprRNtLO2fQja4+H5BjI3LkJyPfIGtxOcob2vSIGDZ
+ Y9Tm8iaC
+ sl6/QIN+LzkMk8ka7rn23u+vLsZUqOglf3Cxc9Pe6Sv7pPUK/Xp6vUxNikRXTYmYhvEZnXYH+nisDy6Z7WQDuqZKnI7fRpEqCnvgoneaCVcE5WjbnWbzH8w8PAWFyghfQH9BFqcdMccVgyogI2pBkhzJrb21ZeLiiS9ZOKQOLPYESGFAIkjIX1VBdJ4yIAxauURH8NUA1ELGxFRslV+yDk4DmEF/52Zc+Ql6bY0Q/ypDU8mEbOHHo6TLNmDeijn5t1hc2vDzQuHnQ3hv1lBK5h0jcJwJCrpZjWJctiSd2MXM2rvWJxRnoShN6jLtMYTBrQwF9GyQ6Zh4biRTql7GFVe2EmwWqylo3UYlzohNXnFIDyXaoBCbLDS1GYb9P+xadHdJ99+lDrS3kUBtm4zSABQxTDA5PeoB/APWi00dfWlDULky11jDXEbKaFXwH2yX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,299 +105,182 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 27, 2025 at 11:45=E2=80=AFAM David P. Reed <dpreed@deepplum.com=
-> wrote:
->
-> OK - responses below.
+syzbot has found a reproducer for the following issue on:
 
-I think Peter will be able to help you the most, but I want to give my
-two cents anyway.
+HEAD commit:    e835faaed2f8 net/mlx5: Expose uar access and odp page faul..
+git tree:       net-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=136e2ae2580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=15254880b29b9ff
+dashboard link: https://syzkaller.appspot.com/bug?extid=65203730e781d98f23a0
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15e58334580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1005eae2580000
 
->
-> I'm still unclear what my role is vs. the others cc'ed on this problem re=
-port is.
->
-> Is anyone here (other than Andrew) a decision maker on what userfaultfd i=
-s supposed to do? I can see what the current code DOES - and honestly, it's=
- seriously whacked semantically. (see the ExtMem paper for a reasonable use=
- case that it cannot serve, my use case is quite similar). So is anyone her=
-e wanting to improve the functionality? I'm sure its current functions are =
-used by some folks here - Google employees presumably focused on ChromeOS o=
-r Android, I suppose, suggest that there's a use case there.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/6b3cd235e609/disk-e835faae.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/180c3f29b5c5/vmlinux-e835faae.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/6b8fa2c53bdd/bzImage-e835faae.xz
 
-I think all of us want userfaultfd to be as useful as possible. :)
-Peter, Axel, and I are quite familiar with userfaultfd's use as a tool
-for enabling post-copy live migration for virtual machines.
-Userfaultfd minor faults were created expressly for this purpose. Axel
-wrote the userfaultfd minor fault support; I wrote the corresponding
-userspace code to use it in Google Cloud.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+65203730e781d98f23a0@syzkaller.appspotmail.com
 
-Peter is quite a bit more familiar with userfaultfd than me (and I
-think Axel, but I don't want to speak for him), so please excuse our
-mistakes. (mm is complicated!)
+rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+rcu: 	1-...!: (1 GPs behind) idle=3cd4/1/0x4000000000000000 softirq=15457/15459 fqs=3
+rcu: 	Tasks blocked on level-0 rcu_node (CPUs 0-1): P43/2:b..l
+rcu: 	(detected by 0, t=10503 jiffies, g=9717, q=782 ncpus=2)
+Sending NMI from CPU 0 to CPUs 1:
+NMI backtrace for cpu 1
+CPU: 1 UID: 0 PID: 5901 Comm: udevd Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/18/2025
+RIP: 0010:hrtimer_set_expires include/linux/hrtimer.h:100 [inline]
+RIP: 0010:advance_sched+0x9cc/0xc90 net/sched/sch_taprio.c:988
+Code: 24 18 48 89 f8 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df 80 3c 08 00 74 05 e8 80 51 87 f8 4d 89 74 24 18 49 83 c4 20 4c 89 e0 <48> c1 e8 03 48 b9 00 00 00 00 00 fc ff df 80 3c 08 00 74 08 4c 89
+RSP: 0018:ffffc90000a08c70 EFLAGS: 00000086
+RAX: ffff888024623360 RBX: ffff8880246232c0 RCX: dffffc0000000000
+RDX: 0000000000000000 RSI: 0000000000000004 RDI: ffff888024623358
+RBP: ffff88807b34d550 R08: ffff8880246232eb R09: 1ffff110048c465d
+R10: dffffc0000000000 R11: ffffed10048c465e R12: ffff888024623360
+R13: ffff888024623000 R14: 1869abf3b67aa73f R15: ffff88807b34f400
+FS:  0000000000000000(0000) GS:ffff888125d39000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055f6efacf088 CR3: 000000000df36000 CR4: 00000000003526f0
+Call Trace:
+ <IRQ>
+ __run_hrtimer kernel/time/hrtimer.c:1761 [inline]
+ __hrtimer_run_queues+0x529/0xc60 kernel/time/hrtimer.c:1825
+ hrtimer_interrupt+0x45b/0xaa0 kernel/time/hrtimer.c:1887
+ local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1039 [inline]
+ __sysvec_apic_timer_interrupt+0x108/0x410 arch/x86/kernel/apic/apic.c:1056
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1050 [inline]
+ sysvec_apic_timer_interrupt+0xa1/0xc0 arch/x86/kernel/apic/apic.c:1050
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
+RIP: 0010:deref_stack_reg+0xa/0x230 arch/x86/kernel/unwind_orc.c:402
+Code: 4c 24 18 e9 f2 fe ff ff 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 55 41 57 41 56 41 55 41 54 53 <48> 83 ec 20 48 89 54 24 18 49 89 f0 49 89 ff 48 be 00 00 00 00 00
+RSP: 0018:ffffc900042cf4e0 EFLAGS: 00000283
+RAX: fffffffffffffff0 RBX: ffffffff9036fb70 RCX: 0000000000000000
+RDX: ffffc900042cf628 RSI: ffffc900042cf720 RDI: ffffc900042cf5e8
+RBP: dffffc0000000000 R08: ffffc900042cf647 R09: 0000000000000000
+R10: ffffc900042cf638 R11: fffff52000859ec9 R12: ffffc900042cf720
+R13: ffffc900042cf638 R14: ffffc900042cf5e8 R15: 1ffffffff206df6e
+ unwind_next_frame+0x17c4/0x2390 arch/x86/kernel/unwind_orc.c:-1
+ arch_stack_walk+0x11c/0x150 arch/x86/kernel/stacktrace.c:25
+ stack_trace_save+0x9c/0xe0 kernel/stacktrace.c:122
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
+ poison_kmalloc_redzone mm/kasan/common.c:388 [inline]
+ __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:405
+ kasan_kmalloc include/linux/kasan.h:260 [inline]
+ __kmalloc_cache_noprof+0x230/0x3d0 mm/slub.c:4407
+ kmalloc_noprof include/linux/slab.h:905 [inline]
+ slab_free_hook mm/slub.c:2374 [inline]
+ slab_free mm/slub.c:4695 [inline]
+ kmem_cache_free+0x166/0x400 mm/slub.c:4797
+ exit_mmap+0x53f/0xb50 mm/mmap.c:1305
+ __mmput+0x118/0x430 kernel/fork.c:1129
+ exit_mm+0x1da/0x2c0 kernel/exit.c:582
+ do_exit+0x648/0x2300 kernel/exit.c:949
+ do_group_exit+0x21c/0x2d0 kernel/exit.c:1102
+ __do_sys_exit_group kernel/exit.c:1113 [inline]
+ __se_sys_exit_group kernel/exit.c:1111 [inline]
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1111
+ x64_sys_call+0x21f7/0x2200 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fd7130f16c5
+Code: Unable to access opcode bytes at 0x7fd7130f169b.
+RSP: 002b:00007ffca03ef578 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
+RAX: ffffffffffffffda RBX: 000055f6efb75130 RCX: 00007fd7130f16c5
+RDX: 00000000000000e7 RSI: fffffffffffffe68 RDI: 0000000000000000
+RBP: 000055f6efac3910 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffca03ef5c0 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+INFO: NMI handler (nmi_cpu_backtrace_handler) took too long to run: 1.498 msecs
+task:kworker/1:1     state:R  running task     stack:22536 pid:43    tgid:43    ppid:2      task_flags:0x4208060 flags:0x00004000
+Workqueue: mld mld_ifc_work
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5357 [inline]
+ __schedule+0x1798/0x4cc0 kernel/sched/core.c:6961
+ preempt_schedule_common+0x83/0xd0 kernel/sched/core.c:7145
+ preempt_schedule+0xae/0xc0 kernel/sched/core.c:7169
+ preempt_schedule_thunk+0x16/0x30 arch/x86/entry/thunk.S:12
+ __local_bh_enable_ip+0x13e/0x1c0 kernel/softirq.c:414
+ local_bh_enable include/linux/bottom_half.h:33 [inline]
+ rcu_read_unlock_bh include/linux/rcupdate.h:910 [inline]
+ __dev_queue_xmit+0x1d79/0x3b50 net/core/dev.c:4790
+ neigh_output include/net/neighbour.h:547 [inline]
+ ip6_finish_output2+0xfb3/0x1480 net/ipv6/ip6_output.c:136
+ NF_HOOK_COND include/linux/netfilter.h:307 [inline]
+ ip6_output+0x340/0x550 net/ipv6/ip6_output.c:247
+ NF_HOOK+0x9e/0x380 include/linux/netfilter.h:318
+ mld_sendpack+0x8d4/0xe60 net/ipv6/mcast.c:1855
+ mld_send_cr net/ipv6/mcast.c:2154 [inline]
+ mld_ifc_work+0x83e/0xd60 net/ipv6/mcast.c:2693
+ process_one_work kernel/workqueue.c:3236 [inline]
+ process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3319
+ worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
+ kthread+0x70e/0x8a0 kernel/kthread.c:463
+ ret_from_fork+0x439/0x7d0 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+rcu: rcu_preempt kthread starved for 10490 jiffies! g9717 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=0
+rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
+rcu: RCU grace-period kthread stack dump:
+task:rcu_preempt     state:R  running task     stack:27160 pid:16    tgid:16    ppid:2      task_flags:0x208040 flags:0x00004000
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5357 [inline]
+ __schedule+0x1798/0x4cc0 kernel/sched/core.c:6961
+ __schedule_loop kernel/sched/core.c:7043 [inline]
+ schedule+0x165/0x360 kernel/sched/core.c:7058
+ schedule_timeout+0x12b/0x270 kernel/time/sleep_timeout.c:99
+ rcu_gp_fqs_loop+0x301/0x1540 kernel/rcu/tree.c:2083
+ rcu_gp_kthread+0x99/0x390 kernel/rcu/tree.c:2285
+ kthread+0x70e/0x8a0 kernel/kthread.c:463
+ ret_from_fork+0x439/0x7d0 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+rcu: Stack dump where RCU GP kthread last ran:
+CPU: 0 UID: 0 PID: 1011 Comm: kworker/u8:5 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/18/2025
+Workqueue: events_unbound toggle_allocation_gate
+RIP: 0010:csd_lock_wait kernel/smp.c:342 [inline]
+RIP: 0010:smp_call_function_many_cond+0xd33/0x12d0 kernel/smp.c:877
+Code: 45 8b 2c 24 44 89 ee 83 e6 01 31 ff e8 86 63 0b 00 41 83 e5 01 49 bd 00 00 00 00 00 fc ff df 75 07 e8 31 5f 0b 00 eb 38 f3 90 <42> 0f b6 04 2b 84 c0 75 11 41 f7 04 24 01 00 00 00 74 1e e8 15 5f
+RSP: 0018:ffffc900036a7660 EFLAGS: 00000293
+RAX: ffffffff81b44fab RBX: 1ffff110170e7f69 RCX: ffff888025bada00
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: ffffc900036a77e0 R08: ffffffff8fa30637 R09: 1ffffffff1f460c6
+R10: dffffc0000000000 R11: fffffbfff1f460c7 R12: ffff8880b873fb48
+R13: dffffc0000000000 R14: ffff8880b863b1c0 R15: 0000000000000001
+FS:  0000000000000000(0000) GS:ffff888125c39000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000000300 CR3: 000000000df36000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ on_each_cpu_cond_mask+0x3f/0x80 kernel/smp.c:1044
+ on_each_cpu include/linux/smp.h:71 [inline]
+ smp_text_poke_sync_each_cpu arch/x86/kernel/alternative.c:2653 [inline]
+ smp_text_poke_batch_finish+0x5f9/0x1130 arch/x86/kernel/alternative.c:2863
+ arch_jump_label_transform_apply+0x1c/0x30 arch/x86/kernel/jump_label.c:146
+ static_key_enable_cpuslocked+0x128/0x250 kernel/jump_label.c:210
+ static_key_enable+0x1a/0x20 kernel/jump_label.c:223
+ toggle_allocation_gate+0xad/0x240 mm/kfence/core.c:850
+ process_one_work kernel/workqueue.c:3236 [inline]
+ process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3319
+ worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
+ kthread+0x70e/0x8a0 kernel/kthread.c:463
+ ret_from_fork+0x439/0x7d0 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
 
-There are a few others who care about userfaultfd who might jump in as
-soon as patches get sent. I think these folks (so on top of Peter and
-Andrew, people like Suren, Lorenzo, David Hildenbrand) will be the
-folks who Ack or Nak the patches.
 
->
->
->
-> My role started out by reporting that the documentation is both incomplet=
-e and confusing, both in the man pages and the "kernel documentation". And =
-the rationale presented in the documentation doesn't make sense. Some of yo=
-u guys admit that you really don't understand how "swap" is different from =
-"file-backed paging" (except for the corner cases of hugetlbfs [sort of "fi=
-le backed"], "file-backed by /dev/zero" [which ends up using "swap"], and t=
-mpfs [also "file backed" but using "swap"]. And yet "anonymous, private" us=
-es "swap" and the "swap cache", not the "page cache".
-
-The documentation is confusing; I agreed with you originally that it
-should be updated. (Do you want to send a patch? Perhaps I could give
-it a go when I find the time.)
-
-I spent some time writing out how I define the various terms being
-used here, I'll leave it at the end of this email in case it is
-helpful, but otherwise please just ignore it. I wouldn't say that the
-rationale in the documentation doesn't make sense. Userfaultfd exists
-to solve specific problems.
-
->
-> Now, after digging into the question, I feel like there was never, ever a=
- coherent architectural design for userfaultfd as a function. It's apparent=
-ly just a "hack", not a "feature".
-
-Userfaultfd certainly isn't perfect, but it is critical for things
-like VM live migration, Android GC, CRIU, etc..
-
->
-> I'd be happy to propose a much more coherent design (in my opinion as an =
-operating systems designer for the past more than 20 years, starting with M=
-ultics in 1970 - you guys may not be interested in my input, which is fair.=
- Is Linus interested? That would be a bunch of work for me, because I would=
- do a thorough job, not just a bunch of random patches. But I'm not proposi=
-ng to join the maintainer-club - I'm retired from that space, and I find th=
-e Linux kernel contributors poorly organized and chaotic.
->
-> Or, I can just drop this interaction - concluding that userfaultfd is kin=
-d of useless as is, and really badly documented to boot.
-
-I am interested to hear your ideas for how you think userfaultfd
-should work and how it solves your problem. :) At the end of the day,
-I'm just trying (though clearly failing miserably) to help you solve
-your problem.
-
-Your characterization of userfaultfd as a "useless" "bunch of random
-patches" that is just a "hack" is wrong. I understand; it doesn't
-support your needs. I think what Peter, Axel, and I have been trying
-to understand is what exactly you're trying to do and how userfaultfd
-could (or may not) help you get there. You've shared some[1]
-details[2] about what you're looking for, so thank you for that, but I
-am still struggling to understand how the flexibility that you're
-asking for is actually the right tool for the problem(s) you're trying
-to solve.
-
-[1]: https://lore.kernel.org/linux-mm/1758037039.08578612@apps.rackspace.co=
-m/
-[2]: https://lore.kernel.org/linux-mm/1758042583.108320755@apps.rackspace.c=
-om/
-
-> There is no sensible way to respond to a "missing event" when "missing" m=
-eans the page is swapped out (to SWAP) by UFFDIO_COPY or UFFDIO_ZEROPAGE. T=
-hat's just weird, and you continue to insist on it. Where is the page that =
-was swapped out? Well, one could look at the PTE in /proc/pid/maps, and you=
- find that its "swap entry" is there as an index into a block device. (so, =
-maybe you can open the swap device using some file descriptor and mmap() it=
- into the manager process, then UFFDIO_COPY, but what if the swap page is a=
-ctually in the "swap cache", you can't mmap any swap cache page via any use=
-rspace API - do you know a way to do that?)
-
-(Please see the terms that I use at the bottom of this email; let me
-reply using those terms.)
-
-UFFDIO_COPY has quite well-defined semantics (albeit, perhaps not
-*documented* well):
-
-* For anonymous VMAs: UFFDIO_COPY will allocate page(s), copy some
-user memory into the page(s) and map those pages at the specified VAs.
-* For hugetlbfs and shmem/tmpfs VMAs, UFFDIO_COPY will fill holes in
-the file's page cache with new pages, copy the user memory in, and map
-those pages. UFFDIO_CONTINUE is additionally supported; it skips the
-hole-filling step and requires the page cache to be populated.
-
-For UFFDIO_COPY, if a page at a to-be-populated VA has already been
-allocated (including if it has been reclaimed), the call will be
-rejected. It would effectively be overwriting the contents of the
-page; this is not supported today.
-
-If "missing" includes swapped out pages, UFFDIO_COPY and
-UFFDIO_ZEROPAGE would need to be allowed to overwrite the existing
-contents. "Sensible" or not, there has been no need for this yet.
-
-> Now I reported a bug in UFFIO_REGISTER [...]
-
-The bug you reported is in the documentation only.
-
-> [...] which you keep saying is the same as UFFDIO_CONTINUE. Well, it isn'=
-t! I can register a minor handler (which allows continue) if I use MAP_ANON=
-YMOUS|MAP_SHARED. The same "swap cache" mechanics exactly apply. The only "=
-sharing" is potential future sharing after that process forks, in which cas=
-e, the same "swap page" is shared until a Copy on Write forces the page to =
-be unshared - it is a writeable page, just sharing the same physical block.=
- It can be swapped out to the swap cache and the swap device, which sets th=
-e PTE to be a "swap entry" that causes a page fault.
-
-(Using the terms at the bottom of this email.)
-
-For UFFDIO_CONTINUE, the swap cache mechanics are like:
-
-1. For anonymous pages in the VMA: swap-outs will not clear the PTEs,
-touching the page will swap it back in again, UFFDIO_CONTINUE on it is
-disallowed.
-2. For page cache pages in the VMA (i.e., not-yet-written-to pages for
-MAP_PRIVATE, any page for MAP_SHARED): swap-outs will clear the PTEs,
-and touching the page will trigger a minor fault, and UFFDIO_CONTINUE
-will swap it back in.
-
-For MAP_ANONYMOUS|MAP_PRIVATE, all pages in the VMA will be anonymous
-pages, so UFFDIO_CONTINUE will never be allowed, therefore
-registration in the first place is disallowed.
-
-(IMHO, it was dubious to have even allowed registering userfaultfd
-minor faults with *any* MAP_PRIVATE VMA.)
-
-> The swap device doesn't know where the pages are mapped. You need to look=
- at the PTEs of all the processes to find the translation to swap cache ent=
-ry, and if you want to go backward from swap entry to pages, you need to us=
-e a special XArray that finds VMAs given swap entry.
->
-> But the point here I keep making is that UFFDIO_REGISTER rejects only MAP=
-_ANONYMOUS that are MAP_PRIVATE and also not huge pages. To me that's weird=
-.
-
-I hope my above explanation (of sorts) makes it a little less weird.
-
-> If it is the CoW case that doesn't work (I doubt it), well, you have to r=
-ead the swapped out page into memory before copying it anyway. Then you cop=
-y on write, from the page read or found in the swap cache.
->
-> Now, as you say, that may require allocating a new page, also in the swap=
- cache. Is that a "missing" page in the weird userfaultfd terminology? If s=
-o, to handle it can't be done with UFFIO_COPY, because you can't access the=
- contents from userspace. And it's not "write protected" from the perspecti=
-ve of WP.
-
-No it isn't a missing userfault. Data exists at the VA for which a
-userfault would be generated, therefore it cannot be "missing".
-
->
->
->
-> > The only exception I can
-> > think of is swap faults, I could see anon swap faults (perhaps
-> > specifically when the page is in the swap cache?) being considered
-> > UFFD minor faults, but I would be curious to know what the use case is
-> > for that / why you would want to do that. The original use case for
-> > UFFD minor fault support was demand paging for VMs, where you have
-> > some kind of shared memory (shmem or hugetlb) where one side of the
-> > mapping is given to the VM, and the other side of the shared mapping
-> > is used by the hypervisor to populate guest memory on-demand in
-> > response to userfaultfd events.
->
->
->
-> I think I've just answered this. userfaultfd doesn't support the "swap ou=
-t" part of anonymous swapping at all. So, how could a manager get the page =
-contents as of the instant it is put in the swap cache for writing out to t=
-he swap device? There's no "swap out" event mechanism, and no way to treat =
-the swap device cached into the swap cache as a page source. (not to mentio=
-n the zswap mechanism, which compresses some of the pages into an invisible=
- piece of memory).
->
->
-> >
-> > To me it's not intended userfaultfd minor events are generated for
-> > writeprotect faults, to me that's the domain of userfaultfd-wp, not
-> > minor faults. James might be right that these unintentionally trigger
-> > minor faults today, I would need to do some more reading of the code
-> > to be certain though.
->
-> I don't particulary care about writeprotect faults, but CoW probably shou=
-ldn't be considered the same as a writeprotect fault, because CoW is trigge=
-red by a write into a writeable area, ONLY in one of the mappings, whicheve=
-r is written first. The process doesn't think of it as a "write" - it just =
-is a kernel optimization of a common case where fork is followed by non-use=
-, so the actual copy could have been done at fork time, semantically. It's =
-a deferred read and allocation.
->
->
->
-> I hope this helps clarify my concerns.
->
-> There are several reasonable outcomes -
->
-> 1. Much better documentation of what the code actually does (and why).
-
-Agreed.
-
-> 2. Fix the "bug" that prevents REGISTER of "minor" handler on private, an=
-onymous mappings (obviously, you can REGISTER missing handlers as well), th=
-en document actually what happens during the life cycle of swapping of page=
-s in detail, including MAP_PRIVATE|MAP_ANONYMOUS VMAs.
-
-Not a bug.
-
-> 3. Do a thorough analysis of what userfaultfd really should do, if the go=
-al is to provide the ability of a "manager process" to get to handle all ca=
-ses of page fault behavior on a case-by-case basis for regions of user addr=
-essable pages.
-
-What userfaultfd "should do" is up to the problems we need it to solve.
-
-> I'd be happy to contribute to (but not manage) whichever outcome - and I =
-have what I think is a reasonable use case. (and I'm aware that this API ac=
-cidentally created a serious hacker exploit earlier in its life, by creatin=
-g a way to hang one process from another. I think that's no longer so easy.=
-)
-
-I would be glad to hear what changes you think should be made to
-userfaultfd to better suit your needs.
-
-Sorry if this reply is somewhat incoherent; I've gone back and forth a
-few times on how to respond to your points in the most helpful way I
-can. I've tried to be as clear as possible without being too verbose.
-
-- James
-
---
-
-Alrighty here are the terms/definitions I use, as I mentioned above.
-Again feel, free to ignore them if they are unhelpful:
-
-A "file-backed VMA" will load pages into the page cache. For most
-filesystems, the page is loaded from a disk (or a proper device), but
-for special filesystems like tmpfs, hugetlbfs, and ramfs, the page
-cache is populated with zeroed pages initially.
-
-tmpfs is kind of like a filesystem API for shmem, but they are so
-interconnected that many people use the terms interchangeably. (To
-clarify, I don't think of "shmem" as shorthand for "shared memory"; to
-me, it is the name of an mm subsystem.) Every MAP_ANONYMOUS|MAP_SHARED
-VMA is a shmem VMA; it is as if there is a tmpfs file backing VMAs
-like these, so they are in some contexts considered "file-backed". See
-shmem_zero_setup(). As far as I'm concerned, vma->vm_file is set, so
-the VMA is file-backed (even though the mmap flags included
-MAP_ANONYMOUS). I assume this is what you are referring to when you
-say "file-backed by /dev/zero".
-
-For any MAP_PRIVATE VMA, some pages may be "anonymous", in that no
-page cache is holding a reference to it (i.e., generally speaking, the
-only references on the page are the ones taken by the PTEs mapping the
-page). Reclaim of pages like these will put them in a swap cache.
-
-For pages where a reference is held in a page cache, if the page is
-dirty, it can be written out to disk. shmem implements "writeout" by
-swapping just like anonymous pages, but other filesystems implement it
-how you would expect.
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
