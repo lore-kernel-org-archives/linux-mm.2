@@ -4,110 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C9F4CAC5BB
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 00:59:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A130CAC5BB
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 01:02:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 331D88E0003; Sun, 28 Sep 2025 20:59:00 -0400 (EDT)
+	id 7F38F8E0006; Sun, 28 Sep 2025 21:02:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E2688E0001; Sun, 28 Sep 2025 20:59:00 -0400 (EDT)
+	id 77D3C8E0001; Sun, 28 Sep 2025 21:02:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F8408E0003; Sun, 28 Sep 2025 20:59:00 -0400 (EDT)
+	id 645B38E0006; Sun, 28 Sep 2025 21:02:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0FF9E8E0001
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 20:59:00 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B31BD1401FC
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 00:58:59 +0000 (UTC)
-X-FDA: 83940478398.24.1B9EDE9
-Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D93781C0004
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 00:58:57 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Gu6wniZE;
-	spf=pass (imf18.hostedemail.com: domain of jianyungao89@gmail.com designates 209.85.214.193 as permitted sender) smtp.mailfrom=jianyungao89@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D05A8E0001
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 21:02:42 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E2F6CB749E
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 01:02:41 +0000 (UTC)
+X-FDA: 83940487722.11.510820E
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7472D80007
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 01:02:37 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	spf=pass (imf02.hostedemail.com: domain of yukuai1@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yukuai1@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759107760; a=rsa-sha256;
+	cv=none;
+	b=UQFkHzBwiTXAJec90l2NcOYDhvzflohHjhEwpUSMqHnE7rl9XSBtzYVxe1KgFlNvO/7+Ue
+	ZWGIVFoQXYVGnZCxi/Ao4ZTP21XEkRpiG1/57zMf8YtulUN4QweZ8nvtHK9cokAkavQ0sb
+	x3ncP4QE368DteO9bcIgTzwyByO1D0U=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of yukuai1@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yukuai1@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759107537;
+	s=arc-20220608; t=1759107760;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ORs2gycvYbnBEoguqR6oKSNFoMATmvXOvwD+L187YZo=;
-	b=YnE1CLKBZqlpTuHH0g8g/04T/WlvsweIi5qFhOl8n0IGk96LUjuOv734q7Wn3T3QiIUISS
-	RqsbS/mR9eILseMRg4rTyx2XlBOlLKw+8Qve9T5iGkCASRr0ApuUfp8311O2IaZmYLg+Wa
-	jVu4u6DhRSCYGHfH1Pd8PIte2MiJ9Ag=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759107537; a=rsa-sha256;
-	cv=none;
-	b=QCqwbCoMOH5TNBwjFFpkK4+bHAGpc8MPqPs07I3wrun7as9O7uefmMWaBcXWjCvJGdFks4
-	idxh0+SbEI+7tUhnvu+NRLHHJ/5QQgsgBBk+nggjjBC5dlUsoXfKdPWxkY6uCxRQ9q0gEb
-	UgsBPq2rVo8vDWLNoiR7hVejFyL/aR0=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Gu6wniZE;
-	spf=pass (imf18.hostedemail.com: domain of jianyungao89@gmail.com designates 209.85.214.193 as permitted sender) smtp.mailfrom=jianyungao89@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-279e2554b6fso32417325ad.2
-        for <linux-mm@kvack.org>; Sun, 28 Sep 2025 17:58:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759107536; x=1759712336; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ORs2gycvYbnBEoguqR6oKSNFoMATmvXOvwD+L187YZo=;
-        b=Gu6wniZEC5Ab1mhF7B5fK8/D/kFv/gNvfAzli/HOp3eoRnw6vGq/Vttv2ye3RMiuNK
-         LxxfBlxEnWD0urxKp+RRwaJiYcv/5u+qMS19yhYnXveqjb2uW5KzYOLZWGPg4ijFfQmB
-         DiYIbrQAkemFsC7ETw8+H6lDAtHwg3033JSuVy1aZL8nr6UaLM5OclKZvfq43TaAkG4a
-         HeMQcCscMyA7kx51JT5SBb1QEG0wYlpNt20jIXLPn42/nXCLDaVgxMjvmPe56L9d2lhT
-         /FdbjUJUr+dYraOfoJu4LSy7IPsCIi7JKHEIx5Vydal72Ob1ffkmUtLi1c3bBlLHntnI
-         x9fA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759107536; x=1759712336;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ORs2gycvYbnBEoguqR6oKSNFoMATmvXOvwD+L187YZo=;
-        b=Ns3E8ibkxLRtH1ytmL1pOjDFUQ+//MTU7jSUo4STIdCReQc1oQPOAHG6YnN6vUEOGh
-         QAMP0qnbjVJBj/cbct+UC41c+uyEOLJGKUwmUEJIBngUn3DFbcPOfxQPTuf6Lv6NeqVy
-         YwHhc8DvfdDBoGzqwfxMtUJQlnlt+i21RecJGcor5fmuvrrs9LdxSux0z6CNDQuk5Szz
-         1DPixhRKDX+t8lxbc2wVg7q5fkx5Lwj3TW/43ixVodSUNo5MxpuXdeUcALWG3Iur+KIK
-         Bkdg0Bxl+1Wz4jNb8vdx/rmCIIwPrAf/Ba77+MbNsiZDED6DGIZ3Ip/7O4aQSro5orJF
-         ybdw==
-X-Gm-Message-State: AOJu0YxseyV5l0jEwnvnDe18ViEzGYAFPs7Kpp3vjje4CVtIv61ECzQW
-	qTRTY9yroJCQ7H1pnbxBqqK5VnM8pJ+ukHNG5TL2jfR4iqFhV++amj5AZVPfO4og46vvDUlfhax
-	5gIegdmQsbdKaP2pAeNWINjC6peuOsVmwybUwN4VmJA==
-X-Gm-Gg: ASbGnctPv/q36eOZyoG0a9Sw9GDof/CruPccE2kJrWXB2AZCodB9MP9bVwPhAv4UsrJ
-	gI2jf9KQAg7mYLSU2qYhYrRJHZZNElTfwRJI98Huw+WYm+pgjg25QVPusP4tTYq7iT3Opq6LxYF
-	rkhAF6Sj5zEkLhbk5xCw6p2fUC06dGdOovDh6XGruF39g30SsAblqjtVA3W5utL0BYASAY9QhRZ
-	2KmKQa/foYcUELUpy97E/viEozC
-X-Google-Smtp-Source: AGHT+IEdKd/2f3BIPX8+CygnGdwjwhF1+QMfyj3p0x4KG1dJssR+VKdv7FmMNZsXXawlRu74HGb/awoBUT3TBuZICKA=
-X-Received: by 2002:a17:902:ecc3:b0:269:4759:904b with SMTP id
- d9443c01a7336-27ed4ade041mr179270045ad.58.1759107536398; Sun, 28 Sep 2025
- 17:58:56 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references;
+	bh=FlKrbsIAgmfNiVKTNKTmDX2sKeAjR5Becej3iNuMCnQ=;
+	b=QDE/C/w63QlkvyQ/C6wIVoqAcHXYQnZ+HKz/GJiSbeNhj+MxjKqGUuaXBszYNGQTBL1oKQ
+	/8erpKBczapUzAptn0PLsPuONtzyKp2sN7i1uamUuUaCzBFjKq5VMwgvizVgG1qB8afvvW
+	78T3YBpoSP98Ig8/3BXRT0iO4uPot4s=
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4cZjZx3gxxzYQv27
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 09:02:17 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 9E5401A018D
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 09:02:32 +0800 (CST)
+Received: from [10.174.179.143] (unknown [10.174.179.143])
+	by APP4 (Coremail) with SMTP id gCh0CgDHi2Om2tlog8ipBA--.21198S3;
+	Mon, 29 Sep 2025 09:02:32 +0800 (CST)
+Subject: Re: [PATCH 01/10] blk-cgroup: use cgroup lock and rcu to protect
+ iterating blkcg blkgs
+To: Bart Van Assche <bvanassche@acm.org>, Yu Kuai <yukuai1@huaweicloud.com>,
+ Yu Kuai <hailan@yukuai.org.cn>, tj@kernel.org, ming.lei@redhat.com,
+ nilay@linux.ibm.com, hch@lst.de, josef@toxicpanda.com, axboe@kernel.dk,
+ akpm@linux-foundation.org, vgoyal@redhat.com
+Cc: cgroups@vger.kernel.org, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, yi.zhang@huawei.com,
+ yangerkun@huawei.com, johnny.chenyi@huawei.com,
+ "yukuai (C)" <yukuai3@huawei.com>
+References: <20250925081525.700639-1-yukuai1@huaweicloud.com>
+ <20250925081525.700639-2-yukuai1@huaweicloud.com>
+ <bc6fe04d-3245-40dd-aa30-c3a3acb670c2@acm.org>
+ <01e7eccd-3529-4d12-8ad2-fd9e034a026d@yukuai.org.cn>
+ <688275d5-fbb4-08b3-45e1-798ad8cf77fc@huaweicloud.com>
+ <66dcdcd1-df71-43b9-a468-2b4aaa8b6dc7@acm.org>
+From: Yu Kuai <yukuai1@huaweicloud.com>
+Message-ID: <9cf50e70-d2e4-cfd7-da2e-3701da0814b4@huaweicloud.com>
+Date: Mon, 29 Sep 2025 09:02:30 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 MIME-Version: 1.0
-References: <20250927064926.1496579-1-jianyungao89@gmail.com>
-In-Reply-To: <20250927064926.1496579-1-jianyungao89@gmail.com>
-From: Jianyun Gao <jianyungao89@gmail.com>
-Date: Mon, 29 Sep 2025 08:58:44 +0800
-X-Gm-Features: AS18NWAUhnnwQ1CHLLzDZsDFdPRBZuLB6p-5ELHUMzymLqEllF6uCWerrHJaZYU
-Message-ID: <CAHP3+4B9LBqODc-YoLogQBLawzqCwBpABi0bNpQ6aNRWuDavtQ@mail.gmail.com>
-Subject: Re: [PATCH] mm/hugetlb: Fix some typos in hugetlb module
-To: linux-mm@kvack.org
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D93781C0004
-X-Stat-Signature: 8s6kt5zf7apj1dshbbrbte9tchxdy79p
+In-Reply-To: <66dcdcd1-df71-43b9-a468-2b4aaa8b6dc7@acm.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgDHi2Om2tlog8ipBA--.21198S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7KrW5urWxuryfZw4DJr17Awb_yoW8Xr47p3
+	yFq3W2kr4DtF4q93sFga1jvF1F9an7Gr98Jr4kXry5Aa4qvr1YqFsFyFWqkF1vqanrt3Wq
+	k34jkrZ3Jw10vaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBF14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
+	0xkIwI1lc7I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x
+	0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
+	7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcV
+	C0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF
+	04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7
+	CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0pRHUDLUUUUU=
+X-CM-SenderInfo: 51xn3trlr6x35dzhxuhorxvhhfrp/
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7472D80007
+X-Stat-Signature: sdndwcjmqmj8u511ceu74dig8hfwiua5
 X-Rspam-User: 
-X-HE-Tag: 1759107537-273840
-X-HE-Meta: U2FsdGVkX1+KUeW5VbXpbc1pe0+SkLgmDSow+uVFfvy/7/GDDTc/TAFFQ4SwlMlnfVZCHAlqPSFROR7YaXqrsiT09fiVWOusyAFG+Sg0DM9PfUE0WTSW7YbUYMAkZFav7BzYdnw3liRy2S1yj8K2TACKwY4TBSmdPd+tVX+sc1r1Z4I/RZaXNM2EYKDaBW/QzFy8IIT2tt/qUxpIWUBGxnN66KGmruZ36zYwT5TijyyBk7bIx+YNPv+yfFG1Sa+E/OrllookYgckVB/5Uk30zcf7miEUCXek+1uXe3WA+mwKYMbxVeMZUSJKgogi+A/6WhDu0YI8+eOYqJTWMGVL3G6m8oQ+qNwF8hZS9kGK+vxba3BT+4oLQCEkmD3ZqMJikigqlpmqGdM8svkzg6OOFp8Re65APDjedMFSrTKZ70SSIDWjygHImehVg3AfUu8nBMu4LJDfqu1zptS/LSu3Mtr66ZEkuJWI86ETzp9Q2L2XANYUqEb+TI/vqtyBRBwHqMetFDdl7FOlyQZwwJt48PS4KV2vTG2rQE2WaAi6mA9+dMXlMwAhyEUl8WtxMr9KV0pfInXZCo9bmmaCPZm12jQl0GGiGwwzUeyZmb4o9K64k8YPAsfupjKMMsW3wwbJa5kbMt4RxmtiU2bLxK1i8asXDEPl0dk6LIkLs6i1KoFT1XnfIf95P2+SFuY4DOhdIf1ULoyRl0ffOZwwYv0H9Md+agX6YQ6PpfoDJmau5c+wms2T+dstWnK6KGVwmzp4TxZnhESXU0nG+q8GvH/KtRi5aVequZNE9pPoOEqyCV6dc9vnNZ5zewWdDRFoHm/lwQQBdIp9otEDr6GxXwTHRs+0hLjB0wsnN8Kk3a4y78RpQxiceBUaAe2ac4e759FvIrpwdn0U8qKMSVuefpbnq1rz34FIcjydlCiLIFSFQWV+hgbHdeVcrexi90DL40BARPTiAhsApNN9FP9MwJ8
- KS+ZwsDd
- WqkQI1xUGL45AGbRncYkrWiG4CJ1f8Bx6UpCxFIhrjbvP1cVMoKwExCH/OU3Og9n65Vs6oebX+Qf82vuIsTG9O5f1W+eq9qlXPoiP90gS5WTmKJEQXyIUJn25sANQlg/0YJRp3DmncQaRCmAgiWcpWAujxM4P/6LgpfVrEc8D6p7ClcadFK1HJ6dvvSvm2WyUkk9FzMrXRUI4r9OK1djkHaNeuVXOcNEjPzrBlJ9Hds9Vw8WMSYp1YCdh6PhEpbC3eDcmdt/2IU/e+A8ZeBRw09zVkWHr+8Mc3Q6Mf+70DbWsNBam2N1FtSa2Y4RvudRf+0mxnKbnH+BYziQK1/j8WpGr4k7vu4iXLm/p8fBQcD0Z9VW8Mrl2SmJl3LlGdHxxamzuWgXvAowWmICOVh6Fp+gym9x3/29lmg4d
+X-HE-Tag: 1759107757-383072
+X-HE-Meta: U2FsdGVkX18rtNHz9psbjpY7/r9VSN6S6XVPa/s8UWopdlygusm2Lhx4OS83MHH9Dt1RgtBjPAmZsMHW7SNddYmrle1BLGXzQs1ntYEwu+XhSQPoEx+rbt4YcOrkCq9h/3xxHTGOZAlE/9LetSERSxGB63XMwKKEWVhxtyVdh+MBV00neUmv2M6DCqcsrE9MKvl05PexGzL2NUoymbf/rt1MYrZvbfBzkgm/UcbAMjUxHvlo66kN8Mkk5b9VCIDPOM6Y3Gx5zE/m94lyJbNPaVxeNA/G84oMUtM7CuS5w85FT1vrSQthRUV4eCXUE+xOZ2KgeeHVxHQEjsRLkvE0Ah9CCEE14aBuX5cNVP7LaquEWliDum98bG4eBMohDmkPl9LDRpPmPUjCLdiMFGVrgGG7oc3H3t65omnSbFmK9DsGu1ho1AASVIgiryUCd4zm4dmPmoCPgSoLagFX398IBKBBMWZsjwnbAiLncqyImXISNdH8Uj8uObbijKdijLqKnRiIjFxU2Sbc/7pz8kIQO6xAW+9UjiCA9I31YWGEnNclLr9BPIh/0tJkZRrC57WdbbkDctEFLviKbE0V7FJdrTbiUpTaVeC9OEAmPQ1dcEsUkEgaT+sEIIrSzibN+koY8cOrO5y0jukv8QFejuPZMtMFO+JectYGw5zOu5XUosJbjVRO3zGPfZ99QtmRgkCC16xuywV0k3ZaoEvL9bxrzvq7VJxp8h09przZEVn7SmMWeHUPMy90FtTS8adPYU4Japw0+P0v2xg8Fr5ZOhsbUGE6EnlDfYw7Sp3S0ny97+FE5WWDJwL7Xhx3xYrKrRITcvihUxg5Sti2frjQTZbBivvt/O/bZlGHnQkoIylI1bLNsoHioXerTWSMFIgfMJn0+yMmMfYy4zk6eKPAQPQrRHBmqgY1mYiC3ebbP6ay5yEn4UIzYJCEntupB8MggvblBWdve+WTUeVlHPOmX2+
+ yVbTgouy
+ v22iQKVuDmHqh4+VgLsyyn+8GyWWl127kFSbphgF1CFz6XQnmfLmCzbKsNJXJHvfiYsxb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,112 +115,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Superseded by: 20250929002608.1633825-1-jianyungao89@gmail.com .
-Please ignore / Please drop.
+Hi,
+
+在 2025/09/27 1:19, Bart Van Assche 写道:
+> On 9/25/25 5:57 PM, Yu Kuai wrote:
+>> 在 2025/09/26 1:07, Yu Kuai 写道:
+>>> 在 2025/9/25 23:57, Bart Van Assche 写道:
+>>>> On 9/25/25 1:15 AM, Yu Kuai wrote:
+>>>>> It's safe to iterate blkgs with cgroup lock or rcu lock held, prevent
+>>>>> nested queue_lock under rcu lock, and prepare to convert protecting
+>>>>> blkcg with blkcg_mutex instead of queuelock.
+>>>>
+>>>> Iterating blkgs without holding q->queue_lock is safe but accessing the
+>>>> blkg members without holding that lock is not safe since q->queue_lock
+>>>> is acquired by all code that modifies blkg members. Should perhaps a 
+>>>> new
+>>>> spinlock be introduced to serialize blkg modifications?
+>>
+>> Actually, only blkcg_print_blkgs() is using rcu in this patch, and take
+>> a look at the callers, I don't see anyone have to hold queue_lock. Can
+>> you explain in detail which field from blkg is problematic in this
+>> patch?
+> 
+> I'm not a cgroup expert so I cannot answer the above question. But I
+> think it's clear that the description of this patch is not sufficient as
+> motivation for this patch. Removing the blkg->q->queue_lock lock and
+> unlock calls requires a detailed review of all blkcg_print_blkgs() and
+> blkcg_print_stat() callers. There is no evidence available in the patch
+> description that shows that such a review has happened.
+> 
+
+Ok, I'll explain more in details in commit message.
 
 Thanks,
-Jianyun
+Kuai
 
-On Sat, Sep 27, 2025 at 2:49=E2=80=AFPM jianyun.gao <jianyungao89@gmail.com=
-> wrote:
->
-> There are som typos in the code comments as follows:
->
->   differenciate =3D=3D> differentiate
->   refernece =3D=3D> reference
->   permissons =3D=3D> permissions
->   indepdenent =3D=3D> independent
->   Spliting =3D=3D> Splitting
->
-> Just fix it.
->
-> Signed-off-by: jianyun.gao <jianyungao89@gmail.com>
-> ---
->  mm/hugetlb.c         | 6 +++---
->  mm/hugetlb_vmemmap.c | 6 +++---
->  2 files changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index eed59cfb5d21..8ff9edd09504 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -2954,7 +2954,7 @@ typedef enum {
->          * NOTE: This is mostly identical to MAP_CHG_NEEDED, except
->          * that currently vma_needs_reservation() has an unwanted side
->          * effect to either use end() or commit() to complete the
-> -        * transaction.  Hence it needs to differenciate from NEEDED.
-> +        * transaction.  Hence it needs to differentiate from NEEDED.
->          */
->         MAP_CHG_ENFORCED =3D 2,
->  } map_chg_state;
-> @@ -5998,7 +5998,7 @@ void __unmap_hugepage_range(struct mmu_gather *tlb,=
- struct vm_area_struct *vma,
->         /*
->          * If we unshared PMDs, the TLB flush was not recorded in mmu_gat=
-her. We
->          * could defer the flush until now, since by holding i_mmap_rwsem=
- we
-> -        * guaranteed that the last refernece would not be dropped. But w=
-e must
-> +        * guaranteed that the last reference would not be dropped. But w=
-e must
->          * do the flushing before we return, as otherwise i_mmap_rwsem wi=
-ll be
->          * dropped and the last reference to the shared PMDs page might b=
-e
->          * dropped as well.
-> @@ -7179,7 +7179,7 @@ long hugetlb_change_protection(struct vm_area_struc=
-t *vma,
->                 } else if (unlikely(is_pte_marker(pte))) {
->                         /*
->                          * Do nothing on a poison marker; page is
-> -                        * corrupted, permissons do not apply.  Here
-> +                        * corrupted, permissions do not apply.  Here
->                          * pte_marker_uffd_wp()=3D=3Dtrue implies !poison
->                          * because they're mutual exclusive.
->                          */
-> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-> index ba0fb1b6a5a8..e6f79b2c63ee 100644
-> --- a/mm/hugetlb_vmemmap.c
-> +++ b/mm/hugetlb_vmemmap.c
-> @@ -75,7 +75,7 @@ static int vmemmap_split_pmd(pmd_t *pmd, struct page *h=
-ead, unsigned long start,
->         if (likely(pmd_leaf(*pmd))) {
->                 /*
->                  * Higher order allocations from buddy allocator must be =
-able to
-> -                * be treated as indepdenent small pages (as they can be =
-freed
-> +                * be treated as independent small pages (as they can be =
-freed
->                  * individually).
->                  */
->                 if (!PageReserved(head))
-> @@ -684,7 +684,7 @@ static void __hugetlb_vmemmap_optimize_folios(struct =
-hstate *h,
->                 ret =3D hugetlb_vmemmap_split_folio(h, folio);
->
->                 /*
-> -                * Spliting the PMD requires allocating a page, thus lets=
- fail
-> +                * Splitting the PMD requires allocating a page, thus let=
-s fail
->                  * early once we encounter the first OOM. No point in ret=
-rying
->                  * as it can be dynamically done on remap with the memory
->                  * we get back from the vmemmap deduplication.
-> @@ -715,7 +715,7 @@ static void __hugetlb_vmemmap_optimize_folios(struct =
-hstate *h,
->                 /*
->                  * Pages to be freed may have been accumulated.  If we
->                  * encounter an ENOMEM,  free what we have and try again.
-> -                * This can occur in the case that both spliting fails
-> +                * This can occur in the case that both splitting fails
->                  * halfway and head page allocation also failed. In this
->                  * case __hugetlb_vmemmap_optimize_folio() would free mem=
-ory
->                  * allowing more vmemmap remaps to occur.
-> --
-> 2.34.1
->
+> Thanks,
+> 
+> Bart.
+> .
+> 
+
 
