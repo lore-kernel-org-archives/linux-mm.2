@@ -4,104 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B81CCAC5B5
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 12:30:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9BF5CAC5B0
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 13:22:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F3D9F8E0014; Mon, 29 Sep 2025 08:30:02 -0400 (EDT)
+	id 97B528E0003; Mon, 29 Sep 2025 09:22:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC7688E0002; Mon, 29 Sep 2025 08:30:02 -0400 (EDT)
+	id 923AC8E0002; Mon, 29 Sep 2025 09:22:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB6018E0014; Mon, 29 Sep 2025 08:30:02 -0400 (EDT)
+	id 8128D8E0003; Mon, 29 Sep 2025 09:22:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C09E68E0002
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 08:30:02 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 58D4A1401EF
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 12:30:02 +0000 (UTC)
-X-FDA: 83942219844.15.078F9C2
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5560B1C0009
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 12:29:58 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=ncYpLbcw;
-	spf=pass (imf21.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A47D8E0002
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 09:22:51 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D4D0958AE7
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 13:22:50 +0000 (UTC)
+X-FDA: 83942352900.03.67797EC
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 92A98C0002
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 13:22:48 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nofgTvVc;
+	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759149000;
+	s=arc-20220608; t=1759152169;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xwPQpa8YyY/4fqmUTUsxZAf/0tS09vx9t0wYWRdNUL0=;
-	b=vKKL/TXcnHnJ0zAGg5ymqkZnfjEstyX45AFYmc2/Of6zTN4huDY34N8UrHXva4JR97VRAn
-	QJcbOL7LAl9QAWPe04w1JOy60I2N6uE7rJs+3Ik1sdQss6mob878PJvdiq8HuW7q+Kb2gv
-	j11MaRlYkIgo3wSOIiMZGVMk9DSIEyE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759149000; a=rsa-sha256;
-	cv=none;
-	b=Uc4fAsa0mrDxsNpRWhcnhxMq+iUFHMHZ5PgSDlsDWLi4KEE2GVSiqTlSdtmaWHjLrAsWzR
-	JJVxl69JO26CKF98mBEVHHYJ5eHbRHMqC+evmCX/T33qHPRYPYFmxLuX6NhQL32qbyhPdQ
-	DbQvCrLsHSHooLKWFoe0u0Qs/YmBagI=
+	bh=gEY4Wq5zRiJY8ZDmsjRBwwv7BQUDjoacSGQVy+nSiw8=;
+	b=ZyUaTB0R1IkK7SlKDRyE69uaWRHiAPAILFF39AO4peR9/riyoOW29z6MPVEQ1pqsY0JD75
+	PjOPHgXviDuaaYIcbHTJqkVeINgyWoDPemYhezqIg/65qOOqBWWvkfj5CakGB9BFep+ajr
+	njZMlsjuPtHIAMPru++/7fkpdfG//5s=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=ncYpLbcw;
-	spf=pass (imf21.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=xwPQpa8YyY/4fqmUTUsxZAf/0tS09vx9t0wYWRdNUL0=;
-	b=ncYpLbcwbF08YgdPPX4CVpXE+aN+dyGed0mOtmm9Yb1io98SZhDIOS3IpWVB94YZGb8sS51cQ
-	F3GvRpBPwfGQzVP//ABufVlXWHhm71r3cjEYoRcdYbwNE1HU4O3C8kaiRNavtGyF+enhqUDdoaZ
-	0Vnl6G/LMcAhi6+Uqya9m98=
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4cb0r712HNz1cySb;
-	Mon, 29 Sep 2025 20:29:43 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id AD39C180042;
-	Mon, 29 Sep 2025 20:29:53 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 29 Sep 2025 20:29:53 +0800
-Received: from [10.173.125.236] (10.173.125.236) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 29 Sep 2025 20:29:52 +0800
-Subject: Re: [PATCH 1/1] mm: prevent poison consumption when splitting THP
-To: Jiaqi Yan <jiaqiyan@google.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-CC: <akpm@linux-foundation.org>, <david@redhat.com>,
-	<lorenzo.stoakes@oracle.com>, <tony.luck@intel.com>, <ziy@nvidia.com>,
-	<baolin.wang@linux.alibaba.com>, <Liam.Howlett@oracle.com>,
-	<npache@redhat.com>, <ryan.roberts@arm.com>, <dev.jain@arm.com>,
-	<baohua@kernel.org>, <nao.horiguchi@gmail.com>, <farrah.chen@intel.com>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, Andrew Zaborowski
-	<andrew.zaborowski@intel.com>
-References: <20250928032842.1399147-1-qiuxu.zhuo@intel.com>
- <CACw3F50ijQ20Vg8ycMROSCccf_XtjB_fFvLGxvQZ7eaNQoLwGQ@mail.gmail.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <5f117b73-8d7b-b233-a0a8-2a29ea6312a8@huawei.com>
-Date: Mon, 29 Sep 2025 20:29:42 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nofgTvVc;
+	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759152169; a=rsa-sha256;
+	cv=none;
+	b=zNVM0/PSn/4LdgH5jOW782PwedDK8TBkkbjrsjdpWWs37AwSDifzR9q8BBQytobyiA//Tl
+	ewIgKy/5PNbwhYN2PORhdPuNFuut9FMA8Sr8dhlwZSfbGiO/FQq6Yp67vWqeYtCtbP4uvy
+	XHL9OBsBGx17mafEK8ZL0K6V/UktXVk=
+Message-ID: <0701c9d9-b9b3-4313-8783-8e6d1dbec94d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1759152165;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gEY4Wq5zRiJY8ZDmsjRBwwv7BQUDjoacSGQVy+nSiw8=;
+	b=nofgTvVcT7NTFQk/LoeYAL1QMMD+NwAgSMS5++Z3v51RGaY0qB/4sNR1XmpkccV1gutI6R
+	FN4D8JDH3/YFp7o+/xwfMvq9ZK+7IugxZZGwSgCbVwFWu2CZ0heC7OFSz/U5B7PLrjj3eH
+	anK6qqN9M0/hCNWp+lVtGY1zP+HCSHY=
+Date: Mon, 29 Sep 2025 21:22:28 +0800
 MIME-Version: 1.0
-In-Reply-To: <CACw3F50ijQ20Vg8ycMROSCccf_XtjB_fFvLGxvQZ7eaNQoLwGQ@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: Re: [PATCH 1/1] mm/rmap: fix soft-dirty bit loss when remapping
+ zero-filled mTHP subpage to shared zeropage
 Content-Language: en-US
+To: David Hildenbrand <david@redhat.com>
+Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, baohua@kernel.org,
+ ryan.roberts@arm.com, dev.jain@arm.com, npache@redhat.com, riel@surriel.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, harry.yoo@oracle.com,
+ jannh@google.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com, usamaarif642@gmail.com,
+ yuzhao@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ ioworker0@gmail.com, stable@vger.kernel.org, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com
+References: <20250928044855.76359-1-lance.yang@linux.dev>
+ <b19b4880-169f-4946-8c50-e82f699bb93b@redhat.com>
+ <900d0314-8e9a-4779-a058-9bb3cc8840b8@linux.dev>
+ <1f66374a-a901-49e7-95c8-96b1e5a5f22d@linux.dev>
+ <69b463e5-9854-496d-b461-4bf65e82bc0a@redhat.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <69b463e5-9854-496d-b461-4bf65e82bc0a@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.173.125.236]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5560B1C0009
-X-Stat-Signature: 9ubtdwoxky9g6ub9nf1wkdj5gapkn8bj
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 92A98C0002
 X-Rspam-User: 
-X-HE-Tag: 1759148998-71239
-X-HE-Meta: U2FsdGVkX1/0DH47BedOnB3Y29aAHiuax8638F+gLFplHFn05slMrFsmSAhIMWR9Mn41yAcniP4+DyGebCZfSa3pu+JQR2URqrbRcBc+LOVtaYapr2KTOnuXVjFyvcSM1w//K2ajcQNyHBnUvCJpvvct6yb9MjpmJvI31HoGATXj1MpLWQmym41R5O+/ois7KnWcRtIofCRyM5j3E+RvlPyXAsupsyEeU4E6Er7VaoxNLd8t19fCkATj7xx5sQULF1Zo50WHtNDRokYb1owDkbGhGRPoankZ+bG0KGz8ZHa4/cvnl8Gltzq848+x/Mqx7RydDn3ibaiFjHSpSvQJmJD0ULDTj3A9BlTB2WmyTDQwGhhI356IQMcxy93n4OoT32qUdlPz0g8vPWwQ0tWt+K7pzkYSUTCbTDW2PMorOQrb2DjRToGGta++XDDVB0wM8sfqOttxyEe1Av25e8nD3WPSk39mwp/7gvnaDHZS6QWo2bzAv879kSD6oWOk8VHFoDOnIkJGacOCrmk4Fkh3am2HMtqdElQV6wvUNau3JZ9mpuYrQbBTM6RLUdkRJkwGblTt/jjQ/PqpaF8wfY9yYlT8bpkGAoXiEIne4wOFd/naMKrVwtVuO7a8l6nbUnc8wFb4tHo9E2IavX/u9PZXWi4NxrgR+Xpae74j5R9vk3/Yy8pa0j6mKyN1AntPRFya/HXHDTtNm6G5/p5nRY88+qhdk9mUXy/p/Vk9HxIdzkIxuo2yWCrhCDh6T9wpyLoZptXSJaJEPJ67TyqgbuhQkI5MDVmq02AU/e14Z3b/ruFRBu4fVsp1kGDx1cSP/ih3Sc5tYYznS8eiRTdDqo6GCdVz8WEFQaYOQ0WFV3bFBZpxUKEc4U9ZQsuBSnOf1NOM/5Ch2vwgOz/7mEhqeRDOqjwlfZXX3jiZmJmdMlurKe2AC2KzZuM948iRvFO3Whs2EDIn9d6xp2usZt+gLBq
- Z67Fe6br
- wypHerHNeFiUXzeFZHdZxYqqNCQ==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: qfps6fidnuks7611ab6fmx97q4agn8tb
+X-HE-Tag: 1759152168-160206
+X-HE-Meta: U2FsdGVkX1/1BokDc16briYDSaKgux6l3TPEe4DsD8NG6DYgBzdxaotH3ohnsVSYRS4ACgxoEbkkxt9Mo9RjV8G5rlHgB0RyoTsTm2Khgl/q2YZCKUCwTrNGNNh5PR4WhuTw48hSPvUorw1jbEj1FK53p9Gwly1BUfS4u7qoo0XhnzQazrZ427P6FNm3ekLRvPnDIPVgJury9GeNR4ZJsyjyFUUSMX2NyGaMGru6RByT4DDhaureZn3ER/GmkXs080pGfaT7F3S54J2KRv66z7+wmJ3bKJtEw/h4ZX+AWUPw3hD/jJ5TXtGIHa0QpQ00PrHSDV5R5MWjWagAWWuz5Eh7edshflJ0GbbL+lZxTHrCYwl4PfspOeN7FBeqXb0y5p/+4dY7mTRWZywkADPf2FxvIfqtMbAeLmXzDv2yk9hTFhPyafdQ9xd3jFnWU1BNrsDi2VwtN0MUHU3Q+4QV8NWr+lNUf9Xfakbmeb3KhYzNl4R9jvZErQZptmGmc2Ais2Zg7FuvHEARAJidyFPl7ZNlHucK3mdUYkYpQHiZlhhTld2FVUwsvxQRh+AGPTkb4ssVUabge696TIWotSgeoWZAJtew78wlZMGZdaVNnWbQ88B82tcphsk6Q+AaVfC/wOOS11pZLU9y+tZ8lDUF0UKo4U7OmvLExilcjdOHcgANn9hEkmKOf4ZNfnMv6KQ9cjeiFxJB8mS3Zn2DGRFg508gzfCHUtK8IDTiB6vu43Iv5BKTtljnc4NRfQt80/T9+9feBOMAMwQ8q532yXqW7tckua+dfyUJh+08zf/DgtceAzvJE9kO19s6dVSRf2vBroIe9OCY/rSFWbVgMuLa/B79WUwOjTyU7z9R0ZFNCWWL4qIuF1tlwLY+9cZ8PJ4YekXBCpW3u+pdhfdUyLNLDcdNwA93i3479zHK+AF+bkI2hyi7Ckl4W3js7eAAk18dLFAP4Puik6J+XZnr5ZO
+ FwW2JGc/
+ VI1qb2h2HWGhoWXB1TmtHEUM0z+l0qU6bHqF4avGsbc7ZTUlV0YEKJuDdzcyY8vTCUrxccc2NFwMGa79StmBDzyWg7Qv3p3ITUPykabFvxLVYyt9m5P+TglplSElqHo0ltRsj583szi2Dg2illNii5Y4tbBBdq87SUIeXnWOVfyGF8dqQQ+mr1Bl0Lt4iCYopVkZWH8J6BUcQA5tTScmSNw+yPuTygereOq50gTOpuZHIcN2/txiINn9y3Sb7b8iFAybjsFFLByDclnEpqEAbatUmhaIl2MZxvTT/DvwcOMkmcZ/6IopOuXsuXA9CZGZE1XC7mdJjCL2PcW9RtosCwXwpMOeSaXdEEaTB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,51 +102,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025/9/29 5:55, Jiaqi Yan wrote:
-> On Sat, Sep 27, 2025 at 8:30 PM Qiuxu Zhuo <qiuxu.zhuo@intel.com> wrote:
+
+
+On 2025/9/29 20:08, David Hildenbrand wrote:
+> On 29.09.25 13:29, Lance Yang wrote:
 >>
->> From: Andrew Zaborowski <andrew.zaborowski@intel.com>
 >>
->> When performing memory error injection on a THP (Transparent Huge Page)
->> mapped to userspace on an x86 server, the kernel panics with the following
->> trace. The expected behavior is to terminate the affected process instead
->> of panicking the kernel, as the x86 Machine Check code can recover from an
->> in-userspace #MC.
+>> On 2025/9/29 18:29, Lance Yang wrote:
+>>>
+>>>
+>>> On 2025/9/29 15:25, David Hildenbrand wrote:
+>>>> On 28.09.25 06:48, Lance Yang wrote:
+>>>>> From: Lance Yang <lance.yang@linux.dev>
+>>>>>
+>>>>> When splitting an mTHP and replacing a zero-filled subpage with the
+>>>>> shared
+>>>>> zeropage, try_to_map_unused_to_zeropage() currently drops the soft- 
+>>>>> dirty
+>>>>> bit.
+>>>>>
+>>>>> For userspace tools like CRIU, which rely on the soft-dirty mechanism
+>>>>> for
+>>>>> incremental snapshots, losing this bit means modified pages are 
+>>>>> missed,
+>>>>> leading to inconsistent memory state after restore.
+>>>>>
+>>>>> Preserve the soft-dirty bit from the old PTE when creating the 
+>>>>> zeropage
+>>>>> mapping to ensure modified pages are correctly tracked.
+>>>>>
+>>>>> Cc: <stable@vger.kernel.org>
+>>>>> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage
+>>>>> when splitting isolated thp")
+>>>>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>>>>> ---
+>>>>>    mm/migrate.c | 4 ++++
+>>>>>    1 file changed, 4 insertions(+)
+>>>>>
+>>>>> diff --git a/mm/migrate.c b/mm/migrate.c
+>>>>> index ce83c2c3c287..bf364ba07a3f 100644
+>>>>> --- a/mm/migrate.c
+>>>>> +++ b/mm/migrate.c
+>>>>> @@ -322,6 +322,10 @@ static bool try_to_map_unused_to_zeropage(struct
+>>>>> page_vma_mapped_walk *pvmw,
+>>>>>        newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
+>>>>>                        pvmw->vma->vm_page_prot));
+>>>>> +
+>>>>> +    if (pte_swp_soft_dirty(ptep_get(pvmw->pte)))
+>>>>> +        newpte = pte_mksoft_dirty(newpte);
+>>>>> +
+>>>>>        set_pte_at(pvmw->vma->vm_mm, pvmw->address, pvmw->pte, newpte);
+>>>>>        dec_mm_counter(pvmw->vma->vm_mm, mm_counter(folio));
+>>>>
+>>>> It's interesting that there isn't a single occurrence of the stof-
+>>>> dirty flag in khugepaged code. I guess it all works because we do the
+>>>>
+>>>>       _pmd = maybe_pmd_mkwrite(pmd_mkdirty(_pmd), vma);
+>>>>
+>>>> and the pmd_mkdirty() will imply marking it soft-dirty.
+>>>>
+>>>> Now to the problem at hand: I don't think this is particularly
+>>>> problematic in the common case: if the page is zero, it likely was
+>>>> never written to (that's what the unerused shrinker is targeted at),
+>>>> so the soft-dirty setting on the PMD is actually just an over-
+>>>> indication for this page.
+>>>
+>>> Cool. Thanks for the insight! Good to know that ;)
+>>>
+>>>>
+>>>> For example, when we just install the shared zeropage directly in
+>>>> do_anonymous_page(), we obviously also don't set it dirty/soft-dirty.
+>>>>
+>>>> Now, one could argue that if the content was changed from non-zero to
+>>>> zero, it ould actually be soft-dirty.
+>>>
+>>> Exactly. A false negative could be a problem for the userspace tools, 
+>>> IMO.
+>>>
+>>>>
+>>>> Long-story short: I don't think this matters much in practice, but
+>>>> it's an easy fix.
+>>>>
+>>>> As said by dev, please avoid double ptep_get() if possible.
+>>>
+>>> Sure, will do. I'll refactor it in the next version.
+>>>
+>>>>
+>>>> Acked-by: David Hildenbrand <david@redhat.com>
+>>>
+>>> Thanks!
+>>>
+>>>>
+>>>>
+>>>> @Lance, can you double-check that the uffd-wp bit is handled
+>>>> correctly? I strongly assume we lose that as well here.
 >>
->>   mce: [Hardware Error]: CPU 0: Machine Check Exception: f Bank 3: bd80000000070134
->>   mce: [Hardware Error]: RIP 10:<ffffffff8372f8bc> {memchr_inv+0x4c/0xf0}
->>   mce: [Hardware Error]: TSC afff7bbff88a ADDR 1d301b000 MISC 80 PPIN 1e741e77539027db
->>   mce: [Hardware Error]: PROCESSOR 0:d06d0 TIME 1758093249 SOCKET 0 APIC 0 microcode 80000320
->>   mce: [Hardware Error]: Run the above through 'mcelog --ascii'
->>   mce: [Hardware Error]: Machine check: Data load in unrecoverable area of kernel
->>   Kernel panic - not syncing: Fatal local machine check
+>> Yes, the uffd-wp bit was indeed being dropped, but ...
 >>
->> The root cause of this panic is that handling a memory failure triggered by
->> an in-userspace #MC necessitates splitting the THP. The splitting process
->> employs a mechanism, implemented in try_to_map_unused_to_zeropage(), which
->> reads the sub-pages of the THP to identify zero-filled pages. However,
->> reading the sub-pages results in a second in-kernel #MC, occurring before
->> the initial memory_failure() completes, ultimately leading to a kernel
->> panic. See the kernel panic call trace on the two #MCs.
->>
->>   First Machine Check occurs // [1]
->>     memory_failure()         // [2]
->>       try_to_split_thp_page()
->>         split_huge_page()
->>           split_huge_page_to_list_to_order()
->>             __folio_split()  // [3]
->>               remap_page()
->>                 remove_migration_ptes()
->>                   remove_migration_pte()
->>                     try_to_map_unused_to_zeropage()
+>> The shared zeropage is read-only, which triggers a fault. IIUC,
+>> The kernel then falls back to checking the VM_UFFD_WP flag on
+>> the VMA and correctly generates a uffd-wp event, masking the
+>> fact that the uffd-wp bit on the PTE was lost.
 > 
-> Just an observation: Unfortunately THP only has PageHasHWPoisoned and
-> don't know the exact HWPoisoned page. Otherwise, we may still use
-> zeropage for these not HWPoisoned.
+> That's not how VM_UFFD_WP works :)
 
-IIUC, the raw error page will have HWPoisoned flag set while the THP has
-PageHasHWPoisoned set. So I think we could use zeropage for healthy sub-pages.
+My bad! Please accept my apologies for the earlier confusion :(
 
-Thanks.
-.
+I messed up my test environment (forgot to enable mTHP), which
+led me to a completely wrong conclusion...
+
+You're spot on. With mTHP enabled, the WP fault was not caught
+on the shared zeropage after it replaced a zero-filled subpage
+during an mTHP split.
+
+This is because do_wp_page() requires userfaultfd_pte_wp() to
+be true, which in turn needs both userfaultfd_wp(vma) and
+pte_uffd_wp(pte).
+
+static inline bool userfaultfd_pte_wp(struct vm_area_struct *vma,
+				      pte_t pte)
+{
+	return userfaultfd_wp(vma) && pte_uffd_wp(pte);
+}
+
+userfaultfd_pte_wp() fails as we lose the uffd-wp bit on the PTE ...
+
+Please correct me if I missed something important!
 
