@@ -4,123 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04AA4CAC5B0
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 16:12:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B308CAC5B9
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 16:12:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 461D28E0012; Mon, 29 Sep 2025 12:12:08 -0400 (EDT)
+	id 48B948E0014; Mon, 29 Sep 2025 12:12:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 439B88E0002; Mon, 29 Sep 2025 12:12:08 -0400 (EDT)
+	id 461EB8E0002; Mon, 29 Sep 2025 12:12:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 329A68E0012; Mon, 29 Sep 2025 12:12:08 -0400 (EDT)
+	id 3510F8E0014; Mon, 29 Sep 2025 12:12:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E8768E0002
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 12:12:08 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BE9411DD892
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 16:12:07 +0000 (UTC)
-X-FDA: 83942779494.03.A801A21
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 21C538E0002
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 12:12:55 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A84CC140404
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 16:12:54 +0000 (UTC)
+X-FDA: 83942781468.26.069C42D
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 505468000D
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 16:12:05 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QEX8TaYP;
-	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 5E2A2160011
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 16:12:52 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CZl6iC67;
+	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759162325;
+	s=arc-20220608; t=1759162372;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lW3umbnn2U+i47M0Kxw/zaZzRyBwQr9J+IoqgDAnoAQ=;
-	b=iaPrcruatBi7dw6IYAXYs0rJ8xXlqQHWCjGxVrcl4ZWtzaFdO1s7+JsyRK72FId4Jf9E0W
-	T3bwSX9vDIzNc80Rh/3xTcvMZf4fivtAlaTQwIS5+NRLibpEB6fEBtF2QVCD8/t+zHi3u5
-	ZqdrYyZo2/6S3k7uLEIfyRVO3D3DYRk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759162325; a=rsa-sha256;
-	cv=none;
-	b=QbtljpFNZUqJxfT6dr91HSNYSqG6RF0kWdEwafwahUxJICNCDQSghAKUQgjsyxMEm43KZ1
-	3uMtjhUeBLMTgsjxxicjHnUHmwQtP806gjloR01hXuAWDQWomXFVMjUYghF5cH4Z3OQg/c
-	nxw7MQVz3LxqKgQhIHcamrLhO63xBls=
+	bh=OzvElMudVSfvbJETPxHv1iAKDOnPfrzp7voXLszfl/0=;
+	b=DWR6bxdsfwPcnHHJG+mUrcBR78y74viohJJ+4WfeD16H8VmnELjFH/4zH2vmJRBXB8+op5
+	dIFF2/q2AAsqNA1qaK0wVPRdaoMbgx3rDc/KTUjrMabUrd6WBtRIIl540XPykqgY6m/9E9
+	m7GXdLICLDzgxUv30tsQN+xpsY8qmfI=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QEX8TaYP;
-	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CZl6iC67;
+	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759162372; a=rsa-sha256;
+	cv=none;
+	b=s2+QWTdmo0NbhNLug5trMKh2/xV5k183SgKbWi4tX1n7ZwDvWi9T1W56gAFqispkP7+gUt
+	V+k+H84MrtDm9pOQp6vXaC6c6pGYIsmYOAneQl+vViboE3FNvQnKOz09hvmQdAwANy9mHD
+	K9BlWdS2XwG1PJK2o7T8EjCF1PFCScY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759162324;
+	s=mimecast20190719; t=1759162371;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=lW3umbnn2U+i47M0Kxw/zaZzRyBwQr9J+IoqgDAnoAQ=;
-	b=QEX8TaYPijMhcyrpFqoC4w2kP2v5+F1o81+DDiIwGnZbsYZfA8RffuKgKASnPm453OFFUD
-	dYvN0TMwShinQKs+5VIHvNQmmK3RbVLlLrN5jYeHywxyNhmdGUl6dom34mhUrGYU4A0NOy
-	bLhDuGM/ROvk0zvCkUXWVp9UYHeJ6C8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=OzvElMudVSfvbJETPxHv1iAKDOnPfrzp7voXLszfl/0=;
+	b=CZl6iC67LGPwuaqx90P88zejKIxlKK6vxE+A0bSfNpcVYc6VJanKmjK7cu8IakRS4sRbdt
+	dXUaNPbG/xFKleyOiE1i3HlqjcgNjEX/Z0P+OCEdF9t2E1k2MFpaqdBvi/NwWywF1m48BY
+	JvO2CvX5jlzYRXeXN+b1l8C4vjzzOkk=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-CTeMtvuLPya84T1vPvChsQ-1; Mon, 29 Sep 2025 12:12:03 -0400
-X-MC-Unique: CTeMtvuLPya84T1vPvChsQ-1
-X-Mimecast-MFC-AGG-ID: CTeMtvuLPya84T1vPvChsQ_1759162322
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-46e36686ca1so37223565e9.2
-        for <linux-mm@kvack.org>; Mon, 29 Sep 2025 09:12:03 -0700 (PDT)
+ us-mta-49-bhtpIyfvPKa1OYz1TVJwmA-1; Mon, 29 Sep 2025 12:12:48 -0400
+X-MC-Unique: bhtpIyfvPKa1OYz1TVJwmA-1
+X-Mimecast-MFC-AGG-ID: bhtpIyfvPKa1OYz1TVJwmA_1759162367
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-46e32eb4798so24441055e9.2
+        for <linux-mm@kvack.org>; Mon, 29 Sep 2025 09:12:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759162322; x=1759767122;
+        d=1e100.net; s=20230601; t=1759162367; x=1759767167;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=lW3umbnn2U+i47M0Kxw/zaZzRyBwQr9J+IoqgDAnoAQ=;
-        b=uWy1e761xkqzX66X3AXnvVIU/HCtNOIRBWAVQxVw3UAQLcIACexfjChZlvI+KF6j5a
-         iyzrqeHVaD4xLIxhOSVRHaAi4+wyKNiFLw2uJwJXWAnlbPTvha/GniVts4JLK8WgAY8N
-         7PlQEJuXt0Sg534WTaihIs1p8U79Bjw7B8SLMcImB9oOUrR2poTr2bsZ1L/Jgjcykg5v
-         wE6vknIwVqZbvAH97WjLL00qboOcOcNAhZMnPrLe5Za6unNu61Xzf/qZJzNrf3ESE4OZ
-         IiXtyhPIuJZiVVIDSzaG7dQflPdqptEVxgWhkA/gu+o/CfSWdnd+J9EmBKUHhB+3LpSH
-         fHtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUViWL5bQtErINZ54/Hz1yho4G+YGVnUl6iT4bJcB2fzoRZC1+2YtV7rjN3mw8CpIoMVHpd2Si6EA==@kvack.org
-X-Gm-Message-State: AOJu0YzzkW0e2DudEckiZWrLsMA9wziZtWUd5dpzeHgFlWBHSbLXhrPB
-	TvEOZJfmrTfD51YsgfxyS5nghhe4UfZJNa4iHvFd/hlX8I/mf9KfDFc7MYbsBwGIAmAOQWCcC2h
-	JZSShSQo0KTLwILv2T87JXOcUhuf4SZP+rGUkBz8dyg9SLmN73Mn6
-X-Gm-Gg: ASbGncuvTrWDTYWSIFrx80TqM78KJQVNGiHzuAO024o3VeiiYjO5KDF/edY53lizUhl
-	UHXjFOGibp1kugAkrF2emicVFIDmwRT6ikIMZblToIZ+GaNFu92Ha2aTQk6w6O/KO04JEu8RJJb
-	qa5N87Fq6qLusFStuQSnpq6EP6z+30325mas+SY0p/PHJqPQ5hlgeiQy/pSTZlxr/X0UFifqGAq
-	pXahu+eBPvGE24YlwS7CSs5EpOSZugdQWDBV+XLUQtzIaB3J5eLlXWI2q/OoGhB12JwssCHm+14
-	gvhMtq3Od/QAUjC56W+CEgCtIs7oH3uk3nEXYHdwOI4ki614wozm9ojsMmZWWWo2aWW/ERcT4pM
-	HdUs=
-X-Received: by 2002:a05:600c:a43:b0:45d:cfee:7058 with SMTP id 5b1f17b1804b1-46e329e4aa5mr149358795e9.22.1759162321892;
-        Mon, 29 Sep 2025 09:12:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHATh8Zy5jKwZGDwOw3Gds07nQEvZPlgZdVLrdT3lSvHBbbw0pqU2Gxo6cq9HH0mFtbCklTYA==
-X-Received: by 2002:a05:600c:a43:b0:45d:cfee:7058 with SMTP id 5b1f17b1804b1-46e329e4aa5mr149358485e9.22.1759162321411;
-        Mon, 29 Sep 2025 09:12:01 -0700 (PDT)
+        bh=OzvElMudVSfvbJETPxHv1iAKDOnPfrzp7voXLszfl/0=;
+        b=VnQC9bbHWPRrWze/+SbLBDB1ZocB4fd0ZF+rVb0be1ZdFhNLkSL2VwQiJJ6WFWjFkj
+         TbB9xsPJGe0vz/MKpKR4dfQjYKs/uIKEZ3EOxvR+OiyBw3GbzBXrp2thaspp29SPtIaU
+         hqiUI4v3dl8tyOKXLzzNR4if6nd3W84VjiAdnjyG+RSGv84uISSEMWkj7baqIXTgI9Rz
+         Oc3DDfzmgkuhpDfSdmFCfx66DiA5KX6U/NsHnaPorjv3nTgKUQDrDUgx7hYUhaBeiwiI
+         ZeS/9UTn6YaqbszkXfeJjLv2xmi1HIESa5UAi2ORT5yWMt8VSpkiAJvBLJT16VQ0dFVK
+         5TeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUPjOrNhXo1lT7XeatLhHn1ipExl7UZB6Zvg1QuwD7W/DZnusHkdVMhS0XfH/ncqt7cBKzTV50fDg==@kvack.org
+X-Gm-Message-State: AOJu0Yz/nOqekIfxjEyqSdxwq70s+XcWvbcjqa32Jl+xESk0VXp0r+9z
+	48GsQLYi2hMo0Qs9L87JCt/InO/FVlsct/rzVYJ5XRiFGAVB8Z+H2TxTl8IkdSzXQxfLKzVohoZ
+	2WQ4NXpH27bNXsDPNWZQK4Frup3BEgTqKogOv7QoPa9tABFrMYm4K
+X-Gm-Gg: ASbGnctKhQDvb+0AIYMGjwnncW8JHMAVvoypni9MsC47FiPThZryWlVFH58Jvu7kxSq
+	TNLXO58DkF/C0GWorMGkRdwdFavgzmNB2xa15tAzNgooj6NDgBo8XmwM8C3SERad3YcQm7TRwgh
+	Uu8+s8Qv2CS1C0XFzWRONn77mUlaJFtnf4nTas8gZVBuIvTBavBMDHnFmxIN/pLURk6De+Ep/n6
+	jIK6jwo/YVGPlPtsRve+ikhJiSlqkbfqzFT/woMGAwOmQT55/pRaeotUCOpR5La6IH/qHWTUBg1
+	Rlx+neFRHCleDJTgTEsot24/T+BgITXLyudFxLAJ8+VKgy5iDMcNjD8miBnzSS3CvO+Yss8/H8s
+	qyWU=
+X-Received: by 2002:a05:600c:c04b:20b0:46e:4cd3:7d54 with SMTP id 5b1f17b1804b1-46e4cd3808cmr49439535e9.18.1759162366865;
+        Mon, 29 Sep 2025 09:12:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG1GaUJvPE9CIRgzTsnjb5wMg+CWX4smf8zPGHwXWsu5AFuVLyV5tu3ni+AZ0lmEZbiWGdluw==
+X-Received: by 2002:a05:600c:c04b:20b0:46e:4cd3:7d54 with SMTP id 5b1f17b1804b1-46e4cd3808cmr49439145e9.18.1759162366448;
+        Mon, 29 Sep 2025 09:12:46 -0700 (PDT)
 Received: from ?IPV6:2a01:599:901:4a65:f2e2:845:f3d2:404d? ([2a01:599:901:4a65:f2e2:845:f3d2:404d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e2ab6a514sm231311635e9.22.2025.09.29.09.11.58
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fc82f2ff6sm18806375f8f.56.2025.09.29.09.12.44
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Sep 2025 09:12:00 -0700 (PDT)
-Message-ID: <1718aee4-1201-4362-885b-e707f536a065@redhat.com>
-Date: Mon, 29 Sep 2025 18:11:58 +0200
+        Mon, 29 Sep 2025 09:12:45 -0700 (PDT)
+Message-ID: <ea6aafea-59ea-4df4-b5e3-796cca047c76@redhat.com>
+Date: Mon, 29 Sep 2025 18:12:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm/rmap: fix soft-dirty bit loss when remapping
- zero-filled mTHP subpage to shared zeropage
-To: Lance Yang <lance.yang@linux.dev>
-Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, baohua@kernel.org,
- ryan.roberts@arm.com, dev.jain@arm.com, npache@redhat.com, riel@surriel.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, harry.yoo@oracle.com,
- jannh@google.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, usamaarif642@gmail.com,
- yuzhao@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- ioworker0@gmail.com, stable@vger.kernel.org, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com
-References: <20250928044855.76359-1-lance.yang@linux.dev>
- <b19b4880-169f-4946-8c50-e82f699bb93b@redhat.com>
- <900d0314-8e9a-4779-a058-9bb3cc8840b8@linux.dev>
- <1f66374a-a901-49e7-95c8-96b1e5a5f22d@linux.dev>
- <69b463e5-9854-496d-b461-4bf65e82bc0a@redhat.com>
- <0701c9d9-b9b3-4313-8783-8e6d1dbec94d@linux.dev>
+Subject: Re: [PATCH 1/1] mm: prevent poison consumption when splitting THP
+To: "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+ "linmiaohe@huawei.com" <linmiaohe@huawei.com>,
+ "Luck, Tony" <tony.luck@intel.com>
+Cc: "ziy@nvidia.com" <ziy@nvidia.com>,
+ "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
+ "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
+ "npache@redhat.com" <npache@redhat.com>,
+ "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
+ "dev.jain@arm.com" <dev.jain@arm.com>, "baohua@kernel.org"
+ <baohua@kernel.org>, "nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
+ "Chen, Farrah" <farrah.chen@intel.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Andrew Zaborowski <andrew.zaborowski@intel.com>
+References: <20250928032842.1399147-1-qiuxu.zhuo@intel.com>
+ <8ef5e3fd-2ee8-453a-b8ae-584e3d606aa4@redhat.com>
+ <SA1PR11MB71303A772356C994DB932077891BA@SA1PR11MB7130.namprd11.prod.outlook.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -166,21 +168,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <0701c9d9-b9b3-4313-8783-8e6d1dbec94d@linux.dev>
+In-Reply-To: <SA1PR11MB71303A772356C994DB932077891BA@SA1PR11MB7130.namprd11.prod.outlook.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 47TntB2BeAgH9nqjjfGVe2ojC7XIM_HvPAfX9VRVrBc_1759162322
+X-Mimecast-MFC-PROC-ID: aRmCsIjOheF2sO0_763646aoLu6Z89h9PfZ2xVRQ7yo_1759162367
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 505468000D
-X-Stat-Signature: zfzoy5zchnp6zboq6idgq3f9xgwh6ix9
+X-Stat-Signature: ih4cqwh5rhunqtgz8tyyf8y5td8h7fmz
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1759162325-824094
-X-HE-Meta: U2FsdGVkX1+c8f+DoIX6cdptqeWAhoukuCrkDy9iaGHaYTMC2WyYMQ4PF3c8Gy7mKAhTJ4pgPgq1kxx3V9fKdr1w2BUbaHPEaRf+iunld+x/7oFzKePuteX/f3x/uSk0r77wc0YbWyeXvU0f6BR3U+zH/Aoasbxyf9f0n60hf6gQ8eUVPsE9668d4+Wi5BYd1qqfwR1vuH0eQqARSrWR+HBIuPU+8AC1fNMwPV4qcKIVq9ojw9WXfo2+DEIsh5qQQTL6DyTLO4miAJZbIVfJmUWSxWNMlxU12qd11warQO4uxISMmrR9sFuA1hh9M67IQVaNyaomUPdgnAmgen9M0OfTs0w1HSMlNLPZzPmgw1N8QaV4W4Ppne8+i1UELYRTVweagTxQPaUbHBUw1jBlf1sKTSqmGPU66xSRXSLqAw88SXjJK5MDBPHK0E4QVRNV2wMkYV9wUm+fsJdFYsjHPAESfMDd3x947S91rXCZWd7H44Qn7YOXacvDRU1fSCyYpXSO6YomLdGGhLxI71ZncFwZ1LWLuXSDVAkc8VxZTMmJHAI1hAS5oswxp2B5kLqjtRXqKNSOHD5pkATPmyuqCU0LzXj6VONK72eNJ+is7HlGdB1Ry5nypXtzZFKK6C+oeOLSmZtukcOL2hj3fSu59pB8AM5HEZWQ1XG+/hl64PxSlh9qF4xl/Kn/j6uz8TMXx+wwRbU1UXVbtDojSJ9QjLQU2KpBiXJ7nOv0zzUxyafAIlOEk4forfMltQ/UL1tfgU08J+EHSVsaU1T7azPyFtwffzmg+tepGm1NTtOMI8QbpjLVt9B0XXHVRIhcCif62vJUE0uvZmDbWdmrN1qfasiPF276pzqNhrK0eNhEqzsbbEM2Ew4v7A5cI2/OUCeNETRZ8VDg9IsTE1QssN6daMxyfXRBpZbltQ8EObts3pY0TCguMGVibZ8a+wj2Wx9JuYrmSo+6Fu8BTeE+ltK
- KyVsTnlp
- SIi5MrbvtfZrq+YPMK1cgaExUlj+waOyf9YiXKzNsXrpkfw77nEm8k14Mqa+4wGRGN/TzJlgijQ1pG+9BXtXTTklEHAM47jmzVqYWXRTG2qeYvNIoVAscLtiSU3kkCYeomfnr+HMw3pGanPs27O/piWfQksqEmK1Nds+jln+p39pmxJvwks4o/L7SW2hxUjEPLzGm+pqTRAwFTTvOBd/RMPfjNWwlRUSI36WDvQDrOG9ZK/ySsBXAPhDdDBTUiROppaaWWNMqoJ7YeOPXR4CT8/8eJUWCTztmy3QYHCrOqwV/smW3jta5dkexEIldkFDdMa37XfkYrUhJb9+eGX6WejmyMhXJ4QlxDiKlNiMVHWXAKmuqXJaok19LX1YLSOt25dYh8kYvn8eofSFXu4ktLdaiofYNjRs8I3SmCVjJXY6zDCquQsf9DJwqsArpzr/ZbDXRRC+pZci4BHImunI8X+OIfCTEybBhYnLK9yLZiDLLxJ9jQQdYDZEjPtfJABv9N2r3vtKOIOkXJFXhv+PbNegExGObdsoFR9ec
+X-Rspamd-Queue-Id: 5E2A2160011
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1759162372-836474
+X-HE-Meta: U2FsdGVkX1/KzsEsgIQjqfTfps9Hw0zrYmBrl4opeWonsdobWdsbIx08LTM4B0StYncl9VluokmhZ4Xm0/YwcZQjFKsC82PXmQVATejdjx2PA8KHUCrNm4oAAH9/j6pVHJ/QQlyIVJ8loPWgcrnEAEy4ay52hzm/le+jqrD+IKiEocWnjYdbiR8/Y0/q69drNzGAUAQmXL81jc0UwRTsQVrcb367BRRqAY5BdCVNaBltBszPnFz4tNxRFqM1CqEziIg91f+/3ep5y6E6V9yV7LRJ9jw87A+8Zt3TtnBuHSO1VNh6ZyaZm19aWFtP5R9FBu3XkgmF0pceUj2IFGNvUqXakv4sau7JP16v0QDmoLuCG8BauW5oY4VFkwPrIoFQtSfPz88Y13Lw/49hWyZ0YUs9feit47Gf9YnWR3eZs49Eerfvw1vw6lHWGFNl2kpq9IA7z0SAG62wa3vVkbLVLNLbf9gKCrE6J6L8/WxUnk8F8IRxplTeS/RBzwYuOU4Hmyrc4w652maVw+sJkGti2mk1ZlSoV+yqAxW2+2qAg23jWQzw2OTKDci8TqQRFwG0Hh0trL8RIZBk0uyBGSc6VM87CA6nrJl9bFt/8PgcuOPPqKjU3U4t7v0mDYeT1iQCXuG60QvhxI7h+Rvt6CMDpnX5kucOxu9MhXjAKWHU7hGL8QcL6//Yl5poic1LVChFC9fWABqJG4MK76FFOsxlyqTZDnuZWpy0GQSTe3kShOYp8fppTSkpLj6t7/AKKIu+ch6/xXxcBgvU4JvsxGk1tsj2sAe/O0Hu7LnKi6xTGvoQlgoG7XsiovoxyejBj8nFQm46bnLynbg9Q9iUhnZ9VwS6px1k59rLGwClZOXIRLnY7c7eU5X/fuG6fXg5HJCpgjfcy3qzEUzkcYzDJxya8gXSOV9n3DUeHGXmypp5w2sCbzEWZcxoiz1A3ZbCiM2wallc672VJoJoa54jVMc
+ lrTrjFVx
+ 1Atvkeidng5el8X6MFEEsUvj8cy8KXjucwNVic1pG+3dZCzAz2RR/WVGTLoR72MaY2m4RviAEd7lVouvJwrCYD/ynXzZN2UAB1if/dzbz3hAFTl4RNurH87LM22/mjYh3oaggrZg8wjhTXJYyQfjo/Cd+mmmqSaKZG3zDnelugXjT5y0QFa0Ek+3o9lHE3ENo/MOPXEHxgs5YhV8YC/LWJL03cwYVJnDoSEj0aNt+Mrvaa2xEyRdnF4moqDFzAXLBkYA3GJGDxQ6glSqfLPFTVEri6dzxTvDetOulg9wN9bNOelECyztdFrLoo9IcQDNrMQ9c5iCLofJCuPP2JMfyIRFjyWO3D9dyZuR502Lu0rLZ08SYR3uiTQprTqzL+iGrnAoi15L+cRXMACcypV/6fzxPGyndnU0gmUl0BSX4mQFpFQ8VV7mkAnwKZBfLmB4mhlhLj7HB0oNGO/3PHR6a6vV6CvZmxIuYCiRHSqTEjzIxrIVFuS+kuSGwvQ8sIbynO+9z0ZwKkx/sTDD+kgeb7z6xv24eurSk4BhaWXK579Ov6FQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -189,136 +191,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 29.09.25 15:22, Lance Yang wrote:
+On 29.09.25 15:52, Zhuo, Qiuxu wrote:
+> Hi David,
 > 
-> 
-> On 2025/9/29 20:08, David Hildenbrand wrote:
->> On 29.09.25 13:29, Lance Yang wrote:
->>>
->>>
->>> On 2025/9/29 18:29, Lance Yang wrote:
->>>>
->>>>
->>>> On 2025/9/29 15:25, David Hildenbrand wrote:
->>>>> On 28.09.25 06:48, Lance Yang wrote:
->>>>>> From: Lance Yang <lance.yang@linux.dev>
->>>>>>
->>>>>> When splitting an mTHP and replacing a zero-filled subpage with the
->>>>>> shared
->>>>>> zeropage, try_to_map_unused_to_zeropage() currently drops the soft-
->>>>>> dirty
->>>>>> bit.
->>>>>>
->>>>>> For userspace tools like CRIU, which rely on the soft-dirty mechanism
->>>>>> for
->>>>>> incremental snapshots, losing this bit means modified pages are
->>>>>> missed,
->>>>>> leading to inconsistent memory state after restore.
->>>>>>
->>>>>> Preserve the soft-dirty bit from the old PTE when creating the
->>>>>> zeropage
->>>>>> mapping to ensure modified pages are correctly tracked.
->>>>>>
->>>>>> Cc: <stable@vger.kernel.org>
->>>>>> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage
->>>>>> when splitting isolated thp")
->>>>>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->>>>>> ---
->>>>>>     mm/migrate.c | 4 ++++
->>>>>>     1 file changed, 4 insertions(+)
->>>>>>
->>>>>> diff --git a/mm/migrate.c b/mm/migrate.c
->>>>>> index ce83c2c3c287..bf364ba07a3f 100644
->>>>>> --- a/mm/migrate.c
->>>>>> +++ b/mm/migrate.c
->>>>>> @@ -322,6 +322,10 @@ static bool try_to_map_unused_to_zeropage(struct
->>>>>> page_vma_mapped_walk *pvmw,
->>>>>>         newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
->>>>>>                         pvmw->vma->vm_page_prot));
->>>>>> +
->>>>>> +    if (pte_swp_soft_dirty(ptep_get(pvmw->pte)))
->>>>>> +        newpte = pte_mksoft_dirty(newpte);
->>>>>> +
->>>>>>         set_pte_at(pvmw->vma->vm_mm, pvmw->address, pvmw->pte, newpte);
->>>>>>         dec_mm_counter(pvmw->vma->vm_mm, mm_counter(folio));
->>>>>
->>>>> It's interesting that there isn't a single occurrence of the stof-
->>>>> dirty flag in khugepaged code. I guess it all works because we do the
->>>>>
->>>>>        _pmd = maybe_pmd_mkwrite(pmd_mkdirty(_pmd), vma);
->>>>>
->>>>> and the pmd_mkdirty() will imply marking it soft-dirty.
->>>>>
->>>>> Now to the problem at hand: I don't think this is particularly
->>>>> problematic in the common case: if the page is zero, it likely was
->>>>> never written to (that's what the unerused shrinker is targeted at),
->>>>> so the soft-dirty setting on the PMD is actually just an over-
->>>>> indication for this page.
->>>>
->>>> Cool. Thanks for the insight! Good to know that ;)
->>>>
->>>>>
->>>>> For example, when we just install the shared zeropage directly in
->>>>> do_anonymous_page(), we obviously also don't set it dirty/soft-dirty.
->>>>>
->>>>> Now, one could argue that if the content was changed from non-zero to
->>>>> zero, it ould actually be soft-dirty.
->>>>
->>>> Exactly. A false negative could be a problem for the userspace tools,
->>>> IMO.
->>>>
->>>>>
->>>>> Long-story short: I don't think this matters much in practice, but
->>>>> it's an easy fix.
->>>>>
->>>>> As said by dev, please avoid double ptep_get() if possible.
->>>>
->>>> Sure, will do. I'll refactor it in the next version.
->>>>
->>>>>
->>>>> Acked-by: David Hildenbrand <david@redhat.com>
->>>>
->>>> Thanks!
->>>>
->>>>>
->>>>>
->>>>> @Lance, can you double-check that the uffd-wp bit is handled
->>>>> correctly? I strongly assume we lose that as well here.
->>>
->>> Yes, the uffd-wp bit was indeed being dropped, but ...
->>>
->>> The shared zeropage is read-only, which triggers a fault. IIUC,
->>> The kernel then falls back to checking the VM_UFFD_WP flag on
->>> the VMA and correctly generates a uffd-wp event, masking the
->>> fact that the uffd-wp bit on the PTE was lost.
+>> From: David Hildenbrand <david@redhat.com>
+>> [...]
+>>> --- a/mm/memory-failure.c
+>>> +++ b/mm/memory-failure.c
+>>> @@ -2351,8 +2351,10 @@ int memory_failure(unsigned long pfn, int flags)
+>>>    		 * otherwise it may race with THP split.
+>>>    		 * And the flag can't be set in get_hwpoison_page() since
+>>>    		 * it is called by soft offline too and it is just called
+>>> -		 * for !MF_COUNT_INCREASED.  So here seems to be the best
+>>> -		 * place.
+>>> +		 * for !MF_COUNT_INCREASED.
+>>> +		 * It also tells split_huge_page() to not bother using
+>>> +		 * the shared zeropage -- the all-zeros check would
+>>> +		 * consume the poison.  So here seems to be the best place.
+>>>    		 *
+>>>    		 * Don't need care about the above error handling paths for
+>>>    		 * get_hwpoison_page() since they handle either free page
 >>
->> That's not how VM_UFFD_WP works :)
+>> Hm, I wonder if we should actually check in
+>> try_to_map_unused_to_zeropage() whether the page has the hwpoison flag
+>> set. Nothing wrong with scanning non-affected pages.
+>>
 > 
-> My bad! Please accept my apologies for the earlier confusion :(
+> Good point about continuing to scan non-affected pages for possible zeropage mapping.
 > 
-> I messed up my test environment (forgot to enable mTHP), which
-> led me to a completely wrong conclusion...
+>> In thp_underused() we should just skip the folio entirely I guess, so keep it
+>> simple.
+>>
+>> So what about something like this:
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c index
+>> 9c38a95e9f091..d4109fd7fa1f2 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -4121,6 +4121,9 @@ static bool thp_underused(struct folio *folio)
+>>           if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
+>>                   return false;
+>>
+>> +       folio_contain_hwpoisoned_page(folio)
 > 
-> You're spot on. With mTHP enabled, the WP fault was not caught
-> on the shared zeropage after it replaced a zero-filled subpage
-> during an mTHP split.
-> 
-> This is because do_wp_page() requires userfaultfd_pte_wp() to
-> be true, which in turn needs both userfaultfd_wp(vma) and
-> pte_uffd_wp(pte).
-> 
-> static inline bool userfaultfd_pte_wp(struct vm_area_struct *vma,
-> 				      pte_t pte)
-> {
-> 	return userfaultfd_wp(vma) && pte_uffd_wp(pte);
-> }
-> 
-> userfaultfd_pte_wp() fails as we lose the uffd-wp bit on the PTE ...
+> Typo here 😊?
 
-That's my understanding. And FWIW, that's a much more important fix. (in 
-contrast to soft-dirty, uffd-wp actually is precise)
+Yes! :) As always, completely uncompiled.
 
-Can you test+send a fix ... please? :)
+> 
+> if (folio_contain_hwpoisoned_page(folio))
+> 
+>> +               return false;
+>> +
+>>           for (i = 0; i < folio_nr_pages(folio); i++) {
+>>                   kaddr = kmap_local_folio(folio, i * PAGE_SIZE);
+>>                   if (!memchr_inv(kaddr, 0, PAGE_SIZE)) { diff --git a/mm/migrate.c
+>> b/mm/migrate.c index 9e5ef39ce73af..393fc2ffc96e5 100644
+>> --- a/mm/migrate.c
+>> +++ b/mm/migrate.c
+>> @@ -305,8 +305,9 @@ static bool try_to_map_unused_to_zeropage(struct
+>> page_vma_mapped_walk *pvmw,
+>>           pte_t newpte;
+>>           void *addr;
+>>
+>> -       if (PageCompound(page))
+>> +       if (PageCompound(page) || PageHWPoison(page))
+>>                   return false;
+>> +
+>>           VM_BUG_ON_PAGE(!PageAnon(page), page);
+>>           VM_BUG_ON_PAGE(!PageLocked(page), page);
+>>           VM_BUG_ON_PAGE(pte_present(ptep_get(pvmw->pte)), page);
+>>
+> 
+> I tested this diff and it works well.
+> If there are no objections, I'll use this diff for v2.
+
+Sounds good, thanks!
 
 -- 
 Cheers
