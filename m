@@ -4,91 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2D88CAC5B0
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 10:10:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04D1ECAC5B5
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 10:15:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59E298E0003; Mon, 29 Sep 2025 06:10:27 -0400 (EDT)
+	id 471FB8E0005; Mon, 29 Sep 2025 06:15:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 575B38E0002; Mon, 29 Sep 2025 06:10:27 -0400 (EDT)
+	id 449CF8E0002; Mon, 29 Sep 2025 06:15:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B38A8E0003; Mon, 29 Sep 2025 06:10:27 -0400 (EDT)
+	id 386258E0005; Mon, 29 Sep 2025 06:15:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 375FC8E0002
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 06:10:27 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D0788B8663
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 10:10:26 +0000 (UTC)
-X-FDA: 83941868052.22.A2FE526
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C6785180015
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 10:10:24 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZLIgf0R2;
-	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 26FC28E0002
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 06:15:48 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C141113A508
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 10:15:47 +0000 (UTC)
+X-FDA: 83941881534.19.0B4D2C2
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 8C2EE8000D
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 10:15:45 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gzO39fAC;
+	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759140625;
+	s=arc-20220608; t=1759140945;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rV9QK51rsx4eLWCMpcFHElTpfQGO2X4unrpezssK7M4=;
-	b=kgNPDVutYSNwBmxa7lTjKh5JTPtrLsaz2eyE03nND/dg3SuNqoUEu3Lpa5inPgjk5T2yhI
-	vCkYnHPeJK3ABhslk1+yy7E05Lej+0/0W36MGP7zJgO//q7bYdiaywG2e4PCgjS1xQoyw5
-	X4U9nT8VLEASW52bg30xxHaFV0Q9rwU=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZLIgf0R2;
-	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759140625; a=rsa-sha256;
+	bh=0lDTfGg/6Uyqwfi6NmuvIilfdfFny0fXjAuu0Bjee84=;
+	b=5sVjrOPn7BsALXciWZ5mq6F3+zii46dM/m4IwYIQK03KGl13vdu5HmnvVLvUVTOJJk82+j
+	4XzootUPXYHJaFpROgTvkGyfWh6QBRscCtZCPr+4YBE2fv9ViKDZiH+VnfTj3aWy1uv/D9
+	Ruz2s5kY5z3GOjCn/eoJX7wnrkSJWzE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759140945; a=rsa-sha256;
 	cv=none;
-	b=iaUItpdwUhJE4dLUFMZl1UczcHl+CuCc9Og0wF7nO9uhQ4ajkDFkKNXDvUibnXWaFiLuoI
-	s1skcsHqrMxCHUxPSAiLB0ON4SrLU52w2bINga2CEN6labTyD+lJ6qhepxaAk3nCQbivRS
-	l471vXiTLMAJKJeIWWosSpFDZWLsv3k=
-Message-ID: <c41e3890-dea3-4ab9-8913-5bfe9665facf@linux.dev>
+	b=hCFs9Ti+Vmb1kYK9B/2HDHaRenmn06mJKLvHfyZy3frhc0LOBCWrK3QWf7DlXB7Rb716gs
+	RF5/IcQAVOXqgQL7iC3b+r9DeLiQIF8R7ZbuEov+AKbaHFdXSd241ppC4yisuWZkHZSwA1
+	FLq6nj/2hS92vijfO1a6ORfqhWVTxeg=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gzO39fAC;
+	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <e88cbc23-16af-458e-9f5f-6b06eff0d8f5@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759140623;
+	t=1759140943;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rV9QK51rsx4eLWCMpcFHElTpfQGO2X4unrpezssK7M4=;
-	b=ZLIgf0R2iCYlSrfsjOq/7WtFyFLGOg/YA6lT0DXwDmN/8fZktfpgKoMqf9JmwBwFzqUmGM
-	SPwbJ2r19RNrqWXAn2BReT26CAYlM6ZiSrGo3pztvreXdbnecNuoeLH/OL3mLrkgqsLZRQ
-	G8kDE47McoqbJdkRDKB1ELIhptJl4k8=
-Date: Mon, 29 Sep 2025 18:10:10 +0800
+	bh=0lDTfGg/6Uyqwfi6NmuvIilfdfFny0fXjAuu0Bjee84=;
+	b=gzO39fACECb42zPXJwdyj6Jv27mioHJsXOtNOgcfJ+jWFO9VImd3+gUNkHtBP/obtV3B7B
+	pFJMjkkPJqkUu67chDrlvcIkKpsNMrW9Bn08O92QVgLhNIqIFhRQ4VYEvvxjJgrjLaQWri
+	YMHMpUqryT0WsiiYzr+1JRdaCwrF8G8=
+Date: Mon, 29 Sep 2025 18:15:29 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH mm-new 1/1] mm/khugepaged: abort collapse scan on non-swap
- entries
+Subject: Re: [PATCH 1/1] mm/rmap: fix soft-dirty bit loss when remapping
+ zero-filled mTHP subpage to shared zeropage
 Content-Language: en-US
+To: Dev Jain <dev.jain@arm.com>
+Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, baohua@kernel.org,
+ ryan.roberts@arm.com, npache@redhat.com, riel@surriel.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, harry.yoo@oracle.com,
+ jannh@google.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com, usamaarif642@gmail.com,
+ yuzhao@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ ioworker0@gmail.com, stable@vger.kernel.org, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, david@redhat.com
+References: <20250928044855.76359-1-lance.yang@linux.dev>
+ <2065263d-a2c0-437e-a096-695c6d17f97a@arm.com>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Lance Yang <lance.yang@linux.dev>
-To: David Hildenbrand <david@redhat.com>
-Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, dev.jain@arm.com, hughd@google.com,
- ioworker0@gmail.com, kirill@shutemov.name, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, mpenttil@redhat.com, npache@redhat.com,
- ryan.roberts@arm.com, ziy@nvidia.com, richard.weiyang@gmail.com,
- akpm@linux-foundation.org
-References: <20250924100207.28332-1-lance.yang@linux.dev>
- <1282de5a-3dce-443d-91d1-111103140973@redhat.com>
- <69621b58-5142-48ea-9dd8-6baed69e50f8@linux.dev>
-In-Reply-To: <69621b58-5142-48ea-9dd8-6baed69e50f8@linux.dev>
+In-Reply-To: <2065263d-a2c0-437e-a096-695c6d17f97a@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: C6785180015
-X-Stat-Signature: rxtb1a6qn6zsspn631a8frum4a1c3479
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 8C2EE8000D
+X-Stat-Signature: iz5xr9acfdx7ar9xdttgdbktsb7rrtpy
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1759140624-443921
-X-HE-Meta: U2FsdGVkX184943pxI0U9cB8h94pIUT3J9bqkFDZeU8xgruRUpsRdaufGl+nWkL73opc48uw5Hj+I2413Sd4mSwcOi6aMbOP3t+mDomHirmRWJScw9zyhGDkwggMt62czBmgXHC8h2iWvR6lgH+jmX5VDi2alW0u0XeFhR3kuvo37XNc6cP5nb/BilcwvlN5btNVbypgHYFyXtrO3HXD8pKbD0mspudndNmGL/kIchMv4FpZZ8hbKRLY6nk6cMCUY0GOWpu8C4y+ia/NWYuBFlJisbMUoojrjmv3iQKEZUWj17ot5Gbm659P4gkI+SJF/e4BhpQgfK9RKGRs1SonyIC+7xCMChrDpvsVXmT3pJAv5YDdJArrQvpaqZ4CTbM6rTw7GnCo9Uqcth6Tf+NAQNfKlotrtcqAf62MkMofcw5bGfBQNMrtlV+fhoi5yPKHmZ0xGlq5/p4Xol9nFxNg19Dv9wkuzzM1Zw59LOZK8r6Lu37Dc1T/bPElLvGF+bXmEByxnqNFDn1/oXVXckshdxWGr+5Z1mn83P3EFUzz8kF9TZYrcBbr4csem/W4bze+aKmOxy8R+CKZsAY9Y0ogt1qPuoDIJcHfD5qnAPLpe9+SpQlXLknWJ8SpdEER0BUHpWuX7DslXWL5V+UzVsG0LD1aoMa4StnbFW11MZJZPTNhk5S6KD2r1CA8WxjP09FK35Ti55lujtfxlFyBzzD2Met6u7l688cZQguztUVoVSndQh1LNbCzFEO1EMIAjEcwO1Eipy2zVyhxsSSAFqNlmLkSvUijiZmgSvgPrKOUY6MJ0UR34YCJ7MWTfUotc0f/D+XrPIYakf39hEWsWOISS6fm0PvseqHsBkfaXTMB7anK9n+dC2C1gNjS1Sr0n89/Qn7+TUwGGZZFPDD/VOKz3jJ72Sr7Oy9Mis75Ex+lV71ctbYPGdoQKUGY0dXSlMAtFBZpC4i+dANujrTKIie
- /POrhjoX
- /7ZpoNK1ct+YE3KqkWx7v7I9F1OpvZnZ9m1CifhYYRnlfv8KHrsu8SLXKE67g2spbVj1ysss8mWN/Yq80tKvrbfIIklXMyHqP+a+sGZgpl8Gzn+xV0TDoTtTzuUnEwmHbLcEZMm93yJkN4qZRb70tE55WMxuzBkHntTe5G0XGMLR88i7Cage+QaCwrdzssIfYXb5ST1PCi0jE2cgRvWsxbmJTSFkoT4T7u4UBZiGAxrYR7u8QWV0lL5Nelq35hyLtNLHUFYPVar441Y19YwyOr4Cp9tGFjzzB+HjgO4qvkmVl8DM1Dz28wG+2BSxZD8ulQ3JIDVq+rnfCWAIAAZM5/03T/Q==
+X-HE-Tag: 1759140945-385866
+X-HE-Meta: U2FsdGVkX19WyjacFUww1d2Aba+T4hpLGpBWlgpHVJYC6xzS/wd0omgbDo+BxGWiq4jDFDeNuf2TgV68GjrEGffKFDxVmSdVrzkBen6pgoendmiGOe+xw/DS96/z3iz005ldKAg5QXu5iFgpuGs9v2DRtiN3v06t7RLEsUqde1sR2n4udKVZyhJSZ3T6S0nfW9JiwDSD30DbmUUIIZnIe7HV1iVtSqLDaAGjXxsXANWctr7JMWqAvRmgVr/TzPwSpEoWgGxtYwSyYkigH4/aJW8lnoGYj6D95klEeSHClA699LemdssPsZ94+v8HaUaJD8xfysd/JwzB0sH58fsV/MuKJ/VvBlxUn0fXHidd82arJfstgbiyRhrhNEM7oNIKWsgRqqJT0ZLA7goit4eTWP60rjgS4ple8NXCQ/VzeOu6zMK81hE/X2aRdc8sljCTxYbdLcXAep9uGOOk91N+5eK21MoAZiq85no47BVHnUc7FkGfgHsJaWaxx8+fpR9fRv1dUxs7G1NY6RCifGmoxjNC6sB9SSaTP9zd9HiK1vn9vqHJenw98GGu9gOgmReSttOECv9M2GeCPN+POu2latuo+xANfPSpmc9ppFbLuhjy/aWUcHriAneWjPC+xWcK/nPdfcE1ThIP+wuOf9Yx93p2xHOhVrIgTEbTYpjYLKA+EMRgXJZzd44vXOtDaECQaEOpOT9Q9USJR4uAAhUpLO7gSM5RTIIrmadkmwEKGVD852HyINX9cfX+4LyWsRqegtZUnkVWMG4Lrzcu4inDcM52AY9WDruvG6JHexGbbFhKs2U/6dKBgLbctzbh6ZQqlZuys1grRKJiO48/8PokZBaElA+FO6MnaR5oM93wF7szu0dlRmIz2iLG7+di48hRbS7SXAvuLSGyfx3dvKb3zoYdZDG0O/dLxdacJzN260xfMxM37zOd8CD/qlxEAS7zPoosS/QLAAFpxSh4K7J
+ m+dQAPIL
+ Eclsid5Xu8wDQ+InawhdDVj8uzKLwcwL9ME5FIz6U5WcIgD0ZNQRKlFZ6HMwxQ1DCbZXVLsMJ6+xUpvEPzQyYqJ8vepqllcXCdCTzd9Ihn44ubab4PH3BY/NfSUYLWihKkr5MoE/tlnvxnWnfpZ6qr35DJiYRNxJgqiLaaUlhzLLRplGbFqaMNXyec4AIUkCWXZ1nZ5zJ8JD5cssCgEJNrpdVrkSM+Bh6GOu7PYqDQE2/376df+nj1/FjyMuezmBDibUDaJasO3Hqp4VUX4cPadWCBtyi6JvfYlJLP0qa14Vj8c12f6A/dh+E02ZbLkNT5brO0LPq+9vVTSs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,106 +101,52 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2025/9/24 19:47, Lance Yang wrote:
+On 2025/9/29 12:44, Dev Jain wrote:
 > 
-> 
-> On 2025/9/24 18:10, David Hildenbrand wrote:
->> On 24.09.25 12:02, Lance Yang wrote:
->>> From: Lance Yang <lance.yang@linux.dev>
->>>
->>> The existing check in hpage_collapse_scan_pmd() is specific to uffd-wp
->>> markers. Other special markers (e.g., GUARD, POISONED) would not be 
->>> caught
->>> early, leading to failures deeper in the swap-in logic.
->>>
->>> hpage_collapse_scan_pmd()
->>>   `- collapse_huge_page()
->>>       `- __collapse_huge_page_swapin() -> fails!
->>>
->>> As David suggested[1], this patch skips any such non-swap entries early.
->>> If a special marker is found, the scan is aborted immediately with the
->>> SCAN_PTE_NON_PRESENT result, as Lorenzo suggested[2], avoiding wasted
->>> work.
+> On 28/09/25 10:18 am, Lance Yang wrote:
+>> From: Lance Yang <lance.yang@linux.dev>
 >>
->> Note that I suggested to skip all non-present entries except swap 
->> entries, which includes migration entries, hwpoisoned entries etc.
+>> When splitting an mTHP and replacing a zero-filled subpage with the 
+>> shared
+>> zeropage, try_to_map_unused_to_zeropage() currently drops the soft-dirty
+>> bit.
+>>
+>> For userspace tools like CRIU, which rely on the soft-dirty mechanism for
+>> incremental snapshots, losing this bit means modified pages are missed,
+>> leading to inconsistent memory state after restore.
+>>
+>> Preserve the soft-dirty bit from the old PTE when creating the zeropage
+>> mapping to ensure modified pages are correctly tracked.
+>>
+>> Cc: <stable@vger.kernel.org>
+>> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage 
+>> when splitting isolated thp")
+>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>> ---
+>>   mm/migrate.c | 4 ++++
+>>   1 file changed, 4 insertions(+)
+>>
+>> diff --git a/mm/migrate.c b/mm/migrate.c
+>> index ce83c2c3c287..bf364ba07a3f 100644
+>> --- a/mm/migrate.c
+>> +++ b/mm/migrate.c
+>> @@ -322,6 +322,10 @@ static bool try_to_map_unused_to_zeropage(struct 
+>> page_vma_mapped_walk *pvmw,
+>>       newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
+>>                       pvmw->vma->vm_page_prot));
+>> +
+>> +    if (pte_swp_soft_dirty(ptep_get(pvmw->pte)))
+>> +        newpte = pte_mksoft_dirty(newpte);
+>> +
+>>       set_pte_at(pvmw->vma->vm_mm, pvmw->address, pvmw->pte, newpte);
+>>       dec_mm_counter(pvmw->vma->vm_mm, mm_counter(folio));
 > 
-> Oops, I completely misunderstood your suggestion :(
+> I think this should work.
 > 
-> It should be to handle all special non-present entries (migration,
-> hwpoison, markers), not just a specific type of marker ...
-> 
-> How about this version, which handles all non-swap entries as you
-> suggested?
+> You can pass old_pte = ptep_get(pvmw->pte) to this function to avoid 
+> calling ptep_get()
+> multiple times.
 
-@David
-
-Gently ping ...
-
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 7ab2d1a42df3..27f432e7f07c 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -1284,7 +1284,23 @@ static int hpage_collapse_scan_pmd(struct 
-> mm_struct *mm,
->          for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
->               _pte++, addr += PAGE_SIZE) {
->                  pte_t pteval = ptep_get(_pte);
-> -               if (is_swap_pte(pteval)) {
-> +               if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
-> +                       ++none_or_zero;
-> +                       if (!userfaultfd_armed(vma) &&
-> +                           (!cc->is_khugepaged ||
-> +                            none_or_zero <= khugepaged_max_ptes_none)) {
-> +                               continue;
-> +                       } else {
-> +                               result = SCAN_EXCEED_NONE_PTE;
-> +                               count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
-> +                               goto out_unmap;
-> +                       }
-> +               } else if (!pte_present(pteval)) {
-> +                       if (non_swap_entry(pte_to_swp_entry(pteval))) {
-> +                               result = SCAN_PTE_NON_PRESENT;
-> +                               goto out_unmap;
-> +                       }
-> +
->                          ++unmapped;
->                          if (!cc->is_khugepaged ||
->                              unmapped <= khugepaged_max_ptes_swap) {
-> @@ -1293,7 +1309,7 @@ static int hpage_collapse_scan_pmd(struct 
-> mm_struct *mm,
->                                   * enabled swap entries.  Please see
->                                   * comment below for pte_uffd_wp().
->                                   */
-> -                               if (pte_swp_uffd_wp_any(pteval)) {
-> +                               if (pte_swp_uffd_wp(pteval)) {
->                                          result = SCAN_PTE_UFFD_WP;
->                                          goto out_unmap;
->                                  }
-> @@ -1304,18 +1320,6 @@ static int hpage_collapse_scan_pmd(struct 
-> mm_struct *mm,
->                                  goto out_unmap;
->                          }
->                  }
-> -               if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
-> -                       ++none_or_zero;
-> -                       if (!userfaultfd_armed(vma) &&
-> -                           (!cc->is_khugepaged ||
-> -                            none_or_zero <= khugepaged_max_ptes_none)) {
-> -                               continue;
-> -                       } else {
-> -                               result = SCAN_EXCEED_NONE_PTE;
-> -                               count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
-> -                               goto out_unmap;
-> -                       }
-> -               }
->                  if (pte_uffd_wp(pteval)) {
->                          /*
->                           * Don't collapse the page if any of the small
-> ---
-> 
-> Thanks,
-> Lance
+Good catch! Will do in v2, thanks.
 
 
