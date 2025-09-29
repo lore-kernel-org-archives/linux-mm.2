@@ -4,179 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CB81CAC5B0
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 07:30:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 324F2CAC5B5
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 07:34:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76BCC8E0027; Mon, 29 Sep 2025 03:30:39 -0400 (EDT)
+	id 8FA238E0029; Mon, 29 Sep 2025 03:34:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71C418E0002; Mon, 29 Sep 2025 03:30:39 -0400 (EDT)
+	id 8AF848E0002; Mon, 29 Sep 2025 03:34:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E3A68E0027; Mon, 29 Sep 2025 03:30:39 -0400 (EDT)
+	id 7726D8E0029; Mon, 29 Sep 2025 03:34:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C5A38E0002
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 03:30:39 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CFD3A1DE76E
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 07:30:38 +0000 (UTC)
-X-FDA: 83941465356.16.A58E0E3
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 5CF59C0007
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 07:30:36 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BkvYITie;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YGkrDeXE;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SNSLGGAW;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=R1v9Sb5k;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CE718E0002
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 03:34:22 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0EE32B7FB7
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 07:34:22 +0000 (UTC)
+X-FDA: 83941474764.28.BA2A167
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 99DA8100006
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 07:34:19 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QwAtxLfQ;
+	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759131036;
+	s=arc-20220608; t=1759131259;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ivinBsRltrvjUvAHlfXzBwXeEkNCvnM2QUHS0Pud2rI=;
-	b=SKeneJMgDM0yVxxc05zOdSVnvHuUnr1FSlqrQT3OlkUzAbqPPqdZfDnoaKELwNHlMMSDMG
-	UjpwJizrA+ofPbHjOYH00dqhroNfIOnYbsSkISllCPPB2pDukluirRmuEbYes3EbFCvAYw
-	WFFtwXvxqZcYWfC4Ko31RMVw2EtKLtE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759131036; a=rsa-sha256;
-	cv=none;
-	b=zuKxdzJiK7cwNa+tQzY/Qp/0dp2f8wPnL4J+Ct7j2d0GlAg/ABkA3hhf39At5MxqWLEprP
-	mtuPRN/n98ZwKyVq/ffT5FEsUuLxIgXR42eNoo1QOk7B7NtZ7evaPaEOCmWl4Nj64jWmTk
-	4F0NG7rOy6zAqWSc5pXoQ9WMvysmPdQ=
+	bh=4cN6MysZF1C0J6jyCpD7LyZGkMRtdynqcaCV1B52hGE=;
+	b=on2g+WiChES/KeknPqlNxVzAtT7KWZDTYdEzESPf0FHgWTPG+kzn3CLbJkIz09JU2IgJSO
+	Lh0+k9zgN4BKbjWhCJim0nPs3eevPrl+HhugaOeeqyUPiCVUY4hFVz8QUG/xVH62jKaHL7
+	9SCUbIcguLvDTtsDNxbe7AsveyD0K8c=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BkvYITie;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YGkrDeXE;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SNSLGGAW;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=R1v9Sb5k;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 40F092FA26;
-	Mon, 29 Sep 2025 07:30:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759131032; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QwAtxLfQ;
+	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759131259; a=rsa-sha256;
+	cv=none;
+	b=Lf5AeWShqHBgJgsi6fKgyNUuEkR5+94icAi/w80flg95n1XLgZvgT0mgZ2ragOJCaI6dKd
+	8J3qxlDLqWFafQWrV2OplxEGlw3kaVoTUZ6FCvvR32GMwkALLSQR2bf5ODeUBgpJ2bg10c
+	n0PYg83gMmqJOuIIEVpdTsleXC6vGUo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1759131258;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ivinBsRltrvjUvAHlfXzBwXeEkNCvnM2QUHS0Pud2rI=;
-	b=BkvYITiejp/KTvqq8OaoMcNss7s+sSMOTeu0xhYGmzzWoGPLKJn4eh4uEaOnAbY+ACrowT
-	oVcE8O5HcIN/uwyVfx7slhbC/qU//PgfAwLuC6XwoHYl24I9rzTGRzqbOeebK2SFUWjC00
-	yolZK8MO1vFs1SgWVBWp/ohREXCBtIM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759131032;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ivinBsRltrvjUvAHlfXzBwXeEkNCvnM2QUHS0Pud2rI=;
-	b=YGkrDeXEg91wpN7KQGKAaW5vO6kucY/BDkCoDw7pTe110Mrcq8E028kw9ppdAoMaKMJLFl
-	AAQRkInYzF6icSBQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759131031; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ivinBsRltrvjUvAHlfXzBwXeEkNCvnM2QUHS0Pud2rI=;
-	b=SNSLGGAWN8MYg1X6dHwaRj7S9N85CLFH91L3qRaVbIJ2ykqnKr3QGKZcl6nuWML0DZ+Cu9
-	PjjbcrkIYpHx9H9IHMidfcwbiUKdCjqbfR3KSpMDjrJkP1AG0Nh7hU0TPX/wF5n4ZEFEt/
-	eiux/hZk62Mxrw7ExNTUQp23/BAmUuc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759131031;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ivinBsRltrvjUvAHlfXzBwXeEkNCvnM2QUHS0Pud2rI=;
-	b=R1v9Sb5k4RHKMcYp3Gxdhi6aNphndmKrCe6poouH127P/iVmO96mIFKJqWy3/Le01aAKOM
-	YyZMCjVom9FFMdBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2923113782;
-	Mon, 29 Sep 2025 07:30:31 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id yIy+CZc12mgCHgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 29 Sep 2025 07:30:31 +0000
-Message-ID: <e8735d27-2917-402a-86fa-7446b1acbfcc@suse.cz>
-Date: Mon, 29 Sep 2025 09:30:30 +0200
+	bh=4cN6MysZF1C0J6jyCpD7LyZGkMRtdynqcaCV1B52hGE=;
+	b=QwAtxLfQqz7IzFymSo/UVVGs8sy/60Zy3+ibr2R5dMzvDAN1+UDb8kkstYMJxXkdsSBJos
+	EQfZ+rTD4xIk3IRIqGeuu1dBLnpkjhx6pJCtUocf5/0mnOYeEEa5IYyyVDbj1BfpTSpIWl
+	jCGVaulv3jiDCVwlYiEIoR+NVZ8AL4Q=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-600-JBznoAZgPWCP32zAFHMmoA-1; Mon, 29 Sep 2025 03:34:17 -0400
+X-MC-Unique: JBznoAZgPWCP32zAFHMmoA-1
+X-Mimecast-MFC-AGG-ID: JBznoAZgPWCP32zAFHMmoA_1759131256
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-46e4d34ff05so5065505e9.2
+        for <linux-mm@kvack.org>; Mon, 29 Sep 2025 00:34:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759131256; x=1759736056;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4cN6MysZF1C0J6jyCpD7LyZGkMRtdynqcaCV1B52hGE=;
+        b=JMPtYIy6muJ8yCkhE9gPx2RUfCCK7581pHzI6IjAGfz1/2x/MaLgU9pYxA8xBSJt+V
+         LMgphDyep+tYswDINIXTzRrPeNKu3x7CfUeI9wjANf8qRPEofPZfil14h/fBWt1gVQra
+         62an+egYwtdEcMYQlmQ7W9ZJYEBsUM94OBmxhOO4MJSCRJaLWt9xt6WRKJEk4ZAsHp8G
+         DFTOeyaC8Eaky6MexvvcBvtNpvZSBCGzvH+LimEMhzU36yMdyvL0vDCEtyhnItNUyIc8
+         xH6TRzI1azDvY5d07oeikTrnJr9XoQiee+/LHmemcNAo3kpAyESWlGC4vysNsdw3Wf74
+         Fo7g==
+X-Forwarded-Encrypted: i=1; AJvYcCWwRgAOsyd7JpOt1VP2N57SfCCaZGr/MfXYLSlfOgrt1hs9GoWv9tn5P9irv9ABE9jBmUpPqNJl2Q==@kvack.org
+X-Gm-Message-State: AOJu0Yxy/v+iK2KtfUCsigX3UAvfhwTDdyEp807XmwYD2jsKFLa8olpK
+	3fJCAvmOZZMXAIStPZLqx5qtr0LlKjscTjEoIcNM2sYzXWeHlQMumauKK0cbSO8r6vCx6vgxi2C
+	9VG0TSPTNzx7kgE7R+0APbvSMiG8SF0K6CC4gR982BArWdCBr2GIG
+X-Gm-Gg: ASbGncs6mBAFhsSTewdpGWn5SrM9EhZSTL363QV09zqu5k+f043nj7jXdvVB00i+IiJ
+	2sEKNl8u2FLibDziEWgnWi+SSpoHtrn+JTFRCml7+LSNSSynlFRLz54J7Xb0/sdvCDPRBaeRgLu
+	+R4CGr9UAo1qrFlDwYQCluLZMKyT0xApiyiFsLutK6wJ6qZDZEwGxOPGgP8kkxMNkCkm5j+BLxn
+	Q+UsimrVSIB1cBtChYc12WHsEFHkE1+C4+JubpjEn2ZMPKiu1nub1NIx7WyOkOn7IPDkQf0t87t
+	1A8RQI9r9u4LsscwbTR3KHBRym13SOcb1AxJ6EBfZ3Ane7lOQ6P1mONNwJfbMfma9hZUjkpbTIF
+	AlTrcxJ89uWTNgQ1m+mfAavIBEOTJDbSi6BSVXiXK2AiBdR8JyW8srZA0OkLm75drrA==
+X-Received: by 2002:a05:600c:4ec6:b0:46c:7097:6363 with SMTP id 5b1f17b1804b1-46e329b441cmr135712855e9.13.1759131256010;
+        Mon, 29 Sep 2025 00:34:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGO1W3cLkDsOrAUUj/Y71FAFuKW33ai4dR71vpnx/udDB8eBJ1Ccnl/FvU8H9AzA7aJClyCqA==
+X-Received: by 2002:a05:600c:4ec6:b0:46c:7097:6363 with SMTP id 5b1f17b1804b1-46e329b441cmr135712565e9.13.1759131255575;
+        Mon, 29 Sep 2025 00:34:15 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f05:e100:526f:9b8:bd2a:2997? (p200300d82f05e100526f09b8bd2a2997.dip0.t-ipconnect.de. [2003:d8:2f05:e100:526f:9b8:bd2a:2997])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e32bf61b1sm90731705e9.2.2025.09.29.00.34.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 Sep 2025 00:34:15 -0700 (PDT)
+Message-ID: <8ef5e3fd-2ee8-453a-b8ae-584e3d606aa4@redhat.com>
+Date: Mon, 29 Sep 2025 09:34:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 21/23] maple_tree: Prefilled sheaf conversion and
- testing
+Subject: Re: [PATCH 1/1] mm: prevent poison consumption when splitting THP
+To: Qiuxu Zhuo <qiuxu.zhuo@intel.com>, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, linmiaohe@huawei.com, tony.luck@intel.com
+Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, nao.horiguchi@gmail.com, farrah.chen@intel.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Andrew Zaborowski <andrew.zaborowski@intel.com>
+References: <20250928032842.1399147-1-qiuxu.zhuo@intel.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250928032842.1399147-1-qiuxu.zhuo@intel.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: t7XFb-5nK4A9NFLOhaMUmVbKUHHqOY8ZuLUjqzBVGdQ_1759131256
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Uladzislau Rezki <urezki@gmail.com>,
- Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
- maple-tree@lists.infradead.org
-References: <20250910-slub-percpu-caches-v8-0-ca3099d8352c@suse.cz>
- <20250910-slub-percpu-caches-v8-21-ca3099d8352c@suse.cz>
- <CAJuCfpGBg7xO6-swzvk3vLhMxO+F=C6udEiNmAAC6LEA7vA9=Q@mail.gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <CAJuCfpGBg7xO6-swzvk3vLhMxO+F=C6udEiNmAAC6LEA7vA9=Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5CF59C0007
-X-Stat-Signature: 5tt4u1q1xyhmyx96nteqzoj5mzs9e4hu
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 99DA8100006
+X-Stat-Signature: 1a8e1p1xnxsbixouhbc784a4fzc3wsfm
 X-Rspam-User: 
-X-HE-Tag: 1759131036-828495
-X-HE-Meta: U2FsdGVkX19p5MGAlkgp2Xx5mbnizv+NKArHkeJxvmO/pFUFWw7BrY1zzJGHFDSETtBoi6iLoDOpFD8SUBt9AV0VDO/4kE0j30Ugyf29uaHpr336L0dn2O/9O/Nr3v+Huk9E3a4sN9Fz+zwt98Fg6Od5vScJoFEMUDG8zfHZngvXjviS5fj87PD5xLayJV919T6IWWd5JNkNDj6DPUGHhzqBlyJmR0OEeLBAzPpy0tB5ewSBhlaSbuhI2hqM2nE4+LBEYtiTUHNmLpd8AROwa3tyeOGp0qmb+vhpwaPZGHs/P7OZMTzkPMB5h/JKDdc3QJFTlvAcXvgsbOnxfpZ5okG+yIIOyzi3EsNm4RrgKvHQ+nqJbun49SplSVJrnq5DNr04rYDbg4LPGLyVO62iv51aJpQdR+DEmlPxZdU1qLMroe0smmBaAFJlE0JIEAYgYd8bgnTgLWKRCi9fQYNIn2AVpV159SkYmiiYbyJz3XCxLbiV5RbvgiovMO1hA4WApfnv9qAjPwRe3tzz1GM8jUqJ6IfVGx2YTfDZAGeAJg6rQqAgXDTNGfXo2mVp0gXebY9mYQR6Y6fj7KZOuGAf1pp297Sw/W+OgNYDHX7rt5/UkYS8KyPmT8Li2ZiigwTgqD6caD1Keu8rXFYMi5z7cyscf5wHkd+twKR9BXUfmen+3eaiCVb6f80d9HeBelKCRTivF6zxLKNWCHMLqNeeNDDSLV0rPr9Eb2yYW2mPTMnFesu5pMn3xbBmcnWExKEe0ZX1mHE4CKUJUu/9NvUAuAmtVGfjVhDU+lW83PmKYKevdhCZ/WRO/gXGZCqcwB6HgJSjuGnpvwzm7sivcXpenfu7G/+StPmg4igBzv9xIJQjaHBTfaA6cvSLQ0U7ixgsJTJM/oQB3OmvWSq8oJTQENB9jVBKZESQZgIf5eQC0YHa6YMIXPCR43jcD9zE0SbVHgMqnizYtp06PbvPMUQ
- 3+Orf/mA
- G91E2Ly7EVtyRD7uQm5rmIxG16x5qaEwYXpNUk9vxcQPuenlE+CeyvszXeiTcsH7x0sJDlIliHZnYDOc76a6yZ2osCabWFFtHUsWLOJ164W6LgxxaQe3mw5ZfsWmE/Ck/DFS1k14smxvm+SLzvwlAxgtXJjtVh5hDEMmG1BOnUSP+p7GlX8J0A44x7siPOxBKm+2HlX5uRGTHD9IYrhbAjOYBfC+bOHmF3UyNNz5Kq9KF52zHFJzSmyXhNiJsOYpSqFaQ8+skFBznxUp14A6m+IiZ+hjxz3WNr4zxffW3+9y5hxKDlPRw2xY5sdGVczALiZsuOCqL6RyP44GLbRGA1RTGDVOpwX4hTY3hMc/B7ViOVjLQJkPbWc+Uww==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1759131259-790461
+X-HE-Meta: U2FsdGVkX18104POoS7F/mTG2Qz549Bdr1+LOqbudPv+T2oZi3/xeoOIGan1dIlQIZobxRZgPNgnIWrxNWxtiT6HHS97CEmVRZOjap6zJanv0OHsRjqr7BzQf4m+TXl/ykHsQ9TyjdvXHT7dm+clitdG7m6IjeAOFBglmck4srwKjiZZTazNoPaJSufnGTD3mSZzjoQgGzkwTrIe63hmTqHL6AnuUF+gkG2p6ii37WJztmbY7W8BEQ5NaDbi5gx5zBGBRnjbTLdQzlYYptPGZOf6QcsnMovfkbZvy0DRgbTsXxy/nvjbnv9hFRmJhahioWn5OusSnQi4MlGOx5qrXPi4aF3SMK/rysrW0rMew6vpJwzbGRTJjCZ/q07DssuA4OhJOnxHQTmH5vko7XKf3NJuGkC6Hk9/fO9RRnStbhJN7vYruRxETgEdCAwqfQ7wLQe+qU5yagUTdx7ySi2S+Y/FJ48gJD5V+0sb7AYP2lDTSzu9z40zLXYviLyEfd1OVyLzqvtXL3880cmqWKRyuLB0j/FAUiVbuTItoQRWUDgnuzRpPcxx/wEynyvbWEdg3xTrgW26dqRfKtCCEkCacll5wWE5in4IHzXeDwsQle1peA9cdHa7cuvIi4sW6q931rDBiwD67hTFFf1wb4V+4dvw/w4rr7pKME/VZxDIisfnmev1/NQB0Hsig5aQsAQEaSlpZAYNMcQdP3bgA+QtDOMwze58vB+FyHCgr9mEqt0i/4oJHCCuZMcSLmq77+Fm6ISM2yz40L9y6IxP5C8wAl/Ti4Mqagq+Mja+AVdooUfpZcNpW5anfuAvEUKYER9BCE/4Y5K71bLboYUuNOQwcCg3hkJQxZtoJzusVJfx+pC3FivmhD2CETN7j9fWnU4jsfy8Ou6b9FGYrki4sSYYAZbF78nIKNVeIiiMgGo3sqDTt+Ap0sCshrhdgwif0i70ACnGVqGc+Q/5Nkg7yOu
+ wADQ+LjH
+ 1Ohuhcivr0rRLBK1jn3iRsE6Ij7x3zxdb5b/I/2i++LjrVABmbwGZuW3CAni2AmxUx91/4IaDJR9QO+2JcHoFWL0+9i+OLUq4Jaf5ra/g3n6DbQ8o9tcDhPomnGFLshdkn3ZBlW8/FgRWya6q9VSLVL22Bg/khdZRA2NfNGDot+X8M6w9/gWio9GT+75jdThhj7neh2p0lhO42Vv+UOM4H8wsmiQV6dRNl8uTuF1Nmj1bVsfEb4EosqufbmNoUdWUrklwiCFVvHk/+zEKZRZlEl+MjXmlY542eOKTGo4ASvK9UlRIsv6FABv7ww2kiG/Mc8gjPcjL4qVU0CSJYa29MHnVty662tE9eQa190QqgaqRGqoYEkM4aB2GwMi8Fx2lFfjmQ2oMFw3t4y6o7jqedKufobO0xpuS8kOC9n28Mx9YwAjsXFbKsGelBvPoLSbj0tUR8L/pvhq1HjupuU0rKHIuMs3CZuz/LwkaKlGMB0DO7gj1m11nyePoVhqFrDe51toOQC7X1nLhS/9mwwMWmHonmA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,48 +180,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/27/25 03:08, Suren Baghdasaryan wrote:
-> On Wed, Sep 10, 2025 at 1:01 AM Vlastimil Babka <vbabka@suse.cz> wrote:
->>
->> From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
->>
->> Use prefilled sheaves instead of bulk allocations. This should speed up
->> the allocations and the return path of unused allocations.
->>
->> Remove the push and pop of nodes from the maple state as this is now
->> handled by the slab layer with sheaves.
->>
->> Testing has been removed as necessary since the features of the tree
->> have been reduced.
->>
->> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
->> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+On 28.09.25 05:28, Qiuxu Zhuo wrote:
+> From: Andrew Zaborowski <andrew.zaborowski@intel.com>
 > 
-> Couple nits but otherwise looks great!
+> When performing memory error injection on a THP (Transparent Huge Page)
+> mapped to userspace on an x86 server, the kernel panics with the following
+> trace. The expected behavior is to terminate the affected process instead
+> of panicking the kernel, as the x86 Machine Check code can recover from an
+> in-userspace #MC.
 > 
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+>    mce: [Hardware Error]: CPU 0: Machine Check Exception: f Bank 3: bd80000000070134
+>    mce: [Hardware Error]: RIP 10:<ffffffff8372f8bc> {memchr_inv+0x4c/0xf0}
+>    mce: [Hardware Error]: TSC afff7bbff88a ADDR 1d301b000 MISC 80 PPIN 1e741e77539027db
+>    mce: [Hardware Error]: PROCESSOR 0:d06d0 TIME 1758093249 SOCKET 0 APIC 0 microcode 80000320
+>    mce: [Hardware Error]: Run the above through 'mcelog --ascii'
+>    mce: [Hardware Error]: Machine check: Data load in unrecoverable area of kernel
+>    Kernel panic - not syncing: Fatal local machine check
 > 
->> ---
->>  include/linux/maple_tree.h       |   6 +-
->>  lib/maple_tree.c                 | 326 ++++++---------------------
->>  tools/testing/radix-tree/maple.c | 461 ++-------------------------------------
->>  tools/testing/shared/linux.c     |   5 +-
->>  4 files changed, 88 insertions(+), 710 deletions(-)
->>
->> diff --git a/include/linux/maple_tree.h b/include/linux/maple_tree.h
->> index bafe143b1f783202e27b32567fffee4149e8e266..166fd67e00d882b1e6de1f80c1b590bba7497cd3 100644
->> --- a/include/linux/maple_tree.h
->> +++ b/include/linux/maple_tree.h
->> @@ -442,7 +442,8 @@ struct ma_state {
->>         struct maple_enode *node;       /* The node containing this entry */
->>         unsigned long min;              /* The minimum index of this node - implied pivot min */
->>         unsigned long max;              /* The maximum index of this node - implied pivot max */
->> -       struct maple_alloc *alloc;      /* Allocated nodes for this operation */
->> +       struct slab_sheaf *sheaf;       /* Allocated nodes for this operation */
->> +       unsigned long node_request;
+> The root cause of this panic is that handling a memory failure triggered by
+> an in-userspace #MC necessitates splitting the THP. The splitting process
+> employs a mechanism, implemented in try_to_map_unused_to_zeropage(), which
+> reads the sub-pages of the THP to identify zero-filled pages. However,
+> reading the sub-pages results in a second in-kernel #MC, occurring before
+> the initial memory_failure() completes, ultimately leading to a kernel
+> panic. See the kernel panic call trace on the two #MCs.
 > 
-> No comment for this poor fella?
+>    First Machine Check occurs // [1]
+>      memory_failure()         // [2]
+>        try_to_split_thp_page()
+>          split_huge_page()
+>            split_huge_page_to_list_to_order()
+>              __folio_split()  // [3]
+>                remap_page()
+>                  remove_migration_ptes()
+>                    remove_migration_pte()
+>                      try_to_map_unused_to_zeropage()
+>                        memchr_inv()                   // [4]
+>                          Second Machine Check occurs  // [5]
+>                            Kernel panic
+> 
+> [1] Triggered by accessing a hardware-poisoned THP in userspace, which is
+>      typically recoverable by terminating the affected process.
+> 
+> [2] Call folio_set_has_hwpoisoned() before try_to_split_thp_page().
+> 
+> [3] Pass the RMP_USE_SHARED_ZEROPAGE remap flag to remap_page().
+> 
+> [4] Re-access sub-pages of the hw-poisoned THP in the kernel.
+> 
+> [5] Triggered in-kernel, leading to a panic kernel.
+> 
+> In Step[2], memory_failure() sets the has_hwpoisoned flag on the THP,
+> right before calling try_to_split_thp_page(). Fix this panic by not
+> passing the RMP_USE_SHARED_ZEROPAGE flag to remap_page() in Step[3]
+> if the THP has the has_hwpoisoned flag set. This prevents access to
+> sub-pages of the poisoned THP for zero-page identification, avoiding
+> a second in-kernel #MC that would cause kernel panic.
+> 
+> [ Qiuxu: Re-worte the commit message. ]
+> 
+> Reported-by: Farrah Chen <farrah.chen@intel.com>
+> Signed-off-by: Andrew Zaborowski <andrew.zaborowski@intel.com>
+> Tested-by: Farrah Chen <farrah.chen@intel.com>
+> Tested-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+> Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+> Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+> ---
+>   mm/huge_memory.c    | 3 ++-
+>   mm/memory-failure.c | 6 ++++--
+>   2 files changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 9c38a95e9f09..1568f0308b90 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3588,6 +3588,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+>   		struct list_head *list, bool uniform_split)
+>   {
+>   	struct deferred_split *ds_queue = get_deferred_split_queue(folio);
+> +	bool has_hwpoisoned = folio_test_has_hwpoisoned(folio);
+>   	XA_STATE(xas, &folio->mapping->i_pages, folio->index);
+>   	struct folio *end_folio = folio_next(folio);
+>   	bool is_anon = folio_test_anon(folio);
+> @@ -3858,7 +3859,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+>   	if (nr_shmem_dropped)
+>   		shmem_uncharge(mapping->host, nr_shmem_dropped);
+>   
+> -	if (!ret && is_anon)
+> +	if (!ret && is_anon && !has_hwpoisoned)
+>   		remap_flags = RMP_USE_SHARED_ZEROPAGE;
+>   	remap_page(folio, 1 << order, remap_flags);
+>   
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index df6ee59527dd..3ba6fd4079ab 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -2351,8 +2351,10 @@ int memory_failure(unsigned long pfn, int flags)
+>   		 * otherwise it may race with THP split.
+>   		 * And the flag can't be set in get_hwpoison_page() since
+>   		 * it is called by soft offline too and it is just called
+> -		 * for !MF_COUNT_INCREASED.  So here seems to be the best
+> -		 * place.
+> +		 * for !MF_COUNT_INCREASED.
+> +		 * It also tells split_huge_page() to not bother using
+> +		 * the shared zeropage -- the all-zeros check would
+> +		 * consume the poison.  So here seems to be the best place.
+>   		 *
+>   		 * Don't need care about the above error handling paths for
+>   		 * get_hwpoison_page() since they handle either free page
 
-adding: /* The number of nodes to allocate for this operation */
+Hm, I wonder if we should actually check in try_to_map_unused_to_zeropage()
+whether the page has the hwpoison flag set. Nothing wrong with scanning
+non-affected pages.
+
+In thp_underused() we should just skip the folio entirely I guess, so keep
+it simple.
+
+So what about something like this:
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 9c38a95e9f091..d4109fd7fa1f2 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -4121,6 +4121,9 @@ static bool thp_underused(struct folio *folio)
+         if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
+                 return false;
+  
++       folio_contain_hwpoisoned_page(folio)
++               return false;
++
+         for (i = 0; i < folio_nr_pages(folio); i++) {
+                 kaddr = kmap_local_folio(folio, i * PAGE_SIZE);
+                 if (!memchr_inv(kaddr, 0, PAGE_SIZE)) {
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 9e5ef39ce73af..393fc2ffc96e5 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -305,8 +305,9 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
+         pte_t newpte;
+         void *addr;
+  
+-       if (PageCompound(page))
++       if (PageCompound(page) || PageHWPoison(page))
+                 return false;
++
+         VM_BUG_ON_PAGE(!PageAnon(page), page);
+         VM_BUG_ON_PAGE(!PageLocked(page), page);
+         VM_BUG_ON_PAGE(pte_present(ptep_get(pvmw->pte)), page);
+
+
+-- 
+Cheers
+
+David / dhildenb
 
 
