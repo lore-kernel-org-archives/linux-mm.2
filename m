@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D011CAC5BB
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 01:05:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD7FECAC5B5
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 01:05:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 588638E0025; Sun, 28 Sep 2025 21:04:58 -0400 (EDT)
+	id DED2D8E0026; Sun, 28 Sep 2025 21:04:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51DF28E0006; Sun, 28 Sep 2025 21:04:58 -0400 (EDT)
+	id CDB7F8E0006; Sun, 28 Sep 2025 21:04:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EF828E0025; Sun, 28 Sep 2025 21:04:58 -0400 (EDT)
+	id 9F5D88E0026; Sun, 28 Sep 2025 21:04:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B3748E0006
-	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 21:04:58 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C8DA185821
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D6B18E0006
+	for <linux-mm@kvack.org>; Sun, 28 Sep 2025 21:04:59 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4BA0C85821
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 01:04:59 +0000 (UTC)
+X-FDA: 83940493518.28.F183417
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 77567C000E
 	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 01:04:57 +0000 (UTC)
-X-FDA: 83940493434.17.648517D
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 0D6681C0008
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 01:04:55 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=gJpvDY7Q;
-	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=IaSfjQCW;
+	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759107896;
+	s=arc-20220608; t=1759107897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N2v75INyzNMPI4oEdp2NmuGRVQWzF+umEVMJPwM0ApE=;
-	b=oXnY6aLjSc70DTjMinQCmQrVvKC6FvFmyiP7UhhNaIhREL3itniSPT+YaQz8oAnT1mUT11
-	bWLzD2wECHIVnPNYvudi71DVGejEw+xIqwcWCmwamKss3crKzvzwaTFCNx1hCRmyGPd8GL
-	iYYhbPgUicCywBCCdM4FaCBrqwJtia4=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=gJpvDY7Q;
-	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759107896; a=rsa-sha256;
+	bh=ougWc4G/qIZT3q+j2o8YnJ0ye/FPwzyh3Yh9OeHBEk8=;
+	b=idtrzzyrxE3nrsz8i+q1Fi4GtfBJ5haJRSLrv50/5bfSNymiSt2t6QfMHtSZ8AcPKmTTbh
+	v346jDHiKDPXYFR7neZmfJBL/ne5B5RroeurKvq87vmIomEoGkSQY0WvDQu8Fbjp3R3nco
+	N+IKljeHDykOV/pv/w3ZOXmccS3nP5c=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759107897; a=rsa-sha256;
 	cv=none;
-	b=Lm8mau3wQkywYYmY8ia5bBU78PxXzDR23aXiNSMLjgp32vc6bCOaLtFz7iduwLE14gk/4h
-	F9fWOwaGh4WVfTCrrAsqbCfPEi65pGPWvQHtvYo7eiedlBq4W8GdYbgPtm/ISCwfi5gx4M
-	HoDcNmt0eR9Be3Zom3N0AvDf1U/5fso=
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4dfd1f48d4cso7220131cf.0
-        for <linux-mm@kvack.org>; Sun, 28 Sep 2025 18:04:55 -0700 (PDT)
+	b=7aDq7EaZoJGE0kDkuxCm/EIM1/NO7XB6RRfGAu1ZzCEtabRbMCLZN+z/woTPmBarIwgokY
+	LPcg99CSdCbUsvtuqEs7qsQb7gs/C+fJVjsiVNorhWZsSTy3ocaEtl0+kHm2Y5ZT/lzARx
+	3smWCVdTkvndlllHM4TVPl7uFVXIwWI=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=IaSfjQCW;
+	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4df60ea79d1so14514241cf.2
+        for <linux-mm@kvack.org>; Sun, 28 Sep 2025 18:04:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1759107895; x=1759712695; darn=kvack.org;
+        d=soleen.com; s=google; t=1759107896; x=1759712696; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=N2v75INyzNMPI4oEdp2NmuGRVQWzF+umEVMJPwM0ApE=;
-        b=gJpvDY7QdocW0oCNenkjzsjnIsersRoI0cjP3kOMFk1auKISy7V7TMuGLInkOXe+dn
-         RprRxFiF5+oA/PMjiIfUXKYlc3W66UGZYqt31uquiSSmwHnYfwRjt/8MgKPZ/UwJv/d0
-         fQGqGKC21JA6GSm6dr6+x1/GxMaPSgcbLPuBwogaDCgJddn3rHjDbwbkP5sijUVYJvk0
-         RWMuEwlnEBWOVWpMsmRJ0c4H9cxcnBALB+ShPmyE9OfHZEqAioW5gQrN4fINOlHXVkAD
-         02WS6C/thuTK30oL3KcQE8rn1udqcb8xX93hOlJoS/URlm4po29C2N71U53LaCbD9Xr5
-         uB+A==
+        bh=ougWc4G/qIZT3q+j2o8YnJ0ye/FPwzyh3Yh9OeHBEk8=;
+        b=IaSfjQCWE5+IDYoJskKcw6/IK9zef9hEtLDaVRy+RKCt34kBsWFVNZHBWLhyq4jAqd
+         KFg1hoMCZvq70On5ZPr5yll7lY01zPiBpHuBFDKJdSHZWwP44n6sXGKrDS6e95n5+ZEh
+         dV1UWuY9FYyMUEyc4JYuZZjUBhTuhT8QMWIikeMxnfxajcqnpjmUTy2OBVX+sr3Qypzi
+         1yx82kQ++WUjqs88RG+ryBQCQkC1JTQQJ+XYUHYyffLiCyeJdduzpDjd4RQpjqFtClP0
+         9K//PeoS7xjYRyR4BRcoBMCPNln3K6kwNo8YHyWMz2/7Dh+rip9Cl2vM/Vz6h9mcHaj1
+         jijw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759107895; x=1759712695;
+        d=1e100.net; s=20230601; t=1759107896; x=1759712696;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=N2v75INyzNMPI4oEdp2NmuGRVQWzF+umEVMJPwM0ApE=;
-        b=AosNtqSwYRCOSFkGEWVMMRKiM1Mt8ib3jp+Qhr4NPPIzM/1g4UxIxpYFQmCGcR8CjD
-         2cIGAbj8y5Svk642aR8GB6rakHEilmXn87EufjiLHYgNNbfUc1esA4KMQSI3s84JthyY
-         xVej+75Lghv4WMlP7ePyxjxXOEe18SLhl8NGqGEhISrOCf6cM6axUIaKfJS/0ZAUe5fv
-         wUnaU5XKCbMBKZPxkZIYxQKgMcEmKWEPv2J7nD8/706/HE1jjV24LOG7iq/rLc/LJJLF
-         qkPw/YMMBVmAHjEZoxivL3vxSGV8Lq3Crt8dmwktSHXtbyyO8pmDQlI505/lhGMJErZn
-         7s3g==
-X-Forwarded-Encrypted: i=1; AJvYcCVDu7Y68K173Rq4vHN4+e+nQRaj/V5Y588GMX/93VP/zNLH16JfQTLGeNYjH0116lAU+cVBxleKbg==@kvack.org
-X-Gm-Message-State: AOJu0YyLa7YT2RE1yK9gGcYOkxvL+ngpPpRaEgN2x8mJhUA59ezHtnuh
-	HNLvuXPWPE7ONKkJUB4jMF7au3KYwvTdiFR9cMtyIT0MThIXYIPffPPA7yhKZqIaCAg=
-X-Gm-Gg: ASbGncsCrZc9YmIMO1DZhdkzcamPHzva1iGCK7+HO4XeUlWZ6JGQYBROWTRQL6YoUzV
-	yZa3tXMrwN0xFskrgu9sLq8M00Y6GNTL+T9/+mDm9V2f+l1dviCKhKuXaE3lY7lXYjr7imI/t9U
-	nLdOT4E6G0cp0GU1bQ8LKmaF867cdd8ihsxaq6Y9TDYqfL0DUfNAo1YfRwMsDIinE2h1WqoUPjM
-	C0ek2alfw2gEBxbO0Zp35uBGNUyrPAdr/yjMO3HjskpJbWxfFfvXZvilDhI54gcQ9paExh31t+h
-	tjqC4kNijjUKbgV0Da8TD2QZEDKj8eMi57KbhJBGut42sL8+nddYG02AnYuy5Vp7CIoIKWpLkHx
-	D9Qh2yBUOdwZaLv73eG7ZTj7dqpLLFCktAHb1iR6ZoZIF21MpdlRNj1HKrGEXjKJpoGHNWIhYPO
-	J/59dDFz0=
-X-Google-Smtp-Source: AGHT+IGNYpnFHhEDZ7IQxe60li51JF8Ceu8MZliO1sqTV6jJCplnwCE0LZP4epB2zRmz4aDw8ZyDcw==
-X-Received: by 2002:a05:622a:1e89:b0:4cc:d6f0:2e41 with SMTP id d75a77b69052e-4da47354de0mr216005241cf.6.1759107894911;
-        Sun, 28 Sep 2025 18:04:54 -0700 (PDT)
+        bh=ougWc4G/qIZT3q+j2o8YnJ0ye/FPwzyh3Yh9OeHBEk8=;
+        b=GKEvMdlgJ6yJvORp4IS+Iuu6/rf5p20QUlg7pVu7WoX2U8zVGme4wkC4T7GVRDgDuT
+         LZCl2ycTEmYNYyce5yqayr2ToDT0b/kbnZcjnYW9Ep+Qxdr5srh0QMmzAhavBN6rm4Za
+         Cv60r7DJNU6CWD4+Hw2Em0G+SUcvZyIBIDORCMPtetVfqjDlyoKtJrN9IA0YZxqmvvzt
+         yH3T50c8eTbhdGadj9//LgBzIBa2ibeXUzOvh8KLoe6Kp4N76KLe3sh8gco5o3dsx1mr
+         4gRO4ZtlznbTKFJlf+RYODm+3aeDp0FWJ7u8hjSXAdHknhhpyXA81nTl46H7wmwLkkHH
+         RzXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU0hIpFE/Q1eLYvpw/A23A3cHZlZt0OJdtl1yjYP0pZREr65ojydun8453nr1BWWhMoQWHiq3mNcA==@kvack.org
+X-Gm-Message-State: AOJu0YyKu/i/sG7D+RrA/Eh9jCHC3nnD3Fr/vYfYBBwhe1vOc89CMYBb
+	k0pyortz8deTTkCDiebY7I6FpRq+3Tzd7/XzGMFU1dGUCNCE7KvDlDqB88T2UU4MWT4=
+X-Gm-Gg: ASbGnctiXz+W+LO4zTvKSg1BnHN7lGhobeGJ0Vv9GBAHHKFmRopGtxY99fUoZgtfzyQ
+	FKw33QaxOOIWPEke+aC4kXFrrQDSRLS7SBj6jaJtAyjMOXZjI9RmL9kvFwhZsR/D0PC2w3Rdw51
+	2IBF6fazoFdclXEsGCdaBJ3uv5Yrhqfuc7rrcq+55ZFJ6x7B2QOB7aUKlXNWGXYlfkOMqHCO+23
+	cm5NojKGL14Tknp2y4HZrQCZgUZFcJIbEjBOX/Gts3NmuonH/QBkg83b4DKIzyydI7hf25kTjN1
+	Uz85eenpjZODXEqaQYyqOsW1lRp3LzuKgQE4SwVYwNsY312m+yz3Fty+6TWoieeFzguNoyBAXaP
+	/OyHYlNtS4O0S+sq5YBJeopUcucavozlGYrgZ+/PkExwxkOlfzgIuWd9JTbU7n5ENeExDCcjN/N
+	qFMPP9g+U=
+X-Google-Smtp-Source: AGHT+IFYNaFG7Jc9+8mczCUfL2NG5AxHH54S3++B2bClP4OT/C9rMlU+s2JYq6QncxNId85tdheqhw==
+X-Received: by 2002:ac8:7d43:0:b0:4b7:90c0:3156 with SMTP id d75a77b69052e-4da4735376emr195893531cf.9.1759107896425;
+        Sun, 28 Sep 2025 18:04:56 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (53.47.86.34.bc.googleusercontent.com. [34.86.47.53])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4db0c0fbe63sm64561521cf.23.2025.09.28.18.04.53
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4db0c0fbe63sm64561521cf.23.2025.09.28.18.04.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Sep 2025 18:04:54 -0700 (PDT)
+        Sun, 28 Sep 2025 18:04:55 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: pratyush@kernel.org,
 	jasonmiu@google.com,
@@ -168,22 +168,22 @@ To: pratyush@kernel.org,
 	skhawaja@google.com,
 	chrisl@kernel.org,
 	steven.sistare@oracle.com
-Subject: [PATCH v4 29/30] selftests/liveupdate: Add test for unreclaimed resource cleanup
-Date: Mon, 29 Sep 2025 01:03:20 +0000
-Message-ID: <20250929010321.3462457-30-pasha.tatashin@soleen.com>
+Subject: [PATCH v4 30/30] selftests/liveupdate: Add tests for per-session state and cancel cycles
+Date: Mon, 29 Sep 2025 01:03:21 +0000
+Message-ID: <20250929010321.3462457-31-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.51.0.536.g15c5d4f767-goog
 In-Reply-To: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
 References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0D6681C0008
-X-Rspamd-Server: rspam05
-X-Stat-Signature: jo1g46mxr7aisn7cse7cxf7ow1iztzfr
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 77567C000E
+X-Stat-Signature: napom9iidhmdbqzj8ib1sojsosr97jye
 X-Rspam-User: 
-X-HE-Tag: 1759107895-831036
-X-HE-Meta: U2FsdGVkX1/b/gK+/pE7EH3++TvVXL2NM0bGqQ9GDHDgWiKYc6D07vjF7wkzwH+id+El7Xp15pKN8lvbTM/35Uu3HdtXj+9ctxQFiPYA1Awk8uXkrO1lwtUujLyIwDkVnfHxhZDLlvYoGkJYJeNvKeaOSSJ9l3RfwwJBz0kk1adDg0cFxKmXhxPahtyLN2XGeyEvxLfGo1AenHZOl7oROKnOxeM49IT7zAaX3DSxMEXDZVhUSwSBadxdf2D3DbRWnz3LNtVRA7x4a0nR3Sn1lL6LdVEt/gQpG7vsk23LBBU6tQxsxvsQyUbPTD0zpGxsl7K9bwoYxQbSOhGxgDEudJ95Xeh668N8qx+vd/PGldGMG2BU9S33PdtAPfQwo4ZJvFQFfzgErYdtNMcf52sDGVw5XTJLdtih1ReEbvLdJYkHQpDGNo9plWghSBvrLnv8gdoyb/eFSfH72UBSoyAGv+dUmygw3yWwQ8EZIy+sTKP+TWyy85kvqMEHo2QTDKxgb1qUAMFhFiCZXcJ3An1KMCsiUhg5u5716wvh6IgkxvnFOFZ/OWrljdZFsc+rIcUvjfuJIJRqSmjOKpL1MybkUP5vl2PU5M+E7yNHYYM8z21W8/psowKEynUyXvxAuN5algPRB35XRvQ3uhFZ6jq781tfZHtMVz/UuQ8mR19sKDn74Z9Zl9NwKOcBIjiVNmrm+3ThFYPCQO2qCI4BfEnrxi/MhSI9nqrQpIobvYN04pv/GYpRSGVN4vyNrfIa+ochnG4ALEN/zX0YZb9m3KwC2lLAZ7vaE0JfibWldvPZXI4nR3QdsV9jcLTpyoixm7lmOvbqvZe7VhZXkLyjzIsMSoAAqzbQpNRRKvZr1xFEBnRfYfN+ZJj7xd0yvewqQAuSyLVDnoulpWfrl0POWpOrpk265SLupwy0yf19Ye+cBrGMnx1+f6MccVpnJ1BJzcXh4KMDIYPqAjndQGcNZO/
- i6zgBVXE
- mgkKAmDCR1XnXrHt+IUBJjkRyuG48x7FKoi2oDnBjaKA/xFBQjzGryzph6ygYHLwYgVHZkWaWqplzQAYrtjbhFonK8TNnukHbkEmBlmylNVbkR9vj5wTYhOQK6//N+tbUDuydoIf4RFNJz2NIVUhU68JByXgSm7Q2UUjZfG2a+twG6znElXg8wjEjc1fIn7L8oC51W7r6r0IOrGKsFMCTcEkH4YKNIonNjueKNYDkRurlTfsDGZyyN4rpKzc7C+G7a3cRhuo8Z53Sk9P7XEt8wET8NmgivIZKuVgpeGn51+cnQY4g4wImM7EQZ5k/PzjFZUonv4CtyyBEl4+5XHeBOGP6j9Y1p5IgN/NMqS9ebalka5JSE8+CwyngkRizXfJzvuKbFjl8rH4Q43f9IkgqOfDx7A==
+X-HE-Tag: 1759107897-215756
+X-HE-Meta: U2FsdGVkX1+fYx0NsUPnCxagwC0acaigAVr2F4cLAzFFdQ7XNisJNZ269ux4/99n4SUlNtPq977iTQVoEYHDzsETe/HJCT46BQ0ZgyuRLIT0mTN3nTsPB5ItEQ+ukwGyQnf7VBNzQjR+ugzsC8Bdhdf/Rvo+6qfiaSc07uitPoGChllqHKcyfxtesICSvYZ3ps+mbFfQ53f8bmrlL2J+FkzFTEXuFu9eI+m/7VmmuHdsRVsaeRSFQECjeE76tMxQl2I4So1qCyTTwTziB82wUXoUOEoAEBM7ULUwN1eJ1QJ4P0mJxC24Ao34oJAsoex2GlMBljjr5j8xxuwgTKyk98LKVgo5omBP+ex0qtffqDagi+5jsUScRgsh8ZRmJKPc63r0tpX8F0FUQ175DipVw5YxSxBCCBCgGOsIZVjcMgf2L7tiHPauCIu3NpImMNS7UpSYRN92EAjuVmcbQq8ERGrgpAABZMUUCk2j4oL1axgVv31Nrx+sHwthdZK/XJgCgMZlA8OrM8E2SEe3wnBjEBpS6ClY6qIpPm6HfXv5GDdRHsahODKMC+RETLOb9UQgqHPQ/1eqXtSO+HsHOmsXgtXtC3nggNaTs9YaDEJSbpEoKp4fiU+alEhyEQ6KxTepjP7CHCo5lj4AFi3GNOn8Bh978VW7yzmVEvolOeBMm7zRabIdUkimhDdk9IwkR3ObY4L5g/F+VWQfCufLVDYhz3QoOKCMXE7HlOcmBeT1RhuFYCUEZjq5mEyzP2ZKTGptyGrToCoUOnrGKOTb1DnA0BgsriUlaWsBnALJo9NZKbPFEMiRdDdSWCbPnDvQn1KpAZyPSlA8bWoEdIjvaJKFtb2BZ49VLAqOVyn6l3dN/LDL/zJn/9yHT3MHViuGKTe6xxkfvmtci0yTK2oUVnu5ZwU2MQXIy4H3vQOWc37j2e0VPlf1nG2167vriEhhoWHD1SAI/jbfg8OQXZtcVPe
+ MbqGp3zD
+ 6e6H0EQZ+DEyxGvxg374xNqX3eadnaLezzpHELsb1Kp/FgSDbEHgnLHMtrX/z/JqqhUGRvvDE1aDgrP1jEUlnXFaGHbQqgIa+S6H6u2PW0pMWjL0LVtFIeiSOa2Y2fx+ybFT9hDFoGwFliM/OgVC+HQ5t8k0wgyZAwZJaIl8hzl4RGc8LfviWH0oLQ3O/p3JPoy137UA1uJM0wjoIZqNUrqGXKhwk5YQfZ66PnAqToRoWrnQsbh8wI5W4oJlzI1o1NTBOsfBnsH+CCPQSZWGD+VxofyB41nUMcRI2P1p9z8unBhjjPsZXSEqjF7oqPEjYTNjIcPcd6fo2Osw5F7t62vSDwLlt94zcb8FzaEpX36Fs0/lKecNfRtifmswvXER3nVTwox7ROuclKFO5W0IppxFdNA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -192,164 +192,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce a new selftest, luo_unreclaimed, to specifically validate that
-the LUO framework correctly identifies and cleans up preserved
-resources that are not restored by userspace after a kexec reboot.
+Introduce two new, non-kexec selftests to validate the state transition
+logic for individual LUO sessions, with a focus on the PREPARE, FREEZE,
+and CANCEL events. While other tests cover the full kexec lifecycle, it
+is critical to also test the internal per-session state machine's logic
+and rollback capabilities in isolation. These tests provide this focused
+coverage, ensuring the core session management ioctls behave as
+expected.
 
-Ensuring proper cleanup of unreclaimed (or "abandoned") resources is
-critical for preventing resource leaks in the kernel. This test provides
-a focused scenario to verify this cleanup path, which is a key aspect of
-the LUO's robustness.
+The new test cases are:
+1. session_prepare_cancel_cycle:
+  - Verifies the fundamental NORMAL -> PREPARED -> NORMAL state
+    transition path.
+  - It creates a session, preserves a file, sends a per-session PREPARE
+    event, asserts the state is PREPARED, then sends a CANCEL event and
+    asserts the state has correctly returned to NORMAL.
 
-The test performs a full kexec cycle with the following simple flow:
-
-1. Pre-kexec:
-  - A single session is created.
-  - Two memfd files are preserved: File A (which will be restored) and
-    File B (which will be abandoned).
-  - The global LIVEUPDATE_PREPARE event is triggered, and the system
-    reboots.
-2. Post-kexec:
-  - The preserved session is retrieved.
-  - Only File A is restored and its contents are verified to confirm the
-    basic preservation mechanism is working.
-  - File B is intentionally not restored.
-  - The global LIVEUPDATE_FINISH event is triggered.
-3. Verification:
-  - The test passes if File A is verified successfully.
+2. session_freeze_cancel_cycle:
+  - Extends the first test by validating the more critical ... ->
+    FROZEN -> NORMAL rollback path.
+  - It follows the same steps but adds a FREEZE event after PREPARE,
+    asserting the session enters the FROZEN state.
+  - It then sends a CANCEL event, verifying that a session can be rolled
+    back even from this final pre-kexec state. This is essential for
+    robustly handling aborts.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- tools/testing/selftests/liveupdate/Makefile   |   1 +
- .../selftests/liveupdate/luo_unreclaimed.c    | 107 ++++++++++++++++++
- 2 files changed, 108 insertions(+)
- create mode 100644 tools/testing/selftests/liveupdate/luo_unreclaimed.c
+ tools/testing/selftests/liveupdate/Makefile   |  9 ++-
+ .../testing/selftests/liveupdate/liveupdate.c | 56 +++++++++++++++++++
+ 2 files changed, 64 insertions(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/liveupdate/Makefile b/tools/testing/selftests/liveupdate/Makefile
-index 72892942dd61..ffce73233149 100644
+index ffce73233149..25a6dec790bb 100644
 --- a/tools/testing/selftests/liveupdate/Makefile
 +++ b/tools/testing/selftests/liveupdate/Makefile
-@@ -12,6 +12,7 @@ LUO_SHARED_HDRS += luo_test_utils.h
- LUO_MANUAL_TESTS += luo_multi_file
- LUO_MANUAL_TESTS += luo_multi_kexec
- LUO_MANUAL_TESTS += luo_multi_session
-+LUO_MANUAL_TESTS += luo_unreclaimed
+@@ -16,11 +16,18 @@ LUO_MANUAL_TESTS += luo_unreclaimed
  
  TEST_FILES += do_kexec.sh
  
-diff --git a/tools/testing/selftests/liveupdate/luo_unreclaimed.c b/tools/testing/selftests/liveupdate/luo_unreclaimed.c
-new file mode 100644
-index 000000000000..c3921b21b97b
---- /dev/null
-+++ b/tools/testing/selftests/liveupdate/luo_unreclaimed.c
-@@ -0,0 +1,107 @@
-+// SPDX-License-Identifier: GPL-2.0-only
+-TEST_GEN_PROGS += liveupdate
++LUO_MAIN_TESTS += liveupdate
+ 
+ # --- Automatic Rule Generation (Do not edit below) ---
+ 
+ TEST_GEN_PROGS_EXTENDED += $(LUO_MANUAL_TESTS)
++TEST_GEN_PROGS := $(LUO_MAIN_TESTS)
 +
-+/*
-+ * Copyright (c) 2025, Google LLC.
-+ * Pasha Tatashin <pasha.tatashin@soleen.com>
-+ */
++liveupdate_SOURCES := liveupdate.c $(LUO_SHARED_SRCS)
 +
++$(OUTPUT)/liveupdate: $(liveupdate_SOURCES) $(LUO_SHARED_HDRS)
++	$(call msg,LINK,,$@)
++	$(Q)$(LINK.c) $^ $(LDLIBS) -o $@
+ 
+ # Define the full list of sources for each manual test.
+ $(foreach test,$(LUO_MANUAL_TESTS), \
+diff --git a/tools/testing/selftests/liveupdate/liveupdate.c b/tools/testing/selftests/liveupdate/liveupdate.c
+index 7c0ceaac0283..804aa25ce5ae 100644
+--- a/tools/testing/selftests/liveupdate/liveupdate.c
++++ b/tools/testing/selftests/liveupdate/liveupdate.c
+@@ -17,6 +17,7 @@
+ #include <sys/mman.h>
+ 
+ #include <linux/liveupdate.h>
 +#include "luo_test_utils.h"
-+#include "../kselftest.h"
+ 
+ #include "../kselftest.h"
+ #include "../kselftest_harness.h"
+@@ -52,6 +53,16 @@ const char *const luo_state_str[] = {
+ 	[LIVEUPDATE_STATE_UPDATED]  = "updated",
+ };
+ 
++static int get_session_state(int session_fd)
++{
++	struct liveupdate_session_get_state arg = { .size = sizeof(arg) };
 +
-+#define KEXEC_SCRIPT "./do_kexec.sh"
++	if (ioctl(session_fd, LIVEUPDATE_SESSION_GET_STATE, &arg) < 0)
++		return -errno;
 +
-+#define SESSION_NAME "unreclaimed_session"
-+#define TOKEN_A 100
-+#define TOKEN_B 200
-+#define DATA_A "This is file A, the one we retrieve."
-+#define DATA_B "This is file B, the one we abandon."
++	return arg.state;
++}
 +
-+static void run_pre_kexec(int luo_fd)
+ static int run_luo_selftest_cmd(int fd_dbg, __u64 cmd_code,
+ 				struct luo_arg_subsystem *subsys_arg)
+ {
+@@ -345,4 +356,49 @@ TEST_F(subsystem, prepare_fail)
+ 		ASSERT_EQ(0, unregister_subsystem(self->fd_dbg, &self->si[i]));
+ }
+ 
++TEST_F(state, session_freeze_cancel_cycle)
 +{
 +	int session_fd;
++	const char *session_name = "freeze_cancel_session";
++	const int memfd_token = 5678;
 +
-+	ksft_print_msg("[PRE-KEXEC] Starting workload...\n");
++	session_fd = luo_create_session(self->fd, session_name);
++	ASSERT_GE(session_fd, 0);
 +
-+	session_fd = luo_create_session(luo_fd, SESSION_NAME);
-+	if (session_fd < 0)
-+		fail_exit("Failed to create session '%s'", SESSION_NAME);
++	ASSERT_EQ(0, create_and_preserve_memfd(session_fd, memfd_token,
++					       "freeze test data"));
 +
-+	ksft_print_msg("[PRE-KEXEC] Preserving memfd A (to be restored).\n");
-+	if (create_and_preserve_memfd(session_fd, TOKEN_A, DATA_A) < 0)
-+		fail_exit("Failed to preserve memfd A");
++	ASSERT_EQ(0, luo_set_session_event(session_fd, LIVEUPDATE_PREPARE));
++	ASSERT_EQ(get_session_state(session_fd), LIVEUPDATE_STATE_PREPARED);
 +
-+	ksft_print_msg("[PRE-KEXEC] Preserving memfd B (to be abandoned).\n");
-+	if (create_and_preserve_memfd(session_fd, TOKEN_B, DATA_B) < 0)
-+		fail_exit("Failed to preserve memfd B");
++	ASSERT_EQ(0, luo_set_session_event(session_fd, LIVEUPDATE_FREEZE));
++	ASSERT_EQ(get_session_state(session_fd), LIVEUPDATE_STATE_FROZEN);
 +
-+	if (luo_set_global_event(luo_fd, LIVEUPDATE_PREPARE) < 0)
-+		fail_exit("Failed to set global PREPARE event");
-+
-+	ksft_print_msg("[PRE-KEXEC] System is ready. Executing kexec...\n");
-+	if (system(KEXEC_SCRIPT) != 0)
-+		fail_exit("kexec script failed");
-+
-+	sleep(10);
-+	exit(EXIT_FAILURE);
-+}
-+
-+static void run_post_kexec(int luo_fd)
-+{
-+	int session_fd, mfd_a;
-+
-+	ksft_print_msg("[POST-KEXEC] Starting workload...\n");
-+
-+	session_fd = luo_retrieve_session(luo_fd, SESSION_NAME);
-+	if (session_fd < 0)
-+		fail_exit("Failed to retrieve session '%s'", SESSION_NAME);
-+
-+	ksft_print_msg("[POST-KEXEC] Restoring and verifying memfd A (token %d)...\n",
-+		       TOKEN_A);
-+	mfd_a = restore_and_verify_memfd(session_fd, TOKEN_A, DATA_A);
-+	if (mfd_a < 0)
-+		fail_exit("Failed to restore or verify memfd A");
-+	close(mfd_a);
-+	ksft_print_msg("  Data verification PASSED for memfd A.\n");
-+
-+	ksft_print_msg("[POST-KEXEC] NOT restoring memfd B (token %d) to test cleanup.\n",
-+		       TOKEN_B);
-+
-+	ksft_print_msg("[POST-KEXEC] Driving global state to FINISH...\n");
-+	if (luo_set_global_event(luo_fd, LIVEUPDATE_FINISH) < 0)
-+		fail_exit("Failed to set global FINISH event");
++	ASSERT_EQ(0, luo_set_session_event(session_fd, LIVEUPDATE_CANCEL));
++	ASSERT_EQ(get_session_state(session_fd), LIVEUPDATE_STATE_NORMAL);
 +
 +	close(session_fd);
-+
-+	ksft_print_msg("\n--- TEST PASSED ---\n");
-+	ksft_print_msg("Check dmesg for cleanup log of token %d in session '%s'.\n",
-+		       TOKEN_B, SESSION_NAME);
 +}
 +
-+int main(int argc, char *argv[])
++TEST_F(state, session_prepare_cancel_cycle)
 +{
-+	enum liveupdate_state state;
-+	int luo_fd;
++	const char *session_name = "prepare_cancel_session";
++	const int memfd_token = 1234;
++	int session_fd;
 +
-+	luo_fd = luo_open_device();
-+	if (luo_fd < 0) {
-+		ksft_exit_skip("Failed to open %s. Is the luo module loaded?\n",
-+			       LUO_DEVICE);
-+	}
++	session_fd = luo_create_session(self->fd, session_name);
++	ASSERT_GE(session_fd, 0);
 +
-+	if (luo_get_global_state(luo_fd, &state) < 0)
-+		fail_exit("Failed to get LUO state");
++	ASSERT_EQ(0, create_and_preserve_memfd(session_fd, memfd_token,
++					       "prepare test data"));
 +
-+	switch (state) {
-+	case LIVEUPDATE_STATE_NORMAL:
-+		run_pre_kexec(luo_fd);
-+		break;
-+	case LIVEUPDATE_STATE_UPDATED:
-+		run_post_kexec(luo_fd);
-+		break;
-+	default:
-+		fail_exit("Test started in an unexpected state: %d", state);
-+	}
++	ASSERT_EQ(0, luo_set_session_event(session_fd, LIVEUPDATE_PREPARE));
++	ASSERT_EQ(get_session_state(session_fd), LIVEUPDATE_STATE_PREPARED);
 +
-+	close(luo_fd);
-+	ksft_exit_pass();
++	ASSERT_EQ(0, luo_set_session_event(session_fd, LIVEUPDATE_CANCEL));
++	ASSERT_EQ(get_session_state(session_fd), LIVEUPDATE_STATE_NORMAL);
++
++	close(session_fd);
 +}
++
+ TEST_HARNESS_MAIN
 -- 
 2.51.0.536.g15c5d4f767-goog
 
