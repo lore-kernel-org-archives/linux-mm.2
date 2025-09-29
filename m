@@ -4,102 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70C4BCAC5B0
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 11:42:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BEB6CAC5B5
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 11:43:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB2308E0028; Mon, 29 Sep 2025 07:42:54 -0400 (EDT)
+	id BA0748E002A; Mon, 29 Sep 2025 07:43:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C63178E0002; Mon, 29 Sep 2025 07:42:54 -0400 (EDT)
+	id B50DA8E0002; Mon, 29 Sep 2025 07:43:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B04228E0028; Mon, 29 Sep 2025 07:42:54 -0400 (EDT)
+	id A40308E002A; Mon, 29 Sep 2025 07:43:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 95AB48E0002
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 07:42:54 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2C43486C3B
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 11:42:54 +0000 (UTC)
-X-FDA: 83942101068.06.06F9234
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 68192180004
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 11:42:52 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 8D6B08E0002
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 07:43:07 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5E309119A55
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 11:43:07 +0000 (UTC)
+X-FDA: 83942101614.25.B4A78BC
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 647F8180011
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 11:43:05 +0000 (UTC)
 Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=d5FDUCj0;
-	spf=pass (imf24.hostedemail.com: domain of gmonaco@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=gmonaco@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Au+XeKIQ;
+	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759146172;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1759146185;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FfADzoiCbyBtyAaLw463Wx6LUyiLBEBIcUcZudbfl5k=;
-	b=goUqVohg71MuNmYi0rS41vG/ZpdLOcL5cYq+iy/80NlbAacZXnRkhiNjWSDQQOKi4TjLKm
-	oC8QkqTjrAbD2qN+CPN/LVa9wCtZ4oIeRck/4O2jV6522YggTg+ob6j5wj81fWG12qpDaf
-	qxS8oHI2Q/6lqotjWTItIL0ugoCPjpo=
+	bh=6mbjVJui29v4n+pWGfvI7ZRvpZGP8q8p7zkZRQub17I=;
+	b=7BVopu8mufHKjNNX4QAMIhnzhOL2A2tDxY36tRsyZwroEMA0IJBEU66UU/F8PdeBxk5GG+
+	dD/4ORCA0mYzK46CRgQvPnMbAcE7lc3TkD1HzJTwUpdiutL7dso82G0I6D5PciqJHijGNL
+	YN9QwBNJjEQaCbSniQv8YV+vBOCGYB4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759146185; a=rsa-sha256;
+	cv=none;
+	b=tl6phjSAHvpOzp1cYeTxJWjDbZptuU5W5D8iwcbKZYehhH7Z1zA2PKF/SnTm52+T7f+OCX
+	YqhpvUjY17vpEY0jthwXYcwIHzTgO3bASAOErf0PwK5KF2x4pPTNokWv8QODKRBbigUnXM
+	jai90sskj7DUl/5iXMRVMR3o+c1b6qA=
 ARC-Authentication-Results: i=1;
 	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=d5FDUCj0;
-	spf=pass (imf24.hostedemail.com: domain of gmonaco@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=gmonaco@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759146172; a=rsa-sha256;
-	cv=none;
-	b=22um2wN4KEE8Xp8EI05jLJbtcV1wM0EgyZXhyDpXl+HTO1xDU86UlGDZmfk2Eu8iNOixcY
-	7oXP9OVmIV1/DbCHXXfpRIESNawXbIqmEvSGAGVuhnJu+PuqfiuHh/pVahva7DfXA+iEXC
-	JDHxPkKwHUrqvWs2ukA8WswmwE4pv0U=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759146171;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FfADzoiCbyBtyAaLw463Wx6LUyiLBEBIcUcZudbfl5k=;
-	b=d5FDUCj0PlRPg0H+hspAUVGtL/5igYoL0ZYjd6yKM7iSFnuoC3uCOiQOwh/EbMDgOBBrj0
-	5hqB5m6NkLlE84TxlgA8UtsKqYcLDnxCBBtN+UYV9awVznQNB1an1gHM8JTSPM6Rrvlemn
-	uRAyH4TtgG2gk6E9hXYfYVWvMezQwxo=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-49-M6vFsBw4NUqOLclGlyQs1Q-1; Mon,
- 29 Sep 2025 07:42:50 -0400
-X-MC-Unique: M6vFsBw4NUqOLclGlyQs1Q-1
-X-Mimecast-MFC-AGG-ID: M6vFsBw4NUqOLclGlyQs1Q_1759146169
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A4CE7195608E;
-	Mon, 29 Sep 2025 11:42:48 +0000 (UTC)
-Received: from gmonaco-thinkpadt14gen3.rmtit.csb (unknown [10.44.32.41])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6910E19560A2;
-	Mon, 29 Sep 2025 11:42:44 +0000 (UTC)
-From: Gabriele Monaco <gmonaco@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	linux-mm@kvack.org
-Cc: Gabriele Monaco <gmonaco@redhat.com>
-Subject: [PATCH v3 3/4] sched: Compact RSEQ concurrency IDs in batches
-Date: Mon, 29 Sep 2025 13:42:24 +0200
-Message-ID: <20250929114225.36172-4-gmonaco@redhat.com>
-In-Reply-To: <20250929114225.36172-1-gmonaco@redhat.com>
-References: <20250929114225.36172-1-gmonaco@redhat.com>
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Au+XeKIQ;
+	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-62fbfeb097eso6494485a12.2
+        for <linux-mm@kvack.org>; Mon, 29 Sep 2025 04:43:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759146184; x=1759750984; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6mbjVJui29v4n+pWGfvI7ZRvpZGP8q8p7zkZRQub17I=;
+        b=Au+XeKIQ4pCY7qd+ptHfaVduKzvjvqs3pIndCEsu7bKhf/D3ky1gbqluq7Ydt91f8c
+         FbGhYFqGjuMEyawBAFVrObBZo77TwIkN66u5aj5annNVXnhAiBf30ruXTfotIILx+InT
+         ymlA2IDKUWfJ+vG8WCOWxNuKuqWjAPUwLxlOWRUR29PqUFQJ1nLyCqmEhjPHS4rE+4z6
+         5z16ILnwCPM+4DhdG1UowW6NRDTbCBtkpjv2R2TGDjRjSWpoCi1R47To/9XwynVyD+mV
+         nQHhB1r/++92NXpk2bqSpJS4igOqUl7Cd3HioNVPbtDEp+TLQfcZAeTP+Ld51grBiJ6K
+         /RQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759146184; x=1759750984;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6mbjVJui29v4n+pWGfvI7ZRvpZGP8q8p7zkZRQub17I=;
+        b=iwg6p5jOObdTezD2JVl4BhYg+mASfUGXP1F7cX0TpRrb9CA2bOG8tz5A2gvSHzTgET
+         2THBv3FCv2kR2nW9YgtOlSBIM3935ReK4Fo7THjxBQCgPpEJHGxj4k0e87KNYDzLW7aK
+         YOMUuKBac9D6r11xI6pNMLnKdQn7U4BGmz0ppvZ1f//XmDf/K8xhENuY6bJ1vuV03zSM
+         Hb6wQKTLJFVRtH514ZQ8qYnFAAE9PlbFA4IB1y816M7CNbl0BAKFwIBlUY5EYWH9FsUi
+         ni79yQNgCQ4xYOH3L9CdFADsvinjlGn0foe9tIULqYNevqAy9tnk8V6fIpLUimUwhSm9
+         5YAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXQV6JyQGgsDUMR4G0UKYL2SIvItTbYBLuRBCvVjmnkDfbZHDRfQH3D9kfFWNs/dEcbNvi3a50CQA==@kvack.org
+X-Gm-Message-State: AOJu0YzVCXGx7lCoBIqm9pzPTcngx7hjGAsMDWqREhyiu+glG84xaQkm
+	GzLIVH086yixUObyvBZmnev+LmF4L/b72/9ao2dunsv6reCrzLB9R+4W
+X-Gm-Gg: ASbGncvQX+HAgMnmbeC5d8c6EmsBWMeWBFWzRWarYcUfXJE4dJ/ZGRm1HQeHDc/3DRE
+	wOWcnn2AJYGya1bt+rkeWfuN0NIcb/JLpDhVt6aVOdml3XXtb9RAkK/InXBxMc/MSaTTtVNb8Ns
+	Mtq+QhW3C6xGcg6G3tZ2XDO5Wnp3fUwTk6GFgKMWfOMoryQEXVsm7NOOIQM/TlRD4E03xKwPO/7
+	1iITe9J6+LDzm++tAqjuJcKITFtaUXQ6oXQI4P1baj1tx2dMFYhywgz3aotvJWu6hF8ZGd0578T
+	LOhTstoNX2SWxgix0wGvNy78ba7KIlGaPbCLK48D+jB0i/tA9jb6dD4Myqr2+ub2F++TEY+Hn8g
+	emOXUuZkc4OUkrSw8MKOkfxhhgKu/MxmMS/ov
+X-Google-Smtp-Source: AGHT+IHpSaj2SVniGIDju9aHpbyUh48ii8/cQ5YSVvAGh2d+K7m0MNGtY13FQ+XBP5NLGndaXCuTRQ==
+X-Received: by 2002:a05:6402:504b:b0:62f:cc4b:7b53 with SMTP id 4fb4d7f45d1cf-6349fa932c5mr14065525a12.37.1759146183418;
+        Mon, 29 Sep 2025 04:43:03 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-634a3ae3080sm7873345a12.34.2025.09.29.04.43.02
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 29 Sep 2025 04:43:02 -0700 (PDT)
+Date: Mon, 29 Sep 2025 11:43:02 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Jianyun Gao <jianyungao89@gmail.com>
+Cc: dev.jain@arm.com, Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+	baohua@kernel.org, bhe@redhat.com, chengming.zhou@linux.dev,
+	chrisl@kernel.org, cl@gentwo.org, damon@lists.linux.dev,
+	david@redhat.com, dvyukov@google.com, elver@google.com,
+	glider@google.com, harry.yoo@oracle.com, jannh@google.com,
+	jgg@ziepe.ca, jhubbard@nvidia.com, kasan-dev@googlegroups.com,
+	kasong@tencent.com, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mhocko@suse.com,
+	nphamcs@gmail.com, peterx@redhat.com, pfalcato@suse.de,
+	rientjes@google.com, roman.gushchin@linux.dev, rppt@kernel.org,
+	shikemeng@huaweicloud.com, sj@kernel.org, surenb@google.com,
+	vbabka@suse.cz, xu.xin16@zte.com.cn
+Subject: Re: [PATCH v2] mm: Fix some typos in mm module
+Message-ID: <20250929114302.eshtdbqkjiuflsib@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <3c3f9032-18ac-4229-b010-b8b95a11d2a4@arm.com>
+ <20250929002608.1633825-1-jianyungao89@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250929002608.1633825-1-jianyungao89@gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Stat-Signature: 1dc9a5qrk3cchygncsdmhaozaedsz3b6
+X-Rspamd-Queue-Id: 647F8180011
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 68192180004
-X-Stat-Signature: ytguzmdrny98iqq1dufzh8ccjcowkufm
-X-HE-Tag: 1759146172-88504
-X-HE-Meta: U2FsdGVkX19TpH15qSh3kSeg3crFSFOkPLQfkXqa0VYKJ+G4OUaiAt5f0OodIghc1OwvZG6i453MepYCbdOb0MS7L/EuFmZj4UlOy19N2qav9hPATPgxdjd5n1BcBYoDLNHJLv1lGkx/CjfXCqTGbGnKBEjgjE4BoON+t71LAeP0LMI3tIj8oykGHyXWMafCICmGwe6Urvxz931i+5in6Fn71xodcqvD3+h6ZSsB9DR6xoRA+trLmyfPyb4CYzcE1g+m7X8hhaBAVcBhtj1uL9StZFYYRhXeQuJ9rydQaRnIzP+PHso4FPJHrz9Pn5FGckD9hPNRfwsPTimv2ORvn7wr5liBqjOYtxdZxghWZmomgomVC6YyyV5PnfmgmujyIy0PcxXD8d2GwbgLpOFt7pMuovxvIfxga37ama6oPwXu6C3hn/ZyjP+CWlGxFQizwZ9NH5jO8/+6f5dt0axfpcO5Fx+qDwduBpjn3eSE5krnapRDVbibyBXeZZLVJStfTvnjectAyWeCwvV/zjoJzGQJiHbDA8l6Ww8TpjHyOnoAQiPGYw+9fmwVKyH6OFr+c2ItakT4DcJVaKvFXFOIElL3QaE9cuiyf2wXPN8yXQ49aSMbMaTh/RQ69AKL5RJEeLt9zdq4HEcp/CXXDhOQdrNdGZ0/t6e2L0wSewkqsh4xS0lOHNpxw3zH3EDeAvzv5jjOaRzwRQH5ZvaUwvxiZWw2LG8Eghs8LdDAJw7y+oZiHpvIISDvDBN0UacHs6E7AmHrP6LPPqAVfnorTb9fYT70ok2eA0+3Spt860M4sPmIX0MtSOf4ZehB3RHS6WXxTHowTykBey9IO8vq73ZcDsjg4bnyTVrQGaD97VA2WbLzvmaIiIC2s4/PG9dxiTeXUGgVU/QmGQl7AgiEz2lCxSGqAq7+oXtvW49OHDBLzPapXTQ41qChc+8Eh5Jdj2Y4CTUINV/M3DXhgF5d9kf
- mtE7rGTr
- CVUOBJ0dsgUIvv9hl8RiNY+z2GsNNxfiPkzN5V99ja0l6GpHdi9ew6gemazGQZOHggcqilc+ekZgBPmo7H28hTDpkNIgubBEolGZpmhu2j+lDZg2mu8BWMZRyBP+O/irwJDNmV9twj+Xvesb+DhTs6tB6nvNaqWWNWbPvnUSk+fYLTI3cbg5fx2J4MS38U+/fYASO6hqd31htvinDC4hTF7qg4tIKH6gN+h85Vy0o4sA0/D5MIwTzdAM71+R8uSrHy5kw4JZham5LV0geqmrztGhPo6+jzRYYD0DMDdMgeu19iFmR6sUhxEde81I863CvyuTWOeHArMeOz/Ijtk80HBCDmkUA/rEZ9Rl+E6u8C3tppZo=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1759146185-628740
+X-HE-Meta: U2FsdGVkX1/HB+HcyVu6t5W7JlpPfszvOKtq2LXJ4Z+F1PWMqWB/h6KC/M/p1k39UnT9CkLdiyjqtoNkweXdnlnbRAgroVlHuUmazCR6bB8DntGtopQyc2O2O/bBhW/0pLX5VT3vRX/Q+FY4xJZz9jpLQakZ9uCeCLFR4zrnf6Wn5O1jyQu4CqdhvfKFjDUw1tVeD2wqfPoVx4es46asKFya+rXZxyUjMr1sNx+d6lEE0oLUKAqBK5iH1tRiM/W6ScxWEp3NZBZxh3WeGIYM3WaTtWeFXMQCpsdiAkI5EjKQmp6jk/8R5MDNFNUJ7o8f1cIddvc45TxH1gKBP5yi0g5HabxIi9X3eO5VT+g7lxCp1/aU1tC1JhOxFtB4Rp8vIJI/E+B+YwQyDVrGoq3Vs0JtgUC1XV/JmM/QdVs2VYVhiG1o+iQq1fPnV4je32sayrz1plbLl9EOdzZVAfvT0QR9CQyRCgBVDpgsUWohlhFS0roqYO1mftHZiIrLP0bP01tcKlC78IXcICy3cyfEIwcJFgTKyjBxADZDH1wRXjAB0JHEEKxX9N6ItDzglGMnZN6P6rrhxiaOHPFU4nWFn49TkQjvddpIlo5rSlx/7TGk3JIHQE9T8b3PC9fNAC70fI8xzoiI2w6wmGQElJZd6bE2lxIKv06IcvyMaIM75dEZmy32H6x7WjfvkVJm3C8UC691UwnNMW+168YOG69wPvI7sdKlWoUJfre+UfMi5+IV+uhHgOMVesSHz7S9bT2V4137RqItKPYrEkuoy0aAm96FHePAubE2u4LBajJbE3xC9AdKIcR++AMDopcYSbeQS6ftUmVZ9AkvY0GaYmEu+phkf+Lspl17WcUt/FnbHJviw4GvOu+VGmTwH3hHZBCIsVwYka1xoiP0IEGp35lCmWvAiwrbIqXK6nZ8bfFP/b2x//VarDAb2qHXlTeXsxv3hlznFkuy/DMwaXV9RJF
+ cfGg22yw
+ vEP8fQao4oZZnBIj/SGeykQWtW3hcbvyUNMZDuostq9pH0QUfYMUdThNtRrGHkjPcPWjFEXcH0nQ6LOMKzRe2mXc5oXQCi0iN2uaWIC32qFOxtXMj/QIdOz8DU1y21aDRdjlPx5Sel4AVcxX35DaF9Ftx7On1ok13bq0vAYD1Rdl1ZrWTuP3nc96Few9DolEzRbAFhHTgP2mx1bHe3Is2GiibWuv6W3w/N3ceItdworwSzM1mTDi3Y/LZ+P047QN/SHj/Zsp6HLokEQZq+hK3exewRvl72y+9rjPeJKuYI93ODLpsOPQp7eu+mJa+8ZZ9HtX6m5J8v/cqKc+ffNPf4YXcVuR4Z/xe0mtoyhrLbugd6be+6194lcGzwSOYFlMV7RHRih+tsNQFD8on6dU819pEvkbtpODzrTdZKpPIGjRz38aih36XEyepOOcuMR2Qh0Rf+zTM99vRUW9kvZma3AZJlOaeJZLdgpp/7mYxNPtlIsfkgiEXRHfHdSMA9dPHf8I1KJhlkJ4REF5bAtJ05SaRZIvbdyZM6J//FRxjSnPmyoKho1Y6JF/xA0iOamnGyuBH86V8k2AOc84jqmawlUbYX39axU2mlD19TsRiALa+xWpyWmKMPh3Pj8J0BioyEcr5fDsoy/TygqOCTnX6j71H2iCqXd5roh1H7uayGSCVunncT9h3UTBNatJw55paop9Qgi6PEOSbTSA6C7MTwnKGM8lmh60jIMvI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,169 +131,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, task_mm_cid_work() is called from resume_user_mode_work().
-This can delay the execution of the corresponding thread for the entire
-duration of the function, negatively affecting the response in case of
-real time tasks.
-In practice, we observe task_mm_cid_work increasing the latency of
-30-35us on a 128 cores system, this order of magnitude is meaningful
-under PREEMPT_RT.
+On Mon, Sep 29, 2025 at 08:26:08AM +0800, Jianyun Gao wrote:
+>From: "jianyun.gao" <jianyungao89@gmail.com>
+>
+>Below are some typos in the code comments:
+>
+>  intevals ==> intervals
+>  addesses ==> addresses
+>  unavaliable ==> unavailable
+>  facor ==> factor
+>  droping ==> dropping
+>  exlusive ==> exclusive
+>  decription ==> description
+>  confict ==> conflict
+>  desriptions ==> descriptions
+>  otherwize ==> otherwise
+>  vlaue ==> value
+>  cheching ==> checking
+>  exisitng ==> existing
+>  modifed ==> modified
+>  differenciate ==> differentiate
+>  refernece ==> reference
+>  permissons ==> permissions
+>  indepdenent ==> independent
+>  spliting ==> splitting
+>
+>Just fix it.
+>
+>Signed-off-by: jianyun.gao <jianyungao89@gmail.com>
 
-Run the task_mm_cid_work in batches of up to CONFIG_RSEQ_CID_SCAN_BATCH
-CPUs, this reduces the duration of the delay for each scan.
+LGTM
 
-The task_mm_cid_work contains a mechanism to avoid running more
-frequently than every 100ms. Keep this pseudo-periodicity only on
-complete scans.
-This means each call to task_mm_cid_work returns prematurely if the
-period did not elapse and a scan is not ongoing (i.e. the next batch to
-scan is not the first).
-This way full scans are not excessively delayed while still keeping each
-run, and introduced latency, short.
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
 
-Fixes: 223baf9d17f2 ("sched: Fix performance regression introduced by mm_cid")
-Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
----
- include/linux/mm_types.h | 15 +++++++++++++++
- init/Kconfig             | 12 ++++++++++++
- kernel/sched/core.c      | 31 ++++++++++++++++++++++++++++---
- 3 files changed, 55 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 5dab88707014..83f6dc06b15f 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -994,6 +994,13 @@ struct mm_struct {
- 		 * When the next mm_cid scan is due (in jiffies).
- 		 */
- 		unsigned long mm_cid_next_scan;
-+		/*
-+		 * @mm_cid_scan_batch: Counter for batch used in the next scan.
-+		 *
-+		 * Scan in batches of CONFIG_RSEQ_CID_SCAN_BATCH. This field
-+		 * increments at each scan and reset when all batches are done.
-+		 */
-+		unsigned int mm_cid_scan_batch;
- 		/**
- 		 * @nr_cpus_allowed: Number of CPUs allowed for mm.
- 		 *
-@@ -1389,6 +1396,7 @@ static inline void mm_init_cid(struct mm_struct *mm, struct task_struct *p)
- 	raw_spin_lock_init(&mm->cpus_allowed_lock);
- 	cpumask_copy(mm_cpus_allowed(mm), &p->cpus_mask);
- 	cpumask_clear(mm_cidmask(mm));
-+	mm->mm_cid_scan_batch = 0;
- }
- 
- static inline int mm_alloc_cid_noprof(struct mm_struct *mm, struct task_struct *p)
-@@ -1427,8 +1435,15 @@ static inline void mm_set_cpus_allowed(struct mm_struct *mm, const struct cpumas
- 
- static inline bool mm_cid_needs_scan(struct mm_struct *mm)
- {
-+	unsigned int next_batch;
-+
- 	if (!mm)
- 		return false;
-+	next_batch = READ_ONCE(mm->mm_cid_scan_batch);
-+	/* Always needs scan unless it's the first batch. */
-+	if (CONFIG_RSEQ_CID_SCAN_BATCH * next_batch < num_possible_cpus() &&
-+	    next_batch)
-+		return true;
- 	return time_after(jiffies, READ_ONCE(mm->mm_cid_next_scan));
- }
- #else /* CONFIG_SCHED_MM_CID */
-diff --git a/init/Kconfig b/init/Kconfig
-index 854b35e33318..8905d64c2598 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1918,6 +1918,18 @@ config DEBUG_RSEQ
- 
- 	  If unsure, say N.
- 
-+config RSEQ_CID_SCAN_BATCH
-+	int "Number of CPUs to scan at every mm_cid compaction attempt"
-+	range 1 NR_CPUS
-+	default 16
-+	depends on SCHED_MM_CID
-+	help
-+	  CPUs are scanned pseudo-periodically to compact the CID of each task,
-+	  this operation can take a longer amount of time on systems with many
-+	  CPUs, resulting in higher scheduling latency for the current task.
-+	  A higher value means the CID is compacted faster, but results in
-+	  higher scheduling latency.
-+
- config CACHESTAT_SYSCALL
- 	bool "Enable cachestat() system call" if EXPERT
- 	default y
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 30652bb4a223..14b79c143d26 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -10784,11 +10784,11 @@ static void sched_mm_cid_remote_clear_weight(struct mm_struct *mm, int cpu,
- 
- static void task_mm_cid_work(struct callback_head *work)
- {
-+	int weight, cpu, from_cpu, this_batch, next_batch, idx;
- 	unsigned long now = jiffies, old_scan, next_scan;
- 	struct task_struct *t = current;
- 	struct cpumask *cidmask;
- 	struct mm_struct *mm;
--	int weight, cpu;
- 
- 	WARN_ON_ONCE(t != container_of(work, struct task_struct, cid_work));
- 
-@@ -10798,6 +10798,17 @@ static void task_mm_cid_work(struct callback_head *work)
- 	mm = t->mm;
- 	if (!mm)
- 		return;
-+	this_batch = READ_ONCE(mm->mm_cid_scan_batch);
-+	next_batch = this_batch + 1;
-+	from_cpu = cpumask_nth(this_batch * CONFIG_RSEQ_CID_SCAN_BATCH,
-+			       cpu_possible_mask);
-+	if (from_cpu >= nr_cpu_ids) {
-+		from_cpu = 0;
-+		next_batch = 1;
-+	}
-+	/* Delay scan only if we are done with all cpus. */
-+	if (from_cpu != 0)
-+		goto cid_compact;
- 	old_scan = READ_ONCE(mm->mm_cid_next_scan);
- 	next_scan = now + msecs_to_jiffies(MM_CID_SCAN_DELAY);
- 	if (!old_scan) {
-@@ -10813,17 +10824,31 @@ static void task_mm_cid_work(struct callback_head *work)
- 		return;
- 	if (!try_cmpxchg(&mm->mm_cid_next_scan, &old_scan, next_scan))
- 		return;
-+
-+cid_compact:
-+	if (!try_cmpxchg(&mm->mm_cid_scan_batch, &this_batch, next_batch))
-+		return;
- 	cidmask = mm_cidmask(mm);
- 	/* Clear cids that were not recently used. */
--	for_each_possible_cpu(cpu)
-+	idx = 0;
-+	cpu = from_cpu;
-+	for_each_cpu_from(cpu, cpu_possible_mask) {
-+		if (idx++ == CONFIG_RSEQ_CID_SCAN_BATCH)
-+			break;
- 		sched_mm_cid_remote_clear_old(mm, cpu);
-+	}
- 	weight = cpumask_weight(cidmask);
- 	/*
- 	 * Clear cids that are greater or equal to the cidmask weight to
- 	 * recompact it.
- 	 */
--	for_each_possible_cpu(cpu)
-+	idx = 0;
-+	cpu = from_cpu;
-+	for_each_cpu_from(cpu, cpu_possible_mask) {
-+		if (idx++ == CONFIG_RSEQ_CID_SCAN_BATCH)
-+			break;
- 		sched_mm_cid_remote_clear_weight(mm, cpu, weight);
-+	}
- }
- 
- void init_sched_mm_cid(struct task_struct *t)
 -- 
-2.51.0
-
+Wei Yang
+Help you, Help me
 
