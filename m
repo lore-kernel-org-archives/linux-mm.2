@@ -4,100 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7459CAC5B9
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 21:17:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E109CAC5B0
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Sep 2025 21:17:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0CA3E8E000B; Mon, 29 Sep 2025 17:17:52 -0400 (EDT)
+	id EFB558E0025; Mon, 29 Sep 2025 17:17:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07A618E0002; Mon, 29 Sep 2025 17:17:52 -0400 (EDT)
+	id E850A8E0002; Mon, 29 Sep 2025 17:17:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EAB268E000B; Mon, 29 Sep 2025 17:17:51 -0400 (EDT)
+	id D4DC48E0025; Mon, 29 Sep 2025 17:17:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D57E68E0002
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 17:17:51 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 672D81DF690
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BA9528E0002
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 17:17:53 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 765A51404F8
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 21:17:53 +0000 (UTC)
+X-FDA: 83943550026.20.D451A73
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 32BF1A0016
 	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 21:17:51 +0000 (UTC)
-X-FDA: 83943549942.12.7839954
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 01F651A0007
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 21:17:48 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WPsZ2uOK;
-	spf=pass (imf19.hostedemail.com: domain of alex.williamson@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=alex.williamson@redhat.com;
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eSzIvrH3;
+	spf=pass (imf15.hostedemail.com: domain of alex.williamson@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=alex.williamson@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759180669;
+	s=arc-20220608; t=1759180671;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pvJsfDbbmraa6iCCkjoqVoBB3Mb9XdjPoCcVP3qHFzU=;
-	b=UvWOuK41HhpUzCYTtpou+3w6e1stTDeG4dxRi9CywShmvJBX6fslpOqVWFYcWnaDyVJr8D
-	oi6dNRPlYbdV+bDrg90/I46t7fwBZunWtkJYgGtr3arQBeTymVPVWD3RrknS9Z1T39Fit1
-	DpRbeI/tjwITKxJ12K3yt5AE4s466d4=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WPsZ2uOK;
-	spf=pass (imf19.hostedemail.com: domain of alex.williamson@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=alex.williamson@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759180669; a=rsa-sha256;
+	bh=pary30BmU4/NqakwYdG1eNkY0RiL1NyFW4TmIsuJ5GE=;
+	b=rrKVMb6pLzfn00HteG38k+1oRN7Xeb27DmK0gtl9170DFEizENvQ3F2JmkAPCOC5+ZnGkQ
+	u6XLbO2HnPeIU4WrfDDShmo7GWWVHIViDeDnSBG4lg5kRO/IRsSTExq1aDtA4joYakeNRb
+	uYdlHqi0rA+y94JADQ5orJBsp/SBV1o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759180671; a=rsa-sha256;
 	cv=none;
-	b=RpfyOeyHNdC+9dgle2CyDpceKg4lWPZ4f0v99eYj65wzEqkF9MEaGZsKjDKJkXk61cis+h
-	pP5jaurkeBcO5QfBDRhGqZQWKRPYzEb7G0nG5GDZDwhUr0w6R/U5QkQd0kdmlTtMOZXOmX
-	Ws2Lu4ukBX1yRo4J1UG2v4WwtJISNCs=
+	b=IMJfugS2BipxARVhfVcFJSziKj9VUwAGRzXiIvJ4sRvKDX0/m6JpRR5bdtnVCkSC0TuEa5
+	vt8mLBDnEVkZmpZjMWlPeH7WNUa5EzaQcecXA7kDvs1AmKtZHtTJ2OMDE6Zhs8fWWXjYf/
+	dvsfohfQBBXEZix6MXATx1/tefE1MwQ=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eSzIvrH3;
+	spf=pass (imf15.hostedemail.com: domain of alex.williamson@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=alex.williamson@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759180668;
+	s=mimecast20190719; t=1759180670;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pvJsfDbbmraa6iCCkjoqVoBB3Mb9XdjPoCcVP3qHFzU=;
-	b=WPsZ2uOKVqLQETBTtPI36pbF0fAxED6UkoBsRTJc8vHtRaFEZDfFfPLQP4ljacqDJheZ5W
-	Y2DEBoMwKaz+PbrPOZllAvla0F8AGl+z0U2IkumRHuyBNeNJKaAk7AkouWXYCg5LnrrMk+
-	dGbbTCtYvPQFnwpVJmRFJ0nwxKf4mZs=
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com
- [209.85.166.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=pary30BmU4/NqakwYdG1eNkY0RiL1NyFW4TmIsuJ5GE=;
+	b=eSzIvrH3TgR0u/E7xT35nD+af8z61fl3d06j8oab4bPnIAOmHnplVN848Li+daD8aG2NUl
+	eo9ppaNIkhWD0cfULhpqQAOKXbhi3NB/3F3Q77eGKJqGllFgASG+czUoRAp9Mk3BRKkKmM
+	PaGkjgchT4tV6RFaWyNW7XHFmxsUftE=
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
+ [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-423-0algKbxbMMys6U1N1D4Fng-1; Mon, 29 Sep 2025 17:17:45 -0400
-X-MC-Unique: 0algKbxbMMys6U1N1D4Fng-1
-X-Mimecast-MFC-AGG-ID: 0algKbxbMMys6U1N1D4Fng_1759180664
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-4264c256677so13488735ab.3
-        for <linux-mm@kvack.org>; Mon, 29 Sep 2025 14:17:44 -0700 (PDT)
+ us-mta-610-kS1B4gpvOjimKQFeukoh4g-1; Mon, 29 Sep 2025 17:17:49 -0400
+X-MC-Unique: kS1B4gpvOjimKQFeukoh4g-1
+X-Mimecast-MFC-AGG-ID: kS1B4gpvOjimKQFeukoh4g_1759180668
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-42b2a51fab6so3496305ab.0
+        for <linux-mm@kvack.org>; Mon, 29 Sep 2025 14:17:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759180664; x=1759785464;
+        d=1e100.net; s=20230601; t=1759180668; x=1759785468;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=pvJsfDbbmraa6iCCkjoqVoBB3Mb9XdjPoCcVP3qHFzU=;
-        b=C1lcYhktp9smz0sl9AyhHAoNTGBRTsMJeeKM+leQMnV5v69au5m5/RMVRYM3mpYKOZ
-         OONcITrPlEa9oVt4+aeQCyGKsIZSF5FRSMnybVty/j0MQc3Fz8OC+ug6bMwikeUlNXwj
-         MyI4AZft6EITjdxqrZvhNgytBqDf1Oa3jCVP9IU/a1f+G1hcHceBfVH8Lk5QmMTim+9E
-         NC5RpFAzbFV1K6wVlZqgyPTcjkf/S2+dDcl0ZTLKTogS8g4VU1b1xbHiBhuzb7HR01SK
-         gKCD8sfJEqs9fcCdtMz16ikQPzTHh9z7bpWcBZMbZTUioQ+elvP9GzdbFIVPzPjFe3n7
-         hR+g==
-X-Forwarded-Encrypted: i=1; AJvYcCXhgIJzXbxl8EXYvXH9Jv07cxFXQjLLP1RLpg6mtpVU3pyvP9EouSoNYAVtZwwixETkglcvcoha0g==@kvack.org
-X-Gm-Message-State: AOJu0YxGwJs4hbojGA3QdvckiVPEPRQSTR12X2qLuaSJFhdVWVFXXaRt
-	GgR/a4jN7EOVVVvjB644mQj8iyZR7cPEPuHuy5ee4WS8xES8lrN9ooeLZNjxT77Q4jm85zjukzW
-	WX7+4qSdGkorGnp0EYVqC59ny274gh2Ckc7C+Xvdv0N1021ynaiD1
-X-Gm-Gg: ASbGncv0BTPr7pJxYu4dM1KEKP76FxorriUnzPxf8fJCuHYpZbkLMDNbQVRd8RugfLu
-	3cK3COR0hSqudawiPimVVRHPn6uQw0NXKirJMd1a6ANuXARzOTb3n4h9rMKn/SiX9U6K4Xop4OC
-	q2NB7i/5YjFc3ZHHRsmktqj01tb04jE2bFdvCVZBIPGKa4bghOyNwBIN7UelbQ1EouCtjWnC/1P
-	TDs/94TbStW4gZhhR3RtlZ1IUM6NLlQc+8vqDd3IMSkFZhkSWnHjtTfjTdX0VpvEvXry7avpUmb
-	RMUk9Owl/So4YBTF8PwFY9eO/9AfuGMCzc5g8tHWvv8=
-X-Received: by 2002:a05:6e02:1525:b0:408:1624:b2ee with SMTP id e9e14a558f8ab-425955e4f60mr87964875ab.1.1759180664144;
-        Mon, 29 Sep 2025 14:17:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG3VrvxaH7k00bkTZJWrxcv/Xeuv7Ik/zOnPnH3ASkfKmA5ptZ34qoyLfGaDXRfunQjFfs8kg==
-X-Received: by 2002:a05:6e02:1525:b0:408:1624:b2ee with SMTP id e9e14a558f8ab-425955e4f60mr87964675ab.1.1759180663680;
-        Mon, 29 Sep 2025 14:17:43 -0700 (PDT)
+        bh=pary30BmU4/NqakwYdG1eNkY0RiL1NyFW4TmIsuJ5GE=;
+        b=xKWFXbcfFh45M5mECg1/jLl9El5Qb7WNLvSg6WPj9DTkSCJFnTnDpYktJLEvRvMU30
+         QocFqb4AmnYF6uQOV9u3mA52cBp0SdFb32lB2oLph8IbaxdUfZz8wAE28yXdqW2EWI4o
+         S4cbe4mJtJAaC5sL7inkyG6q5NwdEyXWVJkFJwuGlurcbQE28S7BmYzZl6iX2kClnui8
+         s0CwsaQBM/5F3SzEUhAan+Z7FOVvPv9ew+VBqV4CknXi3+swLd3lQLGAzZFQL6qB9AMU
+         LkaBg3fVPDfrJMph3DkECZx5izsxbZKzb4+NfonFEDO8jNdSMBjUw/oZV1lm4p5eqw/i
+         vcrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU9jcFsqQmJeDqLnzHQ39Zny+ZmL/cqYpCWsEDDdiHUK9b7n7gXEkf1WpQ/IqnG2NtJhK9TXGMnJQ==@kvack.org
+X-Gm-Message-State: AOJu0YyehVCMxgxX0ZEb6ZgAEjiB3WxmB1n+wFdv6CifIKyE4zYsrnFq
+	SXjA2iCpJJ3Y6Ks0ZBWhYcccCw//QEoq+6DVfO0V/OCn+qoXVHK/bTEN3U9CJX58yCrsYg5n+xV
+	LSoopnpBR+WPw0Zv9yGmPh7cKj+8N/Zu/FKGBAFlkoAU3JM+whR9m
+X-Gm-Gg: ASbGncvuSSDgW2U0YuPyc87sagyomWr81cvnpUVmjDFWp3SFQuhUZSB76Xf3Brn6iwz
+	3fmUOzLKNeUxgyPLjHvPcl1rxdlvYDUdO2YKJRMTaArTTgKQOe2Onm3z2ijfBgnnqYS7QkB5JRH
+	ir4pQM9d/jkQTR14Lw4DooFtMJVljnjGWZz2ZdNhfyiSoCGQ6EZozXVK87MkjiDfBXZdk7Ra3Wb
+	i8JUDWkEbREPv13IprZiO/zrRfV2BYqM1AA8B7hde6FrSoo9V8DEOQElBOREvEs21yX7M3o/Pow
+	olfc2XGPkrQmEUw0N2c+iAPqH+sVhpGFTbJZl8yzsWA=
+X-Received: by 2002:a05:6e02:1b08:b0:424:6c8e:6187 with SMTP id e9e14a558f8ab-425955e4dfdmr95833755ab.2.1759180668374;
+        Mon, 29 Sep 2025 14:17:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHE31/4ZuuqxcHY5C8RvKg6dnDpxm6QWjHiIpet9IRXNGlsIsGmjCxy18kHCIW8dgbK0MWZ9w==
+X-Received: by 2002:a05:6e02:1b08:b0:424:6c8e:6187 with SMTP id e9e14a558f8ab-425955e4dfdmr95833605ab.2.1759180667942;
+        Mon, 29 Sep 2025 14:17:47 -0700 (PDT)
 Received: from redhat.com ([38.15.36.11])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-57269f5d0c5sm1963571173.13.2025.09.29.14.17.42
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-5753c50a188sm920778173.31.2025.09.29.14.17.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Sep 2025 14:17:42 -0700 (PDT)
-Date: Mon, 29 Sep 2025 15:17:40 -0600
+        Mon, 29 Sep 2025 14:17:46 -0700 (PDT)
+Date: Mon, 29 Sep 2025 15:17:45 -0600
 From: Alex Williamson <alex.williamson@redhat.com>
 To: Leon Romanovsky <leon@kernel.org>
 Cc: Leon Romanovsky <leonro@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
@@ -112,27 +112,27 @@ Cc: Leon Romanovsky <leonro@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
  <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, Sumit
  Semwal <sumit.semwal@linaro.org>, Vivek Kasireddy
  <vivek.kasireddy@intel.com>, Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v4 07/10] vfio/pci: Add dma-buf export config for MMIO
- regions
-Message-ID: <20250929151740.21f001e3.alex.williamson@redhat.com>
-In-Reply-To: <b1b44823f93fd9e7fa73dc165141d716cb74fa90.1759070796.git.leon@kernel.org>
+Subject: Re: [PATCH v4 08/10] vfio/pci: Enable peer-to-peer DMA transactions
+ by default
+Message-ID: <20250929151745.439be1ec.alex.williamson@redhat.com>
+In-Reply-To: <ac8c6ccd792e79f9424217d4bca23edd249916ca.1759070796.git.leon@kernel.org>
 References: <cover.1759070796.git.leon@kernel.org>
-	<b1b44823f93fd9e7fa73dc165141d716cb74fa90.1759070796.git.leon@kernel.org>
+	<ac8c6ccd792e79f9424217d4bca23edd249916ca.1759070796.git.leon@kernel.org>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ofS-FHxVej_062jS65kjYPXSTsCVuzG4k-k9nrX_H-c_1759180664
+X-Mimecast-MFC-PROC-ID: qsCgLiSsEGAHe-YKdKCsY5cF3TC9ov0EPkTRPj6sJ6g_1759180668
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 32BF1A0016
+X-Stat-Signature: 7kju7c16691i5556bonh6a7yiap4n1zj
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 01F651A0007
-X-Stat-Signature: 9x38txeo6xa7pydpr6ibk7tgrbacse43
-X-HE-Tag: 1759180668-894072
-X-HE-Meta: U2FsdGVkX18u7Td3EcVdDkwuMs2G3hgnfZzj3+ydEQhVzKbbmxkSqAfPsFfXd9bWxqwf8gxXQYuO1PR2RoVY0JIrzmKe1p0mTLRclnas6F938MgqFmQrIPcbGBlyrpHMX+Lsz8IigwRm9wQplDP3SE/89r5QRVjso56NizRRZsYVTJo/Lky5h0o5PhMVUVy0JWJ5P+qTUYfLw2SIN3zROmtZVi91lVCvoOo+T4YUfeqpZqjxsjb8OYXzg81jB8iN03ut9yLfZtRroGu3pnHZIqA06YML7YSgNtQ4PlqN87IWg7DkxjYeSlq1vuo+nP8kyZGKrVqJghafwlbjzzjIqwHq8nnJ2KrYMsus+B8pceHJZFkQH/jXgFGiSn7yXNKjmXiC1Wh99OGPtiyE2Yym9iGxYSmYZasc/Vys/fBTOglNXlmfLqgI81uhNkO+qpfQRylS6G7bBFG5Zxf3Gh2j6Lt7juY5J6BKTD9qwGvt6QwnE6KuOz4ITATTXN/XNkLdOiEHh6krB04AzoH23JKFcAtjtmgjNoOtYuQQdf8GFRm7dJAhW+3kvyeYmWLoBfk/6ieIPQy7uT3vo06JVR1iaAssWvUHXjPLkmJzSYz9ysuXbZ93vQtEzgSQ+5bZlAhLpWCaa0Iqfs231mDumamKwfFIM/5+7W+r/X4/5MIHx+8pmnzApSjEhddEHwrrrphPSHvqDqNvT+vuawYggTJbydRGMHXv+epFYH/lrByB3nBPWRWZCgRbyO/Txm/3ua8WCiuQJY2XIZE6nGouFzSlM29PEsba8hwKevuQ5JbCpkZ6sp1YQ3uxd4QLrmfUdlQmpvfbYowTzxfMyCKinblXX50YPNRj7wW+98TTfL8SSvszx2oukR2O1n6mveHTQG6qAZMZcJybKzGUHyCxiaRju7Kl2Gix1RRtV3N2Vz+Y2574djkDns6/vKu/WzpEJXjqy2csvMKiU9bk5aIzvl4
- JyTtk9Wi
- i55GfC47t8sQLoXm1kMPgvzXC/R8PBZsYR1nYKtb/lhLMWrcsmyKZz+YFk2HMZPfM/zYdL79ymVkNFE/NXXkjU2DYm6xG16xspmiR/hO+ZTVg0wM8gR6dJAgQuAnHz4V2Pj6wTlkgqAwg7RDY6iZxWSFvTw1A4D2bNdvIcjDnNZiscLXwXUApmFx/q+PUOJfbp5oYy0cG7k+uiFYxSXsR0VXOXI5zvSJGQ4qLe+IA1zrRImRlEnDJ4KP7giZEHc0m8u4G9ng0IEhq1ZR9/RtSlYRWaO3U3BUDK4Va2FpWuK8/TJl+xz+Iqg/e+L/KFQZFkfbq2EFu03DOKtu7brbqC64ei/3OWzcwXU7durgZpkp0AgKUrFpsqJ/j0OEg2LbrGPDtSlqvh7Qu0Ww=
+X-HE-Tag: 1759180671-851806
+X-HE-Meta: U2FsdGVkX1/GrJ0tfIR23JEBK9MtQh501JX07keUu3mtMOvk+jhzXTlv6OHOAnO/Jy8zPxksE35Snf593c/S9IBaM5iqeMKCn8P1W6gfSU/np6+vbyMOH0srB2uFiSbxVKkbG3T6YBBsGW5+5t8tixFfTyrJhR8WvWYacigNSNAdQh14dSRQM6VHWalBDbHkGAV20UvYVP4XdrAInxMT+WHVv8P53W5E5UYGP/9YOxMC74yyCl+ZXfL4tNuDrUEvPf7lj2bq9YSe23FB0jnRxA4IuLWc5WFhkfKrQ2WJk4aS4ZYlF3RhiaWNKnMgpxJ5aCJmQTkNXOvvP8Lie13BogMubgNaF8wAvjIFPth+OmbdsMTJ/eWUnvGy4DPkOzrATktoOhyKD7tk2ZUXgyW/E4HGe0GbDnNx0HJ6HUUSgXCSm2MfCxNsQSn8SqSKB+MVSuboQA5qCyfshulm5b8Uu3wHAsuhf84BhzK+6KOvBPBWSzvusoYOFeHUJ5g/hfB0oj8k7e1BEs+5lYWIPO3OvSZIILygo0jYCWZQTXPW0NEgxCr/McTd+CTp019xjM17iAVHAQV8iHXjD7nTzsLdUgA9XL+m4QRsg95RqFckfVM5zZj3Qu9vfNlzYoyOd9BuoyDOmoUDPZgYqPHO9kyjwU2bsejqb7HeYZzdz/+IyDZA5/M3sVscFxrR96VR5uOYuICLR9k+4P55T6/1semArHm3JA/EVioN+LwqnwtXWqWpmiSvAytQf5YLCWRMmYQN40lycTT/JmGVveuZtFc7q36RYYijcF86LDB1wTj9Arhhr4Ni0VJzzQVTYmLnYP/qE53PYHbFA6zE8PReMdSA4oSwfTHyDXDZlSOQeztj77i9mq4ol/mgcZM3mizQY9aFP1V4Gz/g6S/fKXMP/ry8gByAVtYUKqGqFcS1pkyvgPQKB/LJ7zLo79FOLb4K5OYihvKJrvT/vC00quy4hSn
+ c74gGPkj
+ Vq7jyD6HrgG263m+Kog6d/KirF+oaGV9FmmfDAfyK4HAZHFWS5ZUZTypMvuyCM320KBq2c/FRXAZbrqXmOfZ4WvoayFMJqVoszeePYLfxL3ZPJZYllKkVx64yEE1YZFuAWAL5r0jjxf/DvX1gQtCjkPEheyu5Mf9q1wrLF2Oli4Klh1Trr624+ERiXchk6Bk2odMwZCKDKsej0djd8cRSY5fFqJuqUwnLTgtAWhQnzNQ+/BFfi6ovUeQp5qQnaiswM6WbvvVwNj5KRj9kDY7wPSPAriyuVRrioO6wLR35ZXyo4sSDouX5skI59Mys11MBJljWqj9V2/pexpPLk2j3A7jDww0JXV27rRdD6FcK2HEO9k5l4m6G5Wdfx8H3V5QOH/b2U1hqyMU0bA8QNhQrjcU7+jAREVbcbF1aelcDmo0MKuZL8Pzw01gpff3B1PGjhCsL7bwVENYMT5L3Y46Kb4qc3GuWIn9JWxqTn4Ffci8JR7w=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,58 +141,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 28 Sep 2025 17:50:17 +0300
+On Sun, 28 Sep 2025 17:50:18 +0300
 Leon Romanovsky <leon@kernel.org> wrote:
 
 > From: Leon Romanovsky <leonro@nvidia.com>
 > 
-> Add new kernel config which indicates support for dma-buf export
-> of MMIO regions, which implementation is provided in next patches.
+> Make sure that all VFIO PCI devices have peer-to-peer capabilities
+> enables, so we would be able to export their MMIO memory through DMABUF,
 > 
 > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 > ---
->  drivers/vfio/pci/Kconfig | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
+>  drivers/vfio/pci/vfio_pci_core.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 > 
-> diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
-> index 2b0172f54665..55ae888bf26a 100644
-> --- a/drivers/vfio/pci/Kconfig
-> +++ b/drivers/vfio/pci/Kconfig
-> @@ -55,6 +55,26 @@ config VFIO_PCI_ZDEV_KVM
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index 7dcf5439dedc..608af135308e 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -28,6 +28,9 @@
+>  #include <linux/nospec.h>
+>  #include <linux/sched/mm.h>
+>  #include <linux/iommufd.h>
+> +#ifdef CONFIG_VFIO_PCI_DMABUF
+> +#include <linux/pci-p2pdma.h>
+> +#endif
+>  #if IS_ENABLED(CONFIG_EEH)
+>  #include <asm/eeh.h>
+>  #endif
+> @@ -2085,6 +2088,7 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
+>  {
+>  	struct vfio_pci_core_device *vdev =
+>  		container_of(core_vdev, struct vfio_pci_core_device, vdev);
+> +	int __maybe_unused ret;
 >  
->  	  To enable s390x KVM vfio-pci extensions, say Y.
+>  	vdev->pdev = to_pci_dev(core_vdev->dev);
+>  	vdev->irq_type = VFIO_PCI_NUM_IRQS;
+> @@ -2094,6 +2098,11 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
+>  	INIT_LIST_HEAD(&vdev->dummy_resources_list);
+>  	INIT_LIST_HEAD(&vdev->ioeventfds_list);
+>  	INIT_LIST_HEAD(&vdev->sriov_pfs_item);
+> +#ifdef CONFIG_VFIO_PCI_DMABUF
+> +	ret = pcim_p2pdma_init(vdev->pdev);
+> +	if (ret)
+> +		return ret;
+> +#endif
+>  	init_rwsem(&vdev->memory_lock);
+>  	xa_init(&vdev->ctx);
 >  
-> +config VFIO_PCI_DMABUF
-> +	bool "VFIO PCI extensions for DMA-BUF"
-> +	depends on VFIO_PCI_CORE
-> +	depends on PCI_P2PDMA && DMA_SHARED_BUFFER
-> +	default y
-> +	help
-> +	  Enable support for VFIO PCI extensions that allow exporting
-> +	  device MMIO regions as DMA-BUFs for peer devices to access via
-> +	  peer-to-peer (P2P) DMA.
-> +
-> +	  This feature enables a VFIO-managed PCI device to export a portion
-> +	  of its MMIO BAR as a DMA-BUF file descriptor, which can be passed
-> +	  to other userspace drivers or kernel subsystems capable of
-> +	  initiating DMA to that region.
-> +
-> +	  Say Y here if you want to enable VFIO DMABUF-based MMIO export
-> +	  support for peer-to-peer DMA use cases.
-> +
-> +	  If unsure, say N.
-> +
->  source "drivers/vfio/pci/mlx5/Kconfig"
->  
->  source "drivers/vfio/pci/hisilicon/Kconfig"
 
-This is only necessary if we think there's a need to build a kernel with
-P2PDMA and VFIO_PCI, but not VFIO_PCI_DMABUF.  Does that need really
-exist?
-
-I also find it unusual to create the Kconfig before adding the
-supporting code.  Maybe this could be popped to the end or rolled into
-the last patch if we decided to keep it.  Thanks,
+What breaks if we don't test the return value and remove all the
+#ifdefs?  The feature call should fail if we don't have a provider but
+that seems more robust than failing to register the device.  Thanks,
 
 Alex
 
