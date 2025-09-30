@@ -4,112 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A3C7CAC5B9
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 06:41:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EED9CAC5B8
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 06:45:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98D008E0021; Tue, 30 Sep 2025 02:41:39 -0400 (EDT)
+	id 725C28E001B; Tue, 30 Sep 2025 02:45:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93DB28E0002; Tue, 30 Sep 2025 02:41:39 -0400 (EDT)
+	id 6D6058E0002; Tue, 30 Sep 2025 02:45:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82C148E0021; Tue, 30 Sep 2025 02:41:39 -0400 (EDT)
+	id 59DF98E001B; Tue, 30 Sep 2025 02:45:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D9DD8E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 02:41:39 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0ED7BC05C0
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 06:41:39 +0000 (UTC)
-X-FDA: 83944970718.30.96B8E43
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 433018E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 02:45:58 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E1F611A05D3
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 06:45:57 +0000 (UTC)
+X-FDA: 83944981554.01.08A87A5
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9354520008
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 06:41:36 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=inG81Tjr;
-	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 7A874100010
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 06:45:55 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Xibjcj7C;
+	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759214496;
+	s=arc-20220608; t=1759214755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lYaoOw8qzwN21ASCyI37EJX6p2H1Y8ERe04KSYlj1rA=;
-	b=mdtPdidwAEvZL6RUbvRoIbKNohK04jFMymFpaI3KuBmbtMIhp68RNEL+jnhp72ZOmXZ65c
-	EFRT2OSuJ0w1sHXHOgVbMY07CMZrS9eWvBj+faEudPUR7eJZF1eR/T1jb0Xf0mGCl7VPX3
-	X3oX4Zd28Xp/PvoVi6BFOVrPI4yJjL4=
+	bh=8AIMq+OlhpyT2npgIFmZrEOK/CbKwyfphzbxq2DUajU=;
+	b=MMfUnN2DN4OOZD02n83QK4NjlevW3NK498cdVb7JjVluTuJtCyI33pyQp5ybcy6VEcZgl+
+	B0MhIgdleiIr4SEyv31mFESZUh5MXHZsgnqKR5jEcKrcnWMGi4RvS5+wNaKoeJFEM4OgQD
+	cOtPsgYsNZmGA/ROPzgDLAmN+7Da8Vc=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=inG81Tjr;
-	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Xibjcj7C;
+	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759214496; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759214755; a=rsa-sha256;
 	cv=none;
-	b=DhCMHupZU7VNOj6fz7nsKxyu6U6RBsHYXOcu2Q49PGsg8vW5sZuJTVrnU1myrF+4LolLMV
-	GkQJJY9DzK80UWBnHUTS02459YZhqZ+stf/gV0WluAnBL9jgsJXutF3Z/dq1sOkPRDKF6s
-	F1vRxfLyqbSOdVpexGoalGcYNta7qAE=
+	b=UR7ERtR4//JOhnjs3mYm036AAuDG9F3NcyXI7Lv13Lhip5/+CCCzJYODNiOF0tyaWP9QWF
+	A4PJd5uVAuG8bcUnfOFGoShv+lGp2QE4EcdumT4rYz0DAMJU04v6LCKd7xBF7l1BkJTFmP
+	jQ6bdnCuGqBa2TQA+kWqa4xNHOBHnQw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759214496;
+	s=mimecast20190719; t=1759214754;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=lYaoOw8qzwN21ASCyI37EJX6p2H1Y8ERe04KSYlj1rA=;
-	b=inG81Tjr0VKv7VyIjZ6AdzWHcoi6cTV3hpW3JrEwJyTG5V3qIPfkDhUbUcQg1gTw4mTJR0
-	7G6Z+KVbNfOyqGtvpExRilrlqOsAiZkQPrbNmqEDLXeh2tQ4H5wznAuphtRv5lVa1mBePK
-	jQUb5LpbQr9ufFgrTcJP1Rz6eQYaD7Y=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=8AIMq+OlhpyT2npgIFmZrEOK/CbKwyfphzbxq2DUajU=;
+	b=Xibjcj7CHeBLRgtTVaUSMBuClYACz5rRf8o0x2mJUi4vR9R9mhdPBwSLr4nk4BoIZwN0yn
+	l0crbBv8OWf0Y/5K692MzKkR5PdL3Oaju4S52H/9YkgQnC/12wforUuoyxtR5dXKX0ZiK0
+	4e9ewBBV4nya0fYAR4gDU0YuaHwJSKQ=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-281-cSoTWclGODaT-RvXq_MoLA-1; Tue, 30 Sep 2025 02:41:34 -0400
-X-MC-Unique: cSoTWclGODaT-RvXq_MoLA-1
-X-Mimecast-MFC-AGG-ID: cSoTWclGODaT-RvXq_MoLA_1759214493
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3efe4fcc9ccso3396424f8f.3
-        for <linux-mm@kvack.org>; Mon, 29 Sep 2025 23:41:33 -0700 (PDT)
+ us-mta-465-e682dCYBNOeGMMiSN4G1yg-1; Tue, 30 Sep 2025 02:45:53 -0400
+X-MC-Unique: e682dCYBNOeGMMiSN4G1yg-1
+X-Mimecast-MFC-AGG-ID: e682dCYBNOeGMMiSN4G1yg_1759214752
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3ee13e43dd9so2675682f8f.1
+        for <linux-mm@kvack.org>; Mon, 29 Sep 2025 23:45:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759214493; x=1759819293;
+        d=1e100.net; s=20230601; t=1759214752; x=1759819552;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=lYaoOw8qzwN21ASCyI37EJX6p2H1Y8ERe04KSYlj1rA=;
-        b=qBL9f7sKfCF8G7C75s/MX7EZGJw1wNXx5ziA8CPsdhuVLv2l25PtvIG3ecjdGLnMdi
-         G/tgseR7DvniGC+SRvPEV9mXlSiBuHVM4YnZvZZeveiHM7OM5D1tSKS27mu7O7AE/7x8
-         Of4o1KKcukjm6+r2vcMPOyr/2Mj0tCWnS4WmX8HiGd1VvAg0t+bM8J2qC6pz2u9I8j0p
-         pQnjzFP+FGXhmmT2eFHxHTKKq1lYyewXsjK5FuRdaNK23e9PTWJxRvkDVpmq/y1aEk1R
-         Jf741rNAftYYe5kLRDROXs9SNzg5CfOzetusGyLfRiYG+b2u2bMxmQ+ux33s1wMA/VbO
-         vVMw==
-X-Forwarded-Encrypted: i=1; AJvYcCU9pLq9R2RaGD8YG5C1JlhJYHztbvDSsHuniyG5n7uwzbnsoMOoIYcGMSvYLbc4xl/XyWXG05A+CQ==@kvack.org
-X-Gm-Message-State: AOJu0YzBFz1/zgb5wEsTleCR+bIRA/ENUT0ufnvcRI/jAlg3iiiiTweQ
-	IupjxAALnMmBslEHRK6nwXP9eZZKY7eZ0B0BxxQtmh4NnM1gdIoEtFaW2sLX3C0WEmYfSMemDa5
-	FxBNJ0XGjYS3SJGO+bA5E7cDmDTBg0NJ/cj7Vdp0XH9FIg4iKYRN276CYn/eBFjo=
-X-Gm-Gg: ASbGncudYGWxLIYTAsA/v4E6IuMTEXEqadhizx+VC796Rnkb4pIgtEGQqIzTqf1hmOR
-	KuS/9KA23lG5xIhaEloDgxmdqT8mVLCsuJuexmAuAZmBJ34Z0r4Q5ackQ1QTJUipjiZv0vw/CB5
-	FW5vEHvPYFKNC61+NUCWKYAK/Sh3o7x7PzXT/xpTXdulwYtNPmdKJdh0XxvvcuuVg8QOGIgMBNf
-	IUvgtm6c2CF1KDUYjD4BFzumdM77y9OImTgFVga8JXGriPZBhWhhq51BlmuzNtxZ7v3FpkIIsUh
-	FvaDDiR8G0K98LZPWXymUU2jhFhL2TyTQXhJdFVHe14Icta9UC9N7jGqz3znlggEI6W+697ORsE
-	JLKHiXkz5
-X-Received: by 2002:a05:6000:3105:b0:3ee:15c6:9a60 with SMTP id ffacd0b85a97d-40e497c34a1mr15672033f8f.6.1759214492744;
-        Mon, 29 Sep 2025 23:41:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHQF9o5qWpBDFJJVt3D2oyXGVYSoEewGDgjfPn6Bd3CFXCSIuBY8r/0k5EG3CenB1jAXiThWQ==
-X-Received: by 2002:a05:6000:3105:b0:3ee:15c6:9a60 with SMTP id ffacd0b85a97d-40e497c34a1mr15672008f8f.6.1759214492338;
-        Mon, 29 Sep 2025 23:41:32 -0700 (PDT)
+        bh=8AIMq+OlhpyT2npgIFmZrEOK/CbKwyfphzbxq2DUajU=;
+        b=ESPHWNJ4reIrhTsUnWxQKApIMHMDbfz2Z/mP6xdy6zfd3ZkHjt8j/WNimKWlzOj+dm
+         bnLZ3oxZsK15vudknZ5zhLfU2zGTF33b9A/AGxssDgYntkjXTj34Og1Q4wwC1hajoaRf
+         gSAnp4pj/tvQqVhL0kjz/siGnIEiFrHxuOFDMQ8zCzzyo1Tv575WTFQCg6p0Dl7BP6dV
+         jtcLbCst+GxOKff4zBGhddor7OjV6dZIeBO7f/cm/EtrXkRpmI7mkMe1unqww7ahGTiZ
+         Z6yH5ZMlNxlnMX/1qgBxJK0+lyxYapBuUnqAlbl+xQN+ZjoA8EewnupkCjleRP4fZMHc
+         x5IQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUPIwCyl1V3q1dq8w5ztK4vOqKC4ptuNmsLjH/6lvuHfUDDNRkghiMZ9wacVF3X9AKvfbLwvwuJqg==@kvack.org
+X-Gm-Message-State: AOJu0YxnuEa8nzrYLQOsO4nV+PG0CzjNsIANo6fyZVUI6EY9u4CFL+1Q
+	f1VdVTJa/PTR1pxFRsP09n07jPnBQdKHijMggXsIoypjry38r5t4s8+WuHEJTktIjuZ6R5HYZmi
+	xHuczCe5vxfNzapTfl4plFySHSb97atmRjMlnt4XejoBO2v0wrU4I
+X-Gm-Gg: ASbGnctUTU+H1UlUgGVFtrS4gVBIt7HJGkqm1mynIqgJrTFMptc9Yau7aNiCSLsdyK2
+	CTOkSGEe8g1vNxZFO6E3a44GcU5Dc+RJbLD/5bk2DnI5mSHlxme9yg7MpHwExiniELBMc9uXj1t
+	x7FnAmnDvr/2nsN6B8cx9UBdYegTXytzcMG1JCh+XLLqz+DkApTWvHAvE1n05nkcZooJnf8OXap
+	UxWOpycvu8lAGcCh2hRYi4W04xdy683rswgw5V4hIkPrYPTxktwKDeUOJvWY23rnLfeS7RWE+3z
+	M4xqhf8SOI9c8lVlVmz2pnBqRwsbjq4Ew7TObDOKsPRy7LF/TK0g3kkeQvhxLcdFOWRTN5X7v4p
+	pey91mfDe
+X-Received: by 2002:a05:6000:1a89:b0:3ed:a43d:8eba with SMTP id ffacd0b85a97d-40e4b389211mr18844299f8f.52.1759214751619;
+        Mon, 29 Sep 2025 23:45:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFg/W6e/I7hHziArdv6ifYggaC+j0tYvxahMU2MCeZ7zKwkNHwGQwxT9opm5ct5RbwIhmPfXQ==
+X-Received: by 2002:a05:6000:1a89:b0:3ed:a43d:8eba with SMTP id ffacd0b85a97d-40e4b389211mr18844269f8f.52.1759214751197;
+        Mon, 29 Sep 2025 23:45:51 -0700 (PDT)
 Received: from ?IPV6:2a01:599:901:4a65:f2e2:845:f3d2:404d? ([2a01:599:901:4a65:f2e2:845:f3d2:404d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e2ab31ea3sm253476505e9.12.2025.09.29.23.41.31
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e5c06a9ffsm7025105e9.0.2025.09.29.23.45.49
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Sep 2025 23:41:31 -0700 (PDT)
-Message-ID: <f0f0479a-fdab-4f42-9600-5d7b44a73f4e@redhat.com>
-Date: Tue, 30 Sep 2025 08:41:30 +0200
+        Mon, 29 Sep 2025 23:45:50 -0700 (PDT)
+Message-ID: <d25474b8-c340-4546-a41e-60a6ecfc42c3@redhat.com>
+Date: Tue, 30 Sep 2025 08:45:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/ptdump: Replace READ_ONCE() with standard page table
- accessors
-To: Dev Jain <dev.jain@arm.com>, Anshuman Khandual
- <anshuman.khandual@arm.com>, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org
-References: <20250930025246.1143340-1-anshuman.khandual@arm.com>
- <9736fd6a-8987-4b10-9b05-e03106463c34@arm.com>
+Subject: Re: [PATCH] mm/ksm: fix flag-dropping behavior in ksm_madvise
+To: Jakub Acs <acsjakub@amazon.de>, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Xu Xin <xu.xin16@zte.com.cn>,
+ Chengming Zhou <chengming.zhou@linux.dev>, Peter Xu <peterx@redhat.com>,
+ Axel Rasmussen <axelrasmussen@google.com>,
+ Mike Kravetz <mike.kravetz@oracle.com>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250930063921.62354-1-acsjakub@amazon.de>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -155,21 +156,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <9736fd6a-8987-4b10-9b05-e03106463c34@arm.com>
+In-Reply-To: <20250930063921.62354-1-acsjakub@amazon.de>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: LNCWSBg8rIL3GLuu4-gHhwumrZsZnY2SrwS8ckTrawc_1759214493
+X-Mimecast-MFC-PROC-ID: uHZdEXXET3_fd5P_wvzrUb9x1dMueuD0y7tO39_w5x8_1759214752
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 7A874100010
+X-Rspamd-Server: rspam05
+X-Stat-Signature: qesu5tmp4ztoj6hxqc6n7uo4ak7nibdn
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 9354520008
-X-Stat-Signature: bs9bca9khme6rjy3qhsfg54485py98fu
-X-HE-Tag: 1759214496-344672
-X-HE-Meta: U2FsdGVkX1/GS3W+fK5Ep6cDsUx7ttsBgDmB95JDPniPYXK0gSnFCtUcQ8h8QNJwCbJNpFFs4jOV+rPn0NMTQ2eAap8BqgiilKE/bP78rUm/soGvnzPOrcKRINGQxccpzFHpevWIMbLGIhM/ne8mUJoXN5pYXBYLIQLZS2NvigvG0XvEFRm6g5p/d6dPeWOO50AP+mElRM4EoOaUGosH5KKGtVTG0j/fs8Ocw6x+83naP0Y2y3CaH8/KJZSlGuTrH3Ip9nkGY7FL62NLxGHCd899gHhWNfwAvLifwlymBwMqLc/Oo4Vwl+zqJl6EjFMdiwqRYuIkcVHdW/ykw+hV4KGEM4JHJqpdDqM2Qs146guriGgwT7P/UNtNSUbsIpK1TjBYnwv6HtVGodygZOLLqs+sIFdLHvPbg9UaaDU1EI6DCo2YMMwCzIdet+oil7qL1Don/stVJOgo1u82PAda4s34qbMvyRRsFKPHFqD57qon20nJKl7X319Afdt9k0g3R15L8AxDibfEbHAhhZqzdlHU3vOcvBOWagmu//jpbii+KL7a+wBc6L5qzNSkL0wyE18fzg+AeWTSvbht/bZUev/spXhiCjbM8DYNiq/+W7JRR9Xrldy8Cr6Pk2xBRFEs/b17TB+IiffzMr6ViWo5XGKLFT3uf+GIlOg5yR80iOvmeIg2mX1zqghZqwzAWflCJrzrTqiDuDFUTs7/sOaDPgztxEq8BeSeAmf/x/FSJSkaai23QxOjJGoPrGS57K+Kx9gfRuJghC4gU+pRTDOD6Mm59eSMa4kpt33dSj4Fn9VjvYG3hbhiA0HSNHWfO0In/zKWwMmt6aOjzWl5ZjyUg7z3PT5teehwk7nFGXdDaG0RpuDaw0iSUT916tZ9wANfHnW6fk+cIHEiwr/Or0wnxcM4ey9tQ7CLZev1xpYFg3+BSH8bOL0BY+AK7irahFNhLLR84U/0d/NRl6nMsgE
- PUYocVtN
- MnzRjOIiE03qz20qO045Wn5bp2CE7pMHFWYXiHXAfzIfXmHc+gp9rMGg/EJ0LdXG+KdV3nfk+f6CBDRg+p23a2ik+TaLT8ZIp4szUwiYpYPgw+UaZ2Bg/JmF1zpzkYZ15pzDmnOojgAjpMQrNEpncPRPJ/VZgp4zvE+Z4i5RDekelnasngEqoxUfwzzcJRndrFdWxfWfv8gNOeY1BfKiA+sEYd/uj9VIHgFG7HvjrQ8xWRM6aQDhoucI/8vWyucuiAOM/T16tAXK0pKulmqa7bzr3TWmvoQ+IBuRVRK0qeOp0kBcUE1lqC2NCGOiwpxTe5PhT3wKkmTRJQ50AdZn0XKx6OEp5ohL2rQNTIJm700OWJMiusRR8WA2LfqVmKWFrUIQGnIC+p7++xJvMj9txWnOSr9m0KSpozeLwtkrCrJgijbjnTP1BFZbOCesmOWHeWkpkxzp9hOKRgzcSPjpPEOfI+45C+j8/RYn/+d9yLDM5EFZfSzm6wY2UhtyuNd/95kodPxHzOgjYnEwN24LFC9EYJ+EbPKkT11QgUY/3XVa0Lo+ZpHyRPtid0xy3EilFnBccfoZxL++KBRJiB+DGmD3s9kex54/VbzmPb275bByeUSn1uhg7QdXdwA==
+X-HE-Tag: 1759214755-869502
+X-HE-Meta: U2FsdGVkX1/G8nTFg621XgNiKJzy445pJAQG8o8d+A8ZagphyEFsbHMfTGcnYTvJ6WJSeXMMKX23RPK9YSZTo/iwIy6gIJBHefyaMNf7WdELrY2DbiYF2MO9VnDf8fiulwzQ9nQiQxznnpEV6TIKWQy/bpmS8+XC3C9j4dqYnfpJ8NmaRwuMoD0Zdq/9ab8nTsvc3Nu0M37ywrqGR/l0kNiY27zN1sUTuqXtigmN0Zz6ryzRY1Ot1bQCAYpZFLf4f3RbGHUOYsnwDU5piiDR1SArzHhFs+bCfnPRvSjZbm4FeD+Y7jBdL4EoQm+33v6HcQOQ5Q31aj5FmWgPIBQLrsFCAqWYAhlcZLEKRDLm3vxrZvqjqOoVYR/1EdMw8rONnDVR1J3JSbniVIVtC7Y5OexjdLfCzsvXtsxnD7QlC/hBvHHwWxQXWOfY2B2YXFZiCzHZHoszP4iYeG13JzUJkB4NFtI9jzxawG+r3Tcf5T1MknWqh+Oq5c9f6GQ2X4V5J9yqoapmoHf2NCBckPb4PO+3bJBkOg05OVTewa+kF+pLsMZrwCRoCgsgs7mEdXb/uHEWH4RDHeQBHgfXHbIbUIRA2NpTgM+P+XMjW4LHCYjkLR0CQNihZeJZOm6cO9UhnACI8wkclrqT8PJ9OcNUJCrdugcFLunDllcKIe6OP0AJoCp3BhKzsagq58OI0ayqcwVWLJtJ9ZILq89I2qF9zk/LHdEt8jTme1d8j8IdnIyTD9UFj8BlyixrwnAUZwrAM4u4mpDS94vFxJhOqcxznbH/ATK10RcyqfDR5zJ8/XjtIjZrP8O0mAdOuixMhAt5eXsbqS0Ux3bD0urmP7XSz4goXex7iSq5eqvRd3tg/7FMrVXmRUpTXN3nWAo8yqXYV0oovTIjAZaBCghm5ylV6ta8FoovX6wfPjC+cYoktc7fDo0eVUbPM1MidQdaAu7ozyR76Vc/5T+nB0Xidqw
+ xUvVGHKm
+ IckXayODMls0nbplp9v+0l0b9RVw12FX9GvCBaLT22lbe56mPtL8ypPTRtnicB+lJ6ldZneJjHYJQq46543FOXkcNaY1u/9OqF4MT+8+b8wwWVq2XYCia1BmB8n0Px3O8JRmD0O033uatSp1Dv2lO4r7os4s/tZLdZaCSEQCQutV0HTA+vyKTDlcX7cXjHb6uV81jAOBrtEL3wGpB54OFilxkra2EFAszzo41aD8Z3izs+3pL5kDquzincF7PxiqPh19+U4jmDo/DixfqCQh/+2S0DiSCstkC+7hqxV2oqRQbxRB9Xc68HBj3/H6lXyYknWpFiBD0b3J5f9BPNEg8zq6cBrPQS5u0xZ212YkWNzXb0/7C+BShdSYD89qpzMCy/onuFR5zL/ybGqiKienCmvyE8gRk0ocf00xVFCATovE4ckG+hRmqie8vnNtyzzHfr6DHNowwInS3q1iHL10YUaclRjjIjsypQoZzOLvtyisFkCyvnyHfezdM5djhp+1s5lmKzkWfbZuFHP/jtSZNPAATOnxcGDiacnH4cptU2fwwEjBpZpgB1K24gkeJcj/KMG9f7LLoGVRBY5bObfMzakzV4EBsjzguMH1b+/YYlRsKKCU5iaHFag7cNn0CM3AttaWQJofWgWsboTD7Bv23c0795Lq8ITohoufF9DaBSIohqkL7psu5F1JIOzAYqWe1o5pn8CVnBbByLZWNiqnxVsI13Y54ShtIfOCT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -178,73 +179,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 30.09.25 06:37, Dev Jain wrote:
+On 30.09.25 08:39, Jakub Acs wrote:
+> syzkaller discovered the following crash: (kernel BUG)
 > 
-> On 30/09/25 8:22 am, Anshuman Khandual wrote:
->> Replace READ_ONCE() with standard page table accessors i.e pxdp_get() which
->> anyways default into READ_ONCE() in cases where platform does not override.
->>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Cc: David Hildenbrand <david@redhat.com>
->> Cc: linux-mm@kvack.org
->> Cc: linux-kernel@vger.kernel.org
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->>    mm/ptdump.c | 8 ++++----
->>    1 file changed, 4 insertions(+), 4 deletions(-)
->>
->> diff --git a/mm/ptdump.c b/mm/ptdump.c
->> index b600c7f864b8..18861501b533 100644
->> --- a/mm/ptdump.c
->> +++ b/mm/ptdump.c
->> @@ -31,7 +31,7 @@ static int ptdump_pgd_entry(pgd_t *pgd, unsigned long addr,
->>    			    unsigned long next, struct mm_walk *walk)
->>    {
->>    	struct ptdump_state *st = walk->private;
->> -	pgd_t val = READ_ONCE(*pgd);
->> +	pgd_t val = pgdp_get(pgd);
->>    
->>    #if CONFIG_PGTABLE_LEVELS > 4 && \
->>    		(defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS))
->> @@ -54,7 +54,7 @@ static int ptdump_p4d_entry(p4d_t *p4d, unsigned long addr,
->>    			    unsigned long next, struct mm_walk *walk)
->>    {
->>    	struct ptdump_state *st = walk->private;
->> -	p4d_t val = READ_ONCE(*p4d);
->> +	p4d_t val = p4dp_get(p4d);
->>    
->>    #if CONFIG_PGTABLE_LEVELS > 3 && \
->>    		(defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS))
->> @@ -77,7 +77,7 @@ static int ptdump_pud_entry(pud_t *pud, unsigned long addr,
->>    			    unsigned long next, struct mm_walk *walk)
->>    {
->>    	struct ptdump_state *st = walk->private;
->> -	pud_t val = READ_ONCE(*pud);
->> +	pud_t val = pudp_get(pud);
->>    
->>    #if CONFIG_PGTABLE_LEVELS > 2 && \
->>    		(defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS))
->> @@ -100,7 +100,7 @@ static int ptdump_pmd_entry(pmd_t *pmd, unsigned long addr,
->>    			    unsigned long next, struct mm_walk *walk)
->>    {
->>    	struct ptdump_state *st = walk->private;
->> -	pmd_t val = READ_ONCE(*pmd);
->> +	pmd_t val = pmdp_get(pmd);
+> [   44.607039] ------------[ cut here ]------------
+> [   44.607422] kernel BUG at mm/userfaultfd.c:2067!
+> [   44.608148] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+> [   44.608814] CPU: 1 UID: 0 PID: 2475 Comm: reproducer Not tainted 6.16.0-rc6 #1 PREEMPT(none)
+> [   44.609635] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+> [   44.610695] RIP: 0010:userfaultfd_release_all+0x3a8/0x460
 > 
-> I believe this should go through pmdp_get_lockless(). I can see in pgtable.h that
-> some magic is required on some arches to decode the pmd correctly in case walking
-> without locks.
+> <snip other registers, drop unreliable trace>
+> 
+> [   44.617726] Call Trace:
+> [   44.617926]  <TASK>
+> [   44.619284]  userfaultfd_release+0xef/0x1b0
+> [   44.620976]  __fput+0x3f9/0xb60
+> [   44.621240]  fput_close_sync+0x110/0x210
+> [   44.622222]  __x64_sys_close+0x8f/0x120
+> [   44.622530]  do_syscall_64+0x5b/0x2f0
+> [   44.622840]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [   44.623244] RIP: 0033:0x7f365bb3f227
+> 
+> Kernel panics because it detects UFFD inconsistency during
+> userfaultfd_release_all(). Specifically, a VMA which has a valid pointer
+> to vma->vm_userfaultfd_ctx, but no UFFD flags in vma->vm_flags.
+> 
+> The inconsistency is caused in ksm_madvise(): when user calls madvise()
+> with MADV_UNMEARGEABLE on a VMA that is registered for UFFD in MINOR
+> mode, it accidentally clears all flags stored in the upper 32 bits of
+> vma->vm_flags.
+> 
+> Assuming x86_64 kernel build, unsigned long is 64-bit and unsigned int
+> and int are 32-bit wide. This setup causes the following mishap during
+> the &= ~VM_MERGEABLE assignment.
+> 
+> VM_MERGEABLE is a 32-bit constant of type unsigned int, 0x8000'0000.
+> After ~ is applied, it becomes 0x7fff'ffff unsigned int, which is then
+> promoted to unsigned long before the & operation. This promotion fills
+> upper 32 bits with leading 0s, as we're doing unsigned conversion (and
+> even for a signed conversion, this wouldn't help as the leading bit is
+> 0). & operation thus ends up AND-ing vm_flags with 0x0000'0000'7fff'ffff
+> instead of intended 0xffff'ffff'7fff'ffff and hence accidentally clears
+> the upper 32-bits of its value.
+> 
+> Fix it by casting `VM_MERGEABLE` constant to unsigned long to preserve
+> the upper 32 bits, in case it's needed.
+> 
+> Note: other VM_* flags are not affected:
+> This only happens to the VM_MERGEABLE flag, as the other VM_* flags are
+> all constants of type int and after ~ operation, they end up with
+> leading 1 and are thus converted to unsigned long with leading 1s.
+> 
+> Note 2:
+> After commit 31defc3b01d9 ("userfaultfd: remove (VM_)BUG_ON()s"), this is
+> no longer a kernel BUG, but a WARNING at the same place:
+> 
+> [   45.595973] WARNING: CPU: 1 PID: 2474 at mm/userfaultfd.c:2067
+> 
+> but the root-cause (flag-drop) remains the same.
+> 
+> Fixes: 7677f7fd8be76 ("userfaultfd: add minor fault registration mode")
+> Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Xu Xin <xu.xin16@zte.com.cn>
+> Cc: Chengming Zhou <chengming.zhou@linux.dev>
+> Cc: Peter Xu <peterx@redhat.com>
+> Cc: Axel Rasmussen <axelrasmussen@google.com>
+> Cc: Mike Kravetz <mike.kravetz@oracle.com>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: stable@vger.kernel.org
+> ---
+> 
+> I looked around the kernel and found one more flag that might be
+> causing similar issues: "IORESOURCE_BUSY" - as its inverted version is
+> bit-anded to unsigned long fields. However, it seems those fields don't
+> actually use any bits from upper 32-bits as flags (yet?).
+> 
+> I also considered changing the constant definition by adding ULL, but am
+> not sure where else that could blow up, plus it would likely call to
+> define all the related constants as ULL for consistency. If you'd prefer
+> that fix, let me know.
+> 
+> 
+>   mm/ksm.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index 160787bb121c..c24137a1eeb7 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -2871,7 +2871,7 @@ int ksm_madvise(struct vm_area_struct *vma, unsigned long start,
+>   				return err;
+>   		}
+>   
+> -		*vm_flags &= ~VM_MERGEABLE;
+> +		*vm_flags &= ~((unsigned long) VM_MERGEABLE);
+>   		break;
+>   	}
+>   
 
-pmdp_get_lockless() is a nasty thingy to handle selected 32bit 
-architectures.
+Wouldn't it be better to just do
 
-But given that we're using ptep_get_lockless() in ptdump_pmd_entry() it 
-probably wouldn't hurt to use pmdp_get_lockless() here.
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 1ae97a0b8ec75..0eaf8af153f98 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -296,7 +296,7 @@ extern unsigned int kobjsize(const void *objp);
+  #define VM_MIXEDMAP    0x10000000      /* Can contain "struct page" and pure PFN pages */
+  #define VM_HUGEPAGE    0x20000000      /* MADV_HUGEPAGE marked this vma */
+  #define VM_NOHUGEPAGE  0x40000000      /* MADV_NOHUGEPAGE marked this vma */
+-#define VM_MERGEABLE   0x80000000      /* KSM may merge identical pages */
++#define VM_MERGEABLE   0x80000000ul    /* KSM may merge identical pages */
+  
+  #ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS
+  #define VM_HIGH_ARCH_BIT_0     32      /* bit only usable on 64-bit architectures */
 
-Staring at ARCH_HAS_PTDUMP, I don't think any 32bit arch would actually 
-end up compiling ptdump.c.
 
-E.g., on x86 only X86_64 ends up selecting ARCH_HAS_PTDUMP.
+And for consistency doing it to all other flags as well? After all we have
+
+	typedef unsigned long vm_flags_t;
 
 -- 
 Cheers
