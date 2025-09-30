@@ -4,109 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54362CCA476
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 16:09:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92103CCA472
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 16:29:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACA7C8E000B; Tue, 30 Sep 2025 12:09:44 -0400 (EDT)
+	id C55778E000C; Tue, 30 Sep 2025 12:29:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA1848E0002; Tue, 30 Sep 2025 12:09:44 -0400 (EDT)
+	id C06478E0002; Tue, 30 Sep 2025 12:29:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DF278E000B; Tue, 30 Sep 2025 12:09:44 -0400 (EDT)
+	id B428F8E000C; Tue, 30 Sep 2025 12:29:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DABA8E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 12:09:44 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 36F6F87CBD
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 16:09:44 +0000 (UTC)
-X-FDA: 83946402288.10.CFF9F84
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A24758E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 12:29:30 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 58AF0C0775
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 16:29:30 +0000 (UTC)
+X-FDA: 83946452100.05.264B8B8
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4EB49160012
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 16:09:42 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=kipK6wKf;
-	spf=pass (imf08.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6D41C40004
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 16:29:28 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=PolTssNT;
+	spf=pass (imf07.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
 	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759248582;
+	s=arc-20220608; t=1759249768;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w7Q792Hya2crtNGLvTmj+/a9REAcmnG/Y5xPxAa99WY=;
-	b=fLnCzk3h1R5226BlLdh+/Q92DLfpBnRB1WjORnkPL3EN2khRZjw5fiqC+p+CCQ8NBkZUf8
-	Fvj9e2ne4iV+nHMyTVIzMYrB7SoeqX0rA8JXHEvPOsXdPMwfWlC2+xoY8qQkAEb/DK7GXj
-	DReUVvaYKVZRwOrznqapQcg0wztXCmU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759248582; a=rsa-sha256;
-	cv=none;
-	b=xyt2Ll5EW6F9XV7Sx8y4M572yMPpw3q5b0zFDXbG9KLWZkM/DRy3eOm35rM10E9u54kkZ2
-	m1lVaTZN8cgfEEfa/X6MGJraC/dXCPxhGc9oF3aDdidDkp67Lb189AzjjOzMrEooSJvnyK
-	pH0JiuY4mt993+o1bxdSTGyagnvoK3o=
+	bh=RK4X/BIb9R9NgXTb/i6Ig5G5g1HpJIT9kFV85VHeGVI=;
+	b=aOQzudSNNWBLKT1mfrkG+7RJUqR3oIOHv7DP0fMLjTBzedy4DLpHl5LjYPU/9yUGnMv+wP
+	wv5wyOHvxJtx6kIfl53grf2NTx2AOKq2BYnpj1maCGCMDRPdpuAWrMlvxGYyqKT5n/rusc
+	ixEbL/A+hl0PwbTIeRqvnYJr+XNkNbQ=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=kipK6wKf;
-	spf=pass (imf08.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=PolTssNT;
+	spf=pass (imf07.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
 	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759249768; a=rsa-sha256;
+	cv=none;
+	b=66mTRVhwYV2zhH9SUB+wLagyjnuNXKwQlwHqL3T4sf7ID8lhgAKBjsyY88BFkmMXGeyB83
+	28JuBwl6G2DkiRaExVx+Mrv/ndmewsBpHkSKHcOi79GHKkFSb7qU3dUYqLbBpddrAzo/Yv
+	0JDYNQiaFGC1a410tJ9ZjxyMLN9nbOc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1759248579;
-	bh=zNOqW8q3K8VzrkGpGhn/Rwg2ryt2C/LYQAHlbYXM5zQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kipK6wKfCNDwXwPqAORdhW6HgjiNlNdE0KuHuBqz2AHHfRWmbcMjSrLfFIdXkLnpz
-	 p1M8hRm8VMktfTq1sULOVF+By7uOvMef3OfFPZW2hlzz9zlCbIZuc7sVIVHE9kTpDv
-	 Qzqu6Gi2EkT6BOpsLFvjVo8Hz++DRwsTFSAf+jF2WKYTxEx1pDJurafyWxK1JdrQnS
-	 tPyt36VADlrD9S+otqgz4MoUQrrys9qZIfE9zLIvuFBzDQ6R7DFGoXNhgUS0YjSY+V
-	 xuFkAzEubr5lEy5gp9gpYnc0Y5/rMd3WqyQMhvoOhvrdT5DBqq3Uh1o5d3t1Q/3q/G
-	 F1rT/b30CeMFg==
-Received: from [IPV6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa] (unknown [IPv6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	s=mail; t=1759249765;
+	bh=2kqE3MdFlsyIlKM4AXOI/bfovHhPnQfahB0ssoeeF0c=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=PolTssNTD/USvUl+E8EPJJxihv6AllZ4tybpwcB+Lx+uOtrK9A4XzieEF2h0abKvP
+	 REOKUxCTJiev/5Ke0JauBbNNM0IX0gZrcMFVmlhdz9WpEVoKmMVUn+bQaZsFjtUTKm
+	 51B08R7qwVAHwh10JCkMociGcrekAsNWjxGQO+R+uUV2DcBYDqdvOBuo2mUr2f5p0i
+	 zbkpKQcGRGJ3eZN+Fho0rg6JtT1t0yPC5V0AhKZuSU/+qaXjcO9z8+/aJVVf6W5TGE
+	 gLLFBVYnVOOA43QHW8I+COItf8bHKz6NWF5MiSUqcU9gmwtf+QMeCNMJVFN1q3pAG6
+	 Hz1v/kBYgvPSA==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: loicmolinari)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 6C64D17E010B;
-	Tue, 30 Sep 2025 18:09:38 +0200 (CEST)
-Message-ID: <cd9084e1-16d9-4fd6-9c64-1876d53d5225@collabora.com>
-Date: Tue, 30 Sep 2025 18:09:37 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/8] drm/gem: Introduce drm_gem_get_unmapped_area() fop
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, Rob Herring <robh@kernel.org>,
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id B0BA117E010B;
+	Tue, 30 Sep 2025 18:29:24 +0200 (CEST)
+Date: Tue, 30 Sep 2025 18:29:20 +0200
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: =?UTF-8?B?TG/Dr2M=?= Molinari <loic.molinari@collabora.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Jani Nikula
+ <jani.nikula@linux.intel.com>, Joonas Lahtinen
+ <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>, Rob Herring <robh@kernel.org>,
  Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
- Melissa Wen <mwen@igalia.com>, =?UTF-8?Q?Ma=C3=ADra_Canal?=
- <mcanal@igalia.com>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>, Al Viro
- <viro@zeniv.linux.org.uk>, =?UTF-8?Q?Miko=C5=82aj_Wasiak?=
- <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>,
- Nitin Gote <nitin.r.gote@intel.com>, Andi Shyti
- <andi.shyti@linux.intel.com>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- linux-mm@kvack.org, kernel@collabora.com
+ Melissa Wen <mwen@igalia.com>, =?UTF-8?B?TWHDrXJh?= Canal
+ <mcanal@igalia.com>, Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, =?UTF-8?B?TWlrb8WCYWo=?= Wasiak
+ <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>, Nitin
+ Gote <nitin.r.gote@intel.com>, Andi Shyti <andi.shyti@linux.intel.com>,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, linux-mm@kvack.org, kernel@collabora.com
+Subject: Re: [PATCH 2/8] drm/gem: Introduce drm_gem_get_unmapped_area() fop
+Message-ID: <20250930182920.5604ca49@fedora>
+In-Reply-To: <cd9084e1-16d9-4fd6-9c64-1876d53d5225@collabora.com>
 References: <20250929200316.18417-1-loic.molinari@collabora.com>
- <20250929200316.18417-3-loic.molinari@collabora.com>
- <20250930123003.75370854@fedora>
-Content-Language: fr
-From: =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>
-Organization: Collabora Ltd
-In-Reply-To: <20250930123003.75370854@fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: wbtozxkp5eqmui9pj5wzrawgxrcooqgw
-X-Rspamd-Queue-Id: 4EB49160012
+	<20250929200316.18417-3-loic.molinari@collabora.com>
+	<20250930123003.75370854@fedora>
+	<cd9084e1-16d9-4fd6-9c64-1876d53d5225@collabora.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1759248582-946155
-X-HE-Meta: U2FsdGVkX1+rEhZb212nCkv8WRNrLTTiEp3Ni0fcQSg10GcNmjyIvEzKIb9Z7V+UwkD6Np9FtmJxm/RjRPPPurdoT7K7s0dXYjipk/7Y93WwxK6M9MugfWMTMXJN1d82S3WpUxSK1toxR3mvXZdiyx+ARkUMyq5H3rPOPoo+w6+c44NUBU+1Etqy7OQYsK9XLOpm4cD2bSgLGAjMJJfzRLTiR62yW2zKpUtrcJuni7uosNRQkuYIuf2nTiHVDKHLDp6nuugqlCQbIrXRIeZAMz7ywBQ7wO5wRt1dKtBdVRu7z1G9eAD1U50Y/dgQ5mYkP8ldUs6I8/CM4uhaVfzBFHku15AyiCheUt3sd4T15awKaALaXeGnVa4RedntA7HV8KmmJ+LJ+HspxXde7inaXcz4B2AqVtkGroMYk2BvDhJMptt/6op22CuDcqkhlfRCe/9OLmNG6mIVZpKGfw1/bZtLs7pl61iQGNOnfB6Y56vQcwUJbgfJ61c2HrOgUaW7NB7JYztk8RqkMloMEwUXdgAeKnDD81DXLTctcnbfs47xmuBGjCrrYH+8ZVuPnPFMuQDkTLbiOXphKsCwbYSTaa7tNslYmNgmaP4SZbVldCSmwOS+4jl7fp2pCUkM3kISzRvSxFxTBoWLPI1atSd7WAqkfJ7fPBfiaCudbLWjMcOvQ2TwujctJbGx/6gbV2oUThoxkSB/6i450wK8xuSG1ylYV+5+xDy12JiRljBTMRmGAkcgwpvo8bP32EEbudMt7Xyp1gM097nJQxhKLZZx4LV2hR39A21XO7m6+s6rKBQQqvcVr3IEzk8xUpZnfAm5AcnOJphqUsolH0yHmxN3VtRd0NbNdHe+hZUamkOCkFhvuUGu8B5B+goLnf/9ZxA8vKXQ68H5ZwOqgZh8iscIGOQNAAqV+GBk+iN/KMvEqioyaGAwNvv+SjNCH35PID9in/5196wjriVP8OoPmUb
- Afs7nPZF
- GsYF/fJ+dzenJCyZJ76GkpDbalODKN8Qew4F6SzbLUN7SzUfZz75FoNyfUlolL2FsJHw7aEJkhesqhoifoAKPancu8fC4EJruPpQV/itqTTNnwyNc6328v/C4hu86pDepAs2iulfoTLd47eY8l2NrBY9/TJbBKYZ5UvZW155nTtmQk1cbSY9W7eQJya7+kK/U/B0OcY4++9TMt1M7AQTwPbCn7XwSqc/s2NQf4NrgQo1C6eKLJtSlxjKFa3hHa1RXxqorPi1MMRhFjD/Rp3RxFVflo00rTITWtc5jOJDiQi9wsCutjnMWf4EYdCqMHVt8XumJdIo8x8x9ZfWWFTCpkKy81A1V8qCGAMVWZtWokB5YhmkzYirjsHo7aJpxms1JU94bkgjVB5fyg7Ar2dLbndikCI4y6afU70nMsFWdiMMWeQ8uZzJY2OwaCP3a57ETAHLuSx8+mu2qziT2WstZIrs/PFdjniTDBbvmjGMqI58yLG7MAvfaWrZN9oHJRrOZ3PxV
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6D41C40004
+X-Stat-Signature: 6u44q3cxpxjxxap4jaxiamw7wzsytaor
+X-HE-Tag: 1759249768-951671
+X-HE-Meta: U2FsdGVkX1/iX14h7tBsWunw4kQtAi0VBdUTq7rd32XqghXsJnTXG+dUFGQg3MtY/ikCAof2t0/g52MLvpZw7H3ZmIgfPZ67weks8XMRzDSyP9JYn1RUBCa8ITnwUwHxSDIs1e0RP2rYSBp2HwfN5zrqWD5Vg2kzti3fkZT/uXL1JGid4XCy3/lxBbJYfEPzgi/7YzhAlZd1DW5Q+JoLPq5T+/UDy7mCTGdosodiImHytVNTVIBa1hOOeJQkGfGqdRYDpuwYN3VST8sKR7LTy21b9ulJAX1LI7Btb+08FsbZuuZ1dOVGNZOdp/h6Dr/mRBur3lYis04rV5XU8Fpv3SculQ4YuV63WMm8SDxV84jmcts2FvSMo2oJk+CilDZuEd4vePvo12dM0PUp/4EZMkltcsvBqzFmm1JftRkfPDIqKHDEbt/gNYKOzlIwWc4QbUqjjzPRG1E07QuVbX9niQ3Ov+4b86V9eEu3cSJ0xEd0N+FbIEu8cHxJ8Ez31bDqMV+ODN0RM3pUao2HAhx9FgP4W8hnAP88QS1FFT6wrKPUXT/7R9h4WGTTYE8bIDR21WtW8qeahAwUas+dMMQytqeE5keRh25MEA6EUmZZAC9PdhPIHg6E9qF9u4WIS8EOWOhf4mOEcwmMIasjMO2qpM3PiqgUZh3ENnydRakkgv6lrsLrMvtxIJ8I7tOiGYYC2nq6gzaooRRbM0UtcY6uDeuIWWQicpZNZjeJ4ZKWieCJviam6i3f/g2Vwg3NWqXOK4rUnn0nmsFo0cPxsjrVyUbViOvTIHZlK+d0j8r0aFRKpqumX6pHLMtuBufHWapS1Uz0e6sHve8QE905RwsThXkeITa5UhakoQTiBv0ldA/OdHeHjQ6QR3NIvZzFY7SGCoSwWOOsY2nXixH7OK0PmjpeIgQNUpH1jQx+8sQ/UJCTldSVBMRnWHkHP8y+XIwqi1qKlySNC1PHIrvcU4P
+ n4v+NQBn
+ g8IkD5/gkabNGajsWkLphRVmc24qaTuTNFBQHPAznqrDRmQGayStjTaKAnSpHst3SiQd1LHhz+gQjFvZxV6S+xo/qOaBf/rqrUL5hnCpnGzd4J3t71YZso7ewd07XkkLHhwjsxbQQszAA6BTpgXbvMbF3VZPK3g/j37pvxH1e0HCBGq7bL0jbtwmNv6x0NQmfQCjjfjLX/cZw3DTmFob85qMh1PJtE/msfyurL48wx1d49V4K3zBcmGEC6QW9yrO93GQ+mbUrb1pGdhfJU3g718IyJGRnR06PR0aG49oa7gSu++mAhWtuSL9VTeAPI46S2/q4Iy3P4nqia3yv2Jys6CwNlucBudQllXsL06Bf9VCeCyayGKJhXKP6ioins1LcuWpipGqjvLRXU0r0toLq1YmJ8w7Rvlv4RfjW
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,42 +112,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 30/09/2025 12:30, Boris Brezillon wrote:
-> On Mon, 29 Sep 2025 22:03:10 +0200
->
-> Loïc Molinari <loic.molinari@collabora.com> wrote:
->> +unsigned long drm_gem_get_unmapped_area(struct file *filp, unsigned long uaddr,
->> +					unsigned long len, unsigned long pgoff,
->> +					unsigned long flags)
->> +{
->> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
->> +	struct drm_gem_object *obj;
->> +	unsigned long ret;
->> +
->> +	obj = drm_gem_object_lookup_from_offset(filp, pgoff, len >> PAGE_SHIFT);
->> +	if (IS_ERR(obj))
->> +		return mm_get_unmapped_area(current->mm, filp, uaddr, len, 0,
->> +					    flags);
->> +
->> +	ret = shmem_get_unmapped_area(obj->filp, uaddr, len, 0, flags);
->> +
->> +	drm_gem_object_put(obj);
->> +
->> +	return ret;
->> +#else
->> +	return mm_get_unmapped_area(current->mm, filp, uaddr, len, 0, flags);
-> 
-> Looks like the above code covers the non-THP case too, do we really need
-> to specialize for !CONFIG_TRANSPARENT_HUGEPAGE here?
+On Tue, 30 Sep 2025 18:09:37 +0200
+Lo=C3=AFc Molinari <loic.molinari@collabora.com> wrote:
 
-It does cover the !CONFIG_TRANSPARENT_HUGEPAGE case 
-(shmem_get_unmapped_area() would just call and return the 
-mm_get_unmapped_area() address) but the idea here is to avoid the GEM 
-object lookup cost by calling mm_get_unmapped_area() directly.
+> On 30/09/2025 12:30, Boris Brezillon wrote:
+> > On Mon, 29 Sep 2025 22:03:10 +0200
+> >
+> > Lo=C3=AFc Molinari <loic.molinari@collabora.com> wrote: =20
+> >> +unsigned long drm_gem_get_unmapped_area(struct file *filp, unsigned l=
+ong uaddr,
+> >> +					unsigned long len, unsigned long pgoff,
+> >> +					unsigned long flags)
+> >> +{
+> >> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> >> +	struct drm_gem_object *obj;
+> >> +	unsigned long ret;
+> >> +
+> >> +	obj =3D drm_gem_object_lookup_from_offset(filp, pgoff, len >> PAGE_S=
+HIFT);
+> >> +	if (IS_ERR(obj))
+> >> +		return mm_get_unmapped_area(current->mm, filp, uaddr, len, 0,
+> >> +					    flags);
+> >> +
+> >> +	ret =3D shmem_get_unmapped_area(obj->filp, uaddr, len, 0, flags);
+> >> +
+> >> +	drm_gem_object_put(obj);
+> >> +
+> >> +	return ret;
+> >> +#else
+> >> +	return mm_get_unmapped_area(current->mm, filp, uaddr, len, 0, flags)=
+; =20
+> >=20
+> > Looks like the above code covers the non-THP case too, do we really need
+> > to specialize for !CONFIG_TRANSPARENT_HUGEPAGE here? =20
+>=20
+> It does cover the !CONFIG_TRANSPARENT_HUGEPAGE case=20
+> (shmem_get_unmapped_area() would just call and return the=20
+> mm_get_unmapped_area() address) but the idea here is to avoid the GEM=20
+> object lookup cost by calling mm_get_unmapped_area() directly.
 
->> +#endif
->> +}
->> +EXPORT_SYMBOL(drm_gem_get_unmapped_area);
+I'd expect the extra GEM lookup to be negligible compared to the overall
+mmap() operation to be honest, but I guess if we really want to avoid
+the overhead, we could still write it without this ifdef.
 
-Loïc
+	if (!IS_ENABLED(TRANSPARENT_HUGEPAGE))
+		return mm_get_unmapped_area(current->mm, filp, uaddr,
+					    len, 0, flags);
+
+	...
+
+My main concern is that shmem_get_unmapped_area() evolves with more
+!TRANSPARENT_HUGEPAGE cases, and by calling mm_get_unmapped_area()
+directly, we miss the opportunity to get optimizations for these cases,
+just like we missed them by not forwarding the ->get_unmapped_area()
+requests to the shmem layer so far.
+
+>=20
+> >> +#endif
+> >> +}
+> >> +EXPORT_SYMBOL(drm_gem_get_unmapped_area); =20
+>=20
+> Lo=C3=AFc
+
 
