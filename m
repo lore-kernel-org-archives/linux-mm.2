@@ -4,86 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ED1ECCA470
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 22:15:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BF7ACAC5B8
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 23:36:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 543788E0007; Tue, 30 Sep 2025 18:15:02 -0400 (EDT)
+	id 058528E0003; Tue, 30 Sep 2025 19:36:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51A148E0002; Tue, 30 Sep 2025 18:15:02 -0400 (EDT)
+	id 030548E0002; Tue, 30 Sep 2025 19:36:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 456F88E0007; Tue, 30 Sep 2025 18:15:02 -0400 (EDT)
+	id EAF668E0003; Tue, 30 Sep 2025 19:36:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C8DBC8E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 18:15:01 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6610C13BE66
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 22:15:01 +0000 (UTC)
-X-FDA: 83947322802.22.A0AD781
-Received: from r3-25.sinamail.sina.com.cn (r3-25.sinamail.sina.com.cn [202.108.3.25])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 965051A000C
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 22:14:58 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=sina.com header.s=201208 header.b="w/zrK9mj";
-	spf=pass (imf19.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.25 as permitted sender) smtp.mailfrom=hdanton@sina.com;
-	dmarc=pass (policy=none) header.from=sina.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D7F628E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 19:36:31 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 596671608B4
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 23:36:31 +0000 (UTC)
+X-FDA: 83947528182.28.2387AE4
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6912F100012
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 23:36:29 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=rlEQZreO;
+	spf=pass (imf05.hostedemail.com: domain of almasrymina@google.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=almasrymina@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759270499;
+	s=arc-20220608; t=1759275389;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PeSt4auwglYPFnJc8427LVoppmueE7xaZPihXjESuXM=;
-	b=UmopZaSq7fN4daWW6vzDxxuUgRko5vQ+dMwGBCFes9vZU5EUiWvE6GtzbDhmXHZLXOPyKG
-	lC5CQNFvn2d32a9jP3je3o3Cb7PnNyiqlnkbgWCUHnOQa6eKAXmuHeAy0ZBpL0MazFcIpP
-	O2lsdNa13TBJ+EO63Jo/8gmrEsGv/dI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759270499; a=rsa-sha256;
-	cv=none;
-	b=sBZ28GfbXC0aGoRYUPeFBenhcCREBI1jCp+wg3/Zd1HR/JVZ8kxeoBmr+PFkoWlgE9Apw1
-	dK6F0DSQGsNZLXyZjq87hEWET/CPYSXeEQLoQ+htCIVBw6DODpw1g+i91Fcpo2XQ4tb9kb
-	sVUhJQIeJx4JD+IR3qhv2yfwqEnnFkg=
+	bh=BzAGHoC3LCY9BMZcnX+2gQ2YcNS5UVNzJHOD3iXvnng=;
+	b=cyHG/0GYcq/CwUW0XKm9Bf2RYpULH4YAeqJv6f78hbn5IuAq1jvDOT+D4ocgTCxN7/4kTl
+	VtB4lKrM8qxvrR1K9+4TwtZreDvDYkeF9PU85g/uHFd6CjgUP+ujw0+whwKK1UkBhs59zm
+	jKA9p9vvksQV5aYJu+6l2A0FSwmn9Ws=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=sina.com header.s=201208 header.b="w/zrK9mj";
-	spf=pass (imf19.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.25 as permitted sender) smtp.mailfrom=hdanton@sina.com;
-	dmarc=pass (policy=none) header.from=sina.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1759270498;
-	bh=PeSt4auwglYPFnJc8427LVoppmueE7xaZPihXjESuXM=;
-	h=From:Subject:Date:Message-ID;
-	b=w/zrK9mjLxs8v467OJrkDqb3Y3M9M92qSgHDOPVLlW44ybqiXoJP1D3AUrLbR7xfz
-	 Fppwlo4bwcyUtLjuiwxAQyEdAO4bmLMHU7HQEFBk2sZjaH3VbQOt0cQNTn3rviYqQo
-	 ulFWvSwY0UpK4V0cku3gNqd9H0qXoYcFWwHvgJ1A=
-X-SMAIL-HELO: localhost.localdomain
-Received: from unknown (HELO localhost.localdomain)([114.249.58.236])
-	by sina.com (10.54.253.31) with ESMTP
-	id 68DC565B00001D3D; Tue, 1 Oct 2025 06:14:54 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-X-SMAIL-MID: 2332286816301
-X-SMAIL-UIID: C55BE4FAE527454F8983310896AB42A9-20251001-061454-1
-From: Hillf Danton <hdanton@sina.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v2 2/4] mm/page_alloc: Perform appropriate batching in drain_pages_zone
-Date: Wed,  1 Oct 2025 06:14:40 +0800
-Message-ID: <20250930221441.7748-1-hdanton@sina.com>
-In-Reply-To: <20250930144240.2326093-1-joshua.hahnjy@gmail.com>
-References: 
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=rlEQZreO;
+	spf=pass (imf05.hostedemail.com: domain of almasrymina@google.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=almasrymina@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759275389; a=rsa-sha256;
+	cv=none;
+	b=GM6LihJS3y1YiT7hFVDJ2O8h8aH+AEzX4e3gJXp93s26O0n4JUEVFQ0Ta6mtAKoU2mzumM
+	zm2A6nckGaoKesDp+ncH6BfyjVC7+Jb/f/XxeQlg8JkyK/jtOu8leNX0iM6jAsDBZHzey+
+	M8H92hOx29MDz+/XuQu0zr9tJvngG8U=
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-57abcb8a41eso1792e87.1
+        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 16:36:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1759275387; x=1759880187; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BzAGHoC3LCY9BMZcnX+2gQ2YcNS5UVNzJHOD3iXvnng=;
+        b=rlEQZreOBo1QnMxoVjezj2aQKrOeeoJmLw4ELxk/FEQ5e6U3/6v/4h/a21jD0K3vRX
+         mVFYQrKTsVaqGnf2Fu1kp6M+kmR9Aj33hfy4SRNbyTJq7KoDM518nZaSpp/lbT2aXTG9
+         vPEzTR8h/YQ0UuN/SQT53ogcS1wT3LpJasE7ZCs2tIAtjCcqNMJWOljDnr74jUk8li/w
+         AyxhALjWBx5ypUTcHMi/0lFYnQcxBoT8/kWoSKy3XYmV99Fu5TDUCv55CGXFnNG/A7D5
+         oWis42dqxVBFXUeoPTzxwFAQZjasR7yfSj03KwEhh9rK9gGxfo6AvcYEG7tLDBr++nRa
+         x3BA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759275387; x=1759880187;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BzAGHoC3LCY9BMZcnX+2gQ2YcNS5UVNzJHOD3iXvnng=;
+        b=NdE8Zq5sUPa0VIzoF8jyienxwUNO+o2YlQ9lmaR2ygqX/OoOwEx5mK6apAVFAEePxZ
+         HJ4zrdll5C+eLiSrw1Nb7xWL/3f/E85s6Xbl2FXuYRxqRVs6UXv6CYYFwzS2sCFk+DjF
+         TzyTcTQ/Hz5UYfo5m20CbJhojmXAxJoZQ9V6flBIxtg5bnni/keq3Dj+v54gTOn64fl6
+         oWoO5Enm0zehDvdXTn4xFf1/+9Mznh75yfsjIoLE52SYztjCrjyyVWdYLZtZnttNZFUK
+         N9pUKTOxWihczDJWCFTzFPkq7hUAXhvjtZLsOC/nBtuVCANaBSd916Cbn7hNcpN0UfxA
+         McgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU/nDdOeeujM9utkzArQJuWeOcDkm0NalQLCvBNxfJoAJe6PHvJfnGteqRNmgdsGcILDBFM/mms1Q==@kvack.org
+X-Gm-Message-State: AOJu0YzESLmm1Zrp17eENkyVgT3nOGse9MNtzLG7JTc5cNbdl7zitZzZ
+	R+Xa33AHyBPoKYAGU3ns97H6MbRvmworwnZcH3I+/VJaIC2LSKnv0Ym1MVVBFM7RFuX3I+KE1Zc
+	Dd6LXQ11HFdCeLDGnnh6pZXfFs3wqz31fdNX2oL4n
+X-Gm-Gg: ASbGncu2xjTStGFv+rYe9g61wpaFI1MioVPx9uTFxm4EH8PIy6SAhsENs5708N+sGr1
+	xq+oOwHnYm9ClWO4WJdjV1HBw7xZATgOIosTN/RDZZ/zct+FO/U76yE1b6fgmAQi1BVJPeUNPku
+	T7EQqofwl4n/oEcFxDWqcLKW1Hw7Nrhr3bs6mhDzCq78hXdz9mmuuWtKCEpN0/MmmrefJ436nLA
+	eJNVDmzYku/7IPw3xrmYMsII8iB5W0rWytJMa5bdSygnU+vFTgJDu1WuirdTYX+q58S4ebOsMfj
+	3U4=
+X-Google-Smtp-Source: AGHT+IFkc4IJjLwRN6BK7QqMPx6rU0WejItlxxFNvZ50TdxHWfIXW7DGWHWYtXgj2YsxQvYwGLGM181jyibNLaHKuC8=
+X-Received: by 2002:ac2:490c:0:b0:57b:aa84:8b11 with SMTP id
+ 2adb3069b0e04-58afa3eb46emr129851e87.2.1759275386958; Tue, 30 Sep 2025
+ 16:36:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 965051A000C
-X-Stat-Signature: 63hi3expfebn6ft6r1sxcbaayzbbd9bo
+References: <20250930114331.675412-1-toke@redhat.com>
+In-Reply-To: <20250930114331.675412-1-toke@redhat.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Tue, 30 Sep 2025 16:36:14 -0700
+X-Gm-Features: AS18NWBXmtCuQg-Y2WOs8Fk6rwYNK6cExv_BH5QWhhlqrllaXyqnaMgGll4hTLc
+Message-ID: <CAHS8izPGxvdDu7JwEWK2=fk=qHoYgFzOs1FjOWjmNwqrU2r0kA@mail.gmail.com>
+Subject: Re: [PATCH net v2] page_pool: Fix PP_MAGIC_MASK to avoid crashing on
+ some 32-bit arches
+To: =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Jakub Kicinski <kuba@kernel.org>, stable@vger.kernel.org, 
+	Helge Deller <deller@gmx.de>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-mm@kvack.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: i159x7w5irj3tmkeszzzetkhgthposs8
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1759270498-690496
-X-HE-Meta: U2FsdGVkX1/4JmydjCuCKvW1OfiX4fpCLHSrtEy42QX9/z60Ov4jNnSQYEQnBjJY1oCvxvHzH1T0uggX8nUmUMf0jBQ106yAvu/VmuaEiAEgXQTWE5pxy3MuVVTlfjwHgu/E3Vhzq2KQMMx0+QjIdufbxJ/dIa/4BgW8Pi0KzDea9feCmlV6YSCbrYFdYoTYkgpjdR6+j85w6ANEo6T2g2exLyZjrRY9+Z9k2V1Zrrn6uKxgjY9dAecAHzE38gBnKwANLXj3tFWu4mO/CDTI0sSMvw69qfJYOuOTsxhO15yvItUB3W/JC7p9RLJXqERIbGpy85Nn9gTtfbvZyeop2mR2DyGrVBTvmgyOR1F+SN78l6I3L4UlxeeGlb6zM9kc/fC5ktSpjPAPNGholBVnXlHFadQNgFhRPHbtMbI/8aNRSwzXTXKBp5aBUo8xWcnPfTaV3ElWhnQc/MIRSrJEmIoGW6+vNLvblvvGsJ5ZLTCz/szk3jlrwIsIwa9yHelckvF+a8n02q0PRXIyUu8nDfvhXQZbYF7NwyANGxWW7DIoeTEchjNxc/81XWPOOnRTqZrcp3iTClI950aXza7fw/zgG3NL5Ak3vzxGlS58Ym4QrEGM6jVs5ykeu146vBBJv0ilJr0i7V3sx7bV9OK2wJYE+tG8wW5dD4Wd7fefTDeFLXGjB4XQu7TdgvXUa5qbcbf3dCwt6NwBkk8D+6l37gEuwIUcB1CagGYTJCVyyD0b/auSSg1ln3wx+Z5iH49wUq173U4PZ1g4jkHYL2twjYbisg8DZGX2tyYXts0cVAXIHjtJT1gMAXTJ8I/j2OXmCbiITmMKEQ04QxOU+SDbtXRneW+obZpW38v0wlFuUd5o1nUdYbAO6yBLDIjxTcCKlDrGAstt1Ild8YhDYSjJxMdLi1Qdy2aeArY2tlspx64QI7KgCs8WRxggVggtohxoBgLXi/42oCd/L97+6au
- 2y8Jt9/A
- vSszlKBzd4Juyrr3+vag1TK4vGAuA1xL+7Tjpsa7S4XPxPeyD4JEYOkE24Mhxh0j4tC1q2M0aY1q2tKQ/eXjcjseOF6ulXqCH0vqsaLcgo3YLIpuEXKRtXAtlEmKJHK64eWlozsL/dJ4KXTF0MlGR0Hmbtz402p4PoPZ3vSxCV3XIA4CWV0oehlv/COQaVEVFOjAlF6kHsMhnMSXtPEdr/ycJn3CKKlyuyj+FjL8DMugRxQlpt2CIhOYUcis21OlREA4W3gxMYf9a+fWocHWC1qovp8+Td05RUgpfNmissxBXhdC7neTxpVNXUj3QHc2+I61gKnzKniDL2cmeSqXH3WFgCghCpx5tdwOpXnxKpWkJRrDCSmSDwtoTuK0goZswwY9yScT0PWcE6/ByHX9zogASFFs18M9/Fc2gD067GgbJMAYKSj8vFewLmsu8pR3Y+XmX6KiT9v0E5j8=
+X-Rspamd-Queue-Id: 6912F100012
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1759275389-551822
+X-HE-Meta: U2FsdGVkX182UiGY+LtJxvw+t62NEoCbf0f4xc+UY1p8zhtbKPMI784ErqRY2zqBV+p/rLPIk4ZzihaNqpEhfNcgi8oK+98OpYwQvpKd/ngXDA9U56rLIBIShnY0nz2iGUWcgdn/7O5nUBi+4v9NT4rmE/3MFokU9o2eDbz0VrMBekKIELvn+EW3tlKTsxq4gyAdV4McE7jmngofMLOXkDzw4osR7Os3Nm1JDkUL6nkPXhoOb5xZ34shwMfv1IfNfJfBf9NovMJSR+PM0kWuZ5hkoPU6kJ63q2jDGxzT+m1New5D7cjRMMNqLVPY+PN3AodAXBYI5QmR+p6Az/Rl7H52wF6ct+hAdkdLKUl7ZtgDZZ9Chi0jg9BABoqUmnGZV7FkoV5PBaeDhwXIZa8TfYycyNklnCTMlGhnn03j9PkbgncyjJ+5bfb9m2g1gzfwldRn8MwhKiwapc3FiWI7/zne7o3NHltjFGlRUdmAPe+bOkoki/se7qVyL1jzXCS6RkjAP8JcPjyUtR5jq6wQ7TVVJj63XsjFAclleZ+Aq95oO/DsrlfLMFFpyglBcUG8vQR7ocbbsRE05eA5Uzrp9qmLbRJsbxw4SiFE1f5DtFFBJYavWSJAUaygwj/UKRbd+eD+OZIBeb2GYejMCoDAUOoLi5t18pkefcMT2hoCNLiL4GVdGtybWLaqXmKWmhbTwgbGn31jMB13KUrgH7Je1ZvC28+MrOojXOy/lhwolXtdracDpm2vW9hdZuDJClM/FtxJNj6kVSBh+4RWyoWRftP3ekUTrrrPtoqLFz85BX3xqpWbQ7j1kkf5s71pB2ThW1ZlvULITitWuEHbyiFgBX+HRSTDn2XXhRjPH4un75s8D+yvmNu/TZMjVR2PlLe6TDxKibgZronJT+UnuS5uTKtukFEbY0z+sa1O/EBpo7DMqPqGMFSwiWD2fqB/cEgIx39Dddr0lHWm4iXLn5w
+ YBJ3+G/s
+ +aqPI6oeWgmVY7rnod01WHyyMoh2nVjoGi9TWH9IlV2iRUjZA8+lhumK8nXUZV17xrCqJ8ZyGJDihsk5Y+8mYEExXtS/IXs85Mx17ae8cXG4Rps3GMjBf3GIWh1rd7GkeqkLvxKxBQDaInZCkB0z9/pS/nVh2qa4aJe+jG1hp9kW7cmSvX17Gxekntli9XOwZSm0kSlnzY34vNzSHW+OZy5ctuWyMyWuWhWSDkJ9AjTwTT009XdsidK17/mYqfr0XFvWe5vCgud9uEw9OhZplwYN+6dnYDTiKT2Trs3prVyhwx5DKCKsd+OEYhQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,101 +124,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 30 Sep 2025 07:42:40 -0700 Joshua Hahn wrote:
-> On Sat, 27 Sep 2025 08:46:15 +0800 Hillf Danton <hdanton@sina.com> wrote:
-> > On Wed, 24 Sep 2025 13:44:06 -0700 Joshua Hahn wrote:
-> > > drain_pages_zone completely drains a zone of its pcp free pages by
-> > > repeatedly calling free_pcppages_bulk until pcp->count reaches 0.
-> > > In this loop, it already performs batched calls to ensure that
-> > > free_pcppages_bulk isn't called to free too many pages at once, and
-> > > relinquishes & reacquires the lock between each call to prevent
-> > > lock starvation from other processes.
-> > > 
-> > > However, the current batching does not prevent lock starvation. The
-> > > current implementation creates batches of
-> > > pcp->batch << CONFIG_PCP_BATCH_SCALE_MAX, which has been seen in
-> > > Meta workloads to be up to 64 << 5 == 2048 pages.
-> > > 
-> > > While it is true that CONFIG_PCP_BATCH_SCALE_MAX is a config and
-> > > indeed can be adjusted by the system admin to be any number from
-> > > 0 to 6, it's default value of 5 is still too high to be reasonable for
-> > > any system.
-> > > 
-> > > Instead, let's create batches of pcp->batch pages, which gives a more
-> > > reasonable 64 pages per call to free_pcppages_bulk. This gives other
-> > > processes a chance to grab the lock and prevents starvation. Each
-> 
-> Hello Hillf,
-> 
-> Thank you for your feedback!
-> 
-> > Feel free to make it clear, which lock is contended, pcp->lock or
-> > zone->lock, or both, to help understand the starvation.
-> 
-> Sorry for the late reply. I took some time to run some more tests and
-> gather numbers so that I could give an accurate representation of what
-> I was seeing in these systems.
-> 
-> So running perf lock con -abl on my system and compiling the kernel,
-> I see that the biggest lock contentions come from free_pcppages_bulk
-> and __rmqueue_pcplist on the upstream kernel (ignoring lock contentions
-> on lruvec, which is actually the biggest offender on these systems.
-> This will hopefully be addressed some time in the future as well).
-> 
-> Looking deeper into where they are waiting on the lock, I found that they
-> are both waiting for the zone->lock (not the pcp lock, even for
+On Tue, Sep 30, 2025 at 4:43=E2=80=AFAM Toke H=C3=B8iland-J=C3=B8rgensen <t=
+oke@redhat.com> wrote:
+>
+> Helge reported that the introduction of PP_MAGIC_MASK let to crashes on
+> boot on his 32-bit parisc machine. The cause of this is the mask is set
+> too wide, so the page_pool_page_is_pp() incurs false positives which
+> crashes the machine.
+>
+> Just disabling the check in page_pool_is_pp() will lead to the page_pool
+> code itself malfunctioning; so instead of doing this, this patch changes
+> the define for PP_DMA_INDEX_BITS to avoid mistaking arbitrary kernel
+> pointers for page_pool-tagged pages.
+>
+> The fix relies on the kernel pointers that alias with the pp_magic field
+> always being above PAGE_OFFSET. With this assumption, we can use the
+> lowest bit of the value of PAGE_OFFSET as the upper bound of the
+> PP_DMA_INDEX_MASK, which should avoid the false positives.
+>
+> Because we cannot rely on PAGE_OFFSET always being a compile-time
+> constant, nor on it always being >0, we fall back to disabling the
+> dma_index storage when there are not enough bits available. This leaves
+> us in the situation we were in before the patch in the Fixes tag, but
+> only on a subset of architecture configurations. This seems to be the
+> best we can do until the transition to page types in complete for
+> page_pool pages.
+>
+> v2:
+> - Make sure there's at least 8 bits available and that the PAGE_OFFSET
+>   bit calculation doesn't wrap
+>
+> Link: https://lore.kernel.org/all/aMNJMFa5fDalFmtn@p100/
+> Fixes: ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them wh=
+en destroying the pool")
+> Cc: stable@vger.kernel.org # 6.15+
+> Tested-by: Helge Deller <deller@gmx.de>
+> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+> ---
+>  include/linux/mm.h   | 22 +++++++------
+>  net/core/page_pool.c | 76 ++++++++++++++++++++++++++++++--------------
+>  2 files changed, 66 insertions(+), 32 deletions(-)
+>
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 1ae97a0b8ec7..0905eb6b55ec 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -4159,14 +4159,13 @@ int arch_lock_shadow_stack_status(struct task_str=
+uct *t, unsigned long status);
+>   * since this value becomes part of PP_SIGNATURE; meaning we can just us=
+e the
+>   * space between the PP_SIGNATURE value (without POISON_POINTER_DELTA), =
+and the
+>   * lowest bits of POISON_POINTER_DELTA. On arches where POISON_POINTER_D=
+ELTA is
+> - * 0, we make sure that we leave the two topmost bits empty, as that gua=
+rantees
+> - * we won't mistake a valid kernel pointer for a value we set, regardles=
+s of the
+> - * VMSPLIT setting.
+> + * 0, we use the lowest bit of PAGE_OFFSET as the boundary if that value=
+ is
+> + * known at compile-time.
+>   *
+> - * Altogether, this means that the number of bits available is constrain=
+ed by
+> - * the size of an unsigned long (at the upper end, subtracting two bits =
+per the
+> - * above), and the definition of PP_SIGNATURE (with or without
+> - * POISON_POINTER_DELTA).
+> + * If the value of PAGE_OFFSET is not known at compile time, or if it is=
+ too
+> + * small to leave at least 8 bits available above PP_SIGNATURE, we defin=
+e the
+> + * number of bits to be 0, which turns off the DMA index tracking altoge=
+ther
+> + * (see page_pool_register_dma_index()).
+>   */
+>  #define PP_DMA_INDEX_SHIFT (1 + __fls(PP_SIGNATURE - POISON_POINTER_DELT=
+A))
+>  #if POISON_POINTER_DELTA > 0
+> @@ -4175,8 +4174,13 @@ int arch_lock_shadow_stack_status(struct task_stru=
+ct *t, unsigned long status);
+>   */
+>  #define PP_DMA_INDEX_BITS MIN(32, __ffs(POISON_POINTER_DELTA) - PP_DMA_I=
+NDEX_SHIFT)
+>  #else
+> -/* Always leave out the topmost two; see above. */
+> -#define PP_DMA_INDEX_BITS MIN(32, BITS_PER_LONG - PP_DMA_INDEX_SHIFT - 2=
+)
+> +/* Use the lowest bit of PAGE_OFFSET if there's at least 8 bits availabl=
+e; see above */
+> +#define PP_DMA_INDEX_MIN_OFFSET (1 << (PP_DMA_INDEX_SHIFT + 8))
+> +#define PP_DMA_INDEX_BITS ((__builtin_constant_p(PAGE_OFFSET) && \
+> +                           PAGE_OFFSET >=3D PP_DMA_INDEX_MIN_OFFSET && \
+> +                           !(PAGE_OFFSET & (PP_DMA_INDEX_MIN_OFFSET - 1)=
+)) ? \
+> +                             MIN(32, __ffs(PAGE_OFFSET) - PP_DMA_INDEX_S=
+HIFT) : 0)
+> +
+>  #endif
 
-One of the hottest locks again plays its role.
+It took some staring at, but I think I understand this code and it is
+correct. This is the critical check, it's making sure that the bits
+used by PAGE_OFFSET are not shared with the bits used for the
+dma-index:
 
-> __rmqueue_pcplist). I'll add this detail into v3, so that it is more
-> clear for the user. I'll also emphasize why we still need to break the
-> pcp lock, since this was something that wasn't immediately obvious to me.
-> 
-> > If the zone lock is hot, why did numa node fail to mitigate the contension,
-> > given workloads tested with high sustained memory pressure on large machines
-> > in the Meta fleet (1Tb memory, 316 CPUs)?
-> 
-> This is a good question. On this system, I've configured the machine to only
-> use 1 node/zone, so there is no ability to migrate the contention. Perhaps
+> +                           !(PAGE_OFFSET & (PP_DMA_INDEX_MIN_OFFSET - 1)=
+)) ? \
 
-Thanks, we know why the zone lock is hot - 300+ CPUs potentially contended a lock.
-The single node/zone config may explain why no similar reports of large
-systems (1Tb memory, 316 CPUs) emerged a couple of years back, given
-NUMA machine is not anything new on the market.
+The following check confused me for a while, but I think I figured it
+out. It's checking that the bits used for PAGE_OFFSET are 'higher'
+than the bits used for PP_DMA_INDEX:
 
-> another approach to this problem would be to encourage the user to
-> configure the system such that each NUMA node does not exceed N GB of memory?
-> 
-> But if so -- how many GB/node is too much? It seems like there would be
-> some sweet spot where the overhead required to maintain many nodes
-> cancels out with the benefits one would get from splitting the system into
-> multiple nodes. What do you think? Personally, I think that this patchset
-> (not this patch, since it will be dropped in v3) still provides value in
-> the form of preventing lock monopolies in the zone lock even in a system
-> where memory is spread out across more nodes.
-> 
-> > Can the contension be observed with tight memory pressure but not highly tight? 
-> > If not, it is due to misconfigure in the user space, no?
-> 
-> I'm not sure I entirely follow what you mean here, but are you asking
-> whether this is a userspace issue for running a workload that isn't
-> properly sized for the system? Perhaps that could be the case, but I think
+> +                           PAGE_OFFSET >=3D PP_DMA_INDEX_MIN_OFFSET && \
 
-This is not complicated. Take another look at the system from another
-POV - what is your comment if running the same workload on the same
-system but with RAM cut down to 1Gb? If roughly it is fully loaded for a
-dentist to serve two patients well a day, getting the professional over
-loaded makes no sense I think.
+And finally this calculation should indeed be the bits we can use (the
+empty space between the lsb set by PAGE_OFFSET and the msb set by the
+pp magic:
 
-In short, given the zone lock is hot in nature, soft lockup with reproducer
-hints misconfig.
+> +                             MIN(32, __ffs(PAGE_OFFSET) - PP_DMA_INDEX_S=
+HIFT) : 0)
 
-> that it would not be bad for the system to protect against these workloads
-> which can cause the system to stall, especially since the numbers show
-> that there is neutral to positive gains from this patch. But of course
-> I am very biased in this opinion : -) so happy to take other opinions on
-> this matter.
-> 
-> Thanks for your questions. I hope you have a great day!
-> Joshua
+AFAIU we should not need the MIN anymore, since that subtraction is
+guaranteed to be positive, but that's a nit.
+
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+
+--=20
+Thanks,
+Mina
 
