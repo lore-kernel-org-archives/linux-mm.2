@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A882CAC5B8
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 05:59:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FF9DCAC5B9
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 05:59:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0B0C8E001D; Tue, 30 Sep 2025 01:59:39 -0400 (EDT)
+	id 9D6578E0021; Tue, 30 Sep 2025 01:59:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBA228E0002; Tue, 30 Sep 2025 01:59:39 -0400 (EDT)
+	id 9ADD08E0002; Tue, 30 Sep 2025 01:59:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA9238E001D; Tue, 30 Sep 2025 01:59:39 -0400 (EDT)
+	id 8C3F88E0021; Tue, 30 Sep 2025 01:59:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A673E8E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 01:59:39 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6F052BA630
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 05:59:39 +0000 (UTC)
-X-FDA: 83944864878.25.4E39989
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 88CB14000C
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 05:59:37 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZavWj2G4;
-	spf=pass (imf07.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BD838E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 01:59:48 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3FDA51605DC
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 05:59:48 +0000 (UTC)
+X-FDA: 83944865256.06.D7C6FFB
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8BB2320008
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 05:59:46 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=PR7nYSpI;
+	spf=pass (imf03.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759211977;
+	s=arc-20220608; t=1759211986;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1tfnp2VgNI7X5NDB06OaZAZrurrAWQnxjDDxodnKF9g=;
-	b=68pTjeqTzJJ+r5LjZEyiJmhF893hayJVfmy0Kqv0MuZblXpFZxyZTpizVq1ZS2zops5EzO
-	OFhLPebUAE7ouZ1oqmqWr/Q0/rmP1p+COmG+qvSgCwChwtkCe7p4er6TPUdjNg3JH7VPJG
-	baH0Y0cfRBPteoLFOWl0K3ZS4Hg4lsM=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZavWj2G4;
-	spf=pass (imf07.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759211977; a=rsa-sha256;
+	bh=oOprrquoKlbkEreJojZ4KykFg8G0TswcVk79ghRz+Tk=;
+	b=eN+YxXaAavPvb5bgCrsM1Rx71uD/7PKbmZoeEiZmA9YkzsqGqPW6KK4gU6WsSAeuGxyohk
+	1StnilU3lyYolwiU7Upqcssuebxk0q7rf14MdhfesMA9MKI/TRqufwhnnsNPTHZONZ5miE
+	QN/pbw1JLS7myNTSIBsxa8Lc42t6m0o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759211986; a=rsa-sha256;
 	cv=none;
-	b=7QVFIPnxzWQ9V6XZ9P/m9GBaWXLVWZ67YTNnxEn4L3344y0AdfYiMe+VljDK1zFM+P2ruy
-	vscpLvdDCHRNYSNcMAs1GiTBkPZ+O/p8m8xxSnYjCIlDeb9Hl5Op4h4sAK8J7da4mwp/Ns
-	PhBqhF4p2mwM/QUwUmwGlvdiU+UT7WA=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-27edcbbe7bfso59075095ad.0
-        for <linux-mm@kvack.org>; Mon, 29 Sep 2025 22:59:37 -0700 (PDT)
+	b=ibMSsN0nuaFNQTVoBpja9VfOsEgAP3i7OadQF+u4boZWXWSf7Pub7qAg7jiAdFiQ8+zG4r
+	MZHbqdn7cDP3Qb/WxhQw+6PO2pvsDMBWAzCF6+PB05yBNPB4d9YKSAaHYejxzE/HdHZG97
+	QYZpQSnNQQF4CeGvV6w1PFdkVXirBhI=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=PR7nYSpI;
+	spf=pass (imf03.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-271d1305ad7so71976725ad.2
+        for <linux-mm@kvack.org>; Mon, 29 Sep 2025 22:59:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759211976; x=1759816776; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1759211985; x=1759816785; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1tfnp2VgNI7X5NDB06OaZAZrurrAWQnxjDDxodnKF9g=;
-        b=ZavWj2G4L81SZEy4yZfIVgJF69DMHqyxQhftgx36DfTV9WhItiF/8gPZQVwhCivdsa
-         S9NJqE3BtCBgO2MOw+LU+GbXSdY5T6CxDVUhJBfXMMpI7Fu0ji4wt30brTg2pPXlE2do
-         73CgBhUpdSKloaIGEPfYSz4157NGIy5Rjc3eK51QqH19dMMY4gMXVjZqz5/AMoZMAXlL
-         6gVwUKDTyZFoHT374vw0ucZGkrgYPEr7eoaYFa+p6uW12fSS5nlw5/pAURK3HMKHU4xO
-         9X5qSda9zNLDGkLRaXcUCw3iFrSibwJ8cExYaXABkeypL2luzLKCE0NlPH5te8snzauH
-         r3TA==
+        bh=oOprrquoKlbkEreJojZ4KykFg8G0TswcVk79ghRz+Tk=;
+        b=PR7nYSpIF+IQSdgOjMsDuaAi5j/7iMFx+MF5OWqGJyB35zOUcQkXgpJK47jrvDcPGp
+         VS9E7PTTKNybclBApMo/Hl8Xivw0wK7iB6JcW3Xy53Oxtz6ZaWo3dijau1eE4+i3oW0k
+         kZluQ5OiXAxYC2fAp+BpI+VNLHXaHdeWakHKdiW21EnVpSEqYSUbegfwGo5rxVHWu/Iy
+         CMupnOxaLWDgy1PvWDWkgiylRh7zSlOEKvKyzVyBC3XT5RQcoX+yKFzipu2NjyUKCG3k
+         OOdhOP0x3010TuyKFppyf/O+MnJfr/rUEBmIm00aVcAt7PS/xnNBEEyT6SMMR8sUHifK
+         sujA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759211976; x=1759816776;
+        d=1e100.net; s=20230601; t=1759211985; x=1759816785;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1tfnp2VgNI7X5NDB06OaZAZrurrAWQnxjDDxodnKF9g=;
-        b=MH/VfODcs/Ckkfc4qih/RABxvnQpU0zPxs4162ZlrKp9N5BWPyIM/geExF0c0OrR3e
-         B2edu6+pwt0YykiCgyot4/OVsafybZByivBaB7v3sGvh244XfqNsPOfyEkoazereXSeh
-         fNpWqTfvYzxgxsO06DPiw2wLy2OdVhbdMFR9bt+QDNkqh0RBH6k4C5nYWBTShWSXS+dz
-         qgYSp4s4+cWo+ton8rbqoJSFZLDtLYkH2Eu5Qma56Y1TvikV0j7o47w51xQU9aAk5EyH
-         e3BKt/ZczqdEgFstw+/6FzcXavDprBIi7B4T3Nr+S85WIWvH02UzRXBVVtYzfMdtMcAS
-         FZ/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXNPYoeGIYw/7SRwu1U5BgO2MrAAlxf1HWw9gO5Di5ufn4EY0+A2d2YiCbNpOvX+oRWo7wNAzKPpQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy5faVsYxg+IYxKLvz68GqOY9Hgxkqd7Q8NIujC9pH75azczDWU
-	0SlzNHe92z3+rHhBtZLBzrK0UpNhfPBb4ikZmKVYifQt2cyTgrf+nM8h
-X-Gm-Gg: ASbGncsSp/MI5VaqMBNPG3Bl2wYi8RfUb9nyMu1mPyQlzaBHMnF7xmSSoLiRiCnwd86
-	SaVQU6J7g4MH0a9jKWEqfcjOZZTiaTOZNl6elpbx6vj/Ok/2QYDRikO/E59RuRioSjThl+VkMTr
-	nkgnZpGG921UBQmOzutgoR4znm/0K+fkiyo0jN6Ad9+RnOAlU7t6LJMpmT7HNVhA+6wbp/h31hQ
-	nFXOX1beRbU5E0VSOTphsON6mxrPOWgbZhoqaRZeVDPIPZTUE7Gj6Tn9/wCGusKZpib+gm44mWC
-	ZdnEGX2FGYuOrermsBB4LkLpXtF+Y8fqY+dTL9afknxbv29W0lz36/R0VYwzypiZAlAMgK7ONv7
-	8sySOuI0rk8rbsWgZUD81oahdcBDRiplVhEZ2cJDng7sHun9t5yA1fHbiBWvUysMgv+2nySNS2v
-	+aWtx2HtXoOv7F2u6lygOgvpvoIZZOGSR5rSLqJQ==
-X-Google-Smtp-Source: AGHT+IHzK9X+Xf+bVu8Rrmbp78/kS7yuMf0wwgc2gHprT/HrnmCmly3PRVr5PnyZFdbWTIQHPwUiwA==
-X-Received: by 2002:a17:903:3d0e:b0:250:bd52:4cdb with SMTP id d9443c01a7336-27ed4a3d9f5mr206668205ad.32.1759211976345;
-        Mon, 29 Sep 2025 22:59:36 -0700 (PDT)
+        bh=oOprrquoKlbkEreJojZ4KykFg8G0TswcVk79ghRz+Tk=;
+        b=xHZ6mtjrTFRdB509SHML2Y0G4xPSA6Kws4RJIBmuApE8/l6Nbugq6t3NNfcGU1QOb3
+         F3yyTBdPTzqfla7mf1XjV8730SszrKQ0Ydo0eOlTQ2hBRUocPzk+hD1ICZ+kGoXg1bJu
+         RWFWykVVESCeRh5pHTCRf2g4UhiQKe9R5L5jQFd5hcY8+GwgoET0WaXdqoaNcD+Bi1OE
+         v/Y0QNFudrJuw8qGBurpWvBzejN3rLZc6BImPZEtgG17ujNuOs4QfTcqFNY2nEWDbKhV
+         Y7fsQDbKqb82z7UrzBYPJTiQuNN2slf/ES1EhvkSdDSO+TYwpUr69SwmqG3yz71x/noW
+         26jQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWXrUnIIrRZcScB+s4goc5Ic/ruf3zbChZGR/n0Vjx+rip7vDM5+OiSwl7wBpr6rkrZwvhqvHtOYQ==@kvack.org
+X-Gm-Message-State: AOJu0YwyDwwOVgjwRedc3qGFWWwtO7T6Y9Hp7jm8GKadJNQtWkJ18Tui
+	ghAmeAe9HAZCQihfss90Zm1Vy4LFbNRtYHtmHooSSrYvUt3aMmd9v0tY
+X-Gm-Gg: ASbGncsFdsM3+UhU3cIEOVAkoFJWqzyJo0c7TNx8gEjmAPsTjgru3HYUsC0rr/JIGfU
+	8ctRFhiy0gVN3LRjdRCj5VfZIxbMvlTabJv5V7IC2Q/J5klVZubxbI+rM50OGm8IqccGISIipEO
+	oiHGliw+/iOu3YRLsH7HtzWdA8fFRrkZIK9BlC80lfv6ltv8r8qpJh6an+auNhif+7/mpMck3Zy
+	JWxI4A+6HVmJyUKnGXV5E5n3+/k2xqjtEW+GQJZyztUyQUsDeH237iQc1mlYYTaTf2wXx/nmpu4
+	L46CNI2KdvBLj+iW5ejKCHWSbFgkKiyb9SEJ3ElZVVnJgurZT8N8eXm+aBXYAoP7snAHKvuBx/V
+	2ReZqib3IDnm07mJf/IwgDjV9hhAMTAnY+7Fg0lEXgwDEr9R6ag2zuwQxm73u2orsLBfEy7LFFF
+	pdeT6ZKjp5hcaYyt6XoyRYQCMQw6tRTIkMQmO9fA==
+X-Google-Smtp-Source: AGHT+IHaVympRvUhy+mNwqzkCqg8GQH0WHYHPq1npnx2or9ONNHwBhPtVzKfVWrGEP9ED65uKj4qEQ==
+X-Received: by 2002:a17:903:b83:b0:265:47:a7bd with SMTP id d9443c01a7336-27ed49b802bmr208932635ad.4.1759211985356;
+        Mon, 29 Sep 2025 22:59:45 -0700 (PDT)
 Received: from localhost.localdomain ([61.171.228.24])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-27ed66d43b8sm148834065ad.9.2025.09.29.22.59.26
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-27ed66d43b8sm148834065ad.9.2025.09.29.22.59.36
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 29 Sep 2025 22:59:35 -0700 (PDT)
+        Mon, 29 Sep 2025 22:59:44 -0700 (PDT)
 From: Yafang Shao <laoar.shao@gmail.com>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -121,22 +121,22 @@ Cc: bpf@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yafang Shao <laoar.shao@gmail.com>
-Subject: [PATCH v9 mm-new 05/11] mm: thp: enable THP allocation exclusively through khugepaged
-Date: Tue, 30 Sep 2025 13:58:20 +0800
-Message-Id: <20250930055826.9810-6-laoar.shao@gmail.com>
+Subject: [PATCH v9 mm-new 06/11] bpf: mark mm->owner as __safe_rcu_or_null
+Date: Tue, 30 Sep 2025 13:58:21 +0800
+Message-Id: <20250930055826.9810-7-laoar.shao@gmail.com>
 X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
 In-Reply-To: <20250930055826.9810-1-laoar.shao@gmail.com>
 References: <20250930055826.9810-1-laoar.shao@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 7py531o6odw7814titjf1mnfuk9ns1a1
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8BB2320008
+X-Stat-Signature: no5mjtdwxyjwk4ypbktqhyngq9kts53s
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 88CB14000C
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1759211977-942673
-X-HE-Meta: U2FsdGVkX19b0maWLzqZGyohgy1p+t9bQmuHiXRHAEsTTvbNMZ38e02yqZEep/A+L3mWSncvioj4h43o2WSPlC4RYDLR7hpqmTSnrZL9KjK8lzc6w7BdyTs6rpoFlNWCJg7ca/l/zogDdW5r2vhmPKQzAoo9LzKYeY7yt3X6Bjvpe+yKLZD+nosGl6vJbbu8Ihe6Ld5YkQ7ZkN2gdfG+IkpOwD8Gdcf3mL5e73xQ52R/1qpqLWHNCBQSrHPY7nbvXPlNIRTnfcb4otc5BulzsVapjhwgYr6+Th9Dh0TRznklJq7EMnTmX2mSmSrJLX5uq9Jtjbi3bznP24DZ0h9VOVsK69MZGsa7cgqaSG66uZBbPBTSUGvxOeEEtoDn89cEx0HICHoK7YgVBNsiXxDXdOEwU0hq1aZu4ALatFtjCwFntKZqSFWq2DerRISU7OPM/SviqfHVhzaBU3IjjsDSg5Wj1ae5O5nu48d/TDVyO5b+a5znapiHlAWKrPOmdNlvdljRXXc0s+5Z+TfT+tpQSGx/ZmFU7dsRrwtuTbky+ktlEieEkoasFqaWFyEAnJNnsfaeVW8aeDSZ+MtYLYFGlZwc4zp1ZaMl8djx5XISu5Kyvp+8YsDWMGxx0ZEYY9nkbkfxoaI2QhfU6XJnReeex+wh6JtMtjtcSyaZ3prMAorWTPcOYRfhErxn39RZj60ZIpHL+HHLyFKDWbSDLVmH0xRsAQbZJAblaqz0PblShv32q1Ayel7S0FyEROSxfiiEmDD1ZEB3remJuFLMTF0AZiuQeqVFBLV4LRVDcxwFluOCcBh5Sx7jl3nMWtssYVVtIMZMaOGNEdRGducEbZUuHTnQ54iq+tYpvf92CBcSFZeegAlWn3weZnrQk9Dw69wZJlK7II0kbdRs+wUjqcwl7D6bpE9Od27pPOJoaQ5IA/albb0spc0b3812ZdTgfjnW1K2tE20VzXezSwHfj7P
- kAyFI2JR
- 3ziH1OO3c6A0TnV1Bn7HAlpjA9OIRjqcSa7Nz6SeGIaHUPsY9JgUy8Jws7LoSiIFTXRi5nJ/IMdobV2IKFz7JcvNDZ/5ty+DBp+BNTUMHF9TGXrNktFf4EPf+cf8oi3gb/gMyPaFxbS8LkKbVPwlPOqzEMxHtuSluW0e9mRIoVaQZ9bfGDQxS1ayxfJdyZwP3fk83iBWZvXMaMP8dL40rIIXQudY3maL5i0tu2wNDUi+VeLfYblqmZw1BvCyUd1/je4J4JqM/oM8U9SzSQN+5werZe3bH0n4U6E13s9moJlh5j/VYtoL2SzGJy/i1wkLAktpD5i/Iy/BMtLpTpIZe4dqx+bGoaT2puJz2neWtHoQ5y7Qai1zwu13Crx+CeCb6/GlYRbzBTdwVcfrcle+Jn/J/hU8jNzVXFuOCpBIEV0xdHbHQ8rgke3kQ2Icx0kS9zFbkddLoK7lil8Rf/CVZNOft00hp/PM5LKe+
+X-HE-Tag: 1759211986-276169
+X-HE-Meta: U2FsdGVkX18UiZZpt4mNoQtkYWltwlNB0O3ZrFM0O39PhnAJ3SiTElpE13iEBizKgTDbMC601EtEkJiZcSZGe122bqx/2JUvuiPjBl/bW3+DtyKlpqlMN92bnwdxldSB5jywI9zqYwwZstC8DoZbfyibsaTg0Gb4NYZnEpqQEjGGof3tKUdcID0qSwQDezs3FtqQFb97FcUedQLvZPMkebNMrWtswaVWZJNJi+l6Aq29GEc1QFb0ZG7rjjFoM+s7vhHW7vB0eXVV5VA+K4G3hdxNv0MDEBB9cNRsjTxK2gx2r7EZioj8iG/gFlLd0h/FRXF5+CpBoZ7c4fdWf1t7N7+EDsRESmoTHZGOTl/yD2IjGmwnzSqJhp7bWMZ4s1tluZnsHl4DxG+RCJzccoaplBtTbG9O+uRVMoBTMv7eeZt0j6+rEX1ktprJjgSNkJ6X4bh0W9YLJM/rO7tMLyqylUvyR+iO+dTe1u/nUW069E8NK1hMdFsKdamz9iRYMsGk56bw+rEHhMFfjBFStVd+vIJjvFBl3irV59onHMV2ePszkkulIxnefsh3+x0+ph7sadsXugzI3UJNNhVwbh/qcKwZgLnf5/bOGgQq6EQLSs+4fLTMIZwHui4UkBqciCCM0xrPSuzqBb1irIoCUXOWqz3J6cYCX7Oj0qA9n4g1uI5z7wkpDutk3xH80Mg618UmfDmG1/fH4U8yOvK24qVxMn1gHllgrZsYAO/oHmxoIjXDCIgjoqmp6XdEE/tBtttuOsiNQl81EeZ5H4uchzM72JLtRV43KUjkvqNnzaxBDogCwUept6nrkRoHFuOrYhrFYkyK/4T33nzt6LvYvSp4qnnKfHBMKZJw9bMmY4lExPSTv8fsYKelMpxohA+50jps8LtUi2vDF78TbbrBuU15oACC+Q62+9ayGSGGhzi4+yHrrcBRDNLrxZGYIm57ZJSXdLyJw4REJ8+ZLRtD/iV
+ DdRe0wWi
+ BKe8ptPKkxr9HjQ6EL7QQQ76Ahi89AJCZysNXxCudgdlIZOOE/T8puMiWZnahJNGi7j7VVKgjFp6HwQsZ7zWnYBwbOT6NVjM9m04jkZ4CUWfM8pvP9d7bHN+JK2H5HHYoD3LFZE+GP41y812fiyKzvukkIU+pPDOyMr+Ouv0pvq2otjgFdR5RttlrP4587Qrh69u6zKtI4LeXxys4vv+lUolFj2cuJs4FsAv7DH2S0OVFDm8JhtQthNf75A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,73 +145,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-khugepaged_enter_vma() ultimately invokes any attached BPF function with
-the TVA_KHUGEPAGED flag set when determining whether or not to enable
-khugepaged THP for a freshly faulted in VMA.
+When CONFIG_MEMCG is enabled, we can access mm->owner under RCU. The
+owner can be NULL. With this change, BPF helpers can safely access
+mm->owner to retrieve the associated task from the mm. We can then make
+policy decision based on the task attribute.
 
-Currently, on fault, we invoke this in do_huge_pmd_anonymous_page(), as
-invoked by create_huge_pmd() and only when we have already checked to
-see if an allowable TVA_PAGEFAULT order is specified.
+The typical use case is as follows,
 
-Since we might want to disallow THP on fault-in but allow it via
-khugepaged, we move things around so we always attempt to enter
-khugepaged upon fault.
+  bpf_rcu_read_lock(); // rcu lock must be held for rcu trusted field
+  @owner = @mm->owner; // mm_struct::owner is rcu trusted or null
+  if (!@owner)
+      goto out;
 
-This change is safe because:
-- khugepaged operates at the MM level rather than per-VMA. The THP
-  allocation might fail during page faults due to transient conditions
-  (e.g., memory pressure), it is safe to add this MM to khugepaged for
-  subsequent defragmentation.
-- If __thp_vma_allowable_orders(TVA_PAGEFAULT) returns 0, then
-  __thp_vma_allowable_orders(TVA_KHUGEPAGED) will also return 0.
+  /* Do something based on the task attribute */
 
-While we could also extend prctl() to utilize this new policy, such a
-change would require a uAPI modification to PR_SET_THP_DISABLE.
+out:
+  bpf_rcu_read_unlock();
 
+Suggested-by: Andrii Nakryiko <andrii@kernel.org>
 Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Acked-by: Lance Yang <lance.yang@linux.dev>
-Cc: Usama Arif <usamaarif642@gmail.com>
+Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 ---
- mm/huge_memory.c |  1 -
- mm/memory.c      | 13 ++++++++-----
- 2 files changed, 8 insertions(+), 6 deletions(-)
+ kernel/bpf/verifier.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 08372dfcb41a..2b155a734c78 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1346,7 +1346,6 @@ vm_fault_t do_huge_pmd_anonymous_page(struct vm_fault *vmf)
- 	ret = vmf_anon_prepare(vmf);
- 	if (ret)
- 		return ret;
--	khugepaged_enter_vma(vma);
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index c4f69a9e9af6..d400e18ee31e 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -7123,6 +7123,9 @@ BTF_TYPE_SAFE_RCU(struct cgroup_subsys_state) {
+ /* RCU trusted: these fields are trusted in RCU CS and can be NULL */
+ BTF_TYPE_SAFE_RCU_OR_NULL(struct mm_struct) {
+ 	struct file __rcu *exe_file;
++#ifdef CONFIG_MEMCG
++	struct task_struct __rcu *owner;
++#endif
+ };
  
- 	if (!(vmf->flags & FAULT_FLAG_WRITE) &&
- 			!mm_forbids_zeropage(vma->vm_mm) &&
-diff --git a/mm/memory.c b/mm/memory.c
-index 58ea0f93f79e..64f91191ffff 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -6327,11 +6327,14 @@ static vm_fault_t __handle_mm_fault(struct vm_area_struct *vma,
- 	if (pud_trans_unstable(vmf.pud))
- 		goto retry_pud;
- 
--	if (pmd_none(*vmf.pmd) &&
--	    thp_vma_allowable_order(vma, TVA_PAGEFAULT, PMD_ORDER)) {
--		ret = create_huge_pmd(&vmf);
--		if (!(ret & VM_FAULT_FALLBACK))
--			return ret;
-+	if (pmd_none(*vmf.pmd)) {
-+		if (vma_is_anonymous(vma))
-+			khugepaged_enter_vma(vma);
-+		if (thp_vma_allowable_order(vma, TVA_PAGEFAULT, PMD_ORDER)) {
-+			ret = create_huge_pmd(&vmf);
-+			if (!(ret & VM_FAULT_FALLBACK))
-+				return ret;
-+		}
- 	} else {
- 		vmf.orig_pmd = pmdp_get_lockless(vmf.pmd);
- 
+ /* skb->sk, req->sk are not RCU protected, but we mark them as such
 -- 
 2.47.3
 
