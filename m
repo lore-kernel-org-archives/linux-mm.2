@@ -4,91 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 481F7CAC5B8
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 20:17:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 169ACCCA470
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 20:35:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D4588E0005; Tue, 30 Sep 2025 16:17:37 -0400 (EDT)
+	id F3E498E0005; Tue, 30 Sep 2025 16:35:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A99F8E0002; Tue, 30 Sep 2025 16:17:37 -0400 (EDT)
+	id F162A8E0002; Tue, 30 Sep 2025 16:35:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BFE68E0005; Tue, 30 Sep 2025 16:17:37 -0400 (EDT)
+	id E2B0F8E0005; Tue, 30 Sep 2025 16:35:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6413C8E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 16:17:37 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 024585B893
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 20:17:36 +0000 (UTC)
-X-FDA: 83947026954.26.F47313D
-Received: from mail-il1-f205.google.com (mail-il1-f205.google.com [209.85.166.205])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 5033A40009
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 20:17:35 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of 33jrcaAkbABMBHI3t44xAt881w.z77z4xDBxAv76Cx6C.v75@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.205 as permitted sender) smtp.mailfrom=33jrcaAkbABMBHI3t44xAt881w.z77z4xDBxAv76Cx6C.v75@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D2D9C8E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 16:35:45 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 73AEA13B399
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 20:35:45 +0000 (UTC)
+X-FDA: 83947072650.12.8F0F15F
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 3D5E0C0013
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 20:35:43 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C1W2Us7S;
+	spf=pass (imf22.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759263455;
+	s=arc-20220608; t=1759264543;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=imYVyFLoW8Lx5IenAuDtwzh/rTjhBRKJiMfcM+p+yW8=;
-	b=41I3vuUeM3xa+rMlCSuE84wvll+04hiS5uOL+9cmwv8iIXD++KIIEmNfl5GunMU7uzeXtU
-	T5kllWJRhIkZIrwSUkAjHgst5gGxstp6YhtkA/Li2kq0PV+g+FUEy6XIU2ltW6anCod3QT
-	h/ci5+5e3kH3E8AS2iA4B7DV2uGa+54=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tcdjHj3hrCi2n9CnZqBqMGWq7DhDnkuit40Rw1hplXg=;
+	b=HqjluY7uu+BSiVzK8M0ieI7nGzDgdhoBRWTG1k2j4jGIRnFbY+JrLgoc8m/pbuNOG65KsQ
+	nZtHlSQyqX4UW9ze2CtUlOAKSPaCj3vaQRUPorgycRScPMpIr4PAwqrJVmHSBTH02r+5xF
+	l6YASyIkv38D706oXGsJC+aKVnZBvbU=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of 33jrcaAkbABMBHI3t44xAt881w.z77z4xDBxAv76Cx6C.v75@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.205 as permitted sender) smtp.mailfrom=33jrcaAkbABMBHI3t44xAt881w.z77z4xDBxAv76Cx6C.v75@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759263455; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C1W2Us7S;
+	spf=pass (imf22.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759264543; a=rsa-sha256;
 	cv=none;
-	b=eMsnqAsxWxdLNsSWJQ1TYf75fUYePguZ5L4OnoCPCJH9I4s3iEBOj6lnzjIm+3fVdDVzh9
-	eR99bYg9byZe/lhRdzuY8EzdYLw/0e929/wNZtdzy3V5t6U3Kgl9g16VftVyxwX4AJaG38
-	NuPh41qbvkT7Vfk9LEq5KVeGeDk0tz0=
-Received: by mail-il1-f205.google.com with SMTP id e9e14a558f8ab-4278a8ecfa0so143789405ab.0
-        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 13:17:35 -0700 (PDT)
+	b=N9Yf3MgadovrefYJ8QAjQOfBVACV3IhPE7AJqvE/4M00layAlG7EeJBQKD1Oz91Cf5whze
+	TZ4J9dCDOleg91Eeu6bGB/o4r0zX6XuF/T984rIsDZ/ZjBXSEX1iPmK9vvmBbCNMPSOML0
+	eSg+yZAWVTheQKWGBBbiDtGKos1Stng=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1759264542;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tcdjHj3hrCi2n9CnZqBqMGWq7DhDnkuit40Rw1hplXg=;
+	b=C1W2Us7Sl+/zGVZiX3qGywjWZovX0S1SFtGYd0q/l7QBL4ZysYoGMih/2M3Ntm+LO1qdYf
+	cuzaWSvhQ9ZZJzBvGwJuRLGnSfHvap1mQQVvDPDwUsmdp++j6X8ngCh5rwVxztJVbEGUNW
+	iwVQJSfvvq+ZAWOLfEfRe08lKNv1i0M=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-246-Af90EKV-PQ6CumuUGM_fqA-1; Tue, 30 Sep 2025 16:35:41 -0400
+X-MC-Unique: Af90EKV-PQ6CumuUGM_fqA-1
+X-Mimecast-MFC-AGG-ID: Af90EKV-PQ6CumuUGM_fqA_1759264540
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4b78fb75a97so67227211cf.1
+        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 13:35:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759263454; x=1759868254;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=imYVyFLoW8Lx5IenAuDtwzh/rTjhBRKJiMfcM+p+yW8=;
-        b=GoqG1pLCPvQd2CH7iAd5Buu2jjW9BIc7EcFgJcU72EobNwsicSGawXGIKwHrWt+xYX
-         Z0Jye8ttdjNjfglq9vX034SgeNIRRPzahWoWYM55EPnTozdWOusW/+GMSIEatg5sEdmC
-         UUNrpZpHWQuhdrBqdkStUAkAEXLvDcwYqRQ17GvXAlAMt7WA3+mthkv7rBJxlMZLD5Q9
-         v9WVez2UWQ/JL1/mH1FHWMlgpWW+XUvu3mboysagHlFUKVnasE+9lkHO935DniDgvppx
-         eGFoEyUbGhkgaGTC3MX0i76nkteoL6Xtd4Ogcz6//20C309/DDIOtyrZr+bmzBTxj4xK
-         64RA==
-X-Forwarded-Encrypted: i=1; AJvYcCW4XJSJ5lEhekekoB5/1EOMKVG3faQZTp3K8nCoazIgGeShK8zifOYX6WRKAGOsBEVMYel71aIkMQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx72lBvBXk1Gb9AZXMJwmPvgLllpITSZjcUYpfbFftnE4Og3bLK
-	yV7i6/dEsvs76JdY0JoQ89ZGefJNq6t7RqVzDpMDZlyNGZ/gn3rBdXa1Ky3BfLp0Ed29QLaIcy0
-	UuBNpqMDWR0LFCjmx59lYPXrM8vGlwl9fYZ+VicZ7DiqdQPA5Qs+RGlfyixc=
-X-Google-Smtp-Source: AGHT+IEvi3ZUUdgyMCecZ94IYWbSb9OgCzFJ4lzc7VTcsbHz93zWE4mlXeuyyGAd5BE10k9YRhgghfauZkiLPJjoX5Zi+AgOjOcb
+        d=1e100.net; s=20230601; t=1759264540; x=1759869340;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tcdjHj3hrCi2n9CnZqBqMGWq7DhDnkuit40Rw1hplXg=;
+        b=EmsCQdymy7RNUx3oz/HQYpY3GSZSZyKhjTlWkjJdrMkkKUximi04Cw6mwZAVtHQFsR
+         m4TQ+ohyGxiY6wLkQ3kAd4jcFfXjn2rOJT7zB3mibJf5fCGKZW3nsHvyasrKxrlpwQLv
+         zuy1Yo9OyLkhaY/PW8ZnNeClxz4f4z8+Zf47LuWwsgQ5BHW67XSVjfRZ42opUSGIVxPP
+         FDaeNOOTedBY7F3mM5ONvlGbspf8QUDOO/KcOhrNWk/BHpgE1kkoUaxxAeW2nAy+g84D
+         g1Fv+svNkolc4XroCBklsfwprjzHhf2+0mX8OfKqQv8dvZiwZ8JzjbuBNEFQ/Yr7GmEQ
+         Nztw==
+X-Gm-Message-State: AOJu0YwvPHiJarojdTPm1r7GKgxsWyoTlj83GlrJrVS8t4nRjrbWHbcG
+	mWiCwBlFFGRrJgQyho2zqsqUzttivJWPBbIZW3KhKTFdrgxBFB1t8zEVPxQbwkaoavGUaDK3AT/
+	MnNPTPCDV5PDdREOgC0UOHNj07S6MZcQB4xT/d37GyOV8uQp1UI1G
+X-Gm-Gg: ASbGnctEh6DISQUnykNusLltAJl046k3ceZKvexoyHOGKFLCYk8T/8A9e3cl/DbDK2R
+	jq0uytm7nyF9uAnRI2h9DwmJfcK9CrkQMITAPTaU2HAkjYs0DoT8xJBrYr/xEBZyZdHb2vSORW7
+	ZuVMbi0oxFwrWQm0n1hPgeqI6t9vv/0IhYk7+QnKmznjdMXJhPW7BGVYfdAHNHCv+047g08wSN7
+	4TKfkI04J+ewf/jVM5h5rWPGxurCZf9H6PbsaUYGdxVqx8Y3Nkk5pszL3ooVACCUp00XEv7GkKI
+	Sxqkb2ZHGcORpzEL1XSuZKy/f9t2BaanLCl5hA==
+X-Received: by 2002:ac8:525a:0:b0:4cf:c058:96f8 with SMTP id d75a77b69052e-4e41ea16a4dmr9675211cf.75.1759264540407;
+        Tue, 30 Sep 2025 13:35:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFRFvQ7iweHJJXKuRSbPcafJqC24Mx1TFX1nNEJ4hnhKFuws1x28jLXszl2ahz6F4cqkhz+GQ==
+X-Received: by 2002:ac8:525a:0:b0:4cf:c058:96f8 with SMTP id d75a77b69052e-4e41ea16a4dmr9674851cf.75.1759264539936;
+        Tue, 30 Sep 2025 13:35:39 -0700 (PDT)
+Received: from x1.local ([142.188.210.50])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-80cd172fd3esm95716896d6.27.2025.09.30.13.35.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Sep 2025 13:35:39 -0700 (PDT)
+Date: Tue, 30 Sep 2025 16:35:38 -0400
+From: Peter Xu <peterx@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	James Houghton <jthoughton@google.com>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Ujwal Kundur <ujwal.kundur@gmail.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>, Hugh Dickins <hughd@google.com>,
+	Suren Baghdasaryan <surenb@google.com>
+Subject: Re: [PATCH v3 1/4] mm: Introduce vm_uffd_ops API
+Message-ID: <aNw_GrZsql_M04T0@x1.local>
+References: <20250926211650.525109-1-peterx@redhat.com>
+ <20250926211650.525109-2-peterx@redhat.com>
+ <f1da3505-f17f-4829-80c1-696b1d99057d@redhat.com>
+ <aNwmE11LirPtEuGW@x1.local>
+ <f409cbe7-7865-45ab-af9a-6d5108bc5ad4@redhat.com>
 MIME-Version: 1.0
-X-Received: by 2002:a92:cda7:0:b0:427:6510:650b with SMTP id
- e9e14a558f8ab-42d8161957amr17936155ab.22.1759263454279; Tue, 30 Sep 2025
- 13:17:34 -0700 (PDT)
-Date: Tue, 30 Sep 2025 13:17:34 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68dc3ade.a70a0220.10c4b.015b.GAE@google.com>
-Subject: [syzbot] [fs?] [mm?] WARNING in path_noexec (2)
-From: syzbot <syzbot+a9391462075ffb9f77c6@syzkaller.appspotmail.com>
-To: brauner@kernel.org, jack@suse.cz, kees@kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <f409cbe7-7865-45ab-af9a-6d5108bc5ad4@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: BaN5imEnCpW4WETLTQjVfPNRlM-b86tM8jPNGrjfATo_1759264540
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+X-Rspamd-Queue-Id: 3D5E0C0013
+X-Rspamd-Server: rspam05
+X-Stat-Signature: umsrdfhauof8o1f34b9zwy91rpo8dros
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5033A40009
-X-Stat-Signature: y5k7jxibnjmiuqaes3bmtfoj84bc43d4
-X-HE-Tag: 1759263455-32208
-X-HE-Meta: U2FsdGVkX1+rS/q3ny+aXJVWUyr9/MfgbQWQ1MPrTpxgAdml4LHxNgdI7tEM9fa11wDMgwkzXpqJiw6MO+4dOqZziLjh4dOCIi8keHMnOA4rta9Vhbjo8egl8tyc0GF00tgpDXbk6DkaNIv5Ufl9QVG9hADsFvi8I+0GW4vgs+A7TJ8hwYjuw4KcfHtfCZFV64v4mSSSGmDczDlPsROv9yz3BjZlMw9xqzuYOHXR+0qB0JZyVFkb1AChU5TcLJuCVMJ8WGalGD2ydlEcNIonS1Wc90zWg7HqzB3U8IzlR90/eaRV3Acnzsge2Czc6AoytdQPP1vePzWLKYrV60lXJpH+vpCIxcWG+w6FJjoRutZM2+KEAhGd60U73jwLz+Na+EFZeFJD1U7MwFMR+ybhJ4Rhil9oz+Cz6jj6KkVvx9GosxkqK9QDP+aM6gguZAaK6/cp8XqVToOJezXFkIL+O29wPewcyAQyZf67lYqfa2V74Y8Jvv4Gug/3n1U4vEvtRTkTJnGHLBzkv0ieXFV6kkFY3yb/JisyTEp+mNduzge8FGMRxbIPGuhNoEYzl+6m32956ItDjhBXcwhwotRCrSNW0DzvxJQsLmhqhS+K02ih93Q+E5mu+TFPQV/xDdYn2vbBv8CfbJYci+rB7cxipWpeWdsC/fvY3K4ctDgi8gbMtZX1hrFcGsbMaYIEG0S81NsgF4foYhi0vXgdPMpLaT++YsCQTNGUEvNDBJbZb0TDKO+cNQ6/bbdgeILXxYiakLsnVXA6qMvGh/XOQKrT5bhvthutLrMEU/7Su/uYNOH11Rj8VXq2PdXXzYeqGlm4TVZaZgkr0sMGzaV78pV1JxJhNNNxXaqW05EDuTimJsro8nqrkgH6xmH2n9CO7y5IN8DjVNdP6G2kuT/9gEA7u0gTFWp3hyyhQCU74r7NDUwWD3PpSbYk1nL9CJpWPkaLTnLheNdyi+JKxZJxzP6
- JdyL3fhr
- lAZE93A/uDIqZlzgjYUCCKbV0EgyByZj5l6OQa6xl5X911xYVKkVSSP3pJ58/iXFPkSQIc7MkIZrb+nOydNFejKhHEt9Bdj+UEu/+nRbpqzclQSomUWIswRXaaKC6ASRZw2D6YJ8stupBocbrXwztB2hUZWLjAOc5G4tEAXgZApcD9yDIJBcWs8jpV9Q1NtE2SbRfqnFqvzSppvgRkGtEtCJ4FQr7IJbX/CNknPN8RBfFrrjVIEcvzyGyb7JofMZ8qGZ5Bc94a4ziJBIcm3rFm58CiuHhWxrx/K2qBnNSDoxa6VWYrRCWMee7ExNkHmg1jD4xuqUczWFY8n3kewuxqXAU7nVZgB82Z05GGIw/9qdhJRKMekbVcjnPuSkpibUMNV0RweQB5KtN+HxEoVzW80LgibDVjK6X37fOPu89xBnZCBDN+CD1sESDJSYuhqpkc6fV3TO2LYiEU46YBcmP9J4CmRJB+3QPMQ3LJTEqPMpU+jEc4O0/gSrfRdFID8jN96BH6cWnwMpaR2nIa3IqGOQo5HlyxPg2PmWSH+sCS6xPZjX5AyLJ6OEUWZKCJoUg5R8e54bWGhdXKa+1EPlC5lywBypVWJ6ufsm6Zrp/bYHrWyiaYHYKCoeOLiBm4AeS8NkOL6joTO2y7aCp57xhYg1U13RKJ3REsnlkjN9PlWRqkSF19YX/nEZktkVluxSq6YXMue8u9l1b3PoHTPvF1XiGYV0ivcZnbtnSyKo5PRZMlHi5GoROwJBLzSkIzztxKN//Y9QylgeRWENGaIE6Oox8d2zs0z8c+DxPjg3Mm2s1Y6mqDJdvRuhG02kaiq3xri4Pg7Je4WAIWwYNL+2s4JX/xGJH2MszrlpKI82WFNyKJdN3+DHeRmuEJhYgyWbl6ue43wSveuVBt4cv6Uq7ce7xI/Si7S24rtmkGVlA0V4yhhm7kU08RfJYjMLZLZ8ABOiT8pbXPzZx3g2Fni9PZh93yMpV
- ueQA6EFJ
- 54GWQGjqJTnsfySa0RNh00ippwJAyfVHIdCVm/gkY5ONfMNN6nooCrwCqwGRWnryFrLPdepISsNib7eOESu04cGMMVM5vwRGn7qtOcvPbJ6eDyZNv0RlXK4XP3YA5uaigWdbSAVTCImjWg0h892z/HPtNoM1Q+nBYXbt9HbQJgpZh+WwRW2rX2+nCZRZPNWUjZWHdDseRvPRR7Iv0YDSR2sZ8NBjwZE8weKN7eaV6cm3q4suW1mDE2uuqJ9RxegwW2Q+VHFJ5mDCa6+DYuS8NoF3T73SpSXv1WnOD90wO1bMiId7mrpq8XT3FLK/nFZotDJsFacPb5+Np6oDlMvvPXV4Kjnhp1h0bpc5CP3kPC8WqjO/3xZQ0HRvHwbdW96xhypzuJZbXFScpsnleMLLBnatSwAfBwCc5ZeQsWJ0fqkNPo1KV8cgI2NesUKua2QLiQOKYiMk+0H+emN4Zk/Ai4YPxQkjgSfKe8TH63ElnMvLDnQEhbqTmuFZZ8Akwr/Q
+X-HE-Tag: 1759264543-890736
+X-HE-Meta: U2FsdGVkX1/8vTQeuyqi97GkTuROAckYyy6Yc+668ImffrGifNsAUKTlxCI0bmXgCzgvi8fYmkiNzA9A5JlzG4k/k29BLJt15ZZvzerBj+/wP4lsa6pKQXBxpXiwQQgKVOZ+k2psWduGNUTHvK41Hm9HTvJ7qtP0idYcH6NLRu9rIrZGoF1dRsxMecbcLuv2fBq4M5D/sAwiDYsDChYrhI9s08J/wyhl822sIm3DmF5HyOgeQidkik4dF5oh05nUaPyHqMEmdNy9UYv41mj5aX1XXt+Ho5izy6QDEE0+yxVnb5zknO4UROmHuOELTspT3th1xEdq4dTkVEuN/fwYn8YPOqD9gTQctXssueCqYSzvV3G2Kozk8VT0JHZzpE5junQMkEA/L9618M1A4GCY0BeWXOYdx7tpnlynZQTL0Ez9veEPmcPK9F7MxO3tG2XF6gac28oLL/2h27h8S3tGug3W2rT64z8EtIbiJTXUp27fwim337Hb/zzHhMDw1hB3ARZ5/DLqElGj57YI51njLjvF9EBiO88DrYdYzkXW9apSE/Iiq5lawa9CDTNHHx3m6W0XjH0NqiLjMMEt4LE1juCdnXKRNj/lrqct3HjOHdatefVLJ7sLxAVTvOm2nPdL5ieP0+nqcn/o/vxdB9rpwcfYy6TBlmDlRFDqgrkAYzxuweblrNBiEQufUJbPWruzqjMZgdh8q2PYKl6SUCgad2kk2V5r2ZAimhXHuOPXkncd4N0k8DBXMtWqFcpbthkfWWKb3O5sSznyIgUePRVCMoX+OixVApx8J349RhkN5oyyvjXBErK27ExdnWfUaRxZJTcktRFpYW9NmjafXEaVa2QtQrGQYsUmatTidPNqoFyb3Ck5SeypthOaXFvqcQpW7KBq6gI9zIGobCUwpGrdUeQE7tg16A0Ii4QZB5DU6aLRNkH2Q/immAClPjXDOzhKrr8gZkxLBWuY6qwRgLX
+ 8RAJ5Z+u
+ +8IItFFwq+4y+q11BK6Y26t/ZKRXCmyxzVP+9wUdwbScdvC3SKGJXk9AYtJ1AGz8w9vTD0jPkVWaTv64gkRv9YgdoqwaEM632GFizUxFU8dL7jJjZkoMPd7gipd07XTyZ9OyiWGPDEXw9I5ikqYsKoel54QsghifFZAb2Z2QI+Gqm/pgZglj4DQVPJoGBwwYq/Tu4d+kOIAOiYfYErVV0IH+3j9Sm8LVL20KRGkO1N78jMac5egzcByDsHxnJ50zaOnrOgzAnclLpRex1M64W5jUNgYNgj6MzRHEF8phcYnV6Bfdc2J/slgUgrm6LkBj2r+1kjmWpQGZSOf4Tjr/pCeATPZaDXHmV1FHzjku0HjXwBsquv2zRwn9C7GpePXAmhVEvQevEtFROjrM/fI4uO/toSh95Q08UqfRO8ek6toa5lxm8gs7cM4MUfd8jig7J+XSm52/LiusUxwj+oKI+0gKflqYhy4UKjM6lEbU8e4Rw0tMo11tuyqeKESHkoUR/KJo1VLRJXweL8JPXw2wd/uNfser1Ke23kqKh9v+RvGK7qRx4oLcYqdVY5k3karKzNq1aNoI+dpec1lE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,84 +141,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Tue, Sep 30, 2025 at 09:19:05PM +0200, David Hildenbrand wrote:
+> On 30.09.25 20:48, Peter Xu wrote:
+> > On Tue, Sep 30, 2025 at 11:36:53AM +0200, David Hildenbrand wrote:
+> > > > +/* VMA userfaultfd operations */
+> > > > +struct vm_uffd_ops {
+> > > > +	/**
+> > > > +	 * @uffd_features: features supported in bitmask.
+> > > > +	 *
+> > > > +	 * When the ops is defined, the driver must set non-zero features
+> > > > +	 * to be a subset (or all) of: VM_UFFD_MISSING|WP|MINOR.
+> > > > +	 *
+> > > > +	 * NOTE: VM_UFFD_MISSING is still only supported under mm/ so far.
+> > > > +	 */
+> > > > +	unsigned long uffd_features;
+> > > 
+> > > This variable name is a bit confusing , because it's all about vma flags,
+> > > not uffd features. Just reading the variable, I would rather connect it to
+> > > things like UFFD_FEATURE_WP_UNPOPULATED.
+> > > 
+> > > As currently used for VM flags, maybe you should call this
+> > > 
+> > > 	unsigned long uffd_vm_flags;
+> > > 
+> > > or sth like that.
+> > 
+> > Indeed it's slightly confusing.  However uffd_vm_flags is confusing in
+> > another way, where it seems to imply some flags similar to vm_flags that is
+> > prone to change.
+> > 
+> > How about uffd_vm_flags_supported / uffd_modes_supported?
+> 
+> The former would make things clearer when we are at least not talking about
+> uffd features.
 
-syzbot found the following issue on:
+I'll go with it.
 
-HEAD commit:    30d4efb2f5a5 Merge tag 'for-linus-6.18-rc1-tag' of git://g..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=14f085cd980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=f17deb9fdc33e902
-dashboard link: https://syzkaller.appspot.com/bug?extid=a9391462075ffb9f77c6
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=175496e2580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13e5fd6f980000
+> 
+> > 
+> > > 
+> > > I briefly wondered whether we could use actual UFFD_FEATURE_* here, but they
+> > > are rather unsuited for this case here (e.g., different feature flags for
+> > > hugetlb support/shmem support etc).
+> > > 
+> > > But reading "uffd_ioctls" below, can't we derive the suitable vma flags from
+> > > the supported ioctls?
+> > > 
+> > > _UFFDIO_COPY | _UFDIO_ZEROPAGE -> VM_UFFD_MISSING
+> > > _UFFDIO_WRITEPROTECT -> VM_UFFD_WP
+> > > _UFFDIO_CONTINUE -> VM_UFFD_MINOR
+> > 
+> > Yes we can deduce that, but it'll be unclear then when one stares at a
+> > bunch of ioctls and cannot easily digest the modes the memory type
+> > supports.  Here, the modes should be the most straightforward way to
+> > describe the capability of a memory type.
+> 
+> I rather dislike the current split approach between vm-flags and ioctls.
+> 
+> I briefly thought about abstracting it for internal purposes further and
+> just have some internal backend ("memory type") flags.
+> 
+> UFFD_BACKEND_FEAT_MISSING -> _UFFDIO_COPY and VM_UFFD_MISSING
+> UFFD_BACKEND_FEAT_ZEROPAGE -> _UFDIO_ZEROPAGE
+> UFFD_BACKEND_FEAT_WP -> _UFFDIO_WRITEPROTECT and VM_UFFD_WP
+> UFFD_BACKEND_FEAT_MINOR -> _UFFDIO_CONTINUE and VM_UFFD_MINOR
+> UFFD_BACKEND_FEAT_POISON -> _UFFDIO_POISON
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/d3e36b0a1279/disk-30d4efb2.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/c964999afe48/vmlinux-30d4efb2.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/b49e62d3fb02/bzImage-30d4efb2.xz
+This layer of mapping can be helpful to some, but maybe confusing to
+others.. who is familiar with existing userfaultfd definitions.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+a9391462075ffb9f77c6@syzkaller.appspotmail.com
+> > 
+> > If hugetlbfs supported ZEROPAGE, then we can deduce the ioctls the other
+> > way round, and we can drop the uffd_ioctls.  However we need the ioctls now
+> > for hugetlbfs to make everything generic.
+> 
+> POISON is not a VM_ flag, so that wouldn't work completely, right?
 
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 6000 at fs/exec.c:119 path_noexec+0x1af/0x200 fs/exec.c:118
-Modules linked in:
-CPU: 1 UID: 0 PID: 6000 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/18/2025
-RIP: 0010:path_noexec+0x1af/0x200 fs/exec.c:118
-Code: 02 31 ff 48 89 de e8 c0 e2 89 ff d1 eb eb 07 e8 d7 dd 89 ff b3 01 89 d8 5b 41 5e 41 5f 5d e9 98 51 04 09 cc e8 c2 dd 89 ff 90 <0f> 0b 90 e9 48 ff ff ff 44 89 f1 80 e1 07 80 c1 03 38 c1 0f 8c a6
-RSP: 0018:ffffc9000384fbd8 EFLAGS: 00010293
-RAX: ffffffff823437ce RBX: ffff888077b40780 RCX: ffff88802eebbc00
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000080000 R08: ffff88802eebbc00 R09: 0000000000000003
-R10: 0000000000000003 R11: 0000000000000000 R12: 0000000000000011
-R13: 1ffff92000709f90 R14: 0000000000000000 R15: dffffc0000000000
-FS:  000055558a5c5500(0000) GS:ffff88812647e000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b30b63fff CR3: 00000000213d4000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- do_mmap+0xa43/0x10d0 mm/mmap.c:469
- vm_mmap_pgoff+0x2a6/0x4d0 mm/util.c:580
- ksys_mmap_pgoff+0x51f/0x760 mm/mmap.c:604
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fea4258eec9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffc0d346898 EFLAGS: 00000246 ORIG_RAX: 0000000000000009
-RAX: ffffffffffffffda RBX: 00007fea427e5fa0 RCX: 00007fea4258eec9
-RDX: 0000000003000007 RSI: 0000000000003000 RDI: 0000200000000000
-RBP: 00007fea42611f91 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000011 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fea427e5fa0 R14: 00007fea427e5fa0 R15: 0000000000000006
- </TASK>
+Logically speaking, POISON should be meaningful if MISSING|MINOR is
+supported.  However, in reality, POISON should always be supported across
+all types..
 
+> 
+> As a side note, hugetlbfs support for ZEROPAGE should be fairly easy:
+> similar to shmem support, simply allocate a zeroed hugetlb folio.
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+IMHO it'll be good if we do not introduce ZEROPAGE only because we want to
+remove some flags.. We could be introducing dead codes that nobody uses.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+I think it'll be good if we put that as a separate discussion, and define
+the vm_uffd_ops based on the current situation.
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+> 
+> > 
+> > Do you mind I still keep it as-is?
+> 
+> I would prefer if we find a way to not have this dependency between both
+> feature/ioctl thingies. It just looks rather odd.
+> 
+> But let's hear if there are other opinions.
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+Sure.
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+-- 
+Peter Xu
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
