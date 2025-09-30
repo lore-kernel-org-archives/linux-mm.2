@@ -4,175 +4,197 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3407CCAC5BE
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 15:20:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD607CCA468
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 15:28:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FAE28E0005; Tue, 30 Sep 2025 11:20:40 -0400 (EDT)
+	id 251A78E000B; Tue, 30 Sep 2025 11:28:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D2248E0002; Tue, 30 Sep 2025 11:20:40 -0400 (EDT)
+	id 202088E0002; Tue, 30 Sep 2025 11:28:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E7558E0005; Tue, 30 Sep 2025 11:20:40 -0400 (EDT)
+	id 0A3108E000B; Tue, 30 Sep 2025 11:28:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EF9E8E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 11:20:40 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EE40744702
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 15:20:39 +0000 (UTC)
-X-FDA: 83946278598.16.D6F11D7
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 786AB180009
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 15:20:37 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=wa3ooWwz;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iMDiVHkC;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=wa3ooWwz;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iMDiVHkC;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759245637;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E48CE8E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 11:28:29 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9B7B1BB5C1
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 15:28:29 +0000 (UTC)
+X-FDA: 83946298338.06.642BF90
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010020.outbound.protection.outlook.com [52.101.46.20])
+	by imf15.hostedemail.com (Postfix) with ESMTP id BAF8DA0016
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 15:28:26 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=g8VVbI0K;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf15.hostedemail.com: domain of ziy@nvidia.com designates 52.101.46.20 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1759246106;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gd2qT68HUE4EIRZvibhNEqpEUn00xzNgkHBgMBOCgts=;
-	b=aMG6m5wiUNCrHnCTf5TRZ86dOC3lfDRyn4tLybg5c/9xWYsmG0HFMA2/5FGQ0obb4x/l+q
-	4B0CdtatiwaMPNtwbxmC5TbW1pMKnFui77gYmW9LFEbUW3LvhSL+obf8K1DWTeCrQCmWmC
-	fbveVCHnXq0vZm5eMzj/5nlXMg2+4cY=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=wa3ooWwz;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iMDiVHkC;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=wa3ooWwz;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iMDiVHkC;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759245637; a=rsa-sha256;
-	cv=none;
-	b=wacH/dOlqal2+EYakqixf+HY97fh3s67Q4gee+G65vUuoG1hKVQkCJCcIStmJD0uppIg0P
-	87rYaPOqUxQ8gTLlhOunRPhHlEkPemcU8hZedTRh6DiodLE5w5xOjy1IXw7wdaQRivf+Ih
-	VJJmPzdyCd9djHbhFCX+R6TZICvchYA=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 4845E33694;
-	Tue, 30 Sep 2025 15:20:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759245635; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gd2qT68HUE4EIRZvibhNEqpEUn00xzNgkHBgMBOCgts=;
-	b=wa3ooWwzTJsztv853h+TJU4PhMezZDPlASPLWLPPWi9hrK9eZzsFf/HezvGFP0lV1VHDUB
-	RA+ZDby28/38iCKSN89M/zqnXs6I5F8MTI7596a6tWLbTLOYhg6cW28dpeArbNbiiDhG92
-	vdmmQ4OkVjjwGprXuq+9lF/NuBmGhlI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759245635;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gd2qT68HUE4EIRZvibhNEqpEUn00xzNgkHBgMBOCgts=;
-	b=iMDiVHkC3gUrFDletyifwdSwtGl2Rz/jIG3SVSOq9+i1DJY3i0am4wcMDJ79825NWAi4yG
-	79Jm/LdWVm3eb6Cg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759245635; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gd2qT68HUE4EIRZvibhNEqpEUn00xzNgkHBgMBOCgts=;
-	b=wa3ooWwzTJsztv853h+TJU4PhMezZDPlASPLWLPPWi9hrK9eZzsFf/HezvGFP0lV1VHDUB
-	RA+ZDby28/38iCKSN89M/zqnXs6I5F8MTI7596a6tWLbTLOYhg6cW28dpeArbNbiiDhG92
-	vdmmQ4OkVjjwGprXuq+9lF/NuBmGhlI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759245635;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gd2qT68HUE4EIRZvibhNEqpEUn00xzNgkHBgMBOCgts=;
-	b=iMDiVHkC3gUrFDletyifwdSwtGl2Rz/jIG3SVSOq9+i1DJY3i0am4wcMDJ79825NWAi4yG
-	79Jm/LdWVm3eb6Cg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 275F21342D;
-	Tue, 30 Sep 2025 15:20:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id u8rBB0P122ijaAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 30 Sep 2025 15:20:35 +0000
-Message-ID: <5181a289-eee7-42c1-8bdb-7b7bb463babc@suse.cz>
-Date: Tue, 30 Sep 2025 17:20:34 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v0] mm/page_alloc: Cleanup for __del_page_from_free_list()
-Content-Language: en-US
-To: Zi Yan <ziy@nvidia.com>, Matthew Wilcox <willy@infradead.org>
+	bh=HiQRhv73wbULoJMolOZTTMgrY1RuNV6Kb4S9cohSUAI=;
+	b=yAV39od46+9zvnOj9sTDNrMM+a/rvJz56LwvhL3QyQko4U3eiTf2bKN2bPUBa2cwzadVgZ
+	fgHPAqzCyKb53opqaTjU1NPyncJuwrlY4Vwm8Mo5RsELr/DnCenFZ80T06NvDeXWajfOfH
+	IRxgjpXPHc8qgYzsyEvb6+TQXPlkMsc=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1759246106; a=rsa-sha256;
+	cv=pass;
+	b=z1lA+qkTkNwhNc5P9ByAz/+HlqkhmzZH+hwySTyjirwf1JJbdyjfq2QiKhSpDM6MnFXYkK
+	pUAsIPlU2xjapIX9CJvvINfUAAEYnyQasYrPToTXygHIa20CN2lpyHSR79yjD6ER1zkDor
+	+BBU7G5UGExQ07Etsju5bWtRnn7RrPk=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=g8VVbI0K;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf15.hostedemail.com: domain of ziy@nvidia.com designates 52.101.46.20 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jJrjnDCJ8ZvMoK3az8yhmLb3PGkR41El5mSZzNqJITxjSXNjCt1muTf/pfHYv1s7A66pSCYdcwEMGn7tufUjbyt6Jwc6o0cYahBlAY5i4QUJvpcAyGONR6QmirRQUGHJbaOyNaVnvJIhcBMaI7Zu9/sSXWsxOXhPTFVonPKE67fJQXXvADNIv9rXiDkxVSUA6rHthCd7G2CHMhArmxL03l3P5BpWUivhL3MimadAgTvaIcK1Zs5vmfEj4a5+8LdWYpXNwLOCzMpTw7JSBh7HlvcJhEMZLcq1Z3XalTl5ods/6ir2VH9Qx2oEHKeAjHy21N4fsiN1dq5rE202nJID9g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HiQRhv73wbULoJMolOZTTMgrY1RuNV6Kb4S9cohSUAI=;
+ b=Y69grLS5/2OKo4iDF0RpIDkdQhaGNpwPOQVM0WxQWW0XC2AmAp5Jiw1stvxk4XFfj29YFBbQ9SFzphpdGiLWpSXtrCtRBHLH5Avgv8I80kJ6ZvmCku9baNuHk9+BJTpHXydKpEwaLU6O6vx/rHdulI7wz2qhsSra4P55No/iaTD/ijZR0WUQKwMwldZMYSh1Ar1jfNsZiCnbXhbfiI0adI4/Y4mjj8RGeIHpcO8zhTAJ+HB3qMXVT1XjCJTjBIyN8sCAC29gJzQl7Q1EZa48rrwW3oBotyFCmhL8jyH4sqty66t911vTJW6CYXSYZhryTcGnEgvwmmbbipvCboanLA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HiQRhv73wbULoJMolOZTTMgrY1RuNV6Kb4S9cohSUAI=;
+ b=g8VVbI0Kp1vdenQjk1AQTynbaLXaJnunVsSJKb5Rt8psbPN8iTze3KaCEtcaUrEMwX1GA01ANVDR17JcvNP3gdpHyDcM3u7xUdyTiyAGrhSbHSuh10lQ8jtCmw6IMr949un8hMCoAyXjoM6a1wY+Y3bCq6SlJ1hLyakZksHX0cVHOk4ufOrYj9lB4w+pqL+tlRk/uYZIT8vdIh5vnvM9H+VVakIvg2dS3eW030XXVJWnVlqiOsc9vKxkT+C5XVL0hmZyb4VpAV/r+eVMGtrk3qveFCemFXpGB6THWOltL8iJy64a7ywEBwB2tHfgs91kYWOK1VNLjmbyUTGVGFsybQ==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ PH8PR12MB6793.namprd12.prod.outlook.com (2603:10b6:510:1c4::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.14; Tue, 30 Sep
+ 2025 15:28:22 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9160.015; Tue, 30 Sep 2025
+ 15:28:22 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Vlastimil Babka <vbabka@suse.cz>, Matthew Wilcox <willy@infradead.org>
 Cc: zhongjinji <zhongjinji@honor.com>, akpm@linux-foundation.org,
  surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, liulu.liu@honor.com,
  feng.han@honor.com
+Subject: Re: [PATCH v0] mm/page_alloc: Cleanup for __del_page_from_free_list()
+Date: Tue, 30 Sep 2025 11:28:20 -0400
+X-Mailer: MailMate (2.0r6283)
+Message-ID: <C317AB4A-7593-46B1-BEAB-E683BD7C1CAF@nvidia.com>
+In-Reply-To: <5181a289-eee7-42c1-8bdb-7b7bb463babc@suse.cz>
 References: <20250925085006.23684-1-zhongjinji@honor.com>
  <6fa0e2e3-045e-446f-8ef3-955711b6aa82@suse.cz>
  <F1AB428D-73B3-4E40-939C-2A7BAEA1E73A@nvidia.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
- KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
- 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
- 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
- tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
- Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
- 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
- LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
- 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
- BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSBWbGFzdGltaWwg
- QmFia2EgPHZiYWJrYUBzdXNlLmN6PsLBlAQTAQoAPgIbAwULCQgHAwUVCgkICwUWAgMBAAIe
- AQIXgBYhBKlA1DSZLC6OmRA9UCJPp+fMgqZkBQJnyBr8BQka0IFQAAoJECJPp+fMgqZkqmMQ
- AIbGN95ptUMUvo6aAdhxaOCHXp1DfIBuIOK/zpx8ylY4pOwu3GRe4dQ8u4XS9gaZ96Gj4bC+
- jwWcSmn+TjtKW3rH1dRKopvC07tSJIGGVyw7ieV/5cbFffA8NL0ILowzVg8w1ipnz1VTkWDr
- 2zcfslxJsJ6vhXw5/npcY0ldeC1E8f6UUoa4eyoskd70vO0wOAoGd02ZkJoox3F5ODM0kjHu
- Y97VLOa3GG66lh+ZEelVZEujHfKceCw9G3PMvEzyLFbXvSOigZQMdKzQ8D/OChwqig8wFBmV
- QCPS4yDdmZP3oeDHRjJ9jvMUKoYODiNKsl2F+xXwyRM2qoKRqFlhCn4usVd1+wmv9iLV8nPs
- 2Db1ZIa49fJet3Sk3PN4bV1rAPuWvtbuTBN39Q/6MgkLTYHb84HyFKw14Rqe5YorrBLbF3rl
- M51Dpf6Egu1yTJDHCTEwePWug4XI11FT8lK0LNnHNpbhTCYRjX73iWOnFraJNcURld1jL1nV
- r/LRD+/e2gNtSTPK0Qkon6HcOBZnxRoqtazTU6YQRmGlT0v+rukj/cn5sToYibWLn+RoV1CE
- Qj6tApOiHBkpEsCzHGu+iDQ1WT0Idtdynst738f/uCeCMkdRu4WMZjteQaqvARFwCy3P/jpK
- uvzMtves5HvZw33ZwOtMCgbpce00DaET4y/UzsBNBFsZNTUBCACfQfpSsWJZyi+SHoRdVyX5
- J6rI7okc4+b571a7RXD5UhS9dlVRVVAtrU9ANSLqPTQKGVxHrqD39XSw8hxK61pw8p90pg4G
- /N3iuWEvyt+t0SxDDkClnGsDyRhlUyEWYFEoBrrCizbmahOUwqkJbNMfzj5Y7n7OIJOxNRkB
- IBOjPdF26dMP69BwePQao1M8Acrrex9sAHYjQGyVmReRjVEtv9iG4DoTsnIR3amKVk6si4Ea
- X/mrapJqSCcBUVYUFH8M7bsm4CSxier5ofy8jTEa/CfvkqpKThTMCQPNZKY7hke5qEq1CBk2
- wxhX48ZrJEFf1v3NuV3OimgsF2odzieNABEBAAHCwXwEGAEKACYCGwwWIQSpQNQ0mSwujpkQ
- PVAiT6fnzIKmZAUCZ8gcVAUJFhTonwAKCRAiT6fnzIKmZLY8D/9uo3Ut9yi2YCuASWxr7QQZ
- lJCViArjymbxYB5NdOeC50/0gnhK4pgdHlE2MdwF6o34x7TPFGpjNFvycZqccSQPJ/gibwNA
- zx3q9vJT4Vw+YbiyS53iSBLXMweeVV1Jd9IjAoL+EqB0cbxoFXvnjkvP1foiiF5r73jCd4PR
- rD+GoX5BZ7AZmFYmuJYBm28STM2NA6LhT0X+2su16f/HtummENKcMwom0hNu3MBNPUOrujtW
- khQrWcJNAAsy4yMoJ2Lw51T/5X5Hc7jQ9da9fyqu+phqlVtn70qpPvgWy4HRhr25fCAEXZDp
- xG4RNmTm+pqorHOqhBkI7wA7P/nyPo7ZEc3L+ZkQ37u0nlOyrjbNUniPGxPxv1imVq8IyycG
- AN5FaFxtiELK22gvudghLJaDiRBhn8/AhXc642/Z/yIpizE2xG4KU4AXzb6C+o7LX/WmmsWP
- Ly6jamSg6tvrdo4/e87lUedEqCtrp2o1xpn5zongf6cQkaLZKQcBQnPmgHO5OG8+50u88D9I
- rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
- dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
- m6M14QORSWTLRg==
-In-Reply-To: <F1AB428D-73B3-4E40-939C-2A7BAEA1E73A@nvidia.com>
+ <5181a289-eee7-42c1-8bdb-7b7bb463babc@suse.cz>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 786AB180009
-X-Stat-Signature: brhjcix3sds4xa7uc36e6hq4tdw87sxj
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: BN9PR03CA0883.namprd03.prod.outlook.com
+ (2603:10b6:408:13c::18) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|PH8PR12MB6793:EE_
+X-MS-Office365-Filtering-Correlation-Id: 01f9726a-2964-41c4-d3b1-08de0035fde2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?QjF4b3ZBdU16NVRMckpHamw3VHQ0Qk80LzhWU0dvQVMrcDNRY3V6Nkdrdmp1?=
+ =?utf-8?B?UzRJSFM0NzBVT1lTTXE1RHF6Sy8xYVR4R080YXh4dm5wa3JWWFVaSmJ1ZkxM?=
+ =?utf-8?B?VkM1cndTRWxOOEhycWppNm5NbXVhNFhPb0FHWDJjcE8yTzNrSnhGeG9nUWdx?=
+ =?utf-8?B?U2t0bnJlaGFxUkcyUkFiZm9pK25hdlhlNkpuWjJ3UUdSdE8ycUlsaEdFL05O?=
+ =?utf-8?B?SGZsRnh1K2lnUlQrN3MvT1g0MUpCbUZLdnJ2S2hTWFNTM2Uvc2RQNHJzZ0tX?=
+ =?utf-8?B?U2lyMHFTViswcGU3Sis5Z3NaK0ZiNGlSd0x5czR6c3JVUlF1SVB5TWxNaFJh?=
+ =?utf-8?B?bUNrYkdORit1dmZCM2ZueXZ1bmhOcUExRXNwS1g3NHNVVGovajBoWWFRRnJ6?=
+ =?utf-8?B?WlRObDl0b0VKaEdOWHAyUTF3Tk9Wb3FFQmRxRUZobFA1MjErK3kydzZTZFZD?=
+ =?utf-8?B?N3N6Z2ZUd1ZFVjlxak5sY3YzVU1kWS83amY3a2RkVzVCSTU5ckM3WXY0ODF6?=
+ =?utf-8?B?ZXlqY296NGR1cHBvK0Y1bjJ3VmNKcWlGWjUrVDlqck5UdHB6em9tY25wakNN?=
+ =?utf-8?B?dmpGSlRsN29QVHhrQ1pKN0xqQkFYSnZjTGZrNGZaRkUrTEZlOGFTeFB5QkpL?=
+ =?utf-8?B?VldSSzVSVVM2K0xqR3Z5WUFtUG43a0xUa3B5cGd1R0JIL0FOZmN0U2l0YWE0?=
+ =?utf-8?B?Nld5cGZsUEZOSDAzMTV3bXpxQUFid2hqa25iTEFHSTczQ0dEbmFqNFByM2tM?=
+ =?utf-8?B?L2M2RWlIOWVlbkJhKzFLT3lzTGttS3pWWTJLTTdFYUVEOWM1c3VGTXpURzhL?=
+ =?utf-8?B?dWFMTVltR2dGME1vMGwwQThES0FhWmFVanpXUWNVTVhjeFN5SHhuR1c2N1A5?=
+ =?utf-8?B?SGlxenJBQTNKWEgraE1xdjFjSGpOeU1JME81NVRvRUVIbmZWd2U1dDViZHFJ?=
+ =?utf-8?B?MXR3VktQNmdvWUJ4U2pVazY0R0NKeGJWdEVnaHRVcVpJKzJBU01jWTV4bXR3?=
+ =?utf-8?B?dFQwNWpwa2ZhQy9yK0pCbzJUU0IxbnVXV2hwaU5LNkYwb0hYQ1k5RkVNbnQx?=
+ =?utf-8?B?Y01oaEw2QkMyOW5DOWxCSW9IUGZMQkNZbnBYczd1QW56WEhIazBFejhOdlV4?=
+ =?utf-8?B?N1ZzQVdRaDZ0bmhYRnlDS0grcW5xTStBcDUwamtvNHFaUGFSTXJhQ0xnRzQ4?=
+ =?utf-8?B?dU1UMUw2OW9XSk4yWFFXWWd6bVZkYkltcmhHaFczMDk0MGZoQWY4MU41MDJw?=
+ =?utf-8?B?cFFJaDA3RGlNYlRKL2NKd0lpNUZPN0JnUXQwamtGMFlDV3ZTSnVTcXMzdXVr?=
+ =?utf-8?B?N2RVTlZYTzJOTERFRmxHaUpDMHB4ZTRzZTB1MmxkeFA3azJ1Z21PRXlhd3J1?=
+ =?utf-8?B?ZGl6NDQ4ZEtxM1ZCRjJIUlBkUjF5QnJRc2hVWVoxQkNBOHd2bFRkVk9FRmlL?=
+ =?utf-8?B?MGY3eXQ3Mm51WGVBNi9OVGNVaGJtbk14aTdEWVlrYitkd2RKSlNLRVdLN1M2?=
+ =?utf-8?B?SUMzQU15TVJ3czRiQ1VMWUJPdHlTVTU4Q1JURENTZzNQeU8vbjBVZitSa1lt?=
+ =?utf-8?B?WlFkYThsNHVJc1hqZ3JsVGdyME95bnV1ekpjS0t1WW5sN015VEx4MUlTZ2lw?=
+ =?utf-8?B?Sis3QXpGVHZpUkVFbDB4M2tkdkM5WFBXRjdzUHZqQWVWeWMzeGViNGVmZk12?=
+ =?utf-8?B?MU9WMU1JRXVoMlZYK01ycUc4c3FpZUp6NFk1RDhCZ2xuek05L1c2Q3JPUklW?=
+ =?utf-8?B?MlhpRmhubHBGTXZzeVo3VENGc2tLaVVyUkM4R0pjMjZWUWNPYnU0d2lONTB5?=
+ =?utf-8?B?YkZyKys0SjcyQm0wUUV5Rm1RWE96ekxmWTAwQU9mU2M5NjNZeGZOY3pteWox?=
+ =?utf-8?B?QkhiVjBTUFE2YVI4eWtlSVRBVnI0WDg2VVZ0TFhYTFZkMnZ6K2txVGhidkFD?=
+ =?utf-8?Q?gNfN5p3rDGypbOQyUd6CjXF0pJOZOOgF?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dTcyMzkvdUl5WHpBTWU2NUR1TFo5ejU3QmdNQnd1NzZrSWN4V3pUdjlwdW1l?=
+ =?utf-8?B?NXJHVU5mMm9XT242a2R3b2MwNGFudnNyL21FRmxKL1JVc0p2ODZrOVA5OWZx?=
+ =?utf-8?B?QTNVVzFwZzNQcE8wY3dCUzFhK2RLSklFNW5CQUxhZG9jM0ZyS1g5dmgyZ00x?=
+ =?utf-8?B?UC9Od3FxcGhFZkI2T2xGaTV1M1F5a21KVjg0WXpGVjZUQkFvdGRidDB5cTYx?=
+ =?utf-8?B?TW85VEVjN29WK3ZlS2xIVlYvcTZZbXptUmYySDdaYUoyVDl4c3lUUmVvMnVi?=
+ =?utf-8?B?aW1rWHIvNEg5SmhMZXhoanIwbHYvRllxZ1drdEt1MkNxMFZzcEV5cVcyaFhh?=
+ =?utf-8?B?Lzk5S2Y4ZVRoVDBOallpVnRNVVpOMkNoUDVzclpSNG56dXlHVTJva1NWZWt0?=
+ =?utf-8?B?bEVESFZ3aFhqS21GUkJpN2NuVDZwa0JtUE5USE1uUGxxdnF6T2RoeWlxanJq?=
+ =?utf-8?B?WkhLSUQ1Nml2dCt4cytENnJlQk5oUm9JZWVLUDhKbnlBdGl4SFdqL0FCSHhS?=
+ =?utf-8?B?Z0JuL3ZIZkZra2VJWWlGZFIvRUpwS0ZSYWhXSDRnZDVzdkxqeTl3cThGN0hS?=
+ =?utf-8?B?V01XMVZQUitCcWdZckYxNjZQYnpHUjljOWluVSs3cFB0NWJuVEdrNmFhNkNz?=
+ =?utf-8?B?ME5SejZnQmNUZnJOcW1IeVJtVmpPK0JaVUV4ekY0aDRFcW95elVVMFArQjlz?=
+ =?utf-8?B?NjV5TTlWUW55ZmFKajE0S04yMFIweXNvdzY0aEUyaXRSaEt3OGlqRXkybk9R?=
+ =?utf-8?B?bkZDUHVJa1pzdWZLcXJOd0U3NDcvRGNNQWgwRHVCeEZJNitub2RaWjc1bW0x?=
+ =?utf-8?B?M3lqaEI3N3gzOWRYVmVSdUhRaTVneUxaVmFONHNpWFBUQWk2c2JNY1JvZjcx?=
+ =?utf-8?B?ZmJOT1FHZk1LOHdaaFZEaHlTQ016MWxqK2o1d1RlaDU4V2V6Z3FNeHVKS2lm?=
+ =?utf-8?B?eVZORU00M0NsNk9mQmpxbEZBK01Gc2ZGR3hGUldZV0pueEVWeXJrZkhzNnlK?=
+ =?utf-8?B?bWQ0cmVZSkZmbDFRMGVLL1ZvNUZ5VkNBcWRZU09lc0QvMko4SG55YVZvd1Q5?=
+ =?utf-8?B?bWRiUWpLRnB5dWRxUHdNUzNXVEFmT0ZDSmF1cnpZRmNUdlhEa1NHUWZ4VTk0?=
+ =?utf-8?B?S2paMWg2b1loYXZuQzBBZW15TjNtT2s0azlvaHNKMXFlaHgzNFVoWDJNVUxP?=
+ =?utf-8?B?Q3NDNDdRYW5Jb1pxODhGc3lxR3hSRkt4YkpNMVpXeEg3Y2l0UVp1R0NBTytR?=
+ =?utf-8?B?NEV6UDhmcmtsRzZzK2h4bW1ybjZZREUvS3hGTEwraGRyZDNKS0RaREZFTUw5?=
+ =?utf-8?B?LzlJMVlRZnFwUmZNd3N5aTlKclJ2WGNWNDZrM1FGTjlGV1VadlZqOVEwK1Vq?=
+ =?utf-8?B?a1VtSWhJTzhuTUlFSU9vbjdOWmI4K2xsMTh1UEFQK0JBUDR0Vm5yanBucWlB?=
+ =?utf-8?B?Z1FEMWRqZ2x6WTg4bXlyckxWQmlzZldTWkt3cHlzelI0SGszL0VwOEVHVzE0?=
+ =?utf-8?B?UmdueXB0aS94UEFJL0N2YjJoNy9NY0hFT0VSWllOeEVoVG9WOWl3UDRESkh5?=
+ =?utf-8?B?SlpYc0ZhbS9TMG80ejhBdFh2Z2lHdVM5Rmp0LzhkUHJJeTlHWTV0K01EeUZV?=
+ =?utf-8?B?WDlJOTZSZkFac3YyME9GNDl5ME1TMWRwdXgvWG9sS0lhSmxxbGNFbCsxNDd5?=
+ =?utf-8?B?VFo2bjNjQWVYZTB4aExKTm5PVzJCN2N3ZFkrK1EvOGlTQXFFeEFVY2J2R2xC?=
+ =?utf-8?B?TnpwM0lGT0czR0Q4V1JMRytON3I0K1RWcmd4MXBaQ0EyL0daeG1KbzgyUTRD?=
+ =?utf-8?B?dTVKem1NK3lKN0ZOYjBFVDlvNjE3bFRuenlsQWpGZUlCYlpRYWI0OVpRdzlM?=
+ =?utf-8?B?cktJR1NPN2U3OHRTY056ZzFQSllBb29xdE45TlRSWjlJN2dGYTZLaHMvNzZS?=
+ =?utf-8?B?bllMaHhBV29KZU43M0VGRUgyMEZKU0Juak9JdlBvKzRveFlUeVp3NkNhcG1k?=
+ =?utf-8?B?emJTV3RSRmlYZ25aUHRPbE12cjIzOWtvTHJrZUpZSG5qYXVxcTRxaURJS1J5?=
+ =?utf-8?B?czd6RDh6M0kwOFg4bjBBd1NqdHRyR0JTV1p6Y2JMbDl2YW9HbXVldkFxTlV1?=
+ =?utf-8?Q?0tuFNaMsxzSQaqdM+dkynls8k?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 01f9726a-2964-41c4-d3b1-08de0035fde2
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2025 15:28:22.7620
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OLm+2P9SDtHgNL3cN4II4mw4vLBMYCdUt2lXm+l7WjLCQyE8mfsoGkfEWEEktQ7r
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6793
+X-Stat-Signature: ec6ywefsuejh8rg4n96f55qscbuno4pz
+X-Rspamd-Queue-Id: BAF8DA0016
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1759245637-79917
-X-HE-Meta: U2FsdGVkX19Zm8FZbSJ7JKBJ+4jODBnHG7CKh4b8sMJql3uT2qvM3JRfgqM6ltaUuR2SSehr2k53vd/ybx/eAnRH2k92KQCOxXs4rkYwgcEnZCEDO+OyYgOOl8/rEh+o4QhhSil+/AJf7M+aGEHvcT6EE33WOPDzHAv2ZcMwEQ9GqKf7D6qOO1eyfVeU+l5k6WMwAvDwiXGFY0jE9QiaTp6GZHLphFweU2BAU/0Xsx2LFCJnKYLlmZJQKpCaowbMG2LOZmpG7GSEolNFLAp3rCW9LfAOh3TV/L5wMDP6AEvq8l+WqGlHORQqdMxxo99m0qo+nS5YPnG10FU+cm/47D64wRWjkrGYf/SpYqsi0wcNfHGboH2+f3dijKCNk4YS1ssVqN5DSzow7EvwuRO4yiejj24/JYIaYCnRHDQRKSJf05Yl1VS2jldsu4popaGcI1mw1sPvpQaebwNQoVkeRvvt4344FOkKa5RGIxz3Ai1WgIbY0pU5lZsyxZBlXuS6NtJn6CkiQHyVNpV1KN9KNB4TAZq8p7fLd+xsqnGERbWtdldkRFGWRB70Q03W1pJH6Hp5b5jTTs7Sl0Q0ZXKt1/BHiFXmZffDoj+0R4ft5hj3otzgxjQci2aaVKSuKu/tn2UKnxHHi2Psuc4OdQoo8844BzA5Hwh6Vk2dUUUK/BcFPTDmWkuOv4VqwdjmEhJCOMnXr02STqz2ibSba+McE8NktNM63ESJWco4duKE6Pffbk9va/P+7Yrl+JRJSIKzk+lk4opyNvYKTIZoxOjVkPCAJQhoKOZdHfkDQY89PcTXiB3RhxOVi1SNAQ2iGDDv5W5gzW6iW2DPo/6p4FI5PkmWyqn2APqGA3bCpzIYCKgyN0uMZTHD97LyYJBGWwau+qLTJnvZwt1h/edEWOqPkH2qIaAZa/ioqNmLbI1dVGFAhsulIw/Zu7cV0qMfb2zUf1X2nJIXeInZOI5/Fz0
- 49V6tuPH
- U4keGQkzWDHQwhbTlpM5180fY/jImeci7rplzKlIkVDK41WLreeHHkUx813de1oX1YAs5iGvbHXZGqE3uNwKsYTwKneCeRq7ROwCOsqc5wOp8YBmmvn3fbFOHQMBehgf7e5xqlifH6s3wZ3fCiINwLGAxe9rKNw/cdGqHF6CybYQoTZkwNwSToEEHY6OSmFLncCaLAqWHBNKhrXruWdnB+n7+miXikBl1Yn7qaZwkXeztIX8N+tlw93lHy345HOBRZmvMJmXP9J8W/KBNe3XlUXi7AkiJPfJIKzOQe2QPbfCvcfS1d2R+oSlJldn74c+ZHU+/gq8y29WEc60Yp9u/37Yo8QqLI1HslBG1VmDECQ9deDrN0/Wn6+oYgVUhHvLRTS2x4sMGTolg8vA5r2UgtNBt0QndE16QTj6z6oSGnktciDgLzDBOB7jzQIzBt0Q8AMMSEhJ2SAt43ELUfE6eHURSeiTZZSvng790
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1759246106-192363
+X-HE-Meta: U2FsdGVkX18TzCqA8yijNOmm8cvY6FSZCbCmWPI4JnzW4ibmOQ4ZF7u8/sE5puK5Pm3KgEBQwkI7xILcMRVRY9fm672tcaqddp1aHjd8fxmLjHKI3KPDvo8bZVjmACKLsAmwXXqrydGN8/MTTmcdwh1xZyUf5oju9GdCpL2VjaoasXFWADicdupQJ6TEfAoK9ghxI8yjcgnAaUJLA5M+OVWLHl/ghq/k/gwoAdvHcg9quu37kp30RZb/XYkfWT2PycAeCQuSUeUIV/taJhI/VP8YUMthDCCb79TYxMnXW1FDQWvaVo2wOO2OpU2BHnYbL7HIG6OuHaHuj2khoaaeI6ZJm0KDJN6/+VTf8ncDiDwMMhGY0aonQ8hY38BSHC+VQ2WpzAqP45MRx1b+fxlF4iGK0eg7lMI8YM83/IAhUYwzgzreNDoY8POUSawdk1/3UvqXy57zIOPZ+2okU022jdyUTdweZP3sze/jN5tKCxAXkw4cPKiThZdmGmdC0CYb4inSo3FByoY1qzHE0CPtluUDWXT6fzNkzuBZqxzLpQTemB9Zu0YUStTp8euEmRsYg47ZOgPmslnftmNJfATe0lrYi6wWFl0gr6RuizJUz9KX+G8MFKIzuhXLlnFlKx8nxAFTmrtk0EnjwiuMshJxTQ3j03Z5j8IUTg6hxmlyBePZF6L3YoufyQYo4/sewgbHAjOThEbWTDpMD6eZ1OGMA3Ojo2d2LJ2Ofb1NfnY8wYZ/OQUiMp2c/RXvEQ+oa6tpAb14dC63PPLdAc3NeNLlg9CETgom4FpYaEbEQWEeftj4tD68MhViJZmOGbkRwJH379Uq86ReL7Xz5hTH9Q75qV6B5dUe64JzE9XdkH4uxkz7twZJJwPqeVsAkRzNlvDwd7pR27sODhnv1ZpGuECiOysnJ7WGMVfH4Nxwkk0WB5t1RMTNEiyFTT8umTVqz6ibTCMjthYEo0h2Urck2GR
+ J42buvI6
+ SfSx4NubtG7PLOk+DzMHlBjMNMm68o2NJnwp/Fpc+nIfWlsDvo2gbjRe/d24is+H5k3YkubmePPAyVw80cKoXs2tOoWrVH0KZF9rVfqTUj+T5dlLij77TRFfOXqNWWxnnVWUvAlQyedYuUAHhJMhhtd2HHGaWVPs2/XgbR+FuJU+mxKeBYjX7LaMd3O1s3hRUJrgI+cN9hNFz+xgyiL37Z268JR+s1pM7sJkBw4UpuDJCRRz4yYeXJDT4+r71LVld/XeRuzFDcnO+Endns+ZdYCkugvOnLl2HVsG5GAOz/4PAPXTsofZ9OfXT3BAzd2HkaLl5TGyGeBYaOStyOERGFSx9/rHIaM8/RrauiJ8OL3v60WIye85jjamlu29Cld9B/bIpPltffeEfVnmh68Vb1I8vlWoc7ym0MaBZFS/m8NLLwUApLl90Wk+lCTl3g7jVP9aGvC+hDTth7syUc0CPsw157atBvj9HeelhcdlbBHfrJ0EBZAUlbEuqW4nKwL6n8N/OF7KlkuFItrH+CCxdMkVdzLCGcfrzEZav4LYHBphNBpDg+Ax1auwpXPAUtECcZ31pjJPIMt/cjd/z3eXEeyDYWAFJySLeS3m8jx4/CCmBI2lKS1WItWoEGuPAQ8iBbxl+
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -181,76 +203,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/30/25 16:28, Zi Yan wrote:
-> On 30 Sep 2025, at 9:55, Vlastimil Babka wrote:
-> 
->> On 9/25/25 10:50, zhongjinji wrote:
->>> It is unnecessary to set page->private in __del_page_from_free_list().
->>>
->>> If the page is about to be allocated, page->private will be cleared by
->>> post_alloc_hook() before the page is handed out. If the page is expanded
->>> or merged, page->private will be reset by set_buddy_order, and no one
->>> will retrieve the page's buddy_order without the PageBuddy flag being set.
->>> If the page is isolated, it will also reset page->private when it
->>> succeeds.
+On 30 Sep 2025, at 11:20, Vlastimil Babka wrote:
+
+> On 9/30/25 16:28, Zi Yan wrote:
+>> On 30 Sep 2025, at 9:55, Vlastimil Babka wrote:
 >>
->> Seems correct.
-> 
-> This means high order free pages will have head[2N].private set to a non-zero
-> value, where head[N*2].private is 1, head[N*(2^2)].private is 2, ...
-> head[N*(2^M)].private is M and head[0].private is the actual free page order.
-
-Hm right, tail pages...
-
-> If such a high order free page is used as high order folio, it should be fine.
-
-We don't reinterpret the private field in any of the first X tail pages for
-folios? That would be bad too.
-
-> But if user allocates a non-compound high order page and uses split_page()
-> to get a list of order-0 pages from this high order page, some pages will
-> have non zero private. I wonder if these users are prepared for that.
-> 
-> For example, kernel/events/ring_buffer.c does it. In its comment, it says
-> “set its first page's private to this order; !PagePrivate(page) means it's
-> just a normal page.”
-> (see https://elixir.bootlin.com/linux/v6.17/source/kernel/events/ring_buffer.c#L634)
-> 
-> I wonder if non zero page->private would cause any issue there.
-> 
-> Maybe split_page() should set all page->private to 0.
-> 
-> Let me know if I get anything wrong.
-
-Maybe we could postpone this optimization until struct pages are shrunk.
-
+>>> On 9/25/25 10:50, zhongjinji wrote:
+>>>> It is unnecessary to set page->private in __del_page_from_free_list().
+>>>>
+>>>> If the page is about to be allocated, page->private will be cleared by
+>>>> post_alloc_hook() before the page is handed out. If the page is expand=
+ed
+>>>> or merged, page->private will be reset by set_buddy_order, and no one
+>>>> will retrieve the page's buddy_order without the PageBuddy flag being =
+set.
+>>>> If the page is isolated, it will also reset page->private when it
+>>>> succeeds.
+>>>
+>>> Seems correct.
 >>
->>> Since __del_page_from_free_list() is a hot path in the kernel, it would be
->>> better to remove the unnecessary set_page_private().
->>>
->>> Signed-off-by: zhongjinji <zhongjinji@honor.com>
->>
->> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
->>
->>> ---
->>>  mm/page_alloc.c | 1 -
->>>  1 file changed, 1 deletion(-)
->>>
->>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->>> index d1d037f97c5f..1999eb7e7c14 100644
->>> --- a/mm/page_alloc.c
->>> +++ b/mm/page_alloc.c
->>> @@ -868,7 +868,6 @@ static inline void __del_page_from_free_list(struct page *page, struct zone *zon
->>>
->>>  	list_del(&page->buddy_list);
->>>  	__ClearPageBuddy(page);
->>> -	set_page_private(page, 0);
->>>  	zone->free_area[order].nr_free--;
->>>
->>>  	if (order >= pageblock_order && !is_migrate_isolate(migratetype))
-> 
-> 
-> Best Regards,
-> Yan, Zi
+>> This means high order free pages will have head[2N].private set to a non=
+-zero
+>> value, where head[N*2].private is 1, head[N*(2^2)].private is 2, ...
+>> head[N*(2^M)].private is M and head[0].private is the actual free page o=
+rder.
+>
+> Hm right, tail pages...
+>
+>> If such a high order free page is used as high order folio, it should be=
+ fine.
+>
+> We don't reinterpret the private field in any of the first X tail pages f=
+or
+> folios? That would be bad too.
 
+I thought so until I see the comment above page_private():
+=E2=80=9Cpage_private can be used on tail pages.=E2=80=9D
+
+Now I am not so confident about =E2=80=9Cit should be fine=E2=80=9D.
+
+>
+>> But if user allocates a non-compound high order page and uses split_page=
+()
+>> to get a list of order-0 pages from this high order page, some pages wil=
+l
+>> have non zero private. I wonder if these users are prepared for that.
+>>
+>> For example, kernel/events/ring_buffer.c does it. In its comment, it say=
+s
+>> =E2=80=9Cset its first page's private to this order; !PagePrivate(page) =
+means it's
+>> just a normal page.=E2=80=9D
+>> (see https://elixir.bootlin.com/linux/v6.17/source/kernel/events/ring_bu=
+ffer.c#L634)
+>>
+>> I wonder if non zero page->private would cause any issue there.
+>>
+>> Maybe split_page() should set all page->private to 0.
+>>
+>> Let me know if I get anything wrong.
+>
+> Maybe we could postpone this optimization until struct pages are shrunk.
+
+Yes, I agree. But I think willy could give a more definitive answer here.
+
+>
+>>>
+>>>> Since __del_page_from_free_list() is a hot path in the kernel, it woul=
+d be
+>>>> better to remove the unnecessary set_page_private().
+>>>>
+>>>> Signed-off-by: zhongjinji <zhongjinji@honor.com>
+>>>
+>>> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+>>>
+>>>> ---
+>>>>  mm/page_alloc.c | 1 -
+>>>>  1 file changed, 1 deletion(-)
+>>>>
+>>>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>>>> index d1d037f97c5f..1999eb7e7c14 100644
+>>>> --- a/mm/page_alloc.c
+>>>> +++ b/mm/page_alloc.c
+>>>> @@ -868,7 +868,6 @@ static inline void __del_page_from_free_list(struc=
+t page *page, struct zone *zon
+>>>>
+>>>>  	list_del(&page->buddy_list);
+>>>>  	__ClearPageBuddy(page);
+>>>> -	set_page_private(page, 0);
+>>>>  	zone->free_area[order].nr_free--;
+>>>>
+>>>>  	if (order >=3D pageblock_order && !is_migrate_isolate(migratetype))
+>>
+>>
+>> Best Regards,
+>> Yan, Zi
+
+
+Best Regards,
+Yan, Zi
 
