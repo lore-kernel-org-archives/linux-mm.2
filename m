@@ -4,201 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61FCACCA468
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 12:50:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA351CCA470
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 13:00:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 752FD8E000B; Tue, 30 Sep 2025 08:50:54 -0400 (EDT)
+	id 2398E8E000F; Tue, 30 Sep 2025 09:00:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72A958E0002; Tue, 30 Sep 2025 08:50:54 -0400 (EDT)
+	id 210CD8E0002; Tue, 30 Sep 2025 09:00:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 619748E000B; Tue, 30 Sep 2025 08:50:54 -0400 (EDT)
+	id 14DE58E000F; Tue, 30 Sep 2025 09:00:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 49AB78E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 08:50:54 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0F12011AB61
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 12:50:54 +0000 (UTC)
-X-FDA: 83945901228.07.715D7DD
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010036.outbound.protection.outlook.com [52.101.85.36])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 2E7A9C000D
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 12:50:50 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=CvJCltn8;
-	spf=pass (imf10.hostedemail.com: domain of skolothumtho@nvidia.com designates 52.101.85.36 as permitted sender) smtp.mailfrom=skolothumtho@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759236651;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F3D418E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 09:00:38 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 877D1160743
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 13:00:38 +0000 (UTC)
+X-FDA: 83945925756.14.5E70EA4
+Received: from pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.26.1.71])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 08ACE40011
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 13:00:35 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=dFe+qzEf;
+	spf=pass (imf12.hostedemail.com: domain of "prvs=3616c5604=acsjakub@amazon.de" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=3616c5604=acsjakub@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1759237236;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5FhRKAEbVUZqQ5F9A4lMRmtvH3BXrYpOP8PXGUBoEt4=;
-	b=gv/vIpfK5odymvzFdf5HBNOIa4q/93tUOdkz2yrLLsKkHeGYOglFHba9n8+DNCc8z96emp
-	Y2BGPcQin7u5s7NgMvkOkNvmZjIEP67cgXh0QsFjcEDnQTCZMtLRjdHwN0zEOwr09KH7kI
-	7632TcoDazNTttJDx7IDwmETiWnQJKI=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=CvJCltn8;
-	spf=pass (imf10.hostedemail.com: domain of skolothumtho@nvidia.com designates 52.101.85.36 as permitted sender) smtp.mailfrom=skolothumtho@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1759236651; a=rsa-sha256;
-	cv=pass;
-	b=eVufHYWuTtxZqbUimi6dRKchgP9iEK9MLQyQJ8+Sgrcz+dmbgRWQy0oy+7RtHG5ruLA55h
-	rjzY3yv/6jENengSdVgTf+JsLeej+rujjnfMbpG4LRhFAWmP/DcTqX9EUsG4sSJPpZDfWW
-	YOF+XR8q7DM2CcBSS/3WujsGrzWzMIw=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wCJAe+E2LF+oxKNEistG/9nAKXUMAbe1wRnTiU48f6ev6TUvQEqwl8Pb+n0RvOWxjzVG6wD5SqyOZLY22drmCCCsnT4wh1K8QooTB114+wB8LI6hJkmRUPv6AMFUAgPwutVeM2hZHI87AKugWkytPtbYUCi90FY1GJ5J9rl8ETwdZPeOXZSx3lMZ7nHmXJrUHQGQKePKXTkeNbKAf6ctn2w6hWu4/UPZYF+oW1jLZosiGLukbFt0sRvK5VBuJUgcDVfCUfyVaRbupOzh3F36WNTBlAf1AiJLyt29ihIC36K/Rv2CXkKi25X1UJ1W97f/P5CAu85Aq3/lwR3N3tfMvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5FhRKAEbVUZqQ5F9A4lMRmtvH3BXrYpOP8PXGUBoEt4=;
- b=JLygVw0feJ1khgL62+ml1NoTQKov8j0Tvct0zZr/Vvp9Q9gaLbmA44z2pBmUY8b4bgTGZdG8IwA8MkHvGPPEt2A+wnItXpg5fspHmoHyO8OIZexP9OtSvYjGaaIchheX0sYfoGQamZvyieoOzU0XMrLfQB+kq5QfyYg5xJvtiCGEnZWMT/s3xbuPq2bwE+hueoHkCXE6/ufVyLRpFYu6R6qhIhjstcn6btdxqg0IVIjcEBDvHIeN8NNlIa5z8ZR1WQdMKMbET/5m8Sk2m6tux+jj4pnZE9GCv07HXF6ZyW6vAMcZOmSn9FaSdATjBUsyr42Rh+0zXH9xnZkqNJTzdg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5FhRKAEbVUZqQ5F9A4lMRmtvH3BXrYpOP8PXGUBoEt4=;
- b=CvJCltn8jAJHqv3V7xP2QSHnetEY2bRMw71VCrsvoZL+LDmO5oEDOH5SORg4HeO5NuNIwSLSzXJaORQ5LWgONjS6oD/xvlj7roDO9mYPo3jKcHGYyxRK/PE4kvfOiqu5HF2tIXIZuhJ/Ozm/5MZfMItTWmTX+mEiwnBXvryW55EQM0WCFVtkj7uhJ9vsd2+xQXIoSXdeHQ7j7niMXWm4vIhRN41189gygyk+Wn0BxcH7b3HR06BHEN0TRnXTJVxhP/aO+kCQFfDPNLO++Fz4VLEf6gJP2yHaVSHpIuTjikPxt4ROGl84osZpyf5bbh0OV91gTU9WdBgMr23f3c/Cag==
-Received: from CH3PR12MB7548.namprd12.prod.outlook.com (2603:10b6:610:144::12)
- by SA1PR12MB9471.namprd12.prod.outlook.com (2603:10b6:806:458::12) with
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=4y9rVmjkhatWvM5IQXAd0quXaLLwCNEnONzYm/0o4vg=;
+	b=4CSPjeeVHF/HZD66/wyf3dxxIv1JCYqj/KAm0LxvBVn9O5A9jyuV7R7re8iy2NKCRvn+sf
+	ZMogd1zAELwuZh3lSdnidXNucGZ7cf5kVH75fPLGUmNH5yp3RdIA12iceQk5uIwx0/3+/a
+	gThteuTZBYsFlXJ4FLYyAzKyf6TaRHU=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=dFe+qzEf;
+	spf=pass (imf12.hostedemail.com: domain of "prvs=3616c5604=acsjakub@amazon.de" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=3616c5604=acsjakub@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759237236; a=rsa-sha256;
+	cv=none;
+	b=AIgjxSfYTC5NItke4ijwtf9B6uQcn/wjp2AYhXESv6CAdSIVIfMH8ROngE5T/Gz1V6Dd6m
+	oIMeJwF35ByO1H+DIsdqzhPUbWVrQNx2wMDADPz5C02SUcX4RBwp9tTJTbcB6SppT7r5rg
+	X7q50nyv6/B98ALiukmA0kIfKa+WtHY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1759237236; x=1790773236;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=4y9rVmjkhatWvM5IQXAd0quXaLLwCNEnONzYm/0o4vg=;
+  b=dFe+qzEfWjMX3mQalUC5xGrwKEHJpbEB8vITLGCQMsa2ofqqwN1GMkxn
+   4CaIBgLpogfaE6vJgK5tkNeGj2z2mtysvaC9Cv6cCrNtdrF49ZT8gPCDE
+   S5KKHW6HdvrGnh5h2fNIvxI6aU2B78PIjpyqJavzLuiLiBbOWoSK9umLL
+   DFoMjW/ITKSxWuN9Y4SXXgEWT5enZh5Hka3pg8JKM4KiM8HIZmuc4A+gC
+   j4aihh0jRleecV4EKLlTNf0U9UrV3gRDwhUGjHbFS6abLT41IsyOURrpx
+   TyIvQBBGLitS6TYPU8xZk4vucX0rvairYlQYJYT5FDbjkuNfm9m+08TZZ
+   w==;
+X-CSE-ConnectionGUID: U2bmbB3zQ6esQ+cFN2bi4Q==
+X-CSE-MsgGUID: T2b8wKMdQxSUE3HXqyo/mQ==
+X-IronPort-AV: E=Sophos;i="6.18,281,1751241600"; 
+   d="scan'208";a="4002597"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2025 13:00:32 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [10.0.7.35:22805]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.31.86:2525] with esmtp (Farcaster)
+ id 143b7053-1d57-488d-839b-227c6cd39263; Tue, 30 Sep 2025 13:00:32 +0000 (UTC)
+X-Farcaster-Flow-ID: 143b7053-1d57-488d-839b-227c6cd39263
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Tue, 30 Sep 2025 13:00:32 +0000
+Received: from dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com
+ (172.19.75.107) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.18; Tue, 30 Sep
- 2025 12:50:47 +0000
-Received: from CH3PR12MB7548.namprd12.prod.outlook.com
- ([fe80::e8c:e992:7287:cb06]) by CH3PR12MB7548.namprd12.prod.outlook.com
- ([fe80::e8c:e992:7287:cb06%5]) with mapi id 15.20.9160.015; Tue, 30 Sep 2025
- 12:50:47 +0000
-From: Shameer Kolothum <skolothumtho@nvidia.com>
-To: Leon Romanovsky <leon@kernel.org>, Alex Williamson
-	<alex.williamson@redhat.com>
-CC: Jason Gunthorpe <jgg@nvidia.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	=?iso-8859-1?Q?Christian_K=F6nig?= <christian.koenig@amd.com>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>, Jens Axboe
-	<axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "linaro-mm-sig@lists.linaro.org"
-	<linaro-mm-sig@lists.linaro.org>, "linux-block@vger.kernel.org"
-	<linux-block@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-media@vger.kernel.org"
-	<linux-media@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, Logan Gunthorpe
-	<logang@deltatee.com>, Marek Szyprowski <m.szyprowski@samsung.com>, Robin
- Murphy <robin.murphy@arm.com>, Sumit Semwal <sumit.semwal@linaro.org>, Vivek
- Kasireddy <vivek.kasireddy@intel.com>, Will Deacon <will@kernel.org>
-Subject: RE: [PATCH v4 10/10] vfio/pci: Add dma-buf export support for MMIO
- regions
-Thread-Topic: [PATCH v4 10/10] vfio/pci: Add dma-buf export support for MMIO
- regions
-Thread-Index: AQHcMIfjZsgV0WO2skun7ZexLpmyZbSqq/SAgADEaQCAABo64A==
-Date: Tue, 30 Sep 2025 12:50:47 +0000
-Message-ID:
- <CH3PR12MB754801DC65227CC39A3CB1F3AB1AA@CH3PR12MB7548.namprd12.prod.outlook.com>
-References: <cover.1759070796.git.leon@kernel.org>
- <53f3ea1947919a5e657b4f83e74ca53aa45814d4.1759070796.git.leon@kernel.org>
- <20250929151749.2007b192.alex.williamson@redhat.com>
- <20250930090048.GG324804@unreal>
-In-Reply-To: <20250930090048.GG324804@unreal>
-Accept-Language: en-US, en-GB
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH3PR12MB7548:EE_|SA1PR12MB9471:EE_
-x-ms-office365-filtering-correlation-id: 590df93e-1cb4-45a0-8405-08de001ff9f8
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|376014|1800799024|366016|38070700021;
-x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?nhI2JxnKRja6ZMnW7X8Pzs8LYfaDT1lBGivQmptzuXktv4y+Hoiq+eHJxa?=
- =?iso-8859-1?Q?EvPe8VJKCZn9AIUsNJAtJZF5APACM05dnKVS+D69CroEyJm8go/O4LGRB3?=
- =?iso-8859-1?Q?sb/wWcJLvkkiFQYkmPobmondr2JOlQk3fl31w/MPmoW+vVZvU+P/gQnxb+?=
- =?iso-8859-1?Q?zKhJbIMUTWlqH0JM/Kx1oJ4jH00yD6UbaLYGFbcI4ITff1Uey9qQ2GQ9uv?=
- =?iso-8859-1?Q?zxVqyk4ozTHsm9t1agP/2xeFtos5d29l2Yn6klNvJyFZ5Top0vFgarq7bE?=
- =?iso-8859-1?Q?FDobCxRdEPM2LtPvrw8wabmiz2QUU3A5K9dPHd3etTzn1FwqnAuEEybIdU?=
- =?iso-8859-1?Q?PechBsNmw5JRZpy7+Iq9fQAbGm25qayMA87nZ2D6HfN0Wyrk2dCgYRcJOz?=
- =?iso-8859-1?Q?fUWEvwNXNFlZ/de6WzItnqIFPTcAh532PRkMKqttgQ9Ymd+jyz76Xp9TUX?=
- =?iso-8859-1?Q?YR1O8hFtjQ1uZpANKczlw5tXrcBbHQ33BfjZ64yJ4ewRhLVo+rTO2D1ygv?=
- =?iso-8859-1?Q?sjyOSNsWMrgaYVrZUJWbFVinVkVHoJgDE/LPrNSF/hMosThyEyvso+AvpK?=
- =?iso-8859-1?Q?Qp9AWWFQAywHvmpI2/0fUWtfGBT9S9iJVzF7Cex1mnEl4UOE7Q0VHF7por?=
- =?iso-8859-1?Q?jFVZKvuZC3UGfmA2tLcezG1frUDBQvRB4UfOvroCZXELlJtA/hDb/fDKHT?=
- =?iso-8859-1?Q?9q0/CjRU3quC7D5uJaFmuzhuHvb5HAOJy6kH5rYo4bf1fi6K/NjT8WRXcI?=
- =?iso-8859-1?Q?rXoA5kcW5gjuanMw69z0AyFgdJnhOSXjC58pRBFBrrOby4IvQlGazIvWFW?=
- =?iso-8859-1?Q?YALHBNhathORFE8/YW9nUrFMmOllzgnz+GhjHDQMACzVC78mzLtO5BvWe+?=
- =?iso-8859-1?Q?QsILF9EVsNlhg+e5A+C2stdygAJs2hFt2ALCh+7myOZmZn7aKinzwCxRKf?=
- =?iso-8859-1?Q?gL5M6ruI0VRfIg5cMgpGUagvQBwh8sF7otxKZD0ihnh0NDo32ZBuYHWdmL?=
- =?iso-8859-1?Q?eJELGjTkJ9t3FcDq64HepUiygibgl4B7oPUVk80ErrOCFi2g5wAdNzAh/e?=
- =?iso-8859-1?Q?dFtyqiP3aEPmwAS4/avo7o4jxCmOgItzX1a6ipyzMMHGKE912D0m+dJkhT?=
- =?iso-8859-1?Q?0EqlzfbKnNSnB5YH5w09We9eWPcFD5BEi11AmGrSlOwh9wlNlaRDXxtLi9?=
- =?iso-8859-1?Q?nhFPK29G9/qOMO2kQ77f/dNhugnQqmOwoWJgA3IgmgLyARwe2SqkFg6i70?=
- =?iso-8859-1?Q?QkvvglOQhbrhU3Dp2ScP4W2XfSdX1SGIwbZ7x1hW6maZLsVArRQI38+gw6?=
- =?iso-8859-1?Q?3WgwcNRWyFDe+m3+fnNuXsw0whoOXPru9cMzqZ7m3tsV4n5NQKKtNJ8C9i?=
- =?iso-8859-1?Q?mvIq1wyOrnSJiOJ/lJCi+yOcVJVy69qTxwW6e79ii6wFFiB8TXF+JQzEYC?=
- =?iso-8859-1?Q?J1l4vkdGJAri9p787NunoN+RskvOPa0qx2qJXbRihJvUunjEveMcSBkqAw?=
- =?iso-8859-1?Q?wtjcnSwT2QZvIjjU4HhsTvlYbp1IDyJmdOmOJO1fR/ZXTQPuYpnWCgO/px?=
- =?iso-8859-1?Q?YB7k92CdUUOIyol/1/AdS6xYVTVe?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB7548.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?C2Fuyw1wDAFVGHNwhB+4M19VwmLfy6qKDyiJ7zkOAW1Lj7wVnN1eDpPnal?=
- =?iso-8859-1?Q?Ll6JBjnd455UUKoYh+sMtr2+8Q9b4oYFelOyqwv13RDL4f/CzrjYbb80yz?=
- =?iso-8859-1?Q?MSZ3GZFYhmfEPkEtEOBxjxs1Uyq2d/uKsJjb9jsSJU0vW0L+RqVHVllFYg?=
- =?iso-8859-1?Q?YClAd7RY5ZSFx9G+BcLwL50E9Tt5SAJaOhgiVN039s7OwEvnf2iIbMRZpR?=
- =?iso-8859-1?Q?9ZzWCA0MtNneuXQ0RAel2Fqn7+t8p8leVuFAk7NT6FXct8XYeUSmWBnjBa?=
- =?iso-8859-1?Q?C2vZK6iKNsPCV6yuoSqdP17BE6YKdgt6DuCInicYDEWfwKd9EoqJrGNam8?=
- =?iso-8859-1?Q?zj1o+Wj92kNRMAtnKeat2TRBEOX+/BoRABuGi8H6h3w8keJaYpTTvTf7wU?=
- =?iso-8859-1?Q?HnPqXB/+63k5jfnwzRgAkGP5Bk6vDdf50JwEd4VoGrHJadO7+GYM0BgVXK?=
- =?iso-8859-1?Q?Qc1MR4DrJAeMXezBzIKiR9Z2uue6jaXtEYQtqofDXksME48pSdNEcpB8Cj?=
- =?iso-8859-1?Q?K5Y8pwejAne/jcGcAZcCD9x8ooZG+zmS+vH1BN8lm1nbHfe2hG3nfSZ8rT?=
- =?iso-8859-1?Q?70b/K1ZnhlSSiE+6kU9yZqT+8qanGXOd3eyL+ShTYW4Li67GBVfTrgPhZ/?=
- =?iso-8859-1?Q?uW7p22kQ19FqK6UpsjXdSBZUytKClqRLjh3Om1RiIzOOpkJaobFJFZfBJE?=
- =?iso-8859-1?Q?9XqSCk7/Nv0hApAYpXhZ/7I3yrHeAcWCnjSBGC6RpoBTquMohExYyT8lVs?=
- =?iso-8859-1?Q?H3ucXBtWDVH4A+Y4iZV1fmEDOW+GMNXgd+8qC2SKBzw/6+ipu4mLzHvuSC?=
- =?iso-8859-1?Q?bftDHB5Yy43uZno6P0iAnHlqky8SxF5HSoom3ubKWwShsWA+j6At3vNDjf?=
- =?iso-8859-1?Q?ygKZeWPCQf3aOEuh4larY0OiXp4XFJfVO0b5lt4Ag99ffdF+xWoLu3cMtk?=
- =?iso-8859-1?Q?siPpQm6h4jOWtPhkcaXAv658KSynqVoALbdeGg/YjTufcHITvdwVt2WDFI?=
- =?iso-8859-1?Q?+LNGbMLKYYM7AEYcPYyhKzhajHr8EQzjv8DP6m6FoXKwkX8cgFZKEjjggr?=
- =?iso-8859-1?Q?hqP4c8Ea3IDqqeaQK1iVNICSr+I1ZTw5H/TAq1taxzbrUREAkzbFjRHuog?=
- =?iso-8859-1?Q?dFfoMTF/uk0NZ8GDa2UB2NqLx6/8+MXEStqP5uoyjgLO3t0nlP0bNE6LPi?=
- =?iso-8859-1?Q?DpfuKalDU1hezohi0FRYsX8kdcDDkcAg9AiderSq1kC/eFJiwhUUmeWL+Z?=
- =?iso-8859-1?Q?SnV0L2XT8F97Y6wlZY9lWonKHU1CJ14NLAYdWhUxTacad2Rtjb07vMygqJ?=
- =?iso-8859-1?Q?Z5/KclW4G/ET+sGGeAOMB4zVHjJK4a6AZWY197dL35Ik0SnEujAgDRuwEv?=
- =?iso-8859-1?Q?6aYZ6mi0bXVBrGZxtFHkAXYEnExq8Ist3cIoV+eiSwJqC4sPe0AUocv+Tc?=
- =?iso-8859-1?Q?Vbqlkn4jfyN1IJXjR6xji75jG014nC/mj3GapF4gfi3xoOEwNisjRdgusl?=
- =?iso-8859-1?Q?xNUYznLNZ55REfKWNKFhTcXbNwnCKQ2/iU6Z0tjuY44MXNRWHo2dSQbcSa?=
- =?iso-8859-1?Q?vtgHGK9m4ScCJNw/G+LvzowocL5lPtiaTAjH0swYPomFBQ/FXdDhNOx4oM?=
- =?iso-8859-1?Q?MKgIXaq0UTyPuHrT17iMehugaPjTqHImO8?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Tue, 30 Sep 2025
+ 13:00:30 +0000
+From: Jakub Acs <acsjakub@amazon.de>
+To: <linux-mm@kvack.org>
+CC: <acsjakub@amazon.de>, Andrew Morton <akpm@linux-foundation.org>, "David
+ Hildenbrand" <david@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou
+	<chengming.zhou@linux.dev>, Peter Xu <peterx@redhat.com>, Axel Rasmussen
+	<axelrasmussen@google.com>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: [PATCH v2] mm/ksm: fix flag-dropping behavior in ksm_madvise
+Date: Tue, 30 Sep 2025 13:00:23 +0000
+Message-ID: <20250930130023.60106-1-acsjakub@amazon.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB7548.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 590df93e-1cb4-45a0-8405-08de001ff9f8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Sep 2025 12:50:47.0781
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: rBDuHJ8NLMxMpbZjS1Fc12K6RMJxkkH97VFXIsxHTAcr6yN20E9FCnDr1Mmd0otrii+ETfNbp3zRPZWTGo/N4A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB9471
-X-Stat-Signature: 5po4xkim9tog4ojbo7ym9auio5ys6qfo
+X-Originating-IP: [172.19.75.107]
+X-ClientProxiedBy: EX19D041UWB004.ant.amazon.com (10.13.139.143) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: rz8j9ooyzmgarzgfn8kaabmx93gxbrwd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2E7A9C000D
+X-Rspamd-Queue-Id: 08ACE40011
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1759236650-87736
-X-HE-Meta: U2FsdGVkX192TlVRj9dZOZyG9PQM2lf/cTy9dm0rC+jHF85bqG8yb9XDPywYBncDznNCm+8QbiP8vVI/azwTSpMgYPik49TmwMIu61wjEbr3WM7MEKCOS1rDg1sM0QT4bcqADP8qRq5vojDFOmnbyN4INQg/JjLlBWZJ6mnOEYqVf49OIeznTgMRKDs8cOxM8DRuAHqtKSbt1Zn0l1UUPJ2ggxItVbX3rcBhb+mDTC/KZ1UQwpfPwKL0pUR1sHYE1/pkFHtduK5se+a6tlJLQOCI1lA00OnD9zdkk0Me4nl6AZ+GM32urX6E8YAoeZs3s3U6DlzmUIoPCuukNfcYZURI6n5uqyAyT367R/VxJ8Zbuw+GeVsUD0itzgbWXhJ/+PMmIseMkRuUZ25ZhsCV8Q05dPjmZotpEPCNCaQHmjOg99ixKXtunWEJ0jXTc7k4rEE04H9JZh6qCKD3QhM4GpxQ7NwKeMKBI6DAxa53JlKj3FuY0EeckifhLCc1TT3bUBehFHQj54LTVMpdoIETEkRcGfLvhlhRZRnR0PMaA2vXir6paWl/g52NE8LjnOseTgmxu0K2BrbZYGxhXNRw6jDG7FlSdD7gyn0rEJuzJdPmzSx3Du6DlMEa+nGK58YSg2aWVPtTTZE+tjqrJFBV5c8erOZ/9pemQU9lzYmMCjHc7p2jbdaIwrNOfzi5YHcO5WqQ5M3ya1dOMUdC6rj1VWzweQcs2RUVD6d2cyGPqhHZk7RbtBo4qCNWTrOpUtbaaYkctNL+142nj/qOzJcfK7bHfb0Oi132j+cRZUa46xCghDiJRfYSqI0gBQjl2RdQdUqHwfcmsaZo8SfiakrsXHqOTs6KHtNWphM9vK5zveMRHw3KC6XrH9Y5tJTDcW7TtWj+5NyATtNPM/xvWAzZ5ECm64SYBo+IZZ6kuKQ/5bYv947qFQdaudZkLyDsws1MsuNYmhGunvtvBIEMo+P
- zK6x6BZL
- GUDKfKE1fWLs5vu3yqbello3jPQZaqRSn1zYgFbxwxSWs0lhVrGkPFn1jGw==
+X-HE-Tag: 1759237235-401319
+X-HE-Meta: U2FsdGVkX1861YyLSRKyB1TunX0cKfkl0EdSy07epmaWOxb0EXGL29Gg/6O+BJTBLgoK9GTBms1qyFmT5ogEDea99eT1vwjayhqQ/+/HdY++dp1IYXofFHguvB0sW1yzAOUC+VMHtBTwJ7CbGP3sUwWyzYQWHiKaxrXkmcnWqzH4opsRih1990PDyq+Y/OYIv6GLMbYq8EmLkgpOh3/0rTz/jKW/PKJotsf3s3X6kgfItz/b/Vo6GWWGZfEVZ7M79cRY3bp8JFZIekBGfmp8821ULideZbNj6MAq7DuCiJFo4lGvIhEhibAjCSznblyTnOrzbmHCrcBgtZvGZcrOFs+uQu7BtTXRiGo4onlLSbg8PMRVxDN1oduyowXmUqaOIWEzNcouAil8SzEHarlqR6VhGDk574DYz7EvAQbBgnhMjJsDYlj6frL64Qwqt+e2i6jbt9GqU1AK4u2k/PXHkGiByrZYf807mYD4quWWDTN67pqqZjnkr97+vqT5VoC5TQl6j7qV6txdlLPUNSMNfTx8Dh56DITTkYniDWXhywsLKt6xzTx+Sf0ZsowWOsvXsvDfTbiEbNOKi7fRUCJGpUwL/GLtA/U5UKgGYgiyzpr8GaCT4irhMznpInKSu5N+T6MJxQQYEWZ8PBddJXYd0QOwPRR0ca3OHLjjc2ssUhhc5sRJJLi1dd7Ao+wlXwHF7YQJ62ytfcp70gjdkuLk+d/Y6cP/r9ocW0jOwH2QD8RKyJyqL6F9o2uSYGpnUYwnGiyqzN0DacYnhu9p7Pa/R/24YNY0gSvMQ3MXNl1Yvhglk/rqhnj8WBuakhNN2rbzb+JxYLQoUSFRTuxAlFUUrmL/kzRpa11iDnVzV6RPbW4ARpDy1yjoUVeQlcRimK1R6X7bCc28ZS/EGco2GhogfwN5u27OZ3Mk8r0CGd9CgrbsB8V6LNwSLkipGCx3xYnw8mGDTFcF6H9WzuuMwMZ
+ I5VF19dH
+ U1iuYihmd1omdGsIARmrVYjUpasbCWi2lvoD1Oar1tlpWXiX4N/0bIYZUJ6+yfKlPznAXtt7PF+ndX0PPWpY9jtXHG9HNTb7xPNltADNKkvkop4Uejp+2Cs5p3xPBoaff2MMzGtBPzJFq3QuoBayDG7PofRXGz/2ldN/uGrRw5BdDr5aHA8t+Y0NyvoxDtchBJ0sOu0Ph/T73v/3xYCc7d2wtqYP2RoIJUIquAedRVE6LfFIcgsEuvg46cRtWZ/Rjy7syNNTs58tp4eG+yHpj5fh2J1F5TGZsYlTLkZoBDBgs3EiMB0dLYS7PtLNQ4Savu9snbMol3gq5Jopnimg5/jrBud72efUWLHDdv166prZO97RO/495xjsi6PGMFAOdngXjkZ/SxCED9ZNA5yT9r35myV7RvXEgobhJX379oj5AwAoh84oc2pBpp4s58hD9ArwlXbyhPQ4RkB/VvTYe1j0SKRr6cmsHF16gZj2fnZmln59L82eO75XNgcAhh3qXmoojba+C8W/ZLwjVVFczMLD2faXdoY6irUku+svefd/VPJBdUgfzaVe1sijNz72gN7zGDAUHRw9Wy7ODsq930yTfHmKoMLsv54gx3MWkBRTISdGBU2qFUXQpIyCtEFAB24AyTr9+IGyilUjUPCFOiEcywaMTPXvWsotCyZCqAbQcVFL35n7T8lVEECPuMpXA2wSa9lIaSQGkg2RaoD44qdM/Fnv4+nnt2bBuuzo3orHUVtrt+nQmvbLK3uLYd+TqdWC7tDl6/WUHZC2izNCpZNFxzxJGDsEkda5RHgqxxs8u7hv2StShdZRMXQzFV//hTEdvGhMdufsYK4Tr+8BdPg+zzg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -207,136 +113,198 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+syzkaller discovered the following crash: (kernel BUG)
+
+[   44.607039] ------------[ cut here ]------------
+[   44.607422] kernel BUG at mm/userfaultfd.c:2067!
+[   44.608148] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+[   44.608814] CPU: 1 UID: 0 PID: 2475 Comm: reproducer Not tainted 6.16.0-rc6 #1 PREEMPT(none)
+[   44.609635] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[   44.610695] RIP: 0010:userfaultfd_release_all+0x3a8/0x460
+
+<snip other registers, drop unreliable trace>
+
+[   44.617726] Call Trace:
+[   44.617926]  <TASK>
+[   44.619284]  userfaultfd_release+0xef/0x1b0
+[   44.620976]  __fput+0x3f9/0xb60
+[   44.621240]  fput_close_sync+0x110/0x210
+[   44.622222]  __x64_sys_close+0x8f/0x120
+[   44.622530]  do_syscall_64+0x5b/0x2f0
+[   44.622840]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   44.623244] RIP: 0033:0x7f365bb3f227
+
+Kernel panics because it detects UFFD inconsistency during
+userfaultfd_release_all(). Specifically, a VMA which has a valid pointer
+to vma->vm_userfaultfd_ctx, but no UFFD flags in vma->vm_flags.
+
+The inconsistency is caused in ksm_madvise(): when user calls madvise()
+with MADV_UNMEARGEABLE on a VMA that is registered for UFFD in MINOR
+mode, it accidentally clears all flags stored in the upper 32 bits of
+vma->vm_flags.
+
+Assuming x86_64 kernel build, unsigned long is 64-bit and unsigned int
+and int are 32-bit wide. This setup causes the following mishap during
+the &= ~VM_MERGEABLE assignment.
+
+VM_MERGEABLE is a 32-bit constant of type unsigned int, 0x8000'0000.
+After ~ is applied, it becomes 0x7fff'ffff unsigned int, which is then
+promoted to unsigned long before the & operation. This promotion fills
+upper 32 bits with leading 0s, as we're doing unsigned conversion (and
+even for a signed conversion, this wouldn't help as the leading bit is
+0). & operation thus ends up AND-ing vm_flags with 0x0000'0000'7fff'ffff
+instead of intended 0xffff'ffff'7fff'ffff and hence accidentally clears
+the upper 32-bits of its value.
+
+Fix it by changing `VM_MERGEABLE` constant to unsigned long. Modify all
+other VM_* flags constants for consistency.
+
+Note: other VM_* flags are not affected:
+This only happens to the VM_MERGEABLE flag, as the other VM_* flags are
+all constants of type int and after ~ operation, they end up with
+leading 1 and are thus converted to unsigned long with leading 1s.
+
+Note 2:
+After commit 31defc3b01d9 ("userfaultfd: remove (VM_)BUG_ON()s"), this is
+no longer a kernel BUG, but a WARNING at the same place:
+
+[   45.595973] WARNING: CPU: 1 PID: 2474 at mm/userfaultfd.c:2067
+
+but the root-cause (flag-drop) remains the same.
+
+Fixes: 7677f7fd8be76 ("userfaultfd: add minor fault registration mode")
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Xu Xin <xu.xin16@zte.com.cn>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+---
+v1 -> v2: 
+- fix by adding ul to flag constants instead of explicit cast.
+- drop Mike Kravetz <mike.kravetz@oracle.com> from cc, as the mail
+  returned
+
+v1:
+https://lore.kernel.org/all/20250930063921.62354-1-acsjakub@amazon.de/
+
+ include/linux/mm.h | 72 +++++++++++++++++++++++-----------------------
+ 1 file changed, 36 insertions(+), 36 deletions(-)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 1ae97a0b8ec7..26a5c0f78b36 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -246,57 +246,57 @@ extern unsigned int kobjsize(const void *objp);
+  * vm_flags in vm_area_struct, see mm_types.h.
+  * When changing, update also include/trace/events/mmflags.h
+  */
+-#define VM_NONE		0x00000000
++#define VM_NONE		0x00000000ul
+ 
+-#define VM_READ		0x00000001	/* currently active flags */
+-#define VM_WRITE	0x00000002
+-#define VM_EXEC		0x00000004
+-#define VM_SHARED	0x00000008
++#define VM_READ		0x00000001ul	/* currently active flags */
++#define VM_WRITE	0x00000002ul
++#define VM_EXEC		0x00000004ul
++#define VM_SHARED	0x00000008ul
+ 
+ /* mprotect() hardcodes VM_MAYREAD >> 4 == VM_READ, and so for r/w/x bits. */
+-#define VM_MAYREAD	0x00000010	/* limits for mprotect() etc */
+-#define VM_MAYWRITE	0x00000020
+-#define VM_MAYEXEC	0x00000040
+-#define VM_MAYSHARE	0x00000080
++#define VM_MAYREAD	0x00000010ul	/* limits for mprotect() etc */
++#define VM_MAYWRITE	0x00000020ul
++#define VM_MAYEXEC	0x00000040ul
++#define VM_MAYSHARE	0x00000080ul
+ 
+-#define VM_GROWSDOWN	0x00000100	/* general info on the segment */
++#define VM_GROWSDOWN	0x00000100ul	/* general info on the segment */
+ #ifdef CONFIG_MMU
+-#define VM_UFFD_MISSING	0x00000200	/* missing pages tracking */
++#define VM_UFFD_MISSING	0x00000200ul	/* missing pages tracking */
+ #else /* CONFIG_MMU */
+-#define VM_MAYOVERLAY	0x00000200	/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
+-#define VM_UFFD_MISSING	0
++#define VM_MAYOVERLAY	0x00000200ul	/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
++#define VM_UFFD_MISSING	0ul
+ #endif /* CONFIG_MMU */
+-#define VM_PFNMAP	0x00000400	/* Page-ranges managed without "struct page", just pure PFN */
+-#define VM_UFFD_WP	0x00001000	/* wrprotect pages tracking */
++#define VM_PFNMAP	0x00000400ul	/* Page-ranges managed without "struct page", just pure PFN */
++#define VM_UFFD_WP	0x00001000ul	/* wrprotect pages tracking */
+ 
+-#define VM_LOCKED	0x00002000
+-#define VM_IO           0x00004000	/* Memory mapped I/O or similar */
++#define VM_LOCKED	0x00002000ul
++#define VM_IO           0x00004000ul	/* Memory mapped I/O or similar */
+ 
+ 					/* Used by sys_madvise() */
+-#define VM_SEQ_READ	0x00008000	/* App will access data sequentially */
+-#define VM_RAND_READ	0x00010000	/* App will not benefit from clustered reads */
+-
+-#define VM_DONTCOPY	0x00020000      /* Do not copy this vma on fork */
+-#define VM_DONTEXPAND	0x00040000	/* Cannot expand with mremap() */
+-#define VM_LOCKONFAULT	0x00080000	/* Lock the pages covered when they are faulted in */
+-#define VM_ACCOUNT	0x00100000	/* Is a VM accounted object */
+-#define VM_NORESERVE	0x00200000	/* should the VM suppress accounting */
+-#define VM_HUGETLB	0x00400000	/* Huge TLB Page VM */
+-#define VM_SYNC		0x00800000	/* Synchronous page faults */
+-#define VM_ARCH_1	0x01000000	/* Architecture-specific flag */
+-#define VM_WIPEONFORK	0x02000000	/* Wipe VMA contents in child. */
+-#define VM_DONTDUMP	0x04000000	/* Do not include in the core dump */
++#define VM_SEQ_READ	0x00008000ul	/* App will access data sequentially */
++#define VM_RAND_READ	0x00010000ul	/* App will not benefit from clustered reads */
++
++#define VM_DONTCOPY	0x00020000ul    /* Do not copy this vma on fork */
++#define VM_DONTEXPAND	0x00040000ul	/* Cannot expand with mremap() */
++#define VM_LOCKONFAULT	0x00080000ul	/* Lock the pages covered when they are faulted in */
++#define VM_ACCOUNT	0x00100000ul	/* Is a VM accounted object */
++#define VM_NORESERVE	0x00200000ul	/* should the VM suppress accounting */
++#define VM_HUGETLB	0x00400000ul	/* Huge TLB Page VM */
++#define VM_SYNC		0x00800000ul	/* Synchronous page faults */
++#define VM_ARCH_1	0x01000000ul	/* Architecture-specific flag */
++#define VM_WIPEONFORK	0x02000000ul	/* Wipe VMA contents in child. */
++#define VM_DONTDUMP	0x04000000ul	/* Do not include in the core dump */
+ 
+ #ifdef CONFIG_MEM_SOFT_DIRTY
+-# define VM_SOFTDIRTY	0x08000000	/* Not soft dirty clean area */
++# define VM_SOFTDIRTY	0x08000000ul	/* Not soft dirty clean area */
+ #else
+-# define VM_SOFTDIRTY	0
++# define VM_SOFTDIRTY	0ul
+ #endif
+ 
+-#define VM_MIXEDMAP	0x10000000	/* Can contain "struct page" and pure PFN pages */
+-#define VM_HUGEPAGE	0x20000000	/* MADV_HUGEPAGE marked this vma */
+-#define VM_NOHUGEPAGE	0x40000000	/* MADV_NOHUGEPAGE marked this vma */
+-#define VM_MERGEABLE	0x80000000	/* KSM may merge identical pages */
++#define VM_MIXEDMAP	0x10000000ul	/* Can contain "struct page" and pure PFN pages */
++#define VM_HUGEPAGE	0x20000000ul	/* MADV_HUGEPAGE marked this vma */
++#define VM_NOHUGEPAGE	0x40000000ul	/* MADV_NOHUGEPAGE marked this vma */
++#define VM_MERGEABLE	0x80000000ul	/* KSM may merge identical pages */
+ 
+ #ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS
+ #define VM_HIGH_ARCH_BIT_0	32	/* bit only usable on 64-bit architectures */
+-- 
+2.47.3
 
 
-> -----Original Message-----
-> From: Leon Romanovsky <leon@kernel.org>
-> Sent: 30 September 2025 10:01
-> To: Alex Williamson <alex.williamson@redhat.com>
-> Cc: Jason Gunthorpe <jgg@nvidia.com>; Andrew Morton <akpm@linux-
-> foundation.org>; Bjorn Helgaas <bhelgaas@google.com>; Christian K=F6nig
-> <christian.koenig@amd.com>; dri-devel@lists.freedesktop.org;
-> iommu@lists.linux.dev; Jens Axboe <axboe@kernel.dk>; Joerg Roedel
-> <joro@8bytes.org>; kvm@vger.kernel.org; linaro-mm-sig@lists.linaro.org;
-> linux-block@vger.kernel.org; linux-kernel@vger.kernel.org; linux-
-> media@vger.kernel.org; linux-mm@kvack.org; linux-pci@vger.kernel.org;
-> Logan Gunthorpe <logang@deltatee.com>; Marek Szyprowski
-> <m.szyprowski@samsung.com>; Robin Murphy <robin.murphy@arm.com>;
-> Sumit Semwal <sumit.semwal@linaro.org>; Vivek Kasireddy
-> <vivek.kasireddy@intel.com>; Will Deacon <will@kernel.org>
-> Subject: Re: [PATCH v4 10/10] vfio/pci: Add dma-buf export support for
-> MMIO regions
->=20
-> External email: Use caution opening links or attachments
->=20
->=20
-> On Mon, Sep 29, 2025 at 03:17:49PM -0600, Alex Williamson wrote:
-> > On Sun, 28 Sep 2025 17:50:20 +0300
-> > Leon Romanovsky <leon@kernel.org> wrote:
-> > > +static int validate_dmabuf_input(struct vfio_pci_core_device *vdev,
-> > > +                            struct vfio_device_feature_dma_buf *dma_=
-buf,
-> > > +                            struct vfio_region_dma_range *dma_ranges=
-,
-> > > +                            struct p2pdma_provider **provider)
-> > > +{
-> > > +   struct pci_dev *pdev =3D vdev->pdev;
-> > > +   u32 bar =3D dma_buf->region_index;
-> > > +   resource_size_t bar_size;
-> > > +   u64 sum;
-> > > +   int i;
-> > > +
-> > > +   if (dma_buf->flags)
-> > > +           return -EINVAL;
-> > > +   /*
-> > > +    * For PCI the region_index is the BAR number like  everything el=
-se.
-> > > +    */
-> > > +   if (bar >=3D VFIO_PCI_ROM_REGION_INDEX)
-> > > +           return -ENODEV;
-> > > +
-> > > +   *provider =3D pcim_p2pdma_provider(pdev, bar);
-> > > +   if (!provider)
-> >
-> > This needs to be IS_ERR_OR_NULL() or the function needs to settle on a
-> > consistent error return value regardless of CONFIG_PCI_P2PDMA.
->=20
-> pcim_p2pdma_provider() doesn't return errors after split to _init() and _=
-get().
-> The more accurate check needs to be if (!*provider) and not what is writt=
-en.
->=20
-> >
-> > > +           return -EINVAL;
-> > > +
-> > > +   bar_size =3D pci_resource_len(pdev, bar);
-> >
-> > We get to this feature via vfio_pci_core_ioctl_feature(), which is used
-> > by several variant drivers, some of which mangle the BAR size exposed
-> > to the user, ex. hisi_acc.  I'm afraid this might actually be giving
-> > dmabuf access to a portion of the BAR that isn't exposed otherwise.
->=20
-> Doe you mean that part?
->=20
->   1185 static int hisi_acc_vf_qm_init(struct hisi_acc_vf_core_device
-> *hisi_acc_vdev)
->   1186 {
-> ...
->   1204          * Also the HiSilicon ACC VF devices supported by this dri=
-ver on
->   1205          * HiSilicon hardware platforms are integrated end point d=
-evices
->   1206          * and the platform lacks the capability to perform any PC=
-Ie P2P
->   1207          * between these devices.
->   1208          */
->   1209
->   1210         vf_qm->io_base =3D
->   1211                 ioremap(pci_resource_start(vf_dev,
-> VFIO_PCI_BAR2_REGION_INDEX),
->   1212                         pci_resource_len(vf_dev,
-> VFIO_PCI_BAR2_REGION_INDEX));
->   1213         if (!vf_qm->io_base)
->   1214                 return -EIO;
->   1215
 
-This is where hisi_acc reports a different BAR size as it tries to hide
-the migration control region from Guest access.
 
-static long hisi_acc_vfio_pci_ioctl(struct vfio_device *core_vdev, unsigned=
- int cmd,
-				    unsigned long arg)
-{
-	...
-		if (info.index =3D=3D VFIO_PCI_BAR2_REGION_INDEX) {
-			info.offset =3D VFIO_PCI_INDEX_TO_OFFSET(info.index);
-
-			/*
-			 * ACC VF dev BAR2 region consists of both functional
-			 * register space and migration control register space.
-			 * Report only the functional region to Guest.
-			 */
-			info.size =3D pci_resource_len(pdev, info.index) / 2;
-
-			info.flags =3D VFIO_REGION_INFO_FLAG_READ |
-					VFIO_REGION_INFO_FLAG_WRITE |
-					VFIO_REGION_INFO_FLAG_MMAP;
-
-			return copy_to_user((void __user *)arg, &info, minsz) ?
-					    -EFAULT : 0;
-		}
-	}
-	return vfio_pci_core_ioctl(core_vdev, cmd, arg);
-}
-
-> According to the comment, it doesn't support p2p and in any case we will
-> fail that platform in vfio_pci_dma_buf_attach() by taking "default" case:
-
-Yes. No P2P for this device. But variant drivers can override size exposed =
-to
-userspace like this one.
-
-Thanks,
-Shameer=20
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christian Schlaeger
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
 
 
