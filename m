@@ -4,94 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52441CCA470
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 11:20:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E46BCCA468
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 11:30:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B1B1E8E001D; Tue, 30 Sep 2025 07:20:42 -0400 (EDT)
+	id 9AACE8E0003; Tue, 30 Sep 2025 07:30:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF2488E0002; Tue, 30 Sep 2025 07:20:42 -0400 (EDT)
+	id 95BE98E0002; Tue, 30 Sep 2025 07:30:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2FE58E001D; Tue, 30 Sep 2025 07:20:42 -0400 (EDT)
+	id 84A8E8E0003; Tue, 30 Sep 2025 07:30:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9115E8E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 07:20:42 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 480E05A3E2
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 11:20:42 +0000 (UTC)
-X-FDA: 83945673924.17.7ED0CDD
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5F9401C000A
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 11:20:40 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NwR4r4Y0;
-	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D13D8E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 07:30:51 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 16B0B11AB1B
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 11:30:51 +0000 (UTC)
+X-FDA: 83945699502.26.5D8A210
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9D3234000B
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 11:30:48 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IF5ht6We;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf04.hostedemail.com: domain of toke@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=toke@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759231848; a=rsa-sha256;
+	cv=none;
+	b=VuCLCVMW8imZebdnrK3NheTJklxGLY766DduMvIplNcRbHu7k+PUxuLTSHTGLiSFpVarNe
+	W5+VUlIlT8Ug+kFfhvqqsCfaElqj0PLwS2nrQEJ7QZIuOqu4a6gwCSiA8M0FrgChd+j1Gp
+	W6CbKTQY/WerZ24f0goLi5IfrreIcFI=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IF5ht6We;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf04.hostedemail.com: domain of toke@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=toke@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759231240;
+	s=arc-20220608; t=1759231848;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FwItMkCXdMaYwI2Rw03q5KkFnMdZIJjcXXc+fJQ+dcM=;
-	b=EbZvUkYBgBTlmEXmM/cedTzhXIj+1hHTCcjeP0WJO68of74h5g68ooZTf48EIu+otPZnzL
-	Zz30jenYRm/g6BoH2DJrVpXXrfQMy0/p3tuEIvPe4pCyMACrBnoMHoyNq7sFZXf7KnIZLj
-	C8Hpo40oKMXKveTrhJiUM9nGGxdl28I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759231240; a=rsa-sha256;
-	cv=none;
-	b=w5eFnFHEFpQ0Cc16OG8jPct9+BtBp70l4mqNM8rUQx6VPqqQBc8wdVGbpff+p//U2yis9X
-	kdSzsd87AjwwXMHij+lc5ANbQW36YWUSttSghaz/xqqkgCW+rP/IOPz6kPo0RlQ5yjwmWi
-	ckz2TKzvPbl9Q+MTJzMB+G1MEsVNqWQ=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NwR4r4Y0;
-	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <fd30aff2-fbe3-4228-a38f-08b242ef33a2@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759231237;
+	bh=HjpJIKEkeLAVBOh01dbuSi//HbjFIpX6T8dNbupqv0s=;
+	b=u40Ux32IQevtNJe6jBg6HZYhdVggUzi1O7tKsmK4LdrsYnb1ZID/hyHpt/cw2H4QQ0TrIo
+	tvClnn39eg+z/xH+wWeCbvcPU9vFUPbAFbt63R8PWGy/WQd6uH/fXBLMYg4wcR5Dv6hcD8
+	00PJUfDm3VHQatgPxO00YW2uJe/taDk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1759231847;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FwItMkCXdMaYwI2Rw03q5KkFnMdZIJjcXXc+fJQ+dcM=;
-	b=NwR4r4Y01p8bjyaYC2Cb+KDyNJfvm65DPlrkQwIIuK4GySHW+teXi5V/VZoIQmwBsOF9QJ
-	195hhGBcC5XcbY0uotAldgCMQ6LUsRE4r23TXSNBmr0fD4APWT38tyPtxjFNFlgSMUo8+E
-	y+U25NBfb7aXWLuuFxytFy9omxROj9s=
-Date: Tue, 30 Sep 2025 19:20:23 +0800
+	bh=HjpJIKEkeLAVBOh01dbuSi//HbjFIpX6T8dNbupqv0s=;
+	b=IF5ht6We429Yr0kN8+v5suiAkjv41ddrjRimZPHV66vQO18WJvSZ7GgO+xzdi51A1Xyl9s
+	PD8js1xWmL1q9lN0Tiv1rVQi4QDPO1JRz721A3bpqxZ8zVeUSzv5SPoDFHVsAyeFh2Qjb+
+	y7IrAMI1yFBfi3SipMsdRcO1bEeu2F4=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-43-jqXsewfEMPiJESXAqxGhbQ-1; Tue, 30 Sep 2025 07:30:46 -0400
+X-MC-Unique: jqXsewfEMPiJESXAqxGhbQ-1
+X-Mimecast-MFC-AGG-ID: jqXsewfEMPiJESXAqxGhbQ_1759231845
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-b2e6b2bb443so589438266b.2
+        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 04:30:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759231845; x=1759836645;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=60uGyvQqOvx3NZbN7PM8fFSOU0EVqBan1owFG0+88fM=;
+        b=Nj5wFYfrcfa0Hst+g9NM+CD+ixToia8+hjsO+J/y8cY8+rmZsz3GypsA1IJ5nyz8hV
+         vgEoXVzrtfATYYYb1rAafD7jz/GTWn1+2X/DWfVzQJsELV8f2vFT8b0j51cSvsh9F7Ms
+         /W/VqA+sfVnagbRvI+A4Oah6GE/BEnbGTXaiWp1n6z1dmCL/ljDHgxUnGDf+E+ZCs0xJ
+         mTdlaHH1YTHRZqtWc4LyNAJPeVlC1SGvnfjqfeurmmKkhjAMAIh6JtckZlF18m+eTBSf
+         DL0O3NaGBoR0gYbTWhjRUM5KgZlXytIYd3cGTOIxKryDb9a+DTRP7ezH0WFiORXmFKiH
+         2n2w==
+X-Forwarded-Encrypted: i=1; AJvYcCXKZ5LiqAwVJvp7U2fexqB1eMLA7sC2BYRj+yWshAcnwf65sJXzYXJeCRPRKM2JYKC8Jm75n+JEKg==@kvack.org
+X-Gm-Message-State: AOJu0YwGgl99jKSOLexaPJMDs7qDAMcgVtMQeFFLXsuYHlP4lFYI6Uq8
+	zMcboU+PmLf02j6Z/mOcOVqSKaZRQEtbG5RotPQBq3/UMUfPUSAVYw6mZhE8k4zFAOZvSv/a9sW
+	b+1njLZ/Qw/EXZiSuOTAlSAX0O4e83r+6B3XHRn3UetPNV3ASmN68
+X-Gm-Gg: ASbGncsrvoRAWzxDehXpTBDknYHd8G9aOFSY2vgzENVHZDOlPIrRM9foxEm8N5a052l
+	oNNwmWx04uxgQ7ypDSXlCsotqom11Vkpc0pH7JzOQBtGEsUWdzLBCufCqFnqSkpq3BdKwUvEPuo
+	mgqhUNUpaHRBKjtT+3qXn3ed0CJTqY7gqVRyD7gWdp+e2utJT9s6A54mnzUuLNRCchhGufe3UR4
+	6HYPJFKNc3ZyRGAgZLS+Bb8GUzOwMDrx8jSuouBkK328IY3SKhxYrgAa5QCdvbGz252zZXhEe/k
+	UHnQisfm9a1zCJPIKRc+F2uL6Hi0Xi2iu35CBIPbmGBylTjjrrgZHSyUWK7duOcCYsj98Q==
+X-Received: by 2002:a17:907:94cf:b0:b3d:73e1:d810 with SMTP id a640c23a62f3a-b3d73e1ef38mr857566166b.49.1759231844933;
+        Tue, 30 Sep 2025 04:30:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGoB1+OY95A0NTLqmIVmGw9vxLbsBNmzGnI34+lOhNkGW9jiRWgh55f3njKeLEh37AJ/qzJWA==
+X-Received: by 2002:a17:907:94cf:b0:b3d:73e1:d810 with SMTP id a640c23a62f3a-b3d73e1ef38mr857561366b.49.1759231844384;
+        Tue, 30 Sep 2025 04:30:44 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b40ac59a4b5sm278533166b.22.2025.09.30.04.30.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Sep 2025 04:30:43 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id B956E2777F9; Tue, 30 Sep 2025 13:30:42 +0200 (CEST)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To: Paolo Abeni <pabeni@redhat.com>, Mina Almasry <almasrymina@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+ <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike
+ Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
+ Hocko <mhocko@suse.com>, Jesper Dangaard Brouer <hawk@kernel.org>, Ilias
+ Apalodimas <ilias.apalodimas@linaro.org>, Jakub Kicinski
+ <kuba@kernel.org>, Helge Deller <deller@kernel.org>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Simon Horman
+ <horms@kernel.org>, linux-mm@kvack.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net] page_pool: Fix PP_MAGIC_MASK to avoid crashing on
+ some 32-bit arches
+In-Reply-To: <0dc3f975-c769-4a78-9211-80869509cfd2@redhat.com>
+References: <20250926113841.376461-1-toke@redhat.com>
+ <CAHS8izMsRq4tfx8603R3HLKPYGqEsLqvPH8qfENFnzeB5Ja8AA@mail.gmail.com>
+ <873484o02h.fsf@toke.dk> <0dc3f975-c769-4a78-9211-80869509cfd2@redhat.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Tue, 30 Sep 2025 13:30:42 +0200
+Message-ID: <87ms6cmb31.fsf@toke.dk>
 MIME-Version: 1.0
-Subject: Re: [syzbot ci] Re: mm/rmap: fix soft-dirty and uffd-wp bit loss when
- remapping zero-filled mTHP subpage to shared zeropage
-Content-Language: en-US
-To: syzbot ci <syzbot+ci4a5736baef02a97d@syzkaller.appspotmail.com>
-Cc: syzbot@lists.linux.dev, liam.howlett@oracle.com, usamaarif642@gmail.com,
- rakie.kim@sk.com, david@redhat.com, dev.jain@arm.com, ioworker0@gmail.com,
- syzkaller-bugs@googlegroups.com, ziy@nvidia.com, byungchul@sk.com,
- baolin.wang@linux.alibaba.com, akpm@linux-foundation.org,
- apopple@nvidia.com, vbabka@suse.cz, joshua.hahnjy@gmail.com,
- gourry@gourry.net, linux-mm@kvack.org, matthew.brost@intel.com,
- lorenzo.stoakes@oracle.com, ying.huang@linux.alibaba.com,
- linux-kernel@vger.kernel.org, baohua@kernel.org, npache@redhat.com,
- yuzhao@google.com, ryan.roberts@arm.com, riel@surriel.com,
- stable@vger.kernel.org, peterx@redhat.com, jannh@google.com,
- harry.yoo@oracle.com
-References: <68dbbc27.a00a0220.102ee.0047.GAE@google.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <68dbbc27.a00a0220.102ee.0047.GAE@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 5F9401C000A
-X-Stat-Signature: 7jp1qudd7ghd7mh5td833woab45bm8xb
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: _XTIN3397jmYejbRpRzNpfypOvqCEqqdauIgF6-YpWQ_1759231845
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9D3234000B
+X-Stat-Signature: 9c7pxhdju76ipwixcjrnomzaozsbc181
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1759231240-628448
-X-HE-Meta: U2FsdGVkX1+9tOY3G/juTbC2Wp/ZPgDCM/n2zWRGJ9PpPQ9i7jjhbL2+BRBDsehzSkwHuJV35x0rmPiC2jq3STBjj8QbdbEOfgI31M9/4xp0jQ9wTYiOG3/t78s8u5L3G2TubvF4zRW+SaDz84F/sGgKAUfbL2LvgmZkFiZDdkVu7gHnlcD8g894WqFsWBKC7y9r3obUgf8z4mPaM/V1Ba2azGdkqJy3dCZrQPwks8+KEgawn7PHI6Ilm6mycCbFzGkOSvQxMZXf2T7TA7Mm/bXQ2H9Ib4bnDox3vZJKve/IUR0ixKFGtBzPqEj/IknIxQn6A9u6Jtj/01L29Lqf8H2PY+pdWTfi+/5khKSUsllKIEi+U1d8lLFqVM94Mf4ImMGx/ZF/XCiDq/NAbbUGbqD567T5ie4vbnzEHT6OdMwShs+ZAn7bS1vDgJ3WBUS3EG1e2HxzmC6BSi7IBv5KOML3b26LKbpF02WckZnr9C19J1U7OdWbk2eYhR5Jd5qzIxJKx1fLU20nDFPM1wn59wC0e5dyat6EYPMLfntZjexS86B43SeK7Y2p0keptQEH6bsWtqjzUnnYd6TuxABE/BL6xJ5OrtjclMQmd99SEA+ZiYg7QFtkQfqo9ND0lO7tTL8S57VcpiUaxkWZIcfRZQWuh+TM7Pg5fTdIkc94IaFBncJ/RQOFSHM/1jfOVtrq8e7T8rR0Dp2QnEfb1dqBPtn8HPXoQ51dfOl+Rg13pqdAcjFxAARcKcnTPKeTENd7ypzHOJbMiqx3tJV+pu2j9JMlaAs+0LDSh3uj84y7QXYCQTSMV25jrah/SaN2sXmxw0Gnc6ryc4DrgTCsxngA0h9EUg+wjkdMUvG3FX+cMMJE+azIIfzEpxFuV6vv4OE1q8fTQMkl/7UJMXqDVy8VqMk5HoAsbjaethrVwhVyu3k6/52jJrgeYzysVrH7EL7hZxynlwiXUQCgyfqmy+c
- Mo0Z1syC
- 2nbftysHtEQGNnvg+CKoWdu9bbokXdCUiE2nevtfGaIA65Y5+EyIinF401iaa2iHLIxIZQ2HLvmDhSqi888FqVF++iqEAIP9EVZgXz6IlA/5p3WAUsjCERH72uVit7U2o79VN6qI9gZInSm9w7I9zjtxAs9xcW386PSmmrhj8VCwF5EijAZRLOut0U+mZ8GBUvg4gX79b4TZf1oj+RIuPItRf6/hHAhcJHbOmqdMZa2bsxgcAxZi7rqk0P9WsoaIOZCsZzB4jTrclAjKGANPP0U3Q2Fa1cfVk0kfbRsu4qm9yR70qjIduRig8Ab8PTYX1LNAEWalsTrhR5XPtXplck8U3yepJITvUsAlMRpbuDUBayqey5f7EPp9kUON7NuMaA2I1vHJej4WkjyEAYGy6ldvSk1emYa2lWGsWyUTyE50D8wPVy+GbjUw8fRsmdjIhKFio6nzUNq4ram9VYPsSkCeDnaW2W0xHBaPRzoPd1HZc1M+Aea8ZJkH3+6QuBA0LVOZ/1Y/YkAbKNdk6uBNdKFeE6lP7lRcjU9hF9L0JbbutBthp14FxBE9NG73f52iRGQfe
+X-HE-Tag: 1759231848-309571
+X-HE-Meta: U2FsdGVkX18Qb77H/99m3Td1XoqZ2wHJvUsWC9ziFxO0gsAFhU+aW4fXYcYkMkvW6ZKUzCZ3yGAj29b44Urd/pa2nrGBerA5W31KyPItbtsXw6dVy16cBICpJWiFck5LNBQ0L2NXdGR3cHXR/UDRe1BsHb1L/s09WVRW9is0p084/P42Qak8eJnKwFHJh8HLW/k90aONDrMW1Mjn9XzveapFhxYgM9qtsAwfDt0BHE0gjPAMiE78L3wW5aaDiRr4l6DvK9XlQ0znV9be0w4nlT1ewM0PdNUeuxap7f/aTvZKD6gi4NUJIhdYYkooKdaHb4YEm4FuFG8jFJOzBOtW4s5XydzCdfr5rGG7H2ahMRNF9BakZ3GEPj2iycsQd8uK7E+hml0XcsGFyflyqzdp22xsCUfpoyH2cdp/M74RUX7YnItcauhksU3vIriuQDYyOud+ZRvuI1weFQpeMDWVsurUicSZaOqvKF+/LenxrxaBuC2MCShYyhQWtIkME7BAiIz7pnQxPnlIcmifPcK8nISumk5jNtnM5MvZzSjXW2j7jJu9629J4XYGOhXwCp/HnSFtfRejyF88cScBtVJ2Pdw3IHcCv3RiAfxrNaU2N757geBNhgHaKxYIrwaWTOeWeqFtnqR4lSHcNCp1+Go46jbJP0EIDhuH92Ed36VyODElEB/AQ5pkJPuLRj9yG5uywuduSb1Qoxt6OuHChZ5fMsAkGFvp1cNfqG3BWlbqG2dmg5thasXh/AVFDFivCiI0kYBfZCbQf+tKu+Jflk5J//QzzV9vGuqMH3rKszdB4AtAGrj4TrDsQuENprjCLWoqmmUJk9jGWhBidALqsgjhSBpTbexg4S058FbOBd/Aws3lOR6DhScx1g2NNReu165Alpo22wl9GbVsxZMhi97oh9036bStouc3beh8wCvHEcQjc/28qF6i7wzQWhFG/WzLlShtYWqzd7CARPV2tCJ
+ ZEYBmOE+
+ 1eKHQa8rwq+uH2IGZAktXIjRqFEBuWdtWi9jbI9DEQhXEecjwRJYaQ6BqJQAxah3hDYUW61jenb4InUjpUV+G/iG1rUUUoy21J/3txh+S/nlIgpGcqgY1rz/U6cpvU7Kf9WzDL04rC4S9KZGUxXJtZJ36z8nVlxq6uuH65394ifZGKOTSHr5KYDaF6sZA4MaNKYdqlzCBUXHw1kfX/kSQnkQofvUZpWOWlqQxhBOvmcm1K4LfgE5dZ48nQqmjUtT2Y++DIoRA/DrKIYjyykUTHaMdYBtCVXSmUtC9KEthh0LRVDCFHTgj0Hwq/Vn9+FhYrmj5gZrbeZ8EWL8tLifHCTQWPVeY0opXR7KAsEhCTvIy9jcGptBmM4yiqxNMkbkRAeSV+t5i91dtWRX8Le8vQJhQS57Cv49jdNLwAvHBtb+60xscL1JAJiXe2ZsV6Rv4RoDKcKCaM20wvLNZIMHVHZqo0d4a6sTZVv1H1LHuAn6kpxo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,138 +141,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Paolo Abeni <pabeni@redhat.com> writes:
 
+> On 9/30/25 9:45 AM, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>> Mina Almasry <almasrymina@google.com> writes:
+>>> On Fri, Sep 26, 2025 at 4:40=E2=80=AFAM Toke H=C3=B8iland-J=C3=B8rgense=
+n <toke@redhat.com> wrote:
+>>>>
+>>>> Helge reported that the introduction of PP_MAGIC_MASK let to crashes o=
+n
+>>>> boot on his 32-bit parisc machine. The cause of this is the mask is se=
+t
+>>>> too wide, so the page_pool_page_is_pp() incurs false positives which
+>>>> crashes the machine.
+>>>>
+>>>> Just disabling the check in page_pool_is_pp() will lead to the page_po=
+ol
+>>>> code itself malfunctioning; so instead of doing this, this patch chang=
+es
+>>>> the define for PP_DMA_INDEX_BITS to avoid mistaking arbitrary kernel
+>>>> pointers for page_pool-tagged pages.
+>>>>
+>>>> The fix relies on the kernel pointers that alias with the pp_magic fie=
+ld
+>>>> always being above PAGE_OFFSET. With this assumption, we can use the
+>>>> lowest bit of the value of PAGE_OFFSET as the upper bound of the
+>>>> PP_DMA_INDEX_MASK, which should avoid the false positives.
+>>>>
+>>>> Because we cannot rely on PAGE_OFFSET always being a compile-time
+>>>> constant, nor on it always being >0, we fall back to disabling the
+>>>> dma_index storage when there are no bits available. This leaves us in
+>>>> the situation we were in before the patch in the Fixes tag, but only o=
+n
+>>>> a subset of architecture configurations. This seems to be the best we
+>>>> can do until the transition to page types in complete for page_pool
+>>>> pages.
+>>>>
+>>>> Link: https://lore.kernel.org/all/aMNJMFa5fDalFmtn@p100/
+>>>> Fixes: ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them=
+ when destroying the pool")
+>>>> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+>>>> ---
+>>>> Sorry for the delay on getting this out. I have only compile-tested it=
+,
+>>>> since I don't have any hardware that triggers the original bug. Helge,=
+ I'm
+>>>> hoping you can take it for a spin?
+>>>>
+>>>>  include/linux/mm.h   | 18 +++++------
+>>>>  net/core/page_pool.c | 76 ++++++++++++++++++++++++++++++-------------=
+-
+>>>>  2 files changed, 62 insertions(+), 32 deletions(-)
+>>>>
+>>>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>>>> index 1ae97a0b8ec7..28541cb40f69 100644
+>>>> --- a/include/linux/mm.h
+>>>> +++ b/include/linux/mm.h
+>>>> @@ -4159,14 +4159,13 @@ int arch_lock_shadow_stack_status(struct task_=
+struct *t, unsigned long status);
+>>>>   * since this value becomes part of PP_SIGNATURE; meaning we can just=
+ use the
+>>>>   * space between the PP_SIGNATURE value (without POISON_POINTER_DELTA=
+), and the
+>>>>   * lowest bits of POISON_POINTER_DELTA. On arches where POISON_POINTE=
+R_DELTA is
+>>>> - * 0, we make sure that we leave the two topmost bits empty, as that =
+guarantees
+>>>> - * we won't mistake a valid kernel pointer for a value we set, regard=
+less of the
+>>>> - * VMSPLIT setting.
+>>>> + * 0, we use the lowest bit of PAGE_OFFSET as the boundary if that va=
+lue is
+>>>> + * known at compile-time.
+>>>>   *
+>>>> - * Altogether, this means that the number of bits available is constr=
+ained by
+>>>> - * the size of an unsigned long (at the upper end, subtracting two bi=
+ts per the
+>>>> - * above), and the definition of PP_SIGNATURE (with or without
+>>>> - * POISON_POINTER_DELTA).
+>>>> + * If the value of PAGE_OFFSET is not known at compile time, or if it=
+ is too
+>>>> + * small to leave some bits available above PP_SIGNATURE, we define t=
+he number
+>>>> + * of bits to be 0, which turns off the DMA index tracking altogether=
+ (see
+>>>> + * page_pool_register_dma_index()).
+>>>>   */
+>>>>  #define PP_DMA_INDEX_SHIFT (1 + __fls(PP_SIGNATURE - POISON_POINTER_D=
+ELTA))
+>>>>  #if POISON_POINTER_DELTA > 0
+>>>> @@ -4175,8 +4174,9 @@ int arch_lock_shadow_stack_status(struct task_st=
+ruct *t, unsigned long status);
+>>>>   */
+>>>>  #define PP_DMA_INDEX_BITS MIN(32, __ffs(POISON_POINTER_DELTA) - PP_DM=
+A_INDEX_SHIFT)
+>>>>  #else
+>>>> -/* Always leave out the topmost two; see above. */
+>>>> -#define PP_DMA_INDEX_BITS MIN(32, BITS_PER_LONG - PP_DMA_INDEX_SHIFT =
+- 2)
+>>>> +/* Constrain to the lowest bit of PAGE_OFFSET if known; see above. */
+>>>> +#define PP_DMA_INDEX_BITS ((__builtin_constant_p(PAGE_OFFSET) && PAGE=
+_OFFSET > PP_SIGNATURE) ? \
+>>>> +                             MIN(32, __ffs(PAGE_OFFSET) - PP_DMA_INDE=
+X_SHIFT) : 0)
+>>>
+>>> Do you have to watch out for an underflow of __ffs(PAGE_OFFSET) -
+>>> PP_DMA_INDEX_SHIFT (at which point we'll presumably use 32 here
+>>> instead of the expected 0)? Or is that guaranteed to be positive for
+>>> some reason I'm not immediately grasping.
+>>=20
+>> That's what the 'PAGE_OFFSET > PP_SIGNATURE' in the ternary operator is
+>> for. I'm assuming that PAGE_OFFSET is always a "round" number (e.g.,
+>> 0xc0000000), in which case that condition should be sufficient, no?
+>
+> IDK if such assumption is obviously true. I think it would be safer to
+> somehow express it with a build time constraint.
 
-On 2025/9/30 19:16, syzbot ci wrote:
-> syzbot ci has tested the following series
-> 
-> [v4] mm/rmap: fix soft-dirty and uffd-wp bit loss when remapping zero-filled mTHP subpage to shared zeropage
-> https://lore.kernel.org/all/20250930071053.36158-1-lance.yang@linux.dev
-> * [PATCH v4 1/1] mm/rmap: fix soft-dirty and uffd-wp bit loss when remapping zero-filled mTHP subpage to shared zeropage
-> 
-> and found the following issue:
-> general protection fault in remove_migration_pte
-> 
-> Full report is available here:
-> https://ci.syzbot.org/series/8cc7e52f-a859-4251-bd08-9787cdaf7928
-> 
-> ***
-> 
-> general protection fault in remove_migration_pte
-> 
-> tree:      linux-next
-> URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
-> base:      262858079afde6d367ce3db183c74d8a43a0e83f
-> arch:      amd64
-> compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-> config:    https://ci.syzbot.org/builds/97ee4826-5d29-472d-a85d-51543b0e45de/config
-> C repro:   https://ci.syzbot.org/findings/f4819db2-21f2-4280-8bc4-942445398953/c_repro
-> syz repro: https://ci.syzbot.org/findings/f4819db2-21f2-4280-8bc4-942445398953/syz_repro
-> 
-> Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN PTI
-> KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+Alright, I'll respin and constrain it further.
 
-This is a known issue that I introduced in the v3 patch. I spotted
-this exact NULL pointer dereference bug[1] myself and have already
-sent out a v5 version[2] with the fix.
-
-The root cause is that ptep_get() is called before the !pwmw.pte
-check, which handles PMD-mapped THP migration entries.
-
-[1] 
-https://lore.kernel.org/linux-mm/2d21c9bc-e299-4ca6-85ba-b01a1f346d9d@linux.dev
-[2] 
-https://lore.kernel.org/linux-mm/20250930081040.80926-1-lance.yang@linux.dev
-
-Thanks,
-Lance
-
-> CPU: 0 UID: 0 PID: 6025 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
-> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-> RIP: 0010:ptep_get include/linux/pgtable.h:340 [inline]
-> RIP: 0010:remove_migration_pte+0x369/0x2320 mm/migrate.c:352
-> Code: 00 48 8d 43 20 48 89 44 24 68 49 8d 47 40 48 89 84 24 e8 00 00 00 4c 89 64 24 48 4c 8b b4 24 50 01 00 00 4c 89 f0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 f7 e8 f8 3e ff ff 49 8b 06 48 89 44 24
-> RSP: 0018:ffffc90002fb73e0 EFLAGS: 00010246
-> RAX: 0000000000000000 RBX: ffff88802957e300 RCX: 1ffffd40008c9006
-> RDX: 0000000000000000 RSI: 0000000000030dff RDI: 0000000000030c00
-> RBP: ffffc90002fb75d0 R08: 0000000000000003 R09: 0000000000000004
-> R10: dffffc0000000000 R11: fffff520005f6e34 R12: ffffea0004648008
-> R13: dffffc0000000000 R14: 0000000000000000 R15: ffffea0004648000
-> FS:  00005555624de500(0000) GS:ffff8880b83fc000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 0000200000000300 CR3: 000000010d8b8000 CR4: 00000000000006f0
-> Call Trace:
->   <TASK>
->   rmap_walk_anon+0x553/0x730 mm/rmap.c:2855
->   remove_migration_ptes mm/migrate.c:469 [inline]
->   migrate_folio_move mm/migrate.c:1381 [inline]
->   migrate_folios_move mm/migrate.c:1711 [inline]
->   migrate_pages_batch+0x202e/0x35e0 mm/migrate.c:1967
->   migrate_pages_sync mm/migrate.c:1997 [inline]
->   migrate_pages+0x1bcc/0x2930 mm/migrate.c:2106
->   migrate_to_node mm/mempolicy.c:1244 [inline]
->   do_migrate_pages+0x5ee/0x800 mm/mempolicy.c:1343
->   kernel_migrate_pages mm/mempolicy.c:1858 [inline]
->   __do_sys_migrate_pages mm/mempolicy.c:1876 [inline]
->   __se_sys_migrate_pages+0x544/0x650 mm/mempolicy.c:1872
->   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->   do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
->   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7fb18e18ec29
-> Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-> RSP: 002b:00007ffdca5c9838 EFLAGS: 00000246 ORIG_RAX: 0000000000000100
-> RAX: ffffffffffffffda RBX: 00007fb18e3d5fa0 RCX: 00007fb18e18ec29
-> RDX: 0000200000000300 RSI: 0000000000000003 RDI: 0000000000000000
-> RBP: 00007fb18e211e41 R08: 0000000000000000 R09: 0000000000000000
-> R10: 0000200000000040 R11: 0000000000000246 R12: 0000000000000000
-> R13: 00007fb18e3d5fa0 R14: 00007fb18e3d5fa0 R15: 0000000000000004
->   </TASK>
-> Modules linked in:
-> ---[ end trace 0000000000000000 ]---
-> RIP: 0010:ptep_get include/linux/pgtable.h:340 [inline]
-> RIP: 0010:remove_migration_pte+0x369/0x2320 mm/migrate.c:352
-> Code: 00 48 8d 43 20 48 89 44 24 68 49 8d 47 40 48 89 84 24 e8 00 00 00 4c 89 64 24 48 4c 8b b4 24 50 01 00 00 4c 89 f0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 f7 e8 f8 3e ff ff 49 8b 06 48 89 44 24
-> RSP: 0018:ffffc90002fb73e0 EFLAGS: 00010246
-> RAX: 0000000000000000 RBX: ffff88802957e300 RCX: 1ffffd40008c9006
-> RDX: 0000000000000000 RSI: 0000000000030dff RDI: 0000000000030c00
-> RBP: ffffc90002fb75d0 R08: 0000000000000003 R09: 0000000000000004
-> R10: dffffc0000000000 R11: fffff520005f6e34 R12: ffffea0004648008
-> R13: dffffc0000000000 R14: 0000000000000000 R15: ffffea0004648000
-> FS:  00005555624de500(0000) GS:ffff8880b83fc000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 0000200000000300 CR3: 000000010d8b8000 CR4: 00000000000006f0
-> ----------------
-> Code disassembly (best guess):
->     0:	00 48 8d             	add    %cl,-0x73(%rax)
->     3:	43 20 48 89          	rex.XB and %cl,-0x77(%r8)
->     7:	44 24 68             	rex.R and $0x68,%al
->     a:	49 8d 47 40          	lea    0x40(%r15),%rax
->     e:	48 89 84 24 e8 00 00 	mov    %rax,0xe8(%rsp)
->    15:	00
->    16:	4c 89 64 24 48       	mov    %r12,0x48(%rsp)
->    1b:	4c 8b b4 24 50 01 00 	mov    0x150(%rsp),%r14
->    22:	00
->    23:	4c 89 f0             	mov    %r14,%rax
->    26:	48 c1 e8 03          	shr    $0x3,%rax
-> * 2a:	42 80 3c 28 00       	cmpb   $0x0,(%rax,%r13,1) <-- trapping instruction
->    2f:	74 08                	je     0x39
->    31:	4c 89 f7             	mov    %r14,%rdi
->    34:	e8 f8 3e ff ff       	call   0xffff3f31
->    39:	49 8b 06             	mov    (%r14),%rax
->    3c:	48                   	rex.W
->    3d:	89                   	.byte 0x89
->    3e:	44                   	rex.R
->    3f:	24                   	.byte 0x24
-> 
-> 
-> ***
-> 
-> If these findings have caused you to resend the series or submit a
-> separate fix, please add the following tag to your commit message:
->    Tested-by: syzbot@syzkaller.appspotmail.com
-> 
-> ---
-> This report is generated by a bot. It may contain errors.
-> syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+-Toke
 
 
