@@ -4,90 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 885A4CCA468
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 14:31:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAE9ECCA468
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 14:32:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF27D8E000C; Tue, 30 Sep 2025 10:31:16 -0400 (EDT)
+	id 441DC8E000E; Tue, 30 Sep 2025 10:32:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7BBE8E0002; Tue, 30 Sep 2025 10:31:16 -0400 (EDT)
+	id 3F26B8E0002; Tue, 30 Sep 2025 10:32:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6A7B8E000C; Tue, 30 Sep 2025 10:31:16 -0400 (EDT)
+	id 2E1218E000E; Tue, 30 Sep 2025 10:32:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A053E8E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 10:31:16 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 35C711A0710
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 14:31:16 +0000 (UTC)
-X-FDA: 83946154152.26.B3E05B0
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 362B240005
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 14:31:14 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DmNECBIo;
-	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 160848E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 10:32:24 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AEA8E5A95E
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 14:32:23 +0000 (UTC)
+X-FDA: 83946156966.27.7F516AF
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5B59B140013
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 14:32:21 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=dXpj7gOA;
+	spf=pass (imf23.hostedemail.com: domain of mfo@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=mfo@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759242674;
+	s=arc-20220608; t=1759242741;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/P8UbV87J09tZL1h3UzmxkojtiXGLQJFOupY2v35F54=;
-	b=6NdUhRwo8duGM0vNp8OGT2Ee2gBPaBeI1VkRhZ9IIL4ErT/ug007F1XrSD4LQpOVJb5I2u
-	OoZCYCMRFXEToqU0eOHB/y84jB1AG469I3RQv2wjjwAccUriaOhXWr8UALwrCPIBX96RRv
-	Aja3Gz0bto7q6J85K0tFCup8+1wqNRM=
+	bh=Na77R11NbjgWMZhuIVj8AYAJI1CDT3+izYFOG1w9JTo=;
+	b=05BtKpP4XdyucgaZN5KYAi8Yl8sWQez14rVG9uJkpdfOu6OqZ4MCNivAMq17DuU8j8Ibks
+	A8WoEt/U9OkdRKBtYrm9DMEukdKxknAprpLp6eXu+pFv8KtMody66lezN1ue7+vLWYaDWa
+	VNgYtqLVzTDY1EFyKnO0sngStf9uIRQ=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DmNECBIo;
-	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759242674; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=dXpj7gOA;
+	spf=pass (imf23.hostedemail.com: domain of mfo@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=mfo@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759242741; a=rsa-sha256;
 	cv=none;
-	b=T6Y93Y6kJdRreuI+6hZB89TlYUeepugbxEYbWwZMweMugpTRwpryux/73mFLnE4XXy8IRx
-	Ree7J4pmRSrJ2ofp+z3/Ix25VaWK48Y0kYEmk2hmu+kex7ghIjv3lwV2+cxqWNHkF3QmzF
-	SQEBDQ/jtgLLPC7znsgjQvvLSbuYyyI=
-X-Gm-Message-State: AOJu0Yzbycravlk3Tj9NhfGPv1BE+7l0H+kAZ3ZTJLc41oX6OzonDjzc
-	tAwWtI6zNaj6Ntn3LzTs4qHSS8++bZMwjmAB33Pite5NIURYw/t9jgRHz/b8vuNFAna1CeuhJ48
-	bFIaeL5doyRfw3uZo2Wy07JYOVDf2kHg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759242672;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/P8UbV87J09tZL1h3UzmxkojtiXGLQJFOupY2v35F54=;
-	b=DmNECBIoyXkG+izaS+XHWg8JfiiOWbi1iRSLsCeV6J30+D9ODSeJ+YNOMYB0X6Piojjj3P
-	abUQboE0XasR5z907cfCOUBHho3ePzO74plpfkyVEaLId72a8mipqxXyhEgW++56X3OoEo
-	oEyd5SA0Wyr8gJWTN4VMRmTymt/pv6g=
-X-Google-Smtp-Source: AGHT+IFVSPZu6yh0Q16pHzVeahA0zVDamjBYekfddJu+S0nvsCyAm84127hmtyw+5HLmrZLl1Fidbc3JRjFYvkTCfPo=
-X-Received: by 2002:ad4:5c65:0:b0:746:4ca1:fbc with SMTP id
- 6a1803df08f44-7fc2fd7343amr298313466d6.23.1759242666456; Tue, 30 Sep 2025
- 07:31:06 -0700 (PDT)
+	b=3+31ns/kfbyPOcHHHSRAiNV6sf8ClBrPZgxzV5WtzF4Zdwu2OzIGuy0bulSk3gqWO0050z
+	hahthqn6UvpF2Jdo3ULf2FqNweNMwWvuVB94N69gT4tXldsKjNcwRyClOx2+9N1XrobfYA
+	6w/kNeiw382SC7XlTOfeyjdgUxrtv8Y=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:Message-ID:References:
+	In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=Na77R11NbjgWMZhuIVj8AYAJI1CDT3+izYFOG1w9JTo=; b=dXpj7gOA3v9harDKKH/oW0XcbY
+	+h/uyc6a2+u9EZS9K6NxCe2Prjf7rmfpx1lWPNemsWwepTtZ0iYvKyM7kW4qQQysPLnSUpWCamWh+
+	pWLpvwhnL1Hw4YM2+moKz8uxFkJgryPd56GjsTTVWruSda4BQrYwUV7dmu20vJAzDi7yzi/O3qQSA
+	uJ88naDRF6KE+VI7qOrlFil2SHAZKueUiTjJRvC2JUy6VEf1Tkae4MQhhk2u+cwV85hftXAvmnHQu
+	u5XsZTI1XwTDmMkZMqeu/LRCxfzqgYPkSwzITiU69rN5U3Nmo5F5C/DXH9gZBBX8QtUmdDrQxwlZ4
+	plLvqeKw==;
+Received: from maestria.local.igalia.com ([192.168.10.14] helo=mail.igalia.com)
+	by fanzine2.igalia.com with esmtps 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1v3bOo-002JKb-8u; Tue, 30 Sep 2025 16:32:14 +0200
+Received: from webmail.service.igalia.com ([192.168.21.45])
+	by mail.igalia.com with esmtp (Exim)
+	id 1v3bOm-001fwV-8f; Tue, 30 Sep 2025 16:32:14 +0200
+Received: from localhost ([127.0.0.1] helo=webmail.igalia.com)
+	by webmail with esmtp (Exim 4.96)
+	(envelope-from <mfo@igalia.com>)
+	id 1v3bOl-00Chfy-2C;
+	Tue, 30 Sep 2025 16:32:12 +0200
 MIME-Version: 1.0
-References: <20250930025246.1143340-1-anshuman.khandual@arm.com>
-In-Reply-To: <20250930025246.1143340-1-anshuman.khandual@arm.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-Date: Tue, 30 Sep 2025 22:30:28 +0800
-X-Gmail-Original-Message-ID: <CABzRoyYvdeX562ob6tf50O8gRoMKPp9-62FR5mcjTUNyGZSoTQ@mail.gmail.com>
-X-Gm-Features: AS18NWDSRA9_SfA-4xAgCAAwq9ckBLFuJLAQkfHgnyzZ7OPW9t0Fkeu1DptjuSI
-Message-ID: <CABzRoyYvdeX562ob6tf50O8gRoMKPp9-62FR5mcjTUNyGZSoTQ@mail.gmail.com>
-Subject: Re: [PATCH] mm/ptdump: Replace READ_ONCE() with standard page table accessors
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Migadu-Flow: FLOW_OUT
+Date: Tue, 30 Sep 2025 11:32:12 -0300
+From: Mauricio Faria de Oliveira <mfo@igalia.com>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka
+ <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>, Suren Baghdasaryan
+ <surenb@google.com>, Brendan Jackman <jackmanb@google.com>, Johannes Weiner
+ <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kernel-dev@igalia.com
+Subject: Re: [PATCH 0/3] mm/page_owner: add options 'print_handle' and
+ 'print_stack' for 'show_stacks'
+In-Reply-To: <aNvjDsBuw3hqwy31@tiehlicka>
+References: <20250924174023.261125-1-mfo@igalia.com>
+ <aNVpFn9W0jYYr9vs@tiehlicka> <4c2a467113efd085530eb055e4a4e1fe@igalia.com>
+ <aNY49sdoFVe03m_Y@tiehlicka> <d9af42d5cb9d427632087c5f51e50501@igalia.com>
+ <aNvjDsBuw3hqwy31@tiehlicka>
+Message-ID: <2a1efa8ba183e866ab5c71b3526f64ab@igalia.com>
+X-Sender: mfo@igalia.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 5B59B140013
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 362B240005
-X-Stat-Signature: bmjaf5iktwucck85kpmxosr6smizazhd
-X-HE-Tag: 1759242674-502530
-X-HE-Meta: U2FsdGVkX19Ih5suB2pm4Ws/daGYdou1nVnUEEM+Doy1Wf9MXFdPDsS5IQIBSTs9Pfjs548LKp1Dt+oJVFKQ7zUm4YU8FjoSDaJGutGu99ba0UvwUF69cD6LCvPBcp4OBAHwAU0lC/KBtoc6xnVTShSYQGnY4UJUVgkJTYmiGVvU7hgmy0o7CpM3CSdvldQHNHnLOeA+nOAkUBTl3JhED/gtyMTOIKVddQmhDcitCjd6iaXlrvVS6pjdcYb8TbKahWlI/N3NCUz+ExEGpgkbayznzOWYWsdaPc9yjyC1VjT0rjGfgfWbJng+QEUGtiQ0hI6hWbuCQmgRYDGQ1d2v+OraqRqQMFDXRwpKAgTtL5dSZ9lE0EO0e5Q3Ky6PZiREt4hWgCI1xlh4KNcLeraD+nyJ6RxFtVEXOGBowaK+iTv8n0VWclD9QQgxCSinVLGk8hDUd+c6c0F9uRWR5/0uMe+99PnN9OJtUwxZJ+mm/jT+o03o5xOfztIkaB2W2g/knmu5tKKJRgF2sj99GQsILsyU+pXliA1AOdIEvXhDhRMhFASscnV9aoXpm4pFtIdve34LcRk15F34JFja4m/kaJg1ljkdpiDmHS39pNmxHvCMVVLWNwiT/B1YlLWAP6HbmMs2UZcDEJWjVJM5nkD3VXAaLzOYSSguXfuPNP6rLGYIbDjuOLjq0cmLbYSM/UO7sUnpBr/tdgIpYBL9WCP52HqabQT6ItHDwm/hn57ki7rswkAwZ+y80nBwiv4YtJ1dd/pVoByLEYpZHjFlGh48DBJBNpmm1Qio30AEJP4eaiCqQERIvz0YJn+GlkU7rnJCtl0/SDDO1f96ByURJxYo6BT34+w/Rvi5F1HW2AL06OMYFPerzzxiCvR1/bwz23Dx73cB0CW5NbMeWwJMD620Sg==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: fzkxzhuo3sz6fxbdt4osdctfnzer7wx6
+X-HE-Tag: 1759242741-641781
+X-HE-Meta: U2FsdGVkX18yHSF+YB1i4fhbwdE4WhDOelcXZB+xfOuz3aNh3TbgvSz4lmgjAN2S4udTggz3CEdGkxfgX66nF+/KcQRleW1eUWc9Cp6S2GHaIXmfZbiQs7v9WrCWN6fC22pQ2HlZtx1yUKUSIkZqpPKZu5SQyfPGrfZQZPNB3nlngpL8y8rYmLwa5S84EekVIWczCn/6O5z6x71ykm4aBqwaxRgx6w99IEch2s6qzB04Agp79E9a0EEWJvH9lkLiD5c8yZ/TNMuUTENGyXahc7+8gqkDrNl4YIHfWUYWBlrrODq3knKLesAP/BkMt00ymNIHGHehhvSRm5WGZQqj5897SDovtduN+522TvHqgagGQGmcef6r6INJTagcRvurmFV+xTGlYPK8ZX+2v3HXDaPzoOdELYglaAERDPcMDSZ4RqerkMeJQmV/Eg0TPwgrXsCA3PlbEb6amYx/qjpAyoEKNrrL6GNu6VNq/xtoV0Z2st/qai3Xd5nZw5+jmH/Zk20iQ4XjC8d2m4ZUMTtRJmjg/MNJHaEa4b1W7y31Q4vSXx1NfuFvP2SuMyRgjUSV1FA0Yt8ElYSlJWhjnY0cdWQv0bxUvutlJKVQMXk8JVcwj95Pl4hnxrlu6hiEwzF7evXXv9RnznubkcsuqSJg2Vc1TUWxRQ/BeM28WMnSuiJAyC/nDtjoxadcZkPHN3PzFaEw89dYVFbnnddR2J71CZXxVUA9Tq8Dm1P2znYvF5Cmy/yu34l3tae8uM9Usfaa37Xj0Fd74BBUqukdIxtnP6JWq/sNkdmJif7ikF7I2MlAPQ5N4JeMl3ogkOYSTdlJ0usUVfr5PjmVHjxX2ogHPuuBHSTS27JgZL3ziVgOR8ReSNfT/jwvafSp+ZscwNDF80pYDGNXh8gxkaxDO4vghir+9pALACENpKoHWWKzENnqMu41O23nZe1RbZYyL8zpvTeUfOhg/F9HQrhTnIM
+ 4u0q8ZnU
+ cqRbva2jnJxOGRLqk8+1bRpNNFRtf4angi1s2Y8T8p28kQmZ/SJthBoB7CX3F8ASJhpFq7rmIcz08ViPD5tJQKcA3EOtnrlnohnPt/crvZvGg25ufWTWwSsaLVwgYKOpX6uZlqri597SFykq0VtE5F3u+iqszqV6Lrtj05XaTB9/4FR5n1WCtX2O4/UP5//+4deBjKbon5shaiGARt7L2bTTxk11xE8XhvdKlNb2tXNv9aZ456vTa8YQfkNtuciriedLxBOpDOsZ8c7ZmCajW1BAUTQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,77 +109,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 30, 2025 at 10:56=E2=80=AFAM Anshuman Khandual
-<anshuman.khandual@arm.com> wrote:
->
-> Replace READ_ONCE() with standard page table accessors i.e pxdp_get() whi=
-ch
-> anyways default into READ_ONCE() in cases where platform does not overrid=
-e.
->
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
+On 2025-09-30 11:02, Michal Hocko wrote:
+> Sure, I see. The main problem with the option file is that it is
+> inherently suited for a single consumer which is a hard assumption to
+> make at this stage. So I think it is worth having a separate 2 files
+> which provide the missing functionality.
 
-Nice cleanup! I assume it's a no-op change on all architectures for now ;)
-Acked-by: Lance Yang <lance.yang@linux.dev>
+Ack; I'll submit v2 addressing your suggestions. Thanks!
 
->  mm/ptdump.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/mm/ptdump.c b/mm/ptdump.c
-> index b600c7f864b8..18861501b533 100644
-> --- a/mm/ptdump.c
-> +++ b/mm/ptdump.c
-> @@ -31,7 +31,7 @@ static int ptdump_pgd_entry(pgd_t *pgd, unsigned long a=
-ddr,
->                             unsigned long next, struct mm_walk *walk)
->  {
->         struct ptdump_state *st =3D walk->private;
-> -       pgd_t val =3D READ_ONCE(*pgd);
-> +       pgd_t val =3D pgdp_get(pgd);
->
->  #if CONFIG_PGTABLE_LEVELS > 4 && \
->                 (defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW=
-_TAGS))
-> @@ -54,7 +54,7 @@ static int ptdump_p4d_entry(p4d_t *p4d, unsigned long a=
-ddr,
->                             unsigned long next, struct mm_walk *walk)
->  {
->         struct ptdump_state *st =3D walk->private;
-> -       p4d_t val =3D READ_ONCE(*p4d);
-> +       p4d_t val =3D p4dp_get(p4d);
->
->  #if CONFIG_PGTABLE_LEVELS > 3 && \
->                 (defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW=
-_TAGS))
-> @@ -77,7 +77,7 @@ static int ptdump_pud_entry(pud_t *pud, unsigned long a=
-ddr,
->                             unsigned long next, struct mm_walk *walk)
->  {
->         struct ptdump_state *st =3D walk->private;
-> -       pud_t val =3D READ_ONCE(*pud);
-> +       pud_t val =3D pudp_get(pud);
->
->  #if CONFIG_PGTABLE_LEVELS > 2 && \
->                 (defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW=
-_TAGS))
-> @@ -100,7 +100,7 @@ static int ptdump_pmd_entry(pmd_t *pmd, unsigned long=
- addr,
->                             unsigned long next, struct mm_walk *walk)
->  {
->         struct ptdump_state *st =3D walk->private;
-> -       pmd_t val =3D READ_ONCE(*pmd);
-> +       pmd_t val =3D pmdp_get(pmd);
->
->  #if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
->         if (pmd_page(val) =3D=3D virt_to_page(lm_alias(kasan_early_shadow=
-_pte)))
-> --
-> 2.30.2
->
->
+-- 
+Mauricio
 
