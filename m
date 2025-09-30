@@ -4,89 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07429CAC5B8
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 07:36:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B586CCAC5B8
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 07:43:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 662018E000B; Tue, 30 Sep 2025 03:36:47 -0400 (EDT)
+	id 0CBE88E0027; Tue, 30 Sep 2025 03:43:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 612B88E0002; Tue, 30 Sep 2025 03:36:47 -0400 (EDT)
+	id 0A44E8E0002; Tue, 30 Sep 2025 03:43:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54FBA8E000B; Tue, 30 Sep 2025 03:36:47 -0400 (EDT)
+	id EFB848E0027; Tue, 30 Sep 2025 03:43:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4368B8E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 03:36:47 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DA38E1405E5
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 07:36:46 +0000 (UTC)
-X-FDA: 83945109612.17.9D8A74E
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 0E0B614000D
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 07:36:44 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=I7LfKX44;
-	spf=pass (imf26.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id DF6758E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 03:43:35 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8AEF9BA743
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 07:43:35 +0000 (UTC)
+X-FDA: 83945126790.30.362CE65
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 61EA38000C
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 07:43:32 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="t0N6w/AM";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=xva+Ts5n;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="t0N6w/AM";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=xva+Ts5n;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759217805;
+	s=arc-20220608; t=1759218212;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nMbO9Tlys5llPIB/GKS5R/+Lw3U9d4/u9TV/lNk2GF8=;
-	b=qRx5pj5GKBXUvUXcd9saSjGLeQop+G20B2Wk+AugODHbyG+sE6ftyvM/nViuDVMSmmIZGz
-	F27R5N8EfeDqC79Up4PhHIRN60IvaJXihj/8WRSBT4C/8+2Fy+AkNOq5l1RB3L+Jo+CneF
-	LQSUwo7YXoWlIIK2F38e6WnqIQrNJ4g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759217805; a=rsa-sha256;
+	bh=tWv6kYc8Znq14mP8rEXIkgR9K/OwdQEybl1xuZYh90M=;
+	b=c/v3kLPgaO+PJGYWRml3jaS0qdUm9qETnVtJxjUe7GycvUobkw/9U6Fk3Ee7Q3bnuCFqZZ
+	7ZaGc1J2aVHFqCzFEhuXJzN2ZuzjGTjezxfh+nGgYFy+jB7PwbFuw6Yl43JsD9qZjdedmd
+	Cn1HbAADOYygsGw7wkmegI+ttC2eCJc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759218212; a=rsa-sha256;
 	cv=none;
-	b=1LZdy7gHEPMe/oqTdXvkkAVjXHtVrGI5FNv434jp1Kr4Mdo9gDjtjlND4xNq5KzxceHkYh
-	7VLPuzuNeOMjeYhjLmTEqZ+Jf+GMLrnOjuHGM5zMopnWb+OzTi0arXv0MUVLQJBBkdiDba
-	BJFFoUgaI/VJ6TCD+OisOOOBM7+HvHU=
+	b=Fxxdx8n/M49mU15ZaUyxxJYj1pGX5ePfDM5U9T1wVAEBxKq75kfEjQ611uF+PArQ1Yn+95
+	CtSuoL0SLO8mC74505Nw0Hv4wdHpnanhQ/hrOOGBETTWDHomJ2dQogHi/a7reDJvxsfg8L
+	2pNfFiebLPrW8umx3t/ASAO5S6CKK1Q=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=I7LfKX44;
-	spf=pass (imf26.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <556e072d-6bec-421a-a78c-fcde61af67f9@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759217803;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="t0N6w/AM";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=xva+Ts5n;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="t0N6w/AM";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=xva+Ts5n;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 219151F747;
+	Tue, 30 Sep 2025 07:43:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1759218209; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nMbO9Tlys5llPIB/GKS5R/+Lw3U9d4/u9TV/lNk2GF8=;
-	b=I7LfKX44os0xFnVKDz31DNnBjFvIrbnjN2gggYFuKyx1SoGR9d/Xs/QWF4i1I8nA2V5RWl
-	W85GgcOtwqUi+YQglSgCu2t2Q0M0gzq8vFreEoFROs6WgbEcu960J7PO4AXZWGr9y45Q5H
-	DN77mofyd0GxSn0DtEEpDiyjEUy/2X4=
-Date: Tue, 30 Sep 2025 15:36:36 +0800
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tWv6kYc8Znq14mP8rEXIkgR9K/OwdQEybl1xuZYh90M=;
+	b=t0N6w/AMC1Ug+t5cTpJuKpTY5ednFfBC5C55OYerHg5YnNRXM6TMtm2c+ezbaHYKLpXs13
+	spLsU7rUzegLNgonoavueMlEmpBLtNTLh0WxEiKdd7VCsGVTC6a4GtGKU5oIBvgwhqLgaQ
+	5uLew1nvUcZczbTdgkv33TAhUiU0WAk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1759218209;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tWv6kYc8Znq14mP8rEXIkgR9K/OwdQEybl1xuZYh90M=;
+	b=xva+Ts5niEu0NviFgcyz371DOYJa8E3ubxUNoLRcLwGp79abZuDicyYrCXTOoOBdKOs96A
+	ryTFt44lpHf+j2Ag==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1759218209; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tWv6kYc8Znq14mP8rEXIkgR9K/OwdQEybl1xuZYh90M=;
+	b=t0N6w/AMC1Ug+t5cTpJuKpTY5ednFfBC5C55OYerHg5YnNRXM6TMtm2c+ezbaHYKLpXs13
+	spLsU7rUzegLNgonoavueMlEmpBLtNTLh0WxEiKdd7VCsGVTC6a4GtGKU5oIBvgwhqLgaQ
+	5uLew1nvUcZczbTdgkv33TAhUiU0WAk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1759218209;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tWv6kYc8Znq14mP8rEXIkgR9K/OwdQEybl1xuZYh90M=;
+	b=xva+Ts5niEu0NviFgcyz371DOYJa8E3ubxUNoLRcLwGp79abZuDicyYrCXTOoOBdKOs96A
+	ryTFt44lpHf+j2Ag==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F39581342D;
+	Tue, 30 Sep 2025 07:43:28 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id wCUgOyCK22gKVAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 30 Sep 2025 07:43:28 +0000
+Message-ID: <877fa6d5-e2c7-41d8-88f7-6ee6ac395fc2@suse.cz>
+Date: Tue, 30 Sep 2025 09:43:28 +0200
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/1] mm/ksm: fix spurious soft-dirty bit on zero-filled
- page merging
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: re-enable kswapd when memory pressure subsides or
+ demotion is toggled
 Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>
-Cc: xu.xin16@zte.com.cn, chengming.zhou@linux.dev, ran.xiaokai@zte.com.cn,
- yang.yang29@zte.com.cn, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- ioworker0@gmail.com, akpm@linux-foundation.org
-References: <20250928045207.78546-1-lance.yang@linux.dev>
- <e74ae9da-9dfb-4673-ae9f-c0b27b796cf0@redhat.com>
- <8476e9be-3f80-4d7a-9a38-f910661e61c6@linux.dev>
- <02c8cf41-116d-46ab-9d40-803cc26dbbf8@redhat.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <02c8cf41-116d-46ab-9d40-803cc26dbbf8@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0E0B614000D
-X-Stat-Signature: gdsizp7ck4fzfjyjx1h5gq9useabyfpy
+To: Chanwon Park <flyinrm@gmail.com>, akpm@linux-foundation.org,
+ surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
+ ziy@nvidia.com, david@redhat.com, zhengqi.arch@bytedance.com,
+ shakeel.butt@linux.dev, lorenzo.stoakes@oracle.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <aL6qGi69jWXfPc4D@pcw-MS-7D22>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <aL6qGi69jWXfPc4D@pcw-MS-7D22>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 61EA38000C
+X-Stat-Signature: 6q8b9eon1nq78ahq6eywqxm9rnrzw7pg
 X-Rspam-User: 
-X-HE-Tag: 1759217804-676305
-X-HE-Meta: U2FsdGVkX19cb90pjdgQc87pfXLs5XP/awizk2W+Byr1smPOaWHd+o0f3cBhLoYjJK16IpKCGtj5KR0RAhhF9ypVOt+ww30/aPf6b3VQo7eLY9OaEtXxJ1TrfpkZhBLDoSHMG1pKOOTpnsUVyhhuf6yN4WE2mg6XxON1GjU3ZVixpHDOXsWiQubQ9K29X4m84JlR4mYRGkHP0ehK6d0AbjzB+Cv1n43iFzBS5i+/56i+GjbLxl5q3NFhfMRi5BjwnYR7nNeq5P/kMzLF4zPAPcHl3YtxW46sVmUwNEaYXVtd5cS4E7TmxkhsrPpiZmV2G1yrMXbRz3MzjpW+D+WhKttSw0UEkulLeyDsa+SRFiHZteWTyMkzcH/4P6GVimPQhs0uRF8eaqUBDfbE3pz1ugWdDs1HucMZzJnbFrM18j5eW5OUDMu8fVMv586U1Np2ifazknNJ8p51sGFZdLDjY/Ni8BmoPJWUBFo9gNhxOpxD6i0Mv8sEQqCXdV/Zbpng5tx5uSCBoJacxSl/qSOZbbieWtxu8bndhch3F6spEi4jaNXXq1ukHuZ9exA/fFzPLjV0QHbTpQVX44GT6yAXxWiXAttxO6XkHEzfH0hTLASdEAwnmd0fAuLM4jklum5ByuKW17dtVQAGyumKvKaEdcxle8eGc7QZGdr96TatBecl/TiaEh1mmyOc86IE9Dkwo7t42RtWfk/7/yWEQsUxUyaoyZLyXbDt/wdRLhaBebdnp6j6JUy9J2LS+gH6mS2+uRFLQOksebCf9W83o9ltP7yDGgIxCVSrh2hDBhZNiLzEHWVLx9idL/Pvj+myWgIYpwCGYMq4zigHr1CR9leyr3J8PYCTZZlR2Ee1UW9iSGJzN0/Vs1MNZW+UO6gI2nbXBA9vjtw0aR9vEmXUDi/pNRGasYq0DepoheWzska19AvhZnoQEMTIWvNvJZT7eBwj3VZPU/f1OTUZ9gtM9a7
- v+qqLLg0
- qPruVKmYsgP7peYzxMf9yAfqbb/jT+ZNCe++oR4vutREOIS4L8tJ0SlS8kaEhDHXWdKSgiBTc03gel8W1UUMpvHWXSU4KekY9IDmFiMzigaaUknc0WJn+RbazIapAIMi3jQfx0HfxJ60KGo0h4VGnnnLgOJJ/DqdQX6ivc8k6rkeND8obpGjOPYWGi5E3tvHER/x6
+X-HE-Tag: 1759218212-859166
+X-HE-Meta: U2FsdGVkX18C0QNSPDiFwT7r+XbpKx8E/yE6QlJuiMIKJxeMvT3IhHpmC5gMFE0qRdzGvjxgeSfQPDeJPMn6iQVi2G9sQ+z0o7NmIRti9DVqmYomzWgwoLIvy3ligRnb6b59cwCSo5MZO7fWTD0tyY6wzZnQVvzatNGoaXNiG141pUyTzxq1LMqiYxDq2VIivhOrFoe6HJRRNsWfeKZtkmTrEmKSldRU3tRbjhd770aVw8eqYIhX7PsanxtEUbI0qEFH4qx2K0b7R6VPgxD/Ryf6ZzNHPW6QkqhlpWN05tbeJryfv1OjlFvcsjeWQGBkZgVNuT9BZT6kY1Y3gEcIFmBeFSQ8nPRkZNSXSp9Gss/VnVhHQWX39S7bKmqGmWR0Zu4fx1+djVk6UiRGPDG904k6+wxaLEAL9FNVWPXht4/wIcSbVbfqHPSgS3MqQHy1D4LqVGclg2bg7Hu/DrpEBXYAkc/pFGxBCm1X58U7QFzuV7VAMm/tPy0l+ASZlUI/3CK5IiNPDdxNHWJQjtmzf6g6CGYK5wB0q3wMTB4C5vMLHodqBrIS702MpQtrzLSUyR4mUjV+Si7bUopc9vzdP5hcAy1MitTYBGOhe71+ZtsdiO6/u/ZEu0PhzpDoVx/sLngXv56o24OJ+rOzYI24aoxtEuq+gWNC+Nd3QX0tF1eRN2NMi6TzsWJfG7Gfn8tUuKK9S6bs0mgKtHbrNlqyytScsMk10lJqQyUyP06vUN2KOwSmvaMmM4gqSoy8BJpdzI033LM3nn3ngayMpLnyYoz4NCEXOsmDbvwdJMR+V/SojCNKEjOP6akLZWJ/7VqaALj8rJdDON+BOee08ymIEvvpGH5Z8ZgLAkoQIuwH7tmmp+W3/6FcaIriBXw3eljXafD2rMCIbuxGAsQpWjuhybTxPOZWLMobzQUwhoJyB31543lf9IsE44HuwkWa15OdQGvUZRRvmYADP6tQcUa
+ RPI1wQB1
+ WMh5dYoutYUxt98VEn2uVFFAh1g/NoQ2dK74JLSiEQeXFXLscRYow40A8adQrzl2Ylca0fNVj9WIi7eU9X1ErQjrJ0ssp6xHMwzTo7Zn/HIthB3BrwJrheb2XQblKvQeNDTD1/XA8QUzRn+3VNXth5ugFglhgWKWx2+lnydDFcMUEHxDZXaJzxW13dZ4nPORwr51XM2axMYrFhSWBFSGG0aTk9XY434xVddWj+LAbYTkrw6fNf0ETjH2ZyKcxddtAHDYEMgTLy5Jral8OK4mJu3ze/ULWTgO+jyYcUkiG6OhHeqZUh8SJxWDxbQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,45 +179,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025/9/30 15:32, David Hildenbrand wrote:
-> On 29.09.25 12:08, Lance Yang wrote:
->>
->>
->> On 2025/9/29 16:25, David Hildenbrand wrote:
->>> On 28.09.25 06:52, Lance Yang wrote:
->>>> From: Lance Yang <lance.yang@linux.dev>
->>>>
->>>> When KSM merges a zero-filled page with the shared zeropage, it uses
->>>> pte_mkdirty() to mark the new PTE for internal accounting. However,
->>>> pte_mkdirty() unconditionally sets both the hardware dirty bit and the
->>>> soft-dirty bit.
->>>>
->>>
->>> Right, that's one think we should clean up at one point.
->>
->> Got it. I’ll take a look when I get a chance ;)
->>
->>>
->>>> This behavior causes false positives in userspace tools like CRIU that
->>>> rely on the soft-dirty mechanism for tracking memory changes.
->>>
->>> IIRC, false positives are not a problem. We get them all of the time
->>> when merging VMAs etc.
->>
->> Right, Indeed.
->>
->>> So I am not sure if this here is really worth fixing. Soft-dirty is not,
->>> and never will be false-positive free.
->>
->> Makes sense to me. It doesn’t seem worth the trouble to fix. Let’s go
->> ahead and drop it.
+On 9/8/25 12:04, Chanwon Park wrote:
+> If kswapd fails to reclaim pages from a node MAX_RECLAIM_RETRIES in a
+> row, kswapd on that node gets disabled. That is, the system won't wakeup
+> kswapd for that node until page reclamation is observed at least once.
+> That reclamation is mostly done by direct reclaim, which in turn enables
+> kswapd back.
 > 
-> Yeah, I would prefer if we can just decouple soft-dirty from dirty 
-> handling at some point. I recall I had a use case around 
-> PageAnonExclusive at some point.
+> However, on systems with CXL memory nodes, workloads with high anon page
+> usage can disable kswapd indefinitely, without triggering direct
+> reclaim. This can be reproduced with following steps:
+> 
+>    numa node 0   (32GB memory, 48 CPUs)
+>    numa node 2~5 (512GB CXL memory, 128GB each)
+>    (numa node 1 is disabled)
+>    swap space 8GB
+> 
+>    1) Set /sys/kernel/mm/demotion_enabled to 0.
+>    2) Set /proc/sys/kernel/numa_balancing to 0.
+>    3) Run a process that allocates and random accesses 500GB of anon
+>       pages.
+>    4) Let the process exit normally.
+> 
+> During 3), free memory on node 0 gets lower than low watermark, and
+> kswapd runs and depletes swap space. Then, kswapd fails consecutively
+> and gets disabled. Allocation afterwards happens on CXL memory, so node
+> 0 never gains more memory pressure to trigger direct reclaim.
+> 
+> After 4), kswapd on node 0 remains disabled, and tasks running on that
+> node are unable to swap. If you turn on NUMA_BALANCING_MEMORY_TIERING
+> and demotion now, it won't work properly since kswapd is disabled.
+> 
+> To mitigate this problem, reset kswapd_failures to 0 on following
+> conditions:
+> 
+>    a) ZONE_BELOW_HIGH bit of a zone in hopeless node with a fallback
+>       memory node gets cleared.
+>    b) demotion_enabled is changed from false to true.
+> 
+> Rationale for a):
+>    ZONE_BELOW_HIGH bit being cleared might be a sign that the node may
+>    be reclaimable afterwards. This won't help much if the memory-hungry
+>    process keeps running without freeing anything, but at least the node
+>    will go back to reclaimable state when the process exits.
+> 
+> Rationale for b):
+>    When demotion_enabled is false, kswapd can only reclaim anon pages by
+>    swapping them out to swap space. If demotion_enabled is turned on,
+>    kswapd can demote anon pages to another node for reclaiming. So, the
+>    original failure count for determining reclaimability is no longer
+>    valid.
+> 
+> Since kswapd_failures resets may be missed by ++ operation, it is
+> changed from int to atomic_t.
+> 
+> Signed-off-by: Chanwon Park <flyinrm@gmail.com>
 
-Cool. I'll give it a try ;)
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
 
