@@ -4,99 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F3B6CCA468
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 10:08:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2721CCA468
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 10:13:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A50F18E001C; Tue, 30 Sep 2025 06:08:02 -0400 (EDT)
+	id 37F798E000B; Tue, 30 Sep 2025 06:13:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A00D88E0002; Tue, 30 Sep 2025 06:08:02 -0400 (EDT)
+	id 330B28E0002; Tue, 30 Sep 2025 06:13:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EFE48E001C; Tue, 30 Sep 2025 06:08:02 -0400 (EDT)
+	id 246598E000B; Tue, 30 Sep 2025 06:13:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 788AF8E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 06:08:02 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3E5EC44554
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 10:08:02 +0000 (UTC)
-X-FDA: 83945490804.27.2BFF312
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 73120C0003
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 10:08:00 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PPFoM2jB;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 10D378E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 06:13:42 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C214D140635
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 10:13:41 +0000 (UTC)
+X-FDA: 83945505042.23.8BA65AC
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 96381140009
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 10:13:39 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iAeOnS8f;
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759226880;
+	s=arc-20220608; t=1759227220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CvoiLqxxKQ0jT9slf+t6DRAd/5akH8KBN9CMAMdhcA4=;
-	b=Cw7y29sSA1BvECRMcp1pXNQOQArr7r63aSynZ13L5k/1/0fbk/5lXkgs9jNuUiU7qfIM9a
-	RyCOgb+R8dstO2u8MM9OfAa/W3FJRNBQesG/LC/msRoRvBgBYureSKbLGoZKsAaW1LTzpD
-	bQKor4oUPHosAcNMjlUjIrQStn3owf0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759226880; a=rsa-sha256;
-	cv=none;
-	b=JwfsiSOCL3noZFd8Ep1GVolZTztAksNuo3ac3Nh/GkWBxOgcWnkgSlHlY2wcOn7boHZTFD
-	pz0ZMbpVsspiedLQAkB4Z0XFojqqCxMf1WSFKqSmCdWuyVzUe7WQPZmfxq2HUMsLyyRKxg
-	M4OkghG2A3TnbWeRk5BnPRvg3kJL01k=
+	bh=hZmqSQC1HjW/If1x8PYxKuOR/oWq1mejmSvIWyDl9Gk=;
+	b=51oyw2dIaKJ60qv3ntxU24x+NRgHaqyIaFnfiHYrXOAiZ6stOpqy0Ojdsj23/uAbSmEyI+
+	YPZQomb2dsQyQD8+BZIQE53qtG4qy/LRsb2goXLx/HvIyIWmavTRpsUr6cfFazP6HNeuAI
+	pGOllUqBYAGLzHsnrXvUdF2VFGS4MRo=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PPFoM2jB;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 151B140127;
-	Tue, 30 Sep 2025 10:07:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3040C4CEF7;
-	Tue, 30 Sep 2025 10:07:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759226878;
-	bh=iaTYo42AMbeWEpSjWoHhR0ggf4sFotfptbmlFUWCPr0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PPFoM2jBVRv5qpyhc8HiiNBCJxADagb8/rS9CmNMB1PjEYIY9FJqprLktYosCrr4d
-	 MJICc96nK4yJ8BFPoBDCLK53IsCOeKrVVGLkkTCdMO0AOyZwvvLCUeDUZgyidmJ3d1
-	 l3QaFlvxESd3dsppQ9sMTAkZO3QLqHjhuHlxMDmXRXiqP5gDptFbEy4FITjKGk48Ys
-	 mcUU2RrRkAm9w00OJZxz7mV9BDkAf0cWZncSX0Eg0szswZXYfvJxOoy/JsDEghgq2I
-	 YMBnUxgJg3GUhhsGPiQFD0oND8EgMRh650+Qsw/WNyBV00Wlq1uFsnC3xgEKnu/pPZ
-	 6Z76IJLF4SVDA==
-Date: Tue, 30 Sep 2025 12:07:50 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: David Hildenbrand <david@redhat.com>
-Cc: Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	James Houghton <jthoughton@google.com>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Ujwal Kundur <ujwal.kundur@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>, Hugh Dickins <hughd@google.com>,
-	Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH v3 1/4] mm: Introduce vm_uffd_ops API
-Message-ID: <aNur9nbdnlykqbU7@kernel.org>
-References: <20250926211650.525109-1-peterx@redhat.com>
- <20250926211650.525109-2-peterx@redhat.com>
- <f1da3505-f17f-4829-80c1-696b1d99057d@redhat.com>
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iAeOnS8f;
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759227220; a=rsa-sha256;
+	cv=none;
+	b=pfRxFsA3+9iBANNh9ml9wnkc1BmxH7AQcxsUAZbPpBYs1Tic8AEqSU9jFaJZ5emzBhwzgQ
+	qnamrngWCl5ha8C7aUoZWel5VYwvqk6CLtAgybbtJG82u1mv9paP2rCVVqQoiHF5/1gXWy
+	HSDlQj7OMUpTjNAkNEo5/4p30kY0C2c=
+Message-ID: <f637f793-7979-4817-bfb4-732ddb7d2e32@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1759227217;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hZmqSQC1HjW/If1x8PYxKuOR/oWq1mejmSvIWyDl9Gk=;
+	b=iAeOnS8fKLsSALcaZT1eCR+NEP2Qc+GEKd9yDnqSeZ4USGAs7Z4te+iKr6fGiraaAMLx7h
+	kFbfnHSm1htYKvpBBXMnL1fzMM8sD4Tp+n5dXTz48B4vubJgAfbuEqM1XNA6kfCL0sZHtM
+	VnYdniHNblgwbzdi/vzQOd6qjS2ct50=
+Date: Tue, 30 Sep 2025 18:13:22 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f1da3505-f17f-4829-80c1-696b1d99057d@redhat.com>
-X-Rspamd-Queue-Id: 73120C0003
-X-Stat-Signature: kai6dob4sc9gup5icfh4eiqc16gsxrrm
+Subject: Re: [PATCH 1/1] mm: prevent poison consumption when splitting THP
+Content-Language: en-US
+To: David Hildenbrand <david@redhat.com>, "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>
+Cc: "Luck, Tony" <tony.luck@intel.com>, Jiaqi Yan <jiaqiyan@google.com>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+ "linmiaohe@huawei.com" <linmiaohe@huawei.com>,
+ "ziy@nvidia.com" <ziy@nvidia.com>,
+ "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
+ "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
+ "npache@redhat.com" <npache@redhat.com>,
+ "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
+ "dev.jain@arm.com" <dev.jain@arm.com>, "baohua@kernel.org"
+ <baohua@kernel.org>, "nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
+ "Chen, Farrah" <farrah.chen@intel.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Andrew Zaborowski <andrew.zaborowski@intel.com>
+References: <20250928032842.1399147-1-qiuxu.zhuo@intel.com>
+ <CACw3F50ijQ20Vg8ycMROSCccf_XtjB_fFvLGxvQZ7eaNQoLwGQ@mail.gmail.com>
+ <SA1PR11MB7130ABC25E060D2CC4749E45891BA@SA1PR11MB7130.namprd11.prod.outlook.com>
+ <SJ1PR11MB608350E5169EE77F86A51E2FFC1BA@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <SA1PR11MB713082CA93E9B1C5F22CFBBE891BA@SA1PR11MB7130.namprd11.prod.outlook.com>
+ <c1294b63-eeee-4d99-82b6-93eb3a6d0af9@redhat.com>
+ <CABzRoya5wuXoMWuGb_+F0oBc0mCDVrjbXTZsoMwcfRT99Y5z7g@mail.gmail.com>
+ <c980f6ae-ba44-425b-b7bf-511cb6957c2d@redhat.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <c980f6ae-ba44-425b-b7bf-511cb6957c2d@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 96381140009
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1759226880-994570
-X-HE-Meta: U2FsdGVkX1+CuE0HmXkSol3M+qsUEwLlZ5TVPHOb5bJbOBuid2sJbhbJ+dGQhl8Mt2r58lpvtCZ6Okxa9DGIo/lNmei8uB+O6+sVBZJZbpjNjmEa5xsLrb0xIdn1eGJcAt0XVkaIINonJWJQW15cW0QPAEYj3qDvfC89A4Dw8B5l7M8Cgyj1F3eq0uxsLMX2dDNWLsJci9mmXBY2t8+LQTXj5B9zwaLpT6JadNpd+xAOB9fw1WVjvDCufsAvQOirpzy2hnI3GEhxz3lESamw9pd3fkUoXsbSbS0bBV+G2uiC3I94cn9qkDeckNcxJeaTphPsICOL3oNN2xHq7wfnxG/aU4Sq2/lsV+5xMf2i7jKISkMu7tv60Fb1aDot+IotdrW3NFHEDcllKZVinGBfycxXg6L01gX0jgoP0F02/krMXjS9BqOR39ZgJqdVnU6wAnv4PvwsjwMCXJ6O3CSp6johQqXy4TRWsr/BjMDvqy8XaPzipsiHAuueQdQWjMABaR+4DEMEYgT7oAAbC3QD5xq1yHHR4kJw4cJVIPiXMsNqyHjAas9iW5CePDdhes6JjnA+a/cljoX/a3AKx/cxmPTzLbiu7/VYZKqn4SIMQ4vGZr8BObG5nsKY/hyY+qF5c7UE2pxRm6lDlu12A44FBYF2D117UGiVs4KHtUBmnJPfKD6CupavD8pYS10L+qocrOrrOPXFVd2mHqDivn14D0l3xIkOzc0XadGAcRH3NCTsi64REKrjh2sFqmLp/JpQERMMmjmKrX5wPgoaVjcOs1fJkWlyqc1FgwCDqnh66I4vLwVWFSD7rI914Gm0Nl32d3c/7/+E6rjbRMQI/CG1v5JMR3s9UjHrHfz7YpNXTuiJqrs/MzMLOUn3v/lS9QKVRx6Gz1vBpkTjougryVaK8FTj6VrYbOvNuUnMhTf9clphlih1GfMio6RAZqiF5dKuZmutP+hssTwSA8muggY
- nzS2XyC0
- nNV1puM80q7yNX2B8xNBXHha7G6RFCaiTM+nWPDrgbznL0XoUZCbPfKKy24Kdcrbp4VkWwRs08OwjrmmX/yOetEiARqJmqBGA+1mFTSz4u4016yxxXwpPK8QAKqshwpVARhunYKjKDAudYLo9mA6nNVAj1oJx6D5sT4/AAgZHUtr3IlFfFKebhHRMwr14Rkhd+CJQiovzpgixiw6A07GXNZggVXcVMiDoDm6d/rsYmj42VL/WTA2bmgus8ECFB9Sxc1X8JFyKeQ4RtomWP/5EYqO36J6dN4c9URrFP/GJGFqU25SF+dJW+L5ZbDPbrE0HeT5Xb4gWeA0URvo7T/VDmK/qvcIoZA5shQHG+xRNA5GE4YCWJdSyvBmBAA==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: mcqon7hxfzpg9wwtqk7an41ej8rsq8cs
+X-HE-Tag: 1759227219-854784
+X-HE-Meta: U2FsdGVkX18+ePNc+s3AMoXmTS+ZVZQFODIkfHNjeuSeJAwmwjLwbl73iwu2lI3+n+RIAxzxuGUnllahKBs1gXdrstMANoWSXItpIkXZlzeLl2gp34hLijNlLMhbZ+FC+TxqLx/+M1gL8Vje6I0rHNgGK+nkXxZp79vpK5SJJNtWniuuEmgIaIMYfsSPhK+pXYJ9SGV31aU+bUioGUAr2YuG/qt3OyrnEOz6zkw/2qDF7voCEP+EMn8k3sC+eKN6mWjeBAQTNZkTC8oBvfm/9HBDPiZHelqLGTqx2jhS5mw3m5NXuzwE1hKekIWi3Ijh4kAf1cnI+k/K4HqCnvQ1mrNqmQfygVyrmmJFahY8+FUBlAPuezW7WdpHtIAjN9ixPcXDyyAaUriIrgomBRlmNuyTsjBawPGzu7bFUDnsb/MFq9Mf0HhRGC1J9soKU+8jNz4up8/BbWKIf/T0zASgJH+XayCimSp2T6KIJt0MRjp34XSqkWmUeWNzbiKH4XhuGho55zIjdCL9t+Hcu0gaX/XzpDLU9RkIedZO82+Zfja4CAhJID6BpsICjsUhYwd3OokAABtQFB5VbYZVvTNeVx3Ogzftx+Ry0EajsQNZVPjF5ygkfr7s2X6cV/RJfQcfBpytFw/1ChCdqEuZN66MHmrtKFzONs2ZuJVSJMVyuDS1rhSFP9sRY61GRhjRGgQUPIMPjZ1rmRTyuPTsHbhOHWPNUsI99kVOW/fh0ThDaUZlhi20YJjuFo5HJ6xDHekL6R1gXsfg4lqYUhEfilXZrIYs7ZB77oxJMYP01DCFV2tcOVlU5HrkJbUFm7mpdFzDCUs8u/qtzuCazT/wsCKYi3xDdkIbLPkbEBhsGEz2ZtJQT7ybyyGR46gVBUZRMlBfowlFrCLs13A3ghqUsTQvywo7s7ZVLHCH7iveroDxNepOcHttY+6SE4bBToPK87MB3l+sp/18gCg2Zj94GQZ
+ oC6mJcrq
+ Ler9jYDiPM3eXZi3J+b34t7r9KsnQhzefLWUMqAkc4gS9CEEP+GUqqvgy33OGH3C178HwFVTBb4pN4mCFEx0NU/YcBUUwsmmezRgxGjcfazN8GrPFJOSN7DaGzjaxyPUZVLmHY+1QbqkptNOnthc0qYBoE140TaKMsPnPCePAeT/QbbMQLvCFXw3LktbDWGHLjohQ2yvckeb0scn8cEhN5kX+X04LOufvNflGQpYoohRuhUfNwg4AggoHsR6j7x0jnPtLDlX2slH4pd/ULB6I72MQi44a/UCcK/bgfwx7AdZcUjO6mpc6tbXa41sthUjaQXI/WiiuVtaN5CwAmwjhk+ujTr3R5WmxD1PUoDrGqrYHvAg+75J5ALzAflR/fqypv3PLVIRIkX6+vJo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,32 +110,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 30, 2025 at 11:36:53AM +0200, David Hildenbrand wrote:
-> On 26.09.25 23:16, Peter Xu wrote:
-> > +	/**
-> > +	 * uffd_get_folio: Handler to resolve UFFDIO_CONTINUE request.
-> 
-> Just wondering if we could incorporate the "continue" / "minor" aspect into
-> the callback name.
-> 
-> uffd_minor_get_folio / uffd_continue_get_folio
-> 
-> Or do you see use of that callback in the context of other uffd features?
 
-If someone picks the gauntlet of refactoring the loop in mcopy_atomic()
-we'd need a similar callback for uffd copy. And as I see it it would be
-different enough to warrant emphasizing minor/continue in the name here.
 
-I also think we can drop uffd_ prefix for the callback, as it's called as
-uffd_ops->get_folio() or whatever it's be called.
- 
-> -- 
-> Cheers
+On 2025/9/30 16:53, David Hildenbrand wrote:
+> On 30.09.25 03:48, Lance Yang wrote:
+>> On Tue, Sep 30, 2025 at 3:07 AM David Hildenbrand <david@redhat.com> 
+>> wrote:
+>>>
+>>> On 29.09.25 18:30, Zhuo, Qiuxu wrote:
+>>>> Hi Tony,
+>>>>
+>>>>> From: Luck, Tony <tony.luck@intel.com>
+>>>>> [...]
+>>>>> Subject: RE: [PATCH 1/1] mm: prevent poison consumption when 
+>>>>> splitting THP
+>>>>>
+>>>>>> Miaohe mentioned in another e-mail that there was an HWPoisoned flag
+>>>>> for the raw error 4K page.
+>>>>>> We could use that flag just to skip that raw error page and still use
+>>>>>> the zeropage for other healthy sub-pages. I'll try that.
+>>>>>
+>>>>> That HWPoisoned flag is only set for raw pages where an error has been
+>>>>> detected. Maybe Linux could implement an
+>>>>> "is_this_page_all_zero_mc_safe()"[1] that would catch undetected 
+>>>>> poison
+>>>>
+>>>> This sounds like a great suggestion to me.
+>>>> Let's see what others think about this and the name (though the name 
+>>>> already LGTM 😊).
+>>>
+>>> The function name is just ... special. Not the good type of special 
+>>> IMHO. :)
+>>>
+>>> Note that we'll be moving to pages_identical() in [1]. Maybe we would
+>>> want a pages_identical_mc() or sth. like that as a follow up later.
+>>>
+>>>
+>>> So in any case, make that a follow-up work on top of a simple fix.
+>>
+>> Yeah. IIRC, as David suggested earlier, we can just check if a page is
+>> poisoned using PageHWPoison().
+>>
+>> Perhaps we should move this check into pages_identical()? This would make
+>> it a central place to determine if pages are safe to access and merge ;)
 > 
-> David / dhildenb
+> I would have to go into memcmp_pages(). Would be an option, but not sure 
+> if we should rather let callers deal with that.
 > 
+> For example, in some cases it might be sufficient to just check if the 
+> large folio has any poisoned page and give up early.
 
--- 
-Sincerely yours,
-Mike.
+FWIW, one idea I had was to create a unified pre-flight checker, like
+folio_pages_identical_prepare(struct folio *folio). A caller could use
+it before a loop of pages_identical() calls to pre-check a folio :)
+
 
