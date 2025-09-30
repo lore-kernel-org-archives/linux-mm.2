@@ -4,69 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59309CCA474
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 10:37:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2890CCA471
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 10:46:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B57108E0027; Tue, 30 Sep 2025 06:37:43 -0400 (EDT)
+	id 59D748E0028; Tue, 30 Sep 2025 06:46:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B07818E0002; Tue, 30 Sep 2025 06:37:43 -0400 (EDT)
+	id 54E858E0002; Tue, 30 Sep 2025 06:46:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1D448E0027; Tue, 30 Sep 2025 06:37:43 -0400 (EDT)
+	id 48B408E0028; Tue, 30 Sep 2025 06:46:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A1C78E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 06:37:43 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4FEFA5A437
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 10:37:43 +0000 (UTC)
-X-FDA: 83945565606.29.0C5765E
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 387B28E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 06:46:18 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D15E4BAC7E
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 10:46:17 +0000 (UTC)
+X-FDA: 83945587194.05.93D853E
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 6A12BA0008
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 10:37:41 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=BcTwBBrW;
-	spf=pass (imf15.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 0865040003
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 10:46:15 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=QTjlXH2q;
+	spf=pass (imf04.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
 	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759228661;
+	s=arc-20220608; t=1759229176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Nc2h7glBxt5xx7n96Lm8Ls8CG8CiBezBcmaA0eivQdI=;
-	b=tEnqkV8C60UWHNVhEm5DWkyoHmffKvhHwANt+x5DjrmaEQjrZ6lpSrUICP9F3d/RmnXeP8
-	Ml1/TROOH4zNoDTs1NWxKEwqxQ8v5pjQONKqkYz9q15udjVvrtgyhaW1m3P/H2wuGA161x
-	yyMauo50lrKZ2wrfzWrBGSpFD/BEps0=
+	bh=S4KYOVAfG2EDjCiQPVHu2HNjEnQ4vyOLnqlxFq3af60=;
+	b=iKe0t3AY5RFzS1QddMNxcDQtI5G0cEvi0zA4dXMTy++kBCHYEHNojyNMQzSW3pB7FY4QwB
+	UgA+f45Z2QkWNmuFUUAhY7udkM8ULyW9z93a3XVYUTamq4pcHDK1DgfkXH/tviz3YlZWOW
+	w5Te0eSUdf8f6pZFDRa+gVXS4mNxJ4c=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=BcTwBBrW;
-	spf=pass (imf15.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
+	imf04.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=QTjlXH2q;
+	spf=pass (imf04.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
 	dmarc=pass (policy=none) header.from=collabora.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759228661; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759229176; a=rsa-sha256;
 	cv=none;
-	b=4SZjXHbB3/D+lpDH0xU8U41EWnisotLN5pyR8GSmCcPFxUaBJU5LP/GYc63jvrcs3AHvtw
-	W28t86lJaPjFnEnvao8cgjJJWj/4CidMemSU3mOYGLMcX2ek0hhpVYteo7bZaLm8WfRsVw
-	dgLN3YO/HiqehQDlJEU/HGjYhlSvx5M=
+	b=U2/BLJDkeqO45xh9kpLjqxpv73wMJwpd1g0WdljvYP0s/Duxh/+AOo2HFfyBfe5+ldN+qy
+	qHClNzEDdX4SGwFQfyH6hSUGmqFou0kI46ZJngO4yzdV4rEiVFah60JPzGwddfdcl2c6j1
+	uhyJh/QpCs5Zj2LjwYXsGvLUoxsdEVI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1759228659;
-	bh=MMIyOgdHnuGM4uEoQQLpGnCP70/OAeedxU02J/5zTEg=;
+	s=mail; t=1759229173;
+	bh=D7FPMpVUID4VWIVsRLfS5OjhCnjT47sZGTl0id6lZQU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=BcTwBBrW+yRD6eriWbZ42c2oQO0j0hHeqx5JV8UhHtjJWUIV9QhoSoxmg2XpIDyms
-	 lz4tNqJJXoIRt/bUJ48xHdLS86A1CwPFTFHKkOzuulzseeIHYklcAYoKneep4Rs2A4
-	 QamQa5Sp313UMIvSQGLQtKA5d9jkwmlKfKZr57hSEVSrLgNV48osU8VZP+O+RM7XaB
-	 VpZrQl1XhODJLADRUsuW7dNaJOugL3bRX7qvCmoSOZhl1wp+cYo7nWgfct6opzmWKu
-	 KKDbmEhiIKqKi2PsDE0Weo3zTPGgd38cpmHb3DB1ZeZSel/nuOIhaYysMN3VXUnGzA
-	 skvbg3IV8yilA==
+	b=QTjlXH2qlSMLT94RF69MdmWM6gnsmuNpbnGAeDVk1OFSCE7ihPVo6rNvTIG/Tpe8w
+	 vNGepnhvL010tfDYKJQl6E05PrKb8kutNjqacgZjs/Kq5Hss/drZ9NpqvKNbm4J2pC
+	 8HxDIJ7eFltlQetIVqrN6rrC3ye9kzs/tS+mOE/1FOm2Q4+S/Ef7Ouj35S5BMygvHH
+	 5xxg9pkWPGbseOA6vdpLQwJmreCPctFohglY6D0BHYsgGQVNUUXyoJeKZpiFa9qXs6
+	 PpSBuODe7zdLCk3IdG3klbaab4KPtqvbO+ITsVd+nISzyN9TkGdbvJOT5rJNB1kOhk
+	 SW9R625asBKbQ==
 Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 19E9417E124A;
-	Tue, 30 Sep 2025 12:37:38 +0200 (CEST)
-Date: Tue, 30 Sep 2025 12:37:32 +0200
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id B361117E0CF8;
+	Tue, 30 Sep 2025 12:46:12 +0200 (CEST)
+Date: Tue, 30 Sep 2025 12:45:54 +0200
 From: Boris Brezillon <boris.brezillon@collabora.com>
 To: =?UTF-8?B?TG/Dr2M=?= Molinari <loic.molinari@collabora.com>
 Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
@@ -84,24 +84,25 @@ Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
  Gote <nitin.r.gote@intel.com>, Andi Shyti <andi.shyti@linux.intel.com>,
  linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
  intel-gfx@lists.freedesktop.org, linux-mm@kvack.org, kernel@collabora.com
-Subject: Re: [PATCH 7/8] drm/panthor: Improve IOMMU map/unmap debugging logs
-Message-ID: <20250930123732.43e6987d@fedora>
-In-Reply-To: <20250929200316.18417-8-loic.molinari@collabora.com>
+Subject: Re: [PATCH 2/8] drm/gem: Introduce drm_gem_get_unmapped_area() fop
+Message-ID: <20250930124554.5459194c@fedora>
+In-Reply-To: <20250930123003.75370854@fedora>
 References: <20250929200316.18417-1-loic.molinari@collabora.com>
-	<20250929200316.18417-8-loic.molinari@collabora.com>
+	<20250929200316.18417-3-loic.molinari@collabora.com>
+	<20250930123003.75370854@fedora>
 Organization: Collabora
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 6A12BA0008
-X-Stat-Signature: iaxpg7fqgoyknw416tojyxxymr1x8zer
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1759228661-473140
-X-HE-Meta: U2FsdGVkX1+Fsj+EC+GpuUFm/r/+8wJdmVR22GE8TJWNKarQ7ACpWzPRRDxTnjhzYTYyBMfRq/Lw528yq6ZYExOdW35p5ntm/U4uyd2D3fZkS8RCLmwpF7X3E5KOD6XYcChj0nsXK3PQxBbRZO8j3pvDO6u5G1/k+JrjaSsxLdN+VdVswVxW4R/6ex4XDtkpGXnpnxeHnSHaXFCeIuEEjS3yyEm+yFWB2LdanL4dvmfMgvx4whRxLZ+NVsRCw6i+wbx9ENbCBq3hlMFF8FaujkdWmvINg46Qz7ZK+iXxsZZaL8lAHcgYrmI6NxmlufoCTYoqoL4oggFEV9EsSBBMq/2tePKkkw9iB3Rx6yjnCshECxMhb0zsDBi+qNUpvVks7WZLnmRYQJrtl6aiW3oNpvhmlv+yNSVuK85OL1HXM6KW5MtT2yqHbChdcv9YmdGqlKUT2p6BPU55bL3/b1cL3qwe7D77Rwjabum8XDrYLsoaAp+6ZAyrr8Qced7GzNDSaKDW7NVQexcWuz51M9tWis7+DxRaXs5Y7RqBg1D7XtNA48J071mnZGbOkbur0F9H6/Lqvo1O/+S2h4ZbpTFOMLpdzChZBMORbeTAk1NObMSzKPPm1EXsMscqSm8wXUw16uATa9ltvnTLZ1RbYTKdSwoSloR4ugDE7y0s7h6IFpVJ/2q27Ue55bIMVnVphUJRzSYe2e4jjMcpQaMTZIVeDxESDfmDyyEq2X2MFmAlj+50ef9FgxlJgyLtWX1Ih8Bxr/tTsVMzY8n/QxXn9Ck45DNFVjNr3/IU3UR2YAgYj8J7FAomBmCE86QR7d6LIFr9bpCnYwJ5P7mE1i4JnEG7wXBdgXuJ8cXzG1TTyV2sR0Ovs8R8HUF6QMoNdlWY89yXPPe3mcJpVYIdCoDc08RGjIKdaKSElhk+++q5B3swr32oIVNM+hTMUlePPnYAayIkOm0QtRk0LsrtKm6NA4r
- tQYyz3lJ
- nm8jFn4EtLiRuqvee/Ffl8Y/xSwKJCx/0X41Njy9SC/j4VK4JKJCFjn2MyZW/h08TmYH+UnlT+zOChydiMEHhpgGpXhfQnb9xD1PiULtOpcVaecv9bmXAUWowAkjH4AleV7ZI0vvBpkNhZLA7ovFiv0dObVJr96nQ/elVpah26w7S9TQu4RdgUQUsp+yV1e453BecrsdVMwZ32MgwxCAsIIa+IlzcD+8uBTm4qz9kTZfcYdhPnDQ9LWvISWCAVVRuVViYGk3RfV2wXqU57QlGR66ELN5kXv9owU4i+S1Urp6pRDeBPMXU5PYjqrZan5ucprvtfBIlE4FNncG8LpE5tZzCEbZigT/t99OG+R/bAqEf01X8ybPB4w9WWPc0/IpdMuVHU75R4wSe0aOOYoKKxYYAgA==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0865040003
+X-Stat-Signature: 76b5jumqufn5stgnwo7u3a3gha9odnxk
+X-HE-Tag: 1759229175-19626
+X-HE-Meta: U2FsdGVkX194oJ+kQip0DmiqCjjVcnEK2HGEOYBPmr+s4G+/uBO6HUa0hyeniihlivpQbb3n0dRhfxzxP5mOlWelFEvRSycTujNWKu5hR4dzQD0J56CFH0mq4jBQFHX+hJE/wI8xzBM1vCqUGEZq3hmNnHIHdpANb77R0tXMTAoF9KZaq3N50XKQjCNbh4O6P8r3+qSd8ez7Pij81BH8JWTCljZdLDCpdbhapsxTr5dPxYaH626+aWNiGiISHAtRij2vTI38YdNIUl92EpqxTwVo3z4glXQ1rx2CtgVERgUTGp3GB1RI4o6IDC5LwWt59XrZlhzer+wiFEq2PXqdPiqvX3rTN6uEU6KRJ1jQeEmShn7/n3XOUwyE73mIUQGGXgU2uinMyHEHzD1Km7YvaDzq3YniGKyOP5mNFYKv5/Edzlnj5251SAs+m5sjGYJj0wmvzsTO4C371KrGolsh8kZgEFuwBNz2UdpM9nW6SyaUgGbEavfOiVoOxAyHzzgUz0UMA+857xdsXYVNmkYSHp/AkhAtEGGbdd28WCjceV0rv00hkUAQWvYFtkIwPRthSrqqwLZtaSQ48m7ri4J3g93NxJIgqz0Sh3S8wS86mO9zSfkr15N97c3BYN8SIafuzXDKEOZY7kPexWyKWbGroL9p+02J2L8y0NJrvfpuw6edu1o7b6JMExB90Jk8Oo3jCIGXnMiAakJlkdHZL/eug8Fzr2wlSaNZdRTZlTsVJfMgricnKSSILOU/9gB+EjJAtfq7sYY6EiALRzqgOz7LEtf0hkRTGV8MmOcm47bXo8V8lrcrLi68E1DYYHOCnra+FAAoTgEwcniTqUHowJCclhGSlA2L1woU736VQViYRCMRAIgSXA5ko7BEUsFaDau1mETcdk7Jxe7OIQDLQjiReZktvhmjDOq4/Sr+LGXI3JGeJM/ZVkbeB66vzMDozQBTTBlkIIqQLfe2yTqwHIu
+ FG68VtbS
+ RbEHgfR1+eFunczr3FtSrKhwOl+ginlIXOT+tuzf3Jyh2rRrJHaUE9PtcgqzjELdSYmLJi6M8WP3Qy7wYF94itfqLcPL7J09QuISa0KMJTQNbFMwWYNcglKfRbGyOtxp/u1ZiPP/k9kpnJAvZaE97MiW7m15vcmCNh7jlaBtiE3CIfLXpgLBfXgLDFML0W0wbdHb8ww6lcWXJrzpfTCm/z/Cxyj+3QI3zYnXNIe7euP/pYV8d3EyR9y0SkcKkERLFztYIr98BnDZ8lHaZ3WhGJjTIpNwyJbONWpkPBzPFq3LeYCcIOOgcznkKDuBxFxGUtwvEoU55+ukhY/kL3vVyC2unQtfyDBajxSwGC+5DY9OkpZhRjP/4Tn+TRJ1OrsVNxegI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,90 +111,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 29 Sep 2025 22:03:15 +0200
-Lo=C3=AFc Molinari <loic.molinari@collabora.com> wrote:
+On Tue, 30 Sep 2025 12:30:03 +0200
+Boris Brezillon <boris.brezillon@collabora.com> wrote:
 
-> Log the number of pages and their sizes actually mapped/unmapped by
-> the IOMMU page table driver. Since a map/unmap op is often split in
-> several ops depending on the underlying scatter/gather table, add the
-> start address and the total size to the debugging logs in order to
-> help understand which batch an op is part of.
->=20
-> Signed-off-by: Lo=C3=AFc Molinari <loic.molinari@collabora.com>
+> > +unsigned long drm_gem_get_unmapped_area(struct file *filp, unsigned long uaddr,
+> > +					unsigned long len, unsigned long pgoff,
+> > +					unsigned long flags)
+> > +{
+> > +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> > +	struct drm_gem_object *obj;
+> > +	unsigned long ret;
+> > +
+> > +	obj = drm_gem_object_lookup_from_offset(filp, pgoff, len >> PAGE_SHIFT);
+> > +	if (IS_ERR(obj))  
+> 
+> Is this supposed to happen? If not, I'd be tempted to add a
+> WARN_ON_ONCE().
 
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Taking that back. I think you need it for non-GEM backed mappings, like
+userland IOMEM mappings.
 
-> ---
->  drivers/gpu/drm/panthor/panthor_mmu.c | 19 ++++++++++++++-----
->  1 file changed, 14 insertions(+), 5 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/panthor/panthor_mmu.c b/drivers/gpu/drm/pant=
-hor/panthor_mmu.c
-> index 6dec4354e378..aefbd83d1a75 100644
-> --- a/drivers/gpu/drm/panthor/panthor_mmu.c
-> +++ b/drivers/gpu/drm/panthor/panthor_mmu.c
-> @@ -917,10 +917,9 @@ static int panthor_vm_unmap_pages(struct panthor_vm =
-*vm, u64 iova, u64 size)
->  {
->  	struct panthor_device *ptdev =3D vm->ptdev;
->  	struct io_pgtable_ops *ops =3D vm->pgtbl_ops;
-> +	u64 start_iova =3D iova;
->  	u64 offset =3D 0;
-> =20
-> -	drm_dbg(&ptdev->base, "unmap: as=3D%d, iova=3D%llx, len=3D%llx", vm->as=
-.id, iova, size);
-> -
->  	while (offset < size) {
->  		size_t unmapped_sz =3D 0, pgcount;
->  		size_t pgsize =3D get_pgsize(iova + offset, size - offset, &pgcount);
-> @@ -935,6 +934,12 @@ static int panthor_vm_unmap_pages(struct panthor_vm =
-*vm, u64 iova, u64 size)
->  			panthor_vm_flush_range(vm, iova, offset + unmapped_sz);
->  			return  -EINVAL;
->  		}
-> +
-> +		drm_dbg(&ptdev->base,
-> +			"unmap: as=3D%d, iova=3D0x%llx, sz=3D%llu, va=3D0x%llx, pgcnt=3D%zu, =
-pgsz=3D%zu",
-> +			vm->as.id, start_iova, size, iova + offset,
-> +			unmapped_sz / pgsize, pgsize);
-> +
->  		offset +=3D unmapped_sz;
->  	}
-> =20
-> @@ -950,6 +955,7 @@ panthor_vm_map_pages(struct panthor_vm *vm, u64 iova,=
- int prot,
->  	struct scatterlist *sgl;
->  	struct io_pgtable_ops *ops =3D vm->pgtbl_ops;
->  	u64 start_iova =3D iova;
-> +	u64 start_size =3D size;
->  	int ret;
-> =20
->  	if (!size)
-> @@ -969,15 +975,18 @@ panthor_vm_map_pages(struct panthor_vm *vm, u64 iov=
-a, int prot,
->  		len =3D min_t(size_t, len, size);
->  		size -=3D len;
-> =20
-> -		drm_dbg(&ptdev->base, "map: as=3D%d, iova=3D%llx, paddr=3D%pad, len=3D=
-%zx",
-> -			vm->as.id, iova, &paddr, len);
-> -
->  		while (len) {
->  			size_t pgcount, mapped =3D 0;
->  			size_t pgsize =3D get_pgsize(iova | paddr, len, &pgcount);
-> =20
->  			ret =3D ops->map_pages(ops, iova, paddr, pgsize, pgcount, prot,
->  					     GFP_KERNEL, &mapped);
-> +
-> +			drm_dbg(&ptdev->base,
-> +				"map: as=3D%d, iova=3D0x%llx, sz=3D%llu, va=3D0x%llx, pa=3D%pad, pgc=
-nt=3D%zu, pgsz=3D%zu",
-> +				vm->as.id, start_iova, start_size, iova, &paddr,
-> +				mapped / pgsize, pgsize);
-> +
->  			iova +=3D mapped;
->  			paddr +=3D mapped;
->  			len -=3D mapped;
-
+> 
+> > +		return mm_get_unmapped_area(current->mm, filp, uaddr, len, 0,
+> > +					    flags);
+> > +
 
