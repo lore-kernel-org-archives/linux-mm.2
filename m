@@ -4,101 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78BFACAC5B9
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 07:31:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49405CAC5B8
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 07:32:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D338F8E001C; Tue, 30 Sep 2025 03:31:01 -0400 (EDT)
+	id A29918E001D; Tue, 30 Sep 2025 03:32:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE40D8E0002; Tue, 30 Sep 2025 03:31:01 -0400 (EDT)
+	id 9DAB18E0002; Tue, 30 Sep 2025 03:32:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD3628E001C; Tue, 30 Sep 2025 03:31:01 -0400 (EDT)
+	id 8A31C8E001D; Tue, 30 Sep 2025 03:32:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AA2418E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 03:31:01 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5F90544472
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 07:31:01 +0000 (UTC)
-X-FDA: 83945095122.26.AA0AACD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B7F2B14000E
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 07:30:59 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=F87Yad04;
-	spf=pass (imf26.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 74A7E8E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 03:32:40 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 18E72160627
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 07:32:40 +0000 (UTC)
+X-FDA: 83945099280.02.88A6C00
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B01B8140002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 07:32:37 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iFNYt0gw;
+	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759217459;
+	s=arc-20220608; t=1759217557;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L9yqnF4M+qCDA9000pqzfMg6QdUSOLGidqM7b5HtStE=;
-	b=cNslElxJfk+6RlMRHrGB3E7zXR+GwK65byaiP9GHNPkn1AkkzgkONUT6qkkL1/GxMMGurk
-	BzqzzNuGEG7DjZISNkua7Zpt01jf4xlCWQowSWNo3xb4vxllHINsfMpVpT1WcDh/paOxXH
-	I7QnubUClhrDVf3OXQyPlMq3J+5Y4Vg=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=F87Yad04;
-	spf=pass (imf26.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759217459; a=rsa-sha256;
+	bh=kx5kJD47lwmwEdMug0EQxUJ+vdmo/Qnc4VmJ84EJ4d0=;
+	b=SAjwgsW083MHjQFK8GWYzj9hl6RDihpg4DZXgjpUpwBHZ30M5vkLVU62QW4MQZGCaBbdSA
+	Wy04vVUarhhp6dqQDZs8G0B8MLCO3AebOsxZQoVvMTcn3jTanR68sXLg9Vf4jzryE1oGar
+	K9wkCqzSsXz0/8xiArVB+GrYTN9/8kc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759217557; a=rsa-sha256;
 	cv=none;
-	b=LSLDZRib4FIGe5+c78wkkml1iXKUxtYDf7XXSptUkc65bT1iIbTtgwMjdURA9a4q2U2loM
-	uM/JELHzPGN4GMnPb+yrMGCV3Xnom+LdZt0oVELDexA1Sw8VSv37io+VKkqVfXa0LHJVyI
-	LLYlzdmpSQx1xBgfm1if1XQasO/ry3A=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D398A603F3;
-	Tue, 30 Sep 2025 07:30:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71C8C113D0;
-	Tue, 30 Sep 2025 07:30:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759217458;
-	bh=JQzf0lGVVh7uBp1GGrgRG3aOLt81vd3Z1vJ+MdzJaUg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=F87Yad04oYGKqR0yrv700Kdv7cMA7yYANQZWxSzZfBGzhhGL/AY0n38vF/CbS1+uS
-	 xoHf7BEDW8mOIaQN7Wk/lwIKl4Yr4ZCcSIRmUMKAIta02I34naQImlmh2K8ES0+J0J
-	 37JGfcZ5Fcjrg+XvYNzoB1zs1jcuvaeDiG8rOpUd6KE1U67TY/2JY6hYEFcEF+3s0j
-	 KRocY0sJEKrIBIPmUsJmcRcbzwrkU9tKLg/YjlOL+FaI0JgPnlof0Me1fLbHLHzT1r
-	 DpZwl2Lrtc0E2Q7+85ZBPdg92JKatMeAQHBu3PCoTknvQScfYkwgCaBKVjyqnL/Fk+
-	 VbrIksbpXUNYQ==
-Date: Tue, 30 Sep 2025 10:30:53 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Alex Williamson <alex.williamson@redhat.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-	kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org, Logan Gunthorpe <logang@deltatee.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v4 08/10] vfio/pci: Enable peer-to-peer DMA transactions
- by default
-Message-ID: <20250930073053.GE324804@unreal>
-References: <cover.1759070796.git.leon@kernel.org>
- <ac8c6ccd792e79f9424217d4bca23edd249916ca.1759070796.git.leon@kernel.org>
- <20250929151745.439be1ec.alex.williamson@redhat.com>
+	b=XBWZmkpsJpTCM1ytCkLUE0/q/VB1P5WiJSqnKk8QGBQC2DkqnR1yA0VfmLSEMVkHc06maj
+	sCr1VTGJr7lrU5pZVLoypIV31AbLkwtA+8dXVyVzlc8hHOOWWEdSCVMsAHU7/3OKujmS0c
+	kqfezjImcm2F4Lsh3t+aEIzKQrfqC/Y=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iFNYt0gw;
+	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1759217557;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=kx5kJD47lwmwEdMug0EQxUJ+vdmo/Qnc4VmJ84EJ4d0=;
+	b=iFNYt0gwLiB96AlMS4GcI0eXBm+z3WeBmQWgGHA6GvHtq0M4hLPNrBDF2BZH7gejjAkscC
+	W5igCiII+/h/Qhox/2NOzTbdpfBpvEWNkBSnJ0Ot4+lOamwYFg3UQa65phOlkOBeqKSaUc
+	z90OkFHsxxffAuzPsQCyBeVFVpSLbFc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-359-e-mDwHqOMsG1Qb-oDmThvg-1; Tue, 30 Sep 2025 03:32:33 -0400
+X-MC-Unique: e-mDwHqOMsG1Qb-oDmThvg-1
+X-Mimecast-MFC-AGG-ID: e-mDwHqOMsG1Qb-oDmThvg_1759217552
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-46e502a37cdso11822365e9.0
+        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 00:32:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759217552; x=1759822352;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kx5kJD47lwmwEdMug0EQxUJ+vdmo/Qnc4VmJ84EJ4d0=;
+        b=lB7ZmEbFfoeQDPaEAFiNxkI5K3u5F3HYkhgFFYUwVdHb+HKkyYk/rEkvpQbTUsXCgM
+         +9wDXP3G+0bCqawZzLGnO0Rknlt9qrUxNwu46mGbGRmtVNLC/KvCbvrpkCGMR3exWBF7
+         jUUBPzvVaf4c7I2Nn1Js1cpx9SCeuNcuYpK8WNZsTaJp531dTtxOfVIQcRK1g4HramJx
+         r3wktkqpfDSmsPuThGMW/uaa/MbJQVFUhU6VOSEiiAueya0F3J4Qq+gfLhEenNXDI1aC
+         hkbIs5LP2IQNCdgWs73DzVhCRV8cNwzU5skVp71O9HYWnioE3U+cWgrlcZ4GIPC46Gfj
+         TwZA==
+X-Forwarded-Encrypted: i=1; AJvYcCWsSx6brlSNHdT+Cfg+FkOnRohFV7Z5B/hesbuKnAQ2sT7NdT99tq3pDDG0h/f91X10lIDM/AUSSA==@kvack.org
+X-Gm-Message-State: AOJu0YwxtjE5ncJschYrjoUlebarWp7wpTLmCaXF6M/eJQSDcpDKJOTY
+	zYrAgJ1qZ5vF/pmAqei1/Nkz6+nZAYD46s9T0chnC8x5sJ0PyuvDU8BHVYz3SRxHTLZfRnTvP55
+	pY+CNytwzcAGCdqWa78k0ppQhdUGobW9zesguMRCw3pvwroj0IxNf
+X-Gm-Gg: ASbGncsIl5aUmGQFLdYHRuXNhuhoJQ25d+PLNxt+TUWtN8iPB0xtlSXcK70UgoN51DF
+	cI3l03AcdhqxlZlt9bdjOs2CFBWuxvXj+j+tfP4AfkPbIvn2jzV5xpVTSZg9Llixfg9miejvB72
+	GVMD4WbwulQtCkRGN9oimqVVEq5kogtKb74BaFDSQ/sIWhWndWtShUqhj+q8zwbbrqW+2nXsJTj
+	SLqQF2nZVFGRwWC4sklbPqWvf00w3j42NGLbFYH5YmXOSd7OozUs1VabZD/1g7e5dHXvQ4muKC8
+	ZqgVNgLfbQCYW7SKK632YLFsubOh28b28wqfMKH0fBnvSHB+Cs5qtgIAvfA5LP4VrmByG2hkvor
+	ZlarfTNHk9A==
+X-Received: by 2002:a05:600c:3b10:b0:45d:f83b:96aa with SMTP id 5b1f17b1804b1-46e3299a5aamr165320545e9.7.1759217552130;
+        Tue, 30 Sep 2025 00:32:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF4B7drdL4EeWrqkWa+uMSppFVKBycAsK4wlNYE6Vh0G6TeYmxyF48M7zZXFvsuApXLRvCrnQ==
+X-Received: by 2002:a05:600c:3b10:b0:45d:f83b:96aa with SMTP id 5b1f17b1804b1-46e3299a5aamr165320325e9.7.1759217551698;
+        Tue, 30 Sep 2025 00:32:31 -0700 (PDT)
+Received: from ?IPV6:2a01:599:901:4a65:acad:d401:ae54:edf3? ([2a01:599:901:4a65:acad:d401:ae54:edf3])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e56f64849sm43391315e9.11.2025.09.30.00.32.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Sep 2025 00:32:31 -0700 (PDT)
+Message-ID: <02c8cf41-116d-46ab-9d40-803cc26dbbf8@redhat.com>
+Date: Tue, 30 Sep 2025 09:32:24 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250929151745.439be1ec.alex.williamson@redhat.com>
-X-Stat-Signature: ysf7akfpw79uu5e9yr1jcixrw59p5h9f
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] mm/ksm: fix spurious soft-dirty bit on zero-filled
+ page merging
+To: Lance Yang <lance.yang@linux.dev>
+Cc: xu.xin16@zte.com.cn, chengming.zhou@linux.dev, ran.xiaokai@zte.com.cn,
+ yang.yang29@zte.com.cn, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ ioworker0@gmail.com, akpm@linux-foundation.org
+References: <20250928045207.78546-1-lance.yang@linux.dev>
+ <e74ae9da-9dfb-4673-ae9f-c0b27b796cf0@redhat.com>
+ <8476e9be-3f80-4d7a-9a38-f910661e61c6@linux.dev>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <8476e9be-3f80-4d7a-9a38-f910661e61c6@linux.dev>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: J3BJEhS343_dDWwJC1DRTUlDIVGOpVxpLqIRJgEgOLU_1759217552
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: B01B8140002
+X-Stat-Signature: r61qac84z5d7npnkrqh3um18t7praqyk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B7F2B14000E
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1759217459-736350
-X-HE-Meta: U2FsdGVkX18wkiBQpxHY0gj1SuAQt3uQHbBVyIo0Q/qgUN6YbLj8HgslEg+WCdAj88g/2dzfD8qUrQcFEQ4Dotsp/g8qRgANORp13a/yj40vBogwsFFJ9nFolvoWE+ZBhRb9ufZRft0NAE2xHZ5DZXQxSo25Bz3EgeWQ7i+pdD3skx4LCNxYK+MbFjx/SVj+5el/EVmd6pH9eWggstC/ELy0QhLQ38LHg3Om2UXwsj9Cdq9tPKHT+4TCBsKz08HD1YRamMOs7reprUPrkCqgCI9hCXuq38IElhMeKFseuHvQZ42dus98EK3+4HiI1M7ZGlPGnhKT4FHJ5BpL7+2RSsRtLtTBnSFK7h1KhvN6Z3uzkZv0M+ez8l61/WC3g5s6mP2y7xebKJwWaVcX0XhtCMpKV+F3ATwjAJUi4QeCgc9TWOLAV5VJ7S4frQxVWOcMBNmDMli2+Ue5Kz0mG+8WT+a2CNo9/OpWznYzGurxaGRAkBF7W8kTMtjvmXYAh/QcV0wUOefSHCFCp/MFwchTw6wZwHbLys5W3Is6nEfC4SxmGIMUncQk+MoGPItYi374kdB3qtM+b/EQsvmkKODD5QVCAWHUoWVHXQMcE1mw5LiRacdIRM+o1ruiVDnguufofTG4Fb9mGhdg4pikhh6r5M0VCI7ZXGkGADt7BMNEkkHA1VPqv3b/OqzXxGeINGq+47d7vTEUJQvlW+EZrr46kloQ37W67wz9Xx1I5fy4Ke+c2ev23cGsAEJVmakdbFYmWDHuz8wZub0JSMTXUmX7sEBRZDWE2vqgzlubz/cBxjY9GDHanBPGzj1OewUQX8TPGXqW9PnIiY65E6K5L1MNGGZog/BlWfPwUk+4Byk68DNSXjYy6ARwUY0Yk4Fb32Q82+mL4wzL+G0vAW++DZEE/kC4PlgpbUtQWZpn7CJNKaIwwEEr6lJJrKlL+p0xAI8uw7sGlOvfFvCKy5bs9sL
- fD/Mr//n
- fwsbKOgc04t3CmCbxB5hVKPewlOsf7/US1/ptpVm1PVd90OkbrBLzvnTOrhVkLoKi9HwxrlefQKQDO3EV+FVJzIdgtDWsz3kWsdKmWizka+du4kMxO4E7VUSMpDANj2jZD9SCVF/83o54n9uYSiKi5nK3Ql91iAAl02Xr8uZ7+2a4XuYEOnxU/y77wnzwgMDm3XO7Hom0rdKllhsRc7obfTx7lVxgI8eRTQGevvi1aFWmiq4o+VI/NOqaoitKJ/CmESrrACnc4YXqrwyk6uKlGxJ3VjQMtoRKKJs/6NfLwkJvBp0=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1759217557-766435
+X-HE-Meta: U2FsdGVkX1/hRMqxDdFRcxEcnJWGoJ1JnyY9NgOha1SP+B9BTPE9KeEgF8uzabwpIJkrmqHAq0Z+cJb/jdQjhGLUM8pSuPCnGxo9QemgQJjmdoDRa1hYhH5HSkKjg8ztsNM6kYASqa4s5ESFAAVAGxM1PU2OGxVvtMxOlx54jNJ7gQ3At59ARF1ehG5guCxSAQuspUJiJdCxi/i+hgsMDY7+oX5tszq1cLTg2FDhAxbhp+pt6wSLT+6s7Dlp9J9Yi271tS2ymO8DeyhMJTVyFBHS8MDIZ43ZnbEKsjO8ZCD1K/vzEpLAsMpqwCFznOU9OtiKgRN5JbqbR/bZKwbPUXXjS+o0KubVTOc/A4ZPHzw8gbQ0adnLTz3ndna6sOead+zU+Xz3QVLYS4w9xstiU+bBSrhoDMGL5oVW6Pg+/g3YIb/7z5NU3ag6R+FZASqR56dcl7H1gUQwIWUltuRrBCDc1V5Up0Bg3u6a0hhnrbmZTMT14L1OKJMoUk9YRsgTO1tKRFChbAw4NPCh+1h2G6bTzXqAsQWm7y2/qhfjxSQJvGN79FsKfd2E55jNE3Ut+nJ5aKuav2Jfn+y3y3A/As251LRYD9i0vK4KTtldyXnh8tIDwkp6fLcsgSYYv9GWHm7WPG/Qu3T+gH3nJACXBLoGl/zfMqBOfynqg1J7YCIVj+Z4KVTHQZ/VgjBT5qXPTT3YzT+nr+WI1Q/5m7vzmy6YjmyEcjgmc3HBWD5IoR/Y6eh3pODAtvC8AH4dTmzBS4eJ8wOYm/1hDUp402PbhQ8xMAGz2UDYdWcjm5m4rD2kgvhIJELuuFwIQn7n2fd1ToCtdXUkNELb5JtUk2aJOIcKa9OB6QprSCOzjteH9F6kijd3Ll6eocWR984SRBUpG8bKTqNN8MvbKgs3e781py3t4d/eueuKAYPo5fNo/SXjgKsYN5/GRh5/2yVdt4exu9FBSzU4/3ynRgmXN24
+ Z4yGgNqd
+ kKnnVqpwbZ0kZG7vxtOcxyoiYbj8usZVhlui2NQPncrqY8UhygppgwcmwL7Ip3xQhwX194P+Fy39X01pqnS8Mwx5bnB3R3+EM2+bVUieHzPAKr+47uQ+aZTE49CfSJ5JfsrUCw9Rj9OspYOID8oUClJbrGXLuJCpcd8IWqlv4lKKTA3vTiTrMwAiPo++izkKPE1tZpv05DHzJD7aFMQboR3+v1xakgm39vPM+PF/IPGbCCw2AmbAjxxRpW8C8SKzCF4sYvfU4bk7J5rfjRejw88PcC0qBL6XvBR3PSOlnbXVa7D0ImejU5FTFho1bfMcffoPZbRXe9GTBM5pMgZg4bGZfMmwwFckM2ElHV84PJPZJDKM0TQP1QNeLWfewQY9kAKCgI67NMXfCE+XuLlJdwbcsH40RUjX7I24t
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,73 +180,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 29, 2025 at 03:17:45PM -0600, Alex Williamson wrote:
-> On Sun, 28 Sep 2025 17:50:18 +0300
-> Leon Romanovsky <leon@kernel.org> wrote:
+On 29.09.25 12:08, Lance Yang wrote:
 > 
-> > From: Leon Romanovsky <leonro@nvidia.com>
-> > 
-> > Make sure that all VFIO PCI devices have peer-to-peer capabilities
-> > enables, so we would be able to export their MMIO memory through DMABUF,
-> > 
-> > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> > ---
-> >  drivers/vfio/pci/vfio_pci_core.c | 9 +++++++++
-> >  1 file changed, 9 insertions(+)
-> > 
-> > diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> > index 7dcf5439dedc..608af135308e 100644
-> > --- a/drivers/vfio/pci/vfio_pci_core.c
-> > +++ b/drivers/vfio/pci/vfio_pci_core.c
-> > @@ -28,6 +28,9 @@
-> >  #include <linux/nospec.h>
-> >  #include <linux/sched/mm.h>
-> >  #include <linux/iommufd.h>
-> > +#ifdef CONFIG_VFIO_PCI_DMABUF
-> > +#include <linux/pci-p2pdma.h>
-> > +#endif
-> >  #if IS_ENABLED(CONFIG_EEH)
-> >  #include <asm/eeh.h>
-> >  #endif
-> > @@ -2085,6 +2088,7 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
-> >  {
-> >  	struct vfio_pci_core_device *vdev =
-> >  		container_of(core_vdev, struct vfio_pci_core_device, vdev);
-> > +	int __maybe_unused ret;
-> >  
-> >  	vdev->pdev = to_pci_dev(core_vdev->dev);
-> >  	vdev->irq_type = VFIO_PCI_NUM_IRQS;
-> > @@ -2094,6 +2098,11 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
-> >  	INIT_LIST_HEAD(&vdev->dummy_resources_list);
-> >  	INIT_LIST_HEAD(&vdev->ioeventfds_list);
-> >  	INIT_LIST_HEAD(&vdev->sriov_pfs_item);
-> > +#ifdef CONFIG_VFIO_PCI_DMABUF
-> > +	ret = pcim_p2pdma_init(vdev->pdev);
-> > +	if (ret)
-> > +		return ret;
-> > +#endif
-> >  	init_rwsem(&vdev->memory_lock);
-> >  	xa_init(&vdev->ctx);
-> >  
 > 
-> What breaks if we don't test the return value and remove all the
-> #ifdefs?  The feature call should fail if we don't have a provider but
-> that seems more robust than failing to register the device.  Thanks,
+> On 2025/9/29 16:25, David Hildenbrand wrote:
+>> On 28.09.25 06:52, Lance Yang wrote:
+>>> From: Lance Yang <lance.yang@linux.dev>
+>>>
+>>> When KSM merges a zero-filled page with the shared zeropage, it uses
+>>> pte_mkdirty() to mark the new PTE for internal accounting. However,
+>>> pte_mkdirty() unconditionally sets both the hardware dirty bit and the
+>>> soft-dirty bit.
+>>>
+>>
+>> Right, that's one think we should clean up at one point.
+> 
+> Got it. I’ll take a look when I get a chance ;)
+> 
+>>
+>>> This behavior causes false positives in userspace tools like CRIU that
+>>> rely on the soft-dirty mechanism for tracking memory changes.
+>>
+>> IIRC, false positives are not a problem. We get them all of the time
+>> when merging VMAs etc.
+> 
+> Right, Indeed.
+> 
+>> So I am not sure if this here is really worth fixing. Soft-dirty is not,
+>> and never will be false-positive free.
+> 
+> Makes sense to me. It doesn’t seem worth the trouble to fix. Let’s go
+> ahead and drop it.
 
-pcim_p2pdma_init() fails if memory allocation fails, which is worth to check.
-Such failure will most likely cause to non-working vfio-pci module anyway,
-as failure in pcim_p2pdma_init() will trigger OOM. It is better to fail early
-and help for the system to recover from OOM, instead of delaying to the
-next failure while trying to load vfio-pci.
+Yeah, I would prefer if we can just decouple soft-dirty from dirty 
+handling at some point. I recall I had a use case around 
+PageAnonExclusive at some point.
 
-CONFIG_VFIO_PCI_DMABUF is mostly for next line "INIT_LIST_HEAD(&vdev->dmabufs);"
-from the following patch. Because that pcim_p2pdma_init() and dmabufs list are
-coupled, I put CONFIG_VFIO_PCI_DMABUF on both of them.
+-- 
+Cheers
 
-Thanks
+David / dhildenb
 
-> 
-> Alex
-> 
-> 
 
