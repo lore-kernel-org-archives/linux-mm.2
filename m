@@ -4,106 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38A4ACCA475
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 09:43:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27662CCA470
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 09:44:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5AAD88E0006; Tue, 30 Sep 2025 05:43:29 -0400 (EDT)
+	id 733A78E000B; Tue, 30 Sep 2025 05:44:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 582378E0002; Tue, 30 Sep 2025 05:43:29 -0400 (EDT)
+	id 70AD28E0002; Tue, 30 Sep 2025 05:44:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 449FD8E0006; Tue, 30 Sep 2025 05:43:29 -0400 (EDT)
+	id 5F9DF8E000B; Tue, 30 Sep 2025 05:44:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A9208E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 05:43:29 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BBB171A05E1
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 09:43:28 +0000 (UTC)
-X-FDA: 83945428896.06.9812ABF
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 489318E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 05:44:26 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E56845A0F0
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 09:44:25 +0000 (UTC)
+X-FDA: 83945431290.14.1291A34
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 5579840005
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 09:43:26 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Y1mgO+FK;
-	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9CDDD80012
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 09:44:23 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QxqMD+Op;
+	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759225406;
+	s=arc-20220608; t=1759225463;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qokv/laRH94AdQbGGOyg7Qkb85bGPaWxiKN12cykW2A=;
-	b=XJCr8uDm5ClYcXslOwtDBwebF73uO4wxpeiUm91BkF5yis64+XTwpqp6Z+F9iy2qI+lQLc
-	MXVDSQSm3yulAVoHJLoBlqsSDFEuGEpcOn5i41FFhBsFKb/47eATW4B+UD96iKydxjl+xi
-	E1D5atjbW8C19D3npwBe0JGC8q+ZTv4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759225406; a=rsa-sha256;
+	bh=zTKsiV+MwvU3A+CTYo66BfK7kCyj0E0ejJPRqjGwaM0=;
+	b=7dfL1lX2qS8AdWQTp54+tNjttLXEeJGl6hSPkKjnut8QXoJJP8FgBQSWJTTjZsAjJppaMC
+	D16OwDUvCJWqKaUr9rmcjQW0jplaE8+wNPQ7EnvPUBFP8W00ZVyumyutu2RkYphcvCl4C8
+	N3WGFmNtEvq8C1tO176rrbFQDOskKpI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759225463; a=rsa-sha256;
 	cv=none;
-	b=Cn3xGW782nEG+PdKkBnfH9Fx2XTHJeskL9sBFniWoL51z/ipkV7BC/t18Fm9hgtKFKa8/o
-	4twVUe5M9ybZTlrN6/L0P93vOVQgqxaXAB1K1xuxvRBrp/edvkDvYiVrBKt8ZZw4yRrIhi
-	1PF1rAavyE8vJ+dBAuLoLgyvGjQ2N9I=
+	b=iE+sTce7yTNJ4Hd6kU0uANOrBzqyVdekH7kes49bge2nTF1E+qW+yTpEO6bbskbktO9U/k
+	FqpnASmZ+oOPjrUayRI8K4D4L7y5FT2hbfGGdPPo8LyMQGtXzAEQrkKq1ouoalYYmtpJmB
+	efOo1L/1nhaT0/UmgG2A0ukDwu6sOgs=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Y1mgO+FK;
-	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QxqMD+Op;
+	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759225405;
+	s=mimecast20190719; t=1759225463;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qokv/laRH94AdQbGGOyg7Qkb85bGPaWxiKN12cykW2A=;
-	b=Y1mgO+FKAzigHWcpFMRHpnbrG9szLmI2dSvvyrOtONX6B5eOS3XZvsS6ObNl3leLg8x5t8
-	5K+x1z5kAzWpnYa6/xiICzU0epP6/ALpGFxKRZ/B/lKiRYrP/FDZOzeIEWDDMfvjQZ4x3u
-	+qfJJuwe18AcOpKf/y65pQBoMHP0DQc=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=zTKsiV+MwvU3A+CTYo66BfK7kCyj0E0ejJPRqjGwaM0=;
+	b=QxqMD+Oprfw4BtJnfBt3q7dgduxV2IPZIVtbRykd0Vo0/A9vXpuvSW0HdcFx6GGlBIQ6mK
+	vtmSmzcUTcBSRVVMGLGBhQlUomk44r8anQ3LiWd4Kzznmcit+iuiUlHtD1BTpta05tKTU0
+	5Vp2sK7Ah7il+2YroFI0STqNLJbOXVo=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-4jARTkZIOJaC4XAnjGW7vw-1; Tue, 30 Sep 2025 05:43:24 -0400
-X-MC-Unique: 4jARTkZIOJaC4XAnjGW7vw-1
-X-Mimecast-MFC-AGG-ID: 4jARTkZIOJaC4XAnjGW7vw_1759225403
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-46e36f9c651so45230865e9.3
-        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 02:43:24 -0700 (PDT)
+ us-mta-253--Xp129NdNWSMu5EQV9T3QQ-1; Tue, 30 Sep 2025 05:44:21 -0400
+X-MC-Unique: -Xp129NdNWSMu5EQV9T3QQ-1
+X-Mimecast-MFC-AGG-ID: -Xp129NdNWSMu5EQV9T3QQ_1759225460
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3f44000639fso4236824f8f.0
+        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 02:44:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759225403; x=1759830203;
+        d=1e100.net; s=20230601; t=1759225460; x=1759830260;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qokv/laRH94AdQbGGOyg7Qkb85bGPaWxiKN12cykW2A=;
-        b=MmrHGkyZYifywd4qA06E7XJiqSOZAs8o7sGFa/rVYOq63b57spuOT3dUWxs0zAapSI
-         ihwMgUL38wqd/Y6azN2qidEZJsYEZlX20MSBvobkeBD3DWWFKTVW5XH9Bjf5qZT/lZ9A
-         eO6CZ5AGIX+EVJsVFy4CarTkUePVRjEhZ5lQgTqFl5F7WzS1Ir30XFIEgzu+jWiLyoCH
-         WpJhwKTy83RB8DlCHWuk2die63veoHoSj3Ua9dsh/dz1IR5m5lvwXsr7I/VAYA9+kC7e
-         X27TDS4HJhWsDDf9s+9Rjp1GqCBGyzG62ArwivhVHmvzBRFmUVzROORyIWkhfmWvEbTX
-         DERQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU2K9d9Plo0NaE0pwJz9DaAsb9C9eBloQmP4rf0RXl4Xula9uZDYbpXQU4e8uYLFm9H2bKOtWCMTw==@kvack.org
-X-Gm-Message-State: AOJu0Yy6TdKE1t2/kZQdQD7xUFJi2fmBe4MoheLCEGeko8NySPmr/bL+
-	cv9mX4b2lv9fzVh3mnY2o8htT9dqvjyVo/5HW6eMDqvtuou1snTFX0D8e9NjtTI3TfDSRbUz8J8
-	RtEQPcP1ouE6aA7IARNSNmEYXJle6CvFWoPFagY1uGvcW2GdJHMDd
-X-Gm-Gg: ASbGncvLlRyLfNL5TbTCF6JNdLMjha7S/hVvR31r55IKg+p1aGerwgt/yxfYMkf4X84
-	b/G8uN3F6IzmA76KKwXggV8Y4dqdGWGTbZIfeXBegsRB77M+ezapwjLoq4TdK+Mk6CrdscMmPJi
-	Wmcq6FOlRsHStbSY52c+gmBVqL0J8z6GEkAqI4GbD5BcakOwRVY/+VoI6yACBiM0CExo7AQE0T8
-	8LRSFk2e3qD1jeNGK5UBNwzedAQo7rgyXDSNh7ihiY8pFJU3FcDtuoCAmLIqfDGEhCNMgnXp76q
-	ZwxFUWF8sKZbakQyMs+0eVTg61XzG8X+aePsKBZvIep69zkfe3KPV1CwANzaXm9pnbR+xsuYgtE
-	Ht+qVqwxQ
-X-Received: by 2002:a05:600c:310c:b0:46e:35a0:3587 with SMTP id 5b1f17b1804b1-46e35a037c8mr154073665e9.27.1759225403195;
-        Tue, 30 Sep 2025 02:43:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHTKL6gFqXI2rPmAGDrKYjABjcyUMbEcXwo+xNyca8w+iKnIU3LDs/srXyhSwlLdRFbWyQ4WQ==
-X-Received: by 2002:a05:600c:310c:b0:46e:35a0:3587 with SMTP id 5b1f17b1804b1-46e35a037c8mr154073385e9.27.1759225402680;
-        Tue, 30 Sep 2025 02:43:22 -0700 (PDT)
+        bh=zTKsiV+MwvU3A+CTYo66BfK7kCyj0E0ejJPRqjGwaM0=;
+        b=w5NXACK+XwCpyTJT5tgkk0+qBQAApp3wmgSq8UNglmkdEDIb/DB74mhTcFghpwaYVf
+         l5f8owzJgWh87DWNJqzk4TWRWflBD+9SxGLch1NPkGimrgKWCVNY3skUUW/CLyhzCDsl
+         RuB1+E9vb4LggItiG6F+NBJ59uddR0N49iUI8AkpZTBDJgwhKeGlKLUkI+h42QuwankF
+         2yRCgec+RRSPhye9hk+xWTFaOemb2s4QweR5BlmH1ULT+ZJv7mnI+gq41rxNP+G3OCBp
+         YqYOzzCVDjaw0V6PdRw9Ugk0kfPlzryvMf7NjqLP0LtrckUJiaHRNTDS5bLrnesY7+3c
+         hrTg==
+X-Forwarded-Encrypted: i=1; AJvYcCWEBbly3jlwqLEdOapsjuMzDmqdc0h/2UVv5674LvvzS3IyERExoZAEl4pYAezVujll67P0ddYzxQ==@kvack.org
+X-Gm-Message-State: AOJu0YzRz9+e969asmFd0f+t7FzZ8fW6hXiVPhOGBh7LFloJZWsPO/Xx
+	NimA4SkZ5/OqmyMS2HNIFI1g3zTsmbVBMnsmPJP9SavkfHFTU1R8Ud03ajfrkJ7+VSECbpKYkdy
+	mz/Cor3GuMnAgMx57qZPz32XLRHH4jo/qHhyWmVzGux1WkWtXC0k+
+X-Gm-Gg: ASbGncsIoOE3oe29AVLbrmFPPKSQMFJb3FPTZAeVA9tJjDUkfGiwanQ6mTmASQt9zvz
+	QJF+l4xIvdiogvE1CO5ppO7Fek2Mrh+lpzV5SLqoSKdWlQlfQc8wSemAPcqGoVmeszxbgyNEg1F
+	fg6HCqJ0UB1tJQPkJETsuE7nHNvDO4EYw6STrIjvHLD/1Wih3q1Ouj4852DLjTYSMnQeO2BfOvv
+	ihdzO2OS89zgsVG6kSPIHeV8nIXxarhZK2hSzqlXEx4I8lpx57XQva84Hb4+Zebuj/8ClJA4VKX
+	B/0VJ1XKhFgfEJLxqwKhehtEAgp/EN20jLGWgptD5ANflimc8W0LGeZcE/BZdMtNa/B3e2uwPNM
+	LKgHvDyzB
+X-Received: by 2002:a5d:5f45:0:b0:3ea:a496:9ba8 with SMTP id ffacd0b85a97d-40e480ca410mr18059626f8f.29.1759225460270;
+        Tue, 30 Sep 2025 02:44:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF+VXBV2ldPpYoazSy8gSggmZyFPsDv2dwFEenIOlqVRHhIY/sSwP8s9VAR+ET95zAfD7AiAw==
+X-Received: by 2002:a5d:5f45:0:b0:3ea:a496:9ba8 with SMTP id ffacd0b85a97d-40e480ca410mr18059594f8f.29.1759225459801;
+        Tue, 30 Sep 2025 02:44:19 -0700 (PDT)
 Received: from [192.168.3.141] (tmo-080-144.customers.d1-online.com. [80.187.80.144])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e5c44bd75sm9846475e9.4.2025.09.30.02.43.20
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fb72fb711sm21683292f8f.11.2025.09.30.02.44.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Sep 2025 02:43:22 -0700 (PDT)
-Message-ID: <5d763fb0-b216-4b6c-ac93-510fa471575f@redhat.com>
-Date: Tue, 30 Sep 2025 11:43:19 +0200
+        Tue, 30 Sep 2025 02:44:19 -0700 (PDT)
+Message-ID: <c1cf2254-2449-48b4-b1db-0d92595567df@redhat.com>
+Date: Tue, 30 Sep 2025 11:44:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 10/16] mm: define clear_pages(), clear_user_pages()
+Subject: Re: [PATCH v7 11/16] mm/highmem: introduce clear_user_highpages()
 To: Ankur Arora <ankur.a.arora@oracle.com>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
  akpm@linux-foundation.org, bp@alien8.de, dave.hansen@linux.intel.com,
@@ -112,9 +112,9 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
  tglx@linutronix.de, willy@infradead.org, raghavendra.kt@amd.com,
  boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
 References: <20250917152418.4077386-1-ankur.a.arora@oracle.com>
- <20250917152418.4077386-11-ankur.a.arora@oracle.com>
- <5ec85b0b-9848-4cee-98f4-37953d504773@redhat.com> <87y0q4ewzf.fsf@oracle.com>
- <6743ead5-4d61-4274-a24f-13a8a8265aee@redhat.com> <87frcbayt2.fsf@oracle.com>
+ <20250917152418.4077386-12-ankur.a.arora@oracle.com>
+ <6626d497-4c27-4263-9be1-1c05d2672019@redhat.com> <87ecrwewn3.fsf@oracle.com>
+ <4e061f4f-cd57-4df4-a001-9eba80d1ded9@redhat.com> <877bxnayrc.fsf@oracle.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -160,21 +160,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <87frcbayt2.fsf@oracle.com>
+In-Reply-To: <877bxnayrc.fsf@oracle.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: K3lzbZz8wsRVU1ipc9XY3bOz3PfVJ9Lc7rte8kndNmY_1759225403
+X-Mimecast-MFC-PROC-ID: Wa6eFOWzsY08wXNTRmadg2wnGdVM6U9jnx0L3WCE8JA_1759225460
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: kaywqab78gz9jizw3brduxy19rgj8irb
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9CDDD80012
+X-Stat-Signature: 3a3713onac9q95ib1mch7bsn4xkdn9q7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5579840005
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1759225406-382160
-X-HE-Meta: U2FsdGVkX1+cf/jk8O1Xo1wh88my300DHx0IbhuizmwcqvzlkOfBSzmqd/lPfPlwz8k6XRJcloEcWtspSJRLTaqKCQ7gnNx8j7c+sEh00lPIfrum8/TrdGMP1Quxb6IMbDVpRpuWL+ISHkafhZBb0DELIpIR8cOR0Bd6SSuTTrwvCbD/t6FgWoXIBKuI3/H70tCiy1ZMB6rrbfLUifbB5j7zNKPIQYDPj9KIjouAe3sQ6aWlzG3QcLjLwsAH/GGl1DIISUTfgVC8qYRmeDED79iL/QJL07BHy3trRxRJcpIn/zvyFNtVrFhLJpLFv8fz6p2eQsK5h6GAh8+gZk5HHdDClMTdkeqzovEIY37yjw2sCqgnz2pNnVczJaAPnb69aptlgI3K0KWWSoe4czpRGNL14aEdkDhXSvAeLCbwzEYKb1SU4BR8jvDeYTt1juBNnv7S5DqcavjypMP50mHZ3kmCALICii3y61JF9Jv4lP+Txp9fDPecgx2pNKAvcRC0FfmtAxFX+TMbnpL0yBROPZracLsaekVZS9A9tp8+OR2Inqyx9qGBP712eWoSFwoA7Lj+3Lmo939iF3oDYid38hRd56KxJ39o9/3iQ50X6WjxBBn9JsgBGC6QFmoKaWuFSWs+GK6FUSNvycRBBnKc3+r8frocN5jlz7hclsJiARgwNpdt7HG4hAMM+Ac8kphgP8ZvIFAtoA+qm7f3sZ2hys3rtiohe+GoTBBpart+ggnvNREb4TB0wkGOl27zJ9FeEjrrih9PTAEbuhQE69PCPbJnRr6eXhcvI25uGAh73RG2zToBaftsJkKpHyzJsZOwe+robx6gFvVm3y2zBNC7AF/Jam8c1Gj8r96F/um1+aDLkqvNjHFdI/VUVno2KdiafLnQjw+s5uW7TADbvQVYdp3MxNa7A1k6KsU2VAf0n4pPttIG6QtwTIN1dmvpCyygN1jCKB+To9oxHxPaz9I
- PG5dfcB9
- 9nAZMvPo8n0cYrOX1V5aMvUS2Km6lC3GgxRjMPqwNqEz8AiFAtYRU7VQp8J113gVSqUelwYV4xIgdrPTMVOeOT7oQHGJwfZoGAX3nQKKwD9kWIX9/2dkGYWuEeA==
+X-HE-Tag: 1759225463-695655
+X-HE-Meta: U2FsdGVkX19E0EvUNsWENDM3dS766l4lBpbvI2ZRxj7M80sjuxiZjamCOEKl6NVxJew+kS1cfJIb28xIqFKYLf+zwu551dhK9AT3NPVUK6c4WeP9FEO2bg0Zr38dPvqxq77kHl/SgAPJtG7Tvk5LCtMnCjNRjvYV7QHOnWWcETFr0YwT/m//KnndCi4j1OueNL7Q+EQ44uPbNYk6IhPS1B4DDs5X4acj3SC18YlPzQHCbz2VThJGh7Lypj6o8+P0qtCzHhWJcEnrFDZhmmQdl22p9bQZMuCZ/J0YOwIB2mW2QSBKyVetURNtJa6ZBEUXmWf2w71mJ4WzgZlWqJCiyeNxDK4zg8D9zR8vTqvixyC8+vOQNBdK1sB5t8WNew5S0/8iplxn2jYdKVGfPMJLzAfixeVHEgUuM00JgUTyy3mk8KGkUloWlrI3450bK/p+kBO5hi7rQgt7DP9XldpDq8rdYp+ITHEIxvlZi+vwlSm9KC4Pxj523yRp06J9A0DAXbFNQ8hKPuVlXpNjOIpf5CotX2ldZ2LbOsYDPxoRBXhJ0b2yGfmm3NxCgArR1LiSFLWlXsuJev+ZDKpk8IkZ6xfkJ9a2pk2ztxHErY65aPqlxbKNTMY7ZroYavrdyI1z2qXNvIwa/XDf+7AiLat89Qg1as+xDnng9q3DzteMIXtj3qtNciFMqRlMpy39+LG4AuZIuAE6nysvEcQ9rld4koWjMuC6DECz+YHJehYcRTd2UIxB5ntUBd3A9ywFd7883lZ9uYLyYCKzNaaZmVmYo4q44LOJj4GD5gLZXagpzdBveBUC14UmlaIVPgbAcoBf23GTwowGDB960VYDKSfGOLuOTPPKRCIVGqE5sNv3NvOZ2cL8qZsTME1A9RMs5Vgv4sE3sNMgwhWQfdkIcbqKg5ShKp8FvGC0WfVqp4cIaaSnCbe94RN8jWUFBfxLUfnV1riN/8uDVBi+25g/PLB
+ SoAbcf1L
+ KORI7o/dv8LtoxkcARJj7mtKTkTqwctnQUkD6mv3NtgP9ckJpFuXwVTKsm5tEQU71wLElAJxr/GhH4UAsw7xdQsWW09d6Zyj0xe7x+LX/R/wdaqBdOGgZfj3bQ+nC2WkhWXX4hn1ZGMPUkxJ7OegKgT25AlLKEzXCY1R+B8bZjPLPdYVe1SvtdNn4tZ0QwsRtSOyVyGSgHPqlK4UXC+EFY0rtkQLbXXmv0r+Vc2qLwxq/926wIiGCfDvQojRAP0ZwV8U038IggrA83L16PoBpvW2tTKU7V4rQ1L+FTTtl1A89uXOV2jWJZbm/2uD26FsJJI2434Xv6Ij33Ysc85AYqWDAYAz4kP7DMl7NpOeUy2MrLwfbXdX/9v4Oikxg8VEho/YjhCzno7/AjULE7qmCnOjdqwLxXaWDFlJiNfZVH+fUuS4oply0nELVBhUqGKYFCAHSXCmZvqXjeHy/kCle6qrozkmrtU5goL5ytDQ0yqQm5tNcuAG10mFb+IHTXPqEzRMf/X1N+WwbuK0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -183,111 +183,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 25.09.25 07:25, Ankur Arora wrote:
+On 25.09.25 07:26, Ankur Arora wrote:
 > 
 > David Hildenbrand <david@redhat.com> writes:
 > 
->> On 23.09.25 22:26, Ankur Arora wrote:
+>> On 23.09.25 22:34, Ankur Arora wrote:
 >>> David Hildenbrand <david@redhat.com> writes:
 >>>
 >>>> On 17.09.25 17:24, Ankur Arora wrote:
->>>>> Define fallback versions of clear_pages(), clear_user_pages().
->>>>> In absence of architectural primitives, we just clear pages
->>>>> sequentially.
+>>>>> Define clear_user_highpages() which clears pages sequentially using
+>>>>> the single page variant.
+>>>>> With !CONFIG_HIGHMEM, pages are contiguous so use the range clearing
+>>>>> primitive clear_user_pages().
 >>>>> Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
 >>>>> ---
->>>>>     include/linux/mm.h | 38 ++++++++++++++++++++++++++++++++++++++
->>>>>     1 file changed, 38 insertions(+)
->>>>> diff --git a/include/linux/mm.h b/include/linux/mm.h
->>>>> index 1ae97a0b8ec7..0cde9b01da5e 100644
->>>>> --- a/include/linux/mm.h
->>>>> +++ b/include/linux/mm.h
->>>>> @@ -3768,6 +3768,44 @@ static inline void clear_page_guard(struct zone *zone, struct page *page,
->>>>>     				unsigned int order) {}
->>>>>     #endif	/* CONFIG_DEBUG_PAGEALLOC */
->>>>>     +#ifndef clear_pages
->>>>> +/**
->>>>> + * clear_pages() - clear a page range using a kernel virtual address.
+>>>>>     include/linux/highmem.h | 18 ++++++++++++++++++
+>>>>>     1 file changed, 18 insertions(+)
+>>>>> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
+>>>>> index 6234f316468c..ed609987e24d 100644
+>>>>> --- a/include/linux/highmem.h
+>>>>> +++ b/include/linux/highmem.h
+>>>>> @@ -207,6 +207,24 @@ static inline void clear_user_highpage(struct page *page, unsigned long vaddr)
+>>>>>     }
+>>>>>     #endif
+>>>>>     +#ifndef clear_user_highpages
 >>>>
->>>> I'd just call this "clear a page range for kernel-internal use"
->>>>
->>>>> + * @addr: start address
->>>>> + * @npages: number of pages
->>>>> + *
->>>>> + * Assumes that (@addr, +@npages) references a kernel region.
->>>>
->>>> And say here simply that "Use clear_user_pages() instead for clearing a page
->>>> range to be mapped to user space".
->>> So, comments that actually speak to the use instead of technically
->>> correct but unhelpful generalities :). Thanks, good lesson.
+>>>> Maybe we can add a simple kernel doc that points at the doc of clear_user_pages,
+>>>> but makes it clear that this for pages that might reside in highmem.
+>>> Didn't add one because clear_user_highpage() didn't have one. Will add
+>>> for both.
 >>>
->>>>> + * Does absolutely no exception handling.
->>>>> + */
->>>>> +static inline void clear_pages(void *addr, unsigned int npages)
->>>>> +{
->>>>> +	do {
->>>>> +		clear_page(addr);
->>>>> +		addr += PAGE_SIZE;
->>>>> +	} while (--npages);
->>>>> +}
->>>>> +#endif
->>>>> +
->>>>> +#ifndef clear_user_pages
->>>>> +/**
->>>>> + * clear_user_pages() - clear a page range mapped by the user.
->>>>
->>>> I'd call this then "clear a page range to be mapped to user space"
->>>>
->>>> Because it's usually called before we actually map it and it will properly flush
->>>> the dcache if required.
->>> Makes sense.
->>>
->>>>> + * @addr: kernel mapped address
->>>>
->>>> "start address"
->>>>
->>>>> + * @vaddr: user mapped address
->>>>
->>>> "start address of the user mapping" ?
->>>>
->>>>> + * @pg: start page
->>>>
->>>> Please just call it "page". I know, clear_user_page() has this weird page vs. pg
->>>> thingy, but let's do it better here.
->>>>
->>>>> + * @npages: number of pages
->>>>> + *
->>>>> + * Assumes that the region (@addr, +@npages) has been validated
->>>>> + * already so this does no exception handling.
->>>>> + */
->>>>> +#define clear_user_pages(addr, vaddr, pg, npages)	\
->>>>> +do {							\
->>>>> +	clear_user_page(addr, vaddr, pg);		\
->>>>> +	addr += PAGE_SIZE;				\
->>>>> +	vaddr += PAGE_SIZE;				\
->>>>> +	pg++;						\
->>>>> +} while (--npages)
->>>>> +#endif
->>>>
->>>> Should indent with one tab.
->>> Will do. Also acking to the ones above.
->>>
->>>> Any reason this is not a static inline function?
->>> Alas yes. Most architecture code defines clear_user_page() as a macro
->>> where, if they need a to flush the dcache or otherwise do something
->>> special, they need access to some external primitive. And this primitive
->>> which might not be visible in contexts that we include this header.
->>> For instance this one on sparc:
->>>     https://lore.kernel.org/lkml/202509030338.DlQJTxIk-lkp@intel.com/
->>> Defining as a macro to get around that. But maybe there's a better
->>> way?
 >>
->> Can we just move it to mm/utils.c and not have it be an inline function?
+>> Doesn't have to be excessive. But even I have to keep reminding myself when to
+>> use clear_page(), clear_user_page(), clear_user_highpage() ...
 > 
-> Thanks. Yeah, that's a good place for it.
+> And now all the multi-page variants. Really motivates the removal of
+> the HIGHMEM stuff.
 
-If the function call overhead is ever a problem, we can look into 
-reworking that.
+:) I'm afraid it will stick around for a couple of years to come.
 
 -- 
 Cheers
