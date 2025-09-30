@@ -4,98 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8C82CAC5B9
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 01:53:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4501FCAC5B9
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 02:44:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 203B78E000B; Mon, 29 Sep 2025 21:53:28 -0400 (EDT)
+	id 387748E0005; Mon, 29 Sep 2025 22:44:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DB188E0002; Mon, 29 Sep 2025 21:53:28 -0400 (EDT)
+	id 35F8C8E0002; Mon, 29 Sep 2025 22:44:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1181C8E000B; Mon, 29 Sep 2025 21:53:28 -0400 (EDT)
+	id 24D5F8E0005; Mon, 29 Sep 2025 22:44:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F3E8F8E0002
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 21:53:27 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B44261DFF84
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 01:53:27 +0000 (UTC)
-X-FDA: 83944244454.24.F503372
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf09.hostedemail.com (Postfix) with ESMTP id CC68A140002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 01:53:25 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="GKtcpK/H";
-	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0EE958E0002
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 22:44:21 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 65E6D1DEF7A
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 02:44:20 +0000 (UTC)
+X-FDA: 83944372680.12.9FE8C23
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 93CBF80008
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 02:44:18 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VnduohAF;
+	spf=pass (imf02.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759197206;
+	s=arc-20220608; t=1759200258;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ch7Q5TgnPok++zD6SAUojpj+InJhxzN/ETKzPzMNocY=;
-	b=Yj4slAOyWbmif9GOzqR+OOrl1lYc1L3c7jQZyZHXr7ffCBXYB6oBmnz374UkE7ilAvzyFa
-	YZZhnGxXcKXNUo8ibHM8O9q/mZPlBeAtv06fp5dm4rojdeSQjmfJTy21bCKJin+oMr+D2J
-	XQoIfZgnvbMda8iBcuiEebc6GK9Q1qU=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=oBLHnI+e6tAOqeHvXlDdht1mTbtW+pSP4ewzl28Opg0=;
+	b=lxOXWXlJicvrIK3DQColRZF0ibRkSWrbidf33JnQ+YCI2VeVS0rmT4YD5CMO1uQcBcYG5J
+	UHvLScpyMoOz/5aXutqImOLHYByf2pfXelu/0GGRl0OmoGSaD/5AsGOWJ0jwllGyEmIyrl
+	JW13mxfsVi3pWwpTuh9ISlRumBwvnmo=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="GKtcpK/H";
-	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759197206; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VnduohAF;
+	spf=pass (imf02.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759200258; a=rsa-sha256;
 	cv=none;
-	b=X4Eu/zoRNVKDV6AFKIrIdukFg7vN6E+gVh1r724DekI5QWI+57Kf6IE7dOPRt/G4U9v0HQ
-	c9/rSDLNnQMoc91VRJSSJuLZS4pLyJbrKvXkY0nK0G03PR4nnBXJuWOFgxqRav3oxkSNtU
-	jkqu4IdqdToqjrGrZXrBj/TLkfVJ9yg=
-Message-ID: <01200dfc-f881-4d09-ab52-c5b7944af0d0@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759197203;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ch7Q5TgnPok++zD6SAUojpj+InJhxzN/ETKzPzMNocY=;
-	b=GKtcpK/H3udWTBPYkB4ydbSTFKIOoUDTEEoJv73sh5+CqWioHoKYIbcYTFsFvB04HPuhxD
-	Ue/C2yQ2yPycp7yxWsXIVzrt7jEnabTZU0H+n1+2g3VsD1ozbxw9DqnYHZo7fcJJlyZvrM
-	1In1epsu/OA54NgKu7glJ2SjuKNll/g=
-Date: Tue, 30 Sep 2025 09:53:08 +0800
+	b=PnNVqJu5D4BiXtJvMKJUqoJAXw/5EAbewDv45eh+BDYeSnHJdzm00WnDOIJ4jOi+u8FqJU
+	ju5gr6+u9xhhNYL7i+k0xFEZj6fMpIJu/pi7tj30zXxEMS6w/8KA+jTxPNarxHrwUJUCEd
+	wXG+QOpB/1YffHuD5ik7WV7rOQvvh+o=
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-b553412a19bso3820721a12.1
+        for <linux-mm@kvack.org>; Mon, 29 Sep 2025 19:44:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759200257; x=1759805057; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oBLHnI+e6tAOqeHvXlDdht1mTbtW+pSP4ewzl28Opg0=;
+        b=VnduohAF9j9FrWJEDc3qPshGlpsi4dOZiI1T071TLdepNjJxaPAu8tVDNXrlIr6vEn
+         blh4eGRcpVobY7FfPUu+QTYVUq3jfXi7fWu0tjYA2E6fIgB01Uu6hq2E9Tzd7VfvDdVt
+         JCQEyxYIyS3TAzS11eSY2z4KKCwJBcWc7/vM+hlpP0ABxJtAQ4PLGuyCI3sOlG8DWXGB
+         ufWPLLruSnmg79S7TWJIE5TcAKOluy2BYXfqBN6F4H3yL9psgzdp2h3Q7QuM3yQwZBCO
+         vQq6Uw8ZJQ5XhiXw+y8Dsk+78wFyXhPwkZHL5pczEbudZ8E3Knunh1uPNZVWcmCHHWP/
+         XkjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759200257; x=1759805057;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oBLHnI+e6tAOqeHvXlDdht1mTbtW+pSP4ewzl28Opg0=;
+        b=WpTP2mz73mrhxOviB1axUMfogYnsNQWCmtA9QUtGCTgnAN/dw8rfpyBT9MpuCKWhWb
+         ujebsCVxrI9tfc+ZttH8HfVUVMTjhs6/+dwcmYHzMupIFDYlgf+zo2kbKQwbrmWfKUCa
+         M14oUw/lGSUCVuXOJ4ZuRlwztSaCFulhwUZT386ki5eYu1epDXQgkoISq4nc2al0VKiI
+         sExFX5XwFyqVuMXWKNe6A0vaGEcn0KBdV9sHPGhw355gs4KuYd+fo6dheenSlm4t5zvk
+         bpo9NDTGG4Q+cKMLaSstozXrbK3W2hQnjlHEdiZh/tNi+GADacavGv9iFNTV7QrSf/u6
+         bXZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUbskY8inBYlCmg1bTmdDG4ORmF0AGHS4GB5WEaMqUS499W3mlOKp0NumclO/TuNO9c1u6l020Hag==@kvack.org
+X-Gm-Message-State: AOJu0Yw+ajX22o69pIUEOWMhgKBNSbB8mboR55Vsh/Om9rG1Lamrz09B
+	Lv6A8aE0ltzqkx5F6nSOFq8tY2fEwA+Vyfl6jNPdRiG8BN1+8BBe0jbL
+X-Gm-Gg: ASbGncvI51Sn4rlpw0jkfl88wii1q871FU+Dzz6iHo/VQHbbhG5vDuEc8Q2BLRCXxXH
+	3sRJmomw9eMn48no+98fxZIw98q3/gpg7YPeXPMdz78a+k15JoH7T9UJlqpj2Jj0LUXJVBnwUJ1
+	sh95lgBQjQKnkHyWm2a9vW0yPVCqK/OzPrtOoFbspLPJXvqO+9X8Qwwyy9yV/phjw2GSyCX8Jld
+	4N2WU3c7kWfha2iZZUuYP5LyOeJGjB/znj5vbpzuZAyxPckHJN0k3L1lwmvh+w06fIq0XUwwYX3
+	bjVyluRLXVDK0WI7YGpw0G9Z91eLRj/Jg62AOEYGS0QxoTDdc7X6BRXfihJePUoxsqz7l9ZQbk7
+	bivqmA0szGpNf2VPi2jABe/71DqV7zOFBczm5NqajNvkHMFbAXvAlQr7EpKxWEgs4c3zliZa2zx
+	FK
+X-Google-Smtp-Source: AGHT+IHr+eKlqahlH64ABrOo26g2DZtu5RbBsAa8n+SzXkmpJPz4gPjilw094eEXW9CbsMYgjx7Ytw==
+X-Received: by 2002:a17:902:c409:b0:275:f156:965c with SMTP id d9443c01a7336-27ed4ade26bmr209883395ad.52.1759200257156;
+        Mon, 29 Sep 2025 19:44:17 -0700 (PDT)
+Received: from localhost ([45.142.167.196])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-27ed66d3acfsm146037925ad.20.2025.09.29.19.44.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Sep 2025 19:44:16 -0700 (PDT)
+From: Jinchao Wang <wangjinchao600@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Marco Elver <elver@google.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	"Liang, Kan" <kan.liang@linux.intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Kees Cook <kees@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Rong Xu <xur@google.com>,
+	Naveen N Rao <naveen@kernel.org>,
+	David Kaplan <david.kaplan@amd.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Nam Cao <namcao@linutronix.de>,
+	workflows@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org,
+	linux-mm@kvack.org,
+	llvm@lists.linux.dev,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	kasan-dev@googlegroups.com,
+	"David S. Miller" <davem@davemloft.net>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	linux-trace-kernel@vger.kernel.org
+Cc: Jinchao Wang <wangjinchao600@gmail.com>
+Subject: [PATCH v6 00/23] mm/ksw: Introduce real-time KStackWatch debugging tool
+Date: Tue, 30 Sep 2025 10:43:21 +0800
+Message-ID: <20250930024402.1043776-1-wangjinchao600@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/1] mm/rmap: fix soft-dirty bit loss when remapping
- zero-filled mTHP subpage to shared zeropage
-Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>
-Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, baohua@kernel.org,
- ryan.roberts@arm.com, dev.jain@arm.com, npache@redhat.com, riel@surriel.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, harry.yoo@oracle.com,
- jannh@google.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, usamaarif642@gmail.com,
- yuzhao@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- ioworker0@gmail.com, stable@vger.kernel.org, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com
-References: <20250928044855.76359-1-lance.yang@linux.dev>
- <b19b4880-169f-4946-8c50-e82f699bb93b@redhat.com>
- <900d0314-8e9a-4779-a058-9bb3cc8840b8@linux.dev>
- <1f66374a-a901-49e7-95c8-96b1e5a5f22d@linux.dev>
- <69b463e5-9854-496d-b461-4bf65e82bc0a@redhat.com>
- <0701c9d9-b9b3-4313-8783-8e6d1dbec94d@linux.dev>
- <1718aee4-1201-4362-885b-e707f536a065@redhat.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <1718aee4-1201-4362-885b-e707f536a065@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 93CBF80008
+X-Stat-Signature: 8xde1h8ukxagb5zww71zm8zk7ybi7hfu
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: CC68A140002
-X-Stat-Signature: xd4bj4jp4mw6jqpjyrsux9bz4ughn5pb
-X-HE-Tag: 1759197205-539397
-X-HE-Meta: U2FsdGVkX1+K72xJe2qkjr5CyoSFuCdnO95Ml/BwkYDyHyR7e0Qfli1eU2tu1j9asRAtKJBZxziq79cqUs5fSztkighlVqg912w0yGPENqm86wRtWn1A5NGKR9KcS37qigR7horY7gvU/vF6Ys+pxGewB0iSYEg+dOqydsSkrtLFrMYJXXp0sp1TZZPAnBXFBuLafuiGzfy4fnwG4/el0tIROUcQAm2pqh2gM6Q734cKIMHkswWbmztXRBM2QsV8hczzrUqxBcHvAcxYjHuVr8CaK99BQygwzywyJPn5wR3A2IUjAnWfVjyJM23kI2XgRXaD8sk7wtgyOWKP4J6GrmD+BxrukhHBfKvaw8RuXVVhoZH0rNVCkyGGTKyHc8QXuqNuVSrd/bNhhM41tvrWR11Xljldi9tUZn38jPBVAUR6CQP9EzpHtCVFjT2X9dkpFmhHE9VggOMe3KFoEHP2wO06HnN86e7OnS6SWvwihr+V2PRdpTRwSoUY2xcVJ/dOlq6jMKnB64c9lvm6y18kzOMT/Zhes8FjsDPuL+Ej7cFxp/AQ+EUoEknwwDotm8nKdtqbhWTVKdzV+dPS0tJigByuAK72FtSr4XlEDkwzFD3fgclyLANwtfw8S4B1x1dD4A3ltvlblWoPeCwB6ZHqraGWfTFsqexhamdN1uNOtCJeiTf8b5oSKFDwrEVpJEg7ggRvCNr7cbUN/AXy5gIjAHK27QcR4nwnoVHwnIG/paXJaG8m1pPGqe206qv6Gu0qELQKruFM+Hn9Ei3Jrx9bUKN4k16D96QZSbAV1ViSz5Mj5pHgQKbLp8WVkwOeLWN5DPVfvuJ19ESpAEDBcwjJU5G25RiC8zu26gevX52IPz3XR+b4gpK2R0noS3vXKx9td0FALpp08tf924Qk35HNJcNDP/HzbXXtn4q1egHXSUWJT5f10Mlb3vA40C6QeQ8Hz5Mc8+SJctMc1HScALN
- lsw+cSXK
- zD0etqTA6EjmNOTvL6VTWW60hpJjLZRy7GrgmVlwVl7QwKSegnVFCJ+qMbZGIAv1v5nJ2NKhAy2sasDMy4K6//IO2wxWdJUQqgaJ0U0VKR/LT++wJzFC0w6QI3SbwddMXV7LowyRw+pADz1BxedXugmKuCfkr85gIiS4kRsCkBTZo3uXbTY8AzMxAG/EfQ00sSqxfJrwZObYAaQLFOk80dU2coqYy46d+02yjTZLzP94Cp2iZuAEkMmObe5FPso3M4289xJO6xQRQwFJpDyZvcvkS+6/As3hWZ8PomO816/EGGUaak655wOv21xV2G71J2s6/oTojtF+2SNFgdwrk6rZgHGJhZEn74+GJ
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1759200258-497901
+X-HE-Meta: U2FsdGVkX1/Xp3YBbKrMjChnK0wHIVjRRpaudVYn7aQS412G4okxxXXA2BUDGxCFdqam7Ak2w3DwK6osMXiPvbh2ZgCgxLHy1BeSkjCsSWeOmgRD+iyh0XDVxlCGJ2dTVXkCCzAFVzm/cWfdsNiEX48+C6DYg3GnWkSIhivmRWehbUKoqrYt2xBBqqXjzp5aFcx15uYUQpyuBXxsQKKFS7Pv+13r73bzAYg5P3V/DjUtosIV3bGzy2Ht/Q8Jcv6gyB1zEoopyBqWczTqJbtkXifhv4Y3oz50vM/bwjRzpQn/mzMNKis5ImPTzRA+dzz1sPdgU1WpFxnC7Ce55dmUpqQ4iHxzcDRQPM8T/lFrreo1fo0NB03F0nxLVZ/A4t3i+nNqawJSDblFmLd49TwEEwi2kUMAdoWYNso6jzznrsWtqBog8Qrlts9DhMmLcrkTHoJABXw4uYtURGpNvCrKBUX5vGpMlRxiVCVe5/CqrILgjKhu7p5AsPJUchZhJK/NYkkIIWqbGHqWe19ijk3+Ev1xGdiGu7ORKcgZ/xUOfigXqB+IXx/XWQEO5iFXkIlid3+Nk4FprH9fRxTejPaAuFD9nqXu3OIOssa7YsJXH09+r1nyq8kdxNJ4W3m47mdGIIEQziZmMAhjjrRl2uEYWDIvWUrcIAGYrpO7r4V/HbFKMVGocGBACIsyugkbEqaZ8rL/R3EDxMK9l1t/UXiQtWtgrZMXJSzL1bvScfK6z1nItkCdt5AZYt0eNXR/EQ6uMbCShjevW9odUA9rFTJ/ZTDDReWrtUzjUnJfvWkZ01URvCot6oeOm7QBe0Y1pigKST09Ej+UyrRauiHLtGTqXtPPxf/Wo6mm7l1dhmN15CHlgmOxOXN6W+OV/lWiBvpXdHrJ1XFJggpmQwSM1ribwkT+cMDuADg11yFuQLvzYp/Fngz1sVhVSUmmmfFg2n3z31/KFlR4nLS50IV4Ryh
+ qbz+TzPM
+ F6IDJoApmQgupG+dEIzoIu66bTL8q59VHm8jaDBQZ+wRYWrL8QakYoqXusMvc7Zr9Ibsuv/FI27NCwitD7W2K97OIqHY3piKlTEjMAMMaR7i677Y/4bx0T1iwvstKpLvLQyvUbl9HJkR6RW3U2V+Mz29t2209INcJFTpzCiUK/y6ON/bS6L8ORK3JXiStknoQaREHjvYCdjRlcZBAenN57B75MKTisHWeS+wMfpevYVf6uTXB+ascFeuiYHT+eobdG1M5gSV3G6s4d9+DArXMZF7ZYRzauq5gXYbSWStbwfP3y3JMLeg/Ox4zje4k3sEUwuM9hjolcfPQofqqardUHdld9OGrJev8fbIAtrQRGGMUMjRwIa8QPadOxTPxfjZh6+5ualq3N8lMQiLpnz7CTuF8G4w+eLBI04L2zIRU20aWFtFI+jfc6bFqTJvSY6DzkPibyyRSL+MR6BGDFR11DkfCy+GYvgkYF1Vt0SdgXHfn43T3gQOwzmp+ctdGFFimFQIBzaoOBUTW+f48ixeqTE4J0CG56FSLyIMqr4hn7evM6IzyV5n4IkRy78bsGtfw73yH6Bd6jXOgmAlPqKhy5E6XS/+FUhVJVXqb2960mJDBwmQcv/Mrpx2Rnw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,146 +179,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This patch series introduces KStackWatch, a lightweight debugging tool to detect
+kernel stack corruption in real time. It installs a hardware breakpoint
+(watchpoint) at a function's specified offset using `kprobe.post_handler` and
+removes it in `fprobe.exit_handler`. This covers the full execution window and
+reports corruption immediately with time, location, and a call stack.
 
+The motivation comes from scenarios where corruption occurs silently in one
+function but manifests later in another, without a direct call trace linking
+the two. Such bugs are often extremely hard to debug with existing tools.
+These scenarios are demonstrated in test 3–5 (silent corruption test, patch 20).
 
-On 2025/9/30 00:11, David Hildenbrand wrote:
-> On 29.09.25 15:22, Lance Yang wrote:
->>
->>
->> On 2025/9/29 20:08, David Hildenbrand wrote:
->>> On 29.09.25 13:29, Lance Yang wrote:
->>>>
->>>>
->>>> On 2025/9/29 18:29, Lance Yang wrote:
->>>>>
->>>>>
->>>>> On 2025/9/29 15:25, David Hildenbrand wrote:
->>>>>> On 28.09.25 06:48, Lance Yang wrote:
->>>>>>> From: Lance Yang <lance.yang@linux.dev>
->>>>>>>
->>>>>>> When splitting an mTHP and replacing a zero-filled subpage with the
->>>>>>> shared
->>>>>>> zeropage, try_to_map_unused_to_zeropage() currently drops the soft-
->>>>>>> dirty
->>>>>>> bit.
->>>>>>>
->>>>>>> For userspace tools like CRIU, which rely on the soft-dirty 
->>>>>>> mechanism
->>>>>>> for
->>>>>>> incremental snapshots, losing this bit means modified pages are
->>>>>>> missed,
->>>>>>> leading to inconsistent memory state after restore.
->>>>>>>
->>>>>>> Preserve the soft-dirty bit from the old PTE when creating the
->>>>>>> zeropage
->>>>>>> mapping to ensure modified pages are correctly tracked.
->>>>>>>
->>>>>>> Cc: <stable@vger.kernel.org>
->>>>>>> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage
->>>>>>> when splitting isolated thp")
->>>>>>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->>>>>>> ---
->>>>>>>     mm/migrate.c | 4 ++++
->>>>>>>     1 file changed, 4 insertions(+)
->>>>>>>
->>>>>>> diff --git a/mm/migrate.c b/mm/migrate.c
->>>>>>> index ce83c2c3c287..bf364ba07a3f 100644
->>>>>>> --- a/mm/migrate.c
->>>>>>> +++ b/mm/migrate.c
->>>>>>> @@ -322,6 +322,10 @@ static bool 
->>>>>>> try_to_map_unused_to_zeropage(struct
->>>>>>> page_vma_mapped_walk *pvmw,
->>>>>>>         newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
->>>>>>>                         pvmw->vma->vm_page_prot));
->>>>>>> +
->>>>>>> +    if (pte_swp_soft_dirty(ptep_get(pvmw->pte)))
->>>>>>> +        newpte = pte_mksoft_dirty(newpte);
->>>>>>> +
->>>>>>>         set_pte_at(pvmw->vma->vm_mm, pvmw->address, pvmw->pte, 
->>>>>>> newpte);
->>>>>>>         dec_mm_counter(pvmw->vma->vm_mm, mm_counter(folio));
->>>>>>
->>>>>> It's interesting that there isn't a single occurrence of the stof-
->>>>>> dirty flag in khugepaged code. I guess it all works because we do the
->>>>>>
->>>>>>        _pmd = maybe_pmd_mkwrite(pmd_mkdirty(_pmd), vma);
->>>>>>
->>>>>> and the pmd_mkdirty() will imply marking it soft-dirty.
->>>>>>
->>>>>> Now to the problem at hand: I don't think this is particularly
->>>>>> problematic in the common case: if the page is zero, it likely was
->>>>>> never written to (that's what the unerused shrinker is targeted at),
->>>>>> so the soft-dirty setting on the PMD is actually just an over-
->>>>>> indication for this page.
->>>>>
->>>>> Cool. Thanks for the insight! Good to know that ;)
->>>>>
->>>>>>
->>>>>> For example, when we just install the shared zeropage directly in
->>>>>> do_anonymous_page(), we obviously also don't set it dirty/soft-dirty.
->>>>>>
->>>>>> Now, one could argue that if the content was changed from non-zero to
->>>>>> zero, it ould actually be soft-dirty.
->>>>>
->>>>> Exactly. A false negative could be a problem for the userspace tools,
->>>>> IMO.
->>>>>
->>>>>>
->>>>>> Long-story short: I don't think this matters much in practice, but
->>>>>> it's an easy fix.
->>>>>>
->>>>>> As said by dev, please avoid double ptep_get() if possible.
->>>>>
->>>>> Sure, will do. I'll refactor it in the next version.
->>>>>
->>>>>>
->>>>>> Acked-by: David Hildenbrand <david@redhat.com>
->>>>>
->>>>> Thanks!
->>>>>
->>>>>>
->>>>>>
->>>>>> @Lance, can you double-check that the uffd-wp bit is handled
->>>>>> correctly? I strongly assume we lose that as well here.
->>>>
->>>> Yes, the uffd-wp bit was indeed being dropped, but ...
->>>>
->>>> The shared zeropage is read-only, which triggers a fault. IIUC,
->>>> The kernel then falls back to checking the VM_UFFD_WP flag on
->>>> the VMA and correctly generates a uffd-wp event, masking the
->>>> fact that the uffd-wp bit on the PTE was lost.
->>>
->>> That's not how VM_UFFD_WP works :)
->>
->> My bad! Please accept my apologies for the earlier confusion :(
->>
->> I messed up my test environment (forgot to enable mTHP), which
->> led me to a completely wrong conclusion...
->>
->> You're spot on. With mTHP enabled, the WP fault was not caught
->> on the shared zeropage after it replaced a zero-filled subpage
->> during an mTHP split.
->>
->> This is because do_wp_page() requires userfaultfd_pte_wp() to
->> be true, which in turn needs both userfaultfd_wp(vma) and
->> pte_uffd_wp(pte).
->>
->> static inline bool userfaultfd_pte_wp(struct vm_area_struct *vma,
->>                       pte_t pte)
->> {
->>     return userfaultfd_wp(vma) && pte_uffd_wp(pte);
->> }
->>
->> userfaultfd_pte_wp() fails as we lose the uffd-wp bit on the PTE ...
-> 
-> That's my understanding. And FWIW, that's a much more important fix. (in 
-> contrast to soft-dirty, uffd-wp actually is precise)
+Key features include:
 
-Got it, and thanks for setting me straight on that!
+* Immediate and precise corruption detection
+* Support multiple watchpoints for concurrently called functions
+* Lockless design, usable in any context
+* Depth filter for recursive calls
+* Minimal impact on reproducibility
+* Flexible procfs configuration with key=val syntax
 
-> 
-> Can you test+send a fix ... please? :)
-> 
+To validate the approach, the patch includes a test module and a test script.
 
-Certainly, I'm on it ;)
+There is a workflow example described in detail in the documentation (patch 22).
+Please read the document first if you want an overview.
+
+---
+  Patches 1–3 of this series are also used in the wprobe work proposed by
+  Masami Hiramatsu, so there may be some overlap between our patches.
+  Patch 3 comes directly from Masami Hiramatsu (thanks).
+---
+Changelog
+
+V6:
+  * Replace procfs with debugfs interface
+  * Fix typos
+
+V5:
+  * Support key=value input format
+  * Support multiple watchpoints
+  * Support watching instruction inside loop
+  * Support recursion depth tracking with generation
+  * Ignore triggers from fprobe trampoline
+  * Split watch_on into watch_get and watch_on to fail fast
+  * Handle ksw_stack_prepare_watch error
+  * Rewrite silent corruption test
+  * Add multiple watchpoints test
+  * Add an example in documentation
+
+V4:
+  https://lore.kernel.org/all/20250912101145.465708-1-wangjinchao600@gmail.com/
+  * Solve the lockdep issues with:
+    * per-task KStackWatch context to track depth
+    * atomic flag to protect watched_addr
+  * Use refactored version of arch_reinstall_hw_breakpoint
+
+V3:
+  https://lore.kernel.org/all/20250910052335.1151048-1-wangjinchao600@gmail.com/
+  * Use modify_wide_hw_breakpoint_local() (from Masami)
+  * Add atomic flag to restrict /proc/kstackwatch to a single opener
+  * Protect stack probe with an atomic PID flag
+  * Handle CPU hotplug for watchpoints
+  * Add preempt_disable/enable in ksw_watch_on_local_cpu()
+  * Introduce const struct ksw_config *ksw_get_config(void) and use it
+  * Switch to global watch_attr, remove struct watch_info
+  * Validate local_var_len in parser()
+  * Handle case when canary is not found
+  * Use dump_stack() instead of show_regs() to allow module build
+  * Reduce logging and comments
+  * Format logs with KBUILD_MODNAME
+  * Remove unused headers
+  * Add new document
+
+V2:
+  https://lore.kernel.org/all/20250904002126.1514566-1-wangjinchao600@gmail.com/
+  * Make hardware breakpoint and stack operations architecture-independent.
+
+V1:
+  https://lore.kernel.org/all/20250828073311.1116593-1-wangjinchao600@gmail.com/
+  * Replaced kretprobe with fprobe for function exit hooking, as suggested
+    by Masami Hiramatsu
+  * Introduced per-task depth logic to track recursion across scheduling
+  * Removed the use of workqueue for a more efficient corruption check
+  * Reordered patches for better logical flow
+  * Simplified and improved commit messages throughout the series
+  * Removed initial archcheck which should be improved later
+  * Replaced the multiple-thread test with silent corruption test
+  * Split self-tests into a separate patch to improve clarity.
+  * Added a new entry for KStackWatch to the MAINTAINERS file.
+
+RFC:
+  https://lore.kernel.org/lkml/20250818122720.434981-1-wangjinchao600@gmail.com/
+
+---
+
+The series is structured as follows:
+
+Jinchao Wang (22):
+  x86/hw_breakpoint: Unify breakpoint install/uninstall
+  x86/hw_breakpoint: Add arch_reinstall_hw_breakpoint
+  mm/ksw: add build system support
+  mm/ksw: add ksw_config struct and parser
+  mm/ksw: add singleton debugfs interface
+  mm/ksw: add HWBP pre-allocation
+  mm/ksw: Add atomic watchpoint management api
+  mm/ksw: ignore false positives from exit trampolines
+  mm/ksw: support CPU hotplug
+  sched: add per-task context
+  mm/ksw: add entry kprobe and exit fprobe management
+  mm/ksw: add per-task ctx tracking
+  mm/ksw: resolve stack watch addr and len
+  mm/ksw: manage probe and HWBP lifecycle via procfs
+  mm/ksw: add self-debug helpers
+  mm/ksw: add test module
+  mm/ksw: add stack overflow test
+  mm/ksw: add recursive depth test
+  mm/ksw: add multi-thread corruption test cases
+  tools/ksw: add test script
+  docs: add KStackWatch document
+  MAINTAINERS: add entry for KStackWatch
+
+Masami Hiramatsu (Google) (1):
+  HWBP: Add modify_wide_hw_breakpoint_local() API
+
+ Documentation/dev-tools/index.rst       |   1 +
+ Documentation/dev-tools/kstackwatch.rst | 314 ++++++++++++++++++++++
+ MAINTAINERS                             |   8 +
+ arch/Kconfig                            |  10 +
+ arch/x86/Kconfig                        |   1 +
+ arch/x86/include/asm/hw_breakpoint.h    |   8 +
+ arch/x86/kernel/hw_breakpoint.c         | 148 +++++-----
+ include/linux/hw_breakpoint.h           |   6 +
+ include/linux/kstackwatch_types.h       |  14 +
+ include/linux/sched.h                   |   5 +
+ kernel/events/hw_breakpoint.c           |  37 +++
+ mm/Kconfig.debug                        |  18 ++
+ mm/Makefile                             |   1 +
+ mm/kstackwatch/Makefile                 |   8 +
+ mm/kstackwatch/kernel.c                 | 292 ++++++++++++++++++++
+ mm/kstackwatch/kstackwatch.h            |  60 +++++
+ mm/kstackwatch/stack.c                  | 240 +++++++++++++++++
+ mm/kstackwatch/test.c                   | 343 ++++++++++++++++++++++++
+ mm/kstackwatch/watch.c                  | 305 +++++++++++++++++++++
+ tools/kstackwatch/kstackwatch_test.sh   |  52 ++++
+ 20 files changed, 1809 insertions(+), 62 deletions(-)
+ create mode 100644 Documentation/dev-tools/kstackwatch.rst
+ create mode 100644 include/linux/kstackwatch_types.h
+ create mode 100644 mm/kstackwatch/Makefile
+ create mode 100644 mm/kstackwatch/kernel.c
+ create mode 100644 mm/kstackwatch/kstackwatch.h
+ create mode 100644 mm/kstackwatch/stack.c
+ create mode 100644 mm/kstackwatch/test.c
+ create mode 100644 mm/kstackwatch/watch.c
+ create mode 100755 tools/kstackwatch/kstackwatch_test.sh
+
+-- 
+2.43.0
+
 
