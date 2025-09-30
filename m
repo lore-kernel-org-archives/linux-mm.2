@@ -4,172 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A776DCCA468
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 13:55:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2ABCBCCA468
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 14:03:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C1248E000B; Tue, 30 Sep 2025 09:55:31 -0400 (EDT)
+	id 566598E000F; Tue, 30 Sep 2025 10:03:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 998A78E0002; Tue, 30 Sep 2025 09:55:31 -0400 (EDT)
+	id 53D978E0002; Tue, 30 Sep 2025 10:03:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AE348E000B; Tue, 30 Sep 2025 09:55:31 -0400 (EDT)
+	id 47A7B8E000F; Tue, 30 Sep 2025 10:03:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 793708E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 09:55:31 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2937C1A0700
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 13:55:31 +0000 (UTC)
-X-FDA: 83946064062.22.03D1ECA
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A244D180004
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 13:55:28 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=V7r0aD6Q;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gTG4p3dy;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=V7r0aD6Q;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gTG4p3dy;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 35DB48E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 10:03:00 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E193ABB241
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 14:02:59 +0000 (UTC)
+X-FDA: 83946082878.23.90B8AD0
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	by imf17.hostedemail.com (Postfix) with ESMTP id C65484000B
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 14:02:57 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=dCkBO07L;
+	spf=pass (imf17.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759240529;
+	s=arc-20220608; t=1759240978;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=shkbnvvDYpZT9aPtv+GSxkGAU/4/Q0bYAxcbdOiTomw=;
-	b=Qjk3qR/BjButg3QFVAyBzSv3TAdcXnrJWt7FuWcYVnpcj5xjJjaEgD3AijSMUFh/QeV3xw
-	iFd88fFA1Tz7EFw+R0DwWMuhxIlTrgXUtvAS7P861MVRnW4XtTR54qBZKHiUlz4Br1BkyT
-	yMvI4YyMrn7+0XNqJ3dxgRnyi792Zsk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759240529; a=rsa-sha256;
-	cv=none;
-	b=g2rvNJBpFQxP/b15K898XrkW7WmH7sarpbXa7Isik0lhlLSagOF72jcLx8uuJ7BILNqIxh
-	O3xlnANpok4Ue8Idg8XgKUX5tfZ/UIfA+VVGg9Hoigq9ZXyfdQHwLWGn0AG2nj8stCOjVu
-	NBREfcwz5tAWlL8diDTNI9KBv9IJkAE=
+	bh=db4oB+dnmVLJdBFQUKkZOAMclZ3E72AB5HReZPRQbFY=;
+	b=m8xyhbsT5J8E5j2qjEfQziFm72beFeixY7KhAqZ8ELylZIAEQgJBdOAWTqWWKXxeCqn9ZR
+	3Gn8n0ZjDVsedkSLrMYFAEdoHGT8goAyZLM4u//LdDAjOrbm7LizbLZ4YxyqN1Ii2hI8x7
+	/8p1QFicm/q81NL9zO7jYqi7TjDAXWI=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=V7r0aD6Q;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gTG4p3dy;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=V7r0aD6Q;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gTG4p3dy;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id AF50A33694;
-	Tue, 30 Sep 2025 13:55:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759240526; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=shkbnvvDYpZT9aPtv+GSxkGAU/4/Q0bYAxcbdOiTomw=;
-	b=V7r0aD6QDr5xLQzdZg+gW91SS1a4MTs2i/wDKnukCKhs4n8ik7FfXoAXEN06qlmTL/drVF
-	8atG5APsk5yWOPcZI/tXXDK5Ho79kqXTB+JMfe4XeKcZidL6DWwW7Kc1Z2pe/yFW/CWMpi
-	rJIX1AMPfkME/LkbbcH+GvwUsYLHO5U=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759240526;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=shkbnvvDYpZT9aPtv+GSxkGAU/4/Q0bYAxcbdOiTomw=;
-	b=gTG4p3dyH1VzVWZn4H9POt9My5D2CGK8Xfba5ARqVAKuysGcEMtLFIrIzMFP263aG+mUwj
-	kSUVk4KelCSZYWBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759240526; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=shkbnvvDYpZT9aPtv+GSxkGAU/4/Q0bYAxcbdOiTomw=;
-	b=V7r0aD6QDr5xLQzdZg+gW91SS1a4MTs2i/wDKnukCKhs4n8ik7FfXoAXEN06qlmTL/drVF
-	8atG5APsk5yWOPcZI/tXXDK5Ho79kqXTB+JMfe4XeKcZidL6DWwW7Kc1Z2pe/yFW/CWMpi
-	rJIX1AMPfkME/LkbbcH+GvwUsYLHO5U=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759240526;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=shkbnvvDYpZT9aPtv+GSxkGAU/4/Q0bYAxcbdOiTomw=;
-	b=gTG4p3dyH1VzVWZn4H9POt9My5D2CGK8Xfba5ARqVAKuysGcEMtLFIrIzMFP263aG+mUwj
-	kSUVk4KelCSZYWBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8F9F61342D;
-	Tue, 30 Sep 2025 13:55:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id baQnIk7h22jQTAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 30 Sep 2025 13:55:26 +0000
-Message-ID: <6fa0e2e3-045e-446f-8ef3-955711b6aa82@suse.cz>
-Date: Tue, 30 Sep 2025 15:55:26 +0200
+	imf17.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=dCkBO07L;
+	spf=pass (imf17.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759240978; a=rsa-sha256;
+	cv=none;
+	b=bT3nQvnf5gpwAaQ7ByV/9PhW2Z4gkNRJ7V/ImyWqSKxgptzbVcZbxOAczasDcQ8zCBeOw0
+	DsR5mMII/mtv/w+mKuqrR/iJ3kWrYuLWqLwQfIBODvc3AhXsc57ckL+791WMadn6x0LsVM
+	AWXLfPS9O8FbAdkviMZokyOpzGfoWvw=
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-634a3327ff7so11030772a12.1
+        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 07:02:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1759240976; x=1759845776; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=db4oB+dnmVLJdBFQUKkZOAMclZ3E72AB5HReZPRQbFY=;
+        b=dCkBO07L9DQE+dfZw48Qjs5I14DHR611ipj56IduVSo72lq8AZT4qBeyHpgDbFZQVT
+         KyTFT40zR7EsljStrnfV1tOtu8N/jUvbq0f2bAJrgz8l+d5bXCNlYEHO4v0PARvgkTyd
+         /CJug6HhtRkLJmJIGgoKavg21sX82Rgfybp3OY4bWM0rh24i6b3kJPzWe7lc2YcOR+Me
+         YVKg+H8fBlj19lBZdmrBbTsZvYwp+vM0OFkWmTcbtzYIDD9TjP6TKUec6kd9BjUsKooh
+         tsbzqazBB5/MIHmiMe0jbH02MCnO51QbYO9E6QOcpT5tvnwU84Z4LKvlPjNEIWJYn4PU
+         b4pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759240976; x=1759845776;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=db4oB+dnmVLJdBFQUKkZOAMclZ3E72AB5HReZPRQbFY=;
+        b=LZnPJC76LJivgPdP/gmFdKJBvSsLol+Re9PPbqLrnVVbp5y/5Z796sGsfrrvYZlsXo
+         JvvQ53zojCVeaPkY7/UpfTTU3FE3IKdbHyELElnXwyP5yscccLLbJ2xRnq8kHaQPF0Ig
+         VXbA4ASrq6RJ3ANi3Id+yPHHNKgLPRkcFQVSzayWocMMTVP+M/a0QzGWAoK3HiCRrgU2
+         mSZ57YbBWrBrmAoLCev5LJ8walSSYl/ca+YX7vX+U2okKojkUi8Xq0GvsLlbYcdxdzhf
+         VkwpJ+sdWOCfg7fsKSri0IJcLWJj+KKCgCosDXIJAGTrPX9gQTdO5xGzSbD4A09O+IH2
+         Lrsw==
+X-Forwarded-Encrypted: i=1; AJvYcCWvw8MaffTOMAd2JtvXqlJruOejE1F5dWlQ/tj9FhDqw6j8YoXO8W2dsGl3YwgHevWCocXlBM7OyA==@kvack.org
+X-Gm-Message-State: AOJu0YyOqGAlW44PjjZCNs2SdbNwbH1/NR1eREJ3xFpl3BwOiF1xjh7b
+	D1ErYXZFu6YPXPwxlGwWft74X0pHuxzS5wtm8Cp7Sk7oEFNpvnKYA+tnRoalYIx1YhQ=
+X-Gm-Gg: ASbGnct7jASD+ZAYGtjkmBNT0oi+bdMgBEDjL1N8V5waKfrnr9hpy3XG2TKQPJKEjkq
+	jDc4vsFEn4LmLBqVU9H5LOP8SltfuPcoSaPIlvdXOf3emecvadXJpBEDm89slp+UNLtNKj+FUVC
+	iG6l4tQI6V5xmlYjn0gxCeNOE/cBJcUXBE0lmTJdjxSMN8DEgzJ4zydcerw6MHI4XVFOTYGIHC3
+	ABSu+kXUyFWeNpBBbHueqCCNeKhPTH0WUfMjOrbVhA+vRhrM/cJ3mHz8pgN2eOXT2lH9tCBg+51
+	PdpLxlSRyxaYirawdVNZ4vYtNsWh3tDp64voYXhODamIuLgWLLcJUeA/OVNrKoEujmSHElPkANN
+	36hwNLaJ14LP/WScuvAsLVAn/NpZbLCN+HPyEiZRTB0U4iU5bjoam/SXyT1CaXSYZnchblik=
+X-Google-Smtp-Source: AGHT+IEeAKRVJFWvUX+ebo0ADsGSIRuTxkgSHEm/uyOzRMG2ulX2Iq/k1vfZ2HZ/NayCWmtejwwsrg==
+X-Received: by 2002:aa7:d9cd:0:b0:632:9110:c012 with SMTP id 4fb4d7f45d1cf-6349fa8a537mr14218078a12.25.1759240975900;
+        Tue, 30 Sep 2025 07:02:55 -0700 (PDT)
+Received: from localhost (109-81-95-234.rct.o2.cz. [109.81.95.234])
+        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-634a365093asm9741048a12.18.2025.09.30.07.02.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Sep 2025 07:02:55 -0700 (PDT)
+Date: Tue, 30 Sep 2025 16:02:54 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Mauricio Faria de Oliveira <mfo@igalia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Oscar Salvador <osalvador@suse.de>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-dev@igalia.com
+Subject: Re: [PATCH 0/3] mm/page_owner: add options 'print_handle' and
+ 'print_stack' for 'show_stacks'
+Message-ID: <aNvjDsBuw3hqwy31@tiehlicka>
+References: <20250924174023.261125-1-mfo@igalia.com>
+ <aNVpFn9W0jYYr9vs@tiehlicka>
+ <4c2a467113efd085530eb055e4a4e1fe@igalia.com>
+ <aNY49sdoFVe03m_Y@tiehlicka>
+ <d9af42d5cb9d427632087c5f51e50501@igalia.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v0] mm/page_alloc: Cleanup for __del_page_from_free_list()
-To: zhongjinji <zhongjinji@honor.com>, akpm@linux-foundation.org
-Cc: surenb@google.com, mhocko@suse.com, jackmanb@google.com,
- hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, liulu.liu@honor.com, feng.han@honor.com
-References: <20250925085006.23684-1-zhongjinji@honor.com>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20250925085006.23684-1-zhongjinji@honor.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: A244D180004
-X-Stat-Signature: c6knodwdc33t8abwyobjf3hxxi5mn98b
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d9af42d5cb9d427632087c5f51e50501@igalia.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1759240528-941527
-X-HE-Meta: U2FsdGVkX18YvGLHHUzJdFf4ohQ70yo+K4FynXIrFN0y9NV8ZZPFOXayrV2b1RrMXxQi/fCgSk1Rs25IWI9dMdzEz0AhRdLEX6EUSoAHSEDliGVkZObCtIVpGO+vkH9H/zGpd67HLL5mWeIgVa4dsCdLS0/KasBmWE1iGqkRd6HCNlDlhRUWLOrU+SIUM3Tz34JfsKXo6YexSxVFBmH61gXiyTJe0w6kKqfMaP1vGaBTua5c3opcsdv3Xo2ogherxL+Lrt/ZkfTS2ln1QnCTORZFUo6rs4xpsiG0YQbNTPtqxEmWYlEWlDyYMJBn0Aj9z9adsWtIcJfwaNVP3jZzFQ6aZWHaz3esGgy5lsgtOaitU7VNF8HZMCOVhmKhbheNKghWojHa8ixdhC6A5Mf2bRq5n6uX6zeZ1ol8AhQhn5TJk5fyltl9cM4C9M3i6YJwWJ5ARwoXBv99I8HdGwfLWkB2YH1FTen5PqSISyorqojplMH+qu03EYXohvHO/1Tj/FYFCJE+NaeCaXAHErTUAcBxzPUHxjTrOebWwSKyHvWiuKVKS/pR2Vzlmrg+p4daoDIdBv2ogO7XVmwE1QRMAj0UIuJjv7kqOMtOCcNBYo0rtQ0LchSz92iOuejgrlGRx3beWOkDKtOS1AexvhNGxrpucfvOdyBw8DAeT8VtTp7rEneAU78oq7Ta4trEAOoMZTnDJ8+mZuoygUpWVh6eLYPhoeZ9tJJMThb24l6Iy4tUXCsWBsXJVADUgBkpvJTRzS1UqJ640zM+S13nBM/NvLEfsH9/NkysmUyuI45KI8zpmZ4I+pTscXLJNHeZ/k9537UToOOQ3ezOAIVctm7peJir9f6sPopmi3kpj6+UMIAJ3DEG0RDhNC/ucsN5SRd+owhX2XbT1lajht9Lq+ZXI6D9DjfSxS6GUcBRmu/scUaGO3To6CVTiL/9xUdKrt6rFJM8fZU3cmBojBlqZ7K
- Z7dYjjsD
- 3oDSqyEEzQaFzu0ybAiB3vUJr9ijxoQT7/HFQyNzC+eIP6bDMcI44bULmGOmhCdP+jf2bBSb1KDln+WoZidGWyHWOXzV1FRi1bHNooI/HvU5nOHDpQmLRzDLjFr/6+euOWoZia/WPju9Axx2yZI2k0VDhlCpedpREM4m5SU/iglyxI53Vs/Iil6xC2O4/QqsXj0wF660HIPsqTE0jDCr9ihqD2C8GDpe0B54m0fm1mllakKeBSckDwzVG2CUm40icB9cp6am8NDTDK5Lrt9MFMjxh7ImNkROjrDi74ryxjDvIJEgrJ+rTPB/j3kU9zpEoZhrq50Sxjl0KQyQgzQRuAviZmsGKU0R3etasYYIdWxVIy0Mr01+CdWkr7udDM+cHcOPLK3wG3pPgli8=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C65484000B
+X-Stat-Signature: xoo1ywe8zas86bgusf8kw6qkxk3cxbtu
+X-HE-Tag: 1759240977-869194
+X-HE-Meta: U2FsdGVkX1+vDoivwbDNgoA7Lm2XkFmihiso2CMcRtRSCwjNHDtaB110P26yOWX/mb3cqU8Px5e2eONfwRpKWZPX6Su4RhW6eqwPCmk9PGnZyHusSbptb21bipgm8idjQVcIMoTAvssWqRLjOGIg/TIGjWLlx6YEJP1lSXvOP2pLkej80rbVTQj2mTkPKXiMQj3ZNMrClVSuymPQWGqcz1jpgiOGkUpMq53+mbsKr0vV8/g+3OMeNNMbkGneb7P7fYoSZ6SVUn2NhcH2PkeqQm0RZDfzlEoaEDSd0aFSsD78j3lJSnRhSHuIPLSE96C5r0tZ3rpyFIxSWcbyr6AaT5Yvjitt7s76HTm57iTexl/vkoqfMC62uBKGY/PNBhiQ3eP2eHfSDqFxc7mHWAE9IXwHUU490ozGtB1zmBf2iWXNsUX9tekE/iIvVG3u66f05aIqNGS/i4Ll61O/e4AN/onUn9SSGA7VRQtEB5oXugxmOxalmCGU8O+3v3qccXUrcd7u8opZ4aFookiUf2jMQSERoq550PEnJLRKWgz74KSe3L9kxteJIKRA/0Qi133MLxqLxmNEN4UGe08hK4HHnLW5NZBn0meycRoTfRujaLsItsaG8r4ZMdcHJvEKA00wLErv+fMh6ko7YlxXU0g2I6TDfjbWM6OGe+pF/QIjzIpyqjyXWU6NGSzYw19y4wgSHI7qA2Fpevm00BZ0C6x+goERdEgi4U/LfETYZFO/zqL/pxat1ASjm3UzttSeB1gyzcuedSjrcPHNwVJmyUXNAefUEMcUFmDYAzE3Ca5SD3Rv2WJkth1DdyYlfc6/WiwJwdd5aJfUY+r4LpYqiFf820rGR5PRKx+jrQpgplPTtLjbfI5dmM7G+x6uNCklGs6pI0akisOBVbOu6HLcXgfDhkpPUDkPZDyAVMb2l95R8lypwkVmMAfPSkgEdTsiQQpLWfTgRGU1WciBFjE+DcF
+ U941BKXT
+ cieAqI6bIMlh02327nfvDmVKhG0pEWb6+OM3jHqJkvAACOodaQ2WC1retYNt5QKMvuGuxE/ALiTJxZCvEAPOAGQk7t9FdTGwxSBZyIOryYpi53NMUYSop2IDyyx5VcKeUWa9kXCJ3dW/S7/4oDvupDsoBl/6lidKd6LNE8TJhMOCZZp4mWiCW7Ej0m2w1r4ANbEL7Mj1d7dEmS6fSA20mpvBYmPgCA5ubDPm+uz9G/PBbjptQKhTB6lfsP/owIf1/O2nlxyaHDGp56ntgNE3tvdkAVjOafIosBhilGg6m1aCJGycBtzC39Hl1wTuUwSQN/TKktJgbh7ZkNT/Zgrbl7WoKg9hx+I4r3cjeMxOy1Lj+Cj8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -178,40 +128,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/25/25 10:50, zhongjinji wrote:
-> It is unnecessary to set page->private in __del_page_from_free_list().
+On Fri 26-09-25 13:47:15, Mauricio Faria de Oliveira wrote:
+> On 2025-09-26 03:55, Michal Hocko wrote:
+> > On Thu 25-09-25 16:38:46, Mauricio Faria de Oliveira wrote:
+> >> On 2025-09-25 13:08, Michal Hocko wrote:
+> > [...]
+> >> > Could you elaborate some more on why the performance really matters here?
+> >> 
+> >> Sure.
+> >> 
+> >> One reason is optimizing data processing.
+> >> 
+> >> Currently, the step to obtain the key of a strack trace (e.g., hashing)
+> >> incurs
+> >> a considerable work (done for all stack traces, on every sample) that
+> >> actually
+> >> is duplicated work (the same result for each stack trace, on every
+> >> sample).
+> > 
+> > OK, that was not really clear to me but the above seems to suggest that
+> > by hashing you really mean hashing in the userspace when trying to
+> > create a key so that you can watch memory consumption trends per stack
+> > trace (hash in this case) without post processing.
 > 
-> If the page is about to be allocated, page->private will be cleared by
-> post_alloc_hook() before the page is handed out. If the page is expanded
-> or merged, page->private will be reset by set_buddy_order, and no one
-> will retrieve the page's buddy_order without the PageBuddy flag being set.
-> If the page is isolated, it will also reset page->private when it
-> succeeds.
-
-Seems correct.
-
-> Since __del_page_from_free_list() is a hot path in the kernel, it would be
-> better to remove the unnecessary set_page_private().
+> Yes.
 > 
-> Signed-off-by: zhongjinji <zhongjinji@honor.com>
-
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-
-> ---
->  mm/page_alloc.c | 1 -
->  1 file changed, 1 deletion(-)
+> > Stating that more explicitly in the changelog along with an example on
+> > how you are using this would be really helpful. 
 > 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index d1d037f97c5f..1999eb7e7c14 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -868,7 +868,6 @@ static inline void __del_page_from_free_list(struct page *page, struct zone *zon
->  
->  	list_del(&page->buddy_list);
->  	__ClearPageBuddy(page);
-> -	set_page_private(page, 0);
->  	zone->free_area[order].nr_free--;
->  
->  	if (order >= pageblock_order && !is_migrate_isolate(migratetype))
+> Sure. Thanks for pointing that out, and making the effort to understand.
+> 
+> > When the interface was originally introduced the primary usecase was to
+> > examine biggest memory consumers - e.g. when memory counters do not add
+> > up to counters that track most common users (e.g. userspace memory, slab
+> > caches etc.). In those case you need to see those stack traces as those
+> > are giving you the most valuable information.
+> > 
+> > I can see you are coming from a different direction and you want to
+> > collect data repeatedly and watch for trends rather than analyzing a
+> > particular situation. This seems like a useful usecase in itself.
+> 
+> Precisely. I can make that more explicit in the changelog as well.
+> 
+> > My main question is whether this should squashed into the existing file
+> > with a rather strange semantic of controling the file content depending
+> > on a different file content. Instead, would it make more sense to add
+> > two more files, one to display your requested key:value data and another
+> > to resolve key -> stack trace?
+> 
+> I see your point. Either way works for me, honestly.
+> Let me justify the current way, but it's certainly OK to change it, if
+> that is preferred.
+> 
+> The use of option files has precedents in page_owner itself
+> (count_threshould) and ftrace (/sys/kernel/debug/trace/options/*).
+> 
+> The use of output files needs more code/complexity for a similar result,
+> AFAICT (I actually started it this way, but changed it to minimize
+> changes). 
+> The reason is debugfs_create_bool() is more specialized/simpler to
+> handle than debugfs_create_file().
+> 
+> It ends up with a similar pattern in a common "__stack_print()" to avoid
+> duplicate code (conditions on parameters to configure the output), and
+> it adds:
+> - 2 ops structs per file (file_operations and seq_operations, as in
+> 'show_stacks'), for plumbing different behaviors down to different
+> functions, to call the common function with different parameters.
+> - It should be possible to reduce it with private fields (from
+> debugfs_create_file(data) to seq_file.private), however, since
+> seq_file.private is used (iterator in stack_start|next()), this needs
+> more code: a new struct for the private field (to store the current
+> iterator and add the new parameters).
+> 
+> So, I went for the (IMHO) simpler and smaller implementation with option
+> files instead of output files.
+> 
+> Please let me know which way is preferred, and I'll send v2 with that
+> (in addition to the changelog suggestions).
 
+Sure, I see. The main problem with the option file is that it is
+inherently suited for a single consumer which is a hard assumption to
+make at this stage. So I think it is worth having a separate 2 files
+which provide the missing functionality.
+
+Thanks!
+-- 
+Michal Hocko
+SUSE Labs
 
