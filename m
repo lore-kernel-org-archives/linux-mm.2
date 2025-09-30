@@ -4,176 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26856CCA471
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 10:02:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B71CCCA470
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 10:05:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E6F28E000C; Tue, 30 Sep 2025 06:02:01 -0400 (EDT)
+	id 5DF158E0016; Tue, 30 Sep 2025 06:05:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6974C8E0002; Tue, 30 Sep 2025 06:02:01 -0400 (EDT)
+	id 58F5F8E0002; Tue, 30 Sep 2025 06:05:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55FAB8E000C; Tue, 30 Sep 2025 06:02:01 -0400 (EDT)
+	id 47E388E0016; Tue, 30 Sep 2025 06:05:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D73D8E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 06:02:01 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 09424BAAFF
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 10:02:01 +0000 (UTC)
-X-FDA: 83945475642.28.C526076
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 968AFC0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 10:01:58 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HbXuV41F;
-	spf=pass (imf28.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A0A88E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 06:05:54 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D325C86CF1
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 10:05:53 +0000 (UTC)
+X-FDA: 83945485386.25.576953F
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	by imf20.hostedemail.com (Postfix) with ESMTP id A85291C000F
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 10:05:50 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=gOGVF1ml;
+	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759226518;
+	s=arc-20220608; t=1759226751;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Eg+v4IKPoz2FPKhU2l6uVp6hT3zjuuf5++3tVQs0spo=;
-	b=2M2Bzejd6D8FaqXnc/b1SmhrY2Elf7DTEQ1N/MXCunPhXGZ1sn3Bwb3dI8XSt6vAkhwxxm
-	dDOHs3Y5cBDO/XxQEA8fFHKbECVRIF3cz0yh1k47/vxQLiHKf8+BQBeP6qTBVyKxLa+zFH
-	Yq/o/V/50LzBMLKxsG/v4KUzWoOsrIs=
+	bh=pyWM7M3FmhurEwSCgkwQ76vToMTu4VsK1uo0zZ5Zw9k=;
+	b=y7IG81K5EmAk2yFuue97gIfqb8QG9qqloBMtHtV5c907vs5qJhwEOt23Z/HuftKC1jxZ9A
+	j3z7lJAnfTeDaTYJX8z8KgHMkEsp63Pj/MP7Au+iVzdS2Qu9HqvS9EC40LtcPRC5EalTzp
+	4eUVYo0kIkFg+Zvlo4GcCDAReFRnrdU=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HbXuV41F;
-	spf=pass (imf28.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759226518; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=gOGVF1ml;
+	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759226751; a=rsa-sha256;
 	cv=none;
-	b=rDZUqIjH3K8j06jFl2eN942i0vb+StI/abyGJSJrNZ1X9JhlURb159DUlv+ILHnopO8c9I
-	V5pE1/n4Ct/if7/uPp4awWnjJCRRg2kuaNyZZ8L0wiYRUCeVhShvb6zVkc1MuCgbGmyymr
-	GTg9o+Tb4BZVvgG8YYbCLs7QsM75+OU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759226518;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Eg+v4IKPoz2FPKhU2l6uVp6hT3zjuuf5++3tVQs0spo=;
-	b=HbXuV41FD7wLz+EHui+9kVbVICBoZCWGI3Z8svaxJqoFFJQ+bWNqDZTFWbdgCrwqIIHwBO
-	y0gunyEVaN2z7zvEUsikym7+SUYuGdELlf1h1xbeQxNHMoNog3ziuxD7wJGarPFciDoK65
-	LbWHfVAHdzSQ0iGJ1Pi4CmCFUcjTKig=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-68-M4XvawDQOI-2KbDc2PBDRQ-1; Tue, 30 Sep 2025 06:01:54 -0400
-X-MC-Unique: M4XvawDQOI-2KbDc2PBDRQ-1
-X-Mimecast-MFC-AGG-ID: M4XvawDQOI-2KbDc2PBDRQ_1759226513
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3ee888281c3so5861609f8f.3
-        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 03:01:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759226513; x=1759831313;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Eg+v4IKPoz2FPKhU2l6uVp6hT3zjuuf5++3tVQs0spo=;
-        b=bstOLADCyToJgkAXATCIHsYWBtrqWYV35YvysTcTdJ2Jkjsx37CqIJ4uZXDeFGK4zN
-         aLkKRqovCAeC5sBsZEaexuc+9gfEz+5j1KnOdkqMXHhsStTWMlO53mCeUBuENFjbWCKB
-         K4utysm9ofYvjVVM9Zu+8NkdGy7UdfNCcCiKdcWtL0NKX0+34dFQS/9gx3WGuDH9Pu/e
-         hedqNp3pjpzBix4aF8WW6Woc/KbBdEh+nSTzbUkf23sVao6zHDpUMLWSwzjazniqe0ff
-         0jn5RICAZrvzNt4PRNrKsrBf1uguSMCXZyoAjzfW+pkGZSAKt1PU5A8L6TSXBKSn9V8W
-         yb+A==
-X-Forwarded-Encrypted: i=1; AJvYcCWBjGCpb2VWduFEbq0uM0/9j4MYD9hTz+kmoEA7hCVrJmiUjDnML8Op/BaWz+K/vcdOKaFw2xnYXQ==@kvack.org
-X-Gm-Message-State: AOJu0YwNxnRCyNkJv7Hr+jv9CAQjHoyStdglsE3hzN5OPt09MgL+I/W+
-	cRflri4m+YlA8uVFjaBaqgsp0OdNmq4k0q8HMRdAXyi6EYU/PL4LEiMyCGBXFvHBImLuLKDJYDv
-	UrtksFMCSbd/pMfrsqY2sGO4a/LbXOjpqT+7bbc4n2Y8rcsDJ3r4Q
-X-Gm-Gg: ASbGnctd1ULYTPZHZp7SuVU8RpR1H/VaXLEieYgheZ8xyXaNuHovy68tDZOMavw9YYQ
-	81ZUhvHHctKXYCEQgI5OsTXu8Y3vtEjkHwfh8sn0yiyezISlXID1yIEVZq86u02FqBnrT2D7mzU
-	zEnX+jVk/EXQjS2TTPlk7s9vmZxaRILXVCHk1bHQgQppcYeZraPHyvCH8QDIzkNzLnjeT//exMG
-	tIA65j9O2apKc3Vzm60OhQ7lO0u1AxyAYY4mSzNXeql3ckuSLv7UeG/KDX8YcQH5mEgOUKJ6vxk
-	yR3mRBT05D5cLf3AV5pTAKuncusOR5H09JplHlasEpCHnGwICSN7g8CDbTBiu4ZtxGwFu/AcjUm
-	7+LDccxfI
-X-Received: by 2002:a05:6000:1887:b0:3dd:8b62:5fe7 with SMTP id ffacd0b85a97d-40e4ca79f1bmr15726992f8f.49.1759226513294;
-        Tue, 30 Sep 2025 03:01:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IED7gfrvzvniVIFECWpvOoBoj5giRqSLDnng1gFjrr0tfWABPkbygH7VH3YO344nCIvzj7nZQ==
-X-Received: by 2002:a05:6000:1887:b0:3dd:8b62:5fe7 with SMTP id ffacd0b85a97d-40e4ca79f1bmr15726967f8f.49.1759226512875;
-        Tue, 30 Sep 2025 03:01:52 -0700 (PDT)
-Received: from [192.168.3.141] (tmo-080-144.customers.d1-online.com. [80.187.80.144])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fb871c811sm22014577f8f.15.2025.09.30.03.01.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Sep 2025 03:01:52 -0700 (PDT)
-Message-ID: <645b34af-059f-49d4-b8ff-8b5b5d6fae56@redhat.com>
-Date: Tue, 30 Sep 2025 12:01:50 +0200
+	b=A68HHRcNR3hJ9vxbBnkj7Ad0Uycj85pv2kOeLxpNnUFc+oL8n+tRUHecAOfsk3E/XpufNY
+	fikN9XsyzWPalGBxRr9wfoSgz/ZHEloldDQc56zLoYQQ0bYeJ1rK3imGD+d152E7+24/vc
+	nzB+6suPKy6C/CB4yxPRyjbXfAPewNM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1759226750; x=1790762750;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=npvtgCQVERmCarOfKSvie70oeT0wMLmYdU95Di6tZxk=;
+  b=gOGVF1mlA0+lFGOqGZxGDLEala+0OHUHvQ5YBJg9a0EZi/Rgm8FChSPz
+   bdLuOhr4a6qM0APrAwtkg6vgw7OybUh/p+lIMYWXp+JrRW5ccl5A3S0Q9
+   J1KOtyQTPFylcP/wlCrbUUhpZI6u5FTNPY7vG7ZRMqslUIOamdqPVzHLU
+   FyGai2uuS7OkxB1vgoeO+3/HszP3OhARUZI6DPuB6Qog1jNzC59xX62E6
+   30+6gf1VEOxQjvibzEs3kfM4KkwHPzXZ/Ozr4oxHqZ4zCH946MB1e2g+u
+   LZK4oEwVtsuqsIv6VRt/RgTYv3FFjptXmCeNtCk4vNEfBs9Y2SUVdz9v/
+   w==;
+X-CSE-ConnectionGUID: /fJG8jiZRtiCFbcji4RWOg==
+X-CSE-MsgGUID: FVMdu1gJTCmvnuGkGg7x6g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="72097648"
+X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; 
+   d="scan'208";a="72097648"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2025 03:05:49 -0700
+X-CSE-ConnectionGUID: PV+0NBfaTwSqEdenvWAgLQ==
+X-CSE-MsgGUID: K51ZkYz/TQmtpVOD/uXFwQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; 
+   d="scan'208";a="178889093"
+Received: from lkp-server01.sh.intel.com (HELO 2f2a1232a4e4) ([10.239.97.150])
+  by fmviesa009.fm.intel.com with ESMTP; 30 Sep 2025 03:05:43 -0700
+Received: from kbuild by 2f2a1232a4e4 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v3XEq-00019L-1H;
+	Tue, 30 Sep 2025 10:05:40 +0000
+Date: Tue, 30 Sep 2025 18:05:36 +0800
+From: kernel test robot <lkp@intel.com>
+To: =?iso-8859-1?Q?Lo=EFc?= Molinari <loic.molinari@collabora.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Boris Brezillon <bbrezillon@kernel.org>,
+	Rob Herring <robh@kernel.org>, Steven Price <steven.price@arm.com>,
+	Liviu Dudau <liviu.dudau@arm.com>, Melissa Wen <mwen@igalia.com>,
+	=?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	=?utf-8?Q?Miko=C5=82aj?= Wasiak <mikolaj.wasiak@intel.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Nitin Gote <nitin.r.gote@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org, kernel@collabora.com
+Subject: Re: [PATCH 2/8] drm/gem: Introduce drm_gem_get_unmapped_area() fop
+Message-ID: <202509301702.DL6CeU62-lkp@intel.com>
+References: <20250929200316.18417-3-loic.molinari@collabora.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/8] mm: debug_vm_pgtable: add
- debug_vm_pgtable_free_huge_page()
-To: Kefeng Wang <wangkefeng.wang@huawei.com>,
- Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
- <osalvador@suse.de>, Muchun Song <muchun.song@linux.dev>,
- Zi Yan <ziy@nvidia.com>, Matthew Wilcox <willy@infradead.org>
-Cc: sidhartha.kumar@oracle.com, jane.chu@oracle.com,
- Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org
-References: <20250918132000.1951232-1-wangkefeng.wang@huawei.com>
- <20250918132000.1951232-4-wangkefeng.wang@huawei.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20250918132000.1951232-4-wangkefeng.wang@huawei.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: JOz6Plkb9E6oBb1XywYGCIEX9zryTxPw9vmo7f3Glto_1759226513
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250929200316.18417-3-loic.molinari@collabora.com>
+X-Rspamd-Queue-Id: A85291C000F
+X-Rspamd-Server: rspam05
+X-Stat-Signature: tmusp5aqcchne5ji8pae8zpboqcyyth4
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 968AFC0002
-X-Stat-Signature: rb1eua1c9bne3sbuckn4c483xj4qzo71
-X-HE-Tag: 1759226518-754536
-X-HE-Meta: U2FsdGVkX18HzMsvyQCEeMCVjrF1BRcKwB5ge9djg4rr4GCHWofvwI/FNu+XyEeW/HlHu9ElXtawWpzIaOJHeIkyW6BDV2rmBRxwYJRGNe8S/8myZPixFTcHXzX23c1NV497bnp/oZTs9XrKfgjj+NX9hGTexQxuS+jSnlBgJeSVH2piwQTHD1in6fNwSg8k6kxBqIpsfnGzq7MuKUFlOL/fh63x/q1ycEkieqAh0i51z4b7g5qLuoqVrSXFHykp25FuE3B7997VDQ13qiqYkvDc+dkdH84NHnU3p85uHHW1vppeDwvtV5fBocZgdhFi1Eq7aBcIRVaznR3qdXrYUFzk4F3FOC52thbYwMBRoJceitGLo4+GS2bclKO/BwMoFy4kAXVsbwOAyNwyKmATqTch2dPCVx5UH1IB/A0vYPJe7erpYGkqTAXbq88bLcLSMK3vcgoT3eB4jYJWZEmau1xqdk/jphr4PalHj7rrTVPo7TvmOrMCzlCGrqx48HjtYb7TeRAf0KJLjRP90DKNIvKOQzIwyuvMJ6WitOq8+kQktNwgnqmZaDv9/FZtBOuEOSW0SlfhaYdmkShc7DsmP6eAlll06pYiR1kGariVh5Qz308KDNSdrHacmMYZRQt7G4O5HwG3lzXgiknAURuEY31TwU0UMYo/+tupnq6jCoDQ1/fA4MNK/wWD7wZXWH14KcBjs7Vx5CYihXEIH2/ZM7DJctKESPpCCx6w1VEApfW/A9/sU3esYzCD7PEGcJHTgzTpchLd4FcD6EMJVlICwcKaqCoV+lOd8Fvs4a0onHKaj+MIagZCTBaZ5BaiOU5ipFZWuZ7n3rtF063ZR2GMdmvTGm5xxRaRwa6reUkKtE1Xpl8VMQtFnA4OCUOOGJrpw7//xJ7LOp0HQx/DKzZ18wEH2BdQk4Efdn7zVWY9kUKX1FPKlyegT5oCJYFBEjv8jiWFy8UWgsGndj2R+5C
- voHrk4NX
- S2fuuLxGL65aic8scfSxmlDpALKTb3msx7dgZq8NKEQ78GgY7zVO7zG3gmMNH2ffh7Ao1+NAA+zfaPBUpE46+IiCkefd6xKPCe6hyypu0PhVr7rTDStWcT/nSjcU/DRd33KAKI7D523dCbpOpXNN3kBuOWlj4WJJavqNCdyqpK8010XRJWKLZ85YWfF+YUXgM/GtqrhIh5dyyuChfUI5MemCdYihIa6F6HNcZDYJt1ifOiGhrB5ZDdFgU1pNwBOQvbSPVJMV5pAQOeQjCHVZoZxz8akpDu6hjWAOf5FamIzBXvqC9anE6dgueHOGGLlKig21Zb/GOlApf/88q+YS6v09o3x/295QNWIV5mhh9PQ0LPm+4qkOvskAdlfl8tBgobXYTWV1GuZ3YEihbZVjRlJ3mWHD9+M9barAyB0CspGDQG73ghUc4Yuz5TlXpRRYIgFqHvWZH3lAmlifSGcu+U9T95RwxPZtNRTKK
+X-HE-Tag: 1759226750-443769
+X-HE-Meta: U2FsdGVkX1+yZkK7zvJe2iH0L96if2i3JGUpc7jBvKMFimzZOCSBbxYZwdMywFZdgsbUyP+cwcmXSjIAEaGQvFNSNySK62EI1PW3EzD+6E6K3a65Z3SDcwmA7qRXLzA6CBsPX805PWQj0a82q2QOQRehqhVQM0v0/6tSd9MjBjyuL2hfnXwAl7F4cQBXXi0lJYp76yUgH8tGYGOyybLLi9cx6iu8ypCGW754l4A8OsT6y0NJzlTz5bJMh03aolpqDQZ6PZxO5LKSHOekUPkltM8zhrnFWN2ZBJjrvedWRSYO5YBvZ8YJ/1G75doGqkrxSAaNfsf/TtI4GTbbVYVRkNaxpy4IQeXQH2qwwN27R4Tw+rLpqXBR0PibeAYz9ER0MasWYmDArUN8mdWIsuHs3MgYn+FZhgCmzFsSaXTzFf8izSrtHhrDY5ySZZQfNbs+Ip+tqxyoCBTphddbNoLs3bYDdgVbwsvnp3qRFLCruL8Tw+/27qLo4R9oBxUMqy1sST4/B/x2PAh+ecIbSHDj+w+ykDmpdqXpFlUOZqUiLmsm8nL3KEnc5u/0aYpY6dswU6B8w9JIVKUmTqqWJi9ksUUiPDvQnUQ9M0AA14ornUBs4WBt3y3aJbvVf6KRggSJz9gVnjSua2Ct3kuIF81FdOBn935/JpPVWAKLEikHmiNzAN/Vudh9qeLkeZJRy4+K7ugpzjZr/OFWc8tD/t4AaVACqFwmbqpqoBWArS6cEosggbti0qWqlJySrsGkx1cQG2s3R0Y4XIgYBFYI8rGIB4PQBbv/1i0bWSHVZR8NiYby39rMnbUWQsBOQKuFy6/wI9nbr5CZbKZNcRwD9vRKQAFHriGkNW1Hd3rb9CfLQx5ytqn6Bqc/U12qCM9MIkBa1d5tB97FDXsacIcWHP/Uc/AVT3Vwe3Lrt8QS9n5nroSEKbTTLBnqXGBr+nos5HPs9EStiQjbCYyV23Aqh/J
+ qKkvuXX9
+ mcpfr3lGOdoiu53b9LCQb1ikjapqW4DYwKCYi5+qM0KTEtMkhcjfffYNpnnW0zLOfTVjrPCMbAs92R/O+dG1IsDaRflLs0Xn9lH0ytsbAgMwOKsSv3TgSdCNyq00WpPDPTSZxojt870bugMBulnlM3vKdIM+roBR+KliLJG7aPTkREGfBfrwq8RlFqUHq9nmi1fHI4p6ClK5NksVGBeyS7UxV4m/akLjNGwwCTxfUaocX4KL5u6wXxKv4oifK4S0RuQQHSrbBpzjvdMikc5/oeEsJkLCw7AkkRfRVNqmBMcK3gZoCzJ+onWE9Casud/5fXr6YTNSPMGrKa186Sq7xOH1QMGyoeO98P+ZEbNGd68EvpOLSb3v7kFCP2q5h86XMxgA6HBcypOT62JmFWP7jnwfPoFRlGUaKYXQ7/iBJOwgAHkdE2xMZlMs8MCSz2MHTatpoqbbJ5xhXHcRU/9GKC7ODnoob8oNcUQZ3BC34yRTC5avu8RGuQ4numoXrixJGJA0j2TRidw/BIc0f1QlHyY30fzXPine/hOHq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,22 +131,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 18.09.25 15:19, Kefeng Wang wrote:
-> Add a new helper to free huge page to be consistency to
-> debug_vm_pgtable_alloc_huge_page(), and use HPAGE_PUD_ORDER
-> instead of open-code.
-> 
-> Also move the free_contig_range() under CONFIG_ALLOC_CONTIG
-> since all caller are built with CONFIG_ALLOC_CONTIG.
-> 
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> ---
+Hi Loïc,
 
-Acked-by: David Hildenbrand <david@redhat.com>
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on drm-misc/drm-misc-next]
+[also build test ERROR on linus/master v6.17 next-20250929]
+[cannot apply to akpm-mm/mm-everything]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Lo-c-Molinari/drm-shmem-helper-Add-huge-page-fault-handler/20250930-040600
+base:   git://anongit.freedesktop.org/drm/drm-misc drm-misc-next
+patch link:    https://lore.kernel.org/r/20250929200316.18417-3-loic.molinari%40collabora.com
+patch subject: [PATCH 2/8] drm/gem: Introduce drm_gem_get_unmapped_area() fop
+config: arm-randconfig-002-20250930 (https://download.01.org/0day-ci/archive/20250930/202509301702.DL6CeU62-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250930/202509301702.DL6CeU62-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509301702.DL6CeU62-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   drivers/gpu/drm/drm_gem.c: In function 'drm_gem_get_unmapped_area':
+>> drivers/gpu/drm/drm_gem.c:1280:9: error: implicit declaration of function 'mm_get_unmapped_area'; did you mean 'shmem_get_unmapped_area'? [-Werror=implicit-function-declaration]
+     return mm_get_unmapped_area(current->mm, filp, uaddr, len, 0, flags);
+            ^~~~~~~~~~~~~~~~~~~~
+            shmem_get_unmapped_area
+   cc1: some warnings being treated as errors
+
+
+vim +1280 drivers/gpu/drm/drm_gem.c
+
+  1238	
+  1239	/**
+  1240	 * drm_gem_get_unmapped_area - get memory mapping region routine for GEM objects
+  1241	 * @filp: DRM file pointer
+  1242	 * @uaddr: User address hint
+  1243	 * @len: Mapping length
+  1244	 * @pgoff: Offset (in pages)
+  1245	 * @flags: Mapping flags
+  1246	 *
+  1247	 * If a driver supports GEM object mapping, before ending up in drm_gem_mmap(),
+  1248	 * mmap calls on the DRM file descriptor will first try to find a free linear
+  1249	 * address space large enough for a mapping. Since GEM objects are backed by
+  1250	 * shmem buffers, this should preferably be handled by the shmem virtual memory
+  1251	 * filesystem which can appropriately align addresses to huge page sizes when
+  1252	 * needed.
+  1253	 *
+  1254	 * Look up the GEM object based on the offset passed in (vma->vm_pgoff will
+  1255	 * contain the fake offset we created) and call shmem_get_unmapped_area() with
+  1256	 * the right file pointer.
+  1257	 *
+  1258	 * If a GEM object is not available at the given offset or if the caller is not
+  1259	 * granted access to it, fall back to mm_get_unmapped_area().
+  1260	 */
+  1261	unsigned long drm_gem_get_unmapped_area(struct file *filp, unsigned long uaddr,
+  1262						unsigned long len, unsigned long pgoff,
+  1263						unsigned long flags)
+  1264	{
+  1265	#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+  1266		struct drm_gem_object *obj;
+  1267		unsigned long ret;
+  1268	
+  1269		obj = drm_gem_object_lookup_from_offset(filp, pgoff, len >> PAGE_SHIFT);
+  1270		if (IS_ERR(obj))
+  1271			return mm_get_unmapped_area(current->mm, filp, uaddr, len, 0,
+  1272						    flags);
+  1273	
+  1274		ret = shmem_get_unmapped_area(obj->filp, uaddr, len, 0, flags);
+  1275	
+  1276		drm_gem_object_put(obj);
+  1277	
+  1278		return ret;
+  1279	#else
+> 1280		return mm_get_unmapped_area(current->mm, filp, uaddr, len, 0, flags);
+  1281	#endif
+  1282	}
+  1283	EXPORT_SYMBOL(drm_gem_get_unmapped_area);
+  1284	
 
 -- 
-Cheers
-
-David / dhildenb
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
