@@ -4,106 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 122D4CAC5B8
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 09:23:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49235CAC5B9
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 09:37:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B6FD8E0003; Tue, 30 Sep 2025 05:23:30 -0400 (EDT)
+	id A57468E0005; Tue, 30 Sep 2025 05:37:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 666C38E0002; Tue, 30 Sep 2025 05:23:30 -0400 (EDT)
+	id A2ECC8E0002; Tue, 30 Sep 2025 05:37:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52F1E8E0003; Tue, 30 Sep 2025 05:23:30 -0400 (EDT)
+	id 944A98E0005; Tue, 30 Sep 2025 05:37:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C2248E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 05:23:30 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8192F160676
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 09:23:28 +0000 (UTC)
-X-FDA: 83945378496.24.81EEEB1
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 1D1BFC0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 09:23:25 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BQXtqijk;
-	spf=pass (imf10.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FC678E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 05:37:06 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 21B9413B782
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 09:37:06 +0000 (UTC)
+X-FDA: 83945412852.08.0CEB35C
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf01.hostedemail.com (Postfix) with ESMTP id ADCCD4000A
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 09:37:03 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dMaQGLa6;
+	spf=pass (imf01.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759224206;
+	s=arc-20220608; t=1759225023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TVTRRja56NKyfYmtJWa6t4niAYLHaXsYHEoVzq9agdk=;
-	b=E01wrogPDlI9JL6iK2H2K8gWRXZx1DASBe70iLKC2nDZpU7Xl56fopMxtQ4jpl8kbpj8GU
-	FOMf7slEQ3Q8DVaOXbY77dhSCf4mzcIW6SdchnYNpSInceWBpsWBWSEGTNxc6kt4gu8RAD
-	xxZA5tZBGMtAgJPCwiFnUprde5xEDsI=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BQXtqijk;
-	spf=pass (imf10.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759224206; a=rsa-sha256;
+	bh=sriyjezazUL36Fd5zaQH3Go6JHJr+H5glZUzh05N9l8=;
+	b=IzFCbPmUt3ilg+SL48vs91s5njO/+O0EQ+JNjtop1uLob/d/EYN46kj2Ql2vg7SrC2AHC5
+	uETUK3WkK3nGHXYnfaDyI8+1WNjMe3hNR0ZnYjM6Hi1LR64hZ6Nlj/zANfvTWx5XyHX4Yp
+	P/pv0nZuQ0rp19IwBVumEK5YrKtOvx0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759225023; a=rsa-sha256;
 	cv=none;
-	b=MrXu8daJza/f3Y+HGo24923d2go5cJvG4S+SSOEEq/LbiXli0dSLE6EXg4NHU8FAXYhXGs
-	A48cNdURfEcMdpXgukEdzFTNcncpiPdrqdpagswaZXk9gYol0rEjQXAnuE4CpJpk5tXYYj
-	dw94MbN5i93wknWi1RzPYoUjtj8q1Ac=
+	b=E7fwLf3IBQxaUEfaVV8lWB3ePWRIla6JQWAcaJs12GI9CNd23wLp3CisUY7NlNqeBzEAYQ
+	JOdkfMuVtz+N5uA+wcpjTccnvkqdpPlKyC+VtF3Iv9MuyTY3+ldBxgiHGG4Y8vwjcoAWxu
+	0B9riNln7k/xzTC/rPNMrYEEoJopqK8=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dMaQGLa6;
+	spf=pass (imf01.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759224205;
+	s=mimecast20190719; t=1759225023;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=TVTRRja56NKyfYmtJWa6t4niAYLHaXsYHEoVzq9agdk=;
-	b=BQXtqijkPj378dABWJmeBpc4v+BtH0Oiu4evEAXeYMI6R2Fky3nRL5tvgFIt/ymV+N0LJb
-	PpaoFMHHUO6C+4VWIaBqsPW9lmiAMcoaaJW4geSca87kW5swb1GopeunDCZa2Vd3v1mYBk
-	j9JSnO9+D1BCOvZkF7kOOeVipwCjsFA=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=sriyjezazUL36Fd5zaQH3Go6JHJr+H5glZUzh05N9l8=;
+	b=dMaQGLa63smzTbp2PYti3rll6RntV/0tzY+Sd/b/uSvwj8voBMx/t4iMgApBA+4RD6CHWR
+	6r1btC8uTjE+D/n0xxuASlf7DALokQDviPq3DdP/lZwJyzWpVeSHcdACzWe/gmkNx7oYtS
+	2PyzvyEEz2UOziQWrbU6LHNgQ4fqxVs=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-20-QGhGmM79M0-KKlPs36rY4A-1; Tue, 30 Sep 2025 05:23:24 -0400
-X-MC-Unique: QGhGmM79M0-KKlPs36rY4A-1
-X-Mimecast-MFC-AGG-ID: QGhGmM79M0-KKlPs36rY4A_1759224203
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-401dbafbcfaso3882907f8f.1
-        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 02:23:23 -0700 (PDT)
+ us-mta-219-5wIBw4ydNHSpNq4xhoZ2sQ-1; Tue, 30 Sep 2025 05:36:59 -0400
+X-MC-Unique: 5wIBw4ydNHSpNq4xhoZ2sQ-1
+X-Mimecast-MFC-AGG-ID: 5wIBw4ydNHSpNq4xhoZ2sQ_1759225018
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-46e3ed6540fso20753685e9.0
+        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 02:36:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759224203; x=1759829003;
+        d=1e100.net; s=20230601; t=1759225018; x=1759829818;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=TVTRRja56NKyfYmtJWa6t4niAYLHaXsYHEoVzq9agdk=;
-        b=EyawZuQaSjY/Riw9TruNoXukSEB5VI2zJCBxwQ0TRqvNUrsiYaIDlsrpNUZcd4+JNr
-         TaFBMxXoCi1kN0SC5ol/Ij0B8xNDR7dcBNi/lxyB6JUM6WJSaggj4t8fM06a+p+Mk/u4
-         jqQ9MHybQef8XVq6lsRljkF7MUmCUvJhnbLB0s4wx9+/TDp0680kfBofvWLBY8vP9frW
-         qIjIzitl9Zwd2xgi9i/Nu6GPpXSxfgq6VEtQ9IIHsBgypcl7yI+xVHgXDX+WcNygqAd4
-         9tItTdMLb5U++TB6XVdAuyASeW3AUU2CpwoLqGaGiSmXT7cfXzIN97KYyiMaLDhfnYvj
-         SYbw==
-X-Forwarded-Encrypted: i=1; AJvYcCUCxxA1+7+4/JncY/0i+PjWRh/egoQAj57wy+cFgtv7l4jr2/aAjV0Neh062+pzY+bQaMM2va7vcw==@kvack.org
-X-Gm-Message-State: AOJu0YxENtTXDxSD9A7CQrGGGuaMvDCSodYcK1tBC8uJxVjlwR1z78ar
-	Fh4VYuVvhCfjCV2RtMHeNMdwpjeyjdVDJFAWwuhusyF60tnos+MmS0BEibSlu9x3ROHDzeYG7b0
-	MpNZ9vduqLXyq2JfJtPxOUV9btQhl4pwDMmH5h1eKEBUthFovylv8
-X-Gm-Gg: ASbGncuv6Re9eO+RK5TInOa4Ts/05R81gXeCoi5D1m1NQ879BS2ZlUS4CTdx8+vU8cL
-	4nJvlsgfCrChruqoQcxiiyGFLZarSCPLT7GygDQS+Fv+h9xtavaVnTW/DIj9T91Rr+vmj0h6SHk
-	GXKsXHwlHwa44H8DBfhbHmNQliA0w5BOauvoUocN77slVopgPkWh4AqQUjfJgonpgBUE8RqtgAu
-	kUCy/mipi8QPEL/zzkHKXmInEef8tTolSxTWqeshho4OP6I975np9eDb9pZISHD0jt9JwEZWkBw
-	7/jEU7QteME5pGlre+psNT4vV6OMPRbpL7t+3lkPLQYeZlOYpDuB9x9epmFMOe9mVCkeXG4rxxb
-	v+9UMOew1
-X-Received: by 2002:a5d:5f45:0:b0:3ea:a496:9ba8 with SMTP id ffacd0b85a97d-40e480ca410mr18003942f8f.29.1759224202715;
-        Tue, 30 Sep 2025 02:23:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF8kxKym0XL78KwB0qdyY+0naOZrFtENcl3ZdbfIV0WoqTUk+yahydILwO1rCp3XZnwKFT+lw==
-X-Received: by 2002:a5d:5f45:0:b0:3ea:a496:9ba8 with SMTP id ffacd0b85a97d-40e480ca410mr18003916f8f.29.1759224202270;
-        Tue, 30 Sep 2025 02:23:22 -0700 (PDT)
+        bh=sriyjezazUL36Fd5zaQH3Go6JHJr+H5glZUzh05N9l8=;
+        b=ZGs21u/M61K9xNduOnVxiEa9cKyFpIVnAvZFwBLs5BI3v3CvlYh1ApRnB0gQoBr8bY
+         GtqMV6wN6rYKlyZl+ha5bNmEMS54DQv/Mw/gZmF6PbrR7B3wQOb0v8C0kxuty5QgYPRP
+         XVMby800SUCiww2mr11mxGk/QZc1TxnqjU45rLe6elF16pljrB4g2nhEjHJ9s8ro0iV0
+         U5SrgxqASuuysezlM5bPgER7ckUAxGOHOkKA4bsDWfkWlRawnz1L38ASywVu+YGqGnxh
+         D3k7K9yaf9vyC8o6xv29ZONtJvruX+nP512TJHVoHWZy838f6NwLMhiCT5aSY6Y8vUPi
+         vZyA==
+X-Forwarded-Encrypted: i=1; AJvYcCWekrxFY80kQxoo8EuPm3V18KRmiEnBAwkkIurYgwOHl328zHkblkVdo3Owd3oAor0ym4/5whAe3w==@kvack.org
+X-Gm-Message-State: AOJu0YyHqq5ttYXQokzqgq2ga8EPysXdYnTNNebZQG8QMpFxGJD1UolM
+	2IFAUJ+ODBea902FGRf7KSVQHqcPscYNfZxqh2VQh1ZFbu919Wnx1G5YfvbmAxtsLrGSAbnk3YL
+	csxIzc2Fwoiv7mZSmqbGAOz7i8XAyO63OjCpuO4DJMge9NcqNuyJF
+X-Gm-Gg: ASbGnctX03AV2IiIo4lOu8RU2FfoJscQGL5NSkRlm34c6b6LmI0trR+8PaGuvO6M82i
+	ApIoFaY/OaYmyBS6VjWhFvnvh1uR9mDTTm7+3yYH3gD/VLMY04k28MH5rD7cMEVaubGxwMc1rhe
+	PzM2n/u6KxGE6597LhuVpvMciplzCqqkx04QM8dD1vOviBKJP6pdmSYXKbWbhl3jDTqVostqeL0
+	DJ2h9373/UHlVK873SgwD7BlKwD4hbPZoL35dzZhHLUaFdYO6JC1cQfDuptIbyII3YckSN1Fu5f
+	RdvXJnkgME4mw1mNlJd2qoDfu+kh2Sf1C2mEq0kDAh9KFAD8C6wUrWz7kr4tD0Xftl4/qm5mKTo
+	PFVh2yv8p
+X-Received: by 2002:a05:600c:4510:b0:46d:1a9b:6d35 with SMTP id 5b1f17b1804b1-46e58ac9c36mr37612515e9.14.1759225018321;
+        Tue, 30 Sep 2025 02:36:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGsPJzHmF8DkpwxtlmdmhxGs2aUnDwUWraLDaT6N40+ieEDyQubMcJS5ZryUo4Ugs9z5ZSCKg==
+X-Received: by 2002:a05:600c:4510:b0:46d:1a9b:6d35 with SMTP id 5b1f17b1804b1-46e58ac9c36mr37612135e9.14.1759225017777;
+        Tue, 30 Sep 2025 02:36:57 -0700 (PDT)
 Received: from [192.168.3.141] (tmo-080-144.customers.d1-online.com. [80.187.80.144])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fc5603381sm23402858f8f.31.2025.09.30.02.23.20
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e4ab0bf62sm109304255e9.9.2025.09.30.02.36.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Sep 2025 02:23:21 -0700 (PDT)
-Message-ID: <0a60d99b-fa3b-482b-8171-ac63dcdf3168@redhat.com>
-Date: Tue, 30 Sep 2025 11:23:19 +0200
+        Tue, 30 Sep 2025 02:36:57 -0700 (PDT)
+Message-ID: <f1da3505-f17f-4829-80c1-696b1d99057d@redhat.com>
+Date: Tue, 30 Sep 2025 11:36:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/4] mm: Apply vm_uffd_ops API to core mm
+Subject: Re: [PATCH v3 1/4] mm: Introduce vm_uffd_ops API
 To: Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
 Cc: Axel Rasmussen <axelrasmussen@google.com>,
@@ -118,7 +118,7 @@ Cc: Axel Rasmussen <axelrasmussen@google.com>,
  Oscar Salvador <osalvador@suse.de>, Hugh Dickins <hughd@google.com>,
  Suren Baghdasaryan <surenb@google.com>
 References: <20250926211650.525109-1-peterx@redhat.com>
- <20250926211650.525109-5-peterx@redhat.com>
+ <20250926211650.525109-2-peterx@redhat.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -164,21 +164,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20250926211650.525109-5-peterx@redhat.com>
+In-Reply-To: <20250926211650.525109-2-peterx@redhat.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: oN3SnbdC0u3FOiMxDQxDI6jvoUOesfms3AOP0ODcjqk_1759224203
+X-Mimecast-MFC-PROC-ID: EpreA-ZLPUFhF9EJZEMfCaYlz_yYpJZYIDLDpvJHqR0_1759225018
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1D1BFC0002
-X-Rspamd-Server: rspam05
-X-Stat-Signature: nybwmbkhqmarh9hs6nm8yy79o1ufsmuu
+X-Stat-Signature: hke8brdb8z648m9wu9hhpwqjzst36ggr
+X-Rspamd-Queue-Id: ADCCD4000A
 X-Rspam-User: 
-X-HE-Tag: 1759224205-508967
-X-HE-Meta: U2FsdGVkX1+PGnoQycPqezWVs5HqbQXmc8XyxtYxgFF5wn2wG70qKLzS4QOpJED2jtEXKQX0ToZaCJojV8psC5srhwRU/Z8UC8nGqpQfnjLu5jv1zGUORyCCrXlpoT7XS3NUBXQyWjLmfauGkPQ/gvLxOCmEKtv/7ED6ELFcl9NnhINPhtpVDgdx4yhDYs0zJx/YcpgEgQ8vbCegzazBTyo5w6eG5wgwSCq4ZSH97q1WuIlTxOfQTAg0aor/PDOkguhZXAoArGsYC6ku7XxDM4HSkBzinkfrrD3vUFl8J1WnSIXzqJZoiZIFrijeXwIpEnoGTACM7XoRehfq22K07FjDrmBUMJwl45G4sXqt2W4mtyUSZgA10D1i7lfPZpuJ7Zq47tZsmhuBvm8sE585/cjKrStCeVBvtmVXwXzUhtyJ3kk9+9q9kfFLZrNJTKJi4B2juhnkzGlN9kP9XUTOcBTUcd3w90uj010ETCclP1O9SGtrOuencasKAlVALHFkwac6hfh4Sh1yJoc/DkTyBdhF+xVOzQOM6C+QYPZOtEpicbnt4HyynDWkBdr3H43UJo+xAzBpHWGVCJ5HhSfGDGyFa/5KE25QKNsQJXdWBwCx1T9XmVbTogFl1w8T3saeJSQhsI7Rp1ffoH7idWbTdP9HrzFfKBVsBPF+hBKDEaAwrnEmwcpaa4oHjGe9jA0bQ51sJLlu0V+AIjQZMIF2XQhfe/M8hqovMamkelPcvspyMpuivc6VmG68osXOU9cSAxNipRayzoPQ3b4uwaKJaTXC6BRGI9gUBd3X4p1+ZvaSczeC5/9XB19eKTlCONRO4EGWGY8raiXNJYFguXFiLtVJGQah5bnTCoIyzAsH+6EYJ8IwA15jW0B5sUAFDkNo32ttU0ix1Z8VgGh5mCDZuXUYLYXaXIjid7ub1Jw4m4ziE3gqBuBtuJW5SkTdolMEOR6LwSwGBoGdz4IBZDW
- wL7YJ1wJ
- Rp8GMP8BD4PT0HtIG0nTWOpbb+1y1jFO3l9G+C6Ru6wa8aEmMjCiKUd7N6emweGU6P7OR7J8EAKJEgoTkBG91cH3pgzW6jiLzxMDVbmeN08yXaBVjoi5eaXpGy+RgggahXmzivKJ5+9rh81iteO5jrd+Pi+ZPeh60uuXvpeEEIsVpG7XqD5hEmCWxNFSk1LaOe9Fcqh/10jrHupeRDaSexN404VoTLydK0SrJ/VIGX4nekN00gifwXQU6ncFqX9huT5pB7SvCo4O62hEcpMmp8nlTKLHOjL6vOfsCWHBKFAyt7vEGZjCBFWKEq2pRWM1yKbpLWnpoXWETxDMMwXhBo+Pv2/THhfGHIvtcZEn6C0+2X/HgbiVSqHNJTrjT82PPWDQRhMLS68knmTlHm3HecylSO4BVxPKjqjilb240Q+cd/vBJI1sEKUbI3UPfp/gJgmk4itS1oRoWAz5RqMvT3Gq3XxCABGEMFL4JquUOAY2S2KcCKrxI+XqszCPvZb4pEQtQ4i2dE0miCxb4fUAt7GiJT0v3+DeNW9ER7g0pwuQ9XZHyhdzSulFJMS4kk/o8lh1W
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1759225023-528451
+X-HE-Meta: U2FsdGVkX19jgYmVkwsxRE5MGfCipFTtB5+vtRN+tYgIG9c7HREgGhlxwHGTxMHH+l44nE3fvxqZxXIDP6k+S0zFOGRQQbGYWHuEN9gHYnw1AP01+n0/pYg3en6LDntyZjgAUBG9ww41RfcFNbX74GLliH8eZizONri6VxFj6ChEPIhiB7s4xOqa5TcsN4MeAnxl3KyFCPVSxJiBLXYUW367SRIrSeqWg48RbsBk9F3Tie863mgMOPbSXX4jKZlFMX8hjZeaWmZrc/Kjy2DJgUS2HshiF4KNbdtNiKlZvNp952fZOdarHHM0mebksbH+YSMfuUiuqN78fQgSuj3HsR0xpmk4yV2fIaXYNucHQCiCiXuPTarqXCyaBXye+7ZFOE/qXl7W/y9yT6weJ4pY16x2qQGqsMTzcfiXnma40MkpYSndxTD4wJyKJQyxRDVlmtfuF1+IQRJf6hzBWep9i2mH9D17mAGHTX5HRhKN1p80fZ/ne+K4dmPzfjVCHKer6Wr2Sa/Iquwhc6OXvlEaq97U9cBJZjEtcS5/YyD69cmMeE1BeEp/07vriSnhPQ85HjBQRV0u2GfM5Wo36zwS97IQPIDOSEnF5+FnxnJhVydUDk+IuJv+OCdj6nnz1MWp4r0zMg6kgLL1t4XSxkJwn53147TNYY99j6LvLRtkLENKDsG5QjKd8NR5sujlujP7ihfjBFZ1LMPUIxH+MebMoexdEM55Y1pScqYlzCOktsydYOt7piU6q7dQnJPVyjYSyUzrJo6ja+zj3Ic/YeO28qifmb5nEUc/+l9SNh2YEX/DHlszfIcSs+sjRvQON1IQ7R8OJRSky8YDdPTi1lKKjpqBRAhk2KizV/ZAZIVX/CT0jjsEgwcAs1a1N3KeetCEfyfevWPXi2wvbvJSwYKFWlZK9kVip6ga+cx0Etvz2L1/mRSMiDOQ0oLZQRU9RIZOMIiwdVtFoVB07lzUO7M
+ C6yv2nYB
+ T8P5HxfrVkFNX9nc/eh8szMaLda1aquQp8pIJT0Z2ldM2KqixsbzMwU5wUChqnaVYLtyf13uI64b37PvtxLZ356UjR4DNXa3sllLzgOp8uLZ7RksIOnhdqO/uZKPJNBjevyFs1qfaRdJkmH3LZ0JbM8+O/rC8ttRH2AQ6h0iCyRILuK1Ny2cxDj7Il6v2cqVinPJyV+8zuyLVME2+VMAIAVGHAGZnsMfpHgQ8lz1Cxf+QegTnnRx6P3ktVUGadadh6eelBGjKbhbDeqYTywFQrUJxu/r4X0gI9YWL9pK49a6o7YAMLM6OUltNkgi3zP40lgVEcPh8/OognOSjL5Q9A8jyr/FKC4eMPjCw34EgYdRjuX8apKRHT3QX48ZZ4o9rC0m/5tVw+gK57QVjg51iXJE2KjTESFgNfqSN6dbuq7Nhr4hJmdG6a9zvwaiO2pbkrgET1VxWtdkddPy+Gz4bVMeSxKadiPCob2qYSJ6h5VOmMHq5hbq2KJcQITVE/HaJBO96Ml51E6/ue353WBLleq8rgZtQSHO+XNWB1Qgv4sgTOco=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,97 +188,132 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 26.09.25 23:16, Peter Xu wrote:
-> Move userfaultfd core to use new vm_uffd_ops API. After this change file
-> systems that implement vm_operations_struct can start using new API for
-> userfaultfd operations.
+> Currently, most of the userfaultfd features are implemented directly in the
+> core mm.  It will invoke VMA specific functions whenever necessary.  So far
+> it is fine because it almost only interacts with shmem and hugetlbfs.
 > 
-> When at it, moving vma_can_userfault() into mm/userfaultfd.c instead,
-> because it's getting too big.  It's only used in slow paths so it shouldn't
-> be an issue.  Move the pte marker check before wp_async, which might be
-> more intuitive because wp_async depends on pte markers.  That shouldn't
-> cause any functional change though because only one check would take effect
-> depending on whether pte marker was selected in config.
+> Introduce a generic userfaultfd API extension for vm_operations_struct,
+> so that any code that implements vm_operations_struct (including kernel
+> modules that can be compiled separately from the kernel core) can support
+> userfaults without modifying the core files.
 > 
-> This will also remove quite some hard-coded checks for either shmem or
-> hugetlbfs.  Now all the old checks should still work but with vm_uffd_ops.
+> With this API applied, if a module wants to support userfaultfd, the
+> module should only need to properly define vm_uffd_ops and hook it to
+> vm_operations_struct, instead of changing anything in core mm.
 > 
-> Note that anonymous memory will still need to be processed separately
-> because it doesn't have vm_ops at all.
+> This API will not work for anonymous memory. Handling of userfault
+> operations for anonymous memory remains unchanged in core mm.
 > 
-> Reviewed-by: James Houghton <jthoughton@google.com>
-> Acked-by: Mike Rapoport <rppt@kernel.org>
+> Due to a security concern while reviewing older versions of this series
+> [1], uffd_copy() will be temprorarily removed.  IOW, so far MISSING-capable
+> memory types can only be hard-coded and implemented in mm/.  It would also
+> affect UFFDIO_COPY and UFFDIO_ZEROPAGE.  Other functions should still be
+> able to be provided from vm_uffd_ops.
+> 
+> Introduces the API only so that existing userfaultfd users can be moved
+> over without breaking them.
+> 
+> [1] https://lore.kernel.org/all/20250627154655.2085903-1-peterx@redhat.com/
+> 
+
+Looks much better with the uffdio_copy stuff removed for now.
+
 > Signed-off-by: Peter Xu <peterx@redhat.com>
 > ---
-
-[...]
-
-> +++ b/mm/userfaultfd.c
-> @@ -20,6 +20,43 @@
->   #include "internal.h"
->   #include "swap.h"
+>   include/linux/mm.h            |  9 +++++++++
+>   include/linux/userfaultfd_k.h | 37 +++++++++++++++++++++++++++++++++++
+>   2 files changed, 46 insertions(+)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 6b6c6980f46c2..8afb93387e2c6 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -620,6 +620,8 @@ struct vm_fault {
+>   					 */
+>   };
 >   
-> +bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
-> +		       bool wp_async)
-> +{
-> +	unsigned long supported;
+> +struct vm_uffd_ops;
 > +
-> +	if (vma->vm_flags & VM_DROPPABLE)
-> +		return false;
-> +
-> +	vm_flags &= __VM_UFFD_FLAGS;
-> +
-> +#ifndef CONFIG_PTE_MARKER_UFFD_WP
-
-While at it, you can turn that into an
-!IS_ENABLED(CONFIG_PTE_MARKER_UFFD_WP) to avoid the ifdef.
-
+>   /*
+>    * These are the virtual MM functions - opening of an area, closing and
+>    * unmapping it (needed to keep files on disk up-to-date etc), pointer
+> @@ -705,6 +707,13 @@ struct vm_operations_struct {
+>   	struct page *(*find_normal_page)(struct vm_area_struct *vma,
+>   					 unsigned long addr);
+>   #endif /* CONFIG_FIND_NORMAL_PAGE */
+> +#ifdef CONFIG_USERFAULTFD
 > +	/*
-> +	 * If user requested uffd-wp but not enabled pte markers for
-> +	 * uffd-wp, then any file system (like shmem or hugetlbfs) are not
-> +	 * supported but only anonymous.
+> +	 * Userfaultfd related ops.  Modules need to define this to support
+> +	 * userfaultfd.
 > +	 */
-> +	if ((vm_flags & VM_UFFD_WP) && !vma_is_anonymous(vma))
-> +		return false;
+> +	const struct vm_uffd_ops *userfaultfd_ops;
 > +#endif
-> +	/*
-> +	 * If wp async enabled, and WP is the only mode enabled, allow any
-> +	 * memory type.
+>   };
+>   
+>   #ifdef CONFIG_NUMA_BALANCING
+> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+> index c0e716aec26aa..b1949d8611238 100644
+> --- a/include/linux/userfaultfd_k.h
+> +++ b/include/linux/userfaultfd_k.h
+> @@ -92,6 +92,43 @@ enum mfill_atomic_mode {
+>   	NR_MFILL_ATOMIC_MODES,
+>   };
+>   
+> +/* VMA userfaultfd operations */
+> +struct vm_uffd_ops {
+> +	/**
+> +	 * @uffd_features: features supported in bitmask.
+> +	 *
+> +	 * When the ops is defined, the driver must set non-zero features
+> +	 * to be a subset (or all) of: VM_UFFD_MISSING|WP|MINOR.
+> +	 *
+> +	 * NOTE: VM_UFFD_MISSING is still only supported under mm/ so far.
 > +	 */
-> +	if (wp_async && (vm_flags == VM_UFFD_WP))
-> +		return true;
+> +	unsigned long uffd_features;
 
+This variable name is a bit confusing , because it's all about vma 
+flags, not uffd features. Just reading the variable, I would rather 
+connect it to things like UFFD_FEATURE_WP_UNPOPULATED.
 
-> +
-> +	if (vma_is_anonymous(vma))
-> +		/* Anonymous has no page cache, MINOR not supported */
-> +		supported = VM_UFFD_MISSING | VM_UFFD_WP;
-> +	else if (vma_get_uffd_ops(vma))
-> +		supported = vma_get_uffd_ops(vma)->uffd_features;
-> +	else
-> +		return false;
+As currently used for VM flags, maybe you should call this
 
-To avoid the hidde return here, I think you can just do
+	unsigned long uffd_vm_flags;
 
-	supported = 0;
+or sth like that.
 
+I briefly wondered whether we could use actual UFFD_FEATURE_* here, but 
+they are rather unsuited for this case here (e.g., different feature 
+flags for hugetlb support/shmem support etc).
 
-Or even cleaner, just do
+But reading "uffd_ioctls" below, can't we derive the suitable vma flags 
+from the supported ioctls?
 
-unsigned long supported = 0
-...
-if (vma_is_anonymous(vma))
-	supported = ...
-else if (vma_get_uffd_ops(vma))
-	supported = ...
-return ...
+_UFFDIO_COPY | _UFDIO_ZEROPAGE -> VM_UFFD_MISSING
+_UFFDIO_WRITEPROTECT -> VM_UFFD_WP
+_UFFDIO_CONTINUE -> VM_UFFD_MINOR
 
-> +
-> +	return !(vm_flags & (~supported));
+> +	/**
+> +	 * @uffd_ioctls: ioctls supported in bitmask.
+> +	 *
+> +	 * Userfaultfd ioctls supported by the module.  Below will always
+> +	 * be supported by default whenever a module provides vm_uffd_ops:
+> +	 *
+> +	 *   _UFFDIO_API, _UFFDIO_REGISTER, _UFFDIO_UNREGISTER, _UFFDIO_WAKE
+> +	 *
+> +	 * The module needs to provide all the rest optionally supported
+> +	 * ioctls.  For example, when VM_UFFD_MINOR is supported,
+> +	 * _UFFDIO_CONTINUE must be supported as an ioctl.
+> +	 */
+> +	unsigned long uffd_ioctls;
+> +	/**
+> +	 * uffd_get_folio: Handler to resolve UFFDIO_CONTINUE request.
 
-I think this can just be:
+Just wondering if we could incorporate the "continue" / "minor" aspect 
+into the callback name.
 
-	return !(vm_flags & ~supported);
+uffd_minor_get_folio / uffd_continue_get_folio
 
+Or do you see use of that callback in the context of other uffd features?
 
 -- 
 Cheers
