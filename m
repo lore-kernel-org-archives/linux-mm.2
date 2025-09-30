@@ -4,87 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75461CAC5B8
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 05:29:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72BADCAC5B8
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 05:48:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B3E218E000B; Tue, 30 Sep 2025 01:29:29 -0400 (EDT)
+	id 774A88E000B; Tue, 30 Sep 2025 01:48:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AEE5F8E0002; Tue, 30 Sep 2025 01:29:29 -0400 (EDT)
+	id 723888E0002; Tue, 30 Sep 2025 01:48:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DD928E000B; Tue, 30 Sep 2025 01:29:29 -0400 (EDT)
+	id 639CA8E000B; Tue, 30 Sep 2025 01:48:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8AC378E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 01:29:29 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2F071BA50B
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 05:29:29 +0000 (UTC)
-X-FDA: 83944788858.03.43CC13A
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 828AE40007
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 05:29:27 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B83F8E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 01:48:43 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E9B17C05A6
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 05:48:42 +0000 (UTC)
+X-FDA: 83944837284.09.61050A0
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 43A3614000B
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 05:48:41 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pmySo2y1;
+	spf=pass (imf09.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759210167;
+	s=arc-20220608; t=1759211321;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6a7nF/Zm+qVrnFfForPcR7ff6+QOW/ZD4srf5I8XNrA=;
-	b=ab1IygH26Sv7zLhXyLTWzYdpYGqDKxn4BF6hbSHN1jqFOsHDTt07BzOeLKB8uf7N64JnyO
-	x+u4DDlHDLirAbkPvKyylxGkqVhDyU6sATOSIY6ELnk77W+oJXVKepExnopRJ0KYpfqCvl
-	7Yg4S2f9zM5mtG3oLYCkni7Fh/OCMPQ=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759210167; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=nwaNOsPaMPcKzgmglNmEscXlbXRyMv0Han6sLSHWCaw=;
+	b=TqQRgV81hGZKd5NXhDDkBMtteIresWg5YUN0IguCuD6Kg0WTXQb/yLZJiFzncHS4nWmRTM
+	e2QLw3fyRdLVEsvIKP/KFDOaWBQOD1mu01iHnPaDBS2bLTaWwg0We1VZYqU6cpSCgLx43O
+	qPIyo+QPNtcOvw1LUUgN46+WH66PGhw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759211321; a=rsa-sha256;
 	cv=none;
-	b=lQDZLJv3Ye17VaS/sA/F95XHxC94yneZsHrM/2JbXRt871yJgkkcwTsALhY0teG6sfKkv4
-	dKsun6IX9SrsjudyfxGSOu7sTuKWO7RSG4aFA6NLZ4q0BAIYTh4gzIV4wceObgzkMI1BbD
-	DsSIbShYu55Cmg/agSQbE5aihW6eN5Y=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 95FEA1424;
-	Mon, 29 Sep 2025 22:29:18 -0700 (PDT)
-Received: from [10.164.18.53] (MacBook-Pro.blr.arm.com [10.164.18.53])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 50DEF3F5A1;
-	Mon, 29 Sep 2025 22:29:18 -0700 (PDT)
-Message-ID: <68cff704-bbdb-41a7-81d4-7195f71ba73a@arm.com>
-Date: Tue, 30 Sep 2025 10:59:15 +0530
+	b=Jq2fRKB7ozOQRTWjhh0fgOKDKdIyX0g6Q/dOHX2ZymagXEbZUWZnoCvfc2iWyROGFSS33H
+	S6+aaB/RltjV5I9y1+N92ESJcNBdD6vfEEAjQ/kQJ7tUSA3f5P5kVH2ig1tdwZoDtoVVHH
+	BQZ2NZInCvkiwuUAdMC64mAzqg+nQcQ=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pmySo2y1;
+	spf=pass (imf09.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1759211319;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=nwaNOsPaMPcKzgmglNmEscXlbXRyMv0Han6sLSHWCaw=;
+	b=pmySo2y1mTUj+Hr/IcBN2zZF4HXhBVlZfNevClLH2GLrdQbgELHVg/tH2snIP35hUgWF5D
+	GtGv3022ovPF1dxHmfPX6ELwctMadEKOPOGRuci7evFLZ3qI8xyt0eE/BinJpQoVaUnE9o
+	BsNLPkkhumB/Lx+JR8Lex2DfmeVAJfM=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	linux-mm@kvack.org
+Subject: [PATCH] mm: readahead: make thp readahead conditional to mmap_miss logic
+Date: Tue, 30 Sep 2025 07:48:15 +0200
+Message-ID: <20250930054815.132075-1-roman.gushchin@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] mm/rmap: fix soft-dirty and uffd-wp bit loss when
- remapping zero-filled mTHP subpage to shared zeropage
-To: Lance Yang <lance.yang@linux.dev>
-Cc: peterx@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- baohua@kernel.org, ryan.roberts@arm.com, npache@redhat.com,
- riel@surriel.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- harry.yoo@oracle.com, jannh@google.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
- usamaarif642@gmail.com, yuzhao@google.com, lorenzo.stoakes@oracle.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, ioworker0@gmail.com,
- stable@vger.kernel.org, akpm@linux-foundation.org, david@redhat.com
-References: <20250930043351.34927-1-lance.yang@linux.dev>
- <0c498301-7434-4b2b-b7bc-73abe2057b67@arm.com>
- <668bfb74-014c-4fd5-a636-ff5ec17861c3@linux.dev>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <668bfb74-014c-4fd5-a636-ff5ec17861c3@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 828AE40007
-X-Rspamd-Server: rspam05
-X-Stat-Signature: jr6gjtuwgnkcwp1iesetcd8yakybwjo9
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 43A3614000B
+X-Stat-Signature: z4i6dsqxd7cn39dwx9inf8zdxkgjtfb1
 X-Rspam-User: 
-X-HE-Tag: 1759210167-701944
-X-HE-Meta: U2FsdGVkX191CHlTznJ8FPyysybBLCx4PuwIIENA9Mms1VenAky4NVfutZKaymIhSiSE6rMwFBEJqjiPBo7MuSfUQW9K9BmRgc1MBnr3O5KCov3uNH1gGFeuoCKYE58fifR4Mn9UPXZx5eUOf6Vw9EMyzUkuXngRnGFXlN6u60OFWuk+4Eq0iXXYxkZjs1pxKoofsZ+vJehDbam/9o9fm07PpvTdcElTblZcfdqonyaa/Fcu4On0Vld1CENPUncV8QrNaA9lt/AjS1YbZPCLbYVsfPEP84d+vWaJp82IbkkSmxL96A7x9712i0saBQ26hpeZgJj6nGQUD4Fi2w/GtcD+V4zV/K74rPQAuUCnb8Tu8TBR/Pdy/7zPg4N2IxCC8xeCtCIHAkAJC5UyYV4pdK2WOo9k3wGDwmuxUBhpJNIl3Kd9S9YXpPXVHpKJHDk4GQsYPeTiZDASexF9zEz6qbJhXxSBirPa48gm72nRG6q4zruBd7fT2o71lzMV62GeNGNHiV7W41igy7dM6efduCQrC+VSM1WrfCbZhJ2+jwsJ02ZbiX2KBtFaknRVHh+h56AKRrwaMuMRHHAXCT9XzqmrSBG3ARibhN7GfKUHw4EZLAOll8h4zepaIufDzvNLUcAV+v9F1D6jnFYXgv6bs3yBmVpzrpO0gBJIVtw58W/S+1hZ+CqcLGxsuQ27IZVrXUHipfeGW0hfRDnn9wShGi7Iu//ZqMB1oeAJMWCBExmRUnMZJ2JlNeN5gswp32o2ciW18OW714kb1qxuvVtuaFdNFsF4cCXZoQklcrprkDiX6DniMrcJmNuClR+CO25Ka1FY6IYyeh6Yh1G7tBYHn1iagwaNSssrP02EuvuGzaFSiz4vTZ7Jmh87x2xGMH54
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1759211321-675389
+X-HE-Meta: U2FsdGVkX18fKJe6pXEE5OJRQBqtB5x/NSixFD/fc5Sl4DI4YfIuxn4VA5xIZzcwS08Sk/TzYowweV9nSF4AiqOcmtydrltncGyHsAex+uGpDdEZfjoNjZx3P+300YHWQaYVJ6wGRzwKbiqoV7UxTI8n++oYTA8wGroNOq+1xz/1y8/SGbrsUIkoKvc/y2CN6N91nyPNAWKIGEZ5ITJxLxppR2cU82kKltBo6EmIjtQbfTEYquagqZ24LRQuPWyRGfNbqjb46VckAAhq0KTaqftiMTIYt7FPpgVEkl4ISJH5jgo1J/ac7fOtk3W9s/DVxxdhowTqYfKScALUVV4AoHBnJ59J//U7SP1Webym98OPanzhobKd9RurYOk6DGEFTDeWiune/dbtISWgr5q49xhWfFK23yzdVR4VYudWgci2j6pV21vLS/D0RJTqubYoE/AFOlwIjXSI1NCNYteT6TlM+KdWTd05OvRj3T7I7DWdRT0Cc6UszngK9lBKN0gkU0OctVmQ9mhUIvKefCxnW9qoAoTTZN1saA+gLQUvrEQYIwTVTnyeaVORs0eRuMbZ9ZGs9QAHB+2OcN1JsaIeBMlHTFM5qMVQzlU/4RkRf98uSa1FpyMAS7m5oJRNsWpMIyR744xXg/W9ijH4F7XX4xENiilCuaXL8fRdwIeJSKLiAeARCREXJHIENbJtBPU/ta2ffO+9mfh0Kj6DnWqTCIedPkZC4Pqd2p1uz7XDKSx/TJ6Vt7Ar5Xnn/cTRqia/FxH5Th2wVjbEB8PG+GrYiDCG+b58hrAo9kXFhLWwEvrC+dhPCqDGz7eW84htNO3mpl5lPtamUM8xkOdP7+L+AqpQqh9B5JST6U1mi71S+n2VGd5d8TZ8oxg7t0n8onwvJfsVYHh7sO8CbyZvi5ingCS6TY/TjZ4NOxMEBcmVZ4oeq4Um5n4sU4fUy3FNFeADYfnAuYdmTIOu5gp1zJc
+ lOJ8sRFj
+ 3d0ul/hnPZfpMcHOg2dVneQ/qCHBF39pzsoOf0pDiJVb84o2zY1DmMAH3yiOIustzd5POdmFLMzYs+avnb++4mxXU1kidNyJbnO/3h14Zmam7aIaeIjqiBlz7+p3hrjzlFeAPxTJKsniyclZSFb+4v8ivpswrQsahf2uVNdTFdsJgWPjfZZnVJtCE3AIPUTcclr/IMH1vSxd7jM+RsgAnPEgiMpus+6s29h7EKoGKuFfKRXkmHml013hhAhv8YnLsTpsxJVkoE3FDpBFoDWvOngH3YEBaMQkfa5FpU3SaY2x9oVwAgQ3AMB+DE6/ozbw0Uz+8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,144 +87,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Commit 4687fdbb805a ("mm/filemap: Support VM_HUGEPAGE for file mappings")
+introduced a special handling for VM_HUGEPAGE mappings: even if the
+readahead is disabled, 1 or 2 HPAGE_PMD_ORDER pages are
+allocated.
 
-On 30/09/25 10:52 am, Lance Yang wrote:
->
->
-> On 2025/9/30 12:50, Dev Jain wrote:
->>
->> On 30/09/25 10:03 am, Lance Yang wrote:
->>> From: Lance Yang <lance.yang@linux.dev>
->>>
->>> When splitting an mTHP and replacing a zero-filled subpage with the 
->>> shared
->>> zeropage, try_to_map_unused_to_zeropage() currently drops several 
->>> important
->>> PTE bits.
->>>
->>> For userspace tools like CRIU, which rely on the soft-dirty 
->>> mechanism for
->>> incremental snapshots, losing the soft-dirty bit means modified 
->>> pages are
->>> missed, leading to inconsistent memory state after restore.
->>>
->>> As pointed out by David, the more critical uffd-wp bit is also dropped.
->>> This breaks the userfaultfd write-protection mechanism, causing writes
->>> to be silently missed by monitoring applications, which can lead to 
->>> data
->>> corruption.
->>>
->>> Preserve both the soft-dirty and uffd-wp bits from the old PTE when
->>> creating the new zeropage mapping to ensure they are correctly tracked.
->>>
->>> Cc: <stable@vger.kernel.org>
->>> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage 
->>> when splitting isolated thp")
->>> Suggested-by: David Hildenbrand <david@redhat.com>
->>> Suggested-by: Dev Jain <dev.jain@arm.com>
->>> Acked-by: David Hildenbrand <david@redhat.com>
->>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->>> ---
->>> v1 -> v2:
->>>   - Avoid calling ptep_get() multiple times (per Dev)
->>>   - Double-check the uffd-wp bit (per David)
->>>   - Collect Acked-by from David - thanks!
->>>   - https://lore.kernel.org/linux-mm/20250928044855.76359-1- 
->>> lance.yang@linux.dev/
->>>
->>>   mm/migrate.c | 9 ++++++++-
->>>   1 file changed, 8 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/mm/migrate.c b/mm/migrate.c
->>> index ce83c2c3c287..50aa91d9ab4e 100644
->>> --- a/mm/migrate.c
->>> +++ b/mm/migrate.c
->>> @@ -300,13 +300,14 @@ static bool 
->>> try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
->>>                         unsigned long idx)
->>>   {
->>>       struct page *page = folio_page(folio, idx);
->>> +    pte_t oldpte = ptep_get(pvmw->pte);
->>
->> What I meant to say was, you can pass oldpte from 
->> remove_migration_pte to this
->> function. Basically define old_pte = ptep_get(pvmw.pte) in the 
->> declarations of
->> the start of the while block in remove_migration_pte and remove the 
->> existing
->> one. That will ensure ptep_get() gets called only once per iteration.
->
-> Ah, got it. Thanks for the clarification!
->
-> IIUC, you mean something like this:
->
-> ```
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index ce83c2c3c287..bafd8cb3bebe 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -297,6 +297,7 @@ bool isolate_folio_to_list(struct folio *folio, 
-> struct list_head *list)
->
->  static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk 
-> *pvmw,
->                        struct folio *folio,
-> +                      pte_t old_pte,
->                        unsigned long idx)
->  {
->      struct page *page = folio_page(folio, idx);
-> @@ -306,7 +307,7 @@ static bool try_to_map_unused_to_zeropage(struct 
-> page_vma_mapped_walk *pvmw,
->          return false;
->      VM_BUG_ON_PAGE(!PageAnon(page), page);
->      VM_BUG_ON_PAGE(!PageLocked(page), page);
-> -    VM_BUG_ON_PAGE(pte_present(ptep_get(pvmw->pte)), page);
-> +    VM_BUG_ON_PAGE(pte_present(old_pte), page);
->
->      if (folio_test_mlocked(folio) || (pvmw->vma->vm_flags & 
-> VM_LOCKED) ||
->          mm_forbids_zeropage(pvmw->vma->vm_mm))
-> @@ -322,6 +323,12 @@ static bool try_to_map_unused_to_zeropage(struct 
-> page_vma_mapped_walk *pvmw,
->
->      newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
->                      pvmw->vma->vm_page_prot));
-> +
-> +    if (pte_swp_soft_dirty(old_pte))
-> +        newpte = pte_mksoft_dirty(newpte);
-> +    if (pte_swp_uffd_wp(old_pte))
-> +        newpte = pte_mkuffd_wp(newpte);
-> +
->      set_pte_at(pvmw->vma->vm_mm, pvmw->address, pvmw->pte, newpte);
->
->      dec_mm_counter(pvmw->vma->vm_mm, mm_counter(folio));
-> @@ -344,7 +351,7 @@ static bool remove_migration_pte(struct folio *folio,
->
->      while (page_vma_mapped_walk(&pvmw)) {
->          rmap_t rmap_flags = RMAP_NONE;
-> -        pte_t old_pte;
-> +        pte_t old_pte = ptep_get(pvmw.pte);
->          pte_t pte;
->          swp_entry_t entry;
->          struct page *new;
-> @@ -365,12 +372,11 @@ static bool remove_migration_pte(struct folio 
-> *folio,
->          }
->  #endif
->          if (rmap_walk_arg->map_unused_to_zeropage &&
-> -            try_to_map_unused_to_zeropage(&pvmw, folio, idx))
-> +            try_to_map_unused_to_zeropage(&pvmw, folio, old_pte, idx))
->              continue;
->
->          folio_get(folio);
->          pte = mk_pte(new, READ_ONCE(vma->vm_page_prot));
-> -        old_pte = ptep_get(pvmw.pte);
->
->          entry = pte_to_swp_entry(old_pte);
->          if (!is_migration_entry_young(entry))
-> ```
->
-> ptep_get() gets called only once per iteration, right?
+This change causes a significant regression for containers with a
+tight memory.max limit, if VM_HUGEPAGE is widely used. Prior to this
+commit, mmap_miss logic would eventually lead to the readahead
+disablement, effectively reducing the memory pressure in the
+cgroup. With this change the kernel is trying to allocate 1-2 huge
+pages for each fault, no matter if these pages are used or not
+before being evicted, increasing the memory pressure multi-fold.
 
-Yup.
+To fix the regression, let's make the new VM_HUGEPAGE conditional
+to the mmap_miss check, but keep independent from the ra->ra_pages.
+This way the main intention of commit 4687fdbb805a ("mm/filemap:
+Support VM_HUGEPAGE for file mappings") stays intact, but the
+regression is resolved.
+
+The logic behind this changes is simple: even if a user explicitly
+requests using huge pages to back the file mapping (using VM_HUGEPAGE
+flag), under a very strong memory pressure it's better to fall back
+to ordinary pages.
+
+Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: linux-mm@kvack.org
+---
+ mm/filemap.c | 40 +++++++++++++++++++++-------------------
+ 1 file changed, 21 insertions(+), 19 deletions(-)
+
+diff --git a/mm/filemap.c b/mm/filemap.c
+index a52dd38d2b4a..b67d7981fafb 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3235,34 +3235,20 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+ 	DEFINE_READAHEAD(ractl, file, ra, mapping, vmf->pgoff);
+ 	struct file *fpin = NULL;
+ 	vm_flags_t vm_flags = vmf->vma->vm_flags;
++	bool force_thp_readahead = false;
+ 	unsigned short mmap_miss;
+ 
+-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ 	/* Use the readahead code, even if readahead is disabled */
+-	if ((vm_flags & VM_HUGEPAGE) && HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER) {
+-		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
+-		ractl._index &= ~((unsigned long)HPAGE_PMD_NR - 1);
+-		ra->size = HPAGE_PMD_NR;
+-		/*
+-		 * Fetch two PMD folios, so we get the chance to actually
+-		 * readahead, unless we've been told not to.
+-		 */
+-		if (!(vm_flags & VM_RAND_READ))
+-			ra->size *= 2;
+-		ra->async_size = HPAGE_PMD_NR;
+-		ra->order = HPAGE_PMD_ORDER;
+-		page_cache_ra_order(&ractl, ra);
+-		return fpin;
+-	}
+-#endif
+-
++	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
++	    (vm_flags & VM_HUGEPAGE) && HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER)
++		force_thp_readahead = true;
+ 	/*
+ 	 * If we don't want any read-ahead, don't bother. VM_EXEC case below is
+ 	 * already intended for random access.
+ 	 */
+ 	if ((vm_flags & (VM_RAND_READ | VM_EXEC)) == VM_RAND_READ)
+ 		return fpin;
+-	if (!ra->ra_pages)
++	if (!ra->ra_pages && !force_thp_readahead)
+ 		return fpin;
+ 
+ 	if (vm_flags & VM_SEQ_READ) {
+@@ -3283,6 +3269,22 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+ 	if (mmap_miss > MMAP_LOTSAMISS)
+ 		return fpin;
+ 
++	if (force_thp_readahead) {
++		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
++		ractl._index &= ~((unsigned long)HPAGE_PMD_NR - 1);
++		ra->size = HPAGE_PMD_NR;
++		/*
++		 * Fetch two PMD folios, so we get the chance to actually
++		 * readahead, unless we've been told not to.
++		 */
++		if (!(vm_flags & VM_RAND_READ))
++			ra->size *= 2;
++		ra->async_size = HPAGE_PMD_NR;
++		ra->order = HPAGE_PMD_ORDER;
++		page_cache_ra_order(&ractl, ra);
++		return fpin;
++	}
++
+ 	if (vm_flags & VM_EXEC) {
+ 		/*
+ 		 * Allow arch to request a preferred minimum folio order for
+-- 
+2.51.0
+
 
