@@ -4,104 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 163AACAC5B8
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 06:33:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9993BCAC5B9
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 06:33:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 759F78E002F; Tue, 30 Sep 2025 02:33:40 -0400 (EDT)
+	id 007768E001C; Tue, 30 Sep 2025 02:33:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 731068E0002; Tue, 30 Sep 2025 02:33:40 -0400 (EDT)
+	id ED2BD8E0002; Tue, 30 Sep 2025 02:33:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66E658E002F; Tue, 30 Sep 2025 02:33:40 -0400 (EDT)
+	id D73AB8E001C; Tue, 30 Sep 2025 02:33:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 50C888E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 02:33:40 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F14841405B4
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 06:33:39 +0000 (UTC)
-X-FDA: 83944950558.13.71AAD7D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1DFDD80008
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 06:33:37 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="QHzd/VZv";
-	spf=pass (imf02.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BE6A88E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 02:33:51 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8A201441A3
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 06:33:51 +0000 (UTC)
+X-FDA: 83944951062.08.18E40E5
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 601E2140003
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 06:33:49 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=none;
+	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759214018;
+	s=arc-20220608; t=1759214030;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=kiXxrBcVVFYm8tZKNDHLTv2ddgXNFYWsb2EEhOiKInA=;
-	b=5o+3Go59+F2vxsYyOXIFq8TCjATKiR/HYpU+vDteORMnGlsWW9xcZdrCvgub/dgl35nW8c
-	lLfs7Wf5mEj5kejU/yH6TZ3h96p8QVUiGxmGur7xasepvir19D1gQ3eXyHVTyLUarhKQ/1
-	9x2NyyG5Pgrxx8lIv5WI+cAgfg5Lrr4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759214018; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Kg/rtcgKydY9e6DitVYeYNYidjQwm8usT9dDMBR+Y/s=;
+	b=mRrKpSinLukOvG4g1v1HRAw3t/7fiW9YEtQGLRy7uR0bwNzNm7izXRDcQzxdXgqdbEtZLc
+	iz2ZsGF1UY5y98+pIM4HEzwJIyl3/SSnvH71S5bE26LxVjWIIg154JquHqw3kZsRcaN+bm
+	NYtcTeD1vTCIg2vYVN9+xYSGUieBOOI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759214030; a=rsa-sha256;
 	cv=none;
-	b=brMFAxC1Ze5Lkotz4ajuxAcPdfB0BgecqmUoLQiSGADi0a8KsLxSNFEP0FRbVh5rZJjq3L
-	n/uFHTfqhX3Msl9HgkDsAO4KFeXcZNz52ptQ0MCxTW3Fpty8dmo32x8bU6ozMH7gkdgDzp
-	pP3oiIhaszaBMWGOQV6vB04k2+MBYj4=
+	b=cOAXhmNE/c1C7OqP/7myNDjccQQAUzyBGTrqPaIIdmpbiosA0FhuRBVgNLCZknu5TexE7U
+	vj055yzu5vV8X4JDhvtAHlBnr7rnGXcV4HlT0qHusspxCFow+TUbVpF1VnyRxWKMIecfZG
+	D1HyllsgjYT8rrpMcV2scwXgI6rm+yI=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="QHzd/VZv";
-	spf=pass (imf02.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759214017;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=kiXxrBcVVFYm8tZKNDHLTv2ddgXNFYWsb2EEhOiKInA=;
-	b=QHzd/VZv0BcvmXnWi5esjWjrWbAk3yb4wXaKMWYNprPJOpc0Lk6Wvcq60wODONxD+/YjN6
-	Lhz0pv1JRYY150ENTKRbBgqaZLrhRNmo5Fcyc8roIZzzvY1QGNF1e8/QOF+cr3HznKRBvd
-	8FzFi1cb0oY7JTlUjGViDsIULz+pRZM=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-629-XUSP3b1nNp6eSyZ0l9ofng-1; Tue,
- 30 Sep 2025 02:33:34 -0400
-X-MC-Unique: XUSP3b1nNp6eSyZ0l9ofng-1
-X-Mimecast-MFC-AGG-ID: XUSP3b1nNp6eSyZ0l9ofng_1759214012
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E1623180A20D;
-	Tue, 30 Sep 2025 06:33:19 +0000 (UTC)
-Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.112.181])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 547321801AD8;
-	Tue, 30 Sep 2025 06:33:13 +0000 (UTC)
-From: Baoquan He <bhe@redhat.com>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	youngjun.park@lge.com,
-	aaron.lu@intel.com,
-	baohua@kernel.org,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	Baoquan He <bhe@redhat.com>
-Subject: [PATCH v3 0/2] mm/swapfile.c: select the swap device with default priority round robin
-Date: Tue, 30 Sep 2025 14:33:08 +0800
-Message-ID: <20250930063311.14126-1-bhe@redhat.com>
+	imf09.hostedemail.com;
+	dkim=none;
+	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3074E1424;
+	Mon, 29 Sep 2025 23:33:40 -0700 (PDT)
+Received: from [10.164.18.53] (MacBook-Pro.blr.arm.com [10.164.18.53])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CE13A3F66E;
+	Mon, 29 Sep 2025 23:33:39 -0700 (PDT)
+Message-ID: <838505c8-053e-49af-b37b-0475520daf68@arm.com>
+Date: Tue, 30 Sep 2025 12:03:36 +0530
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: sjMiv17bIrmx8PvXC0Jcu74Xa-FlPlll3TXnyStSjA0_1759214012
-X-Mimecast-Originator: redhat.com
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1DFDD80008
-X-Stat-Signature: z4d54ffwb8uco548xyjqecyo5dndis4x
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/1] mm/rmap: fix soft-dirty and uffd-wp bit loss when
+ remapping zero-filled mTHP subpage to shared zeropage
+To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org,
+ david@redhat.com, lorenzo.stoakes@oracle.com
+Cc: peterx@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ baohua@kernel.org, ryan.roberts@arm.com, npache@redhat.com,
+ riel@surriel.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ harry.yoo@oracle.com, jannh@google.com, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+ gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+ usamaarif642@gmail.com, yuzhao@google.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, ioworker0@gmail.com, stable@vger.kernel.org
+References: <20250930060557.85133-1-lance.yang@linux.dev>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20250930060557.85133-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 4k59m5jpkgk6wq64e9yq8oubddf99hi6
+X-Rspamd-Queue-Id: 601E2140003
 X-Rspam-User: 
-X-HE-Tag: 1759214017-389787
-X-HE-Meta: U2FsdGVkX19xR5ZRbz2i8YS0quZQA63fRqWJbbMbMVDBWVgPlPnoW3Z/ZPBdVUBE8nK6RNt8l7nghiHqu94KHbph4tNlFkf2cyBgSnd1hhWPCd0YSTRP9plT2wFpfGwlJdhFcGaS5FgKvKWzCGzR8pdsHFXh7+LGId8ph5JmeE8gEk85/mypgoGVyczVeajpBm/3aErNa38rF73NPk7LzTSsRR66DYtG1brHSRsvOF7oufUUGil69/waR6VXB7K0RuNdQGhzf97vZjJPaHCPn6BOH/ts3eIuVAAyhBk1mq6SovkB0SWg6pHHL7k0gPwUUnvVDd+aOs+FB060rO3I4nQGTJeTLt6rgurnH1uX+wbNylN3TvRRAZDumRA8l4RRGCDYaSMPFsZPm6tFmWAGlJH7GqDq0bLvSvdst0TAVpH9a1h10BHNb0WU51xd2+xJsMCDYJ0SuaVChVBbRIW7fCW7rnmKAuHHDPfxKSZBEkh1FmEJZLOIyzyRP7FH7JwjU6UAI7xyCIICvzbdb2C62gHxLLFar4o7NH58TbDQOX0WsJ3+FwjEaGvKhO9xEf69Rd6YLUCF08SGWwTaWowUh73ujFcRylohlbL69efuQRHdjnpg6OsJ3GaygKYUJuYtd/luCBr3k2JvugAtqpKuYdshYrWYVahagbMNkmGYN8D0za/EKfr1LisgS6bA1NnCQiu+Y3ohsI/Wu3sYoKwDcLvVkg4U+WHmP0wS3DvfrS7ebyH+K7gRLQdODxSs3JKswKixIZo8ep88ABoHSsPgXRC3f1JjhxA3TgujLFOFbOQ4o8n3sfAWnOrkF7YS/QnEY9SyxDQRJ4pg9WVR/niSTVyVVAnZQF8BdyvI1gZoXynDdEnr1NS1hSOd5ZYReaSIpisUX/PVcFttyVXcKBh2mWqKV3TM9k42Q/Dr2oe3MaKfO5iPDOE6msvvNiToFJlzYmeeB4ZX40vOUfGk5pg
- daKUvMyj
- FqWgBO7Mxj1VwIANHuoJEm+a584EoWoHgJu6QX+qXh4uiMi2icMv9AmpQzjE3iBqDjQ7yi8i+G5LHHe2QPik246kRtllOy2M2nr1WoJfL5xpgLkspiGk5hgg050NzfWP0zwNTtHAJaE0mu8BAkiK+i0TZQKBMbVI9ic8Xjnne/JksDbrX17IeDrWDq+1NudUjMFmluuZNvL45XlLDTVjvmA9f40+Lp98lUNueDHpI6r5aU0e0iB5jmWNu7A6MIVufDxV26WZLz1rRWGyDu1cCu1KyLtw4DLkUso73WyiUZRdrep1E2zyInQ2kBHkl4Et5RE/qy5Jf7CNFdnbd9zM1/+W9/nGj3eDbb76M
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1759214029-856997
+X-HE-Meta: U2FsdGVkX1+tVM+BOCQbzglaSPE03e5gr1MIQQYUcs7YYwIzBtsgfNcdUpsR3UhvfzzbykjmmyYgV1thSA29YASvEUk3VtoipIddlgOCe/SVvGM7XARw8mwAzLGi1ZlrVOzD7MknmT0aBtS0AJDLVCrMCHbfa9brXb26cU+Yvl+/HYAxOzVmayWOB+4rd/SF6cxv3xRA1Xz3CJVjGVsIPFgtbjuZ1gRjYn8GLuVx25IqByL2DDy3Ts4mOj5Yg8++QKC26NsTagYy+6RSph2xwIAMjnDxpBQ4mwW5zPd8Khdn+4cSOYeih/5uAySTDzbKnok48MwKZFHjQVuSPq2noWry0g1hrQIRty/M6mV4eIx2wejwReuPaCWTl6aiNQxrkw4NTygmQv9BuoradfRuHBwhS39K0Fi4SsQLgIQ6gVwPst019LkohXgq8GnQ1PteONc9Hk5lBomoRPjRkGiAP/0DxqGKRdpUE8qKOd7NWVJtyFOCuu0YyttjZmekxcCYZURS756hmtEGEvmUYZ4WqLZC9OUZtk7rtEnyKSg8/ueTyANCm10x7mjcKKTocZj+uFFDsCNLj/ZNwYtsrE7kgCcKEYZexmxmt+L/0DS4b+xv4b60tNP6HZO7E37LAlaSAnEiNxy9kz/yTsN5+zdjHwm6QkBTh5kCfKXGEVXAJA0xM4hM97+Wsyp20i9TYTR1wQWVY3tEz9U7H24Q/FhoxRNwB2/xZ1bV5fPnY7CXU2LP54PCLYkDW138RmwE6+7k1vBXoNJavjtf5JNWiCOd0UNJC6HbNKhcIZAwh7gOqJflLR5q2b5Av4MNVmwinOO0xSLaDwYw195VvM4zOudjvhXE4rcZ8pYSJdI67mv1GitIlz9JDXPN7v/C3xvCIxVry7dVhOB8UjqP2rWL7cXvyTKTkUYqWIkDr3OcQno+miwiYbSZomQQOw0xkjfg8y89dA1b+DFpT8DEaCAsA1J
+ GZjNc2Ev
+ WzatRFTEI1XORCvhaOnxYHGdpcOwQbRucPxPDhvRlPzup7XMP55VBOxh9/UNpcgH1yDkUzyd8Oy+stfQXo1gdlMaGjsincjuszhSU3krZ9Ih8lIgY40z8CsVzd9PKM7WCQGqilLxwFRRsrmhzR6th9ByGk9fBzvb1/+NHlq4NI/vr7FIm7Q3k74HUq0yGeM740WunrVZcvxDE2C/tkbYr2OOAOnr5y+zYk0+Sy1RhoddsWhvXKpA6WmRnfuWUiJCinrBRHbIGOlNsyphBIPqDkNPzsiv78DZfnpf3C8c0GT8zq15HStSTIhfP/4DdvFVPej0E
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,146 +93,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, on system with multiple swap devices, swap allocation will
-select one swap device according to priority. The swap device with the
-highest priority will be chosen to allocate firstly.
 
-People can specify a priority from 0 to 32767 when swapon a swap device,
-or the system will set it from -2 then downwards by default. Meanwhile,
-on NUMA system, the swap device with node_id will be considered first
-on that NUMA node of the node_id.
+On 30/09/25 11:35 am, Lance Yang wrote:
+> From: Lance Yang <lance.yang@linux.dev>
+>
+> When splitting an mTHP and replacing a zero-filled subpage with the shared
+> zeropage, try_to_map_unused_to_zeropage() currently drops several important
+> PTE bits.
+>
+> For userspace tools like CRIU, which rely on the soft-dirty mechanism for
+> incremental snapshots, losing the soft-dirty bit means modified pages are
+> missed, leading to inconsistent memory state after restore.
+>
+> As pointed out by David, the more critical uffd-wp bit is also dropped.
+> This breaks the userfaultfd write-protection mechanism, causing writes
+> to be silently missed by monitoring applications, which can lead to data
+> corruption.
+>
+> Preserve both the soft-dirty and uffd-wp bits from the old PTE when
+> creating the new zeropage mapping to ensure they are correctly tracked.
+>
+> Cc: <stable@vger.kernel.org>
+> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Suggested-by: Dev Jain <dev.jain@arm.com>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+> ---
+> v2 -> v3:
+>   - ptep_get() gets called only once per iteration (per Dev)
+>   - https://lore.kernel.org/linux-mm/20250930043351.34927-1-lance.yang@linux.dev/
+>
+> v1 -> v2:
+>   - Avoid calling ptep_get() multiple times (per Dev)
+>   - Double-check the uffd-wp bit (per David)
+>   - Collect Acked-by from David - thanks!
+>   - https://lore.kernel.org/linux-mm/20250928044855.76359-1-lance.yang@linux.dev/
+>
+>   mm/migrate.c | 14 ++++++++++----
+>   1 file changed, 10 insertions(+), 4 deletions(-)
+>
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index ce83c2c3c287..bafd8cb3bebe 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -297,6 +297,7 @@ bool isolate_folio_to_list(struct folio *folio, struct list_head *list)
+>   
+>   static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
+>   					  struct folio *folio,
+> +					  pte_t old_pte,
+>   					  unsigned long idx)
 
-In the current code, an array of plist, swap_avail_heads[nid], is used
-to organize swap devices on each NUMA node. For each NUMA node, there
-is a plist organizing all swap devices. The 'prio' value in the plist
-is the negated value of the device's priority due to plist being sorted
-from low to high. The swap device owning one node_id will be promoted to
-the front position on that NUMA node, then other swap devices are put in
-order of their default priority.
+Could have just added this in the same line as folio?
 
-E.g I got a system with 8 NUMA nodes, and I setup 4 zram partition as
-swap devices.
+>   {
+>   	struct page *page = folio_page(folio, idx);
+> @@ -306,7 +307,7 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
+>   		return false;
+>   	VM_BUG_ON_PAGE(!PageAnon(page), page);
+>   	VM_BUG_ON_PAGE(!PageLocked(page), page);
+> -	VM_BUG_ON_PAGE(pte_present(ptep_get(pvmw->pte)), page);
+> +	VM_BUG_ON_PAGE(pte_present(old_pte), page);
+>   
+>   	if (folio_test_mlocked(folio) || (pvmw->vma->vm_flags & VM_LOCKED) ||
+>   	    mm_forbids_zeropage(pvmw->vma->vm_mm))
+> @@ -322,6 +323,12 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
+>   
+>   	newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
+>   					pvmw->vma->vm_page_prot));
+> +
+> +	if (pte_swp_soft_dirty(old_pte))
+> +		newpte = pte_mksoft_dirty(newpte);
+> +	if (pte_swp_uffd_wp(old_pte))
+> +		newpte = pte_mkuffd_wp(newpte);
+> +
+>   	set_pte_at(pvmw->vma->vm_mm, pvmw->address, pvmw->pte, newpte);
+>   
+>   	dec_mm_counter(pvmw->vma->vm_mm, mm_counter(folio));
+> @@ -344,7 +351,7 @@ static bool remove_migration_pte(struct folio *folio,
+>   
+>   	while (page_vma_mapped_walk(&pvmw)) {
+>   		rmap_t rmap_flags = RMAP_NONE;
+> -		pte_t old_pte;
+> +		pte_t old_pte = ptep_get(pvmw.pte);
+>   		pte_t pte;
+>   		swp_entry_t entry;
+>   		struct page *new;
+> @@ -365,12 +372,11 @@ static bool remove_migration_pte(struct folio *folio,
+>   		}
+>   #endif
+>   		if (rmap_walk_arg->map_unused_to_zeropage &&
+> -		    try_to_map_unused_to_zeropage(&pvmw, folio, idx))
+> +		    try_to_map_unused_to_zeropage(&pvmw, folio, old_pte, idx))
+>   			continue;
+>   
+>   		folio_get(folio);
+>   		pte = mk_pte(new, READ_ONCE(vma->vm_page_prot));
+> -		old_pte = ptep_get(pvmw.pte);
+>   
+>   		entry = pte_to_swp_entry(old_pte);
+>   		if (!is_migration_entry_young(entry))
 
-Current behaviour:
-their priorities will be(note that -1 is skipped):
-NAME       TYPE      SIZE USED PRIO
-/dev/zram0 partition  16G   0B   -2
-/dev/zram1 partition  16G   0B   -3
-/dev/zram2 partition  16G   0B   -4
-/dev/zram3 partition  16G   0B   -5
+Looks good, the special bit does not overlay on any arch with the soft-dirty bit.
+It shouldn't overlay with uffd-wp as well since split_huge_zero_page_pmd does the
+same bit preservation.
 
-And their positions in the 8 swap_avail_lists[nid] will be:
-swap_avail_lists[0]: /* node 0's available swap device list */
-zram0   -> zram1   -> zram2   -> zram3
-prio:1     prio:3     prio:4     prio:5
-swap_avali_lists[1]: /* node 1's available swap device list */
-zram1   -> zram0   -> zram2   -> zram3
-prio:1     prio:2     prio:4     prio:5
-swap_avail_lists[2]: /* node 2's available swap device list */
-zram2   -> zram0   -> zram1   -> zram3
-prio:1     prio:2     prio:3     prio:5
-swap_avail_lists[3]: /* node 3's available swap device list */
-zram3   -> zram0   -> zram1   -> zram2
-prio:1     prio:2     prio:3     prio:4
-swap_avail_lists[4-7]: /* node 4,5,6,7's available swap device list */
-zram0   -> zram1   -> zram2   -> zram3
-prio:2     prio:3     prio:4     prio:5
-
-The adjustment for swap device with node_id intended to decrease the
-pressure of lock contention for one swap device by taking different
-swap device on different node. The adjustment was introduced in commit
-a2468cc9bfdf ("swap: choose swap device according to numa node").
-However, the adjustment is a little coarse-grained. On the node, the swap
-device sharing the node's id will always be selected firstly by node's CPUs
-until exhausted, then next one. And on other nodes where no swap device
-shares its node id, swap device with priority '-2' will be selected firstly
-until exhausted, then next with priority '-3'.
-
-This is the swapon output during the process high pressure vm-scability
-test is being taken. It's clearly showing zram0 is heavily exploited until
-exhausted.
-
-===================================
-[root@hp-dl385g10-03 ~]# swapon
-NAME       TYPE      SIZE  USED PRIO
-/dev/zram0 partition  16G 15.7G   -2
-/dev/zram1 partition  16G  3.4G   -3
-/dev/zram2 partition  16G  3.4G   -4
-/dev/zram3 partition  16G  2.6G   -5
-
-The node based strategy on selecting swap device is much better then the
-old way one by one selecting swap device. However it is still unreasonable
-because swap devices are assumed to have similar accessing speed if no
-priority is specified when swapon. It's unfair and doesn't make sense just
-because one swap device is swapped on firstly, its priority will be higher
-than the one swapped on later.
-
-So in this patchset, change is made to select the swap device round robin
-if default priority. In code, the plist array swap_avail_heads[nid] is replaced
-with a plist swap_avail_head which reverts commit a2468cc9bfdf. Meanwhile,
-on top of the revert, further change is taken to make any device w/o
-specified priority get the same default priority '-1'. Surely, swap device
-with specified priority are always put foremost, this is not impacted. If
-you care about their different accessing speed, then use 'swapon -p xx' to
-deploy priority for your swap devices.
-
-New behaviour:
-
-swap_avail_list: /* one global available swap device list */
-zram0   -> zram1   -> zram2   -> zram3
-prio:1     prio:1     prio:1     prio:1
-
-This is the swapon output during the process high pressure vm-scability
-being taken, all is selected round robin:
-=======================================
-[root@hp-dl385g10-03 linux]# swapon
-NAME       TYPE      SIZE  USED PRIO
-/dev/zram0 partition  16G 12.6G   -1
-/dev/zram1 partition  16G 12.6G   -1
-/dev/zram2 partition  16G 12.6G   -1
-/dev/zram3 partition  16G 12.6G   -1
-
-With the change, we can see about 18% efficiency promotion as below:
-
-vm-scability test:
-==================
-Test with:
-usemem --init-time -O -y -x -n 31 2G (4G memcg, zram as swap)
-                           Before:          After:
-System time:               637.92 s         526.74 s      (lower is better)
-Sum Throughput:            3546.56 MB/s     4207.56 MB/s  (higher is better)
-Single process Throughput: 114.40 MB/s      135.72 MB/s   (higher is better)
-free latency:              10138455.99 us   6810119.01 us (low is better)
-
-Changelog:
-==========
-v2->v3:
--------
-- Split the v2 patch into two parts, one is reverting commit
-  a2468cc9bfdf, the 2nd is making change to set default priority as -1
-  for all swap devices which makes swapping out select swap device round
-  robin. This eases patch reviewing which is suggested by Chris, thanks.
-- Fix a LKP reported issue I mistakenly added other debugging code into
-  v2 patch. clean that up.
-
-v1->v2:
--------
-- Remove Documentation/admin-guide/mm/swap_numa.rst;
-- Add back mistakenly removed lockdep_assert_held() line;
-- Remove the unneeded code comment in _enable_swap_info().
-  Thanks a lot for careful reviewing from Chris, YoungJun and Kairui.
-
-Baoquan He (2):
-  mm/swap: do not choose swap device according to numa node
-  mm/swap: select swap device with default priority round robin
-
- Documentation/admin-guide/mm/swap_numa.rst |  78 ----------------
- include/linux/swap.h                       |  11 +--
- mm/swapfile.c                              | 103 +++------------------
- 3 files changed, 16 insertions(+), 176 deletions(-)
- delete mode 100644 Documentation/admin-guide/mm/swap_numa.rst
-
--- 
-2.41.0
+Reviewed-by: Dev Jain <dev.jain@arm.com>
 
 
