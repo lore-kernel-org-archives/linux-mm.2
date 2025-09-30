@@ -4,112 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46BCECAC5B0
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 03:18:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6351FCAC5B9
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 03:32:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 736088E0005; Mon, 29 Sep 2025 23:18:29 -0400 (EDT)
+	id 927BD8E0006; Mon, 29 Sep 2025 23:32:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E49D8E0002; Mon, 29 Sep 2025 23:18:29 -0400 (EDT)
+	id 8D8AD8E0002; Mon, 29 Sep 2025 23:32:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FA378E0005; Mon, 29 Sep 2025 23:18:29 -0400 (EDT)
+	id 778B78E0006; Mon, 29 Sep 2025 23:32:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F3308E0002
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 23:18:29 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E681F87827
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 03:18:28 +0000 (UTC)
-X-FDA: 83944458696.05.E498352
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 2BFED1A0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 03:18:27 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6203C8E0002
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 23:32:09 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0F9BD599D3
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 03:32:09 +0000 (UTC)
+X-FDA: 83944493178.24.C58777F
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1C4C21A0007
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 03:32:06 +0000 (UTC)
 Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ZUDOBY5K;
-	spf=pass (imf19.hostedemail.com: domain of hughd@google.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=GFLdhnee;
+	spf=pass (imf19.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759202307;
+	s=arc-20220608; t=1759203127;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PGNLCKGJrXLWa6eAFuG7oNqbsQrVZxx3Sl0hu9yULUc=;
-	b=NhN7BS5EqLis8yT4Sz1i+P27Ph/VGf0QyDwLYxLjalKTJRRkoUJ74c+91bqOw1K4aJepSX
-	6jHSbjNHCNUZaFSIGtgKVLyrPQacA7a0EfRjtdw+YEdYIRHfa0iSxdUNNcgHN925lyETmH
-	SjMmVYyvoOL2WNdNXcQ8YiFndgIys5U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759202307; a=rsa-sha256;
-	cv=none;
-	b=S+5+R+3PTCIVmbwwdd8E/4V7VrE+SPiuF9IWRvxHbzd8v7+JQaafeO11hv+52pyZooEPQf
-	8uJjCq+0PuSbQwsFhO8TvBJwhC62usEjFzDx0Tw3uttiEQsFqi5c1pRZh3q3txV+VIOElK
-	WcG8Fr+Y5mbmWR4CDr26OQSTH73mq34=
+	bh=Ipg2xSQ+y9eG+cY+ycWtarKVzuOf0KH86wwLmftXUAk=;
+	b=VYZg8VryKrGB7baYc9e114iFLRjwcX4pVQa7k2OIPTLUFAWWkaseI8WCgOAfAYZa6IeJNL
+	FW/47zRSK2L4HM6eLEE2/tYnm6kjRALQWHMGk5plTnEgpHPGOfw9J2kn8rOoBZkOLmjHKj
+	FRgxw6afkmsXwnebPPsF5XEqhDnKwkQ=
 ARC-Authentication-Results: i=1;
 	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ZUDOBY5K;
-	spf=pass (imf19.hostedemail.com: domain of hughd@google.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-72e565bf2feso57689127b3.3
-        for <linux-mm@kvack.org>; Mon, 29 Sep 2025 20:18:26 -0700 (PDT)
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=GFLdhnee;
+	spf=pass (imf19.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759203127; a=rsa-sha256;
+	cv=none;
+	b=xtTAxvivoE8qDlXco+2+cVDRZUu5Jk+BrZSH0CeeSX7n59DZj+j5EU2ewS/9CEDTv/flR1
+	L6CA8BEKNEJr9mC4RPy0eMz6GaLq6iwJnefycQ8Jqz3hA1H07zlWnq8F2urIcbLz6DAnLZ
+	JL+tpU61D6uELO6EXI3oPp5YFHi2k+E=
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-781010ff051so3733665b3a.0
+        for <linux-mm@kvack.org>; Mon, 29 Sep 2025 20:32:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1759202306; x=1759807106; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PGNLCKGJrXLWa6eAFuG7oNqbsQrVZxx3Sl0hu9yULUc=;
-        b=ZUDOBY5KSXMY8TB5F6jVjTr1LW5//fi0AL+7lc1NcvtRqCIzi1iW7321N3xR76em1T
-         capjVcbfhaV9+ofcuZBoITI4GBM1F8ZuElzNJhkVgKt6vuUCmRVbKQ/gHXS4qsKZ1P9l
-         rLV+Gp8qYl1nMkJkXPI1OHJBf/bT6BF1RdiKMHZYNvVCbdiictcU1BfHeGEMzIZ51WOG
-         JzDMIXi9QHHaZBe4lQQF0h/i2vko2cpqBIA0Zp/JDdQnHiMP4teVcov9ZDjoByLJR6uy
-         cFmGOiYO9h128iLtfyJPfxlBnS9G4afh1/CpIQakVT+ez98oONmn82cgFLf8/b715niz
-         HIBQ==
+        d=gmail.com; s=20230601; t=1759203126; x=1759807926; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ipg2xSQ+y9eG+cY+ycWtarKVzuOf0KH86wwLmftXUAk=;
+        b=GFLdhneeNh0cgtI6gf5EMtmpCnBSCto3WkA1/ed0rogWwkhLCodywQZMobSbUiMKw/
+         jW9sktV7LxUNUsp01SCny6pnDfsm1hvCCM9Yn6r86/Td5361lRKZVItoVv4FURzZNqBR
+         SIR5gC+wkmRlLiCqhqGXeTnNksJgfto4nsedOJHRi5KCq+/yuCFrt5/slhNiybwRTe3o
+         KtgsAgxtqE/E2qnqtnouMwq/HRTBj8ZoXSiZ3GhsFlpvXO0Co+2JfJjO4Rr1p/XHxZYX
+         G1YnuOJRaENOkQ12JPNnnnTAs2uDzDQEb+FsTAgIaqYrsH1NfwUPzJJASO5DxlGjMCrB
+         s0Rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759202306; x=1759807106;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PGNLCKGJrXLWa6eAFuG7oNqbsQrVZxx3Sl0hu9yULUc=;
-        b=J6mWRzym7DNS7DC5lX7Q5rvMven2Jv7JyR64txOaqV76VboUGgQGDZQya9n5Pgo3e0
-         pCSFJJhnSgbONqkd7KXFcb0UtUBg08RcpSWXwp9NC7gVPCGMiUl+6HTh+rn+fLw1n1UH
-         o1dj0k9/C+XqHOILfwys5oqgCX2Yd3771OaFXNgP3yH1kCqvF+wdML4D4xIWit12v9Zq
-         SVKPWLtk33XBIkB4XgCNioHNVienX3pYMAZi0jj+XRhIe9S/4VXTvHHuK53tqsBkxFIn
-         pQPZ2IW4pkpI+mzaIOoLAoCy9wUD6lSRyMYiMlvhXfWtE6QQKVWN5IAkffl37utLUw8d
-         ZB1w==
-X-Forwarded-Encrypted: i=1; AJvYcCVuAyHrWI+VD+vTQzq0/PDhNPf40ZUI0JrhYmPsPK6BHdzYPpMbbsXQredgK+7NvhjmDQCwuP4ufA==@kvack.org
-X-Gm-Message-State: AOJu0Yztd5ad1Xf3NvToPZIuz0th01ubm66KkmkkliA5zR2BGGi58Qqn
-	Hpfo686oqyGqIzC4NDkAqR01tk+rzBE3PHx04yF/HCmJGDqFw9WKjqkF7A/ZigHajw==
-X-Gm-Gg: ASbGnctPL83xGaLh41RRGeM6EiWyGkVbaXfkYibvtbvWVWf9fyMM7lcTYqLAS6TdYgX
-	SxcdDFlKNe20TdpZ684j+nfZyFd41J4H+061fNqRW4KZBBlyIYtfMXyE8kFt3zrVCAmGmy/l/ed
-	XuolN/2pXr9gSOMbMTp5XUl80aETI7XpNd5psVsL+8QIpXlGo06njuYm6kOA2RfORoWOi1E2pgi
-	s/OOAIveT/WRuZVLu1wXD+Cw/QBC/nFKp6XEa5Kwxe70zjV4bB2yskp2jT52/Pu6zXVR3NVLIoP
-	xb+/Ha+S6CqoPzsLbOezZzw7RmxpFa/39yxM4V0INkVdPISixvvRMNVRuvbZKpI6GBuRK5FnmWQ
-	IgLcYHFS/72hyjZFHg6M2e2GNoKpo8F9t1KkItg+yPAgqs5CyvYv0NVVTHcPLopETyAWgrPBacz
-	F9i1+Wxq3M9X8iMAZ9uDBqtuB1UYuLjvO6HQOk
-X-Google-Smtp-Source: AGHT+IFcZqYas2wBQmI9BbRmqml9F+2QA9spZ9yKoBd8FyOombPucba4gtkHHMksFeRZI+3E7DFoZg==
-X-Received: by 2002:a05:690c:7302:b0:734:ee:200b with SMTP id 00721157ae682-764052014damr237888467b3.51.1759202305941;
-        Mon, 29 Sep 2025 20:18:25 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-765c77e72d0sm34142987b3.49.2025.09.29.20.18.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Sep 2025 20:18:24 -0700 (PDT)
-Date: Mon, 29 Sep 2025 20:18:13 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: SeongJae Park <sj@kernel.org>
-cc: Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>, 
-    damon@lists.linux.dev, kernel-team@meta.com, linux-kernel@vger.kernel.org, 
-    linux-mm@kvack.org, Xinyu Zheng <zhengxinyu6@huawei.com>
-Subject: Re: [PATCH] mm/damon/vaddr: do not repeat pte_offset_map_lock()
- until success
-In-Reply-To: <20250930004410.55228-1-sj@kernel.org>
-Message-ID: <07267988-1736-1372-8994-76892c5cc804@google.com>
-References: <20250930004410.55228-1-sj@kernel.org>
+        d=1e100.net; s=20230601; t=1759203126; x=1759807926;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ipg2xSQ+y9eG+cY+ycWtarKVzuOf0KH86wwLmftXUAk=;
+        b=h76u5P0xXdHQNYB2ebCjtMjkgCqwiegM9JYY9TAFa9ULw5ozcpoivmqWVB416vntdx
+         MpBK+pVuXRjPUXHITPl9jMZ+10oThAPBujl2waSWKMPR5wxJel4Yxy3O7bjSd64zHG55
+         tv2h3eZGaij3lhDm3dhuZcVPy3GzhfY1fT44jIoyBaZdv/4qx7WcBtQJhYumrZrWV+OS
+         tlZOLWPoaG2+K7eG61HBEHOyB75JhMgx2vYJTpwEJ5kQhsnF3B+02gCMgKmFAGag789r
+         o3hclWD9guU0A7X6Y5jNVr3HeG7Td2icRpeK6hP/snWtFPePvX1FVv/NRJBVkbyuKnKN
+         gdQg==
+X-Forwarded-Encrypted: i=1; AJvYcCWNAk88mz0+htb7lUukLPQnQ/0P3jo5+SoFtvWV8RqjgEjftgr5VGDxEeG8JOZzsfE1rZhsbxr00g==@kvack.org
+X-Gm-Message-State: AOJu0YzU39Ab5aAM+08s+dyfHEz8jj/kzY0IEBkcTOxUFvyrWXb+3GJE
+	Xtfr1MEDoKXLZvFCRJTiGCrsUTdoEL/kLw721a6XXc6mzE/7WGqspcRg
+X-Gm-Gg: ASbGncsnPQx8fUvHcOcy89PnodFOFChf5xkgmbmdYPlF3TeFkmUSt1cZ+6NCRgowG6L
+	QYhP/eipN9Gjk6WCosK9yS5yIyyu+9QdBnD6nt9m3vv3EzCTnjgI0cJUPoriTuSw32P/vpfPMyP
+	5LSP04mQJtXqi2JZ9GhH9AvoHa0wXcRLQEkI6iwVf2qsJJnubKRxSjBIcSKME1CYnC99MM+az3k
+	FlXjdFFyinc6nVwTo76MVkIVMCGRP1x2W1p7KWy3/lDW0DxYcP6buUBSG2AvP2OH591BmKb54Ug
+	Pugi5pTop6QkIqOGllVDOcPXugEMBB7VAhrs3C5ZVEnwFoI6YjJOmAbgGLAqEky6oVuKAX1eV3I
+	yGVB0ERZA/RmDFeVj6Q7ngMmAaEP5T8ml6ajIgEQBzWpLLEcEXB8Lu7CbtKvUM+5iDathY+ZpED
+	YtMJ4=
+X-Google-Smtp-Source: AGHT+IH6LhWbk9ue158EeoJf03eqT7m8bYm+d7vM0ErLdQPaLK8hlGYtsJv7ZK2fU0mzhBBLUHqIUg==
+X-Received: by 2002:a05:6a00:b53:b0:77d:6a00:1cd1 with SMTP id d2e1a72fcca58-780fce27f29mr20086588b3a.12.1759203125932;
+        Mon, 29 Sep 2025 20:32:05 -0700 (PDT)
+Received: from localhost.localdomain ([2409:8900:7cd:1d59:4483:ece3:c019:40f4])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-78102b23634sm12557741b3a.66.2025.09.29.20.32.00
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 29 Sep 2025 20:32:05 -0700 (PDT)
+From: lianux <lianux.mm@gmail.com>
+X-Google-Original-From: lianux <lianux@lianux.local>
+To: sj@kernel.org
+Cc: david.hunter.linux@gmail.com,
+	hannes@cmpxchg.org,
+	justinstitt@google.com,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	llvm@lists.linux.dev,
+	morbo@google.com,
+	nathan@kernel.org,
+	nick.desaulniers+lkml@gmail.com,
+	nphamcs@gmail.com,
+	shuah@kernel.org,
+	sidharthseela@gmail.com,
+	wang lian <lianux.mm@gmail.com>
+Subject: Re: [PATCH v1] selftests: cachestat: Fix warning on declaration under label
+Date: Tue, 30 Sep 2025 11:31:11 +0800
+Message-ID: <20250930033111.63465-1-lianux@lianux.local>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250929172724.75108-1-sj@kernel.org>
+References: <20250929172724.75108-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: 5o8d858cbq8tuq8zdi3tyd4akogobgfr
-X-Rspamd-Queue-Id: 2BFED1A0002
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1C4C21A0007
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 1akgqqh7zxydj3ez68fpanirtuejix4b
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1759202307-768785
-X-HE-Meta: U2FsdGVkX19SE/QzSjEpw9GkYh9x/bTgT7uR+ZKOndJzgI4XiYfEiC0PuItOVUysmDLrDjnvx4KYNw3q1eTAtZYKImimU+0vzAMaGc/6WQ9sLGpBTydGv+HqpVBYyJF3hvv5RBBi8rCD7VnGb0dj17bCNzXurDTB4ZRkSElyS89q1tE353wg8YtrxKTjNDv2j88b+xgm5u6bM+n++DzPzYvXlm2zRrMkUeXFItbk5CS+wTmQUuS13iEqM/h6anJgKOlBSiamA7QPsM+XayPcmxavWx9POr8gCxrP3VgZ/NqusBYV3A0A0DVSo9Sh/mnS3w056wilb9npa4+1Rpq4V9cQpniQP0hJnDx4F5kmbnuxAxnTXxHJl+ICswvwLeDCNa3UwVPNHT6C9GiVtZBg0g4iw7GiYYI+AtSJ3RWT8MyjZLfRklexg3D1LiOnOa/kBi9O9MePdTBgApx+jr4fgTzo6Y/dSCOYU25SI5LvbTb/oO4oYydALPpnKDHQp7PvIGHnM0JQa1ci+cPgot+rtJJ/9z5Xh8biD6eRJGw5+QrHInUeY5CVEQO0E87E8nIMzH1rsHhdfKq4gCuMixhTjZrMx84PmMgnShROM7A+KzDjIeUnuvVRn17PnrgHD+aaOhJZco5xi0wZJDryme7EHx2UpnzuOtiDew2+LOUf3W+YXKFivQijvMWu6etskMx24paby/hngY7A+DhG9m3U+pkTE3nSHD+Vy9Se1g+2YCYf24RoXSpWC5Iqg69lhhJO3NHPT84hnnEvNt8mb6RuPZ36eYFicL+sfcaUGEHX03WAtVuEdtrzKYL9rfMtkvZQLmt9fdYsPY9v+kXdJhNjRQrX9532yyBel9wLZq0rwOydNm8Lz0g1LQ/YdqxpUf+26zbhygriYuQSwgfNERB6jf8rMsXvvvOl3ZALILGxa6//DMWDM3Ks2QnSGsKXVZnFi1VcibaFPEHffNpNebt
- fK7Nvs8k
- 9zal+J1SI25Tx0fXAqHi0g5UeF8mScIql4wpV/XNiugbUynd9S1HY3PcjpuOUSNVkECrQl2zoaUzh7mSLFgeLapw0ees1ENLhxP8MAXCTyEOlp/uvGKcOfHGVCPpPBDpfYbiEcI+6mi+uPNdLFwGqfxroqynar47db6uo47SyllcLN2FtIdxcIeoHXZTWyUtfzjmd+bSJICzSBCqNpWFY0Mdp4uCsb6HnnixMBzMTg+y/YT9fCpTtRcaGcNrDhNl3g3dXEfSY9g8V+Jy3fUSdsmar65VHMmrMi+BVa4oHVYH01j3H9bELzgPUPuqflFS6nEK8in4lCxTVTRAn57eMEgv5BaYsHssa3eGRf/OxDR1B8VXM9jUjNpBfUjSB7VkAmE5qa0f8dILp8+b7//T3FwLZ3GIj3NzSvHJYtHYVX0WnFGhS9I2aFgE1H7j64w0PbTsr
+X-HE-Tag: 1759203126-416400
+X-HE-Meta: U2FsdGVkX18hFbfPT8fvnqs6+Khta+Pdum827KsM0Qq2nvyg7bQkEtEqcX8yv0mvtJLuUxmPI/seZ1FSjFAeHM/CDny+lPa/VigF9lsLkeX+CTwo1vuQ6NTcQdzGZL9zmuL8G+XWLUQHGQV6/IFmfcPjPS1sO3/XjyEDIjqiALGnNZLQ7fGm0oZmWQ9HmPiH0EW3CaRSkUOGtS1lknxf0FjrGNat+lCiBj9ak9mbO5zqHSs0mN7AoA/TsS7zEscY+dOmC939oSX9qquzd2Mt+3hSzkSokVB7yKO9cwIwJNBvr7aSr7nImFPer88ilaFrRHlx+IpEwVDi6jM7w/9nfupzQdqBWDbuv1jFJDbcj290LYYkLHJZQgqPsAysfez2GRNOMVljOWuBb55gkQ9AA1c5mXsF81gdiA4zpf28bF1tTjU4Q5Mcs0TVpOOpk3PN5AcqwtofZncUQvNwDCShDelr1FjTR4S09UvtKQDWc33yZZDzpui48oovFs/kox6lLueWgNqzgiINJ6ga8xR42g7QzHVdP78CIk5BbciTpbmgCY7+r9R2wHS2MT3132srI5cbn1mk6lU/FipEGQBnAizNgC6dfFLhUNPtjhTZRsTHKjhqLKoVDk4ZGncjb2qVyo3XCv+HDoaEQH6K1nzEcsN4LXe93UaG1HVirjE4Pc0QTjI595hLyg+DF5YQv79+ytoamdYH873Q4OR8ktPcBxLgVhHItv55PzVdUywgv9EvpclWzAYvzrxYvgWyf0mqmY873YNV5m7u0CUJA06njf98lOFeawbNHnHAa6yR1nsJuSL1HJkqC6FMxTdXwhmMCN7k0d6DEHQ3vgDUgnFGB2MzRrJyQKFb9cimfxOL97zjV3SjAzyiTy+yY7rJNvY6mDML/i82HF6ik6ahtztvHVPLLlChjg7as7kCJWsvdeAV24GdOABtf/SOCqAv58D+mmgid3y7nFURrQxTtY0
+ 1hm3O0jJ
+ RRzUsLU3n/N296bRqpLJsSsP3Qtrj6lAnAxOn0ywLGka1jgqWMb+yfvMqdPgmrkQC+S3Ph+mBBHM7e9N0hDY8osf/8ga7nVgOj4/dw6KJBd9DX4gJ0QRZZrPzVJSgk+t1i1MUqgD84i+2KT4PG+yOAmW1uTBETrlQKbIgeCBO97Nn5in+waSh+zTEpHH+mXcPr2hwB0FjyVc4u5Q2bbdGqWUWr5vPvKnDEMO0TJxOrVAmuzV7sa2tQicuDEiy8pKfqFuZYT6YyEC6euBbq8EBUf7/DUbGzqQ0eRtiqh5I/Ed2YCeopEUrzhTmSGTgiwAb9Fc3OVuoVo4c8x9LF1DnwNzC+u+f0PmCV/nxK6iSlXV06CRwV/hYL3Mp+ITKprMGZWQY6dLsFG0bBBj4L4oN8yjqwz0p2q7uj9tPRV3hMEw6HODWBFhSUiSTNSr9qFd2kr5zl4HolP08h6k//fuFPYOyJY/42YZ7ZgPyy9hpqJSWkaM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,68 +132,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 29 Sep 2025, SeongJae Park wrote:
+From: wang lian <lianux.mm@gmail.com>
 
-> DAMON's virtual address space operation set implementation (vaddr) calls
-> pte_offset_map_lock() inside the page table walk callback function.
-> This is for reading and writing page table accessed bits.  If
-> pte_offset_map_lock() fails, it retries by returning the page table walk
-> callback function with ACTION_AGAIN.
-> 
-> pte_offset_map_lock() can continuously fail if the target is a pmd
-> migration entry, though.  Hence it could cause an infinite page table
-> walk if the migration cannot be done until the page table walk is
-> finished.  This indeed caused a soft lockup when CPU hotplugging and
-> DAMON were running in parallel.
-> 
-> Avoid the infinite loop by simply not retrying the page table walk.
-> DAMON is promising only a best-effort accuracy, so missing access to
-> such pages is no problem.
-> 
-> Reported-by: Xinyu Zheng <zhengxinyu6@huawei.com>
-> Closes: https://lore.kernel.org/20250918030029.2652607-1-zhengxinyu6@huawei.com
-> Fixes: 7780d04046a2 ("mm/pagewalkers: ACTION_AGAIN if pte_offset_map_lock() fails")
-> Cc: <stable@vger.kernel.org> # 6.5.x
-> Cc: Hugh Dickins <hughd@google.com>
-> Signed-off-by: SeongJae Park <sj@kernel.org>
+Reviewed-by: wang lian <lianux.mm@gmail.com>
 
-Thanks,
-Acked-by: Hugh Dickins <hughd@google.com>
+> Fix warning caused from declaration under a case label. The proper way
+> is to declare variable at the beginning of the function. The warning
+> came from running clang using LLVM=1; and is as follows:
+> --
+> -test_cachestat.c:260:3: warning: label followed by a declaration is a C23 extension [-Wc23-extensions]
+>   260 |                 char *map = mmap(NULL, filesize, PROT_READ | PROT_WRITE,
+>       |
+> 
+> Signed-off-by: Sidharth Seela <sidharthseela@gmail.com>
 
-> ---
->  mm/damon/vaddr.c | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
-> 
-> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-> index 8c048f9b129e..7e834467b2d8 100644
-> --- a/mm/damon/vaddr.c
-> +++ b/mm/damon/vaddr.c
-> @@ -328,10 +328,8 @@ static int damon_mkold_pmd_entry(pmd_t *pmd, unsigned long addr,
->  	}
->  
->  	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
-> -	if (!pte) {
-> -		walk->action = ACTION_AGAIN;
-> +	if (!pte)
->  		return 0;
-> -	}
->  	if (!pte_present(ptep_get(pte)))
->  		goto out;
->  	damon_ptep_mkold(pte, walk->vma, addr);
-> @@ -481,10 +479,8 @@ static int damon_young_pmd_entry(pmd_t *pmd, unsigned long addr,
->  #endif	/* CONFIG_TRANSPARENT_HUGEPAGE */
->  
->  	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
-> -	if (!pte) {
-> -		walk->action = ACTION_AGAIN;
-> +	if (!pte)
->  		return 0;
-> -	}
->  	ptent = ptep_get(pte);
->  	if (!pte_present(ptent))
->  		goto out;
-> 
-> base-commit: 3169a901e935bc1f2d2eec0171abcf524b7747e4
-> -- 
-> 2.39.5
+Best regards,
+wang lian
 
