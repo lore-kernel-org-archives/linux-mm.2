@@ -4,107 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24BA3CAC5B0
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 01:49:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8C82CAC5B9
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 01:53:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F1A368E0005; Mon, 29 Sep 2025 21:49:26 -0400 (EDT)
+	id 203B78E000B; Mon, 29 Sep 2025 21:53:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF1D08E0002; Mon, 29 Sep 2025 21:49:26 -0400 (EDT)
+	id 1DB188E0002; Mon, 29 Sep 2025 21:53:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E074F8E0005; Mon, 29 Sep 2025 21:49:26 -0400 (EDT)
+	id 1181C8E000B; Mon, 29 Sep 2025 21:53:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CBCDF8E0002
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 21:49:26 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4AFC6140563
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 01:49:26 +0000 (UTC)
-X-FDA: 83944234332.20.D7CE0FA
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 31CB3C000D
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 01:49:23 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="B8HOhXu/";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759196964; a=rsa-sha256;
-	cv=none;
-	b=Qim7hGdoKPCVTySzK2LhY6APo/QSg7QT7ert0ITzJmpsjd8drDuigy8iu8D9MyXXe813Ee
-	fV0N/+ldSOLGG6siW9MQ60u2e2s9a2d93gCvy35zUCNUZWLBZiAErXQJNf3Mjhfmt9NSsO
-	m02cKbMPji7vNidF6XVqpz4QrupOJd0=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="B8HOhXu/";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id F3E8F8E0002
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 21:53:27 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B44261DFF84
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 01:53:27 +0000 (UTC)
+X-FDA: 83944244454.24.F503372
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf09.hostedemail.com (Postfix) with ESMTP id CC68A140002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 01:53:25 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="GKtcpK/H";
+	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759196964;
+	s=arc-20220608; t=1759197206;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cccOvLIDs0brVn19lKW2cu082nXZ924OZUgqQqLgWy4=;
-	b=3zRZcPRaHhz2+9f0IL/tZF1iUkl5b76frbR2q8omQnIZ1sbOB0asp/UsmfD3d/DhM4OGHJ
-	YPahZOx0eWitOGugM+sQIMZB5k8bYoRN0x0n2Xl3b+OpOCvGBNXaJP7QFe4Oca3Hqa0Vtj
-	HMkoDQrrmGcveZuUnEdcB/qwAskE5Nk=
-X-Forwarded-Encrypted: i=1; AJvYcCVrL1VhEqC2w6mXwOS2/CNjNQMjg36Ev8q2kaAvfRX5/qULO1J8Sfn/b3mcYCuUW82Qh97Dnsjm7A==@kvack.org
+	bh=ch7Q5TgnPok++zD6SAUojpj+InJhxzN/ETKzPzMNocY=;
+	b=Yj4slAOyWbmif9GOzqR+OOrl1lYc1L3c7jQZyZHXr7ffCBXYB6oBmnz374UkE7ilAvzyFa
+	YZZhnGxXcKXNUo8ibHM8O9q/mZPlBeAtv06fp5dm4rojdeSQjmfJTy21bCKJin+oMr+D2J
+	XQoIfZgnvbMda8iBcuiEebc6GK9Q1qU=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="GKtcpK/H";
+	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759197206; a=rsa-sha256;
+	cv=none;
+	b=X4Eu/zoRNVKDV6AFKIrIdukFg7vN6E+gVh1r724DekI5QWI+57Kf6IE7dOPRt/G4U9v0HQ
+	c9/rSDLNnQMoc91VRJSSJuLZS4pLyJbrKvXkY0nK0G03PR4nnBXJuWOFgxqRav3oxkSNtU
+	jkqu4IdqdToqjrGrZXrBj/TLkfVJ9yg=
+Message-ID: <01200dfc-f881-4d09-ab52-c5b7944af0d0@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759196962;
+	t=1759197203;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cccOvLIDs0brVn19lKW2cu082nXZ924OZUgqQqLgWy4=;
-	b=B8HOhXu/G+ed4lo7yxhAgpmi3zaaTykcgbzs3nrrxTCbjs/cs27j0lfve3jiQipQwSp94H
-	MJhGPsTHvlXMCOlMGDpXTG3INLhPA/yXs6H8SddxrzImQwvcjAaheyAqxNEGuh3sURZwOI
-	lyIPWifHIkjjvQzPW5fSGc/ZGyhB9r0=
-X-Gm-Message-State: AOJu0Yys0IQCUYF+8hLVxCQcVNt7Wq43XG96k16h1t8MoFq37Y8CoV7m
-	Jvg9ZdvayJZKTRQQKozcH3gtDskAjyG65oWyLAA7ikq9dAK3c/NMhY+FAWVLAwvnyb0nrfhzPev
-	giqCvCGavnJcem9YfDpifj1ZCW7/LNKQ=
-X-Google-Smtp-Source: AGHT+IFyudbMtZdS0/36vaHAY+KBcRFGx23xtJVbc/IL05kWT/AjSm5jL8atDU+wwYaYSRh1LwVacl/v4+VesV0jJio=
-X-Received: by 2002:ad4:5ce3:0:b0:863:5c7a:7289 with SMTP id
- 6a1803df08f44-8635c89b87emr43694456d6.17.1759196952850; Mon, 29 Sep 2025
- 18:49:12 -0700 (PDT)
+	bh=ch7Q5TgnPok++zD6SAUojpj+InJhxzN/ETKzPzMNocY=;
+	b=GKtcpK/H3udWTBPYkB4ydbSTFKIOoUDTEEoJv73sh5+CqWioHoKYIbcYTFsFvB04HPuhxD
+	Ue/C2yQ2yPycp7yxWsXIVzrt7jEnabTZU0H+n1+2g3VsD1ozbxw9DqnYHZo7fcJJlyZvrM
+	1In1epsu/OA54NgKu7glJ2SjuKNll/g=
+Date: Tue, 30 Sep 2025 09:53:08 +0800
 MIME-Version: 1.0
-References: <20250928032842.1399147-1-qiuxu.zhuo@intel.com>
- <CACw3F50ijQ20Vg8ycMROSCccf_XtjB_fFvLGxvQZ7eaNQoLwGQ@mail.gmail.com>
- <SA1PR11MB7130ABC25E060D2CC4749E45891BA@SA1PR11MB7130.namprd11.prod.outlook.com>
- <SJ1PR11MB608350E5169EE77F86A51E2FFC1BA@SJ1PR11MB6083.namprd11.prod.outlook.com>
- <SA1PR11MB713082CA93E9B1C5F22CFBBE891BA@SA1PR11MB7130.namprd11.prod.outlook.com>
- <c1294b63-eeee-4d99-82b6-93eb3a6d0af9@redhat.com>
-In-Reply-To: <c1294b63-eeee-4d99-82b6-93eb3a6d0af9@redhat.com>
+Subject: Re: [PATCH 1/1] mm/rmap: fix soft-dirty bit loss when remapping
+ zero-filled mTHP subpage to shared zeropage
+Content-Language: en-US
+To: David Hildenbrand <david@redhat.com>
+Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, baohua@kernel.org,
+ ryan.roberts@arm.com, dev.jain@arm.com, npache@redhat.com, riel@surriel.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, harry.yoo@oracle.com,
+ jannh@google.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com, usamaarif642@gmail.com,
+ yuzhao@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ ioworker0@gmail.com, stable@vger.kernel.org, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com
+References: <20250928044855.76359-1-lance.yang@linux.dev>
+ <b19b4880-169f-4946-8c50-e82f699bb93b@redhat.com>
+ <900d0314-8e9a-4779-a058-9bb3cc8840b8@linux.dev>
+ <1f66374a-a901-49e7-95c8-96b1e5a5f22d@linux.dev>
+ <69b463e5-9854-496d-b461-4bf65e82bc0a@redhat.com>
+ <0701c9d9-b9b3-4313-8783-8e6d1dbec94d@linux.dev>
+ <1718aee4-1201-4362-885b-e707f536a065@redhat.com>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Lance Yang <lance.yang@linux.dev>
-Date: Tue, 30 Sep 2025 09:48:34 +0800
-X-Gmail-Original-Message-ID: <CABzRoya5wuXoMWuGb_+F0oBc0mCDVrjbXTZsoMwcfRT99Y5z7g@mail.gmail.com>
-X-Gm-Features: AS18NWCEPx5gCS0R5WB1gxGkcM2qm8EcK_iKsr9vf6l6Pm-AjVLkn3oGjXPud8c
-Message-ID: <CABzRoya5wuXoMWuGb_+F0oBc0mCDVrjbXTZsoMwcfRT99Y5z7g@mail.gmail.com>
-Subject: Re: [PATCH 1/1] mm: prevent poison consumption when splitting THP
-To: "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>, David Hildenbrand <david@redhat.com>
-Cc: "Luck, Tony" <tony.luck@intel.com>, Jiaqi Yan <jiaqiyan@google.com>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, "linmiaohe@huawei.com" <linmiaohe@huawei.com>, 
-	"ziy@nvidia.com" <ziy@nvidia.com>, 
-	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>, 
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "npache@redhat.com" <npache@redhat.com>, 
-	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "dev.jain@arm.com" <dev.jain@arm.com>, 
-	"baohua@kernel.org" <baohua@kernel.org>, "nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>, 
-	"Chen, Farrah" <farrah.chen@intel.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	Andrew Zaborowski <andrew.zaborowski@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <1718aee4-1201-4362-885b-e707f536a065@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 31CB3C000D
-X-Stat-Signature: ma88q3kagfwqqjd7bych88phstiozyms
 X-Rspam-User: 
-X-HE-Tag: 1759196963-155124
-X-HE-Meta: U2FsdGVkX19GphDwCxkjbpH9pSZlL8avezGKtg7NSpo1Ata/GXMD69OE/h4YX31mxENkF43/qo7SN94ul9Kuo53COc88EdwWA2onIly6A010VFuB77Zk8C04Y1swDBZPiLT+Ki+5XPIQ25Xxh9kY1hPvkaYJfg/FIEsQPGiI7wMunxFKn9zixUSswGhC+2OVr6BC0LFZ7fhZvvc95GocwaSr4x8+BKQwXdBi7ztCLYhXy4TiEq69yELcjnlskmJboBrIzPLNOFybwkwu9L4m9uCv4PqgjVv8S94I50iYkE3nWzLfdoNsaze5EpLMABKPZ8ddNPwIm8Vqi9RYZUTE/QoETQFQ5BumH8SqgZt6JOr8pvdqOSe7MyhR3/wNFVhUY1mUZ5g5CMe/Z0pqX7TLwusZYpdbr/7ATx88haP3cZFBN3nULDxqo+7moFML0V8hWS9b2DHr0xM0QUSsqQ+X82IyEfhVJY8jehcU40y/ZpQ9Dtw46ifJTSCQTrmqaMF21aywwnticf2b7ujIUNjC9Bpp6xjO355PMEllpUuf07Oz/3ojNgsTlpkPzwNNewmXhM1dwPg8ybAvmyBoNwikXjUxtuqhBHwYkCgkUiM8BoIH4R/se/dXTkIolL3TriZRECUPA8qbSTJ9jULe/rQvJR+H2+6uzSjt7kykxDA5iCqoWl/U8klJAtm+ZZX43C26LmJSEFhlRgpgTSF/p+Ba4EUvqCw7n/A3VGmLX68SAfUcl3XpoARAs8Q3lwFvYI74moXCxNcC4oMzF6YiM1VEQMbvXHbVCsPzQeTgdWZKDewao/jMWQGRToVGltxE8KciWjhAfBQKmmXmu9zVPAkSBpvoaqOUdPtH3D4gwFBj/qo/i+sqDJAKgDHvd7PY5jq+gB0mj5Iw5VeQ4VddyplLXrt8DWDL+y1DSej+e0JL98tkuqKyhpPCXkfrsloANzGrd7yiHZlD1mwuz7eryBs
- 9ZGS3oqS
- 0YEGvL8TRXtBSueyj0EWWIXusbiIW8l1865f1LxSWF/b457iOBUct6ANtgWkRDXREV+W/6WiTgop3Xrf6t8CDXgkaVhhjDlNPvE0Bq+D4jXGcBVuol/Uoyfg9cfEMjAfYo0GB/1uBosdv+9XHnugjdHBsy4o7rLsekWDZykjKSUFYHHL9tCTd0mHcqNrbw7jgDN1NZLwmnsIxWyROSde4urWbD0yoa1N1ZwEuR8lXw3UKCKla7X+U7vmQ58cOpoQo6bC0Ns5ItN83S+0gxzKorOrWk74AMiE+rc6hxHoAHfaqf0OGdPZMh4xsLLgq8pY95ZQzywuvf3R7qkE5yaDaN0grRulR+P50nyV3
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: CC68A140002
+X-Stat-Signature: xd4bj4jp4mw6jqpjyrsux9bz4ughn5pb
+X-HE-Tag: 1759197205-539397
+X-HE-Meta: U2FsdGVkX1+K72xJe2qkjr5CyoSFuCdnO95Ml/BwkYDyHyR7e0Qfli1eU2tu1j9asRAtKJBZxziq79cqUs5fSztkighlVqg912w0yGPENqm86wRtWn1A5NGKR9KcS37qigR7horY7gvU/vF6Ys+pxGewB0iSYEg+dOqydsSkrtLFrMYJXXp0sp1TZZPAnBXFBuLafuiGzfy4fnwG4/el0tIROUcQAm2pqh2gM6Q734cKIMHkswWbmztXRBM2QsV8hczzrUqxBcHvAcxYjHuVr8CaK99BQygwzywyJPn5wR3A2IUjAnWfVjyJM23kI2XgRXaD8sk7wtgyOWKP4J6GrmD+BxrukhHBfKvaw8RuXVVhoZH0rNVCkyGGTKyHc8QXuqNuVSrd/bNhhM41tvrWR11Xljldi9tUZn38jPBVAUR6CQP9EzpHtCVFjT2X9dkpFmhHE9VggOMe3KFoEHP2wO06HnN86e7OnS6SWvwihr+V2PRdpTRwSoUY2xcVJ/dOlq6jMKnB64c9lvm6y18kzOMT/Zhes8FjsDPuL+Ej7cFxp/AQ+EUoEknwwDotm8nKdtqbhWTVKdzV+dPS0tJigByuAK72FtSr4XlEDkwzFD3fgclyLANwtfw8S4B1x1dD4A3ltvlblWoPeCwB6ZHqraGWfTFsqexhamdN1uNOtCJeiTf8b5oSKFDwrEVpJEg7ggRvCNr7cbUN/AXy5gIjAHK27QcR4nwnoVHwnIG/paXJaG8m1pPGqe206qv6Gu0qELQKruFM+Hn9Ei3Jrx9bUKN4k16D96QZSbAV1ViSz5Mj5pHgQKbLp8WVkwOeLWN5DPVfvuJ19ESpAEDBcwjJU5G25RiC8zu26gevX52IPz3XR+b4gpK2R0noS3vXKx9td0FALpp08tf924Qk35HNJcNDP/HzbXXtn4q1egHXSUWJT5f10Mlb3vA40C6QeQ8Hz5Mc8+SJctMc1HScALN
+ lsw+cSXK
+ zD0etqTA6EjmNOTvL6VTWW60hpJjLZRy7GrgmVlwVl7QwKSegnVFCJ+qMbZGIAv1v5nJ2NKhAy2sasDMy4K6//IO2wxWdJUQqgaJ0U0VKR/LT++wJzFC0w6QI3SbwddMXV7LowyRw+pADz1BxedXugmKuCfkr85gIiS4kRsCkBTZo3uXbTY8AzMxAG/EfQ00sSqxfJrwZObYAaQLFOk80dU2coqYy46d+02yjTZLzP94Cp2iZuAEkMmObe5FPso3M4289xJO6xQRQwFJpDyZvcvkS+6/As3hWZ8PomO816/EGGUaak655wOv21xV2G71J2s6/oTojtF+2SNFgdwrk6rZgHGJhZEn74+GJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,59 +104,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 30, 2025 at 3:07=E2=80=AFAM David Hildenbrand <david@redhat.com=
-> wrote:
->
-> On 29.09.25 18:30, Zhuo, Qiuxu wrote:
-> > Hi Tony,
-> >
-> >> From: Luck, Tony <tony.luck@intel.com>
-> >> [...]
-> >> Subject: RE: [PATCH 1/1] mm: prevent poison consumption when splitting=
- THP
-> >>
-> >>> Miaohe mentioned in another e-mail that there was an HWPoisoned flag
-> >> for the raw error 4K page.
-> >>> We could use that flag just to skip that raw error page and still use
-> >>> the zeropage for other healthy sub-pages. I'll try that.
-> >>
-> >> That HWPoisoned flag is only set for raw pages where an error has been
-> >> detected. Maybe Linux could implement an
-> >> "is_this_page_all_zero_mc_safe()"[1] that would catch undetected poiso=
-n
-> >
-> > This sounds like a great suggestion to me.
-> > Let's see what others think about this and the name (though the name al=
-ready LGTM =F0=9F=98=8A).
->
-> The function name is just ... special. Not the good type of special IMHO.=
- :)
->
-> Note that we'll be moving to pages_identical() in [1]. Maybe we would
-> want a pages_identical_mc() or sth. like that as a follow up later.
->
->
-> So in any case, make that a follow-up work on top of a simple fix.
 
-Yeah. IIRC, as David suggested earlier, we can just check if a page is
-poisoned using PageHWPoison().
 
-Perhaps we should move this check into pages_identical()? This would make
-it a central place to determine if pages are safe to access and merge ;)
+On 2025/9/30 00:11, David Hildenbrand wrote:
+> On 29.09.25 15:22, Lance Yang wrote:
+>>
+>>
+>> On 2025/9/29 20:08, David Hildenbrand wrote:
+>>> On 29.09.25 13:29, Lance Yang wrote:
+>>>>
+>>>>
+>>>> On 2025/9/29 18:29, Lance Yang wrote:
+>>>>>
+>>>>>
+>>>>> On 2025/9/29 15:25, David Hildenbrand wrote:
+>>>>>> On 28.09.25 06:48, Lance Yang wrote:
+>>>>>>> From: Lance Yang <lance.yang@linux.dev>
+>>>>>>>
+>>>>>>> When splitting an mTHP and replacing a zero-filled subpage with the
+>>>>>>> shared
+>>>>>>> zeropage, try_to_map_unused_to_zeropage() currently drops the soft-
+>>>>>>> dirty
+>>>>>>> bit.
+>>>>>>>
+>>>>>>> For userspace tools like CRIU, which rely on the soft-dirty 
+>>>>>>> mechanism
+>>>>>>> for
+>>>>>>> incremental snapshots, losing this bit means modified pages are
+>>>>>>> missed,
+>>>>>>> leading to inconsistent memory state after restore.
+>>>>>>>
+>>>>>>> Preserve the soft-dirty bit from the old PTE when creating the
+>>>>>>> zeropage
+>>>>>>> mapping to ensure modified pages are correctly tracked.
+>>>>>>>
+>>>>>>> Cc: <stable@vger.kernel.org>
+>>>>>>> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage
+>>>>>>> when splitting isolated thp")
+>>>>>>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>>>>>>> ---
+>>>>>>>     mm/migrate.c | 4 ++++
+>>>>>>>     1 file changed, 4 insertions(+)
+>>>>>>>
+>>>>>>> diff --git a/mm/migrate.c b/mm/migrate.c
+>>>>>>> index ce83c2c3c287..bf364ba07a3f 100644
+>>>>>>> --- a/mm/migrate.c
+>>>>>>> +++ b/mm/migrate.c
+>>>>>>> @@ -322,6 +322,10 @@ static bool 
+>>>>>>> try_to_map_unused_to_zeropage(struct
+>>>>>>> page_vma_mapped_walk *pvmw,
+>>>>>>>         newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
+>>>>>>>                         pvmw->vma->vm_page_prot));
+>>>>>>> +
+>>>>>>> +    if (pte_swp_soft_dirty(ptep_get(pvmw->pte)))
+>>>>>>> +        newpte = pte_mksoft_dirty(newpte);
+>>>>>>> +
+>>>>>>>         set_pte_at(pvmw->vma->vm_mm, pvmw->address, pvmw->pte, 
+>>>>>>> newpte);
+>>>>>>>         dec_mm_counter(pvmw->vma->vm_mm, mm_counter(folio));
+>>>>>>
+>>>>>> It's interesting that there isn't a single occurrence of the stof-
+>>>>>> dirty flag in khugepaged code. I guess it all works because we do the
+>>>>>>
+>>>>>>        _pmd = maybe_pmd_mkwrite(pmd_mkdirty(_pmd), vma);
+>>>>>>
+>>>>>> and the pmd_mkdirty() will imply marking it soft-dirty.
+>>>>>>
+>>>>>> Now to the problem at hand: I don't think this is particularly
+>>>>>> problematic in the common case: if the page is zero, it likely was
+>>>>>> never written to (that's what the unerused shrinker is targeted at),
+>>>>>> so the soft-dirty setting on the PMD is actually just an over-
+>>>>>> indication for this page.
+>>>>>
+>>>>> Cool. Thanks for the insight! Good to know that ;)
+>>>>>
+>>>>>>
+>>>>>> For example, when we just install the shared zeropage directly in
+>>>>>> do_anonymous_page(), we obviously also don't set it dirty/soft-dirty.
+>>>>>>
+>>>>>> Now, one could argue that if the content was changed from non-zero to
+>>>>>> zero, it ould actually be soft-dirty.
+>>>>>
+>>>>> Exactly. A false negative could be a problem for the userspace tools,
+>>>>> IMO.
+>>>>>
+>>>>>>
+>>>>>> Long-story short: I don't think this matters much in practice, but
+>>>>>> it's an easy fix.
+>>>>>>
+>>>>>> As said by dev, please avoid double ptep_get() if possible.
+>>>>>
+>>>>> Sure, will do. I'll refactor it in the next version.
+>>>>>
+>>>>>>
+>>>>>> Acked-by: David Hildenbrand <david@redhat.com>
+>>>>>
+>>>>> Thanks!
+>>>>>
+>>>>>>
+>>>>>>
+>>>>>> @Lance, can you double-check that the uffd-wp bit is handled
+>>>>>> correctly? I strongly assume we lose that as well here.
+>>>>
+>>>> Yes, the uffd-wp bit was indeed being dropped, but ...
+>>>>
+>>>> The shared zeropage is read-only, which triggers a fault. IIUC,
+>>>> The kernel then falls back to checking the VM_UFFD_WP flag on
+>>>> the VMA and correctly generates a uffd-wp event, masking the
+>>>> fact that the uffd-wp bit on the PTE was lost.
+>>>
+>>> That's not how VM_UFFD_WP works :)
+>>
+>> My bad! Please accept my apologies for the earlier confusion :(
+>>
+>> I messed up my test environment (forgot to enable mTHP), which
+>> led me to a completely wrong conclusion...
+>>
+>> You're spot on. With mTHP enabled, the WP fault was not caught
+>> on the shared zeropage after it replaced a zero-filled subpage
+>> during an mTHP split.
+>>
+>> This is because do_wp_page() requires userfaultfd_pte_wp() to
+>> be true, which in turn needs both userfaultfd_wp(vma) and
+>> pte_uffd_wp(pte).
+>>
+>> static inline bool userfaultfd_pte_wp(struct vm_area_struct *vma,
+>>                       pte_t pte)
+>> {
+>>     return userfaultfd_wp(vma) && pte_uffd_wp(pte);
+>> }
+>>
+>> userfaultfd_pte_wp() fails as we lose the uffd-wp bit on the PTE ...
+> 
+> That's my understanding. And FWIW, that's a much more important fix. (in 
+> contrast to soft-dirty, uffd-wp actually is precise)
 
-BTW, could you please keep me in the loop for the next version?
+Got it, and thanks for setting me straight on that!
 
-Thanks,
-Lance
+> 
+> Can you test+send a fix ... please? :)
+> 
 
->
-> [1] https://lore.kernel.org/all/20250922021458.68123-1-lance.yang@linux.d=
-ev/
->
-> --
-> Cheers
->
-> David / dhildenb
->
->
+Certainly, I'm on it ;)
 
