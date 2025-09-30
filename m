@@ -4,89 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE4E9CAC5B9
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 00:44:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02072CAC5B9
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 00:49:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 083078E0005; Mon, 29 Sep 2025 20:44:20 -0400 (EDT)
+	id 5E0678E000B; Mon, 29 Sep 2025 20:49:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02E9B8E0002; Mon, 29 Sep 2025 20:44:19 -0400 (EDT)
+	id 5B8168E0002; Mon, 29 Sep 2025 20:49:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E5FC48E0005; Mon, 29 Sep 2025 20:44:19 -0400 (EDT)
+	id 4F4938E000B; Mon, 29 Sep 2025 20:49:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CFC648E0002
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 20:44:19 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 60908C0543
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 00:44:19 +0000 (UTC)
-X-FDA: 83944070238.12.46B202C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id DC28340004
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 00:44:17 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WFgJtw5A;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3FA7D8E0002
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 20:49:13 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BDA6113B3B7
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 00:49:12 +0000 (UTC)
+X-FDA: 83944082544.14.285E221
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 0CF8720010
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 00:49:10 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QhK76q+a;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759193057;
+	s=arc-20220608; t=1759193351;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=HCzBphx38re8+FZndYBdyelQ5jd8zKCpObxmFzyZ3zE=;
-	b=fqLYHZ25aRv5x6a0XZodCKMlTXss+QMDeOhc5TJyaITVohJcRbDU4EFgAZqTbhWTVt570c
-	1/HhQc5Hw0V02wTRC7E8wl4cxv4j1Fom9GLB0tUxdtT1g9YfZ2yswV0s74Bo1H3Wc6OuG5
-	3jjL7qIzk5up0mTP4sPIE4rIgEuSbtU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759193057; a=rsa-sha256;
-	cv=none;
-	b=q/2xAhpOEy1WDgJpLmEinrIin4uMl8ln0oOizGRExvTUMfDrH22yWxYf1aYvohPIUJV9yZ
-	yEyigDYCoaWNyReoTzw663oJ0pmnL/5/nBSbAwFObAUzPp6D5FUJoy95DAUZ8NUPE3zmKi
-	yDMhc6zogScz339/BEMAXopiGfVbYPA=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9P8i0lPxwdWcH06Qu/q8Q7cHVskIwe2qq5Z3Y/6PcLs=;
+	b=2p6c3mwwIHMj+a/jB6GBU734BLcAm164HCTqRYFcriTJtAEaYFk2LV88IJAKZX7/A+6Dmy
+	E4O3MpwxGQyP3hvuJ31Qblz7c8w3Z6IdtlT2UP4IKy3bLE6nBmPZTf4Y1AyPqUgsFhX3AF
+	qIwmruXsS9jRwsODDss1mfEwMzWaQMY=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WFgJtw5A;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QhK76q+a;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759193351; a=rsa-sha256;
+	cv=none;
+	b=VgEHCr87h1PRWFsF3WDpe023/81MKsjbXPEwHVXyF1Ut/070b3hhrJHaz/vW+JAyC13JHg
+	2XXfGaLc5L0ZC/4yldfypn+wfAGg1V3IoLu35A1RRz4z3lE/opVy4tLjQnYByOlONP5lXa
+	qKrshc8YjJg6WVdeuwUA/A5YQRwtgkc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E7AE9602B2;
-	Tue, 30 Sep 2025 00:44:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7868BC4CEF4;
-	Tue, 30 Sep 2025 00:44:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A7A60433CB;
+	Tue, 30 Sep 2025 00:49:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6388CC4CEF4;
+	Tue, 30 Sep 2025 00:49:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759193056;
-	bh=UG8UCbAm0S/mQH2S995hl54PecX4r3H8TVBvdoOGWy0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=WFgJtw5ACgIRAyKx3TKKMwbhW2WgSueANdrKKbBKdBndFiq7YY5atdMu2O22g8QN1
-	 yu+15Uc2wTr8dJIc8VNZlP5mGQf6Q5zfJO2YWMgfzwZdgYrHg9absTE3yyFSk6iExz
-	 j5bRLRcB1/XBqJOaDqwy81kYqxdKW/M0YRCDY2QYVRFAYw02zcyMPigm6BLoyHaVb8
-	 BZ29MuEK9lvrWETT4xLxojgvwUWqgJr9r0V13dn3yWY0BOns/PvvyFbJXk0lLkO23U
-	 wz0aXjFsmt7nrXiMJCwxlnoBUvWj6bgS4REbPqTpJ67KcRA9C2Z8cCLnSBfRno8VdM
-	 zeAbiqY3mfOdA==
+	s=k20201202; t=1759193349;
+	bh=Dmx25bmLQf6ATWT8g8tetZDOFF0vBbRp6vW8hTDcyvc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=QhK76q+aJngACoGRYQpbuwf9uBLxE7n+FfDFAI6Bz7CRfp9ohr/mdN6MzNy4Y+cbF
+	 PJP3xHR20cu+BzyuUy7Gl3Qq82r3fg7EjaQpikJUEUz5+5xCPugK97xs6t9FDM0xyY
+	 Hd+vzUifNrzATwg4X9wlRNkTkZm/oMoYzEk7KqYkK9Y6hICU0FW4U7iL6UfuxGRsHK
+	 wdZSrpIjBc+gy+9jQDWi0BHwdvjG4pGW4CoT5SkisCEv+htE+KSj5g3N+hDZapdrKc
+	 /pSALxpvqkak+zEX88oxB+WXrJ9oaDh9IV3eztg7ZJzgtaHheTeX3az3YS6ksRPxUh
+	 ZV/EXsYxjXcrw==
 From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
+To: Xinyu Zheng <zhengxinyu6@huawei.com>
 Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 5 . x" <stable@vger.kernel.org>,
-	Hugh Dickins <hughd@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	damon@lists.linux.dev,
-	kernel-team@meta.com,
-	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	Xinyu Zheng <zhengxinyu6@huawei.com>
-Subject: [PATCH] mm/damon/vaddr: do not repeat pte_offset_map_lock() until success
-Date: Mon, 29 Sep 2025 17:44:09 -0700
-Message-Id: <20250930004410.55228-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org,
+	zouyipeng@huawei.com,
+	Hugh Dickins <hughd@google.com>
+Subject: Re: [BUG REPORT] mm/damon: softlockup when kdamond walk page with cpu hotplug
+Date: Mon, 29 Sep 2025 17:49:07 -0700
+Message-Id: <20250930004907.55388-1-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <eaee73bd-21cc-4da2-86a8-fe6a9576ab51@huawei.com>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1f4cwp7cqowjz8j63seuoymtfbhq7dfw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DC28340004
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1759193057-49626
-X-HE-Meta: U2FsdGVkX1+d56xaMP9H0wLrCeUCptsqm4yF+UKpsX7Wa/GtVuGsqZ9sIZ5QXflSns/2RR6yYN9yzSR5nw3jZHPJdTTrA+kY5wxT4Xn+gVviyJ7BVkLtrOfac5cBu7GK7ypbTOoHXV/Oi8ZsjrM6KqJ34+jrLHeDQJ2nAnKWgRT54foaNKK/APKsf+BNJxWVRi4h+TexmvompnvYt0oViraCR5L9xPc7l5OCVnAUnLxRlgg7EVemdzeoq3GXXRf8dMoI8OVVS1FnBsAN2opnNU7Bw2eD3YhsF0rKJ9w0W6C8zfiDoJT8Uqkqo0lsGuPdcVaONwCw4JNkaGTY5XYpD06gfuB2p5ZmK2O3ihx7g/2nmjR5q/hSYxVZ9fbqxfekIiVrsxc9SdJ9RTp/0s4vgAMOI3+xlqQOuEbaAudI3Eb5CIQOabffnzahmRY1lFLJ3bpG11FOyxscQOa0nJ2eJ1Ip2X3Q/YWVQ9+LiD4ME+C9tdmAzkZD1ByqGMdAo+hZl38NPxAd9oOyHnHbowS6c6jRQod2gGmtTKV0h/ueyIh6ClQv1d5XiQHnGHcXfp+MAXIaO7TzZAN1yyVPk/rFX6qn84ltNVkMY6CcEnygamCn9EGZS1F12oaNrezM61Et15L5u2Px+pKOABzGdG5PqVNQNNJ1TGsAskRx1Tz/PprloIPDuvnuWqw52VO7CVekd5CUf5ugzSoBLgcM4O7ve8VxmT9qDVe7d8DeLGjAEeP7XfoAo5aK82PmFSg/cy673IVRwg6VM2j1JxrOwinU8obEw7YQWBxs/ND5RbGKTFFCeNMX2yKcDktKvR+lwFhdaFMlEbeoMEG3WywJM7mHRorhavDTk/drWxzTNwZECd7qT4BeGqgIVkKZcnE9vEbmZV7kMcnwPac32/S6USEFur8YgDvXsklVDCoqEbZcPC6cO3XKblPTZOHIZ5EYfjMIMDvsGBsJVN+1aU3cGXr
- UN3dhftg
- lHRn1pRtpGKG/6QaQBKMi2aJDh64pRwH01ZuSjeqoCYEEer7SGKC8ukPUblc/kp3uBpQCCp2oJJxAAZgy01AzCF7ovSGuWd6CrApJGPumLlxCn0M0mCiXRaiSRiYlesfX1dB4b1WNh+nSxq04EGiKk9BfdXifo4nckpD1be/CTcr8/QKKKnot3HxOUl/7DSfL3gEgYR680FXppoEs5Fjz7upLMEZI0BQx2el20k+UguT/riSXYEcpOoOzM6OUQXmJiKyV5ITp0ydffmRllkEQAHgRv9Eooh8ltD8a9VrBAwM+fzpIekKlB8pLNVscRULiLC4q
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0CF8720010
+X-Stat-Signature: tnnah655u7iirbpntuhhybce5tujnq1m
+X-HE-Tag: 1759193350-398143
+X-HE-Meta: U2FsdGVkX18YhXExzzxAH6p6ptvYIKe/djjMbHFO2GobR42DBDlSCqQxEgk/8pkPYL4ILr/npKaaeqAJYgDm3q1aYxeu3uKuuVhFZOcUfmftRCSmMFqypPOajSLClZQoQtGRzRwM7mr2Fe6YkQz3IzTzW17CQuP3GwBHdlqlycoQ4zQ4KKL8djp8GoekaXZOUEZvaBBbEH9+x2Bp2cfeBCdUEKrNV2p+J6gRPzMCko4aJyUw1HpyNZpP8X7i7zw5FVfDX2omASt67wJS/BLCLvTL2fvEkB00DczJQm6Gx7TLYDAU0M5sRvduNqzYoezyaw+PNLk2b6F317VA48b0t9WeaKbCdlPQekGYArlQ0mK1Pu13Azj0UKPaIAGzS8KRcz6cck+wsLkQoXPutequs1A1MNSZuC1mGCDpR9tgaYvaUVLc+ZiGe7of8Etwhj7kc26XHj8F/od+4vj/uaFzzVwi7Nfy4y1LP//7/ZVpFt2TNB2YvXrxpMoLUKrnW95G4nnMb7K6ntI58r/qJ2pcnyHPByn3HloZQ/SymDsrVyxAiWdwrAe3q/1thGShj/zlv0jCHEZD14+zXic8Zk7r9EtAUqt6J89fHYWo7A9c12PiDkGmbHdo+NtsioncYWAx/f+LNBVqF02iVTLw7IjpmnFJ89ekXs/nC6fjJ9qxHL4uXMnENMNkXq2H2uw0rBi66u9O2DoYqOTbxtj2ZS/c71rXC8zQqQf2gXyWKr78dRSJeQoOQ/mrkUeeCNYkkP9FhkUrvHi4Ilky6yMUxDmwa3aOPTlEyoAia1uZRUiZM1lvxriQe2oTz359WcSPZ59MBVrlimSupxXwHhJExsZ/4BiZFv06yqP427LcbxL4wXFXpLnEQmYpvkvWchfWEo/kpNJ1ISEraBJNDVG+/pmvZOdvlxt20eBc0AkLEaQSIX9QVuP9dRqRw1f7baYxnZ7FV9VR7l2RfZtMk33Yxbd
+ rXZ7gtqc
+ Wv5uzzt5YlkZFY6J95VDANNUR+rkJHv3O6kaefHLhtwrR3/oYLhwcbqBfNfhWdFrRK/g50aBwdZe2d028D/5SPS5pv4zj0lZa8FS2mn7azqw4SfnRWc1ZvAdqTahWateiLoUyFegT+dQ/+Hezlg2sEUp0BhpafwPHdxauM4LcwHcv4pLGpi7IUD8PGH8/F8UMBLbvdOX7xjV90uPXcGCoh5aIwB4UE9RWsCLMEBmUp8AwuO6FOQKkVSty19L1r6XHxLGEUi0brtYGxYpvPOuZ3cOmqQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,62 +98,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON's virtual address space operation set implementation (vaddr) calls
-pte_offset_map_lock() inside the page table walk callback function.
-This is for reading and writing page table accessed bits.  If
-pte_offset_map_lock() fails, it retries by returning the page table walk
-callback function with ACTION_AGAIN.
+On Thu, 25 Sep 2025 19:11:13 +0800 Xinyu Zheng <zhengxinyu6@huawei.com> wrote:
 
-pte_offset_map_lock() can continuously fail if the target is a pmd
-migration entry, though.  Hence it could cause an infinite page table
-walk if the migration cannot be done until the page table walk is
-finished.  This indeed caused a soft lockup when CPU hotplugging and
-DAMON were running in parallel.
+> 
+> 
+> On 9/20/2025 6:42 PM, SeongJae Park wrote:
+> > On Fri, 19 Sep 2025 20:56:56 -0700 (PDT) Hugh Dickins <hughd@google.com> wrote:
+> > 
+> >> On Thu, 18 Sep 2025, SeongJae Park wrote:
+> >>
+> >>> Hello,
+> >>>
+> >>> On Thu, 18 Sep 2025 03:00:29 +0000 Xinyu Zheng <zhengxinyu6@huawei.com> wrote:
+> >>>
+> >>>> A softlockup issue was found with stress test:
+[...]
+> > Xinyu, could you please test if the below attached patch fixes your issue and
+> > let us know the result?
+> > 
+> > If Xinyu confirms the validity of the fix and no one objects to the above plan,
+> > I will post the fix as a formal one with a better commit message.
+> > 
+> 
+> Hi, SJ. The below attached patch is works!
+> 
+> These days, I reproduced the same softlockup scenario for three times. 
+> It can be reproduced around an hour when I increase the memory pressure.
+> Then I patched the below fix, and ran the same testcase whole day, 
+> softlock didn't trigger again.
+> 
+> Sorry for the long wait. Thanks again for your solution and explanation!
 
-Avoid the infinite loop by simply not retrying the page table walk.
-DAMON is promising only a best-effort accuracy, so missing access to
-such pages is no problem.
+Sorry for late response, and thank you for confirming that the fix works.  I
+just posted it as a formal patch:
+https://lore.kernel.org/20250930004410.55228-1-sj@kernel.org
 
-Reported-by: Xinyu Zheng <zhengxinyu6@huawei.com>
-Closes: https://lore.kernel.org/20250918030029.2652607-1-zhengxinyu6@huawei.com
-Fixes: 7780d04046a2 ("mm/pagewalkers: ACTION_AGAIN if pte_offset_map_lock() fails")
-Cc: <stable@vger.kernel.org> # 6.5.x
-Cc: Hugh Dickins <hughd@google.com>
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/vaddr.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index 8c048f9b129e..7e834467b2d8 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -328,10 +328,8 @@ static int damon_mkold_pmd_entry(pmd_t *pmd, unsigned long addr,
- 	}
- 
- 	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
--	if (!pte) {
--		walk->action = ACTION_AGAIN;
-+	if (!pte)
- 		return 0;
--	}
- 	if (!pte_present(ptep_get(pte)))
- 		goto out;
- 	damon_ptep_mkold(pte, walk->vma, addr);
-@@ -481,10 +479,8 @@ static int damon_young_pmd_entry(pmd_t *pmd, unsigned long addr,
- #endif	/* CONFIG_TRANSPARENT_HUGEPAGE */
- 
- 	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
--	if (!pte) {
--		walk->action = ACTION_AGAIN;
-+	if (!pte)
- 		return 0;
--	}
- 	ptent = ptep_get(pte);
- 	if (!pte_present(ptent))
- 		goto out;
+Thanks,
+SJ
 
-base-commit: 3169a901e935bc1f2d2eec0171abcf524b7747e4
--- 
-2.39.5
+[...]
 
