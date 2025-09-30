@@ -4,82 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 545ADCAC5B8
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 07:00:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DE91CAC5B8
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 07:13:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DFBF8E001C; Tue, 30 Sep 2025 03:00:14 -0400 (EDT)
+	id C48D68E000B; Tue, 30 Sep 2025 03:13:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 942758E0002; Tue, 30 Sep 2025 03:00:14 -0400 (EDT)
+	id BF8EB8E0002; Tue, 30 Sep 2025 03:13:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 809928E001C; Tue, 30 Sep 2025 03:00:14 -0400 (EDT)
+	id B0E358E000B; Tue, 30 Sep 2025 03:13:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C6508E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 03:00:14 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B4DCE879CD
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 07:00:13 +0000 (UTC)
-X-FDA: 83945017506.14.A2C5EE9
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf01.hostedemail.com (Postfix) with ESMTP id B9FEE4000A
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 07:00:11 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A052D8E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 03:13:13 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 255381405F5
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 07:13:13 +0000 (UTC)
+X-FDA: 83945050266.25.337B797
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 52DA3C000C
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 07:13:11 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
 	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	spf=pass (imf10.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759215612;
+	s=arc-20220608; t=1759216391;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=p1wips17F6Pis7sLhu50eaAc8bW3bG6wJ4x5ri0JeZs=;
-	b=3s34p4WBVYRw8FwdVeaoRl+9QvuVxhspI09JH9WkmCs5aZ7p0+gnip5/yRsCgRXXI/AUd4
-	+IeQpw4iOMNSQpu7fPlSan3zd5PNI6ITEg4RXFK2Wh+P3vinip3sSwRNMHp+rG1q0Jli4B
-	3SJ3lVy0bU4d9n1dfAOdTnQTp2giUes=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759215612; a=rsa-sha256;
-	cv=none;
-	b=QljG9XTHIKIHY1/2VWexMO4RBsvMuS/QIhgJy7eQ+xUIrqQVXVpx/RoC21Hpoq2HEbFLsV
-	H9h/MPSGx6cptOpn2h3zlUA3fsk40JiJoE1xRlZBVTnvu+8BLXLVVtDMxofrki+SYNOYel
-	5brhMXu1u2PUo8fLtoqc1m5nNjOWVtk=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=RJg+MB8jkyhooYHl7VPWRbhLVwCzgwHPNjrxfT41vz8=;
+	b=s71DqTqTs83grE/rqKJChuSNSmjEQi663PNM2Nh5b7Jbr6GasRM/cRoukOcbYur5/A5sa1
+	trak8lQbJEumDOj2wMxQX2b0l4oW1AvHCRnzv2wRiqCr116/M6d+dMqoQThkr6XMityiXX
+	m1Dif+N7GM7694ZFYozfN5tjv4VesR8=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
+	imf10.hostedemail.com;
 	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9B2F21424;
-	Tue, 30 Sep 2025 00:00:02 -0700 (PDT)
-Received: from [10.164.18.71] (unknown [10.164.18.71])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 277A53F5A1;
-	Tue, 30 Sep 2025 00:00:08 -0700 (PDT)
-Message-ID: <1f3c8fe8-cff0-4e3e-bea8-285b00fc7a5d@arm.com>
-Date: Tue, 30 Sep 2025 12:30:06 +0530
+	spf=pass (imf10.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759216391; a=rsa-sha256;
+	cv=none;
+	b=0WYThD61mAHoTlaKGtyqouaXUNh9LPpav5WBi9NIJLwOkpf5nDSouvtgfLyTIhVcIckSMc
+	G4KglJkGA6sJRfjP07YdeVttHAkR+VBYVNVKi6E+tefcuDj5r5URi5lh6vZI8sCJDBOm93
+	GUbrp/yvRBC+ENOZkhFPeUD5/eBOfew=
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-46e504975dbso16175435e9.1
+        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 00:13:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759216390; x=1759821190;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RJg+MB8jkyhooYHl7VPWRbhLVwCzgwHPNjrxfT41vz8=;
+        b=RPq4txpbkjoPRbPBEiKhCGri6tAmfnEXHD823Setx96l2yhdb+uLB5QSRTn5xiRaZW
+         DHUsSB0AwxTqx/Gen9D1B3v5EVEby+1/JcCv3MifT9SwwVRjH2L1o4qPWNGUz0z8r6A0
+         Ae4fQeaPOoZ+2n33CwACY8ut5TEboBijtngOTQ/ceNxCde5+wKUcrLSfw6+o8kKAexnG
+         oifv890onHLLd77jgEI9zlawswzTbn+Bt8h9vJxUqnOKt1+jdH/kCEllpIhxvBMKjhDq
+         Ec2N86c53Mv9NeeVet9KHlT0MwoLCcLiCZCHqrPpo6bJ1jwQ+pWBOqg5123xdw0Z7Gbz
+         y5BQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWng1WHC4qTCBSUOFFjYwK5uCLvIIiQs/5YK/FEbnSA3mc6WngWJlUgNL4UlkAprbb8itwUM5IBog==@kvack.org
+X-Gm-Message-State: AOJu0YwKXh/UK4yOoM2EO7rR0CIzggy+HaU+Bgp9rlB3QncgX9TyeQ94
+	WZuqfezliwtwWOnKTUnwRy0V6LfoCAII1JwBiDsc6Q/OIGRgaM3qYkw4
+X-Gm-Gg: ASbGnctFXFxqpwZUD9KeNX1S+9uZeekeYL3h9bPPXDjYKiluFAKNU7Ai5e0/1RJgjls
+	eI22quDbKKvHBPVF05DxLeki79gMWChSPsMnh4xEXqd9zOIz1/YsMUfeLYeG4gqQSzgXZ8RkWs+
+	gTVGrjoywp/sDIpjmAdSFYxr/z247yrvD5raIh7Ea06oyEDX410Bdqjklsy/964ruPHKjuHiLfw
+	XujQBNYGUz/0Qo3eGYuayRCLQQsIJfUQ3+zIZ2m9dLzpLI5Ce1wQUwmBYd2oi10wiP/Atl/ep8q
+	RRG9gJKedQAJqiAe9vAI3ThLHnJAnsLPMr82zoLaLavhyjhjWANfln/RzngtByl7vFZXIujeegq
+	6qx9SmzoywhREHG07LhEHvPyi/AboTlc2aVvLdTLq2AuYwqz1Kg==
+X-Google-Smtp-Source: AGHT+IHG/vdhpkUdLGzDD/hQegsFD5o72BWBQNk08ly8bjkRBa9wOlUTaVnXFyckUgCALWtyUUhxsA==
+X-Received: by 2002:a05:600c:8b58:b0:45d:e326:96fb with SMTP id 5b1f17b1804b1-46e32a17d2bmr190697065e9.30.1759216389605;
+        Tue, 30 Sep 2025 00:13:09 -0700 (PDT)
+Received: from localhost.localdomain ([2a09:0:1:2::301b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e56f64d06sm42221855e9.12.2025.09.30.00.13.00
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 30 Sep 2025 00:13:09 -0700 (PDT)
+From: Lance Yang <lance.yang@linux.dev>
+To: akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com
+Cc: peterx@redhat.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	baohua@kernel.org,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	npache@redhat.com,
+	riel@surriel.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	harry.yoo@oracle.com,
+	jannh@google.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	usamaarif642@gmail.com,
+	yuzhao@google.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ioworker0@gmail.com,
+	stable@vger.kernel.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: [PATCH v4 1/1] mm/rmap: fix soft-dirty and uffd-wp bit loss when remapping zero-filled mTHP subpage to shared zeropage
+Date: Tue, 30 Sep 2025 15:10:53 +0800
+Message-ID: <20250930071053.36158-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/ptdump: Replace READ_ONCE() with standard page table
- accessors
-To: David Hildenbrand <david@redhat.com>, Dev Jain <dev.jain@arm.com>,
- linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org
-References: <20250930025246.1143340-1-anshuman.khandual@arm.com>
- <9736fd6a-8987-4b10-9b05-e03106463c34@arm.com>
- <f0f0479a-fdab-4f42-9600-5d7b44a73f4e@redhat.com>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <f0f0479a-fdab-4f42-9600-5d7b44a73f4e@redhat.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B9FEE4000A
-X-Stat-Signature: ns4bopxc6d4s78baxpau3obomrfucbkn
+X-Rspamd-Queue-Id: 52DA3C000C
 X-Rspam-User: 
-X-HE-Tag: 1759215611-7508
-X-HE-Meta: U2FsdGVkX199FMJ9/RnKzjqXEbqWpqqEwnZ8/6vizQoBX6Hv00IIRwtFoWkVjalaCjRrD6MucHTCHCTcpwKpAx0XAWjcKmlkrVeyWQGxBmJkn6wMJSz2UZIeKhipAdlY/J/UY6+tvu7bARPxeZJFG8nbLvHZTvzEd5wg6OjjGh69PmUTKx7dLG+yPNev48ObHlNcKOdnAEbDzGuOT/vjDSOPAttQOV4vVWph8+rGlmI+T1DAyIssqkTCw+XoM7F+fJfXnFSxxqcDKPe8zhynwYY2brlfbRnnW5c0//zJyaY0eXar0K4/Jnj3+6+WqPrBLSS0z2ZtnB7KH6NHthwFFjmyZzgJuVDdEGQmSUuZ5HMRa7X+ITBq7EJXE1+Z7SK1Aus0c/KMaIPd8r3NlvPV9qFQSDqaw8vkwF9dNMhr2rXmC6hBFUSKK7PKbXSrLYK/FwmVtHdUiw7Ov4266yewBck8x816uOTQCaZA39Q2GVl++qdQU9AQ8Eiy/R+GJjE/zXnSF4XGIvnxdMya/r98ZSUZp3sufyVZi48yaD8PugngzlYlTMasyAYj8vBHJMQUw06Hr+a0+Zk2LDJE4yabZSKlEF9KOi2HPyn3AO6JM4FUdSOcB+lgjuElSIF9dN06f643mdmroENTwCoRkKKbwdXQpPyq+9/mOisM/f5kF1uNmX/3Up2Euq2I4F13Dxa2caWrzKMGE38EsLObt5p8QzZugXfi7UP9pd4PrxN7jt1CBoOE+Hvdbsv8jGWr8Nzy3jb0dbjiBJ0Y/kPUFE3nrIlCcvGw2vDf/FiaaBctBmjWJ5i17eKvIRTvb3EZlU67L5QyZKb1b3W8Xr0Q7SrMfKl4sg8wReshWoOdIrgzbap1cvg6frs+250wcsBW5dVzb0TnI3Hdb9Xf3ASYaq93dURZRBJLbVbwctliBaRmsDZ2qiLGSkLM2VBSzL1aDRX2/HCDIe+UET34WancjaD
- e8v8ULP/
- 6D1RYqrP46wtHh48IoKJpp90QA7fLc0US93toQkcUuwz8Br/nixQUn/Ll5Y/AUPrNusng4OcixmZGORh36PqcUCHj4mgByN4qKO/oIu7nqaXlv01Rs8t2V/yECXU3m8m5oyMIen6nA3ekas8/qBTbQWV0LiFez3WqPcma+5c6lKbKb/C+utPq9/pbMSc34JSx7xXwn5a150PJpQSdrA7cWxEX/HsrxlRm2VUatYOa6sx6FOEXHLgyMqRczpBIyAVm9KI41A4gI2ek14bdFhOnZOTkKSlerRd8FviVldHydJkfocN6DwNGzHvF2CJ94vSd+B6AAk90Emu6R8NfePzH6oRtwhFTTmt37Xc8hRF4eJP5QjqtVCKI2SCBuEWSXRaxLM3cRQfomkc4Di4=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: guqnqqq7eh9a4y57pxsdffwtssrn9iup
+X-HE-Tag: 1759216391-490112
+X-HE-Meta: U2FsdGVkX19edzjJM2K31ywIXvTa8aPQtwp7ASr52OUYDqj8jxXW2sFztZ228EKio60ZFflg92sSLnNZd1InTQT5irEqVpy5C7fIXGPdLWDCmEAApFHYMIGKUcZMtOMxPF98ip5UlvNHrxgZFvCbuOABZd3MD7haQiRMydDrRKhe3ax7ZPUTP/Ts17AU2xi6sR/GU0CvEau3kW731EKVNOARaJU4+mtAPS5LB2KZ64u82WyHVTA1YAftoNkhUdgB9Z6nr/W/sLUWM/LoeyxqRJQBb4Pzakzx8/wmxV2847g0+uthYuvdlpbRgYeeBGpxN+I51AKzlQC6Pb8Eta7bRKuRrZDgBlMkoROXQUobuK3ZiKYjyWK2t7ts1Ywj5axbhJAeJlrURL6uMjiq1gWq2yheLb+HM2Ec3WMW4cfQ6H+NM73DIc4bgx1RzZs4qpcsf50jNaM8QaPOrmRb/Q3XBQQwIyd8FpGhMAm7ozCRiwAG8yxnu99fjcbvBezqfqjvsZL6B7W+e6wfSJw5d5zJX/WZ/Wno2LkMz0PdE543jcA9cAIQ/IP8twA7F7QKvhwD/NXsP1iOD4+EZrV3KejUiBXIAN2haVgwPRWT2JBd4JPJHBEuQU4ptZWVZhRoBx1I1bvk6Uuobfh+OwdRJktpFoIgkXd2mMgCoRVwkbN84xdYvMCwGDL82y4PcA+QiDXEm0aa/VHFasFVVNiiMtyXySE3ElWfggUh5dmwuccqKqMvVtYoY0Do5wvB/EiW0wVPzSUOd4POrenZ5dgCb45W2UucPySrtQg8CmgCH4yVMvGf8fO3YPJKZWfasNxdnQjmVpBqEVUVnpa7uVTheA/cVijmeMbqMAYanIBOZf4WJ/eNjrLSQgdGFkSmyBHuSHdMvE7Sj9ajBdFUdFktDcRX/cdtvguEEDKaeDi7unMumvn72lt1Ve2YdK8v3uKYF7LHxPy+zltlTmz+ymWFeR5
+ bGQXvnVc
+ mwn2bDXp63JT7NmQRawHAkboLGnBk/7OXfHDuSnWVOCVegRyF3+PwCxZjtf85KxSDiW7mzN42rhCJBMbuIeWr/OFlIQlRzMilNONnVxQp/WftQX4HowRUm4DDl2O1NL8/v8Zenbg2bQ5DbVo2tiA69Z65VIhpTHr5vqup61UlbGzdu0pWe71XTL0I6I/IRFj/0Rueav8x+inJe/FMkUKoL4QrppA1995mSecLCxa97E8eUS50uA2oZQYYYcNpDxLCnOmlk2oLeanob4moETOVtVnj6FRFhXXJEwtpIne+Nk5z5vvHUBoL7jFq1ZsLLJaxD/6W40X7PKc71AwQC5RzUNNm1GbhI59vUtlYrCKiG3akxhXtggLjzEimCp0Njg9hclsQkWGkyAX4U0ZTpjZNB11UJ3seD6kt7TLbR6+YY+NfXTAZbT0AVj1hkk/u1tTFrqIYABzMMglGUa7Q+ntBd1v1KCcTC7Fb1owyVXX1ZTuhefNA2dchDNLGwsWBzj4tCFKbNcLCNPORSojcbkuvcitdOOO3yjDQT1McGQtfm51sRtF/oW/x4NtnEou9Ypg+9i5in+eFbTW/r1QZ1Y6nwPLuXkH/TpG9fHbckdtMwvL0F8wEIluYU0XYug==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,71 +129,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Lance Yang <lance.yang@linux.dev>
 
+When splitting an mTHP and replacing a zero-filled subpage with the shared
+zeropage, try_to_map_unused_to_zeropage() currently drops several important
+PTE bits.
 
-On 30/09/25 12:11 PM, David Hildenbrand wrote:
-> On 30.09.25 06:37, Dev Jain wrote:
->>
->> On 30/09/25 8:22 am, Anshuman Khandual wrote:
->>> Replace READ_ONCE() with standard page table accessors i.e pxdp_get() which
->>> anyways default into READ_ONCE() in cases where platform does not override.
->>>
->>> Cc: Andrew Morton <akpm@linux-foundation.org>
->>> Cc: David Hildenbrand <david@redhat.com>
->>> Cc: linux-mm@kvack.org
->>> Cc: linux-kernel@vger.kernel.org
->>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->>> ---
->>>    mm/ptdump.c | 8 ++++----
->>>    1 file changed, 4 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/mm/ptdump.c b/mm/ptdump.c
->>> index b600c7f864b8..18861501b533 100644
->>> --- a/mm/ptdump.c
->>> +++ b/mm/ptdump.c
->>> @@ -31,7 +31,7 @@ static int ptdump_pgd_entry(pgd_t *pgd, unsigned long addr,
->>>                    unsigned long next, struct mm_walk *walk)
->>>    {
->>>        struct ptdump_state *st = walk->private;
->>> -    pgd_t val = READ_ONCE(*pgd);
->>> +    pgd_t val = pgdp_get(pgd);
->>>       #if CONFIG_PGTABLE_LEVELS > 4 && \
->>>            (defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS))
->>> @@ -54,7 +54,7 @@ static int ptdump_p4d_entry(p4d_t *p4d, unsigned long addr,
->>>                    unsigned long next, struct mm_walk *walk)
->>>    {
->>>        struct ptdump_state *st = walk->private;
->>> -    p4d_t val = READ_ONCE(*p4d);
->>> +    p4d_t val = p4dp_get(p4d);
->>>       #if CONFIG_PGTABLE_LEVELS > 3 && \
->>>            (defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS))
->>> @@ -77,7 +77,7 @@ static int ptdump_pud_entry(pud_t *pud, unsigned long addr,
->>>                    unsigned long next, struct mm_walk *walk)
->>>    {
->>>        struct ptdump_state *st = walk->private;
->>> -    pud_t val = READ_ONCE(*pud);
->>> +    pud_t val = pudp_get(pud);
->>>       #if CONFIG_PGTABLE_LEVELS > 2 && \
->>>            (defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS))
->>> @@ -100,7 +100,7 @@ static int ptdump_pmd_entry(pmd_t *pmd, unsigned long addr,
->>>                    unsigned long next, struct mm_walk *walk)
->>>    {
->>>        struct ptdump_state *st = walk->private;
->>> -    pmd_t val = READ_ONCE(*pmd);
->>> +    pmd_t val = pmdp_get(pmd);
->>
->> I believe this should go through pmdp_get_lockless(). I can see in pgtable.h that
->> some magic is required on some arches to decode the pmd correctly in case walking
->> without locks.
-> 
-> pmdp_get_lockless() is a nasty thingy to handle selected 32bit architectures.
-> 
-> But given that we're using ptep_get_lockless() in ptdump_pmd_entry() it probably wouldn't hurt to use pmdp_get_lockless() here.
-> 
-> Staring at ARCH_HAS_PTDUMP, I don't think any 32bit arch would actually end up compiling ptdump.c.
-> 
-> E.g., on x86 only X86_64 ends up selecting ARCH_HAS_PTDUMP.
-> 
+For userspace tools like CRIU, which rely on the soft-dirty mechanism for
+incremental snapshots, losing the soft-dirty bit means modified pages are
+missed, leading to inconsistent memory state after restore.
 
-pxdp_get_lockless() not really required here, let's stick with pxdp_get() instead.
+As pointed out by David, the more critical uffd-wp bit is also dropped.
+This breaks the userfaultfd write-protection mechanism, causing writes
+to be silently missed by monitoring applications, which can lead to data
+corruption.
+
+Preserve both the soft-dirty and uffd-wp bits from the old PTE when
+creating the new zeropage mapping to ensure they are correctly tracked.
+
+Cc: <stable@vger.kernel.org>
+Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
+Suggested-by: David Hildenbrand <david@redhat.com>
+Suggested-by: Dev Jain <dev.jain@arm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
+---
+v3 -> v4:
+ - Minor formatting tweak in try_to_map_unused_to_zeropage() function
+   signature (per David and Dev)
+ - Collect Reviewed-by from Dev - thanks!
+ - https://lore.kernel.org/linux-mm/20250930060557.85133-1-lance.yang@linux.dev/
+
+v2 -> v3:
+ - ptep_get() gets called only once per iteration (per Dev)
+ - https://lore.kernel.org/linux-mm/20250930043351.34927-1-lance.yang@linux.dev/
+
+v1 -> v2:
+ - Avoid calling ptep_get() multiple times (per Dev)
+ - Double-check the uffd-wp bit (per David)
+ - Collect Acked-by from David - thanks!
+ - https://lore.kernel.org/linux-mm/20250928044855.76359-1-lance.yang@linux.dev/
+
+ mm/migrate.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/mm/migrate.c b/mm/migrate.c
+index ce83c2c3c287..21a2a1bf89f7 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -296,8 +296,7 @@ bool isolate_folio_to_list(struct folio *folio, struct list_head *list)
+ }
+ 
+ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
+-					  struct folio *folio,
+-					  unsigned long idx)
++		struct folio *folio, pte_t old_pte, unsigned long idx)
+ {
+ 	struct page *page = folio_page(folio, idx);
+ 	pte_t newpte;
+@@ -306,7 +305,7 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
+ 		return false;
+ 	VM_BUG_ON_PAGE(!PageAnon(page), page);
+ 	VM_BUG_ON_PAGE(!PageLocked(page), page);
+-	VM_BUG_ON_PAGE(pte_present(ptep_get(pvmw->pte)), page);
++	VM_BUG_ON_PAGE(pte_present(old_pte), page);
+ 
+ 	if (folio_test_mlocked(folio) || (pvmw->vma->vm_flags & VM_LOCKED) ||
+ 	    mm_forbids_zeropage(pvmw->vma->vm_mm))
+@@ -322,6 +321,12 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
+ 
+ 	newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
+ 					pvmw->vma->vm_page_prot));
++
++	if (pte_swp_soft_dirty(old_pte))
++		newpte = pte_mksoft_dirty(newpte);
++	if (pte_swp_uffd_wp(old_pte))
++		newpte = pte_mkuffd_wp(newpte);
++
+ 	set_pte_at(pvmw->vma->vm_mm, pvmw->address, pvmw->pte, newpte);
+ 
+ 	dec_mm_counter(pvmw->vma->vm_mm, mm_counter(folio));
+@@ -344,7 +349,7 @@ static bool remove_migration_pte(struct folio *folio,
+ 
+ 	while (page_vma_mapped_walk(&pvmw)) {
+ 		rmap_t rmap_flags = RMAP_NONE;
+-		pte_t old_pte;
++		pte_t old_pte = ptep_get(pvmw.pte);
+ 		pte_t pte;
+ 		swp_entry_t entry;
+ 		struct page *new;
+@@ -365,12 +370,11 @@ static bool remove_migration_pte(struct folio *folio,
+ 		}
+ #endif
+ 		if (rmap_walk_arg->map_unused_to_zeropage &&
+-		    try_to_map_unused_to_zeropage(&pvmw, folio, idx))
++		    try_to_map_unused_to_zeropage(&pvmw, folio, old_pte, idx))
+ 			continue;
+ 
+ 		folio_get(folio);
+ 		pte = mk_pte(new, READ_ONCE(vma->vm_page_prot));
+-		old_pte = ptep_get(pvmw.pte);
+ 
+ 		entry = pte_to_swp_entry(old_pte);
+ 		if (!is_migration_entry_young(entry))
+-- 
+2.49.0
+
 
