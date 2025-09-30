@@ -4,83 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 316B2CAC5B9
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 05:26:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75461CAC5B8
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 05:29:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8778C8E000B; Tue, 30 Sep 2025 01:26:26 -0400 (EDT)
+	id B3E218E000B; Tue, 30 Sep 2025 01:29:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84F598E0002; Tue, 30 Sep 2025 01:26:26 -0400 (EDT)
+	id AEE5F8E0002; Tue, 30 Sep 2025 01:29:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78CB68E000B; Tue, 30 Sep 2025 01:26:26 -0400 (EDT)
+	id 9DD928E000B; Tue, 30 Sep 2025 01:29:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 645DD8E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 01:26:26 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E41CBC0591
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 05:26:25 +0000 (UTC)
-X-FDA: 83944781130.07.0260537
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8AC378E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 01:29:29 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2F071BA50B
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 05:29:29 +0000 (UTC)
+X-FDA: 83944788858.03.43CC13A
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 14C0F40004
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 05:26:23 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 828AE40007
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 05:29:27 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759209984; a=rsa-sha256;
-	cv=none;
-	b=UG7NWnVWqkEMDURfcgxU8gtsQdMER6II3G8jH4/vbXQ5QnpW6lt1u70qZ/FP6xcxG6ZoC1
-	Uck9SdMiX0Z27l17Kktk8RSchNExlNwRbcbq7LK17wzuGloV7xikxo3pKpnQV667iFdJns
-	AGdOC1eu9O9K1KNNGap4d/tm1jJJz6o=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	spf=pass (imf01.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759209984;
+	s=arc-20220608; t=1759210167;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wv9IUesbBnGvMDl+uXl5DUzDhZ8MJQGxru5eJPQA9QM=;
-	b=b0ewO4N48vOKM2v3FCksMP/Ogl8d3UBRtiyW+kyBqexglql2/lA9I43TUc+QWPSJIUeIaw
-	wDTllcCdj924oPYneOE1LpbBSlnIJbel6NOHFWEnRzpCFsWHEiayzNCm11yTZJa9BwZ5Xn
-	YjvdczsRYHpLAzfS7RNbdnkrKc2Jxb0=
+	bh=6a7nF/Zm+qVrnFfForPcR7ff6+QOW/ZD4srf5I8XNrA=;
+	b=ab1IygH26Sv7zLhXyLTWzYdpYGqDKxn4BF6hbSHN1jqFOsHDTt07BzOeLKB8uf7N64JnyO
+	x+u4DDlHDLirAbkPvKyylxGkqVhDyU6sATOSIY6ELnk77W+oJXVKepExnopRJ0KYpfqCvl
+	7Yg4S2f9zM5mtG3oLYCkni7Fh/OCMPQ=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759210167; a=rsa-sha256;
+	cv=none;
+	b=lQDZLJv3Ye17VaS/sA/F95XHxC94yneZsHrM/2JbXRt871yJgkkcwTsALhY0teG6sfKkv4
+	dKsun6IX9SrsjudyfxGSOu7sTuKWO7RSG4aFA6NLZ4q0BAIYTh4gzIV4wceObgzkMI1BbD
+	DsSIbShYu55Cmg/agSQbE5aihW6eN5Y=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 054201424;
-	Mon, 29 Sep 2025 22:26:15 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 95FEA1424;
+	Mon, 29 Sep 2025 22:29:18 -0700 (PDT)
 Received: from [10.164.18.53] (MacBook-Pro.blr.arm.com [10.164.18.53])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 145EE3F5A1;
-	Mon, 29 Sep 2025 22:26:18 -0700 (PDT)
-Message-ID: <cc40d827-3b98-4e15-ad45-5c2033e4ce20@arm.com>
-Date: Tue, 30 Sep 2025 10:56:15 +0530
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 50DEF3F5A1;
+	Mon, 29 Sep 2025 22:29:18 -0700 (PDT)
+Message-ID: <68cff704-bbdb-41a7-81d4-7195f71ba73a@arm.com>
+Date: Tue, 30 Sep 2025 10:59:15 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [v2 PATCH] mm: hugetlb: avoid soft lockup when mprotect to large
- memory area
-To: Yang Shi <yang@os.amperecomputing.com>, muchun.song@linux.dev,
- osalvador@suse.de, david@redhat.com, akpm@linux-foundation.org,
- catalin.marinas@arm.com, will@kernel.org, anshuman.khandual@arm.com,
- carl@os.amperecomputing.com, cl@gentwo.org
-Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20250929202402.1663290-1-yang@os.amperecomputing.com>
+Subject: Re: [PATCH v2 1/1] mm/rmap: fix soft-dirty and uffd-wp bit loss when
+ remapping zero-filled mTHP subpage to shared zeropage
+To: Lance Yang <lance.yang@linux.dev>
+Cc: peterx@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ baohua@kernel.org, ryan.roberts@arm.com, npache@redhat.com,
+ riel@surriel.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ harry.yoo@oracle.com, jannh@google.com, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+ gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+ usamaarif642@gmail.com, yuzhao@google.com, lorenzo.stoakes@oracle.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, ioworker0@gmail.com,
+ stable@vger.kernel.org, akpm@linux-foundation.org, david@redhat.com
+References: <20250930043351.34927-1-lance.yang@linux.dev>
+ <0c498301-7434-4b2b-b7bc-73abe2057b67@arm.com>
+ <668bfb74-014c-4fd5-a636-ff5ec17861c3@linux.dev>
 Content-Language: en-US
 From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20250929202402.1663290-1-yang@os.amperecomputing.com>
+In-Reply-To: <668bfb74-014c-4fd5-a636-ff5ec17861c3@linux.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 14C0F40004
-X-Stat-Signature: 9671hndfz5qgd1mfyrw5yy5y938bt9se
+X-Rspamd-Queue-Id: 828AE40007
+X-Rspamd-Server: rspam05
+X-Stat-Signature: jr6gjtuwgnkcwp1iesetcd8yakybwjo9
 X-Rspam-User: 
-X-HE-Tag: 1759209983-192757
-X-HE-Meta: U2FsdGVkX18LyMawHkiLnE9k2HCIsNfC+RjoTZVWXU3VBzbMOIlafgefe6a3KsMV6aVdy80nOojsqQyeq7xhSdgyh+HaXGekVMMGhsq9Yb56zhkk/ELgeEm3Z4j2iZgMq36RkZlNZB6n09eCEMm/I34WW/jbYtnGJmEIOAAYMpSGmczplkXt8+bm0dKkTDXTcURvfNd4sbKUuYt6jK72dSGJ7hX6emZHDgHHZwP341N13d/Toub4W3q9oiTcS9FKrFEO2qlhnamiNSHYbaL4GVwF370gm/3euj+nquU5GVjDvHT7MnarzcZq6P0I7HehcwKXkNAZbmXrOw4cFikXCBPJrwe2i5CMn0PEaZhtUgWa7tMKlpymebPAVxwxJM+Jz3E2LeE8F4SE2shtA6Y5RJavpZDZjgeENhEgJonr2peo7N/sDvIkZKIYR5ClBRHdsE5mBpfiZS1Q7gDT6sTMMFWLOFXFP5sfnc/iEZa5oH5LxP+3XqA8EmjkSCmWYbhScbywPTUaCT+wr4V5IbQNsVrb/kh6v+RshrF7jGE6irFn2obHoM0xuI4VQL9kZxmJok+q4VbwziqV6qoDX3Xi5Mp7c3/CGLAt8MlQTSoEvuP4JmQ1kdGdcyA4QUWlMYIjVKE8UUyA9wqDI0Ru7FnWoVKh3eZOAqZG6Ee/7ROWdSfRgl6S3++qr5lABr92W4Ib/qCyEGRO3oCbZdyJk4dwP/+fwKSMmyHImUXoBQscU8qZQJ9yhzmMzqhhSqeYzA+f6sTvpRtGSdezNLNSkanQnBn3tHlgIHrw0i3pNWsnzq4UtkwIE77jMqYlo9kH11ab0mr5t9iJ+izH4EGw2msJGGbeIrKTLWl+WTotcZFMDkaivrW+eWCrYo9n1F0fI51pamCjiN3cvdPcyjFDZ4VZ13H2UsDkG3Ncf2LV4VziNm7IRZ/cugDoJ0mf3W2kK5VcZdBTaa+ENnKasi8Z6Z4
- 5PaUiBtf
- 0DLo1jRa2BJ3w8flPBvCJaVbX1Cqt03pSbstGbC1dsBNpOryi41W5xyRLd3wM2ewv31uti1UiNjKsXCoReECtU7Yhl1z9D0OHAVp5Puw81Qelj2rfxvhJljDDiXcAg8EB1n9gkRXqID7XlB+lY4K6opyzGjRXl75kVOCZhZ00hH8jJfcoRJiN23d3hfEw3mwjHwZCeg0tpV2yNh8ulL2cL+HFFF/j34wrgpHGxllOCBByIcl+1oRWzBtNG/G3f648a89wblSPLVvF9ZzfChTblsniYTXqoie8nG0xVyhrr8jqEASzwoKBJ++ppUIibNO6/tgiQlN3Mrb85McU+JNP/yo+p2Vox/JioirW65gbP68KZysbS1CASXcVFg==
+X-HE-Tag: 1759210167-701944
+X-HE-Meta: U2FsdGVkX191CHlTznJ8FPyysybBLCx4PuwIIENA9Mms1VenAky4NVfutZKaymIhSiSE6rMwFBEJqjiPBo7MuSfUQW9K9BmRgc1MBnr3O5KCov3uNH1gGFeuoCKYE58fifR4Mn9UPXZx5eUOf6Vw9EMyzUkuXngRnGFXlN6u60OFWuk+4Eq0iXXYxkZjs1pxKoofsZ+vJehDbam/9o9fm07PpvTdcElTblZcfdqonyaa/Fcu4On0Vld1CENPUncV8QrNaA9lt/AjS1YbZPCLbYVsfPEP84d+vWaJp82IbkkSmxL96A7x9712i0saBQ26hpeZgJj6nGQUD4Fi2w/GtcD+V4zV/K74rPQAuUCnb8Tu8TBR/Pdy/7zPg4N2IxCC8xeCtCIHAkAJC5UyYV4pdK2WOo9k3wGDwmuxUBhpJNIl3Kd9S9YXpPXVHpKJHDk4GQsYPeTiZDASexF9zEz6qbJhXxSBirPa48gm72nRG6q4zruBd7fT2o71lzMV62GeNGNHiV7W41igy7dM6efduCQrC+VSM1WrfCbZhJ2+jwsJ02ZbiX2KBtFaknRVHh+h56AKRrwaMuMRHHAXCT9XzqmrSBG3ARibhN7GfKUHw4EZLAOll8h4zepaIufDzvNLUcAV+v9F1D6jnFYXgv6bs3yBmVpzrpO0gBJIVtw58W/S+1hZ+CqcLGxsuQ27IZVrXUHipfeGW0hfRDnn9wShGi7Iu//ZqMB1oeAJMWCBExmRUnMZJ2JlNeN5gswp32o2ciW18OW714kb1qxuvVtuaFdNFsF4cCXZoQklcrprkDiX6DniMrcJmNuClR+CO25Ka1FY6IYyeh6Yh1G7tBYHn1iagwaNSssrP02EuvuGzaFSiz4vTZ7Jmh87x2xGMH54
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,87 +94,143 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On 30/09/25 1:54 am, Yang Shi wrote:
-> When calling mprotect() to a large hugetlb memory area in our customer's
-> workload (~300GB hugetlb memory), soft lockup was observed:
+On 30/09/25 10:52 am, Lance Yang wrote:
 >
-> watchdog: BUG: soft lockup - CPU#98 stuck for 23s! [t2_new_sysv:126916]
 >
-> CPU: 98 PID: 126916 Comm: t2_new_sysv Kdump: loaded Not tainted 6.17-rc7
-> Hardware name: GIGACOMPUTING R2A3-T40-AAV1/Jefferson CIO, BIOS 5.4.4.1 07/15/2025
-> pstate: 20400009 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> pc : mte_clear_page_tags+0x14/0x24
-> lr : mte_sync_tags+0x1c0/0x240
-> sp : ffff80003150bb80
-> x29: ffff80003150bb80 x28: ffff00739e9705a8 x27: 0000ffd2d6a00000
-> x26: 0000ff8e4bc00000 x25: 00e80046cde00f45 x24: 0000000000022458
-> x23: 0000000000000000 x22: 0000000000000004 x21: 000000011b380000
-> x20: ffff000000000000 x19: 000000011b379f40 x18: 0000000000000000
-> x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
-> x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
-> x11: 0000000000000000 x10: 0000000000000000 x9 : ffffc875e0aa5e2c
-> x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
-> x5 : fffffc01ce7a5c00 x4 : 00000000046cde00 x3 : fffffc0000000000
-> x2 : 0000000000000004 x1 : 0000000000000040 x0 : ffff0046cde7c000
+> On 2025/9/30 12:50, Dev Jain wrote:
+>>
+>> On 30/09/25 10:03 am, Lance Yang wrote:
+>>> From: Lance Yang <lance.yang@linux.dev>
+>>>
+>>> When splitting an mTHP and replacing a zero-filled subpage with the 
+>>> shared
+>>> zeropage, try_to_map_unused_to_zeropage() currently drops several 
+>>> important
+>>> PTE bits.
+>>>
+>>> For userspace tools like CRIU, which rely on the soft-dirty 
+>>> mechanism for
+>>> incremental snapshots, losing the soft-dirty bit means modified 
+>>> pages are
+>>> missed, leading to inconsistent memory state after restore.
+>>>
+>>> As pointed out by David, the more critical uffd-wp bit is also dropped.
+>>> This breaks the userfaultfd write-protection mechanism, causing writes
+>>> to be silently missed by monitoring applications, which can lead to 
+>>> data
+>>> corruption.
+>>>
+>>> Preserve both the soft-dirty and uffd-wp bits from the old PTE when
+>>> creating the new zeropage mapping to ensure they are correctly tracked.
+>>>
+>>> Cc: <stable@vger.kernel.org>
+>>> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage 
+>>> when splitting isolated thp")
+>>> Suggested-by: David Hildenbrand <david@redhat.com>
+>>> Suggested-by: Dev Jain <dev.jain@arm.com>
+>>> Acked-by: David Hildenbrand <david@redhat.com>
+>>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>>> ---
+>>> v1 -> v2:
+>>>   - Avoid calling ptep_get() multiple times (per Dev)
+>>>   - Double-check the uffd-wp bit (per David)
+>>>   - Collect Acked-by from David - thanks!
+>>>   - https://lore.kernel.org/linux-mm/20250928044855.76359-1- 
+>>> lance.yang@linux.dev/
+>>>
+>>>   mm/migrate.c | 9 ++++++++-
+>>>   1 file changed, 8 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/mm/migrate.c b/mm/migrate.c
+>>> index ce83c2c3c287..50aa91d9ab4e 100644
+>>> --- a/mm/migrate.c
+>>> +++ b/mm/migrate.c
+>>> @@ -300,13 +300,14 @@ static bool 
+>>> try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
+>>>                         unsigned long idx)
+>>>   {
+>>>       struct page *page = folio_page(folio, idx);
+>>> +    pte_t oldpte = ptep_get(pvmw->pte);
+>>
+>> What I meant to say was, you can pass oldpte from 
+>> remove_migration_pte to this
+>> function. Basically define old_pte = ptep_get(pvmw.pte) in the 
+>> declarations of
+>> the start of the while block in remove_migration_pte and remove the 
+>> existing
+>> one. That will ensure ptep_get() gets called only once per iteration.
 >
-> Call trace:
->    mte_clear_page_tags+0x14/0x24
->    set_huge_pte_at+0x25c/0x280
->    hugetlb_change_protection+0x220/0x430
->    change_protection+0x5c/0x8c
->    mprotect_fixup+0x10c/0x294
->    do_mprotect_pkey.constprop.0+0x2e0/0x3d4
->    __arm64_sys_mprotect+0x24/0x44
->    invoke_syscall+0x50/0x160
->    el0_svc_common+0x48/0x144
->    do_el0_svc+0x30/0xe0
->    el0_svc+0x30/0xf0
->    el0t_64_sync_handler+0xc4/0x148
->    el0t_64_sync+0x1a4/0x1a8
+> Ah, got it. Thanks for the clarification!
 >
-> Soft lockup is not triggered with THP or base page because there is
-> cond_resched() called for each PMD size.
+> IIUC, you mean something like this:
 >
-> Although the soft lockup was triggered by MTE, it should be not MTE
-> specific. The other processing which takes long time in the loop may
-> trigger soft lockup too.
+> ```
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index ce83c2c3c287..bafd8cb3bebe 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -297,6 +297,7 @@ bool isolate_folio_to_list(struct folio *folio, 
+> struct list_head *list)
 >
-> So add cond_resched() for hugetlb to avoid soft lockup.
+>  static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk 
+> *pvmw,
+>                        struct folio *folio,
+> +                      pte_t old_pte,
+>                        unsigned long idx)
+>  {
+>      struct page *page = folio_page(folio, idx);
+> @@ -306,7 +307,7 @@ static bool try_to_map_unused_to_zeropage(struct 
+> page_vma_mapped_walk *pvmw,
+>          return false;
+>      VM_BUG_ON_PAGE(!PageAnon(page), page);
+>      VM_BUG_ON_PAGE(!PageLocked(page), page);
+> -    VM_BUG_ON_PAGE(pte_present(ptep_get(pvmw->pte)), page);
+> +    VM_BUG_ON_PAGE(pte_present(old_pte), page);
 >
-> Fixes: 8f860591ffb2 ("[PATCH] Enable mprotect on huge pages")
-> Tested-by: Carl Worth <carl@os.amperecomputing.com>
-> Reviewed-by: Christoph Lameter (Ampere) <cl@gentwo.org>
-> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Acked-by: Oscar Salvador <osalvador@suse.de>
-> Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
-> ---
-> v2: - Made the subject and commit message less MTE specific and fixed
->        the fixes tag.
->      - Collected all R-bs and A-bs.
+>      if (folio_test_mlocked(folio) || (pvmw->vma->vm_flags & 
+> VM_LOCKED) ||
+>          mm_forbids_zeropage(pvmw->vma->vm_mm))
+> @@ -322,6 +323,12 @@ static bool try_to_map_unused_to_zeropage(struct 
+> page_vma_mapped_walk *pvmw,
 >
->   mm/hugetlb.c | 2 ++
->   1 file changed, 2 insertions(+)
->
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index cb5c4e79e0b8..fe6606d91b31 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -7242,6 +7242,8 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
->   						psize);
->   		}
->   		spin_unlock(ptl);
+>      newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
+>                      pvmw->vma->vm_page_prot));
 > +
-> +		cond_resched();
->   	}
->   	/*
->   	 * Must flush TLB before releasing i_mmap_rwsem: x86's huge_pmd_unshare
+> +    if (pte_swp_soft_dirty(old_pte))
+> +        newpte = pte_mksoft_dirty(newpte);
+> +    if (pte_swp_uffd_wp(old_pte))
+> +        newpte = pte_mkuffd_wp(newpte);
+> +
+>      set_pte_at(pvmw->vma->vm_mm, pvmw->address, pvmw->pte, newpte);
+>
+>      dec_mm_counter(pvmw->vma->vm_mm, mm_counter(folio));
+> @@ -344,7 +351,7 @@ static bool remove_migration_pte(struct folio *folio,
+>
+>      while (page_vma_mapped_walk(&pvmw)) {
+>          rmap_t rmap_flags = RMAP_NONE;
+> -        pte_t old_pte;
+> +        pte_t old_pte = ptep_get(pvmw.pte);
+>          pte_t pte;
+>          swp_entry_t entry;
+>          struct page *new;
+> @@ -365,12 +372,11 @@ static bool remove_migration_pte(struct folio 
+> *folio,
+>          }
+>  #endif
+>          if (rmap_walk_arg->map_unused_to_zeropage &&
+> -            try_to_map_unused_to_zeropage(&pvmw, folio, idx))
+> +            try_to_map_unused_to_zeropage(&pvmw, folio, old_pte, idx))
+>              continue;
+>
+>          folio_get(folio);
+>          pte = mk_pte(new, READ_ONCE(vma->vm_page_prot));
+> -        old_pte = ptep_get(pvmw.pte);
+>
+>          entry = pte_to_swp_entry(old_pte);
+>          if (!is_migration_entry_young(entry))
+> ```
+>
+> ptep_get() gets called only once per iteration, right?
 
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-
-Does it make sense to also do cond_resched() in the huge_pmd_unshare() branch?
-That also amounts to clearing a page. And I can see for example, zap_huge_pmd()
-and change_huge_pmd() consume a cond_resched().
-
+Yup.
 
