@@ -4,135 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 169ACCCA470
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 20:35:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3276CAC5B8
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 20:45:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F3E498E0005; Tue, 30 Sep 2025 16:35:45 -0400 (EDT)
+	id 20E838E0006; Tue, 30 Sep 2025 16:45:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F162A8E0002; Tue, 30 Sep 2025 16:35:45 -0400 (EDT)
+	id 1BE018E0002; Tue, 30 Sep 2025 16:45:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2B0F8E0005; Tue, 30 Sep 2025 16:35:45 -0400 (EDT)
+	id 0AD1D8E0006; Tue, 30 Sep 2025 16:45:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D2D9C8E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 16:35:45 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 73AEA13B399
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 20:35:45 +0000 (UTC)
-X-FDA: 83947072650.12.8F0F15F
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E53FC8E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 16:45:18 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7E6AA447DF
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 20:45:18 +0000 (UTC)
+X-FDA: 83947096716.26.1739378
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3D5E0C0013
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 20:35:43 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C1W2Us7S;
-	spf=pass (imf22.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 361DFA0003
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 20:45:16 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=d96RJ5Us;
+	spf=pass (imf25.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759264543;
+	s=arc-20220608; t=1759265116;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tcdjHj3hrCi2n9CnZqBqMGWq7DhDnkuit40Rw1hplXg=;
-	b=HqjluY7uu+BSiVzK8M0ieI7nGzDgdhoBRWTG1k2j4jGIRnFbY+JrLgoc8m/pbuNOG65KsQ
-	nZtHlSQyqX4UW9ze2CtUlOAKSPaCj3vaQRUPorgycRScPMpIr4PAwqrJVmHSBTH02r+5xF
-	l6YASyIkv38D706oXGsJC+aKVnZBvbU=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C1W2Us7S;
-	spf=pass (imf22.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759264543; a=rsa-sha256;
+	bh=8KhdHzEXScZ1ZuHAPb/984gxCrhf58t9oc3EYjkX9MI=;
+	b=VCV9zCBzY/LkGKmx3iklvz6cSaVqWMK5nFoLYjgIZyreE6BoduzKAW0Y3+YPBzFvTeTFVf
+	bdXAQO09qpoLMSWeeGPCkyqCxS52wu+EJwicklJuTfBG7QYsCh5ITF5Qn6iXhAHEyseKQj
+	k2vgoU0VdCopc49RYRgQW1HFQSdSZnY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759265116; a=rsa-sha256;
 	cv=none;
-	b=N9Yf3MgadovrefYJ8QAjQOfBVACV3IhPE7AJqvE/4M00layAlG7EeJBQKD1Oz91Cf5whze
-	TZ4J9dCDOleg91Eeu6bGB/o4r0zX6XuF/T984rIsDZ/ZjBXSEX1iPmK9vvmBbCNMPSOML0
-	eSg+yZAWVTheQKWGBBbiDtGKos1Stng=
+	b=ifo8qhCMsINax6gHX6QMrbPomAa42dfPzzpPSnZhfjcpT2lxRBUyVSDX5GoD8oj2TghaG9
+	dbC8xSMzWgfN10F6AvSmB6qHG8LE2vURVH+HPgcVNSxTyJLQLw/ZjzN9K30ftLcaAP9C0m
+	T/aYFhHk+zud5VQYSa/SLNtWciFPSIA=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=d96RJ5Us;
+	spf=pass (imf25.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759264542;
+	s=mimecast20190719; t=1759265115;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tcdjHj3hrCi2n9CnZqBqMGWq7DhDnkuit40Rw1hplXg=;
-	b=C1W2Us7Sl+/zGVZiX3qGywjWZovX0S1SFtGYd0q/l7QBL4ZysYoGMih/2M3Ntm+LO1qdYf
-	cuzaWSvhQ9ZZJzBvGwJuRLGnSfHvap1mQQVvDPDwUsmdp++j6X8ngCh5rwVxztJVbEGUNW
-	iwVQJSfvvq+ZAWOLfEfRe08lKNv1i0M=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=8KhdHzEXScZ1ZuHAPb/984gxCrhf58t9oc3EYjkX9MI=;
+	b=d96RJ5UsR11uW5DevxrJsHRkXk9Yj8e0zq92ctjJZEEJ93npVNqQp/ZvgJeCpa2yk5IcWT
+	tdJnd38oPM2Tk/BaHzyT2ZQd+RtL22f5pExvh/kcvzKtLijzRy9FOz13PL64JfaHTu8PdO
+	1VOlQEkz5EPh9+blU14ATM+PG74e95E=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-246-Af90EKV-PQ6CumuUGM_fqA-1; Tue, 30 Sep 2025 16:35:41 -0400
-X-MC-Unique: Af90EKV-PQ6CumuUGM_fqA-1
-X-Mimecast-MFC-AGG-ID: Af90EKV-PQ6CumuUGM_fqA_1759264540
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4b78fb75a97so67227211cf.1
-        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 13:35:41 -0700 (PDT)
+ us-mta-178-hgbD_GcbPl6hE04ydbyWrw-1; Tue, 30 Sep 2025 16:45:13 -0400
+X-MC-Unique: hgbD_GcbPl6hE04ydbyWrw-1
+X-Mimecast-MFC-AGG-ID: hgbD_GcbPl6hE04ydbyWrw_1759265113
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-871614ad3efso190972285a.0
+        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 13:45:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759264540; x=1759869340;
+        d=1e100.net; s=20230601; t=1759265113; x=1759869913;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :subject:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tcdjHj3hrCi2n9CnZqBqMGWq7DhDnkuit40Rw1hplXg=;
-        b=EmsCQdymy7RNUx3oz/HQYpY3GSZSZyKhjTlWkjJdrMkkKUximi04Cw6mwZAVtHQFsR
-         m4TQ+ohyGxiY6wLkQ3kAd4jcFfXjn2rOJT7zB3mibJf5fCGKZW3nsHvyasrKxrlpwQLv
-         zuy1Yo9OyLkhaY/PW8ZnNeClxz4f4z8+Zf47LuWwsgQ5BHW67XSVjfRZ42opUSGIVxPP
-         FDaeNOOTedBY7F3mM5ONvlGbspf8QUDOO/KcOhrNWk/BHpgE1kkoUaxxAeW2nAy+g84D
-         g1Fv+svNkolc4XroCBklsfwprjzHhf2+0mX8OfKqQv8dvZiwZ8JzjbuBNEFQ/Yr7GmEQ
-         Nztw==
-X-Gm-Message-State: AOJu0YwvPHiJarojdTPm1r7GKgxsWyoTlj83GlrJrVS8t4nRjrbWHbcG
-	mWiCwBlFFGRrJgQyho2zqsqUzttivJWPBbIZW3KhKTFdrgxBFB1t8zEVPxQbwkaoavGUaDK3AT/
-	MnNPTPCDV5PDdREOgC0UOHNj07S6MZcQB4xT/d37GyOV8uQp1UI1G
-X-Gm-Gg: ASbGnctEh6DISQUnykNusLltAJl046k3ceZKvexoyHOGKFLCYk8T/8A9e3cl/DbDK2R
-	jq0uytm7nyF9uAnRI2h9DwmJfcK9CrkQMITAPTaU2HAkjYs0DoT8xJBrYr/xEBZyZdHb2vSORW7
-	ZuVMbi0oxFwrWQm0n1hPgeqI6t9vv/0IhYk7+QnKmznjdMXJhPW7BGVYfdAHNHCv+047g08wSN7
-	4TKfkI04J+ewf/jVM5h5rWPGxurCZf9H6PbsaUYGdxVqx8Y3Nkk5pszL3ooVACCUp00XEv7GkKI
-	Sxqkb2ZHGcORpzEL1XSuZKy/f9t2BaanLCl5hA==
-X-Received: by 2002:ac8:525a:0:b0:4cf:c058:96f8 with SMTP id d75a77b69052e-4e41ea16a4dmr9675211cf.75.1759264540407;
-        Tue, 30 Sep 2025 13:35:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFRFvQ7iweHJJXKuRSbPcafJqC24Mx1TFX1nNEJ4hnhKFuws1x28jLXszl2ahz6F4cqkhz+GQ==
-X-Received: by 2002:ac8:525a:0:b0:4cf:c058:96f8 with SMTP id d75a77b69052e-4e41ea16a4dmr9674851cf.75.1759264539936;
-        Tue, 30 Sep 2025 13:35:39 -0700 (PDT)
+        bh=8KhdHzEXScZ1ZuHAPb/984gxCrhf58t9oc3EYjkX9MI=;
+        b=gdlMZ8brWqOUIQvxa33HAznsR3FtKQCF2N/VorMzd7mWe0p+i650476z/jsQhYIkSk
+         aVtwpsl+bRXB5+muW04f3L9zXU1444rhnG6U9ImH9tl3WPoFuFgdQBxRr9RNyOfB7eOh
+         pXX9bEUrnggz5eI9vitxg1pBssCMX/GTcPOK5Gwy9zG42GSU2iWCk75Jk3YfotuHw9Nj
+         QeuMOpAqLeqPcb6ip26jOyvxyJN5KGGv6RjQYN341QLsVSfZOA8U6pbYUd+SRiWWvzLb
+         AMtPi8Zq8G/yFwEHUIA9Uh28qz9wDKF8Kid3vGMuNALVqC7WUo3c2YJ4th9jG9gdoKR2
+         S5rQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU7r1LlrdYxgJZyBj2g+HrgMPwSnOKCQ8pMHhRpqrQc+i0R6J1TOIaxiWvnwvU37eYMlccNc+SG5w==@kvack.org
+X-Gm-Message-State: AOJu0YxAPsyCIzbpbElWnaruB8AEsFNkeK8QHvdEwkAIvgW1cBeUOlHw
+	5PBKNgShOWp0sgClbl51PtQHojBrJpAooSayFJS1AyJ23M7CfYCFaotouCTFS1tjBVNwVQFNBDo
+	yMQ0PTEnPnhPxAbEpAUvSdxnUStjunuQoKhdhKZ+cBzUVwap0bMtw
+X-Gm-Gg: ASbGnct8EChJbt1B47d6csshH2VHhzbGJU9qJErhK+D57r867l+iIYS5t5KnTu98OAt
+	/2wref6tFL2dPvY5daCecJfPg5K0F0rUn4w3ICw+xxjBSE8HTXeru3L8oNE2jgsjtZLVaqPkR1O
+	xJ+MZKmpwdLWLRslzwXBpaTOGmyqCtaDOUSB7AOPgY4kjqDJLmRwzMN6K4QeX+DGbk2g/8gyzK4
+	G8vcNShXBkVpge/bgeavFEnhGfpKT3mfv6oYrr3erVEKGc27gc6ymlNP0WSETid7C8bxZnyYwxE
+	O8d8+yEy/qkqtCCGj6xoHjuMcLPoliPGrOCtzA==
+X-Received: by 2002:a05:620a:4723:b0:82e:6ec8:9887 with SMTP id af79cd13be357-87371172610mr182017385a.24.1759265112685;
+        Tue, 30 Sep 2025 13:45:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHOUW1s4NzIrA6CcfA5cgYQ1iR+uPx4PZsCRjPXoXfqPRBxU2cfAJOj4iIKUlkfgDU9xy9dNw==
+X-Received: by 2002:a05:620a:4723:b0:82e:6ec8:9887 with SMTP id af79cd13be357-87371172610mr182013085a.24.1759265112108;
+        Tue, 30 Sep 2025 13:45:12 -0700 (PDT)
 Received: from x1.local ([142.188.210.50])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-80cd172fd3esm95716896d6.27.2025.09.30.13.35.38
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-85c2737848csm1124926985a.3.2025.09.30.13.45.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Sep 2025 13:35:39 -0700 (PDT)
-Date: Tue, 30 Sep 2025 16:35:38 -0400
+        Tue, 30 Sep 2025 13:45:11 -0700 (PDT)
+Date: Tue, 30 Sep 2025 16:45:10 -0400
 From: Peter Xu <peterx@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
 	Axel Rasmussen <axelrasmussen@google.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
 	James Houghton <jthoughton@google.com>,
 	Nikita Kalyazin <kalyazin@amazon.com>,
+	David Hildenbrand <david@redhat.com>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	Ujwal Kundur <ujwal.kundur@gmail.com>,
 	Mike Rapoport <rppt@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Andrea Arcangeli <aarcange@redhat.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
 	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
 	Oscar Salvador <osalvador@suse.de>, Hugh Dickins <hughd@google.com>,
 	Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH v3 1/4] mm: Introduce vm_uffd_ops API
-Message-ID: <aNw_GrZsql_M04T0@x1.local>
+Subject: Re: [PATCH v3 0/4] mm/userfaultfd: modulize memory types
+Message-ID: <aNxBVj6Ya0FhvkS2@x1.local>
 References: <20250926211650.525109-1-peterx@redhat.com>
- <20250926211650.525109-2-peterx@redhat.com>
- <f1da3505-f17f-4829-80c1-696b1d99057d@redhat.com>
- <aNwmE11LirPtEuGW@x1.local>
- <f409cbe7-7865-45ab-af9a-6d5108bc5ad4@redhat.com>
+ <urtzlj3wwjmmgdon3goi2qopxlxrajewdxhhchzw72exz4of7l@vlmbjw3i3xth>
 MIME-Version: 1.0
-In-Reply-To: <f409cbe7-7865-45ab-af9a-6d5108bc5ad4@redhat.com>
+In-Reply-To: <urtzlj3wwjmmgdon3goi2qopxlxrajewdxhhchzw72exz4of7l@vlmbjw3i3xth>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: BaN5imEnCpW4WETLTQjVfPNRlM-b86tM8jPNGrjfATo_1759264540
+X-Mimecast-MFC-PROC-ID: TASSTzfG_Wk6xuma4CeuLDlnawF0gGBhm5_Oc7QNFkc_1759265113
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Rspamd-Queue-Id: 3D5E0C0013
-X-Rspamd-Server: rspam05
-X-Stat-Signature: umsrdfhauof8o1f34b9zwy91rpo8dros
+X-Stat-Signature: cp3i5rn7zzhrshfcn7x3uym7fqtrw6wz
 X-Rspam-User: 
-X-HE-Tag: 1759264543-890736
-X-HE-Meta: U2FsdGVkX1/8vTQeuyqi97GkTuROAckYyy6Yc+668ImffrGifNsAUKTlxCI0bmXgCzgvi8fYmkiNzA9A5JlzG4k/k29BLJt15ZZvzerBj+/wP4lsa6pKQXBxpXiwQQgKVOZ+k2psWduGNUTHvK41Hm9HTvJ7qtP0idYcH6NLRu9rIrZGoF1dRsxMecbcLuv2fBq4M5D/sAwiDYsDChYrhI9s08J/wyhl822sIm3DmF5HyOgeQidkik4dF5oh05nUaPyHqMEmdNy9UYv41mj5aX1XXt+Ho5izy6QDEE0+yxVnb5zknO4UROmHuOELTspT3th1xEdq4dTkVEuN/fwYn8YPOqD9gTQctXssueCqYSzvV3G2Kozk8VT0JHZzpE5junQMkEA/L9618M1A4GCY0BeWXOYdx7tpnlynZQTL0Ez9veEPmcPK9F7MxO3tG2XF6gac28oLL/2h27h8S3tGug3W2rT64z8EtIbiJTXUp27fwim337Hb/zzHhMDw1hB3ARZ5/DLqElGj57YI51njLjvF9EBiO88DrYdYzkXW9apSE/Iiq5lawa9CDTNHHx3m6W0XjH0NqiLjMMEt4LE1juCdnXKRNj/lrqct3HjOHdatefVLJ7sLxAVTvOm2nPdL5ieP0+nqcn/o/vxdB9rpwcfYy6TBlmDlRFDqgrkAYzxuweblrNBiEQufUJbPWruzqjMZgdh8q2PYKl6SUCgad2kk2V5r2ZAimhXHuOPXkncd4N0k8DBXMtWqFcpbthkfWWKb3O5sSznyIgUePRVCMoX+OixVApx8J349RhkN5oyyvjXBErK27ExdnWfUaRxZJTcktRFpYW9NmjafXEaVa2QtQrGQYsUmatTidPNqoFyb3Ck5SeypthOaXFvqcQpW7KBq6gI9zIGobCUwpGrdUeQE7tg16A0Ii4QZB5DU6aLRNkH2Q/immAClPjXDOzhKrr8gZkxLBWuY6qwRgLX
- 8RAJ5Z+u
- +8IItFFwq+4y+q11BK6Y26t/ZKRXCmyxzVP+9wUdwbScdvC3SKGJXk9AYtJ1AGz8w9vTD0jPkVWaTv64gkRv9YgdoqwaEM632GFizUxFU8dL7jJjZkoMPd7gipd07XTyZ9OyiWGPDEXw9I5ikqYsKoel54QsghifFZAb2Z2QI+Gqm/pgZglj4DQVPJoGBwwYq/Tu4d+kOIAOiYfYErVV0IH+3j9Sm8LVL20KRGkO1N78jMac5egzcByDsHxnJ50zaOnrOgzAnclLpRex1M64W5jUNgYNgj6MzRHEF8phcYnV6Bfdc2J/slgUgrm6LkBj2r+1kjmWpQGZSOf4Tjr/pCeATPZaDXHmV1FHzjku0HjXwBsquv2zRwn9C7GpePXAmhVEvQevEtFROjrM/fI4uO/toSh95Q08UqfRO8ek6toa5lxm8gs7cM4MUfd8jig7J+XSm52/LiusUxwj+oKI+0gKflqYhy4UKjM6lEbU8e4Rw0tMo11tuyqeKESHkoUR/KJo1VLRJXweL8JPXw2wd/uNfser1Ke23kqKh9v+RvGK7qRx4oLcYqdVY5k3karKzNq1aNoI+dpec1lE=
+X-Rspamd-Queue-Id: 361DFA0003
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1759265116-201704
+X-HE-Meta: U2FsdGVkX199C82TjxwHlLI4qKmsqtlqz+APHmcn9XnAmrSyeXgCWIiChf+Lc0Ts9WyNHZ2AaF74PVKWraV+uFtmfTnCMmoO9M7c+OwHs6fvDjC/SUr4WkemyAKkDEgBitvKUo7QZUX423GAYWmktDiVHHGJT2vA4OUywKit+fC7azkOXJhEwdMsS2vJzuDhOciNCh5epoWvCQN74p19o7DhHYfEm093sC3PiBmIIv2oTJbD9TEVBt5I8tOar1KYceDeqFsnwVyQS0biuMftEDHI3fK0wCcXJcs7EVtt4ZMiUW9VBrZNVMgvuHx1Ou9DQf8TABtHp5XiZbfJ5n6oXP/mMncVGzJPui0n/83K+3yuh5eUy+AmAf/hFfz5pi1Vz+0ox6HV57YdhaVj+HbSgBiw+i+qYzB3UAnNjg6RfMjw/IWpsz7FpGALy8uO+zguV6rJDDUDPh7g1x4NGXGqPe9qFa6/tSlESkQuGqyN6VzKXiJZiXicvVahYnQ+23RSQto1MP0xMoWKxX0oqIFL2ReT9Hxrhy3JuPsJPx6Ow4gVeNURaiJ6SsppfhXCpmuSCiBY1at9ipWFFx6QFmqHqoQvR6ABgWAF5l6t86LjhN1A/K65ArXzHvnuEhZHLOVN/ViekziG028PHHOgUC/H9frIW2O2sUJG+JhnW1c9TVkHjHI2bjO8yatiKH2EPrzwaEIUeqZgIma0rvgciqFjMzLaLEXOFueZopXY1PDe2k7KONqUN5DTEzmSFxqHDa+EJODnvdOLFMHGk+cZ6G9C3vKnlt6sUT/fXF4B/mKSqKdNDpWKmHVXE1tnj6n6038tuq32a8waIZflBb2HgJVu0jzulV13tZtbz/PNJv7MtcRhCdQrHwYC8PYy5TcOpT4gzrVn8aPEpiUWbdVBSlJJwD/QQPSnxrKYZtxpA9fbH31V1gEZ6nFD9P0WtwMgp4+mw5usLZuSX4LCLoguAX6
+ 58sON8ZO
+ LLlgvZwqEpudm2LEry6aiM+bzUkq7czqwYmuETb9932NErtXRCwr1bzP0ZJA1tnWdVfXIJjWNq3SudWZCSWHmwJi4mYVQNJtXm3hpOK6YkcrwEhb4Vnz1rkgBNMsgKp0CB4IpYyXvZCasDl806rvx9AkhsuIE7Hwduu25yKjEc6CmP1ehL5qZvCB2Asn8RYfvvSle29UkkuNFtUrANG9mO+hIUfOWMqpZCbuIfTtXsUBhFDjkD0s+2npeD0z8IzQOg9QPM7Rg4hGYJSHd+7cnHbGwt6nE5d/TRoCHAdn2ZySQAGwJBw9tIuLLuToIYzIPFbQPOxF8koPWmd+E5hmT3VmwqjVd2JTDpt5fm/R0Hxr/2DTDNOALVmL+ZQljBO7PN/cy5JWrW7zSRqtpovkDNNOPqmIpwsq/xwz6Kte12oBAdWqSDdnJp96UEo9ofENujopU9WYcUff54JULxWuB7n2XgyvqjZDU6jWiLy0n3s6AXsBbrrAQ7BPRI5KYiss74j3Un/eMdRhbjF3GMbznvz88XaaSuJC1YiACzC9lqvxXlSA7DAyfSxgJab722VdzR31g
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,106 +139,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 30, 2025 at 09:19:05PM +0200, David Hildenbrand wrote:
-> On 30.09.25 20:48, Peter Xu wrote:
-> > On Tue, Sep 30, 2025 at 11:36:53AM +0200, David Hildenbrand wrote:
-> > > > +/* VMA userfaultfd operations */
-> > > > +struct vm_uffd_ops {
-> > > > +	/**
-> > > > +	 * @uffd_features: features supported in bitmask.
-> > > > +	 *
-> > > > +	 * When the ops is defined, the driver must set non-zero features
-> > > > +	 * to be a subset (or all) of: VM_UFFD_MISSING|WP|MINOR.
-> > > > +	 *
-> > > > +	 * NOTE: VM_UFFD_MISSING is still only supported under mm/ so far.
-> > > > +	 */
-> > > > +	unsigned long uffd_features;
-> > > 
-> > > This variable name is a bit confusing , because it's all about vma flags,
-> > > not uffd features. Just reading the variable, I would rather connect it to
-> > > things like UFFD_FEATURE_WP_UNPOPULATED.
-> > > 
-> > > As currently used for VM flags, maybe you should call this
-> > > 
-> > > 	unsigned long uffd_vm_flags;
-> > > 
-> > > or sth like that.
+On Tue, Sep 30, 2025 at 03:49:34PM -0400, Liam R. Howlett wrote:
+> * Peter Xu <peterx@redhat.com> [250926 17:17]:
+> > [based on latest akpm/mm-new of Sep 26th, commit e612c80ae0aeb]
 > > 
-> > Indeed it's slightly confusing.  However uffd_vm_flags is confusing in
-> > another way, where it seems to imply some flags similar to vm_flags that is
-> > prone to change.
+> > v3 changelog:
+> > - Fixed checkpatch issues on spaces or typedef
+> > - Dropped uffd_copy() API
+> > - Refined commit messages here and there to reflect the removal of uffd_copy()
 > > 
-> > How about uffd_vm_flags_supported / uffd_modes_supported?
-> 
-> The former would make things clearer when we are at least not talking about
-> uffd features.
-
-I'll go with it.
-
-> 
+> > v1: https://lore.kernel.org/r/20250620190342.1780170-1-peterx@redhat.com
+> > v2: https://lore.kernel.org/r/20250627154655.2085903-1-peterx@redhat.com
 > > 
-> > > 
-> > > I briefly wondered whether we could use actual UFFD_FEATURE_* here, but they
-> > > are rather unsuited for this case here (e.g., different feature flags for
-> > > hugetlb support/shmem support etc).
-> > > 
-> > > But reading "uffd_ioctls" below, can't we derive the suitable vma flags from
-> > > the supported ioctls?
-> > > 
-> > > _UFFDIO_COPY | _UFDIO_ZEROPAGE -> VM_UFFD_MISSING
-> > > _UFFDIO_WRITEPROTECT -> VM_UFFD_WP
-> > > _UFFDIO_CONTINUE -> VM_UFFD_MINOR
+> > This series is an alternative proposal of what Nikita proposed here on the
+> > initial three patches:
 > > 
-> > Yes we can deduce that, but it'll be unclear then when one stares at a
-> > bunch of ioctls and cannot easily digest the modes the memory type
-> > supports.  Here, the modes should be the most straightforward way to
-> > describe the capability of a memory type.
-> 
-> I rather dislike the current split approach between vm-flags and ioctls.
-> 
-> I briefly thought about abstracting it for internal purposes further and
-> just have some internal backend ("memory type") flags.
-> 
-> UFFD_BACKEND_FEAT_MISSING -> _UFFDIO_COPY and VM_UFFD_MISSING
-> UFFD_BACKEND_FEAT_ZEROPAGE -> _UFDIO_ZEROPAGE
-> UFFD_BACKEND_FEAT_WP -> _UFFDIO_WRITEPROTECT and VM_UFFD_WP
-> UFFD_BACKEND_FEAT_MINOR -> _UFFDIO_CONTINUE and VM_UFFD_MINOR
-> UFFD_BACKEND_FEAT_POISON -> _UFFDIO_POISON
-
-This layer of mapping can be helpful to some, but maybe confusing to
-others.. who is familiar with existing userfaultfd definitions.
-
+> >   https://lore.kernel.org/r/20250404154352.23078-1-kalyazin@amazon.com
 > > 
-> > If hugetlbfs supported ZEROPAGE, then we can deduce the ioctls the other
-> > way round, and we can drop the uffd_ioctls.  However we need the ioctls now
-> > for hugetlbfs to make everything generic.
+> > This is not yet relevant to any guest-memfd support, but paving way for it.
 > 
-> POISON is not a VM_ flag, so that wouldn't work completely, right?
+> It would be much easier to review this with the guest-memfd support in
+> this patch set.  Any chance of including the target user?
 
-Logically speaking, POISON should be meaningful if MISSING|MINOR is
-supported.  However, in reality, POISON should always be supported across
-all types..
+It should be something like what Nikita posted previously here against v1:
 
-> 
-> As a side note, hugetlbfs support for ZEROPAGE should be fairly easy:
-> similar to shmem support, simply allocate a zeroed hugetlb folio.
+https://lore.kernel.org/all/114133f5-0282-463d-9d65-3143aa658806@amazon.com/
 
-IMHO it'll be good if we do not introduce ZEROPAGE only because we want to
-remove some flags.. We could be introducing dead codes that nobody uses.
+I'll add the link into the cover letter when I repost. That formal patch
+logically will need to be reviewed from KVM side after this patch lands.
 
-I think it'll be good if we put that as a separate discussion, and define
-the vm_uffd_ops based on the current situation.
-
-> 
-> > 
-> > Do you mind I still keep it as-is?
-> 
-> I would prefer if we find a way to not have this dependency between both
-> feature/ioctl thingies. It just looks rather odd.
-> 
-> But let's hear if there are other opinions.
-
-Sure.
+Thanks,
 
 -- 
 Peter Xu
