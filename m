@@ -4,113 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4638ECCA470
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 11:19:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52441CCA470
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 11:20:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A55F08E001F; Tue, 30 Sep 2025 07:19:30 -0400 (EDT)
+	id B1B1E8E001D; Tue, 30 Sep 2025 07:20:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A058D8E0002; Tue, 30 Sep 2025 07:19:30 -0400 (EDT)
+	id AF2488E0002; Tue, 30 Sep 2025 07:20:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 942938E001F; Tue, 30 Sep 2025 07:19:30 -0400 (EDT)
+	id A2FE58E001D; Tue, 30 Sep 2025 07:20:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 83BCD8E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 07:19:30 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2C96111AB0A
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 11:19:30 +0000 (UTC)
-X-FDA: 83945670900.10.A3D6D7E
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 61B2A120009
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 11:19:28 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bJ560kCz;
-	spf=pass (imf29.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9115E8E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 07:20:42 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 480E05A3E2
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 11:20:42 +0000 (UTC)
+X-FDA: 83945673924.17.7ED0CDD
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 5F9401C000A
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 11:20:40 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NwR4r4Y0;
+	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759231168;
+	s=arc-20220608; t=1759231240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ypq+/ajxaG4je7HYmcqvMA1fKurMa0dGhCUD1PNUx50=;
-	b=GfD7LtRYe7rvKev6xX4Zu/A2VJ2YSX/i7RYZ5IHJrEyTbTHRtmt9wKMvZRNRvgRB6eIQ7d
-	NR04zhOWwGYb4xRr6gFZsV7QzkrooooBjAmAwpnrdRTOes9hUgWU/CD9JqGDPw+CW7Ujdh
-	sz7j1zKiShYWFRCcdDj4tFzfJMXfsQE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759231168; a=rsa-sha256;
+	bh=FwItMkCXdMaYwI2Rw03q5KkFnMdZIJjcXXc+fJQ+dcM=;
+	b=EbZvUkYBgBTlmEXmM/cedTzhXIj+1hHTCcjeP0WJO68of74h5g68ooZTf48EIu+otPZnzL
+	Zz30jenYRm/g6BoH2DJrVpXXrfQMy0/p3tuEIvPe4pCyMACrBnoMHoyNq7sFZXf7KnIZLj
+	C8Hpo40oKMXKveTrhJiUM9nGGxdl28I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759231240; a=rsa-sha256;
 	cv=none;
-	b=mhTYtlxZ8s32uIDab4+sIUoUFwkomJ1BwxK0NNospsVLxD030SxntYVJp8r77ikrPYSCP0
-	j/E4T0VRD0rybfRtXlng/bMwqBRrJiUBhXdBHX49t/1N6WFXQGoAFonqdJ/CVK/BWio2h5
-	vL5qf8jJZYkPptnoPwO79xSAbZ8Ek1E=
+	b=w5eFnFHEFpQ0Cc16OG8jPct9+BtBp70l4mqNM8rUQx6VPqqQBc8wdVGbpff+p//U2yis9X
+	kdSzsd87AjwwXMHij+lc5ANbQW36YWUSttSghaz/xqqkgCW+rP/IOPz6kPo0RlQ5yjwmWi
+	ckz2TKzvPbl9Q+MTJzMB+G1MEsVNqWQ=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bJ560kCz;
-	spf=pass (imf29.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-46e4ad36541so32893045e9.0
-        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 04:19:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759231167; x=1759835967; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ypq+/ajxaG4je7HYmcqvMA1fKurMa0dGhCUD1PNUx50=;
-        b=bJ560kCzoBvkxTm72UvJSfEiQ4nyTDcIlxjr7dOyZN6kCeeyDwQcl9yMIcf9cAXYHE
-         R5UNRT9lnTkRk0wrlAgmL2ip5/IvssgE6+n89vVuSQbpP3stO/zWEIWLwXxXXKFXA4bP
-         +hb4neO60h0zeFy7RYY9oriUgzlCeFQu+EhqMc4r9HROsNmg9yNw2Km8QDcg4FVLYpaN
-         jh4fITHHV9UbszfezoWqSN3j8begBX6RAPOfnhqkQjXIjUwvavp4M1ESeV9duDKxJt4V
-         FwsmJAU7/nOpSmlXIp0YA8sJnAeP/K8lLa9xRZtzDGrYT84kCbDJY31+eprgwOMi7LhY
-         auXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759231167; x=1759835967;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ypq+/ajxaG4je7HYmcqvMA1fKurMa0dGhCUD1PNUx50=;
-        b=qwrSksRdKSuhmmQdnpgrMfksTjTl+Z4x5HDhEYmMeA6pVDrK0VAalHjGkiwVGoYgQd
-         Pb2dxsgU1wCNoHw7M0yKivbO3/8h/mHEO5qflMztKb7HyIHvAjOOJYDuiagfqY39VhKg
-         uuorpIF6e2uo4L6EnxHv5bTF1rQ+gXAwIomkk0McFbrvnl6yncBZ/XekUbeSu7e45iyO
-         TWjhjBcT/21GOpCrmYtT5p8H3GSfpuINq5UBt3IMVQpFbeKQbjV0wHPeY2X5PgXZZGzE
-         OJIpNnKtxZDMoeSSxq1g4qvI7og6hWUcZvQgkPCayV9KZxlWCI42spE7ACLSy6CO+cyp
-         goQA==
-X-Forwarded-Encrypted: i=1; AJvYcCVN1PkGFL4vhiwRH7hQPXDRDO+cf6exywc+BvupsRbW9HkXRJEPfBsjgbpA7J8jMFyH/IFYa1moxg==@kvack.org
-X-Gm-Message-State: AOJu0YyOXbHGNwvFmVATXfU8wvE7XgrAh1i5B8QWr1sxtwoDd9VMkQSQ
-	yKokGtFC31ZTaxP3NxPYLimeOlj3TvVtrA3sDHJGOZUAN+Fsh9tKv8BfKnlrQ1UI2OMHrYAjJg5
-	cMrhHMP5U72aWNsLptDhLTsE3+eqYhVA=
-X-Gm-Gg: ASbGncvHCFfoNsihtXErsqFe0m1PgMyEh4AWGYVoad/orfOIct6M0aGd80wxd3tPQV8
-	osPAxba4MikE8Fs4zSmeJ9jyR7+4TO9JLg1s6zsrL64cljwHAsRYOxW24bz2CS1tIklb58D9nMQ
-	xrFbNoP6ZkoCc8Sb+NhhHHZHrsPJMRMfsNDgqY490DlulfddDN0C2iIRetNus5I2iONb2CVTgX8
-	QDIF43cszniH1EKNCLDp3DtvFIhFnaJ7nOH+3f1oQ/neZI9CGM13A==
-X-Google-Smtp-Source: AGHT+IFZ1fMTMwFHtaeQpXybp0NxecATfP4lqnf9y7TiHPos/hXiuxUHuUdy25b4V0fv4saKSFcmKIqnb2NB8ydX8Ww=
-X-Received: by 2002:a05:600c:6303:b0:46e:37a3:3ec1 with SMTP id
- 5b1f17b1804b1-46e37a34304mr173099175e9.24.1759231166709; Tue, 30 Sep 2025
- 04:19:26 -0700 (PDT)
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NwR4r4Y0;
+	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <fd30aff2-fbe3-4228-a38f-08b242ef33a2@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1759231237;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FwItMkCXdMaYwI2Rw03q5KkFnMdZIJjcXXc+fJQ+dcM=;
+	b=NwR4r4Y01p8bjyaYC2Cb+KDyNJfvm65DPlrkQwIIuK4GySHW+teXi5V/VZoIQmwBsOF9QJ
+	195hhGBcC5XcbY0uotAldgCMQ6LUsRE4r23TXSNBmr0fD4APWT38tyPtxjFNFlgSMUo8+E
+	y+U25NBfb7aXWLuuFxytFy9omxROj9s=
+Date: Tue, 30 Sep 2025 19:20:23 +0800
 MIME-Version: 1.0
-References: <20250930083402.782927-1-ranxiaokai627@163.com> <aNu2xJMkEyYSdmW6@hyeyoo>
-In-Reply-To: <aNu2xJMkEyYSdmW6@hyeyoo>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Tue, 30 Sep 2025 13:19:15 +0200
-X-Gm-Features: AS18NWDoOuauUwUhU_r-pegvcK1zYn6qFC4ElDPwWAuR9qeK68FX3q_eHNFaYvg
-Message-ID: <CAADnVQJ-bkd2UVsZmhdb1L5ZrXjZbTnRcaJ-D=ojsoiRHmHwaw@mail.gmail.com>
-Subject: Re: [PATCH] slab: Fix using this_cpu_ptr() in preemptible context
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: ranxiaokai627@163.com, Vlastimil Babka <vbabka@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, cl@gentwo.org, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Alexei Starovoitov <ast@kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, ran.xiaokai@zte.com.cn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: pznr3ktt17g65ytku55tpc993fw7h8bu
+Subject: Re: [syzbot ci] Re: mm/rmap: fix soft-dirty and uffd-wp bit loss when
+ remapping zero-filled mTHP subpage to shared zeropage
+Content-Language: en-US
+To: syzbot ci <syzbot+ci4a5736baef02a97d@syzkaller.appspotmail.com>
+Cc: syzbot@lists.linux.dev, liam.howlett@oracle.com, usamaarif642@gmail.com,
+ rakie.kim@sk.com, david@redhat.com, dev.jain@arm.com, ioworker0@gmail.com,
+ syzkaller-bugs@googlegroups.com, ziy@nvidia.com, byungchul@sk.com,
+ baolin.wang@linux.alibaba.com, akpm@linux-foundation.org,
+ apopple@nvidia.com, vbabka@suse.cz, joshua.hahnjy@gmail.com,
+ gourry@gourry.net, linux-mm@kvack.org, matthew.brost@intel.com,
+ lorenzo.stoakes@oracle.com, ying.huang@linux.alibaba.com,
+ linux-kernel@vger.kernel.org, baohua@kernel.org, npache@redhat.com,
+ yuzhao@google.com, ryan.roberts@arm.com, riel@surriel.com,
+ stable@vger.kernel.org, peterx@redhat.com, jannh@google.com,
+ harry.yoo@oracle.com
+References: <68dbbc27.a00a0220.102ee.0047.GAE@google.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <68dbbc27.a00a0220.102ee.0047.GAE@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 5F9401C000A
+X-Stat-Signature: 7jp1qudd7ghd7mh5td833woab45bm8xb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 61B2A120009
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1759231168-878986
-X-HE-Meta: U2FsdGVkX1+E69sL38CD1pUDKQ67P2csR+hOTXyqwkXvrzuJtdKikm6ZBw2Lcs8KZwIRXKMV4S4zZWLEL7l/cG6Xwi4MGz7kPhLFWJh9W7pIAkLL8ywXIqZ7fDKvp5pC2MA5IAN6AoCBg52DC0DUaQzbARodKCEqQaD2FZcgrqgPaIhZ4aIekft+k7oFOfF0g7A6H4+5DUu1HnHZmb2ARF4WWOhmpST/Y3BW75XcoJ9UNHdOgF0fxtkpuyYp/xfqJf738jYMwrO/ifzfsrmVO2KSOkhUFR5bMF4EezkXFKjLzKilcwot3kSSWwyI31/7NQWLXRNM8CRuq+z4dAcFd6Ie94ri+n8pos0dmixnhXKhMblDNWytxXxuFMhzTicTWjqOYHF+wdkqLTlx1pZSWDGLA2qe3cmDsD3McY3pIJToZYiaJxN4aMSpS9R7I4PODheC7uB3SwhTmE1EilAUScKPOnBrgNJHwg5v2zQZRMLwJZuzey7qLxc6wsi8EkQ7oWsY1W8PG8ZRMBG6cIUPSvNNm5K5i3M56F5k+NoSUYKfmJ+2dEZ6Rvn7rA9cJ6f9L3hnC/bMTmA7pSkCMKaBAiTagv6B7kA7Ykf90WlUWxKXjBSf42bcKqFvmMdJnOisI4xE6K5ag+yjCAIOol+Bm1V64g8gZny1BU9sY2od3mtEsqv+WKP0hQuHpALDbB55DLKRASc2civHK2SWAJpB69u0fXR7RIKD0tQr/ypfcRI+pk7Aiqakq/FKXoUegIjoIodMu38bKmZTDAuqS7o63KHtS9kbKxbr+vMZtcJjrkBAJCAI5Lf6APn8R9slLj2YcPsC1j8wK/wuVlv1KNsiD2LZsHxpZauqcbEI5IJ9HBIc9+tKky9GLouVFnhRpYzUSV0CjNMW7eRqAdtIpnlgllYtzWXu1zzJEiliApRyeIG245rvNSk/QZzqWHRbTrSzL+bVn/SCXTRlqlEQRM9
- TneyYGJm
- tEBDOatSK0hsR7HPiQIhVui8GHjBpd4QvqO0U1OVk6uLcqHxlb7+o41naWmAkJVIJI8SEM1jmyVhip2fPOw5vY5hKgbYrSlDe+4gv
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1759231240-628448
+X-HE-Meta: U2FsdGVkX1+9tOY3G/juTbC2Wp/ZPgDCM/n2zWRGJ9PpPQ9i7jjhbL2+BRBDsehzSkwHuJV35x0rmPiC2jq3STBjj8QbdbEOfgI31M9/4xp0jQ9wTYiOG3/t78s8u5L3G2TubvF4zRW+SaDz84F/sGgKAUfbL2LvgmZkFiZDdkVu7gHnlcD8g894WqFsWBKC7y9r3obUgf8z4mPaM/V1Ba2azGdkqJy3dCZrQPwks8+KEgawn7PHI6Ilm6mycCbFzGkOSvQxMZXf2T7TA7Mm/bXQ2H9Ib4bnDox3vZJKve/IUR0ixKFGtBzPqEj/IknIxQn6A9u6Jtj/01L29Lqf8H2PY+pdWTfi+/5khKSUsllKIEi+U1d8lLFqVM94Mf4ImMGx/ZF/XCiDq/NAbbUGbqD567T5ie4vbnzEHT6OdMwShs+ZAn7bS1vDgJ3WBUS3EG1e2HxzmC6BSi7IBv5KOML3b26LKbpF02WckZnr9C19J1U7OdWbk2eYhR5Jd5qzIxJKx1fLU20nDFPM1wn59wC0e5dyat6EYPMLfntZjexS86B43SeK7Y2p0keptQEH6bsWtqjzUnnYd6TuxABE/BL6xJ5OrtjclMQmd99SEA+ZiYg7QFtkQfqo9ND0lO7tTL8S57VcpiUaxkWZIcfRZQWuh+TM7Pg5fTdIkc94IaFBncJ/RQOFSHM/1jfOVtrq8e7T8rR0Dp2QnEfb1dqBPtn8HPXoQ51dfOl+Rg13pqdAcjFxAARcKcnTPKeTENd7ypzHOJbMiqx3tJV+pu2j9JMlaAs+0LDSh3uj84y7QXYCQTSMV25jrah/SaN2sXmxw0Gnc6ryc4DrgTCsxngA0h9EUg+wjkdMUvG3FX+cMMJE+azIIfzEpxFuV6vv4OE1q8fTQMkl/7UJMXqDVy8VqMk5HoAsbjaethrVwhVyu3k6/52jJrgeYzysVrH7EL7hZxynlwiXUQCgyfqmy+c
+ Mo0Z1syC
+ 2nbftysHtEQGNnvg+CKoWdu9bbokXdCUiE2nevtfGaIA65Y5+EyIinF401iaa2iHLIxIZQ2HLvmDhSqi888FqVF++iqEAIP9EVZgXz6IlA/5p3WAUsjCERH72uVit7U2o79VN6qI9gZInSm9w7I9zjtxAs9xcW386PSmmrhj8VCwF5EijAZRLOut0U+mZ8GBUvg4gX79b4TZf1oj+RIuPItRf6/hHAhcJHbOmqdMZa2bsxgcAxZi7rqk0P9WsoaIOZCsZzB4jTrclAjKGANPP0U3Q2Fa1cfVk0kfbRsu4qm9yR70qjIduRig8Ab8PTYX1LNAEWalsTrhR5XPtXplck8U3yepJITvUsAlMRpbuDUBayqey5f7EPp9kUON7NuMaA2I1vHJej4WkjyEAYGy6ldvSk1emYa2lWGsWyUTyE50D8wPVy+GbjUw8fRsmdjIhKFio6nzUNq4ram9VYPsSkCeDnaW2W0xHBaPRzoPd1HZc1M+Aea8ZJkH3+6QuBA0LVOZ/1Y/YkAbKNdk6uBNdKFeE6lP7lRcjU9hF9L0JbbutBthp14FxBE9NG73f52iRGQfe
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,109 +100,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 30, 2025 at 12:54=E2=80=AFPM Harry Yoo <harry.yoo@oracle.com> w=
-rote:
->
-> On Tue, Sep 30, 2025 at 08:34:02AM +0000, ranxiaokai627@163.com wrote:
-> > From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> >
-> > defer_free() maybe called in preemptible context, this will
-> > trigger the below warning message:
-> >
-> > BUG: using smp_processor_id() in preemptible [00000000] code: swapper/0=
-/1
-> > caller is defer_free+0x1b/0x60
-> > Call Trace:
-> >  <TASK>
-> >  dump_stack_lvl+0xac/0xc0
-> >  check_preemption_disabled+0xbe/0xe0
-> >  defer_free+0x1b/0x60
-> >  kfree_nolock+0x1eb/0x2b0
-> >  alloc_slab_obj_exts+0x356/0x390
 
-Please share config and repro details, since the stack trace
-looks theoretical, but you somehow got it?
-This is not CONFIG_SLUB_TINY, but kfree_nolock()
-sees locked per-cpu slab?
-Is this PREEMPT_RT ?
 
-> >  __alloc_tagging_slab_alloc_hook+0xa0/0x300
-> >  __kmalloc_cache_noprof+0x1c4/0x5c0
-> >  __set_page_owner+0x10d/0x1c0
-> >  post_alloc_hook+0x84/0xf0
-> >  get_page_from_freelist+0x73b/0x1380
-> >  __alloc_frozen_pages_noprof+0x110/0x2c0
-> >  alloc_pages_mpol+0x44/0x140
-> >  alloc_slab_page+0xac/0x150
-> >  allocate_slab+0x78/0x3a0
-> >  ___slab_alloc+0x76b/0xed0
-> >  __slab_alloc.constprop.0+0x5a/0xb0
-> >  __kmalloc_noprof+0x3dc/0x6d0
-> >  __list_lru_init+0x6c/0x210
-> >  alloc_super+0x3b6/0x470
-> >  sget_fc+0x5f/0x3a0
-> >  get_tree_nodev+0x27/0x90
-> >  vfs_get_tree+0x26/0xc0
-> >  vfs_kern_mount.part.0+0xb6/0x140
-> >  kern_mount+0x24/0x40
-> >  init_pipe_fs+0x4f/0x70
-> >  do_one_initcall+0x62/0x2e0
-> >  kernel_init_freeable+0x25b/0x4b0
-> >  kernel_init+0x1a/0x1c0
-> >  ret_from_fork+0x290/0x2e0
-> >  ret_from_fork_asm+0x11/0x20
-> > </TASK>
-> >
-> > Replace this_cpu_ptr with raw_cpu_ptr to eliminate
-> > the above warning message.
-> >
-> > Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock=
-().")
->
-> There's no mainline commit hash yet, should be adjusted later.
->
-> > Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> > ---
-> >  mm/slub.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index 1433f5b988f7..67c57f1b5a86 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -6432,7 +6432,7 @@ static void free_deferred_objects(struct irq_work=
- *work)
-> >
-> >  static void defer_free(struct kmem_cache *s, void *head)
-> >  {
-> > -     struct defer_free *df =3D this_cpu_ptr(&defer_free_objects);
-> > +     struct defer_free *df =3D raw_cpu_ptr(&defer_free_objects);
->
-> This suppresses warning, but let's answer the question;
-> Is it actually safe to not disable preemption here?
->
-> >       if (llist_add(head + s->offset, &df->objects))
->
-> Let's say a task was running on CPU X and migrated to a different CPU
-> (say, Y) after returning from llist_add() or before calling llist_add(),
-> then we're queueing the irq_work of CPU X on CPU Y.
->
-> I think technically this should be safe because, although we're using
-> per-cpu irq_work here, the irq_work framework itself is designed to handl=
-e
-> concurrent access from multiple CPUs (otherwise it won't be safe to use
-> a global irq_work like in other places) by using lockless list, which
-> uses try_cmpxchg() and xchg() for atomic update.
->
-> So if I'm not missing something it should be safe, but it was very
-> confusing to confirm that it's safe as we're using per-cpu irq_work...
->
-> I don't think these paths are very performance critical, so why not disab=
-le
-> preemption instead of replacing it with raw_cpu_ptr()?
+On 2025/9/30 19:16, syzbot ci wrote:
+> syzbot ci has tested the following series
+> 
+> [v4] mm/rmap: fix soft-dirty and uffd-wp bit loss when remapping zero-filled mTHP subpage to shared zeropage
+> https://lore.kernel.org/all/20250930071053.36158-1-lance.yang@linux.dev
+> * [PATCH v4 1/1] mm/rmap: fix soft-dirty and uffd-wp bit loss when remapping zero-filled mTHP subpage to shared zeropage
+> 
+> and found the following issue:
+> general protection fault in remove_migration_pte
+> 
+> Full report is available here:
+> https://ci.syzbot.org/series/8cc7e52f-a859-4251-bd08-9787cdaf7928
+> 
+> ***
+> 
+> general protection fault in remove_migration_pte
+> 
+> tree:      linux-next
+> URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
+> base:      262858079afde6d367ce3db183c74d8a43a0e83f
+> arch:      amd64
+> compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+> config:    https://ci.syzbot.org/builds/97ee4826-5d29-472d-a85d-51543b0e45de/config
+> C repro:   https://ci.syzbot.org/findings/f4819db2-21f2-4280-8bc4-942445398953/c_repro
+> syz repro: https://ci.syzbot.org/findings/f4819db2-21f2-4280-8bc4-942445398953/syz_repro
+> 
+> Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN PTI
+> KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
 
-+1.
-Though irq_work_queue() works for any irq_work it should
-be used for current cpu, since it IPIs itself.
-So pls use guard(preempt)(); instead.
+This is a known issue that I introduced in the v3 patch. I spotted
+this exact NULL pointer dereference bug[1] myself and have already
+sent out a v5 version[2] with the fix.
+
+The root cause is that ptep_get() is called before the !pwmw.pte
+check, which handles PMD-mapped THP migration entries.
+
+[1] 
+https://lore.kernel.org/linux-mm/2d21c9bc-e299-4ca6-85ba-b01a1f346d9d@linux.dev
+[2] 
+https://lore.kernel.org/linux-mm/20250930081040.80926-1-lance.yang@linux.dev
+
+Thanks,
+Lance
+
+> CPU: 0 UID: 0 PID: 6025 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+> RIP: 0010:ptep_get include/linux/pgtable.h:340 [inline]
+> RIP: 0010:remove_migration_pte+0x369/0x2320 mm/migrate.c:352
+> Code: 00 48 8d 43 20 48 89 44 24 68 49 8d 47 40 48 89 84 24 e8 00 00 00 4c 89 64 24 48 4c 8b b4 24 50 01 00 00 4c 89 f0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 f7 e8 f8 3e ff ff 49 8b 06 48 89 44 24
+> RSP: 0018:ffffc90002fb73e0 EFLAGS: 00010246
+> RAX: 0000000000000000 RBX: ffff88802957e300 RCX: 1ffffd40008c9006
+> RDX: 0000000000000000 RSI: 0000000000030dff RDI: 0000000000030c00
+> RBP: ffffc90002fb75d0 R08: 0000000000000003 R09: 0000000000000004
+> R10: dffffc0000000000 R11: fffff520005f6e34 R12: ffffea0004648008
+> R13: dffffc0000000000 R14: 0000000000000000 R15: ffffea0004648000
+> FS:  00005555624de500(0000) GS:ffff8880b83fc000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 0000200000000300 CR3: 000000010d8b8000 CR4: 00000000000006f0
+> Call Trace:
+>   <TASK>
+>   rmap_walk_anon+0x553/0x730 mm/rmap.c:2855
+>   remove_migration_ptes mm/migrate.c:469 [inline]
+>   migrate_folio_move mm/migrate.c:1381 [inline]
+>   migrate_folios_move mm/migrate.c:1711 [inline]
+>   migrate_pages_batch+0x202e/0x35e0 mm/migrate.c:1967
+>   migrate_pages_sync mm/migrate.c:1997 [inline]
+>   migrate_pages+0x1bcc/0x2930 mm/migrate.c:2106
+>   migrate_to_node mm/mempolicy.c:1244 [inline]
+>   do_migrate_pages+0x5ee/0x800 mm/mempolicy.c:1343
+>   kernel_migrate_pages mm/mempolicy.c:1858 [inline]
+>   __do_sys_migrate_pages mm/mempolicy.c:1876 [inline]
+>   __se_sys_migrate_pages+0x544/0x650 mm/mempolicy.c:1872
+>   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>   do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+>   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7fb18e18ec29
+> Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+> RSP: 002b:00007ffdca5c9838 EFLAGS: 00000246 ORIG_RAX: 0000000000000100
+> RAX: ffffffffffffffda RBX: 00007fb18e3d5fa0 RCX: 00007fb18e18ec29
+> RDX: 0000200000000300 RSI: 0000000000000003 RDI: 0000000000000000
+> RBP: 00007fb18e211e41 R08: 0000000000000000 R09: 0000000000000000
+> R10: 0000200000000040 R11: 0000000000000246 R12: 0000000000000000
+> R13: 00007fb18e3d5fa0 R14: 00007fb18e3d5fa0 R15: 0000000000000004
+>   </TASK>
+> Modules linked in:
+> ---[ end trace 0000000000000000 ]---
+> RIP: 0010:ptep_get include/linux/pgtable.h:340 [inline]
+> RIP: 0010:remove_migration_pte+0x369/0x2320 mm/migrate.c:352
+> Code: 00 48 8d 43 20 48 89 44 24 68 49 8d 47 40 48 89 84 24 e8 00 00 00 4c 89 64 24 48 4c 8b b4 24 50 01 00 00 4c 89 f0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 f7 e8 f8 3e ff ff 49 8b 06 48 89 44 24
+> RSP: 0018:ffffc90002fb73e0 EFLAGS: 00010246
+> RAX: 0000000000000000 RBX: ffff88802957e300 RCX: 1ffffd40008c9006
+> RDX: 0000000000000000 RSI: 0000000000030dff RDI: 0000000000030c00
+> RBP: ffffc90002fb75d0 R08: 0000000000000003 R09: 0000000000000004
+> R10: dffffc0000000000 R11: fffff520005f6e34 R12: ffffea0004648008
+> R13: dffffc0000000000 R14: 0000000000000000 R15: ffffea0004648000
+> FS:  00005555624de500(0000) GS:ffff8880b83fc000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 0000200000000300 CR3: 000000010d8b8000 CR4: 00000000000006f0
+> ----------------
+> Code disassembly (best guess):
+>     0:	00 48 8d             	add    %cl,-0x73(%rax)
+>     3:	43 20 48 89          	rex.XB and %cl,-0x77(%r8)
+>     7:	44 24 68             	rex.R and $0x68,%al
+>     a:	49 8d 47 40          	lea    0x40(%r15),%rax
+>     e:	48 89 84 24 e8 00 00 	mov    %rax,0xe8(%rsp)
+>    15:	00
+>    16:	4c 89 64 24 48       	mov    %r12,0x48(%rsp)
+>    1b:	4c 8b b4 24 50 01 00 	mov    0x150(%rsp),%r14
+>    22:	00
+>    23:	4c 89 f0             	mov    %r14,%rax
+>    26:	48 c1 e8 03          	shr    $0x3,%rax
+> * 2a:	42 80 3c 28 00       	cmpb   $0x0,(%rax,%r13,1) <-- trapping instruction
+>    2f:	74 08                	je     0x39
+>    31:	4c 89 f7             	mov    %r14,%rdi
+>    34:	e8 f8 3e ff ff       	call   0xffff3f31
+>    39:	49 8b 06             	mov    (%r14),%rax
+>    3c:	48                   	rex.W
+>    3d:	89                   	.byte 0x89
+>    3e:	44                   	rex.R
+>    3f:	24                   	.byte 0x24
+> 
+> 
+> ***
+> 
+> If these findings have caused you to resend the series or submit a
+> separate fix, please add the following tag to your commit message:
+>    Tested-by: syzbot@syzkaller.appspotmail.com
+> 
+> ---
+> This report is generated by a bot. It may contain errors.
+> syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+
 
