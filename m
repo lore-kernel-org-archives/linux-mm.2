@@ -4,113 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EED9CAC5B8
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 06:45:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04C75CAC5B9
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 06:49:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 725C28E001B; Tue, 30 Sep 2025 02:45:58 -0400 (EDT)
+	id 1D5F28E0025; Tue, 30 Sep 2025 02:49:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D6058E0002; Tue, 30 Sep 2025 02:45:58 -0400 (EDT)
+	id 187798E0002; Tue, 30 Sep 2025 02:49:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59DF98E001B; Tue, 30 Sep 2025 02:45:58 -0400 (EDT)
+	id 027928E0025; Tue, 30 Sep 2025 02:49:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 433018E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 02:45:58 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E1F611A05D3
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 06:45:57 +0000 (UTC)
-X-FDA: 83944981554.01.08A87A5
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E0C828E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 02:49:36 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4C122443E1
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 06:49:36 +0000 (UTC)
+X-FDA: 83944990752.07.8AF42B7
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 7A874100010
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 06:45:55 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Xibjcj7C;
-	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 0A7F8C0013
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 06:49:33 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="cWPn/YHw";
+	spf=pass (imf28.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759214755;
+	s=arc-20220608; t=1759214974;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8AIMq+OlhpyT2npgIFmZrEOK/CbKwyfphzbxq2DUajU=;
-	b=MMfUnN2DN4OOZD02n83QK4NjlevW3NK498cdVb7JjVluTuJtCyI33pyQp5ybcy6VEcZgl+
-	B0MhIgdleiIr4SEyv31mFESZUh5MXHZsgnqKR5jEcKrcnWMGi4RvS5+wNaKoeJFEM4OgQD
-	cOtPsgYsNZmGA/ROPzgDLAmN+7Da8Vc=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Xibjcj7C;
-	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759214755; a=rsa-sha256;
+	bh=mqRlzhy6X/OCGXbjhJnXJHWuco4CEjpdGpSoiDLw9OM=;
+	b=Vf/1UMtlf15wVg/uZmUReHQEYLxeAAKnjWZqc7GHntFR8cAUL0zIyS0KWetqzoEiYzZX1z
+	VrvToAg6bZ8QTcrL3z2Ho39fwaA32ICy7tUxhQe007jtiM8fKTMgzUJ8I2QCwzoD62+55j
+	dYDm5nIDizah7SoH71aKHY+og2zzYS0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759214974; a=rsa-sha256;
 	cv=none;
-	b=UR7ERtR4//JOhnjs3mYm036AAuDG9F3NcyXI7Lv13Lhip5/+CCCzJYODNiOF0tyaWP9QWF
-	A4PJd5uVAuG8bcUnfOFGoShv+lGp2QE4EcdumT4rYz0DAMJU04v6LCKd7xBF7l1BkJTFmP
-	jQ6bdnCuGqBa2TQA+kWqa4xNHOBHnQw=
+	b=BFKRKf1G7lPU9Y5IBqA3Hia0cqBNJ8X/SUU21Lo+Rp1Bnyf+QzXbYGpDG6XkI0Oew+ih7k
+	FQ2apZaqXMJ6oMk6q+VM92q1xa6kIVGFFCLxBNRQjbLtP23buvRV1tOCXTdcn9eaITPc2v
+	xKNRZBF/9i5p8EntTPnMKSCgRrE3Hmg=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="cWPn/YHw";
+	spf=pass (imf28.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759214754;
+	s=mimecast20190719; t=1759214973;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=8AIMq+OlhpyT2npgIFmZrEOK/CbKwyfphzbxq2DUajU=;
-	b=Xibjcj7CHeBLRgtTVaUSMBuClYACz5rRf8o0x2mJUi4vR9R9mhdPBwSLr4nk4BoIZwN0yn
-	l0crbBv8OWf0Y/5K692MzKkR5PdL3Oaju4S52H/9YkgQnC/12wforUuoyxtR5dXKX0ZiK0
-	4e9ewBBV4nya0fYAR4gDU0YuaHwJSKQ=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=mqRlzhy6X/OCGXbjhJnXJHWuco4CEjpdGpSoiDLw9OM=;
+	b=cWPn/YHwPd2B4yFiIEeGg9p+l507dxYRKoRh8m9Z2afCMhlT5iLmjLKkI9zU0i6jBK3xO1
+	jTsiwSFIT6MxARK9fGgAhMyOTK7UOlB4SIRVEsG+3jeF3mcYLOPXppHovCvOZu7Wr02J8j
+	BvHYWel8OO4c7H3TaGe5RTRhY+hzZpk=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-465-e682dCYBNOeGMMiSN4G1yg-1; Tue, 30 Sep 2025 02:45:53 -0400
-X-MC-Unique: e682dCYBNOeGMMiSN4G1yg-1
-X-Mimecast-MFC-AGG-ID: e682dCYBNOeGMMiSN4G1yg_1759214752
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3ee13e43dd9so2675682f8f.1
-        for <linux-mm@kvack.org>; Mon, 29 Sep 2025 23:45:52 -0700 (PDT)
+ us-mta-375-yPdGD9ZJPgKHr2qBTc340A-1; Tue, 30 Sep 2025 02:49:31 -0400
+X-MC-Unique: yPdGD9ZJPgKHr2qBTc340A-1
+X-Mimecast-MFC-AGG-ID: yPdGD9ZJPgKHr2qBTc340A_1759214971
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3ed9557f976so3626683f8f.3
+        for <linux-mm@kvack.org>; Mon, 29 Sep 2025 23:49:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759214752; x=1759819552;
+        d=1e100.net; s=20230601; t=1759214971; x=1759819771;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8AIMq+OlhpyT2npgIFmZrEOK/CbKwyfphzbxq2DUajU=;
-        b=ESPHWNJ4reIrhTsUnWxQKApIMHMDbfz2Z/mP6xdy6zfd3ZkHjt8j/WNimKWlzOj+dm
-         bnLZ3oxZsK15vudknZ5zhLfU2zGTF33b9A/AGxssDgYntkjXTj34Og1Q4wwC1hajoaRf
-         gSAnp4pj/tvQqVhL0kjz/siGnIEiFrHxuOFDMQ8zCzzyo1Tv575WTFQCg6p0Dl7BP6dV
-         jtcLbCst+GxOKff4zBGhddor7OjV6dZIeBO7f/cm/EtrXkRpmI7mkMe1unqww7ahGTiZ
-         Z6yH5ZMlNxlnMX/1qgBxJK0+lyxYapBuUnqAlbl+xQN+ZjoA8EewnupkCjleRP4fZMHc
-         x5IQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUPIwCyl1V3q1dq8w5ztK4vOqKC4ptuNmsLjH/6lvuHfUDDNRkghiMZ9wacVF3X9AKvfbLwvwuJqg==@kvack.org
-X-Gm-Message-State: AOJu0YxnuEa8nzrYLQOsO4nV+PG0CzjNsIANo6fyZVUI6EY9u4CFL+1Q
-	f1VdVTJa/PTR1pxFRsP09n07jPnBQdKHijMggXsIoypjry38r5t4s8+WuHEJTktIjuZ6R5HYZmi
-	xHuczCe5vxfNzapTfl4plFySHSb97atmRjMlnt4XejoBO2v0wrU4I
-X-Gm-Gg: ASbGnctUTU+H1UlUgGVFtrS4gVBIt7HJGkqm1mynIqgJrTFMptc9Yau7aNiCSLsdyK2
-	CTOkSGEe8g1vNxZFO6E3a44GcU5Dc+RJbLD/5bk2DnI5mSHlxme9yg7MpHwExiniELBMc9uXj1t
-	x7FnAmnDvr/2nsN6B8cx9UBdYegTXytzcMG1JCh+XLLqz+DkApTWvHAvE1n05nkcZooJnf8OXap
-	UxWOpycvu8lAGcCh2hRYi4W04xdy683rswgw5V4hIkPrYPTxktwKDeUOJvWY23rnLfeS7RWE+3z
-	M4xqhf8SOI9c8lVlVmz2pnBqRwsbjq4Ew7TObDOKsPRy7LF/TK0g3kkeQvhxLcdFOWRTN5X7v4p
-	pey91mfDe
-X-Received: by 2002:a05:6000:1a89:b0:3ed:a43d:8eba with SMTP id ffacd0b85a97d-40e4b389211mr18844299f8f.52.1759214751619;
-        Mon, 29 Sep 2025 23:45:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFg/W6e/I7hHziArdv6ifYggaC+j0tYvxahMU2MCeZ7zKwkNHwGQwxT9opm5ct5RbwIhmPfXQ==
-X-Received: by 2002:a05:6000:1a89:b0:3ed:a43d:8eba with SMTP id ffacd0b85a97d-40e4b389211mr18844269f8f.52.1759214751197;
-        Mon, 29 Sep 2025 23:45:51 -0700 (PDT)
+         :from:references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mqRlzhy6X/OCGXbjhJnXJHWuco4CEjpdGpSoiDLw9OM=;
+        b=MP7O8WJ+41uCOoARzzTjsomJfQ+Y/Q9kvkGpFDD14NpuVKQ3KBY5E0I+Y/PjMp9fk/
+         HmSbvdAgF5ANiS+Eb593qhmhVcQoH8dc+NZsobr1Z5WY6yTwjrYmr0KY+V3q/HeunBu7
+         z9WROCcJ1dGYWiqfxEedH5K646SCj8ANFEFxfRVt+JTZ5GdLr/6GijFkstlzp2OZB48/
+         arZgVGyS2yhbnAdZEK2TrsCVEv+o1Gy4ptNmURVaQqhRc7VayV3EWhC/YNzFEcimy9kg
+         7UdR2Psca3br40+UF4rvjfJRjJVOKplxj7vbEDzPErlHE8+kKy7BdP6RjJeMnqG0bnsR
+         d0ug==
+X-Forwarded-Encrypted: i=1; AJvYcCX1Jx92WsVGjDRxkNWijOeznkZTc77wHwKeQLeJUDF4WsJmlF0gQP2Geyzym/0nrY3zqlYL/0kqVA==@kvack.org
+X-Gm-Message-State: AOJu0YytXlSvHncOOleDsLscBmbtYB6YiKdkwObdCCIfYw7d16uokMwH
+	mOkav5DqRYni2U2986LJiX/Nh+BMeJwU1PbJSElPj4tPVR8ZQ6DPH9MSgGMzPoi1OH+hKySiY6n
+	kpW3VKlMvS2uESanEWVs5EvMxkQAiFajRhv3z9wp/+r8bF8PszoG/
+X-Gm-Gg: ASbGncv4esxSyZ6/yDui3gGr0jdYHXxSsrcTP2geV3k9yJwuIDZ37j+w/3UgIyz3dRU
+	p9ELnKzTmllUENQw/7Wkzjugh2BvPQ63+q5qpHoq/eGgzxfaC7Nc9DHpe/MwWOL9PTvLhDzazWY
+	7ZLVrE3Cp4TI9qBXHmHIzZ1zNhdDS6ZNoJQAs3dsrGzmGSv0n+4fiJvEAPh8u7qsr3Y3hY+9gZJ
+	8F40Xz67eg0DeyDduvacghD81ZmBdZgcZULMu0QcsZA7dgjZchFywCdVw01m46gT1xu2lXJ6nRm
+	ceECPt1AI2CAkyvDHa02zJ057/SHx2x0fjdUDYoN/7sXipWOhJci9eD+leLxP9bTWeBHd/ojxEh
+	1FuD4fzsD
+X-Received: by 2002:a5d:5c84:0:b0:3ea:15cd:ac3b with SMTP id ffacd0b85a97d-40e480ca367mr13436896f8f.30.1759214970671;
+        Mon, 29 Sep 2025 23:49:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFjJ1kh+gHGKjhm8s7ngHlJgKibrCLfy9i3c10QH8wYWazuNRp/0yTM4Ql0YUWytAaTC1Wp7w==
+X-Received: by 2002:a5d:5c84:0:b0:3ea:15cd:ac3b with SMTP id ffacd0b85a97d-40e480ca367mr13436821f8f.30.1759214970148;
+        Mon, 29 Sep 2025 23:49:30 -0700 (PDT)
 Received: from ?IPV6:2a01:599:901:4a65:f2e2:845:f3d2:404d? ([2a01:599:901:4a65:f2e2:845:f3d2:404d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e5c06a9ffsm7025105e9.0.2025.09.29.23.45.49
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e5b5e4922sm7544255e9.1.2025.09.29.23.49.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Sep 2025 23:45:50 -0700 (PDT)
-Message-ID: <d25474b8-c340-4546-a41e-60a6ecfc42c3@redhat.com>
-Date: Tue, 30 Sep 2025 08:45:48 +0200
+        Mon, 29 Sep 2025 23:49:29 -0700 (PDT)
+Message-ID: <3ed8a6a5-9983-4b9e-bae1-4c433568de16@redhat.com>
+Date: Tue, 30 Sep 2025 08:49:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/ksm: fix flag-dropping behavior in ksm_madvise
-To: Jakub Acs <acsjakub@amazon.de>, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Xu Xin <xu.xin16@zte.com.cn>,
- Chengming Zhou <chengming.zhou@linux.dev>, Peter Xu <peterx@redhat.com>,
- Axel Rasmussen <axelrasmussen@google.com>,
- Mike Kravetz <mike.kravetz@oracle.com>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250930063921.62354-1-acsjakub@amazon.de>
+Subject: Re: [PATCH v6 21/23] tools/ksw: add test script
+To: Jinchao Wang <wangjinchao600@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Alexander Potapenko <glider@google.com>, Randy Dunlap
+ <rdunlap@infradead.org>, Marco Elver <elver@google.com>,
+ Jonathan Corbet <corbet@lwn.net>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>,
+ "Liang, Kan" <kan.liang@linux.intel.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ Kees Cook <kees@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Sami Tolvanen <samitolvanen@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Masahiro Yamada <masahiroy@kernel.org>, Rong Xu <xur@google.com>,
+ Naveen N Rao <naveen@kernel.org>, David Kaplan <david.kaplan@amd.com>,
+ Andrii Nakryiko <andrii@kernel.org>, Jinjie Ruan <ruanjinjie@huawei.com>,
+ Nam Cao <namcao@linutronix.de>, workflows@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com,
+ "David S. Miller" <davem@davemloft.net>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ linux-trace-kernel@vger.kernel.org
+References: <20250930024402.1043776-1-wangjinchao600@gmail.com>
+ <20250930024402.1043776-22-wangjinchao600@gmail.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -156,21 +190,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20250930063921.62354-1-acsjakub@amazon.de>
+In-Reply-To: <20250930024402.1043776-22-wangjinchao600@gmail.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: uHZdEXXET3_fd5P_wvzrUb9x1dMueuD0y7tO39_w5x8_1759214752
+X-Mimecast-MFC-PROC-ID: oDMMfUT3LQpnVE8gazfHSdaZSaVkvZ5LYc-VJYnuhbU_1759214971
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 7A874100010
-X-Rspamd-Server: rspam05
-X-Stat-Signature: qesu5tmp4ztoj6hxqc6n7uo4ak7nibdn
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0A7F8C0013
+X-Stat-Signature: asdxrw9seb3qzp3x7jzt5jpep64xmnrz
 X-Rspam-User: 
-X-HE-Tag: 1759214755-869502
-X-HE-Meta: U2FsdGVkX1/G8nTFg621XgNiKJzy445pJAQG8o8d+A8ZagphyEFsbHMfTGcnYTvJ6WJSeXMMKX23RPK9YSZTo/iwIy6gIJBHefyaMNf7WdELrY2DbiYF2MO9VnDf8fiulwzQ9nQiQxznnpEV6TIKWQy/bpmS8+XC3C9j4dqYnfpJ8NmaRwuMoD0Zdq/9ab8nTsvc3Nu0M37ywrqGR/l0kNiY27zN1sUTuqXtigmN0Zz6ryzRY1Ot1bQCAYpZFLf4f3RbGHUOYsnwDU5piiDR1SArzHhFs+bCfnPRvSjZbm4FeD+Y7jBdL4EoQm+33v6HcQOQ5Q31aj5FmWgPIBQLrsFCAqWYAhlcZLEKRDLm3vxrZvqjqOoVYR/1EdMw8rONnDVR1J3JSbniVIVtC7Y5OexjdLfCzsvXtsxnD7QlC/hBvHHwWxQXWOfY2B2YXFZiCzHZHoszP4iYeG13JzUJkB4NFtI9jzxawG+r3Tcf5T1MknWqh+Oq5c9f6GQ2X4V5J9yqoapmoHf2NCBckPb4PO+3bJBkOg05OVTewa+kF+pLsMZrwCRoCgsgs7mEdXb/uHEWH4RDHeQBHgfXHbIbUIRA2NpTgM+P+XMjW4LHCYjkLR0CQNihZeJZOm6cO9UhnACI8wkclrqT8PJ9OcNUJCrdugcFLunDllcKIe6OP0AJoCp3BhKzsagq58OI0ayqcwVWLJtJ9ZILq89I2qF9zk/LHdEt8jTme1d8j8IdnIyTD9UFj8BlyixrwnAUZwrAM4u4mpDS94vFxJhOqcxznbH/ATK10RcyqfDR5zJ8/XjtIjZrP8O0mAdOuixMhAt5eXsbqS0Ux3bD0urmP7XSz4goXex7iSq5eqvRd3tg/7FMrVXmRUpTXN3nWAo8yqXYV0oovTIjAZaBCghm5ylV6ta8FoovX6wfPjC+cYoktc7fDo0eVUbPM1MidQdaAu7ozyR76Vc/5T+nB0Xidqw
- xUvVGHKm
- IckXayODMls0nbplp9v+0l0b9RVw12FX9GvCBaLT22lbe56mPtL8ypPTRtnicB+lJ6ldZneJjHYJQq46543FOXkcNaY1u/9OqF4MT+8+b8wwWVq2XYCia1BmB8n0Px3O8JRmD0O033uatSp1Dv2lO4r7os4s/tZLdZaCSEQCQutV0HTA+vyKTDlcX7cXjHb6uV81jAOBrtEL3wGpB54OFilxkra2EFAszzo41aD8Z3izs+3pL5kDquzincF7PxiqPh19+U4jmDo/DixfqCQh/+2S0DiSCstkC+7hqxV2oqRQbxRB9Xc68HBj3/H6lXyYknWpFiBD0b3J5f9BPNEg8zq6cBrPQS5u0xZ212YkWNzXb0/7C+BShdSYD89qpzMCy/onuFR5zL/ybGqiKienCmvyE8gRk0ocf00xVFCATovE4ckG+hRmqie8vnNtyzzHfr6DHNowwInS3q1iHL10YUaclRjjIjsypQoZzOLvtyisFkCyvnyHfezdM5djhp+1s5lmKzkWfbZuFHP/jtSZNPAATOnxcGDiacnH4cptU2fwwEjBpZpgB1K24gkeJcj/KMG9f7LLoGVRBY5bObfMzakzV4EBsjzguMH1b+/YYlRsKKCU5iaHFag7cNn0CM3AttaWQJofWgWsboTD7Bv23c0795Lq8ITohoufF9DaBSIohqkL7psu5F1JIOzAYqWe1o5pn8CVnBbByLZWNiqnxVsI13Y54ShtIfOCT
+X-HE-Tag: 1759214973-897673
+X-HE-Meta: U2FsdGVkX1/XAuJ7EocTyb6iIT1xkVjJdaKWj55XGDoA33AS1kx2Ss+AcE8MZ1UBwGP+RAmDg6cRWvENsfBf6hAyZltAMV9gL6toQwHaN9B9VBgjCY3C/snYUgicpns8nRlaJOidL4ufeZBErdrCWdjw4APVsK29T0JU6ZbNPF2I7/UKwNCdzkOHAXhp0lfAbAsQtkK3TowYKuL8emqfSX37fyKWk7wU79SIb3xaPZ6wmZTETbQulYaSgsmGU++/rnG7QN+dgG5B4o1JZSX9FYiuscXCJ5bLQ91poyCSnrjN+MxuRiVmnAYjKX2WgsdpxXjAvgO119BJhc6jV+cznnP+BOKiUc+xicyHT+6ekVd3NhjNIQQJnS33sXsayyH0pAhUHMqw7i2XtIE8vQPGTZVhEFBU3fQqEO3DG2tdmYhmDadW9Wlg1Mz+EWrgG5FtldaR/LI5vqKLOOiP/KKwEg7JwecFtgJxO6lUeQLIvJAKTuCvR3iwA0jcYloC9ItbxGp6wsMDGk1I2FZRlj5zewVqooyQFLRVmRl7ifNXF+ClUpTEgmDOscic8u3tIWcnyOqH4V+I9FBccPdrmNuVdmh6CnE1HxmFApwGDf5ZTF7+3QFDQryVWu9RNKEpoPPWZtGTwlU4/eGzWSGb4qfHjxEtuHmUyaqiOitkm6VUopcdeUxHrPpRjIewghzRylMpCs8EkMMBXtURKBFazH0lh8Wfs9DE2kDqA/vPd4H+Pm3ENO4ZRfFCkXTmQWEyahy41oZnu87AiDa+7ws26d5Fant9H7La4R4hNoXrMjEdKS5HJwQuYRTTvkdU7F4eeXGFjZZ2IGKTq3Zka4PrZq1F/nSzI69XAYW6VuPYtmLcz5UyTMmoQQ7JaZrK3BiPBnt5pwwTYQd5fJtdirUpFPQzSa4gZDSf1IgK9Foo8JdQcnfFpHoIvEbZcyqYOwNpEFOjJ39nCtu1J4d70vNLOzO
+ ldgZMw9X
+ bOI1F5ZWZ3wF2b6moIr3BtjSjlpkjEs2OneZLyEBe7vmfEjZT0LQBUXUmrNSlTEMzwoBIpsUfqYWwowp0ndrDYmYLUAZUDMiW81ZjNx9unAnx+pEhemFmti5RelMq1Yj5xFQW7+VWFrwircPH2UOQo4d/WTQDQxKZXyVsg0jXTU2dB/S4p3vbYsQYUu8HntC/m2D16nfGBz9RWCTVBUZ+WH/KkDuLnrLUepjVEHDy2oBnTukxyTDoJWZ9wSTYuBGBnSJb4t4HtG0hJgVG79XieISgVm44e/WhiRttN16/TKg7GWgDo2xayuaPVWSbhB+2FqRy0//ERODSEeOF6RKz7GDvsBXyYVsfUBNOMpYqcqNvAi+VHDqqxvKU4RBYzbdF4tVsM3NP5EWQmn4OKQLQ7Qsw768xbXnBip2HbabwcwTx4lewzR8c4KneYOggvUoN0Q/nOIgKKL1jfG8ujImtnDpRSaLrKNMXrMOQg8nJIArwGszG53Zwtk27u4ey0RqovhLSgbB4vKJiNvhiGIPCDZXjIg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,128 +213,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 30.09.25 08:39, Jakub Acs wrote:
-> syzkaller discovered the following crash: (kernel BUG)
+On 30.09.25 04:43, Jinchao Wang wrote:
+> Provide a shell script to trigger test cases.
 > 
-> [   44.607039] ------------[ cut here ]------------
-> [   44.607422] kernel BUG at mm/userfaultfd.c:2067!
-> [   44.608148] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
-> [   44.608814] CPU: 1 UID: 0 PID: 2475 Comm: reproducer Not tainted 6.16.0-rc6 #1 PREEMPT(none)
-> [   44.609635] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-> [   44.610695] RIP: 0010:userfaultfd_release_all+0x3a8/0x460
-> 
-> <snip other registers, drop unreliable trace>
-> 
-> [   44.617726] Call Trace:
-> [   44.617926]  <TASK>
-> [   44.619284]  userfaultfd_release+0xef/0x1b0
-> [   44.620976]  __fput+0x3f9/0xb60
-> [   44.621240]  fput_close_sync+0x110/0x210
-> [   44.622222]  __x64_sys_close+0x8f/0x120
-> [   44.622530]  do_syscall_64+0x5b/0x2f0
-> [   44.622840]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> [   44.623244] RIP: 0033:0x7f365bb3f227
-> 
-> Kernel panics because it detects UFFD inconsistency during
-> userfaultfd_release_all(). Specifically, a VMA which has a valid pointer
-> to vma->vm_userfaultfd_ctx, but no UFFD flags in vma->vm_flags.
-> 
-> The inconsistency is caused in ksm_madvise(): when user calls madvise()
-> with MADV_UNMEARGEABLE on a VMA that is registered for UFFD in MINOR
-> mode, it accidentally clears all flags stored in the upper 32 bits of
-> vma->vm_flags.
-> 
-> Assuming x86_64 kernel build, unsigned long is 64-bit and unsigned int
-> and int are 32-bit wide. This setup causes the following mishap during
-> the &= ~VM_MERGEABLE assignment.
-> 
-> VM_MERGEABLE is a 32-bit constant of type unsigned int, 0x8000'0000.
-> After ~ is applied, it becomes 0x7fff'ffff unsigned int, which is then
-> promoted to unsigned long before the & operation. This promotion fills
-> upper 32 bits with leading 0s, as we're doing unsigned conversion (and
-> even for a signed conversion, this wouldn't help as the leading bit is
-> 0). & operation thus ends up AND-ing vm_flags with 0x0000'0000'7fff'ffff
-> instead of intended 0xffff'ffff'7fff'ffff and hence accidentally clears
-> the upper 32-bits of its value.
-> 
-> Fix it by casting `VM_MERGEABLE` constant to unsigned long to preserve
-> the upper 32 bits, in case it's needed.
-> 
-> Note: other VM_* flags are not affected:
-> This only happens to the VM_MERGEABLE flag, as the other VM_* flags are
-> all constants of type int and after ~ operation, they end up with
-> leading 1 and are thus converted to unsigned long with leading 1s.
-> 
-> Note 2:
-> After commit 31defc3b01d9 ("userfaultfd: remove (VM_)BUG_ON()s"), this is
-> no longer a kernel BUG, but a WARNING at the same place:
-> 
-> [   45.595973] WARNING: CPU: 1 PID: 2474 at mm/userfaultfd.c:2067
-> 
-> but the root-cause (flag-drop) remains the same.
-> 
-> Fixes: 7677f7fd8be76 ("userfaultfd: add minor fault registration mode")
-> Signed-off-by: Jakub Acs <acsjakub@amazon.de>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Xu Xin <xu.xin16@zte.com.cn>
-> Cc: Chengming Zhou <chengming.zhou@linux.dev>
-> Cc: Peter Xu <peterx@redhat.com>
-> Cc: Axel Rasmussen <axelrasmussen@google.com>
-> Cc: Mike Kravetz <mike.kravetz@oracle.com>
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: stable@vger.kernel.org
+> Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
 > ---
-> 
-> I looked around the kernel and found one more flag that might be
-> causing similar issues: "IORESOURCE_BUSY" - as its inverted version is
-> bit-anded to unsigned long fields. However, it seems those fields don't
-> actually use any bits from upper 32-bits as flags (yet?).
-> 
-> I also considered changing the constant definition by adding ULL, but am
-> not sure where else that could blow up, plus it would likely call to
-> define all the related constants as ULL for consistency. If you'd prefer
-> that fix, let me know.
-> 
-> 
->   mm/ksm.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/ksm.c b/mm/ksm.c
-> index 160787bb121c..c24137a1eeb7 100644
-> --- a/mm/ksm.c
-> +++ b/mm/ksm.c
-> @@ -2871,7 +2871,7 @@ int ksm_madvise(struct vm_area_struct *vma, unsigned long start,
->   				return err;
->   		}
->   
-> -		*vm_flags &= ~VM_MERGEABLE;
-> +		*vm_flags &= ~((unsigned long) VM_MERGEABLE);
->   		break;
->   	}
->   
 
-Wouldn't it be better to just do
-
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 1ae97a0b8ec75..0eaf8af153f98 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -296,7 +296,7 @@ extern unsigned int kobjsize(const void *objp);
-  #define VM_MIXEDMAP    0x10000000      /* Can contain "struct page" and pure PFN pages */
-  #define VM_HUGEPAGE    0x20000000      /* MADV_HUGEPAGE marked this vma */
-  #define VM_NOHUGEPAGE  0x40000000      /* MADV_NOHUGEPAGE marked this vma */
--#define VM_MERGEABLE   0x80000000      /* KSM may merge identical pages */
-+#define VM_MERGEABLE   0x80000000ul    /* KSM may merge identical pages */
-  
-  #ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS
-  #define VM_HIGH_ARCH_BIT_0     32      /* bit only usable on 64-bit architectures */
-
-
-And for consistency doing it to all other flags as well? After all we have
-
-	typedef unsigned long vm_flags_t;
+Do you think there could be a way to convert this into an automated 
+selftests, living in tool/testing/selftests/TBD ?
 
 -- 
 Cheers
