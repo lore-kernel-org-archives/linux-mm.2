@@ -4,154 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34FBCCAC5B8
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 08:33:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1A71CAC5B9
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 08:34:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7076B8E000B; Tue, 30 Sep 2025 04:33:46 -0400 (EDT)
+	id 078CA8E0014; Tue, 30 Sep 2025 04:34:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DE4C8E0002; Tue, 30 Sep 2025 04:33:46 -0400 (EDT)
+	id 029248E0002; Tue, 30 Sep 2025 04:34:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F4998E000B; Tue, 30 Sep 2025 04:33:46 -0400 (EDT)
+	id E59E88E0014; Tue, 30 Sep 2025 04:34:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 447B58E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 04:33:46 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E4B421A0617
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 08:33:45 +0000 (UTC)
-X-FDA: 83945253210.19.552CFC1
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 080F712000B
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 08:33:43 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XAokL+X0;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759221224; a=rsa-sha256;
-	cv=none;
-	b=O8tEP5fJHWNkE8a0GsdTw4KUBjFLi8lcPEsq8x+kFyafWO9UmkMxbO5j49c9acagwQRAGq
-	CPrbqoiL0L7M+lPPXpzRnmbUIMVNtAwsd/DaRxXjnNq5+q/Hf605Kp5ec4PeDs3pFx5pfb
-	pbeg9dQ+bwBWqd3eazunro1oLaMHNb0=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XAokL+X0;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id C7F608E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 04:34:33 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 95282160452
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 08:34:33 +0000 (UTC)
+X-FDA: 83945255226.03.B5183F4
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 3F935180015
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 08:34:30 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="mrLA/ulE";
+	spf=pass (imf24.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759221224;
+	s=arc-20220608; t=1759221272;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bBOPU6N+QlAarzu9LlqnD6xE/6f1CWCmb96507SlQ5Q=;
-	b=WsMBovItgpYATHGlElrgSxn8ACSbzFpcGXjEiz3Ag/16lLXb0xGyxAm6I9zMEd1L4fRogv
-	TAq/vrFBI9OldU8OJSX6jPLVm2GSmexrS62saKUDtggXNgho7gBySH9UGTYbgD8iTFkJ5e
-	+FwSRWKjRDdv4ChxSXwaOsW30DBN2mc=
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-723ad237d1eso59717857b3.1
-        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 01:33:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759221223; x=1759826023; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=bBOPU6N+QlAarzu9LlqnD6xE/6f1CWCmb96507SlQ5Q=;
-        b=XAokL+X0PsDrql7hGkhEigmVzZ5HfWsa3QFHEPebmzLvoTchs7/LIX0O4Cfz2cLksE
-         mBKS6/Dtmf6B75/UxrWIiQK0V7cI8LBvOqxBhXiK3mZepCdxLB8b9fhOCeBPJbUmDmRZ
-         XKnqOoppwdkRpLFZa7A8wB7w9kqgSG+hiwM0jPcNG7zbXPvJON9jcXIC8boFvJjC/rVv
-         dPzOVf8DUejBbbu/ahgdHB6ZtZgI7zkBarmv/JHWXZiLb7JeCe/D4oFq4iTDaDGN+ze8
-         vNLjVfeFua7rsRPqhda79/c5J7uhwBN7NBHWI8b57aSKnts5Uv8FHeaesz1SeKLQ817Y
-         WxWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759221223; x=1759826023;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bBOPU6N+QlAarzu9LlqnD6xE/6f1CWCmb96507SlQ5Q=;
-        b=joKafLBMrgzx+cmfraIsuFCegbH/6jXTigqS4JUV+gahHkAWXwmzRFLTwZh4hdnrxz
-         Wh3VEbGkvXBxO5CRu2/TJPGxqTOYb9Jajrt+v6VUehaPX6JdrZAAY13NO6ZbPuirx88U
-         PBWCF7CdsfF3Se1HGLFrE+58uIJUbTUa289jtjhcWUQZSdsViZzSTjAHofoQT+QZK7GR
-         +pECeckV9IiZMo7xr+nReBaYikPrR842Sf9WYx0Xza3L0cOzDM0H3dMK2eTIXsXW83qs
-         lOgdj53wdlkrQOvfUTXvBo2R0g0TXp41kNAB6LYcy8q6IalfyEiyAO7F8kR83GcIamnh
-         3Aew==
-X-Forwarded-Encrypted: i=1; AJvYcCUD1a+7Oa/Ds6gc9ha2FsFrKAO8ZwU8E4Wz6PMhLBnHCjD+wz79vwuqXR0x2WJrucc3y+7PorwDTQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy5yQi69qnzalHWpJC1YO712lH2qepdpuWLWDH3a6AzXps7BogH
-	Jqhkt9nWAu7AGxLXA/g21MP/OfzAjnD5u0Om09d/fI2VYpj/ONM3NzMZ
-X-Gm-Gg: ASbGncuVDKVURxc21juTgqCn/eveWFaT3Bbqqd1BewAbgN7eT6Knc6lPQEqIj4XOqtl
-	aPsDAripWy11NG3jwvVB3lDpG4W/DsaW5KUJDPy0k7ipbU0lt0DKEiQsl+IdhAJm+JKCFwVl2LK
-	V/0wtwx2nlQGl5SIJnqCHPuLfXzNhu6sTsDJls8avowkWs5fESPp+ZAxTcdz3bp5BylQ1T39bzn
-	38RUYH7V076pZBlZsUomdERRUcMuCaMbMB6a38X70IwBRX+sdzf0CkkIVmyts59jOdRdgOnJF9x
-	UdqrAxWDf5KKBExsvUvoKQ0aLYgzsXia3bT0ej2nxr65uaWTTK/yrn8DdwLiFCvGxJ+jpY2LSX4
-	ysoTm4fAqhTibpsCRMCF8GN4MjRkjId6ufXwNNtde3Tvyq0ck7uSypavN8uw8cH1G7Kzk
-X-Google-Smtp-Source: AGHT+IGdR0AHEeCd0GI8ArsMTXFyr2HmyKLRFM1XYpy12MOYMkBlzY/X5jDZtYeuuUkt/8DMB9hqmQ==
-X-Received: by 2002:a53:d015:0:b0:635:4ecf:bdd1 with SMTP id 956f58d0204a3-6361a8d4824mr21581008d50.51.1759221222864;
-        Tue, 30 Sep 2025 01:33:42 -0700 (PDT)
-Received: from [127.0.0.1] ([45.142.167.196])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-636d5b1d875sm3280311d50.10.2025.09.30.01.33.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Sep 2025 01:33:42 -0700 (PDT)
-Message-ID: <7530d25c-f4ef-40bc-9ac8-40de4abe3960@gmail.com>
-Date: Tue, 30 Sep 2025 16:33:14 +0800
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=oJNprfTnzFv5j3p9LJM1lYVBmez2CLiJJObfY5Wzdn8=;
+	b=joqi7GkvuXPjDHx94rDYKQtwjFOseRu5jJCa9jBlq+pZvtHfFs+02dN8Y6yo6phTJLis6A
+	IIi3xG5CX7KgkjQ/ZnBJ6oCEiRZzKyqaWfblxUwloIDwVsWY20el9JyYzLZW8m2Xx92dPS
+	ujE9uf4gqSZoIxfK6lZ2Ux7JY/DGHvM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759221272; a=rsa-sha256;
+	cv=none;
+	b=cdLd4WAwkC/7q7Il6U9GMudn0nJz56KiDb7blgwrSc09Oz9tzTwDLJ2FmwnSoAFPwOcbeR
+	mgkpkWW0bvwea0EqAAjFXU9kZpGHkLFPk9BtUeF/X199ArqSvlqvThhU8sUtGjOs8qpWNX
+	vdlS+CH/5cvT2Krv/jqD+IuYVmf8R3k=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="mrLA/ulE";
+	spf=pass (imf24.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=oJ
+	NprfTnzFv5j3p9LJM1lYVBmez2CLiJJObfY5Wzdn8=; b=mrLA/ulEE/SybplfoZ
+	V2zyco/irOXroNPBHhvIRLEV8CIpqPOkAdN6fZs/FoLTDknPXdjPjRh7qb5xhFb8
+	GKZbc9gwWaClSMpafBhxB2Tc72NvFtHKYk+8nm+ODmuVGsYYJmh74oQPbNJvNU3P
+	kA+BHDcVnuD9Ulfr3n25ueUr4=
+Received: from ubuntu24-z.. (unknown [])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wD3fz78ldtoiyG8BA--.62130S2;
+	Tue, 30 Sep 2025 16:34:05 +0800 (CST)
+From: ranxiaokai627@163.com
+To: vbabka@suse.cz,
+	akpm@linux-foundation.org,
+	cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	harry.yoo@oracle.com,
+	ast@kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ran.xiaokai@zte.com.cn,
+	ranxiaokai627@163.com
+Subject: [PATCH] slab: Fix using this_cpu_ptr() in preemptible context
+Date: Tue, 30 Sep 2025 08:34:02 +0000
+Message-ID: <20250930083402.782927-1-ranxiaokai627@163.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 21/23] tools/ksw: add test script
-To: David Hildenbrand <david@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Masami Hiramatsu <mhiramat@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Alexander Potapenko <glider@google.com>, Randy Dunlap
- <rdunlap@infradead.org>, Marco Elver <elver@google.com>,
- Jonathan Corbet <corbet@lwn.net>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>,
- "Liang, Kan" <kan.liang@linux.intel.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Kees Cook <kees@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Sami Tolvanen <samitolvanen@google.com>, Miguel Ojeda <ojeda@kernel.org>,
- Masahiro Yamada <masahiroy@kernel.org>, Rong Xu <xur@google.com>,
- Naveen N Rao <naveen@kernel.org>, David Kaplan <david.kaplan@amd.com>,
- Andrii Nakryiko <andrii@kernel.org>, Jinjie Ruan <ruanjinjie@huawei.com>,
- Nam Cao <namcao@linutronix.de>, workflows@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com,
- "David S. Miller" <davem@davemloft.net>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- linux-trace-kernel@vger.kernel.org
-References: <20250930024402.1043776-1-wangjinchao600@gmail.com>
- <20250930024402.1043776-22-wangjinchao600@gmail.com>
- <3ed8a6a5-9983-4b9e-bae1-4c433568de16@redhat.com>
-Content-Language: en-CA
-From: Jinchao Wang <wangjinchao600@gmail.com>
-In-Reply-To: <3ed8a6a5-9983-4b9e-bae1-4c433568de16@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 080F712000B
-X-Stat-Signature: jaiwrwamq7byhqkc4n4bazwpqhbzky3b
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3fz78ldtoiyG8BA--.62130S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ZryDZrWDurW5Wr13GFWrAFb_yoW5Jry3pF
+	Z0g34DJrs5Jr1qyw45tr4Igr15uay5W3y8GryIgw1SqFs0vwnrJasrAFy7WF15uFy8Ja1U
+	CF4vga4Yqw48WaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRHv3UUUUUU=
+X-Originating-IP: [117.176.243.111]
+X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbBEgHYTGjbks5yFAAAsO
+X-Stat-Signature: wdcpar7bzsbni69b69useky4oiin5mbw
+X-Rspamd-Queue-Id: 3F935180015
 X-Rspam-User: 
-X-HE-Tag: 1759221223-949439
-X-HE-Meta: U2FsdGVkX19q9uMIlVlIKlNOVFHpI+/xB+wG6ouWYdIz3MmW2WCQ6l+vfVQN6c7BVtd654Ozi9bmmiwPmdVlXhnsWFuLvuHPADT2M1ztIiWdHva5D/m+HmArvuKyiysv9aM1HuHnA0lmWNGRQw1yYFRWfcnLjI+3V+HClu2BgiT8wO4rRPts7843FZvKh7U66cR82KvS6rm1IvcLKqVY8bnbpwaIeR2BbjzVZ2dxNKookZ8ldU8WiNMoP2BSKtRUIsR9fgirhNsFa5gsOSpuZIBxa/aTGXlP7uv3PYBXdGAVXlxAzBJDVz+FrUbiBu3skE13wBZMhBe2sKaDD5fpyAhRiDWhKv413d65qrxHEjBVK1JkQAFFa7qhCYFdotGZ/LVuff5PXf0Ma7BHai7kfuxKtQgm5sxv7eRvV/CAdSgOvaf0CPvioTJSICxet+D2XCGYEEOwsSKSNuVJ0EqmgpZhUh90regLR8/hD+ceFGEnbop/FEaIJBUA9okaeh9XU3wAEfAUz9WXyP6carbgZUjy8x5GIMbQBPPeLIRz4UJba5dmRhO5dxjWuu5ai+yv/mebJ8o5ynqJIOM3rUyA5nj6MQqHhhsq6ZF9vIYB0esvqsAeIbdl4Zle1e/an3qunPwG4oDhDnebPbT2PIwWsF4qCUq7H/8nxyAso9q7jjehDB3pGR6IWTkshMnKvgFBsIXdYnriYTbtv3q7MslKJs99ip0jJN5rKF1UiJf5gAj0Psmxml7OdQFE40QMUAXheoQkrei9t1aEqPcIP83GGbzp0s+t/fEGRebSbAyB1jmztG1/HeX8BXCji5azQJWLKMPOATIMRh9iliql0cg1xpGVZwpF6YiIbs3LsnA1MdU4HvqNwc2Dy+40PWTKPe3Y0heXdEOfdzbSZbJuBwce1MslKf1R6HOVr/OEFIZqvq5NjKLVi4e7FxlMFdQcCmRHnuSyWVsoq9qVQZjEzKg
- CaCSG6CW
- wWsMPpF8WD1dRLrc80F2C+A/qVLUeP+tAZihTnlcW7yYfBvhIVQqZSyKas4/8j0zdgdCn/OhywFjKKNLg/igV+O6URAPn1E6CQfbJFm3XMxju+vRugKO0W29y/H8QOKUbNjdEdPT0xwB8OZeGf3neTkjdU7HDpLxnxtBDiBf59X7Ty1UXr8EEvTpzSWI3iv5ZNBZbeSfSIF0SGpIepaIKpvRo5yVMnl+a3aYeZFKln1esJtkErhYcs7iuJULpMajBSzv8RqxTWeWPDA4SeZ/PI48gWmrRIWPdo98dM83yzTsEd+rTwFlHAPCXfbyE5lww/NzWuIXFBXYkkLcUEvSd1tpSFh0zQhRKvj/rXMVOsaes8V+N+MCJ+V9jZ7RY39vhAQ4NmheXZx34yfDoGkq0cXAjiSVCpumVx6zetp9cvov34edkEum/2Sxo3Xm4L7SxERDzKC9Yfj/PlHR7HDcl/QrvnbM77a4ecEFAo4le0BkibCAaSN7nYa6D+f4rxMJL6q87rs+vZSkBZPf3fAg16WNsXETfjwgcDRU8cqj4SOTK2rgMrqpLwy6NsvAFasHaRqU027vPv4uv0JI372e8WFA2Ta9Z84VGL0uV
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1759221270-305377
+X-HE-Meta: U2FsdGVkX1//38Q4R1HHJdKAnvzWosylyo+RuPXwoICfV+CAt/0R77Mh9nvuDCc/TKwf1tUET3oY3IuuB3BfxY/dN/Z16vYq3S1qnL5TjPDPTzb28EaYQEbDWrROjkCcRi0gkSGDfhxvyiBC222rIq4eAW2DNSPpa4zVFuR44sFIvumzKs3sLi8TLAcSL6WfYPNj4DHOjDS8D6sjulPZxu21oXRRP5KTt90Ylck8In8pkVvcOXImlwjBbmisUI/7q6JvBcmcwo668LhPiRae/NRmq6A9nybw6jmny4dfsVob8ARq0d0aY3azs5LfPVnRALpu2M0BPWoW8gU2Bi1ykRLgKx3NC8++8PhwRb5aVO5Yypn+sf0pEw8ZOOnZE7zx3RyzpV2iT3i8mtwufbuMHcu6ewuMnNnPwCQKwSVMvpF/M51bICFbjjQrbKZ53TIrJEOR6shNxFm9LwhYkmChTkaokF1Yvew3qpPLkfCQHtTbi4U/qrlrPf1QqiOM77QyM5kvliRDsPqHbSON+spj1kDpv1bkxAHGozTzm/bf47S3wWDlphsc9R4KAkk6BolJQuTARKKesmUT0oyBqd10Uj4mnIVHHL9ffxUXQj5hhw7s23OGN6eFJ+5OMV7i1XF3EdkX0SFcYxAcmhFrt9wn8Z/SkQkXIoFPWSUN3r1EmsV4b6MMIOwei+go70Xfl2vuopY5Dicxe9B4N2OVA6Y7x9FYrq0nZxwwO1V7tBj3EMCup634L/ULwK3iM/3g8UfdbTtMphl6HRj8Kgm6HlsP8HH4sbq82XbCOl9nLZcjI/qB2Yu56XVfv2uSUN2a3efvmetiEOQzKi3snVM494p5TfUyWtNhIAzahHwC+6HFwyt9TxYtShnoRN5d8SscLvFOzfvwFlqYo1zPfZUnK+JFkZu33S6DpPI0fRpkusIvcLsJcBo6Hg78ixqD0P7goG+vIbCDZekl2Gro91bt4kM
+ LZZzgQsX
+ g4NlsLylegFB8lNbEb2zmAjddm6QeqnB9d7UkJ+e1IVL3j45JrPAh9sfuO7ubW1zZV99+g2Vz/7N0c3GWvQcacuWKQT27R2PK7gvhhdbsztN3SBiQLyh48BR0/LT0/eq+NJNgFwGLg4Qeh2Z04dYShi0DC9Y+RZ/8vzV7ZCQQl60V+fv7wui7zrWX+MY+zeGvA3d00dpyvJ7ioOXNuzZUXT5g+fqr/N0Rq6+NnKpFKiJuStIItAzC4LSNSfdDkCQzlgrnq3MGTN/LddwuExiYqQavrOJInHyu1fYrZd9SWFdDM+FmCeOWVBNALSunIIbLu53qpY5+jYppKPiKum0A7cULFCI+pVrPR/K5m5s6XyRG8pM+nbShVDU1TxEDM/ek2OOaNxZ6wiRN3IyX9+W5ly0jclJiLQ1AfsYKQdMFTG2DbBiY07kFccQAgDKD96rDz72A
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -160,21 +98,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/30/25 14:49, David Hildenbrand wrote:
-> On 30.09.25 04:43, Jinchao Wang wrote:
->> Provide a shell script to trigger test cases.
->>
->> Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
->> ---
-> 
-> Do you think there could be a way to convert this into an automated 
-> selftests, living in tool/testing/selftests/TBD ?
-> 
-kstackwatch_test includes 6 cases. Because KStackWatch is aimed at
-debugging stack corruption, several of the cases intentionally trigger
-kernel panic. kselftest is designed for tests that exit cleanly with a
-status code, so these panic cases do not map well to it.
+From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 
+defer_free() maybe called in preemptible context, this will
+trigger the below warning message:
+
+BUG: using smp_processor_id() in preemptible [00000000] code: swapper/0/1
+caller is defer_free+0x1b/0x60
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xac/0xc0
+ check_preemption_disabled+0xbe/0xe0
+ defer_free+0x1b/0x60
+ kfree_nolock+0x1eb/0x2b0
+ alloc_slab_obj_exts+0x356/0x390
+ __alloc_tagging_slab_alloc_hook+0xa0/0x300
+ __kmalloc_cache_noprof+0x1c4/0x5c0
+ __set_page_owner+0x10d/0x1c0
+ post_alloc_hook+0x84/0xf0
+ get_page_from_freelist+0x73b/0x1380
+ __alloc_frozen_pages_noprof+0x110/0x2c0
+ alloc_pages_mpol+0x44/0x140
+ alloc_slab_page+0xac/0x150
+ allocate_slab+0x78/0x3a0
+ ___slab_alloc+0x76b/0xed0
+ __slab_alloc.constprop.0+0x5a/0xb0
+ __kmalloc_noprof+0x3dc/0x6d0
+ __list_lru_init+0x6c/0x210
+ alloc_super+0x3b6/0x470
+ sget_fc+0x5f/0x3a0
+ get_tree_nodev+0x27/0x90
+ vfs_get_tree+0x26/0xc0
+ vfs_kern_mount.part.0+0xb6/0x140
+ kern_mount+0x24/0x40
+ init_pipe_fs+0x4f/0x70
+ do_one_initcall+0x62/0x2e0
+ kernel_init_freeable+0x25b/0x4b0
+ kernel_init+0x1a/0x1c0
+ ret_from_fork+0x290/0x2e0
+ ret_from_fork_asm+0x11/0x20
+</TASK>
+
+Replace this_cpu_ptr with raw_cpu_ptr to eliminate
+the above warning message.
+
+Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
+Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+---
+ mm/slub.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index 1433f5b988f7..67c57f1b5a86 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -6432,7 +6432,7 @@ static void free_deferred_objects(struct irq_work *work)
+ 
+ static void defer_free(struct kmem_cache *s, void *head)
+ {
+-	struct defer_free *df = this_cpu_ptr(&defer_free_objects);
++	struct defer_free *df = raw_cpu_ptr(&defer_free_objects);
+ 
+ 	if (llist_add(head + s->offset, &df->objects))
+ 		irq_work_queue(&df->work);
+@@ -6440,7 +6440,7 @@ static void defer_free(struct kmem_cache *s, void *head)
+ 
+ static void defer_deactivate_slab(struct slab *slab, void *flush_freelist)
+ {
+-	struct defer_free *df = this_cpu_ptr(&defer_free_objects);
++	struct defer_free *df = raw_cpu_ptr(&defer_free_objects);
+ 
+ 	slab->flush_freelist = flush_freelist;
+ 	if (llist_add(&slab->llnode, &df->slabs))
 -- 
-Jinchao
+2.25.1
+
+
 
