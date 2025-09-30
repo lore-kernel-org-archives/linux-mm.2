@@ -4,102 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA2DECAC5B8
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 09:22:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 122D4CAC5B8
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 09:23:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A65A8E000C; Tue, 30 Sep 2025 05:22:14 -0400 (EDT)
+	id 6B6FD8E0003; Tue, 30 Sep 2025 05:23:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37F428E0002; Tue, 30 Sep 2025 05:22:14 -0400 (EDT)
+	id 666C38E0002; Tue, 30 Sep 2025 05:23:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0237B8E000C; Tue, 30 Sep 2025 05:22:13 -0400 (EDT)
+	id 52F1E8E0003; Tue, 30 Sep 2025 05:23:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DCE7E8E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 05:22:13 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7CAF211A9CF
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 09:22:13 +0000 (UTC)
-X-FDA: 83945375346.17.DD75EAE
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 067DCA000B
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 09:22:10 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	spf=pass (imf15.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C2248E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 05:23:30 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8192F160676
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 09:23:28 +0000 (UTC)
+X-FDA: 83945378496.24.81EEEB1
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 1D1BFC0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 09:23:25 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BQXtqijk;
+	spf=pass (imf10.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759224131;
+	s=arc-20220608; t=1759224206;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=a9azlZKSi0tNyM/ClSPY9rn3tcKKqR8f1zLkNmcpz0Q=;
-	b=nvP7U4DPBYrlHiHPKTYlaa9+80PSX4rTjPkg3PZ0X/3JH4nRsotEg5ql5TXRY+rNgrrHi6
-	iRhE4DU53nZqra9r8pOjD9und/rP4Ccr6r29RSGqfEJVs9y4oT21zxFrEnG2xzltsBUmII
-	x0gvQYcSeao2h249MLVqrLeIa0E83+Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759224131; a=rsa-sha256;
-	cv=none;
-	b=YGKf2CO3a1G8dudjbzk3gz3RuTFiPTvGAUti2hi8ZNJI15yF/spYi5JmNUVBcD3Ci10gTm
-	K22xCAhYeTV1Z+gVb/U1BPSG57RUBnBneQ/NOUAY8Lm8hiNmEH/cFzmnfZzsFdDZneZecb
-	IPUhFj7PmcE9xSdPPkLYdwO82gtOMvI=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TVTRRja56NKyfYmtJWa6t4niAYLHaXsYHEoVzq9agdk=;
+	b=E01wrogPDlI9JL6iK2H2K8gWRXZx1DASBe70iLKC2nDZpU7Xl56fopMxtQ4jpl8kbpj8GU
+	FOMf7slEQ3Q8DVaOXbY77dhSCf4mzcIW6SdchnYNpSInceWBpsWBWSEGTNxc6kt4gu8RAD
+	xxZA5tZBGMtAgJPCwiFnUprde5xEDsI=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn;
-	dmarc=none
-X-UUID: ec5771ae9dde11f08b9f7d2eb6caa7cf-20250930
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED
-	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:59d1ce55-b7b6-483e-b503-62d061f3287b,IP:10,
-	URL:0,TC:0,Content:0,EDM:25,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:30
-X-CID-INFO: VERSION:1.1.45,REQID:59d1ce55-b7b6-483e-b503-62d061f3287b,IP:10,UR
-	L:0,TC:0,Content:0,EDM:25,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:30
-X-CID-META: VersionHash:6493067,CLOUDID:c6ed15d43f0769bedf10a25675148f30,BulkI
-	D:250930172204C4MEKGXS,BulkQuantity:0,Recheck:0,SF:19|24|38|44|66|72|78|81
-	|82|102|850,TC:nil,Content:0|50,EDM:5,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil
-	,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:
-	0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI
-X-UUID: ec5771ae9dde11f08b9f7d2eb6caa7cf-20250930
-X-User: husong@kylinos.cn
-Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <husong@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 912808686; Tue, 30 Sep 2025 17:22:02 +0800
-From: Hu Song <husong@kylinos.cn>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>
-Cc: Song Hu <husong@kylinos.cn>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] mm/page_owner: simplify zone iteration logic in init_early_allocated_pages()
-Date: Tue, 30 Sep 2025 17:21:52 +0800
-Message-Id: <20250930092153.843109-2-husong@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250930092153.843109-1-husong@kylinos.cn>
-References: <20250930092153.843109-1-husong@kylinos.cn>
+	imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BQXtqijk;
+	spf=pass (imf10.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759224206; a=rsa-sha256;
+	cv=none;
+	b=MrXu8daJza/f3Y+HGo24923d2go5cJvG4S+SSOEEq/LbiXli0dSLE6EXg4NHU8FAXYhXGs
+	A48cNdURfEcMdpXgukEdzFTNcncpiPdrqdpagswaZXk9gYol0rEjQXAnuE4CpJpk5tXYYj
+	dw94MbN5i93wknWi1RzPYoUjtj8q1Ac=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1759224205;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=TVTRRja56NKyfYmtJWa6t4niAYLHaXsYHEoVzq9agdk=;
+	b=BQXtqijkPj378dABWJmeBpc4v+BtH0Oiu4evEAXeYMI6R2Fky3nRL5tvgFIt/ymV+N0LJb
+	PpaoFMHHUO6C+4VWIaBqsPW9lmiAMcoaaJW4geSca87kW5swb1GopeunDCZa2Vd3v1mYBk
+	j9JSnO9+D1BCOvZkF7kOOeVipwCjsFA=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-20-QGhGmM79M0-KKlPs36rY4A-1; Tue, 30 Sep 2025 05:23:24 -0400
+X-MC-Unique: QGhGmM79M0-KKlPs36rY4A-1
+X-Mimecast-MFC-AGG-ID: QGhGmM79M0-KKlPs36rY4A_1759224203
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-401dbafbcfaso3882907f8f.1
+        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 02:23:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759224203; x=1759829003;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TVTRRja56NKyfYmtJWa6t4niAYLHaXsYHEoVzq9agdk=;
+        b=EyawZuQaSjY/Riw9TruNoXukSEB5VI2zJCBxwQ0TRqvNUrsiYaIDlsrpNUZcd4+JNr
+         TaFBMxXoCi1kN0SC5ol/Ij0B8xNDR7dcBNi/lxyB6JUM6WJSaggj4t8fM06a+p+Mk/u4
+         jqQ9MHybQef8XVq6lsRljkF7MUmCUvJhnbLB0s4wx9+/TDp0680kfBofvWLBY8vP9frW
+         qIjIzitl9Zwd2xgi9i/Nu6GPpXSxfgq6VEtQ9IIHsBgypcl7yI+xVHgXDX+WcNygqAd4
+         9tItTdMLb5U++TB6XVdAuyASeW3AUU2CpwoLqGaGiSmXT7cfXzIN97KYyiMaLDhfnYvj
+         SYbw==
+X-Forwarded-Encrypted: i=1; AJvYcCUCxxA1+7+4/JncY/0i+PjWRh/egoQAj57wy+cFgtv7l4jr2/aAjV0Neh062+pzY+bQaMM2va7vcw==@kvack.org
+X-Gm-Message-State: AOJu0YxENtTXDxSD9A7CQrGGGuaMvDCSodYcK1tBC8uJxVjlwR1z78ar
+	Fh4VYuVvhCfjCV2RtMHeNMdwpjeyjdVDJFAWwuhusyF60tnos+MmS0BEibSlu9x3ROHDzeYG7b0
+	MpNZ9vduqLXyq2JfJtPxOUV9btQhl4pwDMmH5h1eKEBUthFovylv8
+X-Gm-Gg: ASbGncuv6Re9eO+RK5TInOa4Ts/05R81gXeCoi5D1m1NQ879BS2ZlUS4CTdx8+vU8cL
+	4nJvlsgfCrChruqoQcxiiyGFLZarSCPLT7GygDQS+Fv+h9xtavaVnTW/DIj9T91Rr+vmj0h6SHk
+	GXKsXHwlHwa44H8DBfhbHmNQliA0w5BOauvoUocN77slVopgPkWh4AqQUjfJgonpgBUE8RqtgAu
+	kUCy/mipi8QPEL/zzkHKXmInEef8tTolSxTWqeshho4OP6I975np9eDb9pZISHD0jt9JwEZWkBw
+	7/jEU7QteME5pGlre+psNT4vV6OMPRbpL7t+3lkPLQYeZlOYpDuB9x9epmFMOe9mVCkeXG4rxxb
+	v+9UMOew1
+X-Received: by 2002:a5d:5f45:0:b0:3ea:a496:9ba8 with SMTP id ffacd0b85a97d-40e480ca410mr18003942f8f.29.1759224202715;
+        Tue, 30 Sep 2025 02:23:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF8kxKym0XL78KwB0qdyY+0naOZrFtENcl3ZdbfIV0WoqTUk+yahydILwO1rCp3XZnwKFT+lw==
+X-Received: by 2002:a5d:5f45:0:b0:3ea:a496:9ba8 with SMTP id ffacd0b85a97d-40e480ca410mr18003916f8f.29.1759224202270;
+        Tue, 30 Sep 2025 02:23:22 -0700 (PDT)
+Received: from [192.168.3.141] (tmo-080-144.customers.d1-online.com. [80.187.80.144])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fc5603381sm23402858f8f.31.2025.09.30.02.23.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Sep 2025 02:23:21 -0700 (PDT)
+Message-ID: <0a60d99b-fa3b-482b-8171-ac63dcdf3168@redhat.com>
+Date: Tue, 30 Sep 2025 11:23:19 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 067DCA000B
-X-Stat-Signature: norzbiptiyjycuthedh9ztde7wxtj8bt
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/4] mm: Apply vm_uffd_ops API to core mm
+To: Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Cc: Axel Rasmussen <axelrasmussen@google.com>,
+ Vlastimil Babka <vbabka@suse.cz>, James Houghton <jthoughton@google.com>,
+ Nikita Kalyazin <kalyazin@amazon.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Ujwal Kundur <ujwal.kundur@gmail.com>, Mike Rapoport <rppt@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Andrea Arcangeli <aarcange@redhat.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Michal Hocko
+ <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, Hugh Dickins <hughd@google.com>,
+ Suren Baghdasaryan <surenb@google.com>
+References: <20250926211650.525109-1-peterx@redhat.com>
+ <20250926211650.525109-5-peterx@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250926211650.525109-5-peterx@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: oN3SnbdC0u3FOiMxDQxDI6jvoUOesfms3AOP0ODcjqk_1759224203
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 1D1BFC0002
+X-Rspamd-Server: rspam05
+X-Stat-Signature: nybwmbkhqmarh9hs6nm8yy79o1ufsmuu
 X-Rspam-User: 
-X-HE-Tag: 1759224130-13363
-X-HE-Meta: U2FsdGVkX191wqvrAPDy53JGxoHVS4HE22KgLvU4ZrdVYk8eUzzu5zKZCl1clVm8gOEGPxDWtXhLtPmUs/rhNl07p6KXF0+NRHbfKRDZH5/MuZ8BTq1StH7bZXLIjEUMSN3ohm6HNrE3s++4AAbMkYnWN7BAwyKca2dyWms03Cc/f8/2sGjnycNgnVut+/Z3I+oeHqLaej1RLr3VG17FAHcaraTA4KvuzDGbmkrr3hXV3r2akANgff6SJNfoOLmbJkHX7reIB0lW20k4wIjqKQC8Oz8FDq5j7Lol4sO9d9Gow96ygYF1E+/oFGCIWiv40X4TmZkBLDl6s0A4Uk2jw1r4klrvdQBsFOdS2qEKTdAIy4K1J6OK4uxYjWxTErJNSti0lKu8ix5gv1pF8c+ltFbGC/woiyak2LjRbwgKadJFr9HQU17Psz4dK4Yziu6H++NVMRjSC4ZAewx9TR3Appz0Hlh0p88S3YJrdm5Cp4axP77+KN2cqwMvfN27nIgh+856I86gdAacc4lkaNGbAdH+4X0TBFp/Bvrtkpp3BYeP4DL+MCU4S+igFjypAotMSfqsOhKfu5DndhwojqtZYkhVxUxwCJcuIwdUs1gJT4THJsljNF6bSxnrVIOUabglzFYjZ1K1fhgtC6aATQ7PoQcCWr7jYCy22H6/OawHnHXycmOHnR86Z1emr88ZFH79O0GcMInoupt2ibW0HGfAH/ftnCdcbpgERLxX9b5P30TbExbJh9sXLyKSLzKdz3003BkdRQYAw0KhYbrq/ANF9PLwfyawNNN8Sqhl8GLk1TjLKAWrt/+csw==
+X-HE-Tag: 1759224205-508967
+X-HE-Meta: U2FsdGVkX1+PGnoQycPqezWVs5HqbQXmc8XyxtYxgFF5wn2wG70qKLzS4QOpJED2jtEXKQX0ToZaCJojV8psC5srhwRU/Z8UC8nGqpQfnjLu5jv1zGUORyCCrXlpoT7XS3NUBXQyWjLmfauGkPQ/gvLxOCmEKtv/7ED6ELFcl9NnhINPhtpVDgdx4yhDYs0zJx/YcpgEgQ8vbCegzazBTyo5w6eG5wgwSCq4ZSH97q1WuIlTxOfQTAg0aor/PDOkguhZXAoArGsYC6ku7XxDM4HSkBzinkfrrD3vUFl8J1WnSIXzqJZoiZIFrijeXwIpEnoGTACM7XoRehfq22K07FjDrmBUMJwl45G4sXqt2W4mtyUSZgA10D1i7lfPZpuJ7Zq47tZsmhuBvm8sE585/cjKrStCeVBvtmVXwXzUhtyJ3kk9+9q9kfFLZrNJTKJi4B2juhnkzGlN9kP9XUTOcBTUcd3w90uj010ETCclP1O9SGtrOuencasKAlVALHFkwac6hfh4Sh1yJoc/DkTyBdhF+xVOzQOM6C+QYPZOtEpicbnt4HyynDWkBdr3H43UJo+xAzBpHWGVCJ5HhSfGDGyFa/5KE25QKNsQJXdWBwCx1T9XmVbTogFl1w8T3saeJSQhsI7Rp1ffoH7idWbTdP9HrzFfKBVsBPF+hBKDEaAwrnEmwcpaa4oHjGe9jA0bQ51sJLlu0V+AIjQZMIF2XQhfe/M8hqovMamkelPcvspyMpuivc6VmG68osXOU9cSAxNipRayzoPQ3b4uwaKJaTXC6BRGI9gUBd3X4p1+ZvaSczeC5/9XB19eKTlCONRO4EGWGY8raiXNJYFguXFiLtVJGQah5bnTCoIyzAsH+6EYJ8IwA15jW0B5sUAFDkNo32ttU0ix1Z8VgGh5mCDZuXUYLYXaXIjid7ub1Jw4m4ziE3gqBuBtuJW5SkTdolMEOR6LwSwGBoGdz4IBZDW
+ wL7YJ1wJ
+ Rp8GMP8BD4PT0HtIG0nTWOpbb+1y1jFO3l9G+C6Ru6wa8aEmMjCiKUd7N6emweGU6P7OR7J8EAKJEgoTkBG91cH3pgzW6jiLzxMDVbmeN08yXaBVjoi5eaXpGy+RgggahXmzivKJ5+9rh81iteO5jrd+Pi+ZPeh60uuXvpeEEIsVpG7XqD5hEmCWxNFSk1LaOe9Fcqh/10jrHupeRDaSexN404VoTLydK0SrJ/VIGX4nekN00gifwXQU6ncFqX9huT5pB7SvCo4O62hEcpMmp8nlTKLHOjL6vOfsCWHBKFAyt7vEGZjCBFWKEq2pRWM1yKbpLWnpoXWETxDMMwXhBo+Pv2/THhfGHIvtcZEn6C0+2X/HgbiVSqHNJTrjT82PPWDQRhMLS68knmTlHm3HecylSO4BVxPKjqjilb240Q+cd/vBJI1sEKUbI3UPfp/gJgmk4itS1oRoWAz5RqMvT3Gq3XxCABGEMFL4JquUOAY2S2KcCKrxI+XqszCPvZb4pEQtQ4i2dE0miCxb4fUAt7GiJT0v3+DeNW9ER7g0pwuQ9XZHyhdzSulFJMS4kk/o8lh1W
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,74 +187,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Song Hu <husong@kylinos.cn>
+On 26.09.25 23:16, Peter Xu wrote:
+> Move userfaultfd core to use new vm_uffd_ops API. After this change file
+> systems that implement vm_operations_struct can start using new API for
+> userfaultfd operations.
+> 
+> When at it, moving vma_can_userfault() into mm/userfaultfd.c instead,
+> because it's getting too big.  It's only used in slow paths so it shouldn't
+> be an issue.  Move the pte marker check before wp_async, which might be
+> more intuitive because wp_async depends on pte markers.  That shouldn't
+> cause any functional change though because only one check would take effect
+> depending on whether pte marker was selected in config.
+> 
+> This will also remove quite some hard-coded checks for either shmem or
+> hugetlbfs.  Now all the old checks should still work but with vm_uffd_ops.
+> 
+> Note that anonymous memory will still need to be processed separately
+> because it doesn't have vm_ops at all.
+> 
+> Reviewed-by: James Houghton <jthoughton@google.com>
+> Acked-by: Mike Rapoport <rppt@kernel.org>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
 
-The current implementation uses nested loops: first iterating over all
-online nodes, then over zones within each node. This can be simplified
-by using the for_each_populated_zone() macro which directly iterates
-through all populated zones.
+[...]
 
-This change:
-1. Removes the intermediate init_zones_in_node() function
-2. Simplifies init_early_allocated_pages() to use direct zone iteration
-3. Updates init_pages_in_zone() to take only zone parameter and access
-   node_id via zone->zone_pgdat
+> +++ b/mm/userfaultfd.c
+> @@ -20,6 +20,43 @@
+>   #include "internal.h"
+>   #include "swap.h"
+>   
+> +bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
+> +		       bool wp_async)
+> +{
+> +	unsigned long supported;
+> +
+> +	if (vma->vm_flags & VM_DROPPABLE)
+> +		return false;
+> +
+> +	vm_flags &= __VM_UFFD_FLAGS;
+> +
+> +#ifndef CONFIG_PTE_MARKER_UFFD_WP
 
-The functionality remains identical, but the code is cleaner and more
-maintainable.
+While at it, you can turn that into an
+!IS_ENABLED(CONFIG_PTE_MARKER_UFFD_WP) to avoid the ifdef.
 
-Signed-off-by: Song Hu <husong@kylinos.cn>
----
- mm/page_owner.c | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+> +	/*
+> +	 * If user requested uffd-wp but not enabled pte markers for
+> +	 * uffd-wp, then any file system (like shmem or hugetlbfs) are not
+> +	 * supported but only anonymous.
+> +	 */
+> +	if ((vm_flags & VM_UFFD_WP) && !vma_is_anonymous(vma))
+> +		return false;
+> +#endif
+> +	/*
+> +	 * If wp async enabled, and WP is the only mode enabled, allow any
+> +	 * memory type.
+> +	 */
+> +	if (wp_async && (vm_flags == VM_UFFD_WP))
+> +		return true;
 
-diff --git a/mm/page_owner.c b/mm/page_owner.c
-index bb88b72b6062..b170b27d87a1 100644
---- a/mm/page_owner.c
-+++ b/mm/page_owner.c
-@@ -757,7 +757,7 @@ static loff_t lseek_page_owner(struct file *file, loff_t offset, int orig)
- 	return file->f_pos;
- }
- 
--static void init_pages_in_zone(pg_data_t *pgdat, struct zone *zone)
-+static void init_pages_in_zone(struct zone *zone)
- {
- 	unsigned long pfn = zone->zone_start_pfn;
- 	unsigned long end_pfn = zone_end_pfn(zone);
-@@ -824,28 +824,15 @@ static void init_pages_in_zone(pg_data_t *pgdat, struct zone *zone)
- 	}
- 
- 	pr_info("Node %d, zone %8s: page owner found early allocated %lu pages\n",
--		pgdat->node_id, zone->name, count);
--}
--
--static void init_zones_in_node(pg_data_t *pgdat)
--{
--	struct zone *zone;
--	struct zone *node_zones = pgdat->node_zones;
--
--	for (zone = node_zones; zone - node_zones < MAX_NR_ZONES; ++zone) {
--		if (!populated_zone(zone))
--			continue;
--
--		init_pages_in_zone(pgdat, zone);
--	}
-+		zone->zone_pgdat->node_id, zone->name, count);
- }
- 
- static void init_early_allocated_pages(void)
- {
--	pg_data_t *pgdat;
-+	struct zone *zone;
- 
--	for_each_online_pgdat(pgdat)
--		init_zones_in_node(pgdat);
-+	for_each_populated_zone(zone)
-+		init_pages_in_zone(zone);
- }
- 
- static const struct file_operations page_owner_fops = {
+
+> +
+> +	if (vma_is_anonymous(vma))
+> +		/* Anonymous has no page cache, MINOR not supported */
+> +		supported = VM_UFFD_MISSING | VM_UFFD_WP;
+> +	else if (vma_get_uffd_ops(vma))
+> +		supported = vma_get_uffd_ops(vma)->uffd_features;
+> +	else
+> +		return false;
+
+To avoid the hidde return here, I think you can just do
+
+	supported = 0;
+
+
+Or even cleaner, just do
+
+unsigned long supported = 0
+...
+if (vma_is_anonymous(vma))
+	supported = ...
+else if (vma_get_uffd_ops(vma))
+	supported = ...
+return ...
+
+> +
+> +	return !(vm_flags & (~supported));
+
+I think this can just be:
+
+	return !(vm_flags & ~supported);
+
+
 -- 
-2.25.1
+Cheers
+
+David / dhildenb
 
 
