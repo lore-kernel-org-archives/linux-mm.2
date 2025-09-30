@@ -4,174 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 445F4CAC5B0
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 02:46:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 345C4CAC5B9
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 02:51:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D4948E0038; Mon, 29 Sep 2025 22:46:13 -0400 (EDT)
+	id 790868E0039; Mon, 29 Sep 2025 22:51:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97DB68E0002; Mon, 29 Sep 2025 22:46:13 -0400 (EDT)
+	id 740F98E0002; Mon, 29 Sep 2025 22:51:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 846338E0038; Mon, 29 Sep 2025 22:46:13 -0400 (EDT)
+	id 630878E0039; Mon, 29 Sep 2025 22:51:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D8698E0002
-	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 22:46:13 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3BD5C11A629
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 02:46:13 +0000 (UTC)
-X-FDA: 83944377426.12.194224A
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6100340005
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 02:46:11 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fi3przvp;
-	spf=pass (imf11.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 50CEA8E0002
+	for <linux-mm@kvack.org>; Mon, 29 Sep 2025 22:51:47 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 07BFC13B458
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 02:51:47 +0000 (UTC)
+X-FDA: 83944391454.03.97B4DF1
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D3BB440006
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 02:51:43 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=iAbSmT09;
+	spf=pass (imf12.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759200371;
+	s=arc-20220608; t=1759200705;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6dXdR7Vr7GvNxroOAYy+aBhMqtIGh2YpUvjEzBf0MIg=;
-	b=xRj9mQeXgsaDEKsh25X5MPuoFDcauwTTMSsQnu4mJmVpVQ1udYGlf6k439nzmnZMwrLXVd
-	xUZO0h3R3LhIpj/E+i4bmaqtU0XX66uXG6FOxMCOlnvBXHyN716tQ0HpvY5N2K8DQwkqPa
-	t+gLf9gL0JVVilTRuqC9+eKQ6+77ybg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759200371; a=rsa-sha256;
-	cv=none;
-	b=HBULWrExYULKkVoxZLLkvUOl4KiiM5jBWQcwH0T+BhG7yC//Q5w9i7kTp/5230X9Fc1OO2
-	OwKyv/Jnuya4a+K0HEQ15fyzWJw5ovCiGH2SheMRidALcroVkRWqshF/tITjzafiieC4pi
-	E5wHwxhsSicY9rx0VTn5RSWY9yBt33k=
+	bh=g0cNtQr4557jtEaOFawLvfNZk92gUobA2ObLkEl8z4I=;
+	b=AHgbCNB1RlPzOD/yenWoDizVO7ABV7JNNyEg9AnaSNTZhfJq9PXAkI3ieMexwv2ZjN5+44
+	E7WZCXJI1+GFIoxmlySPygUL3P6VsJjvSvuiv1vEWxdpKhPWb3Izzqm1CQD6wODWyEdeAK
+	CyDaFSONe/ksygadz1KfZZPDAU4a0Ew=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fi3przvp;
-	spf=pass (imf11.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b550eff972eso3586198a12.3
-        for <linux-mm@kvack.org>; Mon, 29 Sep 2025 19:46:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759200370; x=1759805170; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6dXdR7Vr7GvNxroOAYy+aBhMqtIGh2YpUvjEzBf0MIg=;
-        b=fi3przvp3IUnnE+roL6z9Im370+5iXdu3CCte+/8HBiyOEYujavj6UiDhTC2cLEfAO
-         V3IgQkyRwsnFrhA13qquh06w2vjI0/VmKpE7sEzMbUVb9mbU29BINdsRTpdyYlElFLWe
-         sYau6vrTnGYNSPkw4611DR5Fa1kTtjQWJin4S4Sijw4ZNqrmzSrKhKlpXm7hbbEGorSm
-         tP9JMhhPhMtvoCSi7jJyb3J24qKZu1AGyuC6E4wCicx7CjuM7fCwZGXAQTmfMP7VV4sB
-         NJ38NLW9pqrg2KPisifl09rU+ZLve5UPbgrQBwmkadmR+nvQuWjAbnFh5yd7BT7pxxQi
-         QjBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759200370; x=1759805170;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6dXdR7Vr7GvNxroOAYy+aBhMqtIGh2YpUvjEzBf0MIg=;
-        b=C+BNf9LV+egrwEtbRkbWeVQUCpoppXhS7MSKRHofl8sNa1tAjaWZi/C3ETXz6njBXX
-         h6HeC+kqciZpvibZRDBrJtktWNDEnVrzHQxp46iTfjXexO5j7rx47KrqXVj6glmEVDQR
-         tKtOqA+ciL9I1ri/Re2UcbV8ZIcsVHmjNiOszAwWJnY4WgJiGkVx7Y9q0LWxEHesOwxV
-         XJEblQ6A5V3yBy0S82P2aF9BXTWXJqX4Uyu8lwuhwgWqpjKiy9UZBkjPmnDyD1G6Vetf
-         bLmMNnazhBvb4BXoegKBximMkVgoYMUAEWOiM3NncDcjbMO15lW7hRdjOcSVTiaDaNoG
-         at3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXqIspUpY0l5woxgGUPEFuWW/aLzHNK3Zu1/IjLCFCp4B+4jxwXL2lzQfXrRD5MAWKoo2hsouAomw==@kvack.org
-X-Gm-Message-State: AOJu0YwZOA8KApX4ZVuBq2bEicyf+SV32G25sleeaeJaLSW/E+nyNENe
-	dm6hi6ryfppndmbYYxcNqvVmjkhAynzcGRZQMu48MEkGlbYplkl/2s2A
-X-Gm-Gg: ASbGncsZHkc7VWC4pAxT0uMUS/zfAPc+qQc0N1Icvp5G4nohLAwCJbJSs7PurIuvijp
-	cCeQZCUUO03DKBHe3wBTeu59pmX6rdcFWhil+cjaRdbuL/yeFEf0uxVO4MzrM/d46Xe+1kT0YQn
-	mNmbzEYwmwPPBceZnrgkwPb4QDvpjs2mgXySmOBTE+smPFzmu7mtn/L8OqzswRum7sGVyGSsCcK
-	uiCUo5tZK52/ogqzRo1fK5EaehahGQJlqV4l3lqEl73BO4DwZlx0Ycs2D+S/9YZumGzfmgTJKAF
-	Ius0iXjx8+fYLB6UmNxpULaraPc75HI8v99opzrBLSh9rpj/mrWhEt19R01z2xuSGnOPwGAA8Mf
-	yvaXXPcLBAdCXzJGQNNMeNhpi3Gqyc3hqmWjIjxL9genpDKiiv0H9jsbLKa1jFgT92w==
-X-Google-Smtp-Source: AGHT+IEoEe43JjNKdWndUwta+OzzU/8noer3nQDRA4tPEoZN9FB7in6q7dddTrTKlJfmrNdEMUXFZw==
-X-Received: by 2002:a17:902:f9c6:b0:275:2aac:fef8 with SMTP id d9443c01a7336-27ed4a78d81mr138634555ad.38.1759200370200;
-        Mon, 29 Sep 2025 19:46:10 -0700 (PDT)
-Received: from localhost ([45.142.167.196])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-27ed6715f0esm144277015ad.52.2025.09.29.19.46.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Sep 2025 19:46:09 -0700 (PDT)
-From: Jinchao Wang <wangjinchao600@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Alexander Potapenko <glider@google.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Marco Elver <elver@google.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Liang, Kan" <kan.liang@linux.intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Kees Cook <kees@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Rong Xu <xur@google.com>,
-	Naveen N Rao <naveen@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Nam Cao <namcao@linutronix.de>,
-	workflows@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org,
-	linux-mm@kvack.org,
-	llvm@lists.linux.dev,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	kasan-dev@googlegroups.com,
-	"David S. Miller" <davem@davemloft.net>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	linux-trace-kernel@vger.kernel.org
-Cc: Jinchao Wang <wangjinchao600@gmail.com>
-Subject: [PATCH v6 23/23] MAINTAINERS: add entry for KStackWatch
-Date: Tue, 30 Sep 2025 10:43:44 +0800
-Message-ID: <20250930024402.1043776-24-wangjinchao600@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250930024402.1043776-1-wangjinchao600@gmail.com>
-References: <20250930024402.1043776-1-wangjinchao600@gmail.com>
+	imf12.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=iAbSmT09;
+	spf=pass (imf12.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759200705; a=rsa-sha256;
+	cv=none;
+	b=59LYLIJ5++QajUDyHGG8Dk/bL6J4pbClaoQvvO81SfFV5sCoY1pLwMIEnRCwUhQTk2+zzi
+	mO1ra8c7jaCDTf8oyP3wTs76lErvBb8vGeMBnmyXWcGWYhosBi0a4NnwC/cdHhhzZ9Z3ki
+	UUpcEu3icQ2vd2oVBB57XncyOZMA3tY=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=g0cNtQr4557jtEaOFawLvfNZk92gUobA2ObLkEl8z4I=;
+	b=iAbSmT09ClD693sektscQaIBj7LE992j94gJB8RmPZDaxrPDUOy3EZfMudN5iTlCNINe8GBIS
+	BfXIG9Ho7/lboCOmi9IZI6n6oCyZhebGrccd/f4cNW3Swubn0izNVPtLymL+RByg4ovg/fn1CvL
+	xpNoK5ANLCNzlt1ennBpxdw=
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4cbMyC2wwsz1T4Ln;
+	Tue, 30 Sep 2025 10:51:15 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id C9CE21402ED;
+	Tue, 30 Sep 2025 10:51:38 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 30 Sep 2025 10:51:26 +0800
+Received: from [10.173.125.236] (10.173.125.236) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 30 Sep 2025 10:51:25 +0800
+Subject: Re: [syzbot] [mm?] WARNING in memory_failure
+To: <jane.chu@oracle.com>
+CC: David Hildenbrand <david@redhat.com>, Luis Chamberlain
+	<mcgrof@kernel.org>, syzbot
+	<syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com>,
+	<akpm@linux-foundation.org>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <nao.horiguchi@gmail.com>,
+	<syzkaller-bugs@googlegroups.com>, "Pankaj Raghav (Samsung)"
+	<kernel@pankajraghav.com>, Zi Yan <ziy@nvidia.com>
+References: <68d2c943.a70a0220.1b52b.02b3.GAE@google.com>
+ <ce93b55c-75a7-4b4d-a68b-9d80baf1578b@redhat.com>
+ <DB0E39CD-36A9-4929-BCC6-33F27E387AEA@nvidia.com>
+ <70522abd-c03a-43a9-a882-76f59f33404d@redhat.com>
+ <B0781266-D168-4DCB-BFCE-3EA01F43F184@nvidia.com>
+ <cad74ef8-3543-4fc5-a175-8fc23a88776a@redhat.com>
+ <E82638DD-9E5D-4C69-AA0F-7DDC0E3D109B@nvidia.com>
+ <fzfcprayhtwbyuauld5geudyzzrslcb3luaneejq4hyq2aqm3l@iwpn2n33gi3m>
+ <80D4F8CE-FCFF-44F9-8846-6098FAC76082@nvidia.com>
+ <w2kwxcd6br6h4tdn6xigtuf73qklt6jhxvhtcwp7idugycgxlv@vqjx26vrnwu5>
+ <594350a0-f35d-472b-9261-96ce2715d402@oracle.com>
+ <7577871f-06be-492d-b6d7-8404d7a045e0@oracle.com>
+ <c61ca94b-5b19-4c69-b2a1-d11a5301c6bb@oracle.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <d15fec58-58ad-fd20-7130-9c480df43d15@huawei.com>
+Date: Tue, 30 Sep 2025 10:51:25 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
+In-Reply-To: <c61ca94b-5b19-4c69-b2a1-d11a5301c6bb@oracle.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 8mqmd43554naqmdc6cfc1qc469f4d4cz
-X-Rspamd-Queue-Id: 6100340005
+X-Originating-IP: [10.173.125.236]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Queue-Id: D3BB440006
+X-Stat-Signature: 6hrj7j9djji64tzxds9i4ii3ipjgms8q
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1759200371-894741
-X-HE-Meta: U2FsdGVkX1/umFwTg7AsGAcKdyEgkOy52l3tprj3AodhtFOviboaABRHcVEx0dfW5gCCO6fk/GPg1DG4KSR8lD0av2g0dZ7ApkFT51sZM73yYw8bhcrSlI43jWmdioxZ1NmCK/yTzQ9Cxm+m14hyhfOe+ZEF1VkqSHKmWB3lED4B1wlgfL9cdzV8o8PJDCxrjDUUUK4aSP665izjHgGq3YKCLlPDeweo/LkwoeGcTghRmxqdMl/mqDHQjtpFp4lDxnb1j+G5mMs614qO4aodqDO4RmJF432zBFGcKYLUuCsviwl/RqVen6uNuAZ9cQAZd0uY7eEx/YFDyUJjeei6TxPL3/3ug0/2M+iJDkTfMq13D17dW3vCYciAnruZ9hoTGL2PLA8gUrXPoykWQ3ETTLviBtUaGalFvFgNqmWT5b446reBfjLW3m9ScD2tqnkA2Kx5JZ9goR/Pn7hBM/9EnVDPfRVhWU7CyjFZA5qFCQ0UZDgWijf/ECi2qn8dCVUWV+Sex/S93zEVkJSA3WrApNjnA1zLkeA/Qe6B5Bg9DeBHlomOvNzMbsdYVOoM44FJqzkBt6DXlqFwQbewREKcWish2uoG1TpVeIsqaBHj9YsJX5tTPYNCHulsa/R9MKm2xa1lGY/3vqIRYZoJufgRttqpoGeK2ylASeDpcBtYYX/oYntqzHSuiCP9yDRQxwsIXMAJ05kl2bTZeGH4lKQ1p5iL+uczhAgU+O1ed4bh3CPxOc0tjWAwtbezfRr3T2ZO9sr1ubuxGIaGulVceSGOo6edG6s5mgj+JbeMM6RM/1vT6PqJPPmxOwGPbH7ZVCo3smi/ddzZwp0LBp31U5lJjwhy95d64WHinjYh0RnQEZrM8rgpp/+Cby/+Swun+pWxW6u1fLrW7QFZ/IkFRRf81rm3QP9yVV3e+9XUCKMC8AjZk+oModKFEuh4GxX8SaBWOzaOSCS0rqPU7n+VJF2
- Rih3NNMW
- luVq/DDrqRbPIOimrbdmh7EJK0M+iJxBb/GWMs/hL2+589ylpIGyWF4rvBckybTJmMz1c4F5ANjaYIhRTP2dHJND71VCSmJpfy37AEMEP1Jvf5I8KeDA8mvDfptfD1D+Ucmox7EeLUt0kIjxchzLqbzI/2hSaJ9wv0D3i2uLUG5KExQumCidqPhu59fs0c+mKY4M602aRhC+Y2o1sV2ncb1HrWRiN4g/orW3vdOouvlHTcSYk2uLwubzIAt7CcfkBw3B05b0lGc2OOUcFzDnxvv/PAxll1+OeHWIKOYqlfKtgG1AS8RK51yHirw0yCJnpVzjTK+nek8hyiJ++FmGMs0AdEOrEilE7fLZwPAEIz1/eWls8Ag8BTomO27tqP529XyV1DCHkIf+m3JOcwsjNC/6JB5z0f//yeSqa1gViw+3SdMAbQMSmlvFRFKUbXl5qW6W8Dwhk2ff/uaAOqN24s4kmgxWkBhBd1kGDQxXl+Bu4PTlmaZ8AaRW64qFp+JErsJM7BBjpAdJkNULwszJPU8WGS2x8R7gO/iXQ5AwNtMCKQaqtsf2oWw0HBHyGIgmMtPA1GRy9SRMjzrjxyFY2nL1CFVlZ18vlrV6O
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1759200703-590942
+X-HE-Meta: U2FsdGVkX18gwbGz10wWnPMTfwDUztS0J/tVPVNVCDmTe041YwEIvVWBdb37/QUPZEHs0rt7znevx4o9EMlOC7wSgyQ9rlVjXdLjmLj78VJlbEP2cnSCvj/xwmv8iTz2rDwiXMHGTFBNG2dCt9tJZhywUyD+gdocL9lji11Gr99QYaamMp/Z5una6JI8gjTwA2wgM+SmgED7QEGwPvC4OSC/HW1r1cyG2Mt2MwbXS80BJipLFv608zeS6Y3dJzT9HurUrJ9WTjPOnziy0sKMsSuxR5cRBONl220wHPQkdXTqCn7GDnSQFMPNlcppg3foZao0enXvceq0kaOQ8qIyIpPqL1NrKaEWaLWJTcG8nXmiaZhk3QHJIJY1JrM0r2/XqWhbfhABM3QYne3v3ITGQXlhFsyOS7txCud9fnGqFJZaepqHXGJRCy6fIJx6yRAykCcGVccnvP2P7uX13vmE3Nwu//uW/zQpdqPD2T1xzWnShdmH3FpdQG2PS9ltbmuZKggbzOje+0Np09O+y9LzkHYokEuVO4gZOtpdF4QHFuRY1KNuYkSULIm17h518RkqsTKX1CeicjYMmsiHQ8oCdTZeYlR5MZyMqxml/N0CYfKbL7NMfVMQYuUDKUMe3FNAhF/BXlYosWgy8tA3GKQYXDa39xAY2Fy13b6M4Qxel7eIQEzu1y07clc9IScdVVu/B9h6NB3vzglAeFiu7crPP3lWR8mkXdT19K+VaFaqYnGzRd893vag+TyIf7iZKOv3kTV7soyhphM8FaatEfQ/cCWrQs0Fmop8N6IxAaG7tRe6xaSf7mRSux6J39oLJgYjtyEDf4pq80lIz7tKLFTkscqZQNtpmZdPBD5nsYy5EEmVsPm06cZezyXi9yHXedUEMMTs0i9qpuLUaadb44qfvy+4Q7IUyv3OA6lzMZvu7TTXG49Pi4RulRE4f5CFsWUi4aOCQBQqEINl9WgR2yL
+ xphc2TmF
+ Kz3jwnGUmJ5KNpcytZuLcmT0GsoqT40kgwbfW6HeqKhM5d6hI74b9lW4cYZhQOZ8JhYioNVdSsjQheG6c62MwQulLjrIvjIqwsP6XcF21yr1DH78zapxUm8H52vO+ZM9R125GLf1kLc2vFmTw+yvbtc67WpZRFFtD/FNWDFEEWJrCJuM6bfznHWgCT9g7iM6DWcULkUDILvxlyUhaIhhrjpHYUWyLhPd7Dy5AESGbTqlugQoojsRjexVLU5FPrXVp1DWE5GXD0pqy/3ApI8gjkZIOaaKo9/wL0xYazrlWYSd/vtMlTh7Ha3FXnvyCdMi+iE86JKxdU6gfQhOCXDxLQbupr891gUvmubf6CXFhPhmaN4N7ILNgwsIYbUn0bi5O4lXqLo2VaXk6WnnItJUi+NwBh+1pBdj/A+wF3rzQPpW50YUSZiPClYyEa7PxgeExj3TqcoyFhD5kqMZ4jujStv8V9kCU9MA4bVft1xtPfhWVM3gr5p7eXHiW9jT9cjHPNKCnv4eaykvCZmiWAq8/HBwu7pOQ2HxYKZDp+N3XAXjAdH4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,33 +121,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a maintainer entry for Kernel Stack Watch.
+On 2025/9/30 2:23, jane.chu@oracle.com wrote:
+> 
+> 
+> On 9/29/2025 10:49 AM, jane.chu@oracle.com wrote:
+>>
+>> On 9/29/2025 10:29 AM, jane.chu@oracle.com wrote:
+>>>
+>>> On 9/29/2025 4:08 AM, Pankaj Raghav (Samsung) wrote:
+>>>>>
+>>>>> I want to change all the split functions in huge_mm.h and provide
+>>>>> mapping_min_folio_order() to try_folio_split() in truncate_inode_partial_folio().
+>>>>>
+>>>>> Something like below:
+>>>>>
+>>>>> 1. no split function will change the given order;
+>>>>> 2. __folio_split() will no longer give VM_WARN_ONCE when provided new_order
+>>>>> is smaller than mapping_min_folio_order().
+>>>>>
+>>>>> In this way, for an LBS folio that cannot be split to order 0, split
+>>>>> functions will return -EINVAL to tell caller that the folio cannot
+>>>>> be split. The caller is supposed to handle the split failure.
+>>>>
+>>>> IIUC, we will remove warn on once but just return -EINVAL in __folio_split()
+>>>> function if new_order < min_order like this:
+>>>> ...
+>>>>         min_order = mapping_min_folio_order(folio->mapping);
+>>>>         if (new_order < min_order) {
+>>>> -            VM_WARN_ONCE(1, "Cannot split mapped folio below min- order: %u",
+>>>> -                     min_order);
+>>>>             ret = -EINVAL;
+>>>>             goto out;
+>>>>         }
+>>>> ...
+>>>
+>>> Then the user process will get a SIGBUS indicting the entire huge page at higher order -
+>>>                  folio_set_has_hwpoisoned(folio);
+>>>                  if (try_to_split_thp_page(p, false) < 0) {
+>>>                          res = -EHWPOISON;
+>>>                          kill_procs_now(p, pfn, flags, folio);
+>>>                          put_page(p);
+>>>                          action_result(pfn, MF_MSG_UNSPLIT_THP, MF_FAILED);
+>>>                          goto unlock_mutex;
+>>>                  }
+>>>                  VM_BUG_ON_PAGE(!page_count(p), p);
+>>>                  folio = page_folio(p);
+>>>
+>>> the huge page is not usable any way, kind of similar to the hugetlb page situation: since the page cannot be splitted, the entire page is marked unusable.
+>>>
+>>> How about keep the current huge page split code as is, but change the M- F code to recognize that in a successful splitting case, the poisoned page might just be in a lower folio order, and thus, deliver the SIGBUS ?
+>>>
+>>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+>>> index a24806bb8e82..342c81edcdd9 100644
+>>> --- a/mm/memory-failure.c
+>>> +++ b/mm/memory-failure.c
+>>> @@ -2291,7 +2291,9 @@ int memory_failure(unsigned long pfn, int flags)
+>>>                   * page is a valid handlable page.
+>>>                   */
+>>>                  folio_set_has_hwpoisoned(folio);
+>>> -               if (try_to_split_thp_page(p, false) < 0) {
+>>> +               ret = try_to_split_thp_page(p, false);
+>>> +               folio = page_folio(p);
+>>> +               if (ret < 0 || folio_test_large(folio)) {
+>>>                          res = -EHWPOISON;
+>>>                          kill_procs_now(p, pfn, flags, folio);
+>>>                          put_page(p);
+>>> @@ -2299,7 +2301,6 @@ int memory_failure(unsigned long pfn, int flags)
+>>>                          goto unlock_mutex;
+>>>                  }
+>>>                  VM_BUG_ON_PAGE(!page_count(p), p);
+>>> -               folio = page_folio(p);
+>>>          }
+>>>
+>>> thanks,
+>>> -jane
+>>
+>> Maybe this is better, in case there are other reason for split_huge_page() to return -EINVAL.
+>>
+>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+>> index a24806bb8e82..2bfa05acae65 100644
+>> --- a/mm/memory-failure.c
+>> +++ b/mm/memory-failure.c
+>> @@ -1659,9 +1659,10 @@ static int identify_page_state(unsigned long pfn, struct page *p,
+>>   static int try_to_split_thp_page(struct page *page, bool release)
+>>   {
+>>          int ret;
+>> +       int new_order = min_order_for_split(page_folio(page));
+>>
+>>          lock_page(page);
+>> -       ret = split_huge_page(page);
+>> +       ret = split_huge_page_to_list_to_order(page, NULL, new_order);
+>>          unlock_page(page);
+>>
+>>          if (ret && release)
+>> @@ -2277,6 +2278,7 @@ int memory_failure(unsigned long pfn, int flags)
+>>          folio_unlock(folio);
+>>
+>>          if (folio_test_large(folio)) {
+>> +               int ret;
+>>                  /*
+>>                   * The flag must be set after the refcount is bumped
+>>                   * otherwise it may race with THP split.
+>> @@ -2291,7 +2293,9 @@ int memory_failure(unsigned long pfn, int flags)
+>>                   * page is a valid handlable page.
+>>                   */
+>>                  folio_set_has_hwpoisoned(folio);
+>> -               if (try_to_split_thp_page(p, false) < 0) {
+>> +               ret = try_to_split_thp_page(p, false);
+>> +               folio = page_folio(p);
+>> +               if (ret < 0 || folio_test_large(folio)) {
+>>                          res = -EHWPOISON;
+>>                          kill_procs_now(p, pfn, flags, folio);
+>>                          put_page(p);
+>> @@ -2299,7 +2303,6 @@ int memory_failure(unsigned long pfn, int flags)
+>>                          goto unlock_mutex;
+>>                  }
+>>                  VM_BUG_ON_PAGE(!page_count(p), p);
+>> -               folio = page_folio(p);
+>>          }
+>>
+>>          /*
+>> @@ -2618,7 +2621,8 @@ static int soft_offline_in_use_page(struct page *page)
+>>          };
+>>
+>>          if (!huge && folio_test_large(folio)) {
+>> -               if (try_to_split_thp_page(page, true)) {
+>> +               if ((try_to_split_thp_page(page, true)) ||
+>> +                       folio_test_large(page_folio(page))) {
+>>                          pr_info("%#lx: thp split failed\n", pfn);
+>>                          return -EBUSY;
+>>                  }
+> 
+> In soft offline, better to check if (min_order_for_split > 0), no need to split, just return for now ...
 
-Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
----
- MAINTAINERS | 8 ++++++++
- 1 file changed, 8 insertions(+)
+I might be miss something but why we have to split it? Could we migrate the whole thp or folio with min_order instead?
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 520fb4e379a3..3d4811ff3631 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -13362,6 +13362,14 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest.git
- F:	Documentation/dev-tools/kselftest*
- F:	tools/testing/selftests/
- 
-+KERNEL STACK WATCH
-+M:	Jinchao Wang <wangjinchao600@gmail.com>
-+S:	Maintained
-+F:	Documentation/dev-tools/kstackwatch.rst
-+F:	include/linux/kstackwatch_types.h
-+F:	mm/kstackwatch/
-+F:	tools/kstackwatch/
-+
- KERNEL SMB3 SERVER (KSMBD)
- M:	Namjae Jeon <linkinjeon@kernel.org>
- M:	Namjae Jeon <linkinjeon@samba.org>
--- 
-2.43.0
-
+Thanks.
+.
 
