@@ -4,122 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F288CAC5B9
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 09:21:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DAFACAC5B9
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Sep 2025 09:22:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 21D6B8E0006; Tue, 30 Sep 2025 05:21:08 -0400 (EDT)
+	id C31BC8E0003; Tue, 30 Sep 2025 05:22:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1CD978E0002; Tue, 30 Sep 2025 05:21:08 -0400 (EDT)
+	id BE2088E0002; Tue, 30 Sep 2025 05:22:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BD378E0006; Tue, 30 Sep 2025 05:21:08 -0400 (EDT)
+	id B20158E0003; Tue, 30 Sep 2025 05:22:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E86A78E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 05:21:07 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A178311A9A3
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 09:21:07 +0000 (UTC)
-X-FDA: 83945372574.10.3C46460
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id C118BA0011
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 09:21:05 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dCBfiAUY;
-	spf=pass (imf25.hostedemail.com: domain of fweimer@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=fweimer@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C9B58E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 05:22:12 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4FFA61A0645
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 09:22:12 +0000 (UTC)
+X-FDA: 83945375304.24.79258EE
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 3BFEB180006
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 09:22:08 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	spf=pass (imf06.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759224065;
+	s=arc-20220608; t=1759224130;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9lQSfvfcTNySF441awH7y9u1KuhzkH5FEbQXswdQdkk=;
-	b=r2f55KPu/eFIAfqUmYgghiooPp7cujFtvgH3p4INAA8BNmyPrBDyyaZBhUwFHo1suZ3tvO
-	WnwcWRbJypYojXAV2PzNkSy3i0MTexDxMfUvsvhIaNIaRwr8PpN4BzHm+hME8pt0GWl5lQ
-	Hbhic9/a7iv30MRGkqCOYIH3ldqL7dc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759224065; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=xj8xivkLrU44W9J2jDv0VhheFDWYQLbHF8j8FNE+dvA=;
+	b=W+HT9meLxkccU4J4Fvlzm9nPZhF7vBb697gLLP/ENKG043CTOk5l5wOxmViv5NoeoFl9pp
+	s1qkjCsnOuNWpQxQjiRYCSnfA3so+/q8pwyrBtFSJZqriVohn5jy9hCmF0d4f0fIOMzeOw
+	B358YVHTghDbMfU4HR/tlbbMOh6tsYk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759224130; a=rsa-sha256;
 	cv=none;
-	b=70BKYknqKPQxiUTuRiXwVNm6detwLwVn4JQ+z/p3WKJNRMYW+YmsS+6w7U+9U82ucNWxbZ
-	AERqeM1f/DMbX1RufU/q4P023nf4ra2HymBsimJFfjSUF7Un31zC4W5pYyWERr6RghVByp
-	vuww46krO0/hR1UeStIV/maczdhiJ40=
+	b=NSx01jlScgU6KLIbdM/OhfVeUqPpe8AjaUYSAkFqODUhozkR6rFkUb21djCThyYCIJLWJ3
+	wQXjXm2HgYBfenAWAi9dFg+a0fiklygwIQpx/HR9sFK46b+q5Ve2LLpY3uOV/WChSID/+m
+	/HCyB//7OZKV/a1KkBICdhE/rVWnbYY=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dCBfiAUY;
-	spf=pass (imf25.hostedemail.com: domain of fweimer@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=fweimer@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759224065;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9lQSfvfcTNySF441awH7y9u1KuhzkH5FEbQXswdQdkk=;
-	b=dCBfiAUYXD3DPX1TFJ4iyuh/Brv9gFFFXKSyD3N75oER7cdyq3DLG8s+9J/LytHsyaoQZg
-	M1IfeNhTJJjX/gdISdPcZsA2GrMgNlyl7bBZAx6lY7XCBfq3dyi9SKYgupD2ATr158vCB1
-	nFvIfH7qUjvFer17Qkd8493ZP+PUliU=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-90-34emJvPvN3m5oBvcOsfJzQ-1; Tue,
- 30 Sep 2025 05:20:58 -0400
-X-MC-Unique: 34emJvPvN3m5oBvcOsfJzQ-1
-X-Mimecast-MFC-AGG-ID: 34emJvPvN3m5oBvcOsfJzQ_1759224053
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0B5A218004D8;
-	Tue, 30 Sep 2025 09:20:52 +0000 (UTC)
-Received: from fweimer-oldenburg.csb.redhat.com (unknown [10.44.33.56])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 051C1180035E;
-	Tue, 30 Sep 2025 09:20:34 +0000 (UTC)
-From: Florian Weimer <fweimer@redhat.com>
-To: Deepak Gupta <debug@rivosinc.com>
-Cc: Charles Mirabile <cmirabil@redhat.com>,  pjw@kernel.org,
-  Liam.Howlett@oracle.com,  a.hindborg@kernel.org,
-  akpm@linux-foundation.org,  alex.gaynor@gmail.com,
-  alexghiti@rivosinc.com,  aliceryhl@google.com,  alistair.francis@wdc.com,
-  andybnac@gmail.com,  aou@eecs.berkeley.edu,  arnd@arndb.de,
-  atishp@rivosinc.com,  bjorn3_gh@protonmail.com,  boqun.feng@gmail.com,
-  bp@alien8.de,  brauner@kernel.org,  broonie@kernel.org,
-  charlie@rivosinc.com,  cleger@rivosinc.com,  conor+dt@kernel.org,
-  conor@kernel.org,  corbet@lwn.net,  dave.hansen@linux.intel.com,
-  david@redhat.com,  devicetree@vger.kernel.org,  ebiederm@xmission.com,
-  evan@rivosinc.com,  gary@garyguo.net,  hpa@zytor.com,  jannh@google.com,
-  jim.shu@sifive.com,  kees@kernel.org,  kito.cheng@sifive.com,
-  krzk+dt@kernel.org,  linux-arch@vger.kernel.org,
-  linux-doc@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org,
-  linux-mm@kvack.org,  linux-riscv@lists.infradead.org,
-  lorenzo.stoakes@oracle.com,  lossin@kernel.org,  mingo@redhat.com,
-  ojeda@kernel.org,  oleg@redhat.com,  palmer@dabbelt.com,
-  paul.walmsley@sifive.com,  peterz@infradead.org,
-  richard.henderson@linaro.org,  rick.p.edgecombe@intel.com,
-  robh@kernel.org,  rust-for-linux@vger.kernel.org,
-  samitolvanen@google.com,  shuah@kernel.org,  tglx@linutronix.de,
-  tmgross@umich.edu,  vbabka@suse.cz,  x86@kernel.org,  zong.li@sifive.com
-Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
-In-Reply-To: <aNcAela5tln5KTUI@debug.ba.rivosinc.com> (Deepak Gupta's message
-	of "Fri, 26 Sep 2025 14:07:06 -0700")
-References: <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org>
-	<20250926192919.349578-1-cmirabil@redhat.com>
-	<aNbwNN_st4bxwdwx@debug.ba.rivosinc.com>
-	<CABe3_aE4+06Um2x3e1D=M6Z1uX4wX8OjdcT48FueXRp+=KD=-w@mail.gmail.com>
-	<aNcAela5tln5KTUI@debug.ba.rivosinc.com>
-Date: Tue, 30 Sep 2025 11:20:32 +0200
-Message-ID: <lhu3484i9en.fsf@oldenburg.str.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn;
+	dmarc=none
+X-UUID: eafba74e9dde11f08b9f7d2eb6caa7cf-20250930
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED
+	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD
+	CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_T1
+	AMN_GOOD, AMN_C_TI, AMN_C_BU, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:64f52787-5ac7-4f5a-9186-d8c0339fe843,IP:10,
+	URL:0,TC:0,Content:0,EDM:25,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:30
+X-CID-INFO: VERSION:1.1.45,REQID:64f52787-5ac7-4f5a-9186-d8c0339fe843,IP:10,UR
+	L:0,TC:0,Content:0,EDM:25,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:30
+X-CID-META: VersionHash:6493067,CLOUDID:cde200468e5833ba8e998c12b7f72ec2,BulkI
+	D:2509301722017RW1K8LW,BulkQuantity:0,Recheck:0,SF:19|24|38|44|66|72|78|10
+	2|850,TC:nil,Content:0|50,EDM:5,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS:ni
+	l,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:
+	0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_FSI,TF_CID_SPAM_SNR,TF_CID_SPAM_FSD
+X-UUID: eafba74e9dde11f08b9f7d2eb6caa7cf-20250930
+X-User: husong@kylinos.cn
+Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <husong@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 167271401; Tue, 30 Sep 2025 17:21:59 +0800
+From: Hu Song <husong@kylinos.cn>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>
+Cc: Song Hu <husong@kylinos.cn>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] mm/page_owner: Rename proc-prefixed variables for clarity
+Date: Tue, 30 Sep 2025 17:21:51 +0800
+Message-Id: <20250930092153.843109-1-husong@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C118BA0011
-X-Stat-Signature: 7yi8ced1sys3nkg58iz657qxteztk1w6
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3BFEB180006
+X-Stat-Signature: 7anmwity5b5mxoawd3cfn8srw7nakefb
 X-Rspam-User: 
-X-HE-Tag: 1759224065-290390
-X-HE-Meta: U2FsdGVkX19CdntTzPj3E4G8Q9A1/ukLkx3uuxa4MkFptEhTr5QenWpgwk++TNwDMQZTOzwItaoachs9Ik+k2F9/fuvyIqFbbHpI5a4ZouT7SMyJXUj/Ta1XRL92pgxnG7Dj3TO+eVchZQbths+P1+yYmRQdkNcU+8/+IQfeOVpr9D/S/8/SSgXyVSW/HxbPqUAdelVAo6CWs1M63k17utd/VhMmYbUYz8Y6jxfr8eoHbqWIimK60XnhM7QuEmmiKcbcpKsgZjqL8hiAC7JU4u1PDt2w0CXDzlh3Oor/pBq/ATiweUZlLD7gehrogiLhdZjTMVz5/Q/S5LvLeM48y+8tm1swtWlnHAcsAq1y7mJnC6l/fFVhGju/8+EJ0QmT8p0bhB4naagpKNKkpUicNdvjifCeAYcszjbDiYT2otTxWxr+C/Z02jae7pswGIp8hujdf1Mhfx5RBV7ycmTSaartxO7r6SD2zAMycirJOzXMXu8JyqHIt4EJq8TfBtM0Mykw4V9XPcdg8e4ytwakXwI4nwGUwm9PCjErqO/Z9qdMblqWGfXvBHvol2ufAhBNXDG4I476j9TSdnSe8OLg9gs+r/UqgIB2Q5Jhk1F1ngInQLJnUsFULqijnKvUqC0Ayazhv150ucHyxs+diMuUqaLWLF40ooQew9p9Fm0lrAKhHe2ChXZZfNAkkq9XA1BPpv2KHD9UH+rlEjo8JxDjY/l/xFOBLRDT43uUuzQtv+MwXXAE3tbtuSHano4Rv3w2updmaSOv69Z5rJFDEqT7KDfhpz+gQhHjaTmKOMD8qlg+uaaN2vQUTxE9eQkYN/ppkzYMR0+Px1CR1cODiMM5AiQm/xreAtSqgLLwL+62HBsq8fb0MvKm/Txv1/6ZQxxa92B/o8EfrcfakHzZdrBVy5Ao0TK8pQfbhkQmkjuwlqX0itDEGWvONC0DHyoVvcxpE/xqR1/zBLanSEwicaT
- OaxMmTmf
- OF92PYpcX1NJRF9oltIYdPKEE/6N6J3RFsxRhX+SUq611KuNEFysaG5qZstVgoGlQQ/exgOl2SUJ4YLboTp+G0h1yBkffWEyLeIFZfT/mRl3Z+J0KZyan1TK0KOh/5mml0LytYaew9tlZy6L/NMrPHFoJ1WhQbCeCMj4zHfNlwieqHqbETna7b/tCUQaby7/ojdKOkjLS1gTkxe0JdNJKlHAcWaaBe2K7mwNSY4M5Ft8AJ1GUT8PwxtIAVfW9fZkif0Ztd4zNO1RzuGsyfcqubWx4xQ==
+X-HE-Tag: 1759224128-760298
+X-HE-Meta: U2FsdGVkX19an7afAVqOg6t+fYbrbcv2cpBVLlheqFfHdf3dHzUmaVa9vclwL3Yh63+k4BJokpyys7VovbLPMsvTjiP+cl/D7wr5dNAcIzoWEeWzlHUUMmKig9AiOhOoXMUo0V91dNXPmHgPhRDuIJp6gz0PrOXxj8iOAggwDbSUQkqLGzV6ZpgLgIUL72L27JLyrlRaYlFvJmE08vd3s+vaXCuR0GgjnIiiFdBfE0hqHGi6Zy2Uq1xq3OjHDiLL/Kh0wQ1cp4hpV3KdDmApkdIg5M/2JDcHauQVv9dxAbrqOe33M8F1ZWF+fvBRkNaKBQWZonUzWMKULJ/g0T8wshHGYvML+AQE1QvfKXkotoZ/J7mTmvF10qmE8/j1mrEKp213vK9c1bjfpSIa+lPoZE+5EDSIzVEgOlOduMW5O5EwmS0ROfrIdPBX7lGO3m/Cajh47UkQmGgma+oNJaoOMEvFZU6GKm/HO1wWgMunVFLzg30doOdyjtNmoY9iKI1ixmIAU8+aVbEL7LY43Ctpt2pVI4//9Z4vGbNm+8m9lRtVrowZr2WhKZFLNZxgQqisdV1DOY+kzwcJGvcdyOw9f3LXhAnppOv1ZNlmKBALrBAO+1ouQS4gkkDk9Ez8yPu69kf7Ytdw5tIA0Ny1tD/Rjr6htSz090IhFMG4exiIua0UjppSGyHGIS4nLsH1Ov2+ZlZlMu3xiugEPjByoCWJFqZp0ouHCxVqptM2IaoRWuN81dKgXvAoZiaqZgKfdIwrTXEHxl3Ay08K7MGS3BqNf+TqU/FCBmRYYQmIQd/UJ8Xs5LhLz1yurQUdrTSg5IOI8ql5KRg41Oo0dQBvngv5O09Dy84nrdc26f1qAGzu9rhGfc5tLNSkCZHFFkYel9yeiXEt5ZESaZwk5fhT28yPhXdAEejuEbnB4NSy49J/4Onk00hZ2EpQ2xF0+OVB0ATk8nJUDQZdVv8FUsvQ2z7
+ nmWwiRrO
+ hVEFyz4U9VBGigrMkWrP3sn0TGqh0HApvyr79bVkiTggnU3Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,22 +109,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-* Deepak Gupta:
+From: Song Hu <husong@kylinos.cn>
 
-> In case of shadow stack, it similar situation. If enabled compiler
-> decides to insert sspush and sspopchk. They necessarily won't be
-> prologue or epilogue but somewhere in function body as deemed fit by
-> compiler, thus increasing the complexity of runtime patching.
->
-> More so, here are wishing for kernel to do this patching for usermode
-> vDSO when there is no guarantee of such of rest of usermode (which if
-> was compiled with shadow stack would have faulted before vDSO's
-> sspush/sspopchk if ran on pre-zimop hardware)
+The `proc_page_owner_operations` and related variables were renamed to
+`page_owner_fops` to better reflect their association with `debugfs` rather
+than `/proc`. This improves code clarity and aligns with kernel naming
+conventions.
 
-I think this capability is desirable so that you can use a distribution
-kernel during CFI userspace bringup.
+Signed-off-by: Song Hu <husong@kylinos.cn>
+---
+ mm/page_owner.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-Thanks,
-Florian
+diff --git a/mm/page_owner.c b/mm/page_owner.c
+index c3ca21132c2c..bb88b72b6062 100644
+--- a/mm/page_owner.c
++++ b/mm/page_owner.c
+@@ -848,7 +848,7 @@ static void init_early_allocated_pages(void)
+ 		init_zones_in_node(pgdat);
+ }
+ 
+-static const struct file_operations proc_page_owner_operations = {
++static const struct file_operations page_owner_fops = {
+ 	.read		= read_page_owner,
+ 	.llseek		= lseek_page_owner,
+ };
+@@ -929,7 +929,7 @@ static int page_owner_stack_open(struct inode *inode, struct file *file)
+ 	return seq_open_private(file, &page_owner_stack_op, 0);
+ }
+ 
+-static const struct file_operations page_owner_stack_operations = {
++static const struct file_operations page_owner_stack_fops = {
+ 	.open		= page_owner_stack_open,
+ 	.read		= seq_read,
+ 	.llseek		= seq_lseek,
+@@ -948,7 +948,7 @@ static int page_owner_threshold_set(void *data, u64 val)
+ 	return 0;
+ }
+ 
+-DEFINE_SIMPLE_ATTRIBUTE(proc_page_owner_threshold, &page_owner_threshold_get,
++DEFINE_SIMPLE_ATTRIBUTE(page_owner_threshold_fops, &page_owner_threshold_get,
+ 			&page_owner_threshold_set, "%llu");
+ 
+ 
+@@ -961,13 +961,12 @@ static int __init pageowner_init(void)
+ 		return 0;
+ 	}
+ 
+-	debugfs_create_file("page_owner", 0400, NULL, NULL,
+-			    &proc_page_owner_operations);
++	debugfs_create_file("page_owner", 0400, NULL, NULL, &page_owner_fops);
+ 	dir = debugfs_create_dir("page_owner_stacks", NULL);
+ 	debugfs_create_file("show_stacks", 0400, dir, NULL,
+-			    &page_owner_stack_operations);
++			     &page_owner_stack_fops);
+ 	debugfs_create_file("count_threshold", 0600, dir, NULL,
+-			    &proc_page_owner_threshold);
++			    &page_owner_threshold_fops);
+ 
+ 	return 0;
+ }
+-- 
+2.25.1
 
 
