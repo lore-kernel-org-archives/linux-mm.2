@@ -4,139 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EB3FCAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 11:21:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C00A8CAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 11:35:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D878B8E0008; Wed,  1 Oct 2025 07:21:07 -0400 (EDT)
+	id D53F28E0006; Wed,  1 Oct 2025 07:35:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5E4C8E0002; Wed,  1 Oct 2025 07:21:07 -0400 (EDT)
+	id D05258E0002; Wed,  1 Oct 2025 07:35:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C74AF8E0008; Wed,  1 Oct 2025 07:21:07 -0400 (EDT)
+	id BF3218E0006; Wed,  1 Oct 2025 07:35:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B1FB88E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 07:21:07 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3DDA713BFC6
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 11:21:07 +0000 (UTC)
-X-FDA: 83949303774.07.D1CFD5F
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 052A340004
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 11:21:04 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=27x6QSsL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gIzBnHXK;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=27x6QSsL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gIzBnHXK;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AC1548E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 07:35:49 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 540831A0923
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 11:35:49 +0000 (UTC)
+X-FDA: 83949340818.01.66ECE10
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 0A4FA4000D
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 11:35:46 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="szEo/DGw";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2XT83wDD;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="szEo/DGw";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2XT83wDD;
+	spf=pass (imf12.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759317665;
+	s=arc-20220608; t=1759318547;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PF0wBi19hCMZbudds09SMu1E6+Thus+lwXfrPMqv/OQ=;
-	b=m+AJCSR6vUxVw49VvDu+gJN1bhk7acsyI2Z2ML43r/YjMzCUFe2Uby7HeYkAOM08IrjNf6
-	L52y0mX5JmLGU8rFNFe1V5ksO/t/IlbM/zyo+Mb+fUEn4gD5o1vpQ43Xet8YIU6bJyKJFA
-	u4wTtIgR9gXs9lkBeKam+iVfHAwkmJ8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759317665; a=rsa-sha256;
-	cv=none;
-	b=Dzek/5C+DY/s9YWLslN7M01usqVV2jgzCTLp9c2Y/ssmH2/perKWqYvAHYsfIK7EwxdnOL
-	E2affiXyyoSXPdWSjawPM7lYrG0kNzaHYjDhTWHfFbCLR01dOQnqtXnb2dPwpmaKWQVouj
-	MUAZHyFwDa1/wD9XGGYC2D7pphC1oWA=
+	bh=WDEo3ASRhQvw+aReLbl1V7zNFjYQm+NIo9wkgd7UiqI=;
+	b=SqC/SWeRG63dfB+VQL+rrOXxyUQonpZOA77i6JjfYFCbHtiOk94IfDPYG79MgoFOquYC3U
+	0XVpiERUiWzORrrYq/33sBeIS2Xhp3ofnPS7Uv8buLKp5tpJQukmQVDwtl1tBNUpTBJaLJ
+	FIkAo0R72ptgo3K/Y+wppc8/47cCTpw=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=27x6QSsL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gIzBnHXK;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=27x6QSsL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gIzBnHXK;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="szEo/DGw";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2XT83wDD;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="szEo/DGw";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2XT83wDD;
+	spf=pass (imf12.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759318547; a=rsa-sha256;
+	cv=none;
+	b=7Khx8JmwxqkxLX/M1wDnQamNWzbjoxk964akGCg+cSKyS2i4bCUM7P52+6OhSq5J49KjMW
+	tFCvHlSRG2tbfnn3u2Rkk+s6zdEv0WEsj9ntqWhXwUcWfT7+ZbjaxI8hrauUy4JnZVkQ7v
+	0JR8X+N5TG6SizPAusvVQVCnZPFK6ss=
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 30F041FB6C;
-	Wed,  1 Oct 2025 11:21:03 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 186F3336CE;
+	Wed,  1 Oct 2025 11:35:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759317663; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1759318544; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PF0wBi19hCMZbudds09SMu1E6+Thus+lwXfrPMqv/OQ=;
-	b=27x6QSsLnXfDgXY7pdEYSiZXKKor/atJajs4IHb9CiYvXbS8LZJh6jeOaQbyhHf70Z9x/U
-	zjgMZjaizsIsEe9ybGSqit0kpkCYa+AR0LWJVR3rD51nn+pRT9YXH7CFV6QuoYDicAYhl8
-	fvUeahFf8QDGGEgBVG3JSRYAvzxrg58=
+	bh=WDEo3ASRhQvw+aReLbl1V7zNFjYQm+NIo9wkgd7UiqI=;
+	b=szEo/DGwXESSdOXMZl+okmUt/nifNcaF5R9rEV1NVdU9gFqb0iIpCfTfcPnqUn6cKvxjf9
+	1MuzlNiReDOz+zcvKz+UBUmWUddhPDEpUNfRCFE4kIiWM9tfc+/YVkxNkXUJ0Frgkvtmhn
+	2C0CaHeu6U8oxKI8bu0x4R56SO88V2I=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759317663;
+	s=susede2_ed25519; t=1759318544;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PF0wBi19hCMZbudds09SMu1E6+Thus+lwXfrPMqv/OQ=;
-	b=gIzBnHXKDLn2i76VXzzgf1C9Z5lCSTfOVvUxwyauayG+U5gMiznPQijHtafE1CiYcSX5tG
-	WsnNmvjEr6y6TpBA==
+	bh=WDEo3ASRhQvw+aReLbl1V7zNFjYQm+NIo9wkgd7UiqI=;
+	b=2XT83wDDRKig0YV7MR1f4REKgD1p1C9m27DggWEXFST8WaxoB80Mo0C/3tvTQRjttv6rqb
+	vjLKWvWLOcHLc6Cg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759317663; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1759318544; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PF0wBi19hCMZbudds09SMu1E6+Thus+lwXfrPMqv/OQ=;
-	b=27x6QSsLnXfDgXY7pdEYSiZXKKor/atJajs4IHb9CiYvXbS8LZJh6jeOaQbyhHf70Z9x/U
-	zjgMZjaizsIsEe9ybGSqit0kpkCYa+AR0LWJVR3rD51nn+pRT9YXH7CFV6QuoYDicAYhl8
-	fvUeahFf8QDGGEgBVG3JSRYAvzxrg58=
+	bh=WDEo3ASRhQvw+aReLbl1V7zNFjYQm+NIo9wkgd7UiqI=;
+	b=szEo/DGwXESSdOXMZl+okmUt/nifNcaF5R9rEV1NVdU9gFqb0iIpCfTfcPnqUn6cKvxjf9
+	1MuzlNiReDOz+zcvKz+UBUmWUddhPDEpUNfRCFE4kIiWM9tfc+/YVkxNkXUJ0Frgkvtmhn
+	2C0CaHeu6U8oxKI8bu0x4R56SO88V2I=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759317663;
+	s=susede2_ed25519; t=1759318544;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PF0wBi19hCMZbudds09SMu1E6+Thus+lwXfrPMqv/OQ=;
-	b=gIzBnHXKDLn2i76VXzzgf1C9Z5lCSTfOVvUxwyauayG+U5gMiznPQijHtafE1CiYcSX5tG
-	WsnNmvjEr6y6TpBA==
+	bh=WDEo3ASRhQvw+aReLbl1V7zNFjYQm+NIo9wkgd7UiqI=;
+	b=2XT83wDDRKig0YV7MR1f4REKgD1p1C9m27DggWEXFST8WaxoB80Mo0C/3tvTQRjttv6rqb
+	vjLKWvWLOcHLc6Cg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 218DF13A3F;
-	Wed,  1 Oct 2025 11:21:03 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0B64113A3F;
+	Wed,  1 Oct 2025 11:35:44 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id CarzB58O3WjSZwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 01 Oct 2025 11:21:03 +0000
-Message-ID: <138f3057-8aab-4bfb-a541-dbf1a51a32bb@suse.cz>
-Date: Wed, 1 Oct 2025 13:23:47 +0200
+	id 6LjAAhAS3Wi2bAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 01 Oct 2025 11:35:44 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id B01F8A0A2D; Wed,  1 Oct 2025 13:35:39 +0200 (CEST)
+Date: Wed, 1 Oct 2025 13:35:39 +0200
+From: Jan Kara <jack@suse.cz>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	linux-kernel@vger.kernel.org, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, linux-mm@kvack.org
+Subject: Re: [PATCH] mm: readahead: make thp readahead conditional to
+ mmap_miss logic
+Message-ID: <hm56lqfeqcpjjpwkzuo4ktv7ayt763htehpi7ie2d47q52gm3w@mgbj42ivvv5g>
+References: <20250930054815.132075-1-roman.gushchin@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] mm/page_alloc: Perform appropriate batching in
- drain_pages_zone
-To: "Christoph Lameter (Ampere)" <cl@gentwo.org>,
- Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Chris Mason <clm@fb.com>,
- Kiryl Shutsemau <kirill@shutemov.name>, Brendan Jackman
- <jackmanb@google.com>, Michal Hocko <mhocko@suse.com>,
- Suren Baghdasaryan <surenb@google.com>, Zi Yan <ziy@nvidia.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel-team@meta.com,
- Mel Gorman <mgorman@techsingularity.net>
-References: <20250925184446.200563-1-joshua.hahnjy@gmail.com>
- <567be36f-d4ef-e5bc-e11c-3718272d3dfe@gentwo.org>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <567be36f-d4ef-e5bc-e11c-3718272d3dfe@gentwo.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 052A340004
-X-Stat-Signature: esq1ggyq91cjdoqznkhdfutiznionsut
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250930054815.132075-1-roman.gushchin@linux.dev>
+X-Stat-Signature: 96hw97uggz6ef38i58ab8kmc36mnhtfn
 X-Rspam-User: 
-X-HE-Tag: 1759317664-343383
-X-HE-Meta: U2FsdGVkX192R3sI8DY15aQa9aXbWt/qNnwOKpiQQZOTsrOM2sF5tI4CJsJRPkWpdJY/vMZLBtq68lI2UELqxO9XMQo02hldbOZlhxa9c0xESFJ6pAD6dmvNOrkBXA/+Ytki3P4ls3Hzc/u+euolXcPdHoABHooSFEljz/EMp1x6cW/rIZG26vbe3DOBz8SBnjjLAGN/WR8afxfFEtdIHTPZHMdeBb8RfHerAvI2kZgjQoIcLOg07szr+3YUfnayI/iOF2H8Kx9hcjJyiMmD2VPQLv78LxmZTySYOfA7K0HnJPNqnzLuMtJtyxDVA+WPiUBULt7SPVYbnBiyLiPR9cwUe0JmUbFzDEha1RukWrSb6slYfgATyJgz1yeqsSaCmAsaHreknBC2oEhtnKnSmDCOV1jNDWdbKmN+gyZ6tOPxeI4Ey59RRIOTBoJvc3elSx9OCa3svuFXJUlLXQGN/ZqbswBptAOZmbfwgiOqM6nut0VKYyK4BREk58BPqSPvvD47bueCANy1phoPb9w7YOmTFHPx1PB0p+6fdIEoBeYBmYeoOYKXMShvaQ0yGITLrh8V5Tj+CN2FR3Hdi5lXKafbUNH0p5jTP1LDibcmsfrbSdklS/LsP0GWBFH+JVU71qTLg9XSjNkiCQ6x0Qqw2j2MDXgBDIwN0sGSvDSCgKtXDsZmpEOv4cG+xntLU8eDetvq5d0Ln5le7vQNIvebdLgZbv7C3YYwgSQdrHGAJkuzSkUXahNrAZ95ZcqnlQwyFASMMpq249cQMaDQtKd3JZ5VezNe3hKw+Wxzl2tQU9ygMKPg/2HP3CnE8kddX9vsmzymCeTil7nrOuhyBDtYoBMyQHfxqY0pbZ05vO5EJB3zp51XL+3mTlJ5roL9Te2qGrG4x2lSEVJ8Uq3YGAmFtQcaf/xsUBTxw36Ithxe1lWlC+HTexwTuEKD4rpXQ+L8qC7CPeybYLSlbfuY+P/
- zIhkJwK4
- GiJL1uQ3MrVvvfNh0M8Ybm82Dq9KYMCDUVciv1ufGh2aPng238MfO6X2EiUAhkdGmVlsn94uvZO7807lNYSdqaAeSbwghxaM5KAoElXgarG8nsnnJ7Ho/T5vgMhOQcPF8reIq1wFlaMeyUEY7v9QMFZa1vIluxrkjOrqIe5KFih1+EuD4Czu04YfZc1ExMgOU4EE35NpT9OGfpT6514U+KE6l9YCKwLzxJpfycwZPBP30ZYHP+9moY76ciXvCF4Mqw8ccUlm+kLI69lsxNzkBLrQ1J7jBdbNya7bwzkktw7F76oPpG8Fovqu7dyShBBRXJhdcv9cnkbST3kwgBTYVgCipRDC2XpT4uSp89I1xkD2JhMj3frRwlH8o6Ub2CcWOvywVARTEiRj8dQun1SdUAxqyrw==
+X-Rspamd-Queue-Id: 0A4FA4000D
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1759318546-101420
+X-HE-Meta: U2FsdGVkX1/yN3Z43an3scpgLLk0+/dmvYyeLn112HQy513DvkJo8h9je6r0KrkbaB+hHiCjkbgpOWn1GGf69BD+2i2KWUe3KfAmrPtt7CjIceGJ06NqCEvRJT2zM899mlJoMLiJzcVAwVchoAwxKFgemzKA+XIeUiZeEWF4lZfL+yxChMdRx7MiArWhD3SOQbsBCDYMPZCwg31urh3lI88i+ZINfI10VPtMrnTkBBCd7fyA8E68ie7nwRQ+0Ihsw9+DKFrc4s0v44kCmBSVaIV8MLlmpKvXszZUCdYMtt8RyXI3ZCHdY4k6X4vWUJMUh0WidLt6Vwacv7yYjFMGda9zKK7sRn0mORCzLXftrsrnMrlG/li2PDxEz9CDEOwSzUmVm2doXpT2gsaEDlzriTkqWjLNl62izwCyoRvoe4cBFsduP5Eiq9tebzvbZL2e11/S9GPHw5BHCwPRLfD+bxXdoAyaLu5wcWFzXWLyfR8VcUFHLWlMtWJEQs9BqIFP3Scw0+aXvn4K7GcFtdUP87PJmGNYnNEutTH27MaqpeD070/IoFw1BwZO5ihbxPpn5ZaccxcREuM/BnGWoz2yBKP3v60O+AO5lr7LG2BWlaohMUyHBbM1NiRym4NkPdD29/kT2q0rmirLrNsBEQtZbN8ywtL9f8ODzSjkcwOgpCJFSWpdjBk+g6AAQi3HwS8+TKM5q/XBxstzsOpkzPugJXbSdK+I5HvIOe7SHqAB0eYCfmz/c3KL6JXQi4TYeSPX9fIV4ZWmksOLKCtU3ocy1GH0nk/catQujKuSz3WUV/BiJ1v0NBQT+YG9d9orIkz2k7f0dR5Y+J2WMJyXPkoXe2tOsoEGk2HU75ywghfN00JylEev1Ag0uh4rMNHbfQY8hI63hQF8CPvwj8EJIzO7by89geH7Zvg0pv4Pcyzv7D4Is720pUeQc8rtElQbQa5ifD2tCO3pggbLUTrx4hy
+ gx6GK4Eq
+ DdttYlc1SX6KmaskBvtiFKjDDAPG8OOp0ooVywIvjB0encK29ZkMMeO00hhilkDF7Q8EkCglDZvCg5pzmlbSy6elSW9vpGSorL3W9Ze2VzwunB8q1EosNCI08lku2C726KcwmrOK0F8bQ/TT48pZ+RiL2qMzS06RTOfOh+crrp5/Mwpud6SBeelRdvBful78bGuk4lz1dmSxKzRctuTbY5dp07DAi1rlzjGnmqMwoi5/9T/9/2BO7U23gLheR/XE7qRh4NFCfeHZ7vjoMq/brRA3rOGZpPFD4pssbC0v9aAuw3Vmxh6WwBAoO6/pwsuCoIBNoRWKnnEaD7PfqrM5EgsO7Cb0t9vTRvLZ1lv+aUXqekvKjkZ84mvBKBDm8j4gdU7vue3Dk8UYxC3cayYyemNWLm6WHQjpk4VN+rtnYUwPz4MZsSnBMRBLIXcuV0iFwDKsJK9c9bMdaMrTN6vzP31fNSTxmT1GopY/179Rluw3BDJ9n92Kh+qB7cQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,82 +134,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/26/25 6:21 PM, Christoph Lameter (Ampere) wrote:
-> On Thu, 25 Sep 2025, Joshua Hahn wrote:
+On Tue 30-09-25 07:48:15, Roman Gushchin wrote:
+> Commit 4687fdbb805a ("mm/filemap: Support VM_HUGEPAGE for file mappings")
+> introduced a special handling for VM_HUGEPAGE mappings: even if the
+> readahead is disabled, 1 or 2 HPAGE_PMD_ORDER pages are
+> allocated.
 > 
->>> So we need an explanation as to why there is such high contention on the
->>> lock first before changing the logic here.
->>>
->>> The current logic seems to be designed to prevent the lock contention you
->>> are seeing.
->>
->> This is true, but my concern was mostly with the value that is being used
->> for the batching (2048 seems too high). But as I explain below, it seems
->> like the min(2048, count) operation is a no-op anyways, since it is never
->> called with count > 1000 (at least from the benchmarks that I was running,
->> on my machine).
+> This change causes a significant regression for containers with a
+> tight memory.max limit, if VM_HUGEPAGE is widely used. Prior to this
+> commit, mmap_miss logic would eventually lead to the readahead
+> disablement, effectively reducing the memory pressure in the
+> cgroup. With this change the kernel is trying to allocate 1-2 huge
+> pages for each fault, no matter if these pages are used or not
+> before being evicted, increasing the memory pressure multi-fold.
 > 
+> To fix the regression, let's make the new VM_HUGEPAGE conditional
+> to the mmap_miss check, but keep independent from the ra->ra_pages.
+> This way the main intention of commit 4687fdbb805a ("mm/filemap:
+> Support VM_HUGEPAGE for file mappings") stays intact, but the
+> regression is resolved.
 > 
-> The problem is that you likely increase zone lock contention with a
-> reduced batch size.
+> The logic behind this changes is simple: even if a user explicitly
+> requests using huge pages to back the file mapping (using VM_HUGEPAGE
+> flag), under a very strong memory pressure it's better to fall back
+> to ordinary pages.
 > 
-> Actually that there is a lock in the pcp structure is weird and causes
-> cacheline bouncing on such hot paths. Access should be only from the cpu
+> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Cc: Jan Kara <jack@suse.cz>
+> Cc: linux-mm@kvack.org
 
-The hot paths only access the lock local to them so should not cause
-bouncing.
+It would be good to get confirmation from Matthew that indeed this
+preserves what he had in mind with commit 4687fdbb805a92 but the change
+looks good to me. Feel free to add:
 
-> that owns this structure. Remote cleaning (if needed) can be triggered via
-> IPIs.
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-It used to be that way but Mel changed it to the current implementation
-few years ago. IIRC one motivation was to avoid disabling irqs (that
-provide exclusion with IPI handlers), hence the spin_trylock() approach
-locally and spin_lock() for remote flushing.
+								Honza
 
-Today we could use local_trylock() instead of spin_trylock()
-theoretically. The benefit is being inline, unlike spin_trylock() (on
-x86). But an IPI handler (that must succeed and can't give up if the
-lock is already taken by the operation it interrupted) wouldn't work
-with that - it can't give up nor "spin". So the remote flushes would
-need to use queue/flush work instead and then the preempt disable +
-local_trylock() would be enough (work handler can't interrupt a preempt
-disabled section). I don't know if that would make the remote flushes
-too expensive though or whether they only happen in such slowpaths to be
-acceptable.
-
-> This is the way it used to be and the way it was tested for high core
-> counts years ago.
+> ---
+>  mm/filemap.c | 40 +++++++++++++++++++++-------------------
+>  1 file changed, 21 insertions(+), 19 deletions(-)
 > 
-> You seem to run 176 cores here so its similar to what we tested way back
-> when. If all cores are accessing the pcp structure then you have
-> significant cacheline bouncing. Removing the lock and going back to the
-> IPI solution would likely remove the problem.
-
-I doubt the problem here is about cacheline bouncing of pcp. AFAIK it's
-free_frozen_page_commit() will be called under preempt_disable()
-(pcpu_spin_trylock does that) and do a potentially long
-free_pcppages_bulk() operation under spin_lock_irqsave(&zone->lock). So
-multiple cpus with similarly long free_pcppages_bulk() will spin on the
-zone lock with irqs disabled.
-Breaking down the time zone lock is held to smaller batches will help
-that and reduce the irqs disabled time. But there might be still long
-preemption disabled times for the pcp, and that's IIRC enough to cause
-rcu_sched stalls? So patch 4/4 also relinquishes the pcp lock itself
-(i.e. enables preemption), which we already saw from the lkp report
-isn't trivial to do. But none of this is about pcp cacheline bouncing,
-AFAICS.
-
-> The cachelines of the allocator per cpu structures are usually very hot
-> and should only be touched in rare circumstances from other cpus.
-
-It should be rare enough to not be an issue.
-
-> Having a loop over all processors accessing all the hot percpus structurs
-> is likely causing significant performance issues and therefore the issues
-> that you are seeing here.
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index a52dd38d2b4a..b67d7981fafb 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -3235,34 +3235,20 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+>  	DEFINE_READAHEAD(ractl, file, ra, mapping, vmf->pgoff);
+>  	struct file *fpin = NULL;
+>  	vm_flags_t vm_flags = vmf->vma->vm_flags;
+> +	bool force_thp_readahead = false;
+>  	unsigned short mmap_miss;
+>  
+> -#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>  	/* Use the readahead code, even if readahead is disabled */
+> -	if ((vm_flags & VM_HUGEPAGE) && HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER) {
+> -		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
+> -		ractl._index &= ~((unsigned long)HPAGE_PMD_NR - 1);
+> -		ra->size = HPAGE_PMD_NR;
+> -		/*
+> -		 * Fetch two PMD folios, so we get the chance to actually
+> -		 * readahead, unless we've been told not to.
+> -		 */
+> -		if (!(vm_flags & VM_RAND_READ))
+> -			ra->size *= 2;
+> -		ra->async_size = HPAGE_PMD_NR;
+> -		ra->order = HPAGE_PMD_ORDER;
+> -		page_cache_ra_order(&ractl, ra);
+> -		return fpin;
+> -	}
+> -#endif
+> -
+> +	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+> +	    (vm_flags & VM_HUGEPAGE) && HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER)
+> +		force_thp_readahead = true;
+>  	/*
+>  	 * If we don't want any read-ahead, don't bother. VM_EXEC case below is
+>  	 * already intended for random access.
+>  	 */
+>  	if ((vm_flags & (VM_RAND_READ | VM_EXEC)) == VM_RAND_READ)
+>  		return fpin;
+> -	if (!ra->ra_pages)
+> +	if (!ra->ra_pages && !force_thp_readahead)
+>  		return fpin;
+>  
+>  	if (vm_flags & VM_SEQ_READ) {
+> @@ -3283,6 +3269,22 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+>  	if (mmap_miss > MMAP_LOTSAMISS)
+>  		return fpin;
+>  
+> +	if (force_thp_readahead) {
+> +		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
+> +		ractl._index &= ~((unsigned long)HPAGE_PMD_NR - 1);
+> +		ra->size = HPAGE_PMD_NR;
+> +		/*
+> +		 * Fetch two PMD folios, so we get the chance to actually
+> +		 * readahead, unless we've been told not to.
+> +		 */
+> +		if (!(vm_flags & VM_RAND_READ))
+> +			ra->size *= 2;
+> +		ra->async_size = HPAGE_PMD_NR;
+> +		ra->order = HPAGE_PMD_ORDER;
+> +		page_cache_ra_order(&ractl, ra);
+> +		return fpin;
+> +	}
+> +
+>  	if (vm_flags & VM_EXEC) {
+>  		/*
+>  		 * Allow arch to request a preferred minimum folio order for
+> -- 
+> 2.51.0
 > 
-> 
-> 
-
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
