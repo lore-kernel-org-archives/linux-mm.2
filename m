@@ -4,153 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C0F4CCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 00:13:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B122ECCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 01:07:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 495C48E0003; Tue, 30 Sep 2025 20:13:29 -0400 (EDT)
+	id C1B578E0006; Tue, 30 Sep 2025 21:07:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 446948E0002; Tue, 30 Sep 2025 20:13:29 -0400 (EDT)
+	id BA53D8E0005; Tue, 30 Sep 2025 21:07:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30DF58E0003; Tue, 30 Sep 2025 20:13:29 -0400 (EDT)
+	id A6AD68E0007; Tue, 30 Sep 2025 21:07:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 197DE8E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 20:13:29 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 74EA313BED8
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 00:13:28 +0000 (UTC)
-X-FDA: 83947621296.20.4AB81EA
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 9808B16000A
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 00:13:26 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=rivosinc.com header.s=google header.b=EdFazZr4;
-	spf=pass (imf08.hostedemail.com: domain of debug@rivosinc.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
-	dmarc=pass (policy=none) header.from=rivosinc.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D5388E0002
+	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 21:07:00 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 19775C08C0
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 01:07:00 +0000 (UTC)
+X-FDA: 83947756200.01.7238870
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 4A14B180005
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 01:06:58 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=P2BXvhDl;
+	spf=pass (imf06.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759277606;
+	s=arc-20220608; t=1759280818;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CUsbmESiNHTapnE6rmxwHkpYC/VK0QzGDUHHcofE4qs=;
-	b=ApSO/cQhmVEG9TbMBeFMGN5my6lJObpsgMLTGfIkSnNYqlHAW+EI0/rRaG6TmvKSVhftJK
-	+sJIxqwCE/FHkiSpUYN18hNndiE86Bq45N6oszn7TQGN1MkIK1O5bq1dMxkOSpGUNVZtLe
-	oVDTH70CJZG9p38MEbDG6LwFGGTe/DA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759277606; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=7KDLDg+Dl3qWFtDxuCx7fnLK9u41qYIlWveNKnTJTds=;
+	b=q4rajupiu0+oFQm+UVOYArI8aS5pmNbzY0o6d8VUV5iSCB5VPZdhMiFwQYp6QH5q6yl7oo
+	JVnzIZgUeIjhz7Zr3z497dAFswcobJtyocg8ZIMkOOxfcWo/IWUhL5CJi6BzXybcS14R8U
+	blhh4MWHtxwmN5lwDnnG9cFiEMF+Cgc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759280818; a=rsa-sha256;
 	cv=none;
-	b=dWmHaaWxJmQCq7Sw2h++rYzZgZB9GARoitlWthgbbNKrANnjdaVMcQSiCGEQcIYB2svqe3
-	0zMCxo1bxEVsa1/DTYFKe3sFA6qxEiN2bESR+8C6HHWiCwjb9vAUkukl4P0dxvEn/AqzC2
-	Kz+h+qTTcE/O2oOBj8aM/PIqxZcxmi4=
+	b=7idnjPYicy27AXPfGTRHsbYDNxA+Xc7aO3MoSqA2mPJLNNK8Iz6KPPnlA8PLYfFD4L1oX7
+	A9ert1hUm4Vyvis8jDmPnMA+2RMGED49zAmZZ5v+WveFLTilQeDcZAuEgy3pQkvV/W+n1R
+	/6HJWuam/FiptJ7jP3xq+WT0VwnakFM=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=rivosinc.com header.s=google header.b=EdFazZr4;
-	spf=pass (imf08.hostedemail.com: domain of debug@rivosinc.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
-	dmarc=pass (policy=none) header.from=rivosinc.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-77f605f22easo6027877b3a.2
-        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 17:13:26 -0700 (PDT)
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=P2BXvhDl;
+	spf=pass (imf06.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b3e9d633b78so117068166b.1
+        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 18:06:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc.com; s=google; t=1759277605; x=1759882405; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CUsbmESiNHTapnE6rmxwHkpYC/VK0QzGDUHHcofE4qs=;
-        b=EdFazZr4AVqyGA5uuBuVNUpudV44Bn0mOf9XZrhCx2XdBNfOS85LcaywVHOa0LkGSw
-         bTy/fG/fyY+2uLgsZ7Wvfwj59L7693A9QoGaCNyUT3g6/f3w/Wu3sSr3ku1SOjO2TRbe
-         N/rxYQljdckqFJKqE+OKQh/ZgHzWmz1e1ahylO/vb9bpmCybTkxjVN6gtdXw0KIud82j
-         JbCsYsMybBy5fuhxCLINttQkCyv1ZMwi7CGz+0xJtwBfMI6WJkLRQV+gcIsWvuj2ptDE
-         ffAcb1FD7IOPI2Lvv4/BPb1eBpVlRrmTYUmfhntdMTkQibMHB6vrQ0V+rGbO9VPSMTIe
-         4pIg==
+        d=gmail.com; s=20230601; t=1759280817; x=1759885617; darn=kvack.org;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=7KDLDg+Dl3qWFtDxuCx7fnLK9u41qYIlWveNKnTJTds=;
+        b=P2BXvhDlkhQKKES8ONWyOC2CJl/Xcq6wvcZCpAzG0jl5qYBTdE4R+SxhY6UFA6dyVk
+         YwokIu1v9raBoCimmLQ7i1AdKcX/cvF+9B5eHF4NX9TQGGm3IvFr8j9kPUwzwAYkPorP
+         ahxHEQgy17dTfbZmZwFU+90MMHzGPsmIgUICIyOT3MB3uJP163QyUZr1XYeogq2uoUeP
+         8f24DoDGVdMgQWbjdruI+svbT21GLR1PpohOQ8sd8115OqrAANavZJRX7WkKT78GhUBF
+         JL46jySFAwSUqD1NBynxBNkGU7eKgrXQ5WV4mck9jPrn7SUgcFmXctB5l3oOONBfKlXp
+         pHNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759277605; x=1759882405;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CUsbmESiNHTapnE6rmxwHkpYC/VK0QzGDUHHcofE4qs=;
-        b=g/iedn51daET5dyIaCfSM8V0szcPlVWLbdsoZARMs6KHTeri1s57fC2HW++RyOvmMV
-         q5SAjO92hUW95k3mZRUwMpzwhyYG26f3AGd2GKi9UlokU8NNe32xwHhwrrsZ470HCt+7
-         DOYWqHAhAN4bxUlIxpCmE2CStZQ0hCbQ2lxPMmJoXf7JFEtdHsR3I0YR5iT8YavpMcgO
-         fJcWdXaf6sS5k2Ttk5E48KRmOGFA7jO9BetRuW+CQVC467THehb8919vKli8AUFv/umz
-         JF3SGKq4AmSCKJacJLTLI4be3Wko318qYPJisBwgZZXFNB/nFPy1qsHWM7sgs+lVqbHU
-         NlWA==
-X-Forwarded-Encrypted: i=1; AJvYcCVWh8SvDRoiVNwzBNCRaOQfH7bKbbvNJ1kZd524+TTBm+3q2qkDSWCDMh8gQMRzeFnUFbItU5a/YA==@kvack.org
-X-Gm-Message-State: AOJu0YxCpttkI7cj21ZyY1+MBKOcihFMPYr1jF1QhW+t3NjC2+HmO9m1
-	ohcDXmNT3KfhtP4TKrfD7Y3OUI2p+DvRsaSvYITWsBAE5xkKJOtIrLY9n5EvToj0aI0=
-X-Gm-Gg: ASbGnctKRYflxJimizAplC5aRxOXO+97FPBYi0eUbXFrFjf5zaFAGb4x/xHUICbx7k3
-	ghhitjiMduzkbI/ZpfbYYQNqAJ5io8YXWb+mPo4niOuqaNOr9xoPS59EtWSWzSY8R9tsxzNicjj
-	BORJOeARPgK7N7jNYnfi5NeGNdMucCtAX+/Yq9cEsV2O5fUhvZ1r2I1a8wavadx/638roxZJuOT
-	vpNqizQ/GqxjtQhB/HDqll/puXWqH3eWsCQE7YMZaWK0J2qRSY6RRIJ03teNyvPMkdCx2S811ax
-	wWoESq6QJDB2StOqwwhBaTeuot26vO9uwA8MD96fDxFHSmHT633vdm164NCQV7AznE8K/Kr18yl
-	+oOUZ3YwvwYdaohgijbRGecQOu0TyzqwxUi2AExDXDDp1KwgT/454wgsQ
-X-Google-Smtp-Source: AGHT+IH1ajiur2VZSdi3/i+zRO/0+860zWmY2Oc/Oh+OdPF2Hx4MVy9Glo++QmHnaPr2yVoYd0LYtw==
-X-Received: by 2002:a05:6a00:3d51:b0:77f:2f7c:b709 with SMTP id d2e1a72fcca58-78af404c9c4mr1324097b3a.5.1759277605281;
-        Tue, 30 Sep 2025 17:13:25 -0700 (PDT)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-78102b64599sm14805168b3a.70.2025.09.30.17.13.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Sep 2025 17:13:24 -0700 (PDT)
-Date: Tue, 30 Sep 2025 17:13:21 -0700
-From: Deepak Gupta <debug@rivosinc.com>
-To: Florian Weimer <fweimer@redhat.com>
-Cc: Paul Walmsley <pjw@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Conor Dooley <conor@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Christian Brauner <brauner@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
-	Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com,
-	richard.henderson@linaro.org, jim.shu@sifive.com,
-	Andy Chiu <andybnac@gmail.com>, kito.cheng@sifive.com,
-	charlie@rivosinc.com, atishp@rivosinc.com, evan@rivosinc.com,
-	cleger@rivosinc.com, alexghiti@rivosinc.com,
-	samitolvanen@google.com, broonie@kernel.org,
-	rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
-	Zong Li <zong.li@sifive.com>, David Hildenbrand <david@redhat.com>,
-	Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
-	bharrington@redhat.com, Aurelien Jarno <aurel32@debian.org>,
-	bergner@tenstorrent.com, jeffreyalaw@gmail.com
-Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
-Message-ID: <aNxyIeVB8Rjsu6wW@debug.ba.rivosinc.com>
-References: <20250731-v5_user_cfi_series-v19-0-09b468d7beab@rivosinc.com>
- <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org>
- <aNQ7D6_ZYMhCdkmL@debug.ba.rivosinc.com>
- <lhuldlwgpij.fsf@oldenburg.str.redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <lhuldlwgpij.fsf@oldenburg.str.redhat.com>
-X-Stat-Signature: dhemfm5scdhkto1ckz7qot7ock6a37se
+        d=1e100.net; s=20230601; t=1759280817; x=1759885617;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7KDLDg+Dl3qWFtDxuCx7fnLK9u41qYIlWveNKnTJTds=;
+        b=vxLxuE1bzFEh8IPc85Y0+XdcPkKyw50xiNh/WhGIlckvvY5/naePYronsNbGyhCnON
+         3dgmwArn7KM0aBUaeNSv1UiDivWRPfztKiHXTjJQ1kGl7avgG9+wnbvOLXpOUDahIOEx
+         KdayS0b7xzMPA1xgGWVboLgUzFnAWl7w/KfGFUHd8HpSAG5zvkomSjjhAnookeMdfvFl
+         SGLWxGMrjF+iotrW9806guDVcN7ULvqe8GnYRWWxOo6rIShCE/wveqBn1NAasPluak9Y
+         HMUjvjlElT50WhYiII6cmjHo2mqPuhdVKmRAPUjtmk0OmY2b5Q+gKMpw2jmJjGhD80dt
+         Nlvg==
+X-Gm-Message-State: AOJu0YzkudAXBHq2cnCy191t65c6cXRU0qCg7ESBogon/SqbHALqXK/U
+	/s9cRqaf74Yvf14VwUD/dZo9raw6rYwTYRPemKA+XkTnfLARqM2P5sj2
+X-Gm-Gg: ASbGncsqGakl4KwrRFXWCtMOhFRpuxC88E2IpYU6Rt+MqGw7FMPZfShf7iKqxUpXTaY
+	nkjp8kC4Y10/8tKIXHg0Ci4Cbk+jkfa6zJIl0SKUcdVGQNT1ook4Uq3Ga5HAphb4WFdUAl15XLN
+	m23tGZ9n3TNCrz2VC1bGTMaWMWMsxilm6kAm3l6ssxpfMTNY7lqf4z7dbAxoNA57cDLptSNBFj5
+	i8HXs23FFdGEifp1HEpudBoSeLiT5oC0SliA3m5jfdyd+US/opuceeaXXl9Bvyiu1vWQlmHQgQc
+	PerEur52aMazDrp3xDvMLlvc/7HFMeHOxh2FT0tPJXMZmLCh+gC2ed55QeHraKuaPP5wEc22vgV
+	1k4c1KDrPAzgsDdLSKCUeorbgGQKhqNEnBfcSjWmeUc52JP5jbQ==
+X-Google-Smtp-Source: AGHT+IEAm+pXXiKYd964wuSo/X8tRj88Tn9PVg1wbxvhKDxwF1x7LCvJcy3hLAzXXalpwnyoBTfCOA==
+X-Received: by 2002:a17:907:94c7:b0:b3f:493c:aa with SMTP id a640c23a62f3a-b41356214fcmr739143866b.7.1759280816434;
+        Tue, 30 Sep 2025 18:06:56 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b3545a96977sm1258180066b.93.2025.09.30.18.06.55
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 30 Sep 2025 18:06:56 -0700 (PDT)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev
+Cc: linux-mm@kvack.org,
+	kirill@shutemov.name,
+	raghavendra.kt@amd.com,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>
+Subject: [Patch mm-stable-fixup 1/2] mm/ksm: don't call mm_slot_entry() when the slot is NULL
+Date: Wed,  1 Oct 2025 01:06:50 +0000
+Message-Id: <20251001010651.10543-2-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
+In-Reply-To: <20251001010651.10543-1-richard.weiyang@gmail.com>
+References: <20251001010651.10543-1-richard.weiyang@gmail.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4A14B180005
+X-Stat-Signature: spb8b4tuwxbzypgfcfp4q3x8z59awisf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9808B16000A
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1759277606-490312
-X-HE-Meta: U2FsdGVkX19SNuY+Qv07GXBLgqdimxY6eSS7efP9nsAPlr0j1bZc3MYkZ/utfzTrNLxWbegwMkyDMRXW1A6Gxt/X0o4hnHKQTM+7STbbHdyPNw7HhVoYbs+jttQmblNiW7MzayR8ng7hLgLBfAsCxmuJ650v9fYltgVQR/Tgn/Xom34hAsWOfsuKfJmK9gtVaJ0JsCJPnIyRn9BT/WCCfb4tvIapaamdDsyuH9fFEthiemR501T6UA4mQ5WZA2P2mrWkr8QRkMDODLDPlfn8VzmmzTmB5tK+fiDLVhovCwFwlW0x5WH/AqKWxw+UlIt2Jow4T1GSmC5vTTDxdZKtGfy/p6ImNYQTJdDZg9k1OEC4gj3bLaDnQD6G0avd9kghdfCzuT6ZACCkU3C56/ot8vO7/eKFB1Zjhe4APojWrUV5dUQ+Af16sr53EVb39NvXN/+FV3kyFdn1MPO6P0P4/tirz7v9m9yjZvLAJxzYxKX3lnREt0JJtL1AB2drZuZGy8OZgkkGu71XF+4okXrm+pFJzkxRjYYM4H4hPiyYwAqUo+BTxY0Jt22uWhn9v4/neVthk39voGx5MdV/Kwo2pPu5vcP4C7v173Z5XULUBZHVuc99/PG7iBMUxYlMqTTRjH3RWZZeVlQD0BJS/3HEnFUb171R07Tkwo/v9Uyqv7gIHqN9jBb10ZrAiOa63XsNY35SCCYnMARN6bY2NDHTnFj6zOoEx7dtxrwZ3rP7+1WxWtVX9qHcY4fdNZMWpsRMX4XXYncZzTcr6evepzA6JeWYawQH9GQpJduQ0kz4yiUR5pxARhLXREDS5OBLgqUtNFHCAoVeOH+ru3fMuiD3pYDJtCyFto2hlh5zcxVaqt9o67GwzD1SI7YZopxCBLsEZW8nwQSujbfo4Z2WtKhvqLgt0CspoLAUfXKdXjMO1+F5KyXDrBUNibp5nfczjXuqod31lZnvXsJO9wiKh1S
- QmUSQdvQ
- 2TogjoOYVlWNLSvF6xVgykgQ0AJo2hgO+htEjzqvb4NctzCNqGUkYc95m5o86q2nTQZterxORIjVN9yq+VKhqrY+pXBzfginSVaDLZPFBqM5DRsAT1muyHKYksrJFTACGfMQBzSmbzwBWu1NwSIIrXokrrL5W4/0Ja+dgd61amZJgIl9t4H1fXF0+zNqCbL4SKpBXAdOovCVCHypnjl2/yCWnRcN7QA2S/gMJZPwWbNuJ3ZocEzIWoi1VF/mXZd8Xhh4chbS6yN2UsB7EQHvDGEHI5zgtNtgLJrfeHtntASEv6M81oEgNFFMI73AJtregBxyHvk7qEwpsh2zvl1drIfo26J/B2jPTtIDMKQ9u77kjxGLUmCO9EAWuGVj8V6YYtc9UgZduPAuQRt8=
+X-HE-Tag: 1759280818-424090
+X-HE-Meta: U2FsdGVkX1+It4brRtuNvyzSJI31UcHYDZPLU2s9VGZAGEyi4jshTb6i0NDVy55uFRjxCFrXijR3ahPlE7czBzckvX9I4wui0CL/JcSYUk5vCUqNr3ecaXdjkmNfZeduokZE6rwSg5pmsnPUk/WP3Bsxrva/f5+tccZ0tLLhMYQdUklhOwI/UDEvBmrgv8jMTqt3IHvpHDYMH76Tf6VtubZs0NPMID7lmuZ+mkfq06nvqHcJRiML2WP05RMrWGgHgUowOsrBWhRwu59VXiq6EtlnLIsICef/mg/dUA9ye7x0/93s4+Krp6P+1pNf8zZTcj2Xm26px1GC9iF4XCqe+DegolbLdvE4vPd8Zlrn31lI6I8XcVDPUQQT4OVe/BcpMQa3gXBsLWoI2/oa2GX7MDnOJsBbNL61ojo0pT1HOuKB7zb25NJY8hQ/7e8EP+D2gD6f1zNLtz/cSQlVAGn8RMG3xRc0ThaxaTe5sfE+hWu5ly9iOrflU4u0I7gtX7fzJyHClYbwRdMIE1ORgNbiT2/JhOyDXY21Y+FQq1ApZAfjrCF/txl99c7C30zyWijcy4fPdNyywlK46YjacW5JVoH/zvS99h3MhJCBDg6Dm+szI18L1Ryj1ebzPE4oEJn1B6zdK3NfPuS6mWCHI7n5T3PmvANxQpoL8RRJzvnXi/JWKhEBU7TehUWweb0YgHv0HkmScvvloo86L4106NYqVE6kIIv9TDRiZCbuidYhD4eXuVwewVf0cAIXRrvOxN2qCWPEfx4pEZhf3AWYk3ynzjKaQCzQX73LemLkZ38JP+oun2eLH/t+f7Ky/fUMjus2ZucEXmImvoB1tS1sn0kcFxbHwTEFLaUsOQP60SwOJuxUTDqv2KECRG/rg3WELiSw3kJ7/i/Z/O21j+SS5NHf149U7NGfIqJHxuOOfJDjudYJ1KSL4uSYm/j65sXZGXdg/ALTwvL0UAxKwg1Y63c
+ torH3Tti
+ 4rKtu4lmmCNbSP8STknf5lwVj5pb/nbebIb+CKC1/8Uc+vrOmvt0+Gx2EO5LpF1C7n+upAb1sXwQOyo/tZCS57EsSzLf9gWDUjHIlfI/1pwGcXJkbRTbJ0A5aidYmdlyrxMfd6MHfQ1fsGA3KYpcdGSXm7M/jrd1Nf+JGEuYsbaM9dY+roA4p0GHdH0Z9Msw3UVbOl93ysDQlu8InoDw5h0DmL4p+35v/vZrN3teLZXp/6e3PHpgvYL50kqaTL2JMIk9J89BCd1tONXd4FhfDdliBgFFpc+7ylwLwtmlTbn8V9x2XFDMueIbiBklH7Fa/YVcsX01ZS091NbdOCGoSzCnIll+sVw5AalLoc47Mje3lMgrY0fSQzyMuXtZd1q8emBuuNXHePm03Sl6XykEpgQtnHnkxVpGsb2cJsm4yF/dz1tcUPKWhwGmPKcxMzPTaofulNDWKvhuhb24/GrgfkAyVTWy18Y5kZPw7MuZ6Pz3W5mWAFqckB8n/ZeIFTJiqQF44qP0X8bOPANwQbJe6aC9A/Kc2f1s44uflqlOLpM6LWODsRt+uGSv3f7E5YJ4/xV3P8jVZqxvC0cnFtE4cNQkbdeIl6YDhqK7kOehAhm0M5AoPl8//Rvb9UI8X/JXWK5ojOR+ETPEdFdjZhc2qv4MuCUkJHdK2jHCXv9ucotuy99PTXO8WJ+YUJlQZz2lEnI/wCQYBc31Q/IimXaYOjn5RmDqTA1gjE++9RPJuzYjqXCgFE3RmhvsxD75xnqc/O336LYBzytbJDAtivnP6LPnToFiDmOsPtuV2zXQE7RRlx0Yd/VAI2qPvsMdhzN5eR9gPt/4qOMpUtPOOigDwZs4GaKQdgquytGcv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -159,104 +128,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 30, 2025 at 01:15:32PM +0200, Florian Weimer wrote:
->* Deepak Gupta:
->
->> Any distro who is shipping userspace (which all of them are) along
->> with kernel will not be shipping two different userspaces (one with
->> shadow stack and one without them). If distro are shipping two
->> different userspaces, then they might as well ship two different
->> kernels. Tagging some distro folks here to get their take on shipping
->> different userspace depending on whether hardware is RVA23 or
->> not. @Heinrich, @Florian, @redbeard and @Aurelien.
->>
->> Major distro's have already drawn a distinction here that they will drop
->> support for hardware which isn't RVA23 for the sake of keeping binary
->> distribution simple.
->
->The following are just my personal thoughts.
->
->For commercial distributions, I just don't see how things work out if
->you have hardware that costs less than (say) $30 over its lifetime, and
->you want LTS support for 10+ years.  The existing distribution business
->models aren't really compatible with such low per-node costs.  So it
->makes absolute sense for distributions to target more powerful cores,
->and therefore require RVA23.  Nobody is suggesting that mainstream
->distributions should target soft-float, either.
->
->For community distributions, it is a much tougher call.  Obsoleting
->virtually all existing hardware sends a terrible signal to early
->supporters of the architecture.  But given how limited the RISC-V
->baseline ISA is, I'm not sure if there is much of a choice here.  Maybe
->it's possible to soften the blow by committing to (say) two more years
->of baseline ISA support, and then making the switch, assuming that RVA23
->hardware for local installation is widely available by then.
+When using mm_slot in ksm, there is code like:
 
-Yes that's totally fine. Distro (community or commercial) get to decide.
-They aren't forced to make a decision of RVA23 switch. Question is about
-"Once they switch to RVA23 on say release `A`, will they build release `A`
-for non-RVA23 as well". 
+     slot = mm_slot_lookup(mm_slots_hash, mm);
+     mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
+     if (mm_slot && ..) {
+     }
 
-Once they make a switch, I do not expect the userspace they're building
-to be able to run on older hardware because it'll have zimop instruction
-in them in epilogue and prologue.
+The mm_slot_entry() won't return a valid value if slot is NULL generally.
+But currently it works since slot is the first element of struct
+ksm_mm_slot.
 
-Sure, they can keep supporting older releases, keep building userspace
-without cfi/non-rva23 and thus they should be building kernel without
-cfi config as well for those releases.
+To reduce the ambiguity and make it robust, only call mm_slot_entry()
+when we have a valid slot.
 
-New release (RVA23) isn't expected to run on older hardware. If new userspace
-is not going to be able to run on older hardware and new userspace isn't
-making an effort to have runtime selection of binaries depending on which
-hardware it is running, Is it worth the effort to have two vDSO in kernel
-and expose the one depending on which hardware its running? It's just added
-complexity for usecase which I don't really see a usecase.
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: xu xin <xu.xin16@zte.com.cn>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Kiryl Shutsemau <kas@kernel.org>
+Acked-by: Zi Yan <ziy@nvidia.com>
+---
+ mm/ksm.c | 27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-Yes a savvy kernel hacker might have a need where they want to build a kernel
-with RVA23 and transport it on all kind of hardware but that's a very corner
-use-case. 
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 04019a15b25d..7bc726b50b2f 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -2921,7 +2921,7 @@ int __ksm_enter(struct mm_struct *mm)
+ 
+ void __ksm_exit(struct mm_struct *mm)
+ {
+-	struct ksm_mm_slot *mm_slot;
++	struct ksm_mm_slot *mm_slot = NULL;
+ 	struct mm_slot *slot;
+ 	int easy_to_free = 0;
+ 
+@@ -2936,19 +2936,20 @@ void __ksm_exit(struct mm_struct *mm)
+ 
+ 	spin_lock(&ksm_mmlist_lock);
+ 	slot = mm_slot_lookup(mm_slots_hash, mm);
+-	if (slot) {
+-		mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
+-		if (ksm_scan.mm_slot != mm_slot) {
+-			if (!mm_slot->rmap_list) {
+-				hash_del(&slot->hash);
+-				list_del(&slot->mm_node);
+-				easy_to_free = 1;
+-			} else {
+-				list_move(&slot->mm_node,
+-					  &ksm_scan.mm_slot->slot.mm_node);
+-			}
+-		}
++	if (!slot)
++		goto unlock;
++	mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
++	if (ksm_scan.mm_slot == mm_slot)
++		goto unlock;
++	if (!mm_slot->rmap_list) {
++		hash_del(&slot->hash);
++		list_del(&slot->mm_node);
++		easy_to_free = 1;
++	} else {
++		list_move(&slot->mm_node,
++			  &ksm_scan.mm_slot->slot.mm_node);
+ 	}
++unlock:
+ 	spin_unlock(&ksm_mmlist_lock);
+ 
+ 	if (easy_to_free) {
+-- 
+2.34.1
 
-At the very least this corner use case shouldn't block these patches from
-being taken in 6.18. Current patches don't block such future capability (if any
-one feels like this is really needed).
-
->
->However, my real worry is that in the not-too-distant future, another
->ISA transition will be required after RVA23.  This is not entirely
->hypothetical because RVA23 is still an ISA designed mostly for C (at
->least in the scalar space, I don't know much about the vector side).
->Other architectures carry forward support for efficient overflow
->checking (as required by Ada and some other now less-popular languages,
->and as needed for efficiently implementing fixnums with arbitrary
->precision fallback).  Considering current industry trends, it is not
->inconceivable that these ISA features become important again in the near
->term.
->
-
-I can only be optimistic here and hope that enough ecosystem adoption would
-prevent such breaks in transition.
-
->You can see the effect of native overflow checking support if you look
->at Ada code examples with integer arithmetic.  For example, this:
->
->function Fib (N: Integer) return Integer is
->begin
->   if N <= 1 then
->      return N;
->   else
->      return Fib (N - 1) + Fib (N - 2);
->   end if;
->end;
->
->produces about 370 RISC-V instructions with -gnato, compared to 218
->instructions with -gnato0 and overflow checking disabled (using GCC
->trunk).  For GCC 15, the respective instruction counts are 301 and 258
->for x86-64, and 288 and 244 for AArch64.  RVA23 reduces the instruction
->count with overflow checking to 353.  A further reduction should be
->possible once GCC starts using xnor in its overflow checks, but I expect
->that the overhead from overflow checking will remain high.
->
->Thanks,
->Florian
->
 
