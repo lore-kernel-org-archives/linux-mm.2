@@ -4,96 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7020CCCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 04:46:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE9B4CCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 04:51:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B70918E000C; Wed,  1 Oct 2025 00:46:25 -0400 (EDT)
+	id 539D98E000E; Wed,  1 Oct 2025 00:51:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B48898E0002; Wed,  1 Oct 2025 00:46:25 -0400 (EDT)
+	id 511338E0002; Wed,  1 Oct 2025 00:51:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A85478E000C; Wed,  1 Oct 2025 00:46:25 -0400 (EDT)
+	id 44E118E000E; Wed,  1 Oct 2025 00:51:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 929098E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 00:46:25 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3EC6611B0DE
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:46:25 +0000 (UTC)
-X-FDA: 83948309130.29.FEEC0DB
-Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 69340180007
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:46:23 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=elijahs.space header.s=purelymail3 header.b=BVY13p2N;
-	dkim=pass header.d=purelymail.com header.s=purelymail3 header.b=sbFVLOys;
-	spf=pass (imf06.hostedemail.com: domain of git@elijahs.space designates 34.202.193.197 as permitted sender) smtp.mailfrom=git@elijahs.space;
-	dmarc=pass (policy=reject) header.from=elijahs.space
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 338BD8E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 00:51:09 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CBEB3C027E
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:51:08 +0000 (UTC)
+X-FDA: 83948321016.22.A9EC6ED
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2D0F140002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:51:06 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=none;
+	spf=pass (imf27.hostedemail.com: domain of 3OrPcaAkbAGERXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.69 as permitted sender) smtp.mailfrom=3OrPcaAkbAGERXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759293983;
+	s=arc-20220608; t=1759294267;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sfrZW6AR35r6CkC58CZBqPk7K4vhTSoVPBNTGOk/rRI=;
-	b=r7opNZqnl5x2bkzy6K9tiSFC+37/sLdpxnXZ+/kFD+b/TKN0sBd2jLMX38TICLn51l+OYg
-	r4Q8PV5cU+lFw9PhPYoHjQATfanqk7D4yollj7r0yAWsinGBTKiYiv5vr9VAm/ZO//J61+
-	S2Wz6Wysn+YOljISzOWe2dKsDm3g0W0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759293983; a=rsa-sha256;
-	cv=none;
-	b=RHiizfgL1zRCfnmMFFJGKKChTnk+Ojc/ep5zGl7BCyqUur2GjSWBcscWtRiG7Mqw8RE0Yi
-	iHHCMEKLKv8giljcchcFSMU6RSIiHOFhuWPWGpPaPgxVSrpyIbMvhhp34fFWb3YOMbwUwo
-	Ekoxqoagv6MbIY1NV61d+WffCtQU0c8=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=lAhA4miFvnKiMwYobzKIYJ1viibUSiXEfKDDH1S55ek=;
+	b=WIgAECqjNhIPWIcPkSThHA/NNAfVgGscHgJeu6vn4iqT1vAZ3kUGb+mKYbJvOUB7EQ9SW7
+	5tT3sNpRqNW3Ukcerdj673lkIOVXuzbz7bhfRrqv9sWyS2QtwU8EDrq/jVylmJkoe+/t+j
+	ICye/NW8dwcftGvzDI5Yjd4rk48AOzk=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=elijahs.space header.s=purelymail3 header.b=BVY13p2N;
-	dkim=pass header.d=purelymail.com header.s=purelymail3 header.b=sbFVLOys;
-	spf=pass (imf06.hostedemail.com: domain of git@elijahs.space designates 34.202.193.197 as permitted sender) smtp.mailfrom=git@elijahs.space;
-	dmarc=pass (policy=reject) header.from=elijahs.space
-DKIM-Signature: a=rsa-sha256; b=BVY13p2N/J3gxB4vcQ9vaRwkpICVSGS0Wg6rMVgrnHn43OzsTUq8aa3vKO4E1Q98CwPKLz42Sh3UlxbgS6E2dqKO0d1JXhlWPLQ4wP/etM5iRzgY1yNKpg86ZWDL98DD2yiHNUZH7y1MvCXtBOxgpS/Cg90xqMAZg5lyTCs2+B0Eac0ZW9Tt9hgWmGY6hRRn6GOr+LzuuAQQMZyoiLNlOIhEVekzBTi1bz0j3GoYilS4+dBqqVYjvqfTtJX5muWc2RpD0cqeZ6nZS9JtE8kD6WqmKoDpLigTN8ZshnQ0YMZEvH2isqhGYJErXJHCNjxD72gUJKXm8GYmYlHoF8Ro/g==; s=purelymail3; d=elijahs.space; v=1; bh=W9aE/h0MCF2uj9dBQXAmWE6NxDahP+VqHyrnxKfSqKI=; h=Received:From:To:Subject:Date;
-DKIM-Signature: a=rsa-sha256; b=sbFVLOysOH+HRfWWENrNx001woaBDpzpoQnXyPe7Dm5sNgrt5iTQaULT8fqQbLwmp7xE5BVFTnX9JdbZcwfvZlgTg+ZpuuxaXIcaCEw72xMz135jxKjj3rEIIbAuvvk8DTdakrD4i33EcifpCrYrwdqE7ohadn0dKwCaYRSbMr3c5Rj+aO2gjD3cLSFLqfm2zgT2lzeF2LMGfnR2e5CST0hw9XDh/V2zYHBCtO6GFWIMD0b5cpuK4uz8FDPLCFWMI/0DA7vf6hCUc9RdzX2IL5GTxR0xannQyrn7xEcKE7XU4uTjVICThplaIy9l5wpV59gc8jQyxGjmTz3eqeBVEw==; s=purelymail3; d=purelymail.com; v=1; bh=W9aE/h0MCF2uj9dBQXAmWE6NxDahP+VqHyrnxKfSqKI=; h=Feedback-ID:Received:From:To:Subject:Date;
-Feedback-ID: 147366:4866:null:purelymail
-X-Pm-Original-To: linux-mm@kvack.org
-Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id -1637358726;
-          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-          Wed, 01 Oct 2025 04:45:34 +0000 (UTC)
-From: Elijah Wright <git@elijahs.space>
-To: Elijah Wright <git@elijahs.space>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	linux-mm@kvack.org
-Subject: [PATCH v2] rust: slab: add basic slab module
-Date: Tue, 30 Sep 2025 21:44:21 -0700
-Message-ID: <20251001044508.23126-1-git@elijahs.space>
-X-Mailer: git-send-email 2.49.1
-In-Reply-To: <20250924193643.4001-1-git@elijahs.space>
-References: <20250924193643.4001-1-git@elijahs.space>
+	imf27.hostedemail.com;
+	dkim=none;
+	spf=pass (imf27.hostedemail.com: domain of 3OrPcaAkbAGERXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.69 as permitted sender) smtp.mailfrom=3OrPcaAkbAGERXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759294267; a=rsa-sha256;
+	cv=none;
+	b=rhCgNjFMKgSG4q5SthIJRM2GAmsmlCeZUlxQzz8yvyj9apm/vRiPASF07KIUw0m7fxRCWU
+	6d4j2BtIjGBYxZW8YxxGpOTPU5R1KISxDjBYhvMnwX/YzmNAmS3U69sCu5Wz81RCaUHzdh
+	BP/M4WGPH2qxYjGcRi5JWZKTL7sYAXo=
+Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-919d48f1869so894179239f.0
+        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 21:51:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759294266; x=1759899066;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lAhA4miFvnKiMwYobzKIYJ1viibUSiXEfKDDH1S55ek=;
+        b=qZRWqYR3Pj4JAury7u9JItY2dMoci+5Wk0EO4gH2AfhVA3ZJp7R21sLbVV7Wh2LHVX
+         KKR0QFETpoq37dJA9vlr2aETFtH+jZ7k5DzsLKhlKVggj6HMxsq53GM39t4IrvojGpFN
+         57k6H2fXbIM8sSCfjBizFAhEZn5LHV1MFHg5r1HG/Ay6WUtfe53/+ebzn8I74u6v2Gto
+         OqqC1m6ywDx60vVVGN1d8uw7plA5M/y95GPvUwHyeiRXcxzmWQIjJa5HhrJvhBQlD1qE
+         xnBnr/gBAxxd0Rze8EAC5ofMWUv3LvZfuDJSCZKl4XNuOs820aKx+UjEQ94g4nYKhsRP
+         Ntag==
+X-Forwarded-Encrypted: i=1; AJvYcCVOjGaWP5MWKzzcwTf+x1M9wxvAtAk7jEy6RtrrfuZJFHzBYcOfacL2RCA/94AOclb1UL94ytLf0A==@kvack.org
+X-Gm-Message-State: AOJu0Yyj6xgwnNjUecCxQuexQoLtj4ULAsv6mg8YOixGLYs1ioKesT8L
+	3B0RgTagfCcegvbOxAhpjgxB+XIFumwGSFjhZgGrK4mSM9q92NjWQaaF6Q60ljT7Jp/Gt7dBeMG
+	+b6zuTc7MNItU1DnsLwtom8kuzVQvvJ59W0CS0O2SiDmwnoqevDHBTakZBnc=
+X-Google-Smtp-Source: AGHT+IFpxkpfvuq6u6Pm400EcvKPujEmJQ/w8z4AShfju1LNpMJ5s6lt4f2ylZv7zDcHLjEUmHnp7/zBrytIBZr6t8Ia+WLR/RVh
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-MIME-Autoconverted: from 8bit to quoted-printable by Purelymail
-Content-Type: text/plain; charset=UTF-8
-X-Stat-Signature: qdgknfu7wb4m97kqqq59xidjpxz9q8uj
-X-Rspamd-Queue-Id: 69340180007
+X-Received: by 2002:a05:6602:4a0d:b0:935:a475:d539 with SMTP id
+ ca18e2360f4ac-937adb657a7mr362933939f.15.1759294266280; Tue, 30 Sep 2025
+ 21:51:06 -0700 (PDT)
+Date: Tue, 30 Sep 2025 21:51:06 -0700
+In-Reply-To: <7F95F86F-F002-4CD1-A5B2-4A261A9D1317@nvidia.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68dcb33a.a00a0220.102ee.0053.GAE@google.com>
+Subject: Re: [syzbot] [mm?] WARNING in memory_failure
+From: syzbot <syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, david@redhat.com, kernel@pankajraghav.com, 
+	linmiaohe@huawei.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	mcgrof@kernel.org, nao.horiguchi@gmail.com, syzkaller-bugs@googlegroups.com, 
+	ziy@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 2D0F140002
+X-Stat-Signature: cu675aufawi553strib5i7jtyd59b1eb
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1759293983-780803
-X-HE-Meta: U2FsdGVkX18R3cOYhFpO/SsmMo6Nf9VwBaz73FF9/ZemKgJ5P1yKQh9WHfVbH2UjKLXHEvIDrhP4YVifPlIeXw7rwaQ8i6XU4SNTJ+uu0UKpk1Yw5s50Ugc/9Jdkl5udVRlxRTKzuwgDauo83EtbUHzsr0wk0nh6A6Y8kDrkikD8ospHLBis9yA6n7Nf3+Hr/ACuduqgQ5RXibpvZz9Tc85NsTHOSu4JZCFEX2QaASlRGHrLBulcgDqeWYs+eRmXBEn6w5gDELWYy5tVCFLnYO+tZ9qMKHTDuNCvPoAGqlT62dB672VU8GMOwe/SlnrLDaP551gWs7Glxo6oE/4pLcSJ+GG4xpGka0v4Pd0xz005TnUp3B2x63JZdwyLny4gtvj6dN3fLAz4kYBkyFdd4fYCklM46UoemLRWUulJz1snWwgHDZpQhKnCePBjO4Lq3MtN6r5Y8jJRUEMEEHJm1bEdFtqZdKhWrbJap6v5QoHhO29gzukwa8/qCh4SFrqXQihbD3NU719OCYv4R+hGCBrJACyW7kfpINHYRC71b3/AwuZo1V047DUnqU/zvNLxfc+rFj9xNHS05XaDjKCBofH+GneYky2LibjgfJuGRelrNDBHC3cOFMohDof/C0vzsGyz14jEk/5lrRfPL/BMe0dTgt6NKN1V61UooGv8djEpaimUfdYGgFI3vkdIrsPojqDCZda40H5vqWIosehNYAm3TkO831qXM98g9axbv3kLQL5cjHA99IxMEyBB57+RvOQb9b9T/veH1Mc8JungOfHalVuLfgTSOSCYsphOWXKJrvNLOqonF2PGEud3LIsfcmY2E5RdDEacp4PhCXAs4FP555gtvUdfUvOTe0ae8l3JrOrktLtq/zwaJkQUFsEYdcJerS2q76y1CCCgm0VPmmeXFSjrhCqpJBla2irxsLCdrSIBPapS7fjlMn6KjFIxfHVhY//a/nA7RXSKV3x
- cmaGmKsg
- n9T29uce0zaOw3cR24YnLCvyJQSs/pLWiQAfyxyteqxzg+7yvhW6x8HArAZILN+87NOTZ1gy7YHCd4/s6xn8WVzJ/4ROiMuohSBUqCq1pdX/3V04gt5nuF1fxHIjcJHhdpSTbxDPk75DeCUHfRJEqpMJ/HBGDYvZgO7ioSCDJCBn5Mb86LrV6bwxB2UkELnyWqk9wRHKdLZiYVVkg6ACBNLxGj7wGyHE2QH7uV9POwJCtnTerAHpbV8nj5jiNIPhJh6Y3sFR2JroERP1C/tbNVRQKxfDouoBzGJXCYY4oi14VxUuV46WbnyDA/tlX+Bef38xLKqeA00/tq200TQZw7u23kwkdah9xPMEaYCo3gDHeGa5NLcelxe1Xtxdueptg+zfa8yGJkkLgeGyUbajPhWfwbUglIAI14n2jTrrgro3wzyg1tV1+hexGBHohTpUN1BujR+2IjLdl8DQCEWi5ejFNOMx1x2EsJatWPuBXl15J1Rx6UtlXodwVR7lQH/t3JKMLv+CEc4neNZkeBuqs/z/miZ8YMr9GJORvDcyrLShvmUIdBwlL5mkM7hXka6zaTRsYANWvTamgoL0=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1759294266-240863
+X-HE-Meta: U2FsdGVkX18dhGsqwDtXXR8dJHXFiGrZvq3DcGGDKHQtR9YkILNx9ohRnvy+TDhGNibDbkNuaxTuhK14/9oPBRv+NdB1KMdfrHGCZtBWzDtVU3WUdhMerLrNiQ40IPOCWVXR5+04qsz7BDN2YzdrS4qtXDEfbnGdeSox2VwBzg6J+dt/EKZENnL8KgqDaNrTcCnXnks02u4adxmTX2PtESe+nhB/LHUVnyu3z88a6TJ2mco/xu01Ij9t9zc5gvjSMgkLpIu9e8ScnDQrUgbLy2xFjU4df2Cb2jxZxHaIMff2JJ+qEBu866xCLarhx1vtx+lmCqm21vslSHjXLVMP6S5aOqmj7u+5iPHHWXy4K8c1FghCa9LKHN5WBTlB62QzzyQZg6woFUne+vApPPZN/2xBs3cIaOauTxZH0z2Z0AcgnckkOewqoy80aSK2GmMDI/wOgNvTCSUWg7MKwnCHLRoHjOWv+rVwGRSFZGFtewQw0WVY2+lBPSAmqBYYtLf4tB5bEQGdYSKtziisW7DKekLTS+Tj+EY5GsyChsqjURpIiDRzi+v9M4R0Ha4oMaDcrfMfbhgQdZMLHMWsPTAeQyTi/1GVliWIS+xEQ7VJJX0hhJWcqqEN39vz1P6XIgLx+R+7ptCYMOdz3fqudddeFjyQ5WiCw8MJNY17ky7KlYz4nJe5HSUCh7Uh3KaLsr68jHDS3EGFtqHhfX+lBDwsK8iNiUllErSe8JKyncnCSigvty7Cz/rVoG3WubTngCe+vrZYZOxurgck8TmjQyRabpnzfZDjhDYZwphZsDQv0g9V2vWLyl4yu82TjiSmxgL9uY6T2IlKmBwZKcZlpm6dosSlwRhBvQ5SmHPu5HZqs29WSbqODrbB0Wnim/X5fDHNEtt6CDxiJQ8MkCjsLzYqVYFwWIbkLcBD8hiCLMNNm4nhoNVnsvU7+FXa8J1fLMEwu6+xfXcsf+Vn0hsn11G
+ Y2/V8JxZ
+ MApOoMiGROhTahbBoY/veHT/SHvJyVLzmJg/m1uE5Jyr+fbpFjxudLTFjLXwZUodJLz/JA1mHaRqGurLFXoFAJL+anZ/3+twijC6pY40Zb7+yYp6XJ9+ByuzcV8SWMDRE+9AoFpvF22kQy/cKhN1J+nrGbJvdw4QNUS2MjRCzwaofGttEMixXsNAbO1tj0fN9/fXooCFxPkS7Kb1wCtqvOE6jT6tKzi/s5QEuggYP22XTYxQzfGX1gQIiTYbbAWhnFp1RDvYSj4td1SdMrP0+MBLrYXCIxBbzmh61H0XQT4fnH+E7Nzu/bI6RdgDa7t/uK7If+BXW/lWDJwIJdlHJ+NeJFL1W8/MjWxkkuaugGT1ccnZp9gaJguOQz9G/aWGgeBTxha6EvlciaMBwPzKRKV+9qNcoVjUHAiT+D0SVPqhzJqUqRPu6ehpFSfKi4mgc6s7s4NsKfbe8kicPiXf00oxwE7gA47DK8yYovowD1YzgwDn/lymb2QvsIIT/+CSfKbJVnc9RPUYJIDYeJVEY+hFSyHQpvBagOtHjBPaC31zPoBvu3PMMfJDqTXc5azPer7NXB7e2lwzHr+MuszoCkVb12DtxglcWB64jj68PWX/2lEzCuZ1KfCw6cELxgwpxRBYrzIVhGitJKdWqnKtBIY75v/4T80w3N0ZOO2UPMcp2FakD/RyhnVyYECGKfXWsIfSnc7q8C/78pYxJfGuG4xnrJSX0UPepU5L9G+58GspRg7jh8SW1qNCGnBJmS17DYVJEPqAhs1/tv6c3n3eqbWkOHEjRooxcZPnluiS+Xmgd65zXgIiERp3Wy8lYXv5s5EUs+LzXsggN3I20h4Im4VFrZ0iR8ESp/IVf/Ux6fz51qlrJxAAgsNRRectRPWm62ZeS5xvcLYfWxQ7rVrUCvgamrlER+EubZePiE0KwXonn3+b5Sc0tA8CFg45w1EXOsrpYUvCZpagmopWEhB6YdyzY8Obn
+ TGAtbMWW
+ 9xn/9eNInqyPdxNCVMq80vljmf1D5u5nCCQmXW8WkAE6sLEaeAIx84M871/w9ftVApdVFk/MMpUxJoZc/OxjdvEVexFTlPGhwGp9jQIlZ+jXE4wYzMWLc8kli1kYb3Nj8T4JQ1SrbNr4J1HKONxQkMEtprrTs+rUsXz2YopTBTk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,85 +100,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-this revision adds gen_kmem_cache_allocator, a macro that implements
-Allocator::realloc for kmem_cache. the one concern that I did have was real=
-loc()
-for resizing, since that obviously isn't possible for slab
+Hello,
 
-Signed-off-by: Elijah Wright <git@elijahs.space>
----
- rust/kernel/slab.rs | 52 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+syzbot has tested the proposed patch but the reproducer is still triggering an issue:
+lost connection to test machine
 
-diff --git a/rust/kernel/slab.rs b/rust/kernel/slab.rs
-index 8b418f9db7cb..3f1310f309c5 100644
---- a/rust/kernel/slab.rs
-+++ b/rust/kernel/slab.rs
-@@ -83,3 +83,55 @@ fn drop(&mut self) {
-         unsafe { bindings::kmem_cache_destroy(self.cache.as_ptr()) };
-     }
- }
-+
-+// SAFETY: The pointer does not change after creation, so `Slab<T>` may
-+// be used from multiple threads.
-+unsafe impl<T> Send for Slab<T> {}
-+unsafe impl<T> Sync for Slab<T> {}
-+
-+/// Generates a zero-sized allocator type that allocates from a given
-+/// `Slab<T>`.
-+#[macro_export]
-+macro_rules! gen_kmem_cache_allocator {
-+    (struct $name:ident for $cache:expr $(,)?) =3D> {
-+        #[derive(Clone, Copy, Default)]
-+        pub struct $name;
-+
-+        // SAFETY: Allocation and free happen through kernel APIs which
-+        // provide guarantees. The ZST carries no state, so it can be
-+        // duplicated freely.
-+        unsafe impl $crate::alloc::Allocator for $name {
-+            #[inline]
-+            unsafe fn realloc(
-+                ptr: Option::<::core::ptr::NonNull<u8>>,
-+                layout: ::core::alloc::Layout,
-+                old_layout: ::core::alloc::Layout,
-+                flags: $crate::alloc::Flags,
-+            ) -> ::core::result::Result<::core::ptr::NonNull<[u8]>, $crate=
-::alloc::AllocError> {
-+                if layout.size() =3D=3D 0 {
-+                    if let Some(p) =3D ptr {
-+                        // SAFETY: Caller promises `p` came from this allo=
-cator.
-+                        unsafe {
-+                            $crate::bindings::kmem_cache_free($cache.as_pt=
-r(), p.as_ptr().cast());
-+                        }
-+                    }
-+                    let dang =3D $crate::alloc::dangling_from_layout(layou=
-t);
-+                    let slice =3D ::core::ptr::NonNull::slice_from_raw_par=
-ts(dang, 0);
-+                    return Ok(slice);
-+                }
-+
-+                if ptr.is_some() {
-+                    return Err($crate::alloc::AllocError);
-+                }
-+
-+                let raw_ptr =3D unsafe {
-+                    $crate::bindings::kmem_cache_alloc($cache.as_ptr(), fl=
-ags.as_raw())
-+                };
-+                let nn =3D ::core::ptr::NonNull::new(raw_ptr.cast())
-+                    .ok_or($crate::alloc::AllocError)?;
-+                let slice =3D ::core::ptr::NonNull::slice_from_raw_parts(n=
-n.cast::<u8>(), layout.size());
-+                Ok(slice)
-+            }
-+        }
-+    };
-+}
-\ No newline at end of file
---=20
-2.49.1
 
+
+Tested on:
+
+commit:         d8795075 mm/huge_memory: do not change split_huge_page..
+git tree:       https://github.com/x-y-z/linux-dev.git fix_split_page_min_order-for-kernelci
+console output: https://syzkaller.appspot.com/x/log.txt?x=17ce96e2580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=714d45b6135c308e
+dashboard link: https://syzkaller.appspot.com/bug?extid=e6367ea2fdab6ed46056
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+userspace arch: arm64
+
+Note: no patches were applied.
 
