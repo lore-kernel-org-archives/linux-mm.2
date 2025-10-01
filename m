@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A74FCCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 04:35:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FA12CCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 04:35:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 563658E0007; Wed,  1 Oct 2025 00:35:01 -0400 (EDT)
+	id 7AE018E000B; Wed,  1 Oct 2025 00:35:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 515AB8E0002; Wed,  1 Oct 2025 00:35:01 -0400 (EDT)
+	id 75F878E0002; Wed,  1 Oct 2025 00:35:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3DCC18E0007; Wed,  1 Oct 2025 00:35:01 -0400 (EDT)
+	id 64DA18E000B; Wed,  1 Oct 2025 00:35:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 305658E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 00:35:01 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C5D4D13BF16
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:35:00 +0000 (UTC)
-X-FDA: 83948280360.27.EB4779B
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FAA68E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 00:35:11 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E3FB6BC19F
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:35:10 +0000 (UTC)
+X-FDA: 83948280780.21.9D4E62E
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E8DC34000A
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:34:58 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YsHJGiyM;
-	spf=pass (imf04.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 3E8EE2000B
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:35:09 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZYb0H0Nm;
+	spf=pass (imf13.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759293299;
+	s=arc-20220608; t=1759293309;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c1Do2rkufLmyW7Uw/umi5Z/fqdMDaGBEe8TTZH7oPXw=;
-	b=KQtSbNgRQJ/Cg6VCZIuJxPi331b4Pdxn5fodQBzgT/B9o+RB5A3qsqhBKCB8ErOy56AQNk
-	1VYxYRHvINwGAfd9yCQj500iyQpf+KeT+Am14IoeJYAxrQjt2NmliK+9Ei4uJCFSwZL4vj
-	wyK3G9NAjHSQue7uceCqRB8hIzYw0zI=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YsHJGiyM;
-	spf=pass (imf04.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759293299; a=rsa-sha256;
+	bh=0b5/BvT70k+vJiz3SordWv2jtVZP+YSZ2gcS6nnoogE=;
+	b=vf+06ytG2k1t352nhbPvlNORvVe9rMWcstBPvWovqMATvkaxWkCiwMgF8EGP/jGH4hY0Sl
+	JiI8mIePhX9KEL8tuHJDCQcdj1g3F+JFw9iGHULe20+JSO3feVupF72Etgw8NM18Frol9f
+	CCVTy+bJ7aSXqKsDOgNXiyb6Wc2K5U4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759293309; a=rsa-sha256;
 	cv=none;
-	b=htY81QSwQ2RBYDZOBFbWDMUfsl1DNVB+C0eK69YhP8t03vpdioMSPEQaF6rjCATK0hFlOC
-	wdNugCSGjmEREdkJAYHBmd1C3SQyKil3oWOt1YSGm2PolRzDq+uNxZT+ziCQ99ImNStTYk
-	x/vKEy+wif8BTsyyG00sN07th5eKoGo=
+	b=e96o/o7sLGfgx2FyZ8yGhqdDp3cCvJNb3P4VU7JwvXqfXtd3D81JsE8xHWO8kosGOPTDaL
+	DF/qcrmbWFMJYe8fLcecI6qSta8/OSgbYtk2wQ3gG0CyQqqjYQT4P9WC/3hGc1UpIskd3H
+	nJU6R4LnE3CGEhPV0ahRcoa8+GOOy+8=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZYb0H0Nm;
+	spf=pass (imf13.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759293298;
+	s=mimecast20190719; t=1759293308;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=c1Do2rkufLmyW7Uw/umi5Z/fqdMDaGBEe8TTZH7oPXw=;
-	b=YsHJGiyMH1ejdM8vvcI9ervaq/w19FBCnapwUA7E7Pc04/h7Eman9PPcq+7K3fPhvD375f
-	Y8VqHaJ4SbZfVk3nsu6JZUIAvgo7FOz6d+Yd3fHjllu8Y+VA/9qEbrzXM9wQIAfiyMVlpb
-	/2H5eLhYXzr69IseWjuSFP+REjfTwdk=
+	bh=0b5/BvT70k+vJiz3SordWv2jtVZP+YSZ2gcS6nnoogE=;
+	b=ZYb0H0NmCvJEdKqNh4gkN2v59jlWcKjHWbe5ofqLSaFc4c5TfsnxreCmuWIyO7r8L+XROR
+	/uDSdNUXg8yVDgJSyVF/SIMyRkG6ptisvKv/XLMGJJAZj4FlzJetA4fqSbT2Pqg/LSvcA2
+	HyKuvyImOIiWatPVQ+r4xZP3GJW+few=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-692-QrHEaRghOMWhqPvcGRbZIg-1; Wed,
- 01 Oct 2025 00:34:57 -0400
-X-MC-Unique: QrHEaRghOMWhqPvcGRbZIg-1
-X-Mimecast-MFC-AGG-ID: QrHEaRghOMWhqPvcGRbZIg_1759293295
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-484-uugSkg2lPMqhEEdRgASAuw-1; Wed,
+ 01 Oct 2025 00:35:03 -0400
+X-MC-Unique: uugSkg2lPMqhEEdRgASAuw-1
+X-Mimecast-MFC-AGG-ID: uugSkg2lPMqhEEdRgASAuw_1759293302
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A159F1800562;
-	Wed,  1 Oct 2025 04:34:55 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 01BC818004D4;
+	Wed,  1 Oct 2025 04:35:01 +0000 (UTC)
 Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.116.46])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3D2B81800576;
-	Wed,  1 Oct 2025 04:34:50 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1753D1800576;
+	Wed,  1 Oct 2025 04:34:56 +0000 (UTC)
 From: Baoquan He <bhe@redhat.com>
 To: linux-mm@kvack.org
 Cc: akpm@linux-foundation.org,
@@ -84,26 +84,26 @@ Cc: akpm@linux-foundation.org,
 	nphamcs@gmail.com,
 	shikemeng@huaweicloud.com,
 	Baoquan He <bhe@redhat.com>
-Subject: [PATCH 2/3] mm/swapfile.c: use swap_info[] to find the swap device
-Date: Wed,  1 Oct 2025 12:34:35 +0800
-Message-ID: <20251001043436.41338-3-bhe@redhat.com>
+Subject: [PATCH 3/3] mm/swap: remove unneeded swap_active_head
+Date: Wed,  1 Oct 2025 12:34:36 +0800
+Message-ID: <20251001043436.41338-4-bhe@redhat.com>
 In-Reply-To: <20251001043436.41338-1-bhe@redhat.com>
 References: <20251001043436.41338-1-bhe@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: U7ElVmJlmdPXbp9t3n5r-EMfN50SVWTzijUvt-zZIfI_1759293295
+X-Mimecast-MFC-PROC-ID: B_pfrkSHA9fdKVG35gnh_vAsQiWrW7XmKalirvJIR-I_1759293302
 X-Mimecast-Originator: redhat.com
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: m47iiz78n5f4nuha4z448gsee881dqyf
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3E8EE2000B
+X-Stat-Signature: 4x7my6mstzj43ny6a8hoqwexetetjdn3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E8DC34000A
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1759293298-325187
-X-HE-Meta: U2FsdGVkX19zBa42VZnZ2xsyb1+T1ivQjSbFcHvbXwdhRf/QCZK/KGF0phAVIOI1/VasmOewmVvEcoKwyl8SOdIKDRrEI7iby6LYJmxIb5sFgysojQqssGtyIlu4sWztI1O+pCokdnSw40bYcoSnS3q63aoAuZaApi/RAYwmHSeAUHNiqBWiXBYe9soyuIZ/ldk/BIh5xdsiQbnuxBYHWcnSgX4go2dfhJWhnVDbpWlji5XmLUy2ja2yQ16kHSjNYNFXuTKErjI44LGuGuwTg3QHhNKc5XAu+RUV3rfmkENbKNui2lkMyt6+PmYOcwo+K/ZJl4zYkWqtB7R8p7WCeTjfBoa1YK4j0GqXNPm1Zh11Dg9it6ccpHHYG6RQeTp4l7Iuxi4AtiPA898wXV7zhxXz6YdcsfnfWZx/EzMwytT8v/3W65kSaLWJRzIRlXsUOF0Rudc0wllc9Ffk0VOV/d6nu6H0e+tWru13Wn/j8NktVNz5lm/hxtay8EnCFaJw8Cf1JldvNHEsV5e55LMtu7cb5fKbnUQM5dYLM8ol1muHDPKj2mSIj66iv038asZ3ho9PfsodMnMLy2Mw7+sYHOWak5oT7u6h1DI5yySQOWv27/d461uin+lp9UWNL7h18KaaFvp8BHBdh/4V7uHnN5WDoDXNXOfz8TpVuGPQU3wjyIeTQc5X/6k5Be2TdokUKU+fWOukkoyhxjztMlVHgt8gIIWaGez0gD0/8eEkpUpI5ZgXOPTShe3iHhN9+B8NLuMRy8IDMwoNqgX/A4HQjT9pQoAUum5kHNI7oRKGJeJruNqM4Q19zLn1+/nO8KLYxZlOk2Xv1ySBXD8gProdskCnnN2NEyWUwIs6UWbnxFzvg9uJh5NAeZSUdGyNJNBLcPANrhl7TL91JlSHwtpKVhoSunxJcbG83FibSyDs2DZnr7xmCXSAaEJ+emVEux73voPJaUmFNS3fDJTBO1+
- W+2Uk8dC
- 8Rdekx2Ry9SBQw8uKBQk3evq5juNHWeXG+81L3lUEsSQe6ibkX/C3SFWFzHKrAMBxZB2ES/7KtE/FT3JeLbKvMPaFS4wtvHUVPyK3qbyYlJMbf10Em2OAoOfNd6Dg8PbhLChTKhofMsQa2GTsCOqVjY8hZc1Ozht9+7tEY8iPzaqJghkdNuKEa6SVQ8yH8cizYVCedJ5/X5pkAgZvLbURV1IULBe4yUDpm7i1YJIZE7bn+n/Vh+z8VvIJWvykoVokbAciefbTabkA/fuJWVAuZKA1DY/frtnsyofgK1VT6dT+kLBNNhxA9vv1drILQ1Gv2lvVrR4yTKK36LCfjJ1vK/HqiO7CvGnUCV5Uix5NBftTfZOwh7Pj8v9thhQuVoplORBDntqRXj94O/RBzXCuhNT3KS8yIDpISBchQPPRagdSPts=
+X-HE-Tag: 1759293309-648131
+X-HE-Meta: U2FsdGVkX1/X0cVCusuPZnxM5UZax1+LsZ+lIk+6MBUXpH0Hp5fcvKbsG7tyPLBXPAlL8yDUFWuoGcGCpjVq+JRHR1vD90Nd+7Gp5ZQhoARudP/zMzXOUECB+ZaONvGlDhpaUrGhcX/6s4HdzmOukpliEOiY6CLEXJXXFus9FdtsLHbqKx8QLNT33AoiD1YrzOjKTAtI/v7nqWIMI72CrUG8DFhMzqDgo6hw1neJwDaiQWDtKdOkMXJw/sC3l5WNd8OwPe56jAmVHFvYrI1M25j08uyVsI1Ps/rV/Z7ht8+FEsOX1maypgk/krdPLzAjypmR8RI10PGVJUAiYSIQKkWdbAd8daFzKTbl4a5XpXFbIyi3xfnh+G6SC5kCeV20pD3CEDzcaC4hq3S+2q7m6ZL1ETTlKaZAlTBPlGWmWzcPt4bJg47D4UADUma/Vmj0ENCl9b2E6VXQLoxsIddRZk0KU3g6m9sjdXITu6aG5aO+NL9jjhjBkD5ZA0P40Dc4RxmvzYP9WH5Q3SSrO/+pVA4NF5niQjfWsOCmMfTW7R2urET4Glqfb6dQgGi9TCDUPuqwDk5sBhaVQgnzcrcFN13wiINd4s+Dp/oxZ7CokH6c3An51nD4XfOhD/a5v9BT/RHQqF0M2LWEsiSzbC/mofHVhICskF1W+BaoPGqNmoUcU4NoYZFNE/0E8MKgTGR5bgvOkky48/AiFwcl6WdmI5ekk97xn4LZmwzR2jI9tdHJ+njaaBeARMOHQnczKk8YoJdkHdIXzmHVZ6w/yaCatilWj73RH2cgxM71arQaKzDftbMHodge/9UNRA6xFrEUTVcas0fqHsHoIxGwwtDs8v3hSGYtzVGYSKkhsoIvtjLX/nqegDp69eISJA87JMtOkRY+PDdHAY8dUw0JQJVR1AJ8TUUCN8Hcykk3N7INUwrXVo1JXsug5F4vUyRqTfgtkQf5u7Ywr0xwDGChGK2
+ ApqbxdBN
+ B7Hmx1KVlb8QNswiu+DLG79zb/B/MC8XKvxu3TACDapUoDPxP0WlK6wLke/rVtQOJM0USHin5g3kTeplZB1GbFPUkhDkk2chSKvhC+VVz3rvYXos=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,43 +112,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now, swap_active_head is only used to find a present swap device when
-trying to swapoff it. In fact, swap_info[] is a short array which is
-32 at maximum, and usually the unused one can be reused, so the
-searching for target mostly only iterates the foremost several used
-slots. And swapoff is a rarely used operation, efficiency is not so
-important. Then it's unnecessary to get a plist to make it.
-
-Here go by iterating swap_info[] to find the swap device instead of
-iterating swap_active_head.
+There's no user of swap_active_head, remove it now.
 
 Signed-off-by: Baoquan He <bhe@redhat.com>
 ---
- mm/swapfile.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/swap.h |  1 -
+ mm/swapfile.c        | 20 ++++----------------
+ 2 files changed, 4 insertions(+), 17 deletions(-)
 
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 5b7a39b20f58..dfc0cc9fc166 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -296,7 +296,6 @@ struct swap_info_struct {
+ 	struct percpu_ref users;	/* indicate and keep swap device valid. */
+ 	unsigned long	flags;		/* SWP_USED etc: see above */
+ 	signed short	prio;		/* swap priority of this type */
+-	struct plist_node list;		/* entry in swap_active_head */
+ 	signed char	type;		/* strange name for an index */
+ 	unsigned int	max;		/* extent of the swap_map */
+ 	unsigned char *swap_map;	/* vmalloc'ed array of usage counts */
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 5d71c748a2fe..18b52cc20749 100644
+index 18b52cc20749..80b34dc86a95 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -2641,6 +2641,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
- 	struct inode *inode;
- 	struct filename *pathname;
- 	int err, found = 0;
-+	unsigned int type;
+@@ -85,17 +85,10 @@ static const char Bad_offset[] = "Bad swap offset entry ";
+ static const char Unused_offset[] = "Unused swap offset entry ";
  
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EPERM;
-@@ -2658,7 +2659,8 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ /*
+- * all active swap_info_structs
+- * protected with swap_lock, and ordered by priority.
+- */
+-static PLIST_HEAD(swap_active_head);
+-
+-/*
+- * all available (active, not full) swap_info_structs
+- * protected with swap_avail_lock, ordered by priority.
+- * This is used by folio_alloc_swap() instead of swap_active_head
+- * because swap_active_head includes all swap_info_structs,
+- * but folio_alloc_swap() doesn't need to look at full ones.
++ * All available (active, not full) swap_info_structs protected with
++ * swap_avail_lock, ordered by priority.
++ * This is used by folio_alloc_swap() because folio_alloc_swap()
++ * doesn't need to look at full ones.
+  * This uses its own lock instead of swap_lock because when a
+  * swap_info_struct changes between not-full/full, it needs to
+  * add/remove itself to/from this list, but the swap_info_struct->lock
+@@ -2539,7 +2532,6 @@ static void setup_swap_info(struct swap_info_struct *si, int prio,
+ 	 * the plist prio is negated because plist ordering is
+ 	 * low-to-high, while swap ordering is high-to-low
+ 	 */
+-	si->list.prio = -si->prio;
+ 	si->avail_list.prio = -si->prio;
+ 	si->swap_map = swap_map;
+ 	si->cluster_info = cluster_info;
+@@ -2553,8 +2545,6 @@ static void _enable_swap_info(struct swap_info_struct *si)
  
- 	mapping = victim->f_mapping;
- 	spin_lock(&swap_lock);
--	plist_for_each_entry(p, &swap_active_head, list) {
-+	for (type = 0; type < nr_swapfiles; type++) {
-+		p = swap_info[type];
- 		if (p->flags & SWP_WRITEOK) {
- 			if (p->swap_file->f_mapping == mapping) {
- 				found = 1;
+ 	assert_spin_locked(&swap_lock);
+ 
+-	plist_add(&si->list, &swap_active_head);
+-
+ 	/* Add back to available list */
+ 	add_to_avail_list(si, true);
+ }
+@@ -2682,7 +2672,6 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 	}
+ 	spin_lock(&p->lock);
+ 	del_from_avail_list(p, true);
+-	plist_del(&p->list, &swap_active_head);
+ 	atomic_long_sub(p->pages, &nr_swap_pages);
+ 	total_swap_pages -= p->pages;
+ 	spin_unlock(&p->lock);
+@@ -2958,7 +2947,6 @@ static struct swap_info_struct *alloc_swap_info(void)
+ 		 */
+ 	}
+ 	p->swap_extent_root = RB_ROOT;
+-	plist_node_init(&p->list, 0);
+ 	plist_node_init(&p->avail_list, 0);
+ 	p->flags = SWP_USED;
+ 	spin_unlock(&swap_lock);
 -- 
 2.41.0
 
