@@ -4,119 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C50CCCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 16:23:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 899FBCCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 16:36:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 627748E000B; Wed,  1 Oct 2025 12:23:55 -0400 (EDT)
+	id C101D8E000E; Wed,  1 Oct 2025 12:36:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FE458E0002; Wed,  1 Oct 2025 12:23:55 -0400 (EDT)
+	id BC0A68E0002; Wed,  1 Oct 2025 12:36:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53AC28E000B; Wed,  1 Oct 2025 12:23:55 -0400 (EDT)
+	id AD6148E000E; Wed,  1 Oct 2025 12:36:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 406388E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 12:23:55 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 131CFC0142
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 16:23:55 +0000 (UTC)
-X-FDA: 83950066830.17.B26B3F8
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 17763180008
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 16:23:52 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=DC+jM09S;
-	spf=pass (imf06.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.42 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	by kanga.kvack.org (Postfix) with ESMTP id 972448E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 12:36:30 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6690AC0165
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 16:36:30 +0000 (UTC)
+X-FDA: 83950098540.11.A6669D4
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 97846C000B
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 16:36:27 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=QcrzFow+;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759335833;
+	s=arc-20220608; t=1759336588;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gtSz92xfp0z5FAFfCkpEorqCZtizHpWeCxJ+OLFh6+I=;
-	b=aYRiWCcElLpBLO0d4ettaui+6wn4EkbHVD3UzZcog3hQurKfs1BZ9jA7JwF+pr6ejWHs1e
-	2iiZ5HuM7MjzcKf4qDd1R/l909Jv3ufsSI3nxNi+IcZbZ6KHLj+9JofiZZ2SOmaShAhj3K
-	4LJ6eTAFpNEJ8zFR53getpz+DYmjsQU=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=DC+jM09S;
-	spf=pass (imf06.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.42 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759335833; a=rsa-sha256;
+	bh=8NO5Cox1O1/W54mk1qS/tzDDi0dYt0a/DUjYAb9Uhc8=;
+	b=Mfpy9NqAobZlrpnyOPYmrupMZnYE3U8B6foMo6HLJ20YkvG1e28Ez8xyInoXi4jQx+ElEg
+	bOzZt53ayXcWpArxWwyn4OLC5ka9ickFIp/Y9iLDH2d1ek1dvZc0l3B7EPlHE5fEqg9I/I
+	KQpzkcLsaBgfuzp3/vKS4u5IcrETgF0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759336588; a=rsa-sha256;
 	cv=none;
-	b=dNih75YpTTuXjLi99DmGqG+708TF6m8u3+DIT8tqSkqEfRyT0TPOGLlr1cMDOLzhc4YSjc
-	EkLOrLuQ4ggNcCmuABmiTEKvUMXF9UGzOts0x443WjVxRbbZhI6o/GdHOpwxSRhtVxDepf
-	smJgriIKcDaRzU954CJmZWEtxU9yUDA=
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-7e3148a8928so811726d6.2
-        for <linux-mm@kvack.org>; Wed, 01 Oct 2025 09:23:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1759335832; x=1759940632; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gtSz92xfp0z5FAFfCkpEorqCZtizHpWeCxJ+OLFh6+I=;
-        b=DC+jM09S2enDoXKvHlKI9Xp2MyORUO9I5jVT0M1H27x7yAzY/+Qia2HRHYd9AmUS9j
-         i+dcrMR0b75jcdqBdDMVlNcw3mj7lxnY0hSE7t8hjwP/hJVou4ZNlZeo+V6omIi4urpW
-         fYVElLMSmmicFhoAs0FC81PMAhmWXiu1gd1aOgkS+KqIJXL8DJyHjx2Q551wyHOmxo7q
-         C5ILxOG519FM+ZKzpsMsfdjyTGTOAA1cZLgRQDtcSs1b7Wo69EUuro9gJOO3A5YL0gv8
-         wUORMtJtE3QQ0+dJ4Wkk73CO5g8iQ47RL/DuPpXeUXOMXUA2UwCRclrXNKji0IWxB5Ms
-         h8qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759335832; x=1759940632;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gtSz92xfp0z5FAFfCkpEorqCZtizHpWeCxJ+OLFh6+I=;
-        b=Ni+BqD+Pnh3Yf/r/KViUr0R36sqzdmRZLUyZZSmL7JBHS2eHIDXIB/EShU7S+InYvw
-         MsGZWY9bP3J828jyc6eLu+t1UtdeCY1pr+6NKa31n/xvaOHqBq7Ur6xUZaFBcVGXva2R
-         NgyKRqqr5kn5cruMyyDn9wq72EBFC0ZJuBdupIM7GLPdLQQwsIV8kCyuI3JT/l/nsV0K
-         K2oVhJ+xvcrhyHLWuBDWUPtNZVhWDkOs1/yEc5fe3Dvey7h6Uf2msYj76JVkaqDkrNa7
-         WLMIeeAvm+NXtEhyqZJSaSDXZo7W+NKSFm+u1tC/sJlcFdRnvoUT7KShL7ICFx70iRY5
-         yb9A==
-X-Forwarded-Encrypted: i=1; AJvYcCVyMD1V/tFHmvp2ruWWn2KlebChmCkb9t0Pyi6wnTnX/XGM/TIJX2x3IWApDuTLn/Rx3Eh2mge9/A==@kvack.org
-X-Gm-Message-State: AOJu0Yw+KO/BXZbk1LCpeYEnPZQCZZ7UDSxc9mSOwypB6jIjSZLxvtDd
-	bp5onxn3y0pqJhpYftSxhC1N8k31f1FVEy9XLx0sSeGO+daLom0DOQo1HkLdwozD/5hUf1Xo2r5
-	I5yIk
-X-Gm-Gg: ASbGncsXXgZjWEAC8zOhHUi4JNlKQIbcK4VOsAsAA+ldcaoY72qOdIUrTd7AEQJfh7G
-	X9F/oNUZHGN4xgmVyYlemgerK4r9Y2jHoiff4TCz4dUXPfmmXehVTcMHBE2Xi5gsryAu3hxEWbV
-	OdbU24Ka6GPS9szBrjL1R+v+F55hRxr9d52GPtByhCc1xseo6esc6P0blvN1NIBd64RjDi0/lnm
-	H8C1C5c9Ao9/mW8h/Y6iPbAdAghV5RdIs01XLHr3vuemAKqcVzJ9oGjlXYTbBmXQmoDSuWf5WFJ
-	h5Qf+KVeTdfXiytE22LI7cNlr3iuccxzkVRC0JVjNlrv5lCBm+FVRP+Td7458gWzpxYVFCY0Q74
-	G5+aUsozO6S4l8010Jy2QGlYlxBfrNFuhsDGl02SW70J6uw==
-X-Google-Smtp-Source: AGHT+IFDH7ieVM2AheaHk8sAZnU7O28AmWII1fzXYLrDz43DEjvw/hV5xRCTCYfjLf+80FEaCh6AyA==
-X-Received: by 2002:a05:6214:410a:b0:812:c072:db14 with SMTP id 6a1803df08f44-873a704d499mr67800036d6.50.1759335831817;
-        Wed, 01 Oct 2025 09:23:51 -0700 (PDT)
-Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
-        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-878bdf52e64sm598746d6.52.2025.10.01.09.23.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Oct 2025 09:23:50 -0700 (PDT)
-Date: Wed, 1 Oct 2025 12:23:47 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Gregory Price <gourry@gourry.net>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Subject: Re: [PATCH] mm: page_alloc: avoid kswapd thrashing due to NUMA
- restrictions
-Message-ID: <20251001162347.GA1597553@cmpxchg.org>
-References: <20250919162134.1098208-1-hannes@cmpxchg.org>
- <6B65DE2D-3A40-4E48-9F5F-8E807066DD5A@nvidia.com>
+	b=XJW6BlRH6s8nFmaM+gqAOPlKeQqTQCK+qplCVNP32zHQNDwsncCBhSp6FSrQFxkPHVm9ty
+	fwFLX5s6bTUCLZT1vWk6lUsZXB2YkcgvpFANXXECLxfsftqVaGBo9p6jSioFGIM9LU0D64
+	mGVApUWmhTr1gLr2paZEBLP6LiYsjDs=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=QcrzFow+;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1759336588; x=1790872588;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HSLm25QXTpkKM7aT1hm4htROq4qR0UuimjxRvDGXd0s=;
+  b=QcrzFow+M75oSXr3OH7Jh80SBPVbKPRxwk80/uw+eGd3l36pH5MzcYIC
+   vtRMqWkZx1ga7yG+iHhFErzVVZuIOpJGD85CV5HpdZ8aW1qnHHEY8YqMH
+   /tFTie8rhCn/gxRpEE1FgBt6216v7Oha6Z2PoFTvcRvxuP8YhGyaVUe7p
+   uvTqF7Jj5APm3hX7ApiD+AqCu/Ej8PfQ5l4l8iWKxYPltIOZswwkG80Ra
+   r9fki9xdtwjGtVvO5iDtT3/vyhYONpZctNrAafdiq71ynXcwVe0Fhx493
+   /r1TPKQWaOizync4wAEl0NPa3JbzJu2RtdGEJztn2bd5TQYq23HDDV8fK
+   A==;
+X-CSE-ConnectionGUID: wMdOrcyRQEGdOEUng4zJ9g==
+X-CSE-MsgGUID: ZzOs7jKvTQqwKIT2sn3bzA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="61506579"
+X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; 
+   d="scan'208";a="61506579"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 09:36:26 -0700
+X-CSE-ConnectionGUID: TwRkw5L8S9qMFlhUI5AWtQ==
+X-CSE-MsgGUID: OPt0fZOnSpGgCizH7DihNw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; 
+   d="scan'208";a="183116776"
+Received: from lkp-server01.sh.intel.com (HELO 2f2a1232a4e4) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 01 Oct 2025 09:36:22 -0700
+Received: from kbuild by 2f2a1232a4e4 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v3zoR-0003B5-26;
+	Wed, 01 Oct 2025 16:36:19 +0000
+Date: Thu, 2 Oct 2025 00:35:48 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jason Miu <jasonmiu@google.com>, Alexander Graf <graf@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>,
+	David Matlack <dmatlack@google.com>,
+	David Rientjes <rientjes@google.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [PATCH v1 2/3] memblock: Remove KHO notifier usage
+Message-ID: <202510020000.IIPFcxsW-lkp@intel.com>
+References: <20251001011941.1513050-3-jasonmiu@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6B65DE2D-3A40-4E48-9F5F-8E807066DD5A@nvidia.com>
+In-Reply-To: <20251001011941.1513050-3-jasonmiu@google.com>
+X-Rspamd-Queue-Id: 97846C000B
+X-Stat-Signature: 6sbd1u9jcz5xz5niy6q5nhc3ohujep96
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 17763180008
-X-Stat-Signature: xy41739sfqifhj8ypeqn3mmafab8kydj
-X-HE-Tag: 1759335832-101216
-X-HE-Meta: U2FsdGVkX1/3zLyD+DCJiZPPO88VsI5YUNdE7VI0sZ9l/Y7cDwrpJIL1KzhNlB+xriRZ6rlwCo8gDdwT4sP72APZW3ZYLrRVK5ygyNC5w3pZsJw1UDvSoVFIKsyPwNGHQDEO2WqSAMHbJcaKeezO/6yLI6DNoKgnzN4rJH2xcSmS3LK6iFJu6fTpTZIgZQha9OtTCgDveYHlVMqmSLS2Rf5IzRqmOYRQ5f4jswKNl6q6YZclERoI23PjOmCWkZY9/VO8DKOqtfZP7IL5xL58GSJUDKcZbhK02NSPY3136F1IBIJyCLnhRXcnU3WsXt5R8DZVr0ckoKAY4N8NNF7TUEeXRji+CteE3v6GuAg4fTjJaVaYNVNLuvHPv+ldAIooeXRZ+/kPcThAaelRSKtwSibne3nWp2r0MBsfl2gNdA0x6y5pQLEnMzPjyp/lBU/3uzP1z5fukWehzshaxg4bAlD+g9XMYwQi8Pv/fbbrEPiJ65hCuctVwbdBrAgoxaN1ZVXiEmdeueXma6rW3WpypS5ZcYx4Q+YxLmN9cQLf9Se37UD3GsVfhY91D5KcrXPWqNinQm2fqEm3ir8rv5TYmnaSZ2nkkdsv/6pydtvNxC7++0FiJ4PS1hyZEe+QmBxrE6S+QUCs4bhJanl0JT1myqMNMS0l5WPiFp3wkUxEc/xNHOXkYwHVjrS7SPU1HqmOMc1rlcJfX6NV+T3873i7P1pB/AJZDhJ74k35SQa7aIIQFQK1D1mO41CE16b3grz8eM+d70bT4+Q71/+hXih+qJUY84ve71pvF9gn2E+o+T9lRucAJFkNLpK+erZ7K8NkwgxXse5w9CFj2XeQAQVW2W9nZLoF1RkNeyqYCaFkbaWlpMC3nlHsFYYz9wRAlcUg0dpd86x53GHaMw6npgeZtRxv8DjKPrcp1bPDGuFInOASb2w4SuiFychX23N89MwvV4nP8VmWxDiHrM/8i5c
- LXBrGhNc
- t53KT5xTRqIxYZ1WpUpJqsAwn0v0ZxHsQGADdYMjFSw78JtCpC9Er59V1+itTTDYvi8f8/8M6wdUFZMZuhr0rpYauzbOvu2abMoHgC4wBdz+iJ8B1CwmO++68T+07HZZtbfcRvUXLoC7a9g/FEZeQePJr82aSZY+gy9ASE9cDaeDVpuKzmLuiD7Yjex62l96nbFiIog27LLT6o0w=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1759336587-990470
+X-HE-Meta: U2FsdGVkX1+kEEBhSvGpIQabrY50+I5/vT+cDn6lnRiIsrIZJo9GWEoC9MROBgCGbG1vUbY1uQYFJvvj7aoo/s2dpzNyHg0K1KInE/wxEJy2Z6t8zi2q6CroLx8RUFFVuFGli1UrgtxmXsOI2RbPlQewUSyP1bUxowmLNO6GmD24YxuVOpIrAxrkSZi0fLnm/6Q0rGG3Z2dqVvUlnISMOUp6jj14wso2LrPzDczYOtvsx3S9uDJD8BLjQNRcneIxmRBMufdP+mjQROjzfQe98esZhoBa76VM7Lj56pm9f4majl4b7I9fx1rkkVaEtoumPOMjOyqBO0Qs5XHTc7qHeGI1HRhk87VBVufCBU5HDElDgxsQODduGGPgtxn1eo7kwfcMBHAxghlsjBL/8sZl6LoaT9x6llv75SiwBRlVIS4vnh22Ez3fHdL0/qW9vMl8nteVwWujZeeHhkezX9imXLV4wb6Veq9ce6LJpa2YcMp8bEThLKjfe2rBsDTiVk4VWNoaEr4nc0UTzS+n0bKDlMa27+Dpp0N/vruX/6sDJch/NgwreB1V5FsohtXe18ptjH2Y8YlW7KNMiLaOUE6YUnhLIK7rerUVM65NocKXQDfbwGWXxQGjwmwRGVif/+wGA9+yb8+mnl0heo6QcPn9pVUQo2X6/QMRO0cDQvZ9k1M4pX5KyvZpNNnb8/UpeaNnxkKC9eZhRRz+Kt6+teFwerzBLNyb/G7Cmna/SXj9/0C8/dvAOxo/pHTptIa+Wfk19Jjq0yGaJYY8dzxIaCqoGX1fobr0iBboeKG4c+BCp7Mc21p6uY9gGE/TnJ6oHf6UHu7xkZ1X6RFvzTvvzgwlX6BvXCtte60gGrZ9wESDUzLyXcrJF6JWc/SPszV+pLUfZiLrhCYDV+7TAeTAOJRFu0y0QuIcY1dPk3hLeLSiEfCNiZ8qQ/qYhP5FtSvnh7FaYR9FUI6byNu8hPhKvWl
+ V6cKb9E5
+ kDCbh8SgMnMYb9ZWAiMnUc1pb/nFs/MQRpEZ3zBKEYKo4MTub0xcaDsK7p4uEQG/vKGQSj5jJ2pTCUmu6eNecNlExm8wAan90MIqjrdu83NslcMOMsQI5O2GD48y2Sx+g6gBYQayYsrU3wAdf7G//aIt+rlPIaNPCWaVk6uT4RwOCNnd/gHkIsBR8wihLJ+bL1TrzIXPA1XmqM7p4QrlqJp0E2xNEfZsFM2uPNN3ylDo3i8uXUS0KPmSmzIGkv4NQDvfcTm3ai48i/YYHJtgiJVroXEwFAYp5NxTFcrBoGEuzb2LCei9Ro7PyeewDPKSVygU2wM5ABWRp+lLlDrD28epNcT7zTwzRBA7gk9on5nE+JM1vCwNRneGiNZmGn8xB+o2c
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,81 +115,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sorry I missed your reply :(
+Hi Jason,
 
-On Fri, Sep 19, 2025 at 01:18:28PM -0400, Zi Yan wrote:
-> On 19 Sep 2025, at 12:21, Johannes Weiner wrote:
-> 
-> > On NUMA systems without bindings, allocations check all nodes for free
-> > space, then wake up the kswapds on all nodes and retry. This ensures
-> > all available space is evenly used before reclaim begins. However,
-> > when one process or certain allocations have node restrictions, they
-> > can cause kswapds on only a subset of nodes to be woken up.
-> >
-> > Since kswapd hysteresis targets watermarks that are *higher* than
-> > needed for allocation, even *unrestricted* allocations can now get
-> > suckered onto such nodes that are already pressured. This ends up
-> > concentrating all allocations on them, even when there are idle nodes
-> > available for the unrestricted requests.
-> 
-> This is because we build the zonelist from node 0 to the last node
-> and getting free pages always follows zonelist order, right?
+kernel test robot noticed the following build errors:
 
-Yes, exactly.
+[auto build test ERROR on rppt-memblock/for-next]
+[also build test ERROR on linus/master v6.17]
+[cannot apply to rppt-memblock/fixes akpm-mm/mm-everything next-20250929]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> > This was observed with two numa nodes, where node0 is normal and node1
-> > is ZONE_MOVABLE to facilitate hotplugging: a kernel allocation wakes
-> > kswapd on node0 only (since node1 is not eligible); once kswapd0 is
-> > active, the watermarks hover between low and high, and then even the
-> > movable allocations end up on node0, only to be kicked out again;
-> > meanwhile node1 is empty and idle.
-> >
-> > Similar behavior is possible when a process with NUMA bindings is
-> > causing selective kswapd wakeups.
-> >
-> > To fix this, on NUMA systems augment the (misleading) watermark test
-> > with a check for whether kswapd is already active during the first
-> > iteration through the zonelist. If this fails to place the request,
-> > kswapd must be running everywhere already, and the watermark test is
-> > good enough to decide placement.
-> >
-> > With this patch, unrestricted requests successfully make use of node1,
-> > even while kswapd is reclaiming node0 for restricted allocations.
-> 
-> Thinking about this from memory tiering POV, when a fast node (e.g., node 0,
-> and assume node 1 is a slow node) is evicting cold pages using kswapd,
-> unrestricted programs will see performance degradation after your change.
-> Since before the change, they start from a fast node, but now they start from
-> a slow node.
+url:    https://github.com/intel-lab-lkp/linux/commits/Jason-Miu/kho-Adopt-KHO-radix-tree-data-structures/20251001-092230
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git for-next
+patch link:    https://lore.kernel.org/r/20251001011941.1513050-3-jasonmiu%40google.com
+patch subject: [PATCH v1 2/3] memblock: Remove KHO notifier usage
+config: x86_64-randconfig-003-20251001 (https://download.01.org/0day-ci/archive/20251002/202510020000.IIPFcxsW-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251002/202510020000.IIPFcxsW-lkp@intel.com/reproduce)
 
-I don't think that's quite right. The default local-first NUMA policy
-absent any bindings or zone restrictions is that you first fill node0,
-*then* you fill node1, *then* kswapd is woken up on both nodes - at
-which point new allocations would go wherever there is room in order
-of preference.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510020000.IIPFcxsW-lkp@intel.com/
 
-I'm just making it so that iff kswapd0 is woken prematurely due to
-restrictions, we still fill node1.
+All errors (new ones prefixed by >>):
 
-In either case, node1 is only filled when node0 space is exhausted.
+>> lib/test_kho.c:59:44: error: too many arguments to function call, expected 2, have 3
+      59 |         err |= kho_add_subtree(ser, KHO_TEST_FDT, folio_address(state->fdt));
+         |                ~~~~~~~~~~~~~~~                    ^~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/kexec_handover.h:30:5: note: 'kho_add_subtree' declared here
+      30 | int kho_add_subtree(const char *name, void *fdt);
+         |     ^               ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   1 error generated.
 
-> Maybe kernel wants to shuffle zonelist based on the emptiness of each zone,
-> trying to spread allocations across all zones. For memory tiering,
-> spreading allocation should be done within a tier. Since even with this fix,
-> in a case where there are 3 nodes, node 0 is heavily used by restricted
-> allocations, node 2 will be unused until node 1 is full for unrestricted
-> allocations and unnecessary kswapd wake on node 1 can happen.
 
-Kswapd on node1 only wakes once node2 is watermark-full as well. This
-is the intended behavior of the "local first" numa policy. I'm not
-trying to implement interleaving, it's purely about the quirk that
-watermarks alone are not reliable predictors for whether a node is
-full or not if kswapd is running.
+vim +59 lib/test_kho.c
 
-So we would expect to see
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  40) 
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  41) static int kho_test_notifier(struct notifier_block *self, unsigned long cmd,
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  42) 			     void *v)
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  43) {
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  44) 	struct kho_test_state *state = &kho_test_state;
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  45) 	struct kho_serialization *ser = v;
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  46) 	int err = 0;
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  47) 
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  48) 	switch (cmd) {
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  49) 	case KEXEC_KHO_ABORT:
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  50) 		return NOTIFY_DONE;
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  51) 	case KEXEC_KHO_FINALIZE:
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  52) 		/* Handled below */
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  53) 		break;
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  54) 	default:
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  55) 		return NOTIFY_BAD;
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  56) 	}
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  57) 
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  58) 	err |= kho_preserve_folio(state->fdt);
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27 @59) 	err |= kho_add_subtree(ser, KHO_TEST_FDT, folio_address(state->fdt));
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  60) 
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  61) 	return err ? NOTIFY_BAD : NOTIFY_DONE;
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  62) }
+b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  63) 
 
-fill node0 -> fill node1 -> fill node2 -> wake all sleeping kswapds
-
-- without restricted allocations in the vanilla kernel
-- with restricted allocations after this patch.
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
