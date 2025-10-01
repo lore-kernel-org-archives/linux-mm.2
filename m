@@ -4,112 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AEE3CAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 03:25:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83735CAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 04:23:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D79CB8E0005; Tue, 30 Sep 2025 23:25:06 -0400 (EDT)
+	id 71CC88E0005; Wed,  1 Oct 2025 00:23:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D512A8E0002; Tue, 30 Sep 2025 23:25:06 -0400 (EDT)
+	id 6CD918E0002; Wed,  1 Oct 2025 00:23:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C67158E0005; Tue, 30 Sep 2025 23:25:06 -0400 (EDT)
+	id 5BCEB8E0005; Wed,  1 Oct 2025 00:23:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B3D208E0002
-	for <linux-mm@kvack.org>; Tue, 30 Sep 2025 23:25:06 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 304D116091D
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 03:25:06 +0000 (UTC)
-X-FDA: 83948104212.10.A208168
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 80A1120002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 03:25:04 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A6168E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 00:23:37 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EEBD21A08E1
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:23:36 +0000 (UTC)
+X-FDA: 83948251632.01.D1DF44E
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf29.hostedemail.com (Postfix) with ESMTP id F3748120008
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:23:34 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
 	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none);
-	spf=pass (imf03.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
+	spf=pass (imf29.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759289104;
+	s=arc-20220608; t=1759292615;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=FA57N8DSQvEdDyyKBkxAad4tUYCW8q9ybdMKiaOoC/o=;
-	b=kIfWvLPNYsH8Zvk0Pp0bNMBnPDzxQHFB+urza/MdhQiLT1lEWoLeN2jS41gZ275rR3fpxY
-	3rVv1VxrCu9WG5mwuC9GRqiYcr+4q+6PURwriSZw6uDdwKTgrbfJGuHiHBWPSH4tzIpcQv
-	zOyKqWgCapZGSSCtXCdJfrNoiEliHvE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759289104; a=rsa-sha256;
-	cv=none;
-	b=tx2YToJlPeO+rRQtjgaztlGp4cmGPhAfd6AdKHWklFn7pXUaXCdQlb82LUDh7TyXA/WK6D
-	cC30BGkIFi1S2Oy2KTRlG8bgqBimwKuiE79qk+g9Dmds7eZhGsZBEbepTqVj6fpLw2qCbz
-	VH/GVXDlz8A/tvYt7qSEnMXQQHj+PcE=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oufO/qxtKuBhIvvH4o1hco84voWMHFT5FnkmWTKSNDU=;
+	b=IiIzKMJrNmy7SmnDv5SowQ/b/yYBdMUiq/Ran0KWva1lGm1uHQZDZN5HLfr4E0oSK7zHMG
+	rYwAulQVdsoL99b1S86YtbyrmXTWWvG+ZyHQ5aLGHKL474iSeSWLIihgxJaotk90cmuhHC
+	LRGr+ZEtV6H5YxIOg9ZvlO4p3XCa76I=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
+	imf29.hostedemail.com;
 	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none);
-	spf=pass (imf03.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-42557c5cedcso251648f8f.0
-        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 20:25:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759289103; x=1759893903;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FA57N8DSQvEdDyyKBkxAad4tUYCW8q9ybdMKiaOoC/o=;
-        b=ldxwDo5+qTWLmF3diqWcpFZjUzwJV8d8nbUD0W6xQr9mq05TAclpuwoSxjG2ayGXmt
-         ndkd3YorxUv49WG68yeE7y8mP94RiagNo+laOq06eQKa6yAhv1bUULdN1scL4hlVAN6r
-         HbNHkh6M/Gung2Khuodh9mrQHPrMYJaxJ/FjqJtfU6X7VbH1FW9Yu37XLhCrk+VlCLi5
-         zQu08ZVsG7/U4CteOXEUkzBmSMeehjvo1f/XEvwrZ8SU0PGsY/VB5fTCQZGZ4NAuJ1vb
-         CUwVgo25o2r1uPPC8gVLN/gmBs2N+pVI3DqIm6LagfWcYZK38wGnX9OSXKBWkqJ3D7SB
-         CmNg==
-X-Forwarded-Encrypted: i=1; AJvYcCVZB7FWjXSywzXJwllDC3X56EKXtK4d3UQTfmvj9et5hSqOVFRBVvmVZHH/kzFhZ/48QNYeebOIXA==@kvack.org
-X-Gm-Message-State: AOJu0YxZq3npCzzzi9or+0BTBo41AVAqsgVzxhqydhswWdrXwpCmKYvy
-	qlEf614YbnHmXcMyHwJBHaEhtka8ndY8Bo9ZlzJ5Nz5HOTnoxLZgwHdc
-X-Gm-Gg: ASbGncsxW2JDzWK0li4Oa7rESdr6X4QCK2W9OIJCQ5teXVY4LDG8SWDA1ZB9g5hB56X
-	cCiy5u/F0+sj06Cniz64dAWieEZbkZ40hoX9/bsh0mt5mRm+zz1fRvtzC87wMib9XE4gkbsq5iD
-	/zLDK+GRQxKzCHBBwT3eTZqhJlhEPMkTYa0By30ZkA16MuggWIHQ/qCzvNHjgvx4Qpvw+GB2ClY
-	8FVgMk1W+53kt9mr94rSQsI2ZnXsaQqV47VnwCPx/WRzYNJx5eo07yjIszHxflYudAURwlwIcOa
-	b1g22Hxyx+7At19yAMTqyZHgnl7KcKvtDZmZKr59269jDcCoxSsgcl/SFnmdD8O+j+Bu6tKOjcU
-	3suGJoXfpxJzDySZfB5BkdHUtlsa8fcSKnD6j2W8=
-X-Google-Smtp-Source: AGHT+IFBchqrZzaojHRR/WFRnhqsxmy4IwBajiOP3XpKUmxGFc7GSlwImuIjkfg4UuEYFnWVH5+X+w==
-X-Received: by 2002:a05:6000:2388:b0:3e7:4697:297a with SMTP id ffacd0b85a97d-425577f5552mr1219739f8f.24.1759289102832;
-        Tue, 30 Sep 2025 20:25:02 -0700 (PDT)
-Received: from localhost.localdomain ([2a09:0:1:2::301b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fb72fb017sm24993352f8f.3.2025.09.30.20.24.56
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 30 Sep 2025 20:25:02 -0700 (PDT)
-From: Lance Yang <lance.yang@linux.dev>
-To: akpm@linux-foundation.org
-Cc: david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	dev.jain@arm.com,
-	hughd@google.com,
-	ioworker0@gmail.com,
-	kirill@shutemov.name,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	mpenttil@redhat.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	ziy@nvidia.com,
-	richard.weiyang@gmail.com,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH mm-new v2 1/1] mm/khugepaged: abort collapse scan on non-swap entries
-Date: Wed,  1 Oct 2025 11:22:51 +0800
-Message-ID: <20251001032251.85888-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
+	spf=pass (imf29.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759292615; a=rsa-sha256;
+	cv=none;
+	b=Ul9OAQ9ygqNGwEuw4yn02q55rAzBSjw12mFTDCZbsnsgrK4VWCD5JsqKRO8p2Yle9GaGJt
+	/TzJvS3gufb9lrwqIJKnEef6MGoLAMBgBy/JodAzZOOmxDay/yd8OtjlVmJDAwIunGd7Cf
+	DNFEEsm2sfCnC+17yvuoTN0F6sF84T8=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D6D8F16F2;
+	Tue, 30 Sep 2025 21:23:25 -0700 (PDT)
+Received: from [10.164.18.53] (MacBook-Pro.blr.arm.com [10.164.18.53])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B29623F66E;
+	Tue, 30 Sep 2025 21:23:29 -0700 (PDT)
+Message-ID: <746c4dd3-2285-4353-9e15-a0a2fbd4e6b5@arm.com>
+Date: Wed, 1 Oct 2025 09:53:26 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [v2 PATCH] mm: hugetlb: avoid soft lockup when mprotect to large
+ memory area
+To: Yang Shi <yang@os.amperecomputing.com>, muchun.song@linux.dev,
+ osalvador@suse.de, david@redhat.com, akpm@linux-foundation.org,
+ catalin.marinas@arm.com, will@kernel.org, anshuman.khandual@arm.com,
+ carl@os.amperecomputing.com, cl@gentwo.org
+Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20250929202402.1663290-1-yang@os.amperecomputing.com>
+ <cc40d827-3b98-4e15-ad45-5c2033e4ce20@arm.com>
+ <6cde8290-3aa2-411c-bf29-eb91a99e33a5@os.amperecomputing.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <6cde8290-3aa2-411c-bf29-eb91a99e33a5@os.amperecomputing.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 9maci6cjp8n3rhxskgr6biygwf41zcai
+X-Rspamd-Queue-Id: F3748120008
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 80A1120002
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1759289104-30583
-X-HE-Meta: U2FsdGVkX1/VpJYSB9sPvxqxYjBCRh3b7qiOLfBLUluGurBhVt+ll67/2JCxz0XK+zcD25AlnDs/JHkbafsHwkae/CfWGDS0zFqF1Zk/rDChbTqIkSbt+qOVlicer6QD4YPxrhPYK8A2I769AmPg/02QGWuhLsnpukBt63nuUFmwMXSF/jnWANE5GfEiqbrp8rhOFktEtNmD7b113r3nB3oNx2lTaKpsIAZ/yB/xwsVZSuYOwiByb5Iguvnfi32xoPMdvKtDklAtLgTo+Beao/T8M6BxRo3KdmlbSuYoNTi6wqZRTkFfp8xhA2pK6y0RmrqaVMGte6ls68g0nV0cCvi6gYSVF0KDZD6TzN+1lhEONbl3qaKE+amBsjr2Lr3AhQw9KXQRMY+/D9ruYHNrH5WFZ+NmND1JCujX8+Q7Ytx0/FV0agCPlB0OaTLHfNnHysGBYOXRfTJasZ+wLJiD82lH9pafCmrMXHn5HJ99ttAEDSXoSR2XOxueAxGplTuM6Jot1wnTDKhWJ5ttrRXTyDOgVcYoWISICOKBsTkLLuyzW1cP7XoRIcIIvoQ9tXn5EyHx83KwLLR/UoIARmnlVjlyfW3DmacI7PuUXGBWvSXXY9YYvty+whyxxUGweTylrscAXjgETG2nSC/KJqeV7poaDJZeuiGgsZEU/JbZsWih73AFiyjBCSlOWnq9uRUtfNhRfnJVAOfcF8H/DU9t6IBcE3CDOi+DvABeA6eK+E4KdC/GezK0srGl/oaAMK4uT9pPCIvpZoFfn1zDmhWIdGFmQXjhFXbtLQnNDWrbWHqsmOxm1HHE+OKK92NIoWgeE0VlcM3belU+X7ydBXXDQZ9VxCoLnGml3ZWHTmqgborf3wAs/j14ob9sKsSZwZdCXqgH9plIDcOsc1x+SVQJTqZT+s51ah1byzcF6M6RkXNi/xY6an4Dys/tWD6M0lMo1Mjp6wwMtukjg0Yx9HO
- DbShZi7+
- vO+xOVYMEbIIlPsZDp92aJac714F4VhidqvrDU85D5ucn2cUdA907nW34qSw+mcgO4jrmu6gEWmyDU434B7cgZGOWs5QWrRwucmZvpAo8wB6zl02UwYqy0DCrQsEQpieFTUzmSFYqhj84fbmBNe0l/8rFDrzpihcD4ERWgoL2zV5YmoHxaq1ufpJKhwxNsNdkbP3fddOLSKmGeLTl5FIFvxg3SRezCZHnKhSfwE6Q4u5DcR2xLUFzNhQFyUJVJlsl+KRsDwPRlYtMVcWuWL1HnXEs9CYW9cErzwdH
+X-Rspamd-Server: rspam07
+X-Stat-Signature: i1tz7tjqm14koqkzncrjxnjppucxseo8
+X-HE-Tag: 1759292614-47134
+X-HE-Meta: U2FsdGVkX19o237ei1rm98jlD3RdtVGicsT2zMwzINWywZL4u5Ci2UpeWfd5kpwtRTbz8ss9tvhidtGiuMEJJD75BWJrtsGTB1UL/XRpNboAS1lYBqLCdDYN9sfyx8zg9p1V6rbUdxctGXdPJVlZNj4ooh2+keptx+7oO+7YKHwmGBwAD/xEcTB2u3lT1fKz5n1c5nAvJx0qf7+gmpkxBjHj34HhmEXsXF323+rDnv8dJjdbwwyGw1TIm0BSXQhhHf58zMtkUJ5qyvd1M0diVs4SeMcU7A+dFHOEhMchYBNG7irWOw6tcwwy3ljaZwjLklt6eUFrSSIjUY3JJuHWd/509a/tFnTdTqtpRZsypQ2So0XciVTp2jIMjGpdrsCbx3M/4sRUG3Y/a2LIDFkyJ5N/fzvrG8wMwn69p1lIlK+KME5MTJdHsFoHAsG1paF9zp1F6NoIBLhAhT+32/7OKB+pp7rObaQMukPXOFQ2fPkwLKl9ZuqmKd6+Zgeyil/pAlsaB5AtaTVnbib4lLzSoyOihXGccn4fbm+3iOnhUzu/vQKIKE7Vxg2ndNIc297o8eCbogJ4CiLAxm3YWZ4ucohr5vSHhEgQBsmjrJVuo7nCd0StGq+OeO6AFUt3T64nc1s4yWtmPCBpzlp9p/Iid5CtsaZh0gakYdMAtHNnAVJskJPKz/7yRfa1UfT4HjwO94rRz+5fth+mom/Y6XAFyNNodxCqvHM0T2sWCtYA8MWzMkQs0xL5vxNdi05SUx8hPyG6NTopSAdroZ0K3Xug225VG26EuSxUGTZM3zSca0EpR6FacnbTrbZFqBwpQKhcl9TDEtasP4norL8zBZ7ENyaWhZxn44584c/y6OYwHoH5om5pmvAooNMNtAd2kcSFgCVTPbxMtnf/69TkoU5IoWpBfJTMYDlW9mNEGdXaHMwIRF3Z2wjNZMofmB6CFuBArr6B2rWbpwb0C7Gf2Po
+ EcF4unPh
+ XYYumL/TLX6HGc8DbV7301iei125mnYZ8amn/a+uBLTVI8v/7f1FSV1mPBFYyQSiFKAUkC92SAgxuveJIaDbpxZd5N03s26y+b4bWFiCU8TyaVDx6GJFsgyN5JLuRJkx+OiT+aB+2pfW9lZND8pnkCoPrE6EMUsbxeSGb7b31okGxzL5ZBEZTZEvOw4khepCs2DSekwbcI7QmAAbHnxIJTGvk5DNUJyk+dxU+EV1gu/t2MXc7KL6HeAN5hxk1h7shEiMyWKN5YcM35PB7VAq2x8gxmlNIxC3Tr3WTRP+toTuicN0pccqmdwireZINV4yTPVfFiBV/4qR44UfnFbBKSDbh70SA7E2phzpnLSXw2GqPm72z8Xz9lqH1Fw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,93 +91,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Lance Yang <lance.yang@linux.dev>
 
-Currently, special non-swap entries (like migration, hwpoison, or PTE
-markers) are not caught early in hpage_collapse_scan_pmd(), leading to
-failures deep in the swap-in logic.
+On 30/09/25 11:38 pm, Yang Shi wrote:
+>
+>
+> On 9/29/25 10:26 PM, Dev Jain wrote:
+>>
+>> On 30/09/25 1:54 am, Yang Shi wrote:
+>>> When calling mprotect() to a large hugetlb memory area in our 
+>>> customer's
+>>> workload (~300GB hugetlb memory), soft lockup was observed:
+>>>
+>>> watchdog: BUG: soft lockup - CPU#98 stuck for 23s! [t2_new_sysv:126916]
+>>>
+>>> CPU: 98 PID: 126916 Comm: t2_new_sysv Kdump: loaded Not tainted 
+>>> 6.17-rc7
+>>> Hardware name: GIGACOMPUTING R2A3-T40-AAV1/Jefferson CIO, BIOS 
+>>> 5.4.4.1 07/15/2025
+>>> pstate: 20400009 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+>>> pc : mte_clear_page_tags+0x14/0x24
+>>> lr : mte_sync_tags+0x1c0/0x240
+>>> sp : ffff80003150bb80
+>>> x29: ffff80003150bb80 x28: ffff00739e9705a8 x27: 0000ffd2d6a00000
+>>> x26: 0000ff8e4bc00000 x25: 00e80046cde00f45 x24: 0000000000022458
+>>> x23: 0000000000000000 x22: 0000000000000004 x21: 000000011b380000
+>>> x20: ffff000000000000 x19: 000000011b379f40 x18: 0000000000000000
+>>> x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+>>> x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+>>> x11: 0000000000000000 x10: 0000000000000000 x9 : ffffc875e0aa5e2c
+>>> x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
+>>> x5 : fffffc01ce7a5c00 x4 : 00000000046cde00 x3 : fffffc0000000000
+>>> x2 : 0000000000000004 x1 : 0000000000000040 x0 : ffff0046cde7c000
+>>>
+>>> Call trace:
+>>>    mte_clear_page_tags+0x14/0x24
+>>>    set_huge_pte_at+0x25c/0x280
+>>>    hugetlb_change_protection+0x220/0x430
+>>>    change_protection+0x5c/0x8c
+>>>    mprotect_fixup+0x10c/0x294
+>>>    do_mprotect_pkey.constprop.0+0x2e0/0x3d4
+>>>    __arm64_sys_mprotect+0x24/0x44
+>>>    invoke_syscall+0x50/0x160
+>>>    el0_svc_common+0x48/0x144
+>>>    do_el0_svc+0x30/0xe0
+>>>    el0_svc+0x30/0xf0
+>>>    el0t_64_sync_handler+0xc4/0x148
+>>>    el0t_64_sync+0x1a4/0x1a8
+>>>
+>>> Soft lockup is not triggered with THP or base page because there is
+>>> cond_resched() called for each PMD size.
+>>>
+>>> Although the soft lockup was triggered by MTE, it should be not MTE
+>>> specific. The other processing which takes long time in the loop may
+>>> trigger soft lockup too.
+>>>
+>>> So add cond_resched() for hugetlb to avoid soft lockup.
+>>>
+>>> Fixes: 8f860591ffb2 ("[PATCH] Enable mprotect on huge pages")
+>>> Tested-by: Carl Worth <carl@os.amperecomputing.com>
+>>> Reviewed-by: Christoph Lameter (Ampere) <cl@gentwo.org>
+>>> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+>>> Acked-by: David Hildenbrand <david@redhat.com>
+>>> Acked-by: Oscar Salvador <osalvador@suse.de>
+>>> Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>>> Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
+>>> ---
+>>> v2: - Made the subject and commit message less MTE specific and fixed
+>>>        the fixes tag.
+>>>      - Collected all R-bs and A-bs.
+>>>
+>>>   mm/hugetlb.c | 2 ++
+>>>   1 file changed, 2 insertions(+)
+>>>
+>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>>> index cb5c4e79e0b8..fe6606d91b31 100644
+>>> --- a/mm/hugetlb.c
+>>> +++ b/mm/hugetlb.c
+>>> @@ -7242,6 +7242,8 @@ long hugetlb_change_protection(struct 
+>>> vm_area_struct *vma,
+>>>                           psize);
+>>>           }
+>>>           spin_unlock(ptl);
+>>> +
+>>> +        cond_resched();
+>>>       }
+>>>       /*
+>>>        * Must flush TLB before releasing i_mmap_rwsem: x86's 
+>>> huge_pmd_unshare
+>>
+>> Reviewed-by: Dev Jain <dev.jain@arm.com>
+>
+> Thank you.
+>
+>>
+>> Does it make sense to also do cond_resched() in the 
+>> huge_pmd_unshare() branch?
+>> That also amounts to clearing a page. And I can see for example, 
+>> zap_huge_pmd()
+>> and change_huge_pmd() consume a cond_resched().
+>
+> Thanks for raising this. I did think about it. But I didn't convince 
+> myself because shared pmd should be not that common IMHO (If I'm 
+> wrong, please feel free to correct me). At least PMD can't be shared 
+> if the memory is tagged IIRC. So I'd like to keep the patch minimal 
+> for now and defer adding cond_resched() until it is hit by some real 
+> life workload.
 
-hpage_collapse_scan_pmd()
- `- collapse_huge_page()
-     `- __collapse_huge_page_swapin() -> fails!
+If we have large swathes of hugetlb memory like in your workload, and it 
+is MAP_SHARED, then there should be high chances of sharing the PMD. 
+Although, I incorrectly
 
-As David suggested[1], this patch skips any such non-swap entries
-early. If any one is found, the scan is aborted immediately with the
-SCAN_PTE_NON_PRESENT result, as Lorenzo suggested[2], avoiding wasted
-work.
+observed that we are clearing a page there - we are only clearing the 
+pud entry which is 8 bytes. So yes a soft lockup should be highly 
+unlikely. But since cond_resched()
 
-[1] https://lore.kernel.org/linux-mm/7840f68e-7580-42cb-a7c8-1ba64fd6df69@redhat.com
-[2] https://lore.kernel.org/linux-mm/7df49fe7-c6b7-426a-8680-dcd55219c8bd@lucifer.local
+is cheap (I assume this is the case since it is liberally sprinkled all 
+over the codebase) I think we should be consistent. Probably not an 
+immediate concern and not a matter
 
-Suggested-by: David Hildenbrand <david@redhat.com>
-Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
----
-v1 -> v2:
- - Skip all non-present entries except swap entries (per David) thanks!
- - https://lore.kernel.org/linux-mm/20250924100207.28332-1-lance.yang@linux.dev/
+of this patch.
 
- mm/khugepaged.c | 32 ++++++++++++++++++--------------
- 1 file changed, 18 insertions(+), 14 deletions(-)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 7ab2d1a42df3..d0957648db19 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1284,7 +1284,23 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
- 	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
- 	     _pte++, addr += PAGE_SIZE) {
- 		pte_t pteval = ptep_get(_pte);
--		if (is_swap_pte(pteval)) {
-+		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
-+			++none_or_zero;
-+			if (!userfaultfd_armed(vma) &&
-+			    (!cc->is_khugepaged ||
-+			     none_or_zero <= khugepaged_max_ptes_none)) {
-+				continue;
-+			} else {
-+				result = SCAN_EXCEED_NONE_PTE;
-+				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
-+				goto out_unmap;
-+			}
-+		} else if (!pte_present(pteval)) {
-+			if (non_swap_entry(pte_to_swp_entry(pteval))) {
-+				result = SCAN_PTE_NON_PRESENT;
-+				goto out_unmap;
-+			}
-+
- 			++unmapped;
- 			if (!cc->is_khugepaged ||
- 			    unmapped <= khugepaged_max_ptes_swap) {
-@@ -1293,7 +1309,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
- 				 * enabled swap entries.  Please see
- 				 * comment below for pte_uffd_wp().
- 				 */
--				if (pte_swp_uffd_wp_any(pteval)) {
-+				if (pte_swp_uffd_wp(pteval)) {
- 					result = SCAN_PTE_UFFD_WP;
- 					goto out_unmap;
- 				}
-@@ -1304,18 +1320,6 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
- 				goto out_unmap;
- 			}
- 		}
--		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
--			++none_or_zero;
--			if (!userfaultfd_armed(vma) &&
--			    (!cc->is_khugepaged ||
--			     none_or_zero <= khugepaged_max_ptes_none)) {
--				continue;
--			} else {
--				result = SCAN_EXCEED_NONE_PTE;
--				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
--				goto out_unmap;
--			}
--		}
- 		if (pte_uffd_wp(pteval)) {
- 			/*
- 			 * Don't collapse the page if any of the small
--- 
-2.49.0
-
+>
+> Yang
+>
+>
 
