@@ -4,138 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39DD6CCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 10:02:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11F94CCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 10:06:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8154A8E0003; Wed,  1 Oct 2025 06:02:18 -0400 (EDT)
+	id 6BC828E0006; Wed,  1 Oct 2025 06:06:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C6278E0002; Wed,  1 Oct 2025 06:02:18 -0400 (EDT)
+	id 66DA68E0002; Wed,  1 Oct 2025 06:06:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B49F8E0003; Wed,  1 Oct 2025 06:02:18 -0400 (EDT)
+	id 583048E0006; Wed,  1 Oct 2025 06:06:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 56EA48E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 06:02:18 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C990811B146
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 10:02:17 +0000 (UTC)
-X-FDA: 83949105114.21.499CD93
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C8E90180005
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 10:02:14 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=B9FzD2Cm;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rE7Fvyhn;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1Q34JIqo;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MoEEEght;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 44C338E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 06:06:21 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EAA3111B130
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 10:06:20 +0000 (UTC)
+X-FDA: 83949115320.16.DE4B68F
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf03.hostedemail.com (Postfix) with ESMTP id DC4F320011
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 10:06:18 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NP+oJT9X;
+	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759312935;
+	s=arc-20220608; t=1759313179;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TeD8soTHHIxNG6f1XpozFfG0T75bKxyP4oAiQvd6izY=;
-	b=cCDWp+l21G6Wep/wA7ZNoH5G+AbtvG1tSUz4zWJjW8a9ZZ8yHPf5TF+uejMTLZkH/gKicU
-	epLg9mEohChc7ffVPsKqGQbf9TLgL9p+S6NLRVhHpbLNvWpvT/p166In5ugEDThXMv/KRu
-	jpQM2EbRa/qVlEvN7xxFn7Z/4qn5nWA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759312935; a=rsa-sha256;
+	bh=393rN1ZpjbBC/kxJBIELF7diTurMQySclAxKyAjIUr4=;
+	b=Hfwk3ZvHCaH+MOfB17aqX7npvByzVw7R52pgQR/wfqzrDzUepq3sHE/KVvTpIPgF8ErnDu
+	R6o9GgOnCRTAzz5Txs4UXJ9QsKIFD7a7aD+tYH+Qqq8Iiv5ffbtyDFQRP1ZSd1zE1Ma5Sm
+	6KBKUQCIt603iMhyCj61E7dATTnIo1o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759313179; a=rsa-sha256;
 	cv=none;
-	b=TNd2CkAS8xG5Tw/rgUsqfGJcaduIzxhmCa7fqoQxWq+3SVA2sAlVjeVpen34MjgbWjXjh9
-	zWSoIIaOSMFA2h8200ojtDCtHDJzYTB9Ok5wvCPfOEM3LgtDryDhLoVF1DlRvs7/y003mw
-	HsWAqRTnADWJ6Ff/qS7f0LLGfcBNqPA=
+	b=6lh6YwDza0bgXnXGYXS7U1H0I6zNAWWSROnD1ByqFSVfBvSZ3tKZxUoZ+scO5f+XmqeXQW
+	m6luUyDfN3lKLhbtbWuaa1EXBIiO4aYXwQx4JhG2bu/TKR3hnsDDGCIxNdmV+RJEJuZ9g8
+	5VRlRrV3+c8Yrizx5KlIDJIdQLnG7tg=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=B9FzD2Cm;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rE7Fvyhn;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1Q34JIqo;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MoEEEght;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 73D05337A4;
-	Wed,  1 Oct 2025 10:02:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759312927; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NP+oJT9X;
+	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <1d09acbf-ccc9-4f06-9392-669c98e34661@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1759313176;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TeD8soTHHIxNG6f1XpozFfG0T75bKxyP4oAiQvd6izY=;
-	b=B9FzD2CmxCKFVebzqdQFEmlFPt22S5EjbPIZsp5yuBxLvpL2KhgiMsO3t/8Vmqt6K1UNZT
-	49/iHf+B2diTqIB7UsT74yjk/ZCBv0ScegguvGT/1yls0y5ZoCs6zYctvXUbmNXskGi5JR
-	xBdFGx79WsPyL+7Y5KjxhnTJ059SYdk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759312927;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TeD8soTHHIxNG6f1XpozFfG0T75bKxyP4oAiQvd6izY=;
-	b=rE7Fvyhn6OtfaFyfpp7h8JxLtJ8put0GTFpJcbtzTgPtwUTzJoOAEruZQ4AJ2JHU610MGn
-	yryK6oe4i9gtjyCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759312922; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TeD8soTHHIxNG6f1XpozFfG0T75bKxyP4oAiQvd6izY=;
-	b=1Q34JIqoIlXithAOEHLzWztElhn0iwwC96rDV8SdaTwxGABhyDCYq0uAV83MN0P8ZucKDs
-	l/iVkqQEMJkjsTKhEn+KKP/Pw5mo0K+R4l05nHz6X8/O++069/pdI8niE5plSB2kocUShZ
-	GdbvO75HMwJgqdVLP4CP3/pIzRDVdNM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759312922;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TeD8soTHHIxNG6f1XpozFfG0T75bKxyP4oAiQvd6izY=;
-	b=MoEEEght4a9SSGw6MaP8wY4NdyUJBcKUM41d2/gKPD11aN9SydwUf+/RU3WfNcMLBOzQVQ
-	AyqDU9CCA+2KtXAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6185313A42;
-	Wed,  1 Oct 2025 10:02:02 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id eeKCFxr83GhJTwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 01 Oct 2025 10:02:02 +0000
-Message-ID: <689e36d4-d828-42c5-9e57-ba663adc9ea9@suse.cz>
-Date: Wed, 1 Oct 2025 12:04:50 +0200
+	bh=393rN1ZpjbBC/kxJBIELF7diTurMQySclAxKyAjIUr4=;
+	b=NP+oJT9Xu+AIdWD3V7YlGutu+9IPikN9WZKVvB11Dhj7ychLuogT3WtOw5FNQXyilQPRnp
+	dmwRpn5dn5cV7eXJ7Gf1MxlWz95XyJ1jBzFfPsHAfTHsrStEKsNUb6mJqGtTglcsiJxw71
+	1Z6rlohEHy+UlVPl7khZgQyjYDHluhY=
+Date: Wed, 1 Oct 2025 18:05:57 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] mm/page_alloc: Batch page freeing in
- free_frozen_page_commit
-To: Joshua Hahn <joshua.hahnjy@gmail.com>,
- kernel test robot <oliver.sang@intel.com>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, Chris Mason <clm@fb.com>,
- Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Kiryl Shutsemau <kirill@shutemov.name>, Brendan Jackman
- <jackmanb@google.com>, Michal Hocko <mhocko@suse.com>,
- Suren Baghdasaryan <surenb@google.com>, Zi Yan <ziy@nvidia.com>,
- linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20250929151744.2922386-1-joshua.hahnjy@gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [PATCH mm-new v2 1/1] mm/khugepaged: abort collapse scan on
+ non-swap entries
 Content-Language: en-US
-In-Reply-To: <20250929151744.2922386-1-joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
+ dev.jain@arm.com, hughd@google.com, ioworker0@gmail.com,
+ kirill@shutemov.name, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ mpenttil@redhat.com, npache@redhat.com, ryan.roberts@arm.com, ziy@nvidia.com
+References: <20251001032251.85888-1-lance.yang@linux.dev>
+ <20251001085425.5iq2mgfom6sqkbbx@master>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20251001085425.5iq2mgfom6sqkbbx@master>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: C8E90180005
-X-Stat-Signature: 5yetsdrronpgewcjodtdo37c41wdsbks
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: e83ji36bw5pzq5ttk7cetpx6dre66exn
+X-Rspamd-Queue-Id: DC4F320011
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1759312934-887240
-X-HE-Meta: U2FsdGVkX19s73fx4hfoxqwUeRIWMr69xAuO7OCmmUy4BpqfQWyI3qLMW8WH0eBn0tdvBN/TbOsNe4DDD3C3mrARTuFZSZLfF1gcsFR7pRJGxMWOjTTGu1Lrf2jodNT1x49MMKMg0TxROSQYldgDdNgbZZ251/VMHFmiOrQPLY1UqM038vFPoX0+5tTZR/BXnsHllEFGCxahgY9v3NneeK+ZCsNQwK6DQqMEgCgEuvV3Yso/SMVc+pgFhGk6X1j63oRekTBiqKF+IgqxmYFRpsa9lK91qVSoGeEqKZVAFZ4ZjVkmtwDdLkkIan5n2mUQHfz4gL9Nv+Td6dWTX0LIgOFKg5a0sZcox4hYE4HjJpF8OWR/RZE3qfJGlMTMtiNOVHYb1ZXxF9GHw1D/JO0QWeljAADbrdKojQ59ignfEkhPexvBrMtZfatyWdsZjLWuZe//ndCYtOiKwemuLvcqFrcKGB+hIGefV7wbwVhzyOaARLcMwvq8SWMfk4gb6UkB/VoVF2C1/oxa46LPl2YLDOMeLVDsHfL7RmM9LMGbSi0qiXkkl25nZCDxkUigTIcK5+gVuafxoUpJduvyPklGCyINA80EkALCOUonRcLHwYXNJSSUgngayfHsr4HlHyukqsfV0mOFd7gfmprDmNLGORrCj2t914/3UKh9Fva1X7hq0sSK5sLWEMUNJOJIWva/2OM9qipdtDTVsOuX1Jl56Sk/TEsaxBIVX1TyprYFFyvcNiQ5+Nulg/ZcDE7U3q+K+0b+A+2VBSEaxARsJiUzEhArEPnM085pF5jOMglf5JaTBNgRFVcM3N6kIQaAEd7zlM3EOhC0i5zn2e8udzlh4M54M7rRMX0d93Nx4OdTfszMzD9sDR8k4++Lc+vjqulcj2U95qeozw68JKM4FNaN/A7tg6Bfl5yXImgDig+do4iS597Xj/F+MzqpXHQVlc0K5uMxPRrb3DUfN4UAc4Q
- w4+LqtQZ
- pVR9bZTNS/0zzmwaMUeyn/kmyH5nkX2EQ56BYlxHzI6euASqSqPrCjBnr60f2h4N6PuO8aimfrcpZlupqJihKZ1qI+qDhD4J9cHOlKs/TnkxXm/SCPQKcCXY7HnK5fNSzEN09xcxOYMAsKF977h/pILWqAxfSVOCeG3Nf2WLoTmnbhgzHcXIlJWYgMhuLsMsEQePlcIfKqIddH+5lYEJYsYIjU9YOVuHMLxUgbcPEpNVLwaDJW41CSr5OiEhv2mWY8WKHY3ev1Dwzjz1jcr1qxvRUjNcwb6wTux8FekG/JrVkEg8NkM/Cse2jt/16867jjeMW7o7BoZw9xoNTeiyjhFAxJblPclF+trYc/ay6z9A6lC7sUA++vicMdLHcTQozUlqjZRM9dlArp8pDCfiueBuXxykIeNyX9LLGbY11ymEbGIe42qbSTHpKDR6/H5mwwZ6G7fL9drYDeQPzLrg7UVBwug0yKltcgnd4+qx6ayURm60gJIi7mGzvkQ==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1759313178-114168
+X-HE-Meta: U2FsdGVkX1+V2tSa8TE5G5w6jfsNSETnF1l55YL+fmjeBhd/8NWGfheJVchxSzXAs3oAvKocUVqbHmq6OinlqO/X1Z/aKB6bNzNlYPYu0ue5aiMiIwiUI6jiR8a+dFlgMSbNDmXnBieJeUbj88rz13kPElTRKF0hDXoJgepFa0T9CnzT/FrNQgDgZrHcI/TTcW0jWiyX4s2ee1YE7a12TN8mCqQdDMx1K+TR/dFIAMWleJioPqWTK9emNA00QyZdCDwl9e+00Arc8XpAqXBIBWp1sEwtvwN4TDV6rj1zqrd905In2uXWwP4mitR14PyIERTyvOmsPlnRGnCP2wR0BbInwzj1+ZliOMiHNVCaPEkOEervLJld9fyNQSZyD9S3oSv32PizrS4iyWZAaz8wJflNJ6fIQUPHbmNcuWyc7jYqr+hI+H6ZZpgjI/HUm+seOtXCMvV6iOEHgttNICnytYniLdSL6RaecGFVKw9vCiScI9D8BnpBLbRQXV2PMckNwazv+kK1/nlfYElxhN4JuHm1RTHi6VU59p+oEVDg+NTLIFYdOSZ1YnuVeY4Bv31Gk734re/GVgVxMYyt3y6ggss4Ic+uB5sQz7+m6wyOoW6xD9hakJsKIsG4/LlNBaGZPqolAb/HPm66hZGIXS7SFmcGX5iv+/uSXkPudP9FMLwsu5eBkU3RDr9RQNmP3/9R8JLt/r232Fxi4OHvxwfDxXNGNd/3dshqJjDDc9dKv5KVRWJgOHGnKXG++PHxZeB6ZTToy/cbWJZE1+NglIkTmt7A5MZkXRP4HWHU2TeLRtdkqLt5NuNgk4AOwY27KsjiloG5Lc+euQzu8HU5z5qEZwwYeam5SRbD3KRieN4riv6AQOl5k5MKtJ0/uTHUJHARH4BpVoCW3hOmnZbq6pfYtJ3wzM4l150Nl36Disa/OpP6tYogCw8eQG1RtEk5KTj2v2Rt+9VohJx05kuZXun
+ 8wEM90vw
+ AF7J2pKx5qC04q3K1wKnMK3PV8MlMgdYv0r2TgEFu/RwzO0vFsiZ748xNo7citClUykc5peQrrjaSvlHNgjb1v1FCWkdWMoP3ffucPfnr6b0CG9KhV36QoGX3qJI58WFSdtgW/MgRwxx3Xd+4eODsudtKNb+loguVAZZ1YsiLVZRpKsq8qQyE8syR+w3231DBjFPcfhxQd3ePrwjEj/gnzZGLjsp+zZB1sjCu5+p3nc1Vb5gNnaYYcNVmzGyYNGT+GbL+U0xxXe6eVwOCttLsOtn1qPxchDvWbGf55BeU6H/IXPkusWNONEEFx6rILEqWa2EajHMLU/L/FJ3SIpOFmap7WIalKvpGhsyv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,76 +95,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/29/25 5:17 PM, Joshua Hahn wrote:
-> On Sun, 28 Sep 2025 13:17:37 +0800 kernel test robot <oliver.sang@intel.com> wrote:
+
+
+On 2025/10/1 16:54, Wei Yang wrote:
+> On Wed, Oct 01, 2025 at 11:22:51AM +0800, Lance Yang wrote:
+>> From: Lance Yang <lance.yang@linux.dev>
+>>
+>> Currently, special non-swap entries (like migration, hwpoison, or PTE
+>> markers) are not caught early in hpage_collapse_scan_pmd(), leading to
+>> failures deep in the swap-in logic.
+>>
+>> hpage_collapse_scan_pmd()
+>> `- collapse_huge_page()
+>>      `- __collapse_huge_page_swapin() -> fails!
+>>
+>> As David suggested[1], this patch skips any such non-swap entries
+>> early. If any one is found, the scan is aborted immediately with the
+>> SCAN_PTE_NON_PRESENT result, as Lorenzo suggested[2], avoiding wasted
+>> work.
+>>
+>> [1] https://lore.kernel.org/linux-mm/7840f68e-7580-42cb-a7c8-1ba64fd6df69@redhat.com
+>> [2] https://lore.kernel.org/linux-mm/7df49fe7-c6b7-426a-8680-dcd55219c8bd@lucifer.local
+>>
+>> Suggested-by: David Hildenbrand <david@redhat.com>
+>> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>> ---
+>> v1 -> v2:
+>> - Skip all non-present entries except swap entries (per David) thanks!
+>> - https://lore.kernel.org/linux-mm/20250924100207.28332-1-lance.yang@linux.dev/
+>>
+>> mm/khugepaged.c | 32 ++++++++++++++++++--------------
+>> 1 file changed, 18 insertions(+), 14 deletions(-)
+>>
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index 7ab2d1a42df3..d0957648db19 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -1284,7 +1284,23 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+>> 	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+>> 	     _pte++, addr += PAGE_SIZE) {
+>> 		pte_t pteval = ptep_get(_pte);
+>> -		if (is_swap_pte(pteval)) {
 > 
-> Hello Kernel Test Robot,
+> It looks is_swap_pte() is mis-leading?
+
+Hmm.. not to me, IMO. is_swap_pte() just means:
+
+!pte_none(pte) && !pte_present(pte)
+
 > 
->> Hello,
->>
->> kernel test robot noticed "WARNING:bad_unlock_balance_detected" on:
->>
->> commit: 7e86100bfb0d65a17f3228a9af4c2a49ac38f057 ("[PATCH v2 4/4] mm/page_alloc: Batch page freeing in free_frozen_page_commit")
->> url: https://github.com/intel-lab-lkp/linux/commits/Joshua-Hahn/mm-page_alloc-vmstat-Simplify-refresh_cpu_vm_stats-change-detection/20250925-044532
->> patch link: https://lore.kernel.org/all/20250924204409.1706524-5-joshua.hahnjy@gmail.com/
->> patch subject: [PATCH v2 4/4] mm/page_alloc: Batch page freeing in free_frozen_page_commit
->>
->> in testcase: trinity
->> version: 
->> with following parameters:
->>
->> 	runtime: 300s
->> 	group: group-03
->> 	nr_groups: 5
->>
->> config: x86_64-randconfig-161-20250927
->> compiler: gcc-14
->> test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 2 -m 16G
->>
->> (please refer to attached dmesg/kmsg for entire log/backtrace)
->>
->> If you fix the issue in a separate patch/commit (i.e. not just a new version of
->> the same patch/commit), kindly add following tags
->> | Reported-by: kernel test robot <oliver.sang@intel.com>
->> | Closes: https://lore.kernel.org/oe-lkp/202509281204.3086f707-lkp@intel.com
->>
->>
->> [  414.880298][ T7549] WARNING: bad unlock balance detected!
->> [  414.881071][ T7549] 6.17.0-rc6-00147-g7e86100bfb0d #1 Not tainted
->> [  414.881924][ T7549] -------------------------------------
->> [  414.882695][ T7549] date/7549 is trying to release lock (&pcp->lock) at:
->> [ 414.883649][ T7549] free_frozen_page_commit+0x425/0x9d0 
->> [  414.884764][ T7549] but there are no more locks to release!
->> [  414.885539][ T7549]
->> [  414.885539][ T7549] other info that might help us debug this:
->> [  414.886704][ T7549] 2 locks held by date/7549:
->> [ 414.887353][ T7549] #0: ffff888104f29940 (&mm->mmap_lock){++++}-{4:4}, at: exit_mmap (include/linux/seqlock.h:431 include/linux/mmap_lock.h:88 include/linux/mmap_lock.h:398 mm/mmap.c:1288) 
->> [ 414.888591][ T7549] #1: ffff8883ae40e858 (&pcp->lock){+.+.}-{3:3}, at: free_frozen_page_commit+0x46a/0x9d0 
+>> +		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
+>> +			++none_or_zero;
+>> +			if (!userfaultfd_armed(vma) &&
+>> +			    (!cc->is_khugepaged ||
+>> +			     none_or_zero <= khugepaged_max_ptes_none)) {
+>> +				continue;
+>> +			} else {
+>> +				result = SCAN_EXCEED_NONE_PTE;
+>> +				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
+>> +				goto out_unmap;
+>> +			}
+>> +		} else if (!pte_present(pteval)) {
+>> +			if (non_swap_entry(pte_to_swp_entry(pteval))) {
+>> +				result = SCAN_PTE_NON_PRESENT;
+>> +				goto out_unmap;
+>> +			}
+>> +
+>> 			++unmapped;
+>> 			if (!cc->is_khugepaged ||
+>> 			    unmapped <= khugepaged_max_ptes_swap) {
+>> @@ -1293,7 +1309,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+>> 				 * enabled swap entries.  Please see
+>> 				 * comment below for pte_uffd_wp().
+>> 				 */
+>> -				if (pte_swp_uffd_wp_any(pteval)) {
+>> +				if (pte_swp_uffd_wp(pteval)) {
 > 
-> So based on this, it seems like I must have overlooked a pretty important
-> consideration here. When I unlock the pcp, it allows both the zone and pcp
-> lock to be picked up by another task (pcp lock less likely), but it also
-> means that this process can be migrated to a different CPU, where it will
-> be trying to unlock & acquire a completely different pcp.
-
-Yes.
-
-> For me the most simple solution looks to be migrate_disable() and
-> migrate_enable() in the function to ensure that this task is bound to the
-> CPU it originally started runing on.
+> I am not sure why we want to change this. There is no description in the
+> change log.
 > 
-> I'm not sure how this will affect performance, but I think in terms of
+> Would you mind giving some hint on this?
 
-It is somewhat expensive, I'd rather avoid if possible.
+The reason is that pte_swp_uffd_wp_any(pte) is broader than what
+we need :)
 
-> desired behavior it does seem like this is the correct way to do it.
+static inline bool pte_swp_uffd_wp_any(pte_t pte)
+{
+#ifdef CONFIG_PTE_MARKER_UFFD_WP
+	if (!is_swap_pte(pte))
+		return false;
 
-I'd rather detect this happened (new pcp doesn't match old pcp after a
-relock) and either give up (should be rare enough hopefully so won't
-cause much imbalance) or recalculate how much to free on the other cpu
-and continue there (probably subtract how much we already did so we
-don't end up unlucky flushing all kinds of cpus "forever").
+	if (pte_swp_uffd_wp(pte))
+		return true;
 
-> Joshua
+	if (pte_marker_uffd_wp(pte))
+		return true;
+#endif
+	return false;
+}
+
+In the context within hpage_collapse_scan_pmd(), we are already inside
+an is_swap_pte() block, and we have just handled all non-swap entries
+(which would include pte_marker_uffd_wp()).
+
+So we only need to check if the swap entry itself is write-protected
+for userfaultfd ;)
+
+Hope that explains it. I skipped it in the changelog as it's a tiny
+cleanup ...
+
+Thanks,
+Lance
+
+> 
+>> 					result = SCAN_PTE_UFFD_WP;
+>> 					goto out_unmap;
+>> 				}
+>> @@ -1304,18 +1320,6 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+>> 				goto out_unmap;
+>> 			}
+>> 		}
+>> -		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
+>> -			++none_or_zero;
+>> -			if (!userfaultfd_armed(vma) &&
+>> -			    (!cc->is_khugepaged ||
+>> -			     none_or_zero <= khugepaged_max_ptes_none)) {
+>> -				continue;
+>> -			} else {
+>> -				result = SCAN_EXCEED_NONE_PTE;
+>> -				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
+>> -				goto out_unmap;
+>> -			}
+>> -		}
+>> 		if (pte_uffd_wp(pteval)) {
+>> 			/*
+>> 			 * Don't collapse the page if any of the small
+>> -- 
+>> 2.49.0
+> 
 
 
