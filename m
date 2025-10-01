@@ -4,239 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93CBCCAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 17:38:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05535CAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 17:56:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D100F8E0007; Wed,  1 Oct 2025 13:38:09 -0400 (EDT)
+	id 490CB8E0005; Wed,  1 Oct 2025 13:56:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC0508E0002; Wed,  1 Oct 2025 13:38:09 -0400 (EDT)
+	id 41AE88E0007; Wed,  1 Oct 2025 13:56:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B39FB8E0007; Wed,  1 Oct 2025 13:38:09 -0400 (EDT)
+	id 329C88E0005; Wed,  1 Oct 2025 13:56:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C4EF8E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 13:38:09 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 745B41A01E5
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 17:38:09 +0000 (UTC)
-X-FDA: 83950253898.01.6F67B18
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 4503A14000D
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 17:38:05 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=KMCaIY0D;
-	spf=pass (imf26.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759340285;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BB308E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 13:56:30 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AE6F756983
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 17:56:29 +0000 (UTC)
+X-FDA: 83950300098.13.10F5A2E
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	by imf07.hostedemail.com (Postfix) with ESMTP id EAD1740009
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 17:56:27 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=rR7ab9TO;
+	spf=pass (imf07.hostedemail.com: domain of mfo@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=mfo@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1759341388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pZec31FxAdxVin+cZIq/RLPZPhWsdyUzjXzDrJ4cz4Q=;
-	b=UHncXPgQxGi9m7GEFundNyHoaqA3ZMAT1GExbhW+CTL111nj+qjHQ6h8TAFnNt45InRPpd
-	CORgWop0XEh+EwYk2x0rra3HqDLGFB4sMciWSB5g8BZrWH2jOCTzF2OOBreO6MX0jsASPX
-	tzisYNoW1amEJrI99oOLHw8K9XTysR0=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=KMCaIY0D;
-	spf=pass (imf26.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1759340285; a=rsa-sha256;
-	cv=pass;
-	b=k80tFztMrcpsRG3kjFl8lsHZiUG88gB6N6SEDFK0Y/83EK76KeIXequM4WClUyXAZETaSw
-	mKe/wTU+L0R4aRejRA8q4+49QXFRxtFJBSJLSedPwXODMCnbzHQixlDRcz44lcoY5lebGW
-	3UyX1o0b3AzgGqEGT76/SLZCBD1i5O4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759340284; x=1790876284;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=1hc/zMGiazTux8zXHvPrm1/15j36fc1HJrCr10sFuo0=;
-  b=KMCaIY0DQwfDS5RwBx9A0f5iQqROkIaSzDjzjPeet7dlTAsqRvQtwOLf
-   289o8AdWJYSIdF1Ko4ploce9++gCSyG88ibg2fixABjp/zZeaaxC7wL6I
-   iMztAKRDZA7HluxXLnTFw36npel3ThD/c7p5E+faroBvFX+oOMCyp2DGA
-   bj5b1nxC1Tu8j4SKMQ54CT+DfejnKcVvdOEjQSsjBjQu8/lobAw/l2Qos
-   /0slM1OUVmJ2gzEOpwQ8IRERHxqmOa5YJ0gYmMSA/YJbaEzCfwv99r6oN
-   JIg7zS7WKBhFAA8xHM5qqxuBYUIYKliySNLWCKSVPPC3RYLrTJEsey0wz
-   g==;
-X-CSE-ConnectionGUID: GweBGsPqRtmiBbMq+X0X+g==
-X-CSE-MsgGUID: w15AQ7CtQ9GE4lpaLV5ryw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="79043952"
-X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; 
-   d="scan'208";a="79043952"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 10:38:02 -0700
-X-CSE-ConnectionGUID: dzRY4phNSUSbkNs09gIBQw==
-X-CSE-MsgGUID: CAwt0KeJQUy86+tKo2YPQw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; 
-   d="scan'208";a="182878605"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 10:38:04 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Wed, 1 Oct 2025 10:38:03 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Wed, 1 Oct 2025 10:38:02 -0700
-Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.43) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Wed, 1 Oct 2025 10:38:02 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iL6R075mV9b2u2/EuU9Ob6LP8YCo5cotvcZNIHmIoq3P5RM65f8CxNxt+/oKM+9veyX+DNXnWhsoBZ0xVXauaECxbvPeyzfutZMrQzbK1xhN3ACL21QJFsJiikzLfhWkbdIbRKMb9nsg560/PPVP8bdLBcUXopOd847Uof1vFtSfJk+5DNs1UP/cMbhzot0IJkCpIxglGVLa4hZMmULiF6rpEuuJdEquC1PcWktbg4JM4KMDOtyjw8KOnRT4CzUhKM7JJ8gYLIuECdI/Bxrz8PM5SH+UiIXNQlQGvZtoUYykLW/L4xzsFdPTkTknbUXokb95Q/5+2Z/uV0WI6VBSpA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pZec31FxAdxVin+cZIq/RLPZPhWsdyUzjXzDrJ4cz4Q=;
- b=TYOPR/ifnUQdfSDAI6dA82GNJOXvquCAx7w8WSKAN32tNg7I93MVuKbrRypG9/OT0/v5sHh5Qwu4y2k7wIOog0YFG9XYlthf2z963dFoPmRvqjTrJGDjyU83yA+wouhAcDcWoyY4zIME6JcySaHAYabB9rSOb8WYxK8JKiVg3qc/TH8xu8KFYH7o8m/IjYJ6U/CTXRbFGmX3GBCMQVxxch9cxhpxkdVP/xZ6l/G8n9SI23YGb8kIxw8Zb7h1am/G5knYOjsa3QiQKiKDAigm+rm293wsoMYhhzz6Wk4MOFhyHaTm+dbElDyxJJ2gC0pAYZORD6ttYPaeoFqWoveGaQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB8121.namprd11.prod.outlook.com (2603:10b6:510:234::14)
- by DS7PR11MB9474.namprd11.prod.outlook.com (2603:10b6:8:265::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.18; Wed, 1 Oct
- 2025 17:37:59 +0000
-Received: from PH7PR11MB8121.namprd11.prod.outlook.com
- ([fe80::ec4e:64cf:cf1f:daab]) by PH7PR11MB8121.namprd11.prod.outlook.com
- ([fe80::ec4e:64cf:cf1f:daab%7]) with mapi id 15.20.9160.017; Wed, 1 Oct 2025
- 17:37:59 +0000
-From: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "hannes@cmpxchg.org"
-	<hannes@cmpxchg.org>, "nphamcs@gmail.com" <nphamcs@gmail.com>,
-	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
-	"usamaarif642@gmail.com" <usamaarif642@gmail.com>, "ryan.roberts@arm.com"
-	<ryan.roberts@arm.com>, "21cnbao@gmail.com" <21cnbao@gmail.com>,
-	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"senozhatsky@chromium.org" <senozhatsky@chromium.org>, "sj@kernel.org"
-	<sj@kernel.org>, "kasong@tencent.com" <kasong@tencent.com>,
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-	"herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
-	"davem@davemloft.net" <davem@davemloft.net>, "clabbe@baylibre.com"
-	<clabbe@baylibre.com>, "ardb@kernel.org" <ardb@kernel.org>,
-	"ebiggers@google.com" <ebiggers@google.com>, "surenb@google.com"
-	<surenb@google.com>, "Accardi, Kristen C" <kristen.c.accardi@intel.com>,
-	"Gomes, Vinicius" <vinicius.gomes@intel.com>, "Feghali, Wajdi K"
-	<wajdi.k.feghali@intel.com>, "Gopal, Vinodh" <vinodh.gopal@intel.com>,
-	"Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
-Subject: RE: [PATCH v12 20/23] mm: zswap: Per-CPU acomp_ctx resources exist
- from pool creation to deletion.
-Thread-Topic: [PATCH v12 20/23] mm: zswap: Per-CPU acomp_ctx resources exist
- from pool creation to deletion.
-Thread-Index: AQHcLpaVftDjct+5Jkq/fUkbn0Rx3bSr5mcAgAAXwZCAABUagIAAJKswgAAK3QCAAAiGUIABKOOAgAAirzA=
-Date: Wed, 1 Oct 2025 17:37:59 +0000
-Message-ID: <PH7PR11MB81213920BBB94AA1E8DDD39FC9E6A@PH7PR11MB8121.namprd11.prod.outlook.com>
-References: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
- <20250926033502.7486-21-kanchana.p.sridhar@intel.com>
- <j4o53f24yeegzrj7aj2mbu5c2xyqksnb6uz2fjkwgi3dbbtqsw@cwatjnrsgbco>
- <SA3PR11MB81201CE73D6CCF274BB2265FC91AA@SA3PR11MB8120.namprd11.prod.outlook.com>
- <7gnj6tcuvqg7vxqu4otqznvtdhus3agtxkorwy3nm2zobkd7vn@hqanfuyklt7u>
- <SA3PR11MB81209CF02417CED3C0459504C91AA@SA3PR11MB8120.namprd11.prod.outlook.com>
- <6xb7feds424kfld4udwmbtccftwnnx6vmbpvmjcwlionfdlmuj@vz4uzh6tog5g>
- <SA3PR11MB8120D4BDA8A6980A4BC5447FC91AA@SA3PR11MB8120.namprd11.prod.outlook.com>
- <6frwacvukeaqrmtja43ab3nkldkrupczmhelrgjljvtk5eh4km@4pebysubl3dl>
-In-Reply-To: <6frwacvukeaqrmtja43ab3nkldkrupczmhelrgjljvtk5eh4km@4pebysubl3dl>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB8121:EE_|DS7PR11MB9474:EE_
-x-ms-office365-filtering-correlation-id: d92026d7-085a-4d37-cf90-08de011143a8
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024|38070700021;
-x-microsoft-antispam-message-info: =?us-ascii?Q?9HqlAK+LJkBgEH/m2F9TscExcjWTPYn/lkhM+zpK4RL8W28P9aj6N0AM7Jot?=
- =?us-ascii?Q?yku7kv5nfeNRX7hYsPbDQudViqS0tTj5HeVe//n4XzK/IPan/9gna0DxyQp1?=
- =?us-ascii?Q?Ld5HC+trxvop4thqC1Wg/oXCv6rpBzvVje3DnOzMZgk0zzqDc6yyQMKGuYMF?=
- =?us-ascii?Q?hYLavGV78oXw/f8mEiY3S23Kc4Mo4xtmQsKi72oBaHFEwtDXqU+ffVOMV/nJ?=
- =?us-ascii?Q?/z796G57s4/mYPRi27t6b044QSYfw0V5mdcCfWJLkbeP0GENILmMlqW1bQbN?=
- =?us-ascii?Q?Yh2DrQatDFZBiv9PMLLqv2+uTEwYtApfvsXq0KKTZdCDlXGoHyIfHDzp6OsA?=
- =?us-ascii?Q?KO+ARJ1aUOmf38wgbJ3IID6xO5JpR3cHfhKq+EWNpPYDYXLZt3uvG1PhHww+?=
- =?us-ascii?Q?s/unpYM3T+qzEh+yiY04/RlUYrLXMFShOy6Nf/oYrihLf/E/4H5CMJ8zbbqD?=
- =?us-ascii?Q?XqI8kd7PzCyJEh4EDFmxa9uSR38iZgjolpgCV0/0dvSjHnN7oL3mNKdsVAIW?=
- =?us-ascii?Q?RXQAYBp/iiyzb32KxNEnONFtoZ+hElgfFasotbrGmqA8raJhxXdQxgJaMpih?=
- =?us-ascii?Q?pxjLQ+S1IwPO1BlL8ZGPSeF/LQxmOX9OMDKyE9WgtYC8RDyud+iCBpDRqOsr?=
- =?us-ascii?Q?SzBgHuCDC9fuVQtrGxcKraw+2asfXX8DBXay0uiXJeFvddW5FfM63aAuRMDO?=
- =?us-ascii?Q?9sSuRAOYG8tqLhZAJXfhJuGoQvCmzhkZw4ibJ1bXp0LbwawVpK52DrOkRWgO?=
- =?us-ascii?Q?0HTcg/wGMDq/S+BazO2/u+JZOnFsE99Km6g4LPW98RRC+vHJvD+7IjBM5Cjj?=
- =?us-ascii?Q?x0TKj5ESrc8Wi1JFxKIqt8CEtsXq0/eNpAXLjX3cLX0z9noINiI1TVcxaMnN?=
- =?us-ascii?Q?wBBiC4awJEYrsWwPLjs+ZlMU6I+UJphZUPkMxWE06lCIphqXfnXvmfDflP96?=
- =?us-ascii?Q?SiVyPPGaNN/uCfnhRkUAB/1b5AmRTuN4HwLmDGxyomV6WFZv7YrOQVEZjHYj?=
- =?us-ascii?Q?+o28tOzmgmDQmU1/sOOFRjblL3kJgrH105KTmD1dC0M88D99IykvWgLx7NnW?=
- =?us-ascii?Q?Ssc8FKGBttWgXmtGHsUJymXYwZafBACdYFZHwWfo9VkBwjzqJ9ImEP7qspUD?=
- =?us-ascii?Q?/bsNpiQUGYq9j+SBRKn3FIF+sIYSA513k6n50UxKuBqqjBWtgbJZh80g7Mml?=
- =?us-ascii?Q?GOwiIDFMrjybr6Gkr9vtOCqaCiQbjZW5/6bSbu1d1ietiLPlCwKWQ59V9NGL?=
- =?us-ascii?Q?Dc/p4PFCaYiNThvSvWs2Gv4VDx2wB0DULhQXPWDe1sTTlGl19OKQevANviw1?=
- =?us-ascii?Q?ViogNEbcPnyyW2F+2BRsAPGGr8WKorP8BrPJtBW3GELQikHRCSdJ+WFniLEB?=
- =?us-ascii?Q?25FyyYjQi5MYgolpQjDl/P/Qdae7Xw/p9nNjDtojqig9S3tUGOCdyE435hgI?=
- =?us-ascii?Q?Pe9woe9kggJ6ND4FSyTAy9rl9cC2TuyUnNcERnj9FrLZJ9NN02AFg/XSB24K?=
- =?us-ascii?Q?lSuI7va+r750amT438QNESAvLeoY4uX/U+Dk?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB8121.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?o/mNtKg7CGlgNU5WLHnFsvx2oVYP+yQi2Ex1sDiApqFsYYvJbKdhZzke08DG?=
- =?us-ascii?Q?wRD1sDCRJfljVdJXUUiAyRnnw0VLLq6rg2NcPuuecvQwMIbCqjNb7XB+WYtU?=
- =?us-ascii?Q?BFQYr0RvDdmfd/U89EHK9wcrz1yoEMLCgXCYwAGaeB8wZ3oMR5X0vLhzbuBh?=
- =?us-ascii?Q?6o+M8SBVMOnei6ilZOKsyWCU4TEpZMzWqLdfvSa/ivZ0YNfAOGKTUV+Wz60U?=
- =?us-ascii?Q?O7le/g/JaHrSbRMYDhGR5nYNzDhs766IZZR4TSdZKS71XazEiw0rovI63GTy?=
- =?us-ascii?Q?gxQUXRh6r1JLoekxTWcqjaF8pQgm9YWP8YBlg5nQNvl/xYxAMIV5ZhD8F64A?=
- =?us-ascii?Q?BdMvzK2EgYNXUj9K7pSTH2X1r7YoK984hBQwNmKnnAkqJ2dfEddu/RjLJWb6?=
- =?us-ascii?Q?laR8znww90OmUNG0rHdPBNpaDJKaNKVtDGxxSHX4OX2+0DkpAZR2tTGzw/W8?=
- =?us-ascii?Q?MhpGW/f/EdM4tXPjzZqjJYus32TCSrV1KgkjZipjWjnKWfeOX8Hk02ZCGGVI?=
- =?us-ascii?Q?tLXFqkgB2le8zhAYG0vTGf1euGl2p91TN15BsvLQ3bVv2bUN4+yXAbw1IwsN?=
- =?us-ascii?Q?9rOImNS6/6rhtDDBAgiXwrvFyfqdy+sHlXh1p4guncLRy1NP6k77cqZsQizR?=
- =?us-ascii?Q?y71HnI7vlArDzgFtptZrJKowie51NgiKMNGTeuuW/g0UbqnAJi2dMejVuqdh?=
- =?us-ascii?Q?8RqKOZAiL82M/ZLoTXZgs1d3zfqZyGFFuoOxo1WbrHQYbVXxMdJXm2PXt8nE?=
- =?us-ascii?Q?1CVXKnFGWC8pSEzEp0Gz/gvQFhzl6b9ftoNMnJNf46ZJbjnmbpq10DlX7+pQ?=
- =?us-ascii?Q?cRW/DqGf4oxTFhBsMHhk2E53+LbPx7gLxrcJu3XW+GyNcaUeXnd8ZEPMQsKr?=
- =?us-ascii?Q?PFwoestCoy2LG4M//MrKF2o76+568NU25mpurHkdnPtp9gL8yFoZ1UZ/ZepV?=
- =?us-ascii?Q?oi96jumCL+Ghu+FYxzSTjsE0zSuVAgcC9lYJnKZsibjcccVLqXZH4GakPZ9G?=
- =?us-ascii?Q?G+UNOPWFPHPD22Q/d0U2niMbdUwzdcSQ+uEPX/czQ1zUQ8o6G01r8/dibdK7?=
- =?us-ascii?Q?hVUCTr1qFn5r7DhdAj9jZYF2x/E4DKnPZ2etzZiPyYSDeDirm6K7quAoJ1ZL?=
- =?us-ascii?Q?n6B8iXv8RT00UcNDXon9HovXF6cM2ZhwM+QG2gO/Z7fQpgVPfTL11TPfyMOT?=
- =?us-ascii?Q?PvQOalDXX/2R3YjKxtRG4Y0K2k8fcKQDeWvkQ5K5wyqKkkWdhQ53uZDfjbUa?=
- =?us-ascii?Q?nftOWYUk2XTeiA7tVWjc01X3BdvGHjuESTuaV1e7vJevNrG0Il07HGLlIqOk?=
- =?us-ascii?Q?7f1cXe0NlRIOx4WWaJTrPOcd5WDLzhqI25/dQWaY52oBdzOz1OOZrPvLgTYN?=
- =?us-ascii?Q?O7qb/ES3uxts75B+SreJu4un0oKpdyT6fT92JciTc+1v8MOwoubZUvqOsLeu?=
- =?us-ascii?Q?6AS9d3mu1ByRJzNlCPzSYPn/Cm/xqi2phwZt+8eimZ9yI8vIt4qFNtQBMMJW?=
- =?us-ascii?Q?UoKc4IvzvumN1ZXbRYGX/L9KIzZ21/94WrAzssLUd59o9LmFAfaPDiAVagaU?=
- =?us-ascii?Q?1QOpZkMkvprY+UnJMZHHgRxkA+KkiEP8g5HpQXASKvU5vbcMxJ5BIrQO6hT+?=
- =?us-ascii?Q?sw=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=RPq+VgOKsxNu+oCprJxr+nljWMfU2DwvZUq2//omNlQ=;
+	b=yB9JuN38kCRjwK0lj/ilrJAfDOl1JDUTFNQe+Jg4DfokynSH0R6n177WgU9elAq/Q5+FS/
+	GyxlFLbFzbzsSaxk63v4WaKCDRh7DUCn7u7yNbGn+v/BS0E8n6hhXOaGOjasHhdHuwjs3A
+	LlQoqJYxkmk4LWNhi3ng8GSxbjSFviY=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=rR7ab9TO;
+	spf=pass (imf07.hostedemail.com: domain of mfo@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=mfo@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759341388; a=rsa-sha256;
+	cv=none;
+	b=CC/jVE5JUzfVyI0MSknk7EvxsDfarYOeKF2UdSj2e36OXhecVUePCTyOvtefxgPxGHQsMQ
+	6b47E3pGgLiJMDmNM/Zhhvrzukvw6r/4ptlqU7Z8pBlX44OwkfL3QHs7Q/B/kxaIgYjruF
+	Ld5n7DIlObYvOsgNYhTeJB/KpApy4PY=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=RPq+VgOKsxNu+oCprJxr+nljWMfU2DwvZUq2//omNlQ=; b=rR7ab9TOJwxAgwL9Z26MYBb6rI
+	idhwdt51Y1nFIEVoY/Vr+I2R+5B1j2hbhnT8E/s44Zs4FW5FkpH55UPJQOInO7TXmzm+gm/Z759jR
+	Q9C73kLG8AIc9/jeJPgnIFN0adb7xIyJVp44+nPVAbCAoqxfVhvyLP/+Et9wxg1JMWwlFH7oZ/3GI
+	wHwfg+R321O2ydmmhX8pa5w8QYCLGeaJY1g25AMmAYLNXN4JuIvp36bx48PxDIlLMot/tDkDk1iw9
+	IzNIqEAbr0uwtrvkceROmB861h37vEC7ggvB8qB1FyYyThWjw3WcQ305lwCl1nKpnNkdl5Pt3bX/P
+	oHtEa4+g==;
+Received: from [179.159.118.139] (helo=localhost.localdomain)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1v413r-002xd4-67; Wed, 01 Oct 2025 19:56:19 +0200
+From: Mauricio Faria de Oliveira <mfo@igalia.com>
+To: Michal Hocko <mhocko@suse.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Oscar Salvador <osalvador@suse.de>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-dev@igalia.com
+Subject: [PATCH v2 0/5] mm/page_owner: add debugfs files 'show_handles' and 'show_stacks_handles'
+Date: Wed,  1 Oct 2025 14:56:06 -0300
+Message-ID: <20251001175611.575861-1-mfo@igalia.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB8121.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d92026d7-085a-4d37-cf90-08de011143a8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Oct 2025 17:37:59.4065
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ca4oHEIIfqrVj9VuZ4Bc/2k1QvNWW4Jr/4aaONZ9jljUerVN3IQBsE/awELCPtanjXHKVj75tX/ECYF0SNp6lZQFtgOpkIxVS3SdmVweV+Y=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB9474
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: EAD1740009
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4503A14000D
-X-Stat-Signature: sd8147ptoyumy3ae9tqftkthrgigsubh
-X-HE-Tag: 1759340285-785274
-X-HE-Meta: U2FsdGVkX18H/ccSXQakXzB/VzS/FMm4TqSbJgRagUfD8gNHQZOl/5nUz2Cu29yKvuUP7iFMsW43StbJrMpHfcSU8tIta81Stf6CgJyTctLyW0vnoz/AfNQA30QZJWjwL3PbcPV+I/EXqx5f21KdTFbs39Ig8HiQTMnr6RNLg0ZB4czcQUU3cBbdEGnjz1/2+AIonUfsby/JjYslu167eP2xOoQqq5lIvJVEtG/cvcynkPp1+h4n0P6i067qiK1z6yNfNURwx95X47R41zhrdCLeF8PKV3tcpeBDq0TuMKWTRAOh//STjdNAl2Oj3OrQHu1wMyY9bw1JWglC0XSXXnMnFOCxQqIIlJLyt8/oKXiOSjSBYSqxeNRYpbFilAeHtEGfBEZel5LFwCUcRVyLMDBFBrIwsMEjEAsaENUoNZuy9nssJugp/orCjvdrXUE+8MAVxKiG8Imzc/tTEobDIveegN4HvXYpvESGriJTu+/mm2GlqY1VWPCGLQUzaMUgzIG9KAiCtJRUnmyillVQvZwlxuIBUjufuBgPr/opEoZcFhtxv8/ft3YczqYebJ4z9C2ak4L1WVCfM6uPomDLjQ40Etrq2ux/UGTc8qi/UmgauOacUUzwiB0jCsJ4zHoj69qGzJOkPekgzTcQi/HxAnbvrZRYd57+UmSrpuZKL2x8tHkQbCX770z9lAIr9rXvINJyUrbINRapUnxJvrlRBzmBNpOk1w0dctjin0e1q4qS3yJhGktaiBSvxto9eSUZHXqaabxO5pca1pPNh2hfub+UTAz/4HWds5V2j18ezI480yTT6e6KJDgcoSPtP4gbUb7lY7IgMVTCGADi7ZNSnRPL5ELZd4kj+lhFfiEiFqEwTTsVSequuYACuapkNCN6EG/mXUFy5tcA0sja1UblovNSkNLA/HJAQ9lcp51gasKu3oDoiSOI5jTsb1n1LVroYDsHHiA6FIIlXHluJ3R
- 6va2pNL1
- x89jlUX8hsLhtdORDZfpRO1/sBU8oVtGc4JB2bJl+9d4OpeSZuy3NArP3hyYkCydormNo3MVYZvPHlhwM5EH/Cz9PB5bkGLKi13elI9/BwHTPi5eKe33+vN47TX5gmywLKhUNuAv13Uj5rPS+bUaUIBLDYZfQGT3sIxpg5U11Gl1YxkB3rMmztaOw/Ip7h2qEYNzfgPTd/RYVPGzIhxYG7o1rNCjfGnuvuh5QlK+d4yYbZU033936xy3DwM75oxYFEheHM7D7sZ0TUMVjQgs4UrW8+YAvYwi6gc9OCPHD0Iglsy1+iBohnwqmyi43sbIp85p/FDVFLq22vp5rXFfMEVmokvaATaAvUwqMZBCBDGPBg/C+f09Hou22cJaCEmHmgaJnBvwfNAUoqcjKA/S1tjFHco8zNbnX3CWyFJxBC4aXaRhKGEU5Ij6i/hKG3n83b53axAESbb1pj2EBIPTeOlBQ2/uYlZ3neAdtqdVy1kRyGPZ5P6xZAgjaUmMiHgdoHboRCQeboADDgq3vgnm0E3XGjAMRsvE9yJLwhRPRplO+DB0QuxbNoSAI82jg94PX6sLmuCYCfjqn9Bw2GmL2VUCg98BET6yQ+/TOv/3J8/Vj7YpU6plWQ4hDz3aOTag79BnugLn4YuZ29loiF33sHaggQiTPx3uWzwz/1KEzNUtNHSrv54iGCH/yeCXZvz3SDtQzRT441NmiGo6N/6AGrDSDT786jrFvS+zYkPBbZwc+7mrdp/x0s0Oc5ECwOosTiKEw7rH7nS/PNS08ip33WFMYoP6eJkWnVWZrGWYO24gNtMYmPjUP7RIxo1aP4OtrpN8GeSayWwB3DMBLIk2vavj6A4XqJOSdheCz5QOo1HAFPdRUyd2Us5iTvrzX6BBDb81py+M182v8pF9cERGTi1n+u6bCruKh3ujlAs10frw3Nwd9q60qJnquPpQ60hsVFuQ3q0fDfQkSFNUWNbZv833RDXUs
- z1Lx60Uc
- lZjPCI3YadpgAR7p+bUrKjgE14B/a65TFobY9/yYFHXXtqakcBpO7zYcxLQT2IbqZ1SSKnmUUSKBUVWAH1Sby479PKEbc9QiRveVHBEYGzFYHXgfV/D2uum11SClm9Gs
+X-Rspamd-Server: rspam07
+X-Stat-Signature: sxmxppb7bhx6iqh6kyesthz6hmntiwg9
+X-HE-Tag: 1759341387-940095
+X-HE-Meta: U2FsdGVkX19T2V/TaqPg7I1EA15mIdsGF0UL9PkB2pbf76/5BQUSz/fFW0Bh3/qnAUolk0w2IWCnfVOwr/wTb/uGv0Lsn88T+GZZS6y1W3Q/ni7RlzbrQhNozF45BryFXDgwbYaJWeYOKuAzQpPHJrprvkaVQTDsLUCYD2E7+W1AsxQYdw63c0GRXFSVYto3NmGp+eupXyIyicNnf5Xx3i+hoGiOsIYXe6cDTrJsUZBrnA+mNKXxFkQ3eKUHkKpl1XFBqZDBanY0mfOtBK/iWnH7gPToWsnmD62is7dVwdZzpX836bDtlJp9hxhoOJz1EkRddtSGwrekRoVGwCHMcU9MCSLKhjf7bgTXHoLs4bqoEGa+BvhkjiXEt/vKYh6tY2yLyTFE0Zv44tcdb/6yKWZO9s9E/ZsJQauwT1VG8JOnKAeqSytAIXyBlybPQ4xUc3jYW7M+n9UKDRQf7qZuzWInOXLRUptMM2SumVGBwVP76r53T9Pn+z3fMFIeGa2L1af93DIYb4ACQHtFtHa1XwQ48KWOm0iI44XE2077npPatduCbgN4GCyPYd9EmFT2nc8ciZolLUI41VCRl8N4ols0yoa9hmJMYqrzhnIZWxYGQWNyc5Ps/s+O6eoY55LiGcTLfYhFsgC/S/OPeo975yuHKIrPG3nFm2l/u/ewq4eKOAMBsy5uv0v9kQ3FD2XfdClmqc222FlwBJ29u878cDWcIDUOZ5AJpquHUX+fQz1xsGZnHprpaLkrSKJePghRDxz/osXQijRjsQdPu35nwHgBrRb0rZkdSheoE28WMHiUBQwZ68vFANgY2ZR/2l8KDyaOBoCewJoBK4ABW3jJVq2RMxR6m3O5210nxG4vrQit1t0Cjfa2RwDWnADD3+u4DX3cu51YlMF+MoBstAlCgCOB9IhXGJUtd0Kq3nCx77YUBoGcPPoOCNSjYgoaV/VvYCwKhFgdnhiO8wYf/XZ
+ kJkR0SHN
+ JUQnBhl/AuhFGogY5rXFfhEeniR6ikiFTHEZh6lNCyPnIPCyppx5UxhjJbYL6UM200fHI+SNvz2AR3662p6z04NTU23WiV4rUCODI6XsMyCrbMrOD8u/Uenoa2kkoaLwrnTFeEo3xpTXa53CEAhtGx6mmXq3Y25GOrdQUEZZ+d08N+StBMy/KrB3rBvQKUU5tICb9ZVavK4500PeepKHuxy7Wl0mOiri0Q72r2UYeTPCuYcJYT/LtxACSOT15JONz0J8kr/1n+mT21KURH7Npne7CFIWKew8QFi701PLur+VEqTKLv/5NdHL7kgv4AxJLrcu2voEFRsLQT6UHuMiyy9PHrQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -245,256 +98,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Changelog:
+ - v2:
+   - Make context/usecase and hashing in userspace more explicit
+     and add an example in the cover letter. (Michal Hocko)
+   - Use different output files. (Michal Hocko, Vlastimil Babka)
+   - Add context struct for plumbing flags from debugfs_create_file()
+     down to stack_print(), avoiding more struct {file,seq}_operations
+     for the new files.
+   - Simplify commit messages.
 
-> -----Original Message-----
-> From: Yosry Ahmed <yosry.ahmed@linux.dev>
-> Sent: Wednesday, October 1, 2025 8:33 AM
-> To: Sridhar, Kanchana P <kanchana.p.sridhar@intel.com>
-> Cc: linux-kernel@vger.kernel.org; linux-mm@kvack.org;
-> hannes@cmpxchg.org; nphamcs@gmail.com; chengming.zhou@linux.dev;
-> usamaarif642@gmail.com; ryan.roberts@arm.com; 21cnbao@gmail.com;
-> ying.huang@linux.alibaba.com; akpm@linux-foundation.org;
-> senozhatsky@chromium.org; sj@kernel.org; kasong@tencent.com; linux-
-> crypto@vger.kernel.org; herbert@gondor.apana.org.au;
-> davem@davemloft.net; clabbe@baylibre.com; ardb@kernel.org;
-> ebiggers@google.com; surenb@google.com; Accardi, Kristen C
-> <kristen.c.accardi@intel.com>; Gomes, Vinicius <vinicius.gomes@intel.com>=
-;
-> Feghali, Wajdi K <wajdi.k.feghali@intel.com>; Gopal, Vinodh
-> <vinodh.gopal@intel.com>
-> Subject: Re: [PATCH v12 20/23] mm: zswap: Per-CPU acomp_ctx resources
-> exist from pool creation to deletion.
->=20
-> On Tue, Sep 30, 2025 at 09:56:33PM +0000, Sridhar, Kanchana P wrote:
-> >
-> > > -----Original Message-----
-> > > From: Yosry Ahmed <yosry.ahmed@linux.dev>
-> > > Sent: Tuesday, September 30, 2025 2:20 PM
-> > > To: Sridhar, Kanchana P <kanchana.p.sridhar@intel.com>
-> > > Cc: linux-kernel@vger.kernel.org; linux-mm@kvack.org;
-> > > hannes@cmpxchg.org; nphamcs@gmail.com;
-> chengming.zhou@linux.dev;
-> > > usamaarif642@gmail.com; ryan.roberts@arm.com; 21cnbao@gmail.com;
-> > > ying.huang@linux.alibaba.com; akpm@linux-foundation.org;
-> > > senozhatsky@chromium.org; sj@kernel.org; kasong@tencent.com; linux-
-> > > crypto@vger.kernel.org; herbert@gondor.apana.org.au;
-> > > davem@davemloft.net; clabbe@baylibre.com; ardb@kernel.org;
-> > > ebiggers@google.com; surenb@google.com; Accardi, Kristen C
-> > > <kristen.c.accardi@intel.com>; Gomes, Vinicius
-> <vinicius.gomes@intel.com>;
-> > > Feghali, Wajdi K <wajdi.k.feghali@intel.com>; Gopal, Vinodh
-> > > <vinodh.gopal@intel.com>
-> > > Subject: Re: [PATCH v12 20/23] mm: zswap: Per-CPU acomp_ctx
-> resources
-> > > exist from pool creation to deletion.
-> > >
-> > > > > > > >  static struct zswap_pool *zswap_pool_create(char *compress=
-or)
-> > > > > > > >  {
-> > > > > > > >  	struct zswap_pool *pool;
-> > > > > > > > @@ -263,19 +287,43 @@ static struct zswap_pool
-> > > > > > > *zswap_pool_create(char *compressor)
-> > > > > > > >
-> > > > > > > >  	strscpy(pool->tfm_name, compressor, sizeof(pool-
-> > > >tfm_name));
-> > > > > > > >
-> > > > > > > > -	pool->acomp_ctx =3D alloc_percpu(*pool->acomp_ctx);
-> > > > > > > > +	/* Many things rely on the zero-initialization. */
-> > > > > > > > +	pool->acomp_ctx =3D alloc_percpu_gfp(*pool->acomp_ctx,
-> > > > > > > > +					   GFP_KERNEL |
-> > > __GFP_ZERO);
-> > > > > > > >  	if (!pool->acomp_ctx) {
-> > > > > > > >  		pr_err("percpu alloc failed\n");
-> > > > > > > >  		goto error;
-> > > > > > > >  	}
-> > > > > > > >
-> > > > > > > > -	for_each_possible_cpu(cpu)
-> > > > > > > > -		mutex_init(&per_cpu_ptr(pool->acomp_ctx, cpu)-
-> > > >mutex);
-> > > > > > > > -
-> > > > > > > > +	/*
-> > > > > > > > +	 * This is serialized against CPU hotplug operations. Hen=
-ce,
-> > > cores
-> > > > > > > > +	 * cannot be offlined until this finishes.
-> > > > > > > > +	 * In case of errors, we need to goto "ref_fail" instead =
-of
-> > > "error"
-> > > > > > > > +	 * because there is no teardown callback registered anymo=
-re,
-> > > for
-> > > > > > > > +	 * cpuhp_state_add_instance() to de-allocate resources as=
- it
-> > > rolls
-> > > > > > > back
-> > > > > > > > +	 * state on cores before the CPU on which error was
-> > > encountered.
-> > > > > > > > +	 */
-> > > > > > > >  	ret =3D
-> > > > > > > cpuhp_state_add_instance(CPUHP_MM_ZSWP_POOL_PREPARE,
-> > > > > > > >  				       &pool->node);
-> > > > > > > > +
-> > > > > > > > +	/*
-> > > > > > > > +	 * We only needed the multi state instance add operation =
-to
-> > > invoke
-> > > > > > > the
-> > > > > > > > +	 * startup callback for all cores without cores getting o=
-fflined.
-> > > Since
-> > > > > > > > +	 * the acomp_ctx resources will now only be de-allocated
-> > > when the
-> > > > > > > pool
-> > > > > > > > +	 * is destroyed, we can safely remove the multi state
-> > > instance. This
-> > > > > > > > +	 * minimizes (but does not eliminate) the possibility of
-> > > > > > > > +	 * zswap_cpu_comp_prepare() being invoked again due to a
-> > > CPU
-> > > > > > > > +	 * offline-online transition. Removing the instance also
-> > > prevents race
-> > > > > > > > +	 * conditions between CPU onlining after initial pool cre=
-ation,
-> > > and
-> > > > > > > > +	 * acomp_ctx_dealloc() freeing the acomp_ctx resources.
-> > > > > > > > +	 * Note that we delete the instance before checking the e=
-rror
-> > > status
-> > > > > > > of
-> > > > > > > > +	 * the node list add operation because we want the instan=
-ce
-> > > removal
-> > > > > > > even
-> > > > > > > > +	 * in case of errors in the former.
-> > > > > > > > +	 */
-> > > > > > > > +
-> > > 	cpuhp_state_remove_instance(CPUHP_MM_ZSWP_POOL_PREPARE,
-> > > > > > > &pool->node);
-> > > > > > > > +
-> > > > > > >
-> > > > > > > I don't understand what's wrong with the current flow? We cal=
-l
-> > > > > > > cpuhp_state_remove_instance() in pool deletion before freeing=
- up
-> the
-> > > > > > > per-CPU resources. Why is this not enough?
-> > > > > >
-> > > > > > This is because with the changes proposed in this commit, the m=
-ulti
-> > > state
-> > > > > > add instance is used during pool creation as a way to create
-> acomp_ctx
-> > > > > > resources correctly with just the offline/online state transiti=
-ons
-> > > guaranteed
-> > > > > > by CPU hotplug, without needing additional mutex locking as in =
-the
-> > > > > mainline.
-> > > > > > In other words, the consistency wrt safely creating/deleting
-> acomp_ctx
-> > > > > > resources with the changes being proposed is accomplished by th=
-e
-> > > hotplug
-> > > > > > state transitions guarantee. Stated differently, the hotplug
-> framework
-> > > > > > helps enforce the new design during pool creation without relyi=
-ng on
-> the
-> > > > > > mutex and subsequent simplifications during zswap_[de]compress(=
-)
-> > > > > > proposed in this commit.
-> > > > > >
-> > > > > > Once this is done, deleting the CPU hotplug state seems cleaner=
-, and
-> > > > > reflects
-> > > > > > the change in policy of the resources' lifetime. It also preven=
-ts race
-> > > > > conditions
-> > > > > > between zswap_cpu_comp_prepare() and acomp_ctx_dealloc()
-> called
-> > > from
-> > > > > > zswap_pool_destroy().
-> > > > >
-> > > > > How is a race with zswap_cpu_comp_prepare() possible if we call
-> > > > > cpuhp_state_remove_instance() before acomp_ctx_dealloc() in the
-> pool
-> > > > > deletion path?
-> > > >
-> > > > Good point. I agree, calling cpuhp_state_remove_instance() before
-> > > > acomp_ctx_dealloc() will not cause a race. However, if we consider =
-the
-> > > > time from pool creation to deletion: if there is an online-offline-=
-online
-> > > > transition, can zswap_cpu_comp_prepare() race with the call to
-> > > > cpuhp_state_remove_instance()? If so, wouldn't this cause
-> unpredictable
-> > > > behavior?
-> > >
-> > > How will this race happen?
-> > >
-> > > cpuhp_state_remove_instance() is called while a pool is being destroy=
-ed,
-> > > while zswap_cpu_comp_prepare() while the pool is being created or
-> during
-> > > CPU onlining.
-> > >
-> > > The former cannot race, and the latter should be synchronized by hotp=
-lug
-> > > code.
-> > >
-> > > >
-> > > > I agree, this can occur even with the code in this commit, but ther=
-e is
-> > > > less risk of things going wrong because we remove the CPU hotplug
-> > > > instance before the pool is added to zswap_pools.
-> > > >
-> > > > Further, removing the CPU hotplug instance directly codifies the
-> > > > intent of this commit, i.e., to use this as a facilitator and manag=
-e
-> memory
-> > > > allotted to acomp_ctx, but not to manage those resources' lifetime
-> > > > thereafter.
-> > > >
-> > > > Do you see any advantage of keeping the call to
-> > > cpuhp_state_remove_instance()
-> > > > occur before acomp_ctx_dealloc() in zswap_pool_destroy()? Please le=
-t
-> me
-> > > know
-> > > > if I am missing something.
-> > >
-> > > What about more CPUs going online? Without the hotplug instance we
-> don't
-> > > get per-CPU resources for those. We are not using the hotplug mechani=
-sm
-> > > just to facilitate per-CPU resource allocation, we use it to
-> > > automatically allocate resources for newly onlined CPUs without havin=
-g
-> > > to preallocate for all possible CPUs.
-> >
-> > This is an excellent point! It makes sense, I will move the call to
-> > cpuhp_state_remove_instance() to be before the call to
-> > acomp_ctx_dealloc() in zswap_pool_destroy(). Thanks for catching this.
-> >
-> > >
-> > > Also, this makes the code more difficult to reason about, and is an
-> > > unncessary change from the current behavior.
-> >
-> > Ok.
-> >
-> > >
-> > > The only change needed is to drop the teardown callback and do the
-> > > freeing in the pool destruction path instead.
-> >
-> > Just to summarize: besides moving the call to
-> cpuhp_state_remove_instance()
-> > to zswap_pool_destroy() and more concise comments/commit logs, are
-> there
-> > other changes to be made in patch 20?
->=20
-> I don't believe so. Thanks!
+ - v1:
+   https://lore.kernel.org/linux-mm/20250924174023.261125-1-mfo@igalia.com/
 
-Sounds good, thanks!
+Context:
 
-Thanks,
-Kanchana
+The page_owner debug feature can help understand a particular situation in
+in a point in time (e.g., identify biggest memory consumers; verify memory
+counters that do not add up).
+
+Another useful usecase is to collect data repeatedly over time, and use it
+for profiling, monitoring, and even comparing different kernel versions,
+at the stack trace level (e.g., watch for trends, leaks, correlations, and
+regressions).
+
+For this usecase, userspace periorically collects the data from page_owner
+and organizes it in data structures appropriate for access per-stack trace.
+
+Problem:
+
+The usecase of tracking memory usage per stack trace (or tracking it for
+a particular stack trace) requires uniquely identifying each stack trace
+(i.e., keys to store their memory usage over periodic data collections).
+
+This has to be done for every stack trace in every sample/data collection,
+even if tracking only one stack trace (to identify it among all others).
+
+Therefore, an approach like hashing the stack traces in userspace to create
+unique keys/identifiers for them during post-processing can quickly become
+expensive, considering the repetition and a growing number of stack traces.
+
+Solution:
+
+Fortunately, the kernel can provide a unique identifier for stack traces
+in page_owner, which is the handle number in stackdepot. This eliminates
+the need for creating keys (hashing) in userspace during post-processing.
+
+Additionally, with that information, the stack traces themselves are not
+needed until the memory usage should be resolved from a handle to a stack
+trace (say, to look at the stack traces of a few top consumers). This can
+reduce the amount of text emitted/copied by the kernel to userspace, and
+save userspace from matching and discarding stack traces when not needed.
+
+Changes:
+
+This patchset adds 2 files to provide information, like 'show_stacks':
+ - show_handles: print handle number and number of pages (no stack traces)
+ - show_stacks_handles: print handle numbers and stack traces (no pages)
+
+Now, it's possible to periodically collect data with handle numbers (keys)
+and without stack traces (lower overhead) from 'show_handles', and later do
+a final collection with handles and stack traces from 'show_stacks_handles'
+to resolve the handles to their stack traces.
+
+The output format follows the existing 'show_stacks' file, for simplicity,
+but it can certainly be changed if a different format is more convenient.
+
+Example:
+
+The number of base pages collected can be stored per-handle number over the
+periodic data collections, and finally resolved to stack traces per-handle
+number as well with a final collection.
+
+Later, one can, for example, identify the biggest consumers and watch their
+trends or correlate increases/decreases with other events in the system,
+or watch a particular stack trace(s) of interest during development.
+
+Testing:
+
+Tested on next-20250929.
+
+ - show_stacks:
+	
+	 register_dummy_stack+0x32/0x70
+	 init_page_owner+0x29/0x2f0
+	 page_ext_init+0x27c/0x2b0
+	 mm_core_init+0xdc/0x110
+	nr_base_pages: 47
+		
+ - show_handles:
+
+	handle: 1
+	nr_base_pages: 47
+
+ - show_stacks_handles:
+
+	 register_dummy_stack+0x32/0x70
+	 init_page_owner+0x29/0x2f0
+	 page_ext_init+0x27c/0x2b0
+	 mm_core_init+0xdc/0x110
+	handle: 1
+	
+ - count_threshold:
+
+	# echo 100 >/sys/kernel/debug/page_owner_stacks/count_threshold
+	# grep register_dummy_stack show_stacks		# not present
+	# grep -B4 '^handle: 1$' show_handles  		# not present 
+	# grep -B4 '^handle: 1$' show_stacks_handles	# present
+	 register_dummy_stack+0x32/0x70
+	 init_page_owner+0x29/0x2f0
+	 page_ext_init+0x27c/0x2b0
+	 mm_core_init+0xdc/0x110
+	handle: 1
+
+Mauricio Faria de Oliveira (5):
+  mm/page_owner: introduce struct stack_print_ctx
+  mm/page_owner: add struct stack_print_ctx.flags
+  mm/page_owner: add debugfs file 'show_handles'
+  mm/page_owner: add debugfs file 'show_stacks_handles'
+  mm/page_owner: update Documentation with 'show_handles' and
+    'show_stacks_handles'
+
+ Documentation/mm/page_owner.rst | 32 ++++++++++++++++-
+ mm/page_owner.c                 | 61 +++++++++++++++++++++++++++------
+ 2 files changed, 81 insertions(+), 12 deletions(-)
+
+-- 
+2.48.1
+
 
