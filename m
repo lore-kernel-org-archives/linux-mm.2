@@ -4,118 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8125ACCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 16:41:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0180ECCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 16:43:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF0AF8E0011; Wed,  1 Oct 2025 12:41:39 -0400 (EDT)
+	id 606118E0012; Wed,  1 Oct 2025 12:43:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC8238E0002; Wed,  1 Oct 2025 12:41:39 -0400 (EDT)
+	id 5DD678E0002; Wed,  1 Oct 2025 12:43:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDDAB8E0011; Wed,  1 Oct 2025 12:41:39 -0400 (EDT)
+	id 51A7C8E0012; Wed,  1 Oct 2025 12:43:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BAFC98E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 12:41:39 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 512531A0199
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 16:41:39 +0000 (UTC)
-X-FDA: 83950111518.30.21D9310
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3680040014
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 16:41:37 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=eM1Klstm;
-	spf=pass (imf12.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.177 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3FD048E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 12:43:28 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DF3C4140196
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 16:43:27 +0000 (UTC)
+X-FDA: 83950116054.15.BBA38D4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 105E11A0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 16:43:25 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=et4f6tyq;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759336897;
+	s=arc-20220608; t=1759337006;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x8Pdh4UPxBNFa+jIlOxZr+0N7CcxwrBzi/u8gKDgJeo=;
-	b=whXUey1ZZfgSsm5prxSvD5wSd1ydZfl/iEGPw6K7rTTbi9x00VEJtI3xGA8TTk9tTmHCrm
-	ziIWufarpnCklfWnxsYMfIAEfPH9JufACAXWsWtVYUEwxRC9ld/uBJIj73mB0nkg12J74r
-	51tydr+fR+xcz4GJS2xO2U163wCgZkw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759336897; a=rsa-sha256;
+	bh=RNy7oxf6drqmm6IYcV3OWSCXa64vRp5VD07stDp2h3M=;
+	b=fnn9XOodHHVYMgM9L1XEdjMojy8IQB+LFb/rlRtoY/bcbLfxEPb/fZe27gvAMcyL8icoOW
+	48AzO+bsqX8KthWKTAysj1TOXuH+xqbKZU9KQz4gRFqYwqWRRCLRHqo/JCWVwXMuxJbCsH
+	SNeDlk95j1Im8aA52JTLKroqPIN1w20=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759337006; a=rsa-sha256;
 	cv=none;
-	b=oSddkuOmcy4br1hui2pCvnEOoZ9Ji1ZPCSHHxI1Xbnwk6To2som8syWELfV6h9UhZY6OsU
-	lanBrc/67bp0n8+c9ATzHtHU6HsL4zdOHiD39jkSwoPp2l+GraWqNuYJb3CbFyDYwBzRBU
-	Yv1uODu8YRjlfmhn7IAXouKyDIOmMBc=
+	b=MNQgiVUVJRPFDekBe4gIVQJWykCzXd+7akUQxftc6se7LWrfJZU+frvFuYCRfmE8w0ldVA
+	6t6q39hoxLb/47FY7+D1MpSpcKDulK2ixQcAoWAZXyDVzDyH62fSWpUdrwgm3kE25Q3+Rf
+	0oWnYhzA9B4dHnWWZB4bm1GdN0k6xQQ=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=eM1Klstm;
-	spf=pass (imf12.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.177 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4df81016e59so394821cf.3
-        for <linux-mm@kvack.org>; Wed, 01 Oct 2025 09:41:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1759336896; x=1759941696; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=x8Pdh4UPxBNFa+jIlOxZr+0N7CcxwrBzi/u8gKDgJeo=;
-        b=eM1KlstmrRn+CLLLhlm2qoLY02yq7ePIgE7FLsw+hiigBUByMD3QYGIrD6pn/EK5mT
-         TytCk/T30LR1Crvnjm3SAQF0jypwBBaT5/lC9CK5tVTIqcOpKUxfah8zvs0S8S7adMFF
-         r6J9FnINBnb3gChawYUzT2cP/vmWPSzVMCtU8IlG7bQa10c5hP8VKITWQ2n1WbQKLq5S
-         sYpve/oIl1lRGUPOfSZiC4OVSpDCLinUci+Rc6GQH8t1LojGLUQzdv0AYUro07cPzQxF
-         0qetR7tVf+M4zixcwwYUc2yN/5f1Mlu+vJZlWje0Fb0ZzkHhLxqQ3mhX6Ic27X7boOHj
-         DBIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759336896; x=1759941696;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=x8Pdh4UPxBNFa+jIlOxZr+0N7CcxwrBzi/u8gKDgJeo=;
-        b=EdU4HB8kxXxbirE3zRj3RGUYrx6rFfK+G6zFvsCbhzAz6uT/rISQsI7zvvRHjYa9hE
-         sgLcMwZ5pXN+eQ1qMkntnNiua4CQTq3EwQBVmKZs9Ns3g+7mOyusKi4ZHIc0bABHY4S2
-         1ISfadCjRi/lXNKyEWpmIYDQPVe4Hzkr1vpPqDMr8t5x8mUG9CscGt4Cl5dbrQmOZKgD
-         sEQxed7VbZ9YaFwNJuym4EIR2aZtDR5S6CWKIMLzHM5vPfHAL5dx+Oj8DSOkCcMkn9Hb
-         V1ws9I93l+M4R+Jg1Ke7GLIixagSiErXFQ48ob9tT2zH9CGMnU702ZoZR8I8EFAJE/nA
-         IdGA==
-X-Forwarded-Encrypted: i=1; AJvYcCX99XUUY20YqEKZ2F7srOjeRb1CiyVo96Z2UagKs2p8PuxA5/72XqWy6VM9VszSRceAaDR4fEM/9A==@kvack.org
-X-Gm-Message-State: AOJu0YzPmXvqmUNaG8Ud7/DSyXwJ4/dcI4Rvp0x39QhJrYYLiJmz5pyt
-	xXKccMUDDy0mtyKbzuz18voj8msA6BOx8G2dNvXrYJC7xg1CNAkHFgpUDsUcxmesaro=
-X-Gm-Gg: ASbGnctGuod1MURFyWAbmWXEGMnWBFMaz3L5Ap7Wf9fl7IsA40PKB8DCADAn6za68HU
-	iQPVubzVvGSPiPjoGSgHy5D4Bd9n6vzrL7/duICDF8q6+itfHLQNTtTbPP67150kwcZ8+3Z2nNR
-	DnadDZLnFJE32OggJ2qmDx0JTj2RASYDE9XGr139PUPYpqW8VoYGCpFpj5yJXr7r97TumcsKhPO
-	siJG2obFYXddoTkq3lnyaX3UJ4enOy918m7nQcjGcqfjbJA8dlLkp4fZKzrrh9k1RaXdO2vMAVU
-	EoGyMY8VIUEepXhPN/NINsL/zjx4bHAHXgpFpdAa2azRaAArvXdZisF0X2HEpSOEDziYUSfBl3y
-	QFJCpgM9wjBSgaYU3qaQOFNPNUE9AKJXTV9qzlJpsTPxB0Q==
-X-Google-Smtp-Source: AGHT+IGPb0Edu1K4J4/cuc8wtsu5FZIIzXcuwfIai0CmgIW3O2Li8d+X8dt0nP89wSlyBM1hFk3zHQ==
-X-Received: by 2002:a05:622a:2cf:b0:4b7:81df:95e2 with SMTP id d75a77b69052e-4e41ea16a29mr49675751cf.40.1759336896110;
-        Wed, 01 Oct 2025 09:41:36 -0700 (PDT)
-Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
-        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-877796a1c72sm8001285a.46.2025.10.01.09.41.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Oct 2025 09:41:35 -0700 (PDT)
-Date: Wed, 1 Oct 2025 12:41:31 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Gregory Price <gourry@gourry.net>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Subject: Re: [PATCH] mm: page_alloc: avoid kswapd thrashing due to NUMA
- restrictions
-Message-ID: <20251001164131.GB1597553@cmpxchg.org>
-References: <20250919162134.1098208-1-hannes@cmpxchg.org>
- <4a793133-6cb3-42d4-948f-84eae6fa7df3@suse.cz>
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=et4f6tyq;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B36CB444B2;
+	Wed,  1 Oct 2025 16:43:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B905C4CEF1;
+	Wed,  1 Oct 2025 16:43:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759337004;
+	bh=QNWLZ4djmIVjwAAxkUZ+XJhGSD3E4wAU7zU18m3QAOs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=et4f6tyqrgBs7WZdlRex+OjwqnGS/x5v8MW5qcn+FID5dPPlJ6MdrhJ69h5DiRGOU
+	 JMdkEsTcrsZICAHv2OlH3sRAZBik9sU0UHIc7UUI0CCMSawT2yT8B82DtPj+LhGlTt
+	 yUBy3bUol0m3/CncqRBf25h3T+RjMO/mqJvolAZ/43Ei8ths7hTOrn1i0qlaS980vB
+	 kI17kNzpPN97y09flJ7eGoKXitPjRvc2brrw14m4Lv4hDWOpkQC953BAQykS23lhMp
+	 73lmIDC0Nn0bZp4CpXnwKzHJmlAvUB6yXZ0M2bDTY//9tiAGJP3K/J5VM8LDPCs5qY
+	 HbIogzzOYCGTg==
+From: SeongJae Park <sj@kernel.org>
+To: Jakub Acs <acsjakub@amazon.de>
+Cc: SeongJae Park <sj@kernel.org>,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	david@redhat.com,
+	xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev,
+	peterx@redhat.com,
+	axelrasmussen@google.com,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] mm/ksm: fix flag-dropping behavior in ksm_madvise
+Date: Wed,  1 Oct 2025 09:43:22 -0700
+Message-Id: <20251001164322.54119-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20251001090353.57523-2-acsjakub@amazon.de>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4a793133-6cb3-42d4-948f-84eae6fa7df3@suse.cz>
-X-Rspamd-Queue-Id: 3680040014
-X-Stat-Signature: onxfs5zr9xwzaxbjhopo7c9yen7ci976
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ydp681ia4mhk6wkxxpexdhhasxdx8y7j
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1759336897-406826
-X-HE-Meta: U2FsdGVkX1/5UwOK+rBI2mtvg42lrcCdiCzqWAdj+iJUu2Fx+sp6/+BtFtnwsYMnpE0f5ayK5xklPZt+5G8x4CrckwrSeCBzyAiny0z9xYf6Got3suUximuByv67w3JA+vmxgx25hLLSCbPKekic9KMXUJ6qtFw2ef4vg67ZUi79QjY6yeD3W4Lkb0oQCQduSVEVhlMK6RLw4okbDPHv+TqIHqbBDYNF/zJiIo2NZlJmrW15lJxftk9836SHmTQKgUU7IoIuyj1FrmcDk/0YwQMNNoZZ9VtPHBTE8fUBjIXATI2jRySpP5Ebz4cCkpbYUyfXwVjLjoJKPJgnW/t5tocrmfEes3G+9d5n6vyQSKfoNNPZdGTIswMdm4P30fi7t1Hj/V/Hg+bJ6ba8bf+GLzCvZ8Z1MKFefWSsstY+6wV7TirfM9EaaINv5tje2NTl4hRBDsAuGWhUDQyfdNLmswOSVYkHTqVjkiiE5m44nRAmgFcGnAo43o3xZchHJKALtt80YF+k0clT4jMKPyiCWFvWneFIwqWGh+h+Dxbysn2UNoFHQkKkjkqVRRIRcnrZJVQ5+xvmAanIMKonWzdAac3jaErdrAIZIyXT+dyTH55oiZccrL0NvnkEOLnAx4RkTiweagQJGQd8SMo4DWN4o5lpU6r58A9XWd0EsgwSxuY0t2ho9ifc2DHXSulmqiXrpVpFWhkDWSUPI2y9sxiYUbv4smLwxVCpIzp5+BcIVwF8MXG2Z9ryoTgO197VKXrxoCZllsmu7WIYYpMb6z1pF+iZY9EJXxjaHmLjHTi2dldA6GINkyiA4rj3sxXngvdSpURjjLnTSkex+MH21tj6222vYXyZe3KZZYdpkenynt1m3QOBUtLBMScCqi66JFKBhaETxBmxADJDLGe00jFz20D3Xwf3wi67BCukOYJ6Yzu1v2dnrhucrnQnYgiKBZ+yomsOZofn2vImpcn6P3U
- Ii3tiCLK
- 04G74SvySQjI1JUG14dvqJXst2l70hkRxkI/Um4AJbRARm7awPd06n1ZOzU/5tC7X/NPJdwr4640QUu46RyO4jsBCMjkYB657ZA7zUgtyKUycJBRBLgG/5gsgIuOpmb/FJNr2pNvI6+E8aXNuIDHjGECtc4mFutrFTG6JEyoUd3YZ0E3KOPecR/amhsFO2Yg0df0gOMeBqXte7BKAFqE0U4hwdLaqK6q3Wy428kKL7kE86E/5JYe+PIYbdq6mChCuP37PNE+3kgrid4J/3J/Rd3/7rZ9IOVY6NVpKez5jIDgGUPPXVh62GtDolrHyK1Uyt2F380fy6IxWv8jaOH83AY4JxvEFYfUNZJs+cU57ZxL1S73ShvLXGSYbS+8LQEA2YSJVaXJPVNsy4ox4Vk4kUJMKYvIkq2fNzBSLVEv1wohiu2kaDen5lEMky/IK7P01tE6EkKWo0EHD9Hl2lzUu2PqBAtsF1hwZWoFpcbSmCensxVbQE22/mqO71uaRTqHSzIWJ1CHhcPXPdkM+AxRgKPmsWRltb6wSZRtcW+EtneFk9A7G+xcPV06BPSqUJavd/AremZbDwR/rLNonUSkfVZAxXwuJr4CD3PegVpKAuwBt9qM=
+X-Rspamd-Queue-Id: 105E11A0002
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1759337005-499101
+X-HE-Meta: U2FsdGVkX1+40GI2+oks34MZPrHqEHSA4DIT1qV7W9jYJO8wEyJ003CmwKKr7EfIipxPRlgxySsKyeHFCLFWgSguwCFCqXqYnGkPaEDNQ4dv/SoUMZZQG0y/7N21RUUazA93VdrFrv32MJCbo0w+K40CwmQaNZr4YVZZGioTgd9aGSHoO1ziClRLdJV1VR6ywWkpNHj9mgY9IoIZzUd5fFZ0K1bgwZ/CYqi47HhEMgrQpi4WfuCHkh7zB2qKLy1ek1YC/UXKjO5HjfeTu5ga2xeKeGkN6NHeNep7x27zJEEfkYrF/IT1Xta32HHJuLLbnq+bIEuqcdObby0zxiWBTVUThyy3vaAOrB4CJm3zbNvfb3TInkI1Gj53XkWrxgl/tkzRuUBxSRyW6SOw+hZjfO4OSnlm23l/uNywdoQkzAq2MvHZMxYN40ysS0eArmsAkqqBDzsN+Qu8CWBrVbD70fCfGt5823O+MzODbKmIc0vt+iutnhhUfirg1LyZwVSSnbPt5vUF8+J/skExRmkHQCUqETvugGJ9iGZzB7CDxqc2qidugAX3biDJg/nOO5D7XNAF51svNQnvwWj+wcQ9x5GbGFkkm/FWe37lKBIGkaqJlX1T2ys5DBjdZUcT4ReOxflzvPshxncBnvO57mW33ruxVsGGrQX6tm58kSM4nb1uG0dZuuUpRpRKd2RQIRKvQzjbGtKtl91eOsO4OUFIEK3j1bL6ldlcbTxYe2wMxzzLE2JLPLU66qwHWm6LDGikuydL/n/4jDEEI9nFYYoN88syZGcEJn2erwEYsOw28AzxSxXopzJhsGqBE6TFd+moUckbHDIIZC4xEPlnN5ylIAYQ096hg+991nTDNIqtbFVpNoggs907VAFbX7ho/FBCn3OmyCnccFJi7LYC9GYm9ccW8yaZOQge8M3Wm65kDsUD6XuEhF1L9Mzevof9LJuY9ilM52lOVG/+wKZjWND
+ QNdshsdh
+ ni5py6bDZy/CbOXsHqrd5ZXERQ5Q6ZJ13ZQchErjIF4a1UkP3yDNclD4ChoqLOHw4FFJuf0GmrHqf68bfmepg71TNMBVkSOHgQW9HZhEMtHK7WYNgnlzX9Dv2P+FlaIM3ct56uZaH2FyoKaE1qDOoUHExkN7Pe8ytsRi1vMrxMZxO4wIE8IGslaOI0j+t4FK8g/NRPh2Kt2J2DTO9SB48FUxw8eLxHFRjjLIzHec351mSNSDku8punytH0YF3vmWpT2GEYduLHU937FfkA2b0ZS3p7KKzvTopNZ7COIyKbbc1YRPgUNj8U2QlnEvyinD0fUMMpUYj4ceKt7lY+r8LuCnUywrD6NH4qzoAOyBB36QT+vKLexMRmVnHQ82Rzct5wytU6XRh2qfOO6HJV6NzVK1DNpf8U5FulWDwL4+jnQior6eO1hgM+cvAdPlGUSDvJ54vOiX1CmYk6nL2r9rsbg9UU2i9sHH2q5PZt1BsbXla83l/ZnKoy+JX+7rHZQNR5EG7j7BEeMP7chy8MBftpuj+Y5Cy4g0hJP5taiEBkrSah1ZPxw540i5VanAeqssZbQHsnHq3/Y37Oz0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,65 +99,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 01, 2025 at 04:59:02PM +0200, Vlastimil Babka wrote:
-> On 9/19/25 6:21 PM, Johannes Weiner wrote:
-> > On NUMA systems without bindings, allocations check all nodes for free
-> > space, then wake up the kswapds on all nodes and retry. This ensures
-> > all available space is evenly used before reclaim begins. However,
-> > when one process or certain allocations have node restrictions, they
-> > can cause kswapds on only a subset of nodes to be woken up.
-> > 
-> > Since kswapd hysteresis targets watermarks that are *higher* than
-> > needed for allocation, even *unrestricted* allocations can now get
-> > suckered onto such nodes that are already pressured. This ends up
-> > concentrating all allocations on them, even when there are idle nodes
-> > available for the unrestricted requests.
-> > 
-> > This was observed with two numa nodes, where node0 is normal and node1
-> > is ZONE_MOVABLE to facilitate hotplugging: a kernel allocation wakes
-> > kswapd on node0 only (since node1 is not eligible); once kswapd0 is
-> > active, the watermarks hover between low and high, and then even the
-> > movable allocations end up on node0, only to be kicked out again;
-> > meanwhile node1 is empty and idle.
+On Wed, 1 Oct 2025 09:03:52 +0000 Jakub Acs <acsjakub@amazon.de> wrote:
+
+> syzkaller discovered the following crash: (kernel BUG)
 > 
-> Is this because node1 is slow tier as Zi suggested, or we're talking
-> about allocations that are from node0's cpu, while allocations on
-> node1's cpu would be fine?
-
-It applies in either case. The impetus for this fix was from behavior
-in a tiered system, but this seems like a general NUMA problem to me.
-
-Say you have a VM where you use an extra node for runtime resizing,
-making it ZONE_MOVABLE to keep it hotpluggable.
-
-> > Similar behavior is possible when a process with NUMA bindings is
-> > causing selective kswapd wakeups.
-> > 
-> > To fix this, on NUMA systems augment the (misleading) watermark test
-> > with a check for whether kswapd is already active during the first
-> > iteration through the zonelist. If this fails to place the request,
-> > kswapd must be running everywhere already, and the watermark test is
-> > good enough to decide placement.
+> [   44.607039] ------------[ cut here ]------------
+> [   44.607422] kernel BUG at mm/userfaultfd.c:2067!
+> [   44.608148] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+> [   44.608814] CPU: 1 UID: 0 PID: 2475 Comm: reproducer Not tainted 6.16.0-rc6 #1 PREEMPT(none)
+> [   44.609635] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+> [   44.610695] RIP: 0010:userfaultfd_release_all+0x3a8/0x460
 > 
-> Suppose kswapd finished reclaim already, so this check wouldn't kick in.
-> Wouldn't we be over-pressuring node0 still, just somewhat less?
+> <snip other registers, drop unreliable trace>
+> 
+> [   44.617726] Call Trace:
+> [   44.617926]  <TASK>
+> [   44.619284]  userfaultfd_release+0xef/0x1b0
+> [   44.620976]  __fput+0x3f9/0xb60
+> [   44.621240]  fput_close_sync+0x110/0x210
+> [   44.622222]  __x64_sys_close+0x8f/0x120
+> [   44.622530]  do_syscall_64+0x5b/0x2f0
+> [   44.622840]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [   44.623244] RIP: 0033:0x7f365bb3f227
+> 
+> Kernel panics because it detects UFFD inconsistency during
+> userfaultfd_release_all(). Specifically, a VMA which has a valid pointer
+> to vma->vm_userfaultfd_ctx, but no UFFD flags in vma->vm_flags.
+> 
+> The inconsistency is caused in ksm_madvise(): when user calls madvise()
+> with MADV_UNMEARGEABLE on a VMA that is registered for UFFD in MINOR
+> mode, it accidentally clears all flags stored in the upper 32 bits of
+> vma->vm_flags.
+> 
+> Assuming x86_64 kernel build, unsigned long is 64-bit and unsigned int
+> and int are 32-bit wide. This setup causes the following mishap during
+> the &= ~VM_MERGEABLE assignment.
+> 
+> VM_MERGEABLE is a 32-bit constant of type unsigned int, 0x8000'0000.
+> After ~ is applied, it becomes 0x7fff'ffff unsigned int, which is then
+> promoted to unsigned long before the & operation. This promotion fills
+> upper 32 bits with leading 0s, as we're doing unsigned conversion (and
+> even for a signed conversion, this wouldn't help as the leading bit is
+> 0). & operation thus ends up AND-ing vm_flags with 0x0000'0000'7fff'ffff
+> instead of intended 0xffff'ffff'7fff'ffff and hence accidentally clears
+> the upper 32-bits of its value.
+> 
+> Fix it by changing `VM_MERGEABLE` constant to unsigned long, using the
+> BIT() macro.
 
-Yes. And we've seen that to a degree, where kswapd goes to sleep
-intermittently and the occasional (high - low) batch of fresh pages
-makes it into node0 until kswapd is woken up again.
+Nice!
 
-It still fixed the big picture pathological case, though, where
-*everything* was just concentrated on node0. So I figured why
-complicate it. But there would be room for some hysteresis.
+> 
+> Note: other VM_* flags are not affected:
+> This only happens to the VM_MERGEABLE flag, as the other VM_* flags are
+> all constants of type int and after ~ operation, they end up with
+> leading 1 and are thus converted to unsigned long with leading 1s.
+> 
+> Note 2:
+> After commit 31defc3b01d9 ("userfaultfd: remove (VM_)BUG_ON()s"), this is
+> no longer a kernel BUG, but a WARNING at the same place:
+> 
+> [   45.595973] WARNING: CPU: 1 PID: 2474 at mm/userfaultfd.c:2067
+> 
+> but the root-cause (flag-drop) remains the same.
+> 
+> Fixes: 7677f7fd8be76 ("userfaultfd: add minor fault registration mode")
 
-Another option could be, instead of checking kswapds, to check the
-watermarks against the high thresholds on that first zonelist
-iteration. After all, that's where a recently-gone-to-sleep would
-leave the watermark level.
+Nit.  It is recommended [1] to use 12 characters of the SHA-1 ID, but you are
+using 13 characters.
 
-But it would need a fudge factor too, to account for the fact that
-kswapd might overreclaim past the high watermark. And the overreclaim
-factor is something that has historically fluctuated quite a bit
-between systems and kernel versions. So this could be too
-fragile. Kswapd being active is a very definitive signal comparably.
+> Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Xu Xin <xu.xin16@zte.com.cn>
+> Cc: Chengming Zhou <chengming.zhou@linux.dev>
+> Cc: Peter Xu <peterx@redhat.com>
+> Cc: Axel Rasmussen <axelrasmussen@google.com>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: stable@vger.kernel.org
+
+Nit.  This would be nice to be placed just after the 'Fixes:' tag.
+
+Acked-by: SeongJae Park <sj@kernel.org>
+
+[1] https://docs.kernel.org/process/submitting-patches.html#describe-your-changes
+
+
+Thanks,
+SJ
+
+[...]
 
