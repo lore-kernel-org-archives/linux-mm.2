@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0180ECCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 16:43:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A983FCAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 16:51:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 606118E0012; Wed,  1 Oct 2025 12:43:28 -0400 (EDT)
+	id E2DCE8E0003; Wed,  1 Oct 2025 12:51:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DD678E0002; Wed,  1 Oct 2025 12:43:28 -0400 (EDT)
+	id DDE778E0002; Wed,  1 Oct 2025 12:51:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51A7C8E0012; Wed,  1 Oct 2025 12:43:28 -0400 (EDT)
+	id CF4228E0003; Wed,  1 Oct 2025 12:51:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FD048E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 12:43:28 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DF3C4140196
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 16:43:27 +0000 (UTC)
-X-FDA: 83950116054.15.BBA38D4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 105E11A0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 16:43:25 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=et4f6tyq;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BFED38E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 12:51:26 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5BC8E1A013E
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 16:51:26 +0000 (UTC)
+X-FDA: 83950136172.06.A03E2EC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A6F26140002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 16:51:24 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PrLf9AbQ;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759337006;
+	s=arc-20220608; t=1759337484;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RNy7oxf6drqmm6IYcV3OWSCXa64vRp5VD07stDp2h3M=;
-	b=fnn9XOodHHVYMgM9L1XEdjMojy8IQB+LFb/rlRtoY/bcbLfxEPb/fZe27gvAMcyL8icoOW
-	48AzO+bsqX8KthWKTAysj1TOXuH+xqbKZU9KQz4gRFqYwqWRRCLRHqo/JCWVwXMuxJbCsH
-	SNeDlk95j1Im8aA52JTLKroqPIN1w20=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759337006; a=rsa-sha256;
-	cv=none;
-	b=MNQgiVUVJRPFDekBe4gIVQJWykCzXd+7akUQxftc6se7LWrfJZU+frvFuYCRfmE8w0ldVA
-	6t6q39hoxLb/47FY7+D1MpSpcKDulK2ixQcAoWAZXyDVzDyH62fSWpUdrwgm3kE25Q3+Rf
-	0oWnYhzA9B4dHnWWZB4bm1GdN0k6xQQ=
+	bh=rlYd+TB5CJeW3VdXGJQ/USyQzlcXjdeIKECVMppL2WE=;
+	b=rAFnGGgZCAKJslW+IsZLAKibaXghIBduaI1fnsRec1bOs0lyODLXjidozxawDHf7HkNy0z
+	pXzy2mZwLITqInsXEO0BJIL68aNnnd9PKzTWsDnpEtrU375NVuYEHdhKldzDicOurzLNgl
+	IMDpifHiR4V6wkf7QodSrqyE9M7gTKk=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=et4f6tyq;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PrLf9AbQ;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759337484; a=rsa-sha256;
+	cv=none;
+	b=a1emZfyk46hctonma4V3ZZKTCQ6zvaZZe350GhhS4nu1nNuog3VjLqgXrv0oOZhZGWVGLl
+	g2Z/4HVwofbf17rRQ7Ks7U3QXvKkUwzLRTq+rIJuWTIPPzkLZ0k+cuTXwB9sYWGDXYqlxP
+	uRT3yBPWBvScM+bN1lOSaLDAo9rJ+Lc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B36CB444B2;
-	Wed,  1 Oct 2025 16:43:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B905C4CEF1;
-	Wed,  1 Oct 2025 16:43:24 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0C85161ED6;
+	Wed,  1 Oct 2025 16:51:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 757A3C4CEF1;
+	Wed,  1 Oct 2025 16:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759337004;
-	bh=QNWLZ4djmIVjwAAxkUZ+XJhGSD3E4wAU7zU18m3QAOs=;
+	s=k20201202; t=1759337483;
+	bh=sq47SPnNubBaOrDYNmqLZOFhbgnhc5uNep+QUZv1fr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=et4f6tyqrgBs7WZdlRex+OjwqnGS/x5v8MW5qcn+FID5dPPlJ6MdrhJ69h5DiRGOU
-	 JMdkEsTcrsZICAHv2OlH3sRAZBik9sU0UHIc7UUI0CCMSawT2yT8B82DtPj+LhGlTt
-	 yUBy3bUol0m3/CncqRBf25h3T+RjMO/mqJvolAZ/43Ei8ths7hTOrn1i0qlaS980vB
-	 kI17kNzpPN97y09flJ7eGoKXitPjRvc2brrw14m4Lv4hDWOpkQC953BAQykS23lhMp
-	 73lmIDC0Nn0bZp4CpXnwKzHJmlAvUB6yXZ0M2bDTY//9tiAGJP3K/J5VM8LDPCs5qY
-	 HbIogzzOYCGTg==
+	b=PrLf9AbQ0lrvaZltk4zWolRVs+DxIrNghRLqz+NqgIY+KLEdCzqdVHtQSe+jmUWxe
+	 DF3qJ27ROq6HsizQbqkhxWz5IshERT8hP0rw7siC50Sk5cfmuezbfpqPBoyLcX17sD
+	 J3rtaKGevmQDXOFNmKx7U5s4S30BSI4Mx9MZACFtQTRYds+Z8HVTbWTDX74slWOhFD
+	 RoEtEG5B+Hn0EvNxtz903vreJVeXqw//T6ndav7vRRwy0pRCn+1q4JzKusExjbHDmW
+	 JG1esOFkVb0Cql53UuxMgTPc6BMoxBk5SKrAXBl/Dm2bX1VGDUOekA7E3w4SlxJ0Dk
+	 +H1ICsR4Ik2jQ==
 From: SeongJae Park <sj@kernel.org>
 To: Jakub Acs <acsjakub@amazon.de>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -73,24 +73,23 @@ Cc: SeongJae Park <sj@kernel.org>,
 	chengming.zhou@linux.dev,
 	peterx@redhat.com,
 	axelrasmussen@google.com,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] mm/ksm: fix flag-dropping behavior in ksm_madvise
-Date: Wed,  1 Oct 2025 09:43:22 -0700
-Message-Id: <20251001164322.54119-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] mm: redefine VM_* flag constants with BIT()
+Date: Wed,  1 Oct 2025 09:51:21 -0700
+Message-Id: <20251001165121.54258-1-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20251001090353.57523-2-acsjakub@amazon.de>
+In-Reply-To: <20251001090353.57523-3-acsjakub@amazon.de>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ydp681ia4mhk6wkxxpexdhhasxdx8y7j
+X-Stat-Signature: 94hopo43kyxzec9fdquw5du3nwr4ucrw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 105E11A0002
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1759337005-499101
-X-HE-Meta: U2FsdGVkX1+40GI2+oks34MZPrHqEHSA4DIT1qV7W9jYJO8wEyJ003CmwKKr7EfIipxPRlgxySsKyeHFCLFWgSguwCFCqXqYnGkPaEDNQ4dv/SoUMZZQG0y/7N21RUUazA93VdrFrv32MJCbo0w+K40CwmQaNZr4YVZZGioTgd9aGSHoO1ziClRLdJV1VR6ywWkpNHj9mgY9IoIZzUd5fFZ0K1bgwZ/CYqi47HhEMgrQpi4WfuCHkh7zB2qKLy1ek1YC/UXKjO5HjfeTu5ga2xeKeGkN6NHeNep7x27zJEEfkYrF/IT1Xta32HHJuLLbnq+bIEuqcdObby0zxiWBTVUThyy3vaAOrB4CJm3zbNvfb3TInkI1Gj53XkWrxgl/tkzRuUBxSRyW6SOw+hZjfO4OSnlm23l/uNywdoQkzAq2MvHZMxYN40ysS0eArmsAkqqBDzsN+Qu8CWBrVbD70fCfGt5823O+MzODbKmIc0vt+iutnhhUfirg1LyZwVSSnbPt5vUF8+J/skExRmkHQCUqETvugGJ9iGZzB7CDxqc2qidugAX3biDJg/nOO5D7XNAF51svNQnvwWj+wcQ9x5GbGFkkm/FWe37lKBIGkaqJlX1T2ys5DBjdZUcT4ReOxflzvPshxncBnvO57mW33ruxVsGGrQX6tm58kSM4nb1uG0dZuuUpRpRKd2RQIRKvQzjbGtKtl91eOsO4OUFIEK3j1bL6ldlcbTxYe2wMxzzLE2JLPLU66qwHWm6LDGikuydL/n/4jDEEI9nFYYoN88syZGcEJn2erwEYsOw28AzxSxXopzJhsGqBE6TFd+moUckbHDIIZC4xEPlnN5ylIAYQ096hg+991nTDNIqtbFVpNoggs907VAFbX7ho/FBCn3OmyCnccFJi7LYC9GYm9ccW8yaZOQge8M3Wm65kDsUD6XuEhF1L9Mzevof9LJuY9ilM52lOVG/+wKZjWND
- QNdshsdh
- ni5py6bDZy/CbOXsHqrd5ZXERQ5Q6ZJ13ZQchErjIF4a1UkP3yDNclD4ChoqLOHw4FFJuf0GmrHqf68bfmepg71TNMBVkSOHgQW9HZhEMtHK7WYNgnlzX9Dv2P+FlaIM3ct56uZaH2FyoKaE1qDOoUHExkN7Pe8ytsRi1vMrxMZxO4wIE8IGslaOI0j+t4FK8g/NRPh2Kt2J2DTO9SB48FUxw8eLxHFRjjLIzHec351mSNSDku8punytH0YF3vmWpT2GEYduLHU937FfkA2b0ZS3p7KKzvTopNZ7COIyKbbc1YRPgUNj8U2QlnEvyinD0fUMMpUYj4ceKt7lY+r8LuCnUywrD6NH4qzoAOyBB36QT+vKLexMRmVnHQ82Rzct5wytU6XRh2qfOO6HJV6NzVK1DNpf8U5FulWDwL4+jnQior6eO1hgM+cvAdPlGUSDvJ54vOiX1CmYk6nL2r9rsbg9UU2i9sHH2q5PZt1BsbXla83l/ZnKoy+JX+7rHZQNR5EG7j7BEeMP7chy8MBftpuj+Y5Cy4g0hJP5taiEBkrSah1ZPxw540i5VanAeqssZbQHsnHq3/Y37Oz0=
+X-Rspamd-Queue-Id: A6F26140002
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1759337484-270342
+X-HE-Meta: U2FsdGVkX1/o8mATysCMNxhhvxVHGsDVaE386WJYqRQ+UHp/dyLREqKCfdOsTNeJrIBUpFqlU2yXtoaNV8z8VNfGDAnrCn886iUkGLBuly7rVQy8yV/Mq1SZVNNS53mPEEIG2Wo2sJaKGAcKeqm8LM8V/eZbhvkVF+WlI+glBJl/LGE2Ly8DlnDmGpmusg3C82g8pbKj1tUafjRT0dNBkF35g7pliJuk+rkEYJKqJz4CWQLbr2GC5mPD1QjY+VpG6UUxrjN7VbshmbF1iHpO8EEXymZgWR7EVUznBR6h2YE8+lZ3c79IWl8mJcpfqVdauZx8jGGT3CCndfQBkRb+YE1i9U/zYg+nBxD7ipFZJLBz4O8FDbPncK5pPIIqOO0C8c9Fhukd4HuPR15RIszlA3z/boN+LZsUlGo4h6UUT9SXcb8tp/tDYzLU4jQcu/1ME4S9pWUTP9m8rNjHE+VYyZeugn/44x6nOggIr0tG04S9kvzNZzWBbGMEdqz1AW37iTCnCjiG1kLaNiaNbJGRVapRgdHqecSSzBGRv8t0XcoENSv4R5+otRZPrz5rrXQntMNNu/MHMcdvB9kERQDHttL2IvW2CD/T4M+l0lldevIgupQ98RRmLfHy4f+1RSVUhKwiczW1az13pR0UddhG14hReuuRI3gTdG0WROxmOAsBSFur5diynxzOmBUDRI5sSesZti2T5GFy5XI//IOCT+hrN4HbQOhWuNtcUcmKD5sJ1rF3jffQ7cNsLd9D8IoIofFfuoN1e6CWXOKRuirTMQlawSFNvOaJ053G/B3oBlMRHDnBbVY9ngTQA/QS37l6TjjBa1ZsDd2Fd2OfTdyNwOd+9QNZQ+GicSnIPDLI9lNzdYpHTKMm0Lr2/W5hfcLJioODJESQc31Fa1ZhJhisi+Ixowt465puixZ9nLnnLzA5f6EfkXL++LAmeVYmyd3OxM/HYUR8mp4O72arLmi
+ ZpNd54np
+ SncQ/HrstjlfUUCn+dF1w5K4BWdBhs62o88YpCWJDZyXW8hzxuUtXU4Wq8myR2BZNcEWeoHpvWX9EmYosa8ritHJrdo8MsXAZkI0IH4BEcuOXv44ZUVtuF+3ULefR9XAlOpDKAI3yxJriJvdYyYpNUUnvT1y6ajPUJ4dm7+H5kAtqQKJSlu29fk+ukW04qrsj6TYYjGsERO71/XjdObXktJlILoC2HEeMkH6X2Xr5pM0oIl3ByEd1HzW4f+U0Y6PyHkswRnzrertFixwdsXZDt1GbgSwq4O4DC28Ag0/4D7ZH5CyFUMyzdRcXsKyqC7n7pRf+RhdtByQHRnY/MixwmdWlKaGlREXiAbJ1LO4fQ33bl5V/qC5aUPV7uC7hgZAwqpcf06zZEBXrnaAD66fQ6Le4U+nIPpKnreHSaHWWv4L/4NLf3LgA1njs4peLHUeX5YR3At8SCjOw4pC/gM/AKLAUCGMrPYY4TzRLlYG7Q2fnKYKFctm42Guy7Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,75 +98,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 1 Oct 2025 09:03:52 +0000 Jakub Acs <acsjakub@amazon.de> wrote:
+On Wed, 1 Oct 2025 09:03:53 +0000 Jakub Acs <acsjakub@amazon.de> wrote:
 
-> syzkaller discovered the following crash: (kernel BUG)
+> Make VM_* flag constant definitions consistent - unify all to use BIT()
+> macro.
 > 
-> [   44.607039] ------------[ cut here ]------------
-> [   44.607422] kernel BUG at mm/userfaultfd.c:2067!
-> [   44.608148] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
-> [   44.608814] CPU: 1 UID: 0 PID: 2475 Comm: reproducer Not tainted 6.16.0-rc6 #1 PREEMPT(none)
-> [   44.609635] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-> [   44.610695] RIP: 0010:userfaultfd_release_all+0x3a8/0x460
+> This is a separete follow-up fix after we changed VM_MERGEABLE
+> separately to isolate bugfix for easier backporting. As suggested by
+> David in [1]. 
 > 
-> <snip other registers, drop unreliable trace>
+> [1]: https://lore.kernel.org/all/85f852f9-8577-4230-adc7-c52e7f479454@redhat.com/
 > 
-> [   44.617726] Call Trace:
-> [   44.617926]  <TASK>
-> [   44.619284]  userfaultfd_release+0xef/0x1b0
-> [   44.620976]  __fput+0x3f9/0xb60
-> [   44.621240]  fput_close_sync+0x110/0x210
-> [   44.622222]  __x64_sys_close+0x8f/0x120
-> [   44.622530]  do_syscall_64+0x5b/0x2f0
-> [   44.622840]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> [   44.623244] RIP: 0033:0x7f365bb3f227
-> 
-> Kernel panics because it detects UFFD inconsistency during
-> userfaultfd_release_all(). Specifically, a VMA which has a valid pointer
-> to vma->vm_userfaultfd_ctx, but no UFFD flags in vma->vm_flags.
-> 
-> The inconsistency is caused in ksm_madvise(): when user calls madvise()
-> with MADV_UNMEARGEABLE on a VMA that is registered for UFFD in MINOR
-> mode, it accidentally clears all flags stored in the upper 32 bits of
-> vma->vm_flags.
-> 
-> Assuming x86_64 kernel build, unsigned long is 64-bit and unsigned int
-> and int are 32-bit wide. This setup causes the following mishap during
-> the &= ~VM_MERGEABLE assignment.
-> 
-> VM_MERGEABLE is a 32-bit constant of type unsigned int, 0x8000'0000.
-> After ~ is applied, it becomes 0x7fff'ffff unsigned int, which is then
-> promoted to unsigned long before the & operation. This promotion fills
-> upper 32 bits with leading 0s, as we're doing unsigned conversion (and
-> even for a signed conversion, this wouldn't help as the leading bit is
-> 0). & operation thus ends up AND-ing vm_flags with 0x0000'0000'7fff'ffff
-> instead of intended 0xffff'ffff'7fff'ffff and hence accidentally clears
-> the upper 32-bits of its value.
-> 
-> Fix it by changing `VM_MERGEABLE` constant to unsigned long, using the
-> BIT() macro.
-
-Nice!
-
-> 
-> Note: other VM_* flags are not affected:
-> This only happens to the VM_MERGEABLE flag, as the other VM_* flags are
-> all constants of type int and after ~ operation, they end up with
-> leading 1 and are thus converted to unsigned long with leading 1s.
-> 
-> Note 2:
-> After commit 31defc3b01d9 ("userfaultfd: remove (VM_)BUG_ON()s"), this is
-> no longer a kernel BUG, but a WARNING at the same place:
-> 
-> [   45.595973] WARNING: CPU: 1 PID: 2474 at mm/userfaultfd.c:2067
-> 
-> but the root-cause (flag-drop) remains the same.
-> 
-> Fixes: 7677f7fd8be76 ("userfaultfd: add minor fault registration mode")
-
-Nit.  It is recommended [1] to use 12 characters of the SHA-1 ID, but you are
-using 13 characters.
-
 > Signed-off-by: Jakub Acs <acsjakub@amazon.de>
 > Cc: Andrew Morton <akpm@linux-foundation.org>
 > Cc: David Hildenbrand <david@redhat.com>
@@ -177,13 +118,115 @@ using 13 characters.
 > Cc: Axel Rasmussen <axelrasmussen@google.com>
 > Cc: linux-mm@kvack.org
 > Cc: linux-kernel@vger.kernel.org
-> Cc: stable@vger.kernel.org
+> ---
+>  include/linux/mm.h | 66 +++++++++++++++++++++++-----------------------
+>  1 file changed, 33 insertions(+), 33 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index c6794d0e24eb..88cab3d7eea2 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -246,56 +246,56 @@ extern unsigned int kobjsize(const void *objp);
+>   * vm_flags in vm_area_struct, see mm_types.h.
+>   * When changing, update also include/trace/events/mmflags.h
+>   */
+> -#define VM_NONE		0x00000000
+> +#define VM_NONE		0
 
-Nit.  This would be nice to be placed just after the 'Fixes:' tag.
+I'm wondering if it could be more consistent to use 0UL instead.
 
-Acked-by: SeongJae Park <sj@kernel.org>
+>  
+> -#define VM_READ		0x00000001	/* currently active flags */
+> -#define VM_WRITE	0x00000002
+> -#define VM_EXEC		0x00000004
+> -#define VM_SHARED	0x00000008
+> +#define VM_READ		BIT(0)		/* currently active flags */
+> +#define VM_WRITE	BIT(1)
+> +#define VM_EXEC		BIT(2)
+> +#define VM_SHARED	BIT(3)
+>  
+>  /* mprotect() hardcodes VM_MAYREAD >> 4 == VM_READ, and so for r/w/x bits. */
+> -#define VM_MAYREAD	0x00000010	/* limits for mprotect() etc */
+> -#define VM_MAYWRITE	0x00000020
+> -#define VM_MAYEXEC	0x00000040
+> -#define VM_MAYSHARE	0x00000080
+> +#define VM_MAYREAD	BIT(4)		/* limits for mprotect() etc */
+> +#define VM_MAYWRITE	BIT(5)
+> +#define VM_MAYEXEC	BIT(6)
+> +#define VM_MAYSHARE	BIT(7)
+>  
+> -#define VM_GROWSDOWN	0x00000100	/* general info on the segment */
+> +#define VM_GROWSDOWN	BIT(8)		/* general info on the segment */
+>  #ifdef CONFIG_MMU
+> -#define VM_UFFD_MISSING	0x00000200	/* missing pages tracking */
+> +#define VM_UFFD_MISSING	BIT(9)		/* missing pages tracking */
+>  #else /* CONFIG_MMU */
+> -#define VM_MAYOVERLAY	0x00000200	/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
+> +#define VM_MAYOVERLAY	BIT(10)		/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
 
-[1] https://docs.kernel.org/process/submitting-patches.html#describe-your-changes
+s/10/9/ ?
+
+>  #define VM_UFFD_MISSING	0
+>  #endif /* CONFIG_MMU */
+> -#define VM_PFNMAP	0x00000400	/* Page-ranges managed without "struct page", just pure PFN */
+> -#define VM_UFFD_WP	0x00001000	/* wrprotect pages tracking */
+> +#define VM_PFNMAP	BIT(11)		/* Page-ranges managed without "struct page", just pure PFN */
+
+s/11/10/ ?
+
+> +#define VM_UFFD_WP	BIT(12)		/* wrprotect pages tracking */
+>  
+> -#define VM_LOCKED	0x00002000
+> -#define VM_IO           0x00004000	/* Memory mapped I/O or similar */
+> +#define VM_LOCKED	BIT(13)
+> +#define VM_IO           BIT(14)		/* Memory mapped I/O or similar */
+>  
+>  					/* Used by sys_madvise() */
+> -#define VM_SEQ_READ	0x00008000	/* App will access data sequentially */
+> -#define VM_RAND_READ	0x00010000	/* App will not benefit from clustered reads */
+> -
+> -#define VM_DONTCOPY	0x00020000      /* Do not copy this vma on fork */
+> -#define VM_DONTEXPAND	0x00040000	/* Cannot expand with mremap() */
+> -#define VM_LOCKONFAULT	0x00080000	/* Lock the pages covered when they are faulted in */
+> -#define VM_ACCOUNT	0x00100000	/* Is a VM accounted object */
+> -#define VM_NORESERVE	0x00200000	/* should the VM suppress accounting */
+> -#define VM_HUGETLB	0x00400000	/* Huge TLB Page VM */
+> -#define VM_SYNC		0x00800000	/* Synchronous page faults */
+> -#define VM_ARCH_1	0x01000000	/* Architecture-specific flag */
+> -#define VM_WIPEONFORK	0x02000000	/* Wipe VMA contents in child. */
+> -#define VM_DONTDUMP	0x04000000	/* Do not include in the core dump */
+> +#define VM_SEQ_READ	BIT(15)		/* App will access data sequentially */
+> +#define VM_RAND_READ	BIT(16)		/* App will not benefit from clustered reads */
+> +
+> +#define VM_DONTCOPY	BIT(17)		/* Do not copy this vma on fork */
+> +#define VM_DONTEXPAND	BIT(18)		/* Cannot expand with mremap() */
+> +#define VM_LOCKONFAULT	BIT(19)		/* Lock the pages covered when they are faulted in */
+> +#define VM_ACCOUNT	BIT(20)		/* Is a VM accounted object */
+> +#define VM_NORESERVE	BIT(21)		/* should the VM suppress accounting */
+> +#define VM_HUGETLB	BIT(22)		/* Huge TLB Page VM */
+> +#define VM_SYNC		BIT(23)		/* Synchronous page faults */
+> +#define VM_ARCH_1	BIT(24)		/* Architecture-specific flag */
+> +#define VM_WIPEONFORK	BIT(25)		/* Wipe VMA contents in child. */
+> +#define VM_DONTDUMP	BIT(26)		/* Do not include in the core dump */
+>  
+>  #ifdef CONFIG_MEM_SOFT_DIRTY
+> -# define VM_SOFTDIRTY	0x08000000	/* Not soft dirty clean area */
+> +# define VM_SOFTDIRTY	BIT(27)		/* Not soft dirty clean area */
+>  #else
+>  # define VM_SOFTDIRTY	0
+>  #endif
+>  
+> -#define VM_MIXEDMAP	0x10000000	/* Can contain "struct page" and pure PFN pages */
+> -#define VM_HUGEPAGE	0x20000000	/* MADV_HUGEPAGE marked this vma */
+> -#define VM_NOHUGEPAGE	0x40000000	/* MADV_NOHUGEPAGE marked this vma */
+> +#define VM_MIXEDMAP	BIT(28)		/* Can contain "struct page" and pure PFN pages */
+> +#define VM_HUGEPAGE	BIT(29)		/* MADV_HUGEPAGE marked this vma */
+> +#define VM_NOHUGEPAGE	BIT(30)		/* MADV_NOHUGEPAGE marked this vma */
+>  #define VM_MERGEABLE	BIT(31)		/* KSM may merge identical pages */
+>  
+>  #ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS
+> -- 
+> 2.47.3
 
 
 Thanks,
