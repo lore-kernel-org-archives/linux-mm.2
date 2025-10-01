@@ -4,84 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65DD2CAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 21:19:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA6A0CCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 21:20:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8ECDE8E0006; Wed,  1 Oct 2025 17:19:03 -0400 (EDT)
+	id 3249B8E0008; Wed,  1 Oct 2025 17:20:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C4C38E0002; Wed,  1 Oct 2025 17:19:03 -0400 (EDT)
+	id 2FC138E0002; Wed,  1 Oct 2025 17:20:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DA9C8E0006; Wed,  1 Oct 2025 17:19:03 -0400 (EDT)
+	id 2119F8E0008; Wed,  1 Oct 2025 17:20:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B43D8E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 17:19:03 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EFFDE140289
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 21:19:02 +0000 (UTC)
-X-FDA: 83950810524.25.7CE2021
+	by kanga.kvack.org (Postfix) with ESMTP id 0DB788E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 17:20:34 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D0D4A13A507
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 21:20:33 +0000 (UTC)
+X-FDA: 83950814346.12.D18934E
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 5C9C81A000F
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 21:19:00 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=d1jAuZP+;
-	spf=pass (imf19.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9DA1780010
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 21:20:31 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Vsc+rTBM;
+	spf=pass (imf30.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759353541;
+	s=arc-20220608; t=1759353631;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mT5PdxjtcI1i48v71PO+UPDYOzAaI+Kbtaq6k4yhaTo=;
-	b=OVTgd0ln4pKqMNYvIC0KHIBOdbFDPhYFYy5EhetmbVz08Xh3fmV+sWaIbvqRf/o8Kl6Yus
-	Q75McdwbKiZjb0e80fbUy6FuvgxmruzLrq/uM1riVs3CplgxwBYWhyWpb49OY9KrnVgtVx
-	n0YiWMs4g/fG3OxApNMG48S0BDxw5r8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759353541; a=rsa-sha256;
-	cv=none;
-	b=ytDE7K3BmDcATYY5DG9bekZ2yaIyFufaE7dFVCe84ElLuRmbxvUr/hRXaIE+01ZHp/WH75
-	ycVioA9KmsLTtR1DZxvDKfueMuHNAW1l1yl3/193yrPfT2+upmCMzYNYQbNlISRbLOYLJh
-	t11jWz7GlbIn6dSAYgzOufnBbsxaHzo=
+	bh=bKVpA9G31jKVedOBSYJ/cAfmJyMKXqtENT44BEOmwbw=;
+	b=34euIRfFLCIAt/eTXK48HZsENp3NL9VucfER073xtUiHeTblpGi/LTpqurIqY6UNq9E5WC
+	JGq0tD02mWyVaRpiK6xPcNp7bTYeT04pjZT5lPgzhRol+lOtzAJUQ18KJ6DGLC8tAtEpB+
+	X6GX/jcIEb+9Z5lapehee6BJJsnXHoI=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=d1jAuZP+;
-	spf=pass (imf19.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	imf30.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Vsc+rTBM;
+	spf=pass (imf30.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759353631; a=rsa-sha256;
+	cv=none;
+	b=Jqy7g4QjB8aeYzFnHkM1BtX0iCA5BkA8JqVwLnJqzdBYLtTFS9nJpr0RBAWh+PHJ4wc32q
+	S7+tQpH3IVboGDvWkOLqTTV0g7fYFYUooFcqgRNjw2wpRc1cy7dgOwUV42yvUSE0Hvs3wz
+	52uhR5/o+jNZwZwwVgSyuu7HX7MKuEY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759353541; x=1790889541;
+  t=1759353632; x=1790889632;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=hszeVLXsk4QDA1KmLdo7/yU41aGufNbi7fn8qVjcQSE=;
-  b=d1jAuZP+lV9ZC6vciuFZ9Qt1ZjMUF9dCVKtwAa5PXLMmgGL8/94/7Msd
-   DPIZcaJTp6lKZ8H54HftaYR3z65UwJuRoKxdTlmc75vK/5qlydLMK0YjE
-   pDRL/Et/rN4kHW//0YkUg+ofj6+Gy/xj2SOlI72/79PAoyL7HrmU+MtXL
-   sHP9M7BOArh4Q7rcnoylDtQ2ovOyqAfTUDm0XYYNKY4In9PAUQSHBh2fQ
-   uEPaDpVrmlGNEEyiSSuKV1S/O3LwQHvhyXEyrzXh/u8x0D4a6JpUjYTzv
-   om1eKSmtY222XE/zNPPn95vPDds/LxYc+G/Wdse+sSzt8uuk3rRe/j8vj
-   A==;
-X-CSE-ConnectionGUID: CDrBSwfjS1yo/GDwf+ZXtw==
-X-CSE-MsgGUID: pWvN+GwCQXytwsYpb+pRiQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="61805126"
+  bh=tTCadrNIkPdxAI2P4Lbojs+IXuprB8fMDp/ldr0Onew=;
+  b=Vsc+rTBMABLJG+ezrZ+xQe37ZChKAQQzxXcFsJ8bBHdL6WjuG+jg2Kqk
+   UfkN6dD62JfYelpLHSdSPkX7hXxgI+gXpz9tq/cdNzZKa3NR849o8dPDC
+   +9mMSsoK6u7Z7r8hClCaWXYFwgl4ipgXbs3IK9HwnM4DJr25ScbYt7HNF
+   dTFK4Cf6a7BEkEzGdBImgIvpvhCmInBqW0UqgW8345chPIuMklrvixrvq
+   l6WMFCVTyp5Zdvl2NgU86GIJ/nQccnx2wHKIGlrNnBkJE4xiumMzPSxJ2
+   rhlZnMrUo0wCnM9/QdgetiNSw74tqUuauZ5brMSQ99Rj1kMj+dstvQF7f
+   w==;
+X-CSE-ConnectionGUID: z0dqgzvnRhajFirKnmumzA==
+X-CSE-MsgGUID: gez78V78QXSOE7gmjHxzqw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="61805200"
 X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; 
-   d="scan'208";a="61805126"
+   d="scan'208";a="61805200"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 14:18:59 -0700
-X-CSE-ConnectionGUID: f5zzIt87SOGwdW4MfswyKg==
-X-CSE-MsgGUID: 8PZytHqNTsONmo4Y4mV8ww==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 14:20:31 -0700
+X-CSE-ConnectionGUID: ADEPaYJ4RCek9su6GZ6d6g==
+X-CSE-MsgGUID: cPzU1CMLRdOuWaGIPbcQUw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; 
-   d="scan'208";a="209598672"
+   d="scan'208";a="209598851"
 Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.109.221]) ([10.125.109.221])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 14:18:58 -0700
-Message-ID: <fb450443-07c3-438c-888f-30540935da15@intel.com>
-Date: Wed, 1 Oct 2025 14:18:57 -0700
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 14:20:30 -0700
+Message-ID: <caee3410-a01b-4e40-9f0c-ff7810caf323@intel.com>
+Date: Wed, 1 Oct 2025 14:20:29 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/21] mm/page_alloc: add __GFP_SENSITIVE and always set
- it
+Subject: Re: [PATCH 11/21] mm: introduce freetype_t
 To: Brendan Jackman <jackmanb@google.com>, Andy Lutomirski <luto@kernel.org>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  "Liam R. Howlett" <Liam.Howlett@oracle.com>,
@@ -96,7 +95,7 @@ Cc: peterz@infradead.org, bp@alien8.de, dave.hansen@linux.intel.com,
  rientjes@google.com, rppt@kernel.org, vbabka@suse.cz, x86@kernel.org,
  yosry.ahmed@linux.dev
 References: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
- <20250924-b4-asi-page-alloc-v1-6-2d861768041f@google.com>
+ <20250924-b4-asi-page-alloc-v1-11-2d861768041f@google.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -142,15 +141,17 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20250924-b4-asi-page-alloc-v1-6-2d861768041f@google.com>
+In-Reply-To: <20250924-b4-asi-page-alloc-v1-11-2d861768041f@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ib7p87owdrjhjmz9pndij37h1m8eaaje
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5C9C81A000F
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1759353540-342708
-X-HE-Meta: U2FsdGVkX19EFpem8NhuupdGRYd3cMXaOLq+HxjtiM3Fq8W0ctpq0Joj0wVs1c0ZQgX0J2Dh1EUf1uoWQpHNNj0GNUAE1nfRI+1cEVET79+gEAyf0RKT6RHpugHnXev5L0aBzT/L/GXganhPj4IUgdvXN9Zuattp7GF5+0xWVT6xVLY49pNPc7hkZLiPcyelc6y51rDQYeEmEaA9vulMxbxGQZokkQL/1CTcaS4k8c6qeYA2ICRlGFjOlH484Ao4fDE94asqGh49BbeH1CTppIPSwp8DIPlDqF6d7jtSC+m2Ihq6lbQfUSFRkam3LmMycfiBYSwEBe7SermOsrhqXk5Efgle+H7sHnvm59Tueob7ABRC3i8WJ4Qk38VQthm7W5zIfzCIa13kR95M5GYuJZkInmsUecaAppnYb8N9zzxwyYYP3LdTI21WEDABiZBrCLtgvTM1kBl91Mb1WNyrRJMLsLEkShK7wUiVB1DbovWpZbXtSd0xvqaWS6P+oscW+pw/TivmwoVpCkoCvxWJtr9PHZdwPh6MqRF25tRXySmS03ctapMCS05fyhGiaV++2EBvHtkISuIxEH1yDvGkpUuR1oXfM2sH5yeiB4uiYYGubwNv9OJ+Tx7iqtnI+W8cCE/9QebfG5L8L5nXeK6OT+9iSylCZXp62zSKjMZgUxp3sfECcjmuTgVIsMREGDZt4rXhDKFOEzpT2YSTmdfmx2MRrkPCSoaAdXdESfqkcrv8CFPlmHTesWqjx7xB3/ElEnbwbCtXrobMJaYzQ7zG0KFKs2KdhIXOPek7r3UPL5XDoncFt087soKolJ0a3Da3wZbGUZBK5kkt7KD1T3OMEOB1fcHZgemTWB2IQi5mMwPSCloGxXExOUwlJXxzjvFPWcJBkTaatW6dQjjx4r1Gg1iwpPztmundGMlVIiHuhhY=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9DA1780010
+X-Stat-Signature: jfrbk8jybfc5be1owwms648979qh6tco
+X-HE-Tag: 1759353631-605583
+X-HE-Meta: U2FsdGVkX1+ELhzO/Z1revmHypjmJ+biXNTXy9x6SqeOoZFK4LoLch5w3uGZb7xePkiOae0jYo+weLp9tIIPUtkXFt7kauw5Ga0PwlSyPmCwy7y3rfNKwA8xQJfX0MSWfEIUDEJTKZ0jeH6mIHu2Ku2E+NgK2Z/CPMXlRjFFBnHFe1vkM6rPQoJ4f3bG/yKLx0AnkGDU3jEyfxHM7H1FxlnF+ZCx23FwqVD4jTz7VLm4F0MG9+ajkt/bWbofpyYVC+4UOUzk3JfeCQzPcW89WKIB6OdO4Ti8t2ImTFZF9Q7rUA9GOdUI36EhA/ZY+eynr67tKePM8RLmEKGu9GFvMvYH6JLhtf0P49ZqpxRFaSHyRhRLQh7Ky0kOMjtZIIt4ChCB8ZHO26N0U4xbr2PTJ1D1Fav8de2+hprQvFTPCeaTka3XxDtZsfLP+EdUTU7gL3hdWKvgB4kel35Nw88Uxi+3697H2ORWnDsvio/GPFXb2PguUm0ezqTzcgDbuhmM5+w3VUN+bOsi8vWZ0FbhThXk8+7XKXKUDCtZPCzNSonZ7BLt3aV9KvB3Zv3LPUp9cIiGYnrqfwlyj+O32ktGPry5r8JjF6st9Dh/0XtcgXKgzvGP7C5Zr7neFmh2ZOoGLPCkv9N4SEEuUsAjJAPCKlj41pAJ94QoR3CUj38sHR4T+lZ9uXYXty2vCHx4QYHnvArrzuOZ01JHAP2+tWnLm5h0b1ulshqmtdGBmyiMSjtWKVF6OVfrzyRdoQ90y2fYQeen+mWWbdv09qJ2YE3TWcG78uBJJtk6lgFiRWDCsBZB70RhILzT7Nwxf40zFG1uD4B067ViagCKkwdi4ZhwzZiAAO54QlmwTk6Cr9q7elcsvH89WEuc9myTmjL6FQ2OqYTvKbqSTBZoqosHl9EiSaQ0IwSN6/XVf3wFBBKUReYm3vW2GtyqqZ0Feet441U14srPz7suYUqZcONTjJn
+ gzVsBxJJ
+ csxcbfV8I9ku/RzmfZgePUlDziqPFTo8Ju2Lw0WKylvXSSxXBtcweHNPT3kt0XufDGAJitX4/jtePBqK/nRRQYGIcQZn96hIkJSTmG8kuR7FBuh8S3xtK879qJLReru6HfvuZPsf1SUIjunSu8glLOGxZADVQ7dGWQwDKjGg6w0jp0X1FCoxiVh8nHjJExKtZUVM133T7TYfoTe0Nrd0KV+1Mxw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -160,23 +161,16 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/24/25 07:59, Brendan Jackman wrote:
-> +#ifdef CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION
-> +#define ___GFP_SENSITIVE	BIT(___GFP_SENSITIVE_BIT)
-> +#else
-> +#define ___GFP_SENSITIVE 0
-> +#endif
+> @@ -2234,7 +2235,7 @@ static bool should_proactive_compact_node(pg_data_t *pgdat)
+>  static enum compact_result __compact_finished(struct compact_control *cc)
+>  {
+>  	unsigned int order;
+> -	const int migratetype = cc->migratetype;
+> +	const freetype_t freetype = cc->freetype;
 
-This is clearly one of the inflection points of the series.
+Just as I'm scanning this series at a high level, this patch looks too
+big to me. There is too much mixing of mechanical changes like this
+s/int/freetype_t/ and s/migratetype/freetype/ with new functionality.
 
-To go any farther with this approach, I think it's critical to get a few
-acks on this hunk specifically. Well, maybe not formal acked-by's, but
-at least _clear_ agreement from at least one of:
-
-	MEMORY MANAGEMENT - PAGE ALLOCATOR
-	M:      Andrew Morton <akpm@linux-foundation.org>
-	M:      Vlastimil Babka <vbabka@suse.cz>
-
-... or this approach is dead in the water.
-
-
+I'd be looking for ways to split this up a lot more.
 
