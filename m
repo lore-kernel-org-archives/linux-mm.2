@@ -4,78 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D30CCAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 04:25:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68170CAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 04:34:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 748498E0006; Wed,  1 Oct 2025 00:25:14 -0400 (EDT)
+	id BF49C8E0005; Wed,  1 Oct 2025 00:34:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71F908E0002; Wed,  1 Oct 2025 00:25:14 -0400 (EDT)
+	id BA3888E0002; Wed,  1 Oct 2025 00:34:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65CC38E0006; Wed,  1 Oct 2025 00:25:14 -0400 (EDT)
+	id AE0718E0005; Wed,  1 Oct 2025 00:34:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5314F8E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 00:25:14 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D3B791A0689
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:25:13 +0000 (UTC)
-X-FDA: 83948255706.10.50FD341
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4F6A6140007
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:25:12 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F4728E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 00:34:54 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3BA3211B0D9
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:34:54 +0000 (UTC)
+X-FDA: 83948280108.11.C0C358D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 6787816000A
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:34:52 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GA5avzjc;
+	spf=pass (imf08.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759292712;
+	s=arc-20220608; t=1759293292;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=z7oFzYvy9aFCNZhgEm/RfOu9uiydoa9PKFq6hDaYedE=;
-	b=tlHs7g3ki90e+MNRJ4wt3+JgdIPl/onJvtCdGsl4OsFI3ZpWAQncFVA24yYY47Z7Bqi4RU
-	OKbaiAwwtm9EdSNvKLWlfW9T9o7z4NO0xA9v46VoUiiHc9RJGYHwj6tmrD4r87dEsFuCy9
-	CWx92UaFXrXqGyFMcxGfPHiBlCFsFjY=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=AksJYMjR0EFY5Pbn6MonfRRHjJ3TUgaXL+VXE3PlcCg=;
+	b=n+/rULklo0RhBwuAKXM/5DvnEA+qDe6GGUogmNL0QADKnAgeJHDr8PhvdXhFUjw/N9BceO
+	/7bScF8AdT5J9tTbVrkmWQZPMLdqhmzFEZhHmzIGEo66GQyInvKpMkg4j0d0j+5xWxv2hu
+	FD1Lqs4a1rnicEc/Y4WF1A54rcoWfuI=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759292712; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GA5avzjc;
+	spf=pass (imf08.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759293292; a=rsa-sha256;
 	cv=none;
-	b=G8I9lKHeMHzXwZ4ziB48fR02UHcdtvnBPW+Y5lmil95ZWWBKziQCScn/i2CPjeZsK1Zf2W
-	fU44s1sGQGU7oHqqSLwenwkBULyq8IDr11v1bE9m9t1M40ESmqNNz8Yjwp9T21G0NnQAHr
-	LynDXKt7MzdSj5mnzyzQHM33F3M7jH0=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1CCC616F2;
-	Tue, 30 Sep 2025 21:25:03 -0700 (PDT)
-Received: from ergosum.cambridge.arm.com (ergosum.cambridge.arm.com [10.1.196.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id B4C903F66E;
-	Tue, 30 Sep 2025 21:25:09 -0700 (PDT)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
+	b=25cOOmV84VxO32GbCUahRv4Yb2uAaVhpBKpBmsKg57kSZbk7NFfcYlmqGtKjWrb+ecZjBb
+	YbSl5YJKq9uLdyv0oPRj8WLhxiV6T6VdXzIaMVNjLYhjQD7Ezfs4rQzErtT8wqItbamKnN
+	1+rDexuISUBXBOb10gj2ozIZWZqpruI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1759293291;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=AksJYMjR0EFY5Pbn6MonfRRHjJ3TUgaXL+VXE3PlcCg=;
+	b=GA5avzjcO6Zmfng0OIjDJ5m8faIEhIL05Jb2VcKLHd2tiqXCeiBW3pO12AeWiVmWkiicQQ
+	Bh//Ka2OTIKP8wzWAO1qaUasIaQDCrGIb/sI8wV8iEezhQ7lQs48RyBLE72nI6RbgGDgGa
+	T8zQMCbLa/LKyOxWMGYcnzY9l0VThkQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-435-XIF_mvPRPVupgzKcuQMmyw-1; Wed,
+ 01 Oct 2025 00:34:47 -0400
+X-MC-Unique: XIF_mvPRPVupgzKcuQMmyw-1
+X-Mimecast-MFC-AGG-ID: XIF_mvPRPVupgzKcuQMmyw_1759293286
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B898619560BB;
+	Wed,  1 Oct 2025 04:34:45 +0000 (UTC)
+Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.116.46])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5FBD1180035E;
+	Wed,  1 Oct 2025 04:34:40 +0000 (UTC)
+From: Baoquan He <bhe@redhat.com>
 To: linux-mm@kvack.org
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	Dev Jain <dev.jain@arm.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	SeongJae Park <sj@kernel.org>
-Subject: [PATCH V2] mm/ptdump: Replace READ_ONCE() with standard page table accessors
-Date: Wed,  1 Oct 2025 05:25:02 +0100
-Message-Id: <20251001042502.1400726-1-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.30.2
+Cc: akpm@linux-foundation.org,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	nphamcs@gmail.com,
+	shikemeng@huaweicloud.com,
+	Baoquan He <bhe@redhat.com>
+Subject: [PATCH 0/3] mm/swap: remove plist swap_active_head
+Date: Wed,  1 Oct 2025 12:34:33 +0800
+Message-ID: <20251001043436.41338-1-bhe@redhat.com>
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: ub63ItWysZXuHg91t48yS7Oddh2xpinSdFRkXzt941k_1759293286
+X-Mimecast-Originator: redhat.com
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4F6A6140007
+X-Rspamd-Queue-Id: 6787816000A
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 18c71769zpt4bn4s65grh7hnq6t4cfxa
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: occp9osjf5ny5m3sayg1ubxnjgmcyqci
-X-HE-Tag: 1759292712-326619
-X-HE-Meta: U2FsdGVkX19WoUOak88j+tP8xlP5tZiJCXQwva/YpoFTGYWyzw9Qg7CiMGF8+SNckA0XVpw5t7mfvU8GWFYLY3iQzCQJrxQCAdgCdOvXWluY6vsnLWZXbQjfSrpsgiBmkrjdjfiEuSwkw3TnVz/bCBiMlRy4ulfft7h5ZjigRAxrF2e1MGDL4HLAO8x0THKEBbTCGDaqlSx7Z+VJUVzHFRxlQChGRpGtY8FR/GEvRnSTwDmPDrHcbBdmzmoSzPaM8IHcksupox1+pgGPzqBTuR+qW8yR+TXlLe0EF0XuGBO3xR9e9KjFgSZ1XJZFBYKARjZxuiHR9aTGBUrlTPn0vx9Y4s6PdayQS+VHp7vdyd136t6uuGHkPvn/XagZff+UiWVMCw1vcRWKP5IKOm0E3VHRNqDDQhZHe04l7lnndhW252jrOMSP1ZZaXecjktfjSc7uS6F2Wmzta/Q/pgSFCTbDH6ixi2I3iJlL64w0mzCQrXDmupgV6VCsEhnmTP92+rnRrBZvMxoLacaOTv8XE6LTvxls4/+2NGfuHl5P4J+DjV6ut0RVFhU6Exmsm48J6Q1qIPWnFXnfALyNPV5WuPOwfqGAoXCr8lh8au0Ylf7o2T9M85MfrN6Nuoiemr5yBwi7+xV6ktTgLZoLXhzV11ilKUkNIc8V4qfoeYdKNsujUkVFO36i6frPHP6Pg3cCvgRJWLAlaDTDCohKd0UwY+BEZdvZ1qIaH+ni3Qd71ebp8MAaKwbq+5kyXR7/f/R+t4J9uGASBLSTQfFdec7YLkp/6HDWOPwAdt2G2HmVxoqSSzN1sGWc4yg4vm8oJn2AyQPueiqunMtQJmW4HMA+5BUqOObtaUEdRdt9YN+YHYka0jf8oAISkvCrHodhtA/lIZuZkxmz0+WXHdSrN+cKTMxPFwJLdP+i/wwOmdjPtdk/YCzSSRv6atASmQwqzdwmM1r1D7ENQTi08jDQfqh
- UArY7Lf7
- 1sYxWDn/LlSQ9FlXGXatdzjGd8ZPft1WraFfhbGwmStgL5gOVVRvAInbDpmFbZnum/1vU3dJ8WXVO3tzULA34UUxMvsUK4BZGQO5dkdk5S8mOledeCnLofapbhbDMq7WN0+pxBDTPRlrulGFfTAbpo95ThD0BNcYE0I/mfefw/U0yGXaf0HPFR6Ygdi9aFBR9DHtln+RLycoTp2smLR41Rh/6R4wD5bFhRG4cw0hiiCuPj1QX9gAz3zr4Tt0R6Lq7kSHXaDN5Gc/k+8mmpbSznmlol/MXyDmLJDo1AqQnG1ubERvoZiUFflBcxU9Xp+59lSFQaN6qaHDi/TLZNnopGHIFYhR43HWosha6QffNzbw/paGjChiJHUW06Gqk0WQZlAZvn0lqWZFguOcfMjLWC/jsfA==
+X-HE-Tag: 1759293292-264050
+X-HE-Meta: U2FsdGVkX1/oNB1qA+9Zutt8hZCvZfAJHHcq6U3RHBjX4GNn81akPODEKrJ9FktycIsp4i9VrMTTtrhDKijL5gtd+KN5tNV1WCBqOWZnqIg0oiRdIYk2T7vOb4kdSc7LnswYIFWfpv5mB5s0HcaS5gwhROPyYpEtPW1HPYvHEOr0Iz6MftblEi9ygrh38CqrjQiPsjVwSHaDygm08MYky+8CAMSdYjY93NG5rYFLnjO9CAF6uSNKHTwvBevvEKJNI71BgUIuQg+ZoZAf6QoIKQQYpJ+6nUKLINq0KpyzlkVAAwbpqkXvfZO8ZoYqyg0x6zpRRGBN9J5+HMw3iHHkXGJyUs7nrA5YEU+zuFkeZPeNWEXSbmZ+6+hsA7RtcHX/MuP8gL91yfOGVvjWA+KkUzCKQ5Q5HbDXRumq+Lq8q5EYgyG8JX7kIZX/xagIbeT3P1ClTF16SCZ6pJab4GMyTNZQ3LlosVAIrBVom8cbRcohOeqJZ8P2PI6cZ52z3tYdgLqh1PYa2bzMeySFvtGVMl/eyAS0JPkdpCaPuc70p7PmcanVhesuHkn5rCspaXila4jwgMqzHAe8KOh+ugjdaVuc7Q3G4X2aRRXg1cIHvjJWvW22apzf+WGGDLU6aKt9yU4mgb4u2EQcXfcchW9mEvSaZbJj8vTbTirIfn8NXlx9zGgT2Wfiq90qsO1+pdIlnxZI19v6lcF7gyUFh4d9+j7Qf8l1EfYrNdl0euYVNQqusb+8SU2axuGLwx/biCO0PwAdtPIvs8Lwy+5EwwVsTxMWW8kHAvbWhBhdcXMw79Qa6embG8HFWYUcbLVUjV3YD3REcylKHs15yZVCB7dMgpBJNcwCCIpB5JzNEEMB8PlE7AsR17GD/h2EoQujZeD4INDfKivf6C26eg5gXu/MPwNx2BHAswDW3q6aLlpAA2fBkM6KmlwpNSaqQSZS93wdcA2PPGIMEbU/XpgcPOe
+ ksdHUD7D
+ T+Y8SGNPPgfiqfhH/U2tjGUbqkY5kXgm2iAjORTLCDb6gQKPeL3rbkaokHPKajqa+24fHajAbsnzFD4h9ff2TrF2vNNls1ikZhu7QikQEv2Opo8VxXOEea7PQcDHqgsZhVIly1/62qNFOcVhcupZCVLO4y7Hzo58IEehcnH3JF0EWrR7+uC1gu2/CwiIfpWPdsn5TDjGKF6zWJXRzIaxljIUN20PJSHW4rUYLgf6tPTLd5iCxcGUJvDTzfRj4n1TTNaEYuALHJP78/3I19qSf6PxnCMrITH2w6JYpWuxR3HszCc2XesddWjbb5B64nd5lxLqcE2vRgDZOpAWD4eP5bhfKwp6fn+4Daz2QyFJNfcRuDaq3uAV+1vpStvgH2NXTQ4C+ZWJbRAdh8In13FR9yA91/SnbuEY46II2z+xE0L5tuNQGxkj0zeQ3Vcw2ykiXxHCZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -84,80 +108,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Replace READ_ONCE() with standard page table accessors i.e pxdp_get() which
-anyways default into READ_ONCE() in cases where platform does not override.
-Also convert ptep_get_lockless() into ptep_get() as well.
+In mm/swapfile.c, there are two plist variables, swap_active_head and
+swap_avail_head. swap_avail_head contains all available (active, not full)
+swap_info_structs orderred by priority. While swap_active_head contains
+all active swap_info_structs (active, nor full and full) orderred by
+priority. Earlier, it serves three purposes:
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Acked-by: Lance Yang <lance.yang@linux.dev>
-Acked-by: SeongJae Park <sj@kernel.org>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
-Changes in V2:
+1) When swapoff one swap device in the middle, swap devices of priority
+   lower than the swapped off swap device will be promoted up value one,
+   e.g, I swapped off zram1 of priority '-3', then zram2 promoted to
+   have priority '-3', zram3 has priority '-4'. This is done via plist 
+   swap_active_head.
+   - This code has been taken off in 
+     - [PATCH v3 0/2] mm/swapfile.c: select the swap device with default priority round robin
 
-- Replaced ptep_get_lockless() with ptep_get() per David
+# swapon
+NAME       TYPE      SIZE USED PRIO
+/dev/zram0 partition  16G   0B   -2
+/dev/zram1 partition  16G   0B   -3
+/dev/zram2 partition  16G   0B   -4
+/dev/zram3 partition  16G   0B   -5
+# swapoff /dev/zram1
+# swapon
+NAME       TYPE      SIZE USED PRIO
+/dev/zram0 partition  16G   0B   -2
+/dev/zram2 partition  16G   0B   -3
+/dev/zram3 partition  16G   0B   -4
 
-Changes in V1:
+2) Find a swap device in swap_active_head when swap off.
+   - This can be done through iterating swap_info[] instead. Change is
+     done in patch 2.
 
-https://lore.kernel.org/all/20250930025246.1143340-1-anshuman.khandual@arm.com/
+3) Judge if there's any active swap device via __has_usable_swap().
+   - This can be done by checking total_swap_pages instead. Change is
+     done in patch 1.
 
- mm/ptdump.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Among them, the purpose 1) is the most important, while it has been
+taken off in below patchset. So this patchset removing swap_active_head
+sits on top of it.
+- [PATCH v3 0/2] mm/swapfile.c: select the swap device with default priority round robin
+  - https://lore.kernel.org/all/20250930063311.14126-1-bhe@redhat.com/T/#u
 
-diff --git a/mm/ptdump.c b/mm/ptdump.c
-index b600c7f864b8..973020000096 100644
---- a/mm/ptdump.c
-+++ b/mm/ptdump.c
-@@ -31,7 +31,7 @@ static int ptdump_pgd_entry(pgd_t *pgd, unsigned long addr,
- 			    unsigned long next, struct mm_walk *walk)
- {
- 	struct ptdump_state *st = walk->private;
--	pgd_t val = READ_ONCE(*pgd);
-+	pgd_t val = pgdp_get(pgd);
- 
- #if CONFIG_PGTABLE_LEVELS > 4 && \
- 		(defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS))
-@@ -54,7 +54,7 @@ static int ptdump_p4d_entry(p4d_t *p4d, unsigned long addr,
- 			    unsigned long next, struct mm_walk *walk)
- {
- 	struct ptdump_state *st = walk->private;
--	p4d_t val = READ_ONCE(*p4d);
-+	p4d_t val = p4dp_get(p4d);
- 
- #if CONFIG_PGTABLE_LEVELS > 3 && \
- 		(defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS))
-@@ -77,7 +77,7 @@ static int ptdump_pud_entry(pud_t *pud, unsigned long addr,
- 			    unsigned long next, struct mm_walk *walk)
- {
- 	struct ptdump_state *st = walk->private;
--	pud_t val = READ_ONCE(*pud);
-+	pud_t val = pudp_get(pud);
- 
- #if CONFIG_PGTABLE_LEVELS > 2 && \
- 		(defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS))
-@@ -100,7 +100,7 @@ static int ptdump_pmd_entry(pmd_t *pmd, unsigned long addr,
- 			    unsigned long next, struct mm_walk *walk)
- {
- 	struct ptdump_state *st = walk->private;
--	pmd_t val = READ_ONCE(*pmd);
-+	pmd_t val = pmdp_get(pmd);
- 
- #if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
- 	if (pmd_page(val) == virt_to_page(lm_alias(kasan_early_shadow_pte)))
-@@ -121,7 +121,7 @@ static int ptdump_pte_entry(pte_t *pte, unsigned long addr,
- 			    unsigned long next, struct mm_walk *walk)
- {
- 	struct ptdump_state *st = walk->private;
--	pte_t val = ptep_get_lockless(pte);
-+	pte_t val = ptep_get(pte);
- 
- 	if (st->effective_prot_pte)
- 		st->effective_prot_pte(st, val);
+Baoquan He (3):
+  mm/swapfile.c: remove __has_usable_swap()
+  mm/swapfile.c: use swap_info[] to find the swap device
+  mm/swap: remove unneeded swap_active_head
+
+ include/linux/swap.h |  1 -
+ mm/swapfile.c        | 31 ++++++++-----------------------
+ 2 files changed, 8 insertions(+), 24 deletions(-)
+
 -- 
-2.30.2
+2.41.0
 
 
