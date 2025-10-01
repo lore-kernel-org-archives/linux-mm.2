@@ -4,108 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 611C0CCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 12:42:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89364CAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 12:47:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 84EB48E0003; Wed,  1 Oct 2025 08:42:09 -0400 (EDT)
+	id E22488E0003; Wed,  1 Oct 2025 08:47:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8265D8E0002; Wed,  1 Oct 2025 08:42:09 -0400 (EDT)
+	id DFA678E0002; Wed,  1 Oct 2025 08:47:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73BF58E0003; Wed,  1 Oct 2025 08:42:09 -0400 (EDT)
+	id D37A48E0003; Wed,  1 Oct 2025 08:47:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E41A8E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 08:42:09 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E48ADBC815
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 12:42:08 +0000 (UTC)
-X-FDA: 83949507936.02.AC22E0C
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 1E159A0008
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 12:42:06 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf25.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C40E58E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 08:47:29 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6D864160A10
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 12:47:29 +0000 (UTC)
+X-FDA: 83949521418.24.4D0900D
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E6D65C0006
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 12:47:25 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="P//ecjFt";
+	spf=pass (imf28.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759322527;
+	s=arc-20220608; t=1759322847;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I1wrTOQk3HC+Fo1aBvEzngNPe9+LVpiTcP6T08Zz9dc=;
-	b=HkLx/1evv/9OgD9TT7RC85vY2zOIAkdcZTLFgLHOmbH1XbuLkFtK/wNdypHThUxpqVzjKL
-	4NE2H0002kP8BsUIv0bS7Txe88lToNOOa+9ONo5Mfu0u+kZ1REt7TbK4Uwqnm36wmeXSQN
-	y6nuSAaqLceJ+Cerm0TrY2NKTf0+tFE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759322527; a=rsa-sha256;
-	cv=none;
-	b=8fNOwq1z3zU0YE6CaJ+wUBA7iNNWNpnuFfQqLmBzDhfIl7lTWG6TFiUyyfFvkh0Y9heBil
-	4jmhcQOA9S0StsEp+VeA4KogPYngBCt5MAwjHgqMFRyicVSIDEGwkjPCh6BFK28zkToWWo
-	gg4xXhIxJZt0S6SZT2ws9Ry80qeOTgM=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8jbAq27x+6Ohu5C8t37JTrdMMIEZluW2VP8UzF113Oo=;
+	b=yQC4B1fIOgowLYcZsQ6d3Yd1D/bZOmx5GXCf3Hm1UlS28q0pIwLKIN77CNzUybSTlgy+CJ
+	ryufdzeIhqkCb/bvsop1d773eWFN9PA025AVwi7MLPRWzhFz/AyBv1/pvd2/GnI/vGxpY2
+	rvMJLkv9l0tYD9q+rQHJ400Cr9Xcxfc=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf25.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1A8CF16F2;
-	Wed,  1 Oct 2025 05:41:58 -0700 (PDT)
-Received: from [10.57.66.40] (unknown [10.57.66.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4E1733F66E;
-	Wed,  1 Oct 2025 05:42:00 -0700 (PDT)
-Message-ID: <6dc0b5c8-b485-4fe1-b85b-7dcd00214d1b@arm.com>
-Date: Wed, 1 Oct 2025 14:41:58 +0200
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="P//ecjFt";
+	spf=pass (imf28.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759322847; a=rsa-sha256;
+	cv=none;
+	b=i+VJIq0bH3oKzXP+tstlUrVR4TbKiFUnnvgy0QgUHdkOJPJCs74VzCptyQdoAXnYnOPmdr
+	jHNqFzEIeKMJ5SvK5cg3mlai2UjxurXWCFavnMNUOOMT06EVQ8b6kJo8jAhi3FVKK21b/u
+	mgmJULjF+WW9NKBYc8+EF0D7LWVlsRY=
+Date: Wed, 1 Oct 2025 12:47:19 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1759322844;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8jbAq27x+6Ohu5C8t37JTrdMMIEZluW2VP8UzF113Oo=;
+	b=P//ecjFtKiJHDjV1XNDMgZMod3wG/g+N0uto8cBhW/w2QUokuv+5sjW9PjMVw0541JzVn7
+	/+iVWORug+p8yhf03THXsQackG2BTLJZapgBOYiszUzGePwoidnACPcC59PDr+Z3sDAd0e
+	0aLjqGO3yym+RrB5xV0wcTX8Ub77vO0=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Jan Kara <jack@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-mm@kvack.org
+Subject: Re: [PATCH] mm: readahead: make thp readahead conditional to
+ mmap_miss logic
+Message-ID: <aN0i107IF0oQ_PQb@google.com>
+References: <20250930054815.132075-1-roman.gushchin@linux.dev>
+ <hm56lqfeqcpjjpwkzuo4ktv7ayt763htehpi7ie2d47q52gm3w@mgbj42ivvv5g>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v5 00/18] pkeys-based page table hardening
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "yang@os.amperecomputing.com" <yang@os.amperecomputing.com>,
- "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>
-Cc: "maz@kernel.org" <maz@kernel.org>, "luto@kernel.org" <luto@kernel.org>,
- "willy@infradead.org" <willy@infradead.org>,
- "mbland@motorola.com" <mbland@motorola.com>,
- "david@redhat.com" <david@redhat.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "rppt@kernel.org" <rppt@kernel.org>, "joey.gouly@arm.com"
- <joey.gouly@arm.com>, "akpm@linux-foundation.org"
- <akpm@linux-foundation.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "Weiny, Ira" <ira.weiny@intel.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
- "pierre.langlois@arm.com" <pierre.langlois@arm.com>,
- "jeffxu@chromium.org" <jeffxu@chromium.org>,
- "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
- "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
- "kees@kernel.org" <kees@kernel.org>,
- "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "jannh@google.com" <jannh@google.com>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, "will@kernel.org" <will@kernel.org>,
- "qperret@google.com" <qperret@google.com>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "broonie@kernel.org" <broonie@kernel.org>, "x86@kernel.org" <x86@kernel.org>
-References: <20250815085512.2182322-1-kevin.brodsky@arm.com>
- <98c9689f-157b-4fbb-b1b4-15e5a68e2d32@os.amperecomputing.com>
- <8e4e5648-9b70-4257-92c5-14c60928e240@arm.com>
- <8f7b3f4e-bf56-4030-952f-962291e53ccc@arm.com>
- <6e5d24de6a6661f83442741f6be8daf691a05a20.camel@intel.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <6e5d24de6a6661f83442741f6be8daf691a05a20.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: z6o36dqd3eip76guyfc1pr84959dm66n
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <hm56lqfeqcpjjpwkzuo4ktv7ayt763htehpi7ie2d47q52gm3w@mgbj42ivvv5g>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: E6D65C0006
+X-Rspamd-Server: rspam05
+X-Stat-Signature: h1tf8qwcpzdr9gqb6mrkakpdoi4rm93b
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1E159A0008
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1759322526-240049
-X-HE-Meta: U2FsdGVkX19dlDhPiHfbJF1iQbpDJQWVRBa0Qpr3DMlo/f9PaJdFahbyT39XEsB0HVmxQ+oLxaWYOpFtJkaEtcueXTcQztG9NbiYIWOwuyB+HC3jpSV9FX9+HthF7B3/2B/mjxJS9wdvhUKa+3vmKAjO8R6lnhwzCv+CGTNt03LsxjEEuz4o3U7pM7NGpUMFn9CTEFLGvusuEYR8JdgIa4bhxDAESliTcobbSP6hBQr+Ac7ck4aJ4QZ6XNWqKAoclzWu/Jfe6k1Qpn4f/CB1dF+oKznzt/xAeK5zj8U6bj+UeKpIF0aZyOsZw5QAq4BGoI8OBh3VyrvuGnhswhyvQFzx7oYBMMQHkEq0q/ktGMOw+3jjHw+gpk8BSjYr29O+NIcY+3Qm4EyyRXE6oLu6AyhqOepnJrtP9n5ecR5iMr7kNw2xi/hgB1RG2HD2LB1jp9g+9QNMB0bvLjWjromRKLx0bgMGTQLJPADVH7Wz4uQ33uj3857SXngXanYQDk1hn37sYh51Fm+1u27qkXVPew+6QLjVV58+jymBy7CsbuNR+H5nc1OLzeYrwi8OjbASNT0L2rIPzAsyQcthBe0fwtNczKZWxLrhHFD/oHANQJT1FxSkGL1DxG5Gj6yyqp4tPnz0+hiyQq942WqTu88DCCjqYwv4an7yoCNC1eobeDx/xkNbnw/bNYzkP14SYnSAg8u/viN/C4B7WgV424/yAYdr/MA3hwsrXTj4R6LWRGxGF/CATkPl/vC1c2fUentXQnHx7IR64Lh36g4jC1v/w/WGaU76/+kPsaOlpUba3sfSnC9mbfUEziefNLr5HI/hZ4zrzKtXCIqXhjTSAfu9FkPD83TLRtE65/b4KVEQm456x8aiSlah0atcmmr5djBFyI7mATvPSGAUC4lfFMnVCCr1G/G0nfV7vcEh1JvRCYlrA+Gx3+Kg/sXsVVtIO0Y9cqL0rMYi1ggKEPi5ODr
- Zto/hMyx
- dP/oVLWlQmYsa8MwkYpnFBIizm+4t4dfmsDUF7yypYZvFMHy0aJG0isOnuX3Ubv6gVwe7cyjAIHplnwuy4kBU2im3rbuGZ3rHyLw7fCL4J0An/pwK3d8kMODwheMoRGeQMTAYP7exUht9FLNU3q+DgACvMKkvw4o86ItbYVQw4ioWKyG8vAEHN67mx5LGBvxqhiqyBs57rqrWk6LK6BQsTLlYRwgvYKlM/z9xZuvqnTWOAmkVEZWqZ9u0Px6dqXhA9N9qywJK62QxFus=
+X-HE-Tag: 1759322845-313178
+X-HE-Meta: U2FsdGVkX18edvbMCd7QiFX+AuAqmKQXZPVyB7qtPB/VFjF9Ajim3t0CMf6gHSJe446fZixJHMre5OOo/ygL2weFKyxYeH2GFBzHHCznu4LD0fyePYiQHvmHR9DY6dZ3LAeLfCml+coHS5bp70DYm2w/CpS6T0q4kCj/b2VW2yb4BRl98oqam3AwHjHHcNMhRLWdIBgjBBgcwM4LVynkTdTuKCVEKgFHhUMNgPlDd+qMedJnwMRiRDR9O+vKbohJwRdB1NB0JqISWEotyDoEdVFjR9Dl6PZvCLrqbcQ2YDkaayHHbUWZ4TW8hIkxVyr9hMOEXCBKe2uh91gyWPPsdzz3yKSDLEmq5BAelIpa0QB62w2lZSS7vVVzWQOdIeVfuveELDfiTNuPQkqNcT40ANN7Ql07ECTxZj9GsO/xxCOh4L/tL64/p/emtgR7pjsU4JA+XCI8qJIIh5GQDsLJoGXOANmqlrPJFJt2R6Xbk1UiF8tU0BSbrbq8jhqejhGoSHCDS54RRR/wTSVr9aQxL39SX7xwVMtmAhfl8TRZTgkzBLj9mAF4r+xytqK5ZE/gxrsgku+JQy4Ta8Qr2at2GGJ/phg5Jvh7+zU27V+utEMfL9GKYpldhdt1OBZ+2f2VEWrF6dAFVhIXSZjGAgkt3avNuN9ozmIT3ScVNX73m5HtArOS6fsyBnKd9maiDYkr6W7LYA6XWp78Dh7emZxXWNz8x4f08OZJVSBHX6suLVSB1KuVMkfIOPsEc+npqqLaWKwO1p0xrWo7wbL7ModvLmJ3d+IxAKc0qr5k+oLOs0oa19v8p+mlE2YwaiU0Ef1gxnp5ah1xVpTN3LOmXlsWzkxF0pZVgiKnFIJQY+j/Nebv9oCWlI0X+d6yQ2ItQtOfaIhnrhydsBps2Fi2jVhp4DlRxznufh3Bnik9/2IESdjGIdcXIHluOt4BqAwFx67ycYS1cnRzE+RSAktRVTr
+ fiGaX/NY
+ VZ8C8Qo3WZxu4n/iy9RtvapPZGZpTZFKss1sQmOp3mis2rHVDWGJPJ0nzx3I4Xwt9Hn3LLbS7eoII/kFyDdUnxZHFXjQrgFnUoAlXXbW7k9uhBdwcfX2rxbq15WzLrCZnqNkNtvk22AFsHfwtbvEkgvhtWXBT4OV1h28mrijYzORt+XYwBP0qqVLJE14K4CvTrGfnCz/dtHdkAikOi9zlLTFLh1e++QxAB6a1wFeeZEz9qkGTW0tmrpNU7bRYiUOpSgkxywAJiJRSl7g1JNiRNhiYkQSwrVDpLrHF1g/tQoL2/4yRrhk/UfxMZfTYxpWeDpnhLTmVgJhXoIVA6QQIQ3hnlBBbh6L8UqbwnPb+qe1gNB646QB/pjp/YCXYbA23e+pYH2zrt6PCHLUxvXZcMYRrmA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,80 +89,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 18/09/2025 19:31, Edgecombe, Rick P wrote:
-> On Thu, 2025-09-18 at 16:15 +0200, Kevin Brodsky wrote:
->> This is where I have to apologise to Rick for not having studied his
->> series more thoroughly, as patch 17 [2] covers this issue very well in
->> the commit message.
->>
->> It seems fair to say there is no ideal or simple solution, though.
->> Rick's patch reserves enough (PTE-mapped) memory for fully splitting the
->> linear map, which is relatively simple but not very pleasant. Chatting
->> with Ryan Roberts, we figured another approach, improving on solution 1
->> mentioned in [2]. It would rely on allocating all PTPs from a special
->> pool (without using set_memory_pkey() in pagetable_*_ctor), along those
->> lines:
-> Oh I didn't realize ARM split the direct map now at runtime. IIRC it used to
-> just map at 4k if there were any permissions configured.
+On Wed, Oct 01, 2025 at 01:35:39PM +0200, Jan Kara wrote:
+> On Tue 30-09-25 07:48:15, Roman Gushchin wrote:
+> > Commit 4687fdbb805a ("mm/filemap: Support VM_HUGEPAGE for file mappings")
+> > introduced a special handling for VM_HUGEPAGE mappings: even if the
+> > readahead is disabled, 1 or 2 HPAGE_PMD_ORDER pages are
+> > allocated.
+> > 
+> > This change causes a significant regression for containers with a
+> > tight memory.max limit, if VM_HUGEPAGE is widely used. Prior to this
+> > commit, mmap_miss logic would eventually lead to the readahead
+> > disablement, effectively reducing the memory pressure in the
+> > cgroup. With this change the kernel is trying to allocate 1-2 huge
+> > pages for each fault, no matter if these pages are used or not
+> > before being evicted, increasing the memory pressure multi-fold.
+> > 
+> > To fix the regression, let's make the new VM_HUGEPAGE conditional
+> > to the mmap_miss check, but keep independent from the ra->ra_pages.
+> > This way the main intention of commit 4687fdbb805a ("mm/filemap:
+> > Support VM_HUGEPAGE for file mappings") stays intact, but the
+> > regression is resolved.
+> > 
+> > The logic behind this changes is simple: even if a user explicitly
+> > requests using huge pages to back the file mapping (using VM_HUGEPAGE
+> > flag), under a very strong memory pressure it's better to fall back
+> > to ordinary pages.
+> > 
+> > Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+> > Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+> > Cc: Jan Kara <jack@suse.cz>
+> > Cc: linux-mm@kvack.org
+> 
+> It would be good to get confirmation from Matthew that indeed this
+> preserves what he had in mind with commit 4687fdbb805a92 but the change
+> looks good to me.
 
-Until recently the linear map was always PTE-mapped on arm64 if
-rodata=full (default) or in other situations (e.g. DEBUG_PAGEALLOC), so
-that it never needed to be split at runtime. Since [1b] landed though,
-there is support for setting permissions at the block level and
-splitting, meaning that the linear map can be block-mapped in most cases
-(see force_pte_mapping() in patch 3 for details). This is only enabled
-on systems with the BBML2_NOABORT feature though.
+Hi Jan!
 
-[1b]
-https://lore.kernel.org/all/20250917190323.3828347-1-yang@os.amperecomputing.com/
+Matthew and myself had a chat about this issue last week at Kernel Recipes
+conference and in general agreed on this approach. But of course,
+an explicit Ack from him will be appreciated.
 
->> 1. 2 pages are reserved at all times (with the appropriate pkey)
->> 2. Try to allocate a 2M block. If needed, use a reserved page as PMD to
->> split a PUD. If successful, set its pkey - the entire block can now be
->> used for PTPs. Replenish the reserve from the block if needed.
->> 3. If no block is available, make an order-2 allocation (4 pages). If
->> needed, use 1-2 reserved pages to split PUD/PMD. Set the pkey of the 4
->> pages, take 1-2 pages to replenish the reserve if needed.
-> Oh, good idea!
->
->> This ensures that we never run out of PTPs for splitting. We may get
->> into an OOM situation more easily due to the order-2 requirement, but
->> the risk remains low compared to requiring a 2M block. A bigger concern
->> is concurrency - do we need a per-CPU cache? Reserving a 2M block per
->> CPU could be very much overkill.
->>
->> No matter which solution is used, this clearly increases the complexity
->> of kpkeys_hardened_pgtables. Mike Rapoport has posted a number of RFCs
->> [3][4] that aim at addressing this problem more generally, but no
->> consensus seems to have emerged and I'm not sure they would completely
->> solve this specific problem either.
->>
->> For now, my plan is to stick to solution 3 from [2], i.e. force the
->> linear map to be PTE-mapped. This is easily done on arm64 as it is the
->> default, and is required for rodata=full, unless [1] is applied and the
->> system supports BBML2_NOABORT. See [1] for the potential performance
->> improvements we'd be missing out on (~5% ballpark).
->>
-> I continue to be surprised that allocation time pkey conversion is not a
-> performance disaster, even with the directmap pre-split.
->
->> I'm not quite sure
->> what the picture looks like on x86 - it may well be more significant as
->> Rick suggested.
-> I think having more efficient direct map permissions is a solvable problem, but
-> each usage is just a little too small to justify the infrastructure for a good
-> solution. And each simple solution is a little too much overhead to justify the
-> usage. So there is a long tail of blocked usages:
->  - pkeys usages (page tables and secret protection)
->  - kernel shadow stacks
->  - More efficient executable code allocations (BPF, kprobe trampolines, etc)
->
-> Although the BPF folks started doing their own thing for this. But I don't think
-> there are any fundamentally unsolvable problems for a generic solution. It's a
-> question of a leading killer usage to justify the infrastructure. Maybe it will
-> be kernel shadow stack.
-It seems to be exactly the situation yes. Given Will's feedback, I'll
-try to implement such a dedicated allocator one more time (based on the
-scheme I suggested above) and see how it goes. Hopefully that will
-create more momentum for a generic infrastructure :) - Kevin
+Long-term it would be great to use a better metric for memory pressure
+here, e.g. PSI. But it's far from trivial.
+
+> Feel free to add:
+> 
+> Reviewed-by: Jan Kara <jack@suse.cz>
+
+Thank you!
 
