@@ -4,123 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C52CDCCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 04:38:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7020CCCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 04:46:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 284E58E0008; Wed,  1 Oct 2025 00:38:18 -0400 (EDT)
+	id B70918E000C; Wed,  1 Oct 2025 00:46:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 235C48E0002; Wed,  1 Oct 2025 00:38:18 -0400 (EDT)
+	id B48898E0002; Wed,  1 Oct 2025 00:46:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FDAA8E0008; Wed,  1 Oct 2025 00:38:18 -0400 (EDT)
+	id A85478E000C; Wed,  1 Oct 2025 00:46:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EC5AF8E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 00:38:17 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B470C140894
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:38:17 +0000 (UTC)
-X-FDA: 83948288634.25.28A3060
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	by imf05.hostedemail.com (Postfix) with ESMTP id CCFE6100010
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:38:15 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MbnIkHmU;
-	spf=pass (imf05.hostedemail.com: domain of jinji.z.zhong@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=jinji.z.zhong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 929098E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 00:46:25 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3EC6611B0DE
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:46:25 +0000 (UTC)
+X-FDA: 83948309130.29.FEEC0DB
+Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 69340180007
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:46:23 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=elijahs.space header.s=purelymail3 header.b=BVY13p2N;
+	dkim=pass header.d=purelymail.com header.s=purelymail3 header.b=sbFVLOys;
+	spf=pass (imf06.hostedemail.com: domain of git@elijahs.space designates 34.202.193.197 as permitted sender) smtp.mailfrom=git@elijahs.space;
+	dmarc=pass (policy=reject) header.from=elijahs.space
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759293495;
+	s=arc-20220608; t=1759293983;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=orjiVwk9jVmakZ54G1xSOOUArCKwPbL4DFcsMOqI4MI=;
-	b=AN+CAKIEOk3RDR1kes02rHniriN0q8tEuQhT2glgGZ10vQwNTrHVTFZskMLHiylaLXj53K
-	RiZ5ucdzICYwXH0WG3dBSGO3dpEybMRFDoO+i1FoEta1EvZhxuJbmB/zWZ2eCJosnGt34G
-	CGg1FAyV4dGhlW0oxf6e4Wie+jfQliQ=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MbnIkHmU;
-	spf=pass (imf05.hostedemail.com: domain of jinji.z.zhong@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=jinji.z.zhong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759293495; a=rsa-sha256;
+	bh=sfrZW6AR35r6CkC58CZBqPk7K4vhTSoVPBNTGOk/rRI=;
+	b=r7opNZqnl5x2bkzy6K9tiSFC+37/sLdpxnXZ+/kFD+b/TKN0sBd2jLMX38TICLn51l+OYg
+	r4Q8PV5cU+lFw9PhPYoHjQATfanqk7D4yollj7r0yAWsinGBTKiYiv5vr9VAm/ZO//J61+
+	S2Wz6Wysn+YOljISzOWe2dKsDm3g0W0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759293983; a=rsa-sha256;
 	cv=none;
-	b=C8SQGYXieDutIw9GBwhP5l3JAJxjVbWCCKUcyk0AwYioIUIhtsDlI8rmaYFa8sMGog2IF0
-	Ki8x1n964P0QmjNiOYdFY4ecE8zNfstYEXewLAiSMQyXM13N+3SVZk9B0T7yHG/xG+SDRz
-	K8EGdzr2b1kfkxK1fVudY3yd5jSoU44=
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-789fb76b466so1170818b3a.0
-        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 21:38:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759293495; x=1759898295; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=orjiVwk9jVmakZ54G1xSOOUArCKwPbL4DFcsMOqI4MI=;
-        b=MbnIkHmUR/uWxfJ6DcXLVLD3tc/BdqSm4UnR8vCVIcirET4gMKNCH4ZkWz8sRJMbW6
-         UBSz7aSSEx+D1+rXyFjWWkbv1BhKfgUdxC8PJvZ7pIFnq5GrtUSXw04ul3B1oaKuTrs5
-         /VF5w3Q+1kjifWssxNT2/tRECUBAH8k79rgd3h8Cqdvw3MiSFKfMfzuaFhYtQeMt6a4e
-         aWH657TYqZMeKbTxBgEYcQg6MmNqT5P6RG/HSDtY/nUtwphWfdCd5YQIwKbQXBH183Ao
-         iA4zNyU5bXnL5254A1WOjUJUU6XAfnJGHYRW9vE5LbEoehmES3TdFd/SxZn61uIWjE+r
-         EWng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759293495; x=1759898295;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=orjiVwk9jVmakZ54G1xSOOUArCKwPbL4DFcsMOqI4MI=;
-        b=OZYYTvnt2JHjEcZjsUPuH86ZJ/ruJXb/F+O1YBITOry92gmPx/4fC9xpsakFqoeibh
-         1fZZYS3OIUr0ZUFCoPy3VOuhHrE5uH4exrsSt/ozqjyVaYu3yTAxMvJZBqiNtcMnfUuH
-         wb0jqdyR2Emyj+pYV1LhcM6UiSEnasdLeNNe5uRdGLwgAgV3kLerlxrf5As71N7ce8BM
-         b52uK9dLDbHfAtfVdc6NDUVeCrVSqRw9j1IxzjoWm8vytON7kNytlyKRpg2hahTX7fIv
-         suDBfas7+68aDy6F6tyCw03DMRPd+tNmjzN21o7M5PJkPYFRJ+7iqRLFp0lhjSgVABlN
-         +Zog==
-X-Forwarded-Encrypted: i=1; AJvYcCVIaowZbJ2eZdmKat4ghmebSHQHGu9r8v2rVym94WOcjmd7gkxh7PthGABS2kaDctfhiEXvwydlrA==@kvack.org
-X-Gm-Message-State: AOJu0Yybjxe43l2+BLR8szOJ29wXZC3cE0D6N5ujbg6Jcr6v2mG8EPxP
-	7VD31jpTH2NQaTv2Hfv0EN7tx4vTfEvJCD4toYNye0GfINDGsW8FBLRt
-X-Gm-Gg: ASbGncuoNrYwd4y3S+r+eFbCOX6m7a819WadFPe3s8RVEX2xO0NAcfZ720c6+390uRA
-	BC+KkxcgKe7WfFriJMxr+e166nDirtDaiONJETbb1w8DNuoDaSdDOrJ+C5S7dGJZdvnf8D303G9
-	J2C/BwbpCB1JQRZfJ71sOf4VhOqLhSZtYvAgvdXa6LjuE1/7WwE572oAER3aPxTpD6aoBqs+Pk1
-	V8SV5ytOTYfUXFMR2Yso8tlWa7coPsr8xDaQAHhd2BxyjWnHASmXn/J7LEiw7w7HwWbtmjQzw3F
-	ORe/9MmjPVAxkn32NnpbEN+kPG6xI6zbdH8CCZmUX09KWmQ9IGA5E8Fk9WWzyQGwq4QlNuBpJeA
-	hNAZDnG9F52AFkGQH8I2PcPFZtBSHw9sA++Gx
-X-Google-Smtp-Source: AGHT+IFs5bZFDV04o//0C2oYnOx72aMORXDwifOEjRchzNZn3UoLmDmaq+PUE6cX7sUUJbBmPCgC0Q==
-X-Received: by 2002:a05:6a00:194b:b0:781:1a9f:aee7 with SMTP id d2e1a72fcca58-78af3fe9a87mr2377050b3a.2.1759293494640;
-        Tue, 30 Sep 2025 21:38:14 -0700 (PDT)
-Received: from daniel.. ([221.218.137.8])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-783ad5e99acsm7912871b3a.22.2025.09.30.21.38.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Sep 2025 21:38:14 -0700 (PDT)
-From: jinji zhong <jinji.z.zhong@gmail.com>
-To: ziy@nvidia.com
-Cc: akpm@linux-foundation.org,
-	feng.han@honor.com,
-	hannes@cmpxchg.org,
-	jackmanb@google.com,
+	b=RHiizfgL1zRCfnmMFFJGKKChTnk+Ojc/ep5zGl7BCyqUur2GjSWBcscWtRiG7Mqw8RE0Yi
+	iHHCMEKLKv8giljcchcFSMU6RSIiHOFhuWPWGpPaPgxVSrpyIbMvhhp34fFWb3YOMbwUwo
+	Ekoxqoagv6MbIY1NV61d+WffCtQU0c8=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=elijahs.space header.s=purelymail3 header.b=BVY13p2N;
+	dkim=pass header.d=purelymail.com header.s=purelymail3 header.b=sbFVLOys;
+	spf=pass (imf06.hostedemail.com: domain of git@elijahs.space designates 34.202.193.197 as permitted sender) smtp.mailfrom=git@elijahs.space;
+	dmarc=pass (policy=reject) header.from=elijahs.space
+DKIM-Signature: a=rsa-sha256; b=BVY13p2N/J3gxB4vcQ9vaRwkpICVSGS0Wg6rMVgrnHn43OzsTUq8aa3vKO4E1Q98CwPKLz42Sh3UlxbgS6E2dqKO0d1JXhlWPLQ4wP/etM5iRzgY1yNKpg86ZWDL98DD2yiHNUZH7y1MvCXtBOxgpS/Cg90xqMAZg5lyTCs2+B0Eac0ZW9Tt9hgWmGY6hRRn6GOr+LzuuAQQMZyoiLNlOIhEVekzBTi1bz0j3GoYilS4+dBqqVYjvqfTtJX5muWc2RpD0cqeZ6nZS9JtE8kD6WqmKoDpLigTN8ZshnQ0YMZEvH2isqhGYJErXJHCNjxD72gUJKXm8GYmYlHoF8Ro/g==; s=purelymail3; d=elijahs.space; v=1; bh=W9aE/h0MCF2uj9dBQXAmWE6NxDahP+VqHyrnxKfSqKI=; h=Received:From:To:Subject:Date;
+DKIM-Signature: a=rsa-sha256; b=sbFVLOysOH+HRfWWENrNx001woaBDpzpoQnXyPe7Dm5sNgrt5iTQaULT8fqQbLwmp7xE5BVFTnX9JdbZcwfvZlgTg+ZpuuxaXIcaCEw72xMz135jxKjj3rEIIbAuvvk8DTdakrD4i33EcifpCrYrwdqE7ohadn0dKwCaYRSbMr3c5Rj+aO2gjD3cLSFLqfm2zgT2lzeF2LMGfnR2e5CST0hw9XDh/V2zYHBCtO6GFWIMD0b5cpuK4uz8FDPLCFWMI/0DA7vf6hCUc9RdzX2IL5GTxR0xannQyrn7xEcKE7XU4uTjVICThplaIy9l5wpV59gc8jQyxGjmTz3eqeBVEw==; s=purelymail3; d=purelymail.com; v=1; bh=W9aE/h0MCF2uj9dBQXAmWE6NxDahP+VqHyrnxKfSqKI=; h=Feedback-ID:Received:From:To:Subject:Date;
+Feedback-ID: 147366:4866:null:purelymail
+X-Pm-Original-To: linux-mm@kvack.org
+Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id -1637358726;
+          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+          Wed, 01 Oct 2025 04:45:34 +0000 (UTC)
+From: Elijah Wright <git@elijahs.space>
+To: Elijah Wright <git@elijahs.space>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	liulu.liu@honor.com,
-	mhocko@suse.com,
-	surenb@google.com,
-	vbabka@suse.cz,
-	zhongjinji@honor.com
-Subject: Re: [PATCH v0] mm/page_alloc: Cleanup for __del_page_from_free_list()
-Date: Wed,  1 Oct 2025 04:38:08 +0000
-Message-ID: <20251001043809.11019-1-jinji.z.zhong@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <F1AB428D-73B3-4E40-939C-2A7BAEA1E73A@nvidia.com>
-References: <F1AB428D-73B3-4E40-939C-2A7BAEA1E73A@nvidia.com>
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	linux-mm@kvack.org
+Subject: [PATCH v2] rust: slab: add basic slab module
+Date: Tue, 30 Sep 2025 21:44:21 -0700
+Message-ID: <20251001044508.23126-1-git@elijahs.space>
+X-Mailer: git-send-email 2.49.1
+In-Reply-To: <20250924193643.4001-1-git@elijahs.space>
+References: <20250924193643.4001-1-git@elijahs.space>
 MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-MIME-Autoconverted: from 8bit to quoted-printable by Purelymail
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CCFE6100010
-X-Rspamd-Server: rspam05
-X-Stat-Signature: ch44oud7aykj4pej6pscertfpstn3nhb
+X-Stat-Signature: qdgknfu7wb4m97kqqq59xidjpxz9q8uj
+X-Rspamd-Queue-Id: 69340180007
 X-Rspam-User: 
-X-HE-Tag: 1759293495-88607
-X-HE-Meta: U2FsdGVkX18RoH9YPvsBhkcpe4zqycViYA4sn0U/ErzJW0A2D3+sVMFxVcq2c3GX+VWJXmXOn0h4Uix2M1J3dx+qutBN36BOcw2+TMwCt0yiRjrzKdXialWyPe1NU02+n+kPgtnaWVaIu+haYICFpizGVFguV7Jid8jClKjjjF466ecZDfi0bIDbFu3QMzHn9ZMiSscRFlr6JxSgfq+11iK/2NM2v0N6ONzYMhOcnbknORBm3YbB/K3TWC8zs3tBEthkaX6Lh9+/ryA3TxJLecD7Sx1XI3znKopMh29yzrZSlH8aThKnF5eEuBXPQPLo7HPxO/0SaBQfPkExdvuTXTyHFa+WOVK7bJWiKi/6nwhgTqHgI/0ZfMchspswPubGbCSVdt1EeGvUsaJFz8NRKtfmBl0CWkt1KHQsdi6KZNv8wsYuGcSv3xdrrGmjOC/wmU12YQwwLQNC+Hpsz1Wtr5oOUtlMceBkjT9CEYI8IHu5XDWVu1iv2NSKcV1KYvxQLk3L5vFNhC+sLleleJIKkknUOxpvtSadaXZJqW1ySH2/WvGwmVPDHT3499yjylCZ6cdUfrse/0T0SVwE+j77b+kO4fNBUj0SvD81VihqTULI4DXxDPvJA9jY0xr02QG2wd1j+N9ksp4WbrELvRk8LaCSzeAWGMDC4XYM+yWn08jrK4h6C93LIbQEh7smvMxyQGXcS8Z/dWjaoOKuFDizvAklfua8pMj7S+/RJf9Bp6hWmyDwdUW0Os4B/1pvI9/FXHOLmuegX1otW2DuxnZGlskqI8ZKShEOOHhEYCD8JIIrrfSfhX9oCCfdOq3SfNqLKU70Y7z4lJZLfov4IPHjUcJrWykoxKtql0Pr9NZdQpmXWEoAo7Etk4uCYPQXlnx2k/v7tDQSPSGMbEMdjb22alOsNog2V0hnZGzOXBo8K/n/w3bKEa0ZpeXweBjQbPdvvZIWqSC0ph90MWqm2y3
- 4aXZp1Sd
- QmifpzmooeqBE5DLcvqrzLZLrtJAhEgjmYsD2Y93DWS9jef6Xo1RQ/0uTsNtx2Onej4cMl4OfxiDAR3TCHNtnmQM2TLFW/Sin/MpoHpjLS/9+9E6NFt4SksCqQVSt2fKQc/MiOr+SJSAAXeL/Jz5ZGZGYn4ka3hGJfJc4KyjFCYpGLdEgbhzKn+oWsU6hyXZbf//zlNiBp6Z4/KVAmpK0vFiIYzTT0PRHI9wUiKstr6wZs7+PNVtYYOdX1++vTaoMDRUhT0JR1w2IlVXNn5Sywcgrjouql3yK6ECYkpbLwwR1vNMPvpbnhiiRXrBiLeeq4PYYTKau0/bJzyLmrnPXE4xSMcr3c2JLswQkPtPEDpFVZ8EPwUbi2KhqlpFm1O6zc4orGvS75kzeqlHxLJX6XNxVrsVDHs2QV1GfP+Coj93XQnTeZcikNGdgUCkuWMnT+LJlnzgSDpCY9YYwYkpXE5JPhblGgEkQTAUQjUe55kokiYfskHGcLyQe/HICMD/ck3Msk3axKvk8WCvxABeGRLKHi6wQ4WHdqOHdMKmBnCy2o9yAqUztXlZzBQSTG0J6InP3XmqvEqSrZKPoH+H9oWpFjgextd1yXcfrE4rij4ougLmT3Lz23tuTWA==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1759293983-780803
+X-HE-Meta: U2FsdGVkX18R3cOYhFpO/SsmMo6Nf9VwBaz73FF9/ZemKgJ5P1yKQh9WHfVbH2UjKLXHEvIDrhP4YVifPlIeXw7rwaQ8i6XU4SNTJ+uu0UKpk1Yw5s50Ugc/9Jdkl5udVRlxRTKzuwgDauo83EtbUHzsr0wk0nh6A6Y8kDrkikD8ospHLBis9yA6n7Nf3+Hr/ACuduqgQ5RXibpvZz9Tc85NsTHOSu4JZCFEX2QaASlRGHrLBulcgDqeWYs+eRmXBEn6w5gDELWYy5tVCFLnYO+tZ9qMKHTDuNCvPoAGqlT62dB672VU8GMOwe/SlnrLDaP551gWs7Glxo6oE/4pLcSJ+GG4xpGka0v4Pd0xz005TnUp3B2x63JZdwyLny4gtvj6dN3fLAz4kYBkyFdd4fYCklM46UoemLRWUulJz1snWwgHDZpQhKnCePBjO4Lq3MtN6r5Y8jJRUEMEEHJm1bEdFtqZdKhWrbJap6v5QoHhO29gzukwa8/qCh4SFrqXQihbD3NU719OCYv4R+hGCBrJACyW7kfpINHYRC71b3/AwuZo1V047DUnqU/zvNLxfc+rFj9xNHS05XaDjKCBofH+GneYky2LibjgfJuGRelrNDBHC3cOFMohDof/C0vzsGyz14jEk/5lrRfPL/BMe0dTgt6NKN1V61UooGv8djEpaimUfdYGgFI3vkdIrsPojqDCZda40H5vqWIosehNYAm3TkO831qXM98g9axbv3kLQL5cjHA99IxMEyBB57+RvOQb9b9T/veH1Mc8JungOfHalVuLfgTSOSCYsphOWXKJrvNLOqonF2PGEud3LIsfcmY2E5RdDEacp4PhCXAs4FP555gtvUdfUvOTe0ae8l3JrOrktLtq/zwaJkQUFsEYdcJerS2q76y1CCCgm0VPmmeXFSjrhCqpJBla2irxsLCdrSIBPapS7fjlMn6KjFIxfHVhY//a/nA7RXSKV3x
+ cmaGmKsg
+ n9T29uce0zaOw3cR24YnLCvyJQSs/pLWiQAfyxyteqxzg+7yvhW6x8HArAZILN+87NOTZ1gy7YHCd4/s6xn8WVzJ/4ROiMuohSBUqCq1pdX/3V04gt5nuF1fxHIjcJHhdpSTbxDPk75DeCUHfRJEqpMJ/HBGDYvZgO7ioSCDJCBn5Mb86LrV6bwxB2UkELnyWqk9wRHKdLZiYVVkg6ACBNLxGj7wGyHE2QH7uV9POwJCtnTerAHpbV8nj5jiNIPhJh6Y3sFR2JroERP1C/tbNVRQKxfDouoBzGJXCYY4oi14VxUuV46WbnyDA/tlX+Bef38xLKqeA00/tq200TQZw7u23kwkdah9xPMEaYCo3gDHeGa5NLcelxe1Xtxdueptg+zfa8yGJkkLgeGyUbajPhWfwbUglIAI14n2jTrrgro3wzyg1tV1+hexGBHohTpUN1BujR+2IjLdl8DQCEWi5ejFNOMx1x2EsJatWPuBXl15J1Rx6UtlXodwVR7lQH/t3JKMLv+CEc4neNZkeBuqs/z/miZ8YMr9GJORvDcyrLShvmUIdBwlL5mkM7hXka6zaTRsYANWvTamgoL0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,76 +102,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> On 30 Sep 2025, at 9:55, Vlastimil Babka wrote:
+this revision adds gen_kmem_cache_allocator, a macro that implements
+Allocator::realloc for kmem_cache. the one concern that I did have was real=
+loc()
+for resizing, since that obviously isn't possible for slab
 
-> >On 9/25/25 10:50, zhongjinji wrote:
-> >> It is unnecessary to set page->private in __del_page_from_free_list().
-> >>
-> >> If the page is about to be allocated, page->private will be cleared by
-> >> post_alloc_hook() before the page is handed out. If the page is expanded
-> >> or merged, page->private will be reset by set_buddy_order, and no one
-> >> will retrieve the page's buddy_order without the PageBuddy flag being set.
-> >> If the page is isolated, it will also reset page->private when it
-> >> succeeds.
-> >
-> >Seems correct.
+Signed-off-by: Elijah Wright <git@elijahs.space>
+---
+ rust/kernel/slab.rs | 52 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
-> This means high order free pages will have head[2N].private set to a non-zero
-> value, where head[N*2].private is 1, head[N*(2^2)].private is 2, ...
-> head[N*(2^M)].private is M and head[0].private is the actual free page order.
-> If such a high order free page is used as high order folio, it should be fine.
-> But if user allocates a non-compound high order page and uses split_page()
-> to get a list of order-0 pages from this high order page, some pages will
-> have non zero private. I wonder if these users are prepared for that.
-
-Having non-empty page->private in tail pages of non-compound high-order
-pages is not an issue, as pages from the pcp lists never guarantee their
-initial state. If ensuring empty page->private for tail pages is required,
-we should handle this in prep_new_page(), similar to the approach taken in
-prep_compound_page().
-
-> For example, kernel/events/ring_buffer.c does it. In its comment, it says
-> “set its first page's private to this order; !PagePrivate(page) means it's
-> just a normal page.”
-> (see https://elixir.bootlin.com/linux/v6.17/source/kernel/events/ring_buffer.c#L634)
-
-PagePrivate is a flag in page->flags that indicates page->private is
-already in use. While PageBuddy serves a similar purpose, it additionally
-signifies that the page is part of the buddy system.
-
-> I wonder if non zero page->private would cause any issue there.
-
-> Maybe split_page() should set all page->private to 0.
-
-> Let me know if I get anything wrong.
-
-> >
-> >> Since __del_page_from_free_list() is a hot path in the kernel, it would be
-> >> better to remove the unnecessary set_page_private().
-> >>
-> >> Signed-off-by: zhongjinji <zhongjinji@honor.com>
-> >
-> >Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-> >
-> >> ---
-> >>  mm/page_alloc.c | 1 -
-> >>  1 file changed, 1 deletion(-)
-> >>
-> >> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> >> index d1d037f97c5f..1999eb7e7c14 100644
-> >> --- a/mm/page_alloc.c
-> >> +++ b/mm/page_alloc.c
-> >> @@ -868,7 +868,6 @@ static inline void __del_page_from_free_list(struct page *page, struct zone *zon
-> >>
-> >>  	list_del(&page->buddy_list);
-> >>  	__ClearPageBuddy(page);
-> >> -	set_page_private(page, 0);
-> >>  	zone->free_area[order].nr_free--;
-> >>
-> >>  	if (order >= pageblock_order && !is_migrate_isolate(migratetype))
-
-
-> Best Regards,
-> Yan, Zi
+diff --git a/rust/kernel/slab.rs b/rust/kernel/slab.rs
+index 8b418f9db7cb..3f1310f309c5 100644
+--- a/rust/kernel/slab.rs
++++ b/rust/kernel/slab.rs
+@@ -83,3 +83,55 @@ fn drop(&mut self) {
+         unsafe { bindings::kmem_cache_destroy(self.cache.as_ptr()) };
+     }
+ }
++
++// SAFETY: The pointer does not change after creation, so `Slab<T>` may
++// be used from multiple threads.
++unsafe impl<T> Send for Slab<T> {}
++unsafe impl<T> Sync for Slab<T> {}
++
++/// Generates a zero-sized allocator type that allocates from a given
++/// `Slab<T>`.
++#[macro_export]
++macro_rules! gen_kmem_cache_allocator {
++    (struct $name:ident for $cache:expr $(,)?) =3D> {
++        #[derive(Clone, Copy, Default)]
++        pub struct $name;
++
++        // SAFETY: Allocation and free happen through kernel APIs which
++        // provide guarantees. The ZST carries no state, so it can be
++        // duplicated freely.
++        unsafe impl $crate::alloc::Allocator for $name {
++            #[inline]
++            unsafe fn realloc(
++                ptr: Option::<::core::ptr::NonNull<u8>>,
++                layout: ::core::alloc::Layout,
++                old_layout: ::core::alloc::Layout,
++                flags: $crate::alloc::Flags,
++            ) -> ::core::result::Result<::core::ptr::NonNull<[u8]>, $crate=
+::alloc::AllocError> {
++                if layout.size() =3D=3D 0 {
++                    if let Some(p) =3D ptr {
++                        // SAFETY: Caller promises `p` came from this allo=
+cator.
++                        unsafe {
++                            $crate::bindings::kmem_cache_free($cache.as_pt=
+r(), p.as_ptr().cast());
++                        }
++                    }
++                    let dang =3D $crate::alloc::dangling_from_layout(layou=
+t);
++                    let slice =3D ::core::ptr::NonNull::slice_from_raw_par=
+ts(dang, 0);
++                    return Ok(slice);
++                }
++
++                if ptr.is_some() {
++                    return Err($crate::alloc::AllocError);
++                }
++
++                let raw_ptr =3D unsafe {
++                    $crate::bindings::kmem_cache_alloc($cache.as_ptr(), fl=
+ags.as_raw())
++                };
++                let nn =3D ::core::ptr::NonNull::new(raw_ptr.cast())
++                    .ok_or($crate::alloc::AllocError)?;
++                let slice =3D ::core::ptr::NonNull::slice_from_raw_parts(n=
+n.cast::<u8>(), layout.size());
++                Ok(slice)
++            }
++        }
++    };
++}
+\ No newline at end of file
+--=20
+2.49.1
 
 
