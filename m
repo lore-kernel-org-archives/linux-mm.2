@@ -4,119 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8861ECCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 04:55:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6723CCAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 05:33:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBD4E8E0008; Wed,  1 Oct 2025 00:55:13 -0400 (EDT)
+	id 7E2A08E0005; Wed,  1 Oct 2025 01:33:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6D8A8E0002; Wed,  1 Oct 2025 00:55:13 -0400 (EDT)
+	id 7BA3A8E0002; Wed,  1 Oct 2025 01:33:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B83948E0008; Wed,  1 Oct 2025 00:55:13 -0400 (EDT)
+	id 6A8EF8E0005; Wed,  1 Oct 2025 01:33:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A43CF8E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 00:55:13 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5BD6944AA6
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:55:13 +0000 (UTC)
-X-FDA: 83948331306.02.D928252
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 875B5180003
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:55:11 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=So8vnSLZ;
-	spf=pass (imf24.hostedemail.com: domain of inwardvessel@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=inwardvessel@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 525798E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 01:33:57 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EFDDB13BF53
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 05:33:56 +0000 (UTC)
+X-FDA: 83948428872.15.613F689
+Received: from mail-yw1-f196.google.com (mail-yw1-f196.google.com [209.85.128.196])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0DCE24000B
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 05:33:54 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AVQhhREy;
+	spf=pass (imf11.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.128.196 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759294511;
+	s=arc-20220608; t=1759296835;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ri7WDt45zmQrzY579qfISU4VEl3xx5nuQVZaGHjeynE=;
-	b=QPdGDKIiF4xm7vFluuTY5d4N35NOiSc1okizqAejj/xt+42JGog8gAEAQ6cG1DTTjlweNa
-	cwd07lo9g048VehS25tAopVeNx0AAvB+pBXvIL8pIXvzoNbnJul6U+AY4jnZdwCfXpFHbj
-	Dc7x6mugAs6/IRXoTo9FpY2CEizc4nM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759294511; a=rsa-sha256;
-	cv=none;
-	b=73mqmZCzgiE1ELBWHca5Rd5DNQbAN4i5TGIeYSRzSJMKT1Ca9tOqQXwhT8DcAkCM6Iw1hh
-	xaWbUGrex9W9WjTixkBWZKGn+ijSu4HAPZpHAdSe4h4rHz/qpYWzrk+uY/dFB8cdHwOlPu
-	bvAGyUL2eo/iaJs1I1ezQhQfKyJsdFQ=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vjOu/lv0o+hRPXMJw3S9SLujHR3dZi7a3b+OL+YSGcI=;
+	b=VIGZGMbrloKeqpdaLj6KcybyDj50QL8HOjM/jlLxALlKhGV1ABQqWXQpZp5WR6evRNsmr7
+	HIRY2m0JqDGtTH2EdHH5KJCZ8HqOBB9WkjDFIPSwdcFfJjzAVNSNX3G+mayQowqZBQ6CGK
+	tIBP5d1LgupTrYt4eHgxj4VgFS77vzA=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=So8vnSLZ;
-	spf=pass (imf24.hostedemail.com: domain of inwardvessel@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=inwardvessel@gmail.com;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AVQhhREy;
+	spf=pass (imf11.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.128.196 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-76e4fc419a9so6932261b3a.0
-        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 21:55:11 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759296835; a=rsa-sha256;
+	cv=none;
+	b=u0Fw1WVEjldvHiW7lzVGpYJKrMtaXnqxMyB9DyA3T7kenFLZqC4TlcHcznhVQk4QDk11BU
+	NU9OsrtTbfKlAZV8v1y+i6DvRUgVxm7lAbfP13oMvSocaOmOVCE0HasfAHMLDw03Lh9EUf
+	PXFBbTjKA3T5FsIex6ib4d6r0fbAGXU=
+Received: by mail-yw1-f196.google.com with SMTP id 00721157ae682-71d60528734so76410587b3.2
+        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 22:33:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759294510; x=1759899310; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ri7WDt45zmQrzY579qfISU4VEl3xx5nuQVZaGHjeynE=;
-        b=So8vnSLZd29C98wQMg7fLzqhj5bfQVJ8GHFfcr8BYL06wKRWfQDItkbT/w5SiJzffO
-         VZIVS36mHpGNKDYROqcvhFnWoKEVXRpDt+IasxxZqifQXJ5i3liZejVRo5jTKND6Hucc
-         5Gijc3ScVj5PHztDCXfYpyXymXmcfTUNiOQOrh71bAL3xGwofDLHnU9QzN97W4aFmKDQ
-         0RMHw/YNqJJs1QFEMkQ1rLXwgoXSpygt8zRprYxDJZP2sqEPy0jw4IBSqUeOc+AQCLxz
-         bnDc/niWtTOs7s36ZKcTLz2fm3U3tnPerZEcDuPvo/KHY1IC4wIhPuRUKgNOvLWP4+Z4
-         SEUw==
+        d=gmail.com; s=20230601; t=1759296834; x=1759901634; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vjOu/lv0o+hRPXMJw3S9SLujHR3dZi7a3b+OL+YSGcI=;
+        b=AVQhhREyZmc4vHQcU3GMlpAt5c9ng5HPGjsQigUxxNAGk6x/6zED+u6ouU3PWRbfxL
+         1zGkmpyVnuUPJoVA2VQW+WNWqQBapmDdsrjuKMxMeKZex/DPrFLwu2oF6M8OdfAEwoyv
+         VhzHwYPbpWZfgDeu/9R9FRlu6v8PhJ++efGolUTkbQYff4JWGzaDcNAW4t2io2K1CqnK
+         K3zh7eZIRS35ijqimyVh6JqDknLc319bTk7bcsz+FpDX1JUcJtOtTmR2NCGpjKXVth9n
+         yFkGj3WAOaf4yzuVRC4ryuMBLFJCFHtNhodM9MJCG0TFfp9e0eGw/wtcSvWX2hMs6VxQ
+         +IGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759294510; x=1759899310;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ri7WDt45zmQrzY579qfISU4VEl3xx5nuQVZaGHjeynE=;
-        b=EQb8EPcVAEEOi5kFFG89wyG1GnpiRfpzgXlx1aH3YecGtGH7kEvKaWrc+my+3ZEAAJ
-         Q5r/um+t+Fm5MaISyTaHpE4JPADsLNzgPBDhSqoS2GscZBF703jbKNKFcGUDl+sPPRU5
-         gVCzCD3lqxFx+jNpLaMmHzRTZQ4spQLDpget0Qzz7bQFoTLhyWu4k0Fq4tAVcwp3u8gn
-         yncaEf1AbQPBwbZ+UimPC60tOwX2KY9JKLDZ98Ot7qLbq3czV1wmwA3i+xcCjs+mWKCo
-         /xSVcKzj1VImNRyPrnats5DdyWqy45OeTcPrGsJQHaFJnYochEffIL4y/YgbUaD2GPtt
-         bxUA==
-X-Forwarded-Encrypted: i=1; AJvYcCUW8cX8pyyMHpl0n+BWPNuel08ysBPpBZHMcCdOCqB/QWb+sH8mznybrvdPkBgsexp1SmGbmvt0fQ==@kvack.org
-X-Gm-Message-State: AOJu0YzgriRqcIjerKqreh3+rQJ0dUzeN3vq5la+7PmIVblWJg7L9qek
-	2k+eYglRwqqyuNpvWG/8QMzjTV9C4TNr3b/udNym5aFOymMGZRDIQOuR
-X-Gm-Gg: ASbGncuI9sazOGU1XEPqjgmZj3I7JyZsKW4jQjid5LLldAhaPTV202KtriHfuNc7F35
-	qdEHCVLpM8VlSWEk2T1Yb8BOV/vEzHO6sQWPMY4ecdq3MGQHOWNPz2jU8f0Ge4Znq+dAMVtE7m1
-	zryK0tyxP1nGSwHzsUMMsNjZA4Gw8gh0a4Qqbp5uK27m/SgUMT1rweqYQbPg14aIlC+YIZBK5L3
-	bnPQp7AZq2PkM79bUWlcFxjwcQ73e6Nk6flMFnEkVol3pg0jyBo4B8PYVopjzjqkw4StkLpeDCR
-	71Olwy1kQflJdz97eJTXNfb48Q16PA4kQV4ibgLaSclfEudLNxEcPUG3Vlq6Yqb5K0ljWC+jpBT
-	rXQMTB/ys0p35ckW7GY306nYdw0mLVrm4oYZXL328u66AjihDeZuWhfK54q4YrbOJnJvxTy0JTA
-	==
-X-Google-Smtp-Source: AGHT+IENg8JFMQAvrh08OsAp21v3nqidKkwtj7VlhXv2erEQYAsK9Mahy8m3QZfWW4FUYn06+OTIZQ==
-X-Received: by 2002:a05:6a21:99a6:b0:2bd:2798:7ae7 with SMTP id adf61e73a8af0-321e3edc8cbmr3372698637.31.1759294510242;
-        Tue, 30 Sep 2025 21:55:10 -0700 (PDT)
-Received: from jpkobryn-fedora-PF5CFKNC.lan ([73.222.117.172])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b5f2c1b7608sm1011996a12.5.2025.09.30.21.55.08
+        d=1e100.net; s=20230601; t=1759296834; x=1759901634;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vjOu/lv0o+hRPXMJw3S9SLujHR3dZi7a3b+OL+YSGcI=;
+        b=ANQFkMMd9ePFSTE4VqNgXJGWETID3VY+fF6vAKjYNfG2+FUBZDiEUyaLACLaASlJOm
+         YU5Z+wL9tjTsqrqCCQ8FOdfHTLh5oq514txGe1Fqy+/gxY9gv6603jrhM76rXbbT2kaB
+         skbXnFm+nECTMZBUbOUtZ3UtM3XOFpN4Axz4KEECYYEe+2CebQhPvG0nlUzJQ8gPG2cW
+         2tiewpCyDKs9TdVTudDu1AD2efHshuMSmlrG9baOrHq1ixgB4YCyyfIanxlTxGtZ7qs1
+         5P4yv8BRms778JLSJ+eL/RVnh17/52HMqmBfSnmVXjSrAFMmm+MlZMhGUjNx67LnazkA
+         P8Yw==
+X-Forwarded-Encrypted: i=1; AJvYcCW8AtzKW/9eg7Y4r8xYn7C0vS6TAY6udEjOBnsEVk3Nt4Hj82vSjetDMu+HIRtmuN/nl4AOzk7VaQ==@kvack.org
+X-Gm-Message-State: AOJu0YzFELHATiEv9Kf8MDYeywopmfDZSutosnyUK3nSzNAr1SZ8lnJb
+	e/U5cGQTnry32wNJxjZnQxEuWx0yWYD+HyzwLD+EaVfp5FBgw+AAK3Y=
+X-Gm-Gg: ASbGncsHT3XYK/KFzmTgDO2hoyNa7ZQlVHRatpAuYA9P0+9EjYkiTw0LLZinEt1D6tD
+	MC3uMBhOiT5l2uKXscLUA0+TPPWfniV2cfmnuv63uJiJt/EEaiE+oVnRIQ2IFjWwd6WMQuhCWeQ
+	JtJWDTDXQGI4tbIeP0mWWTosiiwG7kHqj6Sc5lSDs+0oDnb7ymquSjibPj4vlL+nw0SxZDkP70z
+	41Gikq+phKxuadil5uhVxkFNvINrN1oKTbcUyb406J1pAkPSnOTOge5Sket7rvrG3E7QZ6crsZy
+	Qt/ocRWtcqaDvx1uhSfaV6jBmqtaoaRRYYJy2T4QcK+INZS4RiKzuVwrKrivtt9R8qZOw2I3Ro9
+	KaKKYZp6yxitJ1RPETU/xbhW9nJqELtDGJk+/tmR6n/VpYX11jOeve6Xggr4ipwEsO6zS6kzf6X
+	n0SbMIPde3adjaQRs9e97H1g==
+X-Google-Smtp-Source: AGHT+IE9x+m5qq+92GplIA8/TKoNYGYahEk+CsxIr1Mz6FhWtoR9oLrhckW7wvH3frCT3+NsBuEyyA==
+X-Received: by 2002:a05:690c:a089:10b0:76f:d03b:de5f with SMTP id 00721157ae682-77f6f30b886mr30654667b3.48.1759296834076;
+        Tue, 30 Sep 2025 22:33:54 -0700 (PDT)
+Received: from localhost (23-116-43-216.lightspeed.sntcca.sbcglobal.net. [23.116.43.216])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-765c7ac70desm43043007b3.54.2025.09.30.22.33.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Sep 2025 21:55:09 -0700 (PDT)
-From: JP Kobryn <inwardvessel@gmail.com>
-To: shakeel.butt@linux.dev,
-	mkoutny@suse.com,
-	yosryahmed@google.com,
-	hannes@cmpxchg.org,
-	tj@kernel.org,
-	akpm@linux-foundation.org
-Cc: linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
+        Tue, 30 Sep 2025 22:33:52 -0700 (PDT)
+From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+To: rientjes@google.com
+Cc: Jonathan.Cameron@huawei.com,
+	bharata@amd.com,
+	dave@stgolabs.net,
+	gourry@gourry.net,
+	joshua.hahnjy@gmail.com,
 	linux-mm@kvack.org,
-	bpf@vger.kernel.org,
-	kernel-team@meta.com
-Subject: [PATCH] memcg: introduce kfuncs for fetching memcg stats
-Date: Tue, 30 Sep 2025 21:54:56 -0700
-Message-ID: <20251001045456.313750-1-inwardvessel@gmail.com>
-X-Mailer: git-send-email 2.51.0
+	nifan.cxl@gmail.com,
+	rkodsara@amd.com,
+	sj@kernel.org,
+	weixugc@google.com,
+	xuezhengchu@huawei.com,
+	yiannis@zptcorp.com,
+	ziy@nvidia.com
+Subject: Re: [Linux Memory Hotness and Promotion] Notes from September 25, 2025
+Date: Tue, 30 Sep 2025 22:33:51 -0700
+Message-ID: <20251001053351.43902-1-ravis.opensrc@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <98d72dc3-c2cc-b636-8a26-495870ae0f95@google.com>
+References: <98d72dc3-c2cc-b636-8a26-495870ae0f95@google.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 875B5180003
-X-Stat-Signature: gxezn83wrykw67ftiedojyhiidy8oa3c
+X-Rspamd-Queue-Id: 0DCE24000B
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 84iknafkdbo6r9bo9d89pbh79qs16dj3
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1759294511-766893
-X-HE-Meta: U2FsdGVkX18qlT/tIiJ1chuAswdTYWuOtoIn0jq1lujC5UJkKrIj7mAYfyOe8UBpbCwHN7XG4s5YSE63iYeB0kyu2HDt08H5fEhRF8onyrg/ZLa+9jrZD1qtGEVBMWLl6RJnCWvFoBBUIQlI/SMSxCOPsPIsrW+X7VqyQ7D2+nY8RikNBl/k94hMhAwGV4BWRVUJlKTSAKlaTHeqVAOTDLTB8ShMiZp8tMPBGWc0V/lpLbbMW6qIPetTrtGtoPm0kMgjvfe+1ev3JrAdFKA4PzkLZ2X5GfMQncJZvtAu9tNkf7S7x4ixf7aR/FpMi+VFxhFvRhPtieL3vbfGd6bFwDmlmeWgt28VqnUmoWEw69Z0FwbYdGyttF6kY4UTmx15Td0NxwWKpWMFcoSUM05TntU0d7oQzQz2Mg1rOiGyEgNMGP+J+42fCqZqadcC1VUW93vlFeBkiboNv1MbQ9Tz2QrFxgQTGKnXUvUgSYlENXaq51VXT6b8IYUHwzncc+TyjPf7k3gBT+EYcU2EB45FZG/O6QMdBWcF3+ID56Hb+WxvT1Q7k/M6hbxKC/Hd5H9PvYR0vd0JQt+0C2WUxq+cNUg8ZyXBpIbsbK8hOVUDfJyRbLg9zXucJlI4K3UCczXJyVC3s2nOqOdu/YjdhtEBTM/pA6xUkymD8oJHWz0+Is05NI5wq5vMH/DpYIGvns3hG3/+bGzIZyTTMjSCMldGyz+qTy36NLQ7OGeugzlp/ttvCnSinZ8mnLwXPq5NZ2uwqe1eluF8cRwPR9bSiwNrelGBGRK6TL82lAdFYSbAXxMlq6Ummnrk94UiZn0nh7LKTknUOg+IfcnmUmjryWtxYAal8mmm+edGGx7x0NapXhuMvtlOKmA55GDnuECcQZ9GNAtNBFqrX0qoUvHSEYGpfUm6U2TIxAsLsjWcci5/hoyTTsRYMpME55GI7Z7XbJYGYbDT7sxJJcp0epG5LQc
- YIoT66pB
- 7PNmTYoB+MXO+JG6h+qium0LVVGsKQAjLluszzsAbnyeoUPzQbaMlDGeXvvK0hPvwWFNuFm2KVJCeHzFho/m3ByKXpZBCWlM6QWUkdHS/1QeG0OJmwYf3YolGMHl6Vp+syUEIwjfNbb8fPtgZ/mVnlkfgZSvjoxSr7FqMKppF7r6k+AuPyTBz2KO/B8WXSDViv+AHyBxtKyvnJXuqZKbeen7msIcpBxPGXXmrFnevM3wCdLIlweJ7iwlmZMNaQOMtr2K4idTiYveJ/lwNehnQRJmpKNxzCCM5/2R9LY+0hCHxHlOZ3Qyls1k+AJuYeqLC2595bwCCn4gMs5iVbtfUTDbI+kyPQ6kkAQzBQ2nEmWdtFTlMuzQ6IFtbBGpkwp960vaU5DFP1Yjf84QHe3MVhhgVXcoAoTgqyvBqo7BY911iCUogLayGA+ozyw==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-HE-Tag: 1759296834-236144
+X-HE-Meta: U2FsdGVkX1+5JenJvuY/4Re8U1j7Tl7ETRueH6ICoEYCIHsKZ4BcJUogcYqEEBLIxI7MdmNrupoQi7v6/iwtoPZYXZbJNJgDMEQecVcaLjDI3uu1tLLTixgkDyh8BaUnvq9AYLY4GaYO+i/CkqawXC92+PUlsLvFGNtgnkrSXDzEsMZMXvivip9YotFmOwyCKNmZYn6sD/0bkzp79Ou9RV0GEZXbVTrFdHirB59JG5xVrghPHQEvdkf14cOSIdNS+dQn4NairlW5Itm7zGT5Xc/og1LQgn53CuzJzyff0lXLz5+X+SAM63WM9G5oBOCniE9SanoY8UbdeB5pNSO+Ef8w6ZhhkkwoJjEd9yWrVv3Ntz8YkLq74de9lZ7x/a3A5b/Dv5ZkoITmrBwJn/+kScngPap36nuetvrU9ozu8tb0kEck6WKSG9QG0KmlqD21hV7DKsFXD/dfJjyI/NxZR1/i6J0UGtzzbCRxwenf2WpY3HEoVLFMfcOSbrEXswJnQiCkf6zF71goHtrs3cFhddZyGP3sVtul1RxtpPYjAIUo9GEjSTM48LJj3Ui12Zy75zuULEtnfOJ9frvOiCpX+Xz0lo42hISisjlqqRNvLIaMBLZclGfspYucJGTtulWXa4hkHUXsZcBvkhQHebcU9POYbefq3ovJuTCw4FiKRo9wksAYY2lMmXgC4BvxMUF30XMWvhMVzF9qAXwoOTx0u2pCKF4uzRds/jxPKnYfrLs8iswxdIMA5AJdh8twe8eUlp1wuLJcfibL6vM0J16uPXvG+Sd4rRWvPFSFaaMYrkVyrL6Oz0+ejuvi2thzXpz7VIyz/jsTH5zsTywK6DlI79L1GitQOXUa4yQY/5+RZWgX+Qky2v0jew+YIGnHd17DQeJiemH8pm2J62gzeiH2XYzbGyypjQuATpUEc22cGUbaQuXklaRfT6BQQM/6KB5z038/OjY5nWJLSc/72PX
+ eRfp1F4d
+ zY5lDuQwNRhCg9CVhH8TNSZsk98ltY/VNfnLG7E7RrXU8IKLRzix57kgg5ZuhcoKmf+FN6ntsd4uOe0w/r9apQgZy3+rhw/DheIgNO9bYOZOA2PuQuXwVSULxqkTgnd5QbbKCEWnJ8sQ7BHzS7B99VCK+FMiePssLdGfGXl5QVuCtQmhL6ea6I0nIMqg0RsEop9GJ9dE1+Ta0HtJ355DU/63KbPS1V480s7mlHSq9DEeq1SjxsF+FY08R2HEAP1Qy1wbC9ItkEJMSyifqSKzikPGotUTFjEg8/HeI6qWf6I17N9b/OGso7yNariopkjtE4l/VqwixaKMUTdNR0z796bWPo/9ozQTxdQqf/tofRN0pYsfTGFWmTn3I5NrDf2Su+vCDrl/qJQODLQz4EqaTcqhxJMXtW4u7BwBOOoeKre9rmxALStUhiF9Pwops4hSfPWdTaZm68ceD+ziwhwnkUbacZf9h30C7w3XOmmwzNSPIuKnndE2bzelE9Y3EZrt89h0cEdVEZnp8jlLU0WuivkmWgRDTRBu5StnE2w2Q7Q/kK0ZT4CbOTpAyQOmTXcrZVO9E2v5ImlypbXqA0wOMrWFYlaymz1iCUCk0t4qYUE+mV/ATM7TupxH4mN5aqqtsSaU73pWWY8HIVtjUBZb0EnxJleqga2YOwhirwOgl0DMEjU0=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.028123, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,167 +130,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When reading cgroup memory.stat files there is significant work the kernel
-has to perform in string formatting the numeric data to text. Once a user
-mode program gets this text further work has to be done, converting the
-text back to numeric data. This work can be expensive for programs that
-periodically sample this data over a large enough fleet.
+Hi David, all,
 
-As an alternative to reading memory.stat, introduce new kfuncs to allow
-fetching specific memcg stats from within bpf cgroup iterator programs.
-This approach eliminates the conversion work done by both the kernel and
-user mode programs. Previously a program could open memory.stat and
-repeatedly read from the associated file descriptor (while seeking back to
-zero before each subsequent read). That action can now be replaced by
-setting up a link to the bpf program once in advance and then reusing it to
-invoke the cgroup iterator program each time a read is desired. An example
-program can be found here [0].
+I'm writing to correct the reference mentioned in the notes from the last meeting.
 
-There is a significant perf benefit when using this approach. In terms of
-elapsed time, the kfuncs allow a bpf cgroup iterator program to outperform
-the traditional file reading method, saving almost 80% of the time spent in
-kernel.
+> Ravi Shankar noted a recent patch series[1] was recently pushed for
+> interleaving of hot pages and not for the entire memory allocation.
 
-control: elapsed time
-real    0m14.421s
-user    0m0.183s
-sys     0m14.184s
+I must have mistakenly provided the wrong reference during the discussion.
 
-experiment: elapsed time
-real    0m3.250s
-user    0m0.225s
-sys     0m2.916s
+The correct link is here:
+https://lore.kernel.org/all/20250709005952.17776-14-bijan311@gmail.com/T/#m374b66a5195cbd24a848665ce214d0c248a4efea
 
-control: perf data
-22.24% a.out [kernel.kallsyms] [k] vsnprintf
-17.35% a.out [kernel.kallsyms] [k] format_decode
-12.60% a.out [kernel.kallsyms] [k] string
-12.12% a.out [kernel.kallsyms] [k] number
- 8.06% a.out [kernel.kallsyms] [k] strlen
- 5.21% a.out [kernel.kallsyms] [k] memcpy_orig
- 4.26% a.out [kernel.kallsyms] [k] seq_buf_printf
- 4.19% a.out [kernel.kallsyms] [k] memory_stat_format
- 2.53% a.out [kernel.kallsyms] [k] widen_string
- 1.62% a.out [kernel.kallsyms] [k] put_dec_trunc8
- 0.99% a.out [kernel.kallsyms] [k] put_dec_full8
- 0.72% a.out [kernel.kallsyms] [k] put_dec
- 0.70% a.out [kernel.kallsyms] [k] memcpy
- 0.60% a.out [kernel.kallsyms] [k] mutex_lock
- 0.59% a.out [kernel.kallsyms] [k] entry_SYSCALL_64
+This functionality is already merged in mainline.
+Apologies for the mix-up and any confusion this may have caused.
 
-experiment: perf data
-8.17% memcgstat bpf_prog_c6d320d8e5cfb560_query [k] bpf_prog_c6d320d8e5cfb560_query
-8.03% memcgstat [kernel.kallsyms] [k] memcg_node_stat_fetch
-5.21% memcgstat [kernel.kallsyms] [k] __memcg_slab_post_alloc_hook
-3.87% memcgstat [kernel.kallsyms] [k] _raw_spin_lock
-3.01% memcgstat [kernel.kallsyms] [k] entry_SYSRETQ_unsafe_stack
-2.49% memcgstat [kernel.kallsyms] [k] memcg_vm_event_fetch
-2.47% memcgstat [kernel.kallsyms] [k] __memcg_slab_free_hook
-2.34% memcgstat [kernel.kallsyms] [k] kmem_cache_free
-2.32% memcgstat [kernel.kallsyms] [k] entry_SYSCALL_64
-1.92% memcgstat [kernel.kallsyms] [k] mutex_lock
-
-The overhead of string formatting and text conversion on the control side
-is eliminated on the experimental side since the values are read directly
-through shared memory with the bpf program. The kfunc/bpf approach also
-provides flexibility in how this numeric data could be delivered to a user
-mode program. It is possible to use a struct for example, with select
-memory stat fields instead of an array. This opens up opportunities for
-custom serialization as well since it is totally up to the bpf programmer
-on how to lay out the data.
-
-The patch also includes a kfunc for flushing stats. This is not required
-for fetching stats, since the kernel periodically flushes memcg stats every
-2s. It is up to the programmer if they want the very latest stats or not.
-
-[0] https://gist.github.com/inwardvessel/416d629d6930e22954edb094b4e23347
-    https://gist.github.com/inwardvessel/28e0a9c8bf51ba07fa8516bceeb25669
-    https://gist.github.com/inwardvessel/b05e1b9ea0f766f4ad78dad178c49703
-
-Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
----
- mm/memcontrol.c | 67 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 67 insertions(+)
-
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 8dd7fbed5a94..aa8cbf883d71 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -870,6 +870,73 @@ unsigned long memcg_events_local(struct mem_cgroup *memcg, int event)
- }
- #endif
- 
-+static inline struct mem_cgroup *memcg_from_cgroup(struct cgroup *cgrp)
-+{
-+	return cgrp ? mem_cgroup_from_css(cgrp->subsys[memory_cgrp_id]) : NULL;
-+}
-+
-+__bpf_kfunc static void memcg_flush_stats(struct cgroup *cgrp)
-+{
-+	struct mem_cgroup *memcg = memcg_from_cgroup(cgrp);
-+
-+	if (!memcg)
-+		return;
-+
-+	mem_cgroup_flush_stats(memcg);
-+}
-+
-+__bpf_kfunc static unsigned long memcg_node_stat_fetch(struct cgroup *cgrp,
-+		enum node_stat_item item)
-+{
-+	struct mem_cgroup *memcg = memcg_from_cgroup(cgrp);
-+
-+	if (!memcg)
-+		return 0;
-+
-+	return memcg_page_state_output(memcg, item);
-+}
-+
-+__bpf_kfunc static unsigned long memcg_stat_fetch(struct cgroup *cgrp,
-+		enum memcg_stat_item item)
-+{
-+	struct mem_cgroup *memcg = memcg_from_cgroup(cgrp);
-+
-+	if (!memcg)
-+		return 0;
-+
-+	return memcg_page_state_output(memcg, item);
-+}
-+
-+__bpf_kfunc static unsigned long memcg_vm_event_fetch(struct cgroup *cgrp,
-+		enum vm_event_item item)
-+{
-+	struct mem_cgroup *memcg = memcg_from_cgroup(cgrp);
-+
-+	if (!memcg)
-+		return 0;
-+
-+	return memcg_events(memcg, item);
-+}
-+
-+BTF_KFUNCS_START(bpf_memcontrol_kfunc_ids)
-+BTF_ID_FLAGS(func, memcg_flush_stats)
-+BTF_ID_FLAGS(func, memcg_node_stat_fetch)
-+BTF_ID_FLAGS(func, memcg_stat_fetch)
-+BTF_ID_FLAGS(func, memcg_vm_event_fetch)
-+BTF_KFUNCS_END(bpf_memcontrol_kfunc_ids)
-+
-+static const struct btf_kfunc_id_set bpf_memcontrol_kfunc_set = {
-+	.owner          = THIS_MODULE,
-+	.set            = &bpf_memcontrol_kfunc_ids,
-+};
-+
-+static int __init bpf_memcontrol_kfunc_init(void)
-+{
-+	return register_btf_kfunc_id_set(BPF_PROG_TYPE_TRACING,
-+					 &bpf_memcontrol_kfunc_set);
-+}
-+late_initcall(bpf_memcontrol_kfunc_init);
-+
- struct mem_cgroup *mem_cgroup_from_task(struct task_struct *p)
- {
- 	/*
--- 
-2.47.3
-
+Best regards,
+Ravi Jonnalagadda
 
