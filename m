@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4F84CCA471
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 19:27:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5547CCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 19:27:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DF808E0011; Wed,  1 Oct 2025 15:27:00 -0400 (EDT)
+	id ACF878E0012; Wed,  1 Oct 2025 15:27:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 292278E0003; Wed,  1 Oct 2025 15:27:00 -0400 (EDT)
+	id AA7038E0003; Wed,  1 Oct 2025 15:27:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3B7D8E0011; Wed,  1 Oct 2025 15:26:59 -0400 (EDT)
+	id 9BC748E0012; Wed,  1 Oct 2025 15:27:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D4FCA8E0003
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 15:26:59 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 79069C01E4
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 19:26:59 +0000 (UTC)
-X-FDA: 83950528158.04.54D9AE3
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9592940002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 19:26:57 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="h/xzDSiY";
-	spf=pass (imf11.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 886C48E0003
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 15:27:00 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 57FEC1DE1C9
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 19:27:00 +0000 (UTC)
+X-FDA: 83950528200.20.F12BD36
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 7039AC0005
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 19:26:58 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BL+NAKMo;
+	spf=pass (imf22.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.47 as permitted sender) smtp.mailfrom=urezki@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759346817;
+	s=arc-20220608; t=1759346818;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xkBi4jfGKtCYgzp1QyKIde+SrLm3hIwzDlMhFP9SOB4=;
-	b=Hx13SQY2yu8wzji9GI4CX92JXKniI1HQREaOh7qwP8QBYRXX8l4du2Wy9lM4KbteJib3tF
-	5WRrNrBwbegF1TvJfzRjgorqaCufOpm8i04oM6kcvjmm8gLWqWRDujl6LKYdKs7+gP7kn3
-	YSa3+IrkAVaI6P/3JHlI2BrP/ItNlvE=
+	bh=IbYRlCl/Dzj0Jt1PXEP3jL/F9CvbCkzzyw4wzC1Iq2o=;
+	b=mNoChmjZb1iy9y1MUgqlpI6ypDfEqEBFb6YiPNOviG1fwWyQtMH2HfNT8phe+O4A7zVl0Z
+	PbHaEMAE/KfJYewRcMMICa58wWTWXhcZLlmFYYR/ccFhGbV+/6zyaxa10oitwTqyshQWmC
+	vzbSTJ9LYBCUUnuwfK+1Gv8HTRRSW3s=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="h/xzDSiY";
-	spf=pass (imf11.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BL+NAKMo;
+	spf=pass (imf22.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.47 as permitted sender) smtp.mailfrom=urezki@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759346817; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759346818; a=rsa-sha256;
 	cv=none;
-	b=1+g4zvQU1b+5UOh45HY2oW7hsd7b3ngZk43WI/EtYMiyZ4ZtEtV9+kAZ1AxvmSA5uT16ac
-	7Zpn8GHBlKhfN0Gh4E4bGeMG3tl83Wl9/I2pUnmvrPpNPV6QyorHrkzjmxVKUAtbnXgIcb
-	lzJPYUcvLrXAJc39UI9b4wcFxCf7ZPs=
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-57992ba129eso301083e87.3
-        for <linux-mm@kvack.org>; Wed, 01 Oct 2025 12:26:57 -0700 (PDT)
+	b=8ZFVCtk663LbEKQOOYeLJzSKh6Wiz8DtG1GdfmAXlr0RFVJEw3ZumPFOI87Ca5yVQYdPWM
+	lf/HX3cPEDUzB0gHPPYqdZtc1fm9VhPqwYeHd0aTXNzmJ3Y44QNfy9/Las0GSa5rbkaXMD
+	v1J+ZPl6eFGvgSFTuMaPO27AxEx70j0=
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-57db15eeb11so225763e87.2
+        for <linux-mm@kvack.org>; Wed, 01 Oct 2025 12:26:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759346816; x=1759951616; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1759346817; x=1759951617; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xkBi4jfGKtCYgzp1QyKIde+SrLm3hIwzDlMhFP9SOB4=;
-        b=h/xzDSiY4hlH4LKUqKmxHcrxpVbROofMd2Wijb26k5yZmqv/GJ3adCbirvx/Foi67t
-         hxhTUQ/rpxih7xNh6lesP9NMec0PVOTkgHhpdr22yu9H+parcrSEKv68VuV6B/e9nlml
-         GkjYZQ3/dIk7R1ckahRgofGkAA0Oqut+6x/OId+dBLXWwXhYVlnMt1D4HJmaDhMzR2zf
-         GrI/NXvPn2QpIOw6nfup/bD1Qj7l3J4bXFlHVIE23Ha/96bRH6ASzfXwSIQz/QOdB44A
-         VCZpqkXHAXTSSfK1yGfx+7XjtCnV1cpDJ4gplyafWjzr7bIlvbUMrwgEgD1a9kUjwqfX
-         4ngA==
+        bh=IbYRlCl/Dzj0Jt1PXEP3jL/F9CvbCkzzyw4wzC1Iq2o=;
+        b=BL+NAKMojGGZ4H2YLOicy3Y/zc8xdIgWvSLa35btzA7aNWNHJSaVkrPw+W+F2qCGKq
+         TZnAa2jGSkoH1JmJ3aKWNYqYf57cfC8izb+JEW9K1y3ivXKfqUoS2/hvDdEjFHOUm977
+         X/iSq1nOrzAvl3SeZpP8s+iBAPHw8q3ajx8e8HEFp2ab6u1/PL76BD1xZEmCOgHFPxDD
+         adfSYy8uFKxPIojUAzoGAYdZWYJkSZvCmA+Fhjj4x5bip1tUcLct7qarA8Qq6SBDA/H6
+         omvFs3lp42dwwKKOvSBRpmSx7w14Y1HSumm3F3TgDrY9PBmkfIRKy8uD1rrOdVnfhuZL
+         Trpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759346816; x=1759951616;
+        d=1e100.net; s=20230601; t=1759346817; x=1759951617;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xkBi4jfGKtCYgzp1QyKIde+SrLm3hIwzDlMhFP9SOB4=;
-        b=GUtwikNfVxh2wk66Vt+5IXktspVfYkn74KyprJish9bv/zZUlPxqwaoxDSWTW2uUso
-         0olum7BPLkRCbodDzeLl1SOvm5n2zZBRr+SO+a7w9gLwZFQMn7rtt0wDwAt2f9+ecas2
-         Z9kVJN4CW1q+5lm7++QhN3cPnxahcwsUNX8BQdfMIM82PVlaiaJrtSjsadaC/OhOkzdk
-         31AYwFiUvTNZSbu1MFeNA8NwcK0mkiXfZQh6iMoPn2AL9ireYnC36tljYpEH95oMEDc8
-         Ccn/u0qmgQ8B+DnsfZ2KjBcpVGt5ydbjLMZiw3aOjVtvB68dDVBEkOt+1Fw1QhKqgMRx
-         HZpg==
-X-Gm-Message-State: AOJu0YzNpb6uykpVYRmUsTI9QkCa2dCxDK2xOok+bI803msV0Gkc1oDE
-	FrCpBq+9W4/yYPclC2ed+fY4YEe9D++eoVvbduAfvxTdX/kA+AL3hzNtjhfM3fF71pM=
-X-Gm-Gg: ASbGnct7Ahp+Bm0y7ranve42nwmB40vGYjTS9+CmAsK2sPKtJYUiz3x8zPulbw0hXGR
-	VscGZXTlofDDsIQ8hTCcuoiLkLOGKbcR3b+4lpXvZAaHd9Bl1Rul/e50wua/MBmzohDhVdkspXD
-	B0kbeMibwHW4dJZp+rnImYU1k9BB4c7WqJ7q0wbGVCiwSV9/G/pQmvqdcMtWa22Jd62cbZDZaeT
-	dypQSytzGmP2nIEUEPSiJSdlZUq4nuxQP5Wn+lTx3HO0Bhe1k+SIXr/zevJD3eu7rbyD91T/evT
-	liyRuaZyiG5uNuiAaxTsKF3Bznmu29FB2HJz3ceqPAXr7OiZtd4ZmU1zw+drkb/bh618fiXwNSX
-	pSXlC0zd8mRnNZ5CuYmOYF1kIAipMkRdMCGCUsb2G
-X-Google-Smtp-Source: AGHT+IEkQiFaaGHGhvMaMWZ16i+DpN9GfXJ09NHbrvk7y7MEplCQ54CMiAjG/D4d/KqWTkIk76Mo9A==
-X-Received: by 2002:a05:6512:308b:b0:585:b05f:9459 with SMTP id 2adb3069b0e04-58af9f38cccmr1321362e87.27.1759346815828;
-        Wed, 01 Oct 2025 12:26:55 -0700 (PDT)
+        bh=IbYRlCl/Dzj0Jt1PXEP3jL/F9CvbCkzzyw4wzC1Iq2o=;
+        b=lmTdDOMyJPvaeFri1DSUBDU4AQenCfmF9yqgCbKVggHwu6B3bUgIM3peloBCE8UZE0
+         2uaxVjwsFfUVuTMlGpFDJuv9e3BwaM1TltezcjU5Q1H0P/9RsgHnjuLYEyULDaxrfFNz
+         cY8IIWrLt/LtxAboCAKfpAG6PfdH8hCUE8QS282QG8QwVic35dR3zgwk0WpggmATgl+U
+         FulwMtjtIrYYtnjrcne65YVf2IG4IpgtcIS8EKHt65MF+wmGIzqYrFx1tn0g/brwykvM
+         cOVhxPQdRFCEcoIAUqNBovAP81IBtaYFpwoep6WeDHfaTMPFnJWHSP+pe76Z9DgIlih3
+         /1sw==
+X-Gm-Message-State: AOJu0Yzy63xyrWGIx3zSFhjA5FCw8BfkjBesCAh2bejn0Bq/5LAKwIsw
+	XUvKBU94wPdEWlvCLyA5v+fWm76o0uNlQ9mE6GUiYE6fPh4dpF09Zaa7y9HJS6sNql0=
+X-Gm-Gg: ASbGncssvgCr/yH5HM5fW5N2wwV3AAJzdBRnW3D1nfxUBQxfaT5dx0OWG3Ev9MF94H+
+	VW6iHQ/3Q19bRV+keI0qlwdc87DEhQfqekEQ36CKMixO2ztvYVllKZJWeoDEt7fQKsuDFjMk583
+	13nBS98dLxiDil6ANbTWW8srsfFQLqSsuZU37huUFEg9CraAQY5qMoKjDdD3Ft1LZ3NUgcT0ZYZ
+	OFi9QsFWAHChSCHVbOU+pXKXc/ojj/9hw7td5phwjn26227Bcs7HlMmrM1DravVifqf7+5odFty
+	XXbLnBNGUX9tVfZ0hmE7I/9V4nZWkif+VmNkj2jMLaSfpsccfFS0IiPg8EUsrvVfR7PTHos0879
+	e9TjD9sEssmKqO73xUuZEy0gDooUEdHZwWX5Ttuj2
+X-Google-Smtp-Source: AGHT+IF9llFN2LXsjgVGkXyRw7BDqyfzeD80j0uo5mXamBd03EZQeOTEdSwaixEgJc8AVhTRjW6k2Q==
+X-Received: by 2002:a05:6512:3d01:b0:579:e5da:e530 with SMTP id 2adb3069b0e04-58af9efd33amr1535887e87.10.1759346816620;
+        Wed, 01 Oct 2025 12:26:56 -0700 (PDT)
 Received: from localhost.localdomain ([2001:9b1:d5a0:a500::24b])
         by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-58b0112414fsm136627e87.28.2025.10.01.12.26.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Oct 2025 12:26:55 -0700 (PDT)
+        Wed, 01 Oct 2025 12:26:56 -0700 (PDT)
 From: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
 To: linux-mm@kvack.org,
 	Andrew Morton <akpm@linux-foundation.org>
@@ -97,9 +97,9 @@ Cc: Michal Hocko <mhocko@kernel.org>,
 	LKML <linux-kernel@vger.kernel.org>,
 	Uladzislau Rezki <urezki@gmail.com>,
 	Michal Hocko <mhocko@suse.com>
-Subject: [PATCH v3 08/10] mm: Skip might_alloc() warnings when PF_MEMALLOC is set
-Date: Wed,  1 Oct 2025 21:26:44 +0200
-Message-ID: <20251001192647.195204-9-urezki@gmail.com>
+Subject: [PATCH v3 09/10] mm/vmalloc: Update __vmalloc_node_range() documentation
+Date: Wed,  1 Oct 2025 21:26:45 +0200
+Message-ID: <20251001192647.195204-10-urezki@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251001192647.195204-1-urezki@gmail.com>
 References: <20251001192647.195204-1-urezki@gmail.com>
@@ -107,12 +107,12 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 9592940002
-X-Stat-Signature: cqn7ktpeyqrxawmca9to4up1eobsscgb
-X-HE-Tag: 1759346817-123167
-X-HE-Meta: U2FsdGVkX18t/RSRt4mGw0i0cBwFQmhH73ZGIcAK/0jYGtDAeUl/F96yjAk+5caXrf2GVnAKRO9b1Zd/jh2SdoaeXdspc84dHsGvVThK93LEGkxX1skUpeQso7qH6NM+4FGGRujYVKuF+U6l9OOtqndu+S9UKGldpVLD6SNp1bYA+t78DVQOW/FHQzRJNrb4jKy18jJOfgi4bdQUXW5AdzKFLl7K6fPqslcMhF4ndmh4wU45OAKle0SpbQuFleLVKKWoKnPEoODNmdbXm5v26agzQpRtbB+ZV8d2UeQ4QOzcxRMqIMlFQiiPbQFbvENHvwDIV60O9Y/oVdSUQLbKjyCvYsb8Uc77r77ByGDkqCjMuXn6xnWzsae7YP9VAgVJEWGK6qvbpOjir3x85uJ95lpRspjh2RCYyMVlVyDwpYTI0FLZUJwplMMR35y3dWYsVin27IsYmBq5JqIU+gmE3YrvcJ/cLWDcXVP105jLeIAnSg3KqS4VvnQ9lEWvFvbhxxUPY/QPJPRbAiBHaIFNVJvwdQs10mMzjg4T0mKyr6bcKNh09siu698v85VeJtw9Y4ZAbBFTGeiKnb7siyGmsWrFc5wmGZflW7tF5u8V6VlB4PA4IRyhkBRixZb/7elqlXH14GAepRSCCyMMc+HF7xwBvlD5HJCit7PpzjoQWil6jSM6R5+Y4llVs+L55RptsOz3UHkIFaeocaHGhR1D7A7S2IfRnE6E1RVzf+iMz8BnXQynozYrre7oTSP4KbdKVoE18zWekHN2vjVFJUC7jJFkc/Ookcd0nsBTNjLQa+vIpl5wYoDLuUgkFCijbV0dFVgLHdAQ+1y800Bl/DbdqY2rA5Q/gIELXyaDHS6TbrBTtXikhx+I+/garCcSbBmDSz5JUSqlQAvvSwTWIInopW1qyPc5KbpPNqfa9UcM5gGuzQ+4JKNTUIRmKmMEfBlhb920NDjGuapVLYjjcVa
- xce46lJy
- aVWZYmzRHOrpmpoOacZ396msb/6/pCG0K03Q78P5NlfD/EH1zkIK+wTpCkqEb4Va/TTrJhljKj04pXb0ENhwtQLZeno3wq7mPsozRAO5biZrZ6CXHqJvOXRms5NrBgfPxDbwh4aiWwvKIl+uHx7L6W1eXXw/KruRSKlaeT/xwNC5jShUHT4PdJ2ZEGntGzpuLGEXpVCXK7LrHZjgFllkaPGi4PTUVOJhQn1D7j4aV0XeZVCgSc1+V/E5/FwTzQOlLibDXsAsKqXHs9UVXxqFjRtNsELeJ5tO1kLf4ACoqXW7gM4fwwoK8bDZyHMfDABK8kaJFUBaQEJ5OYTaOtGObdxfJkwUx961jy+7/Yjy6ds7cnfR/Z12sD4N/drnf6cWNrSjfO2rviPQ0PUP+xv3ruEjNMxUkTVgYIYBEZMCiFzqnSmQSe+WjAs2fkzg4qB6HhQy4SsqeNKN2ksnBZJ8wCpJd8lrlH1Ke1ON7M9dUgJd0wU+BBIsR/1mDu+fwE8ij3SdcXM5D9EmEfvUxJukm4Ce0Pxlp84We0uBVV09dK1qSv99ciRyY+Xw6fQ==
+X-Rspamd-Queue-Id: 7039AC0005
+X-Stat-Signature: yexspamnmpax98pdeakhzuw51nmo66bw
+X-HE-Tag: 1759346818-589898
+X-HE-Meta: U2FsdGVkX1/cxkiaz20XimaCMOgNa33l4WiEkDPTzwgHxG8U79we1/0OMZd1WaP6nVAxjqrHQmEFGiwMh1RzakcPUlA3CW9bdCmbtKfIVNSAwP5yhiJdTBSz3wV4N3tRsUbdHRGKAWLf+Yob+LEdgTm7Ue6A6zcIxpL8hbvVY9BWjoCmH/RZiW0IzuTGOXlfE/solyNAcIKHUE0d+8n/IzDZBFOdo6t+PRXn5Ze+zk9M7nBN5638KGWg+9gYE2MUUHiY/zcwJST8apS7L8SJtDILy234o3tQ/394wmrHL/we6j9JJFFjgHXpkrh4EJ99KHAQ3Mcbn4ThWzc5R72EbbqYYXJl9bb18Pa6TBmrVqfRrZAaD1m6R1vca1MVj7UjicQ6N0nGWRuBXRf/wpj6FOiWjIW3tbt1QifAAP9MiHJ85PDW3o6CvRS+JSMOktzzvCmGpF7VlNcw8DoktU3TsUznOY9sSZUMQZxQSPD3a7x0BnkG9uZRep0gYdl4I2k9846xRIxNgVXNfOCnYsJpiJtUgmNq5pz82835aCsp/kaslpwHTvMyGn0wkVVlMQqQi/mKyyCO1Usw/+JHddEpBIqBcEFLryzfIbNsq2I7nk94PXrAVSExWreP20AdJao1R3+oqyjNXxfbdbwSDAZa1Bd8HkkJpTM8lG1hx4IDdEHCUAgPmCmv40xa+kzZAifknP4KIUc9GCBUdKNvH+Zf9eELIH+yAJMIgsOPtbajTEXAATsfRHXzg05U4a+zUhezPLAeaJMNaL/cnGrWCyjpUmi4Vgq66YHZWtRjG3LOBFlnysKRwsHdtBFc3SAzMXxTMjKtopXuBldFbEzqhsc7QKn1rzVcSEsdvuVgyLWorlCMex1idZGeIqifdvGK9KADEpvDX8d7Hz2W6ZP3Endhb5kyeVCw9touhA1iYEXsZWEJN3QZ0ltI/3RbISt5rOq/gStfNh70ZtDBpWIL5CO
+ nFNLb43N
+ 28h1S4GHpvrv2v/OMwDaymM10Q1d+ScrgkYDtHQgnZYrlxSvlNjF+D0+42Ckhb1hoWPGc6wsDytiLJjD21/dYNnzbm3ZMEL2Io7lJ+138x0qQ+MTkbSWpYmlf5377A7t/P7xSxbXh08b+SrLHCHIFRi6o77DgRxwDo1Q9HNAnphxdd5APKLBcUnFiRfJCGMb3XCIb1goj4XBoBF2CF356T+R9w5n4236LJTXWfcG8/6OZ6YpyzvlTzn8eoYET4K1sVq2zmQL6XDAabPFIvnh6xRUC87DzSNCxiRi4vYqwdsouNQmU+DdiA8Vzh7m8Wc4ejW/xTVCI9N4rT8acaEdshITeMMMyW2DaG3y7duVub+1ujo297bdW6+l13b7oiiW1X1z5HOSzloNVO7VhLFtGV2W78IGOeR7ehN9Qx+DXkgCGIgKfJ6R4HxG+7fJhkO7UCQR2Ak4DLkJygZP3s3KkOJI6zPkHUG05joIatV08uFcTd/hg8dBbW9Meym+AqjfJ1H8ZYYABM1D8eDQUnbUTm57de8HL/wJywV21hQAv2XBAA+N3/ZAJXZE3Wg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,37 +121,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-might_alloc() catches invalid blocking allocations in contexts
-where sleeping is not allowed.
-
-However when PF_MEMALLOC is set, the page allocator already skips
-reclaim and other blocking paths. In such cases, a blocking gfp_mask
-does not actually lead to blocking, so triggering might_alloc() splats
-is misleading.
-
-Adjust might_alloc() to skip warnings when the current task has
-PF_MEMALLOC set, matching the allocator's actual blocking behaviour.
+__vmalloc() function now supports non-blocking flags such as
+GFP_ATOMIC and GFP_NOWAIT. Update the documentation accordingly.
 
 Acked-by: Michal Hocko <mhocko@suse.com>
 Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 ---
- include/linux/sched/mm.h | 3 +++
- 1 file changed, 3 insertions(+)
+ mm/vmalloc.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
-index 0232d983b715..a74582aed747 100644
---- a/include/linux/sched/mm.h
-+++ b/include/linux/sched/mm.h
-@@ -318,6 +318,9 @@ static inline void might_alloc(gfp_t gfp_mask)
- 	fs_reclaim_acquire(gfp_mask);
- 	fs_reclaim_release(gfp_mask);
- 
-+	if (current->flags & PF_MEMALLOC)
-+		return;
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index d7e7049e01f8..2b45cd4ce119 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3881,19 +3881,20 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+  * @caller:		  caller's return address
+  *
+  * Allocate enough pages to cover @size from the page level
+- * allocator with @gfp_mask flags. Please note that the full set of gfp
+- * flags are not supported. GFP_KERNEL, GFP_NOFS and GFP_NOIO are all
+- * supported.
+- * Zone modifiers are not supported. From the reclaim modifiers
+- * __GFP_DIRECT_RECLAIM is required (aka GFP_NOWAIT is not supported)
+- * and only __GFP_NOFAIL is supported (i.e. __GFP_NORETRY and
+- * __GFP_RETRY_MAYFAIL are not supported).
++ * allocator with @gfp_mask flags and map them into contiguous
++ * virtual range with protection @prot.
+  *
+- * __GFP_NOWARN can be used to suppress failures messages.
++ * Supported GFP classes: %GFP_KERNEL, %GFP_ATOMIC, %GFP_NOWAIT,
++ * %GFP_NOFS and %GFP_NOIO. Zone modifiers are not supported.
++ * Please note %GFP_ATOMIC and %GFP_NOWAIT are supported only
++ * by __vmalloc().
 +
- 	might_sleep_if(gfpflags_allow_blocking(gfp_mask));
- }
- 
++ * Retry modifiers: only %__GFP_NOFAIL is supported; %__GFP_NORETRY
++ * and %__GFP_RETRY_MAYFAIL are not supported.
+  *
+- * Map them into contiguous kernel virtual space, using a pagetable
+- * protection of @prot.
++ * %__GFP_NOWARN can be used to suppress failure messages.
+  *
++ * Can not be called from interrupt nor NMI contexts.
+  * Return: the address of the area or %NULL on failure
+  */
+ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
 -- 
 2.47.3
 
