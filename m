@@ -4,128 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C00A8CAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 11:35:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9823ECCA472
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 11:39:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D53F28E0006; Wed,  1 Oct 2025 07:35:49 -0400 (EDT)
+	id CE7A68E000B; Wed,  1 Oct 2025 07:39:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D05258E0002; Wed,  1 Oct 2025 07:35:49 -0400 (EDT)
+	id C4B2E8E0002; Wed,  1 Oct 2025 07:39:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF3218E0006; Wed,  1 Oct 2025 07:35:49 -0400 (EDT)
+	id B12A58E000B; Wed,  1 Oct 2025 07:39:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AC1548E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 07:35:49 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 540831A0923
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 11:35:49 +0000 (UTC)
-X-FDA: 83949340818.01.66ECE10
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0A4FA4000D
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 11:35:46 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="szEo/DGw";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2XT83wDD;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="szEo/DGw";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2XT83wDD;
-	spf=pass (imf12.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D9F68E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 07:39:45 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 41CFFC0708
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 11:39:45 +0000 (UTC)
+X-FDA: 83949350730.13.6D6439C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9ADBF1C0004
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 11:39:43 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hyfhWXjK;
+	spf=pass (imf18.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759318547;
+	s=arc-20220608; t=1759318783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WDEo3ASRhQvw+aReLbl1V7zNFjYQm+NIo9wkgd7UiqI=;
-	b=SqC/SWeRG63dfB+VQL+rrOXxyUQonpZOA77i6JjfYFCbHtiOk94IfDPYG79MgoFOquYC3U
-	0XVpiERUiWzORrrYq/33sBeIS2Xhp3ofnPS7Uv8buLKp5tpJQukmQVDwtl1tBNUpTBJaLJ
-	FIkAo0R72ptgo3K/Y+wppc8/47cCTpw=
+	bh=JnqM7GmQND7QXgn1M6rdLry/ghqsJ3aWAxMWYo/a6wQ=;
+	b=p7TbD02KFADjupD8ERo2hQdbtRwCvyVmSKVpYLtv3Gsy3CxI0OlK5v5i3vUbJD83P0tqHk
+	qnMLFS/G+aMZlMFWRCmy+aO1TeX+mePFiRxFdVnqP8zD9lQFMzdxzOVQkS8+XV5Kjrt41d
+	l2vRij5GHJvYzCtQFu1gJzywKNOwwAA=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="szEo/DGw";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2XT83wDD;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="szEo/DGw";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2XT83wDD;
-	spf=pass (imf12.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759318547; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hyfhWXjK;
+	spf=pass (imf18.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759318783; a=rsa-sha256;
 	cv=none;
-	b=7Khx8JmwxqkxLX/M1wDnQamNWzbjoxk964akGCg+cSKyS2i4bCUM7P52+6OhSq5J49KjMW
-	tFCvHlSRG2tbfnn3u2Rkk+s6zdEv0WEsj9ntqWhXwUcWfT7+ZbjaxI8hrauUy4JnZVkQ7v
-	0JR8X+N5TG6SizPAusvVQVCnZPFK6ss=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 186F3336CE;
-	Wed,  1 Oct 2025 11:35:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759318544; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WDEo3ASRhQvw+aReLbl1V7zNFjYQm+NIo9wkgd7UiqI=;
-	b=szEo/DGwXESSdOXMZl+okmUt/nifNcaF5R9rEV1NVdU9gFqb0iIpCfTfcPnqUn6cKvxjf9
-	1MuzlNiReDOz+zcvKz+UBUmWUddhPDEpUNfRCFE4kIiWM9tfc+/YVkxNkXUJ0Frgkvtmhn
-	2C0CaHeu6U8oxKI8bu0x4R56SO88V2I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759318544;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WDEo3ASRhQvw+aReLbl1V7zNFjYQm+NIo9wkgd7UiqI=;
-	b=2XT83wDDRKig0YV7MR1f4REKgD1p1C9m27DggWEXFST8WaxoB80Mo0C/3tvTQRjttv6rqb
-	vjLKWvWLOcHLc6Cg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759318544; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WDEo3ASRhQvw+aReLbl1V7zNFjYQm+NIo9wkgd7UiqI=;
-	b=szEo/DGwXESSdOXMZl+okmUt/nifNcaF5R9rEV1NVdU9gFqb0iIpCfTfcPnqUn6cKvxjf9
-	1MuzlNiReDOz+zcvKz+UBUmWUddhPDEpUNfRCFE4kIiWM9tfc+/YVkxNkXUJ0Frgkvtmhn
-	2C0CaHeu6U8oxKI8bu0x4R56SO88V2I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759318544;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WDEo3ASRhQvw+aReLbl1V7zNFjYQm+NIo9wkgd7UiqI=;
-	b=2XT83wDDRKig0YV7MR1f4REKgD1p1C9m27DggWEXFST8WaxoB80Mo0C/3tvTQRjttv6rqb
-	vjLKWvWLOcHLc6Cg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0B64113A3F;
-	Wed,  1 Oct 2025 11:35:44 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 6LjAAhAS3Wi2bAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 01 Oct 2025 11:35:44 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id B01F8A0A2D; Wed,  1 Oct 2025 13:35:39 +0200 (CEST)
-Date: Wed, 1 Oct 2025 13:35:39 +0200
-From: Jan Kara <jack@suse.cz>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	linux-kernel@vger.kernel.org, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, linux-mm@kvack.org
-Subject: Re: [PATCH] mm: readahead: make thp readahead conditional to
- mmap_miss logic
-Message-ID: <hm56lqfeqcpjjpwkzuo4ktv7ayt763htehpi7ie2d47q52gm3w@mgbj42ivvv5g>
-References: <20250930054815.132075-1-roman.gushchin@linux.dev>
+	b=sriZhq5+hRrFmKJrvzyfFc0vKCT93nP3xPYyMCUTls1tkRm9JcNYO+q4OcWf1cXBgqIH6W
+	+eyRQUuLB/s60RjKhYS8nd+c0fKEmUbF2exfqBk57fEB6tUR7FVEXHK4MeEMWsvq8JLqzZ
+	7xoZgIEwW8ITVP8EJMR+LwwTOj6VcFI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B93506062C;
+	Wed,  1 Oct 2025 11:39:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4B8C4CEF4;
+	Wed,  1 Oct 2025 11:39:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759318782;
+	bh=Ezy7+mtT4eps9wTpBlbZkP1mFfCZBHTp5E+V6UHQD4c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hyfhWXjKKeqTsPAKqst9VMRZTuHnr79Sn85JR9oApnhJZe1TO5oXMimv1OZ2K5t1Q
+	 9MiMpANH+0eOS4bcbwboljFqvrlf7T7uAAqpI3hYX8SgDpEKW89XvVN/UZ5DYJEoku
+	 FCsdu0jIgr5dBxYfu2TGJvAqsoQRkfMXMl/1F9lyU95/QyzDKaMdhpvL1V7Ya/B2mh
+	 pfedbt0u93fTYkQVaxWkIHD9fK5BbrTidNe/CqVFgP1WMiwVDvBVcc7cf3aq3rnWzp
+	 eISxrrXcYtNF0j6R+nLIOAcxLwM1v6bQ7c0J8gD109M3HZIzW3eQE3Urg+TrWFUG6k
+	 2FEfVcfX3pxjQ==
+Date: Wed, 1 Oct 2025 14:39:37 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org, Logan Gunthorpe <logang@deltatee.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v4 07/10] vfio/pci: Add dma-buf export config for MMIO
+ regions
+Message-ID: <20251001113937.GH324804@unreal>
+References: <cover.1759070796.git.leon@kernel.org>
+ <b1b44823f93fd9e7fa73dc165141d716cb74fa90.1759070796.git.leon@kernel.org>
+ <20250929151740.21f001e3.alex.williamson@redhat.com>
+ <20250930075748.GF324804@unreal>
+ <20250930100758.1605d5a5.alex.williamson@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250930054815.132075-1-roman.gushchin@linux.dev>
-X-Stat-Signature: 96hw97uggz6ef38i58ab8kmc36mnhtfn
+In-Reply-To: <20250930100758.1605d5a5.alex.williamson@redhat.com>
+X-Stat-Signature: ojwrbuxyiy43b461s1ei9639xwee1jba
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0A4FA4000D
+X-Rspamd-Queue-Id: 9ADBF1C0004
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1759318546-101420
-X-HE-Meta: U2FsdGVkX1/yN3Z43an3scpgLLk0+/dmvYyeLn112HQy513DvkJo8h9je6r0KrkbaB+hHiCjkbgpOWn1GGf69BD+2i2KWUe3KfAmrPtt7CjIceGJ06NqCEvRJT2zM899mlJoMLiJzcVAwVchoAwxKFgemzKA+XIeUiZeEWF4lZfL+yxChMdRx7MiArWhD3SOQbsBCDYMPZCwg31urh3lI88i+ZINfI10VPtMrnTkBBCd7fyA8E68ie7nwRQ+0Ihsw9+DKFrc4s0v44kCmBSVaIV8MLlmpKvXszZUCdYMtt8RyXI3ZCHdY4k6X4vWUJMUh0WidLt6Vwacv7yYjFMGda9zKK7sRn0mORCzLXftrsrnMrlG/li2PDxEz9CDEOwSzUmVm2doXpT2gsaEDlzriTkqWjLNl62izwCyoRvoe4cBFsduP5Eiq9tebzvbZL2e11/S9GPHw5BHCwPRLfD+bxXdoAyaLu5wcWFzXWLyfR8VcUFHLWlMtWJEQs9BqIFP3Scw0+aXvn4K7GcFtdUP87PJmGNYnNEutTH27MaqpeD070/IoFw1BwZO5ihbxPpn5ZaccxcREuM/BnGWoz2yBKP3v60O+AO5lr7LG2BWlaohMUyHBbM1NiRym4NkPdD29/kT2q0rmirLrNsBEQtZbN8ywtL9f8ODzSjkcwOgpCJFSWpdjBk+g6AAQi3HwS8+TKM5q/XBxstzsOpkzPugJXbSdK+I5HvIOe7SHqAB0eYCfmz/c3KL6JXQi4TYeSPX9fIV4ZWmksOLKCtU3ocy1GH0nk/catQujKuSz3WUV/BiJ1v0NBQT+YG9d9orIkz2k7f0dR5Y+J2WMJyXPkoXe2tOsoEGk2HU75ywghfN00JylEev1Ag0uh4rMNHbfQY8hI63hQF8CPvwj8EJIzO7by89geH7Zvg0pv4Pcyzv7D4Is720pUeQc8rtElQbQa5ifD2tCO3pggbLUTrx4hy
- gx6GK4Eq
- DdttYlc1SX6KmaskBvtiFKjDDAPG8OOp0ooVywIvjB0encK29ZkMMeO00hhilkDF7Q8EkCglDZvCg5pzmlbSy6elSW9vpGSorL3W9Ze2VzwunB8q1EosNCI08lku2C726KcwmrOK0F8bQ/TT48pZ+RiL2qMzS06RTOfOh+crrp5/Mwpud6SBeelRdvBful78bGuk4lz1dmSxKzRctuTbY5dp07DAi1rlzjGnmqMwoi5/9T/9/2BO7U23gLheR/XE7qRh4NFCfeHZ7vjoMq/brRA3rOGZpPFD4pssbC0v9aAuw3Vmxh6WwBAoO6/pwsuCoIBNoRWKnnEaD7PfqrM5EgsO7Cb0t9vTRvLZ1lv+aUXqekvKjkZ84mvBKBDm8j4gdU7vue3Dk8UYxC3cayYyemNWLm6WHQjpk4VN+rtnYUwPz4MZsSnBMRBLIXcuV0iFwDKsJK9c9bMdaMrTN6vzP31fNSTxmT1GopY/179Rluw3BDJ9n92Kh+qB7cQ==
+X-HE-Tag: 1759318783-393516
+X-HE-Meta: U2FsdGVkX1+ZRZmSDXmQHmWYmGyv7CAgzaV5N7Ngj56PQfv+ePMRe3U81zaXGGweBLvlyFCd8Ctm7qaXZf27CdZaIAH4K0VpVeYuEr5H0NI3OddquS2LtHLKqBF4Prn5kblcUNlHJhFOvuvWD4Zc/OUNz2E4Oyc3aT/v0m3wiNmxagnC8w+0oJiambs3I9Gj773AowlFqRvPoc26iB2JtY1WfKd8siw5b7jJ2S9QSYUWP2pbdXu/lVFcQ0hohXeJtKT0GWrgPoOLrSQmNl2ZUO3DDeiooHAUXBDXC/G5wJ82q6bD3iNSpu1rjX+O4eXE2NNvy1S8p2MbNNQCFe1etvMR4how6h7r5tiZ7d3B3bBgeNcjo1Baw4eqdPSFU/aN0Uls7EWelcL/htAX4U9uzpuCiqgWeztRf0NvvMJvJIQEsD8TwBu0A51rP/rE4ayWQXhrmIt9b94vAqTYLVAPCYnDAK85sgzrymIb64HoYm5P9BlB9rhzR4EOwvtF6dPBawqRhR7qwM9t1rddjxG1ambT9mAWCuNeRe1fZBfQm5/jdfriOMj7rPdk3Prb7GA+m8GMPzdSm04xoZeJOH5O3A+KPlANxksnisCGWTP/ll0r4KQ4P0ThzcAg8/Ex/xyeXkDkA2DYRgEGYZ0agz/rNmRmCz10APOuggXI+coZh6JMDHG16Of4xcQ1kfcLzWdNcvXKp5DClz+Uhw/itaNYAUUR+DLIMndDj2TOOGNvTUwwq6J08xTmYWLvkV1Ok2jvWqYKy5wKYCj/nCJWVis6EVnFNOMCuaKB2H+uRMWxUIcUtVQFf/Zy/pPIF4+ZZOxQ2QOit/q3TKJYRHuJUFkgA4rcHmJAIhAmygB8f1P1v7wf2CBgy7tbaYxrmTTQQAv0viz+pN48SRUAyIb8awyYvDa4Kxo+5yK54vlbGXYL9EV97uL7TaRXlfPo68uABl1a2v9gsyJ6TpE3YltyrOd
+ QjIkhuMr
+ iLyjWG+FWiKqa7+DbviTe74xnpMwWl1O3JBL5Sb/i5K0n2+kxjLqFbIFJOz8XGfoHeOMczRJ9Huz+eQHphruUb85syYw0Fe8OU/lulct718XGvNG9y+9EUn2vZxQkSPgriL1vc+FKOZv3S89vzSfHzLH6Zv+0W9bN9W7e3l5uLL3aL5UGRis4+rrDbPoTRpFbYK5YEipEwbf8yztt9Y+LjTCF0i1l0Q3Sb5dWk7I3qzRqPwLk5sU+3CWcEDBdSrefb6monOAKi8SRsHq7YBZN6xdZ0gFZabNCk8F//97a4EYUdPM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,119 +109,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 30-09-25 07:48:15, Roman Gushchin wrote:
-> Commit 4687fdbb805a ("mm/filemap: Support VM_HUGEPAGE for file mappings")
-> introduced a special handling for VM_HUGEPAGE mappings: even if the
-> readahead is disabled, 1 or 2 HPAGE_PMD_ORDER pages are
-> allocated.
+On Tue, Sep 30, 2025 at 10:07:58AM -0600, Alex Williamson wrote:
+> On Tue, 30 Sep 2025 10:57:48 +0300
+> Leon Romanovsky <leon@kernel.org> wrote:
 > 
-> This change causes a significant regression for containers with a
-> tight memory.max limit, if VM_HUGEPAGE is widely used. Prior to this
-> commit, mmap_miss logic would eventually lead to the readahead
-> disablement, effectively reducing the memory pressure in the
-> cgroup. With this change the kernel is trying to allocate 1-2 huge
-> pages for each fault, no matter if these pages are used or not
-> before being evicted, increasing the memory pressure multi-fold.
+> > On Mon, Sep 29, 2025 at 03:17:40PM -0600, Alex Williamson wrote:
+> > > On Sun, 28 Sep 2025 17:50:17 +0300
+> > > Leon Romanovsky <leon@kernel.org> wrote:
+> > >   
+> > > > From: Leon Romanovsky <leonro@nvidia.com>
+> > > > 
+> > > > Add new kernel config which indicates support for dma-buf export
+> > > > of MMIO regions, which implementation is provided in next patches.
+> > > > 
+> > > > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> > > > ---
+> > > >  drivers/vfio/pci/Kconfig | 20 ++++++++++++++++++++
+> > > >  1 file changed, 20 insertions(+)
+> > > > 
+> > > > diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
+> > > > index 2b0172f54665..55ae888bf26a 100644
+> > > > --- a/drivers/vfio/pci/Kconfig
+> > > > +++ b/drivers/vfio/pci/Kconfig
+> > > > @@ -55,6 +55,26 @@ config VFIO_PCI_ZDEV_KVM
+> > > >  
+> > > >  	  To enable s390x KVM vfio-pci extensions, say Y.
+> > > >  
+> > > > +config VFIO_PCI_DMABUF
+> > > > +	bool "VFIO PCI extensions for DMA-BUF"
+> > > > +	depends on VFIO_PCI_CORE
+> > > > +	depends on PCI_P2PDMA && DMA_SHARED_BUFFER
+> > > > +	default y
+> > > > +	help
+> > > > +	  Enable support for VFIO PCI extensions that allow exporting
+> > > > +	  device MMIO regions as DMA-BUFs for peer devices to access via
+> > > > +	  peer-to-peer (P2P) DMA.
+> > > > +
+> > > > +	  This feature enables a VFIO-managed PCI device to export a portion
+> > > > +	  of its MMIO BAR as a DMA-BUF file descriptor, which can be passed
+> > > > +	  to other userspace drivers or kernel subsystems capable of
+> > > > +	  initiating DMA to that region.
+> > > > +
+> > > > +	  Say Y here if you want to enable VFIO DMABUF-based MMIO export
+> > > > +	  support for peer-to-peer DMA use cases.
+> > > > +
+> > > > +	  If unsure, say N.
+> > > > +
+> > > >  source "drivers/vfio/pci/mlx5/Kconfig"
+> > > >  
+> > > >  source "drivers/vfio/pci/hisilicon/Kconfig"  
+> > > 
+> > > This is only necessary if we think there's a need to build a kernel with
+> > > P2PDMA and VFIO_PCI, but not VFIO_PCI_DMABUF.  Does that need really
+> > > exist?  
+> > 
+> > It is used to filter build of vfio_pci_dmabuf.c - drivers/vfio/pci/Makefile:
+> > vfio-pci-core-$(CONFIG_VFIO_PCI_DMABUF) += vfio_pci_dmabuf.o
 > 
-> To fix the regression, let's make the new VM_HUGEPAGE conditional
-> to the mmap_miss check, but keep independent from the ra->ra_pages.
-> This way the main intention of commit 4687fdbb805a ("mm/filemap:
-> Support VM_HUGEPAGE for file mappings") stays intact, but the
-> regression is resolved.
-> 
-> The logic behind this changes is simple: even if a user explicitly
-> requests using huge pages to back the file mapping (using VM_HUGEPAGE
-> flag), under a very strong memory pressure it's better to fall back
-> to ordinary pages.
-> 
-> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Cc: Jan Kara <jack@suse.cz>
-> Cc: linux-mm@kvack.org
+> Maybe my question of whether it needs to exist at all is too broad.
+> Does it need to be a user visible Kconfig option?  Where do we see the
+> need to preclude this feature from vfio-pci if the dependencies are
+> enabled?
 
-It would be good to get confirmation from Matthew that indeed this
-preserves what he had in mind with commit 4687fdbb805a92 but the change
-looks good to me. Feel free to add:
+The dependencies are for the platform and not for the devices. For
+example, hisilicon device mentioned in other email doesn't support
+p2p, but the platform most likely support.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+I don't have strong feelings about this config and at least for our use
+case will always be enabled. I can hide it from the users.
 
-								Honza
-
-> ---
->  mm/filemap.c | 40 +++++++++++++++++++++-------------------
->  1 file changed, 21 insertions(+), 19 deletions(-)
 > 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index a52dd38d2b4a..b67d7981fafb 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -3235,34 +3235,20 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
->  	DEFINE_READAHEAD(ractl, file, ra, mapping, vmf->pgoff);
->  	struct file *fpin = NULL;
->  	vm_flags_t vm_flags = vmf->vma->vm_flags;
-> +	bool force_thp_readahead = false;
->  	unsigned short mmap_miss;
->  
-> -#ifdef CONFIG_TRANSPARENT_HUGEPAGE
->  	/* Use the readahead code, even if readahead is disabled */
-> -	if ((vm_flags & VM_HUGEPAGE) && HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER) {
-> -		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
-> -		ractl._index &= ~((unsigned long)HPAGE_PMD_NR - 1);
-> -		ra->size = HPAGE_PMD_NR;
-> -		/*
-> -		 * Fetch two PMD folios, so we get the chance to actually
-> -		 * readahead, unless we've been told not to.
-> -		 */
-> -		if (!(vm_flags & VM_RAND_READ))
-> -			ra->size *= 2;
-> -		ra->async_size = HPAGE_PMD_NR;
-> -		ra->order = HPAGE_PMD_ORDER;
-> -		page_cache_ra_order(&ractl, ra);
-> -		return fpin;
-> -	}
-> -#endif
-> -
-> +	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
-> +	    (vm_flags & VM_HUGEPAGE) && HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER)
-> +		force_thp_readahead = true;
->  	/*
->  	 * If we don't want any read-ahead, don't bother. VM_EXEC case below is
->  	 * already intended for random access.
->  	 */
->  	if ((vm_flags & (VM_RAND_READ | VM_EXEC)) == VM_RAND_READ)
->  		return fpin;
-> -	if (!ra->ra_pages)
-> +	if (!ra->ra_pages && !force_thp_readahead)
->  		return fpin;
->  
->  	if (vm_flags & VM_SEQ_READ) {
-> @@ -3283,6 +3269,22 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
->  	if (mmap_miss > MMAP_LOTSAMISS)
->  		return fpin;
->  
-> +	if (force_thp_readahead) {
-> +		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
-> +		ractl._index &= ~((unsigned long)HPAGE_PMD_NR - 1);
-> +		ra->size = HPAGE_PMD_NR;
-> +		/*
-> +		 * Fetch two PMD folios, so we get the chance to actually
-> +		 * readahead, unless we've been told not to.
-> +		 */
-> +		if (!(vm_flags & VM_RAND_READ))
-> +			ra->size *= 2;
-> +		ra->async_size = HPAGE_PMD_NR;
-> +		ra->order = HPAGE_PMD_ORDER;
-> +		page_cache_ra_order(&ractl, ra);
-> +		return fpin;
-> +	}
-> +
->  	if (vm_flags & VM_EXEC) {
->  		/*
->  		 * Allow arch to request a preferred minimum folio order for
-> -- 
-> 2.51.0
+> > > I also find it unusual to create the Kconfig before adding the
+> > > supporting code.  Maybe this could be popped to the end or rolled into
+> > > the last patch if we decided to keep it.  Thanks,  
+> > 
+> > It is leftover from previous version, I can squash it, but first we need
+> > to decide what to do with pcim_p2pdma_init() call, if it needs to be
+> > guarded or not.
 > 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> As in the other thread, I think it would be cleaner in an IS_ENABLED
+> branch.  I'm tempted to suggest we filter out EOPNOTSUPP to allow it to
+> be unconditional, but I understand your point with the list_head
+> initialization.  Thanks,
+
+We can add dmabuf list to struct unconditionally, as memory overhead is
+negligible. It will allow us to drop IS_ENABLED() too.
+
+Thanks
+
+> 
+> Alex
+> 
+> 
 
