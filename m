@@ -4,111 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C3C9CAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 14:05:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8DA5CCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 14:06:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9FC48E0006; Wed,  1 Oct 2025 10:05:00 -0400 (EDT)
+	id 27B948E000C; Wed,  1 Oct 2025 10:06:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B77BA8E0002; Wed,  1 Oct 2025 10:05:00 -0400 (EDT)
+	id 2533A8E0002; Wed,  1 Oct 2025 10:06:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8D778E0006; Wed,  1 Oct 2025 10:05:00 -0400 (EDT)
+	id 142378E000C; Wed,  1 Oct 2025 10:06:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FAC68E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 10:05:00 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5FCBDC0A0D
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 14:05:00 +0000 (UTC)
-X-FDA: 83949716760.03.3201B65
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 02A778E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 10:06:18 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A46A4160AC5
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 14:06:17 +0000 (UTC)
+X-FDA: 83949719994.09.08F5391
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf12.hostedemail.com (Postfix) with ESMTP id DFE354000D
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 14:04:57 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XodyGt5I;
-	spf=pass (imf12.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 4C3E310001D
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 14:06:15 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RUNnrhEx;
+	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759327498;
+	s=arc-20220608; t=1759327575;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5wPPCW56HYmH+KQxPHAabwefVp7YnLOP8sGF8wH4S4Q=;
-	b=UJyF8kxeD5cCNWmDQYtf3Q51zyt7ZF/TEr0xMBR/BVNyUgPYdnONxIcED6iVXtLxgBM3gi
-	GcrF0dQlsF3YYt5NYE96ouGQaflWH44e25TsUjVt5JNKir4WTZVNm+HvHRzUfJkbb417qX
-	JOk3bK8uoXbxIVInH73h4cwNTRJQlVc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759327498; a=rsa-sha256;
-	cv=none;
-	b=lRo008fpyuOpwdn7j6It8i5A14De3NPZZ3eoRfh/i6bfTtKj7O2v6R5urRrZ7/w9ZU2xav
-	BtxRTmd/+59ZfdEHNYEDQXIZcX2fO4HpN2gnFXhnX2juOaIc6PfECbzHQzPRfzDw56jh3k
-	NVOgGOpW4ZCoFBm2o1llIe9ARe/FOIc=
+	bh=+JjFA8L7VJ9DW4AhzP29s4DyZi7y9MtKLl72xa433K0=;
+	b=K7eDr90ulpZ/pDrc5tvhszuJcp5GvHQ4ax5D0UcmSA70YbEEXSEZYrjsgAIe257F7e+gwI
+	odSH7bKqa0YaIQUhGyasHCDSid/kFKmt1u0z/6IjftS3UhCmuhor5oGn4uj+xDoAMio9Ue
+	ggTah+/eeij5rpMTZ/CtzWN7i695YwU=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XodyGt5I;
-	spf=pass (imf12.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RUNnrhEx;
+	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759327575; a=rsa-sha256;
+	cv=none;
+	b=mSgoQpiTl87DQpdCNLWoCtMYru/Kp7i6UoFS4IvW+JPwiwWlQ+FvQzV2Db1AamcWNDjrpr
+	c+3LQlzm3Ha68cO7H8MwVeKAKjSbPOwO4/g4E3m6JNRI2yqyK64tM9A890XQdH2IffJKdl
+	9DhzyoF9P+ELze73BUYa1Ji1+yw+X/I=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759327497;
+	s=mimecast20190719; t=1759327574;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=5wPPCW56HYmH+KQxPHAabwefVp7YnLOP8sGF8wH4S4Q=;
-	b=XodyGt5I+zede1QCngSo2PEKyuetWYNYTbA1iQ7KdL4109TzSRuqiVVYSam6X7+8d1LISL
-	fTJCaxp1GgKUmDJ4OszS3CCYL1R7FzxVxvZA5ElnO2l8YapyCmZV5R/H3KRNMrXg8EHnCz
-	A/CqA4GfROPapXabyZuh5p6bgK7nSDs=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=+JjFA8L7VJ9DW4AhzP29s4DyZi7y9MtKLl72xa433K0=;
+	b=RUNnrhEx3tQwt14Qs/TrjamWfQKZU9oVfNgH+GO7ABh1DOIrhgvKfN+LZFqHafZqHQs6UX
+	HgzPBsFfY78mtWmmfrVvFCEx9NdgAjlrqSzwfP9nQCcbl5N+i3JPa7e1HROXTGRoJlCNh/
+	XPRFqCn4qshd9S16mNdayJYxLHSTsKg=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-446-BWdT0KIXMWOA3kMAPcx19Q-1; Wed, 01 Oct 2025 10:04:55 -0400
-X-MC-Unique: BWdT0KIXMWOA3kMAPcx19Q-1
-X-Mimecast-MFC-AGG-ID: BWdT0KIXMWOA3kMAPcx19Q_1759327494
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3ee1317b132so5685780f8f.0
-        for <linux-mm@kvack.org>; Wed, 01 Oct 2025 07:04:55 -0700 (PDT)
+ us-mta-28-6uq1RboQMJq1k6RUA491tA-1; Wed, 01 Oct 2025 10:06:13 -0400
+X-MC-Unique: 6uq1RboQMJq1k6RUA491tA-1
+X-Mimecast-MFC-AGG-ID: 6uq1RboQMJq1k6RUA491tA_1759327572
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3ee1317b132so5687066f8f.0
+        for <linux-mm@kvack.org>; Wed, 01 Oct 2025 07:06:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759327494; x=1759932294;
+        d=1e100.net; s=20230601; t=1759327572; x=1759932372;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=5wPPCW56HYmH+KQxPHAabwefVp7YnLOP8sGF8wH4S4Q=;
-        b=BwrJCIrRugS2G7TdUXFC5u+Hra/hYzsy29JLUMDkdN6z59QJBtGrgN67qHC2XOUnc+
-         fP/L5vXhZehTNKy7F/5jxBi0Tww0YlPSqyR7T+67AaI3m57pjxDQajqLSm+OzDOSdIj7
-         m7n3icmEDTXdMQ9k+BTPjdPV7eR/hEsNx+b8YYDLvZWFGwAWRvYcX2GB1Igw8+0Zq7RI
-         /YS0q6p36MpcVtKhb2LbTI7DVqOVjM8+a+IQ4IN7zMYB0yywAGKlXyZlhq7GNibPvUC9
-         TiziTeML6NEEDAHlg65bb5Vdz0KISPse7Dj1Ku9hja/5iyWSSQnvaiuZRk9kiB2L3UJR
-         AQ0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV/aX50QVCKriRlOMMxyUvE5YKJwmzKfjHDRvGrKLvI+1liLtOYoPhFw6vXAzHRdOCDDKc34H3J1w==@kvack.org
-X-Gm-Message-State: AOJu0Ywwb1IWoBOEIYCKbto5Chj4WBVbol6+PzgbFqDzUH88x3ml6lSU
-	UVBu9NIXvV5QWHU0LEFKJ2tmxsoDVFrbyD4fb8lBDJQlh/CVhy+GqfCpx8hF7S+GbKMtOLZj7Qu
-	rvP9ExG0ATf0/p94PUbTKWTI7OiMeNiE+CbNXQv2fbgZn7VJSTBDS
-X-Gm-Gg: ASbGncvucoXGwUQcUoLuePwqhxTkeKhCaSM3zFCKaZhqHeuDDbI0rycWbCF1YOCsV/a
-	WtTl998n/YncTYVZD7Ic48jXfUltoS3ITyYmDAMh0Ytu37e3xBGJUY0uHjztJxrDJ+kBRhIG2RN
-	ISxHrdc808LoM0OaTw1xKZvRhs7+kSPczSFwpn2lWtbNQph534wdrzYKGi1ZhwSL8N4ckZZFOS3
-	ZnIurf2GYc1fWbTWeqIU7TYowfo+KbVhzq//Rw9vAvqbHtd3LFt7sec9cYA/pl3FFwb2p9Dc97r
-	JklDCjttNfYZmALzFM90tPql1mfzXqWAOhnt67v+8gLlVWdI0+NtkYIGFfLSPDiOz4o1qMYPg47
-	NDZJEsHEY
-X-Received: by 2002:a05:6000:2310:b0:3f4:84d0:401a with SMTP id ffacd0b85a97d-425577ed6a4mr2490032f8f.4.1759327494301;
-        Wed, 01 Oct 2025 07:04:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IENzD4FS17jMrqlPAIsdQn+NVx/5qGSii77YOKVGiC9md7iTCov990k4EcT+GuqiLVYoBJGrA==
-X-Received: by 2002:a05:6000:2310:b0:3f4:84d0:401a with SMTP id ffacd0b85a97d-425577ed6a4mr2489997f8f.4.1759327493844;
-        Wed, 01 Oct 2025 07:04:53 -0700 (PDT)
+        bh=+JjFA8L7VJ9DW4AhzP29s4DyZi7y9MtKLl72xa433K0=;
+        b=E4CXJct0wG3l/299u0dNgYVfSqxwKg1wbapd8U+a29I0t0HsUlVKbSRbC1ONLIrGxW
+         c/xzheV3CdDLGgUwmbxNjSIGmFpH92GZ8mUqF/4AxMVYf5Jt+GgsRm8bCEvPcAfcn9FL
+         mNcooxnju2xvRkGWAIjLmPJC3iK/GBM8DjhiSgh/meB28LGxDIBtxj76zyMAdZn2Ol/A
+         4ISpp/yGbjimrZzwpmgsA71lz5V5l2mZluiN26/pOiNZOhBT24ehrHuvZOROmD7luBPI
+         Vdxh8UfqT//kylQ2w6IAwuokvFyVVRtj5+c0rbnm0obBkGM9hRuLG3f//a+rcctg7sMY
+         RIRw==
+X-Forwarded-Encrypted: i=1; AJvYcCX0ZcEF/JaXjZdihBWj6jHkIvpSubCsPRQso/TqXsW61uIBKGwfBDmTxQjaL3NwSFuHa96QNiLBiw==@kvack.org
+X-Gm-Message-State: AOJu0YwWWC/HykvCApv0IzeNNEwVv5acrczLJI+xR0pdL+KLrMyeiSck
+	ren/z9Ue928sjtrmN+YGGwLBSmnBZm7dhXEs1xH0w5Y3dg6n+60zw4v9vLGiog/EyEWw0Bv5had
+	o62SGLlaGnuCFyByiVRP0kxg/JSplfX/vPdf3G/5dlldnFzs6N/n2
+X-Gm-Gg: ASbGncv7e/YLT6DCa6fuWKX+XYJHfAbw8liGmeBBiikURjDshniFXptf4bxHxrHdo6u
+	GLzJYC4pKWsfqZaXIc/iV7p46GQ5TyBYwqmrwYxYj2vYUofuCK7BayX8drTjZaaNG1XNWK84Yq7
+	Xn5J6huROZUrW691E7l7sVgFRwFO5Wf7QghCQN/tCj6aZZxIB9ILY49joI3L8blFtNVHVQHLaP0
+	f2hWLp3WHZu2LuLSJQhoBQ8JgpydeF1pVCbD8Z9zyPoMPLpOhyj1JH7KxdPjzDycA25392DWN9J
+	LZru7Su5KT7ZN+JibihzAFrsLsIkzM0gkKKGNCOy15Qx3o9VOJDr9Vw3bBglF1ocXsreapXV56N
+	uJyfXlNav
+X-Received: by 2002:a05:600c:45d0:b0:45c:b6fa:352e with SMTP id 5b1f17b1804b1-46e612bc7f7mr29175205e9.18.1759327572103;
+        Wed, 01 Oct 2025 07:06:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFB6BiumaTojBiz3Df4vGWwSD12NjYRd7DhTnsqEdJQlY3WRU8bYOQe+jJ2eqHmu3GbYlW5bw==
+X-Received: by 2002:a05:600c:45d0:b0:45c:b6fa:352e with SMTP id 5b1f17b1804b1-46e612bc7f7mr29174765e9.18.1759327571568;
+        Wed, 01 Oct 2025 07:06:11 -0700 (PDT)
 Received: from [192.168.3.141] (tmo-080-144.customers.d1-online.com. [80.187.80.144])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e5b63b407sm38795465e9.2.2025.10.01.07.04.52
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e6199f17asm41088775e9.6.2025.10.01.07.06.09
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Oct 2025 07:04:53 -0700 (PDT)
-Message-ID: <98cad9a6-875f-49c2-99b2-389bf4fd9b55@redhat.com>
-Date: Wed, 1 Oct 2025 16:04:51 +0200
+        Wed, 01 Oct 2025 07:06:10 -0700 (PDT)
+Message-ID: <02391468-5249-4640-b96e-76eb99b792ae@redhat.com>
+Date: Wed, 1 Oct 2025 16:06:08 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] mm: redefine VM_* flag constants with BIT()
+Subject: Re: [PATCH v3 1/2] mm/ksm: fix flag-dropping behavior in ksm_madvise
 To: Jakub Acs <acsjakub@amazon.de>, linux-mm@kvack.org
 Cc: akpm@linux-foundation.org, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
- peterx@redhat.com, axelrasmussen@google.com, linux-kernel@vger.kernel.org
+ peterx@redhat.com, axelrasmussen@google.com, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
 References: <20251001090353.57523-1-acsjakub@amazon.de>
- <20251001090353.57523-3-acsjakub@amazon.de>
+ <20251001090353.57523-2-acsjakub@amazon.de>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -154,21 +155,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20251001090353.57523-3-acsjakub@amazon.de>
+In-Reply-To: <20251001090353.57523-2-acsjakub@amazon.de>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: uTwiXPKFOugPgA9SoxxarUZ-4xnrhqVC_a9BItBzRVc_1759327494
+X-Mimecast-MFC-PROC-ID: eYJH1996IJdfg49XbFWtEFS79YY4HJRud0fiSFMz2jY_1759327572
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: DFE354000D
-X-Stat-Signature: gzpo8cu6646ormgss959nu6gzkdgiw4d
+X-Stat-Signature: mgh5wgc3739wr5st3tgy8zeom6urihch
 X-Rspam-User: 
-X-HE-Tag: 1759327497-966436
-X-HE-Meta: U2FsdGVkX1/uAhGtukowcGIXr3vLY/0RofQRCdiVxTB+na2WsS8H+g0CyhQs3/ph/JGKekQPadqa9TUkvsZrv2Sx7TojTklFnJjf134SfZJk1kyp6oqw450N4WokCFMdXaPhJsr+wrtLhZ1R07dKmRJ4rZLDsUqglAmwidHMkTVcDrzeTZm521Z9mR3fLuUnxTn0N/WGhc7BQAA7vlSu36rcy3YRw0D91x1uXvSgSqfGNdqVMCV6EUntCwNM5R4lOTf0WEvkYgBVznwrzGQgd5QS4AFYrO4VrRrMLzeys5d6MbCXXNoNWme1ZfUF1LSopLPUg9PJjDvPx9glX3sxwSsXyulLzlm+QKBRRAofpklmwaQ9QxH3jalbj+/bEbV5xMGCmUva1Zl3jn9sv7rY2ldGzbSVfe1jzVrmXDsKqKjWlUZUINhvOeZWosyunsYmDKZkFCSQjqKdwf3AuAN6s4x5T3850tBgisIGOJL3V+D/YrxbcGlpmXaZLxs8SU1x6BZAb0tbn0LC9JeDRSlTFVNIqztYbFZZBrCWmpT+t/CyjZfGPgV2UyZ7PLzQq+Lu0qn2CcXMvkEVexUxRvuhRyBktTDw7prANFqCUX/ap0vWU7objBSpVDWZdP0id4bS3GH0tn5MRuzCrHhbuAbPmnGeRPXKnqRC2Hdj6XqVsahUqCTTU1lZnsuzZwE2u/dwJFI+Z3VSIxIb00YGlMIMibQmcdiMZreoWFQd9Xatdh2UtcrSxTy/+bcKVF68JSzliYuduUy4vkGy3dna5gk9LkDbRSlJtQ61gbl3WNyzLYft48b/TZsr8Kmh7G2V9gONJLxmfPJrIIzz6xIvMHSwdnRaJ/51zD1N/6G88SHjtb8j8cCYQV8m1BQKqQp+/DfueXiUuNoJe92+KC6sMTitu7TiNFruo2euyIRohMoZ50kTMMAsbGOAaDsbGhaLKUEQPWAXXokBkq9dUgNG4i1
- yHyU5AaQ
- hbARQxeaybaAMnraE+9dt9yfWUl5U0DS26As+X8MFc4jmlTIwBhqVoR4Xc0OMt1oggGH5r/IKlbzQyEXUvSrHqI6mILzPfCAR1IHLLu0QFlxOJ8vKN/ut5dcyepNHYOSapf3ODn7+Lh4U5CvTSfy8gZ1SyA2zO6pF0xBJG/9xzjIw2TeyTYoxfSqOqWsp1VK5NBtYycGFTtAkwxXqhPbVoPD0Qw46k+cdVrHX/pVDvwzGIU05h45Kgbe6u8UMYHYMGiivuoEzW68UVbv5B5RI29FzCiaGEL/nZGPokmYOsoY59rZar+rHE40zGww0QkXkpIyZQLM1rrjdmhF+AVNO+Yin+PlufBKMIhyp8tV8fdWN5P6jBmFVmzJevHi6ZMCAWJPE7EOV2h3kws+VXVOK0BkoejshQdujKW9dEOi0istGpJ0OSnQPWlbUig==
+X-Rspamd-Queue-Id: 4C3E310001D
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1759327575-572501
+X-HE-Meta: U2FsdGVkX19Wwiuq6EJfMdv+UN+r1elEUVW4titjzrMBQJGkzYfO45GqBNlYKrPe2IXFRqZQh7+O1v/vlSCSyD9GPMA3k0K46iNvSNBti9T327SQdgX9KjHXzMOvC3H+dxsjMVNs/zRkp5PV1wMvo4hBgsVvnBw1KTPOSk2a8M0jmVXM9/daGtUZSSY/ioqnafMkLRTmHd7zbTHXO5ipvtOFuOVIn1QpRxNEPrrYOw25/jg6PH0yiz2oDteDoVLDP09QZiG1CSJKgsWPbdRgBGPjreTNMFg7ZmTdiJP/hX71QNiw8M2RUrhescseug5SMQVF4TsOIJ9mjvDTLxKN6qc9n9GA+bhnVQ6llN6Ao1cGQfXuwcJ3IdTJF3aD/MAQsTc4ytWfOk48leWbo7TSbdBurbOtVX7uj5rLswHJLuA6if2Z8E9+LxAAJbhBaexEWxRRzUHAmAQFrA/wJ0uV2dNGrBpekv1smgD4jSfeNG9/cqWycoscjfO/LDjhWRoywzLGXIgebKV6dFx2LCwy4xw2uhvPjS/Zcmvqj5t26jv9Yf+nPrtd3MAfK32b+p5OtHdENwbghOFGCmwPWvMP1c1OmwD1Dlv7kJZI5uZGBV3KrWPbK3tSIqR94sv2hSY5rnwlRort4wOnVON3rUxsre1RvyM2G7rNc8eFAnCngigGkykpGFba2rLKEyB2gwiuDc2fZj0uLgwK4Gej3mo7KNMvxkejOLP6mBJy4ecCzTrj0VokpGKVp7sbkzibK+7Ug0OcHfbQYc0J1rWZJ42zJy70Dall04o9DJblMCVOhILXHLeDwFzTQg0THbGXDjW25Pn3t2KXqy4ATQjgXYK5dgv4EpqGS+M7gB9eWuaGPa2l1IgvH4LLEpHbtjCd/pMHBrennA16Ejp+nCfSVBqTfIHcZfWRkiRY0zkKAoUmENtvIVu4fbkbXiO1Y/paoPabw7k8XNb4IiZxQhZ34O1
+ GtYVjegT
+ 7a5rlhV8vOrUc7wP1B1eFBPk+RQz3OJXrMLRgnMXnNQhgI9kJqzYT7GUP5Ptx78n7SBELVkFLMOZpSnaxNM6Fxyiz1g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -177,39 +178,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->   
-> -#define VM_GROWSDOWN	0x00000100	/* general info on the segment */
-> +#define VM_GROWSDOWN	BIT(8)		/* general info on the segment */
->   #ifdef CONFIG_MMU
-> -#define VM_UFFD_MISSING	0x00000200	/* missing pages tracking */
-> +#define VM_UFFD_MISSING	BIT(9)		/* missing pages tracking */
->   #else /* CONFIG_MMU */
-> -#define VM_MAYOVERLAY	0x00000200	/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
-> +#define VM_MAYOVERLAY	BIT(10)		/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
+On 01.10.25 11:03, Jakub Acs wrote:
+> syzkaller discovered the following crash: (kernel BUG)
+> 
+> [   44.607039] ------------[ cut here ]------------
+> [   44.607422] kernel BUG at mm/userfaultfd.c:2067!
+> [   44.608148] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+> [   44.608814] CPU: 1 UID: 0 PID: 2475 Comm: reproducer Not tainted 6.16.0-rc6 #1 PREEMPT(none)
+> [   44.609635] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+> [   44.610695] RIP: 0010:userfaultfd_release_all+0x3a8/0x460
+> 
+> <snip other registers, drop unreliable trace>
+> 
+> [   44.617726] Call Trace:
+> [   44.617926]  <TASK>
+> [   44.619284]  userfaultfd_release+0xef/0x1b0
+> [   44.620976]  __fput+0x3f9/0xb60
+> [   44.621240]  fput_close_sync+0x110/0x210
+> [   44.622222]  __x64_sys_close+0x8f/0x120
+> [   44.622530]  do_syscall_64+0x5b/0x2f0
+> [   44.622840]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [   44.623244] RIP: 0033:0x7f365bb3f227
+> 
+> Kernel panics because it detects UFFD inconsistency during
+> userfaultfd_release_all(). Specifically, a VMA which has a valid pointer
+> to vma->vm_userfaultfd_ctx, but no UFFD flags in vma->vm_flags.
+> 
+> The inconsistency is caused in ksm_madvise(): when user calls madvise()
+> with MADV_UNMEARGEABLE on a VMA that is registered for UFFD in MINOR
+> mode, it accidentally clears all flags stored in the upper 32 bits of
+> vma->vm_flags.
+> 
+> Assuming x86_64 kernel build, unsigned long is 64-bit and unsigned int
+> and int are 32-bit wide. This setup causes the following mishap during
+> the &= ~VM_MERGEABLE assignment.
+> 
+> VM_MERGEABLE is a 32-bit constant of type unsigned int, 0x8000'0000.
+> After ~ is applied, it becomes 0x7fff'ffff unsigned int, which is then
+> promoted to unsigned long before the & operation. This promotion fills
+> upper 32 bits with leading 0s, as we're doing unsigned conversion (and
+> even for a signed conversion, this wouldn't help as the leading bit is
+> 0). & operation thus ends up AND-ing vm_flags with 0x0000'0000'7fff'ffff
+> instead of intended 0xffff'ffff'7fff'ffff and hence accidentally clears
+> the upper 32-bits of its value.
+> 
+> Fix it by changing `VM_MERGEABLE` constant to unsigned long, using the
+> BIT() macro.
+> 
+> Note: other VM_* flags are not affected:
+> This only happens to the VM_MERGEABLE flag, as the other VM_* flags are
+> all constants of type int and after ~ operation, they end up with
+> leading 1 and are thus converted to unsigned long with leading 1s.
+> 
+> Note 2:
+> After commit 31defc3b01d9 ("userfaultfd: remove (VM_)BUG_ON()s"), this is
+> no longer a kernel BUG, but a WARNING at the same place:
+> 
+> [   45.595973] WARNING: CPU: 1 PID: 2474 at mm/userfaultfd.c:2067
+> 
+> but the root-cause (flag-drop) remains the same.
+> 
+> Fixes: 7677f7fd8be76 ("userfaultfd: add minor fault registration mode")
 
-Careful: VM_UFFD_MISSING and VM_MAYOVERLAY share the same bit, depending 
-on CONFIG_MMU (9).
+Very Likely we want to CC stable.
 
->   #define VM_UFFD_MISSING	0
->   #endif /* CONFIG_MMU */
-> -#define VM_PFNMAP	0x00000400	/* Page-ranges managed without "struct page", just pure PFN */
-> -#define VM_UFFD_WP	0x00001000	/* wrprotect pages tracking */
-> +#define VM_PFNMAP	BIT(11)		/* Page-ranges managed without "struct page", just pure PFN */
+> Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Xu Xin <xu.xin16@zte.com.cn>
+> Cc: Chengming Zhou <chengming.zhou@linux.dev>
+> Cc: Peter Xu <peterx@redhat.com>
+> Cc: Axel Rasmussen <axelrasmussen@google.com>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: stable@vger.kernel.org
+> ---
 
--> 10
+IMHO no need to resend this one if Andrew can just pick this one up. 
+Then, you can send out patch #2 separately as commented in reply to 
+patch #2.
 
-11 is actually unused IIUC.
+Thanks!
 
-> +#define VM_UFFD_WP	BIT(12)		/* wrprotect pages tracking */
->   
-
-This seems to be correct again.
-
-
-IIRC, Andrew prefers not mixing fixes and cleanups in the same series if 
-possible. So you might just want to send out patch #1 separately and, 
-send out patch #2 separately with a note under the --- that it depends 
-on patch #1.
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers
