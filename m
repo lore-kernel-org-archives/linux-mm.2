@@ -4,116 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE351CCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 22:17:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1D67CCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 22:25:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB4FA8E0007; Wed,  1 Oct 2025 18:17:26 -0400 (EDT)
+	id 8707C8E0008; Wed,  1 Oct 2025 18:25:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3EBB8E0002; Wed,  1 Oct 2025 18:17:26 -0400 (EDT)
+	id 8481B8E0002; Wed,  1 Oct 2025 18:25:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2CF68E0007; Wed,  1 Oct 2025 18:17:26 -0400 (EDT)
+	id 75D848E0008; Wed,  1 Oct 2025 18:25:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id ABC288E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 18:17:26 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 64E3316027B
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 22:17:26 +0000 (UTC)
-X-FDA: 83950957692.07.2967A00
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7F61418000B
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 22:17:24 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=JXGWBLD0;
-	spf=pass (imf06.hostedemail.com: domain of axelrasmussen@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=axelrasmussen@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 618F28E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 18:25:39 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 003081402B9
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 22:25:38 +0000 (UTC)
+X-FDA: 83950978356.06.4778349
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1531EC0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 22:25:36 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FX8RDkQT;
+	spf=pass (imf28.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759357044;
+	s=arc-20220608; t=1759357537;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=im5o8/JhY9U4JZPGh2QjfMYtoFGFzGrMg53SDn54CBY=;
-	b=CcI9hlm6Ctmew2jawSR4wdLGcKqKp0k8vDcCtBDjsNqd1MiUlTX6wvoPBYHUSP3UGQFCdT
-	P8yZ34ikkcJNPEmzPgXsTLywiHXRn9KsRpckuSJmTZoHDMVvJzsxaEEhlnnos64MJ1Q2oq
-	nwrcA/IwgpKymy3ncIqW+RogDjuw74w=
+	bh=vzvrs1VV2WDiIUvA5i+R/HiHvohIXfIQ0AqUBNp0VuQ=;
+	b=diRCERL5SEwpWR2RMKztDguSrdoW6LoH0YZkqq7QB4TRCXIKt80F5GMwgZsPnbiP4WHg0r
+	NCUib5mVvmzyJkYayoRaVscJ9V+7ZnmUyVe02/mzgz2aJXoNDl5g+lqM9JNE2vbIU7dFFc
+	7upjTmgigcMs+ALN4NHpdkPI8sBpiA8=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=JXGWBLD0;
-	spf=pass (imf06.hostedemail.com: domain of axelrasmussen@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=axelrasmussen@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759357044; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FX8RDkQT;
+	spf=pass (imf28.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759357537; a=rsa-sha256;
 	cv=none;
-	b=QOcXVFuyIkP3RZqv4hRKWExzfBpaEFcw/ABzv9dF3CuBV2CS5696zxhh5uwXxsikRyserw
-	fPFwNS6aiHwfVn9y8dTe3bl29rKOxwIL8aWEtfB1dDsRNUBFCgicFid999Rex8ROqc7BMU
-	RmVlvpW/6CmB2AlRSFPa4/nE6jwwUyg=
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-27d67abd215so73535ad.0
-        for <linux-mm@kvack.org>; Wed, 01 Oct 2025 15:17:24 -0700 (PDT)
+	b=zVg2m4ngll2ltV5yHQ9fqQkXpKE4Q2iAFwDv1Y3bCU03nV0ft849eXglKwcnlzVlKovShZ
+	53FTQOMAfc1yTdS4yaZhkEobaamB4RBg1nOJlJ8GyodSLUg+PpvrWU6FNR0q2UoWVPiIB5
+	pzc4WiouVe/zyybBnP4BunR3LpNDDYY=
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3ee13baf2e1so172732f8f.3
+        for <linux-mm@kvack.org>; Wed, 01 Oct 2025 15:25:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1759357043; x=1759961843; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1759357535; x=1759962335; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=im5o8/JhY9U4JZPGh2QjfMYtoFGFzGrMg53SDn54CBY=;
-        b=JXGWBLD08pbEcy51zCwdXumCmLwqHFrZBdB8hOa726rZS9r9Qok4MXY6or3gE7BVPI
-         QB9EKkti41B2rdnAuGfKqVQboUjQL16Zqw/UGYAiktjGmoHeze+YEBN8jvSoiqQ9yAnU
-         FCgZpb42mHl3AKjCbBtm9U0DTIr1gkCzo264728YQIFNsRXUEQXReR/utlWlrOJMCgpM
-         NS1U32Aqj+T//kYcfqAwPurVWpNOKkpwtvM0kbuzbLRMyRKq6QwqYOMD2IDA1Eo58Dbi
-         9NxHgkqSXKdvX0Zuj++CTXZVVMNhTDVbuJtmEb3D3elsHnjgVmNhQMiPZ91sPBI/TOO5
-         OJJQ==
+        bh=vzvrs1VV2WDiIUvA5i+R/HiHvohIXfIQ0AqUBNp0VuQ=;
+        b=FX8RDkQTXPJNaXeOFfkEu+Ava2zVpSZvDZUMpghS0HfSKbQS1IhGOMDianMw0qpeBZ
+         MHNnu6nESGBMXfMc+jN4FaZzssWBsgjRCrGneIbvUzXqJ9s/9WqPr7ySQJgZm3zsbyw0
+         4uDxxs6IUa+n7mrTKSonlSrvTJ35tyxFvyOe2w7Bhp/PUb+t++PDq9w+Uu/Zhf7kwf9v
+         Qei18X2Qrefo7KVKJ+hY7my3s7ID+dHSBvrdQVXVw9GHPHTpHDNIqtnUtav1Gj9Kndyb
+         oBHiqPp0h16amilpo8E/P0BJjh4sFWyHvflVtjEg3XV3MBGK73fcrw8uErz7RADWqLrq
+         Y93Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759357043; x=1759961843;
+        d=1e100.net; s=20230601; t=1759357535; x=1759962335;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=im5o8/JhY9U4JZPGh2QjfMYtoFGFzGrMg53SDn54CBY=;
-        b=VfCTiPqZ/DfG+vxibWyffeRhfAEeCzLZn9AoKBUp5k+25i3zB8Am1AGQtSXzLMgy/M
-         RJfONqVdl44A3JHUyRR2ymBvBB/nfyYUd+ZiE+m3yOJGG7rZmRt1wmV2S7wxJyPQFRNi
-         grxrBYRXC8KasChVNioHQD7jwu8uwxCD4MEuUnd3dWbwxw2+zU0LpvnVPFlz7droftTF
-         KwfHH2kN6/zBUyvn3CEmzXE583eyRoD78OCYrxwrBLHx4JS1/cS28VKYpkwhEiuEvFhX
-         rW54eG/7+7iB1S8Q42lGpe/D7PDkaRuqVvQcVMSnOWx9CQ7tuW02Lp2Y3oeFj5hIiUaR
-         MoMg==
-X-Forwarded-Encrypted: i=1; AJvYcCWx/WAuDyV8PmJ62ZHiHmPjFFDkKsLO4HefWFQb9sEFLoAhUVH0+cKVSTpAj5jUReFO0O7hpf7dtA==@kvack.org
-X-Gm-Message-State: AOJu0YxlGxV7aBSGH62qFNJuVQ+0WU/EvY5qo017Dai9Cjs6r1WgJ2GJ
-	KPTzL+7agx9zcwRw9wpmC9UP+KwLIEhT3ZJM5ziaDSwLvhbZDnBwesCFj5YDxx2OHolcbzg5f3g
-	DXct1AjYG+SbK6G8doQ3t1OY+4WvlS2U6HJ+IQOs7
-X-Gm-Gg: ASbGnctg4fUCwzgxC6/C7n2vn+aLDMuvGw24FQneXpzpnINdGE5zDMpZI//Dbdbdami
-	P978zNSZwxmeqyBKPMH92gC8W+Fz2ILrxtJ+nt2E+J8nBzy82jNfNjJ5vpu4IgZTYw8GDWAD4mc
-	WD8rV2d+4nbY/y2D56PAJ+v7o8h7apRnrcY8J+XLeTE/XdUKveb8x3OCVI+kjtXIkHLcysrAcCU
-	GHwx9zKQ9JoJH1sIxEwSph5jai9Fgf9XAGcOHM/XeTO24m1HXVwn7tBrhVGxFEqXL6TZp+E1vMn
-	ifWb3PU=
-X-Google-Smtp-Source: AGHT+IEhjJEVv1KO2Sl21mU11B4LQvkwHgYZg9a+VzDZ8KCf9eDDcpza/PlMQ4nWMJB8yYNDQWX3ETtyc0DRbR0iuAQ=
-X-Received: by 2002:a17:902:f791:b0:25b:ce96:7109 with SMTP id
- d9443c01a7336-28e8e9e7c4amr656585ad.3.1759357043044; Wed, 01 Oct 2025
- 15:17:23 -0700 (PDT)
+        bh=vzvrs1VV2WDiIUvA5i+R/HiHvohIXfIQ0AqUBNp0VuQ=;
+        b=ht1ALWXMumJdZA6fXD2ve9erZbmftHmKtUkDwqalkUaZc0ePkYTtGTVT6VZOHErxjA
+         /RV8HuIaa7XE+qFeZ3qDKMewa/2pDHp0BdQb0MyypxcRsMa0j6acSaOm2Zesmb7o2VfE
+         nyjc4oxtvY0qnuqXCqjCV/ko7/BT2tpscyJge+2lnuxobgyNboWFVtSKaV+bWgJA3iFX
+         /Cn+EJRUxswKMaYevcCnBoYTtJngVgjiA2Jgs6+o/WJCXRQust9fIOOdd36GRTL0Cs8h
+         2XQzmv7uuhWLW2OBmTnpvc4j+vzPeTDrXjyXl5sPf5Zk7uia7dkudBRvn7NtONr5owFE
+         SvOA==
+X-Forwarded-Encrypted: i=1; AJvYcCXy8yGbDfB1yC4kzZoq6Jdb9WxEsZxJfzrH00s0MgVQXeELRuU+pcvW+5dyF1WE4vT8j/DqnfvYYA==@kvack.org
+X-Gm-Message-State: AOJu0YzaE5ZV7vkT+j1IDDz53MLfY1OGUeLmcmzAVSoDVhzEcGnn4kD6
+	B9fkFVsX+N8FzsUfucA4Pqlpa+J3H2Yr2QZoQtcsI5PWN4cgG9xx5XDTpkNYNqPkudppVDh3e17
+	l9iTIFNZ7RH/DNtNsqxjPvaoe91CuiX0=
+X-Gm-Gg: ASbGnctw+US+bgpssKZexy2IP1ndc3t60o2xn7MPrw2gql2IynTv9JoQIVTKTYtz/Ja
+	hKdqNA+0Apq5QBgnrS41Sz/w5xWPQJKnvVM+xUH3vQLcxq2lndsIHvJ70ezJgQDiT98x6bsN4td
+	6//RaxdPqDLTK7dAt1JcBfgy9kz+H8Qg3eZQGGr7PAAqme8u5qLOYwuO6uYlL4wDZyGF2QWVAhE
+	/O/Ruwt/sjvD72uFwB0SPNVNw6rI8aucvltlFEcDRAmQTxzviU56p8trPBz
+X-Google-Smtp-Source: AGHT+IHUnBKdFqH+zdDC55FLmxcJJANqI9YCx7pP1qHkYZGc1Je9nusm+GcGOviIHqQ5EYWixbHaoj2wSMOND3KK2p4=
+X-Received: by 2002:a5d:64c8:0:b0:40f:5eb7:f23e with SMTP id
+ ffacd0b85a97d-425577ecbedmr3263574f8f.1.1759357535110; Wed, 01 Oct 2025
+ 15:25:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <aMmMnfU-Koopc9mL@x1.local> <1758043654.112619688@apps.rackspace.com>
- <CAJHvVciL-6OLMPDGQjZ=VGDwvwKJznq0BL49uSj+DSq63LOUYQ@mail.gmail.com>
- <1758052343.971831541@apps.rackspace.com> <CAJHvVchHKxiVKFjUz4ir4PVDvUihLhiSRMBWqpMEZfwLdereuA@mail.gmail.com>
- <1758306560.96630670@apps.rackspace.com> <CAJHvVcj_gd=48k-dgbLeEoqn_f+QD-ifscu_DPvpAmPd1Kg=GA@mail.gmail.com>
- <1758998720.44976697@apps.rackspace.com> <CADrL8HW0eNsHnEsEdKYRNvFRBMvrDMrHawa55Kik9QFeVNEwgA@mail.gmail.com>
- <1759175092.67312651@apps.rackspace.com> <aNrsXJsKaw24ADAp@x1.local>
-In-Reply-To: <aNrsXJsKaw24ADAp@x1.local>
-From: Axel Rasmussen <axelrasmussen@google.com>
-Date: Wed, 1 Oct 2025 15:16:44 -0700
-X-Gm-Features: AS18NWB0rgWlKVjT_-eaXe1ipgZH5LVgU24IvVOu0YKljnqjqmaS0nFQKcyhcQo
-Message-ID: <CAJHvVciLe9--JnNn1=q=ycrgQSTVt7Zq0e01KhaRmOeSLO86dQ@mail.gmail.com>
-Subject: Re: PROBLEM: userfaultfd REGISTER minor mode on MAP_PRIVATE range fails
-To: Peter Xu <peterx@redhat.com>
-Cc: "David P. Reed" <dpreed@deepplum.com>, James Houghton <jthoughton@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+References: <20251001045456.313750-1-inwardvessel@gmail.com>
+In-Reply-To: <20251001045456.313750-1-inwardvessel@gmail.com>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Wed, 1 Oct 2025 15:25:22 -0700
+X-Gm-Features: AS18NWDFsjjNNsPBytmySk7rKJfVZ4JmUJORMaJDq5DI1Bp20yXRuNwLH5i4BL4
+Message-ID: <CAADnVQKQpEsgoR5xw0_32deMqT4Pc7ZOo8jwJWkarcOrZijPzw@mail.gmail.com>
+Subject: Re: [PATCH] memcg: introduce kfuncs for fetching memcg stats
+To: JP Kobryn <inwardvessel@gmail.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Yosry Ahmed <yosryahmed@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Tejun Heo <tj@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, LKML <linux-kernel@vger.kernel.org>, 
+	"open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, bpf <bpf@vger.kernel.org>, 
+	Kernel Team <kernel-team@meta.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7F61418000B
-X-Stat-Signature: rqt18eb51cj4piq1zr3e4pkw6qtpf3ob
-X-HE-Tag: 1759357044-656758
-X-HE-Meta: U2FsdGVkX18iq66GWq37tz3pFiF9a6MYqxgkym3t+L14X2gSwaC/mzGKuhRZS7eibudpOFYvYNlmG7oJu6OdgQukAL+wSr1gxMEe0O4wSxLO4g2iqfA++4nO0r/khTzGyHnx6WU/1M8dvLAjLp4xS5fzcnLdylQDk3vfVLrR6MWBm+rMk2QDAJAw3J9rplIm3EXT6wGAbsSFRxWQKncHjpFXp1tEgGKmTOOw/nAPWnvI3XqSqS53DUVEGIaO0WLuf47jfwXXa/gPEhoKaICfd+BQf+9I3Cf44I37n7shT9ERJGCOcYp7aory0m6Qiiae+hy0+f85nssCb7VSgj0IQLu53U7vycRcmcEDbExkajzZlQKSIVF4bMe2z/QLuMlifWUWd7PbSzcExDKwWIRLXyvJ/Ft+XtOUqML3cwhKxfhDhP4iWWGKze4avg9ID42jY0bojmXj3ui9hMzBJP5P5xMHFyGqft8CJZlS20kOobHjqflzwx079YY+KK/ZGG6uge33rmuwav2WrTKJhxGEfF7Oly4aKEFo5mJW966Aa/hM45w73/JZdLe9uAH2v/S8ELEBLYqBWQOYSpMsgo9LPOiO7NYIKToOETQN7F/4l+MUOX7CeWIAF7CofZ/aFvJuMklctAkAbrip+kfkDRJHIMeSfYyF5DBIlks5gyzqU0Up0VTfeF9N6IYa2CKy7uo8Yr3FHGTJ9Vv8mm/9er44XE+RoD05lGIftwBOHdQiVfhC28sz8w5MsENndDzkXHHq3HVJXy46Do8bH1fSe+9Z1tpfsTdaoLFSv5Oo1+2oFqXUu5ocL9ps2XpcthJ4Du4CTpo2JwgLtI+CnfLss1RYvGM4uLSudGnUAz6ilJNs0ykMEeiyvWjrb6mHe45SxYxbYemDL4SiPzhCpDg2xI+5cZUtAUMnumHn4jkLYrY/xpODBGI44hQT0yZVUfw1Bo6d0TLC30L/7/HQY/QfqoA
- oXQNegMD
- 5ZkKZ5MDBJHXhiPvkkLSpwc1wWKfTbGJJmuEr0J991CTHnGwO+PBPaP0MB8kFuiRA5nzmHddLntivcPNzj6gXwHgAYv2QkvK5ucSRs/uyTHPClYpYX8adNSW9j5LBFSgDNkkNw4VSTfQV9Ybvt8FHOFxAODXV18JbHJPBvhp416djR37vOQrM1XgXPJ3TeptpTrs97xuAIqxdw8AjWoYuPmVuy2wOsufgtbJykjgNuitBLuREj4axy5Eyp8oeuMJctwQIaP6loHENjNg=
+X-Rspamd-Queue-Id: 1531EC0002
+X-Stat-Signature: x6h47ziupihhjyjneptkynmzty66gy7s
+X-HE-Tag: 1759357536-95368
+X-HE-Meta: U2FsdGVkX199+v3g8ahlO1h1uB0jreUvI9vYsirC8a6ZOqtP/qj2xJxI2d5YSfwtNFmzl2fmtxG4U2Q9Twe6gXz1uotDx+VcTqolj+9BWm8b7/dRG8mVT/3X5USsNrXTqhr+GFzQRHJRshMvSjsg5TVzPH9RD40CRe8LDertHdGgjQJ5NrrstByhyjFV5Pq3Lv5m6S2+Y7u/E/vQoPUoUcSYMRFb/u2wlJXMty2lW7OxemHkG5sXVePW68fBMg3ZZE6tGzaY4TPJhqc9rt0wAVs6w+TjEhq8spNqvETV5eNKtRCrp7WolT0HTNRe5avcV5+cxa0O9jkyTuTrjz6Ekeh1+1ufQmhRWibb59hVM2ZAaDntnh9ZSVtwU+O8VYYNyouJuhU3ERMxHhnPNepGv2fmXIr/hTc4stkGekXg8w7lnDL2iUBuneiGEcSG204JTQjKrrsWTJCGW686kxISYYRjVBfdpPaXHgCJTglFa9gAdxsZa0IusYiGDm6S+S20ap2NSj+VbWL/egqYvQwsr3tws6IaFQuv4B8znFdYZogudsHdsF2iDeqJ5WfhUMwFriynIqrfNFYL/R8gRd/UzD0djfz2hZ9bRIJTTkYEod1XlEVP0ffakpJ5Ecl54lvle8B+xn9lew0meusw7UeId9VvT4bqXXzacxL751v//u3sbFnAOGk/dEqZMTRpF6RE+jabanrtET5immnlwww/h1bMRJTqbLk0OsX5iUi5M3qEUpZQGjJ0q22vbvxkpqp5Uq7WpiyVt5OPP13whlQnYBFuTlpho/MTv0Exv3ooNKLfru4CmwrwQOXkRw5M4piQC4pSddDdcSOusahEqKbzirfVgBxPC4IxTO8AuHD0yEKOj7kGp8K2xSJJyyYAqwREZj+f2YyZ5CIUtTuRfwGzRlwK7iBLkYVzIPyJ53rHaAladovkwygMB61MJXP5kt0x6Fh7mCI1hKLEeTWtQfr
+ OkHTQtg/
+ 5Fps80azx7MC0Cy3sZ9N7Aeo55acOI+T9tdO1qjWTcG/dKpnuwUqb1rMwG0IqelKTC5VA6uk3ykfjpfVlHmkwzuJtpND/dvNrUllgfbTt5aHfwU0F1dkz3zxH9hKi+5e/uxrBVrTS7WWKn3HyPqb40MQQ4okYBauIawItDUV9ubbXLYmnlkma8WgQVFlmc5BAZmQggh5VkI6WxEQkgu8BpQ6iRepFa6A3K0rbNGyWWhkupb/mAqv/nBUtG9dIbeQAwI7ZLn6SK5qfZk6xyo1b1+vKsXQ3TgPKiZRq6EieEhJFg3ufog6LHlpG+jSJT9P9vIQOnN1GqwEyoILy6YcrJg8uPrCVt5q1bloegaDdqK89F6tqBRBjQS5fOQuY3zte1uqSX3v1NTcpKOOzmQ6A/k/11pnTAFu5RW6Jmp/B8EtJf6yy5SBzYEqgQX6qIkg+KyNB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,85 +119,193 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks for linking the ExtMem paper David, that makes it a lot more
-clear to me what your expectations are.
-
-I think basically, userfaultfd has evolved incrementally, and it only
-has a handful of features needed to address pretty specific use cases,
-it doesn't have the full flexibility / generality you would need to do
-"full memory management in userspace". Not to say I think it shouldn't
-be able to do that from a philosophical point of view, I just mean to
-say it would take quite a lot of work to get there.
-
-Performance is also a big concern. Userfaultfd performance is not
-great, in fact scalability issues are one of the reasons we have been
-pursuing guest_memfd based approaches to VM demand paging, instead of
-userfaultfd.
-
-I don't disagree that in principle it makes sense for anon private
-swap faults to generate userfaultfd minor fault events, it's just
-until now nobody had ever wanted to do that, so it hasn't been
-implemented yet. :) For what it's worth, I don't think this would get
-you where you want to go by itself though, because the only action you
-could take in response to such an event today is UFFDIO_CONTINUE,
-which would simply swap in + map the page, you would have no
-opportunity to e.g. populate the page contents from elsewhere, you'd
-be delegating all of that to the existing in-kernel swap
-implementation. So it doesn't really get you all the way to "full
-userspace memory management".
-
-
-On Mon, Sep 29, 2025 at 1:30=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote:
+On Tue, Sep 30, 2025 at 9:57=E2=80=AFPM JP Kobryn <inwardvessel@gmail.com> =
+wrote:
 >
-> On Mon, Sep 29, 2025 at 03:44:52PM -0400, David P. Reed wrote:
-> > I thought it was a general purpose interface. My mistake. But I think i=
-t
-> > can be more general, at least encompassing my goal of having a userspac=
+> When reading cgroup memory.stat files there is significant work the kerne=
+l
+> has to perform in string formatting the numeric data to text. Once a user
+> mode program gets this text further work has to be done, converting the
+> text back to numeric data. This work can be expensive for programs that
+> periodically sample this data over a large enough fleet.
+>
+> As an alternative to reading memory.stat, introduce new kfuncs to allow
+> fetching specific memcg stats from within bpf cgroup iterator programs.
+> This approach eliminates the conversion work done by both the kernel and
+> user mode programs. Previously a program could open memory.stat and
+> repeatedly read from the associated file descriptor (while seeking back t=
+o
+> zero before each subsequent read). That action can now be replaced by
+> setting up a link to the bpf program once in advance and then reusing it =
+to
+> invoke the cgroup iterator program each time a read is desired. An exampl=
 e
-> > "interface" that monitors processes' page faults.
+> program can be found here [0].
 >
-> To James: thanks for the great writeup.  Somehow, I just feel like userfa=
-ultfd
-> (as a linux submodule) got some sheer luck to have you around. :)
+> There is a significant perf benefit when using this approach. In terms of
+> elapsed time, the kfuncs allow a bpf cgroup iterator program to outperfor=
+m
+> the traditional file reading method, saving almost 80% of the time spent =
+in
+> kernel.
 >
-> To David: just to say, I still think it's a general purpose interface, at
-> least that's the hope..
+> control: elapsed time
+> real    0m14.421s
+> user    0m0.183s
+> sys     0m14.184s
 >
-> I agree with you at least on one point you mentioned, that shmem also can
-> swap, and that was accounted as minor faults when swapin happens at a
-> specific virtual address.  It doesn't sound fair if anon isn't doing the
-> same. Indeed.
+> experiment: elapsed time
+> real    0m3.250s
+> user    0m0.225s
+> sys     0m2.916s
+
+Nice, but github repo somewhere doesn't guarantee that
+the work is equivalent.
+Please add it as a selftest/bpf instead.
+Like was done in commit
+https://lore.kernel.org/bpf/20200509175921.2477493-1-yhs@fb.com/
+to demonstrate equivalence of 'cat /proc' vs iterator approach.
+
 >
-> It was just not in the radar when minor fault was introduced by Axel, eve=
-n
-> it was for a solo purpose for live migration at that time.. but the hope =
-is
-> the interface designed should service a generic purpose.
+> control: perf data
+> 22.24% a.out [kernel.kallsyms] [k] vsnprintf
+> 17.35% a.out [kernel.kallsyms] [k] format_decode
+> 12.60% a.out [kernel.kallsyms] [k] string
+> 12.12% a.out [kernel.kallsyms] [k] number
+>  8.06% a.out [kernel.kallsyms] [k] strlen
+>  5.21% a.out [kernel.kallsyms] [k] memcpy_orig
+>  4.26% a.out [kernel.kallsyms] [k] seq_buf_printf
+>  4.19% a.out [kernel.kallsyms] [k] memory_stat_format
+>  2.53% a.out [kernel.kallsyms] [k] widen_string
+>  1.62% a.out [kernel.kallsyms] [k] put_dec_trunc8
+>  0.99% a.out [kernel.kallsyms] [k] put_dec_full8
+>  0.72% a.out [kernel.kallsyms] [k] put_dec
+>  0.70% a.out [kernel.kallsyms] [k] memcpy
+>  0.60% a.out [kernel.kallsyms] [k] mutex_lock
+>  0.59% a.out [kernel.kallsyms] [k] entry_SYSCALL_64
 >
-> Now the problem is, userfaultfd wasn't initially used for monitoring syst=
-em
-> activities.  As its name implies, it provides the userspace a way to
-> resolve a fault, but only if a fault happens first..
+> experiment: perf data
+> 8.17% memcgstat bpf_prog_c6d320d8e5cfb560_query [k] bpf_prog_c6d320d8e5cf=
+b560_query
+> 8.03% memcgstat [kernel.kallsyms] [k] memcg_node_stat_fetch
+> 5.21% memcgstat [kernel.kallsyms] [k] __memcg_slab_post_alloc_hook
+> 3.87% memcgstat [kernel.kallsyms] [k] _raw_spin_lock
+> 3.01% memcgstat [kernel.kallsyms] [k] entry_SYSRETQ_unsafe_stack
+> 2.49% memcgstat [kernel.kallsyms] [k] memcg_vm_event_fetch
+> 2.47% memcgstat [kernel.kallsyms] [k] __memcg_slab_free_hook
+> 2.34% memcgstat [kernel.kallsyms] [k] kmem_cache_free
+> 2.32% memcgstat [kernel.kallsyms] [k] entry_SYSCALL_64
+> 1.92% memcgstat [kernel.kallsyms] [k] mutex_lock
 >
-> Meanwhile, system activities should definitely at least involve swapouts,
-> which unfortunately doesn't involve page faults, but only happen the othe=
+> The overhead of string formatting and text conversion on the control side
+> is eliminated on the experimental side since the values are read directly
+> through shared memory with the bpf program. The kfunc/bpf approach also
+> provides flexibility in how this numeric data could be delivered to a use=
 r
-> way round when the system wants to secretly move things out.. that is wha=
-t
-> userfaultfd is out of control.
+> mode program. It is possible to use a struct for example, with select
+> memory stat fields instead of an array. This opens up opportunities for
+> custom serialization as well since it is totally up to the bpf programmer
+> on how to lay out the data.
 >
-> It just sounds like it won't suffice your need even if we could add minor
-> fault support for anon private memories on swap cache. However, if
-> userfaultfd is used to do everything (including swap in/outs), then it's =
-by
-> nature all trappable + accountable, on both swap in/outs to/from any medi=
-a.
-> Then swapout will be driven by the userspace too, then everything will be
-> in solid control, including monitoring of the activities.
+> The patch also includes a kfunc for flushing stats. This is not required
+> for fetching stats, since the kernel periodically flushes memcg stats eve=
+ry
+> 2s. It is up to the programmer if they want the very latest stats or not.
 >
-> Thanks,
+> [0] https://gist.github.com/inwardvessel/416d629d6930e22954edb094b4e23347
+>     https://gist.github.com/inwardvessel/28e0a9c8bf51ba07fa8516bceeb25669
+>     https://gist.github.com/inwardvessel/b05e1b9ea0f766f4ad78dad178c49703
 >
-> --
-> Peter Xu
+> Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
+> ---
+>  mm/memcontrol.c | 67 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 67 insertions(+)
 >
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 8dd7fbed5a94..aa8cbf883d71 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -870,6 +870,73 @@ unsigned long memcg_events_local(struct mem_cgroup *=
+memcg, int event)
+>  }
+>  #endif
+>
+> +static inline struct mem_cgroup *memcg_from_cgroup(struct cgroup *cgrp)
+> +{
+> +       return cgrp ? mem_cgroup_from_css(cgrp->subsys[memory_cgrp_id]) :=
+ NULL;
+> +}
+> +
+> +__bpf_kfunc static void memcg_flush_stats(struct cgroup *cgrp)
+> +{
+> +       struct mem_cgroup *memcg =3D memcg_from_cgroup(cgrp);
+> +
+> +       if (!memcg)
+> +               return;
+> +
+> +       mem_cgroup_flush_stats(memcg);
+> +}
+
+css_rstat_flush() is sleepable, so this kfunc must be sleepable too.
+Not sure about the rest.
+
+> +
+> +__bpf_kfunc static unsigned long memcg_node_stat_fetch(struct cgroup *cg=
+rp,
+> +               enum node_stat_item item)
+> +{
+> +       struct mem_cgroup *memcg =3D memcg_from_cgroup(cgrp);
+> +
+> +       if (!memcg)
+> +               return 0;
+> +
+> +       return memcg_page_state_output(memcg, item);
+> +}
+> +
+> +__bpf_kfunc static unsigned long memcg_stat_fetch(struct cgroup *cgrp,
+> +               enum memcg_stat_item item)
+> +{
+> +       struct mem_cgroup *memcg =3D memcg_from_cgroup(cgrp);
+> +
+> +       if (!memcg)
+> +               return 0;
+> +
+> +       return memcg_page_state_output(memcg, item);
+> +}
+> +
+> +__bpf_kfunc static unsigned long memcg_vm_event_fetch(struct cgroup *cgr=
+p,
+> +               enum vm_event_item item)
+> +{
+> +       struct mem_cgroup *memcg =3D memcg_from_cgroup(cgrp);
+> +
+> +       if (!memcg)
+> +               return 0;
+> +
+> +       return memcg_events(memcg, item);
+> +}
+> +
+> +BTF_KFUNCS_START(bpf_memcontrol_kfunc_ids)
+> +BTF_ID_FLAGS(func, memcg_flush_stats)
+> +BTF_ID_FLAGS(func, memcg_node_stat_fetch)
+> +BTF_ID_FLAGS(func, memcg_stat_fetch)
+> +BTF_ID_FLAGS(func, memcg_vm_event_fetch)
+> +BTF_KFUNCS_END(bpf_memcontrol_kfunc_ids)
+
+At least one of them must be sleepable and the rest probably too?
+All of them must be KF_TRUSTED_ARGS too.
+
+> +
+> +static const struct btf_kfunc_id_set bpf_memcontrol_kfunc_set =3D {
+> +       .owner          =3D THIS_MODULE,
+> +       .set            =3D &bpf_memcontrol_kfunc_ids,
+> +};
+> +
+> +static int __init bpf_memcontrol_kfunc_init(void)
+> +{
+> +       return register_btf_kfunc_id_set(BPF_PROG_TYPE_TRACING,
+> +                                        &bpf_memcontrol_kfunc_set);
+> +}
+
+Why tracing only?
 
