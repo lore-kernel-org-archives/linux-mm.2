@@ -4,100 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77D9FCCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 15:33:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F9C1CCA474
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 15:37:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE5A88E0005; Wed,  1 Oct 2025 11:33:23 -0400 (EDT)
+	id C26598E0006; Wed,  1 Oct 2025 11:37:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABD448E0002; Wed,  1 Oct 2025 11:33:23 -0400 (EDT)
+	id BFE158E0002; Wed,  1 Oct 2025 11:37:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F9C58E0005; Wed,  1 Oct 2025 11:33:23 -0400 (EDT)
+	id B3AF68E0006; Wed,  1 Oct 2025 11:37:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E10D8E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 11:33:23 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3AF90C0152
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 15:33:23 +0000 (UTC)
-X-FDA: 83949939486.23.9853112
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3DC2720007
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 15:33:21 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fVaCowwg;
-	spf=pass (imf03.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A4B938E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 11:37:23 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 18D01160167
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 15:37:23 +0000 (UTC)
+X-FDA: 83949949566.04.8D450ED
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 21F3F10000F
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 15:37:20 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CkX1ydXZ;
+	spf=pass (imf14.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759332801;
+	s=arc-20220608; t=1759333041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0Yv0CwkielXUFY13Tke9yDHu46iA3m89ltKb+trU33A=;
-	b=bhTEJn0E557THpffbtbYNysn/C9iVWap59ub7jEY82lHsMhdiarIFllHD619qVfPBSMPxm
-	O+438+1Ote7bUio3Z00btjj78kDMDZyI6M+0Hd7GHoWzR+VXAbL2jrGhiilYTEjf5vFgr0
-	HE8RDaLK91jNieD+ZxMjW+ugO7SnfFI=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fVaCowwg;
-	spf=pass (imf03.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759332801; a=rsa-sha256;
+	bh=HOhlFtoBnWaiM64nftJX9Q0scL17iSbfh4QHyZLgLlk=;
+	b=Ir/zlSs0y2mT7fqLCgQ2Xso/78J7RcYVLX7ojZuU7GIr18Cj7g3Cbbdq6VwNB+4ljYFojB
+	AfWPcQgO4w52Q9G4su1bTB//CVf8cBDPgmEM8KlorRUCv4EJelt3nrsp994Q1ngwQ3va6R
+	jvHdlFoyh/WMJfZ+1x4DIaPI1eAqmDY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759333041; a=rsa-sha256;
 	cv=none;
-	b=aAoWX0557OHDiF6Hfg+hh1l9VLCbnpQC++nNIkt4pJsM6gv0Fw2LGIctty5i6B59kYJW1r
-	g/JY5oTtboFyhg1kOnwqD5HcaWi+HJ8unPIwMFJ0btvr0zpnoFoXZrON3EpMUFmgYNl+al
-	MC4WHC7WiNfyIpIgstdMWbkytk476zU=
-Date: Wed, 1 Oct 2025 15:33:09 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759332798;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0Yv0CwkielXUFY13Tke9yDHu46iA3m89ltKb+trU33A=;
-	b=fVaCowwgrrW4wG/jzU1zmwNJvtpZ07/RFYUBwwSe7afqIXdgVgQ6tU9Dg2PNGvbgbNN7Lk
-	Rj1UQFZNqlWPIqjrPgfeiO1Pl4SDn+QbT9yuD1DHae6U0TMP/nBSeq//qx3HWFpK2iYLsC
-	SvEgMc2jmmmwjAWhsAAvOYVu+W2Y/Gk=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>, 
-	"nphamcs@gmail.com" <nphamcs@gmail.com>, "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, 
-	"usamaarif642@gmail.com" <usamaarif642@gmail.com>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>, 
-	"21cnbao@gmail.com" <21cnbao@gmail.com>, "ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "senozhatsky@chromium.org" <senozhatsky@chromium.org>, 
-	"sj@kernel.org" <sj@kernel.org>, "kasong@tencent.com" <kasong@tencent.com>, 
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>, 
-	"davem@davemloft.net" <davem@davemloft.net>, "clabbe@baylibre.com" <clabbe@baylibre.com>, 
-	"ardb@kernel.org" <ardb@kernel.org>, "ebiggers@google.com" <ebiggers@google.com>, 
-	"surenb@google.com" <surenb@google.com>, "Accardi, Kristen C" <kristen.c.accardi@intel.com>, 
-	"Gomes, Vinicius" <vinicius.gomes@intel.com>, "Feghali, Wajdi K" <wajdi.k.feghali@intel.com>, 
-	"Gopal, Vinodh" <vinodh.gopal@intel.com>
-Subject: Re: [PATCH v12 20/23] mm: zswap: Per-CPU acomp_ctx resources exist
- from pool creation to deletion.
-Message-ID: <6frwacvukeaqrmtja43ab3nkldkrupczmhelrgjljvtk5eh4km@4pebysubl3dl>
-References: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
- <20250926033502.7486-21-kanchana.p.sridhar@intel.com>
- <j4o53f24yeegzrj7aj2mbu5c2xyqksnb6uz2fjkwgi3dbbtqsw@cwatjnrsgbco>
- <SA3PR11MB81201CE73D6CCF274BB2265FC91AA@SA3PR11MB8120.namprd11.prod.outlook.com>
- <7gnj6tcuvqg7vxqu4otqznvtdhus3agtxkorwy3nm2zobkd7vn@hqanfuyklt7u>
- <SA3PR11MB81209CF02417CED3C0459504C91AA@SA3PR11MB8120.namprd11.prod.outlook.com>
- <6xb7feds424kfld4udwmbtccftwnnx6vmbpvmjcwlionfdlmuj@vz4uzh6tog5g>
- <SA3PR11MB8120D4BDA8A6980A4BC5447FC91AA@SA3PR11MB8120.namprd11.prod.outlook.com>
+	b=ruiwWEFMeKEu/6Mag9BVaVVm0BQlzaijwEprV6gGYgEVU0P5oRLGn7yesMUstcVEkzPRcW
+	/HFNhSx46fmLnSejgzTv06K82Y9KmptBTDZvUr/7FYaucqR8HKe8hpKUKrenvnRaPYtcDI
+	yuY2O/NNMFctm3JtbxPrT9NHHTzrwHA=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CkX1ydXZ;
+	spf=pass (imf14.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-71d603b674aso146517b3.1
+        for <linux-mm@kvack.org>; Wed, 01 Oct 2025 08:37:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759333040; x=1759937840; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HOhlFtoBnWaiM64nftJX9Q0scL17iSbfh4QHyZLgLlk=;
+        b=CkX1ydXZxl+2Kr0U0sEkXbvg7NluwTq6ZJ2UoO67GIyQXaAJxT46rZtPy7ZIiENLgJ
+         1gfL1bTuFbXKR9OrntAmPrcAciJAU/XZO4syrTyA2ztry8ns1UsHAuvM9KdmnawMlLd8
+         PbW+CBnlQ4SGmGBthAanKqusspo2kjWYUWryBpMR4xpy/sZHuBAONTWbm/2IFebM9dIc
+         u/I3N2LjWIUiSWsO8Lti4M5FWSB8zm/tlL4gJ3XS6npsoa7bq+0/SzBowoFSkY8HurOk
+         XNrGKcXYlArqS90aC+gLNQLyOiTGgqK5tfdnG6Q+g6YgTqaxBFwRBzkLxju/VwmQjQeT
+         JFZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759333040; x=1759937840;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HOhlFtoBnWaiM64nftJX9Q0scL17iSbfh4QHyZLgLlk=;
+        b=Odl0BGLebJg9UDV321c0JEmyPL7QF6ngASoXbTU7o7UNOaind//NED78E/H1mk+BHv
+         AngpPMbdXQtbZyp+UZ5F3RdfBNTZlO9zY/ivs1vGRn0shZacayrq9twEbcAojUDKJfXw
+         V4RK5gnK2UYMIykQJ64SK990LLJQBOPkrxCJR/dhOj6lu7mRwKw/zTmWQhzYXKHTI4Le
+         HHKTbD6QkYLQoHxbpNnLH/uplk/4gcYvin3qZcUo9StylAiK/rOWg8F0nu12yZRLNWJk
+         juqAvZfdoFR4gG895UMcuEUyBAibvsu8kKlyH7AlrhATaUBNIt7nzmuyVLUBMMpRdJU2
+         wtnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXjUICxjf8ge53707c6SIdk5lW31ZtSuSiavh+VAARSQN3shxbVp+zW/ceLA8fC4If7UHUNZhSeVw==@kvack.org
+X-Gm-Message-State: AOJu0YwvHXJ9GJOO8IqoZiCjRBz9RHElc3o5LJsl6pWVN1gK9snOA1bm
+	hBt/TbJH3DCuzPiddc0CxMzY9e6XeIBFsPfP57RN+NH6HIgIv62YcPZC
+X-Gm-Gg: ASbGnctZw6WEFtuQojwPrdiVrL4bvmqWf6M6NKbiRcHFRrS/+K6YYdGFgiAS3V1C+zw
+	fnJ8JM/d6OaSEdqm0rsLZpoYYCD6AXjvBYTc4nXhxpharwYtzg7XaFoNZZqzp074sbVLln1/pxC
+	j54EDQsWOdgLcyW9w/4pcZzTI7WmUxTyxCLEZOUyi7nvb3A8SaalWVezCqFFtELbWetlgOvWxqR
+	Bcci0esRsK11di6rjwaf7otIERKKtTVkkW+oCC6Y2iaHMeXzlCUpK1Kl+U8I1+q9CIGo8b/f6aZ
+	TXDqEevh/5wnl6JYEVE9/xE+ILXS0wHsOJ8G+qLHdlhzyxv6jrz1rdYIzFYBkGWJW25trTeFtff
+	a3HlKiEf6YjMCM7Wdh9UpuHXXMRogGt4+qSn/IN91VXSQai4+KLL4OF5X1NN8hUk3dM0wnSfic2
+	vC78oEAC10dW4=
+X-Google-Smtp-Source: AGHT+IHKVJROpyMqw1QoZWrF7csKcCEketgdJMlIcKVy36nzcnmwP5FDc0ogNg5Bq4RBgd59dy6v4Q==
+X-Received: by 2002:a05:690c:39a:b0:76b:cd91:e7c8 with SMTP id 00721157ae682-77f6f317c86mr59080407b3.25.1759333039546;
+        Wed, 01 Oct 2025 08:37:19 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:8::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-77f67cb2a92sm12615607b3.46.2025.10.01.08.37.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Oct 2025 08:37:19 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Hillf Danton <hdanton@sina.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 2/4] mm/page_alloc: Perform appropriate batching in drain_pages_zone
+Date: Wed,  1 Oct 2025 08:37:16 -0700
+Message-ID: <20251001153717.2379348-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250930221441.7748-1-hdanton@sina.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SA3PR11MB8120D4BDA8A6980A4BC5447FC91AA@SA3PR11MB8120.namprd11.prod.outlook.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 21F3F10000F
+X-Stat-Signature: 1zjnj471es1jp4dkcsb7m4ob9fsz1s5n
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3DC2720007
-X-Stat-Signature: caqdm7zkmm6tnjsoqxyzj6xtmyk1nsyq
-X-HE-Tag: 1759332801-438838
-X-HE-Meta: U2FsdGVkX19aru/BqktxK0WEMq3W6ue8I/PJ/6KNL3RlAM580CtOywLcUkbut5qSemjsnFNKW7FBGhx9yk6kmThua1qBgwr2BNDzk6cYzhzFN6JGlyBR0Y8OZWUht5/PGj9Rv9xq99atJHCFU7MjcOraTFl0qLfglypn7IgxEXeSyxBslEf3EcPbAN1GlxlOaxdBu2cxvb4gQYoobGxv1ARVZg9Gsy4KCabg248cSP5VZaSFP9kfm5z3kjvzWY1Ip9RcUMWo5GQe9BMfj5CFOh45WRL3W+TojRihHZXEElY+d4K0eT+uUjmA2O5m8FL2yMXbBaQr1jUwejf1BNSHqXIaDZ/sY1mNU1R6iAUhXunMc0uiANDf1FvtgdSlEFbVQ9j99RF7HVlhJE/HM+kdabQczZhT5kLkpUZrWjU5gUwSsruRkHlCq443da6ZWZdOS/dNbOGBz2khtw3crElrzcRf0Ugl0dM5GjaMeuEVbp7KhCdinJW/g2cokDBMB+cHrId3KHjZF5yeYMK/Thi1dtLURMD1A6pSEz0XlCAlA/N84xwDWZpma3nD4E/Yo4xmXFI2WhYzePHWLSk7TkuJOHO/gS24diR9S20t5dEcyMMz29t0wt7+V5NzzNXaW0SyB38RfXxM57AGTy76v64+JOI9UcMRrT0vTOc5T5Cu/Ul7EXFXGzgVxOA4M+ACAM+slLlrmujP4eGgjznhAa/FEoVh70ILXfnuVjZ4v6gwqD66q4wvNJdeLWuoTSKYfjFRdhHR56GR5VFq3aGOghC4HiVykP9617GLJHnd4eDWOUp7yc4wTvVLd7uQ1yzebF7gCfWSzg5GrLPuQ0+y/LIeCnIvZTTCgmPoR5lbDfRETFKJhqJOBLX7NzysNkeqIQdkpT4BKshAIwx9AtXMr9KLZ2+EfaWVv5JPK7+QXxodHjCBhJFFhYf5yndWQbOmPxJGTElewS99R0KhjjaMZy9
- 1s5wTMx/
- dU9fbNIzlPVP7Y8nsDcMv8w6jctbJ22aNsp4DM/D92VI0x7alHEMO8S7qqJvXELp5U9sHAWNxJ9j6/3cUCtOGIHUseCqIa2ygb1Qw1XUciOYNhp6Pc9VIi8Gxpw+nA7FCvJwcV5+U7NKzVMyeuXkK9EcYWrcfQSEz+5+1KaS4L1PsIV9HBRTHMNmikFZo3qYQY+4Alhofm2gpnHrZ7KhT5tHno942ePNXOMStD2E7ugm6H7A00H/zpCwCVCKIkTITRxRmdLfDvL2rl4NXTwiePpcdpvGjrFO9FbyEZypehuUNgm2Kd9h12bbz6DY4a61xssQfjzM4Iv+Aig300eCWPWUmyaG36UcF5mNYV2+J/4BoGfT3/WK4KyAFjYpGHbTEewRPbnCEiA6VO2P/WbK8PR88B5v9S+3/9ws9VZfvmUZOyN4XqKG/+1jnbG6FKHUdbWmSU5s7aQWQjaDUHxh/gQOnGpyuYVv5YXa5ug7ebHFmgSMzbVm1GBNeySCktpLXG4FtDWZpd0fd8Xq+TXOEehT9rqNdqoUcp03JUhcgyy/JkwHYO3mQAqrEzcl4ohITpRWqz1EPjdO4UlIfj4OG2uBdKUYEabuvK9lY0CF3/bpd/AO2YvCKJnAJ+9F41tDkU3igQKGQEOX7vcgf3Qq7+pH3XjJWFkzPVp6xXoSj0AJT+dQ/Jxmr3/Rf1gHAmm8+RFbKzZbwpZpGdigUM9Bv4Ix3/MfmuK474LBHBiEjNK68E9XI7fgl/Vv3gR8bgznIlWgXZGyATT0Vn7KrpIqyUTVahWSxHA1Zy2huf9U9aafvM62u2K71OW25HTUSrv/pSYQFnRD9MC23Bm9fNJHtl8+MSJXgoHcw6Dwr1rW1GglvyM0RdE9uQSXUbRWW5U9LiXJnUezXhUK4AiDo3PfuHQNawQ==
+X-HE-Tag: 1759333040-683255
+X-HE-Meta: U2FsdGVkX1+pyC7WKX7IhwpyisQH3zJXgRJNidw2TrHF+yCSxeexBL7XlP/34OTG7ehYSVp+nz1svs9IcmhrHQxfPv2sfz0lWi0wAlZTL4tHRbMbH7QcYMG+EvJ4edlhZfmbTWM3wIzXjkqsTdcvPhL9fGZjLRU2/UW1Wx9v6SVsBYufEpch/4xKD7wE6dtOpvXpV7tcNdvAX8uGpcy8TDSt+7jWZG02JPkKps2zYikJO22l6sdClusO4MVPZVYWaUrxmTgQDQQnOxGgImrp4e9A8xbzMygpHBsClBvxFlYBsR/Hz8WAPfiSyhYeUnmGQAbAks5fHHxjvj45c96b9y55JNaXEeV9WIdjoXiHE4uDnxwIGGBYweebahajW/Xrf8Ym1Fzu474ALElUAuszyFaaqmCH6K0vm4pgiQNz1KR7nHY30Vlne2I9f2owGwdN8bCMi9Fb3PsDld3mSD6IWoe2sjhHsVRxaIM/2eQDNZ1xFEFgz1W3L9u3lR9RomR3eEgodpAEIs+PKtibwGCyhMBoooqv5yWaAY5ijqxpjNzRw4NzL9CI6vdCa0UGClFo7EYaiZ2xbxPqaILyWhgou8oUxvvH0UD+zN5bDXRpjA+jld0KK67xZKkZEZYzmN5gss04w6z1/MSamZ7G1weefEvwK4sIOlPPex9CyxvM+CXa4UOBuvm/DFJEjMwCRr58Ol374est6M+B0bjBjM8Sp+oqozIPqKf+jymqUTIWmZCvWQNa704Cl8miiaJPP/DTCq7KNaQVNYJjY7g2D0P3xhbd54Hmj1RDS9JjEIhx8GzfMRvKcUgF0cCr3NCertKjXdWFRiLRFxJWMUgSeIdRmfYqrSMK5KKHHeOdZcyS2DbMpGA28xpAR6OjeCplzvPVnv7EpKrirQM71NqMG4F08ex/P95wiWJHcUoHL4V034+w7SCuBrmX9QaiXMq5xP0QjqZy7aim+IHRePZx2aA
+ ///kUjEb
+ Xgyq8SlRSPdkFfV2VD3hobhZXNPPdmbbMiXb4j3nlolca2s4PPEzBnfnS7YHSFNqwiC8WKrbptYc0rwO32aAHLBqc2t4m/wLKUV7etbuljM97haOAT+SuPUZoWI8uk8yFs1BYcDFUZiJDzyfFZcBgB7QGDayWk/i7NfE1moOYbWNzsswqVBhzQowEN65mxzge7uz1nCf4CpwoSAItYw5A2zBJI/M9jb4mrbRZfILb4R/fkA695QT8GJ0J0D8zuZ7Pb9n/ZBi70KAXMjADGYI89FEXA267B1qUVZvgPJ0aAOdbyM8EkvdX90aQQS+a/aEMaH2t4jEKrYQy1GKMyHHdZedgcfPwkVGjCgUThf+sosp8mSXJZnAI9Zw9lK4JHJus0JDDgvcUtthcHkvKZAgz4+QPA2w8eM2g4jS+AdrztpFKcg4YhJVEyjb2oBfggTfUMNvwGFqv6PzwadiHGsPrRIm7SUtSsizabtUIhPN3ERHcOZS43PWLLlX1UkwzwtDxNbpHkoibVFcKmhd7zdpyghoWOZaXLVhQp3uY6SPiJHEuO6/amVMLjCR0lQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,185 +122,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 30, 2025 at 09:56:33PM +0000, Sridhar, Kanchana P wrote:
-> 
-> > -----Original Message-----
-> > From: Yosry Ahmed <yosry.ahmed@linux.dev>
-> > Sent: Tuesday, September 30, 2025 2:20 PM
-> > To: Sridhar, Kanchana P <kanchana.p.sridhar@intel.com>
-> > Cc: linux-kernel@vger.kernel.org; linux-mm@kvack.org;
-> > hannes@cmpxchg.org; nphamcs@gmail.com; chengming.zhou@linux.dev;
-> > usamaarif642@gmail.com; ryan.roberts@arm.com; 21cnbao@gmail.com;
-> > ying.huang@linux.alibaba.com; akpm@linux-foundation.org;
-> > senozhatsky@chromium.org; sj@kernel.org; kasong@tencent.com; linux-
-> > crypto@vger.kernel.org; herbert@gondor.apana.org.au;
-> > davem@davemloft.net; clabbe@baylibre.com; ardb@kernel.org;
-> > ebiggers@google.com; surenb@google.com; Accardi, Kristen C
-> > <kristen.c.accardi@intel.com>; Gomes, Vinicius <vinicius.gomes@intel.com>;
-> > Feghali, Wajdi K <wajdi.k.feghali@intel.com>; Gopal, Vinodh
-> > <vinodh.gopal@intel.com>
-> > Subject: Re: [PATCH v12 20/23] mm: zswap: Per-CPU acomp_ctx resources
-> > exist from pool creation to deletion.
-> > 
-> > > > > > >  static struct zswap_pool *zswap_pool_create(char *compressor)
-> > > > > > >  {
-> > > > > > >  	struct zswap_pool *pool;
-> > > > > > > @@ -263,19 +287,43 @@ static struct zswap_pool
-> > > > > > *zswap_pool_create(char *compressor)
-> > > > > > >
-> > > > > > >  	strscpy(pool->tfm_name, compressor, sizeof(pool-
-> > >tfm_name));
-> > > > > > >
-> > > > > > > -	pool->acomp_ctx = alloc_percpu(*pool->acomp_ctx);
-> > > > > > > +	/* Many things rely on the zero-initialization. */
-> > > > > > > +	pool->acomp_ctx = alloc_percpu_gfp(*pool->acomp_ctx,
-> > > > > > > +					   GFP_KERNEL |
-> > __GFP_ZERO);
-> > > > > > >  	if (!pool->acomp_ctx) {
-> > > > > > >  		pr_err("percpu alloc failed\n");
-> > > > > > >  		goto error;
-> > > > > > >  	}
-> > > > > > >
-> > > > > > > -	for_each_possible_cpu(cpu)
-> > > > > > > -		mutex_init(&per_cpu_ptr(pool->acomp_ctx, cpu)-
-> > >mutex);
-> > > > > > > -
-> > > > > > > +	/*
-> > > > > > > +	 * This is serialized against CPU hotplug operations. Hence,
-> > cores
-> > > > > > > +	 * cannot be offlined until this finishes.
-> > > > > > > +	 * In case of errors, we need to goto "ref_fail" instead of
-> > "error"
-> > > > > > > +	 * because there is no teardown callback registered anymore,
-> > for
-> > > > > > > +	 * cpuhp_state_add_instance() to de-allocate resources as it
-> > rolls
-> > > > > > back
-> > > > > > > +	 * state on cores before the CPU on which error was
-> > encountered.
-> > > > > > > +	 */
-> > > > > > >  	ret =
-> > > > > > cpuhp_state_add_instance(CPUHP_MM_ZSWP_POOL_PREPARE,
-> > > > > > >  				       &pool->node);
-> > > > > > > +
-> > > > > > > +	/*
-> > > > > > > +	 * We only needed the multi state instance add operation to
-> > invoke
-> > > > > > the
-> > > > > > > +	 * startup callback for all cores without cores getting offlined.
-> > Since
-> > > > > > > +	 * the acomp_ctx resources will now only be de-allocated
-> > when the
-> > > > > > pool
-> > > > > > > +	 * is destroyed, we can safely remove the multi state
-> > instance. This
-> > > > > > > +	 * minimizes (but does not eliminate) the possibility of
-> > > > > > > +	 * zswap_cpu_comp_prepare() being invoked again due to a
-> > CPU
-> > > > > > > +	 * offline-online transition. Removing the instance also
-> > prevents race
-> > > > > > > +	 * conditions between CPU onlining after initial pool creation,
-> > and
-> > > > > > > +	 * acomp_ctx_dealloc() freeing the acomp_ctx resources.
-> > > > > > > +	 * Note that we delete the instance before checking the error
-> > status
-> > > > > > of
-> > > > > > > +	 * the node list add operation because we want the instance
-> > removal
-> > > > > > even
-> > > > > > > +	 * in case of errors in the former.
-> > > > > > > +	 */
-> > > > > > > +
-> > 	cpuhp_state_remove_instance(CPUHP_MM_ZSWP_POOL_PREPARE,
-> > > > > > &pool->node);
-> > > > > > > +
-> > > > > >
-> > > > > > I don't understand what's wrong with the current flow? We call
-> > > > > > cpuhp_state_remove_instance() in pool deletion before freeing up the
-> > > > > > per-CPU resources. Why is this not enough?
-> > > > >
-> > > > > This is because with the changes proposed in this commit, the multi
-> > state
-> > > > > add instance is used during pool creation as a way to create acomp_ctx
-> > > > > resources correctly with just the offline/online state transitions
-> > guaranteed
-> > > > > by CPU hotplug, without needing additional mutex locking as in the
-> > > > mainline.
-> > > > > In other words, the consistency wrt safely creating/deleting acomp_ctx
-> > > > > resources with the changes being proposed is accomplished by the
-> > hotplug
-> > > > > state transitions guarantee. Stated differently, the hotplug framework
-> > > > > helps enforce the new design during pool creation without relying on the
-> > > > > mutex and subsequent simplifications during zswap_[de]compress()
-> > > > > proposed in this commit.
-> > > > >
-> > > > > Once this is done, deleting the CPU hotplug state seems cleaner, and
-> > > > reflects
-> > > > > the change in policy of the resources' lifetime. It also prevents race
-> > > > conditions
-> > > > > between zswap_cpu_comp_prepare() and acomp_ctx_dealloc() called
-> > from
-> > > > > zswap_pool_destroy().
-> > > >
-> > > > How is a race with zswap_cpu_comp_prepare() possible if we call
-> > > > cpuhp_state_remove_instance() before acomp_ctx_dealloc() in the pool
-> > > > deletion path?
-> > >
-> > > Good point. I agree, calling cpuhp_state_remove_instance() before
-> > > acomp_ctx_dealloc() will not cause a race. However, if we consider the
-> > > time from pool creation to deletion: if there is an online-offline-online
-> > > transition, can zswap_cpu_comp_prepare() race with the call to
-> > > cpuhp_state_remove_instance()? If so, wouldn't this cause unpredictable
-> > > behavior?
-> > 
-> > How will this race happen?
-> > 
-> > cpuhp_state_remove_instance() is called while a pool is being destroyed,
-> > while zswap_cpu_comp_prepare() while the pool is being created or during
-> > CPU onlining.
-> > 
-> > The former cannot race, and the latter should be synchronized by hotplug
-> > code.
-> > 
-> > >
-> > > I agree, this can occur even with the code in this commit, but there is
-> > > less risk of things going wrong because we remove the CPU hotplug
-> > > instance before the pool is added to zswap_pools.
-> > >
-> > > Further, removing the CPU hotplug instance directly codifies the
-> > > intent of this commit, i.e., to use this as a facilitator and manage memory
-> > > allotted to acomp_ctx, but not to manage those resources' lifetime
-> > > thereafter.
-> > >
-> > > Do you see any advantage of keeping the call to
-> > cpuhp_state_remove_instance()
-> > > occur before acomp_ctx_dealloc() in zswap_pool_destroy()? Please let me
-> > know
-> > > if I am missing something.
-> > 
-> > What about more CPUs going online? Without the hotplug instance we don't
-> > get per-CPU resources for those. We are not using the hotplug mechanism
-> > just to facilitate per-CPU resource allocation, we use it to
-> > automatically allocate resources for newly onlined CPUs without having
-> > to preallocate for all possible CPUs.
-> 
-> This is an excellent point! It makes sense, I will move the call to
-> cpuhp_state_remove_instance() to be before the call to
-> acomp_ctx_dealloc() in zswap_pool_destroy(). Thanks for catching this.
-> 
-> > 
-> > Also, this makes the code more difficult to reason about, and is an
-> > unncessary change from the current behavior.
-> 
-> Ok.
-> 
-> > 
-> > The only change needed is to drop the teardown callback and do the
-> > freeing in the pool destruction path instead.
-> 
-> Just to summarize: besides moving the call to cpuhp_state_remove_instance()
-> to zswap_pool_destroy() and more concise comments/commit logs, are there
-> other changes to be made in patch 20?
+Hello Hillf, thanks for your continued interest in this series!
 
-I don't believe so. Thanks!
+> > Hello Hillf,
+> > 
+> > Thank you for your feedback!
+> > 
+> > > Feel free to make it clear, which lock is contended, pcp->lock or
+> > > zone->lock, or both, to help understand the starvation.
+> > 
+> > Sorry for the late reply. I took some time to run some more tests and
+> > gather numbers so that I could give an accurate representation of what
+> > I was seeing in these systems.
+> > 
+> > So running perf lock con -abl on my system and compiling the kernel,
+> > I see that the biggest lock contentions come from free_pcppages_bulk
+> > and __rmqueue_pcplist on the upstream kernel (ignoring lock contentions
+> > on lruvec, which is actually the biggest offender on these systems.
+> > This will hopefully be addressed some time in the future as well).
+> > 
+> > Looking deeper into where they are waiting on the lock, I found that they
+> > are both waiting for the zone->lock (not the pcp lock, even for
+> 
+> One of the hottest locks again plays its role.
+
+Indeed...
+
+> > __rmqueue_pcplist). I'll add this detail into v3, so that it is more
+> > clear for the user. I'll also emphasize why we still need to break the
+> > pcp lock, since this was something that wasn't immediately obvious to me.
+> > 
+> > > If the zone lock is hot, why did numa node fail to mitigate the contension,
+> > > given workloads tested with high sustained memory pressure on large machines
+> > > in the Meta fleet (1Tb memory, 316 CPUs)?
+> > 
+> > This is a good question. On this system, I've configured the machine to only
+> > use 1 node/zone, so there is no ability to migrate the contention. Perhaps
+> 
+> Thanks, we know why the zone lock is hot - 300+ CPUs potentially contended a lock.
+> The single node/zone config may explain why no similar reports of large
+> systems (1Tb memory, 316 CPUs) emerged a couple of years back, given
+> NUMA machine is not anything new on the market.
+> 
+> > another approach to this problem would be to encourage the user to
+> > configure the system such that each NUMA node does not exceed N GB of memory?
+> > 
+> > But if so -- how many GB/node is too much? It seems like there would be
+> > some sweet spot where the overhead required to maintain many nodes
+> > cancels out with the benefits one would get from splitting the system into
+> > multiple nodes. What do you think? Personally, I think that this patchset
+> > (not this patch, since it will be dropped in v3) still provides value in
+> > the form of preventing lock monopolies in the zone lock even in a system
+> > where memory is spread out across more nodes.
+> > 
+> > > Can the contension be observed with tight memory pressure but not highly tight? 
+> > > If not, it is due to misconfigure in the user space, no?
+> > 
+> > I'm not sure I entirely follow what you mean here, but are you asking
+> > whether this is a userspace issue for running a workload that isn't
+> > properly sized for the system? Perhaps that could be the case, but I think
+> 
+> This is not complicated. Take another look at the system from another
+> POV - what is your comment if running the same workload on the same
+> system but with RAM cut down to 1Gb? If roughly it is fully loaded for a
+> dentist to serve two patients well a day, getting the professional over
+> loaded makes no sense I think.
+> 
+> In short, given the zone lock is hot in nature, soft lockup with reproducer
+> hints misconfig.
+
+While I definitely agree that spreading out 1TB across multiple NUMA nodes
+is an option that should be considered, I am unsure if it makes sense to
+dismiss this issue as simply a misconfiguration problem.
+
+The reality is that these machines do exist, and we see zone lock contention
+on these machines. You can also see that I ran performance evaluation tests
+on relatively smaller machines (250G) and saw some performance gains.
+
+The other point that I wanted to mention is that simply adding more NUMA
+nodes is not always strictly beneficial; it changes how the scheduler
+has to work, workloads would require more numa-aware tuning, etc.
+
+Thanks for your feedback, Hillf. I hope you have a great day!
+Joshua
 
