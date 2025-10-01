@@ -4,140 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9561CAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 10:56:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EB3FCAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 11:21:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DD6E8E0003; Wed,  1 Oct 2025 06:56:15 -0400 (EDT)
+	id D878B8E0008; Wed,  1 Oct 2025 07:21:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B47F8E0002; Wed,  1 Oct 2025 06:56:15 -0400 (EDT)
+	id D5E4C8E0002; Wed,  1 Oct 2025 07:21:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CA348E0003; Wed,  1 Oct 2025 06:56:15 -0400 (EDT)
+	id C74AF8E0008; Wed,  1 Oct 2025 07:21:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E7E38E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 06:56:15 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AE335BC688
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 10:56:14 +0000 (UTC)
-X-FDA: 83949241068.13.6F0A768
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 6F28EA000B
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 10:56:11 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=oasM6Diy;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pZNUj2vW;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=oasM6Diy;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pZNUj2vW;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B1FB88E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 07:21:07 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3DDA713BFC6
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 11:21:07 +0000 (UTC)
+X-FDA: 83949303774.07.D1CFD5F
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 052A340004
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 11:21:04 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=27x6QSsL;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gIzBnHXK;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=27x6QSsL;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gIzBnHXK;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759316171;
+	s=arc-20220608; t=1759317665;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DpePL461P7LsNb38EA5EBCrLN87PvsNeyDTc8FDW4ww=;
-	b=a0jEjkYaBzzhelwxK+4wkzd3BWUo5o0pn4mneELe5uXc7FcIl9C7Ix0S6kiCjVyNMA8ubC
-	RCgCy2Umk9FIiO7fJwV+OLb2lBo9rSX6MfPMG4q22q4m4W1UaztZ2z6uh0rdReuv2oe0At
-	0IqM9o6liTFomAAguxD8YbSktVgqyTs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759316171; a=rsa-sha256;
+	bh=PF0wBi19hCMZbudds09SMu1E6+Thus+lwXfrPMqv/OQ=;
+	b=m+AJCSR6vUxVw49VvDu+gJN1bhk7acsyI2Z2ML43r/YjMzCUFe2Uby7HeYkAOM08IrjNf6
+	L52y0mX5JmLGU8rFNFe1V5ksO/t/IlbM/zyo+Mb+fUEn4gD5o1vpQ43Xet8YIU6bJyKJFA
+	u4wTtIgR9gXs9lkBeKam+iVfHAwkmJ8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759317665; a=rsa-sha256;
 	cv=none;
-	b=tnob6io4cZnenznOXeaw0wUY+OGMQ2dHJG6HCjYUqRyx63bFosKxB2zIfbJ8s3wb0b5bLo
-	TgDEMt6XBGeiH7CWCWNdYZ2o+4AcyVFGQsCAcMZac8XT5OEJ8kfa397STEFe7jQiE9hdcV
-	PBge5Jg7SDzGE//LTG5yvIrec2STYQg=
+	b=Dzek/5C+DY/s9YWLslN7M01usqVV2jgzCTLp9c2Y/ssmH2/perKWqYvAHYsfIK7EwxdnOL
+	E2affiXyyoSXPdWSjawPM7lYrG0kNzaHYjDhTWHfFbCLR01dOQnqtXnb2dPwpmaKWQVouj
+	MUAZHyFwDa1/wD9XGGYC2D7pphC1oWA=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=oasM6Diy;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pZNUj2vW;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=oasM6Diy;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pZNUj2vW;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=27x6QSsL;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gIzBnHXK;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=27x6QSsL;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gIzBnHXK;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id D0AC922ACA;
-	Wed,  1 Oct 2025 10:56:09 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 30F041FB6C;
+	Wed,  1 Oct 2025 11:21:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759316169; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1759317663; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DpePL461P7LsNb38EA5EBCrLN87PvsNeyDTc8FDW4ww=;
-	b=oasM6DiyM2kyMCNTGIAYlVkqmuNLZi8GAubQecgC+xqhk20yQDljW8iTL9YJmLPw1O5OFW
-	z8pBByI1Z/DIrd9ncqSoxwme6OV4WBmIgVTl7F7AP+DSK6y2B/edVMEVU622UH7oq5awIt
-	fyWkwEDG/TxDXiK8ToWQ3gNCaXhEjks=
+	bh=PF0wBi19hCMZbudds09SMu1E6+Thus+lwXfrPMqv/OQ=;
+	b=27x6QSsLnXfDgXY7pdEYSiZXKKor/atJajs4IHb9CiYvXbS8LZJh6jeOaQbyhHf70Z9x/U
+	zjgMZjaizsIsEe9ybGSqit0kpkCYa+AR0LWJVR3rD51nn+pRT9YXH7CFV6QuoYDicAYhl8
+	fvUeahFf8QDGGEgBVG3JSRYAvzxrg58=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759316169;
+	s=susede2_ed25519; t=1759317663;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DpePL461P7LsNb38EA5EBCrLN87PvsNeyDTc8FDW4ww=;
-	b=pZNUj2vWzGza9ZshzzOh9mzR2No65ac/H9H9BRuOMF5WGnimvNxVZNMaGiBeOS2fsIe5HL
-	OdWIUP3n5cPmGOCQ==
+	bh=PF0wBi19hCMZbudds09SMu1E6+Thus+lwXfrPMqv/OQ=;
+	b=gIzBnHXKDLn2i76VXzzgf1C9Z5lCSTfOVvUxwyauayG+U5gMiznPQijHtafE1CiYcSX5tG
+	WsnNmvjEr6y6TpBA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759316169; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1759317663; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DpePL461P7LsNb38EA5EBCrLN87PvsNeyDTc8FDW4ww=;
-	b=oasM6DiyM2kyMCNTGIAYlVkqmuNLZi8GAubQecgC+xqhk20yQDljW8iTL9YJmLPw1O5OFW
-	z8pBByI1Z/DIrd9ncqSoxwme6OV4WBmIgVTl7F7AP+DSK6y2B/edVMEVU622UH7oq5awIt
-	fyWkwEDG/TxDXiK8ToWQ3gNCaXhEjks=
+	bh=PF0wBi19hCMZbudds09SMu1E6+Thus+lwXfrPMqv/OQ=;
+	b=27x6QSsLnXfDgXY7pdEYSiZXKKor/atJajs4IHb9CiYvXbS8LZJh6jeOaQbyhHf70Z9x/U
+	zjgMZjaizsIsEe9ybGSqit0kpkCYa+AR0LWJVR3rD51nn+pRT9YXH7CFV6QuoYDicAYhl8
+	fvUeahFf8QDGGEgBVG3JSRYAvzxrg58=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759316169;
+	s=susede2_ed25519; t=1759317663;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DpePL461P7LsNb38EA5EBCrLN87PvsNeyDTc8FDW4ww=;
-	b=pZNUj2vWzGza9ZshzzOh9mzR2No65ac/H9H9BRuOMF5WGnimvNxVZNMaGiBeOS2fsIe5HL
-	OdWIUP3n5cPmGOCQ==
+	bh=PF0wBi19hCMZbudds09SMu1E6+Thus+lwXfrPMqv/OQ=;
+	b=gIzBnHXKDLn2i76VXzzgf1C9Z5lCSTfOVvUxwyauayG+U5gMiznPQijHtafE1CiYcSX5tG
+	WsnNmvjEr6y6TpBA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B9A6713A42;
-	Wed,  1 Oct 2025 10:56:09 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 218DF13A3F;
+	Wed,  1 Oct 2025 11:21:03 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id l3XrLMkI3WgGYAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 01 Oct 2025 10:56:09 +0000
-Message-ID: <602271e2-86c9-4a63-845a-b84407d3aa51@suse.cz>
-Date: Wed, 1 Oct 2025 12:58:50 +0200
+	id CarzB58O3WjSZwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 01 Oct 2025 11:21:03 +0000
+Message-ID: <138f3057-8aab-4bfb-a541-dbf1a51a32bb@suse.cz>
+Date: Wed, 1 Oct 2025 13:23:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] mm/page_owner: add options 'print_handle' and
- 'print_stack' for 'show_stacks'
-To: Michal Hocko <mhocko@suse.com>,
- Mauricio Faria de Oliveira <mfo@igalia.com>
+Subject: Re: [PATCH v2 2/4] mm/page_alloc: Perform appropriate batching in
+ drain_pages_zone
+To: "Christoph Lameter (Ampere)" <cl@gentwo.org>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>, Suren Baghdasaryan <surenb@google.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- kernel-dev@igalia.com
-References: <20250924174023.261125-1-mfo@igalia.com>
- <aNVpFn9W0jYYr9vs@tiehlicka> <4c2a467113efd085530eb055e4a4e1fe@igalia.com>
- <aNY49sdoFVe03m_Y@tiehlicka> <d9af42d5cb9d427632087c5f51e50501@igalia.com>
- <aNvjDsBuw3hqwy31@tiehlicka>
+ Johannes Weiner <hannes@cmpxchg.org>, Chris Mason <clm@fb.com>,
+ Kiryl Shutsemau <kirill@shutemov.name>, Brendan Jackman
+ <jackmanb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Suren Baghdasaryan <surenb@google.com>, Zi Yan <ziy@nvidia.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel-team@meta.com,
+ Mel Gorman <mgorman@techsingularity.net>
+References: <20250925184446.200563-1-joshua.hahnjy@gmail.com>
+ <567be36f-d4ef-e5bc-e11c-3718272d3dfe@gentwo.org>
 Content-Language: en-US
 From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <aNvjDsBuw3hqwy31@tiehlicka>
+In-Reply-To: <567be36f-d4ef-e5bc-e11c-3718272d3dfe@gentwo.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Stat-Signature: fyci1ckysumrpdkx1yzkxkmx5kmy7fyz
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 052A340004
+X-Stat-Signature: esq1ggyq91cjdoqznkhdfutiznionsut
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6F28EA000B
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1759316171-729055
-X-HE-Meta: U2FsdGVkX1/2RzXwMETOtAK/GhZ9gku1/56PQgc9thkI38HlcZwMwQOMIKAVkD7VAl7eWCcRZinceXB4tVeafgyUYMuENwBOSnRH7/y2xEJPlaF50WmXoAA1T7wtA4rqE3aEp/fLAEetJ6Fj9Tr1RGwyZr4lm1GkkivDMbCICwZsDFaf2bRZbe2uAmV8Pme+uVNGyS4dA5f2b5fctGrkYDxXPVZMjQuvsdlQCvkGO9WOvzQF/4Ih41LkG8I8KYSKSNjzI1v691JXR8/Ig9heeZSHBjC7Uibn3/TNA9vcSnsR03/wTY51Sx1aXyPTjnx518jaL6PPxBru4ftWXtCbJX5xT4Y1s1kqift91p0YLJUP4Pxgfe3QVkj6I7CrQDBm5Ry5jjyzdmrf8qMJ37VCRS6lCVbN9MJzBuWifH4dFMeZ0Y2aM0qWHu1TwSMgihewPwGIm10CClLbmvvOPwh3NbBFFghUyPF55PBjA3NJq63abUfzEUfvmnuyPrH7SMmD0MOM3OE0EvGegDnzihFVBP80fW1nX6pYdm+W0jeuMBlU8WZnNtmUaxZywpVhTazYhfimWFHG+0SVbPb0xUGBMzo8+sEivEeioYTsagMWee+J0j+p7CZuuu2/OTcoXispqyCPIWXg384zNBa116sGoLeasIwINnjQSUjeZvpakW0pPlwWHa5ABPgFTyJgigwfFHZaj5byIKMvJxKN57VVaO7ur2vBKgmEQVML+1HpQ+Vj26d5Ts5YKlVEq2dDdMHZwatEIm0qDAHz6+Dcaj8AmOtUhUHs0OPyAQCfCuamAayQpdsZmoqeMFQviRMpN/7Irn6OfFR0c+lmoJxvT4eModK3vQao2rQoDU/snYAxx9XLzeNgf0ZAzIO08SYEN90bje0Xwk7kDx3Fa9FJWwsCpn/UcIyHb6bAVhrhAtxwGRVUTg+Z9hZy/k8Gb280mUf8b8amXt/JJyBHa6N1Pdo
- DPgr5Gyo
- pyJ9Lhhl/IU6GjLGybG1DsbkgUwq+fs+1pzBUaqoo0SKopdbASvli9uealXda62B7n4axxk8+XEZzhV9tg5RHVHBAmCPgr+q7CApt8RdMz1ph+F/i6lajRLEr5OSML1gAN0hnRlcRVwMq6+56mfvhlQyZX3cVWJtWtibdM/TbjA8FvKlqqPqIf07uVtzJSladW6K1a8PvCX6Z/0yFTSGplOgQ77fT3M0/arZYnsP4w2xKg6vjBqGgsYdTYeODjaFdi7kkydhGGqcnRuhW6a7ovGCvnL5yiEl1V29+8WgRegMkZs14DuUH+Fg1rcdwIJA0PlM5Vvgk5wzFpP4=
+X-HE-Tag: 1759317664-343383
+X-HE-Meta: U2FsdGVkX192R3sI8DY15aQa9aXbWt/qNnwOKpiQQZOTsrOM2sF5tI4CJsJRPkWpdJY/vMZLBtq68lI2UELqxO9XMQo02hldbOZlhxa9c0xESFJ6pAD6dmvNOrkBXA/+Ytki3P4ls3Hzc/u+euolXcPdHoABHooSFEljz/EMp1x6cW/rIZG26vbe3DOBz8SBnjjLAGN/WR8afxfFEtdIHTPZHMdeBb8RfHerAvI2kZgjQoIcLOg07szr+3YUfnayI/iOF2H8Kx9hcjJyiMmD2VPQLv78LxmZTySYOfA7K0HnJPNqnzLuMtJtyxDVA+WPiUBULt7SPVYbnBiyLiPR9cwUe0JmUbFzDEha1RukWrSb6slYfgATyJgz1yeqsSaCmAsaHreknBC2oEhtnKnSmDCOV1jNDWdbKmN+gyZ6tOPxeI4Ey59RRIOTBoJvc3elSx9OCa3svuFXJUlLXQGN/ZqbswBptAOZmbfwgiOqM6nut0VKYyK4BREk58BPqSPvvD47bueCANy1phoPb9w7YOmTFHPx1PB0p+6fdIEoBeYBmYeoOYKXMShvaQ0yGITLrh8V5Tj+CN2FR3Hdi5lXKafbUNH0p5jTP1LDibcmsfrbSdklS/LsP0GWBFH+JVU71qTLg9XSjNkiCQ6x0Qqw2j2MDXgBDIwN0sGSvDSCgKtXDsZmpEOv4cG+xntLU8eDetvq5d0Ln5le7vQNIvebdLgZbv7C3YYwgSQdrHGAJkuzSkUXahNrAZ95ZcqnlQwyFASMMpq249cQMaDQtKd3JZ5VezNe3hKw+Wxzl2tQU9ygMKPg/2HP3CnE8kddX9vsmzymCeTil7nrOuhyBDtYoBMyQHfxqY0pbZ05vO5EJB3zp51XL+3mTlJ5roL9Te2qGrG4x2lSEVJ8Uq3YGAmFtQcaf/xsUBTxw36Ithxe1lWlC+HTexwTuEKD4rpXQ+L8qC7CPeybYLSlbfuY+P/
+ zIhkJwK4
+ GiJL1uQ3MrVvvfNh0M8Ybm82Dq9KYMCDUVciv1ufGh2aPng238MfO6X2EiUAhkdGmVlsn94uvZO7807lNYSdqaAeSbwghxaM5KAoElXgarG8nsnnJ7Ho/T5vgMhOQcPF8reIq1wFlaMeyUEY7v9QMFZa1vIluxrkjOrqIe5KFih1+EuD4Czu04YfZc1ExMgOU4EE35NpT9OGfpT6514U+KE6l9YCKwLzxJpfycwZPBP30ZYHP+9moY76ciXvCF4Mqw8ccUlm+kLI69lsxNzkBLrQ1J7jBdbNya7bwzkktw7F76oPpG8Fovqu7dyShBBRXJhdcv9cnkbST3kwgBTYVgCipRDC2XpT4uSp89I1xkD2JhMj3frRwlH8o6Ub2CcWOvywVARTEiRj8dQun1SdUAxqyrw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,60 +145,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/30/25 4:02 PM, Michal Hocko wrote:
-> On Fri 26-09-25 13:47:15, Mauricio Faria de Oliveira wrote:
->>> My main question is whether this should squashed into the existing file
->>> with a rather strange semantic of controling the file content depending
->>> on a different file content. Instead, would it make more sense to add
->>> two more files, one to display your requested key:value data and another
->>> to resolve key -> stack trace?
->>
->> I see your point. Either way works for me, honestly.
->> Let me justify the current way, but it's certainly OK to change it, if
->> that is preferred.
->>
->> The use of option files has precedents in page_owner itself
->> (count_threshould) and ftrace (/sys/kernel/debug/trace/options/*).
->>
->> The use of output files needs more code/complexity for a similar result,
->> AFAICT (I actually started it this way, but changed it to minimize
->> changes). 
->> The reason is debugfs_create_bool() is more specialized/simpler to
->> handle than debugfs_create_file().
->>
->> It ends up with a similar pattern in a common "__stack_print()" to avoid
->> duplicate code (conditions on parameters to configure the output), and
->> it adds:
->> - 2 ops structs per file (file_operations and seq_operations, as in
->> 'show_stacks'), for plumbing different behaviors down to different
->> functions, to call the common function with different parameters.
->> - It should be possible to reduce it with private fields (from
->> debugfs_create_file(data) to seq_file.private), however, since
->> seq_file.private is used (iterator in stack_start|next()), this needs
->> more code: a new struct for the private field (to store the current
->> iterator and add the new parameters).
->>
->> So, I went for the (IMHO) simpler and smaller implementation with option
->> files instead of output files.
->>
->> Please let me know which way is preferred, and I'll send v2 with that
->> (in addition to the changelog suggestions).
+On 9/26/25 6:21 PM, Christoph Lameter (Ampere) wrote:
+> On Thu, 25 Sep 2025, Joshua Hahn wrote:
 > 
-> Sure, I see. The main problem with the option file is that it is
-> inherently suited for a single consumer which is a hard assumption to
-> make at this stage. So I think it is worth having a separate 2 files
-> which provide the missing functionality.
+>>> So we need an explanation as to why there is such high contention on the
+>>> lock first before changing the logic here.
+>>>
+>>> The current logic seems to be designed to prevent the lock contention you
+>>> are seeing.
+>>
+>> This is true, but my concern was mostly with the value that is being used
+>> for the batching (2048 seems too high). But as I explain below, it seems
+>> like the min(2048, count) operation is a no-op anyways, since it is never
+>> called with count > 1000 (at least from the benchmarks that I was running,
+>> on my machine).
+> 
+> 
+> The problem is that you likely increase zone lock contention with a
+> reduced batch size.
+> 
+> Actually that there is a lock in the pcp structure is weird and causes
+> cacheline bouncing on such hot paths. Access should be only from the cpu
 
-Agreed, we should prioritize a better userspace API over having simpler
-kernel implementation.
+The hot paths only access the lock local to them so should not cause
+bouncing.
 
-Will count_threshold apply the same to the new file that prints only
-handles? I guess it will?
+> that owns this structure. Remote cleaning (if needed) can be triggered via
+> IPIs.
 
-Also the handles to stack translation file could perhaps support
-"seeking" to a specific handle if you're interested in only a few
-handles. Perhaps not necessary though if you plan to read it all just once.
+It used to be that way but Mel changed it to the current implementation
+few years ago. IIRC one motivation was to avoid disabling irqs (that
+provide exclusion with IPI handlers), hence the spin_trylock() approach
+locally and spin_lock() for remote flushing.
 
-> Thanks!
+Today we could use local_trylock() instead of spin_trylock()
+theoretically. The benefit is being inline, unlike spin_trylock() (on
+x86). But an IPI handler (that must succeed and can't give up if the
+lock is already taken by the operation it interrupted) wouldn't work
+with that - it can't give up nor "spin". So the remote flushes would
+need to use queue/flush work instead and then the preempt disable +
+local_trylock() would be enough (work handler can't interrupt a preempt
+disabled section). I don't know if that would make the remote flushes
+too expensive though or whether they only happen in such slowpaths to be
+acceptable.
+
+> This is the way it used to be and the way it was tested for high core
+> counts years ago.
+> 
+> You seem to run 176 cores here so its similar to what we tested way back
+> when. If all cores are accessing the pcp structure then you have
+> significant cacheline bouncing. Removing the lock and going back to the
+> IPI solution would likely remove the problem.
+
+I doubt the problem here is about cacheline bouncing of pcp. AFAIK it's
+free_frozen_page_commit() will be called under preempt_disable()
+(pcpu_spin_trylock does that) and do a potentially long
+free_pcppages_bulk() operation under spin_lock_irqsave(&zone->lock). So
+multiple cpus with similarly long free_pcppages_bulk() will spin on the
+zone lock with irqs disabled.
+Breaking down the time zone lock is held to smaller batches will help
+that and reduce the irqs disabled time. But there might be still long
+preemption disabled times for the pcp, and that's IIRC enough to cause
+rcu_sched stalls? So patch 4/4 also relinquishes the pcp lock itself
+(i.e. enables preemption), which we already saw from the lkp report
+isn't trivial to do. But none of this is about pcp cacheline bouncing,
+AFAICS.
+
+> The cachelines of the allocator per cpu structures are usually very hot
+> and should only be touched in rare circumstances from other cpus.
+
+It should be rare enough to not be an issue.
+
+> Having a loop over all processors accessing all the hot percpus structurs
+> is likely causing significant performance issues and therefore the issues
+> that you are seeing here.
+> 
+> 
+> 
 
 
