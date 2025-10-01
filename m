@@ -4,109 +4,265 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3C99CAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 18:16:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A462CCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 18:16:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D3548E0005; Wed,  1 Oct 2025 14:16:07 -0400 (EDT)
+	id 815FF8E0007; Wed,  1 Oct 2025 14:16:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1AB0C8E0002; Wed,  1 Oct 2025 14:16:07 -0400 (EDT)
+	id 7C5BF8E0002; Wed,  1 Oct 2025 14:16:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E8998E0005; Wed,  1 Oct 2025 14:16:07 -0400 (EDT)
+	id 68DE58E0007; Wed,  1 Oct 2025 14:16:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id EE0878E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 14:16:06 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 99FFB139CCC
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 18:16:06 +0000 (UTC)
-X-FDA: 83950349532.11.52B0B9A
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C741E14000E
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 18:16:03 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RW5fzXJT;
-	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759342564;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 557128E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 14:16:22 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 04EC28567D
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 18:16:21 +0000 (UTC)
+X-FDA: 83950350204.26.9FF718D
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 9580212000B
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 18:16:18 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="JVmIXne/";
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=NojV0psK;
+	spf=pass (imf29.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1759342578;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3Mdub60HiTWo+g+tF/XVv2omv5wDiDEFkmBEPHIx+T4=;
-	b=k2kqLD2gGIcG2W4C9blBKQEQF7DyPnvkPkLuOAo9U3ev6m/XSipro6+LLaXWlavx6LmB6H
-	8wFVEu5ft3enVwTUUyg5KuzCnYZ6ghZj5FXgMuzqRu3BIUN7pYZzCsU7438W6xLABvRj1x
-	KJzlexLZxO+LbttUjfOHVjxYoaiY0hg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759342564; a=rsa-sha256;
-	cv=none;
-	b=R9J6UwnaqXN/HI5KXmibLVwTQ2vLR/EY7yLqDj97ENLSGZWk2OO55jgE9bhit7S/kdpp9V
-	3+ZcdQTnsP37XdH8JLXB+SY0XOVh4vesoBPE4Ssvnwtmb+Th7+RC8mWJH3HgwECVh+N64i
-	wVb2exo4F2j/RLxsPwKEnVpZy03DEL8=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RW5fzXJT;
-	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759342564; x=1790878564;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=qcrmoc3s3sksxYRsdt5U6g9JOBi2RNp8WJie6nSUIYk=;
-  b=RW5fzXJTu93OznJc9CK2ZOVr5OSsd23zSb+d7KzE5fI7GmseOe4ysNfm
-   rJV1mPTsmHTeT4AHmnHERqcrdGCbEu7YSaZlS+XoUYZS7sn/1uEDEnayw
-   jqwG5mDsAafuMDHvzGTn0lhPRceIQJbdowKDMulV70WKlS872LB72Nth9
-   e9cOgC/DnCB0wHkYEk+hhS1XsZw2Mv3D93a6+GoZYHDZQEHYadr7AFfv+
-   h0S7vFHkSfLgzO4/+1ZRpSIlKkWYRPlE3vdM6uFYLWijFJre8IIIciWYD
-   eFDbnZOhtAVmNU4zpmNegY/qXzl3tdSxE3Nmd6m+YyPHK8cElUgJ7WNft
-   g==;
-X-CSE-ConnectionGUID: Iw59p4tbQ3e7ljxqOjvypQ==
-X-CSE-MsgGUID: AULYg1lxQKurWr8xoAaVdw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="61790921"
-X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; 
-   d="scan'208";a="61790921"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 11:08:35 -0700
-X-CSE-ConnectionGUID: WdspEPscT/meykkINjzoBA==
-X-CSE-MsgGUID: rPWEaq2eSuK3OcfRFceIAg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; 
-   d="scan'208";a="179266909"
-Received: from lkp-server01.sh.intel.com (HELO 2f2a1232a4e4) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 01 Oct 2025 11:08:30 -0700
-Received: from kbuild by 2f2a1232a4e4 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v41Fc-0003Fb-0f;
-	Wed, 01 Oct 2025 18:08:28 +0000
-Date: Thu, 2 Oct 2025 02:07:46 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jason Miu <jasonmiu@google.com>, Alexander Graf <graf@amazon.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>,
-	David Matlack <dmatlack@google.com>,
-	David Rientjes <rientjes@google.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [PATCH v1 3/3] kho: Remove notifier system infrastructure
-Message-ID: <202510020105.a05LM8TX-lkp@intel.com>
-References: <20251001011941.1513050-4-jasonmiu@google.com>
+	bh=CpDTLMb5I4KFJQBVkbo8vvxo/VctarHJRtQ4MEpZd2k=;
+	b=xtW309FrbCfFpvrkyz8rXlorTBFAHZ8CkFnIIcM9f4xolrNvB8ahTXbzZHy7q2EtaM2kHN
+	EIVg2+r7m+GQRI1xCOet/XJ/XsWIcGojArPBiriOPDTkNA7IIJ7lpHlp6MoVi3Koq6t2X5
+	q6xVZs14g06BzG+ZO321zY0tJDH7KaY=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="JVmIXne/";
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=NojV0psK;
+	spf=pass (imf29.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1759342578; a=rsa-sha256;
+	cv=pass;
+	b=G/EW5ZF+Cw+c/R/LuKhRAA+z0VlfKa7AZqaUJmdXEsnInqzDwyqVpyrtWMWjGNUeCTxgYK
+	x2Gyzn/o6CHInNitctQx099N92k9+mGPgAhYwbLvdCD//JBKU8njU8D2T1xR4HiT4MlKPY
+	IHBBhKJ7hsfO4/PJbgTMUD5bA7cj+vc=
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 591I0nGX000507;
+	Wed, 1 Oct 2025 18:16:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=CpDTLMb5I4KFJQBVkbo8vvxo/VctarHJRtQ4MEpZd2k=; b=
+	JVmIXne/vPR2aNrpxYLZ7kWa5ayBOOSBTSKyjhB816TV1OLiBYJ+ZZQLBWLlYE1Y
+	P/+bu+Ju4g2yZA1MRsiM0tcXbrYJxIQIl19hoYISs7hD3BDpIaybBajtoyc9g6JO
+	6FMTl5AA+2TOl8k6kseu4xtsItuz64IUDvk+eSTkt7mSo9dRdmjFORTpuFFLYQo5
+	YaDnniL9oOQ20/ttcDM3md9+Ui1AvvlIlinH1G+r3d/QIyl0Kv6MoEnFyQCLRuuP
+	BFVQwzBNCw5yeoMtjQDmZxBXHjKLNgpliB7V30P6nMFMvpeEBZGWKOStT27odW1r
+	e5nhiOPqoUtEoc3/lKOBZg==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49gksxa31x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 01 Oct 2025 18:16:08 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 591Ge4aJ023181;
+	Wed, 1 Oct 2025 18:16:08 GMT
+Received: from ch5pr02cu005.outbound.protection.outlook.com (mail-northcentralusazon11012036.outbound.protection.outlook.com [40.107.200.36])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 49e6cagh8s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 01 Oct 2025 18:16:07 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=zQewBKribscjLXmXcVbAdY0y1lF7hGJTaXur3pZFiaeEt1OAUYJCu4bgzq5iA2juTMvcaELu4SbWeRWxIXI9u7PxjKB9rPdlM4M/bClqV+Y3Z+4z3XJplmTLyCYCJJ353A+UwEInfGGJoQnLqU1wh+H0jc4ZtOzUXunTMaJto62yLtH8UMceyPMXBbXDIPulKVqCzGVNjuPVeY0WvnmHqaeZXfxWj+4/ppbzfVVG2wL9MnIY6U5WqlncD1jVHFzDoUxHF9dOkU/9QaD3DI0u+lUuziCdX6FAHVduCFD4pSTibmg3H4jeh1wggAd/aZeMyZ9356VR+buh6ygQnublLA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CpDTLMb5I4KFJQBVkbo8vvxo/VctarHJRtQ4MEpZd2k=;
+ b=lasSuKGJbKqSnU0V+DVKbzK2XARfOm4DEOZsJU5hs2zu9cvz+hRaYxTGXrhlwHw0ItgQLuKQPB/6XY/383fP81Ox+RFWyKBetxa1uDhppc1/59hajuVDPKyfO8Lpa5lfu6bhN+ImdklrFjLNUuznO+lG2ubNPOLMHrNIqUlgZfDcNUamJ1vbBVLeHcKWTTXmJidC9PWVMBUaq2GCx5y2/yxeu87Egs24l6WA2Dy8KMpo83/2ndfME8O/yZkIdSipAwaei00K0GBVSSFrN2ia9FugZ9TdZJlEaHYlJqKt5qQU3bWdT6YQHpTdRhNRTmJtwJkhCCpuMFnXHouc9fkqsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CpDTLMb5I4KFJQBVkbo8vvxo/VctarHJRtQ4MEpZd2k=;
+ b=NojV0psK6FjNYMa0R9hY7fJ6wSyJHNqhG92O140HchN2a5N3IHFCa483KkMK4PtFE5IdyYzPy6MiPbws3GoXtVCmIMtBDiAHL7uhc/tWW8YRclDrUnf+KHu3jGJuhpP+RDdnbd08JpjIC7THco0kEBZjsVlhwyNa8RT1fZq/2tY=
+Received: from DS0PR10MB7364.namprd10.prod.outlook.com (2603:10b6:8:fe::6) by
+ CH3PR10MB7833.namprd10.prod.outlook.com (2603:10b6:610:1ad::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9160.18; Wed, 1 Oct 2025 18:15:58 +0000
+Received: from DS0PR10MB7364.namprd10.prod.outlook.com
+ ([fe80::b7d7:9d3f:5bcb:1358]) by DS0PR10MB7364.namprd10.prod.outlook.com
+ ([fe80::b7d7:9d3f:5bcb:1358%6]) with mapi id 15.20.9160.017; Wed, 1 Oct 2025
+ 18:15:57 +0000
+Message-ID: <b451c3b8-98d8-4df7-b076-cf9e6ed7a087@oracle.com>
+Date: Wed, 1 Oct 2025 11:15:52 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [syzbot] [mm?] WARNING in memory_failure
+To: Miaohe Lin <linmiaohe@huawei.com>
+Cc: David Hildenbrand <david@redhat.com>,
+        Luis Chamberlain
+ <mcgrof@kernel.org>,
+        syzbot <syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com>,
+        akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, nao.horiguchi@gmail.com,
+        syzkaller-bugs@googlegroups.com,
+        "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
+        Zi Yan <ziy@nvidia.com>
+References: <68d2c943.a70a0220.1b52b.02b3.GAE@google.com>
+ <ce93b55c-75a7-4b4d-a68b-9d80baf1578b@redhat.com>
+ <DB0E39CD-36A9-4929-BCC6-33F27E387AEA@nvidia.com>
+ <70522abd-c03a-43a9-a882-76f59f33404d@redhat.com>
+ <B0781266-D168-4DCB-BFCE-3EA01F43F184@nvidia.com>
+ <cad74ef8-3543-4fc5-a175-8fc23a88776a@redhat.com>
+ <E82638DD-9E5D-4C69-AA0F-7DDC0E3D109B@nvidia.com>
+ <fzfcprayhtwbyuauld5geudyzzrslcb3luaneejq4hyq2aqm3l@iwpn2n33gi3m>
+ <80D4F8CE-FCFF-44F9-8846-6098FAC76082@nvidia.com>
+ <w2kwxcd6br6h4tdn6xigtuf73qklt6jhxvhtcwp7idugycgxlv@vqjx26vrnwu5>
+ <594350a0-f35d-472b-9261-96ce2715d402@oracle.com>
+ <7577871f-06be-492d-b6d7-8404d7a045e0@oracle.com>
+ <c61ca94b-5b19-4c69-b2a1-d11a5301c6bb@oracle.com>
+ <d15fec58-58ad-fd20-7130-9c480df43d15@huawei.com>
+ <8d39b975-b85f-42f2-8be4-0b7adee09dd6@oracle.com>
+ <c97dedf5-0f45-5082-64b6-ef0772dc33a3@huawei.com>
+Content-Language: en-US
+From: jane.chu@oracle.com
+In-Reply-To: <c97dedf5-0f45-5082-64b6-ef0772dc33a3@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BN9PR03CA0702.namprd03.prod.outlook.com
+ (2603:10b6:408:ef::17) To DS0PR10MB7364.namprd10.prod.outlook.com
+ (2603:10b6:8:fe::6)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251001011941.1513050-4-jasonmiu@google.com>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C741E14000E
-X-Stat-Signature: hy7ezupabyufo6eiuemgwpdnq4gej6uf
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR10MB7364:EE_|CH3PR10MB7833:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6cebb92e-6d4e-4fce-ec2f-08de01169102
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?d1VmSU9pTHQza0Q5alNFbVVTUk80MXMxYTNoWkVKNUhiMTRjMzNYZmhuWGJK?=
+ =?utf-8?B?dHUyUjhTN1R1QjdXVjNKeHVXdis0WnQxNDlwRndQNDY2bjlSSmV2M0pTSzJm?=
+ =?utf-8?B?a3kyVXo0Q3l6ZGpBUVc5a1pxeXZZNVFyMld2WjZ1K0N4VEFhK0JoUERTWjlX?=
+ =?utf-8?B?bGpHdk9DOTRaMDJaQjN6T0drOTZaSzRDaDF6eW5kU3A0WWVZU25pajBGUVpt?=
+ =?utf-8?B?ZUZBK2JRM25PTHVHN2pYM0RnRitWN1orRTZrZWJMdnh2ZklveHBiKzArcFN4?=
+ =?utf-8?B?T05jSTRnVVI0Zyt0bHVpY0c5aFdTZk9YbmRaME9nRGh1YVdpOXYxb3o1VjNv?=
+ =?utf-8?B?dlkxNGF1VVI0SE5RUnRYbWJReGNiZVl2UG03VENobmY2dzFtOEd3NlVsWHRZ?=
+ =?utf-8?B?UFNLUFJMNmxkUHFMTFhpQ2twRWh4QzF5UmxTZFNsK2htSm51Y0cvVC8wdUNw?=
+ =?utf-8?B?dHhCczRxZnZQVUpjbXduRTVubmJQb3VwajIwYkZ0NzlFeUN1R2VPREUxbjA4?=
+ =?utf-8?B?eHRIdzJDWTZYL2EvTm1kZTBGNVd6SitZS0xzWnhEWUZwOGxOaWYyMVF5SlhM?=
+ =?utf-8?B?QU9URDlPcGdsbjM0dGhCL3EwYzFPVFNOemR2eWR1Z2dDc3VESkpCdi9RMmZM?=
+ =?utf-8?B?UjhNK1Vub1NvMlhrbWtleUZEa3c3SmlQUno0RmppY3k2RlErbCswdXdXMVdu?=
+ =?utf-8?B?VkpsZlVoYXUwN3U2K2ZoQVF2Nm1sZ3J6dXJBa2poK254QmZ1UFdZZDkrYmps?=
+ =?utf-8?B?d3VDM0xNYTFwN3ZCVkd6aEgxRjM4ZmUzenZOSHhudzQ3czY5b251dk1vdm8z?=
+ =?utf-8?B?ZlNYU3JaTkxuVkVlUGdUdnM4ZGV5OHp6RVJTanNWSHJ4R0p5RGpFNi9yRVpp?=
+ =?utf-8?B?WGYxTzExRU9HYmVnK3BWWXN3T0Q2UGtwVkliWmxiTlpwNUVOcEJFTHZlK3NJ?=
+ =?utf-8?B?MDNCZzYwUm11aHk4YkZGZWN0b3lBaVBhNW1IQ1NEZHVjZVYyMk1GVHF0NGVy?=
+ =?utf-8?B?QndaVmNKWENIWE9YcnhXWUtOcEJuVXpwc254VDk1Lzk5eU0vK09URVdNcE5Z?=
+ =?utf-8?B?dzE2MHpZaGZvY0FBWFJQbnp4anZlVmFRVDUxT0lhMG9KazJJVG1nYkRTYkxT?=
+ =?utf-8?B?T0g2RGJMTm1JdnBsZVhRbEF4R2w2MVpVa3BJQ3ExaHYveFdERHZKbXB1Njdm?=
+ =?utf-8?B?ZnUyZDdDZGVWcTNmeG1zZE4zektXWWJpaU44UlVjUU1Fdkx0TURScU5zSTNG?=
+ =?utf-8?B?N1RUSkl1RlJxK0ZUdUhCQUtNNjh0cmJ6bTdkaVpBenMyTmFBTnFiTnErT2I2?=
+ =?utf-8?B?MkdxaDdyY1d2NXE1S3Z6dnlacmJsbi9BSDlUSGZ3WnJvd1k2dXVXSDIzaWJo?=
+ =?utf-8?B?cnFoZVRjSkZWLzFMOTg2TmxhTTAwTjB0aXd4T2Jyd1U0bXJWMWhBLzRsVHR1?=
+ =?utf-8?B?eHVZUzg2ckJCUy80Y2ZHWFlyQUROWlp0QXJ6ME93cGczRHVVankvY2JiMEdR?=
+ =?utf-8?B?YklvY0h6ZWF1UmJyVzZwV1ZyRU9mVjM5WHN4SlNHcmRPVDZpMDlueGhXYkx5?=
+ =?utf-8?B?TGNhclBwUzAwRjFKUTVmdTVya0FtWklZYWhvbUtFVUhzM3htNWpicUNaV1p2?=
+ =?utf-8?B?aG80RXNLckp2a1dZcXlOb1gzRmlQM3Y4RUplT1pBR2QyUlROcUp2VkVWUmtp?=
+ =?utf-8?B?KzRIMUpIbTNBRVh3ak42TXB1UDBWUUVmTEFGMW41dWRESkUyQnpkNFZGOFRE?=
+ =?utf-8?B?Z016cm0xcjRSbENla3IySEVpQXlNZjJ4ODYzQmRrREM5QW1KTlR3THpiWURi?=
+ =?utf-8?B?Z1lTazdzQ084a0dJSUl4bkdUdElJRlV1THZRVlhDb1ArdC93ZVliWlBUeUVt?=
+ =?utf-8?B?eFRJMmdvN0pqenZuNy9rY1FySnVQUmxVT1hzeGNvbUVZN0EyNlJqSXY1dmRp?=
+ =?utf-8?Q?KQoaOriUiUbYx5fc3h8ZTdGI7IWsc58J?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR10MB7364.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NFBKaHU1Zk5RRmlZNGZiQVNFWURRbHB6enR3VHRrUmNXVmJGMmxVOWRHQlBG?=
+ =?utf-8?B?U1Bqdnlkc0ttQXRPQXE0NzVPMmhpVWN1c25PZGF1RFZUeXQxcHZNNWUvc29a?=
+ =?utf-8?B?cStRWmtlYU5xVGhQVGNZUTEyUDkwaUJCang5MmR5SHB0WkJHc3ROSWI3L0Fs?=
+ =?utf-8?B?YnRkRlV3aHJlVkpTVjVaU1BFQzhteWFLNEptLzlVbmlNTkdCdjVyNFVGL1Rq?=
+ =?utf-8?B?QUpHZ0pjcHhzZ1J5UUNwL25VQXJSSUFOSWdhMm1xa3dLWVh4VzVvOTBaTlBI?=
+ =?utf-8?B?TFA2MmRHa0dWVlZYQlpZekZBWXBjRW5UUUxMcjg1QUFSbE5CRzNmNGFtMjhv?=
+ =?utf-8?B?TlJ1YUphYlRWY3l2aXR3eGdCUHNydTZRRmFycXdWb0V1MU45SVFoN0F6NDVN?=
+ =?utf-8?B?UGJhR3h4Y1E2Q25yanJNb09zbUNJZ1hYbHBJK3VpKzlIay80aXZnMVFHN3Za?=
+ =?utf-8?B?SnBOeWo5NFkzR1BZSHdmLzhMM1U1MnYydkh1SUFiNE9IWGtoOXFYSGVOY3N6?=
+ =?utf-8?B?MUNaM0xMb2pBMXYya3RlM28wenN0c3lYVFB5UlJISDlKQ01ISVZqeXVSZ0ha?=
+ =?utf-8?B?UDRoMW5jcWRyYytEand0WDVaMGRJUnRZeG9LK1BZbGhyTHkyMkxyTlhXMldz?=
+ =?utf-8?B?WEM2dXFyTGhMSUF4ZjhSeUo1V3Z5Ly9HenVvRDdIZXlPdkVnZE1zdjRSTDhB?=
+ =?utf-8?B?Q1dVSzZZU29WQWFVSHozaTlIaGFjbG9zK3NGNlcvdjA5U3VlU2p5UTFpUjRE?=
+ =?utf-8?B?Q0hrclhHQ2FuL3FCV0ZiQzVDS0xmN2xpVlFqSlJndjBCdmg2REhXOGtpT1Z4?=
+ =?utf-8?B?MkNzOVQvVzl6aHdDSTVGMTNyanhOOFJ1eWJjTk91TGR3cVhPTTVsSE1mcFVZ?=
+ =?utf-8?B?eTFIZ2tPQVdxc0hMeEhsZ0dzaG5rQUxhNGFLM0l6OUlDU1NSOWRhUkp6bU0x?=
+ =?utf-8?B?UXFSVHR2VEI0a0ttRG9RdUV4S3Z4U1RBcG1TRmUrUlNQQVh1QzhLRUo1OWlH?=
+ =?utf-8?B?WGkyNTg2LzhlaGo0SWp4MmdIR0ltZXNxKzB5amc1a2NTSHF5QW5LeFpkTWNh?=
+ =?utf-8?B?enBXa1JYek9GS1Q3QkJZOGVGajg4SURRN255Q2E1N3RpTHc4NVlTaVNhNi9S?=
+ =?utf-8?B?SnhiWVBUczltaEZxNzR4L3E0a3pnY1hscmdqSEVtV1ZZakpQVWg3MGlxRjNq?=
+ =?utf-8?B?Q1RhRXZVanBtbFpLUFd1SmVVWFJ4VGdJUVA0NWx0RG05NXc1MWhYTkZKVk9i?=
+ =?utf-8?B?NlF4V3VISUM0ZE5Nd05CRzRLNDB4bUF6c0xGaDQ5c1ZXcG91ckN4RHNCVW8x?=
+ =?utf-8?B?QmpXamJLUzVCQ0gya1o2NkUvWEhtMm1lWkVnU2pkK0NmOVRVcWROc3NpYWxj?=
+ =?utf-8?B?cnFwbVpRQU9PblkwTGlUYTkrekRrZTg4a2NNVjJCMmRQRmgyYjRoYTdzUWdj?=
+ =?utf-8?B?ckFsci8zdHNYV3ZsY1RwT2tRci9jR0hmOHNUTjdzRmZGSXJWemtGZUc2VytN?=
+ =?utf-8?B?MmJQTE8vYXAwT0p3MlZ4d3pQS0llREhzZG56MVVOR0hoMzVHQ1RUUTVZVnE2?=
+ =?utf-8?B?YWJoNmJJWS9WdytwRk1OSHhkeUJTL3Z2TlZTSVZoU05GTEFZdGgwSlJzNkJp?=
+ =?utf-8?B?UERjeUZZMkRzdWZSa0dORTFKeVlibEh6U2g5ZldQTGdCN0xSdTBWeldGRVE1?=
+ =?utf-8?B?ZGY5V0tQRTBPM3daRTZ6cDBKemZnQlplb3M4ZG5PbVQrOGpER0d6MnJkWk8r?=
+ =?utf-8?B?WmlUOFZnRjlVc1hnZGc3VHBVU0pKaFR2NU41SDd3T2lObjE5UHJ2RHVSYS9T?=
+ =?utf-8?B?cXRldmdsNWwyUXk1REMwektnWVZQZGZoUWEyRHI4SVZpekltNjljeHB5bE5I?=
+ =?utf-8?B?UitIMFBleGVqQTFad1IxSUFZdDBMVTB2ZlJJL04xRFNnZzRyRzBIdEM3QzNK?=
+ =?utf-8?B?dWFvT09URUJUZ09yWkt3TXQ4WnE0SHE1UnJDOXo3Mk1oWWh2clpNbU5HTWNy?=
+ =?utf-8?B?NGZPNk53Qk1LaHNxZUV2ZDlpcitiQzF1M0dvSlovQURqQmUxaFlaRko3Q0Nh?=
+ =?utf-8?B?UmE2RlRodEIyZWxOcmdkNjcrQWh2ZmZUdkU1SWxQZkM0cFN6d3VoWEZhdktZ?=
+ =?utf-8?Q?wsyqa2QSu2TYSmK8HoNGPeVW2?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	lgzNCj90o6TtEmvreumxTtRf/l+oAnKP1qNZlV27PR7Ha6Qa1H5ZMM8wUOhODKXHLnitIesPNOStNKW6yFj43qv003MQx5DZfY84Zin86w6T2vxsuxQpMG0Sy4yEavJ9Xog8Q1ccgYk47591ipl8oGEeQejikBfPtEcyMT+SszDkTZDsQ/vVIQ3yWd4QennNaqxDoge+EQnoP/+dfVFOsdXIgDUm34IcXKnPZWdvplhpU5PHX3oiqI02B0Our7JCiOZ3Lyk3sEJQ0DgtLux+ROUpScfknzly1sx9sFlQqQiOE9hgo5sU1Ao/tcLi2WRlukQz5Tm7njxG2kCoOOuH7Duxep3W+ImeJCLgCVP6HPhy0tHWCzTIePQf/bMHl6Dzs8+beZFOp/a7C/pa5iu9k8YttZlIfF3nsKdjli3Dozp26MHvAqmiWVFbHqdvBr75Hp7/jkQCWvzMVB/+GQwOUJasfpvs2baaaVoAg3opxyqoJMjIVVLgB35KqlMDXeRT4A2mIxEkYAWJmbAVIgr4ptvcy6m0opwp3DdypNNrYp2PIRbcByb2Eh3ATFVSqUinUIz3FoJiWHEgz9CgCK6P5hIlEJaizDUmW5UJhN0+WAQ=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6cebb92e-6d4e-4fce-ec2f-08de01169102
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR10MB7364.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2025 18:15:57.1245
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Q7lzNd1+W3J9cJgVxzbj1ErPheRsre7zv4+ZBDRx+leTTqwm+dggBV3T1wAjnNhCbGyXM+kv/bd+yKtbN5u1xw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR10MB7833
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-01_05,2025-09-29_04,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0
+ mlxlogscore=999 mlxscore=0 phishscore=0 bulkscore=0 suspectscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2509150000 definitions=main-2510010159
+X-Proofpoint-GUID: 42Vc66DFCaWnKTHk-RC_8aQc03-PkzvP
+X-Authority-Analysis: v=2.4 cv=N4Ik1m9B c=1 sm=1 tr=0 ts=68dd6fe9 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=x6icFKpwvdMA:10 a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8 a=vm3rMv-giqQMgpSKNcsA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: 42Vc66DFCaWnKTHk-RC_8aQc03-PkzvP
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTMwMDE2MCBTYWx0ZWRfXw2xDUWNfJHLS
+ +6Xisx9tMAPAi491r+ENE1VrdZDndn4BuJK4Npu+V6PopazfRupIhY+jSkGEzjxBrk+wfL1KXEP
+ 3q/cSTOms6tWlhnoYwS7m7JErcgDc0kVMdbBQ8jPRSYYaw/7f25VmFVON+pSegkdHoK/3rCe6SF
+ uA5RJ64LV5o90jh5Jq+VmREDFJpCeOLF+uARrFWBAa9iUgx2oJ1u7ANq0DsAVkZwJ1hcvmQY2A5
+ MAG40+ZHvQSXiDi3uTbNwF1aUNrYn+F+kyH0if3uJ618RMEABDl27ZOBwuTCqjgGGaH7SdxxNwy
+ 2Z/zakKl4lAMVU6dMtFxrm0xM3VHIekEc4pfnSJPuF38k1iEvfCIatCIEzEoQTCezRBtOM/nO4s
+ Azv5vD+ppknxdHe//rimVygTZUHJMA==
+X-Rspamd-Queue-Id: 9580212000B
 X-Rspam-User: 
-X-HE-Tag: 1759342563-939417
-X-HE-Meta: U2FsdGVkX1/R5fu/bKF1P2Z9FU3/gN7SQvhR1UEoWQRWMJdWtlVMJ4Aw13r1ln+bIG4T7vgyGuB2JVgVYVqsczSb+hJVzsK8UtrOqclqXeL9s82pPPF5/g4PmdavotvbbTN/CxNp14U6FGKlfCX51Yol3GPe3a8kGHrzpLdCeJ72EKMFUViq0tDAJNZDb5hV7S+8lfV0O7V7eibXR2sIOQp6d+zRs7RjOSCaJyN/oQiSIKypVvNY3cr0v7cIIk4MKzJFZEa+OfmaxQAvC+NZX1aTnQD+avBYsGrgwD3fYhjQE9ek6vqX0QlHYMb/nKXMzzxYS3OpdwVIkXtU7VVZo0v6ohnFtUyorcFgM/PEd0k7dnWliwgH3btaBw8rZ1CCLBEDmadsWGy6X3oTYxqfSnDBo9/eSMPSoURi3SvniVhOhCJfh0xWUDqn9QJKgCPJV7ep1ptoN3TP1f3QT5jrEaXY/8gD8u2LHft/J5YPWslSXTAPxl4Z/rCVSkJAyn28xM9sT+Uur7W+W+oI4wZqhClixiYE/F7AKlWahx24YZVi+qMqOOnaRk6GiDNDdAMcGE5/KRrhrdQFvJBz8hQiyO0oDbcpViKDh6Gpk7ye9Cqy+e7LY3UX8EDb9z5v1iezNsqwghfCsQoP7DfU2Rg07Y3N18hsDos36HE3l6cj4B745p2H+RIrkTdpa8p1lfdsY7akgkV2miwLXfAfUm+F2qxciUuN4wqP6l0R/gG+wPaOa1v9xISa5d6YzKdD/Eul908ZZd4DJgnoNtKmdg3igiECUV8oMojwkcdZVFWEchBkLxRqSxCZjohSwjMhq1ABYm/LRhGlx7ijS2OThfFT+4sRFfuikdjTgIlqBvN7BH5d7hVPhzBz6zjBkYYeREa7fILt+ew6VbV2hAyM42tBIKD7+LqdwtmOU6B06xJKW61D2MqsG1lCkZ2p1BqkPINsBgHZoLcb14bEu7w9VHh
- sWs3mkxg
- r46xmCW8IHDNpkf2L6eJzV5SiC8kna+1wqVkzXoc9PyzYDwmwt1PMOy4wRdk1/kvYpe3slUh0L46L1nN/oH/s1QG5FmYGN+cajiVmJVf4KsQE4fHI4MRf6WHtIpiuPqAzGY+ftnipybcPEKh6NtZYu8PV3eq8kU08BOW+IkoHwJhtmKavE0+hfUX2dwFUxKYaZnxYTZqmysRSUAXkg3PMuX8ZlTNNdzvPjpfdNlVyIkYxawFmjALhDTlv2yXeOmNVeUo3oZep3fJewOfp7MOakVoXLm8pVXdm+7emXsp1PJ3EgouRqHJGSqdUYZCQCl5LwFhltzzqxQTy3YLPWMxtIrkvdr8XZXsFSEg5NADD3owWjPJko7AqoWQaHfbGw5Hh4OJ1
+X-Rspamd-Server: rspam07
+X-Stat-Signature: jmehyzyzpr3myb1mc1t36duph6hhgcin
+X-HE-Tag: 1759342578-301323
+X-HE-Meta: U2FsdGVkX1+Y7GZ9bEYYDOS0XYgeTI1/FKeNHe0cqBFdn1/Bd9mdoZZ51xB1tkRvBUe3oMLLHqQr34wk2MDFFaWPqS5TDy/NH9M3kJF2oWdE4FLa9AlyIbDU60QE9P+h+MpbVw1pYX6IRKxSpo+ONGMmPGntkRrW7PQpAlwI3OIj6IiPWLQ++MA+QAURlVoBNxcjZA5FPTFQon+VtDYoCji8PyDUXBGJ69eV8T6VUk0d2fAcdPuKAxUTUvAYcw3gWqBzJZSEOE5bfhq1WPFWUAnLj5qguIaMe/UPq0g6MbbSwmMvaTq7UIlTdGozz1X59LDyVXiGwmQUEHBy/Xx9jbs8Kq3v/HHqX9fLc1mQmmLsD66uWxCwoHt55PIWy5EcnDud86cRjTMzAiiN8Hbgn6g6s3qfGSOO8RgPparRVqDlvhtHIAuiY0KK6d7nLPb0Bf8pLBofnE/vmMdREPqP09fzocxLy2WVlE6Uro+qSmLlExES5c/iwRpD/lDDPcBSKNVkhC6HP0dLlaXHIhuuW2wt/89dl9AP0n0C4gnp7tFKIFM/vFDZ8Im+62A1tFd/kYP4JZogdBq5IvXnfQXG8m36j9EbzwRjtEUPcv7py4L3hyW0nRH7g85Ctv+InIyOe4mNqoOcg2a5QueeVEsnbJy18Ukz6tJB4A8tPMY9hzqyPbtHEJftzNzmt0pxHtg0YAHE9LY+BDjg5HD2W9MazZ94zLB4j7oOz88swdFsnbcsmtDGw0R6pMQFAAPK5Khu9XMsdN1bLW0cy/WdHV9m9lplvWEFuJE0HrRWx9mpy00pw06DZnYT2wEQSfrwW9vmH5Xz2Yux5RSs8XQ1jFFUSmCyxvqxe7V7Y5YThW0DCcrIif+ZKUAEL0yflsEcVFmUvnGEXGMGDGnV3n78uyD5O7IUd/tw+2yCNTagjZkZS5KbSTMdAWSCnW2MJNpaiyt+PRATna9d596+KFQjqUG
+ pi3rxjak
+ Ed6f1gyUklxPogTSM5al9dyd2q31HxCUgwXZQiBZSgfKWNMe+Q3iqc9dn8C/CCMwSZFgXC6rMBQjeOAQAoV1alnK0YICNc0GYaYppuwXdQIUjj7I9HwOyF8arAA3rQqPIMjK/gkRgSWxtF8nxXhpV/wSePfttntiShReEfk9odwlj9MSDUPJObE/UeTU2Fkq0vM20fLjMuQmhb+G4s6yY3J23NesZMcniyt43Fn63/mmM1vM11HwjuKytWe1txsR69o0oR4yuIbKlbwrSgi+/gGQyK6K8Rkkmiyy4p1bmAe6u70Qbuj+gyRXIWFg3hWxiX/W/QffjBdhtUHnhonpkGfmG9N8OMR4kRByqTguzS+utYoqMNJ0aYdvwzQF52/9jlxpFPof4oHuIXMqp88cOR42l+dQhpYHeCrnJE9jcM2eAX9k/SULyPcgaq6XXmXVEqyJSOcmmRgWkoJyWfD/QPc7l52gV3G0kyGiLYArVl+Ds9wApR4FX2cVLJAv6iq7hEAFuM7+jr1S3NIAunPlGUGiEfBgkQDz90r48Iu5Wy0/x3BQ94XZ9NnAWFiRNN2RM4ZAoC18yk7tZw7WvJGBQwhOhoVQirrTAsk3oL1U1zP0p9UrFdaQfK4lzPF3aiGfl5NXcaOl5UR6LSosgXCWQ8nUWh5YONeNRQ38ORpG+FsCPiJWvrv4sbILG4yJ1S+K2wtg+lFnZ8ZITMd22oFr3WMFyANjnPfhfAPjJJvK1QUGLRb5wcVmQC081nq+wOGRcxw8HO0LZ3tqpLULJs1h9KsdcBs6nl1KH3yZlX7K0xUnT8sF6UuNO5PmR83cW4am7D2DAYaJHh+vegK4P9LqAyF0reemUZvRtYLjQmY3Q1sOXysCmVTSwfhK14/J4NGtE+1LJSk17LfQs7ku8c1ds7BaaWHyXtFrCT6y4mAQP7YfBSSjloBnRhKQlHA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,222 +271,167 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jason,
 
-kernel test robot noticed the following build errors:
+On 9/29/2025 11:31 PM, Miaohe Lin wrote:
+> On 2025/9/30 12:35, jane.chu@oracle.com wrote:
+>>
+>>
+>> On 9/29/2025 7:51 PM, Miaohe Lin wrote:
+>>> On 2025/9/30 2:23, jane.chu@oracle.com wrote:
+>>>>
+>>>>
+>>>> On 9/29/2025 10:49 AM, jane.chu@oracle.com wrote:
+>>>>>
+>>>>> On 9/29/2025 10:29 AM, jane.chu@oracle.com wrote:
+>>>>>>
+>>>>>> On 9/29/2025 4:08 AM, Pankaj Raghav (Samsung) wrote:
+>>>>>>>>
+>>>>>>>> I want to change all the split functions in huge_mm.h and provide
+>>>>>>>> mapping_min_folio_order() to try_folio_split() in truncate_inode_partial_folio().
+>>>>>>>>
+>>>>>>>> Something like below:
+>>>>>>>>
+>>>>>>>> 1. no split function will change the given order;
+>>>>>>>> 2. __folio_split() will no longer give VM_WARN_ONCE when provided new_order
+>>>>>>>> is smaller than mapping_min_folio_order().
+>>>>>>>>
+>>>>>>>> In this way, for an LBS folio that cannot be split to order 0, split
+>>>>>>>> functions will return -EINVAL to tell caller that the folio cannot
+>>>>>>>> be split. The caller is supposed to handle the split failure.
+>>>>>>>
+>>>>>>> IIUC, we will remove warn on once but just return -EINVAL in __folio_split()
+>>>>>>> function if new_order < min_order like this:
+>>>>>>> ...
+>>>>>>>           min_order = mapping_min_folio_order(folio->mapping);
+>>>>>>>           if (new_order < min_order) {
+>>>>>>> -            VM_WARN_ONCE(1, "Cannot split mapped folio below min- order: %u",
+>>>>>>> -                     min_order);
+>>>>>>>               ret = -EINVAL;
+>>>>>>>               goto out;
+>>>>>>>           }
+>>>>>>> ...
+>>>>>>
+>>>>>> Then the user process will get a SIGBUS indicting the entire huge page at higher order -
+>>>>>>                    folio_set_has_hwpoisoned(folio);
+>>>>>>                    if (try_to_split_thp_page(p, false) < 0) {
+>>>>>>                            res = -EHWPOISON;
+>>>>>>                            kill_procs_now(p, pfn, flags, folio);
+>>>>>>                            put_page(p);
+>>>>>>                            action_result(pfn, MF_MSG_UNSPLIT_THP, MF_FAILED);
+>>>>>>                            goto unlock_mutex;
+>>>>>>                    }
+>>>>>>                    VM_BUG_ON_PAGE(!page_count(p), p);
+>>>>>>                    folio = page_folio(p);
+>>>>>>
+>>>>>> the huge page is not usable any way, kind of similar to the hugetlb page situation: since the page cannot be splitted, the entire page is marked unusable.
+>>>>>>
+>>>>>> How about keep the current huge page split code as is, but change the M- F code to recognize that in a successful splitting case, the poisoned page might just be in a lower folio order, and thus, deliver the SIGBUS ?
+>>>>>>
+>>>>>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+>>>>>> index a24806bb8e82..342c81edcdd9 100644
+>>>>>> --- a/mm/memory-failure.c
+>>>>>> +++ b/mm/memory-failure.c
+>>>>>> @@ -2291,7 +2291,9 @@ int memory_failure(unsigned long pfn, int flags)
+>>>>>>                     * page is a valid handlable page.
+>>>>>>                     */
+>>>>>>                    folio_set_has_hwpoisoned(folio);
+>>>>>> -               if (try_to_split_thp_page(p, false) < 0) {
+>>>>>> +               ret = try_to_split_thp_page(p, false);
+>>>>>> +               folio = page_folio(p);
+>>>>>> +               if (ret < 0 || folio_test_large(folio)) {
+>>>>>>                            res = -EHWPOISON;
+>>>>>>                            kill_procs_now(p, pfn, flags, folio);
+>>>>>>                            put_page(p);
+>>>>>> @@ -2299,7 +2301,6 @@ int memory_failure(unsigned long pfn, int flags)
+>>>>>>                            goto unlock_mutex;
+>>>>>>                    }
+>>>>>>                    VM_BUG_ON_PAGE(!page_count(p), p);
+>>>>>> -               folio = page_folio(p);
+>>>>>>            }
+>>>>>>
+>>>>>> thanks,
+>>>>>> -jane
+>>>>>
+>>>>> Maybe this is better, in case there are other reason for split_huge_page() to return -EINVAL.
+>>>>>
+>>>>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+>>>>> index a24806bb8e82..2bfa05acae65 100644
+>>>>> --- a/mm/memory-failure.c
+>>>>> +++ b/mm/memory-failure.c
+>>>>> @@ -1659,9 +1659,10 @@ static int identify_page_state(unsigned long pfn, struct page *p,
+>>>>>     static int try_to_split_thp_page(struct page *page, bool release)
+>>>>>     {
+>>>>>            int ret;
+>>>>> +       int new_order = min_order_for_split(page_folio(page));
+>>>>>
+>>>>>            lock_page(page);
+>>>>> -       ret = split_huge_page(page);
+>>>>> +       ret = split_huge_page_to_list_to_order(page, NULL, new_order);
+>>>>>            unlock_page(page);
+>>>>>
+>>>>>            if (ret && release)
+>>>>> @@ -2277,6 +2278,7 @@ int memory_failure(unsigned long pfn, int flags)
+>>>>>            folio_unlock(folio);
+>>>>>
+>>>>>            if (folio_test_large(folio)) {
+>>>>> +               int ret;
+>>>>>                    /*
+>>>>>                     * The flag must be set after the refcount is bumped
+>>>>>                     * otherwise it may race with THP split.
+>>>>> @@ -2291,7 +2293,9 @@ int memory_failure(unsigned long pfn, int flags)
+>>>>>                     * page is a valid handlable page.
+>>>>>                     */
+>>>>>                    folio_set_has_hwpoisoned(folio);
+>>>>> -               if (try_to_split_thp_page(p, false) < 0) {
+>>>>> +               ret = try_to_split_thp_page(p, false);
+>>>>> +               folio = page_folio(p);
+>>>>> +               if (ret < 0 || folio_test_large(folio)) {
+>>>>>                            res = -EHWPOISON;
+>>>>>                            kill_procs_now(p, pfn, flags, folio);
+>>>>>                            put_page(p);
+>>>>> @@ -2299,7 +2303,6 @@ int memory_failure(unsigned long pfn, int flags)
+>>>>>                            goto unlock_mutex;
+>>>>>                    }
+>>>>>                    VM_BUG_ON_PAGE(!page_count(p), p);
+>>>>> -               folio = page_folio(p);
+>>>>>            }
+>>>>>
+>>>>>            /*
+>>>>> @@ -2618,7 +2621,8 @@ static int soft_offline_in_use_page(struct page *page)
+>>>>>            };
+>>>>>
+>>>>>            if (!huge && folio_test_large(folio)) {
+>>>>> -               if (try_to_split_thp_page(page, true)) {
+>>>>> +               if ((try_to_split_thp_page(page, true)) ||
+>>>>> +                       folio_test_large(page_folio(page))) {
+>>>>>                            pr_info("%#lx: thp split failed\n", pfn);
+>>>>>                            return -EBUSY;
+>>>>>                    }
+>>>>
+>>>> In soft offline, better to check if (min_order_for_split > 0), no need to split, just return for now ...
+>>>
+>>> I might be miss something but why we have to split it? Could we migrate the whole thp or folio with min_order instead?
+>>
+>> The soft offline code was originally written with the assumption that only 1 base page will be offlined.
+> 
+> Yes, only page corresponding to parameter @pfn of soft_offline_page() will be offlined.
+> 
+>>
+>> With the recent introduction of min_order, it might quietly offline multiple pages, is that a desirable thing?
+> 
+> I don't think so. Even if try_to_split_thp_page splits folio into smaller one with min_order, page_handle_poison()
+> will put back the folio into buddy after migrate_pages, set the hwpoisoned flag to raw error page and hold the extra
+> refcnt. So only raw error page will be offlined while other sub-pages will be put back into buddy.
+> Or am I miss something?
 
-[auto build test ERROR on rppt-memblock/for-next]
-[also build test ERROR on linus/master v6.17]
-[cannot apply to rppt-memblock/fixes akpm-mm/mm-everything next-20250929]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+The thing is that the non-poisoned subpages are also migrated away, 
+they're no longer available for the user process.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jason-Miu/kho-Adopt-KHO-radix-tree-data-structures/20251001-092230
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git for-next
-patch link:    https://lore.kernel.org/r/20251001011941.1513050-4-jasonmiu%40google.com
-patch subject: [PATCH v1 3/3] kho: Remove notifier system infrastructure
-config: x86_64-randconfig-003-20251001 (https://download.01.org/0day-ci/archive/20251002/202510020105.a05LM8TX-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251002/202510020105.a05LM8TX-lkp@intel.com/reproduce)
+thanks,
+-jane
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202510020105.a05LM8TX-lkp@intel.com/
+> 
+> Thanks.
+> .
 
-All errors (new ones prefixed by >>):
-
->> lib/test_kho.c:49:7: error: use of undeclared identifier 'KEXEC_KHO_ABORT'
-      49 |         case KEXEC_KHO_ABORT:
-         |              ^
->> lib/test_kho.c:51:7: error: use of undeclared identifier 'KEXEC_KHO_FINALIZE'
-      51 |         case KEXEC_KHO_FINALIZE:
-         |              ^
-   lib/test_kho.c:59:44: error: too many arguments to function call, expected 2, have 3
-      59 |         err |= kho_add_subtree(ser, KHO_TEST_FDT, folio_address(state->fdt));
-         |                ~~~~~~~~~~~~~~~                    ^~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/kexec_handover.h:21:5: note: 'kho_add_subtree' declared here
-      21 | int kho_add_subtree(const char *name, void *fdt);
-         |     ^               ~~~~~~~~~~~~~~~~~~~~~~~~~~~
->> lib/test_kho.c:194:9: error: call to undeclared function 'register_kho_notifier'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     194 |         return register_kho_notifier(&kho_test_nb);
-         |                ^
-   lib/test_kho.c:194:9: note: did you mean 'register_module_notifier'?
-   include/linux/module.h:745:5: note: 'register_module_notifier' declared here
-     745 | int register_module_notifier(struct notifier_block *nb);
-         |     ^
->> lib/test_kho.c:298:2: error: call to undeclared function 'unregister_kho_notifier'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     298 |         unregister_kho_notifier(&kho_test_nb);
-         |         ^
-   lib/test_kho.c:298:2: note: did you mean 'unregister_module_notifier'?
-   include/linux/module.h:746:5: note: 'unregister_module_notifier' declared here
-     746 | int unregister_module_notifier(struct notifier_block *nb);
-         |     ^
-   5 errors generated.
-
-
-vim +/KEXEC_KHO_ABORT +49 lib/test_kho.c
-
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   40) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   41) static int kho_test_notifier(struct notifier_block *self, unsigned long cmd,
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   42) 			     void *v)
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   43) {
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   44) 	struct kho_test_state *state = &kho_test_state;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   45) 	struct kho_serialization *ser = v;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   46) 	int err = 0;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   47) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   48) 	switch (cmd) {
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  @49) 	case KEXEC_KHO_ABORT:
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   50) 		return NOTIFY_DONE;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  @51) 	case KEXEC_KHO_FINALIZE:
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   52) 		/* Handled below */
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   53) 		break;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   54) 	default:
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   55) 		return NOTIFY_BAD;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   56) 	}
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   57) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   58) 	err |= kho_preserve_folio(state->fdt);
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   59) 	err |= kho_add_subtree(ser, KHO_TEST_FDT, folio_address(state->fdt));
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   60) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   61) 	return err ? NOTIFY_BAD : NOTIFY_DONE;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   62) }
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   63) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   64) static struct notifier_block kho_test_nb = {
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   65) 	.notifier_call = kho_test_notifier,
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   66) };
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   67) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   68) static int kho_test_save_data(struct kho_test_state *state, void *fdt)
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   69) {
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   70) 	phys_addr_t *folios_info __free(kvfree) = NULL;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   71) 	int err = 0;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   72) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   73) 	folios_info = kvmalloc_array(state->nr_folios, sizeof(*folios_info),
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   74) 				     GFP_KERNEL);
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   75) 	if (!folios_info)
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   76) 		return -ENOMEM;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   77) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   78) 	for (int i = 0; i < state->nr_folios; i++) {
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   79) 		struct folio *folio = state->folios[i];
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   80) 		unsigned int order = folio_order(folio);
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   81) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   82) 		folios_info[i] = virt_to_phys(folio_address(folio)) | order;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   83) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   84) 		err = kho_preserve_folio(folio);
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   85) 		if (err)
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   86) 			return err;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   87) 	}
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   88) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   89) 	err |= fdt_begin_node(fdt, "data");
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   90) 	err |= fdt_property(fdt, "nr_folios", &state->nr_folios,
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   91) 			    sizeof(state->nr_folios));
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   92) 	err |= fdt_property(fdt, "folios_info", folios_info,
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   93) 			    state->nr_folios * sizeof(*folios_info));
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   94) 	err |= fdt_property(fdt, "csum", &state->csum, sizeof(state->csum));
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   95) 	err |= fdt_end_node(fdt);
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   96) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   97) 	return err;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   98) }
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27   99) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  100) static int kho_test_prepare_fdt(struct kho_test_state *state)
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  101) {
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  102) 	const char compatible[] = KHO_TEST_COMPAT;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  103) 	unsigned int magic = KHO_TEST_MAGIC;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  104) 	ssize_t fdt_size;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  105) 	int err = 0;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  106) 	void *fdt;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  107) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  108) 	fdt_size = state->nr_folios * sizeof(phys_addr_t) + PAGE_SIZE;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  109) 	state->fdt = folio_alloc(GFP_KERNEL, get_order(fdt_size));
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  110) 	if (!state->fdt)
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  111) 		return -ENOMEM;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  112) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  113) 	fdt = folio_address(state->fdt);
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  114) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  115) 	err |= fdt_create(fdt, fdt_size);
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  116) 	err |= fdt_finish_reservemap(fdt);
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  117) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  118) 	err |= fdt_begin_node(fdt, "");
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  119) 	err |= fdt_property(fdt, "compatible", compatible, sizeof(compatible));
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  120) 	err |= fdt_property(fdt, "magic", &magic, sizeof(magic));
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  121) 	err |= kho_test_save_data(state, fdt);
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  122) 	err |= fdt_end_node(fdt);
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  123) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  124) 	err |= fdt_finish(fdt);
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  125) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  126) 	if (err)
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  127) 		folio_put(state->fdt);
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  128) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  129) 	return err;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  130) }
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  131) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  132) static int kho_test_generate_data(struct kho_test_state *state)
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  133) {
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  134) 	size_t alloc_size = 0;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  135) 	__wsum csum = 0;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  136) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  137) 	while (alloc_size < max_mem) {
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  138) 		int order = get_random_u32() % NR_PAGE_ORDERS;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  139) 		struct folio *folio;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  140) 		unsigned int size;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  141) 		void *addr;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  142) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  143) 		/* cap allocation so that we won't exceed max_mem */
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  144) 		if (alloc_size + (PAGE_SIZE << order) > max_mem) {
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  145) 			order = get_order(max_mem - alloc_size);
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  146) 			if (order)
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  147) 				order--;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  148) 		}
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  149) 		size = PAGE_SIZE << order;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  150) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  151) 		folio = folio_alloc(GFP_KERNEL | __GFP_NORETRY, order);
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  152) 		if (!folio)
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  153) 			goto err_free_folios;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  154) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  155) 		state->folios[state->nr_folios++] = folio;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  156) 		addr = folio_address(folio);
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  157) 		get_random_bytes(addr, size);
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  158) 		csum = csum_partial(addr, size, csum);
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  159) 		alloc_size += size;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  160) 	}
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  161) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  162) 	state->csum = csum;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  163) 	return 0;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  164) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  165) err_free_folios:
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  166) 	for (int i = 0; i < state->nr_folios; i++)
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  167) 		folio_put(state->folios[i]);
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  168) 	return -ENOMEM;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  169) }
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  170) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  171) static int kho_test_save(void)
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  172) {
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  173) 	struct kho_test_state *state = &kho_test_state;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  174) 	struct folio **folios __free(kvfree) = NULL;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  175) 	unsigned long max_nr;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  176) 	int err;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  177) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  178) 	max_mem = PAGE_ALIGN(max_mem);
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  179) 	max_nr = max_mem >> PAGE_SHIFT;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  180) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  181) 	folios = kvmalloc_array(max_nr, sizeof(*state->folios), GFP_KERNEL);
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  182) 	if (!folios)
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  183) 		return -ENOMEM;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  184) 	state->folios = folios;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  185) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  186) 	err = kho_test_generate_data(state);
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  187) 	if (err)
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  188) 		return err;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  189) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  190) 	err = kho_test_prepare_fdt(state);
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  191) 	if (err)
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  192) 		return err;
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  193) 
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27 @194) 	return register_kho_notifier(&kho_test_nb);
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  195) }
-b753522bed0b7e Mike Rapoport (Microsoft  2025-07-27  196) 
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
