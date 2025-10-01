@@ -4,222 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D51F5CAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 07:21:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8796CCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 07:22:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C4F58E0008; Wed,  1 Oct 2025 03:21:59 -0400 (EDT)
+	id 43BB08E0015; Wed,  1 Oct 2025 03:22:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39CCD8E0002; Wed,  1 Oct 2025 03:21:59 -0400 (EDT)
+	id 413248E0002; Wed,  1 Oct 2025 03:22:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 263ED8E0008; Wed,  1 Oct 2025 03:21:59 -0400 (EDT)
+	id 329958E0015; Wed,  1 Oct 2025 03:22:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F3448E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 03:21:59 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 198D98E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 03:22:50 -0400 (EDT)
 Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BBB1F1A0857
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 07:21:58 +0000 (UTC)
-X-FDA: 83948701116.02.740182C
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9730C4000B
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 07:21:56 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmx.de header.s=s31663417 header.b=KNM5rWPw;
-	spf=pass (imf04.hostedemail.com: domain of deller@gmx.de designates 212.227.15.15 as permitted sender) smtp.mailfrom=deller@gmx.de;
-	dmarc=pass (policy=quarantine) header.from=gmx.de
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AB4ED140943
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 07:22:49 +0000 (UTC)
+X-FDA: 83948703258.02.C304A85
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+	by imf18.hostedemail.com (Postfix) with ESMTP id ABFF31C000A
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 07:22:47 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=iqK4JFji;
+	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759303317;
+	s=arc-20220608; t=1759303367;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hnZWcXMOWRq2bfdW9zZE3Y8mGZXHkc4Xt0CxUKxl5es=;
-	b=bdHpEv2gGSjsv5/9+uesRyqKw4F1JlWLuA/xDeZgtNiAkvJs9TlFmj5duZ21QTRTXSz01m
-	7Ax2/Ra4uxxIs5esWBxSyClu7wJouoVfQ11yCD4XgiCyxDRgHvQxLfHOzz3DUD8ygk13HF
-	y3CiALtmcXoAF5bqxGkhZmaSUHK97uA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759303317; a=rsa-sha256;
+	bh=/dGsRtrk3NgIPfHc9qy1Hht+Zu4gDykb2oRP+kyh1y8=;
+	b=ziJDl2/8pBeX0S08Ney0agdauyluXEwTHMg4d9URjmnHoiOF8sEi/zTKt3CogvU1aw2Ml4
+	pcAjFFUDC8q/8gMeacZmFCzMEmQlP4OX3906r18hERTEUa/HZtbDotvOuhu64PyVZP0xFN
+	pKA/HueY3C0961bIEs4Bv3HsCQiCYRc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759303367; a=rsa-sha256;
 	cv=none;
-	b=wYTqVlbECDkomBFUrN4fVdOq9yn0pbgmi9yxM9k4rdsPP04gn1iDmNbZJupY1wxJnO7CD7
-	T1xmJ6RE+41lhQHjS/eyKV1l2Lxeq4EgTmeJIFK54rhOcKlDMECWPNwzMlBMjaT5vFtSwH
-	2AEvcPclbDDYhHaehBeYl3GTohTvGVA=
+	b=ELHfgzUb2DhS74vohKhl5C86FY5htepKqv9epCjEZsmHKMyQeWlcw6BZ+vnPO+6sFy2M7B
+	ok6y6ZQdHoi8vKcAFmq1PSGis3g9PaB7oZ9vtuanCnJTuydUdFGWijg/HY12myNQ42KzZJ
+	HagsggNf/WdDxVtu2z5tZgKR01Ia+o8=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmx.de header.s=s31663417 header.b=KNM5rWPw;
-	spf=pass (imf04.hostedemail.com: domain of deller@gmx.de designates 212.227.15.15 as permitted sender) smtp.mailfrom=deller@gmx.de;
-	dmarc=pass (policy=quarantine) header.from=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1759303310; x=1759908110; i=deller@gmx.de;
-	bh=hnZWcXMOWRq2bfdW9zZE3Y8mGZXHkc4Xt0CxUKxl5es=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=KNM5rWPwJ9kFGuk7wBUp39om8Q+7cmNhdOlAlrGkAMFdB3Iv6AW6dOqg2LFXI749
-	 vPOI/R+5DKLtW2jvww3YQfZroOaXL8pAXlLl584/Jzj1WksGSUWPqDVOuHxWSp9K9
-	 CmAd24Mg2+nPMv5+vZ/GUQe4srMM4P4m3jVQnv5Tt9IeCVHxXV44cYWvW0fHCR2ra
-	 tp9UiuxifigU/ySTygGNayekf83E+BLZTcfB9ale3RYaizlyByZb/khhTKYkS4r84
-	 By1IQc8aU3A19Er5UmnyVxsoh2Z4hzxXvEjOkFc9820k4ItCQTNMmi9+/jKrJADst
-	 +ll6XY+Go3XdDuBSVA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([109.250.51.8]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N5G9n-1uKrJz2eHt-0157oy; Wed, 01
- Oct 2025 09:21:50 +0200
-Message-ID: <03029eb0-921a-4e45-ab23-3cb958199085@gmx.de>
-Date: Wed, 1 Oct 2025 09:21:47 +0200
+	imf18.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=iqK4JFji;
+	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-795be3a3644so39153306d6.0
+        for <linux-mm@kvack.org>; Wed, 01 Oct 2025 00:22:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1759303367; x=1759908167; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/dGsRtrk3NgIPfHc9qy1Hht+Zu4gDykb2oRP+kyh1y8=;
+        b=iqK4JFji4ziYEGcGoZ+tEVZ3tuReZ+VvNgKPDvYgD+aZpDEoFAguKFhZqoDhnDnTIR
+         Bt/Nn1vjJVFKc4Oamd66pQbY9tlmY3zYSBCorW3HnjceDYO+L9W/G+oY9XFBnBt5337C
+         rcYWIw2Tc0DcugxqzxFGofGyNJKOZpLLSYyRqRGNlGhK262v4Si26d9cCUnKorSSvK0M
+         Xadrff8AFONm32D8rQ1O9a9S6HGvjhPrz2jBkDmWu3GL9dx6gNHl8TJRhtdZkS1S8N/b
+         ASpdi3hPbBwfr6FnEJbzGTfR/Z319BUt5ENbA0XX3ns28VaS/TUoxPa2Ws/SKisfP7nO
+         8OFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759303367; x=1759908167;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/dGsRtrk3NgIPfHc9qy1Hht+Zu4gDykb2oRP+kyh1y8=;
+        b=V2hP9fj33vNzaSNkimFnaSOpSBjxJ5ksPRDItlLB+mg33+3i5G0X6MO4atv2ofaiMC
+         BRbXahXT9trFvU73iAwfnS5IPY/0EZQW2amv4atJEqsiGgu7u8cu4H1No49O96ymrEqk
+         uxwoHI1Pih0wzxUIhpEM1T38HFYmzNdTGi0IH7gYyntzE28vWkz6a/+zCUOr3wgNB1H4
+         Cczv22sRHG1t1gqO9YN2rJo4hj7UEcqRQBg1zAyr2CeD6/vPj8iCtnSPyo5xiJhq4M6c
+         d1LmGlUld0fy80h4LdgqSAXlI17eDwyBaAi5IKi5wfpkwXxKigXi9D6Y5mMlOVVt3Pss
+         gXew==
+X-Forwarded-Encrypted: i=1; AJvYcCWc69UgiJJBbPE4S2/W+vpX0m2wcdjpk0fkFj9A+MCE4rBxX7SG66kR9v5QrLOeSQFaxYt+AX67BQ==@kvack.org
+X-Gm-Message-State: AOJu0Ywwvqy6lAAqk9egcgGsZg3c9lenUeU21lFkfo4aVWCGSfEF1sar
+	KFKftg3wbcXznC/Fq4pQULAs/uNE/fdd4nVGkQZSwLBdQdhXOQsihx6SL3lzZmcJUiA=
+X-Gm-Gg: ASbGncv7alFgSJ8LkScXS8DNmdVf5i+kSlww5MBe5G0SQUQtKd0OU7Wa6lTZR1yTioR
+	2MGLkHG7dGxerQqKjUVEWAQUEUI0gDZYDvmGmb1jqf3wGq0bKrun3hONZ6uuJuJFvH2u4eoQEz+
+	K1LR94p4UjTfutnegYXZyeIRMuDT1ltOB/udo8QeuWhyh/vBexOTbApP3iYQQJffIjqC7dyfm09
+	dOMrJto5n2Ix3ST9zYTbiMgV5fpDsp2uLnZ0Zpz30Xy5CVFoFWnEoUr9wgVtmNh5fCPPgOBr24v
+	hVuaria2C5JHyBr6FkwLRUVWf0ZZThx9FP+UKQeq4LwpQPQrCjNke3uB3RMpfClb5x2WXaH4nte
+	OIvIBDP5PsddvLHmxhKxkuM2dRn0nFUFTYoBsdep+zsPp9CnkU+89sVQem3O72e5X3V8m/6aMDo
+	tEKw7fM1OR6zPbHCyWx9RQQYZ4sRK2fw==
+X-Google-Smtp-Source: AGHT+IEb4zYPFyY51hBg9M62QR/+6dWkMsCJckH5yirdBRASwDVM76yHqNVz6fekjl8pBVjStIx0HQ==
+X-Received: by 2002:ad4:4ee6:0:b0:863:5c7a:728a with SMTP id 6a1803df08f44-873a547f9a5mr32344286d6.37.1759303366554;
+        Wed, 01 Oct 2025 00:22:46 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8013cdf31besm107925176d6.18.2025.10.01.00.22.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Oct 2025 00:22:45 -0700 (PDT)
+Date: Wed, 1 Oct 2025 03:22:43 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>,
+	Wei Xu <weixugc@google.com>, David Rientjes <rientjes@google.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Bharata B Rao <bharata@amd.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, dave.hansen@intel.com, hannes@cmpxchg.org,
+	mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org,
+	raghavendra.kt@amd.com, riel@surriel.com, sj@kernel.org,
+	ying.huang@linux.alibaba.com, ziy@nvidia.com, dave@stgolabs.net,
+	nifan.cxl@gmail.com, xuezhengchu@huawei.com,
+	akpm@linux-foundation.org, david@redhat.com, byungchul@sk.com,
+	kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
+	balbirs@nvidia.com, alok.rathore@samsung.com, yiannis@zptcorp.com,
+	Adam Manzanares <a.manzanares@samsung.com>
+Subject: Re: [RFC PATCH v2 0/8] mm: Hot page tracking and promotion
+ infrastructure
+Message-ID: <aNzWwz5OYLOjwjLv@gourry-fedora-PF4VCD3F>
+References: <7e3e7327-9402-bb04-982e-0fb9419d1146@google.com>
+ <CAAPL-u-d6taxKZuhTe=T-0i2gdoDYSSqOeSVi3JmFt_dDbU4cQ@mail.gmail.com>
+ <20250917174941.000061d3@huawei.com>
+ <5A7E0646-0324-4463-8D93-A1105C715EB3@gmail.com>
+ <20250925160058.00002645@huawei.com>
+ <aNVbC2o8WlYKjEfL@gourry-fedora-PF4VCD3F>
+ <20250925162426.00007474@huawei.com>
+ <aNVohF0sPNZSuTgI@gourry-fedora-PF4VCD3F>
+ <20250925182308.00001be4@huawei.com>
+ <aNWRuKGurAntxhxG@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] page_pool: Fix PP_MAGIC_MASK to avoid crashing on
- some 32-bit arches
-To: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Jakub Kicinski <kuba@kernel.org>, Mina Almasry <almasrymina@google.com>,
- linux-parisc <linux-parisc@vger.kernel.org>
-Cc: stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, linux-mm@kvack.org, netdev@vger.kernel.org
-References: <20250930114331.675412-1-toke@redhat.com>
-Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <20250930114331.675412-1-toke@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:PBXPll7xM7u3uw4Q9cPL2zfse9YG3KsxFM7O4WpnM/wagZm9iod
- nR+2OAVpeNgnIZnUI3G5l4Tbx3cDiYYyd1U1jRZ8Pf/ulCj0eYn7Ithoygx8QqjUmFMzkbD
- ippirVXJX7srYQlhyDZmTGjHI0NIFYaDQVmsF8qY+dLKdCoGk0MrPiOxgNvANBgJujsZ4d3
- LQqIsSWU5l9DjkCo7L7FA==
-UI-OutboundReport: notjunk:1;M01:P0:nP7369nU9w4=;CW20skZnlr6EqTc2kFizoWkyK9X
- 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
-X-Rspamd-Queue-Id: 9730C4000B
-X-Stat-Signature: mzn9up7gpt1sifnrxc9mb1zucr6wz6xk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aNWRuKGurAntxhxG@gourry-fedora-PF4VCD3F>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: ABFF31C000A
+X-Stat-Signature: ocmdoah8ygk8s377pnr4s5c57qctcwkw
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1759303316-84011
-X-HE-Meta: U2FsdGVkX19un0ZFq14TfrD6ktWpf20ZSonYarGhUd8g+AG3wEtqOo98j3LR+6zAO4nkzLpr9bTKPcJDJBEkUcXgCPLofNiNYnxRk9hDdFWAaKkJhCyOEoJ88sylWKlDItmLvZztnedlUX2duRlH1lDQYo9zP5Bw6d9EjcBNKoIqNwewxY+ZNgS88kjk4DBGJxznDaYncmH+1gbwBo2V44Ch2WQOYRG1p/sq/uQkCcTybtN4AMKtoLteFFFte9JmNRWQB8k7nVxt2XB8ol5Gkunf69cRxCzMXRuCBvpi2xnELmBWZ6U4tsW5LZrkOA2wS8GYqcdgk3DJOIwdwshtFdPLjVXKOwAvOVR/UisPb9VIINRoLnD0ptPNGFxR+jDHLyLdIHNN3ZtOWC1vUA4fwqbYw3I/IPQW0NL4fZ3IIPc3EfWt8krTWS2iDUs78ckbWRIDmUMIU8omjzAmVylWjJxXVDo0Ywo2lvU6/bThrxiUfOlKQ17mcZPm0L0TaurngT1+xf2E+z/kNzgLABTLDD8u1fRuImj3Jh1OjjRwD0ecAj6NU4Fb5lj90XR32UE21dVQdYqCZsBui4YYDhxUye6N8txWI6rWXJxBPotcDogIT9zOUA8GWaAE/+6OuRbPYzvkjBX65kAYe2ePvJLk5f3eMHYUNq6PplK/1DbxMr6dPK08C9hTgUAVPF61WEHqSEu+m54Qh2PjcH5XYqURQyEASklT5rtXkLUTp51IBsCvLhTJcN+uTdZ5OWfO4iBK2K/OMLVeTQ4erZreKkkPbueCv9YVP72hZtKJpzmmTCNhXll+Hl/uJ2nTNDSIZDIywZ1JKPAt7G/1HjcN5D2/nQ/TjaYm5tK4ZcfEbCq8Uy2OLbcU8AWqYhzRKb2hNv8yAm8CNV+LMAlA1hDG8Mf+IA7adEmb11JYzfCcnaJqrul4l6gaf1ZYX0UI8gEt8Nfjya/c3k4PX1NPA9Uzvqo
- AHYfBfxO
- wRxPQuPu9gapfFiePGoE2y0qbttVbYr8aLaUvCe4zBJDaGika3EqbQB44IH7aX+YiSx+pANiuxcybIo+lTalv44GpZeSpNagaQ9ZtJKEjZJ66lIH0ifnMFMsY1XZI5sw+K3uB5VJRKBnDAl+SyV8z4sYnnR4GMmNVmdxkZ0jgyvr4pT7nYJtTOP7oPtUXPl/wPxFk68E0hYkYkR6OeKsz9ei7aeJkrhaiSYKseTMdnqg7+SaEqcInMYMP0WSN6MMTRNpDqLH7RhraQSZHo+l9K3ApSJ1TMLeDM/26tnP3uOIZx6M8HY/mLMlXdKZF0O6YVh6AnpjTuqfiyaNWukDSb+jZ6F6YcNnqnDJdKBkKOe+JKv9rFDhzxnf/c0UIkgK+YpJXmknPmni10bDrnOzGL43bLdgOCass9aztQ9qEbAKO1fZJFFJptER8Ip+y2w5YMmb4xNZ09bdKd64=
+X-HE-Tag: 1759303367-215906
+X-HE-Meta: U2FsdGVkX1+RYF8cFcLdKelOdA1aM0kbV4+FoczExwftD5Wv3cMLkIacEU9QTpxr4R21ohx4IyUDRCWRBuk3dG7VSLuP8i4MG5PJfhD4vHv6kdWaNR9jlk7axX3LT8XKwfIU9cQvtGotUqUzsWANN2yJdBMV+PlP1jQABjm6N0OttllO65iORQaaVBRlGmB1JVYoOPN1XQSa30KJwAxZwTSYCuGFMoCK3DyUd5Fsnw/wnZ2xOkETTnS55neiIHWJN6jjby2m8/VcpTKu5+5IGWhN5YxQzED2rkY2BYIk/RLsM7blIQ+9zUD4WbzcCqqouL1M2TqHMPsJ2GXPCvaZw8TXjfnZN4X4OdFQH5dfOoL1HuoNJ7HRRqy+p9u8zTuN3moYq6uBuf/YE9msmU8kH44upBj/KUSvX0Z1y5oPhBv7d2bo2eaKmaSGDpbk6OPnYyXWGBAMJSLiVY6rbasrHSgnJBYLQuiu1PzZxfo6EfuZ3EqrPedpVvbCjtkYZ69Rt6rNnVEeT1US2KovzwRGy0qPDU6fiO3DztLaNiCJiQgYiR3kFIJObumTGkU0vzfmJ9Gr0BSUTAcqpNKtx1cBDT5N+VgTqrmsNCXB++tr2NY1iEAdSy8SY+CT6uH9A85bovTIRCiYWFD6he5v7NUy3Y8fOtqjruwmZ0lphAxR9J9FIol0sFm/dU+T4EVLDKAcN6Q1HCc3/FYMJpe+3ASRJOB9GbaBjaUhz/tUceHaLdyZj7fSSqfSz9xpqPjwZDJJ5JCLGqqVGn9TahDgBchGq6UCr8FivOgB3xZllT5avqOf83XVIl4pCt9QmhJKhUoGSQ5PN0tEl1FLbY9dL70vBtaarSIvURlpYrSTJQVywpdExxH9ZgfFjXC1WzReP3hC3OQ3o81geYEmQkrFxS2Nlz3/wZv8tYCzX4I6bS4HJLwDwFT0E5J1YdZfyR/sOzHi+N9v8DTLJU9CSevb30Y
+ FAF5A43E
+ SbEY/aZFsn4Z1SGFb5dN0Hd99TI2GA7CCAjghxjAKPPLnmfokWT0tlln2hpQAQdO75hCvXUbXb/f/uoZl39rAhYjCFH8azq4DBaegUaGwiXasGWN15Loi+TZ8O9e6Uu7kGRI/EeCzVOC6j7UPnYhYebAay9EKinxrkMBSa+/vpOy8j/CgO3/ZUY9KtyGd53C19olzn7SqEoOTT4pT5VODxRth8uQh2stzc1yOdHyp9+hppwUoQHKv7q2wOWRWXFNfjWWW2F+MGw/0OJJKGTpOjRg/xtK1kd63Eb5/HvOO8WvSm9dDi7ojwHmmWu6p+CwDs/tY9uk5p0kAwzvUV3IPKWO3vDh191x5GKopYloP2vGZfvDDymwpLBdcTk/X/Un5tUX4GJFtY0MNYZw8PTymK18R79gXDqISlZV84Woa2J9IlsR8T8A6Rqaq9WSIbkXlaxAgWvIJy8ZvLKVkc4lpXdl4g8x/Sku+6IPD1Rj/hWOhYKUdrglfwollzOhPjodJB5bHB3cm38z0mCJa/RO5C1d4HA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -228,50 +139,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/30/25 13:43, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
-> Helge reported that the introduction of PP_MAGIC_MASK let to crashes on
-> boot on his 32-bit parisc machine. The cause of this is the mask is set
-> too wide, so the page_pool_page_is_pp() incurs false positives which
-> crashes the machine.
->=20
-> Just disabling the check in page_pool_is_pp() will lead to the page_pool
-> code itself malfunctioning; so instead of doing this, this patch changes
-> the define for PP_DMA_INDEX_BITS to avoid mistaking arbitrary kernel
-> pointers for page_pool-tagged pages.
->=20
-> The fix relies on the kernel pointers that alias with the pp_magic field
-> always being above PAGE_OFFSET. With this assumption, we can use the
-> lowest bit of the value of PAGE_OFFSET as the upper bound of the
-> PP_DMA_INDEX_MASK, which should avoid the false positives.
->=20
-> Because we cannot rely on PAGE_OFFSET always being a compile-time
-> constant, nor on it always being >0, we fall back to disabling the
-> dma_index storage when there are not enough bits available. This leaves
-> us in the situation we were in before the patch in the Fixes tag, but
-> only on a subset of architecture configurations. This seems to be the
-> best we can do until the transition to page types in complete for
-> page_pool pages.
->=20
-> v2:
-> - Make sure there's at least 8 bits available and that the PAGE_OFFSET
->    bit calculation doesn't wrap
->=20
-> Link: https://lore.kernel.org/all/aMNJMFa5fDalFmtn@p100/
-> Fixes: ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them w=
-hen destroying the pool")
-> Cc: stable@vger.kernel.org # 6.15+
-> Tested-by: Helge Deller <deller@gmx.de>
-> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
-> ---
->   include/linux/mm.h   | 22 +++++++------
->   net/core/page_pool.c | 76 ++++++++++++++++++++++++++++++--------------
->   2 files changed, 66 insertions(+), 32 deletions(-)
+On Thu, Sep 25, 2025 at 03:02:16PM -0400, Gregory Price wrote:
+> On Thu, Sep 25, 2025 at 06:23:08PM +0100, Jonathan Cameron wrote:
+> > On Thu, 25 Sep 2025 12:06:28 -0400
+> > Gregory Price <gourry@gourry.net> wrote:
+> > 
+> > > It feels much more natural to put this as a zswap/zram backend.
+> > > 
+> > Agreed.  I currently see two paths that are generic (ish).
+> > 
+> > 1. zswap route - faulting as you describe on writes.
+> 
+> aaaaaaaaaaaaaaaaaaaaaaah but therein lies the rub
+> 
+> The interposition point for zswap/zram is the PTE present bit being 
+> hacked off to generate access faults.
+> 
 
-I tested this v2 patch (the former tested-by was for v1), and v2
-works too:
+I went digging around a bit.
 
-Tested-by: Helge Deller <deller@gmx.de>
+Not only this, but the PTE is used to store the swap entry ID, so you
+can't just use a swap backend and keep the mapping. It's just not a
+compatible abstraction - so as a zswap-backend this is DOA.
 
-Thanks!
-Helge
+Even if you could figure out a way to re-use the abstraction and just
+take a hard-fault to fault it back in as read-only, you lose the swap
+entry on fault.  That just gets nasty trying to reconcile the
+differences between this interface and swap at that point.
+
+So here's a fun proposal.  I'm not sure of how NUMA nodes for devices
+get determined - 
+
+1. Carve out an explicit proximity domain (NUMA node) for the compressed
+   region via SRAT.
+   https://docs.kernel.org/driver-api/cxl/platform/acpi/srat.html
+
+2. Make sure this proximity domain (NUMA node) has separate data in the
+   HMAT so it can be an explicit demotion target for higher tiers
+   https://docs.kernel.org/driver-api/cxl/platform/acpi/hmat.html
+
+3. Create a node-to-zone-allocator registration and retrieval function
+   device_folio_alloc = nid_to_alloc(nid)
+
+4. Create a DAX extension that registers the above allocator interface
+
+5. in `alloc_migration_target()` mm/migrate.c
+   Since nid is not a valid buddy-allocator target, everything here
+   will fail.  So we can simply append the following to the bottom
+
+   device_folio_alloc = nid_to_alloc(nid, DEVICE_FOLIO_ALLOC);
+   if (device_folio_alloc)
+       folio = device_folio_alloc(...)
+   return folio;
+
+6. in `struct migration_target_control` add a new .no_writable value
+   - This will say the new mapping replacements should have the
+     writable bit chopped off.
+
+7. On write-fault, extent mm/memory.c:do_numa_page to detect this
+   and simply promote the page to allow writes.  Write faults will
+   be expensive, but you'll have pretty strong guarantees around
+   not unexpectedly running out of space.
+
+   You can then loosen the .no_writable restriction with settings if
+   you have high confidence that your system will outrun your ability
+   to promote/evict/whatever if device memory becomes hot.
+
+The only thing I don't know off hand is how shared pages will work in
+this setup.  For VMAs with a mapping that exist at demotion time, this
+all works wonderfully - less so if the mapping doesn't exist or a new
+VMA is created after a demotion has occurred.
+
+I don't know what will happen there.
+
+I think this would also sate the desire for a "separate CXL allocator"
+for integration into other paths as well.
+
+~Gregory
 
