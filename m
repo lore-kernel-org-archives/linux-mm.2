@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B54D7CCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 20:50:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3EC4CCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 20:59:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BC9D8E0003; Wed,  1 Oct 2025 16:50:20 -0400 (EDT)
+	id 194CA8E0005; Wed,  1 Oct 2025 16:59:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 094B78E0002; Wed,  1 Oct 2025 16:50:20 -0400 (EDT)
+	id 145138E0002; Wed,  1 Oct 2025 16:59:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEBB98E0003; Wed,  1 Oct 2025 16:50:19 -0400 (EDT)
+	id 033588E0005; Wed,  1 Oct 2025 16:59:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DF3308E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 16:50:19 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8BC6FC0289
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 20:50:19 +0000 (UTC)
-X-FDA: 83950738158.14.F7F1BA7
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 42B1C4000C
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 20:50:16 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lebovFAQ;
-	spf=pass (imf04.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DF8318E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 16:59:20 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6D77257783
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 20:59:20 +0000 (UTC)
+X-FDA: 83950760880.21.1F3A75B
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E6CBA1C000A
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 20:59:17 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NgYMyeHZ;
+	spf=pass (imf20.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759351817;
+	s=arc-20220608; t=1759352358;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L+sY6hHXmQmAq3I5l+Bc3KZ+ZPYaRF/aEJFBBdkRFCM=;
-	b=qhEwlXDaU+4AowkFSEsru6+DxeySQXcsvstHQ750PLmKPp/usy8uD6sdewtUBsSHsuGlnE
-	rjIp6dVZBtePq7L5hLod3HXUG50wVAWnN7uvVmpxSzf4vbor/gXY8iebauPp872f2EArTY
-	tTUM3qaKyAxC/npSb539nPOLDLR0oLo=
+	bh=L0HadZFiMgp+DlYLs+MttGlBpdWKzPKqgXUkQdjT6mI=;
+	b=NjlYqJItaw5lhDXUONCbtIyzc8ap2IGeo7O+z0jKAW/glQ6Hg/rwfrPEzQ0hUILv4rwmGI
+	zLD51Nu5a+5UMPLgns3Q4pCe1/jaJkenBqZh7cVX4Q9oomOEmrUPyl7rkTzktWwEYIGC1j
+	6NVJRSuZJRssIx9I7gnZk7klb6/uY0I=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lebovFAQ;
-	spf=pass (imf04.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NgYMyeHZ;
+	spf=pass (imf20.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759351817; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759352358; a=rsa-sha256;
 	cv=none;
-	b=8IWw0qoVzpBgtaEQShrmgX6dkzkQ4BwaMQc5qLwOwBZVSyinEWf4fzWxpaJ153N5E2yId6
-	P/HZRX9a4HPVCxwXFY7ae7BPuHI5I2U3P9q8xG+a8GGPTHlmgWre0+wrMC13j2yZdmthSt
-	xTniJUT6qmkwyUSFfCsyoUVJEhdsOQM=
+	b=FtUgCkKtkCO6CTIsGLk2dmvTDcfssEEmYf0qByrk3Go1kNB1by2KWklwu0NwcArpHYtLfF
+	RBNavZj6nUsoh8Qt/SXoGf0Aizp7nbnMgq0XoQq/Q/SYY9Jl0Zthw3AHFJiZkKmUkBCF5u
+	pqCt5KPWIs6mgqTmlc4Jwt1rzjljx4g=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759351816; x=1790887816;
+  t=1759352358; x=1790888358;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=IB8uPb6EUBcGWblRPI+e7U2JqmalxFcJYmMrRUroNbE=;
-  b=lebovFAQQNtbxcycmR7ZxUhnmAbNWmjdm1b59hQ4UU0T/+65gkyci0eM
-   lc243CQBAmDV5fv0PenuALMOJJDA+TQjX0UkfUU4ONE92PHIQDoGE3jZ8
-   HzwdJGI/Dvj0d9IcalB4Qt/Glzt2EGR1fv5ibd/oHZAKc2pONET4tg1RQ
-   zxV4PkAYZQAFbNUonDk0XOduWtnxAr9iJHJ8dAXUmTvGr4Wcar7Se7Vhk
-   xWj/WJWQgELpQK1GYTjRT9jM1XLbV7ZqbXicBLO3f34MH9/k4ezCl/OKK
-   6eHGW5XcZSkqHTLuec0nQag5umTEtU+W0gEfsGtRq9HTSKwxFMLWe5fmX
-   Q==;
-X-CSE-ConnectionGUID: ToskuKLZQECiQ+Q1zBuLvA==
-X-CSE-MsgGUID: xvKT4A82Q+K4l0XxlOSZOg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="61548716"
+  bh=L0HadZFiMgp+DlYLs+MttGlBpdWKzPKqgXUkQdjT6mI=;
+  b=NgYMyeHZovwXiSG6rF0OIfBxyCTlkf6Y1ST9oVsdD0aK+pYN8QGcFGNk
+   E/loYWbvVlyo12UucM9sk1ZlW2mXG3mgeO4Zxc9G8S0GLjTrcrlJStzIZ
+   EMY1qI1EX/8EDkyJacWs0TPiOJFWaqK3GqQlLjTg+n20FqjSLcAWCJnFk
+   ZmPA1XpVFdG1ltW2lf+6Dtnggy7u09E8nQkWsFvGhaphlKFNxn+bQDlCb
+   iR1cq9wJrhH3M/RydM8ydjyW+VxChmvudZDN+dXDHOFm6ajW7wtSbrjgq
+   W79s2HA24XKiws/pf6uN7dMl4m/dsNiDNvdpk/nU77ZSaxLMbcSfuWfFU
+   g==;
+X-CSE-ConnectionGUID: aaeoQTESROiuORHJMzPbtA==
+X-CSE-MsgGUID: SsqnXbnNT7SGhA6LZlOLMQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="71885950"
 X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; 
-   d="scan'208";a="61548716"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 13:50:14 -0700
-X-CSE-ConnectionGUID: PphuQsj6R32nVbv8mRQWjA==
-X-CSE-MsgGUID: Q6Riu27eRkCBy6UsEdHvtA==
+   d="scan'208";a="71885950"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 13:59:16 -0700
+X-CSE-ConnectionGUID: A+pFzs88QqKNagxbFnqvfg==
+X-CSE-MsgGUID: pdzjycyCTeyCcD0oRis+JA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; 
-   d="scan'208";a="178166843"
+   d="scan'208";a="184069162"
 Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.109.221]) ([10.125.109.221])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 13:50:14 -0700
-Message-ID: <08338619-6aa1-4905-bdf8-bf1a90857307@intel.com>
-Date: Wed, 1 Oct 2025 13:50:13 -0700
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 13:59:16 -0700
+Message-ID: <00e7ff5e-fe6c-4edc-9bf8-2352321f74dc@intel.com>
+Date: Wed, 1 Oct 2025 13:59:15 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/21] x86/mm/pat: mirror direct map changes to ASI
+Subject: Re: [PATCH 00/21] mm: ASI direct map management
 To: Brendan Jackman <jackmanb@google.com>, Andy Lutomirski <luto@kernel.org>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  "Liam R. Howlett" <Liam.Howlett@oracle.com>,
@@ -95,7 +95,6 @@ Cc: peterz@infradead.org, bp@alien8.de, dave.hansen@linux.intel.com,
  rientjes@google.com, rppt@kernel.org, vbabka@suse.cz, x86@kernel.org,
  Yosry Ahmed <yosry.ahmed@linux.dev>
 References: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
- <20250924-b4-asi-page-alloc-v1-5-2d861768041f@google.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -141,17 +140,17 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20250924-b4-asi-page-alloc-v1-5-2d861768041f@google.com>
+In-Reply-To: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 42B1C4000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: iztagwu4dz1r8a6dk98komwnf6u988oq
-X-HE-Tag: 1759351816-453860
-X-HE-Meta: U2FsdGVkX1/beehPsiMJc312/G/FzvtiODdu7pK3LyqHzHzB7XVs9w9R2IweWY2SAQKD351y8ttlrsG0xBuHKrzy43GNnLVgTTs+ZfaZquzbrR1Uam9lBd0Ksv7rKpkMzoILbZXRu1/HhDdper9u4jl9uu7lCQF2OPjBARvN834c5q9hCXQfsjIqn0DguyG/YOFyVOsgpn6Iz5N9GzVfDTRp4fqVBHqhiQVx7vEEwcmBz8rbQcMcrYKiuHaKrIuVvdP8BwZ7DU8M9BYGcuLuxMaWy1l20HqNAyFLHOR++vx6+sTAcMCDwTlG/t2T5Dbfxx2GYpwUPNMTX3L6MtB4hf/cJIx2NT/ZPUr6EHmk8GT1cCyrutxP3e/fp2XVGS13zMIfw/RjnnPZXe4L8mXK7f/AtYHul2iJ32S3/Grg57liKZWM1blpOOQlkg6CmPu8pNaTBsunHzY7TtdRPZBVEMaih+WlxJ+ozxjg1DvP1i3k5r+5Gl4/o3e80NlmQ0Kti1MeSIsN7KUVB6PWOe5NZIthxlTdfz+KL+nJYuLBcfU4bclB1yNwyoRcjttjeYqLQo6viUI1PpSJ1RMqIoHXkk1IB6oWvXNoNLBhjdLiOdIhfEG+zOt0yoJKSx2sK8UcgSWBsrf+hJtTzGr/y8XGyJQ+5hHgvxoU6FQ/3Lm+t2g0ALhlDYP1DA+SfdH7PwgUZPGe277VgI7khvAu/Qmx1o8S1+a73suBf8rGvv+YJtVn4XfdQOkJowlIx8/QMQwWbrxEIy5VQnG+8nx8r6FcovH5W6GploQ8XRghdJXZksBnqO5ybW0c3t6Y5PTWJ4GFWF2Oxx1Ab4cclULTLeCTpHGVizybQdSjHG0SO0WK/O1Gdylhkn2EPDG0/GLm3ssQO/VzVla03BlFooLWYa7FmDYNZt9hNmZWCak1niHhQKyaxGVSVPfbGDQ5qHe8v3oiwKN0ObyPZlUZ7f1fnZG
- cTXC3ora
- z5ofJwinmzJT8jIQ9/L0RP+jOKtL34SurUyibSaV5xliT59Jw/xQrU84QbsI4RUG4j4Gl2fQZ8KeQM+DcvdtK55HnUCIpl5zUPh2wsKlB9nWZdywGKtlXaih4zRfPwL7QlZ0yXUUGjRb8N42jfp7K06kMsRvve2+wxpNo5ybHSUdvGz9quUkYjfzIfeAxS7W/IL+uEDDyhaOmObQ=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E6CBA1C000A
+X-Stat-Signature: x1uz9et7ufjxwsxj8q79453sphra3uzy
+X-HE-Tag: 1759352357-710360
+X-HE-Meta: U2FsdGVkX18wbz6koGaNcWvKKRhcTiZPcyXlpR8VLtB1P6dQhwVxnQIQlNvg2ED0ZW3fIItoXMZ/wVb2wJQGSuAXSvbngyh7kqgoLlpa+r1U4g1nuA109LwGw5CaN1m8CQHO9TEA8iR4mUB0vtoX90Rnyvr+2qv98bQ20WtkqD/2c1nIzwHbTuHjuuAik7xOhfctuhhdVv5ZXdLWPEOZFLobhJOEbcIv3dc3WKTol/Qep3/XVvxXMKlKStpxecBN7/vayQhg8v5uy/sFoYkLWuJyebOpwnR25uyRtKrBSMOkIBmqJrmBtvQknztYgLzmJwJDQy7amyQn94Szeci1JngnTKNVR2dVdLBO0TzQSLZaFz7DqQVBjbDfFpafHn/5pnStYC47qyZ2A6iltf2JOIjJrOeHorVBxmfGxN8fGaUznqODI982TYBCLc/auriKNLBzF6XR0A3z0wVX6S8lHvdR5sUXCyIbizHnxwVBjwp0OMCoUT3zSkjtN9aPCNt1m7bi36VJy/vKdfz46kVZOtfXTFEW+ZZwoYgRl8ZJL1mXLzojhY6SdsX5w2Ml021MZY+pk7tgWDQC3+HYHzOQoB9ny0Fh7960uSf09KsKAlSkaA97vKqD71HuNzxVyKQZWIH20QmEsXTfTkZQAGnkc+GZCVDBCQ3Gg5veRyEzf6nI6ifn0dwJP65iO+ssQA8Da7Kyesg10P8/+6o8PFwN4wC5PCFqD6LpCWYqr4+37zUGTu/21u6xIDPIt9dheWnty56OBRM5uq0Cyl/JACUgbDWJWdDxTjJ4cwwHjKh/fQ/Vla4C0+k62FyhhPfhaSis2MZSsgvGz1b2CS1PDTs5jItrlcypV0XRRJFBDhgEteAzOzBa7oQfbBDjDcyJMG2jEevlOSyNR4nj7XX0pqVEkgFnDJQC9z1kb5C2EIP4NgqtRWdQyUVoSbXw2u7mNW4PkA5XyA9uylMAgxkAxRv
+ 4KdWBGxR
+ lQzw23up5bTsncVZLHP0AU+WECbd6Dgf48I6YZWNvXpwE32SbyI42Ar/L1B2M7Dxsel08Rkv9KMUE0ArkObX4Jf0Nv3CShoDI4MTfpQy76/DHSXl0XMaOQgwY1QS5CcegXpXz6aG9K+jz53i+7bjj7UbpvJI3d39nRzyO
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -161,88 +160,15 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/24/25 07:59, Brendan Jackman wrote:
-> ASI has a separate PGD for the physmap, which needs to be kept in sync
-> with the unrestricted physmap with respect to permissions.
+> Why is this the scope of the first series? The objective here is to
+> reach a MVP of ASI that people can actually run, as soon as possible.
 
-So that leads to another thing... What about vmalloc()? Why doesn't it
-need to be in the ASI pgd?
+I had to ask ChatGPT what you meant by MVP. Minimum Viable Product?
 
-> +static inline bool is_direct_map(unsigned long vaddr)
-> +{
-> +	return within(vaddr, PAGE_OFFSET,
-> +		      PAGE_OFFSET + (max_pfn_mapped << PAGE_SHIFT));
-> +}
->  
->  static int __cpa_process_fault(struct cpa_data *cpa, unsigned long vaddr,
->  			       int primary)
-> @@ -1808,8 +1814,7 @@ static int __cpa_process_fault(struct cpa_data *cpa, unsigned long vaddr,
->  	 * one virtual address page and its pfn. TBD: numpages can be set based
->  	 * on the initial value and the level returned by lookup_address().
->  	 */
-> -	if (within(vaddr, PAGE_OFFSET,
-> -		   PAGE_OFFSET + (max_pfn_mapped << PAGE_SHIFT))) {
-> +	if (is_direct_map(vaddr)) {
->  		cpa->numpages = 1;
->  		cpa->pfn = __pa(vaddr) >> PAGE_SHIFT;
->  		return 0;
-> @@ -1981,6 +1986,27 @@ static int cpa_process_alias(struct cpa_data *cpa)
->  	return 0;
->  }
->  
-> +/*
-> + * Having updated the unrestricted PGD, reflect this change in the ASI
-> + * restricted address space too.
-> + */
-> +static inline int mirror_asi_direct_map(struct cpa_data *cpa, int primary)
-> +{
-> +	struct cpa_data asi_cpa = *cpa;
-> +
-> +	if (!asi_enabled_static())
-> +		return 0;
-> +
-> +	/* Only need to do this for the real unrestricted direct map. */
-> +	if ((cpa->pgd && cpa->pgd != init_mm.pgd) || !is_direct_map(*cpa->vaddr))
-> +		return 0;
-> +	VM_WARN_ON_ONCE(!is_direct_map(*cpa->vaddr + (cpa->numpages * PAGE_SIZE)));
-> +
-> +	asi_cpa.pgd = asi_nonsensitive_pgd;
-> +	asi_cpa.curpage = 0;
+So this series just creates a new address space and then ensures that
+sensitive data is not mapped there? To me, that's a proof-of-concept,
+not a bit of valuable functionality that can be merged upstream.
 
-Please document what functionality this curpage=0 has. It's not clear.
-
-> +	return __change_page_attr(cpa, primary);
-> +}
-
-But let's say someone is doing something silly like:
-
-	set_memory_np(addr, size);
-	set_memory_p(addr, size);
-
-Won't that end up in here and make the "unrestricted PGD" have
-_PAGE_PRESENT==1 entries?
-
-Also, could we try and make the nomenclature consistent? We've got
-"unrestricted direct map" and "asi_nonsensitive_pgd" being used (at
-least). Could the terminology be made more consistent?
-
-One subtle thing here is that it's OK to allocate memory here when
-mirroring changes into 'asi_nonsensitive_pgd'. It's just not OK when
-flipping sensitivity. That seems worth a comment.
-
->  static int __change_page_attr_set_clr(struct cpa_data *cpa, int primary)
->  {
->  	unsigned long numpages = cpa->numpages;
-> @@ -2007,6 +2033,8 @@ static int __change_page_attr_set_clr(struct cpa_data *cpa, int primary)
->  		if (!debug_pagealloc_enabled())
->  			spin_lock(&cpa_lock);
->  		ret = __change_page_attr(cpa, primary);
-> +		if (!ret)
-> +			ret = mirror_asi_direct_map(cpa, primary);
->  		if (!debug_pagealloc_enabled())
->  			spin_unlock(&cpa_lock);
->  		if (ret)
-> 
-
-Is cpa->pgd ever have any values other than NULL or init_mm->pgd? I
-didn't see anything in a quick grep.
+I'm curious how far the first bit of functionality that would be useful
+to end users is from the end of this series.
 
