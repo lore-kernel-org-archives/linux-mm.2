@@ -4,120 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 368E1CAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 08:54:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 965CCCAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 09:03:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 691278E0015; Wed,  1 Oct 2025 04:54:30 -0400 (EDT)
+	id C9C858E0015; Wed,  1 Oct 2025 05:03:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 668A48E0002; Wed,  1 Oct 2025 04:54:30 -0400 (EDT)
+	id C4C038E0002; Wed,  1 Oct 2025 05:03:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A5468E0015; Wed,  1 Oct 2025 04:54:30 -0400 (EDT)
+	id B3C0E8E0015; Wed,  1 Oct 2025 05:03:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 496138E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:54:30 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EF2635BD58
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 08:54:29 +0000 (UTC)
-X-FDA: 83948934258.12.CD7E69E
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 000E040002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 08:54:27 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Kt+EIMBQ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759308868; a=rsa-sha256;
-	cv=none;
-	b=zlJxwIl9R4q2cabBx5LMOZ0zJI2JxzZgCCCVCrdyWJii8S+11/pafAnGbBN9FBIIB/Upqv
-	0pBSFwFr+rA7Wnv+GG3tvnyXmdJjCEG6dPNbJ4+cP9UWStGfkWi+cDE+/7sfwT/YoQKjep
-	pB/5Y69mZVUK8xPLRa32+0ozIHaRgsY=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Kt+EIMBQ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 983D98E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 05:03:42 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 48F171609AD
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 09:03:42 +0000 (UTC)
+X-FDA: 83948957484.17.8439ACE
+Received: from mail-24418.protonmail.ch (mail-24418.protonmail.ch [109.224.244.18])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 460F08000B
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 09:03:40 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=gq5cdMSm;
+	spf=pass (imf02.hostedemail.com: domain of oliver.mangold@pm.me designates 109.224.244.18 as permitted sender) smtp.mailfrom=oliver.mangold@pm.me;
+	dmarc=pass (policy=quarantine) header.from=pm.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759308868;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1759309420;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4jq+NwjNX43C8IcFtydh0hsU++MGHu2pSQ+/Nx3+Uws=;
-	b=3rx7Jjs3cjsY62G9zoBKLAleaaao++s8aKdd8tsGFF1eQ8kKmNVHwVpLrpPTndKX4ytFBj
-	y2JxPGHw3xzBeqXG7ljS72hRJliptQAERG2ukvLkOASYyJnbgURITF7bbAkg4SVkkmnBF6
-	rn2uHiYs8nBlLhKp23yJsrTUQCXPiAE=
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-62fa062a1abso11481658a12.2
-        for <linux-mm@kvack.org>; Wed, 01 Oct 2025 01:54:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759308866; x=1759913666; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4jq+NwjNX43C8IcFtydh0hsU++MGHu2pSQ+/Nx3+Uws=;
-        b=Kt+EIMBQVJXKhRB23RxvQ0UQ83ydU1TpUZHmPnYVEnzqv8bNGLFc9zmtsLOoPEMRTy
-         Dgj/tq9KGW4dT2Jre07LvjbUP3MG7a6/H1t8yjA+4v1nUqF4IALOgh/8x1q4AWSymVSn
-         rpckGeSwYQcpH+gf0uHIkkRkgy5U6nCavCOClFlcjGw5Np+z09dvH6Lj60iFTYUHiEgU
-         8CezFhR+09l2uqi1xGSHP465nLihlGf1KPfKemnFMW38A14xzUV+nqGCCbWKMNO9cuq6
-         BxxBsXVBk8aGlNLHJPWGUnJWeNWEmw1alGwDKh7bqmVN9Hoswjv3g/ct73zLjzrMNASJ
-         wg1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759308866; x=1759913666;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4jq+NwjNX43C8IcFtydh0hsU++MGHu2pSQ+/Nx3+Uws=;
-        b=O5rxBDZOBIHGnY1/pzqI3GEPG7q88U5+iKdCPpT1yhqTYzyEAPD1d6pHA7q2stHi6C
-         4Owk9y9s3CUGF0wYhTNRGaaPnsK05QgeDfe5J1uzltficwcfp2FkW+J9MvA5KuIgqg4b
-         rgNGhSQ74mQgZNxU6gOwcSv80VSGTVoiyFnelX+v4l5+cdm9nMbcpxcOENaKsS3bSxsj
-         4Bl9RIRGJz5gZ5iDqN4IIkmKSwyw188t0CQRS9sE8I40W+V4pT4gfoKCd5K4evE5H94k
-         YI46mXUfyZwdMD0UDvjOvYVRPZz8lZMaZSCJlldQKMTNo0znZQNjVP1IVWQBbLId63WM
-         utxw==
-X-Forwarded-Encrypted: i=1; AJvYcCUrcy1klqIdfEBVglSNakf5qdzKbkXKq+c6gNq+GQWZatbaLPO4jCaMJ5bDkv8/8C5YgQP+nzDPZg==@kvack.org
-X-Gm-Message-State: AOJu0YxKSlBeqwp3BnanuAJIMUNbBwWy5j9ULl08ptvEZBNbRTusSGnQ
-	56sA9ODHHBjrRMMuHfGFxRWl/K7nxASQYI2pe4x6/LSY3/L90oRO/ckX
-X-Gm-Gg: ASbGncvuoVcXHbBV5hotB8TBbFs+k9PoAEEvVr0PEdxl5h7WPmXWurgZw+OSYwAUJTp
-	15+AfFipWOvBz1DVnR4r7ag2JiHbgWX2g/F+cqjS9pWJWWbsIvZDHFwifnneCcVKQtyEX+VMx37
-	e7dd7haRhswIuQukam0ChFLbVafHB1i6cPZ6IiF5BD9aOLtEBoID0L2XyV1WSKd9ZhexzdbE3F/
-	s4uQYTJBImnICfPK6ScvAy8P8ikiCqMP2W/Vz1KE8mR7Qdi8Mhfh2KL53gXlLW94UVPCcu5cRqb
-	Oi9n4hdGUhjxt7+XVvJcaEUng8gAF89uQ+sz4Q2SRAsN9lqOuw23WckV2GgvHwzBndZQb9EtiGr
-	hanuAmf5U09YatZbHwhjQaqy4QWOK7iWVt0XG8twDCRKI86TN3g==
-X-Google-Smtp-Source: AGHT+IEXQ1igMBNuJPp8r1+b1vCKJaIsvxsCFMXTwEOKWVqNJRrL3GS3CWPQfw5QrY0+nNdCEPtJXQ==
-X-Received: by 2002:a17:907:9449:b0:b3b:5fe6:577a with SMTP id a640c23a62f3a-b46e24366cfmr319920566b.8.1759308866250;
-        Wed, 01 Oct 2025 01:54:26 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b40f9d0a652sm457947366b.33.2025.10.01.01.54.25
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 01 Oct 2025 01:54:25 -0700 (PDT)
-Date: Wed, 1 Oct 2025 08:54:25 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, baohua@kernel.org,
-	baolin.wang@linux.alibaba.com, dev.jain@arm.com, hughd@google.com,
-	ioworker0@gmail.com, kirill@shutemov.name,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	mpenttil@redhat.com, npache@redhat.com, ryan.roberts@arm.com,
-	ziy@nvidia.com, richard.weiyang@gmail.com
-Subject: Re: [PATCH mm-new v2 1/1] mm/khugepaged: abort collapse scan on
- non-swap entries
-Message-ID: <20251001085425.5iq2mgfom6sqkbbx@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251001032251.85888-1-lance.yang@linux.dev>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=k2cd0h/lNPW6oKirfHBNFEiPHjT+8NPzCf04+VSLOsg=;
+	b=3y22rwVoWyuMZxpDujpa3ZyGeZCHdG6/WWNQr7EOtc3e80tMNZ+MN1LrVk6pWo1+Vn5Eti
+	F8XOdxe7YYNykM/uVdDWf+vvOfVjmgmar7adzhdIbmaKVvRrzzPrd3JjyCWXQ1YqrFUnjV
+	Kg80Khv25P1OHo8OmdpyF7qEVRYQrvc=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=gq5cdMSm;
+	spf=pass (imf02.hostedemail.com: domain of oliver.mangold@pm.me designates 109.224.244.18 as permitted sender) smtp.mailfrom=oliver.mangold@pm.me;
+	dmarc=pass (policy=quarantine) header.from=pm.me
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759309420; a=rsa-sha256;
+	cv=none;
+	b=Nadp5DPRckzcuutOfVp5owRuE0iKATYAKMvEo8Hf9W2JhK0pO//j3W6ZPee8s3v8kI+d5a
+	bu7je2pX4EkKMu3ZrbhiBXBmwvjMdxtxm07iVi/4VnW6TTMi5At5ekv+arDNXZeGc0182n
+	aXETtdDcQsGPeRFaeQEg2UO/LCZn42o=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1759309417; x=1759568617;
+	bh=k2cd0h/lNPW6oKirfHBNFEiPHjT+8NPzCf04+VSLOsg=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=gq5cdMSmMRJ5eEdQ74b46Afg4C59ln8vt80/KmbouM+MFTl2033f/pBX9xzcIeq3c
+	 enT4MAXopZCXXM6u8MfmhBxjUT6n5m1ghFZIaA2NLIUKRLBpebo7Nl/W+xz25bSdkL
+	 pM227Wrf+Pf1aQ+0s6p0RpRpMvHjcnf3aX8YNIB7KGbhAhc8bcRGXGXurIHssikDkl
+	 1q8ZroZcQt16iBc6K+0cXAsicmMEPNQQEwLMybDsThZ0uWpfeXrXHudarIT9Ec323i
+	 DZ8DMK1X2WbiT+Fk9grZNvAGMjnvy5Kb/X5WF3YPKUnQOnedseFZJOWs8WudYT4Zme
+	 ksS29du6VknaQ==
+Date: Wed, 01 Oct 2025 09:03:31 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Viresh Kumar
+	<vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Asahi Lina <lina+kernel@asahilina.net>
+From: Oliver Mangold <oliver.mangold@pm.me>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, Oliver Mangold <oliver.mangold@pm.me>
+Subject: [PATCH v12 0/4] New trait OwnableRefCounted for ARef<->Owned conversion.
+Message-ID: <20251001-unique-ref-v12-0-fa5c31f0c0c4@pm.me>
+Feedback-ID: 31808448:user:proton
+X-Pm-Message-ID: 05f6e75cf8354eecb1d79bcf61223bca92da5f3d
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251001032251.85888-1-lance.yang@linux.dev>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 000E040002
-X-Stat-Signature: ewtmr5iq6wriizakc15quqqjr7ny1dog
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1759308867-946681
-X-HE-Meta: U2FsdGVkX1/SKVy0VdMatq5+LRju4VfJprHcE6lLKkd/dfpx/X8UkhUdnOpSjq+2vrkdDzZDMEq6SAJFuiTSAEjlBoF4HlgyzI0jUFpy9gGUD8u5To9q2Uv7B/djPehgcNfJbFsMMOThbfjaLrtYfYZchkjk+XO5A5SchxoMT9jXpkx23oV6qePMYjTsPQKL9Mf3Z+Hp/O5TwA51LDyvRiLl1v0SepkT/PRTqXvBuHhqNBh0WlZNSCZNpBkplrVGcET91Ls6zaQ7O1GnOgMQKGpIMN6DaLQby4zgwXISsXKXHwxDxW+WyTb+bTv5AJjAzZyAG7BsJBa50wi22eOdYYMOuQrx20qqmNEk8BDInVkp4wIsAAGsnto4Mtv10j9ewzktHS2y9UEUmY0pkreRDQOSbmQi4X/lLuNHrJPZYrHWG1ZLLfBxR4XUmJpNy9PTev4hEi08vLGp8LAhc+Ruy/u4fGTolZZsu208wtJjWRtqzsg6wjpm4EqVrH9cUhL9+x1jJYZIEJR0so0TA0IidazXURB1+AQK2pGJi4tveR7fDe5165IOPY75asAqA/r/bH8SUBfiW8jl8/9WXhj+2u6Q/UQKqNRLCn7gKyHyJik1UFood0QtNQwBVXMrAVbU8Q9WIAzSJbmcX1sj8JSzmJRPQaADl6awva51jOrXpcbwjFQeId06NshDliDmcDOPQSCsZegWKa3I4LYIolsuJjvQjxYcCAbJGuGDq7WgONM1iZ7gkoXoLCJDy94WL7BkdaBDordGQnadEkyPAntz8WVf/M8Zt0Ue7QuxsFXil8NxaTl+GaLPmAi47p9wAgFSx/YbOmefavj8i0GaLYCiClq37e65K5L+RTRrRN7IksmHyCma9rdN5DdRHIYRNJYlhNEK3ynqBgthiI0KFqTV49oWVD6XUEjR6VdBEW1CtuKK7dLpymAmhPTJ9/MUmnMZFcygJooKw0xP7HLEqMD
- zU5uvNRk
- CdnqM/+4cUUQuY200WMSrTub/C6GeNLSrWO5FABkhOq64q8W4Kef/G+xFiKEOmslySg8Jb8TaL2D8V7xb2biugx4ddpbmSIz0rg+0+eMuCc1QYA+1si0DBIXmf91x9TQNLmyRpuEGqlWfKlbv2zmhnsfDYNAm605Typdrw5MvAEWu6fDF0F+Uxk/AzAMqoLB7hUWUP5tmqsBPk/70VdskATlNsVtrkaPE7JcnGbv+4oAJUTT9fFPt5kqOOeU/5jXoTXPW6djpDmgxHrTrtmPqrzItK2VzdA4zH3uaoaO9LkasVEa6JubEE9XWd7IJsUCxQJZyiDSdOd4rLuKj5BlMceCwA+fAxgXWipMJj4gqL4HpLTm0jJ/PQR1e35+/mStWRbN4dhLrH+0z+itLJtWh5VzdFDeNOl4eWufkwsZFvQ7wYFdfIkAOcejC+WDJ4Ngsgz2YKG0w3KFp6LGKm51Wc2awgLPtfDP58gUOEuFaP/i0ki7gGR/jz23G+xgy29m6fCtwb45JmKp93qjgOdaAeB0fGWFB5w/FqZsBkLkNf2uQF+D+Ktk/kB/gDwBwrfPc7DhSfBbAN3L4PCeyz9zVJhx0Rg9ZBJEy4lOekn1Vo8D3X2IVcmljbnaV0IUr0k1S4Y9DSDjfiseX9ltPriJP97FcMfP3J3Vk204kPNydvmUZk09yTFEe6UMn++yFQjvD9C+rJ3FfWzIBctQ3FUFdgE6pgn+dGZKiONL18/t5NajEIJE4tmvBeenRfw==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 460F08000B
+X-Stat-Signature: ybq5hjybnmme15zmt7ci5y6rg94fqz5p
+X-HE-Tag: 1759309420-940413
+X-HE-Meta: U2FsdGVkX18hV2YmrEZZ2UEhiES/mjWzf0qaoiYpcMVF0nHiTuMws2nLwKMqXcp3p18y/q8sTVns+SdUs0kfKzsOrrFe5mHo6eKB5WhQ4yrQxkNJUM8JuNuMt04I88jUFyPuRzA8rt7PLHzatroPZU5KamFbOKi5dvWrF75cuBrBqX43FL4s32W08muLS1i7q/ssCuzcVdUegDMv1U1tbKYdQDv0+HvhDOgkzl7VLAqu9i0zxSNpTUivraxEqDybc8TI2HAbiJpCA1DQLUdOAmAwXjlUbuUdKMv8K0y4nTksWXo4cDuTCetmvvKVBUHWpYQVm6xg6pWXzCf45et1tXJ/iYF1AYIWRK4C3IqwUlXnVIAlr7tUY2hS/2qYMUYleyHcjX1gE0bqt+/Ki0eH0rPhSn4JeBAtpGFGUb6bbwDiLpnG5lJjqBDpThqX45arihI8sJ7VR2ukdYGN5FCSU1MfFDxKNQ3YLSy0g1h1bvOe+sg0RQbG5L4cDQ8QI5JT7WYFRva+M789/+pDm+4FHyTf02VyQro5EXvUFxI3bLGiYvFFVJ2ZpHGVQx2k24FjoauVPaCBGGZpH2htZy/LiN0TWrXL0BHYds95CunuQlzrOkO/84r+6E0XH5CqFw5WcEaD38wrypT2Jy3d737I6nlDbmuVa9dRRivy3so142n30TNlv0icdOUlB6yAm6iY5n6v897ARAPPqkHoFsYd56p/a+twXY4yf7AUh7+Xql1na0pBkmjZ4lRBKjB/T/cW/ziXChk+l0jj2Cl2Y7RFkv6SZuchnQ0ycDFVmGCIKWg7vw+rem7o6omWzeUeDxddDdx6k2Uj2w75lrICyN7BTLCxocFM+pYp2ji5E8W07bR24aScXebIKChvzgZAtnrgtIqu7XeS2tCQQ1OqHXHjDcf+w8+ego4q73HbUT0dyA9gtDm5+O9Nw+/DrERH5E6EJSUc/MxduDOi7ZnYgm8
+ PhmA+44o
+ deRm0NJtU0Rz9qz4D39aCu0WPN7WUlKCpXcFzuw+s5B44OWy+656byEjnikET0svJ4OsE4OabBFp5I41hgkosxHBZI51NEIQx67l3q+tTh44WSADwu7ZEbZkJHaU7mcALDEKcbWWrS9ahxEaIpmJu/T/x6jfyMKm5PnDFUUhSNiDu3V1tikhYRZJLukcC+KjJhGB2Sbjz9SkmmX+1OxeIussCoA1/zoka8ePn7DtPX45lc9CTnYVfqup2cdTdXUMdil5N7JpkIcoY1qMH1SMgiIIj8tgsoN8lwdKfCKLuv63+APVQiTHXGeGYF8gIATyA45g5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,106 +87,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 01, 2025 at 11:22:51AM +0800, Lance Yang wrote:
->From: Lance Yang <lance.yang@linux.dev>
->
->Currently, special non-swap entries (like migration, hwpoison, or PTE
->markers) are not caught early in hpage_collapse_scan_pmd(), leading to
->failures deep in the swap-in logic.
->
->hpage_collapse_scan_pmd()
-> `- collapse_huge_page()
->     `- __collapse_huge_page_swapin() -> fails!
->
->As David suggested[1], this patch skips any such non-swap entries
->early. If any one is found, the scan is aborted immediately with the
->SCAN_PTE_NON_PRESENT result, as Lorenzo suggested[2], avoiding wasted
->work.
->
->[1] https://lore.kernel.org/linux-mm/7840f68e-7580-42cb-a7c8-1ba64fd6df69@redhat.com
->[2] https://lore.kernel.org/linux-mm/7df49fe7-c6b7-426a-8680-dcd55219c8bd@lucifer.local
->
->Suggested-by: David Hildenbrand <david@redhat.com>
->Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->Signed-off-by: Lance Yang <lance.yang@linux.dev>
->---
->v1 -> v2:
-> - Skip all non-present entries except swap entries (per David) thanks!
-> - https://lore.kernel.org/linux-mm/20250924100207.28332-1-lance.yang@linux.dev/
->
-> mm/khugepaged.c | 32 ++++++++++++++++++--------------
-> 1 file changed, 18 insertions(+), 14 deletions(-)
->
->diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->index 7ab2d1a42df3..d0957648db19 100644
->--- a/mm/khugepaged.c
->+++ b/mm/khugepaged.c
->@@ -1284,7 +1284,23 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
-> 	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
-> 	     _pte++, addr += PAGE_SIZE) {
-> 		pte_t pteval = ptep_get(_pte);
->-		if (is_swap_pte(pteval)) {
+This allows to convert between ARef<T> and Owned<T> by
+implementing the new trait OwnedRefCounted.
 
-It looks is_swap_pte() is mis-leading?
+This way we will have a shared/unique reference counting scheme
+for types with built-in refcounts in analogy to Arc/UniqueArc.
 
->+		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
->+			++none_or_zero;
->+			if (!userfaultfd_armed(vma) &&
->+			    (!cc->is_khugepaged ||
->+			     none_or_zero <= khugepaged_max_ptes_none)) {
->+				continue;
->+			} else {
->+				result = SCAN_EXCEED_NONE_PTE;
->+				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
->+				goto out_unmap;
->+			}
->+		} else if (!pte_present(pteval)) {
->+			if (non_swap_entry(pte_to_swp_entry(pteval))) {
->+				result = SCAN_PTE_NON_PRESENT;
->+				goto out_unmap;
->+			}
->+
-> 			++unmapped;
-> 			if (!cc->is_khugepaged ||
-> 			    unmapped <= khugepaged_max_ptes_swap) {
->@@ -1293,7 +1309,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
-> 				 * enabled swap entries.  Please see
-> 				 * comment below for pte_uffd_wp().
-> 				 */
->-				if (pte_swp_uffd_wp_any(pteval)) {
->+				if (pte_swp_uffd_wp(pteval)) {
+Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+---
+Changes in v12:
+-
+- Rebase onto v6.17-rc1 (Andreas's work).
+- moved kernel/types/ownable.rs to kernel/owned.rs
+- Drop OwnableMut, make DerefMut depend on Unpin instead. I understood
+  ML discussion as that being okay, but probably needs further scrunity.
+- Lots of more documentation changes suggested by reviewers.
+- Usage example for Ownable/Owned.
+- Link to v11: https://lore.kernel.org/r/20250618-unique-ref-v11-0-49eadcdc=
+0aa6@pm.me
 
-I am not sure why we want to change this. There is no description in the
-change log.
+Changes in v11:
+- Rework of documentation. I tried to honor all requests for changes "in
+  spirit" plus some clearifications and corrections of my own.
+- Dropping `SimpleOwnedRefCounted` by request from Alice, as it creates a
+  potentially problematic blanket implementation (which a derive macro that
+  could be created later would not have).
+- Dropping Miguel's "kbuild: provide `RUSTC_HAS_DO_NOT_RECOMMEND` symbol"
+  patch, as it is not needed anymore after dropping `SimpleOwnedRefCounted`=
+.
+  (I can add it again, if it is considered useful anyway).
+- Link to v10: https://lore.kernel.org/r/20250502-unique-ref-v10-0-25de64c0=
+307f@pm.me
 
-Would you mind giving some hint on this?
+Changes in v10:
+- Moved kernel/ownable.rs to kernel/types/ownable.rs
+- Fixes in documentation / comments as suggested by Andreas Hindborg
+- Added Reviewed-by comment for Andreas Hindborg
+- Fix rustfmt of pid_namespace.rs
+- Link to v9: https://lore.kernel.org/r/20250325-unique-ref-v9-0-e91618c1de=
+26@pm.me
 
-> 					result = SCAN_PTE_UFFD_WP;
-> 					goto out_unmap;
-> 				}
->@@ -1304,18 +1320,6 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
-> 				goto out_unmap;
-> 			}
-> 		}
->-		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
->-			++none_or_zero;
->-			if (!userfaultfd_armed(vma) &&
->-			    (!cc->is_khugepaged ||
->-			     none_or_zero <= khugepaged_max_ptes_none)) {
->-				continue;
->-			} else {
->-				result = SCAN_EXCEED_NONE_PTE;
->-				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
->-				goto out_unmap;
->-			}
->-		}
-> 		if (pte_uffd_wp(pteval)) {
-> 			/*
-> 			 * Don't collapse the page if any of the small
->-- 
->2.49.0
+Changes in v9:
+- Rebase onto v6.14-rc7
+- Move Ownable/OwnedRefCounted/Ownable, etc., into separate module
+- Documentation fixes to Ownable/OwnableMut/OwnableRefCounted
+- Add missing SAFETY documentation to ARef example
+- Link to v8: https://lore.kernel.org/r/20250313-unique-ref-v8-0-3082ffc67a=
+31@pm.me
 
--- 
-Wei Yang
-Help you, Help me
+Changes in v8:
+- Fix Co-developed-by and Suggested-by tags as suggested by Miguel and Boqu=
+n
+- Some small documentation fixes in Owned/Ownable patch
+- removing redundant trait constraint on DerefMut for Owned as suggested by=
+ Boqun Feng
+- make SimpleOwnedRefCounted no longer implement RefCounted as suggested by=
+ Boqun Feng
+- documentation for RefCounted as suggested by Boqun Feng
+- Link to v7: https://lore.kernel.org/r/20250310-unique-ref-v7-0-4caddb78aa=
+05@pm.me
+
+Changes in v7:
+- Squash patch to make Owned::from_raw/into_raw public into parent
+- Added Signed-off-by to other people's commits
+- Link to v6: https://lore.kernel.org/r/20250310-unique-ref-v6-0-1ff5355861=
+7e@pm.me
+
+Changes in v6:
+- Changed comments/formatting as suggested by Miguel Ojeda
+- Included and used new config flag RUSTC_HAS_DO_NOT_RECOMMEND,
+  thus no changes to types.rs will be needed when the attribute
+  becomes available.
+- Fixed commit message for Owned patch.
+- Link to v5: https://lore.kernel.org/r/20250307-unique-ref-v5-0-bffeb63327=
+7e@pm.me
+
+Changes in v5:
+- Rebase the whole thing on top of the Ownable/Owned traits by Asahi Lina.
+- Rename AlwaysRefCounted to RefCounted and make AlwaysRefCounted a
+  marker trait instead to allow to obtain an ARef<T> from an &T,
+  which (as Alice pointed out) is unsound when combined with UniqueRef/Owne=
+d.
+- Change the Trait design and naming to implement this feature,
+  UniqueRef/UniqueRefCounted is dropped in favor of Ownable/Owned and
+  OwnableRefCounted is used to provide the functions to convert
+  between Owned and ARef.
+- Link to v4: https://lore.kernel.org/r/20250305-unique-ref-v4-1-a8fdef7b1c=
+2c@pm.me
+
+Changes in v4:
+- Just a minor change in naming by request from Andreas Hindborg,
+  try_shared_to_unique() -> try_from_shared(),
+  unique_to_shared() -> into_shared(),
+  which is more in line with standard Rust naming conventions.
+- Link to v3: https://lore.kernel.org/r/Z8Wuud2UQX6Yukyr@mango
+
+---
+Asahi Lina (1):
+      rust: types: Add Ownable/Owned types
+
+Oliver Mangold (3):
+      `AlwaysRefCounted` is renamed to `RefCounted`.
+      rust: Add missing SAFETY documentation for `ARef` example
+      rust: Add `OwnableRefCounted`
+
+ rust/kernel/auxiliary.rs        |   7 +-
+ rust/kernel/block/mq/request.rs |  14 +-
+ rust/kernel/cred.rs             |   7 +-
+ rust/kernel/device.rs           |   9 +-
+ rust/kernel/device/property.rs  |   7 +-
+ rust/kernel/drm/device.rs       |   9 +-
+ rust/kernel/drm/gem/mod.rs      |   7 +-
+ rust/kernel/fs/file.rs          |  13 +-
+ rust/kernel/lib.rs              |   1 +
+ rust/kernel/mm.rs               |  12 +-
+ rust/kernel/mm/mmput_async.rs   |   7 +-
+ rust/kernel/opp.rs              |   7 +-
+ rust/kernel/owned.rs            | 318 ++++++++++++++++++++++++++++++++++++=
+++++
+ rust/kernel/pci.rs              |   7 +-
+ rust/kernel/pid_namespace.rs    |   7 +-
+ rust/kernel/platform.rs         |   7 +-
+ rust/kernel/sync/aref.rs        |  67 ++++++---
+ rust/kernel/task.rs             |   7 +-
+ rust/kernel/types.rs            |   4 +-
+ 19 files changed, 474 insertions(+), 43 deletions(-)
+---
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+change-id: 20250305-unique-ref-29fcd675f9e9
+
+Best regards,
+--=20
+Oliver Mangold <oliver.mangold@pm.me>
+
+
 
