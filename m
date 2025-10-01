@@ -4,83 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3EC4CCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 20:59:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65DD2CAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 21:19:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 194CA8E0005; Wed,  1 Oct 2025 16:59:21 -0400 (EDT)
+	id 8ECDE8E0006; Wed,  1 Oct 2025 17:19:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 145138E0002; Wed,  1 Oct 2025 16:59:21 -0400 (EDT)
+	id 8C4C38E0002; Wed,  1 Oct 2025 17:19:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 033588E0005; Wed,  1 Oct 2025 16:59:20 -0400 (EDT)
+	id 7DA9C8E0006; Wed,  1 Oct 2025 17:19:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DF8318E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 16:59:20 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6D77257783
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 20:59:20 +0000 (UTC)
-X-FDA: 83950760880.21.1F3A75B
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E6CBA1C000A
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 20:59:17 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=NgYMyeHZ;
-	spf=pass (imf20.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B43D8E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 17:19:03 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EFFDE140289
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 21:19:02 +0000 (UTC)
+X-FDA: 83950810524.25.7CE2021
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 5C9C81A000F
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 21:19:00 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=d1jAuZP+;
+	spf=pass (imf19.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759352358;
+	s=arc-20220608; t=1759353541;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L0HadZFiMgp+DlYLs+MttGlBpdWKzPKqgXUkQdjT6mI=;
-	b=NjlYqJItaw5lhDXUONCbtIyzc8ap2IGeo7O+z0jKAW/glQ6Hg/rwfrPEzQ0hUILv4rwmGI
-	zLD51Nu5a+5UMPLgns3Q4pCe1/jaJkenBqZh7cVX4Q9oomOEmrUPyl7rkTzktWwEYIGC1j
-	6NVJRSuZJRssIx9I7gnZk7klb6/uY0I=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=NgYMyeHZ;
-	spf=pass (imf20.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759352358; a=rsa-sha256;
+	bh=mT5PdxjtcI1i48v71PO+UPDYOzAaI+Kbtaq6k4yhaTo=;
+	b=OVTgd0ln4pKqMNYvIC0KHIBOdbFDPhYFYy5EhetmbVz08Xh3fmV+sWaIbvqRf/o8Kl6Yus
+	Q75McdwbKiZjb0e80fbUy6FuvgxmruzLrq/uM1riVs3CplgxwBYWhyWpb49OY9KrnVgtVx
+	n0YiWMs4g/fG3OxApNMG48S0BDxw5r8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759353541; a=rsa-sha256;
 	cv=none;
-	b=FtUgCkKtkCO6CTIsGLk2dmvTDcfssEEmYf0qByrk3Go1kNB1by2KWklwu0NwcArpHYtLfF
-	RBNavZj6nUsoh8Qt/SXoGf0Aizp7nbnMgq0XoQq/Q/SYY9Jl0Zthw3AHFJiZkKmUkBCF5u
-	pqCt5KPWIs6mgqTmlc4Jwt1rzjljx4g=
+	b=ytDE7K3BmDcATYY5DG9bekZ2yaIyFufaE7dFVCe84ElLuRmbxvUr/hRXaIE+01ZHp/WH75
+	ycVioA9KmsLTtR1DZxvDKfueMuHNAW1l1yl3/193yrPfT2+upmCMzYNYQbNlISRbLOYLJh
+	t11jWz7GlbIn6dSAYgzOufnBbsxaHzo=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=d1jAuZP+;
+	spf=pass (imf19.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759352358; x=1790888358;
+  t=1759353541; x=1790889541;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=L0HadZFiMgp+DlYLs+MttGlBpdWKzPKqgXUkQdjT6mI=;
-  b=NgYMyeHZovwXiSG6rF0OIfBxyCTlkf6Y1ST9oVsdD0aK+pYN8QGcFGNk
-   E/loYWbvVlyo12UucM9sk1ZlW2mXG3mgeO4Zxc9G8S0GLjTrcrlJStzIZ
-   EMY1qI1EX/8EDkyJacWs0TPiOJFWaqK3GqQlLjTg+n20FqjSLcAWCJnFk
-   ZmPA1XpVFdG1ltW2lf+6Dtnggy7u09E8nQkWsFvGhaphlKFNxn+bQDlCb
-   iR1cq9wJrhH3M/RydM8ydjyW+VxChmvudZDN+dXDHOFm6ajW7wtSbrjgq
-   W79s2HA24XKiws/pf6uN7dMl4m/dsNiDNvdpk/nU77ZSaxLMbcSfuWfFU
-   g==;
-X-CSE-ConnectionGUID: aaeoQTESROiuORHJMzPbtA==
-X-CSE-MsgGUID: SsqnXbnNT7SGhA6LZlOLMQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="71885950"
+  bh=hszeVLXsk4QDA1KmLdo7/yU41aGufNbi7fn8qVjcQSE=;
+  b=d1jAuZP+lV9ZC6vciuFZ9Qt1ZjMUF9dCVKtwAa5PXLMmgGL8/94/7Msd
+   DPIZcaJTp6lKZ8H54HftaYR3z65UwJuRoKxdTlmc75vK/5qlydLMK0YjE
+   pDRL/Et/rN4kHW//0YkUg+ofj6+Gy/xj2SOlI72/79PAoyL7HrmU+MtXL
+   sHP9M7BOArh4Q7rcnoylDtQ2ovOyqAfTUDm0XYYNKY4In9PAUQSHBh2fQ
+   uEPaDpVrmlGNEEyiSSuKV1S/O3LwQHvhyXEyrzXh/u8x0D4a6JpUjYTzv
+   om1eKSmtY222XE/zNPPn95vPDds/LxYc+G/Wdse+sSzt8uuk3rRe/j8vj
+   A==;
+X-CSE-ConnectionGUID: CDrBSwfjS1yo/GDwf+ZXtw==
+X-CSE-MsgGUID: pWvN+GwCQXytwsYpb+pRiQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="61805126"
 X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; 
-   d="scan'208";a="71885950"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 13:59:16 -0700
-X-CSE-ConnectionGUID: A+pFzs88QqKNagxbFnqvfg==
-X-CSE-MsgGUID: pdzjycyCTeyCcD0oRis+JA==
+   d="scan'208";a="61805126"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 14:18:59 -0700
+X-CSE-ConnectionGUID: f5zzIt87SOGwdW4MfswyKg==
+X-CSE-MsgGUID: 8PZytHqNTsONmo4Y4mV8ww==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; 
-   d="scan'208";a="184069162"
+   d="scan'208";a="209598672"
 Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.109.221]) ([10.125.109.221])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 13:59:16 -0700
-Message-ID: <00e7ff5e-fe6c-4edc-9bf8-2352321f74dc@intel.com>
-Date: Wed, 1 Oct 2025 13:59:15 -0700
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 14:18:58 -0700
+Message-ID: <fb450443-07c3-438c-888f-30540935da15@intel.com>
+Date: Wed, 1 Oct 2025 14:18:57 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/21] mm: ASI direct map management
+Subject: Re: [PATCH 06/21] mm/page_alloc: add __GFP_SENSITIVE and always set
+ it
 To: Brendan Jackman <jackmanb@google.com>, Andy Lutomirski <luto@kernel.org>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  "Liam R. Howlett" <Liam.Howlett@oracle.com>,
@@ -93,8 +94,9 @@ Cc: peterz@infradead.org, bp@alien8.de, dave.hansen@linux.intel.com,
  david@redhat.com, derkling@google.com, junaids@google.com,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, reijiw@google.com,
  rientjes@google.com, rppt@kernel.org, vbabka@suse.cz, x86@kernel.org,
- Yosry Ahmed <yosry.ahmed@linux.dev>
+ yosry.ahmed@linux.dev
 References: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
+ <20250924-b4-asi-page-alloc-v1-6-2d861768041f@google.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -140,17 +142,15 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
+In-Reply-To: <20250924-b4-asi-page-alloc-v1-6-2d861768041f@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ib7p87owdrjhjmz9pndij37h1m8eaaje
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E6CBA1C000A
-X-Stat-Signature: x1uz9et7ufjxwsxj8q79453sphra3uzy
-X-HE-Tag: 1759352357-710360
-X-HE-Meta: U2FsdGVkX18wbz6koGaNcWvKKRhcTiZPcyXlpR8VLtB1P6dQhwVxnQIQlNvg2ED0ZW3fIItoXMZ/wVb2wJQGSuAXSvbngyh7kqgoLlpa+r1U4g1nuA109LwGw5CaN1m8CQHO9TEA8iR4mUB0vtoX90Rnyvr+2qv98bQ20WtkqD/2c1nIzwHbTuHjuuAik7xOhfctuhhdVv5ZXdLWPEOZFLobhJOEbcIv3dc3WKTol/Qep3/XVvxXMKlKStpxecBN7/vayQhg8v5uy/sFoYkLWuJyebOpwnR25uyRtKrBSMOkIBmqJrmBtvQknztYgLzmJwJDQy7amyQn94Szeci1JngnTKNVR2dVdLBO0TzQSLZaFz7DqQVBjbDfFpafHn/5pnStYC47qyZ2A6iltf2JOIjJrOeHorVBxmfGxN8fGaUznqODI982TYBCLc/auriKNLBzF6XR0A3z0wVX6S8lHvdR5sUXCyIbizHnxwVBjwp0OMCoUT3zSkjtN9aPCNt1m7bi36VJy/vKdfz46kVZOtfXTFEW+ZZwoYgRl8ZJL1mXLzojhY6SdsX5w2Ml021MZY+pk7tgWDQC3+HYHzOQoB9ny0Fh7960uSf09KsKAlSkaA97vKqD71HuNzxVyKQZWIH20QmEsXTfTkZQAGnkc+GZCVDBCQ3Gg5veRyEzf6nI6ifn0dwJP65iO+ssQA8Da7Kyesg10P8/+6o8PFwN4wC5PCFqD6LpCWYqr4+37zUGTu/21u6xIDPIt9dheWnty56OBRM5uq0Cyl/JACUgbDWJWdDxTjJ4cwwHjKh/fQ/Vla4C0+k62FyhhPfhaSis2MZSsgvGz1b2CS1PDTs5jItrlcypV0XRRJFBDhgEteAzOzBa7oQfbBDjDcyJMG2jEevlOSyNR4nj7XX0pqVEkgFnDJQC9z1kb5C2EIP4NgqtRWdQyUVoSbXw2u7mNW4PkA5XyA9uylMAgxkAxRv
- 4KdWBGxR
- lQzw23up5bTsncVZLHP0AU+WECbd6Dgf48I6YZWNvXpwE32SbyI42Ar/L1B2M7Dxsel08Rkv9KMUE0ArkObX4Jf0Nv3CShoDI4MTfpQy76/DHSXl0XMaOQgwY1QS5CcegXpXz6aG9K+jz53i+7bjj7UbpvJI3d39nRzyO
+X-Rspamd-Queue-Id: 5C9C81A000F
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1759353540-342708
+X-HE-Meta: U2FsdGVkX19EFpem8NhuupdGRYd3cMXaOLq+HxjtiM3Fq8W0ctpq0Joj0wVs1c0ZQgX0J2Dh1EUf1uoWQpHNNj0GNUAE1nfRI+1cEVET79+gEAyf0RKT6RHpugHnXev5L0aBzT/L/GXganhPj4IUgdvXN9Zuattp7GF5+0xWVT6xVLY49pNPc7hkZLiPcyelc6y51rDQYeEmEaA9vulMxbxGQZokkQL/1CTcaS4k8c6qeYA2ICRlGFjOlH484Ao4fDE94asqGh49BbeH1CTppIPSwp8DIPlDqF6d7jtSC+m2Ihq6lbQfUSFRkam3LmMycfiBYSwEBe7SermOsrhqXk5Efgle+H7sHnvm59Tueob7ABRC3i8WJ4Qk38VQthm7W5zIfzCIa13kR95M5GYuJZkInmsUecaAppnYb8N9zzxwyYYP3LdTI21WEDABiZBrCLtgvTM1kBl91Mb1WNyrRJMLsLEkShK7wUiVB1DbovWpZbXtSd0xvqaWS6P+oscW+pw/TivmwoVpCkoCvxWJtr9PHZdwPh6MqRF25tRXySmS03ctapMCS05fyhGiaV++2EBvHtkISuIxEH1yDvGkpUuR1oXfM2sH5yeiB4uiYYGubwNv9OJ+Tx7iqtnI+W8cCE/9QebfG5L8L5nXeK6OT+9iSylCZXp62zSKjMZgUxp3sfECcjmuTgVIsMREGDZt4rXhDKFOEzpT2YSTmdfmx2MRrkPCSoaAdXdESfqkcrv8CFPlmHTesWqjx7xB3/ElEnbwbCtXrobMJaYzQ7zG0KFKs2KdhIXOPek7r3UPL5XDoncFt087soKolJ0a3Da3wZbGUZBK5kkt7KD1T3OMEOB1fcHZgemTWB2IQi5mMwPSCloGxXExOUwlJXxzjvFPWcJBkTaatW6dQjjx4r1Gg1iwpPztmundGMlVIiHuhhY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -160,15 +160,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/24/25 07:59, Brendan Jackman wrote:
-> Why is this the scope of the first series? The objective here is to
-> reach a MVP of ASI that people can actually run, as soon as possible.
+> +#ifdef CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION
+> +#define ___GFP_SENSITIVE	BIT(___GFP_SENSITIVE_BIT)
+> +#else
+> +#define ___GFP_SENSITIVE 0
+> +#endif
 
-I had to ask ChatGPT what you meant by MVP. Minimum Viable Product?
+This is clearly one of the inflection points of the series.
 
-So this series just creates a new address space and then ensures that
-sensitive data is not mapped there? To me, that's a proof-of-concept,
-not a bit of valuable functionality that can be merged upstream.
+To go any farther with this approach, I think it's critical to get a few
+acks on this hunk specifically. Well, maybe not formal acked-by's, but
+at least _clear_ agreement from at least one of:
 
-I'm curious how far the first bit of functionality that would be useful
-to end users is from the end of this series.
+	MEMORY MANAGEMENT - PAGE ALLOCATOR
+	M:      Andrew Morton <akpm@linux-foundation.org>
+	M:      Vlastimil Babka <vbabka@suse.cz>
+
+... or this approach is dead in the water.
+
+
 
