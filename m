@@ -4,90 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63821CCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 10:48:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9561CAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 10:56:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C0C38E0007; Wed,  1 Oct 2025 06:48:23 -0400 (EDT)
+	id 3DD6E8E0003; Wed,  1 Oct 2025 06:56:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 749C78E0002; Wed,  1 Oct 2025 06:48:23 -0400 (EDT)
+	id 3B47F8E0002; Wed,  1 Oct 2025 06:56:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 638578E0007; Wed,  1 Oct 2025 06:48:23 -0400 (EDT)
+	id 2CA348E0003; Wed,  1 Oct 2025 06:56:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DDB88E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 06:48:23 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0164744C45
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 10:48:22 +0000 (UTC)
-X-FDA: 83949221286.10.57DE24D
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	by imf28.hostedemail.com (Postfix) with ESMTP id ED293C000A
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 10:48:20 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="CEz9D/G6";
-	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E7E38E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 06:56:15 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AE335BC688
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 10:56:14 +0000 (UTC)
+X-FDA: 83949241068.13.6F0A768
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 6F28EA000B
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 10:56:11 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=oasM6Diy;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pZNUj2vW;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=oasM6Diy;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pZNUj2vW;
+	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759315701;
+	s=arc-20220608; t=1759316171;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DQUujdosur72Brf3SU3nUTaWVwV5A6tLlSLe6abHjBM=;
-	b=m5ze97TqUY2mvDWegfw9p/EjHZdkzaJSxBG8Bv8m4uZTr0yeYl4MameyGWPZrxeyViW2WW
-	lR/mBc+D4wO4D55uBJOuQN/fSBfvgYPcayL2JTRX8fwvxY+2ZkAxcEz88vWLilRpN+X5n6
-	lj1m5lik+vTME7Wvv+7l430ShPo+qvc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759315701; a=rsa-sha256;
+	bh=DpePL461P7LsNb38EA5EBCrLN87PvsNeyDTc8FDW4ww=;
+	b=a0jEjkYaBzzhelwxK+4wkzd3BWUo5o0pn4mneELe5uXc7FcIl9C7Ix0S6kiCjVyNMA8ubC
+	RCgCy2Umk9FIiO7fJwV+OLb2lBo9rSX6MfPMG4q22q4m4W1UaztZ2z6uh0rdReuv2oe0At
+	0IqM9o6liTFomAAguxD8YbSktVgqyTs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759316171; a=rsa-sha256;
 	cv=none;
-	b=AhX4xCOGywqFnUOPEQhmKfC9cIE2DtyVbFthTU0acAe9u36AZGGOFFYP/atjXvsV+hpQSg
-	hfDN66QN0DV77ukJAGWO6j0GjYroJUUOgyABm8JgEecbPf792pJHkb1ztTeTshPyBs+7wm
-	hwXk7STjQF3Y+aGaZdWIm6gUuzCT0Cg=
+	b=tnob6io4cZnenznOXeaw0wUY+OGMQ2dHJG6HCjYUqRyx63bFosKxB2zIfbJ8s3wb0b5bLo
+	TgDEMt6XBGeiH7CWCWNdYZ2o+4AcyVFGQsCAcMZac8XT5OEJ8kfa397STEFe7jQiE9hdcV
+	PBge5Jg7SDzGE//LTG5yvIrec2STYQg=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="CEz9D/G6";
-	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <35c9a208-a7e6-41ab-aa3e-dbfdffaf5f44@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759315698;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	imf15.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=oasM6Diy;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pZNUj2vW;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=oasM6Diy;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pZNUj2vW;
+	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id D0AC922ACA;
+	Wed,  1 Oct 2025 10:56:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1759316169; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DQUujdosur72Brf3SU3nUTaWVwV5A6tLlSLe6abHjBM=;
-	b=CEz9D/G6FWs96Xm7MfIttlI2vT8a4OKRqIi+Z63tvSyfSJakEey4bMpwr/5BZiuUl3xD4o
-	+4zuHS711gNpBhLZEQ0tqOaVBeqXvlWf/BRBhQjMkPwtVovRtm6EJCnVeVYJb305EAbziK
-	FJR2NlqCa6FhRHe/URVjtXXm7qN8MNc=
-Date: Wed, 1 Oct 2025 18:48:07 +0800
+	bh=DpePL461P7LsNb38EA5EBCrLN87PvsNeyDTc8FDW4ww=;
+	b=oasM6DiyM2kyMCNTGIAYlVkqmuNLZi8GAubQecgC+xqhk20yQDljW8iTL9YJmLPw1O5OFW
+	z8pBByI1Z/DIrd9ncqSoxwme6OV4WBmIgVTl7F7AP+DSK6y2B/edVMEVU622UH7oq5awIt
+	fyWkwEDG/TxDXiK8ToWQ3gNCaXhEjks=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1759316169;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DpePL461P7LsNb38EA5EBCrLN87PvsNeyDTc8FDW4ww=;
+	b=pZNUj2vWzGza9ZshzzOh9mzR2No65ac/H9H9BRuOMF5WGnimvNxVZNMaGiBeOS2fsIe5HL
+	OdWIUP3n5cPmGOCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1759316169; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DpePL461P7LsNb38EA5EBCrLN87PvsNeyDTc8FDW4ww=;
+	b=oasM6DiyM2kyMCNTGIAYlVkqmuNLZi8GAubQecgC+xqhk20yQDljW8iTL9YJmLPw1O5OFW
+	z8pBByI1Z/DIrd9ncqSoxwme6OV4WBmIgVTl7F7AP+DSK6y2B/edVMEVU622UH7oq5awIt
+	fyWkwEDG/TxDXiK8ToWQ3gNCaXhEjks=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1759316169;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DpePL461P7LsNb38EA5EBCrLN87PvsNeyDTc8FDW4ww=;
+	b=pZNUj2vWzGza9ZshzzOh9mzR2No65ac/H9H9BRuOMF5WGnimvNxVZNMaGiBeOS2fsIe5HL
+	OdWIUP3n5cPmGOCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B9A6713A42;
+	Wed,  1 Oct 2025 10:56:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id l3XrLMkI3WgGYAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 01 Oct 2025 10:56:09 +0000
+Message-ID: <602271e2-86c9-4a63-845a-b84407d3aa51@suse.cz>
+Date: Wed, 1 Oct 2025 12:58:50 +0200
 MIME-Version: 1.0
-Subject: Re: [PATCH mm-new v2 1/1] mm/khugepaged: abort collapse scan on
- non-swap entries
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/3] mm/page_owner: add options 'print_handle' and
+ 'print_stack' for 'show_stacks'
+To: Michal Hocko <mhocko@suse.com>,
+ Mauricio Faria de Oliveira <mfo@igalia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>, Suren Baghdasaryan <surenb@google.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kernel-dev@igalia.com
+References: <20250924174023.261125-1-mfo@igalia.com>
+ <aNVpFn9W0jYYr9vs@tiehlicka> <4c2a467113efd085530eb055e4a4e1fe@igalia.com>
+ <aNY49sdoFVe03m_Y@tiehlicka> <d9af42d5cb9d427632087c5f51e50501@igalia.com>
+ <aNvjDsBuw3hqwy31@tiehlicka>
 Content-Language: en-US
-To: Dev Jain <dev.jain@arm.com>
-Cc: david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- baohua@kernel.org, baolin.wang@linux.alibaba.com, hughd@google.com,
- ioworker0@gmail.com, kirill@shutemov.name, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, mpenttil@redhat.com, npache@redhat.com,
- ryan.roberts@arm.com, ziy@nvidia.com, richard.weiyang@gmail.com,
- akpm@linux-foundation.org
-References: <20251001032251.85888-1-lance.yang@linux.dev>
- <a1df234c-d003-4696-8f1f-609a360fdeda@arm.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <a1df234c-d003-4696-8f1f-609a360fdeda@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: ED293C000A
-X-Stat-Signature: ke6gcc589wjbi95aatao1x3wo375fo8q
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <aNvjDsBuw3hqwy31@tiehlicka>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Stat-Signature: fyci1ckysumrpdkx1yzkxkmx5kmy7fyz
 X-Rspam-User: 
-X-HE-Tag: 1759315700-317061
-X-HE-Meta: U2FsdGVkX181wGq+sq5ck4NGoxuVZmwZf59g4IbigvxZTePotqlao9wjjIYA692at4oQyDIMgXxrEhQQa5yfxKTzfbjKXPy0CjdP6bkmJPJSruK9UEnjPBfYlInH9bnuH+fjQTOoWdN4di/H+DMUIxs2gfI9T5zMKBrqR8AFyMKyzGhN72yQsDl7Wf/WPV5SZYG8rjSpzSggztcwOr7rZhcNC9SJLSEirJ+1Uv6jf4x/TNOZz5zl2rWaGNF63fEhVTuLsN/KLlYK0w4Zjo2zdGxHv/BUVNUmX2uWEui90GRCQUaR6AcNjN24rZ/fYy6P5jNpdGdqsAp19rSuNMlMIKH+xz4CGTsUlJKPzlwEzfQ3FEcP8jIaRzEjdlEVMgPYsSFwlxBwJYYwih2SmYbYtWzL7PJamrAsEeUF6PUPvYzwipZnDICKZG111VSH4cLBl/M6X3sDqX45H8zQeBOZJMDOuFglmL7+9Gnr2vDNJ+mVBiDgqajYbPsIZmWA9XTu8q8v53jgyRVGBxyaMEQ/RIhWreKFHGCPWfsOt1sz+XOtS8Zxfv5gLx6k6KyiAFYIcQH7OsT6vuN8k84WP6cji+lRUnxndXb5Q9zuGCnZxnodnqvED0GPydSn930MIWfEuopJi0JXndESncy64Nzhx+eBtWyJwZluctQ3/J7+D9laeQzSwX6YlgFarW/yexyZv/Rpji0jmY5kw2YvpqcQ/kHjRsum+STM4YnUZUgko/0XRqYSlJHYFm+ciWKfJCHeWPESX3s5sqd4yE91e+zdvtk41YJf3gYQAKd7o7Sp2VIRFFokhNnMKOmfD1AMgq0jIl5midYWnYqVQDYZ4iTgYZVrzLKACkErSmhmvlRXPVca39DAlEt57dEXjBc3TtSx5lmuNSLTO56FYAYJtFcq2NzGXr+SOJ1U0d7wKspyNGeLkYt8jjwhBdcYVOpEbozJ0xhe57B5ywTeF8uBc4H
- TZZ/XsGI
- TgpbPQ53YrbUaPOSYX6Ky+ZboFD/X3M+5sgajg4NcgL7Cg6ckqZE4wbUha3vtqenIoO9KUkLtptKYRu1/uiYPdWA60qt+HFcKi6nOBSBEmy+7jnbPgsAVO9Z3yN78UR3Bpf6hQiEWRwnU1U+T6kvZ/fHxMRy4SsUz/kNidldSRrt16oOzp6KU80H+Ga3+8tPsjlU5vhN5OXihC3+EOuVm0pjkUJbBPPaYpBIiF6c+YN6sXFKYBnX1Bp0gljgKeL7nsjPiEfWgPKyotQAHguhP5JiXZKk5KEiL3MHYOUrgQGPs+D9TNz/uwUEPtO7oYlKB/s5uYYd1xRk9eLZXS93QBeh0pv0bSaVrb821iwQphhQ7xCKjrcXUuI7gKdI051TSvZ89wfHJZIPcJZs=
+X-Rspamd-Queue-Id: 6F28EA000B
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1759316171-729055
+X-HE-Meta: U2FsdGVkX1/2RzXwMETOtAK/GhZ9gku1/56PQgc9thkI38HlcZwMwQOMIKAVkD7VAl7eWCcRZinceXB4tVeafgyUYMuENwBOSnRH7/y2xEJPlaF50WmXoAA1T7wtA4rqE3aEp/fLAEetJ6Fj9Tr1RGwyZr4lm1GkkivDMbCICwZsDFaf2bRZbe2uAmV8Pme+uVNGyS4dA5f2b5fctGrkYDxXPVZMjQuvsdlQCvkGO9WOvzQF/4Ih41LkG8I8KYSKSNjzI1v691JXR8/Ig9heeZSHBjC7Uibn3/TNA9vcSnsR03/wTY51Sx1aXyPTjnx518jaL6PPxBru4ftWXtCbJX5xT4Y1s1kqift91p0YLJUP4Pxgfe3QVkj6I7CrQDBm5Ry5jjyzdmrf8qMJ37VCRS6lCVbN9MJzBuWifH4dFMeZ0Y2aM0qWHu1TwSMgihewPwGIm10CClLbmvvOPwh3NbBFFghUyPF55PBjA3NJq63abUfzEUfvmnuyPrH7SMmD0MOM3OE0EvGegDnzihFVBP80fW1nX6pYdm+W0jeuMBlU8WZnNtmUaxZywpVhTazYhfimWFHG+0SVbPb0xUGBMzo8+sEivEeioYTsagMWee+J0j+p7CZuuu2/OTcoXispqyCPIWXg384zNBa116sGoLeasIwINnjQSUjeZvpakW0pPlwWHa5ABPgFTyJgigwfFHZaj5byIKMvJxKN57VVaO7ur2vBKgmEQVML+1HpQ+Vj26d5Ts5YKlVEq2dDdMHZwatEIm0qDAHz6+Dcaj8AmOtUhUHs0OPyAQCfCuamAayQpdsZmoqeMFQviRMpN/7Irn6OfFR0c+lmoJxvT4eModK3vQao2rQoDU/snYAxx9XLzeNgf0ZAzIO08SYEN90bje0Xwk7kDx3Fa9FJWwsCpn/UcIyHb6bAVhrhAtxwGRVUTg+Z9hZy/k8Gb280mUf8b8amXt/JJyBHa6N1Pdo
+ DPgr5Gyo
+ pyJ9Lhhl/IU6GjLGybG1DsbkgUwq+fs+1pzBUaqoo0SKopdbASvli9uealXda62B7n4axxk8+XEZzhV9tg5RHVHBAmCPgr+q7CApt8RdMz1ph+F/i6lajRLEr5OSML1gAN0hnRlcRVwMq6+56mfvhlQyZX3cVWJtWtibdM/TbjA8FvKlqqPqIf07uVtzJSladW6K1a8PvCX6Z/0yFTSGplOgQ77fT3M0/arZYnsP4w2xKg6vjBqGgsYdTYeODjaFdi7kkydhGGqcnRuhW6a7ovGCvnL5yiEl1V29+8WgRegMkZs14DuUH+Fg1rcdwIJA0PlM5Vvgk5wzFpP4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,130 +146,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025/10/1 18:20, Dev Jain wrote:
-> 
-> On 01/10/25 8:52 am, Lance Yang wrote:
->> From: Lance Yang <lance.yang@linux.dev>
+On 9/30/25 4:02 PM, Michal Hocko wrote:
+> On Fri 26-09-25 13:47:15, Mauricio Faria de Oliveira wrote:
+>>> My main question is whether this should squashed into the existing file
+>>> with a rather strange semantic of controling the file content depending
+>>> on a different file content. Instead, would it make more sense to add
+>>> two more files, one to display your requested key:value data and another
+>>> to resolve key -> stack trace?
 >>
->> Currently, special non-swap entries (like migration, hwpoison, or PTE
->> markers) are not caught early in hpage_collapse_scan_pmd(), leading to
->> failures deep in the swap-in logic.
+>> I see your point. Either way works for me, honestly.
+>> Let me justify the current way, but it's certainly OK to change it, if
+>> that is preferred.
 >>
->> hpage_collapse_scan_pmd()
->>   `- collapse_huge_page()
->>       `- __collapse_huge_page_swapin() -> fails!
+>> The use of option files has precedents in page_owner itself
+>> (count_threshould) and ftrace (/sys/kernel/debug/trace/options/*).
 >>
->> As David suggested[1], this patch skips any such non-swap entries
->> early. If any one is found, the scan is aborted immediately with the
->> SCAN_PTE_NON_PRESENT result, as Lorenzo suggested[2], avoiding wasted
->> work.
+>> The use of output files needs more code/complexity for a similar result,
+>> AFAICT (I actually started it this way, but changed it to minimize
+>> changes). 
+>> The reason is debugfs_create_bool() is more specialized/simpler to
+>> handle than debugfs_create_file().
 >>
->> [1] https://lore.kernel.org/linux-mm/7840f68e-7580-42cb- 
->> a7c8-1ba64fd6df69@redhat.com
->> [2] https://lore.kernel.org/linux-mm/7df49fe7-c6b7-426a-8680- 
->> dcd55219c8bd@lucifer.local
+>> It ends up with a similar pattern in a common "__stack_print()" to avoid
+>> duplicate code (conditions on parameters to configure the output), and
+>> it adds:
+>> - 2 ops structs per file (file_operations and seq_operations, as in
+>> 'show_stacks'), for plumbing different behaviors down to different
+>> functions, to call the common function with different parameters.
+>> - It should be possible to reduce it with private fields (from
+>> debugfs_create_file(data) to seq_file.private), however, since
+>> seq_file.private is used (iterator in stack_start|next()), this needs
+>> more code: a new struct for the private field (to store the current
+>> iterator and add the new parameters).
 >>
->> Suggested-by: David Hildenbrand <david@redhat.com>
->> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->> ---
->> v1 -> v2:
->>   - Skip all non-present entries except swap entries (per David) thanks!
->>   - https://lore.kernel.org/linux-mm/20250924100207.28332-1- 
->> lance.yang@linux.dev/
+>> So, I went for the (IMHO) simpler and smaller implementation with option
+>> files instead of output files.
 >>
->>   mm/khugepaged.c | 32 ++++++++++++++++++--------------
->>   1 file changed, 18 insertions(+), 14 deletions(-)
->>
->> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> index 7ab2d1a42df3..d0957648db19 100644
->> --- a/mm/khugepaged.c
->> +++ b/mm/khugepaged.c
->> @@ -1284,7 +1284,23 @@ static int hpage_collapse_scan_pmd(struct 
->> mm_struct *mm,
->>       for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
->>            _pte++, addr += PAGE_SIZE) {
->>           pte_t pteval = ptep_get(_pte);
->> -        if (is_swap_pte(pteval)) {
->> +        if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
->> +            ++none_or_zero;
->> +            if (!userfaultfd_armed(vma) &&
->> +                (!cc->is_khugepaged ||
->> +                 none_or_zero <= khugepaged_max_ptes_none)) {
->> +                continue;
->> +            } else {
->> +                result = SCAN_EXCEED_NONE_PTE;
->> +                count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
->> +                goto out_unmap;
->> +            }
->> +        } else if (!pte_present(pteval)) {
+>> Please let me know which way is preferred, and I'll send v2 with that
+>> (in addition to the changelog suggestions).
 > 
-> If you are trying to merge this with the _isolate() conditions, we can do
-> a micro-optimization here - is_swap_pte, (pte_none && is_zero_pfn), and 
-> pte_uffd_wp
-> are disjoint conditions, so we can use if-else-if-else-if to write them.
+> Sure, I see. The main problem with the option file is that it is
+> inherently suited for a single consumer which is a hard assumption to
+> make at this stage. So I think it is worth having a separate 2 files
+> which provide the missing functionality.
 
-Ah, indeed, thanks!
+Agreed, we should prioritize a better userspace API over having simpler
+kernel implementation.
 
-I think it would fit better into the follow-up patch that unifies the
-scanning logic, and I'll make sure to include it there ;p
+Will count_threshold apply the same to the new file that prints only
+handles? I guess it will?
 
-> 
->> +            if (non_swap_entry(pte_to_swp_entry(pteval))) {
->> +                result = SCAN_PTE_NON_PRESENT;
->> +                goto out_unmap;
->> +            }
->> +
->>               ++unmapped;
->>               if (!cc->is_khugepaged ||
->>                   unmapped <= khugepaged_max_ptes_swap) {
->> @@ -1293,7 +1309,7 @@ static int hpage_collapse_scan_pmd(struct 
->> mm_struct *mm,
->>                    * enabled swap entries.  Please see
->>                    * comment below for pte_uffd_wp().
->>                    */
->> -                if (pte_swp_uffd_wp_any(pteval)) {
->> +                if (pte_swp_uffd_wp(pteval)) {
->>                       result = SCAN_PTE_UFFD_WP;
-> 
-> Could have mentioned in the changelog "while at it, convert 
-> pte_swp_uffd_wp_any to
-> pte_swp_uffd_wp since we are in the swap pte branch".
+Also the handles to stack translation file could perhaps support
+"seeking" to a specific handle if you're interested in only a few
+handles. Perhaps not necessary though if you plan to read it all just once.
 
-Right, that would have been clearer.
-
-I'll add that if a next version is needed :)
-
-> 
->>                       goto out_unmap;
->>                   }
->> @@ -1304,18 +1320,6 @@ static int hpage_collapse_scan_pmd(struct 
->> mm_struct *mm,
->>                   goto out_unmap;
->>               }
->>           }
->> -        if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
->> -            ++none_or_zero;
->> -            if (!userfaultfd_armed(vma) &&
->> -                (!cc->is_khugepaged ||
->> -                 none_or_zero <= khugepaged_max_ptes_none)) {
->> -                continue;
->> -            } else {
->> -                result = SCAN_EXCEED_NONE_PTE;
->> -                count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
->> -                goto out_unmap;
->> -            }
->> -        }
->>           if (pte_uffd_wp(pteval)) {
->>               /*
->>                * Don't collapse the page if any of the small
-> 
-> Otherwise LGTM
-> 
-> Reviewed-by: Dev Jain <dev.jain@arm.com>
-
-Cheers!
+> Thanks!
 
 
