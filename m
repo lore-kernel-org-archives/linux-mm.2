@@ -4,101 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1865BCCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 23:31:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBE84CAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 23:48:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1305F8E0005; Wed,  1 Oct 2025 19:31:45 -0400 (EDT)
+	id 069728E0005; Wed,  1 Oct 2025 19:48:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 107C38E0002; Wed,  1 Oct 2025 19:31:45 -0400 (EDT)
+	id 019D38E0002; Wed,  1 Oct 2025 19:48:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 044DF8E0005; Wed,  1 Oct 2025 19:31:45 -0400 (EDT)
+	id E99868E0005; Wed,  1 Oct 2025 19:48:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E75FA8E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 19:31:44 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8BD65584F1
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 23:31:44 +0000 (UTC)
-X-FDA: 83951144928.02.E90C72C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id F3D3940003
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 23:31:42 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t5OrcNnJ;
-	spf=pass (imf04.hostedemail.com: domain of conor@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=conor@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D83E18E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 19:48:32 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 78C89B58F5
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 23:48:32 +0000 (UTC)
+X-FDA: 83951187264.21.268DB7F
+Received: from smtp153-168.sina.com.cn (smtp153-168.sina.com.cn [61.135.153.168])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1E45B4000E
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 23:48:28 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=EuNYN5AE;
+	spf=pass (imf01.hostedemail.com: domain of hdanton@sina.com designates 61.135.153.168 as permitted sender) smtp.mailfrom=hdanton@sina.com;
+	dmarc=pass (policy=none) header.from=sina.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759361503;
+	s=arc-20220608; t=1759362510;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MTRNgFb/uXFYWdnXboNRWVcBZmcEx1q5hKN0lJrIGBI=;
-	b=CMNxJf1WaRDnDE3Bps1rsG0xb2tFuEsBGuUr3YhyyWcmOnul2F374zZg5O1DxPN13fZRvF
-	aeKNS5LgEu8AwTBEbqxADXSxzSWiYLW7I1VAMBZuyRhohLA7/GX5876/3vdaREfVpm4qra
-	vHvKZKIDKs89VY850yWm08tc/WMCLg4=
+	bh=yZQWondl07akNaSbykBePufOpb6YbJS3NJLe/Pq4A5Y=;
+	b=EJ43insmCLm/s38wPlppz7Pxp6njOVZXabF/dtDL7qdpJK1+DbrUjDTMBlKvB26PyMGjGl
+	Vs6wojqHk5EUUfm95hWdlv/Pvwgjsf7oGN1MROMTWmM+0bcnRKmAX7QCP/OM7ELanG7skG
+	RQrnOwSSe23n/MDe+ZpkcwNatnSiYKs=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t5OrcNnJ;
-	spf=pass (imf04.hostedemail.com: domain of conor@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=conor@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759361503; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=EuNYN5AE;
+	spf=pass (imf01.hostedemail.com: domain of hdanton@sina.com designates 61.135.153.168 as permitted sender) smtp.mailfrom=hdanton@sina.com;
+	dmarc=pass (policy=none) header.from=sina.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759362510; a=rsa-sha256;
 	cv=none;
-	b=JX5h+MMEdznr7P+zne4ErHrMGefM95vg7uzV+P/E1S5ruxupMAK1e2a2NJvOXZLr+dvLGx
-	fuYRZIVge9MaS1atknf6xQS7jrK8APvBGmPYi8hrzeHhcFXw9RswWnJF4dHpeRK/MBS3KR
-	+9LJ3YwFZ9+PVCgEnMTwzPo+ooQaf7w=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D9CB161D70;
-	Wed,  1 Oct 2025 23:31:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44208C4CEF1;
-	Wed,  1 Oct 2025 23:31:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759361501;
-	bh=OGlK5L3ggNTJFXop7r3keERa3EKrM29ZMElxPIYJMHQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t5OrcNnJRZl6gflPLlO7LLBZEmOdJ3NXgYQ6CdBf0v3BaHJ2P+n2N3PvXwMTW9gUr
-	 6EtiPCgl/JHF1O/UqUSAQpR+II3zPB4XAACMoDGzV1U309o90SzIVHUZyZGJePz0NZ
-	 thzUy7XLC2KYkrjk+yhbYcz06jFv01RJjA8bbjrhyofxtjg2PQP/vFv7ik+PoVR6ci
-	 fpouJohZ0OdV1MOe1uKinrV/n96glTjZou5zhNpgdGw8ha02geNWO/KBnM+N3U4xZp
-	 3xYqSDeuesYjm5rRBIRiY3w5+R5FiESXDdUAxJO61jjztSAgyVQ291xNYtqdYvWHex
-	 1kcqbBWu67kog==
-Date: Thu, 2 Oct 2025 00:31:34 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, james.morse@arm.com,
-	linux-cxl@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-mm@kvack.org, Will Deacon <will@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Yicong Yang <yangyicong@huawei.com>, linuxarm@huawei.com,
-	Yushan Wang <wangyushan12@huawei.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org, Andy Lutomirski <luto@kernel.org>
-Subject: Re: [PATCH v3 4/8] MAINTAINERS: Add Jonathan Cameron to drivers/cache
-Message-ID: <20251002-strainer-kindly-8e654868337a@spud>
-References: <20250820102950.175065-1-Jonathan.Cameron@huawei.com>
- <20250820102950.175065-5-Jonathan.Cameron@huawei.com>
+	b=kPt9sCwGh0ngaDg11bslDixMecCqgn78wT4x3sf7yWHH0l38a2mTMPdMmqkDEQmG6o7JDf
+	EyMMuy18QBUKlooKPHq6Kf7vIEufgLSQCBo+7+e8tXgBAR01gbmSvf56msxBwrX/6Y5uS5
+	vr3BgAv/k4mWO6EjD3S/Qa/ScYlWEtE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1759362509;
+	bh=yZQWondl07akNaSbykBePufOpb6YbJS3NJLe/Pq4A5Y=;
+	h=From:Subject:Date:Message-ID;
+	b=EuNYN5AE/2a5TMA05wqY2dltxyEJg0ixdz3cfAQuo9AvIT9LIpO0T/whKYDNQxrJb
+	 HPPbFSLZDF3o4iSrqmxZ9BKMR7D5D6Y7Qb/53TV7rbOpFh3Uu+CEAUf4KlPDhxv7zp
+	 ijAJPGghyZqG45vpeoLBtgDJt1oThcX5Xo9DZt4A=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([114.249.58.236])
+	by sina.com (10.54.253.33) with ESMTP
+	id 68DDBDC600002D15; Wed, 2 Oct 2025 07:48:24 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+X-SMAIL-MID: 5327776685137
+X-SMAIL-UIID: FC1CA3AB1CD149779B717C7E815BC1F3-20251002-074824-1
+From: Hillf Danton <hdanton@sina.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 2/4] mm/page_alloc: Perform appropriate batching in drain_pages_zone
+Date: Thu,  2 Oct 2025 07:48:13 +0800
+Message-ID: <20251001234814.7896-1-hdanton@sina.com>
+In-Reply-To: <20251001153717.2379348-1-joshua.hahnjy@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="O121PAwtnwfexBg5"
-Content-Disposition: inline
-In-Reply-To: <20250820102950.175065-5-Jonathan.Cameron@huawei.com>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1E45B4000E
+X-Rspamd-Server: rspam05
+X-Stat-Signature: f4tzzhusbdu7hsy6mx66hnrgn4pyquon
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: F3D3940003
-X-Stat-Signature: nzi7hrf58ut9rk15txoypkjmebbo849i
-X-HE-Tag: 1759361502-278218
-X-HE-Meta: U2FsdGVkX1+tV/OEGjeFMsAmt4FWFE+l12cs/dfuKgAPod2HiXWDIiboe90L4zmd8jfp7tleLIxeyHJX5YByEEACWMdKD4jvGujaEcKDYeuiA03Lil82z9ORUiIqlU4wEJlxDtcaBgdLkVHQ8Atb4Q11dTl7MDFGVVQhmZ3wkuze1SUPBGSz5FNi3fWJmPbF7S9RBQTQJcbMu/zC2ANVNT/44J341TZLHK4ad0pMn0kkxz5K3iOX1dXpfuLb5JU8vgswdiRUiVxpaJNnrGxfDlXPyNYw1tWBBSj1HHfyPSjrK7iDCt/K/rQoZX6gWpzDgVWs9z1R3uTx7npQRp4hz/O6wV3guoADGtDPCXsBzgkUv26eeNzFw9rgBkVXSCTjvpF3k08t4+phJNLS1Nn0BCB+VcQtbaOFTjHtfIlGe6SsXjFcjV/NIQMQdjZwPqTYuNtyNMOXPcsOIZQaIEzYR9yoYDb5abHvmZ36dVc7UduKAzrNh3D5xuWgkRJQTUK5TzrXcK2fkAMPGoN/BoSf0DH26QvfDKYU7JAdMHgKtqOsyi0U6ULntqHThEosJvcteSkNhaXWoGXusDKkcF4WkfPUNJ8GdXSZilOFIedmjIf4NnychGOdvnXdxQ5gkPlukWvLc6KnBmnjQdN4tsyOWmZgMWXTKrheJB6K0Wd3pImijTQP0Perjio2VpDjsNE00p+fjPiko5+UOUjOQTNN6XVWAwrNCLJCKXb+LEZwKRIMa//N86vWfEkoHiiNZePY8IZKkXIHsisU3BTTBtAOoI+nl3GYCQdVgBsE0aatWOIxrElDtS7DnasXsiWBUwjNCTNM8X4+rt0adNSUxwg3TUFg0vGnsglaEWVySg7y1jfwrUkHbBvTi6g00rYPQkQ9OFDeAxmN0TO8G8kHCtQxnNDAvHIg1/JxjBQBy41QRb8EGu78S0gE92CCWp7iuYch9OfOxpMZPyxYstq0fkA
- PxR7FDvy
- BJ9AMPlH+zpKwjLkvjlG7V5Fkgb/qSpxFwrQXBCOw0QHpS7YvC/J6UcaQFo596hYFMQX1sLjwQ4XxpKDlgituxipEVngGOgozY/sZK+r58lWf834n+zjscnlKV1jVo+o2FN7L7X6Jmhgoi/cLKBdjZF2bbkdvWeVvDPyQwWFGCQ8NLA1/x0rpSD95Hzbb0b1k/9T8QR1A6dtyQOsicEdnOoJk2lEeBhXLjbojuAwD+4dBEKS27+Sh0muYeBQQtlk0gQxLW/J9x7fH7iIp/7IMtHE5/DIbYAeuFcm1jT6Y9F5Bw1FX+PMpX+YXi9CMD4bhtZVMyxhPYj4su9rpwhDTV6VZcJoEX3poFpZn+zjgaBDqnSGEbwcmDipGQorHEh69vvJSJp/jZpWLwjlzEwrHNZgbEB/o4fVBpXccrLBq96I12g8isGHlTOovs1EflsoGRxH6gvMKuy6TZ1ScuvxleBBBoTTNxXRYqc1n+ysKH+ZhN4UheKkREEysHXNpohO/AxZa612LbgO3pug=
+X-HE-Tag: 1759362508-993783
+X-HE-Meta: U2FsdGVkX18/NBtw0PKFqD8Bpm5ImbdSODiRdz5nypAhrZqhIR6gJz7SVrpyZGN+e37TBmyYpLPmdqkiqB3OA4RoexwL94DvZsSSshaGCvBS8+mxaOOc32YdPIc1Z/4Ik4hj2Am3cU3GVlpjfS43Mh37LWVizCBHRqemLQs+c4ZG8SYvDKq+9Z5W4ttV+/G2k2cetkQgfuYuwqDOy2YQ2LDWivkaNrLfdo4889q+53bZE5MQlLrV4C/ns9wdgoHBqIAQuMZL8YK3u07kudBIIg7IJStvju+gv31qroxML1prgxuQU7/wPCO/4BDWoiqONcYC+KEX+2FnL0yb1WFxaY8ZNRQAgbIazogZioBeFpWtGeRIzeTbDnG60bZrlPp5PoZ/DPgJ89xZrUSqBNWk0W7AE29OBmK7fGnhz8az6fN2Sa+LxrYhneadLxK2E+FK+xpChvR7H9j0aQt/FrSr3qoTIcztJzy6WFtpvRsdfaD3y+UB+fTYbWpuhNsCJKx308w8Y5Uw782rVyOrITL7ZhzxY9NFMEJjHJVoVjgWyoKSzLpGppPs/v7+PWgpY8sqn3fKgpgXHr1DwfmF/L2hCpTsRqZVY0CEAzBxFjQpsh2m8B278gs6PQ5QOgiGeQ5LkHih+oMeCJIfY5allM69QRsYc7JYd7wgMNXBujMt1VxVzYaJz6nBCx24z1XQ/t5vt0NZpO3iGz0Wl7hcoDNZ7ScsCBtHqKltIKtajkneBqy2an5slaOhy5+MBgMGRp0hO8aJMyUmbPs87hzmQGSdIueHjnAX5Su3QZlO7pwapJeBbXMzv8mGixW+GaW2xG1ICzq2lVURlNFICe+T4EgYo9qSrNyYeUf0Y6IkD7p7tFCVBDYOo8pSMI0QlTr5RwhPa0M0/Gfy+iZtmUTI5Qb0GwlldRubUfRVTR4B7jkSFdcEUdwRfz1OrTsYK+ozAXscB6ODTdcnCgEjoX4FiL4
+ c9HVw0P0
+ PnUbiapavgKkEUlcpZ98pzP7GOlDAQZfXgbNWbNb+7w1S4UilAVjcyqzcQUCBTNVLCenkGGIolNo/gOQNYfom9+zGNljv8PAWh1aYcJ/VrzozqlGcFYX/6FXy/4ajgd0ZxYnbGvFJP5XU/6Zknv5V4r6XzUYdry2U4JEyZKawLRs8GhA18cj8NIx82mrCWgAB6Bxd6g6Q4sKNcpnKtQk8klxSuVUXJ8e3v40Y3i2NWZ5jnMMpc3+36ly8IuLZBMerpOxEyHVClR92cB6Z1RpQ3TGpo487Pm9xCvNduuykHKKKkpUfGm2HEl+CI6MbFMtpTvfxj5aJHTAQFT6YCsAgmtqjjxR9Do/GUGEqstvznn8zGmMgPd+kqT61Zp8G1qRPEKB5vTWjTDOFUYiSZQl5McNUp4GEWRswaboFMOWcjhD6YeWWGEWf/WgJOC6pkB6xqVXXlK6DlUdbjUpxzR9MFPteWg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,67 +92,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed,  1 Oct 2025 08:37:16 -0700 Joshua Hahn wrote:
+> 
+> While I definitely agree that spreading out 1TB across multiple NUMA nodes
+> is an option that should be considered, I am unsure if it makes sense to
+> dismiss this issue as simply a misconfiguration problem.
+> 
+> The reality is that these machines do exist, and we see zone lock contention
+> on these machines. You can also see that I ran performance evaluation tests
+> on relatively smaller machines (250G) and saw some performance gains.
+> 
+If NUMA node could not be an option, there is still much room in the zone types
+for adding new zones on top of the current pcp and zone mechanism to mitigate
+zone lock contention, see diff below. Then the issue falls in the config category.
 
---O121PAwtnwfexBg5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> The other point that I wanted to mention is that simply adding more NUMA
+> nodes is not always strictly beneficial; it changes how the scheduler
+> has to work, workloads would require more numa-aware tuning, etc.
 
-On Wed, Aug 20, 2025 at 11:29:46AM +0100, Jonathan Cameron wrote:
-> Seems unfair to inflict the cache-coherency drivers on Conor with out
-> also stepping up as a second maintainer for drivers/cache.
->=20
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
-> v3: Add lib/cache_maint.c and include/cache_coherency.h
->     Conor, do you mind those two being in this entry? Seems silly to spin
->     another MAINTAINERS entry for a few 10s of lines of simple code.
+Feel safe to sit back with Netflix on as PeterZ is taking care of NUMA nodes
+and eevdf, haha.
 
-Oh damn, I just found this randomly while wondering if this series was
-going ahead - you forgot to CC me here! I don't mind the extra bits, I
-think this makes sense, splitting it out would imply a different path
-for merging.
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-
-FWIW, I don't mind using some non-personal tree location for this, but
-that's something that can be done independently if it's needed.
-
-> ---
->  MAINTAINERS | 3 +++
->  1 file changed, 3 insertions(+)
->=20
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index fe168477caa4..039d10ded9e9 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -23967,10 +23967,13 @@ F:	drivers/staging/
-> =20
->  STANDALONE CACHE CONTROLLER DRIVERS
->  M:	Conor Dooley <conor@kernel.org>
-> +M:	Jonathan Cameron <jonathan.cameron@huawei.com>
->  S:	Maintained
->  T:	git https://git.kernel.org/pub/scm/linux/kernel/git/conor/linux.git/
->  F:	Documentation/devicetree/bindings/cache/
->  F:	drivers/cache
-> +F:	include/cache_coherency.h
-> +F:	lib/cache_maint.c
-> =20
->  STARFIRE/DURALAN NETWORK DRIVER
->  M:	Ion Badulescu <ionut@badula.org>
-> --=20
-> 2.48.1
->=20
-
---O121PAwtnwfexBg5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaN251gAKCRB4tDGHoIJi
-0toUAP0dOcmtbXnxZnNoXXCM7kD2Nsf3MpJIf+ZHnwEDwUNU6wEAvn+n1seE9hkC
-hVZLo8CCugs4ulT80RBNTP9Auu7ODw8=
-=p30I
------END PGP SIGNATURE-----
-
---O121PAwtnwfexBg5--
+--- x/include/linux/mmzone.h
++++ y/include/linux/mmzone.h
+@@ -779,6 +779,9 @@ enum zone_type {
+ #ifdef CONFIG_ZONE_DMA32
+ 	ZONE_DMA32,
+ #endif
++#ifdef CONFIG_ZONE_EXP
++	ZONE_EXP0, ZONE_EXP1, ZONE_EXP2, /* experiment */
++#endif
+ 	/*
+ 	 * Normal addressable memory is in ZONE_NORMAL. DMA operations can be
+ 	 * performed on pages in ZONE_NORMAL if the DMA devices support
 
