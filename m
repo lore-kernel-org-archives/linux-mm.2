@@ -4,98 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AD5ACCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 20:28:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32390CCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 20:30:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BD838E0007; Wed,  1 Oct 2025 16:28:21 -0400 (EDT)
+	id 8A30F8E000B; Wed,  1 Oct 2025 16:30:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3948D8E0003; Wed,  1 Oct 2025 16:28:21 -0400 (EDT)
+	id 82C448E0003; Wed,  1 Oct 2025 16:30:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2AA0F8E0007; Wed,  1 Oct 2025 16:28:21 -0400 (EDT)
+	id 6CDDD8E000B; Wed,  1 Oct 2025 16:30:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AB378E0003
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 16:28:21 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9207557265
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 20:28:20 +0000 (UTC)
-X-FDA: 83950682760.30.7C5725E
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 557538E0003
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 16:30:05 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E6428B77AB
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 20:30:04 +0000 (UTC)
+X-FDA: 83950687128.11.293E883
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E0AE840003
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 20:28:17 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=g3tcPX6p;
-	spf=pass (imf04.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9B5F310000B
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 20:30:02 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=OS7KGxbL;
+	spf=pass (imf14.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759350498;
+	s=arc-20220608; t=1759350602;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xlQ/eEuYLqdsF9tepaMbkPtMHgOZAonQwHnhaaYoZag=;
-	b=04WO3vZE8fvl1/8ak/WJUJx+jGC2b3rXmQrgq6oCQ3ktHMdInwS13jJAm4+oOFpwY617aS
-	6aT+SL7PeJQ5kEiAUduD6xTXhGMcpFRPtFjkNKOEPG17k9l40ljKmSeE9L2TeKxGsal3u5
-	l2B3cWPTAj82tpcWY7GCiicNxGDlwsE=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=g3tcPX6p;
-	spf=pass (imf04.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759350498; a=rsa-sha256;
+	bh=x+L3eqNwlE1XNXWCzM2qp6IsiU2Pj3HFoytcmsW8ZOc=;
+	b=D7IbZ3wN3lDcuDeyAsrx32UuvkBuLYSOmiTCeRfcXbTgQ/WpWEEdoHKgjYNJQmJN59wPOC
+	70SSJkNP2WUV4tS9VdG0AjaumhcWKWefEEzyMe/ioA1tBbzR3aSBNykk6BKtJKLLBUh0YR
+	bKl6Edkon4hdWZo2XtF0Uxk231z2ivQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759350602; a=rsa-sha256;
 	cv=none;
-	b=NU7dRuQ6vO30O2co9lBcMvb+SqxnZOxSFfr1TQfs0Ot04PbzgKFLJl6kM1pPLHixkuNSOz
-	VfDUvBuG2ZkR8KW19YyoJ1qopXrAquG1H2rM7MJy/9F98iWNgQF3f3gQA3+llPjoQwCFSb
-	cRBJgj46ssQI2xUmfP0URrcA+x70yCA=
+	b=jmg58J0i8S2mZmVdv/Qx/hNYXfIzWKoTHWMVO2HO9ZG4lYJl2JH28DJ2pkJJq1go3One6b
+	D3GEjsfYFZ/VQHaCGeaS52V0HsHPMyfYCOVbPO8W96lsN2CgT4BPKQ3HG9l7E4QyunJS/0
+	PEMTQtL8dmk3uxNiVVzARTDniK1FLfk=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=OS7KGxbL;
+	spf=pass (imf14.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759350498; x=1790886498;
+  t=1759350603; x=1790886603;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=LlcH7vyJmv35KEF+YeiG5f2vq9X7M5kexM/dDzucHhM=;
-  b=g3tcPX6pOAqpm3NA4CShc+1SsVonxpAn3xprKsWZ7D0VfUsgtXbEvbXK
-   x1iGNc/PhO8DCdbz3mixzF/+dVVcLhRO5jbTxVln7PYFYWyyEQ0S+cVgx
-   OXXTBE9KMjvPxbI0OlSaYL9pvav+6OXw2WU0qr4DLuZilZtYkCl3LEHOe
-   /M1ok9707rtXZ26kXcGcD1iBUkWw9eJpPZiVqLTHdIkS1p9bZCUL6R+ld
-   XQec/rsTMVixHUqkqzFt3R+scHPNq1iQiKaLTJCX7U/vWBhKAg9TtByL3
-   N78hJB0JcF39v2ZiDh/m9QB0wgbrgo4i+GFSq6nU6N1ydVc2BBhEG1Eu/
+  bh=x+L3eqNwlE1XNXWCzM2qp6IsiU2Pj3HFoytcmsW8ZOc=;
+  b=OS7KGxbLrsrrJA7nv7JAjs/ymUbsF/wIFohx0khCFcPTMVzvrUk2WAqB
+   0bWM+itA0EhqEeuEZg1Rh731DbxfKuuWCWOP0sQ/TaZjKgUjwuGRSIiqA
+   n5EejMO64Bu9e8FPM0KLMwWfl/JssQDkRRqHC2x99M0lAh79ASMqSN4qa
+   1poBBYCDASvrSzAdsFzK4NDZlPN4kAEt40lhyNZ+w2/jilvyKTt5VaptJ
+   J2u28uJwCzt/0sU07qGJIxnh4YWfg8wGfCMRLDInjHibSWj9S5Bud6LId
+   sMGhifO4afjEuyxjtIxAK5AdAOk9dmKjWkICVxA7UTQpT7tXmAYrbsTR8
    w==;
-X-CSE-ConnectionGUID: 3biK3G9nSFipVnputhj5oQ==
-X-CSE-MsgGUID: lILpO+RgQfOn2VNVWuYiNg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="87083796"
+X-CSE-ConnectionGUID: Qyj4HiStQze8nXKTGOS6ww==
+X-CSE-MsgGUID: 4R1WsAceTjKacjv4OxV9WA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="87083872"
 X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; 
-   d="scan'208";a="87083796"
+   d="scan'208";a="87083872"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 13:28:16 -0700
-X-CSE-ConnectionGUID: PQ55WtNDQVeh6uBnVQvKAQ==
-X-CSE-MsgGUID: M0TrMgDRQYu4klrdw2kHMA==
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 13:30:02 -0700
+X-CSE-ConnectionGUID: Fe+AqTixS3CpuPLRxgvT2g==
+X-CSE-MsgGUID: J38wk/e4QyiyD3tdpVOnNw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; 
-   d="scan'208";a="215998890"
+   d="scan'208";a="215999128"
 Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.109.221]) ([10.125.109.221])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 13:28:15 -0700
-Message-ID: <b0fb40f6-8baa-498f-bb88-50113cb80f53@intel.com>
-Date: Wed, 1 Oct 2025 13:28:14 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 13:30:01 -0700
+Message-ID: <7dd29a1e-cea8-4889-bff1-462ad00e25fb@intel.com>
+Date: Wed, 1 Oct 2025 13:30:00 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/21] x86/mm/asi: set up asi_nonsensitive_pgd
-To: Brendan Jackman <jackmanb@google.com>, Andy Lutomirski <luto@kernel.org>,
+Subject: Re: [PATCH 00/21] mm: ASI direct map management
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: Brendan Jackman <jackmanb@google.com>, Andy Lutomirski <luto@kernel.org>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  "Liam R. Howlett" <Liam.Howlett@oracle.com>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
  Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
  Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>
-Cc: peterz@infradead.org, bp@alien8.de, dave.hansen@linux.intel.com,
- mingo@redhat.com, tglx@linutronix.de, akpm@linux-foundation.org,
- david@redhat.com, derkling@google.com, junaids@google.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, reijiw@google.com,
- rientjes@google.com, rppt@kernel.org, vbabka@suse.cz, x86@kernel.org,
- yosry.ahmed@linux.dev
+ Roman Gushchin <roman.gushchin@linux.dev>, peterz@infradead.org,
+ bp@alien8.de, dave.hansen@linux.intel.com, mingo@redhat.com,
+ tglx@linutronix.de, akpm@linux-foundation.org, david@redhat.com,
+ derkling@google.com, junaids@google.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, reijiw@google.com, rientjes@google.com, rppt@kernel.org,
+ vbabka@suse.cz, x86@kernel.org
 References: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
- <20250924-b4-asi-page-alloc-v1-4-2d861768041f@google.com>
+ <726d6a45-d732-4c23-a7b7-766d6a62122e@intel.com>
+ <eajnyirurulezkgpqaonfqmh5ydi7ujzztgok2ab3fsumcmtwi@34ios2bpwxk5>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -141,15 +142,17 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20250924-b4-asi-page-alloc-v1-4-2d861768041f@google.com>
+In-Reply-To: <eajnyirurulezkgpqaonfqmh5ydi7ujzztgok2ab3fsumcmtwi@34ios2bpwxk5>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: mm9y1czau5ze76qf8xmkz9jj9sr9bw4j
+X-Rspamd-Queue-Id: 9B5F310000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: E0AE840003
-X-Stat-Signature: qz8h5qqqhhh93fdrz5nrwzagu61r9htx
-X-HE-Tag: 1759350497-540777
-X-HE-Meta: U2FsdGVkX18tVA/+XVznmwu8KqX+0Rsum1So1PAjEHBWTgG/fPyAefPIXdygp/LyPEmcxYKa8pTp0clxUryxOmS6MHjEhRfpC/ZaG0Ji9vlJfueTJO7LrV86/T/DaMCalRg08FrV+fwjGXxrfml9j9N+h3/z6VZARFPwt3dbaINysltjBwXeLTvho9D4kXTVJlIeoeDPdhixPmFKzUnRt0CbgGHKQ7qm97I8UiVolpF+yV5KcJbekpuPHlQaVr2Q/G6zX2JuTqwB8XNHwPYLFvUa9CLRUtEe92S4uFrStiuDnTM4xF0Q6PO/furom4Ys+UbhA5RIVqqZxEj2ZcDuQabOY4YZ+VPnOIxGdpmVT2zzOsf2YAt8YMIX+9zX2fIhTCt0S68L/JPYAs8y9ARZvZdMv1MoZV1RaqqsyoBcVKxBRR9QtZEZEhCnIVY6Y1GD00bqalYO8498BQ7y7KTLOj8SLs+xUq8k/nYoSh4BhldBTY7ubu9LE74IIFVTzY5xvNCYsR3qqTlxNG6bjQPU0w3mApvJSsVqa2tp3mTTAYzFAbtse4r4gYQclGqF7tAdjH/1FvIQ66ik+D6dd909TgNZoEtThbK9NE3LUTrpXjpICZE7g9AwtclKqUCJtQD0nDlKyfKLJp12zhmOimj3fdzDaQLYvdlyylR74UjBYSkgAd1k2ufLijBEC5LUvftKtC+DhxD4R73pG5EOVoKevo6ozxF9egXFIgEgrZwzVw4tylHyHjSz/FXXfn7P/y3HdwNXhN+vCLSoVyvo/kHU/eRiqVFryC74bLV2KdfzRqtWKzcPXsMBs2OzKoghokV69V51HA3wTSAn0dVlverPpwubY75fM5rXBTO2j54WkLZ6qNN8pG1Re4DxIzVD34+jwJlwerao20aTRS/q3PWbER/h/ypsB3bdCEtJERNMcD4=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1759350602-625023
+X-HE-Meta: U2FsdGVkX1/ywYmq7RdbjDeiLTX8V9Q65+QCdxQaGclGsSkLBD3082V9fw3fF7btpSWSSi792wfxfubYhqZhytcO7dRvM6kfnglme06Rt0SOigtJYFizckATghnR0rj0eqoCVb3uC9+2vH1JNzmGl9voIS0KoUc6QFJP5oWhIHp9Kg5FnhLNID1Eu2nWomYgSbsm4525KHqfZNUo4OPCJZLia6k7seo1/5m89bL1MsK0Y9xeTxVLSNq/VfsdrRAMxNnIo6aEZBY4gYmJ44f/J0Ki8cMA9wRQKtLccgW5lV4uleBGv8RYwQOvFQb/quj/JPzBo+zSIHDivx9IyACDBGVIdmiN2pYKxjQhNSW6rQv6E+A/EMNd0bklWJljHfKDROxczgc8sP5wGvVi8L9z5ZLb0ESybgfuX+xs0+wn94Qzu40Sgw5pAtsFVDymEXmuClP4gO4n70z/DutYstkN5zz96ZNcS0J0CqXzLrfqAQrZ+WHkwuNBVbgNKXHr4AeyxFU0fef0RetdmHDVuO5YC+8nTElaWVGz/HhUtRn79Z4srTXnYGd74NhEAHO0yDFYsAxPWvm3pJZ1VDj1dTozzp1qrTyqu0ADoIpPWbudJJ1HeDlzxBMFhTi+x7Jlow7bYRhgB3GSRZmo08oZyEg2yi9+UGO75oSbngt8TwZHn2eprVxiACRCIyBpXuemunqBqE5pRjmo5muKtNI+JYUpAYNXy6T3mgzgQyS71seVX1v+N81JcZTsrjkK6CH0rzcL2uDuYVJO6BjMXbUED7nxt8ZPV4nhrbpZGd/KWfBGZMAq9E6qyq1om189IbGIyygLNkEweOt/fq1cJTWAu4SIpd2TMNW4q44liF8a2HkOWI4adxkSJx04Vtoku/O+19bRrsopMJbRQTiXH96r2MTg9IYI4TiVBNOa3qKGffhAsZbNYT/cpYWBTKFok3P5JN0N/GwWYQX0D6SkfxwBU+N
+ n1nSQBmf
+ NduDwNNSb5Jq0YOwpFqRooJYXLrECG2pYYJdKaPLjv/E1Gg6NqRq3Nvtm4TzIEzJf/6hiYVbO9h70dgE5vVA58ZN8MzvsbpvW15Yp5jk4c1huXMZaZDm5LIG9yJIy79DtLhW9G5TaYJddgnSJ/53145T6lo9FhKx7vFx6K6qyxMJ77N+hvBb5KZeqYUIQxdkA6KVfQx75JfyAFaE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -158,89 +161,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/24/25 07:59, Brendan Jackman wrote:
-> Create the initial shared pagetable to hold all the mappings that will
-> be shared among ASI domains.
-> 
-> Mirror the physmap into the ASI pagetables, but with a maximum
-> granularity that's guaranteed to allow changing pageblock sensitivity
-> without having to allocate pagetables, and with everything as
-> non-present.
+On 10/1/25 13:22, Yosry Ahmed wrote:
+> On Wed, Oct 01, 2025 at 12:54:42PM -0700, Dave Hansen wrote:
+>> On 9/24/25 07:59, Brendan Jackman wrote:
+>>> As per [0] I think ASI is ready to start merging. This is the first
+>>> step. The scope of this series is: everything needed to set up the
+>>> direct map in the restricted address spaces.
+>> Brendan!
+>>
+>> Generally, we ask that patches get review tags before we consider them
+>> for being merged. Is there a reason this series doesn't need reviews
+>> before it gets merged?
+> I think Brendan just meant that this is not an RFC aimed at prompting
+> discussion anymore, these are fully functional patches aimed at being
+> merged after they are reviewed and iterated on accordingly.
 
-Could you also talk about what this granularity _actually_ is and why it
-has the property of never requiring page table alloc
+Just setting expectations ... I think Brendan has probably rewritten
+this two or three times. I suggest he's about halfway done; only two or
+three rewrites left. ;)
 
-...
-> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-> index e98e85cf15f42db669696ba8195d8fc633351b26..7e0471d46767c63ceade479ae0d1bf738f14904a 100644
-> --- a/arch/x86/mm/init_64.c
-> +++ b/arch/x86/mm/init_64.c
-> @@ -7,6 +7,7 @@
->   *  Copyright (C) 2002,2003 Andi Kleen <ak@suse.de>
->   */
->  
-> +#include <linux/asi.h>
->  #include <linux/signal.h>
->  #include <linux/sched.h>
->  #include <linux/kernel.h>
-> @@ -746,7 +747,8 @@ phys_pgd_init(pgd_t *pgd_page, unsigned long paddr_start, unsigned long paddr_en
->  {
->  	unsigned long vaddr, vaddr_start, vaddr_end, vaddr_next, paddr_last;
->  
-> -	*pgd_changed = false;
-> +	if (pgd_changed)
-> +		*pgd_changed = false;
-
-This 'pgd_changed' hunk isn't mentioned in the changelog.
-
-...
-> @@ -797,6 +800,24 @@ __kernel_physical_mapping_init(unsigned long paddr_start,
->  
->  	paddr_last = phys_pgd_init(init_mm.pgd, paddr_start, paddr_end, page_size_mask,
->  				   prot, init, &pgd_changed);
-> +
-> +	/*
-> +	 * Set up ASI's unrestricted physmap. This needs to mapped at minimum 2M
-> +	 * size so that regions can be mapped and unmapped at pageblock
-> +	 * granularity without requiring allocations.
-> +	 */
-
-This took me a minute to wrap my head around.
-
-Here, I think you're trying to convey that:
-
-  1. There's a higher-level design decision that all sensitivity will be
-     done at a 2M granularity. A 2MB physical region is either sensitive
-     or not.
-  2. Because of #1, 1GB mappings are not cool because splitting a 1GB
-     mapping into 2MB needs to allocate a page table page.
-  3. 4k mappings are OK because they can also have their permissions
-     changed at a 2MB granularity. It's just more laborious.
-
-The "minimum 2M size" comment really threw me off because that, to me,
-also includes 1G which is a no-no here.
-
-I also can't help but wonder if it would have been easier and more
-straightforward to just start this whole exercise at 4k: force all the
-ASI tables to be 4k. Then, later, add the 2MB support and tie to
-pageblocks on after.
-
-
-> +	if (asi_nonsensitive_pgd) {
-> +		/*
-> +		 * Since most memory is expected to end up sensitive, start with
-> +		 * everything unmapped in this pagetable.
-> +		 */
-> +		pgprot_t prot_np = __pgprot(pgprot_val(prot) & ~_PAGE_PRESENT);
-> +
-> +		VM_BUG_ON((PAGE_SHIFT + pageblock_order) < page_level_shift(PG_LEVEL_2M));
-> +		phys_pgd_init(asi_nonsensitive_pgd, paddr_start, paddr_end, 1 << PG_LEVEL_2M,
-> +			      prot_np, init, NULL);
-> +	}
-
-I'm also kinda wondering what the purpose is of having a whole page
-table full of !_PAGE_PRESENT entries. It would be nice to know how this
-eventually gets turned into something useful.
-
-
+But, seriously, this _is_ a big deal. It's not going to be something
+that gets a few tags slapped on it and gets merged. At least that's not
+how I expect it to go.
 
