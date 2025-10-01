@@ -4,108 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CD01CCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 09:04:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E358CCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 09:04:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F37298E001F; Wed,  1 Oct 2025 05:04:35 -0400 (EDT)
+	id ACA4A8E0021; Wed,  1 Oct 2025 05:04:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC0408E001D; Wed,  1 Oct 2025 05:04:35 -0400 (EDT)
+	id A7A878E001D; Wed,  1 Oct 2025 05:04:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAF098E001F; Wed,  1 Oct 2025 05:04:35 -0400 (EDT)
+	id 969F78E0021; Wed,  1 Oct 2025 05:04:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C26E68E001D
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 05:04:35 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 72EFB1407CF
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 09:04:35 +0000 (UTC)
-X-FDA: 83948959710.28.6EA4DD4
-Received: from pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com [34.218.115.239])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 504B71C0018
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 09:04:33 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=gM4RFjSk;
-	spf=pass (imf20.hostedemail.com: domain of "prvs=3627e3e53=acsjakub@amazon.de" designates 34.218.115.239 as permitted sender) smtp.mailfrom="prvs=3627e3e53=acsjakub@amazon.de";
-	dmarc=pass (policy=quarantine) header.from=amazon.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 829678E001D
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 05:04:42 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1EF835BE09
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 09:04:42 +0000 (UTC)
+X-FDA: 83948960004.13.6A11B27
+Received: from mail-24418.protonmail.ch (mail-24418.protonmail.ch [109.224.244.18])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 39E4AA0008
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 09:04:39 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=rKJ0zo80;
+	spf=pass (imf15.hostedemail.com: domain of oliver.mangold@pm.me designates 109.224.244.18 as permitted sender) smtp.mailfrom=oliver.mangold@pm.me;
+	dmarc=pass (policy=quarantine) header.from=pm.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759309473;
+	s=arc-20220608; t=1759309480;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XbjLxHPX3pHS5RC1/ropqG4Thiyj9sqaDWC+ZZ01EUg=;
-	b=3WTsI9/Eul44wBeMUmp/skF+m+0AA0H2eQ7kqRqIfxX2zKxEolYv7DGQMbhDSumFAe63uQ
-	1rA0l7xT9uOsoIIAwzpVOSOvIBp3efk+RQlMr+PbjqIBNlrKM+7la2166WBs/O0uaDyTQm
-	wg8Besx+nZ7oW/LDp6YLRZYq3A37kq0=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=gM4RFjSk;
-	spf=pass (imf20.hostedemail.com: domain of "prvs=3627e3e53=acsjakub@amazon.de" designates 34.218.115.239 as permitted sender) smtp.mailfrom="prvs=3627e3e53=acsjakub@amazon.de";
-	dmarc=pass (policy=quarantine) header.from=amazon.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759309473; a=rsa-sha256;
+	bh=yp/Ky9qZB+Lu2rfaJfq2n9npeG17/rIKND2/1FJbPUU=;
+	b=vdYxVPVlkwfUtvRGZaxGrisOajZNWq4MvEqJ70XHTwc/xDp90tAm/ERfKrtF0ShS7IkoIG
+	VNVYKmC8A/a6BuUWffA4UoFEjNNtzu0yXJJI1AAmF7VVjFIbfFNfPqH5lBeJosECOVfMdr
+	DOmmUQDKCcNL5voQevq3Q+yuEwsNSjw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759309480; a=rsa-sha256;
 	cv=none;
-	b=1RXrEHnBjNPI5vM3eV137/5zVKDfra9uXGueYRSXiG8DFSDBSXM4a+TSlM/3Q++ceZPMaK
-	dEgV/IYoGyndc5qhSFq432RJlta0YxU63LJCAEJ7QSQIgsMrte55DkOlbF1IOR1WtGOcqT
-	T6eEzls/5GoFCsi0EWTKxUd4iFJqPzk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1759309473; x=1790845473;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=XbjLxHPX3pHS5RC1/ropqG4Thiyj9sqaDWC+ZZ01EUg=;
-  b=gM4RFjSkRrj7sVN+CMULl9/TVLzT70wX98RhGbc/5zDpalgWcwQLTJFX
-   HtDrkrLzrikVjOCqXtbhR+Gjw2IPxMOUWgSQYqrSThEm1JX3qPc2dsDw4
-   wky8Dj+m+KtoSDXZ2UINUj1ElLy1jUFocV4D48Sh24jDCWseO4OkQ5+Mb
-   YkeCCsIXi0ZrO/aP0kaDTSyu+cbZJR8RJ1q4BZhMEI4ENtE5xKfPILkJ6
-   NyWz1p7s+nq4Plv70wlnN/2aOoFN+E2D+Ne2Tk6VKEPy2sG1NeWWm1lmE
-   tQbVex3Ver52w9jzAWjbfyaj1U3g+GlGv61zjF/EHTMs+XgALyHEfV9Es
-   Q==;
-X-CSE-ConnectionGUID: qzZB1Dj7RgaxXW/DXso8Yw==
-X-CSE-MsgGUID: zU1wXzfmR4CAaKr5nq7jOg==
-X-IronPort-AV: E=Sophos;i="6.18,306,1751241600"; 
-   d="scan'208";a="3877563"
-Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
-  by internal-pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 09:04:30 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [10.0.7.35:19205]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.36.10:2525] with esmtp (Farcaster)
- id 2a1fecd2-3ff4-4d02-9405-1e1b0aa88cbf; Wed, 1 Oct 2025 09:04:30 +0000 (UTC)
-X-Farcaster-Flow-ID: 2a1fecd2-3ff4-4d02-9405-1e1b0aa88cbf
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Wed, 1 Oct 2025 09:04:30 +0000
-Received: from dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com
- (172.19.75.107) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Wed, 1 Oct 2025
- 09:04:28 +0000
-From: Jakub Acs <acsjakub@amazon.de>
-To: <linux-mm@kvack.org>
-CC: <acsjakub@amazon.de>, <akpm@linux-foundation.org>, <david@redhat.com>,
-	<xu.xin16@zte.com.cn>, <chengming.zhou@linux.dev>, <peterx@redhat.com>,
-	<axelrasmussen@google.com>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3 2/2] mm: redefine VM_* flag constants with BIT()
-Date: Wed, 1 Oct 2025 09:03:53 +0000
-Message-ID: <20251001090353.57523-3-acsjakub@amazon.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251001090353.57523-1-acsjakub@amazon.de>
-References: <20251001090353.57523-1-acsjakub@amazon.de>
+	b=GwebHeMOc4KNxL2lgJNbGBnvDaMynwF7eG7BIf9uS8L89LJCTKyCCwndnXHhV1g0o7X1iK
+	9Z9SrOVhinU+0r0FjdDg1EKES6IpDgTMYcent+51plwmvcps9dJ13e69qfwbPj0sCiu4nZ
+	9AwXGtmhRqwKSIqb2xno93NwO6rlKug=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=rKJ0zo80;
+	spf=pass (imf15.hostedemail.com: domain of oliver.mangold@pm.me designates 109.224.244.18 as permitted sender) smtp.mailfrom=oliver.mangold@pm.me;
+	dmarc=pass (policy=quarantine) header.from=pm.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1759309474; x=1759568674;
+	bh=yp/Ky9qZB+Lu2rfaJfq2n9npeG17/rIKND2/1FJbPUU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=rKJ0zo808K9+5xv+W+fbxwG7qVsIwuWt2mbyuJGFLiXXCoVZoeZVu3SLq6+wnhkS6
+	 9zijPkbcHDElLMm9/Bee795eT9ukcv732jQW0DzyAcKr2VRZ1+2dtJnGpOLuFZrPqN
+	 aPNucRfz0HQpb322WmUDY63i/Vgx6HMh7ngXDaU0QPiQuiwBDxzSCL6yPIZAFw1GeA
+	 nDhkHM9HYJpYUij3nie0NTuQ1iweAHh3D6/dswrnS/XIriKSAwKVWOynLjJPuGuqOd
+	 x3yAkCadMoBGsr2QK3jsBXIvGOJqiwutO+rPE/LLNa83zA4uTWVa6Oy2Ri/h1QqHs3
+	 QzBkgjOw5SMzw==
+Date: Wed, 01 Oct 2025 09:04:27 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Viresh Kumar
+	<vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Asahi Lina <lina+kernel@asahilina.net>
+From: Oliver Mangold <oliver.mangold@pm.me>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, Oliver Mangold <oliver.mangold@pm.me>
+Subject: [PATCH v12 4/4] rust: Add `OwnableRefCounted`
+Message-ID: <20251001-unique-ref-v12-4-fa5c31f0c0c4@pm.me>
+In-Reply-To: <20251001-unique-ref-v12-0-fa5c31f0c0c4@pm.me>
+References: <20251001-unique-ref-v12-0-fa5c31f0c0c4@pm.me>
+Feedback-ID: 31808448:user:proton
+X-Pm-Message-ID: 273bbd2e0c664caf1e93c782e9d3dde288208540
 MIME-Version: 1.0
-X-Originating-IP: [172.19.75.107]
-X-ClientProxiedBy: EX19D038UWC002.ant.amazon.com (10.13.139.238) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: u3584s3rdmrotfk179wgtmpeosqaqz1a
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 504B71C0018
-X-Stat-Signature: tgyi1b48emyq31o8gdjtu4qc8qhbsm36
-X-HE-Tag: 1759309473-636812
-X-HE-Meta: U2FsdGVkX1/6DQsOPA2JO4aWpPVKkPdzAN1MaOdc/ZvcBi+gP5G3JSBsc0abLYPgaNFiWLGhRAQOqaougAfuZUT0VrmV8OoeAuSnU4IRubtbfpHAp05kkwmndbyzUejLYolNvhyz8Y7810y6Kxcx/mh4s8LOFKcsL800lAXe8yOijGd0IG4vtoMu7aGoSvcugH9jalFAknatjZ7S9HIYvvNENtX8xORo47NjhkzdDdbYTUIPeWnGLk8iawRN7YyBa8bvneYtwT5RlHKmdwXGRwPNG31rb10/Xp8KwlinUkp5SS/IOgPk6PIAbgsPXxUg4/BK9JWiMr29yQBSbETCM5ULiOBJO3DkuOezMdOeH3LVqIsHKnH4AN+zKYPjv+WQiD2t34oDSQPIddYhWdBv4kGfgeJLqMUx8JpA/ldDC40pzdU2mUNspL/zXV7LW2Uzipt3cWCRl0EP36HIsYhHzdojbegZMEJhcKDcBsK9JYOuxoeuaGp757anz03f8tb7QR1Tgvw4FVRq90bikkQ1dbIMTmxgykPaxg+WUI0uzkplHE7SgH/jKsTt27LbqCksFn5zcRg+1YmYdfMcLO+DHRj/1mVOsW0EN8xod7TA5r9vYLtvmusgMbKaTJFDV5I7LAdL5VWUZIo6RuNE0KV8lmrPkYMgTEPYHiMt/dAe66uAUl8FKMWi4ET8hPTURSjK1IrUDjDHVpQ0El+PmSWc4/NquebzvLlQcVU6nWaOPhNL9y+CICuV8A8Mv5BLe7GZQInLiPP+PL3RTd90ZQGyPhH9dRn17CRLWhnmWUs7WT3P6cRU4NQwWOyrcBnsrw4ZyHnsV5u6g7YiPFBGXyCfwezJX7xIgpsUPYTVUs+55bbsBMjy9bT0M/TU7GQTrwE9e6atzA5V7LWRGessDIA5i6hnp0+OySAg57Pl3HPwOWXiQ0bn/0LDBYMuBQeffYe6aBuYgUjhWyZGbIn1eSu
- IBNQPQ1h
- EIgWtrVsQc/3102tWfeocpGe/wFDfuvFa4fkOLDFnJ9dSgi+WGKqwsasiWktGXVejgECFvRVEtwoVWEA8hFY9h3GbR31/6pBu2IJBoXTWCpy/BJAZxLxGhkZdFM8gHOVCYocmRJhRHKAwzIA+bayqiwr12DjN6LsvopTdXbTmFQ6s9tnMl0qJHgXvZLTHxZuRkkXuZYisbzBMWH0B4UAG9tbAVEaIvgFAgcOspUQOSNjQh+UGMY8lXJJUl/vTFEnDIcJI6rQluhsatt2eNsD7ddzS3uy1gEt2PHkYwn9NftJ1WRcqEhGJj7TNbYi6MrODOSZplPNdhjlgzMagVluZbxiCKa8egN6nUfDWG90UvX6ueoE6qlAIQjQ60KwKJPwvZOsNFQ6oYHqjmZmanOXOG6dmhCAoHWLPecKVXlrn9fdYQBALH+m7MZYDsp8COT4TXGakpIGIyPZYaf6e9SGIXzEYzgm5Q6CiEqQdOGgpIN5TvjGLOGQcwAvBtfV50YNGgWycQFqmN9LHALtm1yHWDKxxGX58k7Ax212A4C9w4H6JYaPDDj5UsFxtPzyKlrIO1pmwPtrdJk3KPiLu/dXzuzf+V1jFVs07DGIiw+qcyxIH6AgNVaQHdTrxhVanW1lhco2KFXb3mBTZ7pQHR8K2yANq75jKksQhn0ye/QuGjaaEtjG9Q73TVwLFkJTZr1UsAgMwxzpF1/2xvIQG5mc1nt9DnqM1vvAzlKj4cX1q7My+euI0Eo4fYo2lIOHQ8eC9S+mxABn+dpSUgDEj85k+EGGZEdWMPenLhJGez4CmKfi/jyHhOTqYSIqnHA==
+X-Rspamd-Queue-Id: 39E4AA0008
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1759309479-385642
+X-HE-Meta: U2FsdGVkX1+GJIkfb57IvecU17ZoUf42LcYWKT6bmKLIi7ZZPdjfQGVH4Ohb17UPKNXM4qp/qUfnAWS3ZMVndHuR/pSpuJTltTGMNEA8Is09BgPR0Jmzvzts9TpH8xEji3MYiwe06cHLYHSgTuKM/LKp6eG3L0GTsCPtPMhsyf85KKADQ3uWbbkS/tkN0KsSgIHvq1IQk9CNyA7eYARZzVoh0NwzEDgLS/BRnYAkRonSP3DObVJ9JxUbvn0rsNaXRaxJSBNp0yRiwyEogvOfDLR8EZYN7eXvLr1ITn/Gkm8zb8hZp9tiZEgx3y12rOoIxmpf3euOW2kC3uRfybolaEYsbXwMaUJUNIO9vVnzds67SAafx9bWrAzTwvi3BWjWP+PkdnlUwt8LAiTCVttdj0yyNEW4gSxaGamyfw9HFVutEqoJ4gHGO3/MuBQlSMpPLvAX2oiM7D725hkDM9raNmfwrVLzCAgm9bBHwMORHsGi2dN6Uqj3hTkIki5uDa0CB5UWnCaUAbIQdamaLqStKMEo0FKI+vQHGa+Nq7Y9yN6C3KY2Rjsp4alp16JIG+sSqauuyiIR+t4GIjUUdR5tYtW38l2A+VE3cehWH+eE+Onupi3ydXrQMaFkp54bEkoRGvauTKesQ8XLCAthsEmZ50ZkN8TVN0S8eIewzzLPmkiIN/YElBiG26rJlW5TJHvl8shtdQ7yzOtOskGWCUfBcD2z2x9kC+Zr8FaqJEmdc43gTxUo8JXx9IT7+01gRq3jRN2wxIMZxsjQaWOx0DsqvneYq0cke4mlDNl6hdjAaJAnAfKmvz7KE2nrIUWquFtAysMQvbaUwA7l0H8TBoDRzNDwTQe39eqWiDQzr+YsF01qAtEtOreLVgDr1Ghb0TmdmMCWuV8Vfl+ODNI00Vi0t+cUTk1N2EhuJFuTNpE9tQU7Wg7hPu3iqooDqvDgJ1KEv+70QcxMMo3w2xz2m2a
+ 53D0eOXl
+ SErNqhMBKgybOO27xgXqo/jzyQ0Fdk2SS4zFF0peQx/RCQXnk3HRs0lbTogyMFlVPNdjEBU9glnrRG4g6EPThflnAN1R9tyGVz5CvWuPJdOOywFbUIP/ZYme5dhxS4Gg+vmGPiD/JfGts7H0dq2CmE4fB62CAHoROu757vOdzDB8ULzLfx2A/jQSzsY7QQ6kSA7CSI8TIPsjrKvBXe2xueeX68HEXGUwoX9NoN2+Sus8vRBklssGZDfxmo/rbJZEc15fAAWtq5Xz78U6BfD+9qKxstPQc4gP9Ha9+CTF/rjV1qmMrB4nBpx8Cb4VmyYK040KJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,134 +91,250 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Make VM_* flag constant definitions consistent - unify all to use BIT()
-macro.
+Types implementing one of these traits can safely convert between an
+`ARef<T>` and an `Owned<T>`.
 
-This is a separete follow-up fix after we changed VM_MERGEABLE
-separately to isolate bugfix for easier backporting. As suggested by
-David in [1]. 
+This is useful for types which generally are accessed through an `ARef`
+but have methods which can only safely be called when the reference is
+unique, like e.g. `block::mq::Request::end_ok()`.
 
-[1]: https://lore.kernel.org/all/85f852f9-8577-4230-adc7-c52e7f479454@redhat.com/
-
-Signed-off-by: Jakub Acs <acsjakub@amazon.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Xu Xin <xu.xin16@zte.com.cn>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- include/linux/mm.h | 66 +++++++++++++++++++++++-----------------------
- 1 file changed, 33 insertions(+), 33 deletions(-)
+ rust/kernel/owned.rs     | 125 +++++++++++++++++++++++++++++++++++++++++++=
++++-
+ rust/kernel/sync/aref.rs |  11 ++++-
+ rust/kernel/types.rs     |   2 +-
+ 3 files changed, 135 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index c6794d0e24eb..88cab3d7eea2 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -246,56 +246,56 @@ extern unsigned int kobjsize(const void *objp);
-  * vm_flags in vm_area_struct, see mm_types.h.
-  * When changing, update also include/trace/events/mmflags.h
-  */
--#define VM_NONE		0x00000000
-+#define VM_NONE		0
- 
--#define VM_READ		0x00000001	/* currently active flags */
--#define VM_WRITE	0x00000002
--#define VM_EXEC		0x00000004
--#define VM_SHARED	0x00000008
-+#define VM_READ		BIT(0)		/* currently active flags */
-+#define VM_WRITE	BIT(1)
-+#define VM_EXEC		BIT(2)
-+#define VM_SHARED	BIT(3)
- 
- /* mprotect() hardcodes VM_MAYREAD >> 4 == VM_READ, and so for r/w/x bits. */
--#define VM_MAYREAD	0x00000010	/* limits for mprotect() etc */
--#define VM_MAYWRITE	0x00000020
--#define VM_MAYEXEC	0x00000040
--#define VM_MAYSHARE	0x00000080
-+#define VM_MAYREAD	BIT(4)		/* limits for mprotect() etc */
-+#define VM_MAYWRITE	BIT(5)
-+#define VM_MAYEXEC	BIT(6)
-+#define VM_MAYSHARE	BIT(7)
- 
--#define VM_GROWSDOWN	0x00000100	/* general info on the segment */
-+#define VM_GROWSDOWN	BIT(8)		/* general info on the segment */
- #ifdef CONFIG_MMU
--#define VM_UFFD_MISSING	0x00000200	/* missing pages tracking */
-+#define VM_UFFD_MISSING	BIT(9)		/* missing pages tracking */
- #else /* CONFIG_MMU */
--#define VM_MAYOVERLAY	0x00000200	/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
-+#define VM_MAYOVERLAY	BIT(10)		/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
- #define VM_UFFD_MISSING	0
- #endif /* CONFIG_MMU */
--#define VM_PFNMAP	0x00000400	/* Page-ranges managed without "struct page", just pure PFN */
--#define VM_UFFD_WP	0x00001000	/* wrprotect pages tracking */
-+#define VM_PFNMAP	BIT(11)		/* Page-ranges managed without "struct page", just pure PFN */
-+#define VM_UFFD_WP	BIT(12)		/* wrprotect pages tracking */
- 
--#define VM_LOCKED	0x00002000
--#define VM_IO           0x00004000	/* Memory mapped I/O or similar */
-+#define VM_LOCKED	BIT(13)
-+#define VM_IO           BIT(14)		/* Memory mapped I/O or similar */
- 
- 					/* Used by sys_madvise() */
--#define VM_SEQ_READ	0x00008000	/* App will access data sequentially */
--#define VM_RAND_READ	0x00010000	/* App will not benefit from clustered reads */
--
--#define VM_DONTCOPY	0x00020000      /* Do not copy this vma on fork */
--#define VM_DONTEXPAND	0x00040000	/* Cannot expand with mremap() */
--#define VM_LOCKONFAULT	0x00080000	/* Lock the pages covered when they are faulted in */
--#define VM_ACCOUNT	0x00100000	/* Is a VM accounted object */
--#define VM_NORESERVE	0x00200000	/* should the VM suppress accounting */
--#define VM_HUGETLB	0x00400000	/* Huge TLB Page VM */
--#define VM_SYNC		0x00800000	/* Synchronous page faults */
--#define VM_ARCH_1	0x01000000	/* Architecture-specific flag */
--#define VM_WIPEONFORK	0x02000000	/* Wipe VMA contents in child. */
--#define VM_DONTDUMP	0x04000000	/* Do not include in the core dump */
-+#define VM_SEQ_READ	BIT(15)		/* App will access data sequentially */
-+#define VM_RAND_READ	BIT(16)		/* App will not benefit from clustered reads */
+diff --git a/rust/kernel/owned.rs b/rust/kernel/owned.rs
+index 466b7ecda6d9f4f54852ca0b59b36ac882ab3f47..ad38a4d378fa8fcf934f1c41cd9=
+02d79a2c8baa5 100644
+--- a/rust/kernel/owned.rs
++++ b/rust/kernel/owned.rs
+@@ -3,6 +3,7 @@
+ //! Unique reference types for objects with custom destructors. They shoul=
+d be used for C-allocated
+ //! objects which by API-contract are owned by Rust, but need to be freed =
+through the C API.
+=20
++use crate::sync::aref::{ARef, RefCounted};
+ use core::{
+     marker::PhantomData,
+     mem::ManuallyDrop,
+@@ -19,7 +20,8 @@
+ ///
+ /// Note: The underlying object is not required to provide internal refere=
+nce counting, because it
+ /// represents a unique, owned reference. If reference counting (on the Ru=
+st side) is required,
+-/// [`RefCounted`](crate::types::RefCounted) should be implemented.
++/// [`RefCounted`] should be implemented. [`OwnableRefCounted`] should be =
+implemented if conversion
++/// between unique and shared (reference counted) ownership is needed.
+ ///
+ /// # Safety
+ ///
+@@ -193,3 +195,124 @@ fn drop(&mut self) {
+         unsafe { T::release(self.ptr) };
+     }
+ }
 +
-+#define VM_DONTCOPY	BIT(17)		/* Do not copy this vma on fork */
-+#define VM_DONTEXPAND	BIT(18)		/* Cannot expand with mremap() */
-+#define VM_LOCKONFAULT	BIT(19)		/* Lock the pages covered when they are faulted in */
-+#define VM_ACCOUNT	BIT(20)		/* Is a VM accounted object */
-+#define VM_NORESERVE	BIT(21)		/* should the VM suppress accounting */
-+#define VM_HUGETLB	BIT(22)		/* Huge TLB Page VM */
-+#define VM_SYNC		BIT(23)		/* Synchronous page faults */
-+#define VM_ARCH_1	BIT(24)		/* Architecture-specific flag */
-+#define VM_WIPEONFORK	BIT(25)		/* Wipe VMA contents in child. */
-+#define VM_DONTDUMP	BIT(26)		/* Do not include in the core dump */
- 
- #ifdef CONFIG_MEM_SOFT_DIRTY
--# define VM_SOFTDIRTY	0x08000000	/* Not soft dirty clean area */
-+# define VM_SOFTDIRTY	BIT(27)		/* Not soft dirty clean area */
- #else
- # define VM_SOFTDIRTY	0
- #endif
- 
--#define VM_MIXEDMAP	0x10000000	/* Can contain "struct page" and pure PFN pages */
--#define VM_HUGEPAGE	0x20000000	/* MADV_HUGEPAGE marked this vma */
--#define VM_NOHUGEPAGE	0x40000000	/* MADV_NOHUGEPAGE marked this vma */
-+#define VM_MIXEDMAP	BIT(28)		/* Can contain "struct page" and pure PFN pages */
-+#define VM_HUGEPAGE	BIT(29)		/* MADV_HUGEPAGE marked this vma */
-+#define VM_NOHUGEPAGE	BIT(30)		/* MADV_NOHUGEPAGE marked this vma */
- #define VM_MERGEABLE	BIT(31)		/* KSM may merge identical pages */
- 
- #ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS
--- 
-2.47.3
++/// A trait for objects that can be wrapped in either one of the reference=
+ types [`Owned`] and
++/// [`ARef`].
++///
++/// # Examples
++///
++/// A minimal example implementation of [`OwnableRefCounted`], [`Ownable`]=
+ and its usage with
++/// [`ARef`] and [`Owned`] looks like this:
++///
++/// ```
++/// # #![expect(clippy::disallowed_names)]
++/// use core::cell::Cell;
++/// use core::ptr::NonNull;
++/// use kernel::alloc::{flags, kbox::KBox, AllocError};
++/// use kernel::sync::aref::{ARef, RefCounted};
++/// use kernel::types::{Owned, Ownable, OwnableRefCounted};
++///
++/// // Example internally refcounted struct.
++/// //
++/// // # Invariants
++/// //
++/// // - `refcount` is always non-zero for a valid object.
++/// // - `refcount` is >1 if there are more then 1 Rust references to it.
++/// //
++/// struct Foo {
++///     refcount: Cell<usize>,
++/// }
++///
++/// impl Foo {
++///     fn new() -> Result<Owned<Self>, AllocError> {
++///         // We are just using a `KBox` here to handle the actual alloca=
+tion, as our `Foo` is
++///         // not actually a C-allocated object.
++///         let result =3D KBox::new(
++///             Foo {
++///                 refcount: Cell::new(1),
++///             },
++///             flags::GFP_KERNEL,
++///         )?;
++///         let result =3D NonNull::new(KBox::into_raw(result))
++///             .expect("Raw pointer to newly allocation KBox is null, thi=
+s should never happen.");
++///         // SAFETY: We just allocated the `Self`, thus it is valid and =
+there cannot be any other
++///         // Rust references. Calling `into_raw()` makes us responsible =
+for ownership and
++///         // we won't use the raw pointer anymore, thus we can transfer =
+ownership to the `Owned`.
++///         Ok(unsafe { Owned::from_raw(result) })
++///     }
++/// }
++///
++/// // SAFETY: We increment and decrement each time the respective functio=
+n is called and only free
++/// // the `Foo` when the refcount reaches zero.
++/// unsafe impl RefCounted for Foo {
++///     fn inc_ref(&self) {
++///         self.refcount.replace(self.refcount.get() + 1);
++///     }
++///
++///     unsafe fn dec_ref(this: NonNull<Self>) {
++///         // SAFETY: By requirement on calling this function, the refcou=
+nt is non-zero,
++///         // implying the underlying object is valid.
++///         let refcount =3D unsafe { &this.as_ref().refcount };
++///         let new_refcount =3D refcount.get() - 1;
++///         if new_refcount =3D=3D 0 {
++///             // The `Foo` will be dropped when `KBox` goes out of scope=
+.
++///             // SAFETY: The [`KBox<Foo>`] is still alive as the old ref=
+count is 1. We can pass
++///             // ownership to the [`KBox`] as by requirement on calling =
+this function,
++///             // the `Self` will no longer be used by the caller.
++///             unsafe { KBox::from_raw(this.as_ptr()) };
++///         } else {
++///             refcount.replace(new_refcount);
++///         }
++///     }
++/// }
++///
++/// impl OwnableRefCounted for Foo {
++///     fn try_from_shared(this: ARef<Self>) -> Result<Owned<Self>, ARef<S=
+elf>> {
++///         if this.refcount.get() =3D=3D 1 {
++///             // SAFETY: The `Foo` is still alive and has no other Rust =
+references as the refcount
++///             // is 1.
++///             Ok(unsafe { Owned::from_raw(ARef::into_raw(this)) })
++///         } else {
++///             Err(this)
++///         }
++///     }
++/// }
++///
++/// // SAFETY: What out `release()` function does is safe of any valid `Se=
+lf`.
++/// unsafe impl Ownable for Foo {
++///     unsafe fn release(this: NonNull<Self>) {
++///         // SAFETY: Using `dec_ref()` from [`RefCounted`] to release is=
+ okay, as the refcount is
++///         // always 1 for an [`Owned<Foo>`].
++///         unsafe{ Foo::dec_ref(this) };
++///     }
++/// }
++///
++/// let foo =3D Foo::new().expect("Failed to allocate a Foo. This shouldn'=
+t happen");
++/// let mut foo =3D ARef::from(foo);
++/// {
++///     let bar =3D foo.clone();
++///     assert!(Owned::try_from(bar).is_err());
++/// }
++/// assert!(Owned::try_from(foo).is_ok());
++/// ```
++pub trait OwnableRefCounted: RefCounted + Ownable + Sized {
++    /// Checks if the [`ARef`] is unique and convert it to an [`Owned`] it=
+ that is that case.
++    /// Otherwise it returns again an [`ARef`] to the same underlying obje=
+ct.
++    fn try_from_shared(this: ARef<Self>) -> Result<Owned<Self>, ARef<Self>=
+>;
++
++    /// Converts the [`Owned`] into an [`ARef`].
++    fn into_shared(this: Owned<Self>) -> ARef<Self> {
++        // SAFETY: Safe by the requirements on implementing the trait.
++        unsafe { ARef::from_raw(Owned::into_raw(this)) }
++    }
++}
++
++impl<T: OwnableRefCounted> TryFrom<ARef<T>> for Owned<T> {
++    type Error =3D ARef<T>;
++    /// Tries to convert the [`ARef`] to an [`Owned`] by calling
++    /// [`try_from_shared()`](OwnableRefCounted::try_from_shared). In case=
+ the [`ARef`] is not
++    /// unique, it returns again an [`ARef`] to the same underlying object=
+.
++    fn try_from(b: ARef<T>) -> Result<Owned<T>, Self::Error> {
++        T::try_from_shared(b)
++    }
++}
+diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
+index 97cfddd9ec2ad788a4a659f404a9b6790da08e29..605c56b3d634e048cdfe1524881=
+ab1e2e76ae3a4 100644
+--- a/rust/kernel/sync/aref.rs
++++ b/rust/kernel/sync/aref.rs
+@@ -15,7 +15,10 @@
+ /// Note: Implementing this trait allows types to be wrapped in an [`ARef<=
+Self>`]. It requires an
+ /// internal reference count and provides only shared references. If uniqu=
+e references are required
+ /// [`Ownable`](crate::types::Ownable) should be implemented which allows =
+types to be wrapped in an
+-/// [`Owned<Self>`](crate::types::Owned).
++/// [`Owned<Self>`](crate::types::Owned). Implementing the trait
++/// [`OwnableRefCounted`](crate::types::OwnableRefCounted) allows to conve=
+rt between unique and
++/// shared references (i.e. [`Owned<Self>`](crate::types::Owned) and
++/// [`ARef<Self>`](crate::types::Owned)).
+ ///
+ /// # Safety
+ ///
+@@ -165,6 +168,12 @@ fn from(b: &T) -> Self {
+     }
+ }
+=20
++impl<T: crate::types::OwnableRefCounted> From<crate::types::Owned<T>> for =
+ARef<T> {
++    fn from(b: crate::types::Owned<T>) -> Self {
++        T::into_shared(b)
++    }
++}
++
+ impl<T: RefCounted> Drop for ARef<T> {
+     fn drop(&mut self) {
+         // SAFETY: The type invariants guarantee that the `ARef` owns the =
+reference we're about to
+diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+index 8ef01393352bb2510524bf070ad4141147ed945f..a9b72709d0d3c7fc58444a19fae=
+896aed7506128 100644
+--- a/rust/kernel/types.rs
++++ b/rust/kernel/types.rs
+@@ -11,7 +11,7 @@
+ };
+ use pin_init::{PinInit, Wrapper, Zeroable};
+=20
+-pub use crate::owned::{Ownable, Owned};
++pub use crate::owned::{Ownable, OwnableRefCounted, Owned};
+=20
+ pub use crate::sync::aref::{ARef, AlwaysRefCounted, RefCounted};
+=20
 
+--=20
+2.51.0
 
-
-
-Amazon Web Services Development Center Germany GmbH
-Tamara-Danz-Str. 13
-10243 Berlin
-Geschaeftsfuehrung: Christian Schlaeger
-Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
-Sitz: Berlin
-Ust-ID: DE 365 538 597
 
 
