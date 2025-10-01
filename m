@@ -4,134 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82898CCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 13:17:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5B5FCCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 13:44:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BEE5E8E0006; Wed,  1 Oct 2025 09:17:16 -0400 (EDT)
+	id C0C968E0005; Wed,  1 Oct 2025 09:44:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9EFF8E0002; Wed,  1 Oct 2025 09:17:16 -0400 (EDT)
+	id BE4478E0002; Wed,  1 Oct 2025 09:44:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8DE08E0006; Wed,  1 Oct 2025 09:17:16 -0400 (EDT)
+	id AF9EF8E0005; Wed,  1 Oct 2025 09:44:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 96A3D8E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 09:17:16 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 155B4BCA3F
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 13:17:16 +0000 (UTC)
-X-FDA: 83949596472.30.95BB3FD
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CF868E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 09:44:39 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 328CD880DE
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 13:44:39 +0000 (UTC)
+X-FDA: 83949665478.22.D40BB3C
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C5B1C4000A
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 13:17:13 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="sxSyGSR/";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ItTL2eou;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nBTKxE2C;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="Ga03/4WG";
-	spf=pass (imf27.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	by imf14.hostedemail.com (Postfix) with ESMTP id B6D3A100004
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 13:44:36 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tAZQS6W0;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ImepUTZ9;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qPDGAH8H;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="2vI/BOL5";
+	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759324634;
+	s=arc-20220608; t=1759326277;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WmRrN30rfew7e/j2Ph45WjnBsE+EVhv1bOJ8ZOYpilQ=;
-	b=Mz1GMERWjolbQjB23+mzvykHCU0wsAi6LvaRJ4jjVHDe6ZcWzIvr9v/4/kg1OnB4OhvI3G
-	BZUKxhGhfUDmLy9VGmGxyPwmMSNmvP51tc1mFjkFmVkDgyrxbbJMVFBLIy90yTl9czfal7
-	CVI6vvsz9zlc/XYOEhzpKVeJ5Y6hwtA=
+	bh=RXKm7uHno0RVrdO73gZiJiNWmspDgiTH3SIvPr6Kuoc=;
+	b=IVcZYoZBwe7uQFNch7jhsFUuryPwGP5T6uNQ8FQL9eCVwYhJq80vV7Qs9Eiia4VofN6M/D
+	62/qD3eILpjBng2lYUB5HwgKt2BQ9gEhEoiNzuiWky9PqCgKUIocZyiPp+tumfqFHg3GcB
+	7KcmLDBSgnAMrKqSp1LCnNy+Ev67coA=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="sxSyGSR/";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ItTL2eou;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nBTKxE2C;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="Ga03/4WG";
-	spf=pass (imf27.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	imf14.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tAZQS6W0;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ImepUTZ9;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qPDGAH8H;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="2vI/BOL5";
+	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759324634; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759326277; a=rsa-sha256;
 	cv=none;
-	b=KL1ztZMIpWiHAeEIECCSkGT/X68HvGetnJbMwwBQZuuuL5e3sQqNRp4BbCkkhE7kU9wGXL
-	EE8emdrM2L09uCdvQyoHZQPSlTwLzYEebYsb6cnZvB/2g4UNS2Xlf96zfSLyN3jq6K1yBO
-	eJAiqMSeOe49+LQIXuuaLWFBZoJpF88=
+	b=ki4ywxkF/JDcleGvEPHLecXWiXvYRQxuNCVoP4VMrEYpGSByqMqhzhnN4xjnPrqvoatKtJ
+	6pheWAOVn6XgIlNhYIt6ZP3VePhKDxNTnY/EWp6DLJOlRjlztJxPm6GBE5ejV1TznaZTNw
+	RS595NQ4uVnO0sSy9b7MiiTgOufB3ho=
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 9FF2D1FB66;
-	Wed,  1 Oct 2025 13:17:10 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id DDEF91FB78;
+	Wed,  1 Oct 2025 13:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759324632; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1759326270; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WmRrN30rfew7e/j2Ph45WjnBsE+EVhv1bOJ8ZOYpilQ=;
-	b=sxSyGSR/05AfwtKZW9+4jdwaNmsSnhB+gyiMe3kPKkWQRjNCOHzM/oypF7Fj1JqOE9wddo
-	jMZ9UPUxIYrdvaivVhEZGQdjwLV95/0+mtQiRKalZYizeuJNUWnDPvjtkQ7mbhRtJBRn94
-	4i020G8YVJscSoxjdsdpBysieOezSoM=
+	bh=RXKm7uHno0RVrdO73gZiJiNWmspDgiTH3SIvPr6Kuoc=;
+	b=tAZQS6W0FbVDQeHSwQjxvc272crMvd4NBWS1wZw7slpKHmXmg3kBzznZ0CS4RvhNlg9vJd
+	65PsILbe+5cHsTQm2oDb107QA3clz2+qlkI5GvrPijUN62bGp5/XPp7rtZPvpTeViIrPCk
+	kYVVZjXBFD8BTB4qhNkhrFQY1GfetT4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759324632;
+	s=susede2_ed25519; t=1759326270;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WmRrN30rfew7e/j2Ph45WjnBsE+EVhv1bOJ8ZOYpilQ=;
-	b=ItTL2eou8Wl55gSlsfk2xBhlGn0fW9gOu1DjoPIU2fQvVhlvsKKo9OqhD9qepKtTf8FQU1
-	KBO/dXpB0OX89uCg==
+	bh=RXKm7uHno0RVrdO73gZiJiNWmspDgiTH3SIvPr6Kuoc=;
+	b=ImepUTZ9j4xdyUYX1G71yNrcxM7HqH5lzp3dv9QxXsvjUY4EbsZ/7Z3E1vHNMtkaLUOMhW
+	gXB2akPgAMVKoCAg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759324631; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1759326269; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WmRrN30rfew7e/j2Ph45WjnBsE+EVhv1bOJ8ZOYpilQ=;
-	b=nBTKxE2CepeBww3zK1xK18HiHHlmS4yHFNTHwMb33LlWKEKzQY8gWCEeGovIsS2ceib6uR
-	zQkWjlKYcc7Yk8GP4UL90bXvD6LpWtYtZ20wH3BggZayt8ChXYkIUSXv6zvmFg+2YOP7/o
-	TF3Sglo9FpWe4fR/YNvnvHMWuI3qZeM=
+	bh=RXKm7uHno0RVrdO73gZiJiNWmspDgiTH3SIvPr6Kuoc=;
+	b=qPDGAH8HeVB1km9OJ37bqLFvz98qM5hOngA7YJgjUURS88LsWeKUPqMvM/CYAeDR7zyf30
+	LYrvTMoaipqBdUYpmf35ZKHLjZzCg3B3G8g6lsfSoc9/Otyb0EAOUVBYW+VMRraNnb72Za
+	GKrqsuLtv56952NDNWUVHG9h/Rj87KA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759324631;
+	s=susede2_ed25519; t=1759326269;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WmRrN30rfew7e/j2Ph45WjnBsE+EVhv1bOJ8ZOYpilQ=;
-	b=Ga03/4WGFp5aYpkn4UvpK3mtiZ39QXlhD6z5ou2eOXXgFe2Yb0LM1NA+Yu+zWdkKHihxLZ
-	E9VIWO+maVJCeFCA==
+	bh=RXKm7uHno0RVrdO73gZiJiNWmspDgiTH3SIvPr6Kuoc=;
+	b=2vI/BOL5LTZ2nP5Obmklz30pGvsvgQ5xks0R41jESgSffubPqLzvrfSdL9epIWClBCuGig
+	5Tn8B/oXUBeUD2DQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8A18613A3F;
-	Wed,  1 Oct 2025 13:17:10 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C869E13A3F;
+	Wed,  1 Oct 2025 13:44:29 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ZsoyIdYp3WjqDwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 01 Oct 2025 13:17:10 +0000
-Message-ID: <5e057255-ccd4-4250-8653-73040e14354f@suse.cz>
-Date: Wed, 1 Oct 2025 15:19:59 +0200
+	id 2MuFMD0w3WhwGAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 01 Oct 2025 13:44:29 +0000
+Message-ID: <e261a18d-0ea3-4fba-9774-aa58270809af@suse.cz>
+Date: Wed, 1 Oct 2025 15:47:10 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/page_owner: Rename proc-prefixed variables for
- clarity
+Subject: Re: [PATCH 2/2] mm/page_owner: simplify zone iteration logic in
+ init_early_allocated_pages()
 To: Hu Song <husong@kylinos.cn>, Andrew Morton <akpm@linux-foundation.org>
 Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
  Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
  Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <20250930092153.843109-1-husong@kylinos.cn>
+ <20250930092153.843109-2-husong@kylinos.cn>
 Content-Language: en-US
 From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20250930092153.843109-1-husong@kylinos.cn>
+In-Reply-To: <20250930092153.843109-2-husong@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: B6D3A100004
+X-Stat-Signature: j3sq36xx98xmj56n9ft55i1remstpjo4
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C5B1C4000A
-X-Stat-Signature: da3tqtkrqgcddhz5gk3cssm8dut7twot
-X-HE-Tag: 1759324633-878165
-X-HE-Meta: U2FsdGVkX1++U4l3dCtFVPrx2DFKr0NPfUJuDIOE1SoShnY2E66etGSK6lawydokOIRO9SBIt7UoegWGtTfvwWA1FpplqbUW7UYMxzQ573oEH1KLnWjoCMQuz5vuhZGMjL2gZyD1A99dyFTPUX8G9w221yIqSe6KaThkkEXhxHSCO1MwHgSHSjkPR2sGxC1gsV5ZPEoB+CA/AjEivbdZg3FyDej6CfhqoJupPaFO5Yq2FfX01+Kg8loagBszT1Va9+gKRHcSoZf2mEFAglt4fs2AJkNkcCR/4WxOvxa9r+DliUL4QhexxtQuBHrLYF0QxreD6/EXi5pPkoWrW9y7J0zie+VUlYe233oW6GRCBu4qiNrqLNIZbO2exfbIEK1uZfmuBwx8miIdL5fXfhjor1G1p5Kvc4jpyk4av1DUxZFiIMY/zowGsjpcsDVZBqsJ5gywYk0473EdH0F3qIPxC/WwBCUcPcASpTnad9nh6ihYzua3FgcCnHgTWZCbhhxnWloRDDGALlK3qP4LHupsQLjGcphP8kQj5Z7vko5FcZDfJJb8+z0BzIcxLNarHw4qsl3Imjl7UcIu4pB2s41bgjMl4zZNvBA/cOqoeG6Y2FtTl7MSLVeImjfZewVWgPwbD1iSsv+KeAeVP2+zRS77ZM+aBMUl1ed/PFfi7yXbI2tUj6+DE59Re9fKePDjdTPHmdpGw+vLRLmAFSzuGsSdUOlC2NzJ+LnghvE8E8oJ5uivV3B5PZiHXHkLt9D9KOnFK+aWT3NrpogZRFnEhba4xoD0mPAsUIiFd8zMLlm8l43cW2Pr6AtoQ0F7n4oXHxVIZ5Ho5urDLD4QTAkKu6xMyNRD7jx2XfT74sEjP5yXsZsxEsMtanGC/WeppzFQE5pY54YiU1uAG5ISRHON7xbA8HBNtyZBY9RgnpwgOf732hQze8TUr/XSPNcMxF6DUT7GhFbtkedfLQNzcfuMvDZ
- YJp3Wpy7
- 9UcnNywCRxUaeYsU=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1759326276-295479
+X-HE-Meta: U2FsdGVkX19kM73DMBpE4TNO1oKsRYsZrwEQxfkAwThqY6lvewAIcHiCyjEIFj5JNG+aw5fcnMUAYyme0eIOQ+Dj2/+KK/Z3Kr6559oK2Cu4ytOQa/Lbr7sxeJK0xf23MhExmsAjmB1PQr6ZdqIt02nYwTYDSrcJRRAXvkY5oqje9UMjWLyLbw2WkGKobfqUaNHGJ0s25UK+Qa5ihP3vBKlGjlotEmUN9rhnGAFmyZLv2Wv7zSyaiOYDSRWKcTj2GyI1NTZshQtuRVzol0hM/QQOEc1jEhbF2Z/n22JrRKnRLjusSEv7afy197968aDBWRy6Fg4G+t4ToMIrwQD2USL5Vr7Y99TOVT/qdrZeTLAUBB/Ls3cT5vP8gxFqW82rz5NdOo75w18i0/ZBpVy2SPdNRnQAZo/cEyVjQiXmhi0X6I4sEhNvwNQ06ROgIbAdyiXd4h6DLYWStP0I+uSOaIjpuEZcmFLd0QLmMHi0Uh6p7ZHjOzZbLAYHmVyrc4jJdnzzYWpxAczrTov4Ly+lYaAGhbNjGCHsqtOh0qD05gwNcEMYEvthltpmqgDVEKvT/+yQI2YW1paTG/dXaXoqxrrDdd8sE5wog/tLHcbp6TQXRh+iRDFPjcgIA9zbr3Y6F1bHnz/c5fx7YWJWcBuWNT+3ubijtA+68lxUR3FWvMpvVmOo6uoA/HgQ4anmEYvtrP1dVjEM1pBtOdNo4+UqGXsVgZspBtjFzf9XZVYC146FOQ69IVe7ZjV/iEbZDSr0A3E2i+YrtS0KWGQ4CmWnEMEhowq+VYA84kVLFsKLuBB+tVrfeH0F1Tr6Gmb7jMAR238RSaHD8mvfLhgleAtjias1PwhfqVCHLuvu6kf9778OsXC+f0hoTvgjlKks40sbDuxR48TxbliB9vBkP1SMwwDKYHaE/Mb94vAxGOkwKZDyFoW7xqYgfjdYg/a+VcnD8zlGvmzfqew+Zvbboog
+ EMxH0YT/
+ wm3/xmO16tw3NqzY0lwv5CKZi/4O4VsNQyikBFMDYyFjhKQLuOHcuHAPmRAcW9aH4Cg2HRO9yOA52KehTZGPoH1JG6cCumf9/1B5+axTYbynbxPAS701GMF5ogVQZnU2tjJ5LRePNE3at06VKR2BjX3zPKf/m1PFFP06KrxB1RkuemcUpg8aCU3McRfY5PHPUPsKUzBFcm87kcvhyc0vDRldwT1o7InCbZp9xObpSzirf731V2AoTmhEbrobPO4vzXloH/RvUBM2+ggDiG84q8gD5jP+8++EJ+b1HP8Ol4WaZYUkQlbMi7HdU4DYWAZaurlJYtCzrc44sE6ptl2O6MJx579aihjDs7vZTCZabrCMnPUg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,74 +144,24 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 9/30/25 11:21 AM, Hu Song wrote:
 > From: Song Hu <husong@kylinos.cn>
 > 
-> The `proc_page_owner_operations` and related variables were renamed to
-> `page_owner_fops` to better reflect their association with `debugfs` rather
-> than `/proc`. This improves code clarity and aligns with kernel naming
-> conventions.
+> The current implementation uses nested loops: first iterating over all
+> online nodes, then over zones within each node. This can be simplified
+> by using the for_each_populated_zone() macro which directly iterates
+> through all populated zones.
+> 
+> This change:
+> 1. Removes the intermediate init_zones_in_node() function
+> 2. Simplifies init_early_allocated_pages() to use direct zone iteration
+> 3. Updates init_pages_in_zone() to take only zone parameter and access
+>    node_id via zone->zone_pgdat
+> 
+> The functionality remains identical, but the code is cleaner and more
+> maintainable.
 > 
 > Signed-off-by: Song Hu <husong@kylinos.cn>
 
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
+LGTM.
 
-how bout going even further and renaming to:
-
-show_stacks_fops
-count_threshold_fops
-
-static means we can't collide with other files using the same name so no
-need for page_owner prefix everywhere
-
-> ---
->  mm/page_owner.c | 13 ++++++-------
->  1 file changed, 6 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/page_owner.c b/mm/page_owner.c
-> index c3ca21132c2c..bb88b72b6062 100644
-> --- a/mm/page_owner.c
-> +++ b/mm/page_owner.c
-> @@ -848,7 +848,7 @@ static void init_early_allocated_pages(void)
->  		init_zones_in_node(pgdat);
->  }
->  
-> -static const struct file_operations proc_page_owner_operations = {
-> +static const struct file_operations page_owner_fops = {
->  	.read		= read_page_owner,
->  	.llseek		= lseek_page_owner,
->  };
-> @@ -929,7 +929,7 @@ static int page_owner_stack_open(struct inode *inode, struct file *file)
->  	return seq_open_private(file, &page_owner_stack_op, 0);
->  }
->  
-> -static const struct file_operations page_owner_stack_operations = {
-> +static const struct file_operations page_owner_stack_fops = {
->  	.open		= page_owner_stack_open,
->  	.read		= seq_read,
->  	.llseek		= seq_lseek,
-> @@ -948,7 +948,7 @@ static int page_owner_threshold_set(void *data, u64 val)
->  	return 0;
->  }
->  
-> -DEFINE_SIMPLE_ATTRIBUTE(proc_page_owner_threshold, &page_owner_threshold_get,
-> +DEFINE_SIMPLE_ATTRIBUTE(page_owner_threshold_fops, &page_owner_threshold_get,
->  			&page_owner_threshold_set, "%llu");
->  
->  
-> @@ -961,13 +961,12 @@ static int __init pageowner_init(void)
->  		return 0;
->  	}
->  
-> -	debugfs_create_file("page_owner", 0400, NULL, NULL,
-> -			    &proc_page_owner_operations);
-> +	debugfs_create_file("page_owner", 0400, NULL, NULL, &page_owner_fops);
->  	dir = debugfs_create_dir("page_owner_stacks", NULL);
->  	debugfs_create_file("show_stacks", 0400, dir, NULL,
-> -			    &page_owner_stack_operations);
-> +			     &page_owner_stack_fops);
->  	debugfs_create_file("count_threshold", 0600, dir, NULL,
-> -			    &proc_page_owner_threshold);
-> +			    &page_owner_threshold_fops);
->  
->  	return 0;
->  }
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
 
