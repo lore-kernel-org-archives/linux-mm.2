@@ -4,83 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89364CAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 12:47:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82898CCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 13:17:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E22488E0003; Wed,  1 Oct 2025 08:47:29 -0400 (EDT)
+	id BEE5E8E0006; Wed,  1 Oct 2025 09:17:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFA678E0002; Wed,  1 Oct 2025 08:47:29 -0400 (EDT)
+	id B9EFF8E0002; Wed,  1 Oct 2025 09:17:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D37A48E0003; Wed,  1 Oct 2025 08:47:29 -0400 (EDT)
+	id A8DE08E0006; Wed,  1 Oct 2025 09:17:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C40E58E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 08:47:29 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6D864160A10
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 12:47:29 +0000 (UTC)
-X-FDA: 83949521418.24.4D0900D
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf28.hostedemail.com (Postfix) with ESMTP id E6D65C0006
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 12:47:25 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="P//ecjFt";
-	spf=pass (imf28.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 96A3D8E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 09:17:16 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 155B4BCA3F
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 13:17:16 +0000 (UTC)
+X-FDA: 83949596472.30.95BB3FD
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf27.hostedemail.com (Postfix) with ESMTP id C5B1C4000A
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 13:17:13 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="sxSyGSR/";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ItTL2eou;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nBTKxE2C;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="Ga03/4WG";
+	spf=pass (imf27.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759322847;
+	s=arc-20220608; t=1759324634;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8jbAq27x+6Ohu5C8t37JTrdMMIEZluW2VP8UzF113Oo=;
-	b=yQC4B1fIOgowLYcZsQ6d3Yd1D/bZOmx5GXCf3Hm1UlS28q0pIwLKIN77CNzUybSTlgy+CJ
-	ryufdzeIhqkCb/bvsop1d773eWFN9PA025AVwi7MLPRWzhFz/AyBv1/pvd2/GnI/vGxpY2
-	rvMJLkv9l0tYD9q+rQHJ400Cr9Xcxfc=
+	bh=WmRrN30rfew7e/j2Ph45WjnBsE+EVhv1bOJ8ZOYpilQ=;
+	b=Mz1GMERWjolbQjB23+mzvykHCU0wsAi6LvaRJ4jjVHDe6ZcWzIvr9v/4/kg1OnB4OhvI3G
+	BZUKxhGhfUDmLy9VGmGxyPwmMSNmvP51tc1mFjkFmVkDgyrxbbJMVFBLIy90yTl9czfal7
+	CVI6vvsz9zlc/XYOEhzpKVeJ5Y6hwtA=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="P//ecjFt";
-	spf=pass (imf28.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759322847; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="sxSyGSR/";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ItTL2eou;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nBTKxE2C;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="Ga03/4WG";
+	spf=pass (imf27.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759324634; a=rsa-sha256;
 	cv=none;
-	b=i+VJIq0bH3oKzXP+tstlUrVR4TbKiFUnnvgy0QgUHdkOJPJCs74VzCptyQdoAXnYnOPmdr
-	jHNqFzEIeKMJ5SvK5cg3mlai2UjxurXWCFavnMNUOOMT06EVQ8b6kJo8jAhi3FVKK21b/u
-	mgmJULjF+WW9NKBYc8+EF0D7LWVlsRY=
-Date: Wed, 1 Oct 2025 12:47:19 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759322844;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	b=KL1ztZMIpWiHAeEIECCSkGT/X68HvGetnJbMwwBQZuuuL5e3sQqNRp4BbCkkhE7kU9wGXL
+	EE8emdrM2L09uCdvQyoHZQPSlTwLzYEebYsb6cnZvB/2g4UNS2Xlf96zfSLyN3jq6K1yBO
+	eJAiqMSeOe49+LQIXuuaLWFBZoJpF88=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 9FF2D1FB66;
+	Wed,  1 Oct 2025 13:17:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1759324632; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8jbAq27x+6Ohu5C8t37JTrdMMIEZluW2VP8UzF113Oo=;
-	b=P//ecjFtKiJHDjV1XNDMgZMod3wG/g+N0uto8cBhW/w2QUokuv+5sjW9PjMVw0541JzVn7
-	/+iVWORug+p8yhf03THXsQackG2BTLJZapgBOYiszUzGePwoidnACPcC59PDr+Z3sDAd0e
-	0aLjqGO3yym+RrB5xV0wcTX8Ub77vO0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Jan Kara <jack@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-mm@kvack.org
-Subject: Re: [PATCH] mm: readahead: make thp readahead conditional to
- mmap_miss logic
-Message-ID: <aN0i107IF0oQ_PQb@google.com>
-References: <20250930054815.132075-1-roman.gushchin@linux.dev>
- <hm56lqfeqcpjjpwkzuo4ktv7ayt763htehpi7ie2d47q52gm3w@mgbj42ivvv5g>
+	bh=WmRrN30rfew7e/j2Ph45WjnBsE+EVhv1bOJ8ZOYpilQ=;
+	b=sxSyGSR/05AfwtKZW9+4jdwaNmsSnhB+gyiMe3kPKkWQRjNCOHzM/oypF7Fj1JqOE9wddo
+	jMZ9UPUxIYrdvaivVhEZGQdjwLV95/0+mtQiRKalZYizeuJNUWnDPvjtkQ7mbhRtJBRn94
+	4i020G8YVJscSoxjdsdpBysieOezSoM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1759324632;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WmRrN30rfew7e/j2Ph45WjnBsE+EVhv1bOJ8ZOYpilQ=;
+	b=ItTL2eou8Wl55gSlsfk2xBhlGn0fW9gOu1DjoPIU2fQvVhlvsKKo9OqhD9qepKtTf8FQU1
+	KBO/dXpB0OX89uCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1759324631; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WmRrN30rfew7e/j2Ph45WjnBsE+EVhv1bOJ8ZOYpilQ=;
+	b=nBTKxE2CepeBww3zK1xK18HiHHlmS4yHFNTHwMb33LlWKEKzQY8gWCEeGovIsS2ceib6uR
+	zQkWjlKYcc7Yk8GP4UL90bXvD6LpWtYtZ20wH3BggZayt8ChXYkIUSXv6zvmFg+2YOP7/o
+	TF3Sglo9FpWe4fR/YNvnvHMWuI3qZeM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1759324631;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WmRrN30rfew7e/j2Ph45WjnBsE+EVhv1bOJ8ZOYpilQ=;
+	b=Ga03/4WGFp5aYpkn4UvpK3mtiZ39QXlhD6z5ou2eOXXgFe2Yb0LM1NA+Yu+zWdkKHihxLZ
+	E9VIWO+maVJCeFCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8A18613A3F;
+	Wed,  1 Oct 2025 13:17:10 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ZsoyIdYp3WjqDwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 01 Oct 2025 13:17:10 +0000
+Message-ID: <5e057255-ccd4-4250-8653-73040e14354f@suse.cz>
+Date: Wed, 1 Oct 2025 15:19:59 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <hm56lqfeqcpjjpwkzuo4ktv7ayt763htehpi7ie2d47q52gm3w@mgbj42ivvv5g>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: E6D65C0006
-X-Rspamd-Server: rspam05
-X-Stat-Signature: h1tf8qwcpzdr9gqb6mrkakpdoi4rm93b
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm/page_owner: Rename proc-prefixed variables for
+ clarity
+To: Hu Song <husong@kylinos.cn>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20250930092153.843109-1-husong@kylinos.cn>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <20250930092153.843109-1-husong@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-HE-Tag: 1759322845-313178
-X-HE-Meta: U2FsdGVkX18edvbMCd7QiFX+AuAqmKQXZPVyB7qtPB/VFjF9Ajim3t0CMf6gHSJe446fZixJHMre5OOo/ygL2weFKyxYeH2GFBzHHCznu4LD0fyePYiQHvmHR9DY6dZ3LAeLfCml+coHS5bp70DYm2w/CpS6T0q4kCj/b2VW2yb4BRl98oqam3AwHjHHcNMhRLWdIBgjBBgcwM4LVynkTdTuKCVEKgFHhUMNgPlDd+qMedJnwMRiRDR9O+vKbohJwRdB1NB0JqISWEotyDoEdVFjR9Dl6PZvCLrqbcQ2YDkaayHHbUWZ4TW8hIkxVyr9hMOEXCBKe2uh91gyWPPsdzz3yKSDLEmq5BAelIpa0QB62w2lZSS7vVVzWQOdIeVfuveELDfiTNuPQkqNcT40ANN7Ql07ECTxZj9GsO/xxCOh4L/tL64/p/emtgR7pjsU4JA+XCI8qJIIh5GQDsLJoGXOANmqlrPJFJt2R6Xbk1UiF8tU0BSbrbq8jhqejhGoSHCDS54RRR/wTSVr9aQxL39SX7xwVMtmAhfl8TRZTgkzBLj9mAF4r+xytqK5ZE/gxrsgku+JQy4Ta8Qr2at2GGJ/phg5Jvh7+zU27V+utEMfL9GKYpldhdt1OBZ+2f2VEWrF6dAFVhIXSZjGAgkt3avNuN9ozmIT3ScVNX73m5HtArOS6fsyBnKd9maiDYkr6W7LYA6XWp78Dh7emZxXWNz8x4f08OZJVSBHX6suLVSB1KuVMkfIOPsEc+npqqLaWKwO1p0xrWo7wbL7ModvLmJ3d+IxAKc0qr5k+oLOs0oa19v8p+mlE2YwaiU0Ef1gxnp5ah1xVpTN3LOmXlsWzkxF0pZVgiKnFIJQY+j/Nebv9oCWlI0X+d6yQ2ItQtOfaIhnrhydsBps2Fi2jVhp4DlRxznufh3Bnik9/2IESdjGIdcXIHluOt4BqAwFx67ycYS1cnRzE+RSAktRVTr
- fiGaX/NY
- VZ8C8Qo3WZxu4n/iy9RtvapPZGZpTZFKss1sQmOp3mis2rHVDWGJPJ0nzx3I4Xwt9Hn3LLbS7eoII/kFyDdUnxZHFXjQrgFnUoAlXXbW7k9uhBdwcfX2rxbq15WzLrCZnqNkNtvk22AFsHfwtbvEkgvhtWXBT4OV1h28mrijYzORt+XYwBP0qqVLJE14K4CvTrGfnCz/dtHdkAikOi9zlLTFLh1e++QxAB6a1wFeeZEz9qkGTW0tmrpNU7bRYiUOpSgkxywAJiJRSl7g1JNiRNhiYkQSwrVDpLrHF1g/tQoL2/4yRrhk/UfxMZfTYxpWeDpnhLTmVgJhXoIVA6QQIQ3hnlBBbh6L8UqbwnPb+qe1gNB646QB/pjp/YCXYbA23e+pYH2zrt6PCHLUxvXZcMYRrmA==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C5B1C4000A
+X-Stat-Signature: da3tqtkrqgcddhz5gk3cssm8dut7twot
+X-HE-Tag: 1759324633-878165
+X-HE-Meta: U2FsdGVkX1++U4l3dCtFVPrx2DFKr0NPfUJuDIOE1SoShnY2E66etGSK6lawydokOIRO9SBIt7UoegWGtTfvwWA1FpplqbUW7UYMxzQ573oEH1KLnWjoCMQuz5vuhZGMjL2gZyD1A99dyFTPUX8G9w221yIqSe6KaThkkEXhxHSCO1MwHgSHSjkPR2sGxC1gsV5ZPEoB+CA/AjEivbdZg3FyDej6CfhqoJupPaFO5Yq2FfX01+Kg8loagBszT1Va9+gKRHcSoZf2mEFAglt4fs2AJkNkcCR/4WxOvxa9r+DliUL4QhexxtQuBHrLYF0QxreD6/EXi5pPkoWrW9y7J0zie+VUlYe233oW6GRCBu4qiNrqLNIZbO2exfbIEK1uZfmuBwx8miIdL5fXfhjor1G1p5Kvc4jpyk4av1DUxZFiIMY/zowGsjpcsDVZBqsJ5gywYk0473EdH0F3qIPxC/WwBCUcPcASpTnad9nh6ihYzua3FgcCnHgTWZCbhhxnWloRDDGALlK3qP4LHupsQLjGcphP8kQj5Z7vko5FcZDfJJb8+z0BzIcxLNarHw4qsl3Imjl7UcIu4pB2s41bgjMl4zZNvBA/cOqoeG6Y2FtTl7MSLVeImjfZewVWgPwbD1iSsv+KeAeVP2+zRS77ZM+aBMUl1ed/PFfi7yXbI2tUj6+DE59Re9fKePDjdTPHmdpGw+vLRLmAFSzuGsSdUOlC2NzJ+LnghvE8E8oJ5uivV3B5PZiHXHkLt9D9KOnFK+aWT3NrpogZRFnEhba4xoD0mPAsUIiFd8zMLlm8l43cW2Pr6AtoQ0F7n4oXHxVIZ5Ho5urDLD4QTAkKu6xMyNRD7jx2XfT74sEjP5yXsZsxEsMtanGC/WeppzFQE5pY54YiU1uAG5ISRHON7xbA8HBNtyZBY9RgnpwgOf732hQze8TUr/XSPNcMxF6DUT7GhFbtkedfLQNzcfuMvDZ
+ YJp3Wpy7
+ 9UcnNywCRxUaeYsU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,53 +140,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 01, 2025 at 01:35:39PM +0200, Jan Kara wrote:
-> On Tue 30-09-25 07:48:15, Roman Gushchin wrote:
-> > Commit 4687fdbb805a ("mm/filemap: Support VM_HUGEPAGE for file mappings")
-> > introduced a special handling for VM_HUGEPAGE mappings: even if the
-> > readahead is disabled, 1 or 2 HPAGE_PMD_ORDER pages are
-> > allocated.
-> > 
-> > This change causes a significant regression for containers with a
-> > tight memory.max limit, if VM_HUGEPAGE is widely used. Prior to this
-> > commit, mmap_miss logic would eventually lead to the readahead
-> > disablement, effectively reducing the memory pressure in the
-> > cgroup. With this change the kernel is trying to allocate 1-2 huge
-> > pages for each fault, no matter if these pages are used or not
-> > before being evicted, increasing the memory pressure multi-fold.
-> > 
-> > To fix the regression, let's make the new VM_HUGEPAGE conditional
-> > to the mmap_miss check, but keep independent from the ra->ra_pages.
-> > This way the main intention of commit 4687fdbb805a ("mm/filemap:
-> > Support VM_HUGEPAGE for file mappings") stays intact, but the
-> > regression is resolved.
-> > 
-> > The logic behind this changes is simple: even if a user explicitly
-> > requests using huge pages to back the file mapping (using VM_HUGEPAGE
-> > flag), under a very strong memory pressure it's better to fall back
-> > to ordinary pages.
-> > 
-> > Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-> > Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> > Cc: Jan Kara <jack@suse.cz>
-> > Cc: linux-mm@kvack.org
+On 9/30/25 11:21 AM, Hu Song wrote:
+> From: Song Hu <husong@kylinos.cn>
 > 
-> It would be good to get confirmation from Matthew that indeed this
-> preserves what he had in mind with commit 4687fdbb805a92 but the change
-> looks good to me.
-
-Hi Jan!
-
-Matthew and myself had a chat about this issue last week at Kernel Recipes
-conference and in general agreed on this approach. But of course,
-an explicit Ack from him will be appreciated.
-
-Long-term it would be great to use a better metric for memory pressure
-here, e.g. PSI. But it's far from trivial.
-
-> Feel free to add:
+> The `proc_page_owner_operations` and related variables were renamed to
+> `page_owner_fops` to better reflect their association with `debugfs` rather
+> than `/proc`. This improves code clarity and aligns with kernel naming
+> conventions.
 > 
-> Reviewed-by: Jan Kara <jack@suse.cz>
+> Signed-off-by: Song Hu <husong@kylinos.cn>
 
-Thank you!
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+
+how bout going even further and renaming to:
+
+show_stacks_fops
+count_threshold_fops
+
+static means we can't collide with other files using the same name so no
+need for page_owner prefix everywhere
+
+> ---
+>  mm/page_owner.c | 13 ++++++-------
+>  1 file changed, 6 insertions(+), 7 deletions(-)
+> 
+> diff --git a/mm/page_owner.c b/mm/page_owner.c
+> index c3ca21132c2c..bb88b72b6062 100644
+> --- a/mm/page_owner.c
+> +++ b/mm/page_owner.c
+> @@ -848,7 +848,7 @@ static void init_early_allocated_pages(void)
+>  		init_zones_in_node(pgdat);
+>  }
+>  
+> -static const struct file_operations proc_page_owner_operations = {
+> +static const struct file_operations page_owner_fops = {
+>  	.read		= read_page_owner,
+>  	.llseek		= lseek_page_owner,
+>  };
+> @@ -929,7 +929,7 @@ static int page_owner_stack_open(struct inode *inode, struct file *file)
+>  	return seq_open_private(file, &page_owner_stack_op, 0);
+>  }
+>  
+> -static const struct file_operations page_owner_stack_operations = {
+> +static const struct file_operations page_owner_stack_fops = {
+>  	.open		= page_owner_stack_open,
+>  	.read		= seq_read,
+>  	.llseek		= seq_lseek,
+> @@ -948,7 +948,7 @@ static int page_owner_threshold_set(void *data, u64 val)
+>  	return 0;
+>  }
+>  
+> -DEFINE_SIMPLE_ATTRIBUTE(proc_page_owner_threshold, &page_owner_threshold_get,
+> +DEFINE_SIMPLE_ATTRIBUTE(page_owner_threshold_fops, &page_owner_threshold_get,
+>  			&page_owner_threshold_set, "%llu");
+>  
+>  
+> @@ -961,13 +961,12 @@ static int __init pageowner_init(void)
+>  		return 0;
+>  	}
+>  
+> -	debugfs_create_file("page_owner", 0400, NULL, NULL,
+> -			    &proc_page_owner_operations);
+> +	debugfs_create_file("page_owner", 0400, NULL, NULL, &page_owner_fops);
+>  	dir = debugfs_create_dir("page_owner_stacks", NULL);
+>  	debugfs_create_file("show_stacks", 0400, dir, NULL,
+> -			    &page_owner_stack_operations);
+> +			     &page_owner_stack_fops);
+>  	debugfs_create_file("count_threshold", 0600, dir, NULL,
+> -			    &proc_page_owner_threshold);
+> +			    &page_owner_threshold_fops);
+>  
+>  	return 0;
+>  }
+
 
