@@ -4,106 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FA12CCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 04:35:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C52CDCCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Oct 2025 04:38:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AE018E000B; Wed,  1 Oct 2025 00:35:11 -0400 (EDT)
+	id 284E58E0008; Wed,  1 Oct 2025 00:38:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75F878E0002; Wed,  1 Oct 2025 00:35:11 -0400 (EDT)
+	id 235C48E0002; Wed,  1 Oct 2025 00:38:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64DA18E000B; Wed,  1 Oct 2025 00:35:11 -0400 (EDT)
+	id 0FDAA8E0008; Wed,  1 Oct 2025 00:38:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FAA68E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 00:35:11 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E3FB6BC19F
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:35:10 +0000 (UTC)
-X-FDA: 83948280780.21.9D4E62E
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 3E8EE2000B
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:35:09 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZYb0H0Nm;
-	spf=pass (imf13.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EC5AF8E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 00:38:17 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B470C140894
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:38:17 +0000 (UTC)
+X-FDA: 83948288634.25.28A3060
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	by imf05.hostedemail.com (Postfix) with ESMTP id CCFE6100010
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 04:38:15 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MbnIkHmU;
+	spf=pass (imf05.hostedemail.com: domain of jinji.z.zhong@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=jinji.z.zhong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759293309;
+	s=arc-20220608; t=1759293495;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0b5/BvT70k+vJiz3SordWv2jtVZP+YSZ2gcS6nnoogE=;
-	b=vf+06ytG2k1t352nhbPvlNORvVe9rMWcstBPvWovqMATvkaxWkCiwMgF8EGP/jGH4hY0Sl
-	JiI8mIePhX9KEL8tuHJDCQcdj1g3F+JFw9iGHULe20+JSO3feVupF72Etgw8NM18Frol9f
-	CCVTy+bJ7aSXqKsDOgNXiyb6Wc2K5U4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759293309; a=rsa-sha256;
-	cv=none;
-	b=e96o/o7sLGfgx2FyZ8yGhqdDp3cCvJNb3P4VU7JwvXqfXtd3D81JsE8xHWO8kosGOPTDaL
-	DF/qcrmbWFMJYe8fLcecI6qSta8/OSgbYtk2wQ3gG0CyQqqjYQT4P9WC/3hGc1UpIskd3H
-	nJU6R4LnE3CGEhPV0ahRcoa8+GOOy+8=
+	bh=orjiVwk9jVmakZ54G1xSOOUArCKwPbL4DFcsMOqI4MI=;
+	b=AN+CAKIEOk3RDR1kes02rHniriN0q8tEuQhT2glgGZ10vQwNTrHVTFZskMLHiylaLXj53K
+	RiZ5ucdzICYwXH0WG3dBSGO3dpEybMRFDoO+i1FoEta1EvZhxuJbmB/zWZ2eCJosnGt34G
+	CGg1FAyV4dGhlW0oxf6e4Wie+jfQliQ=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZYb0H0Nm;
-	spf=pass (imf13.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759293308;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0b5/BvT70k+vJiz3SordWv2jtVZP+YSZ2gcS6nnoogE=;
-	b=ZYb0H0NmCvJEdKqNh4gkN2v59jlWcKjHWbe5ofqLSaFc4c5TfsnxreCmuWIyO7r8L+XROR
-	/uDSdNUXg8yVDgJSyVF/SIMyRkG6ptisvKv/XLMGJJAZj4FlzJetA4fqSbT2Pqg/LSvcA2
-	HyKuvyImOIiWatPVQ+r4xZP3GJW+few=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-484-uugSkg2lPMqhEEdRgASAuw-1; Wed,
- 01 Oct 2025 00:35:03 -0400
-X-MC-Unique: uugSkg2lPMqhEEdRgASAuw-1
-X-Mimecast-MFC-AGG-ID: uugSkg2lPMqhEEdRgASAuw_1759293302
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 01BC818004D4;
-	Wed,  1 Oct 2025 04:35:01 +0000 (UTC)
-Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.116.46])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1753D1800576;
-	Wed,  1 Oct 2025 04:34:56 +0000 (UTC)
-From: Baoquan He <bhe@redhat.com>
-To: linux-mm@kvack.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MbnIkHmU;
+	spf=pass (imf05.hostedemail.com: domain of jinji.z.zhong@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=jinji.z.zhong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759293495; a=rsa-sha256;
+	cv=none;
+	b=C8SQGYXieDutIw9GBwhP5l3JAJxjVbWCCKUcyk0AwYioIUIhtsDlI8rmaYFa8sMGog2IF0
+	Ki8x1n964P0QmjNiOYdFY4ecE8zNfstYEXewLAiSMQyXM13N+3SVZk9B0T7yHG/xG+SDRz
+	K8EGdzr2b1kfkxK1fVudY3yd5jSoU44=
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-789fb76b466so1170818b3a.0
+        for <linux-mm@kvack.org>; Tue, 30 Sep 2025 21:38:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759293495; x=1759898295; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=orjiVwk9jVmakZ54G1xSOOUArCKwPbL4DFcsMOqI4MI=;
+        b=MbnIkHmUR/uWxfJ6DcXLVLD3tc/BdqSm4UnR8vCVIcirET4gMKNCH4ZkWz8sRJMbW6
+         UBSz7aSSEx+D1+rXyFjWWkbv1BhKfgUdxC8PJvZ7pIFnq5GrtUSXw04ul3B1oaKuTrs5
+         /VF5w3Q+1kjifWssxNT2/tRECUBAH8k79rgd3h8Cqdvw3MiSFKfMfzuaFhYtQeMt6a4e
+         aWH657TYqZMeKbTxBgEYcQg6MmNqT5P6RG/HSDtY/nUtwphWfdCd5YQIwKbQXBH183Ao
+         iA4zNyU5bXnL5254A1WOjUJUU6XAfnJGHYRW9vE5LbEoehmES3TdFd/SxZn61uIWjE+r
+         EWng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759293495; x=1759898295;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=orjiVwk9jVmakZ54G1xSOOUArCKwPbL4DFcsMOqI4MI=;
+        b=OZYYTvnt2JHjEcZjsUPuH86ZJ/ruJXb/F+O1YBITOry92gmPx/4fC9xpsakFqoeibh
+         1fZZYS3OIUr0ZUFCoPy3VOuhHrE5uH4exrsSt/ozqjyVaYu3yTAxMvJZBqiNtcMnfUuH
+         wb0jqdyR2Emyj+pYV1LhcM6UiSEnasdLeNNe5uRdGLwgAgV3kLerlxrf5As71N7ce8BM
+         b52uK9dLDbHfAtfVdc6NDUVeCrVSqRw9j1IxzjoWm8vytON7kNytlyKRpg2hahTX7fIv
+         suDBfas7+68aDy6F6tyCw03DMRPd+tNmjzN21o7M5PJkPYFRJ+7iqRLFp0lhjSgVABlN
+         +Zog==
+X-Forwarded-Encrypted: i=1; AJvYcCVIaowZbJ2eZdmKat4ghmebSHQHGu9r8v2rVym94WOcjmd7gkxh7PthGABS2kaDctfhiEXvwydlrA==@kvack.org
+X-Gm-Message-State: AOJu0Yybjxe43l2+BLR8szOJ29wXZC3cE0D6N5ujbg6Jcr6v2mG8EPxP
+	7VD31jpTH2NQaTv2Hfv0EN7tx4vTfEvJCD4toYNye0GfINDGsW8FBLRt
+X-Gm-Gg: ASbGncuoNrYwd4y3S+r+eFbCOX6m7a819WadFPe3s8RVEX2xO0NAcfZ720c6+390uRA
+	BC+KkxcgKe7WfFriJMxr+e166nDirtDaiONJETbb1w8DNuoDaSdDOrJ+C5S7dGJZdvnf8D303G9
+	J2C/BwbpCB1JQRZfJ71sOf4VhOqLhSZtYvAgvdXa6LjuE1/7WwE572oAER3aPxTpD6aoBqs+Pk1
+	V8SV5ytOTYfUXFMR2Yso8tlWa7coPsr8xDaQAHhd2BxyjWnHASmXn/J7LEiw7w7HwWbtmjQzw3F
+	ORe/9MmjPVAxkn32NnpbEN+kPG6xI6zbdH8CCZmUX09KWmQ9IGA5E8Fk9WWzyQGwq4QlNuBpJeA
+	hNAZDnG9F52AFkGQH8I2PcPFZtBSHw9sA++Gx
+X-Google-Smtp-Source: AGHT+IFs5bZFDV04o//0C2oYnOx72aMORXDwifOEjRchzNZn3UoLmDmaq+PUE6cX7sUUJbBmPCgC0Q==
+X-Received: by 2002:a05:6a00:194b:b0:781:1a9f:aee7 with SMTP id d2e1a72fcca58-78af3fe9a87mr2377050b3a.2.1759293494640;
+        Tue, 30 Sep 2025 21:38:14 -0700 (PDT)
+Received: from daniel.. ([221.218.137.8])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-783ad5e99acsm7912871b3a.22.2025.09.30.21.38.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Sep 2025 21:38:14 -0700 (PDT)
+From: jinji zhong <jinji.z.zhong@gmail.com>
+To: ziy@nvidia.com
 Cc: akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	nphamcs@gmail.com,
-	shikemeng@huaweicloud.com,
-	Baoquan He <bhe@redhat.com>
-Subject: [PATCH 3/3] mm/swap: remove unneeded swap_active_head
-Date: Wed,  1 Oct 2025 12:34:36 +0800
-Message-ID: <20251001043436.41338-4-bhe@redhat.com>
-In-Reply-To: <20251001043436.41338-1-bhe@redhat.com>
-References: <20251001043436.41338-1-bhe@redhat.com>
+	feng.han@honor.com,
+	hannes@cmpxchg.org,
+	jackmanb@google.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	liulu.liu@honor.com,
+	mhocko@suse.com,
+	surenb@google.com,
+	vbabka@suse.cz,
+	zhongjinji@honor.com
+Subject: Re: [PATCH v0] mm/page_alloc: Cleanup for __del_page_from_free_list()
+Date: Wed,  1 Oct 2025 04:38:08 +0000
+Message-ID: <20251001043809.11019-1-jinji.z.zhong@gmail.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <F1AB428D-73B3-4E40-939C-2A7BAEA1E73A@nvidia.com>
+References: <F1AB428D-73B3-4E40-939C-2A7BAEA1E73A@nvidia.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: B_pfrkSHA9fdKVG35gnh_vAsQiWrW7XmKalirvJIR-I_1759293302
-X-Mimecast-Originator: redhat.com
-Content-type: text/plain
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3E8EE2000B
-X-Stat-Signature: 4x7my6mstzj43ny6a8hoqwexetetjdn3
+X-Rspamd-Queue-Id: CCFE6100010
+X-Rspamd-Server: rspam05
+X-Stat-Signature: ch44oud7aykj4pej6pscertfpstn3nhb
 X-Rspam-User: 
-X-HE-Tag: 1759293309-648131
-X-HE-Meta: U2FsdGVkX1/X0cVCusuPZnxM5UZax1+LsZ+lIk+6MBUXpH0Hp5fcvKbsG7tyPLBXPAlL8yDUFWuoGcGCpjVq+JRHR1vD90Nd+7Gp5ZQhoARudP/zMzXOUECB+ZaONvGlDhpaUrGhcX/6s4HdzmOukpliEOiY6CLEXJXXFus9FdtsLHbqKx8QLNT33AoiD1YrzOjKTAtI/v7nqWIMI72CrUG8DFhMzqDgo6hw1neJwDaiQWDtKdOkMXJw/sC3l5WNd8OwPe56jAmVHFvYrI1M25j08uyVsI1Ps/rV/Z7ht8+FEsOX1maypgk/krdPLzAjypmR8RI10PGVJUAiYSIQKkWdbAd8daFzKTbl4a5XpXFbIyi3xfnh+G6SC5kCeV20pD3CEDzcaC4hq3S+2q7m6ZL1ETTlKaZAlTBPlGWmWzcPt4bJg47D4UADUma/Vmj0ENCl9b2E6VXQLoxsIddRZk0KU3g6m9sjdXITu6aG5aO+NL9jjhjBkD5ZA0P40Dc4RxmvzYP9WH5Q3SSrO/+pVA4NF5niQjfWsOCmMfTW7R2urET4Glqfb6dQgGi9TCDUPuqwDk5sBhaVQgnzcrcFN13wiINd4s+Dp/oxZ7CokH6c3An51nD4XfOhD/a5v9BT/RHQqF0M2LWEsiSzbC/mofHVhICskF1W+BaoPGqNmoUcU4NoYZFNE/0E8MKgTGR5bgvOkky48/AiFwcl6WdmI5ekk97xn4LZmwzR2jI9tdHJ+njaaBeARMOHQnczKk8YoJdkHdIXzmHVZ6w/yaCatilWj73RH2cgxM71arQaKzDftbMHodge/9UNRA6xFrEUTVcas0fqHsHoIxGwwtDs8v3hSGYtzVGYSKkhsoIvtjLX/nqegDp69eISJA87JMtOkRY+PDdHAY8dUw0JQJVR1AJ8TUUCN8Hcykk3N7INUwrXVo1JXsug5F4vUyRqTfgtkQf5u7Ywr0xwDGChGK2
- ApqbxdBN
- B7Hmx1KVlb8QNswiu+DLG79zb/B/MC8XKvxu3TACDapUoDPxP0WlK6wLke/rVtQOJM0USHin5g3kTeplZB1GbFPUkhDkk2chSKvhC+VVz3rvYXos=
+X-HE-Tag: 1759293495-88607
+X-HE-Meta: U2FsdGVkX18RoH9YPvsBhkcpe4zqycViYA4sn0U/ErzJW0A2D3+sVMFxVcq2c3GX+VWJXmXOn0h4Uix2M1J3dx+qutBN36BOcw2+TMwCt0yiRjrzKdXialWyPe1NU02+n+kPgtnaWVaIu+haYICFpizGVFguV7Jid8jClKjjjF466ecZDfi0bIDbFu3QMzHn9ZMiSscRFlr6JxSgfq+11iK/2NM2v0N6ONzYMhOcnbknORBm3YbB/K3TWC8zs3tBEthkaX6Lh9+/ryA3TxJLecD7Sx1XI3znKopMh29yzrZSlH8aThKnF5eEuBXPQPLo7HPxO/0SaBQfPkExdvuTXTyHFa+WOVK7bJWiKi/6nwhgTqHgI/0ZfMchspswPubGbCSVdt1EeGvUsaJFz8NRKtfmBl0CWkt1KHQsdi6KZNv8wsYuGcSv3xdrrGmjOC/wmU12YQwwLQNC+Hpsz1Wtr5oOUtlMceBkjT9CEYI8IHu5XDWVu1iv2NSKcV1KYvxQLk3L5vFNhC+sLleleJIKkknUOxpvtSadaXZJqW1ySH2/WvGwmVPDHT3499yjylCZ6cdUfrse/0T0SVwE+j77b+kO4fNBUj0SvD81VihqTULI4DXxDPvJA9jY0xr02QG2wd1j+N9ksp4WbrELvRk8LaCSzeAWGMDC4XYM+yWn08jrK4h6C93LIbQEh7smvMxyQGXcS8Z/dWjaoOKuFDizvAklfua8pMj7S+/RJf9Bp6hWmyDwdUW0Os4B/1pvI9/FXHOLmuegX1otW2DuxnZGlskqI8ZKShEOOHhEYCD8JIIrrfSfhX9oCCfdOq3SfNqLKU70Y7z4lJZLfov4IPHjUcJrWykoxKtql0Pr9NZdQpmXWEoAo7Etk4uCYPQXlnx2k/v7tDQSPSGMbEMdjb22alOsNog2V0hnZGzOXBo8K/n/w3bKEa0ZpeXweBjQbPdvvZIWqSC0ph90MWqm2y3
+ 4aXZp1Sd
+ QmifpzmooeqBE5DLcvqrzLZLrtJAhEgjmYsD2Y93DWS9jef6Xo1RQ/0uTsNtx2Onej4cMl4OfxiDAR3TCHNtnmQM2TLFW/Sin/MpoHpjLS/9+9E6NFt4SksCqQVSt2fKQc/MiOr+SJSAAXeL/Jz5ZGZGYn4ka3hGJfJc4KyjFCYpGLdEgbhzKn+oWsU6hyXZbf//zlNiBp6Z4/KVAmpK0vFiIYzTT0PRHI9wUiKstr6wZs7+PNVtYYOdX1++vTaoMDRUhT0JR1w2IlVXNn5Sywcgrjouql3yK6ECYkpbLwwR1vNMPvpbnhiiRXrBiLeeq4PYYTKau0/bJzyLmrnPXE4xSMcr3c2JLswQkPtPEDpFVZ8EPwUbi2KhqlpFm1O6zc4orGvS75kzeqlHxLJX6XNxVrsVDHs2QV1GfP+Coj93XQnTeZcikNGdgUCkuWMnT+LJlnzgSDpCY9YYwYkpXE5JPhblGgEkQTAUQjUe55kokiYfskHGcLyQe/HICMD/ck3Msk3axKvk8WCvxABeGRLKHi6wQ4WHdqOHdMKmBnCy2o9yAqUztXlZzBQSTG0J6InP3XmqvEqSrZKPoH+H9oWpFjgextd1yXcfrE4rij4ougLmT3Lz23tuTWA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,86 +129,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There's no user of swap_active_head, remove it now.
+> On 30 Sep 2025, at 9:55, Vlastimil Babka wrote:
 
-Signed-off-by: Baoquan He <bhe@redhat.com>
----
- include/linux/swap.h |  1 -
- mm/swapfile.c        | 20 ++++----------------
- 2 files changed, 4 insertions(+), 17 deletions(-)
+> >On 9/25/25 10:50, zhongjinji wrote:
+> >> It is unnecessary to set page->private in __del_page_from_free_list().
+> >>
+> >> If the page is about to be allocated, page->private will be cleared by
+> >> post_alloc_hook() before the page is handed out. If the page is expanded
+> >> or merged, page->private will be reset by set_buddy_order, and no one
+> >> will retrieve the page's buddy_order without the PageBuddy flag being set.
+> >> If the page is isolated, it will also reset page->private when it
+> >> succeeds.
+> >
+> >Seems correct.
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 5b7a39b20f58..dfc0cc9fc166 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -296,7 +296,6 @@ struct swap_info_struct {
- 	struct percpu_ref users;	/* indicate and keep swap device valid. */
- 	unsigned long	flags;		/* SWP_USED etc: see above */
- 	signed short	prio;		/* swap priority of this type */
--	struct plist_node list;		/* entry in swap_active_head */
- 	signed char	type;		/* strange name for an index */
- 	unsigned int	max;		/* extent of the swap_map */
- 	unsigned char *swap_map;	/* vmalloc'ed array of usage counts */
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 18b52cc20749..80b34dc86a95 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -85,17 +85,10 @@ static const char Bad_offset[] = "Bad swap offset entry ";
- static const char Unused_offset[] = "Unused swap offset entry ";
- 
- /*
-- * all active swap_info_structs
-- * protected with swap_lock, and ordered by priority.
-- */
--static PLIST_HEAD(swap_active_head);
--
--/*
-- * all available (active, not full) swap_info_structs
-- * protected with swap_avail_lock, ordered by priority.
-- * This is used by folio_alloc_swap() instead of swap_active_head
-- * because swap_active_head includes all swap_info_structs,
-- * but folio_alloc_swap() doesn't need to look at full ones.
-+ * All available (active, not full) swap_info_structs protected with
-+ * swap_avail_lock, ordered by priority.
-+ * This is used by folio_alloc_swap() because folio_alloc_swap()
-+ * doesn't need to look at full ones.
-  * This uses its own lock instead of swap_lock because when a
-  * swap_info_struct changes between not-full/full, it needs to
-  * add/remove itself to/from this list, but the swap_info_struct->lock
-@@ -2539,7 +2532,6 @@ static void setup_swap_info(struct swap_info_struct *si, int prio,
- 	 * the plist prio is negated because plist ordering is
- 	 * low-to-high, while swap ordering is high-to-low
- 	 */
--	si->list.prio = -si->prio;
- 	si->avail_list.prio = -si->prio;
- 	si->swap_map = swap_map;
- 	si->cluster_info = cluster_info;
-@@ -2553,8 +2545,6 @@ static void _enable_swap_info(struct swap_info_struct *si)
- 
- 	assert_spin_locked(&swap_lock);
- 
--	plist_add(&si->list, &swap_active_head);
--
- 	/* Add back to available list */
- 	add_to_avail_list(si, true);
- }
-@@ -2682,7 +2672,6 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
- 	}
- 	spin_lock(&p->lock);
- 	del_from_avail_list(p, true);
--	plist_del(&p->list, &swap_active_head);
- 	atomic_long_sub(p->pages, &nr_swap_pages);
- 	total_swap_pages -= p->pages;
- 	spin_unlock(&p->lock);
-@@ -2958,7 +2947,6 @@ static struct swap_info_struct *alloc_swap_info(void)
- 		 */
- 	}
- 	p->swap_extent_root = RB_ROOT;
--	plist_node_init(&p->list, 0);
- 	plist_node_init(&p->avail_list, 0);
- 	p->flags = SWP_USED;
- 	spin_unlock(&swap_lock);
--- 
-2.41.0
+> This means high order free pages will have head[2N].private set to a non-zero
+> value, where head[N*2].private is 1, head[N*(2^2)].private is 2, ...
+> head[N*(2^M)].private is M and head[0].private is the actual free page order.
+> If such a high order free page is used as high order folio, it should be fine.
+> But if user allocates a non-compound high order page and uses split_page()
+> to get a list of order-0 pages from this high order page, some pages will
+> have non zero private. I wonder if these users are prepared for that.
+
+Having non-empty page->private in tail pages of non-compound high-order
+pages is not an issue, as pages from the pcp lists never guarantee their
+initial state. If ensuring empty page->private for tail pages is required,
+we should handle this in prep_new_page(), similar to the approach taken in
+prep_compound_page().
+
+> For example, kernel/events/ring_buffer.c does it. In its comment, it says
+> “set its first page's private to this order; !PagePrivate(page) means it's
+> just a normal page.”
+> (see https://elixir.bootlin.com/linux/v6.17/source/kernel/events/ring_buffer.c#L634)
+
+PagePrivate is a flag in page->flags that indicates page->private is
+already in use. While PageBuddy serves a similar purpose, it additionally
+signifies that the page is part of the buddy system.
+
+> I wonder if non zero page->private would cause any issue there.
+
+> Maybe split_page() should set all page->private to 0.
+
+> Let me know if I get anything wrong.
+
+> >
+> >> Since __del_page_from_free_list() is a hot path in the kernel, it would be
+> >> better to remove the unnecessary set_page_private().
+> >>
+> >> Signed-off-by: zhongjinji <zhongjinji@honor.com>
+> >
+> >Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+> >
+> >> ---
+> >>  mm/page_alloc.c | 1 -
+> >>  1 file changed, 1 deletion(-)
+> >>
+> >> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> >> index d1d037f97c5f..1999eb7e7c14 100644
+> >> --- a/mm/page_alloc.c
+> >> +++ b/mm/page_alloc.c
+> >> @@ -868,7 +868,6 @@ static inline void __del_page_from_free_list(struct page *page, struct zone *zon
+> >>
+> >>  	list_del(&page->buddy_list);
+> >>  	__ClearPageBuddy(page);
+> >> -	set_page_private(page, 0);
+> >>  	zone->free_area[order].nr_free--;
+> >>
+> >>  	if (order >= pageblock_order && !is_migrate_isolate(migratetype))
+
+
+> Best Regards,
+> Yan, Zi
 
 
