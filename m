@@ -4,119 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBD91CAC5B8
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 04:17:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89F33CAC5B8
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 04:29:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C43998E0003; Thu,  2 Oct 2025 00:17:17 -0400 (EDT)
+	id D98718E0006; Thu,  2 Oct 2025 00:29:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1CE68E0002; Thu,  2 Oct 2025 00:17:17 -0400 (EDT)
+	id D6FD88E0002; Thu,  2 Oct 2025 00:29:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B316D8E0003; Thu,  2 Oct 2025 00:17:17 -0400 (EDT)
+	id C860B8E0006; Thu,  2 Oct 2025 00:29:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F6D08E0002
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 00:17:17 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 38B6F1D449B
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:17:17 +0000 (UTC)
-X-FDA: 83951864514.26.B116DFB
-Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 56B6A40006
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:17:15 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Mv8s3IWG;
-	spf=pass (imf07.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.217.48 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B500B8E0002
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 00:29:28 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4314913A9AB
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:29:28 +0000 (UTC)
+X-FDA: 83951895216.11.2ABD2D1
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A576E180003
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:29:25 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="kblPw/TR";
+	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759378635;
+	s=arc-20220608; t=1759379366;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ctQddUgZm+88vHmtPzUekOskf2BJsO+AnrtcChvOlmA=;
-	b=rCRRpMaqF79dkGzLB/gQQYgno9tWdOOe0pbs1Vh1eYeowAwmC/xTaouBJA49sfmHx5pLDY
-	V21ZwkfFd8itHBwAxdBsvzqOOUhoEj4sMpV8AVcM8Dh9INbVPzXKoiAtaHqjiMraaB6gbT
-	tz0oTuYt/CTkBZ3yv58EABfHAfQuGow=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Mv8s3IWG;
-	spf=pass (imf07.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.217.48 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759378635; a=rsa-sha256;
+	bh=NHF6h4Ls4dHg3uTjT8RkkFkU4hLoyL8d6PtCtHg7MP4=;
+	b=GhaELfKGc6StB5Q21w+vtDL7AU3hX1jkuAydmAC3bdrizTHFAuD+scgITp37JIiyWIKeMm
+	9nJncRx/o873kf91lOm59H7HpJYgYa4CEWUowET7Bi1e+54AFH1knuHS+3H/goWuaCtn6A
+	AbwIDUO544cAHgiwE4QJ5pzxMBbv4VQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759379366; a=rsa-sha256;
 	cv=none;
-	b=qUHEOMzfb5ftTQXZLIc5gu9p65CArtmjEk1r2/RbnGgNMK2LlOCvDNpMZ6mnwDcgzZEw7a
-	vfaXzUX4RUJAtYKMEWqZ6EStLMDX1bz1CzxUJyzfB7m8bvI1WZlX1dkxh28usVXyuw6Nbe
-	7Vt64w5XgVmKvg1R5JVS5sIB9f9uz6E=
-Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-5aa6b7c085aso768899137.2
-        for <linux-mm@kvack.org>; Wed, 01 Oct 2025 21:17:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759378634; x=1759983434; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ctQddUgZm+88vHmtPzUekOskf2BJsO+AnrtcChvOlmA=;
-        b=Mv8s3IWGYdVZkjzP8vCMR6x/2eSFNmRa99cBXXtdSNffZrPrfORtBntSB4yltszo4Z
-         4NRG1JFWmscrR/xKZoQMYcXGKgSJP8kk4PXeG4beojmT8msdWv8UqzuCl4Ttogv86X45
-         tsxJASwRNNTtx8Gaj2AGPyCpifsRjtDT0H1p6/hP1bCUP9eirLp1aAoDA70XBzxahIZE
-         UdvO6JKJuKJTScPdCsXG0sISqbZ/z0SCXq/dnQkHhe2vdrGgeNKkiy3YmbIq817U7zWQ
-         pXmO25rlE+t9vgfBsa7wio0QGOKCFrYiVZS5QvMNmxX+58wKBQcRTocc/QN2YmYRP2gQ
-         UKtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759378634; x=1759983434;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ctQddUgZm+88vHmtPzUekOskf2BJsO+AnrtcChvOlmA=;
-        b=ZNA+RN4WoUADFCcaLpi4qNkHUHLqtNxp/ivBoq/Mv0WmGhEKmyOIxIYI7yu1VB5UAm
-         2lxHVCnddmZRQaQcY2bZzc7muGX/yydgEL5E7jckqbC/N12EI0lpdUmBsMicH6+xDIa2
-         imjVsojlfPzvaov/5KbH6ERw0ioyPWMnCCXu3IS4BXwVrakW9Wp2B2xDpqCz4M4/oAqz
-         1/17ZnG65EsVhqfvRD6taOTdV7DZ3EJWKroNVWkaeWSIgZ7nfd4i2+yOOx1zdikyKXz6
-         41QBB1OuJrnZmKY9aVarrlLjR13IYBcjrAakb3LMFN7kYUibcxQ6e2bfgBP9IVV2teTb
-         mlMw==
-X-Forwarded-Encrypted: i=1; AJvYcCVA3vQ8Hj3Pi6Fr66WGG2aiaibb23r6dxasCZ+G9Bjq/pB+GLhch5Ln2ljhwcPWghHDB1grbbk4Iw==@kvack.org
-X-Gm-Message-State: AOJu0YysJEYRXKc0vxi++qngSMPlwj1CxRBQgj5oJgP5jsCjPytigBM/
-	KdxYVFf5BpwBGLoOzGiWcq43y5BShRFsGW/oX4mx87eO+tOSoa8Fe/QMSlf+8XbKi/I6EsvRlrh
-	bBrKSsYnYl/DAUho9lrWCQ0B1zLOs+4o=
-X-Gm-Gg: ASbGncseeNyIZr+1h1IF2bqsRCyPydBNy8EGf7zPzn34MBb2YggY2KS6KgATrBiQuVr
-	NZtGmzWKiC8ylQZ4WZldDh27C0fFlsEkrRF86bNlYrNgK27peCi/CqlV27FmcQHeAxE8UiAwM5J
-	lODyfVz+fdDmdVCWo+S2RFhtwkfUrWJUw9X5wVzk1iRO4sn8hCMUiSJsxgZHJmqUM/oqwSgbLRD
-	kfOlUkIRIUn4Hmo5vsvCgatpaWNsXnkh7Wsd5uEKvl51zYwSakDjpHEzs75RQG3qpkzub1YNM4=
-X-Google-Smtp-Source: AGHT+IHtvWQt8jonztmIlXZVLrosCzlBFZCwfKRU9/rXACxnEYGw3JcofNOIt435bpI1Zm7zqg5PCoJh2gMscknY7Rc=
-X-Received: by 2002:a05:6102:41a1:b0:59d:b0f7:664c with SMTP id
- ada2fe7eead31-5d3fe7043d6mr3036274137.35.1759378634290; Wed, 01 Oct 2025
- 21:17:14 -0700 (PDT)
+	b=OekNJKcWtnOzkscwOqHgEZGfB/FqbY/NxI7dBSowE2KuIvLLk7btwsUGD0VY2SxAukcTZr
+	4XDsvEFb0Z85wxInVspQnIUINgUfyuesJaOIe76V4vpWlTKVLcquA6LNY2Wi+dPZvCFD26
+	gHfWdpzbuxP2GFxTfczdsYr1vcqcACg=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="kblPw/TR";
+	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1759379366; x=1790915366;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=9f+HXNcD7IOFZER/ertfy9YqZjvmxhL5wyEiNgnR4kw=;
+  b=kblPw/TRTxqEnWD6cNjUqdZyg1hObOC97mUQxIMKb2Hg9sllY+QQqBqp
+   Az0w7kVZhlofUX8DtyeOpGnd/T75QooVH2OecHBqsbwjRWg4tf59TIi5p
+   Um6DXM+3YnBTMrYAsLd/ckcqDOdJpF6euxzy6XL0xtZClXhALm9mm4bL7
+   hd+WY6sdbDsPeI+JqYqRl+itlOPdVw7USRTfkEpk6Fydz06aTBSLsaTCe
+   TfJwFpKWJeW6XAUerf3k/ydj69Rp+RrzEBC+wZ9JS/Qs/QkhqzKYpCQ6z
+   MBnxE+M78ZLN0KCIl01Wiik5VonsPy5w/VjmSUS2merjyY2jQtngwRvyk
+   Q==;
+X-CSE-ConnectionGUID: YrhKulUIRhGTMzBM2HGPkw==
+X-CSE-MsgGUID: /TpfYclVQSioz1UphDpUpQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="73016727"
+X-IronPort-AV: E=Sophos;i="6.18,308,1751266800"; 
+   d="scan'208";a="73016727"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 21:29:24 -0700
+X-CSE-ConnectionGUID: LZEq29e4Tqu8t5/Q3RYwFw==
+X-CSE-MsgGUID: wbDqmC1RT0KGjEqOh3Vncg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,308,1751266800"; 
+   d="scan'208";a="179734321"
+Received: from lkp-server01.sh.intel.com (HELO 2f2a1232a4e4) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 01 Oct 2025 21:29:21 -0700
+Received: from kbuild by 2f2a1232a4e4 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v4AwR-0003Z5-0K;
+	Thu, 02 Oct 2025 04:29:19 +0000
+Date: Thu, 2 Oct 2025 12:29:15 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jason Miu <jasonmiu@google.com>, Alexander Graf <graf@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>,
+	David Matlack <dmatlack@google.com>,
+	David Rientjes <rientjes@google.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [PATCH v1 1/3] kho: Adopt KHO radix tree data structures
+Message-ID: <202510021229.mKL5i2Vt-lkp@intel.com>
+References: <20251001011941.1513050-2-jasonmiu@google.com>
 MIME-Version: 1.0
-References: <20250919212650.GA275426@fedora> <CAM_iQpXnHr7WC6VN3WB-+=CZGF5pyfo9y9D4MCc_Wwgp29hBrw@mail.gmail.com>
- <20250922142831.GA351870@fedora> <CAM_iQpWO71vSV_0qXiUYeKYZMYF0xWNz8MrUVRkqKwDEtQvKqA@mail.gmail.com>
- <20250923170545.GA509965@fedora> <3b1a1b17-9a93-47c6-99a1-43639cd05cbf@redhat.com>
- <20250924125101.GA562097@fedora> <CAM_iQpWRZ-vihMEa=k-j9EYN9itUeZLhZ14AoCvZ9mturFxAyw@mail.gmail.com>
- <20250924190316.GA8709@fedora> <CAM_iQpXnvyZWrv4W45SBTDV-tCXU4Fz1=S8z_0s5en+U29vSZQ@mail.gmail.com>
- <20250929151149.GB81824@fedora>
-In-Reply-To: <20250929151149.GB81824@fedora>
-From: Cong Wang <xiyou.wangcong@gmail.com>
-Date: Wed, 1 Oct 2025 21:17:02 -0700
-X-Gm-Features: AS18NWBSFERQychThKDKhC7xP4aDfnWKA8U5c5GLpDIk74WF-1WcxMsDvgDcjOU
-Message-ID: <CAM_iQpVRruWNnMtP2BKfQJrHnA_B+ea84GbO_C2rF6cuJcj5_Q@mail.gmail.com>
-Subject: Re: [RFC Patch 0/7] kernel: Introduce multikernel architecture support
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, 
-	pasha.tatashin@soleen.com, Cong Wang <cwang@multikernel.io>, 
-	Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, 
-	Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, Changyuan Lyu <changyuanl@google.com>, 
-	kexec@lists.infradead.org, linux-mm@kvack.org, multikernel@lists.linux.dev, 
-	jasowang@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 56B6A40006
-X-Rspamd-Server: rspam05
-X-Stat-Signature: n4hwgbautx8ccxah66hu9f7xs6u5xbxb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251001011941.1513050-2-jasonmiu@google.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A576E180003
+X-Stat-Signature: rjr336qysj9hciw8u3m5my6orrw7ywiz
 X-Rspam-User: 
-X-HE-Tag: 1759378635-372988
-X-HE-Meta: U2FsdGVkX1+nfMjPz//uJyXddPbeQ0I2YT2efVU4zIHlEUa2kBANQFVtAP+gs2SvoUyZq3ci/XojFMFmwZHjPtSlSw6Lu/laOBCNXUy4YmAWZIo/VSSsZyAXIM2QUVC+HoTCJ2KmLlqFUxxGdmQ9YMiGWLWn0GOsJZmD5TdgTVXTl6HwzuqSVvH2yfPG8lEWHvUanQ8FSfDpvsBrKFc0lLavQjqr+cCfVmGnrITbp4GEFP6kITgK/wqASO1v9fw3q8P7iykTu2hni7NdxX7468AdE+rx6EeRkX/BttNdn9nkAGJFRe8lVWuneV5hLqD2mP1SdTx16nK5oQzR25J5Fa15Y+N/HNId3IlN5HGCqKsRyWEa6/nNrbHQVoYHSd62c7BWJti7wLc15iJ67rcQI+yWDzWVIxMudUaIleMzA0RFf19LDB17s5BkLBNJGdxyJB1QjxoiPhy+U2OFYb+ND5wbsWcszNqH/rdjA3CWwGsRR+aJL0zezSOXU0K4anwLWnYg0cS0+HfB/qZr6rIb+i/TYJxqlvwgh19Z81pgOVWGN2LWw59lVR/uvvCfKLTGvR2ic//oNh7455VOdir6F8OEH/Zijzva4ADZkEE9XGdn8Ls2mJUQi6tNhvNoju51ZgQJqWJpcnTM9QTzgbJ+Bfw+c/001EiyfrffFzeryH9RtWD3EmY8VlG8PCizqve3nqAch9sYZZNBNG77iUgmMlqFlf+IWoaGHCmnh4IGLi+j9Z+7WRyMh3zZQg9ht4T9tpxiaCTPa+92Rc6duymVD90J67rG2VJ66ID2LlOLrLY4KM08u4CjKyjJielSApwHEklQ4ontoqK/KExYjlAklOiyvGXZSMCAKQHg7AphlMr8ZQEibr0dO4qmbC5SG8H3j1XjsOOGhJEwX2gLi6M8UjeAHPxf4mhs1GgJoRYzZsNTXAxUdU1q1y8ovRey7wUGNTx67mi2aw2Hiawkf9r
- hsal3LK6
- C1tenNve2nm2aD5bZ7SDbiz3eE9XKMnZCRYH8/QR3JLXj7HUHeKgQXJ3M8vvljWgbKeKNkpCgjJ9z43Jg1vRuo/aUWfOuAni3QuGyXtbhYqb/3zx2gauAQ018BAgUejNcGxqBV4JzG4b14QpArVkcjDqU0hjZC+RQsJOb7+mQkpTWIFZhDQWZhk21TsYLIPHdVgIlOc7EgSBfHqgTeVqC6ubIZhn5C1ZrF5LXW1+4AkXy7HcQJZaWXx3liPkBVCf3ZmGFNefyqteq67i9wIXg6wWEUBiaY/YdvA+gcv4sjB5UfiYlFriepp0/TuYIbEtsxs0tMFtjdKC+ivKsln9+hmbp1q295ddDHeGeMWSidZ5QcA2VCiLoiqKSmw==
+X-HE-Tag: 1759379365-524237
+X-HE-Meta: U2FsdGVkX1/FsYsZSl1rjAd/DFa0CIKiDx0+AM4tXGgpBl7zLnSQW2clQvbyaHSXg3uGXTNXMM8Fgr7IRCL8dzzr2MkebhuUcQDxe5qMVol9Lv/6GBCTEW0q5ruCavlBfW3jRZsP0yYZ7rmdO7JsLcXxCLDqihJNN1RUegfLcnda8MZVhV9AwuLqgWFy8cl/zlcYxrP1aG/Xep82BWUVb0OaVXCiMKIMt4u+5Qlm+x1UwiBLS/4BC3J6vHQz46BaU2uqq4ehDDMooqMfuEXH1uqHOZS5GGpnefr3uIadYcy46o/dd3oRV8UXLrsqbVWHyqjYHcWgSUN65UEpcWmpygxrXYfqp1fCbs4S/Pg15yxwNy38f8EWVCh6Iab5zi3uJ/n8s6jUmLwcOCcv/6EjVkg7RjinRK3TTkokfQG4F8u36xdt4bPFFuiV88W13Bk2Cr+8QKrL7pxP5K9xF41hh4lFPUDLtwvGn55PJnRKWmaIampzmgAgssuwt8jF52hBgbeoUz33/8CLQvU64j31b34IVa9gmHg97UDBFC5H9nj3nuDrgoZKE/Y6EU2ntdm0BnBuCFexoMI3JJlgYadqfOlxZxlhOQ8huKtiPKEXICaUPlgYaza5iN6AumA/1evsMA8j1WqivnWOXmvxsqq3PMqCXUfMijx0wcueZyRjixfcvuF6cHr+VwEARuRhgaF8sTYK2RWnPWDg6KVEd4Q104bbUYFe82/4f1jrJ6fAVzI48HmYpKjkNAg0N69mzN93R/J+oVBH+oyOxezqxlPxvm6N+iFsdGrwSDXJkeu8M2jQ+2C2c26psBMQrFxTn1mmxc06UWDLjxFmTnXbTYZsoSzk+Tmpk/vDC0cs/de0LbholOATcW/p3fdhsbUxYihP0GvXa6rq795AmFaRhvyEA6kImhbY3vdst+/rEAuo2C4dB29ijjWcpZkD6gYclrJmvRLuozldgX2ff9cAyvf
+ FqN7a7C7
+ 7PlEJxGUu7Q/chB0Py/k9ohypi8LztUVzCZpxOWYvqdywHG7DLi49EXFZZGRxPEkvQLcn0/fDig2q1KvLO9D3RtAWcrT6InW02r6SFcenJf/Sz35BEarL8JvxDYu60FzQPx841YBk22hgOCYjq/JW/nHjvJyzxqQK417j2/uzFhkC3P8JWu3akP0nrl3oITBoIm0fPhSkOHSo7tH5Nbk+sagfz53/QFBi1cN1Bk/Is7Rs1xVcOqxBj/7s7/FFi/gvaZ9nX7I8c4Ht7/xoQpjAYVcqArHx+YjGX+agpgQxRs2SsY0jJMEsOlE+rIjW1nQur0P7X9pm8sYvdMJ4JMHMcJY7sw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,79 +115,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 29, 2025 at 8:12=E2=80=AFAM Stefan Hajnoczi <stefanha@redhat.co=
-m> wrote:
->
-> On Sat, Sep 27, 2025 at 12:42:23PM -0700, Cong Wang wrote:
-> > On Wed, Sep 24, 2025 at 12:03=E2=80=AFPM Stefan Hajnoczi <stefanha@redh=
-at.com> wrote:
-> > >
-> > > Thanks, that gives a nice overview!
-> > >
-> > > I/O Resource Allocation part will be interesting. Restructuring exist=
-ing
-> > > device drivers to allow spawned kernels to use specific hardware queu=
-es
-> > > could be a lot of work and very device-specific. I guess a small set =
-of
-> > > devices can be supported initially and then it can grow over time.
-> >
-> > My idea is to leverage existing technologies like XDP, which
-> > offers huge benefits here:
-> >
-> > 1) It is based on shared memory (although it is virtual)
-> >
-> > 2) Its API's are user-space API's, which is even stronger for
-> > kernel-to-kernel sharing, this possibly avoids re-inventing
-> > another protocol.
-> >
-> > 3) It provides eBPF.
-> >
-> > 4) The spawned kernel does not require any hardware knowledge,
-> > just pure XDP-ringbuffer-based software logic.
-> >
-> > But it also has limitations:
-> >
-> > 1) xdp_md is too specific for networking, extending it to storage
-> > could be very challenging. But we could introduce a SDP for
-> > storage to just mimic XDP.
-> >
-> > 2) Regardless, we need a doorbell anyway. IPI is handy, but
-> > I hope we could have an even lighter one. Or more ideally,
-> > redirecting the hardware queue IRQ into each target CPU.
->
-> I see. I was thinking that spawned kernels would talk directly to the
-> hardware. Your idea of using a software interface is less invasive but
-> has an overhead similar to paravirtualized devices.
+Hi Jason,
 
-When we have sufficient hardware resources or prefer to use
-SR IOV, the multikernel could indeed access hardware directly.
-Queues are an alternative choice for elasticity.
+kernel test robot noticed the following build warnings:
 
->
-> A software approach that supports a wider range of devices is
-> virtio_vdpa (drivers/vdpa/). The current virtio_vdpa implementation
-> assumes that the device is located in the same kernel. A
-> kernel-to-kernel bridge would be needed so that the spawned kernel
-> forwards the vDPA operations to the other kernel. The other kernel
-> provides the virtio-net, virtio-blk, etc device functionality by passing
-> requests to a netdev, blkdev, etc.
+[auto build test WARNING on rppt-memblock/for-next]
+[also build test WARNING on linus/master v6.17]
+[cannot apply to rppt-memblock/fixes akpm-mm/mm-everything next-20250929]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-I think that is the major blocker. VDPA looks more complex than
-queue-based solutions (including Soft Functions provided by mlx),
-from my naive understanding, but I will take a deep look at VDPA.
+url:    https://github.com/intel-lab-lkp/linux/commits/Jason-Miu/kho-Adopt-KHO-radix-tree-data-structures/20251001-092230
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git for-next
+patch link:    https://lore.kernel.org/r/20251001011941.1513050-2-jasonmiu%40google.com
+patch subject: [PATCH v1 1/3] kho: Adopt KHO radix tree data structures
+config: x86_64-randconfig-005-20251001 (https://download.01.org/0day-ci/archive/20251002/202510021229.mKL5i2Vt-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251002/202510021229.mKL5i2Vt-lkp@intel.com/reproduce)
 
->
-> There are in-kernel simulator devices for virtio-net and virtio-blk in
-> drivers/vdpa/vdpa_sim/ which can be used as a starting point. These
-> devices are just for testing and would need to be fleshed out to become
-> useful for real workloads.
->
-> I have CCed Jason Wang, who maintains vDPA, in case you want to discuss
-> it more.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510021229.mKL5i2Vt-lkp@intel.com/
 
-Appreciate it.
+All warnings (new ones prefixed by >>, old ones prefixed by <<):
 
-Regards,
-Cong Wang
+>> WARNING: modpost: vmlinux: section mismatch in reference: kho_radix_walk_trees_callback+0x83 (section: .text) -> __memblock_reserve (section: .init.text)
+>> WARNING: modpost: vmlinux: section mismatch in reference: kho_radix_walk_trees_callback+0x91 (section: .text) -> memblock_reserved_mark_noinit (section: .init.text)
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
