@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5534CAC5B0
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:13:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07661CAC5B8
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:14:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10B328E0024; Thu,  2 Oct 2025 04:13:58 -0400 (EDT)
+	id 63B278E0023; Thu,  2 Oct 2025 04:14:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E0958E0022; Thu,  2 Oct 2025 04:13:57 -0400 (EDT)
+	id 612908E0022; Thu,  2 Oct 2025 04:14:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8DBA8E0023; Thu,  2 Oct 2025 04:13:57 -0400 (EDT)
+	id 48C478E0023; Thu,  2 Oct 2025 04:14:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C49D88E0022
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:13:57 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9AA5FB8ACD
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:13:57 +0000 (UTC)
-X-FDA: 83952460914.29.4A3069F
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F4A88E0022
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:14:00 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D83A81403A5
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:13:59 +0000 (UTC)
+X-FDA: 83952460998.05.D9EEA4A
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf25.hostedemail.com (Postfix) with ESMTP id BF74CA0008
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:13:55 +0000 (UTC)
+	by imf25.hostedemail.com (Postfix) with ESMTP id EFCACA0008
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:13:57 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
 	spf=pass (imf25.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759392836;
+	s=arc-20220608; t=1759392838;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=JUiqI60Iw8lVfta7nu3ww1/OLUvt8cdoB6792EPNA08=;
-	b=RUBXjsahtfOt17QNY6aIC7yIgBefJocVoNuHkqleRCD1divyCCUS+yjS5lo2oTmVH4U8p8
-	HiHQXRG/pMX2AY2elDjkZksGAkzvU9ZiT3vJv5xT9qgnCN7CLkDtKzuNhBWki5nfJ6KwZZ
-	xaqqQAFiF7ABljU3KhfjqDhxbCw5lTQ=
+	bh=Irf3Oyph52vEG30MuAN438PQS/OMGYpARnTVIzgPmmQ=;
+	b=5fde1VJiAVfA5IueFHVjtwhfK7coOOocdA2OuIfZavpJAwH/QOMenzU3B8Zx6KB7x/2nWx
+	PNuJF96YoKqpyKFf3ZuhiSfJhaU/rALFFz9QVWthgkrrOJyRKVR7fjw2Dpp7hxDb+MVI8u
+	Z1AC5++OlsyFxp9ttpvAJkAtAN9zRFY=
 ARC-Authentication-Results: i=1;
 	imf25.hostedemail.com;
 	dkim=none;
 	dmarc=none;
 	spf=pass (imf25.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759392836; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759392838; a=rsa-sha256;
 	cv=none;
-	b=dREILe/g+z8cyYgg4k6BUOSIZDxlia+bsXbhYzIpVaIvkOiaqjVECSDFSBUx4lF/F9Ucbh
-	Y/oSIqa/rlywu85fP91DNKhj5o7+msDjQyo8wjiqJg+H/eeYd9FlrYIivDWY8/qymERfEk
-	oepcx6iuQh6pJTKviNkbJZhwBGgkrw4=
-X-AuditID: a67dfc5b-c2dff70000001609-ee-68de340feceb
+	b=E0wPhvKG8qO4O6eINboXqiSSag75gdale0B0Axf7efMGEt6ks9vg5isVbslmhDOjy9igqG
+	8LGw8deRiiBSlpkcpM5Q30lUVV5ZvFJIOrupZ6xNqnaGBdMA+0a9MYox3EJhUT53poxH18
+	OLXEJzxTq1cvmXAtC8kT3HDxB70Fkq8=
+X-AuditID: a67dfc5b-c2dff70000001609-2e-68de34100f44
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: kernel_team@skhynix.com,
@@ -196,54 +196,53 @@ Cc: kernel_team@skhynix.com,
 	rcu@vger.kernel.org,
 	linux-nfs@vger.kernel.org,
 	linux-rt-devel@lists.linux.dev
-Subject: [PATCH v17 21/47] dept: apply timeout consideration to waitqueue wait
-Date: Thu,  2 Oct 2025 17:12:21 +0900
-Message-Id: <20251002081247.51255-22-byungchul@sk.com>
+Subject: [PATCH v17 23/47] dept: apply timeout consideration to dma fence wait
+Date: Thu,  2 Oct 2025 17:12:23 +0900
+Message-Id: <20251002081247.51255-24-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20251002081247.51255-1-byungchul@sk.com>
 References: <20251002081247.51255-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTdxTG/d/7v/e2nTV3HZE7ZyJpQkjw3TBzMrdl2ZfdLzNLluwDJmq1
-	N2u1gLYKVF3GSzs6N5l0g2aUTV6EVFp5aUWlAvIyq6wSW8FSlReZ2EKQaYBKZIzulm1fTn7n
-	Oc95zpcjIRUhaoNEm31C0GerdEpahmWza2u2vpkxptnxmIZQYTeG2IIFg8X9MwWBJieC8ZgF
-	gbk9jmHh9WMG4p0+BBVBKwnzLSs0zPTNIbBNF2KYHb9BQXw0SkDD5AoBk90lCC7Uemj4a+Ae
-	CVMtYnvFN4ag01FEw7PzbSQMTq6D/vLvaJgNVhHwZwsNv9itCIrrmmlof+JlIDizTMBIhZUA
-	p/tTGG+IYKhoTQa7rZgQyxQB5ZdviOcKUsE+MEjBH45KBpYndkK8Ogd8zigDoz+UY+gfC1Ew
-	E7HScK3gCQPuh7cQLAxNEOD6PkKCxRvD4H4qWjofbYaaby5i6OjsxzDoraJhzBWnoDkaJsDv
-	uyMmVV7CcM97mYL64SABnoG7JATKzlEfqflFcynmGz1XCd58/2+ad/3qQvxCfTHJ9z1/QfIm
-	Tx5f739O80uxBzT/ey3Hlw1s5dsrRxm+2n2SN/02S/EeRzpf1zFNfLY9U/a+WtBpcwX99g8P
-	yjQB2xR5rI3JtztrmQJkos8iqYRjM7jhWJA4iySrbI5/kZBpNo0Lh1+TCU5iUzjPuQiVYJL1
-	b+RCwS0Jfovdy02WxlZjMJvK+UMVRILl7G7OtBRm/o3fxDlbuldzpKI+OOHHCVaw73LmFybR
-	LxM9TinXVtP138LbXI8jjM8jeTVa04gU2uzcLJVWl7FNY8zW5m87nJPlRuK3NXy1vO86mgt8
-	3otYCVKulQdSRzUKSpVrMGb1Ik5CKpPkBx0jGoVcrTKeEvQ5B/QndYKhF70jwcpk+a5XeWoF
-	+6XqhHBUEI4J+v+nhES6oQAdSTn1aDGZ2980/snDFev0lmvDeQ51z5GXOunSB/Ono3ct6/tS
-	Wu9XnhmyFf1Y1r0psOfSdNpPpR2tdE3DoRSDd4/RNh+bicyR64eSGl8Vur5Nq2suORrNtB9Y
-	cztk6C38eNdx7r2RN7q+dtzMTM+/rulZ3FtctbHr5SGhxFndVOQzKrFBo9qZTuoNqn8Ac/ga
-	U2kDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAAzXSe0xTZxQAcL97b797aazedExvUNQ0IRqjMDNYTnQa/zDziwY1RjFZ4qTR
-	W9rxXMuYbFks0mqjm2JjS6SCBUPD2k5YC8uAlfDIyLaOQMUhKhUwHUIA8UFRXnatif+c/M4j
-	J+ePw9HyJkkCp8krFLV5yhwFljLSQ7tKt69Ofaz+6ILzYxgoaWcgPGti4Ga9G4PJc0MCfXdc
-	CIbDJgSvF200GJsjDCybu1mYnX/EQsTXjcAaMNPgbiyh4FXDWwyTXS8RWEZDGMonShiYcfyA
-	oGLMxsLEH/therhVApHgUwruz00hcITeUhBqv4hg2ZoNt2q8GBZ7emkot/QhqB4N0jDeEG02
-	dj9G4Ks7j+G/siYa+kOr4F54BsNflssYpgM3KXjWgMF+3ieBSpsZQentegzWSg8DzSMtLAQm
-	lygYspopcHnSYdgxxoC/rIaK3hed+mUt2MpLqWgYp8DycysF8w4nC//cHmLAoU8CW0+/BJ7U
-	VbCwNLoDIvZ86HY9ZSF41cLAneleyV4LIq+NVxji9P5KEePdZUzcVW5EFhfMiMzWltLEWBZN
-	u6ZmaGLwfkNq/VOYLIT/xcQ3Z2fI3zUCudaznTRXBFliaHvIHtn5ufTTM2KOpkjUpuzJlKr7
-	ysfpgib2rM1Vw+qRAV9CHCfwqYIxknEJxXGY3ywMDs7TMcfzmwTvj2OSmGnev14YCGyL+QP+
-	kBC6EsYxM3yS4B+wUjHL+E8Ew8IgG7PAbxRcDe3v9sRF6/2jfiZmOZ8mGGcMVBmS2tEKJ4rX
-	5BXlKjU5acm6bHVxnuZs8un8XA+KPpPj+6Vrv6HZ/v2diOeQYqUskBRUyyXKIl1xbicSOFoR
-	L8usG1LLZWeUxd+K2vxT2q9zRF0nWscxirWyAyfETDmfpSwUs0WxQNS+71JcXIIejVSrPsMr
-	H6hedOih+uizLwq+3L3meJtqzpK4oUPRtSj+mdWjYg+e3JbB6WQ+cnTnljeXPe6f2us7r7ec
-	aP1uNaieHG9cvpDaWzUyaD+Xvuv3FKV5T1Jl8+FkF7E+T5xY410VkrGJRxKcX+07mGLyX0xX
-	TfL6Y6evmj7cwD9PuD6vYHRq5Y6ttFan/B8Rux29SAMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0iTexjH+723vVutXpfRmwanM5LCshsWTyGdiOC8cSCiIugCtdqLG95i
+	y1sQrJrd9ISN4zo6081w2VxZM6isgUmtbEmbq7VqmivRRNfF5kRzrVerfx4+z/f3fb7P7wc/
+	Gpe9JpNode5hXpOryJZTEkISnmFJS0jvVq3ouJcM1U12Ct6OnEYw+s2EQ8mdOAExg0sEkbE3
+	Iog7XQiMXgMOFaFeCi4MHCPgk7UMQVWfSQQDD/+G8Nu7JLyMDiGw9n7HoLf1FIKYMQtq65oF
+	f4UHgSXUhcOH64J+09WNoL2ilALzcScJF00GIfyigwDv4AQGQaMBA3d5HSasocB4Yy6YLpzA
+	hPIBgzGrTQRPLwUJsOpSwNThI2EitBJcjf0iuBZ+RsJgn0F4xqOTJNzS9YjA8eohgsjzEAb2
+	sj4cHO/9JFTWBCk4HYsg8LVUU9Btj5OgM42S4Gl1k9DZ6CGgqT8gXMH1mID2qisEPGu5SkL9
+	Sy8GoZ4ACdFzyXD1Yx0Fg1ErvkHJlXTGKM5eY0fct3ED4iL1J3CupFxox0deUJwzaia4J3Us
+	d74jjbtT1SXizI58Tv8gTHLNDancpXsDGGcZHiE5h+0MtXXxbkmGks9WF/Ca5ev3S1S37o7h
+	h3x00RNfBNehRtFZJKZZJp0N6ALUbx7yfJnSKWYRGwiM4ZOcyCxgm//tIycZZ9zzWb936STP
+	ZrawTV9Lp2YJJoX1P2ia8kuZNex/+pu/8v9gG6+3TuliQfeF3MQky5jVbMknPXYWSQSPScyO
+	hOPYz4F57P2GAFGOpGY0zYZk6tyCHIU6O32ZqjhXXbTsYF6OAwk/znp0Ys9tNOzZ3oYYGsln
+	SD0pXSoZqSjQFue0IZbG5YnS/Q1BlUyqVBQf4TV5+zT52by2DSXThHyudFW0UCljMhWH+Sye
+	P8Rrfp9itDhJh/Dx/EKb5B9t/872yoUNSXQhM1S/JLXquyUvetA6b35WNauObP3Mx9QHFqT9
+	Zc5z1hatlSX2OPm9CfFh/59+YyXTmZGZuW3T5tJ34S6xbdZm/cY5mxQZyv9nmqWndoQZ2y7s
+	2LoyL155PzNB31Irf/fZfWTLRI3FPLrtcuLT6UE5oVUpVqbiGq3iBwsd8xhtAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0iTcRTG+7/XuVq8LMW3C1QDKSKzION0pcsH34Qi6ENRoI58a8Mrm1kG
+	kTpXll10tUlOyyyXOM21mbVkYquMNHVrZVJOmy2tnNllJqZmm9SXw+88z8Ph+XAEuLiBXCCQ
+	p2bwilRpsoQSEsLdG1WRzNpe2WqvYz505TQTMOrPJ6C0roaCfPNVEhx3jAj6RvMRjE3ocVBb
+	pwmY0rTQ4B9/R8O0rQWBzqnBoaY+B4Ofpj8UDD3+gUDr8VJQ/DmHgBHDeQQlA3oaPj+NgeG+
+	RhKm3YMYvPnlQ2Dw/sHA23wGwZQuCa5XWCiYaO/EoVjrQHDD48bhkylg1rf0IrBV5VLwsfAe
+	Di7vXHg1OkLBc20BBcPOUgy+migoz7WRUKbXIFDdrKNAV2YmwPr+IQ3OoUkMenQaDIzmXdBn
+	GCCgrbACC/QLpO6Gg75YhQXGJwy0tY0YjBuqaXhxs4cAQ3YE6NtdJPRXldAw6VkD0+Vp0GIc
+	pMF9SUvAneFOcqsWcWPqiwRXbWnAOPXLKYqruVaDuInfGsT5K1U4py4MrI99IziXZznGVbb5
+	KO736GuKs/0qJ7jWCpYrao/krCVumstrekvv2XBAuCmRT5Zn8oqoLQlC2f3GcTzdJTje6vLj
+	2chIn0MhApZZy/oc32eYYpax3d3jeJBDmSWs5cIAGWScaVvEdjlXBnkes5ut+1lABZlgItiu
+	J3UzeRGzjr2SV//v5mLWaGqe0UMCusvTRgRZzESz6pE8rBAJy9GsahQqT81MkcqTo1cpk2RZ
+	qfLjqw6lpZhR4JsMJyeLHiC/K8aOGAGSzBE5I9wyMSnNVGal2BErwCWhooSqHplYlCjNOsEr
+	0uIVR5N5pR0tFBCScFHsPj5BzByRZvBJPJ/OK/67mCBkQTbK5S9uxroPl3TIJLMJa9SLvcrE
+	+1k/uvfN3ryn9rTXNLB3u6WCNJK3dqw4cWhrf3x4QX9sxFTSw+F71cW+LUtxT/qzs/vLBsNu
+	L47KHdpeH2dtCmuy23u/vquNS1F7x/aTB+N2xjwSr1dc/lDLnkqUbHN0DJU+Zb58WK4KMX/T
+	2aokhFImXbMCVyilfwG1nG8USQMAAA==
 X-CFilter-Loop: Reflected
-X-Stat-Signature: zweec8eo3mxea4ne5sdxq4y9z5qjwrre
+X-Stat-Signature: 3nfzxiqd4ijxjwnfoixrjb37ghw84iyu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BF74CA0008
+X-Rspamd-Queue-Id: EFCACA0008
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1759392835-995057
-X-HE-Meta: U2FsdGVkX1+ot8kZ+u3J522aGmAubCLh0iNzzlXQHlsfW+PXo+BWGVUX/3Kq6u+57NWZ8/e8xm2Z4R/sfxt9x7cC2AIHnH4XAuluaL2naQY+SgxOnmrasj2j1junKLa8b3wG27tVVjo5LRxEQiiJc1P5e/81TIA8EAXw38uY/lw+cME7ywDhf/hFN4TvR2+EPay9SfLMODUCyxx+SLs6OLObB4gkf/SW1ytzG7XdBQmK7Idoaf0mOUYjbUtbo6zpgdy5lryclUD1QPCfKDX14m03YWvO8natmly3C4UVwW5ilFsqhcdzZeBnAnEfO+7RNvR2piKeISEiBbZT2NDyIr+Oy086tZb01uhJvFm0wDJnFut2+V0b/CUa3QuttOfUhpNtLywC0FItAEeO8ZI+MUNnw0EM9lx+l9NYeOLcA5UHUHMb2+SWPyxvaex6KHZgR3FnXsCn+a5+rfIPajTrjvnC6jPw6FqAHhszYdU5fuDy9qu/pHhqZG7FuRMjf88Soe8mhtd8TNsB86VpOYGRSP5cwJuN/bEut4ijdYQb8lBinX6c1EfW4NwBN33js3BV8ElwhFOMSKCWCSWqfYARPLAa+njSUpNJaFoYkYtvllHix1tixa6ZpRVaygpzbg3UbtjFjDs59Ee+yEJ3cQUjX8Yq+e9PWnmqcKUYdbqDqU5UbG0pFtMbFEwi/y9y2FxrmVeUlkTCz9xEiUWqaAzTExx5UxDTwfJljaU8QFSBgCmAqmgSs3cNmab3+WOPHrkedP3VKTrxhZCKjf9UoctOcgtoNja2dtdtoOVf+fvDc6sPfw51vy6e0YCVhih8GdOJUjR0LLs0iRb7IDMtPJvINK4tB1/qpxPTBkacahJMS/uSrwmmgGf/pd6m9tUvliHZEHwUdrfqv8jrqCjUsg0luYmRy/oErI1b9QmmOpC+foi1GyFXL0y1xMB09EbTh/6jFBFV6sTNoxg600s05Mj
- vGVol1Jq
- 8bG6W
+X-HE-Tag: 1759392837-371645
+X-HE-Meta: U2FsdGVkX1+YJ3QzUtTJ+LZ3slKaJlw+/A56pzn4zOPKpm9jOLoohTeOqcAhAWeHW3rX54JkUPTxHy0y3SkAxp78mSeGbPMBp2HzmHRusl/Dpo6A3QVMfxzgBfr9yIhx+ZzI+EZU2rvalUdgWHkKoN/QAq47XXMeTxyugMxyOkYLd9qoqTPX8vfW39wyqV6W/tA1bMBIDhKHgsZfcDgXdcXxWqe5KYFYBkyeXSbn7DHts3FbFNWPezzkMn4DLMEhTeyucEAssNI9u9YRjbQyT/6rRvWzv1CzNgiT1NGTX+c/Dy0svAN8kArOeIfBEvE57b0+y0S9z8zb5razAkDeYqQBvOQTK8ZkZMqk5JdwQnLNt2y9BJxSFGDIoAJeqzvROhUmxATaaECY7wSb26RticdpOnR+XlNduGiywt6N4kyZuU17RsDerv/2EvC3/z149ZlZQ9srFiWDrdTO35XG1u28nGbKU0go24j1VeUYdXtcCe5ivlNbUH0P8FIP54w1Key+UrnVd/zKewj2fiQ++Nw4oU7gtRrIC2B5aNgQJaADCD1B4uCShszR65gOmZMRMyrS5AAuzp7Vrwmonr9WLYL+jUTixSPj8r3eDjTaw7+tt3n06+nBBsclT8Q4XVQTkwLmbGb9peEBzqSn6zfodiCe//lSQnyBJs+Q0r8BWAryVf16nPhZq18GOzOTJbhduTyjgwz9R18sEJaueCp8eCjZ3+WQPJi8rxzSc30DKgGVi3oXutWYl4Yby8MlYnfgWEOLO838RYCj/dMwtdoLvX1l/eMkZ4wGd8lpklH1qDAJ3p1pg85mekHiJZVYmYLnYJcoEKVIQyWvDeFEG6xP3STeNA2qd7m7IcK1Qe+PJCnqVrpFJ1VhiNxNNMMTeNaYZx927luFmz/IRUcyBkCfU1oN9oaoXeG7fS4NOw3REbjXOxNUEZPGhkWb6bZJc8ejP4UUi2eWnIy8rOqxjmo
+ lwSQY88r
+ 9V7sD7hAttk4uLQdR7PO7ce39TVAGaVBGOLA1CryJjpfqGX0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -253,27 +252,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Now that CONFIG_DEPT_AGGRESSIVE_TIMEOUT_WAIT was introduced, apply the
-consideration to waitqueue wait, assuming an input 'ret' in
-___wait_event() macro is used as a timeout value.
+consideration to dma fence wait.
 
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- include/linux/wait.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma-buf/dma-fence.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/wait.h b/include/linux/wait.h
-index 65dd50f25e54..902a2e5381db 100644
---- a/include/linux/wait.h
-+++ b/include/linux/wait.h
-@@ -306,7 +306,7 @@ extern void init_wait_entry(struct wait_queue_entry *wq_entry, int flags);
- 	struct wait_queue_entry __wq_entry;					\
- 	long __ret = ret;	/* explicit shadow */				\
- 										\
--	sdt_might_sleep_start(NULL);						\
-+	sdt_might_sleep_start_timeout(NULL, __ret);				\
- 	init_wait_entry(&__wq_entry, exclusive ? WQ_FLAG_EXCLUSIVE : 0);	\
- 	for (;;) {								\
- 		long __int = prepare_to_wait_event(&wq_head, &__wq_entry, state);\
+diff --git a/drivers/dma-buf/dma-fence.c b/drivers/dma-buf/dma-fence.c
+index 787fa10a49f1..0a4b519e3351 100644
+--- a/drivers/dma-buf/dma-fence.c
++++ b/drivers/dma-buf/dma-fence.c
+@@ -801,7 +801,7 @@ dma_fence_default_wait(struct dma_fence *fence, bool intr, signed long timeout)
+ 	cb.task = current;
+ 	list_add(&cb.base.node, &fence->cb_list);
+ 
+-	sdt_might_sleep_start(NULL);
++	sdt_might_sleep_start_timeout(NULL, timeout);
+ 	while (!test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags) && ret > 0) {
+ 		if (intr)
+ 			__set_current_state(TASK_INTERRUPTIBLE);
+@@ -905,7 +905,7 @@ dma_fence_wait_any_timeout(struct dma_fence **fences, uint32_t count,
+ 		}
+ 	}
+ 
+-	sdt_might_sleep_start(NULL);
++	sdt_might_sleep_start_timeout(NULL, timeout);
+ 	while (ret > 0) {
+ 		if (intr)
+ 			set_current_state(TASK_INTERRUPTIBLE);
 -- 
 2.17.1
 
