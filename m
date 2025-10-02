@@ -4,48 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA060CAC5B8
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:16:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E82ABCAC5B0
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:20:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7716D8E0037; Thu,  2 Oct 2025 04:14:26 -0400 (EDT)
+	id 9E59E8E003B; Thu,  2 Oct 2025 04:14:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D78E8E003D; Thu,  2 Oct 2025 04:14:26 -0400 (EDT)
+	id 9BD7C8E0038; Thu,  2 Oct 2025 04:14:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26A5F8E0037; Thu,  2 Oct 2025 04:14:26 -0400 (EDT)
+	id 37C348E0038; Thu,  2 Oct 2025 04:14:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DDBA78E0039
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:14:25 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9BAD886D33
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 175668E0038
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:14:26 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DA5FE13ABEE
 	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:25 +0000 (UTC)
-X-FDA: 83952462090.19.20CA1BD
+X-FDA: 83952462090.01.E97BFE5
 Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf07.hostedemail.com (Postfix) with ESMTP id ABCC44000C
+	by imf04.hostedemail.com (Postfix) with ESMTP id D0CDD4000B
 	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:23 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	spf=pass (imf07.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+Authentication-Results: imf04.hostedemail.com;
+	spf=pass (imf04.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1759392864;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=TYd+ByeKF1PD4A4pfqGn7QIcnG3qV0Wm2r3LkmPDlvw=;
-	b=M6zn82nHMSYdRM1ClJilj3bmoOktvyDRlIfGhtjaMKbmOq4bFewRT/zPOmS+tiYqOcb2mm
-	PGijlAFVvrYlxzriw/C7/r/JyywtGO8iLmqV2cxRSpsmrl4Qt+Ct8LlGwIBnVcpwIJ5ZTt
-	cyiFUOhvhSThj6xAndiPF4bbyrVhQuY=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9qoBYT6wbI3DuD96QNrUKxtuEJglEVZJKtwoP0TlqlQ=;
+	b=B7ao3phMw9+K8a2cASXsIsbv6G9PlflLREJhcQU6iXVGopHbIWIpKqXdUXYJjwrHnNqzlS
+	RA4LUpP3qwVeCSxSs89JSTzapnKlITBYQ71V4mjbtDFPuCwf7yIRCToRrJkaWhpiTQNrOH
+	nbLZ0tDBiLkXyVdrR+uILGkh8QrCnF8=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759392864; a=rsa-sha256;
 	cv=none;
-	b=BJY51QTu/ComJGcVLLVWoZGSOuyoXzsW28FPqXChx3HsgyLPm79gpSXt/5ypTuGn5dM9Q6
-	xCatLAQxCeee6TwxX7R6Pmk7LDaqX6sYoAyQ1dfTwa6dcjAk4p4Ehq+Hva+qZVC9+PSQcm
-	+L4NdoUXFfqHnVS9uUflOgCewjLgMQE=
+	b=vP38S0Kw0QgnxoljAay8TqgB8K9ZuBp4U/7nH8uXFPCenHbFIv6G7TR6LwCOIiRD0YiSwE
+	L/11tAopsXKz/YIzTDAyQrkJXC5vIuCR9IP9DCH+ZPuVGsv+FwqoiaIvCYvlOEvGk166HB
+	2XAwaMEXQxbSiX1ggl9rLdhyYAiLwN8=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
+	imf04.hostedemail.com;
 	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
+	spf=pass (imf04.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
 	dmarc=none
-X-AuditID: a67dfc5b-c2dff70000001609-f3-68de3419c66c
+X-AuditID: a67dfc5b-c45ff70000001609-14-68de3419f97f
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: kernel_team@skhynix.com,
@@ -196,52 +198,56 @@ Cc: kernel_team@skhynix.com,
 	rcu@vger.kernel.org,
 	linux-nfs@vger.kernel.org,
 	linux-rt-devel@lists.linux.dev
-Subject: [PATCH v17 45/47] dept: track PG_writeback with dept
-Date: Thu,  2 Oct 2025 17:12:45 +0900
-Message-Id: <20251002081247.51255-46-byungchul@sk.com>
+Subject: [PATCH v17 46/47] SUNRPC: relocate struct rcu_head to the first field of struct rpc_xprt
+Date: Thu,  2 Oct 2025 17:12:46 +0900
+Message-Id: <20251002081247.51255-47-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20251002081247.51255-1-byungchul@sk.com>
 References: <20251002081247.51255-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSf0wTdxjG/d737npt7HIpJJ6wRNbFbDEiatC8bk5Fk3FZmFnCzIyaaGcv
-	tgxaLcJEM4PSKjGMdDXgnAgFXK20/BCnUbBGUDsRlSKOVQZFEKusQhVoUX7uitl/n/d53+d5
-	8yYvgxVdVAyj1e0XDDpVupKWkbKh+eXxCxN9muWe0/FQUuukoTeUj2B88gyGaYtbArMuN4Li
-	dguG0boZGgK3RhAU9Q3QcGrwCAlBWwGCwTvJMNTbSMHf4VcIbAMzBAzcPI5g8kEbhlNFHgTl
-	fT0YXtaJ2h9uHwKX/SgNz82XMXQMfACPQ0EarEddFORV1tJw7WmDBNoDUwR0F1sIcNR/Da3m
-	CkLcR0PxxQVQVN1IwDtblQTuV3aTMGvVg9vxQgI1Q20UtPg6KQj4LeIZfx6jYOxxHwHOAj+G
-	/IYQCfXPxG75sXMknC7tpuG6q4WE/OkxBO6r/QR0NJTQUFB3mQKfc5aCRw4PCbUvvAS0uu+S
-	0NZQTUG4MBa85ucIqocraDg57EcQCNvwBjU/biokedOjaZp3ljoRPzlhQfzY73mYN5nF8tar
-	IOYnQn/RvCtsJfl7FRx/7bceCW+80SXhrfVZvPH2EMVfsi/hK68PEt8kbJOtVQvp2mzBkLBu
-	l0zT39hP762JOzBxL4/KRYWxJ5CU4dhE7h/zBXwCMXM8W5YakWn2E87rfYcjHM3GcZd+9lMR
-	xmzrh1xn+9IIR7FfcE97S4kIk+xi7nXu2bkZObuaa3JMovfxizhH3c25HKmod/S1khFWsKs4
-	U9AoemXizBkpZxoNke8NC7kmu5c0I7kVzatCCq0uO0OlTU9cpsnRaQ8s263PqEfix9l+mtp+
-	FY14UpsRyyDlfLlncY9GQamyM3MymhHHYGW0fJe9W6OQq1U5BwWDfqchK13IbEaxDKlcIF8Z
-	/lGtYPeo9gs/CMJewfB/l2CkMbnIdAj9K2PSXIdrjAq++fxXD5taykrSqCj1t/jty3UpyXeC
-	T4wnN251bt7UFqVRPihNsfkTUvSfBWZC4X3SRUmhjjcKz696nf7+p58nsWnDB2v0nd+V4fUf
-	NeYmx2wxvrHvADpa/fDK5i7jyNQ8y9qlzqxtvxxv+X7Nx2e1HvjSt1VJZmpUK5ZgQ6bqP1UP
-	GjJtAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0iTcRTG+793R4u3ZfWaQTYQ6aLN0Dh0o2++SEUQ0VV05EtbOq2tLINq
-	NkdmZdtoSk7LSw1zprZlZKJ4ISFNdJkW5byMZVqaUbPy1tqCvhx+5zwPD8+Hw+CSOnIVo0w7
-	I6jT5KlSSkSI9m7TRYbEDCpkRgcJ/VnNBEx7cwgoqqmiIMd+h4SeahuCoekcBL/mLDjo630E
-	LJjaafDOfKDB19iOIN9pwqHqSRYGP2r/UPCl7TsC84iHgoLxLAKmrDcQFI5aaBh/EQeTQw0k
-	+FyfMHj7cwKB1fMHA0/zVQQL+Slwr8xBwVxXNw4F5h4EpSMuHMZq/eKT9kEEjRVXKPhoqMOh
-	17ME3kxPUfDSfJ2CSWcRBl9rKSi50khCscWEQFdeQ0F+sZ2A+uHnNDi/zGMwkG/CwGbfA0PW
-	UQI6DWWYv5/f9XglWAp0mH+MYWB+1IDBjLWShlflAwRYteFg6eolwV1RSMP8SDT4StKh3faJ
-	BtctMwHVk93kLjPif+nzCL7S8RTj9a8XKL7qbhXi52ZNiPc+0OG83uBf2yamcD7bcY5/0DlB
-	8bPTfRTf+LOE4DvKON7YFcnXF7poPrvpPb1v6xHR9mQhVZkhqDftTBIp3A1u6lR12PnZDh2p
-	RXmhuYhhODaG893bn4uCGIqN4N69m8EDHMyGcY6bo2SAcbZzNdfv3BjgZewObnjoLhZggg3n
-	vmmL/3nE7BauxTaHAsyxazhbbfO/nCD/vXekkwiwhI3l9FPZmAGJStCiShSsTMtQyZWpsVGa
-	FEVmmvJ81PF0lR35n8l6cd74DHl741oRyyDpYrEz3KWQkPIMTaaqFXEMLg0WJ1UMKCTiZHnm
-	BUGdnqg+mypoWlEoQ0hXiuMPCkkS9oT8jJAiCKcE9X8VY4JWaVGE0xM23p87fjw2frvJebTm
-	5KVEo8ouG1xxbd3l+Cg8JLRUtnpDgipcveVVQ9OxQ7e9wxpJzIXTLQlbzUcPX+8parofZ6or
-	8zwe+x0ilt9pdicYuq/Sss2K5Et5QSjlUMT+xHLf7AFZf9/y3Q/dkuf2z+u129KNSy/e3txy
-	Y+17RZuU0Cjk0etxtUb+F1bYeZtIAwAA
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa2yLYRTH8zx9b2uUV228LjHKiGE2GTkuESSy9wsRvggRa9Y3WttKOnYR
+	krELFpfp1OjWpbOlqXZsOkZR2c1lNtLZMMk2OjVbqEptYhfmrUX4cvLLec7/d54Ph5HI3eQM
+	RqM9KOi0yiQFJSWkvgmlS6fHdqujyx/GgPu6HUGOc4yAn/pHNIy5HiEweLwU+C2nEfRVnUDQ
+	5p0I7YN+CnytxRgumhwEON/dpaH10yiG5vwrGAr7KSgqzMJi6cNguHYPw5DFRoMlMwKKnrWR
+	0GM10tB1zkBAU/crEj716il4+ziXhNuZ72gYaPdgKM0tJ6DtbjEF3RVjJLhrm0ko+NKLwDLo
+	p6H3ZS6GqmzR8qzoOQkfjSYMDYOfMRS8MFPQc9ZHQ8D0iwR7KwGG0ZMUHPv2FoFpIAYG7Dbx
+	cw+76fXRvK26BvMVJRWIHxnWIz4nXySnsYvmzY5DfHajj+SrrZF82f1+zJcGBkneYTtF8Y6A
+	nuZLR/okfJ6vHfNPLo0QvNOzauusndK1KiFJkyrolq2Ll6pbrm444Jqcnq3fnYn8sjwUwnBs
+	LOc/cYP+yw/sX3GQKXYh19ExJAlyKDuHqz7TSwZZwjbP4l61LgnyFFbJfWvoEmcYhmAjuMCP
+	HcG2jF3JWbMukePKcM5eVftHEyL22zzNRJDl7Aoux5+Nx+cnc02XvURQIxHXVpbIxzeFc1m3
+	isSoVNQ0hHDfbzvxuHM6V2ftIPIRa/wvbvwXN/4XNyOJDck12tRkpSYpNkqdodWkRyXsT3Yg
+	8c4sR0d33UEB9/Z6xDJIMUHmjuhSy0llakpGcj3iGIkiVBZv7VTLZSplxmFBt3+P7lCSkFKP
+	ZjKEYpps+fc0lZzdqzwoJArCAUH39xUzITMykdQVpzC8T+zcfNOsPRU5KeFFwvz4xWlTmri5
+	jAoKSm6UNb6ucq/tW90479zMRXu9plC2Qmo2Fnc2hLXUbNpiOB6l+vC0M22VI+aNIvGCEDdM
+	nX2+ZuxMXr93wLlvwdDG4cojcVSEf9QVDd6wOyWVU8MLz9fYthX3z65rKvO47uUqiBS1MiZS
+	oktR/ganEuEEYwMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTYRjHec9d6cRxGZ3Ksgaj6GIXsh4qulDhIejyrQgqVx7amDe2spQC
+	bY6krGwxV1upKQ3bTE0rMlkMJSt11LQb6dLlskJtYpp5XWdJ1JeX3/s8P/7P8+FhcNkIOYdR
+	Jx8XtcnKRDkVToTv3qBfPnvNR9VKZ/kMeJvlImBoMIeAGxVlFORUXSfhVbkDQcdQDoLhMSsO
+	hpogARPGBhoGR9poCDobEOR7jDiU3c/C4EflJAU99QMITD4/BeZvWQQEbLkILN1WGr49jYO+
+	jloSgt4vGLz72YvA5p/EwO86h2AiXwOFxdUUjLlf4mA2vUJwy+fF4Wul1Lzf8BGBs/QsBZ/z
+	HuDQ6p8Or4cCFLwwXaCgz3MDg++VFBSddZJw02pEoC+poCD/ZhUBNZ2PafD0jGPQnm/EwFG1
+	Czps3QQ05RVj0n6SdW8WWM16THq+YmC6W4vBiM1OQ3NJOwG2TAVY3a0kfCq10DDuWwXBohRo
+	cHyhwXvZREB530tyiwkJw4ZLhGCvfogJhpYJSigrKEPC2KgRCYO39bhgyJO+9b0BXMiuPinc
+	buqlhNGhN5Tg/FlECI3FvHDFvVyosXhpIfvJB3rv+gPhGxPERHWaqF2xKT5c1Xxna6oz4lS2
+	8WAmCrDnURjDc2v4J45+LMQUt4h//34ED3Ekt4CvvthNhhjnmqL4t55lIZ7BKfkf9V7JYRiC
+	U/ADv/aHyiy3li/VXyOnIqN5R6XrT0yYVG/1NREhlnGxvCGQjU35EfyL634iFINLYysKZFOT
+	onn9Ayueh1jLf5bln2X5zypCuB1FqpPTkpTqxNgYnUaVnqw+FXM0JakKSQdpOzN+5REabI2r
+	QxyD5NNYj8KrkpHKNF16Uh3iGVweycaXtqtkbIIyPUPUphzWnkgUdXVoLkPIZ7E794nxMu6Y
+	8rioEcVUUfu3izFhczLRh8aWPRBVeFCh3fbZ3bgO254rX9072XNu4Xx3f+PchKhJfdy8q5u2
+	bC5xm8/bYtpcW2MWz+zqYjtrT7ZohI0F9tPajOd7I7b7Tmc034L2nK5n9wotbOehpbFO89Xh
+	w/1ZrsVc3xFFbYV5x1qHnW8zTUtN0oRFu9riBsbujAZzV8gJnUq5agmu1Sl/A2JfrD6MAwAA
 X-CFilter-Loop: Reflected
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: ABCC44000C
-X-Stat-Signature: xe5a8xepeu6i94xpk38esi5znfdy9ezn
+X-Stat-Signature: khseud6zfawbzjz9nuk33t1gmpgrmn4h
+X-Rspamd-Queue-Id: D0CDD4000B
 X-Rspam-User: 
-X-HE-Tag: 1759392863-384525
-X-HE-Meta: U2FsdGVkX19i7n2e/ImzecjIU7+t6reRLJ1MYEVxmozZlIxuIBHofepxuv4bDGiVYdCXJUsFy9UQ8VX4Bc/LEnbpMM1E3IxPV3ySjwmwEARCqe/YxYwgR2zAsDndJyLKUMYQRIo7zVm51nVIB/TUKryVcxc9qsuIvI2FpM/Z7umH2euHTfCNaQ+swBoDoIiEj7vXd9ih5UgkgZkxzLO1rJzm8EgirdhftGMnxhODrPULMaWcovzDOaOg2etK2fKnZyEHW6WS/u7ZIOZcQaOfWRmUGSCMJ/dFwwZrR1Ylx5RDllrtp0eclGsV2uJzDJ8OP7PtrLDUQT0MnAAqBWupgzkT3XZA3Nuxlx6nKOtLY7eRNBnoqasjZt4nzOmX53IWf6Qs43EMfxKAmmBfaa54CBU0r9WG7wGsSBKymdEVByG7GNEuBDTIvuKaguKb6sr30cgCmYCYnIBmsRFILVO8ZE0yYShaWPsEWC9pdZhrfqBJCc8dCjx5jXiNChaZnRcFLVnEylQf35uakCzXTuJo+NYba62E77+cyTquF0bXWtKPCSq18GZRq70qCq/iqetnjybmXg17rpvhG9AqzIz5uhVcL0/jP0d8B4RAxp3KUT3sUwnu8Dn47cu1cObELa9O7UK4wn+hJzXZTm1FqA2K1SCdeSBYguiXiMC04VPq1uGw3nJV3CNZDr5nVTZH04Mg8r352+M8FihOgx+iKA5ms0uQzWbO1vCN9eEmsDD0ZdcCIoNli6I/t1bTpCIIcC2o1dPrhUj0Xf6Dj7lLEdPIrNeffvG3+INPU/njWFmgl2ttXfexPdKPz/A0aH9QICaZQGOlnBtBRiWiV2EBESn0UVP0tcQ+mZaJ
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1759392863-714612
+X-HE-Meta: U2FsdGVkX1+KI1YYZjAbTia/rzsIN+KMCI/MDs/fOwT2pMtZtSSZOl4XnQFsAbUtax4aNS+oqMuSATt77PUwvhvdcyRHpgER2xt7s89ktb1FovtVQukLHBMzwWfuWLukoUlszQS4TfVz2XIPykGVwYaGLcCj+6Y+gje+6RwJXGOVWAJ9PU1BlsCb2Dc2CIvs+a9myRn+xj5vPF5m6ajS164eJEVDoTH02UughrR+v2I0ieMemIJFTKLGJU3y2phXE0i3jodgbZE+OBU1noYbtI7LLdytxDULW6p0dmg/Y60S7Bihzx/AMAJ2WxOvYdvdP5l2E49Mh4FnkQn/e480kkT262LmeFsKS2DZ2bjI/8Wu76d0HIFu6kF9+LxPMYoICqepmTBfhjALW66LRA6viUxRFJnwUBL/GV+BpTxmwyPqXNlRaplnafm3bsV39T6Kig0+PNMMpUhlAo4BD95A7KwvUb9RgVFgdgCw75oPM5xjw+G+mmATxKdxnvJUXCP+FZp5a9RvVlYYXvCmjVK+h1jg+SOFoxYonLwhtPrezzQkMMHKMTvYcjuj/1icYNuyPzvZm4hEDmYMHy5aqdCAHcuSz2PXnCPWJ+c0fUdCU7iuGDUUKZrdeANEZM76ZLdlJzPlkQKbGwUtyDjhtl7dr61+6I7JZxMiW7jhOyVeSEUE3Sg/Ap/qrOjv0D6jjmhFddmKuqLz9I4U4uJAvbXeMpjHb0NYMe/aHhRNi97QuVK+MpHdDYHdLNHIjV48+sQsHBqdNAavln88FoGIPMXYCTfxRXpJMpRVsY0pyZnGrUaiBzB7bgKFJXHNpIHKN176BkEjG06HSPlr/gNaF846cqsioE6lOp7UERl0V4JrcC3lDxu2ubOVDejRP/bX7cawE2pemmoD8qctnssq0RLZCQxqGEEP5ygStRHquVagWvWO3UHPuFsNQoG878uXon3nmVho6S7VYQBgvDSF79b
+ UtUfmukT
+ JV9eAQ7xFXj4d7P3yT0W4YWA0CBarhN54Otep4zZOvg59OMQk/Zgqv9McBdN7bakBsQbUMsFKS49NPgA5i3VQxn/opkwbs13/q95v1u7+ulppxjL0nFLHLRDGYwV0tM9HaAPbY37w1e0upXvEzz+7sX6X5ricU4+Kaf+y8qOpu10c8nFk/TAocSK0+35xwUo9Ebab1L+E9OTb1O9pS+gRtvBG/+LYQbEyvQZ4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -250,116 +256,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Makes dept able to track PG_writeback waits and events, which will be
-useful in practice.
+While compiling Linux kernel with DEPT on, the following error was
+observed:
 
+   ./include/linux/rcupdate.h:1084:17: note: in expansion of macro
+   ‘BUILD_BUG_ON’
+   1084 | BUILD_BUG_ON(offsetof(typeof(*(ptr)), rhf) >= 4096);	\
+        | ^~~~~~~~~~~~
+   ./include/linux/rcupdate.h:1047:29: note: in expansion of macro
+   'kvfree_rcu_arg_2'
+   1047 | #define kfree_rcu(ptr, rhf) kvfree_rcu_arg_2(ptr, rhf)
+        |                             ^~~~~~~~~~~~~~~~
+   net/sunrpc/xprt.c:1856:9: note: in expansion of macro 'kfree_rcu'
+   1856 | kfree_rcu(xprt, rcu);
+        | ^~~~~~~~~
+    CC net/kcm/kcmproc.o
+   make[4]: *** [scripts/Makefile.build:203: net/sunrpc/xprt.o] Error 1
+
+Since kfree_rcu() assumes 'offset of struct rcu_head in a rcu-managed
+struct < 4096', the offest of struct rcu_head in struct rpc_xprt should
+not exceed 4096 but does, due to the debug information added by DEPT.
+
+Relocate struct rcu_head to the first field of struct rpc_xprt from an
+arbitrary location to avoid the issue and meet the assumption.
+
+Reported-by: Yunseong Kim <ysk@kzalloc.com>
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- include/linux/mm_types.h   |  1 +
- include/linux/page-flags.h |  7 +++++++
- mm/filemap.c               | 11 +++++++++++
- mm/mm_init.c               |  1 +
- 4 files changed, 20 insertions(+)
+ include/linux/sunrpc/xprt.h | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 8ccbb030500c..bed1a3bc81e1 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -226,6 +226,7 @@ struct page {
- #endif
- 	struct dept_page_usage usage;
- 	struct dept_ext_wgen pg_locked_wgen;
-+	struct dept_ext_wgen pg_writeback_wgen;
- } _struct_page_alignment;
+diff --git a/include/linux/sunrpc/xprt.h b/include/linux/sunrpc/xprt.h
+index f46d1fb8f71a..666e42a17a31 100644
+--- a/include/linux/sunrpc/xprt.h
++++ b/include/linux/sunrpc/xprt.h
+@@ -211,6 +211,14 @@ enum xprt_transports {
  
- /*
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 3fd3660ddc6f..b965b16c8cee 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -203,6 +203,7 @@ enum pageflags {
- #include <linux/dept.h>
- 
- extern struct dept_map pg_locked_map;
-+extern struct dept_map pg_writeback_map;
- 
- static inline int dept_set_page_usage(struct page *p,
- 		unsigned int new_type)
-@@ -279,6 +280,8 @@ static inline void dept_page_set_bit(struct page *p, int bit_nr)
- 	dept_update_page_usage(p);
- 	if (bit_nr == PG_locked)
- 		dept_request_event(&pg_locked_map, &p->pg_locked_wgen);
-+	else if (bit_nr == PG_writeback)
-+		dept_request_event(&pg_writeback_map, &p->pg_writeback_wgen);
- }
- 
- static inline void dept_page_clear_bit(struct page *p, int bit_nr)
-@@ -288,6 +291,8 @@ static inline void dept_page_clear_bit(struct page *p, int bit_nr)
- 	evt_f = dept_event_flags(p, false);
- 	if (bit_nr == PG_locked)
- 		dept_event(&pg_locked_map, evt_f, _RET_IP_, __func__, &p->pg_locked_wgen);
-+	else if (bit_nr == PG_writeback)
-+		dept_event(&pg_writeback_map, evt_f, _RET_IP_, __func__, &p->pg_writeback_wgen);
- }
- 
- static inline void dept_page_wait_on_bit(struct page *p, int bit_nr)
-@@ -298,6 +303,8 @@ static inline void dept_page_wait_on_bit(struct page *p, int bit_nr)
- 	evt_f = dept_event_flags(p, true);
- 	if (bit_nr == PG_locked)
- 		dept_wait(&pg_locked_map, evt_f, _RET_IP_, __func__, 0, -1L);
-+	else if (bit_nr == PG_writeback)
-+		dept_wait(&pg_writeback_map, evt_f, _RET_IP_, __func__, 0, -1L);
- }
- 
- static inline void dept_folio_set_bit(struct folio *f, int bit_nr)
-diff --git a/mm/filemap.c b/mm/filemap.c
-index edb0710ddb3f..d8f1816dc6c2 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -1187,6 +1187,13 @@ static void folio_wake_bit(struct folio *folio, int bit_nr)
- 	key.bit_nr = bit_nr;
- 	key.page_match = 0;
- 
+ struct rpc_sysfs_xprt;
+ struct rpc_xprt {
 +	/*
-+	 * dept_page_clear_bit() being called multiple times is harmless.
-+	 * The worst case is to miss some dependencies but it's okay.
++	 * Place struct rcu_head within the first 4096 bytes of struct
++	 * rpc_xprt if sizeof(struct rpc_xprt) > 4096, so that
++	 * kfree_rcu() can simply work assuming that.  See the comment
++	 * in kfree_rcu().
 +	 */
-+	if (bit_nr == PG_locked || bit_nr == PG_writeback)
-+		dept_page_clear_bit(&folio->page, bit_nr);
++	struct rcu_head		rcu;
 +
- 	spin_lock_irqsave(&q->lock, flags);
- 	__wake_up_locked_key(q, TASK_NORMAL, &key);
- 
-@@ -1241,6 +1248,9 @@ static inline bool folio_trylock_flag(struct folio *folio, int bit_nr,
- struct dept_map __maybe_unused pg_locked_map = DEPT_MAP_INITIALIZER(pg_locked_map, NULL);
- EXPORT_SYMBOL(pg_locked_map);
- 
-+struct dept_map __maybe_unused pg_writeback_map = DEPT_MAP_INITIALIZER(pg_writeback_map, NULL);
-+EXPORT_SYMBOL(pg_writeback_map);
-+
- static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
- 		int state, enum behavior behavior)
- {
-@@ -1683,6 +1693,7 @@ void folio_end_writeback(struct folio *folio)
- 	 * reused before the folio_wake_bit().
- 	 */
- 	folio_get(folio);
-+	dept_page_clear_bit(&folio->page, PG_writeback);
- 	if (__folio_end_writeback(folio))
- 		folio_wake_bit(folio, PG_writeback);
- 
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 09e4ac6a73c7..fd2bf6689afa 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -589,6 +589,7 @@ void __meminit __init_single_page(struct page *page, unsigned long pfn,
- 	page_cpupid_reset_last(page);
- 	page_kasan_tag_reset(page);
- 	dept_ext_wgen_init(&page->pg_locked_wgen);
-+	dept_ext_wgen_init(&page->pg_writeback_wgen);
- 
- 	INIT_LIST_HEAD(&page->lru);
- #ifdef WANT_PAGE_VIRTUAL
+ 	struct kref		kref;		/* Reference count */
+ 	const struct rpc_xprt_ops *ops;		/* transport methods */
+ 	unsigned int		id;		/* transport id */
+@@ -317,7 +325,6 @@ struct rpc_xprt {
+ #if IS_ENABLED(CONFIG_SUNRPC_DEBUG)
+ 	struct dentry		*debugfs;		/* debugfs directory */
+ #endif
+-	struct rcu_head		rcu;
+ 	const struct xprt_class	*xprt_class;
+ 	struct rpc_sysfs_xprt	*xprt_sysfs;
+ 	bool			main; /*mark if this is the 1st transport */
 -- 
 2.17.1
 
