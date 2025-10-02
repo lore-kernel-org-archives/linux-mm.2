@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACE30CAC5B0
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 20:52:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F158CAC5B0
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 20:52:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 132858E0014; Thu,  2 Oct 2025 16:52:09 -0400 (EDT)
+	id 6B1928E0015; Thu,  2 Oct 2025 16:52:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 096328E0001; Thu,  2 Oct 2025 16:52:09 -0400 (EDT)
+	id 662878E0001; Thu,  2 Oct 2025 16:52:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC6048E0014; Thu,  2 Oct 2025 16:52:08 -0400 (EDT)
+	id 551198E0015; Thu,  2 Oct 2025 16:52:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D9C2A8E0001
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 16:52:08 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AC67413B814
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 20:52:08 +0000 (UTC)
-X-FDA: 83954371536.29.658B922
-Received: from fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com [63.178.143.178])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5D3CD40002
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 20:52:06 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=UVtdTufS;
-	spf=pass (imf17.hostedemail.com: domain of "prvs=363ba725c=farbere@amazon.com" designates 63.178.143.178 as permitted sender) smtp.mailfrom="prvs=363ba725c=farbere@amazon.com";
+	by kanga.kvack.org (Postfix) with ESMTP id 421188E0001
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 16:52:30 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0D28F13B8E3
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 20:52:30 +0000 (UTC)
+X-FDA: 83954372460.25.768BD5A
+Received: from fra-out-015.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-015.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.158.153.154])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A5BBF18000A
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 20:52:27 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=sGWdrFTZ;
+	spf=pass (imf16.hostedemail.com: domain of "prvs=363ba725c=farbere@amazon.com" designates 18.158.153.154 as permitted sender) smtp.mailfrom="prvs=363ba725c=farbere@amazon.com";
 	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759438326;
+	s=arc-20220608; t=1759438348;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=teLsaTNUBK6Nro2wtPnSOzbrxENlIlr+X2oFjCDnk/w=;
-	b=JXm1c3Ba/QtVCJdWenCzhsUkoHmqS3Yos1CN31cHMSOghKiSx6oxY9EpN9osHEXPrUmtZP
-	U40Z9qz6OWPiIdxzup86SO/v6VFUHOWvxkXEFL8qX0bB14rbqjKKr3cmZZUiM49Q9g2vl1
-	LtjOIwX/pLvXCfs1I2hKYfLw5tCmuu8=
+	bh=xkEPvUKyQPfYOtTnd+JXsEAKoNLEM/0U49oHM5nqIDU=;
+	b=mg+EcbPQ+L/WydwKKhaYv/cgRF56abMjry0SF0vyxAVggabEbRCu23SuEWRm75mfEBSpyL
+	ChZgQyfRAoRjjwzB5yUfgDdWC4Lvtktskm7doPJwFxkkawDvrPhr6Z7v6QyhO+Yy8wTgGh
+	UhVjRrZMo/hMLXjTozf7gpBhrCal/TI=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=UVtdTufS;
-	spf=pass (imf17.hostedemail.com: domain of "prvs=363ba725c=farbere@amazon.com" designates 63.178.143.178 as permitted sender) smtp.mailfrom="prvs=363ba725c=farbere@amazon.com";
+	imf16.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=sGWdrFTZ;
+	spf=pass (imf16.hostedemail.com: domain of "prvs=363ba725c=farbere@amazon.com" designates 18.158.153.154 as permitted sender) smtp.mailfrom="prvs=363ba725c=farbere@amazon.com";
 	dmarc=pass (policy=quarantine) header.from=amazon.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759438326; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759438348; a=rsa-sha256;
 	cv=none;
-	b=1WGOE17Y64mx6s1G/nUHicfHKR5xec6O/5JcSawofM6JIInovYPeeQbitjmusxjwFbFCw5
-	mEULpNdYTqFcvtp1D62okScOJtrc0K6lvA9CJy2Ia0WGFCXxpH2ooC84pX46QAHnEjr033
-	RHK3BOlSAjweUmlRGoqiFI6RCLV1g0M=
+	b=JmAia/BIi7EM25xlXWOtvgulUiBDC+emUuZnH1wcrQfI/N2xJ006jbSNj0SmNcI20A0lRL
+	Uh9oOBLAWimcninbYK3O8k1HO9y3/lnIxHfgRe/zgZi03ScVx3unKRrx/gV94rNDc4VH0d
+	egz6GKDsr0qeZPX6uLSZzRrjEgDOV4o=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1759438326; x=1790974326;
+  t=1759438347; x=1790974347;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=teLsaTNUBK6Nro2wtPnSOzbrxENlIlr+X2oFjCDnk/w=;
-  b=UVtdTufSswNi+cFqHnUoGuxQGix+OLArBpDtRyR2TpVBkDY/pyZc1/3Q
-   UwmzjqRZ6JbGiOST8HjJHKFzsMKqfcNHGiDZSkv6ZaHGZu5gmnJHK7Q5D
-   WQOKUyQIzk6378Y6ea4LVtNU+y8b9ttLFTGisitI+4Ko7qNk5gT4zB8W9
-   J97Vw8wal2ZmQokYYn8/FJLm78M+nL3uPm8JyL3bJqz470MJIjhCE/lA4
-   n/Kbv8+J9jNmlKpzPeb+M95asIAtjbOIAazhE28nOJiU1sjBFtWIMPYr2
-   mLPHvLOcPgoKEpxl4sDfqX9g2QkWcu1pcdj8rxaG8DBrBzVk2TgL3LOXo
-   Q==;
-X-CSE-ConnectionGUID: LiiP98nuRPetjjRJiVlisw==
-X-CSE-MsgGUID: ltUlqHuPSt+4mXMkmRlCXA==
+  bh=xkEPvUKyQPfYOtTnd+JXsEAKoNLEM/0U49oHM5nqIDU=;
+  b=sGWdrFTZv+A30lge+RMdSZgFzhhxBXB4o/pQSE5XePH6UgAUaLJCT9w0
+   Mcjw5yqo9aN2A3Njl4I7l79AZvAhn7fAgqnj3uqoRI2TPgYq/+LGvghrB
+   /n1AV9dwNyjqN9Br9DIM4fUGY9Vhiex41svm9gNS8TIM43FBgaGTZ2uj/
+   dHTtFUEvmwFYE82KbIOK85/d6OyysrPqCK3fe6XLVRohOjX7qLe+ypq1o
+   p3erCKMPOhH+BZNAsfbyOcOySXGNRAKlHhGpTTJemj/dcLFxwbgVPLMYv
+   fpCJPsit7xLTcSojTuPLOo3L7lip4cZLXluwALCF1xbrkRmOgX37sPtjz
+   A==;
+X-CSE-ConnectionGUID: wHAod7MhR22UT1vGpqORLg==
+X-CSE-MsgGUID: gfossYLATOWqowCqaE0HrQ==
 X-IronPort-AV: E=Sophos;i="6.18,310,1751241600"; 
-   d="scan'208";a="2922370"
+   d="scan'208";a="2913969"
 Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
-  by internal-fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 20:52:04 +0000
-Received: from EX19MTAEUB001.ant.amazon.com [54.240.197.226:27524]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.22.27:2525] with esmtp (Farcaster)
- id d799511a-7212-48df-909a-6ceac3f44b2d; Thu, 2 Oct 2025 20:52:04 +0000 (UTC)
-X-Farcaster-Flow-ID: d799511a-7212-48df-909a-6ceac3f44b2d
+  by internal-fra-out-015.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 20:52:26 +0000
+Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.225:9824]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.3.52:2525] with esmtp (Farcaster)
+ id f8d1e173-8db1-4c75-9e58-45e39cebae31; Thu, 2 Oct 2025 20:52:26 +0000 (UTC)
+X-Farcaster-Flow-ID: f8d1e173-8db1-4c75-9e58-45e39cebae31
 Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
- EX19MTAEUB001.ant.amazon.com (10.252.51.28) with Microsoft SMTP Server
+ EX19MTAEUC001.ant.amazon.com (10.252.51.155) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Thu, 2 Oct 2025 20:51:57 +0000
+ Thu, 2 Oct 2025 20:52:23 +0000
 Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
  (172.19.116.181) by EX19D018EUA004.ant.amazon.com (10.252.50.85) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Thu, 2 Oct 2025
- 20:51:32 +0000
+ 20:51:57 +0000
 From: Eliav Farber <farbere@amazon.com>
 To: <gregkh@linuxfoundation.org>, <jdike@addtoit.com>, <richard@nod.at>,
 	<anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>,
@@ -124,9 +124,9 @@ To: <gregkh@linuxfoundation.org>, <jdike@addtoit.com>, <richard@nod.at>,
 	<linux-kselftest@vger.kernel.org>, <stable@vger.kernel.org>
 CC: Linus Torvalds <torvalds@linux-foundation.org>, David Laight
 	<David.Laight@aculab.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: [PATCH 08/19 5.15.y] minmax: simplify and clarify min_t()/max_t() implementation
-Date: Thu, 2 Oct 2025 20:47:22 +0000
-Message-ID: <20251002204733.35652-9-farbere@amazon.com>
+Subject: [PATCH 09/19 5.15.y] minmax: simplify min()/max()/clamp() implementation
+Date: Thu, 2 Oct 2025 20:47:23 +0000
+Message-ID: <20251002204733.35652-10-farbere@amazon.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251002204733.35652-1-farbere@amazon.com>
 References: <20251002204733.35652-1-farbere@amazon.com>
@@ -136,14 +136,14 @@ Content-Type: text/plain
 X-Originating-IP: [172.19.116.181]
 X-ClientProxiedBy: EX19D045UWC001.ant.amazon.com (10.13.139.223) To
  EX19D018EUA004.ant.amazon.com (10.252.50.85)
-X-Stat-Signature: jt8mxh9qdedxaoa4bpmgrgb1s8q9ud6k
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5D3CD40002
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1759438326-641161
-X-HE-Meta: U2FsdGVkX18Dv9KHQHeM715tw8dXI0rmh/nK3mHGbaFtyKm+CV91q7fPKaMVlLFBbmnZZEYR0F/XiPgMyEpy6PZZM5DqfIjWmd32zusXADZ4jh0Xvv6aUAbwv62mnS28zr0/LqVFWdAnPQpxfWaJ2HUFEIkT8mDOPFcHO+GrpFN4K1spNxnJmt0p5flpFaRzfCxre5710Le0AB6uiLqTsrI0SDhWDf1ueAgIq4qusVulYxE3ZGMxhjbqVLQL1KiPntEKilmIGhju/HfSSaSgIIngNegpuZQfzfV7a7CeJs0Y4Ed+PjyLKCKRoHKyL3wE3D2HNKJWGaBPN691wAaSkBO3Y0EE3232L03uT00huFswF7I1kE+ZdndwX1U7JgM2nh1zuJRlvP+VXNEQm4xLZJWuvPhOsDD/YnKeuICOm4h0QExYyoi3ikzx1MjQIvtj77wozk9TvxtLxjpBAWXM0XQ4u72BfE6nh1I0Y1CGr+JBDCJySdbpW8esxmeOzhE16i/my2xVfDtZFIRpDDV2cYSoIVPhWaQz3wj2t7L1c4TXe6rKEQfdu7AO9mMHGdkSGRoX6mF1uMZ/n6xC1sjoKMO476xcS6TwfBjM+FfPjagdmKzOtOvrE6pOAMePMJ+vcrOWYeVlkXiw/F+pAVeFAo7qk9qGSvVVjsFwpWynvysiMm2MGcwDxbujg2W+hZbInEo0VBf9zamObR5mR5QsnDReUZPamzOdP6GQCuN2m4MeZB28yDC3WO7nMDshvr24DIfEr+Lv21/I0bRaUEXfIq/w9hhJ7Y2mV40DXCAH62hh3eOgWZWf5FuG2PKwTZicC/n4kcrrzOgRWU78VwY6jIbINgvb4ecgRwzzxD+VgR14nW4Rw8nuV4fJMJVvnYjbGs1LHzpTYJalkdSqf4UXzRlOR+zqdhWAbSUuHLxdZ5ih74dZHQ5UCe3pFQrMcQ02gVHFTHORE9SYFaBEaBf
- KxQ2GRdp
- wnX/QxBVOScI7PcLbOAonfwGYp3ADFgzIJbx8Jda+zPwiv28S7NKwDoSfhlKI6u/JxCmZ+IgbXtb2Sy93ocTCSGQ8kAssEorLbuSFhHhgd4p3bEGAWPcCMhAF/zJgNslWlJQf9Ab+xaSz0Mmt9jL5Y2bKr4DnEcR7C6GGA1u0fXSjpMoKK96Zr9lP8IQnmmYobnoVtzdoIJ7M/atgE92nHoCqCBS9zdqelHEafHezdHcUmZuk/ADN1qaiN+n7x1j6NK45fDiMzifDHVVw2NutHSmRWbwDE784ImkoBxOxEKhf3uhI7t6Zy5y4T8y6chmixGvRHrHPPBO4vtSldkELsV8C4rAFIJ7lzdvuYY+rfArpEZSAgckt9E4FJedJ+zkK7J9nDPzv6fnW2b4gbvYWrFfstjYJKrLeabxloseviOTFnrNSKdpUxGnaxgPyMgap/nf2pAA7Fcnjs53snktPFX93JvuLWNYN+UoB8TKntGnoB7b9FCkDD994oDeyOKngi0keRGaN/JVgMKE3uaLQsr6khu5Ydp7BL3yrr5x6Z5GvkfmIL7mjnYOAfee6cSiVqVSf0dSpubdqqHuP8AlDTnekNelf05KKA2Bk0bFQkvICk4pmVxyWrYp1UDtBJHVOkXKAMeLJHJFLZrhvAXgMgb04To/+yMYYkMYghxOG/7JKpNGPwmp94W877hzwjmoi80NFrZp+NkN9Cpb6tbC/tDlBIlfJM8rxRSH3Y8KceDH8qyvVYxm4vFRVrW1Zhj8sVvr2ZxA+upDQwLFOJhe/Db4UgEatwLUbKDuOmBzvkJuDGk7iNn89VWpstiM1bf8FEtcN0giTSxHK7V0IjNXOBM0NOEZzumLAfyb2DbtXh149OAHatwD1FIUmJI5j8HfQQf/oBvfoBRhBMbvsObjWd7cH7gxrqDao8YTIl1MadlBSV/6SvRNozh6TkeMurjNVjrNz9Brwb4leQnQ=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: A5BBF18000A
+X-Stat-Signature: rrqpd1jpp16g69bmujuwrerrpqz8p637
+X-HE-Tag: 1759438347-367238
+X-HE-Meta: U2FsdGVkX19k57QPgdpTWzWJmiNt5l/x36nwqmP7B2ro7FHE8pHDv7/RR0q50mdyM0OVy9+3MIrIy8XrQt186m3HCCevchXV0RqoalThlaXRmaUIA3cdQMWXwNYkxt179ag6EsLz3YatoelAIsHOqX6ifUAjME+uQI/VWfzl872sYmhxqgykJI1NwSSzEWFJo76Y9B5tLVC5Prfj3YEM1uyQTDe+/95Jolxhr/4OGwjzEonei4xMWlXmsOoXC8cq69LiESJ6v/khonut77tmxYLIM4lR0HCyiQvczy9g/4m4q7ybJmDUbRwUC9vsSc8hXMGYAaBaFFLV/p+bwqv416koX8LvszisW8BmoQ1RlNvBLNgosoobvU3YARwTOqClVU2kaTat+ViedOhPFNyy+vLe2YPTCBFZWfgIw0JBoNj4Y1r5AsEMuOaZadmadIIwiekPq0OZf73dCJ4tfmDa8gVa+fUEbFjShBPhmiEO+zkelaqJk4ssiNdnLgtGCOgD/7/9SziDYPax63vcMhkKVf78EktXPypm+WR2TgDsYFlwN3SPu70K/RhTFzT7ueiPmIw+Pjq5Qh8DZVO4Jqe6b3VGkSWeppgUXBttucWK1fh2D+/H54rM7MWkmDF/S5YF7ZIhpaYDcku1M3HXjSNBNpTh9k+QvriwKwnChUD2icawWo6BICUwUpXnmkUICyzih9ckbZ1l81kV631Sr76Dvt7AqqEJBaTAlBbWEiYH2q4DSf+SYqPiMk2vLALs/2mOc+gotpa1UtkfFauU8AYyLY8jEAsI3xDx5NrwQ51fnRB356JHSq7CRNt6m7Kr8eK+ZIEaVgQcy6bbGtFKMRQ7cvo974Z8w/OZhmNEfVsNP7ywLDQv+kepvlTla0wMjI0KkbZZSvi0ijR2ketvtu8BrgkB57ehyvEcb/iTWJ/Z7EtaOVJZvjQDgnYtkD1rdJLhhRha/Ma4/q607f6dKxw
+ EX18Mrya
+ Sq8xcvaSrEqf2mAEZ8nRAVWX1EpINcrDrKzT3mXybPRJ4dltae2znDBAcmANweVCXZXsx5lX8LFmLHzAL2gtoQRvrMEOsuw/R3rb0meflfliZcZ3ctDlZrr8dTwIuM1zp9ZyGDuwYzdfOuwqa4JuQNX/JUNGQ2FL4fkxc9SzEyQR/vnw2hHWFUrIsR0qtUVHhtJUF4Z8dJhoIGLvrpCbfOdz+yQTxFK6+icSzVtIvrxDQPTapOxuQoUaIxUZ3hQzUsiAosHzaTfC2o3bQkhnn18nRpF9N9Fj6Cp4CmZYmYQnHfYSIrrs/Apc7kOHAt1XpbRmFc+u7alSLPqiPbUAp2B9i54QKVovE361NvEdCQIJzWS9+VSZK5KzcMsZo85wzcoEuM4yo274ORhpnCzDdiJ+g8vF79V+pAdTnXH+d8eeZS3p7kccjuUtN94ez50JbMyg63FpLo8W8Jv7BJ1MDAaXWmVDlu5atYjeBAygRHXQdhYBlTmDtXTRQf6ImnNUYAEQ/rXgcp1VgIppIIfou1FmUgfxX893xZklfYEb3XiV9T3vSjJZj1FfOc9Du4+umwXyDNKO/U7CaFU5Tc2s2JTiPdFCWdqXNspmczxv70kVTZdA7unWnd5aIwt0kAVxuWTn9X+sPQwQX83IKQ32NzcXE/RJfauctLglTSTfJbmGBMXpE0JyyDHTLpcjMwN1xbIyfnf+9wXooIrbRZs253ZfkzaylWQwcFuDPMMHJO/yw839Lkr8WhG5HCv3o8JxyUaH9nlD+xGbAvQltMrIGXmwGZjksEg+spX8RpQDPGjXcRVWTHtf98MUKKJxX2p2zT0BdO7BNZBhtEulVg/EpKgBr3xR2uzAsxs9MJoZZtDto1NgKkWFqtBsOUQ5uZlHXVR7OC+gsiTZi7hq0wyAl1zztMlNw1kCsQuHw
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -154,73 +154,137 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit 017fa3e89187848fd056af757769c9e66ac3e93d upstream.
+[ Upstream commit dc1c8034e31b14a2e5e212104ec508aec44ce1b9 ]
 
-This simplifies the min_t() and max_t() macros by no longer making them
-work in the context of a C constant expression.
+Now that we no longer have any C constant expression contexts (ie array
+size declarations or static initializers) that use min() or max(), we
+can simpify the implementation by not having to worry about the result
+staying as a C constant expression.
 
-That means that you can no longer use them for static initializers or
-for array sizes in type definitions, but there were only a couple of
-such uses, and all of them were converted (famous last words) to use
-MIN_T/MAX_T instead.
+So now we can unconditionally just use temporary variables of the right
+type, and get rid of the excessive expansion that used to come from the
+use of
+
+   __builtin_choose_expr(__is_constexpr(...), ..
+
+to pick the specialized code for constant expressions.
+
+Another expansion simplification is to pass the temporary variables (in
+addition to the original expression) to our __types_ok() macro.  That
+may superficially look like it complicates the macro, but when we only
+want the type of the expression, expanding the temporary variable names
+is much simpler and smaller than expanding the potentially complicated
+original expression.
+
+As a result, on my machine, doing a
+
+  $ time make drivers/staging/media/atomisp/pci/isp/kernels/ynr/ynr_1.0/ia_css_ynr.host.i
+
+goes from
+
+	real	0m16.621s
+	user	0m15.360s
+	sys	0m1.221s
+
+to
+
+	real	0m2.532s
+	user	0m2.091s
+	sys	0m0.452s
+
+because the token expansion goes down dramatically.
+
+In particular, the longest line expansion (which was line 71 of that
+'ia_css_ynr.host.c' file) shrinks from 23,338kB (yes, 23MB for one
+single line) to "just" 1,444kB (now "only" 1.4MB).
+
+And yes, that line is still the line from hell, because it's doing
+multiple levels of "min()/max()" expansion thanks to some of them being
+hidden inside the uDIGIT_FITTING() macro.
+
+Lorenzo has a nice cleanup patch that makes that driver use inline
+functions instead of macros for sDIGIT_FITTING() and uDIGIT_FITTING(),
+which will fix that line once and for all, but the 16-fold reduction in
+this case does show why we need to simplify these helpers.
 
 Cc: David Laight <David.Laight@aculab.com>
 Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 ---
- include/linux/minmax.h | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ include/linux/minmax.h | 43 ++++++++++++++++++++----------------------
+ 1 file changed, 20 insertions(+), 23 deletions(-)
 
 diff --git a/include/linux/minmax.h b/include/linux/minmax.h
-index 2a40d3550f28..fc384714da45 100644
+index fc384714da45..e3e4353df983 100644
 --- a/include/linux/minmax.h
 +++ b/include/linux/minmax.h
-@@ -45,17 +45,20 @@
+@@ -35,10 +35,10 @@
+ #define __is_noneg_int(x)	\
+ 	(__builtin_choose_expr(__is_constexpr(x) && __is_signed(x), x, -1) >= 0)
  
- #define __cmp(op, x, y)	((x) __cmp_op_##op (y) ? (x) : (y))
+-#define __types_ok(x, y) 					\
+-	(__is_signed(x) == __is_signed(y) ||			\
+-		__is_signed((x) + 0) == __is_signed((y) + 0) ||	\
+-		__is_noneg_int(x) || __is_noneg_int(y))
++#define __types_ok(x, y, ux, uy) 				\
++	(__is_signed(ux) == __is_signed(uy) ||			\
++	 __is_signed((ux) + 0) == __is_signed((uy) + 0) ||	\
++	 __is_noneg_int(x) || __is_noneg_int(y))
  
--#define __cmp_once(op, x, y, unique_x, unique_y) ({	\
--	typeof(x) unique_x = (x);			\
--	typeof(y) unique_y = (y);			\
-+#define __cmp_once_unique(op, type, x, y, ux, uy) \
-+	({ type ux = (x); type uy = (y); __cmp(op, ux, uy); })
-+
-+#define __cmp_once(op, type, x, y) \
-+	__cmp_once_unique(op, type, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
-+
-+#define __careful_cmp_once(op, x, y) ({			\
- 	static_assert(__types_ok(x, y),			\
+ #define __cmp_op_min <
+ #define __cmp_op_max >
+@@ -51,34 +51,31 @@
+ #define __cmp_once(op, type, x, y) \
+ 	__cmp_once_unique(op, type, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
+ 
+-#define __careful_cmp_once(op, x, y) ({			\
+-	static_assert(__types_ok(x, y),			\
++#define __careful_cmp_once(op, x, y, ux, uy) ({		\
++	__auto_type ux = (x); __auto_type uy = (y);	\
++	static_assert(__types_ok(x, y, ux, uy),		\
  		#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
--	__cmp(op, unique_x, unique_y); })
-+	__cmp_once(op, __auto_type, x, y); })
+-	__cmp_once(op, __auto_type, x, y); })
++	__cmp(op, ux, uy); })
  
- #define __careful_cmp(op, x, y)					\
- 	__builtin_choose_expr(__is_constexpr((x) - (y)),	\
--		__cmp(op, x, y),				\
--		__cmp_once(op, x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y)))
-+		__cmp(op, x, y), __careful_cmp_once(op, x, y))
+-#define __careful_cmp(op, x, y)					\
+-	__builtin_choose_expr(__is_constexpr((x) - (y)),	\
+-		__cmp(op, x, y), __careful_cmp_once(op, x, y))
++#define __careful_cmp(op, x, y) \
++	__careful_cmp_once(op, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
  
  #define __clamp(val, lo, hi)	\
  	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
-@@ -158,7 +161,7 @@
-  * @x: first value
-  * @y: second value
-  */
--#define min_t(type, x, y)	__careful_cmp(min, (type)(x), (type)(y))
-+#define min_t(type, x, y) __cmp_once(min, type, x, y)
+ 
+-#define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({		\
+-	typeof(val) unique_val = (val);						\
+-	typeof(lo) unique_lo = (lo);						\
+-	typeof(hi) unique_hi = (hi);						\
++#define __clamp_once(val, lo, hi, uval, ulo, uhi) ({				\
++	__auto_type uval = (val);						\
++	__auto_type ulo = (lo);							\
++	__auto_type uhi = (hi);							\
+ 	static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
+ 			(lo) <= (hi), true),					\
+ 		"clamp() low limit " #lo " greater than high limit " #hi);	\
+-	static_assert(__types_ok(val, lo), "clamp() 'lo' signedness error");	\
+-	static_assert(__types_ok(val, hi), "clamp() 'hi' signedness error");	\
+-	__clamp(unique_val, unique_lo, unique_hi); })
+-
+-#define __careful_clamp(val, lo, hi) ({					\
+-	__builtin_choose_expr(__is_constexpr((val) - (lo) + (hi)),	\
+-		__clamp(val, lo, hi),					\
+-		__clamp_once(val, lo, hi, __UNIQUE_ID(__val),		\
+-			     __UNIQUE_ID(__lo), __UNIQUE_ID(__hi))); })
++	static_assert(__types_ok(uval, lo, uval, ulo), "clamp() 'lo' signedness error");	\
++	static_assert(__types_ok(uval, hi, uval, uhi), "clamp() 'hi' signedness error");	\
++	__clamp(uval, ulo, uhi); })
++
++#define __careful_clamp(val, lo, hi) \
++	__clamp_once(val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
  
  /**
-  * max_t - return maximum of two values, using the specified type
-@@ -166,7 +169,7 @@
-  * @x: first value
-  * @y: second value
-  */
--#define max_t(type, x, y)	__careful_cmp(max, (type)(x), (type)(y))
-+#define max_t(type, x, y) __cmp_once(max, type, x, y)
- 
- /*
-  * Do not check the array parameter using __must_be_array().
+  * min - return minimum of two values of the same or compatible types
 -- 
 2.47.3
 
