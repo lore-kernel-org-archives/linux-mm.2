@@ -4,126 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B98ECAC5B8
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 20:46:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31B7ACAC5B8
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 20:46:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 174778E0005; Thu,  2 Oct 2025 16:46:43 -0400 (EDT)
+	id BAEA78E0007; Thu,  2 Oct 2025 16:46:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D6468E0001; Thu,  2 Oct 2025 16:46:43 -0400 (EDT)
+	id AE8F28E0001; Thu,  2 Oct 2025 16:46:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE0E88E0005; Thu,  2 Oct 2025 16:46:42 -0400 (EDT)
+	id 98A208E0007; Thu,  2 Oct 2025 16:46:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D58C68E0001
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 16:46:42 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9D5651A068A
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 20:46:42 +0000 (UTC)
-X-FDA: 83954357844.18.CFCD263
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C4BF71C0014
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 20:46:40 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dCeQUFXC;
-	spf=pass (imf21.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DFC58E0001
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 16:46:44 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DE66A11AA80
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 20:46:43 +0000 (UTC)
+X-FDA: 83954357886.11.7625638
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 1299F12000E
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 20:46:41 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YVA3z1sP;
+	spf=pass (imf29.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759438000;
+	s=arc-20220608; t=1759438002;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2jwps1lz6jxYNn7Dnn5Z09tOaOeYs2HTQuW80UbgHqQ=;
-	b=bDF7Cje3MYQlpW2UG5NnRgy5MRhqWw0BigjTlqc3GGhsygUJmHVsO39pjdXME/G4/8JqNz
-	Z2NU1fxt1KYHRima6OK9J+bCMUX8yH7EN38pXGwBbd0wuT5UvSs8Fz3+huOUW0Mz5uK9Yy
-	/OpJa39a+hiGU0+lJfVX3fzrhGRCq+8=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dCeQUFXC;
-	spf=pass (imf21.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759438000; a=rsa-sha256;
+	bh=Mtg5K7mFEUovxKHIKqKvsg9K7Q6jEbo/PlbyX0ggh/g=;
+	b=tV5xlnyOU5P6Qq8NLelFJDQBOOZFCH2GirajabYwGRiBG82diYyPojM658o5kHhSFmZXMt
+	cyOJhIJoF8qCE9AEigJZsJJ/TmukbFqq+Hog5wiBB4DqZMif73kuNaTKq0XFeS6+ZKc0MF
+	sr+KKuf0hHVBhCTPWbtormiZnXoEpJk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759438002; a=rsa-sha256;
 	cv=none;
-	b=R24B7eIdFs/u6c2PmkFKapZ7vM0wCklLHjvXonZtKDa/GFWr0/rZJdH+fjImJqd9m8xl51
-	Jb0odjHRcvzOjjjAwwBYC55J88JOv1N5Toy1o4pAKx84MK7zlg4JYf49Pl6cj5T4XENtyK
-	CoHoa7T1iLN/mjI7j59jDwBEAgPgyNU=
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-71d60110772so16013757b3.0
-        for <linux-mm@kvack.org>; Thu, 02 Oct 2025 13:46:40 -0700 (PDT)
+	b=UbzU23T0T2mrsr/QQ1YK7fPXDdyw8rVpe8by8mo/XREZpIVZN3UnCfrwK2p4tgb5bZg4fv
+	YtwndgxP+IXMlcaY+9KSOkGCcLTR60lnGYICdmA01qiK35gcPWKMy6sbJXt9nwDHYlVnWm
+	IBVoKBJ05dcHtNOUdFeQmzr8NDgikzs=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YVA3z1sP;
+	spf=pass (imf29.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-71d71bcac45so16953587b3.0
+        for <linux-mm@kvack.org>; Thu, 02 Oct 2025 13:46:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759438000; x=1760042800; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1759438001; x=1760042801; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2jwps1lz6jxYNn7Dnn5Z09tOaOeYs2HTQuW80UbgHqQ=;
-        b=dCeQUFXC5+aCI7TNbmQYuFT1qZLlXnYtvL2N6a+YTtUJKFAyZxh2ymT93B2yrHHkWv
-         4/1yxoDKP6OPDWXbligWKBnujvdo8gSyaE4aZQQpBZFzb9LTxdS5u13ByiSPN8dZZi7b
-         4A+OzDGa8hfKa9fE6EoVoDuG06KaDDzlPQANxlBz98r1SNH3++YUlH8v+96fAauampE2
-         MvnmVT0eyGo+12STFUfmK3sZGwVeQM9It93c3lF4pj9lvTsA65WEDHGagJeSlx2hqBc5
-         0jHdqvbDedWMTyV64UDrYiYqcuYuABAsdVvvK9gl9i5eS+6idRptM3X++BUoe8n3f4oS
-         lTew==
+        bh=Mtg5K7mFEUovxKHIKqKvsg9K7Q6jEbo/PlbyX0ggh/g=;
+        b=YVA3z1sPMzmGYmBhqtAKRHPuWbkKa71yMZPi1LAhObt0bZWrAxyceOUJ+B4sOk29Oa
+         /Ec7yR1uwtw4O4b8MAxezqEknEwAmjPEDTJILpRiRDUYjYPTJtHo6eE5xlu50aQVnxVR
+         tkVWGTlg9hHpMLZ/VfeesklMSBTDsGQRF7KdU3e/6gKir+G/GAlE7a2/ZLZqj2V2aqBu
+         DQH8U6gdwQTYi1AFVlR+QWR/5af5cBsq7ZUAn4/ztekYw2FCXYzk40dvtCGNA5KIEOV9
+         RB1u+5s6moNpSTtmUisArOO+1YqdZ4HjIRu6T7EZgv2/kQygWGaX6CpOjeO4eIiQ4vGG
+         IojQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759438000; x=1760042800;
+        d=1e100.net; s=20230601; t=1759438001; x=1760042801;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2jwps1lz6jxYNn7Dnn5Z09tOaOeYs2HTQuW80UbgHqQ=;
-        b=leZQ9btJB0AAgIWA0swV6eFwy3iRNQTGxCfQZgrqsbglkyZ/x4LO8S4nD1IrcnW1F4
-         INGH9LmaMSCiSWWo8BRurLuBErMsAet0FNo1xz+PHU+lfQEc4awadRVBDPFtVVMu9KZF
-         bUAa5ScNeY/uVc121rMutk0++SVhoZjFKD+Rzp2z7Mm1QOmPefZCSVBIITxzNbBgkQI6
-         eic+zIgMlsqq+xwqb85I0tfcu/lv/ZEBCLIezHK9UJou8pHeVyzAJnv/8c5MsXKtcnd8
-         fOLqZbuZG59mviy4RlpVyyaclgySV7vUnJOsZIIJuJgrYpL5mMP7oUiEId+rzuIxfWTa
-         k2KA==
-X-Forwarded-Encrypted: i=1; AJvYcCW5w5p+Xvp/CN7eWyYIj+6SDAgPd0S2pJB1sm69nd/nsNq47NFcQXzTZIwRi19ocIDvg0dI1T2EhQ==@kvack.org
-X-Gm-Message-State: AOJu0YyFfQP81+ig2Ae2SzEXmOuYBIDU2lDEhJJFTng9Z/FfXaHIxSs7
-	0+/wcMyu8zU4nPgpwCtihuNcQSmR3HyqlgR6FRpjNqjzuv8ZM2PDK75+
-X-Gm-Gg: ASbGncvSZN/6HXq5ocGD0dzBhzEIWA6YoGFdOhdu0TzqI5MUVWjSiOek4ZPptM6niWQ
-	oBJHiQlfpu5hltjMzd7s4AC3CdIXIyKkx85eZBFpn33h8QQJpNkCZWMGikdtIkrlhmYyyK0DLgd
-	7PlJgEOP3kQigkZOdoI8plXh1T69Ktwp1gj+x2aLUW+pB8DXFvI0DF6vW3tGcrQ7k5obtELS88z
-	VTtOUo04w5o9nFKGSuM9+1nskGfQwcoFtigEOelyB3M8+E5YqmBjqCiPQYvM/Sc6sGg0FSH+/C+
-	2sTbzcQzmXz2Yjd1Czf4f17QTFI0L7AtdY/lOLgfCPFnV3p2fkYoCHVtioA74GxXUe6fLsvzwdH
-	JnbbuLVrjLf8qDXTtzGbEdIiFN2MLjZObPaasJlp/LDlQyUdZMOYJ/XA2Zc219J8bM9uNgShaBf
-	tCDw==
-X-Google-Smtp-Source: AGHT+IHzWFTSbAUSJS7YF3yHmxIfnxGDKF6Uqmg2CyEoFyCqQ6BTPK8MNk89Gdh1FJmam2OVjyxg6Q==
-X-Received: by 2002:a05:690c:6e8e:b0:772:3578:2ec5 with SMTP id 00721157ae682-77f942c2c16mr14178777b3.0.1759437999539;
-        Thu, 02 Oct 2025 13:46:39 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:5b::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-77f81e370c7sm11291757b3.55.2025.10.02.13.46.38
+        bh=Mtg5K7mFEUovxKHIKqKvsg9K7Q6jEbo/PlbyX0ggh/g=;
+        b=V8fmgwA64NA4fq7XPfg37m6XRDBk/6RGfV6x/8RDDt9zbVfdbrNeKLkw2UndlKBZUU
+         PVVJTlXKHY52I23uTKTfsgX4ZJTB4j/2u7CUQtAzTHUtw8RDpPE5PQ4tLBN2TSz8ZoQJ
+         DLU7eIVzdW4dKMWsm3eELkJPIVPQJANyBVCVU9IYhxy7QJXO5511qvIn53jpHH1tCch6
+         CPTjjMydjm6YcOH84r/iM1aHZrh5hyz1bbYzoeVgYPkdsM8XkBWjU9YhLCFNmAYqKJpC
+         1oKhJ4tcqBh8NnVhVecZWuOpV7bTGay2JkfhIK82eufMjlMwQcV0KAoT4FLtvIVGDx5S
+         jvlA==
+X-Forwarded-Encrypted: i=1; AJvYcCWdyy3ZLp0UZaf+YlAkFEmQxPEQuwYcJtcP03pRhtA2+JIt/ORui+jJm59+YI/MuelDEJn1ulQFGA==@kvack.org
+X-Gm-Message-State: AOJu0YxRKHMZmb7ik5SeO3G+6d21ltQ1xZnUgmOWOnMPRJQHd71soERb
+	6Km184WwuD3yNjBmVgDCkYGtd4T+X7FfUxGxqkNxhIT4gEOAUqqlgG2y
+X-Gm-Gg: ASbGncvFZItG5gWOo5midRz5NXjd/w38oFYpQzFtrLaLfo4q1ZXUAwv5t6zpqW3WlVp
+	xo+Jyu2fDMp6W/IafsC8y6Rq/Qm8nPZKmU05kwKbeIJyLb/uiA0kuo5MmsWDuGRAvFkRcN0Gk9C
+	2+wyVCXPtIdxtZ8MC0tZtR3S9SZWQfNL6nRqntELJN6dJ+FhVsiuOs56thsAyEyXtsPZrJFlITo
+	92ObiQMgvJ0n4MtMr2nyay+pkMHMZTrPhV5pm/gzORWe0oAjS1tyftDB+rso+OdxzNWzMNV/CZj
+	m5Xgf5VdvyfC2Ee8PHCS28emc2NblNCZdpSshAgZ20aj6VpGUAA7eYoe+w7DUqHZ3O02QkZHVeS
+	gp3yZhqk3QlYRIlccCJHwIe3oYEKq9NuMAtFTvt6Ry5BqNdmstEOIDLM4XenRIEm7SbwekHjhkE
+	q+Ij/iq23TXqUCL2LhwAtIkPvI
+X-Google-Smtp-Source: AGHT+IH1dK4l8EVgnO4Il3oHYv3U0XOv5jcIZNNZM8+Kj7vgvveFLxrmq74ZKJzTaehh0HFqLOPNkQ==
+X-Received: by 2002:a05:690c:6085:b0:772:2b5e:1f10 with SMTP id 00721157ae682-77f9456fdf6mr14998337b3.1.1759438001032;
+        Thu, 02 Oct 2025 13:46:41 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:74::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-77f81e63e8bsm11224447b3.67.2025.10.02.13.46.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Oct 2025 13:46:39 -0700 (PDT)
+        Thu, 02 Oct 2025 13:46:40 -0700 (PDT)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Chris Mason <clm@fb.com>,
 	Kiryl Shutsemau <kirill@shutemov.name>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Brendan Jackman <jackmanb@google.com>,
-	David Hildenbrand <david@redhat.com>,
 	Johannes Weiner <hannes@cmpxchg.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
 	Zi Yan <ziy@nvidia.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	kernel-team@meta.com
-Subject: [PATCH v3 1/3] mm/page_alloc/vmstat: Simplify refresh_cpu_vm_stats change detection
-Date: Thu,  2 Oct 2025 13:46:31 -0700
-Message-ID: <20251002204636.4016712-2-joshua.hahnjy@gmail.com>
+Subject: [PATCH v3 2/3] mm/page_alloc: Batch page freeing in decay_pcp_high
+Date: Thu,  2 Oct 2025 13:46:32 -0700
+Message-ID: <20251002204636.4016712-3-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251002204636.4016712-1-joshua.hahnjy@gmail.com>
 References: <20251002204636.4016712-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1299F12000E
+X-Stat-Signature: u1rrzcndpb7qk3fads3cnwybfwhfbti3
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C4BF71C0014
-X-Stat-Signature: ark8ggjcnkafunqkyijpr16hekxa4q8g
-X-HE-Tag: 1759438000-200152
-X-HE-Meta: U2FsdGVkX1+/woDXEIHzJKAASOAjCHq0Qtrtjfpr71LpjREHbATZ5D00rAgXdJEAAlykLLqod5ZiOMuCMLG3zNy/Jl9WKMEuJiyTy7NGh5XLDjNJKAQxK4wU87GPZA0gLZL5mrnHNCKTsrTJtGc2+2Ed3mxoZ3nckqC7hagperK7+slGJk3b90uCiOjzK0Z9eReWmA9S4p/AZ4x0Us8yiqxVC6WXZbdd7LXoxHC4sNPpQZ/pt4uh71MHLzlSVv3MbDS7cshfEHrTgEH1afT9o8vMflVjRl1CfHjRiXAzSrnwNKAyo0zk8R4WsAcPvwCPQxULlZfmoXzSN6yXx4KYNXEQwvGUMoFyW2Cw98Xpfn7eRHrX8sQMg+ohJbI7iuX4xQNTP3byoG+O3iehwBr2ec5bqpDR1tJUekVTvBedC8qNPRh+pQeD2atggmSjosSa/FTQ3V2m4L4KimhEBuAqEUd0haMjtX11RoaQLQ2TZSTsr2W2a5MsMOg+IiALDOnJwNRatugRQ64VgzKfb67P8a3cjjmz1PnNi0zC3xryeJlCzq/4wApDsZrguIBTFzZbqmO1TekNNUCR0OApipQWcbSti9baS3Apc6UuvAARh//03uKidx/OhdQMLvezFGKxwXpg0hRkqN9NA5YZsgYhFwraYw1o/Evtt39G+8rUKdM2lB8ENKAzwGPH6sKeJAfFUAqO1PAbJ3XKLWuWnOkpf2QC2ateTw05RWUpdds6lKsNVyuXW6O2Az+9C5Dn2BYl8aWogeUY/ncwe6Gk9MGy5wSKurwIwmbpOwePiZJNCws24ObNUgYSUPc7bi3D6QNJxvZf6+MtVxzx1YekpWIuJPt757BV/R6wMFXtrUg37FAldRwbEb2hbeKt9o1FlFTnOTHn9+qsU5OyClXPlSC4+OB/mB9hYpkLadNLWta3mheR4YQMbNaYPflrSBaeMiLVLXXjTHPNTNbqxoPOGHo
- 5czVQ9jY
- 6iElpPfnjXFMcZktK45v8U2lcYa79Jx2MLe78eexGPZc3kbFTOdjrL0FVzTHOMAp/CFzZL9ZCDlw0B0HlPM7BZkHQW83dyUqqMaXS81zoURxkwoo3aZtPvZnuuqg0yBFWPnUbSAJZhG1CUB6j8DBCeB89AnUwTk3kxOD1jHZdWbtMwhlQCk5XydaPgF6X8qgWlXSFAQOYboq3kJlLSyYa+p3xEqQYv8FT7dtj+hWRBldkA9qK9g25jyUOcpbYCF4kdv/xRc/2S+Fdlv148EapCE94MHnI78gEf0F4+qtoEGywPW5qVrN4aM3Ae1rmzo6z74DZY0yw6wObEz7QlkbkiJkOsH3+dhwYtT315OTzQMPInaF8N6MUcEZS2fRuJ69Ozilo07x2T6P21Jp/9O3hRPvQlyFvCSUFfq71lX1cAQdn5bYgYJVY9yGcgJAGKEpu84OIe/Djnuu8/MciCcpg/lL78rfQ5OsPIpVrfW/KN4oFLKT65tQjqSg+tAwrpN4yRwwV
+X-HE-Tag: 1759438001-543362
+X-HE-Meta: U2FsdGVkX19rVaxFRoTNwxCydisLNmnmA8M4+k+t7jkRmK3WKnWbnHIc+3aUpD5GLZ51smFyWUdKe5goHSVhojTTmj+THl5/rwqRutgf24K+g2itDLU3rd11KWdM60YktDcCGvf6FMgl7MrevZYbuLrauklV0IhSiKB0RrQkrN1cLAe+azTJ7f3qhuO06my4+Zd5e8pokNmWxwugj8/xyKSloKGGHpMa4Hp+fLQ6mPcQtPrG2U2c3+emK4uedpG2UzFMQCskDlogLV376/CipaUM9qZIsp3pOkpDnDCAHPpCp3r+qRj3A6u18EfpDBLqTZA0Zp7WTYfdi4pamnADn6X4swkclVlNM2Vi1Z00l3UeFHxliFGKnqjfmmb9/POiHVQ4aCHikVMYLsyFYJy+aZCwzMSLWsiPn0V90wIbWkPFfJ6JFnxo55BgGIE/7BTbir0y6AsM0QdwSwlaXHn6oIGkQUwpFzhuSumqsn0k/BnAFzuyKH0Fo5VwIE33tp0he24QHhb0ddPZNjZCHAPrE1QQFyIuR3YTUYbie2fWHIecIxKZ1XCTEpZxUTrPt52tYdxgxWfzjPDfHI/WeMhhdn5E5NznK+DSiwUldWsSFP3majfN7fFJOyFAISvnIQgmqI+wDvAU2udjMiLUV39ivT4/Szib/4BlVdgPyW3lxJ73Rap3rPVNtvU5tX/W1HorV7DI63WpM2Ge4HmVRETgaOLY9KcX4q95QcDKZDqSDRCc1FFRPZf21ACbQv0czpPoTGy4xmdaWhG6/tvsetMYS6klSK32c120NIwXWcI0TO3IjRD1jIa8/HuebuJYnT/mitN56CXSYg5ldQtiuisFUbw6pmDiQFj7BaN4A1DYSG5dqKzltMxAiWAPOlnHQTvuijIF0Ruf1fetoBSmyImde8NelSqJXs/Y97UCu5mJG8GV6lgmpqfJSNafGXfguSR7OnCAt8O+sTh/ECW9w2U
+ C3Xntm6O
+ 75JR0TM0B1tDTOISOZMok9mFEEQL3iuqdEuyMMQ8CcgpDkJ7YaMcI8HuD+ERSIb2jm1MF0X+O0SEcPWR6Q126u/dtumx0kjyPiJQyadONDJObVEBMTM4AMSU3a1wNag/GXtI988lNbGePySqs/w9nIoWgoF6JBJXYSEflBKhG2wuVygTvZVEB4Hi22BjJ2dSgYkip/GaT4uk18fVe5XVned0Gxoay6qOEwmYzuejebXFkSXVlD43Zdfhk/U3mmVTsuB/3uyQlU8FfVjP2CdW7WUzb0m9YB0rSz4xYxZ05HYgAX7MR5dh30tVOGOUkLCctA4FX5ZjUI/s8oEsgNgVbB1Gzd3Bk2TUTm9e7Boj9zJI0DfrH20l3K+o/NLoDl1hHSuFtGxq10ghxojzXuYtbZumD5fxQ3qUob2DPZhA2HmPa74sldTKNi03FqzEF/kiOgqAb4XswjR+gydNEn5rk0T7EdqSL8lbgk4QqbQ99eqtUCYD/tcGDUTdy7/oaOo4z7aIK2Gk8anhiLakruHTq67tu4dXrNEqigqAVT9gg4M45BoO/KZv1KCJGYimbQpgFG9w0gQ93+WpbB5lE8Fr7gng3XSo/zs1cuHs+nYNHQ7d0qBbmzzslGF6AvQlTV3qGMck2XrdymDqgWjnnpvyPvgvTfY/cuQaODY7zgS3uGabTeEiDC+JCqaLkoQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,169 +128,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, refresh_cpu_vm_stats returns an int, indicating how many
-changes were made during its updates. Using this information, callers
-like vmstat_update can heuristically determine if more work will be done
-in the future.
+It is possible for pcp->count - pcp->high to exceed pcp->batch by a lot.
+When this happens, we should perform batching to ensure that
+free_pcppages_bulk isn't called with too many pages to free at once and
+starve out other threads that need the pcp lock.
 
-However, all of refresh_cpu_vm_stats's callers either (a) ignore the
-result, only caring about performing the updates, or (b) only care about
-whether changes were made, but not *how many* changes were made.
+Since we are still only freeing the difference between the initial
+pcp->count and pcp->high values, there should be no change to how many
+pages are freed.
 
-Simplify the code by returning a bool instead to indicate if updates
-were made.
-
-In addition, simplify fold_diff and decay_pcp_high to return a bool
-for the same reason.
-
+Suggested-by: Chris Mason <clm@fb.com>
+Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+Co-developed-by: Johannes Weiner <hannes@cmpxchg.org>
 Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 ---
- include/linux/gfp.h |  2 +-
- mm/page_alloc.c     |  8 ++++----
- mm/vmstat.c         | 28 +++++++++++++++-------------
- 3 files changed, 20 insertions(+), 18 deletions(-)
+ mm/page_alloc.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-index 5ebf26fcdcfa..63c72cb1d117 100644
---- a/include/linux/gfp.h
-+++ b/include/linux/gfp.h
-@@ -386,7 +386,7 @@ extern void free_pages(unsigned long addr, unsigned int order);
- #define free_page(addr) free_pages((addr), 0)
- 
- void page_alloc_init_cpuhp(void);
--int decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp);
-+bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp);
- void drain_zone_pages(struct zone *zone, struct per_cpu_pages *pcp);
- void drain_all_pages(struct zone *zone);
- void drain_local_pages(struct zone *zone);
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 304e12bf2e4e..b9fc357d2d48 100644
+index b9fc357d2d48..f525f197c5fd 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -2557,10 +2557,10 @@ static int rmqueue_bulk(struct zone *zone, unsigned int order,
-  * Called from the vmstat counter updater to decay the PCP high.
-  * Return whether there are addition works to do.
+@@ -2559,7 +2559,7 @@ static int rmqueue_bulk(struct zone *zone, unsigned int order,
   */
--int decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
-+bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
+ bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
  {
- 	int high_min, to_drain, batch;
--	int todo = 0;
-+	bool todo = false;
+-	int high_min, to_drain, batch;
++	int high_min, to_drain, to_drain_batched, batch;
+ 	bool todo = false;
  
  	high_min = READ_ONCE(pcp->high_min);
- 	batch = READ_ONCE(pcp->batch);
-@@ -2573,7 +2573,7 @@ int decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
- 		pcp->high = max3(pcp->count - (batch << CONFIG_PCP_BATCH_SCALE_MAX),
- 				 pcp->high - (pcp->high >> 3), high_min);
- 		if (pcp->high > high_min)
--			todo++;
-+			todo = true;
+@@ -2577,11 +2577,14 @@ bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
  	}
  
  	to_drain = pcp->count - pcp->high;
-@@ -2581,7 +2581,7 @@ int decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
+-	if (to_drain > 0) {
++	while (to_drain > 0) {
++		to_drain_batched = min(to_drain, batch);
  		spin_lock(&pcp->lock);
- 		free_pcppages_bulk(zone, to_drain, pcp, 0);
+-		free_pcppages_bulk(zone, to_drain, pcp, 0);
++		free_pcppages_bulk(zone, to_drain_batched, pcp, 0);
  		spin_unlock(&pcp->lock);
--		todo++;
-+		todo = true;
+ 		todo = true;
++
++		to_drain -= to_drain_batched;
  	}
  
  	return todo;
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index bb09c032eecf..98855f31294d 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -771,25 +771,25 @@ EXPORT_SYMBOL(dec_node_page_state);
- 
- /*
-  * Fold a differential into the global counters.
-- * Returns the number of counters updated.
-+ * Returns whether counters were updated.
-  */
- static int fold_diff(int *zone_diff, int *node_diff)
- {
- 	int i;
--	int changes = 0;
-+	bool changed = false;
- 
- 	for (i = 0; i < NR_VM_ZONE_STAT_ITEMS; i++)
- 		if (zone_diff[i]) {
- 			atomic_long_add(zone_diff[i], &vm_zone_stat[i]);
--			changes++;
-+			changed = true;
- 	}
- 
- 	for (i = 0; i < NR_VM_NODE_STAT_ITEMS; i++)
- 		if (node_diff[i]) {
- 			atomic_long_add(node_diff[i], &vm_node_stat[i]);
--			changes++;
-+			changed = true;
- 	}
--	return changes;
-+	return changed;
- }
- 
- /*
-@@ -806,16 +806,16 @@ static int fold_diff(int *zone_diff, int *node_diff)
-  * with the global counters. These could cause remote node cache line
-  * bouncing and will have to be only done when necessary.
-  *
-- * The function returns the number of global counters updated.
-+ * The function returns whether global counters were updated.
-  */
--static int refresh_cpu_vm_stats(bool do_pagesets)
-+static bool refresh_cpu_vm_stats(bool do_pagesets)
- {
- 	struct pglist_data *pgdat;
- 	struct zone *zone;
- 	int i;
- 	int global_zone_diff[NR_VM_ZONE_STAT_ITEMS] = { 0, };
- 	int global_node_diff[NR_VM_NODE_STAT_ITEMS] = { 0, };
--	int changes = 0;
-+	bool changed = false;
- 
- 	for_each_populated_zone(zone) {
- 		struct per_cpu_zonestat __percpu *pzstats = zone->per_cpu_zonestats;
-@@ -839,7 +839,8 @@ static int refresh_cpu_vm_stats(bool do_pagesets)
- 		if (do_pagesets) {
- 			cond_resched();
- 
--			changes += decay_pcp_high(zone, this_cpu_ptr(pcp));
-+			if (decay_pcp_high(zone, this_cpu_ptr(pcp)))
-+				changed = true;
- #ifdef CONFIG_NUMA
- 			/*
- 			 * Deal with draining the remote pageset of this
-@@ -861,13 +862,13 @@ static int refresh_cpu_vm_stats(bool do_pagesets)
- 			}
- 
- 			if (__this_cpu_dec_return(pcp->expire)) {
--				changes++;
-+				changed = true;
- 				continue;
- 			}
- 
- 			if (__this_cpu_read(pcp->count)) {
- 				drain_zone_pages(zone, this_cpu_ptr(pcp));
--				changes++;
-+				changed = true;
- 			}
- #endif
- 		}
-@@ -887,8 +888,9 @@ static int refresh_cpu_vm_stats(bool do_pagesets)
- 		}
- 	}
- 
--	changes += fold_diff(global_zone_diff, global_node_diff);
--	return changes;
-+	if (fold_diff(global_zone_diff, global_node_diff))
-+		changed = true;
-+	return changed;
- }
- 
- /*
 -- 
 2.47.3
 
