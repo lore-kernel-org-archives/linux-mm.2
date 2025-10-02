@@ -4,79 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DE1DCAC5B0
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 07:35:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FD0FCAC5B0
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 07:35:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9FD318E000E; Thu,  2 Oct 2025 03:35:11 -0400 (EDT)
+	id D7FBD8E000F; Thu,  2 Oct 2025 03:35:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9ADD48E0002; Thu,  2 Oct 2025 03:35:11 -0400 (EDT)
+	id D2FFF8E0002; Thu,  2 Oct 2025 03:35:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 801AC8E000E; Thu,  2 Oct 2025 03:35:11 -0400 (EDT)
+	id C1F268E000F; Thu,  2 Oct 2025 03:35:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 69EB38E0002
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 03:35:11 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 266A058B75
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 07:35:11 +0000 (UTC)
-X-FDA: 83952363222.20.05FCA22
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 58901140006
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 07:35:09 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AFB038E0002
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 03:35:15 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5113886D9C
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 07:35:15 +0000 (UTC)
+X-FDA: 83952363390.10.91FEEC5
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 756D1C000B
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 07:35:13 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
 	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
 	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759390509;
+	s=arc-20220608; t=1759390513;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=Zy0m6lGq7yazke2nafMsvPVV6PQXFaV2+DO3R5bhnME=;
-	b=q8wPxVuatQRbFqSVBlFSmrFnqdpMS/E+5uagINI5zB1lOHfcW/BadVqowUFod3JQpqJk0s
-	DYDvnobQTFDwlIE254K37eYh9ZhFzv4PRDmdVjvLCQ3ckWXzLcFdSQg7JNWcGCdbBhsal9
-	B/o6BLqosjTqMJ+Ugqqt+nYcvnfeFLE=
+	 in-reply-to:in-reply-to:references:references;
+	bh=VRXzbaSJvEeEuAD//MreCCVgmlc+Vr7UAiNsZmiYS+g=;
+	b=qHh2S6EgQSm8QqhCFLP6waSX43N4Z5Zmk0PGX+mdzZZWZ6mDPXFGcEb2eah8TVikV3nJzp
+	MzI3G3no+uutihsCrFZUaB+0vEDMEuK4Bhd2So19WpL8+Bn+Tnq9RruVZVh+KeNO3LM7t8
+	eVUHLQIBPWIGcKHBrmxsfYj9iC1APrc=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
+	imf22.hostedemail.com;
 	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
 	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759390509; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759390513; a=rsa-sha256;
 	cv=none;
-	b=FC63mh8XDBPTtnAatXAN4asyS3uK8zMUXRaC/a/OYAbkhe3EwpWhCTFVbtRRTfEYE2LMzV
-	5vNKTiwdg9pHNrjbha0h8PCVSUAy88b3tmMOIVGx/K7YovR91LyorCr8wIwr1IdbhKgR+U
-	rUQBXAPUS8HjnyQCp9bVKi/hDhFnpRU=
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-46e48d6b95fso5575925e9.3
-        for <linux-mm@kvack.org>; Thu, 02 Oct 2025 00:35:09 -0700 (PDT)
+	b=QjgQ/bqMQwn7PgeipwxspxTNaU/+9tIx9tKfGMzaXb9yQpOQ5yfqDfmphkes1+jN1gP2Uz
+	MAYln6d8YEZObHBZZxEz5VhG4VR37/WatOtpdTf91yhQQ4qavUBlIpI9SZXwWBgm8FAdcy
+	d64DhrrAESQr177waS+QVvFyEGuTml0=
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-46e37d6c21eso4450805e9.0
+        for <linux-mm@kvack.org>; Thu, 02 Oct 2025 00:35:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759390508; x=1759995308;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Zy0m6lGq7yazke2nafMsvPVV6PQXFaV2+DO3R5bhnME=;
-        b=P/UTy4zF6UuUpYyfPpYK7xe+y9H4yD7XVfXtg2TRCgRRLlrxeZ6mnOzX4EDy6+/t81
-         iK3aireQc+psMzJ7htroUpixrlO+IoMAxsb94i2jKgGagHd2D8pQ0S5/a7mm6jHkPGiF
-         a1afv4y7KrhsfaD3l6yGftjFREYvvOBk5nuDZ8an+Y4bMhjFgmhuXq491fxCVTbFaFla
-         sUvQzvUJXWV3TTbd1S5uw4lafsjQThda0KVvj7JIXQTbPKN4zJVtTKvDLvO3aaP4Vg6j
-         lrqzsuauWRYodB0Ve6RYWWR/9AUJLaTZD0sdq0s42arEuKsgV1gYV1RzbgI1Cy76z/Uw
-         vDaA==
-X-Forwarded-Encrypted: i=1; AJvYcCUSfjsGB04KB5hDAnhAm2vi356+8aEVs5mEEFKWX9YzmOtD7k7J7aw9HPSNx6gBS1nXmZA8Zvjf2Q==@kvack.org
-X-Gm-Message-State: AOJu0YyAIJvjnFp7R40HkCG0vIxUcaFjgBH96d6LxScGLN/zN4EOPEeC
-	tkHs+GFwDDKotUWc8nBYncRF9O2yjonmt88rkzDeIfkst+5Wa7CRscW1
-X-Gm-Gg: ASbGncuhV4amklSIDeZKHJfsrB5iDES5QtmBZDai0IrstkMDvgNb9aw5dYIBI5c2DY4
-	BI8CTiGUfZ2SGDdHfuGoP+VPvqjLFMvpTAPbRZPLSVb84fj+4esd9CMl3TF9YBWR+j2jWlRL4cA
-	rizBYIlVpCk+wwiXnAEg8UKjr8bRIZSDgjTd7dxBnJ1EYrhA43vwOBsGkgehS5GBxaBf6eZXr42
-	hsqForJYedFZRS129KiqQGVPdF151719nWI1/mhVkej1Cz1/wXkPwKBzy5J95BBslu4LOsI1i3o
-	dqE5w4o7gygydWfMgHO528B4kN5VH9P0EwethajC2y2YaPnkcywL6XZi9l6KBAxSJUjU21WxdxQ
-	4T+9HDf/WHju1Lwre6hOhW5AutBZQn/BBaJYlhko=
-X-Google-Smtp-Source: AGHT+IFdXedeq8zfqN8YTO4c4rG0+WopGT+gds1vJKougcSHuF83RceLKvrR4pss1nVq5M3RimSQvA==
-X-Received: by 2002:a05:600c:3544:b0:46e:5aac:54f9 with SMTP id 5b1f17b1804b1-46e61293e93mr47824755e9.37.1759390507589;
-        Thu, 02 Oct 2025 00:35:07 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1759390512; x=1759995312;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VRXzbaSJvEeEuAD//MreCCVgmlc+Vr7UAiNsZmiYS+g=;
+        b=wB3WKrWJ1n8NuyzAT1G1g+t5M/ra8zHruBUFOEd3FGbtBJAFypLLqiR3Sp3UKSanRw
+         S9yN5gZ2w+pIIRnSOkzmV0F0K/uGbAoMIadExqJKQYPWzmuRCTULHrE05QsUD7SmYbge
+         2UdkopddzL4rZuxmkeLEmVlv+7gAClDetsuVu84EfOrfyIxkrApdb+UHgsaNw1Fxd06f
+         UC8PqY59kxcgqB4jdmbVhtyIdeaw6S4g0TcuR+H0ETn8xYCZ4TUvTIKymKPRxPX6hVAi
+         /XODL0niEUgCYash9HUw2OlVBJ8UOuqCuoHd3pcyqBZ9Bh+N4P5KXUrGiT2FUxYw/6+O
+         udJw==
+X-Forwarded-Encrypted: i=1; AJvYcCXm8O87qLnGLjnFF4Au0pp3dBwktJyMnflQ7hKPUVa1y+Sj6XBQPMfIlM87ADIYJZsPQYm8upDYgA==@kvack.org
+X-Gm-Message-State: AOJu0YyecIE8ZQ1SFYwa9+7EFwl/u9QAtjYGCule/cRJ5sUwnsON+4RW
+	bpVdHQWYef7VtHN9t5VFeLiiYRR+VS+qUl+IBmWIEg8lfJUdh+QlqlMeHpiVId+5
+X-Gm-Gg: ASbGncve2yfLytjj1wWnxmAx4QpuyeVO1+SLDdnzMGjFF7npVwmxk0w7E8kX9rqg4lU
+	9C0UehZLZVBjGEg0Y/KRisYuM+coHOY4o83VqB5TcH5wnqZAYHMqAvWzGxCILB90fu70QXpTo5u
+	UZy575KD0CIqIUKfdEVMIM9zgK5XV1vHkqbC6iJsPp0gM+ChV3T7PQjJiRghfRmM6vKnf7n8Enz
+	DgnsRtOR4Ia7BV7esHseKUHPfSzcPU85/LYyo5jkZiBI4VMocPxtrcHLfLrcBI+OKt544/IIkdf
+	GYXmNC2/6gw7sUfgshpDeQQpzitsT9teZBfDMGjLtMTzFbII2DNFly8rr95mKu5vd8rVH2/Ipqf
+	2S3yMdoaPfsSxnzTRE47evKIDXrz5SLhonsbP1ao=
+X-Google-Smtp-Source: AGHT+IG2jlLDIgDG0wBkYWool7Xk9VaM4c6zOW54Z9lnjZVwUFDfiLKSLmpYXXdi82tG9D7HIgWkzg==
+X-Received: by 2002:a05:600c:64ce:b0:46e:32dd:1b1a with SMTP id 5b1f17b1804b1-46e61262498mr50328435e9.7.1759390511979;
+        Thu, 02 Oct 2025 00:35:11 -0700 (PDT)
 Received: from localhost.localdomain ([2a09:0:1:2::301b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e6a692af6sm17856135e9.21.2025.10.02.00.35.00
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e6a692af6sm17856135e9.21.2025.10.02.00.35.07
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 02 Oct 2025 00:35:07 -0700 (PDT)
+        Thu, 02 Oct 2025 00:35:11 -0700 (PDT)
 From: Lance Yang <lance.yang@linux.dev>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -91,21 +92,24 @@ Cc: ziy@nvidia.com,
 	ioworker0@gmail.com,
 	richard.weiyang@gmail.com,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH mm-new 0/2] mm/khugepaged: refactor and merge PTE scanning logic
-Date: Thu,  2 Oct 2025 15:32:53 +0800
-Message-ID: <20251002073255.14867-1-lance.yang@linux.dev>
+	linux-mm@kvack.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: [PATCH mm-new 1/2] mm/khugepaged: optimize PTE scanning with if-else-if-else-if chain
+Date: Thu,  2 Oct 2025 15:32:54 +0800
+Message-ID: <20251002073255.14867-2-lance.yang@linux.dev>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20251002073255.14867-1-lance.yang@linux.dev>
+References: <20251002073255.14867-1-lance.yang@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 58901140006
-X-Rspamd-Server: rspam05
-X-Stat-Signature: ce3mbigo4w3cnciataexfg1weejm6baa
 X-Rspam-User: 
-X-HE-Tag: 1759390509-398177
-X-HE-Meta: U2FsdGVkX18M9aFZrL7BWOhMSKARVqrcrp3gwOe99cPp+qf87SDZC/ToxdOONRWkIfhzEnqqElDWA9r+YPrxebrNCZBe3wLSghOuaKnX8988PWU65HW29x+jvwnkx8+HyUQVryatsYj+hghlk5L9Lo4I3DtBCnQSpODn6DN3Og1EgDGlLIdydYXS1tUXWlgJPGwtoOrhpkBuJpzo9qZUrmIVMaOJ4JbkZzZ8X+2xuSZ3/qdlAwqV5oQR6I46EwvyWpIMjlA31B4Pl3yrhwXv+7GSbHWSS/im0RpNkHCpg/3QeCaZHhrwJVdgHSNZTubNy/GHGcHWXyOh1hWbiPGVG5rMjAmUKKScgiN/N8gMF9RlPOhncdX4Rm0AlBioi7/Y0k1GihUzX/m6wavMGnGQF/bWpLrV4n4wfokeSDn5IDE8CESz0PS5RyEI0gPX+Ul6MZnQmIQHkwM7gUYHYBk9P2xXB3o7oAqE9ynFfg+ZXhOf9OTWsQGAyIv37HwwAms2BH63bSioJFnzeg5io1/9E2iCSq9jCTIFI51hwdtFoVteIsFtstyrerQnogYiAcfZdH9otQadq0DoIrEpBtY7NfIZDjHs3KMbXntXg6X2Y3eXwKGzRfXkZUBgw1qKSPgl2a/8mvz5EARVM5qxIx3gAZLxN5orQNL1/8VOYyyHjWRB0hR+LkBh4DpEDHfpm2sjJ55gV5LnzPars2aMp9lhe7V7qixNqaGAph967K6qs/1H+DlVn6k0HQk6kMzHuXGvKdfo6uIfGEgiExbkYGBc2Q4BSLtDXOOFdZN4aZQZtroDI2LoyjJgNJFureR/1GdGyJKkqoSo4Dj48ygJfeL+jRMufhxEU0uN7886bnmmbvopbNzQlgIRpu5wN4hOrcrhSv50ULzrHkJZsGQFHzDnOhkgW1jy3L3dhvQcMrvIlaXdFgIc4f7od5WxJpoKJFRe9EEv/zOdZutbXvrsZjJ
- qRuIKp0q
- qdYgvIcvdYSZHgKVXTh2ZiqII0JLGRy/s2fvxnUYiATLCEjEuENzpj7pEh3Xj92LB2l2JPEvKcArh/8fKDuG/hZC5lmFbgEATMYkULxHE/FY4TUCfAgRqBLROtj+msRhoag4kek6ZPuoHy+W9QQIcqs2T8aUOrve0GgFm7qtGaQT1djPi7i7f57bbUaXT1XTVFc8O/E5scgL1+iRv/8Wr69vvDPRwaTM/gZxPPE5tPSB1E9IxT5OtqCiVkV3FbD6vYVJhlsZmLDt5J4YA0br9zwHJT1ee+2yxTKtbkAPAsEgXbxVp1LibD5iRDrUOePbWzPz0KCbFVGkprCFhZV+npzchTMtK8IKqEK70pceTbTZAj/wEf/7qxfB/LbKhesVG5ej5VmgKz/nf0ZAFTm5P1yLD/or7I9JpG9jPtlOGa99yE7t8j4Rgta/UQ1PUByhfXuJVJJGkrfHd50FY9M5BOeZepQ9QIsHfuYMlGt5/QgQUWa9Ka0Swxkfs81F43nMDTjcxXSktvD9Tq0NT56Whdzuclg5Iv1UJRZW8iWyu+HkiGS4=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 756D1C000B
+X-Stat-Signature: arm1764sjq9959rz1dkcmxfjrhmzaf7h
+X-HE-Tag: 1759390513-941965
+X-HE-Meta: U2FsdGVkX1/BcqruoQu2OhjXDP9nuy+vyH7U6CVW/o6XArVj2Rx3F6nIe+cCoruyKgj7Xh0fUph49HzUhUgeq6dv1g7ravUZV24MS3Z0+G5aeL3C5INNzAcVZZNbiO089hR0pTpcLSI31gM5kD/Ge8kNKhfVKV+nEZUJRaEIuMe5hqP/XUTy7KoFFsv6UU2awsmZzeV0ujQPHTbaWUUe4oV5P0xXBPxyn0UGXHvkWqZi2NPKzbnD/S4u0qe7cxntZGtT179iYtcyECk0MWzC6NJLhfryU/QCsdjjVH4+FFE0pQ0Ik3uSh4M/Jd1T0ln4zp5umSvIyjcg0uZQ+JfpB21CqJAFMDAAKf/qgEV1PHtI8+sISsvRoBvmiw3+ek+zprdWEd8oYpO62Tvat3gH+ZOQ4XF+0p9TECINMN+gcUtV6QCvU5hKF/ZlOs24X8dKCuYdxkXwfLAoF0tdt1jnMRgvlp0ZT+hE8vCZeO2KAb+TcMkjE3ovoLrt06mssthy4KA4lrn3WEsC91rbT3sngvO+8UfI04zJi64WemGxO5I3E9S9BF5htDlsGZTbe0xw1gMTTsKabISytvh75r/69HKIPuAeAW/G+uwbBNLXX5vJ+6l+Ecyab7o16WRkHZx/qJ9o2R70ZuNLobjLawIqlxUQmofmZBkHlqE5chMznKorL094CrgNXcrFdhoCtbrrD/uKMPmSGyjq4059caFflrQXeAdPmGc+98kD39jzbG1Wdu9atOorAQUuKfEdh1Le+GorJZq7hFZNCRrYtfebgWqyXM+OleCqVJtuc4QL3SMGOGHdcFd82vqf77Hli8f1e5yfgKnnj9nizj0hPAxNTASZ3PwFYgGH9MczUyHBMYhzpnGJ4HhtFFLPJCuMOPGqgazFbhne0b+kuwg8dGFyViGsdtDVXOtsYIS8GYdzeEg6RsayLH4b1TXeJLS863DVPLsmOkfRD4PGsxZ+wK6
+ T1LoxsS0
+ By98ubji8NOi7jNAQ9w2ykNDRSjFRA1YN7s0+An5SeUx0KtFReu8JNS8rpiufVCcRi9fT1h5lGKqP7VvQ3fttiw2Fpilm3T0G2g9mPgP6oRmTDGiidedi265DVgAb4Q9IMXxIAAAl+n26+hNNvzFWjExHr9C5SzSNi6u1xpUoJWiM9XjZ9JdNW2jBa2z3NDI9gBiWyUA81QumYP5D+l1XpSHLRv4+vWgQByIZHEtSd9Bgr2KetqcvVsM9j5BxnBKhjZuca366GEwQJAfaykSMWgwm5I8iBsiv0tCwVHyhWYvnQYtm3mjlbFqYtJdlyg2W+syEj+5EvFnCrEqJl7Q0aBRiAnZZ8VYYtjJGuCXSCddSNYm33WIRRlhsM5m7Ti9Fyy3hZfbvGnpldpQdND184d0UUCYbxj7kON+QCKHN9OI21wr7eTmS8PdOopoTlODSfY0d3h0d5G0hgs9/shHoXwaAIJ7hTZDAjXdRGRKnq7rdoI46CAyRw0djenubH3EjqDl02Q940weu3Czj8kKgdTiiICUiigQFsc/8M+DWlHQ4n6uHNN6u5FJHlBzEATH/dmYl775Kb9PYv6t9FfJP2xzalgN55unthVO0BXgiAKLYm73TnB6tR6PCohJXz4dsy9akCrR+C4LjY6c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,26 +118,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+From: Lance Yang <lance.yang@linux.dev>
 
-This series cleans up the almost-duplicated PTE scanning logic in the
-collapse path.
+As pointed out by Dev, the PTE checks for disjoint conditions in the
+scanning loops can be optimized. is_swap_pte, (pte_none && is_zero_pfn),
+and pte_uffd_wp are mutually exclusive.
 
-The first one is a preparatory step that refactors both loops to use
-a single if-else-if-else-if chain for checking disjoint PTEs.
+This patch refactors the loops in both __collapse_huge_page_isolate() and
+hpage_collapse_scan_pmd() to use a continuous if-else-if-else-if chain
+instead of separate if blocks.
 
-The second one then extracts the common logic into a shared helper.
+Also, this is a preparatory step to make it easier to merge the
+almost-duplicated scanning logic in these two functions, as suggested
+by David.
 
-Thanks,
-Lance
+Suggested-by: Dev Jain <dev.jain@arm.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
+---
+ mm/khugepaged.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-Lance Yang (2):
-  mm/khugepaged: optimize PTE scanning with if-else-if-else-if chain
-  mm/khugepaged: merge PTE scanning logic into a new helper
-
- mm/khugepaged.c | 171 +++++++++++++++++++++++++++++-------------------
- 1 file changed, 104 insertions(+), 67 deletions(-)
-
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index f4f57ba69d72..808523f92c7b 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -548,8 +548,7 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+ 	for (_pte = pte; _pte < pte + HPAGE_PMD_NR;
+ 	     _pte++, addr += PAGE_SIZE) {
+ 		pte_t pteval = ptep_get(_pte);
+-		if (pte_none(pteval) || (pte_present(pteval) &&
+-				is_zero_pfn(pte_pfn(pteval)))) {
++		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
+ 			++none_or_zero;
+ 			if (!userfaultfd_armed(vma) &&
+ 			    (!cc->is_khugepaged ||
+@@ -560,12 +559,10 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+ 				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
+ 				goto out;
+ 			}
+-		}
+-		if (!pte_present(pteval)) {
++		} else if (!pte_present(pteval)) {
+ 			result = SCAN_PTE_NON_PRESENT;
+ 			goto out;
+-		}
+-		if (pte_uffd_wp(pteval)) {
++		} else if (pte_uffd_wp(pteval)) {
+ 			result = SCAN_PTE_UFFD_WP;
+ 			goto out;
+ 		}
+@@ -1316,8 +1313,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 				count_vm_event(THP_SCAN_EXCEED_SWAP_PTE);
+ 				goto out_unmap;
+ 			}
+-		}
+-		if (pte_uffd_wp(pteval)) {
++		} else if (pte_uffd_wp(pteval)) {
+ 			/*
+ 			 * Don't collapse the page if any of the small
+ 			 * PTEs are armed with uffd write protection.
 -- 
 2.49.0
 
