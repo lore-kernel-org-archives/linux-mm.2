@@ -4,99 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BA8FCCA470
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 03:03:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE0F3CCA470
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 03:17:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A39588E0006; Wed,  1 Oct 2025 23:03:47 -0400 (EDT)
+	id 3A1428E0007; Wed,  1 Oct 2025 23:17:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0F3B8E0002; Wed,  1 Oct 2025 23:03:47 -0400 (EDT)
+	id 378998E0002; Wed,  1 Oct 2025 23:17:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94BD48E0006; Wed,  1 Oct 2025 23:03:47 -0400 (EDT)
+	id 27E988E0007; Wed,  1 Oct 2025 23:17:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 83A4E8E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 23:03:47 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 28C8A58764
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 03:03:47 +0000 (UTC)
-X-FDA: 83951679294.13.7F7FEF6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 41FAB100006
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 03:03:45 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WEH8jwFg;
-	spf=pass (imf14.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 13E408E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 23:17:49 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A57A7140314
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 03:17:48 +0000 (UTC)
+X-FDA: 83951714616.30.34A6C24
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 9B38AC0006
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 03:17:46 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Wvo80clQ;
+	spf=pass (imf28.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759374225;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1759375066;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xl1Cvhmlf/9lMWIu5UbWcsXkbQekR0hq3oKTHV4P9Vs=;
-	b=pm+M1Xh2rcR6uKxVDpzSKwPv+96BH6yHUVzT1zfE1evNE2AWqt3COwDLO0WpmhR3///lD1
-	Uvfk1sXXC0PNqaYE6o5LUT2oyQZQDz1BHj3VUYQf6yDM3wzarV6kvTlF44PcMRbjU/xitZ
-	XxIvYlOb9W5+7Tu9oxYhOu7PsvlKV5w=
+	bh=ukIjXlnpeq1rHbLV2IaXOhdHQVb6iKLF8mmZ545G2bI=;
+	b=PF7jUPPegH+7Um9eQo/nAGSnXfPtri+Nk8azxovp+gbaNuWLrq/+RyilKhjwL685THJypI
+	vyptqKli7dHcrXX0bAAhn8WwiOylGojLM1LI0Pqtx2vls7pniIcKYUlxIi+on+QG9+Ewnw
+	rpRVOdlCU1HN8XzDaeG2qu2uKN3diMQ=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WEH8jwFg;
-	spf=pass (imf14.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759374225; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Wvo80clQ;
+	spf=pass (imf28.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759375066; a=rsa-sha256;
 	cv=none;
-	b=YZElQh94x3UfoF52dAaTKRy5osXezak1WBckgFncRd2k20N8v+5fHZ9EQ7QPIMSVCe9CvU
-	CfxeLJJOCKAVla0A4c2geIoWFzMkQ0G7KE3DdOxuope4AsFNlR8i9b6F/GZgBjrQrV2uAb
-	Ij/UUYkd+uO+n0r4Lo4cRZNgp5n7whQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4554663D37
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 03:03:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAC1C4CEFD
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 03:03:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759374223;
-	bh=yMrfrbTF3i4kHXIHt5dXj1BqQ59Mh4163rX4hy4uDk0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=WEH8jwFgp5lK4kza7wdscMDrJ8NXgPFJqL+jmIpS7BgWqOC8jkX1nCidwsvLJ1he3
-	 41W3fe9Zmgc7AymtNQpIcBqD1J9bM09oY1uUC159/3Of/JvDSeBJNa2sDkEtkgjWL5
-	 tKQYr3htbZD85rJmEZASHVikDLigiobfZixpGvGfgrUa91Mc3UI/UaXWaluGNYpAAh
-	 N5ev88K3f83nm9snHW4h5qXqSJfUJVwg0iwJcwCltjLltDLqboQL2xp1xLKSTBvsru
-	 +/Olonav63xrl/a+ysXeUUeWut+c9uisnvu5ptWR3iL9DEXd5MQ2ZmogBEOkjbYTod
-	 QWmGX7tSznb2Q==
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-71d603a269cso6475697b3.1
-        for <linux-mm@kvack.org>; Wed, 01 Oct 2025 20:03:43 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yy370dZESlcYZv+rCul0qJong33wW7xrSGe0g4FESQ/DD3x0fmd
-	5h2WnfqyLfIJnOSJuVoZfoSqiU33KnRZd/aOy9EzszGf/zUpAo68IOGlgNCkPW7k9OjtitvpCGl
-	ndND0HCQ+J9EvprIJYUIFCr3vPHNOkMSFPs5lXf9KeA==
-X-Google-Smtp-Source: AGHT+IEXKGqL5hJjdXsqXsjxnfdIFdyV7/olHNH2maj/Royvl+p57ZYheGgWpbaQd/TINGCr+yl3c03mLNM1ZUJk/wQ=
-X-Received: by 2002:a53:cc41:0:b0:628:a8b3:2d5c with SMTP id
- 956f58d0204a3-63b6feef50fmr5487647d50.4.1759374223149; Wed, 01 Oct 2025
- 20:03:43 -0700 (PDT)
+	b=5sN2eIA4zsGWe+E4MppkHSF3TQjjKuispcqaUDYFg3gNWdnNX//v3qeqANJRwmH4Iv9tBz
+	78yf1KqFBn2EZ7OigF8OWqyieNJE9hcK9YsvJ1r8UUMMb/XlLzAb8sECsr7+c+fHXDbvRT
+	R5bYxu6+lJ9tjX/nSoPq2Tnpi9kbH/4=
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b3b27b50090so110122766b.0
+        for <linux-mm@kvack.org>; Wed, 01 Oct 2025 20:17:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759375065; x=1759979865; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ukIjXlnpeq1rHbLV2IaXOhdHQVb6iKLF8mmZ545G2bI=;
+        b=Wvo80clQyn6VJT5CzN2BQl5I2+OeNvdesnTmJd05soQt69ZiYbx8hyI55FtI8QwFBN
+         3T7NmRnmZSBVWIFTykZkIE3r320A1e6TKGR8El/cLLEoe2DQNWhwdU6tlFiYfiS/hO90
+         SnfS3jEci0UXhGZHLEQX+63THcJ1CCt9jbtrdYq/5ZBlxWmnNGHpk8YIIC2QUb/ch1+X
+         xW/eGYXTSiu2Dq/EjGl06YbK3qKHwTmRraahBgKxkQFqLRIdiKXJ3OwcNvuwMI+xiQBB
+         +u1syST4c2b1r2EdxFwYMXOxNSZnkEGwuXEIxA16MY7Cwsp2PXQM+0Yw32FqUqPaDYz2
+         v3BA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759375065; x=1759979865;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ukIjXlnpeq1rHbLV2IaXOhdHQVb6iKLF8mmZ545G2bI=;
+        b=OFwrXPGr+73G9UHxSt63hA+3+eT6gru7DxL+wZMXNZSWT3UEjFzNBVmCfdjY7JbQGk
+         L8rntOeq5PcChWvpr4BhvmX8qT2aX3CAt72D5NC7qC0bCNRapnduvhstGljo18tz3sbp
+         lAAy+iM9l7sriR79c2HCV1M/KVo0e0f3rRg/j5bHtgTrxfXXCS2IkFm3NMxeX9kewbyC
+         +8csm6I1IJULDtPRlbe+plKdIUXWi2fD8WYiuSd6g/jVlLAaNQRpQV5VNQCrARkPrTcN
+         e68nSlIHaJnKU6AyZ9/MMbxFKdBz/0bA1ZUP3PZXHT4oH1G6Ucpt9ZLg2sWzSb4WuGOx
+         fxEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXmG8EZzvHOPwFG7cUCI964G8uNaaBuxYMaPbwQDzInTOQuF9WWdfb7APf7zYfmvUnJRJP/obxDug==@kvack.org
+X-Gm-Message-State: AOJu0YzmLhSnLYolMUiYpuW0qu8lkCT1u7XB343adi7lJNiUS04eG9UY
+	MAKm2idqj/0aVENyRJlafM6m6wexjZatmAv4lX6/2YLRIe7zNMJN8/QL
+X-Gm-Gg: ASbGncvJWZseStdtwUaJyh5jyAyRojbdtjzPaCATcUK8h2SPGnZz8G+9OUUV00O/oC2
+	O3q796qEvqT7ANhRB8pmcdkzxlvVfteA3tWGeJ2JhYT7zB7m9x/vKsic5MID6VYEOHtX9vx4tm6
+	iYacyM1XHpMlsK64ww5DBSojE55f7KwpIEpLgToGOt2BVI6I4WwnxiTa3OMWS8nMAblkbmI69sE
+	w7R1JLGB9Kgozg2iDQpHNvYYeSYBeEqnR7u+u2niHYi/GhWp5ac0+m+ps967+J9epKeB1currEF
+	a5zhPtGghPFpwdV+s8UCz/Qgz6cxAr7bz3sBh0KarfcEn3Z6kCbli44IfgBaFdH63UKszEwvUKU
+	inSKQfHhuExKqTrR7bmpfXh4SmL5t9AX3YE5SghuvvLY4ECPxgmKRLfDF9bsE
+X-Google-Smtp-Source: AGHT+IGz5qdn7Z8WqPdcaSzQRnRcwjhB2iTUbVl5Nl2cC+78S079TdI9YWxGEdwKvxX3OhBhqheR9g==
+X-Received: by 2002:a17:906:7314:b0:b3f:b7ca:26c5 with SMTP id a640c23a62f3a-b46e68103bbmr711840066b.59.1759375064743;
+        Wed, 01 Oct 2025 20:17:44 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b486a173b4csm101736166b.86.2025.10.01.20.17.44
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 01 Oct 2025 20:17:44 -0700 (PDT)
+Date: Thu, 2 Oct 2025 03:17:43 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+	baohua@kernel.org, wangkefeng.wang@huawei.com, linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: Re: [Patch v2] mm/huge_memory: add pmd folio to ds_queue in
+ do_huge_zero_wp_pmd()
+Message-ID: <20251002031743.4anbofbyym5tlwrt@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20251002013825.20448-1-richard.weiyang@gmail.com>
+ <20251002014604.d2ryohvtrdfn7mvf@master>
+ <fa3f9e82-c6c8-43f2-803f-b8bb0fe56f37@linux.dev>
 MIME-Version: 1.0
-References: <20250930063311.14126-1-bhe@redhat.com> <20250930063311.14126-3-bhe@redhat.com>
-In-Reply-To: <20250930063311.14126-3-bhe@redhat.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Wed, 1 Oct 2025 20:03:31 -0700
-X-Gmail-Original-Message-ID: <CACePvbUozJDOtj2hcepfhp865vGou7-s48NbrJ5sBT_udOeCgA@mail.gmail.com>
-X-Gm-Features: AS18NWC2QJ_woQ0k9SYvk0yYv_9QauDXZHeByGDL5FZ6qfqBfS_iodsqBPOcamc
-Message-ID: <CACePvbUozJDOtj2hcepfhp865vGou7-s48NbrJ5sBT_udOeCgA@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] mm/swap: select swap device with default priority
- round robin
-To: Baoquan He <bhe@redhat.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com, 
-	youngjun.park@lge.com, aaron.lu@intel.com, baohua@kernel.org, 
-	shikemeng@huaweicloud.com, nphamcs@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 41FAB100006
-X-Rspamd-Server: rspam05
-X-Stat-Signature: zcehs3srq5we1jrwktjade5f58n8mkux
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fa3f9e82-c6c8-43f2-803f-b8bb0fe56f37@linux.dev>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Queue-Id: 9B38AC0006
 X-Rspam-User: 
-X-HE-Tag: 1759374225-932749
-X-HE-Meta: U2FsdGVkX185p5MfLqZ4C41Z/SicA+Qmlhu7lf9oDx7Mx9KaWingcGcgj1lIslw2ZOuaymAq/hdzqE1q4oDhWY4ZMn5InABjvFCGadPt4jm6r+7JokvpOkwNobcGo9ZBBUCqRu7k2dyN9T2Yrcj0fvIUnhVDtuvdRTO7NHB7bNeQkZxYED3Si5ZSEFw/qLzIOa1OacTceEYRp7Pb8lzyxRW1oIF/6Dn7fcYvfxfws+ItdWOuSTOfBcKh6XtSkvDdGmWYsTui4I17ElBscQv5XlbN/C5chjg5vyzEfED9ZnL132XzHDrFfjkvmofT517d2GQoP0K7rBAqE93H1ZZhhgjy98j8toLmHmU5Mt5WqhuIyDIKDNWKhj0hllg5pcgC7h7XmkgBNDua9EG0ms3Qqjr3bkd4ab7F+aEnuP3cDGqs7ve/ol0goGAfrD2iS5wHekBaGQ9Aw6o3n1WJ5GTe/vHNBFkCROov0F3KUeql02H4BfeTqeF1hx6OnBbG3W5R/bn68VRFq3f137y1LuFk63cdgBP5krtgC88z+AYfb5+qU7PdP/x/ot0b5+E403TfpRgiaa11hgcabP0aLSDPKIZBYdkNbOAG8EMAYTFMJMyPZMqCqDLa3VcZqjBywBKZRq3iG/AiTvFHHiEAGov2GNfjLa+H1TPB4flYR9DNnX65RdyOHpL7J9yIg8SWZxEy0PLODcatuNINRxYMYDV1IyM6PtCummvh6A7oblefVub4RmHFZu7sCfk9e6wUEEkAYDXtyYuzqtUJsUOL5YvOeb6WGferJ8fX7MdfdZzoPLP4xnQT0MDlgWoul/sie+eXvIpRSTkCQt5NXCIgjBDQIVNMF6CktYgpyg44m8hnT4wgD+NriX860VuQXWv0TZ62mWDSqdoOjEudIzQbCe1qk/zHPde9ZwFcf7Sm8ELqe8GrdLZUjt7ELCV7ZLPE9JxkVYDsyCOnYgOMD58KNNF
- cUQ7l+4q
- yz6ur2CAF3RLjpA3waGn+KbgULyO7UnhoD7PMc9snjZ44WTlbB/yE1W4NYlsXPO4ZnBFsKVKBbsWEyNyk02OHQoH9ZsVO/Mw07H+YdT7ZwnpehXCCI9iJl3fKSsBxqvZ9+VBwjZ0Hs4Tvu7BpI6YEE2i1joi0f24+Fqb6IX85KWNswgzqh1Th4PqxbMfp6Hyy1jlohCIsFEVes9ZuEba0Tvz1ODy+Ik9NoHnRO0SC5Fh9CrOByWdcABbNBRsbktIGdxtrurwx3wABw2YvFSb3RHNMile9AVDZPIsRyiZgbrr/RXC+OyQ73d7ZvTuMRbsA92kVD1vdi/WjScQ=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: ohr8jei47a1wqz4dkwfjopmcohcsb8bd
+X-HE-Tag: 1759375066-951191
+X-HE-Meta: U2FsdGVkX1+slSVChiueCd/v1nx4nSl8BeJVhNrl0e/jdEEufnfBTwaglSoveaRwE0YAFoD/BzsmAr4wU8a5dT29AJXEzzJ/KnpWjStW++ndLcyCIkR2Sd/eboGOdfSBEEytwyfI3Bg+PwliEjh4Od2I8NB0lGAgnT2x8PpS02PwzffKE7mTT3hyihdej6KRmQS9WZbOS/rWjlYL5BEPYYzlBNwPVasoZrknD2F1iScskZXBn7KYB2kLA2Vu/edO1nbagBVjSKGQ4tDlGqopdqZPWTReCiq0P0K2JZdCMZcn2/sJV1G/Z3kOTQS9XpoewQnaj0VXhj0r7iFccDjLhlCZURa4cnvNUoPL7fVIf7BQB4A6JwEQKU/6DxbrvH/DgK9VS2OhxUu/+R2vtRbFQ0jdHeMe8w9qF0zf81SPzomsd3CmVA9tAwndNfEEF03ezvNAQgccNvEo3VhTMkbt4Fgs1aF/xA11WPoxulY6MLIzgDKK/lDOzvUDSuyuCRMaSIPsujX8RV6h6kY42nocPOtbr2Ttct5i0EwGKJhdZp012B0GkyirEz01nQJZtP7Beh4EOvKIkVaz/NAbm4NlzeciehG5ydYs60M3lIg2CS32GqfWuTKMVTBWL1fyqk40NvEP+3hudQlVwpDZ7XilcioLcEi/xIUSDbbQrvjaelBRcsqHyhR0mt3BwQWWrXjBj0vP6S9pIhIRImAUkNp12DB7rfF4N/4rLf6QGMxY33Cr50406zEAYlLzSTXN4LpXzYILybO/cpvWGFFkj2qzqbFyo7moPz/dtPwgm4L4OR0NMpnooRJQNHDT08qqrkpMo221vS79PSVImUyOcJIAshZV4chbVcxA6f6FSXR5S5q8BM99IrOjdpLhyLCWg2S7kSZ78Y96P01ZbfkuMqOLdyTjdgh6aeXisuZmWzPjRcIUiPjywy5Wt8en0m3P/os6ISdmyog6P4+zQbVoTLr
+ 23KDoyCU
+ k2UbT3C7xQtwTN4Jfm4+ITK68s5C9v1oKl4Er2xqKoi60TvlWrqPoX2n7CKXzxqc1axp/4uv/6okqJTHbMlZJZCYFtu2lYtiQhsWh33AM9waFWOrmAO2MBWmq6HI4yT/l6lWlr36OOIRTZ+PUOmR/QBzdoiX8ROOnyFPGRk6xYG8MjsPcUQWVR3IEznrQAQ+hgo3zxourR2DxO0Q8sP5iLiMAbEqhWEEiW8byCdLQn0fMFde45smvVQlGIy1cbKsLZKdRUsrSgZUY29sY4csdPZlWVlx8RdWh2a7rkb+W4weOIzH/Q4FvZSZP+fvSkBgc3rdegufx+zsUktn2VQWFgiLTAQEON+qCWbhee3CMygz3FVmEW3sD6AzR4iiNQTBQ4oIaJ0scAmCnMeCf/o0cV6tp0dfK0NVe89pwdwI4Y07HVMsbcFIDexg/NZRZp8oT+LsieS1fDcYPYG6X8S28yZDtfh3uL1YB8QyrPJ4dafARwSuTka5jmCj7vA1LNU/jkBLe1iVlu3ZcGEbkyC8NAmySJ2g/cHBgAlRd1ireklIiCyl75GyHgqsMJonwndbUOo0uGt/KHSbisHzEHhXbK8E5mBdCp3D9VD8Aunc9ONHCNLT0y0yKUXxgABnK1L+XJF3VzJTOZ3DeAFg2sNfza8Y+cgXkEe8pQuhMvAZs05yW4z/LpZBh1GnWtFqbUgz/oKCpSYkRXR43Q4UBWRRNc9fC0ioqDyzLfV//vkHWs6eOfVE7ksxyLnPwrZgEohTnlFbnQhjK9zV/8CLy3ei4iFkIA1zdlqzSF6IJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,167 +127,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks for removing the node id complexity. Those negative priorities
-have been very hard to follow and reason. Now with the extra 18%
-performance boost just cherry on top.
+On Thu, Oct 02, 2025 at 10:31:53AM +0800, Lance Yang wrote:
+>
+>
+>On 2025/10/2 09:46, Wei Yang wrote:
+>> On Thu, Oct 02, 2025 at 01:38:25AM +0000, Wei Yang wrote:
+>> > We add pmd folio into ds_queue on the first page fault in
+>> > __do_huge_pmd_anonymous_page(), so that we can split it in case of
+>> > memory pressure. This should be the same for a pmd folio during wp
+>> > page fault.
+>> > 
+>> > Commit 1ced09e0331f ("mm: allocate THP on hugezeropage wp-fault") miss
+>> > to add it to ds_queue, which means system may not reclaim enough memory
+>> > in case of memory pressure even the pmd folio is under used.
+>> > 
+>> > Move deferred_split_folio() into map_anon_folio_pmd() to make the pmd
+>> > folio installation consistent.
+>> > 
+>> 
+>> Since we move deferred_split_folio() into map_anon_folio_pmd(), I am thinking
+>> about whether we can consolidate the process in collapse_huge_page().
+>> 
+>> Use map_anon_folio_pmd() in collapse_huge_page(), but skip those statistic
+>> adjustment.
+>
+>Yeah, that's a good idea :)
+>
+>We could add a simple bool is_fault parameter to map_anon_folio_pmd()
+>to control the statistics.
+>
+>The fault paths would call it with true, and the collapse paths could
+>then call it with false.
+>
+>Something like this:
+>
+>```
+>diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>index 1b81680b4225..9924180a4a56 100644
+>--- a/mm/huge_memory.c
+>+++ b/mm/huge_memory.c
+>@@ -1218,7 +1218,7 @@ static struct folio *vma_alloc_anon_folio_pmd(struct
+>vm_area_struct *vma,
+> }
+>
+> static void map_anon_folio_pmd(struct folio *folio, pmd_t *pmd,
+>-		struct vm_area_struct *vma, unsigned long haddr)
+>+		struct vm_area_struct *vma, unsigned long haddr, bool is_fault)
+> {
+> 	pmd_t entry;
+>
+>@@ -1228,10 +1228,15 @@ static void map_anon_folio_pmd(struct folio *folio,
+>pmd_t *pmd,
+> 	folio_add_lru_vma(folio, vma);
+> 	set_pmd_at(vma->vm_mm, haddr, pmd, entry);
+> 	update_mmu_cache_pmd(vma, haddr, pmd);
+>-	add_mm_counter(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
+>-	count_vm_event(THP_FAULT_ALLOC);
+>-	count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_ALLOC);
+>-	count_memcg_event_mm(vma->vm_mm, THP_FAULT_ALLOC);
+>+
+>+	if (is_fault) {
+>+		add_mm_counter(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
+>+		count_vm_event(THP_FAULT_ALLOC);
+>+		count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_ALLOC);
+>+		count_memcg_event_mm(vma->vm_mm, THP_FAULT_ALLOC);
+>+	}
+>+
+>+	deferred_split_folio(folio, false);
+> }
+>
+> static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
+>diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>index d0957648db19..2eddd5a60e48 100644
+>--- a/mm/khugepaged.c
+>+++ b/mm/khugepaged.c
+>@@ -1227,17 +1227,10 @@ static int collapse_huge_page(struct mm_struct *mm,
+>unsigned long address,
+> 	__folio_mark_uptodate(folio);
+> 	pgtable = pmd_pgtable(_pmd);
+>
+>-	_pmd = folio_mk_pmd(folio, vma->vm_page_prot);
+>-	_pmd = maybe_pmd_mkwrite(pmd_mkdirty(_pmd), vma);
+>-
+> 	spin_lock(pmd_ptl);
+> 	BUG_ON(!pmd_none(*pmd));
+>-	folio_add_new_anon_rmap(folio, vma, address, RMAP_EXCLUSIVE);
+>-	folio_add_lru_vma(folio, vma);
+> 	pgtable_trans_huge_deposit(mm, pmd, pgtable);
+>-	set_pmd_at(mm, address, pmd, _pmd);
+>-	update_mmu_cache_pmd(vma, address, pmd);
+>-	deferred_split_folio(folio, false);
+>+	map_anon_folio_pmd(folio, pmd, vma, address, false);
+> 	spin_unlock(pmd_ptl);
+>
+> 	folio = NULL;
+>```
+>
+>Untested, though.
+>
 
-I am very happy with this outcome. Could not ask for better.
+This is the same as I thought.
 
-Acked-by: Chris Li <chrisl@kernel.org>
+Will prepare a patch for it.
 
-Chris
 
-On Mon, Sep 29, 2025 at 11:33=E2=80=AFPM Baoquan He <bhe@redhat.com> wrote:
->
-> Swap devices are assumed to have similar accessing speed if no priority
-> is specified when swapon. It's unfair and doesn't make sense just because
-> one swap device is swapped on firstly, its priority will be higher than
-> the one swapped on later.
->
-> Here, set all swap devicess to have priority '-1' by default. With this
-> change, swap device with default priority will be selected round robin
-> when swapping out. This can improve the swapping efficiency a lot among
-> multiple swap devices with default priority.
->
-> Below are swapon output during processes high pressure vm-scability test
-> is being taken:
->
-> 1) This is pre-commit a2468cc9bfdf, swap device is selectd one by one by
->    priority from high to low when one swap device is exhausted:
-> ------------------------------------
-> [root@hp-dl385g10-03 ~]# swapon
-> NAME       TYPE      SIZE   USED PRIO
-> /dev/zram0 partition  16G    16G   -1
-> /dev/zram1 partition  16G 966.2M   -2
-> /dev/zram2 partition  16G     0B   -3
-> /dev/zram3 partition  16G     0B   -4
->
-> 2) This is behaviour with commit a2468cc9bfdf, on node, swap device
->    sharing the same node id is selected firstly until exhausted; while
->    on node no swap device sharing the node id it selects the one with
->    highest priority until exhaustd:
-> ------------------------------------
-> [root@hp-dl385g10-03 ~]# swapon
-> NAME       TYPE      SIZE  USED PRIO
-> /dev/zram0 partition  16G 15.7G   -2
-> /dev/zram1 partition  16G  3.4G   -3
-> /dev/zram2 partition  16G  3.4G   -4
-> /dev/zram3 partition  16G  2.6G   -5
->
-> 3) After this patch applied, swap devices with default priority are selec=
-td
->    round robin:
-> ------------------------------------
-> [root@hp-dl385g10-03 block]# swapon
-> NAME       TYPE      SIZE USED PRIO
-> /dev/zram0 partition  16G 6.6G   -1
-> /dev/zram1 partition  16G 6.6G   -1
-> /dev/zram2 partition  16G 6.6G   -1
-> /dev/zram3 partition  16G 6.6G   -1
->
-> With the change, we can see about 18% efficiency promotion relative to
-> node based way as below. (Surely, the pre-commit a2468cc9bfdf way is
-> the worst.)
->
-> vm-scability test:
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> Test with:
-> usemem --init-time -O -y -x -n 31 2G (4G memcg, zram as swap)
->                             one by one:      node based:      round robin=
-:
-> System time:                1087.38 s        637.92 s         526.74 s   =
-  (lower is better)
-> Sum Throughput:             2036.55 MB/s     3546.56 MB/s     4207.56 MB/=
-s (higher is better)
-> Single process Throughput:  65.69 MB/s       114.40 MB/s      135.72 MB/s=
-  (high is better)
-> free latency:               15769409.48 us   10138455.99 us   6810119.01 =
-us(lower is better)
->
-> Signed-off-by: Baoquan He <bhe@redhat.com>
-> ---
->  mm/swapfile.c | 31 ++++---------------------------
->  1 file changed, 4 insertions(+), 27 deletions(-)
->
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index f9b3667fb08a..2bd8bd76ea28 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -73,7 +73,7 @@ atomic_long_t nr_swap_pages;
->  EXPORT_SYMBOL_GPL(nr_swap_pages);
->  /* protected with swap_lock. reading in vm_swap_full() doesn't need lock=
- */
->  long total_swap_pages;
-> -static int least_priority;
-> +#define DEF_SWAP_PRIO  -1
->  unsigned long swapfile_maximum_size;
->  #ifdef CONFIG_MIGRATION
->  bool swap_migration_ad_supported;
-> @@ -2534,10 +2534,7 @@ static void setup_swap_info(struct swap_info_struc=
-t *si, int prio,
->                             struct swap_cluster_info *cluster_info,
->                             unsigned long *zeromap)
->  {
-> -       if (prio >=3D 0)
-> -               si->prio =3D prio;
-> -       else
-> -               si->prio =3D --least_priority;
-> +       si->prio =3D prio;
->         /*
->          * the plist prio is negated because plist ordering is
->          * low-to-high, while swap ordering is high-to-low
-> @@ -2555,16 +2552,7 @@ static void _enable_swap_info(struct swap_info_str=
-uct *si)
->         total_swap_pages +=3D si->pages;
->
->         assert_spin_locked(&swap_lock);
-> -       /*
-> -        * both lists are plists, and thus priority ordered.
-> -        * swap_active_head needs to be priority ordered for swapoff(),
-> -        * which on removal of any swap_info_struct with an auto-assigned
-> -        * (i.e. negative) priority increments the auto-assigned priority
-> -        * of any lower-priority swap_info_structs.
-> -        * swap_avail_head needs to be priority ordered for folio_alloc_s=
-wap(),
-> -        * which allocates swap pages from the highest available priority
-> -        * swap_info_struct.
-> -        */
-> +
->         plist_add(&si->list, &swap_active_head);
->
->         /* Add back to available list */
-> @@ -2692,17 +2680,6 @@ SYSCALL_DEFINE1(swapoff, const char __user *, spec=
-ialfile)
->         }
->         spin_lock(&p->lock);
->         del_from_avail_list(p, true);
-> -       if (p->prio < 0) {
-> -               struct swap_info_struct *si =3D p;
-> -               int nid;
-> -
-> -               plist_for_each_entry_continue(si, &swap_active_head, list=
-) {
-> -                       si->prio++;
-> -                       si->list.prio--;
-> -                       si->avail_list.prio--;
-> -               }
-> -               least_priority++;
-> -       }
->         plist_del(&p->list, &swap_active_head);
->         atomic_long_sub(p->pages, &nr_swap_pages);
->         total_swap_pages -=3D p->pages;
-> @@ -3428,7 +3405,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specia=
-lfile, int, swap_flags)
->         }
->
->         mutex_lock(&swapon_mutex);
-> -       prio =3D -1;
-> +       prio =3D DEF_SWAP_PRIO;
->         if (swap_flags & SWAP_FLAG_PREFER)
->                 prio =3D swap_flags & SWAP_FLAG_PRIO_MASK;
->         enable_swap_info(si, prio, swap_map, cluster_info, zeromap);
-> --
-> 2.41.0
->
->
+-- 
+Wei Yang
+Help you, Help me
 
