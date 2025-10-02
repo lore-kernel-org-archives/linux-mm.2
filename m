@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23639CAC5B0
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:16:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA060CAC5B8
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:16:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 52D7B8E0039; Thu,  2 Oct 2025 04:14:26 -0400 (EDT)
+	id 7716D8E0037; Thu,  2 Oct 2025 04:14:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43FAC8E003C; Thu,  2 Oct 2025 04:14:26 -0400 (EDT)
+	id 6D78E8E003D; Thu,  2 Oct 2025 04:14:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A7638E003B; Thu,  2 Oct 2025 04:14:26 -0400 (EDT)
+	id 26A5F8E0037; Thu,  2 Oct 2025 04:14:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D3BA08E0037
+	by kanga.kvack.org (Postfix) with ESMTP id DDBA78E0039
 	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:14:25 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 94F59C03A8
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9BAD886D33
 	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:25 +0000 (UTC)
-X-FDA: 83952462090.21.99B30FB
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 9FB761C0006
+X-FDA: 83952462090.19.20CA1BD
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf07.hostedemail.com (Postfix) with ESMTP id ABCC44000C
 	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:23 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	spf=pass (imf18.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+Authentication-Results: imf07.hostedemail.com;
+	spf=pass (imf07.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1759392864;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=ctlYMnr34PxlnD1VhwaJj6+0KPXrRDGm/ZTGLpqVwb4=;
-	b=Ud0oJgnvrTKvoKJVIy3XG7AccANGsYcFBB3lq7j7s3wc8nFgRLpZieVUAxPPDCZ2XhVXZh
-	Z4jA91fxntP9ztp+NcXg++6PqzaGHdTYWE2GMNKy3G6HzNT3Flyfn1shyYHpSq1f1Dyq08
-	lJ+zUY6uavKHkVuI1vYZlR5SgL4eQzQ=
+	bh=TYd+ByeKF1PD4A4pfqGn7QIcnG3qV0Wm2r3LkmPDlvw=;
+	b=M6zn82nHMSYdRM1ClJilj3bmoOktvyDRlIfGhtjaMKbmOq4bFewRT/zPOmS+tiYqOcb2mm
+	PGijlAFVvrYlxzriw/C7/r/JyywtGO8iLmqV2cxRSpsmrl4Qt+Ct8LlGwIBnVcpwIJ5ZTt
+	cyiFUOhvhSThj6xAndiPF4bbyrVhQuY=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759392864; a=rsa-sha256;
 	cv=none;
-	b=dTvy0SfyAdWdjMeRKUTP5DpCqKBZX+Z702+n1UA9ZjiA+H/eLLMFpACG36o/QbD1uygWQn
-	N6QilvZgM4h+PVSmLy1tKyEuWiOCZwnuxVIMRzVCt+NwS5UF/NFtpXMK1r+Bv1tiojtQHj
-	XcHeIn2Fz+q6nLVofG43LoiU3OXOhGs=
+	b=BJY51QTu/ComJGcVLLVWoZGSOuyoXzsW28FPqXChx3HsgyLPm79gpSXt/5ypTuGn5dM9Q6
+	xCatLAQxCeee6TwxX7R6Pmk7LDaqX6sYoAyQ1dfTwa6dcjAk4p4Ehq+Hva+qZVC9+PSQcm
+	+L4NdoUXFfqHnVS9uUflOgCewjLgMQE=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
+	imf07.hostedemail.com;
 	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
+	spf=pass (imf07.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
 	dmarc=none
-X-AuditID: a67dfc5b-c45ff70000001609-d3-68de341932f9
+X-AuditID: a67dfc5b-c2dff70000001609-f3-68de3419c66c
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: kernel_team@skhynix.com,
@@ -196,52 +196,52 @@ Cc: kernel_team@skhynix.com,
 	rcu@vger.kernel.org,
 	linux-nfs@vger.kernel.org,
 	linux-rt-devel@lists.linux.dev
-Subject: [PATCH v17 44/47] dept: introduce APIs to set page usage and use subclasses_evt for the usage
-Date: Thu,  2 Oct 2025 17:12:44 +0900
-Message-Id: <20251002081247.51255-45-byungchul@sk.com>
+Subject: [PATCH v17 45/47] dept: track PG_writeback with dept
+Date: Thu,  2 Oct 2025 17:12:45 +0900
+Message-Id: <20251002081247.51255-46-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20251002081247.51255-1-byungchul@sk.com>
 References: <20251002081247.51255-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzXSe0hTcRQH8H73PXNxm7WuLswGIliaxawjRQUlXIIi6J8oJEfe2nBqbWYq
-	FStfaSqlSekUNHssH2UzS1uWWS7TTM0HK9RSSi3dJJlKPnNW/xw+nPPl+9dhcMkV0oNRR0YL
-	2kilRk65EC421yI/d0WfKqAr1w2mZgw4JNUsEDCXZaFhodaCoOzxRQy+1aUgqDVeoqDAkIWg
-	fWQWA8ONBOcYxiCn3IzB++IeAgwtHSRYSodoeGBrJeFdXzcJT/Vfaaj9vAGKkm8TYKkewKDj
-	WT4F6RVVJPSVLZCgN0yR0FbXTELrs3ISJjNlUG6/RUG2fRCB8deNxcpCKVS9TELwNqMOg5Rh
-	MwWdn8wIhvIKMHg9MYpB9sdCCipNOThM32tA0DTdhMFApo2G8YJ5EhJ7AsFRWkKB/aqDBEND
-	H707gJ+ZzkL8tRY/viavl+YLTWf4SqMvX/z8B8abSlIp3jSeRfNFM8M4n2brxHj7hw8033hz
-	huBr+oP4In0OzhdnZpN8RoKdOig94rIjTNCoYwTtpp2hLqp0cxt1ql4RW9FVReiRwzcNMQzH
-	KribxXvTkGiJua9+0E5TrA9ntf7GnV7FenGVGYOk0zjbvJbrbt/otBt7gsvtsS7tCdab6y4f
-	IpwWs1s56/UE7G/nOq60om6pR7S47+hvXspI2EAuaSzxX+aeiEt+dOGv3blXRitxFYkL0bIS
-	JFFHxkQo1RqFvyouUh3rfzwqwoQWX+Tu+dmj1Wi87VA9YhkkdxW3efeqJKQyRhcXUY84Bpev
-	Eocae1QScZgyLl7QRh3TntEIunokYwj5GvGWybNhEvakMloIF4RTgvb/FWNEHnp0IGTPi3zD
-	2PrDwaelbvYB/6+9b0Z0T3ziN112T1r9LWTr8vCWOYt2ROp467lb1jV2rvGkutV1766V9Gz3
-	ClmQYjQw3Crz+/J9MFipiQ2Z+tX7+P79jictnNTskbsvoDpvv+0Os/35z7Xqg+bl6RNN7Z5j
-	r7kGOnX+4Wev39sG1jT9lBM6lXKzL67VKf8Ash49Ph4DAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTdxTG/d/7v/e2zYo3lcQbNdE0QRYiviRgjrg4E028c5vZt2XzjWbc
-	0UoBbRGtcQlYGsmGExpaQguT1VhJKdBRJEOswSIERAJ3TGCzBeuwSICRzFblfS3Lvpz8zvM8
-	eXI+HAmpaKO2SDR5BYIuT6VV0jIsO3HQmMqljav3ekfTYKS4E0M0UoqhptlNQ2lLNQVDTQ0I
-	JqKlCN4t2Ukwta9hWDH3MBBZeM7Amq8HgVU0k+BuLSbgjWeVhpmufxBYQpM0VE0XY5h3liGw
-	he0MTHcfg7mJDgrWglMEjL6dReCcXCVgsvM6ghVrDtxyeGlYGhgkocoyhODnUJCE156Y2doz
-	jsBXf42GV+X3SBieTIDfo/M09Fl+oGFOrCHgbw8Nddd8FNTazQiMt5tpsNa2YGh/cZ8BcWaZ
-	gIDVTEBDy+cw4Qxj6C93ELH7YqlfNoO9ykjExmsCLI0dBCw4XQw8vR3A4CxKAvvAMAUv620M
-	LIf2wVpdPvQ0TDEQvGnB0DQ3SB22IP6d6UfMu7xtBG/6bYXm3T+5Eb+0aEZ85I6R5E3lsbVr
-	dp7kS7yX+Dv9szS/GH1G8763dZh/4uD4ioFUvt0WZPiSh38yX2R8LfsoS9BqCgXdnkOZMnVZ
-	xxB93p922fPsHi5CkZTvkVTCsWlc9aNpJs40m8yNjS2QcU5kd3DeG2EqziTbv40bEXfFeRP7
-	LVcdGFvXMZvEjTRO4TjL2f3cWKWR+K9zO9fg6Vzvkcb04VD/ekbBpnOm+RKiHMnq0AYXStTk
-	FeaqNNr03foctSFPc3n3N/m5LSj2Tc7vlit+RZHhY37ESpDyA7mYFFQrKFWh3pDrR5yEVCbK
-	M+sDaoU8S2W4Iujyz+ouagW9H22VYOVm+fEvhUwFm60qEHIE4byg+98lJNItReh0YNwmlGUX
-	FxgOn+oSzxi7X1VW5L58f/eTjHO+T/U7k69Wdz+QiSc/FKPS0coNvY4LoVWNqNv58MD2z7Jr
-	HxCz+e77NfZ0hxguPZExmLCRajvVvD8F+53s6GIvuB5fD9v8hj1m5tZXUtcbYuOMNfEP6xHt
-	yRd/Hf3Yl/W4qG9IifVq1b4UUqdX/QsQvzpjSQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSf0wTdxjG/d737npt7HIpJJ6wRNbFbDEiatC8bk5Fk3FZmFnCzIyaaGcv
+	tgxaLcJEM4PSKjGMdDXgnAgFXK20/BCnUbBGUDsRlSKOVQZFEKusQhVoUX7uitl/n/d53+d5
+	8yYvgxVdVAyj1e0XDDpVupKWkbKh+eXxCxN9muWe0/FQUuukoTeUj2B88gyGaYtbArMuN4Li
+	dguG0boZGgK3RhAU9Q3QcGrwCAlBWwGCwTvJMNTbSMHf4VcIbAMzBAzcPI5g8kEbhlNFHgTl
+	fT0YXtaJ2h9uHwKX/SgNz82XMXQMfACPQ0EarEddFORV1tJw7WmDBNoDUwR0F1sIcNR/Da3m
+	CkLcR0PxxQVQVN1IwDtblQTuV3aTMGvVg9vxQgI1Q20UtPg6KQj4LeIZfx6jYOxxHwHOAj+G
+	/IYQCfXPxG75sXMknC7tpuG6q4WE/OkxBO6r/QR0NJTQUFB3mQKfc5aCRw4PCbUvvAS0uu+S
+	0NZQTUG4MBa85ucIqocraDg57EcQCNvwBjU/biokedOjaZp3ljoRPzlhQfzY73mYN5nF8tar
+	IOYnQn/RvCtsJfl7FRx/7bceCW+80SXhrfVZvPH2EMVfsi/hK68PEt8kbJOtVQvp2mzBkLBu
+	l0zT39hP762JOzBxL4/KRYWxJ5CU4dhE7h/zBXwCMXM8W5YakWn2E87rfYcjHM3GcZd+9lMR
+	xmzrh1xn+9IIR7FfcE97S4kIk+xi7nXu2bkZObuaa3JMovfxizhH3c25HKmod/S1khFWsKs4
+	U9AoemXizBkpZxoNke8NC7kmu5c0I7kVzatCCq0uO0OlTU9cpsnRaQ8s263PqEfix9l+mtp+
+	FY14UpsRyyDlfLlncY9GQamyM3MymhHHYGW0fJe9W6OQq1U5BwWDfqchK13IbEaxDKlcIF8Z
+	/lGtYPeo9gs/CMJewfB/l2CkMbnIdAj9K2PSXIdrjAq++fxXD5taykrSqCj1t/jty3UpyXeC
+	T4wnN251bt7UFqVRPihNsfkTUvSfBWZC4X3SRUmhjjcKz696nf7+p58nsWnDB2v0nd+V4fUf
+	NeYmx2wxvrHvADpa/fDK5i7jyNQ8y9qlzqxtvxxv+X7Nx2e1HvjSt1VJZmpUK5ZgQ6bqP1UP
+	GjJtAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0iTcRTG+793R4u3ZfWaQTYQ6aLN0Dh0o2++SEUQ0VV05EtbOq2tLINq
+	NkdmZdtoSk7LSw1zprZlZKJ4ISFNdJkW5byMZVqaUbPy1tqCvhx+5zwPD8+Hw+CSOnIVo0w7
+	I6jT5KlSSkSI9m7TRYbEDCpkRgcJ/VnNBEx7cwgoqqmiIMd+h4SeahuCoekcBL/mLDjo630E
+	LJjaafDOfKDB19iOIN9pwqHqSRYGP2r/UPCl7TsC84iHgoLxLAKmrDcQFI5aaBh/EQeTQw0k
+	+FyfMHj7cwKB1fMHA0/zVQQL+Slwr8xBwVxXNw4F5h4EpSMuHMZq/eKT9kEEjRVXKPhoqMOh
+	17ME3kxPUfDSfJ2CSWcRBl9rKSi50khCscWEQFdeQ0F+sZ2A+uHnNDi/zGMwkG/CwGbfA0PW
+	UQI6DWWYv5/f9XglWAp0mH+MYWB+1IDBjLWShlflAwRYteFg6eolwV1RSMP8SDT4StKh3faJ
+	BtctMwHVk93kLjPif+nzCL7S8RTj9a8XKL7qbhXi52ZNiPc+0OG83uBf2yamcD7bcY5/0DlB
+	8bPTfRTf+LOE4DvKON7YFcnXF7poPrvpPb1v6xHR9mQhVZkhqDftTBIp3A1u6lR12PnZDh2p
+	RXmhuYhhODaG893bn4uCGIqN4N69m8EDHMyGcY6bo2SAcbZzNdfv3BjgZewObnjoLhZggg3n
+	vmmL/3nE7BauxTaHAsyxazhbbfO/nCD/vXekkwiwhI3l9FPZmAGJStCiShSsTMtQyZWpsVGa
+	FEVmmvJ81PF0lR35n8l6cd74DHl741oRyyDpYrEz3KWQkPIMTaaqFXEMLg0WJ1UMKCTiZHnm
+	BUGdnqg+mypoWlEoQ0hXiuMPCkkS9oT8jJAiCKcE9X8VY4JWaVGE0xM23p87fjw2frvJebTm
+	5KVEo8ouG1xxbd3l+Cg8JLRUtnpDgipcveVVQ9OxQ7e9wxpJzIXTLQlbzUcPX+8parofZ6or
+	8zwe+x0ilt9pdicYuq/Sss2K5Et5QSjlUMT+xHLf7AFZf9/y3Q/dkuf2z+u129KNSy/e3txy
+	Y+17RZuU0Cjk0etxtUb+F1bYeZtIAwAA
 X-CFilter-Loop: Reflected
-X-Stat-Signature: 3ug67mtdzq6gxoozxmc55atdjz6iz7q7
-X-Rspamd-Queue-Id: 9FB761C0006
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: ABCC44000C
+X-Stat-Signature: xe5a8xepeu6i94xpk38esi5znfdy9ezn
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1759392863-19323
-X-HE-Meta: U2FsdGVkX1/lYWSt4fqf1f4nm855cFJ7wi26CMvYTBvt5lkSIRtcQ7Kcs2HE/TzHt67qnskDMEGWLsF9S7K8n6+V1/blvCCCs6ZPmnAcBiR7DvPmFgN1Ti1CKIyVxdBpmhcm1613P7fVuxhC6YY+85jWvVtXpvGJvmUJNLRnfQlGDxG3Zn/e2EUmcgofNCEytBunMqkkaBhDW+5wjtb4xIX3ss6I986MyAM8RzAOawEXUV607NTI3qjYYiqcVz3xZAMx9K0L+W/7NG0e1XOQnVMkusANPNMd52r6lui6Npyiq05oVVR8VGABOUJ86906WUI3sKc2Y4BCkZFEaCVk+uTmohXJFd2Pcf4rs+U3tQGNFsK+tXbUmHZuOpMy/GQnZa8HDOGmeqhZJ/2G4BV9TdHYdAiceDfK5ZpHdPaOfEqLGhlQsRYvOXVl111l78NE+UqNp50KfvS22y+xZdbwF8SQ+JffIs/hDUWry9jqz4TUr3u8qFD+uN2/fqUfLf6ej5DJzSPMRdkueM18JDXOBbUFTwpkZzPxTxJAWMl/3iqCRyRhMYCOm0EDoVeRhHbKGioF996ySaCrmB8+mCLMWAIAp3Qu91J5DDvnADAY/QfDKn/YC5JyIbVZbGE5tt6gslTWHpV4fj2Xfu8yEWM+NjITWWV87yo1Me+KUEoUM4a3cIRt4HC2E3+1n1ixG1MmIByGnZHf3KaGQfIPfU2XuIU1kcwnriryWyPvz/FqfeY1ave0TD8iRsw7+f9ZAVDkuGOJmpN5kTWyytRkVnN/PpQMR+JfiYkVNK75iROIF0d7YtF8lD2Ga3gUjDuyrwk0e0Br3ybBve1i7Z6bBnF38lEzFrJ+6MKyp/H81GUe9IQYydPfO7Je8Md1wN1RprH+7DATmGMIC2Nvl+VqB4Pi8jXaRTHBmA34FkwRR0wK/zoqYHECJy5zE3oxNKwTPNVTkg4lGjdEyY9qWQqfPEM
- vilMDxcG
- 5Um58ULEyRsEEMIvb8TpuNDBjIIL12Gj0zlxTtk4R5WttQEJjS6ai1es8Nm6RDQbN5u5OO/xqOGeSBFggwZDlTuOT+JtvIzR6bDPyBQ5tLcTMkfvBqE+5ZlyUssmr/3GerV2V
+X-HE-Tag: 1759392863-384525
+X-HE-Meta: U2FsdGVkX19i7n2e/ImzecjIU7+t6reRLJ1MYEVxmozZlIxuIBHofepxuv4bDGiVYdCXJUsFy9UQ8VX4Bc/LEnbpMM1E3IxPV3ySjwmwEARCqe/YxYwgR2zAsDndJyLKUMYQRIo7zVm51nVIB/TUKryVcxc9qsuIvI2FpM/Z7umH2euHTfCNaQ+swBoDoIiEj7vXd9ih5UgkgZkxzLO1rJzm8EgirdhftGMnxhODrPULMaWcovzDOaOg2etK2fKnZyEHW6WS/u7ZIOZcQaOfWRmUGSCMJ/dFwwZrR1Ylx5RDllrtp0eclGsV2uJzDJ8OP7PtrLDUQT0MnAAqBWupgzkT3XZA3Nuxlx6nKOtLY7eRNBnoqasjZt4nzOmX53IWf6Qs43EMfxKAmmBfaa54CBU0r9WG7wGsSBKymdEVByG7GNEuBDTIvuKaguKb6sr30cgCmYCYnIBmsRFILVO8ZE0yYShaWPsEWC9pdZhrfqBJCc8dCjx5jXiNChaZnRcFLVnEylQf35uakCzXTuJo+NYba62E77+cyTquF0bXWtKPCSq18GZRq70qCq/iqetnjybmXg17rpvhG9AqzIz5uhVcL0/jP0d8B4RAxp3KUT3sUwnu8Dn47cu1cObELa9O7UK4wn+hJzXZTm1FqA2K1SCdeSBYguiXiMC04VPq1uGw3nJV3CNZDr5nVTZH04Mg8r352+M8FihOgx+iKA5ms0uQzWbO1vCN9eEmsDD0ZdcCIoNli6I/t1bTpCIIcC2o1dPrhUj0Xf6Dj7lLEdPIrNeffvG3+INPU/njWFmgl2ttXfexPdKPz/A0aH9QICaZQGOlnBtBRiWiV2EBESn0UVP0tcQ+mZaJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -250,222 +250,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-False positive reports have been observed since dept works with the
-assumption that all the pages have the same dept class, but the class
-should be split since the problematic call paths are different depending
-on what the page is used for.
-
-At least, ones in block device's address_space and ones in regular
-file's address_space have exclusively different usages.
-
-Thus, define usage candidates like:
-
-   DEPT_PAGE_REGFILE_CACHE /* page in regular file's address_space */
-   DEPT_PAGE_BDEV_CACHE    /* page in block device's address_space */
-   DEPT_PAGE_DEFAULT       /* the others */
-
-Introduce APIs to set each page's usage properly and make sure not to
-interact between at least between DEPT_PAGE_REGFILE_CACHE and
-DEPT_PAGE_BDEV_CACHE.  However, besides the exclusive usages, allow any
-other combinations to interact to the other for example:
-
-   PG_locked for DEPT_PAGE_DEFAULT page can wait for PG_locked for
-   DEPT_PAGE_REGFILE_CACHE page and vice versa.
-
-   PG_locked for DEPT_PAGE_DEFAULT page can wait for PG_locked for
-   DEPT_PAGE_BDEV_CACHE page and vice versa.
-
-   PG_locked for DEPT_PAGE_DEFAULT page can wait for PG_locked for
-   DEPT_PAGE_DEFAULT page.
+Makes dept able to track PG_writeback waits and events, which will be
+useful in practice.
 
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- include/linux/dept.h       | 31 +++++++++++++++-
  include/linux/mm_types.h   |  1 +
- include/linux/page-flags.h | 76 +++++++++++++++++++++++++++++++++++++-
- 3 files changed, 104 insertions(+), 4 deletions(-)
+ include/linux/page-flags.h |  7 +++++++
+ mm/filemap.c               | 11 +++++++++++
+ mm/mm_init.c               |  1 +
+ 4 files changed, 20 insertions(+)
 
-diff --git a/include/linux/dept.h b/include/linux/dept.h
-index 0ac13129f308..fbbc41048fac 100644
---- a/include/linux/dept.h
-+++ b/include/linux/dept.h
-@@ -21,8 +21,8 @@ struct task_struct;
- #define DEPT_MAX_WAIT_HIST		64
- #define DEPT_MAX_ECXT_HELD		48
- 
--#define DEPT_MAX_SUBCLASSES		16
--#define DEPT_MAX_SUBCLASSES_EVT		2
-+#define DEPT_MAX_SUBCLASSES		24
-+#define DEPT_MAX_SUBCLASSES_EVT		3
- #define DEPT_MAX_SUBCLASSES_USR		(DEPT_MAX_SUBCLASSES / DEPT_MAX_SUBCLASSES_EVT)
- #define DEPT_MAX_SUBCLASSES_CACHE	2
- 
-@@ -390,6 +390,32 @@ struct dept_ext_wgen {
- 	unsigned int wgen;
- };
- 
-+enum {
-+	DEPT_PAGE_DEFAULT = 0,
-+	DEPT_PAGE_REGFILE_CACHE,	/* regular file page cache */
-+	DEPT_PAGE_BDEV_CACHE,		/* block device cache */
-+	DEPT_PAGE_USAGE_NR,		/* nr of usages options */
-+};
-+
-+#define DEPT_PAGE_USAGE_SHIFT 16
-+#define DEPT_PAGE_USAGE_MASK ((1U << DEPT_PAGE_USAGE_SHIFT) - 1)
-+#define DEPT_PAGE_USAGE_PENDING_MASK (DEPT_PAGE_USAGE_MASK << DEPT_PAGE_USAGE_SHIFT)
-+
-+/*
-+ * Identify each page's usage type
-+ */
-+struct dept_page_usage {
-+	/*
-+	 * low 16 bits  : the current usage type
-+	 * high 16 bits : usage type requested to be set
-+	 *
-+	 * Do not apply the type requested immediately but defer until
-+	 * after clearing PG_locked bit of the folio or page e.g. by
-+	 * folio_unlock().
-+	 */
-+	atomic_t type; /* Update and read atomically */
-+};
-+
- struct dept_event_site {
- 	/*
- 	 * event site name
-@@ -562,6 +588,7 @@ extern void dept_hardirqs_off(void);
- struct dept_key { };
- struct dept_map { };
- struct dept_ext_wgen { };
-+struct dept_page_usage { };
- struct dept_event_site { };
- 
- #define DEPT_MAP_INITIALIZER(n, k) { }
 diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 5ebc565309af..8ccbb030500c 100644
+index 8ccbb030500c..bed1a3bc81e1 100644
 --- a/include/linux/mm_types.h
 +++ b/include/linux/mm_types.h
-@@ -224,6 +224,7 @@ struct page {
- 	struct page *kmsan_shadow;
- 	struct page *kmsan_origin;
+@@ -226,6 +226,7 @@ struct page {
  #endif
-+	struct dept_page_usage usage;
+ 	struct dept_page_usage usage;
  	struct dept_ext_wgen pg_locked_wgen;
++	struct dept_ext_wgen pg_writeback_wgen;
  } _struct_page_alignment;
  
+ /*
 diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index d3c4954c4218..3fd3660ddc6f 100644
+index 3fd3660ddc6f..b965b16c8cee 100644
 --- a/include/linux/page-flags.h
 +++ b/include/linux/page-flags.h
-@@ -204,6 +204,68 @@ enum pageflags {
+@@ -203,6 +203,7 @@ enum pageflags {
+ #include <linux/dept.h>
  
  extern struct dept_map pg_locked_map;
++extern struct dept_map pg_writeback_map;
  
-+static inline int dept_set_page_usage(struct page *p,
-+		unsigned int new_type)
-+{
-+	unsigned int type = atomic_read(&p->usage.type);
-+
-+	if (WARN_ON_ONCE(new_type >= DEPT_PAGE_USAGE_NR))
-+		return -1;
-+
-+	new_type <<= DEPT_PAGE_USAGE_SHIFT;
-+retry:
-+	new_type &= ~DEPT_PAGE_USAGE_MASK;
-+	new_type |= type & DEPT_PAGE_USAGE_MASK;
-+
-+	if (!atomic_try_cmpxchg(&p->usage.type, &type, new_type))
-+		goto retry;
-+
-+	return 0;
-+}
-+
-+static inline int dept_reset_page_usage(struct page *p)
-+{
-+	return dept_set_page_usage(p, DEPT_PAGE_DEFAULT);
-+}
-+
-+static inline void dept_update_page_usage(struct page *p)
-+{
-+	unsigned int type = atomic_read(&p->usage.type);
-+	unsigned int new_type;
-+
-+retry:
-+	new_type = type & DEPT_PAGE_USAGE_PENDING_MASK;
-+	new_type >>= DEPT_PAGE_USAGE_SHIFT;
-+	new_type |= type & DEPT_PAGE_USAGE_PENDING_MASK;
-+
-+	/*
-+	 * Already updated by others.
-+	 */
-+	if (type == new_type)
-+		return;
-+
-+	if (!atomic_try_cmpxchg(&p->usage.type, &type, new_type))
-+		goto retry;
-+}
-+
-+static inline unsigned long dept_event_flags(struct page *p, bool wait)
-+{
-+	unsigned int type;
-+
-+	type = atomic_read(&p->usage.type) & DEPT_PAGE_USAGE_MASK;
-+
-+	if (WARN_ON_ONCE(type >= DEPT_PAGE_USAGE_NR))
-+		return 0;
-+
-+	/*
-+	 * event
-+	 */
-+	if (!wait)
-+		return 1UL << type;
-+
-+	return (1UL << DEPT_PAGE_DEFAULT) | (1UL << type);
-+}
-+
- /*
-  * Place the following annotations in its suitable point in code:
-  *
-@@ -214,20 +276,28 @@ extern struct dept_map pg_locked_map;
- 
- static inline void dept_page_set_bit(struct page *p, int bit_nr)
- {
-+	dept_update_page_usage(p);
+ static inline int dept_set_page_usage(struct page *p,
+ 		unsigned int new_type)
+@@ -279,6 +280,8 @@ static inline void dept_page_set_bit(struct page *p, int bit_nr)
+ 	dept_update_page_usage(p);
  	if (bit_nr == PG_locked)
  		dept_request_event(&pg_locked_map, &p->pg_locked_wgen);
++	else if (bit_nr == PG_writeback)
++		dept_request_event(&pg_writeback_map, &p->pg_writeback_wgen);
  }
  
  static inline void dept_page_clear_bit(struct page *p, int bit_nr)
- {
-+	unsigned long evt_f;
-+
-+	evt_f = dept_event_flags(p, false);
+@@ -288,6 +291,8 @@ static inline void dept_page_clear_bit(struct page *p, int bit_nr)
+ 	evt_f = dept_event_flags(p, false);
  	if (bit_nr == PG_locked)
--		dept_event(&pg_locked_map, 1UL, _RET_IP_, __func__, &p->pg_locked_wgen);
-+		dept_event(&pg_locked_map, evt_f, _RET_IP_, __func__, &p->pg_locked_wgen);
+ 		dept_event(&pg_locked_map, evt_f, _RET_IP_, __func__, &p->pg_locked_wgen);
++	else if (bit_nr == PG_writeback)
++		dept_event(&pg_writeback_map, evt_f, _RET_IP_, __func__, &p->pg_writeback_wgen);
  }
  
  static inline void dept_page_wait_on_bit(struct page *p, int bit_nr)
- {
-+	unsigned long evt_f;
-+
-+	dept_update_page_usage(p);
-+	evt_f = dept_event_flags(p, true);
+@@ -298,6 +303,8 @@ static inline void dept_page_wait_on_bit(struct page *p, int bit_nr)
+ 	evt_f = dept_event_flags(p, true);
  	if (bit_nr == PG_locked)
--		dept_wait(&pg_locked_map, 1UL, _RET_IP_, __func__, 0, -1L);
-+		dept_wait(&pg_locked_map, evt_f, _RET_IP_, __func__, 0, -1L);
+ 		dept_wait(&pg_locked_map, evt_f, _RET_IP_, __func__, 0, -1L);
++	else if (bit_nr == PG_writeback)
++		dept_wait(&pg_writeback_map, evt_f, _RET_IP_, __func__, 0, -1L);
  }
  
  static inline void dept_folio_set_bit(struct folio *f, int bit_nr)
-@@ -245,6 +315,8 @@ static inline void dept_folio_wait_on_bit(struct folio *f, int bit_nr)
- 	dept_page_wait_on_bit(&f->page, bit_nr);
- }
- #else
-+#define dept_set_page_usage(p, t)		do { } while (0)
-+#define dept_reset_page_usage(p)		do { } while (0)
- #define dept_page_set_bit(p, bit_nr)		do { } while (0)
- #define dept_page_clear_bit(p, bit_nr)		do { } while (0)
- #define dept_page_wait_on_bit(p, bit_nr)	do { } while (0)
+diff --git a/mm/filemap.c b/mm/filemap.c
+index edb0710ddb3f..d8f1816dc6c2 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -1187,6 +1187,13 @@ static void folio_wake_bit(struct folio *folio, int bit_nr)
+ 	key.bit_nr = bit_nr;
+ 	key.page_match = 0;
+ 
++	/*
++	 * dept_page_clear_bit() being called multiple times is harmless.
++	 * The worst case is to miss some dependencies but it's okay.
++	 */
++	if (bit_nr == PG_locked || bit_nr == PG_writeback)
++		dept_page_clear_bit(&folio->page, bit_nr);
++
+ 	spin_lock_irqsave(&q->lock, flags);
+ 	__wake_up_locked_key(q, TASK_NORMAL, &key);
+ 
+@@ -1241,6 +1248,9 @@ static inline bool folio_trylock_flag(struct folio *folio, int bit_nr,
+ struct dept_map __maybe_unused pg_locked_map = DEPT_MAP_INITIALIZER(pg_locked_map, NULL);
+ EXPORT_SYMBOL(pg_locked_map);
+ 
++struct dept_map __maybe_unused pg_writeback_map = DEPT_MAP_INITIALIZER(pg_writeback_map, NULL);
++EXPORT_SYMBOL(pg_writeback_map);
++
+ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
+ 		int state, enum behavior behavior)
+ {
+@@ -1683,6 +1693,7 @@ void folio_end_writeback(struct folio *folio)
+ 	 * reused before the folio_wake_bit().
+ 	 */
+ 	folio_get(folio);
++	dept_page_clear_bit(&folio->page, PG_writeback);
+ 	if (__folio_end_writeback(folio))
+ 		folio_wake_bit(folio, PG_writeback);
+ 
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 09e4ac6a73c7..fd2bf6689afa 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -589,6 +589,7 @@ void __meminit __init_single_page(struct page *page, unsigned long pfn,
+ 	page_cpupid_reset_last(page);
+ 	page_kasan_tag_reset(page);
+ 	dept_ext_wgen_init(&page->pg_locked_wgen);
++	dept_ext_wgen_init(&page->pg_writeback_wgen);
+ 
+ 	INIT_LIST_HEAD(&page->lru);
+ #ifdef WANT_PAGE_VIRTUAL
 -- 
 2.17.1
 
