@@ -4,246 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15C87CAC5B0
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 13:53:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7838CAC5B0
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 13:53:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51ABB8E000C; Thu,  2 Oct 2025 09:53:37 -0400 (EDT)
+	id 2346A8E000E; Thu,  2 Oct 2025 09:53:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CAEE8E0002; Thu,  2 Oct 2025 09:53:37 -0400 (EDT)
+	id 20C7F8E0002; Thu,  2 Oct 2025 09:53:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36B448E000C; Thu,  2 Oct 2025 09:53:37 -0400 (EDT)
+	id 0FAF58E000E; Thu,  2 Oct 2025 09:53:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 21DA88E0002
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 09:53:37 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B64FB160485
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 13:53:36 +0000 (UTC)
-X-FDA: 83953316832.21.418DE70
-Received: from YT5PR01CU002.outbound.protection.outlook.com (mail-canadacentralazon11021072.outbound.protection.outlook.com [40.107.192.72])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C632FC0002
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 13:53:33 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=selector1 header.b=VBFbx+Sw;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf10.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 40.107.192.72 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759413214;
+	by kanga.kvack.org (Postfix) with ESMTP id EC6108E0002
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 09:53:43 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BEA2C1602EB
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 13:53:43 +0000 (UTC)
+X-FDA: 83953317126.25.50C3E11
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 693BA4000C
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 13:53:41 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1759413222;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zxzvFlJLbR6keAr+O53LqG3GN7TgxhOWpLS+lHurZNQ=;
-	b=gf9s4iJhBLG272YSreFwcD7qhh8O4KaQILOFjg8ziEFb/VSBepC2Y7Ky6r8z2+sIseDOLo
-	pVM2MIiAbKdAxUCQr6LrPehQoU83BLlhVhqg9auQUrqJePjawLXua1Kj+pDN7IYPozyqxY
-	fbuME07bPGcWwWV4vADX5QnkDCtUBrM=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1759413214; a=rsa-sha256;
-	cv=pass;
-	b=N2rzjsmFzlLPZ2HhSW1K6PF+ExNEdnvjXxihN0b/lCa9eoJKW1Z07+itTZDKWQcp7cC60l
-	Q6EyhWJ0g8jchHT2XnRPNHWvp+m8Ykut7WZZKqe9fKUzJTFgjlTPUmyXrpb1Yo6J1RZ3gb
-	mezaJpSvQE5c8DbSoZTV8eE2dNWcys0=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=selector1 header.b=VBFbx+Sw;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf10.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 40.107.192.72 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=c/paLCf1FLpcxx4pEOZMkBBHLA3GswMAzq0I6k9uu5F33cqr0ZZLPxVlbIpMoYWqUVtgKvpsEZkSJ9A9jiTaf7YjyaACB/IqkWrwZvZ+8hc5nIprXF2cCDuOoMuarvNnB+oDlI/KuB9vJKGrZNewxQvXVjzcmQRWRTZtrzgX3WIkl50xNvd24wJJmfPRjV8LT3wiy2ul4VLqARs+DtDa9LccopKIthV+o6LDS7bWvQTXjO4jT+WsZwRHNRaBUILYQMK+6tRBoxZRjmi0z1mUXOrrbXLjZfumM9SIEo80vrKIPibN1KimxjtoR+4aBtv/1/e1psJrvs3B5uFy2Y3NDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zxzvFlJLbR6keAr+O53LqG3GN7TgxhOWpLS+lHurZNQ=;
- b=WLmBWpcbPA9WPmu7/URWLhZTasCAsqUYBQZJFy1CZDSUZUtbSP6zGZQKSwUfnwhmmOpPBf1FiLNfIejdwlWNGYtxv5DLXJVZIqyK1pjwU6oJ30rCr1TaxsDrc44JR0oPHh53lVsamWCtnGbBcZsUgwdfKBQ5Jq62uUZpqhRrTYxHLnz2nu7BfSLAYLjKRy9fnPw3iDF1fk4XsL8aeYC85/PYRq0HILTSftXqg8SY2ZLpHYguakUGpoe0EMh8dl7gbCIyjz1FUDjNfFeSwQ4wjTBdCfnYjk+aJpRjTs6SdonK+w6ZFWbkkw+sjI+vwLfzp0htreNAjaGZs4HmJR3o9g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
- dkim=pass header.d=efficios.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zxzvFlJLbR6keAr+O53LqG3GN7TgxhOWpLS+lHurZNQ=;
- b=VBFbx+Sw7kOu3SxTliUz4RLCmCnfgZ7+8nkdyA3aNbXZ4kFKb8I8RR0akUYogdXk5qO8ePjpWoUHjr5HQEQewR02FGtDMauHusTc5O/tSXZXT7gdmG+mRImxA6EPubigGz15h0/M8AMP09vJq3kiHCo6cN5tEEdv8aNTXJLxSFY2IB5DXzntK2CqsaFgrXQwpIPCsN6QhOYyKwZEIaMYT8fskMM2oMDauF0rOoQcqCf98zfQ85enG390zV340Sa8AFNCxm+UzRV70HwJCTTI0j8vqqMxNUdUzYd0kQKIfNO2hG/ljbPM9bvzo+HNZizmvbLyg2kcQwdv2jWP/GjT8w==
-Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:be::5)
- by YT2PR01MB11606.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:156::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.19; Thu, 2 Oct
- 2025 13:53:29 +0000
-Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::50f1:2e3f:a5dd:5b4]) by YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::50f1:2e3f:a5dd:5b4%5]) with mapi id 15.20.9182.015; Thu, 2 Oct 2025
- 13:53:29 +0000
-Message-ID: <63034035-03e4-4184-afce-7e1a897a90e9@efficios.com>
-Date: Thu, 2 Oct 2025 09:53:24 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 01/47] llist: move llist_{head,node} definition to
- types.h
-To: Greg KH <gregkh@linuxfoundation.org>, Byungchul Park <byungchul@sk.com>
-Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
- torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
- linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
- linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
- will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
- joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
- duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu,
- willy@infradead.org, david@fromorbit.com, amir73il@gmail.com,
- kernel-team@lge.com, linux-mm@kvack.org, akpm@linux-foundation.org,
- mhocko@kernel.org, minchan@kernel.org, hannes@cmpxchg.org,
- vdavydov.dev@gmail.com, sj@kernel.org, jglisse@redhat.com,
- dennis@kernel.org, cl@linux.com, penberg@kernel.org, rientjes@google.com,
- vbabka@suse.cz, ngupta@vflare.org, linux-block@vger.kernel.org,
- josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
- jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
- djwong@kernel.org, dri-devel@lists.freedesktop.org,
- rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
- hamohammed.sa@gmail.com, harry.yoo@oracle.com, chris.p.wilson@intel.com,
- gwan-gyeong.mun@intel.com, max.byungchul.park@gmail.com,
- boqun.feng@gmail.com, longman@redhat.com, yunseong.kim@ericsson.com,
- ysk@kzalloc.com, yeoreum.yun@arm.com, netdev@vger.kernel.org,
- matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
- catalin.marinas@arm.com, bp@alien8.de, dave.hansen@linux.intel.com,
- x86@kernel.org, hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
- gustavo@padovan.org, christian.koenig@amd.com, andi.shyti@kernel.org,
- arnd@arndb.de, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- rppt@kernel.org, surenb@google.com, mcgrof@kernel.org, petr.pavlu@suse.com,
- da.gomez@kernel.org, samitolvanen@google.com, paulmck@kernel.org,
- frederic@kernel.org, neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
- josh@joshtriplett.org, urezki@gmail.com, jiangshanlai@gmail.com,
- qiang.zhang@linux.dev, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
- vschneid@redhat.com, chuck.lever@oracle.com, neil@brown.name,
- okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
- anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
- clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
- kristina.martsenko@arm.com, wangkefeng.wang@huawei.com, broonie@kernel.org,
- kevin.brodsky@arm.com, dwmw@amazon.co.uk, shakeel.butt@linux.dev,
- ast@kernel.org, ziy@nvidia.com, yuzhao@google.com,
- baolin.wang@linux.alibaba.com, usamaarif642@gmail.com,
- joel.granados@kernel.org, richard.weiyang@gmail.com,
- geert+renesas@glider.be, tim.c.chen@linux.intel.com, linux@treblig.org,
- alexander.shishkin@linux.intel.com, lillian@star-ark.net,
- chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
- link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
- brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
- mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
- linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
- linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-modules@vger.kernel.org, rcu@vger.kernel.org,
- linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev
-References: <20251002081247.51255-1-byungchul@sk.com>
- <20251002081247.51255-2-byungchul@sk.com>
- <2025100230-grafted-alias-22a2@gregkh>
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Content-Language: en-US
-In-Reply-To: <2025100230-grafted-alias-22a2@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YQZPR01CA0037.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:86::7) To YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:be::5)
+	 in-reply-to:in-reply-to:references:references;
+	bh=7SvIJwxE8fkk1jJ+1dsVC/DtTogjUGMlM69W6VKyhbo=;
+	b=RXf5M0B1GBsXqI9KtFSBJ+jfzmYB7hxTIQyN2wBCtbHrIE2Nk8tVMf66NYEu4jDKWwOIbg
+	xfru0Gjw9zqa7QYfFhfsMlOCbWGejaOpI4K4dTQVPJ24fbm1ClxCgqzRJiiBUGnyFeKXu8
+	0thkfpT0Zqpt7m/lVwqcZf1MsO+OFBs=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759413222; a=rsa-sha256;
+	cv=none;
+	b=rFRKAGWpLXFRwOdbEbM5IqSBYF2MjauVI+cHoVisiAcxi/3RNzy8bmLSzE2yn5LUiIKlN2
+	ITw1c2L6tDyZasCf7Ye0rlXB2Ej++DYVwulLiTJQY8SyaRtM5cQyAa2IJClnHIUvCUMrNY
+	aPBRKa5lBzq0JnDpMUjbkbnoZhxwNHg=
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cctVx1648z6L50l;
+	Thu,  2 Oct 2025 21:51:21 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3ADF11402EB;
+	Thu,  2 Oct 2025 21:53:37 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 2 Oct
+ 2025 14:53:34 +0100
+Date: Thu, 2 Oct 2025 14:53:32 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Raghavendra K T <raghavendra.kt@amd.com>
+CC: <AneeshKumar.KizhakeVeetil@arm.com>, <Michael.Day@amd.com>,
+	<akpm@linux-foundation.org>, <bharata@amd.com>, <dave.hansen@intel.com>,
+	<david@redhat.com>, <dongjoo.linux.dev@gmail.com>, <feng.tang@intel.com>,
+	<gourry@gourry.net>, <hannes@cmpxchg.org>, <honggyu.kim@sk.com>,
+	<hughd@google.com>, <jhubbard@nvidia.com>, <jon.grimm@amd.com>,
+	<k.shutemov@gmail.com>, <kbusch@meta.com>, <kmanaouil.dev@gmail.com>,
+	<leesuyeon0506@gmail.com>, <leillc@google.com>, <liam.howlett@oracle.com>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<mgorman@techsingularity.net>, <mingo@redhat.com>, <nadav.amit@gmail.com>,
+	<nphamcs@gmail.com>, <peterz@infradead.org>, <riel@surriel.com>,
+	<rientjes@google.com>, <rppt@kernel.org>, <santosh.shukla@amd.com>,
+	<shivankg@amd.com>, <shy828301@gmail.com>, <sj@kernel.org>, <vbabka@suse.cz>,
+	<weixugc@google.com>, <willy@infradead.org>, <ying.huang@linux.alibaba.com>,
+	<ziy@nvidia.com>, <dave@stgolabs.net>, <yuanchu@google.com>,
+	<kinseyho@google.com>, <hdanton@sina.com>, <harry.yoo@oracle.com>
+Subject: Re: [RFC PATCH V3 03/17] mm: Scan the mm and create a migration
+ list
+Message-ID: <20251002145332.00003f63@huawei.com>
+In-Reply-To: <20250814153307.1553061-4-raghavendra.kt@amd.com>
+References: <20250814153307.1553061-1-raghavendra.kt@amd.com>
+	<20250814153307.1553061-4-raghavendra.kt@amd.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: YT2PR01MB9175:EE_|YT2PR01MB11606:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4ccd2ba5-2944-4b86-28a1-08de01bb1117
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NE5vYWdBRFJGVEQzOStxMWMzOFhNN290aS9pT0IxSDlSMDFBZUt3bXlZVjln?=
- =?utf-8?B?SUNvQ3VmMXBRMzNsOG95TkljaUFLREN2bWZwRXVjUXJjcDZ0VjV5alg1dit4?=
- =?utf-8?B?RmUxUDhxTHVGWjJvS2N3ckMzVUgyMy95RHVyR1hOLzJZVXFiUER5ajIvYWFt?=
- =?utf-8?B?NXlPTk5CdWZ1dWJEMk5EbHZKUExYbWZnajd4b2YybUhEdm14MGVmUE8rdVVs?=
- =?utf-8?B?T1EzbzNzNUQvYVBsYytLd3cxMDdDOUcrQkRDc3Z4em5LTmhnN2pZWmM2ZFY2?=
- =?utf-8?B?NW8zakFYWlZwQisyQjB3QnAydkdWWDJDcldFMmlacThxQUJtMXZyRDJET0xH?=
- =?utf-8?B?VkFXQjN0MnJwZ2NrZHZXc1lZWEFhdklkc0tiRjRXU1o4M1NxTGNjMjdRU21V?=
- =?utf-8?B?cEU5VUJMenVHajhSZ0F2T1BzVHdUMWZrc0t2ZVFLeW9KTVU3c25LYTVjcnZT?=
- =?utf-8?B?K2ZPbEZNWWxsSlhrWkVHSHc0b0wweUt0djk5czYvTHZLUXl5K0swQkF0YmRq?=
- =?utf-8?B?aXpWclNCS0x6WlZ1T205U3A2Wk5GZUl4QUE4Ymt2eWMxTnM2ckxiUU9nL3hu?=
- =?utf-8?B?Z2xsTk1CSjh4ZXBUT2dTUktvM2M0UmZqM2VMQkRvRWNSaWVmekNUZ0pUdTRB?=
- =?utf-8?B?bFdQSWtSWU05ZENiR0NkYzlwUks4Y3J2UXJZUlFKTXhEM2NyQnRoaE9CcWZh?=
- =?utf-8?B?S25KMUZnNCtnTVkwNWEyNXN1dnFWSnJsZnlpMVhMVmFzUXpXN0xJaEt0UkVI?=
- =?utf-8?B?WEU0eEhSUzYrM2E4VGxKMGtMenFTdEs4eDZSZDdzcEZVRzk5SC8wb211TTZF?=
- =?utf-8?B?NFVNNXAwaERtOWtybE9OTFRLekZVRWtvaUpuUGdvUG81UTZWdkVKZVU1MHFo?=
- =?utf-8?B?SDh2K3VNRW9KR0ROT294R2xUdUxsS3JHYXZKbU4vNWUxMVFXc1VTRE16OEg0?=
- =?utf-8?B?Tkk0TXF4QW84Y3YvQ0VuUGFJMTJ5UGU5SDgxNHg3UUg3dy9yR05ISTBxQVEw?=
- =?utf-8?B?cnFmY2p6TzFqNk8reG9HNU5VUkE2ZDhCRWFvcVBnOUpKcEVmeGJZZVVHSXF5?=
- =?utf-8?B?QU8xUVlBVWNmemk0V1NhekRvS210MEdkTW5RZU5GanBOcFVkUGFPdUR4dk1S?=
- =?utf-8?B?bUxSNVltL3ZuWTJqU1Rxd1JQQjVncGI2TTAzd1VZTGF3a2pXbVpzN1ZuS1VU?=
- =?utf-8?B?VVV5WWk1YTh5RE50WWo2NnZ2ekJTUlBTZ3dOdFhua3BNTGJiN0UwY2NrYXY5?=
- =?utf-8?B?QVI2aGRILzBjK0ttMG5LVStMMWs1VG9nQnBDaGlqSHNRektrcW0yM3loRVBr?=
- =?utf-8?B?MEpBZEljNzdUejIwWS9xWk0wVUhHck9Za1RDcGRJQjU3ZmYvclRlL0dJa0Nz?=
- =?utf-8?B?elBvOGc4WFpiVGkrWjlvaXV2L1NqSFB1MGRjKzBFMmdFZERHVkJOM09jdHhF?=
- =?utf-8?B?NHJaTzFRSXZsaGNleVRocUE5aXNYdmdMT09MRDhHdVZ1M1NjeTlDNWtHcDRq?=
- =?utf-8?B?eTNEN3NKQU5WRmxseU1Lc0NsNk1nZkpmekQ5WUFZN0JpQ0kyRnQ5VFVnWHMy?=
- =?utf-8?B?YjU2eXJTQTEzMHVDNG40UVp2aWpva2JNZWprWVJJZExoK0cvOGMzazJOLzRT?=
- =?utf-8?B?S0EyajlQSjBNMTUrckVtUG03eDR5SU82S3NDZG8xakVJYlZyRXZ1TTdydnVB?=
- =?utf-8?B?TWJGeUhuWTVPbUxwblR4RHlMQ2FreGptNnJXUHhmalhBQkVnL3pEM2l5SFgv?=
- =?utf-8?B?WWZvK0gyMW9ScTRRcHY2ejRhV3dSbFBpYlovbEV4akJZMmNEMGlPVnRtQ2p3?=
- =?utf-8?B?cUtxaE8wMzhuZUZ5OExIUGlaNExhaW0zL3FOOGVDYXpkaUMzU1d2dVpxUWZZ?=
- =?utf-8?B?VFlvT0UwYXFXVXNjRnNFZk56R0VFUjl6T3E1dFh3TjhuZHc9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YitQVG16bTlXMzZIYm1IRldLTG1WamdwZzdZRE9KYkxEUThKNEl6Y3JpNlhL?=
- =?utf-8?B?WWdvdXFpMTZRdnBMK0Nsb3U4WlBIWlhJS3hRbzJzSFk2TUJVeUZjZ0VFUml4?=
- =?utf-8?B?M1M4dnJoZFdXQytkQzBBV053STljYXFIdWU4cmFUR3N3bzkvaWtOZlZFd2V5?=
- =?utf-8?B?cjB4TG4xaW9EaEJFKzZVZG5mSkpwNlBmbStjdDByZDZqaVkvbkU0b3EwY2Zt?=
- =?utf-8?B?K0UrWFRXRi81bjN0bkplaWgzVmtETk9nTFcvYjlzaDkvZXB3REprcFU4UGk0?=
- =?utf-8?B?N0ViMnVqMWorbjh4Zk4ySko4UWErT3RMTGEyTEMvbDV3V0FJNE44QitGVWV0?=
- =?utf-8?B?VWMrOEY0bTVMVnAzTzAwU3pTQ2tlbHpiNVpPUFZmeFZhOUUycmFNTW1OY05B?=
- =?utf-8?B?a1RqZEF5bS8xRFNCK1VBbkdBSkdtSGY1WmdGYzJxTTVRMmJ2R2RnZUhmMlRs?=
- =?utf-8?B?TE1XNUQ4Z2NyYUs0QnlSM25Gc1lwRzVaRUJQd0VjcHlEMjhMMjVLc21DMHNJ?=
- =?utf-8?B?VWJEeE1tMFZGL0ZUMmpjZG1VSE1LMDdESE5jdGRHTWMzUHpNRmFaSWFEL1Zz?=
- =?utf-8?B?UFU1UWE2QkRoQUFxaVRva0tIakplRUh2UWpHalF2QkxESGx3bjhtM0N5aU4w?=
- =?utf-8?B?MFViU0hqdDQ3RTBVY2FrOXVuUGk4Znc0Y0VvSm14SFB5TnFhSGRaVSs2M0ow?=
- =?utf-8?B?Zms5R1pFamI3eW9lTDhTcjlFeG83NlBBL2ZYc1IrVkNZSDEzVWcvNnk4QnJL?=
- =?utf-8?B?OVdqQzRUMjl2RGFZaExwVG1CSlRnRkhocEVQUDBqVzhQYlFUVGMrbG5GYUdu?=
- =?utf-8?B?SFM1blRCa1VFY3EvYWtkYkJxanF2VGpTSVZRVFEvTklzZ09CeXZiU1RZVTZL?=
- =?utf-8?B?aCtSMUJ6NnFFbXlDOWVqbXROREpQcERvUTdXSkhJN0luWWZCTE1hRjBnOVQx?=
- =?utf-8?B?MVlNRVE5UHpuMWdPM3ZmN0dxOVNJVnZhM1FjY0wvMTVWYWJ0NFRCVDNEamVC?=
- =?utf-8?B?T1lwN2lFSndGcFdxanloVWhyRURoaUsxWVFnNkE2Z3hsWGQ1SEVXWUk3WDlw?=
- =?utf-8?B?UFVxTEE3clFGQlVCQWNhQkVOZkhPaWNzZnJFSEh4OURwV0hMMHl2bEtweXJu?=
- =?utf-8?B?L2NIdWk2MGVzeWVtbG1WbjIwSkZaRldQNEtmdEtweWpZWEJwNWJ3L0xSQUlY?=
- =?utf-8?B?UlNNMUJBSFlTdzU4SHo1ZnpZTXI5SGt4VGhtY2t3V1M1WHdKY1RzMUVReTlK?=
- =?utf-8?B?ZmlRNHpoVCt5WGczc3RYT2N5UlppNmREcExPR2FCTi9ZcWtZbGZSMVYxUEh1?=
- =?utf-8?B?K2FHTGZkc2lrbERNUjNpQ3pvL2U4R09HSGl6WGEzZUJWTTRtVDE2VlJCbXRm?=
- =?utf-8?B?ZUlpbk14a3lNWGI0YkJuMWorMXNWNkZhVUJjQ2tqVktha2JCemVvLzVUY2Fz?=
- =?utf-8?B?Q0Jvdi83MnhWdzRlZnRPNGM4V01lTmRLbDlpc2FpdXYrang5K3c4WHN1NE5n?=
- =?utf-8?B?UmIzVWNtMlpScW93NHgwemllVSs0SXFKMHZwUzk2YVNsOG5FeFBGMDdXZUpO?=
- =?utf-8?B?NkYzSGJHQ3VqSkYrWnJKYzkzVkUrS3VIU0c1YjBuaEhHbW9meFpneGZFc3ZD?=
- =?utf-8?B?d0xvWkZjeEtaNUJlbS9LTDRkYm50VWo1ME5RK2pWSXRoeWxSUjNPU1lqUytj?=
- =?utf-8?B?OFVLdUh0aXN4MnJYK1ZaK3NVbmpmMlV1ZU41TndtL0lDWVZWU2pzY3hxcnVy?=
- =?utf-8?B?S3M4UzdKWDRQNnF6bHZnd1pSdmNyTWxRTmFCdzVvL2VMY2t4L2ZoU0U0cDUv?=
- =?utf-8?B?NUxXZlhGT3FRalRPUmNWeXBFeHZ4WjNUZXY4bnQrQmgwMjEzeVNLdEhUZWVN?=
- =?utf-8?B?NWtjdmg3THlHeFpSQ1pxZDhtU29vR2ZDa3BOWWhVRXFXUCtpZDVSeVhIcGhi?=
- =?utf-8?B?VjZrMXlxNVQzSVlmemMxNm54VS9QK2RtMkxpZUhHS1BYb2JVQk5EVDF2T3N3?=
- =?utf-8?B?OUJtVGpucVMyYWFsZHB4Y1NBNzd5eTlaS2loU1Jaam5iQmFJRjNaU0Zsdloz?=
- =?utf-8?B?M1gyRWFVOENDVVZXVkd5ekc2ZnVtaEY0NjFLOElreDg3bG0rTnliR3NoVUJC?=
- =?utf-8?B?NWJ3TzdWRVo1RUtYMUxudXUrRnBPTmducWY1ZzFZSHM5NnJlcFhxYnBjUFlk?=
- =?utf-8?Q?WLrHG+RdhEmrF1PAdTvJ2h8=3D?=
-X-OriginatorOrg: efficios.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4ccd2ba5-2944-4b86-28a1-08de01bb1117
-X-MS-Exchange-CrossTenant-AuthSource: YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2025 13:53:29.3661
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KXq8xNaZwAkTCHjOPywfS2dnQuk+qkFTICb8zdIjiAC+iX/VETbiLuznN3oTYOHanZMNGNaNOnD8A6MM1x9cHAjBSjaB01sa41yTnGDEabo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT2PR01MB11606
-X-Stat-Signature: 14yiwxqdgofhdcifb9xya4a9se79z58a
-X-Rspamd-Queue-Id: C632FC0002
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.15]
+X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
+X-Rspamd-Queue-Id: 693BA4000C
+X-Stat-Signature: xdp4c9zksn71ys39tqwwpxwb5cnke6op
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1759413213-900429
-X-HE-Meta: U2FsdGVkX1+ptvNDWQDAa4eyA8cQMLa5vV4FTM1gFeo21DkMx9hpWIA3lfmknQ7/iC+lHNmYREhOZ2tjkHtBC44JD3eXEAaFTi5BTKHoIvlWy82+/X+IKLYI2lwJIrDN8ge6uXNovjz38UP8/4SKGyKIUF147ZEHye1PWBDvqdVnzbYyd0MuzztLghJPkGsSzLSBHlz3RoAb77z5lb2lv/tJN4yLIQtJDySp+sa9t/pl3w0EmInAcWEMAY7DV136uvv/qyaf3ePxlBhFP8vXn1mkyyqBNBahBCt1R4zg6aK8xzoKzqS4T4V7+WjCzOfgUhSHIIAPI2J8AGsz1r8/2hKhLv1bU5NJujqh1Uc83/DvaiolzUbxRtCh6GXjEBQaKmBmQrk9n2HJHwYZA7aV9eSs3DO4qEw9jN70RmAEmhVQDFNbY+GD5F7qyocAaXRBhmm4kPfCH+rPag2ZmiMNhLfaySCNq6zzXOrfC6lErMOK0Rwf7mrLcIo01jMhyzDaULta06EBAFYqVFqR/kx1CTzo9TOb/RWhMkw9PcpZxldguV0stkFFyU15NjYKwqmRSsH5UTum44snJzjPVPGcxy1wFZSeEYL5hkyxWkRKZRBQLcQFeQb5yyqYU95GSYc5lx9xrOgn4mx3FKK+2E9hYef8ZBwFFH3AFkOjj9giVdUl/+YvyOsH19Gjs2HEbCPIrkI3xgfpOENowEy3mmsTue6kkD4bJ9rKgtQK+QpqDYPJzBracbvFAfee7ObPu9Zp52GkNRf0nqeu9QZFdSOHCX5YIQ7QFtvdbSb4o1kWgEs7UWpzWFRcuB5v4RcQhLwQg1Pv++y8etZ1h/RfQXhjPoHTGPQFWEt5Ie7/ScxrnPa5ONXUWc86iQfiY/WRzmO6D+WLZwIet1IMIWR3Jgt9E42zCKfncqjFF88rTFyp3PT7v5BpXrkFnrT2xoW+Aes/LimUvqfu1VALZACbVv2
- 8uUgzxAH
- mtWxy2jt0I5yiHZd3bf7uvRM62JQpceJmrkaDoSWFuixceuAf0jEa5T5VqVJwxcWFYoOwmaRPUkOS4gYl4bukXkIOQnBeNVWKsn8+hXx4M2lcG8y54cOlsIjQ/n+g/zeyLt9bdvi31rRu8oM5NCPPtidsiYWyCgJzMTsRly5LN0WQi79yyShzF4r4ZgpkysmkMje2yhoVyFCpC3XzeBND03nH9z8A8u4AduO2/v+VBtZMYWfqHnebhGVM5JTQq2JvlhBYzw69RnkkS/0fexEFB6qaBbANMfthxM1OTxoOy6gmVWStM6toh0F9umHnC262BvzVyy1vZXDCLMkXDYp/y10xdisSGdu3jrS/OiInMm/9rArbBLcNks1Q6hGwZENhheK9SiZ4mSCXV3mYuDkoPMn4w5CxVCRg+CyzsIt8PiA13LL7ATkz/LuZXFufRiswVBp6zFLFmWacBdjr6L9H3ffAOoaO6vpw38iKbhE71ohsIvcJePrDPTK/xljE8s36iX3hgsN8b4Bil5EuI2gsLHGbiUPFI5xjWmJZlh5PpG8NovPClwiFytMqLNqI9ea/kpc5ohjt9Vl/mbQ+UPOcCkqQ9LjGs7JIC0BC
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1759413221-315315
+X-HE-Meta: U2FsdGVkX1+bCa1O5Zge505557Do2ufRN5d28s+P8RFXfOladiaIrpycB+NOVaKqFWzENbpOjuiK/VJzXER9TLGzueS9iCE3bvkfnyqD3lMYJNl37SwhbJH7UnuXh7dqBDCqLX0ZjUyoUmJAga+e5SOD04Als+RDhQ2lYpDtmZFgEkslxBZvJZxzNI3f29kUwgYKhzzuJxi4n0Lvmn4lHi/NFne0jcl5CcGwNZs0aeGolXQEUsrXs9TV31j8x4vZviur5Aiob25NTXy2weMVIR6a6HCU7dgINzkeLLg73PLCaEF61iSEkdXkKETgKm2KsJnn/TS3M49brcuHPwEze0kDoCROvNcMsK+gRHKTpPbzCsAssaCpbms2Dlc/q+JhrT2PAbRVR8k1iHWfumaWAUwBB/3N+yWRS4qtKfcfw9BuQSLAlDj1jztn82rL1Oy3bLCjSM5jc8t/4eVe0G1dYvpcDahG9sPtcfO828uixE2Xiq2Y5Taaa8aLmk2PCABblRgI06F4wQfB5vbNct3BVKMlsPbz25EKNVlMsjH5gfiYK9L5EM13hLL4kruCaWpycgXuVCWPfU1qcXkAsauvDICKroLpFt8yO26rJQgpMP71sa0y5HIwWnyWwReGzlEPKKMZ/nJw1nRohtODpNwSBYBL7FJu/A+Rkkx2IDXzoLNo6+W7MiQGfzBG2eDT0NH6pDfGOgtEMADpj9uWCAGKOktwdE9cGACeOyGBcC4zyBmqChwyfgKqg8xyJSc75H7ucFPrAQZ9VfcqLP6yiacyPvK3C/1hpmn9dHTfr5MO+RKvLBynmbY4rDCdFEIuXjhHF04d25fHYIC81O9+WwhpIcoaTIr3/rAEv79pQSFjoinaYVTI7kNtuZds7nJ3UqeY04Q0P9fq5k8R0JgeqgROrhoYUsa5x0V2wXeFZCQwYi9/mqOiFkMkbVxC00TX91i4iQWv39Br7AjPKFGZiTw
+ 2KWg4HiO
+ biLJgrkJSrngmIRq14r8PPUS+c3tudo4yv5SiD+3lP0RTq9OdsPaDxfBAKkQW3FmTcvct2/hnHnWQzUaBxrRq0c62pCrl9JA80g9DW69hYqVZbXtjtu4+QKtX7ndn5QCjqqqN1OwX+eJ34Bvx4bpQnFkqgatEYwB2UOGHkhnj50H+Dt0kGYwuC4SISHv+A+jyQOW0rMgSZU05uGk4DhL+Jz8PZtx2AzQERWwWTGq1RH/T3AztoetUbNWJ0m9Oe3TSiJUl8NvNDfU5FnXKXt9rWE6NgKnQJp3eACn1Iqzx72GD60T5zZkJuaQVS2W4X68pBZo6kP5G5mYgoXNpdjGkfRQYJqVwYHX0D8qA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -252,35 +106,358 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-10-02 04:24, Greg KH wrote:
-> On Thu, Oct 02, 2025 at 05:12:01PM +0900, Byungchul Park wrote:
->> llist_head and llist_node can be used by some other header files.  For
->> example, dept for tracking dependencies uses llist in its header.  To
->> avoid header dependency, move them to types.h.
+On Thu, 14 Aug 2025 15:32:53 +0000
+Raghavendra K T <raghavendra.kt@amd.com> wrote:
+
+> Since we already have the list of mm_struct in the system, add a module to
+> scan each mm that walks VMAs of each mm_struct and scan all the pages
+> associated with that.
 > 
-> If you need llist in your code, then include llist.h.  Don't force all
-> types.h users to do so as there is not a dependency in types.h for
-> llist.h.
+>  In the scan path: Check for the recently acccessed pages (PFNs) belonging
+
+Bonus space at start of line.
+
+> to slowtier nodes. Add all those to a list.
 > 
-> This patch shouldn't be needed as you are hiding "header dependency" for
-> other files.
+> Signed-off-by: Raghavendra K T <raghavendra.kt@amd.com>
 
-I agree that moving this into a catch-all types.h is not what we should
-aim for.
+A few superficial comments. I'm out of time today to take a closer read
+though but thought I'd send these as might not get back to this for a while.
 
-However, it's a good practice to move the type declarations to a
-separate header file, so code that only cares about type and not
-implementation of static inline functions can include just that.
+> ---
+>  mm/kscand.c | 321 +++++++++++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 320 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/kscand.c b/mm/kscand.c
+> index d5b0d3041b0f..1d883d411664 100644
+> --- a/mm/kscand.c
+> +++ b/mm/kscand.c
 
-Perhaps we can move struct llist_head and struct llist_node to a new
-include/linux/llist_types.h instead ?
+> +
+> +static bool kscand_eligible_srcnid(int nid)
+> +{
+> +	/* Only promotion case is considered */
+> +	return  !node_is_toptier(nid);
 
-Thanks,
+one space before ! not 2.
 
-Mathieu
 
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-https://www.efficios.com
+> +}
+> +
+>  static inline int kscand_has_work(void)
+>  {
+>  	return !list_empty(&kscand_scan.mm_head);
+> @@ -84,11 +122,277 @@ static void kscand_wait_work(void)
+>  			scan_sleep_jiffies);
+>  }
+>  
+> +static inline bool is_valid_folio(struct folio *folio)
+> +{
+> +	if (!folio || !folio_mapped(folio) || !folio_raw_mapping(folio))
+> +		return false;
+> +
+> +	if (folio_test_unevictable(folio) || folio_is_zone_device(folio) ||
+> +		folio_maybe_mapped_shared(folio))
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+One blank line only unless local convention matches this.
+> +
+> +static bool folio_idle_clear_pte_refs_one(struct folio *folio,
+
+> +
+> +static int hot_vma_idle_pte_entry(pte_t *pte,
+> +				 unsigned long addr,
+> +				 unsigned long next,
+> +				 struct mm_walk *walk)
+> +{
+> +	struct page *page;
+> +	struct folio *folio;
+> +	struct mm_struct *mm;
+> +	struct vm_area_struct *vma;
+> +	struct kscand_migrate_info *info;
+> +	struct kscand_scanctrl *scanctrl = walk->private;
+> +	int srcnid;
+> +
+> +	scanctrl->address = addr;
+> +	pte_t pteval = ptep_get(pte);
+
+Mixing declarations and code is a bit messy.
+I'd just declare pte_t pteval earlier.
+
+
+> +
+> +	if (!pte_present(pteval))
+> +		return 0;
+> +
+> +	if (pte_none(pteval))
+> +		return 0;
+> +
+> +	vma = walk->vma;
+> +	mm = vma->vm_mm;
+> +
+> +	page = pte_page(*pte);
+> +
+One line only here.
+> +
+> +	folio = page_folio(page);
+> +	folio_get(folio);
+> +
+> +	if (!is_valid_folio(folio)) {
+> +		folio_put(folio);
+> +		return 0;
+> +	}
+> +	folio_set_idle(folio);
+> +	page_idle_clear_pte_refs(page, pte, walk);
+> +	srcnid = folio_nid(folio);
+> +
+> +
+
+one blank line.
+
+> +	if (!folio_test_lru(folio)) {
+
+Maybe a goto given common code in all exit paths around here.
+
+> +		folio_put(folio);
+> +		return 0;
+> +	}
+> +
+> +	if (!kscand_eligible_srcnid(srcnid)) {
+> +		folio_put(folio);
+> +		return 0;
+> +	}
+> +	if (!folio_test_idle(folio) &&
+> +		(folio_test_young(folio) || folio_test_referenced(folio))) {
+
+Odd looking wrapping. I'd align after ( i.e.
+	if (!folio_test_idle(folio) &&
+	    (folio_test_young(folio) || folio_test_referenced(folio))) {
+
+> +
+> +		/* XXX: Leaking memory. TBD: consume info */
+> +
+> +		info = kzalloc(sizeof(struct kscand_migrate_info), GFP_NOWAIT);
+> +		if (info && scanctrl) {
+> +			info->pfn = folio_pfn(folio);
+> +			info->address = addr;
+> +			list_add_tail(&info->migrate_node, &scanctrl->scan_list);
+> +		}
+> +	}
+> +
+> +	folio_put(folio);
+> +	return 0;
+> +}
+
+> +static unsigned long kscand_scan_mm_slot(void)
+> +{
+> +	bool next_mm = false;
+> +	bool update_mmslot_info = false;
+> +
+> +	unsigned long vma_scanned_size = 0;
+> +	unsigned long address;
+> +
+> +	struct mm_slot *slot;
+> +	struct mm_struct *mm;
+> +	struct vm_area_struct *vma = NULL;
+> +	struct kscand_mm_slot *mm_slot;
+
+Confusing to have a variable called mm_slot which isn't a struct mm_slot *
+and another variable that is.
+
+> +
+
+One line enough.
+
+> +
+> +	spin_lock(&kscand_mm_lock);
+> +
+> +	if (kscand_scan.mm_slot) {
+> +		mm_slot = kscand_scan.mm_slot;
+> +		slot = &mm_slot->slot;
+> +		address = mm_slot->address;
+> +	} else {
+> +		slot = list_entry(kscand_scan.mm_head.next,
+> +				     struct mm_slot, mm_node);
+
+Isn't that
+		slot = list_first_entry(&kscand_scan.mm_head,
+					struct mm_slot, mm_node);
+
+Makes little difference other than pointing out it is the first entry.
+
+> +		mm_slot = mm_slot_entry(slot, struct kscand_mm_slot, slot);
+> +		address = mm_slot->address;
+
+Could drop setting address out of the if/else given it's the same in both legs.
+
+Alternatively treat this as a 'get the missing mm_slot' and do
+
+	if (!kscand_scan.mm_slot) {
+		struct mm_slot *next_slot =
+			list_first_entry(&kscand_scan.mm_head,
+					 struct mm_slot, mm_node);
+		struct kscand_mm_slot *next_mm_slot = 
+			mm_slot_entry(slot, struct kscand_mm_slot, slot);
+		kscand_scan.mm_slot = next_mm_slot;
+	}
+
+	mm_slot = kscand_scan.mm_slot;
+	slot = &mm_slot->slot;
+	address = mm_slot->address;
+
+
+
+
+
+> +		kscand_scan.mm_slot = mm_slot;
+> +	}
+> +
+> +	mm = slot->mm;
+> +	mm_slot->is_scanned = true;
+> +	spin_unlock(&kscand_mm_lock);
+> +
+> +	if (unlikely(!mmap_read_trylock(mm)))
+> +		goto outerloop_mmap_lock;
+> +
+> +	if (unlikely(kscand_test_exit(mm))) {
+
+Some of these unlikelys feel like things we should leave to the branch
+predictors to figure out.
+
+> +		next_mm = true;
+> +		goto outerloop;
+> +	}
+> +
+> +	VMA_ITERATOR(vmi, mm, address);
+> +
+> +	for_each_vma(vmi, vma) {
+> +		kscand_walk_page_vma(vma, &kscand_scanctrl);
+> +		vma_scanned_size += vma->vm_end - vma->vm_start;
+> +
+> +		if (vma_scanned_size >= kscand_scan_size) {
+> +			next_mm = true;
+> +			/* TBD: Add scanned folios to migration list */
+> +			break;
+> +		}
+> +	}
+> +
+> +	if (!vma)
+> +		address = 0;
+> +	else
+> +		address = kscand_scanctrl.address + PAGE_SIZE;
+> +
+> +	update_mmslot_info = true;
+> +
+> +	if (update_mmslot_info)
+> +		mm_slot->address = address;
+> +
+> +outerloop:
+> +	/* exit_mmap will destroy ptes after this */
+> +	mmap_read_unlock(mm);
+> +
+> +outerloop_mmap_lock:
+
+This flow is getting a bit too complex for my liking.  Maybe factor
+everything above here out given we run this in all exit paths. Then
+that factored out code can do early returns etc, without the goto
+nest.  Might be able to use guard() for the spin_lock as well to
+allow return instead of goto in next bit.
+
+> +	spin_lock(&kscand_mm_lock);
+> +	WARN_ON(kscand_scan.mm_slot != mm_slot);
+> +
+> +	/*
+> +	 * Release the current mm_slot if this mm is about to die, or
+> +	 * if we scanned all vmas of this mm.
+> +	 */
+> +	if (unlikely(kscand_test_exit(mm)) || !vma || next_mm) {
+> +		/*
+> +		 * Make sure that if mm_users is reaching zero while
+> +		 * kscand runs here, kscand_exit will find
+> +		 * mm_slot not pointing to the exiting mm.
+> +		 */
+> +		if (slot->mm_node.next != &kscand_scan.mm_head) {
+> +			slot = list_entry(slot->mm_node.next,
+> +					struct mm_slot, mm_node);
+> +			kscand_scan.mm_slot =
+> +				mm_slot_entry(slot, struct kscand_mm_slot, slot);
+> +
+> +		} else
+> +			kscand_scan.mm_slot = NULL;
+> +
+> +		if (kscand_test_exit(mm)) {
+> +			kscand_collect_mm_slot(mm_slot);
+> +			goto end;
+> +		}
+> +	}
+> +	mm_slot->is_scanned = false;
+> +end:
+ +	spin_unlock(&kscand_mm_lock);
+> +	return 0;
+> +}
+> +
+>  static void kscand_do_scan(void)
+>  {
+>  	unsigned long iter = 0, mms_to_scan;
+> @@ -101,7 +405,7 @@ static void kscand_do_scan(void)
+>  			break;
+>  
+>  		if (kscand_has_work())
+> -			msleep(100);
+> +			kscand_scan_mm_slot();
+>  
+>  		iter++;
+>  
+> @@ -148,6 +452,7 @@ void __kscand_enter(struct mm_struct *mm)
+>  	if (!kscand_slot)
+>  		return;
+>  
+> +	kscand_slot->address = 0;
+>  	slot = &kscand_slot->slot;
+>  
+>  	spin_lock(&kscand_mm_lock);
+> @@ -175,6 +480,12 @@ void __kscand_exit(struct mm_struct *mm)
+>  		hash_del(&slot->hash);
+>  		list_del(&slot->mm_node);
+>  		free = 1;
+> +	} else if (mm_slot && kscand_scan.mm_slot == mm_slot && !mm_slot->is_scanned) {
+> +		hash_del(&slot->hash);
+> +		list_del(&slot->mm_node);
+> +		free = 1;
+> +		/* TBD: Set the actual next slot */
+> +		kscand_scan.mm_slot = NULL;
+>  	}
+>  
+>  	spin_unlock(&kscand_mm_lock);
+> @@ -224,6 +535,12 @@ static int stop_kscand(void)
+>  	return 0;
+>  }
+>  
+> +static inline void init_list(void)
+
+That's a very generic name that is likely to clash with something in future.
+kscand_init_list()  Or don't bother as not a lot in here so you could just
+put them inline.
+
+> +{
+> +	INIT_LIST_HEAD(&kscand_scanctrl.scan_list);
+> +	init_waitqueue_head(&kscand_wait);
+> +}
+> +
+>  static int __init kscand_init(void)
+>  {
+>  	int err;
+> @@ -234,6 +551,8 @@ static int __init kscand_init(void)
+>  		pr_err("kscand: kmem_cache error");
+>  		return -ENOMEM;
+>  	}
+> +
+> +	init_list();
+>  	err = start_kscand();
+>  	if (err)
+>  		goto err_kscand;
+
 
