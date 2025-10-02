@@ -4,245 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56B10CAC5B8
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:16:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C268CAC5B8
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:16:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37E6B8E003A; Thu,  2 Oct 2025 04:14:26 -0400 (EDT)
+	id 222A58E003E; Thu,  2 Oct 2025 04:16:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 306A78E0039; Thu,  2 Oct 2025 04:14:26 -0400 (EDT)
+	id 1FA248E003C; Thu,  2 Oct 2025 04:16:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E4508E003A; Thu,  2 Oct 2025 04:14:25 -0400 (EDT)
+	id 1370A8E003E; Thu,  2 Oct 2025 04:16:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D64D38E0038
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:14:25 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AB3E5119BA0
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:25 +0000 (UTC)
-X-FDA: 83952462090.16.D58B34F
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 00B3B8E003C
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:16:25 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C5D85B8ADC
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:16:25 +0000 (UTC)
+X-FDA: 83952467130.17.25B88E8
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 7CB65A000A
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:22 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	spf=pass (imf25.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+	by imf05.hostedemail.com (Postfix) with ESMTP id 00DBB10000A
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:16:23 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	spf=pass (imf05.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759392863;
+	s=arc-20220608; t=1759392984;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=XNuhYLZiOR257XxuzGRbFTIiEa1Kohfj+YGCdbIJSDo=;
-	b=sGtLPc4zVJUxwcom3L1w6KVbuM0XK/smTI4svp1MhcdgayQCTETJkXdMS3f1GARRq9LPNH
-	+Kol15guqklmTtCVgcYCRkrijf1ElSIpsxcA+jdMdN2q53MGVkcRbutYhvW11dahGvZWAm
-	DuYu9T0LPaxFTl060pCMWaL6Ai8VX0c=
+	 content-transfer-encoding:in-reply-to:references;
+	bh=Uv+UuR22FBb5c94J0dOHpNEqPUjynS4UcgNpo7e+UPc=;
+	b=7OLimWp3nDn7HbhHZoSXfawV53t9eMTpf6iMyHELDjBWn2FXuUnnmcttVqsrl9ubGK+KOV
+	C1EL4jGUgvRsI/kwI3ENSabd9A3cdqS0p+F5tHPsUdXLcS38HxDGiTOpKAScHMGEcza3/7
+	N+KJZ3p82382BZU91QSXJVDWk0QL+bI=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
+	imf05.hostedemail.com;
 	dkim=none;
 	dmarc=none;
-	spf=pass (imf25.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759392863; a=rsa-sha256;
+	spf=pass (imf05.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759392984; a=rsa-sha256;
 	cv=none;
-	b=TmyOV4kumzYw278jh865A3h5G6LGdQvSBalKeOwjaHncWi+nWm8tftsNYS2bRz3HyrgD6t
-	9ZzqqQQSQtBMjWGwsq7NTP61iJUGQDYznDd9Yp6eB+SlEjyPqgmNl7InYn/giOfxEecO+L
-	6nYqk14nJGa5pMFFJh5pl3plRta/UN0=
-X-AuditID: a67dfc5b-c2dff70000001609-b4-68de34184c9a
+	b=keDJk8ZZyMaV3rXi1x/N7XdCoQOZbILaTUHwrsY64RhOuUKV49o0S1bsJGPvxtc3lo3WK5
+	TsjHS+mPsAZ2LLVB9XMLvl0030zUPZjcZkiOpEnUyePOAuvZzyNq7soikQy5fPzrWwC1LX
+	bLQrSudkaezI1JtHMKSoa0Igk7evonc=
+X-AuditID: a67dfc5b-c45ff70000001609-bf-68de34d63323
 From: Byungchul Park <byungchul@sk.com>
-To: linux-kernel@vger.kernel.org
-Cc: kernel_team@skhynix.com,
-	torvalds@linux-foundation.org,
-	damien.lemoal@opensource.wdc.com,
-	linux-ide@vger.kernel.org,
-	adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	will@kernel.org,
-	tglx@linutronix.de,
-	rostedt@goodmis.org,
-	joel@joelfernandes.org,
-	sashal@kernel.org,
-	daniel.vetter@ffwll.ch,
-	duyuyang@gmail.com,
-	johannes.berg@intel.com,
-	tj@kernel.org,
-	tytso@mit.edu,
-	willy@infradead.org,
-	david@fromorbit.com,
-	amir73il@gmail.com,
-	gregkh@linuxfoundation.org,
-	kernel-team@lge.com,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	mhocko@kernel.org,
-	minchan@kernel.org,
-	hannes@cmpxchg.org,
-	vdavydov.dev@gmail.com,
-	sj@kernel.org,
-	jglisse@redhat.com,
-	dennis@kernel.org,
-	cl@linux.com,
-	penberg@kernel.org,
-	rientjes@google.com,
-	vbabka@suse.cz,
-	ngupta@vflare.org,
-	linux-block@vger.kernel.org,
-	josef@toxicpanda.com,
-	linux-fsdevel@vger.kernel.org,
-	jack@suse.cz,
-	jlayton@kernel.org,
-	dan.j.williams@intel.com,
-	hch@infradead.org,
-	djwong@kernel.org,
-	dri-devel@lists.freedesktop.org,
-	rodrigosiqueiramelo@gmail.com,
-	melissa.srw@gmail.com,
-	hamohammed.sa@gmail.com,
-	harry.yoo@oracle.com,
-	chris.p.wilson@intel.com,
-	gwan-gyeong.mun@intel.com,
-	max.byungchul.park@gmail.com,
-	boqun.feng@gmail.com,
-	longman@redhat.com,
-	yunseong.kim@ericsson.com,
-	ysk@kzalloc.com,
-	yeoreum.yun@arm.com,
-	netdev@vger.kernel.org,
-	matthew.brost@intel.com,
-	her0gyugyu@gmail.com,
-	corbet@lwn.net,
-	catalin.marinas@arm.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com,
-	luto@kernel.org,
-	sumit.semwal@linaro.org,
-	gustavo@padovan.org,
-	christian.koenig@amd.com,
-	andi.shyti@kernel.org,
-	arnd@arndb.de,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	rppt@kernel.org,
-	surenb@google.com,
-	mcgrof@kernel.org,
-	petr.pavlu@suse.com,
-	da.gomez@kernel.org,
-	samitolvanen@google.com,
-	paulmck@kernel.org,
-	frederic@kernel.org,
-	neeraj.upadhyay@kernel.org,
-	joelagnelf@nvidia.com,
-	josh@joshtriplett.org,
-	urezki@gmail.com,
-	mathieu.desnoyers@efficios.com,
-	jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
-	dietmar.eggemann@arm.com,
-	bsegall@google.com,
-	mgorman@suse.de,
-	vschneid@redhat.com,
-	chuck.lever@oracle.com,
-	neil@brown.name,
-	okorniev@redhat.com,
-	Dai.Ngo@oracle.com,
-	tom@talpey.com,
-	trondmy@kernel.org,
-	anna@kernel.org,
-	kees@kernel.org,
-	bigeasy@linutronix.de,
-	clrkwllms@kernel.org,
-	mark.rutland@arm.com,
-	ada.coupriediaz@arm.com,
-	kristina.martsenko@arm.com,
-	wangkefeng.wang@huawei.com,
-	broonie@kernel.org,
-	kevin.brodsky@arm.com,
-	dwmw@amazon.co.uk,
-	shakeel.butt@linux.dev,
-	ast@kernel.org,
+To: akpm@linux-foundation.org
+Cc: david@redhat.com,
 	ziy@nvidia.com,
-	yuzhao@google.com,
-	baolin.wang@linux.alibaba.com,
-	usamaarif642@gmail.com,
-	joel.granados@kernel.org,
-	richard.weiyang@gmail.com,
-	geert+renesas@glider.be,
-	tim.c.chen@linux.intel.com,
-	linux@treblig.org,
-	alexander.shishkin@linux.intel.com,
-	lillian@star-ark.net,
-	chenhuacai@kernel.org,
-	francesco@valla.it,
-	guoweikang.kernel@gmail.com,
-	link@vivo.com,
-	jpoimboe@kernel.org,
-	masahiroy@kernel.org,
-	brauner@kernel.org,
-	thomas.weissschuh@linutronix.de,
-	oleg@redhat.com,
-	mjguzik@gmail.com,
-	andrii@kernel.org,
-	wangfushuai@baidu.com,
-	linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org,
-	linux-i2c@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-modules@vger.kernel.org,
-	rcu@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Subject: [PATCH v17 43/47] rcu/update: fix same dept key collision between various types of RCU
-Date: Thu,  2 Oct 2025 17:12:43 +0900
-Message-Id: <20251002081247.51255-44-byungchul@sk.com>
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	clameter@sgi.com,
+	kravetz@us.ibm.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	max.byungchul.park@gmail.com,
+	kernel_team@skhynix.com,
+	harry.yoo@oracle.com,
+	gwan-gyeong.mun@intel.com,
+	yeoreum.yun@arm.com,
+	syzkaller@googlegroups.com,
+	ysk@kzalloc.com
+Subject: [RFC] mm/migrate: make sure folio_unlock() before folio_wait_writeback()
+Date: Thu,  2 Oct 2025 17:16:12 +0900
+Message-Id: <20251002081612.53281-1-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20251002081247.51255-1-byungchul@sk.com>
-References: <20251002081247.51255-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSUUxTZxTH/e69372Xhpq7SvCqy1yauGU4EAwz58EZNW7eRUxMfGJ7wEau
-	tqMUV4SJxliVIk62YU1poCqlOtJAwVpwo0rJ7GZdR4itdlgIBYpJAWthQYQoIBbUt19+53/+
-	5+WwpKwPr2VVmqOiVqNQy2kJJYknN6SvyR5UZk6HpVDprMUw9KISweycmQS9a5GCBYOXgZqA
-	gQR7+2kCnjte0xD7awqBafw0BZONVQjqomYGxu/thvjQHQyPZ54hWKgpgHprGw1zPQ9IMBn9
-	CBoiYRLavYMI3LYzNARfTNLgM16gIR64TMCEgwbLGTcG1/BtBgKxeQIGagwEDDVGKeiuthKJ
-	ezTU3FwNZtMYAcaWOwS8bGxiwNzzCMOIrY6B+UgWLFqKwNs8ykD4VyMFrfEHGHyDvRhiUQMN
-	Q/crMPyhG2bA2XcPwXQwQoC9KkqC80ki4u7fCA0V1ymovTpAQ6fbR4G3Y4SAKsctDIP2RQw6
-	8yyGG6MhArq9/1AQGQ5huDQRRdvzhVn9L5TQ1PY7IegfLtCC/aodCXOvDEjQVyfIPWOhhH+t
-	vOCqCzNCeVc/I1icJUL533EstNnShGud44TQH/tScDadp/elfyvZmi+qVaWidtO2AxJlve8h
-	PmLfduxZ8wzWodbMn1ASy3PZ/OPei9R7drVM4yWmuU/5UOglucQp3Md828/RZU9y3R/yvYHP
-	l3gVl8f7rZ5lT3Eb+P7APLHEUm4L/9Ty27vO9Xyz48/lnqSEfxTpXvYy7gteP1meyEsSGVMS
-	PxK1obcLa/i7thBVjaQWtKIJyVSa0kKFSp2doSzTqI5lHCwqdKLEwzWenP+uA03593sQxyJ5
-	stS/IayUYUVpcVmhB/EsKU+RHrANKGXSfEXZcVFblKctUYvFHrSOpeSrpZtnfsyXcYcVR8UC
-	UTwiat9PCTZprQ5t5ktGW7/22YzUOl+qbjZ0duxmbdTA7U2NuU+S9buk7p7K4FPb2PddpoN7
-	bicbc/77YIf6q+ATdd5G7jr/w4nxT1ZNZq0sQGntOxV9UxdzTNn6XLbjhIH97HCL9cK5nLuR
-	ief/u+yHKnJdAzc8wVvV6fUfaQ7R/lNXOr/pmupydMipYqUiK43UFiveAERLqqxsAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0hTcRTH+93nHE0uS+hiRTGyIMoMLA49xJ5eetEfQRBFjry55ZyxmakV
-	uHRkbxvMlbNcC5duy9fMslroJMVMcpkWtaUrUyttUJtizmwa/XP4nM/3cDh/HAEubiCjBXJl
-	Jq9SShUSSkgI927IX8XGf5TFWR8sg15NEwHBQCEBpdV2CgrrbpLQVWVD0BcsRDA+acRB2zhN
-	wJSulYbAxAcapp2tCIrdOhzs9RoMftX8oeB7y08Eet8ABYavGgL8lssISgaNNHx9ngSjfU9I
-	mPYOYfB2bASBZeAPBgNN5xFMFadBmdlBwWTnKxwM+i4Ed3xeHIZrwmF960cEzopzFHwpeoBD
-	90AkvAn6KWjXX6Jg1F2KwY8aCkznnCTcMuoQ5N+tpqD4Vh0Bjf2PaXB/D2HgKdZhYKvbA32W
-	QQI6isxY+L7wVO18MBrysXAZxkB//wkGExYrDS/vegiw5MWAsbObhE8VJTSEfGtg2pQBrbYh
-	GrzX9ARUjb4iE/WIG9deJTirowHjtK+nKM5+2464yd86xAXK83FOWxRuW0b8OFfgOMWVd4xQ
-	3O9gD8U5x0wE98LMctc7V3GNJV6aK3j2nt63/qBwYwqvkGfxqtUJyUJZWftr8oQ9IXvENkbm
-	oaq4iyhCwDLxbOP9ADnDFLOcffduAp/hKGYJ67gyOOtxpmMh2+teOcPzmCNsl9k16wkmhn3v
-	DmEzLGLWsd9M5cS/nYtZW03T7J6IsO/2dcx6MbOW1foLsCIkNKE5VhQlV2alS+WKtbHqNFmO
-	Up4dezQjvQ6Fv8lyNnT9EQp0J7kQI0CSuSJ3jFcmJqVZ6px0F2IFuCRKlFzhkYlFKdKcXF6V
-	cUR1UsGrXWiBgJDMF+08wCeLmVRpJp/G8yd41f8UE0RE5yGrYLCUnWhwZqbAi56ntfQV3z7F
-	ouOsvydyyxlNm8FTldu14+FWRXN7f61v26bzvugy/bJ5y1v2+05fDG4ZbtvdckG5dFeqY3vz
-	9rbcA5XpMZ8UkVxStt6TUjlEJ/Zeq7zBZ6sNiXtdhzYf7tccGjcnJKTJjmlC9T/u7aj4TIJT
-	Qqhl0jUrcJVa+hfREQpeSQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrFLMWRmVeSWpSXmKPExsXC9ZZnke41k3sZBu/+GVjMWb+GzWLXjRCL
+	9Y3r2C2+rv/FbPHz7nF2i4uv/zBZ3F/2jMXi+NZ57BbX1x5lsri8aw6bxb01/1ktvvVJW1yY
+	2MtqceRNN7PF3C+GFqvXZFh8Wb2KzWL20XvsDkIea+atYfTYOesuu8eeiSfZPLrbLrN7LN7z
+	kslj06dJ7B4Lf79g9jgx4zeLx86Hlh69ze/YPD4+vcXi8X7fVTaPu9eBys5d62P2+LxJLoA/
+	issmJTUnsyy1SN8ugSvjxdW5zAXTvCsu96s2ME6y7GLk5JAQMJF4f3MOcxcjB5jde84LJMwm
+	oC5x48ZPZhBbREBWYurf8yxdjFwczAKXmSUWbr7DCpIQFgiUWPJ/KhNIL4uAqsTaReUgYV4B
+	U4muNVfZIMbLS6zecIAZpFdC4DubxILNW6ASkhIHV9xgmcDIvYCRYRWjUGZeWW5iZo6JXkZl
+	XmaFXnJ+7iZGYIgvq/0TvYPx04XgQ4wCHIxKPLwXVO9mCLEmlhVX5h5ilOBgVhLhTVhxJ0OI
+	NyWxsiq1KD++qDQntfgQozQHi5I4r9G38hQhgfTEktTs1NSC1CKYLBMHp1QDo3DpnjcpD5sS
+	NP3b2b22bFgv8bRU/u0pLhmLqE9nPz2bUX+k+kD0S8MfPSc+XTAynbL0824Z1sfdVySk5x5I
+	0yq6/06kR3DlBZOL1d0lzveONambVi3pOr0h7qsrw5kJllOthbRrlU77SUrU6S2e01O+ZHq6
+	5aTFa3MYGJfbp8kkn0hZZ+8fosRSnJFoqMVcVJwIAMhUt3ptAgAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAwFZAqb9CAMSxgMaCGludGVybmFsIgYKBApOO4Mt1jTeaDDn7B84nK+sBji6
+	2FQ4r4GuBzj1r/oDOPndxwc40ev8AjjfpuYEOMe1ngc4w53JBTjXrcUCONO6nAY43qz/BTj2
+	jhs40JGNBTjC1ucFOMTsiwM4nfQxOKusaDj0q6oGOJvF3gdAFEisnqwBSLma3QdIvJHJBkiL
+	htMHSKO86QJIsvKSB0ih++gDSMiY+wRIueE5SI2D7gZI8eXaBEjvvtUGSN3X6QJI9ttISKPo
+	8AJIztaOA1ARWgo8ZGVsaXZlci8+YApo6NWdA3CWS3jTjyWAAZI5igEICBgQNBiNzkqKAQkI
+	BhAnGNjY+QOKAQkIFBAdGJX9zwSKAQoIAxDTAxihs9wFigEJCBMQURik/5UCigEICAQQJRit
+	oneKAQkIDRA1GIqs1QaKAQkIGBAfGKuwwAOQAQigAQCqARRpbnZtYWlsNS5za2h5bml4LmNv
+	bbIBBgoEpn38kbgB9NNHwgEQCAEiDA3RJd1oEgVhdnN5bcIBGAgDIhQNYKjcaBINZGF5emVy
+	b19ydWxlc8IBGwgEIhcNSldlYBIQZ2F0ZWtlZXBlcl9ydWxlc8IBAggJGoABmrQ6/dQGRW5m
+	7tfqdxjvZxxMYkIS4he2oulSk9TUDjcbZqzBICj1qH6tY8JN3Yb3xgeIyoTRzzKOqW7NQmvn
+	0YTBD2ur2CObjCx279mhMhGJVNYWjjEV8KduNgcNLh4zyRmPlBhuuyVvWhLofH43LqOK/uHz
+	/4B+0aH5S7Gw4bwiBHNoYTEqA3JzYRffiDpZAgAA
 X-CFilter-Loop: Reflected
-X-Stat-Signature: r9htfzsh7hz5a4hq7fjhj7snd5cjbipo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7CB65A000A
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1759392862-975013
-X-HE-Meta: U2FsdGVkX1/gM1T0Vncd9/EXRc4U+QOI+8dIubgj41So/HzPkd24uOTOtSB605AjxT/xbfKo2WvyhtYs3r9HAkGLBBRCB7nQ91RI8yeqhVYXESsvUw6o5ZKxZjiExCzzWaoLCjFLD8MBmdvslrtjQcC/C+ZYhHdiiyvOvn0KIShQhUep99Zt2+OpTOsHKXl/pbBK+67j0vBhWNDN1M8QQK3qCTPlSK2WoS4wS6upAiF5UMa+nH/2rWGuGOdCX/GoGRnF4S/vQEkluwzqPkisGMlUA0p7PT0z/IHVz4ldT6iAfCHyBnYEyiP0C9CcHMWVV9AlQ8trirIgT3tRcHh0uVy7HAYKMILUanfgolEPVFZYGXHIeIBuwWBUEIlaINyy9maQUtBQAMgqR+7cf/U70tVkbmBZjIYDp6dvHyccq343zJQsBfoUahfnasByE1ZI7uLhrpmFj+CuDoNcGHic8iPdfMwSRZTjDADd/0SH7br7+inDxE83KxN2x2qWoyDamxM2s5pQClHvInfujbQdQqYNy86uU/39KFBK/04H+5wRWGgypvob3XIh8yNMZV4Pz5PdzB7LMX07Qpc7UneS2cjlFMnMNTgfmKJNUuLpf0oMmUXH/RCz4aBO9zSnTUOUHPqapeZ5Ozx+6SPcJ0FOUGC6vACZ37UyQ6S0BEFknAQW4xxc5KKYIsai9fJpZbiS2rQFN6cHyBIPyQ/LMlkH0W8w2VxUgep+CUvbeZgP1PWX3FWiUj8AuqLwk2zUUrLYYYjSWMYGnowb0eOv5GgqrESKuW3/9jvuAlkj5Z94GF7x7QXztH3bYWqNOL7m7+aTJh8q0b4GEVJFJk5xGwhvMiiOQ3h0vXPKKkSIYeeBVmDAGdM841a3bgqTo+SzXYn4yQKcwJKIIO9/8hc0Gfr05WV4RD3/mtx9AYo4y3wTrBB1Bzf9SPlQBLOz5vFgULNeWlLDdFJnhSjBTjDagx3
- yBntkEHz
- gsoMsKSZjqoyuZW0Unp94dZRziWqolMI3BjEGkezP1BbNOwV6HE0yk1g7aMqIW1QJSYPJLIz56xaongMMmNOTPimVpax0kIbWPLW+6qFbQlp8b7eKpflLgBtMS1oMMPtqb1axvotzzf+PhKw=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 00DBB10000A
+X-Stat-Signature: qpee6jzs9j9icqufwz1mn99giq15e6ob
+X-HE-Tag: 1759392983-945576
+X-HE-Meta: U2FsdGVkX1+nHAlLvw1eIwY3eODYbs35pWbHQldGl8MRE01txu0CiMWUenORdxsJl44wXaPCWAdOVr3exw3eg+2CNzoHAbNDVNrSbZc/Vg4LiIxf3wat5bMi5gjvW7NmnjCc0mfDJVlTU7/g+RtXZbE9hiTXO4tagKeIO5npTx7z7cR52zHu/QfmkDaO1XTwfB8VVGBuRYgNLFDug3iHepKYD4mhjSg+O8H/uZtdgOSGB3kgM8JkKcm0ZPk4m6JxuH3gWoah7eFf/JfkqSJIgeCLddObCzfPM0k8HujLIRQjALOS6j8HJ6n4+ZniRTcWfFUd1AH4FKlMmiWqHnsbWgQ92TzgcYMyGZQHu8q0a1wefg5t7vfvCHFzbihtRjYn75lGTKIO2zPsIttT3k49jBQbHXULyD7kgToCwSqby/Nr/1hU/bd6aAnCKD1LXi/9UWFRTVnTDV5c6QQ2nHTLtzva2FFKGRout7mOSqlGJYQbIKN0i3tGKGIpTpPLkYDYxQdwYN8A1iDAUHuhNunlBm9X+124RVjOLQmftG8JzIS+KiWHXWJNR0k9zXHH1jZfqWAnD8Ag6KJlqwSpokhDodLK5aC2KtLcOSwubx40KzgfI+M6Hx7Tl/vJ4mYZDSZ0JYwXimpLyvOX0HtX4vEEP9/H1Hg2yKkXbwD/kYTyfysfFFlmNtQPGkBQPjFfp54szGgGpVd15UgiQb/4mF/AzFLa+oNmuRcebLNzwtYcZnfyOKLYcs84jn8gozqWCN8Ov2KAZM/jZsIZEZik8dYyx+NoyGPaFOsL2Su+cT3gDB8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -251,47 +110,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The current implementation shares the same dept key for multiple
-synchronization points, which can lead to false positive reports in
-dependency tracking and potential confusion in debugging.  For example,
-both normal RCU and tasks trace RCU synchronization points use the same
-dept key.  Specifically:
-
-   1. synchronize_rcu() uses a dept key embedded in __wait_rcu_gp():
-
-      synchronize_rcu()
-         synchronize_rcu_normal()
-            _wait_rcu_gp()
-               __wait_rcu_gp() <- the key as static variable
-
-   2. synchronize_rcu_tasks_trace() uses the dept key, too:
-
-      synchronize_rcu_tasks_trace()
-         synchronize_rcu_tasks_generic()
-            _wait_rcu_gp()
-               __wait_rcu_gp() <- the key as static variable
-
-Since the both rely on the same dept key, dept may report false positive
-circular dependency.  To resolve this, separate dept keys and maps
-should be assigned to each struct rcu_synchronize.
+DEPT(Dependency Tracker) reported a deadlock:
 
    ===================================================
    DEPT: Circular dependency has been detected.
-   6.15.0-rc6-00042-ged94bafc6405 #2 Not tainted
+   6.15.11-00046-g2c223fa7bd9a-dirty #13 Not tainted
    ---------------------------------------------------
    summary
    ---------------------------------------------------
    *** DEADLOCK ***
 
    context A
-      [S] lock(cpu_hotplug_lock:0)
-      [W] __wait_rcu_gp(<sched>:0)
-      [E] unlock(cpu_hotplug_lock:0)
+      [S] (unknown)(pg_locked_map:0)
+      [W] dept_page_wait_on_bit(pg_writeback_map:0)
+      [E] dept_page_clear_bit(pg_locked_map:0)
 
    context B
-      [S] (unknown)(<sched>:0)
-      [W] lock(cpu_hotplug_lock:0)
-      [E] try_to_wake_up(<sched>:0)
+      [S] (unknown)(pg_writeback_map:0)
+      [W] dept_page_wait_on_bit(pg_locked_map:0)
+      [E] dept_page_clear_bit(pg_writeback_map:0)
 
    [S]: start of the event context
    [W]: the wait blocked
@@ -300,179 +137,263 @@ should be assigned to each struct rcu_synchronize.
    context A's detail
    ---------------------------------------------------
    context A
-      [S] lock(cpu_hotplug_lock:0)
-      [W] __wait_rcu_gp(<sched>:0)
-      [E] unlock(cpu_hotplug_lock:0)
+      [S] (unknown)(pg_locked_map:0)
+      [W] dept_page_wait_on_bit(pg_writeback_map:0)
+      [E] dept_page_clear_bit(pg_locked_map:0)
 
-   [S] lock(cpu_hotplug_lock:0):
-   [<ffff8000802ce964>] cpus_read_lock+0x14/0x20
-   stacktrace:
-         percpu_down_read.constprop.0+0x88/0x2ec
-         cpus_read_lock+0x14/0x20
-         cgroup_procs_write_start+0x164/0x634
-         __cgroup_procs_write+0xdc/0x4d0
-         cgroup_procs_write+0x34/0x74
-         cgroup_file_write+0x25c/0x670
-         kernfs_fop_write_iter+0x2ec/0x498
-         vfs_write+0x574/0xc30
-         ksys_write+0x124/0x244
-         __arm64_sys_write+0x70/0xa4
-         invoke_syscall+0x88/0x2e0
-         el0_svc_common.constprop.0+0xe8/0x2e0
-         do_el0_svc+0x44/0x60
-         el0_svc+0x50/0x188
-         el0t_64_sync_handler+0x10c/0x140
-         el0t_64_sync+0x198/0x19c
-
-   [W] __wait_rcu_gp(<sched>:0):
-   [<ffff8000804ce88c>] __wait_rcu_gp+0x324/0x498
-   stacktrace:
-         schedule+0xcc/0x348
-         schedule_timeout+0x1a4/0x268
-         __wait_for_common+0x1c4/0x3f0
-         __wait_for_completion_state+0x20/0x38
-         __wait_rcu_gp+0x35c/0x498
-         synchronize_rcu_normal+0x200/0x218
-         synchronize_rcu+0x234/0x2a0
-         rcu_sync_enter+0x11c/0x300
-         percpu_down_write+0xb4/0x3e0
-         cgroup_procs_write_start+0x174/0x634
-         __cgroup_procs_write+0xdc/0x4d0
-         cgroup_procs_write+0x34/0x74
-         cgroup_file_write+0x25c/0x670
-         kernfs_fop_write_iter+0x2ec/0x498
-         vfs_write+0x574/0xc30
-         ksys_write+0x124/0x244
-
-   [E] unlock(cpu_hotplug_lock:0):
+   [S] (unknown)(pg_locked_map:0):
    (N/A)
+
+   [W] dept_page_wait_on_bit(pg_writeback_map:0):
+   [<ffff800080589c94>] folio_wait_bit+0x2c/0x38
+   stacktrace:
+         folio_wait_bit_common+0x824/0x8b8
+         folio_wait_bit+0x2c/0x38
+         folio_wait_writeback+0x5c/0xa4
+         migrate_pages_batch+0x5e4/0x1788
+         migrate_pages+0x15c4/0x1840
+         compact_zone+0x9c8/0x1d20
+         compact_node+0xd4/0x27c
+         sysctl_compaction_handler+0x104/0x194
+         proc_sys_call_handler+0x25c/0x3f8
+         proc_sys_write+0x20/0x2c
+         do_iter_readv_writev+0x350/0x448
+         vfs_writev+0x1ac/0x44c
+         do_pwritev+0x100/0x15c
+         __arm64_sys_pwritev2+0x6c/0xcc
+         invoke_syscall.constprop.0+0x64/0x18c
+         el0_svc_common.constprop.0+0x80/0x198
+
+   [E] dept_page_clear_bit(pg_locked_map:0):
+   [<ffff800080700914>] migrate_folio_undo_src+0x1b4/0x200
+   stacktrace:
+         migrate_folio_undo_src+0x1b4/0x200
+         migrate_pages_batch+0x1578/0x1788
+         migrate_pages+0x15c4/0x1840
+         compact_zone+0x9c8/0x1d20
+         compact_node+0xd4/0x27c
+         sysctl_compaction_handler+0x104/0x194
+         proc_sys_call_handler+0x25c/0x3f8
+         proc_sys_write+0x20/0x2c
+         do_iter_readv_writev+0x350/0x448
+         vfs_writev+0x1ac/0x44c
+         do_pwritev+0x100/0x15c
+         __arm64_sys_pwritev2+0x6c/0xcc
+         invoke_syscall.constprop.0+0x64/0x18c
+         el0_svc_common.constprop.0+0x80/0x198
+         do_el0_svc+0x28/0x3c
+         el0_svc+0x50/0x220
    ---------------------------------------------------
    context B's detail
    ---------------------------------------------------
    context B
-      [S] (unknown)(<sched>:0)
-      [W] lock(cpu_hotplug_lock:0)
-      [E] try_to_wake_up(<sched>:0)
+      [S] (unknown)(pg_writeback_map:0)
+      [W] dept_page_wait_on_bit(pg_locked_map:0)
+      [E] dept_page_clear_bit(pg_writeback_map:0)
 
-   [S] (unknown)(<sched>:0):
+   [S] (unknown)(pg_writeback_map:0):
    (N/A)
 
-   [W] lock(cpu_hotplug_lock:0):
-   [<ffff8000802ce964>] cpus_read_lock+0x14/0x20
+   [W] dept_page_wait_on_bit(pg_locked_map:0):
+   [<ffff80008081e478>] bdev_getblk+0x58/0x120
    stacktrace:
-         percpu_down_read.constprop.0+0x6c/0x2ec
-         cpus_read_lock+0x14/0x20
-         check_all_holdout_tasks_trace+0x90/0xa30
-         rcu_tasks_wait_gp+0x47c/0x938
-         rcu_tasks_one_gp+0x75c/0xef8
-         rcu_tasks_kthread+0x180/0x1dc
-         kthread+0x3ac/0x74c
+         find_get_block_common+0x224/0xbc4
+         bdev_getblk+0x58/0x120
+         __ext4_get_inode_loc+0x194/0x98c
+         ext4_get_inode_loc+0x4c/0xcc
+         ext4_reserve_inode_write+0x74/0x158
+         __ext4_mark_inode_dirty+0xd4/0x4e0
+         __ext4_ext_dirty+0x118/0x164
+         ext4_ext_map_blocks+0x1578/0x2ca8
+         ext4_map_blocks+0x2a4/0xa60
+         ext4_convert_unwritten_extents+0x1b0/0x3c0
+         ext4_convert_unwritten_io_end_vec+0x90/0x1a0
+         ext4_end_io_end+0x58/0x194
+         ext4_end_io_rsv_work+0xc4/0x150
+         process_one_work+0x3b4/0xac0
+         worker_thread+0x2b0/0x53c
+         kthread+0x1a0/0x33c
+
+   [E] dept_page_clear_bit(pg_writeback_map:0):
+   [<ffff8000809dfc5c>] ext4_finish_bio+0x638/0x820
+   stacktrace:
+         folio_end_writeback+0x140/0x488
+         ext4_finish_bio+0x638/0x820
+         ext4_release_io_end+0x74/0x188
+         ext4_end_io_end+0xa0/0x194
+         ext4_end_io_rsv_work+0xc4/0x150
+         process_one_work+0x3b4/0xac0
+         worker_thread+0x2b0/0x53c
+         kthread+0x1a0/0x33c
          ret_from_fork+0x10/0x20
 
-   [E] try_to_wake_up(<sched>:0):
-   [<ffff8000804233b8>] complete+0xb8/0x1e8
-   stacktrace:
-         try_to_wake_up+0x374/0x1164
-         complete+0xb8/0x1e8
-         wakeme_after_rcu+0x14/0x20
-         rcu_tasks_invoke_cbs+0x218/0xaa8
-         rcu_tasks_one_gp+0x834/0xef8
-         rcu_tasks_kthread+0x180/0x1dc
-         kthread+0x3ac/0x74c
-         ret_from_fork+0x10/0x20
-   (wait to wake up)
-   stacktrace:
-         __schedule+0xf64/0x3614
-         schedule+0xcc/0x348
-         schedule_timeout+0x1a4/0x268
-         __wait_for_common+0x1c4/0x3f0
-         __wait_for_completion_state+0x20/0x38
-         __wait_rcu_gp+0x35c/0x498
-         synchronize_rcu_tasks_generic+0x14c/0x220
-         synchronize_rcu_tasks_trace+0x24/0x8c
-         rcu_init_tasks_generic+0x168/0x194
-         do_one_initcall+0x174/0xa00
-         kernel_init_freeable+0x744/0x7dc
-         kernel_init+0x78/0x220
-         ret_from_fork+0x10/0x20
+To simplify the scenario:
 
-Separating the dept key and map for each of struct rcu_synchronize,
-ensuring proper tracking for each execution context.
+   context X (wq worker)	context Y (process context)
 
-Signed-off-by: Yunseong Kim <ysk@kzalloc.com>
-[ Rewrote the changelog. ]
+				migrate_pages_batch()
+   ext4_end_io_end()		  ...
+     ...			  migrate_folio_unmap()
+     ext4_get_inode_loc()	    ...
+       ...			    folio_lock() // hold the folio lock
+       bdev_getblk()		    ...
+         ...			    folio_wait_writeback() // wait forever
+         __find_get_block_slow()
+           ...			    ...
+           folio_lock() // wait forever
+           folio_unlock()	  migrate_folio_undo_src()
+				    ...
+     ...			    folio_unlock() // never reachable
+     ext4_finish_bio()
+	...
+	folio_end_writeback() // never reachable
+
+context X is waiting for the folio lock to be released by context Y,
+while context Y is waiting for the writeback to end in context X.
+Ultimately, two contexts are waiting for the event that will never
+happen, say, deadlock.
+
+*Only one* of the following two conditions should be allowed, or we
+cannot avoid this kind of deadlock:
+
+   1. while holding a folio lock (and heading for folio_unlock()),
+      waiting for a writeback to end,
+   2. while heading for the writeback end, waiting for the folio lock to
+      be released,
+
+Since allowing 2 and avoiding 1 sound more sensible than the other,
+remove the first condition by making sure folio_unlock() before
+folio_wait_writeback() in migrate_folio_unmap().
+
+Fixes: 49d2e9cc45443 ("[PATCH] Swap Migration V5: migrate_pages() function")
+Reported-by: Yunseong Kim <ysk@kzalloc.com>
 Signed-off-by: Byungchul Park <byungchul@sk.com>
+Tested-by: Yunseong Kim <ysk@kzalloc.com>
 ---
- include/linux/rcupdate_wait.h | 13 ++++++++-----
- kernel/rcu/rcu.h              |  1 +
- kernel/rcu/update.c           |  5 +++--
- 3 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/rcupdate_wait.h b/include/linux/rcupdate_wait.h
-index 4c92d4291cce..ee598e70b4bc 100644
---- a/include/linux/rcupdate_wait.h
-+++ b/include/linux/rcupdate_wait.h
-@@ -19,17 +19,20 @@ struct rcu_synchronize {
+Hi,
+
+Thanks to Yunseong for reporting the issue, testing, and confirming if
+this patch can resolve the issue.  We used the latest version of DEPT
+to detect the issue:
+
+   https://lore.kernel.org/all/20251002081247.51255-1-byungchul@sk.com/
+
+I mentioned in the commit message above like:
+
+   *Only one* of the following two conditions should be allowed, or we
+   cannot avoid this kind of deadlock:
+   
+      1. while holding a folio lock (and heading for folio_unlock()),
+         waiting for a writeback to end,
+      2. while heading for the writeback end, waiting for the folio lock
+         to be released,
+
+Honestly, I'm not convinced which one we should choose between two, I
+chose 'allowing 2 and avoiding 1' to resolve this issue though.
+
+However, please let me know if I was wrong and we should go for
+'allowing 1 and avoiding 2'.  If so, I should try a different approach,
+for example, to fix by preventing folio_lock() or using folio_try_lock()
+while heading for writeback end in ext4_end_io_end() or something.
+
+To Yunseong,
+
+The link you shared for a system hang is:
+
+   https://gist.github.com/kzall0c/a6091bb2fd536865ca9aabfd017a1fc5
+
+I think an important stacktrace for this issue, this is, waiting for
+PG_writeback, was missed in the log.
+
+	Byungchul
+
+---
+ mm/migrate.c | 57 +++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 41 insertions(+), 16 deletions(-)
+
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 9e5ef39ce73a..60b0b054f27a 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1215,6 +1215,17 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
  
- 	/* This is for debugging. */
- 	struct rcu_gp_oldstate oldstate;
-+	struct dept_map dmap;
-+	struct dept_key dkey;
- };
- void wakeme_after_rcu(struct rcu_head *head);
+ 	dst->private = NULL;
  
- void __wait_rcu_gp(bool checktiny, unsigned int state, int n, call_rcu_func_t *crcu_array,
--		   struct rcu_synchronize *rs_array);
-+		   struct rcu_synchronize *rs_array, struct dept_key *dkey);
++retry_wait_writeback:
++	/*
++	 * Only in the case of a full synchronous migration is it
++	 * necessary to wait for PageWriteback.  In the async case, the
++	 * retry loop is too short and in the sync-light case, the
++	 * overhead of stalling is too much.  Plus, do not write-back if
++	 * it's in the middle of direct compaction
++	 */
++	if (folio_test_writeback(src) && mode == MIGRATE_SYNC)
++		folio_wait_writeback(src);
++
+ 	if (!folio_trylock(src)) {
+ 		if (mode == MIGRATE_ASYNC)
+ 			goto out;
+@@ -1245,27 +1256,41 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
  
- #define _wait_rcu_gp(checktiny, state, ...) \
--do {												\
--	call_rcu_func_t __crcu_array[] = { __VA_ARGS__ };					\
--	struct rcu_synchronize __rs_array[ARRAY_SIZE(__crcu_array)];				\
--	__wait_rcu_gp(checktiny, state, ARRAY_SIZE(__crcu_array), __crcu_array, __rs_array);	\
-+do {													\
-+	call_rcu_func_t __crcu_array[] = { __VA_ARGS__ };						\
-+	static struct dept_key __key;									\
-+	struct rcu_synchronize __rs_array[ARRAY_SIZE(__crcu_array)];					\
-+	__wait_rcu_gp(checktiny, state, ARRAY_SIZE(__crcu_array), __crcu_array, __rs_array, &__key);	\
- } while (0)
- 
- #define wait_rcu_gp(...) _wait_rcu_gp(false, TASK_UNINTERRUPTIBLE, __VA_ARGS__)
-diff --git a/kernel/rcu/rcu.h b/kernel/rcu/rcu.h
-index 9cf01832a6c3..c0d8ea139596 100644
---- a/kernel/rcu/rcu.h
-+++ b/kernel/rcu/rcu.h
-@@ -12,6 +12,7 @@
- 
- #include <linux/slab.h>
- #include <trace/events/rcu.h>
-+#include <linux/dept_sdt.h>
- 
- /*
-  * Grace-period counter management.
-diff --git a/kernel/rcu/update.c b/kernel/rcu/update.c
-index c912b594ba98..82292337d5b0 100644
---- a/kernel/rcu/update.c
-+++ b/kernel/rcu/update.c
-@@ -409,7 +409,7 @@ void wakeme_after_rcu(struct rcu_head *head)
- EXPORT_SYMBOL_GPL(wakeme_after_rcu);
- 
- void __wait_rcu_gp(bool checktiny, unsigned int state, int n, call_rcu_func_t *crcu_array,
--		   struct rcu_synchronize *rs_array)
-+		   struct rcu_synchronize *rs_array, struct dept_key *dkey)
- {
- 	int i;
- 	int j;
-@@ -426,7 +426,8 @@ void __wait_rcu_gp(bool checktiny, unsigned int state, int n, call_rcu_func_t *c
- 				break;
- 		if (j == i) {
- 			init_rcu_head_on_stack(&rs_array[i].head);
--			init_completion(&rs_array[i].completion);
-+			sdt_map_init_key(&rs_array[i].dmap, dkey);
-+			init_completion_dmap(&rs_array[i].completion, &rs_array[i].dmap);
- 			(crcu_array[i])(&rs_array[i].head, wakeme_after_rcu);
- 		}
+ 		folio_lock(src);
  	}
+-	locked = true;
+-	if (folio_test_mlocked(src))
+-		old_page_state |= PAGE_WAS_MLOCKED;
+ 
+ 	if (folio_test_writeback(src)) {
+-		/*
+-		 * Only in the case of a full synchronous migration is it
+-		 * necessary to wait for PageWriteback. In the async case,
+-		 * the retry loop is too short and in the sync-light case,
+-		 * the overhead of stalling is too much
+-		 */
+-		switch (mode) {
+-		case MIGRATE_SYNC:
+-			break;
+-		default:
+-			rc = -EBUSY;
+-			goto out;
++		if (mode == MIGRATE_SYNC) {
++			/*
++			 * folio_unlock() is required before trying
++			 * folio_wait_writeback().  Or it leads a
++			 * deadlock like:
++			 *
++			 *   context x		context y
++			 *   in XXX_io_end()	in migrate_folio_unmap()
++			 *
++			 *   ...		...
++			 *   bdev_getblk();	folio_lock();
++			 *
++			 *     // wait forever	// wait forever
++			 *     folio_lock();	folio_wait_writeback();
++			 *
++			 *     ...		...
++			 *     folio_unlock();
++			 *   ...		// never reachable
++			 *			folio_unlock();
++			 *   // never reachable
++			 *   folio_end_writeback();
++			 */
++			folio_unlock(src);
++			goto retry_wait_writeback;
+ 		}
+-		folio_wait_writeback(src);
++		rc = -EBUSY;
++		goto out;
+ 	}
+ 
++	locked = true;
++	if (folio_test_mlocked(src))
++		old_page_state |= PAGE_WAS_MLOCKED;
++
+ 	/*
+ 	 * By try_to_migrate(), src->mapcount goes down to 0 here. In this case,
+ 	 * we cannot notice that anon_vma is freed while we migrate a page.
+
+base-commit: e5f0a698b34ed76002dc5cff3804a61c80233a7a
 -- 
 2.17.1
 
