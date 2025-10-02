@@ -4,89 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A6B4CCA470
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 02:32:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34265CAC5BB
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 02:50:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B066E8E0003; Wed,  1 Oct 2025 22:32:21 -0400 (EDT)
+	id 4E9518E0003; Wed,  1 Oct 2025 22:50:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB69F8E0002; Wed,  1 Oct 2025 22:32:21 -0400 (EDT)
+	id 49A8E8E0002; Wed,  1 Oct 2025 22:50:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F35E8E0003; Wed,  1 Oct 2025 22:32:21 -0400 (EDT)
+	id 3D6D68E0003; Wed,  1 Oct 2025 22:50:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E00E8E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 22:32:21 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2C3FE13A940
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 02:32:21 +0000 (UTC)
-X-FDA: 83951600082.22.C17793C
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 624578000C
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 02:32:19 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CbbQ1EZo;
-	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2AEB18E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 22:50:07 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D18611166F3
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 02:50:06 +0000 (UTC)
+X-FDA: 83951644812.27.F349982
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 226FA180006
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 02:50:04 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of 3XOjdaAkbAPElrsdTeeXkTiibW.ZhhZeXnlXkVhgmXgm.Vhf@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.71 as permitted sender) smtp.mailfrom=3XOjdaAkbAPElrsdTeeXkTiibW.ZhhZeXnlXkVhgmXgm.Vhf@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759372339;
+	s=arc-20220608; t=1759373405;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0BIRTtLPf+QDVfO6C0pMRdsH/qN18OkH5csEBfkbiN8=;
-	b=K5EKTy5VfXf2sxJvpftN42ZjMFGegvLB9WX4YhDrWytXieyHI7mzD64EsQoRMj9/iBJL8n
-	oYAXuvAW6WXFhJz5mmtavoCMO/mvYoSD54itSSJG4/p047bm+hiPVhzJyAJgS2soLDrRdT
-	+xsYv6V2V0G0WScGOI6KDzDcRF1R458=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759372339; a=rsa-sha256;
-	cv=none;
-	b=Qxoiurf2zQQIxYXiQItiPNOdbTcaqFDnEI0xZ7Xmj6n2BDBKio5sIGNpevZPDCFsMCMkz5
-	cg9u+QV32nkxffbO1kboiaX625xJnSCuOOgkO8HSoDammsEgPPwWDRGSBE20yTfLlPTzi5
-	jJetY9Bw/vx66IDUVYpmynMjuT5V+zU=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=IXkCYyVq+Ok8Rfz7LkQRm5taj3jhnYdzLypCVreUpOQ=;
+	b=XwC47I/o/SDVHqf/l+LpGv4RhtPukYxprq/mtm4AHmlJK2o9UaQNmd49O3dwt1pNUqtAT3
+	g22EN4yd4RkFCy/JQ3hkqHlbjk3ovdRMcvcymKkUPfJfSacBGIWl3o0RolzDVEv32m25LU
+	s8/DSZ3jksmabrImIUgA9faZzZHb97w=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CbbQ1EZo;
-	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <fa3f9e82-c6c8-43f2-803f-b8bb0fe56f37@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759372337;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0BIRTtLPf+QDVfO6C0pMRdsH/qN18OkH5csEBfkbiN8=;
-	b=CbbQ1EZoL/G2TucCvc8KETWSTYQyFgE5iafViFJfAYCzTyATKovd/hMHVu2UAuXuBaDCRr
-	e4sJoy7tfLV9CcMG/lYjnCLFhqOC/L10/3E3qUcVx4tlOTsRrpnmeDMf7XplYjHKakdTmd
-	uyzlHETjN+ck6aSgEOXajL23OYIpJio=
-Date: Thu, 2 Oct 2025 10:31:53 +0800
+	imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of 3XOjdaAkbAPElrsdTeeXkTiibW.ZhhZeXnlXkVhgmXgm.Vhf@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.71 as permitted sender) smtp.mailfrom=3XOjdaAkbAPElrsdTeeXkTiibW.ZhhZeXnlXkVhgmXgm.Vhf@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759373405; a=rsa-sha256;
+	cv=none;
+	b=CV9LWzCZMuDgXQJPZebep+KAXAyWgdDP0cjSEAgd+mHJ+F3sGpCo5P8xtGuQXW8XrCu+P/
+	k/5Y3G5EKckPkvFVySYUj9Ap9zjBZxKczXelEHv6Z9OowuXCa+hRWtCdt+R2oabiA3QevD
+	jyLFsIRGS7kLX2aAmWGnVFG/saGXrMc=
+Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-886e347d2afso65429639f.3
+        for <linux-mm@kvack.org>; Wed, 01 Oct 2025 19:50:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759373404; x=1759978204;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IXkCYyVq+Ok8Rfz7LkQRm5taj3jhnYdzLypCVreUpOQ=;
+        b=MjlLoYGfG/nMZ0FN1q4X7R4IGtTUCk1TMeKX4R6rR6uJ6xV01vbWXzIj3n7/K2PGxc
+         ZMP7bCLQn+T/sWPfdrPIDvBJ2PXTv511ZGhnLC16eS+qlRjjZRfY1+wQijOLLc/lb8OX
+         Jt7dGFRMcGVNV/jf/q+dSm7tN39tqDzGrqKmLgO9t+/N71IYqffyU3bJ9yHrioe6RR9M
+         Yd8cedcuvFUmRt60dWAX8H7hnQXXsHdcdMN/I0Ph3oQlis9kRxXaUC34EKX28SMELHuW
+         2OWR7te9fh5Z1H/iVlUFAyE2ZBrxUgBNXs6PpH1knQ4q+KZjoArBhUH8n8/egdymO6Q+
+         8fJA==
+X-Forwarded-Encrypted: i=1; AJvYcCVygp7HZJRf2IIM8mDrPlyQ0k0TlFNUY+Vf+6LDcH+RdRaBUoQsQ2m4v4ygldhtU1xIdGHNc28t3g==@kvack.org
+X-Gm-Message-State: AOJu0Yw8FWYm7wsHLPqB3pNFHxaVjS3+Gavrp7vHm4fePvTK9ttaTfYa
+	rhDsDeDVAFYGrEcxWjXIpzgUJdZBdeP6m4qzWmDqkpSWyCJRzdM0eQxXvgf4G1axpxTLcpF801p
+	f3E+UxQ2iHxreGsNsSeEzcEIwoI6C2fYI9E0KrJ0qLNuuNkAro1bZ86Ulq7k=
+X-Google-Smtp-Source: AGHT+IGr+AJiP1ZEZ27TFDXMlUXIf41qC4roBHiJek7Cv7nZRHTTs9a8+sccW0Tp7nADTyHqjW7I5EQfOoNN575UDOJAH5EEpW6x
 MIME-Version: 1.0
-Subject: Re: [Patch v2] mm/huge_memory: add pmd folio to ds_queue in
- do_huge_zero_wp_pmd()
-Content-Language: en-US
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
- ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
- npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, wangkefeng.wang@huawei.com, linux-mm@kvack.org,
- stable@vger.kernel.org
-References: <20251002013825.20448-1-richard.weiyang@gmail.com>
- <20251002014604.d2ryohvtrdfn7mvf@master>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20251002014604.d2ryohvtrdfn7mvf@master>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 624578000C
-X-Stat-Signature: 46rdzo1rrug7e4inh6551i9f4gq3w6i6
+X-Received: by 2002:a05:6602:2c82:b0:938:9f22:ed34 with SMTP id
+ ca18e2360f4ac-9389f22f4c9mr566606539f.16.1759373404188; Wed, 01 Oct 2025
+ 19:50:04 -0700 (PDT)
+Date: Wed, 01 Oct 2025 19:50:04 -0700
+In-Reply-To: <A4321695-9F12-4C7C-ACC9-72FD84B6DB2C@nvidia.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68dde85c.a00a0220.102ee.0073.GAE@google.com>
+Subject: Re: [syzbot] [mm?] WARNING in memory_failure
+From: syzbot <syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, david@redhat.com, jane.chu@oracle.com, 
+	kernel@pankajraghav.com, linmiaohe@huawei.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, mcgrof@kernel.org, nao.horiguchi@gmail.com, 
+	syzkaller-bugs@googlegroups.com, ziy@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 226FA180006
+X-Rspamd-Server: rspam05
+X-Stat-Signature: yokpfagj4auukiy5q6rds4wh7t466nhe
 X-Rspam-User: 
-X-HE-Tag: 1759372339-946674
-X-HE-Meta: U2FsdGVkX1//zRfRSGOB7GnFLznWqi7FtmWZFFXpwImKsXugLGON8XM4swc4+HxJiRucVzSdrmL81IVZkhruzIalne78Iu5NwGNFOzAyoP/4U8SH8UsZHos8jDUUvwpKxIihp9GfY6LVOV33iddAZ4/3TaoWB9t9Q53QY6unwKx+yGVQcceMy72Jr3VX7nesys4E3OKOkGH27Q/BU6lYIo957v8qKTZcl+pb9cJjz8wgJFbZSwiiLEhDNKqOrisnBwQwbXMNDje++QEO2PhiPFFp24wTY0aOzHknsT7FRSvSr/Edvjx1HOJWNy70kqOdV9ISOzBrXMyzGvlf7BRWteXvV2pAXoWk8QsSxOOMXxjFo8KvYAb3NuqLQXYYJFNU5WgsrEi3qNElAi1cE00zdJf64nbTwm2c6TEBJ6iogwyLvJx5gsRjHSWZlhAXBjYkIa2R9NoHYxcHVasZrf+koiZRaLFShKbW8F8cYB04/danQBdustpU7A9h/FQUmMAONatWMCjLBh414Qw4iyhERNOtJGCk1f6bxuffL+kTBSwmzBCdU+kyM2IooNHrXZBmUgs6c4Sez8mKf14mQneoYnm9QgJWK6yFUAk/6JzY/DQo9c/6PzTlgAs1dz39F1t8XOAYyk4JH1g8+9bJwVlGEOskvHgiy3XseVOGGlurpvnh0zlGBzDoQ4Qr9TBNTqkSiiqdZLPF6njGjvSQgkEYnzbgJKq5X7vrn3gQ6LUDULFIGHnLyj8HjbbetF0Xfrcb3nxfJB1OUT2a9MgIwlBivoj5uJ+/dpQTh/2DIIlx7jnd051p7nSeVj2XFSpgnTrovY1QfygQdvwjC/X/aN3oeeEL54MADEQMWh2KWzEr20wCHniweU96uqNnQD88ADyPw15fUg5a2Kow5A7cWhCxI7LoW36eV3G+R8dYrA3m9KD12RGoyr3y6nXLvLVXr2kqCub+nYR+RrK10L/WfG4
- d6m8B33m
- pxY/AZlnhdQTHgbipC+nm2fgcarCpDafV3e6jmXZDeHmCqWgWLSwt8U3C87m71dc8ecfdiojQQWw4ytCnSKf4Q0M6htG2GcX7XEGjkt+AP078DtcvIqhOQRpxregIExXv6qoazOBpZzNqdzkr1MhIN0X6RrgxJZraQCd1YiV147fpQoE6zq5Gd18IGWh1cZ8BeXFUfLuiNfiA+pieUbTl9q1gHOlHOl3ViLjh6LRlm/Wj8DRVOqLwuOGNHamobmjAr4bO8jeqqnd7F39YNP0cVe42McAKXDtsSt7OesOeVEfxt5ELHEZnOhVk63wuUjkWdyPuGPhe61a/tQBUiI+BHatnk4x7JC1Kaj6mktJ177X5whd8fUKuehf7ZAf7QN5cCAVg1gGXYUel3RP0KjftVvx8ti0chwuA7RwreJ+E6JNBy1ZBpPYuWuEbTuj+dKpsMxNWBZe+sDHNm3jZD0XvaMs5TsBsBqodvDjRYFNM+fnsRd4=
+X-HE-Tag: 1759373404-19087
+X-HE-Meta: U2FsdGVkX19GpE8+tnMYabKKTgG7T/Feyc/Itcv1xohHl9MaPqDea6L9EumDOgMoFWNZ+jBC1HYRoN4CqyTQzGUHja6uVx4Cwm/ZwRKl75/tvGS5S0G4OSfZ4yypyWjZLN+V9oM68C47X2508O2PVEWrX9JD/UFUnMvfVTofAd7ApJl+bhYi/4RGrOXVtX5D10YEgImvOptVd5CP4Yw2El5QPi+BXK/WGWxSaMj7woy61rAPC9kvEDI+jFiWuqdZRGkUcdAM6lY+49HnQQQeHUQ1V5qAJwG3EJyRJGQoOZ5IqxeLcxRn7bmKEq30n2xByRLJy2fnfNBO1/HtTcnIfFiRr58/dLJ62NKmdgBI4FLUOFJsvNphBB9sxZQyJJKP9REIQYLI8D6L5SsryPYXKWXEifC36eS3SxTn2T5mpmflccgeeuDU5z6FqznP24JyAjLsLJrfODDw4iAiZTQJQepME9MPsfBID5z3E/4uyswaXS6z8CT2tR1DgyhcUaeVg1PERp8QFCtGtlb2aGYY4AuTU962jf05yslXFC5AUtON7AjARj0l8g3t6A07fGw0bFY4ZFqCphqCEZ7kiCle66dVeSQnI2xluTgXCtOV+qgq+m2SC7OLXNRX4Zc+1sC3tvtoz/OPuyT4IO3JAWPcnDuGcDWVyfIKOv9RwN+V/ZI3aqyZXeNH/8JY4au51UgObWBrXlx+/QjSF9lfwxaxbjztSOmt3XnHVQMt/Fc9SNoVSrpT6n9w/F+mXTUQe5Kam6v2woVYKhVsHnK4MJnUqsUZHgriLlHtWypWgxh+fCcRv17JkV7N0sTVhHKljbalbgDMs7kneNTcBm9XT26wiS0WgVDIzDAVmMvA4mJvcUJ0nGsFbZpxusZzg3uC5FOjy1sfjM4WExmdwMKjynKlyT55B3rl59E9y8qdthocFywEnVji4zSb/R0Fede0ymGyGvM7DVFwmH9Bkfb/9Cc
+ j4dJCnd4
+ 1LoimRyfJK9iICrDREAQR5Z57nvQgEmYEUI38jc8NkaA7bvkMUS6jC2+Hl1x+6Wv6/TL91n40eMiGlacBhH/NgoGo1T9ELeMJP+BZlMnQy4GqtsLVv/fbmSqgxiFIcCwNjIDOlbhaJut0sxVLLMWar6TbvXls5dxNmn2gWFUK4FEIb4WVKI7YLS5Y+TDt1nLk6IQfO4xPl4e3DhqKBgY7wstmbjkGw2+sLBN0CfxBDUu+pmHA8xgS6WHqzaWjAJg8LTO5HKa5l8Hsuq47N3VO7gLDAiux1banGdFmsV4gZBZxSSsORpVKqbsibGv3zNVU0GT5Ud1SS9lywtlNbec/D3ES3IA5qI0DzXqGTyl0nu1Ow4xPacI3sHEiGO5fReSca/DFgW5i0LVfUv3J6zwPntyfKtEkMm73D+FPsnPUfi4+cvy17tVNQp29D0eIwd4pP5svnGbsJpQ6mVNiNNOon2HY9VzOdzJ1dBbiAGw9JWG75CMcEVhn7x14sTdAoSNMiev5Z31f429/1elYwLft+9c243fN2u2lEqcwp9d7ig7MzbEvUZeev4MYLemD5bmeIPEm7sVB9wfTOfXUtF8Hv/mpk7cZWaLKvUTrxfRMj7wUZ5t2Tyo1b5t4DNeNRR9vOvj7zYU8DqfzlzbB8FpoRFPx3MYYnzbVhxl/P9dAvbj9xmBm/9ZE4/C4O73yI3YDDTD8ql1aimmSopRnqX5fKctzTW9ijO6V58/QxPwzMg++EKryo081Krl4kBo0gA/tsp8XulU2O7WOPdoiNHghcUmOjpcVi0VYMm6rG2Ts2MX8nXeYABQqb8MzvoNbkLxJAiUy/6dVXZ0kFfKxL3UrovB8kr0Jqz41fxK84x97uKzyfOncgXwJy0bBZbPhPnE4W8cRnXQqSycTEIy0VbdnWCTjb7s/ZWd8wCvlYXIaIM2AEafN+YOzv5IDGuTO2N0ak8LMGDCUUNgHOXLPqDlWmPuocJSe
+ ELOkX/Sk
+ 8lWmomwtR9p5syUnvcIzQ4XeBdR7kKVIUo960mi4V7ww1eb5v756ugjktGJCtBdYMOJnl8CiDk35ltnMaCH5HrGwOrjrNoQGMOT+AYs5fS0Fewl69TUuqu01GEPMV5TQ1c5Ymn+gtwzggmEPoaR3195RpW6Wz13EmvptN6L0cP4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,111 +100,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hello,
+
+syzbot has tested the proposed patch but the reproducer is still triggering an issue:
+lost connection to test machine
 
 
-On 2025/10/2 09:46, Wei Yang wrote:
-> On Thu, Oct 02, 2025 at 01:38:25AM +0000, Wei Yang wrote:
->> We add pmd folio into ds_queue on the first page fault in
->> __do_huge_pmd_anonymous_page(), so that we can split it in case of
->> memory pressure. This should be the same for a pmd folio during wp
->> page fault.
->>
->> Commit 1ced09e0331f ("mm: allocate THP on hugezeropage wp-fault") miss
->> to add it to ds_queue, which means system may not reclaim enough memory
->> in case of memory pressure even the pmd folio is under used.
->>
->> Move deferred_split_folio() into map_anon_folio_pmd() to make the pmd
->> folio installation consistent.
->>
-> 
-> Since we move deferred_split_folio() into map_anon_folio_pmd(), I am thinking
-> about whether we can consolidate the process in collapse_huge_page().
-> 
-> Use map_anon_folio_pmd() in collapse_huge_page(), but skip those statistic
-> adjustment.
 
-Yeah, that's a good idea :)
+Tested on:
 
-We could add a simple bool is_fault parameter to map_anon_folio_pmd()
-to control the statistics.
+commit:         9cfbc23b mm/memory-failure: improve large block size f..
+git tree:       https://github.com/x-y-z/linux-dev.git fix_split_page_min_order_and_opt_memory_failure-for-kernelci
+console output: https://syzkaller.appspot.com/x/log.txt?x=118ae05b980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=714d45b6135c308e
+dashboard link: https://syzkaller.appspot.com/bug?extid=e6367ea2fdab6ed46056
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+userspace arch: arm64
 
-The fault paths would call it with true, and the collapse paths could
-then call it with false.
-
-Something like this:
-
-```
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 1b81680b4225..9924180a4a56 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1218,7 +1218,7 @@ static struct folio 
-*vma_alloc_anon_folio_pmd(struct vm_area_struct *vma,
-  }
-
-  static void map_anon_folio_pmd(struct folio *folio, pmd_t *pmd,
--		struct vm_area_struct *vma, unsigned long haddr)
-+		struct vm_area_struct *vma, unsigned long haddr, bool is_fault)
-  {
-  	pmd_t entry;
-
-@@ -1228,10 +1228,15 @@ static void map_anon_folio_pmd(struct folio 
-*folio, pmd_t *pmd,
-  	folio_add_lru_vma(folio, vma);
-  	set_pmd_at(vma->vm_mm, haddr, pmd, entry);
-  	update_mmu_cache_pmd(vma, haddr, pmd);
--	add_mm_counter(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
--	count_vm_event(THP_FAULT_ALLOC);
--	count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_ALLOC);
--	count_memcg_event_mm(vma->vm_mm, THP_FAULT_ALLOC);
-+
-+	if (is_fault) {
-+		add_mm_counter(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
-+		count_vm_event(THP_FAULT_ALLOC);
-+		count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_ALLOC);
-+		count_memcg_event_mm(vma->vm_mm, THP_FAULT_ALLOC);
-+	}
-+
-+	deferred_split_folio(folio, false);
-  }
-
-  static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index d0957648db19..2eddd5a60e48 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1227,17 +1227,10 @@ static int collapse_huge_page(struct mm_struct 
-*mm, unsigned long address,
-  	__folio_mark_uptodate(folio);
-  	pgtable = pmd_pgtable(_pmd);
-
--	_pmd = folio_mk_pmd(folio, vma->vm_page_prot);
--	_pmd = maybe_pmd_mkwrite(pmd_mkdirty(_pmd), vma);
--
-  	spin_lock(pmd_ptl);
-  	BUG_ON(!pmd_none(*pmd));
--	folio_add_new_anon_rmap(folio, vma, address, RMAP_EXCLUSIVE);
--	folio_add_lru_vma(folio, vma);
-  	pgtable_trans_huge_deposit(mm, pmd, pgtable);
--	set_pmd_at(mm, address, pmd, _pmd);
--	update_mmu_cache_pmd(vma, address, pmd);
--	deferred_split_folio(folio, false);
-+	map_anon_folio_pmd(folio, pmd, vma, address, false);
-  	spin_unlock(pmd_ptl);
-
-  	folio = NULL;
-```
-
-Untested, though.
-
-> 
->> Fixes: 1ced09e0331f ("mm: allocate THP on hugezeropage wp-fault")
->> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->> Cc: David Hildenbrand <david@redhat.com>
->> Cc: Lance Yang <lance.yang@linux.dev>
->> Cc: Dev Jain <dev.jain@arm.com>
->> Cc: <stable@vger.kernel.org>
->>
-> 
-
+Note: no patches were applied.
 
