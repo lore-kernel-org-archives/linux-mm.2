@@ -4,88 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E742ACAC5B8
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 07:26:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE3DFCAC5B0
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 07:27:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4EDC88E000A; Thu,  2 Oct 2025 03:26:16 -0400 (EDT)
+	id 1673C8E000B; Thu,  2 Oct 2025 03:27:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BE658E0002; Thu,  2 Oct 2025 03:26:16 -0400 (EDT)
+	id 13F438E0002; Thu,  2 Oct 2025 03:27:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FC208E000A; Thu,  2 Oct 2025 03:26:16 -0400 (EDT)
+	id 07BDB8E000B; Thu,  2 Oct 2025 03:27:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 335CD8E0002
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 03:26:16 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F3B77119AD9
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 07:26:15 +0000 (UTC)
-X-FDA: 83952340710.02.8FF7A40
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E62EB180005
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 07:26:13 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=loFmx088;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759389974; a=rsa-sha256;
-	cv=none;
-	b=jb+xjtuM7rCo0D6Njh0B7+yksjN2Zlbdbp4fZvz4r2XWp4eK6ZjfJN648qMZ5oACKvBePA
-	RUgAIBdkwqNYnzu7rAjwSGNCN5Vptw3LfrQC0M7OdEIfdQ3pxfKepxmyUEb4g3vs6sh4cM
-	D0nyJYMkHzFGdDOnE3GAEm/mQPOS+4o=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=loFmx088;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id ED1118E0002
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 03:27:39 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 97AEE1A0389
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 07:27:39 +0000 (UTC)
+X-FDA: 83952344238.30.3345521
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf24.hostedemail.com (Postfix) with ESMTP id AB982180004
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 07:27:37 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IJuo9suh;
+	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759389974;
+	s=arc-20220608; t=1759390057;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wcfqctUWyMyKjwwrVZORei8dkKTWNNNgmJPwVrqv29Y=;
-	b=Ncfi+sBsXS5Z7H7D7GRmYFy1NUEesAgdWQ+uqfeNRRs5h6ju3ti+B4U14KGZYJtMBTnY3S
-	sEKUV+ygh8aFIf5rCb9N8x/INEpRYa1+j7SnoZq336EPfN9rD89ZJfs491A+AQpRElDTS1
-	XBTTzHj8F6UPxR6T/QmcLKTSRVVmhnQ=
-Message-ID: <b6788269-ac34-407a-9a5c-b94a90724a52@linux.dev>
+	bh=tf8z5q3IrTjEa1scLQkDrmTv4dYy/I6ofHkuRkCTr8Q=;
+	b=OMKnAXWUbNFUIlRJfsPw/B+17Yjt6kZX3yxXWXSfT5FLLczY7aRB1+6hjnqbXaJRZ4Utqa
+	MhBYJfY3gHBjU8gDEjkhhuydz3g2ocAPH4vfSabfNL0NZaTvcWfiMMFbLI0Kidh6YXEAsU
+	zsIjbk7ovUGbHKx92ousES1zjzEi2HA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759390057; a=rsa-sha256;
+	cv=none;
+	b=0ap+zlybMusd9KOrS+KeeavmjlHIKgs8zPuLHSf7yv+PYe/7jPvHTZdGa0FppPpU9ToI48
+	5LzbZ+LNUt/DkFg0A/+WbOCS/TWT98RSK1qgZQ91gQPwqop0YakVsEk4D4GSO1TFGo7xPE
+	sh+0SZh9sQDaqylcWzymqPq0XB5qkCY=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IJuo9suh;
+	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <51e0b689-02fa-465c-896b-1178497085c6@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759389971;
+	t=1759390055;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wcfqctUWyMyKjwwrVZORei8dkKTWNNNgmJPwVrqv29Y=;
-	b=loFmx0885gwXjnfIOCVEplFjluOdPJ+4irqQ3udyeTsxUCFyE9/aKOMTcQGJipS4gutdlD
-	JKieqM6UTA3YPS8U1/l3j+/HvX4J4v5g9LWuRj9MABc3ed/X6W/QiRQCHOIXJbHw4jJmgp
-	348lCGCcsfsBDoVc2k11eeV3ojgVJK8=
-Date: Thu, 2 Oct 2025 15:26:02 +0800
+	bh=tf8z5q3IrTjEa1scLQkDrmTv4dYy/I6ofHkuRkCTr8Q=;
+	b=IJuo9suhBO7mPis8m/CD6PeN8fi++MYV7WCQCMrD+3fBnQ2nStg/ZIQ1fcND3dOuHF5LnZ
+	Pc9R2lIccS0rdH4i04CauQvPVxWXPyEgI5aIeZPyDSJJoPCMhgQDA9LcdSgxAO7VvYt9oD
+	yIMmVHgtsWlaUu9WrRdYTbop2IYsCno=
+Date: Thu, 2 Oct 2025 15:27:33 +0800
 MIME-Version: 1.0
 Subject: Re: [Patch v2] mm/huge_memory: add pmd folio to ds_queue in
  do_huge_zero_wp_pmd()
 Content-Language: en-US
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: linux-mm@kvack.org, stable@vger.kernel.org, npache@redhat.com,
- lorenzo.stoakes@oracle.com, baohua@kernel.org, ziy@nvidia.com,
- dev.jain@arm.com, wangkefeng.wang@huawei.com, baolin.wang@linux.alibaba.com,
- david@redhat.com, ryan.roberts@arm.com, Liam.Howlett@oracle.com,
- akpm@linux-foundation.org
+To: Wei Yang <richard.weiyang@gmail.com>, David Hildenbrand <david@redhat.com>
+Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ wangkefeng.wang@huawei.com, linux-mm@kvack.org, stable@vger.kernel.org
 References: <20251002013825.20448-1-richard.weiyang@gmail.com>
+ <20251002014604.d2ryohvtrdfn7mvf@master>
+ <fa3f9e82-c6c8-43f2-803f-b8bb0fe56f37@linux.dev>
+ <20251002031743.4anbofbyym5tlwrt@master>
+ <a4b5589a-1607-4e67-939d-f86f98a395a6@redhat.com>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20251002013825.20448-1-richard.weiyang@gmail.com>
+In-Reply-To: <a4b5589a-1607-4e67-939d-f86f98a395a6@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E62EB180005
-X-Stat-Signature: xxbaegfmkgpza4i4oko3icz3sxi9xx6b
+X-Rspamd-Queue-Id: AB982180004
+X-Stat-Signature: xcs551m15js34jixh1uhb35wz3mi13ik
 X-Rspam-User: 
-X-HE-Tag: 1759389973-867421
-X-HE-Meta: U2FsdGVkX185DD3GrxnJIxXNun40E3ASC6qdrV4L2CFrmfb1MBVlEEDGrWB4O2sRZ8tA/hfuMrjotEnDYzvA+dE3bDUUifyVUgZPLqX1MPtOHcguLj+DxKt5sv9H+i4rjuPVJ6PRLrlCl5Ud2ZVqUzTXjjbo18pkUoHWcX6tKOK98okMZOB1xho4XBMB2U8eHC4FqQ6GQVshOpq77fqVg7ugRkMVrHDtmciqc1IQ/lRX3liRp62l8SNUwyziX7iXASI7U4P2MxrXMmpX+CoMWSkTcCYuScKWVc/12a+HKc6ElOqpApU01Yblw7r4O47TDV22pCHf+E4/7/l3KDlnRjGXaLXnYgjq/Gagdq7jvNW6g14Hypl4twLycEkrpEESWtZxNAEu7m87xymqk0m6O6QijIPS0q2qTvskvfJ7AqbOscNfiDQUMIIEu2+vuEnqsdI1UwzWwGX3mmb7rI6jIs3eOiSPBSIwWCqJwIqu6G4+CxUycFFUPuCn4Fj5rWeeiXFH08VJcyephPMWOS6KSBTkYwEXUyEWMKJ0PImyhT0mOg60YR6mqbOAiHvUIB1jnspZaKF/xTnj9vBTePn46IYdk2zofF1XSKiX9deCCX/5EumRxuMbYaDxHpHMN9mtf9iP8/8PQANrUayfW6fr6qgLPs55bss5kI+8HAz2Ki78yRLstbpTeGrGSp6Xb2/HQ1DFVLb7MnNdRP8PKjbdgSpQicgadwcr8fuRGKHZNAnwxWXVK0+NUf3V4DEiuOEP8ehX+bmxIBVAiZbU44Axo17xanZt+08VksaNC8BCoQoeC1q/o0+JKn+QlT3cYvJ5yhD/E0hOThA0vmaZEQk/9GEJFOA8SdQJsqsFX/43or9/G24EZH+BYEUcUo5L8d2Kk1lMFaHnNCitUoAkWDWCsLj18jkN1baP8KkvWEs6C96ZEFfePjCm74Trof0nJH70G1dNsXJGYCqnxKqve1r
- YIEwtBsf
- STSHVPap0wakKREy7PdX9LfQg2C4QH6hJfyROPCNirE3AtsPouV96xxgjRPcyw+ZPvof6IbQoC8u+oEiRVJQ9oqEU037NSmeyhxvzZjP3nm2PQSxdU5NJWfV99eIPGx0H0KDzXtMTLbEqozVkIZgT6nJ8xCebS0UHiFnu4jW+zUn3GyR6uMuJZgFWpdOzG1GqS+GyPHSczwxzNIOXi+Z1m233MUU9eKyIJ1TyXIoECnGWOkOi5Xt/Y/d6DxOq12n4XTR44dkZLKfhfPFqDdEbWI7WJuwj1Lbu5ftE9MaOyBn5Gey38bxlNtiHVPs3ied/wTwwD3+ra/AdALeNYYSDGQyOJUSpnxIgNV6t0vcO42JKFq83R0YgemNt+C+v1RaPTJpmpw/doB9wCoWk9cjdy4aHodnA08xoE9e28a/eRB5BAm6R2SiMz3eBQEjrnOueK3buAOBuEoBzSMA=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1759390057-998744
+X-HE-Meta: U2FsdGVkX18A9GDBCGwbk52QbyUeQFQXOShbh5NZZOZ2H1YI0jWaE4rDW5OX/G867xQ09psz+tD7Wdy6DV3OWiq49NKDerHbLuoN0fiCr0rpMyc4OrwmW9ZvtHpM4TUnU638MtU/oM20SMIT5i/Fz82UC6LFhGgHH7RFMR35B24PO+AxSkzSYF7epKI1Ki8DbiMIDp3kNJEy2vJUIJ2JIngIkBvv9sVz5KbyzXbxa0tuTWjIVc46EYOlZR9UAAGCKfPB8vOT4Jaf4DiVrSrwq6C+iNXswACnGbGsjAfHJRy+DO26dQWPN4Oor2xBZGG028uv8xAAYhojvEh14pETk49c7sIJlwkL0f0J8uPNKBNdv/0EgLkF0Jh3yty4n73UAHE/Rt+WrJDmldQ8z58kQ9+yBLclhdsz2N7WcnNlE3MIHQXjq/vt+0mBQPNvOA9ozS7Nn7rMdo4AEXcVvYrnlDDiNXE4dQCuBk/68+iGWqKI7XsRhh3QgKEOhPHx2aaFIsxvW1cbizdinV8TfdcpNkf5tU/mZCeMzqTxHw1Cl0D8lYHgMq68pW+nejrst5qy49+48SAyb67VezLuIG+KoycMZVnlWsagoYacvh8vDLxoVmune6ux/nHRww3lHuamiIR36xQb3iYp4ydsISLhohPeGVeSKFY/Vl1H7fXopIctW5T/BCyJ+8zSgfzf3jbDbtulCOrFsKp3zrntjFqC9nScDQTdSIwryG/lUT0HNsgFXRaPoGhw4ALvXN7F/eDnZ7ao9L90fHwr5UQ7o6BQ281laZTig4DqtNBNciqK7a9Qm6POarV+dirWq0/3kKiaGMcciTYWcz53S2acrunN8Rjp9LCNeR5YOJrNQyLl4SeBJHSeuV09VgPlWvPbTkA+B/hmTCoFtTJp2ihW09L282qIqvF1Ki6IRdGe5YPGQbwEBF2cc3aFvzah00clsKD5PaXjnIi5+NeL7FL6y2v
+ zmdSTp0v
+ 1NhxKCbmlREt8wGr7eN9dsIRNSBlZ9iY8PE+q+ksriKPWA/0XeFVOWP2NeKDtKv316OuOjmpAagOOwoG6iHeu/9WyCQeNmJPtSOFCqJ/F/nxxDuUXqVPb6DRTMXCa5VC5D+NpboIO8Lf+2M05ndmnTMRds/ZF34FpfRQz9z8VA9ohIq7p4FC3TNw9JQ423dYNsX8gox7KVssTw7KgPF7S5UMHGvlsGWPgmWcaTYXUB+nhHFwq5w/5aXFmCK/YyAL7nX1l5gTMJ+ED/pmkbNnSz+jRNBoFuU5dzqKGc4bn1hTEHHkr1wRgKHLONQAJ1HFtYdl6svhXl1jdtYB7jjvJ5/EtLrJUYg5E3pJd2c0TRdiBXizVgy3eXeszrhhJ2wXyUbAs
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,59 +99,118 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2025/10/2 09:38, Wei Yang wrote:
-> We add pmd folio into ds_queue on the first page fault in
-> __do_huge_pmd_anonymous_page(), so that we can split it in case of
-> memory pressure. This should be the same for a pmd folio during wp
-> page fault.
+On 2025/10/2 15:16, David Hildenbrand wrote:
+> On 02.10.25 05:17, Wei Yang wrote:
+>> On Thu, Oct 02, 2025 at 10:31:53AM +0800, Lance Yang wrote:
+>>>
+>>>
+>>> On 2025/10/2 09:46, Wei Yang wrote:
+>>>> On Thu, Oct 02, 2025 at 01:38:25AM +0000, Wei Yang wrote:
+>>>>> We add pmd folio into ds_queue on the first page fault in
+>>>>> __do_huge_pmd_anonymous_page(), so that we can split it in case of
+>>>>> memory pressure. This should be the same for a pmd folio during wp
+>>>>> page fault.
+>>>>>
+>>>>> Commit 1ced09e0331f ("mm: allocate THP on hugezeropage wp-fault") miss
+>>>>> to add it to ds_queue, which means system may not reclaim enough 
+>>>>> memory
+>>>>> in case of memory pressure even the pmd folio is under used.
+>>>>>
+>>>>> Move deferred_split_folio() into map_anon_folio_pmd() to make the pmd
+>>>>> folio installation consistent.
+>>>>>
+>>>>
+>>>> Since we move deferred_split_folio() into map_anon_folio_pmd(), I am 
+>>>> thinking
+>>>> about whether we can consolidate the process in collapse_huge_page().
+>>>>
+>>>> Use map_anon_folio_pmd() in collapse_huge_page(), but skip those 
+>>>> statistic
+>>>> adjustment.
+>>>
+>>> Yeah, that's a good idea :)
+>>>
+>>> We could add a simple bool is_fault parameter to map_anon_folio_pmd()
+>>> to control the statistics.
+>>>
+>>> The fault paths would call it with true, and the collapse paths could
+>>> then call it with false.
+>>>
+>>> Something like this:
+>>>
+>>> ```
+>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>> index 1b81680b4225..9924180a4a56 100644
+>>> --- a/mm/huge_memory.c
+>>> +++ b/mm/huge_memory.c
+>>> @@ -1218,7 +1218,7 @@ static struct folio 
+>>> *vma_alloc_anon_folio_pmd(struct
+>>> vm_area_struct *vma,
+>>> }
+>>>
+>>> static void map_anon_folio_pmd(struct folio *folio, pmd_t *pmd,
+>>> -        struct vm_area_struct *vma, unsigned long haddr)
+>>> +        struct vm_area_struct *vma, unsigned long haddr, bool is_fault)
+>>> {
+>>>     pmd_t entry;
+>>>
+>>> @@ -1228,10 +1228,15 @@ static void map_anon_folio_pmd(struct folio 
+>>> *folio,
+>>> pmd_t *pmd,
+>>>     folio_add_lru_vma(folio, vma);
+>>>     set_pmd_at(vma->vm_mm, haddr, pmd, entry);
+>>>     update_mmu_cache_pmd(vma, haddr, pmd);
+>>> -    add_mm_counter(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
+>>> -    count_vm_event(THP_FAULT_ALLOC);
+>>> -    count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_ALLOC);
+>>> -    count_memcg_event_mm(vma->vm_mm, THP_FAULT_ALLOC);
+>>> +
+>>> +    if (is_fault) {
+>>> +        add_mm_counter(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
+>>> +        count_vm_event(THP_FAULT_ALLOC);
+>>> +        count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_ALLOC);
+>>> +        count_memcg_event_mm(vma->vm_mm, THP_FAULT_ALLOC);
+>>> +    }
+>>> +
+>>> +    deferred_split_folio(folio, false);
+>>> }
+>>>
+>>> static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
+>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>> index d0957648db19..2eddd5a60e48 100644
+>>> --- a/mm/khugepaged.c
+>>> +++ b/mm/khugepaged.c
+>>> @@ -1227,17 +1227,10 @@ static int collapse_huge_page(struct 
+>>> mm_struct *mm,
+>>> unsigned long address,
+>>>     __folio_mark_uptodate(folio);
+>>>     pgtable = pmd_pgtable(_pmd);
+>>>
+>>> -    _pmd = folio_mk_pmd(folio, vma->vm_page_prot);
+>>> -    _pmd = maybe_pmd_mkwrite(pmd_mkdirty(_pmd), vma);
+>>> -
+>>>     spin_lock(pmd_ptl);
+>>>     BUG_ON(!pmd_none(*pmd));
+>>> -    folio_add_new_anon_rmap(folio, vma, address, RMAP_EXCLUSIVE);
+>>> -    folio_add_lru_vma(folio, vma);
+>>>     pgtable_trans_huge_deposit(mm, pmd, pgtable);
+>>> -    set_pmd_at(mm, address, pmd, _pmd);
+>>> -    update_mmu_cache_pmd(vma, address, pmd);
+>>> -    deferred_split_folio(folio, false);
+>>> +    map_anon_folio_pmd(folio, pmd, vma, address, false);
+>>>     spin_unlock(pmd_ptl);
+>>>
+>>>     folio = NULL;
+>>> ```
+>>>
+>>> Untested, though.
+>>>
+>>
+>> This is the same as I thought.
+>>
+>> Will prepare a patch for it.
 > 
-> Commit 1ced09e0331f ("mm: allocate THP on hugezeropage wp-fault") miss
-> to add it to ds_queue, which means system may not reclaim enough memory
-> in case of memory pressure even the pmd folio is under used.
-> 
-> Move deferred_split_folio() into map_anon_folio_pmd() to make the pmd
-> folio installation consistent.
-> 
-> Fixes: 1ced09e0331f ("mm: allocate THP on hugezeropage wp-fault")
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Lance Yang <lance.yang@linux.dev>
-> Cc: Dev Jain <dev.jain@arm.com>
-> Cc: <stable@vger.kernel.org>
+> Let's do that as an add-on patch, though.
 
-Cool. LGTM.
-
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-
-> 
-> ---
-> v2:
->    * add fix, cc stable and put description about the flow of current
->      code
->    * move deferred_split_folio() into map_anon_folio_pmd()
-> ---
->   mm/huge_memory.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 1b81680b4225..f13de93637bf 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -1232,6 +1232,7 @@ static void map_anon_folio_pmd(struct folio *folio, pmd_t *pmd,
->   	count_vm_event(THP_FAULT_ALLOC);
->   	count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_ALLOC);
->   	count_memcg_event_mm(vma->vm_mm, THP_FAULT_ALLOC);
-> +	deferred_split_folio(folio, false);
->   }
->   
->   static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
-> @@ -1272,7 +1273,6 @@ static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
->   		pgtable_trans_huge_deposit(vma->vm_mm, vmf->pmd, pgtable);
->   		map_anon_folio_pmd(folio, vmf->pmd, vma, haddr);
->   		mm_inc_nr_ptes(vma->vm_mm);
-> -		deferred_split_folio(folio, false);
->   		spin_unlock(vmf->ptl);
->   	}
->   
-
+Yeah, let’s do that separately ;)
 
