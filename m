@@ -4,99 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 372D1CAC5B8
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 20:53:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0046CAC5B0
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 20:54:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 925D58E0018; Thu,  2 Oct 2025 16:53:55 -0400 (EDT)
+	id 5A3D58E0019; Thu,  2 Oct 2025 16:54:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D5AD8E0001; Thu,  2 Oct 2025 16:53:55 -0400 (EDT)
+	id 553F18E0001; Thu,  2 Oct 2025 16:54:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C5628E0018; Thu,  2 Oct 2025 16:53:55 -0400 (EDT)
+	id 41B758E0019; Thu,  2 Oct 2025 16:54:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 66B838E0001
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 16:53:55 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 093E413B814
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 20:53:55 +0000 (UTC)
-X-FDA: 83954376030.25.931CE9F
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 89F0B2000C
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 20:53:52 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Tnuu0MFW;
-	spf=pass (imf03.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 295218E0001
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 16:54:09 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E7E38BA992
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 20:54:08 +0000 (UTC)
+X-FDA: 83954376576.27.2580DCE
+Received: from fra-out-007.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-007.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.75.33.185])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C4D9214000B
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 20:54:06 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=LrH6TH67;
+	spf=pass (imf23.hostedemail.com: domain of "prvs=363ba725c=farbere@amazon.com" designates 3.75.33.185 as permitted sender) smtp.mailfrom="prvs=363ba725c=farbere@amazon.com";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759438433;
+	s=arc-20220608; t=1759438447;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=IScp/RSrtk4JAYYkDdSACBSDjbaqW24QPU0y3hCA6yo=;
-	b=2flLluunJaFXxOlckbihXIQDu1ichbfZkCowXWYJgy49aqySjCXp9Hjn9xvRKfDHUqhP8b
-	Fag7YT+Rz6zHLKGJRnjwZYo6UORYqpklKgt6CK9mavnbsvDUIokJ8CxI/bDMFLcB5uMtuw
-	/xsY3whoF8yXW80IVNEIgLJzlZBg+zQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759438433; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fgKTaT7jj0zRx6jbQ7DJOMsaZramokk9q66dhz8aLl4=;
+	b=rTrIkR/dMaKNLsrVPTrs/OZRJSEvmueY7fbtQegFiv0x9EoUFHWRBCEX/bXeTq3r/Gi53Q
+	iEe7Ga+Bql1pnykou/VpZzI7x4a3jt6QoxyzovieouS3+UEBzhUXp8W7uN+uFSHy1xMIGN
+	87nmgeDDpygqmuMnz2kWPqV28+uV1oY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759438447; a=rsa-sha256;
 	cv=none;
-	b=RYurUufhgwD3tMPvlS4Xzl36K0ABehOVrgJzjmebbBi53ndbuNImQHWXSqVKswTqVJrjPR
-	d7zx1qsjcrhMAnzP1d93fBeQ5j05ZKtRdj+7vTfDMsdKhKFcCwNcOrIIGQbBQzSoqpAiAY
-	vFwG5DT/RZQ+0pU4Yql6b9qZSs8fBf4=
+	b=uYLMAqrWDEJyxG3UPy/yqBO5HnsLQu7bnQNyM7cqHKx17EI43kf5p9adPwL3ImUMSMoCMx
+	DEhI8EkVsRx2r5EWsRJ+6eSnQ30kBQS1LwZfIPVz4ntRWCsl6g6mkocvgoHICHM2yXWTKd
+	dIZ5qzi202xAmYjVgLn38ylxKwhy/MA=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Tnuu0MFW;
-	spf=pass (imf03.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759438433; x=1790974433;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=KtFqP/arthrRztirKPKtAcTBBOI1/NQx6QVgvQWd7LE=;
-  b=Tnuu0MFWuve13m2A/daYTHKQhklrbF6ybahK4ifUVZZI2HJjraNhjIrg
-   qqcHNHwHckBxw7QhRNuOqr3bO7+uelUV4fmFPrDgFk5/d9owj1x9Rcwa/
-   MqGR0rfkYT5tYxexYoCMjp4MPgTHv6etiDUlFlmkXboiSs0jczPzJTp9x
-   uHJywxv5ku70QCY4xrsWGYFlAojUDryiiePm62ce6nTV6cBB7UENTnUNd
-   d7wBqcPLAD63FBqRLicu4LEu3eDrmtpjglpftDWg4Rv/BmKAhLVyTl69R
-   gzQ0Ph/kXycYcrLJ55XoCGNSFJuv+eFXev1ZMGcnnzMKU6e69OXs/CZaV
+	imf23.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=LrH6TH67;
+	spf=pass (imf23.hostedemail.com: domain of "prvs=363ba725c=farbere@amazon.com" designates 3.75.33.185 as permitted sender) smtp.mailfrom="prvs=363ba725c=farbere@amazon.com";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1759438446; x=1790974446;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=fgKTaT7jj0zRx6jbQ7DJOMsaZramokk9q66dhz8aLl4=;
+  b=LrH6TH67F/aCNImKYDYwZEFg67HfuX3OCG0rcjD18Q5d6oBq7BbJtYrD
+   CwGTXFU+ZoJI5ao4jipyDsQU+uzdRIGKsXyv47XmVXZ0kKMnyONdxPlk7
+   qQNmRUkEHZrFuwL8oQT4mGgj1XM2VYtkzUb/BquH32lYVubOizyS0cbBR
+   uqt/kbVVR5Si3xCnYAh6m5+HNSqtCtpvTx/1eMYg+nN+tKO4MeqTzawUB
+   rlKg085aa4GhkdW+vb0yHCaGMXjeTqp/p2KesFT6UiC+UI8cBIwow9jzu
+   tlGr848IGbhzdUvMbcGjM0i6APPQkQJPPKalmpzJQwI1NXJQk1J+PZ752
    w==;
-X-CSE-ConnectionGUID: KqUklHcVSwqiymL6sU8Dpw==
-X-CSE-MsgGUID: 2SPt4EqURbKlx47ieNxCGw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="72347705"
-X-IronPort-AV: E=Sophos;i="6.18,310,1751266800"; 
-   d="scan'208";a="72347705"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 13:53:51 -0700
-X-CSE-ConnectionGUID: gj90oZk4Qhq4z+xJTDbB+Q==
-X-CSE-MsgGUID: kZK23Pl8RkKIBDW4eFEjgg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,310,1751266800"; 
-   d="scan'208";a="179571947"
-Received: from lkp-server01.sh.intel.com (HELO 2f2a1232a4e4) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 02 Oct 2025 13:53:50 -0700
-Received: from kbuild by 2f2a1232a4e4 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v4QJ9-00047b-2M;
-	Thu, 02 Oct 2025 20:53:47 +0000
-Date: Fri, 3 Oct 2025 04:52:48 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jakub Acs <acsjakub@amazon.de>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master 13069/13300] error[E0425]: cannot find value
- `VM_MERGEABLE` in crate `bindings`
-Message-ID: <202510030449.VfSaAjvd-lkp@intel.com>
+X-CSE-ConnectionGUID: /Kk2Y+6URw+T8Li/oNxKVw==
+X-CSE-MsgGUID: Wlm0a1+tR1SdfKdQVoro8Q==
+X-IronPort-AV: E=Sophos;i="6.18,310,1751241600"; 
+   d="scan'208";a="3032570"
+Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
+  by internal-fra-out-007.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 20:53:56 +0000
+Received: from EX19MTAEUC002.ant.amazon.com [54.240.197.228:28436]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.4.140:2525] with esmtp (Farcaster)
+ id 31b15363-5bb5-45dc-aa7e-82a9ee14e7c1; Thu, 2 Oct 2025 20:53:56 +0000 (UTC)
+X-Farcaster-Flow-ID: 31b15363-5bb5-45dc-aa7e-82a9ee14e7c1
+Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
+ EX19MTAEUC002.ant.amazon.com (10.252.51.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Thu, 2 Oct 2025 20:53:56 +0000
+Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
+ (172.19.116.181) by EX19D018EUA004.ant.amazon.com (10.252.50.85) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Thu, 2 Oct 2025
+ 20:53:30 +0000
+From: Eliav Farber <farbere@amazon.com>
+To: <gregkh@linuxfoundation.org>, <jdike@addtoit.com>, <richard@nod.at>,
+	<anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>,
+	<luto@kernel.org>, <peterz@infradead.org>, <tglx@linutronix.de>,
+	<mingo@redhat.com>, <bp@alien8.de>, <x86@kernel.org>, <hpa@zytor.com>,
+	<tony.luck@intel.com>, <qiuxu.zhuo@intel.com>, <james.morse@arm.com>,
+	<rric@kernel.org>, <airlied@linux.ie>, <daniel@ffwll.ch>,
+	<maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
+	<tzimmermann@suse.de>, <robdclark@gmail.com>, <sean@poorly.run>,
+	<jdelvare@suse.com>, <linux@roeck-us.net>, <linus.walleij@linaro.org>,
+	<dmitry.torokhov@gmail.com>, <maz@kernel.org>, <wens@csie.org>,
+	<jernej.skrabec@gmail.com>, <agk@redhat.com>, <snitzer@redhat.com>,
+	<dm-devel@redhat.com>, <davem@davemloft.net>, <kuba@kernel.org>,
+	<mcoquelin.stm32@gmail.com>, <krzysztof.kozlowski@canonical.com>,
+	<malattia@linux.it>, <hdegoede@redhat.com>, <mgross@linux.intel.com>,
+	<jejb@linux.ibm.com>, <martin.petersen@oracle.com>,
+	<sakari.ailus@linux.intel.com>, <clm@fb.com>, <josef@toxicpanda.com>,
+	<dsterba@suse.com>, <jack@suse.com>, <tytso@mit.edu>,
+	<adilger.kernel@dilger.ca>, <dushistov@mail.ru>,
+	<luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <pmladek@suse.com>,
+	<senozhatsky@chromium.org>, <andriy.shevchenko@linux.intel.com>,
+	<linux@rasmusvillemoes.dk>, <minchan@kernel.org>, <ngupta@vflare.org>,
+	<akpm@linux-foundation.org>, <yoshfuji@linux-ipv6.org>, <dsahern@kernel.org>,
+	<pablo@netfilter.org>, <kadlec@netfilter.org>, <fw@strlen.de>,
+	<jmaloy@redhat.com>, <ying.xue@windriver.com>, <shuah@kernel.org>,
+	<willy@infradead.org>, <farbere@amazon.com>, <sashal@kernel.org>,
+	<quic_akhilpo@quicinc.com>, <ruanjinjie@huawei.com>,
+	<David.Laight@ACULAB.COM>, <herve.codina@bootlin.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<linux-um@lists.infradead.org>, <linux-edac@vger.kernel.org>,
+	<amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+	<linux-arm-msm@vger.kernel.org>, <freedreno@lists.freedesktop.org>,
+	<linux-hwmon@vger.kernel.org>, <linux-input@vger.kernel.org>,
+	<linux-sunxi@lists.linux.dev>, <linux-media@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
+	<platform-driver-x86@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
+	<linux-staging@lists.linux.dev>, <linux-btrfs@vger.kernel.org>,
+	<linux-ext4@vger.kernel.org>, <linux-sparse@vger.kernel.org>,
+	<linux-mm@kvack.org>, <netfilter-devel@vger.kernel.org>,
+	<coreteam@netfilter.org>, <tipc-discussion@lists.sourceforge.net>,
+	<linux-kselftest@vger.kernel.org>, <stable@vger.kernel.org>
+CC: Linus Torvalds <torvalds@linux-foundation.org>, David Laight
+	<David.Laight@aculab.com>, Arnd Bergmann <arnd@kernel.org>
+Subject: [PATCH 12/19 5.15.y] minmax: fix up min3() and max3() too
+Date: Thu, 2 Oct 2025 20:47:26 +0000
+Message-ID: <20251002204733.35652-13-farbere@amazon.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251002204733.35652-1-farbere@amazon.com>
+References: <20251002204733.35652-1-farbere@amazon.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Stat-Signature: 5hmmajm33yrobm5sb7wx1413xzyp7jiz
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [172.19.116.181]
+X-ClientProxiedBy: EX19D038UWB001.ant.amazon.com (10.13.139.148) To
+ EX19D018EUA004.ant.amazon.com (10.252.50.85)
+X-Stat-Signature: zo5phec8fftnroxzfc555dro8akdntot
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 89F0B2000C
+X-Rspamd-Queue-Id: C4D9214000B
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1759438432-964068
-X-HE-Meta: U2FsdGVkX19tYm2Ugn7U8hv0Er8/tpnwsS4zwDoiHynrnVuQyyLaR4UuEQpz/40ccAf/Rx04oWQ0zSuNYluUlj+5qlKfQ/isYQFq/s8pOEoDejjjAbu/BTul3nQ1q86c6qZ2CgCRtFohn11GXMVnwR4epJ5iqoEDdZoeb/Pa9sjPnNuoLDEnl8KURUb+nvFa/HI0LQRtoa2/hh7sjvjTqZb6KvN+H3f7MZrgDqFaa53LZEdAWjPgbCfNs1L/TJiToEZ74skgM3W8ZIxThgTiCfUeyAp1mAC/NkYLzj6L+FYPC8e0gASuA/yotRbnjcT9nD3dOzkUWQrQSRmbiSJfgBrTo71tOWLo2mTh3Wpu9+k0poxBhvzQKNxDfMWxl8ZhUSVdL1naT6cB8Zn+QWI+rrFKOh5IDUAnNi1NXHx2+bIYfKqgPjmmjTgUMfPnkFxsiPYAuB2GpLrPdSBLwXtb2ekty03jDrnASSdvYggLfI5m+RKvz79vem3FRf/5hm9u1nC6FQ6tOKSGXQYnSFAYqvGcWxoNNJ5/VeNLZrRDRzni8bY9pZ2aitU68Wl05EFK08HqvEoGsiHlxeZ+/67x1tUCLNgQ6NGbj7gBSABFkZIc1BCPwwBegmt+RPxDCmg9fsYI6kArUlPPNBKcupjXXA4fi7pve1bx94iWUlId3nC5/zMQR1JIRcYh7foIZWKf5sfzeiolgp9EprskkOQCt8tTcY9pMI7CqSipb+Yef3vWPlW2CWa+vhK6ASq0JhRBYPy1uUt0U0t1mMbSBDR+G89zEtaxtD15Ho+WXuZipC9TIss/kWo94Mz8olG+YZQnbvmUj2D5CACUwQZKTO8ge4pEOu+B3Bvun5Fc+k8VHHYS5+UhIyEdE7EiLYoPQPNGvyKZ9Hf10cwWzdF4DlCeajSiUKtviELIk77RrV9czWXE9A2+uIp54SglycoDiWulHNH6ZbL3MzdO9GXInbg
- EqLEaKjW
- 2FsvVGLGq3fQK5LRm0JxXDCQavCPkDGHWNXXYhRgqXb7DwETsgkqeEni9DosKt1WOUMwFa5zWKiV/M3k+2lePa4v06Om6TDlLAe8JhXHoVRClbPUWyTi9p9lfOKjbc0vw5l7p2olKx2qgjILIidjlr8CgQWQlvrKx3rIG3hRjeI+M8LmEZGpJKuVFPxXFxTiPxDmyNUE1YxeJUsit+w+dnaZzoEDT6jFhpy7fJ4QLb93eAjGnW3jAGrRHhM77ZfTcoXQTAnAG1d4Bq9hQRQ2lwnnl9IFeNC8a4YI8fi4dUUqG1eW+S/wFX9c37ovvgpzuadJY52n/Ns+cAZX5ipvKRTf3+ZbbxoAsrQ6W3HRv2QKPtcGcdRRC4AzB/Q==
+X-HE-Tag: 1759438446-382795
+X-HE-Meta: U2FsdGVkX19Iy95crVbDYdsIe8ZEUos6tRC5GNKgE/EDYqc5weDgadORxT2ftpiQGsepg4Q8eBspM8gpKTM9vQS7SlC+7orMEgHSIlHaJ075EE5XAMpd5o6jcmEWZI29IKurSgejgKS0WudgfQ10KQzU5TWwidBGREuwFoDJ6FpKZvBbs6g5p8a/e4daJk59KrgLFnIC7qXdWTuyQnvVSUu+CUpJyt7TGB9qd+q8MTokYRRfMjL9PspoXpefCdqs0rLWQOgr++yrQSCg1sZkKWGR797N1Gcvhp+x30sVXo6WgZTwyxYbzqzAkWcwMnDVxzXGKM597mtyTqw5aD/DjwusVzkN/4ovdFJvvtZdAzK6ObF5/AfCef3ThSZVtoROLwexfzwGltelrJOXn6droq1npXGfTnxduKUQvlU4KxYuiEOIrSFAMZr7zQWsUMbsotSBJ9oFDAVvBktiXAFQAvRaOGTfAT+FJL3jH0Ir/ky32gzDlt42bHK7wZ/w0WMSJk/qgyjCYEemqNFrOnhrthWFWppTpj+D1tNZraBkwFudQ+G0BZydzKIguuMyWMNHSh55zPSFMzLRihDbX8JKT0benWEweVBcEAqHjg9v+mm27/TaUUoTlOf7Gpwq6b1mCn8qa5eEC6TQmGNtj/VZ4WHqKbq6qDIfcU0uP7ykUTEs1Sv/QU4VVEByMjrq5ONQXJnvgHezecsFO7L6rKSpnH6RlGJU3XYFdYewlM4buBGqPQcvhekzKi36M5ATcaQ1+8tYXNh7iUpOja330f+Q+HP4f7u3NejCQ/0rd6ZDF8zFMadC2VjZcMbySg6VGMezut004T/iSDyhFl6RW0UP3CGaM8diX0Ta4CN0xXj/2vHl6xCn6t2XzXneyCkxDQQfLRpnYevr0muc3Ix8gZX38HKnPGSUjFd055Eu/lBBVpo556hATdVKSuZsJY34VSU/KjhVeuY2pz27+pdB0ar
+ XFV06keg
+ oeOP1zBKtyb5B6SxpVmVwnH94QHgeNOHX+IDfqwq/gu5NSZ8phTtXFzL2HdDYoU0PNHwT42+db4w6aiFs3BamdDkY7wVPEQiQT1F8juyuQxN5/LhIMGKqFPr5WEl7kWcOLl4oKejVGyTYA/j1ZJuqDOx+qU9bJnlMGT1QQ9U2LvY4pL2DsdrHW8kMrv9G673qMu9rBRULIctAtDoxREVPAUDnQQSI32H06T/7kN+WhvXOecea+C2QWx2NkSRa7uU+4PVopEqJwpYU1EukTdaG3Qw1Na97zS/N67XZi7IbgHOD2pQMkNa7CvIwgoeWKRIrqgFBXrTl5a0bVZXaRaW3xhP42FBDmLm5ZgZe3yO+PIOnR5420srS3/BIQd/BTqgdtqtk/8Mi+CjcvS1TS0DQJmTkZcwwFd4OxkNpBoFnVqLeLH4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,33 +152,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-head:   7396732143a22b42bb97710173d598aaf50daa89
-commit: 8355c2312fdfe590a296b8abf9414ab7ecb49d1d [13069/13300] mm/ksm: fix flag-dropping behavior in ksm_madvise
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20251003/202510030449.VfSaAjvd-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251003/202510030449.VfSaAjvd-lkp@intel.com/reproduce)
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202510030449.VfSaAjvd-lkp@intel.com/
+[ Upstream commit 21b136cc63d2a9ddd60d4699552b69c214b32964 ]
 
-All errors (new ones prefixed by >>):
+David Laight pointed out that we should deal with the min3() and max3()
+mess too, which still does excessive expansion.
 
->> error[E0425]: cannot find value `VM_MERGEABLE` in crate `bindings`
-   --> rust/kernel/mm/virt.rs:471:49
-   |
-   471  |     pub const MERGEABLE: vm_flags_t = bindings::VM_MERGEABLE as vm_flags_t;
-   |                                                 ^^^^^^^^^^^^ help: a constant with a similar name exists: `MMF_VM_MERGEABLE`
-   |
-   ::: rust/bindings/bindings_generated.rs:7936:1
-   |
-   7936 | pub const MMF_VM_MERGEABLE: u32 = 16;
-   | ------------------------------- similarly named constant `MMF_VM_MERGEABLE` defined here
+And our current macros are actually rather broken.
 
+In particular, the macros did this:
+
+  #define min3(x, y, z) min((typeof(x))min(x, y), z)
+  #define max3(x, y, z) max((typeof(x))max(x, y), z)
+
+and that not only is a nested expansion of possibly very complex
+arguments with all that involves, the typing with that "typeof()" cast
+is completely wrong.
+
+For example, imagine what happens in max3() if 'x' happens to be a
+'unsigned char', but 'y' and 'z' are 'unsigned long'.  The types are
+compatible, and there's no warning - but the result is just random
+garbage.
+
+No, I don't think we've ever hit that issue in practice, but since we
+now have sane infrastructure for doing this right, let's just use it.
+It fixes any excessive expansion, and also avoids these kinds of broken
+type issues.
+
+Requested-by: David Laight <David.Laight@aculab.com>
+Acked-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+---
+ include/linux/minmax.h | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/include/linux/minmax.h b/include/linux/minmax.h
+index 41da6f85a407..98008dd92153 100644
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -152,13 +152,20 @@
+ #define umax(x, y)	\
+ 	__careful_cmp(max, (x) + 0u + 0ul + 0ull, (y) + 0u + 0ul + 0ull)
+ 
++#define __careful_op3(op, x, y, z, ux, uy, uz) ({			\
++	__auto_type ux = (x); __auto_type uy = (y);__auto_type uz = (z);\
++	BUILD_BUG_ON_MSG(!__types_ok3(x,y,z,ux,uy,uz),			\
++		#op"3("#x", "#y", "#z") signedness error");		\
++	__cmp(op, ux, __cmp(op, uy, uz)); })
++
+ /**
+  * min3 - return minimum of three values
+  * @x: first value
+  * @y: second value
+  * @z: third value
+  */
+-#define min3(x, y, z) min((typeof(x))min(x, y), z)
++#define min3(x, y, z) \
++	__careful_op3(min, x, y, z, __UNIQUE_ID(x_), __UNIQUE_ID(y_), __UNIQUE_ID(z_))
+ 
+ /**
+  * max3 - return maximum of three values
+@@ -166,7 +173,8 @@
+  * @y: second value
+  * @z: third value
+  */
+-#define max3(x, y, z) max((typeof(x))max(x, y), z)
++#define max3(x, y, z) \
++	__careful_op3(max, x, y, z, __UNIQUE_ID(x_), __UNIQUE_ID(y_), __UNIQUE_ID(z_))
+ 
+ /**
+  * min_not_zero - return the minimum that is _not_ zero, unless both are zero
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.47.3
+
 
