@@ -4,103 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72A71CAC5B8
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 13:09:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67285CAC5B0
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 13:12:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 724DA8E0003; Thu,  2 Oct 2025 09:09:30 -0400 (EDT)
+	id A84868E000A; Thu,  2 Oct 2025 09:12:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D59A8E0002; Thu,  2 Oct 2025 09:09:30 -0400 (EDT)
+	id A5C588E0002; Thu,  2 Oct 2025 09:12:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5EB348E0003; Thu,  2 Oct 2025 09:09:30 -0400 (EDT)
+	id 9994E8E000A; Thu,  2 Oct 2025 09:12:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B1D18E0002
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 09:09:30 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CE219140507
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 13:09:29 +0000 (UTC)
-X-FDA: 83953205658.09.DB4E2D4
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id EA7EE80019
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 13:09:27 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DnaUtH2B;
-	spf=pass (imf30.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 86DCE8E0002
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 09:12:17 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 31A8CC02FA
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 13:12:17 +0000 (UTC)
+X-FDA: 83953212714.13.658B21D
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 85151140010
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 13:12:14 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=none;
+	spf=pass (imf23.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759410568;
+	s=arc-20220608; t=1759410735;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GWUDNEuVsrVCuZ4aXT8MiKkM6HaWCbvQq8AyvQB9qsY=;
-	b=lIKnOXgs0fsmtvj+vbj4pV3QfcYTE4CgvqhnYREV+NNRbSqTLzm+EMG7cPh0a2iEluwpoZ
-	lxwAcfzYSjLitejWZ7ctvd4zR2IAjqoSE6SlMTzeQOC+nhkgILdhcQgAd+1dx0WlcpCWzN
-	7+WiB15mGdr1sZv17eaVtLntIsABHRM=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DnaUtH2B;
-	spf=pass (imf30.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759410568; a=rsa-sha256;
-	cv=none;
-	b=fsvvJVej77jm3OTnLjjedS2q+4SIvqDN1yrakUvjf0LKe98VrmFbZg6TZQMHLBIB+bBdS7
-	nxHojmXQ3tupcnP3MxbHgcnciLSBoSVkurxiE4PSHfOg2fyUj+O9LdlgzRIBrvPWrQUQfc
-	1EP0iVuumsBrIxq8uf8CABk66ZcrI1Q=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759410567;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GWUDNEuVsrVCuZ4aXT8MiKkM6HaWCbvQq8AyvQB9qsY=;
-	b=DnaUtH2BUW+oK4pwUt1nRLI4nKNg0LlyfLP7Jbm/AGGM7vLj04kAk7MtE1Gc79rc+SM/+4
-	OUVDx3QCUB6nMa0FUG9jNY3E5A6wErXNpS7uj4UqNG6lfIBXewhgS0eFzJk6J7Cub7E2LY
-	Z49ZlmEWihM5N4vLDIcfH6no/5Ty+1k=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-658-HEVvXC-zOBGGxQtVAfkgKw-1; Thu,
- 02 Oct 2025 09:09:21 -0400
-X-MC-Unique: HEVvXC-zOBGGxQtVAfkgKw-1
-X-Mimecast-MFC-AGG-ID: HEVvXC-zOBGGxQtVAfkgKw_1759410560
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D7B90195608F;
-	Thu,  2 Oct 2025 13:09:19 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.47])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9EE5A19560B1;
-	Thu,  2 Oct 2025 13:09:17 +0000 (UTC)
-Date: Thu, 2 Oct 2025 21:09:11 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com,
-	baohua@kernel.org, nphamcs@gmail.com, shikemeng@huaweicloud.com
-Subject: Re: [PATCH 0/3] mm/swap: remove plist swap_active_head
-Message-ID: <aN55dzagMDhZEAQV@localhost>
-References: <20251001043436.41338-1-bhe@redhat.com>
- <CACePvbXjLqcz+Smz+woQEKbGdCP3DwgPYvJfLRLPiuHsv7-q_A@mail.gmail.com>
+	bh=RRwzFhX/zSblPOGaDLHB0woVEnsglEq/W9XsYiPUl50=;
+	b=jU2jLqV3hTk2QqKjlSzsotyAyWNm5PgmQW0j5XY8fRNrgiYJ5rHdE7bh3M3CWL0rZdvWnv
+	+ebTRy3s3usEBOYHQOMmHrIkrjC4VDs01trsVs2tKc2RzznyhSCtwTNehJCg5Bv8V6YRX9
+	LXbYBTorbhVRN5j5dEHZy5A6gOz6bhY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759410735; a=rsa-sha256;
+	cv=none;
+	b=p1PAu8S4hLnZlXIpbBh9+xVXbt9hnR9jYZp65RZfTE6AbeP2qxR3iF/HYH5YzFlZMnh9VQ
+	+DcXFL6u1N8FIra+ucIGzkkNE4BC5QcrDv34EmO1s4OThIEY4Aqj2ocCaqOAwWfBUhukN4
+	rDxtYMVVkUFU1VrA0H7cMOlFxzACiXQ=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=none;
+	spf=pass (imf23.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ccsb730Fzz6L4sd;
+	Thu,  2 Oct 2025 21:09:55 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 68093140426;
+	Thu,  2 Oct 2025 21:12:11 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 2 Oct
+ 2025 14:12:09 +0100
+Date: Thu, 2 Oct 2025 14:12:07 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Raghavendra K T <raghavendra.kt@amd.com>
+CC: <AneeshKumar.KizhakeVeetil@arm.com>, <Michael.Day@amd.com>,
+	<akpm@linux-foundation.org>, <bharata@amd.com>, <dave.hansen@intel.com>,
+	<david@redhat.com>, <dongjoo.linux.dev@gmail.com>, <feng.tang@intel.com>,
+	<gourry@gourry.net>, <hannes@cmpxchg.org>, <honggyu.kim@sk.com>,
+	<hughd@google.com>, <jhubbard@nvidia.com>, <jon.grimm@amd.com>,
+	<k.shutemov@gmail.com>, <kbusch@meta.com>, <kmanaouil.dev@gmail.com>,
+	<leesuyeon0506@gmail.com>, <leillc@google.com>, <liam.howlett@oracle.com>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<mgorman@techsingularity.net>, <mingo@redhat.com>, <nadav.amit@gmail.com>,
+	<nphamcs@gmail.com>, <peterz@infradead.org>, <riel@surriel.com>,
+	<rientjes@google.com>, <rppt@kernel.org>, <santosh.shukla@amd.com>,
+	<shivankg@amd.com>, <shy828301@gmail.com>, <sj@kernel.org>, <vbabka@suse.cz>,
+	<weixugc@google.com>, <willy@infradead.org>, <ying.huang@linux.alibaba.com>,
+	<ziy@nvidia.com>, <dave@stgolabs.net>, <yuanchu@google.com>,
+	<kinseyho@google.com>, <hdanton@sina.com>, <harry.yoo@oracle.com>
+Subject: Re: [RFC PATCH V3 01/17] mm: Add kscand kthread for PTE A bit scan
+Message-ID: <20251002141207.00007b58@huawei.com>
+In-Reply-To: <20250814153307.1553061-2-raghavendra.kt@amd.com>
+References: <20250814153307.1553061-1-raghavendra.kt@amd.com>
+	<20250814153307.1553061-2-raghavendra.kt@amd.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-In-Reply-To: <CACePvbXjLqcz+Smz+woQEKbGdCP3DwgPYvJfLRLPiuHsv7-q_A@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ioOQc21wOZ2GE85PLmbVxLkKhFJdlZdmUAw7bJDWs7M_1759410560
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.15]
+X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 85151140010
+X-Stat-Signature: et19k8jppg1xc1bt4aingeiax1xi74d3
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: EA7EE80019
-X-Stat-Signature: mcsjmu154d8xgnjw3t7cn6eth3djub7m
-X-HE-Tag: 1759410567-463615
-X-HE-Meta: U2FsdGVkX19fzBTLHeajr0kAZb5Igryddo8i0+1sSwuNO2EehApwQkUZY1F9bJhHhSmtH4YU2G3+o5VqEPkZsofPKtSrJ8z5/a4uf7FKYhu4GYbjUzyu5XVB78M/0Qy3x8lCF+KIw5I55iV9t5MotMsjePaxK7FSr6r++ztIw+cQjZBaj3o+8rJqDUQTGnRTVnGaROYwgjkiCp8QyWJB9FJj6B+9ScwugL8n6CUQIIgpYoS/HmpSHQ314vkhtRKEGt3Q1zAvk+VNTGPsplBgPWby40gwoXFuPLv2UCxpfssvYF2+DsmPqOnBodtBmd6nr02kIeazTNZTklCXLtkq8t06OuubqZvgB9oDZBM/vrMLXt/OSVZRZ+odUWmUXaXY1o0dtPseMHXuwVC+XTrMpKvRjosneoHruelpXrgVqGnMkjkOWH6oi7+5PCJk5IPeUgMn/9vlo0c1Pk1goUAZLVl50Cqv+5HkrMUE+Atq6CqOuXIk3sPBGlGXiJo00KkZEIvTruQFsXJaB8vyj4BMfSkGWJrHLxmEQO2f6m3g8Tgx+9dX8D1wG+6Bkb6t566SjLpRM58B7EhpW4KgCuTxP3CCzTQ1TW7uT4oh0SQZSennmVSZNFaR4p3l2uW82JnKfRQNnicmsu/iD5H28wFv8OGLL94joW9UNenGbMJrZujFvkrYF99jtu66sRvor8lhnMin8O38OGyzAKV3uMRPtSO4krBLEo75mzA8PAuCVly4P7ZC/XgOcnhSRwj/jat5N63/Vqf5Qfb0lZk0PsjNw/7I4upi/NZ6sRFdvvvf0LjiVOVng8REMx7Vlw65GcGQTYY1kP02Y7eq+yrM4r20sFiPCqr3KC5b6tpV8q7kqYoTb/l71xLEiaBLToFrL5JVy0g1bue++8lVFtN7/MFkNC40onOig7scrKFtt7GQt/FwReUpB+DKVICg2PHWpnKVan2jyOCWAVu1B2Wr7FO
- lhSmamQA
- UmlOYjiPSqC7GX1UIG7so4jM/04TOKlIsXojnhf8iO60TUcrPGG44e4IVfyvLGt3tgybSKrChmV8N27wz8WCPPRUQMV26Ksp8QcuCLEhLlRaDVSk=
+X-HE-Tag: 1759410734-92233
+X-HE-Meta: U2FsdGVkX1//eX/Zs/0v3WmNx9zSNjigT1arUooAbFQfMv+1lFcq9FWkYIpwV9/sHWZXpVK9QZam2dmfyuY75erMguqWM7RhBeh8KPqnKJakDiK4sLN63A8Ic8igHBx0eNUo5Sjx8QfPZYz/uzg8r3bcskWnm5/HJG0MqFu1TCFnxFyksWxkDPwYj5yQrIPywLmR08+fQvp/jtu2CkgF5oP1K2z/+xWScj66oRQnqepQKIP7rodGKWX+wmABC9sCQ03gS5IJ7/IR6cD4471T8xdeozDhM4orDOfXe1g58V3abZbkhapft0fiPOk08g7A2NcUbMgh4dtDyghYQCbtnAaxx3GJYeofwV/54R4LWbXPNIULLhS4AQ9dXxISbPuJvWFTN8Elte/fSp4u7dodqaxfIPDY8PgIRD7IV986xE+1LVbMYfQARVfmk5nUKN7htQR7uxSgAw4hW0mA2q1Y84rhmPeDR9xcA49kFTS1Sbx4Id4T/CzfN46sDftMXQbN49byBlOzFc7mHFBe16zJF36PDP7DHpQMVFt27s/uHoSzfQ34EcVQuKbvW0PAlTTrTzuHIV8HLyklopR13JG0R0tiqstVWLvCvaExRBZSQhBMjs8Zytc/hpDxR5ekUfE2mJcOCR3vLS9zbs613NHLDw55lTh77EbNfTu1oj90X/noDz5lUAjDTJsRC1CrNe4tuRaeCkoX8EsvWPrsq1Zgp09GL8lV87OKTmWBrZFL/XYQroSRThbMAxG/GdWsoHGuZOaX3mykPoDz5Uv4Y5r+JEEGXz4xExMB2kaxwpEl7rm1x65UpQ5LzTioXmrA9oPO39Khj2PUs0sS/GhDt0oNOYX/RxK9eNgd4i9BYR0TxY72EI8hkuSLs0exe1iCBWSG5Be3qKEVldxbhPRUWFlLL0YC8fJPLqbPNjpGnngVv0zS/EKD5MSJ4WDPaOB9Q4Z/sLR/YbytQBhRb8yjWhS
+ 0IzoaVhF
+ kCwcgVANG8Xyhl/XjPhwGWdwW+souVRg6/jDN
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,124 +105,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/01/25 at 11:04pm, Chris Li wrote:
-> On Tue, Sep 30, 2025 at 9:34 PM Baoquan He <bhe@redhat.com> wrote:
-> >
-> 
-> Can you please confirm or deny this series is depend on the "[PATCH v3
-> 0/2] mm/swapfile.c: select the swap device with default priority round
-> robin" series.
+On Thu, 14 Aug 2025 15:32:51 +0000
+Raghavendra K T <raghavendra.kt@amd.com> wrote:
 
-Thanks a lot for reviewing this carefully. This series depends on
-patchset [PATCH v3 0/2] mm/swapfile.c: select the swap device with default
-priority round robin" series.
-
+> Also add a config option for the same.
 > 
-> If it is depend on that series, you need to declare that in the
-> beginning, so Andrew will not try to apply it without the depended
-> series.
-
-Sorry, I should have told that clearly at the beginning.
-
+> High level design:
 > 
-> > In mm/swapfile.c, there are two plist variables, swap_active_head and
-> > swap_avail_head. swap_avail_head contains all available (active, not full)
-> > swap_info_structs orderred by priority. While swap_active_head contains
+> While (1):
+>   Scan the slowtier pages belonging to VMAs of a task.
+>   Add to migation list.
 > 
-> Nit: spelling : orderred -> ordered
+> A separate thread:
+>   Migrate scanned pages to a toptier node based on heuristics.
+> 
+> The overall code is influenced by khugepaged design.
+> 
+> Signed-off-by: Raghavendra K T <raghavendra.kt@amd.com>
 
-Thanks.
+Hi Raghavendra,
 
-> 
-> > all active swap_info_structs (active, nor full and full) orderred by
-> 
-> Same here, ordered.
-> 
-> > priority. Earlier, it serves three purposes:
-> >
-> > 1) When swapoff one swap device in the middle, swap devices of priority
-> >    lower than the swapped off swap device will be promoted up value one,
-> >    e.g, I swapped off zram1 of priority '-3', then zram2 promoted to
-> >    have priority '-3', zram3 has priority '-4'. This is done via plist
-> >    swap_active_head.
-> >    - This code has been taken off in
-> >      - [PATCH v3 0/2] mm/swapfile.c: select the swap device with default priority round robin
-> 
-> See above, if there is patch dependency, declare it early.
+A few comments inline.
 
-Agree, will do in future posting.
+Thanks,
 
-> 
-> > # swapon
-> > NAME       TYPE      SIZE USED PRIO
-> > /dev/zram0 partition  16G   0B   -2
-> > /dev/zram1 partition  16G   0B   -3
-> > /dev/zram2 partition  16G   0B   -4
-> > /dev/zram3 partition  16G   0B   -5
-> 
-> I am a bit confused. If the "[PATCH v3 0/2] mm/swapfile.c: select the
-> swap device with default priority round robin" series already change
-> the default priority to -1. How does it get the -2 -3 -4 -5? You seems
-> describe the behavior before that revert series. Can you please
-> clarify.
+Jonathan
 
-In the given example, It demonstrates every device will get +1 priority
-promotion after the swapped off device. 
+> diff --git a/mm/kscand.c b/mm/kscand.c
+> new file mode 100644
+> index 000000000000..f7bbbc70c86a
+> --- /dev/null
+> +++ b/mm/kscand.c
+> @@ -0,0 +1,163 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +#include <linux/mm.h>
 
-I just intended to tell the purposes of swap_active_head in the current
-kernel, since my patches haven't been merged. I also had a feeling this
-description is messy before posting, diddn't expect it could cause these
-confusion.
+Good to pick an order for includes.   Various options, my personal
+preference is alphabetical with groups of linux/* asm/* and local headers.
 
-I should have mentioned this series depends on "[PATCH v3 0/2] mm/swapfile.c:
-select the swap device with default priority round robin" series, then I
-don't need to mention this purpose of swap_active_head, that could make
-the describing easier.
+> +#include <linux/mm_types.h>
+> +#include <linux/sched.h>
+> +#include <linux/sched/mm.h>
+> +#include <linux/mmu_notifier.h>
+> +#include <linux/swap.h>
+> +#include <linux/mm_inline.h>
+> +#include <linux/kthread.h>
+> +#include <linux/string.h>
+> +#include <linux/delay.h>
+> +#include <linux/cleanup.h>
+> +
+> +#include <asm/pgalloc.h>
+> +#include "internal.h"
+...
 
-> 
-> > # swapoff /dev/zram1
-> > # swapon
-> > NAME       TYPE      SIZE USED PRIO
-> > /dev/zram0 partition  16G   0B   -2
-> > /dev/zram2 partition  16G   0B   -3
-> > /dev/zram3 partition  16G   0B   -4
-> 
-> Is that the behavior before your reverting node id for swapfile series?
-> Assume it has patch dependency on the earlier series. Wouldn't better
-> you describe the behavior after the round robin series and how you can
-> do better?
 
-Right, I agree. 
-> 
-> > 2) Find a swap device in swap_active_head when swap off.
-> >    - This can be done through iterating swap_info[] instead. Change is
-> >      done in patch 2.
-> 
-> Can you please clarify what is the benefit of remove plist swap_active_head?
-> e.g. Does it simply the code or make swap code perform better.
+> +static void kscand_wait_work(void)
+> +{
+> +	const unsigned long scan_sleep_jiffies =
+> +		msecs_to_jiffies(kscand_scan_sleep_ms);
+> +
+> +	if (!scan_sleep_jiffies)
+> +		return;
+> +
+> +	kscand_sleep_expire = jiffies + scan_sleep_jiffies;
+> +
+> +	/* Allows kthread to pause scanning */
+> +	wait_event_timeout(kscand_wait, kscand_should_wakeup(),
+> +			scan_sleep_jiffies);
+> +}
 
-After series "[PATCH v3 0/2] mm/swapfile.c: select the swap device with
-default priority round robin", plist swap_active_head is only used in
-swapoff api to scan it to find a swap device according to the device
-name. It can be replaced with scanning swap_info[], and there's no
-efficiency degradation. And we can remove field "struct plist_node
-list;" in struct swap_info_struct, and the relevant handling code which
-is unnecessary. 
+Trivial but more consistent I think to have a blank line here.
 
-> 
-> > 3) Judge if there's any active swap device via __has_usable_swap().
-> >    - This can be done by checking total_swap_pages instead. Change is
-> >      done in patch 1.
-> >
-> > Among them, the purpose 1) is the most important, while it has been
-> > taken off in below patchset. So this patchset removing swap_active_head
-> > sits on top of it.
-> > - [PATCH v3 0/2] mm/swapfile.c: select the swap device with default priority round robin
-> >   - https://lore.kernel.org/all/20250930063311.14126-1-bhe@redhat.com/T/#u
-> 
-> It seems you mean to say this patch series is depend on that PATCH v3 series.
+> +static void kscand_do_scan(void)
+> +{
+> +	unsigned long iter = 0, mms_to_scan;
+> +
+> +	mms_to_scan = READ_ONCE(kscand_mms_to_scan);
+Slightly nicer perhaps as
 
-Yeah, I should have mentioned this at the beginning to make the log
-clearer.
+	unsigned long iter = 0;
+	unsigned long mms_to_scan = READ_ONCE(kscand_mms_to_scan);
+
+> +
+> +	while (true) {
+> +		if (unlikely(kthread_should_stop()) ||
+> +			!READ_ONCE(kscand_scan_enabled))
+> +			break;
+> +
+> +		if (kscand_has_work())
+> +			msleep(100);
+> +
+> +		iter++;
+> +
+> +		if (iter >= mms_to_scan)
+> +			break;
+> +		cond_resched();
+> +	}
+> +}
+> +
+
+> +
+> +static int start_kscand(void)
+> +{
+> +	struct task_struct *kthread;
+> +
+> +	guard(mutex)(&kscand_mutex);
+> +
+> +	if (kscand_thread)
+> +		return 0;
+> +
+> +	kthread = kthread_run(kscand, NULL, "kscand");
+> +	if (IS_ERR(kscand_thread)) {
+
+That looks like the wrong variable to check.
+
+> +		pr_err("kscand: kthread_run(kscand) failed\n");
+> +		return PTR_ERR(kthread);
+> +	}
+> +
+> +	kscand_thread = kthread;
+> +	pr_info("kscand: Successfully started kscand");
+> +
+> +	if (!list_empty(&kscand_scan.mm_head))
+
+You have kscand_has_work() for this.
+
+> +		wake_up_interruptible(&kscand_wait);
+> +
+> +	return 0;
+> +}
+> +
+> +static int stop_kscand(void)
+> +{
+> +	guard(mutex)(&kscand_mutex);
+> +
+> +	if (kscand_thread) {
+> +		kthread_stop(kscand_thread);
+> +		kscand_thread = NULL;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int __init kscand_init(void)
+> +{
+> +	int err;
+> +
+> +	err = start_kscand();
+> +	if (err)
+> +		goto err_kscand;
+This breaks the nice principle of side effect free calls
+on error. If start_kscand() has failed, I'd not really expect to have
+have stop explicitly.   I'm not sure you actually do need to do so.
+
+
+> +
+> +	return 0;
+> +
+> +err_kscand:
+> +	stop_kscand();
+> +
+> +	return err;
+> +}
+> +subsys_initcall(kscand_init);
 
 
