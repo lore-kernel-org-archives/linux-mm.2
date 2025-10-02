@@ -4,234 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9A75CCA470
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 01:15:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0272FCAC5BB
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 01:22:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C58038E0006; Wed,  1 Oct 2025 21:15:23 -0400 (EDT)
+	id 42A4C8E0003; Wed,  1 Oct 2025 21:22:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2FC48E0002; Wed,  1 Oct 2025 21:15:23 -0400 (EDT)
+	id 3B3A98E0002; Wed,  1 Oct 2025 21:22:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1F258E0006; Wed,  1 Oct 2025 21:15:23 -0400 (EDT)
+	id 27B5B8E0003; Wed,  1 Oct 2025 21:22:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A35768E0002
-	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 21:15:23 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 67C731A0316
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 01:15:23 +0000 (UTC)
-X-FDA: 83951406126.26.1B1E5AD
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf30.hostedemail.com (Postfix) with ESMTP id EB0F480013
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 01:15:19 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=hBddSyhO;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=KAAOAY6d;
-	spf=pass (imf30.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759367720;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 10A958E0002
+	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 21:22:12 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B467C85FA7
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 01:22:11 +0000 (UTC)
+X-FDA: 83951423262.16.64E5C7A
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf10.hostedemail.com (Postfix) with ESMTP id D6274C0003
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 01:22:09 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=Oan4Wl1U;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=E1mhSHhy;
+	spf=pass (imf10.hostedemail.com: domain of tglx@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=tglx@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1759368130;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wkrTV8MDIYvmnKrgkZQ0xBaYKJw74WFrfzWQ/F980+s=;
-	b=yX+eVYr03dv0Czf5pONV41vn9hda+11NnY4GRLcNaPFbauen/xw4Xu78E4xY7ErTQCCY9I
-	LNm2Tss5TXVTsQFnQCO5aGTObqKVDTmc26/ey3gzC/iImsTRWxaUxo0h3YXTArW6gMF3wW
-	OlqoSsaG9fZZa/WIa0mUUJxuVzVIi5g=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=hBddSyhO;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=KAAOAY6d;
-	spf=pass (imf30.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1759367720; a=rsa-sha256;
-	cv=pass;
-	b=tHsUFxDnQcyuybuC0qLP3yAXqQwErXqLKfF5PhZpQS5PdoiPiBsgRuBxGWYng11hkt+z8U
-	xE4sM+o1p/El8DL9JrtChTlNAZhlnzNAhHcnDvdPNsy2CKCuVYgYwTEXcauZ/u1tPbXXuJ
-	dWim8JSmz4S3HyUbexwHeLYN3xLk1mQ=
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 591Lg3cW016404;
-	Thu, 2 Oct 2025 01:15:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=wkrTV8MDIYvmnKrgkZ
-	Q0xBaYKJw74WFrfzWQ/F980+s=; b=hBddSyhOxeYvc8OaDqCGVYc+jiZvoWQRpM
-	mjHcCcV5Q4YgfUA4Oyb+t8jFcxrCFGwxEphnaNPsqQfYrFbZawsufB8U1iNswji3
-	019TAvI7p8qHx+m8UB56RXFWercI+p6QTERTzVS7nca9UGcVNhoBBALMeZ4Xk2Zn
-	n+IcvogUXH+5RMCoUoDGF199ZL2mLGnX/gltHs0aHv2KJM+RsHxK7BI5Jfmwncwj
-	PqhbBApZqFRIGhdDOsj/ri35UTz/qs/mrshpc09Zly1mK//T26xr/KlUM3jCf+oE
-	g4+zhH79Ip8pxuUGSjeQ8xp6YLfWZa8pdzykXsZkqYdiNOQ9MYvw==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49gm3bjkb3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 02 Oct 2025 01:15:11 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59204RlH000349;
-	Thu, 2 Oct 2025 01:15:10 GMT
-Received: from sa9pr02cu001.outbound.protection.outlook.com (mail-southcentralusazon11013000.outbound.protection.outlook.com [40.93.196.0])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 49e6cgdh8f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 02 Oct 2025 01:15:09 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=m/ZmGVvC3g30Nf0o2ruLARes9SEdngxtRqwUZom7kwzi5J98xZktEvXsly0fJuMmYGbaLq3mey5GLuhJrrI+22Z+JWbxih1hW4nJXmkd+MpuT2054LVgySMVDSvvJuslpC91vn4UGwEfk+PUeAG0RGAaqMw7MU/TE1qci3uCsDjky1o6B4rIoa9cVRnz15X2OuDIvWdi6NO2OQv0BnW0vR52CNw+g0wlZUjAsuN/U0NQbGuCM8NNPGjCQA4ObNjdnq5kww89SMwvALPKl8ekCWqQU6oS2wxdRffbSkIZKu3+vB2Be+Q2jm4AN1AC6jYvbK47NL47qpa9RxQKcNC0Ag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wkrTV8MDIYvmnKrgkZQ0xBaYKJw74WFrfzWQ/F980+s=;
- b=vW51t0LxR+sgTsZRC5jP+Y1rLB84bJn/XTasm8fYp3d6Qbno23Aw++h9PPSw5oMcvEumAw0+Scg8L+/w7wAi9HwXs+btizXPrkBnt+rWNyaOLeDQ0+HS7ebAjF36fXcY+7iYdHRMxpXGktTJ8ZaKyiGrrIg/OT7R1Axy9kSkrWqS4flYUZ3C1GLsoYGzTkF0woCBl80yt1Mp7mnIX0i7IXhgyIYOeKfQkG2X+c5IQ64S8sAi91yDg9NJBex6HPMvRVPgJHukUSN5kg0d9rzyFiFU1sLkCKV1ttqwAkq0gRA3mv94tusuz/fELYuuXJr4TLHhR6DcP44aWaZwEqSiBg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wkrTV8MDIYvmnKrgkZQ0xBaYKJw74WFrfzWQ/F980+s=;
- b=KAAOAY6d4FeTMeWkg9JEXpJGce/Vbka20FO5vE3OALmSfdqXOpVZSHLlf3NTk98d7p6xZPoo8DiN0d6U8/PWsDHN0uzPevivL09kSnjoAZ7ut4mHM7SaD+L15Ya44Eeu81Xkn5CyelTkeuPnyiwopDeqcN4vEQ01GTUWHupI+Cg=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by CY8PR10MB6612.namprd10.prod.outlook.com (2603:10b6:930:54::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.17; Thu, 2 Oct
- 2025 01:15:07 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::f238:6143:104c:da23]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::f238:6143:104c:da23%7]) with mapi id 15.20.9160.017; Thu, 2 Oct 2025
- 01:15:06 +0000
-Date: Thu, 2 Oct 2025 10:14:54 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
-        peterx@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-        baohua@kernel.org, ryan.roberts@arm.com, dev.jain@arm.com,
-        npache@redhat.com, riel@surriel.com, Liam.Howlett@oracle.com,
-        vbabka@suse.cz, jannh@google.com, matthew.brost@intel.com,
-        joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-        gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
-        usamaarif642@gmail.com, yuzhao@google.com,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org, ioworker0@gmail.com,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v5 1/1] mm/rmap: fix soft-dirty and uffd-wp bit loss when
- remapping zero-filled mTHP subpage to shared zeropage
-Message-ID: <aN3SDmKeVqIXwGfV@hyeyoo>
-References: <20250930081040.80926-1-lance.yang@linux.dev>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250930081040.80926-1-lance.yang@linux.dev>
-X-ClientProxiedBy: SE2P216CA0193.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2c5::17) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	bh=G5HhcgVdGP3xqgtLy3Tc/szbjeC6+qay+6ptLrUyw/k=;
+	b=ptt7szX68rfGngr0s2p+GYt2RLy2CVUBGqiCD2nLTXt1Ua0U1AlJ8INrlWXLk0X8BnVosI
+	+kX/RjqzwEbAt1XmHdY7uW/JVdT+8qH8XGjzJ+MNAoAMQOfUrkaVjVMb2oIiCBggjq2zZp
+	d+weEfODV/Spjpyj1z+5W459UOmFQ94=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759368130; a=rsa-sha256;
+	cv=none;
+	b=NGKyFKdh7CSpREFp+8uNIEItvNxTTIcQI1cpbTEnMrGOEzjiDTn2X1G7S+ho298o+40Kj1
+	XZm3c4qUCi1Qpvg1p99Mm5F+8icGoLQNxc3SHidio0ZaMoaNhyNTFT2ejE1wEVlLLAghT2
+	xwklxha4HUtqDWn0fzxgAKQ6vk6QV4E=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=Oan4Wl1U;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=E1mhSHhy;
+	spf=pass (imf10.hostedemail.com: domain of tglx@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=tglx@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1759368127;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=G5HhcgVdGP3xqgtLy3Tc/szbjeC6+qay+6ptLrUyw/k=;
+	b=Oan4Wl1U0bc9RAq+4m5qU7jk/gvkevlQvjyEZSOi3LdL9rbY0M5FKkEmeJjVBJ/vAbYY5P
+	oeZL4QWBAVH2vtd13z36h0Xm543vJdF3KEHDO9m5/JQsgdFfifO7fO3AW4ZuzDeyfHPQVS
+	oB4Uatsk+W9x6yK3mVHkzoXZy7Q2DZ5syF02Li9EntetXAjudJrnKAA1U1zVObYRFdnVEr
+	vDqUVtGtPMWZBdKtyNCTQzcXMV4WoBqIcToqzXhr9P7BLLZziblMKCQHAVqhSu2ncNcEwc
+	p5LafiONXZXDpEZ6xdtPux2YbOGRUrP4jup0R1QwuHj4RxWuc61QjR3IrJiDpg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1759368127;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=G5HhcgVdGP3xqgtLy3Tc/szbjeC6+qay+6ptLrUyw/k=;
+	b=E1mhSHhy/7wACo/iZUzp2+hwOWkOvXEgLvUtGiJji4IoPtcEpEErLdhf/7zrVGX+5qlREo
+	dHeDEwxFKHlra9Dw==
+To: Gabriele Monaco <gmonaco@redhat.com>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Ingo Molnar <mingo@redhat.com>, Peter
+ Zijlstra <peterz@infradead.org>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>, linux-mm@kvack.org, "Paul E.
+ McKenney" <paulmck@kernel.org>, Gautham R. Shenoy
+ <gautham.shenoy@amd.com>, Florian Weimer <fweimer@redhat.com>
+Subject: Re: [PATCH v2 2/4] rseq: Run the mm_cid_compaction from
+ rseq_handle_notify_resume()
+In-Reply-To: <87tt0k3oks.ffs@tglx>
+References: <87tt0k3oks.ffs@tglx>
+Date: Thu, 02 Oct 2025 03:22:06 +0200
+Message-ID: <87o6qq2j41.ffs@tglx>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|CY8PR10MB6612:EE_
-X-MS-Office365-Filtering-Correlation-Id: e9a5b411-ebb4-4dfd-e3bb-08de01511f77
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?WvkcDUrgeJ5AvH2gpMbbuGszbEqjofhVGyhmmNIOzaPsfsiinr1B5BXg2pEm?=
- =?us-ascii?Q?Pp4TsXzkw9RGQbJhrNEpzB3QtrqYGVMNbV3/SSnchxqKcESdDFv0l5jWpWvN?=
- =?us-ascii?Q?G54AUhGlnJpjh7KhOo8R06Oi241E64rlee5nT3GXZXAL4HFJyDDvzZGWXPCQ?=
- =?us-ascii?Q?l7ttvLyUEWpSND/jHWlmxb5GIASlPe3Y3xVF3MGJ+qlvCAT4AUVC2d4D/Y+i?=
- =?us-ascii?Q?nF5vezTFhNaA4fSFBl6rop25MzumUvHyxVvXj7UV42GAhujOmb5G6hK2Ft2Q?=
- =?us-ascii?Q?OfSjS8nmX5vFZdrm1LE4MvcF5offuxMdxKMdBSOB+97Xb/9y3LeVRvwAPjuJ?=
- =?us-ascii?Q?Fy+GNXq8RO40U5LAEBXBaGuv50HHJnYXo0BBFv5VZQlT+Zl3wSmO71c8AQ8o?=
- =?us-ascii?Q?9DIgdiXscfDwhlV8maQ0s0cUy/b8mypmKg6GAj7zOSRKKOGZylMWlZYElDWd?=
- =?us-ascii?Q?B24cpIAeBiE0QZABisBRX701uWDlRSSOF+jWaEx+nNOUAjgL4k1ckvMjcjt0?=
- =?us-ascii?Q?1czda5c3HeDm9jtJIimctmUClAOiRFennaXhEgKrjeJ6rbeRHBlxJlPBi+sF?=
- =?us-ascii?Q?biGloeBsf/sfScdD7KsLJVArX37BsWkCiBWnVj7ZC07NDGLf4fTN85250xE7?=
- =?us-ascii?Q?BBJvaLhOkIUT5OHUU9z6mzmC1syDyxdWD/8KAAji2m/k4+fxMW1lfqXKnhqt?=
- =?us-ascii?Q?P65sJL4EsQl1wvnEnYMCK7K/Y2sNBE/c7OJPkiZhRq2ewDfi+WwnWGZ+oBMC?=
- =?us-ascii?Q?7TZ4dtrLjLXBlH9s91552RcS/JIfDxWxDGKqhbYYiTIaFvioEZf0WDm//uLI?=
- =?us-ascii?Q?ZqzpmTKAbwMOnj4Llwy+7beAZzruHo9LVR12/qSG/z5NER76PVS/IDkYVZM2?=
- =?us-ascii?Q?WibnaCJ9Yy9kjqWNeQ8GywbCbR+4LoglFU6CptRHUoWrcyrAVJvNc6BCyY+e?=
- =?us-ascii?Q?U3tlkuZHw5eWntIIPFjELhbrZlhsi+jChDuDI+Yp8WscfjxM5jVMDpC6oKvj?=
- =?us-ascii?Q?TCIhcFjzmQscaVg++TAiv76EoUtff54qJMW/GhH7vzjxwfSqRNGqHdeJEP+R?=
- =?us-ascii?Q?rRxBH1wbOdzdHgxr7r0XpZ+6MWGJHCUHNVTaGlFoT8Na0f4l2qIchx+EhHPy?=
- =?us-ascii?Q?W8osIx6ScnUf/SXdSxc9pFx+MDafdgpCyKGGaCmzsxFitDh47dCgWtUu7HgR?=
- =?us-ascii?Q?1tSxr97u2fKwcgsBRuoAk4+vUsZmm9swofJhXn4riN586xyT+wTDe4Lu5DzB?=
- =?us-ascii?Q?NbL4i+btNO7jBcge4e/1wc/aF+F/+YcpuaiB4fZ15TLSFOJ7JaAmmtDDXAeB?=
- =?us-ascii?Q?tolAm0Fq9uqPYGx5sNg8jQYZfdhiJkswEURCEjG/FgBGV1MQNugr3Kh8j/Nx?=
- =?us-ascii?Q?N7GCyf0QthCyUYuihXkYlrhr8OVGKC0UywCglvSiXXFDzXN3qH/F4SYexX+x?=
- =?us-ascii?Q?GcoYrcf2aqLy/joAQVpqBz/aXzT4+U1a?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?/1/c2sgy97Nn7aitIEUj8tSpu/aoFf3j/SUjmEBbk/5Eu9O7hN+HoPL2Q2O2?=
- =?us-ascii?Q?LnIQ/hrpjLs11JuyNJ3jzyH8wlAFhimXvOA2Sx73OHpE9lDPVsZwFrX9qKY5?=
- =?us-ascii?Q?eaTmas6KQVkja6UF66Kp3psu/EqStb65JkqY0yr2G2/2+AiCg5X6r9IerzAx?=
- =?us-ascii?Q?FaGxKgpaNaEXkTnOgzYBw3uIQ6CooGKa50zyTWD/xibQT4We7jvnpe9uLfgm?=
- =?us-ascii?Q?bS6lSANlsVw7q//W+ne3V55SMPxW1RaTmnB9K/5TC6kPCr/giArx4+3Eatjl?=
- =?us-ascii?Q?sUPAJe+nahPcmDtvFtZUUsBNTVdIZ6sLq1Cimc+rlivtR0SR24+Ht9ej+t/f?=
- =?us-ascii?Q?K+LRbPJHQk15wdJs4koNE76MC7ODkbPXSfupP+KshjYpKjhtHo4loJhWGicN?=
- =?us-ascii?Q?HY2p/WP2ibpPkrZUhe7FZDWkRjOFnzRK8NsVR4AODR+7YNZWIufiwj06hnDy?=
- =?us-ascii?Q?m3nWjH0+nFJT3cVMb3BJogM6O8lYFxoHnYVdDHmsu5zldsNxx8PH7kNm4Sz/?=
- =?us-ascii?Q?9ssgT0iaaCDF+1fmaMUBljXv+lEsKNDAWbGntX2Pa+OV2FBCrFfQcFud5bNj?=
- =?us-ascii?Q?dwwqQQTGNxqjwIJ282hIxN7bT5y5nbAtl7pG/lnfVShIGzPrXGblB8GegqzQ?=
- =?us-ascii?Q?eUcQ6zr5TxQiFaMy/SHEy3YEmpt5SLIqlpmgOCpy550sSChuAOm8nBhCMWlx?=
- =?us-ascii?Q?3KABm1ws714l+tqvEmR7oT03F7mJapgAc4B7yXXFsoTC9MG47wMVPPdCTBmZ?=
- =?us-ascii?Q?cqEgf6rkYlVPF/ix/FF9xZ5wrX+HU/GytaI45fN/PsEvHdYA0WwwyMblezKT?=
- =?us-ascii?Q?NvkxojMQ12EvRHDAltF7PLu+z3jKotIvU/mqW6PMNGfMLuw7cu7cl3+MiPWx?=
- =?us-ascii?Q?6OjlgDF+GRXV55LAqn1OS+vmGHxWlgOtXVT78rnPkOtPPLPPTWXqAYx50XTK?=
- =?us-ascii?Q?SfJOoGX+xRet7s+gFZSKfJuQtPGemxEvESNdH3JLpzwDBEzPm6LFHzfpHzuL?=
- =?us-ascii?Q?8vn+YB3UIEe0gQ0qzBNc5L/eMqpknvy3+aCuN//no8vzVGdBmBM3/bxdWVd6?=
- =?us-ascii?Q?AEbENzFsloPOnkkxLd9h2F6URNAaFPmN06oSr843OCY6tnOw3tBHtuEanU9M?=
- =?us-ascii?Q?8+AnvRPN9lx/0IaT5ebD9oMuN8PDkMJaQjz10wBpf9Rmz8jvUpsyPBVh5nkf?=
- =?us-ascii?Q?e1QHH+9Pu0GAasoqMAja488URM6vW5UqRFImG68y74BB9o3/cDKyrvm4Dmmq?=
- =?us-ascii?Q?hFSyYoovI82v1iyy8LRzHpYwnoWYICKOoPtvOhJ7I6k1NHTOmNdHsSHK9gcU?=
- =?us-ascii?Q?dHTq1mQznqWf5qcCzgEVMkKQ/yjb4TqqO74sjpT9C2vgIXpo6mE5kNXZLvCb?=
- =?us-ascii?Q?rEqUO0ZVWVcazrbXSHtY/2Rj+zBw+L/gU+qFknnbx7jCM7LwxU4Zz5yngNpv?=
- =?us-ascii?Q?AgRIpj6hNF4YN61Q3n4t+j+dj0Shzq4ImwdubOKWt9LcmgB+iGGLWyWPKBNK?=
- =?us-ascii?Q?Z7m97Uadsa+h1jU24ArRJYaC1h6O2ftXpTEV0DoHODnmsrxOayh3u5HPWQIw?=
- =?us-ascii?Q?lPdgS5wSE8Awu6whCVfz11j5mWLIrVMmAQ1OoE2/?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	BEfT2VwM55XGwYO46Gft8mdhrkb+UWkwA8st5yhMrnDvdM9qzKeuonwwv+aAC/BlE0pYHO5H1hXhPSye4tSssbr0dz1i0ub7cyQSWnwFpnr/xCrAdSkiQWCnjDwp0WPHZUnnTttB66sgPzaYdUainrVv14zM9d2IwVmmRX4KV1WDFvJBCb16zAtU8ftM+XsNkjzlJ9hDjjM/luZHdVCiruLXdUfkiznLz4qzVgX4RCqXZDo9AQn3utGZFLJuingZCooMENpKbgagGN+zBsdfb0v+l0oObqbAqShWc/j4JncGfoTWMoF3IGYNJukJ5AXL5J8SyGrciTjzefCcYtnTEnhlnLJ1IB5xA3xQYdyOybAnhxpcpVRIrLFVjo3IyHrJDuP1cTUjKMWNvq71pD0tps7MRXbIfXRQOZ6ACaBk5W1bd6ZpVqhnTzvjHgvb4lo4QvY5zO/u1KP80tEx14QiXz4pHEJizpx5RHQGYLvInvi2acNs/CKxGJ55Zd8qvEnBXvFVycna3ev/CQaLZXd8xI2Iwt5OMs4ALznfLe0aFtvLKxFzUFk3dcqAB/+9kGIkCw002k9QbGcYioCOf4ggaWEajS06i55X6a9JPDipJz4=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e9a5b411-ebb4-4dfd-e3bb-08de01511f77
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2025 01:15:06.7867
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NmdLomi7iTt8C/zLw4qIFvXCN///CVt2sT/3X8PA+jmtBFHu0gr/WElcENfwERHXcyDk9WzVNUaSTZ1BuR0IOQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR10MB6612
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-01_07,2025-09-29_04,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=754
- phishscore=0 mlxscore=0 suspectscore=0 adultscore=0 spamscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2509150000 definitions=main-2510020009
-X-Proofpoint-GUID: -wegKgRID_kNnutkTgAU_qJpPOYbqu0V
-X-Authority-Analysis: v=2.4 cv=GsJPO01C c=1 sm=1 tr=0 ts=68ddd21f b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=x6icFKpwvdMA:10 a=GoEa3M9JfhUA:10 a=VwQbUJbxAAAA:8 a=20KFwNOVAAAA:8
- a=7CQSdrXTAAAA:8 a=yPCof4ZbAAAA:8 a=bqQlsaOvPmgy4kHRsZoA:9 a=CjuIK1q_8ugA:10
- a=a-qgeE7W1pNrGK8U0ZQC:22 cc=ntf awl=host:12089
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTMwMDE2MiBTYWx0ZWRfX0Sv9uTvFfIrl
- s0CZyeks1ZfcObgaB6mHZPDAeZ5zJJLufOXqJbAbktgJbaknxh2LkkvnGBIFWrKqxu1noKpxOWa
- xm267yeDKzZYE0hqCbTlJqdzob4Oc4RvgqX7VD076nKaJMYgVu/iFrycWUMIW6cfc+Sl7N2EOJN
- t4QgLHybVYWcWyr+5R7hZ/hR6P8529vRO5AjYV14ail7XKgViUKZdRuwL6KCSXeOCX/rrKFGC24
- 7SYrv1ZUwvqPcIOupRhyflFZ8GLZz5uy7ja0pAOydu0P9eXAVkgZXyCXNqvLoEcro79cQ4jfaBi
- EKkPXZ5KKGfGuRNw/qm9RoFsF1aytKSuRHvfwyn3PasyOsBZHJITNiEnYkpVFxt0/TayfM4b9vt
- TmIa5JhLcdN+3YxeXbOPmw4UekRMFKgdaaX2bXWcVy9bhamRz50=
-X-Proofpoint-ORIG-GUID: -wegKgRID_kNnutkTgAU_qJpPOYbqu0V
-X-Rspamd-Queue-Id: EB0F480013
+Content-Type: text/plain
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D6274C0003
+X-Stat-Signature: 3awruuh6m76zy7qmt7d93zg3dbybf138
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: os3pixexrn6hatgp4ksuxnemsdn3b14f
-X-HE-Tag: 1759367719-116704
-X-HE-Meta: U2FsdGVkX1/dbKADTtFdGSVoVfKhR+/bTTVdF+RFVcxJne/sYKqGpf0lCzhA0wNDMz0QghTpKzTyX/3NGj6n9tSXEyoH8AtJ3sVE9ODxPmhy9VO5XXl3TPhaNQO6iAD6d1LgGgzeUra+r0/kVQEwqVAigXYXLKMu/J+/BpZcERWSa9wmvd5BkFDY8HnlAHLqvF2NJheZcPGBe8Vimuz7vK6eTMS0kCwJAZt6uKFQMkdvQiRwd7EqfifhtFIPqaptkCd5Kytfbuh35LmsMynWKrBQMPTs+wLvJdFs3iRRUyVAGX/4yk/b4jAQba74MhCCF1DiyubTCcGbqnT3pUW2AlOcHmFLKtEjlLNnM5lMgiIeBZKpu1I85XdYUGoaGtvSXb4o0D72YWNxa3BXhrCaD16o1Z0RXP6udWBxGpMdw5eqvVnWSxIPxAd0tdA02C8PcrHld0RZkTRTQP/9JWyTVXtSrXfosK6yceMW3eIoLkb3OalJ0Gc3MczFb/Ae4pDT6HMVjE0vktaLFKwTFpDUnx3uFdIBnQvTzDW2iDtXBH+vGEDkANWgUMr6G/0nSWeDLg35bK8qp2DgduSPXrY1YRLe2WmxSOsiUtuqMCmETOO9GwIUh8o/QwWw8tCyywAX/GdS/q5C99yKYtF7+rHM21Fp/sh6AJtxJud6as2z92zZ1hbGq21W1jaqgUKWzz2VcRsa5zxwsCqr4S/TmJQHyDLm1GaetTSH7HvmMTA0Zu8gFzZyHCFtQVcst/tyubKMczlssiti4IXBwnpMyKf5nleODysm4a6p5VuykfDvOdbtB/aJumjbGJ5Ur0l7KTJamUsMQrQBYHSeIjWl/DAhR9kFONqJI7ccN0O15b6cjtQxBb0u5tpmmnL9FvWIRNRSoHJEIVDQZfvAYXjQ0kqttJYdUX6nkirLSQIJ86oVy/6GH2qQbTj7eed3A2o9adAucpJtDxlSHAzn3JiaqKv
- d8GoUeoP
- BWEA/A+wPDbs2mSx85yjmadtsQt/CZxhvFE5G3EBHIRdffnBnejPddDin1vhI29atbRGVE1MHSOPClXtqoZ3OpVnbk1vlN8vJ+R6XyhplBRaaS1koHVmnzyC6ZTD8Xf8M1LfAHXQ3fvAbXii/5juxUsLdoy/VxciA8nK2wzPcN953OAeFW/FRjahKiT4+Y8lYwxCvWUGg8+FnLHhyCUjLhapkvUdhKQcsmVycXORBukGhcNyFjWOV5i43kLCgbuOV/SjOpYuZQ29kQrNIkRoP6xIB1W5AWb6ZpBBg9dKzhLd0GR9orO25eX3fEu1t7uqXfAkoPli4Uy/4JlJXs9/o9Hn7p83pP51QUREtWM56yW3NKwqsHzDIBXBZjQVQRWjfYxZCXSaxMb1XTwGfrnwPkZFeR3zS70AlIEbEiU+ZSoHJanhWke5lF0etmPTsQ2W5VLytqYiwbI3F0ny7zarfRKfaoQBk7lQ1X+KP3bsMftvABmJqauUl5FZ1fc1Vq56u8QRTU1EgZepg4FXwkEEOxr8oiZpiuTtMlGakWGftaTW7PEmjIaQiUU48JJWoAnM4Uq2nssC/OETCeVmWd+iCvmxWGnkEpLOU9the8q5Vf78ItaME8WnN8LnO7+aRD2Ds1EaKb8uMaALWOjfrareqbqsWjd/nbLpf8OfexcKwauCNXDtMxTpx9Q4tho5Fba4MAkobxO9quOUMy0kRvf4eCw7S6yezZByMSuf67hrvvXZvGb751BXBjujfog3VGT6JJQVR/J9AxlErlB636Nkk5ICYQTp/RHx4GyViB0oqS48LEPC7M524X8iMPjLLjErxJRIXMtWDvwaZ5io+I20uybnOzduKPjKpF32dg2V7cbma+Xw=
+X-HE-Tag: 1759368129-809507
+X-HE-Meta: U2FsdGVkX19BelPz2poMtQnaFhGVRfFD73UScRlpohcBYL3VqAZNkh7L9+EAqZbid6Up4OQUPZSTBNfwcMjKggy0QaxDq704nJPT5ha8WpzKKJyjhT1kZJz3s1OmxbDpGT02hVFZ6AbcJN+DxfRZzSebYka/DmTkUpI/9QMiUiKVZ7Y+TgpfDAIHPrkihJBLDigQpyAIOmpSyS/V1QKeYtujoXHvYnpl9Mik/jJVdTeqGzrqKV+mzCyJm9V7R4x3SEDtN3aVt/mfCKF5tu4uglZuDmFTuz4s/Y8bbsn6I5eXxZR56ABruE5iLZhvBJN3/4qDcWi1HvWpf+Tt5mmd0+o3whCwIllwNQ8d1CKomxiZrZqz6rNkybg0JVEr77ltNFmEbTfdVYvQwNn8dLucPoJnvQjmrz4B2iDFcQ3y7PO6u2dT9qH/hyNs7GiJJFEy8R48oummbzVLrDyVMgW67qQYEtmokQNM6jIjTLkt9OhLWpxtbA+Kg5yRRWT/hPT8TeDql6EFMozrrz+p6qJdRwOHjMpB9/GviX/de0WitNA7Oyl+8X8iXKEZph8Ga57l4vIT43gY09ukz8+5f3PMFxHc89DPA9OdKwcGG8ZLBQ41s9C3hjwmRO0PwjY+4l389u5EsPayYXps71MEAMjBpJv7+k0ggFqm+gKLAoCs6RhSRR7CnzY/wqZ+ROcmtkNzuOwhsFUe4Ccn0fvLpYu18lySVSpvOis+AjqEZnn8wWnkyYFIT2dkgEtjj6C+8f2icMOX9ybt0GMC7X+iNL5yhfoKZY2If87jLQrgrc+qxnGjyNJOoJE9yGjP/wlNgJCzuaR0VZ3EOeWEDvJvL35jRv6RhL+kP3Z4d5He75kADaT2Aty7ABZIQVAFBflZjk511Fu+POjXUWI4DqbxCmsVPrQnNDf1MV9FVjKfMDrn9ty/hDOi6XaE9BmrOdYEFIYhgFxKupMXyPyYCM5qXO5
+ F1qAg8LL
+ 4VNWMrXTqmgOIK6uy//oYCJvj3dAHrHqPjMFg9Aq/CYJGtCXtQweEKmqjRwJYnMLMdXLzXeFkdDrW9lwNB5ZHAFSRWRrYSCqR+S4jIFN5xMq1sHAU1n9crpFRs73WAhBnZt3zlOJViJ0ZLwS2THnyo/rRgg1oSuslTyA1+y3Mus/aP00q1dp8nKQk7QHWEWvXSYUNdEgVrDiKVatDbXUBhlVdDgA5bMEVI0tb8hE7qm9LJkl5OwcZTw08XA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -240,38 +101,398 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 30, 2025 at 04:10:40PM +0800, Lance Yang wrote:
-> From: Lance Yang <lance.yang@linux.dev>
-> 
-> When splitting an mTHP and replacing a zero-filled subpage with the shared
-> zeropage, try_to_map_unused_to_zeropage() currently drops several important
-> PTE bits.
-> 
-> For userspace tools like CRIU, which rely on the soft-dirty mechanism for
-> incremental snapshots, losing the soft-dirty bit means modified pages are
-> missed, leading to inconsistent memory state after restore.
-> 
-> As pointed out by David, the more critical uffd-wp bit is also dropped.
-> This breaks the userfaultfd write-protection mechanism, causing writes
-> to be silently missed by monitoring applications, which can lead to data
-> corruption.
-> 
-> Preserve both the soft-dirty and uffd-wp bits from the old PTE when
-> creating the new zeropage mapping to ensure they are correctly tracked.
-> 
-> Cc: <stable@vger.kernel.org>
-> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Suggested-by: Dev Jain <dev.jain@arm.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Reviewed-by: Dev Jain <dev.jain@arm.com>
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
-> ---
+On Tue, Sep 30 2025 at 00:01, Thomas Gleixner wrote:
+> On Wed, Sep 24 2025 at 17:22, Gabriele Monaco wrote:
+> I'm definitely not claiming that it will hold up in real wider testing,
+> but those initial results tell me that this is definitely more
+> worthwhile to explore further than trying to apply hacky bandaids to the
+> existing implementation.
+>
+> There are some rough edges in it:
+>
+>   - the above #A -> #B -> #C allocation order might be not ideal.
 
-Looks good to me,
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+And actually it is not for the case where there is a massive back to
+back scheduling of threads which share the mm because that makes the
+cidmask operations contended. Thanks to Mathieu and Peter for pointing
+it out.
 
--- 
-Cheers,
-Harry / Hyeonggon
+Though it actually needs a micro benchmark to see it in perf. Neither
+hackbench in threaded mode nor other obnoxious test cases show it.
+
+But after trying a few approaches and utter frustration I decided to
+ignore it for a while and then look at it with a fresh mind again. The
+solution was there in plain sight as the current implementation does
+something similar in the middle of the maze:
+
+  If the scheduled out (previous) and the scheduled in (next) task share
+  the mm, then just inheriting the CID from the previous task w/o
+  touching the CID mask makes that prominent cpumask fiddling in perf
+  top go away completely.
+
+With that the overhead of __schedule() in perf top actually becomes
+smaller than with the original base implementation (rseq/perf branch).
+That's on bare metal with hyperthreading enabled.
+
+           Intel SKL               AMD Zen3
+CPUs:      112                     256      
+base:      5.1% __schedule         4.4% __schedule
+patch-v1: 10.2% __schedule        11.2% __schedule 
+patch-v2:  4.9% __schedule         3.8% __schedule
+
+Cool, right?
+
+But then I really have reached the limits of my performance testing
+abilities. Any benchmark I threw at the lot and especially a simple
+malloc comparison benchmark:
+
+      https://github.com/f18m/malloc-benchmarks
+
+which runs the benchmark magic against various malloc libraries, gives
+me incomprehensible results, which vary from run to run on the same
+kernel and end up in both directions of improvement or regression.
+
+The malloc-benchmark seems to amplify the improvements/regressions
+around the scalability points which are on the mainline base line
+already, so I assume that's some weak spot of those libraries.
+
+Anyway, I've applied the delta patch below to my devel branch:
+
+     git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git rseq/cid
+
+I'd really appreciate help from people who actually have the relevant
+benchmarks and know how to do actually reproducible evaluations and
+comparisons.
+
+The interesting evaluation points are:
+
+    1) upstream Linus
+
+and then the commits in
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git rseq/cid
+
+    2) 1822acbae2c9 ("rseq: Switch to TIF_RSEQ if supported")
+
+       which is the big rseq rework
+
+    3) a769dbb7a22a ("sched: Simplify MM CID management")
+
+       the v1 hack
+
+    4) abd407e145f2 ("sched: More CID hackery")
+
+       the below
+
+Thanks,
+
+        tglx
+---
+Subject: sched: More CID hackery
+From: Thomas Gleixner <tglx@linutronix.de>
+Date: Wed, 01 Oct 2025 21:38:48 +0200
+
+Add content here...
+
+Not-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+---
+ include/linux/mm_types.h |   41 ++++++++++++++++++++++-------------------
+ include/linux/sched.h    |    4 +---
+ kernel/fork.c            |    1 +
+ kernel/sched/core.c      |   36 +++++++++++++++++++-----------------
+ kernel/sched/sched.h     |   33 +++++++++++++++++++++++++--------
+ kernel/signal.c          |    4 ++--
+ 6 files changed, 70 insertions(+), 49 deletions(-)
+
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -919,7 +919,7 @@ struct vm_area_struct {
+ #define vma_policy(vma) NULL
+ #endif
+ 
+-struct mm_cid {
++struct mm_cid_pcpu {
+ 	unsigned int cid;
+ };
+ 
+@@ -977,27 +977,23 @@ struct mm_struct {
+ 
+ #ifdef CONFIG_SCHED_MM_CID
+ 		/**
+-		 * @pcpu_cid: Per-cpu current cid.
+-		 *
+-		 * Keep track of the currently allocated mm_cid for each cpu.
+-		 * The per-cpu mm_cid values are serialized by their respective
+-		 * runqueue locks.
++		 * @pcpu_cid: Per-cpu CID storage
+ 		 */
+-		struct mm_cid __percpu *pcpu_cid;
++		struct mm_cid_pcpu __percpu *pcpu_cid;
+ 		/**
+ 		 * @nr_cpus_allowed: Number of CPUs allowed for mm.
+ 		 *
+-		 * Number of CPUs allowed in the union of all mm's
+-		 * threads allowed CPUs.
++		 * Number of CPUs allowed in the union of all mm's threads
++		 * allowed CPUs. It only grows, but can never shrink.
+ 		 */
+ 		unsigned int nr_cpus_allowed;
++		unsigned int mm_cid_users;
++		unsigned int mm_max_cid;
++
+ 		/**
+-		 * @cpus_allowed_lock: Lock protecting mm cpus_allowed.
+-		 *
+-		 * Provide mutual exclusion for mm cpus_allowed and
+-		 * mm nr_cpus_allowed updates.
++		 * @mm_cid_lock: Lock protecting the above
+ 		 */
+-		raw_spinlock_t cpus_allowed_lock;
++		raw_spinlock_t mm_cid_lock;
+ #endif
+ #ifdef CONFIG_MMU
+ 		atomic_long_t pgtables_bytes;	/* size of all page tables */
+@@ -1332,19 +1328,19 @@ static inline void mm_init_cid(struct mm
+ 	int i;
+ 
+ 	for_each_possible_cpu(i) {
+-		struct mm_cid *pcpu_cid = per_cpu_ptr(mm->pcpu_cid, i);
++		struct mm_cid_pcpu *pcpu_cid = per_cpu_ptr(mm->pcpu_cid, i);
+ 
+ 		pcpu_cid->cid = MM_CID_UNSET;
+ 	}
+ 	mm->nr_cpus_allowed = p->nr_cpus_allowed;
+-	raw_spin_lock_init(&mm->cpus_allowed_lock);
++	raw_spin_lock_init(&mm->mm_cid_lock);
+ 	cpumask_copy(mm_cpus_allowed(mm), &p->cpus_mask);
+ 	cpumask_clear(mm_cidmask(mm));
+ }
+ 
+ static inline int mm_alloc_cid_noprof(struct mm_struct *mm, struct task_struct *p)
+ {
+-	mm->pcpu_cid = alloc_percpu_noprof(struct mm_cid);
++	mm->pcpu_cid = alloc_percpu_noprof(struct mm_cid_pcpu);
+ 	if (!mm->pcpu_cid)
+ 		return -ENOMEM;
+ 	mm_init_cid(mm, p);
+@@ -1363,6 +1359,13 @@ static inline unsigned int mm_cid_size(v
+ 	return 2 * cpumask_size();	/* mm_cpus_allowed(), mm_cidmask(). */
+ }
+ 
++static inline void mm_update_max_cid(struct mm_struct *mm)
++{
++	unsigned int max_cid = min(mm->nr_cpus_allowed, mm->mm_cid_users);
++
++	WRITE_ONCE(mm->mm_max_cid, max_cid);
++}
++
+ static inline void mm_set_cpus_allowed(struct mm_struct *mm, const struct cpumask *cpumask)
+ {
+ 	struct cpumask *mm_allowed = mm_cpus_allowed(mm);
+@@ -1370,10 +1373,10 @@ static inline void mm_set_cpus_allowed(s
+ 	if (!mm)
+ 		return;
+ 	/* The mm_cpus_allowed is the union of each thread allowed CPUs masks. */
+-	raw_spin_lock(&mm->cpus_allowed_lock);
++	guard(raw_spinlock)(&mm->mm_cid_lock);
+ 	cpumask_or(mm_allowed, mm_allowed, cpumask);
+ 	WRITE_ONCE(mm->nr_cpus_allowed, cpumask_weight(mm_allowed));
+-	raw_spin_unlock(&mm->cpus_allowed_lock);
++	mm_update_max_cid(mm);
+ }
+ #else /* CONFIG_SCHED_MM_CID */
+ static inline void mm_init_cid(struct mm_struct *mm, struct task_struct *p) { }
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1405,9 +1405,7 @@ struct task_struct {
+ #ifdef CONFIG_SCHED_MM_CID
+ 	int				mm_cid;		/* Current cid in mm */
+ 	int				last_mm_cid;	/* Most recent cid in mm */
+-	int				migrate_from_cpu;
+ 	int				mm_cid_active;	/* Whether cid bitmap is active */
+-	struct callback_head		cid_work;
+ #endif
+ 
+ 	struct tlbflush_unmap_batch	tlb_ubc;
+@@ -2299,7 +2297,7 @@ static __always_inline void alloc_tag_re
+ void sched_mm_cid_before_execve(struct task_struct *t);
+ void sched_mm_cid_after_execve(struct task_struct *t);
+ void sched_mm_cid_fork(struct task_struct *t);
+-void sched_mm_cid_exit_signals(struct task_struct *t);
++void sched_mm_cid_exit(struct task_struct *t);
+ static inline int task_mm_cid(struct task_struct *t)
+ {
+ 	return t->mm_cid;
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -2449,6 +2449,7 @@ static bool need_futex_hash_allocate_def
+ 	exit_task_namespaces(p);
+ bad_fork_cleanup_mm:
+ 	if (p->mm) {
++		sched_mm_cid_exit(p);
+ 		mm_clear_owner(p->mm, p);
+ 		mmput(p->mm);
+ 	}
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -10408,44 +10408,46 @@ void call_trace_sched_update_nr_running(
+  * When a task exits, the MM CID held by the task is not longer required as
+  * the task cannot return to user space.
+  */
+-void sched_mm_cid_exit_signals(struct task_struct *t)
++void sched_mm_cid_exit(struct task_struct *t)
+ {
+ 	struct mm_struct *mm = t->mm;
+ 
+ 	if (!mm || !t->mm_cid_active)
+ 		return;
+ 
+-	guard(preempt)();
++	guard(raw_spinlock_irq)(&mm->mm_cid_lock);
+ 	t->mm_cid_active = 0;
+ 	if (t->mm_cid != MM_CID_UNSET) {
+ 		cpumask_clear_cpu(t->mm_cid, mm_cidmask(mm));
+ 		t->mm_cid = MM_CID_UNSET;
+ 	}
++	mm->mm_cid_users--;
++	mm_update_max_cid(mm);
+ }
+ 
+-/* Deactivate MM CID allocation across execve() */
+-void sched_mm_cid_before_execve(struct task_struct *t)
+-{
+-	sched_mm_cid_exit_signals(t);
+-}
+-
+-/* Reactivate MM CID after successful execve() */
+-void sched_mm_cid_after_execve(struct task_struct *t)
++void sched_mm_cid_fork(struct task_struct *t)
+ {
+ 	struct mm_struct *mm = t->mm;
+ 
+-	if (!mm)
+-		return;
++	WARN_ON_ONCE(!mm || t->mm_cid != MM_CID_UNSET);
+ 
+-	guard(preempt)();
++	guard(raw_spinlock_irq)(&mm->mm_cid_lock);
+ 	t->mm_cid_active = 1;
+-	mm_cid_select(t);
++	mm->mm_cid_users++;
++	mm_update_max_cid(mm);
+ }
+ 
+-void sched_mm_cid_fork(struct task_struct *t)
++/* Deactivate MM CID allocation across execve() */
++void sched_mm_cid_before_execve(struct task_struct *t)
+ {
+-	WARN_ON_ONCE(!t->mm || t->mm_cid != MM_CID_UNSET);
+-	t->mm_cid_active = 1;
++	sched_mm_cid_exit(t);
++}
++
++/* Reactivate MM CID after successful execve() */
++void sched_mm_cid_after_execve(struct task_struct *t)
++{
++	if (t->mm)
++		sched_mm_cid_fork(t);
+ }
+ #endif /* CONFIG_SCHED_MM_CID */
+ 
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -3518,7 +3518,7 @@ static inline void init_sched_mm_cid(str
+ 		return;
+ 
+ 	/* Preset last_mm_cid */
+-	max_cid = min_t(int, READ_ONCE(mm->nr_cpus_allowed), atomic_read(&mm->mm_users));
++	max_cid = READ_ONCE(mm->mm_max_cid);
+ 	t->last_mm_cid = max_cid - 1;
+ }
+ 
+@@ -3531,7 +3531,7 @@ static inline bool __mm_cid_get(struct t
+ 	if (cpumask_test_and_set_cpu(cid, mm_cidmask(mm)))
+ 		return false;
+ 	t->mm_cid = t->last_mm_cid = cid;
+-	__this_cpu_write(mm->pcpu_cid->cid, cid);
++	__this_cpu_write(t->mm->pcpu_cid->cid, cid);
+ 	return true;
+ }
+ 
+@@ -3540,7 +3540,7 @@ static inline bool mm_cid_get(struct tas
+ 	struct mm_struct *mm = t->mm;
+ 	unsigned int max_cid;
+ 
+-	max_cid = min_t(int, READ_ONCE(mm->nr_cpus_allowed), atomic_read(&mm->mm_users));
++	max_cid = READ_ONCE(mm->mm_max_cid);
+ 
+ 	/* Try to reuse the last CID of this task */
+ 	if (__mm_cid_get(t, t->last_mm_cid, max_cid))
+@@ -3568,14 +3568,31 @@ static inline void mm_cid_select(struct
+ 	}
+ }
+ 
+-static inline void switch_mm_cid(struct task_struct *prev, struct task_struct *next)
++static inline bool mm_cid_inherit(struct task_struct *prev, struct task_struct *next)
+ {
+-	if (prev->mm_cid_active) {
+-		if (prev->mm_cid != MM_CID_UNSET)
+-			cpumask_clear_cpu(prev->mm_cid, mm_cidmask(prev->mm));
+-		prev->mm_cid = MM_CID_UNSET;
++	unsigned int cid = prev->mm_cid;
++
++	if (!prev->mm_cid_active || cid == MM_CID_UNSET)
++		return false;
++
++	prev->mm_cid = MM_CID_UNSET;
++
++	if (!next->mm_cid_active || prev->mm != next->mm ||
++	    cid >= READ_ONCE(prev->mm->mm_max_cid)) {
++		cpumask_clear_cpu(cid, mm_cidmask(prev->mm));
++		return false;
+ 	}
+ 
++	next->mm_cid = next->last_mm_cid = cid;
++	rseq_sched_set_task_mm_cid(next, cid);
++	return true;
++}
++
++static inline void switch_mm_cid(struct task_struct *prev, struct task_struct *next)
++{
++	if (mm_cid_inherit(prev, next))
++		return;
++
+ 	if (next->mm_cid_active) {
+ 		mm_cid_select(next);
+ 		rseq_sched_set_task_mm_cid(next, next->mm_cid);
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -3125,7 +3125,7 @@ void exit_signals(struct task_struct *ts
+ 	cgroup_threadgroup_change_begin(tsk);
+ 
+ 	if (thread_group_empty(tsk) || (tsk->signal->flags & SIGNAL_GROUP_EXIT)) {
+-		sched_mm_cid_exit_signals(tsk);
++		sched_mm_cid_exit(tsk);
+ 		tsk->flags |= PF_EXITING;
+ 		cgroup_threadgroup_change_end(tsk);
+ 		return;
+@@ -3136,7 +3136,7 @@ void exit_signals(struct task_struct *ts
+ 	 * From now this task is not visible for group-wide signals,
+ 	 * see wants_signal(), do_signal_stop().
+ 	 */
+-	sched_mm_cid_exit_signals(tsk);
++	sched_mm_cid_exit(tsk);
+ 	tsk->flags |= PF_EXITING;
+ 
+ 	cgroup_threadgroup_change_end(tsk);
+
+
+
+
+
+
+
+
+   
+
 
