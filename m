@@ -4,124 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9298CAC5B0
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 20:46:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B98ECAC5B8
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 20:46:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE9F38E0002; Thu,  2 Oct 2025 16:46:41 -0400 (EDT)
+	id 174778E0005; Thu,  2 Oct 2025 16:46:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A73288E0001; Thu,  2 Oct 2025 16:46:41 -0400 (EDT)
+	id 0D6468E0001; Thu,  2 Oct 2025 16:46:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 961768E0002; Thu,  2 Oct 2025 16:46:41 -0400 (EDT)
+	id EE0E88E0005; Thu,  2 Oct 2025 16:46:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FFCE8E0001
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 16:46:41 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 18FD613B912
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 20:46:41 +0000 (UTC)
-X-FDA: 83954357802.19.F7E995F
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 40C9FA000D
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 20:46:39 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="PqxbTT/u";
-	spf=pass (imf25.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.42 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id D58C68E0001
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 16:46:42 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9D5651A068A
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 20:46:42 +0000 (UTC)
+X-FDA: 83954357844.18.CFCD263
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C4BF71C0014
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 20:46:40 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dCeQUFXC;
+	spf=pass (imf21.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759437999;
+	s=arc-20220608; t=1759438000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ay/9vezBY6puwDg2MjgpOWz9DbnBpP+YhoVm026fczg=;
-	b=5546o58/GVTBHCaSk7ophWMrKJlnN6qLsFJRGkyEEXGQg1yYVunEXewFZKKzRSsUrInPyU
-	FiKez0OnYzGK1F1wQRK9J9M930+5TlajyWtuP6VRq4qRkbJy4rJFrj916AdIxtf7dULati
-	nIfMiLxLaFfxtYlh7yVOjAfV+TExOXk=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2jwps1lz6jxYNn7Dnn5Z09tOaOeYs2HTQuW80UbgHqQ=;
+	b=bDF7Cje3MYQlpW2UG5NnRgy5MRhqWw0BigjTlqc3GGhsygUJmHVsO39pjdXME/G4/8JqNz
+	Z2NU1fxt1KYHRima6OK9J+bCMUX8yH7EN38pXGwBbd0wuT5UvSs8Fz3+huOUW0Mz5uK9Yy
+	/OpJa39a+hiGU0+lJfVX3fzrhGRCq+8=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="PqxbTT/u";
-	spf=pass (imf25.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.42 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dCeQUFXC;
+	spf=pass (imf21.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759437999; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759438000; a=rsa-sha256;
 	cv=none;
-	b=lQklmQFoPe+xJuTQI94MNG9lHv7Eb6T1ORyvuSKj6mfus4Qcm8EXGCsLeocFvWTb5Fjujf
-	Hj0tjNUvml/JvdGXNx6/nM59boJXvCxBZHETyAveCw7Y1oKu2fxGU73m+V6XnPznx3NzNU
-	Nkk2wMnbLwVVsAA3eslCZkxo/pUCb5Y=
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-635355713d9so1596996d50.3
-        for <linux-mm@kvack.org>; Thu, 02 Oct 2025 13:46:39 -0700 (PDT)
+	b=R24B7eIdFs/u6c2PmkFKapZ7vM0wCklLHjvXonZtKDa/GFWr0/rZJdH+fjImJqd9m8xl51
+	Jb0odjHRcvzOjjjAwwBYC55J88JOv1N5Toy1o4pAKx84MK7zlg4JYf49Pl6cj5T4XENtyK
+	CoHoa7T1iLN/mjI7j59jDwBEAgPgyNU=
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-71d60110772so16013757b3.0
+        for <linux-mm@kvack.org>; Thu, 02 Oct 2025 13:46:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759437998; x=1760042798; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ay/9vezBY6puwDg2MjgpOWz9DbnBpP+YhoVm026fczg=;
-        b=PqxbTT/uHDZghyPbQ6x8fs5d/olZ1SAaB5QsvhlZdQSla1qhpbg4Nf4puHwnnXVeq7
-         nRqb3PpHl6TTdSEgVAXyz0xjFbFet1K0zxi9EKq0KtGlQkphhEthvT3mqs21VPLJPeaX
-         JWrobUkly8kXNjjaf84n3BNmDaCGLUnwK2WzwznCZertz8KKVZvGrecI6hbBGh9/qAQn
-         +X49Ayz1w1MuG6131uIj2iiJUdEhmzSvEIGO5Qab1OGqVke4+to8LsOUq7WSRiF4faLn
-         I0tS14ahpvf5afM97bLTm49YF2wQP/mojHaJE5Ire0q5DKjFRRrVdqT7KxjmugO6cq6B
-         Orog==
+        d=gmail.com; s=20230601; t=1759438000; x=1760042800; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2jwps1lz6jxYNn7Dnn5Z09tOaOeYs2HTQuW80UbgHqQ=;
+        b=dCeQUFXC5+aCI7TNbmQYuFT1qZLlXnYtvL2N6a+YTtUJKFAyZxh2ymT93B2yrHHkWv
+         4/1yxoDKP6OPDWXbligWKBnujvdo8gSyaE4aZQQpBZFzb9LTxdS5u13ByiSPN8dZZi7b
+         4A+OzDGa8hfKa9fE6EoVoDuG06KaDDzlPQANxlBz98r1SNH3++YUlH8v+96fAauampE2
+         MvnmVT0eyGo+12STFUfmK3sZGwVeQM9It93c3lF4pj9lvTsA65WEDHGagJeSlx2hqBc5
+         0jHdqvbDedWMTyV64UDrYiYqcuYuABAsdVvvK9gl9i5eS+6idRptM3X++BUoe8n3f4oS
+         lTew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759437998; x=1760042798;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ay/9vezBY6puwDg2MjgpOWz9DbnBpP+YhoVm026fczg=;
-        b=b9C++Tp3p/BLr5JlimKs84rvsQGzhP/Daoe/vcVHKWsGk90dssZjFUwHD4Lc41bUCG
-         w33o68N5grhkpm5AqtKwNsAg+A/xHPGozupkdQVhtuY/s3g35XAa4pAhMfZAAvf53NFt
-         JXoFwaJ9wSdh1z6Lp5EAhWpXH4GtUQiUYG7IuAI5T17Sj/ZmNzvKbV0I1kDeH0n2Idek
-         /9hqCSNHuyssVyODhjfNUL/Ik4mZDqmstHmxwAeDyAaTRjEf2TdWegbok2EF8xRZXRsa
-         j4gXctacGvGbLryxS0prZ4LlId80NMYZhq+FqqbvwuJK8JIxma+qtXQUzur5LoRageCZ
-         K6MQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU8BwWe6op3MPPZGGSJ4iXXOarC1liA42sPhwXI9BQyvx573gypUooe116dPexNDT0XgwzGC9D5Cg==@kvack.org
-X-Gm-Message-State: AOJu0YzGy33e4CslMlJSgoRGYBP2vtR/vlYvnzs9PXcydUhVHvEs9qob
-	8VV6wpwFkzuKhjH38z7zG6LpqkI/2t5/LjiwRQadcbxtcK0paEyCoUj4
-X-Gm-Gg: ASbGncvlit4V2j+UXI2EOf/piGlqUojwGM7++CRbDqPDbs1o7TIRSoyin57NxCP/vrv
-	ZW3VS9Qtyy0iRzuS9rnGHW5p7IawhTGo1AKz51Piy90/6xd7T0T4rdrS/CnJS2UW3kJVXqJWaAZ
-	8mjF7v1uuCHPItNeh7wsURC9xfxtjXKxemkXh2aqb72Swbriidr3cM4sQNbryT+MylrnaFEuai9
-	cCbq6sHnumC9DQ47qNTSujkxQ7pWFyESOnE8FqE5JzXNxM4bDyGct8F3Djdm3Zc+w/8k71zBc80
-	yyLhXfxgX8QhHw+It6k20WOoOBvvhgSWd30R/Uprsl33j0zKRWkaysv2/MM7P/7WGXnbwv7XlsL
-	9hwrqpF+aBxiPtaH3mWFUOKF8AaTejNKVp4xxcAdUQEFKxYHmjW5Qt9wxwytltKlusfMPqJaCiJ
-	rpGA==
-X-Google-Smtp-Source: AGHT+IHpcCTVRqgenU3vW+3sLcFVGrhQQKAHnHEh2WSWX6kMoKdNV+yXAl0xqxgPOXUh0ujYau5cmw==
-X-Received: by 2002:a53:d6c9:0:b0:635:4ecd:759f with SMTP id 956f58d0204a3-63b9a0fcb2fmr503983d50.45.1759437998068;
-        Thu, 02 Oct 2025 13:46:38 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:4d::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-63b845a65e4sm1038716d50.10.2025.10.02.13.46.37
+        d=1e100.net; s=20230601; t=1759438000; x=1760042800;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2jwps1lz6jxYNn7Dnn5Z09tOaOeYs2HTQuW80UbgHqQ=;
+        b=leZQ9btJB0AAgIWA0swV6eFwy3iRNQTGxCfQZgrqsbglkyZ/x4LO8S4nD1IrcnW1F4
+         INGH9LmaMSCiSWWo8BRurLuBErMsAet0FNo1xz+PHU+lfQEc4awadRVBDPFtVVMu9KZF
+         bUAa5ScNeY/uVc121rMutk0++SVhoZjFKD+Rzp2z7Mm1QOmPefZCSVBIITxzNbBgkQI6
+         eic+zIgMlsqq+xwqb85I0tfcu/lv/ZEBCLIezHK9UJou8pHeVyzAJnv/8c5MsXKtcnd8
+         fOLqZbuZG59mviy4RlpVyyaclgySV7vUnJOsZIIJuJgrYpL5mMP7oUiEId+rzuIxfWTa
+         k2KA==
+X-Forwarded-Encrypted: i=1; AJvYcCW5w5p+Xvp/CN7eWyYIj+6SDAgPd0S2pJB1sm69nd/nsNq47NFcQXzTZIwRi19ocIDvg0dI1T2EhQ==@kvack.org
+X-Gm-Message-State: AOJu0YyFfQP81+ig2Ae2SzEXmOuYBIDU2lDEhJJFTng9Z/FfXaHIxSs7
+	0+/wcMyu8zU4nPgpwCtihuNcQSmR3HyqlgR6FRpjNqjzuv8ZM2PDK75+
+X-Gm-Gg: ASbGncvSZN/6HXq5ocGD0dzBhzEIWA6YoGFdOhdu0TzqI5MUVWjSiOek4ZPptM6niWQ
+	oBJHiQlfpu5hltjMzd7s4AC3CdIXIyKkx85eZBFpn33h8QQJpNkCZWMGikdtIkrlhmYyyK0DLgd
+	7PlJgEOP3kQigkZOdoI8plXh1T69Ktwp1gj+x2aLUW+pB8DXFvI0DF6vW3tGcrQ7k5obtELS88z
+	VTtOUo04w5o9nFKGSuM9+1nskGfQwcoFtigEOelyB3M8+E5YqmBjqCiPQYvM/Sc6sGg0FSH+/C+
+	2sTbzcQzmXz2Yjd1Czf4f17QTFI0L7AtdY/lOLgfCPFnV3p2fkYoCHVtioA74GxXUe6fLsvzwdH
+	JnbbuLVrjLf8qDXTtzGbEdIiFN2MLjZObPaasJlp/LDlQyUdZMOYJ/XA2Zc219J8bM9uNgShaBf
+	tCDw==
+X-Google-Smtp-Source: AGHT+IHzWFTSbAUSJS7YF3yHmxIfnxGDKF6Uqmg2CyEoFyCqQ6BTPK8MNk89Gdh1FJmam2OVjyxg6Q==
+X-Received: by 2002:a05:690c:6e8e:b0:772:3578:2ec5 with SMTP id 00721157ae682-77f942c2c16mr14178777b3.0.1759437999539;
+        Thu, 02 Oct 2025 13:46:39 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:5b::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-77f81e370c7sm11291757b3.55.2025.10.02.13.46.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Oct 2025 13:46:37 -0700 (PDT)
+        Thu, 02 Oct 2025 13:46:39 -0700 (PDT)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>
+To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Chris Mason <clm@fb.com>,
 	Kiryl Shutsemau <kirill@shutemov.name>,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Brendan Jackman <jackmanb@google.com>,
 	David Hildenbrand <david@redhat.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	Michal Hocko <mhocko@suse.com>,
 	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
 	Zi Yan <ziy@nvidia.com>,
-	Hillf Danton <hdanton@sina.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	kernel-team@meta.com
-Subject: [PATCH v3 0/3] mm/page_alloc: Batch callers of free_pcppages_bulk
-Date: Thu,  2 Oct 2025 13:46:30 -0700
-Message-ID: <20251002204636.4016712-1-joshua.hahnjy@gmail.com>
+Subject: [PATCH v3 1/3] mm/page_alloc/vmstat: Simplify refresh_cpu_vm_stats change detection
+Date: Thu,  2 Oct 2025 13:46:31 -0700
+Message-ID: <20251002204636.4016712-2-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251002204636.4016712-1-joshua.hahnjy@gmail.com>
+References: <20251002204636.4016712-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 40C9FA000D
-X-Stat-Signature: q3im3r11ffubnp5zpzc4wfnf7scab95h
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1759437999-64429
-X-HE-Meta: U2FsdGVkX1+PSREdrdBA/JxVX/c5r0mNnOm6KqNxdIGtu1xl7JbZvwG3g+5Z6kbCRwDOljRy7Q6jFPxNVsnRcnBd6+DW/5d+ySHnNmaTekO8RdYRmDAk9b7F8xDJ0RijoJ6ncVXbprxBjf9UZXxSPkei1fHEIM2sX24M1GWUvnkA2sqbIKipp/jVsVz03rW5fHLLPZZznS+ikx2gN8B5PYexq2oWRuw9fdrz85M8sUKf/4/9CRsLyLQXnu8hW7ECpVJVE8YeUnySqCzaupN1WEYJmjbEPYOXrrJezcrbpxEhjBapoSP8eq81et6drBnbhyvyPmi7MdUUqdMRLxaYVwSYDKg0hT2YcILjQ9VwkxzFjQvmJQWLEelz2+GCpxdcfz3TCaR9f8459g/fj9e93NXfZXp3gt6GlbOBfe/GfX+qtdJHac8bMJofiZgGFUZvUV1L7kzg8yg1mRuKRGazTRcyNA3ixFXcUn51D3ERBsWwnuAcQIrqsKq4Ubd/7DmArAt/WuP7v7l9nkF4TENbEPSx9LlZ+ashV41Im3Jth7L8WxScQ0ABrsGC/Xrf4ZQiJBF1g6jUESeg+U94axQ85Zy9MEvK1qzdI82Xr/d1r9HI1dW+auPVEIGZ/1hieWO+wq6qx8N8NU9CNniCzY4fY+AXZTB/1yHdFDWWjxkBzO2hyZID8uA/tIsBGBo5U/XdMu95ZKffORl3ixOMxOGxoueGrsyKfOnPiV25bpfOGyyhvF6MABYV6Q687tePb+PJgrQndlOEU5ZNs8GlFbPLRktQ9BcNJEmPm1W7C2TnOWnejT6oAajJ7vgjUfkamoCVkbFvcqCK5bUuCQP/gnECr+1mLf0mLOPBlDXrWunLHRoiYvNtOzHdcfrCn/RCbAnpe1urzcLvKCr42jTsECboVUA8mG1HxzbMz7oepZExR04zigw7XT3QI46RpJStX13RSy5iCNQMQnZySRxeCyW
- xNwMNZyb
- JIfc7zMc1r1YQFBB56rmbrAMpWNfU0J3uja7iTwvMaJ09WgyiIb5vg6IkgPRO8UNJflua803nR1ZEkUhGrVZNo7Gog631ef3tsKc3JtqyDTLGgqxLTzTuU28pFkoQvD22kfgMZvmulnWnLbirTGgSlerxHbY5C+qpq8MliXT7mLIUOa/A6yIkSQXPkbzEH3atqVSI2fYYOx7urB/4FEDgpvTqCTt3ETfo97HRRME5rTGF3bfkKPmWZFNhhm5uf2+sYNzo2gplVY+8QcNkRZRx2UXvHnXRmBDOeWQ0PRZO5CqbhNWon32RYaHfO5qz+KAiHCKAiIUdkV7zPdeD0EqqLIKVx5shFV90Y+5VSE5jugd5fYRQmAMpkQT78YUNMZarXuWU90zHMPZAHSsNBwo/KWaHo1QMeF0ma3NSbBfeu2zqOpjszx5RLJvqSZw7FHkU+5TozOMouKmkG6R6kGZ8yg1E860IgvlLcoRAwFzHy6WGuZUkQdpWIgl2NyqXSnrC6UqyeAqd7apMYw+N2JH79Z/YBvdK2MTfg+TvWnzuytP948ObdkBw81xi9g==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C4BF71C0014
+X-Stat-Signature: ark8ggjcnkafunqkyijpr16hekxa4q8g
+X-HE-Tag: 1759438000-200152
+X-HE-Meta: U2FsdGVkX1+/woDXEIHzJKAASOAjCHq0Qtrtjfpr71LpjREHbATZ5D00rAgXdJEAAlykLLqod5ZiOMuCMLG3zNy/Jl9WKMEuJiyTy7NGh5XLDjNJKAQxK4wU87GPZA0gLZL5mrnHNCKTsrTJtGc2+2Ed3mxoZ3nckqC7hagperK7+slGJk3b90uCiOjzK0Z9eReWmA9S4p/AZ4x0Us8yiqxVC6WXZbdd7LXoxHC4sNPpQZ/pt4uh71MHLzlSVv3MbDS7cshfEHrTgEH1afT9o8vMflVjRl1CfHjRiXAzSrnwNKAyo0zk8R4WsAcPvwCPQxULlZfmoXzSN6yXx4KYNXEQwvGUMoFyW2Cw98Xpfn7eRHrX8sQMg+ohJbI7iuX4xQNTP3byoG+O3iehwBr2ec5bqpDR1tJUekVTvBedC8qNPRh+pQeD2atggmSjosSa/FTQ3V2m4L4KimhEBuAqEUd0haMjtX11RoaQLQ2TZSTsr2W2a5MsMOg+IiALDOnJwNRatugRQ64VgzKfb67P8a3cjjmz1PnNi0zC3xryeJlCzq/4wApDsZrguIBTFzZbqmO1TekNNUCR0OApipQWcbSti9baS3Apc6UuvAARh//03uKidx/OhdQMLvezFGKxwXpg0hRkqN9NA5YZsgYhFwraYw1o/Evtt39G+8rUKdM2lB8ENKAzwGPH6sKeJAfFUAqO1PAbJ3XKLWuWnOkpf2QC2ateTw05RWUpdds6lKsNVyuXW6O2Az+9C5Dn2BYl8aWogeUY/ncwe6Gk9MGy5wSKurwIwmbpOwePiZJNCws24ObNUgYSUPc7bi3D6QNJxvZf6+MtVxzx1YekpWIuJPt757BV/R6wMFXtrUg37FAldRwbEb2hbeKt9o1FlFTnOTHn9+qsU5OyClXPlSC4+OB/mB9hYpkLadNLWta3mheR4YQMbNaYPflrSBaeMiLVLXXjTHPNTNbqxoPOGHo
+ 5czVQ9jY
+ 6iElpPfnjXFMcZktK45v8U2lcYa79Jx2MLe78eexGPZc3kbFTOdjrL0FVzTHOMAp/CFzZL9ZCDlw0B0HlPM7BZkHQW83dyUqqMaXS81zoURxkwoo3aZtPvZnuuqg0yBFWPnUbSAJZhG1CUB6j8DBCeB89AnUwTk3kxOD1jHZdWbtMwhlQCk5XydaPgF6X8qgWlXSFAQOYboq3kJlLSyYa+p3xEqQYv8FT7dtj+hWRBldkA9qK9g25jyUOcpbYCF4kdv/xRc/2S+Fdlv148EapCE94MHnI78gEf0F4+qtoEGywPW5qVrN4aM3Ae1rmzo6z74DZY0yw6wObEz7QlkbkiJkOsH3+dhwYtT315OTzQMPInaF8N6MUcEZS2fRuJ69Ozilo07x2T6P21Jp/9O3hRPvQlyFvCSUFfq71lX1cAQdn5bYgYJVY9yGcgJAGKEpu84OIe/Djnuu8/MciCcpg/lL78rfQ5OsPIpVrfW/KN4oFLKT65tQjqSg+tAwrpN4yRwwV
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,138 +132,169 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Motivation & Approach
-=====================
+Currently, refresh_cpu_vm_stats returns an int, indicating how many
+changes were made during its updates. Using this information, callers
+like vmstat_update can heuristically determine if more work will be done
+in the future.
 
-While testing workloads with high sustained memory pressure on large machines
-in the Meta fleet (1Tb memory, 316 CPUs), we saw an unexpectedly high number
-of softlockups. Further investigation showed that the zone lock in
-free_pcppages_bulk was being held for a long time, and was called to free
-2k+ pages over 100 times just during boot.
+However, all of refresh_cpu_vm_stats's callers either (a) ignore the
+result, only caring about performing the updates, or (b) only care about
+whether changes were made, but not *how many* changes were made.
 
-This causes starvation in other processes for the zone lock, which can lead
-to the system stalling as multiple threads cannot make progress without the
-locks. We can see these issues manifesting as warnings:
+Simplify the code by returning a bool instead to indicate if updates
+were made.
 
-[ 4512.591979] rcu: INFO: rcu_sched self-detected stall on CPU
-[ 4512.604370] rcu:     20-....: (9312 ticks this GP) idle=a654/1/0x4000000000000000 softirq=309340/309344 fqs=5426
-[ 4512.626401] rcu:              hardirqs   softirqs   csw/system
-[ 4512.638793] rcu:      number:        0        145            0
-[ 4512.651177] rcu:     cputime:       30      10410          174   ==> 10558(ms)
-[ 4512.666657] rcu:     (t=21077 jiffies g=783665 q=1242213 ncpus=316)
+In addition, simplify fold_diff and decay_pcp_high to return a bool
+for the same reason.
 
-While these warnings are benign, they do point to the underlying issue of
-lock contention. To prevent starvation in both locks, batch the freeing of
-pages using pcp->batch.
-
-Because free_pcppages_bulk is called with both the pcp and zone lock,
-relinquishing and reacquiring the locks are only effective when both of them
-are broken together (unless the system was built with queued spinlocks).
-Thus, instead of modifying free_pcppages_bulk to break both locks, batch the
-freeing from its callers instead.
-
-A similar fix has been implemented in the Meta fleet, and we have seen
-significantly less softlockups.
-
-Testing
-=======
-The following are a few synthetic benchmarks, made on two machines. The
-first is a large, single-node machine with 754GiB memory and 316 processors.
-The second is a relatively smaller single-node machine with 251GiB memory
-and 176 processors.
-
-On both machines, I kick off a kernel build with -j$(nproc).
-Lower delta is better (faster compilation).
-
-Large machine (754GiB memory, 316 processors)
-make -j$(nproc)
-+------------+---------------+----------+
-| Metric (s) | Variation (%) | Delta(%) |
-+------------+---------------+----------+
-| real       |        0.4627 |  -1.2627 |
-| user       |        0.2281 |  +0.2680 |
-| sys        |        4.6345 |  -7.5425 |
-+------------+---------------+----------+
-
-Medium machine (251GiB memory, 176 processors)
-make -j$(nproc)
-+------------+---------------+----------+
-| Metric (s) | Variation (%) | Delta(%) |
-+------------+---------------+----------+
-| real       |        0.2321 |  +0.0888 |
-| user       |        0.1730 |  -0.1182 |
-| sys        |        0.7680 |  +1.2067 |
-+------------+---------------+----------+
-
-Small machine (62GiB memory, 36 processors)
-make -j$(nproc)
-+------------+---------------+----------+
-| Metric (s) | Variation (%) | Delta(%) |
-+------------+---------------+----------+
-| real       |        0.1920 |  -0.1270 |
-| user       |        0.1730 |  -0.0358 |
-| sys        |        0.7680 |  +0.9143 |
-+------------+---------------+----------+
-
-Here, variation is the coefficient of variation, i.e. standard deviation / mean.
-
-Based on these results, there is definitely some gain to be had when
-lock contention is observed in a larger machine, especially if it is running
-on one node. It leads to both a measurable decrease in compilation time for
-both the real and system times (i.e. relieving lock contention).
-
-For the medium machine, there is negligible regression in real time
-(<< coefficient of variation), although it leads to a measurable increase
-in the system time.
-
-For the small machine, there is a negligible performance gain in real time,
-but has a similar regression to the medium machine.
-
-Despite the regressions (~1%) of system time in the smaller machines, it
-seems to be (1) not observable in realtime and (2) is much smaller than the
-gain made in the large machine.
-
-Changelog
-=========
-v2 --> v3:
-- Refactored on top of mm-new
-- Wordsmithing the cover letter & commit messages to clarify which lock
-  is contended, as suggested by Hillf Danton.
-- Ran new tests for the cover letter, instead of running stress-ng, I decided
-  to compile the kernel which I think will be more reflective of the "default"
-  workload that might be run. Also ran on a smaller machines to show the
-  expected behavior of this patchset when there is lock contention vs.
-  lower lock contention.
-- Removed patch 2/4, which would have batched page freeing for
-  drain_pages_zone. It is not a good candidate for this series since it is
-  called on each CPU in __drain_all_pages.
-- Small change in 1/4 to initialize todo, as suggested by Christoph Lameter
-- Small change in 1/4 to avoid bit manipulation, as suggested by SeongJae Park.
-- Change in 4/4 to handle the case when the thread gets migrated to a different
-  CPU during the window between unlocking & reacquiring the pcp lock, as
-  suggested by Vlastimil Babka.
-- Small change in 4/4 to handle the case when pcp lock could not be acquired
-  within the loop in free_unref_folios.
-
-v1 --> v2:
-- Reworded cover letter to be more explicit about what kinds of issues
-  running processes might face as a result of the existing lock starvation
-- Reworded cover letter to be in sections to make it easier to read
-- Fixed patch 4/4 to properly store & restore UP flags.
-- Re-ran tests, updated the testing results and interpretation
-
-Joshua Hahn (3):
-  mm/page_alloc/vmstat: Simplify refresh_cpu_vm_stats change detection
-  mm/page_alloc: Batch page freeing in decay_pcp_high
-  mm/page_alloc: Batch page freeing in free_frozen_page_commit
-
+Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+---
  include/linux/gfp.h |  2 +-
- mm/page_alloc.c     | 83 ++++++++++++++++++++++++++++++++++++---------
- mm/vmstat.c         | 28 ++++++++-------
- 3 files changed, 83 insertions(+), 30 deletions(-)
+ mm/page_alloc.c     |  8 ++++----
+ mm/vmstat.c         | 28 +++++++++++++++-------------
+ 3 files changed, 20 insertions(+), 18 deletions(-)
 
-
-base-commit: 71fffcaf9c5c5eb17f90a8db478586091cd300c5
+diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+index 5ebf26fcdcfa..63c72cb1d117 100644
+--- a/include/linux/gfp.h
++++ b/include/linux/gfp.h
+@@ -386,7 +386,7 @@ extern void free_pages(unsigned long addr, unsigned int order);
+ #define free_page(addr) free_pages((addr), 0)
+ 
+ void page_alloc_init_cpuhp(void);
+-int decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp);
++bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp);
+ void drain_zone_pages(struct zone *zone, struct per_cpu_pages *pcp);
+ void drain_all_pages(struct zone *zone);
+ void drain_local_pages(struct zone *zone);
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 304e12bf2e4e..b9fc357d2d48 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -2557,10 +2557,10 @@ static int rmqueue_bulk(struct zone *zone, unsigned int order,
+  * Called from the vmstat counter updater to decay the PCP high.
+  * Return whether there are addition works to do.
+  */
+-int decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
++bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
+ {
+ 	int high_min, to_drain, batch;
+-	int todo = 0;
++	bool todo = false;
+ 
+ 	high_min = READ_ONCE(pcp->high_min);
+ 	batch = READ_ONCE(pcp->batch);
+@@ -2573,7 +2573,7 @@ int decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
+ 		pcp->high = max3(pcp->count - (batch << CONFIG_PCP_BATCH_SCALE_MAX),
+ 				 pcp->high - (pcp->high >> 3), high_min);
+ 		if (pcp->high > high_min)
+-			todo++;
++			todo = true;
+ 	}
+ 
+ 	to_drain = pcp->count - pcp->high;
+@@ -2581,7 +2581,7 @@ int decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
+ 		spin_lock(&pcp->lock);
+ 		free_pcppages_bulk(zone, to_drain, pcp, 0);
+ 		spin_unlock(&pcp->lock);
+-		todo++;
++		todo = true;
+ 	}
+ 
+ 	return todo;
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index bb09c032eecf..98855f31294d 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -771,25 +771,25 @@ EXPORT_SYMBOL(dec_node_page_state);
+ 
+ /*
+  * Fold a differential into the global counters.
+- * Returns the number of counters updated.
++ * Returns whether counters were updated.
+  */
+ static int fold_diff(int *zone_diff, int *node_diff)
+ {
+ 	int i;
+-	int changes = 0;
++	bool changed = false;
+ 
+ 	for (i = 0; i < NR_VM_ZONE_STAT_ITEMS; i++)
+ 		if (zone_diff[i]) {
+ 			atomic_long_add(zone_diff[i], &vm_zone_stat[i]);
+-			changes++;
++			changed = true;
+ 	}
+ 
+ 	for (i = 0; i < NR_VM_NODE_STAT_ITEMS; i++)
+ 		if (node_diff[i]) {
+ 			atomic_long_add(node_diff[i], &vm_node_stat[i]);
+-			changes++;
++			changed = true;
+ 	}
+-	return changes;
++	return changed;
+ }
+ 
+ /*
+@@ -806,16 +806,16 @@ static int fold_diff(int *zone_diff, int *node_diff)
+  * with the global counters. These could cause remote node cache line
+  * bouncing and will have to be only done when necessary.
+  *
+- * The function returns the number of global counters updated.
++ * The function returns whether global counters were updated.
+  */
+-static int refresh_cpu_vm_stats(bool do_pagesets)
++static bool refresh_cpu_vm_stats(bool do_pagesets)
+ {
+ 	struct pglist_data *pgdat;
+ 	struct zone *zone;
+ 	int i;
+ 	int global_zone_diff[NR_VM_ZONE_STAT_ITEMS] = { 0, };
+ 	int global_node_diff[NR_VM_NODE_STAT_ITEMS] = { 0, };
+-	int changes = 0;
++	bool changed = false;
+ 
+ 	for_each_populated_zone(zone) {
+ 		struct per_cpu_zonestat __percpu *pzstats = zone->per_cpu_zonestats;
+@@ -839,7 +839,8 @@ static int refresh_cpu_vm_stats(bool do_pagesets)
+ 		if (do_pagesets) {
+ 			cond_resched();
+ 
+-			changes += decay_pcp_high(zone, this_cpu_ptr(pcp));
++			if (decay_pcp_high(zone, this_cpu_ptr(pcp)))
++				changed = true;
+ #ifdef CONFIG_NUMA
+ 			/*
+ 			 * Deal with draining the remote pageset of this
+@@ -861,13 +862,13 @@ static int refresh_cpu_vm_stats(bool do_pagesets)
+ 			}
+ 
+ 			if (__this_cpu_dec_return(pcp->expire)) {
+-				changes++;
++				changed = true;
+ 				continue;
+ 			}
+ 
+ 			if (__this_cpu_read(pcp->count)) {
+ 				drain_zone_pages(zone, this_cpu_ptr(pcp));
+-				changes++;
++				changed = true;
+ 			}
+ #endif
+ 		}
+@@ -887,8 +888,9 @@ static int refresh_cpu_vm_stats(bool do_pagesets)
+ 		}
+ 	}
+ 
+-	changes += fold_diff(global_zone_diff, global_node_diff);
+-	return changes;
++	if (fold_diff(global_zone_diff, global_node_diff))
++		changed = true;
++	return changed;
+ }
+ 
+ /*
 -- 
 2.47.3
 
