@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5319CAC5B8
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 14:34:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20039CAC5B0
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 14:39:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3571F8E0012; Thu,  2 Oct 2025 10:34:38 -0400 (EDT)
+	id 66F1F8E000C; Thu,  2 Oct 2025 10:39:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E03B8E0002; Thu,  2 Oct 2025 10:34:38 -0400 (EDT)
+	id 647318E0002; Thu,  2 Oct 2025 10:39:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CEB78E000C; Thu,  2 Oct 2025 10:34:38 -0400 (EDT)
+	id 536C68E000C; Thu,  2 Oct 2025 10:39:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 03D9A8E0002
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 10:34:38 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8B3BB1604B5
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 14:34:37 +0000 (UTC)
-X-FDA: 83953420194.03.016D803
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F6F18E0002
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 10:39:32 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D10D2C04EE
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 14:39:31 +0000 (UTC)
+X-FDA: 83953432542.05.57789F9
 Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
-	by imf12.hostedemail.com (Postfix) with ESMTP id ABC9240011
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 14:34:35 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=hviAjhFO;
-	spf=pass (imf12.hostedemail.com: domain of 3eY3eaAgKCFwD46EG4H5AIIAF8.6IGFCHOR-GGEP46E.ILA@flex--jackmanb.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3eY3eaAgKCFwD46EG4H5AIIAF8.6IGFCHOR-GGEP46E.ILA@flex--jackmanb.bounces.google.com;
+	by imf08.hostedemail.com (Postfix) with ESMTP id F23E316000C
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 14:39:29 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=floxxIxr;
+	spf=pass (imf08.hostedemail.com: domain of 3oI7eaAgKCIUsjltvjwkpxxpun.lxvurw36-vvt4jlt.x0p@flex--jackmanb.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3oI7eaAgKCIUsjltvjwkpxxpun.lxvurw36-vvt4jlt.x0p@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759415675;
+	s=arc-20220608; t=1759415970;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ccAYPxe52zBmW+CF4aFxuUujdoprfZQhiZMBpUVmHbM=;
-	b=IECDSZb7Oi/8SXNP9AtG/DabvrovoV9cvT9x5fWzHG505yq5vVoCyRlvCxWwRuVNjhW4iB
-	aVzm0oe5IuiN5BXl4/piYkz1j164h+C58C4SFw4Y7A7iRaXbJOjzDBo1wT4LPCuuFn8gex
-	AaCfPUdB/C+BcU1WoNzyklxlsBE8Myo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759415675; a=rsa-sha256;
-	cv=none;
-	b=n7mCbT1EGKOcET3htjOd8kv6qHad8mO0CJbftGBCYO1MBnwf2uH4jVbZZXN9Ud6jWBJf8N
-	Bs6F7+gXQ+ImCzKFfwQ+btR/ZZlgtrEfYuL2A+xu3sKNwQtEtr45vNWmqKXkanjAu7x5hC
-	V1DEbdTahnZfDJ+WX3HZRO2a/1ganHY=
+	bh=OXmRPiiy/jxXhEQ2QANIVQqqqCVGSfAH9NdCa3WEjBc=;
+	b=v/7rYuCtyhCe5mnyULzNZA7E0gSuOer5pVlOkKIJi9whUc0wUqyMWZwGkzXxNyXqwSkgWM
+	OXnDs0zzyxM4pnqzXTduJUvVxR7oRPXGTkW4L0WZ4AldP//xtCbTbHONcWHo5/WU1RoE++
+	h424dzvU3nbyfKVpDn3UJCfdvW8nFpM=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=hviAjhFO;
-	spf=pass (imf12.hostedemail.com: domain of 3eY3eaAgKCFwD46EG4H5AIIAF8.6IGFCHOR-GGEP46E.ILA@flex--jackmanb.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3eY3eaAgKCFwD46EG4H5AIIAF8.6IGFCHOR-GGEP46E.ILA@flex--jackmanb.bounces.google.com;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=floxxIxr;
+	spf=pass (imf08.hostedemail.com: domain of 3oI7eaAgKCIUsjltvjwkpxxpun.lxvurw36-vvt4jlt.x0p@flex--jackmanb.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3oI7eaAgKCIUsjltvjwkpxxpun.lxvurw36-vvt4jlt.x0p@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-afe81959e5cso158530866b.1
-        for <linux-mm@kvack.org>; Thu, 02 Oct 2025 07:34:35 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759415970; a=rsa-sha256;
+	cv=none;
+	b=8bNiYT4rJDyVPkXHO2VOZDYmnQlVPNUXzFTYL/d1HlnGVeATQZEoNtUJVoqr8oquc+pU8m
+	Mgi+DUNl2RBtuSkFTJqKQIY3A8N8cwsv/2L70QG1Njt3Nj3fT4+0ctpj9+PvXVXmfJe8MP
+	wgafPMRuzCyGHcGlGzUiXEetdd1GoiI=
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-afcb72a8816so100851966b.0
+        for <linux-mm@kvack.org>; Thu, 02 Oct 2025 07:39:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1759415674; x=1760020474; darn=kvack.org;
+        d=google.com; s=20230601; t=1759415968; x=1760020768; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ccAYPxe52zBmW+CF4aFxuUujdoprfZQhiZMBpUVmHbM=;
-        b=hviAjhFODJoPxbOATORG2YUsqtEt1KW8WzTPb3GcIjh1oJFQbJkflUuiciF8c6x3cp
-         /CQOGCe2CtLDbIfxol2ihPahXWrdvENcNOtNxPm9TJGJ334Zug+a5/pDRWH3RYUwp2vA
-         nIV7l5HJK850y0i3e3J71ihlH+rmamFUrAmi0Sy3r+veX4qKC7k5lZXXK3jfPK2W3wO9
-         v9vTw9j0zdUrhzxFZGy7SzuK6+JEPbo1MJb5cUzGTSttdjAw7pM8MjnhbZ2dD4MAVudI
-         MljYzkXY+AvV/A6OwYcYXCMfrWyEw7TDkpOQr3PA956MOED/daw1Bzw6RcA2t97xZX1y
-         /0Ig==
+        bh=OXmRPiiy/jxXhEQ2QANIVQqqqCVGSfAH9NdCa3WEjBc=;
+        b=floxxIxrR0FDzCvEZXUBDcEJcQq3GdrzafFmO3/84ADA5uRzKbhpHt9KIpXBAHvw8Q
+         Pl6/YtVQabVXnDkHdQ7DnvAKM1Y1Nr6uNqJNBoGZNpaNsrhAA/mY2LXF8ZSbUeXEAXKy
+         AZqnlXnMgcQYj7I6W7NllM6muoAgY7432Fpb5RvVQcit/CKupyAntQYbNYb3j1uU7YC4
+         vjFQSaUCP/Osg42lucIWfZ8dSvRZHSc0yGWLrlu0Iok3dZ9q/UnGFey56KiZNT9JPPex
+         O7rZdRtT6AUwrxO8khiOKV9fjtLRUwOonpV0pCjQLxC6CCZ4vnQzlHPDZHQR4SRwx92C
+         ljIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759415674; x=1760020474;
+        d=1e100.net; s=20230601; t=1759415968; x=1760020768;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ccAYPxe52zBmW+CF4aFxuUujdoprfZQhiZMBpUVmHbM=;
-        b=wITlOo+KSTGq8kQ1Yjcx6jNA2jN+wPorOGrllyxYXeGjHgfIX6b7e1/941pg0a3lRh
-         3nGQrF6Hwka+ax+X3U2oZVCDgPuFlRFw2yw5sD7ivxqWcTb23Wb+r9V+Ehmb5O75NlMm
-         AJNFS4BuBf6z4r8QJN2tJK2b2oSJk8LxN/MbOFdj8n08qHRMAclXntt5VrAe15cv0j2p
-         IYNdzqxmohijtUAz6cG25IWPFRTgH9oqUYwfrggX3oDXSec7YWBavQ2dmZamdeoETIfR
-         x+zaIqiMDtOfnxf+r+gwloEKjWqQkDK1N+nO9gEUMciYMPsjKQMK5j4+eFHyvLU8CXqA
-         ZAbw==
-X-Forwarded-Encrypted: i=1; AJvYcCU/cQRMs1WxTPFFSVTriqKD9zyw/IMVK9pR0/HGv8enW9l0eu7+o+r9a8P6iObYeVT3RXejPdN8Tg==@kvack.org
-X-Gm-Message-State: AOJu0YxmXgMvJSV4/GjmQKHQYyEsLkSvwZo4Au66kehBczvqVLWvCHh0
-	d4onzebdSOIaxeZtJYJe6HLe/LLJ73WknL4od05txm5wdXrt+ucGZlYQdBbK/IA5VlTjMqoAOKy
-	Zx1X3zX3Lp5vTNg==
-X-Google-Smtp-Source: AGHT+IFdG6GPcaMbq+nXyD4vqbM1JFF0Ehtb9l8N4ZAbsP4Fg7J26kq4QoNXh1x8rjPxUFgXCopP4kBq7GBFoA==
-X-Received: from ejbbn6.prod.google.com ([2002:a17:906:c0c6:b0:b41:568b:f49d])
+        bh=OXmRPiiy/jxXhEQ2QANIVQqqqCVGSfAH9NdCa3WEjBc=;
+        b=Wd3JXChejhGbgePoW3kXr5d47cDxfsBi4l3crECY0MzyfN5E8BOe7AiDQKHECv1Ito
+         V6M5EJclkKj9CqY7BDxQRT6GJ/hEFji/7dy2LMKw9PkyG0w2vHKDU0t4y9vD5U0xPhYQ
+         5VBDwJFDd0AYdUzIqZOIRCvbYEQmtgOHdwdOz+WOEFCZgck9gndkAfLBQ5edQpNhW0cd
+         pcYg0qwZRUHMjOGLmLuyeTwB2VfYKEdmPC16rdjBEN1L1yQxmdqehoHYeM0D1PqMOLPW
+         qQ5zMCWxk/7JdHK1kyMWUprYgp/Y1vf5b12mAUzN16OWkRPp/k3ARWQQxFGyje4fB7ja
+         CrrA==
+X-Forwarded-Encrypted: i=1; AJvYcCUEK5R4ox+HLqArRDZ4OJPORTXeryCHpWTyejVgyW3K2BYL3LS9KbUzVcOo8ciqV+ajvzeAR4vi0w==@kvack.org
+X-Gm-Message-State: AOJu0Yz6m+4X8Q74M5gIp6PWSxpeIRtX6gVdUQbB+4V4E2TUY2kEQxiY
+	qJ4HJxxg9OVWb4UT9Bvy+WLSDSru9lAPzDtVLSS36Xmk9oaNgfoa8lvLBRbY9He6bOEe/M61No7
+	2WAFDoU5jwC2+Aw==
+X-Google-Smtp-Source: AGHT+IFnRkf9ot3Skun0op0G7EM1gEJs7lrJQJnh2eFwDF5s4NKmeG9rSXFP7Ix3NYG+PqPTDK5hgURKWHPSPw==
+X-Received: from ejbo22.prod.google.com ([2002:a17:906:3596:b0:b3a:79ae:c785])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:906:c14d:b0:b46:dbe3:e732 with SMTP id a640c23a62f3a-b46e8c7fe49mr988799866b.48.1759415673921;
- Thu, 02 Oct 2025 07:34:33 -0700 (PDT)
-Date: Thu, 02 Oct 2025 14:34:33 +0000
-In-Reply-To: <fb450443-07c3-438c-888f-30540935da15@intel.com>
+ 2002:a17:907:3d43:b0:b3e:babd:f263 with SMTP id a640c23a62f3a-b46e4b8ec24mr986902266b.3.1759415968473;
+ Thu, 02 Oct 2025 07:39:28 -0700 (PDT)
+Date: Thu, 02 Oct 2025 14:39:27 +0000
+In-Reply-To: <caee3410-a01b-4e40-9f0c-ff7810caf323@intel.com>
 Mime-Version: 1.0
 References: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
- <20250924-b4-asi-page-alloc-v1-6-2d861768041f@google.com> <fb450443-07c3-438c-888f-30540935da15@intel.com>
+ <20250924-b4-asi-page-alloc-v1-11-2d861768041f@google.com> <caee3410-a01b-4e40-9f0c-ff7810caf323@intel.com>
 X-Mailer: aerc 0.21.0
-Message-ID: <DD7WSY2PPABG.UK6GJ98WZS79@google.com>
-Subject: Re: [PATCH 06/21] mm/page_alloc: add __GFP_SENSITIVE and always set it
+Message-ID: <DD7WWPE3YSPZ.1E51AQNHNEU2G@google.com>
+Subject: Re: [PATCH 11/21] mm: introduce freetype_t
 From: Brendan Jackman <jackmanb@google.com>
 To: Dave Hansen <dave.hansen@intel.com>, Brendan Jackman <jackmanb@google.com>, 
 	Andy Lutomirski <luto@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
@@ -103,14 +103,14 @@ Cc: <peterz@infradead.org>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
 	<rientjes@google.com>, <rppt@kernel.org>, <vbabka@suse.cz>, <x86@kernel.org>, 
 	<yosry.ahmed@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: euudpgp9umwyo7jj5jb6fzmt1akemo9f
+X-Stat-Signature: rgum5nhtxas3gez3igiew76xw1i1dkak
 X-Rspam-User: 
-X-Rspamd-Queue-Id: ABC9240011
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1759415675-815886
-X-HE-Meta: U2FsdGVkX1/49m93ecEXkNOM2jJN8iEDMDDrL9JmEBiADCtvQohNS7e1h+EictYSTD+stZFffLscaUF9KiAQQ0Od8VvcmYXkcutxr0QBsleIyTUf9kCVPic/DtHa9DmJ3AcAcX2UXwrPG7pqPayxkTd9A04acBZoqnAJWe0myczNJby6hKWh2M9fxwFhbicaKaHaGZmMpjbQjKUKSIHeX13yt7oxkGpX62pX9nfYnTT5fa7Y9TTy3hJVU0VOE7CxRe+/v3aassORX/rpONyPsXD4TPISq/VG7BENq/kmhkcomiRlkW4qBu1Y+hzdNSrrNEO4ynYa3hO4sLH6ffKIBesjOxOJP4S56BEAvDfVDFDDADkgZS+WZvmXO3J972i2K5gYgK6m/4O9KebbwSyYLu95FDGnBEGi39fhoMYgdK6+RYhoSdv/Z53vci1KU1dSyGDxVfAsbC66TIMQPYdA+QWMgf9g9LiMCpTk999jGZFBTeiDKF84XN30TRB6x5ZhjFNZQCFb017+sJyTT2eDKUKkt5hW2hIeIpqSCFiSbdM9gZC92bPfrq1IjK+f+HzC8w7igjHaqwMm5JOjQo7/JXvXUSaBVfvgD7sC2jInoO/XWy0cfQVy/2Uffqt3/6YJ2l5WIszGOC/4DlrFqP9hTsqWYYY5TWodC/ZZ8+VDmOszLyfbGfEk5IImzr6HC9ZTEpuyN22hQ7YL+//voHclB6Y2cwt0BaEshumGvQMqb0Kalu8vmZcviO+Ky9PPU8s9PD/dyLdwz/V++1BCmiVabrKkhWhAouHlpfS918fDZHNGRa2wrPZncbm0Z0lf1M3IrifR1YhPPndQ5/rZj9bpiLK5ZLACV4itNvMlALO+ChbtqVQwHPfgftcG1BPtxYuIr+/o9v+Uv/GyRfWio5Gh30KBFU08uLHtVKWfxIQbD2Mbr/27q9lYwi0gDbc9rzGJ/nyCuga347PkBziNlPv
- X4/ZpIWP
- GWgsTBOtTZQEvgQfY5AG12l6WxBdva/0EUlKA7GEOdYcFXwqyWwIK+8HdQaXippPuTpD7AfrXE3fFJcwITr3kw9m2UJXwpISrZ21qwUBfWD3cph8kR78lb5lZW2CnUSWxfmP8IHreKEpThnXAy+kGm/1r7zOZz2U4WIUE8kzp7NL0jyiW0+NqCxyWK7P45jScm0Pu0c1wsJEAFPqg6KMvOgOvC8S11Z5DJ1TdtlLgZ2BEDJ1msHJkNpgf/640O5voDzCFNjLOFu8DyCx/P6zNZ5MEWS//BkWDUE9ORdSft/VTJHDcW9y1vw/gCL/RpYThtDvOpD4vChycSwKlCixifVcpAnxk0Mvck1dP3151gUBrDwqJVWs8Tg5WNnxxevxDRI3k1fiOTdaFu9hFUB5yC1BiTn/E59XEZr1drU+JqZgQNjFM9igoUnuuSHQ8Ru57YHiEhDtDtUesfz3oCW9TJk8Gz5InqvYp4zut8YsB51I0nEFWYjqygm1uH+SuQyGpBZKzmemDuiSbzCIYnsnzuiFeQfbL+bqgCbsQFZ4iqM8Ypg0w+z8VZ0IaZjkTtZcllYbCpCd9R9N5pW6xwcBK5ToAqiXk/vSR9qv+rPrv4fm+1DKBBkegoZ/vC1e88AkmdZjbaTI1DiPxlUy4m38o7r2NSbFotUtRjXJaZwf2vTWRVSUZHA6McRBo3g==
+X-Rspamd-Queue-Id: F23E316000C
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1759415969-620974
+X-HE-Meta: U2FsdGVkX1/GpU4mI0Sd4lxpCEIAO5i2jmYXiG5YKT2FPP99d6XwcOiq1CWYs3IJfaVBNm2twHzkUcnDxG1lpKhwXs8N7heR7lqaSjKonaqH/EH8lpPb0Bx2GAZeODu2ogYH1TpkLx9pGjCnJV2oMDitiiBYTD6RaGz/fGA8SNiC3P0fBej39nNb5+fAli3nrGeX5bNgydjMTygmt7kbcS30vjSruIagQLCqgNuf07EpG01STbaOVSrUPGSrU4416b185r2QdTzv2W3+2GiFSXRTSOlvzSiehHJoXbHmITwLaB5bXa/uouSBeCPF4CH4cE2lZ4LcKE3erzMjr2TebmYMnyYPrmvpn/wfRU97QEsSeVkG6gQBB/CEFJoMeX5ineMiJjyXdvYMrTveVUyLvPRFW5sPqZ1K0m5dH2lE3lZLU+HV+OrazkCROv/R/v8SNZEzc4jFSHV+cmNfZqJ6B2wgFM0yvs0YQXjFCXXW6cPCBMH3AoVcOKafInSBgQ0s/Ku44BUXM58gQmCYu/zl79QykOFu41TR0J36CO0mg5qbkawzCKEWwqwkwfjQctY5yN086slFhPY5gH7s9H5Q8jJL7ImhH8aJQn40jdvAhXtoY1ohWDoCf8O3BpxCWPAjj9gMc+XPDapDgx4BufThFbHlZSBbxsORaamvvj7rcG/nvSJ1MvHMIUo8haCTRCoTrqI97KBbsJqXMDdSFUOzTVLWdXAhwvbnDkAlO9vCbCLLg4CkWxn2atvQlDfyx0d43A2mldSptbnUNvLBAZZW3Dw2aIPcJATYSpAuH/oYXIFTQfLxHZGGuIUg+cURBHkwzGQREQ+YUe3TyQc6wVwvpSQ4Nd/6Cj22Tge+hmBB1vQ8SqZYitAvSmdiDfnUDNVvaoKUBf+gP1K0S09nI9nQMdrY28l2je+m276KYq9draHb0wLOgEkPbyy38Y97X2p+3qy3j/qz5v+htbsWxdU
+ XLc/HKwH
+ 7mSfuHuNl/ft2m+PQk3lXqLX6+ls9UFR6PR1tal+jbpWI84NkKZPATXAGlx0oVhoBEephI/Qhxm8/Q+Ce1ESZZIx9xKb6S7CPKOVN6sLU/YUVhOxvQTEds4/L94/U5As081X85YAsMUtvoWG1xtEQALwX8DCyPrzRLqpkQIghCONOZ8+lAITV+ByhACyUj5TQ+oOz1A//HLeQDSZrZI6IiNSkLIpEj8WZ1EuKYbNybqdLeH3D6coLKELwVL9Znm0tsBc6o39fqV5AEs1Vsb/xWCZ3tEz9e+rRiMbxFY/m91y+9dFoBE1i0fdU6zVDHdlq4SFzlwZd3TO4eSxI1nL8/eVdset3rgfEPpUsxLnSCunJHPPVeCcy7GDzlJJMPOLFU6AwZVHFUb/Pnp5p7DiZ9wjvUc4WIqXTULd1kJAJejD6g74NVTVZLozN6NlgNSHB6LgJ3tQecTk31aqsRvjpbEbGTW/Oci15Vp/2keXOLDw0XlqouupeTPFz/3HpEBo7ubj0lHpEluhSqgvGfmioC/kAMh4DamWZZbf3ie5YTeGL/uJHeTUyi0ibgbPnRAhGYN9KpTfMlH4pDO4La194PC/3012ALgVQmHeQVGfuZJ5+vgfBvsv0GVkQTA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,29 +119,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed Oct 1, 2025 at 9:18 PM UTC, Dave Hansen wrote:
+On Wed Oct 1, 2025 at 9:20 PM UTC, Dave Hansen wrote:
 > On 9/24/25 07:59, Brendan Jackman wrote:
->> +#ifdef CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION
->> +#define ___GFP_SENSITIVE	BIT(___GFP_SENSITIVE_BIT)
->> +#else
->> +#define ___GFP_SENSITIVE 0
->> +#endif
+>> @@ -2234,7 +2235,7 @@ static bool should_proactive_compact_node(pg_data_t *pgdat)
+>>  static enum compact_result __compact_finished(struct compact_control *cc)
+>>  {
+>>  	unsigned int order;
+>> -	const int migratetype = cc->migratetype;
+>> +	const freetype_t freetype = cc->freetype;
 >
-> This is clearly one of the inflection points of the series.
+> Just as I'm scanning this series at a high level, this patch looks too
+> big to me. There is too much mixing of mechanical changes like this
+> s/int/freetype_t/ and s/migratetype/freetype/ with new functionality.
 >
-> To go any farther with this approach, I think it's critical to get a few
-> acks on this hunk specifically. Well, maybe not formal acked-by's, but
-> at least _clear_ agreement from at least one of:
->
-> 	MEMORY MANAGEMENT - PAGE ALLOCATOR
-> 	M:      Andrew Morton <akpm@linux-foundation.org>
-> 	M:      Vlastimil Babka <vbabka@suse.cz>
->
-> ... or this approach is dead in the water.
+> I'd be looking for ways to split this up a lot more.
 
-Yep, I agree. This is where the chicken-and-egg thing I mentioned in [0]
-comes into play though...
+Ack. One avenue I didn't fully explore would be to break it into:
 
-[0] https://lore.kernel.org/all/DD7SCRK2OJI9.1EJ9GSEH9FHW2@google.com/
+1. Introduce freetype_t as nothing else than an annoying wrapper around
+   migratetype.
 
+2. Add the sensitive field when ASI is compiled in. 
+
+The reason I shied away from this, is that part 1 will look kinda weird,
+because in some place I'll be switching the code to freetype while
+others will still use migratetype (code that will never care about
+sensitivity), and the distinction might not be obvious without first
+reading part 2. I'll just have to try and write a good commit message I
+suppose.
 
