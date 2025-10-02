@@ -4,104 +4,244 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C268CAC5B8
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:16:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23639CAC5B0
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:16:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 222A58E003E; Thu,  2 Oct 2025 04:16:26 -0400 (EDT)
+	id 52D7B8E0039; Thu,  2 Oct 2025 04:14:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FA248E003C; Thu,  2 Oct 2025 04:16:26 -0400 (EDT)
+	id 43FAC8E003C; Thu,  2 Oct 2025 04:14:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1370A8E003E; Thu,  2 Oct 2025 04:16:26 -0400 (EDT)
+	id 1A7638E003B; Thu,  2 Oct 2025 04:14:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 00B3B8E003C
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:16:25 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C5D85B8ADC
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:16:25 +0000 (UTC)
-X-FDA: 83952467130.17.25B88E8
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D3BA08E0037
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:14:25 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 94F59C03A8
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:25 +0000 (UTC)
+X-FDA: 83952462090.21.99B30FB
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 00DBB10000A
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:16:23 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	spf=pass (imf05.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9FB761C0006
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:23 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	spf=pass (imf18.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759392984;
+	s=arc-20220608; t=1759392864;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Uv+UuR22FBb5c94J0dOHpNEqPUjynS4UcgNpo7e+UPc=;
-	b=7OLimWp3nDn7HbhHZoSXfawV53t9eMTpf6iMyHELDjBWn2FXuUnnmcttVqsrl9ubGK+KOV
-	C1EL4jGUgvRsI/kwI3ENSabd9A3cdqS0p+F5tHPsUdXLcS38HxDGiTOpKAScHMGEcza3/7
-	N+KJZ3p82382BZU91QSXJVDWk0QL+bI=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759392984; a=rsa-sha256;
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=ctlYMnr34PxlnD1VhwaJj6+0KPXrRDGm/ZTGLpqVwb4=;
+	b=Ud0oJgnvrTKvoKJVIy3XG7AccANGsYcFBB3lq7j7s3wc8nFgRLpZieVUAxPPDCZ2XhVXZh
+	Z4jA91fxntP9ztp+NcXg++6PqzaGHdTYWE2GMNKy3G6HzNT3Flyfn1shyYHpSq1f1Dyq08
+	lJ+zUY6uavKHkVuI1vYZlR5SgL4eQzQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759392864; a=rsa-sha256;
 	cv=none;
-	b=keDJk8ZZyMaV3rXi1x/N7XdCoQOZbILaTUHwrsY64RhOuUKV49o0S1bsJGPvxtc3lo3WK5
-	TsjHS+mPsAZ2LLVB9XMLvl0030zUPZjcZkiOpEnUyePOAuvZzyNq7soikQy5fPzrWwC1LX
-	bLQrSudkaezI1JtHMKSoa0Igk7evonc=
-X-AuditID: a67dfc5b-c45ff70000001609-bf-68de34d63323
+	b=dTvy0SfyAdWdjMeRKUTP5DpCqKBZX+Z702+n1UA9ZjiA+H/eLLMFpACG36o/QbD1uygWQn
+	N6QilvZgM4h+PVSmLy1tKyEuWiOCZwnuxVIMRzVCt+NwS5UF/NFtpXMK1r+Bv1tiojtQHj
+	XcHeIn2Fz+q6nLVofG43LoiU3OXOhGs=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
+	dmarc=none
+X-AuditID: a67dfc5b-c45ff70000001609-d3-68de341932f9
 From: Byungchul Park <byungchul@sk.com>
-To: akpm@linux-foundation.org
-Cc: david@redhat.com,
-	ziy@nvidia.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	clameter@sgi.com,
-	kravetz@us.ibm.com,
+To: linux-kernel@vger.kernel.org
+Cc: kernel_team@skhynix.com,
+	torvalds@linux-foundation.org,
+	damien.lemoal@opensource.wdc.com,
+	linux-ide@vger.kernel.org,
+	adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	will@kernel.org,
+	tglx@linutronix.de,
+	rostedt@goodmis.org,
+	joel@joelfernandes.org,
+	sashal@kernel.org,
+	daniel.vetter@ffwll.ch,
+	duyuyang@gmail.com,
+	johannes.berg@intel.com,
+	tj@kernel.org,
+	tytso@mit.edu,
+	willy@infradead.org,
+	david@fromorbit.com,
+	amir73il@gmail.com,
+	gregkh@linuxfoundation.org,
+	kernel-team@lge.com,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	max.byungchul.park@gmail.com,
-	kernel_team@skhynix.com,
+	akpm@linux-foundation.org,
+	mhocko@kernel.org,
+	minchan@kernel.org,
+	hannes@cmpxchg.org,
+	vdavydov.dev@gmail.com,
+	sj@kernel.org,
+	jglisse@redhat.com,
+	dennis@kernel.org,
+	cl@linux.com,
+	penberg@kernel.org,
+	rientjes@google.com,
+	vbabka@suse.cz,
+	ngupta@vflare.org,
+	linux-block@vger.kernel.org,
+	josef@toxicpanda.com,
+	linux-fsdevel@vger.kernel.org,
+	jack@suse.cz,
+	jlayton@kernel.org,
+	dan.j.williams@intel.com,
+	hch@infradead.org,
+	djwong@kernel.org,
+	dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com,
+	melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com,
 	harry.yoo@oracle.com,
+	chris.p.wilson@intel.com,
 	gwan-gyeong.mun@intel.com,
+	max.byungchul.park@gmail.com,
+	boqun.feng@gmail.com,
+	longman@redhat.com,
+	yunseong.kim@ericsson.com,
+	ysk@kzalloc.com,
 	yeoreum.yun@arm.com,
-	syzkaller@googlegroups.com,
-	ysk@kzalloc.com
-Subject: [RFC] mm/migrate: make sure folio_unlock() before folio_wait_writeback()
-Date: Thu,  2 Oct 2025 17:16:12 +0900
-Message-Id: <20251002081612.53281-1-byungchul@sk.com>
+	netdev@vger.kernel.org,
+	matthew.brost@intel.com,
+	her0gyugyu@gmail.com,
+	corbet@lwn.net,
+	catalin.marinas@arm.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	luto@kernel.org,
+	sumit.semwal@linaro.org,
+	gustavo@padovan.org,
+	christian.koenig@amd.com,
+	andi.shyti@kernel.org,
+	arnd@arndb.de,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	mcgrof@kernel.org,
+	petr.pavlu@suse.com,
+	da.gomez@kernel.org,
+	samitolvanen@google.com,
+	paulmck@kernel.org,
+	frederic@kernel.org,
+	neeraj.upadhyay@kernel.org,
+	joelagnelf@nvidia.com,
+	josh@joshtriplett.org,
+	urezki@gmail.com,
+	mathieu.desnoyers@efficios.com,
+	jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	dietmar.eggemann@arm.com,
+	bsegall@google.com,
+	mgorman@suse.de,
+	vschneid@redhat.com,
+	chuck.lever@oracle.com,
+	neil@brown.name,
+	okorniev@redhat.com,
+	Dai.Ngo@oracle.com,
+	tom@talpey.com,
+	trondmy@kernel.org,
+	anna@kernel.org,
+	kees@kernel.org,
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	mark.rutland@arm.com,
+	ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com,
+	wangkefeng.wang@huawei.com,
+	broonie@kernel.org,
+	kevin.brodsky@arm.com,
+	dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev,
+	ast@kernel.org,
+	ziy@nvidia.com,
+	yuzhao@google.com,
+	baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com,
+	joel.granados@kernel.org,
+	richard.weiyang@gmail.com,
+	geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com,
+	linux@treblig.org,
+	alexander.shishkin@linux.intel.com,
+	lillian@star-ark.net,
+	chenhuacai@kernel.org,
+	francesco@valla.it,
+	guoweikang.kernel@gmail.com,
+	link@vivo.com,
+	jpoimboe@kernel.org,
+	masahiroy@kernel.org,
+	brauner@kernel.org,
+	thomas.weissschuh@linutronix.de,
+	oleg@redhat.com,
+	mjguzik@gmail.com,
+	andrii@kernel.org,
+	wangfushuai@baidu.com,
+	linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org,
+	linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: [PATCH v17 44/47] dept: introduce APIs to set page usage and use subclasses_evt for the usage
+Date: Thu,  2 Oct 2025 17:12:44 +0900
+Message-Id: <20251002081247.51255-45-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrFLMWRmVeSWpSXmKPExsXC9ZZnke41k3sZBu/+GVjMWb+GzWLXjRCL
-	9Y3r2C2+rv/FbPHz7nF2i4uv/zBZ3F/2jMXi+NZ57BbX1x5lsri8aw6bxb01/1ktvvVJW1yY
-	2MtqceRNN7PF3C+GFqvXZFh8Wb2KzWL20XvsDkIea+atYfTYOesuu8eeiSfZPLrbLrN7LN7z
-	kslj06dJ7B4Lf79g9jgx4zeLx86Hlh69ze/YPD4+vcXi8X7fVTaPu9eBys5d62P2+LxJLoA/
-	issmJTUnsyy1SN8ugSvjxdW5zAXTvCsu96s2ME6y7GLk5JAQMJF4f3MOcxcjB5jde84LJMwm
-	oC5x48ZPZhBbREBWYurf8yxdjFwczAKXmSUWbr7DCpIQFgiUWPJ/KhNIL4uAqsTaReUgYV4B
-	U4muNVfZIMbLS6zecIAZpFdC4DubxILNW6ASkhIHV9xgmcDIvYCRYRWjUGZeWW5iZo6JXkZl
-	XmaFXnJ+7iZGYIgvq/0TvYPx04XgQ4wCHIxKPLwXVO9mCLEmlhVX5h5ilOBgVhLhTVhxJ0OI
-	NyWxsiq1KD++qDQntfgQozQHi5I4r9G38hQhgfTEktTs1NSC1CKYLBMHp1QDo3DpnjcpD5sS
-	NP3b2b22bFgv8bRU/u0pLhmLqE9nPz2bUX+k+kD0S8MfPSc+XTAynbL0824Z1sfdVySk5x5I
-	0yq6/06kR3DlBZOL1d0lzveONambVi3pOr0h7qsrw5kJllOthbRrlU77SUrU6S2e01O+ZHq6
-	5aTFa3MYGJfbp8kkn0hZZ+8fosRSnJFoqMVcVJwIAMhUt3ptAgAA
-X-Brightmail-Tracker: H4sIAAAAAAAAAwFZAqb9CAMSxgMaCGludGVybmFsIgYKBApOO4Mt1jTeaDDn7B84nK+sBji6
-	2FQ4r4GuBzj1r/oDOPndxwc40ev8AjjfpuYEOMe1ngc4w53JBTjXrcUCONO6nAY43qz/BTj2
-	jhs40JGNBTjC1ucFOMTsiwM4nfQxOKusaDj0q6oGOJvF3gdAFEisnqwBSLma3QdIvJHJBkiL
-	htMHSKO86QJIsvKSB0ih++gDSMiY+wRIueE5SI2D7gZI8eXaBEjvvtUGSN3X6QJI9ttISKPo
-	8AJIztaOA1ARWgo8ZGVsaXZlci8+YApo6NWdA3CWS3jTjyWAAZI5igEICBgQNBiNzkqKAQkI
-	BhAnGNjY+QOKAQkIFBAdGJX9zwSKAQoIAxDTAxihs9wFigEJCBMQURik/5UCigEICAQQJRit
-	oneKAQkIDRA1GIqs1QaKAQkIGBAfGKuwwAOQAQigAQCqARRpbnZtYWlsNS5za2h5bml4LmNv
-	bbIBBgoEpn38kbgB9NNHwgEQCAEiDA3RJd1oEgVhdnN5bcIBGAgDIhQNYKjcaBINZGF5emVy
-	b19ydWxlc8IBGwgEIhcNSldlYBIQZ2F0ZWtlZXBlcl9ydWxlc8IBAggJGoABmrQ6/dQGRW5m
-	7tfqdxjvZxxMYkIS4he2oulSk9TUDjcbZqzBICj1qH6tY8JN3Yb3xgeIyoTRzzKOqW7NQmvn
-	0YTBD2ur2CObjCx279mhMhGJVNYWjjEV8KduNgcNLh4zyRmPlBhuuyVvWhLofH43LqOK/uHz
-	/4B+0aH5S7Gw4bwiBHNoYTEqA3JzYRffiDpZAgAA
+In-Reply-To: <20251002081247.51255-1-byungchul@sk.com>
+References: <20251002081247.51255-1-byungchul@sk.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAAzXSe0hTcRQH8H73PXNxm7WuLswGIliaxawjRQUlXIIi6J8oJEfe2nBqbWYq
+	FStfaSqlSekUNHssH2UzS1uWWS7TTM0HK9RSSi3dJJlKPnNW/xw+nPPl+9dhcMkV0oNRR0YL
+	2kilRk65EC421yI/d0WfKqAr1w2mZgw4JNUsEDCXZaFhodaCoOzxRQy+1aUgqDVeoqDAkIWg
+	fWQWA8ONBOcYxiCn3IzB++IeAgwtHSRYSodoeGBrJeFdXzcJT/Vfaaj9vAGKkm8TYKkewKDj
+	WT4F6RVVJPSVLZCgN0yR0FbXTELrs3ISJjNlUG6/RUG2fRCB8deNxcpCKVS9TELwNqMOg5Rh
+	MwWdn8wIhvIKMHg9MYpB9sdCCipNOThM32tA0DTdhMFApo2G8YJ5EhJ7AsFRWkKB/aqDBEND
+	H707gJ+ZzkL8tRY/viavl+YLTWf4SqMvX/z8B8abSlIp3jSeRfNFM8M4n2brxHj7hw8033hz
+	huBr+oP4In0OzhdnZpN8RoKdOig94rIjTNCoYwTtpp2hLqp0cxt1ql4RW9FVReiRwzcNMQzH
+	KribxXvTkGiJua9+0E5TrA9ntf7GnV7FenGVGYOk0zjbvJbrbt/otBt7gsvtsS7tCdab6y4f
+	IpwWs1s56/UE7G/nOq60om6pR7S47+hvXspI2EAuaSzxX+aeiEt+dOGv3blXRitxFYkL0bIS
+	JFFHxkQo1RqFvyouUh3rfzwqwoQWX+Tu+dmj1Wi87VA9YhkkdxW3efeqJKQyRhcXUY84Bpev
+	Eocae1QScZgyLl7QRh3TntEIunokYwj5GvGWybNhEvakMloIF4RTgvb/FWNEHnp0IGTPi3zD
+	2PrDwaelbvYB/6+9b0Z0T3ziN112T1r9LWTr8vCWOYt2ROp467lb1jV2rvGkutV1766V9Gz3
+	ClmQYjQw3Crz+/J9MFipiQ2Z+tX7+P79jictnNTskbsvoDpvv+0Os/35z7Xqg+bl6RNN7Z5j
+	r7kGOnX+4Wev39sG1jT9lBM6lXKzL67VKf8Ash49Ph4DAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTdxTG/d/7v/e2zYo3lcQbNdE0QRYiviRgjrg4E028c5vZt2XzjWbc
+	0UoBbRGtcQlYGsmGExpaQguT1VhJKdBRJEOswSIERAJ3TGCzBeuwSICRzFblfS3Lvpz8zvM8
+	eXI+HAmpaKO2SDR5BYIuT6VV0jIsO3HQmMqljav3ekfTYKS4E0M0UoqhptlNQ2lLNQVDTQ0I
+	JqKlCN4t2Ukwta9hWDH3MBBZeM7Amq8HgVU0k+BuLSbgjWeVhpmufxBYQpM0VE0XY5h3liGw
+	he0MTHcfg7mJDgrWglMEjL6dReCcXCVgsvM6ghVrDtxyeGlYGhgkocoyhODnUJCE156Y2doz
+	jsBXf42GV+X3SBieTIDfo/M09Fl+oGFOrCHgbw8Nddd8FNTazQiMt5tpsNa2YGh/cZ8BcWaZ
+	gIDVTEBDy+cw4Qxj6C93ELH7YqlfNoO9ykjExmsCLI0dBCw4XQw8vR3A4CxKAvvAMAUv620M
+	LIf2wVpdPvQ0TDEQvGnB0DQ3SB22IP6d6UfMu7xtBG/6bYXm3T+5Eb+0aEZ85I6R5E3lsbVr
+	dp7kS7yX+Dv9szS/GH1G8763dZh/4uD4ioFUvt0WZPiSh38yX2R8LfsoS9BqCgXdnkOZMnVZ
+	xxB93p922fPsHi5CkZTvkVTCsWlc9aNpJs40m8yNjS2QcU5kd3DeG2EqziTbv40bEXfFeRP7
+	LVcdGFvXMZvEjTRO4TjL2f3cWKWR+K9zO9fg6Vzvkcb04VD/ekbBpnOm+RKiHMnq0AYXStTk
+	FeaqNNr03foctSFPc3n3N/m5LSj2Tc7vlit+RZHhY37ESpDyA7mYFFQrKFWh3pDrR5yEVCbK
+	M+sDaoU8S2W4Iujyz+ouagW9H22VYOVm+fEvhUwFm60qEHIE4byg+98lJNItReh0YNwmlGUX
+	FxgOn+oSzxi7X1VW5L58f/eTjHO+T/U7k69Wdz+QiSc/FKPS0coNvY4LoVWNqNv58MD2z7Jr
+	HxCz+e77NfZ0hxguPZExmLCRajvVvD8F+53s6GIvuB5fD9v8hj1m5tZXUtcbYuOMNfEP6xHt
+	yRd/Hf3Yl/W4qG9IifVq1b4UUqdX/QsQvzpjSQMAAA==
 X-CFilter-Loop: Reflected
+X-Stat-Signature: 3ug67mtdzq6gxoozxmc55atdjz6iz7q7
+X-Rspamd-Queue-Id: 9FB761C0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 00DBB10000A
-X-Stat-Signature: qpee6jzs9j9icqufwz1mn99giq15e6ob
-X-HE-Tag: 1759392983-945576
-X-HE-Meta: U2FsdGVkX1+nHAlLvw1eIwY3eODYbs35pWbHQldGl8MRE01txu0CiMWUenORdxsJl44wXaPCWAdOVr3exw3eg+2CNzoHAbNDVNrSbZc/Vg4LiIxf3wat5bMi5gjvW7NmnjCc0mfDJVlTU7/g+RtXZbE9hiTXO4tagKeIO5npTx7z7cR52zHu/QfmkDaO1XTwfB8VVGBuRYgNLFDug3iHepKYD4mhjSg+O8H/uZtdgOSGB3kgM8JkKcm0ZPk4m6JxuH3gWoah7eFf/JfkqSJIgeCLddObCzfPM0k8HujLIRQjALOS6j8HJ6n4+ZniRTcWfFUd1AH4FKlMmiWqHnsbWgQ92TzgcYMyGZQHu8q0a1wefg5t7vfvCHFzbihtRjYn75lGTKIO2zPsIttT3k49jBQbHXULyD7kgToCwSqby/Nr/1hU/bd6aAnCKD1LXi/9UWFRTVnTDV5c6QQ2nHTLtzva2FFKGRout7mOSqlGJYQbIKN0i3tGKGIpTpPLkYDYxQdwYN8A1iDAUHuhNunlBm9X+124RVjOLQmftG8JzIS+KiWHXWJNR0k9zXHH1jZfqWAnD8Ag6KJlqwSpokhDodLK5aC2KtLcOSwubx40KzgfI+M6Hx7Tl/vJ4mYZDSZ0JYwXimpLyvOX0HtX4vEEP9/H1Hg2yKkXbwD/kYTyfysfFFlmNtQPGkBQPjFfp54szGgGpVd15UgiQb/4mF/AzFLa+oNmuRcebLNzwtYcZnfyOKLYcs84jn8gozqWCN8Ov2KAZM/jZsIZEZik8dYyx+NoyGPaFOsL2Su+cT3gDB8=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1759392863-19323
+X-HE-Meta: U2FsdGVkX1/lYWSt4fqf1f4nm855cFJ7wi26CMvYTBvt5lkSIRtcQ7Kcs2HE/TzHt67qnskDMEGWLsF9S7K8n6+V1/blvCCCs6ZPmnAcBiR7DvPmFgN1Ti1CKIyVxdBpmhcm1613P7fVuxhC6YY+85jWvVtXpvGJvmUJNLRnfQlGDxG3Zn/e2EUmcgofNCEytBunMqkkaBhDW+5wjtb4xIX3ss6I986MyAM8RzAOawEXUV607NTI3qjYYiqcVz3xZAMx9K0L+W/7NG0e1XOQnVMkusANPNMd52r6lui6Npyiq05oVVR8VGABOUJ86906WUI3sKc2Y4BCkZFEaCVk+uTmohXJFd2Pcf4rs+U3tQGNFsK+tXbUmHZuOpMy/GQnZa8HDOGmeqhZJ/2G4BV9TdHYdAiceDfK5ZpHdPaOfEqLGhlQsRYvOXVl111l78NE+UqNp50KfvS22y+xZdbwF8SQ+JffIs/hDUWry9jqz4TUr3u8qFD+uN2/fqUfLf6ej5DJzSPMRdkueM18JDXOBbUFTwpkZzPxTxJAWMl/3iqCRyRhMYCOm0EDoVeRhHbKGioF996ySaCrmB8+mCLMWAIAp3Qu91J5DDvnADAY/QfDKn/YC5JyIbVZbGE5tt6gslTWHpV4fj2Xfu8yEWM+NjITWWV87yo1Me+KUEoUM4a3cIRt4HC2E3+1n1ixG1MmIByGnZHf3KaGQfIPfU2XuIU1kcwnriryWyPvz/FqfeY1ave0TD8iRsw7+f9ZAVDkuGOJmpN5kTWyytRkVnN/PpQMR+JfiYkVNK75iROIF0d7YtF8lD2Ga3gUjDuyrwk0e0Br3ybBve1i7Z6bBnF38lEzFrJ+6MKyp/H81GUe9IQYydPfO7Je8Md1wN1RprH+7DATmGMIC2Nvl+VqB4Pi8jXaRTHBmA34FkwRR0wK/zoqYHECJy5zE3oxNKwTPNVTkg4lGjdEyY9qWQqfPEM
+ vilMDxcG
+ 5Um58ULEyRsEEMIvb8TpuNDBjIIL12Gj0zlxTtk4R5WttQEJjS6ai1es8Nm6RDQbN5u5OO/xqOGeSBFggwZDlTuOT+JtvIzR6bDPyBQ5tLcTMkfvBqE+5ZlyUssmr/3GerV2V
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,290 +250,222 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DEPT(Dependency Tracker) reported a deadlock:
+False positive reports have been observed since dept works with the
+assumption that all the pages have the same dept class, but the class
+should be split since the problematic call paths are different depending
+on what the page is used for.
 
-   ===================================================
-   DEPT: Circular dependency has been detected.
-   6.15.11-00046-g2c223fa7bd9a-dirty #13 Not tainted
-   ---------------------------------------------------
-   summary
-   ---------------------------------------------------
-   *** DEADLOCK ***
+At least, ones in block device's address_space and ones in regular
+file's address_space have exclusively different usages.
 
-   context A
-      [S] (unknown)(pg_locked_map:0)
-      [W] dept_page_wait_on_bit(pg_writeback_map:0)
-      [E] dept_page_clear_bit(pg_locked_map:0)
+Thus, define usage candidates like:
 
-   context B
-      [S] (unknown)(pg_writeback_map:0)
-      [W] dept_page_wait_on_bit(pg_locked_map:0)
-      [E] dept_page_clear_bit(pg_writeback_map:0)
+   DEPT_PAGE_REGFILE_CACHE /* page in regular file's address_space */
+   DEPT_PAGE_BDEV_CACHE    /* page in block device's address_space */
+   DEPT_PAGE_DEFAULT       /* the others */
 
-   [S]: start of the event context
-   [W]: the wait blocked
-   [E]: the event not reachable
-   ---------------------------------------------------
-   context A's detail
-   ---------------------------------------------------
-   context A
-      [S] (unknown)(pg_locked_map:0)
-      [W] dept_page_wait_on_bit(pg_writeback_map:0)
-      [E] dept_page_clear_bit(pg_locked_map:0)
+Introduce APIs to set each page's usage properly and make sure not to
+interact between at least between DEPT_PAGE_REGFILE_CACHE and
+DEPT_PAGE_BDEV_CACHE.  However, besides the exclusive usages, allow any
+other combinations to interact to the other for example:
 
-   [S] (unknown)(pg_locked_map:0):
-   (N/A)
+   PG_locked for DEPT_PAGE_DEFAULT page can wait for PG_locked for
+   DEPT_PAGE_REGFILE_CACHE page and vice versa.
 
-   [W] dept_page_wait_on_bit(pg_writeback_map:0):
-   [<ffff800080589c94>] folio_wait_bit+0x2c/0x38
-   stacktrace:
-         folio_wait_bit_common+0x824/0x8b8
-         folio_wait_bit+0x2c/0x38
-         folio_wait_writeback+0x5c/0xa4
-         migrate_pages_batch+0x5e4/0x1788
-         migrate_pages+0x15c4/0x1840
-         compact_zone+0x9c8/0x1d20
-         compact_node+0xd4/0x27c
-         sysctl_compaction_handler+0x104/0x194
-         proc_sys_call_handler+0x25c/0x3f8
-         proc_sys_write+0x20/0x2c
-         do_iter_readv_writev+0x350/0x448
-         vfs_writev+0x1ac/0x44c
-         do_pwritev+0x100/0x15c
-         __arm64_sys_pwritev2+0x6c/0xcc
-         invoke_syscall.constprop.0+0x64/0x18c
-         el0_svc_common.constprop.0+0x80/0x198
+   PG_locked for DEPT_PAGE_DEFAULT page can wait for PG_locked for
+   DEPT_PAGE_BDEV_CACHE page and vice versa.
 
-   [E] dept_page_clear_bit(pg_locked_map:0):
-   [<ffff800080700914>] migrate_folio_undo_src+0x1b4/0x200
-   stacktrace:
-         migrate_folio_undo_src+0x1b4/0x200
-         migrate_pages_batch+0x1578/0x1788
-         migrate_pages+0x15c4/0x1840
-         compact_zone+0x9c8/0x1d20
-         compact_node+0xd4/0x27c
-         sysctl_compaction_handler+0x104/0x194
-         proc_sys_call_handler+0x25c/0x3f8
-         proc_sys_write+0x20/0x2c
-         do_iter_readv_writev+0x350/0x448
-         vfs_writev+0x1ac/0x44c
-         do_pwritev+0x100/0x15c
-         __arm64_sys_pwritev2+0x6c/0xcc
-         invoke_syscall.constprop.0+0x64/0x18c
-         el0_svc_common.constprop.0+0x80/0x198
-         do_el0_svc+0x28/0x3c
-         el0_svc+0x50/0x220
-   ---------------------------------------------------
-   context B's detail
-   ---------------------------------------------------
-   context B
-      [S] (unknown)(pg_writeback_map:0)
-      [W] dept_page_wait_on_bit(pg_locked_map:0)
-      [E] dept_page_clear_bit(pg_writeback_map:0)
+   PG_locked for DEPT_PAGE_DEFAULT page can wait for PG_locked for
+   DEPT_PAGE_DEFAULT page.
 
-   [S] (unknown)(pg_writeback_map:0):
-   (N/A)
-
-   [W] dept_page_wait_on_bit(pg_locked_map:0):
-   [<ffff80008081e478>] bdev_getblk+0x58/0x120
-   stacktrace:
-         find_get_block_common+0x224/0xbc4
-         bdev_getblk+0x58/0x120
-         __ext4_get_inode_loc+0x194/0x98c
-         ext4_get_inode_loc+0x4c/0xcc
-         ext4_reserve_inode_write+0x74/0x158
-         __ext4_mark_inode_dirty+0xd4/0x4e0
-         __ext4_ext_dirty+0x118/0x164
-         ext4_ext_map_blocks+0x1578/0x2ca8
-         ext4_map_blocks+0x2a4/0xa60
-         ext4_convert_unwritten_extents+0x1b0/0x3c0
-         ext4_convert_unwritten_io_end_vec+0x90/0x1a0
-         ext4_end_io_end+0x58/0x194
-         ext4_end_io_rsv_work+0xc4/0x150
-         process_one_work+0x3b4/0xac0
-         worker_thread+0x2b0/0x53c
-         kthread+0x1a0/0x33c
-
-   [E] dept_page_clear_bit(pg_writeback_map:0):
-   [<ffff8000809dfc5c>] ext4_finish_bio+0x638/0x820
-   stacktrace:
-         folio_end_writeback+0x140/0x488
-         ext4_finish_bio+0x638/0x820
-         ext4_release_io_end+0x74/0x188
-         ext4_end_io_end+0xa0/0x194
-         ext4_end_io_rsv_work+0xc4/0x150
-         process_one_work+0x3b4/0xac0
-         worker_thread+0x2b0/0x53c
-         kthread+0x1a0/0x33c
-         ret_from_fork+0x10/0x20
-
-To simplify the scenario:
-
-   context X (wq worker)	context Y (process context)
-
-				migrate_pages_batch()
-   ext4_end_io_end()		  ...
-     ...			  migrate_folio_unmap()
-     ext4_get_inode_loc()	    ...
-       ...			    folio_lock() // hold the folio lock
-       bdev_getblk()		    ...
-         ...			    folio_wait_writeback() // wait forever
-         __find_get_block_slow()
-           ...			    ...
-           folio_lock() // wait forever
-           folio_unlock()	  migrate_folio_undo_src()
-				    ...
-     ...			    folio_unlock() // never reachable
-     ext4_finish_bio()
-	...
-	folio_end_writeback() // never reachable
-
-context X is waiting for the folio lock to be released by context Y,
-while context Y is waiting for the writeback to end in context X.
-Ultimately, two contexts are waiting for the event that will never
-happen, say, deadlock.
-
-*Only one* of the following two conditions should be allowed, or we
-cannot avoid this kind of deadlock:
-
-   1. while holding a folio lock (and heading for folio_unlock()),
-      waiting for a writeback to end,
-   2. while heading for the writeback end, waiting for the folio lock to
-      be released,
-
-Since allowing 2 and avoiding 1 sound more sensible than the other,
-remove the first condition by making sure folio_unlock() before
-folio_wait_writeback() in migrate_folio_unmap().
-
-Fixes: 49d2e9cc45443 ("[PATCH] Swap Migration V5: migrate_pages() function")
-Reported-by: Yunseong Kim <ysk@kzalloc.com>
 Signed-off-by: Byungchul Park <byungchul@sk.com>
-Tested-by: Yunseong Kim <ysk@kzalloc.com>
 ---
+ include/linux/dept.h       | 31 +++++++++++++++-
+ include/linux/mm_types.h   |  1 +
+ include/linux/page-flags.h | 76 +++++++++++++++++++++++++++++++++++++-
+ 3 files changed, 104 insertions(+), 4 deletions(-)
 
-Hi,
-
-Thanks to Yunseong for reporting the issue, testing, and confirming if
-this patch can resolve the issue.  We used the latest version of DEPT
-to detect the issue:
-
-   https://lore.kernel.org/all/20251002081247.51255-1-byungchul@sk.com/
-
-I mentioned in the commit message above like:
-
-   *Only one* of the following two conditions should be allowed, or we
-   cannot avoid this kind of deadlock:
-   
-      1. while holding a folio lock (and heading for folio_unlock()),
-         waiting for a writeback to end,
-      2. while heading for the writeback end, waiting for the folio lock
-         to be released,
-
-Honestly, I'm not convinced which one we should choose between two, I
-chose 'allowing 2 and avoiding 1' to resolve this issue though.
-
-However, please let me know if I was wrong and we should go for
-'allowing 1 and avoiding 2'.  If so, I should try a different approach,
-for example, to fix by preventing folio_lock() or using folio_try_lock()
-while heading for writeback end in ext4_end_io_end() or something.
-
-To Yunseong,
-
-The link you shared for a system hang is:
-
-   https://gist.github.com/kzall0c/a6091bb2fd536865ca9aabfd017a1fc5
-
-I think an important stacktrace for this issue, this is, waiting for
-PG_writeback, was missed in the log.
-
-	Byungchul
-
----
- mm/migrate.c | 57 +++++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 41 insertions(+), 16 deletions(-)
-
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 9e5ef39ce73a..60b0b054f27a 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1215,6 +1215,17 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
+diff --git a/include/linux/dept.h b/include/linux/dept.h
+index 0ac13129f308..fbbc41048fac 100644
+--- a/include/linux/dept.h
++++ b/include/linux/dept.h
+@@ -21,8 +21,8 @@ struct task_struct;
+ #define DEPT_MAX_WAIT_HIST		64
+ #define DEPT_MAX_ECXT_HELD		48
  
- 	dst->private = NULL;
+-#define DEPT_MAX_SUBCLASSES		16
+-#define DEPT_MAX_SUBCLASSES_EVT		2
++#define DEPT_MAX_SUBCLASSES		24
++#define DEPT_MAX_SUBCLASSES_EVT		3
+ #define DEPT_MAX_SUBCLASSES_USR		(DEPT_MAX_SUBCLASSES / DEPT_MAX_SUBCLASSES_EVT)
+ #define DEPT_MAX_SUBCLASSES_CACHE	2
  
-+retry_wait_writeback:
+@@ -390,6 +390,32 @@ struct dept_ext_wgen {
+ 	unsigned int wgen;
+ };
+ 
++enum {
++	DEPT_PAGE_DEFAULT = 0,
++	DEPT_PAGE_REGFILE_CACHE,	/* regular file page cache */
++	DEPT_PAGE_BDEV_CACHE,		/* block device cache */
++	DEPT_PAGE_USAGE_NR,		/* nr of usages options */
++};
++
++#define DEPT_PAGE_USAGE_SHIFT 16
++#define DEPT_PAGE_USAGE_MASK ((1U << DEPT_PAGE_USAGE_SHIFT) - 1)
++#define DEPT_PAGE_USAGE_PENDING_MASK (DEPT_PAGE_USAGE_MASK << DEPT_PAGE_USAGE_SHIFT)
++
++/*
++ * Identify each page's usage type
++ */
++struct dept_page_usage {
 +	/*
-+	 * Only in the case of a full synchronous migration is it
-+	 * necessary to wait for PageWriteback.  In the async case, the
-+	 * retry loop is too short and in the sync-light case, the
-+	 * overhead of stalling is too much.  Plus, do not write-back if
-+	 * it's in the middle of direct compaction
++	 * low 16 bits  : the current usage type
++	 * high 16 bits : usage type requested to be set
++	 *
++	 * Do not apply the type requested immediately but defer until
++	 * after clearing PG_locked bit of the folio or page e.g. by
++	 * folio_unlock().
 +	 */
-+	if (folio_test_writeback(src) && mode == MIGRATE_SYNC)
-+		folio_wait_writeback(src);
++	atomic_t type; /* Update and read atomically */
++};
 +
- 	if (!folio_trylock(src)) {
- 		if (mode == MIGRATE_ASYNC)
- 			goto out;
-@@ -1245,27 +1256,41 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
- 
- 		folio_lock(src);
- 	}
--	locked = true;
--	if (folio_test_mlocked(src))
--		old_page_state |= PAGE_WAS_MLOCKED;
- 
- 	if (folio_test_writeback(src)) {
--		/*
--		 * Only in the case of a full synchronous migration is it
--		 * necessary to wait for PageWriteback. In the async case,
--		 * the retry loop is too short and in the sync-light case,
--		 * the overhead of stalling is too much
--		 */
--		switch (mode) {
--		case MIGRATE_SYNC:
--			break;
--		default:
--			rc = -EBUSY;
--			goto out;
-+		if (mode == MIGRATE_SYNC) {
-+			/*
-+			 * folio_unlock() is required before trying
-+			 * folio_wait_writeback().  Or it leads a
-+			 * deadlock like:
-+			 *
-+			 *   context x		context y
-+			 *   in XXX_io_end()	in migrate_folio_unmap()
-+			 *
-+			 *   ...		...
-+			 *   bdev_getblk();	folio_lock();
-+			 *
-+			 *     // wait forever	// wait forever
-+			 *     folio_lock();	folio_wait_writeback();
-+			 *
-+			 *     ...		...
-+			 *     folio_unlock();
-+			 *   ...		// never reachable
-+			 *			folio_unlock();
-+			 *   // never reachable
-+			 *   folio_end_writeback();
-+			 */
-+			folio_unlock(src);
-+			goto retry_wait_writeback;
- 		}
--		folio_wait_writeback(src);
-+		rc = -EBUSY;
-+		goto out;
- 	}
- 
-+	locked = true;
-+	if (folio_test_mlocked(src))
-+		old_page_state |= PAGE_WAS_MLOCKED;
-+
+ struct dept_event_site {
  	/*
- 	 * By try_to_migrate(), src->mapcount goes down to 0 here. In this case,
- 	 * we cannot notice that anon_vma is freed while we migrate a page.
-
-base-commit: e5f0a698b34ed76002dc5cff3804a61c80233a7a
+ 	 * event site name
+@@ -562,6 +588,7 @@ extern void dept_hardirqs_off(void);
+ struct dept_key { };
+ struct dept_map { };
+ struct dept_ext_wgen { };
++struct dept_page_usage { };
+ struct dept_event_site { };
+ 
+ #define DEPT_MAP_INITIALIZER(n, k) { }
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 5ebc565309af..8ccbb030500c 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -224,6 +224,7 @@ struct page {
+ 	struct page *kmsan_shadow;
+ 	struct page *kmsan_origin;
+ #endif
++	struct dept_page_usage usage;
+ 	struct dept_ext_wgen pg_locked_wgen;
+ } _struct_page_alignment;
+ 
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index d3c4954c4218..3fd3660ddc6f 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -204,6 +204,68 @@ enum pageflags {
+ 
+ extern struct dept_map pg_locked_map;
+ 
++static inline int dept_set_page_usage(struct page *p,
++		unsigned int new_type)
++{
++	unsigned int type = atomic_read(&p->usage.type);
++
++	if (WARN_ON_ONCE(new_type >= DEPT_PAGE_USAGE_NR))
++		return -1;
++
++	new_type <<= DEPT_PAGE_USAGE_SHIFT;
++retry:
++	new_type &= ~DEPT_PAGE_USAGE_MASK;
++	new_type |= type & DEPT_PAGE_USAGE_MASK;
++
++	if (!atomic_try_cmpxchg(&p->usage.type, &type, new_type))
++		goto retry;
++
++	return 0;
++}
++
++static inline int dept_reset_page_usage(struct page *p)
++{
++	return dept_set_page_usage(p, DEPT_PAGE_DEFAULT);
++}
++
++static inline void dept_update_page_usage(struct page *p)
++{
++	unsigned int type = atomic_read(&p->usage.type);
++	unsigned int new_type;
++
++retry:
++	new_type = type & DEPT_PAGE_USAGE_PENDING_MASK;
++	new_type >>= DEPT_PAGE_USAGE_SHIFT;
++	new_type |= type & DEPT_PAGE_USAGE_PENDING_MASK;
++
++	/*
++	 * Already updated by others.
++	 */
++	if (type == new_type)
++		return;
++
++	if (!atomic_try_cmpxchg(&p->usage.type, &type, new_type))
++		goto retry;
++}
++
++static inline unsigned long dept_event_flags(struct page *p, bool wait)
++{
++	unsigned int type;
++
++	type = atomic_read(&p->usage.type) & DEPT_PAGE_USAGE_MASK;
++
++	if (WARN_ON_ONCE(type >= DEPT_PAGE_USAGE_NR))
++		return 0;
++
++	/*
++	 * event
++	 */
++	if (!wait)
++		return 1UL << type;
++
++	return (1UL << DEPT_PAGE_DEFAULT) | (1UL << type);
++}
++
+ /*
+  * Place the following annotations in its suitable point in code:
+  *
+@@ -214,20 +276,28 @@ extern struct dept_map pg_locked_map;
+ 
+ static inline void dept_page_set_bit(struct page *p, int bit_nr)
+ {
++	dept_update_page_usage(p);
+ 	if (bit_nr == PG_locked)
+ 		dept_request_event(&pg_locked_map, &p->pg_locked_wgen);
+ }
+ 
+ static inline void dept_page_clear_bit(struct page *p, int bit_nr)
+ {
++	unsigned long evt_f;
++
++	evt_f = dept_event_flags(p, false);
+ 	if (bit_nr == PG_locked)
+-		dept_event(&pg_locked_map, 1UL, _RET_IP_, __func__, &p->pg_locked_wgen);
++		dept_event(&pg_locked_map, evt_f, _RET_IP_, __func__, &p->pg_locked_wgen);
+ }
+ 
+ static inline void dept_page_wait_on_bit(struct page *p, int bit_nr)
+ {
++	unsigned long evt_f;
++
++	dept_update_page_usage(p);
++	evt_f = dept_event_flags(p, true);
+ 	if (bit_nr == PG_locked)
+-		dept_wait(&pg_locked_map, 1UL, _RET_IP_, __func__, 0, -1L);
++		dept_wait(&pg_locked_map, evt_f, _RET_IP_, __func__, 0, -1L);
+ }
+ 
+ static inline void dept_folio_set_bit(struct folio *f, int bit_nr)
+@@ -245,6 +315,8 @@ static inline void dept_folio_wait_on_bit(struct folio *f, int bit_nr)
+ 	dept_page_wait_on_bit(&f->page, bit_nr);
+ }
+ #else
++#define dept_set_page_usage(p, t)		do { } while (0)
++#define dept_reset_page_usage(p)		do { } while (0)
+ #define dept_page_set_bit(p, bit_nr)		do { } while (0)
+ #define dept_page_clear_bit(p, bit_nr)		do { } while (0)
+ #define dept_page_wait_on_bit(p, bit_nr)	do { } while (0)
 -- 
 2.17.1
 
