@@ -4,97 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5981BCAC5B8
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:33:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0703CAC5B0
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:41:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFD768E0011; Thu,  2 Oct 2025 04:33:58 -0400 (EDT)
+	id 083BB8E0016; Thu,  2 Oct 2025 04:41:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD5248E0003; Thu,  2 Oct 2025 04:33:58 -0400 (EDT)
+	id 05C1C8E0003; Thu,  2 Oct 2025 04:41:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A11A88E0011; Thu,  2 Oct 2025 04:33:58 -0400 (EDT)
+	id E8C1C8E0016; Thu,  2 Oct 2025 04:41:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E0608E0003
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:33:58 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 300541A039B
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:33:58 +0000 (UTC)
-X-FDA: 83952511356.04.741BDE9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4EFDC1C0004
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:33:56 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=la+3NCw2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759394036; a=rsa-sha256;
-	cv=none;
-	b=QMn3WU7TX4hxXFTA4BQbhoFOUUS5Ys34sW1tygBoG30Onq194EWLjW18YlSA9hkHAYhgxP
-	RnQoc1BzyCyI46+IzDfcVLIWmBRq05EL7Kpqmu03v8uw3XzEjigH7842svcXsGONjMABWm
-	T2D2Xo4ouQWsjc3pz6fNAnMn5T1536E=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=la+3NCw2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D7DBF8E0003
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:41:09 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5F5AA869DC
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:41:09 +0000 (UTC)
+X-FDA: 83952529458.30.D5A48E6
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 253B7C000C
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:41:06 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Lc/6wD/n";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=tcHAxREc;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Lc/6wD/n";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=tcHAxREc;
+	spf=pass (imf22.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759394036;
+	s=arc-20220608; t=1759394467;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x4RFbBjXBAG5PiKlOmy3Fq2JrTeXcQC1AqKZRPOaaUk=;
-	b=t4N7Zstffy+riFVcJ+Cg3i/26IVvZCxZAylGwchYXNMkxMmwW9RgxDJSqo1w0T/xbqXctH
-	CwNHTyGmN6F9lpt43eU09Nrb3i5s6kkGIA3ADl7dMP3IBIYN4AdajHgpROTbGkb9LRPYNU
-	iFaUASlVVNmyINRKRJ19IuPz564h5AY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BD4CD63D7A
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:33:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69441C4CEFE
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:33:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759394035;
-	bh=pbVOh0viiaSQxSutfXOGlnV2vsIRoOKRiCLadqZosi0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=la+3NCw2Nb15J3fH82mfJryxEm9q/NcjUgmE1JauOqENFvJ8Bx35Ih2x381Jh0PFB
-	 MFIOMmjWNwyDU8i/vbawZU56lc6rMAPZvFSvhr61j+OlLSWpaGfePrgZOIAuDdKDKb
-	 Z1+Ut01jFzu+JMhPyu4ryofGNc/PkgfuvRe1RmI8oyGnHdqaqzrKPV1aPVR42vKQ30
-	 HzDg5m9bZJD2uRXCP+K2yAm4ze2AQK7vhMF69ca1v+z4u7hSWQPK9QQnvC78BijQY7
-	 3gc0c1y0aJG3W0GkP9X4zVW6qRSYa8ChAtyTLfSy9NGDwsfZ3GKSQzNH5Pr25aGWyD
-	 AXYsN3zl73VvQ==
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-71d60504bf8so8334657b3.2
-        for <linux-mm@kvack.org>; Thu, 02 Oct 2025 01:33:55 -0700 (PDT)
-X-Gm-Message-State: AOJu0YzFztsEWPDbSc3uqbMvHH51s/0nOxgYE4aIi3+WgOQOyDnrRRQ3
-	a5hvfVWhgYNCWSZZLjTvpaXuVy5wDh3+nJYIKuPOVatAGFbSbXwWkIXb5eme3Me6aBwQxd2mFcS
-	HgcOQ8R8zwl3Qzt2bZ4NEPxb7dYCNU5Z9aD4ZQlpJAg==
-X-Google-Smtp-Source: AGHT+IEnyfZfcCdVQp61svzBmK9LMRvaqLJ0QnUZhYgz/8gqmOIsvWmQ4WliKvfLtqjVPjwjjpMmT0tq8pUlaHvu2K0=
-X-Received: by 2002:a05:690e:1a67:b0:5f3:316d:1cf6 with SMTP id
- 956f58d0204a3-63b6febacebmr7046308d50.21.1759394034678; Thu, 02 Oct 2025
- 01:33:54 -0700 (PDT)
+	bh=eH9XbwduDIGri+NeNAU5ni9kwX6UbbeLjDQ6VnltoGs=;
+	b=rq3vrjYFd9Cg2IQuNdznxsRhiH1MQUiCB43RniwHQPcLZvkaIXbep1careydB26mdNCeAi
+	AqzpaPzOR/vtNGCE6QplQCpO5vp1ssDZJHqqUpONqy/3b5gSycOjj/AKXsUyG/h1StHRVq
+	x4Q3ayLN2iMEv0Aq5TxY04yKR6rSXpQ=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Lc/6wD/n";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=tcHAxREc;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Lc/6wD/n";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=tcHAxREc;
+	spf=pass (imf22.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759394467; a=rsa-sha256;
+	cv=none;
+	b=FD/AWXhSydcGn1Al5jHOCgsWgTS5bnQ9i1EiibzdT/CU4Fe5dqXz9DKUjjxVVR34tfqqWu
+	nEzYocFhDtebsbkq4LF+kd9TE9KTZLfVwXYxypE1/wXZfel0BnW1AuvUOqSAdUS6QNKl/B
+	vd58+L2bfz6GYbj7EABsabrIX83Fx+g=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B25A5337E3;
+	Thu,  2 Oct 2025 08:41:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1759394464; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eH9XbwduDIGri+NeNAU5ni9kwX6UbbeLjDQ6VnltoGs=;
+	b=Lc/6wD/ntXWlBNi5/ZRhd/7YAZ8sznPJBX5RHRHKfwGfFA7B1tTT3QywcSDV1sOk0siYjH
+	R6hTmmAXBQb5d50njznYKxwYtXyLHanI1MbzPdd8LE2n2yQwo3SWXoEcpG3z9stQ7qfbpm
+	x4wQvipkO62kRiyy+xPyT3Whtjqjc5U=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1759394464;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eH9XbwduDIGri+NeNAU5ni9kwX6UbbeLjDQ6VnltoGs=;
+	b=tcHAxREcGQBo6JX8Gtg5ds/wKcoNyYsuRu/FipYhTxV6aRrGhQF7GO85yTn7yHDEWd2ZQa
+	dfY0rdGFcBMCunAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1759394464; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eH9XbwduDIGri+NeNAU5ni9kwX6UbbeLjDQ6VnltoGs=;
+	b=Lc/6wD/ntXWlBNi5/ZRhd/7YAZ8sznPJBX5RHRHKfwGfFA7B1tTT3QywcSDV1sOk0siYjH
+	R6hTmmAXBQb5d50njznYKxwYtXyLHanI1MbzPdd8LE2n2yQwo3SWXoEcpG3z9stQ7qfbpm
+	x4wQvipkO62kRiyy+xPyT3Whtjqjc5U=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1759394464;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eH9XbwduDIGri+NeNAU5ni9kwX6UbbeLjDQ6VnltoGs=;
+	b=tcHAxREcGQBo6JX8Gtg5ds/wKcoNyYsuRu/FipYhTxV6aRrGhQF7GO85yTn7yHDEWd2ZQa
+	dfY0rdGFcBMCunAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9C73013AA1;
+	Thu,  2 Oct 2025 08:41:04 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 1AMsJqA63mjaWgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 02 Oct 2025 08:41:04 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 15965A0A56; Thu,  2 Oct 2025 10:40:56 +0200 (CEST)
+Date: Thu, 2 Oct 2025 10:40:56 +0200
+From: Jan Kara <jack@suse.cz>
+To: Byungchul Park <byungchul@sk.com>
+Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com, 
+	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org, 
+	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, mingo@redhat.com, 
+	peterz@infradead.org, will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org, 
+	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch, duyuyang@gmail.com, 
+	johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu, willy@infradead.org, 
+	david@fromorbit.com, amir73il@gmail.com, gregkh@linuxfoundation.org, 
+	kernel-team@lge.com, linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org, 
+	minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org, 
+	jglisse@redhat.com, dennis@kernel.org, cl@linux.com, penberg@kernel.org, 
+	rientjes@google.com, vbabka@suse.cz, ngupta@vflare.org, linux-block@vger.kernel.org, 
+	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org, 
+	dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org, 
+	dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com, 
+	hamohammed.sa@gmail.com, harry.yoo@oracle.com, chris.p.wilson@intel.com, 
+	gwan-gyeong.mun@intel.com, max.byungchul.park@gmail.com, boqun.feng@gmail.com, 
+	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com, 
+	netdev@vger.kernel.org, matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net, 
+	catalin.marinas@arm.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
+	hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org, gustavo@padovan.org, 
+	christian.koenig@amd.com, andi.shyti@kernel.org, arnd@arndb.de, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com, mcgrof@kernel.org, 
+	petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com, paulmck@kernel.org, 
+	frederic@kernel.org, neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com, 
+	josh@joshtriplett.org, urezki@gmail.com, mathieu.desnoyers@efficios.com, 
+	jiangshanlai@gmail.com, qiang.zhang@linux.dev, juri.lelli@redhat.com, 
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de, 
+	vschneid@redhat.com, chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com, 
+	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org, anna@kernel.org, 
+	kees@kernel.org, bigeasy@linutronix.de, clrkwllms@kernel.org, 
+	mark.rutland@arm.com, ada.coupriediaz@arm.com, kristina.martsenko@arm.com, 
+	wangkefeng.wang@huawei.com, broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk, 
+	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com, yuzhao@google.com, 
+	baolin.wang@linux.alibaba.com, usamaarif642@gmail.com, joel.granados@kernel.org, 
+	richard.weiyang@gmail.com, geert+renesas@glider.be, tim.c.chen@linux.intel.com, 
+	linux@treblig.org, alexander.shishkin@linux.intel.com, lillian@star-ark.net, 
+	chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com, link@vivo.com, 
+	jpoimboe@kernel.org, masahiroy@kernel.org, brauner@kernel.org, 
+	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com, andrii@kernel.org, 
+	wangfushuai@baidu.com, linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org, rcu@vger.kernel.org, 
+	linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH v17 30/47] fs/jbd2: use a weaker annotation in journal
+ handling
+Message-ID: <bmthlv2tsd76mgzaoy5gspzdkved6le5xv23xjsc3yafkhrsgh@vvmjdwygm7gn>
+References: <20251002081247.51255-1-byungchul@sk.com>
+ <20251002081247.51255-31-byungchul@sk.com>
 MIME-Version: 1.0
-References: <20251001043436.41338-1-bhe@redhat.com> <20251001043436.41338-4-bhe@redhat.com>
-In-Reply-To: <20251001043436.41338-4-bhe@redhat.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Thu, 2 Oct 2025 01:33:43 -0700
-X-Gmail-Original-Message-ID: <CACePvbWD4BUSqcJkdQdZmXFNjDtGQdEkjUmeHVh0QT3_XTvKEA@mail.gmail.com>
-X-Gm-Features: AS18NWA1QR20ITgLru3xXgiW014ykRRuOj5vwo5jmuA5oDR6gbbijd0nssAhenk
-Message-ID: <CACePvbWD4BUSqcJkdQdZmXFNjDtGQdEkjUmeHVh0QT3_XTvKEA@mail.gmail.com>
-Subject: Re: [PATCH 3/3] mm/swap: remove unneeded swap_active_head
-To: Baoquan He <bhe@redhat.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com, 
-	baohua@kernel.org, nphamcs@gmail.com, shikemeng@huaweicloud.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4EFDC1C0004
-X-Stat-Signature: ju68k8fiayem9y1tc6s4d4qr4w5jnwsc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251002081247.51255-31-byungchul@sk.com>
+X-Rspamd-Queue-Id: 253B7C000C
+X-Stat-Signature: 4b1j6fxzxxaxym3x99bbhycrznfbudkp
 X-Rspam-User: 
-X-HE-Tag: 1759394036-526632
-X-HE-Meta: U2FsdGVkX1+RD6+DhUbOsgGiQYX2+NHNRo+owQ+T2dsgHy6e196mZRQfuOqqwivBOORgdYYUfcQ+YUcvCYuPaqm3uduCtaE28Y/HXYbpUCdxVuwR/fkwx/ImaxGaTGt9pifmPuERmwkn/0uNQGxTif6iKL3yEuiOVmuye6jlijvO7cMLpR6NH1ofdh51doaezi1DkAx4ja/+qDdiFpBxErp+PExv1dsFoHgc0ZHIp/eZws7wJDXgTHPjxovbtwQtI3W/HWlDM6b/gzs1wlVtSPreDVvmGm6R2BVOr9jsUg8Ks2LF9ZKMvHNdjrCup7XV09VoObbNC9eXjTlRFYuDmDsbBCHWNwELyDESWMHV/f8FLaG9ggLVE8gighf0rfnCY1c9+d7KjZBAgL6qMTmXlzwKWHjd7VByQ6+HJbH5osZ7WjAZ8j0tqVedazJJd/qBdDYLwzEMSIXq1bSfT7+ThxVKB22gXAC1EiDST9XYt9IYZA9UpnWdd63FtwVKZNBNNjYYhdb4B8hV3vLqD/cqVerWgvBDp2/jFvYj+pdKz9eyfDXlJ8kUyihmrDYRiM5bRz3C59Nk+jqIxKAdFQaPAp08ePJWORdao961+k/WWklkJ0c8jh+diorGFzpwKILvawNt4oQw9/AZIuY8PjbPmcQD7VxSLDsfFneVZg0c/z/l9+NYmjLhQLR5ChrpKd1wi1oQpA72pCB3o12Dq79VFuC5PlNApm8pbBuMiCy5lzX8Qg16rlrUhjkqpL5uyXtHm6hZlQsb6apDDC1+CZqnBFAPGRswV4MbSQrS2qpCFu9Wzcn4pkhSjdCQgcm+NrXgWLzIIWCnsJRIG4/iJS8oHseyypTSy9gOGlK+r5p2zxAIpco13G2WXjkZppE1M1rKReBvrlk+rtlE4coyi9EAwTtRVwbPI96+ufN5bHOXUxrhEbw6ZUXAjImgcs7dd7/dQZ7yookj1+xLU49HGt8
- HU4lAgku
- NCCTO9FWteDSa5QPHWsdkTI5ErKCmbNbDcI/zu9Knm9WeGVi/1fRc5vJFpnIam7r6z+XDWSy2jz0EdlddH70C4lYoc2fi39gByZJAyaToPUn3dlLyXUwe/ZbYb4ADN/rlAwZa+JlZ7houy7XzK9sIywb92xD2iKOoS83zowmnwyKH9M57zdFmhtJqnn6mbHYm0CjiMMSiZxI27d3Q5XGsn8yQit9bF0aAjvSbI1oqBZYQ2FgPOiqvk4Z8pIskFuJadRKFW6Fs12CRHbMiYQFLCzFtoyMVP4FLC24NH5l+j/v0hmWVmx0AGe6nOGbTdgBGzeHuX9KuF205SQ3mwczg22Y6kEaoWeuTZXh/RQrGZyq4M0OG5weph/WE+35Lvdy5unph
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1759394466-102019
+X-HE-Meta: U2FsdGVkX1883jDTj/kt0lv3mH0qBWm219J/iXL3eKy4IhkcL4W/26XSIc4cqX7cxyP1Io0vRgWQVZr1bEqugAR4LnOk5otRHihhR02PoDnlGvV58CuM1oqaUx9/aHjbG5iiAVvaU2AJWsu+a/w+AFM7DmRZE6MU4iMNYUVWIvasNxctQMGevt2cm2m7oj3dIEfpE5WiT1U5riUKzNbXStCxhd4QKUcP0VlWJssggWhU/PLCaAuyvVqBuWc5+r3P4ft+pBg8k3AfIRSmdm2VYC7gs8yHgve1NnDYZuuS5q0Q0ZT368+EIEOQiPq/4L6Iv5LA/kTpX8amqXrOOixCLjYcGlKP5z8gEaL7RMXKkrLn0UYg7s4PsJJGWGYjpMBKPj6Yh2mCTd8RunWXfbQ4d4RKfGtb1hYmklFSPW48kS1uFgvmINMM4gVVUpNdrI+0mejkQZ+SD2z2s78c6OvGI55TvssjskbCg95RlSrQUxqJp8xh4ByPlQZUyQILy4IIwlYW1syndiKUOIZM6HlPESLHLhWMTb2iSE+1NHT75MJvs3jbVoTruOHEMjuWexwdwLmf0A6JeyJ1NS/UCDtLc++IYdUa/sIklP2xLsqO7K9/gF6+bPuYEUV+P33YmQXlVSW/GZr1KwtbQY5vx0pttIeSkw8xpCgpaVotVHiS4hq2WQhxUAE33en1bu6ZY3RzBnAQsgLOliAumySP6+ynt2T3sYtgNpRyx3731DKh6a2S+7XLRKyrJgE6Dwatmcahd2tIBhA0bYa4ljA56V7O1TEU+YVMe4xvH0VN19vbwpRx00i+0+SeIQah8Ckgf+8XExYQj4o73xq+tGY83sP6M67WhuQX95c2MyMlFxK6ggPeSfkYyir8t3qPk2ZGP/KElbaGT6pwvOE7TZFAhXSv2jQFumgZ8cpKckUQseGhz3WxRH3P98XJbM2GjyCQCPfTJkEPyQg/HH4E8Wz0ned
+ epU9opw0
+ kkR4b0t622EwlB+4X0KNwyN1KGyMiwXzW4KClYpsTHQrMCVJ+cFVP8tBHUL/OVNFNSdxXpPHmLeYkAPZRt/nkMh4VzdbRtzzoo8VBD/2UiUzHV1SqnFX2jUcjmxuPjNXca8EscunSOZuXTFs23I5p30/ayCcvxZrDxNWjyB/hycnv9bpT+On3BvhYDazawOO6vJXmj4QRzpSFor7/lr5bjSIngMkd8WL2FJutCWFAaeoJsPqcnQB+JJhkLvasz7dJ1zu03F1sjNC1x2RE4ZD+Nbxk4RUEYuGWsvn5trRiW1Z/fgbla8KSOgIgq7fc0dUqKrMwqRX3NQRtj7Rj5gvfaCj2E4a1Hueef/wWO2auI2+XE6qs1KxESxbqWlKdOAPdKatUXG9REatEO1VSw4eAbmdqJ0Jn2xuXZ54OQ+xu7Mg4FDjQun6ObZETfN2/qIc9vHRb5aFQWcIpMoOIrQcvqnALuRja6qXthYAN
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,110 +175,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 30, 2025 at 9:35=E2=80=AFPM Baoquan He <bhe@redhat.com> wrote:
->
-> There's no user of swap_active_head, remove it now.
+On Thu 02-10-25 17:12:30, Byungchul Park wrote:
+> jbd2 journal handling code doesn't want jbd2_might_wait_for_commit()
+> to be placed between start_this_handle() and stop_this_handle().  So it
+> marks the region with rwsem_acquire_read() and rwsem_release().
+> 
+> However, the annotation is too strong for that purpose.  We don't have
+> to use more than try lock annotation for that.
+> 
+> rwsem_acquire_read() implies:
+> 
+>    1. might be a waiter on contention of the lock.
+>    2. enter to the critical section of the lock.
+> 
+> All we need in here is to act 2, not 1.  So trylock version of
+> annotation is sufficient for that purpose.  Now that dept partially
+> relies on lockdep annotaions, dept interpets rwsem_acquire_read() as a
+> potential wait and might report a deadlock by the wait.
+> 
+> Replace it with trylock version of annotation.
+> 
+> Signed-off-by: Byungchul Park <byungchul@sk.com>
 
-Removing swap_active_head for 32 swap devices is less than 1K memory
-saving? Only the power off code uses it now so the reduction of
-complexity is very limited as well. I consider this series payout is
-pretty small but has considerable review overhead.
+Indeed. Feel free to add:
 
-Another consideration is that swap.tiers is possible to use the
-swap_active_head to find swap devices belonging to a tier, because the
-swap tier is a range of priority. We can revisit it after the initial
-implementation for swap.tiers.
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-Let's hold off the removal of swap_active_head a bit.
+								Honza
 
-Chris
-
->
-> Signed-off-by: Baoquan He <bhe@redhat.com>
 > ---
->  include/linux/swap.h |  1 -
->  mm/swapfile.c        | 20 ++++----------------
->  2 files changed, 4 insertions(+), 17 deletions(-)
->
-> diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index 5b7a39b20f58..dfc0cc9fc166 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -296,7 +296,6 @@ struct swap_info_struct {
->         struct percpu_ref users;        /* indicate and keep swap device =
-valid. */
->         unsigned long   flags;          /* SWP_USED etc: see above */
->         signed short    prio;           /* swap priority of this type */
-> -       struct plist_node list;         /* entry in swap_active_head */
->         signed char     type;           /* strange name for an index */
->         unsigned int    max;            /* extent of the swap_map */
->         unsigned char *swap_map;        /* vmalloc'ed array of usage coun=
-ts */
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 18b52cc20749..80b34dc86a95 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -85,17 +85,10 @@ static const char Bad_offset[] =3D "Bad swap offset e=
-ntry ";
->  static const char Unused_offset[] =3D "Unused swap offset entry ";
->
->  /*
-> - * all active swap_info_structs
-> - * protected with swap_lock, and ordered by priority.
-> - */
-> -static PLIST_HEAD(swap_active_head);
-> -
-> -/*
-> - * all available (active, not full) swap_info_structs
-> - * protected with swap_avail_lock, ordered by priority.
-> - * This is used by folio_alloc_swap() instead of swap_active_head
-> - * because swap_active_head includes all swap_info_structs,
-> - * but folio_alloc_swap() doesn't need to look at full ones.
-> + * All available (active, not full) swap_info_structs protected with
-> + * swap_avail_lock, ordered by priority.
-> + * This is used by folio_alloc_swap() because folio_alloc_swap()
-> + * doesn't need to look at full ones.
->   * This uses its own lock instead of swap_lock because when a
->   * swap_info_struct changes between not-full/full, it needs to
->   * add/remove itself to/from this list, but the swap_info_struct->lock
-> @@ -2539,7 +2532,6 @@ static void setup_swap_info(struct swap_info_struct=
- *si, int prio,
->          * the plist prio is negated because plist ordering is
->          * low-to-high, while swap ordering is high-to-low
->          */
-> -       si->list.prio =3D -si->prio;
->         si->avail_list.prio =3D -si->prio;
->         si->swap_map =3D swap_map;
->         si->cluster_info =3D cluster_info;
-> @@ -2553,8 +2545,6 @@ static void _enable_swap_info(struct swap_info_stru=
-ct *si)
->
->         assert_spin_locked(&swap_lock);
->
-> -       plist_add(&si->list, &swap_active_head);
-> -
->         /* Add back to available list */
->         add_to_avail_list(si, true);
->  }
-> @@ -2682,7 +2672,6 @@ SYSCALL_DEFINE1(swapoff, const char __user *, speci=
-alfile)
->         }
->         spin_lock(&p->lock);
->         del_from_avail_list(p, true);
-> -       plist_del(&p->list, &swap_active_head);
->         atomic_long_sub(p->pages, &nr_swap_pages);
->         total_swap_pages -=3D p->pages;
->         spin_unlock(&p->lock);
-> @@ -2958,7 +2947,6 @@ static struct swap_info_struct *alloc_swap_info(voi=
-d)
->                  */
->         }
->         p->swap_extent_root =3D RB_ROOT;
-> -       plist_node_init(&p->list, 0);
->         plist_node_init(&p->avail_list, 0);
->         p->flags =3D SWP_USED;
->         spin_unlock(&swap_lock);
-> --
-> 2.41.0
->
+>  fs/jbd2/transaction.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
+> index c7867139af69..b4e65f51bf5e 100644
+> --- a/fs/jbd2/transaction.c
+> +++ b/fs/jbd2/transaction.c
+> @@ -441,7 +441,7 @@ static int start_this_handle(journal_t *journal, handle_t *handle,
+>  	read_unlock(&journal->j_state_lock);
+>  	current->journal_info = handle;
+>  
+> -	rwsem_acquire_read(&journal->j_trans_commit_map, 0, 0, _THIS_IP_);
+> +	rwsem_acquire_read(&journal->j_trans_commit_map, 0, 1, _THIS_IP_);
+>  	jbd2_journal_free_transaction(new_transaction);
+>  	/*
+>  	 * Ensure that no allocations done while the transaction is open are
+> -- 
+> 2.17.1
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
