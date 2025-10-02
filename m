@@ -4,176 +4,244 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA371CAC5B8
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:15:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C9DCCAC5B0
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:15:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C31418E003D; Thu,  2 Oct 2025 04:15:00 -0400 (EDT)
+	id B958C8E0036; Thu,  2 Oct 2025 04:14:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C08988E003C; Thu,  2 Oct 2025 04:15:00 -0400 (EDT)
+	id A5AD58E0034; Thu,  2 Oct 2025 04:14:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF7F88E003D; Thu,  2 Oct 2025 04:15:00 -0400 (EDT)
+	id 8FA3D8E0035; Thu,  2 Oct 2025 04:14:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C4678E003C
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:15:00 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5A7AD1191B7
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:15:00 +0000 (UTC)
-X-FDA: 83952463560.14.6B42215
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf06.hostedemail.com (Postfix) with ESMTP id EC556180009
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:57 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VWWzcd77;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UzrHfhez;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VWWzcd77;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UzrHfhez;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 746EA8E0031
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:14:23 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 49EF01A039F
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:23 +0000 (UTC)
+X-FDA: 83952462006.21.EC7EBAB
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6EC6B40004
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:21 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	spf=pass (imf07.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759392898;
+	s=arc-20220608; t=1759392862;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JkJWMOW654A2NQw8DnXLLcGrKiRsoRYbhX3pXplYai4=;
-	b=Gk7iTdUqI8UD79pMlrGIucCombfKNvM/BG1JG1HEeELz42WScpry+3VrK3nBsIFsca5ynX
-	a8ty3lD4rJiOjg4qWR0yNQioK8dC8wtHIQWnEsAKgYvwpHZbB304dp7QTJSaSOWi/lcplK
-	bHfvxy4a1n+eCtug3T5Szc8K1w9HU/M=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VWWzcd77;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UzrHfhez;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VWWzcd77;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UzrHfhez;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759392898; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=4F8i9JoTUFYcIJt1BSevqc/A2D8F+shDgXFBUVtpHNQ=;
+	b=P7T+P+EEyzwUSkdS1717rrv/Bvhjp+Q0pQEPibuRzgyxvQMC8YhBY0BZi9myRw7uNu0YLr
+	TPdf42DaGOpmEV7z1gJxu/mxf4dyB2LpaixTrqvt08pcNAno8F+JoRTgmHSxjbL5aJvRRK
+	S5c3cjFGKjFZfLE+qxewNziaAhZJxNY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759392862; a=rsa-sha256;
 	cv=none;
-	b=cI67D9XgkJbPqbRZnvfrCyR90fXkHbhZbaLNVSQbesZcBbg9Jh3zf9EKa4FB8bae6SNxA5
-	NUh+xraA0lOCLwpWd3xfmLgxA9HdKE3KZ8S5745CLZAQqc/yuvfRbe1Ks6IsVawiiyjfj5
-	40apAPYcokK9MNw2GIfD+JWbb4D7tzs=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1E1D633769;
-	Thu,  2 Oct 2025 08:14:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759392896; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=JkJWMOW654A2NQw8DnXLLcGrKiRsoRYbhX3pXplYai4=;
-	b=VWWzcd77OjwQ1CbNz6wrB7HcE5ZvWwfEUkURc3y3JjflQ/svq3PHm/78SGC3znYDVL4A7u
-	9EiCaHDxJQi3fnbRjTcc6T4MxJVjAsjMAxoWBaaSUw2MMXgwuwI6iBGtC/dqHGp/QZRS8p
-	LtV4RrvMuTYxib2G4//qpbBYE9Sxpio=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759392896;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=JkJWMOW654A2NQw8DnXLLcGrKiRsoRYbhX3pXplYai4=;
-	b=UzrHfhezFDoU19SNap9yR9071ng3xTx3wtGzgYa113dsd27cl8xwYoW5RqcKamC44qZuea
-	MIBCocsuEVJV0mAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759392896; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=JkJWMOW654A2NQw8DnXLLcGrKiRsoRYbhX3pXplYai4=;
-	b=VWWzcd77OjwQ1CbNz6wrB7HcE5ZvWwfEUkURc3y3JjflQ/svq3PHm/78SGC3znYDVL4A7u
-	9EiCaHDxJQi3fnbRjTcc6T4MxJVjAsjMAxoWBaaSUw2MMXgwuwI6iBGtC/dqHGp/QZRS8p
-	LtV4RrvMuTYxib2G4//qpbBYE9Sxpio=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759392896;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=JkJWMOW654A2NQw8DnXLLcGrKiRsoRYbhX3pXplYai4=;
-	b=UzrHfhezFDoU19SNap9yR9071ng3xTx3wtGzgYa113dsd27cl8xwYoW5RqcKamC44qZuea
-	MIBCocsuEVJV0mAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EA0C51395B;
-	Thu,  2 Oct 2025 08:14:55 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 1MWRNn803mjkUQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 02 Oct 2025 08:14:55 +0000
-Message-ID: <b9fb0a69-6cfb-4285-8118-ef5301115948@suse.cz>
-Date: Thu, 2 Oct 2025 10:14:55 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] slab: Fix using this_cpu_ptr() in preemptible context
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Harry Yoo <harry.yoo@oracle.com>
-Cc: ranxiaokai627@163.com, Andrew Morton <akpm@linux-foundation.org>,
- cl@gentwo.org, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
- linux-mm <linux-mm@kvack.org>, ran.xiaokai@zte.com.cn
-References: <20250930083402.782927-1-ranxiaokai627@163.com>
- <aNu2xJMkEyYSdmW6@hyeyoo>
- <CAADnVQJ-bkd2UVsZmhdb1L5ZrXjZbTnRcaJ-D=ojsoiRHmHwaw@mail.gmail.com>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <CAADnVQJ-bkd2UVsZmhdb1L5ZrXjZbTnRcaJ-D=ojsoiRHmHwaw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+	b=IJBHNm9uCeVRdcMI/AFDf2VoM9w5XHJF4B8woWwt+sAkPyiubY93tUAldDA+3ZksOzI2ON
+	E7+y+ZpGq/Pv6om3RSt5xx7rVcTaWaFLS7xE217oqN9KtEQZXV6jeOYqTdvVsVRfkdZNAo
+	Z+K+CGsM8kUfYTrrS+yr7a4cVeWqXmU=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
+	dmarc=none
+X-AuditID: a67dfc5b-c2dff70000001609-77-68de3414ee79
+From: Byungchul Park <byungchul@sk.com>
+To: linux-kernel@vger.kernel.org
+Cc: kernel_team@skhynix.com,
+	torvalds@linux-foundation.org,
+	damien.lemoal@opensource.wdc.com,
+	linux-ide@vger.kernel.org,
+	adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	will@kernel.org,
+	tglx@linutronix.de,
+	rostedt@goodmis.org,
+	joel@joelfernandes.org,
+	sashal@kernel.org,
+	daniel.vetter@ffwll.ch,
+	duyuyang@gmail.com,
+	johannes.berg@intel.com,
+	tj@kernel.org,
+	tytso@mit.edu,
+	willy@infradead.org,
+	david@fromorbit.com,
+	amir73il@gmail.com,
+	gregkh@linuxfoundation.org,
+	kernel-team@lge.com,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	mhocko@kernel.org,
+	minchan@kernel.org,
+	hannes@cmpxchg.org,
+	vdavydov.dev@gmail.com,
+	sj@kernel.org,
+	jglisse@redhat.com,
+	dennis@kernel.org,
+	cl@linux.com,
+	penberg@kernel.org,
+	rientjes@google.com,
+	vbabka@suse.cz,
+	ngupta@vflare.org,
+	linux-block@vger.kernel.org,
+	josef@toxicpanda.com,
+	linux-fsdevel@vger.kernel.org,
+	jack@suse.cz,
+	jlayton@kernel.org,
+	dan.j.williams@intel.com,
+	hch@infradead.org,
+	djwong@kernel.org,
+	dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com,
+	melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com,
+	harry.yoo@oracle.com,
+	chris.p.wilson@intel.com,
+	gwan-gyeong.mun@intel.com,
+	max.byungchul.park@gmail.com,
+	boqun.feng@gmail.com,
+	longman@redhat.com,
+	yunseong.kim@ericsson.com,
+	ysk@kzalloc.com,
+	yeoreum.yun@arm.com,
+	netdev@vger.kernel.org,
+	matthew.brost@intel.com,
+	her0gyugyu@gmail.com,
+	corbet@lwn.net,
+	catalin.marinas@arm.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	luto@kernel.org,
+	sumit.semwal@linaro.org,
+	gustavo@padovan.org,
+	christian.koenig@amd.com,
+	andi.shyti@kernel.org,
+	arnd@arndb.de,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	mcgrof@kernel.org,
+	petr.pavlu@suse.com,
+	da.gomez@kernel.org,
+	samitolvanen@google.com,
+	paulmck@kernel.org,
+	frederic@kernel.org,
+	neeraj.upadhyay@kernel.org,
+	joelagnelf@nvidia.com,
+	josh@joshtriplett.org,
+	urezki@gmail.com,
+	mathieu.desnoyers@efficios.com,
+	jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	dietmar.eggemann@arm.com,
+	bsegall@google.com,
+	mgorman@suse.de,
+	vschneid@redhat.com,
+	chuck.lever@oracle.com,
+	neil@brown.name,
+	okorniev@redhat.com,
+	Dai.Ngo@oracle.com,
+	tom@talpey.com,
+	trondmy@kernel.org,
+	anna@kernel.org,
+	kees@kernel.org,
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	mark.rutland@arm.com,
+	ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com,
+	wangkefeng.wang@huawei.com,
+	broonie@kernel.org,
+	kevin.brodsky@arm.com,
+	dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev,
+	ast@kernel.org,
+	ziy@nvidia.com,
+	yuzhao@google.com,
+	baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com,
+	joel.granados@kernel.org,
+	richard.weiyang@gmail.com,
+	geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com,
+	linux@treblig.org,
+	alexander.shishkin@linux.intel.com,
+	lillian@star-ark.net,
+	chenhuacai@kernel.org,
+	francesco@valla.it,
+	guoweikang.kernel@gmail.com,
+	link@vivo.com,
+	jpoimboe@kernel.org,
+	masahiroy@kernel.org,
+	brauner@kernel.org,
+	thomas.weissschuh@linutronix.de,
+	oleg@redhat.com,
+	mjguzik@gmail.com,
+	andrii@kernel.org,
+	wangfushuai@baidu.com,
+	linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org,
+	linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: [PATCH v17 41/47] dept: implement a basic unit test for dept
+Date: Thu,  2 Oct 2025 17:12:41 +0900
+Message-Id: <20251002081247.51255-42-byungchul@sk.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20251002081247.51255-1-byungchul@sk.com>
+References: <20251002081247.51255-1-byungchul@sk.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0xTdxjG/Z87nTUnFcPRzUuaoAYFwbD5Go2aqPEki8lEvyjeTuyJbSxg
+	WkTxEhsFBQIKVdiQi0WEVFqgljgGWIdlNJqOWQS1EgoUy0WlkqCoQ6G2Gr/93ud93ufDk5fB
+	Zc/JBYwqOVXUJAtqOSUhJP7ZFdHz4vuUscaBCCitN1OQZS0mwVVnQtA/mYVgWu+gIWBzICjq
+	1OPw1jJDweu2CQSFXh8F49W5CF62bwN/fwsJAc8IBtW+GQx8rRcRfOp4hEOF14PDqCU42ozn
+	KBjKv4NDl28OdE+OU+DvLMXgjYUCwzkbCWUlegTnK+spKCqzEtA00ExDb5EeA5N1Ozjzb2BQ
+	dDsCSn4fxaCwtgWDfyt7CajWRUJJRxcJg8ZrNHz2xkHAkAIO0wgNnsuFBNT5H5HwsO8pCa+H
+	9RQ06gZosD5vR/Cu24uBOXcYh6zmSQKsL4KWigs3CSgu76Wgq7mUglzLHRL6zIFgH61OEh6b
+	XATUj7gxcDoeEFD1rBMD74Cb3KTgP2ReIviahj8xPvPxNMWby82I/zSlR/y7qvM43zY2jvNT
+	k08o3vbeQPAFHdF80zUPzWfc66F5g/UYn/GPn+QbjFF85d2X2G9xeyTrFaJalSZqVm04KFF2
+	Xxykj17ddsI1dpfSofZ1OSiM4dh47o/RLOo7F1wdxkNMscs4t/v/rxzOLuEa8obJEOOs8yfu
+	aefKEM9lt3K+KT+dgxiGYCM5f//mkCxlf+EGZ4rJb5GLOZOl9WtMWFDv8jqJEMvYn7nM8Qws
+	B0mCHlMYZ/To0LeD+dx9o5vIR1IDmlWDZKrktCRBpY6PUaYnq07EHEpJsqLgw1Wf+Zz4F5pw
+	7bQjlkHy2VJXpEcpI4U0bXqSHXEMLg+XHjT2KmVShZB+UtSkHNAcU4taO/qRIeQR0tXvjytk
+	7GEhVTwiikdFzfctxoQt0KElS2812ucO1enssbXKhdlq5Whew87jaz2BljbfaTSxcpduKEHz
+	VhubuO/Qwx3LHe3b1dc3WWKeZPywNrtqOnVNz2HzKXPTikWXj9y7sD+h35699G/1rY3Cx8T7
+	CUJVTwEX7pIrfp2Hl2+w/vdqd3H02cY3V2Q23Vj0/si97poPecIWOaFVCnFRuEYrfAFnHhDB
+	bAMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0yTdxTG93/vdFbfVBJfYcatCc4sgpKgnpRpSBbGuyUz84OpwWyjkVfb
+	UMC0gGCyDSyNDNkGnQWhXgqEjlCmXREVtYpcmiig1KISoWCxVm4Vo1TD3dZlX05+53lOnjwf
+	DoNLWskoRpWVI2iyFGopJSJEexJ1sZEJI8pt5/7eBI+K2gkIzpYQcOZiMwUl9moS+i9YEYwG
+	SxC8WzDhoG9bIWDJ4KRhdm6IhhWHE0Gly4BD86UiDN7YlimY6nyNwOj1UVA1UUTAjKUMQY3f
+	RMNEdwoERq+TsOJ5gcHjt9MILL5lDHztJxAsVWbA+boWChb67uNQZexHUOv14DBuC5mXnCMI
+	HI3HKXhe3oqD27caBoIzFNwxnqQg4DqDwUsbBebjDhLOmgwIdPUXKag8ayeg7ek1GlxTixgM
+	VxowsNq/g1GLn4Ce8jos1C909e86MFXpsNAYx8D4z3UM5ixNNPTWDxNgKYwBU5+bhLHGGhoW
+	vfGwYs4Gp/UFDZ4/jQRcCNwnk4yIf6f/g+CbWi5jvP7BEsU3n2tG/MK8AfGzDTqc15eH1s7p
+	GZwvbjnKN/RMU/x88CHFO96aCf5uHcdX9MXybTUemi+++YT+XpYq+jJdUKvyBM3W3Wki5cCJ
+	MfrIqZT8/ukbVCHqTixFEQzHJnAVp/x4mCn2c25wcO4DR7Kfci2/+8kw42zPJ9wj15Ywr2WT
+	Od98gC5FDEOwMVxg9KuwLGZ3cGPL1eR/kRs5q639Q0xESHd7e4gwS9jtnH6mGCtHIjP6qAlF
+	qrLyMhUq9fY4bYayIEuVH3cwO9OOQs9k+Xmx4iqadad0IJZB0lViV4xHKSEVedqCzA7EMbg0
+	UpzWOKyUiNMVBccETfZPmly1oO1A0QwhXSf+Vi6kSdjDihwhQxCOCJr/XYyJiCpEubJffm3f
+	/NtkF8h3x97xynpLac221P2bFw17T8uGfliz45Z7fWfr7T3UePrO3isVDidLDKXmPzt/71VS
+	8ONDth+rd61O6JRtralSl3Ul1xbK36wflPuiJxW5ZZ+d3qc71nfAbo3+2rhRkyNOH/tGHjcS
+	58nsmBpwxPsb2KYDf4k2SAmtUhH/Ba7RKt4Dd+Nw7EgDAAA=
+X-CFilter-Loop: Reflected
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6EC6B40004
+X-Stat-Signature: j7bpka8csiqngz9pz65sn1qoxrsbydet
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: EC556180009
-X-Stat-Signature: ukh867q5prdty9mjk57fuxtbyk995mj8
-X-HE-Tag: 1759392897-315927
-X-HE-Meta: U2FsdGVkX1+AbGM+OLHZNMRohWllV+W26GzG0BSF92k9JIkXExH9+Cm5+K+pyctW7XE8ByOMVg6ZWsJfSYvHrKCalm+PPRiOg4oqWYQPecrM32XSczrsRRLytnlf7QlK3FewJhWZ48bybyuCmmHRE8YQEJpjhqfwOrYeaMiHFVBfBGHx9yanRGGTfPRjP08gqaWyC1fXsymqqqlwnomUvNP90Vya/TiAiIS9kJbhSaUY9kVhQYmyDRNjyG8zUb07g8J9nhGrEt80CQSybIW3ffPDA1VpEU02NGUrV7CAtA51EqlOcq4zWfjQriLPF9SubicdLNGXBFi0kz1hn+CAomediMO63NTKHv09cfDluCvdd3zZO3w2UstKNfBXUdH2ps+sdeGIBYm5hXrzVcqa6/JXb+04U5TmeD9Ew1HhyTukd6TDV/0TCxVeLkoNUmMOwqcUhq/53f88agOYVWOcULV4DAZo3yRX1ekgYfTNuYZbDDKW/ENqnB0j4NYflMZHcPHzf/sis3qwty+cYOiOryWNL5MsS+rN+BOieW6whj+Mc3KJSuSvoMnjpM3P6amop8EWl6sC1dG93Atv/bYuFSN07hqyO86cfblUy9dwNSx62qnDkmG5LG+mc/ins3HqHpGyEruK+nW1FRpswt6DiST4f0UexEosQGHZY/y3yDeaiHDNxjsXhLF0r79q9/gzei38/piG5Uj+NgaxecliDFQA0vYq1+mt+mXA1YwjEk4VMZy5YVggx8Wp7j3JbFsAIX64qW7xFceHPFysqHFNJD1gwxwHl7jYHknmKZANwwWIQqgZixmY2Z78emnXRntPVf7tcM2f3lhQV8uBL+d07LE8vej39TTgWuC1Po8cKllpOT7WRr7c/te+Emvt/vU7DxLVzzOyKnrOHMG6xOe+1Eiz8iGW3N3/3xm3vfENMHOm9vD1lN7LBYc6uO3wo440g52jAsvuKmi6XJASUbW
- r4gMc82b
- LcBdvTNUiFPMsVuy3SXIE4Xga/Gq/SlfRkfCtlhpfoJq9I1+ZUIvi9z8SFs1Ni8Mk5+qD6K/OxarA2uXanOhLibae5d98EkqISUUU1W9P7B2MCTshPFCRmprsGn7ZX9Eo5Fuaol4Vm4Z9XiEJm7OZsxbLR01iqFyg8G7bOhOv4O4SGMvYLpyw77azA3yzc2N+JkpJNTRlEBGxShhHludq7BBpDuk2fdJ0YkQPJw5JFNYLiSNlDoBEVidLrRzv6TZ5kFi3JVoyJPNINKWmRxEHqZr++rYKvPJZ/DVnS9/+7enUcrlSK2TtmkvZbURV7AXvKkoyRSKQaivc5RsOZrrRyFyW6ktlFho0yhvEsvPzsB+bT3habc7Q0o5Ck8BFb9LihLewkQLXm5AtvF6Fg5lWFGHSKsRapGHxtINuXuFV1TsUOs5ATRqpylnANnD7fHyM94AUsyVL2c30uBz5K8c52vO3rLQu8StJ/kJRcgEfm0PsrzhclioB8T6RbaeqGX4SJeBAd17A2V1k5KR+aOpJ2Km+ng==
+X-HE-Tag: 1759392861-646258
+X-HE-Meta: U2FsdGVkX1+Zc+VGldZY6RBSxXe+D9bUwrjZN6VgtwVoM2dij7+4gGyWZOe9PlcwzpYQ4xSinObmjsR4sPzWoV1Ws6p8Sr/Pwv3Eqap0enCIYjBfHgDMFj1+ofjGm04ajaPGGxmW1eaMVEW4FUW366ApdqPl33+LkZdgSKRTb1xE50rXnTE5a665cZ0n7Tn0qigyOIg6m7e5kONSI8S/bFldU/UxQmCBhoc3bjPz96smtXhk8oa4hUD+sZnRbpahiy+w9M++b99q5JahkmdSUOvmsByzeXDVBKDNmfiBOfD+4KIIev08xNC/OMMNTavbD8ub7+ekpFhI0gsORu90lxUyW2U5t3WDh4YNGD+MtfFkTvnUvZ0HumJODLBiNBp7CEjFaY1TKnMtu2zea7xCUih/3V2DoWdyYRDVRnQ5H+SzbAtFWsFD5fo/+HgJaY2LFowRV3KvXqcKryAdOyM+34/A9FdgcffwdxMr3C2xwPjfXbRzHjz6FouIWFot1j+i5lY+rkQN7VGr+PCRyNo9qzLs2kd0AmRhhIjtjTtn5jFoVQvPZlEaalaE3bCm8zLYWAl7Eo7OswYhMjgkkG3u/mZIDtfP/QecMb67wfK75ya+hG/2b6PgSaX4KcshkMNBRlgw9iDTCSj0/8JXfbRHU8tdktiQ4waWrPxkiOd4b3RnW1Z8mCgxaesh4aOZ9Bfkc8qp+7ApjqrlyBReeXmL8IFbXvCIn+MnVgXvr/Psl7fmoH30ogiJxPxoSKOpA+Ad385u6sWCr9qzFXcH7O6TsxCk4DVD00LyMGE0kKkxeMU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,122 +250,351 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/30/25 13:19, Alexei Starovoitov wrote:
-> On Tue, Sep 30, 2025 at 12:54 PM Harry Yoo <harry.yoo@oracle.com> wrote:
->>
->> On Tue, Sep 30, 2025 at 08:34:02AM +0000, ranxiaokai627@163.com wrote:
->> > From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
->> >
->> > defer_free() maybe called in preemptible context, this will
->> > trigger the below warning message:
->> >
->> > BUG: using smp_processor_id() in preemptible [00000000] code: swapper/0/1
->> > caller is defer_free+0x1b/0x60
->> > Call Trace:
->> >  <TASK>
->> >  dump_stack_lvl+0xac/0xc0
->> >  check_preemption_disabled+0xbe/0xe0
->> >  defer_free+0x1b/0x60
->> >  kfree_nolock+0x1eb/0x2b0
->> >  alloc_slab_obj_exts+0x356/0x390
-> 
-> Please share config and repro details, since the stack trace
-> looks theoretical, but you somehow got it?
-> This is not CONFIG_SLUB_TINY, but kfree_nolock()
-> sees locked per-cpu slab?
+Implement CONFIG_DEPT_UNIT_TEST introducing a kernel module that runs
+basic unit test for dept.
 
-Could it be just the "slab != c->slab" condition in do_slab_free()? That's
-more likely. However...
+Signed-off-by: Byungchul Park <byungchul@sk.com>
+---
+ include/linux/dept_unit_test.h     |  67 +++++++++++
+ kernel/dependency/Makefile         |   1 +
+ kernel/dependency/dept.c           |  12 ++
+ kernel/dependency/dept_unit_test.c | 173 +++++++++++++++++++++++++++++
+ lib/Kconfig.debug                  |  12 ++
+ 5 files changed, 265 insertions(+)
+ create mode 100644 include/linux/dept_unit_test.h
+ create mode 100644 kernel/dependency/dept_unit_test.c
 
-> Is this PREEMPT_RT ?
-> 
->> >  __alloc_tagging_slab_alloc_hook+0xa0/0x300
->> >  __kmalloc_cache_noprof+0x1c4/0x5c0
->> >  __set_page_owner+0x10d/0x1c0
+diff --git a/include/linux/dept_unit_test.h b/include/linux/dept_unit_test.h
+new file mode 100644
+index 000000000000..7612b4e97e69
+--- /dev/null
++++ b/include/linux/dept_unit_test.h
+@@ -0,0 +1,67 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * DEPT unit test
++ *
++ * Started by Byungchul Park <max.byungchul.park@gmail.com>:
++ *
++ *  Copyright (c) 2025 SK hynix, Inc., Byungchul Park
++ */
++
++#ifndef __LINUX_DEPT_UNIT_TEST_H
++#define __LINUX_DEPT_UNIT_TEST_H
++
++#if defined(CONFIG_DEPT_UNIT_TEST) || defined(CONFIG_DEPT_UNIT_TEST_MODULE)
++struct dept_ut {
++	bool circle_detected;
++	bool recover_circle_detected;
++
++	int ecxt_stack_total_cnt;
++	int wait_stack_total_cnt;
++	int evnt_stack_total_cnt;
++	int ecxt_stack_valid_cnt;
++	int wait_stack_valid_cnt;
++	int evnt_stack_valid_cnt;
++};
++
++extern struct dept_ut dept_ut_results;
++
++static inline void dept_ut_circle_detect(void)
++{
++	dept_ut_results.circle_detected = true;
++}
++static inline void dept_ut_recover_circle_detect(void)
++{
++	dept_ut_results.recover_circle_detected = true;
++}
++static inline void dept_ut_ecxt_stack_account(bool valid)
++{
++	dept_ut_results.ecxt_stack_total_cnt++;
++
++	if (valid)
++		dept_ut_results.ecxt_stack_valid_cnt++;
++}
++static inline void dept_ut_wait_stack_account(bool valid)
++{
++	dept_ut_results.wait_stack_total_cnt++;
++
++	if (valid)
++		dept_ut_results.wait_stack_valid_cnt++;
++}
++static inline void dept_ut_evnt_stack_account(bool valid)
++{
++	dept_ut_results.evnt_stack_total_cnt++;
++
++	if (valid)
++		dept_ut_results.evnt_stack_valid_cnt++;
++}
++#else
++struct dept_ut {};
++
++#define dept_ut_circle_detect() do { } while (0)
++#define dept_ut_recover_circle_detect() do { } while (0)
++#define dept_ut_ecxt_stack_account(v) do { } while (0)
++#define dept_ut_wait_stack_account(v) do { } while (0)
++#define dept_ut_evnt_stack_account(v) do { } while (0)
++
++#endif
++#endif /* __LINUX_DEPT_UNIT_TEST_H */
+diff --git a/kernel/dependency/Makefile b/kernel/dependency/Makefile
+index 92f165400187..fc584ca87124 100644
+--- a/kernel/dependency/Makefile
++++ b/kernel/dependency/Makefile
+@@ -2,3 +2,4 @@
+ 
+ obj-$(CONFIG_DEPT) += dept.o
+ obj-$(CONFIG_DEPT) += dept_proc.o
++obj-$(CONFIG_DEPT_UNIT_TEST) += dept_unit_test.o
+diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
+index 3c3ec2701bd6..0f4464657288 100644
+--- a/kernel/dependency/dept.c
++++ b/kernel/dependency/dept.c
+@@ -78,8 +78,12 @@
+ #include <linux/workqueue.h>
+ #include <linux/irq_work.h>
+ #include <linux/vmalloc.h>
++#include <linux/dept_unit_test.h>
+ #include "dept_internal.h"
+ 
++struct dept_ut dept_ut_results;
++EXPORT_SYMBOL_GPL(dept_ut_results);
++
+ static int dept_stop;
+ static int dept_per_cpu_ready;
+ 
+@@ -826,6 +830,10 @@ static void print_dep(struct dept_dep *d)
+ 			pr_warn("(wait to wake up)\n");
+ 			print_ip_stack(0, e->ewait_stack);
+ 		}
++
++		dept_ut_ecxt_stack_account(valid_stack(e->ecxt_stack));
++		dept_ut_wait_stack_account(valid_stack(w->wait_stack));
++		dept_ut_evnt_stack_account(valid_stack(e->event_stack));
+ 	}
+ }
+ 
+@@ -920,6 +928,8 @@ static void print_circle(struct dept_class *c)
+ 	dump_stack();
+ 
+ 	dept_outworld_exit();
++
++	dept_ut_circle_detect();
+ }
+ 
+ /*
+@@ -1021,6 +1031,8 @@ static void print_recover_circle(struct dept_event_site *es)
+ 	dump_stack();
+ 
+ 	dept_outworld_exit();
++
++	dept_ut_recover_circle_detect();
+ }
+ 
+ static void bfs_init_recover(void *node, void *in, void **out)
+diff --git a/kernel/dependency/dept_unit_test.c b/kernel/dependency/dept_unit_test.c
+new file mode 100644
+index 000000000000..88e846b9f876
+--- /dev/null
++++ b/kernel/dependency/dept_unit_test.c
+@@ -0,0 +1,173 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * DEPT unit test
++ *
++ * Started by Byungchul Park <max.byungchul.park@gmail.com>:
++ *
++ *  Copyright (c) 2025 SK hynix, Inc., Byungchul Park
++ */
++
++#include <linux/module.h>
++#include <linux/spinlock.h>
++#include <linux/mutex.h>
++#include <linux/dept.h>
++#include <linux/dept_unit_test.h>
++
++MODULE_DESCRIPTION("DEPT unit test");
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Byungchul Park <max.byungchul.park@sk.com>");
++
++struct unit {
++	const char *name;
++	bool (*func)(void);
++	bool result;
++};
++
++static DEFINE_SPINLOCK(s1);
++static DEFINE_SPINLOCK(s2);
++static bool test_spin_lock_deadlock(void)
++{
++	dept_ut_results.circle_detected = false;
++
++	spin_lock(&s1);
++	spin_lock(&s2);
++	spin_unlock(&s2);
++	spin_unlock(&s1);
++
++	spin_lock(&s2);
++	spin_lock(&s1);
++	spin_unlock(&s1);
++	spin_unlock(&s2);
++
++	return dept_ut_results.circle_detected;
++}
++
++static DEFINE_MUTEX(m1);
++static DEFINE_MUTEX(m2);
++static bool test_mutex_lock_deadlock(void)
++{
++	dept_ut_results.circle_detected = false;
++
++	mutex_lock(&m1);
++	mutex_lock(&m2);
++	mutex_unlock(&m2);
++	mutex_unlock(&m1);
++
++	mutex_lock(&m2);
++	mutex_lock(&m1);
++	mutex_unlock(&m1);
++	mutex_unlock(&m2);
++
++	return dept_ut_results.circle_detected;
++}
++
++static bool test_wait_event_deadlock(void)
++{
++	struct dept_map dmap1;
++	struct dept_map dmap2;
++
++	sdt_map_init(&dmap1);
++	sdt_map_init(&dmap2);
++
++	dept_ut_results.circle_detected = false;
++
++	sdt_request_event(&dmap1); /* [S] */
++	sdt_wait(&dmap2); /* [W] */
++	sdt_event(&dmap1); /* [E] */
++
++	sdt_request_event(&dmap2); /* [S] */
++	sdt_wait(&dmap1); /* [W] */
++	sdt_event(&dmap2); /* [E] */
++
++	return dept_ut_results.circle_detected;
++}
++
++static void dummy_event(void)
++{
++	/* Do nothing. */
++}
++
++static DEFINE_DEPT_EVENT_SITE(es1);
++static DEFINE_DEPT_EVENT_SITE(es2);
++static bool test_recover_deadlock(void)
++{
++	dept_ut_results.recover_circle_detected = false;
++
++	dept_recover_event(&es1, &es2);
++	dept_recover_event(&es2, &es1);
++
++	event_site(&es1, dummy_event);
++	event_site(&es2, dummy_event);
++
++	return dept_ut_results.recover_circle_detected;
++}
++
++static struct unit units[] = {
++	{
++		.name = "spin lock deadlock test",
++		.func = test_spin_lock_deadlock,
++	},
++	{
++		.name = "mutex lock deadlock test",
++		.func = test_mutex_lock_deadlock,
++	},
++	{
++		.name = "wait event deadlock test",
++		.func = test_wait_event_deadlock,
++	},
++	{
++		.name = "event recover deadlock test",
++		.func = test_recover_deadlock,
++	},
++};
++
++static int __init dept_ut_init(void)
++{
++	int i;
++
++	lockdep_off();
++
++	dept_ut_results.ecxt_stack_valid_cnt = 0;
++	dept_ut_results.ecxt_stack_total_cnt = 0;
++	dept_ut_results.wait_stack_valid_cnt = 0;
++	dept_ut_results.wait_stack_total_cnt = 0;
++	dept_ut_results.evnt_stack_valid_cnt = 0;
++	dept_ut_results.evnt_stack_total_cnt = 0;
++
++	for (i = 0; i < ARRAY_SIZE(units); i++)
++		units[i].result = units[i].func();
++
++	pr_info("\n");
++	pr_info("******************************************\n");
++	pr_info("DEPT unit test results\n");
++	pr_info("******************************************\n");
++	for (i = 0; i < ARRAY_SIZE(units); i++) {
++		pr_info("(%s) %s\n", units[i].result ? "pass" : "fail",
++				units[i].name);
++	}
++	pr_info("ecxt stack valid count = %d/%d\n",
++			dept_ut_results.ecxt_stack_valid_cnt,
++			dept_ut_results.ecxt_stack_total_cnt);
++	pr_info("wait stack valid count = %d/%d\n",
++			dept_ut_results.wait_stack_valid_cnt,
++			dept_ut_results.wait_stack_total_cnt);
++	pr_info("event stack valid count = %d/%d\n",
++			dept_ut_results.evnt_stack_valid_cnt,
++			dept_ut_results.evnt_stack_total_cnt);
++	pr_info("******************************************\n");
++	pr_info("\n");
++
++	lockdep_on();
++
++	return 0;
++}
++
++static void dept_ut_cleanup(void)
++{
++	/*
++	 * Do nothing for now.
++	 */
++}
++
++module_init(dept_ut_init);
++module_exit(dept_ut_cleanup);
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 290563fa8b58..f0c58bee263a 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -1404,6 +1404,18 @@ config DEPT_AGGRESSIVE_TIMEOUT_WAIT
+ 	  that timeout is used to avoid a deadlock. Say N if you'd like
+ 	  to avoid verbose reports.
+ 
++config DEPT_UNIT_TEST
++	tristate "unit test for DEPT"
++	depends on DEBUG_KERNEL && DEPT
++	default n
++	help
++	  This option provides a kernel module that runs unit test for
++	  DEPT.
++
++	  Say Y if you want DEPT unit test to be built into the kernel.
++	  Say M if you want DEPT unit test to build as a module.
++	  Say N if you are unsure.
++
+ config LOCK_DEBUGGING_SUPPORT
+ 	bool
+ 	depends on TRACE_IRQFLAGS_SUPPORT && STACKTRACE_SUPPORT && LOCKDEP_SUPPORT
+-- 
+2.17.1
 
-This is the part that puzzles me, where do we call kmalloc from
-__set_page_owner()? And in a way that it loses the GFP_KERNEL passed all the
-way? I don't even see a lib/stackdepot function here.
-
->> >  post_alloc_hook+0x84/0xf0
->> >  get_page_from_freelist+0x73b/0x1380
->> >  __alloc_frozen_pages_noprof+0x110/0x2c0
->> >  alloc_pages_mpol+0x44/0x140
->> >  alloc_slab_page+0xac/0x150
->> >  allocate_slab+0x78/0x3a0
->> >  ___slab_alloc+0x76b/0xed0
->> >  __slab_alloc.constprop.0+0x5a/0xb0
->> >  __kmalloc_noprof+0x3dc/0x6d0
->> >  __list_lru_init+0x6c/0x210
-
-This has a kcalloc(GFP_KERNEL).
-
->> >  alloc_super+0x3b6/0x470
->> >  sget_fc+0x5f/0x3a0
->> >  get_tree_nodev+0x27/0x90
->> >  vfs_get_tree+0x26/0xc0
->> >  vfs_kern_mount.part.0+0xb6/0x140
->> >  kern_mount+0x24/0x40
->> >  init_pipe_fs+0x4f/0x70
->> >  do_one_initcall+0x62/0x2e0
->> >  kernel_init_freeable+0x25b/0x4b0
-
-Here we've set the full gfp_allowed_mask already so it's not masking our
-GFP_KERNEL.
-
->> >  kernel_init+0x1a/0x1c0
->> >  ret_from_fork+0x290/0x2e0
->> >  ret_from_fork_asm+0x11/0x20
->> > </TASK>
->> >
->> > Replace this_cpu_ptr with raw_cpu_ptr to eliminate
->> > the above warning message.
->> >
->> > Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
->>
->> There's no mainline commit hash yet, should be adjusted later.
->>
->> > Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
->> > ---
->> >  mm/slub.c | 4 ++--
->> >  1 file changed, 2 insertions(+), 2 deletions(-)
->> >
->> > diff --git a/mm/slub.c b/mm/slub.c
->> > index 1433f5b988f7..67c57f1b5a86 100644
->> > --- a/mm/slub.c
->> > +++ b/mm/slub.c
->> > @@ -6432,7 +6432,7 @@ static void free_deferred_objects(struct irq_work *work)
->> >
->> >  static void defer_free(struct kmem_cache *s, void *head)
->> >  {
->> > -     struct defer_free *df = this_cpu_ptr(&defer_free_objects);
->> > +     struct defer_free *df = raw_cpu_ptr(&defer_free_objects);
->>
->> This suppresses warning, but let's answer the question;
->> Is it actually safe to not disable preemption here?
->>
->> >       if (llist_add(head + s->offset, &df->objects))
->>
->> Let's say a task was running on CPU X and migrated to a different CPU
->> (say, Y) after returning from llist_add() or before calling llist_add(),
->> then we're queueing the irq_work of CPU X on CPU Y.
->>
->> I think technically this should be safe because, although we're using
->> per-cpu irq_work here, the irq_work framework itself is designed to handle
->> concurrent access from multiple CPUs (otherwise it won't be safe to use
->> a global irq_work like in other places) by using lockless list, which
->> uses try_cmpxchg() and xchg() for atomic update.
->>
->> So if I'm not missing something it should be safe, but it was very
->> confusing to confirm that it's safe as we're using per-cpu irq_work...
->>
->> I don't think these paths are very performance critical, so why not disable
->> preemption instead of replacing it with raw_cpu_ptr()?
-> 
-> +1.
-> Though irq_work_queue() works for any irq_work it should
-> be used for current cpu, since it IPIs itself.
-> So pls use guard(preempt)(); instead.
-
-Agreed. But we should fix it like this. But the report is strange.
 
