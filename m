@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E5C0CAC5B8
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:24:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 242DCCAC5B8
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:25:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 989058E0035; Thu,  2 Oct 2025 04:24:54 -0400 (EDT)
+	id 656F98E003C; Thu,  2 Oct 2025 04:25:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93A1C8E0003; Thu,  2 Oct 2025 04:24:54 -0400 (EDT)
+	id 6084A8E0003; Thu,  2 Oct 2025 04:25:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 828B88E0035; Thu,  2 Oct 2025 04:24:54 -0400 (EDT)
+	id 4CFB78E003C; Thu,  2 Oct 2025 04:25:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CADC8E0003
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:24:54 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 253A0C039D
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:24:54 +0000 (UTC)
-X-FDA: 83952488508.15.864D7A4
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 32F5A8E0003
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:25:43 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D638AB8890
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:25:42 +0000 (UTC)
+X-FDA: 83952490524.23.98E549D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 71EF9100014
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:24:52 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=i5+HKGpb;
-	spf=pass (imf05.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 2092F100004
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:25:40 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Bu2eH7XH;
+	spf=pass (imf14.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
 	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759393492;
+	s=arc-20220608; t=1759393541;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=03kPmqkL6R0pTNGRa4j3+2XI77gPNS4i4nkDiyOd2Kw=;
-	b=tONo7RvjO34wkLGrX/zCB4JaK0vsheogaYrOPRhseKLZFnKDXqLeIjSYo7ZB9pkPNhF+p0
-	YJBhKMVJEZJ8bQ81Y9VX4WUk3vs7S5+OnLq11GCwVh6D+PvK3lMIBaF9aeMfSXsnc1Jn6e
-	W5RBy0OgQYO+9pNyP/wpfDB6kzvabKs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759393492; a=rsa-sha256;
+	bh=VV9Ovf6F7XAAIGErik7svnoMKbuW+Havs4VsSCXuJaI=;
+	b=MIZYWdi9qVHc3gi95t2Mx7/r2BOv0QJgaY46/zPcX2JWoqMGDpaUjh35pi/JSREGRM5SLW
+	Zq2l+TzAP7/Zri2YUy12SqbdVXhBZSDUA/oo/sb5osZMGpmGTogUj/gK2noLtcNEQcIfro
+	YF4VS+yxZ1scKTpxPdYUhgNOjTtdfcI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759393541; a=rsa-sha256;
 	cv=none;
-	b=PodnK0ee8qg0XvZ6+JfiQReZjuay9BoDuJesf076vsCeNgAaeSx1YPcs4RHU9Fi5EfhZSc
-	r6tKbTRAPJmzXX5zkQiDzSQkuLHUHDSIPndjOPvOlVx2ovqp5tzMSCpDMJlFDlJibq9hc3
-	1MD5q+lKlPgoxVmXW0+I0dPmXUrUsZg=
+	b=unmMnxcb1KVz6pC/47ez8mkUkDhb7W9VY7xhdXsxYKp1MCXVHwxaaQX3sH0H6RpEPnp7Z4
+	RMA+IhvkZPAWWI5A4moZHRDDQ+CuJzAsxRIUV/Ie9S0wqgpEn2e7Rc+eSEVxxvVzfxjUFu
+	hapHD78YbYeojqrSttI33vcDNP78eZM=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=i5+HKGpb;
-	spf=pass (imf05.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Bu2eH7XH;
+	spf=pass (imf14.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
 	dmarc=pass (policy=none) header.from=linuxfoundation.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6C8D043E43;
-	Thu,  2 Oct 2025 08:24:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60A32C4CEF4;
-	Thu,  2 Oct 2025 08:24:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0A9AD44E68;
+	Thu,  2 Oct 2025 08:25:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC4C9C4CEF4;
+	Thu,  2 Oct 2025 08:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759393491;
-	bh=EGta/OBizNM09PGf6rEuH2ZEVwPb5dGKC+KMXznpC2w=;
+	s=korg; t=1759393539;
+	bh=rUYgOjZIb4WBFkTgqPyZeDyE4Q7jwjqmDpE7Z7xG6nM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=i5+HKGpbYKH37uF6UEmHuZtFQv6O5ZG1HxMQr8kvde7omSAD+zel/Z4+s6JwdJrZv
-	 Ur3S6DldaheLi+GEdKKHX1ZJ+iRyil+oU4pwd+w36q87VybbM/v+qrAgAFV69+RNbv
-	 WsN8AOHH246elLsfI0Z+lVr0mIU6QpnW71c2yL1s=
-Date: Thu, 2 Oct 2025 10:24:41 +0200
+	b=Bu2eH7XHdLHePX4Bf9lC5g6VKtI9ke1uBOEcSnJHwXk92fJhzOASc8OM213ef4BG5
+	 q4GhQcZBnpHEGQKe8BKzoeZ2FDvVw/OAegY+rlI5qeXGG5B3lb6rK7guEI3fkTUc8R
+	 Vz92RglvCXUVsjfgg5oOym6M1SHpU7RZx/f0N6Sg=
+Date: Thu, 2 Oct 2025 10:25:35 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Byungchul Park <byungchul@sk.com>
 Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
@@ -122,23 +122,22 @@ Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
 	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
 	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
 	linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH v17 01/47] llist: move llist_{head,node} definition to
- types.h
-Message-ID: <2025100230-grafted-alias-22a2@gregkh>
+Subject: Re: [PATCH v17 02/47] dept: implement DEPT(DEPendency Tracker)
+Message-ID: <2025100255-tapestry-elite-31b0@gregkh>
 References: <20251002081247.51255-1-byungchul@sk.com>
- <20251002081247.51255-2-byungchul@sk.com>
+ <20251002081247.51255-3-byungchul@sk.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251002081247.51255-2-byungchul@sk.com>
-X-Stat-Signature: tmdrkxio9h3ba1nm3u79bpw8augo4enr
+In-Reply-To: <20251002081247.51255-3-byungchul@sk.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 2092F100004
+X-Stat-Signature: tydk6zc44ypphr3i4i4nto95dsgjdn6e
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 71EF9100014
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1759393492-248220
-X-HE-Meta: U2FsdGVkX19HnMvfHOcdQt8KQlbnATpOTshOANu7RXkdNO43VUP2d2ghwWDcxhmVefV92NW1YAkOcCTxh+CElCVszLstK+4S0ksBksaPpNMNqJ/FW9eN5eqobv37qiOVUaAVDF98xPA5DWRaZ99JqT2rARD4CPJt0sbjeziFplUZvoLPcs2iR3bEU3i8LPDoZRhcnA19Cr4J/g9T9eCPXKcjc8NqLr2ekIQRvGHBIBzRsnAZa8N1beofs9d8/el+E1EspVKt4HwnGAU1eOOJAv/A1OcBJ9Ubc8ufg/q677Ut1qkwmaWfudFrisDXNWAYQER9lC4yGrJkb4uswYQWi8sTgPpqhac3HwaAayb+0XjZdbpdZAfqOjiXCtomIajhhphZLbYMjGPPw4IaAzcYNzMBaSF0dfQ3VYDx6zjldnoq5RdT0OqXpZs4ZdNwXrbNGq+0ERvnIAPlNYMuTpXKUNaFmGYvf7hxjWrbnugZ2I0MCjdsojpa/ZZFiySyDt/tSQPGwF25wQQGW7dsqSYi0EH+IxglIruv6MzEyid1EoPZmGGaikoosX4NBpIXo/5XS48EkA4n+3Y8bFKU8jxOpMCAQPe7kShQuv41RXKn20//6gAOPEjeyXTbno8R+j36OvFVXAHVw1laKMrF8ylE2GDzBZC6taB3Eq+pCrJnPDsQn4H/XpIcw1gfSXwC2G+dNH91Wx0Tk/EGLSVO1F4+gEkw59UUn3M7tFFmXZrddNYs46iBjnp5whY0ckl5Q9+cfGw7ibp2AlcgwuxJFAfGiwt5zmTGZmf4WlGaGBAQsOftymrtoMMb/mcRiM+x7d8lLUFpjEA4/wQxXpDmoQM2QTfY6tqzM92CDH9eSF42RuefM8rL1f64ADVcpBcCCskuDQ+HKxhKu/e2iIyDj+SfXTefSke2prbWqxK6V4QXjnILhp1uILooCLQEISsTjG9nKmzkBCZvny97o8o1G4z
- TgsoFB+b
- eI9ikeNPgTEhuprRx/rgV+zNLtcXg46daMjnOadI60lbRUUZJKhGPqOqaTNr9LpCHr1NdzCuAzHCTiTd9gjoGcGE2iwwSfaBmGdzhBeCCuDxEP4D3KAuZmpCShEMFncogUfmkd46b8/WDJnqIfQwG5Z/XQg==
+X-HE-Tag: 1759393540-192752
+X-HE-Meta: U2FsdGVkX18WH9Nnxa9bC6NViZF6hiTCralzWWkNOIkF7vxX/Yp+piSeyDOqMw95SUucvM9x0tno+NCRbeKqsX8x1BlswJ9j8yQTX4rXwxf9i+ljM6ePjA8KsmKs7nCt0F3EOjKlJ3AEtsH9BSAGTQ+j6/pSoBaEQgA2p+USw5y4KmNXXqjrDFCqAs8f1pBYWfsT47hpdTIb6Spg1IVRJkxylFxPXjnseNbtiyKlyLQ88DSJY23ygRqOWmMLSdrjmHIipxp9us4/s32cn5gNU4Q+nTcoJU3f7/XrKE5R5GyCscxXifNSVHihoHmCynSuxZGtylqdnSVpZXXCNxEyyPBWQfN+gqKOs0vthutTX8qU7JYjk7OS7CTblIM9W+15e3TvPqex6O3t0tJ7HCI+QPGk6VY1x7AgLK3/V+9XHqj6irEenzGGn4eH4lpLwAEfS0yzAtT7EvtFxj/pEYfrG0BHKgG0yTjs7VZTnDXCI23BxRj33LoS3vVm1uAu0gM4PcgXv9z4BIMdc4hEUQE0oxrisRc3LnhHUgH2COtztCSxRCPv0eFE/SkDGRT1ie15v6GIWWBHBnQjQRcM2pki1pS4P7d/yDUPc8FeJBrAWyHhkpCX0Et4bwRQgoGyE04DNO7nw4948jZJ/thtP5ueM9NlppM0acjVd4TxJy9TWOZh0K817gZaHmQ+VQ5bHBgSJh8NYDR2ZKCMw7ZQNukV0zRme/P8WKhX68nCkKKGZXxvSG1Qra3uG9/BudLCjAkLStQlFIrjDnFSW11Q5SCXZ4lTYCzEhLygqLzZ6u1bwJuf54Qxb4DB5MYs9xeYJIoJtFamhRB2dYd6I3QpqDksNXvbevesisUOrVwO6Sbar0sW1RE8/9BOrKrGvvSNKJV+fCQxOGk3C1VSugbBST3R2YU6iEqDPCjRMm18wdA/vUQf0bA6YCAN7WN9AiYJ7hsSdkG8G4YZZu6MnAS73Fq
+ rojJ2x6/
+ B+dj/TrovU6FfTvH+9hmvL+lP2zmIvzG7xAr2AwbtxGHtlY7tRzzbfL9lOD5yJsu+vNLEQygttSo3A5xq0Yhys5+pC30I4ZBd0lfp7y1jCevgPJVghaSU6JnPLLujcVWvd/8yNLPEODCYE/hQd9oY61ZgJvv/cY7jJdSeHMw1GfhGgVUQZItH8VH5ktBSdAjVMfiFFt3BquiyR606UfXwnoExEgBfqFsEoLu1bgnp12yh7qtDjQIN9mDp2n2aO0BA50ztRby83Z366RoDqj189BjnH0oZ6JbFKA934HGpvcanOFtJDWazyxkrHQ/d5YpTU8kBcQw5KkWxtHHUSd51fWI+1+0PcHQUTuJ3pnlfdwK++5835/V6PDGKMF7PLegEeuoplpDfZ13jobo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,17 +146,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 02, 2025 at 05:12:01PM +0900, Byungchul Park wrote:
-> llist_head and llist_node can be used by some other header files.  For
-> example, dept for tracking dependencies uses llist in its header.  To
-> avoid header dependency, move them to types.h.
+> @@ -0,0 +1,446 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * DEPT(DEPendency Tracker) - runtime dependency tracker
+> + *
+> + * Started by Byungchul Park <max.byungchul.park@gmail.com>:
+> + *
+> + *  Copyright (c) 2020 LG Electronics, Inc., Byungchul Park
+> + *  Copyright (c) 2024 SK hynix, Inc., Byungchul Park
 
-If you need llist in your code, then include llist.h.  Don't force all
-types.h users to do so as there is not a dependency in types.h for
-llist.h.
-
-This patch shouldn't be needed as you are hiding "header dependency" for
-other files.
+Nit, it's now 2025 :)
 
 thanks,
 
