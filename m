@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CA51CAC5B0
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:14:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A01BCCA472
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:15:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 700AD8E0033; Thu,  2 Oct 2025 04:14:22 -0400 (EDT)
+	id C5BE18E0038; Thu,  2 Oct 2025 04:14:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5785D8E0032; Thu,  2 Oct 2025 04:14:22 -0400 (EDT)
+	id B44828E003D; Thu,  2 Oct 2025 04:14:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 306EF8E0031; Thu,  2 Oct 2025 04:14:22 -0400 (EDT)
+	id 9224D8E003C; Thu,  2 Oct 2025 04:14:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C16C8E0032
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:14:22 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CDBC913AC11
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:21 +0000 (UTC)
-X-FDA: 83952461922.22.0837C51
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6922B8E003B
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:14:26 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 31E5016031E
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:26 +0000 (UTC)
+X-FDA: 83952462132.16.11FB837
 Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf23.hostedemail.com (Postfix) with ESMTP id F058C140005
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:19 +0000 (UTC)
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5AC84140005
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:24 +0000 (UTC)
 Authentication-Results: imf23.hostedemail.com;
 	spf=pass (imf23.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759392860;
+	s=arc-20220608; t=1759392864;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=YcZh1vV8SgfnVfzw8dvpv0mjAeTrgvYMwuwe6YQxv7g=;
-	b=MQJuFqaT9eDPXItdVmZjZZlvoy5NE+Mo3xq96AESAPTr3/Q6QOs/inc3981QS9OP/JoKGL
-	cjPZOrNU7j0cAfT5Eu1tHYh1h0cNrhPKAFqpmrf+oCXEizHFXkVimHTDQrWz1LCZ9fIs7Y
-	WbcYL+F9cs8Mlr9Ug4V1tXxd7piLhDg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759392860; a=rsa-sha256;
+	bh=WArLovSFXaT8otVlpV7KIF50R+FCcBURwHrSO1jZKQs=;
+	b=k6GPsZS+Tl5Gn9ApxVEPYY1EoyjaWiVqtQt+v3r2YH+Mf4nb8lB/FCYASASD9CUNFeR0ZH
+	DCssF9TcFRXvjxjLpJErctiwdffmU0i/KYBVQ5QiaIWd9zzr9uCakNC5XPO1LnfaqR8sX9
+	LnZ2jKWdZVRoBWrMBTitAl6iOnxlFck=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759392864; a=rsa-sha256;
 	cv=none;
-	b=Rf76FDJ3Xwx0VJnf7Ch2p29bCFjm8qA6p7yIOK1K6GhSQdKYrKLyUic36io78/IEdxV9x5
-	xFUOlnsoch1gh/V08Mpy9gpLFV+BW99kswABxMTzSDPa8oDJa+aDEyxq+ED94iEH57Nqd1
-	gYBgik/lJnOKYSVX2lzZjeCulkFRPTc=
+	b=OJLsCHy/ZzdLh3ULRdmQ95L5QflEGPUeTtdj2Th6bK6izzDabIF4HjYx57Ulz1C6olmPBr
+	WrKIqKf/rtuqfNCeS0Rk5o1RqLpnPwRhvGbF9agvG8jQxz9uUvn2WKfqagiiTgeyB//fTC
+	jbhtBoRuihnYWFaRMeV1elPpkWs0TsI=
 ARC-Authentication-Results: i=1;
 	imf23.hostedemail.com;
 	dkim=none;
 	dmarc=none;
 	spf=pass (imf23.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-X-AuditID: a67dfc5b-c2dff70000001609-fb-68de341380ef
+X-AuditID: a67dfc5b-c2dff70000001609-31-68de3419efec
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: kernel_team@skhynix.com,
@@ -196,53 +196,53 @@ Cc: kernel_team@skhynix.com,
 	rcu@vger.kernel.org,
 	linux-nfs@vger.kernel.org,
 	linux-rt-devel@lists.linux.dev
-Subject: [PATCH v17 37/47] completion, dept: introduce init_completion_dmap() API
-Date: Thu,  2 Oct 2025 17:12:37 +0900
-Message-Id: <20251002081247.51255-38-byungchul@sk.com>
+Subject: [PATCH v17 47/47] mm: percpu: increase PERCPU_DYNAMIC_SIZE_SHIFT on DEPT and large PAGE_SIZE
+Date: Thu,  2 Oct 2025 17:12:47 +0900
+Message-Id: <20251002081247.51255-48-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20251002081247.51255-1-byungchul@sk.com>
 References: <20251002081247.51255-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzXSa0xTdxQAcP/3WarVm0riHbKhTfCBr8mYniVmaGLi/8sSnR+Mr0iFG9tI
-	0bUKMrOslaLI3MQmLa4XGSAllRaBgkaqRKnCYA3aWodsAZSJlWZgM7Q4oIa1Or+c/HLOyTnn
-	w5GQ8t/pJIk675igzVPmKhgpJR2fV70mMWNI9emzjmToM9yhIPK6hIKKRicDvqsOBE8iJQje
-	zIgkFLfNUvDW1MWCxW8iwdlqIMA8PMJAechAQbjuHAJrUGQh1LkNZgdfEPB4cgzBW8thKDf7
-	EIw2nUHQ2jWEoN1+ioHnZddICIzMh0eRMAM95h8YeNnEwCXRhKDociMDlksuCtqeulnw/x0l
-	YMBiIsDh+gq8ZTVEbGWsoXkRiOVFRCyMxi5puEnAVF09C3X6VBB7AzT8ZbeyEB1eD12OFywM
-	njdT0DPUR8OTX0/T4PqjE4HzXJCEEneEAtezWKH9z1VQfbqWgp8rBxgIuCsYGHLO0qAX39Dw
-	0OGjwNvVHRtivULBA3cDDbbHfmJzDnZWOhGemTYh/NpWROK7Y2ESG1sK8G81PL7Quwa3WQdZ
-	XOU6jo33xmncYk/Dl2+FCFw9EaGxq/4sg10TJhZXz4yS21fukW7KEXLV+YJ23ZdZUpWtUWSO
-	tq88ce9VGdKj6ZRSlCDhuQz+Qccs8cHNPVVM3Ay3nO/vnyLjTuSW8C0/Bum4Sc6bzPf5V8e9
-	kNvBN5Z7UNwUl8rXhBzvemTcBr679ify/cwU3tF0550TYvnAsJeKW859zheHjf/v/SWBH764
-	7L0/4jvs/VQZklWhOfVIrs7L1yjVuRlrVYV56hNrs49oXCj2bHXfRffeQBO+nR7ESZBinsyX
-	OqiS08p8XaHGg3gJqUiUZdkHVHJZjrLwW0F75ID2eK6g86DFEkqxSJY+WZAj5w4pjwmHBeGo
-	oP1QJSQJSXqURhiyvbXpKZ3+bmVbb7Z+bHPmNx+HjXNPvuyfPqteYNu4rmH/luD1gi8Yn3Hk
-	kGZp88nCvl3BpwJ73vAJJiqem5dvu75inyhqdyd9PZlZ/Ojg7QarasHELY3tXyb5e11NemD8
-	sxv/ZL7yb9zgDm3tKJ7yJN/cXbn1frS01HLKEZUqKJ1KuT6N1OqU/wF0GbkcaAMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAAzXSa0xScRQA8P73Xu5Firojl7ds2Sh7LTOX1lnvrQ/+q9V6fGhruWR5C+ar
-	oEzbWhqyXE+ioUu0yJIcaCLaw4pyWPYwZmRpD8hsplk+WmmlIgS1vpz9zmNn58MRkpIbgilC
-	Rdp+XpkmS5HSIkq0cZk6amLse/nCi1fnQ0tOHQWDA3kUFFWW05BnOy+A59csCNoG8xD8GjGQ
-	oKn1UzCqa2BgYOgdA357A4J8l46E8pocAn5YfTR8rf+OQN/eQUNBdw4F/aaTCAo7DQx0P4yH
-	3rY7AvB7ugho/dmDwNThI6Cj7hiC0fxkuFhSTcOIs4mEAv1zBJfaPSR8tgaaNQ3vEdjLjtLw
-	SXudhOaO8fBysJ+GJ/oTNPS6igjos9JgPGoXQLFBh0B9uZKG/GIbBbUfbjPg+uolwJ2vI8Bi
-	2wBtpk4KGrUlROC+wFRVGBgK1EQgfCZAX3GHgCGTmYFnl90UmLIjweBsFsDHskIGvO0x4Dem
-	Q4OliwHPGT0F13qbBKv1CP/SnKawufoGgTUvRmlcfqEc4ZFhHcIDpWoSa7SBtL6nn8S51Qdx
-	aWMPjYcHX9HY/tNI4aclHD7rjMK1hR4G5957y2xaul20PIlPUWTwyuiViSJ5aaWB3mufm/ng
-	hxZlo+GI4yhEyLGxXNUTIx00zc7mXr8eIoMOZadz1ac6BUGTbONUrsU1P+iJ7GaussCBgqbY
-	SK6k2/J3Rswu5h5fOU3+2xnBWax1fx0SqDe3N1JBS9g4TtOfS2iRyIjGmFGoIi0jVaZIiVug
-	SpZnpSkyF+xKT7WhwDeZDnvP3kIDzfEOxAqRdJzYFemRSwSyDFVWqgNxQlIaKk4sc8sl4iRZ
-	1iFemb5TeSCFVzlQuJCShonXbeMTJewe2X4+mef38sr/XUIYMiUbjd0Q/U0YPkP1Mjz6Q0Wr
-	8UhTws0R36Sbrc43C/eZ+yxhpebUNerM1b74SXBs+qyKCbcdw4v84qbJ0mLPzKgdR7y+rbE5
-	9c+u4BY2Zp3jyyP3rS3rE/LcK+Zg/9i7v21FkyOSlmyMc+4+k31y5dqumiT025y7tq9t1btz
-	xdbl3vvT1kgplVwWM49UqmR/AOk0IJhJAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0xTdxjG9z/3NlZOOpIeQLOtiTc2wQvON1EXvxjOFzKSZSZqiFQ5eppx
+	MS1XjQkC9TYxWAIk4FhrsVJaFMELKjUVtQSRUMBgRS4WAWWlNCPQDKV2rdFvv/yeJ2+eDy+D
+	y4fIWEadnStoslWZSkpKSH0rjBtjk8bETeecK2HolIOAyzdsFLiuWxHo7oUICOqdNCwsvaYh
+	ZHciqO7X4+B9PI/Ab76AYOZpMvjGH5DwMjCLwDz5CYNJxxkEf19po+Bjbx8ORs8oDu9bwu6W
+	cwyBvbGEgsHJlfBi0U9Bd9WfFPj6L2Mw10LBX3V6BKWmGxT0e5cxGKnWY2BtTYGaGQqqbyqg
+	qvkBBkvmJhqem0YIqOsdJGHZsxlChhxwWt/RcN3XR0L32BAJ3mk9BeNdp0m4W/wmvP+FBwPb
+	hWkcWt+GU/vwj2A83UDA2eACAmf7BAZjthAJLkcPCQNWFwHdtRYC+u43k9DW+xyHwMU4cF0q
+	J8FdMYWgcm4agTdgxsG86Kd3Z/BNbXcwXjcQpHhbvQ3xHz/oEa+rCNPjWT/OX+2ZpXh7wEDw
+	z65w/KXejfy92lGaL3s4TPOG1jy+7ImP5E0dMxg/7N2VmrBfujNDyFTnC5rEX9KlovuJmzx2
+	W1J492yILkYT9HkkYTg2ibN3vMe/8n+WKSrCFLuOc7uXPvto9nuurXyajDDO9qzihvp/ivC3
+	rMDd/6c93GEYgl3D1Zfui2gZ+zPnf2r5cvI7ztri+MySsB/09BARlrPbOJ2/DDuPpOGOScLN
+	ef79sieGe9ToJiqQzIC+aUJydXZ+lkqdmZQgFmWrCxMO52S1ovC3mU8uH2hH867fOhHLIOUK
+	mWvNqCgnVfnaoqxOxDG4MlqW3jgiymUZqqLjgibnoCYvU9B2ojiGUCpkWwIFGXL2qCpX+EMQ
+	jgmarynGSGKLkTowpdg1Hq8rHSg+NHwk+ZNhtCxK3hF/LeVRkiKvwRR8JfsgWn7fujposRzq
+	01Zvj0qdSN+7IMbhg111qvLXO6LRBuxouXhizxSZPL96d9OJk3tqCi7+Wuowxq5yd29arGku
+	+aF+dsvxlPHcqLnEZbKkKG19ljFm7a1KRX1MamWaktCKqs3xuEar+h+V1r69aQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSXUyTdxTG/b/fbax500H6jo2pNcRoJorKcqbG6IXh1UTizbKoF9LoG1op
+	H7YCZZuGUhrJhA2bFIQqVogNX2qlwKimC4JUsRCsVSBKZZBSUMBmE2QI2LWa3Zz8zvM8OXku
+	DoNL28g4RpV1VtBkKdRySkyIU3cbtny585VyW5FzAwzqOwmYnysh4MrtZgpKWqpIeHKrCcHo
+	fAmChSULDkZnmIAVk5uGucWXNIRdbgQVXhMOza16DN7ZP1Iw3f0PAvNYgILK13oCQrZSBNVB
+	Cw2ve1JgdvQeCWH/JAZD72cQ2AIfMQh0XkCwUpEB12odFCz1D+BQaX6C4PqYH4cpe8Rsdb9C
+	4KovomCivA0HX2ANPJsPUdBrvkjBrPcKBm/tFFiLXCRctZgQGOpuU1BxtYUA5193afBOL2Mw
+	UmHCoKnlMIzaggR4ymuxSL9I6o4MLJUGLDKmMDDfvIfBoq2Rhr66EQJshQlg6feRMF5fTcPy
+	WBKErdngbpqkwf+7mYBbswPkPjPiF4y/EXyjox3jjU9XKL65phnxSx9MiJ+7YcB5Y3lk7Z4J
+	4XyxI5+/4Zmh+A/zzyne9d5K8I9rOf5S/xbeWe2n+eI/X9BHdh0T7zklqFV5gmbr3jSxcvjB
+	MJnTJtL9URKmC9E4/SsSMRy7k/u3YYKKMsVu5IaHF/Eox7DrOEdZkIwyznq+5ga930b5C1bg
+	7r7piGQYhmATuBrD0agsYb/jQj0N+OeTa7kme+cnFkV035iHiLKUTeaMoWKsHImtaFUjilFl
+	5WUqVOrkRG2GsiBLpUs8mZ3ZgiLPZDu3fKkDzflSuhDLIPlqiTfBr5SSijxtQWYX4hhcHiNJ
+	qx9RSiWnFAU/CZrsE5pctaDtQl8xhFwmOfSjkCZl0xVnhQxByBE0/7sYI4orRPe/CQbzN+oa
+	7HT7YYv4oUO3Y2j/NVtsaezlX2JdPQe7c55bRb1Jsvjk0qKB9b7l3X2bJzpO63MT/e369B9k
+	lqGA2r6neMOChq5xn1fVulKdcoXgkf68nZAdonSbvj9Z2l125u/BxLbc1Ibt8Qf0+HR6X1Vw
+	ZrTV/Ch/U//+3uNyQqtUJG3GNVrFfyOFB8lIAwAA
 X-CFilter-Loop: Reflected
-X-Stat-Signature: dk5w118fm87qz38fhp4tujex7gryqebb
+X-Stat-Signature: 5yg8h35ybfzdq8ktd9g43iyf1c9kipsi
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F058C140005
+X-Rspamd-Queue-Id: 5AC84140005
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1759392859-429230
-X-HE-Meta: U2FsdGVkX1+4Uam+lbmJQ9wWjH+jL9J1Spp76UH5x2sEabj/nuUUi6jYQW2RjfRMkohDmSRyRnYn7RG98LXuler6j9+LTpY2ZmJ3+Q3A6adoo2x5zgLD8bwveXLGtTne5V0585zOHYd43S0l4chM4bnTCrzIQ/TSi4lLuO0r3fsayZ44VibLiF5OLJmbJTuDbtVKgQN7o7PBavCF0nktXk1brih2pTu5IBwDkN345YSMRrqDYQoKZn5LedYJAaR5FBAhhj1piMW2hzr8m48aAQVmmRyjgam+JbypmeyPr+7T/aCQL3HyNdfRBbelpCA3Vhz3FU3EQwp1byJY7m93VHaNYYTP8wKrUMV2itNv712YWnX3VIOszRBov8PuYtK1WUMtkM5j2IJHEJMJhN2D8DXnfbagUNQ3/70+0aw5VpP758sBWpFdAUfFf5Rv8eVOTAPwX9acuiaXNfj7ThShpNaPdLFfw0qJzRjoEZUjWe7NEEo38yVrennaP40dddq9twOmtj6GxiuHbRVtado8pPo9ZjbpQhW+2KqDG/pTRaxVrcDKl/Xk/C84h4GUaYKW4odPb1J1+h7hYd1ksJ5DaVLrSk+1WoM8DfXYs+TbBQPr02mUCJ6RC37zj2wy6P6mrQgxyjvEmVFufWu7JhEg2sBHmrXO36PYMI8e/UD/wEf1vq3NuJzSUBcLMGbm/VNG9poDD24nmkw/Ld+7sCcpfQh/cbB3pk1nWG9i1B42lfY3AIOq1wZhGaccYC5eZ5OlrbhJ0IXpnHJ0KDi8x+N55H/Ft9fUShAr6mOtxeyWkugtrp/Pg1awLofsl1FMk/8BvxxOCp1ddnMcG+NYvidr3qfN2YqEIdPc1bImORGFVMhGKS0fmnkPJlYs8nEipdiFThLhBNLhv6N2LZDT7PB7xDSwpb0mN9iD7/ivC2TXjciO/miEJnA2YhpupaXJOmrlpouG67bs4PmxMDrqdTP
- cZZYrQyG
- bvEyu2DqDafatDIs3kyAa+5xuefOYHKJ1HqfaMwHXG8C/cqEZCovHMwre9r63W9o/xQlB9PH50fUsGMEqUCfHLfx8fq2bZcnQhrUuRo9HZbD+NKeV5DLLnBGAj7BGz8r/eMaC
+X-HE-Tag: 1759392864-527739
+X-HE-Meta: U2FsdGVkX19em+aIve19+nFIO+tLj7FlcaUFO52CnzhsifhHqQjXyE1gbxDCED350Zw1oc6co9xUX9vqZGQlz1XtqOElvdMtXSLTOO8+byTdFEnEkDUc2BXhqncx0gqe5KtZia7q+Pus8AcohBXxLwYHWjxGCd+hMXgau8QDv+jejx+IcwjHd9D5jXVEEL4IQBJPTUXzg0uGMWIuFY6xw3DjI8g0EivArfwYHzs1on+7GLfkziRfgp02WS3Gd4XcaimOQi7/0SZrDnAqgWqcnHAbNKYaytco2HQV1SSE+znFc5AzXVsYZSzzCfl/SmZs2AcWFyqNcYT+gfeukamG+XxWyLEC/wQ/o9E/s/C81U+ZXsxW2TrM2OPAUCct3MZJW4eu+GPUs5B7BUuEvDUJ/Yht7D9LlYXZxVVCiGdTq4nljBmg9hC11xqJTsSqgNYLPMDXk8Kg5DxaeyXr/lAvGZbHFg33HMhaGMv63pS5Zmwyy1DgeoiV/2j4gLA1AUNQYWFa7o68C40EId1hQKydyGxZlWVqnc2ws8Suh3kYm3GCQ+r/7JA3CwBQNgX7JLegEAbaNs70LlkakWU/gwi+f6n6Z8INzSrFYekD4pAY9sIjUKg33W8RlOoLGaki/CgB87cKeTNzISRQmCaO2utXLsO80PIzTNJbLuLFBy+Mu9Q6u1jPazRmthD8YLGWg/dyl1BuphCO5IaX6x8gEMRte9RAtXIoBXHa3neKmmVRQxgaXXL4gd/IeQBHpIntvW5rfjzeMeE0dxHM5FS3z0IK0KnelD0AOLoJ6GdXkxyjsBYGI0bfSOO74ddDAMDpxYpn3/OUyJUSgUL24vbKmEFdmSNw1uP8bahEccFpzm+8kQG8bfoph+EZ9rMQTrC7/D80CIS31ONGM8XIpb4Ep6eIkI2UrydAOosHLkoYHCgcUlhjA4gvCbZoykm1yH69R2vpXuaSKOG/IzcxrdSAfGE
+ YVLPMmxy
+ p+dukUxPHYBDnUcRcYTzZoHQaJWkmMJqRhSrWFBJ0JSu8lQcZTHJgaBajGwpJeEt2f3wkD14TqQC0Y9IdVoaXw1iuVX9ZsuvTJgtV9swsbmmyemmg9L7jw8nDmRJE3hMPUu9sYCmZBW2IMmaCaxhgcWThaQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -251,157 +251,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, dept uses dept's map embedded in task_struct to track
-dependencies related to wait_for_completion() and its family.  So it
-doesn't need an explicit map basically.
+Yunseong reported a build failure due to the BUILD_BUG_ON() statement in
+alloc_kmem_cache_cpus().  In the following test:
 
-However, for those who want to set the maps with customized class or
-key, introduce a new API to use external maps.
+  PERCPU_DYNAMIC_EARLY_SIZE < NR_KMALLOC_TYPES * KMALLOC_SHIFT_HIGH * sizeof(struct kmem_cache_cpu)
 
+The following factors increase the right side of the equation:
+
+  1. PAGE_SIZE > 4KiB increases KMALLOC_SHIFT_HIGH.
+  2. DEPT increases the size of the local_lock_t in kmem_cache_cpu.
+
+Increase PERCPU_DYNAMIC_SIZE_SHIFT to 11 on configs with PAGE_SIZE
+larger than 4KiB and DEPT enabled.
+
+Reported-by: Yunseong Kim <ysk@kzalloc.com>
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- include/linux/completion.h | 40 +++++++++++++++++++++-----------------
- 1 file changed, 22 insertions(+), 18 deletions(-)
+ include/linux/percpu.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/linux/completion.h b/include/linux/completion.h
-index 4d8fb1d95c0a..e50f7d9b4b97 100644
---- a/include/linux/completion.h
-+++ b/include/linux/completion.h
-@@ -27,17 +27,15 @@
- struct completion {
- 	unsigned int done;
- 	struct swait_queue_head wait;
-+	struct dept_map *dmap;
- };
- 
--#define init_completion(x)				\
--do {							\
--	__init_completion(x);				\
--} while (0)
-+#define init_completion(x) init_completion_dmap(x, NULL)
- 
- /*
-- * XXX: No use cases for now. Fill the body when needed.
-+ * XXX: This usage using lockdep's map should be deprecated.
-  */
--#define init_completion_map(x, m) init_completion(x)
-+#define init_completion_map(x, m) init_completion_dmap(x, NULL)
- 
- static inline void complete_acquire(struct completion *x, long timeout)
- {
-@@ -48,8 +46,11 @@ static inline void complete_release(struct completion *x)
- }
- 
- #define COMPLETION_INITIALIZER(work) \
--	{ 0, __SWAIT_QUEUE_HEAD_INITIALIZER((work).wait), }
-+	{ 0, __SWAIT_QUEUE_HEAD_INITIALIZER((work).wait), .dmap = NULL, }
- 
-+/*
-+ * XXX: This usage using lockdep's map should be deprecated.
-+ */
- #define COMPLETION_INITIALIZER_ONSTACK_MAP(work, map) \
- 	(*({ init_completion_map(&(work), &(map)); &(work); }))
- 
-@@ -90,15 +91,18 @@ static inline void complete_release(struct completion *x)
+diff --git a/include/linux/percpu.h b/include/linux/percpu.h
+index 85bf8dd9f087..dd74321d4bbd 100644
+--- a/include/linux/percpu.h
++++ b/include/linux/percpu.h
+@@ -43,7 +43,11 @@
+ # define PERCPU_DYNAMIC_SIZE_SHIFT      12
+ #endif /* LOCKDEP and PAGE_SIZE > 4KiB */
+ #else
++#if defined(CONFIG_DEPT) && !defined(CONFIG_PAGE_SIZE_4KB)
++#define PERCPU_DYNAMIC_SIZE_SHIFT      11
++#else
+ #define PERCPU_DYNAMIC_SIZE_SHIFT      10
++#endif /* DEPT and PAGE_SIZE > 4KiB */
  #endif
  
- /**
-- * __init_completion - Initialize a dynamically allocated completion
-+ * init_completion_dmap - Initialize a dynamically allocated completion
-  * @x:  pointer to completion structure that is to be initialized
-+ * @dmap:  pointer to external dept's map to be used as a separated map
-  *
-  * This inline function will initialize a dynamically created completion
-  * structure.
-  */
--static inline void __init_completion(struct completion *x)
-+static inline void init_completion_dmap(struct completion *x,
-+		struct dept_map *dmap)
- {
- 	x->done = 0;
-+	x->dmap = dmap;
- 	init_swait_queue_head(&x->wait);
- }
- 
-@@ -136,13 +140,13 @@ extern void complete_all(struct completion *);
- 
- #define wait_for_completion(x)						\
- ({									\
--	sdt_might_sleep_start_timeout(NULL, -1L);			\
-+	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
- 	__wait_for_completion(x);					\
- 	sdt_might_sleep_end();						\
- })
- #define wait_for_completion_io(x)					\
- ({									\
--	sdt_might_sleep_start_timeout(NULL, -1L);			\
-+	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
- 	__wait_for_completion_io(x);					\
- 	sdt_might_sleep_end();						\
- })
-@@ -150,7 +154,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	int __ret;							\
- 									\
--	sdt_might_sleep_start_timeout(NULL, -1L);			\
-+	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
- 	__ret = __wait_for_completion_interruptible(x);			\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -159,7 +163,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	int __ret;							\
- 									\
--	sdt_might_sleep_start_timeout(NULL, -1L);			\
-+	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
- 	__ret = __wait_for_completion_killable(x);			\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -168,7 +172,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	int __ret;							\
- 									\
--	sdt_might_sleep_start_timeout(NULL, -1L);			\
-+	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
- 	__ret = __wait_for_completion_state(x, s);			\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -177,7 +181,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	unsigned long __ret;						\
- 									\
--	sdt_might_sleep_start_timeout(NULL, t);				\
-+	sdt_might_sleep_start_timeout((x)->dmap, t);			\
- 	__ret = __wait_for_completion_timeout(x, t);			\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -186,7 +190,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	unsigned long __ret;						\
- 									\
--	sdt_might_sleep_start_timeout(NULL, t);				\
-+	sdt_might_sleep_start_timeout((x)->dmap, t);			\
- 	__ret = __wait_for_completion_io_timeout(x, t);			\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -195,7 +199,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	long __ret;							\
- 									\
--	sdt_might_sleep_start_timeout(NULL, t);				\
-+	sdt_might_sleep_start_timeout((x)->dmap, t);			\
- 	__ret = __wait_for_completion_interruptible_timeout(x, t);	\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -204,7 +208,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	long __ret;							\
- 									\
--	sdt_might_sleep_start_timeout(NULL, t);				\
-+	sdt_might_sleep_start_timeout((x)->dmap, t);			\
- 	__ret = __wait_for_completion_killable_timeout(x, t);		\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
+ /*
 -- 
 2.17.1
 
