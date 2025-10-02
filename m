@@ -4,195 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50AACCAC5B0
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 15:22:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C8BFCAC5B8
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 15:59:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C1348E0003; Thu,  2 Oct 2025 11:22:44 -0400 (EDT)
+	id 3CDDC8E0003; Thu,  2 Oct 2025 11:59:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59BC48E0002; Thu,  2 Oct 2025 11:22:44 -0400 (EDT)
+	id 3A6068E0002; Thu,  2 Oct 2025 11:59:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 487488E0003; Thu,  2 Oct 2025 11:22:44 -0400 (EDT)
+	id 294388E0003; Thu,  2 Oct 2025 11:59:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 372738E0002
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 11:22:44 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E5630C0554
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 15:22:43 +0000 (UTC)
-X-FDA: 83953541406.25.48BB6C2
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 5B16F40006
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 15:22:41 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=PGnSMkNX;
-	spf=pass (imf27.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 145BD8E0002
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 11:59:19 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A5FB913B401
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 15:59:18 +0000 (UTC)
+X-FDA: 83953633596.24.7BEC5A5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C081D14000B
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 15:59:16 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K7AAMHLU;
+	spf=pass (imf26.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759418561;
+	s=arc-20220608; t=1759420756;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3uhkKZ1MnjKJjRDzUETeFQKTZF/53yjl3G5eRudwQh8=;
-	b=G9vyfEeLcfqDMuy+wD6uu4gZcztqKDMvTjyAZy6p/LPT9QvZUv9nUvDYOliY6U0ZmrRrZX
-	7LzHH8u4b/EoQ3ZEdRbcYigFqIFiCEsbEKuuIJdXyRKgf1VacQVzVZUehjz57uW9FpD5ny
-	1yqRk914k/oZMxV0O4yuJxxEjdpCwhc=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=PGnSMkNX;
-	spf=pass (imf27.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759418561; a=rsa-sha256;
+	bh=kh2fdAvE69Z/1d4X+1gCB36Cbyo4/Px6GUFvMw7tVOQ=;
+	b=ZpXCm4TZHovsMlugIgGqY6tIYWcjis3N290ug56llfTSyaktVBu6d5SvgrDWbPDNAcTRDs
+	GXavbE6KBADlaf0XvOn0aA2j8q+Q48fXQrqRVMfwH76WUXw9fKBVdvCGyLHR7JWnLw2BMi
+	boB6xnq8E/Um6k+c7bQRIC2eqzWrbxM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759420756; a=rsa-sha256;
 	cv=none;
-	b=w9BDwPSHb3Q/IwrRTkyVpPuo89OGfCu7vbLdYJ9T5I/VbyvnLTExwu63TIwGHCb80eRJql
-	NA23quEJDGOWfWJbFRUdUk+Od7my9HFXbP69NebFWlgDnpcUCWGS7+aztzJE31VMBqOm0f
-	fBo2rYYW79UM9EQLrCs+GMLI5ABbVCk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759418562; x=1790954562;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=S3MwlH8YkjyOEDNxmKqyDUdi0jp5jGqvML1MU0Fs+R4=;
-  b=PGnSMkNXgiBw0/kt8ioKL7QinnB3G/UmAagHivSpM932R4vgso0j6Y3z
-   ylUkiuXiJwvSTORWKQ2jv7O7H19q44d3L+7jBJZU1bwcb/tp0NmlURLzc
-   +zD2CxsMVYZVOrWReEEio0+KVkO0up4V5ZPtssoqVlyrXPP1fqVhQtWUG
-   Eh7AaLPt4p14JKbZfrDhw4kvV9qiGNFttVuLM20JGW1wBYwd1RWfaT0aA
-   VYbc9h5ev2b0ZF5Hv3gAn1bMW5tuDR+OB9FavQD4ldn/w+V2yWfd+3B4U
-   +2XEzo63hfngxWgTiqh32cnPznAmh5333+AMhjSL8yWpP5/7lH3sP909F
-   Q==;
-X-CSE-ConnectionGUID: +Z3gMkIwSMCISpa/YQnF6Q==
-X-CSE-MsgGUID: qKVPz0heT+Guh83vasCqnA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="84322326"
-X-IronPort-AV: E=Sophos;i="6.18,309,1751266800"; 
-   d="scan'208";a="84322326"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 08:22:39 -0700
-X-CSE-ConnectionGUID: Wnfj603OToCU7K3W3E/LVg==
-X-CSE-MsgGUID: +iy4mVcrQz+ktPy0z5LcKQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,309,1751266800"; 
-   d="scan'208";a="179474408"
-Received: from aschofie-mobl2.amr.corp.intel.com (HELO [10.125.109.249]) ([10.125.109.249])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 08:22:31 -0700
-Message-ID: <cd056d80-aadd-4f8a-8aad-c34b55686fac@intel.com>
-Date: Thu, 2 Oct 2025 08:22:29 -0700
+	b=qy3c3PXfbqDkwmFWQk45ZvK7xAHwVvuLNPvIH8ikOvMuoDGYtreXMNuPEPOF4df4rD+WgA
+	elbfvcK4g0VKEiVYawg0ppFoteevMszLK94fcmyv+hLZeRArF/1gQG3KYg2ye8r8ajVq8W
+	6PTKg/xJtTezBzKou8/+AFCelhIRvQY=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K7AAMHLU;
+	spf=pass (imf26.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id A8B5F63E74
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 15:59:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF07C113D0
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 15:59:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759420755;
+	bh=KaeZNapUD3dfCILOnMMmQHXPV54lOgaSRR93Ry2Febg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=K7AAMHLUf2/b+oL+wLPiQMgVBaBQJbhG5b6DQ6S/siLjNUs5QiEzoQ26jbpu4s704
+	 lYZIQmrqJbtVoiy6j+w43aMIYd0nyT2hoJhgUJEAy2L8FkvkPTM6QuqFo7Kms3pK0z
+	 RGamvHVakqCIYXlF0LYkU00XgslcN7BqSuGgjInKhzSvIAOWmhdebQoKT+shyvixOb
+	 Hb+F4bgeXi7SG0XVBF942JgP7A5P4JHRjUUYSDhdkMrKVWWyY3R286pP1FgeJ90ulp
+	 YYEJGBjQHIQLTmZBU28aV+pxMivGC72YVbsADflSe07mj81CiJhC4RMML6aOp7Qpv1
+	 GwmR2gEwnPljg==
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-72ce9790ab3so14255717b3.1
+        for <linux-mm@kvack.org>; Thu, 02 Oct 2025 08:59:15 -0700 (PDT)
+X-Gm-Message-State: AOJu0YzclBBu1s1jaNzYCROaV0MidW4uiqe2QHVvxluC3vea1eXH7TOr
+	WSITDvbpgJ5711ZagYVWJ/SW+3D9cL3Ju/wIzZCZiRx2Xo0eME20oe9G949NJUO44aao4xoKYMD
+	s+l5ypjdu5xo+2g3W4qQ32T1ChD6vj8p3x1LV2ko38g==
+X-Google-Smtp-Source: AGHT+IGLsgc+2MrHeF8PiB6dqx8H4gmK46MCToPUzdW//wTHjQo/zoWdKB4z3bOSXuG+Lz8SxWUgckOmVR54kDBetYg=
+X-Received: by 2002:a05:690e:d46:b0:635:4ecd:5fd6 with SMTP id
+ 956f58d0204a3-63b6ff74398mr8175633d50.51.1759420754579; Thu, 02 Oct 2025
+ 08:59:14 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 08/47] x86_64, dept: add support
- CONFIG_ARCH_HAS_DEPT_SUPPORT to x86_64
-To: Byungchul Park <byungchul@sk.com>, linux-kernel@vger.kernel.org
-Cc: kernel_team@skhynix.com, torvalds@linux-foundation.org,
- damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
- adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, mingo@redhat.com,
- peterz@infradead.org, will@kernel.org, tglx@linutronix.de,
- rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org,
- daniel.vetter@ffwll.ch, duyuyang@gmail.com, johannes.berg@intel.com,
- tj@kernel.org, tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
- amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
- linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
- minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
- sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
- penberg@kernel.org, rientjes@google.com, vbabka@suse.cz, ngupta@vflare.org,
- linux-block@vger.kernel.org, josef@toxicpanda.com,
- linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
- dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
- dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
- melissa.srw@gmail.com, hamohammed.sa@gmail.com, harry.yoo@oracle.com,
- chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
- max.byungchul.park@gmail.com, boqun.feng@gmail.com, longman@redhat.com,
- yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com,
- netdev@vger.kernel.org, matthew.brost@intel.com, her0gyugyu@gmail.com,
- corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, luto@kernel.org,
- sumit.semwal@linaro.org, gustavo@padovan.org, christian.koenig@amd.com,
- andi.shyti@kernel.org, arnd@arndb.de, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
- mcgrof@kernel.org, petr.pavlu@suse.com, da.gomez@kernel.org,
- samitolvanen@google.com, paulmck@kernel.org, frederic@kernel.org,
- neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com, josh@joshtriplett.org,
- urezki@gmail.com, mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
- qiang.zhang@linux.dev, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
- vschneid@redhat.com, chuck.lever@oracle.com, neil@brown.name,
- okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
- anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
- clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
- kristina.martsenko@arm.com, wangkefeng.wang@huawei.com, broonie@kernel.org,
- kevin.brodsky@arm.com, dwmw@amazon.co.uk, shakeel.butt@linux.dev,
- ast@kernel.org, ziy@nvidia.com, yuzhao@google.com,
- baolin.wang@linux.alibaba.com, usamaarif642@gmail.com,
- joel.granados@kernel.org, richard.weiyang@gmail.com,
- geert+renesas@glider.be, tim.c.chen@linux.intel.com, linux@treblig.org,
- alexander.shishkin@linux.intel.com, lillian@star-ark.net,
- chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
- link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
- brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
- mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
- linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
- linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-modules@vger.kernel.org, rcu@vger.kernel.org,
- linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev
-References: <20251002081247.51255-1-byungchul@sk.com>
- <20251002081247.51255-9-byungchul@sk.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20251002081247.51255-9-byungchul@sk.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20251001043436.41338-1-bhe@redhat.com> <20251001043436.41338-3-bhe@redhat.com>
+In-Reply-To: <20251001043436.41338-3-bhe@redhat.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Thu, 2 Oct 2025 08:59:03 -0700
+X-Gmail-Original-Message-ID: <CACePvbXeFxbtH3c0Wvn56m+wsK0wqxP86ge5Ud73OvqnfDOwMw@mail.gmail.com>
+X-Gm-Features: AS18NWCavH0Xput0H2iEPEjY3i62G94Xo-Cb9XuVctO47XryH6vr4dyC6fbQ_84
+Message-ID: <CACePvbXeFxbtH3c0Wvn56m+wsK0wqxP86ge5Ud73OvqnfDOwMw@mail.gmail.com>
+Subject: Re: [PATCH 2/3] mm/swapfile.c: use swap_info[] to find the swap device
+To: Baoquan He <bhe@redhat.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com, 
+	baohua@kernel.org, nphamcs@gmail.com, shikemeng@huaweicloud.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: C081D14000B
+X-Stat-Signature: 64rt1f53mfshuodshorsqhfj5rt3pjwt
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5B16F40006
-X-Stat-Signature: 7ucfeecusz8eebtsoq8n6jpu3g4ez4io
-X-HE-Tag: 1759418561-298183
-X-HE-Meta: U2FsdGVkX19XLO8W/r0oTRAcjYBNwaaPDovGOobRfbgeOvo74VPF0vflbEnEIDuX6HM5YXjS99DBT1UjyncXOFip5WXzImHI7gx4pI3tXvGPF3XFEK2WlXj6quQ1X5oa9wvHt98BBAKqk0Visljmo1bjE0Oeip8UHiadF2Lykc86xT07I584ubsyTArbctN74vbN4cUNpHQgwxWevg3EYdBFrEbHPBYo1lc1QHitNUDId+j95LfgLrArWgnunaP020H0wupE3mlriCbfO41P9ovhMI7K7i65dqqoL+uKBDojpOQh/IEZmaEwfm8BnroUf6nzfT6q10ejoNjvKGMr/jcOXGHkNRFCoxPCMnnGAavmccX+XjctRUM64ypxWardW/wIeYGjnvBRvjR7yBC8W2iM1lcQM+E82rDMhrxeTtMzwlczc28en4YLksqdfgA+ij/H6x8Popq5zW8gLyymDhjBKYdM4Q1O1wznF4NThNQZLxBVG/TpgoNyipeZSCjiumobRV71u8DaCqSPttvl72HBj8zvsiueHCQZ+Cu1RKG4jDrWvSew21GoJ4EE9ZSLBv0ywWMkYYqfqvmxT71vrKTrCp1LXt1k2Tl6/SF6KTJieD4SLIaGUk7FItlh7EGupg3mfItaHLgdDuOg9Ir4Yr+9tMmokMG+c22Ji03/D6V/nTlxo+8OI0AtaozB6oBzOkduE6yKUfSdsXXDJGcxKvs/8eO9ZLYcZHGhUBSRJIO6A61uUIfgd+bBDJUd/AKHrFxxg7r0qz1UgpYpmfi3BdpDYMW/zf+vbi1d3Hzh8mieqowsQVyNcDuQUYT+TpOJHMyD8l29N1cRyMR8jLD0LuHjOUX3gcLH40+tV/qPIlr1uMMMWoMIEDLjskI/8LqQEI6c806Z5XHqcZUv6RuE2lYivBsVroKjVfD9nGILhNhbXjtWH/kK2TAygj05o0vGaGWPbz4ps/qaIfK8Gg1
- 7/hM5oEG
- lVp+ADFt10bSS6af3dBpev9L0kw+VofnULc4ezUSSIo+YHcjnr1vDsQSnW5/eKORh6CdsI/runFs7InQxQCvBlyHPb4HekkYhIT1kCAXRP3X+em1kqBAg73HWrwfnfBlK5LSUT5tJLwtB94gY98YMjDdZOVcWouuqL1xRTEJl5/A6KD5vFAUL9X12ejHac+SyJIZu8FB024BzZs/RnsIV629X7Irb6GEtjH4BZsBPWb/+JsA0T9c0ZTjRmhC0xvUtMemIXP5Jkz5O3PV4Wff1H/7pCS+LLHTs+5mRzB/ww9/MVXd0zG7UHScBLHIkQnBirrPcoPpZZVqFW/Q=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1759420756-317511
+X-HE-Meta: U2FsdGVkX19xIFbK5o9T6Jl524bn8Ge0V+NI1Eewu86lDo/42e4oHEa/mjcC4VopIKS/L9tHNyeXSZXCrTMUpzkExQ4d1k+EoqVLsutOFRhfEtvgt6NHqwNx6hdwihUrHdc1LkLrhf3aunOrKW86r/t6DUrI+4cvmgR2KPwBSGxPgQBElQArBP3aERzIHnkYxx1vy59x0jRxliwYdMihOeacKSPc+zpidhzeYb70RpmFITpNaCpNByNRCtNZKl+hyrhed+878UiC0SDcJENMaxtCVrjEoPUDCgRw5F2xYZUQ1ANrLOUq/ZqSx3xT+ohQ3tldovvnq6v6e3xPowq1gadKsrp2f6lrpc3LhdyhngI5V4hHcJ1yHbGAmBEqorjJqXSkMXWv4Ng2wecNv1JY723VSBBEMow1XVj6gEC49YP3rODoSMweXpGRjdvSUBPGMj04YUmffzbGiL4fiO9UyKae2MOhebZ9iLStnpC8JTWzdl73As8uzGcLoFZCr95BpUuNrUOc/esSH/xlDk8E2r8qXGNUONZFZl7n1l/aELYWdFHDneRYejG3WhyFsz4+oBUDRfeGFizSpgAzJm73zTLJloR3WGPCfJllEeTZ8Zr6DWrpMuJPjloIda0x+MTTzWAyLs6m7/hV1nSBp5B0kNtKxTVOdpwdl0DfKa6vKAUj9rfFrE80zPTMpzck0EDD4KvIuaiIdXYwIB+MFJi34pAq7rWrz1///rIKrdXsABnH5KQorajHQ3Jdz/yUOxlBZ02ygWbhgFUmNZtnSYePExUJ2q63kDguWgjQ0HR6RvxhVlbQMBo+SDnaRQXPb3XaX4IJHSjeaDAlCpTcwYe3fQdTyq+jWduXKC0VNFoku57E17VLb5FFbIEk6NjWi9Y2oRKFIwnqB4v1uC6PVllsSjE0S29HmYfql9PCMW1x10o5gNjhSU2oJJlt2+qo3Fu3pUKqyqaqOsT5WH2gJ9l
+ zeQXhPa5
+ FKQuVIzJxuZfxv6QCSL1tYNuuZC2GtAsh1WnZ+h5Fgte+B0pQCTJlWIzEfgEupVQ+vPLnp13ryhhRU7kkMMXL2ZBeQ3ETIUUqw7JsJV3VYKnQdSPbqHtVyCeJh7yNGdYeJYDWWTdn32Fq/sRk4JkQJUfhqHxTRBq0PfADME4cNzq7Uzh1VkxZTAape4emoM8fkAoCnxBnWc0/Cms0dcW/rKoG+8yR68j7+g4GIu2Wwgq1oceaFPPK5FK/o8VWtUx0lvyXSginRtBoX/xloAyFNcmQ6VAwTR018pHhtvUzNUNGKknHTkdtTmDa/EcCvWCZWIyeMAOUOAKWo1pyGgbaIiRRJw30pK19fhtmBXqcEhcqr8QlHHIOGEasdaZpyF+CI0Le
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -201,55 +103,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/2/25 01:12, Byungchul Park wrote:
-> dept needs to notice every entrance from user to kernel mode to treat
-> every kernel context independently when tracking wait-event dependencies.
-> Roughly, system call and user oriented fault are the cases.
+On Tue, Sep 30, 2025 at 9:35=E2=80=AFPM Baoquan He <bhe@redhat.com> wrote:
+>
+> Now, swap_active_head is only used to find a present swap device when
+> trying to swapoff it. In fact, swap_info[] is a short array which is
+> 32 at maximum, and usually the unused one can be reused, so the
+> searching for target mostly only iterates the foremost several used
+> slots. And swapoff is a rarely used operation, efficiency is not so
+> important. Then it's unnecessary to get a plist to make it.
+>
+> Here go by iterating swap_info[] to find the swap device instead of
+> iterating swap_active_head.
+>
+> Signed-off-by: Baoquan He <bhe@redhat.com>
+> ---
+>  mm/swapfile.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 5d71c748a2fe..18b52cc20749 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -2641,6 +2641,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, speci=
+alfile)
+>         struct inode *inode;
+>         struct filename *pathname;
+>         int err, found =3D 0;
+> +       unsigned int type;
+>
+>         if (!capable(CAP_SYS_ADMIN))
+>                 return -EPERM;
+> @@ -2658,7 +2659,8 @@ SYSCALL_DEFINE1(swapoff, const char __user *, speci=
+alfile)
+>
+>         mapping =3D victim->f_mapping;
+>         spin_lock(&swap_lock);
+> -       plist_for_each_entry(p, &swap_active_head, list) {
+> +       for (type =3D 0; type < nr_swapfiles; type++) {
+> +               p =3D swap_info[type];
 
-"Roughly"?
+After some careful thinking of the swapoff behavior, I now consider
+this patch buggy.
 
->  #define __SYSCALL(nr, sym) extern long __x64_##sym(const struct pt_regs *);
->  #define __SYSCALL_NORETURN(nr, sym) extern long __noreturn __x64_##sym(const struct pt_regs *);
-> @@ -86,6 +87,12 @@ static __always_inline bool do_syscall_x32(struct pt_regs *regs, int nr)
->  /* Returns true to return using SYSRET, or false to use IRET */
->  __visible noinstr bool do_syscall_64(struct pt_regs *regs, int nr)
->  {
-> +	/*
-> +	 * This is a system call from user mode.  Make dept work with a
-> +	 * new kernel mode context.
-> +	 */
-> +	dept_update_cxt();
-> +
->  	add_random_kstack_offset();
->  	nr = syscall_enter_from_user_mode(regs, nr);
+On behavior change is that, previously the swapoff is dependent on the
+swap_active_list and only swapon device is on that list.
 
-Please take a look in syscall_enter_from_user_mode(). You'll see the
-quite nicely-named function: enter_from_user_mode(). That might be a
-nice place to put code that you want to run when the kernel is entered
-from user mode.
+Now you change to enumerate every device at swap off and depend on the
+p->flags & SWP_WRITEOK to filter out the device. Which will go through
+all 32 swap devices regardless.
 
-> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-> index 998bd807fc7b..017edb75f0a0 100644
-> --- a/arch/x86/mm/fault.c
-> +++ b/arch/x86/mm/fault.c
-> @@ -19,6 +19,7 @@
->  #include <linux/mm_types.h>
->  #include <linux/mm.h>			/* find_and_lock_vma() */
->  #include <linux/vmalloc.h>
-> +#include <linux/dept.h>
->  
->  #include <asm/cpufeature.h>		/* boot_cpu_has, ...		*/
->  #include <asm/traps.h>			/* dotraplinkage, ...		*/
-> @@ -1219,6 +1220,12 @@ void do_user_addr_fault(struct pt_regs *regs,
->  	tsk = current;
->  	mm = tsk->mm;
->  
-> +	/*
-> +	 * This fault comes from user mode.  Make dept work with a new
-> +	 * kernel mode context.
-> +	 */
-> +	dept_update_cxt();
-No, this fault does not come from user mode. That's why we call it "user
-addr" fault, not "user mode" fault. You end up here if, for instance,
-the kernel faults doing a copy_from_user().
+>                 if (p->flags & SWP_WRITEOK) {
+>                         if (p->swap_file->f_mapping =3D=3D mapping) {
+
+Considering the following race:
+
+CPU1:
+swapoff( "/dev/sda1")
+spin_lock(&swap_lock);
+
+for (type =3D 0; type < nr_swapfiles; type++) {
+     if (p->flags & SWP_WRITEOK) {
+         // found the device.
+}
+....
+spin_lock(&p->lock);
+del_from_avail_list(p, true);
+plist_del(&p->list, &swap_active_head);
+atomic_long_sub(p->pages, &nr_swap_pages);
+total_swap_pages -=3D p->pages;
+spin_unlock(&p->lock);
+spin_unlock(&swap_lock);
+
+// at this point the p->flags still have SWP_WRITEOK.
+// swap_lock and p->lock are both unlocked.
+
+Now the second CPU swapoff race begins
+
+                                                       CPU2:
+                                                       swapoff( "/dev/sda1"=
+)
+
+spin_lock(&swap_lock); // can take this lock
+
+                                                       for (type =3D 0;
+type < nr_swapfiles; type++) {
+                                                       if (p->flags &
+SWP_WRITEOK) {
+                                                              // also
+found the device. because p->flags are not clear to 0 yet.
+                                                       }
+                                                       ....
+
+spin_lock(&p->lock); // can also take this lock
+
+del_from_avail_list(p, true);
+
+plist_del(&p->list, &swap_active_head); <=3D=3D=3D blow up here
+                                                       // remove p not
+the in list.
+
+atomic_long_sub(p->pages, &nr_swap_pages);
+                                                       // double subtractin=
+g ..
+
+total_swap_pages -=3D p->pages;
+                                                       // double
+subtracting as well.
+                                                       spin_unlock(&p->lock=
+);
+                                                       spin_unlock(&swap_lo=
+ck);
+
+Please confirm or deny if that race is possible.
+If it is, consider it a NACK to this patch.
+
+Please consider that even trivial patches can have subtle behavior
+change and it has non zero cost to reviewers. It can introduce subtle
+bugs unintentionally as well. In this case, I feel that the
+gain(removing a list, total less than 1K) is too small,  not a very
+good return on investment.
+
+Chris
 
