@@ -4,119 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90B10CAC5B0
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 07:48:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7215ACAC5B0
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 07:52:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B78808E0008; Thu,  2 Oct 2025 03:48:40 -0400 (EDT)
+	id B57CD8E000B; Thu,  2 Oct 2025 03:52:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4EED8E0002; Thu,  2 Oct 2025 03:48:40 -0400 (EDT)
+	id B2FD18E0002; Thu,  2 Oct 2025 03:52:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A90ED8E0008; Thu,  2 Oct 2025 03:48:40 -0400 (EDT)
+	id A1DCF8E000B; Thu,  2 Oct 2025 03:52:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 968268E0002
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 03:48:40 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 06B9713ABEE
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 07:48:40 +0000 (UTC)
-X-FDA: 83952397200.15.D4D3EA3
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 252FA4000A
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 07:48:37 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="VD7/6vLQ";
-	spf=pass (imf04.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9126D8E0002
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 03:52:15 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 588DD86450
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 07:52:15 +0000 (UTC)
+X-FDA: 83952406230.05.1082942
+Received: from pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.245.243.92])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 39D0740004
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 07:52:13 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=lHyyTKHM;
+	spf=pass (imf17.hostedemail.com: domain of "prvs=363256128=acsjakub@amazon.de" designates 44.245.243.92 as permitted sender) smtp.mailfrom="prvs=363256128=acsjakub@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759391318;
+	s=arc-20220608; t=1759391533;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qaMCyd365HqjUCgEcANKW5Dc325UlPuInMIKYt7GQt0=;
-	b=w1aFaxT3y3ZHUhyUieixpyzhDGjpa1PDi5XKYOHtxZm796rm96bmZCGZn+S326qtLZw4Ch
-	uf3vmuQ50VNWf0BBm4wUKi4B0QA7nr3+uVl3zQA68d456Vyw/69jQyCCDLrOcNUxsoX69Z
-	CsPXzoNVnO0Br6n5B4CQnVMJ5i92eXo=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=2SGvgtfExrVMKD6QFwY+i2a9wnruIxOwASxfKxqf6S8=;
+	b=PL+QFV0OZgFTKWvzqTO6O3qr/g+QYyUbCKdM1/BnXgB7A9Lescv2pUwm6OaImYrrqd2EzB
+	8a5GqV4HJfxp1TQr17kTM/8m9dt8UI2f6gfBaWTU4hysbtlEVcd1HrJ072knpxD3YATeXY
+	kJNRaztCCy2KqWyULfgdZxKUUFO0MQU=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="VD7/6vLQ";
-	spf=pass (imf04.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759391318; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=lHyyTKHM;
+	spf=pass (imf17.hostedemail.com: domain of "prvs=363256128=acsjakub@amazon.de" designates 44.245.243.92 as permitted sender) smtp.mailfrom="prvs=363256128=acsjakub@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759391533; a=rsa-sha256;
 	cv=none;
-	b=zrgyhxgAN271nRSE2oVbuHi3SJDgJ6OLBuRyBvUuYKBtECJzRG4YquQnBrzf3Wk2YR6rhT
-	GswKIWRLPuRky2lyTxowWJExWW0uLSzMwL7GpsJNXohzPF8cz5Y/i+mWzEWGlmyrdSLBBJ
-	4N5cDL0Djikrpv8UyyLeVCTRnhR74nk=
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-62faa04afd9so5580a12.1
-        for <linux-mm@kvack.org>; Thu, 02 Oct 2025 00:48:37 -0700 (PDT)
+	b=lpXEenwTzTEfmVW5EWBt4EIIdg+wwWejBvdJKHSR4LgHvHdmeruDVdfAjAgJMRqavYyauM
+	ZKTvcZRSCR1BS32AEQDN5/xe6pN4jel5Gjc+I0VVV2aflzCfAvFuKxzVl9vJ47kk9N4oa4
+	fM1b0KNVsE0tPmclDbtnwNnZfiiQjZM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1759391317; x=1759996117; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qaMCyd365HqjUCgEcANKW5Dc325UlPuInMIKYt7GQt0=;
-        b=VD7/6vLQFHTL2zvW/CGIvZdb8gq8HTv6mSLMU6g4vkZ8W/Urqp6pGAcu1j9cE9yXIs
-         ABFn6a21ffS+uAhsZXo51O9w0jPtlEWzlLsLG66rxDRgXC8I0ROQ6XTr/e8CqpA3FVMu
-         vTgvLn2E8zlABaRzl6pw7frwvo7forlWJ//sa7JA4FtZk53wvoiDynu0w9MLjL6Usub+
-         gQDlCAFi6IE4FauPPP095G10PuAPfDTcFfLtmOBAZQmDVSl4LkR9dwBLMMJmv2O7AZIm
-         NCR2CmzN22YWWyngtcMF/onT/5bsU3WrrbmzTlNBEVOOwgYz88t773eheKd329dg9P5F
-         LoDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759391317; x=1759996117;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qaMCyd365HqjUCgEcANKW5Dc325UlPuInMIKYt7GQt0=;
-        b=vmyVF079FkVDcpXpX1ochniYjt8dX6FBE5BiHNaKmZu6+r8h/otD4MqH9alz/u1Alr
-         C7htxDf7DxhfQ3T3YhADZOYmimOYYrQ61njYJHmIpA/DyZYLGKCN1njoKKnn4DZjpTGg
-         3MZuMWSzkZpFp/tCG5iQsxJ9vkj98mhtgepltTLP1rYtWqMY6wSOT4hDvJHC834WeTWc
-         i6r/USwhow7X3kYLDQ78DDDZQuDyig5LetxVGV2HKR0NjHMOirHu/pED8rzfMhc3ZXi0
-         1vRhrsN4vO0DSfNjbHc+9ZHiU1+5Js3bi9RyowvIXhuVT2+3ybTVpW7EuJxeFRGjE792
-         /q8g==
-X-Forwarded-Encrypted: i=1; AJvYcCXtFlpiMtUFyzaTNXbqGv2KoIG7G85aGFQeOEyyposi1ighF/VRGtEwNgaSlzZ5oCs1iJbLTumynw==@kvack.org
-X-Gm-Message-State: AOJu0YwOP8rmeH9vLa8J5Vfg60zZpR5yLolfK4XptijImUSA5bQRVcQs
-	G0IU7XRvffvyYPbQcX0WdyrlLM9WWpsMzCSAJXDhub5Xu7rB5qxiUw316drrNI7UtSGYoIdTuTt
-	MpAGVLlD5NKJOhYONwzPD/iFqrCH4sTrdIG7pVUVv
-X-Gm-Gg: ASbGncvIognieq+AlaRW/QWmCCMqV4PMGFVJhjP/VjmXucgqqsz+0xQ2v71Q8mQ543Q
-	RtFcGZ93AIMc1AHThxUG5SVvsK2cQk/LKxZiyJz5DeG1rswyJQGdgf/Bks/9qfRHjQwqsgFRqQb
-	7FTOOcJr28pqxb8SdBlylWQEucTzvDTVAW5c6qb48LC9FxGbcecPyEuVjyg7UHeXZgl4NnWGuoo
-	OVZQ6CCPHyllNb9KSHL8J2JQKi/EF8DmDeahYhLi8tQxFcym4NBwhNryA0+QBhDQD+mN8w=
-X-Google-Smtp-Source: AGHT+IHbSf8AxhBNwSY6l2em3dvUQkF4NKMAFPf4S8akCNQ4PN/ThIsYfxHtUlYMoa4/Wrvttpf4ooWEajgIDfcMwe4=
-X-Received: by 2002:a50:baa3:0:b0:62f:9d69:9364 with SMTP id
- 4fb4d7f45d1cf-637e1653c4emr46248a12.5.1759391316176; Thu, 02 Oct 2025
- 00:48:36 -0700 (PDT)
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1759391533; x=1790927533;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=2SGvgtfExrVMKD6QFwY+i2a9wnruIxOwASxfKxqf6S8=;
+  b=lHyyTKHMyKILxgGICHNtJvrSY5gAj2ernYm8bTTDq8SnDjM2B3J0hNu3
+   a7w5P30+8Kplrb+eKAbuR655/9BOZKrnyhevbpT4SeZexOG9I0JQcVGRh
+   S2H1lGzegduP0N/e7UqyH38TOrUHzx7nF/niMhPoylRT1TkUKa2RzUq8i
+   ik+kT9HLQ6J31zZW4GxI9182donavLVQ/zrAJI9PHW51Greyjc/kDL/AV
+   Xx+WEYLbuQdEaOqcXhh0NlFcJ0FRoPJgWbHFlbJ3RYw/u+vbbZKAFRGcG
+   uUazTGJVBO8Hqgl0MnwZvwEszc0kRE2NfTraw7GkJ2M2ZMqmgt0j29Tds
+   A==;
+X-CSE-ConnectionGUID: hzfbE5ZsTnCi/kS8l7dAKg==
+X-CSE-MsgGUID: fDs/5FZ+T2Smfxg1JTMupw==
+X-IronPort-AV: E=Sophos;i="6.18,281,1751241600"; 
+   d="scan'208";a="4137127"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 07:52:10 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [10.0.38.20:24445]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.20.71:2525] with esmtp (Farcaster)
+ id 4a555600-ee08-4b41-952a-f943cb84732e; Thu, 2 Oct 2025 07:52:10 +0000 (UTC)
+X-Farcaster-Flow-ID: 4a555600-ee08-4b41-952a-f943cb84732e
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Thu, 2 Oct 2025 07:52:10 +0000
+Received: from dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com
+ (172.19.75.107) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Thu, 2 Oct 2025
+ 07:52:08 +0000
+From: Jakub Acs <acsjakub@amazon.de>
+To: <linux-fsdevel@vger.kernel.org>
+CC: <acsjakub@amazon.de>, Andrew Morton <akpm@linux-foundation.org>, "David
+ Hildenbrand" <david@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou
+	<chengming.zhou@linux.dev>, Peter Xu <peterx@redhat.com>, Axel Rasmussen
+	<axelrasmussen@google.com>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH v4] mm: redefine VM_* flag constants with BIT()
+Date: Thu, 2 Oct 2025 07:52:02 +0000
+Message-ID: <20251002075202.11306-1-acsjakub@amazon.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-References: <20250918055135.2881413-1-lokeshgidra@google.com>
- <20250918055135.2881413-2-lokeshgidra@google.com> <2c9df5ee-6109-4fa5-b895-ad8e47d34bee@redhat.com>
- <CA+EESO4h-_U=Xo3x0G_74t_qJQ54AZ4Qd2Ji437aMV8nDZ+tkw@mail.gmail.com>
- <5549ac3a-20cf-4959-ac53-0a89ed0eadd2@redhat.com> <CA+EESO5e0gupVfM9NgWqx34oMRk1jGzsNfM=X3idPKaXkRL2fg@mail.gmail.com>
- <7305f905-0f81-4268-a3b3-933ac00cdb6a@redhat.com> <CA+EESO5QruRtz8X=2aO8=6P_=uUQuun3f8Uom9gR9-zL-F7dWg@mail.gmail.com>
- <4909d194-58b7-4e94-b730-f916100238d3@redhat.com>
-In-Reply-To: <4909d194-58b7-4e94-b730-f916100238d3@redhat.com>
-From: Lokesh Gidra <lokeshgidra@google.com>
-Date: Thu, 2 Oct 2025 00:48:23 -0700
-X-Gm-Features: AS18NWAQRxKT8_i90yjxjvofkGTlb4fxvtIEYzb9hAaeCuQcGRtrWIaC1n-ptRk
-Message-ID: <CA+EESO44kZ5_tgsBvqZGHz=8DLbBumSSCFptW8EaY59Yws7oew@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mm: always call rmap_walk() on locked folios
-To: David Hildenbrand <david@redhat.com>
-Cc: Dan Williams <dan.j.williams@intel.com>, Alistair Popple <apopple@nvidia.com>, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, kaleshsingh@google.com, 
-	ngeoffray@google.com, jannh@google.com, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Harry Yoo <harry.yoo@oracle.com>, 
-	Peter Xu <peterx@redhat.com>, Suren Baghdasaryan <surenb@google.com>, Barry Song <baohua@kernel.org>, 
-	SeongJae Park <sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [172.19.75.107]
+X-ClientProxiedBy: EX19D040UWA002.ant.amazon.com (10.13.139.113) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 252FA4000A
-X-Stat-Signature: ggozzdfop9np1i3hntx1554cz44s7trz
-X-HE-Tag: 1759391317-443596
-X-HE-Meta: U2FsdGVkX1/z2Prjv6T553jizBsOhW1mH4Qu0X0VUHqOfPiTDOJxipg3buheHwAIKPlws2Vmvx2VHroFNF4DLCzlSE5j3BEY1OxEt/gDdaXunDAoWmdTBKHsrjUbjXGbHAKcAtphRk7L3E8EFj3NdddZDNzDoAXa4YqkGP4e9yhZvjhIl22kB7aoVWBA70Tkyj1WnKBtUyKsblK2npFCu+3Ww5EvM3W4DPHBYPL4dEcqgan7iRKs2oJhqCtEbsv43TQKl3ImZ8x1+n1oxZ7KKF8lYUKyofqeunhs8WV7CDsrzJUEv51czpjXxrLaLjAWC7BRwJKpAjFyf+pWL4In1bM5K9vjpCEn75dLcErTE/5fG4HxJanoUiw+N7QMZwsWX8hINCwiTm9ldZWdRA1MTYPdOp/WjZ7RQPeTuXkuDGRu4k9QmGtNF0f+Krgyx8H0+KdooIMiIzLBonp8cAPctsEz8TrPc92aEGSq07LD36HvG+ub8VKRYIV6kKdIeCJK1xCs6AkjPwSSdxWrBt6fjRaQPwtjRK+DIsAaSWL2w5d0qGxmkMPlh7fpGj0GC31imLJPdJoKYakWY0WJghGChmqWWvYP03CQ/jJGO0sZqBNY4Bre6FqkJZTj/r9bKV3Bg2DJ00m4NGfgFgf84neuBkBsTe2OU7USaDiGLWwymP1uT/mePtqVjYk36bpb9Y+gTMPcaxKLK46xvfMIwmbL6ZdAdzHawCDzKMhp43lzdV4ivIRukdpippF66vIuhgYz6l1bHGsR3e/OuXbuAqL4Ez59/BMiSr6mtaDX31EMs0boze3Ctng7EguALJps27oq09pDFUVzYZID/KAe5UtMXYFW3V5dB2L5XvGgyICbYYk+nnxikDYqCi7yF1n7fZN348x/nmxwDluQ233fyIBpLeKDVTS/YDIhw1KCXg9vIUZbraiWoc5O3tBXOJhUKJyadP9JXdx2h3jTS/bnqGk
- eduBIIEG
- vTPtNX0jVx16HpHaL8ankmUE+k/HetWywAsCuZm+vz/DI0ganbyBD/rcfJGGCceshXVJnpIL/B2M2IAlJPS04X/JG03UfgFE0ED0ToAURSrCiPvkaKxqMc5rGtMojxWHiF3L6fPUkwtb4Qdeo7yEHyn78FlWwpp/fRO1uaujjhwRZVV/euCaDCK9kYMW0Gz9mgY6DaaUlQCZ/zyvlYW5w8N3A5CbK5rUiZ1cKyM0FE2zvFw1fhVknxTcRBAm8n0Vjv9hzrR7LdUlXWsVzwnhgdKa4ZFyea1zrFbL4NR9amMNEC4g=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 39D0740004
+X-Stat-Signature: pu7mhtmauuz6tux3tyatt176rym3cw7i
+X-HE-Tag: 1759391533-309976
+X-HE-Meta: U2FsdGVkX18qO2+c8a+8Ov65Lh/aIh01gnh+Kjgbfj0X0ULT8yYsrk/bSKc/YodCr+l94lfMqUKB/3flHh7+LzlmNAXt0fPnH2TgnFILNjl1S425O25MR9g4vD/mGQZUsh5ibcSDUgh6CtUWT8EJJSJqZpgWHm1lLaEp33b2hl6tPqTxfs0hYFmhxW4Xj4XlUar3pX3N9izO9/DRthCoaIjZlHRakxaRmd6nekBWGnQSF5pjVsrCsSVWMr4yWOoVp8Jv7GqCJ+1Yx7hJ7TzrChpvxCnwQQCa7IBoJQ728BZwOvYSDQsK9oEd3KvMQ7c9eEKoD1+xh0do2KNfCrg4eM+9IhqdwphtitZsP2wFs+uIyYYDgCb9uoPhdbL7Qtdj6Som/HoeRtYUtCCzrbiLw0/bEX19E3EXl7H29ZI4IyncGagMIn+EGp9UV2iSRdo/4Ma8ldrN00BXg7vwsX5jssD+XVbeCWmHxuidph+o4XefRnZ4trgyiq+Q3dj9UH8hVMIgR1ER6Z3lKQ5httYRp0FFuHM34bGQ8FdwMDryskXthnOMh17ufCJj3u9yiSMHRR5L8Ip58QsMxLJyJazcYwcS1N+XWNt8NoH5X5cCENVoX2Pk15MzKGxcM4NHnOISKhed+MS6YixNOZqd6s0jBMr9C72UrOvdtWx8tbDZHGDmussyUaZBHKgUD20eo6MtP02MhCSLmXTs5t3onNNyKaj+Cml/in6tdUt1lZKVszyeCpJwkWlGuWS8IuIGIl80u/DNcLJ7lLRxrFumwBwGEyEVbPAi+gUa+HFvkf0iEhxW88sahP+e+8tGz/sUwTvUtSlrMpTEOU9hYtf864uX/8MbMQ32oPWMYvBJ/J9zTefLWX0Jfu/3snvIgNgNyHvTRCdVwXbJ/kVyNFQivZXYcJpGvBOlO9iExAhTACNTUmk/dbjjFwiVCs0AFDB/To0uMLVqRJq1nT1aI9UZuWh
+ LVYU2Mba
+ jBwiXpN6gULumxgtrmMj2EMXLOBz++FGxiVUQkhcL8mwgrnBkat1Dh5x8Jk/nIdLQhhQtzrPwURvFKFrF5zmqy1qaPZDzWc+gJKPSQS4qWI3/KF9HXNMNr1jgbl+B/cYLmrNo/RhFqBaXmRdGf6+sylUoulJzpgobKN5S82kdf7OtRGbmQ14ss8z0+8kCnFGaE3BC+LQvISg9jDCg6MUczMKKfZlS1wwFVI1rWUxMRfPsNjeW//J15xVGFAnpk58K/nhIHBA5Tds8NplXAIfhOVDJmcJhS2SUNBwPi0cXhEQy/H4K1YG0hWYOUIwW8Vj31WGMIBwHnLoGbQ/GmnQqf+eTBA6lheUz6BgHgNNraVxn0E5ERqoA8YzqM45epTDOZwlumeOAaKu0yN45N31VQxopbcILQVYEObQPop84tcHKMaBDQgDLr9xq8GH8E0l+LP+GzcffwQUwqWrxZkLf71woXfhlsIjIiQudaMyUdhMA7xnqPMecgeMLy8tYYrKM5a19R3S23lssAUcYKhPzWq2bW0G/JIBhh0c0nksVxRefaFArUhO9RdM7vijByfE29qy+kJCuD60PXAACbP7KDKfM5tN4k7gl9ehwse0Q5Q82ETNSb9BVZUNDBAnrfqN5u+HYlqsukoBJ/6c50OtYO7VVHW5zCMu7DZJdHFAcChQoDXqr06v5kKLIyaMBG0yET5eDxtwJxseaIC12n0vtvN5dC5MpwVJvAMBz2cNbrfBkeGuxvzdhN4QpyWlpZvdQFJpOPm0hs0rwlFWksZKNYlp5iTz+sVchHGnqa4/IL8WMh7jIYV66O699wA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,102 +113,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 2, 2025 at 12:22=E2=80=AFAM David Hildenbrand <david@redhat.com=
-> wrote:
->
-> On 02.10.25 08:46, Lokesh Gidra wrote:
-> > On Thu, Sep 25, 2025 at 4:07=E2=80=AFAM David Hildenbrand <david@redhat=
-.com> wrote:
-> >>
-> >> On 24.09.25 21:17, Lokesh Gidra wrote:
-> >>> On Wed, Sep 24, 2025 at 3:00=E2=80=AFAM David Hildenbrand <david@redh=
-at.com> wrote:
-> >>>>
-> >>>>>>
-> >>>>>> Is mf_generic_kill_procs()->collect_procs() problematic?
-> >>>>>>
-> >>>>>> The dax_lock_folio/dax_unlock_folio part confuses me: I think it o=
-nly
-> >>>>>> locks an entry in the page cache but not the actual folio ("Lock t=
-he DAX
-> >>>>>> entry corresponding to a folio")?
-> >>>>> Yeah. The name dax_lock_folio() gives an impression as if the folio=
- is
-> >>>>> locked but it isn't :)
-> >>>>
-> >>>> Sorry for the late reply, I saw you posted v2 in the meantime.
-> >>>>
-> >>>>>
-> >>>>> IIUC, a dax folio can't have an anon_vma (folio->mapping is actuall=
-y
-> >>>>> an address_space instead of anon_vma), right?
-> >>>>
-> >>>> We have these weird device-private dax folios that are anonymous and
-> >>>> should have the anon_vma set up.
-> >>>>
-> >>>>> So, I thought it wasn't
-> >>>>> required to actually lock the folio in this case. Please let me kno=
-w
-> >>>>> if you want me to still lock the folio around collect_procs(), or a=
-dd
-> >>>>> a comment?
-> >>>>
-> >>>> I think we can end up reaching memory_failure_dev_pagemap() with an
-> >>>> anonymous dax folio.
-> >>>>
-> >>>> Not sure if anything would prevent us into calling
-> >>>>
-> >>>> mf_generic_kill_procs()->collect_procs()->collect_procs_anon()->foli=
-o_lock_anon_vma_read()
-> >>>>
-> >>> I must be missing something but dax_lock_folio() dereferences
-> >>
-> >> Maybe the code is missing something :)
-> >>
-> >>> folio->mapping (to get to host) without checking for
-> >>> FOLIO_MAPPING_FLAGS presence. If it were an anon folio, wouldn't that
-> >>> be a problem? And then in collect_procs() we obviously check for
-> >>> folio_test_anon() on the same folio before calling
-> >>> collect_procs_anon().
-> >>
-> >> Right, if we reach dax_lock_folio() with an anon folio we are probably
-> >> already messing things up? Not sure if the "!dax_mapping(mapping)" wou=
-ld
-> >> save us, likely not, because it would be an anon_vma.
-> >>
-> >> Hopefully Dan+Alistair have a clue how this works and if it already
-> >> works as expected with device-private anon folios.
-> >>
-> > Hi David,
-> >
-> > Any suggestion how to make progress? Should I upload v3 with
-> > mf_generic_kill_procs()->collect_procs() in folio-lock critical
-> > section?
->
-> Staring at mf_generic_kill_procs() once again, we have this
->
-> switch (pgmap->type) {
-> case MEMORY_DEVICE_PRIVATE:
-> case MEMORY_DEVICE_COHERENT:
->         rc =3D -ENXIO;
->         goto unlock;
-> ...
-> }
->
-> IIRC, all anon device folios are MEMORY_DEVICE_PRIVATE, so we should
-> actually not succeed in this function and just abort.
->
-> We still call dax_lock_folio() earlier, which likely doesn't do the
-> right thing for anon device folios, but that's an existing issue.
->
-> So regarding your patch I think we're good!
->
-Awesome! Thanks so much for looking into this. Can you please
-ack/review the v2's 1st patch also :-)
+Make VM_* flag constant definitions consistent - unify all to use BIT()
+macro.
 
-> --
-> Cheers
->
-> David / dhildenb
->
+We have previously changed VM_MERGEABLE in a separate bugfix. This is a
+follow-up to make all the VM_* flag constant definitions consistent, as
+suggested by David in [1].
+
+[1]: https://lore.kernel.org/all/85f852f9-8577-4230-adc7-c52e7f479454@redhat.com/
+
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Xu Xin <xu.xin16@zte.com.cn>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+---
+v3 -> v4:
+ - fix VM_MAYOVERLAY and VM_PFNMAP definitions
+ - send outside the series
+
+This depends on the following patch:
+https://lore.kernel.org/all/20251001090353.57523-2-acsjakub@amazon.de/
+
+v3: https://lore.kernel.org/all/20251001090353.57523-3-acsjakub@amazon.de/
+
+ include/linux/mm.h | 66 +++++++++++++++++++++++-----------------------
+ 1 file changed, 33 insertions(+), 33 deletions(-)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index c6794d0e24eb..cb33f967d327 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -246,56 +246,56 @@ extern unsigned int kobjsize(const void *objp);
+  * vm_flags in vm_area_struct, see mm_types.h.
+  * When changing, update also include/trace/events/mmflags.h
+  */
+-#define VM_NONE		0x00000000
++#define VM_NONE		0
+ 
+-#define VM_READ		0x00000001	/* currently active flags */
+-#define VM_WRITE	0x00000002
+-#define VM_EXEC		0x00000004
+-#define VM_SHARED	0x00000008
++#define VM_READ		BIT(0)		/* currently active flags */
++#define VM_WRITE	BIT(1)
++#define VM_EXEC		BIT(2)
++#define VM_SHARED	BIT(3)
+ 
+ /* mprotect() hardcodes VM_MAYREAD >> 4 == VM_READ, and so for r/w/x bits. */
+-#define VM_MAYREAD	0x00000010	/* limits for mprotect() etc */
+-#define VM_MAYWRITE	0x00000020
+-#define VM_MAYEXEC	0x00000040
+-#define VM_MAYSHARE	0x00000080
++#define VM_MAYREAD	BIT(4)		/* limits for mprotect() etc */
++#define VM_MAYWRITE	BIT(5)
++#define VM_MAYEXEC	BIT(6)
++#define VM_MAYSHARE	BIT(7)
+ 
+-#define VM_GROWSDOWN	0x00000100	/* general info on the segment */
++#define VM_GROWSDOWN	BIT(8)		/* general info on the segment */
+ #ifdef CONFIG_MMU
+-#define VM_UFFD_MISSING	0x00000200	/* missing pages tracking */
++#define VM_UFFD_MISSING	BIT(9)		/* missing pages tracking */
+ #else /* CONFIG_MMU */
+-#define VM_MAYOVERLAY	0x00000200	/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
++#define VM_MAYOVERLAY	BIT(9)		/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
+ #define VM_UFFD_MISSING	0
+ #endif /* CONFIG_MMU */
+-#define VM_PFNMAP	0x00000400	/* Page-ranges managed without "struct page", just pure PFN */
+-#define VM_UFFD_WP	0x00001000	/* wrprotect pages tracking */
++#define VM_PFNMAP	BIT(10)		/* Page-ranges managed without "struct page", just pure PFN */
++#define VM_UFFD_WP	BIT(12)		/* wrprotect pages tracking */
+ 
+-#define VM_LOCKED	0x00002000
+-#define VM_IO           0x00004000	/* Memory mapped I/O or similar */
++#define VM_LOCKED	BIT(13)
++#define VM_IO           BIT(14)		/* Memory mapped I/O or similar */
+ 
+ 					/* Used by sys_madvise() */
+-#define VM_SEQ_READ	0x00008000	/* App will access data sequentially */
+-#define VM_RAND_READ	0x00010000	/* App will not benefit from clustered reads */
+-
+-#define VM_DONTCOPY	0x00020000      /* Do not copy this vma on fork */
+-#define VM_DONTEXPAND	0x00040000	/* Cannot expand with mremap() */
+-#define VM_LOCKONFAULT	0x00080000	/* Lock the pages covered when they are faulted in */
+-#define VM_ACCOUNT	0x00100000	/* Is a VM accounted object */
+-#define VM_NORESERVE	0x00200000	/* should the VM suppress accounting */
+-#define VM_HUGETLB	0x00400000	/* Huge TLB Page VM */
+-#define VM_SYNC		0x00800000	/* Synchronous page faults */
+-#define VM_ARCH_1	0x01000000	/* Architecture-specific flag */
+-#define VM_WIPEONFORK	0x02000000	/* Wipe VMA contents in child. */
+-#define VM_DONTDUMP	0x04000000	/* Do not include in the core dump */
++#define VM_SEQ_READ	BIT(15)		/* App will access data sequentially */
++#define VM_RAND_READ	BIT(16)		/* App will not benefit from clustered reads */
++
++#define VM_DONTCOPY	BIT(17)		/* Do not copy this vma on fork */
++#define VM_DONTEXPAND	BIT(18)		/* Cannot expand with mremap() */
++#define VM_LOCKONFAULT	BIT(19)		/* Lock the pages covered when they are faulted in */
++#define VM_ACCOUNT	BIT(20)		/* Is a VM accounted object */
++#define VM_NORESERVE	BIT(21)		/* should the VM suppress accounting */
++#define VM_HUGETLB	BIT(22)		/* Huge TLB Page VM */
++#define VM_SYNC		BIT(23)		/* Synchronous page faults */
++#define VM_ARCH_1	BIT(24)		/* Architecture-specific flag */
++#define VM_WIPEONFORK	BIT(25)		/* Wipe VMA contents in child. */
++#define VM_DONTDUMP	BIT(26)		/* Do not include in the core dump */
+ 
+ #ifdef CONFIG_MEM_SOFT_DIRTY
+-# define VM_SOFTDIRTY	0x08000000	/* Not soft dirty clean area */
++# define VM_SOFTDIRTY	BIT(27)		/* Not soft dirty clean area */
+ #else
+ # define VM_SOFTDIRTY	0
+ #endif
+ 
+-#define VM_MIXEDMAP	0x10000000	/* Can contain "struct page" and pure PFN pages */
+-#define VM_HUGEPAGE	0x20000000	/* MADV_HUGEPAGE marked this vma */
+-#define VM_NOHUGEPAGE	0x40000000	/* MADV_NOHUGEPAGE marked this vma */
++#define VM_MIXEDMAP	BIT(28)		/* Can contain "struct page" and pure PFN pages */
++#define VM_HUGEPAGE	BIT(29)		/* MADV_HUGEPAGE marked this vma */
++#define VM_NOHUGEPAGE	BIT(30)		/* MADV_NOHUGEPAGE marked this vma */
+ #define VM_MERGEABLE	BIT(31)		/* KSM may merge identical pages */
+ 
+ #ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS
+-- 
+2.47.3
+
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christian Schlaeger
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
+
 
