@@ -4,97 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB45CCAC5B8
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 11:03:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FABFCAC5B8
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 11:05:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 104A78E0003; Thu,  2 Oct 2025 07:03:31 -0400 (EDT)
+	id 771DD8E0007; Thu,  2 Oct 2025 07:05:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08E058E0002; Thu,  2 Oct 2025 07:03:30 -0400 (EDT)
+	id 722898E0002; Thu,  2 Oct 2025 07:05:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E718D8E0003; Thu,  2 Oct 2025 07:03:30 -0400 (EDT)
+	id 611058E0007; Thu,  2 Oct 2025 07:05:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D01948E0002
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 07:03:30 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 70BF6119FC3
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 11:03:30 +0000 (UTC)
-X-FDA: 83952888180.27.B4347D3
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf03.hostedemail.com (Postfix) with ESMTP id B539420002
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 11:03:27 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=none;
-	spf=pass (imf03.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 48A328E0002
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 07:05:25 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E94F9B9807
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 11:05:24 +0000 (UTC)
+X-FDA: 83952892968.18.CD2418A
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 24E51C000A
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 11:05:22 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=AJr+AJaH;
+	spf=pass (imf22.hostedemail.com: domain of 3cVzeaAgKCPAbSUceSfTYggYdW.Ugedafmp-eecnSUc.gjY@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3cVzeaAgKCPAbSUceSfTYggYdW.Ugedafmp-eecnSUc.gjY@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759403008;
+	s=arc-20220608; t=1759403123;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=26Fh3hYaPw0UF8Dh+O2fzjCpnAGjVxaVwC1862wzeNk=;
-	b=NH5VANy0NqZPtAUQDovCNJS/Y5ruUEza0OMPZ+iw3YUwBtzAl+pM13auIiZrh5rj+ujDjE
-	wzHWLJsSNk/u97rWeKMdkXx/Gbs0AdVbt8xj+w8rRZmpgppQcm1gI7cyH5O2EF+wa/5Ir6
-	J7j8UZgrk8wM3DkyCSCBA7p5z/fuwto=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=none;
-	spf=pass (imf03.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759403008; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IL2uchrrlVJI0To0OGIK6OnERKr5SS8vcf+vwilHx8o=;
+	b=i9f8cAy4O51PZhp0heXjc+l/1iuei67OW/yD35k4MRiAiqzT67MjICaBJXFv8Y9sTFgkL2
+	45vsVqVFE59fgt+FP20pnnizQ2/U5kz+qcN1k/+kzaEyuMCTTPeLtQMAFVffMuOTA9gzwd
+	ZtRg5246tuq8lqMKdZb2g1dOZzIasLk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759403123; a=rsa-sha256;
 	cv=none;
-	b=cpPmQOhn/ZkHsgO24fOMBewdyVoKBlTcXRUaff+fk4EPN1ptYlRTPHc2Uk9bNL8K0TXyQ1
-	uF2ruQzjSW+OHtwatncj4vQBRrmZx9gX/TsySeb6srR2yaJPV/uPaHzVDQ9prvyTyDkSex
-	otZVeeV/VA49PIBn0oB8/sK1MnADiIc=
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ccpkX0rtWz6L4tv;
-	Thu,  2 Oct 2025 19:01:08 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id D51CE140278;
-	Thu,  2 Oct 2025 19:03:23 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 2 Oct
- 2025 12:03:22 +0100
-Date: Thu, 2 Oct 2025 12:03:20 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Shivank Garg <shivankg@amd.com>
-CC: <akpm@linux-foundation.org>, <david@redhat.com>, <ziy@nvidia.com>,
-	<willy@infradead.org>, <matthew.brost@intel.com>, <joshua.hahnjy@gmail.com>,
-	<rakie.kim@sk.com>, <byungchul@sk.com>, <gourry@gourry.net>,
-	<ying.huang@linux.alibaba.com>, <apopple@nvidia.com>,
-	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-	<vkoul@kernel.org>, <lucas.demarchi@intel.com>, <rdunlap@infradead.org>,
-	<jgg@ziepe.ca>, <kuba@kernel.org>, <justonli@chromium.org>,
-	<ivecera@redhat.com>, <dave.jiang@intel.com>, <dan.j.williams@intel.com>,
-	<rientjes@google.com>, <Raghavendra.KodsaraThimmappa@amd.com>,
-	<bharata@amd.com>, <alirad.malek@zptcorp.com>, <yiannis@zptcorp.com>,
-	<weixugc@google.com>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
-Subject: Re: [RFC V3 4/9] mm/migrate: add migrate_folios_batch_move to 
- batch the folio move operations
-Message-ID: <20251002120320.00003ab7@huawei.com>
-In-Reply-To: <20250923174752.35701-5-shivankg@amd.com>
-References: <20250923174752.35701-1-shivankg@amd.com>
-	<20250923174752.35701-5-shivankg@amd.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.15]
-X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+	b=Ldd22WSIYxpuvvLo8J8jFtdILk8i6pXVpCa7E7HC1kny4aC+Vr+F5dOUQWPsBcTRumvBSp
+	tUjG+DmedZB+EZd3i6AjHJjKIHbNMhQzqcFMq9iRmI2sgdznnAFsob55euE/0lwKJzfZTU
+	JrsqeNq0AWURIYTd7x+1NuJ8Oqbvo/M=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=AJr+AJaH;
+	spf=pass (imf22.hostedemail.com: domain of 3cVzeaAgKCPAbSUceSfTYggYdW.Ugedafmp-eecnSUc.gjY@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3cVzeaAgKCPAbSUceSfTYggYdW.Ugedafmp-eecnSUc.gjY@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-46e47d14dceso3182495e9.2
+        for <linux-mm@kvack.org>; Thu, 02 Oct 2025 04:05:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1759403121; x=1760007921; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IL2uchrrlVJI0To0OGIK6OnERKr5SS8vcf+vwilHx8o=;
+        b=AJr+AJaHiVPbDPsqB4kGqiK06TtsoSWXz1vuPbcJalCsH78KpbxB02VcPBLCE7YcKF
+         IQrkU0YEpWpkL1MySQj1vDMIDuwOrDy9Licu9YvcB1bZzShjegBVBouXOujxSUeh/D3d
+         ak9M42pl41H1YVK6FWqll+6IdxT7oOFTdE+3GIZLpGQdk8AzQAIw16zmoPA5lE0MU6PH
+         zko47UFWeCtZr2OSvfQSeXVcTGAlrwqUXAfN2SXhjxWEAHtSpZFxekmYkSOLqamUCxCh
+         bYG4EolaTynfvxDmq3xTFVQ+66i3TgIvTZm2QeZCLxXv6kjN5g5CCEcMLXT+i/QqfWcX
+         6l8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759403121; x=1760007921;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IL2uchrrlVJI0To0OGIK6OnERKr5SS8vcf+vwilHx8o=;
+        b=Vi65TZD50C0drC+PyL2fUAY0kww4pdwA2aGb98PFdIpz37wFy8FLD2ytXpqhDxLMsl
+         0EBsmme6D8FjyqSCmBfYKxfeQ413zKXwzCxG5ejB1eFu7GwkwqGfZB9cQ8iAYcfCKgr+
+         8HbdjH4Sr4BL9zuAJuHr/Q7JWCyT5wvXzA8mFYfFY4ojlX/2ahYAdwNaylhHP5kqjL+8
+         xOO+0evPkzyPP36vyw4GSlOIbawMZh9M7RJ5i3hJSKGYHiEVuFbTG5cWGrbUzojt1Mrx
+         XVWIJ0WhSqvPv3RQnBUOTf8PhKEfyi50ZsYbneS3GKP3Jr7fgM8fIRh6axKLmAr+bYea
+         o7+w==
+X-Forwarded-Encrypted: i=1; AJvYcCXavjLJng82mLuKR+hRUyKd7Fkaux2uLStKLOkMcjjXMT1qbC39x54OODB9neTIXz7CxmNTWMHpDQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz7ApWhcCH/KYe/weqdFswKCJGn6sJRaeqYj0nRT7Px+OFMW9G9
+	6NVPQ5NXSUzjPWSGZVkEJOoQXQib8TDaMSMuyQvDQNMI6HTbN+3/5LjdNicLdB/TySb/L11bDOw
+	E51CQWdrxXVcysQ==
+X-Google-Smtp-Source: AGHT+IGw6rncY8Zxg7i+a3sTyj/cTgYVjAJmgkG70hNLSfNqxn0MIvjZU+YGtE0bN/lyYtFOJUyzYiuJGMMOBg==
+X-Received: from wmhf25.prod.google.com ([2002:a7b:cc19:0:b0:46d:ab31:6ece])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1c95:b0:46e:6af4:ed83 with SMTP id 5b1f17b1804b1-46e6af4efffmr14013925e9.23.1759403121371;
+ Thu, 02 Oct 2025 04:05:21 -0700 (PDT)
+Date: Thu, 02 Oct 2025 11:05:20 +0000
+In-Reply-To: <7dd29a1e-cea8-4889-bff1-462ad00e25fb@intel.com>
+Mime-Version: 1.0
+References: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
+ <726d6a45-d732-4c23-a7b7-766d6a62122e@intel.com> <eajnyirurulezkgpqaonfqmh5ydi7ujzztgok2ab3fsumcmtwi@34ios2bpwxk5>
+ <7dd29a1e-cea8-4889-bff1-462ad00e25fb@intel.com>
+X-Mailer: aerc 0.21.0
+Message-ID: <DD7SCRK2OJI9.1EJ9GSEH9FHW2@google.com>
+Subject: Re: [PATCH 00/21] mm: ASI direct map management
+From: Brendan Jackman <jackmanb@google.com>
+To: Dave Hansen <dave.hansen@intel.com>, Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: Brendan Jackman <jackmanb@google.com>, Andy Lutomirski <luto@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, <peterz@infradead.org>, <bp@alien8.de>, 
+	<dave.hansen@linux.intel.com>, <mingo@redhat.com>, <tglx@linutronix.de>, 
+	<akpm@linux-foundation.org>, <david@redhat.com>, <derkling@google.com>, 
+	<junaids@google.com>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
+	<reijiw@google.com>, <rientjes@google.com>, <rppt@kernel.org>, 
+	<vbabka@suse.cz>, <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 24E51C000A
+X-Stat-Signature: 5ghfar7wtjdg3pu51tpgnahfwyb5gwh7
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B539420002
-X-Stat-Signature: f3be85879jja6kho4nz5sj586o3eqw9f
-X-HE-Tag: 1759403007-74778
-X-HE-Meta: U2FsdGVkX19wa4mXh8xYhAcaHcowxIx2KHKMkBhD0+/Gl7ohiWwSvxUizLJ8C+2HGnQV8fEgPeWK3mnyFRSy2vD3+eLD3cUIT2CLXkERGHV/wukWKDmCd4coYuzQQhhrIteGu5p+aJB0ekQIAtNskLPSAyCx/35fApD/eH69lE9b5ESbkIdiKYISqjfl8UZ5JrvAGn0kXkn09uRWa4FdatRSexXG5QDtYyiSAd1nUVhUy8VyssIMAyy4jWcfCLhz4vhLeS6FAo+ubmiY9NHeRN2gfFeFzP4Xw1XTPcJKSlIj/sWkI4biCGeUJYuJQhDeQ7RUapcGofpGVlExiVnGTNC2WVpgLORIbnn7KuIIf26sCSBiPZHBmfJmbkS7paKK0BzUy7si3s9T3uqTHLSqnTzY3Gg0GkkGgHe+eUJB6Odd5SjIBaSMAjf8JxwAVdh1qtwVfDGKGv7rGSd1WCPK5hGuK1KqYgePyTGMcuoa8LlakV/cC7Tvd8KiX/qosZiO6jHL3JybZ5WfS8INhJcvevnASTgBW3fpFDj5Jia6uJN3KhftBI5baUnRIsImMREW0DAIPWHlPxIbzfVYqUxgN4zVc35D9WFX2kboVqMV9C4u+A1n6KKn1G3qMgrO2mdWXJ6Tn+PkGVl9anz7acNoOQx+2eaLWdsqylKk1V7WychQdVC1/wnALf2jE6kdnIHZjuDXp+82/8XapeD3jRZjrHRu3pedR4/CQx8LOymyndC8zs/7HpajcZAfstZV7dcQfFopRiZmZJvmEN2PIpoWLAmQZeTI10G4GC4P0rfFHel4AC2pE6rtRYT6gd9KpveBXvGf17wx+7TSEOld/lc+TCilX8WF2EJoTQ0P1It1w9IZmSYdS0XysnncBXSOoQSq3as83kBC7qmS2/4tRUOq3OU5digjSEa54Mq0nrofH1zSHoWY3IlykT8ChB0iyQTgpuMEKaIZ0UvlMrtcbpt
- szzsydWg
- biTn7cKj1gbz4DUqg5VjTEbFR7oeQT9v5FC4BLrtIOX0GWKasaQJgNMb1R/EkyS0e00jN1G2mYpqZLoVF/5KFix2BOAzmt7VhqFq7OQ84gapUOv55TBL6lPJkRL5MI+5a5gJJslW8hEKm8lEMc2VHwycDjC/FUI/PoWSCpyNXPaZDcB9qlaVbA9lKEblstfnicy6F4EHt54AqbXGbX0uCNnAS7sUC1UUnfLhvnXgYhRpyS+DLtqtsND7nw+dR8/W5MY8Zf7K8EobFeQeYg8lLG/jsI/2UFGQDYdFKWGWeFJrhIdjM8edB1jl6VJUaZpLfOLwI+oE0y9HEF6QBt/YaLRHDUPGegDyyX6DnOCD4a1Z+Yqb0lBUsZ/bCxqhaiSq/mRte
+X-HE-Tag: 1759403122-832787
+X-HE-Meta: U2FsdGVkX182Okp1AG8EwsSb+Z5+pA1t0b3TiSCBsgO8Sd85YIScRUpmeMScHo2wYQ4fzz/gBbUWZYZUP2QazZXb90VS+/4sbPZSe467qlU/1F/U7/uc2KT1KXbg2tV2bfE8CbSp+qBfj32RHQ3HsLz1BVCTXlHGdh+mlxXf1NKJGWOQhIn/FaZNPQttiGGjR21sCRdTt1Mk5L8QQexaN/h/0BhwJwvfa92bEsUCQ7t6dIaEgYNvvOUXO5UdmUBmX5lXS/5cmPY3OQ9l4Uz5OnspWMeR7MX62/KADCEl+pHSiciemkeuC+EL/XwAMTVi7WLXcTZ1HekFdMyaHJRQGPpk3jubmA+4US4vyfsG+T5zZirVea+x6L/dKOTf5inrz1DW/rna1B/PdtuyKjcRcbgBYCxqDkcI97Wha6Fr4Mc0Xc3h8g+FLd/JW2hcY3XrjcPhlX/XHA7iPJzWa9z41C2MZkM8DKduCNqOkTCpIghXP2Bbl8l5Ql/b40TysRhmaEJe2yZ1Tjpa2ypyzwJ62FWhlnOpeVUDMawq0qrspp0L9/XoI6Pi+/uTqJjXaLXKR4IzX8GNeTFIdiMefI1PKHkpDDV32ccvvG+KTn5OgLnuyrTN4IeFgESuYMazphIHB6xlJZIglS5FgUBLeg1V8jJD+zfxkzt2bGOOKwqR6JX14OdeEFcgxNi3shlOpBcL7V/PGbQkXuoZ0E3ytbp9P4/CEzQofoI1d3NL3OPMhZnX5P6MKLYb7qxRVBoS0OUxf6xpVMGzpuA8Z7+XeH6ZPT7+WMX9Jnom0UNmtJKnLdUsONIkNVTlivu39vUa/6D6A9iH3p6lcXDnE6ShSrlCNgWy7DtzUigU1J8xlOoQ4U5KZssD0uA3RNUPKZmf8bkxgsxRWvCKuMGaN6G3xUzsDJYYIMzAq0Nm4jU2WrXmYh7ZZtDxwz4JJlVo/UhXLhqHxJOTnuKOfiGhsCQVFIp
+ p51Eq45V
+ tqgiPj2QudA9ioTXASUXNi0u8mExFjyDor1gtIzJNbckRC9SV9wtXFKXIVVpaiQoeDvxPaMAF8/Jc+1J8raWcYD8G3yM5vU7z/5uWyptPEIvyXBYDAehxc16i28aPzJQTMTJkWgFIFU6/EUQcNc7oIuUI5O2hwD9yTsZInJbyTbffGvmvuNb/QoPpQib+eJKqtb8DuosaoVVe1dKcWrsV8X06CArmtdN3Wh5N3S2yfypmZCB+QFr6sWYhhOKRbPRYx3YwIiHz5lYtReLHFK3g5WgNYg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,152 +120,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 23 Sep 2025 17:47:39 +0000
-Shivank Garg <shivankg@amd.com> wrote:
+On Wed Oct 1, 2025 at 8:30 PM UTC, Dave Hansen wrote:
+> On 10/1/25 13:22, Yosry Ahmed wrote:
+>> On Wed, Oct 01, 2025 at 12:54:42PM -0700, Dave Hansen wrote:
+>>> On 9/24/25 07:59, Brendan Jackman wrote:
+>>>> As per [0] I think ASI is ready to start merging. This is the first
+>>>> step. The scope of this series is: everything needed to set up the
+>>>> direct map in the restricted address spaces.
+>>> Brendan!
+>>>
+>>> Generally, we ask that patches get review tags before we consider them
+>>> for being merged. Is there a reason this series doesn't need reviews
+>>> before it gets merged?
+>> I think Brendan just meant that this is not an RFC aimed at prompting
+>> discussion anymore, these are fully functional patches aimed at being
+>> merged after they are reviewed and iterated on accordingly.
+>
+> Just setting expectations ... I think Brendan has probably rewritten
+> this two or three times. I suggest he's about halfway done; only two or
+> three rewrites left. ;)
 
-> This is a preparatory patch that enables batch copying for folios
-> undergoing migration. By enabling batch copying the folio content, we can
-> efficiently utilize the capabilities of DMA hardware or multi-threaded
-> folio copy. It uses MIGRATE_NO_COPY to skip folio copy during metadata
-> copy process and performed the copies in a batch later.
-> 
-> Currently, the folio move operation is performed individually for each
-> folio in sequential manner:
-> for_each_folio() {
->         Copy folio metadata like flags and mappings
->         Copy the folio content from src to dst
->         Update page tables with dst folio
-> }
-> 
-> With this patch, we transition to a batch processing approach as shown
-> below:
-> for_each_folio() {
->         Copy folio metadata like flags and mappings
-> }
-> Batch copy all src folios to dst
-> for_each_folio() {
->         Update page tables with dst folios
-> }
-> 
-> dst->private is used to store page states and possible anon_vma value,
-> thus needs to be cleared during metadata copy process. To avoid additional
-> memory allocation to store the data during batch copy process, src->private
-> is used to store the data after metadata copy process, since src is no
-> longer used.
-> 
-> Co-developed-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> ---
->  mm/migrate.c | 197 +++++++++++++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 193 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 3fe78ecb146a..ce94e73a930d 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -843,12 +843,15 @@ static int __migrate_folio(struct address_space *mapping, struct folio *dst,
->  			   enum migrate_mode mode)
->  {
->  	int rc, expected_count = folio_expected_ref_count(src) + 1;
-> +	unsigned long dst_private = (unsigned long)dst->private;
-Why not just stash it in a void * and void the casts?
+Yeah, I'd love to say "... and we have become exceedingly efficient at
+it" [0], but no, debugging my idiotic freelist and pagetable corruptions
+was just as hard this time as the first and second times...
 
->  
->  	/* Check whether src does not have extra refs before we do more work */
->  	if (folio_ref_count(src) != expected_count)
->  		return -EAGAIN;
->  
-> -	if (mode != MIGRATE_NO_COPY) {
-> +	if (mode == MIGRATE_NO_COPY) {
-> +		dst->private = NULL;
-> +	} else {
->  		rc = folio_mc_copy(dst, src);
->  		if (unlikely(rc))
->  			return rc;
-> @@ -862,6 +865,10 @@ static int __migrate_folio(struct address_space *mapping, struct folio *dst,
->  		folio_attach_private(dst, folio_detach_private(src));
->  
->  	folio_migrate_flags(dst, src);
-> +
-> +	if (mode == MIGRATE_NO_COPY)
+[0] https://www.youtube.com/watch?v=r51EomcIqA0
 
-I'd add a comment on what you mention in the commit message about this being a safe place
-to stash this.
+> But, seriously, this _is_ a big deal. It's not going to be something
+> that gets a few tags slapped on it and gets merged. At least that's not
+> how I expect it to go.
 
-> +		src->private = (void *)dst_private;
-> +
->  	return MIGRATEPAGE_SUCCESS;
->  }
->  
-> @@ -1149,7 +1156,7 @@ static void __migrate_folio_record(struct folio *dst,
->  	dst->private = (void *)anon_vma + old_page_state;
->  }
->  
-> -static void __migrate_folio_extract(struct folio *dst,
-> +static void __migrate_folio_read(struct folio *dst,
->  				   int *old_page_state,
->  				   struct anon_vma **anon_vmap)
->  {
-> @@ -1157,6 +1164,12 @@ static void __migrate_folio_extract(struct folio *dst,
->  
->  	*anon_vmap = (struct anon_vma *)(private & ~PAGE_OLD_STATES);
->  	*old_page_state = private & PAGE_OLD_STATES;
-> +}
+Yeah, sorry if this was poorly worded, I'm DEFINITELY not asking anyone
+to merge this without the requisite acks - "ready for merge" just means
+"please review this as real grown-up code, I no longer consider this a
+PoC". And I'm not expecting this to get merged in v2 either :)
 
-Probably a blank line here.
+Maybe worth noting here: there are two broad parties of important
+reviewers - mm folks and x86 folks. I think we're at risk of a
+chicken-and-egg problem where party A is thinking "no point in reviewing
+this too carefully, it's not yet clear that party B is ever gonna accept
+ASI even in theory". Meanwhile party B says "yeah ASI seems desirable,
+but I'll keep my nose out until party A has ironed out the details on
+their side".
 
-> +static void __migrate_folio_extract(struct folio *dst,
-> +				   int *old_page_state,
-> +				   struct anon_vma **anon_vmap)
-> +{
-> +	__migrate_folio_read(dst, old_page_state, anon_vmap);
->  	dst->private = NULL;
->  }
->  
-> @@ -1776,6 +1789,176 @@ static void migrate_folios_move(struct list_head *src_folios,
->  	}
->  }
->  
-> +static void migrate_folios_batch_move(struct list_head *src_folios,
-> +		struct list_head *dst_folios,
-> +		free_folio_t put_new_folio, unsigned long private,
-> +		enum migrate_mode mode, int reason,
-> +		struct list_head *ret_folios,
-> +		struct migrate_pages_stats *stats,
-> +		int *retry, int *thp_retry, int *nr_failed,
-> +		int *nr_retry_pages)
-> +{
-> +	struct folio *folio, *folio2, *dst, *dst2;
-> +	int rc, nr_pages = 0, nr_batched_folios = 0;
-> +	int old_page_state = 0;
-> +	struct anon_vma *anon_vma = NULL;
-> +	int is_thp = 0;
-
-Always set in each loop before use. So no need to init here that I can see.
-
-> +	LIST_HEAD(err_src);
-> +	LIST_HEAD(err_dst);
-
-> +	/* Batch copy the folios */
-> +	rc = folios_mc_copy(dst_folios, src_folios, nr_batched_folios);
-> +
-> +	/* TODO:  Is there a better way of handling the poison
-> +	 * recover for batch copy, instead of falling back to serial copy?
-
-Is there a reason we might expect this to be common enough to care about
-not using the serial path?
-
-> +	 */
-> +	/* fallback to serial page copy if needed */
-> +	if (rc) {
-> +		dst = list_first_entry(dst_folios, struct folio, lru);
-> +		dst2 = list_next_entry(dst, lru);
-> +		list_for_each_entry_safe(folio, folio2, src_folios, lru) {
-> +			is_thp = folio_test_large(folio) &&
-> +				 folio_test_pmd_mappable(folio);
-> +			nr_pages = folio_nr_pages(folio);
-> +			rc = folio_mc_copy(dst, folio);
-> +
-
+So, if you can do anything to help develop a consensus on whether we
+actually want this thing, that would help a lot. Maybe the best way to
+do that is just to dig into the details anyway, I'm not sure.
 
