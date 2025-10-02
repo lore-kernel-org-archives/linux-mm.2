@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15D1FCCA472
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:14:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49405CAC5B8
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:14:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB2DD8E002F; Thu,  2 Oct 2025 04:14:21 -0400 (EDT)
+	id 000668E002D; Thu,  2 Oct 2025 04:14:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE16D8E0032; Thu,  2 Oct 2025 04:14:21 -0400 (EDT)
+	id EA3588E0031; Thu,  2 Oct 2025 04:14:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C2C48E0031; Thu,  2 Oct 2025 04:14:21 -0400 (EDT)
+	id 947908E002D; Thu,  2 Oct 2025 04:14:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 549528E002F
+	by kanga.kvack.org (Postfix) with ESMTP id 704608E002D
 	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:14:21 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1C1251A0356
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 32261C02B2
 	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:21 +0000 (UTC)
-X-FDA: 83952461922.26.91E184E
+X-FDA: 83952461922.21.629A87A
 Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 0BE954000B
+	by imf07.hostedemail.com (Postfix) with ESMTP id 99E9A40006
 	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:18 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	spf=pass (imf04.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+Authentication-Results: imf07.hostedemail.com;
+	spf=pass (imf07.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1759392859;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=+4T9G9dNgkLm8yg5EH48kAGoiXiSXUHKELiGdsiR/+g=;
-	b=WWFvexecFKQOLhqZ1HM0dMO0Tbx28BWwB7vRlzD3bEW1y6EwphKav6pqbGFd41Ixe4onyu
-	YkWVz2aO8Ysg+i97ZygoHN7459ESkIiplHu5SwAb8KT48XoH0KOjp4Bxtglu3VmzfZoo1g
-	daX91QPsT0g6aBLotFbpPiop6ltNcMU=
+	bh=r8zak7aipRIB37uUTpP1Cxu2EcuPdiK57odtSWP76d0=;
+	b=tfBp38G4MpnXBvisITqxz05hR8yolPUK14bxK/lGdE6OXxeLv3GYbDEQ1I6/b5jugm35zG
+	dVWJA6mf9Ro1JVz0km8CIPxsufULuBscm4k1M/Iq93QUuSZxCHGVkzMaQv/BdoGU71U7LF
+	QBUbsmuK11WuORYpMe72gCGRoOMVBhU=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759392859; a=rsa-sha256;
 	cv=none;
-	b=F6J3+WG5uniNO/lYEhKFCIOxp7HD3+3Xl25Kx842HBCUA8BR26o1IuxCSYEPBi8pKHbGLQ
-	2eItxFuNCpG+1ySNFo8Jre/1FEg5P3MRoqgf8EJjqkZGrGqtYgfimbwPdLkKi/i8aJEkIg
-	KUHcR5IWIBdI23W2IBH/vuzoq/G3l2E=
+	b=TKuS8p4J3D3lVxI+1GH0PNLloy3F48PV3coubalPskWzYpIckQck9UYf07oFfsXoRpzxMs
+	srktWp2Jd25aRQJXoTGv2ncKWtOr0lQZ2E5jAwYprioMZD2j3Yomwvw9iaFSY/mUz1nDp5
+	61mhrgRWG2qSVItQ7FVjDBUR/OrNP5I=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
+	imf07.hostedemail.com;
 	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
+	spf=pass (imf07.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
 	dmarc=none
-X-AuditID: a67dfc5b-c2dff70000001609-47-68de3412f98a
+X-AuditID: a67dfc5b-c2dff70000001609-a1-68de341392f4
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: kernel_team@skhynix.com,
@@ -196,54 +196,52 @@ Cc: kernel_team@skhynix.com,
 	rcu@vger.kernel.org,
 	linux-nfs@vger.kernel.org,
 	linux-rt-devel@lists.linux.dev
-Subject: [PATCH v17 31/47] dept: assign dept map to mmu notifier invalidation synchronization
-Date: Thu,  2 Oct 2025 17:12:31 +0900
-Message-Id: <20251002081247.51255-32-byungchul@sk.com>
+Subject: [PATCH v17 34/47] dept: make dept stop from working on debug_locks_off()
+Date: Thu,  2 Oct 2025 17:12:34 +0900
+Message-Id: <20251002081247.51255-35-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20251002081247.51255-1-byungchul@sk.com>
 References: <20251002081247.51255-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTZxTH9zz3paXa7abidocumibEBYWJQXcSl7kPS7x+WLKNxMWhkWbc
-	2IZSXKFoTZbVABs63LCzEGk3QCZp6FUIBZzMIi9axAIWUdohrZQ4OoOsS9OWKRB2qfHLk9/z
-	P//zkpMjJRR/UmlSja6U1+tUWiUtI2UL65syN+QE1TtvDmVCPFZFgq1NoKGq4yIF3qsOBItL
-	VgJWzG4JxJ4/ksCqy42gdtxMgNB5GsP8YBSBJfSEhrqnp0mItFQjqJ+zir5AGIMv8QzBSm0h
-	LI3eI6DO4kXQFAoQ0OkOIvirpouAB/EIDcOWH2hYGLdh+KedhvLmNhquz/RIYLrWjMHR8Ql4
-	ai5hsQEN1rpyLD5/Y7Bc+QNDiykdrKMTFMza6yWwHMoGtyMsgcBPFhKGg5MUzM+ZabhmmhGH
-	fxDCIFTPEVDVEyfBNbUdmr77jYQbrmESqlZiCCZ6bDRUt3dREBRWKTBZF8UN9HkouO/wktAW
-	9mPwuO+QcNk3jiE046cg8eMm8J4/R31UwLU6uzEn/CogbumFGXGxy+UEV1kjfgefRQiuwnmC
-	exF/SHOuRCPJ3b3EctfrAxKuscPAVdxaoDinPYNrvvEUc03ROPVp1peyDwp4raaM17/3Yb5M
-	Pdbah4773j85NN1Am1Aw8yxKkbJMDjvVX0+94oD9XpJpZhvr9z8n1jiV2co6z80ldYLxbGYn
-	x3es8QbmCPuw90xSJ5l0tn/Em/TLmT3stcEGycuaW1hHe19STxH1iZCHXGMFs5utjFTgs0gm
-	eqwpbExoxy8T3mb77X6yBskb0WutSKHRlRWpNNqcLLVRpzmZ9VVxUQcSD67lm+W831HUmzuA
-	GClSrpd70wNqBaUqKzEWDSBWSihT5fn2abVCXqAynuL1xUf1Bi1fMoA2SUnlW/JdiRMFCuaY
-	qpQv5PnjvP5VFEtT0kxIWbeXmnzngou25w3+spD35qL08zd+HtUdODjrTXt9bF1Wv7GrtHl6
-	S88FpfF+xk7C+PHXT/69tXfq8JFTq/pc9nFk5Fvfxjxronf2s+7lL7ZpcXaO8K7vQPhQOFpc
-	ufnwVlv+lOe//UO5htuHLs73jlyNdhls+5ZXVYXCunzndkPD90qyRK3KziD0Jar/AcoK6aps
-	AwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSeUiTcRjH+73nHC1eptGLFtXI7LL7eOgigvAtqPwjsAPJVW9teLaVR6em
-	SzvVwZSc5jIaMs3ZZqs1jKW1DjOdq+zYPGJpoSaUM7yyafTPw+f5fB8enj8eAS62kMECecIJ
-	XpEgjZNQQkK4a0NmuHh1m2z5JWsgvM+wE+AbyCGg2FhJQY7pBgnNVRUI2n05CH6PaHFQWccJ
-	GFM7aBgY+kzDeK0DQYFTjUNlTQYGv6r/UNBT/xOBptNLQeH3DAL69VcRFHVpafj+LAL62m0k
-	jHu6MWgd7EWg9/7BwGvPRjBWEAulZWYKRhqbcCjUNCO41enB4Vu1P6xxtCGoLb9Awde8+zi4
-	vNPgra+fgpeaKxT0OYsx+FFNge5CLQklWjWCzNtGCgpKTARYOx7R4OwZxcBdoMagwrQT2vVd
-	BDTklWH++/xT92aAtjAT85dvGGju2jAY0htoeH3bTYA+PRS0jS4SvpQX0TDauQLGdYngqOim
-	wZOrIaCqr4ncokHcb9V1gjOYLRinahmjuMqblYgbGVYjbuBOJs6p8vxtfW8/zmWZU7g7Db0U
-	N+x7R3G1gzqCe1XGcvmN4Zy1yENzWY8/0ZHr9ws3HuHj5Mm8YtnmGKHsjcGOklrXpT53l1Lp
-	qC38MgoQsMxq1lPeRE4wxYSxHz4M4RMcxMxhzde6Jj3ONMxk3zuXTHAgE82+e3xp0hNMKPvk
-	dfPkvIhZyz6oL6X/7ZzNVlTbJ32A37s6G4gJFjNrWFV/FpaHhDo0xYCC5AnJ8VJ53JqlylhZ
-	WoI8denhxHgT8n+T/uxo/kM04IqoQ4wASaaKnKEemZiUJivT4usQK8AlQaKYcrdMLDoiTTvF
-	KxIPKk7G8co6FCIgJDNEO6L4GDFzTHqCj+X5JF7xP8UEAcHpaFaJ/VhSyPytTuJwGDR3sDZL
-	7qbwQ1ZPYLbF1hI0+HHevp5I80JjVNjui4Gti1uCu3Sy0W0j2Wlf9p6hUlOYHwbLhpXH64/X
-	RESdXOmaPW3VMDw94z0dct2tNW1P2WNzFK76SB7NzVd8HjzPRYcuOJBz1djdMb343NxnVb4X
-	0cadEkIpk65YhCuU0r+So2tVSQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTZxTHfe597m2pNrt2LFzRRG1GSHDTjeE8ySbBL3rjB98Tk+3DaOyN
+	bYSi5X2LS4VWGlCs1dLIi+PFQdU6a6tmoF2AQaN02DIQqha0GxQJAhm2kIFYW4xfTn7nd/7n
+	fDpCUjJEJQqVqjxerZJlSWkRFk2tavg8Pm1E8YXz1koYPNWOIRzSY6i9aaVBb79EwfxiDQm6
+	1giGJaNLABGnC0FVn5GE17a3NEz+OYvAFBilYaJ7FwzNvUKwVHUMfml00LDY6yHBbPIieGkr
+	Q3DbNYLAaSmhYcxwh4SB8AwND00VNEz11RIwbaOhvsRJQeuLNgH4q4wEPG8OYnAbGgkwT9BQ
+	dSsBasylRLS8JMB04x4BfzX5MTRrkqCmt5+CSH0OuK6PC2D4nAmD/Uk3gtBAgADrmSAJ9n8H
+	KXA+3QQNp69g0C+FEIxYIxRoauYp8La7Kbg57iPA7XqA4WH1VQyethsUBF74KJirXAve82cp
+	8BnGEFyYDiJoDs8IwPKfmYLg49NEhpyb11Vi7prjLsFZL1sRt7hgRFzo11KS0xmirdZRyC2E
+	H9NcTyPLtVYPCzjtH08FXL09n9N2TVGcw5LCNd2fILiG2TC1b8t3om/lfJaygFdvSc8UKdor
+	WgTHA+Iiv2MUa1DdynIUJ2SZNLbl7x6yHAmX+WLvzzFNM8msz/c/GeN4ZgPrOBukYkwy7nXs
+	YN9nMf6Y2c+W6FqWM5hJYrv0/9AxFjNfs89G6/D78+vZ67b25Uxc1PcH3MtewmxldTNaohyJ
+	ohlzHGvS3CPeL6xhOyw+bEDierTiGpIoVQXZMmVW2mZFsUpZtPlITrYdRd+t+eSb739Hs96D
+	nYgRIukqsTdpWCGhZAW5xdmdiBWS0nhxpsWvkIjlsuIfeXXOD+r8LD63E60VYmmCOHWuUC5h
+	jsry+GM8f5xXf5gSwrhEDUpmkmYGPvkpOW9Est9zIqQtO9S5STMutxaVlQ7cmf4toydz267B
+	HZ/unDYu7hjaaUxJqI5M+vVluoz8gkdjS4lNqZMrJrr31bX2V+pONqh7nl2S1c4t+K+6u7Zv
+	LHxecWXIc7Dtq/SOB75Sked1R7rKlnpgdTW595sm9e7+j/a8PbxOinMVsi9TSHWu7B2T/5/+
+	agMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0hTYRjHe895z8XV6rCkDhkVAwvCLoLVg0VlBDsURX0pKCiXHdrQTdnM
+	MjK8jUZXG82lyzSlZc5sbRqZLIapUMtq2Y3cssnSIk0qp3hvE/ry8Hv+/9+H58PDkrImagmr
+	1maLOq0yQ05LsGTv5qI1C5O+qNa7nAg+FHgwhIeNGG4+qKfB6Cyj4E2DHUFP2IhgdMJKgqF5
+	BsOUqYOB4bFuBmbcHQhKfSYS6hsLCPjrmKbh57M/CMzBEA2WHwUYhmyXEJT3WRn40a6AwZ4W
+	CmYC/QR8HBlAYAtNExDynEcwVZoOldUuGiY6X5NgMb9BcDsYIOG7I1I2dnxB4K4tpOFbSRMJ
+	XaH58C48RMNz80UaBn03CfjloKGq0E1BhdWEoKjmAQ2lFU4MzV+fMOD7OUmAv9REgN25B3ps
+	fRi8JdVE5L6I9XAxWC1FRGR8J8B8v4WAMVsdAy9r/Bhs+fFg7eyioLe2nIHJYCLMVGVCh72f
+	gcBVM4aGwdfUdjMSRg1XsFDnekQIhrdTtFB/qx4JE+MmJAzfKSIFQ0lkfTYwRArFrlPCHe8A
+	LYyH39OCe6QKCy+qeeFa5xqhuTzACMVPPzP7kg9JthwXM9Q5om7d1lSJynPxLpMVlJ72u0I4
+	H1XMvYBYlueS+Oud5y6gGJbmVvGfPo2RUY7lVvCuy31UlEnOu5T/4EuI8kJuP19ouDvrYC6e
+	bzP20lGWchv57lAFjjLPLeftDs+sExPJu4Le2VzGbeANQ8VECZJUoTl1KFatzdEo1Rkb1urT
+	Vbla9em1aZkaJ4o8ky1v8tpjNNylaEUci+TzpL74gEpGKXP0uZpWxLOkPFaaWutXyaTHlbln
+	RF3mUd3JDFHfiuJYLF8s3XVQTJVxJ5TZYrooZom6/y3BxizJR0nSrBtUYtmxmuq9Z/ms5MxN
+	Sbf+7Fi5uXLr/jafc/e6e764w+N2g/Js3rJ34ZY0rX2uX73AO7LzkC/71cdFB47UNDnyfo+2
+	pban9bu6yZ0ewz5NwhNLXErOHk69zd/ubhKTKXNjg+bF1GBIobAqDqeEUhIsKyrxdG/ZSd08
+	4xY51quUiatJnV75DxGTf51IAwAA
 X-CFilter-Loop: Reflected
-X-Stat-Signature: 56838pk47bmmo73g8q7ptm85t8zm6rea
-X-Rspamd-Queue-Id: 0BE954000B
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 99E9A40006
+X-Stat-Signature: weybnh44q5cos1y4pc6whmjzif77jxw5
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1759392858-248615
-X-HE-Meta: U2FsdGVkX1+gpjwACQ1vnntgISf9ymNGasPH7LXoLvrqiDSld84/QLxAmc6BV5KNYH751EtjBTwCcb58KJqMzMhf/ughJSgUyn3hSqwVPANd9ZLgq+gBrIkzz1IDN1CyyBpoUbYWv5H4fjXEgexk10CnQyiORjBZ/+ztNKO4L+Yvo9EewpGcR0jVZ2/KksZAgAzFnG/D0yW39O4p0WueS0MBLueEWLgV/t2LBmsYCGU5uTBFlBFIVnubwZJPLCCuWcIiy9aAYB+qf3fqE21MuVjcMSdFcbBHe2BFLZREpScSjgqMGrbTLq5pcvuF3NtiQtryyh9et2tddh6ewn3lkRHJoYqIQXPm+o55PbirL8hdp0irNhR6wWOSU0fS9t48UzGCBGsqvuRB2monR7OIeugK7j93bxPb0nBZJTPnaSj+vw4IQsgAK5whjJT8rSOf2GHm6o/3PalYovcYeSce1MRESvfopp75EKr6goPueR0GK47x9zjAsJ9W/zWWjc8z2PqWcbw/bFcP9rCjiSGbypVyiFu9Leo2qF/MUDeozIwoN9FPmJ4WP2wN6feDs5U6lQoDM0myLi0QOgNnEg4dMMTLiYZ0417XuWdhYeDSwoLIxYW6nTVnfpn6AnLECnhvh2Ks1dVxZBd0BDkQAZRMjKQp5QWYE0XS5NC7Vy4vIv/8LNitZq4fnM+0w1rLeETs7czVtsdzzect50tlvDJpyGrcFvfOXVr/fyU4tbR0ukVULSonTiE4srVJamagKmFlr6uz7P/20YVll7yy196ljo9d421el6Er2v3QwnxPs71EsQOD//A1nlGb+UMJ+lMAurSOP3IzSjguq/UE0e3VjF9Dq1as8gULWEiLY4YRDh5kJKh4PE3w26bSoRJodKmbKVFIsTIaq2wENCRVL1g2hut71okm1/t7m+EozFvSInxgpakEIZveFc/xd4DG815EWkRD+yIhWtdNXSvKC6W
- UyrhhQBs
- 4v9+K/RzDwua2k+MtQWziyepRTcxgzMkVoOFluWmK0tuNNlMGfwPMBZVU8hsM6sdZgsmSvr+38O2SrMI=
+X-HE-Tag: 1759392858-805022
+X-HE-Meta: U2FsdGVkX19i9naYogpteVkpQnk6wP4BUTWWQfn12Nqh1a9URnq4lgugEZyhn7W19mjyk+6T1dWEnsVbNL6trCHtbDz1IAseWFKuYTaxpa9ggBN+picEdfTz2kx8HkjEhO/+WRKxY+skFfUU/yk7CeHv7NRfksjEubwHHBC546Y2X394E6osuFXqmC+UIK7x2YqpX0Mo8pDcjR+wrbkiQH7603wSJb3wEJYxliIEQUYOh8t+9xmdi6VifKetjNMI0xKdPP3wb6IopU+cn4kqZB4gaHyJGsU44dZ7PIAIBZ64uEla/azNGhezpzkiukVFNx77EZUWZ+H52tpKuN4hlbkfHZT5rWLSfFTP95PHnJQVVcgmoH2moMwzEnewiq3EJhotfPPiGuKsOnkZtj093kMdon1Tt4UWJG1MrGWIKOC36nLUavXcbKtKLa+USJVdYqh1/5mxGFpB/NHWljgUUZJrpYo6DopXekcerJU9pM1KGcedLy+78Y671ZEJrcRIxVhB8V/qKrj/NXi9N01oiJ1EvuOQrhJOTzRUtwgge0NeC8P81xyf0RSSPOR+xUN03wsgKjJye84lbcF3u4ONBfOQseFV7oyMoBj6uNGWR4EpdOUFZubnvFa/hoaLtjSR47FKxWiOVImsdTaDhk4uB1+fhUH3RTQsTz+g1c+jGCg+Hfv9qf00esgLEW3FiM37EVm7SctV/skQKwL4ET4uWkhCCqVL9rLGYJZEzuASn79aUIdFC7XCo4G8fFVGSmrN6twAvCRu7k+Su7EY7n1TbCJqNZjSzzu68bUfmsXnYgdFwwmdJ9raeiKkbMxycRPppB7p+aO/zuLLzAIkowTsPQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -252,217 +250,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Resolved the following false positive by introducing explicit dept map
-and annotations for dealing with this case:
-
-   *** DEADLOCK ***
-   context A
-       [S] (unknown)(<sched>:0)
-       [W] lock(&mm->mmap_lock:0)
-       [E] try_to_wake_up(<sched>:0)
-
-   context B
-       [S] lock(&mm->mmap_lock:0)
-       [W] mmu_interval_read_begin(<sched>:0)
-       [E] unlock(&mm->mmap_lock:0)
-
-   [S]: start of the event context
-   [W]: the wait blocked
-   [E]: the event not reachable
-
-dept already tracks dependencies between scheduler sleep and ttwu based
-on internal timestamp called wgen.  However, in case that more than one
-event contexts are overwrapped, dept has chance to wrongly guess the
-start of the event context like the following:
-
-   <before this patch>
-
-   context A: lock L
-   context A: mmu_notifier_invalidate_range_start()
-
-   context B: lock L'
-   context B: mmu_interval_read_begin() : wait
-   <- here is the start of the event context of C.
-   context B: unlock L'
-
-   context C: lock L''
-   context C: mmu_notifier_invalidate_range_start()
-
-   context A: mmu_notifier_invalidate_range_end()
-   context A: unlock L
-
-   context C: mmu_notifier_invalidate_range_end() : ttwu
-   <- here is the end of the event context of C.  dept observes a wait,
-      lock L'' within the event context of C.  Which causes a false
-      positive dept report.
-
-   context C: unlock L''
-
-By explicitly annotating the interesting event context range, make dept
-work with more precise information like:
-
-   <after this patch>
-
-   context A: lock L
-   context A: mmu_notifier_invalidate_range_start()
-
-   context B: lock L'
-   context B: mmu_interval_read_begin() : wait
-   context B: unlock L'
-
-   context C: lock L''
-   context C: mmu_notifier_invalidate_range_start()
-   <- here is the start of the event context of C.
-
-   context A: mmu_notifier_invalidate_range_end()
-   context A: unlock L
-
-   context C: mmu_notifier_invalidate_range_end() : ttwu
-   <- here is the end of the event context of C.  dept doesn't observe
-      the wait, lock L'' within the event context of C.  context C is
-      responsible only for the range delimited by
-      mmu_notifier_invalidate_range_{start,end}().
-
-   context C: unlock L''
+For many reasons, debug_locks_off() is called to stop lock debuging
+feature e.g. on panic().  dept should also stop it in the conditions.
 
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- include/linux/mmu_notifier.h | 26 ++++++++++++++++++++++++++
- mm/mmu_notifier.c            | 31 +++++++++++++++++++++++++++++--
- 2 files changed, 55 insertions(+), 2 deletions(-)
+ include/linux/dept.h     | 2 ++
+ kernel/dependency/dept.c | 6 ++++++
+ lib/debug_locks.c        | 2 ++
+ 3 files changed, 10 insertions(+)
 
-diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
-index d1094c2d5fb6..2b70dce149f0 100644
---- a/include/linux/mmu_notifier.h
-+++ b/include/linux/mmu_notifier.h
-@@ -428,6 +428,14 @@ static inline int mmu_notifier_test_young(struct mm_struct *mm,
- 	return 0;
- }
- 
-+#ifdef CONFIG_DEPT
-+void mmu_notifier_invalidate_dept_ecxt_start(struct mmu_notifier_range *range);
-+void mmu_notifier_invalidate_dept_ecxt_end(struct mmu_notifier_range *range);
-+#else
-+static inline void mmu_notifier_invalidate_dept_ecxt_start(struct mmu_notifier_range *range) {}
-+static inline void mmu_notifier_invalidate_dept_ecxt_end(struct mmu_notifier_range *range) {}
-+#endif
-+
- static inline void
- mmu_notifier_invalidate_range_start(struct mmu_notifier_range *range)
- {
-@@ -439,6 +447,12 @@ mmu_notifier_invalidate_range_start(struct mmu_notifier_range *range)
- 		__mmu_notifier_invalidate_range_start(range);
- 	}
- 	lock_map_release(&__mmu_notifier_invalidate_range_start_map);
-+
-+	/*
-+	 * From now on, waiters could be there by this start until
-+	 * mmu_notifier_invalidate_range_end().
-+	 */
-+	mmu_notifier_invalidate_dept_ecxt_start(range);
- }
- 
- /*
-@@ -459,6 +473,12 @@ mmu_notifier_invalidate_range_start_nonblock(struct mmu_notifier_range *range)
- 		ret = __mmu_notifier_invalidate_range_start(range);
- 	}
- 	lock_map_release(&__mmu_notifier_invalidate_range_start_map);
-+
-+	/*
-+	 * From now on, waiters could be there by this start until
-+	 * mmu_notifier_invalidate_range_end().
-+	 */
-+	mmu_notifier_invalidate_dept_ecxt_start(range);
- 	return ret;
- }
- 
-@@ -470,6 +490,12 @@ mmu_notifier_invalidate_range_end(struct mmu_notifier_range *range)
- 
- 	if (mm_has_notifiers(range->mm))
- 		__mmu_notifier_invalidate_range_end(range);
-+
-+	/*
-+	 * The event context that has been started by
-+	 * mmu_notifier_invalidate_range_start() ends.
-+	 */
-+	mmu_notifier_invalidate_dept_ecxt_end(range);
- }
- 
- static inline void mmu_notifier_arch_invalidate_secondary_tlbs(struct mm_struct *mm,
-diff --git a/mm/mmu_notifier.c b/mm/mmu_notifier.c
-index 8e0125dc0522..31af5ea54a0c 100644
---- a/mm/mmu_notifier.c
-+++ b/mm/mmu_notifier.c
-@@ -46,6 +46,7 @@ struct mmu_notifier_subscriptions {
- 	unsigned long active_invalidate_ranges;
- 	struct rb_root_cached itree;
- 	wait_queue_head_t wq;
-+	struct dept_map dmap;
- 	struct hlist_head deferred_list;
+diff --git a/include/linux/dept.h b/include/linux/dept.h
+index 8b4d97fc4627..b164f74e86e5 100644
+--- a/include/linux/dept.h
++++ b/include/linux/dept.h
+@@ -390,6 +390,7 @@ struct dept_ext_wgen {
+ 	unsigned int wgen;
  };
  
-@@ -165,6 +166,25 @@ static void mn_itree_inv_end(struct mmu_notifier_subscriptions *subscriptions)
- 	wake_up_all(&subscriptions->wq);
++extern void dept_stop_emerg(void);
+ extern void dept_on(void);
+ extern void dept_off(void);
+ extern void dept_init(void);
+@@ -442,6 +443,7 @@ struct dept_ext_wgen { };
+ 
+ #define DEPT_MAP_INITIALIZER(n, k) { }
+ 
++#define dept_stop_emerg()				do { } while (0)
+ #define dept_on()					do { } while (0)
+ #define dept_off()					do { } while (0)
+ #define dept_init()					do { } while (0)
+diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
+index a0eb4b108de0..1de61306418b 100644
+--- a/kernel/dependency/dept.c
++++ b/kernel/dependency/dept.c
+@@ -187,6 +187,12 @@ static void dept_unlock(void)
+ 	arch_spin_unlock(&dept_spin);
  }
  
-+#ifdef CONFIG_DEPT
-+void mmu_notifier_invalidate_dept_ecxt_start(struct mmu_notifier_range *range)
++void dept_stop_emerg(void)
 +{
-+	struct mmu_notifier_subscriptions *subscriptions =
-+		range->mm->notifier_subscriptions;
-+
-+	if (subscriptions)
-+		sdt_ecxt_enter(&subscriptions->dmap);
++	WRITE_ONCE(dept_stop, 1);
 +}
-+void mmu_notifier_invalidate_dept_ecxt_end(struct mmu_notifier_range *range)
-+{
-+	struct mmu_notifier_subscriptions *subscriptions =
-+		range->mm->notifier_subscriptions;
++EXPORT_SYMBOL_GPL(dept_stop_emerg);
 +
-+	if (subscriptions)
-+		sdt_ecxt_exit(&subscriptions->dmap);
-+}
-+#endif
+ enum bfs_ret {
+ 	BFS_CONTINUE,
+ 	BFS_DONE,
+diff --git a/lib/debug_locks.c b/lib/debug_locks.c
+index a75ee30b77cb..14a965914a8f 100644
+--- a/lib/debug_locks.c
++++ b/lib/debug_locks.c
+@@ -38,6 +38,8 @@ EXPORT_SYMBOL_GPL(debug_locks_silent);
+  */
+ int debug_locks_off(void)
+ {
++	dept_stop_emerg();
 +
- /**
-  * mmu_interval_read_begin - Begin a read side critical section against a VA
-  *                           range
-@@ -246,9 +266,12 @@ mmu_interval_read_begin(struct mmu_interval_notifier *interval_sub)
- 	 */
- 	lock_map_acquire(&__mmu_notifier_invalidate_range_start_map);
- 	lock_map_release(&__mmu_notifier_invalidate_range_start_map);
--	if (is_invalidating)
-+	if (is_invalidating) {
-+		sdt_might_sleep_start(&subscriptions->dmap);
- 		wait_event(subscriptions->wq,
- 			   READ_ONCE(subscriptions->invalidate_seq) != seq);
-+		sdt_might_sleep_end();
-+	}
- 
- 	/*
- 	 * Notice that mmu_interval_read_retry() can already be true at this
-@@ -625,6 +648,7 @@ int __mmu_notifier_register(struct mmu_notifier *subscription,
- 
- 		INIT_HLIST_HEAD(&subscriptions->list);
- 		spin_lock_init(&subscriptions->lock);
-+		sdt_map_init(&subscriptions->dmap);
- 		subscriptions->invalidate_seq = 2;
- 		subscriptions->itree = RB_ROOT_CACHED;
- 		init_waitqueue_head(&subscriptions->wq);
-@@ -1070,9 +1094,12 @@ void mmu_interval_notifier_remove(struct mmu_interval_notifier *interval_sub)
- 	 */
- 	lock_map_acquire(&__mmu_notifier_invalidate_range_start_map);
- 	lock_map_release(&__mmu_notifier_invalidate_range_start_map);
--	if (seq)
-+	if (seq) {
-+		sdt_might_sleep_start(&subscriptions->dmap);
- 		wait_event(subscriptions->wq,
- 			   mmu_interval_seq_released(subscriptions, seq));
-+		sdt_might_sleep_end();
-+	}
- 
- 	/* pairs with mmgrab in mmu_interval_notifier_insert() */
- 	mmdrop(mm);
+ 	if (debug_locks && __debug_locks_off()) {
+ 		if (!debug_locks_silent) {
+ 			console_verbose();
 -- 
 2.17.1
 
