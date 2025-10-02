@@ -4,122 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F76ECAC5B8
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 07:22:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E206CAC5B0
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 07:25:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5559B8E0007; Thu,  2 Oct 2025 03:22:57 -0400 (EDT)
+	id 92BFC8E0008; Thu,  2 Oct 2025 03:25:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 52D408E0002; Thu,  2 Oct 2025 03:22:57 -0400 (EDT)
+	id 903B38E0002; Thu,  2 Oct 2025 03:25:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41BEA8E0007; Thu,  2 Oct 2025 03:22:57 -0400 (EDT)
+	id 819BE8E0008; Thu,  2 Oct 2025 03:25:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3125C8E0002
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 03:22:57 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E23C8E0002
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 03:25:45 -0400 (EDT)
 Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BE2A358A8F
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 07:22:56 +0000 (UTC)
-X-FDA: 83952332352.22.4D0FD36
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6E4DB140005
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 07:22:54 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cwcz3EwQ;
-	spf=pass (imf23.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 02A70C0386
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 07:25:44 +0000 (UTC)
+X-FDA: 83952339450.22.7077C48
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 212E21C0006
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 07:25:40 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jPdxIqOP;
+	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759389774;
+	s=arc-20220608; t=1759389942;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ePqbaydthEocsmnJLS2wDGAhTjEi1sfC4mhZpJTfPls=;
-	b=SzaMWjbArHKc9Z7VLx3uGPOt0PI7TyIqWM3w3E8Fi/M411MNca+4OL2AQVMUIl89Oub3/B
-	87yfl99YNFCHODo/Fe0JheP7AXItrgtkLmfQQs8Ag0BOZsWN4rSYaHkYfu2Mph1MrOUAwB
-	VH7SDyibTvI/4v5R9LsXCALPaTwto5o=
+	bh=c4xIEgg73HiwWMLp7GOfj//rAKG412fVdAUGiIOFvVo=;
+	b=RENSCt/KGeIQ2AMSXOE53A+WiOMw1xOPA86WfSivH4cTpJ+NdBCppZ1DMO/dkelvQzXf3/
+	Tc98dOv+o+qgiUEB8kw79zwiAImIiKWY78BORNR8lCtgv+oXvhEsfquGfuBzEma8aPP/Uu
+	bLtjWZ+WPZUjFFy3Xl8JMqlyGGU8N7I=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cwcz3EwQ;
-	spf=pass (imf23.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jPdxIqOP;
+	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759389774; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759389942; a=rsa-sha256;
 	cv=none;
-	b=LINYpZqzkOnNNbiq2XjWGNTVbIBtNJfY7faGvWoe3u3zZ6GSeSqLnkCDzlxoUvtIfq+1qX
-	vkynFqMJ9pePvFArZEwVJfk1KxoqoV7u1RB+N6h+3Z+8B39zdaW6pPOlYY9guIHMSW1w9t
-	frFlV2WFWAw6VkuRbyIt9bj8RqERTm8=
+	b=HXnMOQAmDrMhAk7ocOUeGPovCq6YcF1f7lr3T8xy8xkdFW+siEIz2AfjX4YHBP5TcuzzYW
+	gEQyWoFCXQ8zRpV9GP/8FvbselpAuM3uA4n+Mq09krtaMtzlb3UQDMlRqgw1mY/in/lemY
+	0my3ow69eeiU/pAsOSZEtnwlkaEZex8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759389773;
+	s=mimecast20190719; t=1759389940;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ePqbaydthEocsmnJLS2wDGAhTjEi1sfC4mhZpJTfPls=;
-	b=cwcz3EwQXn66uXuBUh+3z160itpR0f+A/PsJodle3/gZHOM6SOZq5/ve/jgjxdCjlTi6qj
-	J1pKCBAUCDoymnXAmD8R0REGU/2whDKd3MRxus8c81gbv69bWa42FGGZ5uvEjMANcoxvyw
-	Lo6uSDYiGpeEr4kXhUlMYQQJCmg9z2g=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=c4xIEgg73HiwWMLp7GOfj//rAKG412fVdAUGiIOFvVo=;
+	b=jPdxIqOPs8TmIPN9VnFin9k/CDk+q4rahjGsw6giTkmMpwq5L9/j9APcmNNbTqUlBuj4tO
+	XDUehejBLiGwVIGsVzmxtIDQaDTzvVIJGLM57VxJu53WXDoFbb3jmp5PfSrDRezFQ9fc1a
+	Ff3QemXZt0iyJoWKJzWKJX3pUq0xoP4=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-625-KYoYk-iaP3-jLNW8_tSDEA-1; Thu, 02 Oct 2025 03:22:50 -0400
-X-MC-Unique: KYoYk-iaP3-jLNW8_tSDEA-1
-X-Mimecast-MFC-AGG-ID: KYoYk-iaP3-jLNW8_tSDEA_1759389769
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3ee10a24246so448127f8f.3
-        for <linux-mm@kvack.org>; Thu, 02 Oct 2025 00:22:50 -0700 (PDT)
+ us-mta-614-iGKjJuwUO3Cmx5lgB4Nvcw-1; Thu, 02 Oct 2025 03:25:39 -0400
+X-MC-Unique: iGKjJuwUO3Cmx5lgB4Nvcw-1
+X-Mimecast-MFC-AGG-ID: iGKjJuwUO3Cmx5lgB4Nvcw_1759389938
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3f7b5c27d41so612829f8f.0
+        for <linux-mm@kvack.org>; Thu, 02 Oct 2025 00:25:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759389769; x=1759994569;
+        d=1e100.net; s=20230601; t=1759389938; x=1759994738;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ePqbaydthEocsmnJLS2wDGAhTjEi1sfC4mhZpJTfPls=;
-        b=lY1jfsCn5PBX548Mr8uAgWAvJegXWgZfDyXqeqPx4kAhwDReg5nLORk0ni86lhWOfb
-         mU5XfHR/uM/YB6zJK5jPSL3/ztF/eX26KWxDImpSaCY8F2zQU7Z9BuUn1pKpHhR7i9LP
-         uyXkUTw0KExR+IR03UdBLDxmMTGKN7JchU6TmbMXj79ugVc51Zy4QGGwkvl+uweQPOXw
-         wKmr1JBoL36Y7MN5ddklZMsGek2r4pE83QC1c9xqHtyA7PN7n5TQJ1jeegUWy32MRbda
-         1mXhQQxGR3i3/8CEzOlBcRN2d72zSxiv3xBmqnqTJw56gcZ9UMSxzU40CxWZqFXMZ4dK
-         PG5A==
-X-Forwarded-Encrypted: i=1; AJvYcCXOKp0q2TpRD6PvI/6CfFM0UyPNglat5UgtQ5JScvzjO3tPPKNI2+PdqNH0IoSdmZpY6Kd5vMDMpw==@kvack.org
-X-Gm-Message-State: AOJu0YwW+6XA2Mj+JxRL9y96tbvUHJBCTuKH+xoq2aNcfgPlkClARilm
-	hJHXcROoxkD91smdIGYOsFon8ksXXaScKNyAB7mzQpncVr967gME+ao8CftJUh5uWWfiUPRV16c
-	g6pifNwglwZCp8H6ajJvLXgdp9bIuLW2R/XehAwVL6dKr3uJY0Bd9
-X-Gm-Gg: ASbGncsgay9P3U4vr04Y+QILdiU7Iq6qgkknrjC0ebNc5UkHKykWh5xpiEggfIApVzN
-	l7rmWD16LsytuluSI1L7RYBE3hkLCL2kQd6Ye3v8ZMcL0mkNTgG2eqSNtHIiVzV//OdUYI+M8s2
-	VV9KHtRXaf+ACuVXoJ6cTRoPXm1v7v4EIzc+v3jDDytw2ZqxQXD2tHCpmFWxWXkfQjg/Iin3Qew
-	AqNGzKso/GOCGA4au2D12ysAMyAHTdjeipn78kL9PTLm3CpwDaN0yqWPkLCCjhI7a4P00HrMAi8
-	giiU9lnZL/MEHKQS3//u59b5pNcyCjkpTxr6oSFXCie3UAXKokp9s4fsXvPv/DU57D2UB28PhKm
-	PXC5Ygkqf
-X-Received: by 2002:a05:600c:6215:b0:46e:6d12:ee4a with SMTP id 5b1f17b1804b1-46e6d12f02bmr5223725e9.20.1759389769368;
-        Thu, 02 Oct 2025 00:22:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEEdZ1p4zjHZKcWedi5MTyt9Bmyncmz8VJi2HODdrmvI5c5NZ3mhFSBDI92VBHB/MGxJ62slw==
-X-Received: by 2002:a05:600c:6215:b0:46e:6d12:ee4a with SMTP id 5b1f17b1804b1-46e6d12f02bmr5223465e9.20.1759389768947;
-        Thu, 02 Oct 2025 00:22:48 -0700 (PDT)
+         :from:references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=c4xIEgg73HiwWMLp7GOfj//rAKG412fVdAUGiIOFvVo=;
+        b=q/r8IewQrxLo8fK+5cGEf5gk+WI7QTfu58ZZLjjkWAe245qg12xbH4LS40VeMXr2VS
+         JANW8DJTxGTM2Oz3eIV6Y3tVelfgPOyoHqE8bKYv7Bd6xsZwGQ1imqcl6zie30ktrEI7
+         avxoM0t7t3H1XxxZzRBWznwJ56pLpoJPmhs6Y73SZru1fJB2FUTPEUAU7IswllKzdbeB
+         Y2oRZgTHxRTy60J56wdJYaj1OjDLoQBX2MzuZtjFdbay4hAql9DnpOzWVLwSvi2cwZ+A
+         UR3Zbg4sjq51yMfGp0S2jmFPHd6VCKEMUfU6bZmT/pT4Zp1zPl3I9AyzbtGTk+RB43fJ
+         GsBA==
+X-Forwarded-Encrypted: i=1; AJvYcCWILwU86ci2LWxYkQA3+KoUw12PZoiVF5K/0d+eDfe2xzCbWec34YvtUzhIwK/cgw9cMLwY05f29Q==@kvack.org
+X-Gm-Message-State: AOJu0Yx6/qVwOrMWgUXgsxEyIwkuKuFMO8fAHSXJS6s3rGrSjyuamHyC
+	hCBD15k7SY4vlBLZ/ZxDDYyYERFWE0TDNhpdi9ofgG1JHDwfndziAyXtqy+gZoXJMj1wSAvwJyf
+	FWeasWmPN52TEcxyITp8Kj1N3abOU7Lyqkk3kSYbEHVhVWfy8nTYU
+X-Gm-Gg: ASbGncu3Le5Otht2ZqL9vdLKVxT5wzvsHe5qn9+nhjKQyC28UlVCxyz/wLNH+OTvtRA
+	yxAYEA/GCPkL2xs0+mvxM2X99LEde6vWPSLNCj55nUgxG1jbOGDznWKXvJGD2zxKdvN+Q1vlpIL
+	vG+q4dv9Rewigr3Lx550/zRrTeVfqngmRzCNEyNfJCKhdUkE5yAaJ3mOc8yFw/zr6qDTZ8nGZKt
+	etwxlcjKXPunK+R8hc1pABZVgcpMDIk0I5yHGxb/lP0ZX7aWhpKmlI3iMWuL90tOaEBfaUEWXo/
+	B+Vo+urx73YurBcyvdyL+7yZuGnLGdzobOJN5zdedHQbG3nuEoZ0wQyX+v23115TVYUtG2M7NAa
+	3bIakZBnl
+X-Received: by 2002:a05:6000:2010:b0:414:c2e8:a739 with SMTP id ffacd0b85a97d-4255d2bca04mr1474100f8f.31.1759389938010;
+        Thu, 02 Oct 2025 00:25:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFNuBjmSyWl0STGKz3jAGnCdlEY5ESG4JKemsoi3Wwx/R4rsYUPytBl7gz7zm2+UlaW/QHtHQ==
+X-Received: by 2002:a05:6000:2010:b0:414:c2e8:a739 with SMTP id ffacd0b85a97d-4255d2bca04mr1474080f8f.31.1759389937505;
+        Thu, 02 Oct 2025 00:25:37 -0700 (PDT)
 Received: from [192.168.3.141] (tmo-080-144.customers.d1-online.com. [80.187.80.144])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e693c9828sm21809955e9.20.2025.10.02.00.22.46
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8f4ccesm2253063f8f.59.2025.10.02.00.25.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Oct 2025 00:22:48 -0700 (PDT)
-Message-ID: <4909d194-58b7-4e94-b730-f916100238d3@redhat.com>
-Date: Thu, 2 Oct 2025 09:22:45 +0200
+        Thu, 02 Oct 2025 00:25:36 -0700 (PDT)
+Message-ID: <7eeb2a80-a73f-42b9-9f69-e2fe9fb824e5@redhat.com>
+Date: Thu, 2 Oct 2025 09:25:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm: always call rmap_walk() on locked folios
-To: Lokesh Gidra <lokeshgidra@google.com>,
- Dan Williams <dan.j.williams@intel.com>, Alistair Popple <apopple@nvidia.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, kaleshsingh@google.com,
- ngeoffray@google.com, jannh@google.com,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Harry Yoo <harry.yoo@oracle.com>, Peter Xu <peterx@redhat.com>,
- Suren Baghdasaryan <surenb@google.com>, Barry Song <baohua@kernel.org>,
- SeongJae Park <sj@kernel.org>
-References: <20250918055135.2881413-1-lokeshgidra@google.com>
- <20250918055135.2881413-2-lokeshgidra@google.com>
- <2c9df5ee-6109-4fa5-b895-ad8e47d34bee@redhat.com>
- <CA+EESO4h-_U=Xo3x0G_74t_qJQ54AZ4Qd2Ji437aMV8nDZ+tkw@mail.gmail.com>
- <5549ac3a-20cf-4959-ac53-0a89ed0eadd2@redhat.com>
- <CA+EESO5e0gupVfM9NgWqx34oMRk1jGzsNfM=X3idPKaXkRL2fg@mail.gmail.com>
- <7305f905-0f81-4268-a3b3-933ac00cdb6a@redhat.com>
- <CA+EESO5QruRtz8X=2aO8=6P_=uUQuun3f8Uom9gR9-zL-F7dWg@mail.gmail.com>
+Subject: Re: [syzbot] [mm?] WARNING in memory_failure
+To: jane.chu@oracle.com,
+ syzbot <syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com>,
+ akpm@linux-foundation.org, kernel@pankajraghav.com, linmiaohe@huawei.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, mcgrof@kernel.org,
+ nao.horiguchi@gmail.com, syzkaller-bugs@googlegroups.com, ziy@nvidia.com
+References: <68dcb33a.a00a0220.102ee.0053.GAE@google.com>
+ <2afee6bb-b2f0-4a86-ba8c-d33b0b477473@oracle.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -165,21 +155,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CA+EESO5QruRtz8X=2aO8=6P_=uUQuun3f8Uom9gR9-zL-F7dWg@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: nLLbHZSnL2EFrUh2RHB13wJnYv0U2-AQ37fJeFFMxvw_1759389769
+In-Reply-To: <2afee6bb-b2f0-4a86-ba8c-d33b0b477473@oracle.com>
+X-Mimecast-Spam-Score: 1
+X-Mimecast-MFC-PROC-ID: LymWFeuJiv609uyQKEDOSQgunTjUey1Rw6QvRJ92qWU_1759389938
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6E4DB140005
-X-Stat-Signature: rhm8fj9p9gnp9jryoyu9pyw7gfswmyw3
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 212E21C0006
+X-Stat-Signature: tfstir7o3t5z693kkzohz518aock5zss
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1759389774-335431
-X-HE-Meta: U2FsdGVkX18GJ7SVJFTdRBHGoHKu5JIYC5OHZNe2Z+gbScWqM53oHVpcVV8rSbNIXLeGWQkpDjWKXionkw1LxJ39Wo7opiFXI49GTaSGaOGvw2HJbngPKlrpKVGAebuPljrZOZhux154NgvcI6LFAqhx9313ZCO+KYMnQ/ewq/jLq0MoiqH4nCBbt0PwOZLkhPKTTZcs/fDuajmiW7EebMrU7hzRO5X8Hjdch7d4+kfa5SuaNxxO7ukCVqcgifUJJzkVP/Hikh5IIGXnB36TKeKkj2K89QVQXJpUEPib+w/dhckxSJE8mJbbtr778s0bkSyIxlBQ5M2Mhixkrqefbhaqa/8iDmwuYdeuyqwsT/MMjw3HO3Hu+i0yB2o2//LAhmo6Zjy3ZSS9WYNCWL/GbPfYIzKgSouxxaOMvf9lURfcOos04RsJ+Ktb8KPUYgUgcmGiXfq66Uf0ICXvZtm5L97pPGDqrlNVTO5geAS/lJKlFlqPYOmbHNcUiDnlqp2gwSgmWEVJFNbMcVy5ebxvNKpwyzn3ZmP48i9c8a+1H/cDxQrAJai42JLVrqFBl3VyUvrLatIx0b8SBaWGAsH0fu1aXmbKxeTeLp9HBa8p5rmlGQ68zu6lOQ3R50ParybrC0QRCmINAzCkIRQVy4vwIqijhV54wYmqRKDIAXOOvU069IkBn8Fo7N3boWAycbphVcU+cqcoyAFRMNRytzW5peXKa7jNg4UhjU0Z3XDbFF0RhQYMYQ/m4Y7z8hmOIYCnZIL4EOM3M5dymu5k7dgP67zqyrCYsMGt38sEE7vrrAtZfFBWzL+AoQ50WivesLFDI0TgsBG5CEWSZR2IpEc2E6tkfhVq9VGebo5J9t+PJSVSlRIU36HcUgdEhXL5ple47i3avpFTK8/HJf6cqofZoo6pKz+iY02TsIPVJdqJmw+CkHXJmGbIZxvbhQCDKlzaBljaHBFxd8WQA926LM5
- zeFMNjPd
- CuAtdltIzVm6eZuGUAkNfLCciZUVCd4JRXrUOirvioh+n2qOvpAFthNosbo2UuRV2DtrJI5BiXQ9gOYkAS1W1m2Zn0O/g2HennSRYn5VwBYrSHWdrb86KSh3MR7B4lNJH7Tv4D2flBuJ5nV818URZzdtEP/VC8mvCVXy/dcLIck3RRo/xYSnZ5dImZXdil2bIQsZ+qnc4wptUSTfiygOVQyvFDHesGqGwPmDxpCbS3mPwJRmEXi80GJvq4qPYFdfcaNyliMGz6Wk6bSbaFAu6AYxIjMRkjBPgo9VnauhCcQhxCwGtur529DUdaqFEu8LZ9p2xqwkPjzM1wyXjxRZy/BE0xlYp9CfPXVC+NkRTGSIvPWxy8rWSnQZphFVzpSt6IRxsIYoyfWJEFw8t01a8z1AIAAbp1F2sjMwI9Aff8t1mGQT3684lggj2IjNHJb1EmiV98/EvawETQfnT4Ka51Trwq72sGhaol5at
+X-HE-Tag: 1759389940-862469
+X-HE-Meta: U2FsdGVkX1+5/GsO5mUPZcxLx66l8KdwrRVlKB3GSH+cB68mVLmQj0+IPOpzXodOeVTs9OwHekv1gJMWTAL+R6HlE/q6yNwxLdxubgg2dxVoPamrVjbfilJGq+m0pylNEugAuBXOkIK20a5TFvSFrvxqfmv/w79ClqXNjtzl2GJUbKR4LOS+yehVVmsoX961C1/BNIP6PHBSBX/P7vD2aPhlJR3NFfx80XMqKHTao21f22qhPwS9Jm2Rqxq3//+q2wwjCaoend9ZX7G9UrinjWFYF6INh8DBKc+sWvfyWDFeziyusv0dVt7zZu2ArfmorZQxKSnHLP9knbIAeEOEvWOPTo2mwTDSnigPUsIA8X+YNXkogp0yO/mf3XZ1amD50qtxv4Wvbg1hBRZNlxHFHAC54aSTiVq1XAFlshybTrgenMAo/L7BasIHpLlw2U9mXam/OIH46qkDOWCFKJUePCdnyGkzR5IcAcB4zevUllA/W8EyPJTGR/BhybEC5ldBCf6wXk6IT91D0NWrL9AABuR3ULOGyJg94ql1SSs6VXncrVE4NPHgog1UXirEV5XE+V4dtaGhDEs28ELSK+eao5wNZYUb6tlErkPVnqLmf1kJCqEDx3ujdtGhucRX0pYH1KBwL+LWe/I2nzmg9wuh6UXcyvjq5utvrTvFv8GLNUaO6PaDG5fWJvuZkdcpbDlnE8a1QCaOJe/K6JnIvr2nXUfKqyeCSl+06JO8/iQ1iV3sSx644gD2LtWJxl41UwjHh2pmbGRCngseWV+rmpLedFGsi8E2aodx3+8pdkPGL6JUHBglS3vmu1RekKghNX5umAHci6KN1U45o7KUOZONHopLe5wWm2ySG8KzIPJLtrXJyUrKyEIDDzd4OM/+q+VV7pXPl4yc73gu9NDMMH1KHuoVuNhxxz/Zdtv0Y6W74LAPFbgX8vj8i6629VGYVxFRd4c+D3txk+iW1dZori1
+ tcmwkhjp
+ GEwY0KBjdap0Mq48zMRjwtV4z8A5atL80GQhJkvQ7MY1rTVUpXK+p0JhhmLwQPvN3YRgZeoZH9HVdC3QndA9iMl2EVOnZNf3I4emrUPnbyiQMerI16WXaAaKVHFACs1x4gagBlMACAovzwBqXkcp63KdyfELL2AYjpsUVWu0obztud5a6l6gwgAhbW4lHag/QCcBO+5jLpYjj8jUjZLqdAAk7MlCdcEeFWZVtg7oM3fuV0ih8hAvaSjeNJeXn+SKIdvb+B2nWK4yod/VHFMEQCt0MZwbjskfOWANE3nTM8OgCCxSFm5Cl4p8kSoANfxpil2biNscrSbZDsjAItd/TIix4HyV6IZhvAZH9S07LbxHrU0rDn2x4sQ+PdWiNwGYNvbNgV6zYwXuSEnZn9APxX7wVdtyjPRdRMf6EObbAivrSKS8YhfAQJwsFHyKuHo4dGHt6TIYVxHQyRgmh50HtMK7DBHbLSeyBpCB0MWkLmnRZcm8mCdxo3npGUI8DOd07yVbBlJxFXlaNpIVX8bl03uOOP/8NF5y8R6UCppUi+K3wH8zKHLH8rCz/9jr/UCZiFIOP8Pi2JXxnxRMOb6zZ9lhlVtZ+aRK3UE4OwSv6pEjUpYnZut51d/5V+082KT/yBlnEMpTsN0IjOLqB/rUOTai3aFyEJb0v1oEM4eBz8hq6BUVlEG5ymGF2OhXEQX4krHlI6ypQK/s6YUzu7PhsJM7a+bM4JyquVUgKGBvcn3oc8FvidOERhFCBExQggrjDjVgyuGFnA2ayYMTboEVCY1meOUbjHhw9hRJF98HyAUgauj/oM4yYxm//jw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,82 +178,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 02.10.25 08:46, Lokesh Gidra wrote:
-> On Thu, Sep 25, 2025 at 4:07 AM David Hildenbrand <david@redhat.com> wrote:
->>
->> On 24.09.25 21:17, Lokesh Gidra wrote:
->>> On Wed, Sep 24, 2025 at 3:00 AM David Hildenbrand <david@redhat.com> wrote:
->>>>
->>>>>>
->>>>>> Is mf_generic_kill_procs()->collect_procs() problematic?
->>>>>>
->>>>>> The dax_lock_folio/dax_unlock_folio part confuses me: I think it only
->>>>>> locks an entry in the page cache but not the actual folio ("Lock the DAX
->>>>>> entry corresponding to a folio")?
->>>>> Yeah. The name dax_lock_folio() gives an impression as if the folio is
->>>>> locked but it isn't :)
->>>>
->>>> Sorry for the late reply, I saw you posted v2 in the meantime.
->>>>
->>>>>
->>>>> IIUC, a dax folio can't have an anon_vma (folio->mapping is actually
->>>>> an address_space instead of anon_vma), right?
->>>>
->>>> We have these weird device-private dax folios that are anonymous and
->>>> should have the anon_vma set up.
->>>>
->>>>> So, I thought it wasn't
->>>>> required to actually lock the folio in this case. Please let me know
->>>>> if you want me to still lock the folio around collect_procs(), or add
->>>>> a comment?
->>>>
->>>> I think we can end up reaching memory_failure_dev_pagemap() with an
->>>> anonymous dax folio.
->>>>
->>>> Not sure if anything would prevent us into calling
->>>>
->>>> mf_generic_kill_procs()->collect_procs()->collect_procs_anon()->folio_lock_anon_vma_read()
->>>>
->>> I must be missing something but dax_lock_folio() dereferences
->>
->> Maybe the code is missing something :)
->>
->>> folio->mapping (to get to host) without checking for
->>> FOLIO_MAPPING_FLAGS presence. If it were an anon folio, wouldn't that
->>> be a problem? And then in collect_procs() we obviously check for
->>> folio_test_anon() on the same folio before calling
->>> collect_procs_anon().
->>
->> Right, if we reach dax_lock_folio() with an anon folio we are probably
->> already messing things up? Not sure if the "!dax_mapping(mapping)" would
->> save us, likely not, because it would be an anon_vma.
->>
->> Hopefully Dan+Alistair have a clue how this works and if it already
->> works as expected with device-private anon folios.
->>
-> Hi David,
+On 02.10.25 01:58, jane.chu@oracle.com wrote:
+> Hi, Zi Yan,
 > 
-> Any suggestion how to make progress? Should I upload v3 with
-> mf_generic_kill_procs()->collect_procs() in folio-lock critical
-> section?
+> On 9/30/2025 9:51 PM, syzbot wrote:
+>> Hello,
+>>
+>> syzbot has tested the proposed patch but the reproducer is still triggering an issue:
+>> lost connection to test machine
+>>
+>>
+>>
+>> Tested on:
+>>
+>> commit:         d8795075 mm/huge_memory: do not change split_huge_page..
+>> git tree:       https://github.com/x-y-z/linux-dev.git fix_split_page_min_order-for-kernelci
+>> console output: https://syzkaller.appspot.com/x/log.txt?x=17ce96e2580000
+>> kernel config:  https://syzkaller.appspot.com/x/.config?x=714d45b6135c308e
+>> dashboard link: https://syzkaller.appspot.com/bug?extid=e6367ea2fdab6ed46056
+>> compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+>> userspace arch: arm64
+>>
+>> Note: no patches were applied.
+>>
+> 
+> My hunch is that
+>      https://github.com/x-y-z/linux-dev.git
+> fix_split_page_min_order-for-kernelci
+> alone is not enough.  Perhaps on ARM64, the page cache pages of
+> /dev/nullb0 in the test case are probably with min_order > 0, therefore
+> THP split fails, as the console message show:
+> [  200.378989][T18221] Memory failure: 0x124d30: recovery action for
+> unsplit thp: Failed
+> 
+> With lots of poisoned THP pages stuck in the page cache, OOM could
+> trigger too soon.
+> 
+> I think it's worth to try add the additional changes I suggested earlier -
+> https://lore.kernel.org/lkml/7577871f-06be-492d-b6d7-8404d7a045e0@oracle.com/
 
-Staring at mf_generic_kill_procs() once again, we have this
+I think that makes sense in this case. I earlier said that I don't think 
+even splitting makes sense in this case, but as you say we can actually 
+at least allow for reclaiming the remainder of the folio.
 
-switch (pgmap->type) {
-case MEMORY_DEVICE_PRIVATE:
-case MEMORY_DEVICE_COHERENT:
-	rc = -ENXIO;
-	goto unlock;
-...
-}
-
-IIRC, all anon device folios are MEMORY_DEVICE_PRIVATE, so we should 
-actually not succeed in this function and just abort.
-
-We still call dax_lock_folio() earlier, which likely doesn't do the 
-right thing for anon device folios, but that's an existing issue.
-
-So regarding your patch I think we're good!
+Even though we cannot proceed in handling the remaining large folio 
+later on.
 
 -- 
 Cheers
