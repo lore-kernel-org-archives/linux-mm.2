@@ -4,245 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B631CAC5B0
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:15:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA371CAC5B8
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:15:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C2F458E0032; Thu,  2 Oct 2025 04:14:22 -0400 (EDT)
+	id C31418E003D; Thu,  2 Oct 2025 04:15:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE1ED8E0031; Thu,  2 Oct 2025 04:14:22 -0400 (EDT)
+	id C08988E003C; Thu,  2 Oct 2025 04:15:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94A4F8E0034; Thu,  2 Oct 2025 04:14:22 -0400 (EDT)
+	id AF7F88E003D; Thu,  2 Oct 2025 04:15:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 594758E0031
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:14:22 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1EE68160327
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:22 +0000 (UTC)
-X-FDA: 83952461964.08.CF3C46C
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 19FC5A000A
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:19 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	spf=pass (imf25.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C4678E003C
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:15:00 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5A7AD1191B7
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:15:00 +0000 (UTC)
+X-FDA: 83952463560.14.6B42215
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf06.hostedemail.com (Postfix) with ESMTP id EC556180009
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:57 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VWWzcd77;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UzrHfhez;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VWWzcd77;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UzrHfhez;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759392860;
+	s=arc-20220608; t=1759392898;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=Kl2hPkzv04+uACezewOFQgXlhFU+dTsBhaxVVZ1tO58=;
-	b=w41osN6z9ncTos8Tvze2eTr5tpucb2Q70QG0CzA9pJndLE4HwAIMKrnvlUu2EiubVf31xX
-	UNGXd6EIN1Twncy/Hul6qgC1RrVLZI45nf8gtmUldxl0+E00ec2YmRjLNVhlYbbK6SQiOR
-	PT0PNUs94g3qq7SKtMYvTnmWoFFOq48=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JkJWMOW654A2NQw8DnXLLcGrKiRsoRYbhX3pXplYai4=;
+	b=Gk7iTdUqI8UD79pMlrGIucCombfKNvM/BG1JG1HEeELz42WScpry+3VrK3nBsIFsca5ynX
+	a8ty3lD4rJiOjg4qWR0yNQioK8dC8wtHIQWnEsAKgYvwpHZbB304dp7QTJSaSOWi/lcplK
+	bHfvxy4a1n+eCtug3T5Szc8K1w9HU/M=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf25.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759392860; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VWWzcd77;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UzrHfhez;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VWWzcd77;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UzrHfhez;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759392898; a=rsa-sha256;
 	cv=none;
-	b=WVs6luukeNQtQhiyc40ytWTp9gTmyN1YuatTUTGbUMmnjnUZgUZFhZ3bot1wxQ33p8D8Sm
-	0szdndfdarJCc0ZE56CQ4yocAMN7P16bUQl0QI6NaCqvZA65AvoCwIpZviZUpMoCxeG1Fp
-	kWMjU+vOVD3fRi98g2TcpbwaAQWoM50=
-X-AuditID: a67dfc5b-c2dff70000001609-1a-68de3414a6e0
-From: Byungchul Park <byungchul@sk.com>
-To: linux-kernel@vger.kernel.org
-Cc: kernel_team@skhynix.com,
-	torvalds@linux-foundation.org,
-	damien.lemoal@opensource.wdc.com,
-	linux-ide@vger.kernel.org,
-	adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	will@kernel.org,
-	tglx@linutronix.de,
-	rostedt@goodmis.org,
-	joel@joelfernandes.org,
-	sashal@kernel.org,
-	daniel.vetter@ffwll.ch,
-	duyuyang@gmail.com,
-	johannes.berg@intel.com,
-	tj@kernel.org,
-	tytso@mit.edu,
-	willy@infradead.org,
-	david@fromorbit.com,
-	amir73il@gmail.com,
-	gregkh@linuxfoundation.org,
-	kernel-team@lge.com,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	mhocko@kernel.org,
-	minchan@kernel.org,
-	hannes@cmpxchg.org,
-	vdavydov.dev@gmail.com,
-	sj@kernel.org,
-	jglisse@redhat.com,
-	dennis@kernel.org,
-	cl@linux.com,
-	penberg@kernel.org,
-	rientjes@google.com,
-	vbabka@suse.cz,
-	ngupta@vflare.org,
-	linux-block@vger.kernel.org,
-	josef@toxicpanda.com,
-	linux-fsdevel@vger.kernel.org,
-	jack@suse.cz,
-	jlayton@kernel.org,
-	dan.j.williams@intel.com,
-	hch@infradead.org,
-	djwong@kernel.org,
-	dri-devel@lists.freedesktop.org,
-	rodrigosiqueiramelo@gmail.com,
-	melissa.srw@gmail.com,
-	hamohammed.sa@gmail.com,
-	harry.yoo@oracle.com,
-	chris.p.wilson@intel.com,
-	gwan-gyeong.mun@intel.com,
-	max.byungchul.park@gmail.com,
-	boqun.feng@gmail.com,
-	longman@redhat.com,
-	yunseong.kim@ericsson.com,
-	ysk@kzalloc.com,
-	yeoreum.yun@arm.com,
-	netdev@vger.kernel.org,
-	matthew.brost@intel.com,
-	her0gyugyu@gmail.com,
-	corbet@lwn.net,
-	catalin.marinas@arm.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com,
-	luto@kernel.org,
-	sumit.semwal@linaro.org,
-	gustavo@padovan.org,
-	christian.koenig@amd.com,
-	andi.shyti@kernel.org,
-	arnd@arndb.de,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	rppt@kernel.org,
-	surenb@google.com,
-	mcgrof@kernel.org,
-	petr.pavlu@suse.com,
-	da.gomez@kernel.org,
-	samitolvanen@google.com,
-	paulmck@kernel.org,
-	frederic@kernel.org,
-	neeraj.upadhyay@kernel.org,
-	joelagnelf@nvidia.com,
-	josh@joshtriplett.org,
-	urezki@gmail.com,
-	mathieu.desnoyers@efficios.com,
-	jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
-	dietmar.eggemann@arm.com,
-	bsegall@google.com,
-	mgorman@suse.de,
-	vschneid@redhat.com,
-	chuck.lever@oracle.com,
-	neil@brown.name,
-	okorniev@redhat.com,
-	Dai.Ngo@oracle.com,
-	tom@talpey.com,
-	trondmy@kernel.org,
-	anna@kernel.org,
-	kees@kernel.org,
-	bigeasy@linutronix.de,
-	clrkwllms@kernel.org,
-	mark.rutland@arm.com,
-	ada.coupriediaz@arm.com,
-	kristina.martsenko@arm.com,
-	wangkefeng.wang@huawei.com,
-	broonie@kernel.org,
-	kevin.brodsky@arm.com,
-	dwmw@amazon.co.uk,
-	shakeel.butt@linux.dev,
-	ast@kernel.org,
-	ziy@nvidia.com,
-	yuzhao@google.com,
-	baolin.wang@linux.alibaba.com,
-	usamaarif642@gmail.com,
-	joel.granados@kernel.org,
-	richard.weiyang@gmail.com,
-	geert+renesas@glider.be,
-	tim.c.chen@linux.intel.com,
-	linux@treblig.org,
-	alexander.shishkin@linux.intel.com,
-	lillian@star-ark.net,
-	chenhuacai@kernel.org,
-	francesco@valla.it,
-	guoweikang.kernel@gmail.com,
-	link@vivo.com,
-	jpoimboe@kernel.org,
-	masahiroy@kernel.org,
-	brauner@kernel.org,
-	thomas.weissschuh@linutronix.de,
-	oleg@redhat.com,
-	mjguzik@gmail.com,
-	andrii@kernel.org,
-	wangfushuai@baidu.com,
-	linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org,
-	linux-i2c@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-modules@vger.kernel.org,
-	rcu@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Subject: [PATCH v17 38/47] dept: introduce a new type of dependency tracking between multi event sites
-Date: Thu,  2 Oct 2025 17:12:38 +0900
-Message-Id: <20251002081247.51255-39-byungchul@sk.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20251002081247.51255-1-byungchul@sk.com>
-References: <20251002081247.51255-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe2yLexzG/d5r16zOq5bstVnQZCGLsTHydb9E4nVyznFLJCNBoy9t7JbW
-	xsRl7GLnGKbOJlObzqxqq5gWsVGZsYnU2IzqWG21rjMdZdrNMNVO/PPNJ8/3eZ6/HgEubicj
-	BIqUXbwyRZokoYSE8H1oeWxYwmt5XHvFNMg3lpDQ6ctHkFvrJ2BE3USDd/gVDX5zE4LiVjUO
-	hmuHMPhc84MC970BBEUOJwWn+w4RcMaloaGvcSX47b0Y6Jw/MHDWH0FQ7rDjYNYfpqCn8DoO
-	bc6x8MznoeBh0VEK3reexUB72ExCqUaNILviCgXFpUYCqo1/g6XwPBboDihXw0FzOhsLnLcY
-	FF2+hcGwrooGXVY0aJrbSPjuiAe/NhWaqntpsJ8oIsDtUlPQ+SCPBO8zBwaGAhcO+XU+Aozd
-	VhLK8y4QUFLWQcFt80MC8ke8CNrqzlLw2uAnIUszRMLT6hYCrvTaMHhSd5mEyhetGDi6bCSY
-	mh/hMHg8Ek59cCHQ+Tz0Uhk3lHuc4KpMNzDOUGZA3LevasR5K7Nx7l6/B+cqLf0U99X3nOLM
-	g1qCO9kcy9WesdNczp2XNKc1pnMmfQxXcbsP48oHfOSa2I3ChTI+SZHBK2cu3iqU13S202mn
-	ZHtGLGosCx1b+x8KEbBMAltc4aZ+89DFUjrIFDOVtdmG8SCHMZNZ0zEXGWScsUxkra3Tgzye
-	2c4a7vePZgkmmm0svD/qETFz2Y5rd7FfnZPY6pr60Z6QgN7msBBBFjNz2FxPTsAjDHjOhbCX
-	hirJX4EJ7F29jShEIi0aU4XEipSMZKkiKWGGPDNFsWfGttRkIwoMTrf/+6abaKBlfQNiBEgS
-	KmqJtsvFpDRDlZncgFgBLgkTbdV3yMUimTRzL69M3aJMT+JVDShSQEjCRbMGd8vEzA7pLn4n
-	z6fxyt9fTBASkYXof3tv9o1JDk1816Pv2SnYMjPCWv//vNmZOUfiDvyVtyay4EPZi93Wg6bw
-	9V2LHr+5uM9jWbEiXu6Nyp6viFKkljX+8XZeQUI3tejBEjq+5E/t0f3uDd7VDd+meLv/SZ+9
-	fFzcgn3tn6iuOVejPmq/uFW11lXOxGWu7s3WmrTnJ9bJ82QSQiWXxsfgSpX0JyI5+DFsAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0hTcRjG+59zds4crQ5T6JDRZSRFqSV0ebGo6EMegsoKukOudmrDa5u3
-	BYU6V5Jd1mqTnJYZLXNLly7JzPBSg1qWa91zmrLMSLPLpnhZayv68vJ73+fh4fnw8nFRA28m
-	X56WySnSJCliUkAINq9Sx4Qv65YtdT2Jh9f5LQT4vEUElNVaSCiqu8SDzhozgh5fEYLRCSMO
-	msYAAX6dnQLv2AcKAs12BAanDgeLLR+DX9bfJHxt/4lA3+shoeRLPgHDptMISvuNFHx5lABD
-	PU08CLg/Y/BmZBCByfMbA0/LSQR+QzJcqawnYaLjOQ4l+k4EV3vdOAxYg6LN3o2guaqAhE/a
-	Ozi4PNPgpW+YhMf6YhKGnGUYfLOSUFHQzINyow6B+lotCYbyOgIaP96jwPl1EoMugw4Dc90m
-	6DH1E+DQVmLBfkHX7RlgLFFjwTGAgf5WEwZjpmoKnl7rIsCUFwXGDhcP+qpKKZjsjYNARTrY
-	zZ8pcJ/TE1Az9Jy3To/YUc1Zgq2ub8BYzQs/yVouWxA7Ma5DrPe6Gmc12uDaPjiMs4X1Oex1
-	xyDJjvtekWzzSAXBPqlk2PMdMWxjqZtiCx+8pxLj9whWS7kUeTanWLImSSCz9ryjMi5Ic/0O
-	HZaHzmw9hcL4DL2MGb1RToWYpBcwb9+O4SGOoOcy9Wf6eSHGaccs5rUzOsTh9CHG8nCQDDFB
-	RzGPtA//eoT0CqbL1or9y5zDmK0tf3PCgndXr4MIsYhezmiGCzEtElSgKdUoQp6WnSqRpyyP
-	VSbLVGny3NiD6al1KPhNpmOT5+8iryuhDdF8JJ4qdEa5ZSKeJFupSm1DDB8XRwiTqrpkIqFU
-	ojrKKdL3K7JSOGUbiuQT4hnCjTu5JBF9WJLJJXNcBqf4r2L8sJl5aH607dOBDG5yl2ef6mqM
-	PF+iPbS9tUZu2238Xrxqx3TN2s6Vi4/PXq9ov7m0b/cWwa3Ip++OzO/b583RlR0d8Z3Iwi5e
-	zvBbHmjM0sq9kS0/zN1byuPiZa3b3jetnb5hnkodXhBYkmjvKN77LFub0J640BLe4Jbq7q+M
-	UY3P3T5iuCgmlDJJ3CJcoZT8AQHlUXlJAwAA
-X-CFilter-Loop: Reflected
-X-Stat-Signature: rhtia8xj3k3wuuiwk16dhp4kyts1oy8o
+	b=cI67D9XgkJbPqbRZnvfrCyR90fXkHbhZbaLNVSQbesZcBbg9Jh3zf9EKa4FB8bae6SNxA5
+	NUh+xraA0lOCLwpWd3xfmLgxA9HdKE3KZ8S5745CLZAQqc/yuvfRbe1Ks6IsVawiiyjfj5
+	40apAPYcokK9MNw2GIfD+JWbb4D7tzs=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 1E1D633769;
+	Thu,  2 Oct 2025 08:14:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1759392896; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=JkJWMOW654A2NQw8DnXLLcGrKiRsoRYbhX3pXplYai4=;
+	b=VWWzcd77OjwQ1CbNz6wrB7HcE5ZvWwfEUkURc3y3JjflQ/svq3PHm/78SGC3znYDVL4A7u
+	9EiCaHDxJQi3fnbRjTcc6T4MxJVjAsjMAxoWBaaSUw2MMXgwuwI6iBGtC/dqHGp/QZRS8p
+	LtV4RrvMuTYxib2G4//qpbBYE9Sxpio=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1759392896;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=JkJWMOW654A2NQw8DnXLLcGrKiRsoRYbhX3pXplYai4=;
+	b=UzrHfhezFDoU19SNap9yR9071ng3xTx3wtGzgYa113dsd27cl8xwYoW5RqcKamC44qZuea
+	MIBCocsuEVJV0mAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1759392896; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=JkJWMOW654A2NQw8DnXLLcGrKiRsoRYbhX3pXplYai4=;
+	b=VWWzcd77OjwQ1CbNz6wrB7HcE5ZvWwfEUkURc3y3JjflQ/svq3PHm/78SGC3znYDVL4A7u
+	9EiCaHDxJQi3fnbRjTcc6T4MxJVjAsjMAxoWBaaSUw2MMXgwuwI6iBGtC/dqHGp/QZRS8p
+	LtV4RrvMuTYxib2G4//qpbBYE9Sxpio=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1759392896;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=JkJWMOW654A2NQw8DnXLLcGrKiRsoRYbhX3pXplYai4=;
+	b=UzrHfhezFDoU19SNap9yR9071ng3xTx3wtGzgYa113dsd27cl8xwYoW5RqcKamC44qZuea
+	MIBCocsuEVJV0mAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EA0C51395B;
+	Thu,  2 Oct 2025 08:14:55 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 1MWRNn803mjkUQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 02 Oct 2025 08:14:55 +0000
+Message-ID: <b9fb0a69-6cfb-4285-8118-ef5301115948@suse.cz>
+Date: Thu, 2 Oct 2025 10:14:55 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] slab: Fix using this_cpu_ptr() in preemptible context
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ Harry Yoo <harry.yoo@oracle.com>
+Cc: ranxiaokai627@163.com, Andrew Morton <akpm@linux-foundation.org>,
+ cl@gentwo.org, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Alexei Starovoitov <ast@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm <linux-mm@kvack.org>, ran.xiaokai@zte.com.cn
+References: <20250930083402.782927-1-ranxiaokai627@163.com>
+ <aNu2xJMkEyYSdmW6@hyeyoo>
+ <CAADnVQJ-bkd2UVsZmhdb1L5ZrXjZbTnRcaJ-D=ojsoiRHmHwaw@mail.gmail.com>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <CAADnVQJ-bkd2UVsZmhdb1L5ZrXjZbTnRcaJ-D=ojsoiRHmHwaw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 19FC5A000A
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1759392859-8582
-X-HE-Meta: U2FsdGVkX19ZJaowxZb0Hqc4ZIgyq0+3stB0O7kJ9qR1i1LyoKSs03v1LGinTZ65wMeI/58yW8mxUnifCBDQNSGEUUctRL2ljvnf5V9Y6vNTrxTPVmEc/DQSxgZjD/d0MJ2pFo5VxZBxrj3Nv0/Vxg22imLYab8CsaDRD+n4PFcKt77mBOaDvZGwmjmGLWJuweI9CU7kon0avlNvWnbBYsqSNmrE1fxgz1doGtnPmapH+fI2+vSFr4tn2ENtv67MKniL1ef2WGgQ7AO1E0+z0hASeDwyug3jmAHBHSBbAMfaiMswIc+zzMhPIkv880cjGX/fZT6+fEW5K9TnzEX1nJlHXwRLT60Oi1n6plp3NO+EutWq6Axd+BMmfFDMxtprK37nHaDA9wTJXZxyBn7jaZ7rTyZC0RbdkmZ1sYUa9YLpGi00a0Py81dZDvD1Tq5NSkRZqculfYWYf0PNudQdzIRtbMc7SAn0a49fxWrkM1zrMNI0wmaXd3E3I2QLFEWHRAjeVSrqWYujxokcL4v0TQdFQfuJNO+YZ+feaDL+LYpPZkTDV02KqPCLTrE/yFioSbX9xKWbDLI/RXBRHiQ8N7kyza6+pFAuO2t89iiDlz+ukkxQlWACRGA9Gs0J0dMboUiis4ul4VjmQViC0A6oAQGWlMngN1Dyj2bSbb+frTapf/VjFA2eYaX6SLPj+QDccwaZr95BOsBWvu89lZ601/cXyKHYY70GHbaOAVka9kBJdzLkGd5I/BEdZ0Q6g/ojcJSrSkDusN3R0aSHP6Dr99T7VnRY6AdlA2wQuAB6IvrdNW+dywy+MozrZd5GCZYCSnByEbkJ+SamAo96BeHrcGwLcZW1DsQwedEpLnqvxhlX5p9ynT0O8TXx3n8B4a6Xvslji/9vpPPzxXeiyjzEV/uQvMX+hoXmOQ1qS1cEaDCRB1bRvj7YwH0lCEkh45IbCFRouwqtJIFfXrTEiRv
- qEzaebvz
- +kN+ZqaSXLDLcvKpt7k+veff3P6Lf/AWCX4NBQPAwRA0FGfI=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: EC556180009
+X-Stat-Signature: ukh867q5prdty9mjk57fuxtbyk995mj8
+X-HE-Tag: 1759392897-315927
+X-HE-Meta: U2FsdGVkX1+AbGM+OLHZNMRohWllV+W26GzG0BSF92k9JIkXExH9+Cm5+K+pyctW7XE8ByOMVg6ZWsJfSYvHrKCalm+PPRiOg4oqWYQPecrM32XSczrsRRLytnlf7QlK3FewJhWZ48bybyuCmmHRE8YQEJpjhqfwOrYeaMiHFVBfBGHx9yanRGGTfPRjP08gqaWyC1fXsymqqqlwnomUvNP90Vya/TiAiIS9kJbhSaUY9kVhQYmyDRNjyG8zUb07g8J9nhGrEt80CQSybIW3ffPDA1VpEU02NGUrV7CAtA51EqlOcq4zWfjQriLPF9SubicdLNGXBFi0kz1hn+CAomediMO63NTKHv09cfDluCvdd3zZO3w2UstKNfBXUdH2ps+sdeGIBYm5hXrzVcqa6/JXb+04U5TmeD9Ew1HhyTukd6TDV/0TCxVeLkoNUmMOwqcUhq/53f88agOYVWOcULV4DAZo3yRX1ekgYfTNuYZbDDKW/ENqnB0j4NYflMZHcPHzf/sis3qwty+cYOiOryWNL5MsS+rN+BOieW6whj+Mc3KJSuSvoMnjpM3P6amop8EWl6sC1dG93Atv/bYuFSN07hqyO86cfblUy9dwNSx62qnDkmG5LG+mc/ins3HqHpGyEruK+nW1FRpswt6DiST4f0UexEosQGHZY/y3yDeaiHDNxjsXhLF0r79q9/gzei38/piG5Uj+NgaxecliDFQA0vYq1+mt+mXA1YwjEk4VMZy5YVggx8Wp7j3JbFsAIX64qW7xFceHPFysqHFNJD1gwxwHl7jYHknmKZANwwWIQqgZixmY2Z78emnXRntPVf7tcM2f3lhQV8uBL+d07LE8vej39TTgWuC1Po8cKllpOT7WRr7c/te+Emvt/vU7DxLVzzOyKnrOHMG6xOe+1Eiz8iGW3N3/3xm3vfENMHOm9vD1lN7LBYc6uO3wo440g52jAsvuKmi6XJASUbW
+ r4gMc82b
+ LcBdvTNUiFPMsVuy3SXIE4Xga/Gq/SlfRkfCtlhpfoJq9I1+ZUIvi9z8SFs1Ni8Mk5+qD6K/OxarA2uXanOhLibae5d98EkqISUUU1W9P7B2MCTshPFCRmprsGn7ZX9Eo5Fuaol4Vm4Z9XiEJm7OZsxbLR01iqFyg8G7bOhOv4O4SGMvYLpyw77azA3yzc2N+JkpJNTRlEBGxShhHludq7BBpDuk2fdJ0YkQPJw5JFNYLiSNlDoBEVidLrRzv6TZ5kFi3JVoyJPNINKWmRxEHqZr++rYKvPJZ/DVnS9/+7enUcrlSK2TtmkvZbURV7AXvKkoyRSKQaivc5RsOZrrRyFyW6ktlFho0yhvEsvPzsB+bT3habc7Q0o5Ck8BFb9LihLewkQLXm5AtvF6Fg5lWFGHSKsRapGHxtINuXuFV1TsUOs5ATRqpylnANnD7fHyM94AUsyVL2c30uBz5K8c52vO3rLQu8StJ/kJRcgEfm0PsrzhclioB8T6RbaeqGX4SJeBAd17A2V1k5KR+aOpJ2Km+ng==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -251,419 +182,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-It's worth reporting wait-event circular dependency even if it doesn't
-lead to an actual deadlock, because it's a good information about a
-circular dependency anyway.  However, it should be suppressed once
-turning out it doesn't lead an actual deadlock, for instance, there are
-other wake-up(or event) paths.
+On 9/30/25 13:19, Alexei Starovoitov wrote:
+> On Tue, Sep 30, 2025 at 12:54 PM Harry Yoo <harry.yoo@oracle.com> wrote:
+>>
+>> On Tue, Sep 30, 2025 at 08:34:02AM +0000, ranxiaokai627@163.com wrote:
+>> > From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+>> >
+>> > defer_free() maybe called in preemptible context, this will
+>> > trigger the below warning message:
+>> >
+>> > BUG: using smp_processor_id() in preemptible [00000000] code: swapper/0/1
+>> > caller is defer_free+0x1b/0x60
+>> > Call Trace:
+>> >  <TASK>
+>> >  dump_stack_lvl+0xac/0xc0
+>> >  check_preemption_disabled+0xbe/0xe0
+>> >  defer_free+0x1b/0x60
+>> >  kfree_nolock+0x1eb/0x2b0
+>> >  alloc_slab_obj_exts+0x356/0x390
+> 
+> Please share config and repro details, since the stack trace
+> looks theoretical, but you somehow got it?
+> This is not CONFIG_SLUB_TINY, but kfree_nolock()
+> sees locked per-cpu slab?
 
-The report needs to be suppressed by annotating that an event can be
-recovered by other sites triggering the desired wake-up, using a newly
-introduced API, dept_recover_event() specifying an event site and its
-recover site.
+Could it be just the "slab != c->slab" condition in do_slab_free()? That's
+more likely. However...
 
-By the introduction, need of a new type of dependency tracking arises
-since a loop of recover dependency could trigger another type of
-deadlock.  So implement a logic to track the new type of dependency
-between multi event sites for a single wait.
+> Is this PREEMPT_RT ?
+> 
+>> >  __alloc_tagging_slab_alloc_hook+0xa0/0x300
+>> >  __kmalloc_cache_noprof+0x1c4/0x5c0
+>> >  __set_page_owner+0x10d/0x1c0
 
-Lastly, to make sure that recover sites must be used in code, introduce
-a section '.dept.event_sites' to mark it as 'used' only if used in code,
-and warn it if dept_recover_event()s are annotated with recover sites,
-not used in code.
+This is the part that puzzles me, where do we call kmalloc from
+__set_page_owner()? And in a way that it loses the GFP_KERNEL passed all the
+way? I don't even see a lib/stackdepot function here.
 
-Signed-off-by: Byungchul Park <byungchul@sk.com>
----
- include/asm-generic/vmlinux.lds.h |  13 +-
- include/linux/dept.h              |  91 ++++++++++++++
- kernel/dependency/dept.c          | 196 ++++++++++++++++++++++++++++++
- 3 files changed, 299 insertions(+), 1 deletion(-)
+>> >  post_alloc_hook+0x84/0xf0
+>> >  get_page_from_freelist+0x73b/0x1380
+>> >  __alloc_frozen_pages_noprof+0x110/0x2c0
+>> >  alloc_pages_mpol+0x44/0x140
+>> >  alloc_slab_page+0xac/0x150
+>> >  allocate_slab+0x78/0x3a0
+>> >  ___slab_alloc+0x76b/0xed0
+>> >  __slab_alloc.constprop.0+0x5a/0xb0
+>> >  __kmalloc_noprof+0x3dc/0x6d0
+>> >  __list_lru_init+0x6c/0x210
 
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index ae2d2359b79e..704bb47ed843 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -700,6 +700,16 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROPELLER_CLANG)
- #define KERNEL_CTORS()
- #endif
- 
-+#ifdef CONFIG_DEPT
-+#define DEPT_EVNET_SITES_USED()						\
-+	. = ALIGN(8);							\
-+	__dept_event_sites_start = .;					\
-+	KEEP(*(.dept.event_sites))					\
-+	__dept_event_sites_end = .;
-+#else
-+#define DEPT_EVNET_SITES_USED()
-+#endif
-+
- /* init and exit section handling */
- #define INIT_DATA							\
- 	KEEP(*(SORT(___kentry+*)))					\
-@@ -724,7 +734,8 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROPELLER_CLANG)
- 	EARLYCON_TABLE()						\
- 	LSM_TABLE()							\
- 	EARLY_LSM_TABLE()						\
--	KUNIT_INIT_TABLE()
-+	KUNIT_INIT_TABLE()						\
-+	DEPT_EVNET_SITES_USED()
- 
- #define INIT_TEXT							\
- 	*(.init.text .init.text.*)					\
-diff --git a/include/linux/dept.h b/include/linux/dept.h
-index b164f74e86e5..988aceee36ad 100644
---- a/include/linux/dept.h
-+++ b/include/linux/dept.h
-@@ -390,6 +390,82 @@ struct dept_ext_wgen {
- 	unsigned int wgen;
- };
- 
-+struct dept_event_site {
-+	/*
-+	 * event site name
-+	 */
-+	const char			*name;
-+
-+	/*
-+	 * function name where the event is triggered in
-+	 */
-+	const char			*func_name;
-+
-+	/*
-+	 * for associating its recover dependencies
-+	 */
-+	struct list_head		dep_head;
-+	struct list_head		dep_rev_head;
-+
-+	/*
-+	 * for BFS
-+	 */
-+	unsigned int			bfs_gen;
-+	struct dept_event_site		*bfs_parent;
-+	struct list_head		bfs_node;
-+
-+	/*
-+	 * flag indicating the event is not only declared but also
-+	 * actually used in code
-+	 */
-+	bool				used;
-+};
-+
-+struct dept_event_site_dep {
-+	struct dept_event_site		*evt_site;
-+	struct dept_event_site		*recover_site;
-+
-+	/*
-+	 * for linking to dept_event objects
-+	 */
-+	struct list_head		dep_node;
-+	struct list_head		dep_rev_node;
-+};
-+
-+#define DEPT_EVENT_SITE_INITIALIZER(es)					\
-+{									\
-+	.name = #es,							\
-+	.func_name = NULL,						\
-+	.dep_head = LIST_HEAD_INIT((es).dep_head),			\
-+	.dep_rev_head = LIST_HEAD_INIT((es).dep_rev_head),		\
-+	.bfs_gen = 0,							\
-+	.bfs_parent = NULL,						\
-+	.bfs_node = LIST_HEAD_INIT((es).bfs_node),			\
-+	.used = false,							\
-+}
-+
-+#define DEPT_EVENT_SITE_DEP_INITIALIZER(esd)				\
-+{									\
-+	.evt_site = NULL,						\
-+	.recover_site = NULL,						\
-+	.dep_node = LIST_HEAD_INIT((esd).dep_node),			\
-+	.dep_rev_node = LIST_HEAD_INIT((esd).dep_rev_node),		\
-+}
-+
-+struct dept_event_site_init {
-+	struct dept_event_site *evt_site;
-+	const char *func_name;
-+};
-+
-+#define dept_event_site_used(es)					\
-+do {									\
-+	static struct dept_event_site_init _evtinit __initdata =	\
-+		{ .evt_site = (es), .func_name = __func__ };		\
-+	static struct dept_event_site_init *_evtinitp __used		\
-+		__attribute__((__section__(".dept.event_sites"))) =	\
-+		&_evtinit;						\
-+} while (0)
-+
- extern void dept_stop_emerg(void);
- extern void dept_on(void);
- extern void dept_off(void);
-@@ -427,6 +503,14 @@ static inline void dept_ecxt_enter_nokeep(struct dept_map *m)
- extern void dept_key_init(struct dept_key *k);
- extern void dept_key_destroy(struct dept_key *k);
- extern void dept_map_ecxt_modify(struct dept_map *m, unsigned long e_f, struct dept_key *new_k, unsigned long new_e_f, unsigned long new_ip, const char *new_c_fn, const char *new_e_fn, int new_sub_l);
-+extern void __dept_recover_event(struct dept_event_site_dep *esd, struct dept_event_site *es, struct dept_event_site *rs);
-+
-+#define dept_recover_event(es, rs)					\
-+do {									\
-+	static struct dept_event_site_dep _esd = DEPT_EVENT_SITE_DEP_INITIALIZER(_esd);\
-+									\
-+	__dept_recover_event(&_esd, es, rs);				\
-+} while (0)
- 
- extern void dept_softirq_enter(void);
- extern void dept_hardirq_enter(void);
-@@ -440,8 +524,10 @@ extern void dept_hardirqs_off(void);
- struct dept_key { };
- struct dept_map { };
- struct dept_ext_wgen { };
-+struct dept_event_site { };
- 
- #define DEPT_MAP_INITIALIZER(n, k) { }
-+#define DEPT_EVENT_SITE_INITIALIZER(es) { }
- 
- #define dept_stop_emerg()				do { } while (0)
- #define dept_on()					do { } while (0)
-@@ -472,6 +558,7 @@ struct dept_ext_wgen { };
- #define dept_key_init(k)				do { (void)(k); } while (0)
- #define dept_key_destroy(k)				do { (void)(k); } while (0)
- #define dept_map_ecxt_modify(m, e_f, n_k, n_e_f, n_ip, n_c_fn, n_e_fn, n_sl) do { (void)(n_k); (void)(n_c_fn); (void)(n_e_fn); } while (0)
-+#define dept_recover_event(es, rs)			do { } while (0)
- 
- #define dept_softirq_enter()				do { } while (0)
- #define dept_hardirq_enter()				do { } while (0)
-@@ -482,4 +569,8 @@ struct dept_ext_wgen { };
- 
- #define dept_set_lockdep_map(m, lockdep_m)		do { } while (0)
- #endif
-+
-+#define DECLARE_DEPT_EVENT_SITE(es) extern struct dept_event_site (es)
-+#define DEFINE_DEPT_EVENT_SITE(es) struct dept_event_site (es) = DEPT_EVENT_SITE_INITIALIZER(es)
-+
- #endif /* __LINUX_DEPT_H */
-diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
-index 1de61306418b..b14400c4f83b 100644
---- a/kernel/dependency/dept.c
-+++ b/kernel/dependency/dept.c
-@@ -973,6 +973,117 @@ static void bfs(void *root, struct bfs_ops *ops, void *in, void **out)
- 	}
- }
- 
-+/*
-+ * Recover dependency between event sites
-+ * =====================================================================
-+ * Even though an event is in a chain of wait-event circular dependency,
-+ * the corresponding wait might be woken up by another site triggering
-+ * the desired event.  To reflect that, dept allows to annotate the
-+ * recover relationship between event sites using __dept_recover_event().
-+ * However, that requires to track a new type of dependency between the
-+ * event sites.
-+ */
-+
-+/*
-+ * Print all events in the circle.
-+ */
-+static void print_recover_circle(struct dept_event_site *es)
-+{
-+	struct dept_event_site *from = es->bfs_parent;
-+	struct dept_event_site *to = es;
-+
-+	dept_outworld_enter();
-+
-+	pr_warn("===================================================\n");
-+	pr_warn("DEPT: Circular recover dependency has been detected.\n");
-+	pr_warn("%s %.*s %s\n", init_utsname()->release,
-+		(int)strcspn(init_utsname()->version, " "),
-+		init_utsname()->version,
-+		print_tainted());
-+	pr_warn("---------------------------------------------------\n");
-+
-+	do {
-+		print_spc(1, "event site(%s@%s)\n", from->name, from->func_name);
-+		print_spc(1, "-> event site(%s@%s)\n", to->name, to->func_name);
-+		to = from;
-+		from = from->bfs_parent;
-+
-+		if (to != es)
-+			pr_warn("\n");
-+	} while (to != es);
-+
-+	pr_warn("---------------------------------------------------\n");
-+	pr_warn("information that might be helpful\n");
-+	pr_warn("---------------------------------------------------\n");
-+	dump_stack();
-+
-+	dept_outworld_exit();
-+}
-+
-+static void bfs_init_recover(void *node, void *in, void **out)
-+{
-+	struct dept_event_site *root = (struct dept_event_site *)node;
-+	struct dept_event_site_dep *new = (struct dept_event_site_dep *)in;
-+
-+	root->bfs_gen = bfs_gen;
-+	new->recover_site->bfs_parent = new->evt_site;
-+}
-+
-+static void bfs_extend_recover(struct list_head *h, void *node)
-+{
-+	struct dept_event_site *cur = (struct dept_event_site *)node;
-+	struct dept_event_site_dep *esd;
-+
-+	list_for_each_entry(esd, &cur->dep_head, dep_node) {
-+		struct dept_event_site *next = esd->recover_site;
-+
-+		if (bfs_gen == next->bfs_gen)
-+			continue;
-+		next->bfs_parent = cur;
-+		next->bfs_gen = bfs_gen;
-+		list_add_tail(&next->bfs_node, h);
-+	}
-+}
-+
-+static void *bfs_dequeue_recover(struct list_head *h)
-+{
-+	struct dept_event_site *es;
-+
-+	DEPT_WARN_ON(list_empty(h));
-+
-+	es = list_first_entry(h, struct dept_event_site, bfs_node);
-+	list_del(&es->bfs_node);
-+	return es;
-+}
-+
-+static enum bfs_ret cb_check_recover_dl(void *node, void *in, void **out)
-+{
-+	struct dept_event_site *cur = (struct dept_event_site *)node;
-+	struct dept_event_site_dep *new = (struct dept_event_site_dep *)in;
-+
-+	if (cur == new->evt_site) {
-+		print_recover_circle(new->recover_site);
-+		return BFS_DONE;
-+	}
-+
-+	return BFS_CONTINUE;
-+}
-+
-+/*
-+ * NOTE: Must be called with dept_lock held.
-+ */
-+static void check_recover_dl_bfs(struct dept_event_site_dep *esd)
-+{
-+	struct bfs_ops ops = {
-+		.bfs_init = bfs_init_recover,
-+		.extend = bfs_extend_recover,
-+		.dequeue = bfs_dequeue_recover,
-+		.callback = cb_check_recover_dl,
-+	};
-+
-+	bfs((void *)esd->recover_site, &ops, (void *)esd, NULL);
-+}
-+
- /*
-  * Main operations
-  * =====================================================================
-@@ -3166,8 +3277,78 @@ static void migrate_per_cpu_pool(void)
- 	}
- }
- 
-+static bool dept_recover_ready;
-+
-+void __dept_recover_event(struct dept_event_site_dep *esd,
-+		struct dept_event_site *es, struct dept_event_site *rs)
-+{
-+	struct dept_task *dt = dept_task();
-+	unsigned long flags;
-+
-+	if (unlikely(!dept_working()))
-+		return;
-+
-+	if (dt->recursive)
-+		return;
-+
-+	if (!esd || !es || !rs) {
-+		DEPT_WARN_ONCE("All the parameters should be !NULL.\n");
-+		return;
-+	}
-+
-+	/*
-+	 * Check locklessly if another already has done it for us.
-+	 */
-+	if (READ_ONCE(esd->evt_site))
-+		return;
-+
-+	if (!dept_recover_ready) {
-+		DEPT_WARN("Should be called once dept_recover_ready.\n");
-+		return;
-+	}
-+
-+	flags = dept_enter();
-+	if (unlikely(!dept_lock()))
-+		goto exit;
-+
-+	/*
-+	 * Check if another already has done it for us with lock held.
-+	 */
-+	if (esd->evt_site)
-+		goto unlock;
-+
-+	/*
-+	 * Can be used as an indicator of whether this
-+	 * __dept_recover_event() has been processed or not as well as
-+	 * for storing its associated events.
-+	 */
-+	WRITE_ONCE(esd->evt_site, es);
-+	esd->recover_site = rs;
-+
-+	if (!es->used || !rs->used) {
-+		if (!es->used)
-+			DEPT_INFO("dept_event_site %s has never been used.\n", es->name);
-+		if (!rs->used)
-+			DEPT_INFO("dept_event_site %s has never been used.\n", rs->name);
-+
-+		DEPT_WARN("Cannot track recover dependency with events that never used.\n");
-+		goto unlock;
-+	}
-+
-+	list_add(&esd->dep_node, &es->dep_head);
-+	list_add(&esd->dep_rev_node, &rs->dep_rev_head);
-+	check_recover_dl_bfs(esd);
-+unlock:
-+	dept_unlock();
-+exit:
-+	dept_exit(flags);
-+}
-+EXPORT_SYMBOL_GPL(__dept_recover_event);
-+
- #define B2KB(B) ((B) / 1024)
- 
-+extern char __dept_event_sites_start[], __dept_event_sites_end[];
-+
- /*
-  * Should be called after setup_per_cpu_areas() and before no non-boot
-  * CPUs have been on.
-@@ -3175,6 +3356,21 @@ static void migrate_per_cpu_pool(void)
- void __init dept_init(void)
- {
- 	size_t mem_total = 0;
-+	struct dept_event_site_init **evtinitpp;
-+
-+	/*
-+	 * dept recover dependency tracking works from now on.
-+	 */
-+	for (evtinitpp = (struct dept_event_site_init **)__dept_event_sites_start;
-+	     evtinitpp < (struct dept_event_site_init **)__dept_event_sites_end;
-+	     evtinitpp++) {
-+		(*evtinitpp)->evt_site->used = true;
-+		(*evtinitpp)->evt_site->func_name = (*evtinitpp)->func_name;
-+		pr_info("dept_event %s@%s is initialized.\n",
-+				(*evtinitpp)->evt_site->name,
-+				(*evtinitpp)->evt_site->func_name);
-+	}
-+	dept_recover_ready = true;
- 
- 	local_irq_disable();
- 	dept_per_cpu_ready = 1;
--- 
-2.17.1
+This has a kcalloc(GFP_KERNEL).
 
+>> >  alloc_super+0x3b6/0x470
+>> >  sget_fc+0x5f/0x3a0
+>> >  get_tree_nodev+0x27/0x90
+>> >  vfs_get_tree+0x26/0xc0
+>> >  vfs_kern_mount.part.0+0xb6/0x140
+>> >  kern_mount+0x24/0x40
+>> >  init_pipe_fs+0x4f/0x70
+>> >  do_one_initcall+0x62/0x2e0
+>> >  kernel_init_freeable+0x25b/0x4b0
+
+Here we've set the full gfp_allowed_mask already so it's not masking our
+GFP_KERNEL.
+
+>> >  kernel_init+0x1a/0x1c0
+>> >  ret_from_fork+0x290/0x2e0
+>> >  ret_from_fork_asm+0x11/0x20
+>> > </TASK>
+>> >
+>> > Replace this_cpu_ptr with raw_cpu_ptr to eliminate
+>> > the above warning message.
+>> >
+>> > Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
+>>
+>> There's no mainline commit hash yet, should be adjusted later.
+>>
+>> > Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+>> > ---
+>> >  mm/slub.c | 4 ++--
+>> >  1 file changed, 2 insertions(+), 2 deletions(-)
+>> >
+>> > diff --git a/mm/slub.c b/mm/slub.c
+>> > index 1433f5b988f7..67c57f1b5a86 100644
+>> > --- a/mm/slub.c
+>> > +++ b/mm/slub.c
+>> > @@ -6432,7 +6432,7 @@ static void free_deferred_objects(struct irq_work *work)
+>> >
+>> >  static void defer_free(struct kmem_cache *s, void *head)
+>> >  {
+>> > -     struct defer_free *df = this_cpu_ptr(&defer_free_objects);
+>> > +     struct defer_free *df = raw_cpu_ptr(&defer_free_objects);
+>>
+>> This suppresses warning, but let's answer the question;
+>> Is it actually safe to not disable preemption here?
+>>
+>> >       if (llist_add(head + s->offset, &df->objects))
+>>
+>> Let's say a task was running on CPU X and migrated to a different CPU
+>> (say, Y) after returning from llist_add() or before calling llist_add(),
+>> then we're queueing the irq_work of CPU X on CPU Y.
+>>
+>> I think technically this should be safe because, although we're using
+>> per-cpu irq_work here, the irq_work framework itself is designed to handle
+>> concurrent access from multiple CPUs (otherwise it won't be safe to use
+>> a global irq_work like in other places) by using lockless list, which
+>> uses try_cmpxchg() and xchg() for atomic update.
+>>
+>> So if I'm not missing something it should be safe, but it was very
+>> confusing to confirm that it's safe as we're using per-cpu irq_work...
+>>
+>> I don't think these paths are very performance critical, so why not disable
+>> preemption instead of replacing it with raw_cpu_ptr()?
+> 
+> +1.
+> Though irq_work_queue() works for any irq_work it should
+> be used for current cpu, since it IPIs itself.
+> So pls use guard(preempt)(); instead.
+
+Agreed. But we should fix it like this. But the report is strange.
 
