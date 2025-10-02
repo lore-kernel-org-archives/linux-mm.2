@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BA0BCAC5B8
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:13:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F155CAC5B0
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:13:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F9B58E0016; Thu,  2 Oct 2025 04:13:30 -0400 (EDT)
+	id F3D118E0017; Thu,  2 Oct 2025 04:13:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E6E98E0008; Thu,  2 Oct 2025 04:13:30 -0400 (EDT)
+	id EC49C8E0008; Thu,  2 Oct 2025 04:13:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 639BC8E0016; Thu,  2 Oct 2025 04:13:30 -0400 (EDT)
+	id D668F8E0017; Thu,  2 Oct 2025 04:13:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 442898E0008
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:13:30 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1D4CD1A0399
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:13:30 +0000 (UTC)
-X-FDA: 83952459780.19.8C8565B
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B9AFE8E0008
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:13:32 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 833E2B8AE5
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:13:32 +0000 (UTC)
+X-FDA: 83952459864.07.248404E
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 38E3BA0008
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:13:27 +0000 (UTC)
+	by imf25.hostedemail.com (Postfix) with ESMTP id 70661A0008
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:13:30 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
 	spf=pass (imf25.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759392808;
+	s=arc-20220608; t=1759392811;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=7nMDaPuLoqZUrD0QHpXGn+/L3gdag8KL76f+z2/B7g0=;
-	b=uBRuDBSDv0u8zIjOsJzr7fb8FStlknkE9wkBw/f+9l1PUB/OkQUBtiHx08bHIbuA877QrF
-	i6NjqJscEFU00rhCamVvBN84w/jAKfSitCSkgf+KAuHvJGet2dcX2FkzsoIy9U7mTkPZSk
-	4uQpDXiCN6tp6eIMu0ZSr9VplWloQ/g=
+	bh=ndPhf7WdwHGqLjWP6fZXsItcc8yTdoY0Ue+/ZTYgcsM=;
+	b=CIykOhn56UqiFRp9J9Ot3st+wMeiu4u7inKvYJn38PYott8f8O9w2nkLj96Xn9THMgnGRC
+	T+CGhZ6Fiz7DIPORFEjdCEaEoKrlxlFfQ4ZWg2Xptoxb0I/axpvzw8FJPjJu4xALuvzXMw
+	ZfQI08dlaf2QUhnyf37h57VFJngyihA=
 ARC-Authentication-Results: i=1;
 	imf25.hostedemail.com;
 	dkim=none;
 	dmarc=none;
 	spf=pass (imf25.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759392808; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759392811; a=rsa-sha256;
 	cv=none;
-	b=cZcXG9cc0192d08jDxRwk1MXPnfBYIhw/1mSgy0G5oF61R4Ed2rQPU6EBJ/sErQOP72D3x
-	rsbFAfDZlt1fXQrNDeozoYWSS0syPQLYicbvx353Od5Goww2YqldTJgJUk+JkA2T8hfPV0
-	dDGNnHJfKTdyb6nHlm/uTo/jsjf2iy8=
-X-AuditID: a67dfc5b-c2dff70000001609-52-68de340d2012
+	b=SZZOdu5z34nN8GGO9n7C6Qx5k5PJFORoonOqupvQiBi5tbN4Eecos3+BA0oMFrmsd2LMef
+	+FrGMpeOUdvwmBcupBfNdsB+nZk4T3QXf/OPj64wRau3g+AGM89g/zKJvwJjs9bCVmXVn7
+	MBzAt9iD1yejQnQ8l3AggZCoeXnPvBk=
+X-AuditID: a67dfc5b-c2dff70000001609-70-68de340d7a14
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: kernel_team@skhynix.com,
@@ -196,53 +196,53 @@ Cc: kernel_team@skhynix.com,
 	rcu@vger.kernel.org,
 	linux-nfs@vger.kernel.org,
 	linux-rt-devel@lists.linux.dev
-Subject: [PATCH v17 10/47] dept: distinguish each work from another
-Date: Thu,  2 Oct 2025 17:12:10 +0900
-Message-Id: <20251002081247.51255-11-byungchul@sk.com>
+Subject: [PATCH v17 11/47] dept: add a mechanism to refill the internal memory pools on running out
+Date: Thu,  2 Oct 2025 17:12:11 +0900
+Message-Id: <20251002081247.51255-12-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20251002081247.51255-1-byungchul@sk.com>
 References: <20251002081247.51255-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTdxjF97/3f+9tG2vuKnN3atQ1kmVEnC7gni2L0Zi46z6ZbIsJTqWx
-	N7bhzbRaZNEFhTrUogUHNa3WWrQgLdBQNb6AQSIYRaTgps2k1M6uQEhrNlsMDKi3GL/9cs5z
-	zvnySEjFM2qJRFu8X9AVqwqVtAzLYgsuZstzRjRrba25kExUYTjX5qHB3+pGEEpWITDeTGFI
-	TD1n4LV3joa6cIQGy/gRDK9cJgTWqI2B8Z7vIBa6TYErMkdApOs3BLP1BXDB6aPh//4BEi6G
-	gySMeUX9au8Igs6mozQ8iSyE2OA5AuJeGhxHOyk4b6tFUNHQRkP9+XYMgxMzBAzX1xIQckUx
-	9JmdhDhMg80yRsCUq5mBRw3DGFzlmTATXgcpRwn0ukcZCJ6uw9AaG6DgwchTCiaitTSE7h+j
-	IPFHmACPKUpC1a0khvaXols1m0DQe+NvAkzeaxSMeFIU+Lv6xKz1CoaBWy0UhF8EKJg8tRT8
-	NdUUBMz/IGiJO2k4E48imJh0kRvV/BvjKcw3+64TvHFoluY9dg/iE5crSN5oFqnSV8p3Tjow
-	/9DJ8TX92fxNa5DhK+/8xfCO9gN85b0YxfuasviGjnFi2+d5sm/VQqHWIOi+2JAv00Ru36X3
-	xZmDx0x2phx10CeQVMKxOVy07l/iPQ/NtqE00+xnXCAwRaY5g13J+aqjVJpJtm8Z93RwdZoX
-	sZu557+n5nswm8k5emxMmuXseu5h6Cx+17mCc3u75nukov4k3DevK9hczviqUtyViTc2KXfZ
-	/5h5F/iEu9sUwGYkd6APmpFCW2woUmkLc9Zoyoq1B9fsKSlqR+K7uQ7P7LiB/vP/0I1YCVIu
-	kPszgxoFpTLoy4q6ESchlRny/KZhjUKuVpX9IuhKdusOFAr6brRUgpUfy7+cLFUr2L2q/UKB
-	IOwTdO9dQiJdUo4Miy3c+g9XZngOQcPh46YXV86UNUpf6/1j21u+qQmbp1ND2YaFF7Y0ancf
-	sW7q/3n6ozc78jTW6qTl5adb81u4rK/zyCFhm10fP7HcWbDl151fXbWMJX8MCp7t7uAudWP/
-	1opnozPTPX92zlXLv+/IPZRpmLMHu346aR9dNeC+VNqhxHqNal0WqdOr3gJ6jgCjagMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUhTcRTG+99797/baHVZQheLipUVYS9CxbEieoNuRRF9KSrIUZe2nBpb
-	WUaSb0upLB1O05u1lIa5paZl6VrZwlEtyWnvOpexNNFlpBambm1GXw6/8zznPJwPR0zK60WR
-	YnXiCV6bqNQosJSS7lqbuVS2sku1wtUsg3fpTRSMDOdQcK3aiiGntlgErVUWBN6RHAS/xwQS
-	9A1BCiYMThqGRztoCNqdCArdBhKs99IJGKoJYOh/9hOBsduHoagvnYJB8yUEJT0CDX3NW8Hv
-	tYkg6Okl4P2vAQRmX4AAX1M2gonCeLhRVodhrOU1CUXGVgQ3uz0kfKsJmfecXQjsFRkYvubd
-	J6HdNw3ejAxieGG8iMHvvkbA9xoMpgy7CEoFA4LM8moMhaW1FDR8bqTB3T9OQGehgQBL7U7w
-	mnsocOWVEaH7QlN3Z4JQlEmEyjcCjHdsBIyaK2l4Vd5JgTktCoSWdhF8qSihYbw7BoKmJHBa
-	emnwXDFSUOV/LdpgRNxv/WWKq6yrJzh92wTmrNetiBv7Y0Dc8K1MktPnhdpnA4Mkl1V3irvl
-	GsDcn5G3mLP/MlHcyzKWy29ZyjWUeGgu6/Enevea/dJ1R3iNOpnXLl8fJ1X5bE/x8e/06fOX
-	rtNp6BG+gCRillnJtk1UozBjZhH74cMoGeYIZh5bl9sjCjPJuGaz79zRYZ7BbGY7CoKTuxQT
-	xZqaBTrMMmY1+9J7lfqXOZe11DRN5khCenu3a1KXM6tY/WAWkYekJjSlEkWoE5MTlGrNqmW6
-	eFVKovr0ssNJCbUo9E3m1PH8h2i4fasDMWKkmCpzR3lUcpEyWZeS4ECsmFREyOIqOlVy2RFl
-	yhlem3RIe1LD6xxolphSzJRt38vHyZmjyhN8PM8f57X/XUIsiUxDh/mOB1FnHZskuv5T+X6y
-	6Llv+tX7e7Y1OlxO4es5Z0zpDv9zx8edkhw7J3xJjaX3WS1Zqi0FHfho9OwHT4VIZmFr6fyN
-	Tz4XrCmO4zdWxV6x9QcCrkMSY5eKppgVgYPRP1Lb6g8UaOYcWxBL3m70qm1Nlt7s8r4tQ8WL
-	c3uNCkqnUsYsIbU65V94koK6SQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUwTaRDHfXaf3ZaGmrUaXUSjqRoTFHxDM2eU8HE9z2iiflBzOaqstrEU
+	0gqKCTnAVhtQRM4eQhGLL6ShPeSKGlEriNhIKtJSg4AtBcSiwWqiIKK8uNT4ZfLLzH/mP5mM
+	mJS9ohaKVZpjvFajUMtpCZaEo6viZyf2Ktf6RqOhM68Jw+iIEUPFTTsNRkcZBZ5aG4LgqBHB
+	2HczCYaGaQwj469EMO10IfjXW0KC/VYeAZ/rpmgYfvwJgal/kIbSd3kYykNmEYSD9ymYDgwR
+	UD04RcD3tnYSqvoDJDit+TS8Kb5Ngm9wNrSaCmkIeysI+FBHgyXfScFlc4ngcNmBoaHvngi8
+	wxME2Bw7IFgdwuAuvkoILjSYS08RQnhLgOm/+wQ8u+bHYG7zUTBgLRe2tKSDyzYkgsB5E4ba
+	cDsFrb2dFAyHSmhwdD9BMPKinwD72RAJjtdCwdmzCqpOX8fwwNmKwXV3gICzdbcp6LVPU5Br
+	HhMu0uSmoMPmwXBzqIsAt+spTk7lxgxFmKupv0Nwho5JmrNX2hFnKBbC4/cfSU5ff5y74X5P
+	c84vFsxdaIvnGsoDIk7/sEfEWRyZnL4lTHH11jju2oN3xK64/ZItqbxalcVr1ySlSJT+0moq
+	43nyicrKPlEuqt1QgKLELJPIXvhWRv7iosYxPMM0s5Lt6hqP5OcxS9n6cyFqhknGvYjt9K6e
+	4bnMITbYVxPRY2YFW3Q9P8JSZhNrvNSGfs5cwtrqmiJzooS8r98d0ciYjazho54oQBJBUxrF
+	NpZP0j8bYthH1i5cjKQWNKsGyVSarDSFSp2YoMzWqE4kHEpPcyDh5apzJg7cRZ88u5sRI0by
+	aKlnRUApoxRZuuy0ZsSKSfk8aYrVr5RJUxXZJ3lt+l/aTDWva0axYixfIF3/5XiqjDmiOMYf
+	5fkMXvurSoijFuaiw7orZW55jCvxsGE8/HCi8WByQeGU/88cH58VlB2I3bHT3yLTZ8RV3Phb
+	4z33tcXq/b+7Mbg31rNs+3Jpy56L3UnqOUm9L43Bpwv+KQz3TM5KWZJDWzxnAkc3izL/GBhh
+	Okzx84O7Y/ZM/XZEvtKwjSkcfnmm8+DvVxcv3bqv/RmXIMc6pWJdHKnVKX4AW0hLvG4DAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0hTcRTH+93nXK0ua+GlomxgQW/L4lARQUW36P2EwnLopQ3ng60so0Cd
+	o/WyudhWzmxpLXHLzGVlYomRUOZjWSm15RbLimaLcsnysabRP4fPOd8vXw6HI8DF98mpAkXG
+	EV6VIVNKKSEh3LpSs0CU+EG+eEg/A97mNRIQ6tcRUHLHQYGu5goJHVV2BD0hHYKBQQsO2roI
+	AcOGZhr6w+9piDQ0IzC5DDg47uVh8Kt6hIJvT38iMPr8FJi/5hEQtJ1HUNxroeHrsw3Q11NP
+	QsTzGYOu3wEENv8IBv7G0wiGTWlwrcxJwWBrOw5mYweC6z4PDl+qo+K95g8IGiryKfikr8Wh
+	0z8RXoeCFDw3nqOgz1WCwfdqCqz5DSRctRgQaMrvUGC6WkNAnfcRDa5vQxi4TQYM7DVboMfW
+	S0CLvgyL7hd13Y0Fi1mDRcsXDIy36zEI2yppeFnuJsCWGw+W1k4SPlYU0zDkS4CINROa7Z9p
+	8Fw0ElDV106uMSJuQFtIcJXO+xinfTVMcY5SB+IG/xgQ139Tg3NafbR9GgjiXIHzGHezJUBx
+	f0JvKK7ht5XgXpSxXFHrAq6u2ENzBY/f0dtX7BeuSuWVimxetWh1slDuNtvIrLY1x0tLvXQu
+	qlp6FsUIWCaRLXwyQIwyxcxhu7vD+ChLmDjWeaGXHGWcaZnOvnXNH+XJTArb460c8xNMPFt4
+	I3+MRcxyVne5Ff3LnMnaqxvHcmKi805fy5hHzCxjtcECTI+EVjSuEkkUGdnpMoVy2UJ1mjwn
+	Q3F8YUpmeg2KfpPt1FDRQ9TfuaEJMQIknSByxXvkYlKWrc5Jb0KsAJdKRMkVbrlYlCrLOcGr
+	Mg+pjip5dROaJiCksaJN+/hkMXNYdoRP4/ksXvVfxQQxU3NReWP8bklS98m68TPYHzbvvEkP
+	qIM/TL4Br1O3dySSVHu0rX27Cm1+lKpUECn711XEbavautJxMSAMdu2Z5ExcS58J7RqXlFgi
+	qU+Ju7VYY3cFzjgP9glF1uwDr2a1Lynv8u7cO/8s7Ag/KDLv88tvbLz83LM+emF3eHbtpSmZ
+	bVJCLZclzMVVatlfqPDPkUkDAAA=
 X-CFilter-Loop: Reflected
-X-Stat-Signature: n84s9gdsfrj5j1mgn8qkfw7nhuusz956
+X-Stat-Signature: r3qyhgkkk7yuz5a5t1bg41cn9g3kwtyy
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 38E3BA0008
+X-Rspamd-Queue-Id: 70661A0008
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1759392807-443439
-X-HE-Meta: U2FsdGVkX18oXB7rPhWRZPz4W4E4ml9H6q9eXuot/9NEOd1o8ljOjxdiKYtPRgw+5HN6zR9SELV+Nv3Q7gtlsICOZ3YY0fj4spdvb0Erg05BMXUl7mtj5Wyv2Btng9hpB9NXTu4UOHz1WCwKKDMehQL/Hrrl+iiWWcnMeV3jR14MEWzvL0SfWI/R3o6UBZuyhzb1FYdnN7zEOtjEOGmHVUa6TwkNWyoPYlJSG0UuitQNww0HP7/gdnCl5K/tY2ASP60ad+3k07S6v7up/2xVzNI4kwBmEcw9MtDRK4zahvga+sNH32I9TzqlaqZlj6DqotNXdGrQ3JVJCqbSQUf5jbW5AngAVNdKXJzakSYzkfoD9JW24gzDUumSq5qonIbrqVT9M94IzMH2Vg4DJGgsJkPBJn0VFYXkEsr47rCBcsjxE3MmIMDyDDfQ9NLXPRdishhFvR2IANHLlBGYVp0ANh6RE039NKIqTJbohkthzx0FbW7qGxGOkiyi+MFcXdDeJJtKe8mb8ZdR3tlmP69mA2hanaZyBx8KrI81AGpLrpPA8k+FgdW2oFmR3zHXwZRu5ZWmCCU+Tse5Lob6ptPm4MwR7Yc8xIugcv117mtnCXhAA4TVGiQtP7WU/8J3mPQm+8eZ4ADztG6VCRGnQzU7/KU2A3/8A+q5qE+GanvzyB9LFaEJ7KCUsC4BAfqWITRZseVR+/HsSwJyNrk1iXh+qUxITW8FLrJybhXcH/0wvHiGPMCIqqSdb5PVzA5gmyGZmqYQyC6QXbC9xfSq6HEhZHT+ldTMODkhbsgSNr+U3vDsIIYs14IwzqLyWH3Pf/HZaRygOmikJjVWEGbylp+yVhMzCDlpKM9McrqUKE3Qz7SGQ1AAzqiMvKCyQ3U2klvi76Fa9hBnWoIJ9/byh75AUPndy2V2zPBSSoWhVCSguAf3OmSjBhYVYPxsGwHd54UjWih8Hc6RjnxUuLGiNjs
- m4J5mBXd
- hKjXOAyvBGGneeqxl1UDGgXRU3rpUuSo8JaskWwui5FOByOTdlLkGBaOBKdBOpg44D9ZcDqvfPcTuUBxLocZeUacKWkx6D0D1c9kdSWSGt5Wl6yaUa/OEZcdJNw==
+X-HE-Tag: 1759392810-464364
+X-HE-Meta: U2FsdGVkX19n5Oi1bcabw/6XetP1/Z0oiIekVp9NlmY4H5zcTk3I0exo7jlv6qFL8MmSy14XmNEyzVlDEaw3YzD8e4ZjZPhEB4kXMHAfajgbHOtNJFOQWUVIgIi14+ZrOyy/s39f2GqDVCRzUoI9wZrZOKASwtDbgq/kxDGgkmr6FFPCowVAym84IoGM5LKG7pY9rFSlR1pmaLMr5ViglJ0HTmSI+bLjR3LUHskGcpJRY0B6zABk+YcGNesmk1cJWusH5VgJtSTeISpGczI2eF7piDygwPwPJMQYOHcu/98WynN572iXmiNz+S1qmNkyFIbWFBq/8Ik8nu6hzuF2xag4iZFHMSAWfrZu9uCK3Tv2IWpMTx4rXOtB5f/tCHpmjGehMjcQaVzrGSfXzmXsd2l5323LOwK9tZ2/yxUxfvG/2ZfjvbtqTng5DQ3duBC16ml0Vp2nbREqPvNmpb9tJ7poxbRgHwDTjWuggS1rd3CWD7pwSfsm2AwV0Vss/0FbQWT4PTdgZavt8ggbqdA3rVL8z2uJ79uGMVEICxW0c0OB6IZLmNsThQNjKTpv/P9rojBjRwi+/DPSHZqhvQFARlzF9KSDX+orvkPwaGtgTNJYmbQ5ZYGcseXGznzwTSw49qLJ5gIqr0ehSwYIVwSKmdDzomIKnM2kEfVUMS34VwUw3sWuenfm/1hAFkG2C0CuWkblo8s+xtppdx07eZHVkD4r3ShYPRFb3JF8xOrCen5yBS6c0Y5Yj0W0DfMMk0IWB/kvR3wkiSKlEJj9swiIUm5Hb+ro6xYbrdS+Bo6d8+8KBELmQyNpV68yZsryB9Ho7/P5AQUAxbL2ltooFnNDuS8kXsVjBNsV99almlOjbhwDQRHHbmnzr/CfuzIYUTrweqka2WfUDJGl0be36x5qJCqiKu2HRB4BpN3n9xsTwrjylRAulioOWM1OvGMWgYqjh5g6tFR3QSx5dZXMTyE
+ D/iy60GL
+ f0rPK+2i9hwMN5bCdDqABaf3No2kwx2SLt1Kumha5dbA9YuN4EcqqghWgUSYcmo0jXSHk
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -251,38 +251,271 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Workqueue already provides concurrency control.  By that, any wait in a
-work doesn't prevents events in other works with the control enabled.
-Thus, each work would better be considered a different context.
+dept engine works in a constrained environment.  For example, dept
+cannot make use of dynamic allocation e.g. kmalloc().  So dept has been
+using static pools to keep memory chunks dept uses.
 
-So let dept assign a different context id to each work.
+However, dept would barely work once any of the pools gets run out.  So
+implemented a mechanism for the refill on the lack, using irq work and
+workqueue that fits on the contrained environment.
 
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- kernel/workqueue.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/dependency/dept.c          | 108 +++++++++++++++++++++++++-----
+ kernel/dependency/dept_internal.h |  19 ++++--
+ kernel/dependency/dept_object.h   |  10 +--
+ kernel/dependency/dept_proc.c     |   8 +--
+ 4 files changed, 116 insertions(+), 29 deletions(-)
 
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index c6b79b3675c3..0e05648b4501 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -55,6 +55,7 @@
- #include <linux/kvm_para.h>
- #include <linux/delay.h>
- #include <linux/irq_work.h>
-+#include <linux/dept.h>
+diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
+index 953e1b81a81f..1b16a6095b3c 100644
+--- a/kernel/dependency/dept.c
++++ b/kernel/dependency/dept.c
+@@ -75,6 +75,9 @@
+ #include <linux/dept.h>
+ #include <linux/utsname.h>
+ #include <linux/kernel.h>
++#include <linux/workqueue.h>
++#include <linux/irq_work.h>
++#include <linux/vmalloc.h>
+ #include "dept_internal.h"
  
- #include "workqueue_internal.h"
+ static int dept_stop;
+@@ -143,9 +146,11 @@ static inline struct dept_task *dept_task(void)
+ 		}							\
+ 	})
  
-@@ -3153,6 +3154,8 @@ __acquires(&pool->lock)
+-#define DEPT_INFO_ONCE(s...) pr_warn_once("DEPT_INFO_ONCE: " s)
++#define DEPT_INFO_ONCE(s...)	pr_warn_once("DEPT_INFO_ONCE: " s)
++#define DEPT_INFO(s...)		pr_warn("DEPT_INFO: " s)
  
- 	lockdep_copy_map(&lockdep_map, &work->lockdep_map);
- #endif
-+	dept_update_cxt();
+ static arch_spinlock_t dept_spin = (arch_spinlock_t)__ARCH_SPIN_LOCK_UNLOCKED;
++static arch_spinlock_t dept_pool_spin = (arch_spinlock_t)__ARCH_SPIN_LOCK_UNLOCKED;
+ 
+ /*
+  * DEPT internal engine should be cautious in using outside functions
+@@ -268,6 +273,7 @@ static bool valid_key(struct dept_key *k)
+ 
+ #define OBJECT(id, nr)							\
+ static struct dept_##id spool_##id[nr];					\
++static struct dept_##id rpool_##id[nr];					\
+ static DEFINE_PER_CPU(struct llist_head, lpool_##id);
+ 	#include "dept_object.h"
+ #undef OBJECT
+@@ -276,14 +282,74 @@ struct dept_pool dept_pool[OBJECT_NR] = {
+ #define OBJECT(id, nr) {						\
+ 	.name = #id,							\
+ 	.obj_sz = sizeof(struct dept_##id),				\
+-	.obj_nr = ATOMIC_INIT(nr),					\
++	.obj_nr = nr,							\
++	.tot_nr = nr,							\
++	.acc_sz = ATOMIC_INIT(sizeof(spool_##id) + sizeof(rpool_##id)), \
+ 	.node_off = offsetof(struct dept_##id, pool_node),		\
+ 	.spool = spool_##id,						\
++	.rpool = rpool_##id,						\
+ 	.lpool = &lpool_##id, },
+ 	#include "dept_object.h"
+ #undef OBJECT
+ };
+ 
++static void dept_wq_work_fn(struct work_struct *work)
++{
++	int i;
 +
- 	/* ensure we're on the correct CPU */
- 	WARN_ON_ONCE(!(pool->flags & POOL_DISASSOCIATED) &&
- 		     raw_smp_processor_id() != pool->cpu);
++	for (i = 0; i < OBJECT_NR; i++) {
++		struct dept_pool *p = dept_pool + i;
++		int sz = p->tot_nr * p->obj_sz;
++		void *rpool;
++		bool need;
++
++		local_irq_disable();
++		arch_spin_lock(&dept_pool_spin);
++		need = !p->rpool;
++		arch_spin_unlock(&dept_pool_spin);
++		local_irq_enable();
++
++		if (!need)
++			continue;
++
++		rpool = vmalloc(sz);
++
++		if (!rpool) {
++			DEPT_STOP("Failed to extend internal resources.\n");
++			break;
++		}
++
++		local_irq_disable();
++		arch_spin_lock(&dept_pool_spin);
++		if (!p->rpool) {
++			p->rpool = rpool;
++			rpool = NULL;
++			atomic_add(sz, &p->acc_sz);
++		}
++		arch_spin_unlock(&dept_pool_spin);
++		local_irq_enable();
++
++		if (rpool)
++			vfree(rpool);
++		else
++			DEPT_INFO("Dept object(%s) just got refilled successfully.\n", p->name);
++	}
++}
++
++static DECLARE_WORK(dept_wq_work, dept_wq_work_fn);
++
++static void dept_irq_work_fn(struct irq_work *w)
++{
++	schedule_work(&dept_wq_work);
++}
++
++static DEFINE_IRQ_WORK(dept_irq_work, dept_irq_work_fn);
++
++static void request_rpool_refill(void)
++{
++	irq_work_queue(&dept_irq_work);
++}
++
+ /*
+  * Can use llist no matter whether CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG is
+  * enabled or not because NMI and other contexts in the same CPU never
+@@ -319,19 +385,31 @@ static void *from_pool(enum object_t t)
+ 	/*
+ 	 * Try static pool.
+ 	 */
+-	if (atomic_read(&p->obj_nr) > 0) {
+-		int idx = atomic_dec_return(&p->obj_nr);
++	arch_spin_lock(&dept_pool_spin);
++
++	if (!p->obj_nr) {
++		p->spool = p->rpool;
++		p->obj_nr = p->rpool ? p->tot_nr : 0;
++		p->rpool = NULL;
++		request_rpool_refill();
++	}
++
++	if (p->obj_nr) {
++		void *ret;
++
++		p->obj_nr--;
++		ret = p->spool + (p->obj_nr * p->obj_sz);
++		arch_spin_unlock(&dept_pool_spin);
+ 
+-		if (idx >= 0)
+-			return p->spool + (idx * p->obj_sz);
++		return ret;
+ 	}
++	arch_spin_unlock(&dept_pool_spin);
+ 
+-	DEPT_INFO_ONCE("---------------------------------------------\n"
+-		"  Some of Dept internal resources are run out.\n"
+-		"  Dept might still work if the resources get freed.\n"
+-		"  However, the chances are Dept will suffer from\n"
+-		"  the lack from now. Needs to extend the internal\n"
+-		"  resource pools. Ask max.byungchul.park@gmail.com\n");
++	DEPT_INFO("------------------------------------------\n"
++		"  Dept object(%s) is run out.\n"
++		"  Dept is trying to refill the object.\n"
++		"  Nevertheless, if it fails, Dept will stop.\n",
++		p->name);
+ 	return NULL;
+ }
+ 
+@@ -2957,8 +3035,8 @@ void __init dept_init(void)
+ 	pr_info("... DEPT_MAX_ECXT_HELD  : %d\n", DEPT_MAX_ECXT_HELD);
+ 	pr_info("... DEPT_MAX_SUBCLASSES : %d\n", DEPT_MAX_SUBCLASSES);
+ #define OBJECT(id, nr)							\
+-	pr_info("... memory used by %s: %zu KB\n",			\
+-	       #id, B2KB(sizeof(struct dept_##id) * nr));
++	pr_info("... memory initially used by %s: %zu KB\n",		\
++	       #id, B2KB(sizeof(spool_##id) + sizeof(rpool_##id)));
+ 	#include "dept_object.h"
+ #undef OBJECT
+ #define HASH(id, bits)							\
+@@ -2966,6 +3044,6 @@ void __init dept_init(void)
+ 	       #id, B2KB(sizeof(struct hlist_head) * (1 << (bits))));
+ 	#include "dept_hash.h"
+ #undef HASH
+-	pr_info("... total memory used by objects and hashs: %zu KB\n", B2KB(mem_total));
++	pr_info("... total memory initially used by objects and hashs: %zu KB\n", B2KB(mem_total));
+ 	pr_info("... per task memory footprint: %zu bytes\n", sizeof(struct dept_task));
+ }
+diff --git a/kernel/dependency/dept_internal.h b/kernel/dependency/dept_internal.h
+index 6b39e5a2a830..b2a44632ee4d 100644
+--- a/kernel/dependency/dept_internal.h
++++ b/kernel/dependency/dept_internal.h
+@@ -23,9 +23,19 @@ struct dept_pool {
+ 	size_t				obj_sz;
+ 
+ 	/*
+-	 * the number of the static array
++	 * the remaining number of the object in spool
+ 	 */
+-	atomic_t			obj_nr;
++	int				obj_nr;
++
++	/*
++	 * the number of the object in spool
++	 */
++	int				tot_nr;
++
++	/*
++	 * accumulated amount of memory used by the object in byte
++	 */
++	atomic_t			acc_sz;
+ 
+ 	/*
+ 	 * offset of ->pool_node
+@@ -35,9 +45,10 @@ struct dept_pool {
+ 	/*
+ 	 * pointer to the pool
+ 	 */
+-	void				*spool;
++	void				*spool; /* static pool */
++	void				*rpool; /* reserved pool */
+ 	struct llist_head		boot_pool;
+-	struct llist_head __percpu	*lpool;
++	struct llist_head __percpu	*lpool; /* local pool */
+ };
+ 
+ enum object_t {
+diff --git a/kernel/dependency/dept_object.h b/kernel/dependency/dept_object.h
+index 0b7eb16fe9fb..4f936adfa8ee 100644
+--- a/kernel/dependency/dept_object.h
++++ b/kernel/dependency/dept_object.h
+@@ -6,8 +6,8 @@
+  * nr: # of the object that should be kept in the pool.
+  */
+ 
+-OBJECT(dep, 1024 * 8)
+-OBJECT(class, 1024 * 8)
+-OBJECT(stack, 1024 * 32)
+-OBJECT(ecxt, 1024 * 16)
+-OBJECT(wait, 1024 * 32)
++OBJECT(dep, 1024 * 4 * 2)
++OBJECT(class, 1024 * 4)
++OBJECT(stack, 1024 * 4 * 8)
++OBJECT(ecxt, 1024 * 4 * 2)
++OBJECT(wait, 1024 * 4 * 4)
+diff --git a/kernel/dependency/dept_proc.c b/kernel/dependency/dept_proc.c
+index 97beaf397715..f28992834588 100644
+--- a/kernel/dependency/dept_proc.c
++++ b/kernel/dependency/dept_proc.c
+@@ -74,12 +74,10 @@ static int dept_stats_show(struct seq_file *m, void *v)
+ {
+ 	int r;
+ 
+-	seq_puts(m, "Availability in the static pools:\n\n");
++	seq_puts(m, "Accumulated amount of memory used by pools:\n\n");
+ #define OBJECT(id, nr)							\
+-	r = atomic_read(&dept_pool[OBJECT_##id].obj_nr);		\
+-	if (r < 0)							\
+-		r = 0;							\
+-	seq_printf(m, "%s\t%d/%d(%d%%)\n", #id, r, nr, (r * 100) / (nr));
++	r = atomic_read(&dept_pool[OBJECT_##id].acc_sz);		\
++	seq_printf(m, "%s\t%d KB\n", #id, r / 1024);
+ 	#include "dept_object.h"
+ #undef  OBJECT
+ 
 -- 
 2.17.1
 
