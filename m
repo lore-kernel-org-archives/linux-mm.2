@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F632CCA470
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 03:31:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7532CCAC5BB
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 03:31:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67FD98E000A; Wed,  1 Oct 2025 23:31:49 -0400 (EDT)
+	id C73638E000B; Wed,  1 Oct 2025 23:31:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 635308E0002; Wed,  1 Oct 2025 23:31:49 -0400 (EDT)
+	id BFF638E0002; Wed,  1 Oct 2025 23:31:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F74F8E000A; Wed,  1 Oct 2025 23:31:49 -0400 (EDT)
+	id AEABF8E000B; Wed,  1 Oct 2025 23:31:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D7428E0002
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9626B8E0002
 	for <linux-mm@kvack.org>; Wed,  1 Oct 2025 23:31:49 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C1147587F7
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 03:31:48 +0000 (UTC)
-X-FDA: 83951749896.12.139F044
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 0641C14000E
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 03:31:46 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Jw6Tp7bu;
-	spf=pass (imf26.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 56D9F1198A9
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 03:31:49 +0000 (UTC)
+X-FDA: 83951749938.27.4A59E6A
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 8F36D140003
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 03:31:47 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iYmkft9B;
+	spf=pass (imf09.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1759375907;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=DZ/+FPBp5ewZOZmlyRlAIqfnrEXjmJAbbb4NEVZDb7s=;
-	b=0jlG0U40B3VPZHq5RMrec122biUhV7UnLfCEZzlLOsEeaf12mt/Pcin9zojHg2i64f5xtJ
-	1I1ABD+Yit1dltZY/HWPSCUcyaOMJ72w7pM++pyirI23T0NQfu/1q7hF8KA4hW+k3dhq1y
-	htSyde/ZAbeHR1+vwJxDGj63qb/l54Q=
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=Rufg8oIBNQHsD1pfje2BrG4IcAIpwo+nq+Bk3IAMT94=;
+	b=bQ34Tho5p0zOZXswkBFx7MuWpGAvyScCXqMQZ9xKUZq2NkShtRo9CW6dLuuBo9zQeUXOMf
+	gQ+lYdLlnghQWBRpEYuPIowkEsAfe47X9cEpMm4wV6n2WJC3rcwQYV4jZeaOJQCsVybJIv
+	5m49QlvNRvnbEfWwUN9LUmoUlA+8Jqk=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Jw6Tp7bu;
-	spf=pass (imf26.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iYmkft9B;
+	spf=pass (imf09.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759375907; a=rsa-sha256;
 	cv=none;
-	b=3TYc2ja4/aHDXu4gGNpXJlHmv09jXyBWI59JRAz2DjY8kZ5iHZb5evmlb0fbv2Omdd5kIi
-	q8HQ+Ardk4OXOJ3O9P2XwG080WWSKctBZJn+nPelpVk8CvF86BtjlgpvzzdGirCvBo0wX9
-	BbOStrOXoMV0HDEaRhJDVn3xHaL2dtU=
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b4736e043f9so111077766b.0
-        for <linux-mm@kvack.org>; Wed, 01 Oct 2025 20:31:46 -0700 (PDT)
+	b=Sawf039JFWFNlawqUoG5r3JXTuRuwSB/Wk5phALdrbPOe8fOhNzUGxtZ28GN8VaZN+fSyr
+	imjSCrWcyVMJliKXHsC71eMAw+nbCkuvH9VsZ42Wb2D0D/h+WKwZamth5dyaxMbj6+A/TO
+	dGDkR7Q5vDxv6/necKzLi1S6k61f3HQ=
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b40f11a1027so108018466b.2
+        for <linux-mm@kvack.org>; Wed, 01 Oct 2025 20:31:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759375905; x=1759980705; darn=kvack.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DZ/+FPBp5ewZOZmlyRlAIqfnrEXjmJAbbb4NEVZDb7s=;
-        b=Jw6Tp7buNkJEqnitL0b9gO3P6Boi+USbU2NeLGPr1oApKaiSGs3M0MT8FNa+y3XlJL
-         Ap2CvB/k1ei2r2DtSq9vKcY3skuEPaUM1g2N/d7B+TxpLrnHOjpXAP86Ug//7d6HEJ9m
-         VXkc39wt3uw+3QZP3UFre5cvDJqPiOtfkKjrKleWXkC0WRbQMVWsUR667Cg8nUmuI9iE
-         2yYowAQ1z3wkeL5U+ZB4uV7obKSZ4a+ZiMJdevjKxNjfXyX1Kf9Pb3vt0SNl/ZdO9Ai5
-         wLS+2QKcrMm3cYS3W9Zh2R0ye6LIiSJp3HZf2wXIHc5nqtfoQ8OF47NLpaZZ+n5WU2iE
-         idwA==
+        d=gmail.com; s=20230601; t=1759375906; x=1759980706; darn=kvack.org;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Rufg8oIBNQHsD1pfje2BrG4IcAIpwo+nq+Bk3IAMT94=;
+        b=iYmkft9Bm9eOc9RYWHlIwiE9n4QAWHe6I6ng15kwt94cRcz4I5ryAxLamel+ywPXxu
+         ymR//Gl5cFE3qt5TO94H5y3ublTL/SywkfcuTL3jeB78GH+zWYcRENvJ97CI+iHJv44V
+         dlmgngUiiNwn4yZMtkSnmULt+TOgEs1/qxykdJD4jlGca6Lc1WOSIbq3+MCQ5cCwrS2k
+         8Zx0CDfiIYTYGn6PqzeT8W3nAlNIEc+1lAufxP8u+bgNhRsYTh3WLLjL+i91fhAqif/O
+         wpKNK3S6t0P8eG2s1tDpOhy79VQRo/AQ24uW8ONUzcBnMgr9H/ZDOAmOkwZWdxVy/UtF
+         Ywuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759375905; x=1759980705;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DZ/+FPBp5ewZOZmlyRlAIqfnrEXjmJAbbb4NEVZDb7s=;
-        b=rb/D9g3p7F8noZjnOb2oYY0bKVrrh1ET+4oMIlWNJha4zJCpQ6DQlI22Oksf87qJ5p
-         K3Uvxs8KtBo3//5Mu9nos/jR/5mPOxiAlXNAxPe/l/pySRW1dl8exolJNShK/kGcweW3
-         vh4oeCzkTYmC5LQDdy9DwWsAgASw+9johXMqPKgfIC5Tg7uXKc8JpB38TbsGnWKE7h4L
-         sQBI/rWYE7HHetLW+I3dFOLJUxTa/4yR0eqj2m2YI2evndBClUTWFLWFKmtYXi7E1t+Y
-         0EL/KdwcrnKCtORg8uWQzcGJWCxwNsV3vnmutzo83/UyxDHhxiAhO+nMgYfVp02/t5RF
-         Onvg==
-X-Gm-Message-State: AOJu0Yyr/75ziFSwKfB0iv1nT7KpzNfyDP4TRVEGPDXigrLnD0vBRWiU
-	6E7LYe9XYkHLi3nYmOe1Kk6mE/KCTOAoa1+KfUEVk9QLCKj/7x5c+/Y6
-X-Gm-Gg: ASbGncsspwDSUg503ekE/B6M90XTQfJBHQQMHtwvkhCf6YppShfydwODX2qkgWCSKQa
-	kEzl/AtKwb2loPr1tkkHias5L0VQRDpb9NdyD+S878FBKijAUEYRbVKaHxg+NEsAnH1pGL1Ebc9
-	j3qfqDP52rHPdorSLgsBsxf6Klwte8DaTvwbkSFbH+3Zbwu7xiEirzMMrJF4WdniDJ64+h5OQdd
-	taWKL0oo8NpDJnkxglGUQHqzcS4IggtQVwz4PaRIOUs1znpICzE59UuzeaC6tMFsm5UcU6RH/M4
-	f9Bgj7MmpLGehLYTu8wt1IUtDxlCEZl5FHVNwb38bLhp6UuP5eTS9x9N/KuOLqtj8KeUebefdD+
-	vEJEuqppg2g9oEo27xcw4xl89l9xzSFktIK8dh4ZRKFaGx+X/Ow==
-X-Google-Smtp-Source: AGHT+IFwMRGXn6UW+v/BVc8BN/QhfwbKV51dO5Zz5XJE5yvTO+gwfVKQpPk2PKg5mHlrE1q1b+PrDA==
-X-Received: by 2002:a17:906:6a10:b0:afe:b92b:28e9 with SMTP id a640c23a62f3a-b46e8f7dd00mr678339366b.49.1759375905206;
+        d=1e100.net; s=20230601; t=1759375906; x=1759980706;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Rufg8oIBNQHsD1pfje2BrG4IcAIpwo+nq+Bk3IAMT94=;
+        b=rlMAc05Ac/5u/nA6KmtjJYqO9/rLxpYZ1e9zHT7H+oySvKf1S0C1qcdgC4pe7iSB3z
+         mUi2dglrMNsUd69/GpFDBK441yURZAnpv+w3VkYQMTYCEIvhNiRsYu4rNNS286H31y4c
+         5simhF7x2JOJ33GIgGiuAvemaqfwv561ydPAGra0gN6o1eavx9xiZUm9LraVvgJXTqlR
+         MMBQeBvXcQm4HnA5bnQLu1/pBerk+VoaHVTBNz7YRX4NHxXTGAAoS234rIbfXf/WGBg/
+         h+Lgqb4YkN+euSQr+DwIcrWlhFAKx45w9EFSluYJ3ZzL3evl97AYX3dwMPR5OZNN2FGJ
+         v6XA==
+X-Gm-Message-State: AOJu0YxzkquZBeuVG3bnlegwOIIjc1WdVpMovkY9jtUdfctsttlx/Fxe
+	wgJF7kX2udwVLtjX8alktPhIUH48JYN11aW1HBRIii6YquiE0zAO/GuH
+X-Gm-Gg: ASbGncu5TdsjkoHZ+Gdm8ESbLmRdA2WCO3j1qRfQ2UtmVatncFwS83PpjQDGYx6QOlj
+	ehpVoF9oB7Wimh2pVhKmsS7OzxFdfhcdev2aNFcvuM9E/FIRsYtZ9lSp/v9rtewx3enMI6VoFcL
+	LxkVn5l0mIqiz7mtSzhx4ExW8X5Lxr7a2sW3t53OXZdrz4QvPcBiTNQikwP5aldWAt8x0ZFh3uP
+	GXQ1caikvBuMkAAn1rQdNfr7to3FvwGHL7oyZXmt3PGZOYg5ynO9Av3X52QKJFOuwckJuBc5llb
+	3DEDhXI16AIh7izM5YcSOze/8mF87tGzxVytOqdFKFkI0JAaxoNjvQ4SC8rAQxjgOZQqQBBYTdB
+	MTOhi1sh+iDIgyYjua4YdB2iTdqT9QivzZ/m+FQTtJIyAlqDb9Q==
+X-Google-Smtp-Source: AGHT+IFJqILO5ZG8t0gtkRLYTkkTle7jH7h5XXwswU4DH15BdPQrGEgjzMk7ANTqOp5tkMCc3qvafg==
+X-Received: by 2002:a17:907:1c90:b0:b43:b740:b35d with SMTP id a640c23a62f3a-b46e9765d7cmr716205266b.33.1759375905889;
         Wed, 01 Oct 2025 20:31:45 -0700 (PDT)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b486970b2desm102887266b.48.2025.10.01.20.31.44
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b4869c4f94asm101834166b.79.2025.10.01.20.31.45
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 01 Oct 2025 20:31:44 -0700 (PDT)
+        Wed, 01 Oct 2025 20:31:45 -0700 (PDT)
 From: Wei Yang <richard.weiyang@gmail.com>
 To: akpm@linux-foundation.org,
 	vbabka@suse.cz,
@@ -101,18 +102,20 @@ To: akpm@linux-foundation.org,
 	iamjoonsoo.kim@lge.com
 Cc: linux-mm@kvack.org,
 	Wei Yang <richard.weiyang@gmail.com>
-Subject: [PATCH 0/2] mm/compaction: some fix for the range passed to pageblock_pfn_to_page()
-Date: Thu,  2 Oct 2025 03:31:38 +0000
-Message-Id: <20251002033140.24462-1-richard.weiyang@gmail.com>
+Subject: [PATCH 1/2] mm/compaction: check the range to pageblock_pfn_to_page() is within the zone first
+Date: Thu,  2 Oct 2025 03:31:39 +0000
+Message-Id: <20251002033140.24462-2-richard.weiyang@gmail.com>
 X-Mailer: git-send-email 2.11.0
+In-Reply-To: <20251002033140.24462-1-richard.weiyang@gmail.com>
+References: <20251002033140.24462-1-richard.weiyang@gmail.com>
+X-Rspamd-Queue-Id: 8F36D140003
+X-Stat-Signature: 8yajzmpo7nqomj4ow1nca4fu8ie7gxrb
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0641C14000E
-X-Stat-Signature: ufmxeu7ygd3zaiwqe378o8f7d6pbrxgq
-X-HE-Tag: 1759375906-161113
-X-HE-Meta: U2FsdGVkX1/qUNKHzxxkfI4pjHARvxPwC5bgzmTwxyQ6+FvWswlQ33vBIES0+WtrAvIkkmFDhSI/qGQ9VgJgQmi60nvdVNJt0GoX7/8Yjj9q2MWi1WA2GJt3e+QHbPSXDOzCrRkfrc0xAPW3MuwRev1ERJXe3YJd+186v9aYdrUCRE7julMI4OaUzhCOsuEw/II9KN9jrMZ6veot0Fo7TbCF1H+D8yZRjI+E3Y1Z4ZcEwnW+zxH66YNq/P91emrPThy4RdAA0Kdsc4ygYv97WoWNCSVPSaBhM6IO2StP/ErdLfwfOd5duOx6nS74zGhrNSXznbmeU2uXuW9CuEJob4SJ+Npavvwv9IjU75x0uFK9qGN0bbEe6mPZ8G/Q6qgL6R3HXt+aIKNNYthebUbLZ3R7hoQAULz/mOLDe+Nzgu+rNfXpltZDob3N/OW1W+OVGASSWEo2xteEXKGCyCYc6wAjPGqQLavrfdoeBaToAgy8EhvAJlEjiOGgf/7TCKBbCbItTZqYhuCOrMOCrRctUJmYjnXHxPDFpTYqL8JaI0IvLf5K7RWAOWgMBvXt2CbGAGeO2m66wVl+OVc0GRosspNYY7168EAtOlHCAw8y3DeSz8xR2M5ewciu5xg07Ck4ubgEVriGeLE33N4n7ZTF6S8rORSRXLdvhPGW1pNzgJX8hiu20AQiH5WFbWlY87HrrDERwLZq5NF9DKm8/OTNCP5OcrFL0pbD6iY64lRptsr1Faq33aGdN1osxz4oDpHuaG4j45saW0Kcyeo0vopdZaIx8FWAwd+4/DfQpPJNhSLApBR3sLhFsBsKZK8qpZfbidI7F8B4bNvvO9KkSpJpg057143MWY36pttZ5Tz1EpBNuwJJ14MkYriLAWVzTzBy7NA4unfmyrIgAbfNorF1osIMq/rSDw9Nt3gjUHH3V+3FQmixqs0tJIUHn6B23WIXKVEqsVMPsh5xfDDqtWj
- J6B9pmO8
- FLnxvsGbiD7sys8M36wAlPWjgJjoq0epPPTUEflce+8siFdn2mefFz5fBdLQjKzFHQmDqwxRHPDzJDY899L+L941fKkLSLNrM2hJbm06t+hVifVdI9rnzkEYBqW72dxPkATnv01JwFZ02Q6zxZDpiDzIEzjfPdyQ9zPSo94IGqZjbPvcvUuOJguKiIb3a2ziW6gvNONDRdPSodi55gsCLcQKxEV8R4zvW2b2EpeYzQYq5NxuNF84aLYYWMFROJN2mlalFp5/RoPhzRbdCTukFAfI95Rb7b093jQrrC2vDvoxpU5aWUdkxHZCFGCWqRjHcRbDpS5NO+zqaFVeWuKcxuWMRSO5XqaZv06/Uk6jD+QRzs5Mlfeex/rtuZ7G3GLPv4Dnrn0UA44IRl39RILrpJjwNu6fxELuj6ftKqeS2vBZOlasoeD+raejpEil7yk/hq0EpxWBLtf/t1k0mbSWumm+7yoOJNHXTSuaGBF/l82BQATzWAMNTPdHUk/U0pnPSLozkUoc+7eNBe7DKQdvxfTM3zUMvBA4a47rV7SnRpYOJrvRw+cCSXoPuPA4Wt8g4oeX1hazztVvbHnA=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1759375907-135070
+X-HE-Meta: U2FsdGVkX1+WV25GTtI7/ee1GpbGdJDfNpHX/Gtc5YcmIOx3MYhNIz2lacY5sBcTCTi7CWg4L6EL6iWlTDqkYncGXSNsgKdbCV+00zEFb7sHrMwufS1vbVmaoJ3DZ/Ob/bJgeLLUiYQlMj6NOKL6cA+wb6+Um2pULT3BkN7G4vR9FoZ5btlGk/ABOaMP1WxyDdVB5QJszG+OoJwEmu0iI5z7RqR+jHirrUcbUzu3xRJwrM32cD3XRUCTBeEJZGj42qT9tomAS1uMw6xDd1VQny8Hoi8Qf5ldQj2xJ0IEsHg9mIDp7iPceK53cvf9biRcsgxivdXiVLCbIK09OIrA8WqVxvre78EchjOonc8hyAOJ24lR0HV7idjWMD3XPOr2LlM660C12wPcdVw3cTBwc+UbvJjQUVlxC0fKibcpjSX9Shf+xU7d35CAfSh2DVncoZklV70d8PY2rHPv61z6fH/Z3rta+zsKx6ZUcr4vCkYNTzQScjvsazCHG84P2IVhNrMkZQMr1js5YDzAP5ONetbql9qfS/P24lY2Qycre/oHIAmswg26in7gqVAfDdxP4G/j4ckj1E304ZKj0qLe8B2sW9bw2gSZxL4EXpuOXjf3uqS7CBGjZgmBvksrzleW4QHw9doh8bgJt6xljfHPHJTJ+GTKZAZGNLyanHVR0PlXzOZMIyBzv3pSbbbeCV07dleKWYN3J0Jl9CUpGKdIGyZD73017RxWkZ9L04sepJvV8WBNZNJ+14otUc2MwtmmaIFAGeGGy0zFW78hUJcZkWQm/3XHz8bvjUMECKlnSqvhEDZfvRRmKAsfsjDv0oXik1++dJ/E6yg0AlqKUOLFLeN+4h9uBqmqQYX1TATv+erdADZODFRFYwUxcsdSlcDhW2mmCMu3izp9XM5WdjIhcf7RNJo0r64xe+B1yyK33/0FCviJXDpIGuQR0ZuwU6QBuvLdpyuPgVSdna5l8BW
+ dzy9sivF
+ vK3PSFWVXVWgex2JOTo3BAcZ9jtlYkWdEGXVxNEyuw9TmeWWlpOqEvHzDFwI/ciK6VsJ5v2XWtyMfQ7eN7TK+vnIPw+mN/V0IUHFv3WiENXQXqEbPUdrpO4YHD06IdgqK6XkHObe0mzzpUOVaCN2F1e8oFH7Psb1oVULdpyiQ4iZSawdnJWiug3vt7xMcD+U1HfB3UbueLOh4bb7lFABgxG/n3ttmtsrG+MjJWBdx8MJriiYGQD5Mbfc5XfjkYP/Lr87ltNutJC14p7uewlxgAe5RbuidsuN9W4wL8sNZTRqeB1fO+xS5zBqwXohig/TtGqYc2AsOBlTF+jUUqoSCBWTUG5tuEiuasz9t68vIjUzQ3vMRndADiJIWBIDadl0BdYnQiOPmecQ14BNkzXJdtrLODn+P6CvEcbQA5wRGnOnuDaNnynfj6GEz10X76NQHcC7UHloEXLNTzim+5jhDYouIE9IdtGw3k6Hp/JrugGM6nKctRZVQkqgcoFQ5eBK+3EfjoY/X6Zdd4npbGd8xWSf/0EKnmD/Q5RPisd0cJ6I2Zk3qKGMzb5+BnQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,32 +124,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-During the code reading of isolate_migratepages_range(), first spot the range
-passed to pageblock_pfn_to_page() is different from that to
-isolate_migratepages_block().
+Function pageblock_pfn_to_page() is introduced by commit 7d49d8868336
+("mm, compaction: reduce zone checking frequency in the migration scanner"),
+where there is no requirement on start_pfn/end_pfn except they are in
+the same pageblock.
 
-This implies there is a chance that pageblock_pfn_to_page() thinks the range
-is in the same zone, but isolate_migratepages_block() will isolate range in
-two different zones. This is not what we expect.
+So at that time, pageblock_pfn_to_page() would be passed with pfn
+without compared with zone boundary.
 
-Then I found pageblock_pfn_to_page() has an optimization if zone->contiguous,
-this means even the range is across two different zones, it will think the
-range is within the same zone.
+But after commit 7cf91a98e607 ("mm/compaction: speed up
+pageblock_pfn_to_page() when zone is contiguous"), pageblock_pfn_to_page()
+would think the range is valid and in the same zone if zone->contiguous,
+even the range doesn't belong to this zone.
 
-So introduce two patches to fix it:
+For example, in fast_isolate_freepages(), min_pfn is assigned to
+pageblock_start_pfn() and passed to pageblock_pfn_to_page() without
+checking with zone_start_pfn. And mostly, the end_pfn is not checked
+with zone_end_pfn() before using.
 
-Patch 1: check the range belongs to the zone first
-Patch 2: pass the correct range to pageblock_pfn_to_page()
+To make this function robust, check the range is within the zone first.
 
-Wei Yang (2):
-  mm/compaction: check the range to pageblock_pfn_to_page() is within
-    the zone first
-  mm/compaction: fix the range to pageblock_pfn_to_page()
+Fixes: 7cf91a98e607 ("mm/compaction: speed up pageblock_pfn_to_page() when zone is contiguous")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
+---
+ mm/internal.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
- mm/compaction.c | 37 ++++++++++++++-----------------------
- mm/internal.h   |  3 +++
- 2 files changed, 17 insertions(+), 23 deletions(-)
-
+diff --git a/mm/internal.h b/mm/internal.h
+index 38607b2821d9..8e1a3819c9f1 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -724,6 +724,9 @@ extern struct page *__pageblock_pfn_to_page(unsigned long start_pfn,
+ static inline struct page *pageblock_pfn_to_page(unsigned long start_pfn,
+ 				unsigned long end_pfn, struct zone *zone)
+ {
++	if (start_pfn < zone->zone_start_pfn || end_pfn > zone_end_pfn(zone))
++		return NULL;
++
+ 	if (zone->contiguous)
+ 		return pfn_to_page(start_pfn);
+ 
 -- 
 2.34.1
 
