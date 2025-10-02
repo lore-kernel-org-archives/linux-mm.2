@@ -4,112 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE69ECAC5B0
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 11:23:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85CCDCAC5B0
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 11:29:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10CD48E0007; Thu,  2 Oct 2025 07:23:29 -0400 (EDT)
+	id C3B318E0008; Thu,  2 Oct 2025 07:29:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E55C8E0002; Thu,  2 Oct 2025 07:23:29 -0400 (EDT)
+	id BEB9C8E0002; Thu,  2 Oct 2025 07:29:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0214C8E0007; Thu,  2 Oct 2025 07:23:28 -0400 (EDT)
+	id ADA978E0008; Thu,  2 Oct 2025 07:29:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E3FB08E0002
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 07:23:28 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 91E4B590C7
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 11:23:28 +0000 (UTC)
-X-FDA: 83952938496.03.2259F55
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A8F3B16000C
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 11:23:26 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=JmWkhctU;
-	spf=pass (imf08.hostedemail.com: domain of 3rWDeaAgKCDYbSUceSfTYggYdW.Ugedafmp-eecnSUc.gjY@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3rWDeaAgKCDYbSUceSfTYggYdW.Ugedafmp-eecnSUc.gjY@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 956B28E0002
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 07:29:37 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4C3F813B0F4
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 11:29:37 +0000 (UTC)
+X-FDA: 83952953994.17.92D958B
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D558FA0004
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 11:29:34 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759404206;
+	s=arc-20220608; t=1759404575;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=StwXEML9DUJ/mYJQmtqU+M+tGtJwCRVezsEJIIsHWHo=;
-	b=Xt0O8MaSziWvf9WvoXJ3Ve/qFXHBuyteYUYE+EuEqtE+dfr+Wg5j7O9navfjyDP+0TU1MJ
-	rgUXPalUvOeCPdGzfPpuYYarldJeigHIoQPsYtM1XWDLl9GHSETEYmpifhc6fakQXjBWg+
-	0+AZv5iI1vEtW9AX8WSC1HFM1WO1N9Q=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=JmWkhctU;
-	spf=pass (imf08.hostedemail.com: domain of 3rWDeaAgKCDYbSUceSfTYggYdW.Ugedafmp-eecnSUc.gjY@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3rWDeaAgKCDYbSUceSfTYggYdW.Ugedafmp-eecnSUc.gjY@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759404206; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v2EV1rnXWfWTtwYqp+lyv35rV+m9/NB0XXcKL1NcXtQ=;
+	b=qd3fzzR1xTPwJ6prWBKGyVPkJUAbRvSaSpGlERTB1vJnGLd0kxPXX1UjMKtLvuQUsIjsQ9
+	YxujTvwA8j8hy28qr0Wc2jvs4ymTO0EKGZaoBKgn4JmM/q12Sk7yGs4mZmIUnLpj5QmFb5
+	dXoKH/NhuMhME99+vJXs5UZFTBV5RiA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759404575; a=rsa-sha256;
 	cv=none;
-	b=IVaCCvIkNekypM2JB/5d7aArsThxoxz6zaMV8O2xuN4DN5mLbuhosqyYqthHuEeb7aRkzg
-	cW7cDjOGN107rOpO7BaaVhgoJz1YFbh4lHn6/9E36ZucZz2GJcO+E/GB3p55OKEJgD7ZaD
-	udh7xvohTK3vOA2nMvb72Izu4X7z6So=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-46e35baddc1so6276325e9.2
-        for <linux-mm@kvack.org>; Thu, 02 Oct 2025 04:23:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1759404205; x=1760009005; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=StwXEML9DUJ/mYJQmtqU+M+tGtJwCRVezsEJIIsHWHo=;
-        b=JmWkhctUAR/+6NFWp0L8i56dgRzR4j83kVfIerB5XhJwAilMSCKoHML84hUqtX5+5L
-         cXkEE+AJOl0ANCNdiwJ/xrm9jJQEeZj7BsE8iJ1KciqyZXH0w1c4dj4tFG8r2BZTWoWa
-         1BmP5Y1Qxy7VsYGjkFRhfbcmKQXg+tBgggIGpRFHlIQ2N2VLyM4c49tw90Lk3c+YIXfw
-         Kcm89uDNQeJJoSR6AgTtKNrdP19r+lr9d6TOxBmYEZ6qOyKO8oo3yPPfanBiNcrbRuzC
-         G1/lc9+qfa2B5ZJ08mPpdj5FW6Xov9L4mdjpoe1G8CpR2cogwJxVqGAhK3XCqxrNheJG
-         4klQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759404205; x=1760009005;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=StwXEML9DUJ/mYJQmtqU+M+tGtJwCRVezsEJIIsHWHo=;
-        b=js/ZO6qk6UhXdgkJUNfKLDppDrwwCq9+fSAZhJ/MzSmvEMdSWu5XBliQUiDYcUHC86
-         /ZpzGs5nVtLt1KvZ3diWT4dOBg8dz3JuPqDvqxmot8e3neVStSyfBzY8VvPw/STFBh+T
-         m3GWuISqvxUk13vfIPgw0FESy6hybtdTDubuY7CsMUnE9xLqDXaDoKYWqxZEh2iA63kr
-         v+buErlsau0r1Qdy90p1qUdSbnwen13d2HTYt/QTwLws8Um6zsAqSlxh3DmDUEvvv+Cz
-         d/2cLkrTSOmjlmAJYwoqVJkBdUnRhiSYUEKFK9ZzgbSijwuHIpyR9OMslCRZHGOb3+Fm
-         KsPA==
-X-Forwarded-Encrypted: i=1; AJvYcCXEDxV7VNm8ZFxhoIEKV3shiEmnqRv2PwaceTAV5wZVpSqftTspsIRQBWto0LWWnglIvukZyUE3hA==@kvack.org
-X-Gm-Message-State: AOJu0Yxd7rdGwDI+m/YBGMZjEaZ6iK13NKIQGqjLWpjsqdn8WtzEqjVz
-	6+oflD/jkWfLsmPeYMm6PCPF/gtkLixVDL1i5kQgkA0f93B2L5o/N8xkFiPwV50W2tjOIqs/iTy
-	imM+kSIA4bE+b3Q==
-X-Google-Smtp-Source: AGHT+IGWDUkaG6p5pIygtGCDP/CQv3zB4el8v6qelCaY1TuvOduqSN++5HdFowlfxZPTYWDWDdFsU0TbBAaraA==
-X-Received: from wrnk2.prod.google.com ([2002:adf:e8c2:0:b0:3ee:fb15:5340])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:5f55:0:b0:424:2275:63c2 with SMTP id ffacd0b85a97d-42557816e2fmr4729772f8f.33.1759404205042;
- Thu, 02 Oct 2025 04:23:25 -0700 (PDT)
-Date: Thu, 02 Oct 2025 11:23:24 +0000
-In-Reply-To: <00e7ff5e-fe6c-4edc-9bf8-2352321f74dc@intel.com>
-Mime-Version: 1.0
-References: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com> <00e7ff5e-fe6c-4edc-9bf8-2352321f74dc@intel.com>
-X-Mailer: aerc 0.21.0
-Message-ID: <DD7SQLDVNSRL.XJ8PUCH6GYR1@google.com>
-Subject: Re: [PATCH 00/21] mm: ASI direct map management
-From: Brendan Jackman <jackmanb@google.com>
-To: Dave Hansen <dave.hansen@intel.com>, Brendan Jackman <jackmanb@google.com>, 
-	Andy Lutomirski <luto@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>
-Cc: <peterz@infradead.org>, <bp@alien8.de>, <dave.hansen@linux.intel.com>, 
-	<mingo@redhat.com>, <tglx@linutronix.de>, <akpm@linux-foundation.org>, 
-	<david@redhat.com>, <derkling@google.com>, <junaids@google.com>, 
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <reijiw@google.com>, 
-	<rientjes@google.com>, <rppt@kernel.org>, <vbabka@suse.cz>, <x86@kernel.org>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
+	b=Qx2+C9NVr8YSenDEQg/NNgw7JRz8X2fT1c5QPqN8FYNdYp9pGDMg7W/CNOeUaAESTGvEMA
+	kfnNTv2f4JEOg6wGtQmyDH/UGNKKF5wy/hhIaTl6dbNyAZrzQgaahu/muy/4eMUW6fBcGM
+	N7GE7aXxm9sJRyqQkorzdifAdP6sWgQ=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ccqHc6cckz67FbS;
+	Thu,  2 Oct 2025 19:26:20 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id ABDE7140144;
+	Thu,  2 Oct 2025 19:29:30 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 2 Oct
+ 2025 12:29:28 +0100
+Date: Thu, 2 Oct 2025 12:29:27 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Shivank Garg <shivankg@amd.com>
+CC: <akpm@linux-foundation.org>, <david@redhat.com>, <ziy@nvidia.com>,
+	<willy@infradead.org>, <matthew.brost@intel.com>, <joshua.hahnjy@gmail.com>,
+	<rakie.kim@sk.com>, <byungchul@sk.com>, <gourry@gourry.net>,
+	<ying.huang@linux.alibaba.com>, <apopple@nvidia.com>,
+	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
+	<vkoul@kernel.org>, <lucas.demarchi@intel.com>, <rdunlap@infradead.org>,
+	<jgg@ziepe.ca>, <kuba@kernel.org>, <justonli@chromium.org>,
+	<ivecera@redhat.com>, <dave.jiang@intel.com>, <dan.j.williams@intel.com>,
+	<rientjes@google.com>, <Raghavendra.KodsaraThimmappa@amd.com>,
+	<bharata@amd.com>, <alirad.malek@zptcorp.com>, <yiannis@zptcorp.com>,
+	<weixugc@google.com>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
+Subject: Re: [RFC V3 6/9] mtcopy: introduce multi-threaded page copy routine
+Message-ID: <20251002122927.000039e5@huawei.com>
+In-Reply-To: <20250923174752.35701-7-shivankg@amd.com>
+References: <20250923174752.35701-1-shivankg@amd.com>
+	<20250923174752.35701-7-shivankg@amd.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.15]
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
+X-Rspamd-Queue-Id: D558FA0004
+X-Stat-Signature: 9ryahnutorc8bbr88bxat4otzqqat1wg
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A8F3B16000C
-X-Stat-Signature: z9hf6xydnmsrcb16cgjy83mw1e16psjo
-X-HE-Tag: 1759404206-680284
-X-HE-Meta: U2FsdGVkX1/NrBC7mtF7e5XZxBGjRrNG7XYxRvGFhSxfpl2AdDsIUAjXpeLrfRAim18M1V19nxqsr4ff4QB7Mn0YMEiBUu8EWT4cm0rFKZ4yKpI/YBc7BnQwxrWHqhlxfs6FpJlYkCsWMYL0rE5C75u5n23RasWGSxHYzt2cHuQ8Xy1DYWECFgDHJo0BDRx2sw4V1Q9wylTMugCbbzJuFq8gtaoEyYln7uKUGkBRr7H3BQWb+Q8o5h94dEr/XP7xY/uJclCDOjurbfwmB69M8KfnTn1eOUY09leWobBMsFm3PcnVeZ8sucVNnChSbQXYSpy2Pi3Feel/FAnn+ODxCB0XU0VqjGDQZOBwZkYmNeciHaH7P4kja7p4nGNelXkqliq6gNsIBlVjxsKBaT4fwhooSZAMPkozaNF6jyuz0sYc9f3h6Zqc4OmpGR5lINIDDHuQoMK+yklE2DLRS1k2kw7n8JvySGn5UJxQcl044FlyERlIauvsC0MRlBmBZVSWwVk/Mdfp2ukf5uDmdvMN+evws7Jrcix6bdT//i77TqHcE01sPB07L6D9ZUEY1TG+3kIgSLIx5uCu8shIWvfjHxDE43UX7ysgdlJ5h8HA6gDYW6/3ed224BjBRZKkZUvFK+Ez+CND3Op/3XpLLNoW89d0Yma/zP+8dgXQb9p/rFOz1VX9GhaICEl6d4lRABFEPPBIJPbIygi8jLw/ojS6Lp2EK9j54XA94nqfMajbVfOXVHko+wSd/agTgvke5143Th9UU68sB57VG5oHO54ZNga3nZK94OAvg503kaosROKZzCOqM7IMINe9sW8WXIwIaEQQs6dIZLBLk/KR+GHT5Sl4YfiQPONvLu1dPvgIcHjNyCHI2zX/g8IemHzdpnuQbzk5o9gPXehYR7s7vWWd1m0GQjGgOsg/vh+4ryNP6gWKcrMG6UlvnH9kZGXupPXD9ZxO4ln19FGnVj4ohn5
- bdcXZHuA
- xIMVcHJdtO3Nij6VqgjAK6R6rH2+4T2vLRx0DVJ8HCpZR8C6EC+wKQzFH06nKdb4hmbiJJs7kbWxyW2Ye1U7wKu+IqoHIYfDvpyt+AQSM1ywf0yq9xKbsApd22ZVvDNlWLPdbJ2pJw3cvyxlJ4Rd0bqG37WGhMrWpL37RHKSjtxfjxHMm8Yf64RqIr7xkNipOGpFQQ7CbeBid9H68BaXhZWhmYgJGbBQ0NnxOso09Z2DN8LWU5rkuHVkn0i7m0Z5+qedZ7ewbQ/WxEa4w/MAIVJ+W8htvqzD3V3TtYQIo5mUbt5r/lPi3v2DqhFMbN1eUr5ndabHlAsWcoma07aNVnJCVSXCvY5i1mOcaGchANsnfY0AhbUA2xCLiDf++yOP2b+WQnoMpBHhFJlFstk85sUpSnk/OiPATI0b0DCtkN8DTgVau+YpwZDnG6GS9Tc0T2zQkoGlbVlPcqx0lQ1vvm18IE8eiyd2LksFL75Ah8wCVk8F1CpGULPVIQVdQhQkLUdABZBzdpelNeh/utyZSwnaEY6IY1hmye8vmX9xz1W/MTom5GdqLbDo7mgv3D1aRHKzMWBIG73YqHmk=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1759404574-771131
+X-HE-Meta: U2FsdGVkX1/X6stU1/lJJ7y+2nQZXmbMB8KMq6SooWZ3t1PFp5c+UZ1QmEBccyZX5zcsQfTs2YYe/jzBg7pu/D7kAHlHGbFh9tz4XSJpC7oKk+gsmSzjBXqJlYhEpON5bdqAF97Tl5WVX+39hXza5C5MSsVUix2qNFIVC+tCJPdAG/FksivT9WvuFmpTmEZ7Zumd06zvDytqK4um2dOst+ILnhjVblfzck/JGQb7Q753XIv7880uOzZH1EcVM+Zn1ONAH4LhknFTbMX2mcItRKGNXOMJmFcd1q8+DZtnqaEAShAbRE/FXyW44BNMHN97/MvYB/33X9/ZZ8UgYmlH+K5zNBph34yalS06ZcKzqASYt9G0MgrC4/hJVmZ9THxRO2M9f4vZE+ly6s+zl1T1iydJVy7Bjj/60UhWHxQqBMq90hz/QDLKyMBRRLzi1DZy3OcCQ2PqjOxscL2lOohginl/d6A8G9nnq55tHNfJFYIpTufRswz097e0VU8pxEysrkroamC/4jJ4sP2L9+wlXtfi1jYhyBRBudD2x92DyweheUGoXnymtCazJLy/zeLFkbVxeQU6LDb4+Dcb92/OizcpMNj2h2nju7CD8L/gGw7BQTRuljtBMG5W/r+N/Z7bJm/uSjXccW9Xkdf21CRIblHxVEI4/4kelSukqr/Q1THVD6VM8JZYGJ46axuNcOWjPoIpvrORQ4//UWsjZwASv88w8isp/V2XEYOVbhyS4lxl/kbOEEr8YfqTQ7zYFgJMsDUr3NPkNb57sUNd7g0WZGP4fGcCokxODq+3RSFg0yWtcXR3fIG/lzb1aOw62APcp5t6Kz6KZk2SQaVq5cyNCVLXiG/i0b0MN9UiQ8+PbCTbHkKJK9wLGH9DBOqBSGqRI8r//dZhYa7B2/RFp1HS+wVmzmnE5tmNs9VCXfes9KLsdvxMvY9Ri768IiRZfXmD+1RFtWp/6qq//AaEJKT
+ FiVpuerB
+ St1ZDCocK3vONwReDwY4hvQ09bCg0pXg2SnaeCJA8XKLBVDza9Q1Nx0TgOYvAcl6KOr+fwgb7j6tbjsKQMto88JqrnYh3+8CWkVEeuzVZlDN6sqHUZzW2WXrpt7Ykzc5SD8spZqKTLAGNy4Sd2xest8AbvO0x2vj2/OPORdUbd9oxi0c5a0zWLRa/AlQCFPpcLA0+wr1K8PPu7hYntc9hoKKrmRxscVHC2nkx8yb+zol0WBR2HyRQwr2xpeUVGsccdAAFw7+3jkb57H5OoII/zuDPlWdYNH3hPQiO1tXBWeYQSV2WdiZig+939g1Aex8Xu47dGHhzThDhYp6QEcqd/JWeRQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,60 +102,391 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed Oct 1, 2025 at 8:59 PM UTC, Dave Hansen wrote:
-> On 9/24/25 07:59, Brendan Jackman wrote:
->> Why is this the scope of the first series? The objective here is to
->> reach a MVP of ASI that people can actually run, as soon as possible.
->
-> I had to ask ChatGPT what you meant by MVP. Minimum Viable Product?
+On Tue, 23 Sep 2025 17:47:41 +0000
+Shivank Garg <shivankg@amd.com> wrote:
 
-Yeah exactly, sorry I am leaking corporate jargon.
+> From: Zi Yan <ziy@nvidia.com>
+> 
+> Now page copies are batched, multi-threaded page copy can be used to
+> increase page copy throughput.
+> 
+> Enable using:
+> echo 1 >  /sys/kernel/cpu_mt/offloading
+> echo NR_THREADS >  /sys/kernel/cpu_mt/threads
 
-> So this series just creates a new address space and then ensures that
-> sensitive data is not mapped there? To me, that's a proof-of-concept,
-> not a bit of valuable functionality that can be merged upstream.
->
-> I'm curious how far the first bit of functionality that would be useful
-> to end users is from the end of this series.
+I guess this order is to show that you can update threads with it on
+as system load changes.
 
-I think this series is about half way there. With 2 main series:
+Maybe call this out explicitly?
 
-1. The bit to get the pagetables set up (this series)
+> 
+> Disable:
+> echo 0 >  /sys/kernel/cpu_mt/offloading
+> 
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> Co-developed-by: Shivank Garg <shivankg@amd.com>
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
 
-2. The bit to switch in and out of the address space
+Various other things inline.
 
-We already have something that delivers security value. It would only
-perform well for a certain set of usecases, but there are users for whom
-its still a win - it's already strictly cheaper than IBPB-on-VMExit.
+Thanks,
 
-[Well, I'm assuming there that we include the actual security flushes in
-series 2, maybe that would be more like "2b"...]
+Jonathan
 
-To get to the more interesting cases where it's faster than the current
-default, I think is not that far away for KVM usecases. I think the
-branch I posted in my [Discuss] thread[0] gets competitive with existing
-KVM usecases well before it devolves into the really hacky prototype
-stuff.
+> diff --git a/drivers/migoffcopy/Kconfig b/drivers/migoffcopy/Kconfig
+> new file mode 100644
+> index 000000000000..e73698af3e72
+> --- /dev/null
+> +++ b/drivers/migoffcopy/Kconfig
+> @@ -0,0 +1,9 @@
+> +config MTCOPY_CPU
+> +       bool "Multi-Threaded Copy with CPU"
+> +       depends on OFFC_MIGRATION
+> +       default n
+> +       help
+> +         Interface MT COPY CPU driver for batch page migration
+> +         offloading. Say Y if you want to try offloading with
+> +         MultiThreaded CPU copy APIs.
+Try?  I'd be more positive in the help text :)
 
-To get to the actual goal, where ASI can become the global default (i.e.
-it's still fast when you sandbox native tasks as well as KVM guests), is
-further since we need to figure out the details on something like what I
-called the "ephmap" in [0].
+> +
 
-There are competing tensions here - we would prefer not to merge code
-that "doesn't do anything", but on the other hand I don't think anyone
-wants to find themselves receiving [PATCH v34 19/40] next July... so
-I've tried to strike a balance here. Something like:
+> diff --git a/drivers/migoffcopy/mtcopy/copy_pages.c b/drivers/migoffcopy/mtcopy/copy_pages.c
+> new file mode 100644
+> index 000000000000..68e50de602d6
+> --- /dev/null
+> +++ b/drivers/migoffcopy/mtcopy/copy_pages.c
+> @@ -0,0 +1,327 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Parallel page copy routine.
+> + */
+> +
+> +#include <linux/module.h>
+> +#include <linux/kernel.h>
+Generally we are trying to get away from anything including kernel.h
+directly.  There is relatively little still in there, so maybe check
+you actually need it here.
 
-1. Develop a consensus that "we probably want ASI and it's worth trying"
+> +#include <linux/printk.h>
+> +#include <linux/init.h>
+> +#include <linux/sysctl.h>
+> +#include <linux/sysfs.h>
+> +#include <linux/highmem.h>
+> +#include <linux/workqueue.h>
+> +#include <linux/slab.h>
+> +#include <linux/migrate.h>
+> +#include <linux/migrate_offc.h>
+> +
+> +#define MAX_NUM_COPY_THREADS 64
+Add a comment on why this number.
 
-2. Start working towards it in-tree, by breaking it down into smaller
-   chunks.
+> +
+> +struct copy_page_info {
+> +	struct work_struct copy_page_work;
+> +	int ret;
+> +	unsigned long num_items;
+> +	struct copy_item item_list[];
+__counted_by
 
-Do you think it would help if I started also maintaining an asi-next
-branch with the next few things all queued up and benchmarked, so we can
-get a look at the "goal state" while also keeping an eye on the here and
-now? Or do you have other suggestions for the strategy here?
+> +};
+> +
+> +static unsigned long copy_page_routine(char *vto, char *vfrom,
+> +	unsigned long chunk_size)
+> +{
+> +	return copy_mc_to_kernel(vto, vfrom, chunk_size);
+> +}
+> +
+> +static void copy_page_work_queue_thread(struct work_struct *work)
+> +{
+> +	struct copy_page_info *my_work = (struct copy_page_info *)work;
 
-[0] https://lore.kernel.org/all/20250812173109.295750-1-jackmanb@google.com/
+container_of()
+
+> +	int i;
+> +
+> +	my_work->ret = 0;
+> +	for (i = 0; i < my_work->num_items; ++i)
+> +		my_work->ret |= !!copy_page_routine(my_work->item_list[i].to,
+> +					my_work->item_list[i].from,
+> +					my_work->item_list[i].chunk_size);
+> +}
+> +
+> +static ssize_t mt_offloading_set(struct kobject *kobj, struct kobj_attribute *attr,
+> +		const char *buf, size_t count)
+> +{
+> +	int ccode;
+> +	int action;
+> +
+> +	ccode = kstrtoint(buf, 0, &action);
+> +	if (ccode) {
+> +		pr_debug("(%s:) error parsing input %s\n", __func__, buf);
+> +		return ccode;
+> +	}
+> +
+> +	/*
+> +	 * action is 0: User wants to disable MT offloading.
+> +	 * action is 1: User wants to enable MT offloading.
+> +	 */
+> +	switch (action) {
+> +	case 0:
+> +		mutex_lock(&migratecfg_mutex);
+> +		if (is_dispatching == 1) {
+> +			stop_offloading();
+> +			is_dispatching = 0;
+> +		} else
+> +			pr_debug("MT migration offloading is already OFF\n");
+> +		mutex_unlock(&migratecfg_mutex);
+> +		break;
+> +	case 1:
+> +		mutex_lock(&migratecfg_mutex);
+> +		if (is_dispatching == 0) {
+> +			start_offloading(&cpu_migrator);
+> +			is_dispatching = 1;
+> +		} else
+> +			pr_debug("MT migration offloading is already ON\n");
+> +		mutex_unlock(&migratecfg_mutex);
+> +		break;
+> +	default:
+> +		pr_debug("input should be zero or one, parsed as %d\n", action);
+> +	}
+> +	return sizeof(action);
+> +}
+> +
+> +static ssize_t mt_offloading_show(struct kobject *kobj,
+> +		struct kobj_attribute *attr, char *buf)
+> +{
+> +	return sysfs_emit(buf, "%d\n", is_dispatching);
+> +}
+> +
+> +static ssize_t mt_threads_set(struct kobject *kobj, struct kobj_attribute *attr,
+> +		const char *buf, size_t count)
+> +{
+> +	int ccode;
+> +	unsigned int threads;
+> +
+> +	ccode = kstrtouint(buf, 0, &threads);
+> +	if (ccode) {
+> +		pr_debug("(%s:) error parsing input %s\n", __func__, buf);
+
+I'm fairly sure you can use dynamic debug here to add the __func__ so no need
+to do it by hand.
+
+> +		return ccode;
+> +	}
+> +
+> +	if (threads > 0 && threads <= MAX_NUM_COPY_THREADS) {
+> +		mutex_lock(&migratecfg_mutex);
+> +		limit_mt_num = threads;
+> +		mutex_unlock(&migratecfg_mutex);
+> +		pr_debug("MT threads set to %u\n", limit_mt_num);
+> +	} else {
+
+I'd flip the logic to test first for in range and exit if not. Then
+no indent on the good path.
+
+> +		pr_debug("Invalid thread count. Must be between 1 and %d\n", MAX_NUM_COPY_THREADS);
+> +		return -EINVAL;
+> +	}
+> +
+> +	return count;
+> +}
+
+> +int copy_page_lists_mt(struct list_head *dst_folios,
+> +		struct list_head *src_folios, unsigned int nr_items)
+> +{
+> +	struct copy_page_info *work_items[MAX_NUM_COPY_THREADS] = {0};
+
+{} or { NULL } perhaps given it's an array of pointers.
+
+> +	unsigned int total_mt_num = limit_mt_num;
+> +	struct folio *src, *src2, *dst, *dst2;
+> +	int max_items_per_thread;
+> +	int item_idx;
+> +	int err = 0;
+> +	int cpu;
+> +	int i;
+> +
+> +	if (IS_ENABLED(CONFIG_HIGHMEM))
+> +		return -EOPNOTSUPP;
+> +
+> +	/* Each threads get part of each page, if nr_items < totla_mt_num */
+Each thread gets part of each page
+
+total_mt_num  Though isn't the comment talking about when it's greater than or equal?
+
+
+> +	if (nr_items < total_mt_num)
+> +		max_items_per_thread = nr_items;
+> +	else
+> +		max_items_per_thread = (nr_items / total_mt_num) +
+> +				((nr_items % total_mt_num) ? 1 : 0);
+> +
+> +
+> +	for (cpu = 0; cpu < total_mt_num; ++cpu) {
+> +		work_items[cpu] = kzalloc(sizeof(struct copy_page_info) +
+> +						sizeof(struct copy_item) *
+> +							max_items_per_thread,
+
+struct_size() looks appropriate here.
+
+> +					  GFP_NOWAIT);
+> +		if (!work_items[cpu]) {
+> +			err = -ENOMEM;
+> +			goto free_work_items;
+> +		}
+> +	}
+> +
+> +	if (nr_items < total_mt_num) {
+> +		for (cpu = 0; cpu < total_mt_num; ++cpu) {
+> +			INIT_WORK((struct work_struct *)work_items[cpu],
+Why not avoid having to know it is at start of structure by using
+work_items[cpu]->copy_page_work instead.
+
+> +					  copy_page_work_queue_thread);
+> +			work_items[cpu]->num_items = max_items_per_thread;
+> +		}
+> +
+> +		item_idx = 0;
+> +		dst = list_first_entry(dst_folios, struct folio, lru);
+> +		dst2 = list_next_entry(dst, lru);
+> +		list_for_each_entry_safe(src, src2, src_folios, lru) {
+> +			unsigned long chunk_size = PAGE_SIZE * folio_nr_pages(src) / total_mt_num;
+> +			char *vfrom = page_address(&src->page);
+> +			char *vto = page_address(&dst->page);
+> +
+> +			VM_WARN_ON(PAGE_SIZE * folio_nr_pages(src) % total_mt_num);
+> +			VM_WARN_ON(folio_nr_pages(dst) != folio_nr_pages(src));
+> +
+> +			for (cpu = 0; cpu < total_mt_num; ++cpu) {
+> +				work_items[cpu]->item_list[item_idx].to =
+> +					vto + chunk_size * cpu;
+> +				work_items[cpu]->item_list[item_idx].from =
+> +					vfrom + chunk_size * cpu;
+> +				work_items[cpu]->item_list[item_idx].chunk_size =
+> +					chunk_size;
+> +			}
+> +
+> +			item_idx++;
+> +			dst = dst2;
+> +			dst2 = list_next_entry(dst, lru);
+> +		}
+> +
+> +		for (cpu = 0; cpu < total_mt_num; ++cpu)
+> +			queue_work(system_unbound_wq,
+> +				   (struct work_struct *)work_items[cpu]);
+
+As above. If you want the work struct, using the member that is the right type.
+
+> +	} else {
+> +		int num_xfer_per_thread = nr_items / total_mt_num;
+> +		int per_cpu_item_idx;
+> +
+> +
+> +		for (cpu = 0; cpu < total_mt_num; ++cpu) {
+> +			INIT_WORK((struct work_struct *)work_items[cpu],
+
+Same again.
+
+> +					  copy_page_work_queue_thread);
+> +
+> +			work_items[cpu]->num_items = num_xfer_per_thread +
+> +					(cpu < (nr_items % total_mt_num));
+> +		}
+> +
+> +		cpu = 0;
+> +		per_cpu_item_idx = 0;
+> +		item_idx = 0;
+> +		dst = list_first_entry(dst_folios, struct folio, lru);
+> +		dst2 = list_next_entry(dst, lru);
+> +		list_for_each_entry_safe(src, src2, src_folios, lru) {
+> +			work_items[cpu]->item_list[per_cpu_item_idx].to =
+> +				page_address(&dst->page);
+> +			work_items[cpu]->item_list[per_cpu_item_idx].from =
+> +				page_address(&src->page);
+> +			work_items[cpu]->item_list[per_cpu_item_idx].chunk_size =
+> +				PAGE_SIZE * folio_nr_pages(src);
+> +
+> +			VM_WARN_ON(folio_nr_pages(dst) !=
+> +				   folio_nr_pages(src));
+> +
+> +			per_cpu_item_idx++;
+> +			item_idx++;
+> +			dst = dst2;
+> +			dst2 = list_next_entry(dst, lru);
+> +
+> +			if (per_cpu_item_idx == work_items[cpu]->num_items) {
+> +				queue_work(system_unbound_wq,
+> +					(struct work_struct *)work_items[cpu]);
+and one more.
+> +				per_cpu_item_idx = 0;
+> +				cpu++;
+> +			}
+> +		}
+> +		if (item_idx != nr_items)
+> +			pr_warn("%s: only %d out of %d pages are transferred\n",
+> +				__func__, item_idx - 1, nr_items);
+> +	}
+> +
+> +	/* Wait until it finishes  */
+> +	for (i = 0; i < total_mt_num; ++i) {
+> +		flush_work((struct work_struct *)work_items[i]);
+> +		/* retry if any copy fails */
+> +		if (work_items[i]->ret)
+> +			err = -EAGAIN;
+> +	}
+> +
+> +free_work_items:
+> +	for (cpu = 0; cpu < total_mt_num; ++cpu)
+> +		kfree(work_items[cpu]);
+> +
+> +	return err;
+> +}
+> +
+> +static struct kobject *mt_kobj_ref;
+> +static struct kobj_attribute mt_offloading_attribute = __ATTR(offloading, 0664,
+> +		mt_offloading_show, mt_offloading_set);
+> +static struct kobj_attribute mt_threads_attribute = __ATTR(threads, 0664,
+> +		mt_threads_show, mt_threads_set);
+> +
+> +static int __init cpu_mt_module_init(void)
+> +{
+> +	int ret = 0;
+
+Always set before use so don't init here.
+
+> +
+> +	mt_kobj_ref = kobject_create_and_add("cpu_mt", kernel_kobj);
+> +	if (!mt_kobj_ref)
+> +		return -ENOMEM;
+> +
+> +	ret = sysfs_create_file(mt_kobj_ref, &mt_offloading_attribute.attr);
+> +	if (ret)
+> +		goto out_offloading;
+> +
+> +	ret = sysfs_create_file(mt_kobj_ref, &mt_threads_attribute.attr);
+> +	if (ret)
+> +		goto out_threads;
+> +
+> +	is_dispatching = 0;
+> +
+> +	return 0;
+> +
+> +out_threads:
+> +	sysfs_remove_file(mt_kobj_ref, &mt_offloading_attribute.attr);
+> +out_offloading:
+> +	kobject_put(mt_kobj_ref);
+> +	return ret;
+> +}
+
+> +module_init(cpu_mt_module_init);
+> +module_exit(cpu_mt_module_exit);
+> +
+> +MODULE_LICENSE("GPL");
+> +MODULE_AUTHOR("Zi Yan");
+> +MODULE_DESCRIPTION("CPU_MT_COPY"); /* CPU Multithreaded Batch Migrator */
+
+If a module description needs a comment after it I'd rewrite that description!
+
+
 
