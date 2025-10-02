@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC047CAC5B0
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:14:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3B82CAC5B8
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 08:14:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 384FC8E002B; Thu,  2 Oct 2025 04:14:20 -0400 (EDT)
+	id 948FC8E0030; Thu,  2 Oct 2025 04:14:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B8648E002F; Thu,  2 Oct 2025 04:14:20 -0400 (EDT)
+	id 8F95E8E002F; Thu,  2 Oct 2025 04:14:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9F0E8E002B; Thu,  2 Oct 2025 04:14:19 -0400 (EDT)
+	id 6FE638E0030; Thu,  2 Oct 2025 04:14:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D40EB8E002D
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:14:19 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9F9FD160366
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:19 +0000 (UTC)
-X-FDA: 83952461838.16.EEA48D7
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DDFC8E002D
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 04:14:21 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1B0AE58927
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:21 +0000 (UTC)
+X-FDA: 83952461922.02.F759249
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B9A68A000D
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:17 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	spf=pass (imf25.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+	by imf18.hostedemail.com (Postfix) with ESMTP id E9E081C0007
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 08:14:18 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	spf=pass (imf18.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759392858;
+	s=arc-20220608; t=1759392859;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=23L+uLerZ0ilRTZXNUlzqhRD/tvrOgjOfxmrw49VyG0=;
-	b=Q+/7fQtVvXSxoThbaBl30iOhT5QXbcRXwxgh/EbWmWOYU40bFXvKhx5NJgZ+p+yfLsWr2/
-	NWPt0ymcItN5Ssf1lFZWeRQzO5wQuv6ewN2lXLA9Lxd04L0ryGjWIxzEOpHMhvoVEXlL0e
-	APf5j3JyAAXp0hbS3uojGTTYV7VpZrw=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf25.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759392858; a=rsa-sha256;
+	bh=a7l2JilrWLVpclAqjVlJpVLPdlMJldWVEw8jAFApoM0=;
+	b=nIVPNPTCnT1sDH3HsYVc42A4nrEoYbH1ek0Pl4umpCC7jbJAvk9eMJrWDutHWGEU1+Le66
+	ty91E6XiflvoLJa/2HBjVAw1R8zDxmojFefBKs3Yp0xecfqNoVAcm7ZfxdENPnxxyYxSKd
+	KMz12XunwhFEPuRgQ90cqYC0nY6ks6w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759392859; a=rsa-sha256;
 	cv=none;
-	b=KEOTIpKlfX3NibpEOuw2/qfB1ugDN10AOGe9/8AqUwtYonVYE8WFb5JPPROy+GjFg34SQX
-	ACtUj0U0W2SY0w2MOC9f4bHM1RlgFMBZePUNGDlQxtzO15UMRdK89x1Kg0BrpBSOSP2ldK
-	++JYNyz99+8aKaH3TPmWGlhk1i2+0As=
-X-AuditID: a67dfc5b-c2dff70000001609-bf-68de341359ca
+	b=6MEu/N5wCmyM7pw2/IK6jHdG8Mfwci3804UTjdEQhBGANBMi5z0Y/XZUJxXOvC8aDVLmpG
+	t3qTytuiPv8HnLmuMkAKUWy1LklAfi0pUHraf1Wgm/H1TN18vXZifxs9dj07vBv7OYW8ZA
+	yDTFjQYncnh+STEucrb6p6aFjRUUpAE=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
+	dmarc=none
+X-AuditID: a67dfc5b-c2dff70000001609-dd-68de3413fc51
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: kernel_team@skhynix.com,
@@ -196,53 +196,53 @@ Cc: kernel_team@skhynix.com,
 	rcu@vger.kernel.org,
 	linux-nfs@vger.kernel.org,
 	linux-rt-devel@lists.linux.dev
-Subject: [PATCH v17 35/47] i2c: rename wait_for_completion callback to wait_for_completion_cb
-Date: Thu,  2 Oct 2025 17:12:35 +0900
-Message-Id: <20251002081247.51255-36-byungchul@sk.com>
+Subject: [PATCH v17 36/47] dept: assign unique dept_key to each distinct wait_for_completion() caller
+Date: Thu,  2 Oct 2025 17:12:36 +0900
+Message-Id: <20251002081247.51255-37-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20251002081247.51255-1-byungchul@sk.com>
 References: <20251002081247.51255-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzXSf1CLcRwHcN/n+T7P1hiPyfX4ccftxEkhwucOHf/w4B93ft3VoZ2es51a
-	binFYX5Efk9aXS3ZJjNZP2xCTXcJpSaWkaEtS0bXdU4qFyUb55/vve77/vz45yMkJW+pqUKF
-	ch+vUsqSpLQIi3rHGaJCY7zyhU+rxkLb0ToMRRUWGrKtBRR0DGQjyKoexdA/9F4A3yt/09Dz
-	qA+B1tdFQ373UQyFfp0Aup+shd4OOwWjns8EmLp+E9BVdwrBVaONhl8tL0jI1zoRGHweEr5U
-	BoI7DV4EteZjNHzSVJHg6hoPTdqzNPS2FhGgP1ZLwRVdDoK8K1YM1R9qBNDaM0xAh8mPwaEx
-	EoHVNOTdDgNd/nEi8HwhQFtmJ+DZtXYMJnU46FpcFHSaCwUw7IuGUX0KeC5qMTR52yjo8efQ
-	cE/9QQD9r3wEWM75SbB+DASGkyUYCorbaXhQ24Qhe6QfQcP9TgJcNUU0nKusosBrGaXAWeeg
-	4OUtJ4aKz24CHA1P8apE7kfWBcyV2u4SXNbLEZqzFFsQ13/9OMn9HHhNc7WDesw1G1nuUksU
-	V13oEXB6axp34nEvxdnMEdy1B90EZ+gboLh3PSs3zo0TrUjkkxTpvGpBbIJI3mktF+wtYzMM
-	JjepRr7QMyhEyDIxbF5xqeC/b2oaUdA0M4d1u4fIoEOZmaztvJ8KmmQc09m21sigJzHbWWPj
-	m7+9mAlnPxoriKDFzFLW21xA/ps5g71VWffXIYF/l8+Bg5YwS9isrycC9aJAjS6EfT40RPxr
-	mMI+NLuxBon1aEwpkiiU6ckyRVLMfHmmUpExf1dKshUFDs50aDj+PupzbqpHjBBJx4md4R65
-	hJKlp2Ym1yNWSEpDxQnmdrlEnCjLPMCrUnaq0pL41Ho0TYilYeJFg/sTJcxu2T5+D8/v5VX/
-	U0IYMlWNcpehbbAmsiR3/4ix/TlSTjEUFRTWnHZV25sbP3UO2u25Fza0KZrWpGSE6ezRmSe3
-	bimed/HGOs3inXHl2WNKm9+pIOGFZvbkg2SaZ+E3/eUjcZZVByJO2SSb49cvmUl2l+TMis1b
-	tCBy7eG7Zyc2mNXLp884qP25ekJ81KPH1/fsiJXiVLksOoJUpcr+AL/KANRsAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAAzXSa0hTcRQA8P733t07V4vrHHgxoRjZi+wBGgezJ1G3oEgixCBy5aUNNx+b
-	rUwLTUf2nqMpuR66cJjvtrTMVqK4HlN0WTbKaatlVppUWphT24q+HH7nweF8OHxc1MgL48tT
-	MjhVilQhIQWEYNfavMiQqH7ZKlf7XOjNbSFgfKyAgKt11SQUWK7woLu2CsHAeAGCX5NGHLRN
-	MwRM6e0UjE28oWDGZkdQ5NTjUH0nF4Mf9dMkfGn7jsDg8ZJQ/CmXgFHzeQQlg0YKPrVvg5GB
-	Zh7MuD9i8OrnMAKzdxoDb8tpBFNFyXDDZCVhsrMLh2JDN4IyjxuHoXp/8469H4Gt4hQJH3QN
-	OPR458KL8VESnhrOkTDivIrB13oSSk/ZeHDNqEeQd7OOhKJrFgKa3t6nwPnFh0FfkR6DKstO
-	GDAPEuDQmTD/ff6p26FgLM7D/GEIA0NNMwYT5koKOm72EWDOiQBjZw8P3lWUUODzrIaZ0lSw
-	V32kwH3JQEDtSBdvowGxv7QXCbbS2oix2udTJFt9vRqxk7/1iB0rz8NZrc6ftg2P4my+9Shb
-	7hgm2d/jL0nW9rOUYJ+ZGLawM5JtKnFTbP7D19TumH2C2CROIddwqpXrEwWyd5ZaKq2GOVZm
-	duE5yCM+i4L4DB3F3NI9RgGT9GLG5ZrAAxbTCxjrhUFewDjtCGd6ncsDDqH3M6bHr6iACTqC
-	eW+qwwIW0muY/mdX8H875zNV9S1/HeSv93gcRMAiOprRjuZjOiQoRbMqkVieolFK5YroFepk
-	WWaK/NiKQ6lKC/J/k/mEr/AeGuvZ1opoPpLMEToj3DIRT6pRZypbEcPHJWJhYkWfTCRMkmYe
-	51SpB1RHFJy6Fc3jE5JQ4Y54LlFEH5ZmcMkcl8ap/ncxflBYDtpZ+UBhrwl7szDjQqEuoW3V
-	7KwnCYetrnXB3opZn38sQXHlJxuncgyPjp9Nt/E7CtKn4+bE6kuUxGnN8uy4lqyt2d2HOnzf
-	Y4bD1WKlJnRffNumzdtj1jr2Nmhysy4HBy2at6U3+q4eZYcEx5dtWPrNW5t817cnITz24LkO
-	VdKZ5nYJoZZJVy/DVWrpH7oHRxxJAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTZxTHee597m3pqLupLF5lCVsjYSooGtyOi9F925MtCxr95D7Mzt7Y
+	RiimvCgkS6gCokRkaCFYWKgKQVoZFDZ5KyJqFauxFcYIFrCsAxUKRimM1+4W9cvJ77z9T87J
+	kdKKQWaDVKtLF/Q6VbKSlWGZP8IcH5k4rEmwXlwD/YYuDBW/W1kosJUz4Kq3IJhbNNGwXOKQ
+	wMz8MwkE7Q4E1mYDBW8bVliYuPMGgdHrY6HspQHDy3vfgn+knYHg0DgFf89OIqjxrVDg6zqD
+	YLn0GJQZXQjM3iEamh3DCP4t/oOGXt8a6AtMs9BjLGTB766gYKqBhapTdgYqTSUISittGNwT
+	SxSUNq4DU9lpSjQvKDDeaKfg0VUPhpqcGBitvSyBJe92qPc/YaBnuJ+BibESFkbu5zMw0+el
+	oKAtgMH2j5iwD24Bc/41DB32HgwFyzMIHC2jFPS2VbAwbA0ykGOaEw/Q5WTgqcWFwel4gMH7
+	fICBpsePaLgxdYWFi1Nj4nqBack3ajKXV4RJXdOfFMl7uswS629WRBYXShCZqT5Nk7xi0a12
+	TrJkIfAXS+yzVZg8vMKTXx/Hk9bLQxKS2zkoIVW2DJJ718/sizsk260WkrWZgn7bnsMyjbnt
+	EnPcoDtZ0Pgc5aALh86hcCnPJfJlk52SD+wuDFIhZrlYfmBgng5xJPcZ33R+jAkxzTk/5fvd
+	cSFeywn8iPHMai/mYvjW15dWWc59yXteWN9rRvOWhq5VnXAx3ut14hAruJ183nSuOEsm1pjC
+	+Yq6euZdw3r+du0ALkbyKhRWhxRaXWaKSpucuFWTpdOe3HokNcWGxI+r+WXpxxb0xnWgG3FS
+	pIyQu2KGNApGlZmWldKNeCmtjJQfrvVoFHK1Kitb0Kf+pM9IFtK6UZQUK9fJd8yeUCu4o6p0
+	4ZggHBf0H7KUNHxDDtIXFW0MxgbOP4seTbJ80ZRv/j5AAnHxndlhiUfCyt++/vpJpmrSo3Nv
+	vuV6tePnPbuuWkz79t+O/a7RcNPX0NFz/ZPSz/PnvjKWxyyQH/aO7/1I0ZtaWR31X3b67tyJ
+	g3rP/k1nmyOkNv6CT9tXvJAQFTiVtI18bLKdGPcnRavd3KASp2lU2zfT+jTV/0hLqeVtAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzXSa0hTcRQA8P73OUer2xK8aGStJIishIpD7wfULUr6ElIUOfLSlrrFVqZW
+	4NKlZKWNTcm1WprLdNmaVmpMZKGSS3LZW6cZuixn9tCWqa2t6Mvhdx4czocjwMX3yUiBXHGM
+	VymkKRJKSAjj12THzl7RI1ue65gDLzVNBIyN5hFw5Y6Vgjz7ZRI6qqsQ9I7lIfBPGHHQ1gcI
+	mNK10DA63kVDwNGCoMitw8Faq8Hgu+03BUOPviEw9PVTUPxRQ8CI5TyCEq+Rho/N22C49yEJ
+	Ac8HDF798CGw9P/GoL8pF8FUUTJcK62hYKL9KQ7Fhg4E1/s8OAzags3alh4EjoozFAwU3sOh
+	s38GPB8boeCxIZ+CYfcVDD7bKDCfcZBgMuoQZJfdoaDIZCeg/l0DDe6hSQy6i3QYVNl3Qa/F
+	S4CrsBQL3hecuhsBxuJsLBgGMTDcfojBuKWShidl3QRYsmLA2N5JwvuKEhom++IgYFZCS9UH
+	GjwFBgKqh5+SGw2I82svElxlzX2M0z6bojjrVSviJn7pEDdano1z2sJg+sg3gnM5NSe4cpeP
+	4n6NvaA4xw8zwbWVstyl9liuvsRDczmNb+ndq/cJ1ybxKfI0XrVsfaJQdr1BTx7VKNLz7r5D
+	Wahg3zkUJmCZFaw7P4CFTDGL2Nevx/GQw5l5bM0FLxkyzrjmsC/dS0KezfBsryGXDplgYtj6
+	L/q/FjGr2O5BK/1vZzRbZWv6uycsWO/scxEhi5mVrHYkBytEQjOaVonC5Yq0VKk8ZeVSdbIs
+	QyFPX3pImWpHwW+ynJ68VIdGO7c5ESNAkukid4xHJialaeqMVCdiBbgkXJRY0S0Ti5KkGZm8
+	SnlQdTyFVztRlICQRIh2JPCJYuaw9BifzPNHedX/LiYIi8xCHfbGhhvbb70wK8PFWzfvzleX
+	zVJ98iREHah74z0yV5k5uTP+pr4gPrLdpvnqLO/SrjM1D7SOi2rTWz/z/q2nMs8uJOfqM/fP
+	r047fRLrcm3wzYxe7RyYFhGt3rJzaEHUiQTbga/+W+t6mD1tsRL/Xu+Dn/pNel+jyZQwf/H+
+	BlonIdQyadxiXKWW/gFyd5nfSQMAAA==
 X-CFilter-Loop: Reflected
-X-Stat-Signature: 6y7cnrc3wut934rzzfhuhqq4747bjige
+X-Stat-Signature: 177pq9mzszwfp9xoiwt9p54e3fgw5fwe
+X-Rspamd-Queue-Id: E9E081C0007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B9A68A000D
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1759392857-886122
-X-HE-Meta: U2FsdGVkX19xTnPwt6C9cQ8OVweoKKymNy+FIFm02i/0MBrPPNEIu3kY4JKivspk0/3lX5Ywm3ttfYT4iisSK2pdIo5myDvGbiwvPQzRz2Z698S2QjEizYahSBPJcjJvT8ucPQuBHjQUa+Nvw+iIEvzcM/WFWNZoVRMs6zrQtizr44YYJnXgOEav78WK1/2pXpGVJgJx7kx+obwIjlh0+2sFxq6KK7LRaqZLhKsdpz1pliEGuEXfXEculXIqys7aHE8VSIvH4IPnvLahQ+kdDZVSMdq7saPLUGu8URCu9fHf76u8/XE0zKPkvGrgvIWkKtwZURI1/DFnaTJf6iRd36ecS537Uj4GuV+J2s5GaWLSIEnxH+GXpA5ye88bNIL+C/S9e96QkHjqckuxrCaOLHOGujnqUkq76iz620kkpMLMZ6BKiymy4uOVWSPJxULIE4RXZ0I9kdjJz6g4biDXsOedr4fGTT/taVFZoX+IOw+vlbJOf55vMf7DsxhkgDNTx9uPwvZFxURyjQipO5u/2vgD0Mrw/4YE9GtSfoiwjF2CZT4rTcrM18UABlygCo+TrXtoR2WXkThNrW75QEURtNWWseAY236KgBoUEpA9Y6dSWnAtokTzv/SlKuAyAljfEg8Vmf0zqEJliSsc+B6IQReQ+uGWjZ7CZ1aK6vPuzQuX9hyIA7u9CvI30r6lYhdInF4w5/klh+29wWtYQw2Q9cLwGDhQw0wF+5aoe0lGbYukol+6M3IRawTzHwQ3jwu0XNxvMgGb4OEpINtfKU2Sb3YldVtWmtVUjZw/7Xgu/Ymubv+G7ILIA3ERHREWbvSCVSOHvp5uEKDlnD5OSWXTjHLfEs2L77dhUmeNQiSeblz+2hVpXTkGArGhWndwdNvSXWJP5/NZ1I2vnd3x1RUYBhdX9Qyd/RosnnfuCDD4dlfdoNsoOX6mO06NFaPiLbb8U77VE2l8TTkCTZxQ7K9
- lSTPkASA
- YrUwaZd0ZEq0p0wTadcLKIHcsdj2FE3KTXm1bBrr3PlryJ7YdcCcG4tvCYHh+p0Zh8eiXUDwifoCyn+Iw8NCLN4aMCA==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1759392858-773476
+X-HE-Meta: U2FsdGVkX18gO3qwOvS95BydkFo6Byu5CCcTtyXSpPkDyKIjfptYNseCaSGWQaunu6p9YCPQ5q2nfW9CkJmTIHdUwZZ2e1jVcLjsaHQfK+XI3rX4h1tyLSgExcbEeC+D8CsDo0vFcRwapqy84rm4/Hem4xMKX1KyYUp3YiVqPRMw3sjevQzr269XMpddR+JmxT04dWhTQ+PS+PA2gVbfTh0FyrfDJW9A51yl1Ha4JLn8SG9KBRTeYwSWYzEeV5t35bRALgB65bVH1+Q0sX2AFQYAJgv1lsaS3hP6BFUqUsdW6whyWil1kOu5jp5WMv17KhF1c37N5NyUrrDJFGWX3kV9BggoTJj7jjHYcnj54mZLzPcKp+YzIwQcjrUS08P4bH7XmLnxP99IwjczjtckJEV4weGO5T+odLGkn6g65xSJXUQFcWtcAoq5otXSr1HcjWSFXZc3w94JDB+BfMSKBEsFb4ps5gZPjBtPyWFryFRAaqsYj65n+ZzJY8jYjDEe4AXK4H4ZjI7LQE/lvOPLKcrhadl6q6s52qp+X1jjI8SRezrACw3r5DiWbB+LjfohqHSEXCjaHWmH6DuPltWZXieqXTz0IjvVhy8Ke0bCwdEBR9FzsnjO9sWhsO7Jc+uc3jBuTY7QtjsRngt4+wVWh/ubtU2OKQzPTE9uUKX4+GyS9GkbCVJyNFArZetfvRVmrjFErIYnTmte7q6+Pr4XaYQmrtCveFD7FTVj+z6AJremTLSkH3k8GprHMpBHh7A54pY++EwP5Ua41AJdGDVxP/TTfaaeovnf+6vpWOvgqSu7uQTILEI7IxUHBccsuCfoYSqxnK00N6Lz0tOUKacNmhsQ96dg6tt2UsOzI3DTYmIDfm6cATH58An8L4yV6FY+t6wTBTH30yG03DDWSMvzTLuzJ+slENssfoYFzaJzmJEb3YWlBtE+p8DPbPcHZ5EO3VWu9hfkA23y7wb+l8W
+ 94bP5+JU
+ aRdE0KyW0Gm5o1otFxalrUb0jo7H7i0E2EBkERZmWyRqFFfMPpUZnSX3SF79P23/QwrKlF2rvNbqvnjfRXkj0QFptm2gbJ3OdbkLyZifl4mgeT7duK2feN6Z+UtMZfdb+S4r6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -251,77 +251,367 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Functionally no change.  This patch is a preparation for DEPT(DEPendency
-Tracker) to track dependencies related to a scheduler API,
-wait_for_completion().
+wait_for_completion() can be used at various points in the code and it's
+very hard to distinguish wait_for_completion()s between different usages.
+Using a single dept_key for all the wait_for_completion()s could trigger
+false positive reports.
 
-Unfortunately, struct i2c_algo_pca_data has a callback member named
-wait_for_completion, that is the same as the scheduler API, which makes
-it hard to change the scheduler API to a macro form because of the
-ambiguity.
-
-Add a postfix _cb to the callback member to remove the ambiguity.
+Assign unique dept_key to each distinct wait_for_completion() caller to
+avoid false positive reports.
 
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- drivers/i2c/algos/i2c-algo-pca.c      | 2 +-
- drivers/i2c/busses/i2c-pca-isa.c      | 2 +-
- drivers/i2c/busses/i2c-pca-platform.c | 2 +-
- include/linux/i2c-algo-pca.h          | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+ include/linux/completion.h | 100 +++++++++++++++++++++++++++++++------
+ kernel/sched/completion.c  |  60 +++++++++++-----------
+ 2 files changed, 115 insertions(+), 45 deletions(-)
 
-diff --git a/drivers/i2c/algos/i2c-algo-pca.c b/drivers/i2c/algos/i2c-algo-pca.c
-index 74b66aec33d4..ee86df4cff4b 100644
---- a/drivers/i2c/algos/i2c-algo-pca.c
-+++ b/drivers/i2c/algos/i2c-algo-pca.c
-@@ -30,7 +30,7 @@ static int i2c_debug;
- #define pca_clock(adap) adap->i2c_clock
- #define pca_set_con(adap, val) pca_outw(adap, I2C_PCA_CON, val)
- #define pca_get_con(adap) pca_inw(adap, I2C_PCA_CON)
--#define pca_wait(adap) adap->wait_for_completion(adap->data)
-+#define pca_wait(adap) adap->wait_for_completion_cb(adap->data)
- 
- static void pca_reset(struct i2c_algo_pca_data *adap)
- {
-diff --git a/drivers/i2c/busses/i2c-pca-isa.c b/drivers/i2c/busses/i2c-pca-isa.c
-index 85e8cf58e8bf..0cbf2f509527 100644
---- a/drivers/i2c/busses/i2c-pca-isa.c
-+++ b/drivers/i2c/busses/i2c-pca-isa.c
-@@ -95,7 +95,7 @@ static struct i2c_algo_pca_data pca_isa_data = {
- 	/* .data intentionally left NULL, not needed with ISA */
- 	.write_byte		= pca_isa_writebyte,
- 	.read_byte		= pca_isa_readbyte,
--	.wait_for_completion	= pca_isa_waitforcompletion,
-+	.wait_for_completion_cb	= pca_isa_waitforcompletion,
- 	.reset_chip		= pca_isa_resetchip,
+diff --git a/include/linux/completion.h b/include/linux/completion.h
+index 3200b741de28..4d8fb1d95c0a 100644
+--- a/include/linux/completion.h
++++ b/include/linux/completion.h
+@@ -27,12 +27,10 @@
+ struct completion {
+ 	unsigned int done;
+ 	struct swait_queue_head wait;
+-	struct dept_map dmap;
  };
  
-diff --git a/drivers/i2c/busses/i2c-pca-platform.c b/drivers/i2c/busses/i2c-pca-platform.c
-index 87da8241b927..c0f35ebbe37d 100644
---- a/drivers/i2c/busses/i2c-pca-platform.c
-+++ b/drivers/i2c/busses/i2c-pca-platform.c
-@@ -180,7 +180,7 @@ static int i2c_pca_pf_probe(struct platform_device *pdev)
- 	}
+ #define init_completion(x)				\
+ do {							\
+-	sdt_map_init(&(x)->dmap);			\
+ 	__init_completion(x);				\
+ } while (0)
  
- 	i2c->algo_data.data = i2c;
--	i2c->algo_data.wait_for_completion = i2c_pca_pf_waitforcompletion;
-+	i2c->algo_data.wait_for_completion_cb = i2c_pca_pf_waitforcompletion;
- 	if (i2c->gpio)
- 		i2c->algo_data.reset_chip = i2c_pca_pf_resetchip;
- 	else
-diff --git a/include/linux/i2c-algo-pca.h b/include/linux/i2c-algo-pca.h
-index 7c522fdd9ea7..e305bf32e40a 100644
---- a/include/linux/i2c-algo-pca.h
-+++ b/include/linux/i2c-algo-pca.h
-@@ -71,7 +71,7 @@ struct i2c_algo_pca_data {
- 	void 				*data;	/* private low level data */
- 	void (*write_byte)		(void *data, int reg, int val);
- 	int  (*read_byte)		(void *data, int reg);
--	int  (*wait_for_completion)	(void *data);
-+	int  (*wait_for_completion_cb)	(void *data);
- 	void (*reset_chip)		(void *data);
- 	/* For PCA9564, use one of the predefined frequencies:
- 	 * 330000, 288000, 217000, 146000, 88000, 59000, 44000, 36000
+@@ -43,17 +41,14 @@ do {							\
+ 
+ static inline void complete_acquire(struct completion *x, long timeout)
+ {
+-	sdt_might_sleep_start_timeout(&x->dmap, timeout);
+ }
+ 
+ static inline void complete_release(struct completion *x)
+ {
+-	sdt_might_sleep_end();
+ }
+ 
+ #define COMPLETION_INITIALIZER(work) \
+-	{ 0, __SWAIT_QUEUE_HEAD_INITIALIZER((work).wait), \
+-	  .dmap = DEPT_MAP_INITIALIZER(work, NULL), }
++	{ 0, __SWAIT_QUEUE_HEAD_INITIALIZER((work).wait), }
+ 
+ #define COMPLETION_INITIALIZER_ONSTACK_MAP(work, map) \
+ 	(*({ init_completion_map(&(work), &(map)); &(work); }))
+@@ -119,18 +114,18 @@ static inline void reinit_completion(struct completion *x)
+ 	x->done = 0;
+ }
+ 
+-extern void wait_for_completion(struct completion *);
+-extern void wait_for_completion_io(struct completion *);
+-extern int wait_for_completion_interruptible(struct completion *x);
+-extern int wait_for_completion_killable(struct completion *x);
+-extern int wait_for_completion_state(struct completion *x, unsigned int state);
+-extern unsigned long wait_for_completion_timeout(struct completion *x,
++extern void __wait_for_completion(struct completion *);
++extern void __wait_for_completion_io(struct completion *);
++extern int __wait_for_completion_interruptible(struct completion *x);
++extern int __wait_for_completion_killable(struct completion *x);
++extern int __wait_for_completion_state(struct completion *x, unsigned int state);
++extern unsigned long __wait_for_completion_timeout(struct completion *x,
+ 						   unsigned long timeout);
+-extern unsigned long wait_for_completion_io_timeout(struct completion *x,
++extern unsigned long __wait_for_completion_io_timeout(struct completion *x,
+ 						    unsigned long timeout);
+-extern long wait_for_completion_interruptible_timeout(
++extern long __wait_for_completion_interruptible_timeout(
+ 	struct completion *x, unsigned long timeout);
+-extern long wait_for_completion_killable_timeout(
++extern long __wait_for_completion_killable_timeout(
+ 	struct completion *x, unsigned long timeout);
+ extern bool try_wait_for_completion(struct completion *x);
+ extern bool completion_done(struct completion *x);
+@@ -139,4 +134,79 @@ extern void complete(struct completion *);
+ extern void complete_on_current_cpu(struct completion *x);
+ extern void complete_all(struct completion *);
+ 
++#define wait_for_completion(x)						\
++({									\
++	sdt_might_sleep_start_timeout(NULL, -1L);			\
++	__wait_for_completion(x);					\
++	sdt_might_sleep_end();						\
++})
++#define wait_for_completion_io(x)					\
++({									\
++	sdt_might_sleep_start_timeout(NULL, -1L);			\
++	__wait_for_completion_io(x);					\
++	sdt_might_sleep_end();						\
++})
++#define wait_for_completion_interruptible(x)				\
++({									\
++	int __ret;							\
++									\
++	sdt_might_sleep_start_timeout(NULL, -1L);			\
++	__ret = __wait_for_completion_interruptible(x);			\
++	sdt_might_sleep_end();						\
++	__ret;								\
++})
++#define wait_for_completion_killable(x)					\
++({									\
++	int __ret;							\
++									\
++	sdt_might_sleep_start_timeout(NULL, -1L);			\
++	__ret = __wait_for_completion_killable(x);			\
++	sdt_might_sleep_end();						\
++	__ret;								\
++})
++#define wait_for_completion_state(x, s)					\
++({									\
++	int __ret;							\
++									\
++	sdt_might_sleep_start_timeout(NULL, -1L);			\
++	__ret = __wait_for_completion_state(x, s);			\
++	sdt_might_sleep_end();						\
++	__ret;								\
++})
++#define wait_for_completion_timeout(x, t)				\
++({									\
++	unsigned long __ret;						\
++									\
++	sdt_might_sleep_start_timeout(NULL, t);				\
++	__ret = __wait_for_completion_timeout(x, t);			\
++	sdt_might_sleep_end();						\
++	__ret;								\
++})
++#define wait_for_completion_io_timeout(x, t)				\
++({									\
++	unsigned long __ret;						\
++									\
++	sdt_might_sleep_start_timeout(NULL, t);				\
++	__ret = __wait_for_completion_io_timeout(x, t);			\
++	sdt_might_sleep_end();						\
++	__ret;								\
++})
++#define wait_for_completion_interruptible_timeout(x, t)			\
++({									\
++	long __ret;							\
++									\
++	sdt_might_sleep_start_timeout(NULL, t);				\
++	__ret = __wait_for_completion_interruptible_timeout(x, t);	\
++	sdt_might_sleep_end();						\
++	__ret;								\
++})
++#define wait_for_completion_killable_timeout(x, t)			\
++({									\
++	long __ret;							\
++									\
++	sdt_might_sleep_start_timeout(NULL, t);				\
++	__ret = __wait_for_completion_killable_timeout(x, t);		\
++	sdt_might_sleep_end();						\
++	__ret;								\
++})
+ #endif
+diff --git a/kernel/sched/completion.c b/kernel/sched/completion.c
+index 5e45a60ff7b3..7262000db114 100644
+--- a/kernel/sched/completion.c
++++ b/kernel/sched/completion.c
+@@ -4,7 +4,7 @@
+  * Generic wait-for-completion handler;
+  *
+  * It differs from semaphores in that their default case is the opposite,
+- * wait_for_completion default blocks whereas semaphore default non-block. The
++ * __wait_for_completion default blocks whereas semaphore default non-block. The
+  * interface also makes it easy to 'complete' multiple waiting threads,
+  * something which isn't entirely natural for semaphores.
+  *
+@@ -42,7 +42,7 @@ void complete_on_current_cpu(struct completion *x)
+  * This will wake up a single thread waiting on this completion. Threads will be
+  * awakened in the same order in which they were queued.
+  *
+- * See also complete_all(), wait_for_completion() and related routines.
++ * See also complete_all(), __wait_for_completion() and related routines.
+  *
+  * If this function wakes up a task, it executes a full memory barrier before
+  * accessing the task state.
+@@ -139,23 +139,23 @@ wait_for_common_io(struct completion *x, long timeout, int state)
+ }
+ 
+ /**
+- * wait_for_completion: - waits for completion of a task
++ * __wait_for_completion: - waits for completion of a task
+  * @x:  holds the state of this particular completion
+  *
+  * This waits to be signaled for completion of a specific task. It is NOT
+  * interruptible and there is no timeout.
+  *
+- * See also similar routines (i.e. wait_for_completion_timeout()) with timeout
++ * See also similar routines (i.e. __wait_for_completion_timeout()) with timeout
+  * and interrupt capability. Also see complete().
+  */
+-void __sched wait_for_completion(struct completion *x)
++void __sched __wait_for_completion(struct completion *x)
+ {
+ 	wait_for_common(x, MAX_SCHEDULE_TIMEOUT, TASK_UNINTERRUPTIBLE);
+ }
+-EXPORT_SYMBOL(wait_for_completion);
++EXPORT_SYMBOL(__wait_for_completion);
+ 
+ /**
+- * wait_for_completion_timeout: - waits for completion of a task (w/timeout)
++ * __wait_for_completion_timeout: - waits for completion of a task (w/timeout)
+  * @x:  holds the state of this particular completion
+  * @timeout:  timeout value in jiffies
+  *
+@@ -167,28 +167,28 @@ EXPORT_SYMBOL(wait_for_completion);
+  * till timeout) if completed.
+  */
+ unsigned long __sched
+-wait_for_completion_timeout(struct completion *x, unsigned long timeout)
++__wait_for_completion_timeout(struct completion *x, unsigned long timeout)
+ {
+ 	return wait_for_common(x, timeout, TASK_UNINTERRUPTIBLE);
+ }
+-EXPORT_SYMBOL(wait_for_completion_timeout);
++EXPORT_SYMBOL(__wait_for_completion_timeout);
+ 
+ /**
+- * wait_for_completion_io: - waits for completion of a task
++ * __wait_for_completion_io: - waits for completion of a task
+  * @x:  holds the state of this particular completion
+  *
+  * This waits to be signaled for completion of a specific task. It is NOT
+  * interruptible and there is no timeout. The caller is accounted as waiting
+  * for IO (which traditionally means blkio only).
+  */
+-void __sched wait_for_completion_io(struct completion *x)
++void __sched __wait_for_completion_io(struct completion *x)
+ {
+ 	wait_for_common_io(x, MAX_SCHEDULE_TIMEOUT, TASK_UNINTERRUPTIBLE);
+ }
+-EXPORT_SYMBOL(wait_for_completion_io);
++EXPORT_SYMBOL(__wait_for_completion_io);
+ 
+ /**
+- * wait_for_completion_io_timeout: - waits for completion of a task (w/timeout)
++ * __wait_for_completion_io_timeout: - waits for completion of a task (w/timeout)
+  * @x:  holds the state of this particular completion
+  * @timeout:  timeout value in jiffies
+  *
+@@ -201,14 +201,14 @@ EXPORT_SYMBOL(wait_for_completion_io);
+  * till timeout) if completed.
+  */
+ unsigned long __sched
+-wait_for_completion_io_timeout(struct completion *x, unsigned long timeout)
++__wait_for_completion_io_timeout(struct completion *x, unsigned long timeout)
+ {
+ 	return wait_for_common_io(x, timeout, TASK_UNINTERRUPTIBLE);
+ }
+-EXPORT_SYMBOL(wait_for_completion_io_timeout);
++EXPORT_SYMBOL(__wait_for_completion_io_timeout);
+ 
+ /**
+- * wait_for_completion_interruptible: - waits for completion of a task (w/intr)
++ * __wait_for_completion_interruptible: - waits for completion of a task (w/intr)
+  * @x:  holds the state of this particular completion
+  *
+  * This waits for completion of a specific task to be signaled. It is
+@@ -216,7 +216,7 @@ EXPORT_SYMBOL(wait_for_completion_io_timeout);
+  *
+  * Return: -ERESTARTSYS if interrupted, 0 if completed.
+  */
+-int __sched wait_for_completion_interruptible(struct completion *x)
++int __sched __wait_for_completion_interruptible(struct completion *x)
+ {
+ 	long t = wait_for_common(x, MAX_SCHEDULE_TIMEOUT, TASK_INTERRUPTIBLE);
+ 
+@@ -224,10 +224,10 @@ int __sched wait_for_completion_interruptible(struct completion *x)
+ 		return t;
+ 	return 0;
+ }
+-EXPORT_SYMBOL(wait_for_completion_interruptible);
++EXPORT_SYMBOL(__wait_for_completion_interruptible);
+ 
+ /**
+- * wait_for_completion_interruptible_timeout: - waits for completion (w/(to,intr))
++ * __wait_for_completion_interruptible_timeout: - waits for completion (w/(to,intr))
+  * @x:  holds the state of this particular completion
+  * @timeout:  timeout value in jiffies
+  *
+@@ -238,15 +238,15 @@ EXPORT_SYMBOL(wait_for_completion_interruptible);
+  * or number of jiffies left till timeout) if completed.
+  */
+ long __sched
+-wait_for_completion_interruptible_timeout(struct completion *x,
++__wait_for_completion_interruptible_timeout(struct completion *x,
+ 					  unsigned long timeout)
+ {
+ 	return wait_for_common(x, timeout, TASK_INTERRUPTIBLE);
+ }
+-EXPORT_SYMBOL(wait_for_completion_interruptible_timeout);
++EXPORT_SYMBOL(__wait_for_completion_interruptible_timeout);
+ 
+ /**
+- * wait_for_completion_killable: - waits for completion of a task (killable)
++ * __wait_for_completion_killable: - waits for completion of a task (killable)
+  * @x:  holds the state of this particular completion
+  *
+  * This waits to be signaled for completion of a specific task. It can be
+@@ -254,7 +254,7 @@ EXPORT_SYMBOL(wait_for_completion_interruptible_timeout);
+  *
+  * Return: -ERESTARTSYS if interrupted, 0 if completed.
+  */
+-int __sched wait_for_completion_killable(struct completion *x)
++int __sched __wait_for_completion_killable(struct completion *x)
+ {
+ 	long t = wait_for_common(x, MAX_SCHEDULE_TIMEOUT, TASK_KILLABLE);
+ 
+@@ -262,9 +262,9 @@ int __sched wait_for_completion_killable(struct completion *x)
+ 		return t;
+ 	return 0;
+ }
+-EXPORT_SYMBOL(wait_for_completion_killable);
++EXPORT_SYMBOL(__wait_for_completion_killable);
+ 
+-int __sched wait_for_completion_state(struct completion *x, unsigned int state)
++int __sched __wait_for_completion_state(struct completion *x, unsigned int state)
+ {
+ 	long t = wait_for_common(x, MAX_SCHEDULE_TIMEOUT, state);
+ 
+@@ -272,10 +272,10 @@ int __sched wait_for_completion_state(struct completion *x, unsigned int state)
+ 		return t;
+ 	return 0;
+ }
+-EXPORT_SYMBOL(wait_for_completion_state);
++EXPORT_SYMBOL(__wait_for_completion_state);
+ 
+ /**
+- * wait_for_completion_killable_timeout: - waits for completion of a task (w/(to,killable))
++ * __wait_for_completion_killable_timeout: - waits for completion of a task (w/(to,killable))
+  * @x:  holds the state of this particular completion
+  * @timeout:  timeout value in jiffies
+  *
+@@ -287,12 +287,12 @@ EXPORT_SYMBOL(wait_for_completion_state);
+  * or number of jiffies left till timeout) if completed.
+  */
+ long __sched
+-wait_for_completion_killable_timeout(struct completion *x,
++__wait_for_completion_killable_timeout(struct completion *x,
+ 				     unsigned long timeout)
+ {
+ 	return wait_for_common(x, timeout, TASK_KILLABLE);
+ }
+-EXPORT_SYMBOL(wait_for_completion_killable_timeout);
++EXPORT_SYMBOL(__wait_for_completion_killable_timeout);
+ 
+ /**
+  *	try_wait_for_completion - try to decrement a completion without blocking
+@@ -334,7 +334,7 @@ EXPORT_SYMBOL(try_wait_for_completion);
+  *	completion_done - Test to see if a completion has any waiters
+  *	@x:	completion structure
+  *
+- *	Return: 0 if there are waiters (wait_for_completion() in progress)
++ *	Return: 0 if there are waiters (__wait_for_completion() in progress)
+  *		 1 if there are no waiters.
+  *
+  *	Note, this will always return true if complete_all() was called on @X.
 -- 
 2.17.1
 
