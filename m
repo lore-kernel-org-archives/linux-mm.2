@@ -4,114 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD03ACAC5B8
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 19:20:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9298CAC5B0
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Oct 2025 20:46:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 065CA8E0002; Thu,  2 Oct 2025 15:20:00 -0400 (EDT)
+	id AE9F38E0002; Thu,  2 Oct 2025 16:46:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03D788E0001; Thu,  2 Oct 2025 15:20:00 -0400 (EDT)
+	id A73288E0001; Thu,  2 Oct 2025 16:46:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBCA48E0002; Thu,  2 Oct 2025 15:19:59 -0400 (EDT)
+	id 961768E0002; Thu,  2 Oct 2025 16:46:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DA8928E0001
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 15:19:59 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7730E13B615
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 19:19:59 +0000 (UTC)
-X-FDA: 83954139318.22.CE62079
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 7151AA0010
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 19:19:57 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FFCE8E0001
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 16:46:41 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 18FD613B912
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 20:46:41 +0000 (UTC)
+X-FDA: 83954357802.19.F7E995F
+Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 40C9FA000D
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 20:46:39 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=hAYSQvJa;
-	spf=pass (imf25.hostedemail.com: domain of 3W9DeaAgKCMQtkmuwkxlqyyqvo.mywvsx47-wwu5kmu.y1q@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3W9DeaAgKCMQtkmuwkxlqyyqvo.mywvsx47-wwu5kmu.y1q@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="PqxbTT/u";
+	spf=pass (imf25.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.42 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759432797;
+	s=arc-20220608; t=1759437999;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OIPuw5PXf537cGjHuuOBAnE/qD8vkHzGaf9rib+Lq+I=;
-	b=fS5GihRdSl8/qGMODw1rsqKQD0dFlEbYJbVD+6mBIdt5UWU9X4jy+WiVYjw11Wu3gXK/vc
-	pV1r1uvh0D+5XLTjy8Bsy//tgOWxJCb2stB1F/rXe18dVSu7VLSvm/pq+HBZjxeWP9m4A0
-	yXWvyLiG0Iw29ix8iTxESut1b+N9mls=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ay/9vezBY6puwDg2MjgpOWz9DbnBpP+YhoVm026fczg=;
+	b=5546o58/GVTBHCaSk7ophWMrKJlnN6qLsFJRGkyEEXGQg1yYVunEXewFZKKzRSsUrInPyU
+	FiKez0OnYzGK1F1wQRK9J9M930+5TlajyWtuP6VRq4qRkbJy4rJFrj916AdIxtf7dULati
+	nIfMiLxLaFfxtYlh7yVOjAfV+TExOXk=
 ARC-Authentication-Results: i=1;
 	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=hAYSQvJa;
-	spf=pass (imf25.hostedemail.com: domain of 3W9DeaAgKCMQtkmuwkxlqyyqvo.mywvsx47-wwu5kmu.y1q@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3W9DeaAgKCMQtkmuwkxlqyyqvo.mywvsx47-wwu5kmu.y1q@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759432797; a=rsa-sha256;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="PqxbTT/u";
+	spf=pass (imf25.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.42 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759437999; a=rsa-sha256;
 	cv=none;
-	b=2hhvcEMK3CKU/z86ytKaIEIxewr/HEgRQtpysG9UOiJVqcQ1isTbmy9t0Z8C3XTs3ufWkj
-	bPYVYkl8mOAxjGHEslwoa2rMlfz6Ovvddzx867BIwVvZFX2kH9hHG+SCYEIxnda9rONpbN
-	37aqlfYTHP4mg5xKnCwf/bhkZJgQUOo=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-46e4cb3e4deso10517535e9.1
-        for <linux-mm@kvack.org>; Thu, 02 Oct 2025 12:19:57 -0700 (PDT)
+	b=lQklmQFoPe+xJuTQI94MNG9lHv7Eb6T1ORyvuSKj6mfus4Qcm8EXGCsLeocFvWTb5Fjujf
+	Hj0tjNUvml/JvdGXNx6/nM59boJXvCxBZHETyAveCw7Y1oKu2fxGU73m+V6XnPznx3NzNU
+	Nkk2wMnbLwVVsAA3eslCZkxo/pUCb5Y=
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-635355713d9so1596996d50.3
+        for <linux-mm@kvack.org>; Thu, 02 Oct 2025 13:46:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1759432796; x=1760037596; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OIPuw5PXf537cGjHuuOBAnE/qD8vkHzGaf9rib+Lq+I=;
-        b=hAYSQvJa4ez8TV8HWOtvDQzBTFnm58FdwVklfgVtTY961eFMIPcarqsWI6CiDelq7z
-         6l+B5ZSfTlxdfFSEsCKpeUYnyRt8+Dc15Zpd5qXuVJUSlOe6pdQ7HkgMS9u4D9xnJEWM
-         S4VXBj812xPSSS2ip6AePxJnmiYLneY2XwaxMJahJmIf88DMoy8WpAOtVwtY+cZB0EmW
-         fUL196GmzOPVXAzZ0qFPJ0mPznTd9dAN4aA1yQcbTmDk1JbeDXInHJ8gXDDTNPj83rSU
-         +tHqyY6Lj5Pcm6YkEZfiOE5gg2JN0LZBJ7L5oTs664GydeIWqlUDaNhkIgggRjwZ+MzN
-         Yomw==
+        d=gmail.com; s=20230601; t=1759437998; x=1760042798; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ay/9vezBY6puwDg2MjgpOWz9DbnBpP+YhoVm026fczg=;
+        b=PqxbTT/uHDZghyPbQ6x8fs5d/olZ1SAaB5QsvhlZdQSla1qhpbg4Nf4puHwnnXVeq7
+         nRqb3PpHl6TTdSEgVAXyz0xjFbFet1K0zxi9EKq0KtGlQkphhEthvT3mqs21VPLJPeaX
+         JWrobUkly8kXNjjaf84n3BNmDaCGLUnwK2WzwznCZertz8KKVZvGrecI6hbBGh9/qAQn
+         +X49Ayz1w1MuG6131uIj2iiJUdEhmzSvEIGO5Qab1OGqVke4+to8LsOUq7WSRiF4faLn
+         I0tS14ahpvf5afM97bLTm49YF2wQP/mojHaJE5Ire0q5DKjFRRrVdqT7KxjmugO6cq6B
+         Orog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759432796; x=1760037596;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OIPuw5PXf537cGjHuuOBAnE/qD8vkHzGaf9rib+Lq+I=;
-        b=TY6hWpZCBxd8Y+f5XgkN1a0LQ4av4NNRbV6G2oJ3FQ9wyZfYo2HrIJZUg2kwOEUIKK
-         7QJaidhhIBwMDCflzwd0C3nOug0boUiNQ9DQ4EVVUjws0M0Bm8tBJuF9DZDc0RQCxNNv
-         Q2Re7afNFHI5wOocatHdWstg5zlBPrcTQWmZLJvTysxgGwoszTvjAXxSh7vEK8ntcavT
-         4wOL9URQSQWPHd8yzmyxMn0pyG+HL+E3VG+2W1aBgalkXXUu0Gswh2HsO1mt0YEWHWcP
-         Yqx5efcEL2Adzs56dVbiWtadanQRxvkQ25rRt3R3jh2o0756QBlu86FoIb1pnCpi3hkr
-         uMmA==
-X-Forwarded-Encrypted: i=1; AJvYcCX/uypugli8+kaFniJNS84k3xKgzWrQj8D1PiHYl5rKfAiril2i6Ni+wNs7HwnurNzOQ6jJmzubUw==@kvack.org
-X-Gm-Message-State: AOJu0YwGupNPfRMcJJ/3VALp+WTiP3NSFU2/aydKFe76jNP80jbg9nsK
-	G+eaeaCIt86kDtkrnyuOLrtA3oDCX1Kc4ajiiwugJ86dH20YjIk3m9ZH3ko5Vs2yUznd3KVWHKm
-	jRcbkalYmVkpY6w==
-X-Google-Smtp-Source: AGHT+IGA0hBUYWEjVHKMSca9g2yFQ2NDxY+JABJUK7tlQgJ95B/8XPbRxR1nSAIBjkYBvuTBmTOZLYFHa4lk8A==
-X-Received: from wmz11.prod.google.com ([2002:a05:600c:6b6b:b0:46e:5611:ee71])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:6092:b0:45c:b6d3:a11d with SMTP id 5b1f17b1804b1-46e70c48dc8mr4571415e9.1.1759432795577;
- Thu, 02 Oct 2025 12:19:55 -0700 (PDT)
-Date: Thu, 02 Oct 2025 19:19:54 +0000
-In-Reply-To: <6a97031d-33d4-4710-ab5a-7d8947936038@intel.com>
-Mime-Version: 1.0
-References: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
- <00e7ff5e-fe6c-4edc-9bf8-2352321f74dc@intel.com> <DD7SQLDVNSRL.XJ8PUCH6GYR1@google.com>
- <6a97031d-33d4-4710-ab5a-7d8947936038@intel.com>
-X-Mailer: aerc 0.21.0
-Message-ID: <DD82VFJLMSVX.27GMXVWD0A7UX@google.com>
-Subject: Re: [PATCH 00/21] mm: ASI direct map management
-From: Brendan Jackman <jackmanb@google.com>
-To: Dave Hansen <dave.hansen@intel.com>, Brendan Jackman <jackmanb@google.com>, 
-	Andy Lutomirski <luto@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>
-Cc: <peterz@infradead.org>, <bp@alien8.de>, <dave.hansen@linux.intel.com>, 
-	<mingo@redhat.com>, <tglx@linutronix.de>, <akpm@linux-foundation.org>, 
-	<david@redhat.com>, <derkling@google.com>, <junaids@google.com>, 
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <reijiw@google.com>, 
-	<rientjes@google.com>, <rppt@kernel.org>, <vbabka@suse.cz>, <x86@kernel.org>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 7151AA0010
-X-Stat-Signature: wnioge68kaqtpn4pr6nkxe884m4ntfub
+        d=1e100.net; s=20230601; t=1759437998; x=1760042798;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ay/9vezBY6puwDg2MjgpOWz9DbnBpP+YhoVm026fczg=;
+        b=b9C++Tp3p/BLr5JlimKs84rvsQGzhP/Daoe/vcVHKWsGk90dssZjFUwHD4Lc41bUCG
+         w33o68N5grhkpm5AqtKwNsAg+A/xHPGozupkdQVhtuY/s3g35XAa4pAhMfZAAvf53NFt
+         JXoFwaJ9wSdh1z6Lp5EAhWpXH4GtUQiUYG7IuAI5T17Sj/ZmNzvKbV0I1kDeH0n2Idek
+         /9hqCSNHuyssVyODhjfNUL/Ik4mZDqmstHmxwAeDyAaTRjEf2TdWegbok2EF8xRZXRsa
+         j4gXctacGvGbLryxS0prZ4LlId80NMYZhq+FqqbvwuJK8JIxma+qtXQUzur5LoRageCZ
+         K6MQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU8BwWe6op3MPPZGGSJ4iXXOarC1liA42sPhwXI9BQyvx573gypUooe116dPexNDT0XgwzGC9D5Cg==@kvack.org
+X-Gm-Message-State: AOJu0YzGy33e4CslMlJSgoRGYBP2vtR/vlYvnzs9PXcydUhVHvEs9qob
+	8VV6wpwFkzuKhjH38z7zG6LpqkI/2t5/LjiwRQadcbxtcK0paEyCoUj4
+X-Gm-Gg: ASbGncvlit4V2j+UXI2EOf/piGlqUojwGM7++CRbDqPDbs1o7TIRSoyin57NxCP/vrv
+	ZW3VS9Qtyy0iRzuS9rnGHW5p7IawhTGo1AKz51Piy90/6xd7T0T4rdrS/CnJS2UW3kJVXqJWaAZ
+	8mjF7v1uuCHPItNeh7wsURC9xfxtjXKxemkXh2aqb72Swbriidr3cM4sQNbryT+MylrnaFEuai9
+	cCbq6sHnumC9DQ47qNTSujkxQ7pWFyESOnE8FqE5JzXNxM4bDyGct8F3Djdm3Zc+w/8k71zBc80
+	yyLhXfxgX8QhHw+It6k20WOoOBvvhgSWd30R/Uprsl33j0zKRWkaysv2/MM7P/7WGXnbwv7XlsL
+	9hwrqpF+aBxiPtaH3mWFUOKF8AaTejNKVp4xxcAdUQEFKxYHmjW5Qt9wxwytltKlusfMPqJaCiJ
+	rpGA==
+X-Google-Smtp-Source: AGHT+IHpcCTVRqgenU3vW+3sLcFVGrhQQKAHnHEh2WSWX6kMoKdNV+yXAl0xqxgPOXUh0ujYau5cmw==
+X-Received: by 2002:a53:d6c9:0:b0:635:4ecd:759f with SMTP id 956f58d0204a3-63b9a0fcb2fmr503983d50.45.1759437998068;
+        Thu, 02 Oct 2025 13:46:38 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:4d::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-63b845a65e4sm1038716d50.10.2025.10.02.13.46.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Oct 2025 13:46:37 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>
+Cc: Chris Mason <clm@fb.com>,
+	Kiryl Shutsemau <kirill@shutemov.name>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Zi Yan <ziy@nvidia.com>,
+	Hillf Danton <hdanton@sina.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel-team@meta.com
+Subject: [PATCH v3 0/3] mm/page_alloc: Batch callers of free_pcppages_bulk
+Date: Thu,  2 Oct 2025 13:46:30 -0700
+Message-ID: <20251002204636.4016712-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 40C9FA000D
+X-Stat-Signature: q3im3r11ffubnp5zpzc4wfnf7scab95h
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1759432797-521218
-X-HE-Meta: U2FsdGVkX19zwTKsGS76pfQvLz5LuNGD3MLOlulonRyyoJxAitW0bX2Wfls3YHNkPLsaNvmHEcthQQhBC/Q4zWogYIxvhyNkZUj75RMD8ApwtGqdARhCJB9Cc48Pdt7DieGF6AmOfA7itX8tiQx7grfyQYcHBT02QJTyIr3nGT+6cOt/expBUoeYo5mA+lnf5ivXgBhM1V777eDxN/9qfpF9YFOI9VVutlWXZV6h9Mgzh0eZmxFm6CYDwltK98+LSUkyDizLQoKvblCrtwBKupw/b4swg0GZx9qUOj9X/KcyptEqBbVumIaQM+PskAMnVVAqoVC3xyNczN3/5W14KWETCwShFufTKYGPLdUXQS2uBYta9kds+mtLxl7fielus/CO/lHgvn0dmnz4UCsMNys9LdWunrz+hhQ8IAexgxLZWaAtrdRxEoy3GmoS8mrlQYvARLPYvKxBB/5IDlpwcAv53c2O3tXLnmeQXTSVta+svhu/s3S1B17XuQAEpmwDB0G8TUoRNOYGbusmHXDOqopqmlBSa4+c6gw/HrVA475bmK5/bWnq68oXeW6zCFr6wiWomo8gma4KzrBK0RO9AUgNMpkGVN2UH4oJfe97+rT2dKUoQRKSfaKy9UYx7bqyKofe7vSM4OYA0KdlhEpAxlKX8q1kGVsEMGfrOjeYlqKFowa3VGKXUiX4mZFhjZq5OgynSQT+GbArmfRYeQCN4UYJR8AbjkDQH6OS5/+QV+UcFFu7TTqt5d2S3CJPX4LtLBMDaH67hBdowPsixkCJAdupq+iLulSkziCuJhRze0UGUKHHbV/8lgY7sYA1RKIG2ZbUb17hls3riPswoNMpe6c4weCITiOqJxUU5bj9C064F4gSoU9TocGlbpCKPeOblwtn2XppPOnYm7EVhW+2IIEYKIRaAVAuJSXFKwIQbYAclQrjiJgkBtSItc5kIsH1Pi7XjNpnTXUnPafGqaq
- 6ql4TfrW
- 0W7zFXZbGb4/H5EjUciiWqyVS748bT/hkcDvuj9kL6ElQWW0gT1z3ani4pplme7NoHbSUAXtuRifflU4fcW1873vBYrSgBRPMxKvNSM3na5Eg5EfmxhK/+9De+mh5JtMDKwQ1pm8W1yN+d8x6J+rMFEkhmD8LTGZfiidRQgVe/lhhDqeHv56nZTSUMxnFvirYYwjFoMOHH/eY+QcZRLHumd4GIE6e7iurI2q/Ds+nEJ8yqJCGpQ9nh9Bi4F7PMM4/GjGL1p+gYxuta1RFiqCVnjsb2eOgy4NYxTxYmHkDNJ5IGVj4yB9lC7344m9Mv1RZK9A9YzOcd0aFzKrmn80tEKBlrvwpXL2nxxpyz30DsLC5FKe48aUxRguZu6Me3pF3GsZ8GkgGas4KSjwG04NGrhmhHo1k1/OZnqQN2xtxKUTiCYJSkRlIx/rVgPWWENRtamXU+ToM8IjKx6Sn1atgy4sBCTQ8rOpG+j2NQi6uPcuI88duZ899uzVFggiZuAceCZu5Sp6dDqVyboOqclujmYGLsdLREcTTXBGNpJqARjT1WUzd8oTPfhm4diXuyFyzMCiMeHKec4d+7ZEJMpkcM3FRODkKPHZVS7e6vFry3Zeb+Jt8hDfOtrB9NdIpWVL4U0o1ktuixbBdof5My+YQ7Re5TrW14cGCf/hh4+cQDb0G5CY69yP+etcO7w==
+X-HE-Tag: 1759437999-64429
+X-HE-Meta: U2FsdGVkX1+PSREdrdBA/JxVX/c5r0mNnOm6KqNxdIGtu1xl7JbZvwG3g+5Z6kbCRwDOljRy7Q6jFPxNVsnRcnBd6+DW/5d+ySHnNmaTekO8RdYRmDAk9b7F8xDJ0RijoJ6ncVXbprxBjf9UZXxSPkei1fHEIM2sX24M1GWUvnkA2sqbIKipp/jVsVz03rW5fHLLPZZznS+ikx2gN8B5PYexq2oWRuw9fdrz85M8sUKf/4/9CRsLyLQXnu8hW7ECpVJVE8YeUnySqCzaupN1WEYJmjbEPYOXrrJezcrbpxEhjBapoSP8eq81et6drBnbhyvyPmi7MdUUqdMRLxaYVwSYDKg0hT2YcILjQ9VwkxzFjQvmJQWLEelz2+GCpxdcfz3TCaR9f8459g/fj9e93NXfZXp3gt6GlbOBfe/GfX+qtdJHac8bMJofiZgGFUZvUV1L7kzg8yg1mRuKRGazTRcyNA3ixFXcUn51D3ERBsWwnuAcQIrqsKq4Ubd/7DmArAt/WuP7v7l9nkF4TENbEPSx9LlZ+ashV41Im3Jth7L8WxScQ0ABrsGC/Xrf4ZQiJBF1g6jUESeg+U94axQ85Zy9MEvK1qzdI82Xr/d1r9HI1dW+auPVEIGZ/1hieWO+wq6qx8N8NU9CNniCzY4fY+AXZTB/1yHdFDWWjxkBzO2hyZID8uA/tIsBGBo5U/XdMu95ZKffORl3ixOMxOGxoueGrsyKfOnPiV25bpfOGyyhvF6MABYV6Q687tePb+PJgrQndlOEU5ZNs8GlFbPLRktQ9BcNJEmPm1W7C2TnOWnejT6oAajJ7vgjUfkamoCVkbFvcqCK5bUuCQP/gnECr+1mLf0mLOPBlDXrWunLHRoiYvNtOzHdcfrCn/RCbAnpe1urzcLvKCr42jTsECboVUA8mG1HxzbMz7oepZExR04zigw7XT3QI46RpJStX13RSy5iCNQMQnZySRxeCyW
+ xNwMNZyb
+ JIfc7zMc1r1YQFBB56rmbrAMpWNfU0J3uja7iTwvMaJ09WgyiIb5vg6IkgPRO8UNJflua803nR1ZEkUhGrVZNo7Gog631ef3tsKc3JtqyDTLGgqxLTzTuU28pFkoQvD22kfgMZvmulnWnLbirTGgSlerxHbY5C+qpq8MliXT7mLIUOa/A6yIkSQXPkbzEH3atqVSI2fYYOx7urB/4FEDgpvTqCTt3ETfo97HRRME5rTGF3bfkKPmWZFNhhm5uf2+sYNzo2gplVY+8QcNkRZRx2UXvHnXRmBDOeWQ0PRZO5CqbhNWon32RYaHfO5qz+KAiHCKAiIUdkV7zPdeD0EqqLIKVx5shFV90Y+5VSE5jugd5fYRQmAMpkQT78YUNMZarXuWU90zHMPZAHSsNBwo/KWaHo1QMeF0ma3NSbBfeu2zqOpjszx5RLJvqSZw7FHkU+5TozOMouKmkG6R6kGZ8yg1E860IgvlLcoRAwFzHy6WGuZUkQdpWIgl2NyqXSnrC6UqyeAqd7apMYw+N2JH79Z/YBvdK2MTfg+TvWnzuytP948ObdkBw81xi9g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,80 +130,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Oct 2, 2025 at 5:01 PM UTC, Dave Hansen wrote:
-> On 10/2/25 04:23, Brendan Jackman wrote:
-> ...
->> [Well, I'm assuming there that we include the actual security flushes in
->> series 2, maybe that would be more like "2b"...]
->> 
->> To get to the more interesting cases where it's faster than the current
->> default, I think is not that far away for KVM usecases. I think the
->> branch I posted in my [Discuss] thread[0] gets competitive with existing
->> KVM usecases well before it devolves into the really hacky prototype
->> stuff.
->> 
->> To get to the actual goal, where ASI can become the global default (i.e.
->> it's still fast when you sandbox native tasks as well as KVM guests), is
->> further since we need to figure out the details on something like what I
->> called the "ephmap" in [0].
->> 
->> There are competing tensions here - we would prefer not to merge code
->> that "doesn't do anything", but on the other hand I don't think anyone
->> wants to find themselves receiving [PATCH v34 19/40] next July... so
->> I've tried to strike a balance here. Something like:
->> 
->> 1. Develop a consensus that "we probably want ASI and it's worth trying"
->> 
->> 2. Start working towards it in-tree, by breaking it down into smaller
->>    chunks.
->
-> Just to be clear: we don't merge code that doesn't do anything
-> functional. The bar for inclusion is that it has to do something
-> practical and useful for end users. It can't be purely infrastructure or
-> preparatory.
->
-> Protection keys is a good example. It was a big, gnarly series that
-> could be roughly divided into two pieces: one that did all the page
-> table gunk, and all the new ABI bits around exposing pkeys to apps. But
-> we found a way to do all the page table gunk with no new ABI and that
-> also gave security folks something they wanted: execute_only_pkey().
->
-> So we merged all the page table and internal gunk first, and then the
-> new ABI a release or two later.
->
-> But the important part was that it had _some_ functionality from day one
-> when it was merged. It wasn't purely infrastructure.
+Motivation & Approach
+=====================
 
-OK thanks, after our IRC chat I understand this now. So in the case of
-pkeys I guess the internal gunk didn't "do anything" per se but it was a
-clear improvement in the code in its own right. So I'll look for a way
-to split out the preparatory stuff to be more like that. And then I'll
-try to get a single patchset that goes from "no ASI" to "ASI that does
-_something_ useful". I think it's inevitable that this will still be
-rather on the large side but I'll do my best.
+While testing workloads with high sustained memory pressure on large machines
+in the Meta fleet (1Tb memory, 316 CPUs), we saw an unexpectedly high number
+of softlockups. Further investigation showed that the zone lock in
+free_pcppages_bulk was being held for a long time, and was called to free
+2k+ pages over 100 times just during boot.
 
->> Do you think it would help if I started also maintaining an asi-next
->> branch with the next few things all queued up and benchmarked, so we can
->> get a look at the "goal state" while also keeping an eye on the here and
->> now? Or do you have other suggestions for the strategy here?
->
-> Yes, I think that would be useful.
->
-> For instance, imagine you'd had that series sitting around:
-> 6.16-asi-next. Then, all of a sudden you see the vmscape series[1] show
-> up. Ideally, you'd take your 6.16-asi-next branch and show us how much
-> simpler and faster it is to mitigate vmscape with ASI instead of the
-> IBPB silliness that we ended up with.
->
-> Basically, use your asi-next branch to bludgeon us each time we _should_
-> have been using it.
->
-> It's also not too late. You could still go back and do that analysis for
-> vmscape. It's fresh enough in our minds to matter.
->
-> 1.
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=223ba8ee0a3986718c874b66ed24e7f87f6b8124
+This causes starvation in other processes for the zone lock, which can lead
+to the system stalling as multiple threads cannot make progress without the
+locks. We can see these issues manifesting as warnings:
 
-And yep, I'll take a look at this too. Thanks very much for taking a
-look and for all of the valuable pointers.
+[ 4512.591979] rcu: INFO: rcu_sched self-detected stall on CPU
+[ 4512.604370] rcu:     20-....: (9312 ticks this GP) idle=a654/1/0x4000000000000000 softirq=309340/309344 fqs=5426
+[ 4512.626401] rcu:              hardirqs   softirqs   csw/system
+[ 4512.638793] rcu:      number:        0        145            0
+[ 4512.651177] rcu:     cputime:       30      10410          174   ==> 10558(ms)
+[ 4512.666657] rcu:     (t=21077 jiffies g=783665 q=1242213 ncpus=316)
+
+While these warnings are benign, they do point to the underlying issue of
+lock contention. To prevent starvation in both locks, batch the freeing of
+pages using pcp->batch.
+
+Because free_pcppages_bulk is called with both the pcp and zone lock,
+relinquishing and reacquiring the locks are only effective when both of them
+are broken together (unless the system was built with queued spinlocks).
+Thus, instead of modifying free_pcppages_bulk to break both locks, batch the
+freeing from its callers instead.
+
+A similar fix has been implemented in the Meta fleet, and we have seen
+significantly less softlockups.
+
+Testing
+=======
+The following are a few synthetic benchmarks, made on two machines. The
+first is a large, single-node machine with 754GiB memory and 316 processors.
+The second is a relatively smaller single-node machine with 251GiB memory
+and 176 processors.
+
+On both machines, I kick off a kernel build with -j$(nproc).
+Lower delta is better (faster compilation).
+
+Large machine (754GiB memory, 316 processors)
+make -j$(nproc)
++------------+---------------+----------+
+| Metric (s) | Variation (%) | Delta(%) |
++------------+---------------+----------+
+| real       |        0.4627 |  -1.2627 |
+| user       |        0.2281 |  +0.2680 |
+| sys        |        4.6345 |  -7.5425 |
++------------+---------------+----------+
+
+Medium machine (251GiB memory, 176 processors)
+make -j$(nproc)
++------------+---------------+----------+
+| Metric (s) | Variation (%) | Delta(%) |
++------------+---------------+----------+
+| real       |        0.2321 |  +0.0888 |
+| user       |        0.1730 |  -0.1182 |
+| sys        |        0.7680 |  +1.2067 |
++------------+---------------+----------+
+
+Small machine (62GiB memory, 36 processors)
+make -j$(nproc)
++------------+---------------+----------+
+| Metric (s) | Variation (%) | Delta(%) |
++------------+---------------+----------+
+| real       |        0.1920 |  -0.1270 |
+| user       |        0.1730 |  -0.0358 |
+| sys        |        0.7680 |  +0.9143 |
++------------+---------------+----------+
+
+Here, variation is the coefficient of variation, i.e. standard deviation / mean.
+
+Based on these results, there is definitely some gain to be had when
+lock contention is observed in a larger machine, especially if it is running
+on one node. It leads to both a measurable decrease in compilation time for
+both the real and system times (i.e. relieving lock contention).
+
+For the medium machine, there is negligible regression in real time
+(<< coefficient of variation), although it leads to a measurable increase
+in the system time.
+
+For the small machine, there is a negligible performance gain in real time,
+but has a similar regression to the medium machine.
+
+Despite the regressions (~1%) of system time in the smaller machines, it
+seems to be (1) not observable in realtime and (2) is much smaller than the
+gain made in the large machine.
+
+Changelog
+=========
+v2 --> v3:
+- Refactored on top of mm-new
+- Wordsmithing the cover letter & commit messages to clarify which lock
+  is contended, as suggested by Hillf Danton.
+- Ran new tests for the cover letter, instead of running stress-ng, I decided
+  to compile the kernel which I think will be more reflective of the "default"
+  workload that might be run. Also ran on a smaller machines to show the
+  expected behavior of this patchset when there is lock contention vs.
+  lower lock contention.
+- Removed patch 2/4, which would have batched page freeing for
+  drain_pages_zone. It is not a good candidate for this series since it is
+  called on each CPU in __drain_all_pages.
+- Small change in 1/4 to initialize todo, as suggested by Christoph Lameter
+- Small change in 1/4 to avoid bit manipulation, as suggested by SeongJae Park.
+- Change in 4/4 to handle the case when the thread gets migrated to a different
+  CPU during the window between unlocking & reacquiring the pcp lock, as
+  suggested by Vlastimil Babka.
+- Small change in 4/4 to handle the case when pcp lock could not be acquired
+  within the loop in free_unref_folios.
+
+v1 --> v2:
+- Reworded cover letter to be more explicit about what kinds of issues
+  running processes might face as a result of the existing lock starvation
+- Reworded cover letter to be in sections to make it easier to read
+- Fixed patch 4/4 to properly store & restore UP flags.
+- Re-ran tests, updated the testing results and interpretation
+
+Joshua Hahn (3):
+  mm/page_alloc/vmstat: Simplify refresh_cpu_vm_stats change detection
+  mm/page_alloc: Batch page freeing in decay_pcp_high
+  mm/page_alloc: Batch page freeing in free_frozen_page_commit
+
+ include/linux/gfp.h |  2 +-
+ mm/page_alloc.c     | 83 ++++++++++++++++++++++++++++++++++++---------
+ mm/vmstat.c         | 28 ++++++++-------
+ 3 files changed, 83 insertions(+), 30 deletions(-)
+
+
+base-commit: 71fffcaf9c5c5eb17f90a8db478586091cd300c5
+-- 
+2.47.3
 
