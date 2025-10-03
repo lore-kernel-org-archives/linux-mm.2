@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21D3DCCA471
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 09:36:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 979BFCCA471
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 09:41:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B2138E0006; Fri,  3 Oct 2025 05:36:05 -0400 (EDT)
+	id D1CC08E0007; Fri,  3 Oct 2025 05:41:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 063208E0001; Fri,  3 Oct 2025 05:36:05 -0400 (EDT)
+	id CF4E38E0001; Fri,  3 Oct 2025 05:41:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E945D8E0006; Fri,  3 Oct 2025 05:36:04 -0400 (EDT)
+	id C314F8E0007; Fri,  3 Oct 2025 05:41:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D066B8E0001
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 05:36:04 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 840BD5AC7E
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 09:36:04 +0000 (UTC)
-X-FDA: 83956296648.16.92F202E
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AFF1A8E0001
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 05:41:51 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5A3DFC0742
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 09:41:51 +0000 (UTC)
+X-FDA: 83956311222.03.F2F3E7A
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 561F910000A
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 09:36:02 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 96EC0140007
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 09:41:48 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf05.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
+	spf=pass (imf09.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759484162;
+	s=arc-20220608; t=1759484508;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PpQeiq8jv9AGAvDe1G+zaA3L2G3TN/dnU1+546d/boI=;
-	b=cg6KcCpuerKi/cCmgsOZaluGA5BtRPSSrmJvOlfjBXInN6vhslflUoSYkB8ouQTy7FFMRu
-	vVwwr5HCamA7uAsY/0slWniOwldDzKxZytKzlQ8TaUJHA+luLUOJMRTU0XWiVM6Qg1/e+9
-	B+W5Vt0yq0uptMg9ybtR5CiN0M+J1aE=
+	bh=eWLj7T/EJ2OEAL6KYzhlBQvi5OgM3yiH1Dl4hMKL80U=;
+	b=RYIHFUDTHtL4TQnBBlUQhjrf44oQLVQDOkr4TB4I5gVsuqZqxU5uJLueSPiYt09D2PwbhA
+	aQQZs3ugUn9wu1LHa6eosi5yGAB0/doL3wASCJM0krsfopw2x3nJij5kvs4KkZGRb3HMuW
+	omvBIrvGOwGEnmiimrr78uF12lrOQzg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759484508; a=rsa-sha256;
+	cv=none;
+	b=cLgLiFF/IfBQSHLxnG3gCSWa2lPY3+6y1Ie7pXl33f4Cee79fMNLs7UaZskvs/2P/Ld5Om
+	BhJn3cdw1HszrCZftfl8TKbljLgGHzkujVS0vv7ahKDUI0PCpWAOESkEmaEaybK7AZfIkX
+	PoHo2vu9L8SDvfgfGvZjyIRc20Wm84Q=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
+	imf09.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf05.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759484162; a=rsa-sha256;
-	cv=none;
-	b=WXjdY0GErpUsRrJco6zoWcJhqZUDVtN9U3XkkZjYmZpKgs5TYXXYA4YrfbzODfK9BUYK6i
-	zxGynzynWOruEi7Nw7TN9Rd23SyRydMlJ0SkeYRaO9q+XhFW/y493a7wteJKrzNqHiO8Bh
-	g8//9qIsqEl68fpkpczIxrcyXzGjquk=
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cdNk85Vn6z6K8gH;
-	Fri,  3 Oct 2025 17:32:48 +0800 (CST)
+	spf=pass (imf09.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cdNsq1bKyz6L4tL;
+	Fri,  3 Oct 2025 17:39:27 +0800 (CST)
 Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id E30771402EF;
-	Fri,  3 Oct 2025 17:35:59 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 9E68B1400D9;
+	Fri,  3 Oct 2025 17:41:45 +0800 (CST)
 Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
  (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 3 Oct
- 2025 10:35:57 +0100
-Date: Fri, 3 Oct 2025 10:35:56 +0100
+ 2025 10:41:43 +0100
+Date: Fri, 3 Oct 2025 10:41:41 +0100
 From: Jonathan Cameron <jonathan.cameron@huawei.com>
 To: Raghavendra K T <raghavendra.kt@amd.com>
 CC: <AneeshKumar.KizhakeVeetil@arm.com>, <Michael.Day@amd.com>,
@@ -77,12 +77,11 @@ CC: <AneeshKumar.KizhakeVeetil@arm.com>, <Michael.Day@amd.com>,
 	<weixugc@google.com>, <willy@infradead.org>, <ying.huang@linux.alibaba.com>,
 	<ziy@nvidia.com>, <dave@stgolabs.net>, <yuanchu@google.com>,
 	<kinseyho@google.com>, <hdanton@sina.com>, <harry.yoo@oracle.com>
-Subject: Re: [RFC PATCH V3 08/17] mm: Add throttling of mm scanning using
- scan_size
-Message-ID: <20251003103556.00006e3c@huawei.com>
-In-Reply-To: <20250814153307.1553061-9-raghavendra.kt@amd.com>
+Subject: Re: [RFC PATCH V3 09/17] mm: Add initial scan delay
+Message-ID: <20251003104141.00001744@huawei.com>
+In-Reply-To: <20250814153307.1553061-10-raghavendra.kt@amd.com>
 References: <20250814153307.1553061-1-raghavendra.kt@amd.com>
-	<20250814153307.1553061-9-raghavendra.kt@amd.com>
+	<20250814153307.1553061-10-raghavendra.kt@amd.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
@@ -90,14 +89,14 @@ Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.203.177.15]
 X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
  dubpeml100005.china.huawei.com (7.214.146.113)
-X-Stat-Signature: p835g3rnaeh16buicz36x3tba9dztifp
+X-Stat-Signature: spys6uc1oyuxct6zqeje3zb7xbcrrb4e
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 561F910000A
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1759484162-145692
-X-HE-Meta: U2FsdGVkX1/cOQVM52tZ1s/YUpreD2zwps5s52AamV8DArqz0rWcbVRBSxOW8oQYUvXzoU+m9g6mfscBzRvCT5R7U72p+dfvws/NkWUQSclrlO/aYT+giDsjgavL3AjB28MdDn/18X9MULBWew0Yr55HNm8nBJi8s6Mt0izGaEnBrfoUeBUBsOsG9K9Rtr7WH7/5A7Rp0Mnf5jZfN8f/XcVODf9GhzdKe4PWai+4Rm+mjcU2+AxnRcy8yBKFK3KOAOFYPu0vb3h5vGMXhYAfxVKjYMaaUkapttjpqFd9ZgLL3UVo3peb5aSNGGZTSV5v8pdyRjp1kxCXkMPj/8knPbXwEcR2RRUXI5DK2ErOX9piNCKCKPzKfpDkIfQSUc3h3ghr4cToKNrJDVjT4HusSPeTeaD00ctbPgoWl8JQTlkNQjRYJQO3cTrSHF+HEZMPad31sne14EPyNQVtkIHsRg4xw4LVlQLBGhJ9r5ss8WgURzhuBslAQ8i3Abi+dbqg3xa2AAUHGDs0grwq3aLzK5H3Vgu1o2/Kj8ktlfoXZR4W+u/9RF6U9EmQFwl4UUYeC3I0Xt98A74sarONQQgc/5B+R3P+0LDtKPTrNaf8AWPDv+j4MmB5A7rEibbyqn6gt8iIwu9DkAXz++wULT89O7Nn/bISDW679mY5WeJ5Fe2I84jEmv6r02yEb4q8TtrGf5iDLdOW+VCbDG/ibLCFsc+mAgr/ew3wiDGsoNmnVCsfcb9lqI2VYU3ue8SRz2xXmQUc10oh17ecRROoGM6YMsN97B+CS3iLqMBLXdXyKYxCbEKZMWnJSiaUaTkdN4f6jlINA0FViXMKAIGaX/bUg9A+TYpIVFCjEftc/PfIGNNtgf+tyOAaGWIhHIXy0VKvlooFysGQk5d+InHvneN6NIDSnHgESGqle0XEp7yfesTIyCA7mOJeo2GWWWskCxuWkAbiiYCkxqfVv4hs6h/
- 4AYe9QdL
- E0HlnuU7lmSNxOAQwXbgFsO2AeQcv5164al11KfzAGFwR9PQCipVkM//Wt2lTiRgGXehZls3aLuzIT5vs6r+w9lffJtLe6+DSBivjw0qAHGckDVAT9E6b3rO9lLnq+wkaICZvPwwuuBNsl2G8IXJ+HMhHNtHGaI6dM+0eiNAKIHa9XZ2vU6W1HEyQEN/Kr9yDvYOFGDpgygsm+HhRSPkUleh54QnWIKvKBLwdwK233FMyCxAF4gsatFNnqkxvCFjfhDv5gxC7vNMAyi5fS0yaJ6gjEDBg921g3ldsDilAM0YM304M+pxW7djukGbE97YpQDi/d7jrNENe4qyMggdrkycw0e/kiOU0gmRRrqAfRFMrDnAwsmrbmVBTjPv1Hs/+uTxOrZ0U1FHuWCH5Uw+JcnElTQ==
+X-Rspamd-Queue-Id: 96EC0140007
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1759484508-126477
+X-HE-Meta: U2FsdGVkX1+PnHNeVARBoF1Osto1eQsySf2VvWngZeCfOzpTydWnxRSenqv8Ki2fl/Li10Gy37z0H0ilC69XJg9urNl0telnZ2UgUEF5cCxmLolyDZgVoG8Yaxe6Gqg0LAHPs3xhK/FwtoDUJV8dckBsoH8Siv4Roj67yXPrk9wnhD9s/zZlqFomjV3q4pa6jHEzYnjyxRvoN5w9lovpjBtUX6E00MKUMT7eqDxEeFQ6QaXCEg6W4p51fsQbdJkzT8bAJlXfOmZcNnvCIYz2vp07zPiIW6H+pvVNQeLJOE6ME2xe1Mcgl9Xc0E6soi2HfyGNs+47yTf4QXTyC6wtlDEkHQF6DgR1l8pn4B/5PsNSVIyNLUT9g2lJCfdLcPSLaZy8i9C7fTgQEvzO+Y7UagzOw08SRU8El+OOLjQC0bEzfc9Mn9YPVVAPSNK7PRByJaEjEbMiPxIcy21OLYWDs8sCwkYHswwGqKe9YNxyXwO80aK5toxOGvZ9beSRJkaeDVZ2RRVpBt312GdxIIgvXsg/YMFJvh8VhVDK8tWerrFfLA+L7Hmwc8dEL94n1Jtd3M1IZh94Mv6bMrWclJ2s6xoDWBnzASxeKANFLDtzEfoSMDT37eSUccIH/zNWfTfoDsSGY6hjr3VmyMg8ozun0xAvXNy40sXe9A0yGVRmAJuSBf3iiy9kI6FhGlOfeHFeOztKAx6GukuhsQn5Z+a0jc61CvrJBPtqlquBBbHawPgSSMypBLsvdu/pt696lyaky/dsR3SdE5OBYA7/CcMr0mmVeWi/Z4R/gPPS462+CaatLDrbvQqlm21iXV6l/G6vHwwgsYjBBXE2dGEDsjknvHkfKbhdKzdGR2Tio2Ef1ECSZPZ/jP4AdVnoMZlTrlmf0vm8Tbefaq+9Ux5gAIKKIjiRbbKqSP89GkuszMcOr1KVprIZ+tNPlzGZStSYq2airrmZO4D5d66lskr6el7
+ nczOqkQ6
+ Da++GcHV6P2YqSGknxk6UwYwPskOo5fxsge8iML9MqpPQP5NI1FOqxW+upvWe+GiBgqKqJbt2WZUQazHdWYbszQmK4Ymiq5R6JxgJQFpZ3KmREScfs/C2lDuLZspfyeCntRfxLUkpGinyVuboISt2b7aM/e2mWxTTDi0ryf2tlLCQw36x0pnjJZnQHSS5HmmM/I4XAFijt9UP6XFmpT7gixAVWG0t5kRhJdTs7Cx1avMTrBNNJ2KX0GTJNRZEa0HNli1AHexFC+OpViBmVIhM9x+tbSidM7PbCEA/tTljCcFIThitImzYDzov+XeoGM7gwg7a/fHNZy9B8S7rYY2GxpxHBaCKjYl3MRcj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,98 +105,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 14 Aug 2025 15:32:58 +0000
+On Thu, 14 Aug 2025 15:32:59 +0000
 Raghavendra K T <raghavendra.kt@amd.com> wrote:
 
-> Before this patch, scanning is done on entire virtual address space
-> of all the tasks. Now the scan size is shrunk or expanded based on the
-> useful pages found in the last scan.
-> 
-> This helps to quickly get out of unnecessary scanning thus burning
-> lesser CPU.
-> 
-> Drawback: If a useful chunk is at the other end of the VMA space, it
-> will delay scanning and migration.
-> 
-> Shrink/expand algorithm for scan_size:
-> X : Number of useful pages in the last scan.
-> Y : Number of useful pages found in current scan.
-> Initial scan_size is 1GB
->  case 1: (X = 0, Y = 0)
->   Decrease scan_size by 2
->  case 2: (X = 0, Y > 0)
->   Aggressively change to MAX (4GB)
->  case 3: (X > 0, Y = 0 )
->    No change
->  case 4: (X > 0, Y > 0)
->    Increase scan_size by 2
-> 
-> Scan size is clamped between MIN (256MB) and MAX (4GB)).
-> TBD:  Tuning based on real workloads
+>  This is  to prevent unnecessary scanning of short lived tasks
+> to reduce CPU burning.
+Add a tiny bit on why reusing the existing sysctl value.
+Also useful to add a comment here on current default of that
+so when considering this algorithm we know what it is.
 
-Seems like a reasonable thing to do, but as you say tuning
-data needed to justify how aggressive this should be and
-those size limits.
-
-Trivial stuff inline.
 
 > 
 > Signed-off-by: Raghavendra K T <raghavendra.kt@amd.com>
 > ---
->  mm/kscand.c | 29 +++++++++++++++++++++++++++++
->  1 file changed, 29 insertions(+)
+>  mm/kscand.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 > 
 > diff --git a/mm/kscand.c b/mm/kscand.c
-> index 843069048c61..39a7fcef7de8 100644
+> index 39a7fcef7de8..880c3693866d 100644
 > --- a/mm/kscand.c
 > +++ b/mm/kscand.c
-> @@ -28,10 +28,15 @@
+> @@ -28,6 +28,7 @@
 >  
 >  static struct task_struct *kscand_thread __read_mostly;
 >  static DEFINE_MUTEX(kscand_mutex);
-> +
+> +extern unsigned int sysctl_numa_balancing_scan_delay;
 
-Push that into earlier patch to cut down on churn / noise.
+Maybe we need to move the declaration from kernel/sched/sched.h
+I'd rather see that than a somewhat hidden away extern declaration.
 
-
+>  
 >  /*
 >   * Total VMA size to cover during scan.
-> + * Min: 256MB default: 1GB max: 4GB
->   */
-> +#define KSCAND_SCAN_SIZE_MIN	(256 * 1024 * 1024UL)
-> +#define KSCAND_SCAN_SIZE_MAX	(4 * 1024 * 1024 * 1024UL)
->  #define KSCAND_SCAN_SIZE	(1 * 1024 * 1024 * 1024UL)
-> +
-
-Likewise.
-
->  static unsigned long kscand_scan_size __read_mostly = KSCAND_SCAN_SIZE;
->  
->  /*
-> @@ -94,6 +99,8 @@ struct kscand_mm_slot {
->  	unsigned long next_scan;
->  	/* Tracks how many useful pages obtained for migration in the last scan */
->  	unsigned long scan_delta;
-> +	/* Determines how much VMA address space to be covered in the scanning */
-> +	unsigned long scan_size;
->  	long address;
->  	bool is_scanned;
->  };
-
->  static inline void kscand_update_mmslot_info(struct kscand_mm_slot *mm_slot,
->  				unsigned long total)
+> @@ -1010,6 +1011,7 @@ void __kscand_enter(struct mm_struct *mm)
 >  {
->  	unsigned int scan_period;
->  	unsigned long now;
-> +	unsigned long scan_size;
-
-Combining a few of these or assigning at declaration will reduce the code size a bit
-which is always nice to have if it doesn't hurt readability.
-
->  	unsigned long old_scan_delta;
+>  	struct kscand_mm_slot *kscand_slot;
+>  	struct mm_slot *slot;
+> +	unsigned long now;
+>  	int wakeup;
 >  
-> +	scan_size = mm_slot->scan_size;
->  	scan_period = mm_slot->scan_period;
->  	old_scan_delta = mm_slot->scan_delta;
+>  	/* __kscand_exit() must not run from under us */
+> @@ -1020,10 +1022,12 @@ void __kscand_enter(struct mm_struct *mm)
+>  	if (!kscand_slot)
+>  		return;
+>  
+> +	now = jiffies;
+>  	kscand_slot->address = 0;
+>  	kscand_slot->scan_period = kscand_mm_scan_period_ms;
+>  	kscand_slot->scan_size = kscand_scan_size;
+> -	kscand_slot->next_scan = 0;
+> +	kscand_slot->next_scan = now +
+> +			2 * msecs_to_jiffies(sysctl_numa_balancing_scan_delay);
+
+I think one tab beyond line above is enough for indent here.
+
+>  	kscand_slot->scan_delta = 0;
+>  
+>  	slot = &kscand_slot->slot;
 
 
