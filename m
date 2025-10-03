@@ -4,147 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17C56CCA471
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 11:33:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14ED8CCA471
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 12:19:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 511048E0005; Fri,  3 Oct 2025 07:33:43 -0400 (EDT)
+	id F1A018E0005; Fri,  3 Oct 2025 08:19:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C21D8E0003; Fri,  3 Oct 2025 07:33:43 -0400 (EDT)
+	id EF1D78E0003; Fri,  3 Oct 2025 08:19:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B0648E0005; Fri,  3 Oct 2025 07:33:43 -0400 (EDT)
+	id E2E578E0005; Fri,  3 Oct 2025 08:19:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 27CF38E0003
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 07:33:43 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D325111ACE1
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 11:33:42 +0000 (UTC)
-X-FDA: 83956593084.07.D9FA2B5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 23655120004
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 11:33:40 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lFzKRkRA;
-	spf=pass (imf29.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id CC87B8E0003
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 08:19:35 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5D7F71A0511
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 12:19:35 +0000 (UTC)
+X-FDA: 83956708710.22.AFAF9C2
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf30.hostedemail.com (Postfix) with ESMTP id B68878000F
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 12:19:32 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf30.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759491221;
+	s=arc-20220608; t=1759493973;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wbUeDDCMwC2fYB2rpD3gOkcsxTVsmCmhmDFkV5BaIxE=;
-	b=ez2BpiA91xwZRtqXokaAiZM18R+ntkvDOqraXI/S00uMjR9Rn8o6NzzvcPyVwkCPANtMdg
-	RHzowySjPSRP8AgmMwhnqkLFKzOCooHpPHVh/JubHQ+zAlmGToL3GYvqk/DH32l50irvSK
-	QkN3v3zNqN5MKmol5vw+HwxHEsqT0gQ=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lFzKRkRA;
-	spf=pass (imf29.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759491221; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fuj6blZqCq4xnpwT+XGEN8ooNlsHvGrqmKecsaVr26g=;
+	b=ng5d3akloM8o4xyGuTG5rFUIKOPGxEox9PeP2fNXOOhK1+bzxJqdtvQbq1rMwbdLSa95i6
+	p/vbYgTMQqXlwDb2XOv/ROcY8W1ZOLYvlYlgWZBBINOV+zl+fExBV0rePpbHFWSyPfBuZp
+	tY4ngZydfvYpYopI+/9rlC97zC/o5uk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759493973; a=rsa-sha256;
 	cv=none;
-	b=tZokNnJNG4+KB9b8rUxfIllWaeTySi15Zy1rEwhbc5dd32rtXwc5w66VL+pTX8HSUFyPUM
-	oYLxWwzfRRLBh39tYw5U5peiIh4P8UhGVKo/Qlh7E0HhbfCgpt8Z53/mauhFNocqY8a/0B
-	bUZnRXyk1Qk7Txi3AVZvTEDgX1JZjwA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 189C343899;
-	Fri,  3 Oct 2025 11:33:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B48C4CEF5;
-	Fri,  3 Oct 2025 11:33:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759491219;
-	bh=8JvzZz+MrzjUmB/qmn12k1T1z8wI8NEqkWeYCArS4nA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lFzKRkRAagp0TVhUdTwIsW0EPgf7xwe5vUnZsgItAsbqWLbYcv7v2Q3oCdo6pdbpH
-	 TxK4cHFxGzDDbQDQTmmTAALXtRce7awXslf/w51ZRllOlHQfykkv/S85tSAEJm9jFJ
-	 GYwvA6uugwAlC/eFWM7ehADw13/t37TYV5luOUQD7lDrfqGG54YTKnaTyEWvTdRb0c
-	 orc+Nn8y24EKqDs+XjojdkthXLkOB/CpwUkMKq+3hkvcz1Knd27dZO22vw3HIZH/oz
-	 KeJJqGDMye/t+diEqfyZzsugo6eKkklnr+1Zd5LuUfHG/pa69kR/h1070kPLMeXwGn
-	 kaCdIbmTIMmYw==
-Date: Fri, 3 Oct 2025 12:33:03 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Byungchul Park <byungchul@sk.com>
-Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
-	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
-	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
-	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
-	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
-	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
-	tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
-	amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
-	linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
-	minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
-	sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
-	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
-	ngupta@vflare.org, linux-block@vger.kernel.org,
-	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
-	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
-	djwong@kernel.org, dri-devel@lists.freedesktop.org,
-	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
-	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
-	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
-	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
-	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
-	yeoreum.yun@arm.com, netdev@vger.kernel.org,
-	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
-	catalin.marinas@arm.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, luto@kernel.org,
-	sumit.semwal@linaro.org, gustavo@padovan.org,
-	christian.koenig@amd.com, andi.shyti@kernel.org, arnd@arndb.de,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
-	petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
-	paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
-	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
-	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
-	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
-	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
-	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
-	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
-	kevin.brodsky@arm.com, dwmw@amazon.co.uk, shakeel.butt@linux.dev,
-	ast@kernel.org, ziy@nvidia.com, yuzhao@google.com,
-	baolin.wang@linux.alibaba.com, usamaarif642@gmail.com,
-	joel.granados@kernel.org, richard.weiyang@gmail.com,
-	geert+renesas@glider.be, tim.c.chen@linux.intel.com,
-	linux@treblig.org, alexander.shishkin@linux.intel.com,
-	lillian@star-ark.net, chenhuacai@kernel.org, francesco@valla.it,
-	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
-	masahiroy@kernel.org, brauner@kernel.org,
-	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
-	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
-	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH v17 09/47] arm64, dept: add support
- CONFIG_ARCH_HAS_DEPT_SUPPORT to arm64
-Message-ID: <b69ab7d0-ba5e-4d22-88ef-53e0ebf07869@sirena.org.uk>
-References: <20251002081247.51255-1-byungchul@sk.com>
- <20251002081247.51255-10-byungchul@sk.com>
- <a7f41101-d80a-4cee-ada5-9c591321b1d7@sirena.org.uk>
- <20251003014641.GF75385@system.software.com>
+	b=MVtacgwzLlPCqSvRkW7fxJljY0M/c8K5O5k5SAbrLck4S10v9FNPjOnS5rY+4ZdnERfxdl
+	YvkoolNbAsSyBBDDxOSnBUMt/D3IVCWRpusj+099rDrW4t5lh6KsFDiOdr+ANHKPK8D6d/
+	8qtt8X5rt10nAP5YWOkBoXr43FuR0tI=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf30.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cdSLp26Jcz6K8tQ;
+	Fri,  3 Oct 2025 20:16:18 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9A5E7140278;
+	Fri,  3 Oct 2025 20:19:29 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 3 Oct
+ 2025 13:19:28 +0100
+Date: Fri, 3 Oct 2025 13:19:26 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Bharata B Rao <bharata@amd.com>
+CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<dave.hansen@intel.com>, <gourry@gourry.net>, <hannes@cmpxchg.org>,
+	<mgorman@techsingularity.net>, <mingo@redhat.com>, <peterz@infradead.org>,
+	<raghavendra.kt@amd.com>, <riel@surriel.com>, <rientjes@google.com>,
+	<sj@kernel.org>, <weixugc@google.com>, <willy@infradead.org>,
+	<ying.huang@linux.alibaba.com>, <ziy@nvidia.com>, <dave@stgolabs.net>,
+	<nifan.cxl@gmail.com>, <xuezhengchu@huawei.com>, <yiannis@zptcorp.com>,
+	<akpm@linux-foundation.org>, <david@redhat.com>, <byungchul@sk.com>,
+	<kinseyho@google.com>, <joshua.hahnjy@gmail.com>, <yuanchu@google.com>,
+	<balbirs@nvidia.com>, <alok.rathore@samsung.com>
+Subject: Re: [RFC PATCH v2 4/8] x86: ibs: In-kernel IBS driver for memory
+ access profiling
+Message-ID: <20251003131926.0000363f@huawei.com>
+In-Reply-To: <20250910144653.212066-5-bharata@amd.com>
+References: <20250910144653.212066-1-bharata@amd.com>
+	<20250910144653.212066-5-bharata@amd.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="CPEOfhRT6FsWLRqF"
-Content-Disposition: inline
-In-Reply-To: <20251003014641.GF75385@system.software.com>
-X-Cookie: hangover, n.:
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.15]
+X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
+X-Stat-Signature: ytu3pyywjmjq74tg4hgk58x8qfm53bsx
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 23655120004
-X-Stat-Signature: js4ba68j8ge3eyqkhrsr739q5aiqborx
-X-HE-Tag: 1759491220-356781
-X-HE-Meta: U2FsdGVkX18F7mbz6eEuUfSvAcNeZXYjNEend4KAwDnLQR3wWP11VRgGugmEtzp/hyS9BV4Z7spiI0irb30dab8IbwnCYAKYZmpkLCG0WTd/E29DXXNwFdiB5NnqGNWL7/JePN4QwyfhX5HLhWaVGbXj37xVtGahrHZ7y2gEgg9y3SVVq/USCTHDdyqBJD4xQKf0R+CPqDATTMZm5+IGqnVMcGuQ8pJpaY01wU76xwLkXFRyGRr+4o3vve8PHVSbwhxD9uIN5f4ls9T7VdkZLm6/JBsinNWpliN9ck7IxqnCj4FKi4EdsQzjq/I0mjE0+OdmHeQD1TXZlGV9tgcewbOEBoKk23uyTp3l/MlMQn+y2y5tgwF6Q2rhBUH9C+7uWrl2kipBaNztxZqFZI7aqOHc5zbrdDTM6axvLDUHpQe8GSgwSQiRL/PTicFxsQNi3dWF+Sk2sok37EpHlBEgKpvXsX+Vq39LOyi7N7hh5YdBoLjndQfGDLf/6Tg9QX5RY4na67Q656c4kNkCxjIgfeo8F88aXZSFhvmisMSsD1nQMxQJ7emejmisrvw852VAMoOEEmzTJ6qFmA85uxuzR++jspnaBdhdd0tsZYPDOJB4VrYdolaSPbbmkNk8cmHxhbVce1JsHapQXrQqO17UmMgKQXWxWkiwjZeAxrCQNpuT2iU4AMQDZU+V99+9LPmGd4lGV8Pon7NofQTuNykP+x0be7tvWHMnuauWHK/IRZOT3uku++ApFgKn2rsd0/+DA2KQ+y32srt6pOuzGT/yoGGiwlI96bDR13lfRg0suiS2PxyYwQzxuJHucjRLQkExWKzOvJC8fqwl6qfkyiyVh77YGplxPkDRRPaIAbi4h4VQgr/WEEcGuDbH8JrkbR+1hpRM/RUjiBiwyRbvgny7aFRwoMke+EGe6YebnsSpUz+H71nmgvdV+js1P6U9wov5nJ4g15Q7nG6deAGpOdE
- 7XEKuPa0
- UzYhRGjcfOc0gqXbC8IkCt78BLXU6yYhw9hOqoeQgwPHeDL7mqJx0NwKx++RBLxLW+kUKz9ECF7K7H9mqtqE0fUnvvSBDeB7hTfvUwYlsdeZkX82J0OQZJG/H8fkM/3StzQwRbAIU1XAzIvS8xCN4Bhsw+xX0uiwFlDnIXwDUxapTdsC+wARxVevr6FD23A6LHbcSap7BirWnduk9WkotAbkA/f+lrWY5D95FMNKLal5LJv/vkvSZ0yEEIQW2kZWeIk3cZlRzV6wopSKtBsiVDv9D1jWo/zFlG+tnrkv5hhK6yLs985/OCAVZWJDSrF91lMhPlZ5/urt/lA8vyXoaFvts2EFJ8YK3bqT/mrYeE96FFtdBX6DNvpJjj2yvtjBhM36Oa8X6rSelLxSzYKR2oYTom4VpeLWNqoG/njNS+3SeGpxHk7hUXXATbtcfMa9GKGVlVAqKZTHNeqXUyq5gSU+4uvuYFFhXTqypl+Dwrbw9UWE=
+X-Rspamd-Queue-Id: B68878000F
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1759493972-229275
+X-HE-Meta: U2FsdGVkX19i6xfMy+N8EuCax0hhBCE9uloc9neY+qNO57I2DcNWGHx5I4GuwOIHjDUWWoJ/U/2CSOZevnKEB7E6Q6qjiug+Dm8f5WwThwg0VLZB4cfrwFerA8J6Za1HGTbDSJJ0BD30npRVuC6G2LZJTO7pui+/UiE/4dg+7JC2HToEdYDgSwxO/ihxJCSFeckQHocVrK98ZtdrsF8PG7A1F8nayr7J7RagDoBeoPKwn96SS600xFjIJ7glcWZBgESo+KGJNX31AskoF7WA/D7fq3SSyw3CLtkpWm8rle6/Drgh1bphQsP5grXKCA+adOaxezGI8PG+FS4ZH9lJVF3MzbcyvGxURXLKNLwYhTcVNTMNaGcSObt1fllVgQVTU5xaptuPQxSZKH/ZlqReCzfu1AJ8SVZxrxxYVKS0mtNAsdI8cwwuLyaHQpO9qdpBTnFikziOt6dy2+o3PJFwneOZmao4Sg1IjxLt8aZJy8Me0JPc/j8SllCxZ6lKB7d5iR+D1tlsC2WcJ2X3/yZPwUUg0rKTFuFiDimlb+ovu6ahYOiIdAVX6sDxXfFJvcQ0CL3y0GhEJcwjrFSwvPQgFqWh6pi4Bq0Rb4ZormtK0WN9XQUDsFhXTKzd+bc7n1Jg9TIGus4RM3zCGne++CKmqolNOPEYAninmpzGqscVs/1OgcoHy/xp4473s2u8gZAl64uN5hUN3lmCfVHin/vqo2Q+gXj1LYIkSBuMCpd2P72VGUmtNyTyCSu7LabJic4ybjV9Z7ykhmVHvMKLJBBwqKJI56XpHERcN7XUCvcsD5SBHUfFroED2eGl2zJW7OlkWYK9v1hpkKGR/M4/kdVeV+WrBOrJKQTCURqV8aR8qG1YyGP4DvADr8v/2a9HN6NvXvJbbR57uTumQadhTfMLcaQ2Aifw+LPc+Xed72wg/5YCwLbv34qG1n5uisRTZFBKuABd793Yy3SjGfPEM6y
+ 6mw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -153,72 +100,200 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, 10 Sep 2025 20:16:49 +0530
+Bharata B Rao <bharata@amd.com> wrote:
 
---CPEOfhRT6FsWLRqF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Use IBS (Instruction Based Sampling) feature present
+> in AMD processors for memory access tracking. The access
+> information obtained from IBS via NMI is fed to kpromoted
+> daemon for futher action.
+> 
+> In addition to many other information related to the memory
+> access, IBS provides physical (and virtual) address of the access
+> and indicates if the access came from slower tier. Only memory
+> accesses originating from slower tiers are further acted upon
+> by this driver.
+> 
+> The samples are initially accumulated in percpu buffers which
+> are flushed to pghot hot page tracking mechanism using irq_work.
+> 
+> TODO: Many counters are added to vmstat just as debugging aid
+> for now.
+> 
+> About IBS
+> ---------
+> IBS can be programmed to provide data about instruction
+> execution periodically. This is done by programming a desired
+> sample count (number of ops) in a control register. When the
+> programmed number of ops are dispatched, a micro-op gets tagged,
+> various information about the tagged micro-op's execution is
+> populated in IBS execution MSRs and an interrupt is raised.
+> While IBS provides a lot of data for each sample, for the
+> purpose of  memory access profiling, we are interested in
+> linear and physical address of the memory access that reached
+> DRAM. Recent AMD processors provide further filtering where
+> it is possible to limit the sampling to those ops that had
+> an L3 miss which greately reduces the non-useful samples.
+> 
+> While IBS provides capability to sample instruction fetch
+> and execution, only IBS execution sampling is used here
+> to collect data about memory accesses that occur during
+> the instruction execution.
+> 
+> More information about IBS is available in Sec 13.3 of
+> AMD64 Architecture Programmer's Manual, Volume 2:System
+> Programming which is present at:
+> https://bugzilla.kernel.org/attachment.cgi?id=288923
+> 
+> Information about MSRs used for programming IBS can be
+> found in Sec 2.1.14.4 of PPR Vol 1 for AMD Family 19h
+> Model 11h B1 which is currently present at:
+> https://www.amd.com/system/files/TechDocs/55901_0.25.zip
+> 
+> Signed-off-by: Bharata B Rao <bharata@amd.com>
+> ---
+>  arch/x86/events/amd/ibs.c        |  11 ++
+>  arch/x86/include/asm/ibs.h       |   7 +
+>  arch/x86/include/asm/msr-index.h |  16 ++
+>  arch/x86/mm/Makefile             |   3 +-
+>  arch/x86/mm/ibs.c                | 311 +++++++++++++++++++++++++++++++
+>  include/linux/vm_event_item.h    |  17 ++
+>  mm/vmstat.c                      |  17 ++
+>  7 files changed, 381 insertions(+), 1 deletion(-)
+>  create mode 100644 arch/x86/include/asm/ibs.h
+>  create mode 100644 arch/x86/mm/ibs.c
+> 
+> diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
+> index 112f43b23ebf..1498dc9caeb2 100644
+> --- a/arch/x86/events/amd/ibs.c
+> +++ b/arch/x86/events/amd/ibs.c
+> @@ -13,9 +13,11 @@
+>  #include <linux/ptrace.h>
+>  #include <linux/syscore_ops.h>
+>  #include <linux/sched/clock.h>
+> +#include <linux/pghot.h>
+>  
+>  #include <asm/apic.h>
+>  #include <asm/msr.h>
+> +#include <asm/ibs.h>
+>  
+>  #include "../perf_event.h"
+>  
+> @@ -1756,6 +1758,15 @@ static __init int amd_ibs_init(void)
+>  {
+>  	u32 caps;
+>  
+> +	/*
+> +	 * TODO: Find a clean way to disable perf IBS so that IBS
+> +	 * can be used for memory access profiling.
 
-On Fri, Oct 03, 2025 at 10:46:41AM +0900, Byungchul Park wrote:
-> On Thu, Oct 02, 2025 at 12:39:31PM +0100, Mark Brown wrote:
-> > On Thu, Oct 02, 2025 at 05:12:09PM +0900, Byungchul Park wrote:
-> > > dept needs to notice every entrance from user to kernel mode to treat
-> > > every kernel context independently when tracking wait-event dependenc=
-ies.
-> > > Roughly, system call and user oriented fault are the cases.
+Agreed on this being a key thing.  This applies to quite a few
+other sources of data so finding a generally acceptable solution to this
+would be great.  Davidlohr mentioned on the CXL sync that he has
+something tackling this for the CHMU driver around this.
 
-> > > Make dept aware of the entrances of arm64 and add support
-> > > CONFIG_ARCH_HAS_DEPT_SUPPORT to arm64.
 
-> > The description of what needs to be tracked probably needs some
-> > tightening up here, it's not clear to me for example why exceptions for
-> > mops or the vector extensions aren't included here, or what the
-> > distinction is with error faults like BTI or GCS not being tracked?
+> +	 */
+> +	if (arch_hw_access_profiling) {
+> +		pr_info("IBS isn't available for perf use\n");
+> +		return 0;
+> +	}
+> +
+>  	caps = __get_ibs_caps();
+>  	if (!caps)
+>  		return -ENODEV;	/* ibs not supported by the cpu */
 
-> Thanks for the feedback but I'm afraid I don't get you.  Can you explain
-> in more detail with example?
+> diff --git a/arch/x86/mm/ibs.c b/arch/x86/mm/ibs.c
+> new file mode 100644
+> index 000000000000..6669710dd35b
+> --- /dev/null
+> +++ b/arch/x86/mm/ibs.c
+> @@ -0,0 +1,311 @@
 
-Your commit log says we need to track every entrance from user mode to
-kernel mode but the code only adds tracking to syscalls and some memory
-faults.  The exception types listed above (and some others) also result
-in entries to the kernel from userspace.
+...
 
-> JFYI, pairs of wait and its event need to be tracked to see if each
-> event can be prevented from being reachable by other waits like:
+> +
+> +static int ibs_pop_sample(struct ibs_sample *s)
+> +{
+> +	struct ibs_sample_pcpu *ibs_pcpu = raw_cpu_ptr(ibs_s);
+> +
+> +	int next = ibs_pcpu->tail + 1;
+> +
+> +	if (ibs_pcpu->head == ibs_pcpu->tail)
+> +		return 0;
+> +
+> +	if (next >= IBS_NR_SAMPLES)
 
->    context X				context Y
->=20
->    lock L
->    ...
->    initiate event A context		start toward event A
->    ...					...
->    wait A // wait for event A and	lock L // wait for unlock L and
->           // prevent unlock L		       // prevent event A
->    ...					...
->    unlock L				unlock L
-> 					...
-> 					event A
+== seems more appropriate to me.  If it's > then something went wrong
+and we lost data.
 
-> I meant things like this need to be tracked.
+> +		next = 0;
+> +
+> +	*s = ibs_pcpu->samples[ibs_pcpu->tail];
+> +	ibs_pcpu->tail = next;
+> +	return 1;
+> +}
 
-I don't think that's at all clear from the above context, and the
-handling for some of the above exception types (eg, the vector
-extensions) includes taking locks.
 
---CPEOfhRT6FsWLRqF
-Content-Type: application/pgp-signature; name="signature.asc"
+> +static void setup_APIC_ibs(void)
+> +{
+> +	int offset;
+> +
+> +	offset = get_ibs_lvt_offset();
+> +	if (offset < 0)
+> +		goto failed;
+> +
+> +	if (!setup_APIC_eilvt(offset, 0, APIC_EILVT_MSG_NMI, 0))
+> +		return;
+> +failed:
+> +	pr_warn("IBS APIC setup failed on cpu #%d\n",
+> +		smp_processor_id());
 
------BEGIN PGP SIGNATURE-----
+Unless this is going to get more complex, move that up to the if () block
+above and return directly there.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmjftG4ACgkQJNaLcl1U
-h9AJAwf9GUZ8nquWa7D1no47c5NWSm5cMwwvmTjDaPtYC52seNgxT47rqiAa032b
-rbQuOcdIvbMOoRrk3oOjch4rbo2VSgw1bzxKncoUyWrQ1rw9rhdfmdQpZZSbT1XQ
-ZE3VcLNDV3bfjO2GU8cTjiUDwM29qIeTSzCIn9ubfHcuEvoaYes1/BrQYAwB6ghQ
-7LjwZANFGJdatftOLPlVL8kKM/B5H6eSUlr8bUS9hlZE2g39/1LLb9UexVvnMj8u
-6gPRXHiHF5Vzad2FqVmWKt4F1F39CJ4g1c624zJiIGAWP9iBONB8dIyQPlTmK4U7
-mnXQy7USXtlxU+Xw5RCO9fy5x0Ahxw==
-=LMdg
------END PGP SIGNATURE-----
+> +}
 
---CPEOfhRT6FsWLRqF--
+> +static int __init ibs_access_profiling_init(void)
+> +{
+> +	if (!boot_cpu_has(X86_FEATURE_IBS)) {
+> +		pr_info("IBS capability is unavailable for access profiling\n");
+> +		return 0;
+> +	}
+> +
+> +	ibs_s = alloc_percpu_gfp(struct ibs_sample_pcpu, GFP_KERNEL | __GFP_ZERO);
+
+sizeof(*ibs_s).
+Same as in other cases. It's nice to avoid having to check types when reviewing code.
+
+> +	if (!ibs_s)
+> +		return 0;
+> +
+> +	INIT_WORK(&ibs_work, ibs_work_handler);
+> +	init_irq_work(&ibs_irq_work, ibs_irq_handler);
+> +
+> +	/* Uses IBS Op sampling */
+> +	ibs_config = IBS_OP_CNT_CTL | IBS_OP_ENABLE;
+> +	ibs_caps = cpuid_eax(IBS_CPUID_FEATURES);
+> +	if (ibs_caps & IBS_CAPS_ZEN4)
+> +		ibs_config |= IBS_OP_L3MISSONLY;
+ibs_config seems to only be used locally so the global seems unnecessary.
+You'll need to pass it in to the one user in the next patch though.
+
+
+> +
+> +	register_nmi_handler(NMI_LOCAL, ibs_overflow_handler, 0, "ibs");
+> +
+> +	cpuhp_setup_state(CPUHP_AP_PERF_X86_AMD_IBS_STARTING,
+> +			  "x86/amd/ibs_access_profile:starting",
+> +			  x86_amd_ibs_access_profile_startup,
+> +			  x86_amd_ibs_access_profile_teardown);
+> +
+> +	pr_info("IBS setup for memory access profiling\n");
+> +	return 0;
+> +}
+> +
+> +arch_initcall(ibs_access_profiling_init);
+
+
 
