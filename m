@@ -4,134 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E997DCCA471
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 16:54:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41EBCCAC5B0
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 16:54:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 494938E0010; Fri,  3 Oct 2025 12:54:10 -0400 (EDT)
+	id 83EDB8E0014; Fri,  3 Oct 2025 12:54:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 443E08E0005; Fri,  3 Oct 2025 12:54:10 -0400 (EDT)
+	id 814F48E0005; Fri,  3 Oct 2025 12:54:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 333438E0010; Fri,  3 Oct 2025 12:54:10 -0400 (EDT)
+	id 752748E0014; Fri,  3 Oct 2025 12:54:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DFB68E0005
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 12:54:10 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AE11C1A083B
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 16:54:09 +0000 (UTC)
-X-FDA: 83957400618.17.DE5D1B2
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B8FBE14000B
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 16:54:07 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="V rCAewW";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=HJbP2dU1;
-	spf=pass (imf23.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.148 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D22F8E0005
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 12:54:15 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 07CF7451CD
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 16:54:15 +0000 (UTC)
+X-FDA: 83957400870.16.5FC3B22
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 43E6D4000E
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 16:54:13 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="sHZI/SdY";
+	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759510447;
+	s=arc-20220608; t=1759510453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UB3IKnHmzh/QmKgOFKGx8BLdmDHf57NxnecnD+p+sRM=;
-	b=bEzAovo/9CehxqqDBgbDsAmVeVb+lHGm6s20YTY+A8sQerKXujTDX4OuEyHcAoBd4ucUnI
-	YNpseZ68CCgtCL2HgaF6Ss4x+iTWSus1Ty04S3cvPI/WqvfAynnwO55VktELX+wc/aPGc0
-	v583GYhfWcnfRfdmEwyVcGpTcCAzcfQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759510447; a=rsa-sha256;
+	bh=Jx/up15hgoocFMTTmoEqLtWBcwNy2yCwXsVyYpG2qec=;
+	b=23Vzfld/EcP1gJ+GOY6CrmZmvcLdho/j4spn3Q3HNrKWkCWqDpy8cUBcsZL26kdal4+9b8
+	Fi2cEmKfoE16QMf+x8sYoxw0Tl+USbHsIWSLFH7bc/Tm7sIgx7rhQ0BJ55xqqGgkSBWoXl
+	hk+lJnjKEp/qBNKQ4uqPS1ICw+vpQQM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759510453; a=rsa-sha256;
 	cv=none;
-	b=qdM60oXaExvzJxcurQFtJkAogJz6EphcafOaY0O3+TvtSbzwXFcqA4ibA5bmtvOccbSG2D
-	g3fYb4UABxjRtjTPZk6vqvJANv4p2fHBVOJbCLzlra4Pcf0DfUO6cVGv2xfQm+M39wCW6N
-	BNvm9TNDjLy3RJM08iqorsdsUMUfDIk=
+	b=Qq8esO7I+//jGd+b+cjNMjyVNJUlE6EAdHxFgr8mHX6QYHLEcJ7V9XDffBlyhghKJ9eeGZ
+	EM8n7jCQOqv6yGl+AsxUVl3d7gENpKK+oRW78NtRQSiqRZrBcrsYXGVZ3FF5PfEzW0siaC
+	qyZkc66QpNnh7NFjn3LdkQaUDnPc1Ts=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="V rCAewW";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=HJbP2dU1;
-	spf=pass (imf23.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.148 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id 12A22EC0278;
-	Fri,  3 Oct 2025 12:54:07 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Fri, 03 Oct 2025 12:54:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1759510447; x=
-	1759596847; bh=UB3IKnHmzh/QmKgOFKGx8BLdmDHf57NxnecnD+p+sRM=; b=V
-	rCAewWI7sbJvCIV/zpcnz6A0CPYZVWfFX0Dtm6UVGY6RT/28Zy15ntNNBSsAtIPl
-	4AeS0Pk+Ho+rYuDaaB5Hw8Klh46ivi7sHEvbAweBb3JCb/miDh0XneQcuqst6+iP
-	DHK0uh+ii8tWQ/XnmCSykrps7XG21DgZeTLz9ukgJ1iOPBrHGnVuXlbxVeSYLsbZ
-	cL13AnQ6Yg47zxCMlkQh0NMH4W2OUmvwFnwM0klqG7+4HdB4gezArrTeuYAxGz7V
-	ME2GJ/yA/ViRO3iBOMsBiX8P2RbCtCRrrX2Qx4yOchMwc9QS9uxG0tWIxDzVxn0Q
-	O8zpttlCxiJljP2WsmAzQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1759510447; x=1759596847; bh=UB3IKnHmzh/QmKgOFKGx8BLdmDHf57Nxnec
-	nD+p+sRM=; b=HJbP2dU1gXqvJr5xZP81JrdPktlFylwZz2QyJKBRAemfB/Na89d
-	4uMVsS2+JGsNIkxPYS3qPWpObEW7BZQXNk4si7jgrgb9bykcr+01O03QRuqBfSJk
-	CKQ8zCWLG+5Y2L+/ZLXa7Le/UG2trAbGxDTUfJWUGjohNBewZmIkyf2BCHIxtdXh
-	0ANiyZFPCCOwowLLBasMsHF8QE2PFo2kMVAU56I/zlJiufJMFrFy6TFIrjofQ7Ut
-	6RU6mi1hsO08c8503/6rxQumSpu9sifWbOGYmYQkn1ixDCM91gcAXS8PGP13xoNz
-	BqTB4K8OU8Q1vL3G52i84bNpPZ/X7E70A7Q==
-X-ME-Sender: <xms:rv_faFkZNxLNHovlWnH8scAJa2PWTnxJ1De0JAA0q7L9aLqcfUCvYA>
-    <xme:rv_faAtAKu-en65NOEO7BkuNQHdBMf6MQBzHZGG0KjclxEQVQMuT6VcOpAm_QwXFg
-    Zx2rLQp6oXp7ScDUrxq6SM9lzxfjSCyn_CiVZDFn9KYh_0ZTmDuQPY>
-X-ME-Received: <xmr:rv_faI8tg7UcRWHdUwZK2xxEpbyuHG-Aoi_-i5wT2AV8GfwOMyOIoUzLIigZ6g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdekleegfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtf
-    frrghtthgvrhhnpeegfeehleevvdetffeluefftdffledvgfetheegieevtefgfefhieej
-    heevkeeigeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlsehshhhuthgvmhho
-    vhdrnhgrmhgvpdhnsggprhgtphhtthhopedviedpmhhouggvpehsmhhtphhouhhtpdhrtg
-    hpthhtoheprhihrghnrdhrohgsvghrthhssegrrhhmrdgtohhmpdhrtghpthhtoheprghk
-    phhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegurghvih
-    gusehrvgguhhgrthdrtghomhdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghs
-    sehorhgrtghlvgdrtghomhdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrg
-    gtlhgvrdgtohhmpdhrtghpthhtohepvhgsrggskhgrsehsuhhsvgdrtgiipdhrtghpthht
-    oheprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsuhhrvghnsgesghhooh
-    hglhgvrdgtohhmpdhrtghpthhtohepmhhhohgtkhhosehsuhhsvgdrtghomh
-X-ME-Proxy: <xmx:rv_faByXTQ1ZqOnit033VWk75CST6ABfR9loiaIoWbPuFpuXKuy8cA>
-    <xmx:rv_faA9UJCxiG9y9w1PnGVOf5eT3OU6WtAlopeGsVXDnqtRL7jpSag>
-    <xmx:rv_faGKKq0HBVamEfVeUQIwJnZ-ReAXqkZuIfxAYkacd9LeUusHHww>
-    <xmx:rv_faF-zBsHiJgoOLgY1OhO2oG1y8aGMOmT1NLku6yIyYrzyoB4Qsw>
-    <xmx:r__faD9bJJNmCWQHGcetociynY8R-hhTryjqnWWVIeTPovy_N6OmJ88c>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 3 Oct 2025 12:54:05 -0400 (EDT)
-Date: Fri, 3 Oct 2025 17:54:03 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Amir Goldstein <amir73il@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v1] fsnotify: Pass correct offset to fsnotify_mmap_perm()
-Message-ID: <uqijoyhj6m33aslecgbovhujpjgql2zllw4ahfpm5jfqkcsjut@yemuevv2pjrm>
-References: <20251003155238.2147410-1-ryan.roberts@arm.com>
- <nf7khbu44jzcmyx7wz3ala6ukc2iimf4vej7ffgnezpiosvxal@celav5yumfgw>
- <76cd6212-c85f-4337-99cf-67824c3abee7@arm.com>
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="sHZI/SdY";
+	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1759510447;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Jx/up15hgoocFMTTmoEqLtWBcwNy2yCwXsVyYpG2qec=;
+	b=sHZI/SdYJexk3J7ukbM/EEnC/7bI/bjQrZNFcUYz/sorUAWS6rT/d0Ktx6P1KYiqd+xYze
+	JoTDu7a60Xy/6AiG/ZmFJ2ThTyUb0BPL188CyhbXUCtDYzjQ2km5dueSVGnw/ATv85ayvC
+	9KkyfS0EKwTfM6ZsKOzt1/DOQNJ4WHo=
+From: Qi Zheng <qi.zheng@linux.dev>
+To: hannes@cmpxchg.org,
+	hughd@google.com,
+	mhocko@suse.com,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	harry.yoo@oracle.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v4 2/4] mm: thp: introduce folio_split_queue_lock and its variants
+Date: Sat,  4 Oct 2025 00:53:16 +0800
+Message-ID: <68492101fa51d4bab4ade327354b986c0959250e.1759510072.git.zhengqi.arch@bytedance.com>
+In-Reply-To: <cover.1759510072.git.zhengqi.arch@bytedance.com>
+References: <cover.1759510072.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <76cd6212-c85f-4337-99cf-67824c3abee7@arm.com>
-X-Stat-Signature: 3q9o1gd9ss6fnk9ysurojfeygxyrudia
-X-Rspamd-Queue-Id: B8FBE14000B
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 73aohkhkm3635aj1qzxfuxbpe1gpg8m7
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1759510447-269891
-X-HE-Meta: U2FsdGVkX1+jpxflOzLj5Jv5wQHp3wRquNMYzdVmlEJdmHa2POswAdjl6wB8GIonbniwbvppiN6t/68L8WHNpDd795ZWKO0hM0zTK0i15AlekXikKX+zefF5c0eQ4aRzjJXnmpDYYzRfTGrv2py4o2YiVRBtBLaq2VgTE4BWiECq3s8hLOhhFHO4vq7dkVCGF0hnzHhixTTebXZW6qk+bacnopJ00/l5tQjefT0DuivvJA1BmBPx/aoCPfsn9dy56hMV4VJKncVTBpJwwchiFYxXxSupUTv0oP8QEECh5IxbWXkLKCLlwXLAQp/MY6tqWuGT7qclBeTfVcntlTPqubzi4e/E+LR0wicNQiqRj08cx+zai1nZvDq8TXmWWjmMZwE6/Ep3mRU7Qqmd8xu6RtEqNr8WrgpW0eYPWx2E3Wg4pdZMk+n28zKXD68+MAM7xlElVuiRqLnoQO9/Oz9HmZR0sY4lhUu+qWYg9U8q6ro7qvpa9TtxgpqgJaptjyKV/fDVg/v/6htRkE919qn4sJASzt8BnnfwLN8heoddvNfyK23mQZhLinPKmplqTAcCMwOpIPHyZeLUvDc9yDkQbOfDNcl3cgRNGaJmWJXJdR4HD12kgw640geOnjV6VjS92FrhGQa1aElXhRsi6mHoNKuYJIRTs8/EgKP+WkOOqkfQaM5db9CUtl21RG+pxFQ730e2GAbSlvI/o8GPv2/bWzlflDMvENQ6hWWXuDPGZth9nNTI5YUvmRAPW6kv9Fb8l8d6I+WhhGQ0gTp89q7GkgCdZta7Qog8ctd8gKY4tO41IZ1mSGd9nnIGnESCa+di5Zv+mz15gKLR7Hc3H20Ue5rYIo72QtUQetWosNnD6dC9ZCN2hNR+H4Fc9XuEXxc70U/sZOFHdqU/nk4NXfTBWSUdeNLKL1wm3tIU1kH1D2gsXvx/nDpnTwne1y4eHufid0YMQC1uxCCO1wl7Mce
- LFLsMH/z
- dfqSmPzQCc0qdbk2TYkATTvY2tGNrelALMr6UD/6BgEbRBRBvxBH+MJc4IGhtJuqKfQyyOaf4htzZ85QIkstUXoVb73NaLwuDo2Yq5Ie5Kjlzch+APWt65+RRGbYR6EPboY5OhO6fgdkQRGGu19+d4jA87YgqmF1T64/yw3cJ0oUkNIvb0gclnYS4YlMed4mPPcksK8ECLe/ECavCCQLXk3spr+HUEYBxzgfitylRB/RgMUENSkqXMGfii6AuieNleCPWdG3EZ9vcG/h+fJ8jG2RK41JdDmhLBJ4x0omK4iHS1MPbzTRplkjmVWhkmkoj+npvIpzXsQzfE4fyFEiYgDi4kRxYHY6B5731NkmwtTki/v169N7SgUHe+iSS1LmvsVdRQ0hfJxkwH8qSkiuKTcksgjWD+Z/05LnsrrncS8V7hUF26QsqUYUMyg==
+X-Rspamd-Queue-Id: 43E6D4000E
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1759510453-124800
+X-HE-Meta: U2FsdGVkX1+QmJSwzZO2RoF2JP9ONIOAn39K8tWVmh+jK8ONUmgQ/FFmM+PKoOXYlFOFyJvlqrltgxuZqZqpMTZ3/EoKmAfxLOo8Ok5LWcUOXGf4CxZPVX68IFsTdOXniRq1wwVWMu00/v2k/p6n7wRfuQGH8vqcIZ0kS4cKXbJd05zl1vrS2JuZ+eq3slj3k84uQ4D4p8BbMooyc5bdpWuyIOC1CHNxwNCGjLz8WibWCQSaXoboCwKTJTFIbs+q0ooeuoJVKZXF7hSzYVdsWwG1mYRjVtcytlZgKC2WTplxuavhdr/fgpDR+QK7b38MVKewOChHV5NYakSOuG4S4aju+Lh3ihtuQI8uyyn+lkJJeOHEnQYKQKZ5+uxvGJ+QoB/QD7cv5Ndti2fzfOllGNB1lZb3++AWvV75X22rHIxw4TA1PMJrbj+BHqEiAuAJIhoEssbgiyXGg1+VK1cUhsYjOHoRzc3gSRxz+55wPCV+JCFbzzMFvYIjO2ZXQt+Ap9t3UxMVKrlWLftOe1hSZ7bA3oNlqqs2dSfBBptXv1o6cip/r0V7R/hQKk+/hd0cFaqkMA5MhQjHRPWyvI2MyrnsS2+G2ZSgKaXaNnsXAPtZhs3FB3Dzk5fMvte+65IQvk9St/YrgtBpKTt2l0Qlr7EoZjJ5zn67FyvYMeGuqK3ySxAYdAKgbJ9JlIp/cm70uGpzDKkFVwSAjc6ZCCRh+6gyZ0g0/VteaQs0suybo57r2EjRORPpYnC4LLUt2GsruInQlGIQsO3ND8vT0JsapqFClFngzoZzLWGH0C1kMJIQyhjM4k2BUpEAIBPEo4Y4OX64GKCI5pe1H7jrSiJzQg/9ZrZDUaglo9fk0kAO45WmixYqThfQ1/YeqrCtQhAhZbpWrajPFoRhDVrfqeDUokkwaCZfafYCVBMHo/D4uCxTgsPtDUG9lK9tYoSwWEx8ycGe4cs4vCTVirg9meE
+ mZcaM8zf
+ 3bN0qUY0WVlVcH/65w6SQU81SUQxThLnYGH793y8VXmcAQ9c87Jpb9HBp3czHkWn7xoE3rkGEdtKYmElH72qAjumdYANKo8NXvkiJ/KJgmAN8Hd8dr0tvEVgazZYm7qngrmBb0h3MJt/mx+w3Jx7gSyAN4RXw9ChG28tVpXtANKD/7jKLj0cOlWmlzZ7l4g5hhH5JGkNGa0NTUBny80L9vnSUvQC3cYWITm/np67fJSQ09qZSngkHBYcwiX0ZNt78DpCasfenkcNa+HlfaG335ClQvVY0jtqB5LjgRNkCYYQNFxK+lCcQJsGOgrkkvc66YMzzqRmJxz87ReXdpaJHFD3yFyvnSh5MfmDBI7LyXKIiz11aj4QjcYk9UIopg4QrWbcv6S2vBhwFvCY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,39 +107,287 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 03, 2025 at 05:36:23PM +0100, Ryan Roberts wrote:
-> On 03/10/2025 17:00, Kiryl Shutsemau wrote:
-> > On Fri, Oct 03, 2025 at 04:52:36PM +0100, Ryan Roberts wrote:
-> >> fsnotify_mmap_perm() requires a byte offset for the file about to be
-> >> mmap'ed. But it is called from vm_mmap_pgoff(), which has a page offset.
-> >> Previously the conversion was done incorrectly so let's fix it, being
-> >> careful not to overflow on 32-bit platforms.
-> >>
-> >> Discovered during code review.
-> > 
-> > Heh. Just submitted fix for the same issue:
-> > 
-> > https://lore.kernel.org/all/20251003155804.1571242-1-kirill@shutemov.name/T/#u
-> > 
-> 
-> Ha... great minds...
-> 
-> I notice that for your version you're just doing "pgoff << PAGE_SHIFT" without
-> casting pgoff.
-> 
-> I'm not sure if that is safe?
-> 
-> pgoff is unsigned long (so 32 bits on 32 bit systems). loff_t is unsigned long
-> long (so always 64 bits). So is it possible that you shift off the end of 32
-> bits and lose those bits without a cast to loff_t first?
-> 
-> TBH my knowledge of the exact rules is shaky...
+From: Muchun Song <songmuchun@bytedance.com>
 
-I think you are right. Missing cast in my patch might be problematic on
-32-bit machines.
+In future memcg removal, the binding between a folio and a memcg may
+change, making the split lock within the memcg unstable when held.
 
-Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
+A new approach is required to reparent the split queue to its parent. This
+patch starts introducing a unified way to acquire the split lock for
+future work.
 
+It's a code-only refactoring with no functional changes.
+
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+---
+ include/linux/memcontrol.h |  10 ++++
+ mm/huge_memory.c           | 119 ++++++++++++++++++++++++++-----------
+ 2 files changed, 94 insertions(+), 35 deletions(-)
+
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 873e510d6f8d9..0b2d4ec79adfe 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -1674,6 +1674,11 @@ int alloc_shrinker_info(struct mem_cgroup *memcg);
+ void free_shrinker_info(struct mem_cgroup *memcg);
+ void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id);
+ void reparent_shrinker_deferred(struct mem_cgroup *memcg);
++
++static inline int shrinker_id(struct shrinker *shrinker)
++{
++	return shrinker->id;
++}
+ #else
+ #define mem_cgroup_sockets_enabled 0
+ 
+@@ -1705,6 +1710,11 @@ static inline void set_shrinker_bit(struct mem_cgroup *memcg,
+ 				    int nid, int shrinker_id)
+ {
+ }
++
++static inline int shrinker_id(struct shrinker *shrinker)
++{
++	return -1;
++}
+ #endif
+ 
+ #ifdef CONFIG_MEMCG
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 6db24b3a57005..134666503440d 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1076,28 +1076,86 @@ pmd_t maybe_pmd_mkwrite(pmd_t pmd, struct vm_area_struct *vma)
+ 	return pmd;
+ }
+ 
++static struct deferred_split *split_queue_node(int nid)
++{
++	struct pglist_data *pgdata = NODE_DATA(nid);
++
++	return &pgdata->deferred_split_queue;
++}
++
+ #ifdef CONFIG_MEMCG
+ static inline
+-struct deferred_split *get_deferred_split_queue(struct folio *folio)
++struct mem_cgroup *folio_split_queue_memcg(struct folio *folio,
++					   struct deferred_split *queue)
+ {
+-	struct mem_cgroup *memcg = folio_memcg(folio);
+-	struct pglist_data *pgdat = NODE_DATA(folio_nid(folio));
++	if (mem_cgroup_disabled())
++		return NULL;
++	if (split_queue_node(folio_nid(folio)) == queue)
++		return NULL;
++	return container_of(queue, struct mem_cgroup, deferred_split_queue);
++}
+ 
+-	if (memcg)
+-		return &memcg->deferred_split_queue;
+-	else
+-		return &pgdat->deferred_split_queue;
++static struct deferred_split *memcg_split_queue(int nid, struct mem_cgroup *memcg)
++{
++	return memcg ? &memcg->deferred_split_queue : split_queue_node(nid);
+ }
+ #else
+ static inline
+-struct deferred_split *get_deferred_split_queue(struct folio *folio)
++struct mem_cgroup *folio_split_queue_memcg(struct folio *folio,
++					   struct deferred_split *queue)
+ {
+-	struct pglist_data *pgdat = NODE_DATA(folio_nid(folio));
++	return NULL;
++}
+ 
+-	return &pgdat->deferred_split_queue;
++static struct deferred_split *memcg_split_queue(int nid, struct mem_cgroup *memcg)
++{
++	return split_queue_node(nid);
+ }
+ #endif
+ 
++static struct deferred_split *split_queue_lock(int nid, struct mem_cgroup *memcg)
++{
++	struct deferred_split *queue;
++
++	queue = memcg_split_queue(nid, memcg);
++	spin_lock(&queue->split_queue_lock);
++
++	return queue;
++}
++
++static struct deferred_split *
++split_queue_lock_irqsave(int nid, struct mem_cgroup *memcg, unsigned long *flags)
++{
++	struct deferred_split *queue;
++
++	queue = memcg_split_queue(nid, memcg);
++	spin_lock_irqsave(&queue->split_queue_lock, *flags);
++
++	return queue;
++}
++
++static struct deferred_split *folio_split_queue_lock(struct folio *folio)
++{
++	return split_queue_lock(folio_nid(folio), folio_memcg(folio));
++}
++
++static struct deferred_split *
++folio_split_queue_lock_irqsave(struct folio *folio, unsigned long *flags)
++{
++	return split_queue_lock_irqsave(folio_nid(folio), folio_memcg(folio), flags);
++}
++
++static inline void split_queue_unlock(struct deferred_split *queue)
++{
++	spin_unlock(&queue->split_queue_lock);
++}
++
++static inline void split_queue_unlock_irqrestore(struct deferred_split *queue,
++						 unsigned long flags)
++{
++	spin_unlock_irqrestore(&queue->split_queue_lock, flags);
++}
++
+ static inline bool is_transparent_hugepage(const struct folio *folio)
+ {
+ 	if (!folio_test_large(folio))
+@@ -3579,7 +3637,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+ 		struct page *split_at, struct page *lock_at,
+ 		struct list_head *list, bool uniform_split)
+ {
+-	struct deferred_split *ds_queue = get_deferred_split_queue(folio);
++	struct deferred_split *ds_queue;
+ 	XA_STATE(xas, &folio->mapping->i_pages, folio->index);
+ 	struct folio *end_folio = folio_next(folio);
+ 	bool is_anon = folio_test_anon(folio);
+@@ -3718,7 +3776,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+ 	}
+ 
+ 	/* Prevent deferred_split_scan() touching ->_refcount */
+-	spin_lock(&ds_queue->split_queue_lock);
++	ds_queue = folio_split_queue_lock(folio);
+ 	if (folio_ref_freeze(folio, 1 + extra_pins)) {
+ 		struct swap_cluster_info *ci = NULL;
+ 		struct lruvec *lruvec;
+@@ -3740,7 +3798,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+ 			 */
+ 			list_del_init(&folio->_deferred_list);
+ 		}
+-		spin_unlock(&ds_queue->split_queue_lock);
++		split_queue_unlock(ds_queue);
+ 		if (mapping) {
+ 			int nr = folio_nr_pages(folio);
+ 
+@@ -3835,7 +3893,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+ 		if (ci)
+ 			swap_cluster_unlock(ci);
+ 	} else {
+-		spin_unlock(&ds_queue->split_queue_lock);
++		split_queue_unlock(ds_queue);
+ 		ret = -EAGAIN;
+ 	}
+ fail:
+@@ -4016,8 +4074,7 @@ bool __folio_unqueue_deferred_split(struct folio *folio)
+ 	WARN_ON_ONCE(folio_ref_count(folio));
+ 	WARN_ON_ONCE(!mem_cgroup_disabled() && !folio_memcg_charged(folio));
+ 
+-	ds_queue = get_deferred_split_queue(folio);
+-	spin_lock_irqsave(&ds_queue->split_queue_lock, flags);
++	ds_queue = folio_split_queue_lock_irqsave(folio, &flags);
+ 	if (!list_empty(&folio->_deferred_list)) {
+ 		ds_queue->split_queue_len--;
+ 		if (folio_test_partially_mapped(folio)) {
+@@ -4028,7 +4085,7 @@ bool __folio_unqueue_deferred_split(struct folio *folio)
+ 		list_del_init(&folio->_deferred_list);
+ 		unqueued = true;
+ 	}
+-	spin_unlock_irqrestore(&ds_queue->split_queue_lock, flags);
++	split_queue_unlock_irqrestore(ds_queue, flags);
+ 
+ 	return unqueued;	/* useful for debug warnings */
+ }
+@@ -4036,10 +4093,7 @@ bool __folio_unqueue_deferred_split(struct folio *folio)
+ /* partially_mapped=false won't clear PG_partially_mapped folio flag */
+ void deferred_split_folio(struct folio *folio, bool partially_mapped)
+ {
+-	struct deferred_split *ds_queue = get_deferred_split_queue(folio);
+-#ifdef CONFIG_MEMCG
+-	struct mem_cgroup *memcg = folio_memcg(folio);
+-#endif
++	struct deferred_split *ds_queue;
+ 	unsigned long flags;
+ 
+ 	/*
+@@ -4062,7 +4116,7 @@ void deferred_split_folio(struct folio *folio, bool partially_mapped)
+ 	if (folio_test_swapcache(folio))
+ 		return;
+ 
+-	spin_lock_irqsave(&ds_queue->split_queue_lock, flags);
++	ds_queue = folio_split_queue_lock_irqsave(folio, &flags);
+ 	if (partially_mapped) {
+ 		if (!folio_test_partially_mapped(folio)) {
+ 			folio_set_partially_mapped(folio);
+@@ -4077,15 +4131,16 @@ void deferred_split_folio(struct folio *folio, bool partially_mapped)
+ 		VM_WARN_ON_FOLIO(folio_test_partially_mapped(folio), folio);
+ 	}
+ 	if (list_empty(&folio->_deferred_list)) {
++		struct mem_cgroup *memcg;
++
++		memcg = folio_split_queue_memcg(folio, ds_queue);
+ 		list_add_tail(&folio->_deferred_list, &ds_queue->split_queue);
+ 		ds_queue->split_queue_len++;
+-#ifdef CONFIG_MEMCG
+ 		if (memcg)
+ 			set_shrinker_bit(memcg, folio_nid(folio),
+-					 deferred_split_shrinker->id);
+-#endif
++					 shrinker_id(deferred_split_shrinker));
+ 	}
+-	spin_unlock_irqrestore(&ds_queue->split_queue_lock, flags);
++	split_queue_unlock_irqrestore(ds_queue, flags);
+ }
+ 
+ static unsigned long deferred_split_count(struct shrinker *shrink,
+@@ -4128,19 +4183,13 @@ static bool thp_underused(struct folio *folio)
+ static unsigned long deferred_split_scan(struct shrinker *shrink,
+ 		struct shrink_control *sc)
+ {
+-	struct pglist_data *pgdata = NODE_DATA(sc->nid);
+-	struct deferred_split *ds_queue = &pgdata->deferred_split_queue;
++	struct deferred_split *ds_queue;
+ 	unsigned long flags;
+ 	LIST_HEAD(list);
+ 	struct folio *folio, *next, *prev = NULL;
+ 	int split = 0, removed = 0;
+ 
+-#ifdef CONFIG_MEMCG
+-	if (sc->memcg)
+-		ds_queue = &sc->memcg->deferred_split_queue;
+-#endif
+-
+-	spin_lock_irqsave(&ds_queue->split_queue_lock, flags);
++	ds_queue = split_queue_lock_irqsave(sc->nid, sc->memcg, &flags);
+ 	/* Take pin on all head pages to avoid freeing them under us */
+ 	list_for_each_entry_safe(folio, next, &ds_queue->split_queue,
+ 							_deferred_list) {
+@@ -4159,7 +4208,7 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+ 		if (!--sc->nr_to_scan)
+ 			break;
+ 	}
+-	spin_unlock_irqrestore(&ds_queue->split_queue_lock, flags);
++	split_queue_unlock_irqrestore(ds_queue, flags);
+ 
+ 	list_for_each_entry_safe(folio, next, &list, _deferred_list) {
+ 		bool did_split = false;
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.20.1
+
 
