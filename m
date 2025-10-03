@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EF8DCCA471
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 13:42:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F665CCA471
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 13:42:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F35F98E0005; Fri,  3 Oct 2025 09:42:47 -0400 (EDT)
+	id A544F8E001D; Fri,  3 Oct 2025 09:42:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0D5F8E001C; Fri,  3 Oct 2025 09:42:47 -0400 (EDT)
+	id 9DDC88E001C; Fri,  3 Oct 2025 09:42:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E49CE8E0005; Fri,  3 Oct 2025 09:42:47 -0400 (EDT)
+	id 8CC118E001D; Fri,  3 Oct 2025 09:42:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CAFB28E001C
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 09:42:47 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9A5BDBB599
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 13:42:47 +0000 (UTC)
-X-FDA: 83956918374.08.F661853
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C89D320011
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 13:42:44 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=J2JkWq5P;
-	spf=pass (imf13.hostedemail.com: domain of bfoster@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 75C848E001C
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 09:42:48 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3335C87E82
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 13:42:48 +0000 (UTC)
+X-FDA: 83956918416.19.440573D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 646E380019
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 13:42:46 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="By8sAts/";
+	spf=pass (imf30.hostedemail.com: domain of bfoster@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759498965;
+	s=arc-20220608; t=1759498966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+uBUs752o9ejjaxLycOGdkkyFonqI7ieDhyDaEpM9qA=;
-	b=xbFKMLtaF9732niInoNRO0ynjnjuXeH22y948f7x4SrFwP6190Zn/lb7OAQfl1KRKolQrU
-	BJvFurdofrd0cGgHIKUx7fBwKkpvx7/ZFTndKSMujnPK34uuNAP+jYKfCWMmo3WuX7r0fu
-	8GWsmdpn9C8pG3Dfef5M9Sbk4sDB5YQ=
+	bh=zDrKAA2ZD/x3/1/bEfyvAedG8tOXZaxk1l6cH5OtHxo=;
+	b=YJyMxoriu94zi90pc/EwtTuRl3MHzAr4uwDaqfeJw8VIhI/T3NEmP+Jt53Thv5VjRHEVdS
+	iqYQpEUIzQzH+nyohBzvcharH3kmBvpFq8Ia5UunIoyxla6CFPz1ItSlK2wjXAiQ30H77f
+	GFeeA14usLdBBJNwNh+vvAKMEAmazxU=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=J2JkWq5P;
-	spf=pass (imf13.hostedemail.com: domain of bfoster@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
+	imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="By8sAts/";
+	spf=pass (imf30.hostedemail.com: domain of bfoster@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759498965; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759498966; a=rsa-sha256;
 	cv=none;
-	b=Sfe0eor+dpVm1OaubfvZYE4mT2kAlkdiNn1OShigM34Xsax4BAXtw99edLCt/tuFyp3R4I
-	GA2aOUEkbQVWYXPiKZdnTln5quJICrQIEsE/QmGR16DcoHhcsHWaNVQsdyqm8kW2JpI6zh
-	S77fyyC3FCJOZtliR/ajgiKbFEdk0hw=
+	b=xKKHba8XnWmmUSONC/vtdS2L83bJH091p7H1xQCMd5A4Ga9R8lbpPJjK50tHJaYZpIefyn
+	6jrQNxmUQKQryeBZU+cXZrnyUG1GjvLus6CrbZGcxF7kMj2dAE1p/DIbGB7tnAr622kZDY
+	a7GBAbdkfEIRNt4EY8RtUfM/WLVJqQc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759498964;
+	s=mimecast20190719; t=1759498965;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+uBUs752o9ejjaxLycOGdkkyFonqI7ieDhyDaEpM9qA=;
-	b=J2JkWq5PxEYbIWlWupbsTJRZRDPO9oLQItY4Di4Ao1h2NYIDqcZk6xzaSkCaQZT6Yb901+
-	ecgd2M22m1L+8I4fOvRNAbUELKeeDgp/hbTZr/aUhU7m4N8sWxfZTj6EP5wYlFf9jWd94G
-	pgqJnCiF1Vd1snaz1EXXbxMsmkhPa2k=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=zDrKAA2ZD/x3/1/bEfyvAedG8tOXZaxk1l6cH5OtHxo=;
+	b=By8sAts/jzQ/PbNxcAHBZGxfZO6WWBpb5o6IUjrb0XhMlz4pqR9usdKS9TXb4iYjsxPR02
+	wc/ubAeJYiYz24suAnhx1/BJupwxrUYSx9w/xfW90xTsbycaVYAYCVE9Z14bvH4wPMZ3/3
+	Z1yeWOrl3MHy7GXZ5RVlKKx+/CSGyFo=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-633-4PEntGNLOpijA2AKBOui0A-1; Fri,
- 03 Oct 2025 09:42:38 -0400
-X-MC-Unique: 4PEntGNLOpijA2AKBOui0A-1
-X-Mimecast-MFC-AGG-ID: 4PEntGNLOpijA2AKBOui0A_1759498956
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-684-vaP1Z3sdN3-svEXP8nVo4g-1; Fri,
+ 03 Oct 2025 09:42:42 -0400
+X-MC-Unique: vaP1Z3sdN3-svEXP8nVo4g-1
+X-Mimecast-MFC-AGG-ID: vaP1Z3sdN3-svEXP8nVo4g_1759498961
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 16EAC1800378;
-	Fri,  3 Oct 2025 13:42:36 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3C2EC1956053;
+	Fri,  3 Oct 2025 13:42:41 +0000 (UTC)
 Received: from bfoster.redhat.com (unknown [10.22.64.54])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8D5FC19560B1;
-	Fri,  3 Oct 2025 13:42:34 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C116419560B1;
+	Fri,  3 Oct 2025 13:42:39 +0000 (UTC)
 From: Brian Foster <bfoster@redhat.com>
 To: linux-fsdevel@vger.kernel.org
 Cc: linux-xfs@vger.kernel.org,
@@ -83,23 +83,23 @@ Cc: linux-xfs@vger.kernel.org,
 	djwong@kernel.org,
 	willy@infradead.org,
 	brauner@kernel.org
-Subject: [PATCH v5 2/7] iomap: remove pos+len BUG_ON() to after folio lookup
-Date: Fri,  3 Oct 2025 09:46:36 -0400
-Message-ID: <20251003134642.604736-3-bfoster@redhat.com>
+Subject: [PATCH v5 5/7] xfs: fill dirty folios on zero range of unwritten mappings
+Date: Fri,  3 Oct 2025 09:46:39 -0400
+Message-ID: <20251003134642.604736-6-bfoster@redhat.com>
 In-Reply-To: <20251003134642.604736-1-bfoster@redhat.com>
 References: <20251003134642.604736-1-bfoster@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Stat-Signature: jpst3gso31cg86qekk9j8kjpsj8t36d7
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C89D320011
-X-Stat-Signature: 33rr43ef3tqhzy4sf7w4i8n3yj7qmdmz
-X-HE-Tag: 1759498964-709548
-X-HE-Meta: U2FsdGVkX196zq/lt72dcjoWNdUT/MByz/TMCZAbRAZldNeVsXWqBzR7e9j1mVmgf8KBIMkVUpxU9zpQUH8mjtklKfTrrHWfcoIq1zt487A304ksKsD1V6ppq7GVXc2/1kn6CTQmkacgOTt0ili9/ThCMut2pYMG0iIMRpNy/6BIIsdtSGaK703GlloPhP5I/nlV7Oumu4fsR5J4NTkGEIWPcftsotWeA7/PgVr78LAkdol8XK9uL3bAPKnrYVj1kA2U8hvfB0Wod5GupqJcBFpLOErC6uBCzocm3AHrvJ+1VCon9JvDQzSgD9dkEeTP1hXhuL4Dxu2AdWRvKkrOWE8lED58NYmLbPgrX0el4doZa62oY6aAp+7pfD/QYLgpqV/HKHHgHzyl7rCDReS0q4n7DRvibEdB45WTY1FL6IkHZc997bc96Om89z/j0UGtKP0tgtCRLwJTcOp+RUoOAn9DeXVW1hLFslOLgzifg4sTjqoNOsAP/Hv4RtWAamf+vdbu0X03X6uneAak0/upHjs1CULkQ7JeD2tQg+PR0+whuqFxfDBwabEwWUVPGaVRxrEfHpaeAe+MLFythtm8TLstC1ArL0vHQlA5cmGr18bc8KlSrYYXWPdAX7MOgXEE2RPdSxCd7E7dcIvDse0GF0FYukus5KIE9+fG/ceVDIBr4RLIhsH2Tx30jqxY7KmutzltKI27mBGsQw3Wwk3Cgp6y+8Cy1f+jHli5L510yigdL77WXwSXRY1U16i1T/rM4mvOspaqOQ9IO7n1RkyUVxX2cshVqME59QxDUK+sw4qjT4/q6BNfRE2osETTsOwTcmolX7zS+7usZiJrJbZlakwwuUDibQ7yfH1EgaLXumfDa5b7CaS5WWpeTw7tvoO51v/k4/t2vllJ3g2am2REhE6oLBj21TqHuiImy0370mSm8Mhawyrpiy8aS7hhjxSeihljQP5aUrSMhCnxYA2
- DOJl3b6i
- rzMsKY7Qq/yyKRAi1QV81M7vNCKMtfHgXoShpy6OMljhYuZu9v++6tvRVcGC0mxijfBU1xfdHinsRrQ8KmpLxmOgn2KipCOHDolPRJfGw8kd7UNDntA1FBNe8dwzMe+Iivq8hf7CAw43r5rHyqL4OUHMu8pWZzNFmM35qKpMo8u+GaUX4CHAYcmN8c5xBK66CocbaHaj0eqzxAdAlta+4Gi0ArvJxnBPreUE/wnI6fQblVV9qn8GgZ+4pICcpfIwBaqcloiEDRjR9NkwEtHEE8YpXHxQs7K2wGd6TJxLW9h/5zV1ThQyjIpam5738sO6KBV/bIPHwsEJbLe3bAe0AQQNKg87XyvdWJ0GYwsuIM8u1E7dCy4l3IQUIsH6+xVedfy5iqLprNnFcXD8EzMdMX09LHg==
+X-Rspamd-Queue-Id: 646E380019
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1759498966-146141
+X-HE-Meta: U2FsdGVkX18b016IyqbR7jzkrXnZdOaLr8LFSKkQ2awmsG0Td0FlwQi/5H9QPZFgItFmWjxqrruFcrgzPGFV2HmuRbBkUkoHZXUomHMHMsn59RkRscg/kItwaBlMx2W/nB/lHedSy8gMQTdJ3S/piOzf4yZr8gIfDuXfi3uaHezyAthrODmLcu6ERQH/ra0Q9cdrkMQgy7L8zOrHRdTKPJmDLhKAeLXiYl8TLjrrKniOeRi0H0fbgFxbY4zbCUCIxD11G32yXi4W8c5qvKwfjPq7SSTn3OeRKHYF2NlbPa6Bc17YSs85nHgKLz3AkQ2WT8JufCbvE99lz5/jWjCTAyf0yFF8YsTNZVZ7Ws9pIMz26BGXmRN3fg03UgRsR4jFnS31H5bKMstyvWI5vSt+fb+bbfrBEmbvIbhFGco/0/kM7I0HYSe0+1VDCG+2rrd4oC+e5/i+e+MVZAiPOwU7/kGefnkbICnKYGo8JjoDzO8uN6jIYsrDmsOC5VLgqx93ciQMHmTM6y0MHuN6ExOB/kJY55mEfZDdkcLGzRCYSebeJjNoE9xzzqVYeSWjZWOhxIAsh7PRrhqhyRf3rfwN75A6dEtG19s2U1xPZE/ernF666YmGFKdM13zas5jT6ncakCAbMs4B0IWU8Bmh734og3HNCD9nT/5KUAwaKwC4zc5xKo3I8uvtpv6EsFmnhlnjsRcWHFN0ayja9YmX0FRiDbuVlpJxjOTdSNl1qVMqKL8rwxqOyt0OofieGYISaLSXVmycJm2E0fRW2pjT/v4ApEvjCf6FodeOyqUaHBfa7/m2sJlcf5uU42aqeIYBDkjO5gSbr8a7yyaLrAJuVs7YDkUeISavwSRAtK8pbHxPkpgJMgtLOeVfo7d6KStXZdIUdkc1HJFBW/i/X54MBdMnwiAKk/bg4aDT4Gd2WzJMCqtjTC4uzYFGtcBaKp8QdCC58wKD2LgkBwRQD0kPK1
+ 0qHrWPgy
+ +/gJi19bQipRk48V7jpf8vAmgF1urhPtNMdCDsOySgGJZ7oR1eRQCdvvi6f5ONDoUfgEq+URCRxQwICq5gTQVNvq8NcLrF6pTqI8sww2GTu/vT4HvnKtHiDqgLLgfESxLalxsrge9ABrEDUO4g+YMVrNFyGybchtAvlG81Ku+4lXNE+O6Mx4z9hySWJvu+BBE/7QS6GNK2XysokogUArXAzN6xYJud/cyS3E8Bl+Ws8ZF3j6OjcipOhAGgwnWGfL03FiHRyidGRsGD27a4c+hBnkMF42bwni/zi2HPQxBdN56enSlebvb5ERU3k3moK2wYHoq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,41 +108,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The bug checks at the top of iomap_write_begin() assume the pos/len
-reflect exactly the next range to process. This may no longer be the
-case once the get folio path is able to process a folio batch from
-the filesystem. On top of that, len is already trimmed to within the
-iomap/srcmap by iomap_length(), so these checks aren't terribly
-useful. Remove the unnecessary BUG_ON() checks.
+Use the iomap folio batch mechanism to select folios to zero on zero
+range of unwritten mappings. Trim the resulting mapping if the batch
+is filled (unlikely for current use cases) to distinguish between a
+range to skip and one that requires another iteration due to a full
+batch.
 
 Signed-off-by: Brian Foster <bfoster@redhat.com>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
 Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
 ---
- fs/iomap/buffered-io.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ fs/xfs/xfs_iomap.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index 8b847a1e27f1..211644774bb8 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -815,15 +815,12 @@ static int iomap_write_begin(struct iomap_iter *iter,
- 		size_t *poffset, u64 *plen)
+diff --git a/fs/xfs/xfs_iomap.c b/fs/xfs/xfs_iomap.c
+index 6a05e04ad5ba..535bf3b8705d 100644
+--- a/fs/xfs/xfs_iomap.c
++++ b/fs/xfs/xfs_iomap.c
+@@ -1702,6 +1702,8 @@ xfs_buffered_write_iomap_begin(
+ 	struct iomap		*iomap,
+ 	struct iomap		*srcmap)
  {
- 	const struct iomap *srcmap = iomap_iter_srcmap(iter);
--	loff_t pos = iter->pos;
-+	loff_t pos;
- 	u64 len = min_t(u64, SIZE_MAX, iomap_length(iter));
- 	struct folio *folio;
- 	int status = 0;
++	struct iomap_iter	*iter = container_of(iomap, struct iomap_iter,
++						     iomap);
+ 	struct xfs_inode	*ip = XFS_I(inode);
+ 	struct xfs_mount	*mp = ip->i_mount;
+ 	xfs_fileoff_t		offset_fsb = XFS_B_TO_FSBT(mp, offset);
+@@ -1773,6 +1775,7 @@ xfs_buffered_write_iomap_begin(
+ 	 */
+ 	if (flags & IOMAP_ZERO) {
+ 		xfs_fileoff_t eof_fsb = XFS_B_TO_FSB(mp, XFS_ISIZE(ip));
++		u64 end;
  
- 	len = min_not_zero(len, *plen);
--	BUG_ON(pos + len > iter->iomap.offset + iter->iomap.length);
--	if (srcmap != &iter->iomap)
--		BUG_ON(pos + len > srcmap->offset + srcmap->length);
+ 		if (isnullstartblock(imap.br_startblock) &&
+ 		    offset_fsb >= eof_fsb)
+@@ -1780,6 +1783,26 @@ xfs_buffered_write_iomap_begin(
+ 		if (offset_fsb < eof_fsb && end_fsb > eof_fsb)
+ 			end_fsb = eof_fsb;
  
- 	if (fatal_signal_pending(current))
- 		return -EINTR;
++		/*
++		 * Look up dirty folios for unwritten mappings within EOF.
++		 * Providing this bypasses the flush iomap uses to trigger
++		 * extent conversion when unwritten mappings have dirty
++		 * pagecache in need of zeroing.
++		 *
++		 * Trim the mapping to the end pos of the lookup, which in turn
++		 * was trimmed to the end of the batch if it became full before
++		 * the end of the mapping.
++		 */
++		if (imap.br_state == XFS_EXT_UNWRITTEN &&
++		    offset_fsb < eof_fsb) {
++			loff_t len = min(count,
++					 XFS_FSB_TO_B(mp, imap.br_blockcount));
++
++			end = iomap_fill_dirty_folios(iter, offset, len);
++			end_fsb = min_t(xfs_fileoff_t, end_fsb,
++					XFS_B_TO_FSB(mp, end));
++		}
++
+ 		xfs_trim_extent(&imap, offset_fsb, end_fsb - offset_fsb);
+ 	}
+ 
 -- 
 2.51.0
 
