@@ -4,119 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E020CAC5B0
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 16:40:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69802CAC5B0
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 16:54:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B06B88E000B; Fri,  3 Oct 2025 12:40:39 -0400 (EDT)
+	id A5F768E000E; Fri,  3 Oct 2025 12:53:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ADE148E0005; Fri,  3 Oct 2025 12:40:39 -0400 (EDT)
+	id A370F8E0005; Fri,  3 Oct 2025 12:53:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F3C48E000B; Fri,  3 Oct 2025 12:40:39 -0400 (EDT)
+	id 974148E000E; Fri,  3 Oct 2025 12:53:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 88F478E0005
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 12:40:39 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3F2B3C085F
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 16:40:39 +0000 (UTC)
-X-FDA: 83957366598.24.A245C29
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 0AC9D4000F
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 16:40:36 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=IKtbPkQR;
-	spf=pass (imf17.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.44 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8567B8E0005
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 12:53:59 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 38FD013BDA3
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 16:53:59 +0000 (UTC)
+X-FDA: 83957400198.30.10D18F4
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 61AC6100006
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 16:53:57 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JFUg0FPr;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759510437; a=rsa-sha256;
+	cv=none;
+	b=uzdtwd6ufTkmTwQPGU7lVUjuDFsq7YpNWzE8Ui0kFAu735UCsZ8bWMksr/ywQ9VTIt6z6e
+	df5SjD1yU+ViX+Y/OSCb4SauA/sGETAqNnso/Ij/+S3dVJmiMFWTv68DL/MO8qtB4/MqwF
+	uHvsrFZt/5eQZCwYVOnpGeJhROONZ/s=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JFUg0FPr;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759509637;
+	s=arc-20220608; t=1759510437;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o9Bks0glQoZqJ35eNGrkDQ2Zgt5IyBuc325aBW0rfDA=;
-	b=XtXLzTEASZcZO7B3r/GLL7Dn8FKAJEgeCHfSXKbj2WJGLuH8/2xPe3qerMQkJLQizAEYy2
-	lnu4La7Hj+8pLVjY0xlPCKVXyHAWWTXBGwimrCjTDP0FtSft27hlDNQTsiHasnJ7Je3c0S
-	LpH8i1AXjWRQf5BMlLnFeLQ+fWP4/6g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759509637; a=rsa-sha256;
-	cv=none;
-	b=kX8iMcLmhzeLMGacQ2y9RVMnHe7iQ0CGf/8vue6VYWf+UiTuQzIvEb3suCMcTe6lVvNlFK
-	8fJkAwluzRTKeHFoaQiWBV4ZVKBj6KTlWPQdf6teYmU559J9FT6izg5cOwpOWIfUF1uhnC
-	cvcO7nO2MnjE/FDJNIqlmCVCmBZOHoI=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=IKtbPkQR;
-	spf=pass (imf17.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.44 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-afcb78ead12so460297566b.1
-        for <linux-mm@kvack.org>; Fri, 03 Oct 2025 09:40:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1759509635; x=1760114435; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=o9Bks0glQoZqJ35eNGrkDQ2Zgt5IyBuc325aBW0rfDA=;
-        b=IKtbPkQRNi+d5AIKszxRfLmK0uvOWxgZAeBkC3KZdFc5tFa8gBbbzuNqRtGbHPrbJ2
-         1DEGjuijk2uB1AGXVWxmQ4Kw5psd5vwSvGC+8DT16kbnGZqG0INPCbfODEulhEjG0R7E
-         X/yta8KE2fu60DHPntEzDXQKLSqwFTaxWZoZc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759509635; x=1760114435;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=o9Bks0glQoZqJ35eNGrkDQ2Zgt5IyBuc325aBW0rfDA=;
-        b=PjxAV2nlkHTlC4oZCC7rcBS0xoYqO+cVzCGHesnd9NA26RrFn8+GEIPzil3IUFVqUu
-         Z6iCuaY8Q83MpK4legGm2SZO80tfvIvuJFKvQFjCmSeX4kd5Y33SmFxa1NoCZEt6qG++
-         Tb6szMI+keaKT6MxQKNF++xvs7L78Q5hnAUyfhfJa8TamDCggjddoaEfGt0r7asJXHEh
-         kwTazVvjA932oH8eG0WCwZn4K1dFQwZjkuWgq7ubqmAPJPhZgOERSTP5w9NsB0RR9e2v
-         xH3D2ubU6wIMAPf4IT4tPayoiU8AhPgu1q8u3W9D1Z5hIWR5bJ1S03PXOn7rM4VLxZs0
-         7Biw==
-X-Forwarded-Encrypted: i=1; AJvYcCUTZZpbZ9jfXdTeP6UJvUH+xucQyBSq5Bpm+r1fxklisFKx5HFJpXjHo6irRqgI1g0Kx0rkxLkcYw==@kvack.org
-X-Gm-Message-State: AOJu0YyBmLpz7YpCIqEJATyxuU9SpH/Y9+KBPaL4mRk7nhYYh9OugcAW
-	kTRrmJj3RjsjYYa0Lmg6SJxC6XcsxYLxSmkg2un5KBvYjW3KxRnxQOB1kuBM9gL/3Vh+OwWdXC8
-	mvbHw/ig=
-X-Gm-Gg: ASbGncs0SM8Bv/DkLnZZ28De6caGPN8dVS9VxhyHlVAq+8X0uXxErDsjbR3SJaUqKu6
-	6bU7dF37N8OsKrDFyhHSvMYUjfUAQS9DNOatpfBVcWH0eFaq9O6XHDYFn1Tl591Bo5tXVunlUi2
-	Wcb7OeS92BE4nyJWDxWwKGlESd///3pJq7HeQjisBHuvKyLGKBR6qQ2wU1IWNGPsIwVYxChZbHq
-	cgxITjCgyP2yxAPdhXCyDKDB4v8BYg5j3k/CkePihEDX4WWvTDr21cSOqZ7uu0rSLYK//eRjcSZ
-	xoyk4IfBnwvOg4lSkAroW6QgE1pp1cYewWiQ5PHW0sb0vz83YXyFrxfHAgW47cc7+JWPnPR912P
-	pG2HkYWOTN3JL3Fdj3PZ8VRc9D6Q2jBFixFQ3e/BonZx3e3w8zswgqfjrnUovbeOlr0jeXyp/F+
-	Fm92s244bnDgpypWgqmrM5
-X-Google-Smtp-Source: AGHT+IFKzwU246Z4InGBJdoYaYCCR+oUObMoRUkTADMR3sr/0/wGkQgu4LZXcL2wyIsPV4izuGH6fQ==
-X-Received: by 2002:a17:907:25c9:b0:b2d:d7ba:8e7b with SMTP id a640c23a62f3a-b49c2347c2bmr440094266b.23.1759509635214;
-        Fri, 03 Oct 2025 09:40:35 -0700 (PDT)
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com. [209.85.218.52])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b4865e77427sm473769966b.36.2025.10.03.09.40.33
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Oct 2025 09:40:34 -0700 (PDT)
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-afcb7ae6ed0so429253366b.3
-        for <linux-mm@kvack.org>; Fri, 03 Oct 2025 09:40:33 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWDXCceURg422pru6JyPUIOkVaePl4kaJ5jUXAEA8CLpKNrdB3/QFMNQVF/Hzryql11iSmvZ8gHqw==@kvack.org
-X-Received: by 2002:a17:907:7f25:b0:b37:4f78:55b2 with SMTP id
- a640c23a62f3a-b49c3d74babmr424650466b.34.1759509633396; Fri, 03 Oct 2025
- 09:40:33 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=xRVhaW2/i9fEx7I+LuZkY7sYjvYyEufnTn/0UGKwdi0=;
+	b=eCluVyBhFWEftOZjtipJJDWHpgi2u2jE7S4WCzscWT1tasiKCFNf2kTXixINmd/RVo3xC3
+	UWXrqKlrGxgHoC9dtJopyFCLl+SPRYc5qWYIejGHJtwq4ut48gppIXAD4CqIMSeBi56K+V
+	guxPk/JtUzDDO577caPcJ/7KxKVdn4Q=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1759510435;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=xRVhaW2/i9fEx7I+LuZkY7sYjvYyEufnTn/0UGKwdi0=;
+	b=JFUg0FPrMvBpqOsOnXFw1DQ5mKTUoNhv4ZasSvNFslafvWH0wPdUdFy4mTg40rMlU6RUKI
+	TqBCkuIDs60abnrrtDQxPvU0IALLTfKW0PvrsfomgVv2OVlM2tuRdY9jU2/T4e8kd56sPw
+	3WFwXu/A+bbqzgtSp/nWKS3EOza4gvM=
+From: Qi Zheng <qi.zheng@linux.dev>
+To: hannes@cmpxchg.org,
+	hughd@google.com,
+	mhocko@suse.com,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	harry.yoo@oracle.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v4 0/4] reparent the THP split queue
+Date: Sat,  4 Oct 2025 00:53:14 +0800
+Message-ID: <cover.1759510072.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
-References: <CAHk-=wj00-nGmXEkxY=-=Z_qP6kiGUziSFvxHJ9N-cLWry5zpA@mail.gmail.com>
- <flg637pjmcnxqpgmsgo5yvikwznak2rl4il2srddcui2564br5@zmpwmxibahw2> <CAHk-=wgy=oOSu+A3cMfVhBK66zdFsstDV3cgVO-=RF4cJ2bZ+A@mail.gmail.com>
-In-Reply-To: <CAHk-=wgy=oOSu+A3cMfVhBK66zdFsstDV3cgVO-=RF4cJ2bZ+A@mail.gmail.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Fri, 3 Oct 2025 09:40:17 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whThZaXqDdum21SEWXjKQXmBcFN8E5zStX8W-EMEhAFdQ@mail.gmail.com>
-X-Gm-Features: AS18NWBsgBCnrJzzu5xoBdIh2bX5YeDo-15f38HyVBOhspvW89C8BBlXICWbE3s
-Message-ID: <CAHk-=whThZaXqDdum21SEWXjKQXmBcFN8E5zStX8W-EMEhAFdQ@mail.gmail.com>
-Subject: Re: Optimizing small reads
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Matthew Wilcox <willy@infradead.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Linux-MM <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0AC9D4000F
-X-Stat-Signature: 984pimwywtpxwsa6654tmhe3ofw3xpg6
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 61AC6100006
+X-Stat-Signature: m4wkxnoqxrs8if1kf3hnkbh461ny3ktw
 X-Rspam-User: 
-X-HE-Tag: 1759509636-607109
-X-HE-Meta: U2FsdGVkX1/k5dUoHXp5jG7c3NVB3rS3OEwUB1Th/IH5hA8PtWhcPqyYoufbhXjOLieUAtcdlnNQ99Yoh6JcEkx7Ze5IhwJcqoHt5lIDi6mvle5pA4oXi1Wvy4AccHBv4e7I8iB7Q+KeSbCRMHZKml+rEa6ghf0OlRQ5cNfI7o+V+oHcwZvMntDavXg8s3Sv9u0jdstvd4dOE3TzuKbBxazYmN3es4ZUnvYJW6bdVCkNMgvfw/GHNRD2iqTmDLtBO0kLg3MRXw5a3PI9RuDMTT3hj5IKo1zLKWkGTxLaUEtIoIMnqSbehJo8YUwoZFVmrEV3YIo3MBN2NX0g2gqcExdujBA15BENG/C0kI+p4+Zy+Q1ZXZx4jHoFWw54NY+UgXycleGZtDZOPI4j21sYOqFcfEIbE/vTRdYqeLjGT3HT3XuJlkD2szetxfgnOafTHZwQAlC6x+J7MSq7FrmRcyLfj6n20QeM6miXde9xE2D4W6LzsWsebP2PuRhMDAJK99pEz6kfW3Mf7+lOgdiHGv1Ft21mVDXg8orPpsgqWIR9zYlJo3IsQ9svQyEUZqfiFA1MW2M91V5DXb4mt54GzcrnOAxLUfFKiUoDTIBvz6f7+8suazgFUJ8Y8LbvE6IbmAVA4jcKRwfVyiXDz6gxCHuR5/+b9fQNua8aExtBHfZGgtRNcbKP0/nz/cqExlnBRlAfGyfxhhC6KNUHT+JUUOnB8Q4TJHaBOPxQhDR/CkRID/wByY2+5MbQKBU26pYBzLd9d/HRaNbB/n6M2AWX5mKtbtkR9a4HXlmUlTjCTKcIa/LGRzV9xJ5GoFghR3s0RYubhwfzb22E0p6ZLNVFUqvKO7EZ6589QuvN1IzPpqd+AyFQuNeRQM4hxjGyVcSi8ZBk6rLI2WQKxPNeXgkBAJy/BMojsHOH0G8y8vDWtd0llJUcWa1r/ccCOWII2ZnCcWGg+l6YynUX61DWFWA
- 88IEmboW
- O2MPSqaVJYPSoWxZ1uxJmwIkhRlfKKxm7RasLH0t7alcrpy6BeeRjA2H5j2a0lVKnXSqegiHrLlyAKEEGcP4CWvlOFabFUTyTxpm9EOjcFe1ZQvPBcPMPh8XrsygdZO6BdJ5RPABGdP2MJkRGOCAOGRbfmkp/RKUGcy/7zGhXTS2y7D2Ipho9nwfpgo5qk0tadObH6S7b6wTovt5i90OcyczFpiJKq7xlwo3LtShdy+J+c3DdngpadIPBa0jtCXbiER90YUbhzRaAAnGlZb16tei5W14NlwWioGiG+mGktNUAQv9jd1Lc8Gmnsh+kA/fqKnRpgDB6dv8pIl9kjCpAGdkJJHAlj+PDnVaM5X50NdWgqYG0rI7Zy9It/byMVL6bEuoBi6iX2v8yu+f6IDXwbRUCLxcyVs6sPzPgML3pmAREmgzlMVr0sHcTXHFoW30bHry56n9/5/SBVj+hOOGSGuK3duTkXF/XqubMmTRYwNnhW5TkAr4VVlCMae5gNGqc4vi1eIeDXYtXak7aOQ2eRzdK9d6bNrcKNEW/
+X-HE-Tag: 1759510437-722270
+X-HE-Meta: U2FsdGVkX19gojinn8BXHnv2MfPZiVOdqEvEqB2qBA6S5nxfrv5HuqsM0H4nCwiT3STIJcYEA3LVYblonLj4EkozV1WP+TOHRa9r06dVMHQHqBxtE+E8KkfNqHVX8Q3ABBipLyKi0yb5xymrF02leBOz7aOP1+eX3SXfe+3jO4GkvwaBzNov5+a9Bk4SoKuROLsEVg04fivT9NkNZfnyKxv6Lqkfxirbn/qP5tqBUh2HVUBzMtu3mbniGL+MVBep9aK5SL6sj6oxvCs9v0TbmA/2WxhcKdWYjOsJF0qbLeMJoM/qW4QTa2ZBiHLZoUsyxsa5M6E+Z5k8BAvtZy1GmOLA1Aj3C3PXaRIBx1L2CCdnIHRIIgd3yhrtZwqMC8ECJiZivuAV7+pZnsvyoFVQNJQhclyaTPVajG6HxE/6Khzfkc1z5JhbEFj5ATfueeQA7zEB3Qc6LAWJCEuJvUPkWba7jjcPLzd07NfgbOTA/zKP+pj7RMhvjbdwGUxck8xoYjLWbCbN+SEmnz0R+g2sfTh/d7KtzUgObZI88ChYfeZDFcicEx0OYVgUs38Qq5G+r4LAhdpgY+VmenBBHhyFoNEsVzJLaKsuOmRIOWvXgJEKtHtHe9oWdNtvtNCpera9STy0r7KFBSjux6qDwz12J5NDqwKX20LiW1bdTIIV+nQeGKq/6mNemnpUqVeV/zZxqfkhE4a77sx0pEWcxGZ3m115OoOTFio4B/9BF59E8XiO7WFNFlgu1CjSv7w4OjYa8XltLlpOobOxzhvKhDdbkF60I6aBKTvWk0SXvINY6xb+Px2RJQ8BlHehrwUMAVYH8rhUDrSIuyCoySwU31oouYpca3GqDTgR7OcOmhKewjqSlQ1UgI3ZPCMqEPmCh1nB6xag0c7eAgfV9QQLMqxxD95FP5bpL2wQ2RZHXjWgIpmW/jTI3oJh1Ju/FbD3+1u6dm0RPzw1pK1F4n8iNAJ
+ WoB3ZkE0
+ uUUhvK+lVohNUdxvM9PK8ZeRPQjNZNoGMARNq7sQHQOuj+q6CV7yDNoEmQjngoG3Zuwi/UOalrLNMVSXpROTjn7Qg33Wg59kG+r9/juYw5aoIU3Yu9oEffJ2EgZHwJEOYQcBc9vbv3FiRyPNJdcgscnDpl8oROBfjOIaYxL2sIfGW69FPQPTVgBaerillF0jPSRJ6i2wwQdUjVcs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,45 +103,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 3 Oct 2025 at 09:18, Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> That was one of the theories and it might be the right one. There was
-> some discussion about having a sequence number. It's a long time ago,
-> I forget.
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Ok, this bothered me. So I went back.
+Changes in v4:
+ - add split_queue_lock*() and let folio_split_queue_lock*() to use them.
+   (I have kept everyone's Acked-bys and Reviewed-bys. If you need to discard
+    it, please let me know.)
+ - let deferred_split_scan() to use split_queue_lock_irqsave(), which will fix
+   the race problem in [PATCH v3 4/4].
+   (Muchun Song)
+ - collect Reviewed-bys
+ - rebase onto the next-20251002
 
-Damn. I actually mentioned that in the original submission (well,
-actually the reply after I had booted into it [1]):
+Changes in v3:
+ - use css_is_dying() in folio_split_queue_lock*() to check if memcg is dying
+   (David Hildenbrand, Shakeel Butt and Zi Yan)
+ - modify the commit message in [PATCH v2 4/4]
+   (Roman Gushchin)
+ - fix the build error in [PATCH v2 4/4]
+ - collect Acked-bys and Reviewed-bys
+ - rebase onto the next-20250926
 
- "And even then there's the question about replacing the same folio in
-  the same spot in the xarray. I'm not convinced it is worth worrying
-  about in any reality we care about, but it's _technically_ all a bit
-  wrong"
+Changes in v2:
+ - fix build errors in [PATCH 2/4] and [PATCH 4/4]
+ - some cleanups for [PATCH 3/4] (suggested by David Hildenbrand)
+ - collect Acked-bys and Reviewed-bys
+ - rebase onto the next-20250922
 
-but then I left it because I was hoping somebody else would deal with it.
+Hi all,
 
-And I brought up the patch again several months later, but by then I
-had obviously repressed that issue.
+In the future, we will reparent LRU folios during memcg offline to eliminate
+dying memory cgroups, which requires reparenting the THP split queue to its
+parent memcg.
 
-So yeah, I think that's it, and I even knew about it originally, but
-in my incompetence I had entirely forgotten.
+Similar to list_lru, the split queue is relatively independent and does not need
+to be reparented along with objcg and LRU folios (holding objcg lock and lru
+lock). Therefore, we can apply the same mechanism as list_lru to reparent the
+split queue first when memcg is offine.
 
-And by "that's it", I obviously mean that there might be something
-else going on too.
+The first three patches in this series are separated from the series
+"Eliminate Dying Memory Cgroup" [1], mainly to do some cleanup and preparatory
+work.
 
-How about a sequence number in 'struct address_space' that gets
-incremented by removing folios?
+The last patch reparents the THP split queue to its parent memcg during memcg
+offline.
 
-Or even in 'struct xarray': it would always be protected by xa_lock,
-so it doesn't even need any new atomicity...
+Comments and suggestions are welcome!
 
-Anyway, I think you're entirely right, Kirill. And sorry for wasting
-peoples time when I _should_ have remembered about this.
+Thanks,
+Qi
 
-        Linus
+[1]. https://lore.kernel.org/all/20250415024532.26632-1-songmuchun@bytedance.com/
 
-https://lore.kernel.org/all/CAHk-=whFzKO+Vx2f8h72m7ysiEP2Thubp3EaZPa7kuoJb0k=ig@mail.gmail.com/
-[1]
+Muchun Song (3):
+  mm: thp: replace folio_memcg() with folio_memcg_charged()
+  mm: thp: introduce folio_split_queue_lock and its variants
+  mm: thp: use folio_batch to handle THP splitting in
+    deferred_split_scan()
+
+Qi Zheng (1):
+  mm: thp: reparent the split queue during memcg offline
+
+ include/linux/huge_mm.h    |   4 +
+ include/linux/memcontrol.h |  10 ++
+ mm/huge_memory.c           | 258 +++++++++++++++++++++++++------------
+ mm/memcontrol.c            |   1 +
+ 4 files changed, 192 insertions(+), 81 deletions(-)
+
+-- 
+2.20.1
+
 
