@@ -4,92 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2594FCCA471
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 20:38:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8447ACAC5B0
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 20:39:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 444A88E0008; Fri,  3 Oct 2025 16:38:58 -0400 (EDT)
+	id B49958E000B; Fri,  3 Oct 2025 16:38:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F7078E000A; Fri,  3 Oct 2025 16:38:58 -0400 (EDT)
+	id AFA378E000A; Fri,  3 Oct 2025 16:38:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E9588E0008; Fri,  3 Oct 2025 16:38:57 -0400 (EDT)
+	id 9C1F48E000B; Fri,  3 Oct 2025 16:38:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E9C6C8E0008
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 16:38:57 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B283EBC1DA
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A7768E000A
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 16:38:59 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 451251A094E
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 20:38:59 +0000 (UTC)
+X-FDA: 83957967198.23.1CE12BC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 975FFC0007
 	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 20:38:57 +0000 (UTC)
-X-FDA: 83957967114.16.2C78469
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 19DFF1C0014
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 20:38:55 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dVv4/lhP";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759523936; a=rsa-sha256;
-	cv=none;
-	b=YdSg6VaYXONMXaANOU1o4IT4IM9A8DUWSyDi12F4z+eoHy5x3ZTpbI4mgRLial7/l4zdG3
-	nHoHdlMisUF3qvbYV9Q+5ge77RsREsDdK4fi6cQxu8CydViUBsBBdRdmz4amoaUuIL32t7
-	p92Wdl2F/UJD8cJSCyOo7PjI8SeGohM=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dVv4/lhP";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=S4L3F+p0;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759523936;
+	s=arc-20220608; t=1759523937;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2+TO4ULQ7qpToHys1UF8QNqqLylEbH8PsOkTv27WZFc=;
-	b=X5WD1SiWt9v9PR3T5zTDg794Y7eFH93uZvz7pypEuH+AwfUsReFJ34PdT+ghqQVLcGzECi
-	qh6a3/o1tTlUW7U8WFOvPjK4H588QM1bSlU0RfGog3/zJ7KI6L8Mv9QTOzAgOsQwJYtAmM
-	i387wAt1w/ZvvLaUrzGrWsF+9kYxpDk=
+	bh=tcrl7/60KaX1jcDkKq5wApSgdb7W8rnhd6D53REykqE=;
+	b=y8JmJpJLdu2mfpvIxBLjwpymQZZ834I0ZtnnVAQFfhsja4CdwYBPonsWMamDte1VfUdL0N
+	n2uV6S3LAu4irkmicbz+qWQI2uehLSRIHn+GgA/ph+utWllnrPzijwfei+OIbtm7tev+Xj
+	ryr8ukixncipFkh4F+DH/rBIPQ/bD2g=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=S4L3F+p0;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759523937; a=rsa-sha256;
+	cv=none;
+	b=b/qP6LevQhhSZ50p4aQJk569zatFxdtBq6hObUB7VAHkVMcUybe+M/Pnscm1KUiC1Q0/+H
+	YkJS1x39Gqpu3dfF+MAb3QJ4lfjImnhkhrvSMMVzP4UiipqT51WDsT+wOlLSPOOhIH1vzj
+	xmgk/ePRPOVHGXjmbB+uZGn9F0ZqXt8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7EF4F624CA;
-	Fri,  3 Oct 2025 20:38:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD7FC4CEFA;
-	Fri,  3 Oct 2025 20:38:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4BCE948A20;
+	Fri,  3 Oct 2025 20:38:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 150B2C4CEF5;
+	Fri,  3 Oct 2025 20:38:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759523935;
-	bh=QYf5NoN4iCNnsX/4rgyF4h8KGvpOZHNtyc2i/D4d3Fg=;
+	s=k20201202; t=1759523936;
+	bh=AeleWDuyUJnZpkc4cw1hO6AX2XUTuOPcOCcE8L+UJic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dVv4/lhP7CXRVGS6gZXty6SM2CuqqWMtV94l7WDc//YwsLdWRvA9OSEMFefrhAIc8
-	 eD+0MkFrUaBHnOFc9MuMxvL1iv/8mtrG8Ant8Og95++U6GIAgmNKogDidifzS0tHlJ
-	 Qq3b3jfvhfLTtBfMV94YLQ6Y3hwNn1ZBNk9jjHiFhOwXOWUYPudbac5AyJaX6QC+4g
-	 tY9+XyBWcrd7FuttcbI76cyHxqzDkf1l8ZwzoyXp/dM0VPZutwFpp0yKW33ddZzQhP
-	 EH/lKPXUi64pNrLFlO9IYbWvxwLUsAkbVfTSleDoDk04Cwd7/XjIobzm7g7poJJcIa
-	 DEmVG9WD9KLeA==
+	b=S4L3F+p0Ttkg83PfSG5zfqt7CI7+pPYaDjiPpSuK35EUoIoIVcuv6V3Srzu1o/oKT
+	 9k5MNgcTUyTGP/6F/niObr5CU6kwDh1uTRUkFuXkatr32bordchdMQnkRl0y094nju
+	 eTi74st4JX/ZgYbTKIZ1GzKKL6KGtwE5YbGha4Hdwmh549xHD5PF9gkls4rkvCnAvD
+	 /4S6BzjJ4j7n+OEb1uZ6TWMF/GML3AsDTMWqhK9ESVCCjPXLQssq9I/yNoc0wl8jxO
+	 MjAoh0wHLzU652q6+EVeUyv5+wU4eC/gUVoPHunRMdBcZm25AoUQu1TZMn3rqkYwU0
+	 JlYwX08bTtpVg==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Chengming Zhou <chengming.zhou@linux.dev>,
 	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
 	Nhat Pham <nphamcs@gmail.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
 	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	cgroups@vger.kernel.org,
 	kernel-team@meta.com,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 1/4] mm/zswap: remove unnecessary dlen writes for incompressible pages
-Date: Fri,  3 Oct 2025 13:38:48 -0700
-Message-Id: <20251003203851.43128-2-sj@kernel.org>
+Subject: [PATCH 2/4] mm/zswap: fix typos: s/zwap/zswap/
+Date: Fri,  3 Oct 2025 13:38:49 -0700
+Message-Id: <20251003203851.43128-3-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20251003203851.43128-1-sj@kernel.org>
 References: <20251003203851.43128-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 19DFF1C0014
-X-Stat-Signature: famsaaup548gfshksmcoq78ze6krhf31
 X-Rspam-User: 
-X-HE-Tag: 1759523935-11822
-X-HE-Meta: U2FsdGVkX19ehje6bhCOGu9Tncq+paamxf8hgM5edkmsW2hm4zxKiz/JANEai6IJ3hYnxng/6yy8pPa5atTrB88V2jM9ieWzqSVjyOzeHHf9LY6NwmzEvBJvvkIkX7ZJccOta5QzIxZ7sEIPXEtpT4jywg5e2PYs1La8YIXAtxJmQ6ccVRmtDwXH9yeCD84i3/YMPAV2NidcT9jk7C1sYDp9KLytanjrvcALRYDKeB3kQ3v87mCkQGbhVfUxzCPLzWmIyKCxrPO3tE7ZF9qmbWjYukRMmv+b7SdHQKHsTBzGtbcNBWof2fHSOhkmGzE1jHtZFi7aMvTf8DWF+MLcixu2IM2W82Jzqzj11E5S4iZgPSLzR+D3WMWm6eagwnfv6EV0dY/1AH1FDA/Lw3I4Fh4UTgkyIsYmuexfjIicz08RUXS25R9u163e9TPR+OrkGNvFwsVYfkKKBE5HhlCGpYwzZXWw5r+MbW45runMZkt5wiW8DvON04959ixhp5hCNyerlZ0ImYMIg5YJvj7VaKCYHlL11dgBEfG69TfQroCEY4GoYgaSS98ge0FXI6+XYLUCyJ7dYtXuGySX35nUgJSXV/X2oGRbZ0N25QPLNQe2yV/PHPNtLmDuXgXcJ7VPVlzm8jqzWrL3Xv67OnGxcGrvzGCyxmwScunViYuk8sHKQzeRvU1Wz46obNXXEmXMujASYjf8tGSZX9qv8IYYTha3Y8QXDm+HqVN9wsfWKiGCd8KfJR45I9GFtuufQd1ZJct/KYgdet0uzqCyI2tu2CU9B7XFtCVdDlIsU5bLeHAPRHYIkVIcPpSkpysznLnGYPg5+xRmjwVLNkerGVQFqgp+1dcxlRKDJbw2+SawkPDCeytBPRpr/suIEOryDfGQ8wPk00Zfet3e4c+4Ca8Mt9mPsOm4fntDz6Q4YZ+nsI5CnAYUNQvG0yOE9dCurR6XX+fDPWBzezSeOflbqkV
- b6RFKEpN
- BwQe9mm0xfYRXchmCznWgs6qtH1lnkWC667IXajhUWo0FD/9sV1XuS4h6UasKROoNd6lcgJdNC4/rBj4E25g9JQpKjWFAQkQcAC4zFTCIr1qD7fdhYIv/qaOdrhvD6+ZL+kztFDLNpQBPq8YgBG+rfxn6kbXNvsFQI2O5U5/9l40Jy/5TD7uYVqgmnkn1hZIRtUAyHq881148kn9T8Ic2w4RAPqfdyuM3JOEFTdlUqkROTEPh29jLLjdashVevrsKyNkvALghcZ5kZfw=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 975FFC0007
+X-Stat-Signature: jnsy4qhumnc1seiiu5pxu7f4p8bwm1wz
+X-HE-Tag: 1759523937-611926
+X-HE-Meta: U2FsdGVkX192eu8gTXdbACuIUgMHNIz0rPaQ7yh4e1vslS1Hbw48wGJsw2Yo1TGkL6m+ERBfXQepfLOH/ms1yGpZojzrqgDLqtsCYp6XjE8yoMsbfKgS4W4Euyq68DrtqgJSm+ofdPwnGfb405STIOA+g/5FopAZ+euOc+dGWG5rPvvIZOq2HSpqEiqlplNbajJoAU6te8ieF5EKAMRORBZXio6AR4/PeZzWFyT/dzV/8tZk4bi/cHrlKTqcmmtNw6FfOxgZx5HZ0ISpXDiwnfDm58oiALdjkxu9JKNy8P8z5uvKDz+gQ9rhZXnOpcZd14ZTStM/KTnKBzU8Sip4Uu1K4ZvpKsBRNBMS6jbP6r52qN6PO3iMb5uXCQtyR1DxjiqVQAwyirww8XSnREy3SPU/z7vX3KKZ+72ohNfHdFEEty06yd+K+lQ0JM3wm6ah9v9AyDqvuE2muld1jB5w8FG3eKRBbepO/Dk9INGO+2rkI7LQuhx5DL1JUMS21UztY3TyR40/cFkgzsEBrpVm3guWsxRTLaO0+YBXImVZKl18RbyKuxvvSiSwQWU/j/z9uY2XG/xadT53AszcrK2rloig4Go4TDLNqwoR9M8rppCgiu74+Bx0x1ISYE26G0949iF0IAFr8ni5wAG69uFF1ynmQjy4jxZfiX+ZWbUg5Pp2RyEWxe9nr/RjspI0zsyCkQ07d8I3xfln9IS9t36/U2Kvdvj5gYHqCkZsf/Ux4YB2XZP4xHLLitCLBrmTAWwkkVHMKSXedFqzgoqfQWTd8DRz1/SZZazV/ks4EFRTIIx0xCmyUOxJ1+cl/bZ8CyZB6OFDxhGOwnEYUzVSlD9h4UHJGU+BZyXTTos2oaP8HJrFnNZ37BITa3NDLfbx3BkXDylse8dOW805vZ2l5wgZl41soR8sC7SJNPvDZES5WdCQrRdx9soHvyA30IBiWNHBNaT1DTv5fAr875exu1r
+ jZ9QysOO
+ Q7L3WDe9Lt46mouWjQ6RGR5UOwposgijFXwA0SQlnoJo6MfGYBo2w4WCmFNKJAGd4BhBgeaQCGEIzd3FnyNJza5l+dbMLbGL4x/4LbVMxQTWS5P6KLWlN3KVrJeDCftTnkHQRdstbXPR8Q/0iOPPU+0lRpeBA9Zw4GOpo4q5rcXWglwoIwaH+mtTGyU7CZxXy8rExvDsDzR3Pdc5+WDVKlwxZ2nzsLCY1e2K7VHJi/6ZNgLg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,31 +103,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Incompressible pages handling logic in zswap_compress() is setting
-'dlen' as PAGE_SIZE twice.  Once before deciding whether to save the
-content as is, and once again after it is decided to save it as is.
-But the value of 'dlen' is used only if it is decided to save the
-content as is, so the first write is unnecessary.  It is not causing
-real user issues, but making code confusing to read.  Remove the
-unnecessary write operation.
+As the subject says.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/zswap.c | 1 -
- 1 file changed, 1 deletion(-)
+ mm/memcontrol.c | 2 +-
+ mm/zswap.c      | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 69c970554e85..74b1bc2252b6 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -5421,7 +5421,7 @@ bool obj_cgroup_may_zswap(struct obj_cgroup *objcg)
+  * @size: size of compressed object
+  *
+  * This forces the charge after obj_cgroup_may_zswap() allowed
+- * compression and storage in zwap for this cgroup to go ahead.
++ * compression and storage in zswap for this cgroup to go ahead.
+  */
+ void obj_cgroup_charge_zswap(struct obj_cgroup *objcg, size_t size)
+ {
 diff --git a/mm/zswap.c b/mm/zswap.c
-index c1af782e54ec..80619c8589a7 100644
+index 80619c8589a7..f6b1c8832a4f 100644
 --- a/mm/zswap.c
 +++ b/mm/zswap.c
-@@ -894,7 +894,6 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 	 * to the active LRU list in the case.
+@@ -879,7 +879,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+ 	 * acomp instance, then get those requests done simultaneously. but in this
+ 	 * case, zswap actually does store and load page by page, there is no
+ 	 * existing method to send the second page before the first page is done
+-	 * in one thread doing zwap.
++	 * in one thread doing zswap.
+ 	 * but in different threads running on different cpu, we have different
+ 	 * acomp instance, so multiple threads can do (de)compression in parallel.
  	 */
- 	if (comp_ret || !dlen || dlen >= PAGE_SIZE) {
--		dlen = PAGE_SIZE;
- 		if (!mem_cgroup_zswap_writeback_enabled(
- 					folio_memcg(page_folio(page)))) {
- 			comp_ret = comp_ret ? comp_ret : -EINVAL;
+@@ -1128,7 +1128,7 @@ static enum lru_status shrink_memcg_cb(struct list_head *item, struct list_lru_o
+ 	 *
+ 	 * 1. We extract the swp_entry_t to the stack, allowing
+ 	 *    zswap_writeback_entry() to pin the swap entry and
+-	 *    then validate the zwap entry against that swap entry's
++	 *    then validate the zswap entry against that swap entry's
+ 	 *    tree using pointer value comparison. Only when that
+ 	 *    is successful can the entry be dereferenced.
+ 	 *
 -- 
 2.39.5
 
