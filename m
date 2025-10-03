@@ -4,186 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4CB8CAC5B0
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 11:03:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 569D1CAC5B0
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 11:17:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 289678E0008; Fri,  3 Oct 2025 07:03:25 -0400 (EDT)
+	id AE7D98E0009; Fri,  3 Oct 2025 07:17:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 261578E0003; Fri,  3 Oct 2025 07:03:25 -0400 (EDT)
+	id A984E8E0003; Fri,  3 Oct 2025 07:17:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 150418E0008; Fri,  3 Oct 2025 07:03:25 -0400 (EDT)
+	id 9873D8E0009; Fri,  3 Oct 2025 07:17:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id EC69F8E0003
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 07:03:24 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A037313BB10
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 11:03:24 +0000 (UTC)
-X-FDA: 83956516728.26.F80AEC0
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013036.outbound.protection.outlook.com [40.93.196.36])
-	by imf08.hostedemail.com (Postfix) with ESMTP id CD6B416000C
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 11:03:21 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=renELuEA;
-	spf=pass (imf08.hostedemail.com: domain of bharata@amd.com designates 40.93.196.36 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759489402;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 78DCB8E0003
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 07:17:34 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0752C1606F7
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 11:17:34 +0000 (UTC)
+X-FDA: 83956552428.22.19F518B
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf30.hostedemail.com (Postfix) with ESMTP id F144880011
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 11:17:30 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf30.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1759490252;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=95SrH8UQ6PJ/Mqro5QgCwcA/wkJ2vC3HvWnVZTFpvnk=;
-	b=b/NI+lYJClZ2lqUWNuAF7BWF/NukAAmFGoYzD7ocSVKDfiH/MDSnskw4e8Y4NirF1qbveG
-	6pvBeU0Vu9NR0wX66yfUStynQth6B2qfmRZlrSyVfxj4pe0EZWUV/E077kTRKO+Yx4M3Xn
-	ipp9MOVaFaBqsk+Q+4fNRDM7qFns/K0=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=renELuEA;
-	spf=pass (imf08.hostedemail.com: domain of bharata@amd.com designates 40.93.196.36 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1759489402; a=rsa-sha256;
-	cv=pass;
-	b=ib19P+VEjQNP1IhzTF0twLB889FPcY7flOcbBrJh7Obesu6k4GU+W7mVq+FNtr3cZbRGAt
-	S0IT+coGxeDBAyJ/Hqru39Tx2BJbzXb+quLCpDXvCCNPrKb9M6PBigooeAm2r2fYbuLNhA
-	cO6CZxGAscY58oVRQjf6YzV5Il7YaD8=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WkDzrMlcdtHEoYdG+y7KAg+YMLEFATe0EjBoAfoQv2jBct4fOl7aaUNC1MhQktCaVypfopVcCQRFVeRakR06V8SSVCG8FBBIhyjl2M+ce36YuZ5Mwvs4eMZId7CriSNm5BP3Mgg49uhjSeKZpDGQnEzP+BXS7mGYWjk+yZAckjzXpzf5WC1BWNGNhLW6aUa7FlC0GWuNE4YrYfUVvDGI/ryEmxBLRT737cxAxL8H1G+cYALsJDnEWwQOyloBM7RyrYm7BZMCs+VsW0E73flmagKnOUSDvPA7NSVwsS2a9ApRpV533+cQqNz6OT92g2HKQrp9G5tlDfElyYtYEPvHUg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=95SrH8UQ6PJ/Mqro5QgCwcA/wkJ2vC3HvWnVZTFpvnk=;
- b=IMrJ7thRV1KYx0cZmNuaNen9YNcHx0ICYAbHvHGj9/wgM5qUnyJGwDl992VfpM3c3gjvltM/xlGME6tC2LAWH4iSUmGQHEX84jiHEXK3M8MTUzW/BX8DHOcqUx9ujLwG8C1/bdmfmj/ouAvYEfNI7Q6Ai3TuqsMW8uCyJ/Mh+0i78xlLYTcIEVZrIvZwEiYvAexgCPBLcxJiLZgNq/KfdkRXdZ1FbeE9mik/3LtXHd3tnrXh0HUkYJTUZo/qmzhnhnvVC31ZFWTOtsUy9ghnN+J7JPuR8ygAZcqQQiYMmn1RKC56ZQkNIIB20uRvpkh95R6gJNVAUkQkFPUY4tjOJA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=huawei.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=95SrH8UQ6PJ/Mqro5QgCwcA/wkJ2vC3HvWnVZTFpvnk=;
- b=renELuEAmC0bxBGgFh848wsV5AYcM8LmE9vWwuf6mPWxIgWVJ3yQGaofuLlaP4Ic1B56nCiFMPiDuwgqXRlo+NdWIHbhH4icIXrtkRlIVBejmOHfRQNADfHvM2Pb1DSeZOLvxlkaeGiwWswnAVItJWz9xTSwjZ8iNY28TgxmXK0=
-Received: from BN0PR03CA0035.namprd03.prod.outlook.com (2603:10b6:408:e7::10)
- by SJ5PPFA5F0E981D.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::99d) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.14; Fri, 3 Oct
- 2025 11:03:13 +0000
-Received: from BL6PEPF00020E64.namprd04.prod.outlook.com
- (2603:10b6:408:e7:cafe::2d) by BN0PR03CA0035.outlook.office365.com
- (2603:10b6:408:e7::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9182.15 via Frontend Transport; Fri,
- 3 Oct 2025 11:03:12 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- BL6PEPF00020E64.mail.protection.outlook.com (10.167.249.25) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9182.15 via Frontend Transport; Fri, 3 Oct 2025 11:03:11 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 3 Oct
- 2025 04:02:25 -0700
-Received: from [10.252.192.21] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Fri, 3 Oct 2025 04:02:18 -0700
-Message-ID: <66b9c552-61f6-46b3-a773-87958429322f@amd.com>
-Date: Fri, 3 Oct 2025 16:32:12 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 2/8] migrate: implement
- migrate_misplaced_folios_batch
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
+	 in-reply-to:in-reply-to:references:references;
+	bh=8xVo6N2upvB10OgD6HYZI26wvT/raFr/KSuCZ8C6XH4=;
+	b=26onaVU5t8rIEsphoxdW/yrseZqRLKkfmbs9uLoqp3elaUj85zrffaTSaKUTb9cv3xfIhQ
+	0w5Us2Ox0XTLk/Pa+g28OpzvLgh5QcQB/n7ZIDDj9WyQCoiRZe9eDNqO2/ZICrMm9UiSDA
+	tptZtZyyXbxcyH7UynqMfmN2tBx+3qU=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf30.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759490252; a=rsa-sha256;
+	cv=none;
+	b=IXgdeyhwSDcoye10I4lGi4bSxfu1vzT3MKmYUmbi87FolgSOEiZ34ySwIj+H+mNaNhnnqw
+	pCZA0C+Hc/BEuL7OrsuwBBXsRj7g20mj/UznFjA0mkp94B+oYN3wG/D/YhsMAzZlQhcs53
+	vaSNL+AbONw3TI3hhZX9ZGeEBNCvJg4=
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cdR0D40Xtz6L4wn;
+	Fri,  3 Oct 2025 19:15:08 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2747F14038F;
+	Fri,  3 Oct 2025 19:17:27 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 3 Oct
+ 2025 12:17:25 +0100
+Date: Fri, 3 Oct 2025 12:17:24 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Bharata B Rao <bharata@amd.com>
 CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
 	<dave.hansen@intel.com>, <gourry@gourry.net>, <hannes@cmpxchg.org>,
-	<mgorman@techsingularity.net>, <mingo@redhat.com>, <peterz@infradead.org>,
-	<raghavendra.kt@amd.com>, <riel@surriel.com>, <rientjes@google.com>,
-	<sj@kernel.org>, <weixugc@google.com>, <willy@infradead.org>,
-	<ying.huang@linux.alibaba.com>, <ziy@nvidia.com>, <dave@stgolabs.net>,
-	<nifan.cxl@gmail.com>, <xuezhengchu@huawei.com>, <yiannis@zptcorp.com>,
-	<akpm@linux-foundation.org>, <david@redhat.com>, <byungchul@sk.com>,
-	<kinseyho@google.com>, <joshua.hahnjy@gmail.com>, <yuanchu@google.com>,
-	<balbirs@nvidia.com>, <alok.rathore@samsung.com>
+	<mingo@redhat.com>, <peterz@infradead.org>, <raghavendra.kt@amd.com>,
+	<riel@surriel.com>, <rientjes@google.com>, <sj@kernel.org>,
+	<weixugc@google.com>, <willy@infradead.org>, <ying.huang@linux.alibaba.com>,
+	<ziy@nvidia.com>, <dave@stgolabs.net>, <nifan.cxl@gmail.com>,
+	<xuezhengchu@huawei.com>, <yiannis@zptcorp.com>, <akpm@linux-foundation.org>,
+	<david@redhat.com>, <byungchul@sk.com>, <kinseyho@google.com>,
+	<joshua.hahnjy@gmail.com>, <yuanchu@google.com>, <balbirs@nvidia.com>,
+	<alok.rathore@samsung.com>
+Subject: Re: [RFC PATCH v2 3/8] mm: Hot page tracking and promotion
+Message-ID: <20251003121724.00002e6b@huawei.com>
+In-Reply-To: <20250910144653.212066-4-bharata@amd.com>
 References: <20250910144653.212066-1-bharata@amd.com>
- <20250910144653.212066-3-bharata@amd.com>
- <20251003113629.00004fcb@huawei.com>
-Content-Language: en-US
-From: Bharata B Rao <bharata@amd.com>
-In-Reply-To: <20251003113629.00004fcb@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+	<20250910144653.212066-4-bharata@amd.com>
+Reply-To: <mgorman@techsingularity.net>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF00020E64:EE_|SJ5PPFA5F0E981D:EE_
-X-MS-Office365-Filtering-Correlation-Id: 51e75c12-2250-43bc-eac2-08de026c7137
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|7416014|376014|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?T1ZGSXZUTUhtYUxOdjBpTVFtRUNRd3lobEN2OTJLc0YrMXlSeE84a0UzV3Zk?=
- =?utf-8?B?MmR1SFNZNGlTd2ZseGY2ZmxMNDFDS3RiMmFRUGwzUjd3S3dJdDVQck9GdlB0?=
- =?utf-8?B?cEpseExueDBCc1VVRUhnZEtKcURURVZGS3N3RWF2eFRVQ1lCUlh2NXNsb2Vv?=
- =?utf-8?B?Z1A2dVVGYTc4dlVQWUMzSjNZS2pOazVody9wTHBHSTdEVlZJeGpsbmdKZHBv?=
- =?utf-8?B?SVMxdU1HbGZEMVVZWDNLZlc3bWNZdVE0TS9QelBiL09ISnJzbWxyeHdiZ1ho?=
- =?utf-8?B?WXEzL1d6Ri9uK3ZQSFoyMGN6UkxQZGkzV1ZVTldGUmFORXd4azFSa2YyaUU2?=
- =?utf-8?B?Q2JrUWlMc2VuS3Nhd1M4cXJ0NmVlT1VmK0pPTktTaVNGaEs0OTcwZUJPNm9y?=
- =?utf-8?B?Rys3c1NJWGo1VXJqS2ZRTHVWdUl3aERoQkdtWG5aV293OUZwR25hNHprcDhS?=
- =?utf-8?B?NTRFcGJRNjhRWkU1RnRYUVV2UjdpTlZxdTc4VUc2STBreVE1RU9PL2crSk1T?=
- =?utf-8?B?VmNSN2ptVCtuVllIc3RtMWtZbTloZVNjckVrVWlwbE5OaXVEejFUa0YxOEVM?=
- =?utf-8?B?VU90WjNCbk9wblBuRFZVYWpsWFhzSGZkUnZ6YkdFM2pyazQ2VDc5NVhCVVMz?=
- =?utf-8?B?clBqdi9QU2p6alRkdWVESzdudnNhRUhJZ05wekZuTS9PSkl2ZFB2SXMrcXJh?=
- =?utf-8?B?ckZrc001dVV3c3VnVzNvZTJ1aE9MaXFhRkxpMiszZDZwZGJvNk1KbXhEY1dv?=
- =?utf-8?B?T2d5N3dDaDFLdkxYTW04ZW1iblVpTUdrbm5sS3djaS9aNk1rV0FMcDd0b21V?=
- =?utf-8?B?N09McUwwWW1zekoxakNmV1dJYktCZ0diM3ZZV1RsaDNkQ1EvajNBekRPaytk?=
- =?utf-8?B?Y3p2ZjkzTFZIYUg5Y3VxNWdEZStTejM4NFk4dnlDd0drb1dSUU91bHpEYkIy?=
- =?utf-8?B?eGVyNnRianBoM01YcFRsZHhvQ3pHVXZvcDlHQW9EMUZxRW9uT0VIZFJDc0M1?=
- =?utf-8?B?RkJ3VVUxblFEc2xUV2xrNm9UVjlpOTY4T05VbFFkMDg1SkZUZTI5ai9LbHpQ?=
- =?utf-8?B?QlZmWnU2UWM1Z09jUm5mcFAzbGJ3WFYxVGx2ZXYrVXg4NGJ4RVIrWi91b1l2?=
- =?utf-8?B?ZmRVV1JTUEJ1d0Q5SFdmTGpjNVl0aXZqS1dDaGgvOEpnNk1FMjRIa1lSRDBC?=
- =?utf-8?B?MEthdE44RVRXdzBBN3R6TFZEM2plTkVVM3Jnb3M1VCtVSVczWDVONnB1bVhZ?=
- =?utf-8?B?ajc2MzJMeENRT09pZmxTS2FTa1I0a1ZqZEhxenRoSlJYdXdRNk5rQW9wNDkx?=
- =?utf-8?B?OTVrUXZOR21Cc3dZcG9MU0Z5ZFZFaGRtVlZRZERzaTZVRW1aYjBzT1ZyQUFK?=
- =?utf-8?B?Rkt4RXROQjVQcm1yQlVLNVlwY2gxOFFHTUlobjFqMVUzMnF6MXVHM0dhc1Vu?=
- =?utf-8?B?SFpUaE14TGRaeGVGdDBoYmZ4WjNxZlU1ek5wYlFBeUNxWTNteU1GcDdESTBF?=
- =?utf-8?B?bXRmN2pQZWt2SWNKaVVFTTlmZHNDdVRzMXVMczVndDF5OG5OblZ3TXVOWjIx?=
- =?utf-8?B?UDBKb3d5eW5DbUsxMlJwcmFGMHAzUGl5YXh1c0hkTFE4OW92a1VjeDZRVUpP?=
- =?utf-8?B?dWp4ZVFvUmNIN1lCNlNsU0lhOHRjSkN2bTlCSG1OOGtscXVMZzM2dmR6WlBi?=
- =?utf-8?B?RktDQjlzWWhHc2JUZ2FjQStnSXZWOWVwbk82ZnhYTFloWmp3T0hFMDlzeWtI?=
- =?utf-8?B?Nmh3cXhiemhrRXcyc3hPL25FTDRnU2lmdjlRWVN0L3NXZ3A4ZlJ2d0VMKzlG?=
- =?utf-8?B?aTNhVEJRQ1pNNlVBZ2V1cTdCTmFmMW1td2lvaG4yQ3lpNHdzTmFLdXovVVRi?=
- =?utf-8?B?WHpZTWVxNW1TL2JLYUNxanhwS2M1bmJuWGdDTkNTMWVoMnJ3a1FiQ1JLUlho?=
- =?utf-8?B?RlZiRnR4bnVSaVc3SDZ4Rkw2MUtnbGZkeVZGZ0Z1bFlSSDdjbTlheTkzQSty?=
- =?utf-8?B?N1o3RmdGWEtncW9IY09SMGRWc1pzQTRDbHM2NWgvRm1oUFdxTlhLS0RMRlR0?=
- =?utf-8?B?YzJ4R3JZSzUxYUdNYXpqU1ozbXJVU0lOY3poVlFhWG9zdHpHVGQxdjJPcHlK?=
- =?utf-8?Q?BRQE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(7416014)(376014)(13003099007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Oct 2025 11:03:11.1961
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 51e75c12-2250-43bc-eac2-08de026c7137
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF00020E64.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPFA5F0E981D
+X-Originating-IP: [10.203.177.15]
+X-ClientProxiedBy: lhrpeml500010.china.huawei.com (7.191.174.240) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CD6B416000C
-X-Stat-Signature: 1szhbwxk1zykkidxqsfw8aekeah7fncb
-X-HE-Tag: 1759489401-936494
-X-HE-Meta: U2FsdGVkX18kjeEP2PE/ktPbhSDpeY/1LsvQgAETnwn6XEWc1iyxcmFrc4Mo/bTBvI/XoKTnpcBmLcVpSPp5ktIoV3pQZ8h5yo7K76eXjExKPYhbKGsWRwKW1YpDOiE2q8hqmyUd6Ql6/xeUVlnj+5a529WTS7vVYZS6j7k8CwCl1mEjFqXLBJcJNB0J040Fa9l/k84mBztH4AuXJXcEn9N2AHOe0Jnow8iChQjfgPA9ignIgXowfdZXbKUN8e3Sx8mt6clPxnJLuw1KoFMDVPaqTJ7pFLGHNeku9m9eIUqZ3DkpFxtcmQz/yAigQ4w68BfO7fymFTKzkWNhkKmp7UXlVUQt/Zd7ABKKwilplRNxyI37og+W6Z1Zh+cxXwE/HHG/BY9BSsffSZ31asPFfp5lkLtLmf1dIK5OS/nsKry6tFJgTPLWqebB5CdGyypTPZTqNnn2nJ/hFqDainOGGop9XogZQMCE45h7dqUFTyTxVRG42+75CuIQ76DU7jwIm1Rvc7K6MZngSBgOIjJd3Ch1mrWVtdJMfYcQRchFkd3XwdY+YCr7Qv4ewLkiOTDNNguqt6tT0xoSUx3rjHVhbQCMLRgxejPJkY3cf1ADDjKlQgk/JFLSH5BWwBNOvNFmRM1umeFk7nZjeLM5kwXHtPYq2RbKXFq2n3CiABmMkmPBwakVtDvbC0cKDPGF64IsQeazHLB/bJATqvaXiOfOXOtxAfMwK/7Umq0059T5ZQuLYr6o9OT5v0rYeZQBdBxL4PAEFVrc50sLLC/mS555yIMcagaqn0UV49WeN/eFgP22l+svDU4aChzdkSOACpEkVJPGvjJ/+6a20CXKgww7rbl3KxVy8MGnZu6IH6NkWVeKS8VMhB61J78qEeCBvWRpDKQR/XsUzz2CkE4klksrUC2yJWP5ogmuTbQXrTiKLBdQ/pK38IP5xWTQhSk92aXW7VctJRanpgdQeOoEhTt
- DT5GIilD
- bL7RL1ntVPtTHijIFBjMma8ln9/14QhLW06GLAG9HvtFkljDlrvcnvSW2bi4aXoXInMkpmV6cWpAaXnK41WihfT1Gof5d9idwNEcRYPEj/WTujLE=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: F144880011
+X-Stat-Signature: niepzreuqo498dedoozzgkzyinpyknbg
+X-HE-Tag: 1759490250-926656
+X-HE-Meta: U2FsdGVkX1/b0CueXQHaAzDglboYvRHrMZaI33hZbtKtckMdPavOtem9XlryG5O1oWn8N0R11bx6i3835iBsz8U2Ok74tZ5HJYu1MWdWDYlEjmCEmSnNlr5ZdfD0a+2q3Z4umhtNSUzpWTnkQumpcasmyjSoNy/pxxCFD83f/keNH7xsKYvIx5QYIzfEEM2pQsyhxI3bSmrzuSmpbIZ2mw5LPfVWGzen56uiQjkpeaMCCA3YkQTsuG2/bfE5zvLIm/k/VZoCXJHMMhIB539hUfvEEu04ojeGVLCnhcUdf5yggucmbNb7gv/FZ8rDrz/ffWuEGRq+EEqTr6XNsZ45lztzYZh5lkDFR6cJYmoz0/BDjkW8PAtupSjPk/Yg1Xq845IfIQm/SSVmUJgyjIkEHzhCl/XOzu9vrTdEBMmrWmdqb/H2Pbo9oFTyLwFqudQA+iiKTBQLb6ADF9bHfbsnBG740U4f2RLbKh53UOxxhq/bd0OI0izduRh3IiD03E51sdzjZPISerJo9pQS5SgL/Ki5yXfuKOOt99egt0QoxN235/QMpMBxuY7xib/VD8H8t8A/Z7boYVLQvhRT7r+jG3BSvIeH+ne2mk2wsOlCXm6SFSidS9UeN7LRXGQctUCnsgu6037PVLgbCjqEAF6pTDpvU6bSW5xStGPBpn5dHoSEyqBiBBnD2Y0uw7MWR2V0lEOh0TJQT3j2CAoV3KcCUv14ZENyFb8QXUO5Q9FVPnpR1mn1qFI1LeOr9jGUgv8fAYU9KZydFGDJEckq635SbtP3hlx++aRbknWIS737OLeogsPxdyc80JEIhhG4eFBGNsluSLaTh70AsXLj6o1+72yDYJtlbi9qSMqjywOoutS6qDI+ag59XLw/hYUggdQGqeW3lLoHKR1am6uNa9+HiTThyGXrwnOxrYblFfato+ZU7cT1If7dKuNbGBFY7WqvYplkGBTQSzg8dVsAcmR
+ qGka39Rx
+ 7qVgafSWbw7mAC8givIYPGe91+IKvygSCPOUSmOixr9CVS9KQfIx5Yx8YGEkZ/7cQQ6FbZ7i0svGkr1cFCItOyAYEMedNpk6O+Zx8JPf5/iaEHcmZhk2RlEGC1nDnsly6cZ/d4taiZhWWJBtN3S7EGdzZP6q8aKIPfiW326/FEyRsVfa6ywpQ3FjXFnjSnk7tWdYhdT7foGQKlJ5O4FrQor8eKwJi+ufiO9p6nvYBHpB7emESsHKyV4mlmshr1WLY3p24ouLttIUzVAgoqpJHbrtXwIwE7oHb4N93DF6UJkrbNWvxbZBNXbQ03X8pkYVh0233+8hhSNbBSeyI29spvbhLHfFRTpK21dY2WJqOFV4bDY2+8VXJGF1G1CjuJtutGeg7mKNpCqdybo1/GWQWgeGsyhJIoTIk6Mq2JKSj/buZ3E6RakXVjsSfIA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -192,71 +101,548 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 03-Oct-25 4:06 PM, Jonathan Cameron wrote:
-> On Wed, 10 Sep 2025 20:16:47 +0530
-> Bharata B Rao <bharata@amd.com> wrote:
+On Wed, 10 Sep 2025 20:16:48 +0530
+Bharata B Rao <bharata@amd.com> wrote:
+
+> This introduces a sub-system for collecting memory access
+> information from different sources. It maintains the hotness
+> information based on the access history and time of access.
 > 
->> From: Gregory Price <gourry@gourry.net>
->>
->> A common operation in tiering is to migrate multiple pages at once.
->> The migrate_misplaced_folio function requires one call for each
->> individual folio.  Expose a batch-variant of the same call for use
->> when doing batch migrations.
->>
-> I probably missed an earlier discussion of this but what does the
-> _batch postfix add over the plural (folios)?
-
-https://lore.kernel.org/linux-mm/15744682-72ea-472f-9af1-50c3494c0b78@redhat.com/
-
+> Additionally, it provides per-lowertier-node kernel threads
+> (named kpromoted) that periodically promote the pages that
+> are eligible for promotion.
 > 
->> Signed-off-by: Gregory Price <gourry@gourry.net>
->> Signed-off-by: Bharata B Rao <bharata@amd.com>
->> ---
->>  include/linux/migrate.h |  6 ++++++
->>  mm/migrate.c            | 31 +++++++++++++++++++++++++++++++
->>  2 files changed, 37 insertions(+)
->>
->> diff --git a/include/linux/migrate.h b/include/linux/migrate.h
->> index acadd41e0b5c..0593f5869be8 100644
->> --- a/include/linux/migrate.h
->> +++ b/include/linux/migrate.h
->> @@ -107,6 +107,7 @@ static inline int migrate_huge_page_move_mapping(struct address_space *mapping,
->>  int migrate_misplaced_folio_prepare(struct folio *folio,
->>  		struct vm_area_struct *vma, int node);
->>  int migrate_misplaced_folio(struct folio *folio, int node);
->> +int migrate_misplaced_folios_batch(struct list_head *foliolist, int node);
->>  #else
->>  static inline int migrate_misplaced_folio_prepare(struct folio *folio,
->>  		struct vm_area_struct *vma, int node)
->> @@ -117,6 +118,11 @@ static inline int migrate_misplaced_folio(struct folio *folio, int node)
->>  {
->>  	return -EAGAIN; /* can't migrate now */
->>  }
->> +static inline int migrate_misplaced_folios_batch(struct list_head *foliolist,
->> +						 int node)
->> +{
->> +	return -EAGAIN; /* can't migrate now */
->> +}
->>  #endif /* CONFIG_NUMA_BALANCING */
->>  
->>  #ifdef CONFIG_MIGRATION
->> diff --git a/mm/migrate.c b/mm/migrate.c
->> index 7e356c0b1b5a..1268a95eda0e 100644
->> --- a/mm/migrate.c
->> +++ b/mm/migrate.c
->> @@ -2714,5 +2714,36 @@ int migrate_misplaced_folio(struct folio *folio, int node)
->>  	BUG_ON(!list_empty(&migratepages));
->>  	return nr_remaining ? -EAGAIN : 0;
->>  }
->> +
->> +/*
+> Sub-systems that generate hot page access info can report that
+> using this API:
 > 
-> Kernel-doc perhaps appropriate?
+> int pghot_record_access(u64 pfn, int nid, int src,
+> 			unsigned long time)
+> 
+> @pfn: The PFN of the memory accessed
+> @nid: The accessing NUMA node ID
+> @src: The temperature source (sub-system) that generated the
+>       access info
+> @time: The access time in jiffies
+> 
+> Some temperature sources may not provide the nid from which
+> the page was accessed. This is true for sources that use
+> page table scanning for PTE Accessed bit. For such sources,
+> the default toptier node to which such pages should be promoted
+> is hard coded.
+> 
+> Also, the access time provided some sources may at best be
+> considered approximate. This is especially true for hot pages
+> detected by PTE A bit scanning.
+> 
+> The hot PFN records are stored in hash lists hashed by PFN value.
+> The PFN records that are categorized as hot enough to be promoted
+> are maintained in a per-lowertier-node max heap from which
+> kpromoted extracts and promotes them.
+> 
+> Signed-off-by: Bharata B Rao <bharata@amd.com>
 
-Probably yes, will take care in next iteration.
+A fairly superficial review only of this. At some point I'll aim to take a closer
+look at the heap bit.
 
-Thanks for looking into this patchset.
 
-Regards,
-Bharata.
+> ---
+>  include/linux/mmzone.h        |  11 +
+>  include/linux/pghot.h         |  96 +++++++
+>  include/linux/vm_event_item.h |   9 +
+>  mm/Kconfig                    |  11 +
+>  mm/Makefile                   |   1 +
+>  mm/mm_init.c                  |  10 +
+>  mm/pghot.c                    | 524 ++++++++++++++++++++++++++++++++++
+>  mm/vmstat.c                   |   9 +
+>  8 files changed, 671 insertions(+)
+>  create mode 100644 include/linux/pghot.h
+>  create mode 100644 mm/pghot.c
+> 
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index 0c5da9141983..f7094babed10 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+
+> diff --git a/include/linux/pghot.h b/include/linux/pghot.h
+> new file mode 100644
+> index 000000000000..1443643aab13
+> --- /dev/null
+> +++ b/include/linux/pghot.h
+
+> +
+> +struct pghot_info {
+> +	unsigned long pfn;
+> +
+> +	/*
+> +	 * The following three fundamental parameters
+> +	 * required to track the hotness of page/PFN are
+> +	 * packed within a single u32.
+> +	 */
+> +	u32 frequency:PGHOT_FREQ_BITS; /* Number of accesses within current window */
+> +	u32 nid:PGHOT_NID_BITS; /* Most recent access from this node */
+> +	u32 last_update:PGHOT_TIME_BITS; /* Most recent access time */
+
+Add spaces around : I think to help the eye parse those.
+
+> +
+> +	struct hlist_node hnode;
+> +	size_t heap_idx; /* Position in max heap for quick retreival */
+> +};
+> +
+> +struct max_heap {
+> +	size_t nr;
+> +	size_t size;
+> +	struct pghot_info **data;
+> +	DECLARE_FLEX_ARRAY(struct pghot_info *, preallocated);
+
+That macro is all about use in unions rather than generally being needed.
+Do you need that here rather than
+	struct pg_hot_info *preallocated[];
+
+Can you add a __counted_by() marking?
+
+
+> +};
+
+
+> diff --git a/mm/pghot.c b/mm/pghot.c
+> new file mode 100644
+> index 000000000000..9f7581818b8f
+> --- /dev/null
+> +++ b/mm/pghot.c
+> @@ -0,0 +1,524 @@
+
+> +
+> +static struct folio *kpromoted_isolate_folio(struct pghot_info *phi)
+> +{
+> +	struct page *page = pfn_to_page(phi->pfn);
+> +	struct folio *folio;
+> +
+> +	if (!page)
+> +		return NULL;
+> +
+> +	folio = page_folio(page);
+> +	if (migrate_misplaced_folio_prepare(folio, NULL, phi->nid))
+> +		return NULL;
+> +	else
+
+else not needed.
+
+> +		return folio;
+> +}
+
+> +static int phi_heap_extract(pg_data_t *pgdat, int batch_count, int freq_th,
+> +			    struct list_head *migrate_list, int *count)
+> +{
+> +	spinlock_t *phi_heap_lock = &pgdat->heap_lock;
+> +	struct max_heap *phi_heap = &pgdat->heap;
+> +	int max_retries = 10;
+> +	int bkt, i = 0;
+> +
+> +	if (batch_count < 0 || !migrate_list || !count || freq_th < 1 ||
+> +	    freq_th > KPROMOTED_FREQ_THRESHOLD)
+> +		return -EINVAL;
+> +
+> +	*count = 0;
+> +	for (i = 0; i < batch_count; i++) {
+> +		struct pghot_info *top = NULL;
+> +		bool should_continue = false;
+> +		struct folio *folio;
+> +		int retries = 0;
+> +
+> +		while (retries < max_retries) {
+> +			spin_lock(phi_heap_lock);
+> +			if (phi_heap->nr > 0 && phi_heap->data[0]->frequency >= freq_th) {
+> +				should_continue = true;
+> +				bkt = hash_min(phi_heap->data[0]->pfn, phi_hash_order);
+> +				top = phi_heap->data[0];
+> +			}
+> +			spin_unlock(phi_heap_lock);
+> +
+> +			if (!should_continue)
+> +				goto done;
+> +
+> +			spin_lock(&phi_hash[bkt].lock);
+> +			spin_lock(phi_heap_lock);
+> +			if (phi_heap->nr == 0 || phi_heap->data[0] != top ||
+> +			    phi_heap->data[0]->frequency < freq_th) {
+> +				spin_unlock(phi_heap_lock);
+> +				spin_unlock(&phi_hash[bkt].lock);
+> +				retries++;
+> +				continue;
+> +			}
+> +
+> +			top = phi_heap->data[0];
+> +			hlist_del_init(&top->hnode);
+> +
+> +			phi_heap->nr--;
+> +			if (phi_heap->nr > 0) {
+> +				phi_heap->data[0] = phi_heap->data[phi_heap->nr];
+> +				phi_heap->data[0]->heap_idx = 0;
+> +				min_heap_sift_down(phi_heap, 0, &phi_heap_cb,
+> +						   phi_heap->data);
+> +			}
+> +
+> +			spin_unlock(phi_heap_lock);
+> +			spin_unlock(&phi_hash[bkt].lock);
+> +
+> +			if (!phi_is_pfn_hot(top)) {
+> +				count_vm_event(KPROMOTED_DROPPED);
+> +				goto skip;
+> +			}
+> +
+> +			folio = kpromoted_isolate_folio(top);
+> +			if (folio) {
+> +				list_add(&folio->lru, migrate_list);
+> +				(*count)++;
+> +			}
+> +skip:
+> +			phi_free(top);
+> +			break;
+> +		}
+> +		if (retries >= max_retries) {
+> +			pr_warn("%s: Too many retries\n", __func__);
+> +			break;
+> +		}
+> +
+> +	}
+> +done:
+If that is all there is, I'd use an early return as tends to give
+simpler code.
+
+> +	return 0;
+> +}
+> +
+> +static void phi_heap_add_or_adjust(struct pghot_info *phi)
+> +{
+> +	pg_data_t *pgdat = NODE_DATA(phi->nid);
+> +	struct max_heap *phi_heap = &pgdat->heap;
+> +
+> +	spin_lock(&pgdat->heap_lock);
+
+guard() perhaps.
+
+> +	if (phi->heap_idx >= 0 && phi->heap_idx < phi_heap->nr &&
+> +	    phi_heap->data[phi->heap_idx] == phi) {
+> +		/* Entry exists in heap */
+> +		if (phi->frequency < KPROMOTED_FREQ_THRESHOLD) {
+> +			/* Below threshold, remove from the heap */
+> +			phi_heap->nr--;
+> +			if (phi->heap_idx < phi_heap->nr) {
+> +				phi_heap->data[phi->heap_idx] =
+> +					phi_heap->data[phi_heap->nr];
+> +				phi_heap->data[phi->heap_idx]->heap_idx =
+> +					phi->heap_idx;
+> +				min_heap_sift_down(phi_heap, phi->heap_idx,
+> +						   &phi_heap_cb, phi_heap->data);
+> +			}
+> +			phi->heap_idx = -1;
+> +
+> +		} else {
+> +			/* Update position in heap */
+> +			phi_heap_update_entry(phi_heap, phi);
+> +		}
+> +	} else if (phi->frequency >= KPROMOTED_FREQ_THRESHOLD) {
+> +		/*
+> +		 * Add to the heap. If heap is full we will have
+> +		 * to wait for the next access reporting to elevate
+> +		 * it to heap.
+> +		 */
+> +		if (phi_heap_insert(phi_heap, phi))
+> +			count_vm_event(PGHOT_RECORDS_HEAP);
+> +	}
+> +	spin_unlock(&pgdat->heap_lock);
+> +}
+
+> +
+> +/*
+> + * Called by subsystems that generate page hotness/access information.
+> + *
+> + *  @pfn: The PFN of the memory accessed
+> + *  @nid: The accessing NUMA node ID
+> + *  @src: The temperature source (sub-system) that generated the
+> + *        access info
+> + *  @time: The access time in jiffies
+> + *
+> + * Maintains the access records per PFN, classifies them as
+> + * hot based on subsequent accesses and finally hands over
+> + * them to kpromoted for migration.
+> + */
+> +int pghot_record_access(u64 pfn, int nid, int src, unsigned long now)
+> +{
+> +	struct pghot_info *phi;
+> +	struct page *page;
+> +	struct folio *folio;
+> +	int bkt;
+> +	bool new_entry = false, new_window = false;
+> +	u32 cur_time = now & PGHOT_TIME_MASK;
+> +
+> +	if (!kpromoted_started)
+> +		return -EINVAL;
+> +
+> +	if (nid >= PGHOT_NID_MAX)
+> +		return -EINVAL;
+> +
+> +	count_vm_event(PGHOT_RECORDED_ACCESSES);
+> +
+> +	switch (src) {
+> +	case PGHOT_HW_HINTS:
+> +		count_vm_event(PGHOT_RECORD_HWHINTS);
+> +		break;
+> +	case PGHOT_PGTABLE_SCAN:
+> +		count_vm_event(PGHOT_RECORD_PGTSCANS);
+> +		break;
+> +	case PGHOT_HINT_FAULT:
+> +		count_vm_event(PGHOT_RECORD_HINTFAULTS);
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	/*
+> +	 * Record only accesses from lower tiers.
+> +	 */
+> +	if (node_is_toptier(pfn_to_nid(pfn)))
+> +		return 0;
+> +
+> +	/*
+> +	 * Reject the non-migratable pages right away.
+> +	 */
+> +	page = pfn_to_online_page(pfn);
+> +	if (!page || is_zone_device_page(page))
+> +		return 0;
+> +
+> +	folio = page_folio(page);
+> +	if (!folio_test_lru(folio))
+> +		return 0;
+> +
+> +	bkt = hash_min(pfn, phi_hash_order);
+> +	spin_lock(&phi_hash[bkt].lock);
+
+If this doesn't get more complex later, use guard() and early returns on error.
+
+> +	phi = phi_lookup(pfn, bkt);
+> +	if (!phi) {
+> +		phi = phi_alloc(pfn);
+> +		if (!phi)
+> +			goto out;
+
+Not an error?  Add a comment on why not perhaps.
+
+> +		new_entry = true;
+> +	}
+> +
+> +	/*
+> +	 * If the previous access was beyond the threshold window
+> +	 * start frequency tracking afresh.
+> +	 */
+> +	if (((cur_time - phi->last_update) > msecs_to_jiffies(sysctl_pghot_freq_window)) ||
+> +	    (nid != NUMA_NO_NODE && phi->nid != nid))
+> +		new_window = true;
+> +
+> +	if (new_entry || new_window) {
+> +		/* New window */
+> +		phi->frequency = 1; /* TODO: Factor in the history */
+> +	} else if (phi->frequency < PGHOT_FREQ_MAX)
+> +		phi->frequency++;
+> +	phi->last_update = cur_time;
+> +	phi->nid = (nid == NUMA_NO_NODE) ? KPROMOTED_DEFAULT_NODE : nid;
+> +
+> +	if (new_entry) {
+> +		/* Insert the new entry into hash table */
+> +		hlist_add_head(&phi->hnode, &phi_hash[bkt].hash);
+> +		count_vm_event(PGHOT_RECORDS_HASH);
+> +	} else {
+> +		/* Add/update the position in heap */
+> +		phi_heap_add_or_adjust(phi);
+> +	}
+> +out:
+> +	spin_unlock(&phi_hash[bkt].lock);
+> +	return 0;
+> +}
+> +
+> +/*
+> + * Extract the hot page records and batch-migrate the
+> + * hot pages.
+
+Wrap comments to 80 chars.
+
+> + */
+> +static void kpromoted_migrate(pg_data_t *pgdat)
+> +{
+> +	int count, ret;
+> +	LIST_HEAD(migrate_list);
+> +
+> +	/*
+> +	 * Extract the top N elements from the heap that match
+> +	 * the requested hotness threshold.
+> +	 *
+> +	 * PFNs ineligible from migration standpoint are removed
+> +	 * from the heap and hash.
+> +	 *
+> +	 * Folios eligible for migration are isolated and returned
+> +	 * in @migrate_list.
+> +	 */
+> +	ret = phi_heap_extract(pgdat, KPROMOTED_MIGRATE_BATCH,
+> +			       KPROMOTED_FREQ_THRESHOLD, &migrate_list, &count);
+> +	if (ret)
+> +		return;
+> +
+> +	if (!list_empty(&migrate_list))
+> +		migrate_misplaced_folios_batch(&migrate_list, pgdat->node_id);
+> +}
+> +
+> +static int kpromoted(void *p)
+> +{
+> +	pg_data_t *pgdat = (pg_data_t *)p;
+
+Cast not needed.
+	pg_data_t *pgdat = p;
+
+
+> +
+> +	while (!kthread_should_stop()) {
+> +		wait_event_timeout(pgdat->kpromoted_wait, false,
+> +				   msecs_to_jiffies(KPROMOTE_DELAY));
+> +		kpromoted_migrate(pgdat);
+> +	}
+> +	return 0;
+> +}
+> +
+> +static int kpromoted_run(int nid)
+> +{
+> +	pg_data_t *pgdat = NODE_DATA(nid);
+> +	int ret = 0;
+> +
+> +	if (!node_is_toptier(nid))
+> +		return 0;
+> +
+> +	if (!pgdat->phi_buf) {
+> +		pgdat->phi_buf = vzalloc_node(phi_heap_entries * sizeof(struct pghot_info *),
+> +					      nid);
+
+I'd use sizeof(*pgdat->phi_buf) here to avoid need to check types match when reading the
+code.  Sadly there isn't a vcalloc_node().
+
+> +		if (!pgdat->phi_buf)
+> +			return -ENOMEM;
+> +
+> +		min_heap_init(&pgdat->heap, pgdat->phi_buf, phi_heap_entries);
+> +		spin_lock_init(&pgdat->heap_lock);
+> +	}
+> +
+> +	if (!pgdat->kpromoted)
+> +		pgdat->kpromoted = kthread_create_on_node(kpromoted, pgdat, nid,
+> +							  "kpromoted%d", nid);
+> +	if (IS_ERR(pgdat->kpromoted)) {
+> +		ret = PTR_ERR(pgdat->kpromoted);
+> +		pgdat->kpromoted = NULL;
+> +		pr_info("Failed to start kpromoted%d, ret %d\n", nid, ret);
+
+Unless there is going to be more in later patches that prevents it. Just
+return here.
+
+> +	} else {
+> +		wake_up_process(pgdat->kpromoted);
+> +	}
+> +	return ret;
+
+return 0; //after change suggested above.
+
+> +}
+> +
+> +/*
+> + * TODO: Handle cleanup during node offline.
+> + */
+> +static int __init pghot_init(void)
+> +{
+> +	unsigned int hash_size;
+> +	size_t hash_entries;
+> +	size_t nr_pages = 0;
+> +	pg_data_t *pgdat;
+> +	int i, nid, ret;
+> +
+> +	/*
+> +	 * Arrive at the hash and heap sizes based on the
+> +	 * number of pages present in the lower tier nodes.
+
+Trivial: Wrap closer to 80 chars.
+
+> +	 */
+> +	for_each_node_state(nid, N_MEMORY) {
+> +		if (!node_is_toptier(nid))
+> +			nr_pages += NODE_DATA(nid)->node_present_pages;
+> +	}
+> +
+> +	if (!nr_pages)
+> +		return 0;
+> +
+> +	hash_entries = nr_pages * PGHOT_HASH_PCT / 100;
+> +	hash_size = hash_entries / PGHOT_HASH_ENTRIES;
+> +	phi_hash_order = ilog2(hash_size);
+> +
+> +	phi_hash = vmalloc(sizeof(struct pghot_hash) * hash_size);
+
+Prefer sizeof(*phy_hash) so I don't need to check types match :)
+
+vcalloc() probably appropriate here.
+
+
+
+> +	if (!phi_hash) {
+> +		ret = -ENOMEM;
+> +		goto out;
+
+Out label isn't clearly an 'error' which is a little confusing.
+
+> +	}
+> +
+> +	for (i = 0; i < hash_size; i++) {
+> +		INIT_HLIST_HEAD(&phi_hash[i].hash);
+> +		spin_lock_init(&phi_hash[i].lock);
+> +	}
+> +
+> +	phi_cache = KMEM_CACHE(pghot_info, 0);
+> +	if (unlikely(!phi_cache)) {
+> +		ret = -ENOMEM;
+> +		goto out;
+Whilst not strictly necessary I'd add multiple labels so only things
+that have been allocated are free rather than relying on them being
+NULL otherwise.  Whilst not a correctness thing it makes it slightly
+easier to check tear down paths are correct.
+
+> +	}
+> +
+> +	phi_heap_entries = hash_entries * PGHOT_HEAP_PCT / 100;
+> +	for_each_node_state(nid, N_CPU) {
+> +		ret = kpromoted_run(nid);
+> +		if (ret)
+> +			goto out_stop_kthread;
+> +	}
+> +
+> +	register_sysctl_init("vm", pghot_sysctls);
+> +	kpromoted_started = true;
+> +	pr_info("pghot: Started page hotness monitoring and promotion thread\n");
+> +	pr_info("pghot: nr_pages %ld hash_size %d hash_entries %ld hash_order %d heap_entries %d\n",
+> +	       nr_pages, hash_size, hash_entries, phi_hash_order, phi_heap_entries);
+> +	return 0;
+> +
+> +out_stop_kthread:
+> +	for_each_node_state(nid, N_CPU) {
+> +		pgdat = NODE_DATA(nid);
+> +		if (pgdat->kpromoted) {
+> +			kthread_stop(pgdat->kpromoted);
+> +			pgdat->kpromoted = NULL;
+> +			vfree(pgdat->phi_buf);
+> +		}
+> +	}
+> +out:
+> +	kmem_cache_destroy(phi_cache);
+> +	vfree(phi_hash);
+> +	return ret;
+> +}
+> +
+> +late_initcall(pghot_init)
+
+
 
