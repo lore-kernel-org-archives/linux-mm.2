@@ -4,112 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0C6CCAC5B0
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 17:32:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 402B2CCA471
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 17:46:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F8EA8E0018; Fri,  3 Oct 2025 13:32:54 -0400 (EDT)
+	id 9A1348E000D; Fri,  3 Oct 2025 13:46:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 254B98E0016; Fri,  3 Oct 2025 13:32:54 -0400 (EDT)
+	id 978298E000A; Fri,  3 Oct 2025 13:46:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 143338E0018; Fri,  3 Oct 2025 13:32:54 -0400 (EDT)
+	id 88D618E000D; Fri,  3 Oct 2025 13:46:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 003368E0016
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 13:32:53 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B2B9811AD9F
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 17:32:53 +0000 (UTC)
-X-FDA: 83957498226.12.911CEC1
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
-	by imf15.hostedemail.com (Postfix) with ESMTP id CD34BA0005
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 17:32:51 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="4gW15LF/";
-	spf=pass (imf15.hostedemail.com: domain of 3wQjgaAgKCKASMOSTAFAGOOGLE.COMLINUX-MMKVACK.ORG@flex--smostafa.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3wQjgaAgKCKASMOSTAFAGOOGLE.COMLINUX-MMKVACK.ORG@flex--smostafa.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 74F998E000A
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 13:46:17 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2922211B02C
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 17:46:17 +0000 (UTC)
+X-FDA: 83957531994.10.4010CCE
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 8014B1C0006
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 17:46:15 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UTYASEQM;
+	spf=pass (imf18.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759512771;
+	s=arc-20220608; t=1759513575;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rsO4Y9+CDsR/9B2sBMziOZN6BaFGbVnMznIuFrkfbBE=;
-	b=uDOlycxLu56TntqFPTXJvC6cq9f19tqOxC2So+ddZA5nvq8uZWaOATYzWraUjRzmxcQDjL
-	CE6PQ9VhXbcINDBPxGuhIOAJg46Fwdyf7QC4AXARs0fUhI7TumTQrWaleMW1dAsyiKoJ4U
-	/bIp4U+TyNJbApqbjPvleWarx4tSNy0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759512771; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=oNWiu2+oUY794rWhMeFavwyt00FjZeL072iyEDl7YH0=;
+	b=ahwN5n62AMYlRWtaZBKNJ/H37ixz5N3rmbq0eHBz3T2yLvw6dBISz/IVuQJpCaAZFROxzr
+	c7KcVYMwr7kJzBxi5q+rcZ6Lm2oh6w+CHJTOdRCz+ta9ty2gFnWxr2zrXH/y3rcIC9gJDk
+	41l0TbcfsgQy1MwIg4zVAph/Jc6Ukeg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759513575; a=rsa-sha256;
 	cv=none;
-	b=pCfT3NwcX5ajeD4UdaMe/6d9qAZs4139UH2m9Q1Ld2TbRcsl8L4OZKGse/nXE28fPgy0jB
-	dPtPn0tmggXn6S/H6n5o7hJHBITNyZjHdKYl9IKZWoEi9MYilNThTBcxS4nTFar8GgH4IF
-	lPODsL51gGqFvdT9XeIlHn4q9WGmb6s=
+	b=Khn7M0J/YepCFLe0M5IiMkOWyrYA6AURytGCkeNzNURsT/ZN8dmHZTDijMfd4xDNQgW57w
+	rNFEYw6/n1QYAjbD6NzoeUf/LiBJXf/S0AnqsEMk+FIc17sHCyvlWSMo2aKg3VoD/OsWOm
+	1uDE70jLzcMlemlOTP4X7x2KaGV2Les=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="4gW15LF/";
-	spf=pass (imf15.hostedemail.com: domain of 3wQjgaAgKCKASMOSTAFAGOOGLE.COMLINUX-MMKVACK.ORG@flex--smostafa.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3wQjgaAgKCKASMOSTAFAGOOGLE.COMLINUX-MMKVACK.ORG@flex--smostafa.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-6305c385adbso2706623a12.1
-        for <linux-mm@kvack.org>; Fri, 03 Oct 2025 10:32:51 -0700 (PDT)
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UTYASEQM;
+	spf=pass (imf18.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-33255011eafso2543404a91.1
+        for <linux-mm@kvack.org>; Fri, 03 Oct 2025 10:46:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1759512770; x=1760117570; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rsO4Y9+CDsR/9B2sBMziOZN6BaFGbVnMznIuFrkfbBE=;
-        b=4gW15LF/cQnxGerymTvIuW5n+P6NxD2NpgyfcIHCOq4krVzBpKjsTvJEvTkcK/FJZo
-         bz3ca4ajXAcOjSlhpmu3OWtIurr7pYkgm+AEKL45fGs8aFely4s6DWXDj8IL7SV/1v5l
-         0fXAIp1A9SplwmwaZIR3NzMOKfXVuCkTx6q0IrzHNec62FRAzoZhQPKlP4j4yahugi86
-         mBDz6e0sbn4n9Ns74m4MdvErUfWrg5vuslEcktrJawn2ry48sMjv+HErANr3tLLF7uZJ
-         8QJGwBy8Cm8R6YhHSYyQTurZiDTdcrXVqjZBx89vJ7PrxjCt0rniPTfkGiNx/K+A/VS4
-         5qvA==
+        d=gmail.com; s=20230601; t=1759513574; x=1760118374; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oNWiu2+oUY794rWhMeFavwyt00FjZeL072iyEDl7YH0=;
+        b=UTYASEQM+IeZdkrxb2x6X4OuiS9fGK9LrRfMNSEvSGVm8jTfnnUgrf+MATusQ3/I+Q
+         NREkMKCRJG9+LROygTzdKS40aSQiN3j1RAvxV7TDFXnnmIp9Y2LiXvb/SiYqnnC3UW70
+         rdDcTF0KVSjgTNar4YusIS0iJvZFz19HJXNFt/34qtLnVAVLWHylbJDrQaWUbZFYBGxS
+         Ef5NqNKJmdAsQ1p/EoYE/MGdUZ3nXJeqzZvNpLtVApeGR4ZJsSDdoJPkXnFdmOnqHVyi
+         gkmEsRodV+Bnh4Y2sksMiSBWya4AtIpfDzq1i5Bc9EzIZVTq6elm88+16K+kLqeApsfp
+         L+9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759512770; x=1760117570;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=rsO4Y9+CDsR/9B2sBMziOZN6BaFGbVnMznIuFrkfbBE=;
-        b=EF1vswc6x1eHLOgB63FcXF53IU+QkqLPfZqJsdpLviHulWJvOnZNRRRLPnKEnvYu2S
-         /9AnfBSb3O3IMsAOh59YNipcI583Tj8+jBDcm6xI8kkRACxZnFfqLq3Eqxlg27d733Cp
-         B1B2U335BMGKTbtqYnsUIns8PiJe41IclOwp4TquDoKvgVgd1wqV+vr6Y4vcAYoSBkNX
-         uqWMwcCI3ZMQbPlEb3166oIMJOgQ0QB/P3pYvpmiSkhtCAeTu75+sRVh3z9/3eb69Gci
-         w/LcmAwEyytdeAVD9vPx4ReiJZlvRZ6vuJmggsZHQobrdULfC+hTNaY+bMTiuy489hkC
-         v0CA==
-X-Gm-Message-State: AOJu0YxsPR8uwhJsEvsNAO9pCxAT3v8kMrxrHiLYmPnrA4ImOQogDIA3
-	OL5m3zuVy8jWRPwNBn7k11a5eS4qUv4s029P6yxfWV8IVNJGJg9RtTUyZx/o9jhftWiZDm6u8j6
-	/hkZHKPRXOHzt1gCmwbVwPSQIB/QGYDc1rbHPmi4AxTTcYslO3zEh0gTFL8unm3oWWSUfVj43Bu
-	1SRSTWx/KbPzp0CNoIrhMVJD4dgQWJi6+7B1GX67zxpw==
-X-Google-Smtp-Source: AGHT+IEICQMptfCkkk6D3e73QyAc9gpdDen9PXr6jWCu1S1AfhHO09M/A91ku8VJ/Ju4zq0R9Vac76YEgDbAjg==
-X-Received: from edqm10.prod.google.com ([2002:aa7:c48a:0:b0:636:871c:c865])
- (user=smostafa job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:3508:b0:639:102b:b8db with SMTP id 4fb4d7f45d1cf-63939c20419mr3602021a12.24.1759512769531;
- Fri, 03 Oct 2025 10:32:49 -0700 (PDT)
-Date: Fri,  3 Oct 2025 17:32:29 +0000
-In-Reply-To: <20251003173229.1533640-1-smostafa@google.com>
-Mime-Version: 1.0
-References: <20251003173229.1533640-1-smostafa@google.com>
-X-Mailer: git-send-email 2.51.0.618.g983fd99d29-goog
-Message-ID: <20251003173229.1533640-5-smostafa@google.com>
-Subject: [RFC PATCH 4/4] drivers/iommu-debug: Check state of mapped/unmapped
- kernel memory
-From: Mostafa Saleh <smostafa@google.com>
-To: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org
-Cc: corbet@lwn.net, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com, 
-	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com, mhocko@suse.com, 
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, david@redhat.com, 
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
-	Mostafa Saleh <smostafa@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 66s384dtq3w55h5jgx8fi9y8ikr6nyc9
+        d=1e100.net; s=20230601; t=1759513574; x=1760118374;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oNWiu2+oUY794rWhMeFavwyt00FjZeL072iyEDl7YH0=;
+        b=QWkHdU3fqZm3oegUffJtctQ4temG1DtW8moGvdvyx8puOC+5SP/DVjG+yVucf7JGB8
+         0MSUNRPZYJxAfFfEPD0CN3qnRglZm7M7WNXbZCbA7H5L1mR+8VdMP8B42hK7ogP67UBW
+         cV9A+ZDm6yh3DKa04sHmMlu37OPCNNDz8DFbp5TMNwBrH1+JjX88S++HXpFg2kH8XXk4
+         MV5DzRhz/gSvwXBj+XFVVS7zvDOQrkdqESikHcQKSA2L8n+qQ9dkpSISTCKVKSXYNiqF
+         1ZJdj7AofswukPKTxoe6oHIQ5DuKzgiAniEdoN/v3XmbHJevJJPDC3prM5LszqC1gy0k
+         lJug==
+X-Gm-Message-State: AOJu0Yy/yrlP0NYM7yCv3lMXVDePsPchn38s7mM4khXImHJlRDm3Pn28
+	Qo8edWC2NBROaXTcn1sA81Bc2djp5exa2WsbUfHUiUNE+UGiXpG8QeOx
+X-Gm-Gg: ASbGncsSme15glluf4h6aFB+PXseYMLnxVNovKank3Hbsb5OMIqbBIRrE2F6sEFcNa6
+	Du4ddd93hhjSv/WX/cCLAsAlVqkXT48ueXwTMGPEi8FG2IU/rD14i650CPXtNpxdpA4APlcFlCf
+	Isyfl4uv29NWO/f3VJ79A6ej+eWbo8x0z7GVKqe0VjxutMKzJaNSncCRFepA53+xfnEuSRwGg/s
+	+2+/SVkFA9KH2vRmGUMJZzQnIaItc+pB6VcDmP0tVGlseXwUe4hYayWKxuUTIPtw/zhMTXxJ5aD
+	ehtKEUthRy+lCOnSo10GDYlWwI1Cp/3dvlYe5kG89m77tZKJ/DWfjR/ZM1rMEwki3zCWqwjAlEo
+	wHtrDewMVZhTHzPRDCiT6MRLuBeCqdBN2K/KfceW+4mkGmcNY0m+qHG9FlEVPM5+GfKHYuqkjX5
+	BpsLvbTz/8pchXo5/kg646EqHEww==
+X-Google-Smtp-Source: AGHT+IGhNAhoxUdEhhWoPmYNGwknobI9JaYXWSCnKleeWR/UvDtXieXQKqYoy4C04Jsm1xwP15Ya1g==
+X-Received: by 2002:a17:90b:3ec5:b0:32e:1b61:309 with SMTP id 98e67ed59e1d1-339c27865b8mr4941526a91.23.1759513574165;
+        Fri, 03 Oct 2025 10:46:14 -0700 (PDT)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:38c3:a5e9:d69a:7a4])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-339c4a0c666sm2838991a91.1.2025.10.03.10.46.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Oct 2025 10:46:13 -0700 (PDT)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: muchun.song@linux.dev,
+	osalvador@suse.de,
+	david@redhat.com,
+	akpm@linux-foundation.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	broonie@kernel.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
+Subject: [PATCH v3] hugetlbfs: skip PMD unsharing when shareable lock unavailable
+Date: Fri,  3 Oct 2025 23:15:53 +0530
+Message-ID: <20251003174553.3078839-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: k7cniaoawyu5xzzad1f1rjogfrj9kjjk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CD34BA0005
+X-Rspamd-Queue-Id: 8014B1C0006
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1759512771-342446
-X-HE-Meta: U2FsdGVkX18chHaKe1D9YyEPsGdWaBm/eM9gphZglNPsAluWT3t0vA9z7jRHmAhOG+sqvujn2B9s7B0tbHW3jAJeZqgOYVSqf0dn5ma7DHcIJTb30tNCJgdRx1TlWcJKhMdZsV1Gw1ecdVYbjuLNklj7LgJDDFwb5C349PmmuuEbL41r+SFjIr0MRh39FsHhi3AEs96GOcsyC3utgxz+49V7i2MjNjVGFj6PMGdbeqXS9gQwaxMOJd0t4noFu2hBmoX4UHeMKCe+CEXieVS/1L1wQx8+eGqvHMs7FvFpR3L59O4UImr/PFPiXo/yLqCzNRHXjggqNZ7BOyaQdeJxqoQXX0STbNIOdKc/HOCsmGaUKEX1HVU4Tt0obVc7jf9+WpmyudEtVG0gbAw+RUqBb8EViJlVdNz+mGtwAskzvVJOjnM4gwXK/mpBKKzgyY6LvDP98GVRMKzVSs2wSDFLBfgXw9Hy1h6rvB/isVG2jUME915Ctf5Xj/vDKPpxwdHCRfXe4ZSy2HL6hSpGHhveJ1JvwTeVaP5jdhD6B9y3pk1grjUv5nVCufJERJIIl21rFxA3/aplAy+d80cb9E0l2yzhGi2xzUn/RPklG3m6yVQfhM7VD0ErEjZcIt5wL3SMyVYqbOItjKcFIkLMoWHSn4L4iJhWzUMpfW5ycqauBzkn+bZxb8BZdVgSrkSH416VCbWpHVvYvGQkJHbtopcH/C5pDPRDZjH22/ZrBwE6uBWVS4YEEyHD3VlX68n1ASIxXY3hlNIxLlKi0DqsiUtpgtMHjQVoutw68W9z+cFKfpV9BgN8j8ugv5FM5Vut/0lafJfALuhxBh36wE2nxNJUrL+7lxbGA8RuI8Tnf8jZbUW12CmrM+YR8KIhrDCxHH2i+B+bnwzJdX7vnn5uUeNyQMwXP+WsW09QNrS3uYTkyr7lTF8x0AJmghcLpex7iU7oYzc33FRMk+VpcXXSsBq
- BH/3Z7Us
- wKpITg+Fj0/E9FXz1G5/p61DfBD9SqyGkRfXupSEyNsH8AP05jd3/UD6EsAbLK/LXHI4ZtZ4evBAnq4tbZ5UTvcz13ALZmrp9vNS8i+aT6O2bwSRvsuN/bxQJWJjKELL8IKRrC4Qn2bqcGuxvgqyy7DlSK923gP3aEo9Q5QbWdBSYZOm0yROhInraH6AUUGEpeL319lHs+coAEhQPcH0cPv/OHkDii//yzY4Ax0yWiKdBxYGqwas12H4StGV2/kn6/dGqp6Q57i0QO5TLZqJqlJ2UYPVr/1IyZzJPcQlMu3sPN7Gk9pe44Qvx/iT2q7viiWHyYpU7KyD3F+9gYz9SYQllkB3gKQAG06TVP4ShebZ6SfdGg1IgVNagWBcsfmILPqa4p1jfPLUwQ2J4raJpuWwSiw2iSPeXhDDES8kzf8Vbh/gXBChOM9yYSEAbdDEJy3MnaX8jy8VDjAPbvfJ4aGnc0pcHo7M7vVQbT88FjpO1nC980h2bzttGSp+Fsy9dluw4Ca7n5YCfr2MV23Rs1EfYuS5r/uK9zwT+Wp36ixXXJMJault2T08AQzXHKzfGi3h57+quo0AgY9vKsZ9K2PT/MK5QcK0eZDMgdqINNK9IeV1Rm4/SEG2mUYaJKInIumqNCWbqWrNQ0laNk69/B+lLjA==
+X-HE-Tag: 1759513575-115539
+X-HE-Meta: U2FsdGVkX18AzrGuVaVf1GZtUsO2UizT9XF6jHkGcoakkaFohCb+755P/ZOyHm9/YUc3xLunCKWs7ewkCIjQvWdWucHzaTi/Tjcv70sd/7DfTyGe7hM+Mvr8B0SVD5MWHdeWIkEUt0zxsWkPZwuuPkB2udSr8TA19TD07PCiDJYowvKJ/5JZqAPCQFNw6GlJDs3RlF4YVMaqz6Wic0lNh9gUU3nyAcl3B1A12K8ITZ32tgKvATF+WT+Z7xXJp0mKzt82yhQVSfZ6M8p6SCs2xFMX8FdvSTokPsTUWYwmlIdV7uNEAE/uOXHJM5yGx7mnN66Yvn+x8gkSxuYp5eVUOiSEaTwhE+HeT+zdsA9We9GzrkeOjUL0BL+E6OHUDqgbWKpW0zFibUx4UJQafpXyTbGFNxXobABS8a5nQKxj3zln8y8Jp1jl0zl40vyiBVPs3wnuz7Wmlrr3fkqOHTrc/QcBB8jv0mcLUzvq1hCJZfiYPcz8jlLbF0Uy3Vw2WVyQ45gv34EvorkSUI8dIsqsBGH/4MdiqnqH0dCmXAxEQTQmBmkfC839cwtlKC3udMsUA/5zwbEKFNu91eNZfsYFfs9Z0qMJMRGtadUG+WV//9nNlSrl2QJ1MmgRf3seaaBJ0GCb8FQZq+EoKa/WIdclt0DiLt3S5xiujTUVTAh4w+1gIkJ3mEgEyljEY4dEdrfXqXzh5JGd6kSOcfD3nuAXq+vupeWuHkCblpNDZaY1AuGxY4bQDvyMNfjYFStTAAwAJgjprsQtifD0whcbyn2nFo5INh1IKfRhW8cMLgrnwI5iYnojBRshSbMU/cEF5RkVK1PNgIkS0MFUoLciQeNrZPW3tJDyilN3SK9tb/SYUsVXzCvse6u08Oe1leDC9VbrT2tcPeIiI++x2SkZL23qox72pEYSyMff7T3z3NUqtBvtGLWhDDtoo1UwzOpH43O/fp+Q95x3cTWLgJg5zxH
+ YIXmcUKO
+ 4fCiorQkv5TcVjLExtBvUAadcXmEkqdHtzlszsqUCCjGZSaICb+zKGCfCl40suqwE/9LMAZJI2+DriWAUp//ny5/1gwAdquH8WeGVbP4aqzWX9fMqm2mOlze/ysEivQNYS7Rj3ChTdIi1fAupIOlIm3OR+vQXIcQv/k7on74kKZ3doG7Pl5fsq9JOgLg2WWFRm8mV
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,105 +127,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now, as the page_ext holds count of IOMMU mappings, we can use it to
-assert that any page allocated/freed is indeed not in the IOMMU.
+When hugetlb_vmdelete_list() cannot acquire the shareable lock for a VMA,
+the previous fix (dd83609b8898) skipped the entire VMA to avoid lock
+assertions in huge_pmd_unshare(). However, this prevented pages from being
+unmapped and freed, causing a regression in fallocate(PUNCH_HOLE) operations
+where pages were not freed immediately, as reported by Mark Brown.
 
-The sanitizer doesn=E2=80=99t protect against mapping/unmapping during this
-period. However, that=E2=80=99s less harmful as the page is not used by the
-kernel.
+The issue occurs because:
+1. hugetlb_vmdelete_list() calls hugetlb_vma_trylock_write()
+2. For shareable VMAs, this attempts to acquire the shareable lock
+3. If successful, huge_pmd_unshare() expects the lock to be held
+4. huge_pmd_unshare() asserts the lock via hugetlb_vma_assert_locked()
 
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
+The v2 fix avoided calling code that requires locks, but this prevented
+page unmapping entirely, breaking the expected behavior where pages are
+freed during punch hole operations.
+
+This v3 fix takes a different approach: instead of skipping the entire VMA,
+we skip only the PMD unsharing operation when we don't have the required
+lock, while still proceeding with page unmapping. This is safe because:
+
+- PMD unsharing is an optimization to reduce shared page table overhead
+- Page unmapping can proceed safely with just the VMA write lock
+- Pages get freed immediately as expected by PUNCH_HOLE operations
+- The PMD metadata will be cleaned up when the VMA is destroyed
+
+We introduce a new ZAP_FLAG_NO_UNSHARE flag that communicates to
+__unmap_hugepage_range() that it should skip huge_pmd_unshare() while
+still clearing page table entries and freeing pages.
+
+Reported-by: syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
+Reported-by: Mark Brown <broonie@kernel.org>
+Fixes: dd83609b8898 ("hugetlbfs: skip VMAs without shareable locks in hugetlb_vmdelete_list")
+Tested-by: syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+
 ---
- drivers/iommu/iommu-debug.c | 22 ++++++++++++++++++++++
- include/linux/iommu-debug.h |  1 +
- include/linux/mm.h          |  7 +++++++
- 3 files changed, 30 insertions(+)
+Changes in v3:
+- Instead of skipping entire VMAs, skip only PMD unsharing operation
+- Add ZAP_FLAG_NO_UNSHARE flag to communicate lock status
+- Ensure pages are still unmapped and freed immediately
+- Fixes regression in fallocate PUNCH_HOLE reported by Mark Brown
 
-diff --git a/drivers/iommu/iommu-debug.c b/drivers/iommu/iommu-debug.c
-index cec8f594c7fa..09157fef697e 100644
---- a/drivers/iommu/iommu-debug.c
-+++ b/drivers/iommu/iommu-debug.c
-@@ -71,6 +71,28 @@ static size_t iommu_debug_page_size(struct iommu_domain =
-*domain)
- 	return 1UL << __ffs(domain->pgsize_bitmap);
+Changes in v2:
+- Check for shareable lock before trylock to avoid lock leaks
+- Add comment explaining why non-shareable VMAs are skipped
+---
+ fs/hugetlbfs/inode.c | 22 ++++++++++++----------
+ include/linux/mm.h   |  2 ++
+ mm/hugetlb.c         |  3 ++-
+ 3 files changed, 16 insertions(+), 11 deletions(-)
+
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index 9c94ed8c3ab0..519497bc1045 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -474,29 +474,31 @@ hugetlb_vmdelete_list(struct rb_root_cached *root, pgoff_t start, pgoff_t end,
+ 	vma_interval_tree_foreach(vma, root, start, end ? end - 1 : ULONG_MAX) {
+ 		unsigned long v_start;
+ 		unsigned long v_end;
++		bool have_shareable_lock;
++		zap_flags_t local_flags = zap_flags;
+ 
+ 		if (!hugetlb_vma_trylock_write(vma))
+ 			continue;
+-
++
++		have_shareable_lock = __vma_shareable_lock(vma);
++
+ 		/*
+-		 * Skip VMAs without shareable locks. Per the design in commit
+-		 * 40549ba8f8e0, these will be handled by remove_inode_hugepages()
+-		 * called after this function with proper locking.
++		 * If we can't get the shareable lock, set ZAP_FLAG_NO_UNSHARE
++		 * to skip PMD unsharing. We still proceed with unmapping to
++		 * ensure pages are properly freed, which is critical for punch
++		 * hole operations that expect immediate page freeing.
+ 		 */
+-		if (!__vma_shareable_lock(vma))
+-			goto skip;
+-
++		if (!have_shareable_lock)
++			local_flags |= ZAP_FLAG_NO_UNSHARE;
+ 		v_start = vma_offset_start(vma, start);
+ 		v_end = vma_offset_end(vma, end);
+ 
+-		unmap_hugepage_range(vma, v_start, v_end, NULL, zap_flags);
+-
++		unmap_hugepage_range(vma, v_start, v_end, NULL, local_flags);
+ 		/*
+ 		 * Note that vma lock only exists for shared/non-private
+ 		 * vmas.  Therefore, lock is not held when calling
+ 		 * unmap_hugepage_range for private vmas.
+ 		 */
+-skip:
+ 		hugetlb_vma_unlock_write(vma);
+ 	}
  }
-=20
-+static unsigned int iommu_debug_page_count(unsigned long phys)
-+{
-+	unsigned int ref;
-+	struct page_ext *page_ext =3D get_iommu_page_ext(phys);
-+	struct iommu_debug_metadate *d =3D get_iommu_data(page_ext);
-+
-+	ref =3D atomic_read(&d->ref);
-+	page_ext_put(page_ext);
-+	return ref;
-+}
-+
-+void iommu_debug_check_unmapped(const struct page *page, int numpages)
-+{
-+	if (!static_branch_likely(&iommu_debug_initialized))
-+		return;
-+
-+	while (numpages--) {
-+		WARN_ON(iommu_debug_page_count(page_to_phys(page)));
-+		page++;
-+	}
-+}
-+
- void iommu_debug_map(struct iommu_domain *domain, phys_addr_t phys, size_t=
- size)
- {
- 	size_t off;
-diff --git a/include/linux/iommu-debug.h b/include/linux/iommu-debug.h
-index 8d3ea661660f..aaf893cfafd0 100644
---- a/include/linux/iommu-debug.h
-+++ b/include/linux/iommu-debug.h
-@@ -17,6 +17,7 @@ void iommu_debug_map(struct iommu_domain *domain, phys_ad=
-dr_t phys, size_t size)
- void iommu_debug_unmap(struct iommu_domain *domain, unsigned long iova, si=
-ze_t size);
- void iommu_debug_remap(struct iommu_domain *domain, unsigned long iova, si=
-ze_t size);
- void iommu_debug_init(void);
-+void iommu_debug_check_unmapped(const struct page *page, int numpages);
-=20
- #endif /* CONFIG_IOMMU_DEBUG_PAGEALLOC */
-=20
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 06978b4dbeb8..00f5de44faa0 100644
+index 06978b4dbeb8..9126ab44320d 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -36,6 +36,7 @@
- #include <linux/rcuwait.h>
- #include <linux/bitmap.h>
- #include <linux/bitops.h>
-+#include <linux/iommu-debug.h>
-=20
- struct mempolicy;
- struct anon_vma;
-@@ -3806,12 +3807,18 @@ extern void __kernel_map_pages(struct page *page, i=
-nt numpages, int enable);
- #ifdef CONFIG_DEBUG_PAGEALLOC
- static inline void debug_pagealloc_map_pages(struct page *page, int numpag=
-es)
- {
-+#ifdef CONFIG_IOMMU_DEBUG_PAGEALLOC
-+	iommu_debug_check_unmapped(page, numpages);
-+#endif
- 	if (debug_pagealloc_enabled_static())
- 		__kernel_map_pages(page, numpages, 1);
- }
-=20
- static inline void debug_pagealloc_unmap_pages(struct page *page, int nump=
-ages)
- {
-+#ifdef CONFIG_IOMMU_DEBUG_PAGEALLOC
-+	iommu_debug_check_unmapped(page, numpages);
-+#endif
- 	if (debug_pagealloc_enabled_static())
- 		__kernel_map_pages(page, numpages, 0);
- }
---=20
-2.51.0.618.g983fd99d29-goog
+@@ -2395,6 +2395,8 @@ struct zap_details {
+ #define  ZAP_FLAG_DROP_MARKER        ((__force zap_flags_t) BIT(0))
+ /* Set in unmap_vmas() to indicate a final unmap call.  Only used by hugetlb */
+ #define  ZAP_FLAG_UNMAP              ((__force zap_flags_t) BIT(1))
++/* Skip PMD unsharing when unmapping hugetlb ranges without shareable lock */
++#define  ZAP_FLAG_NO_UNSHARE         ((__force zap_flags_t) BIT(2))
+ 
+ #ifdef CONFIG_SCHED_MM_CID
+ void sched_mm_cid_before_execve(struct task_struct *t);
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 6cac826cb61f..c4257aa568fe 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5885,7 +5885,8 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 		}
+ 
+ 		ptl = huge_pte_lock(h, mm, ptep);
+-		if (huge_pmd_unshare(mm, vma, address, ptep)) {
++		if (!(zap_flags & ZAP_FLAG_NO_UNSHARE) &&
++		      huge_pmd_unshare(mm, vma, address, ptep)) {
+ 			spin_unlock(ptl);
+ 			tlb_flush_pmd_range(tlb, address & PUD_MASK, PUD_SIZE);
+ 			force_flush = true;
+-- 
+2.43.0
 
 
