@@ -4,178 +4,184 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCBECCAC5B0
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 06:52:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28C0ACAC5B0
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 06:56:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11C828E0006; Fri,  3 Oct 2025 02:52:35 -0400 (EDT)
+	id 6A3E88E0007; Fri,  3 Oct 2025 02:56:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CD5E8E0001; Fri,  3 Oct 2025 02:52:35 -0400 (EDT)
+	id 654918E0001; Fri,  3 Oct 2025 02:56:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED6DF8E0006; Fri,  3 Oct 2025 02:52:34 -0400 (EDT)
+	id 51B8A8E0007; Fri,  3 Oct 2025 02:56:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D21D48E0001
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 02:52:34 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5A865C04C3
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 06:52:34 +0000 (UTC)
-X-FDA: 83955884628.06.2192492
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3275E40002
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 06:52:31 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MdFVV1md;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Sa4XqljA;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MdFVV1md;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Sa4XqljA;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 381C28E0001
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 02:56:15 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CEC4A1A06E6
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 06:56:14 +0000 (UTC)
+X-FDA: 83955893868.09.184F4C6
+Received: from flow-b4-smtp.messagingengine.com (flow-b4-smtp.messagingengine.com [202.12.124.139])
+	by imf22.hostedemail.com (Postfix) with ESMTP id B5DF7C000E
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 06:56:12 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm2 header.b=aMjNO8Aj;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="P NYMaRE";
+	spf=pass (imf22.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.139 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	dmarc=pass (policy=none) header.from=ownmail.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759474352;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1759474572;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BX6RiGL+cjgZpJxdzOC3lAgawx+FysoKFUY5TPIj1e8=;
-	b=AeHzdeTNVFO5kytLRh5QNaLapGr5adR7NQu5IZA7xNOH51TTY6PRWJgxRuZGs14YDJpDJJ
-	RqC2hSSjRe67+0pHevRuVtTDbw51nloHCbCoTphuSS4gmvUmLkfZgx/ne8ko39sXcACo3b
-	6cHsQdTOHC8HPg/aNJoxJct/kAnX6A8=
+	bh=j+Jw5iNM6nGAnWO3sjaDIDEUdkjo7ZX+LLzqd/P1hYw=;
+	b=xh9Xc+FZYmSlSMm45fB2FkE7GLzi43tYI6asL9ONqtoX8DpY03KyCcKwqlnkn5mbccuJpE
+	mGTYx9RKTxhZMMhc9ZBmZ9hsmOIQZ7fpxfkiODkK0V+PjU6kVFjHjGpNKfq63+GaWx9Hjf
+	aBd9wqQ3JFAqpcTIQNa5f72zGZMuEV0=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MdFVV1md;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Sa4XqljA;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MdFVV1md;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Sa4XqljA;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759474352; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm2 header.b=aMjNO8Aj;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="P NYMaRE";
+	spf=pass (imf22.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.139 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	dmarc=pass (policy=none) header.from=ownmail.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759474572; a=rsa-sha256;
 	cv=none;
-	b=H32CjX93F+Pt2BzLnuoJzgrTJ8pCgOd2UGFXPZ+Au9b4qBJOthTDlG1ZRkCOFl5/aa5odG
-	Jgs/qzBViOBD+BfV1SPjgE8Ub3vnT4hvRjl4SqrHocyrbFg4FMaiBnDvj/IKs6tjslovRd
-	JDASWw7RrONbxuNI2/I2d36+tHUCQ6E=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 797531F455;
-	Fri,  3 Oct 2025 06:52:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759474349; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=BX6RiGL+cjgZpJxdzOC3lAgawx+FysoKFUY5TPIj1e8=;
-	b=MdFVV1mdWjpX5Voooy4m4FqOooqAMhlkKLrM49tVjyAcdMnTtBQhdRT+HJej/prwv9tHx+
-	SmHDUAI8IhJ7aNlUBLVRry43mPqEo6QnqOxpTCxMGkDPZ1BmF1qSDmtLvPYKFifMJy5bTS
-	4xGRP7jNRBQqyzhsp1ZfWftFVLG5jXk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759474349;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=BX6RiGL+cjgZpJxdzOC3lAgawx+FysoKFUY5TPIj1e8=;
-	b=Sa4XqljAPKqvAw6iNfLjzOKJSoc/jgG+cbFP38zUR3P2qToue2mR49IHT/moFZAExLmK/M
-	yhx+R5Sg2+9Y4rDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759474349; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=BX6RiGL+cjgZpJxdzOC3lAgawx+FysoKFUY5TPIj1e8=;
-	b=MdFVV1mdWjpX5Voooy4m4FqOooqAMhlkKLrM49tVjyAcdMnTtBQhdRT+HJej/prwv9tHx+
-	SmHDUAI8IhJ7aNlUBLVRry43mPqEo6QnqOxpTCxMGkDPZ1BmF1qSDmtLvPYKFifMJy5bTS
-	4xGRP7jNRBQqyzhsp1ZfWftFVLG5jXk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759474349;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=BX6RiGL+cjgZpJxdzOC3lAgawx+FysoKFUY5TPIj1e8=;
-	b=Sa4XqljAPKqvAw6iNfLjzOKJSoc/jgG+cbFP38zUR3P2qToue2mR49IHT/moFZAExLmK/M
-	yhx+R5Sg2+9Y4rDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5D89013990;
-	Fri,  3 Oct 2025 06:52:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 11QUFq1y32h0VQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 03 Oct 2025 06:52:29 +0000
-Message-ID: <be2a3a3d-395d-4a0a-9c32-488212710c92@suse.cz>
-Date: Fri, 3 Oct 2025 08:52:29 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] slab: Fix using this_cpu_ptr() in preemptible context
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>, ranxiaokai627@163.com,
- Andrew Morton <akpm@linux-foundation.org>, cl@gentwo.org,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
- linux-mm <linux-mm@kvack.org>, ran.xiaokai@zte.com.cn
-References: <20250930083402.782927-1-ranxiaokai627@163.com>
- <aNu2xJMkEyYSdmW6@hyeyoo>
- <CAADnVQJ-bkd2UVsZmhdb1L5ZrXjZbTnRcaJ-D=ojsoiRHmHwaw@mail.gmail.com>
- <b9fb0a69-6cfb-4285-8118-ef5301115948@suse.cz> <aN4_PeDcDQUhv6N-@hyeyoo>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
- KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
- 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
- 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
- tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
- Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
- 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
- LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
- 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
- BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSBWbGFzdGltaWwg
- QmFia2EgPHZiYWJrYUBzdXNlLmN6PsLBlAQTAQoAPgIbAwULCQgHAwUVCgkICwUWAgMBAAIe
- AQIXgBYhBKlA1DSZLC6OmRA9UCJPp+fMgqZkBQJnyBr8BQka0IFQAAoJECJPp+fMgqZkqmMQ
- AIbGN95ptUMUvo6aAdhxaOCHXp1DfIBuIOK/zpx8ylY4pOwu3GRe4dQ8u4XS9gaZ96Gj4bC+
- jwWcSmn+TjtKW3rH1dRKopvC07tSJIGGVyw7ieV/5cbFffA8NL0ILowzVg8w1ipnz1VTkWDr
- 2zcfslxJsJ6vhXw5/npcY0ldeC1E8f6UUoa4eyoskd70vO0wOAoGd02ZkJoox3F5ODM0kjHu
- Y97VLOa3GG66lh+ZEelVZEujHfKceCw9G3PMvEzyLFbXvSOigZQMdKzQ8D/OChwqig8wFBmV
- QCPS4yDdmZP3oeDHRjJ9jvMUKoYODiNKsl2F+xXwyRM2qoKRqFlhCn4usVd1+wmv9iLV8nPs
- 2Db1ZIa49fJet3Sk3PN4bV1rAPuWvtbuTBN39Q/6MgkLTYHb84HyFKw14Rqe5YorrBLbF3rl
- M51Dpf6Egu1yTJDHCTEwePWug4XI11FT8lK0LNnHNpbhTCYRjX73iWOnFraJNcURld1jL1nV
- r/LRD+/e2gNtSTPK0Qkon6HcOBZnxRoqtazTU6YQRmGlT0v+rukj/cn5sToYibWLn+RoV1CE
- Qj6tApOiHBkpEsCzHGu+iDQ1WT0Idtdynst738f/uCeCMkdRu4WMZjteQaqvARFwCy3P/jpK
- uvzMtves5HvZw33ZwOtMCgbpce00DaET4y/UzsBNBFsZNTUBCACfQfpSsWJZyi+SHoRdVyX5
- J6rI7okc4+b571a7RXD5UhS9dlVRVVAtrU9ANSLqPTQKGVxHrqD39XSw8hxK61pw8p90pg4G
- /N3iuWEvyt+t0SxDDkClnGsDyRhlUyEWYFEoBrrCizbmahOUwqkJbNMfzj5Y7n7OIJOxNRkB
- IBOjPdF26dMP69BwePQao1M8Acrrex9sAHYjQGyVmReRjVEtv9iG4DoTsnIR3amKVk6si4Ea
- X/mrapJqSCcBUVYUFH8M7bsm4CSxier5ofy8jTEa/CfvkqpKThTMCQPNZKY7hke5qEq1CBk2
- wxhX48ZrJEFf1v3NuV3OimgsF2odzieNABEBAAHCwXwEGAEKACYCGwwWIQSpQNQ0mSwujpkQ
- PVAiT6fnzIKmZAUCZ8gcVAUJFhTonwAKCRAiT6fnzIKmZLY8D/9uo3Ut9yi2YCuASWxr7QQZ
- lJCViArjymbxYB5NdOeC50/0gnhK4pgdHlE2MdwF6o34x7TPFGpjNFvycZqccSQPJ/gibwNA
- zx3q9vJT4Vw+YbiyS53iSBLXMweeVV1Jd9IjAoL+EqB0cbxoFXvnjkvP1foiiF5r73jCd4PR
- rD+GoX5BZ7AZmFYmuJYBm28STM2NA6LhT0X+2su16f/HtummENKcMwom0hNu3MBNPUOrujtW
- khQrWcJNAAsy4yMoJ2Lw51T/5X5Hc7jQ9da9fyqu+phqlVtn70qpPvgWy4HRhr25fCAEXZDp
- xG4RNmTm+pqorHOqhBkI7wA7P/nyPo7ZEc3L+ZkQ37u0nlOyrjbNUniPGxPxv1imVq8IyycG
- AN5FaFxtiELK22gvudghLJaDiRBhn8/AhXc642/Z/yIpizE2xG4KU4AXzb6C+o7LX/WmmsWP
- Ly6jamSg6tvrdo4/e87lUedEqCtrp2o1xpn5zongf6cQkaLZKQcBQnPmgHO5OG8+50u88D9I
- rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
- dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
- m6M14QORSWTLRg==
-In-Reply-To: <aN4_PeDcDQUhv6N-@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
+	b=lzZmDUUzOnBXbv4aOGzmCz4Gk/UH3x0ovM3RE0JwQj6G7yfV5BygUuox2YheND++BMooqj
+	ftxSxppbY0ptDuceLrfCKj2PkqWwyi7LJkJZhY+7ibzEr3ufu+0EKSL8bYM92SKHqhlVIA
+	Fm/pKQHbjsBR1ZsZXoJ69pRU2k5BxZg=
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailflow.stl.internal (Postfix) with ESMTP id C4B9A130000D;
+	Fri,  3 Oct 2025 02:56:07 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-10.internal (MEProxy); Fri, 03 Oct 2025 02:56:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm2; t=
+	1759474567; x=1759481767; bh=j+Jw5iNM6nGAnWO3sjaDIDEUdkjo7ZX+LLz
+	qd/P1hYw=; b=aMjNO8AjVn+sj0yKUl+VzgbYszqPNGJNtAPbUQGn88a5UP2eiqs
+	R5yiWdKir92SSE469eXj/b+AHudi0OVXOIY6cS5YPi4E1B06RLjJ+yZPq4inyozE
+	Q+B2H/gKkTXrrQ2uYPkaRXH7k9U3Y58+RCC7RD56mFR5x5KoRAcvgQv9tL7Zpc+/
+	9N6venAGi7v2ylACMFGp9jJlqUne0QvLZGDqcm3MhRqSBzJwu12eGO57hRoA4sro
+	NgXvxEQkBwxT5LSMI5KUZlWIDFBwzR+gvhw0a1r/a6Ty5zl4GCufIIlts3fIye4p
+	JrHYaG8ko/FiP2kNmiy/58lOphRDKpSPmnw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1759474567; x=
+	1759481767; bh=j+Jw5iNM6nGAnWO3sjaDIDEUdkjo7ZX+LLzqd/P1hYw=; b=P
+	NYMaREdofJEjMxoqFbSBZZKryi4ZwnfANONgeT2a1dj37Y+FNVWf603dzC5NuApe
+	8PxvyO6Q6DBCiVJrM8k6zEMwDy/cTTk1TtsSqwegcfRU11nONgZXR4em3KQPmyim
+	OI2gDy6Ogzt7ifj6Ked0HHw1xR170gEX2viFcftT+WOsW+lFe503bLpkWDvr4Z7s
+	cukyNO+ucMr7L3wCcGGdohDGSTdNWryH23xV6KBGaW3B+CI6PeIG9IouSZuBOKBC
+	dKquqjsLUyCcaEnlM82UDPgSN/S1V02Qz83CuSnTbFMrLbBbQ9AXPWab7L0GXpjN
+	gaLZmR2+e/ZuDrFlmXzew==
+X-ME-Sender: <xms:gnPfaMkIJPG7oVHmiGGRa0CpjJx7RohXVYjkJGIiEh2iOGlLIXvz7Q>
+    <xme:gnPfaL7yl9NUDnF6WrW14T4q-2gvfr53xNr0E_QiaHexrYaF0oruSqWMxAHBv_X-7
+    he83VGHvZW4PzWgKOTeAohnaiAhTYeXu9Rhj5h50nInJJpCUvI>
+X-ME-Received: <xmr:gnPfaKZHZu3YD6tKEjPzMoNoGzkIMDN3Z50sJg_3-6-KPUiHJtc04hN2x1QY170mpQr7__pL7KtyMY1QmrIBnneKxaREGagaO6Gn7NBgViHv>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdekkedvfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpegtgfgghffvvefujghffffkrhesthejredttddtjeenucfhrhhomheppfgvihhluehr
+    ohifnhcuoehnvghilhgssehofihnmhgrihhlrdhnvghtqeenucggtffrrghtthgvrhhnpe
+    duteefhfduveehvdefueefvdffkeevkefgtdefgffgkeehjeeghfetiefhgffgleenucev
+    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehnvghilhgsse
+    hofihnmhgrihhlrdhnvghtpdhnsggprhgtphhtthhopedugeelpdhmohguvgepshhmthhp
+    ohhuthdprhgtphhtthhopehhphgrseiihihtohhrrdgtohhmpdhrtghpthhtoheplhhinh
+    hksehvihhvohdrtghomhdprhgtphhtthhopehrtghusehvghgvrhdrkhgvrhhnvghlrdho
+    rhhgpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtoheplhhinhhugidqnhhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
+    thhopehlihhnuhigqdhmohguuhhlvghssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtoheplhhinhhugidqmhgvughirgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopehlihhnuhigqdhiuggvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:gnPfaG0eLIXy_hVmmU0ah6RiWYe432JzyxABI3_ZePEgQyvaESbQMg>
+    <xmx:gnPfaFi8VKDei6hK_Kzm4HvejB1DcIxxW5AGQspQu-BZ0cfQX60vkQ>
+    <xmx:gnPfaNiFoyBB5wKfL7gCcU3cs9PS5_p6fTSHi4mNminIEilZsHOtZA>
+    <xmx:gnPfaDgIFdYh7LlGgsMY4-Bc3EDv7jElWaw_NOfwLw-Yk1w7kum8UQ>
+    <xmx:h3PfaFqY121yl6e12RmJDdKdPbf2ATm6GquMeKQ2MvsNf-5FbRc2NBdT>
+Feedback-ID: iab3e480c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 3 Oct 2025 02:55:17 -0400 (EDT)
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
+MIME-Version: 1.0
+From: NeilBrown <neilb@ownmail.net>
+To: "Byungchul Park" <byungchul@sk.com>
+Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+ torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
+ linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
+ linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
+ will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
+ joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
+ duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
+ tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
+ amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
+ linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
+ minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
+ sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+ penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+ ngupta@vflare.org, linux-block@vger.kernel.org, josef@toxicpanda.com,
+ linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
+ dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
+ dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
+ melissa.srw@gmail.com, hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+ chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+ max.byungchul.park@gmail.com, boqun.feng@gmail.com, longman@redhat.com,
+ yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com,
+ netdev@vger.kernel.org, matthew.brost@intel.com, her0gyugyu@gmail.com,
+ corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ luto@kernel.org, sumit.semwal@linaro.org, gustavo@padovan.org,
+ christian.koenig@amd.com, andi.shyti@kernel.org, arnd@arndb.de,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org,
+ surenb@google.com, mcgrof@kernel.org, petr.pavlu@suse.com,
+ da.gomez@kernel.org, samitolvanen@google.com, paulmck@kernel.org,
+ frederic@kernel.org, neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
+ josh@joshtriplett.org, urezki@gmail.com, mathieu.desnoyers@efficios.com,
+ jiangshanlai@gmail.com, qiang.zhang@linux.dev, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, chuck.lever@oracle.com,
+ okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com,
+ trondmy@kernel.org, anna@kernel.org, kees@kernel.org,
+ bigeasy@linutronix.de, clrkwllms@kernel.org, mark.rutland@arm.com,
+ ada.coupriediaz@arm.com, kristina.martsenko@arm.com,
+ wangkefeng.wang@huawei.com, broonie@kernel.org, kevin.brodsky@arm.com,
+ dwmw@amazon.co.uk, shakeel.butt@linux.dev, ast@kernel.org,
+ ziy@nvidia.com, yuzhao@google.com, baolin.wang@linux.alibaba.com,
+ usamaarif642@gmail.com, joel.granados@kernel.org,
+ richard.weiyang@gmail.com, geert+renesas@glider.be,
+ tim.c.chen@linux.intel.com, linux@treblig.org,
+ alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+ chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
+ link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
+ brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
+ mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
+ linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+ linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-modules@vger.kernel.org, rcu@vger.kernel.org,
+ linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH v17 28/47] dept: add documentation for dept
+In-reply-to: <20251002081247.51255-29-byungchul@sk.com>
+References: <20251002081247.51255-1-byungchul@sk.com>,
+ <20251002081247.51255-29-byungchul@sk.com>
+Date: Fri, 03 Oct 2025 16:55:14 +1000
+Message-id: <175947451487.247319.6809470356431942803@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3275E40002
-X-Stat-Signature: py9pcz7a7k9y6ohmjiq8dus8oe8scs5w
-X-HE-Tag: 1759474351-291066
-X-HE-Meta: U2FsdGVkX19vpmT/JVFxfZavWma4G9X2cviieo7G3haLjrgS4L3GZdcQnIcJ0x0ZT2ZVn6hzYhm9KWsWuXgK7b52w77EB/cV7cEp/UqDvg1Q//2gd/I2Y/XZ96a2bKQqC2/FyxJuWeCd4+t6b5PQnj1xiudjaI0ElfraUrUSi11l8Tlv13wuetvOaZTanzoELYFD6Cm+eEBTU/JR94gMe9sHgTOLU1REJjHqeGb6gPxiWTyog+l8MW5PSHHjPZJZwPGvGr53uJz5nP1mm6llO9r8MdKZ6srKKvlNlt6Yw49nSMMuqfjKWHPY3apVa0N7JLf4B7nQ9oemWSGn4Avjth5WlZUFdm3xKpWmZFha2SEJU1Xf2F6LoTYxsQKPSOfg7S+ejXwyDwLQ3NCr0wwH4JeqA6pWyQZ7JAgwrnv94K7YnoR8If64H4ucxrxdMjJLPmU1KoSaE/8yrQ5/cAjCno/J1OSXlIlSghti/3C+H5f2rtGci7+z+wxsmdRyewMkb79b3dvc4mqAFKBbuzynHS6ixqhqKs05fM6bCgPln8VxSay/gAihrL6GxjZIE8/9mh3Q1c/MlDqq4sxmIGIAazoM3vN6Wh/7AeUozyG3YeOjls/khZ0S6ejkEPZ9RwJnleDFPvyEOkDjAAQM1AYzfZ6LNwHyO/bMRpyj8vYi7T2hojaT3yDBjG+l5B4VSlrN3OTwqrk7GXwK/Lc1LZBMl7j9coIEmFx57AG/w2tsE8TdhCqDcYInNxCrQaN6Y3g0uCpT6pzOEfg6+GWaa1NcVVt5KsXTUMGcSz7qh/bho0SmbXBvV/dkE/81esU68NyJsd2PORHhtowKiSjdibYabsPDHNwAU3YD/cfHkySSaIVB8OpyTW1u+LvfobAoiWKWG5ZxraaRzf0ZT2S44g09m5Lw3R8D2ln0YAwn3o84QIpvQ7gFs2k86voUIDIvtE907oFPkhfaOfRjLxBcR/D
- 6RJXoY3m
- c42GYizGgbAk9tL4c0XZIKlvDi+io0Eo697M2Z1kZCNbdZLO+R44zqwTr8d9otKmhfJJaaiKJ7R4DsU8i25jPA3x8rQ==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B5DF7C000E
+X-Stat-Signature: igbqaht5u56fsn1ofes3seynmnqxnemi
+X-HE-Tag: 1759474572-673359
+X-HE-Meta: U2FsdGVkX1/sCpm2SjAqUJqNz4iHt7urTmf+W+dGqnPgCERglD3C4r/Vf1vYQ9WHMhaLtr3HJWFASIowTrkN+iZqX0IIw+LvXRaW+sl5pMxA+rs5dSgbQ0foukgdG6xK9W5B9kzWWkn967SioOdt9V625PFpo6V3uvkdjZcepiYBVaGma/DH729EI1UUeIEp4H99Spizi1nrkaZ4sxdEiGxHdLHjRaUQ0ufUOhspaOrKjNG5nWoAb+Lm0bQsYx7DPnJE9ZMGQnBOr5ehVXdErOe2Aq9SBKoqxJMOXXzzv0sPDF9Rfw95oKYtiaAI6mRlMX2920RKRD7q9BkYITgVynrOrSw9xmNoRcRpot946tAhUmVoXrnBgOLjVleOO1y3DmfGdnmIINJ+o8TAahMudJ2wcsmxhD9pWn4Xy9xHPK2yIYqS/tnB2vV7Lk/2NCWzgUrdTH7DybuZOG888frG31TOonpYVB3SvWzl+NQoiA3yGYkvBYNMgMOgcCuDy1LVzrOG7RAUVIqXFiP/XqS/Z4BOEFfqOceuFYz6Wu9kOMLO7GLJIJDbEL9cwV8/rZpUnRSADMJNcCvFRC7cHhcxsDg5HaUZ9U3y0e+aa1rv6dZ4nl6ailnMgWSi8hXGwA7SmuZeocUmDA+8fjvciYe5df5UViMwP//0VLf6MNRnjPUUu1+QKhO8xBUCG3H7tjQZXB7Qy5xEnS7g8Sc+CGDEUjqW2lwvyToiywrl0OpCrEI81alCDMUBP1ntoq7vGVBcstN6bOzlUhNYAIF2Mff9ePF6iF8sBlqboZBo09UgTa+PdAdfcUOowfx6n44+4699WkI6Q5CWiFTlkiwPDAsClif4zptBkRiICczxb6gYi7vyMOWgVGnjwPPPQj4CC6T1EbIUuPkK9xLxrQjwGHYlb0z7IXjDRfzTe0IkgZlFi0pOnCzfdRVIUvNPm6VP0DawYILdsNu0LgXWachl/1o
+ w0GRY7xW
+ u2LhSxaQ2MwHnx5ok97/XB8ZgNUpQkbjwvTzzK8nIMvV0Dwq7il1OsYiTrBfX6WP/EzQA6RtOEHoTfJro40AyruMaB41RXCKgllD40BOWKwYvXXXy7lq67rcAQP8y33eIVOknQuwKVZJEo858PO6m1JOihbTFnYBRvnCLqEEUJkTXNKRQtB0HzoouX0vlZzbrQS5+gZFQAo9DS5s6/TJvG9Cy7Xh8xDcs2YL1Lol7R/nCh5HuqGsdEmhK4e3E2HwGuJ5jaywbn1wD0WqEEykyQ/fXUnR2+ZyI0bHKaQu5rFXQJSHgnOoDihjAVTvNVXAettvoSgErrHB6hjnkObT1R8Qf2qF9xa3nHrmwtCNsnaZZqe4BKRslZPeDfU2hxPvCh78FVSybjA89N1NRlwZGnkejgBZAAlmeN8BSjbEG7iFTUEYU2s76X6VDySUHCNANc2Wcr8PVR/mI1U3TJwJ8GGIBtq6n3bbK+8ervSQuyn2eXghrnrJko60VoCL//04Sjg1As12/+6sSt5s03+UcBlX18D3zkE5zwdXWxeTUNItCVQr31lelsa6vcwY1qglZCn5StEkbrFu5MB7mxt7+j5kbIajkbXkDP+iIcfBJVvYRZu77sJzEO9CnFvTsxwOYJ4m9aBsnywg5CcZrMAhrp2/Mm780XN+TxjWKofn9Qz+ePKoGYZr4RMC6werRy66NDO9Kp0SpI/8wbgU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -184,35 +190,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/2/25 11:00, Harry Yoo wrote:
-> On Thu, Oct 02, 2025 at 10:14:55AM +0200, Vlastimil Babka wrote:
->> However...
->> > Is this PREEMPT_RT ?
->> > 
->> >> >  __alloc_tagging_slab_alloc_hook+0xa0/0x300
->> >> >  __kmalloc_cache_noprof+0x1c4/0x5c0
->> >> >  __set_page_owner+0x10d/0x1c0
->> 
->> This is the part that puzzles me, where do we call kmalloc from
->> __set_page_owner()?
+On Thu, 02 Oct 2025, Byungchul Park wrote:
+> This document describes the concept and APIs of dept.
 > 
-> It's
-> 
-> __set_page_owner()
-> -> inc_stack_record_count()
-> -> add_stack_record_to_list()
-> -> kmalloc().
 
-Thanks, missed that.
+Thanks for the documentation.  I've been trying to understand it.
 
->> And in a way that it loses the GFP_KERNEL passed all the
->> way? I don't even see a lib/stackdepot function here.
-> 
-> Oh wait, we clear __GFP_RECLAIM on the first attempt to allocate
-> high-order slabs. so gfpflags_allow_spinning() returns false.
 
-Ah right! Dang, that's suboptimal that we intend to do an opportunistic
-attempt, but limit the allocations of supplementary objects this way. But I
-don't see how to avoid this without inventing new gfp flags.
+> +How DEPT works
+> +--------------
+> +
+> +Let's take a look how DEPT works with the 1st example in the section
+> +'Limitation of lockdep'.
+> +
+> +   context X	   context Y	   context Z
+> +
+> +		   mutex_lock A
+> +   folio_lock B
+> +		   folio_lock B <- DEADLOCK
+> +				   mutex_lock A <- DEADLOCK
+> +				   folio_unlock B
+> +		   folio_unlock B
+> +		   mutex_unlock A
+> +				   mutex_unlock A
+> +
+> +Adding comments to describe DEPT's view in terms of wait and event:
+> +
+> +   context X	   context Y	   context Z
+> +
+> +		   mutex_lock A
+> +		   /* wait for A */
+> +   folio_lock B
+> +   /* wait for A */
+> +   /* start event A context */
+> +
+> +		   folio_lock B
+> +		   /* wait for B */ <- DEADLOCK
+> +		   /* start event B context */
+> +
+> +				   mutex_lock A
+> +				   /* wait for A */ <- DEADLOCK
+> +				   /* start event A context */
+> +
+> +				   folio_unlock B
+> +				   /* event B */
+> +		   folio_unlock B
+> +		   /* event B */
+> +
+> +		   mutex_unlock A
+> +		   /* event A */
+> +				   mutex_unlock A
+> +				   /* event A */
+> +
 
+I can't see the value of the above section.
+The first section with no comments is useful as it is easy to see the
+deadlock being investigate.  The section below is useful as it add
+comments to explain how DEPT sees the situation.  But the above section,
+with some but not all of the comments, does seem (to me) to add anything
+useful.
+
+> +Adding more supplementary comments to describe DEPT's view in detail:
+> +
+> +   context X	   context Y	   context Z
+> +
+> +		   mutex_lock A
+> +		   /* might wait for A */
+> +		   /* start to take into account event A's context */
+
+What do you mean precisely by "context".
+You use the word in the heading "context X  context Y  context Z"
+so it seems like "context" means "task" or "process".  But then as I
+read on, I think - maybe it means something else.  If it does, then you
+should use different words.  Maybe "task X ..." in the heading.
+
+If the examples that follow It seems that the "context" for event A
+starts at "mutex lock A" when it (possibly) waits for a mutex and ends
+at "mutex unlock A" - which are both in the same process.  Clearly
+various other events that happen between these two points in the same
+process could be seen as the "context" for event A.
+
+However event B starts in "context X" with "folio_lock B" and ends in
+"context Z" or "context Y" with "folio_unlock B".  Is that right?
+
+My question then is: how do you decide which, of all the event in all
+the processes in all the system, between the start[S] and the end[E] are
+considered to be part of the "context" of event A.
+
+I think it would help me if you defined what a "context" is earlier.
+What sorts of things appear in a context?
+
+Thanks,
+NeilBrown
+
+
+> +		   /* 1 */
+> +   folio_lock B
+> +   /* might wait for B */
+> +   /* start to take into account event B's context */
+> +   /* 2 */
+> +
+> +		   folio_lock B
+> +		   /* might wait for B */ <- DEADLOCK
+> +		   /* start to take into account event B's context */
+> +		   /* 3 */
+> +
+> +				   mutex_lock A
+> +				   /* might wait for A */ <- DEADLOCK
+> +				   /* start to take into account
+> +				      event A's context */
+> +				   /* 4 */
+> +
+> +				   folio_unlock B
+> +				   /* event B that's been valid since 2 */
+> +		   folio_unlock B
+> +		   /* event B that's been valid since 3 */
+> +
+> +		   mutex_unlock A
+> +		   /* event A that's been valid since 1 */
+> +
+> +				   mutex_unlock A
+> +				   /* event A that's been valid since 4 */
+> +
+> +Let's build up dependency graph with this example. Firstly, context X:
+> +
+> +   context X
+> +
+> +   folio_lock B
+> +   /* might wait for B */
+> +   /* start to take into account event B's context */
+> +   /* 2 */
+> +
+> +There are no events to create dependency. Next, context Y:
+> +
+> +   context Y
+> +
+> +   mutex_lock A
+> +   /* might wait for A */
+> +   /* start to take into account event A's context */
+> +   /* 1 */
+> +
+> +   folio_lock B
+> +   /* might wait for B */
+> +   /* start to take into account event B's context */
+> +   /* 3 */
+> +
+> +   folio_unlock B
+> +   /* event B that's been valid since 3 */
+> +
+> +   mutex_unlock A
+> +   /* event A that's been valid since 1 */
+> +
+> +There are two events. For event B, folio_unlock B, since there are no
+> +waits between 3 and the event, event B does not create dependency. For
+> +event A, there is a wait, folio_lock B, between 1 and the event. Which
+> +means event A cannot be triggered if event B does not wake up the wait.
+> +Therefore, we can say event A depends on event B, say, 'A -> B'. The
+> +graph will look like after adding the dependency:
+> +
+> +   A -> B
+> +
+> +   where 'A -> B' means that event A depends on event B.
+> +
+> +Lastly, context Z:
+> +
+> +   context Z
+> +
+> +   mutex_lock A
+> +   /* might wait for A */
+> +   /* start to take into account event A's context */
+> +   /* 4 */
+> +
+> +   folio_unlock B
+> +   /* event B that's been valid since 2 */
+> +
+> +   mutex_unlock A
+> +   /* event A that's been valid since 4 */
+> +
+> +There are also two events. For event B, folio_unlock B, there is a
+> +wait, mutex_lock A, between 2 and the event - remind 2 is at a very
+> +start and before the wait in timeline. Which means event B cannot be
+> +triggered if event A does not wake up the wait. Therefore, we can say
+> +event B depends on event A, say, 'B -> A'. The graph will look like
+> +after adding the dependency:
+> +
+> +    -> A -> B -
+> +   /           \
+> +   \           /
+> +    -----------
+> +
+> +   where 'A -> B' means that event A depends on event B.
+> +
+> +A new loop has been created. So DEPT can report it as a deadlock. For
+> +event A, mutex_unlock A, since there are no waits between 4 and the
+> +event, event A does not create dependency. That's it.
+> +
+> +CONCLUSION
+> +
+> +DEPT works well with any general synchronization mechanisms by focusing
+> +on wait, event and its context.
+> +
 
