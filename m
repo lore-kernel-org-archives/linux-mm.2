@@ -4,135 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99017CCA471
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 14:37:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72359CAC5B0
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 14:41:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6BAF8E0014; Fri,  3 Oct 2025 10:37:15 -0400 (EDT)
+	id BEEE98E0015; Fri,  3 Oct 2025 10:41:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D43468E0006; Fri,  3 Oct 2025 10:37:15 -0400 (EDT)
+	id BC6888E0006; Fri,  3 Oct 2025 10:41:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C59658E0014; Fri,  3 Oct 2025 10:37:15 -0400 (EDT)
+	id ADCB98E0015; Fri,  3 Oct 2025 10:41:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B2EA98E0006
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 10:37:15 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 732E1451F5
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 14:37:15 +0000 (UTC)
-X-FDA: 83957055630.05.6BD5E77
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 54D3916000D
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 14:37:13 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=none;
-	spf=pass (imf08.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E0598E0006
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 10:41:13 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7190016019E
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 14:41:13 +0000 (UTC)
+X-FDA: 83957065626.22.276F10B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 99A74140018
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 14:41:11 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KORQMTTA;
+	spf=pass (imf26.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759502233;
+	s=arc-20220608; t=1759502471;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0LtpncgCfs+SwUIbz4HS3dmqnzX2hJfu98hTgs+EJKo=;
-	b=TKSuHw5L++HU4iDJXNLBb74ACxqrl/nfRzusFld3AGTiL5OEj/aqvkwS1c3ZHdmiCTLZL4
-	0rNQNhY6SeTrEMq9+Cf8V039Vo85Za3VyCQ4FM8P9ulqQKz/D/DAE4TVhY+mTdBNTyHhKm
-	QdHfoEqGSW6UrAXST3P4rR7ZXoXRi54=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759502233; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BQxEIF4MDPKcIV3btWoh53nWWRElvX8cMJP1nz+7+KE=;
+	b=kjKN96wqbwpivBa0z0yyWtyDPtdUX2uH9oI85HwTAHRsCWTkaOLE0cwZmaklDBH0uTDi8R
+	ijTX2iFDXIan10YdHDnIdKc9tGKlRW2hbGKs/IkYOjtNT4U30co099JEU1GqIy/dFvfceH
+	rlpMASlKvUznErXdjGDu1VBEi2EJwPg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759502471; a=rsa-sha256;
 	cv=none;
-	b=XT1/JdJi8S+z++z7KiVMo6dC+BlTxUI8WPi7ds0QRiYVmHSHKfVnCf3xyBAgZUqzf5bcZc
-	loc5YtY1P3427gntQvgtvUcapyy56pW3zRBwYRpMltvrp7nuz83fw1KvLV4eymaHsodRBh
-	+P+mHoChKp2bW6zEjeaOP61VkwM7mKE=
+	b=UhD8stxEFvvrjjVcchuHpMzMMIGSiPGvaWM34sp6o7BsjFYyU12Kj2pDSGlHQfXTtyb6vi
+	ZolFaY015YL1ZgoxSUVh5/KTSs6t8FmfzxHbHhsiD4/5hBd3P3jARyx9fTYjxfNjLj97iH
+	EU6De0hxiU5BtdAEuD1WSqrvoEhbipA=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=none;
-	spf=pass (imf08.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 08EAB1688;
-	Fri,  3 Oct 2025 07:37:04 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8693C3F5A1;
-	Fri,  3 Oct 2025 07:36:47 -0700 (PDT)
-Date: Fri, 3 Oct 2025 15:36:42 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Byungchul Park <byungchul@sk.com>
-Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
-	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
-	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
-	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
-	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
-	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
-	tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
-	amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
-	linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
-	minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
-	sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
-	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
-	ngupta@vflare.org, linux-block@vger.kernel.org,
-	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
-	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
-	djwong@kernel.org, dri-devel@lists.freedesktop.org,
-	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
-	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
-	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
-	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
-	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
-	yeoreum.yun@arm.com, netdev@vger.kernel.org,
-	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
-	catalin.marinas@arm.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, luto@kernel.org,
-	sumit.semwal@linaro.org, gustavo@padovan.org,
-	christian.koenig@amd.com, andi.shyti@kernel.org, arnd@arndb.de,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
-	petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
-	paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
-	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
-	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
-	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
-	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
-	clrkwllms@kernel.org, ada.coupriediaz@arm.com,
-	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
-	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
-	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
-	yuzhao@google.com, baolin.wang@linux.alibaba.com,
-	usamaarif642@gmail.com, joel.granados@kernel.org,
-	richard.weiyang@gmail.com, geert+renesas@glider.be,
-	tim.c.chen@linux.intel.com, linux@treblig.org,
-	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
-	chenhuacai@kernel.org, francesco@valla.it,
-	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
-	masahiroy@kernel.org, brauner@kernel.org,
-	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
-	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
-	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH v17 09/47] arm64, dept: add support
- CONFIG_ARCH_HAS_DEPT_SUPPORT to arm64
-Message-ID: <aN_fel4Rpqz6TPsD@J2N7QTR9R3>
-References: <20251002081247.51255-1-byungchul@sk.com>
- <20251002081247.51255-10-byungchul@sk.com>
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KORQMTTA;
+	spf=pass (imf26.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6B74062169;
+	Fri,  3 Oct 2025 14:41:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C42C4AF09;
+	Fri,  3 Oct 2025 14:41:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759502470;
+	bh=bx0s1P62xMVENFHKLMPJrGfBOUqIwhHXInCdciLOI28=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KORQMTTA6AcHihhNeZBMpdvPG328KT/QBsc7k8/i6xvDWHHScRI49w9VGuW73fmVp
+	 oLgsO9ucicGSj4o5peNc1wnqCFRAcS3/Ztzvu+PqqfYPEf6RCTfyZOrbDvw6y13HCh
+	 wmiYgRcd2Tmr+mzW9Hkv9zv1IMzSTvuclhL8F0fML0DjOXmEi+r3q47wP+TojwT7l9
+	 Gd7CR26CeBVZVTFnmQv8yXmzer0pDU9CrF9KsSj37DmA6OXt1MgE14WO09w0WFiP3U
+	 36JPC2mkQtImNHwgWJunNC+QSRBVCqRtqEOJ+f9ID7EMwRScTda7AzixkseJR6ZW1Y
+	 rQFCTa7olILGg==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id A9659F4006E;
+	Fri,  3 Oct 2025 10:41:08 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Fri, 03 Oct 2025 10:41:08 -0400
+X-ME-Sender: <xms:hODfaFzzNst2fJ9nsIh_4nXMRtdtOoU9q2tLBMH-xX9onZNA8WETbg>
+    <xme:hODfaFYm4nMntXtyFLKI2ForkYnY6oSWBO1aW9LL0ZVkFmd6F5PVDbRTJKVajQIah
+    X7V4J01XNzwyKbVSBrKc-N77IA4dmpaw5ve69U1Y_TvHeQlarsr9AA>
+X-ME-Received: <xmr:hODfaNL02WtZI4ffI5vVcDxtjDtb_nOJESyrPu5hAAfWB0RmwuqdmC1ydr4qfA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdekleduiecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
+    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
+    hnpeeffefgteeljedtgfekiefguefgffdugeelueffgeehvddutdefgedvfeehudejgfen
+    ucffohhmrghinhepshhtrghtrdhtohdpghhithhhuhgsrdgtohhmpdhrshhtrddqqddqmh
+    hmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhi
+    rhhilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeihe
+    ehqddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhv
+    rdhnrghmvgdpnhgspghrtghpthhtohepfedtpdhmohguvgepshhmthhpohhuthdprhgtph
+    htthhopegusehilhhvohhkhhhinhdrtghomhdprhgtphhtthhopegrkhhpmheslhhinhhu
+    gidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepshhhihhkvghmvghngheshh
+    hurgifvghitghlohhuugdrtghomhdprhgtphhtthhopehkrghsohhnghesthgvnhgtvghn
+    thdrtghomhdprhgtphhtthhopehnphhhrghmtghssehgmhgrihhlrdgtohhmpdhrtghpth
+    htohepsghhvgesrhgvughhrghtrdgtohhmpdhrtghpthhtohepsggrohhhuhgrsehkvghr
+    nhgvlhdrohhrghdprhgtphhtthhopegthhhrihhslheskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtoheprgigvghlrhgrshhmuhhsshgvnhesghhoohhglhgvrdgtohhm
+X-ME-Proxy: <xmx:hODfaLwoTx8Y67Fv462ACMflW_iHLcmVlLOv36fgFtydz1owY5aKag>
+    <xmx:hODfaFPutmKdVMde_Epn7Vd3zK9_XdjhZ2Jada17jn8RhABnYcgSEg>
+    <xmx:hODfaPv-C8Dzp9gAPsbMvk3yFrtxiieBrO8glu-5jXgTK13pe1Jxsg>
+    <xmx:hODfaC05BylUzwxUNzxABzaWlvVUIXl2UCeONM4m3uTWGE_X8kivtQ>
+    <xmx:hODfaMDHgKrDZCbX4AnEAnKDt2PIiZibepNnOOpkj6PnRh5Vgvl1fCLz>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 3 Oct 2025 10:41:07 -0400 (EDT)
+Date: Fri, 3 Oct 2025 15:41:05 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH] mm: skip folio_activate() for mlocked folios
+Message-ID: <hnpzad4aehmp6ncgwhlinzx55z3zst5dlkhsjphpazccy5lzpv@hfj2eyewuplz>
+References: <aN_bix3wDpwYPoVp@shell.ilvokhin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251002081247.51255-10-byungchul@sk.com>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 54D3916000D
-X-Stat-Signature: eagycsyw9jqsnp3rgra1ij18f4mxd6ij
+In-Reply-To: <aN_bix3wDpwYPoVp@shell.ilvokhin.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 99A74140018
+X-Stat-Signature: 1uapch76mgtxn77z6wrdgh1yb6qhzgst
 X-Rspam-User: 
-X-HE-Tag: 1759502233-451582
-X-HE-Meta: U2FsdGVkX19MXvc2BlAxnScUp1rx31rxom7ekaRUthFBRg7i/YmNSixLwndJevA3ijZyYHXHXv19kMfv994p0ns+gt2tjf4nQ97ogc98A1CZcVjzWDbUXuLyzuQ1f3A8gCCJgcTCMLCLdxWoE1YNc76SjyB3V5xs8FPg9h6SGGnphxtC6Y/VL1nmQEOnGFfgXC58UmGumop/Li3OB7PHnsot/R5QOFRSZCW4UAZ4InkWM6+FcGEOp955AYTOx1UnKVOnf4GYlVQ2xPTfBgNVIJGmYakEjYmgSHagWQdQ7cqhKMzSnDMKRDKCBQsPT4YOjqv8c1n3TeEfH0pMZEaTac11g3jo4CDq8AM+nvRcSov+fcsNqui5JYEdPm/RwjvAgD60mfeXp3HextExvD2dlI++HwxHIRhQARdzXIdYCg7q/BBblIeJQxTYl1ngBYzCQkIAD81qHV6PHgB3A4FojcDbTJnkSmu02YfaqOkNN27DbU4fDsK3Oi5/TpK4gxitJGb+IAt1985fH1tK+8I+KZ2air6BlUwkHyrp6ca2a5EEVHn32f2MqMYvizxalLXv/6YkRsuJWcYOyFEu5ZDQUjW78QDyUMqKOrDbnJhG4XkDzkxFepv4Mp4lVu/XQ6rI8gxPC0o6N0lPJEkqs++nlOdIc5yoh8OQtqiOSogacN+8FMRGmwB2XEvFYtZq1zcd+Q/Eu4Ac6n2Wod6L9f5KaKYL4lz12qa4di+EM2D8w0VCMtnsFP1cbIoKIdn/g6rbgswzjxiqZkwRnDHtqSMqFjV60ptW/BKPvjS0T9N2739hUBolNdK+Hl82IMuXJ0zHORJADtwPMRtGqZYUFE4ylQopN5sOozCFOz/fQtTFYAVmJfN1xmFo1sBf0NmhtX0hXc1O87WPe1xMCy7APzZt/ZmiUComKyxqRLWIkhZzSisSgXyLqql9Q3YIr9NlmJIADsmaV3NauxTZGIJL7QR
- XlxPV7eu
- /ZwkoRGDXkpQnX0sWwGAzny11tLdhTMaTd35CLhxpd8cJ2IZmPXV1OrtOPsDcLmEaMuNrwF+4c0flMYL8ex/5qOSz9NdKjfCPSbc/CSs5KbIKqV7tRUpwCztVfpZI3f4qFro6Nk15KBorN4X5KJWe4Sh0Xyg6/Aw0awTT/QS5lgmiqNf6yZJhM3tUil1rvX2a+vOPty6eNZpDSyz7W2JijnockocJTVvJ3/XM1kqJuDdHjDd0LpFR+skj7zn4WhtG0asaF/fkDJi73fbohqj8BoWZwSWGI+UolqPDMYZk7ug4pPn8DbvgrtjOi1TbMdv1uOW4S2u5Qeq/LFoHJNYdHiBfZq697frbfHNGzgSUjWkPccrDTrMn0A/gTkpsA8n5xBa7OdL6+zmxiHbXwlb8RysPfA==
+X-HE-Tag: 1759502471-112544
+X-HE-Meta: U2FsdGVkX1/PdFKf4ne8nY/vywSrad2w9rzJ+jZvsDH7763i9zb/DybmAr3hutZnQ58/oniCv2nyHw+OzEVrID93uzsl6risgMqc+ctdLm+cZdm2HlZBGdGcUFwm4B0otd8X9UoVb4h5XDCB4PShU3Xbiuv+1G0pDoYrP1hwHfQourkmktUqJe9E0LS1wSXiPv/fIY2rAul2RZHli6L/P65YND5IN9EoCCcr19KXqAK0mqRlvp8yeirLp+qIj9D8MLCy/qKQYwwhd7ff371PVRM3Q6yllQFeOxRUcH9eHr9S6TWMc38jfcJloXRHMaxxiFLGrJkqRsdy2CKNVU6CxMZP4iELY9yWTetXOrQDDTZ8EwTaA+m28QH0gAzXroDnDsTf815V51hrIcS7Py/v9hcoK5dd4RjooIMxkTI7Xzzv9gPJAYFB0UU0+Rln/dBGmiKMUxEbxG5t8CfNCDpPegkUlgZOVfVbtEWAd7f/jIQ8JssrSQIH1SAEOSD9RmIITSx1680TaN3jBjlrATZwYNHaUrYFZp/ktZ7I2koYOaq+y034G/REcg1BXbAG1fEJuCUAEeIsRw0f1k6RdWq6XT22utUkdsx7idk2vjwkpPW8ZvZafUdxoPCggxhNHbRNJ2PC25U8vNqEUeCDK0FuH+YlBKUkXmks6E9Dc6d38QBTLeOakdhiwQSF2IHdYP4fB4FznXUmLdY+W0ZfhjgyM7x398lefxlhmJ3oGyLeeZ0EA2mwQzDjCELBVy9F9v0QxSimyht99vWLtUZu5O1sGIAZHRntY1qLs18Lv/U8nS7WbK/aDU7/K3LmQbSa/5ejJpZqGJ530RMyWYS0EW0uZTVqwpJZqphoVFdI6aHJZ30HCsVIGW6kpWIsGShYxJyeT3CN55fOu79RiL7EQ91GumwTQ1qHiWdfH0pzsArwHdEALKn6sdMd93lzMXKfTsAncMMvhBfYiRAifgpm0cl
+ f6x0npui
+ vIMHj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,63 +130,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 02, 2025 at 05:12:09PM +0900, Byungchul Park wrote:
-> dept needs to notice every entrance from user to kernel mode to treat
-> every kernel context independently when tracking wait-event dependencies.
-> Roughly, system call and user oriented fault are the cases.
+On Fri, Oct 03, 2025 at 02:19:55PM +0000, Dmitry Ilvokhin wrote:
+> __mlock_folio() should update stats, when lruvec_add_folio() is called,
+
+The update of stats is incidental to moving to unevicable LRU. But okay.
+
+> but if folio_test_clear_lru() check failed, then __mlock_folio() gives
+> up early. From the other hand, folio_mark_accessed() calls
+> folio_activate() which also calls folio_test_clear_lru() down the line.
+> When folio_activate() successfully removed folio from LRU,
+> __mlock_folio() will not update any stats, which will lead to inaccurate
+> values in /proc/meminfo as well as cgroup memory.stat.
 > 
-> Make dept aware of the entrances of arm64 and add support
-> CONFIG_ARCH_HAS_DEPT_SUPPORT to arm64.
+> To prevent this case from happening also check for folio_test_mlocked()
+> in folio_mark_accessed(). If folio is not yet marked as unevictable, but
+> already marked as mlocked, then skip folio_activate() call to allow
+> __mlock_folio() to make all necessary updates.
 > 
-> Signed-off-by: Byungchul Park <byungchul@sk.com>
+> To observe the problem mmap() and mlock() big file and check Unevictable
+> and Mlocked values from /proc/meminfo. On freshly booted system without
+> any other mlocked memory we expect them to match or be quite close.
+> 
+> See below for more detailed reproduction steps. Source code of stat.c
+> is available at [1].
+> 
+>   $ head -c 8G < /dev/urandom > /tmp/random.bin
+> 
+>   $ cc -pedantic -Wall -std=c99 stat.c -O3 -o /tmp/stat
+>   $ /tmp/stat
+>   Unevictable:     8389668 kB
+>   Mlocked:         8389700 kB
+> 
+>   Need to run binary twice. Problem does not reproduce on the first run,
+>   but always reproduces on the second run.
+> 
+>   $ /tmp/stat
+>   Unevictable:     5374676 kB
+>   Mlocked:         8389332 kB
+
+I think it is worth starting with the problem statement.
+
+I like to follow this pattern of commit messages:
+
+<Background, if needed>
+
+<Issue statement>
+
+<Proposed solution>
+
+> 
+> [1]: https://gist.github.com/ilvokhin/e50c3d2ff5d9f70dcbb378c6695386dd
+> 
+> Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+
+Your Co-developed-by is missing. See submitting-patches.rst.
+
 > ---
->  arch/arm64/Kconfig          | 1 +
->  arch/arm64/kernel/syscall.c | 7 +++++++
->  arch/arm64/mm/fault.c       | 7 +++++++
->  3 files changed, 15 insertions(+)
+>  mm/swap.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
 > 
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index e9bbfacc35a6..a8fab2c052dc 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -281,6 +281,7 @@ config ARM64
->  	select USER_STACKTRACE_SUPPORT
->  	select VDSO_GETRANDOM
->  	select VMAP_STACK
-> +	select ARCH_HAS_DEPT_SUPPORT
->  	help
->  	  ARM 64-bit (AArch64) Linux support.
->  
-> diff --git a/arch/arm64/kernel/syscall.c b/arch/arm64/kernel/syscall.c
-> index c442fcec6b9e..bbd306335179 100644
-> --- a/arch/arm64/kernel/syscall.c
-> +++ b/arch/arm64/kernel/syscall.c
-> @@ -7,6 +7,7 @@
->  #include <linux/ptrace.h>
->  #include <linux/randomize_kstack.h>
->  #include <linux/syscalls.h>
-> +#include <linux/dept.h>
->  
->  #include <asm/debug-monitors.h>
->  #include <asm/exception.h>
-> @@ -96,6 +97,12 @@ static void el0_svc_common(struct pt_regs *regs, int scno, int sc_nr,
->  	 * (Similarly for HVC and SMC elsewhere.)
->  	 */
->  
-> +	/*
-> +	 * This is a system call from user mode.  Make dept work with a
-> +	 * new kernel mode context.
-> +	 */
-> +	dept_update_cxt();
+> diff --git a/mm/swap.c b/mm/swap.c
+> index 2260dcd2775e..f682f070160b 100644
+> --- a/mm/swap.c
+> +++ b/mm/swap.c
+> @@ -469,6 +469,16 @@ void folio_mark_accessed(struct folio *folio)
+>  		 * this list is never rotated or maintained, so marking an
+>  		 * unevictable page accessed has no effect.
+>  		 */
+> +	} else if (folio_test_mlocked(folio)) {
+> +		/*
+> +		 * Pages that are mlocked, but not yet on unevictable LRU.
+> +		 * They might be still in mlock_fbatch waiting to be processed
+> +		 * and activating it here might interfere with
+> +		 * mlock_folio_batch(). __mlock_folio() will fail
+> +		 * folio_test_clear_lru() check and give up. It happens because
+> +		 * __folio_batch_add_and_move() clears LRU flag, when adding
+> +		 * folio to activate batch.
+> +		 */
+>  	} else if (!folio_test_active(folio)) {
+>  		/*
+>  		 * If the folio is on the LRU, queue it for activation via
+> -- 
+> 2.47.3
+> 
 
-As Mark Brown pointed out in his replies, this patch is missing a whole
-bunch of cases and does not work correctly as-is.
-
-As Dave Hansen pointed out on the x86 patch, you shouldn't do this
-piecemeal in architecture code, and should instead work with the
-existing context tracking, e.g. by adding logic to
-enter_from_user_mode() and exit_to_user_mode(), or by reusing some
-existing context tracking logic that's called there.
-
-Mark.
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
