@@ -4,136 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26CB4CAC5B0
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 05:36:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2450CAC5B0
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 06:30:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 520ED8E0005; Fri,  3 Oct 2025 01:36:26 -0400 (EDT)
+	id 8D4DC8E0002; Fri,  3 Oct 2025 02:30:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D1A78E0001; Fri,  3 Oct 2025 01:36:26 -0400 (EDT)
+	id 885188E0001; Fri,  3 Oct 2025 02:30:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C0B18E0005; Fri,  3 Oct 2025 01:36:26 -0400 (EDT)
+	id 774398E0002; Fri,  3 Oct 2025 02:30:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 24EDD8E0001
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 01:36:26 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CCCD1B9166
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 05:36:25 +0000 (UTC)
-X-FDA: 83955692730.27.275B0C8
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	by imf22.hostedemail.com (Postfix) with ESMTP id EA788C000D
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 05:36:23 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=DJJvW5PE;
-	spf=pass (imf22.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
-	dmarc=pass (policy=none) header.from=lwn.net
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A2BF8E0001
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 02:30:11 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D40A5C06C0
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 06:30:10 +0000 (UTC)
+X-FDA: 83955828180.11.83D2F49
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D57CF40008
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 06:30:08 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="gy/GpU1O";
+	spf=pass (imf17.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759469784;
+	s=arc-20220608; t=1759473009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JviM4x86VTg42/9SFICWditZ8FIZ0/vFiF+DDrtEZ08=;
-	b=AjC9K+b4m3N/lSIt98072IfPUSJYcezv2vyCuZ0pHtt8o/RlEcabFgd3/8gQZUFKcP3e8u
-	tb0tQaSCphwJzYeiWCwYn1AZNl2P63jwlGuWVhSp1XIRkHv57dTbDQxSqnyA9k2mT8nnfG
-	EVNOj0TWPcOSmtE7ubTEkugZl2AFbZ4=
+	bh=XkLFiACyw+pxXQ9Sqz5bYmdEFhy/428iFAOlJwo0q5k=;
+	b=Cxrd5u7gik0Ly6oEzMRElo5oN8mVPCtde5CetP05kv5hIytzSnnoab+l2flISQvZR9GUiT
+	qtYN7ZZ4XNA1h2YjhiGgQf6IFETsJxB0hkBlLznNqjq1nR/Zsd3wp6n2biygJNkH7174jI
+	V5jh86cbR0bPY/hzR6cyrsT0B/RxeTk=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=DJJvW5PE;
-	spf=pass (imf22.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
-	dmarc=pass (policy=none) header.from=lwn.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759469784; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="gy/GpU1O";
+	spf=pass (imf17.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759473009; a=rsa-sha256;
 	cv=none;
-	b=NDxmlm7XiSAMZ0F6kcMohwXzpH9DzhZ5yAg8JedBIjEwLIWlFDXPm99iFX88ojImSaEcJf
-	c15Pag/Hz9roOKGea3U4Bjqrf4smQJ5ZkFemyKC3oMV1nijjB8Qd8BtNjLfPL+wWtksrTV
-	9Ami4f+P4SqhuSBDKdryGP3WM0PUCWk=
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 8220940B15
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1759469781; bh=JviM4x86VTg42/9SFICWditZ8FIZ0/vFiF+DDrtEZ08=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=DJJvW5PEMB1qs5Mtek/16g/JnmPt9CmJjE7Uu3yDxuMEd8dQGsOFFsNLXsMYe/EdC
-	 iqEOpfl74zoy2btKntuyskCwXHqb1QziA6gqsLHxEos6514SBiNUgTVTh6gAssbIFt
-	 mX0BfVGqYx99AlSQq50SEso4ByHi4Wl2mDMA1817AOvP7lbGnzuly4lQeWJfoyqsoJ
-	 fHAPdXQvq24AdjQRv5e/AHScCdcLFYjnzQVUHebL1fqlqYQpg1LU1Hw/wr1mqYSMiH
-	 4CDJUKP9Sf0cYHlz89pRZA5pRuDslmiTfDPZXkFMif3dyV2LD6r3xNxo4MP4lnuwWu
-	 2OkTVnFdIVO3g==
-Received: from localhost (mdns.lwn.net [45.79.72.68])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 8220940B15;
-	Fri,  3 Oct 2025 05:36:19 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Byungchul Park <byungchul@sk.com>, linux-kernel@vger.kernel.org
-Cc: kernel_team@skhynix.com, torvalds@linux-foundation.org,
- damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
- adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, mingo@redhat.com,
- peterz@infradead.org, will@kernel.org, tglx@linutronix.de,
- rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org,
- daniel.vetter@ffwll.ch, duyuyang@gmail.com, johannes.berg@intel.com,
- tj@kernel.org, tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
- amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
- linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
- minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
- sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
- penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
- ngupta@vflare.org, linux-block@vger.kernel.org, josef@toxicpanda.com,
- linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
- dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
- dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
- melissa.srw@gmail.com, hamohammed.sa@gmail.com, harry.yoo@oracle.com,
- chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
- max.byungchul.park@gmail.com, boqun.feng@gmail.com, longman@redhat.com,
- yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com,
- netdev@vger.kernel.org, matthew.brost@intel.com, her0gyugyu@gmail.com,
- catalin.marinas@arm.com, bp@alien8.de, dave.hansen@linux.intel.com,
- x86@kernel.org, hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
- gustavo@padovan.org, christian.koenig@amd.com, andi.shyti@kernel.org,
- arnd@arndb.de, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
- petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
- paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
- joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
- mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
- qiang.zhang@linux.dev, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
- vschneid@redhat.com, chuck.lever@oracle.com, neil@brown.name,
- okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com,
- trondmy@kernel.org, anna@kernel.org, kees@kernel.org,
- bigeasy@linutronix.de, clrkwllms@kernel.org, mark.rutland@arm.com,
- ada.coupriediaz@arm.com, kristina.martsenko@arm.com,
- wangkefeng.wang@huawei.com, broonie@kernel.org, kevin.brodsky@arm.com,
- dwmw@amazon.co.uk, shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
- yuzhao@google.com, baolin.wang@linux.alibaba.com, usamaarif642@gmail.com,
- joel.granados@kernel.org, richard.weiyang@gmail.com,
- geert+renesas@glider.be, tim.c.chen@linux.intel.com, linux@treblig.org,
- alexander.shishkin@linux.intel.com, lillian@star-ark.net,
- chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
- link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
- brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
- mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
- linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
- linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-modules@vger.kernel.org, rcu@vger.kernel.org,
- linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH v17 28/47] dept: add documentation for dept
-In-Reply-To: <20251002081247.51255-29-byungchul@sk.com>
-References: <20251002081247.51255-1-byungchul@sk.com>
- <20251002081247.51255-29-byungchul@sk.com>
-Date: Thu, 02 Oct 2025 23:36:16 -0600
-Message-ID: <87ldlssg1b.fsf@trenco.lwn.net>
+	b=YhP8BptOdbSzq2p72kth11se4y4aMqrrh2awCWaM1CB3eE3YtPELFbAx9N6sJvZwRCsmS4
+	H0tVQYrHioYW+OTisEmhPPz/vVzGyDgbFb50WqnbQV8SRpR+mH5bIhgFGaz85c7413kwQQ
+	hmwAWCtWV4bvPff2j9AyiiTQF2Ybezk=
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-62fa062a1abso3385238a12.2
+        for <linux-mm@kvack.org>; Thu, 02 Oct 2025 23:30:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1759473007; x=1760077807; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=XkLFiACyw+pxXQ9Sqz5bYmdEFhy/428iFAOlJwo0q5k=;
+        b=gy/GpU1OvigHLjWG/xoqudlQO1KhZrVaIyE33uNL51hdwg6PrjU7/as6s6980tGDLF
+         BKMgZbo/KieOpahE1UZiBPaYcrACO/zS1BmU/828Zcz/2r9qwySi+MGkenECYy8weu1N
+         OS/klHELSgLGF4j/oW1dMy8jxZC6Nop5nD3/UjgAywPMMnHujz5FFv8qZhjiW/bWh+oF
+         YNdU32HgqZH2TFe9RrvibDB+0ixWBcrGvZnLo+FqtRtPw7x9dhnVyoYuyk0oDNxtHOx3
+         268lxxKFQRa1VXJavKBoFR0HUwiKPwtQzpNu94m1Ge8MrdzGnrXCFDESPqd6VWpYb0m6
+         YLHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759473007; x=1760077807;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XkLFiACyw+pxXQ9Sqz5bYmdEFhy/428iFAOlJwo0q5k=;
+        b=eQFK+J+Ct2kyBPc0kWzFwWrk4NRnIRU8wz1XWoXgUQVHbsjTtSUyXmkhDjiMB1GE3W
+         6XA10Y9lM0Z4bSaUqA2TqP7Uq+86l126lxV7BuoDF66uRfT2wmtkJhdXYEtaHqlYpS6a
+         vMofz2w13fY83zGZYiJb13MX828U+ADerWS64Foe5Sb7ISxF8rUd/K+QjoVaGN0N2hUB
+         gQgPUuOwXX6qVXMzaYiTnxSkPchZPsipAfD7Kai8oiNQQHxtyxR57kV3h4t/YmhbzpnG
+         sdbWpxQsX6D/dcuDakgkqsAQlj31L/Li8I2d5hhlyOwuyTov7ZNuWlXjp/MTFysamsZq
+         HIMQ==
+X-Gm-Message-State: AOJu0YwsXK4QU94vY8C5iUXQcyHM9p91IrVURHyqiHLv3mFm3VIllwMw
+	I0LWV5+s67kCmuA2yLFOO3KWnhZM3rUZhNdHR20V90DFn7FRHFicYVG/30vtfmzZwCc=
+X-Gm-Gg: ASbGncvt/tcvR1henx6ZiLp+UOr21XEypZXEuKzHuv2JtbFG1VPlocwutRTLHBaQg5c
+	KAEinL2xWxkwqlrgfxSlY5mDYmG/fUoy4KXOvPdcOaSA2kULepuPTsE1WJSZnKSD8+PCNpGGZUg
+	TctuOQVoGeuuzoD0Le/tbTGpfwDJ8TwEXOZDr2KQm3zttUAgA/Rw+32GzO9PtdjrY8J+5MN/n1r
+	l4vPuxKjbo80drg7X2QRAWm2S79Sx7UIC+Ik0qE/wShc40QjOkJ3jbFszWJcoIxs6Bad4SrkTEr
+	wZJbGIsWwXjt4GRjOQasklZ8fQ1JYS8ohbRPKoPZU149cH4RJQx2k3dL6ctOuSg3JOSmGtqLdXG
+	5So0e2wP1N2fEbVnqKcG6h3dTedaU0b1Uhfp6YdmhkHk8nrLPLtJsKLf7lsqD
+X-Google-Smtp-Source: AGHT+IGXX832rzQ3SHMm9cxe/AbXuwPv3O0q1qi/7SX7y0yjjhFdzCNvPBXopZojYDFGU05IQJ2DLQ==
+X-Received: by 2002:a17:907:3e93:b0:b04:6fc2:ebb9 with SMTP id a640c23a62f3a-b49c393aa02mr220162166b.45.1759473007029;
+        Thu, 02 Oct 2025 23:30:07 -0700 (PDT)
+Received: from localhost (109-81-95-234.rct.o2.cz. [109.81.95.234])
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b4869c4c1f6sm365114166b.78.2025.10.02.23.30.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Oct 2025 23:30:06 -0700 (PDT)
+Date: Fri, 3 Oct 2025 08:30:05 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 10/10] mm: kvmalloc: Add non-blocking support for
+ vmalloc
+Message-ID: <aN9tbS3RkEqm2tzP@tiehlicka>
+References: <20251001192647.195204-1-urezki@gmail.com>
+ <20251001192647.195204-11-urezki@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251001192647.195204-11-urezki@gmail.com>
+X-Rspamd-Queue-Id: D57CF40008
+X-Stat-Signature: uudo6y4qen4tj6zs81ty4x8obqukazw4
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: EA788C000D
-X-Stat-Signature: ab8wd6wiyd1i63319wdgyraez1nhxx76
-X-HE-Tag: 1759469783-831347
-X-HE-Meta: U2FsdGVkX19gvaI9e8ftlCuO6YmSm/H30RdpGBTSh0pgk92yv0kDlwvbq337MEE4uVMOLBSB+2jmu8CDHLJBiFu0IfRedXcOHbXJUM8h4IF8qSWT8EuQHANq5YuDzezCECXg00L4I8Qst9NA4IhDpH5pQkJQY0iEll9kLp9lfhQkQWvCpGrA2tkfqQJWrDQwPYK3UPqH/Ru/7wNcvLwPc6fEHorZT+62UaPgOlaF9Ojv9IKJjNmhgdKOCdqierkSUcXgM/d1Z3sWbNU1fCXqoUVMf9T1Uhh2ZiNDqceoHZG4C2INqp1EopOG9eJ4zB+z9psTp9wznouY/FINKAeRqeYg6PIhyuNDtPW1NjS+63F7fluaBNjzWYSsp0kR7cdVZHV9DlyusyTux/LnjWqLVwZ0TJtzK3YQSAeCJP1R+xC4wSFmR350CJcrgramCQwM/JedcCugvXH6VGJyY2hs/7dPx6Psg9shb4sM6AJEHVqCFn1sOc34aeauZ06U2NCYmegMve1Fpy/dODdGKHolLAkNwQ/IjIKIhI9rLghz7G7cycCdMlWti36FekbdxiO/+/9wmpi0T1E/UQU/pwk0wDwPppfECFpeeROtQT4F+iwl+VJgAxx/5+OBy4u8MWmpp1mUVEPF0zu4qRRuvwuTKzdLPEg8dIWNJ/hwfK25MAfK8Mqr8kldCW2d3PQlVWCLIi9pG35jdy7KGbWsjC3GdYj+pnx2Gh67Mr6s9+f4J230jdEsERDI2NBqyDrrAl2NDsvLwTnIVnLKh3iDZT5A3qC42GPuvgX4vNAsg4YJV+NHsURKt4RcyTtWFL7qFSmZDEUBqYD7Bme2jlr+ourKfWFIXG5QSngx/mowxtL+vnwdC8UHNFlZcsKK4skYV4+nldO6bei09+7W5mUForTj9sBlfkZ6GO912nDF7oPhqIFYjqXB1dJkl8ZG8+QMoI3o4ZH1vYfgQoSk3QA3s6b
- dEgZ3KqX
- kHv1iStOVn0sc8lCBt6Rqfo0Y/xj6HtvtcjQP7GduLrXpDGbf+3x2cbeJRNb0q6sKC39SA9y8VlzOTlsb3XQdywfyLpHslfqurLr/uXlHrflK/DVMA+nq+hW6ZzW1Cb+gNPhKP/7XTJpuy9hml2MCFKTwB6n7UPRUrRogOygf3hT/azDJEYxR9gGVEDcOJgkO8AhcX7k6uY7iIy6lrbWr2zTGw+GevALLwQ28sYRZcbwL19wW917kNJD+R9y8760NlZaOTFyGRxL0EbXHR2SmQVUS1VEEZ+GcDpgtzZB7vHl+zDyVeIpFiqlz2WAj3PkMnI1hgufD3FP66oO+WgWNnIIH7cVhB2NKNrLkMo7lOkCKPUMYKmvvsYa/czVwC+TfOP+RBO7PAG1nyMNBNkyKuYGxUdUw+8kc3WCIzGRAYBTsj1/ALbTqnT1YAg==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1759473008-497416
+X-HE-Meta: U2FsdGVkX19j/eqzsnlP7szc+4fwgnmnxMfq1bZvM2Biegi7Syz3vsds+c028kn3DQeI6Uu8cEAfqeKT1JOMNWXhw9MQcLtYKGjCtrvYOGb0F5ekGe8xQUGJSZBQvEB9TQlel2Z+Iy5ZyCXeOFubYjTLVnSkhKXASKw/hHqQo3zmoESuI/137o/NOh/EshuOTEMhQExuZvV9QWus6aPjC5YCBf61tter6o9mekj/mozpG51UEhnmy+AvOcbrHyyROY6VgILY5kSMMHi7Z5Q0VtrJ6SdTpvZrL7+L6AeJBJhWtzxakR0+eXF5pbubI3Wj/uDRV4ubhU80OJAxQIFQqELNqdkvCcoKec4CZAHaC1v7CR0n7eFteRho8rgrKCcUfqro4na5K1aWS2mnXuE9oQTbA6KAIICIjn4eYr1pJABgFZ8FuaVRT/n0ombjKpcpUysiDQQ7UeYPKH1K91HxrUxlGz6AnsNcGt0yoKj+LSJaKcwcGVB9q1R/86bjy0GH5h0EVpqOy4uwYgDMG4rAWRcwjaerN/gj9m7jlboKIjh6wxcfwgD+0nLTCgYsRCnpJ6kHLNUA4M0pewZpFYeUrJaxW5cdJ0hGTAq0iBC2alWLDPuZCEssdNTUJLtZb/SNoOj4nYoDfNPC7Hu05vUIcz/tD64zqj/gqwKSQE3Wajke+v/K8c1bw12UPDAtk7g6M8or57z0NFZPKBN9DfjrDWBOD/jOPM4J1j16Sy1CyS9TOr7J/E75Ozp7xLJZ/mQk80RyUbiVVbZPrQVEa/bRncgQYsThL+qyIA9oIhME2lIzl1ooDQp+qEM4Xm3Ro8hSGBcSGtEN70dippVyCrMntSNckAY6dJFl4C0AWh8xoWzVOUk+uqsMootY5VIrRrKvIDH919WCY9uMOSQhSwrK+3vWtHkOSnAbj0g6BK3AGDNGc82HGAQoiq0E3gkTNEJIkNmAhFHS23wLDjM91S7
+ UssAJw+1
+ DbgBEA4TQ/mUCFhxQud7Q77k2Wpds15csXEAGZ2wbpqhuVluyl2AQQJaA2ccPZi8938S6cnedP9BGm6cMjZOetYEko5jEhPCeoGLqmU6p3P8PDQHG/MvWXP2QwXQBnpjJ8iG0eU7Dl1CVDwkbz51E365MzVoxELyDyzNRbLuLohPCwfz9nJRs74NgJ44MhjERkobnP3gbACe/N7blW8Y7YHjHDkQM5PYSUnUNebCsIh5CczlOeaVk2gB7gfGz5L9g/cT1GBOHIEkBQ6CeJ8rkvF6CKvDONzxDXUxdeQ0D8bSOwzT/ypqUnRMs9B8mvyy3kWBLLu64Kwwh760idP7aKq1+DbuSeWpbvK/dM8WLhhRF/AKClIeqIPNlDU5zsZZcwhYz9beFDgTDPLM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,23 +118,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Byungchul Park <byungchul@sk.com> writes:
+On Wed 01-10-25 21:26:46, Uladzislau Rezki wrote:
+> Extend __kvmalloc_node_noprof() to handle non-blocking GFP flags
+> (GFP_NOWAIT and GFP_ATOMIC). Previously such flags were rejected,
+> returning NULL. With this change:
+> 
+> - kvmalloc() can fall back to vmalloc() if non-blocking contexts;
+> - for non-blocking allocations the VM_ALLOW_HUGE_VMAP option is
+>   disabled, since the huge mapping path still contains might_sleep();
+> - documentation update to reflect that GFP_NOWAIT and GFP_ATOMIC
+>   are now supported.
+> 
+> Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
-> This document describes the concept and APIs of dept.
->
-> Signed-off-by: Byungchul Park <byungchul@sk.com>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Thanks!
+
 > ---
->  Documentation/dependency/dept.txt     | 735 ++++++++++++++++++++++++++
->  Documentation/dependency/dept_api.txt | 117 ++++
->  2 files changed, 852 insertions(+)
->  create mode 100644 Documentation/dependency/dept.txt
->  create mode 100644 Documentation/dependency/dept_api.txt
+>  mm/slub.c | 19 +++++++++++++------
+>  1 file changed, 13 insertions(+), 6 deletions(-)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 584a5ff1828b..3de0719e24e9 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -7018,7 +7018,7 @@ static gfp_t kmalloc_gfp_adjust(gfp_t flags, size_t size)
+>   * Uses kmalloc to get the memory but if the allocation fails then falls back
+>   * to the vmalloc allocator. Use kvfree for freeing the memory.
+>   *
+> - * GFP_NOWAIT and GFP_ATOMIC are not supported, neither is the __GFP_NORETRY modifier.
+> + * GFP_NOWAIT and GFP_ATOMIC are supported, the __GFP_NORETRY modifier is not.
+>   * __GFP_RETRY_MAYFAIL is supported, and it should be used only if kmalloc is
+>   * preferable to the vmalloc fallback, due to visible performance drawbacks.
+>   *
+> @@ -7027,6 +7027,7 @@ static gfp_t kmalloc_gfp_adjust(gfp_t flags, size_t size)
+>  void *__kvmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), unsigned long align,
+>  			     gfp_t flags, int node)
+>  {
+> +	bool allow_block;
+>  	void *ret;
+>  
+>  	/*
+> @@ -7039,16 +7040,22 @@ void *__kvmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), unsigned long align,
+>  	if (ret || size <= PAGE_SIZE)
+>  		return ret;
+>  
+> -	/* non-sleeping allocations are not supported by vmalloc */
+> -	if (!gfpflags_allow_blocking(flags))
+> -		return NULL;
+> -
+>  	/* Don't even allow crazy sizes */
+>  	if (unlikely(size > INT_MAX)) {
+>  		WARN_ON_ONCE(!(flags & __GFP_NOWARN));
+>  		return NULL;
+>  	}
+>  
+> +	/*
+> +	 * For non-blocking the VM_ALLOW_HUGE_VMAP is not used
+> +	 * because the huge-mapping path in vmalloc contains at
+> +	 * least one might_sleep() call.
+> +	 *
+> +	 * TODO: Revise huge-mapping path to support non-blocking
+> +	 * flags.
+> +	 */
+> +	allow_block = gfpflags_allow_blocking(flags);
+> +
+>  	/*
+>  	 * kvmalloc() can always use VM_ALLOW_HUGE_VMAP,
+>  	 * since the callers already cannot assume anything
+> @@ -7056,7 +7063,7 @@ void *__kvmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), unsigned long align,
+>  	 * protection games.
+>  	 */
+>  	return __vmalloc_node_range_noprof(size, align, VMALLOC_START, VMALLOC_END,
+> -			flags, PAGE_KERNEL, VM_ALLOW_HUGE_VMAP,
+> +			flags, PAGE_KERNEL, allow_block ? VM_ALLOW_HUGE_VMAP:0,
+>  			node, __builtin_return_address(0));
+>  }
+>  EXPORT_SYMBOL(__kvmalloc_node_noprof);
+> -- 
+> 2.47.3
 
-As already suggested, this should be in RST; you're already 95% of the
-way there.  Also, please put it under Documentation/dev-tools; we don't
-need another top-level directory for this.
-
-Thanks,
-
-jon
+-- 
+Michal Hocko
+SUSE Labs
 
