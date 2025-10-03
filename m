@@ -4,98 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 904ECCAC5B0
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 16:54:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DD20CCA472
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 16:56:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E809D8E0016; Fri,  3 Oct 2025 12:54:25 -0400 (EDT)
+	id B02B08E0017; Fri,  3 Oct 2025 12:56:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E310F8E0005; Fri,  3 Oct 2025 12:54:25 -0400 (EDT)
+	id AD9FE8E0005; Fri,  3 Oct 2025 12:56:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF80F8E0016; Fri,  3 Oct 2025 12:54:25 -0400 (EDT)
+	id 9F00F8E0017; Fri,  3 Oct 2025 12:56:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BBD858E0005
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 12:54:25 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 80C2911AEBB
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 16:54:25 +0000 (UTC)
-X-FDA: 83957401290.25.17855D2
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E1BE840008
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 16:54:23 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=r0z0oIlk;
-	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F2C48E0005
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 12:56:52 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 36E7087E61
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 16:56:52 +0000 (UTC)
+X-FDA: 83957407464.17.6EC9E01
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 49BFF40008
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 16:56:50 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="iPsv2t/l";
+	spf=pass (imf27.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759510464;
+	s=arc-20220608; t=1759510610;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mdGXwz8RCfksNzwLXFncQFeyfM2HiWcY9u8nErU1OTQ=;
-	b=Bvsa20lgyZ4iltdxqypQ4NqU8X0BgtZLM+x1p9NoBxabBWwfCtmyxpmyDn+5AnzlCtmFt/
-	bkfmeLD4ks6zZQ1J2VLuo3cRkcCt4VFam2BXM53JQKK37aG1w8yLSeAtsg43DkBSIEuBq4
-	7joslFlqagNnK6D7q5W860jPteA1kIA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759510464; a=rsa-sha256;
-	cv=none;
-	b=M4DqfkLyNJ2YWB02EYVpb/4Q3NDKwqI7S/X0RMV1KHOf7a2gIGNBpMQn5KuOS77aQMPoR3
-	kfOfhrE8sNxcXu3p6aPeF/AeUi6ghciPPfJxAeJTwiiJuVfZuvuQ9qGLrx5+6gCD50Kb/4
-	I0PwEN6LwrvUrJrsX931yqlyBjzWBRU=
+	bh=F/lxrUW0n5wUW5B1tDAtUnKVX6UHfeSxxmaQJrLLe4k=;
+	b=Rqr3IQszjXM1Z6Pi4A8hhaoG8EyU4pnk4MbZNtJXh9zfVnmJ6V5dOBb6EexhlPZ02r9nK4
+	it2zuvEXNQA902iwpTksFtxhNwSdoR659VzLjBiJS2P7kbog+zV9uIqc0bD8nKFUg/vQ7p
+	rOFkrS31jcItM+LAtNkZOItezT7jc94=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=r0z0oIlk;
-	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759510462;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mdGXwz8RCfksNzwLXFncQFeyfM2HiWcY9u8nErU1OTQ=;
-	b=r0z0oIlk6NWImBasOPaB45bfsCP/wLTIrAznY5ImxqWU+ydf9O7stq0NWg5zUK/FRqv0IT
-	fuIPOjhoJYLpCcJNYEWJ73dEWb6jtcUkUNJkdLAATVEtCzcJU32ysHe7GQkZ+Hy2h7UzcZ
-	ND2kxJvX3NuIM9ClxdK4PhOYE/4+U6c=
-From: Qi Zheng <qi.zheng@linux.dev>
-To: hannes@cmpxchg.org,
-	hughd@google.com,
-	mhocko@suse.com,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	harry.yoo@oracle.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v4 4/4] mm: thp: reparent the split queue during memcg offline
-Date: Sat,  4 Oct 2025 00:53:18 +0800
-Message-ID: <a01588414c9911f2bc912fa87f181aa5620d89d4.1759510072.git.zhengqi.arch@bytedance.com>
-In-Reply-To: <cover.1759510072.git.zhengqi.arch@bytedance.com>
-References: <cover.1759510072.git.zhengqi.arch@bytedance.com>
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="iPsv2t/l";
+	spf=pass (imf27.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759510610; a=rsa-sha256;
+	cv=none;
+	b=u30uKnygtwxOgQOWFaP0Gc6AxIH3N1Zpwaaj0glsqrk2mW10EUUHLie+VOLALHKuecA6su
+	YSkYlfTaJa38HmysHM5vyN/zYb4/lYu+m+NZHDVwkc2k7deHw65PSCsFVJvJ4pc02JIypf
+	WjMvab7covUP3BAu3+xPO7xkL2AkYFo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4B7BF63D26;
+	Fri,  3 Oct 2025 16:56:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E760C4CEF7;
+	Fri,  3 Oct 2025 16:56:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759510609;
+	bh=JV3UpCx5Xkf4WnYDKXQq5+YoXg9RglDY2VFNOWzZ3sE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iPsv2t/lOBILV84DJkEkxasJK9RmPc6DgbHdJkM5szfTaHyfm1vKo68P0wApmk+dQ
+	 FXrTb5AvwQkIhwv12T/eSUb0fVBHHv+z4KUB3jBpxkWBqd1JJHYeQhYpILwcpJqBhW
+	 NNEXNpnBWO/qIpxFgRfNZxb1ufpNDjtWtFgLKU3as/8nSTRiAx3eoih81Ef1y+X+/7
+	 FA/4sdDhzcyTdffwUNQsAyRDbjiws7eWWXAhxppoQUIjBVeNEBdSMaY+PKGsMXHkIq
+	 UrVTfvD2WzacOrhTDYZEpRGgFheZogC7HNEhK6x/72p22igrL7sJIQ9oyNPFYJ8Hhf
+	 vZg9Gi/Q4rqzg==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 6FB2CF40066;
+	Fri,  3 Oct 2025 12:56:47 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Fri, 03 Oct 2025 12:56:47 -0400
+X-ME-Sender: <xms:TwDgaFlxUqzapmQZHn0PHbC8ptyLONHzP77fFPhx3m5xw4_bahlqow>
+    <xme:TwDgaIksgsykPA-UJGwoR42X7ivZT7u1ZC7mJbk0dg9QKLHMLqi9OGgFZrl9s1VQ2
+    WA0S7Vo84qmp_m-Ol3zKDG_W3OxOt25SVx5jTan6sPr8aAqgeL4WL4>
+X-ME-Received: <xmr:TwDgaKMyLseSqZpgPPwZ74nAqOedbBSkXpt_lZlwqN73Qj9tD7G29FwjTMJHTA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdekleeggecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
+    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
+    hnpefhieekteelledugefhffekfffgjedtveevgffgjeeffeegvdekteetudeggefgkeen
+    ucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlodhmvghsmhhtphgruhhthhhpvghr
+    shhonhgrlhhithihqdduieduudeivdeiheehqddvkeeggeegjedvkedqkhgrsheppehkvg
+    hrnhgvlhdrohhrghesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepfedt
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouh
+    hnuggrthhiohhnrdhorhhgpdhrtghpthhtohepuggrvhhiugesrhgvughhrghtrdgtohhm
+    pdhrtghpthhtoheplhhorhgvnhiiohdrshhtohgrkhgvshesohhrrggtlhgvrdgtohhmpd
+    hrtghpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphht
+    thhopehrhigrnhdrrhhosggvrhhtshesrghrmhdrtghomhdprhgtphhtthhopehvsggrsg
+    hkrgesshhushgvrdgtiidprhgtphhtthhopehrphhptheskhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtohepshhurhgvnhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopehmhhhotg
+    hkohesshhushgvrdgtohhm
+X-ME-Proxy: <xmx:TwDgaP4CAVLa8vmKSGL8lliQN1Pc5vTXs4CmYx14EsepnVmM8SAG0Q>
+    <xmx:TwDgaHslB2UC6UlQCYocZTPwhw9-JVFyVn6xmEBxdSa9JsSQpxeepw>
+    <xmx:TwDgaJOAjuiaDVGUeo8aIL7JTEPFk-giBcQqiFTQpRbmgLT2YC5SCg>
+    <xmx:TwDgaDoAejs1PnA71FQLjfBHG_79VltNAwQhHhXagqXTcfEiRJ4elg>
+    <xmx:TwDgaOHKPLYAKhYXsvdVNvTYraMDsRLij-Ypg_1jBYrAtYnAszsrwD-K>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 3 Oct 2025 12:56:46 -0400 (EDT)
+Date: Fri, 3 Oct 2025 17:56:44 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Ryan Roberts <ryan.roberts@arm.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
+	Amir Goldstein <amir73il@gmail.com>, Jan Kara <jack@suse.cz>
+Subject: Re: [PATCH] mm/mmap: Fix fsnotify_mmap_perm() call in vm_mmap_pgoff()
+Message-ID: <bqmxwfi4kohx744fa5ggoiovrhiwsoehqn57kptoni64lgflim@ibt5bjvcbhdx>
+References: <20251003155804.1571242-1-kirill@shutemov.name>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: pe4o4icgnjnmsbm9jg8shk9r3pxzi5e4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251003155804.1571242-1-kirill@shutemov.name>
+X-Rspamd-Queue-Id: 49BFF40008
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E1BE840008
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1759510463-857731
-X-HE-Meta: U2FsdGVkX1/RVakl0x+5qtSzaPs0b/u0oUKeiBt+Cv3spKI8zsMHwocIR+dy6JJUPNV2Whht++Q3f4SFS2ACZZxy4JA0lQHbaQcKhdCnscOddlOh4VpcRcWmHLz4We+pt4Nfr3dterA6/ywfFx4Eo80kyQEkESTKdiE/2oRN8xXuwc0DCtfA1mncqC8ya4yeIJ4eZBTtU77gPa6A2L811diDUKom4BuChL2Eat221g8mFqXzd54ONBPEccPUO/XXXCtT85W369D9Ro0HXsZ9ATNz2bG9HgsL3TsnewXRtZoczRbBW+13UJQCsiXadKooS9+nriSyy8/w/G+mFMCaqlXHBxI3Zv/xzCv0EVrveoz7qqSrbvb/Y+6HhRltBJh3kiIP86MGI5bLrEirwf+MxT/9ytcefsEGm56NVrF5v72062pkbdBeHbBjyndXUCXbGI+8F7cOs8pHhLixJvBkIAET3G5zH8/pts6mXjzqu4d3iPruMfpOrW+HBjjMueekaz5LfPGrMN/1b7BS2wWYjJ52sbguM4A3tSm43ysHZiQA7qdwud7fFXwqBFxIz3S4IC06DZFKbUEBw/rV3w/5t8t/WN+ydHJ8N0AC1Sg5TIzF+E/wBlXNInpEqNxFR01CCxqWZG3Nj3ZPiuLAeIqOtgQWeOFGQwObnSBC88AoH3egD/s9nEJ2NhpfJdefQM+qZ7aw4QT6tGRb7Rm5uaOItOjCGk32GvJrw/tGSGrOXdeo8h/hzKhKqz9z/VI6ZNyclGB8e0CTxD8VZOGAsfoRFBv6IVNk4EsUOcM1BT470mvKVtdqZ7bSHdpgKSClbw4KHnpNn2zkyXsD8Efqgn2/cUBAOsi77k9ZroQCotK1FBQ2tr9vBuFNl/OMjpxcrcalxEBsqmo5yOHw0IqB0PQjPQ==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: opp3n7wcrsgub3b9cww83h7abzass6f4
+X-HE-Tag: 1759510610-21881
+X-HE-Meta: U2FsdGVkX1+u1hfUGKTytdoDexgdBlDnfhsuwlbdrnjNSpOtXB/cC2rAi/voV1pJI1q26pxwCqtlFplrlobrU5ayF2UkvMpxZLyVuAyl3X1vn3sX6eVPjj1S7gmTWtAo4V2D5f7AoWFMYLbLBTfQ20mnGlYLd3u34ZDuhz/jsbtu1kS9AO2IEABlORCiFTHZrHDYu00wgFYFLvRGjOi8Rhb3vW8xg+lJIy/XltGGfct8IJVZ6w+Hlpzz/kuT4T97S56YBwOtEZGE8UeWv1ByxE0Nji7VHzWu3g/6pxwvbDiluhOyzLQuq3SU/w2LYSOJovO43hCqgjk2aohUOwrsx00Ym3Y4l4nGkHDguJzUaospvIjDX4BdrHCsUGo/p5MklerrAXy9Y5oi9870VUJyQHROu1sqoBO26Xv6OuGfQEn6g2htIJVdVKNLAGmSJ7dMlCIJqs+1E7TiQcNgVBZZriYIf3BvtST2VFQYQIubsnELeuZKV9T33kcCMUZj47QTnoJRsGqZJomD1xGXIGh3ZHOj/+73j1ice1IF8YW/QIxDa/zKK09Ngb8ei5139e10fzsrmANAdBsQZgl+6PQv6B7tlBsvgwL+ia8+fcxXEyyZcFS/rUttHA4A/0YqAnlDaNigvdgJ/1hsdpf7UkPb98yozywswcBqM8pDYT71GAb7/QTq790Q2WEJTQWCm+kQhadAKQJrTmHJ7PYJfQms79nbXxrwHARMgye0BZoXCRgNBYHViGxiaY/lVdRGDTFQ0d8bnERo3wfD7bNSkHuV2wVmlCe60N5/rzGrrP/GfY9xp1XWPwitPZVvi8U/45J1osXyyXw4JPjyV/Kz4PU1CJAEvbsoFu4LJZs7vkM1MQ9o6JBtvixsWhLfP9dAa7OhM/YAA7BLe+RM6Ux1yvPY+mKwmO6/e3w8B27MuD7V+uCoFAcPT2gapn5MOSzY/5KlHqyACdVXGGV5aU89bKB
+ mYGy9lw/
+ W/6nFaTEL5kDDCpOAgBP8JyQh6hRf0n08onG+O/Z47KntG4rTusckOIccjgezZtxhBPDDArZ4liPXxgSMx0813nH4l9L1z86gunTzV/+EVCUFnU8/6du0+6LCb5/9/+fqVbC7ZXq+DUoqYBvtwMXlP42aDHwS33WfXP5Bc+ey03Ugy/fd7A2b6qXEfAm3GQaL6ybymRQz9zds8KzU+mbDBWd2PcS1E+kIX6/8cJVsgvgGWxJpruld1La1AZnxHiOAX5xhUlTnRTujRUusLX+xyeNmQaAc3WKxfBMugVDrbh3bX3m0pO9R2Y6Euymq8WtqQEbkqr+YefIGTgUTSwrKGZSqKUqY536kpCkvNUARJ0KNvMwVau3vOr8pakLfB8iSwq5d+KPlIcfvJ0+9lzoSqZWaiNvCbmpBcDzcJTXxhjxTjOYGfRgOwMkKGT83uU5dUr/3doOD0upyenMl2KVrGxMbDKJwx6VnuSSSrUUztvgYiGc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,153 +130,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Qi Zheng <zhengqi.arch@bytedance.com>
+On Fri, Oct 03, 2025 at 04:58:04PM +0100, Kiryl Shutsemau wrote:
+> From: Kiryl Shutsemau <kas@kernel.org>
+> 
+> vm_mmap_pgoff() includes a fsnotify call that allows for pre-content
+> hooks on mmap().
+> 
+> The fsnotify_mmap_perm() function takes, among other arguments, an
+> offset in the file in the form of loff_t. However, vm_mmap_pgoff() has
+> file offset in the form of pgoff. This offset needs to be converted
+> before being passed to fsnotify_mmap_perm().
+> 
+> The conversion from pgoff to loff_t is incorrect. The pgoff value needs
+> to be shifted left by PAGE_SHIFT to obtain loff_t, not right.
+> 
+> This issue was identified through code inspection.
+> 
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Fixes: 066e053fe208 ("fsnotify: add pre-content hooks on mmap()")
+> Cc: stable@vger.kernel.org
+> Cc: Josef Bacik <josef@toxicpanda.com>
+> Cc: Amir Goldstein <amir73il@gmail.com>
+> Cc: Jan Kara <jack@suse.cz>
+> ---
+>  mm/util.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/util.c b/mm/util.c
+> index f814e6a59ab1..52a667157264 100644
+> --- a/mm/util.c
+> +++ b/mm/util.c
+> @@ -573,7 +573,7 @@ unsigned long vm_mmap_pgoff(struct file *file, unsigned long addr,
+>  
+>  	ret = security_mmap_file(file, prot, flag);
+>  	if (!ret)
+> -		ret = fsnotify_mmap_perm(file, prot, pgoff >> PAGE_SHIFT, len);
+> +		ret = fsnotify_mmap_perm(file, prot, pgoff << PAGE_SHIFT, len);
 
-Similar to list_lru, the split queue is relatively independent and does
-not need to be reparented along with objcg and LRU folios (holding
-objcg lock and lru lock). So let's apply the similar mechanism as list_lru
-to reparent the split queue separately when memcg is offine.
+It misses the case to (loff_t) and it broken for 32-bit machines.
 
-This is also a preparation for reparenting LRU folios.
+Luckily, Ryan submitted another fix for the same bug at the almost the
+same time. And he was more careful around types:
 
-Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
----
- include/linux/huge_mm.h |  4 +++
- mm/huge_memory.c        | 54 +++++++++++++++++++++++++++++++++++++++++
- mm/memcontrol.c         |  1 +
- 3 files changed, 59 insertions(+)
+https://lore.kernel.org/all/20251003155238.2147410-1-ryan.roberts@arm.com
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index f327d62fc9852..0c211dcbb0ec1 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -417,6 +417,9 @@ static inline int split_huge_page(struct page *page)
- 	return split_huge_page_to_list_to_order(page, NULL, ret);
- }
- void deferred_split_folio(struct folio *folio, bool partially_mapped);
-+#ifdef CONFIG_MEMCG
-+void reparent_deferred_split_queue(struct mem_cgroup *memcg);
-+#endif
- 
- void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
- 		unsigned long address, bool freeze);
-@@ -611,6 +614,7 @@ static inline int try_folio_split(struct folio *folio, struct page *page,
- }
- 
- static inline void deferred_split_folio(struct folio *folio, bool partially_mapped) {}
-+static inline void reparent_deferred_split_queue(struct mem_cgroup *memcg) {}
- #define split_huge_pmd(__vma, __pmd, __address)	\
- 	do { } while (0)
- 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 59ddebc9f3232..b5eea2091cdf6 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1099,6 +1099,11 @@ static struct deferred_split *memcg_split_queue(int nid, struct mem_cgroup *memc
- {
- 	return memcg ? &memcg->deferred_split_queue : split_queue_node(nid);
- }
-+
-+static bool memcg_is_dying(struct mem_cgroup *memcg)
-+{
-+	return memcg ? css_is_dying(&memcg->css) : false;
-+}
- #else
- static inline
- struct mem_cgroup *folio_split_queue_memcg(struct folio *folio,
-@@ -1111,14 +1116,30 @@ static struct deferred_split *memcg_split_queue(int nid, struct mem_cgroup *memc
- {
- 	return split_queue_node(nid);
- }
-+
-+static bool memcg_is_dying(struct mem_cgroup *memcg)
-+{
-+	return false;
-+}
- #endif
- 
- static struct deferred_split *split_queue_lock(int nid, struct mem_cgroup *memcg)
- {
- 	struct deferred_split *queue;
- 
-+retry:
- 	queue = memcg_split_queue(nid, memcg);
- 	spin_lock(&queue->split_queue_lock);
-+	/*
-+	 * There is a period between setting memcg to dying and reparenting
-+	 * deferred split queue, and during this period the THPs in the deferred
-+	 * split queue will be hidden from the shrinker side.
-+	 */
-+	if (unlikely(memcg_is_dying(memcg))) {
-+		spin_unlock(&queue->split_queue_lock);
-+		memcg = parent_mem_cgroup(memcg);
-+		goto retry;
-+	}
- 
- 	return queue;
- }
-@@ -1128,8 +1149,14 @@ split_queue_lock_irqsave(int nid, struct mem_cgroup *memcg, unsigned long *flags
- {
- 	struct deferred_split *queue;
- 
-+retry:
- 	queue = memcg_split_queue(nid, memcg);
- 	spin_lock_irqsave(&queue->split_queue_lock, *flags);
-+	if (unlikely(memcg_is_dying(memcg))) {
-+		spin_unlock_irqrestore(&queue->split_queue_lock, *flags);
-+		memcg = parent_mem_cgroup(memcg);
-+		goto retry;
-+	}
- 
- 	return queue;
- }
-@@ -4271,6 +4298,33 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
- 	return split;
- }
- 
-+#ifdef CONFIG_MEMCG
-+void reparent_deferred_split_queue(struct mem_cgroup *memcg)
-+{
-+	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
-+	struct deferred_split *ds_queue = &memcg->deferred_split_queue;
-+	struct deferred_split *parent_ds_queue = &parent->deferred_split_queue;
-+	int nid;
-+
-+	spin_lock_irq(&ds_queue->split_queue_lock);
-+	spin_lock_nested(&parent_ds_queue->split_queue_lock, SINGLE_DEPTH_NESTING);
-+
-+	if (!ds_queue->split_queue_len)
-+		goto unlock;
-+
-+	list_splice_tail_init(&ds_queue->split_queue, &parent_ds_queue->split_queue);
-+	parent_ds_queue->split_queue_len += ds_queue->split_queue_len;
-+	ds_queue->split_queue_len = 0;
-+
-+	for_each_node(nid)
-+		set_shrinker_bit(parent, nid, shrinker_id(deferred_split_shrinker));
-+
-+unlock:
-+	spin_unlock(&parent_ds_queue->split_queue_lock);
-+	spin_unlock_irq(&ds_queue->split_queue_lock);
-+}
-+#endif
-+
- #ifdef CONFIG_DEBUG_FS
- static void split_huge_pages_all(void)
- {
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 4deda33625f41..2acb53fd7f71e 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -3888,6 +3888,7 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
- 	zswap_memcg_offline_cleanup(memcg);
- 
- 	memcg_offline_kmem(memcg);
-+	reparent_deferred_split_queue(memcg);
- 	reparent_shrinker_deferred(memcg);
- 	wb_memcg_offline(memcg);
- 	lru_gen_offline_memcg(memcg);
 -- 
-2.20.1
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
