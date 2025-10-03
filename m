@@ -4,120 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20A50CCA471
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 13:21:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E30CECAC5B0
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 13:42:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 42CEA8E000B; Fri,  3 Oct 2025 09:21:24 -0400 (EDT)
+	id 0DDCF8E0006; Fri,  3 Oct 2025 09:42:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 403E48E0006; Fri,  3 Oct 2025 09:21:24 -0400 (EDT)
+	id 0B57F8E0005; Fri,  3 Oct 2025 09:42:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3197B8E000B; Fri,  3 Oct 2025 09:21:24 -0400 (EDT)
+	id F34228E0006; Fri,  3 Oct 2025 09:42:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D0FB8E0006
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 09:21:24 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AB43C11ADAE
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 13:21:23 +0000 (UTC)
-X-FDA: 83956864446.14.0E73235
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 934CE20011
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 13:21:21 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UoKaIPz5;
-	spf=pass (imf03.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DF2418E0005
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 09:42:41 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8D6B54509A
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 13:42:41 +0000 (UTC)
+X-FDA: 83956918122.21.73132D3
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf26.hostedemail.com (Postfix) with ESMTP id AAB7D140011
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 13:42:39 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cseJeB+l;
+	spf=pass (imf26.hostedemail.com: domain of bfoster@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759497681;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1759498959;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pEydH1jo5Se5kyBydip8SdPrTJcyroKtL59YbuJLJJ8=;
-	b=VRWS5GPj9NseVU8l+7RIxFT+edSnA2IePrO/fKIYGkZ9OI7plCdr0bqdxD5yFpCARDlesz
-	8tpVrq+0pi/GRyW2pJQwcRqxm/G66ODomxGzf2wNLBdYpqYoAF0DMjQwpdEJxr4C+kHEL/
-	9BjIytqAlUTTDVNUaaIQ3NCjqV/mzfE=
+	bh=RhaOcNHmb7LPmZ0Qghy3zkBE++ecIdVtQmAjZ928Tfs=;
+	b=CpauYJeNkWTikC6RsXen4VnBgKXeIWdjGoD14qpaovlUjFMCpNLvnEZgV8iCoGeuSh2jOa
+	Mucpd16SGu7OgRuD9JeySzOKEMDruYYwB12sqY7pnsPvGdP7ZsZuAKhwm3u9wn0CtEB7RC
+	eCE1lKnyvl9NpY6PUIeAA+LRJuVbfs8=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UoKaIPz5;
-	spf=pass (imf03.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759497681; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cseJeB+l;
+	spf=pass (imf26.hostedemail.com: domain of bfoster@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759498959; a=rsa-sha256;
 	cv=none;
-	b=uPMiSbU/jvf8+F3eXYStZzXoxHvp9rBo4GYUfZH5M7aMhgfsPyhtP6lCo9Ru189PHdrCZf
-	2GqP438ItlJA05DBgB/D//fD5jsFp03e7zo8aGHMfEUyIv8YUNH8Zcckl0q+gdcEinwGfT
-	h4+xsaZLMtOgSsBg7KT2/OeowIbG3Ek=
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b07e3a77b72so567226666b.0
-        for <linux-mm@kvack.org>; Fri, 03 Oct 2025 06:21:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759497680; x=1760102480; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pEydH1jo5Se5kyBydip8SdPrTJcyroKtL59YbuJLJJ8=;
-        b=UoKaIPz5XEdiCeCMTZhyD9bywZNuowSSMUxL5Gncn/rqiuOLU7atVIMOlsDimB9dXJ
-         X5Mkvrv7DEc9xFGj9YlSySNLkNykKFUrORNyPzdN8M6xilHn7HYUwsCBu5QizVloKcKM
-         ciM39yPEjZfzr1//X4syLhSbVLl9vXxlbL68PUAGqhq60pANS7I6hrBcLJkKzuzkGxrh
-         DINIR2ZA+yCBcjQf7AZmkT43zf5nRutuim3LxO16GONikUQ7JfvBBbbu/+bJRCGBhPYf
-         q85kCsZWLCwUEShL8EivV4IHg52vzbCWcXuTNiW7iYs4UFGLleU4kL7J0BO6OP4YLCjG
-         HfVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759497680; x=1760102480;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=pEydH1jo5Se5kyBydip8SdPrTJcyroKtL59YbuJLJJ8=;
-        b=vjyx14WxICe9uEU/xI0SYu2rMVekIfu2OnVeNsYjTz9AePBfwqPMrzobqVUtdoa67l
-         RNTrryyFHGNTqeK9fMxnOx2AAIc8wIQSLDQSDIrmar3+tFKu2qKEbJ4Io2xf8xg2ubna
-         LH+UeQsZRX4sdBpkfHZBYLUMdMnDH9EnpR+fzU43NL1PWeKsxmL7rtGUENCqAc3CScxp
-         VYjIdiDuy9Vo8RRmDq+A/BSW5LxXmBMRNB509fr1+9riIa2HcgRDH0ecUKi5C6l0tqtR
-         pxbnr8xB7l5RCN8zTX/ijVYxiBjlrSgeB36Jvb4fWFSM53Q8XtXOY6mUslPtg8CT5eHg
-         21ng==
-X-Forwarded-Encrypted: i=1; AJvYcCW3GGB1B2VmVAWxyGh0KHPQe/6KHPCuD7gARoI8o3SKOC1CvwNZV3wkoz4DoEnImLlt7m/mN3IG5Q==@kvack.org
-X-Gm-Message-State: AOJu0YyQ9iQ8Kl6nq3PtMVas3Lg7YtacD2oOmloY3f9oKhviFjbUdDyG
-	gGcAfvSYng7ws7KwyIadVdKDh14vqZnZKkh9yKbcynZcg0Q4rDv6d0bs
-X-Gm-Gg: ASbGncvtubyVlrN8PrFnCatfZEP906ivlX07JvVXmocjhnqt6uCqTShN7lSu/vShoj5
-	x817P46OgHao5qABm6aiYE+y1uejR6+eB/fJ7zDBF5bhfUj7KKtvMZLeWugEo5oKFDfaD2/deXE
-	Y4/g8Bs9p+lEEZKQFbcfC99Zd/zClUerkrrA+rQeJwdILWlDFb+a++2APHg6vI/5bHZWFQ39hb0
-	eNms6ruxhldKNeKsfCkFRYL0LcssbMOApVJCSBxiGP+A6q/f525KFB8nx7O/ZVYPDNRsRzkNr2z
-	sW8DFJykBsjOlHR3N3o7ovbw9DJdGNpkjyTHsjCacRqBv5bYROQWgs4tWKT992A69XP9ORmZzYd
-	vIXwvotA4x7FftIqF0K6gCpIxTGVd+h1XS7i2psRuneCQuZpW0TKM/+6hGn5cY0As5hrb32I=
-X-Google-Smtp-Source: AGHT+IGa64G0qwV9Bk1JMsFpkYvw0NEXZMFhhOg5F9dy+OS5qHXCxq08mh6HOFbiqmNQxCE//fb+4Q==
-X-Received: by 2002:a17:907:1c85:b0:b40:c49b:709 with SMTP id a640c23a62f3a-b4859c7a718mr816247166b.8.1759497679749;
-        Fri, 03 Oct 2025 06:21:19 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b4869b4d9f5sm447012366b.66.2025.10.03.06.21.19
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 03 Oct 2025 06:21:19 -0700 (PDT)
-Date: Fri, 3 Oct 2025 13:21:18 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
-	dev.jain@arm.com, baohua@kernel.org, ioworker0@gmail.com,
-	richard.weiyang@gmail.com, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH mm-new 1/2] mm/khugepaged: optimize PTE scanning with
- if-else-if-else-if chain
-Message-ID: <20251003132118.qe2wipbrzwkbaatq@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251002073255.14867-1-lance.yang@linux.dev>
- <20251002073255.14867-2-lance.yang@linux.dev>
+	b=HlHJJytRYY/PrRrPSJLIgnJzwIiziYBrk3m+j7UmeUjL0g4pOiEk/0vBwMsQt4NvPohRId
+	06WjIJBYVruv2YkZ0olvGufCx4THeNWrWQ+ZNlL8VpxWRbyYGnCcpVnZmLxFu2g1qPClu8
+	IhIuLHtZ5Nx49QUInQtfOTDg3kOuilw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1759498959;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RhaOcNHmb7LPmZ0Qghy3zkBE++ecIdVtQmAjZ928Tfs=;
+	b=cseJeB+l18ma5X7czRngbFByI0Af6fUEYjAoAhkfW1n9mOxmRmdhu4k5NOqnYClUpyKM0X
+	9yfnndZVHkshvKCQ8L4mgxFo4T+7eXDy5jGIbbwDSqNnRdfVWZoyZoBapyiOaU4/HUavYv
+	T5v3abpiA7CFr+AagO10SAbrytwNQ1o=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-645-Jb_DkJH6NRKWU0-g9B8PGg-1; Fri,
+ 03 Oct 2025 09:42:35 -0400
+X-MC-Unique: Jb_DkJH6NRKWU0-g9B8PGg-1
+X-Mimecast-MFC-AGG-ID: Jb_DkJH6NRKWU0-g9B8PGg_1759498954
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 497A1195605C;
+	Fri,  3 Oct 2025 13:42:34 +0000 (UTC)
+Received: from bfoster.redhat.com (unknown [10.22.64.54])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DC51B19560B1;
+	Fri,  3 Oct 2025 13:42:32 +0000 (UTC)
+From: Brian Foster <bfoster@redhat.com>
+To: linux-fsdevel@vger.kernel.org
+Cc: linux-xfs@vger.kernel.org,
+	linux-mm@kvack.org,
+	hch@infradead.org,
+	djwong@kernel.org,
+	willy@infradead.org,
+	brauner@kernel.org
+Subject: [PATCH v5 1/7] filemap: add helper to look up dirty folios in a range
+Date: Fri,  3 Oct 2025 09:46:35 -0400
+Message-ID: <20251003134642.604736-2-bfoster@redhat.com>
+In-Reply-To: <20251003134642.604736-1-bfoster@redhat.com>
+References: <20251003134642.604736-1-bfoster@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251002073255.14867-2-lance.yang@linux.dev>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Queue-Id: 934CE20011
-X-Rspamd-Server: rspam05
-X-Stat-Signature: zperw4r1hxsjmxaonuur8owox74forra
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 X-Rspam-User: 
-X-HE-Tag: 1759497681-933809
-X-HE-Meta: U2FsdGVkX1+wACsgscj1Nli3Sbnwez21odu/qyb0d3uy7TgnUhTSSHHb95mzRriuue4cngG96CpePeCA39vn63/+S1j/C6hvJGTR4BQjQaFtUHKi9vVjcb/ypUeX/oICyjYPWfUZFLNVhOg9lntrwDCEalFruXP6T1vWv05JrmBckpKDpx/juA18xJT8zvQnlHDp0zyVlDIdMINZb8WSr1Jk2owjrtgCI4yTRDgqohbFoFsRdtKmMIh6Y8chKq7lJbiWlaVzSJANmRwcFdPhYonndF2UqmrtjL2YAxxjcpe53IxvugVmQCAAwgILlzb1PxOT+Gm5HUto6u9tBazhnH+NUAm66NaaPfHO4KF0mDmlP8VqmliwVyweU+MyaVBp8UD5uuyCxM9pvAgm7yKQxjgal0DaHSJbv52uMpyKTdbUq9QDLSiCj7PngRvqNOM8Ys4UVFys6OyxUPHoIuuiRixfaugTxUwxvZp61aYhkiguPQTp6HzvJ30IEzC83Crth+JPi69uKuqhvfIPJdv7P0iq9ogJG2xFO/VGVavpkYdy7/SbTQkLH2/9/BxYGF49bLydHPBlEJSgqfgPhMj7lChv6nRMeR8gXXq9mCTIca5SIVtik3cw+45PYs7NhV6Jfcbx0pnDXdNkFGfYO3HSuDDYcSzwnhHZ1EuCiT0YDh18qa2sTBvrRXazcb9AaER2tyag/HwlOBzLylrVuhKCqAAVWv6oJpdfaHhLQcTnu0rfxRbOYywr+uy2Aiz9Dnidv8cyVEA0HJuY7PiiW5/ShPmmh946Sf+UPC179FnM/lGJUHwDvg+PRPdK45F/lD+iD9MG6dkzbWujDQGd1q3tXo9FkaLggw0o3QU+W6NonIFLO5wZYbbNnRKE42wyjfN+mj7LMPDyzn57vFFv4al7rgraGlv7xIvrkB8tLq1ydFqcQZ9Iw8uAYkeikXk4AwpWzsnDzZwquXU5Jvlmr4N
- gfoJDvwG
- +koHceZk7NT3j+BWF8dWJl6tB9XcKh59paSIVVq21BkIFYr+rY8pp1jvo4PJH0iZxm3y/QsTIC+LY15rUwnTI7CFIayzBGMbimU6a08mgiOtMM1c1wS8bFYVXllU9wuPrUI/3pr4f4th/MGEQ9rZtZiLCtVOIzT8K5adu1q6SxYeBsf47j1fNgZkkt4ufi4C4s7R1KaRiArxrEmT3XIN6qKGp5JYTwHDcnObFx05dMjjljOKiYm33cGZhM2LGZQeRHjoimX9mCqfjRLcSUMNRn2zY+VBkg2xFfoJqilanVPjRjiTCl6xqMFHjX2wyQiSbg1ZN6mwOVINRA97GAh7ps71ZQPWlLiR/5sTMuYj/oQHqY3ZjOvhf35IhBJ7GhBCN6Ld7tX76GwHZKG0I5en/Ss5S+HaUKXZYLYx238TMlcBOdohI4nPGrqSwa+9HlJ2dyvUrlU+ngR4Ix9zXOzUvokSKMYgyHwHTUBDvlPA5YsJlHrGRxPXHVwHX4EoePm+yMXmCvXRU+TmqVJ9feXIew7nXwE9njck4+FCd37PsOIxiOzFkNOYVlh5PEBQ7orlZXAP/64SsMOKbYQEP0KLGDQV4uSN1KS53Vtk0f9p6zPya+y7XelpvX0Fjx6og/FkTpg+1EesgOSOA1jyY0v4ZxD2GkaoSyZt+xfhXjHZmHjeSuTP6vwhdoVFSolV0uhA32HanZzCp6Wq5yMykq0rTfy6y4+j4waY8VuRjn2KjH9Q3tDrm2LyIXWVahjMRENoyZ72JjaIbDdBN3Ldxo52Trd40/2NgOsR0/S4LKlJzY5A0YyaN8CTZ2OB9hA==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: AAB7D140011
+X-Stat-Signature: 8b7kgkzek11oa53fiirgfe61xb8tst9y
+X-HE-Tag: 1759498959-428093
+X-HE-Meta: U2FsdGVkX19IbNA6cJ0ePyIeFy2uXgdx0MonpJT9/73JRrEgUF7O3n9A4Ty5HsNLQg/F/OF1YjBR2n4I4649l/RW2QD0WtjHRqxsgLwG+U6/l3F1MiPeR6fYmiD+19Dmb/SWFFifXj9d/J5xx2Q66fYh9yGa+3LYHyePY/xNvqe7bmDF8bo/zTmdkcawECOVBxa2yC03hgeCphUHOPy/wx20FkulRrhVlZdVUZJL3VbzLB0AymlnMHQPP0l6n2IxAHAhyVBZV0xWkQnAfx9IRtRXUFxfJP8rYMVezwn1hTzv/U4HbmyxK0CJskhSF7UdcNzENGTmQosNdgsgV4YlYhmVW7KW/IRw7jhwBUksz0O7A/izT3YE/u4f9zxkwAvNlWjWI+qZPGmmIFQrq0UcIMZHRKMyg5CFwpZrv6ggJ2y+y6F9hS7Wxkia8zKQA55Pd6Z9Hlv1tr7vWmeLRnhZeWVcZDUDghtUOXyTpUns6R1kvCqeWwEYF7Bfg3hyjOolQ9M+ych0Ncq/vwz2lFEd97oqBxzDRo8LCBIe54cuhUC3i5WLJN9UdBhfjgnpYs25gMriLOC38zgG++XZdbBGd70iWGvlsinL9HHyYRjAhNnPJjCRfZ/0uZwF6riYKJ/fmIQlSISnmM1qXfen7WdrjEIqupnD6hXxX7rrpTnQFsB6VYSQVIIsrUJueDZN4SZkXTnBpwGjLupK1ZGRXyk/uTrBDs9dfW+NXbdf2hMzgSze9tYMoWMxkge8+gpipgP1EnwkQ5jItAl6tSKQ7Ac8xZ5EqZ9gZYB4cl0C8tKVX7wAoa4V3NS+O+XDO1HadVRhLUutxAOIa2as7YnrHgrf6I07VQeedJRoEXLiObNli8niXPuO9XNVIuAlR1s38MhiePzW4BVzm++KKHzsT456nnsru68gN59sNwUpD4wPpl7aT9Hiz0IuuOEMEQJRJHLxjZcrl7vaFoF1RUc6dhF
+ akTehveM
+ TDCGn9BwFLS1zm9AVtN99Ex6msl2i+NLoTWm/e/07vsWDepZWvY2kDcXYf+DD6Edm023k6qthM6nzac7LLegOzhmy/MeAujA2ZWBcvf9kr04VFLNMO4zAxrR3hzyQITkwElzAfWsoE6odTNgnV7VsCOU35pBeZ4hmqwBUb3pDp1YwoS/WTON+j0O9zFMEu7IZJwOHG6gVRsGvKu4DtSj/YxE1uSfZCpkiaOFmvRHvnwSQ1QO0OLuXeFKSpegw0JB9oeB2uhbIRJYzXH7qYci1e4E4GBqyPWMa/cb6n2xogaPVl+LtM3fDFsuEXiNrQJtRyQ/FkgjZI9AYIVFG1c4haWJ1jn6U0wT7b817lmwMbpF/wsg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,28 +108,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 02, 2025 at 03:32:54PM +0800, Lance Yang wrote:
->From: Lance Yang <lance.yang@linux.dev>
->
->As pointed out by Dev, the PTE checks for disjoint conditions in the
->scanning loops can be optimized. is_swap_pte, (pte_none && is_zero_pfn),
->and pte_uffd_wp are mutually exclusive.
->
->This patch refactors the loops in both __collapse_huge_page_isolate() and
->hpage_collapse_scan_pmd() to use a continuous if-else-if-else-if chain
->instead of separate if blocks.
->
->Also, this is a preparatory step to make it easier to merge the
->almost-duplicated scanning logic in these two functions, as suggested
->by David.
->
->Suggested-by: Dev Jain <dev.jain@arm.com>
->Suggested-by: David Hildenbrand <david@redhat.com>
->Signed-off-by: Lance Yang <lance.yang@linux.dev>
+Add a new filemap_get_folios_dirty() helper to look up existing dirty
+folios in a range and add them to a folio_batch. This is to support
+optimization of certain iomap operations that only care about dirty
+folios in a target range. For example, zero range only zeroes the subset
+of dirty pages over unwritten mappings, seek hole/data may use similar
+logic in the future, etc.
 
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Note that the helper is intended for use under internal fs locks.
+Therefore it trylocks folios in order to filter out clean folios.
+This loosely follows the logic from filemap_range_has_writeback().
 
+Signed-off-by: Brian Foster <bfoster@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+---
+ include/linux/pagemap.h |  2 ++
+ mm/filemap.c            | 58 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 60 insertions(+)
+
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 185644e288ea..0b471f0eb940 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -977,6 +977,8 @@ unsigned filemap_get_folios_contig(struct address_space *mapping,
+ 		pgoff_t *start, pgoff_t end, struct folio_batch *fbatch);
+ unsigned filemap_get_folios_tag(struct address_space *mapping, pgoff_t *start,
+ 		pgoff_t end, xa_mark_t tag, struct folio_batch *fbatch);
++unsigned filemap_get_folios_dirty(struct address_space *mapping,
++		pgoff_t *start, pgoff_t end, struct folio_batch *fbatch);
+ 
+ struct folio *read_cache_folio(struct address_space *, pgoff_t index,
+ 		filler_t *filler, struct file *file);
+diff --git a/mm/filemap.c b/mm/filemap.c
+index a52dd38d2b4a..db9f2dac9c54 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -2348,6 +2348,64 @@ unsigned filemap_get_folios_tag(struct address_space *mapping, pgoff_t *start,
+ }
+ EXPORT_SYMBOL(filemap_get_folios_tag);
+ 
++/**
++ * filemap_get_folios_dirty - Get a batch of dirty folios
++ * @mapping:	The address_space to search
++ * @start:	The starting folio index
++ * @end:	The final folio index (inclusive)
++ * @fbatch:	The batch to fill
++ *
++ * filemap_get_folios_dirty() works exactly like filemap_get_folios(), except
++ * the returned folios are presumed to be dirty or undergoing writeback. Dirty
++ * state is presumed because we don't block on folio lock nor want to miss
++ * folios. Callers that need to can recheck state upon locking the folio.
++ *
++ * This may not return all dirty folios if the batch gets filled up.
++ *
++ * Return: The number of folios found.
++ * Also update @start to be positioned for traversal of the next folio.
++ */
++unsigned filemap_get_folios_dirty(struct address_space *mapping, pgoff_t *start,
++			pgoff_t end, struct folio_batch *fbatch)
++{
++	XA_STATE(xas, &mapping->i_pages, *start);
++	struct folio *folio;
++
++	rcu_read_lock();
++	while ((folio = find_get_entry(&xas, end, XA_PRESENT)) != NULL) {
++		if (xa_is_value(folio))
++			continue;
++		if (folio_trylock(folio)) {
++			bool clean = !folio_test_dirty(folio) &&
++				     !folio_test_writeback(folio);
++			folio_unlock(folio);
++			if (clean) {
++				folio_put(folio);
++				continue;
++			}
++		}
++		if (!folio_batch_add(fbatch, folio)) {
++			unsigned long nr = folio_nr_pages(folio);
++			*start = folio->index + nr;
++			goto out;
++		}
++	}
++	/*
++	 * We come here when there is no folio beyond @end. We take care to not
++	 * overflow the index @start as it confuses some of the callers. This
++	 * breaks the iteration when there is a folio at index -1 but that is
++	 * already broke anyway.
++	 */
++	if (end == (pgoff_t)-1)
++		*start = (pgoff_t)-1;
++	else
++		*start = end + 1;
++out:
++	rcu_read_unlock();
++
++	return folio_batch_count(fbatch);
++}
++
+ /*
+  * CD/DVDs are error prone. When a medium error occurs, the driver may fail
+  * a _large_ part of the i/o request. Imagine the worst scenario:
 -- 
-Wei Yang
-Help you, Help me
+2.51.0
+
 
