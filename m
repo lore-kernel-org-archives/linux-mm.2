@@ -4,121 +4,236 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24300CCA471
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 17:50:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 135C8CCA471
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 19:11:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 822C48E0010; Fri,  3 Oct 2025 13:49:59 -0400 (EDT)
+	id 137EE8E0007; Fri,  3 Oct 2025 15:11:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D2268E000A; Fri,  3 Oct 2025 13:49:59 -0400 (EDT)
+	id 10FAA8E0006; Fri,  3 Oct 2025 15:11:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E7C48E0010; Fri,  3 Oct 2025 13:49:59 -0400 (EDT)
+	id F18E38E0007; Fri,  3 Oct 2025 15:11:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DF0A8E000A
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 13:49:59 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0DA47140844
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 17:49:59 +0000 (UTC)
-X-FDA: 83957541318.28.BD364D9
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf24.hostedemail.com (Postfix) with ESMTP id D2FE4180013
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 17:49:56 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=V8cxYUPQ;
-	spf=pass (imf24.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.46 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759513797;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DA1F68E0006
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 15:11:05 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 739061408F5
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 19:11:05 +0000 (UTC)
+X-FDA: 83957745690.09.7AD9AEA
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 3A003100013
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 19:11:01 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="ICH/iUjV";
+	spf=pass (imf05.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1759518661;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q9orV9k2QtGkHNb6/9Ad2/oxrPioscR2g9iCU7VwezY=;
-	b=YkAYA/Ebo3eimuYGDcCC1mZbmoO4TSej3qidJsiAQvpJgWLs5ZWphAPSM8wEXhdrAeFaWz
-	FEtbUuE6IlIFW9K5xbn9cKDeZ6+bGI5FTeI28qLZKTFwWvJxi6gY8lZbzNzhHIF48wR1uW
-	1c2M4R5DdQ9D5rM0FdHOYGe/ORPscq8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759513797; a=rsa-sha256;
-	cv=none;
-	b=OdPYve2l28SnqPxDtrqoYEJTFzUcGiRqR1ZfzUns7VTKDHHNvAdY3ivgZ3o0iTKCvJN8lY
-	AET+n6k6l5S0CNRc20MkMtz3mnj+NMxiF6S9dZ4wnjlg9lOv20WtsBQ4lVYvQxr5gMyyAH
-	Ly+4YAQbpcZPRuGbJZRhWQQbwCRhF3I=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=V8cxYUPQ;
-	spf=pass (imf24.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.46 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b4539dddd99so187930066b.1
-        for <linux-mm@kvack.org>; Fri, 03 Oct 2025 10:49:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1759513795; x=1760118595; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q9orV9k2QtGkHNb6/9Ad2/oxrPioscR2g9iCU7VwezY=;
-        b=V8cxYUPQHpn8PX+Y3IuZ7xOZbfZj2YQ4Ctr0A2piItOUur6Ve3GOUyL9Pi7E4bBONK
-         7y6clZPwdget8MNqz/Gb3u8rcP2QUv2Y2yJyj28EF7a2TRATo6t45vYrhdIrSq0vKAbM
-         pBaQhyDZo+pH3nZiv/3pqzXDWyJGxdVG0fyTU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759513795; x=1760118595;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Q9orV9k2QtGkHNb6/9Ad2/oxrPioscR2g9iCU7VwezY=;
-        b=gWtMnIuUDWDrND+YlKmqzhavK9U2bF1BDoFrpSbzIDy53HyixS/xMZKsIuFuowc/qu
-         lXry2D+2sl9iweM4LxtBaP5IU/UcP5cNexO1kY1T636w5sUZ00HeoL2c/BZrXYfUmCnJ
-         uayuuEYUGrYFonog1EcgDPzBmmMJ1ez45sDgCo+T7dnXbtE/euHaI6s4DUZcqygyMCj+
-         3uwDphgic5T2nutNqRxaQKDvky24bDbWduL1QRYs4+0VNJZn3uKaotyaFwHrtT6p5zDB
-         RcpdIzcC3vO8gKSapflf594A/mY1dcSbTjVUsayndAL+8GSZmrSEApK+Vj38295d2vQA
-         1Rzw==
-X-Forwarded-Encrypted: i=1; AJvYcCVMdxpM03EGsE2lsZwjkah7ZkE7wCCjza+8cVP6uiFWyMAdIuOUeo/+6LvagBbICSHf8tW8dx5JAg==@kvack.org
-X-Gm-Message-State: AOJu0Yw8b5muDEHY4q33AFpP/AqRiXlTM76fvRQ9sKHZOBHXyn+qR1Sn
-	q+wDmBsyHKdcXq0pvQYL10Js3eCW9vFph3aRwj0zRUWyc9vhegNq6m7IHmYIeLMdZdwvD93ASnm
-	dZRjn4+w=
-X-Gm-Gg: ASbGnct2ngaOXJZ2EPQsORxyr95wHC4C0zOUiNKzs/s3RJxnHduOpAYMc9Mi4RnNHEZ
-	FitnLYW5RsUhvc7gxt5lNf6LEPLm3BaXwdbssshREWFBcYKY9WIzfMntLKR3bZAKlH4UbqBw2V2
-	oy4dKbR1Q2W2D63yjxYhc6PpoUjBHbU9OSFkO3HrYZ9OU4jaew2PcoIcYtpAV6ULhPO2UPBGTtV
-	AELaiIx22j2QJBZHe/IfrSfRqAPYk5WbOM3u4idQtN4PqDxg8DQwNoAE7eERZeIlRCvUykkyL7D
-	xY1uTjyv2iZcTS8ayHaQ3/tpuWvfuvvp5cIM+lliWVuLyb1PTkFVp3mNzB5kX4wZr6dF4hQxeXz
-	MqBjcDaor91BtAZV4arpAZ1v2gkYNtj4JSTw/LHQFcxQ/6j7QYro1dMYtIGi3tn38lI8X/nl4Us
-	DgVVgCSiZyA51Rte3sjAg0
-X-Google-Smtp-Source: AGHT+IEwqhXrFfVZDy0hjbwFtgbt0f7ya3d42rnaFAmcApkaYgjf/lHdpUYzPe2FPv7pR9M2xBNcXg==
-X-Received: by 2002:a17:907:3f21:b0:afe:b311:a274 with SMTP id a640c23a62f3a-b49c2c5e006mr461997366b.46.1759513795046;
-        Fri, 03 Oct 2025 10:49:55 -0700 (PDT)
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com. [209.85.208.50])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b4869c4dea9sm496841166b.73.2025.10.03.10.49.53
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Oct 2025 10:49:53 -0700 (PDT)
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-637e74e9104so1464531a12.1
-        for <linux-mm@kvack.org>; Fri, 03 Oct 2025 10:49:53 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUDTvP1uB1Exy58fQDQ5L51sco2VK3oX3NyBB6KvIO4Meb7XmpKODiuY/pS5uiM5gE3wT7+a0JC+A==@kvack.org
-X-Received: by 2002:a17:907:2da6:b0:b2b:59b5:ae38 with SMTP id
- a640c23a62f3a-b49c2761ad2mr539453966b.40.1759513793496; Fri, 03 Oct 2025
- 10:49:53 -0700 (PDT)
+	bh=aV4IFuRqSEWExv6pDFgPPDW+2ZC5816E/JhtmhYZzTE=;
+	b=ruMluIRgu56DRcm/CPNId3DqU96oZ3XyZQTfLFzgxCqoKo00+PqdLPSh4IPg9TgOwGwjm/
+	/g5SkcH9KBGySWabC4k3sYWNcOmH89euccEIFAxU4N0eIFE3z4uL0cC8yJ5mDA0kg1dLCM
+	RE/rRfvsgKctlN8j+eOdYEEHnLaQAys=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1759518662; a=rsa-sha256;
+	cv=pass;
+	b=L97Keig8h7mX3uPbppOUxGO2mcAu1DSW8GgGvyROXkuxS8N5jt8O+lr/FQ9tSRdxs4sjGe
+	JX7H+7psyUvAFHYNiqrfgcm+3Zuy6vSCJKORSpN5Qh5wcepOCPIt6e1bxOdV1ozZPNxCnZ
+	g1ISML7DBMjMjpAObw+d4c9aNWS8P10=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="ICH/iUjV";
+	spf=pass (imf05.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1759518661; x=1791054661;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=QbQHGvSLzgoCNMnJqPex8bXVNWc1BPJM3utNYamGmII=;
+  b=ICH/iUjVYtLpo/kBctmMB+W5wm9uYYlS8NdxpFHc/27J1FBCWhPI4C9Q
+   fZR/dMOXz/7tdAsT9PQ8txXFSziE2TqGVaacnI7YaR2A3uA9G8F/9lZIJ
+   DQ7QpSJtWn63e2e9E2VJLkJIKjsJRMNLHcr1Bnk/N2CNUba+tGLoIPtsv
+   eIiMlayuEkfqWHTj0R3FZroXWYj7MmTQO8PY1oNUwaml45cOEMEhITl6n
+   LosQ1j0Nj8+qPpAabvvw54G6JXeCjjuLxtWkd0PPx/+GmO6TGamMhYJMU
+   tZhRhgJUEvstcz55yWIiRSRSf7G6lrDzdBla8ZQSHdxzCetyoxILWfQZt
+   g==;
+X-CSE-ConnectionGUID: T9WUKR+rR/CSw5E6jzOLlQ==
+X-CSE-MsgGUID: jECF9UyDSRq+fwVamnrUIw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11571"; a="65445603"
+X-IronPort-AV: E=Sophos;i="6.18,313,1751266800"; 
+   d="scan'208";a="65445603"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2025 12:10:58 -0700
+X-CSE-ConnectionGUID: 8a82kJ8URai01CEDgoPy1w==
+X-CSE-MsgGUID: IjJdfio1TKKqDg/NzXhs/g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,313,1751266800"; 
+   d="scan'208";a="179782426"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2025 12:10:58 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Fri, 3 Oct 2025 12:10:57 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Fri, 3 Oct 2025 12:10:57 -0700
+Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.39) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Fri, 3 Oct 2025 12:10:57 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=P27Z2Mj1dUqyjbJZB3qRAoLSHdEGcPrdljA/m6pAQlDtTZYFUBZKByeyDPNug+rKg0IqHnRDBIm5MBP1dRSn3oECGY/poNaNGhZ88T11bsG2nKU6//Ic8Jg81tlc9gPouYtmsYfFdPP9pQbIlF0UsMZr0G3mzTPR8IEsmKVzYi9bnlZWCCEUkSAzkUMk0nnAVl+3ZEdP0OCd6hFabRy7jCOUBCbEsoZ8vXB/9kd8VGQ5R1omVXJIeKoeJgLeUwzsY5PV3kiBg54Y6Ykqmb0IsbBDnItyhUJSKgMbQint5r7LjPGJ/3+Q0Q4gXQgN+i5MP7Zts3/utdOUVatw+swQaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aV4IFuRqSEWExv6pDFgPPDW+2ZC5816E/JhtmhYZzTE=;
+ b=Ymoi6DLv3qlSwjYovrRt0tyv9kA79wmFtC9ynPLVBvQaalkyTuGO+crhYzbDSkl/gaCA1HgvMWeRZbNwxPZPjZDu+UlnQADkGTLzUxHZElxWN1EF5yzegNfSHuG7UTvfCxnhB8Bk/3TQUg/4DFmsOwX5QhTgnZOGzMfK7fCaUsQMOmW10MKT377IhVGJE9MdbLwtmSlz9BgYhhlpqxnKWMQ8OMSkxlC6JDK7Bma4lwQBq8zkQGwpuXr7CWOSNQjxrh+hQldnYRlqAK1BlogvmRYVONIO+6mNFR6pNGSB9NWeuSUNR06Z9jOJc9VwXSywssA0/1D42164cVLXXTyezA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB8121.namprd11.prod.outlook.com (2603:10b6:510:234::14)
+ by SJ0PR11MB4894.namprd11.prod.outlook.com (2603:10b6:a03:2d4::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9182.16; Fri, 3 Oct
+ 2025 19:10:49 +0000
+Received: from PH7PR11MB8121.namprd11.prod.outlook.com
+ ([fe80::ec4e:64cf:cf1f:daab]) by PH7PR11MB8121.namprd11.prod.outlook.com
+ ([fe80::ec4e:64cf:cf1f:daab%7]) with mapi id 15.20.9160.017; Fri, 3 Oct 2025
+ 19:10:49 +0000
+From: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "hannes@cmpxchg.org"
+	<hannes@cmpxchg.org>, "nphamcs@gmail.com" <nphamcs@gmail.com>,
+	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
+	"usamaarif642@gmail.com" <usamaarif642@gmail.com>, "ryan.roberts@arm.com"
+	<ryan.roberts@arm.com>, "21cnbao@gmail.com" <21cnbao@gmail.com>,
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"senozhatsky@chromium.org" <senozhatsky@chromium.org>, "sj@kernel.org"
+	<sj@kernel.org>, "kasong@tencent.com" <kasong@tencent.com>,
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+	"herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
+	"davem@davemloft.net" <davem@davemloft.net>, "clabbe@baylibre.com"
+	<clabbe@baylibre.com>, "ardb@kernel.org" <ardb@kernel.org>,
+	"ebiggers@google.com" <ebiggers@google.com>, "surenb@google.com"
+	<surenb@google.com>, "Accardi, Kristen C" <kristen.c.accardi@intel.com>,
+	"Gomes, Vinicius" <vinicius.gomes@intel.com>, "Feghali, Wajdi K"
+	<wajdi.k.feghali@intel.com>, "Gopal, Vinodh" <vinodh.gopal@intel.com>,
+	"Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
+Subject: RE: [PATCH v12 22/23] mm: zswap: zswap_store() will process a large
+ folio in batches.
+Thread-Topic: [PATCH v12 22/23] mm: zswap: zswap_store() will process a large
+ folio in batches.
+Thread-Index: AQHcLpaY70ekQ7dio0CIg97nnm1fBLStgQgAgAAW5fCAAzXpkA==
+Date: Fri, 3 Oct 2025 19:10:49 +0000
+Message-ID: <PH7PR11MB812152287E850FA7CBAE2FD5C9E4A@PH7PR11MB8121.namprd11.prod.outlook.com>
+References: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
+ <20250926033502.7486-23-kanchana.p.sridhar@intel.com>
+ <2qvfjavbepw3sq2pvvcez6jsc3bxkxej27674l4ztfdza7jqaq@xi6qndkj5xhh>
+ <PH7PR11MB81216AEDFD10B5BDCBCE1F19C9E6A@PH7PR11MB8121.namprd11.prod.outlook.com>
+In-Reply-To: <PH7PR11MB81216AEDFD10B5BDCBCE1F19C9E6A@PH7PR11MB8121.namprd11.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR11MB8121:EE_|SJ0PR11MB4894:EE_
+x-ms-office365-filtering-correlation-id: 8be8ac64-c6ea-4cf9-93b9-08de02b090a0
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014|38070700021;
+x-microsoft-antispam-message-info: =?iso-8859-1?Q?kAznOBSy3ycHmGEPcSigALt+E8Fwlfewui5WUPrPj8sC0susyrq7pRDNYS?=
+ =?iso-8859-1?Q?YhkVFJQdKYjAwsQEOmtJ0Fz/jj93bpyTYid1HWKWP20zyHOCjH30FKhcBn?=
+ =?iso-8859-1?Q?7eWckfiPaUw1Fu4/vY6CEzkT2wpq1EmU6wyYgfUPfDcswLjlG49HwqTI+b?=
+ =?iso-8859-1?Q?JQfIAezKzdffgpWt9PrG1j+WeksgnmW0lBa89iZV/rWcRtoAleVz22hwdg?=
+ =?iso-8859-1?Q?3HRhJYEEHQknZdvVJDF6v2oaKA1l71RIFDtd4bf2/ryXMIKeo7hThQDawS?=
+ =?iso-8859-1?Q?wORp3S/nTZS1TGjcHXyha4+qum5dwjuLORHFgcKFSpgPnF94edR5AI/sib?=
+ =?iso-8859-1?Q?5JkZCFa6KYDUDUTqooTDbwOWTmRfZ7iJvU/MNkhjRAUNes+kFRrJp/XFjE?=
+ =?iso-8859-1?Q?G7ae57KPYJrXVhj405rLk9WrH6kS3tVWX7aDwptaznUowbv3HIEyO8rBFg?=
+ =?iso-8859-1?Q?K2qay2QSTt6L6VNeiPsLCzcT5I6YT9DVw+D/JeAg/LJ27qz29egJWx+TPC?=
+ =?iso-8859-1?Q?bWJfGAuFzulkexxACWqNj27nJFpmKGEgF1WEALTa1ygJKgvPJ2fMssOzEb?=
+ =?iso-8859-1?Q?JN6tblL+ImbE5etphNt5YuyAaKR09Y4hfeznaE36F3TZjVbj5Kk2xiGFrr?=
+ =?iso-8859-1?Q?I78a/SCS8/XLy1J2eRdHf3Zq/OcmeMPWOnuSItf6omUdSPSXLhI9tIBbcg?=
+ =?iso-8859-1?Q?+IKcP95O/zCP3XkbEVe/4DqKPUj+CkEnlJfQWtD17wo68w9SRvhfZVJVic?=
+ =?iso-8859-1?Q?lAfRIpJCFQnWzHlIpJAK5QG9EzZsHsLiQTHlhTojSpz+c4jUy97sUbO2lX?=
+ =?iso-8859-1?Q?ZLMfJ1GX6RGjoynbheAeA+ZOAF7aFItIR+yge+jJpij8gXXwmswvJN9/YP?=
+ =?iso-8859-1?Q?9l+o2o17MKc1gwk/QOBl0jLtA4aF8iGOMceGTltPNfqh6gu1kcqNqKSWcL?=
+ =?iso-8859-1?Q?K+OIvX4Tjs9AvJ7kZQwAEaKZvQ75ZQdAeGgsgy8g3+5HNgOvtQw8JQq4j3?=
+ =?iso-8859-1?Q?IqdhYfOjsDD+xNKSY1JOpJWN4SX+QG9+UixEmLaN9UxbTP1dOBFx+r14q2?=
+ =?iso-8859-1?Q?dh6Ny/yiFKfPM7OmUtXlI7kCCPF7OwI9OPWUC7Wv+nGounniMXQ1G2gqZe?=
+ =?iso-8859-1?Q?TuUOLs1c68Us15/yanyTGe7FMIpZAZEgXr6Vl8L1qrP7qhKQDiYIPVzO6+?=
+ =?iso-8859-1?Q?9AtnEAu5ZVTjAIcq9hLswrmnGoMtbTJTNF96WUrbGuJxFlO5DHYEe+PpEs?=
+ =?iso-8859-1?Q?0ns35a+THIlXKlRxmSGrRaRVicTBZSU3i93Bw1wA1wFq5KmU9OOp4zeuG0?=
+ =?iso-8859-1?Q?xqMoHDrtghWXK+BGDXhvCA/ImfF6pDOIWW6QfJFjcTao+i1HlUdFLx/LCW?=
+ =?iso-8859-1?Q?8cCMq4Qe94gjcX+0LvhM0HpCRCOuP5KDkWiHhFnlotCdtJh73rFfYzcbX8?=
+ =?iso-8859-1?Q?nIHICykanXITLmRd4eL4pcYdyGIncOteRMtityzeMHITG+bA2J3UQSvhIb?=
+ =?iso-8859-1?Q?aophoM/hE/d0QRuEsGmTr+6y2c3IM/xxtpqsazxKxtLqzclFtrHRD32NZJ?=
+ =?iso-8859-1?Q?F/1/OeUPM/bv2BEszCRXAsF1nJd6?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB8121.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?PsVBPQ+LcbT50YIPVTYFNEzYDCmgGYGiXFBmzZzKF7dadgVCs7MyVyxIWt?=
+ =?iso-8859-1?Q?ZEn62Vr/5p9wfgJOAPffmmgJ9NQvUTZSTLKWg6g6zDNK792kc3wHEH9Xoh?=
+ =?iso-8859-1?Q?k3KY2PwkU4MAbUA23vdenceQnMulnOnmQzcaT+as5F6bQryJX7ujeAfdE7?=
+ =?iso-8859-1?Q?xuTVApOLAwsC9sDzCyLddLSQiGBTDqeIZ8tBa4XgFMO7LoodX7qbaYWvX7?=
+ =?iso-8859-1?Q?6nd3Lu6i05AuVZs3t4z5CEgWlHk43hEiguT2X/7ZFDh4J37JPf7k/817g5?=
+ =?iso-8859-1?Q?PXEa7odnI9/mC/cr/aVXTdghtJGSHknvWf6x6sVsLP2Iul0hmoprnNeCNj?=
+ =?iso-8859-1?Q?N+J38zcSbbnNr1Zmx2LfIfegBjSI5ijZxsj1yAch8UPFFqcDUFY4xkje2s?=
+ =?iso-8859-1?Q?OO26oV4+0NJ3xJ81PFr0XN7s9sStFNWUZNvW3cUhVZGm9X5oPQpct0NQ7n?=
+ =?iso-8859-1?Q?BgcXMgNVZbE79bIg7YTDyQ2y8f32fXkoJuUQpJJdbczX2s3CLHROLY0/m2?=
+ =?iso-8859-1?Q?I7gKyyLY242aQOtY16U7su7at1HY8Xz6/dhwBLPyxP56a8pkHAnjT9+qiW?=
+ =?iso-8859-1?Q?Q1SN6BzVTjliaO8O7eGnWZi0LqZ26UJ0VzlF4McI7V42DO54w2xp+ViZ58?=
+ =?iso-8859-1?Q?+MGUZj6TkY040DzyPGF+8hSG4sLRI/cwwZwcN0DZjrDzmLdxK9QbI761FW?=
+ =?iso-8859-1?Q?3qaSjpPzg8PNwpI7uWnqF1F8QRO3J8jud+rFgu44lTtnqX/7SLkMlldBLs?=
+ =?iso-8859-1?Q?Z3wMpD0uL22aoueG5UhZb3U46dXI/MEM4Dn+cueMQ+2M7q0AGrSQ/RU+fn?=
+ =?iso-8859-1?Q?tFG+iLMC3HKbSV6rAXZljKIYH4TNjRvLSzvNdgoJ3ymCDT3HvcGd4AoY6M?=
+ =?iso-8859-1?Q?Ia6Z08VT88OiJ0nhYQCIbgeaTYMODKjSFBJp5YXfcXK+vFmQb53msSaVGh?=
+ =?iso-8859-1?Q?hRAjJtVKiZTwRnEvYJm98NeL8EFp8vFBOAGglUwA5qz81IiG+IWN3TbG/i?=
+ =?iso-8859-1?Q?rZimk78uMGbHdOwjbzn1SY4iw+XyhFATKCpOxY6ymCyRL7UqhgnamZbHcn?=
+ =?iso-8859-1?Q?vMZwvomhaVFx0jcmdC5/FL+0GFtZqmz3pC0uHKNm/R4NmGIFu+JjyJX7Xl?=
+ =?iso-8859-1?Q?Z/FJHHCtGwkPzpgEEwbsJ9EfzJv/beoWaA8FU4HU2fWWI0dDEYkFyvsXGl?=
+ =?iso-8859-1?Q?yptNTR/fyss4oFk9+2ZzM+td8dtlG9WJ0fUL+cut6VDADlzsGOj/iKjigZ?=
+ =?iso-8859-1?Q?ZoKCUhkAp6pKobu6if9p7RnOVO9jnQJXCwdSNoHnP+Gwn2CYyfVV5hYSWM?=
+ =?iso-8859-1?Q?nB9X5TdmNDRgpa9ViaTc82bDzks/tHjafsnvCbz0LfM0uyR4ct8SyaleGO?=
+ =?iso-8859-1?Q?jfvgDxzf7C2tqfx1FCSdNlrj/4ZpneSrf514i3IPkm6QN+FvBCd+3Rod2b?=
+ =?iso-8859-1?Q?imolTHVx3h9ZDkTAFjRO9Ze99R+ZYIzt60Q5m+my5potKhEpNL4JwDsa1h?=
+ =?iso-8859-1?Q?nG7HUMrbAuJ7hPlY0+PmgHb3aV0jJL9TymViOiKRzvzutQ7H0BG+QwsUKB?=
+ =?iso-8859-1?Q?ytJJ25fkM9F0AeYZVKUR0i2JIn9G1IQH6cLgFcswe3UA/rjinGKeJoqvFU?=
+ =?iso-8859-1?Q?j/sE+aXCrPF7aVBwsMjY5UKgyGqD2pLB3oZv6luDRQm3+Z0nUHqcLZeg?=
+ =?iso-8859-1?Q?=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <CAHk-=wj00-nGmXEkxY=-=Z_qP6kiGUziSFvxHJ9N-cLWry5zpA@mail.gmail.com>
- <flg637pjmcnxqpgmsgo5yvikwznak2rl4il2srddcui2564br5@zmpwmxibahw2>
- <CAHk-=wgy=oOSu+A3cMfVhBK66zdFsstDV3cgVO-=RF4cJ2bZ+A@mail.gmail.com>
- <CAHk-=whThZaXqDdum21SEWXjKQXmBcFN8E5zStX8W-EMEhAFdQ@mail.gmail.com> <a3nryktlvr6raisphhw56mdkvff6zr5athu2bsyiotrtkjchf3@z6rdwygtybft>
-In-Reply-To: <a3nryktlvr6raisphhw56mdkvff6zr5athu2bsyiotrtkjchf3@z6rdwygtybft>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Fri, 3 Oct 2025 10:49:36 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wg-eq7s8UMogFCS8OJQt9hwajwKP6kzW88avbx+4JXhcA@mail.gmail.com>
-X-Gm-Features: AS18NWCpojVY7tU6AsAPUiLSKBtubBWu3EjIOwDVnCZAtdMF_HXaZNsW5pD-5Yc
-Message-ID: <CAHk-=wg-eq7s8UMogFCS8OJQt9hwajwKP6kzW88avbx+4JXhcA@mail.gmail.com>
-Subject: Re: Optimizing small reads
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Matthew Wilcox <willy@infradead.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Linux-MM <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: yhouja1o473ukmjapd57acp89stss11b
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB8121.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8be8ac64-c6ea-4cf9-93b9-08de02b090a0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Oct 2025 19:10:49.6714
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: OB72qpas4Dk09qjFbnlu511toybIW4wpaq3c280ra1KRwJtgNyNJde3itUq62Cp47CRqiggCcjqne+vhciQoRLbmtw9150AAQwaMY8e5gOs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4894
+X-OriginatorOrg: intel.com
+X-Stat-Signature: jhfad864nc1b68esodni73ccehbfzab1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D2FE4180013
+X-Rspamd-Queue-Id: 3A003100013
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1759513796-952365
-X-HE-Meta: U2FsdGVkX1+V8GStIS8nC1drqhOBjTcB/7VFd5WiuvvR3/T+kbrX1zReV/fjx2pWhcNCbuHbbU9B4DjvwCVwNshJ8iFtWPJ8iswcJc3oHZUPPuWc8qevi7YObFEtfmeUlRhOk4Vt9EoAxjY97BIPa3CWqBz9UiE0JhOZRl+1KyPYVSIOJDhcfEbOISkynpKa15NivBS1teqW0jYNlF4i6f0d9LeJi4uUUI+8YuNowcW1hKMH+Ls/iieUzBNYWmr2OwckU/EnHzuEVQ+XWweRCshDTQE8mBTl9rIUj2XuZLkazkRJmBCAo3uy2AR1I05pCjBRYFcxv6vqJxsVKfdgMUvAr1zIt3ih2ULeIHMOL65cnmtPPKlhGhMyLYyVBF26U5EkHiz4mm7CFUUWbUX1lSfWhQtJKtiONV/R/AFZAx73pfS3yJ0/JDYJLp8SJS6jHl8vesB8+Wr9EyvkYUB15CTHJWcwMNqvnBRGU0AdTnNta7iRvMApYJ+oHMJuCVoLG91qYTPFFDv9SlYBPvyJOszqRDAA46SVVwWvCGwYcd4Ox47CSUEFm0O93RiP8jReINmGhU11QI3CPoFIRaBN2ekykX/R45Vr228lr21PKnHT6HLA1P7xfQtyMGGrr1IpmTekqi7C9PiGiNWUHclXbd4upGOqxG6rcu9o9c/pTGu5Do8edrJl2C5YqizZjhSdyyNj/OU5pFlZyfQPde2qdYNGekSZ5zwjaE9dV3HTKJIfVID08J0Bwo7+xbVXlxvqVt8SL2df63T8pCeuKnIa6KfkKAKXZdej6mJ3G2mhfegBJKSFLyfCFeJUaBZ5ASUluujtxofbFmS2NSIdeQclsPzqv6gZsj/Hg16+4DNdGr9PbQ4Ia16UewOK7vpITSBL4lI1tWTpC2J0aNL7Lnd0NVzWl1JmOiR9lL92DHQ3wI2b6LrRz1Ktm4OJWyfdKdxqcmy2BgQ47GZ+4wJPk1H
- TxssO1xU
- /LqzRa2URI/MbkXGFabJNHkFTm5NgTZa2QKy1jMSyVeyuJOZshH6zw6SRNhnt7E16V0V+gwnRWHQP4TLe1seuIxkdk04GWqG9FBqj5Uh0kkyrgT2MwZJ/+UEVEIE8NTJvPkPbVd2eaW5ERMwQb1/QdgO7m8yF2L3KulVOOvYd6U6Q3Yg9rI2cFoJ/GErMswzuKlgOuCWJ+hvs4RmK6THfzODRrufMX2r1m38jTYAYjiRCYkb9uji6m0GCxIw5kRMd9wDAnjGZdg5qlKwLpDL93hERBVRU4D6aX1l9VZfjwgXe4fgCxKlmncrJJFMTg3QpOdx8uHpKBoLQAwmz1gKz3r49d7INbFmp6DrKhFcYNublr93ahLky30x0q73ZBVZeVE3Xzo4IC+gN6Trp4WGviCAhbEdnqLxQaGT/65k4c0AxwfgQ1kY0LGkx9P7v4uz4uLm9/1+5e38U3Ck3Za8x7+vNjlevRRs5NEkWIWOj1//a5ERsmz5JRzaY50xnZy413LSF
+X-HE-Tag: 1759518661-620829
+X-HE-Meta: U2FsdGVkX19LZSmdUdGwQW0ThGuVBF2iltlTIU8wLCfdm3y1vuYMDwilZSRLI3q4R0eOUkFmkLx0OPC5dDUrlX4m9OqMTSiIgX7ypCGkUlwYfj5DQnR/oB7hZLJLAN4Ebvcg1PNZS341aKlqj2OrS7jJ8HQyd4p6fTRtkIH2KfMNXZIqTq639c04H99cg50HUNblln5zWMN8KVzxu8RDeKan52xBZJ/os979Fu1W83UX+3YxdUPZtkA6nFCvQVxP54K8iggTd5y7e6Rpwu/cYrU2XiLy8j+ppcsm4v0aTIUq3Wx+Ou3rGYQa8PknFTCcHvz90jqq+m03n1XU+LwwWPSAFEs8TsHf/YFchjZOCdBrduJ5ijhDZkZyBQJyTp+7acsCA0AT6TFCHiMKS6XRoZatbixsKEG1AVuyJpETOdvUkXYr98B/Y1BLey+BMo8KQ+vRLeOvu8KtL2vktdBi6OG2PDMOab1SnA2ONkr+/UyJlXkTl6e39ybL4wuwAgEti+i6SgPR2EqVNyaQsAM5m2bs3DsBLS+I9xvvzYSkKCtr13mEDKm/gJ7Bs76l9csm6FaS5YvFWgWVTBQYx4mrbDJvt75evm2lCOPIpaxqABtmCbFYwlwdiQvdoTqsmH5vXHtKrdCq3iWGin+TwuL2H17tGIp30uvfxlFG80BiANE4tizTY3FGO0X9qJDaLO5B+QU9tRmQqCwEkMl54Nke7MTifhjDg5FAl/1l7OFCIb/m+KiWWjGuoZHfL5oWZhJDzY60hLIco+j+JDl+cZbbkGoj4say+BzuvBgWO88cxkndoebnFjXRe0iKkZKM8AYJkOOyauZ5bCMSq5kt3iSH/irimn2d2TlFhqZbjS/8bjOEwBzh14WhzJKrGJMlViG+Ykc7hIvRf+hDSCAF/M9vIps5wCb9hp0nUTPRNj94GG/srsH/3lohB0by2rWlgIUky2VG6nv8hReYCMrVgOT
+ ZZwY9vuZ
+ Sj0NbcmfEYqXdKzEvWeIsDkdk3hHauXs5j3Z+g3ldPVIjAgh6Ap5BJZto6r0rIZp84qOgc1qqbooOUMxWPBJuSy3ksTQXDeIkC9K9cyfc+830rBEIanSJfYtkERuTrQicS2wcNBtYmyxSoX55Cd1a02ZeM1IFi6gQpSc1opzhbCcUTR4C1mqIHP4GdKnnb9tPQh2abuXPNkIzSjMivXY1sixOt2S19nnCA3D1QxKiTDHvVI0CWFg2gP5iyakb+svSdASObjaDf4sJtOJBDW9Waq1F018Vl1ZJr9MHl28CW+zwTYZy2qY80/ciYJCkpWKuAkUdVSN3izTcfqZ/nQbAFngq8k0QTYjF98MNU2qHrgDM+HMtnXbzXCvf17nMUYoKYBZzVg4Xw8KwgsvrhCFP2hPudgp4WRmaZqn4mt21qYsw9h9kKgHERSP8g7Vz4ZR3x5JxJ+jovTtgKz/p4cNXpkiyK6g70E48A16YF2qfL0c+8jHQ2NJsLdRklISlKV05kIRXrdTaziNEMn9t3Oux8otza+4jkARflZ8DDUCS2tTxzlehvFpRL3wW5IetW6Na+v22NhvgvgkGF6dVLe5dLNF2gp5QE+SCwgR35suuxnZOlU4/yZ3FkOXd77FdI6n+UOsEgN9ILfm0EWuijQO3ubXefBaNfSicrc5HVeWA1z5SMKnIZvELBAXVLC7jHEm60bT8OX21PN3WYv3GeQmepsRR22dT2jgrBGlevZWu/0RI8u2Ea8eiYD0ObbQuGoW/VuVIWHe42Q3VmSbLGZMPVbWvnSGvd3dsAbInAtSCxxodN2AM7g4UpbDsO5/FKcrVjxqMvXirlyUEa4CbM5x/z0USOR5pTZonEAks4TXYuC7UT6fRPcufwcsL/o+yIpWhoowkwbQIuRK/S6rm43hJC0aRxqH9pYGvllcw/09FBZMG8GR6dIeFKnLSFKs0B0etxkJxve/FwXgjJeres5Vd0yAyD/Yi
+ fZpPSrhL
+ KwjuL8uEhXaEq05a31agkz0np9UB7CGh3mF27NW2Nu2RBNaqaSYh7Mo8WsJx21EMjLvqdCYlz5rQrG0fodRUGoIZiMChx1hg4KRXr2//o1Fen3FmLUdzRQwl/Pfvjg9o
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,18 +242,257 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 3 Oct 2025 at 10:23, Kiryl Shutsemau <kirill@shutemov.name> wrote:
->
-> We would need a new barriers to serialize the sequence number against
-> removing folio from the tree, but it should be okay.
 
-Oh, I'd just use our existing <linux/seqlock.h> infrastructure, and
-then those helpers all do the proper memory barriers..
+> > -----Original Message-----
+> > From: Yosry Ahmed <yosry.ahmed@linux.dev>
+> > Sent: Wednesday, October 1, 2025 9:19 AM
+> > To: Sridhar, Kanchana P <kanchana.p.sridhar@intel.com>
+> > Cc: linux-kernel@vger.kernel.org; linux-mm@kvack.org;
+> > hannes@cmpxchg.org; nphamcs@gmail.com; chengming.zhou@linux.dev;
+> > usamaarif642@gmail.com; ryan.roberts@arm.com; 21cnbao@gmail.com;
+> > ying.huang@linux.alibaba.com; akpm@linux-foundation.org;
+> > senozhatsky@chromium.org; sj@kernel.org; kasong@tencent.com; linux-
+> > crypto@vger.kernel.org; herbert@gondor.apana.org.au;
+> > davem@davemloft.net; clabbe@baylibre.com; ardb@kernel.org;
+> > ebiggers@google.com; surenb@google.com; Accardi, Kristen C
+> > <kristen.c.accardi@intel.com>; Gomes, Vinicius
+> <vinicius.gomes@intel.com>;
+> > Feghali, Wajdi K <wajdi.k.feghali@intel.com>; Gopal, Vinodh
+> > <vinodh.gopal@intel.com>
+> > Subject: Re: [PATCH v12 22/23] mm: zswap: zswap_store() will process a
+> > large folio in batches.
+[...]
+> >
+> > > + */
+> > > +static __always_inline int zswap_entries_cache_alloc_batch(void
+> > **entries,
+> > > +							   unsigned int
+> > nr_entries,
+> > > +							   gfp_t gfp)
+> > > +{
+> > > +	return kmem_cache_alloc_bulk(zswap_entry_cache, gfp, nr_entries,
+> > entries);
+> >
+> > We currently use kmem_cache_alloc_node() in zswap_entry_cache_alloc()
+> to
+> > allocate the entry on the same node as the compressed page. We use
+> > entry_to_nid() to get the node for LRU operations.
+> >
+> > This breaks that assumption.
+>=20
+> You bring up a good point. I was looking at the code in slub.c and my
+> understanding thus far is that both, bulk allocations and
+> kmem_cache_alloc_node()
+> allocations are made from a per-CPU "cpu_slab" that is allocated by SLUB.
+>=20
+> IIUC, the concern you are raising is in the mainline, the entry is alloca=
+ted on
+> the same node as the compressed page, and gets added to the LRU list of t=
+hat
+> node. IOW, the node to which the compressed page belongs is the one to
+> whose
+> LRU the entry will be added.
+>=20
+> With this patch, with kmem_cache_alloc_bulk(), the entry will be created =
+on
+> the per-CPU slab of the CPU on which zswap_store() is called and will be
+> added to the LRU of that per-CPU slab's NUMA node. Hence, the end result
+> could potentially be that the zswap_entry for a page could potentially be
+> on a different NUMA node/memcg than the page's NUMA node.
+>=20
+> This is my thinking as to how this will impact the zswap shrinker:
+>=20
+> 1) memcg shrinker: if the memcg the entry ends up in is on the zswap_list=
+_lru,
+>     the entry will be written back.
+> 2) Global shrinker: will cycle through all memcg's that have pages in the
+>     zswap_list_lru, and the entry will be written back.
+>=20
+> Based on this, it is not clear to me if there is a problem, and would lik=
+e to
+> request you, Nhat and others to provide insights as well.
+>=20
+> Interestingly, most of the code in slub.c has unlikely(!node_match(slab,
+> node)).
+> Does this imply some higher level mm slab allocation requirements?
+>=20
+> I am Ok with just calling zswap_entry_cache_alloc() for "nr_pages" if we
+> think this would be more correct.
 
-I'd love it if somebody took a look. I'm definitely not going to spend
-any more time on this during the merge window...
+I wanted to share some updates and summarize my understanding from
+looking some more at slub.c. The "zswap_entry_cache" kmem_cache
+has slab memory created for each node. The main change with v12 is:
 
-Back to vfs merges for me,
+before:
+The page being compressed and its zswap_entry are in the same memcg,
+thus, implicitly on the same slab node.
 
-              Linus
+v12:
+The page being compressed and its zswap_entry could be in different
+memcgs if the process that owns the page gets migrated to a different
+node.
+
+Impact to zswap LRU list vis-=E0-vis the memcg shrinker:
+
+before:
+The original NUMA node memcg [hierarchy] would need to face memory
+pressure for the page's zswap_entry to be written back. Hence it is possibl=
+e
+that the node on which the process is currently running may not see the
+benefit of memory being freed up.
+
+v12:
+The memcg whose node on which the process was running when the page
+was compressed would have to face memory pressure for the page's zswap_entr=
+y
+to be written back. This node will see the benefit of memory being freed up=
+ due
+to writeback. If the process has migrated to a different node than the one
+on which it was running when the page was compressed, we have the same issu=
+e
+as "before".
+
+Is my understanding correct? Please let me know if I am missing something.
+
+The bulk allocation does improve batching performance, especially with 64K =
+folios:
+
+ kernel_compile, 64K folios, deflate-iaa:
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+           mm-unstable-9-18-2025              v12     without bulk alloc/fr=
+ee
+ --------------------------------------------------------------------------=
+----
+ real_sec           874.74                 821.59       870.82
+ sys_sec          3,834.35               3,791.12     3,794.06
+ --------------------------------------------------------------------------=
+----
+                       =20
+ kernel_compile, 64K folios, zstd:
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D
+           mm-unstable-9-18-2025              v12     without bulk alloc/fr=
+ee
+ --------------------------------------------------------------------------=
+----
+ real_sec           925.08                 853.14       899.40
+ sys_sec          5,318.65               5,172.23     5,415.20
+ --------------------------------------------------------------------------=
+----
+                       =20
+ kernel_compile, PMD folios, deflate-iaa:
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+           mm-unstable-9-18-2025              v12     without bulk alloc/fr=
+ee
+ --------------------------------------------------------------------------=
+----
+ real_sec           808.10                 794.85       809.33
+ sys_sec          4,351.01               4,266.95     4,169.07
+ --------------------------------------------------------------------------=
+----
+                       =20
+ kernel_compile, PMD folios, zstd:
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D
+           mm-unstable-9-18-2025              v12     without bulk alloc/fr=
+ee
+ --------------------------------------------------------------------------=
+----
+ real_sec           848.06                 845.42       836.06
+ sys_sec          5,898.58               5,741.31     5,795.75
+ --------------------------------------------------------------------------=
+----
+
+Based on this, and if my understanding of the v12 change's impact on the
+zswap shrinker is correct, I am not sure if the change in the assumption
+is necessarily a concern.
+
+>=20
+> >
+> > > +}
+> > > +
+> > > +static __always_inline void zswap_entries_cache_free_batch(void
+> > **entries,
+> > > +							   unsigned int
+> > nr_entries)
+> > > +{
+> > > +	kmem_cache_free_bulk(zswap_entry_cache, nr_entries, entries);
+> > > +}
+[...]
+> > > +static bool zswap_store_pages(struct folio *folio,
+> > > +			      long start,
+> > > +			      long end,
+> > > +			      struct obj_cgroup *objcg,
+> > > +			      struct zswap_pool *pool,
+> > > +			      int node_id,
+> > > +			      bool folio_wb)
+> > >  {
+> > > -	swp_entry_t page_swpentry =3D page_swap_entry(page);
+> > > -	struct zswap_entry *entry, *old;
+> > > -
+> > > -	/* allocate entry */
+> > > -	entry =3D zswap_entry_cache_alloc(GFP_KERNEL, page_to_nid(page));
+> > > -	if (!entry) {
+> > > -		zswap_reject_kmemcache_fail++;
+> > > -		return false;
+> > > +	struct zswap_entry *entries[ZSWAP_MAX_BATCH_SIZE];
+> > > +	u8 i, store_fail_idx =3D 0, nr_pages =3D end - start;
+> > > +
+> > > +	VM_WARN_ON_ONCE(nr_pages > ZSWAP_MAX_BATCH_SIZE);
+> > > +
+> > > +	if (unlikely(!zswap_entries_cache_alloc_batch((void **)&entries[0],
+> > > +						      nr_pages, GFP_KERNEL)))
+> > {
+> > > +		for (i =3D 0; i < nr_pages; ++i) {
+> > > +			entries[i] =3D zswap_entry_cache_alloc(GFP_KERNEL,
+> > node_id);
+> > > +
+> > > +			if (unlikely(!entries[i])) {
+> > > +				zswap_reject_kmemcache_fail++;
+> > > +				/*
+> > > +				 * While handling this error, we only need to
+> > > +				 * call zswap_entries_cache_free_batch() for
+> > > +				 * entries[0 .. i-1].
+> > > +				 */
+> > > +				nr_pages =3D i;
+> > > +				goto store_pages_failed;
+> > > +			}
+> >
+> > Is it okay to use kmem_cache_free_bulk() to free slab objects that were
+> > not allocated with kmem_cache_alloc_bulk()?
+>=20
+> I recall verifying that it should be Ok, but can check again.
+>=20
+
+I verified the code again, and yes, it is Ok for slab objects allocated by
+either kmem_cache_alloc_bulk() or kmem_cache_alloc_node() to be
+freed by calling kmem_cache_free_bulk(). kmem_cache_free_bulk()
+opportunistically looks to create freelists from the list of slab objects
+to then "bulk transfer" them to the slab's freelists, with optimizations
+in synchronization as compared to calling kmem_cache_free().
+
+I verified this with usemem30 with the following code change in
+zswap_store_pages(), and saw no issues with deflate-iaa/zstd:
+
+for each of nr_pages: kmem_cache_alloc_node()
+
+kmem_cache_free_bulk()
+
+kmem_cache_alloc_bulk()
+
+kmem_cache_free_bulk()
+
+kmem_cache_alloc _bulk()
+
+[proceed]
+
+Yosry, please let me know how I should proceed and if there are
+other experiments that I can run to verify this change to bulk alloc/free
+to address any concerns.
+
+Thanks,
+Kanchana
+
 
