@@ -4,113 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78594CAC5B0
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 15:01:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 352D5CCA471
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 15:09:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 876568E0008; Fri,  3 Oct 2025 11:01:23 -0400 (EDT)
+	id 6DBCA8E0006; Fri,  3 Oct 2025 11:09:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84DBE8E0006; Fri,  3 Oct 2025 11:01:23 -0400 (EDT)
+	id 6B3348E0005; Fri,  3 Oct 2025 11:09:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78ADE8E0008; Fri,  3 Oct 2025 11:01:23 -0400 (EDT)
+	id 5CA968E0006; Fri,  3 Oct 2025 11:09:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 65C8D8E0006
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 11:01:23 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CB72C13BD03
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 15:01:22 +0000 (UTC)
-X-FDA: 83957116404.13.3616D53
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf12.hostedemail.com (Postfix) with ESMTP id C93E24000E
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 15:01:20 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="XQIE/k8w";
-	spf=pass (imf12.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CDC28E0005
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 11:09:27 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 16E7713BD07
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 15:09:27 +0000 (UTC)
+X-FDA: 83957136774.25.79E0B7B
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6DCCC1C0016
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 15:09:25 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KBRY7rs9;
+	spf=pass (imf20.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759503680;
+	s=arc-20220608; t=1759504165;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rvoiyExDSEvJpLVkArK+JF0/gLIg1oSJww/Brn0jTdI=;
-	b=0+LMqVOjb6RZKCsbwddz8siPvgOvtaBYqZ8W/cGklLxnMpwi9UmrA+n/QQbOKL7RwYgYMn
-	iScyF9968t1qTBBTTJaoIurarklJLPv6u8l2tqNAcZz7+/ZS5G2K4wM0yFeYPJkIzN7aUL
-	Pmzbu3eFyaYzNZcgbRKkGAxny0AguRk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759503680; a=rsa-sha256;
-	cv=none;
-	b=19woOCWi0dnhjfZyjzfGjg+zF5bP+Tbu2iJf5Hx8q8SBcgEf07ABY3Fh9JH+tvCsE655Uf
-	1J/zfn7E93tE0pNB1qm8L73GScus9Q6INR9EVL2ekKxd4OrV+ktJJ5y7OuIN2bGz0uKcfg
-	Biow/cwdkBB6MjPrTKaI0mZVsBGhiiU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=oaSUB1+BagfG1uIIKH1kjK0S2ChhrhqFels8CRGn4NE=;
+	b=rDFveGLHrxDC7eBEBdlYRH5YM5AVAqJM0irHA2uIK5xY/Hg524kT18M7cV5C/J6x23AHLA
+	W+pSiJPgLIR2nLnoeyJ2rO3r+Q998x56dfx87KI8QPTLNOtKuXVumZvXcMECECp12TU9xh
+	ePU/QxWgHore1hkye6dJFaULfpBs8fU=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="XQIE/k8w";
-	spf=pass (imf12.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KBRY7rs9;
+	spf=pass (imf20.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-46e42fa08e4so22082915e9.3
-        for <linux-mm@kvack.org>; Fri, 03 Oct 2025 08:01:20 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759504165; a=rsa-sha256;
+	cv=none;
+	b=Pa1Me5lha8QV2YA7hRzcCr/2DtOK+yGM5kj7JhlxrxTehNbhU4ZHpvS2i+batqyhindNZR
+	RxaRy681fpSliyA4ADxhJSKkd+vDTTNbft4NxWDd4EFgODrWPubm0iuYCGkJzDgPKZX0iP
+	hZAva2ODizLi/x9FIZkAvDm7aVkTizI=
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-32e715cbad3so2528167a91.3
+        for <linux-mm@kvack.org>; Fri, 03 Oct 2025 08:09:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759503679; x=1760108479; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rvoiyExDSEvJpLVkArK+JF0/gLIg1oSJww/Brn0jTdI=;
-        b=XQIE/k8w2pdUWjVl2JC13t2d25LG6oph/iePjn87Af06o1KqRg5bJPAiRZcTjOlIUQ
-         qe6alBNwXcLZEjqGfEMk4s71wWuzaQTBYKxhMWA8uLVU5aprUKAhqy7v5Q24Qqsynde7
-         hQwUpxsf1Ltf464AjyDfgYLquUmFlDvRf6lSVkaKvuYyukKeuPN0x+dMGEIphicUL2BW
-         nthzgT0FAs/LVJ1IyLnWED8hels8YapXe7aKEd2oNMRfNkIHXKjLR+WnMg/WAnpeZNR6
-         hnEkfMDh0xBzLxcL5ajzpRe7BPW2Fx3Hmrh9d382vci8b9yeUsRfRhO9df3YPp/6vX64
-         GuFQ==
+        d=gmail.com; s=20230601; t=1759504164; x=1760108964; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oaSUB1+BagfG1uIIKH1kjK0S2ChhrhqFels8CRGn4NE=;
+        b=KBRY7rs9CBcHn7Owr28ns1gejN1VWscIi04QNrTEntAJBXNg0LGYYwEVJMuMO0uRAR
+         qXK7AifZnI7z07Pin6y8LPknmDA8zJ8BjG/i9y2vWFMIU8n81vz1D1/z6c948o6Sk8cs
+         f0OfTvFQzfiQfINGlQQwMclMaM05o1SFMDDegVu5CdjBLO8sGz8qSZb/dZkPt+xsFbTo
+         Y97w4vl1aq+/7s49Pi3apMUDVw1p/NdgU/WJRGn0O4NuHwidS2yJtWWawBY2kuCUx9sl
+         g5ZPDZPDKTcw4wST9NC3D7au80+g3+f51JhhFP3Eu7ytRODo+V0Ch+X/SySg0fpbCL7Z
+         5h/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759503679; x=1760108479;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rvoiyExDSEvJpLVkArK+JF0/gLIg1oSJww/Brn0jTdI=;
-        b=wrfDjltJ8dwk/zomZDZ/pbzNfKjbAASvMKErUtqdoetYZVZfA5KniBFQKckQiHN1tQ
-         OZDijH94CjFp90vn46Sx3tJooHk5O3P+NN652DCcuP5ZJc8fQHtj6TytEoVKyNxQMmyL
-         d4ZX4/mTjdOfEiOTNB39qcmq4krwlvB+fcRD8eOR+g7PbFDhQgwbZRsvZ4fGaM35he30
-         4ccUtq6iV345RC9rrxERQAeVgDwgXWWYPQnyQ2tAazR2BCjdlBCh0pzckjN3AMgm1Vif
-         +apZl0boncdFQ+cCi9OUBTwtFOTQR2RlhCt3D5ChcMcd1ZGLa8ilCTDC29dt83LUEg9J
-         7KQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXMA+a79XQcS6VHHYpxBrQSnMAEQBzMxDYSeQufhuMcSTMjKpGpV+DjOJZUHMMg+SHocpBOnJrWOw==@kvack.org
-X-Gm-Message-State: AOJu0YyuD0uctDOFwKClUSHIe8qTiJd0v4vEO5JvCImEztisC5JIDEmr
-	Te78EiRGhX0/zbvNw1OHkLlhk3Q/RU7UMrc/ZuR1c6ZEl4ULCqH8XLmxq4+OEsM40WRIcWhv04X
-	AeK2suAmY4EzavaxWIeFrVd7PgbBGvOU=
-X-Gm-Gg: ASbGncvupwz7ZoFDpsUzwJJx2MnF9XEjoKAHvGeKVHgO1naxdVjE56KptKzIHcMNjJt
-	o1HCEFv8d98z87Zx0UlUvRDcONXXfBbICeuMy1I++hPM/zuCD3Mzz0l+T+xb99QIV2NbcD+Lgtd
-	umwZ2J39fY/GcXN99vXSVHDRWa3yFcmA0UdxFkCgEHHliF5FgOWifZmGGA5IEMI49hqSRXtLz5S
-	V8EU+SV7ruoauXEXEpRNsPWBXuDQmgRXy4SzzbiFUiUzOpB4qp5RZg0O7wDaMJTbl5A
-X-Google-Smtp-Source: AGHT+IGhP1/atGsvKEKDdjwDJhtnkHEnPkwva/8TFkjZbQaj2BQDqokdY2zYTli9XTOnEez1YY3KKjNm1oo6pN9k7fQ=
-X-Received: by 2002:a05:600c:19ce:b0:45f:2919:5e6c with SMTP id
- 5b1f17b1804b1-46e7110c3d5mr28401455e9.16.1759503678161; Fri, 03 Oct 2025
- 08:01:18 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1759504164; x=1760108964;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oaSUB1+BagfG1uIIKH1kjK0S2ChhrhqFels8CRGn4NE=;
+        b=o4b3pjevTp2XMFkesh+QQ19MYBBPXKSW9f89eqb3K1JuY4JFWdYdEz0hp4WNC/Bdmd
+         HsRZZ612FRlmPGY3vLfGC4HT3l2CQDQjrpayKyj/OBbrS/yYooTOqzX+mdyUGaEHVy62
+         8QGnYtNbqwiGELQao8bwTMEAmDyGN1YAC15sIHVgtgEnWTSCVsifqseA6iKyQl+zJykm
+         g+qLZkfrVnJVGJi/VboopvctA55WAyhNDAw6Fosx0fKz+yfYZtOIIpUyvMBQ5lPA3re2
+         +RM2zv39hmZDavIjwFUf2OV251PIVyM0/KUHP8s6MQS18CX836izKA041zeydZ8BuF9K
+         yxwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWM7B6fPFI3HChh0BVpWHqV/wdW4siicJQKU2mP5e6WXgIbdkOs4SL7Znp1YrVtJAhnws8vYghbeg==@kvack.org
+X-Gm-Message-State: AOJu0Yx5+iR2lpNhYe7wW5qYQAIhzA4QUAjjrOwF5csi1tHhSAPzKCR/
+	TgRH0rGkkdnL5VPGfJ9u5Vei2oWVFaY9KWxMo5VMOGaFWu8P/SGHN27J
+X-Gm-Gg: ASbGncs4G2tFTuwh2CkXMuiaF6x9xRc7gNgRLAGz7HtdHagNwy5DHuwNb/XXUGy+6/o
+	bOYGE+GvKMP4FVzphUr2sroWXEtUX9w1gUQRDczXCneTQ06V1x+lB2HhaTLmQvjwM82tqZL/Sc/
+	8GBcv+oSgNnEkUMsvqCqt7laBLP5+67XvSuzK3+ezIEOrKK0ep9ykrqrdnnxCpkfOsph2cEppZt
+	BqOis1KFiVk2g5IK9wzIH/TPm0o6ANL9dBhzLODHzA6NenPwYZX9IHJB2w/lx+N5iWP3BQHcleh
+	ohy6Drql2S+/vmxXVqtAdWrzI3VExDKQGVOiUGCgSyYkYQLNIF+uxdgiZs4/ILQOsFus9FQIG64
+	O4gcPF77ECjXSYXwOQeZcmjCpxCHH8N3k4yohhkh7W8H217ufUeLdtCBRSexDUWr5YCoEF8Z7xT
+	BLPR5FFdfY2j/Oc72bsLkHUx0z8Q==
+X-Google-Smtp-Source: AGHT+IHebKsQGlCqmQWXIuWKaaP6c+lSXFd6QMz8y/M5S0AsKAM+Z/y4gkOBtv1H66xkUTN+BsOd+w==
+X-Received: by 2002:a17:90b:33d1:b0:32f:98da:c38c with SMTP id 98e67ed59e1d1-339c27bc556mr4423329a91.26.1759504163937;
+        Fri, 03 Oct 2025 08:09:23 -0700 (PDT)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:38c3:a5e9:d69a:7a4])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b62d0170c39sm2379114a12.42.2025.10.03.08.09.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Oct 2025 08:09:22 -0700 (PDT)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: akpm@linux-foundation.org,
+	broonie@kernel.org
+Cc: muchun.song@linux.dev,
+	osalvador@suse.de,
+	david@redhat.com,
+	linux-mm@kvack.org,
+	inux-kernel@vger.kernel.org,
+	syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com,
+	Aishwarya.TCV@arm.com
+Subject: Re: [PATCH v2] hugetlbfs: skip VMAs without shareable locks in hugetlb_vmdelete_list
+Date: Fri,  3 Oct 2025 20:39:16 +0530
+Message-ID: <20251003150916.2870729-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20250930083402.782927-1-ranxiaokai627@163.com> <f72deca7-4344-4adc-88e3-35a4a1d9a30b@suse.cz>
-In-Reply-To: <f72deca7-4344-4adc-88e3-35a4a1d9a30b@suse.cz>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Fri, 3 Oct 2025 08:01:07 -0700
-X-Gm-Features: AS18NWDeadN5gWCPdehSIc1K0vm29j1_C80YFC-7IO3Xo557HA4mE3AgwK0bSQg
-Message-ID: <CAADnVQK0COXqq=R_WZU5stBe1b+472RS0+JJrThnbxXadBgN4Q@mail.gmail.com>
-Subject: Re: [PATCH] slab: Fix using this_cpu_ptr() in preemptible context
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: ranxiaokai627@163.com, Andrew Morton <akpm@linux-foundation.org>, cl@gentwo.org, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Harry Yoo <harry.yoo@oracle.com>, Alexei Starovoitov <ast@kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
-	ran.xiaokai@zte.com.cn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C93E24000E
-X-Stat-Signature: ugpodgru5yodx9bo7xnzijxeqfirj6tc
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 58wt4o6kz7ga3w3e94en7r97m5n5q4cn
 X-Rspam-User: 
-X-HE-Tag: 1759503680-646513
-X-HE-Meta: U2FsdGVkX1/nNBrjZx4jvG1liDgVY1wqdKQKBJshraejnuDwn1kOxg+VUzeDE8kJfdTxKzDgGgsdjv3R0P/4EvGMzSg77mKf8zRwY6clHuVJ/bqAriiasoLNTpb2kx2fxB4crCnYAMMuIGR7hhkcDKpYVGc/yd/jiiO3UiGVIgAItrM1sBLQLPSUm/Lcdxgy747CF8vYBNbO5ICTZcz3Irx7dU+uetgswYkHTkAlkGmfjr6m9TcrMT0X41RAu73JxPkmli4/1EiZHrDLe2p+EDb5xtjDFauTyAQgdj9xnqB24vG54j3BYxVwGIifriFuOmbmZoCA16VwuQie/6Ox92IVJsh5ZCqKoIu/tBAqjFZzORDT4ugvH1Tgen3GsXBJTaEksPBDmAMXYirHiuxqqxa5WNTqLbVK8cLG7CqcaD6vuyMpin4IN/PQtSn3lyxeWBaBxZlJwApotn/nyLuifKjgkV6JcS0ftcxzsP4db4NaykTVKjgTUizU+6DIh29YfWntQuZaG9CsJm0k3f5Ij72/6fsEDTlD0di+3OO/GfwWJLhImJHkWK+KJWUo8ezh0XaAsC11o/BYDFfTuBBUdcY/lL7Zfxu3+yg0CmLTc9Fq00dRhueCsmouovqHBXcosk9dUT2sKKJDmA79jXp5Z4PU0kwGaIpLcBsSrC9UKNQxF4PM/xztrGd5OSbPiK2Pk1pyHZRN0AhipUxkI0WmCK3XkeFBRXY6EV1Aw1BFu9dmzU9KUjyB5erEOH1W8e+qLZ/331rt821yIR40ZGU0TCjgJZ5XboNks6yY/GS/HQVJk1I1PRQtTwgCIrEjjys/+yg4j+DmtI/IW4mTJtrVCtVP4Sn7KV1OAfFZbspKVpuYs7JnBz+zI1I2qoasx31aY8edYpfGdQllgc0nMQL8+j+KChyc5+PKhzrkp+cRfJt6fWhENnSY31wjpcXp/dfs5CAQIyBAstWpBB/kdwT
- w3CK+5EW
- yIAMtaospcJrdgBWQwhcw1mLkSvGjcTgMHDI/rt3xQ/YrGpg9/Xtrz5jnFxtC6H9FHrKf/2AO9/FQe19N6ycy78MPo6kIdjLv1dreXzy0OasK8gPTESlBiGQrW+pM9udUBsNcHkgo0i9051Iq0iG/nissxI3Si/X5eByS+mBQ+Mx6k7d7GD+n5EOPbG46SktJ8EOwMG8FeoYIeT0+FzPoBH3md0KWHQpilKCZ0n39TF1OVm5QkXf+uEpIl2XzTNrYXj1T6TRsnUh4RUTIOh8gXfHUco3lVJs3xFWThWRjumPPGHlEV+YjjESAg21hyTUgmVUsyK1QdvlA1BxmcF6uCPQixYgChCJpw/6iP7WovqSLWsgWDvDRo9OJAzIu8hT0MKH8tf6BGEbrojsI8KhgBTUsZYRuRQCoI9FRri2sVmv8sArtZ2fThWzNJ7pIxT+MvJImd3OuTvFxEfxG3ayhGjyx08Bv08qRicA24KOE1+3QNwYxzkIUsMuqqQctPebNNv+JBGsFZg3L+0zl4D1NrNJbG8aI8Z6SVVgO
+X-Rspamd-Queue-Id: 6DCCC1C0016
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1759504165-193603
+X-HE-Meta: U2FsdGVkX1+vrU5zYKYrNAMQGsmY86WNzvmvrJtGBiNCMBE9iguEDsQUGlkhCBSF5JNzgIg3QXuE0tYkRDOlqYNBBAvbCwopodBNk+FLG7URLR7jmTebAY/Hf/Kn3PAuf/9SJtNrshUDIKQhKzkvF1YC+EY5ziDqk9sH8FcYO2RvUlfp735YZX/baFrusD9vkkUQvyj60SQnNWZN17iiyaG19dWyCJW+CWBq5RdUZy19jq6TXA0JPnEGWWTy0S3DJdFYPKzgAchrFHDy5CBYnl9/uU/lfWTudMOP1gEX4X2QY9+0uZEFnPZTIugdabcMiXm1dm0CeoWbx5KO9aL3YM7PuU6fsN9y65Dw3smlHmeJwD3q4FpYWqH7z7L00yuUCvMLmKqgaFum4RS8cM3k+3gchzSuT73QujPoG5aoHTjtyQfW5Khe8K7qnlQ9Uxx17ktx6ECyS1oQUazEDXIsGGTo3X5wfIWBm90USmS5+5KJSYZ4q125kJmhz9T/3XJ0JH8SOf/pWMBDIKcrTkw0FllIqK0GeX8anrjXcdTl1IaUIMYEtvxibXJMgffUMwolB2GuJ9luQvQCF3GBoPAYHOhIaIbNY91ioKCfXJ36SVBK/2vXo3KmwFJcdT2NgWYmR34brbhxgfGa9pYa4RYxlaX3EFDviNDRKYzY4QdeOo4rBzD6jB3zx9NgmY0nLpK+rv0WtfxT9eEogifAFeqEkXmCb/EsV8Kxsl1PFEZsjj/fEDijBH0bz4TSCnSul4KwBGlqNf+HaV+d1+KFRnsbNNh8h/RFoIMXXugdRZolbNK3J9JOO8rr55KVbSiCWLk7btnduMs9NyTJiNDca5CKyXNGM82oDtxbmfodL2mIIMJvO0gOcVHZ+Ao1fTfTnLIgElO6K/w+9LBvc+FkPXFRx90fpTt3UMaEMCljGX+Ay2ED4DNe6AUgbfH53i0gnO6Sydmpv/R9+GCTBIf6Vin
+ 305DCpr8
+ HpZIhAWb5UjD2M+7xHpuOvhVHX1n9dDWLw5bwPvSmU3Ga8sadnYAZtM/DojAFqMAqrK/MjFyf6t7n4OASe5dMyjsN15p2VFAxlY6nFzPBYFjdL2H+a+qO5XID9BhEKm8N3ulPArpbTtfLXWvQc1Yz7/1Nk8s6tO3nhl2XoSgMrJiNhavzlwARwv3fDlW04tjWEGRWEruNu9J48gULy07eOaBz/0oVUZ3MbFeXN4lO5Dqrmc8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,21 +122,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 3, 2025 at 12:50=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
-ote:
->
->
-> Disable preemption in defer_free() and also defer_deactivate_slab() to
-> make it safe.
->
-> [vbabka@suse.cz: disable preemption instead of using raw_cpu_ptr() per
->  the discussion ]
-> Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock()=
-.")
-> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> Link: https://lore.kernel.org/r/20250930083402.782927-1-ranxiaokai627@163=
-.com
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Hi,
 
-Acked-by: Alexei Starovoitov <ast@kernel.org>
+My previous patch dd83609b8898 ("hugetlbfs: skip VMAs without shareable 
+locks in hugetlb_vmdelete_list") fixed a WARNING but introduced a 
+regression where pages aren't freed during punch hole operations, as 
+reported by Mark Brown.
+
+The issue is that skipping the entire VMA means pages don't get unmapped, 
+so they can't be freed.
+
+I'm considering the following fix approach:
+
+1. Add a new ZAP_FLAG_NO_UNSHARE flag
+2. In hugetlb_vmdelete_list(), try to get the shareable lock
+3. If we can't get it, set ZAP_FLAG_NO_UNSHARE and proceed anyway
+4. In __unmap_hugepage_range(), skip huge_pmd_unshare() if flag is set
+5. But still clear page table entries so pages get freed
+
+This way:
+- For truncate: same behavior as before (might skip unsharing)
+- For punch hole: pages get freed immediately (fixes regression)
+- No WARNING (we don't call huge_pmd_unshare without lock)
+
+The trade-off is that PMD metadata may not be cleaned up immediately 
+when we can't get the shareable lock, but it will be freed when the 
+VMA is destroyed.
+
+Does this approach seem reasonable? Or is there a better way to handle 
+this?
+
+Thanks,
+Deepanshu
 
