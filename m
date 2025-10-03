@@ -4,141 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E873CAC5B0
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 08:35:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21D3DCCA471
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 09:36:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 781328E0003; Fri,  3 Oct 2025 04:35:51 -0400 (EDT)
+	id 0B2138E0006; Fri,  3 Oct 2025 05:36:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 759578E0001; Fri,  3 Oct 2025 04:35:51 -0400 (EDT)
+	id 063208E0001; Fri,  3 Oct 2025 05:36:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66EBE8E0003; Fri,  3 Oct 2025 04:35:51 -0400 (EDT)
+	id E945D8E0006; Fri,  3 Oct 2025 05:36:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 539348E0001
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 04:35:51 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B328B85D3C
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 08:35:50 +0000 (UTC)
-X-FDA: 83956144860.27.84762F5
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 612281C000A
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 08:35:48 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="LDSFop/T";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=W4Z6NyaZ;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="LDSFop/T";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=W4Z6NyaZ;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D066B8E0001
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 05:36:04 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 840BD5AC7E
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 09:36:04 +0000 (UTC)
+X-FDA: 83956296648.16.92F202E
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 561F910000A
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 09:36:02 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf05.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759480548;
+	s=arc-20220608; t=1759484162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oKhGqKWYXB0Whi2FFFvg79+OnJq6OL+eV6niiEbIzNY=;
-	b=lrZ9KOPzj5jomI1hHZGS4hMs+umcor94Ih3qKhip8b4CpxUCJ+MY/+uutloK4GlJLCKWGF
-	o+ySu1uBqIsj+qnnM2UGA9dhK+E3vltzPLlKM4GwBAl6q+PqjeuQNoavp3xOiBkj5sqo8k
-	t4dm7y/o4muAC9lCQ6ntDj4Ajkl6OrU=
+	 in-reply-to:in-reply-to:references:references;
+	bh=PpQeiq8jv9AGAvDe1G+zaA3L2G3TN/dnU1+546d/boI=;
+	b=cg6KcCpuerKi/cCmgsOZaluGA5BtRPSSrmJvOlfjBXInN6vhslflUoSYkB8ouQTy7FFMRu
+	vVwwr5HCamA7uAsY/0slWniOwldDzKxZytKzlQ8TaUJHA+luLUOJMRTU0XWiVM6Qg1/e+9
+	B+W5Vt0yq0uptMg9ybtR5CiN0M+J1aE=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="LDSFop/T";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=W4Z6NyaZ;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="LDSFop/T";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=W4Z6NyaZ;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759480548; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf05.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759484162; a=rsa-sha256;
 	cv=none;
-	b=S91tQU3nNSVdExZRZaAxQHMRhsYto7ZnmjjgpqqdpILOkugrvH1OkU1L8ZdT+OzAcBUZjF
-	jI8sAJ8nA8/0TXuPXrsL82kgI0R31JLlToISAOGhR1A90hwQspNvQpWccto0mG5fy1vAet
-	KvnKKZ3YZKdZhLFW2dPp/Nu1lrBXzPo=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 98E0E1F388;
-	Fri,  3 Oct 2025 08:35:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759480546; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oKhGqKWYXB0Whi2FFFvg79+OnJq6OL+eV6niiEbIzNY=;
-	b=LDSFop/ThKXqPoH/QB/KoM7KcPKAWzHsfQw0YMqySe/G6hma5O759ouoSZEpd/ZdvzsPhQ
-	ztvzFErbzg5jdtKegWt4F24xxg8TsECp5Iwb8WzL/CqLoamhZSb8Ceqxs//egXcEolujap
-	XaJg47rPCv4cDmoeQs/kiGQ8joqbL5Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759480546;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oKhGqKWYXB0Whi2FFFvg79+OnJq6OL+eV6niiEbIzNY=;
-	b=W4Z6NyaZQX364XOSjJoKQDHMnvB0rhPlY2A1q9IbodVBxL8GuxRNWbQlcM2VgEBsG1GPXQ
-	XxqtGiZfqNIxY4CQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759480546; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oKhGqKWYXB0Whi2FFFvg79+OnJq6OL+eV6niiEbIzNY=;
-	b=LDSFop/ThKXqPoH/QB/KoM7KcPKAWzHsfQw0YMqySe/G6hma5O759ouoSZEpd/ZdvzsPhQ
-	ztvzFErbzg5jdtKegWt4F24xxg8TsECp5Iwb8WzL/CqLoamhZSb8Ceqxs//egXcEolujap
-	XaJg47rPCv4cDmoeQs/kiGQ8joqbL5Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759480546;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oKhGqKWYXB0Whi2FFFvg79+OnJq6OL+eV6niiEbIzNY=;
-	b=W4Z6NyaZQX364XOSjJoKQDHMnvB0rhPlY2A1q9IbodVBxL8GuxRNWbQlcM2VgEBsG1GPXQ
-	XxqtGiZfqNIxY4CQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 764E513AAD;
-	Fri,  3 Oct 2025 08:35:46 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id xeiGHOKK32gNcgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 03 Oct 2025 08:35:46 +0000
-Message-ID: <db51bcc5-aaf6-4cb4-ab62-fed9d40d6caa@suse.cz>
-Date: Fri, 3 Oct 2025 10:35:46 +0200
+	b=WXjdY0GErpUsRrJco6zoWcJhqZUDVtN9U3XkkZjYmZpKgs5TYXXYA4YrfbzODfK9BUYK6i
+	zxGynzynWOruEi7Nw7TN9Rd23SyRydMlJ0SkeYRaO9q+XhFW/y493a7wteJKrzNqHiO8Bh
+	g8//9qIsqEl68fpkpczIxrcyXzGjquk=
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cdNk85Vn6z6K8gH;
+	Fri,  3 Oct 2025 17:32:48 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id E30771402EF;
+	Fri,  3 Oct 2025 17:35:59 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 3 Oct
+ 2025 10:35:57 +0100
+Date: Fri, 3 Oct 2025 10:35:56 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Raghavendra K T <raghavendra.kt@amd.com>
+CC: <AneeshKumar.KizhakeVeetil@arm.com>, <Michael.Day@amd.com>,
+	<akpm@linux-foundation.org>, <bharata@amd.com>, <dave.hansen@intel.com>,
+	<david@redhat.com>, <dongjoo.linux.dev@gmail.com>, <feng.tang@intel.com>,
+	<gourry@gourry.net>, <hannes@cmpxchg.org>, <honggyu.kim@sk.com>,
+	<hughd@google.com>, <jhubbard@nvidia.com>, <jon.grimm@amd.com>,
+	<k.shutemov@gmail.com>, <kbusch@meta.com>, <kmanaouil.dev@gmail.com>,
+	<leesuyeon0506@gmail.com>, <leillc@google.com>, <liam.howlett@oracle.com>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<mgorman@techsingularity.net>, <mingo@redhat.com>, <nadav.amit@gmail.com>,
+	<nphamcs@gmail.com>, <peterz@infradead.org>, <riel@surriel.com>,
+	<rientjes@google.com>, <rppt@kernel.org>, <santosh.shukla@amd.com>,
+	<shivankg@amd.com>, <shy828301@gmail.com>, <sj@kernel.org>, <vbabka@suse.cz>,
+	<weixugc@google.com>, <willy@infradead.org>, <ying.huang@linux.alibaba.com>,
+	<ziy@nvidia.com>, <dave@stgolabs.net>, <yuanchu@google.com>,
+	<kinseyho@google.com>, <hdanton@sina.com>, <harry.yoo@oracle.com>
+Subject: Re: [RFC PATCH V3 08/17] mm: Add throttling of mm scanning using
+ scan_size
+Message-ID: <20251003103556.00006e3c@huawei.com>
+In-Reply-To: <20250814153307.1553061-9-raghavendra.kt@amd.com>
+References: <20250814153307.1553061-1-raghavendra.kt@amd.com>
+	<20250814153307.1553061-9-raghavendra.kt@amd.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] mm/page_alloc: Perform appropriate batching in
- drain_pages_zone
-Content-Language: en-US
-To: Hillf Danton <hdanton@sina.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, kernel-team@meta.com, Chris Mason <clm@fb.com>,
- Kiryl Shutsemau <kirill@shutemov.name>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Brendan Jackman <jackmanb@google.com>, David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
- <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Zi Yan <ziy@nvidia.com>, Hillf Danton <hdanton@sina.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel-team@meta.com
-References: <20251001234814.7896-1-hdanton@sina.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20251001234814.7896-1-hdanton@sina.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 612281C000A
-X-Rspamd-Server: rspam05
-X-Stat-Signature: jsf19dbu8qdognh4i4kadckz8zct8jwc
+X-Originating-IP: [10.203.177.15]
+X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
+X-Stat-Signature: p835g3rnaeh16buicz36x3tba9dztifp
 X-Rspam-User: 
-X-HE-Tag: 1759480548-545662
-X-HE-Meta: U2FsdGVkX1+iOaErAV3qbTiuOy2+KxK0zuyR/Rvw83ETnkctFTRIPhiX5OUr4zjr5tM1+SS8j0Wpn5JXecEtCVT50Nosq3Pk01379zq0DVHcGBZJ79hkMHVdLAmFnl9lFvq+rO4klCdQAIZU9YFBWrbtpJGU8NZasI97Ve3Ibuvt4uAk4g86A00MgCaE/mp6igXuPoK8cb2jnotpdRuPNmAdmk+AGurnr7kgwrWn7lIPerEQyu3Ss15SJ6jyp5/6WlTrXYGuYE129h1eJtxMVVTYj7dCesPHSvwm6hYcHTfRWpyEH/q/eJUzlK60w26RLffgVfdWMDWMDgY0PuCBfelhKMNc+gjEkpGkfzzBUhVpcoBC38B3tHjG55A1624U3a8+AgXZ/YetR6B4tQQSjOl2sPlsugPnr9fp1tGmLmZnUyd0GWT7wyhHkxIZ2rcd3+4kY4+6SYcDO+i6aI4BeQcKudrRTtg71L2z6kSZEjkQ0K7CCY/9GIYFoRdr2YJrCw37oxoMmedeHq3QC4jY3dQWp0XdQ3WLFFPJVBYGc6lmS7VKsOkLeB1ejC6OCJmnACSr6cC22LWsDMOhIVG6VVPicfpeFsK66OFhF7Nus0QLig5k3Nv2PngnRwQZQNgThiGO+wWTmaAAUKQ5vWmIdprW88+ZGJItt1I8TSUlhf8dUrQhST/UemsFFfyim12biiStuKOdg0fwSYKovzRsPbYhuuFQ8X2ZADbBirIFeDp7AfHp9SylgyEEarvXnMWfrEQOae4PZX8IzeuuewdR+YEPDB60keiRUuBq9ef3rCy6PV+SBpJVGx2DQi5bicMrM3/qbpmQp2NXqE5fF9tLU0z0u57rHpqjtacqie+kw8m6Jf590RT/vO+TiwAjyJS5tmzZOwf6H46DpGPnuGDQcNZiQCP4q3E+wxviXnwMM4HFx9o6Q3nIHh6+nHOF5QL8k9SGIWTETj5R4l6WvJ9
- fhPDweTj
- Npd7XakGInxu0XIlCYVvHUUPjxLETugR+Ze7TRa0f0eaYvKofsoywj/3kBXLERnBOKHR70Zo0BUj6LQIWDL4VAyRiE00kDnPG7qfBFb70YehJusuGZ/XGWfvy3quCWY2HP4Y7H3kukFBs8Vq6hYa3nfD/SwB8qc5X/Ywdh/ici4WAqVeMxPuEJ4VCzE+S6nCoJ4MZSs7tKz6E56Vw49D4E+rmYXsNgPHuD3qF9eTKcnnqM5lgx0XEuze0w1ccvOA0k9qHhNoKjKvkroxMb0eoW0Bu71w07nqTx/3HjFAff9q4lOVHwiEVWm+9VYYKq/BBvdmdeiKLEQwZpHU5PhE+uboFqwCe+vDbFGkGBZsVxF/5X7rKtMbhRvdFU/anwiA4huvpEJIbm2CDsDYuPouyj8Nbsg==
+X-Rspamd-Queue-Id: 561F910000A
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1759484162-145692
+X-HE-Meta: U2FsdGVkX1/cOQVM52tZ1s/YUpreD2zwps5s52AamV8DArqz0rWcbVRBSxOW8oQYUvXzoU+m9g6mfscBzRvCT5R7U72p+dfvws/NkWUQSclrlO/aYT+giDsjgavL3AjB28MdDn/18X9MULBWew0Yr55HNm8nBJi8s6Mt0izGaEnBrfoUeBUBsOsG9K9Rtr7WH7/5A7Rp0Mnf5jZfN8f/XcVODf9GhzdKe4PWai+4Rm+mjcU2+AxnRcy8yBKFK3KOAOFYPu0vb3h5vGMXhYAfxVKjYMaaUkapttjpqFd9ZgLL3UVo3peb5aSNGGZTSV5v8pdyRjp1kxCXkMPj/8knPbXwEcR2RRUXI5DK2ErOX9piNCKCKPzKfpDkIfQSUc3h3ghr4cToKNrJDVjT4HusSPeTeaD00ctbPgoWl8JQTlkNQjRYJQO3cTrSHF+HEZMPad31sne14EPyNQVtkIHsRg4xw4LVlQLBGhJ9r5ss8WgURzhuBslAQ8i3Abi+dbqg3xa2AAUHGDs0grwq3aLzK5H3Vgu1o2/Kj8ktlfoXZR4W+u/9RF6U9EmQFwl4UUYeC3I0Xt98A74sarONQQgc/5B+R3P+0LDtKPTrNaf8AWPDv+j4MmB5A7rEibbyqn6gt8iIwu9DkAXz++wULT89O7Nn/bISDW679mY5WeJ5Fe2I84jEmv6r02yEb4q8TtrGf5iDLdOW+VCbDG/ibLCFsc+mAgr/ew3wiDGsoNmnVCsfcb9lqI2VYU3ue8SRz2xXmQUc10oh17ecRROoGM6YMsN97B+CS3iLqMBLXdXyKYxCbEKZMWnJSiaUaTkdN4f6jlINA0FViXMKAIGaX/bUg9A+TYpIVFCjEftc/PfIGNNtgf+tyOAaGWIhHIXy0VKvlooFysGQk5d+InHvneN6NIDSnHgESGqle0XEp7yfesTIyCA7mOJeo2GWWWskCxuWkAbiiYCkxqfVv4hs6h/
+ 4AYe9QdL
+ E0HlnuU7lmSNxOAQwXbgFsO2AeQcv5164al11KfzAGFwR9PQCipVkM//Wt2lTiRgGXehZls3aLuzIT5vs6r+w9lffJtLe6+DSBivjw0qAHGckDVAT9E6b3rO9lLnq+wkaICZvPwwuuBNsl2G8IXJ+HMhHNtHGaI6dM+0eiNAKIHa9XZ2vU6W1HEyQEN/Kr9yDvYOFGDpgygsm+HhRSPkUleh54QnWIKvKBLwdwK233FMyCxAF4gsatFNnqkxvCFjfhDv5gxC7vNMAyi5fS0yaJ6gjEDBg921g3ldsDilAM0YM304M+pxW7djukGbE97YpQDi/d7jrNENe4qyMggdrkycw0e/kiOU0gmRRrqAfRFMrDnAwsmrbmVBTjPv1Hs/+uTxOrZ0U1FHuWCH5Uw+JcnElTQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,51 +106,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/2/25 01:48, Hillf Danton wrote:
-> On Wed,  1 Oct 2025 08:37:16 -0700 Joshua Hahn wrote:
->> 
->> While I definitely agree that spreading out 1TB across multiple NUMA nodes
->> is an option that should be considered, I am unsure if it makes sense to
->> dismiss this issue as simply a misconfiguration problem.
->> 
->> The reality is that these machines do exist, and we see zone lock contention
->> on these machines. You can also see that I ran performance evaluation tests
->> on relatively smaller machines (250G) and saw some performance gains.
->> 
-> If NUMA node could not be an option, there is still much room in the zone types
-> for adding new zones on top of the current pcp and zone mechanism to mitigate
-> zone lock contention, see diff below. Then the issue falls in the config category.
+On Thu, 14 Aug 2025 15:32:58 +0000
+Raghavendra K T <raghavendra.kt@amd.com> wrote:
+
+> Before this patch, scanning is done on entire virtual address space
+> of all the tasks. Now the scan size is shrunk or expanded based on the
+> useful pages found in the last scan.
 > 
->> The other point that I wanted to mention is that simply adding more NUMA
->> nodes is not always strictly beneficial; it changes how the scheduler
->> has to work, workloads would require more numa-aware tuning, etc.
+> This helps to quickly get out of unnecessary scanning thus burning
+> lesser CPU.
 > 
-> Feel safe to sit back with Netflix on as PeterZ is taking care of NUMA nodes
-> and eevdf, haha.
-
-Feel free to stop making such weird "jokes"?
-
-Also you should really stop dropping CC's on your replies, especially for
-maintainers of given code. I've only learned in the v3 changelog from "as
-suggested by Hillf Danton" that there was this subthread. This is not
-acceptable. When the feedback is wrong and uncorrected by others, it can
-mislead the patch author to do wrong changes in the next version.
-
-If this Cc reduction is due to a problem with your e-mail provider, get a
-different one?
-
-> --- x/include/linux/mmzone.h
-> +++ y/include/linux/mmzone.h
-> @@ -779,6 +779,9 @@ enum zone_type {
->  #ifdef CONFIG_ZONE_DMA32
->  	ZONE_DMA32,
->  #endif
-> +#ifdef CONFIG_ZONE_EXP
-> +	ZONE_EXP0, ZONE_EXP1, ZONE_EXP2, /* experiment */
-> +#endif
->  	/*
->  	 * Normal addressable memory is in ZONE_NORMAL. DMA operations can be
->  	 * performed on pages in ZONE_NORMAL if the DMA devices support
+> Drawback: If a useful chunk is at the other end of the VMA space, it
+> will delay scanning and migration.
 > 
+> Shrink/expand algorithm for scan_size:
+> X : Number of useful pages in the last scan.
+> Y : Number of useful pages found in current scan.
+> Initial scan_size is 1GB
+>  case 1: (X = 0, Y = 0)
+>   Decrease scan_size by 2
+>  case 2: (X = 0, Y > 0)
+>   Aggressively change to MAX (4GB)
+>  case 3: (X > 0, Y = 0 )
+>    No change
+>  case 4: (X > 0, Y > 0)
+>    Increase scan_size by 2
+> 
+> Scan size is clamped between MIN (256MB) and MAX (4GB)).
+> TBD:  Tuning based on real workloads
+
+Seems like a reasonable thing to do, but as you say tuning
+data needed to justify how aggressive this should be and
+those size limits.
+
+Trivial stuff inline.
+
+> 
+> Signed-off-by: Raghavendra K T <raghavendra.kt@amd.com>
+> ---
+>  mm/kscand.c | 29 +++++++++++++++++++++++++++++
+>  1 file changed, 29 insertions(+)
+> 
+> diff --git a/mm/kscand.c b/mm/kscand.c
+> index 843069048c61..39a7fcef7de8 100644
+> --- a/mm/kscand.c
+> +++ b/mm/kscand.c
+> @@ -28,10 +28,15 @@
+>  
+>  static struct task_struct *kscand_thread __read_mostly;
+>  static DEFINE_MUTEX(kscand_mutex);
+> +
+
+Push that into earlier patch to cut down on churn / noise.
+
+
+>  /*
+>   * Total VMA size to cover during scan.
+> + * Min: 256MB default: 1GB max: 4GB
+>   */
+> +#define KSCAND_SCAN_SIZE_MIN	(256 * 1024 * 1024UL)
+> +#define KSCAND_SCAN_SIZE_MAX	(4 * 1024 * 1024 * 1024UL)
+>  #define KSCAND_SCAN_SIZE	(1 * 1024 * 1024 * 1024UL)
+> +
+
+Likewise.
+
+>  static unsigned long kscand_scan_size __read_mostly = KSCAND_SCAN_SIZE;
+>  
+>  /*
+> @@ -94,6 +99,8 @@ struct kscand_mm_slot {
+>  	unsigned long next_scan;
+>  	/* Tracks how many useful pages obtained for migration in the last scan */
+>  	unsigned long scan_delta;
+> +	/* Determines how much VMA address space to be covered in the scanning */
+> +	unsigned long scan_size;
+>  	long address;
+>  	bool is_scanned;
+>  };
+
+>  static inline void kscand_update_mmslot_info(struct kscand_mm_slot *mm_slot,
+>  				unsigned long total)
+>  {
+>  	unsigned int scan_period;
+>  	unsigned long now;
+> +	unsigned long scan_size;
+
+Combining a few of these or assigning at declaration will reduce the code size a bit
+which is always nice to have if it doesn't hurt readability.
+
+>  	unsigned long old_scan_delta;
+>  
+> +	scan_size = mm_slot->scan_size;
+>  	scan_period = mm_slot->scan_period;
+>  	old_scan_delta = mm_slot->scan_delta;
 
 
