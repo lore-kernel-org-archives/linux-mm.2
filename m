@@ -4,184 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28C0ACAC5B0
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 06:56:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3553CCA470
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 06:59:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A3E88E0007; Fri,  3 Oct 2025 02:56:15 -0400 (EDT)
+	id 3C6768E0008; Fri,  3 Oct 2025 02:59:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 654918E0001; Fri,  3 Oct 2025 02:56:15 -0400 (EDT)
+	id 39DF58E0001; Fri,  3 Oct 2025 02:59:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51B8A8E0007; Fri,  3 Oct 2025 02:56:15 -0400 (EDT)
+	id 2B3D38E0008; Fri,  3 Oct 2025 02:59:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 381C28E0001
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 02:56:15 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CEC4A1A06E6
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 06:56:14 +0000 (UTC)
-X-FDA: 83955893868.09.184F4C6
-Received: from flow-b4-smtp.messagingengine.com (flow-b4-smtp.messagingengine.com [202.12.124.139])
-	by imf22.hostedemail.com (Postfix) with ESMTP id B5DF7C000E
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 06:56:12 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm2 header.b=aMjNO8Aj;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="P NYMaRE";
-	spf=pass (imf22.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.139 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
-	dmarc=pass (policy=none) header.from=ownmail.net
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F8788E0001
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 02:59:45 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8BBF687D11
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 06:59:44 +0000 (UTC)
+X-FDA: 83955902688.18.0A72D2A
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 05EF01C0006
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 06:59:41 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=rNU5cVhm;
+	spf=pass (imf18.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759474572;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1759474782;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j+Jw5iNM6nGAnWO3sjaDIDEUdkjo7ZX+LLzqd/P1hYw=;
-	b=xh9Xc+FZYmSlSMm45fB2FkE7GLzi43tYI6asL9ONqtoX8DpY03KyCcKwqlnkn5mbccuJpE
-	mGTYx9RKTxhZMMhc9ZBmZ9hsmOIQZ7fpxfkiODkK0V+PjU6kVFjHjGpNKfq63+GaWx9Hjf
-	aBd9wqQ3JFAqpcTIQNa5f72zGZMuEV0=
+	bh=WB9sbfpLecnMxMoiDerCoUS7521vhN66oFyAsMbTO/0=;
+	b=WRvvL/28k2qkXqia+kyegV/P6FYi3Zr0KAcCs6818hsu388etkoMa+A+IGqdVuNoWWcsYl
+	wB/0Nym+dNXhY7tmOit/lEIb0kIDLakhlYLOe2+0JQv4W1FXiIq77gfBSYBHNjvYrsUb7Y
+	FaWCwX8L0TYHtOUA7rAIGSpQyrTABAE=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm2 header.b=aMjNO8Aj;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="P NYMaRE";
-	spf=pass (imf22.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.139 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
-	dmarc=pass (policy=none) header.from=ownmail.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759474572; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=rNU5cVhm;
+	spf=pass (imf18.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759474782; a=rsa-sha256;
 	cv=none;
-	b=lzZmDUUzOnBXbv4aOGzmCz4Gk/UH3x0ovM3RE0JwQj6G7yfV5BygUuox2YheND++BMooqj
-	ftxSxppbY0ptDuceLrfCKj2PkqWwyi7LJkJZhY+7ibzEr3ufu+0EKSL8bYM92SKHqhlVIA
-	Fm/pKQHbjsBR1ZsZXoJ69pRU2k5BxZg=
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailflow.stl.internal (Postfix) with ESMTP id C4B9A130000D;
-	Fri,  3 Oct 2025 02:56:07 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Fri, 03 Oct 2025 02:56:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to; s=fm2; t=
-	1759474567; x=1759481767; bh=j+Jw5iNM6nGAnWO3sjaDIDEUdkjo7ZX+LLz
-	qd/P1hYw=; b=aMjNO8AjVn+sj0yKUl+VzgbYszqPNGJNtAPbUQGn88a5UP2eiqs
-	R5yiWdKir92SSE469eXj/b+AHudi0OVXOIY6cS5YPi4E1B06RLjJ+yZPq4inyozE
-	Q+B2H/gKkTXrrQ2uYPkaRXH7k9U3Y58+RCC7RD56mFR5x5KoRAcvgQv9tL7Zpc+/
-	9N6venAGi7v2ylACMFGp9jJlqUne0QvLZGDqcm3MhRqSBzJwu12eGO57hRoA4sro
-	NgXvxEQkBwxT5LSMI5KUZlWIDFBwzR+gvhw0a1r/a6Ty5zl4GCufIIlts3fIye4p
-	JrHYaG8ko/FiP2kNmiy/58lOphRDKpSPmnw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1759474567; x=
-	1759481767; bh=j+Jw5iNM6nGAnWO3sjaDIDEUdkjo7ZX+LLzqd/P1hYw=; b=P
-	NYMaREdofJEjMxoqFbSBZZKryi4ZwnfANONgeT2a1dj37Y+FNVWf603dzC5NuApe
-	8PxvyO6Q6DBCiVJrM8k6zEMwDy/cTTk1TtsSqwegcfRU11nONgZXR4em3KQPmyim
-	OI2gDy6Ogzt7ifj6Ked0HHw1xR170gEX2viFcftT+WOsW+lFe503bLpkWDvr4Z7s
-	cukyNO+ucMr7L3wCcGGdohDGSTdNWryH23xV6KBGaW3B+CI6PeIG9IouSZuBOKBC
-	dKquqjsLUyCcaEnlM82UDPgSN/S1V02Qz83CuSnTbFMrLbBbQ9AXPWab7L0GXpjN
-	gaLZmR2+e/ZuDrFlmXzew==
-X-ME-Sender: <xms:gnPfaMkIJPG7oVHmiGGRa0CpjJx7RohXVYjkJGIiEh2iOGlLIXvz7Q>
-    <xme:gnPfaL7yl9NUDnF6WrW14T4q-2gvfr53xNr0E_QiaHexrYaF0oruSqWMxAHBv_X-7
-    he83VGHvZW4PzWgKOTeAohnaiAhTYeXu9Rhj5h50nInJJpCUvI>
-X-ME-Received: <xmr:gnPfaKZHZu3YD6tKEjPzMoNoGzkIMDN3Z50sJg_3-6-KPUiHJtc04hN2x1QY170mpQr7__pL7KtyMY1QmrIBnneKxaREGagaO6Gn7NBgViHv>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdekkedvfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpegtgfgghffvvefujghffffkrhesthejredttddtjeenucfhrhhomheppfgvihhluehr
-    ohifnhcuoehnvghilhgssehofihnmhgrihhlrdhnvghtqeenucggtffrrghtthgvrhhnpe
-    duteefhfduveehvdefueefvdffkeevkefgtdefgffgkeehjeeghfetiefhgffgleenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehnvghilhgsse
-    hofihnmhgrihhlrdhnvghtpdhnsggprhgtphhtthhopedugeelpdhmohguvgepshhmthhp
-    ohhuthdprhgtphhtthhopehhphgrseiihihtohhrrdgtohhmpdhrtghpthhtoheplhhinh
-    hksehvihhvohdrtghomhdprhgtphhtthhopehrtghusehvghgvrhdrkhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheplhhinhhugidqnhhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
-    thhopehlihhnuhigqdhmohguuhhlvghssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheplhhinhhugidqmhgvughirgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
-    phhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopehlihhnuhigqdhiuggvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:gnPfaG0eLIXy_hVmmU0ah6RiWYe432JzyxABI3_ZePEgQyvaESbQMg>
-    <xmx:gnPfaFi8VKDei6hK_Kzm4HvejB1DcIxxW5AGQspQu-BZ0cfQX60vkQ>
-    <xmx:gnPfaNiFoyBB5wKfL7gCcU3cs9PS5_p6fTSHi4mNminIEilZsHOtZA>
-    <xmx:gnPfaDgIFdYh7LlGgsMY4-Bc3EDv7jElWaw_NOfwLw-Yk1w7kum8UQ>
-    <xmx:h3PfaFqY121yl6e12RmJDdKdPbf2ATm6GquMeKQ2MvsNf-5FbRc2NBdT>
-Feedback-ID: iab3e480c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 3 Oct 2025 02:55:17 -0400 (EDT)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	b=7IUxrTX9T3exgvJTULohakJkfe408GBBnRtvMIdrwm4mXuDZb6KXAJ36k5H4WAFiMqLlA3
+	KTT73uH66UMyCD+B2CX/YlM13ZrWOM8FF7I6F56eKkI243m81BfxfumuX/p2XVkT98+thn
+	uvLg8AweCYnrhwlV1OUOJhq96vuALS0=
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20251003065939euoutp019f0ba12198a3099f25d5073ce32fdebf~q6P1pItK00562605626euoutp01Z
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 06:59:39 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20251003065939euoutp019f0ba12198a3099f25d5073ce32fdebf~q6P1pItK00562605626euoutp01Z
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1759474779;
+	bh=WB9sbfpLecnMxMoiDerCoUS7521vhN66oFyAsMbTO/0=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=rNU5cVhmOZDMaP/OVCGCAd+ZxwmVqRRGG57bXmlVB/vN1it679D39JUs4rj/uD8O9
+	 LGrFX2hKQxMK57173qZPyqhKP8sw40gFWvNADtmbVOOJhgVSnzve3te5S9Q11LX87K
+	 Rz18lpX5u3vdLqOFqzdKcwE0nJDGMax+tDSmMxBI=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20251003065939eucas1p2a570a631290b2053af4bfee78ca93977~q6P1Z1Cy11393413934eucas1p25;
+	Fri,  3 Oct 2025 06:59:39 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20251003065937eusmtip1440172238527b922b950b45020a53526~q6P0IH4u62724027240eusmtip1D;
+	Fri,  3 Oct 2025 06:59:37 +0000 (GMT)
+Message-ID: <c921d3d4-3f15-4b46-bd6c-2f48b2747e60@samsung.com>
+Date: Fri, 3 Oct 2025 08:59:37 +0200
 MIME-Version: 1.0
-From: NeilBrown <neilb@ownmail.net>
-To: "Byungchul Park" <byungchul@sk.com>
-Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
- torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
- linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
- linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
- will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
- joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
- duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
- tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
- amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
- linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
- minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
- sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
- penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
- ngupta@vflare.org, linux-block@vger.kernel.org, josef@toxicpanda.com,
- linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
- dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
- dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
- melissa.srw@gmail.com, hamohammed.sa@gmail.com, harry.yoo@oracle.com,
- chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
- max.byungchul.park@gmail.com, boqun.feng@gmail.com, longman@redhat.com,
- yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com,
- netdev@vger.kernel.org, matthew.brost@intel.com, her0gyugyu@gmail.com,
- corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- luto@kernel.org, sumit.semwal@linaro.org, gustavo@padovan.org,
- christian.koenig@amd.com, andi.shyti@kernel.org, arnd@arndb.de,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org,
- surenb@google.com, mcgrof@kernel.org, petr.pavlu@suse.com,
- da.gomez@kernel.org, samitolvanen@google.com, paulmck@kernel.org,
- frederic@kernel.org, neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
- josh@joshtriplett.org, urezki@gmail.com, mathieu.desnoyers@efficios.com,
- jiangshanlai@gmail.com, qiang.zhang@linux.dev, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, dietmar.eggemann@arm.com, bsegall@google.com,
- mgorman@suse.de, vschneid@redhat.com, chuck.lever@oracle.com,
- okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com,
- trondmy@kernel.org, anna@kernel.org, kees@kernel.org,
- bigeasy@linutronix.de, clrkwllms@kernel.org, mark.rutland@arm.com,
- ada.coupriediaz@arm.com, kristina.martsenko@arm.com,
- wangkefeng.wang@huawei.com, broonie@kernel.org, kevin.brodsky@arm.com,
- dwmw@amazon.co.uk, shakeel.butt@linux.dev, ast@kernel.org,
- ziy@nvidia.com, yuzhao@google.com, baolin.wang@linux.alibaba.com,
- usamaarif642@gmail.com, joel.granados@kernel.org,
- richard.weiyang@gmail.com, geert+renesas@glider.be,
- tim.c.chen@linux.intel.com, linux@treblig.org,
- alexander.shishkin@linux.intel.com, lillian@star-ark.net,
- chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
- link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
- brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
- mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
- linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
- linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-modules@vger.kernel.org, rcu@vger.kernel.org,
- linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH v17 28/47] dept: add documentation for dept
-In-reply-to: <20251002081247.51255-29-byungchul@sk.com>
-References: <20251002081247.51255-1-byungchul@sk.com>,
- <20251002081247.51255-29-byungchul@sk.com>
-Date: Fri, 03 Oct 2025 16:55:14 +1000
-Message-id: <175947451487.247319.6809470356431942803@noble.neil.brown.name>
-Reply-To: NeilBrown <neil@brown.name>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH] kmsan: fix kmsan_handle_dma() to avoid false positives
+To: Shigeru Yoshida <syoshida@redhat.com>, glider@google.com,
+	elver@google.com, dvyukov@google.com, akpm@linux-foundation.org,
+	jgg@ziepe.ca, leon@kernel.org
+Cc: kasan-dev@googlegroups.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20251002051024.3096061-1-syoshida@redhat.com>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20251003065939eucas1p2a570a631290b2053af4bfee78ca93977
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20251002051101eucas1p250c65f775d8e64053ee7e009142c89c7
+X-EPHeader: CA
+X-CMS-RootMailID: 20251002051101eucas1p250c65f775d8e64053ee7e009142c89c7
+References: <CGME20251002051101eucas1p250c65f775d8e64053ee7e009142c89c7@eucas1p2.samsung.com>
+	<20251002051024.3096061-1-syoshida@redhat.com>
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B5DF7C000E
-X-Stat-Signature: igbqaht5u56fsn1ofes3seynmnqxnemi
-X-HE-Tag: 1759474572-673359
-X-HE-Meta: U2FsdGVkX1/sCpm2SjAqUJqNz4iHt7urTmf+W+dGqnPgCERglD3C4r/Vf1vYQ9WHMhaLtr3HJWFASIowTrkN+iZqX0IIw+LvXRaW+sl5pMxA+rs5dSgbQ0foukgdG6xK9W5B9kzWWkn967SioOdt9V625PFpo6V3uvkdjZcepiYBVaGma/DH729EI1UUeIEp4H99Spizi1nrkaZ4sxdEiGxHdLHjRaUQ0ufUOhspaOrKjNG5nWoAb+Lm0bQsYx7DPnJE9ZMGQnBOr5ehVXdErOe2Aq9SBKoqxJMOXXzzv0sPDF9Rfw95oKYtiaAI6mRlMX2920RKRD7q9BkYITgVynrOrSw9xmNoRcRpot946tAhUmVoXrnBgOLjVleOO1y3DmfGdnmIINJ+o8TAahMudJ2wcsmxhD9pWn4Xy9xHPK2yIYqS/tnB2vV7Lk/2NCWzgUrdTH7DybuZOG888frG31TOonpYVB3SvWzl+NQoiA3yGYkvBYNMgMOgcCuDy1LVzrOG7RAUVIqXFiP/XqS/Z4BOEFfqOceuFYz6Wu9kOMLO7GLJIJDbEL9cwV8/rZpUnRSADMJNcCvFRC7cHhcxsDg5HaUZ9U3y0e+aa1rv6dZ4nl6ailnMgWSi8hXGwA7SmuZeocUmDA+8fjvciYe5df5UViMwP//0VLf6MNRnjPUUu1+QKhO8xBUCG3H7tjQZXB7Qy5xEnS7g8Sc+CGDEUjqW2lwvyToiywrl0OpCrEI81alCDMUBP1ntoq7vGVBcstN6bOzlUhNYAIF2Mff9ePF6iF8sBlqboZBo09UgTa+PdAdfcUOowfx6n44+4699WkI6Q5CWiFTlkiwPDAsClif4zptBkRiICczxb6gYi7vyMOWgVGnjwPPPQj4CC6T1EbIUuPkK9xLxrQjwGHYlb0z7IXjDRfzTe0IkgZlFi0pOnCzfdRVIUvNPm6VP0DawYILdsNu0LgXWachl/1o
- w0GRY7xW
- u2LhSxaQ2MwHnx5ok97/XB8ZgNUpQkbjwvTzzK8nIMvV0Dwq7il1OsYiTrBfX6WP/EzQA6RtOEHoTfJro40AyruMaB41RXCKgllD40BOWKwYvXXXy7lq67rcAQP8y33eIVOknQuwKVZJEo858PO6m1JOihbTFnYBRvnCLqEEUJkTXNKRQtB0HzoouX0vlZzbrQS5+gZFQAo9DS5s6/TJvG9Cy7Xh8xDcs2YL1Lol7R/nCh5HuqGsdEmhK4e3E2HwGuJ5jaywbn1wD0WqEEykyQ/fXUnR2+ZyI0bHKaQu5rFXQJSHgnOoDihjAVTvNVXAettvoSgErrHB6hjnkObT1R8Qf2qF9xa3nHrmwtCNsnaZZqe4BKRslZPeDfU2hxPvCh78FVSybjA89N1NRlwZGnkejgBZAAlmeN8BSjbEG7iFTUEYU2s76X6VDySUHCNANc2Wcr8PVR/mI1U3TJwJ8GGIBtq6n3bbK+8ervSQuyn2eXghrnrJko60VoCL//04Sjg1As12/+6sSt5s03+UcBlX18D3zkE5zwdXWxeTUNItCVQr31lelsa6vcwY1qglZCn5StEkbrFu5MB7mxt7+j5kbIajkbXkDP+iIcfBJVvYRZu77sJzEO9CnFvTsxwOYJ4m9aBsnywg5CcZrMAhrp2/Mm780XN+TxjWKofn9Qz+ePKoGYZr4RMC6werRy66NDO9Kp0SpI/8wbgU=
+X-Rspamd-Queue-Id: 05EF01C0006
+X-Stat-Signature: k68fu77qd9g5898t3acwn6i4pe8s6nwj
+X-HE-Tag: 1759474781-722749
+X-HE-Meta: U2FsdGVkX19qLHskH98sIBJpt4Ckdxtd18lkFCrKzPDVj/prZ7VilCXMIhkMIl6P7RPukMAzZJAW8WQtq9tOlCGIpvBX8KpZpOZHxt6I2s3u8a8vg1JUV0aj7m9Za+8ACrc3+FHs0+2+RdGbflbf7RUXYB+ijuf4D6vGT4OjHxQDQumcEqFvSt+mKQ2bOtJGotnE5uyhCFrPIBIbNsymed+B8vN40F1g2bfaBr9xvcYncurJ6FZMdRJEimjVuXM4oPbv1FCIOtBoPLf+MTswJzEUyIdSsh19wJ12V4wZWGXw3dhnNLNxJ8P9L2L/xPm7BzSKGyUoXEBcra5U73LWeD2T4TarYWdC+GxXLz0bJFumfkHHg0yTwnf7ipBFXba3+uhzffIK8w1fXxIxDj9rlmbtjcMV/ywpMBmyNSo68KUraZJABL4kJtqi0Vbhi1IpOYGZk9QKMSYSyy8x5d4HOo7bXt5Tw0/5B2yuCPcMiF/4nEKmHf/CxRGpP6WpZqHhq2kLOIi4n7jzr92P0i91Dgvehu0j4njbSSW53okXFqRfjrC35iQY1x5OI/nATClIpjH76d0AC9t1zpWpCxkI8dobkf49wIeXWmvFWltFZ3rT3PlRxWuwUw7Vf38qepyT+t8L80NrXLOrV591cZNP8Kdye8WpEI1r3qdk1deyP8+zZ/aPCZBSWX6NprbeGyhGPHYQevxc+kacoV2VDpeqCAQu8lYJnuQ+kzFF6Ka28gQfHv8Jhcy8C6/sUPVzcfGMvhoRbTWWoEVbRvwMCfjhNXKr2v6L/8RfhNAseiIfvtpP8QIzvd1UoPTs1TrfzErac5JRfnORh6CgbhDTvPnr3iKfPUWBk9qTP1dgN0fJUldMdqWAJvCTpxeYDmuxO6VeCp3iPqujP5V4s4FsoBMnIytiO0Qm5isutc5fBCmLq9LrBv3a21zeaGcMb5YwPDhpGt0UtdMsRKxtb9ksAW4
+ 8qL6m/b/
+ CtYp1Lz4Ye4Tk0C/FmqJgaMPhfxsFZOreZIkUsUuaJaKnwwUkNefk5CX3r9o3NkG7jDG1zQMfUjv6nYk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -190,204 +106,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 02 Oct 2025, Byungchul Park wrote:
-> This document describes the concept and APIs of dept.
-> 
+On 02.10.2025 07:10, Shigeru Yoshida wrote:
+> KMSAN reports an uninitialized value issue in dma_map_phys()[1].  This
+> is a false positive caused by the way the virtual address is handled
+> in kmsan_handle_dma().  Fix it by translating the physical address to
+> a virtual address using phys_to_virt().
+>
+> [1]
+> BUG: KMSAN: uninit-value in dma_map_phys+0xdc5/0x1060
+>   dma_map_phys+0xdc5/0x1060
+>   dma_map_page_attrs+0xcf/0x130
+>   e1000_xmit_frame+0x3c51/0x78f0
+>   dev_hard_start_xmit+0x22f/0xa30
+>   sch_direct_xmit+0x3b2/0xcf0
+>   __dev_queue_xmit+0x3588/0x5e60
+>   neigh_resolve_output+0x9c5/0xaf0
+>   ip6_finish_output2+0x24e0/0x2d30
+>   ip6_finish_output+0x903/0x10d0
+>   ip6_output+0x331/0x600
+>   mld_sendpack+0xb4a/0x1770
+>   mld_ifc_work+0x1328/0x19b0
+>   process_scheduled_works+0xb91/0x1d80
+>   worker_thread+0xedf/0x1590
+>   kthread+0xd5c/0xf00
+>   ret_from_fork+0x1f5/0x4c0
+>   ret_from_fork_asm+0x1a/0x30
+>
+> Uninit was created at:
+>   __kmalloc_cache_noprof+0x8f5/0x16b0
+>   syslog_print+0x9a/0xef0
+>   do_syslog+0x849/0xfe0
+>   __x64_sys_syslog+0x97/0x100
+>   x64_sys_call+0x3cf8/0x3e30
+>   do_syscall_64+0xd9/0xfa0
+>   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>
+> Bytes 0-89 of 90 are uninitialized
+> Memory access of size 90 starts at ffff8880367ed000
+>
+> CPU: 1 UID: 0 PID: 1552 Comm: kworker/1:2 Not tainted 6.17.0-next-20250929 #26 PREEMPT(none)
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-5.fc42 04/01/2014
+> Workqueue: mld mld_ifc_work
+>
+> Fixes: 6eb1e769b2c1 ("kmsan: convert kmsan_handle_dma to use physical addresses")
+> Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
 
-Thanks for the documentation.  I've been trying to understand it.
+Applied to dma-mapping-for-next (for v6.18-rc1) branch. Thanks!
 
+> ---
+> The hash in the "Fixes" tag comes from the linux-next tree
+> (next-20250929), as it has not yet been included in the mainline tree.
+> ---
+>   mm/kmsan/hooks.c | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/mm/kmsan/hooks.c b/mm/kmsan/hooks.c
+> index 90bee565b9bc..2cee59d89c80 100644
+> --- a/mm/kmsan/hooks.c
+> +++ b/mm/kmsan/hooks.c
+> @@ -339,13 +339,12 @@ static void kmsan_handle_dma_page(const void *addr, size_t size,
+>   void kmsan_handle_dma(phys_addr_t phys, size_t size,
+>   		      enum dma_data_direction dir)
+>   {
+> -	struct page *page = phys_to_page(phys);
+>   	u64 page_offset, to_go;
+>   	void *addr;
+>   
+>   	if (PhysHighMem(phys))
+>   		return;
+> -	addr = page_to_virt(page);
+> +	addr = phys_to_virt(phys);
+>   	/*
+>   	 * The kernel may occasionally give us adjacent DMA pages not belonging
+>   	 * to the same allocation. Process them separately to avoid triggering
 
-> +How DEPT works
-> +--------------
-> +
-> +Let's take a look how DEPT works with the 1st example in the section
-> +'Limitation of lockdep'.
-> +
-> +   context X	   context Y	   context Z
-> +
-> +		   mutex_lock A
-> +   folio_lock B
-> +		   folio_lock B <- DEADLOCK
-> +				   mutex_lock A <- DEADLOCK
-> +				   folio_unlock B
-> +		   folio_unlock B
-> +		   mutex_unlock A
-> +				   mutex_unlock A
-> +
-> +Adding comments to describe DEPT's view in terms of wait and event:
-> +
-> +   context X	   context Y	   context Z
-> +
-> +		   mutex_lock A
-> +		   /* wait for A */
-> +   folio_lock B
-> +   /* wait for A */
-> +   /* start event A context */
-> +
-> +		   folio_lock B
-> +		   /* wait for B */ <- DEADLOCK
-> +		   /* start event B context */
-> +
-> +				   mutex_lock A
-> +				   /* wait for A */ <- DEADLOCK
-> +				   /* start event A context */
-> +
-> +				   folio_unlock B
-> +				   /* event B */
-> +		   folio_unlock B
-> +		   /* event B */
-> +
-> +		   mutex_unlock A
-> +		   /* event A */
-> +				   mutex_unlock A
-> +				   /* event A */
-> +
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
-I can't see the value of the above section.
-The first section with no comments is useful as it is easy to see the
-deadlock being investigate.  The section below is useful as it add
-comments to explain how DEPT sees the situation.  But the above section,
-with some but not all of the comments, does seem (to me) to add anything
-useful.
-
-> +Adding more supplementary comments to describe DEPT's view in detail:
-> +
-> +   context X	   context Y	   context Z
-> +
-> +		   mutex_lock A
-> +		   /* might wait for A */
-> +		   /* start to take into account event A's context */
-
-What do you mean precisely by "context".
-You use the word in the heading "context X  context Y  context Z"
-so it seems like "context" means "task" or "process".  But then as I
-read on, I think - maybe it means something else.  If it does, then you
-should use different words.  Maybe "task X ..." in the heading.
-
-If the examples that follow It seems that the "context" for event A
-starts at "mutex lock A" when it (possibly) waits for a mutex and ends
-at "mutex unlock A" - which are both in the same process.  Clearly
-various other events that happen between these two points in the same
-process could be seen as the "context" for event A.
-
-However event B starts in "context X" with "folio_lock B" and ends in
-"context Z" or "context Y" with "folio_unlock B".  Is that right?
-
-My question then is: how do you decide which, of all the event in all
-the processes in all the system, between the start[S] and the end[E] are
-considered to be part of the "context" of event A.
-
-I think it would help me if you defined what a "context" is earlier.
-What sorts of things appear in a context?
-
-Thanks,
-NeilBrown
-
-
-> +		   /* 1 */
-> +   folio_lock B
-> +   /* might wait for B */
-> +   /* start to take into account event B's context */
-> +   /* 2 */
-> +
-> +		   folio_lock B
-> +		   /* might wait for B */ <- DEADLOCK
-> +		   /* start to take into account event B's context */
-> +		   /* 3 */
-> +
-> +				   mutex_lock A
-> +				   /* might wait for A */ <- DEADLOCK
-> +				   /* start to take into account
-> +				      event A's context */
-> +				   /* 4 */
-> +
-> +				   folio_unlock B
-> +				   /* event B that's been valid since 2 */
-> +		   folio_unlock B
-> +		   /* event B that's been valid since 3 */
-> +
-> +		   mutex_unlock A
-> +		   /* event A that's been valid since 1 */
-> +
-> +				   mutex_unlock A
-> +				   /* event A that's been valid since 4 */
-> +
-> +Let's build up dependency graph with this example. Firstly, context X:
-> +
-> +   context X
-> +
-> +   folio_lock B
-> +   /* might wait for B */
-> +   /* start to take into account event B's context */
-> +   /* 2 */
-> +
-> +There are no events to create dependency. Next, context Y:
-> +
-> +   context Y
-> +
-> +   mutex_lock A
-> +   /* might wait for A */
-> +   /* start to take into account event A's context */
-> +   /* 1 */
-> +
-> +   folio_lock B
-> +   /* might wait for B */
-> +   /* start to take into account event B's context */
-> +   /* 3 */
-> +
-> +   folio_unlock B
-> +   /* event B that's been valid since 3 */
-> +
-> +   mutex_unlock A
-> +   /* event A that's been valid since 1 */
-> +
-> +There are two events. For event B, folio_unlock B, since there are no
-> +waits between 3 and the event, event B does not create dependency. For
-> +event A, there is a wait, folio_lock B, between 1 and the event. Which
-> +means event A cannot be triggered if event B does not wake up the wait.
-> +Therefore, we can say event A depends on event B, say, 'A -> B'. The
-> +graph will look like after adding the dependency:
-> +
-> +   A -> B
-> +
-> +   where 'A -> B' means that event A depends on event B.
-> +
-> +Lastly, context Z:
-> +
-> +   context Z
-> +
-> +   mutex_lock A
-> +   /* might wait for A */
-> +   /* start to take into account event A's context */
-> +   /* 4 */
-> +
-> +   folio_unlock B
-> +   /* event B that's been valid since 2 */
-> +
-> +   mutex_unlock A
-> +   /* event A that's been valid since 4 */
-> +
-> +There are also two events. For event B, folio_unlock B, there is a
-> +wait, mutex_lock A, between 2 and the event - remind 2 is at a very
-> +start and before the wait in timeline. Which means event B cannot be
-> +triggered if event A does not wake up the wait. Therefore, we can say
-> +event B depends on event A, say, 'B -> A'. The graph will look like
-> +after adding the dependency:
-> +
-> +    -> A -> B -
-> +   /           \
-> +   \           /
-> +    -----------
-> +
-> +   where 'A -> B' means that event A depends on event B.
-> +
-> +A new loop has been created. So DEPT can report it as a deadlock. For
-> +event A, mutex_unlock A, since there are no waits between 4 and the
-> +event, event A does not create dependency. That's it.
-> +
-> +CONCLUSION
-> +
-> +DEPT works well with any general synchronization mechanisms by focusing
-> +on wait, event and its context.
-> +
 
