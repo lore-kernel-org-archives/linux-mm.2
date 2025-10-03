@@ -4,83 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05D0FCCA470
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 07:55:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E873CAC5B0
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 08:35:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 60F4F8E000A; Fri,  3 Oct 2025 03:55:11 -0400 (EDT)
+	id 781328E0003; Fri,  3 Oct 2025 04:35:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E7A28E0001; Fri,  3 Oct 2025 03:55:11 -0400 (EDT)
+	id 759578E0001; Fri,  3 Oct 2025 04:35:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5240B8E000A; Fri,  3 Oct 2025 03:55:11 -0400 (EDT)
+	id 66EBE8E0003; Fri,  3 Oct 2025 04:35:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E4D88E0001
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 03:55:11 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D851714076E
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 07:55:10 +0000 (UTC)
-X-FDA: 83956042380.13.4424436
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D0FB81C0009
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 07:55:08 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 539348E0001
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 04:35:51 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B328B85D3C
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 08:35:50 +0000 (UTC)
+X-FDA: 83956144860.27.84762F5
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 612281C000A
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 08:35:48 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="LDSFop/T";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=W4Z6NyaZ;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="LDSFop/T";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=W4Z6NyaZ;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759478109;
+	s=arc-20220608; t=1759480548;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZUqhVd7vcsVc1CWlD0NUVC7kP7EMWB7/YDrJRnN/yu4=;
-	b=HwXIhqPBqtZvpmIgp4AvThyEuucYCuhkjrl4DpySK/bSiwnIlr80YRnLcMrblRSXDgVaXq
-	XM3BAo7V+2uO7zEpodJfqy4eFqFS45T/h8/LDHax4hqCoCbEHMyhpdKvSHHMizPnGVSMpk
-	5kvIcABzWHZZEX2S9Hz12dvDYaUlq58=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759478109; a=rsa-sha256;
-	cv=none;
-	b=LuXvgn9XFDECcfUG4u+r4GsSBnFaeggLXsLUEOBPVHFSVL4tIuDfZjyOpcLclkxl4Ruv+M
-	wZgfd6SGc5PpF7A9kOFPMQReB8Xq+/mqu2YhrEuuBjmBHQUGdx/Jb8uh80tN7sEI2/21ox
-	9e9JNpq6/LBALG70C43lmweuMC339UM=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oKhGqKWYXB0Whi2FFFvg79+OnJq6OL+eV6niiEbIzNY=;
+	b=lrZ9KOPzj5jomI1hHZGS4hMs+umcor94Ih3qKhip8b4CpxUCJ+MY/+uutloK4GlJLCKWGF
+	o+ySu1uBqIsj+qnnM2UGA9dhK+E3vltzPLlKM4GwBAl6q+PqjeuQNoavp3xOiBkj5sqo8k
+	t4dm7y/o4muAC9lCQ6ntDj4Ajkl6OrU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9CD081655;
-	Fri,  3 Oct 2025 00:54:59 -0700 (PDT)
-Received: from [10.163.66.2] (unknown [10.163.66.2])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 226B33F5A1;
-	Fri,  3 Oct 2025 00:55:01 -0700 (PDT)
-Message-ID: <36c12f7e-b55c-4f8c-998f-ba7a99a050aa@arm.com>
-Date: Fri, 3 Oct 2025 13:24:57 +0530
+	imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="LDSFop/T";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=W4Z6NyaZ;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="LDSFop/T";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=W4Z6NyaZ;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759480548; a=rsa-sha256;
+	cv=none;
+	b=S91tQU3nNSVdExZRZaAxQHMRhsYto7ZnmjjgpqqdpILOkugrvH1OkU1L8ZdT+OzAcBUZjF
+	jI8sAJ8nA8/0TXuPXrsL82kgI0R31JLlToISAOGhR1A90hwQspNvQpWccto0mG5fy1vAet
+	KvnKKZ3YZKdZhLFW2dPp/Nu1lrBXzPo=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 98E0E1F388;
+	Fri,  3 Oct 2025 08:35:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1759480546; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oKhGqKWYXB0Whi2FFFvg79+OnJq6OL+eV6niiEbIzNY=;
+	b=LDSFop/ThKXqPoH/QB/KoM7KcPKAWzHsfQw0YMqySe/G6hma5O759ouoSZEpd/ZdvzsPhQ
+	ztvzFErbzg5jdtKegWt4F24xxg8TsECp5Iwb8WzL/CqLoamhZSb8Ceqxs//egXcEolujap
+	XaJg47rPCv4cDmoeQs/kiGQ8joqbL5Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1759480546;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oKhGqKWYXB0Whi2FFFvg79+OnJq6OL+eV6niiEbIzNY=;
+	b=W4Z6NyaZQX364XOSjJoKQDHMnvB0rhPlY2A1q9IbodVBxL8GuxRNWbQlcM2VgEBsG1GPXQ
+	XxqtGiZfqNIxY4CQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1759480546; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oKhGqKWYXB0Whi2FFFvg79+OnJq6OL+eV6niiEbIzNY=;
+	b=LDSFop/ThKXqPoH/QB/KoM7KcPKAWzHsfQw0YMqySe/G6hma5O759ouoSZEpd/ZdvzsPhQ
+	ztvzFErbzg5jdtKegWt4F24xxg8TsECp5Iwb8WzL/CqLoamhZSb8Ceqxs//egXcEolujap
+	XaJg47rPCv4cDmoeQs/kiGQ8joqbL5Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1759480546;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oKhGqKWYXB0Whi2FFFvg79+OnJq6OL+eV6niiEbIzNY=;
+	b=W4Z6NyaZQX364XOSjJoKQDHMnvB0rhPlY2A1q9IbodVBxL8GuxRNWbQlcM2VgEBsG1GPXQ
+	XxqtGiZfqNIxY4CQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 764E513AAD;
+	Fri,  3 Oct 2025 08:35:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id xeiGHOKK32gNcgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 03 Oct 2025 08:35:46 +0000
+Message-ID: <db51bcc5-aaf6-4cb4-ab62-fed9d40d6caa@suse.cz>
+Date: Fri, 3 Oct 2025 10:35:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v2] mm/huge_memory: add pmd folio to ds_queue in
- do_huge_zero_wp_pmd()
-To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
- david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- wangkefeng.wang@huawei.com
-Cc: linux-mm@kvack.org, stable@vger.kernel.org
-References: <20251002013825.20448-1-richard.weiyang@gmail.com>
+Subject: Re: [PATCH v2 2/4] mm/page_alloc: Perform appropriate batching in
+ drain_pages_zone
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20251002013825.20448-1-richard.weiyang@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Hillf Danton <hdanton@sina.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, kernel-team@meta.com, Chris Mason <clm@fb.com>,
+ Kiryl Shutsemau <kirill@shutemov.name>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Brendan Jackman <jackmanb@google.com>, David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
+ <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Zi Yan <ziy@nvidia.com>, Hillf Danton <hdanton@sina.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel-team@meta.com
+References: <20251001234814.7896-1-hdanton@sina.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <20251001234814.7896-1-hdanton@sina.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: famigfz1rdonmecxznpt1sgpnkiuma5q
-X-Rspamd-Queue-Id: D0FB81C0009
+X-Rspamd-Queue-Id: 612281C000A
+X-Rspamd-Server: rspam05
+X-Stat-Signature: jsf19dbu8qdognh4i4kadckz8zct8jwc
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1759478108-61634
-X-HE-Meta: U2FsdGVkX1/gBen/YhcV1M7yLQzxMcQ6Xwk06VE2Ny7sA3oNgbRW8gsvnDdMhsqFwn2Mo8CUxzVJGQpI7Hd5Gn16rd0pop1iBAP/jVSfxfAJiLPdqZmV41GnKDxN8Wf2k4SpWp8dzZUI4X96D2dUIQaMXfRVeEIImqWEm6DNxEYjXzFNXv1WXDD82FWJydVsF/R66slA7dZx81Q5jjM7QUOysr3BbZ4nxeG6nRS8PIXHaK3ce5v6m8BEa7rZAojy8BEQXA8ZPYRu9yCCJnlY/0JVzSf8piX6v+uo5GKoLE3d101bE2Ugds4ya1PRXQRHomBpmyyZ+pOdOcDogv0J6l85x21Es9OIPlxaiyj0d+vI553rCAbEc56ewSG7JrUDTKIDNuipungsu//gjWyF7PxwBpWKJG7RfweXE6doPqubl1L3joS2eqXDUh0v4RQ/emcQwAFaPS5GzGzarVa6+CvHLCGp5YaZMYy16DADaeCHwzD/eJrmku/uNcE5jl8ibQwTWBr9C3PCwgmckbnRP0LyUmGTmdb/U0Jy9o/nJqfbZIxqCNhlAz+tH16g8ui6nqULBUNkmtxkAgEwaQQxZO8FEVRZIrr1itZXXh4tMJa9oSrXoiRwqBcpffhfVx6aXFKFQH1mSo2LoU1tiXE3LtzIZB+MjqvgPdJOUrF0O5PZIWIds4/sCuLXU8R19YTZjkrFhBCMNUaTf/ttGEphlRuvjBHoYQ2Nuz2RaXBDAxDldRCxnE/im6a5EnTrFHNZRDOb6EpLBr7lzEu846kg5a74ijSPW9sbjle2kqzs4GiE+VzX7X1hgk6UvE7j7tjw+PuZ/uEXgr8ddxbgmyzG1Z/Ql0hbAempz9GZl4S+2XYpbFn+ll+09Tur6dVk6IGW13EVGDJ3z6b7bT/aSV347jCGViyhs4VNyn9NPdZGpUGqTlUi+WqQMZHymJwh7gRA1vupX7+fqILp/t8St6K
- Mfnmq172
- vtYAvLcXAj1vBYdqI/MTdkQmemPxtfB5Swy81ANhwXawam/nyQJo9rqE1VgV9+RdddA9y21lXHd3bcjfa448ZQD5eC1ozdKN3U3w08aTzn25pqtuXDU/35upYyec6MRzJ00o6X54KKqh4FTm7sVUcFL1u9ROhwYsmBKft/8h/DJYuLlqQwrwB+qvAmnThNdk2GlsvW9oEgNMQX3OfU+eZYiWttQO+SEsRYdJZltIiHR2Xndr2Q5SjS4cUYgEMpZyrVTykOg/Kh5azyXqW2v2UjzIasr512Gg7/Q4V4phhxgF/ono/XEsMV7dQrMJ2LV7qDP6jTSelxHIeiJxSjS7g6T2Dj3rNY8aumOscGoItAinf/ZaXRoIaeKEkTWkdS9Y6fUbPUPKsggSotyw=
+X-HE-Tag: 1759480548-545662
+X-HE-Meta: U2FsdGVkX1+iOaErAV3qbTiuOy2+KxK0zuyR/Rvw83ETnkctFTRIPhiX5OUr4zjr5tM1+SS8j0Wpn5JXecEtCVT50Nosq3Pk01379zq0DVHcGBZJ79hkMHVdLAmFnl9lFvq+rO4klCdQAIZU9YFBWrbtpJGU8NZasI97Ve3Ibuvt4uAk4g86A00MgCaE/mp6igXuPoK8cb2jnotpdRuPNmAdmk+AGurnr7kgwrWn7lIPerEQyu3Ss15SJ6jyp5/6WlTrXYGuYE129h1eJtxMVVTYj7dCesPHSvwm6hYcHTfRWpyEH/q/eJUzlK60w26RLffgVfdWMDWMDgY0PuCBfelhKMNc+gjEkpGkfzzBUhVpcoBC38B3tHjG55A1624U3a8+AgXZ/YetR6B4tQQSjOl2sPlsugPnr9fp1tGmLmZnUyd0GWT7wyhHkxIZ2rcd3+4kY4+6SYcDO+i6aI4BeQcKudrRTtg71L2z6kSZEjkQ0K7CCY/9GIYFoRdr2YJrCw37oxoMmedeHq3QC4jY3dQWp0XdQ3WLFFPJVBYGc6lmS7VKsOkLeB1ejC6OCJmnACSr6cC22LWsDMOhIVG6VVPicfpeFsK66OFhF7Nus0QLig5k3Nv2PngnRwQZQNgThiGO+wWTmaAAUKQ5vWmIdprW88+ZGJItt1I8TSUlhf8dUrQhST/UemsFFfyim12biiStuKOdg0fwSYKovzRsPbYhuuFQ8X2ZADbBirIFeDp7AfHp9SylgyEEarvXnMWfrEQOae4PZX8IzeuuewdR+YEPDB60keiRUuBq9ef3rCy6PV+SBpJVGx2DQi5bicMrM3/qbpmQp2NXqE5fF9tLU0z0u57rHpqjtacqie+kw8m6Jf590RT/vO+TiwAjyJS5tmzZOwf6H46DpGPnuGDQcNZiQCP4q3E+wxviXnwMM4HFx9o6Q3nIHh6+nHOF5QL8k9SGIWTETj5R4l6WvJ9
+ fhPDweTj
+ Npd7XakGInxu0XIlCYVvHUUPjxLETugR+Ze7TRa0f0eaYvKofsoywj/3kBXLERnBOKHR70Zo0BUj6LQIWDL4VAyRiE00kDnPG7qfBFb70YehJusuGZ/XGWfvy3quCWY2HP4Y7H3kukFBs8Vq6hYa3nfD/SwB8qc5X/Ywdh/ici4WAqVeMxPuEJ4VCzE+S6nCoJ4MZSs7tKz6E56Vw49D4E+rmYXsNgPHuD3qF9eTKcnnqM5lgx0XEuze0w1ccvOA0k9qHhNoKjKvkroxMb0eoW0Bu71w07nqTx/3HjFAff9q4lOVHwiEVWm+9VYYKq/BBvdmdeiKLEQwZpHU5PhE+uboFqwCe+vDbFGkGBZsVxF/5X7rKtMbhRvdFU/anwiA4huvpEJIbm2CDsDYuPouyj8Nbsg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,31 +147,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 10/2/25 01:48, Hillf Danton wrote:
+> On Wed,  1 Oct 2025 08:37:16 -0700 Joshua Hahn wrote:
+>> 
+>> While I definitely agree that spreading out 1TB across multiple NUMA nodes
+>> is an option that should be considered, I am unsure if it makes sense to
+>> dismiss this issue as simply a misconfiguration problem.
+>> 
+>> The reality is that these machines do exist, and we see zone lock contention
+>> on these machines. You can also see that I ran performance evaluation tests
+>> on relatively smaller machines (250G) and saw some performance gains.
+>> 
+> If NUMA node could not be an option, there is still much room in the zone types
+> for adding new zones on top of the current pcp and zone mechanism to mitigate
+> zone lock contention, see diff below. Then the issue falls in the config category.
+> 
+>> The other point that I wanted to mention is that simply adding more NUMA
+>> nodes is not always strictly beneficial; it changes how the scheduler
+>> has to work, workloads would require more numa-aware tuning, etc.
+> 
+> Feel safe to sit back with Netflix on as PeterZ is taking care of NUMA nodes
+> and eevdf, haha.
 
-On 02/10/25 7:08 am, Wei Yang wrote:
-> We add pmd folio into ds_queue on the first page fault in
-> __do_huge_pmd_anonymous_page(), so that we can split it in case of
-> memory pressure. This should be the same for a pmd folio during wp
-> page fault.
->
-> Commit 1ced09e0331f ("mm: allocate THP on hugezeropage wp-fault") miss
-> to add it to ds_queue, which means system may not reclaim enough memory
-> in case of memory pressure even the pmd folio is under used.
->
-> Move deferred_split_folio() into map_anon_folio_pmd() to make the pmd
-> folio installation consistent.
->
-> Fixes: 1ced09e0331f ("mm: allocate THP on hugezeropage wp-fault")
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Lance Yang <lance.yang@linux.dev>
-> Cc: Dev Jain <dev.jain@arm.com>
-> Cc: <stable@vger.kernel.org>
->
-> ---
+Feel free to stop making such weird "jokes"?
 
-Thanks!
+Also you should really stop dropping CC's on your replies, especially for
+maintainers of given code. I've only learned in the v3 changelog from "as
+suggested by Hillf Danton" that there was this subthread. This is not
+acceptable. When the feedback is wrong and uncorrected by others, it can
+mislead the patch author to do wrong changes in the next version.
 
-Reviewed-by: Dev Jain <dev.jain@arm.com>
+If this Cc reduction is due to a problem with your e-mail provider, get a
+different one?
+
+> --- x/include/linux/mmzone.h
+> +++ y/include/linux/mmzone.h
+> @@ -779,6 +779,9 @@ enum zone_type {
+>  #ifdef CONFIG_ZONE_DMA32
+>  	ZONE_DMA32,
+>  #endif
+> +#ifdef CONFIG_ZONE_EXP
+> +	ZONE_EXP0, ZONE_EXP1, ZONE_EXP2, /* experiment */
+> +#endif
+>  	/*
+>  	 * Normal addressable memory is in ZONE_NORMAL. DMA operations can be
+>  	 * performed on pages in ZONE_NORMAL if the DMA devices support
+> 
 
 
