@@ -4,122 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0D93CAC5B0
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 14:36:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99017CCA471
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 14:37:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 245A68E0010; Fri,  3 Oct 2025 10:36:15 -0400 (EDT)
+	id D6BAF8E0014; Fri,  3 Oct 2025 10:37:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F68F8E0006; Fri,  3 Oct 2025 10:36:15 -0400 (EDT)
+	id D43468E0006; Fri,  3 Oct 2025 10:37:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 097B58E0010; Fri,  3 Oct 2025 10:36:15 -0400 (EDT)
+	id C59658E0014; Fri,  3 Oct 2025 10:37:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E9AAA8E0006
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 10:36:14 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B2EA98E0006
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 10:37:15 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9FDD187D6F
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 14:36:14 +0000 (UTC)
-X-FDA: 83957053068.05.E42E63E
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9734040005
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 14:36:12 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VqhxA6Rq;
-	spf=pass (imf12.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 732E1451F5
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 14:37:15 +0000 (UTC)
+X-FDA: 83957055630.05.6BD5E77
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 54D3916000D
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 14:37:13 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759502172;
+	s=arc-20220608; t=1759502233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y3bsilfe4P9JMaLp7V6K7RsRiPhrCocOZhdOz70gDbg=;
-	b=x341fUxutn7dOYZtV2fOtE+ldFdlDouGd2eOz/ZrqexXlIw1podsczXxO5ror7cm6PXrtn
-	34v/WEAfw4EJ0038dhXkHRsQmELkJle7oivBrR8hZnL/icQbmusujMx29AN5XHhW/y0jPp
-	bj7Zfyd3tf7cLKA5zly6HiaBcmsc75M=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759502172; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0LtpncgCfs+SwUIbz4HS3dmqnzX2hJfu98hTgs+EJKo=;
+	b=TKSuHw5L++HU4iDJXNLBb74ACxqrl/nfRzusFld3AGTiL5OEj/aqvkwS1c3ZHdmiCTLZL4
+	0rNQNhY6SeTrEMq9+Cf8V039Vo85Za3VyCQ4FM8P9ulqQKz/D/DAE4TVhY+mTdBNTyHhKm
+	QdHfoEqGSW6UrAXST3P4rR7ZXoXRi54=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759502233; a=rsa-sha256;
 	cv=none;
-	b=GjcEmbK9JXNviXf2H0Vo1JdiWBHeva8UcAwcSagy3xvNteNfr9lV15eLO3C34sKvvy0wDr
-	S5yGTE8sVpW0UphawBikINH7x+nP8P8rbjaSj3mLhMQPa5xGISUPpdokGAKQP0gYnuhYCe
-	fSA1AdQUCJghtO10pd77eiQ2hk2Mriw=
+	b=XT1/JdJi8S+z++z7KiVMo6dC+BlTxUI8WPi7ds0QRiYVmHSHKfVnCf3xyBAgZUqzf5bcZc
+	loc5YtY1P3427gntQvgtvUcapyy56pW3zRBwYRpMltvrp7nuz83fw1KvLV4eymaHsodRBh
+	+P+mHoChKp2bW6zEjeaOP61VkwM7mKE=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VqhxA6Rq;
-	spf=pass (imf12.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-41174604d88so1245200f8f.2
-        for <linux-mm@kvack.org>; Fri, 03 Oct 2025 07:36:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759502171; x=1760106971; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Y3bsilfe4P9JMaLp7V6K7RsRiPhrCocOZhdOz70gDbg=;
-        b=VqhxA6Rqsb147utMmsc24uw1jus55DCCOsIR74dedWtBSC5d+JENn0WaB56cziaTvh
-         rWLwlVn1wMvTciEyRjeDmqn5w6+pubtCIoP9+w1xNHN8CjPS+Uc1e4f+FJSAMMUr3xCB
-         1u2RAGmbnZx1wMgT3payJKn2BnX3ElBKlJmjH1AHlfe+WsWDxkUdM0jprUXc4rLYvBoR
-         UZ2MhxE9Jb+hWKOM19f4Od6kYhQkz5lzWIHrj/+4ZN9EBIkZZa8R1IFq4u5p4jUYH/b2
-         pRos7HQbVKtvXfxx+A0IDItPpkg31PowUuHx/FdblJ+5fXXczLhQCSMlQ2ElA/SgPMnc
-         f8hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759502171; x=1760106971;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y3bsilfe4P9JMaLp7V6K7RsRiPhrCocOZhdOz70gDbg=;
-        b=VT+PW7JKxWGrSUT81G65tq/tgmV+H5krrSV/8aaQfazt0T5LMtZQwRqq2qu8bPVnrg
-         jFg9l/En1K5vOOJOOialnu+QAK8uaH607ruNcamNlfSk3Dd3XwwaSPp+zu9+PSw+JPhk
-         XdUjTrqPeb1uv/MjZySbi2P623NyGkaWm4wbbRg+MpRvKd52Q1Gqxvf/B0CJqbP8m+sZ
-         WCrf8b3su7WAC1I1o2pkLubthNT9g1ImFgm4ZzcVYbvVL/mtIYL051Ee4ZPsJgi4at8Y
-         fcQrakQ03Dp2RpRvfyqLSqDi0Hy8Tzw/sNvbdYEJstgbkIwhHLGVlfujcfiNvCjuqfWv
-         Tpnw==
-X-Forwarded-Encrypted: i=1; AJvYcCXcR8P4XrxkTCiXMEmxaoheaRfLK+04IgmFAcjMcvTf/TXi3aBO9WeYaIqcO5GAa1HsNUMmi+Vpnw==@kvack.org
-X-Gm-Message-State: AOJu0YznoiDyqdeKNeULGN4esVm+5s3vW/35/8wbCUYbZVt2v9VzCKoT
-	uxXKNZa8hJVDp6DVBn1LNeeGdhcRjVJo4NitCsmR5wOX1Dldp40+VuTu
-X-Gm-Gg: ASbGncsI9zN5aBMOcG0OPIunX2Zh2jn17zuHgrfCIYz0R7neA5XeL79R2pkpwUiE0Y4
-	UkS7TZCzSjfntOxl/jqsLTL7NT5XsFTbyWq2Vh/Bn+IVt+iJmDVFOaN5nf1CJ03ccNfW60Y4LC4
-	2tUACrlZCzw34+Qh+HsN2+0nsJ2WDqQzgjg/B1aT7TyWyMz/dTS6ErQ5iwDbAcomCzsF5khnihr
-	s673ubU4iNkRTDTMtyfdd+Q8ZWinoftT9LtnFxkUf8PZf9A8pPO9c7KyGd/G/ILt0XSldbfhDuJ
-	pV4oHAFyo1SGq0Ma+69l7Y7PLKIebnBJdmWgzb69DWLrqQ/jGmQfmGp4Y6BrWUO+uU6qk4Yh1P3
-	WER2kY0KSysffMX8y4/V/qDUM3pAP62S+pGFavmd/ZXILYxB01Q0xujHeTSTy7wSQId8DUlwNw/
-	lRvLfvhgHVYvZnHyaPB4b03WFYW0p2ReVnh1lZeyJ+0QHqawbUoOof
-X-Google-Smtp-Source: AGHT+IEHT3U1d/GKQ/eYSM50OfGWitdYsfgfJV0bECxpi6CkX6MrtzWeGs8zaVLwyNg6i+5+M/ZOoQ==
-X-Received: by 2002:a5d:588f:0:b0:3ee:14db:701c with SMTP id ffacd0b85a97d-425671c0f54mr1955781f8f.41.1759502170809;
-        Fri, 03 Oct 2025 07:36:10 -0700 (PDT)
-Received: from ?IPV6:2a02:6b6f:e750:1b00:1cfc:9209:4810:3ae5? ([2a02:6b6f:e750:1b00:1cfc:9209:4810:3ae5])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8b005dsm8102931f8f.25.2025.10.03.07.36.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Oct 2025 07:36:10 -0700 (PDT)
-Message-ID: <550dd78f-bf85-41d6-9c3b-472784b2d94e@gmail.com>
-Date: Fri, 3 Oct 2025 15:36:08 +0100
+	imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 08EAB1688;
+	Fri,  3 Oct 2025 07:37:04 -0700 (PDT)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8693C3F5A1;
+	Fri,  3 Oct 2025 07:36:47 -0700 (PDT)
+Date: Fri, 3 Oct 2025 15:36:42 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Byungchul Park <byungchul@sk.com>
+Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
+	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
+	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
+	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
+	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
+	tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
+	amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
+	linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
+	minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
+	sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+	ngupta@vflare.org, linux-block@vger.kernel.org,
+	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
+	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
+	djwong@kernel.org, dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
+	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
+	yeoreum.yun@arm.com, netdev@vger.kernel.org,
+	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
+	catalin.marinas@arm.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, luto@kernel.org,
+	sumit.semwal@linaro.org, gustavo@padovan.org,
+	christian.koenig@amd.com, andi.shyti@kernel.org, arnd@arndb.de,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+	rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
+	petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
+	paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
+	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
+	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+	clrkwllms@kernel.org, ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
+	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
+	yuzhao@google.com, baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com, joel.granados@kernel.org,
+	richard.weiyang@gmail.com, geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com, linux@treblig.org,
+	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+	chenhuacai@kernel.org, francesco@valla.it,
+	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
+	masahiroy@kernel.org, brauner@kernel.org,
+	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
+	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH v17 09/47] arm64, dept: add support
+ CONFIG_ARCH_HAS_DEPT_SUPPORT to arm64
+Message-ID: <aN_fel4Rpqz6TPsD@J2N7QTR9R3>
+References: <20251002081247.51255-1-byungchul@sk.com>
+ <20251002081247.51255-10-byungchul@sk.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: skip folio_activate() for mlocked folios
-Content-Language: en-GB
-To: Dmitry Ilvokhin <d@ilvokhin.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
- Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>
-Cc: Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <aN_bix3wDpwYPoVp@shell.ilvokhin.com>
-From: Usama Arif <usamaarif642@gmail.com>
-In-Reply-To: <aN_bix3wDpwYPoVp@shell.ilvokhin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: bbbhc1fpxz6pftddedss9h8i87zru38d
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251002081247.51255-10-byungchul@sk.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 54D3916000D
+X-Stat-Signature: eagycsyw9jqsnp3rgra1ij18f4mxd6ij
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9734040005
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1759502172-255410
-X-HE-Meta: U2FsdGVkX192/Aj0tE2nn2GfT124NUU+3BHzNsXjTbkE45orGvYkgBhJ0cs9Z6s9ozlQVVeojN78h4gUssnG+d9kWBkWgBNZ0+r1wnnmx5DpLTbNXRhF2f5E8sx523eH1UzTDy7hHL+6P51HND7LvfS03lBA68qDQ2PCdFJcT244Qs98AbYtN6iLUEJuF+RDka07XRxhIU0djw4yokTkXvGBP0uVQ2Zvsx3bLzOwuTklFDRIGZWhV30KrTjljVC7e6+VW3T9nL7UOhoNAQnrS7R6JivULzoZlxvHi3KULOhWAsdNv1oHxjujlFGD5tKRZVieH6z3pF8yZlDhhWMK6Z7zg9SNOHHPkVhH7hbD2E7OA5e8IxzFGHuiQfAKQ7xpOlW9lyWxGrX13BCGo7F13n1hQ8aHykG0saj0kwV/jBUXI+iMv8SlDXU0iGfuhXPZDbvS3Yr1FdSVuLGPx0d2mRABQUdlV91QJk8SNNgj7SRDrOry2W20OUVgLl7o+meluoxBhFhczn+i24jeMIxzE2BURptW9HPZpEDABeiNfzPsjYyUooWxQAMAkudJLbzTo5id+4Fr17KIWGnb/MjSJ01qwZPZ0cT2rgMW6EQ88c2STUzh7lRwEnQmInzAtO+CPz/TFp7wBSurXLcClauMx4ZLFgVi0XZHHTOYGbZG13sF1OVcKzgy46b1nFGhsy8wzuML0cM2pm2GLmmzxjIkJP2RE/0ZF5HZBJuUwvFzQOZ3lS40xs5syy2KQHIvmEnTzAd81cYV1GCMFtj6Ik3/1iWj6rHaSUFwf9qZ1eNFVDDv2wNteXzr1CFlJ5ZWaXNUEubkwq8p0hJDFO26j14SV7SxyDzhHMi+5IbOIF8w8mw6XMMq37YbFtE5IkeVTPqd8H4llZLkk2lYY5i1SzkueiQm6+kFdcuIwvzn43/Bi0f0epXDzVmrtxLGZ0b5AcTMk7FLsINqdR5I3pNH+N1
- fzKsR/iw
- 7dGq0eolhQRxnFtP0WzIS5+1ZyF9HPLkyqr16LqCpqHr+RiRgslcJZa5KBwGLggKsisa/n0xE4G8ucM88AlpNBJtA7azWnmIeYL1Q0Yp/YdVG2HSNPuoZsx/omp4baqpFgQHA5iiPgQExTcaM02RKsRB8EItZ4VMUdfzrrqkODUoRGyZt7cjgAFKCS1YVHGY4pxIBIeyMLi1iweonlLv1+gdrnCOUbLMwJiyWqoB8dTmfSVRaV0doESoXbT/4a7tZIb2PN5GVimKrNiGLygFGuWooqFqv9AcI4zlo3GbVt9x+Wxfp7DMJBnkB0WwP0PdlOa92CE2G1GlFC4u8XRR4wQgf/jRfZPwXJpSN4r7j6DGMrCcdRQ+do7rk5pYSZdr8JqZpttOUlicxCFGMcNZuRzcctl/5QeIR4JM2UNWct7H+efp1IYpmwmbqxwIlTA5ddSFa4pyhO7v2yC4OOR5pk4s2ASBoARg7raI+SX6iuD5wDRY12R3MJ88blBwdZ3THYVtQNMqzVOO8nHxMamVHxeHjQ7E17q9Iut3pArdg1Rv3ltxxpQOAaKK7Ovxus+g24gbLF5TUwvFuqdgG1SjbBwwsfxIsPvqFH/g1aQHUoUJgCUCTTQkE4WRb9/fLQNcg+lhXz/gmKmL2OqU=
+X-HE-Tag: 1759502233-451582
+X-HE-Meta: U2FsdGVkX19MXvc2BlAxnScUp1rx31rxom7ekaRUthFBRg7i/YmNSixLwndJevA3ijZyYHXHXv19kMfv994p0ns+gt2tjf4nQ97ogc98A1CZcVjzWDbUXuLyzuQ1f3A8gCCJgcTCMLCLdxWoE1YNc76SjyB3V5xs8FPg9h6SGGnphxtC6Y/VL1nmQEOnGFfgXC58UmGumop/Li3OB7PHnsot/R5QOFRSZCW4UAZ4InkWM6+FcGEOp955AYTOx1UnKVOnf4GYlVQ2xPTfBgNVIJGmYakEjYmgSHagWQdQ7cqhKMzSnDMKRDKCBQsPT4YOjqv8c1n3TeEfH0pMZEaTac11g3jo4CDq8AM+nvRcSov+fcsNqui5JYEdPm/RwjvAgD60mfeXp3HextExvD2dlI++HwxHIRhQARdzXIdYCg7q/BBblIeJQxTYl1ngBYzCQkIAD81qHV6PHgB3A4FojcDbTJnkSmu02YfaqOkNN27DbU4fDsK3Oi5/TpK4gxitJGb+IAt1985fH1tK+8I+KZ2air6BlUwkHyrp6ca2a5EEVHn32f2MqMYvizxalLXv/6YkRsuJWcYOyFEu5ZDQUjW78QDyUMqKOrDbnJhG4XkDzkxFepv4Mp4lVu/XQ6rI8gxPC0o6N0lPJEkqs++nlOdIc5yoh8OQtqiOSogacN+8FMRGmwB2XEvFYtZq1zcd+Q/Eu4Ac6n2Wod6L9f5KaKYL4lz12qa4di+EM2D8w0VCMtnsFP1cbIoKIdn/g6rbgswzjxiqZkwRnDHtqSMqFjV60ptW/BKPvjS0T9N2739hUBolNdK+Hl82IMuXJ0zHORJADtwPMRtGqZYUFE4ylQopN5sOozCFOz/fQtTFYAVmJfN1xmFo1sBf0NmhtX0hXc1O87WPe1xMCy7APzZt/ZmiUComKyxqRLWIkhZzSisSgXyLqql9Q3YIr9NlmJIADsmaV3NauxTZGIJL7QR
+ XlxPV7eu
+ /ZwkoRGDXkpQnX0sWwGAzny11tLdhTMaTd35CLhxpd8cJ2IZmPXV1OrtOPsDcLmEaMuNrwF+4c0flMYL8ex/5qOSz9NdKjfCPSbc/CSs5KbIKqV7tRUpwCztVfpZI3f4qFro6Nk15KBorN4X5KJWe4Sh0Xyg6/Aw0awTT/QS5lgmiqNf6yZJhM3tUil1rvX2a+vOPty6eNZpDSyz7W2JijnockocJTVvJ3/XM1kqJuDdHjDd0LpFR+skj7zn4WhtG0asaF/fkDJi73fbohqj8BoWZwSWGI+UolqPDMYZk7ug4pPn8DbvgrtjOi1TbMdv1uOW4S2u5Qeq/LFoHJNYdHiBfZq697frbfHNGzgSUjWkPccrDTrMn0A/gTkpsA8n5xBa7OdL6+zmxiHbXwlb8RysPfA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,96 +141,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 03/10/2025 15:19, Dmitry Ilvokhin wrote:
-> __mlock_folio() should update stats, when lruvec_add_folio() is called,
-> but if folio_test_clear_lru() check failed, then __mlock_folio() gives
-
-nit: s/failed/fails/
-> up early. From the other hand, folio_mark_accessed() calls
-
-nit: s/From/On/
-> folio_activate() which also calls folio_test_clear_lru() down the line.
-> When folio_activate() successfully removed folio from LRU,
-> __mlock_folio() will not update any stats, which will lead to inaccurate
-> values in /proc/meminfo as well as cgroup memory.stat.
+On Thu, Oct 02, 2025 at 05:12:09PM +0900, Byungchul Park wrote:
+> dept needs to notice every entrance from user to kernel mode to treat
+> every kernel context independently when tracking wait-event dependencies.
+> Roughly, system call and user oriented fault are the cases.
 > 
-> To prevent this case from happening also check for folio_test_mlocked()
-> in folio_mark_accessed(). If folio is not yet marked as unevictable, but
-> already marked as mlocked, then skip folio_activate() call to allow
-> __mlock_folio() to make all necessary updates.
-
-Would it make sense to write over here that its safe to skip activating
-an mlocked folio?
+> Make dept aware of the entrances of arm64 and add support
+> CONFIG_ARCH_HAS_DEPT_SUPPORT to arm64.
 > 
-> To observe the problem mmap() and mlock() big file and check Unevictable
-> and Mlocked values from /proc/meminfo. On freshly booted system without
-> any other mlocked memory we expect them to match or be quite close.
-> 
-> See below for more detailed reproduction steps. Source code of stat.c
-> is available at [1].
-> 
->   $ head -c 8G < /dev/urandom > /tmp/random.bin
-> 
->   $ cc -pedantic -Wall -std=c99 stat.c -O3 -o /tmp/stat
->   $ /tmp/stat
->   Unevictable:     8389668 kB
->   Mlocked:         8389700 kB
-> 
->   Need to run binary twice. Problem does not reproduce on the first run,
->   but always reproduces on the second run.
-> 
->   $ /tmp/stat
->   Unevictable:     5374676 kB
->   Mlocked:         8389332 kB
-> 
-> [1]: https://gist.github.com/ilvokhin/e50c3d2ff5d9f70dcbb378c6695386dd
-> 
-> Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> Signed-off-by: Byungchul Park <byungchul@sk.com>
 > ---
-
-
-Thanks for the patch!
-
-Personally I would just use the comment you have written below to create the commit message.
-You probably dont really need to write all the function calls paths?
-
-Also, I don't think you need () for all the functions in the commit message, although
-thats my personal preference.
-
-Apart from changes in the commit message, lgtm.
-
-Feel free to add after commit message fixups.
-
-Acked-by: Usama Arif <usamaarif642@gmail.com>
-
-
->  mm/swap.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
+>  arch/arm64/Kconfig          | 1 +
+>  arch/arm64/kernel/syscall.c | 7 +++++++
+>  arch/arm64/mm/fault.c       | 7 +++++++
+>  3 files changed, 15 insertions(+)
 > 
-> diff --git a/mm/swap.c b/mm/swap.c
-> index 2260dcd2775e..f682f070160b 100644
-> --- a/mm/swap.c
-> +++ b/mm/swap.c
-> @@ -469,6 +469,16 @@ void folio_mark_accessed(struct folio *folio)
->  		 * this list is never rotated or maintained, so marking an
->  		 * unevictable page accessed has no effect.
->  		 */
-> +	} else if (folio_test_mlocked(folio)) {
-> +		/*
-> +		 * Pages that are mlocked, but not yet on unevictable LRU.
-> +		 * They might be still in mlock_fbatch waiting to be processed
-> +		 * and activating it here might interfere with
-> +		 * mlock_folio_batch(). __mlock_folio() will fail
-> +		 * folio_test_clear_lru() check and give up. It happens because
-> +		 * __folio_batch_add_and_move() clears LRU flag, when adding
-> +		 * folio to activate batch.
-> +		 */
->  	} else if (!folio_test_active(folio)) {
->  		/*
->  		 * If the folio is on the LRU, queue it for activation via
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index e9bbfacc35a6..a8fab2c052dc 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -281,6 +281,7 @@ config ARM64
+>  	select USER_STACKTRACE_SUPPORT
+>  	select VDSO_GETRANDOM
+>  	select VMAP_STACK
+> +	select ARCH_HAS_DEPT_SUPPORT
+>  	help
+>  	  ARM 64-bit (AArch64) Linux support.
+>  
+> diff --git a/arch/arm64/kernel/syscall.c b/arch/arm64/kernel/syscall.c
+> index c442fcec6b9e..bbd306335179 100644
+> --- a/arch/arm64/kernel/syscall.c
+> +++ b/arch/arm64/kernel/syscall.c
+> @@ -7,6 +7,7 @@
+>  #include <linux/ptrace.h>
+>  #include <linux/randomize_kstack.h>
+>  #include <linux/syscalls.h>
+> +#include <linux/dept.h>
+>  
+>  #include <asm/debug-monitors.h>
+>  #include <asm/exception.h>
+> @@ -96,6 +97,12 @@ static void el0_svc_common(struct pt_regs *regs, int scno, int sc_nr,
+>  	 * (Similarly for HVC and SMC elsewhere.)
+>  	 */
+>  
+> +	/*
+> +	 * This is a system call from user mode.  Make dept work with a
+> +	 * new kernel mode context.
+> +	 */
+> +	dept_update_cxt();
 
+As Mark Brown pointed out in his replies, this patch is missing a whole
+bunch of cases and does not work correctly as-is.
+
+As Dave Hansen pointed out on the x86 patch, you shouldn't do this
+piecemeal in architecture code, and should instead work with the
+existing context tracking, e.g. by adding logic to
+enter_from_user_mode() and exit_to_user_mode(), or by reusing some
+existing context tracking logic that's called there.
+
+Mark.
 
