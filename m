@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8124CCCA471
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 20:15:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C322DCAC5B0
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 20:15:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F6D48E0005; Fri,  3 Oct 2025 16:15:14 -0400 (EDT)
+	id 9678D8E0006; Fri,  3 Oct 2025 16:15:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CEAF8E0003; Fri,  3 Oct 2025 16:15:14 -0400 (EDT)
+	id 918408E0003; Fri,  3 Oct 2025 16:15:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60B128E0005; Fri,  3 Oct 2025 16:15:14 -0400 (EDT)
+	id 7DFB58E0006; Fri,  3 Oct 2025 16:15:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D33A8E0003
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 16:15:14 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F0A5511B09F
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 609678E0003
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 16:15:15 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1A7E487F6C
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 20:15:15 +0000 (UTC)
+X-FDA: 83957907390.23.07BA250
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 71061180009
 	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 20:15:13 +0000 (UTC)
-X-FDA: 83957907306.27.5F395EA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 6E53A100011
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 20:15:12 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VqNiRg7n;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FAiGGoC3;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759522512;
+	s=arc-20220608; t=1759522513;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=SO1w9aBKzoIWmKHBURr+xBsEY9rmlI2MyvRBzuu2vdc=;
-	b=8OhrfTVmDYOoUA7L5WBwl0niaeG9Sv2EU/1J5LqgemrzyTlfiOPvbeq49cDsoi7WcG8g8z
-	ld2dCFb/oneyM4VEom+/x5JfYWRD8Y+0+KBAclx48MhAe7pkI3il1LX5y38KOx5SGAkaFD
-	W5RUcROH0S2FeIOSJ0AqA1Yq1w/g7RQ=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=i7MUZ1SW74w7TiQIYpufzexzvF3vpnfWGzOhFu9B+Ps=;
+	b=shSbjTrWCIVZCk+8UCE0Nv75PQIK9KaCcB66Mq3PcOVFICAWHZ4EULKviWa0WS35Xtv1CZ
+	k74fXzZur4XjaxLuB5MM2MNLNnQFUNo6SCJRlX04VCdtGdoIp+BLvP3Dman9jA904//Sh6
+	DgXRUPHBSQSEwfF5fYpqPmRAR/gGLj4=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VqNiRg7n;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FAiGGoC3;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759522512; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759522513; a=rsa-sha256;
 	cv=none;
-	b=CyBKJn1rdIKwt3iKRdFWlzs0MXsR3DK+wWlW3Cr00CElAfvk8f4hAdwB6dmDFBIsbaEC3z
-	Oai+C7q3w0eDAwQ2hxRZY7TMZCYD56NhNj6aXk/EyggtMjRpnu5RNw5IW19ka8Vohr94Tl
-	kSdi6+ovtixGCbIIkfBXzG33jZiwKvk=
+	b=kiatezn3lysHHOnZs61qLXDE5szlMsZma4ChekOReUup0rYUtajCC33FW95FZ4scVZIaGs
+	mhyPDlP8LaBJOe33Db8V1A0+LJY+yHtY524qkaZOdpIWapDLfiz+D7ikKywL55ZpaZR1X2
+	t/yZSuJlxxdGx76gsb7fN/Rz4ZKL1UQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 279D94332C;
+	by tor.source.kernel.org (Postfix) with ESMTP id 5B35E624CA;
+	Fri,  3 Oct 2025 20:15:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD5B9C4CEF5;
 	Fri,  3 Oct 2025 20:15:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D740AC4CEF5;
-	Fri,  3 Oct 2025 20:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759522511;
-	bh=qtfz/YfEllIXjoRI/HBAplZP1lyB8MYFrVrD1QnzyoE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=VqNiRg7nMuR+dDDL6d31WcMOXqHyGxsxV+xYD53aX9znF5dxsB3RypkLd+rWv1ovr
-	 RRJCZ6Zfr3pEhrWCK+GKaXKLoMDgbM/p5qwRtlUZ77dfaS31ARj5iXv5m3gBvyYbs2
-	 FWRSPSxWZpAkqB1PpcDNyP4GX9kuJSm3hDAamesOxnrpfJEY5JVpiNTaBFn6mE4wx4
-	 5hKmMn+wEaLtaKQ4Vs35mZtrLTd/hcMVXKjz9badoLpFXiktjsppsy9bP0ibgP5IyE
-	 CMwK8XANfTZlEbGFX+w/U//NY6eI9FMXPumY4UptgsfkYNKIrNV0UuZ1K+Hi9avsB1
-	 +72RZ+7AgHEdQ==
+	s=k20201202; t=1759522512;
+	bh=bjwiI9Qos1leLOU/dQfUObg++Tq8M6DnTqo6oPGEiwM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=FAiGGoC3YCsVr4iogOumZyxh+ejcDryCAR6xlmtdwpzmPRapmWe/8/vC6ii/Iekmn
+	 qrVTrHY1nQ+tZcwdyLnWwuE1SWd46ShRfMqfE0PLmv1judTAgpdNBXm3VUYVG5ZSs+
+	 7GDWZuGnwrVzsgMB0ROjGo3Q8rFf75L02xxAUxp1KZlksOF0m35m5rgP7EWrnLpkxa
+	 7KXmGufNdLh+PEH84FHy/v6zeobPwA7Ohpf9gnOd7qj9PMbh9yZYAtBllDy0/fShv3
+	 V/HlnTMboDq19GvntLbUNYnUh7kie3pDjZIqQR+XxPLaIV74zWx6lljpBcnnrFWB5c
+	 1ogpe7EaBVj7w==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -71,20 +71,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	kernel-team@meta.com,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 0/2] mm/damon/sysfs: fix commit test damon_ctx [de]allocation
-Date: Fri,  3 Oct 2025 13:14:53 -0700
-Message-Id: <20251003201455.41448-1-sj@kernel.org>
+Subject: [PATCH 1/2] mm/damon/sysfs: catch commit test ctx alloc failure
+Date: Fri,  3 Oct 2025 13:14:54 -0700
+Message-Id: <20251003201455.41448-2-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20251003201455.41448-1-sj@kernel.org>
+References: <20251003201455.41448-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 7cm9wnfgdjogyr5gfxj1ngtm9df8zznk
+X-Rspamd-Queue-Id: 71061180009
+X-Rspamd-Server: rspam05
+X-Stat-Signature: mmod7qf1yudas759jy46r9w1gwtyc9m6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6E53A100011
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1759522512-525368
-X-HE-Meta: U2FsdGVkX19USLJKrDJfkpM/zydzVr+HZwNyHm2S6s7MWyq2hgdRwUcOIyw/Q2tsZJfHEg2VEjP+GZfkFTQsWZ0zkYtTHanp/J03298MxYkurYj8bcNr3CopM2+WL9OG40dW4H5sIFiryByhRf8mPz84O8UdE7RdiWU0C2rMwYDs82A4CChLRGBKJSt+7DpzQ4+dMbXTy8lhQN2RI0sigdxwWaBNzhXb7oj3QK6jCTpAnYwRZNwkzFssKvF3j1Ftp4XIHJsZ/8cBzeGKxYqeXW2MEzJxGkkwHCVD4jpRMZ+Mg4W+Z2yPa28Y3ymcnFsDau0RnAJ+0yPR5hq6/fRW2r6RGS3lf1vIK4YnI1RGbbpA3H1ncX5U75UV74raFFWl3mbRdAWFrGzr2FVerjWuZWVaqwj1a/oKMgzGeRwfzkJnKQxSY/E9O9MkqeyEnvQAotxZWyVPdxovmC731V8IjRrjy+yq3oAS+s5hLGx+SgKWxW+0tMYTUfv5TTi+WaXv8na6/E7tJ5y3iWIGrmw/Q62UdcECUloeV9jgBv2Y6gJR8Qaqjv5sNn8k9BrsTrNg9u926vZP8gTlnFu0kk1n+soxdcOFrYvP5Tfd1VHjDAwDht7MFtUpjzsEoWti9JmPd1in4Z1l/C1MK/0nFpiJUCVbP7hOCA5qp7JoiUySJj3r5r5+++BjXkiZci1EcfCbkZqYDH8YItPzBAioeX/gGzHA8ttFm6eJomhAMEvGtHKKl9DybZk5kIwxBgDVi1BKMyPnLorcmj2C71yNS0V45ntRAkcNLte3kCtXaTpENSFvKnlR/LV2tR+YLPr4fB+EPRqbLmYGJv3iWqYY/KPCGYZ9iU5PepWKgind2g7gGtpjBc1FzcP/zlfrCXv8uCh0/FpMKTuCCEZOd3qAcvXS02l1F46h+k9UCm8oTieCuJdD+7jRZluofvxqxgkfcFUVW9FZVKB9UN3SzuZ1pFW
- AaZ/1tYn
- M5tH4Hab3W5sm5x58WDm+KDzBWgKye7xzTTxcT79Gszgo72QuGwC2CtvzxCTsHHYzr1UHZDml42kg7ivkC8rsPm/AJQvETTQ4ce5Oripf6hgTwizSJXHMNIY/9Cgfe/ib1GLYFvhML/HSd8kX0A44PQ2mzQ2hldMBgwE7Pn7NEQKxwKjcKmMklMb1jd+C6W8AQwkN7iYOkW8x10kkR3UTvrWHHVdGBFCIhLrhn3GxSb8H5+a8eDmtfdK+KusA4Tibs0uv
+X-HE-Tag: 1759522513-442774
+X-HE-Meta: U2FsdGVkX18hYKzvK6EdcN4zARLfBfnIZWyqHQJTxBg9EyK+BFQk4+Z9Q5+GxWZsjBMFxeogecx5gbBvI0yoeF/zHd8WQaBG/4Nl/loN+4M6f7+X+sJol2qOKQIaKtp+py9RCC7jt5GhA6r3ESrFK00sg2shsJgl8uGJczSXvIRECLfPIPY8324yVaTJXZxuC3Mia+ByxVRgmbSDcAJBVae1zsgwa+UKaetySozV5mJg9uIJtE1JgCoOxf83a/cLrVsb9Qc/UzXU+AiCUvEgxxKIVdepnQDL/S1vgZbqAIZ3GgEnCbGwb5Wy8ch5Hv5SYwbEyj67TJ3cgaC41D91oDznQCs96win+n+YKrjB4GplSzA/y0wQj6s6uyrFXOAtNaa5zOyd0dSkQiMpMbCIbRNGiIxoEi72EYDsSy1NjA9sYfIR8mjWB0N2zo6ES5poOFlFYvVz1P+X31C9957V1Zzdaqc7w8yc189/aeP2beq4XIaUf5xHYUY3jLsUsjBbOoYH3Q+2WiMxPnwncx3IZUIVXrk9zReaurgNQv2HxEPlMmodP5mH8p2/OmE93oAm+6U0kq64SlpnpNBK99e0yn2fshTTKHLo63nweIY4gWKCVZaIigPY+EPdVzM6gS7n4cPguVZ4Sl1ZeUmULl8AWWnxlFRKp8kTQd4KeHQFegaU/r5ZcjOZFoDnSPuwH5Y43pTFZNDw+SQ6x9jMKvSc7984BFoGbYOImffgnYDg3gIWKhbNni7WKYQhxy0HMb50VQwUuA6E3uWkYKmVtyCvftqhSOh0Gc0NfrZxZczAu9MpzFh9qHyyENJa8MSKiAMTg8mCsSA+mZqcHHgLDH1qnFsRvecO64e/XqPj/VaGBmvNbyFYzYKHKB7eFGIJIvbqlPhOQ9kw1urkgQVh4NPB/40eyoe6FaFBxZIcd0ij6nSkb5WLg5dD6O7RYXwtc87y1SXhhXziXNhaXWhaN5/
+ 6DezRXcu
+ 0RW4u0RK358K7R5g+jAFaSeyHIaX7jzgKUa4vpJwCDXUG9AExh4VDSqcjdShPQOlcmGE/73HfOo5HOa4ku/YWX3+ANujW8VLf8L3DWVyP94zKjo/6AGJaFUDweu8piTpV+tCWsYW7CBtebAP/iixgt1TmWpsN+NW4kqyUr7TKPfSk9Obkin3eu7xYacrvBCWr+7WjM3IfOd17GbT41k2Tt8o/icw+UkwVvdOXRudFtcUaXulj6t8n8+kiwMo5tq/ug1uQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,20 +95,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON sysfs interface dynamically allocates and uses a damon_ctx object
-for testing if given inputs for online DAMON parameters update is valid.
-The object is being used without an allocation failure check, and leaked
-when the test succeeds.  Fix the two bugs.
+The damon_ctx for testing online DAMON parameters commit inputs is used
+without its allocation failure check.  This could result in an invalid
+memory access.  Fix it by directly returning an error when the
+allocation failed.
 
-SeongJae Park (2):
-  mm/damon/sysfs: catch commit test ctx alloc failure
-  mm/damon/sysfs: dealloc commit test ctx always
+Fixes: 4c9ea539ad59 ("mm/damon/sysfs: validate user inputs from damon_sysfs_commit_input()")
+Cc: <stable@vger.kernel.org> # 6.15.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/sysfs.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
- mm/damon/sysfs.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-
-base-commit: 3c39180d389ca58cf309b7aa58b6a3617151c226
+diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+index a212877ed240..27ebfe016871 100644
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1473,6 +1473,8 @@ static int damon_sysfs_commit_input(void *data)
+ 	if (IS_ERR(param_ctx))
+ 		return PTR_ERR(param_ctx);
+ 	test_ctx = damon_new_ctx();
++	if (!test_ctx)
++		return -ENOMEM;
+ 	err = damon_commit_ctx(test_ctx, param_ctx);
+ 	if (err) {
+ 		damon_destroy_ctx(test_ctx);
 -- 
 2.39.5
 
