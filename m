@@ -4,124 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72359CAC5B0
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 14:41:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78594CAC5B0
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 15:01:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BEEE98E0015; Fri,  3 Oct 2025 10:41:13 -0400 (EDT)
+	id 876568E0008; Fri,  3 Oct 2025 11:01:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC6888E0006; Fri,  3 Oct 2025 10:41:13 -0400 (EDT)
+	id 84DBE8E0006; Fri,  3 Oct 2025 11:01:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADCB98E0015; Fri,  3 Oct 2025 10:41:13 -0400 (EDT)
+	id 78ADE8E0008; Fri,  3 Oct 2025 11:01:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E0598E0006
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 10:41:13 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7190016019E
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 14:41:13 +0000 (UTC)
-X-FDA: 83957065626.22.276F10B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 99A74140018
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 14:41:11 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KORQMTTA;
-	spf=pass (imf26.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 65C8D8E0006
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 11:01:23 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CB72C13BD03
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 15:01:22 +0000 (UTC)
+X-FDA: 83957116404.13.3616D53
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf12.hostedemail.com (Postfix) with ESMTP id C93E24000E
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 15:01:20 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="XQIE/k8w";
+	spf=pass (imf12.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759502471;
+	s=arc-20220608; t=1759503680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BQxEIF4MDPKcIV3btWoh53nWWRElvX8cMJP1nz+7+KE=;
-	b=kjKN96wqbwpivBa0z0yyWtyDPtdUX2uH9oI85HwTAHRsCWTkaOLE0cwZmaklDBH0uTDi8R
-	ijTX2iFDXIan10YdHDnIdKc9tGKlRW2hbGKs/IkYOjtNT4U30co099JEU1GqIy/dFvfceH
-	rlpMASlKvUznErXdjGDu1VBEi2EJwPg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759502471; a=rsa-sha256;
+	bh=rvoiyExDSEvJpLVkArK+JF0/gLIg1oSJww/Brn0jTdI=;
+	b=0+LMqVOjb6RZKCsbwddz8siPvgOvtaBYqZ8W/cGklLxnMpwi9UmrA+n/QQbOKL7RwYgYMn
+	iScyF9968t1qTBBTTJaoIurarklJLPv6u8l2tqNAcZz7+/ZS5G2K4wM0yFeYPJkIzN7aUL
+	Pmzbu3eFyaYzNZcgbRKkGAxny0AguRk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759503680; a=rsa-sha256;
 	cv=none;
-	b=UhD8stxEFvvrjjVcchuHpMzMMIGSiPGvaWM34sp6o7BsjFYyU12Kj2pDSGlHQfXTtyb6vi
-	ZolFaY015YL1ZgoxSUVh5/KTSs6t8FmfzxHbHhsiD4/5hBd3P3jARyx9fTYjxfNjLj97iH
-	EU6De0hxiU5BtdAEuD1WSqrvoEhbipA=
+	b=19woOCWi0dnhjfZyjzfGjg+zF5bP+Tbu2iJf5Hx8q8SBcgEf07ABY3Fh9JH+tvCsE655Uf
+	1J/zfn7E93tE0pNB1qm8L73GScus9Q6INR9EVL2ekKxd4OrV+ktJJ5y7OuIN2bGz0uKcfg
+	Biow/cwdkBB6MjPrTKaI0mZVsBGhiiU=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KORQMTTA;
-	spf=pass (imf26.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6B74062169;
-	Fri,  3 Oct 2025 14:41:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C42C4AF09;
-	Fri,  3 Oct 2025 14:41:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759502470;
-	bh=bx0s1P62xMVENFHKLMPJrGfBOUqIwhHXInCdciLOI28=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KORQMTTA6AcHihhNeZBMpdvPG328KT/QBsc7k8/i6xvDWHHScRI49w9VGuW73fmVp
-	 oLgsO9ucicGSj4o5peNc1wnqCFRAcS3/Ztzvu+PqqfYPEf6RCTfyZOrbDvw6y13HCh
-	 wmiYgRcd2Tmr+mzW9Hkv9zv1IMzSTvuclhL8F0fML0DjOXmEi+r3q47wP+TojwT7l9
-	 Gd7CR26CeBVZVTFnmQv8yXmzer0pDU9CrF9KsSj37DmA6OXt1MgE14WO09w0WFiP3U
-	 36JPC2mkQtImNHwgWJunNC+QSRBVCqRtqEOJ+f9ID7EMwRScTda7AzixkseJR6ZW1Y
-	 rQFCTa7olILGg==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id A9659F4006E;
-	Fri,  3 Oct 2025 10:41:08 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Fri, 03 Oct 2025 10:41:08 -0400
-X-ME-Sender: <xms:hODfaFzzNst2fJ9nsIh_4nXMRtdtOoU9q2tLBMH-xX9onZNA8WETbg>
-    <xme:hODfaFYm4nMntXtyFLKI2ForkYnY6oSWBO1aW9LL0ZVkFmd6F5PVDbRTJKVajQIah
-    X7V4J01XNzwyKbVSBrKc-N77IA4dmpaw5ve69U1Y_TvHeQlarsr9AA>
-X-ME-Received: <xmr:hODfaNL02WtZI4ffI5vVcDxtjDtb_nOJESyrPu5hAAfWB0RmwuqdmC1ydr4qfA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdekleduiecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
-    hnpeeffefgteeljedtgfekiefguefgffdugeelueffgeehvddutdefgedvfeehudejgfen
-    ucffohhmrghinhepshhtrghtrdhtohdpghhithhhuhgsrdgtohhmpdhrshhtrddqqddqmh
-    hmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhi
-    rhhilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeihe
-    ehqddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhv
-    rdhnrghmvgdpnhgspghrtghpthhtohepfedtpdhmohguvgepshhmthhpohhuthdprhgtph
-    htthhopegusehilhhvohhkhhhinhdrtghomhdprhgtphhtthhopegrkhhpmheslhhinhhu
-    gidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepshhhihhkvghmvghngheshh
-    hurgifvghitghlohhuugdrtghomhdprhgtphhtthhopehkrghsohhnghesthgvnhgtvghn
-    thdrtghomhdprhgtphhtthhopehnphhhrghmtghssehgmhgrihhlrdgtohhmpdhrtghpth
-    htohepsghhvgesrhgvughhrghtrdgtohhmpdhrtghpthhtohepsggrohhhuhgrsehkvghr
-    nhgvlhdrohhrghdprhgtphhtthhopegthhhrihhslheskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheprgigvghlrhgrshhmuhhsshgvnhesghhoohhglhgvrdgtohhm
-X-ME-Proxy: <xmx:hODfaLwoTx8Y67Fv462ACMflW_iHLcmVlLOv36fgFtydz1owY5aKag>
-    <xmx:hODfaFPutmKdVMde_Epn7Vd3zK9_XdjhZ2Jada17jn8RhABnYcgSEg>
-    <xmx:hODfaPv-C8Dzp9gAPsbMvk3yFrtxiieBrO8glu-5jXgTK13pe1Jxsg>
-    <xmx:hODfaC05BylUzwxUNzxABzaWlvVUIXl2UCeONM4m3uTWGE_X8kivtQ>
-    <xmx:hODfaMDHgKrDZCbX4AnEAnKDt2PIiZibepNnOOpkj6PnRh5Vgvl1fCLz>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 3 Oct 2025 10:41:07 -0400 (EDT)
-Date: Fri, 3 Oct 2025 15:41:05 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH] mm: skip folio_activate() for mlocked folios
-Message-ID: <hnpzad4aehmp6ncgwhlinzx55z3zst5dlkhsjphpazccy5lzpv@hfj2eyewuplz>
-References: <aN_bix3wDpwYPoVp@shell.ilvokhin.com>
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="XQIE/k8w";
+	spf=pass (imf12.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-46e42fa08e4so22082915e9.3
+        for <linux-mm@kvack.org>; Fri, 03 Oct 2025 08:01:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759503679; x=1760108479; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rvoiyExDSEvJpLVkArK+JF0/gLIg1oSJww/Brn0jTdI=;
+        b=XQIE/k8w2pdUWjVl2JC13t2d25LG6oph/iePjn87Af06o1KqRg5bJPAiRZcTjOlIUQ
+         qe6alBNwXcLZEjqGfEMk4s71wWuzaQTBYKxhMWA8uLVU5aprUKAhqy7v5Q24Qqsynde7
+         hQwUpxsf1Ltf464AjyDfgYLquUmFlDvRf6lSVkaKvuYyukKeuPN0x+dMGEIphicUL2BW
+         nthzgT0FAs/LVJ1IyLnWED8hels8YapXe7aKEd2oNMRfNkIHXKjLR+WnMg/WAnpeZNR6
+         hnEkfMDh0xBzLxcL5ajzpRe7BPW2Fx3Hmrh9d382vci8b9yeUsRfRhO9df3YPp/6vX64
+         GuFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759503679; x=1760108479;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rvoiyExDSEvJpLVkArK+JF0/gLIg1oSJww/Brn0jTdI=;
+        b=wrfDjltJ8dwk/zomZDZ/pbzNfKjbAASvMKErUtqdoetYZVZfA5KniBFQKckQiHN1tQ
+         OZDijH94CjFp90vn46Sx3tJooHk5O3P+NN652DCcuP5ZJc8fQHtj6TytEoVKyNxQMmyL
+         d4ZX4/mTjdOfEiOTNB39qcmq4krwlvB+fcRD8eOR+g7PbFDhQgwbZRsvZ4fGaM35he30
+         4ccUtq6iV345RC9rrxERQAeVgDwgXWWYPQnyQ2tAazR2BCjdlBCh0pzckjN3AMgm1Vif
+         +apZl0boncdFQ+cCi9OUBTwtFOTQR2RlhCt3D5ChcMcd1ZGLa8ilCTDC29dt83LUEg9J
+         7KQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXMA+a79XQcS6VHHYpxBrQSnMAEQBzMxDYSeQufhuMcSTMjKpGpV+DjOJZUHMMg+SHocpBOnJrWOw==@kvack.org
+X-Gm-Message-State: AOJu0YyuD0uctDOFwKClUSHIe8qTiJd0v4vEO5JvCImEztisC5JIDEmr
+	Te78EiRGhX0/zbvNw1OHkLlhk3Q/RU7UMrc/ZuR1c6ZEl4ULCqH8XLmxq4+OEsM40WRIcWhv04X
+	AeK2suAmY4EzavaxWIeFrVd7PgbBGvOU=
+X-Gm-Gg: ASbGncvupwz7ZoFDpsUzwJJx2MnF9XEjoKAHvGeKVHgO1naxdVjE56KptKzIHcMNjJt
+	o1HCEFv8d98z87Zx0UlUvRDcONXXfBbICeuMy1I++hPM/zuCD3Mzz0l+T+xb99QIV2NbcD+Lgtd
+	umwZ2J39fY/GcXN99vXSVHDRWa3yFcmA0UdxFkCgEHHliF5FgOWifZmGGA5IEMI49hqSRXtLz5S
+	V8EU+SV7ruoauXEXEpRNsPWBXuDQmgRXy4SzzbiFUiUzOpB4qp5RZg0O7wDaMJTbl5A
+X-Google-Smtp-Source: AGHT+IGhP1/atGsvKEKDdjwDJhtnkHEnPkwva/8TFkjZbQaj2BQDqokdY2zYTli9XTOnEez1YY3KKjNm1oo6pN9k7fQ=
+X-Received: by 2002:a05:600c:19ce:b0:45f:2919:5e6c with SMTP id
+ 5b1f17b1804b1-46e7110c3d5mr28401455e9.16.1759503678161; Fri, 03 Oct 2025
+ 08:01:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aN_bix3wDpwYPoVp@shell.ilvokhin.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 99A74140018
-X-Stat-Signature: 1uapch76mgtxn77z6wrdgh1yb6qhzgst
+References: <20250930083402.782927-1-ranxiaokai627@163.com> <f72deca7-4344-4adc-88e3-35a4a1d9a30b@suse.cz>
+In-Reply-To: <f72deca7-4344-4adc-88e3-35a4a1d9a30b@suse.cz>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Fri, 3 Oct 2025 08:01:07 -0700
+X-Gm-Features: AS18NWDeadN5gWCPdehSIc1K0vm29j1_C80YFC-7IO3Xo557HA4mE3AgwK0bSQg
+Message-ID: <CAADnVQK0COXqq=R_WZU5stBe1b+472RS0+JJrThnbxXadBgN4Q@mail.gmail.com>
+Subject: Re: [PATCH] slab: Fix using this_cpu_ptr() in preemptible context
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: ranxiaokai627@163.com, Andrew Morton <akpm@linux-foundation.org>, cl@gentwo.org, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, Alexei Starovoitov <ast@kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
+	ran.xiaokai@zte.com.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C93E24000E
+X-Stat-Signature: ugpodgru5yodx9bo7xnzijxeqfirj6tc
 X-Rspam-User: 
-X-HE-Tag: 1759502471-112544
-X-HE-Meta: U2FsdGVkX1/PdFKf4ne8nY/vywSrad2w9rzJ+jZvsDH7763i9zb/DybmAr3hutZnQ58/oniCv2nyHw+OzEVrID93uzsl6risgMqc+ctdLm+cZdm2HlZBGdGcUFwm4B0otd8X9UoVb4h5XDCB4PShU3Xbiuv+1G0pDoYrP1hwHfQourkmktUqJe9E0LS1wSXiPv/fIY2rAul2RZHli6L/P65YND5IN9EoCCcr19KXqAK0mqRlvp8yeirLp+qIj9D8MLCy/qKQYwwhd7ff371PVRM3Q6yllQFeOxRUcH9eHr9S6TWMc38jfcJloXRHMaxxiFLGrJkqRsdy2CKNVU6CxMZP4iELY9yWTetXOrQDDTZ8EwTaA+m28QH0gAzXroDnDsTf815V51hrIcS7Py/v9hcoK5dd4RjooIMxkTI7Xzzv9gPJAYFB0UU0+Rln/dBGmiKMUxEbxG5t8CfNCDpPegkUlgZOVfVbtEWAd7f/jIQ8JssrSQIH1SAEOSD9RmIITSx1680TaN3jBjlrATZwYNHaUrYFZp/ktZ7I2koYOaq+y034G/REcg1BXbAG1fEJuCUAEeIsRw0f1k6RdWq6XT22utUkdsx7idk2vjwkpPW8ZvZafUdxoPCggxhNHbRNJ2PC25U8vNqEUeCDK0FuH+YlBKUkXmks6E9Dc6d38QBTLeOakdhiwQSF2IHdYP4fB4FznXUmLdY+W0ZfhjgyM7x398lefxlhmJ3oGyLeeZ0EA2mwQzDjCELBVy9F9v0QxSimyht99vWLtUZu5O1sGIAZHRntY1qLs18Lv/U8nS7WbK/aDU7/K3LmQbSa/5ejJpZqGJ530RMyWYS0EW0uZTVqwpJZqphoVFdI6aHJZ30HCsVIGW6kpWIsGShYxJyeT3CN55fOu79RiL7EQ91GumwTQ1qHiWdfH0pzsArwHdEALKn6sdMd93lzMXKfTsAncMMvhBfYiRAifgpm0cl
- f6x0npui
- vIMHj
+X-HE-Tag: 1759503680-646513
+X-HE-Meta: U2FsdGVkX1/nNBrjZx4jvG1liDgVY1wqdKQKBJshraejnuDwn1kOxg+VUzeDE8kJfdTxKzDgGgsdjv3R0P/4EvGMzSg77mKf8zRwY6clHuVJ/bqAriiasoLNTpb2kx2fxB4crCnYAMMuIGR7hhkcDKpYVGc/yd/jiiO3UiGVIgAItrM1sBLQLPSUm/Lcdxgy747CF8vYBNbO5ICTZcz3Irx7dU+uetgswYkHTkAlkGmfjr6m9TcrMT0X41RAu73JxPkmli4/1EiZHrDLe2p+EDb5xtjDFauTyAQgdj9xnqB24vG54j3BYxVwGIifriFuOmbmZoCA16VwuQie/6Ox92IVJsh5ZCqKoIu/tBAqjFZzORDT4ugvH1Tgen3GsXBJTaEksPBDmAMXYirHiuxqqxa5WNTqLbVK8cLG7CqcaD6vuyMpin4IN/PQtSn3lyxeWBaBxZlJwApotn/nyLuifKjgkV6JcS0ftcxzsP4db4NaykTVKjgTUizU+6DIh29YfWntQuZaG9CsJm0k3f5Ij72/6fsEDTlD0di+3OO/GfwWJLhImJHkWK+KJWUo8ezh0XaAsC11o/BYDFfTuBBUdcY/lL7Zfxu3+yg0CmLTc9Fq00dRhueCsmouovqHBXcosk9dUT2sKKJDmA79jXp5Z4PU0kwGaIpLcBsSrC9UKNQxF4PM/xztrGd5OSbPiK2Pk1pyHZRN0AhipUxkI0WmCK3XkeFBRXY6EV1Aw1BFu9dmzU9KUjyB5erEOH1W8e+qLZ/331rt821yIR40ZGU0TCjgJZ5XboNks6yY/GS/HQVJk1I1PRQtTwgCIrEjjys/+yg4j+DmtI/IW4mTJtrVCtVP4Sn7KV1OAfFZbspKVpuYs7JnBz+zI1I2qoasx31aY8edYpfGdQllgc0nMQL8+j+KChyc5+PKhzrkp+cRfJt6fWhENnSY31wjpcXp/dfs5CAQIyBAstWpBB/kdwT
+ w3CK+5EW
+ yIAMtaospcJrdgBWQwhcw1mLkSvGjcTgMHDI/rt3xQ/YrGpg9/Xtrz5jnFxtC6H9FHrKf/2AO9/FQe19N6ycy78MPo6kIdjLv1dreXzy0OasK8gPTESlBiGQrW+pM9udUBsNcHkgo0i9051Iq0iG/nissxI3Si/X5eByS+mBQ+Mx6k7d7GD+n5EOPbG46SktJ8EOwMG8FeoYIeT0+FzPoBH3md0KWHQpilKCZ0n39TF1OVm5QkXf+uEpIl2XzTNrYXj1T6TRsnUh4RUTIOh8gXfHUco3lVJs3xFWThWRjumPPGHlEV+YjjESAg21hyTUgmVUsyK1QdvlA1BxmcF6uCPQixYgChCJpw/6iP7WovqSLWsgWDvDRo9OJAzIu8hT0MKH8tf6BGEbrojsI8KhgBTUsZYRuRQCoI9FRri2sVmv8sArtZ2fThWzNJ7pIxT+MvJImd3OuTvFxEfxG3ayhGjyx08Bv08qRicA24KOE1+3QNwYxzkIUsMuqqQctPebNNv+JBGsFZg3L+0zl4D1NrNJbG8aI8Z6SVVgO
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,92 +119,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 03, 2025 at 02:19:55PM +0000, Dmitry Ilvokhin wrote:
-> __mlock_folio() should update stats, when lruvec_add_folio() is called,
+On Fri, Oct 3, 2025 at 12:50=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
+ote:
+>
+>
+> Disable preemption in defer_free() and also defer_deactivate_slab() to
+> make it safe.
+>
+> [vbabka@suse.cz: disable preemption instead of using raw_cpu_ptr() per
+>  the discussion ]
+> Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock()=
+.")
+> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> Link: https://lore.kernel.org/r/20250930083402.782927-1-ranxiaokai627@163=
+.com
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 
-The update of stats is incidental to moving to unevicable LRU. But okay.
-
-> but if folio_test_clear_lru() check failed, then __mlock_folio() gives
-> up early. From the other hand, folio_mark_accessed() calls
-> folio_activate() which also calls folio_test_clear_lru() down the line.
-> When folio_activate() successfully removed folio from LRU,
-> __mlock_folio() will not update any stats, which will lead to inaccurate
-> values in /proc/meminfo as well as cgroup memory.stat.
-> 
-> To prevent this case from happening also check for folio_test_mlocked()
-> in folio_mark_accessed(). If folio is not yet marked as unevictable, but
-> already marked as mlocked, then skip folio_activate() call to allow
-> __mlock_folio() to make all necessary updates.
-> 
-> To observe the problem mmap() and mlock() big file and check Unevictable
-> and Mlocked values from /proc/meminfo. On freshly booted system without
-> any other mlocked memory we expect them to match or be quite close.
-> 
-> See below for more detailed reproduction steps. Source code of stat.c
-> is available at [1].
-> 
->   $ head -c 8G < /dev/urandom > /tmp/random.bin
-> 
->   $ cc -pedantic -Wall -std=c99 stat.c -O3 -o /tmp/stat
->   $ /tmp/stat
->   Unevictable:     8389668 kB
->   Mlocked:         8389700 kB
-> 
->   Need to run binary twice. Problem does not reproduce on the first run,
->   but always reproduces on the second run.
-> 
->   $ /tmp/stat
->   Unevictable:     5374676 kB
->   Mlocked:         8389332 kB
-
-I think it is worth starting with the problem statement.
-
-I like to follow this pattern of commit messages:
-
-<Background, if needed>
-
-<Issue statement>
-
-<Proposed solution>
-
-> 
-> [1]: https://gist.github.com/ilvokhin/e50c3d2ff5d9f70dcbb378c6695386dd
-> 
-> Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-
-Your Co-developed-by is missing. See submitting-patches.rst.
-
-> ---
->  mm/swap.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/mm/swap.c b/mm/swap.c
-> index 2260dcd2775e..f682f070160b 100644
-> --- a/mm/swap.c
-> +++ b/mm/swap.c
-> @@ -469,6 +469,16 @@ void folio_mark_accessed(struct folio *folio)
->  		 * this list is never rotated or maintained, so marking an
->  		 * unevictable page accessed has no effect.
->  		 */
-> +	} else if (folio_test_mlocked(folio)) {
-> +		/*
-> +		 * Pages that are mlocked, but not yet on unevictable LRU.
-> +		 * They might be still in mlock_fbatch waiting to be processed
-> +		 * and activating it here might interfere with
-> +		 * mlock_folio_batch(). __mlock_folio() will fail
-> +		 * folio_test_clear_lru() check and give up. It happens because
-> +		 * __folio_batch_add_and_move() clears LRU flag, when adding
-> +		 * folio to activate batch.
-> +		 */
->  	} else if (!folio_test_active(folio)) {
->  		/*
->  		 * If the folio is on the LRU, queue it for activation via
-> -- 
-> 2.47.3
-> 
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Acked-by: Alexei Starovoitov <ast@kernel.org>
 
