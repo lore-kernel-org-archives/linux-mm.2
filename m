@@ -4,87 +4,257 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19E98CAC5B0
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 03:32:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83464CCA470
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 04:03:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31FFC8E0005; Thu,  2 Oct 2025 23:32:48 -0400 (EDT)
+	id 58DF68E0002; Fri,  3 Oct 2025 00:03:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D06C8E0001; Thu,  2 Oct 2025 23:32:48 -0400 (EDT)
+	id 53E458E0001; Fri,  3 Oct 2025 00:03:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E71C8E0005; Thu,  2 Oct 2025 23:32:48 -0400 (EDT)
+	id 406238E0002; Fri,  3 Oct 2025 00:03:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F071F8E0001
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 23:32:47 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 837A911AB4C
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 03:32:47 +0000 (UTC)
-X-FDA: 83955381174.03.4D4A6FF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id F385B140009
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 03:32:45 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cOp8nugQ;
-	spf=pass (imf23.hostedemail.com: domain of mcgrof@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mcgrof@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759462366;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 204948E0001
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 00:03:11 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B3E8544FB4
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 04:03:10 +0000 (UTC)
+X-FDA: 83955457740.08.3CF2BE6
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3896716000F
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 04:03:07 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="D6JRu/i+";
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=OgPG463u;
+	spf=pass (imf08.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1759464187;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CrrxdNJl0qNMWCotNO6t3F2vvc+vVus288/HH8Em4us=;
-	b=RDUsn5E9+I91T9R74yKnpWyFjhG0zc/sKTqf22LxtYJufO5wsA9ZMqd6Dg6szavFF6CvW3
-	+d+p7EvEqmLvHSCc5nwGdIZ8tr1QHmS1aNncdHg1TDIIxxp+tqk5zoyKwSCG5CW3RbdqzZ
-	gXhVJ50z2AQ8kvUPq8BfXLUT5EwXGtc=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cOp8nugQ;
-	spf=pass (imf23.hostedemail.com: domain of mcgrof@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mcgrof@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759462366; a=rsa-sha256;
-	cv=none;
-	b=f1sZYtMpi8Q4o+el3q3/+99mgjcTi1zpagfHzVqjYZoWGx9FsRzkgMH1LaOI4Qlue6scGe
-	kTLmOm/cWoPi25v+Ci3CWvcm9wo3wp6EcWD1mxXwdMPjtGGUSWhIUApdRCncGdvBEkCpuL
-	nlMlzAoEEXAMaenpUYoJzLdtCkDbLpc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CE87060266;
-	Fri,  3 Oct 2025 03:32:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D3F8C4CEF4;
-	Fri,  3 Oct 2025 03:32:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759462364;
-	bh=96e3HGl+7WhLYhSvukvzteCOQvbteUjJBOeOHHD/CPs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cOp8nugQ/AOVVf5et4wxbMCmSkHuQdiTWYTVenPTeMrV6f7Ne6yks+sOabLJ7zuoy
-	 SNewlwWW3Uk4+033GyFyM2BtfDs+ColjEiA60PGpjcf35+DyHwxkFuiC+r1L6Iozas
-	 pZzKNql0z4hzlk+6A4n77Vd3JjiWBLjoCf7w47Fm2X9JkLnuPbUfbaUQvna8buXi83
-	 wCuWjdlfVKeezTwC0i1GMznrCTiZhk9kGS467SEi/j6MW0pAyhexpnrYDlZd/UA6xA
-	 kLtlMjUUhVaVvXoNYLTTwVFAySrN4762XA7aA7GNYgLE+u4GKbNFyA5/QDj0lWbvNo
-	 bZnmdFDkRA0ig==
-Date: Thu, 2 Oct 2025 20:32:42 -0700
-From: Luis Chamberlain <mcgrof@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Matthew Wilcox <willy@infradead.org>, Linux-MM <linux-mm@kvack.org>,
-	Swarna Prabhu <s.prabhu@samsung.com>,
-	Pankaj Raghav <p.raghav@samsung.com>,
-	Devasena Inupakutika <devasena.i@samsung.com>
-Subject: Re: Optimizing small reads
-Message-ID: <aN9D2i4qOroaktSc@bombadil.infradead.org>
-References: <CAHk-=wj00-nGmXEkxY=-=Z_qP6kiGUziSFvxHJ9N-cLWry5zpA@mail.gmail.com>
+	bh=+IRr6hCVtMTzlneADrTk5mYIKS8asjYO0uODZEhXwJM=;
+	b=BW/xUjfqUT1R8tahF/GJm/iHPAkErZ1e3yvfe5ZhrlvIlgNI9G0ogjW9GiWwQfczXUcclH
+	p69yIRwrqrPyN0LkUZfJYB+1EJ5jEONXJU2ZIAvTFErHACQA/5cHtomYORDvPHgrqtv8bQ
+	6LGgitY00Cvnoq6Rslsc5OBOPBONVeQ=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="D6JRu/i+";
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=OgPG463u;
+	spf=pass (imf08.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1759464187; a=rsa-sha256;
+	cv=pass;
+	b=y8GAyuQbPUJpQYu1K4pAju214Dk1muCYdo8ZdeT3Vfj0Q6ZvX1T0bT/xAzsaRVnXJBuBBZ
+	rY5gjlAgNkbN80vjicU4q0hcMgPRvd5c1XiV59EZ2Ps0pdCk53qY6sSs6/rzQFF3nmgV38
+	l9HjUlJQm9TSEgBROzcNaZSYzh54HCY=
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 592J1nCp025457;
+	Fri, 3 Oct 2025 04:02:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=+IRr6hCVtMTzlneADrTk5mYIKS8asjYO0uODZEhXwJM=; b=
+	D6JRu/i+yZHcGfelgdvM819uwyd8rtBjHhSz1JiLe5kATUBHp8uh5fffBTZVnHvC
+	JZfUFpfMYo+29EB35ZCeJwMQ3tsZEzYGi1Shm41f3BZ1bsnWmthJWLjB+lm4B2Lp
+	KvDZl+lBwIrHUTIx/OUAfIYbe5ZlT5+9wzF+ESqdgdEWUASbwnRSWxfN9k3oubb0
+	5gn6iZPpK3Wxz3sP4wJPim8JN91tevxvsjnWxC4sIpmw9Xn3qOFoCoxYWt4nxOii
+	l6yV0cA1hvA/c91QoPHjAVvpVjeo/GvrBgiFURtXz5OD7F7yTBiOcowPNMLnPA97
+	E0PFneV21NJFMIFrgC1zIQ==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49gkxnmfga-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 03 Oct 2025 04:02:56 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5933vAPj018089;
+	Fri, 3 Oct 2025 04:02:55 GMT
+Received: from ph0pr06cu001.outbound.protection.outlook.com (mail-westus3azon11011009.outbound.protection.outlook.com [40.107.208.9])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 49hw32j24g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 03 Oct 2025 04:02:55 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hAzbTaiyuLZ9zDPGdGAG/2AL0joBK63le4e2vmYs/aowsR2Hp/INtZI5uCOiHgkX40QZo190TYV6X7CPo6JE1XL7XG2eDFwGw9D4cJgpE1x/FFVM6oQUcIs6otZe6MQBhNcizAWg4DcGQEYclsIcuwUUeODA7K8m8YaL+NiqVb1Meh8fQYp81eQ4/u2qAm0wnp8v2TFkFrUjwLb+LXII6MJXyELaQFJO/9QbBS9tYnCnnnEwKxqwGjvULAWeN+PxqxtrSPegWAqnu/CCefktP7k++99FFJfX4y4rBrukdEG4ijerf7XA2095RFJPH2Gb84yxe5tVlwheU1/H/hV3hA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+IRr6hCVtMTzlneADrTk5mYIKS8asjYO0uODZEhXwJM=;
+ b=D95vrWm66i3RLpK2oa+A17LQtQ/HUanO65w19zxgyCgkNWYUcOIWBMlTx22qnbRCVI0fR3Y7sWsU267iI2fgedtg2mJi23NONgOYnP5lshBv09I/eubxf9G1VvEorAN/ivXO2n++CQbDWKdujGSgse0EO9JeCDIFyJqzb9TqQ3nm6ev5MR66SbgVttOwG7Z0tEM9NpoXLN6SFqny9VDWvcBHA3kT9rMmWvS1XKOe/D/QbAqmFounENeVdWxj9UBjLJqaWmdLfln2+Qx2j6UWvknNG5jxeQt5oOBmv1s3xyoJcvdlhww0AnTHqH3s5ATiytiPcSj8eVOGfCP4KTgWqw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+IRr6hCVtMTzlneADrTk5mYIKS8asjYO0uODZEhXwJM=;
+ b=OgPG463urX0yVaCjvg8sc/4uedXSHNc8kUAsOdTdX9+uVT1bai3skpfOx0flvLqFYhUPh4sKLxAczEnk3UHAEQ5OBjePOj1C/Ckdj++S/l4x3T3OnZrBCnURoKsUgxaPmwCIzc40uSKJeYzzaPNWnQErnb5nr/COdlNSaiSUuYA=
+Received: from DS0PR10MB7364.namprd10.prod.outlook.com (2603:10b6:8:fe::6) by
+ IA0PR10MB7184.namprd10.prod.outlook.com (2603:10b6:208:409::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.18; Fri, 3 Oct
+ 2025 04:02:51 +0000
+Received: from DS0PR10MB7364.namprd10.prod.outlook.com
+ ([fe80::b7d7:9d3f:5bcb:1358]) by DS0PR10MB7364.namprd10.prod.outlook.com
+ ([fe80::b7d7:9d3f:5bcb:1358%6]) with mapi id 15.20.9160.017; Fri, 3 Oct 2025
+ 04:02:51 +0000
+Message-ID: <7db593b7-6f95-4346-bffd-041fc89ee3f3@oracle.com>
+Date: Thu, 2 Oct 2025 21:02:48 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [syzbot] [mm?] WARNING in memory_failure
+To: Zi Yan <ziy@nvidia.com>
+Cc: syzbot <syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com>,
+        syzkaller-bugs@googlegroups.com, akpm@linux-foundation.org,
+        david@redhat.com, kernel@pankajraghav.com, linmiaohe@huawei.com,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org, mcgrof@kernel.org,
+        nao.horiguchi@gmail.com
+References: <68dcb33a.a00a0220.102ee.0053.GAE@google.com>
+ <2afee6bb-b2f0-4a86-ba8c-d33b0b477473@oracle.com>
+ <637BC0B5-B911-4A79-8107-BD7CDB351660@nvidia.com>
+ <A4321695-9F12-4C7C-ACC9-72FD84B6DB2C@nvidia.com>
+ <57d9aa32-2fc8-48d2-b68b-3308c7d58125@oracle.com>
+ <CD6D8EBD-F139-41BC-9A59-5033EF5A09BC@nvidia.com>
+ <d60770df-a967-498f-9e0e-25a6a145ff55@oracle.com>
+ <32A2C338-EFCC-470A-B5ED-E53C38395E51@nvidia.com>
+Content-Language: en-US
+From: jane.chu@oracle.com
+In-Reply-To: <32A2C338-EFCC-470A-B5ED-E53C38395E51@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR05CA0041.namprd05.prod.outlook.com
+ (2603:10b6:a03:33f::16) To DS0PR10MB7364.namprd10.prod.outlook.com
+ (2603:10b6:8:fe::6)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wj00-nGmXEkxY=-=Z_qP6kiGUziSFvxHJ9N-cLWry5zpA@mail.gmail.com>
-X-Rspamd-Queue-Id: F385B140009
-X-Stat-Signature: he8prpcahw8j4zii68ypb4rt3wtqkg7h
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR10MB7364:EE_|IA0PR10MB7184:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5151e9ba-59bd-481a-6ad7-08de0231b880
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZkRsdFA1cGhYY2FkOVFPY1RuSE1YRFlPa214Q2RWSkFkcFNXUUNzdzVicnRy?=
+ =?utf-8?B?VlJSa3BjUmZndnZrTjVlMEhpRjhsSU1iMTQ4a1VJMTFFb1NMd0FtMzZjYmY2?=
+ =?utf-8?B?N0JoMnZUbWs4YzcxTEF5ZGYwSWdrVXZpeDh6bjA0STVTdVZwZ0FCWlRjbTVm?=
+ =?utf-8?B?VmhtRFAvalpPYm5PNzlHU3pNYWtNY2YwSkdGZ3kzTTVkVTF0UWFNUGZ2RDhm?=
+ =?utf-8?B?ZEZ3WUxZOC9OZmU1N0xaR1BMR1M1RVNiZFJSZjFxc3lYT3NJam4rcUljRXhM?=
+ =?utf-8?B?VGxXT3ptZmtDdzBDTEN3aTNSaTVyYnZjV0lITmtpUGtRRUhxU08yOU1rRFo4?=
+ =?utf-8?B?TjEvVDJpK1hCWnZxbE14L2FLVFlaNGtKMUpnU1ZMZVpEM3J1THJ2SmZjMXFS?=
+ =?utf-8?B?aEFRMXZLRTVRYmd2YzEyQ0gwMmVzTTdBM2dwVlUrMkNaT1diUHJ1ZFNCY3Vo?=
+ =?utf-8?B?RDFXNFNrRHRNcDJ6YW5CdXpBelhNMHViZzRRaTQ5cG9FK3lQRXRtclZBSkNU?=
+ =?utf-8?B?ZXR2YWoreTBHV1lFcTRDMXV4ZzRUN2RYWklsQTJjVDR2dnp1ckhBTmFZWGhn?=
+ =?utf-8?B?dlhMSFNMUjRMTEFXSVp2SHFBYWUza05CeGJtcitSeEs5TGFuaTY3WnZBdktP?=
+ =?utf-8?B?cEZNaW4xY2s3RzVZZzJuQndOSlhyeU5Zc1lRclUzNk1sY2MzSXhjL0Zxbkth?=
+ =?utf-8?B?MEFXUXpyV250bjhCNmhzZC9UWkd2TDlKTzd4cnJsR2Jrc3JTT1dDWXB5RlAr?=
+ =?utf-8?B?Znd4cmYzb3E0Wk5lZENSVDZhZnJEMCtnR01xZkh4UzAxbDFwdGNDOE9DVFUx?=
+ =?utf-8?B?aXExSnJuYXJiaXljK2hjeWxlOUF1KzRGZW9POGVnbHNwOCtaZ1NMOTg0ZzN2?=
+ =?utf-8?B?cnpFOGp6ZFRONzd2YVZlT1YvYThqYjVjODFsK09TSHhxa3JScWdLS0UwRFhJ?=
+ =?utf-8?B?cTdGVHgwdm5oOE1pdjhaMjB2aFZHT3pwNTNFK1N0Y25uZGZLWlRWOG9KbktC?=
+ =?utf-8?B?TGkxSXZIQ3BLbi9JazgzTm1sYlNJTzM3MEZmU2EwYldwOGhXR2hhWGR0Y05p?=
+ =?utf-8?B?N2xnMVBSTnE1QnhEY3FLOEh0QSttK2NCaEVBSHVzQmRYNjc1UXpWR3l2STZK?=
+ =?utf-8?B?KzNKazduVzhaWlJkVmdmcWVtYjNjaVJRQWpPYjF1WW5DK2NNam1nVzQxdnFM?=
+ =?utf-8?B?K1lLYTlpelRuYVF5NFMyMnNIRjJZSHNORVlDMVZic09QaEJPczlkRndQZnhD?=
+ =?utf-8?B?WkFOZHBwdFhVS0lKZjBLSFhVdXpYY0M3WnJobXNoN2hiNVVKZXlRREhyVzd0?=
+ =?utf-8?B?L2cyd0tZVi9Yd0pUMXA3bmkyOGcxaUIveUVqYTF3UHBzbnUzVTZOQzQ0dVM3?=
+ =?utf-8?B?ZlBRcE9seFBjaE5MVlQ5ZDZTb2dnajA2cGVUU3UyaWVuY0JtSlhMZGJldHgr?=
+ =?utf-8?B?ckhERGxPVWpSYXp6aWxYQjMycHRENjNKbjRlZmpTRXdFSVRpaEs3WlJJT1E5?=
+ =?utf-8?B?cWoxU0hGSzJTV1JabjFBY3FSVFpEaGdvb2Zld29BK3FQWWRpN01hTXNUdVhp?=
+ =?utf-8?B?ZEtrbzd0UHVEUU1tS3M4azJZZUxvN1pPU3V5WS9pd2wvWVNkbmVVZC9QaUxw?=
+ =?utf-8?B?aUpDeERIVDhFNTNxOHFzRVRFZDRWQlNoODF5bjI4Ti9GS0VyR1hxc3VSS1Zr?=
+ =?utf-8?B?dzZQc0treWZWN0tmSjBoM2ltTndYcFV2Sk5HQjA2b0ZWbUdEV1VvMWpaTDRa?=
+ =?utf-8?B?aXdBSGxZSjhDdjBSTWdvd1NwTWw3YWI1QVM0dmRnamJ6bjFGbndnUitaalN1?=
+ =?utf-8?B?QVMyd3RVaXNJV0MrTkZZRy8wY1VxTU9PK2JrRGVWYzhxS1ZvdlV3QTd3ME5T?=
+ =?utf-8?B?RVB3L1FXbDEyOGk1Vnh5Rjhud1ZReFQ4ZDkvK2JJbDdZOXc9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR10MB7364.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Y1lBeTN1Yk9CRUJMSGJIQ2x2bWU3dWFqSWFWRHN0RWN6QS9ZYnB4cUEyVkMy?=
+ =?utf-8?B?anR6NDg0am1HME51RStCY05VajB6bDl3ZnBDS2pLTXRNakhRM3R1QlFBOUNR?=
+ =?utf-8?B?RVVmTEk0RW02aE80RkIrYVZwV29ZZkQxRVVlR3AwV2JKejBHOHh5RmYyTThI?=
+ =?utf-8?B?VkFTSHZVRGxQYzRWVmwzMDBmUm1BK1IwdGRHTmxjUVRaaXNEVG9RQVptWTd3?=
+ =?utf-8?B?aUFlQy9PTTZiUXJvYyt6cnJvdklzT3JweDlDK3pjMllWKzRTeis3OW1nOWxi?=
+ =?utf-8?B?UlhaY1dHd0thcVdldnAzTkh3ZmJ0aDZHKzdNaHRtcmJDTEhvRXFUZkpQTHlv?=
+ =?utf-8?B?UStiZjhxWTlyRWxYdEF3cjM1Ujh3eEh6TDNteHpjc3ZVeFRmeWNab2M4Qk9S?=
+ =?utf-8?B?T0pkVUNFZktIRWlLMGVVWFBHTE9YWmdzUzdwTk9oQ2xJUUhqSVNRaThjUmFI?=
+ =?utf-8?B?RCtFa1BTQVQwM2hlU2gyQTVUZkJnMVhTSnRyTVRpd28zcERhQU9OWDUvMzEv?=
+ =?utf-8?B?YkMrdFR4S3B3ZTIvR3Voenl3MCtjNjJ1VTlROTltRWgyZEVJditUS2VEbjZP?=
+ =?utf-8?B?L2NnUDVEUyt0emVRWHpWRWRUZENPTDBWTUNNM0lpVHBTZGo4ZEt0b0FTNmM5?=
+ =?utf-8?B?UjN2YTYrdnJMSXBqbnpzYkZuNm9RcHNIc0ZScVNDSVRnc3h5RGMvRG1mVWVu?=
+ =?utf-8?B?b2h1NlB3SzFkd0REY1lWT3VucXR5MUxpNlppRXFCNGZlMVI4T3BUaU5NS0Vm?=
+ =?utf-8?B?OTl6eGhGcEN5ZkFCRmI1NGRDQnBFWFJEdURaYXVNd1dLV3FhQXVpRUlVeE4w?=
+ =?utf-8?B?cUpaYlBTQnJzYXduY1NoRWduWEZ0YlZNMHZnNktOQ0RaTThJYnF5ZXlVUVZF?=
+ =?utf-8?B?RHB2Y3g0UzVSazFJY2dJMmVXNVh0Z3plRG44UWVITFI5NUJBbDJPNU52TGIr?=
+ =?utf-8?B?YWZPR3RDMWdFVG85WXYxVGhHUlkxdmJCYkw5djZxNHRFNmZyKzFnMTM0UExQ?=
+ =?utf-8?B?THVqU3ZOMm10ZGZsT1FEcXU0QThDWkFjN2lscVRYd3NraW1nSlJ2SnNuMU5J?=
+ =?utf-8?B?UzhYdC9lM2ZNQWs4b0E2eWwyeEVERUMrZnFIaUgxSlczTUlDQWNHcU9vZEZV?=
+ =?utf-8?B?MEJqUE1ZbXNDbjdsVHhqZzBXaFpwMUs0RFF1S3R0UStrTmlabkJYNDVyelhI?=
+ =?utf-8?B?eEhNZWk0MGdiOHBPNkZQMmlENVdjOWRSa3BjWXdzR0sya1p2RzcwZVdzUzRQ?=
+ =?utf-8?B?OVlKaC9wQ0xsTW5NOFMzc0RpSzJMNDVnOXA1WkdLbGdGempYMm5iMHlzYkFL?=
+ =?utf-8?B?ZVBwVlhoY01LUy85VFI1N2NDQ3RIbmFkbm83TTg0WTFjSEx5cFJodzI0YmJ2?=
+ =?utf-8?B?NzFlS2l3OCtGOXVUUmc0WXVLTE9OQkxXOElhL3dvcVhWMEsrRVgvNG03NXpX?=
+ =?utf-8?B?SHkrWTV2TkREUXY4RjdLRzZFRWdzR0NXblNpZFp5UGdaTW1saUNuS2cycUNL?=
+ =?utf-8?B?a0pJQjBiaXRRUDh1RkplL3Y5UmFhRS8rYnVXMUZRTFNwc2tRUzJib1lGSGxm?=
+ =?utf-8?B?dS9GUElhaEs2MERkZDBYRzZzbHhzYXRiblhrb08xVnlpeWE1UUdyeWhjS3Ji?=
+ =?utf-8?B?K0pZVTl0L0Q3VHNNOGJXcGd1d1plOFBsMjdKWDc3T1NHNkVjMCtFcG5VYWNi?=
+ =?utf-8?B?TnBrZDMrZjRCZ0J3Z3dIdGRBbVpwWnJMNXRhK2lsV21wajlCQjM2QlcvR1Vi?=
+ =?utf-8?B?Y1RjbVZ0VG5RcEFlcHd0V0NVZURLUFlmVTJuK1Zqc2t0RVloV1JJcXg5cEo5?=
+ =?utf-8?B?YzgzdTQ5WFVFODVENURXTnZUdVJXM0thVG5SSGNqbDh0L2xXVERHb1g2REpC?=
+ =?utf-8?B?UzhVM3czc2MxMmdFcmtYMExwbkp5ZXpsTVFwZUw1YXVwK201WEZ4SmRtTXVT?=
+ =?utf-8?B?bHJoMXlSY0U0dEwrTGkyRVJiVm1Rb0IrL0xNUm5XdlhKQUhrMFVMMjVlOHRj?=
+ =?utf-8?B?SHlrci9rT1c5MzJQV3c0UTFma1lCeUF4WUVxdmdIR0tDQVV3WnlhVUVJRzRs?=
+ =?utf-8?B?UGFPbDRjb2xMTFVFOUJ2KzBYdWRJNGpOVzFCNm8vTE05ODFadVIwVlR3eTRa?=
+ =?utf-8?Q?dGJWuFDWtxAdh35nX9UrZNqoS?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	2omh1pPMtbVvOoypO1s9INqFCZEYAV01IBZkUFRLszVumXTKPJGV954DrX+oSA9KARs3KEu10FY3VWtBxkQgAfMYfydHpW/c7ZfmTmoeefq2z6/Ssatw8cRrHCNVQBz+dYqhsy6EAjRS7H5URI6o/6LRj23VcLGOtV8fmgBe4I/NPqHzDcpBtuU8UOJG7EG6Oi4VmKD329NhA80qXfU8OnwGSaO+Nl0+hDY7eh67RZ9rWtiqhqSR77uh7LCFkepMMl+AWbawJimt0NQZEILlJ964BaMyjxKENm+m5UOGiJbWi1U7p+Qitj48E5VxfcNvyMtZSs74nzf7ejLdPS9XmDbGoBYl1pmTbPPS9W6K3qC3BHJY6nSXsAn1cOT+VZJcEdW2w0NyPLFERYcf/UgDCFMZqaopziS/ayP2ActjF80XsW+t6/MqYE+OFzh+AKjOLuB12i380WdgyF73w/D3dzjDWGY3RixfLnJBdMPOxyrqVKZKL0g9EcGPpqXfiC9jWomJb7LlatL5PV7iqnSke/2eh5Kx5QeUoBUdw0dR24paYcTHnJHBlAg4tLAGcsScH+QCDUX6IJ15TfoIYta6wo1JI4ETB+vd4zdxQ/tJgY0=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5151e9ba-59bd-481a-6ad7-08de0231b880
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR10MB7364.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Oct 2025 04:02:50.7444
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nzPXAnFLh05z2hobMw4kD+LGHvepQlsg6FCQlauuqO846mKraPfWUvW4skUsNqAgTLNEaJnw3KLbhYHw+mhdoQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR10MB7184
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-03_01,2025-10-02_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 spamscore=0
+ mlxlogscore=999 phishscore=0 suspectscore=0 malwarescore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2509150000
+ definitions=main-2510030028
+X-Proofpoint-GUID: AIkl2aRj2Bplmx5mpxn_xwJRYz_SwOhH
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTMwMDE2MSBTYWx0ZWRfX8p55T0IxwcOW
+ 9/qRV0Qy950trN5GuBUG1tESjfxOsTO3q699BTUBVP3Ump5ov5iY+Eb4zPrjFY9MJbiOYwMgq3P
+ brSYteqnmupwfJ4nWPObPyGrThnaFB8az3XYoaGDqYL384X5N4ugEKHwDlOEuYcSnrJAp4cLeL1
+ CrLnbuiqfAv6g2FivlrTHXGecATqA51b390uyDOGlSQieYciLT2DsjrPWUewOdGm4bFo8CgHGrY
+ K/e8gDAhIfHNfV43S8y9ipWSYlnOezC8KL4EdGl70KiXB9pqE6LoeR54ngXe9XlFpPESv6lYMgC
+ rGjkWrGNMdQ6Akej7Muxe+yrxMgTfbKpQW3dZ/eSYQQ6f5d5Xr0d741zYWJDiPlOaItlNhOAX9a
+ FAmO2KG1tCcisaeFRZ3CHQMT8N/ivrRPSm7i3zZVfNMrV0VAaVE=
+X-Authority-Analysis: v=2.4 cv=RLW+3oi+ c=1 sm=1 tr=0 ts=68df4af0 b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=x6icFKpwvdMA:10 a=GoEa3M9JfhUA:10 a=NEAV23lmAAAA:8 a=edf1wS77AAAA:8
+ a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=AA1TR184yu9CaGNASqUA:9 a=QEXdDO2ut3YA:10
+ a=DcSpbTIhAlouE1Uv7lRv:22 cc=ntf awl=host:12089
+X-Proofpoint-ORIG-GUID: AIkl2aRj2Bplmx5mpxn_xwJRYz_SwOhH
+X-Rspamd-Queue-Id: 3896716000F
+X-Stat-Signature: qy9ttchauenzmjg88goe7b6w5rnudben
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1759462365-439179
-X-HE-Meta: U2FsdGVkX18Qxpm3fadXfFt3mM9sXZblkLlfzJrCw5S4jRnWabbYviUBf8PeDU+pNIlz3Tw9jV48593yH+TX1wg0JXJOh0sWw/xjCE1aJsQbcgRd/Sb7IaiqkOmHa660WaD6AFCVZ7von5IybQctp1MztFqwzMkvhHh1hio2z3jrl8Z73E1I4MkjgK89Pz1ySk1Qf3qBiCoozcTwNl4o/0MSg0ni4YW1JGCe7aODEW5ki4X33JECbRfUMElXZ1AppGHooOcFRnRGIPaYOdv/PNvIq3yGuNJgrEM/13YG4dBg+anwnX6bYOoX8OuJqbh+jgXMLX/Sxc9iVnt8MuZQQ/1ssYKrBViIyYSlCHRE+dS+JqnIDkbQ0HAaUW4wbDx7/+8dPZ8W22FvqqTn5RXbe03pZmEUtlKl4OIIS5Z9f06oiXc1S4kgSg/S6NYjsD+jFxS3BmrhpTQ/d1zFpGpg3dIGPCkdH3RYqZI/Zs9XSLh2Xgj2MInuvBjs0HyCWxhVfpwb4sP/GQKX91ybsd+OsuP9FyCZRbb+MtTukRHiHWaUhahfcy8hK6KbG1axG+N5PiHiU3CSO6AzGwJLTXgfGEOnF0fkPUKLwbM0ovgDD1IbzvhqkTBtylbIu5qmQoYp57CXzqjisquxdnuhauOdhq5ipLvN0coRhjxx+B3NyUWIjpkDYr0ehs2S4YdI7sBLqaclSIc1FwjauUtAIhQLJc7Q4tP3yo3unTnBiUjLUnsk2CAKxjZg54o1TYAuucE/jsKBHmiLrpPI9x3+r9WqPPOv9EskCfN+uqf47sxE68CENs+zhypvoMIcwgoteopeokY5xtL8ExUItHFqRxm5GdrDmBX7km5d0Iv8B4nVqsW/8bcDVPZuswfuCY0CXRJ8pHPsrKXQ4kDw5gMgk+QTYdIlcQT7A4UJ414LssWfVk/yKULW+aWTBKlPAVp9PdwYHroHn4OPOpmFeTt+GrJ
- u6Xq+PdK
- qblQIrceKxnByLNLJAs9zJINxydouD+R8puaSb8XF/t0c/OgXdy2+bIKn2F2Rd98sOtZRQcDleRZJLZcrAeFEDhi1pk/4+a8uA6IBh4xPgjD7wcz+bj6QXkyZqVR/0eKMPQC8wqEolIEKeayz5Zygo7+PeTjkd95HakjTZjXVLDP0ylVRsEI74YjjxNeY6d67G0rhC/iW/otZ21iu2+fEZmL4jC82lp4FJ0b7SgDlJvxnSmLSWrI3wj3cxSihulUE3/fePBaF26Hb0wYW3ksABV3WbZy24bMPX0rw1GdGsIT9pMCr4kHU2GqVDA==
+X-HE-Tag: 1759464187-698245
+X-HE-Meta: U2FsdGVkX19JjAwZ7SdHgcbgbribu7/vu2ZII3UAV0q7LPKPcYyr9fAoWZu0BiyelYTXbbWrwAYB0yoK39WtKZwAiczuVgoswu5dLQ6tyWAYtpjq4Peo+BlWxFV4VlS6/loaDhYBBVkYwUX1PHQt8LHQ95CKR06Myb0eeLS6V6L2L9t+X/Sw4RPixt2Hzbo0IcfijqCueSAjVV7zpKGNikfZs7Vqs++dYOvVq21cDZ8RO9hNN+AclrQn3REsdL4gxFL2vE9KMf7054UUH9cbqQdOkMS6skrzyzecBJe7lVx9XO1xfYe2ZYl5tBSYRuw3t6k4JDhBqgf7xcXwM1MzEjZjg7D5Iza16v+FcXVhfnfxJkNh+SEUUN8ypOzDN072QQYde4OIZ4EAvpFLQKpNd0XtNGNUZK7Vhbg1gq+onr8nX17UR1BYSdXJ3RQsqSUhUQHaBREOIFvU6+GK6F82lHcyssBD6T3HBxKEFfKIb025Piq6MbE2IKJpsZINIdebKaQl+ezzjBcS890E5at2IrBG/yXEKetACpyoRXXrS1O3YUwdSR5EocvvhSzKycs5pFqRnJyHz7e0eqsAHpjGHG3rdKJr4yeJLV3dhTbwDERuL9n5tYfe5iOdINcJ8IKoz7rjJLylxziuvcgA83OAFdlNXSsKg/WapgKc/Owq03HGbl8ZshPi1DB3np/WPFr5Vl7kx0fjuheEBzA8EBFRe1YiWChpV3G5WOoUMH4wgElt9WFsN1QpkPlZiqWymm/WuB824E7YbQxt6Oh22O/zWpLAyvE0slOzipxnagK07uUPD0BuSAm0PlgGagakKbG2Vtjug9yfRBRcF7mdn7HO89u2fVZZ7aahqh87tlt+vWEc2wwdhYaT4VvmjdgzebtA01d65LbrU8W5ekigvgV9foBmqQUon9Idgg+CFopmNPxA35pgR48Pj9rNex2LnnzoGtmqMarAOIqYYPAkzg+
+ GP+Pai+b
+ 3EE+WVao2aKKCv9LvNOSPrtXaGSs1HhReLyi4UImJM/cBPZofSaDIPcRRsIi2kwr0eT2YmPi4mLX7AOXKgUlHkYvSss63MXtwxzTHtUEg6iLRjGMP6Flabj2MHpc5wOOKx3ThlTzpk55xt5cdPLlQi/u2OROgEZm2z/5x7tWDeUx0JfyvHMg62jP+Pl1XBg0PIi0qrExFxhVxTgQdiuG/2sEk+9qXREaSsH3WysB4YCqV/pfAjM4bqlgMfTn6gmE1NZgfyA1YKpsK+egEfde3UP4z8SpVHfQ9V/wbjw4CWd+k98OhpXJgqtJoelS0NH9TTm0T8q/jx5hN4NCHDa2hHm8Bmy6KFtzHjGOC4UdJKu4EwVBx5RQT4OJfmNz6PHU7qGJUJD8kSMlioma2AKSYri2s/KVxmzVEyUumtXya9Dxt1WJdCX3trgDVt2z3cUiPF8OdIua5hSBc2Q4YvUv2757vbWw8ArjAhmLjHLLv6fCnOkWJa5OzJBYt5w76CITQgb60IITt7xRZW+Acj9yZvCYHjvliEqfKrs9zULQLkoEzMybXRjII9hlKqpZ7E70lFqhMVUYjKXtKcjt3VSv52pTTbEsq5wK0CG4vhigLlrG6oUgAYJ0GMiwiR80yrNs/JL63l6Qxqk9y46dhoKvxYT/+wouALMx/L36R5o0XunwjQiyfyJpigdcDStcDE3NnSF4swld2Fof8c9R3Igl/xwxkwMT+SveMoQvWkX15YKr96NOpfgcbMBGz5lGg2DKMaLs9bMGIBdAUG/jAJxhq5rnF1eGs23NzX9XXQEWICnyBYQ51MmF7hJ4JysoFqQX7J3QzC6EIv+9l9hSIrYSc75monEZ+WcC9I4dn7S7rYbomMu9H3p16yl0yt4lWCMzl9E1IKu0efqs7Ex4j/WUwFdE6kKEuE7echfMUeoZtYh6B3inGMoc8Abl7lf3Np1SK6tCCsIHP5x2mvg5hOKBQitYaeO88
+ e+DpDgQF
+ TLQ6wvdi5mIIxe8CNhHx1hcV8bpUVk+Vtsu5+ysd5lLkPnvh4IpsoZZuWP4jZtbCuOsfYHBMRrA6pu+QhdnWHQtrVNCNbRQKKflpGBdwd4JiQpgIThwbnQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,287 +263,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 02, 2025 at 07:18:35PM -0700, Linus Torvalds wrote:
-> Willy,
->  I've literally been running this patch in my tree now for 18 months,
-> and have never seen any issues. However back when I posted it
-> originally, Luis reported that it caused failures on xfstest
+
+On 10/2/2025 11:45 AM, Zi Yan wrote:
+> On 2 Oct 2025, at 13:54, jane.chu@oracle.com wrote:
 > 
->   * generic/095
->   * generic/741
+>> On 10/2/2025 6:54 AM, Zi Yan wrote:
+>>> On 2 Oct 2025, at 1:23, jane.chu@oracle.com wrote:
+>>>
+>>>> On 10/1/2025 7:04 PM, Zi Yan wrote:
+>>>>> On 1 Oct 2025, at 20:38, Zi Yan wrote:
+>>>>>
+>>>>>> On 1 Oct 2025, at 19:58, jane.chu@oracle.com wrote:
+>>>>>>
+>>>>>>> Hi, Zi Yan,
+>>>>>>>
+>>>>>>> On 9/30/2025 9:51 PM, syzbot wrote:
+>>>>>>>> Hello,
+>>>>>>>>
+>>>>>>>> syzbot has tested the proposed patch but the reproducer is still triggering an issue:
+>>>>>>>> lost connection to test machine
+>>>>>>>>
+>>>>>>>>
+>>>>>>>>
+>>>>>>>> Tested on:
+>>>>>>>>
+>>>>>>>> commit:         d8795075 mm/huge_memory: do not change split_huge_page..
+>>>>>>>> git tree:       https://github.com/x-y-z/linux-dev.git fix_split_page_min_order-for-kernelci
+>>>>>>>> console output: https://syzkaller.appspot.com/x/log.txt?x=17ce96e2580000
+>>>>>>>> kernel config:  https://syzkaller.appspot.com/x/.config?x=714d45b6135c308e
+>>>>>>>> dashboard link: https://syzkaller.appspot.com/bug?extid=e6367ea2fdab6ed46056
+>>>>>>>> compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+>>>>>>>> userspace arch: arm64
+>>>>>>>>
+>>>>>>>> Note: no patches were applied.
+>>>>>>>>
+>>>>>>>
+>>>>>>
+>>>>>> Thank you for looking into this.
+>>>>>>
+>>>>>>> My hunch is that
+>>>>>>> https://github.com/x-y-z/linux-dev.git fix_split_page_min_order-for-kernelci
+>>>>>>> alone is not enough.  Perhaps on ARM64, the page cache pages of /dev/nullb0 in
+>>>>>> Yes, it only has the first patch, which fails a split if it cannot be
+>>>>>> split to the intended order (order-0 in this case).
+>>>>>>
+>>>>>>
+>>>>>>> the test case are probably with min_order > 0, therefore THP split fails, as the console message show:
+>>>>>>> [  200.378989][T18221] Memory failure: 0x124d30: recovery action for unsplit thp: Failed
+>>>>>>>
+>>>>>>> With lots of poisoned THP pages stuck in the page cache, OOM could trigger too soon.
+>>>>>>
+>>>>>> That is my understanding too. Thanks for the confirmation.
+>>>>>>
+>>>>>>>
+>>>>>>> I think it's worth to try add the additional changes I suggested earlier -
+>>>>>>> https://lore.kernel.org/lkml/7577871f-06be-492d-b6d7-8404d7a045e0@oracle.com/
+>>>>>>>
+>>>>>>> So that in the madvise HWPOISON cases, large huge pages are splitted to smaller huge pages, and most of them remain usable in the page cache.
+>>>>>>
+>>>>>> Yep, I am going to incorporate your suggestion as the second patch and make
+>>>>>> syzbot check it again.
+>>>>>
+>>>>>
+>>>>> #syz test: https://github.com/x-y-z/linux-dev.git fix_split_page_min_order_and_opt_memory_failure-for-kernelci
+>>>>>
+>>>>
+>>>> There is a bug here,
+>>>>
+>>>> 		if (try_to_split_thp_page(p, new_order, false) || new_order) {
+>>>> 			res = -EHWPOISON;
+>>>> 			kill_procs_now(p, pfn, flags, folio);  <---
+>>>>
+>>>> If try_to_split_thp_page() succeeded on min_order, 'folio' should be retaken:  folio = page_folio(page) before moving on to kill_procs_now().
+>>>
+>>> Thank you for pointing it out. Let me fix it and let syzbot test it again.
+>>
+>> Forgot to ask, even with your current patch, after splitting at min_order, the old 'folio' should be at min_order as well, just not necessarily the one where the raw hwpoisoned sub-page resides, right?
 > 
-> although I still have no idea how that could happen. I've looked at
-> the patch occasionally over the months I've been carrying it, trying
-> to figure out how it could possibly matter, and have never figured it
-> out.
+> Yes.
 > 
-> I'm not planning on moving it to my mainline tree now either, but I
-> decided I might as well at least repost it to see if somebody else has
-> any interest or comments on it.
-
-Indeed, we do, I had asked our of new hires to verify the above two test
-failures, as it seems like a good candidate for someone new to jump in
-and analyze.
-
-> The impetus for this patch is
-> obviously from your posting back in early 2024 about some real user
-> that did a lot of really small reads. It still sounds like a very odd
-> load to me, but apparently there was a good real-life reason for it.
-
-Its actually not odd, I've been trying to dig into "what workload could
-this be", and there a few answers. The top one on my radar is the read
-amplification incurred through through vector DBs on billion scale low
-latency requirements, due to re-ranking due to PQ compression. Since PQ is
-lossy, even if you want the top k candidates you need to re-rank, and
-k_candidates is much larger than k. The issue it each candidate may lie in
-different disk LBAs. PQ compressed vectors are kept in GPU memory and
-their raw vectors on SSDs.
-
-I found a clever algorithm callfed FusionANNs which shows how you can
-optimize the vectors which are likely related to each other so they are
-placed near each other [0] proving the software sucks and could be
-improved. However I'm not aware of an open source version of this
-algorithm, so we're looking to write one and test its impact.
-
-> I still think this patch actually looks quite nice - which surprised
-> me when I wrote it originally. I started out writing it as a "let's
-> see what this hacky thing results in", but it didn't turn out very
-> hacky at all.
-
-Yes, its a quite bueatiful hack.
-
-> And it looks ridiculously good on some strange small-read benchmarks,
-> although I say that purely from memory, since I've long since lost the
-> code that tested this. Now it's been "tested" purely by virtue of
-> basically being something I've been running on my own machine for a
-> long time.
+>> If yes, then 1) I am wondering about the value of the min_order?  2) perhaps
 > 
-> Anyway, feel free to ignore it. I can keep carrying this patch in my
-> local tree forever or until it actually causes more conflicts than I
-> feel comfortable keeping around. But so far in the last 18+ months it
-> has never caused any real pain (I have my own tree that contains a few
-> random patches for other reasons anyway, although lately this has
-> actually been the biggest of that little lot).
+> I think min_order depends on the filesystem config. It can be like 2 (16KB) or 4 (64KB). Based on the reproducer[1], it seems that block size is set to 64KB
+> (see ioctl$BLKBSZSET arg).
+> 
+> [1] https://syzkaller.appspot.com/text?tag=ReproC&x=1361627c580000
+> 
+>> the syzbot test need to reduce the number of fork()'ing,
+>> as with each MADV_HWPOISON inject, one page cache page will be lost and stuck in the page cache, the difference is the size of the page cache page and the number of pages.
+> 
+> Right. the lost page size is amplified by min_order.
+> 
+> BTW, I do not see fork or loop in the above reproducer, I wonder why the test
+> went OOM.
 
-Trust me that this is being looked at :)
+You're right, the test itself doesn't fork.  I saw copy_process() in the 
+oom-kill call trace, I spoke too soon.
 
-We had some other ideas too... but this is far out from anything ready.
+The tests appear to be running in a tight loop, can't tell the number of 
+iterations or duration. The console has logged "5039 pages hwpoisoned",
+likely with each MADV_HWPOISON injection, a 64K folio is lost. So either 
+that means 5039 * 64K, or just 5039 base pages, it's a lot memory lost 
+and become unusable, until zone normal dipped below the min watermark.
 
-However since there was no *rush* I figured its a nice candidate effort
-to get someone new to hack on the kernel. So give us a bit of time and
-will surely justify its merit with a clear workload, and with a thorough
-dig why its failing on the above.
- 
-  Luis
+I think the test might need to be adjusted.
+Option 1, reduce the test runs accordingly, eg, if the blocksize is 4K, 
+maybe allow more test runs,
+Option 2, add unpoison operation after poison.
+
+Not sure how do we go about that.  What do others think?
+
+thanks,
+-jane
+
 
 > 
->              Linus
+> Best Regards,
+> Yan, Zi
+> 
 
-> From bf11d657e1f9a010ae0253feb27c2471b897d25d Mon Sep 17 00:00:00 2001
-> From: Linus Torvalds <torvalds@linux-foundation.org>
-> Date: Mon, 26 Feb 2024 15:18:44 -0800
-> Subject: [PATCH] mm/filemap: do small reads in RCU-mode read without refcounts
-> 
-> Hackety hack hack concept from report by Willy.
-> 
-> Mommy, I'm scared.
-> 
-> Link: https://lore.kernel.org/all/Zduto30LUEqIHg4h@casper.infradead.org/
-> Not-yet-signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-> ---
->  mm/filemap.c | 137 +++++++++++++++++++++++++++++++++++++++++++++++----
->  1 file changed, 127 insertions(+), 10 deletions(-)
-> 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index a52dd38d2b4a..f15bc1108585 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -2677,6 +2677,96 @@ static void filemap_end_dropbehind_read(struct folio *folio)
->  	}
->  }
->  
-> +/*
-> + * I can't be bothered to care about HIGHMEM for the fast read case
-> + */
-> +#ifdef CONFIG_HIGHMEM
-> +#define filemap_fast_read(mapping, pos, buffer, size) 0
-> +#else
-> +
-> +/*
-> + * Called under RCU with size limited to the file size and one page
-> + */
-> +static inline unsigned long filemap_folio_copy_rcu(struct address_space *mapping, loff_t pos, char *buffer, size_t size)
-> +{
-> +	struct inode *inode;
-> +	loff_t file_size;
-> +	XA_STATE(xas, &mapping->i_pages, pos >> PAGE_SHIFT);
-> +	struct folio *folio;
-> +	size_t offset;
-> +
-> +	/* Limit it to the file size */
-> +	inode = mapping->host;
-> +	file_size = i_size_read(inode);
-> +	if (unlikely(pos >= file_size))
-> +		return 0;
-> +	if (size > file_size - pos)
-> +		size = file_size - pos;
-> +
-> +	xas_reset(&xas);
-> +	folio = xas_load(&xas);
-> +	if (xas_retry(&xas, folio))
-> +		return 0;
-> +
-> +	if (!folio || xa_is_value(folio))
-> +		return 0;
-> +
-> +	if (!folio_test_uptodate(folio))
-> +		return 0;
-> +
-> +	/* No fast-case if we are supposed to start readahead */
-> +	if (folio_test_readahead(folio))
-> +		return 0;
-> +	/* .. or mark it accessed */
-> +	if (!folio_test_referenced(folio))
-> +		return 0;
-> +
-> +	/* Do the data copy */
-> +	offset = pos & (folio_size(folio) - 1);
-> +	memcpy(buffer, folio_address(folio) + offset, size);
-> +
-> +	/*
-> +	 * After we've copied the data from the folio,
-> +	 * do some final sanity checks.
-> +	 */
-> +	smp_rmb();
-> +
-> +	if (unlikely(folio != xas_reload(&xas)))
-> +		return 0;
-> +
-> +	/*
-> +	 * This is just a heuristic: somebody could still truncate and then
-> +	 * write to extend it to the same size..
-> +	 */
-> +	if (file_size != inode->i_size)
-> +		return 0;
-> +
-> +	return size;
-> +}
-> +
-> +/*
-> + * Iff we can complete the read completely in one atomic go under RCU,
-> + * do so here. Otherwise return 0 (no partial reads, please - this is
-> + * purely for the trivial fast case).
-> + */
-> +static inline unsigned long filemap_fast_read(struct address_space *mapping, loff_t pos, char *buffer, size_t size)
-> +{
-> +	unsigned long pgoff;
-> +
-> +	/* Don't even try for page-crossers */
-> +	pgoff = pos & ~PAGE_MASK;
-> +	if (pgoff + size > PAGE_SIZE)
-> +		return 0;
-> +
-> +	/* Let's see if we can just do the read under RCU */
-> +	rcu_read_lock();
-> +	size = filemap_folio_copy_rcu(mapping, pos, buffer, size);
-> +	rcu_read_unlock();
-> +
-> +	return size;
-> +}
-> +#endif /* !HIGHMEM */
-> +
->  /**
->   * filemap_read - Read data from the page cache.
->   * @iocb: The iocb to read.
-> @@ -2697,7 +2787,10 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
->  	struct file_ra_state *ra = &filp->f_ra;
->  	struct address_space *mapping = filp->f_mapping;
->  	struct inode *inode = mapping->host;
-> -	struct folio_batch fbatch;
-> +	union {
-> +		struct folio_batch fbatch;
-> +		__DECLARE_FLEX_ARRAY(char, buffer);
-> +	} area __uninitialized;
->  	int i, error = 0;
->  	bool writably_mapped;
->  	loff_t isize, end_offset;
-> @@ -2711,7 +2804,31 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
->  		return 0;
->  
->  	iov_iter_truncate(iter, inode->i_sb->s_maxbytes - iocb->ki_pos);
-> -	folio_batch_init(&fbatch);
-> +
-> +	/*
-> +	 * Try a quick lockless read into the 'area' union. Note that
-> +	 * this union is intentionally marked "__uninitialized", because
-> +	 * any compiler initialization would be pointless since this
-> +	 * can fill it will garbage.
-> +	 */
-> +	if (iov_iter_count(iter) <= sizeof(area)) {
-> +		unsigned long count = iov_iter_count(iter);
-> +
-> +		count = filemap_fast_read(mapping, iocb->ki_pos, area.buffer, count);
-> +		if (count) {
-> +			size_t copied = copy_to_iter(area.buffer, count, iter);
-> +			if (unlikely(!copied))
-> +				return already_read ? already_read : -EFAULT;
-> +			ra->prev_pos = iocb->ki_pos += copied;
-> +			file_accessed(filp);
-> +			return copied + already_read;
-> +		}
-> +	}
-> +
-> +	/*
-> +	 * This actually properly initializes the fbatch for the slow case
-> +	 */
-> +	folio_batch_init(&area.fbatch);
->  
->  	do {
->  		cond_resched();
-> @@ -2727,7 +2844,7 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
->  		if (unlikely(iocb->ki_pos >= i_size_read(inode)))
->  			break;
->  
-> -		error = filemap_get_pages(iocb, iter->count, &fbatch, false);
-> +		error = filemap_get_pages(iocb, iter->count, &area.fbatch, false);
->  		if (error < 0)
->  			break;
->  
-> @@ -2755,11 +2872,11 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
->  		 * mark it as accessed the first time.
->  		 */
->  		if (!pos_same_folio(iocb->ki_pos, last_pos - 1,
-> -				    fbatch.folios[0]))
-> -			folio_mark_accessed(fbatch.folios[0]);
-> +				    area.fbatch.folios[0]))
-> +			folio_mark_accessed(area.fbatch.folios[0]);
->  
-> -		for (i = 0; i < folio_batch_count(&fbatch); i++) {
-> -			struct folio *folio = fbatch.folios[i];
-> +		for (i = 0; i < folio_batch_count(&area.fbatch); i++) {
-> +			struct folio *folio = area.fbatch.folios[i];
->  			size_t fsize = folio_size(folio);
->  			size_t offset = iocb->ki_pos & (fsize - 1);
->  			size_t bytes = min_t(loff_t, end_offset - iocb->ki_pos,
-> @@ -2790,13 +2907,13 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
->  			}
->  		}
->  put_folios:
-> -		for (i = 0; i < folio_batch_count(&fbatch); i++) {
-> -			struct folio *folio = fbatch.folios[i];
-> +		for (i = 0; i < folio_batch_count(&area.fbatch); i++) {
-> +			struct folio *folio = area.fbatch.folios[i];
->  
->  			filemap_end_dropbehind_read(folio);
->  			folio_put(folio);
->  		}
-> -		folio_batch_init(&fbatch);
-> +		folio_batch_init(&area.fbatch);
->  	} while (iov_iter_count(iter) && iocb->ki_pos < isize && !error);
->  
->  	file_accessed(filp);
-> -- 
-> 2.51.0.419.gf70362ddf4
-> 
 
 
