@@ -4,64 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F8F2CAC5B0
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 12:22:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4CDDCAC5B0
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 12:30:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C8AC28E0007; Fri,  3 Oct 2025 08:22:44 -0400 (EDT)
+	id 1C83B8E0005; Fri,  3 Oct 2025 08:30:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C61EC8E0003; Fri,  3 Oct 2025 08:22:44 -0400 (EDT)
+	id 19FD18E0003; Fri,  3 Oct 2025 08:30:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9F938E0007; Fri,  3 Oct 2025 08:22:44 -0400 (EDT)
+	id 0DD088E0005; Fri,  3 Oct 2025 08:30:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A718B8E0003
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 08:22:44 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4846F1A074E
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 12:22:44 +0000 (UTC)
-X-FDA: 83956716648.05.8066C22
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F0D1E8E0003
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 08:30:36 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B1A271407CD
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 12:30:36 +0000 (UTC)
+X-FDA: 83956736472.08.299D702
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 5F008A0009
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 12:22:42 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
+	by imf12.hostedemail.com (Postfix) with ESMTP id ABA444001A
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 12:30:33 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
 	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
+	spf=pass (imf12.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759494162;
+	s=arc-20220608; t=1759494634;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OeDVDlwSeC1BlDNuZhiAP1Uyu1ZwbSRhEUGWJoBsNQI=;
-	b=cHQI0PChUCuG9Rrwme+TBGE4JAHwZGJNrxkrX66KTDc6MYaZLW6pdsVCxPp106GI7IpiwP
-	ksA48jeup1wpcZpP8rekKOvcV8CsHse3kyBeOZrz9CB9PP2IEKbRNVIuNRY/E2lraNWugE
-	2w9BB4RhidVk2sjdZuju1UkSkOuJ4o4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759494162; a=rsa-sha256;
+	bh=tCTk6JhRTxX8/YwftHJzJbBtzijOgzqhcDgKZBhsDTQ=;
+	b=1aBEogdrxYUYNS1sinuhQA82vxM2rs4GCr8qDOu5ILDRljkJySY4+M18HQ3NsEpg9p/Yjb
+	VT0OhbU7fOSCnFq1ppRjJRPcuDnIVeAK5DuSiTmRbyTymbxdGbgkh1pHuO1hYLjW9Xas6X
+	nt1lizKHEi4C+UVZv/1dYPx/ux/A+OY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759494634; a=rsa-sha256;
 	cv=none;
-	b=Hnb9zA7UP5BPUd2pLJcH2scTqTGK2xD9VPNXpVRK+eoayLI2IpgW2MP6ot1nbGv79hZKzU
-	eA84yiOVm0Kw84KUmaO8ShMEvVnE67HbLddER7Xh+p3fy9g72JPBgZmjG39UhY1gunTXFj
-	8MtHlQ4MHnUlQsYGQBjbuNybKC8/Bi8=
+	b=S4I6Wk3r6hneFJOXlRlcMzt1gIcmtbTt5rsECAMJPaypj3IFIdA98vVzcnw46b52XRO7Gw
+	ntLtOJodfToRhhp9hv9DvR4cqmQWj3fHD9Ay8zv3pdwZz49grl72WN7erDznn2AIhrP5f5
+	I2igTEUOvt7e5yj3eNxCHyRiQi/flAs=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
+	imf12.hostedemail.com;
 	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
+	spf=pass (imf12.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cdSQS4xR6z6K8Xc;
-	Fri,  3 Oct 2025 20:19:28 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cdScT5bC2z6L4th;
+	Fri,  3 Oct 2025 20:28:09 +0800 (CST)
 Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 07A4E140372;
-	Fri,  3 Oct 2025 20:22:40 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 8315114038F;
+	Fri,  3 Oct 2025 20:30:28 +0800 (CST)
 Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
  (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 3 Oct
- 2025 13:22:38 +0100
-Date: Fri, 3 Oct 2025 13:22:36 +0100
+ 2025 13:30:27 +0100
+Date: Fri, 3 Oct 2025 13:30:25 +0100
 From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Bharata B Rao <bharata@amd.com>
+To: Bharata B Rao <bharata@amd.com>, <akpm@linux-foundation.org>,
+	<david@redhat.com>
 CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
 	<dave.hansen@intel.com>, <gourry@gourry.net>, <hannes@cmpxchg.org>,
 	<mgorman@techsingularity.net>, <mingo@redhat.com>, <peterz@infradead.org>,
@@ -69,15 +70,14 @@ CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
 	<sj@kernel.org>, <weixugc@google.com>, <willy@infradead.org>,
 	<ying.huang@linux.alibaba.com>, <ziy@nvidia.com>, <dave@stgolabs.net>,
 	<nifan.cxl@gmail.com>, <xuezhengchu@huawei.com>, <yiannis@zptcorp.com>,
-	<akpm@linux-foundation.org>, <david@redhat.com>, <byungchul@sk.com>,
-	<kinseyho@google.com>, <joshua.hahnjy@gmail.com>, <yuanchu@google.com>,
-	<balbirs@nvidia.com>, <alok.rathore@samsung.com>
-Subject: Re: [RFC PATCH v2 5/8] x86: ibs: Enable IBS profiling for memory
- accesses
-Message-ID: <20251003132236.00002ecd@huawei.com>
-In-Reply-To: <20250910144653.212066-6-bharata@amd.com>
+	<byungchul@sk.com>, <kinseyho@google.com>, <joshua.hahnjy@gmail.com>,
+	<yuanchu@google.com>, <balbirs@nvidia.com>, <alok.rathore@samsung.com>
+Subject: Re: [RFC PATCH v2 7/8] mm: klruscand: use mglru scanning for page
+ promotion
+Message-ID: <20251003133025.00006f4b@huawei.com>
+In-Reply-To: <20250910144653.212066-8-bharata@amd.com>
 References: <20250910144653.212066-1-bharata@amd.com>
-	<20250910144653.212066-6-bharata@amd.com>
+	<20250910144653.212066-8-bharata@amd.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
@@ -85,14 +85,14 @@ Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.203.177.15]
 X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
  dubpeml100005.china.huawei.com (7.214.146.113)
-X-Rspamd-Queue-Id: 5F008A0009
-X-Stat-Signature: 6dsbgamfd3w3oe3snaaufm8a1n5trscs
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: ABA444001A
+X-Stat-Signature: 3xjbwskb5s9zfm5ceephsyq6eyhmesgt
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1759494162-431401
-X-HE-Meta: U2FsdGVkX18bq7PHjpI0A2i0tgthixDBK1VlRKVjZC3EC/QYBo7Iw3Ma0jCTO7I/hQXJyLo0Dcx4lMo0W9GYUjBSVwt6A8yjEKZlAKkNV+sxC7r2PmztSapQ/w+G+DkFWszz7xFizEtsog1Bc34KNujsYy0u1+gRNUCEsNgnengzS8ACFr6ARppWIxc5pI3+6k5EO0BXhOofjFIBAq0ZCe3kG8VKwIYLRLg6CvTYJrT0gmrNMrUMakz9dVERx233xkggMG2CDrt6R+WeS03XLGZMb6bdfqZ7HgnzeDyQqiyHbwY9Ik+64R69hAXglsvOm63lFmtiuIP/T4+6+2ogQu/5UVmNa1kGbJXO0XUuc+q9FvnPPyjnGrc2fIEMFbO15r189pBou9iEw5OcXButTn9DG2NdMUanAwHlScgahwm0iJ+DePw3Pz+xKkgRkcJuH40wlou1Kb+gsBENTMdrC4znReBtyucbHe2I4TB7o/XQGeAlhqFBk0WJr41O9l8CLz2s7a47Uvjyv1FFglZ9IJNzoRODA3D+9681zBLF64pSnghr5I4HIOQ2fVnOsDBclNxP1fiDEm8Kr1TYwynYwRjjxONvVxgHPTuLtALqwcp7TR9YXWTOCqGwWEQLYHJblNyQi3O/PxbSjb7ZhTqPjXMkxs0lTyzCRLXRwVtDTfVblLAKx555DYptS4xXwm1QrNE6F2gBNuZuR6+krpq9FSkrXaD1OIayL5bZZhrcXNy8LTIZYjSkPoYT8UcqYxMqpWUOch2H+NRad7TAAnUEPDJPi/vqzRNko/yFsYPHj73awh2mqfOxdsmOmCToHSlPKPmyQf7RxCv51FS/otpDXAeQ6s/KrDWLGYbMcSZzWwRvwWYPkhKlphbTtOEc6GyKVZ8Lcn1vhz3f9Ri8sDRawSgfBGpnHv7JRblOKXhjqQuQb7b7OaSN2txCyDTDtwbxgFHb/F8CPEMOtLxj0fa
- ThVgJIJo
- LcXM/efn4lJKMYxGdvi4vimhIsnd1k22dW7pnv+KGzBX+K7eQhtKq5TaRPFqBhA9kc7yybtyAR2OgyRN/Tcm5zOTrLgQfOwCvR+XPEPQGWKWaFvS8XWvSen1RVr+iKKvpTpmgRDsqbF1Ebh+/zz3K/wJRx63STUHsdMZrEMNzVVYVBMYNlfOuf2qde/VsB1R5bbeCJxkNd001XGVQoCDLgbvXCq7Zu6eEXmka9Ql/89EsRMm+iWeba3uRwMOmGwfVpXsL5hbWxlENoDV9i/QRHxkmKUOnG7RL9iW1n8QVVd2mQgau1DNjTKuqplmJx13rWQEq
+X-HE-Tag: 1759494633-583806
+X-HE-Meta: U2FsdGVkX19lLRQFq7EGHmXdxnctSZr2BXm+wvF3PSIQaom6Y6iSTAvbSuMHBT2WGIszz7TpkvkPr416CdhcMjETI9AdV+UF6Chkkq37M9/MpZvwNUxF2oo96hw9lX7Ntp2wEhQadRYA/zWkNRicMklmpn4ctsMUa0FOjcrtuRiaGvJiG+8toRyEnVvjuxi6NFYZT5DmC1esWD28rV5UftbtKzp53RfaUaTywxwQfRFTmBtCn+XS/KA+ex6yYYKs2UiHfdwGgZuqT84oXOtg5Iax3bhjdjTYWSsQmmDDB77uZEFF3ELAEAHmd6QvgvlDLx7DytfZ3qlw1K80oSNpxnfS6+A0v5alnpPXNcGFuPyG7NBQZGsLqe1AAmnjaC7oYXmcZbZDzEogPn/0OAkPLhHSw0S3epzjhJNia0qXAy2E5V7UtjuRORtxEgITZrw99tFaxCivtx6DveVE8/pyLmnu0KWpeLQuceaNgs6d9oMvN7yq3uQ88drmqL7OunP+QvlwWSkPUktWonErrQvmzzxWDFUP0g4jzFShLiVN25QjxvWG+gH/L8ITRGj/VjB5IQGoipSxJuTkO87fKsGggo+6BtNGMuf1ytmSo7SLgr6hZjDR7uqNOx8LA7vHSzqp0zs6cSlpSYbzm10tZg/BGxNHNImXk2JUSc3R8J3FywiDxxXMxpszyQ6VhJSXzOOk0vPJwyjn9+6Yio0bV5YPLg9UsguENNmSNowcnfREHxKIiO2h2i07ILK8e4W1XXacP36i7IPdDKlewUDmNOORDbEyXD/l5cT3HtAWP733UvkyFOU62dsak9IfFW+lXWSl6xczODJfuac5ooBw3wva8tZkPBRyE4cBoFXxnl1+lrYc3NWO3QJIh/KtXdDHcv1Mxf9sePs1NH8rzPD6i6wXh6uafXJwwUFPh0qNUgtdWeBQ88ibXpVTIPKpVGtuIuzLwb+P3drbEskJGlca+/Y
+ adA0rAhd
+ PP3h/YDNCVRdBBvy0tAsGomiY83eciE04yf+QGqi6c2niGUcWM14dkiFVvnNA+QMOiMru5xLisFmUSuMZVDIOcN5unwnOZHWkXjM6aJ3jVEjtqw3u4MXWCg+EE6dIzqmkTs7x4f8bm9eD+YEO99ZOEfghk2LMMqkGeZj8p7wvdvdn33aD5V27pR+mGskun52MFEPnvTgJgQUVSoL3SK1grBHF7ARMEnSXhSvXBRUAH7HBkXK8fvfn7H8LVHiYkWF2CXT7AJKJ266z26G94ujzQ2sFHG8/KAbbmVC+IyziAMy/qajq2EM9ih72E+relQ4cDcbqkrQZc1UCoh7EnPv242hLEB9F2Mz/Zd1H10z4m2Ql3PqiSHxqMwHYgQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,95 +101,170 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 10 Sep 2025 20:16:50 +0530
+On Wed, 10 Sep 2025 20:16:52 +0530
 Bharata B Rao <bharata@amd.com> wrote:
 
-> Enable IBS memory access data collection for user memory
-> accesses by programming the required MSRs. The profiling
-> is turned ON only for user mode execution and turned OFF
-> for kernel mode execution. Profiling is explicitly disabled
-> for NMI handler too.
+> From: Kinsey Ho <kinseyho@google.com>
 > 
-> TODOs:
+> Introduce a new kernel daemon, klruscand, that periodically invokes the
+> MGLRU page table walk. It leverages the new callbacks to gather access
+> information and forwards it to the pghot hot page tracking sub-system
+> for promotion decisions.
 > 
-> - IBS sampling rate is kept fixed for now.
-> - Arch/vendor separation/isolation of the code needs relook.
+> This benefits from reusing the existing MGLRU page table walk
+> infrastructure, which is optimized with features such as hierarchical
+> scanning and bloom filters to reduce CPU overhead.
 > 
+> As an additional optimization to be added in the future, we can tune
+> the scan intervals for each memcg.
+> 
+> Signed-off-by: Kinsey Ho <kinseyho@google.com>
+> Signed-off-by: Yuanchu Xie <yuanchu@google.com>
 > Signed-off-by: Bharata B Rao <bharata@amd.com>
-One "oops I misread it" wrt to review of previous patch.
-+ a really trivial thing.
+> 	[Reduced the scan interval to 100ms, pfn_t to unsigned long]
+Some very minor comments inline.  I know even less about the stuff this
+is using than IBS (and I don't know much about that ;)
 
 J
 > ---
->  arch/x86/include/asm/entry-common.h |  3 +++
->  arch/x86/include/asm/hardirq.h      |  2 ++
->  arch/x86/include/asm/ibs.h          |  2 ++
->  arch/x86/mm/ibs.c                   | 32 +++++++++++++++++++++++++++++
->  4 files changed, 39 insertions(+)
+>  mm/Kconfig     |   8 ++++
+>  mm/Makefile    |   1 +
+>  mm/klruscand.c | 118 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 127 insertions(+)
+>  create mode 100644 mm/klruscand.c
+> 
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index 8b236eb874cf..6d53c1208729 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -1393,6 +1393,14 @@ config PGHOT
+>  	  by various sources. Asynchronous promotion is done by per-node
+>  	  kernel threads.
+>  
+> +config KLRUSCAND
+> +	bool "Kernel lower tier access scan daemon"
+> +	default y
 
-> diff --git a/arch/x86/mm/ibs.c b/arch/x86/mm/ibs.c
-> index 6669710dd35b..3128e8fa5f39 100644
-> --- a/arch/x86/mm/ibs.c
-> +++ b/arch/x86/mm/ibs.c
-> @@ -16,6 +16,7 @@ static u64 ibs_config __read_mostly;
->  static u32 ibs_caps;
->  
->  #define IBS_NR_SAMPLES	150
-> +#define IBS_SAMPLE_PERIOD      10000
->  
->  /*
->   * Basic access info captured for each memory access.
-> @@ -98,6 +99,36 @@ static void ibs_irq_handler(struct irq_work *i)
->  	schedule_work_on(smp_processor_id(), &ibs_work);
->  }
->  
-> +void hw_access_profiling_stop(void)
+Why default to y? That's very rarely done for new features.
+
+> +	depends on PGHOT && LRU_GEN_WALKS_MMU
+> +	help
+> +	  Scan for accesses from lower tiers by invoking MGLRU to perform
+> +	  page table walks.
+
+> diff --git a/mm/klruscand.c b/mm/klruscand.c
+> new file mode 100644
+> index 000000000000..1a51aab29bd9
+> --- /dev/null
+> +++ b/mm/klruscand.c
+> @@ -0,0 +1,118 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +#include <linux/memcontrol.h>
+
+Probably pick some ordering scheme for includes.
+I'm not spotting what is currently used here.
+
+> +#include <linux/kthread.h>
+> +#include <linux/module.h>
+> +#include <linux/vmalloc.h>
+> +#include <linux/random.h>
+> +#include <linux/migrate.h>
+> +#include <linux/mm_inline.h>
+> +#include <linux/slab.h>
+> +#include <linux/sched/clock.h>
+> +#include <linux/memory-tiers.h>
+> +#include <linux/sched/mm.h>
+> +#include <linux/sched.h>
+> +#include <linux/pghot.h>
+> +
+> +#include "internal.h"
+> +
+> +#define KLRUSCAND_INTERVAL_MS 100
+> +#define BATCH_SIZE (2 << 16)
+> +
+> +static struct task_struct *scan_thread;
+> +static unsigned long pfn_batch[BATCH_SIZE];
+> +static int batch_index;
+> +
+> +static void flush_cb(void)
 > +{
-> +	u64 ops_ctl;
+> +	int i = 0;
 > +
-> +	if (!arch_hw_access_profiling)
-> +		return;
+> +	for (; i < batch_index; i++) {
+> +		u64 pfn = pfn_batch[i];
+
+Why dance through types?  pfn_batch is unsigned long and it is
+cast back to that below.
+
 > +
-> +	rdmsrl(MSR_AMD64_IBSOPCTL, ops_ctl);
-> +	wrmsrl(MSR_AMD64_IBSOPCTL, ops_ctl & ~IBS_OP_ENABLE);
+> +		pghot_record_access((unsigned long)pfn, NUMA_NO_NODE,
+> +					PGHOT_PGTABLE_SCAN, jiffies);
+> +
+> +		if (i % 16 == 0)
+
+No problem with this, but maybe a comment on why 16?
+
+> +			cond_resched();
+> +	}
+> +	batch_index = 0;
 > +}
-> +
-> +void hw_access_profiling_start(void)
+
+> +static int klruscand_run(void *unused)
 > +{
-> +	u64 config = 0;
-> +	unsigned int period = IBS_SAMPLE_PERIOD;
+> +	struct lru_gen_mm_walk *walk;
 > +
-> +	if (!arch_hw_access_profiling)
-> +		return;
+> +	walk = kzalloc(sizeof(*walk),
+> +		       __GFP_HIGH | __GFP_NOMEMALLOC | __GFP_NOWARN);
+
+Maybe use __free() magic so we can forget about having to clear this up on exit.
+Entirely up to you though as doesn't simplify code much in this case.
+
+> +	if (!walk)
+> +		return -ENOMEM;
 > +
-> +	/* Disable IBS for kernel thread */
-> +	if (!current->mm)
-> +		goto out;
+> +	while (!kthread_should_stop()) {
+> +		unsigned long next_wake_time;
+> +		long sleep_time;
+> +		struct mem_cgroup *memcg;
+> +		int flags;
+> +		int nid;
 > +
-> +	config = (period >> 4)  & IBS_OP_MAX_CNT;
-
-Bonus space though before & that can go.
-
-> +	config |= (period & IBS_OP_MAX_CNT_EXT_MASK);
-> +	config |= ibs_config;
-
-Ah. Ignore comment in previous patch on this not being global. Clearly it needs
-to be. Oops I misread this earlier.
-
-> +out:
-> +	wrmsrl(MSR_AMD64_IBSOPCTL, config);
+> +		next_wake_time = jiffies + msecs_to_jiffies(KLRUSCAND_INTERVAL_MS);
+> +
+> +		for_each_node_state(nid, N_MEMORY) {
+> +			pg_data_t *pgdat = NODE_DATA(nid);
+> +			struct reclaim_state rs = { 0 };
+> +
+> +			if (node_is_toptier(nid))
+> +				continue;
+> +
+> +			rs.mm_walk = walk;
+> +			set_task_reclaim_state(current, &rs);
+> +			flags = memalloc_noreclaim_save();
+> +
+> +			memcg = mem_cgroup_iter(NULL, NULL, NULL);
+> +			do {
+> +				struct lruvec *lruvec =
+> +					mem_cgroup_lruvec(memcg, pgdat);
+> +				unsigned long max_seq =
+> +					READ_ONCE((lruvec)->lrugen.max_seq);
+> +
+> +				lru_gen_scan_lruvec(lruvec, max_seq,
+> +						    accessed_cb, flush_cb);
+> +				cond_resched();
+> +			} while ((memcg = mem_cgroup_iter(NULL, memcg, NULL)));
+> +
+> +			memalloc_noreclaim_restore(flags);
+> +			set_task_reclaim_state(current, NULL);
+> +			memset(walk, 0, sizeof(*walk));
+> +		}
+> +
+> +		sleep_time = next_wake_time - jiffies;
+> +		if (sleep_time > 0 && sleep_time != MAX_SCHEDULE_TIMEOUT)
+> +			schedule_timeout_idle(sleep_time);
+> +	}
+> +	kfree(walk);
+> +	return 0;
 > +}
-> +
->  /*
->   * IBS NMI handler: Process the memory access info reported by IBS.
->   *
-> @@ -304,6 +335,7 @@ static int __init ibs_access_profiling_init(void)
->  			  x86_amd_ibs_access_profile_startup,
->  			  x86_amd_ibs_access_profile_teardown);
->  
-> +	arch_hw_access_profiling = true;
->  	pr_info("IBS setup for memory access profiling\n");
->  	return 0;
->  }
 
 
