@@ -4,139 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C25FCAC5B0
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 14:02:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22EFCCAC5B0
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 14:05:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 971E38E001C; Fri,  3 Oct 2025 10:02:23 -0400 (EDT)
+	id 50B278E0022; Fri,  3 Oct 2025 10:05:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9491D8E0007; Fri,  3 Oct 2025 10:02:23 -0400 (EDT)
+	id 4E2A48E0007; Fri,  3 Oct 2025 10:05:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85EF98E001C; Fri,  3 Oct 2025 10:02:23 -0400 (EDT)
+	id 3F8948E0022; Fri,  3 Oct 2025 10:05:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6ED2C8E0007
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 10:02:23 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 25CCC451F0
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 14:02:23 +0000 (UTC)
-X-FDA: 83956967766.16.3A02984
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id AB5DB1C0002
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 14:02:20 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=d990GyQ9;
-	spf=pass (imf18.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2DED88E0007
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 10:05:07 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 04BAC451E1
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 14:05:06 +0000 (UTC)
+X-FDA: 83956974654.09.E1FEEFD
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A82FFA000F
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 14:05:04 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Lfl21iMe;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XA88JfIT;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Lfl21iMe;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XA88JfIT;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf25.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759500305; a=rsa-sha256;
+	cv=none;
+	b=6e8PvasEriiaqLoLnCjCqvsf5OjPdg+NEjJlsDcRrwejuPdBTLsyG5gv4CJ/QT9kM0V0y1
+	UDR0EX3zl+quH4VWfE5Tx3ATkttECh2BFeLq9Og3LxRGUdJ+6a6ASDnwuQUAtdonBMpp9h
+	One1YVTR//Pwl/7GD+AzzKBHDthvwr8=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Lfl21iMe;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XA88JfIT;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Lfl21iMe;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XA88JfIT;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf25.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759500141;
+	s=arc-20220608; t=1759500305;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FfdNLsJo1+niCnnKhS//GeejM6UpWhfStrR/oS1d2Yo=;
-	b=SQwJMQPdlkVhPNN9ELifrT8gETdNYu5/SnDI17yUmsF25dpi/3ye3GKZWV6Csb4vg5EPHD
-	jMexXZENXDseCqLxOqk3A8SP087rXw1CYX3dYlFZ7pejZzuIJ01UZ0zFCvsWuOSAtzK4Xw
-	vI7zdkkA6Y6NM+vqmVehtcqgr0EWp3U=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=d990GyQ9;
-	spf=pass (imf18.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759500141; a=rsa-sha256;
-	cv=none;
-	b=yp8+3lZU65l2wA1XFVwzfemoXKoAQTSqFaEDgqWRMH+xLk5wLn6kgj3J6x1Xgh/L22UX21
-	WLO4anpSmxedgEmETpzzmnDT2FpOh+hHBWgM+XwNex6FjKYp3N5lzeUClpQkrPSJS8rhsU
-	LR2p8kClD4xEftrTuT4GvApuuhwNzvs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759500140;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	bh=3YpYYO0WBQtFMfWk/eRAGiKMSyw4qTIIMBy/MJIROsA=;
+	b=bm0fa65esp/hdTFl1Wo6qVdaTb9STqy5HTeMMxUjBA1FVRCZ2LENpj9BLiHJKlHgJHBv46
+	joCekN3NUDDgkPgL4Q12AZPyz/7RMdfPkL7DfLvDx6K/tW13tsuyapx8NOlnhZzjKKEv7l
+	nD5kCW1ZgJqN3y4Fyq/PleKhas1C6NQ=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4B48F3369C;
+	Fri,  3 Oct 2025 14:04:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1759500297; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FfdNLsJo1+niCnnKhS//GeejM6UpWhfStrR/oS1d2Yo=;
-	b=d990GyQ9kwrT196VFyJ+XEA74648HTMfoeZj/tuoBD7guZzbd67KQYmDT8YO5+Dy2dc8x9
-	/PQwxzwXa1K1JAyUsgrB/rH47pwWn0CWHrtH7JWg6GbI855cJ+CVRhKQFcA6Z7mQ/0C5Uw
-	dBZk2gr9+lg6+6aPnXyjdRHQAHnZy6U=
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
- [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-264-p_BD7KLYMhmubOkiZcNWvg-1; Fri, 03 Oct 2025 10:02:18 -0400
-X-MC-Unique: p_BD7KLYMhmubOkiZcNWvg-1
-X-Mimecast-MFC-AGG-ID: p_BD7KLYMhmubOkiZcNWvg_1759500137
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-43d3063f5c9so602114b6e.2
-        for <linux-mm@kvack.org>; Fri, 03 Oct 2025 07:02:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759500137; x=1760104937;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FfdNLsJo1+niCnnKhS//GeejM6UpWhfStrR/oS1d2Yo=;
-        b=Kwcx7pAQy0ocsZ5A/G8rSiZIdKZn1qDsZNwrqqTp+7N+fJOJsuK8vw27P28bO+khFO
-         xCSoxuy5CO7xUYJgCokTFuoz1WAOPxpWPhKj7OkXZvbwnWE22sZLLy/XFF3Mu1X9vCey
-         OYGqrtarkaZ9Lu1uu/pAHqS4ACGeQ7Zu/D0eJv/W6Nm+WeFitXu4JVjRIMAX2R7mKAcU
-         Cex01UvKOiOiuSkZr/FbvCTUGV5NKdAr4eBzljSf7FK66904IrV0oZZFOfRo0ITOrZU+
-         u2oph9L9BOGvez8P6uqwpqjxuF3eJCIiIcXYcnhpaGDFz2cG/H2Wq0DDXpswndM23O5C
-         8OSQ==
-X-Gm-Message-State: AOJu0YwqsGHbPobcw3D/Ha2dBQRnzbGl0uaYmBlzE8yehY6YXZIwPr9z
-	Q5TmAxIDPXmQJ+6mhNVajxQ1BvDjUdoDGoguZe5z94jvky4ud6aTg3lG1soCQRf5F63wWEJJ2GJ
-	Hd2ibwJbzZuQqByHdeoVTI+SPNHCEeXyPefwYRoWsTbtBVOE+eTIs
-X-Gm-Gg: ASbGncsM7xFsgyANHh/2VLsTTjuCj/LSn+y4uG2xiF3L7zHcHpk0YUge2BJ4hNesl44
-	e3ct4g5ZGtLejKwbIs8d705ZR3Ct+P6Yallmj72JcdXmnyOZPF0l4dOBH6wXuIHh1Cciumsp+v3
-	lq3KoiXLt2FtgIWzL+8R1qMeMrK7yYR+pYaAoO+YnezhEz+2PdpKH3CiPkvdCBu0GZN19QYc4gF
-	q573/NK4yDskIRS7WO2ydd/WvazPUZZmQDnYd8uGwQp12bZs0lDPGBfiyVSgSFUI/DzbX4TkQGP
-	0yyAs/bOXX477J3rKMhf93HKOlWcmg5T3nMqqA==
-X-Received: by 2002:a05:6808:1784:b0:439:ae49:9159 with SMTP id 5614622812f47-43fc1828ba0mr1175485b6e.36.1759500136856;
-        Fri, 03 Oct 2025 07:02:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEisDW2mGnc04qMiO0ty7y+ZeCROu3lxEpJKjD24LI/W2t/5ZFdYU4iCFfZ9dw1K+GrywtPBw==
-X-Received: by 2002:a05:6808:1784:b0:439:ae49:9159 with SMTP id 5614622812f47-43fc1828ba0mr1175402b6e.36.1759500136107;
-        Fri, 03 Oct 2025 07:02:16 -0700 (PDT)
-Received: from x1.local ([142.188.210.50])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-878bd785963sm38628446d6.35.2025.10.03.07.02.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Oct 2025 07:02:15 -0700 (PDT)
-Date: Fri, 3 Oct 2025 10:02:13 -0400
-From: Peter Xu <peterx@redhat.com>
+	bh=3YpYYO0WBQtFMfWk/eRAGiKMSyw4qTIIMBy/MJIROsA=;
+	b=Lfl21iMeOXn9an/HNoczt8yAM7N6QlUDuUmND2LaXT4q44WYxSnEOPNOriKBMF9OTY45VD
+	swOKCcEvBwOSXbI7J8ANiK0KNAGQYz7bF+bfruMp8b5zQ5Reh9RFwkI616rKveeE0VT86x
+	9NPib4BxxiitGJFUH4jnHQn5c1Q+dYI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1759500297;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3YpYYO0WBQtFMfWk/eRAGiKMSyw4qTIIMBy/MJIROsA=;
+	b=XA88JfIT6APbj4/v46502XbSA4Hl+UJMJrnkQ9gDNvHARPrj9sfvoCqrVzXqZ6RBTKsF9z
+	O180MpyW5JA2xBCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1759500297; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3YpYYO0WBQtFMfWk/eRAGiKMSyw4qTIIMBy/MJIROsA=;
+	b=Lfl21iMeOXn9an/HNoczt8yAM7N6QlUDuUmND2LaXT4q44WYxSnEOPNOriKBMF9OTY45VD
+	swOKCcEvBwOSXbI7J8ANiK0KNAGQYz7bF+bfruMp8b5zQ5Reh9RFwkI616rKveeE0VT86x
+	9NPib4BxxiitGJFUH4jnHQn5c1Q+dYI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1759500297;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3YpYYO0WBQtFMfWk/eRAGiKMSyw4qTIIMBy/MJIROsA=;
+	b=XA88JfIT6APbj4/v46502XbSA4Hl+UJMJrnkQ9gDNvHARPrj9sfvoCqrVzXqZ6RBTKsF9z
+	O180MpyW5JA2xBCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DB30513AAD;
+	Fri,  3 Oct 2025 14:04:55 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Yo1oMgfY32jrTgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 03 Oct 2025 14:04:55 +0000
+Date: Fri, 3 Oct 2025 15:04:50 +0100
+From: Pedro Falcato <pfalcato@suse.de>
 To: David Hildenbrand <david@redhat.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	James Houghton <jthoughton@google.com>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Ujwal Kundur <ujwal.kundur@gmail.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>, Hugh Dickins <hughd@google.com>,
-	Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH v3 1/4] mm: Introduce vm_uffd_ops API
-Message-ID: <aN_XZbQjuYx-OnFr@x1.local>
-References: <20250926211650.525109-1-peterx@redhat.com>
- <20250926211650.525109-2-peterx@redhat.com>
- <f1da3505-f17f-4829-80c1-696b1d99057d@redhat.com>
- <aNwmE11LirPtEuGW@x1.local>
- <f409cbe7-7865-45ab-af9a-6d5108bc5ad4@redhat.com>
- <aNw_GrZsql_M04T0@x1.local>
- <43d78ba7-8829-4a19-bdf3-d192a62cdac4@redhat.com>
- <aN08NxRLz7Wx0Qh4@x1.local>
- <ad124fb6-a712-4cf5-8a7e-2abacbc2e4be@redhat.com>
+Cc: Byungchul Park <byungchul@sk.com>, akpm@linux-foundation.org, 
+	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com, clameter@sgi.com, kravetz@us.ibm.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, max.byungchul.park@gmail.com, kernel_team@skhynix.com, 
+	harry.yoo@oracle.com, gwan-gyeong.mun@intel.com, yeoreum.yun@arm.com, 
+	syzkaller@googlegroups.com, ysk@kzalloc.com, Matthew Wilcox <willy@infradead.org>, 
+	linux-ext4@vger.kernel.org
+Subject: Re: [RFC] mm/migrate: make sure folio_unlock() before
+ folio_wait_writeback()
+Message-ID: <dglxbwe2i5ubofefdxwo5jvyhdfjov37z5jzc5guedhe4dl6ia@pmkjkec3isb4>
+References: <20251002081612.53281-1-byungchul@sk.com>
+ <9a586b5b-c47f-45eb-83c8-1e86431fc83d@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <ad124fb6-a712-4cf5-8a7e-2abacbc2e4be@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: DbpMuq_qXR82_Mg4VzFEOmcezUhhtnvGMWFAJUMPImM_1759500137
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <9a586b5b-c47f-45eb-83c8-1e86431fc83d@redhat.com>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A82FFA000F
+X-Stat-Signature: q7tidxje15issrob6suez89sz16u8g66
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: AB5DB1C0002
-X-Stat-Signature: 19hidnm5igmi33ui8gc1ey1cjgc5gu3h
-X-HE-Tag: 1759500140-706962
-X-HE-Meta: U2FsdGVkX18GqKxwQsNj9ncdfKcVcjiIOWFJ9NmQzrYEvAyM5i5mZhKZW5BmSEBwbsoPTKg7lc5LqVkTXsH0S+1i9IYrfQRzShThYj0H5CzuB2kanRH7PMau+cODLGTbwqcG1Egj4ylEe7U1AaK3Hhf+vtrab0TpE2zhAAhhRzTNv/AHoWOtMofg5PFeQaWAzFCTzCdSdbUTXWLedkWUsn1btZMD5FLeu87pZs1h1cCRr1xAHYtOfB/4BQHApeAPYzJgHv70MPfd3FidFcq1YMa3RnVu+4mW7SXC8BygMHHWrAslmFE0+HBVvPlL9TvgbK+srFkMjcoGMFZMCBNhyUaI6RREqt17hSLm43kMEyIKKw/WcAZ1GESCVFy9rvSCfzlJhUQSebW9IW9wIggOYxk+fTklUSc0+qVqKa+1PxJq1glr/RF0D+zY6wl50VCVEY+QaQTvDNSra8nfwXHNPgZxrXf7soZ45q8YzkUmh0yutC3rxj9GxBq4UDs868wI7sXR5+AEZldveJsJdEDRZmmsRTlns8AZgZqpOQj7+WQNa5+3uUfuVFDAPrxyRR1XtE/fhw5cNfWoS81EHIz61iQK2dCbdcuCdErBCwm0xPVnih9muCugCXZ+KQNWWrlamx/hmPvn2069ZElZmKCzsgYswlSRKWt85PiWufG3ZJkQ4z1AH8cHUL559oJ9rzBpwSNJfD/gH3AM3uTkwnEWOcAAYpAxgOe7L5EPcDi5aqo7LS8ZEBE6dymSBC8nPl2feC0qcOrAmXl3F5hPUfYq8TIJ4RlPbsxYcUqKI14vjqmkOv7EX1KdDz+Mpn+citu4VlyXY1FRndE57XBwoGiFt4607ul2fx6nHMrQJiD2fKD0VNnJG2Bsm2aYTGoMfN+nejNtVQYPNfCESVJlJgKEkn2TpL9qSPqkDVrxBhpYcJkbC5ws8sx8DkbTvtZn3mNX1BVRmg9+rEOOCal7+FU
- c7pGQtia
- B73nMHBmkdYtCqvs06Ij+N6tL/3rgVLHsu5XOf8am/cUFkCOnnU7zfjMJ/jKG6caDBhQdWREn9kTCRLYE8w73mLIaaV98lQmIswip5y9A1L3y2Nk8XF1Wc2d+BIPBBwqClpoiNhaeTUpd7ZzRHymsxjvCyb6I7QkSsW0xlOEhK8khgiob34oPrR/JDRPKkHSGClr0twREmgWCM+8VnaPqQJGCG+O0o34y6ISl/Kpm301ugzSWzd7EKzKioaB2FVHGurEzienTfOdQxgjldUmaHGtVw/OwVxYPi+eCLfGsGjnKtUvpK2Pm5VVIVf/ToEB+njf/mtJHVs2yCbqW+h1jW5tkDkKq7HHeroIqYJ4TQxCrCvvJkcLIjZPjxHNJ3u7e0c01jV2tXatFqgF9LRR0OwMOJ0xTEKeXvDyMtg+B5kpFznc/WNoMrpl6g6qSGQukAioGCAhwgJH42S5/7G3gkV+A9Hl7GQ0SVXyz48hyWC3IfTozZaDIJ3Pk2NlW8EOJY+AgLrjZZ73giGPFJ4mDkCHy3jfD3/bvi+VLK2KdiVuwLn4ea69UjIBSEIsJmZWG0e/X0Z700Ijgbng=
+X-HE-Tag: 1759500304-805600
+X-HE-Meta: U2FsdGVkX1++EGh+FY/39zrsA6nqZTevDqxOxJwWu+u09/NbtTHst1enSZcjLVj+WMlXTn/gwG/rNdvswkWIIgfsK8VYNTz6h+3AKTxwYUj0eFNf9xLyDeO9QJuv1ouiAOIfzakjUdvIpJGXr3Bs6C0Ac2+40parrThuFpFGiz4KOec67dH73+TXhZ589MOYbMN83jk+1r69jm+pGrQ9ozTKTeb1H2oa5xJAkbSyFAbZf33/FosN1n74QyPGDak+CYUFEQunLdcvBgudDvav49cgfccD9VCEz47QgTSL3JxjT0IU6L8V7lS35qsVAPVMUwoCLRbP2xMSNQcUbVmVYGHprF4BtWJL2b6SN+og7BDcJ5Dkhcdy8JZX/SRGjKysxSuhCZbLFO9mciLZ8dpmNw7FawafJL+c+gwtd8D/xGRLQeBxA9LgMEPAdtAMRa5uQBwzpn2ul/g16yRoihhLAbkGXAlb47YIkgNio5N2B+5gIMrHajw/0hIokrvsnZBQOLlgA70+8sW5N7ncgbkFgBmUv5wcjhhruRSrNNo4rg6zu17oh/zqewXXK4DFobsIJkjGcd1GjxAMBWFSe/JT7+TsDw6FPLcmDVqnVJGllOMQ8tSJokMZ40/RLQ4EurM2UT/uOukXvorLGRNTdyc4qkA3vjvQnXOzBF03cJJC5mdwVMTlY7op1L57QG5UViz6WYWsqaveOcTdnhDFkIVr9BJk4IE9fpnpTidaEdBwkwnURPJgDZn48eZec2FjTaL4JEv0qrfnBLnjlEZSvurlx4jgU5quyb+oWu3zgIOex7f+9QDN11ow07BbxCGWmyRPB76os1erjj8gRMKSJal+Y2MRsxPwnKl21DjE/gPfQ93ixiwBEloh6y7LjdS2s0HNNrh0sCn6wkac395Q4EIzhUV0d1v6ArIB5Jx4+KJ1PWiqhjP72azMjbyDljbAVYtMgx5Ef6amnqWBy5knd1b
+ flp8UnXG
+ 0t/Hw0noFjaO/z7wGWWU+kkVv1ATm5ktWOcZjiWVEL54uCs4k5AwT5XfzmBCaDlkBdR+cihhbcrJggbLVxtvVdedSaE2NAEwJBFuDlQlFZH9RD7mHxxU2zWo5ahnNWrKsUeg821JPLR+Xj24rlu2CbH4KirW50zeE2z5t78xJ34O1FOmQbavx7HR21XjVNYu0aHl4JbVa0jLSKR6ifmcGXSkfWUD7zDsPSo+n/z3dCvO3fqn3RsGhtLKAYklYfVc/VZYq5BHRvSe37bAQ/R1VfeqsDKUR4jD9fhOeD/dKXwmu5his3u+NLWpFkMWPkaXU7GEdDukf0OJfWTpFkwg1UGV/MbWoDNLrmvUcaOvi5rgEsv0EYtk7kiQhiRxsyFPirYB4Bhp6DQmbCagfaEBhEodxwO2vLR7blaJ3rh37MyWfhBE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,69 +139,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 01, 2025 at 04:39:50PM +0200, David Hildenbrand wrote:
-> On 01.10.25 16:35, Peter Xu wrote:
-> > On Wed, Oct 01, 2025 at 03:58:14PM +0200, David Hildenbrand wrote:
-> > > > > > > I briefly wondered whether we could use actual UFFD_FEATURE_* here, but they
-> > > > > > > are rather unsuited for this case here (e.g., different feature flags for
-> > > > > > > hugetlb support/shmem support etc).
-> > > > > > > 
-> > > > > > > But reading "uffd_ioctls" below, can't we derive the suitable vma flags from
-> > > > > > > the supported ioctls?
-> > > > > > > 
-> > > > > > > _UFFDIO_COPY | _UFDIO_ZEROPAGE -> VM_UFFD_MISSING
-> > > > > > > _UFFDIO_WRITEPROTECT -> VM_UFFD_WP
-> > > > > > > _UFFDIO_CONTINUE -> VM_UFFD_MINOR
-> > > > > > 
-> > > > > > Yes we can deduce that, but it'll be unclear then when one stares at a
-> > > > > > bunch of ioctls and cannot easily digest the modes the memory type
-> > > > > > supports.  Here, the modes should be the most straightforward way to
-> > > > > > describe the capability of a memory type.
-> > > > > 
-> > > > > I rather dislike the current split approach between vm-flags and ioctls.
-> > > > > 
-> > > > > I briefly thought about abstracting it for internal purposes further and
-> > > > > just have some internal backend ("memory type") flags.
-> > > > > 
-> > > > > UFFD_BACKEND_FEAT_MISSING -> _UFFDIO_COPY and VM_UFFD_MISSING
-> > > > > UFFD_BACKEND_FEAT_ZEROPAGE -> _UFDIO_ZEROPAGE
-> > > > > UFFD_BACKEND_FEAT_WP -> _UFFDIO_WRITEPROTECT and VM_UFFD_WP
-> > > > > UFFD_BACKEND_FEAT_MINOR -> _UFFDIO_CONTINUE and VM_UFFD_MINOR
-> > > > > UFFD_BACKEND_FEAT_POISON -> _UFFDIO_POISON
-> > > > 
-> > > > This layer of mapping can be helpful to some, but maybe confusing to
-> > > > others.. who is familiar with existing userfaultfd definitions.
-> > > > 
-> > > 
-> > > Just wondering, is this confusing to you, and if so, which part?
-> > > 
-> > > To me it makes perfect sense and cleans up this API and not have to sets of
-> > > flags that are somehow interlinked.
+(Adding ext4 list to CC)
+
+On Thu, Oct 02, 2025 at 01:38:59PM +0200, David Hildenbrand wrote:
+> > To simplify the scenario:
 > > 
-> > It adds the extra layer of mapping that will only be used in vm_uffd_ops
-> > and the helper that will consume it.
 > 
-> Agreed, while making the API cleaner. I don't easily see what's confusing
-> about that, though.
-
-It will introduce another set of userfaultfd features, making it hard to
-say what is the difference between the new set and UFFD_FEATURE_*.
-
+> Just curious, where is the __folio_start_writeback() to complete the
+> picture?
 > 
-> I think it can be done with a handful of LOC and avoid having to use VM_
-> flags in this API.
+> >     context X (wq worker)	context Y (process context)
+> > 
+> > 				migrate_pages_batch()
+> >     ext4_end_io_end()		  ...
+> >       ...			  migrate_folio_unmap()
+> >       ext4_get_inode_loc()	    ...
+> >         ...			    folio_lock() // hold the folio lock
+> >         bdev_getblk()		    ...
+> >           ...			    folio_wait_writeback() // wait forever
+> >           __find_get_block_slow()
+> >             ...			    ...
+> >             folio_lock() // wait forever
+> >             folio_unlock()	  migrate_folio_undo_src()
+> > 				    ...
+> >       ...			    folio_unlock() // never reachable
+> >       ext4_finish_bio()
+> > 	...
+> > 	folio_end_writeback() // never reachable
+> > 
+> 
+> But aren't you implying that it should from this point on be disallowed to
+> call folio_wait_writeback() with the folio lock held? That sounds ... a bit
+> wrong.
+> 
+> Note that it is currently explicitly allowed: folio_wait_writeback()
+> documents "If the folio is not locked, writeback may start again after
+> writeback has finished.". So there is no way to prevent writeback from
+> immediately starting again.
+> 
+> In particular, wouldn't we have to fixup other callsites to make this
+> consistent and then VM_WARN_ON_ONCE() assert that in folio_wait_writeback()?
+> 
+> Of course, as we've never seen this deadlock before in practice, I do wonder
+> if something else prevents it?
 
-I waited for a few days, unfortunately we didn't get a second opinion.
+As far as I can tell, the folio under writeback and the folio that
+__find_get_block() finds will _never_ be the same. ext4_end_io_end() is
+called for pages in an inode's address_space, and bdev_getblk() is called for
+metadata blocks in block cache. Having an actual deadlock here would mean
+that the folio is somehow both in an inode's address_space, and in the block
+cache, I think? Also, AFAIK there is no way a folio can be removed from the
+page cache while under writeback.
 
-David, do you feel OK I repost with the rest comments (almost renames), and
-if we want yet another new set of features for userfaultfd, we work it on
-top?  It'll be a trivial one patch to do the mappings if we want.  The
-current patch is also the minimum changeset we need to unblock guest-memfd
-minor fault.
-
-Thanks,
+In any case, I added linux-ext4 so they can tell me how right/wrong I am.
 
 -- 
-Peter Xu
-
+Pedro
 
