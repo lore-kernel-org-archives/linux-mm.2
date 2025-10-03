@@ -4,102 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C21F7CAC5B0
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 13:42:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3B29CCA471
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 13:49:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA2318E001F; Fri,  3 Oct 2025 09:42:52 -0400 (EDT)
+	id 226C68E0020; Fri,  3 Oct 2025 09:49:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A05558E001C; Fri,  3 Oct 2025 09:42:52 -0400 (EDT)
+	id 1FE958E001C; Fri,  3 Oct 2025 09:49:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CC2D8E001F; Fri,  3 Oct 2025 09:42:52 -0400 (EDT)
+	id 13BB18E0020; Fri,  3 Oct 2025 09:49:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 639CE8E001C
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 09:42:52 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 149AE5B6E1
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 13:42:52 +0000 (UTC)
-X-FDA: 83956918584.30.60CA211
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 42A9D1C0012
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 13:42:50 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=W0MWHhR4;
-	spf=pass (imf20.hostedemail.com: domain of bfoster@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 002BC8E001C
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 09:49:46 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AED385B75C
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 13:49:46 +0000 (UTC)
+X-FDA: 83956935972.29.D887FCE
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf06.hostedemail.com (Postfix) with ESMTP id A7112180009
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 13:49:44 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iMS901TJ;
+	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759498970;
+	s=arc-20220608; t=1759499385;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S90OJp6nDTn7TMN9sQFl21M5wwKOd5IMR+vPEuCvBrU=;
-	b=lqZ7e8M74NhDcnaIiCMtZJ4Ft79xlLMyl13oo+D1CzROrfCcdL4WAHME+sZH6IGBTQX3Cr
-	fHt0/+RaHKX3pZtn384/H27xog+EtoClqnGCAvbs0rR08xG9t/yYFtTPe3OAIR7DCcuNfp
-	UJd2Yc8gXjjmUPwMDpEKJdkAlRzCHi8=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=W0MWHhR4;
-	spf=pass (imf20.hostedemail.com: domain of bfoster@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759498970; a=rsa-sha256;
+	bh=1O4lGRBUIO8tMHHDJsnRMdq/TLfJSS09aZziMz7CPOo=;
+	b=Sny3EuFo9SgZYUt4Bb3+DWTnRjVWC3NI8sHa39fUArwksNKxDtP/n6UrC6Eew2TJVz5EUm
+	OiDLQwk40wX0kqa1GqfmoUvHrjBA1BN5l6OYtOuNq8Q3Kos3shYsPKMkBBkVUZM9ywFFT1
+	AeU2IuUtC01w0N/HOC9/c2agXmRf7+w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759499385; a=rsa-sha256;
 	cv=none;
-	b=IlXHMO/5kO5E/g33VayBluXyhqSrDrBCXNURm9YLDx2/fhcaRRPNEbrHG9QBpdjdByAhHF
-	9U2Jm694Qqz4wGQ3kPzlnCbcSHbL3ryUmQpdeHG6hX2TWEx0qTXKcNYXZkhOHPtzdk1THI
-	+8M9Sl0J3MZFUtDmUAHg/F7psN8FEgs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759498969;
+	b=jDoQaEhJtRu3nWaKDrVmXeDaalann9mBN043NBR9bWoLe1+XhzBBb+ua73CCiJTMkG0anB
+	mipG8FI3Cvm2VdZtDxu39eQAWxnqmjJ7XtfxzV7EEb6nh1ggOyC+S7Pzr406QfnbbCQUfk
+	h7iqhK2thilUn9yP7hH7y7SdhjGaIG4=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iMS901TJ;
+	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <d8467e83-aa89-4f98-b035-210c966ef263@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1759499382;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=S90OJp6nDTn7TMN9sQFl21M5wwKOd5IMR+vPEuCvBrU=;
-	b=W0MWHhR4p9bsB+JeKvbkN3FEDs7UvH8JRxYPdcG4BLh3N9GOhur3s1hEKYyMMjdwlkecDv
-	Ja+BLkBL9Gc4nUOanOvuW4DUUp55k3AHrYHhwSqgkDfDSeTX7IUKW2cJg4WH95xsYQ486N
-	nGxSOFz/12UI/4LdG55lMm/r7Subu9c=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-227-s6ctFc9jM6eOasNtT3hq9A-1; Fri,
- 03 Oct 2025 09:42:44 -0400
-X-MC-Unique: s6ctFc9jM6eOasNtT3hq9A-1
-X-Mimecast-MFC-AGG-ID: s6ctFc9jM6eOasNtT3hq9A_1759498963
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DAD99195609D;
-	Fri,  3 Oct 2025 13:42:42 +0000 (UTC)
-Received: from bfoster.redhat.com (unknown [10.22.64.54])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8111D19560B1;
-	Fri,  3 Oct 2025 13:42:41 +0000 (UTC)
-From: Brian Foster <bfoster@redhat.com>
-To: linux-fsdevel@vger.kernel.org
-Cc: linux-xfs@vger.kernel.org,
-	linux-mm@kvack.org,
-	hch@infradead.org,
-	djwong@kernel.org,
-	willy@infradead.org,
-	brauner@kernel.org
-Subject: [PATCH v5 6/7] iomap: remove old partial eof zeroing optimization
-Date: Fri,  3 Oct 2025 09:46:40 -0400
-Message-ID: <20251003134642.604736-7-bfoster@redhat.com>
-In-Reply-To: <20251003134642.604736-1-bfoster@redhat.com>
-References: <20251003134642.604736-1-bfoster@redhat.com>
+	bh=1O4lGRBUIO8tMHHDJsnRMdq/TLfJSS09aZziMz7CPOo=;
+	b=iMS901TJmkXV6yhuEmITcV9H9/1QSDuf7iyoTHlxjbI7yzc8sOXgRL4HpfNEJI4k4vF+8K
+	SNUi5sAKcTdp2Fj8BHxwrCU38Mnz4T5nKS4QjqdxdSB9l7OYu+kEJgEdqyvrY4xgS3dgdA
+	PbsZWQ2G1tPlvaK0Q0rurQ3k0NP08Cc=
+Date: Fri, 3 Oct 2025 21:49:28 +0800
 MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Rspamd-Queue-Id: 42A9D1C0012
-X-Stat-Signature: drsgfxeff4jrxt7ngf1m9wsyhwu755x3
+Subject: Re: [Patch v2] mm/huge_memory: add pmd folio to ds_queue in
+ do_huge_zero_wp_pmd()
+Content-Language: en-US
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: linux-mm@kvack.org, baolin.wang@linux.alibaba.com,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ wangkefeng.wang@huawei.com, stable@vger.kernel.org, ziy@nvidia.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, npache@redhat.com,
+ baohua@kernel.org, akpm@linux-foundation.org, david@redhat.com
+References: <20251002013825.20448-1-richard.weiyang@gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20251002013825.20448-1-richard.weiyang@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: hpt84s7dzfshstoqiu487hqjhstpfsqo
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1759498970-234404
-X-HE-Meta: U2FsdGVkX1+GUz1rhVaJsD46o8R7MjyG6M3+9bdtBaxvRst3Fl7lBoe2HNFYMn6JHGasg0kBwVvPRk/2WW2NTe48nH5oQZzB5Rx/asG6WPer3UjvdelN1TWmcQCwdfKz4EhXo33NyrokVSygvQCXQNu/AchRSpv6j4V/MHV6tV6M9j+iO36zZGQXZSqrpm/iuHkjLt+WqCCoguzvyeJ0UPmTcWwppY2mN9IKqDfBXzI0Xl1LeQuR6UfptxZRg8Drcy4+kq8Ilaf/vNqWrrfdBZkNyDKf+M5c+VcKHcsShjuiJP2pVfQdNtKxrrDQHQbaqAAiOh9EzZjZWH65elNbXa+R0MYMp1gwHyH+gdV7MXULbimJ3ePjdWUz00cGTyDjsiSkYY0C9Ojo7QXNmXyG8Wgatp4KbqcCwpZRoBIxiQvDRPig1K9peUFZikRZdCZSx6S23Z1GlHsb3uPCJ83HQHK7ZipUx0LiOHd9rFC4Cdr400XbUDu778adjv21VeKiMgPqlfg+OaT3HQDLKGnE+2Wfc7e8idrJskZuW7zfj0phnY6YPwB+NfZTYYMlUKRU70IXWgJNozKZBfmYu67fRji4gLiGTvYbCaJS3ytOtkbEaiHOrcoFlJuIFIsZlMS3WScGP3gzrFpta3M7QXtEMsb/ELgZGy3H0slL2SglkARWWko7LJ/hqRk9Z1uie55LNu/joAJY142CUgas1vtBYoCHKNKZVI1C0EvmUlp3R3oPQMwuLIRUvNwAaVu22mgWLXO/CFMLZS4nor9q8ga9Be1zalePzTMRmw36Payo+JD63NOErPM9vodO59q54cb2UXGMHihSrgk8jlBctMWe83o7HI5XS3AE6h6pJ325mIktL9TwXlJL3B+tKtgReh0qv5i/NybAlZEQMUe6xDBZlQr5XU5OH5sgg7hpu5qYeaqTL20vxTGpv2C8IBDzNuWCI+GXvUolBFlguPVzoYD
- 0+PnkpWf
- xShqa1C+baaWiWBTvB9SDYP8ZCWW2xfY2lymIEgkTUHcYt1+CON6QdtgYqukbF6qv8xLaCsI6/C0TUnFvnn5rht3ISysONSoDwvKgDWQlfyXKu+nKy7pTXcYLcA5Tnzk2bUEOoHIiDg+qXz9rbUQ970oO/4CzPFJ6nz/p3NS5UetdQLh+o9+++fzoSFgt82TA5THbz8CbFPwvdOa2VBiIKKoz94Fk6aBaVwpZn4D8LvQhGs1WtjaWUtgZxoxMrc7NJYqAHSl1cwgPGdFPyloSpExhDN1lVmQGZ/KfYToYO5L+g6UiEa8DMn/PuZiataA6oHLlF0YklQDqXNAKWnNIWxFvW/fMT7XIT7fm
+X-Rspamd-Queue-Id: A7112180009
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1759499384-749314
+X-HE-Meta: U2FsdGVkX1/OGN/MDDla+sQ4G9F99YSid8wvtfOwMDGP1Z66PDVMVdZcAqUoHuvk9Z/05WBOh4/S2YEjKpi5I36jBf9ROZ8r6i+Cz3m7q+w4WdHvIlfUhhpDQPbvW0zsxXnDNVEdc1ys5ij5UjMwRTzdkI2KJhxPRh1oVeVRbPuvGbTPpWveP8AwP+1MBMsASFx6NRuGz0Hyy7NkNd6q1YtyM2rKAB8hQkLmiMI1dkzc/f93uxSOwKu0q/TcDCjNHUMZBUMcfb9SnYuJu/XNfCJN3g3+PNFA4+aN/HEOXtWbTG1rd6fyH5RAb3b1zkfYnGwA3lcHRSojp8xzzDhCeDPBxNjJvlCgE823wY3oZMc4I2rjgvjnY+zsvD4Yw+FYFeJqbeSnQFGVr+/sAOQjHqLAI9ngyLF/Qf/fdtC43USDmiqzPM37l6RldCRD3VjcuWlTnby4ZYpnGWa0vDaSKy7sTDOj+4XbGjGfOdf6NBKTuCHfIGNv3yw+Hy1ySXso4J1xBXDCxkxwJaLZDC3Dr8LLYfy/iOig/Ll1KetSayQgbS09LL//Oavn0QZI2IimnoqF7ly2eUxwg/gVXtlkefvX7mIC9Qx+LzXbOq0+6viXi3Kzl+1+Dp60nP40FWnTdlDl+xdOJLoDq4SyZ4aKyXddENrIZLhT4tk14BRGeKgBeZMy/xLeemmMcHqClpABPsgAKbrEl9jtWFzMk1IrDD0CGJlF0co54DGclddvuDpuXHngnbwHWYpBibf3H7OJ1un1BParAe78eHjD3zTlY/7O4GhQvJYz+b/y9K5KJDZdwyE7+KHNMN+1A+TdbDdmySKlwuxAcz+tTJbvj3K64bpfL2DEWUV+a/T/hdI+WdQiEdnZTJD2MNhhi05sG5nAfA80TG0B6ER440i4c1RJEUqNSn/YlxxEQKF103xqCDspzxjyX6Too4iF4ehbsjHY/MijzZHemlJBtN6AR9M
+ S8A9mM3k
+ kQRa7iNOjJH/WyI+zr9MdXDWr21qMBn1bk1mt4kuoJVLGdzoRFUzfE9oikxforhD1284OFmTdmgHZoTVsVg3ZLFbqq6ez594nZuuMrq9+J+WQ61HOZJ5Etra2xWRjuUZPfxjKFtyEZtQLcy/qqxnckOUwRprxsK8ajSRfZLgvJtqVDXNLA6lSnlZ/WSOrhwTxm8qQe6PJfrkC3KdYdK8gCqzjZZep51Qw46FBG0TQ2XJES8h4vNuTjVk1pC2Ye83isxdS5lKYNuZUR17EmlVfWd64rz4qIGuhtARjMkAHF6fei7GIhfj0VDszm5pWZMhH9x/udoF69YtZkP1PqOPa0pJ1dfFOK0sJMnzBZkRvVTFgdBg3dZn2aNCv3GuHEmGSgVVDbYNUwu0sYCsgYvsJ3fHdFS03rAkMGrx/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,62 +94,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-iomap_zero_range() optimizes the partial eof block zeroing use case
-by force zeroing if the mapping is dirty. This is to avoid frequent
-flushing on file extending workloads, which hurts performance.
+Hey Wei,
 
-Now that the folio batch mechanism provides a more generic solution
-and is used by the only real zero range user (XFS), this isolated
-optimization is no longer needed. Remove the unnecessary code and
-let callers use the folio batch or fall back to flushing by default.
+On 2025/10/2 09:38, Wei Yang wrote:
+> We add pmd folio into ds_queue on the first page fault in
+> __do_huge_pmd_anonymous_page(), so that we can split it in case of
+> memory pressure. This should be the same for a pmd folio during wp
+> page fault.
+> 
+> Commit 1ced09e0331f ("mm: allocate THP on hugezeropage wp-fault") miss
+> to add it to ds_queue, which means system may not reclaim enough memory
 
-Signed-off-by: Brian Foster <bfoster@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
----
- fs/iomap/buffered-io.c | 25 -------------------------
- 1 file changed, 25 deletions(-)
+IIRC, it was commit dafff3f4c850 ("mm: split underused THPs") that
+started unconditionally adding all new anon THPs to _deferred_list :)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index a830ae5f5ac7..51ecb6d48feb 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -1506,34 +1506,9 @@ iomap_zero_range(struct inode *inode, loff_t pos, loff_t len, bool *did_zero,
- 		.private	= private,
- 	};
- 	struct address_space *mapping = inode->i_mapping;
--	unsigned int blocksize = i_blocksize(inode);
--	unsigned int off = pos & (blocksize - 1);
--	loff_t plen = min_t(loff_t, len, blocksize - off);
- 	int ret;
- 	bool range_dirty;
- 
--	/*
--	 * Zero range can skip mappings that are zero on disk so long as
--	 * pagecache is clean. If pagecache was dirty prior to zero range, the
--	 * mapping converts on writeback completion and so must be zeroed.
--	 *
--	 * The simplest way to deal with this across a range is to flush
--	 * pagecache and process the updated mappings. To avoid excessive
--	 * flushing on partial eof zeroing, special case it to zero the
--	 * unaligned start portion if already dirty in pagecache.
--	 */
--	if (!iter.fbatch && off &&
--	    filemap_range_needs_writeback(mapping, pos, pos + plen - 1)) {
--		iter.len = plen;
--		while ((ret = iomap_iter(&iter, ops)) > 0)
--			iter.status = iomap_zero_iter(&iter, did_zero,
--					write_ops);
--
--		iter.len = len - (iter.pos - pos);
--		if (ret || !iter.len)
--			return ret;
--	}
--
- 	/*
- 	 * To avoid an unconditional flush, check pagecache state and only flush
- 	 * if dirty and the fs returns a mapping that might convert on
--- 
-2.51.0
+> in case of memory pressure even the pmd folio is under used.
+> 
+> Move deferred_split_folio() into map_anon_folio_pmd() to make the pmd
+> folio installation consistent.
+> 
+> Fixes: 1ced09e0331f ("mm: allocate THP on hugezeropage wp-fault")
+
+Shouldn't this rather be the following?
+
+Fixes: dafff3f4c850 ("mm: split underused THPs")
+
+Thanks,
+Lance
+
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Lance Yang <lance.yang@linux.dev>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Cc: <stable@vger.kernel.org>
+> 
+> ---
+> v2:
+>    * add fix, cc stable and put description about the flow of current
+>      code
+>    * move deferred_split_folio() into map_anon_folio_pmd()
+> ---
+>   mm/huge_memory.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 1b81680b4225..f13de93637bf 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -1232,6 +1232,7 @@ static void map_anon_folio_pmd(struct folio *folio, pmd_t *pmd,
+>   	count_vm_event(THP_FAULT_ALLOC);
+>   	count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_ALLOC);
+>   	count_memcg_event_mm(vma->vm_mm, THP_FAULT_ALLOC);
+> +	deferred_split_folio(folio, false);
+>   }
+>   
+>   static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
+> @@ -1272,7 +1273,6 @@ static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
+>   		pgtable_trans_huge_deposit(vma->vm_mm, vmf->pmd, pgtable);
+>   		map_anon_folio_pmd(folio, vmf->pmd, vma, haddr);
+>   		mm_inc_nr_ptes(vma->vm_mm);
+> -		deferred_split_folio(folio, false);
+>   		spin_unlock(vmf->ptl);
+>   	}
+>   
 
 
