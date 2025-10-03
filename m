@@ -4,171 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F571CAC5B8
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 02:53:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA854CAC5B0
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 02:55:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 390B28E0002; Thu,  2 Oct 2025 22:53:57 -0400 (EDT)
+	id 233E78E0005; Thu,  2 Oct 2025 22:55:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3687B8E0001; Thu,  2 Oct 2025 22:53:57 -0400 (EDT)
+	id 1E4FC8E0001; Thu,  2 Oct 2025 22:55:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 208998E0002; Thu,  2 Oct 2025 22:53:57 -0400 (EDT)
+	id 0AC038E0005; Thu,  2 Oct 2025 22:55:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D1758E0001
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 22:53:57 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 45A691604A1
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 02:44:36 +0000 (UTC)
-X-FDA: 83955259752.13.EDD69A1
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 417A680009
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 02:44:34 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="GjG/9Ffw";
-	spf=pass (imf02.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id E66D88E0001
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 22:55:39 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 601F713B9E9
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 02:39:00 +0000 (UTC)
+X-FDA: 83955245640.05.EF154D3
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 4FF69C000A
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 02:38:58 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AdqGwVSx;
+	spf=pass (imf28.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759459474;
+	s=arc-20220608; t=1759459138;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qetHx9HVdf2g3s5a7dZOmiU3bkwsi2YCKNcOlkRT3So=;
-	b=fbjeLXkgiAnOdrd5Z5mjJBpt0z4ZUbKQXYqn+k5qlhUehG0gaTBHqVMtNCAE4Uuhzm5Klu
-	ApWvNPG5ipZTRCUtod/ssDq+Pa1lb4S1TZBaUNDTS2sIRdfCoPvE24ajd651bHYrA+J29z
-	TIKAVnYGfvhy/3EefI1+sMQmBxVyEbY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759459474; a=rsa-sha256;
-	cv=none;
-	b=iP9b6mySFpD1IqH3gDVv6FbxfH40+LC0uhJzdxhjeokx9tl9M2DBGSVupyFwjdrmoW0mZ/
-	P+MX73rlcCsBvkkGVYJ5k0+wH8kqU1/mHfDvWA0ttmxtW25HrL16kTj251pscIjl+KUvXw
-	eOz5cf/cMEx+gnSCaneu/xBF6iuJF8M=
+	bh=rFxohDVox4L5XA/iD/+dEFf1PlFaKFj0XVzXne3jOZE=;
+	b=l3J2MYX2pi+rocg5ASVpLFXfV2qKoNTYFgwfDr3+wlYNjPpXFkDSR0lN6Xe6yKtmgCjJUB
+	Gum+iQ0gzJIfA/wscDYXDHbcf66WB4QETifw28biU8nqmeofCv3/k435rX9xZT9gVkAp/0
+	ohqOQ/N97FvkLLPPzJnONI4+ew9qqYs=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="GjG/9Ffw";
-	spf=pass (imf02.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3307de086d8so1571151a91.2
-        for <linux-mm@kvack.org>; Thu, 02 Oct 2025 19:44:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759459473; x=1760064273; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qetHx9HVdf2g3s5a7dZOmiU3bkwsi2YCKNcOlkRT3So=;
-        b=GjG/9FfwMi7BoiwQpZUeE4chMjcR3YLFmtT4JhCsTlEDh3bRINa7ISGu8Hm58H4U84
-         vMumf23Kbk8WLw2C4I71IJEAtjwEBHfFcRMVoCkQJhwIKU2sV7dw6kG13q/J5VOZFxZA
-         ZZgio3/RaYb+ilpSQCMt721RvwQ1ugDomgIijT8ECZBfRanwcjtGHPduzkSX9tivBeez
-         18e39ctSzYuCCvXqiER1o9tNgikaP/dEJnGwvywN/gDTMGY4DznT56XAjT6d5O+kQary
-         dG3YJzSURn39SG4i7zYeN5i99PukHOtjKPnhH4cJuH3mJYJrjhrclXTHWa9URRH5pc5O
-         /alw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759459473; x=1760064273;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qetHx9HVdf2g3s5a7dZOmiU3bkwsi2YCKNcOlkRT3So=;
-        b=JX4F4KzappFW516TgF9lsFHA1i5fv6sa6q2N98rQu2JSYU3fSjoLbIDnKqb53Ispnj
-         uu7KEM6z3rSjC8EjjuOOdKErC/fKCYw/BifA2CcKD1ZDFpLor1y/Svv4wHg7JEToTSkU
-         /VE5ufTCQAHEgGjJeDOYjT2NrT5gdp8Cm6PjZjKdgsN65yaxwFfyym2wbkaaP7OqOHXF
-         31knRxTIxQue2NravRPgEcMbp8cDrN24UeKwm3F33oWoEUqqCQx2BjrRaWYBPYDsBYPp
-         LRjBNuE1n8JQBMYdUjwsTqhzFhXIZRcNvSY5K+vrJSnBJJJPz3jWY/n2tLZWthkEvRSu
-         i2Ow==
-X-Forwarded-Encrypted: i=1; AJvYcCWC6+/EiD+Pk3CFgYibIqxOAfyCuK/1Dezn1eXqdmjeQSyFdRcs2srIqJoIgfkhV/Fr8lgpf/mupA==@kvack.org
-X-Gm-Message-State: AOJu0YyDUCizC07ObF5eWbGF9Z6rlLTSksxCPLGlCrQ9bbkC+Xv+lDqC
-	LmebUogAmgteYb0O/x7CysjtN8WKZjK2VQZcGdG27LDsiZx1JMdLBzzN
-X-Gm-Gg: ASbGncuyBEtRJWQCoz8/4PFjBHtb3itZ3/FrnY6VCA1gJE5txvslS0M1kG6hnl4Q/pn
-	B1fr9qUQmPWEfuewmkPMltRE+DN+443IvdmHaqoS8urDppS3i7ptM2Wk5T+eRfyZ+XQdTGk7MaZ
-	+Z7ihgW2pv5ly4CkhiCYjqVWPcxpaJqbvcYM/pH0oeiju1tInmKEIyCWMYW6KRdk/mq+zkPCIMh
-	6eoLpEsmuspVLdXo2O/UdbiJSd2nsLKh/QeQjfcxsLhDb9c2LC7ZY+4DYKhtNZfb1B2BRuu+MEZ
-	EaLs+DefR3YhQBwRqJ76pMc6p4GIDtqh0WyH3io2J6BygTlx6OA3N4JKynu9OinDGIgiJRxBFT9
-	4+Mf3ucrrBREU/QGXwSamfi4Qd4ixlyGWKUxDWbCf2uM+ADsX2w==
-X-Google-Smtp-Source: AGHT+IGtz3ZOeWsPHv8EY9jkeNKb21owQAz69HlnW9B0RDy4Err0A1nNF7i/4mZFEake+ey1B0U9zw==
-X-Received: by 2002:a17:90b:3889:b0:31f:5ebe:fa1c with SMTP id 98e67ed59e1d1-339c26b3f3bmr1673227a91.0.1759459472655;
-        Thu, 02 Oct 2025 19:44:32 -0700 (PDT)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-339c4a1a1aasm497537a91.9.2025.10.02.19.44.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Oct 2025 19:44:32 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id 84565420B701; Fri, 03 Oct 2025 09:44:28 +0700 (WIB)
-Date: Fri, 3 Oct 2025 09:44:28 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Byungchul Park <byungchul@sk.com>, linux-kernel@vger.kernel.org
-Cc: kernel_team@skhynix.com, torvalds@linux-foundation.org,
-	damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
-	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
-	mingo@redhat.com, peterz@infradead.org, will@kernel.org,
-	tglx@linutronix.de, rostedt@goodmis.org, joel@joelfernandes.org,
-	sashal@kernel.org, daniel.vetter@ffwll.ch, duyuyang@gmail.com,
-	johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu,
-	willy@infradead.org, david@fromorbit.com, amir73il@gmail.com,
-	gregkh@linuxfoundation.org, kernel-team@lge.com, linux-mm@kvack.org,
-	akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
-	hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
-	jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
-	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
-	ngupta@vflare.org, linux-block@vger.kernel.org,
-	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
-	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
-	djwong@kernel.org, dri-devel@lists.freedesktop.org,
-	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
-	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
-	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
-	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
-	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
-	yeoreum.yun@arm.com, netdev@vger.kernel.org,
-	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
-	catalin.marinas@arm.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, luto@kernel.org,
-	sumit.semwal@linaro.org, gustavo@padovan.org,
-	christian.koenig@amd.com, andi.shyti@kernel.org, arnd@arndb.de,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
-	petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
-	paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
-	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
-	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
-	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
-	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
-	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
-	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
-	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
-	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
-	yuzhao@google.com, baolin.wang@linux.alibaba.com,
-	usamaarif642@gmail.com, joel.granados@kernel.org,
-	richard.weiyang@gmail.com, geert+renesas@glider.be,
-	tim.c.chen@linux.intel.com, linux@treblig.org,
-	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
-	chenhuacai@kernel.org, francesco@valla.it,
-	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
-	masahiroy@kernel.org, brauner@kernel.org,
-	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
-	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
-	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH v17 28/47] dept: add documentation for dept
-Message-ID: <aN84jKyrE1BumpLj@archie.me>
-References: <20251002081247.51255-1-byungchul@sk.com>
- <20251002081247.51255-29-byungchul@sk.com>
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AdqGwVSx;
+	spf=pass (imf28.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759459138; a=rsa-sha256;
+	cv=none;
+	b=og4/WPo48hpS0mt6Q8lpGPsH0OhFLdg/31Un9LbttmoThfWUmbwBWYtrWyn8c+ADT5DU48
+	sIDxyTHEVgC7u/Xpn+gjjn0Tj/0wzc8Te4OTTW2nKFsWC1Gnz97lkBh9BbFZd3tBnsRKqe
+	xdCqNYHhKFIJEXQwe4MzBo/gj8n79SY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1759459137;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rFxohDVox4L5XA/iD/+dEFf1PlFaKFj0XVzXne3jOZE=;
+	b=AdqGwVSxnTmTheR8Edp9X1LlyaX94QQnx42unb81vla3ttwV4Z1ZqwSmSSOUp5KWtGS4DY
+	1MX7gQMHdDkU48natT7U61lsSNkZy6DCieA/XsWXs3JUBxmuFhawSMR+5DJH5lsqSABgYs
+	9qzXQSDUnguCRbUc819mIrqzBJe1YOs=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-448-Ukzc7XblM3K0PKOF2pjLrw-1; Thu,
+ 02 Oct 2025 22:38:55 -0400
+X-MC-Unique: Ukzc7XblM3K0PKOF2pjLrw-1
+X-Mimecast-MFC-AGG-ID: Ukzc7XblM3K0PKOF2pjLrw_1759459133
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 436151800366;
+	Fri,  3 Oct 2025 02:38:53 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.14])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AA61E1953943;
+	Fri,  3 Oct 2025 02:38:51 +0000 (UTC)
+Date: Fri, 3 Oct 2025 10:38:47 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Chris Li <chrisl@kernel.org>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com,
+	baohua@kernel.org, nphamcs@gmail.com, shikemeng@huaweicloud.com
+Subject: Re: [PATCH 2/3] mm/swapfile.c: use swap_info[] to find the swap
+ device
+Message-ID: <aN83NwGpMCFvrOEy@MiWiFi-R3L-srv>
+References: <20251001043436.41338-1-bhe@redhat.com>
+ <20251001043436.41338-3-bhe@redhat.com>
+ <CACePvbXeFxbtH3c0Wvn56m+wsK0wqxP86ge5Ud73OvqnfDOwMw@mail.gmail.com>
 MIME-Version: 1.0
+In-Reply-To: <CACePvbXeFxbtH3c0Wvn56m+wsK0wqxP86ge5Ud73OvqnfDOwMw@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: FpugmBKQkYJioUnT6sMz44S-9jdALHKT1AA_EXKOD0w_1759459133
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251002081247.51255-29-byungchul@sk.com>
-X-Rspamd-Queue-Id: 417A680009
-X-Stat-Signature: xpi81in68so4oh3zk6gq6by73jo16fpj
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4FF69C000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1759459474-673348
-X-HE-Meta: U2FsdGVkX1/iiWuon+6lI89vgqc9ES5UCtcQdq2HM+C1ATTC+HOSqlopD2qUssYoynp5s9aD/8LGIHG4eMLZwzfQC1VGx+vWWQ0ghPW/DFsXhmer3CgGjNnWjKqtEqMqK2meIO2fM4NAbrD7IoMsJ7dihLqQWDu/5/vksHi1V1u09RPptJIQx1MgTVvXRDNhSn3Yz1o1ESTVoMxAvRh50TuW9bB7Jtk/FN/WLzDe8HUKRDVduhQbj4VAfue4u0RDEM2lz2DuboE90bVjFPmsnJoo8MBJAP1VXJTTaE+DF8ewuoZb8cE0A6XEJUUMn/ovwDLk0dQ3RIxttrTd/N5juqxjTG0WCvFx/9Hq0SD2dS4GpjMLsFUvKWZ1jug/QaTBwR6ZE+iKs2vtNHA9Tymw0YyUFpzRg1mHMR1W6AELmJ5vxtlwjDMtH3W5B+K2ZSjtlMYH6LWuDsO7YPwOD9H9dsd6SuS7sxGGPkcp00SBgfrdlMqn6A7PczYe9OHr/wZQEYWdKMi78Rw4yxwAix/SM4TfIIW3XscaHKgLo7et/U8dXeMeIe+LoV7m9i+FezzEm6nbQgeDoPceq6KPrr7UoLWBBAkLb4JZLsjtw1hMljoTfBI46jSDr9rBzYIZeCaZZnSv4e9xbfp3C4wF8+hI+L04k6l0qZp/erMP2fUyPivT0ocPvW6EqH9i48H0Ygzm7QxaQNumja+0XoEKjx/sZp3EsDdI/Vb5SDH3bUen+2mx7kzm9RxXFCiWc0XL+hx9GrocKbHtVft0AkqaaUT00f2ek1XPggUmXkehbhyWhO5GJooqWPkbHNVONoBKDa0yaMPbSWxVGuw2BcyyKITpMT+7sP+GcIh8DRtkiK4jalMOkDzC7ASfjlcO3JelnYfPFZMG4il3lhz4/ZcKGHWuxtG4bFuVyvIBOM75q+mWrLGPemcy+sLgekVCReGHGe82oW6MP43Tubri1n7882o
- S1L7roIf
- cTeeNvV+xCQ+73ynvSvPcrNigC2wxEiT0U7hlM4SgKKVxLvk3y+IA2fbE/kGk2XmGVLnaZDHhyi0BCYC1CXQHWrtmz6lU6X6CYf7f9d/mz90yNpwYL427rVbRtEJhsO0MxDZMB+Imj0rajMwHkHXGUPAB6WZd8cDY1oQrmyHO6IlEpYKtHZnMl3OZBOTxy25Kdzz4lcBOLT65k4qkV8KSa/denK2aFNUJkkQ0ZP0Qzjg269GtkHPBaHyCQL/ExvSnNNZsY1bTgqawWVSdpBQKAyHOg402zD257is9Nq+FOEPs4b51dxU/LKDROKjeEWjYY7IkSKVUFDtHF+GZoiJt15smLb01bJwfL9SrznXkeVSEmJK5IgnVizDmF/htuJucQkD1KH4lBJAx0ThdNrcaYAT6NqUT9lJs/f7tgYMlyxygSJY/iPP5Lbnjd0f3QPTrsjFXDUguJ03Mx4PWBIF91kjVuzgifLua/dDS4pkJdvvLLtSMovOUhpTJ1Rix+6bVveWBn5FCzaH0nkZXz2y6GVjpxE89wObTYgR9EjOUV9Yrhz9+w95CzbKLovAY/wlo89yi
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 5tzieyg8un8ksock8hkz5uardt7zch38
+X-HE-Tag: 1759459138-873754
+X-HE-Meta: U2FsdGVkX19klKNOqRevdp1JJnoUH9kCytrjFbEWdoIDcr54OM55KqBNNmaDrXipBX8TGGGGGJLlAxhIduJztRPZynxPWYlZrVoWNYPw0El0+doZc8aQMoMPyYotkrxb8K9kGfzJhS5BxckrB0xKDdyxCqHI0Su1sc/KBPJ/NViRsJw5XBY5qfIkhXq191esesFAX674B1BBxq+RbTNjGkaB0SVwSt5mHsmgWn5mG2SgndPENrVkxtRI9gWqVITCgIMA2hAKh/a/g9Ml/xBl7e8lZDlL4ShrRfSEkcymKxowSzgWGa4duYiMR53KpEKZDapITZZmUOby+kBQg6z0gUk6sBciCJsCKMaVr9cxU9JEs1veorioJ4ADCRqNP/UeWPfPnY8knCnl/uiVUZvepLpM5hegNQNTho2uKHBzvhNNTteyMBESmPyzMKmtvL9xvvwovpV0R+1yyXiGiTYyo5DMttbQwXK161fJqnzw7xWI0zDhxG11OOV0uJI/TwD5xbj8bCOl0DL5wMVFKyanSaH7aqUembtPBqYEn0pij4DLkVoBed/7vaJkmD8bAAIO8LVumpNPGFU3cco8bSe6kfNTeK1aIWBhir3tHml2GOBWmA5L/qd6cJidOob6AiTQr8GgOIWkdHhwKOaJ1bvbH57FJldK5K0tBazkOw/lOcG/+bs52PSPWKHaTF70UtUJ15oz3VrePi6slDLicerOx9ZIFRyX1/fP2NMqaRsEI+PXRUI/UqEb0Wt1gRH+XthGuq13VHITMCrQYDl1+YxOq52E4DPk7zr9fkLImkY8yxhOOUhDRu89YA3pcS+zg2ne6WT+VCwk/YzCvPRyOy552bIe/p9rryjeVTFKODOBo8GJz4Mh7B6qr0XbJi8ZyvLm5gGS7x4Jiqz1LdihtP+Tyj/wGnfRXpMa38zPHFMITws/n3wZ+x5JgmFXbqq2UMnP6Wd3tVgE6gb7K3T5W4A
+ T1S8MHox
+ UUm2+TPYkfy+ahi5MPzMnUjLh1kSjb7a68Hgwp7f03bwfHRGkXAug7sFiG86kXG0K2nkhZj4L2vOXY+W0OXITZp8MZogJm9SUvdiqfTkxiT2Nfu3EPT1rHjaxqVTmsTetpsgRyayujt39d4OmzFHSwaqJnQ2SLIqkZ/hDva13zVGXOxV+OJWF+wKh9omjKyfLthLqP5WugftxQNgXks43udyCbdgLKsDpBoBVCqbp2BMmP3QIxq0GsMligb1Ldd8LAbLQ/VwwwwvGHa1ZzPioX2rw35QByRc0k/OxFvuciVsefT5lsb3y5A4qorHf879S5MaigGQhxz8vnyuFTzaekpBqIYInbNAysx4EgtNFmMPLTW2E9qvbevIybuUZYUqP/SMiV9FiIbNzMG0VJyNvGmLbjpKUC3ygKqFqAN26Rns383THvaBXpduL8MmAceufS/E4UlExx1Ogmz7z94tgs8Lw9ckajUbiCl0b3qSX9j+7JwT4ttoxXspZ+GnLrrM6NDeqtm4VYVS/n2uGLRJZKVsmP4VDj+i0yA0WUDhocYQdU78rA6AxmUlgRSgTBYyfxDXe8KRcbtZkMY4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -177,420 +111,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 02, 2025 at 05:12:28PM +0900, Byungchul Park wrote:
-> This document describes the concept and APIs of dept.
+On 10/02/25 at 08:59am, Chris Li wrote:
+> On Tue, Sep 30, 2025 at 9:35 PM Baoquan He <bhe@redhat.com> wrote:
+> >
+> > Now, swap_active_head is only used to find a present swap device when
+> > trying to swapoff it. In fact, swap_info[] is a short array which is
+> > 32 at maximum, and usually the unused one can be reused, so the
+> > searching for target mostly only iterates the foremost several used
+> > slots. And swapoff is a rarely used operation, efficiency is not so
+> > important. Then it's unnecessary to get a plist to make it.
+> >
+> > Here go by iterating swap_info[] to find the swap device instead of
+> > iterating swap_active_head.
+> >
+> > Signed-off-by: Baoquan He <bhe@redhat.com>
+> > ---
+> >  mm/swapfile.c | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > index 5d71c748a2fe..18b52cc20749 100644
+> > --- a/mm/swapfile.c
+> > +++ b/mm/swapfile.c
+> > @@ -2641,6 +2641,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+> >         struct inode *inode;
+> >         struct filename *pathname;
+> >         int err, found = 0;
+> > +       unsigned int type;
+> >
+> >         if (!capable(CAP_SYS_ADMIN))
+> >                 return -EPERM;
+> > @@ -2658,7 +2659,8 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+> >
+> >         mapping = victim->f_mapping;
+> >         spin_lock(&swap_lock);
+> > -       plist_for_each_entry(p, &swap_active_head, list) {
+> > +       for (type = 0; type < nr_swapfiles; type++) {
+> > +               p = swap_info[type];
 > 
-> Signed-off-by: Byungchul Park <byungchul@sk.com>
-> ---
->  Documentation/dependency/dept.txt     | 735 ++++++++++++++++++++++++++
->  Documentation/dependency/dept_api.txt | 117 ++++
->  2 files changed, 852 insertions(+)
->  create mode 100644 Documentation/dependency/dept.txt
->  create mode 100644 Documentation/dependency/dept_api.txt
+> After some careful thinking of the swapoff behavior, I now consider
+> this patch buggy.
+> 
+> On behavior change is that, previously the swapoff is dependent on the
+> swap_active_list and only swapon device is on that list.
+> 
+> Now you change to enumerate every device at swap off and depend on the
+> p->flags & SWP_WRITEOK to filter out the device. Which will go through
+> all 32 swap devices regardless.
+> 
+> >                 if (p->flags & SWP_WRITEOK) {
+> >                         if (p->swap_file->f_mapping == mapping) {
+> 
+> Considering the following race:
+> 
+> CPU1:
+> swapoff( "/dev/sda1")
+> spin_lock(&swap_lock);
+> 
+> for (type = 0; type < nr_swapfiles; type++) {
+>      if (p->flags & SWP_WRITEOK) {
+>          // found the device.
+> }
+> ....
+> spin_lock(&p->lock);
+> del_from_avail_list(p, true);
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> plist_del(&p->list, &swap_active_head);
+> atomic_long_sub(p->pages, &nr_swap_pages);
+> total_swap_pages -= p->pages;
+> spin_unlock(&p->lock);
+> spin_unlock(&swap_lock);
+> 
+> // at this point the p->flags still have SWP_WRITEOK.
+> // swap_lock and p->lock are both unlocked.
 
-What about writing dept docs in reST (like the rest of kernel documentation)?
+No, SWP_WRITEOK is cleared in del_from_avail_list(). At this point,
+there's no more SWP_WRITEOK in p->flags when both swap_lock and p->lock
+are lifted.
 
----- >8 ----
-diff --git a/Documentation/dependency/dept.txt b/Documentation/locking/dept.rst
-similarity index 92%
-rename from Documentation/dependency/dept.txt
-rename to Documentation/locking/dept.rst
-index 5dd358b96734e6..7b90a0d95f0876 100644
---- a/Documentation/dependency/dept.txt
-+++ b/Documentation/locking/dept.rst
-@@ -8,7 +8,7 @@ How lockdep works
- 
- Lockdep detects a deadlock by checking lock acquisition order. For
- example, a graph to track acquisition order built by lockdep might look
--like:
-+like::
- 
-    A -> B -
-            \
-@@ -16,12 +16,12 @@ like:
-            /
-    C -> D -
- 
--   where 'A -> B' means that acquisition A is prior to acquisition B
--   with A still held.
-+where 'A -> B' means that acquisition A is prior to acquisition B
-+with A still held.
- 
- Lockdep keeps adding each new acquisition order into the graph in
- runtime. For example, 'E -> C' will be added when the two locks have
--been acquired in the order, E and then C. The graph will look like:
-+been acquired in the order, E and then C. The graph will look like::
- 
-        A -> B -
-                \
-@@ -32,10 +32,10 @@ been acquired in the order, E and then C. The graph will look like:
-    \                  /
-     ------------------
- 
--   where 'A -> B' means that acquisition A is prior to acquisition B
--   with A still held.
-+where 'A -> B' means that acquisition A is prior to acquisition B
-+with A still held.
- 
--This graph contains a subgraph that demonstrates a loop like:
-+This graph contains a subgraph that demonstrates a loop like::
- 
-                 -> E -
-                /      \
-@@ -67,6 +67,8 @@ mechanisms, lockdep doesn't work.
- 
- Can lockdep detect the following deadlock?
- 
-+::
-+
-    context X	   context Y	   context Z
- 
- 		   mutex_lock A
-@@ -80,6 +82,8 @@ Can lockdep detect the following deadlock?
- 
- No. What about the following?
- 
-+::
-+
-    context X		   context Y
- 
- 			   mutex_lock A
-@@ -101,7 +105,7 @@ What leads a deadlock
- ---------------------
- 
- A deadlock occurs when one or multi contexts are waiting for events that
--will never happen. For example:
-+will never happen. For example::
- 
-    context X	   context Y	   context Z
- 
-@@ -121,24 +125,24 @@ We call this *deadlock*.
- If an event occurrence is a prerequisite to reaching another event, we
- call it *dependency*. In this example:
- 
--   Event A occurrence is a prerequisite to reaching event C.
--   Event C occurrence is a prerequisite to reaching event B.
--   Event B occurrence is a prerequisite to reaching event A.
-+   * Event A occurrence is a prerequisite to reaching event C.
-+   * Event C occurrence is a prerequisite to reaching event B.
-+   * Event B occurrence is a prerequisite to reaching event A.
- 
- In terms of dependency:
- 
--   Event C depends on event A.
--   Event B depends on event C.
--   Event A depends on event B.
-+   * Event C depends on event A.
-+   * Event B depends on event C.
-+   * Event A depends on event B.
- 
--Dependency graph reflecting this example will look like:
-+Dependency graph reflecting this example will look like::
- 
-     -> C -> A -> B -
-    /                \
-    \                /
-     ----------------
- 
--   where 'A -> B' means that event A depends on event B.
-+where 'A -> B' means that event A depends on event B.
- 
- A circular dependency exists. Such a circular dependency leads a
- deadlock since no waiters can have desired events triggered.
-@@ -152,7 +156,7 @@ Introduce DEPT
- --------------
- 
- DEPT(DEPendency Tracker) tracks wait and event instead of lock
--acquisition order so as to recognize the following situation:
-+acquisition order so as to recognize the following situation::
- 
-    context X	   context Y	   context Z
- 
-@@ -165,18 +169,18 @@ acquisition order so as to recognize the following situation:
- 				   event A
- 
- and builds up a dependency graph in runtime that is similar to lockdep.
--The graph might look like:
-+The graph might look like::
- 
-     -> C -> A -> B -
-    /                \
-    \                /
-     ----------------
- 
--   where 'A -> B' means that event A depends on event B.
-+where 'A -> B' means that event A depends on event B.
- 
- DEPT keeps adding each new dependency into the graph in runtime. For
- example, 'B -> D' will be added when event D occurrence is a
--prerequisite to reaching event B like:
-+prerequisite to reaching event B like::
- 
-    |
-    v
-@@ -184,7 +188,7 @@ prerequisite to reaching event B like:
-    .
-    event B
- 
--After the addition, the graph will look like:
-+After the addition, the graph will look like::
- 
-                      -> D
-                     /
-@@ -209,6 +213,8 @@ How DEPT works
- Let's take a look how DEPT works with the 1st example in the section
- 'Limitation of lockdep'.
- 
-+::
-+
-    context X	   context Y	   context Z
- 
- 		   mutex_lock A
-@@ -220,7 +226,7 @@ Let's take a look how DEPT works with the 1st example in the section
- 		   mutex_unlock A
- 				   mutex_unlock A
- 
--Adding comments to describe DEPT's view in terms of wait and event:
-+Adding comments to describe DEPT's view in terms of wait and event::
- 
-    context X	   context Y	   context Z
- 
-@@ -248,7 +254,7 @@ Adding comments to describe DEPT's view in terms of wait and event:
- 				   mutex_unlock A
- 				   /* event A */
- 
--Adding more supplementary comments to describe DEPT's view in detail:
-+Adding more supplementary comments to describe DEPT's view in detail::
- 
-    context X	   context Y	   context Z
- 
-@@ -283,7 +289,7 @@ Adding more supplementary comments to describe DEPT's view in detail:
- 				   mutex_unlock A
- 				   /* event A that's been valid since 4 */
- 
--Let's build up dependency graph with this example. Firstly, context X:
-+Let's build up dependency graph with this example. Firstly, context X::
- 
-    context X
- 
-@@ -292,7 +298,7 @@ Let's build up dependency graph with this example. Firstly, context X:
-    /* start to take into account event B's context */
-    /* 2 */
- 
--There are no events to create dependency. Next, context Y:
-+There are no events to create dependency. Next, context Y::
- 
-    context Y
- 
-@@ -317,13 +323,13 @@ waits between 3 and the event, event B does not create dependency. For
- event A, there is a wait, folio_lock B, between 1 and the event. Which
- means event A cannot be triggered if event B does not wake up the wait.
- Therefore, we can say event A depends on event B, say, 'A -> B'. The
--graph will look like after adding the dependency:
-+graph will look like after adding the dependency::
- 
-    A -> B
- 
--   where 'A -> B' means that event A depends on event B.
-+where 'A -> B' means that event A depends on event B.
- 
--Lastly, context Z:
-+Lastly, context Z::
- 
-    context Z
- 
-@@ -343,7 +349,7 @@ wait, mutex_lock A, between 2 and the event - remind 2 is at a very
- start and before the wait in timeline. Which means event B cannot be
- triggered if event A does not wake up the wait. Therefore, we can say
- event B depends on event A, say, 'B -> A'. The graph will look like
--after adding the dependency:
-+after adding the dependency::
- 
-     -> A -> B -
-    /           \
-@@ -367,6 +373,8 @@ Interpret DEPT report
- 
- The following is the example in the section 'How DEPT works'.
- 
-+::
-+
-    context X	   context Y	   context Z
- 
- 		   mutex_lock A
-@@ -402,7 +410,7 @@ The following is the example in the section 'How DEPT works'.
- 
- We can Simplify this by replacing each waiting point with [W], each
- point where its event's context starts with [S] and each event with [E].
--This example will look like after the replacement:
-+This example will look like after the replacement::
- 
-    context X	   context Y	   context Z
- 
-@@ -419,6 +427,8 @@ This example will look like after the replacement:
- DEPT uses the symbols [W], [S] and [E] in its report as described above.
- The following is an example reported by DEPT for a real problem.
- 
-+::
-+
-    Link: https://lore.kernel.org/lkml/6383cde5-cf4b-facf-6e07-1378a485657d@I-love.SAKURA.ne.jp/#t
-    Link: https://lore.kernel.org/lkml/1674268856-31807-1-git-send-email-byungchul.park@lge.com/
- 
-@@ -620,6 +630,8 @@ The following is an example reported by DEPT for a real problem.
- 
- Let's take a look at the summary that is the most important part.
- 
-+::
-+
-    ---------------------------------------------------
-    summary
-    ---------------------------------------------------
-@@ -639,7 +651,7 @@ Let's take a look at the summary that is the most important part.
-    [W]: the wait blocked
-    [E]: the event not reachable
- 
--The summary shows the following scenario:
-+The summary shows the following scenario::
- 
-    context A	   context B	   context ?(unknown)
- 
-@@ -652,7 +664,7 @@ The summary shows the following scenario:
- 
-    [E] unlock(&ni->ni_lock:0)
- 
--Adding supplementary comments to describe DEPT's view in detail:
-+Adding supplementary comments to describe DEPT's view in detail::
- 
-    context A	   context B	   context ?(unknown)
- 
-@@ -677,7 +689,7 @@ Adding supplementary comments to describe DEPT's view in detail:
-    [E] unlock(&ni->ni_lock:0)
-    /* event that's been valid since 2 */
- 
--Let's build up dependency graph with this report. Firstly, context A:
-+Let's build up dependency graph with this report. Firstly, context A::
- 
-    context A
- 
-@@ -697,13 +709,13 @@ wait, folio_lock(&f1), between 2 and the event. Which means
- unlock(&ni->ni_lock:0) is not reachable if folio_unlock(&f1) does not
- wake up the wait. Therefore, we can say unlock(&ni->ni_lock:0) depends
- on folio_unlock(&f1), say, 'unlock(&ni->ni_lock:0) -> folio_unlock(&f1)'.
--The graph will look like after adding the dependency:
-+The graph will look like after adding the dependency::
- 
-    unlock(&ni->ni_lock:0) -> folio_unlock(&f1)
- 
--   where 'A -> B' means that event A depends on event B.
-+where 'A -> B' means that event A depends on event B.
- 
--Secondly, context B:
-+Secondly, context B::
- 
-    context B
- 
-@@ -719,14 +731,14 @@ very start and before the wait in timeline. Which means folio_unlock(&f1)
- is not reachable if unlock(&ni->ni_lock:0) does not wake up the wait.
- Therefore, we can say folio_unlock(&f1) depends on unlock(&ni->ni_lock:0),
- say, 'folio_unlock(&f1) -> unlock(&ni->ni_lock:0)'. The graph will look
--like after adding the dependency:
-+like after adding the dependency::
- 
-     -> unlock(&ni->ni_lock:0) -> folio_unlock(&f1) -
-    /                                                \
-    \                                                /
-     ------------------------------------------------
- 
--   where 'A -> B' means that event A depends on event B.
-+where 'A -> B' means that event A depends on event B.
- 
- A new loop has been created. So DEPT can report it as a deadlock! Cool!
- 
-diff --git a/Documentation/dependency/dept_api.txt b/Documentation/locking/dept_api.rst
-similarity index 97%
-rename from Documentation/dependency/dept_api.txt
-rename to Documentation/locking/dept_api.rst
-index 8e0d5a118a460e..96c4d65f4a9a2d 100644
---- a/Documentation/dependency/dept_api.txt
-+++ b/Documentation/locking/dept_api.rst
-@@ -10,6 +10,8 @@ already applied into the existing synchronization primitives e.g.
- waitqueue, swait, wait_for_completion(), dma fence and so on.  The basic
- APIs of SDT are:
- 
-+.. code-block:: c
-+
-    /*
-     * After defining 'struct dept_map map', initialize the instance.
-     */
-@@ -27,6 +29,8 @@ APIs of SDT are:
- 
- The advanced APIs of SDT are:
- 
-+.. code-block:: c
-+
-    /*
-     * After defining 'struct dept_map map', initialize the instance
-     * using an external key.
-@@ -83,6 +87,8 @@ Do not use these APIs directly.  These are the wrappers for typical
- locks, that have been already applied into major locks internally e.g.
- spin lock, mutex, rwlock and so on.  The APIs of LDT are:
- 
-+.. code-block:: c
-+   
-    ldt_init(map, key, sub, name);
-    ldt_lock(map, sub_local, try, nest, ip);
-    ldt_rlock(map, sub_local, try, nest, ip, queued);
-@@ -96,6 +102,8 @@ Raw APIs
- --------
- Do not use these APIs directly.  The raw APIs of dept are:
- 
-+.. code-block:: c
-+
-    dept_free_range(start, size);
-    dept_map_init(map, key, sub, name);
-    dept_map_reinit(map, key, sub, name);
-diff --git a/Documentation/locking/index.rst b/Documentation/locking/index.rst
-index 6a9ea96c8bcb70..7ec3dce7fee425 100644
---- a/Documentation/locking/index.rst
-+++ b/Documentation/locking/index.rst
-@@ -24,6 +24,8 @@ Locking
-     percpu-rw-semaphore
-     robust-futexes
-     robust-futex-ABI
-+    dept
-+    dept_api
- 
- .. only::  subproject and html
- 
+> 
+> Now the second CPU swapoff race begins
+> 
+>                                                        CPU2:
+>                                                        swapoff( "/dev/sda1")
+> 
+> spin_lock(&swap_lock); // can take this lock
+> 
+>                                                        for (type = 0;
+> type < nr_swapfiles; type++) {
+>                                                        if (p->flags &
+> SWP_WRITEOK) {
+>                                                               // also
+> found the device. because p->flags are not clear to 0 yet.
+>                                                        }
+>                                                        ....
+> 
+> spin_lock(&p->lock); // can also take this lock
+> 
+> del_from_avail_list(p, true);
+> 
+> plist_del(&p->list, &swap_active_head); <=== blow up here
+>                                                        // remove p not
+> the in list.
+> 
+> atomic_long_sub(p->pages, &nr_swap_pages);
+>                                                        // double subtracting ..
+> 
+> total_swap_pages -= p->pages;
+>                                                        // double
+> subtracting as well.
+>                                                        spin_unlock(&p->lock);
+>                                                        spin_unlock(&swap_lock);
+> 
+> Please confirm or deny if that race is possible.
+> If it is, consider it a NACK to this patch.
+> 
+> Please consider that even trivial patches can have subtle behavior
+> change and it has non zero cost to reviewers. It can introduce subtle
+> bugs unintentionally as well. In this case, I feel that the
+> gain(removing a list, total less than 1K) is too small,  not a very
+> good return on investment.
+> 
+> Chris
+> 
 
-> +Can lockdep detect the following deadlock?
-> +
-> +   context X	   context Y	   context Z
-> +
-> +		   mutex_lock A
-> +   folio_lock B
-> +		   folio_lock B <- DEADLOCK
-> +				   mutex_lock A <- DEADLOCK
-> +				   folio_unlock B
-> +		   folio_unlock B
-> +		   mutex_unlock A
-> +				   mutex_unlock A
-> +
-> +No. What about the following?
-> +
-> +   context X		   context Y
-> +
-> +			   mutex_lock A
-> +   mutex_lock A <- DEADLOCK
-> +			   wait_for_complete B <- DEADLOCK
-> +   complete B
-> +			   mutex_unlock A
-> +   mutex_unlock A
-
-Can you explain how DEPT detects deadlock on the second example above (like
-the first one being described in "How DEPT works" section)?
-
-Confused...
-
--- 
-An old man doll... just what I always wanted! - Clara
 
