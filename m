@@ -4,104 +4,165 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBFB7CAC5B8
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 01:02:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C06DCAC5B0
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 01:12:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 111538E0006; Thu,  2 Oct 2025 21:02:40 -0400 (EDT)
+	id 7427C8E0002; Thu,  2 Oct 2025 21:12:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C2CA8E0001; Thu,  2 Oct 2025 21:02:40 -0400 (EDT)
+	id 6F32E8E0001; Thu,  2 Oct 2025 21:12:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F19898E0006; Thu,  2 Oct 2025 21:02:39 -0400 (EDT)
+	id 5BA248E0002; Thu,  2 Oct 2025 21:12:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E1D408E0001
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 21:02:39 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 63F97BAA2C
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 01:02:39 +0000 (UTC)
-X-FDA: 83955002838.22.F3D7E86
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf27.hostedemail.com (Postfix) with ESMTP id EA85540006
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 01:02:36 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	spf=pass (imf27.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 461308E0001
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 21:12:12 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EAC03BA6FB
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 01:12:11 +0000 (UTC)
+X-FDA: 83955026862.09.8CE442C
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4EE5840002
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 01:12:08 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	spf=pass (imf11.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759453357;
+	s=arc-20220608; t=1759453930;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4OBKKwIO3WuO+KhtZhc+7woqfVrywZ4Jt91solNLovM=;
-	b=C20k9wIvwCN1zgpDkLXfW3h5VkJTKgNfeMjomXvZ88LXVsCBBsu8xB911zlo0Bu4GTorOC
-	64ijkSK7gS+E5SDO/unSDfQR80g8WlLkw4sUQmi+dYmJKgrd2wi+1RzfjOl+bu444ZINZK
-	cEYW3ulajNVC9thySMHXTE+7v0Jferg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759453357; a=rsa-sha256;
-	cv=none;
-	b=TkGVNmlhfiS3kBe5VU4gxfqTC7lGgYwg1MdIphCkdlIFNTGIQCHuFVhNxM3f0fvcLJzAIJ
-	k856lWUgNc0lzyNntMVzpbBZbIbHve3grOUIQq5XuA2sZmAl7jnOk9ffVcj/VAF8FXSyfp
-	1shsWJr5HeQRpla7VN5IW/eF4+fVmLQ=
+	bh=sMkLWwSH11x6aVkNl2Lmy02LeseugCtOjlz21VQYeSg=;
+	b=gQ+INI4XRPUHfIQIGHsvd4cUjhNDW9MVpwoByzEYgBFgU8xis7QlducJUIc7UXM9LKQTQ7
+	HqKqfhVcn+cmPe66vn6vgar14bULqK9MYSI7VAFp4BwDsoxwNjt8GspZvKY9TTspwcexYi
+	vlwWYz6F7ONBIFEClpxymmqJ2MtX4pM=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
+	imf11.hostedemail.com;
 	dkim=none;
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-X-AuditID: a67dfc5b-c2dff70000001609-fd-68df20ab7c6a
-Date: Fri, 3 Oct 2025 10:02:30 +0900
+	spf=pass (imf11.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759453930; a=rsa-sha256;
+	cv=none;
+	b=FzLWKkxstvuSCXJPdbuo3dzTiCN7e42zmaEhXN7pUDw+bRivi5BeU9Tto2TuqicksU/VKi
+	u/a+XtzTzt1KcTNs2c3OHGv2m9yV8sa9p18/9EcB5IZVZkJ4N8wiI4PhkCuCSmWGgw1tfX
+	0L0+zRJl6Wnigz8Ri8sAtfBRooBRJt8=
+X-AuditID: a67dfc5b-c45ff70000001609-93-68df22e7fb7d
+Date: Fri, 3 Oct 2025 10:12:01 +0900
 From: Byungchul Park <byungchul@sk.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: akpm@linux-foundation.org, ziy@nvidia.com, matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, gourry@gourry.net,
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, clameter@sgi.com,
-	kravetz@us.ibm.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, max.byungchul.park@gmail.com,
-	kernel_team@skhynix.com, harry.yoo@oracle.com,
-	gwan-gyeong.mun@intel.com, yeoreum.yun@arm.com,
-	syzkaller@googlegroups.com, ysk@kzalloc.com,
-	Matthew Wilcox <willy@infradead.org>
-Subject: Re: [RFC] mm/migrate: make sure folio_unlock() before
- folio_wait_writeback()
-Message-ID: <20251003010230.GC75385@system.software.com>
-References: <20251002081612.53281-1-byungchul@sk.com>
- <9a586b5b-c47f-45eb-83c8-1e86431fc83d@redhat.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
+	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
+	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
+	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
+	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
+	tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
+	amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
+	linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
+	minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
+	sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+	ngupta@vflare.org, linux-block@vger.kernel.org,
+	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
+	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
+	djwong@kernel.org, dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
+	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
+	yeoreum.yun@arm.com, netdev@vger.kernel.org,
+	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
+	catalin.marinas@arm.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, luto@kernel.org,
+	sumit.semwal@linaro.org, gustavo@padovan.org,
+	christian.koenig@amd.com, andi.shyti@kernel.org, arnd@arndb.de,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+	rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
+	petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
+	paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
+	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
+	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
+	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
+	yuzhao@google.com, baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com, joel.granados@kernel.org,
+	richard.weiyang@gmail.com, geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com, linux@treblig.org,
+	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+	chenhuacai@kernel.org, francesco@valla.it,
+	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
+	masahiroy@kernel.org, brauner@kernel.org,
+	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
+	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH v17 08/47] x86_64, dept: add support
+ CONFIG_ARCH_HAS_DEPT_SUPPORT to x86_64
+Message-ID: <20251003011201.GD75385@system.software.com>
+References: <20251002081247.51255-1-byungchul@sk.com>
+ <20251002081247.51255-9-byungchul@sk.com>
+ <cd056d80-aadd-4f8a-8aad-c34b55686fac@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9a586b5b-c47f-45eb-83c8-1e86431fc83d@redhat.com>
+In-Reply-To: <cd056d80-aadd-4f8a-8aad-c34b55686fac@intel.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrIIsWRmVeSWpSXmKPExsXC9ZZnoe5qhfsZBrcfKFnMWb+GzWLXjRCL
-	9Y3r2C2+rv/FbPHz7nF2i4uv/zBZ3F/2jMXi+NZ57BbX1x5lsri8aw6bxb01/1ktvvVJW1yY
-	2MtqceRNN7PF7x9A8blfDC1Wr8mw+LJ6FZvF7KP32B2EPdbMW8PosXPWXXaPPRNPsnl0t11m
-	99i8Qstj8Z6XTB6bPk1i91j4+wWzx4kZv1k8dj609Ohtfsfm8fHpLRaP9/uusnncvQ5Udu5a
-	H7PH501yAQJRXDYpqTmZZalF+nYJXBmTl31hLdgrUDFv/XX2BsbfXF2MnBwSAiYSJ++9YO1i
-	5ACzP0yzAjFZBFQkXi73AKlgE1CXuHHjJzOILSKgIbGpbQOQzcXBLPCOWeLoilUsIAlhgXCJ
-	6e3nwGxeAQuJMwsusYLYQgKZEqc7ZjBBxAUlTs58AlbDLKAlcePfSyaQXcwC0hLL/3GAhDkF
-	7CSmf/oKtktUQFniwLbjTBBXnmKXOPmaDcKWlDi44gbLBEaBWUimzkIydRbC1AWMzKsYhTLz
-	ynITM3NM9DIq8zIr9JLzczcxAiN2We2f6B2Mny4EH2IU4GBU4uH1KLiXIcSaWFZcmXuIUYKD
-	WUmEN2HFnQwh3pTEyqrUovz4otKc1OJDjNIcLErivEbfylOEBNITS1KzU1MLUotgskwcnFIN
-	jF43p3C5u1+dvMFPL8XH816PKa/ysydZ8ZZWZjPZTlgv2SxqYTVDaKWjerX5rA+MUpk3A94t
-	N2J0Wqjyg5c/b9oEse+lstoLlLTeM4T4ucx529iwds7ixM+SJXW3mQwqL26uaHU48Pm0xA2X
-	/vqWeXk7rt670//RSq4sZcH+U/PncHI9VhTcoMRSnJFoqMVcVJwIAChf3JzUAgAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrJIsWRmVeSWpSXmKPExsXC5WfdrLta4X6Gwbl9EhZz1q9hs9h1I8Ri
-	feM6douv638xW/y8e5zd4uLrP0wW95c9Y7E4vnUeu8XhuSdZLa6vPcpkcXnXHDaLe2v+s1p8
-	65O2uDCxl9Xi0LXnrBZH3nQzW/z+AZSc+8XQYvWaDIsvq1exWcw+eo/dQdRjzbw1jB47Z91l
-	99gz8SSbR3fbZXaPzSu0PBbvecnksenTJHaPhb9fMHucmPGbxWPnQ0uP3uZ3bB4fn95i8Xi/
-	7yqbx93rQGXfbnt4LH7xgSlAKIrLJiU1J7MstUjfLoErY/KyL6wFewUq5q2/zt7A+Juri5GD
-	Q0LAROLDNCsQk0VAReLlco8uRk4ONgF1iRs3fjKD2CICGhKb2jYA2VwczALvmCWOrljFApIQ
-	FgiXmN5+DszmFbCQOLPgEiuILSSQKXG6YwYTRFxQ4uTMJ2A1zAJaEjf+vWQC2cUsIC2x/B8H
-	SJhTwE5i+qevYLtEBZQlDmw7zjSBkXcWku5ZSLpnIXQvYGRexSiSmVeWm5iZY6pXnJ1RmZdZ
-	oZecn7uJERiBy2r/TNzB+OWy+yFGAQ5GJR5ej4J7GUKsiWXFlbmHGCU4mJVEeBNW3MkQ4k1J
-	rKxKLcqPLyrNSS0+xCjNwaIkzusVnpogJJCeWJKanZpakFoEk2Xi4JRqYCzJfXo+Qd+W68oF
-	OUtTRkXL5W+uqspK5ZsXV1m0nbbiim9JOr/z46ZHcmEbjktPORXE8G0iZ3f3jfU/ODaUKhfe
-	Wb02drl+/kaF09x+qu9ZEvPec28tSj7QZbLK+3PHSwPh+vWH7SMFLhavLObaktz/ydFeiusA
-	s3t6TUQ+w+oXkiov94hyKLEUZyQaajEXFScCAH4UmxC8AgAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0xbdRTH/d03dXV3V9yuEGOsS2ZQplP+OBiHMyTuZtEEsz802x+jsTe2
+	WXmkMBxGk85J1+Ef1s4xW2C2bDBoy8aKMl6dhYVqh83oXtQNKAxsIW0lIo/g+rCVLO6fk0/y
+	/Z7vOTk5DM41UzmMqrxa1JTL1TJKQkhim6z5YVlQ+VrXQAE0XXJQoHeaSBi7aEcQXNEjWHvY
+	iENdX4qA5fX7NKRcHgQNfiMOkWtLCM4sHCNgYWQvxIIDJKQmwxiMr0YRtM0lMZhzn0CQaDgM
+	P7R0U2CdmcTh9soiBd7TX1MQ8zdh8GcXBZYvXSQ0NxrTsc1OAvqm+2nwR+IYTDQYMbA734dg
+	W4iAUUMLlh5HQcPlbXC6cwCDRt8tEh60m2mIz+yClKUCPPYwDRdjN0jwTt0lIRIyUnBFO02D
+	8/cRBMu3ZzDQ968Q4Lr3Mlh15wkwnZ2gYNDlJUCfWEZwq7+JgilHigRt41r6CO5REm7axwi4
+	FA5gMOr5lYAb/Z0ktI77MZiZDpDQ7fsN36MQbN09mFB3M0EJjrMOJNQZ0uVadBEXWkejlOBa
+	tRDCt758oc88SQsW5xGhuz1PODe4gAn3IrsFp+0kJTiXjLRgfTiPl7xyQPKWQlSrakTNq0Wl
+	EqV3LIFVnso+qjMlKS0ybK5HWQzPFvArQzH0iHXXT/7HBLudX7vci2WYYnfwgcA6nuHsNF/v
+	uEDXIwmDs1dyef+Ps2mBYZ5m5Xzozo6MR8oCb/DZqYyHY79DvLElSG8IW3ivaY7IMM7m8YHk
+	Apbpxdlc/kKSyWAWu5vvGXwy43iGfZF39/yCbaw2lcXXd3y4wc/yQ+0BwoBY82Oh5sdCzf+H
+	WhBuQ5yqvKZMrlIX7FTWlquO7vy4osyJ0k/b9kX8YC9aGts/jFgGyTZJhcopJUfKa6pqy4YR
+	z+CybGlp+4SSkyrktZ+JmopDmiNqsWoY5TKEbJv09dVPFRz7ibxaPCyKlaLmkYoxWTlaVO0u
+	jL70zh9WWR6S/1zizv9pqfDvu0WzHeuHikb2DTTFTcXOXspTsnjc8sAR/Yutzz0Vun/OFi9W
+	zO99L1GjPcO98Oa+b54oPnBnz0ceXVdrJ8eWbH3jK3Joywf6f/Yn3y6dP17xec7VY9yJ2fDW
+	qxH9eFSnfs5X+vy73y8/FbIVCptlRJVSvisP11TJ/wV5WqOHsAMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxbZRTHfe69fe6lrnpX67gBP1UXMpZtLvHlTDddNJEnJhK/kTgj3Gx3
+	tgItayeOJTMwKOJ8oRTbhpa5yrKCwAaDiiBjYTSyAGsEYY4orLAVWDOQbCuU8lLsjTHuy8nv
+	5P/7J+fD4Wj1uiKF0xuOSyaDmKfFSkaZ+XrprjltUPdiiz8J/ijpZWApUsFAbUszhoq2GgUM
+	X2pCEFyqQBBdc9Ng6dpkYMPWz0Ik9hcLmz39CBwjNhqafSUUPGqNY7jvf4jAPh3C4AyXMLDo
+	/RqBa9bNQvjXDFgIditgc3KOglvL8wi8oTgFod4vEGw4cuFcXTuGtcBvNDjtwwh+mJ6k4WF4
+	CsG91oTh67+NoKfhNIYZ6080jIaegrGlRQwD9q8wLIzUUvB3KwbP6R4FnHXbEJSeb8HgONvG
+	QNfULyyM3F+nYMJho6Cp7T0IemcZGLLWUYkjE9blZHA7S6nEuEeB/WI3BTFvIws3zk8w4C3e
+	Du7AqALuNLhYWJ/eC5seI/Q3zbEwWWlnDjoQiVq+ZUhjewdFLL9vYNL8fTMia6s2RCIXSmli
+	sSZW//wiTcraPyMXhuYxWV26iUnPsochg3UCqQrsIl2uSZaUXf2Tff+1D5T7j0h5+kLJtOeN
+	HKVuYHiDKqjWnCivieNiZH36DEriBP4loXzwSyQzw78gRC93UjJjPk0YH4/RMmsSPPhjPXsG
+	KTma/zlVGPHdTQQc9wwvCrM302RHxYNgDTRh2VHz3yHBVhdk/w22CgM1IUZmmk8XxuNhSu7S
+	fKpQH+dkTOIPCB1XnpSNZ/nnhd6O65QVqVyPlV2PlV3/lz2IbkQavaEwX9TnvbzbnKsrMuhP
+	7D5szG9DiZ/0nlqv6kSR0Yw+xHNIu0VFCm7r1Aqx0FyU34cEjtZqVDkNEzq16ohYdFIyGbNN
+	n+ZJ5j6UyjHaZNW7WVKOmv9YPC7lSlKBZPovpbiklGL0+cyHHdcisU+iD7jgmwaDfVv4Wpbx
+	HW9a7luDW/btq88m16PPKX3dEf+NU+LBsnFjdWwl+eITH1UGZtPT9vi5ZRgdW3DGdmRGs1Nq
+	pjKPDe089vahVysOvbIy1b7jlm9mNStc2deycrRz9ZtqV7hkTOPMliyXarfXejLCuNxapdUy
+	Zp24N502mcV/AI9Fdl+PAwAA
 X-CFilter-Loop: Reflected
-X-Stat-Signature: 7orqg6g8pgs4ds83jopc9paf88snyjjt
+X-Rspamd-Queue-Id: 4EE5840002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EA85540006
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1759453356-290024
-X-HE-Meta: U2FsdGVkX1+LYFh2r9HHaRq1AkPgk/RNOGiMxy8nayFgYjDeOPFs0DVwB0zqeQHyx2TfoG41rn25E+2wdUCQU3509BH7+NEQEeYWngZIy0exGbxMZOgrcIFnixvWKFKFqvkx0tmHU3DY2Lyr7kVHE8cppdiFyDOxC6mAR+cJu/PIk1q+in1FH+bs43Y3eiagHrBQYLWRx8fLNIH9F1/X/cUxGXbd5jNz6XbfySIS2UGIn95rrPUmW0JzGdYMwcom0yzgb1z1mG2f+q69ixIBiLCTsTPsz7+trTRxIl75gm7ufRlk9UoqN+HH5CTN/xu94I/UfWrZZynuftyrhCiCzkMhmSJJB0CbdSDKo5YK7+go2s71NVe1YuTiJSq1IQeS8w8uznaKSZpcLa6Pro9iZEraCr9Z9oEgZ+Hk6NHroHak8hO0Jbg98n2cf5Mfze+xiIWVxKmKXemRu+1lgfb306e9l5MKmbruJRl7qQ83XGip6K4/CmEvbXTj7U/+q8brzoDMkuF3AOA5JUR758t2u0sYjjqEIFcYWom9GX3yJ/TuePTdkInuOnCFv+t2XVroOGtdWDIdzeTKXBPDW2SIwANOy1olWeZdLhoTUVsO2q4Qnf9RPDk2j/613ZQVDWkfaHfmAX9Qd8wW8qqFGGof4H+l4l+iGOQftHCZFP7/f1/j5CEXvNlnfV7w3D0imz1UI7U0rBQcI30co0YqWYSfEjnpooIDXjj0
+X-Rspamd-Server: rspam07
+X-Stat-Signature: a3u3pwd3rwxpex7mfm3iwepg5xjqqe3a
+X-HE-Tag: 1759453928-389669
+X-HE-Meta: U2FsdGVkX19LS2l0UiTCbvXwTSGDRLbfD2m3Sp+M5DPHuE5zIbNhkhHZjNJXMJ+bWx/KEZLHJQ5SPR4bre6Y8+oq2d4kAQJTk45f2dU/xyd3XmHR0wsqrxXG69DkJf3HLpg4Z1DkV3j1jgubwTJPV6SZAlrQSgjqb7YMzcyeNZsvfiv1hOF5NsNs+YyVyx8ZjraBEJplQu/o2uZ96l0DG+8xdUnDEoATAykBPAsM8TSmAAbmGW8VR+4m17WnLNoqZ/WjGvEG3qhNonT+Dbxl9cBYA0fJ7fj1qpriMzCWWu8eFPhkZE1/TtaCS8HqCbR0hj2Tv9cIThxT4vN669YRx5TLCITzIAAyf8tKwZHXGzejrFWxsE8DKBpOGDTZjwTOr3mlQcsdJiiIzvaZ2ky4S8sXAr7xL97cjXDQpLfY53gGDJtrccuqDT4kQKIBmKZF9BEf7vNih/FqcMecomqXf4+MWlqi/Mm9mwUbnHnpKh+fM3pBzPQrugzUP3gYtX9eRhtab3cOJbZ6tpxhkygOBRReusnW9IxvBt9qH9Y4oyQBYsmbFslWQyUcuXnkCjLo4TlG2FUrCpFPIb4MiwRL0IJoUeJV2N9kExXMJG5LShZWf1lpe2ZDodZwNNONJl8hdyXQsBwevYv0jSJH9c0wbKHFD4MKed0JRS+voR6C51T5TYmngtA2BFcFAsOwviLlxj+FXwR7dYgxQ2a5q+vNNno79C/wTHQBQpXPOKDBa+QH9YSP3ZZik8N5DqB2KYnIYMb2v2tSdupuOVrx4a6Ix3MRhNVacWyOy3iwfCeEywl/LP4qLFlWThbGHKQeowCgZaJojWQ6DP2Vy6UvutJOyjFywWd/qfgvIERB7bIlZgoMlskSKtKnfwAATK0V1Qe1yI3MNRUJ1lFRlBRxCcrffZ74nHhtwoJ7ckaXYAz1T70grBGQBaUCSEBNkNU6qhldPWHP6xpur0+r/X4NWKc
+ 9w2/FJW4
+ F8rQjrRxABK0zMsiV6o6AvNujXrdxZsfaAz00/pUhOTKOABk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,62 +171,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 02, 2025 at 01:38:59PM +0200, David Hildenbrand wrote:
-> > To simplify the scenario:
-> > 
+On Thu, Oct 02, 2025 at 08:22:29AM -0700, Dave Hansen wrote:
+> On 10/2/25 01:12, Byungchul Park wrote:
+> > dept needs to notice every entrance from user to kernel mode to treat
+> > every kernel context independently when tracking wait-event dependencies.
+> > Roughly, system call and user oriented fault are the cases.
 > 
-> Just curious, where is the __folio_start_writeback() to complete the
-> picture?
-> 
-> >     context X (wq worker)     context Y (process context)
-> > 
-> >                               migrate_pages_batch()
-> >     ext4_end_io_end()           ...
-> >       ...                       migrate_folio_unmap()
-> >       ext4_get_inode_loc()        ...
-> >         ...                       folio_lock() // hold the folio lock
-> >         bdev_getblk()             ...
-> >           ...                     folio_wait_writeback() // wait forever
-> >           __find_get_block_slow()
-> >             ...                           ...
-> >             folio_lock() // wait forever
-> >             folio_unlock()      migrate_folio_undo_src()
-> >                                   ...
-> >       ...                         folio_unlock() // never reachable
-> >       ext4_finish_bio()
-> >       ...
-> >       folio_end_writeback() // never reachable
-> > 
-> 
-> But aren't you implying that it should from this point on be disallowed
-> to call folio_wait_writeback() with the folio lock held? That sounds ...
-> a bit wrong.
-> 
-> Note that it is currently explicitly allowed: folio_wait_writeback()
-> documents "If the folio is not locked, writeback may start again after
-> writeback has finished.". So there is no way to prevent writeback from
+> "Roughly"?
 
-Thank you for the information.  I was wrong then.
+I will change it to a better one.
 
-That means we shouldn't allow folio_lock() but try lock, while heading
-for writeback end in terms of dependency.
+> >  #define __SYSCALL(nr, sym) extern long __x64_##sym(const struct pt_regs *);
+> >  #define __SYSCALL_NORETURN(nr, sym) extern long __noreturn __x64_##sym(const struct pt_regs *);
+> > @@ -86,6 +87,12 @@ static __always_inline bool do_syscall_x32(struct pt_regs *regs, int nr)
+> >  /* Returns true to return using SYSRET, or false to use IRET */
+> >  __visible noinstr bool do_syscall_64(struct pt_regs *regs, int nr)
+> >  {
+> > +     /*
+> > +      * This is a system call from user mode.  Make dept work with a
+> > +      * new kernel mode context.
+> > +      */
+> > +     dept_update_cxt();
+> > +
+> >       add_random_kstack_offset();
+> >       nr = syscall_enter_from_user_mode(regs, nr);
+> 
+> Please take a look in syscall_enter_from_user_mode(). You'll see the
+> quite nicely-named function: enter_from_user_mode(). That might be a
+> nice place to put code that you want to run when the kernel is entered
+> from user mode.
+
+I wanted to put dept_update_cxt() to the very beginning of c code but..
+yeah enter_from_user_mode() looks fine or even better.  Thanks a lot.
+
+> > diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+> > index 998bd807fc7b..017edb75f0a0 100644
+> > --- a/arch/x86/mm/fault.c
+> > +++ b/arch/x86/mm/fault.c
+> > @@ -19,6 +19,7 @@
+> >  #include <linux/mm_types.h>
+> >  #include <linux/mm.h>                        /* find_and_lock_vma() */
+> >  #include <linux/vmalloc.h>
+> > +#include <linux/dept.h>
+> >
+> >  #include <asm/cpufeature.h>          /* boot_cpu_has, ...            */
+> >  #include <asm/traps.h>                       /* dotraplinkage, ...           */
+> > @@ -1219,6 +1220,12 @@ void do_user_addr_fault(struct pt_regs *regs,
+> >       tsk = current;
+> >       mm = tsk->mm;
+> >
+> > +     /*
+> > +      * This fault comes from user mode.  Make dept work with a new
+> > +      * kernel mode context.
+> > +      */
+> > +     dept_update_cxt();
+> No, this fault does not come from user mode. That's why we call it "user
+> addr" fault, not "user mode" fault. You end up here if, for instance,
+> the kernel faults doing a copy_from_user().
+
+My bad.  Thank you.  I will fix it.  Thank you very much.
 
 	Byungchul
-
-> immediately starting again.
-> 
-> In particular, wouldn't we have to fixup other callsites to make this
-> consistent and then VM_WARN_ON_ONCE() assert that in folio_wait_writeback()?
-> 
-> Of course, as we've never seen this deadlock before in practice, I do
-> wonder if something else prevents it?
-> 
-> If it's a real issue, I wonder if a trylock on the writeback path could
-> be an option.
-> 
-> --
-> Cheers
-> 
-> David / dhildenb
-> 
 
