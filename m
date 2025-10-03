@@ -4,91 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB842CCA472
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 02:18:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C856ACAC5B0
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 02:18:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 234CF8E0005; Thu,  2 Oct 2025 22:18:27 -0400 (EDT)
+	id 19A058E0006; Thu,  2 Oct 2025 22:18:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20CEF8E0001; Thu,  2 Oct 2025 22:18:27 -0400 (EDT)
+	id 1713A8E0001; Thu,  2 Oct 2025 22:18:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05EF08E0005; Thu,  2 Oct 2025 22:18:26 -0400 (EDT)
+	id 0AE598E0006; Thu,  2 Oct 2025 22:18:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E65628E0001
-	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 22:18:26 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9EE2C5A52C
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 02:18:26 +0000 (UTC)
-X-FDA: 83955193812.13.385BAF9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id BA041C0007
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 02:18:24 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YOetLl5f;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759457904; a=rsa-sha256;
-	cv=none;
-	b=1+D/4vj/f6jGJH+m7+6xEBmelJXSqBxPrbrWJ6btt2AieNxzCrB8vfVxV112H4hpNz5EYM
-	YeI4P1AH9DH7Rt/kkPqR0r/Nc4DnKC0Y7UHHWQr3vtb/aOy4VC8T2nPx0zTD+/PnvAeev4
-	oUfjEW783esJgD6gKS/URdBi1IKDw8g=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YOetLl5f;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EB1A98E0001
+	for <linux-mm@kvack.org>; Thu,  2 Oct 2025 22:18:48 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 83F121DF73F
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 02:18:48 +0000 (UTC)
+X-FDA: 83955194736.23.CA516E4
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 7EABDC000E
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 02:18:46 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bgZsiT04;
+	spf=pass (imf22.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759457904;
+	s=arc-20220608; t=1759457926;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=kNyG1IA7KJucCDtwUmFnK2uaxlYXdDmqbGCjxcz43Tk=;
-	b=6R6nzDdfRnZS8d3f+SxgDBkUSPnj4yQlf4Cw3cYNIXJEWOcQD4hpPuDwTXa0NdZre/nnh0
-	FL4dFM8ioUx6DlJN7TeAj2UTyIN6cVfLtxfvZO+zrei5rrsXO2hrojM5GEJz/QbDijgm3Y
-	BCDPIl67V1CSoZm2TxgHozqBB6wq3q0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5E155451D0;
-	Fri,  3 Oct 2025 02:18:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B4E4C4CEF5;
-	Fri,  3 Oct 2025 02:18:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759457903;
-	bh=Dc9/hZWk9fHRv7vY+ojxRQScjdcyQGHx3TOlkrD6eLc=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=YOetLl5fKaj7OEU72LUSqOE6CRDtzwNw0H4yD6enkY8XcmXZ2PT9W/5nDF4T1tqx2
-	 uLYL6L4T9gFgNZDOQpA0XFmMuqfku2qeU5qXpQHxcsU03jncwiJCmWAnt1SIaKjyAJ
-	 JVkJZj+lZztFYx6Oxbk2ij9zdxKBKKdedW1xtWOco5b4HnyfjNf/8Tai7pf6/y4kLa
-	 HWcSyU7zOYZnvFnbCvubyqaIVIYiDD8JR26XZNGesTLM5WMwB+D77Su08CKVVD4Qly
-	 8YuiSSfrTS46OW0aH7xzT1hRUW5hT37F0guzWHRon+LE+tV4TcwyR/OyNuwWrEy6Dh
-	 85PwkR4xHgYtQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3401139D0C1A;
-	Fri,  3 Oct 2025 02:18:16 +0000 (UTC)
-Subject: Re: [GIT PULL] non-MM updates for 6.18-rc1
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20251002153627.8890d5019e8e25a9df283e99@linux-foundation.org>
-References: <20251002153627.8890d5019e8e25a9df283e99@linux-foundation.org>
-X-PR-Tracked-List-Id: <linux-mm.kvack.org>
-X-PR-Tracked-Message-Id: <20251002153627.8890d5019e8e25a9df283e99@linux-foundation.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-nonmm-stable-2025-10-02-15-29
-X-PR-Tracked-Commit-Id: 9f1c14c1de1bdde395f6cc893efa4f80a2ae3b2b
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: e406d57be7bd2a4e73ea512c1ae36a40a44e499e
-Message-Id: <175945789476.3590395.14349776223212846303.pr-tracker-bot@kernel.org>
-Date: Fri, 03 Oct 2025 02:18:14 +0000
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org, mm-commits@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: BA041C0007
-X-Stat-Signature: oih9xeqn3gquk3duwrdzyeuyuiie4wxn
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2e/i8EbjlbnXxewfi6hJm/z/4ZP0XZNKcXcN/4b871g=;
+	b=smVtcUcOx2Lno3rYGVo+erq+lAMUz0TDCRTxwj2mxHpe6WA83/3bzoDYWr9g9GqwmI2bUk
+	zhEchnKHqwiKEIW8z7mWIqz9T5D+9WNibPhIyHIgpRdaWKOczROrrNFeb8R/RvwRzS5slf
+	MQZz03q14j3FLiE0qWRJ2H0Ll+nJXgE=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bgZsiT04;
+	spf=pass (imf22.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759457926; a=rsa-sha256;
+	cv=none;
+	b=DW26FddrY7lYJ4cD9TRoMt8ZHUl+xmQeUS7/DpHLt3lOz6plg+tetCf/lt2x8UYZpe1FY6
+	xqYxwFAhPzQMy2PQzGVYkq8gjP65Q3xINU+MEl5CX4c56ZOCXzBVa3iygd5PkCYxY/k1ez
+	trT/sJGvxv38EM3L2nF28xDJtmD9LMg=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-46e5980471eso7980595e9.2
+        for <linux-mm@kvack.org>; Thu, 02 Oct 2025 19:18:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759457925; x=1760062725; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2e/i8EbjlbnXxewfi6hJm/z/4ZP0XZNKcXcN/4b871g=;
+        b=bgZsiT04PiLqPC1qv39Ek4qANKKf8Fi8puMlQwAwhnpG5Xu889Cw6gGwsEjLSeHWRy
+         DIs423czJBBtctlSKR5LzPKpTF37zMSNstH5v5uzwfeAFYFyzclW7X/LWnr3xLb+7Wyl
+         wT50WK/tDbdGh6eAajX94pzm1wBN/dlIy0D+aB3k+wyOtoXNaUk7RB4PJrZbNW6bxoMz
+         y9VKANKwolRYlb2eLNZuLI7BvBDBs6ioP4SWs+JanyAxDHcQ8poYivuwzYeqDXxheihP
+         LJ/1HWHffuWM6m+tFMlMS3oeOyymV3Zm+sYiee2Olts/+cQnc/lbxuEoMN7whdqNa259
+         Jk5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759457925; x=1760062725;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2e/i8EbjlbnXxewfi6hJm/z/4ZP0XZNKcXcN/4b871g=;
+        b=TlJA2RpqHuc461IS9bDGj7B0ISIInGm3TcqcMZLMBjgn5dSbEu5U1y1+QP99w+7W38
+         FV/4x+NwQaAm1IQXrwzHG3MxxLSUgC9pl6xGDg4jey6VzxydGElTs1KJzd052VI5agU+
+         XIaMSbm7Fe7qRtc0ebLPylTE6fB1PXj0CQ8bSKbnqKq2Ja0HDfV/wIXXT/j1QlBywMKz
+         I/glB2k5pZdUxtomgFcQnh0xcWpL4ix9aSgcl2qxJabD8KqsmXByKCIsaDTIEXk8XIxw
+         3vPCW3c/iBq6QjeBeIEKvseIDCq5qMnI4DZ/SMSHo9pxqqRwaJgYM/HorAfX7xqTam15
+         OzXg==
+X-Forwarded-Encrypted: i=1; AJvYcCW78SrrXk5SVABMLuGFde4OYUEo0qBzKOFH3XQBbWU3NjPTRKC718eKag1YtCWtvAVM+crnZJU7Xw==@kvack.org
+X-Gm-Message-State: AOJu0YxqlFWfDQoISMK4gQYABBlRjzolaAff6gqbCYBx9KBE7RFxaCLJ
+	UT1/y5qn985p+F+6eGEdlQKEzlRh9uKdkqx+TffSYgCYSuhoQv9lg60m5YpbZtVH5GGcFbRyQMh
+	z0TldCnpYCkEPC0/NnrzODVDrXjnuBcc=
+X-Gm-Gg: ASbGncsawIAMYso9eWJUrRFTn2tqxKkBLRzkUZk2OtqBp3beOXKUXohYBozrJfdWJow
+	oLqv/npDw/7O+DLc7BGoVcmUkVwZ/fHoDR4x13DdsBrSk2Zae5GRlmlVbEWqEg2PGsZ/vdAV85c
+	z5yq9+hU43sf1R0i6+McWvr9RPQBv0uNUrX+SRloSDodnbJjah8laXAGCtQV5ahlo3epiHovcqv
+	mAedwMH/V2LLquLpwbnh3++S0Nm7CL2dnO48AoWww3QGNqs4TyD7ru9UwXT
+X-Google-Smtp-Source: AGHT+IEUdi5h2t7CXTLul7ivkETFz4Fjf+lqMHwgof5CobhAX/VcEKSKvJeht/4smjkDa2Hgzo4fwK0xXe88/EAzHP8=
+X-Received: by 2002:a05:600c:8b65:b0:46e:2861:9eb2 with SMTP id
+ 5b1f17b1804b1-46e711002e7mr8372685e9.8.1759457924865; Thu, 02 Oct 2025
+ 19:18:44 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250930055826.9810-1-laoar.shao@gmail.com> <20250930055826.9810-4-laoar.shao@gmail.com>
+In-Reply-To: <20250930055826.9810-4-laoar.shao@gmail.com>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Thu, 2 Oct 2025 19:18:33 -0700
+X-Gm-Features: AS18NWB-xO-pJI19YtwvzZWDSOLQVewqObSZM817yMkm5nTGr0yasX6RQmgofXI
+Message-ID: <CAADnVQJtrJZOCWZKH498GBA8M0mYVztApk54mOEejs8Wr3nSiw@mail.gmail.com>
+Subject: Re: [PATCH v9 mm-new 03/11] mm: thp: add support for BPF based THP
+ order selection
+To: Yafang Shao <laoar.shao@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Liam Howlett <Liam.Howlett@oracle.com>, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, Johannes Weiner <hannes@cmpxchg.org>, usamaarif642@gmail.com, 
+	gutierrez.asier@huawei-partners.com, Matthew Wilcox <willy@infradead.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Amery Hung <ameryhung@gmail.com>, 
+	David Rientjes <rientjes@google.com>, Jonathan Corbet <corbet@lwn.net>, 21cnbao@gmail.com, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>, lance.yang@linux.dev, 
+	Randy Dunlap <rdunlap@infradead.org>, bpf <bpf@vger.kernel.org>, 
+	linux-mm <linux-mm@kvack.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1759457904-760580
-X-HE-Meta: U2FsdGVkX1/+QL6+4RHFL8dwGE9nIEnD9n1rYjWaf383qK/At4w99kkajXk8BIRhuenzeH7uf1nX8g+unC7A5FrCz5CbgeO4kldZisCXPBDDruXXK/GOLC6yR0TiE0mI+Rd9KILKGAS5SUoV5WukVoNC//KJxh8s01k/qTc6p5rtY5VmD227t9LA80Eji6chS2DNVCydOYQn3uVZpWi5LskXTDIyCTqfVcQXpKybHO4NwLU11AR5MFAsjjDI355jvQCJiyOk3qs21YFGmEg47pyKbUJT82IWr/+fz/uPCr8mHzcfNf2lC+uyiyhk2Em9DOaXDXh9ZiGvk/2DTIT2Ucl552zIVW8BZH2lP3Blaqomd4hXLlJ8Zjpxv6Zf2TZIu94duUBLuE65GYwav/KuSvzg/HhjpZb8n1u9pPp9y8AlOOGyGmZv23YyMWx7YHcM7F8iAFnzID+IYvWSor3cKq2jP1NsyF4A+0NoJRC+XSQFqwd50pEB0Ilgs+6yCF4S/E0lnt1kg7Gycz41dPLU+DdagunKEYYTFvFMBYJFerRXTEDdYVE9gAAYAkDqSsxRScq7BCHy+IE239JX59shJtW0DGP/kEiQaMynJ7r8btW1cRWA2ilXf80lL62+qjCKJ78nrjqIUb6gtHIETsBQ9RgGuw8ywMDMKbZm0BDPthMwQqRA/E4SS2jxwbPlkK+GshLpIF8QJ27Hk9eRnpfN9quw+Y/zTw8AqYe8ULsv5jXQoV/H+3ncumuKhmfD7ceW0gyrc+udg6L8olBT4AqdcoiXPqv+1/IbhI3t5PaX7I9CePJoEb72+AYSP5hI2hupOpjGulk3TkCj7ty0aBJ9HWonndZWygJKs9W37/MmEZivYP0u0WVN7RwH5kCF+L+eZUzoe9wBvwoaUVJnYmMMK35XfV1TW4IbRT/E9M0j5QMMqm/uyVLUYqRsgm8pFdICUG4ocQSAw3kjYnsKrYu
- j3i72M7w
- CssF/DhlHOFR4/duOdfVqC3DbwsPZlYf0B9l6clorosKQZjvLV/DFhpGIlF3gSURom4ez7c0XdPC8486V1EZwbaYJpO98A+0tJCRyBjWfhQVT8Ha/EiKTGUKtQzPG/2ZsdJjn1ffDBDfqdu1LYqL9/gSSFw1fMVoiIdMp4mAwkMssjsdz6xKcvD11NAN7EnaJrnit3L9w1PZuAmA0edeHm3hrEufceVjCihWRmNgjeo/Y8qur2MmZL/kDDAno/jVkfh5aHSk+yFU9/8x89BchKIrX39SxvZ/fmgmXwDunJClmfgWLOiXRLldrCW8+m7ezlaSzY4KcFuxA7n95ohlF3MKZVWaqFZ/+GZB6WkhJ4yg99yZqsgU1wc17bOpMyjN6KHO42YdxNVvEuVE=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7EABDC000E
+X-Stat-Signature: 9b14e49bcnzqk68xpkq4t7nc6uzc1f9p
+X-HE-Tag: 1759457926-82532
+X-HE-Meta: U2FsdGVkX1+xY8oWkbGzGkk/J7t2W/RSiO7FvNwSAgSlpcbqco0hbIT8gS5p8VlVwHQAhn3/u+sNCPJzJ65oxFn4PFTr8OXGcL7Ah3mG0JrOqLgy66PtApe+GP9IyhT5oGhFKqMhbgxPXG/aj0KC94/iHT/HbdScA3KRj7IZRfXIqhaakW3vDHXtHc9PHqyF+Prk7CokCqO8ZWaDuRXCtgsNpfo3MnfSO0S4g9+ucQimIJ0ZWP0LuMOcHmKhJaOPd1TwLpsZHEeFvOPMrxI4C/Njey9NQ+ArX0ZMxoIVjb/RgfLCb4DebzAwgnlADOBBy+R9T3RdrOpY6T6hRlFhmlQADTrAElAS45KziEgeNUqmH8+u1rNBUewD6ZkDVIPAHwuT7ioRxxL8ofHiga9JV1fYXMqMWZJXCvigJAGjeZ02cb38YgCGZl8h1GzKKXlKcMGAjE+hC6WIUFLiC61Nbpy6quDwthA9/anQCl3bGSGTMc3VagePq+qqjl5VSk2jmPqeJYGgRkKlA7kKt/e3/NWBoxJgs9F1YxAUeUFR4q5ktV/O8KWtkeDgI62IAN4/A4o7xUXfnqj9rZzDqKunPwanm89HvBpwHgy+H/6515nKtx7UkaWAT19E0eQWOp64hbnR2Y+txba2w1dW8pv/eiIOvj8Tos00p+JHta6oZquyj1G5ypbbPFi9ahIbEHc1qENgCHflwJnx8yfgjJPRaD+UIGITlYW9BMk9EaAV9QTKIT4YYXgCbwCtp1vl4vE5iLXhMe/aVa3CP686UUUZqQgHncWN9nZ2v0jAjxEZzENPNCsvU1GQSH/h2D8qxFy7DGoWBnrZ7ctFiYwDoyy911m3QwrC9ffd0iITrrwgoXBY8h9M4PMOuJw0VhIET2ZL/fVwu5K8ptN0l6P8biOmPs31igcUG8Zzy4d15JWE5uj96xDA0t9NoJ9dAzVWPt2jfBLgYdYOC37eb5SCTv4
+ VdIoPHzh
+ MKkC4Ekmpym5hL+nWbZPprfl3Py8hUcyoXdaR3TYjio16/DJW2JueZ1ucw3rJUIgqP9778vclduRDkm1HlhHyYiW1UfghGFs8EhhW89Qfyh+Vv/m/kDhRtVZwX4XwqKChrIADN263HFy0R8DNAw0HTOwju6BKXc5GT7HaF/cwPgpqBDZO8iOgPgm19BkTKROWFGNlJUWB4JqvL+fStqB/vSbEvDaRrLYjaP/kLJT7648We2hG1jdpJcbXOYwcL2M5YE8BXfUdkwb83TJ+//lXFT9zcddbMw+4rHRAcdxubw4TcHQtk7R5poO0xedxJt0Bwyu89kRqMIZdDnBl9e/Lzt6vRt1g5di3S2Es3PgptucqgThjWFL8GcjvUMiYxCsYGtm/+PXPYguoggA/H5+eJYWsc/p/eCPleQUOIjnbiVcyUxiYSlVQZEy711SdreYwmb/TMcW2T7Y9On7NCdHC50zrKz58Sw6OgIPV
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,16 +127,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The pull request you sent on Thu, 2 Oct 2025 15:36:27 -0700:
+On Mon, Sep 29, 2025 at 10:59=E2=80=AFPM Yafang Shao <laoar.shao@gmail.com>=
+ wrote:
+>
+> +unsigned long bpf_hook_thp_get_orders(struct vm_area_struct *vma,
+> +                                     enum tva_type type,
+> +                                     unsigned long orders)
+> +{
+> +       thp_order_fn_t *bpf_hook_thp_get_order;
+> +       int bpf_order;
+> +
+> +       /* No BPF program is attached */
+> +       if (!test_bit(TRANSPARENT_HUGEPAGE_BPF_ATTACHED,
+> +                     &transparent_hugepage_flags))
+> +               return orders;
+> +
+> +       rcu_read_lock();
+> +       bpf_hook_thp_get_order =3D rcu_dereference(bpf_thp.thp_get_order)=
+;
+> +       if (WARN_ON_ONCE(!bpf_hook_thp_get_order))
+> +               goto out;
+> +
+> +       bpf_order =3D bpf_hook_thp_get_order(vma, type, orders);
+> +       orders &=3D BIT(bpf_order);
+> +
+> +out:
+> +       rcu_read_unlock();
+> +       return orders;
+> +}
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-nonmm-stable-2025-10-02-15-29
+I thought I explained it earlier.
+Nack to a single global prog approach.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/e406d57be7bd2a4e73ea512c1ae36a40a44e499e
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+The logic must accommodate multiple programs per-container
+or any other way from the beginning.
+If cgroup based scoping doesn't fit use per process tree scoping.
 
