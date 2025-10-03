@@ -4,107 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E045CCA470
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 05:29:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26CB4CAC5B0
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 05:36:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EEAB8E0003; Fri,  3 Oct 2025 01:29:57 -0400 (EDT)
+	id 520ED8E0005; Fri,  3 Oct 2025 01:36:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29FA88E0001; Fri,  3 Oct 2025 01:29:57 -0400 (EDT)
+	id 4D1A78E0001; Fri,  3 Oct 2025 01:36:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DD118E0003; Fri,  3 Oct 2025 01:29:57 -0400 (EDT)
+	id 3C0B18E0005; Fri,  3 Oct 2025 01:36:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A8238E0001
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 01:29:57 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7FE371403F0
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 05:29:56 +0000 (UTC)
-X-FDA: 83955676392.26.9F65FFC
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 6F5E21C0005
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 05:29:54 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EIYqlPic;
-	spf=pass (imf18.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 24EDD8E0001
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 01:36:26 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CCCD1B9166
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 05:36:25 +0000 (UTC)
+X-FDA: 83955692730.27.275B0C8
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+	by imf22.hostedemail.com (Postfix) with ESMTP id EA788C000D
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 05:36:23 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=lwn.net header.s=20201203 header.b=DJJvW5PE;
+	spf=pass (imf22.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
+	dmarc=pass (policy=none) header.from=lwn.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759469394;
+	s=arc-20220608; t=1759469784;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S5t6kQoNxLFE6ckFDQ5m8USrL/Soot0cxG4lSfuJHKI=;
-	b=37eUwEOWqhk4lceg7Vi1QyPjffPfR+bNGT4DiWaui2pGsh3Gb8R+ACeoDR5d4HD+qB3aSS
-	gkTl1sTYkUiOLp5+x3vBrLlxmLbDf/Bj3TfzqOqQkvaFHoGJrtRLsX+e9NZJGjIIoeVam8
-	BSyfpt0xbZ3pTx5CYkWcPWur6CwTuBw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759469394; a=rsa-sha256;
-	cv=none;
-	b=7HtUr2xOfezLerLKJJ5i+TiKUtCr+wQPDZ72VNCvJk0areYpinYfR2bPImgKJAQdA+4zwC
-	Zc6pCqod3eymR2fnXGB7L9T0n+FNfy6pFA6CsaOqHUGCq/ZyG9ohuJ9Mx9kSN7EhBqzumH
-	QGiu1RTcdVRSC7oA6KUL7GPBq/Ogww8=
+	bh=JviM4x86VTg42/9SFICWditZ8FIZ0/vFiF+DDrtEZ08=;
+	b=AjC9K+b4m3N/lSIt98072IfPUSJYcezv2vyCuZ0pHtt8o/RlEcabFgd3/8gQZUFKcP3e8u
+	tb0tQaSCphwJzYeiWCwYn1AZNl2P63jwlGuWVhSp1XIRkHv57dTbDQxSqnyA9k2mT8nnfG
+	EVNOj0TWPcOSmtE7ubTEkugZl2AFbZ4=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EIYqlPic;
-	spf=pass (imf18.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759469393;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=S5t6kQoNxLFE6ckFDQ5m8USrL/Soot0cxG4lSfuJHKI=;
-	b=EIYqlPic67XaH0mXshi3y4GPIjOi1hvVz+aa3qYdh6T7THhm6nDh/qpQ2Tuc1SDgJr8nS9
-	5ZfJeeveCHzj8L2yGu3EcnIQ7aQfj125nC7QPiE3dqK/W+a+FYDjCLOr41XmakAjW0GTao
-	MtSOq1xhUQVbPyJjU2YyRJya2Cn4pq8=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-86-EXR_QP-0Mr2DPtIC-6B1MA-1; Fri,
- 03 Oct 2025 01:29:50 -0400
-X-MC-Unique: EXR_QP-0Mr2DPtIC-6B1MA-1
-X-Mimecast-MFC-AGG-ID: EXR_QP-0Mr2DPtIC-6B1MA_1759469389
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	imf22.hostedemail.com;
+	dkim=pass header.d=lwn.net header.s=20201203 header.b=DJJvW5PE;
+	spf=pass (imf22.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
+	dmarc=pass (policy=none) header.from=lwn.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759469784; a=rsa-sha256;
+	cv=none;
+	b=NDxmlm7XiSAMZ0F6kcMohwXzpH9DzhZ5yAg8JedBIjEwLIWlFDXPm99iFX88ojImSaEcJf
+	c15Pag/Hz9roOKGea3U4Bjqrf4smQJ5ZkFemyKC3oMV1nijjB8Qd8BtNjLfPL+wWtksrTV
+	9Ami4f+P4SqhuSBDKdryGP3WM0PUCWk=
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 8220940B15
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1759469781; bh=JviM4x86VTg42/9SFICWditZ8FIZ0/vFiF+DDrtEZ08=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=DJJvW5PEMB1qs5Mtek/16g/JnmPt9CmJjE7Uu3yDxuMEd8dQGsOFFsNLXsMYe/EdC
+	 iqEOpfl74zoy2btKntuyskCwXHqb1QziA6gqsLHxEos6514SBiNUgTVTh6gAssbIFt
+	 mX0BfVGqYx99AlSQq50SEso4ByHi4Wl2mDMA1817AOvP7lbGnzuly4lQeWJfoyqsoJ
+	 fHAPdXQvq24AdjQRv5e/AHScCdcLFYjnzQVUHebL1fqlqYQpg1LU1Hw/wr1mqYSMiH
+	 4CDJUKP9Sf0cYHlz89pRZA5pRuDslmiTfDPZXkFMif3dyV2LD6r3xNxo4MP4lnuwWu
+	 2OkTVnFdIVO3g==
+Received: from localhost (mdns.lwn.net [45.79.72.68])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EEC0E1800447;
-	Fri,  3 Oct 2025 05:29:48 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.14])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 61F381955F19;
-	Fri,  3 Oct 2025 05:29:46 +0000 (UTC)
-Date: Fri, 3 Oct 2025 13:29:42 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com,
-	baohua@kernel.org, nphamcs@gmail.com, shikemeng@huaweicloud.com
-Subject: Re: [PATCH 2/3] mm/swapfile.c: use swap_info[] to find the swap
- device
-Message-ID: <aN9fRsoamQ7aWbOl@MiWiFi-R3L-srv>
-References: <20251001043436.41338-1-bhe@redhat.com>
- <20251001043436.41338-3-bhe@redhat.com>
- <CACePvbXeFxbtH3c0Wvn56m+wsK0wqxP86ge5Ud73OvqnfDOwMw@mail.gmail.com>
- <aN83NwGpMCFvrOEy@MiWiFi-R3L-srv>
- <CACePvbWgKCjW0fHT03QUXWsj9sV0+1Co9_=t9OWQA5-ApEJyRg@mail.gmail.com>
+	by ms.lwn.net (Postfix) with ESMTPSA id 8220940B15;
+	Fri,  3 Oct 2025 05:36:19 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Byungchul Park <byungchul@sk.com>, linux-kernel@vger.kernel.org
+Cc: kernel_team@skhynix.com, torvalds@linux-foundation.org,
+ damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
+ adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, mingo@redhat.com,
+ peterz@infradead.org, will@kernel.org, tglx@linutronix.de,
+ rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org,
+ daniel.vetter@ffwll.ch, duyuyang@gmail.com, johannes.berg@intel.com,
+ tj@kernel.org, tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
+ amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
+ linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
+ minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
+ sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+ penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+ ngupta@vflare.org, linux-block@vger.kernel.org, josef@toxicpanda.com,
+ linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
+ dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
+ dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
+ melissa.srw@gmail.com, hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+ chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+ max.byungchul.park@gmail.com, boqun.feng@gmail.com, longman@redhat.com,
+ yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com,
+ netdev@vger.kernel.org, matthew.brost@intel.com, her0gyugyu@gmail.com,
+ catalin.marinas@arm.com, bp@alien8.de, dave.hansen@linux.intel.com,
+ x86@kernel.org, hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
+ gustavo@padovan.org, christian.koenig@amd.com, andi.shyti@kernel.org,
+ arnd@arndb.de, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
+ petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
+ paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
+ joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
+ mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+ qiang.zhang@linux.dev, juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
+ vschneid@redhat.com, chuck.lever@oracle.com, neil@brown.name,
+ okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com,
+ trondmy@kernel.org, anna@kernel.org, kees@kernel.org,
+ bigeasy@linutronix.de, clrkwllms@kernel.org, mark.rutland@arm.com,
+ ada.coupriediaz@arm.com, kristina.martsenko@arm.com,
+ wangkefeng.wang@huawei.com, broonie@kernel.org, kevin.brodsky@arm.com,
+ dwmw@amazon.co.uk, shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
+ yuzhao@google.com, baolin.wang@linux.alibaba.com, usamaarif642@gmail.com,
+ joel.granados@kernel.org, richard.weiyang@gmail.com,
+ geert+renesas@glider.be, tim.c.chen@linux.intel.com, linux@treblig.org,
+ alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+ chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
+ link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
+ brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
+ mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
+ linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+ linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-modules@vger.kernel.org, rcu@vger.kernel.org,
+ linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH v17 28/47] dept: add documentation for dept
+In-Reply-To: <20251002081247.51255-29-byungchul@sk.com>
+References: <20251002081247.51255-1-byungchul@sk.com>
+ <20251002081247.51255-29-byungchul@sk.com>
+Date: Thu, 02 Oct 2025 23:36:16 -0600
+Message-ID: <87ldlssg1b.fsf@trenco.lwn.net>
 MIME-Version: 1.0
-In-Reply-To: <CACePvbWgKCjW0fHT03QUXWsj9sV0+1Co9_=t9OWQA5-ApEJyRg@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: QJki7_T9pSi_CPabh5yvV2nl7dOSglUSt1ylY1LuUek_1759469389
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6F5E21C0005
-X-Stat-Signature: 3cfwma71o3i53ffecmcwb8j3w8sj9hkz
+Content-Type: text/plain
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1759469394-214131
-X-HE-Meta: U2FsdGVkX1/P3GN8CZD3gYzX1aQB/DQfzrxq+r5WkQZuM40uLoqVnfys1zk7b9va8/DxQxKhWJnGvr31Dc4T3h1eyCZVg/9pRoWl0ouXuTshXKkhaYiCTjEbmmtRdqAP1ZBr032eLFegjZjJhidUEak7r09a8veL2ZegSbdoryE0AnIJmM8V66G8gHauVP7or/c455eWySQovTR16Qu9eqyKF317jUa3Hu/3KrenUPGoE2ov7CklRJE1uqsB5gTJJKGR/OSkiev4r3Uetcv50vasNm3z49Q1/pFqz0/pMdZztGmRY0TvqbF2pYwbPmL+SdCTh/aAxF3G0wc0kvyHXu4ZWNQWfF6aokMt1t8QTBQfVLZL2oKgBtAJn6TuegPf2vscz15vv5AGOK4swFztYCPliU6Tm2AqEa9fnxKoT3Vhg0SnCqZGIFiyD3AnMqss45PcImZ61lWl7lgZijr9uEOwv0FihwgkmPu7gqptTmeX3DZVH2i6ylGsVB3J9YPEaGSIxtWxoF6Yy8OEMEeD2tM7oIzfyy0eZcvoMS84R0njBRRKfrTaoZY+Hc/9MOEH1ov5nrne5klrTQpynvsV3DHvvogPMY3y93sImVmSlLF0fAvvZQzSN4/YcS9OpFBH6xDRnZhxOuDA8/O2ZJUucij7qJsdoiqfDkp5t6Snq1K2FnblyURpY0SEMXpLcBwy/sIg7RmIGzs5BS/qiJS01eE1JiMEj9p6TpMEWz3WwG4GDLHxl+fJ+nvnd64Ut2+ByVvn6jM8qCZUUWmR3n6QpaoZVZy9H+PwNF8bT3ePePcVnJkhYSa4SDmMJi/HrADBoEPRZ9oDZsFipB9u55E/mWuVZ78lYIxI1LKxzZYauDSgCZaTKy4sKDBLcDe2VID1b50tkpVwvMh0nwKEkZ37ltCt5WHzCW3cYb/fhdP/RG5CWJLTmnoXpEiYE3dRuKMMyr8kFhNgJXQ3C4nYfnX
- E+ONhjff
- 4XmkwGa8bIr+1vYjLJn4qhfkCREZflfRiDt79nod2LL0Gvdg53VzLQbHXgd6SSJh1zSKp42DCGgZzIDy8D2jCtDk31v2IOF++9V2fDOhYTAEmF7v2ISdTMzSAYAOx5mlILVmy/LCenEvt7hIqSKwiPx0bLJuKzJ8l8ahuVCpEfQGkFtkV/BWVjih5xS8ZARULCdPvFZsd/Of+36LaYkhjjECCTwMAPgVMsamGuegbBqhHywYxg4cYYGJxmQ+iGYuSq2bp3FBa6sbo/JivRbUtdPQNhHKWHBJ8ZAaMFXjshcIlv5kKKV3mwmvNGpLWlNHGQaMDb9YpLa2oKjjqpge/WAEBXSv2VMdB5hrGNgGb4hApCzxqOMRPmkKvGvQ70RgGgi1ZLez81w1m6/9kM7PGgxL1xMPuleMp716W+xDNw0INxNu4LszlUk32SfR+cGj+ePqgtZdPxN5+r8F6k4Ybb7riFXFGxO4FvYGWhGD00ViwD2Y6wErjEiilaBishs2q0yDViMaHxr1Z95kvTyiytHldFqV+mHG6gjWPjWAmsPFCdRx+VOjYLh8LkdN+QdMzQU9k5gnAeh3g/Ew=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: EA788C000D
+X-Stat-Signature: ab8wd6wiyd1i63319wdgyraez1nhxx76
+X-HE-Tag: 1759469783-831347
+X-HE-Meta: U2FsdGVkX19gvaI9e8ftlCuO6YmSm/H30RdpGBTSh0pgk92yv0kDlwvbq337MEE4uVMOLBSB+2jmu8CDHLJBiFu0IfRedXcOHbXJUM8h4IF8qSWT8EuQHANq5YuDzezCECXg00L4I8Qst9NA4IhDpH5pQkJQY0iEll9kLp9lfhQkQWvCpGrA2tkfqQJWrDQwPYK3UPqH/Ru/7wNcvLwPc6fEHorZT+62UaPgOlaF9Ojv9IKJjNmhgdKOCdqierkSUcXgM/d1Z3sWbNU1fCXqoUVMf9T1Uhh2ZiNDqceoHZG4C2INqp1EopOG9eJ4zB+z9psTp9wznouY/FINKAeRqeYg6PIhyuNDtPW1NjS+63F7fluaBNjzWYSsp0kR7cdVZHV9DlyusyTux/LnjWqLVwZ0TJtzK3YQSAeCJP1R+xC4wSFmR350CJcrgramCQwM/JedcCugvXH6VGJyY2hs/7dPx6Psg9shb4sM6AJEHVqCFn1sOc34aeauZ06U2NCYmegMve1Fpy/dODdGKHolLAkNwQ/IjIKIhI9rLghz7G7cycCdMlWti36FekbdxiO/+/9wmpi0T1E/UQU/pwk0wDwPppfECFpeeROtQT4F+iwl+VJgAxx/5+OBy4u8MWmpp1mUVEPF0zu4qRRuvwuTKzdLPEg8dIWNJ/hwfK25MAfK8Mqr8kldCW2d3PQlVWCLIi9pG35jdy7KGbWsjC3GdYj+pnx2Gh67Mr6s9+f4J230jdEsERDI2NBqyDrrAl2NDsvLwTnIVnLKh3iDZT5A3qC42GPuvgX4vNAsg4YJV+NHsURKt4RcyTtWFL7qFSmZDEUBqYD7Bme2jlr+ourKfWFIXG5QSngx/mowxtL+vnwdC8UHNFlZcsKK4skYV4+nldO6bei09+7W5mUForTj9sBlfkZ6GO912nDF7oPhqIFYjqXB1dJkl8ZG8+QMoI3o4ZH1vYfgQoSk3QA3s6b
+ dEgZ3KqX
+ kHv1iStOVn0sc8lCBt6Rqfo0Y/xj6HtvtcjQP7GduLrXpDGbf+3x2cbeJRNb0q6sKC39SA9y8VlzOTlsb3XQdywfyLpHslfqurLr/uXlHrflK/DVMA+nq+hW6ZzW1Cb+gNPhKP/7XTJpuy9hml2MCFKTwB6n7UPRUrRogOygf3hT/azDJEYxR9gGVEDcOJgkO8AhcX7k6uY7iIy6lrbWr2zTGw+GevALLwQ28sYRZcbwL19wW917kNJD+R9y8760NlZaOTFyGRxL0EbXHR2SmQVUS1VEEZ+GcDpgtzZB7vHl+zDyVeIpFiqlz2WAj3PkMnI1hgufD3FP66oO+WgWNnIIH7cVhB2NKNrLkMo7lOkCKPUMYKmvvsYa/czVwC+TfOP+RBO7PAG1nyMNBNkyKuYGxUdUw+8kc3WCIzGRAYBTsj1/ALbTqnT1YAg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,95 +142,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/02/25 at 09:50pm, Chris Li wrote:
-> On Thu, Oct 2, 2025 at 7:39 PM Baoquan He <bhe@redhat.com> wrote:
-> >
-> > On 10/02/25 at 08:59am, Chris Li wrote:
-> > > On Tue, Sep 30, 2025 at 9:35 PM Baoquan He <bhe@redhat.com> wrote:
-> > > >
-> > > > Now, swap_active_head is only used to find a present swap device when
-> > > > trying to swapoff it. In fact, swap_info[] is a short array which is
-> > > > 32 at maximum, and usually the unused one can be reused, so the
-> > > > searching for target mostly only iterates the foremost several used
-> > > > slots. And swapoff is a rarely used operation, efficiency is not so
-> > > > important. Then it's unnecessary to get a plist to make it.
-> > > >
-> > > > Here go by iterating swap_info[] to find the swap device instead of
-> > > > iterating swap_active_head.
-> > > >
-> > > > Signed-off-by: Baoquan He <bhe@redhat.com>
-> > > > ---
-> > > >  mm/swapfile.c | 4 +++-
-> > > >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > > > index 5d71c748a2fe..18b52cc20749 100644
-> > > > --- a/mm/swapfile.c
-> > > > +++ b/mm/swapfile.c
-> > > > @@ -2641,6 +2641,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
-> > > >         struct inode *inode;
-> > > >         struct filename *pathname;
-> > > >         int err, found = 0;
-> > > > +       unsigned int type;
-> > > >
-> > > >         if (!capable(CAP_SYS_ADMIN))
-> > > >                 return -EPERM;
-> > > > @@ -2658,7 +2659,8 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
-> > > >
-> > > >         mapping = victim->f_mapping;
-> > > >         spin_lock(&swap_lock);
-> > > > -       plist_for_each_entry(p, &swap_active_head, list) {
-> > > > +       for (type = 0; type < nr_swapfiles; type++) {
-> > > > +               p = swap_info[type];
-> > >
-> > > After some careful thinking of the swapoff behavior, I now consider
-> > > this patch buggy.
-> > >
-> > > On behavior change is that, previously the swapoff is dependent on the
-> > > swap_active_list and only swapon device is on that list.
-> > >
-> > > Now you change to enumerate every device at swap off and depend on the
-> > > p->flags & SWP_WRITEOK to filter out the device. Which will go through
-> > > all 32 swap devices regardless.
-> > >
-> > > >                 if (p->flags & SWP_WRITEOK) {
-> > > >                         if (p->swap_file->f_mapping == mapping) {
-> > >
-> > > Considering the following race:
-> > >
-> > > CPU1:
-> > > swapoff( "/dev/sda1")
-> > > spin_lock(&swap_lock);
-> > >
-> > > for (type = 0; type < nr_swapfiles; type++) {
-> > >      if (p->flags & SWP_WRITEOK) {
-> > >          // found the device.
-> > > }
-> > > ....
-> > > spin_lock(&p->lock);
-> > > del_from_avail_list(p, true);
-> >   ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > > plist_del(&p->list, &swap_active_head);
-> > > atomic_long_sub(p->pages, &nr_swap_pages);
-> > > total_swap_pages -= p->pages;
-> > > spin_unlock(&p->lock);
-> > > spin_unlock(&swap_lock);
-> > >
-> > > // at this point the p->flags still have SWP_WRITEOK.
-> > > // swap_lock and p->lock are both unlocked.
-> >
-> > No, SWP_WRITEOK is cleared in del_from_avail_list(). At this point,
-> > there's no more SWP_WRITEOK in p->flags when both swap_lock and p->lock
-> > are lifted.
-> 
-> Ah, you are right. I am wrong. I missed the "si->flags &=
-> ~SWP_WRITEOK;" inside the del_from_avail_list().
-> 
-> I read at the end of swapoff it set the si->flags = 0; thinking the
-> SWP_WRITEOK was clear there. It is cleared earlier.
-> 
-> That should be fine. Sorry about the misread.
+Byungchul Park <byungchul@sk.com> writes:
 
-It's OK, thanks for careful reviewing and checking.
+> This document describes the concept and APIs of dept.
+>
+> Signed-off-by: Byungchul Park <byungchul@sk.com>
+> ---
+>  Documentation/dependency/dept.txt     | 735 ++++++++++++++++++++++++++
+>  Documentation/dependency/dept_api.txt | 117 ++++
+>  2 files changed, 852 insertions(+)
+>  create mode 100644 Documentation/dependency/dept.txt
+>  create mode 100644 Documentation/dependency/dept_api.txt
 
+As already suggested, this should be in RST; you're already 95% of the
+way there.  Also, please put it under Documentation/dev-tools; we don't
+need another top-level directory for this.
+
+Thanks,
+
+jon
 
