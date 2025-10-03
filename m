@@ -4,112 +4,178 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2450CAC5B0
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 06:30:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCBECCAC5B0
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Oct 2025 06:52:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D4DC8E0002; Fri,  3 Oct 2025 02:30:11 -0400 (EDT)
+	id 11C828E0006; Fri,  3 Oct 2025 02:52:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 885188E0001; Fri,  3 Oct 2025 02:30:11 -0400 (EDT)
+	id 0CD5E8E0001; Fri,  3 Oct 2025 02:52:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 774398E0002; Fri,  3 Oct 2025 02:30:11 -0400 (EDT)
+	id ED6DF8E0006; Fri,  3 Oct 2025 02:52:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A2BF8E0001
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 02:30:11 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D40A5C06C0
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 06:30:10 +0000 (UTC)
-X-FDA: 83955828180.11.83D2F49
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D57CF40008
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 06:30:08 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D21D48E0001
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 02:52:34 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5A865C04C3
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 06:52:34 +0000 (UTC)
+X-FDA: 83955884628.06.2192492
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 3275E40002
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 06:52:31 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="gy/GpU1O";
-	spf=pass (imf17.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MdFVV1md;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Sa4XqljA;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MdFVV1md;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Sa4XqljA;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759473009;
+	s=arc-20220608; t=1759474352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XkLFiACyw+pxXQ9Sqz5bYmdEFhy/428iFAOlJwo0q5k=;
-	b=Cxrd5u7gik0Ly6oEzMRElo5oN8mVPCtde5CetP05kv5hIytzSnnoab+l2flISQvZR9GUiT
-	qtYN7ZZ4XNA1h2YjhiGgQf6IFETsJxB0hkBlLznNqjq1nR/Zsd3wp6n2biygJNkH7174jI
-	V5jh86cbR0bPY/hzR6cyrsT0B/RxeTk=
+	bh=BX6RiGL+cjgZpJxdzOC3lAgawx+FysoKFUY5TPIj1e8=;
+	b=AeHzdeTNVFO5kytLRh5QNaLapGr5adR7NQu5IZA7xNOH51TTY6PRWJgxRuZGs14YDJpDJJ
+	RqC2hSSjRe67+0pHevRuVtTDbw51nloHCbCoTphuSS4gmvUmLkfZgx/ne8ko39sXcACo3b
+	6cHsQdTOHC8HPg/aNJoxJct/kAnX6A8=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="gy/GpU1O";
-	spf=pass (imf17.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759473009; a=rsa-sha256;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MdFVV1md;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Sa4XqljA;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MdFVV1md;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Sa4XqljA;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759474352; a=rsa-sha256;
 	cv=none;
-	b=YhP8BptOdbSzq2p72kth11se4y4aMqrrh2awCWaM1CB3eE3YtPELFbAx9N6sJvZwRCsmS4
-	H0tVQYrHioYW+OTisEmhPPz/vVzGyDgbFb50WqnbQV8SRpR+mH5bIhgFGaz85c7413kwQQ
-	hmwAWCtWV4bvPff2j9AyiiTQF2Ybezk=
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-62fa062a1abso3385238a12.2
-        for <linux-mm@kvack.org>; Thu, 02 Oct 2025 23:30:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1759473007; x=1760077807; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=XkLFiACyw+pxXQ9Sqz5bYmdEFhy/428iFAOlJwo0q5k=;
-        b=gy/GpU1OvigHLjWG/xoqudlQO1KhZrVaIyE33uNL51hdwg6PrjU7/as6s6980tGDLF
-         BKMgZbo/KieOpahE1UZiBPaYcrACO/zS1BmU/828Zcz/2r9qwySi+MGkenECYy8weu1N
-         OS/klHELSgLGF4j/oW1dMy8jxZC6Nop5nD3/UjgAywPMMnHujz5FFv8qZhjiW/bWh+oF
-         YNdU32HgqZH2TFe9RrvibDB+0ixWBcrGvZnLo+FqtRtPw7x9dhnVyoYuyk0oDNxtHOx3
-         268lxxKFQRa1VXJavKBoFR0HUwiKPwtQzpNu94m1Ge8MrdzGnrXCFDESPqd6VWpYb0m6
-         YLHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759473007; x=1760077807;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XkLFiACyw+pxXQ9Sqz5bYmdEFhy/428iFAOlJwo0q5k=;
-        b=eQFK+J+Ct2kyBPc0kWzFwWrk4NRnIRU8wz1XWoXgUQVHbsjTtSUyXmkhDjiMB1GE3W
-         6XA10Y9lM0Z4bSaUqA2TqP7Uq+86l126lxV7BuoDF66uRfT2wmtkJhdXYEtaHqlYpS6a
-         vMofz2w13fY83zGZYiJb13MX828U+ADerWS64Foe5Sb7ISxF8rUd/K+QjoVaGN0N2hUB
-         gQgPUuOwXX6qVXMzaYiTnxSkPchZPsipAfD7Kai8oiNQQHxtyxR57kV3h4t/YmhbzpnG
-         sdbWpxQsX6D/dcuDakgkqsAQlj31L/Li8I2d5hhlyOwuyTov7ZNuWlXjp/MTFysamsZq
-         HIMQ==
-X-Gm-Message-State: AOJu0YwsXK4QU94vY8C5iUXQcyHM9p91IrVURHyqiHLv3mFm3VIllwMw
-	I0LWV5+s67kCmuA2yLFOO3KWnhZM3rUZhNdHR20V90DFn7FRHFicYVG/30vtfmzZwCc=
-X-Gm-Gg: ASbGncvt/tcvR1henx6ZiLp+UOr21XEypZXEuKzHuv2JtbFG1VPlocwutRTLHBaQg5c
-	KAEinL2xWxkwqlrgfxSlY5mDYmG/fUoy4KXOvPdcOaSA2kULepuPTsE1WJSZnKSD8+PCNpGGZUg
-	TctuOQVoGeuuzoD0Le/tbTGpfwDJ8TwEXOZDr2KQm3zttUAgA/Rw+32GzO9PtdjrY8J+5MN/n1r
-	l4vPuxKjbo80drg7X2QRAWm2S79Sx7UIC+Ik0qE/wShc40QjOkJ3jbFszWJcoIxs6Bad4SrkTEr
-	wZJbGIsWwXjt4GRjOQasklZ8fQ1JYS8ohbRPKoPZU149cH4RJQx2k3dL6ctOuSg3JOSmGtqLdXG
-	5So0e2wP1N2fEbVnqKcG6h3dTedaU0b1Uhfp6YdmhkHk8nrLPLtJsKLf7lsqD
-X-Google-Smtp-Source: AGHT+IGXX832rzQ3SHMm9cxe/AbXuwPv3O0q1qi/7SX7y0yjjhFdzCNvPBXopZojYDFGU05IQJ2DLQ==
-X-Received: by 2002:a17:907:3e93:b0:b04:6fc2:ebb9 with SMTP id a640c23a62f3a-b49c393aa02mr220162166b.45.1759473007029;
-        Thu, 02 Oct 2025 23:30:07 -0700 (PDT)
-Received: from localhost (109-81-95-234.rct.o2.cz. [109.81.95.234])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b4869c4c1f6sm365114166b.78.2025.10.02.23.30.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Oct 2025 23:30:06 -0700 (PDT)
-Date: Fri, 3 Oct 2025 08:30:05 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 10/10] mm: kvmalloc: Add non-blocking support for
- vmalloc
-Message-ID: <aN9tbS3RkEqm2tzP@tiehlicka>
-References: <20251001192647.195204-1-urezki@gmail.com>
- <20251001192647.195204-11-urezki@gmail.com>
+	b=H32CjX93F+Pt2BzLnuoJzgrTJ8pCgOd2UGFXPZ+Au9b4qBJOthTDlG1ZRkCOFl5/aa5odG
+	Jgs/qzBViOBD+BfV1SPjgE8Ub3vnT4hvRjl4SqrHocyrbFg4FMaiBnDvj/IKs6tjslovRd
+	JDASWw7RrONbxuNI2/I2d36+tHUCQ6E=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 797531F455;
+	Fri,  3 Oct 2025 06:52:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1759474349; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=BX6RiGL+cjgZpJxdzOC3lAgawx+FysoKFUY5TPIj1e8=;
+	b=MdFVV1mdWjpX5Voooy4m4FqOooqAMhlkKLrM49tVjyAcdMnTtBQhdRT+HJej/prwv9tHx+
+	SmHDUAI8IhJ7aNlUBLVRry43mPqEo6QnqOxpTCxMGkDPZ1BmF1qSDmtLvPYKFifMJy5bTS
+	4xGRP7jNRBQqyzhsp1ZfWftFVLG5jXk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1759474349;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=BX6RiGL+cjgZpJxdzOC3lAgawx+FysoKFUY5TPIj1e8=;
+	b=Sa4XqljAPKqvAw6iNfLjzOKJSoc/jgG+cbFP38zUR3P2qToue2mR49IHT/moFZAExLmK/M
+	yhx+R5Sg2+9Y4rDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1759474349; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=BX6RiGL+cjgZpJxdzOC3lAgawx+FysoKFUY5TPIj1e8=;
+	b=MdFVV1mdWjpX5Voooy4m4FqOooqAMhlkKLrM49tVjyAcdMnTtBQhdRT+HJej/prwv9tHx+
+	SmHDUAI8IhJ7aNlUBLVRry43mPqEo6QnqOxpTCxMGkDPZ1BmF1qSDmtLvPYKFifMJy5bTS
+	4xGRP7jNRBQqyzhsp1ZfWftFVLG5jXk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1759474349;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=BX6RiGL+cjgZpJxdzOC3lAgawx+FysoKFUY5TPIj1e8=;
+	b=Sa4XqljAPKqvAw6iNfLjzOKJSoc/jgG+cbFP38zUR3P2qToue2mR49IHT/moFZAExLmK/M
+	yhx+R5Sg2+9Y4rDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5D89013990;
+	Fri,  3 Oct 2025 06:52:29 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 11QUFq1y32h0VQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 03 Oct 2025 06:52:29 +0000
+Message-ID: <be2a3a3d-395d-4a0a-9c32-488212710c92@suse.cz>
+Date: Fri, 3 Oct 2025 08:52:29 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251001192647.195204-11-urezki@gmail.com>
-X-Rspamd-Queue-Id: D57CF40008
-X-Stat-Signature: uudo6y4qen4tj6zs81ty4x8obqukazw4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] slab: Fix using this_cpu_ptr() in preemptible context
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>, ranxiaokai627@163.com,
+ Andrew Morton <akpm@linux-foundation.org>, cl@gentwo.org,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Alexei Starovoitov <ast@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm <linux-mm@kvack.org>, ran.xiaokai@zte.com.cn
+References: <20250930083402.782927-1-ranxiaokai627@163.com>
+ <aNu2xJMkEyYSdmW6@hyeyoo>
+ <CAADnVQJ-bkd2UVsZmhdb1L5ZrXjZbTnRcaJ-D=ojsoiRHmHwaw@mail.gmail.com>
+ <b9fb0a69-6cfb-4285-8118-ef5301115948@suse.cz> <aN4_PeDcDQUhv6N-@hyeyoo>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <aN4_PeDcDQUhv6N-@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1759473008-497416
-X-HE-Meta: U2FsdGVkX19j/eqzsnlP7szc+4fwgnmnxMfq1bZvM2Biegi7Syz3vsds+c028kn3DQeI6Uu8cEAfqeKT1JOMNWXhw9MQcLtYKGjCtrvYOGb0F5ekGe8xQUGJSZBQvEB9TQlel2Z+Iy5ZyCXeOFubYjTLVnSkhKXASKw/hHqQo3zmoESuI/137o/NOh/EshuOTEMhQExuZvV9QWus6aPjC5YCBf61tter6o9mekj/mozpG51UEhnmy+AvOcbrHyyROY6VgILY5kSMMHi7Z5Q0VtrJ6SdTpvZrL7+L6AeJBJhWtzxakR0+eXF5pbubI3Wj/uDRV4ubhU80OJAxQIFQqELNqdkvCcoKec4CZAHaC1v7CR0n7eFteRho8rgrKCcUfqro4na5K1aWS2mnXuE9oQTbA6KAIICIjn4eYr1pJABgFZ8FuaVRT/n0ombjKpcpUysiDQQ7UeYPKH1K91HxrUxlGz6AnsNcGt0yoKj+LSJaKcwcGVB9q1R/86bjy0GH5h0EVpqOy4uwYgDMG4rAWRcwjaerN/gj9m7jlboKIjh6wxcfwgD+0nLTCgYsRCnpJ6kHLNUA4M0pewZpFYeUrJaxW5cdJ0hGTAq0iBC2alWLDPuZCEssdNTUJLtZb/SNoOj4nYoDfNPC7Hu05vUIcz/tD64zqj/gqwKSQE3Wajke+v/K8c1bw12UPDAtk7g6M8or57z0NFZPKBN9DfjrDWBOD/jOPM4J1j16Sy1CyS9TOr7J/E75Ozp7xLJZ/mQk80RyUbiVVbZPrQVEa/bRncgQYsThL+qyIA9oIhME2lIzl1ooDQp+qEM4Xm3Ro8hSGBcSGtEN70dippVyCrMntSNckAY6dJFl4C0AWh8xoWzVOUk+uqsMootY5VIrRrKvIDH919WCY9uMOSQhSwrK+3vWtHkOSnAbj0g6BK3AGDNGc82HGAQoiq0E3gkTNEJIkNmAhFHS23wLDjM91S7
- UssAJw+1
- DbgBEA4TQ/mUCFhxQud7Q77k2Wpds15csXEAGZ2wbpqhuVluyl2AQQJaA2ccPZi8938S6cnedP9BGm6cMjZOetYEko5jEhPCeoGLqmU6p3P8PDQHG/MvWXP2QwXQBnpjJ8iG0eU7Dl1CVDwkbz51E365MzVoxELyDyzNRbLuLohPCwfz9nJRs74NgJ44MhjERkobnP3gbACe/N7blW8Y7YHjHDkQM5PYSUnUNebCsIh5CczlOeaVk2gB7gfGz5L9g/cT1GBOHIEkBQ6CeJ8rkvF6CKvDONzxDXUxdeQ0D8bSOwzT/ypqUnRMs9B8mvyy3kWBLLu64Kwwh760idP7aKq1+DbuSeWpbvK/dM8WLhhRF/AKClIeqIPNlDU5zsZZcwhYz9beFDgTDPLM=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 3275E40002
+X-Stat-Signature: py9pcz7a7k9y6ohmjiq8dus8oe8scs5w
+X-HE-Tag: 1759474351-291066
+X-HE-Meta: U2FsdGVkX19vpmT/JVFxfZavWma4G9X2cviieo7G3haLjrgS4L3GZdcQnIcJ0x0ZT2ZVn6hzYhm9KWsWuXgK7b52w77EB/cV7cEp/UqDvg1Q//2gd/I2Y/XZ96a2bKQqC2/FyxJuWeCd4+t6b5PQnj1xiudjaI0ElfraUrUSi11l8Tlv13wuetvOaZTanzoELYFD6Cm+eEBTU/JR94gMe9sHgTOLU1REJjHqeGb6gPxiWTyog+l8MW5PSHHjPZJZwPGvGr53uJz5nP1mm6llO9r8MdKZ6srKKvlNlt6Yw49nSMMuqfjKWHPY3apVa0N7JLf4B7nQ9oemWSGn4Avjth5WlZUFdm3xKpWmZFha2SEJU1Xf2F6LoTYxsQKPSOfg7S+ejXwyDwLQ3NCr0wwH4JeqA6pWyQZ7JAgwrnv94K7YnoR8If64H4ucxrxdMjJLPmU1KoSaE/8yrQ5/cAjCno/J1OSXlIlSghti/3C+H5f2rtGci7+z+wxsmdRyewMkb79b3dvc4mqAFKBbuzynHS6ixqhqKs05fM6bCgPln8VxSay/gAihrL6GxjZIE8/9mh3Q1c/MlDqq4sxmIGIAazoM3vN6Wh/7AeUozyG3YeOjls/khZ0S6ejkEPZ9RwJnleDFPvyEOkDjAAQM1AYzfZ6LNwHyO/bMRpyj8vYi7T2hojaT3yDBjG+l5B4VSlrN3OTwqrk7GXwK/Lc1LZBMl7j9coIEmFx57AG/w2tsE8TdhCqDcYInNxCrQaN6Y3g0uCpT6pzOEfg6+GWaa1NcVVt5KsXTUMGcSz7qh/bho0SmbXBvV/dkE/81esU68NyJsd2PORHhtowKiSjdibYabsPDHNwAU3YD/cfHkySSaIVB8OpyTW1u+LvfobAoiWKWG5ZxraaRzf0ZT2S44g09m5Lw3R8D2ln0YAwn3o84QIpvQ7gFs2k86voUIDIvtE907oFPkhfaOfRjLxBcR/D
+ 6RJXoY3m
+ c42GYizGgbAk9tL4c0XZIKlvDi+io0Eo697M2Z1kZCNbdZLO+R44zqwTr8d9otKmhfJJaaiKJ7R4DsU8i25jPA3x8rQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,87 +184,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 01-10-25 21:26:46, Uladzislau Rezki wrote:
-> Extend __kvmalloc_node_noprof() to handle non-blocking GFP flags
-> (GFP_NOWAIT and GFP_ATOMIC). Previously such flags were rejected,
-> returning NULL. With this change:
+On 10/2/25 11:00, Harry Yoo wrote:
+> On Thu, Oct 02, 2025 at 10:14:55AM +0200, Vlastimil Babka wrote:
+>> However...
+>> > Is this PREEMPT_RT ?
+>> > 
+>> >> >  __alloc_tagging_slab_alloc_hook+0xa0/0x300
+>> >> >  __kmalloc_cache_noprof+0x1c4/0x5c0
+>> >> >  __set_page_owner+0x10d/0x1c0
+>> 
+>> This is the part that puzzles me, where do we call kmalloc from
+>> __set_page_owner()?
 > 
-> - kvmalloc() can fall back to vmalloc() if non-blocking contexts;
-> - for non-blocking allocations the VM_ALLOW_HUGE_VMAP option is
->   disabled, since the huge mapping path still contains might_sleep();
-> - documentation update to reflect that GFP_NOWAIT and GFP_ATOMIC
->   are now supported.
+> It's
 > 
-> Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+> __set_page_owner()
+> -> inc_stack_record_count()
+> -> add_stack_record_to_list()
+> -> kmalloc().
 
-Acked-by: Michal Hocko <mhocko@suse.com>
-Thanks!
+Thanks, missed that.
 
-> ---
->  mm/slub.c | 19 +++++++++++++------
->  1 file changed, 13 insertions(+), 6 deletions(-)
+>> And in a way that it loses the GFP_KERNEL passed all the
+>> way? I don't even see a lib/stackdepot function here.
 > 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 584a5ff1828b..3de0719e24e9 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -7018,7 +7018,7 @@ static gfp_t kmalloc_gfp_adjust(gfp_t flags, size_t size)
->   * Uses kmalloc to get the memory but if the allocation fails then falls back
->   * to the vmalloc allocator. Use kvfree for freeing the memory.
->   *
-> - * GFP_NOWAIT and GFP_ATOMIC are not supported, neither is the __GFP_NORETRY modifier.
-> + * GFP_NOWAIT and GFP_ATOMIC are supported, the __GFP_NORETRY modifier is not.
->   * __GFP_RETRY_MAYFAIL is supported, and it should be used only if kmalloc is
->   * preferable to the vmalloc fallback, due to visible performance drawbacks.
->   *
-> @@ -7027,6 +7027,7 @@ static gfp_t kmalloc_gfp_adjust(gfp_t flags, size_t size)
->  void *__kvmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), unsigned long align,
->  			     gfp_t flags, int node)
->  {
-> +	bool allow_block;
->  	void *ret;
->  
->  	/*
-> @@ -7039,16 +7040,22 @@ void *__kvmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), unsigned long align,
->  	if (ret || size <= PAGE_SIZE)
->  		return ret;
->  
-> -	/* non-sleeping allocations are not supported by vmalloc */
-> -	if (!gfpflags_allow_blocking(flags))
-> -		return NULL;
-> -
->  	/* Don't even allow crazy sizes */
->  	if (unlikely(size > INT_MAX)) {
->  		WARN_ON_ONCE(!(flags & __GFP_NOWARN));
->  		return NULL;
->  	}
->  
-> +	/*
-> +	 * For non-blocking the VM_ALLOW_HUGE_VMAP is not used
-> +	 * because the huge-mapping path in vmalloc contains at
-> +	 * least one might_sleep() call.
-> +	 *
-> +	 * TODO: Revise huge-mapping path to support non-blocking
-> +	 * flags.
-> +	 */
-> +	allow_block = gfpflags_allow_blocking(flags);
-> +
->  	/*
->  	 * kvmalloc() can always use VM_ALLOW_HUGE_VMAP,
->  	 * since the callers already cannot assume anything
-> @@ -7056,7 +7063,7 @@ void *__kvmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), unsigned long align,
->  	 * protection games.
->  	 */
->  	return __vmalloc_node_range_noprof(size, align, VMALLOC_START, VMALLOC_END,
-> -			flags, PAGE_KERNEL, VM_ALLOW_HUGE_VMAP,
-> +			flags, PAGE_KERNEL, allow_block ? VM_ALLOW_HUGE_VMAP:0,
->  			node, __builtin_return_address(0));
->  }
->  EXPORT_SYMBOL(__kvmalloc_node_noprof);
-> -- 
-> 2.47.3
+> Oh wait, we clear __GFP_RECLAIM on the first attempt to allocate
+> high-order slabs. so gfpflags_allow_spinning() returns false.
 
--- 
-Michal Hocko
-SUSE Labs
+Ah right! Dang, that's suboptimal that we intend to do an opportunistic
+attempt, but limit the allocations of supplementary objects this way. But I
+don't see how to avoid this without inventing new gfp flags.
+
 
