@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7DE1CCA471
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Oct 2025 02:37:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C628CCA471
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Oct 2025 03:03:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B408A8E0005; Fri,  3 Oct 2025 22:37:51 -0400 (EDT)
+	id 665B98E0008; Fri,  3 Oct 2025 23:03:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B179E8E0002; Fri,  3 Oct 2025 22:37:51 -0400 (EDT)
+	id 63D148E0002; Fri,  3 Oct 2025 23:03:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2EA38E0005; Fri,  3 Oct 2025 22:37:51 -0400 (EDT)
+	id 552988E0008; Fri,  3 Oct 2025 23:03:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 937118E0002
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 22:37:51 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 320B845543
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 02:37:51 +0000 (UTC)
-X-FDA: 83958871542.01.32BCB31
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 46B724000A
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 02:37:49 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IO2KSUrz;
-	spf=pass (imf04.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 437088E0002
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 23:03:27 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9EF2787F3B
+	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 03:03:26 +0000 (UTC)
+X-FDA: 83958936012.16.52B2511
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A464F20013
+	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 03:03:24 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="J5giOyR/";
+	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759545469;
+	s=arc-20220608; t=1759547005;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZtsI3lx2659ed28Hsfe3yffVn1tmzg1sTkqeGJ64sdY=;
-	b=dIYw6eNWLg60HEfP9fvwyKPsA2DyzXV8XAy5Xh7usBTwbb8sU89Ls5hZUz2e4+59i8p0LT
-	FfeiWBQcsanCg2q77LLwq80wYsgEbjZEDEhWiqCUO/ySIJNg+TdnBjvZZOsAgZfTRAdbHG
-	0W/MpQ18vjcEystQtmOiuu/YzdDjzxk=
+	bh=A3w0aPrtz6owLHfo4rKJJGMrd3gYAmvp7fLTky+PAPA=;
+	b=Z/TpQ8l/13wkAsrHTu97d4tpmuv5nFbMl/S+ZnizAsBFFpxULPHqIOYtjaK1DvXdOmE3Bh
+	kf1XNfDLXH7/IOIWu7UalTF6Q0mk7l1RP1Y++sS6aJGGRrAWi09XhcNria5tCpvh1GAmO9
+	2gHuYUlwQc5DW1gdeXfGwgViCgsdUy8=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IO2KSUrz;
-	spf=pass (imf04.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="J5giOyR/";
+	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759545469; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759547005; a=rsa-sha256;
 	cv=none;
-	b=OI17SNcGwHI8RFb7p/7rnlQ7uNbAcO+/307FJrSnbiGBWKkvABHjm+RykmNLgVKow8eEw1
-	qtO9sf0JwvKwN6qAsQsTNrVig+QCNN4WtC0edGfYlYKop4tyGPHNBZN3cYmWPtrO9/NMtR
-	ebJi0Q/G/RhDaG0DDihJSqbFO7OYYJA=
-Message-ID: <6c4be2e8-04f5-49c6-9055-cef033716c19@linux.dev>
+	b=VhnBrxpXZ0PjXZKEJvmWFbxD0TxvzolUCx6dFgRqjJOZULqYhpFmQdE9pgQmKiX8Vnd1JT
+	1jSuOgHkqw/pU+v6PNJKC9KYtU/yQmR3Kj6rppm+yUMrivAqO0pRMb/hl/LP6iqCoubmn2
+	LSjhbYGJqcX1Uw6V4HQJtIXiL2cKCoo=
+Message-ID: <a36c9776-d158-4add-86d0-c41a09e4a255@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759545467;
+	t=1759547002;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZtsI3lx2659ed28Hsfe3yffVn1tmzg1sTkqeGJ64sdY=;
-	b=IO2KSUrzq3V4cuTh3UvbNkBrJC37Pe4HdjZa1lIkRq+QI5SWpv8888ULk3oRQ/d9QYS8Qm
-	0dZg+eRRrT2guK4KsRhzfCQtFhiTwyE1bDA9xwVDVDKaG1ZxVGh47HBeZecDDyD59xJk14
-	O2bQfUuPDvgjzk1F/Oo+VzJwxOfh0+Q=
-Date: Sat, 4 Oct 2025 10:37:32 +0800
+	bh=A3w0aPrtz6owLHfo4rKJJGMrd3gYAmvp7fLTky+PAPA=;
+	b=J5giOyR/se7ekCKx5d8TRoepFqoYKyM4sDqCkBMDHeM9cIW0yMp4RAR6VjFS9lcB206Qvi
+	IK8YfpHIpHsq9thLfgThvt/61NZg2PZ0NrV569eO5F40KoDftwQ9QVhMGSWTBZUKpvv9Sj
+	/dNa8V8JMS91Y6gcFxNwtcL5OG+VUSY=
+Date: Sat, 4 Oct 2025 11:03:11 +0800
 MIME-Version: 1.0
-Subject: Re: [Patch v2] mm/huge_memory: add pmd folio to ds_queue in
- do_huge_zero_wp_pmd()
+Subject: Re: [PATCH mm-new 2/2] mm/khugepaged: merge PTE scanning logic into a
+ new helper
 Content-Language: en-US
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: linux-mm@kvack.org, baolin.wang@linux.alibaba.com,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- wangkefeng.wang@huawei.com, stable@vger.kernel.org, ziy@nvidia.com,
- ryan.roberts@arm.com, dev.jain@arm.com, npache@redhat.com,
- baohua@kernel.org, akpm@linux-foundation.org, david@redhat.com
-References: <20251002013825.20448-1-richard.weiyang@gmail.com>
- <d8467e83-aa89-4f98-b035-210c966ef263@linux.dev>
- <20251004020447.slfiuvu5elidwosl@master>
+To: Dev Jain <dev.jain@arm.com>
+Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, ryan.roberts@arm.com, baohua@kernel.org,
+ ioworker0@gmail.com, david@redhat.com, richard.weiyang@gmail.com,
+ linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
+ linux-mm@kvack.org, akpm@linux-foundation.org
+References: <20251002073255.14867-1-lance.yang@linux.dev>
+ <20251002073255.14867-3-lance.yang@linux.dev>
+ <0d55d763-81ff-4b99-bb13-3dbb9af53cdc@arm.com>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20251004020447.slfiuvu5elidwosl@master>
+In-Reply-To: <0d55d763-81ff-4b99-bb13-3dbb9af53cdc@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 46B724000A
+X-Stat-Signature: zszhqizt81hyeih77q5am4udouzeed3e
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 7q9uis65iac68pdjj7des3n9ufhyc1mh
-X-HE-Tag: 1759545469-647346
-X-HE-Meta: U2FsdGVkX1/d9YuOV4saC9UoORvj0Dht84DxtFc3fmeVzjYQmV6Xg3SSPq+o020JoRGNSzhi/OnOOVYyenQ4n4bTZqf3QIpOlqx3D92U1bbP8rkmIFZvcgPu4BgPAB2hRpOMJGb5HEnBG9jaXl+J4E4j0ktxFXbjOHeGdcsClyKd3H5vLmusd0BGsVl2FNMu+CtHyyYnLNQCaIlaHYZYWIq4T3/VKXnyUQtyjyYlvCgJg8eet/AtIZVSGDh6Q8HnFfAeOa8jlNBVamlU73y+sh9TZQDMeMJB1W6gdN/EInW3bWa2zwK93DCEjcjz12ZCo9wtpYFFdbI6rVy0Am63BdAV/+Tu2Cw3yMV13kJ3T1PwNsGjbgMkXBdQrvBnR32InQ7+z4Ll/9WIbTjt0/0BKasjHXGbqPbwDWa5bJsk6W+zjaoqf6wGqE4Y/hixrqu6xNyNE7ebP0Mumo7zZaWm348jOzmuiBvgcdo2LLZRYPpi5i4dqAG/I9aE098E7M9bCHzn1PiOlhjADQmMGNj/oCPPCQXjWBezsEkIRq8M+7GHYX32nkyp4hjF1+83iJpna42pdhaLq+uwH0cvJgm6tE8+t5DtzmjyI3sJTb0l8hcef/ZKgcax05vaVcsxJXUouXqNU+4mk1WMUCd4cn/ZLo1zkdAOzUlF8hf3o++IBUVKbYsOmmV41vFAuEmmDIu1hVqusb1m1GYQNMTVmvo+VxWWsbfpZj1ZF98pTALvpNK5E7gvSQFFJhp+QfZkw3jtAT+Yt04aYSk/sXRymkMxOzZ9m67+shwOoSZeTr1C3nuJ4leEkele5oEaYNCAeKxiKs1uTWX5x9gdCfAnqjEDVFcZFuIBpZrwalW4U1SwSEha96LsEO4F19ZRbNqVLRWTtNlGgKG3VyX4OAq9RzraXQuTMtnH1pv7TP+piita9YHGeWbFioMugcAEXm7bVWKcjgT/7f5FSCBrYloF2Dy
- J+g3/QEq
- O1wEKGW1z3a+wtDpDpAuh3/UwwG9ct0IOkAF7GVwBpmdgx1bjeUqdvhqfjtdU16kaFfCWQYtvxGEKpP5oOxv9edgm6awuLdASm1XHZncNBvcyH+KvXc4L/131D+9gmuKbNirlad9M5CMO73v/54epDOdr+Li6OeBF/XJHtiekYHuk3BSAB5ImLwMqbXP5SCXyvQ+SfcPSgZLtUbJrOs/SWqedn5stAxOh/9tISrB+/PELC8TY4xgjNl4x3I3VLPGigejsfMoz1dWFaWcA3TVcoiNiFHpWzQk+jIRV
+X-Rspamd-Queue-Id: A464F20013
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1759547004-394397
+X-HE-Meta: U2FsdGVkX19AIhjhLIYRlgrueerCWcsYHmSHs58HC+XyeD8DR/FK1xaazd2btBTb4P6+3QsJ7va1FcI/tRcsp5jff5FV20p9Gyen5LNBUb4ZqeaR/vukbaQHNaPvu6onFATz8amlK7rozxlq3Bg72rVnRtU7s7jo6zrnWE2cX5LbY36DaoBQS277WOEPL9lPiMK/zoBNkWXGEXlgYQ0OaD0/0RYjCWZZKM1soieE4P1svxnSLOH5JhbNxFwMHccdqG5qcpYbJf7hXsaFTCMz4MP3wyBdyHtvOFwgvyAeRn0u3QHx4enunm69638paYPPLF81fjyqFHpdYC4mfG1OBy1gizPz/9cR3Gz9F/Q+z/CdY1b7a3LgCbZY2hHSryXljPmO5LzdhdvgY7CcVcqAV0tReEFtXHoTttbuz675/gkbN0z/pS2XBU3f7KzOVORKx1LDe8plSMf5/GhIQ98HAZcGJqch3PSwlGCbkqjURRHH5KtkElWAR287A0IWR7SeKmo5M4M4DCGDw2wwNzZx7tJDpg6lMfdv3GQTeeU5Y9m2F5mXqApVRpT3kwo94+HjJRbLK5pVpj9u8nP67akWBQLx6Tbkl3y6TkOI1QTejy9p2Ww5bUY0iKp9OOnfaKT44a3r3W76wffpxHIUd3ATb1oUHPW6ia8GlLN84+RwkLxOtfiifFRnKnvrfpn3B+3k+2F1fnXcQyQQ9in8ssonj7IhFN4UuWpEgK9i+NI0eod7VTIYB/Kq00hmBHw69WxFYBE+CLJHiJpBpVuV0HtR57QqeikC+AZdPhupoNc8cjz70RNOsdy/844AweG4hy9ifb/w9FKC9gVx1SBW63EMkBYSjiEDqiiIsUk1HrzRZJJ3mSm+DpIW4zterzFgvwk4bGZZoEFdIhWoSVLI84EMOovbBkDk8nttZMWhkzMI80XUsY3tKnQZVb/4KMA2KArSNfGjOfH+nB8IJRLCD6s
+ lCwdfPPQ
+ LJy+OkUDAEUiCy0k3vM8ByYXNIAb0hKiMct+Ibv7c5xUZFFLsDfYGwdtJCo8xb4arA+yHvYe1TZoNivEGact4HdNHob2Zdj3wJ6lxKm67yKUtI/gK4awf9mQ8P1C4+fPxtuWxxlAfuQ96qt3HlGQjh6hXtyydKepaB2/a1ezoC2Bym+pi34T0EDN8fk2Cjw7QMo02xhfwHucBv6aHkofI+jYgTmjNM3IqPNagz3+y9CqfiyDirv4yDKfPwiyPVSySq6UgMvAzuCpidcUJC6CL3xhoruVwWQS2DAJnkyz5iPC3/7c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,52 +98,48 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2025/10/4 10:04, Wei Yang wrote:
-> On Fri, Oct 03, 2025 at 09:49:28PM +0800, Lance Yang wrote:
->> Hey Wei,
->>
->> On 2025/10/2 09:38, Wei Yang wrote:
->>> We add pmd folio into ds_queue on the first page fault in
->>> __do_huge_pmd_anonymous_page(), so that we can split it in case of
->>> memory pressure. This should be the same for a pmd folio during wp
->>> page fault.
->>>
->>> Commit 1ced09e0331f ("mm: allocate THP on hugezeropage wp-fault") miss
->>> to add it to ds_queue, which means system may not reclaim enough memory
->>
->> IIRC, it was commit dafff3f4c850 ("mm: split underused THPs") that
->> started unconditionally adding all new anon THPs to _deferred_list :)
->>
+On 2025/10/4 01:05, Dev Jain wrote:
 > 
-> Thanks for taking a look.
-> 
-> While at this time do_huge_zero_wp_pmd() is not introduced, how it fix a
-
-Ah, I see. I was focused on the policy change ...
-
-> non-exist case? And how could it be backported? I am confused here.
-
-And, yes, 1ced09e0331f ("mm: allocate THP on hugezeropage wp-fault") was
-merged later and it introduced the new do_huge_zero_wp_pmd() path without
-aligning with the policy ...
-
-Thanks for clarifying!
-Lance
-
-> 
->>> in case of memory pressure even the pmd folio is under used.
->>>
->>> Move deferred_split_folio() into map_anon_folio_pmd() to make the pmd
->>> folio installation consistent.
->>>
->>> Fixes: 1ced09e0331f ("mm: allocate THP on hugezeropage wp-fault")
+> On 02/10/25 1:02 pm, Lance Yang wrote:
+>> From: Lance Yang <lance.yang@linux.dev>
 >>
->> Shouldn't this rather be the following?
+>> As David suggested, the PTE scanning logic in hpage_collapse_scan_pmd()
+>> and __collapse_huge_page_isolate() was almost duplicated.
 >>
->> Fixes: dafff3f4c850 ("mm: split underused THPs")
+>> This patch cleans things up by moving all the common PTE checking logic
+>> into a new shared helper, thp_collapse_check_pte().
 >>
->> Thanks,
->> Lance
+>> Suggested-by: David Hildenbrand <david@redhat.com>
+>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>> ---
 > 
+> In hpage_collapse_scan_pmd(), we enter with mmap lock held, so for
+> an anonymous vma, is it even possible to hit if (!folio_test_anon(folio))?
+
+Ah, indeed :)
+
+> In which case we can replace this with VM_BUG_ON_FOLIO and abstract away
+> till the folio_maybe_mapped_shared() block?
+
+So you meant something like this:
+
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 2a897cfb1d03..ef87d7fe3d50 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1374,11 +1374,7 @@ static int hpage_collapse_scan_pmd(struct 
+mm_struct *mm,
+                         goto out_unmap;
+                 }
+                 folio = page_folio(page);
+-
+-               if (!folio_test_anon(folio)) {
+-                       result = SCAN_PAGE_ANON;
+-                       goto out_unmap;
+-               }
++               VM_BUG_ON_FOLIO(!folio_test_anon(folio), folio);
+
+                 /*
+                  * We treat a single page as shared if any part of the THP
 
 
