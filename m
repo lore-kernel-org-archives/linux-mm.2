@@ -4,82 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B04EECAC5B0
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Oct 2025 14:27:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E31C0CAC5BB
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Oct 2025 16:39:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9FF778E0006; Sat,  4 Oct 2025 10:27:00 -0400 (EDT)
+	id D99DC8E0006; Sat,  4 Oct 2025 12:39:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AFDD8E0002; Sat,  4 Oct 2025 10:27:00 -0400 (EDT)
+	id D71368E0002; Sat,  4 Oct 2025 12:39:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C5158E0006; Sat,  4 Oct 2025 10:27:00 -0400 (EDT)
+	id C86EC8E0006; Sat,  4 Oct 2025 12:39:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 799738E0002
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 10:27:00 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C4A3F140147
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 14:26:59 +0000 (UTC)
-X-FDA: 83960658558.12.3212739
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9882140004
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 14:26:57 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B93588E0002
+	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 12:39:51 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5D83B1DC26A
+	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 16:39:51 +0000 (UTC)
+X-FDA: 83960993382.19.4AADF83
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+	by imf05.hostedemail.com (Postfix) with ESMTP id DEAA410000C
+	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 16:39:48 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=sang-engineering.com header.s=k1 header.b=PNedKPiX;
+	spf=pass (imf05.hostedemail.com: domain of wsa+renesas@sang-engineering.com designates 194.117.254.33 as permitted sender) smtp.mailfrom=wsa+renesas@sang-engineering.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759588018;
+	s=arc-20220608; t=1759595989;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=g4GhKkMm6uL2Fs/6g0f43IlWTFC0TV00zL9VDhG8wyg=;
-	b=VAtDIH1vkOU1gixNEwCJQ0SVOst8Q5eO6fymzG+7HrBgmn9jOcnWW4cb4yXpaedig7l6/P
-	q38aYQqVo3khJbtuZFbsWOpjFTv9y7cxy5E1WEr9IexDGoki19/a2U88lVMu1XPEbDWUja
-	8jJfFH9P/IHzxA9/Hvcm3u4y5cuXP4M=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759588018; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oYWXAVcToZjL216N14wevIUTr5XEGs+BI72TKUQOPN8=;
+	b=punp035iXOxY01iN5Ir4mr7jdCneWd2rZ9l4O4lnYBdhg3NWll9VHAeKjZ1iwdKDQb6SIn
+	km73HK7JvW2mVuSnzjaRdDgJbhNHR1ZEKlXbvkpjg25Qf1XAXGS9TEs0LimXLY84WT8bnN
+	NHbhn68x/Lk3iTC/6Eyq9sPUvgoBpCM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759595989; a=rsa-sha256;
 	cv=none;
-	b=hOBGv8B5MRQLVS+W5GoMdxSoQTRO3IFOOhDOLrHx7A6RTn4l4xfxDqHo44ev3uSaiYAJGF
-	yYT3pwjwOsDHLE3w9qcCIDLihC1JjdQCaJpjFGbhJF5urdtGUxiO28nCvSa09Ndr60Cb5i
-	31tsY+NJuw2917WE8fPFZm783tsgyGs=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9A8A6153B;
-	Sat,  4 Oct 2025 07:26:48 -0700 (PDT)
-Received: from [10.163.66.97] (unknown [10.163.66.97])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 24D613F5A1;
-	Sat,  4 Oct 2025 07:26:51 -0700 (PDT)
-Message-ID: <96dac3c7-c969-4d4a-afca-85341f8a6a6e@arm.com>
-Date: Sat, 4 Oct 2025 19:56:48 +0530
+	b=aJF/+67LZbPAXWENlZMfPfS+IqDW3Y5BF4LlZ4j8qyPCjtnNi85uYdFD7IUGSto7raL8OV
+	LcnCH2Vnq8UxIHm5fD/pormJPQDOu5OkipJfcqLa7xaEGySlWB88oLR69iD8inS7t2XnAH
+	7iPk0uPq+ddEmL6yzabulwslfkj7AqI=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=sang-engineering.com header.s=k1 header.b=PNedKPiX;
+	spf=pass (imf05.hostedemail.com: domain of wsa+renesas@sang-engineering.com designates 194.117.254.33 as permitted sender) smtp.mailfrom=wsa+renesas@sang-engineering.com;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=oYWX
+	AVcToZjL216N14wevIUTr5XEGs+BI72TKUQOPN8=; b=PNedKPiX4oCj4bpedhVz
+	E+/1zG4RS6etGvHx7daU2DUWMNccTF0z1BMx94C/uGTZ5muouJ1sCi+Rrrn+I0yb
+	QX0tCQTPUifcb+5NvLnilNYtzPuaMC9afpJzRPyfpW8YSMz2Kk2sAGveGofpt2/U
+	FgjEfDef1ztsgRt/i/fhnznfm7TM0Tf+A/tZDrAPd+4jSPssQfBLtqCfRE58HIfm
+	D8PcLW9fA6b0Ln4SDcQwSOwdrXhoroqBaJXPWi2lQd/dVTkvYzyJpOcaiTLwaahq
+	J+U+4x2W131yohhie5t+CaEw/7wpjC2Zja7YEDIcma8nk3Y5vfr5rBO/vRmlQllV
+	Rw==
+Received: (qmail 1087916 invoked from network); 4 Oct 2025 18:39:44 +0200
+Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 4 Oct 2025 18:39:44 +0200
+X-UD-Smtp-Session: l3s3148p1@ZNCL3VdA3IqSRnW9
+Date: Sat, 4 Oct 2025 18:39:43 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Byungchul Park <byungchul@sk.com>
+Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
+	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
+	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
+	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
+	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
+	tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
+	amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
+	linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
+	minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
+	sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+	ngupta@vflare.org, linux-block@vger.kernel.org,
+	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
+	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
+	djwong@kernel.org, dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
+	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
+	yeoreum.yun@arm.com, netdev@vger.kernel.org,
+	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
+	catalin.marinas@arm.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, luto@kernel.org,
+	sumit.semwal@linaro.org, gustavo@padovan.org,
+	christian.koenig@amd.com, andi.shyti@kernel.org, arnd@arndb.de,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+	rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
+	petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
+	paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
+	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
+	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
+	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
+	yuzhao@google.com, baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com, joel.granados@kernel.org,
+	richard.weiyang@gmail.com, geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com, linux@treblig.org,
+	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+	chenhuacai@kernel.org, francesco@valla.it,
+	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
+	masahiroy@kernel.org, brauner@kernel.org,
+	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
+	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH v17 35/47] i2c: rename wait_for_completion callback to
+ wait_for_completion_cb
+Message-ID: <aOFNz2mKXCXUImwO@shikoro>
+References: <20251002081247.51255-1-byungchul@sk.com>
+ <20251002081247.51255-36-byungchul@sk.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/khugepaged: use map_anon_folio_pmd() in
- collapse_huge_page()
-To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
- david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, baohua@kernel.org, lance.yang@linux.dev
-Cc: linux-mm@kvack.org
-References: <20251004092523.28989-1-richard.weiyang@gmail.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20251004092523.28989-1-richard.weiyang@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9882140004
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251002081247.51255-36-byungchul@sk.com>
+X-Stat-Signature: zysfbpoqju98k7a8hshufuia36fmbhrw
+X-Rspamd-Queue-Id: DEAA410000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: sdo88z3su9aqmmc968fjrgni9qfe8nog
-X-HE-Tag: 1759588017-158610
-X-HE-Meta: U2FsdGVkX18XAEVjQg8ozfgmtM1pkLCmp3hBMh5RU5q8A/2r5yxWnNrmV4fOiaNYm4HOOVCaiAJ7Hp13ELR0lQvvLGpeuROPo1F3BqehR8jo/uLxMrr87kNcdHgaoRpL62aAiJlrKSHjSgQ/msyWJcH0jDMXsdGpkeEepV0iPSVPtOwvmaa10y1rKdcrM19epLqcEAHNFi9egoLwBXDXO4f/Bt/W8biJyH+aIJwGfttox4yBLJzcHlbk8SoiD8nVDvYAPdXO3flrWlatgotZjvp8yNmTtKkTjos8EtPbzSli8eECIlHbySTY6l5b/zsEX9Zp53Q6CSLmzvmiGlv+SzLCjXS/1i1X/iN0Vamfc5uKot5asygUCNrQQjciKfIRPj/aU2SXsZAGiuqeCC+Ry/v4VaSTohaY+REXGgJhvKR31tAHkxQrLmVZKihiInPwDAgDhCD7srwma4pxBwRem8tPu6FUb/OfWPaWd6SYsIa/ZkzvE91EZ4AwTS8BiTIiNGlBcpeizIqwUW+rDhI/0+aTzPPG8u1+HTpdzkQS2lMbqpkTTSR2bhwTQr96n182B6xhDT5mpalk8m5IYGbG9O8INreYGH89gMSlZYk9HOvm2CmP0a0zSFgbrBxxIx+zL22GllPhJPvj7bjG+J4tutGVerSVHTYvJ7Jlb63BZ8g6zoak+R+nIan1YSLdM0W0XX329mI2BDFl4rQt6DknoLCUJfmVDf52+CmJnJzO9MXHOF8R4yj3iMVRrue91F6fYRicgd1HpulgrwBmWs9L3NGXZPN9ffoNpYjE4NkO/W/OkxRQw0SP7ODsoZvMKvWrW+xDpYoX0Th00CgDWhvkkPRLTxsVhCbPj6TZgEBhNgAGl3hvdLifk5XQU8Kf4p6qQHuAq1dIMdt3fjgj+UxF0WrvGEwH1iGV8fxZNFORL5P9jVt39MK6kk4B3lGcKajPrn7KojlW6Duuki81xbV
- gFhTDGyy
- lxnx/dzBenTAziMcZtmgrpcYjvdF5vtQy8P81j+lX2lZiQc7NH4vyBarVe6qWXJW2O3yJdWdYjuBXyCjewu85wHDeE8A1n4HYZyywrvJk5C9koqFuxQrhn4ONKI89T8VieHoWEqY/2q2CplFsXX/TmwR+CSbbbkfbtvNLb1OEtQJ1EKQwR8yK8GHIPBfHXHqip+sRRdPcl3PfWIldtRYTrfKmz7K6UpbNXEwBGyJOHZiYROBHmdSART/ZZ7mcXzlUrHh91KPYF0Q5n6jIQ4DofGgzFju6dpFwisWq75eij9/u8P3unEU5Zyjgw9sDB+SPcJZp
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1759595988-599836
+X-HE-Meta: U2FsdGVkX1+HW3KAo9mlWdUxOfWGTXAGj6hEx6yDne2faNQrXfHhMP6DKS7OJucOHXRgu5TZb73UCETwNhoco2WcSXxYKkJQxQd9ejNmuA2kvL2zcggryJxDgr5fyIf9lA0NQDP1cH3VRf91ZyP9J38EZvgjszWxzhkReVwaDEkZVL+9sfEHdU29tK/eQ9xfwiUfjYyarhPdE3917lpmecdLyUICKK4A562y2UTJFO49PnTFZ/tcT6cTq8HiqkcLEtt4MvOcAlEu5pvyiiX9FbKrm3ktkjftLPcD1bEzdoCsBi1avjhNHdNdW0KRq9buU0+wiFrfXf9af9DBjP9Es8B8x/YX6acc7R3LEKZnuRSTLMhvE9g/E0ViRFwEnpdW0kH6+X+C54jNRU2QTd/HSU1Sw2dFd2Ycz4JxxVH/uE8/iSvH/FZhZj3EuunnZxB74fblUzqFRMQGU6AwsT4NUS+jDK7YHXPc6Ewpg4FPFQtGTHfYuQq51kqGjh+Y7BkuoLjz7DGCjyptn6iqske1h2M8hvPNWhua1p95vqPsvT8O/y5ZwmCWa0CTQAPGKA45B6Fxvpa/2PBRxKq8s9A5+65eT/CYhyi13sHqFwBcl4rx2SpFdOivuoyQ/W6gJlFlKmtoMj//PHXU+M/SxEvC/NdI7xDUkLpqguunPDiOBWYR6xzilug1B8XZWmuWxff1mvIlN6X6xAIx/hrKJidAy5kDxF8QQzQybRjIPIb3ygHRo7fJEi1uR6yVyY+SKW1ksJSzGxYyQ2027d+DWtTqapSLNKgAprD6qgSO9q+MtbKfI6xFAmIPPJBDxP7xQXt7FPAc/kTaK9nNXoQtcCudzzP5Gk3fvwpGJyJQU0fNQdNGCeKuvymhxhlI4vFhXgvYuRlh5DhIOrHnSu8wzCthPFX5O0Osr8EiIpevmPlA246igOvIEgfPxJCsrTpdkYjGrxCoMYxwjvkLdf03IGJ
+ Ax3NkGt6
+ qMjWd1IeSmf4I4TBx9DEb70KcyzBfb8Ognm6iGnw3S0SfTigJVU83hHJVlT29J8Hmj25uTnxjQbpo6FSzKy9/9V7H38u4E8vmZYUuB6HdXBxqWC6B1rA4Bxk6I1plbdMahbiGICgqVNL/x3riRyCZHYdAi94lmqPAFhdKUVnOIJET+kpyK3RyRiOUxwz+PJzxvnAUva2qN+qYPJDTXLNb2jHuD1ITZcEEFeyjSo8OwqLK2uaKOOdid033+YMFqSWUrYfJknJ9iTaxcgxuPmhujA8eM9Xj9VKinJrlcQHMJoEgw/Ki41/eHCv6tXmqQfbaOEujw3PXVMJ02iQN9V728Hicy2qKNVSt/5625RC7k8sr3D3/igDBCxDCYWu4xCaX5qooN9qWexnL0QiMLf41d8Td589iVO/5veIvZGFplyikg+ZCSV9wGi0ZUwKyFj64YCxTQ2QUWuJya9o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,118 +148,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Oct 02, 2025 at 05:12:35PM +0900, Byungchul Park wrote:
+> Functionally no change.  This patch is a preparation for DEPT(DEPendency
+> Tracker) to track dependencies related to a scheduler API,
+> wait_for_completion().
+> 
+> Unfortunately, struct i2c_algo_pca_data has a callback member named
+> wait_for_completion, that is the same as the scheduler API, which makes
+> it hard to change the scheduler API to a macro form because of the
+> ambiguity.
+> 
+> Add a postfix _cb to the callback member to remove the ambiguity.
+> 
+> Signed-off-by: Byungchul Park <byungchul@sk.com>
 
-On 04/10/25 2:55 pm, Wei Yang wrote:
-> Unify the process to install pmd folio.
->
-> No functional change is intended.
->
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+This patch seems reasonable in any case. I'll pick it, so you have one
+dependency less. Good luck with the series!
 
-Base commit on which this patch applies?
+Applied to for-next, thanks!
 
-> ---
->   include/linux/huge_mm.h |  6 ++++++
->   mm/huge_memory.c        | 18 ++++++++++--------
->   mm/khugepaged.c         |  9 +--------
->   3 files changed, 17 insertions(+), 16 deletions(-)
->
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index e3ed008a076a..becfba48d17e 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -539,6 +539,8 @@ void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
->   			   pmd_t *pmd, bool freeze);
->   bool unmap_huge_pmd_locked(struct vm_area_struct *vma, unsigned long addr,
->   			   pmd_t *pmdp, struct folio *folio);
-> +void map_anon_folio_pmd(struct folio *folio, pmd_t *pmd,
-> +		struct vm_area_struct *vma, unsigned long haddr, bool in_pf);
->   
->   #else /* CONFIG_TRANSPARENT_HUGEPAGE */
->   
-> @@ -629,6 +631,10 @@ static inline bool unmap_huge_pmd_locked(struct vm_area_struct *vma,
->   	return false;
->   }
->   
-> +void map_anon_folio_pmd(struct folio *folio, pmd_t *pmd,
-> +		struct vm_area_struct *vma, unsigned long haddr, bool in_pf)
-> +{}
-> +
->   #define split_huge_pud(__vma, __pmd, __address)	\
->   	do { } while (0)
->   
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index f13de93637bf..bfe38ca60a10 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -1217,8 +1217,8 @@ static struct folio *vma_alloc_anon_folio_pmd(struct vm_area_struct *vma,
->   	return folio;
->   }
->   
-> -static void map_anon_folio_pmd(struct folio *folio, pmd_t *pmd,
-> -		struct vm_area_struct *vma, unsigned long haddr)
-> +void map_anon_folio_pmd(struct folio *folio, pmd_t *pmd,
-> +		struct vm_area_struct *vma, unsigned long haddr, bool in_pf)
->   {
->   	pmd_t entry;
->   
-> @@ -1228,11 +1228,13 @@ static void map_anon_folio_pmd(struct folio *folio, pmd_t *pmd,
->   	folio_add_lru_vma(folio, vma);
->   	set_pmd_at(vma->vm_mm, haddr, pmd, entry);
->   	update_mmu_cache_pmd(vma, haddr, pmd);
-> -	add_mm_counter(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
-> -	count_vm_event(THP_FAULT_ALLOC);
-> -	count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_ALLOC);
-> -	count_memcg_event_mm(vma->vm_mm, THP_FAULT_ALLOC);
->   	deferred_split_folio(folio, false);
-> +	if (in_pf) {
-> +		add_mm_counter(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
-> +		count_vm_event(THP_FAULT_ALLOC);
-> +		count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_ALLOC);
-> +		count_memcg_event_mm(vma->vm_mm, THP_FAULT_ALLOC);
-> +	}
->   }
->   
->   static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
-> @@ -1271,7 +1273,7 @@ static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
->   			return ret;
->   		}
->   		pgtable_trans_huge_deposit(vma->vm_mm, vmf->pmd, pgtable);
-> -		map_anon_folio_pmd(folio, vmf->pmd, vma, haddr);
-> +		map_anon_folio_pmd(folio, vmf->pmd, vma, haddr, true);
->   		mm_inc_nr_ptes(vma->vm_mm);
->   		spin_unlock(vmf->ptl);
->   	}
-> @@ -1877,7 +1879,7 @@ static vm_fault_t do_huge_zero_wp_pmd(struct vm_fault *vmf)
->   	if (ret)
->   		goto release;
->   	(void)pmdp_huge_clear_flush(vma, haddr, vmf->pmd);
-> -	map_anon_folio_pmd(folio, vmf->pmd, vma, haddr);
-> +	map_anon_folio_pmd(folio, vmf->pmd, vma, haddr, true);
->   	goto unlock;
->   release:
->   	folio_put(folio);
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index f4f57ba69d72..cd187d10dee6 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -1224,17 +1224,10 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
->   	__folio_mark_uptodate(folio);
->   	pgtable = pmd_pgtable(_pmd);
->   
-> -	_pmd = folio_mk_pmd(folio, vma->vm_page_prot);
-> -	_pmd = maybe_pmd_mkwrite(pmd_mkdirty(_pmd), vma);
-> -
->   	spin_lock(pmd_ptl);
->   	BUG_ON(!pmd_none(*pmd));
-> -	folio_add_new_anon_rmap(folio, vma, address, RMAP_EXCLUSIVE);
-> -	folio_add_lru_vma(folio, vma);
->   	pgtable_trans_huge_deposit(mm, pmd, pgtable);
-> -	set_pmd_at(mm, address, pmd, _pmd);
-> -	update_mmu_cache_pmd(vma, address, pmd);
-> -	deferred_split_folio(folio, false);
-> +	map_anon_folio_pmd(folio, pmd, vma, address, false);
->   	spin_unlock(pmd_ptl);
->   
->   	folio = NULL;
 
