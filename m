@@ -4,122 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFE6BCCA471
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Oct 2025 02:13:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 726EACAC5B0
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Oct 2025 02:37:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 258C28E0008; Fri,  3 Oct 2025 22:13:29 -0400 (EDT)
+	id 8599A8E0003; Fri,  3 Oct 2025 22:37:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2307F8E0002; Fri,  3 Oct 2025 22:13:29 -0400 (EDT)
+	id 80B218E0002; Fri,  3 Oct 2025 22:37:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16D278E0008; Fri,  3 Oct 2025 22:13:29 -0400 (EDT)
+	id 6F90D8E0003; Fri,  3 Oct 2025 22:37:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 067028E0002
-	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 22:13:29 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A563A45415
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 02:13:28 +0000 (UTC)
-X-FDA: 83958810096.20.A261A3C
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A469F4000C
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 02:13:26 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aOp5kZPR;
-	spf=pass (imf12.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FD3E8E0002
+	for <linux-mm@kvack.org>; Fri,  3 Oct 2025 22:37:50 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 11AAB45544
+	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 02:37:50 +0000 (UTC)
+X-FDA: 83958871500.22.76A212B
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 3A572A0007
+	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 02:37:48 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=M9ke1iw2;
+	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.172 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759544006;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1759545468;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EJLGML/fAE3TNb3uOnRyVtfPhEJ/kKcyWW/gv7o0MK0=;
-	b=ApOlkUNsHYFpYDQyqufgCByH9LqnlbCTyjxMhgxNh4E7KdGPHypG+pY9C98ARv1+YgeWwh
-	6qyxoPL+/Oo5KziGerqM3wUBKHjm1BNpJlQ/S7WDqTkt7nNo8sC+lPu6c0TPlk7dh7lgjU
-	2ze8g/3Wi/j68KMDm/BXPOl5U0l45pE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759544006; a=rsa-sha256;
-	cv=none;
-	b=EAfsmYFTt61srNzukAq5IrydinlrAzMMPGm9mb489xq2ll6G3ahR9mEIQwWC9sZT/IYi0p
-	iQ4M1A0f+ZB54VgeFUBALgbUlsxK8Oi4DoaGLpjbabI5UvVgbYMOta8l4sQAdC022LFopu
-	FTgwjwXEa6WimmDxFHYRSL86xI2z9OA=
+	bh=WX2AvTRjoMsNn7rSSXm6NpMJfKCTCSB0TADy4mhOSmg=;
+	b=w7FsEOJ5JBSfObkh8Y+4s3Ca6BJPtqGhLXmhIH7EqPsslr/LMa01CBQxuJJ2ttXM7TXZl7
+	jU6uoST6aXItP40z1m/6IppfK5dfaiM5MAAVi5oZBJqUMD05CSE1swK8PbG3cUonhaLiiK
+	aC01PFhjhPZCKYyWKLMnQ18sUSiLQmY=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aOp5kZPR;
-	spf=pass (imf12.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b48d8deafaeso567601266b.1
-        for <linux-mm@kvack.org>; Fri, 03 Oct 2025 19:13:26 -0700 (PDT)
+	imf25.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=M9ke1iw2;
+	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.172 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759545468; a=rsa-sha256;
+	cv=none;
+	b=e1utdWXP4PvlVbxE4FGfcIlzLgCRsvEw5Tu4aErPhW+23J+clGX9OAWpNhdBpspHAcavgI
+	lN+LAp92wY99U+63zCXpSPZSC52zsvgYCaQxX5mkkO5LLipxSxG3BlORzqkvo75XFn4azS
+	HS09afnj+iJjcrR1ovvZK707wze9VSk=
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-85d02580a07so337816485a.0
+        for <linux-mm@kvack.org>; Fri, 03 Oct 2025 19:37:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759544005; x=1760148805; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=soleen.com; s=google; t=1759545467; x=1760150267; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EJLGML/fAE3TNb3uOnRyVtfPhEJ/kKcyWW/gv7o0MK0=;
-        b=aOp5kZPRYdHCWZbQaxocuj3sD3nalP1zFQxAHVVQqt2TUX8U2UQQD1FZ0o9yKBz9w6
-         YzttAOXZS7yj0Jl6OtSUAMoumddaOzWzSHh6pA8kqiF/zhHvevxKH8eJA4pg87t4v5Oo
-         sIFeW5c/fmVcu+4xAeYR3cxJYQ9pHu0ZSbFiQQSzuWfYCGo/sbDOW3bgtYPGJhcv++1+
-         mErmgzvfIQyqKBMnm1QoKdu3+6O4w1nmKhb4KvggSXdf7AC0f76FGs84ODHEdW+JzKRn
-         07Hf/gSJH0Y7DnogMj6m0LkFYdK+tC8QOMAeyg2fdtGUrdXx6b5Zjy8xDa5m6Wq37pEv
-         p6ZA==
+        bh=WX2AvTRjoMsNn7rSSXm6NpMJfKCTCSB0TADy4mhOSmg=;
+        b=M9ke1iw2P+0Nedsn1E50Av58P9EWUmuLI50dZqZuc+Dr2FJzvxicS+YYd/Z+90cvCU
+         ZsCgbaPxRI3N/QvAjj/xDmSV9UzM3vifJS/j9IiiskD1nd0QvTyuEJoQ4dS6FYT7297M
+         QwIHL2MBr7QX0Vs4t9Mr0qMAN+I0WFy+Foab+jZ6XBPpidlGNBMr22Y1pVOOVYKEENAn
+         9i4uw/+1cWmam/BvOn8QdA5XX0cbNZBqNcBJFfBK+m6nNQtzdawrBlaLTe4AQUv45pCs
+         oHe2Tjbrf2xchsqNVFd/Z9+40fW2120JsiYp+q8C0bZBju9/YI/jTgrBGCLwYDWmhWab
+         M3HQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759544005; x=1760148805;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=EJLGML/fAE3TNb3uOnRyVtfPhEJ/kKcyWW/gv7o0MK0=;
-        b=vQ5+u5+G0Io7uqDa6og2bU9BaGYJxlbIJusK3YbTULvfkirwdMBW9bkV+pa0wzM4je
-         FrkcFMoB4OfsuD6ZRLTk2aoLUqC54tISWtqMj0a1h2wWjahZJ6Wdm1tFmD/HOo46hPIN
-         EJxOf2D8f3rVjKe7bPB+FityiJnzSmT51JMv8x6DzUjvn9Vs68HvaESDctqhKcOptcYN
-         gzvMwZ8DYURC/Mr2ZXwW3Y/aXHt06LjEnme96mnIxZxu3wcY4Sc6+t3bgBbBDgXPmGBS
-         22OYA82r6WtzT6GJpV/LljHn5yxmPm6YYEYeT5MjXnUYVCROeRpv5jmBrXQwfOrIB7BZ
-         iy2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUl1fgFX1mgjzxq9Ab8QqRPwpiM8Nfq0Z0517xQMavlVOzhgv8Iuqu5lV24ANzhDMeVB7XDrthgXg==@kvack.org
-X-Gm-Message-State: AOJu0Ywl6dUsm6ch6s702KY7rs+Bf/xx+fVZAXiDqHBRAZyBdcEhujoU
-	N/+i0JwqYyFDzyOh7Mga7x7/9AonJFHVLr70kgPCOkQXnX3b9sTIQpl5
-X-Gm-Gg: ASbGncudazkh1Nd85fpnV6UJ8qfBjZpZ4OQHXdZQiNRjHZrJ+njhFsA35mg3ZhBVApB
-	edb2JkAZ8aTeKDNa34Y7EdJOOZlH/CsRoWQsDtkJFxTBeD7YTVnJN2LqPtIxF6I6bZ/TaQp2aDq
-	lcHcQlktQIAQS93hEX2bILex1pnwkUa3LM2btzQO+e+vl8jEGI1kzKROT3K2+BCfrrrkOFqQr8D
-	VaRB/31FRk/nqyyXJL7RVroH0mlAz2tDFeFL89e1CEKVnvhHzJsndEo7fM+xg7G9SOv17MRFWaC
-	7F96zd7AS9WIXAgdpKlNcT3l5iNh5WpNwgrpanZogXBQDOP0D7OieSL+I46vzVhOLkuUazEjJ2B
-	q32PW9EopjRKJrqEr7TCg+p7eqvX5e4RcqbL4rkT1zOB+jpx1AgL6xc82
-X-Google-Smtp-Source: AGHT+IH6Q3EMy72+qe0t0hsQggbLgNWiTJAlAWog89Yxth2YTCEdR/jsq63Jce8LF6RMeQgMSpj70A==
-X-Received: by 2002:a17:907:3f9f:b0:b3e:fe8f:764 with SMTP id a640c23a62f3a-b49c47abb5dmr658409766b.32.1759544004993;
-        Fri, 03 Oct 2025 19:13:24 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b4865e77427sm569595766b.36.2025.10.03.19.13.24
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 03 Oct 2025 19:13:24 -0700 (PDT)
-Date: Sat, 4 Oct 2025 02:13:24 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Usama Arif <usamaarif642@gmail.com>, Lance Yang <lance.yang@linux.dev>,
-	Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
-	baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, wangkefeng.wang@huawei.com,
-	stable@vger.kernel.org, ryan.roberts@arm.com, dev.jain@arm.com,
-	npache@redhat.com, baohua@kernel.org, akpm@linux-foundation.org,
-	david@redhat.com
-Subject: Re: [Patch v2] mm/huge_memory: add pmd folio to ds_queue in
- do_huge_zero_wp_pmd()
-Message-ID: <20251004021324.t2mysqcblqvwa4bv@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251002013825.20448-1-richard.weiyang@gmail.com>
- <d8467e83-aa89-4f98-b035-210c966ef263@linux.dev>
- <1286D3DE-8F53-4B64-840F-A598B130DF13@nvidia.com>
+        d=1e100.net; s=20230601; t=1759545467; x=1760150267;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WX2AvTRjoMsNn7rSSXm6NpMJfKCTCSB0TADy4mhOSmg=;
+        b=dDXuWPPYPGmDsmEJJ8aFyQyHyFZOkWBAHIh4Ngc4aURqLIS3lKgW0dv99bnKmLUtMQ
+         V18UTEofstKlsSOWVOEL9Y41eCkFth4eja05WhcQqiwh2l2eF4d2T5R5eHtYiB9gKv9z
+         5nIWbC4TyztR+3WT8AlW+etKHxOUyKzzLdUf+ehF/j1MJonC30r9RnGBdZXN8q/Z0cxd
+         x/SbFz4vWC3mPOD6gDlABDrfWO5Cy2b77tfWC9ziISC0cTWlqy3Gx287nLVVkWrnK+bq
+         A25naU23zOq+ubG+bBzCVmR4eEfoDCaUCBdWMZIJXgElXnf+N9jKz6ZP42J/zZ3gu+gz
+         r62Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXkmDbKCfe0xe5iViEMY3DXvJtwo8NHlCp+m4SONuUEy7PiVBwJx61J0VdaL1vWg/Na4e43jFWDkA==@kvack.org
+X-Gm-Message-State: AOJu0Yy4psJ3bH8Zkx02ifUfyWoepPM0pACFz7vw1WutBwVhKqhug8KO
+	clDeIfBak328UvhU1dfhx3rQfQfrPHSf3L8BoZc27JfGLc1EJLrZopkNVLr9UrOJuMfl3dMvlCu
+	GZSdJ+J7AUM1i4jD4I1DxiKYwNHNIIwadYfF1riEMfQ==
+X-Gm-Gg: ASbGncvwZOUX4D8Lp8WFJO+PLZuxsR/PFt6vtBdH3Y9aUbx2l0/yGH8FtBlvWMNw2mE
+	k23PX8H1IuufHc3W+TDQK7DJt69uuxIkNTdV7whKzDWjf1C2Jf1q9Iv9uWhEYB6OCjdpHjUNkSb
+	9QRxmZo1Bcv0UL6fJkFQ3wTvPBua0zcX7yLf68ta5oGwPZZdqwz5S4fePQIt3w0ycDz5H0GFTOD
+	/ASzaEtW7tB5U2hC7nvPg0dp24H
+X-Google-Smtp-Source: AGHT+IHpXmfwm/zD9D+zvb53ixNC14PQWRGIATDbgGewBobYXO/nEIYfu9ZMcBO3awLQMttSyQvIKLOwmKCMpwF49ms=
+X-Received: by 2002:a05:620a:1a0e:b0:828:804a:47f2 with SMTP id
+ af79cd13be357-87a32af5f30mr715143885a.9.1759545467113; Fri, 03 Oct 2025
+ 19:37:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1286D3DE-8F53-4B64-840F-A598B130DF13@nvidia.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Queue-Id: A469F4000C
-X-Stat-Signature: wutsigo9cpyjk7igkcwhykqmzxfbs5dm
+References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
+ <20250929010321.3462457-27-pasha.tatashin@soleen.com> <20251003225120.GA2035091.vipinsh@google.com>
+ <CA+CK2bBuO5YaL8MNqb5Xo_us600vTe2SF_yMNU-O9D2_RBoMag@mail.gmail.com>
+In-Reply-To: <CA+CK2bBuO5YaL8MNqb5Xo_us600vTe2SF_yMNU-O9D2_RBoMag@mail.gmail.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Fri, 3 Oct 2025 22:37:10 -0400
+X-Gm-Features: AS18NWAFqUB-LYy2SykxO160YAKxge0tVD8HRG9MgImFDuYaat9DVXaJFYTvN7M
+Message-ID: <CA+CK2bBSObHG=9Rj623mahyhE81DhhKbN09aHS96p==8y_mCGw@mail.gmail.com>
+Subject: Re: [PATCH v4 26/30] selftests/liveupdate: Add multi-kexec session
+ lifecycle test
+To: Vipin Sharma <vipinsh@google.com>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
+	changyuanl@google.com, rppt@kernel.org, dmatlack@google.com, 
+	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
+	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
+	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
+	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
+	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
+	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
+	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
+	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
+	song@kernel.org, zhangguopeng@kylinos.cn, linux@weissschuh.net, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
+	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
+	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
+	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
+	chrisl@kernel.org, steven.sistare@oracle.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1759544006-561326
-X-HE-Meta: U2FsdGVkX18jFzkr4rdA5phpeKZF2NFpB1z0nPpN4kDKiA7s9tWaIAGOPzksnHELtValKq7oidrZdVUdlVuWnd/Qzn8Cdhdh3As9loJvNY3M06TbBjEyw5UVETof0Po7JQvXGEHVbkCPNaKodj9zIMUHM7wMoKFKAsSSfWvMPTrZ2HvrHP/dd20qCBo05DAVCzaE5yfEi7JQjH8YbkXmogdp1Gjbqfe0oUDo3SiQzrZwOHBR1ijsU38P433bKCjzwf7+mUSd+c9tsVUlux+tz+bmm9pxYQE3Xfg5uGQ2FUZKVQGuztzZpdZwaiIUiVjwu9LbNsy1e9mTr2wQTj47xX3ObnT6J5BYlINV64KZB6NxnOotrSOROoM8OqLQpGB+hbj20DMlT+NWhGnMh/prvDtfjTiWNfqa4gpbr1BieRVuYUn7yxgKGeCj8xO5C1jk/1B29+/bmgBY42lW/DcGLfEjVf5iGx3pMoFzxQlNKwWR4QfcKO+Tk+xokC5d5x5rqlmJQLdF41jWqZq/DgLdXb9+N28zYWrW5O6UGA2wsLPNLcEjNdQ2+/7AThlFd4x/OdD1dgBJyruTpuDduR16ZpKD7X/hUbCTWqKGfmQNuBoFyNvQELBygNOF8qH+SahKJ2fCXMy55fpakFRZYHYlRUpUU/AgGArtP+qRXNdExntHEOOd31RO+3W6L0ag18bHYH6WXenephGIVaAaGg0cF0QOPycTBSpQnhimzdn7WhOcaRK0pYMueGlE6OKSmSL8lvD/4hwj8lq1zk6FXSFOtiJ78hLR1PEM94YYJdHg3cTIqdtAai0ehBV+xZ9NJ0hUWOK/fCymHCFdHVI3+zRPtZsMa3pr9LzbjZLJudgzRmugDXL5vGIZA8c01LzMvbGu9dEShMOaUy5R1avDmDmxdALJZB/5aHvkp/CbiwqY2zCwvEZY71j3ONpFuru5WKZX+R/HQz17EwIrCvvOZ/w
- uqJG5H9c
- c3TLeLuuktM5NyUp6ph9U36VcWEMT/m542jAOhe6QLM+eRVE4WkcdKmGHzowwUnSReFBtFyrSbBOrkxzXiZNP0Bg7776RiNiUD8uOhwY5mNX8zKIpXezf4R1+sCPk+t8tQ8Oy/c4/e4A97LvFoVxUL4UQMU58ct8q+8cKXv6cyzp2eIiHWTvz1m//w3iy1ONODy00yNLxm5H1gtmgVRbNmOwDOirSe1nYjTegOMsy52R/EGGCkIgejXfGpJXdHR197mJhglk2EpvruMhmzCYIddgOwo8JzN8KmV4bH6YYoQe584AeYYLu4Jq7X9h0f/sLcEuKZuaVab+sPlqIxpxI6urb0OuZIaW/K1UnVimiq8Ods96LKJv5ZlFO0wShbeIe4Ujy3bQ671R0/7C5Kk+gaOeIDa76z0qhN8vWGCKoq65oWLQpPCFpnYAJ78A3YzA1w7fMkNhel8jaWtcY4tOythj6RFKIkn4Hbnul2iV0Qw4vzd6SQKv85twxONhfiv9E6KHb1F+fYihrAtJa+G80P/kxARJTuJBWnCOZjC5Xn/bugPc6o2DPIZpD/1D6WCfEXF0UPc1QyDXbtLOA3Fm6hqu22+QAe7b2d/YCn9H0gMFFdvxL9Gl9uTov3K27k/k9lfTUnI+v9EXc+Lhb5w4ZmY/jJw0A2foa1aY5XMZMv4v5yvpoIPEtpbGoE61wzB3CAuNMFhiw0l4MTVyVCJYL1PBki/Kp4MiTwnQiihKA1mSvljc5WN+H3Ty7zxzoSXOc/3Ya
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3A572A0007
+X-Stat-Signature: f3jkxx6k9for477nz3dpd5py4j6nnnh1
+X-HE-Tag: 1759545468-941552
+X-HE-Meta: U2FsdGVkX18wTJe3N77Nr65TEYlUx21mziXZFlYp/gp2rli3Fyth8J//XnasQNonCrqytvBLRXGG+hts8fF0zk+9Rh+1YX6vldkL46O668VlT4mTLwcrr7NqjlUwue5FYoHaavTXvzIEccQlo6UaL2icqAs0UWNiMG+W3Gi89jI94e1+kOYtVfb7PunoloJHH0wa3oug4ige/W76AgVO34nflRyluh/Bp7nGEfzZujETtS+i+T2KhAe+g2OMrTg1VAoZ0Jlvtxe1kP3tE7CmdBX1sim2EMnDUl0rRL2fRJfripSNWY27uWapGYph+pWfPHixg9n27jWdz/s+CBDmhh0YwE2By0pmT+MlYlBC4ihbOLbfHohDkR+uLG2L0aRByFSxcrEf62GCpgieWz6SlEStKsWnbyQt6cmiNqH3tOSHfyGPJ3rjXef350EjfvC3qOBm0TR7dr0bwADLRRRlxfc+qZ3lJrA/OuVGF+xd+f4URXVuPz7ezAkLYk7kZcdmaUYi5hPD+17DRTznNcGpkKi8KJ8YhrANJgTB2r67vCck1h6MAUj+tXOl85s31TOAcWMzvQzruO5DGw8hwG83Nmi+kFKszc+y5CM/z2JvwAR9sCGCZwJopSd7ysPeOgY7KeajtMJueUEAu38EmCaQ2r6Pz2fx2EFHlbS2KTGLy1uik5e5Kw5xksGi5FrKQZrS3Ptc0FYNsW+WVLVrhlq2qol3eO4mTeH4awntQVgnRhMrQobrkD8slYD8EHncH+g/qb3fP01REb6/yV5zsG9pTkmXHpsmOtnA8U3a7ejU25Mn/nHOz3ixLRHyfMbmPWhm3ZZUlL0SpZmJpnLQBPutHtjukc5fWwQ+vcKyZEEGmb5wBjUo+yIjkxiNDVShE+mHj/wSl3mPhvUXqGK5kAmH/3XB46Nh5mNSBDDk6Nfo4IN+CU07Tr4QVpAxe57NMwZHPRetfg8LpbsiL44dC40
+ MFRwTQn4
+ JrIuCKASSNZuhj+7Yc+zp+EI6C5wh1hpzakUFfrAHAisbaGfKj0hnJBeXwSYvgeTbdBtJs7/ca/lAIJKQ5O5PNVNLvIjTIPE1qhiW6UI/97G6En0c+HnYOYC8EDrSnzTJIhtONsLrqzEi8OnvPQNTBVIPe0Y33f3MWLP14anYqWEtZF2GgO49Dh01HaXG10jmmXKIUG+6scgeiwgjzliniTIBKEvEP1BqTHTgrilPuaNorCFOCPnkagbV84+50cTSJcitzuazgz7IASEWxrW8ZzQwCfQV3PpNgwWVKyllOAlPn3mJYP3s/NVnBi0x9CgxYiFoTVE49kXArEJ1uHgkwHIPJA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,60 +142,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 03, 2025 at 10:08:37AM -0400, Zi Yan wrote:
->On 3 Oct 2025, at 9:49, Lance Yang wrote:
+On Fri, Oct 3, 2025 at 10:07=E2=80=AFPM Pasha Tatashin
+<pasha.tatashin@soleen.com> wrote:
 >
->> Hey Wei,
->>
->> On 2025/10/2 09:38, Wei Yang wrote:
->>> We add pmd folio into ds_queue on the first page fault in
->>> __do_huge_pmd_anonymous_page(), so that we can split it in case of
->>> memory pressure. This should be the same for a pmd folio during wp
->>> page fault.
->>>
->>> Commit 1ced09e0331f ("mm: allocate THP on hugezeropage wp-fault") miss
->>> to add it to ds_queue, which means system may not reclaim enough memory
->>
->> IIRC, it was commit dafff3f4c850 ("mm: split underused THPs") that
->> started unconditionally adding all new anon THPs to _deferred_list :)
->>
->>> in case of memory pressure even the pmd folio is under used.
->>>
->>> Move deferred_split_folio() into map_anon_folio_pmd() to make the pmd
->>> folio installation consistent.
->>>
->>> Fixes: 1ced09e0331f ("mm: allocate THP on hugezeropage wp-fault")
->>
->> Shouldn't this rather be the following?
->>
->> Fixes: dafff3f4c850 ("mm: split underused THPs")
+> On Fri, Oct 3, 2025 at 6:51=E2=80=AFPM Vipin Sharma <vipinsh@google.com> =
+wrote:
+> >
+> > On 2025-09-29 01:03:17, Pasha Tatashin wrote:
+> > > diff --git a/tools/testing/selftests/liveupdate/.gitignore b/tools/te=
+sting/selftests/liveupdate/.gitignore
+> > > index af6e773cf98f..de7ca45d3892 100644
+> > > --- a/tools/testing/selftests/liveupdate/.gitignore
+> > > +++ b/tools/testing/selftests/liveupdate/.gitignore
+> > > @@ -1 +1,2 @@
+> > >  /liveupdate
+> > > +/luo_multi_kexec
+> >
+> > In next patches new tests are not added to gitignore.
 >
->Yes, I agree. In this case, this patch looks more like an optimization
->for split underused THPs.
+> Will fix it, thanks.
 >
->One observation on this change is that right after zero pmd wp, the
->deferred split queue could be scanned, the newly added pmd folio will
->split since it is all zero except one subpage. This means we probably
->should allocate a base folio for zero pmd wp and map the rest to zero
->page at the beginning if split underused THP is enabled to avoid
->this long trip. The downside is that user app cannot get a pmd folio
->if it is intended to write data into the entire folio.
-
-Thanks for raising this.
-
-IMHO, we could face the similar situation in __do_huge_pmd_anonymous_page().
-If my understanding is correct, the allocated folio is zeroed and we don't
-have idea how user would write data to it.
-
-Since shrinker is active when memory is low, maybe vma_alloc_anon_folio_pmd()
-has told use current status of the memory. If it does get a pmd folio, we are
-probably having enough memory in the system.
-
+> >
+> > > diff --git a/tools/testing/selftests/liveupdate/Makefile b/tools/test=
+ing/selftests/liveupdate/Makefile
+> > > index 2a573c36016e..1cbc816ed5c5 100644
+> > > --- a/tools/testing/selftests/liveupdate/Makefile
+> > > +++ b/tools/testing/selftests/liveupdate/Makefile
+> > > @@ -1,7 +1,38 @@
+> > >  # SPDX-License-Identifier: GPL-2.0-only
+> > > +
+> > > +KHDR_INCLUDES ?=3D -I../../../usr/include
+> >
+> > If make is run from the tools/testing/selftests/liveupdate directory, t=
+his
+> > will not work because it needs one more "..".
+> >
+> > If this is built using selftest Makefile from root directory
+> >
+> >   make -C tools/testing/selftests TARGETS=3Dliveupdate
+> >
+> > there will not be build errors because tools/testing/selftests/Makefile
+> > defines KHDR_INCLUDES, so above definition will never happen.
+> >
+> > >  CFLAGS +=3D -Wall -O2 -Wno-unused-function
+> > >  CFLAGS +=3D $(KHDR_INCLUDES)
+> > > +LDFLAGS +=3D -static
+> >
+> > Why static? Can't we let user pass extra flags if they prefer static
 >
->Usama might be able to give some insight here.
+> Because these tests are executed in a VM and not on the host, static
+> makes sense to be able to run in a different environment.
 >
+> > > +
+> > > +# --- Test Configuration (Edit this section when adding new tests) -=
+--
+> > > +LUO_SHARED_SRCS :=3D luo_test_utils.c
+> > > +LUO_SHARED_HDRS +=3D luo_test_utils.h
+> > > +
+> > > +LUO_MANUAL_TESTS +=3D luo_multi_kexec
+> > > +
+> > > +TEST_FILES +=3D do_kexec.sh
+> > >
+> > >  TEST_GEN_PROGS +=3D liveupdate
+> > >
+> > > +# --- Automatic Rule Generation (Do not edit below) ---
+> > > +
+> > > +TEST_GEN_PROGS_EXTENDED +=3D $(LUO_MANUAL_TESTS)
+> > > +
+> > > +# Define the full list of sources for each manual test.
+> > > +$(foreach test,$(LUO_MANUAL_TESTS), \
+> > > +     $(eval $(test)_SOURCES :=3D $(test).c $(LUO_SHARED_SRCS)))
+> > > +
+> > > +# This loop automatically generates an explicit build rule for each =
+manual test.
+> > > +# It includes dependencies on the shared headers and makes the outpu=
+t
+> > > +# executable.
+> > > +# Note the use of '$$' to escape automatic variables for the 'eval' =
+command.
+> > > +$(foreach test,$(LUO_MANUAL_TESTS), \
+> > > +     $(eval $(OUTPUT)/$(test): $($(test)_SOURCES) $(LUO_SHARED_HDRS)=
+ \
+> > > +             $(call msg,LINK,,$$@) ; \
+> > > +             $(Q)$(LINK.c) $$^ $(LDLIBS) -o $$@ ; \
+> > > +             $(Q)chmod +x $$@ \
+> > > +     ) \
+> > > +)
+> > > +
+> > >  include ../lib.mk
+> >
+> > make is not building LUO_MANUAL_TESTS, it is only building liveupdate.
+> > How to build them?
+>
+> I am building them out of tree:
+> make O=3Dx86_64 -s -C tools/testing/selftests TARGETS=3Dliveupdate instal=
+l
+> make O=3Dx86_64 -s -C tools/testing/selftests TARGETS=3Dkho install
 
--- 
-Wei Yang
-Help you, Help me
+Actually, I just tested in-tree and everything works for me, could you
+please verify:
+
+make mrproper  # Clean the tree
+cat tools/testing/selftests/liveupdate/config > .config # Copy LUO depends.
+make olddefconfig  # make a def config with LUO
+make kvm_guest.config # Build minimal KVM guest with LUO
+make headers # Make uAPI headers
+make -C tools/testing/selftests TARGETS=3Dliveupdate install # make and
+install liveupdate selftests
+
+# Show that self tests are properly installed:
+ls -1 tools/testing/selftests/kselftest_install/liveupdate/
+config
+do_kexec.sh
+liveupdate
+luo_multi_file
+luo_multi_kexec
+luo_multi_session
+luo_unreclaimed
+
+Pasha
 
