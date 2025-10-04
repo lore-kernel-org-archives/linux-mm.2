@@ -4,86 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13BDFCAC5B0
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Oct 2025 13:12:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B04EECAC5B0
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Oct 2025 14:27:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C3478E0008; Sat,  4 Oct 2025 09:12:00 -0400 (EDT)
+	id 9FF778E0006; Sat,  4 Oct 2025 10:27:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 299798E0002; Sat,  4 Oct 2025 09:12:00 -0400 (EDT)
+	id 9AFDD8E0002; Sat,  4 Oct 2025 10:27:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D6578E0008; Sat,  4 Oct 2025 09:12:00 -0400 (EDT)
+	id 8C5158E0006; Sat,  4 Oct 2025 10:27:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C4918E0002
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 09:12:00 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A25A783CD2
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 13:11:59 +0000 (UTC)
-X-FDA: 83960469558.09.61FCE1E
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 799738E0002
+	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 10:27:00 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C4A3F140147
+	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 14:26:59 +0000 (UTC)
+X-FDA: 83960658558.12.3212739
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 03AFC4000D
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 13:11:57 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9882140004
+	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 14:26:57 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf07.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759583518;
+	s=arc-20220608; t=1759588018;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GCI8Ngj0uJx3jhwkRo0s71hK0X8UJ3DKSu+pKeMhODU=;
-	b=k8K/CCj+kHzgVc9vtegDKFTTuZcPGFDVY00BehtuSZWxn9jeMsQfikDUW9JsDKht4iwbZh
-	1n+j8C5D4MvD0xOuUWpA44F2tXNZNrk/fRinD2IHMNt43QWkg9FYXC9RpRZv91XYtln4Cc
-	4ErK0s3YhBdBxmjcOJr+ipfe0UJfcIs=
+	bh=g4GhKkMm6uL2Fs/6g0f43IlWTFC0TV00zL9VDhG8wyg=;
+	b=VAtDIH1vkOU1gixNEwCJQ0SVOst8Q5eO6fymzG+7HrBgmn9jOcnWW4cb4yXpaedig7l6/P
+	q38aYQqVo3khJbtuZFbsWOpjFTv9y7cxy5E1WEr9IexDGoki19/a2U88lVMu1XPEbDWUja
+	8jJfFH9P/IHzxA9/Hvcm3u4y5cuXP4M=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
+	imf04.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf07.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759583518; a=rsa-sha256;
+	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759588018; a=rsa-sha256;
 	cv=none;
-	b=mGB7EcEW08hav0cOk69AneCd62+eBziiWG8DugvhGcZopFpcqXTeXnAlA3nJORrWKcOYFU
-	tmBAsg94L0bjheQsrXEymxEDUu2R6FjKPQtynY4dGtGLOhnoNjaIjXUI6jHBZgx9YE84v1
-	yMBU1Ob1jHJcpWsZk+VNIwUJwCYbB+Q=
+	b=hOBGv8B5MRQLVS+W5GoMdxSoQTRO3IFOOhDOLrHx7A6RTn4l4xfxDqHo44ev3uSaiYAJGF
+	yYT3pwjwOsDHLE3w9qcCIDLihC1JjdQCaJpjFGbhJF5urdtGUxiO28nCvSa09Ndr60Cb5i
+	31tsY+NJuw2917WE8fPFZm783tsgyGs=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 22263153B;
-	Sat,  4 Oct 2025 06:11:49 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9A8A6153B;
+	Sat,  4 Oct 2025 07:26:48 -0700 (PDT)
 Received: from [10.163.66.97] (unknown [10.163.66.97])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9B35F3F66E;
-	Sat,  4 Oct 2025 06:11:51 -0700 (PDT)
-Message-ID: <f235a557-d031-4fcd-8c68-81d9ab7b54e0@arm.com>
-Date: Sat, 4 Oct 2025 18:41:48 +0530
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 24D613F5A1;
+	Sat,  4 Oct 2025 07:26:51 -0700 (PDT)
+Message-ID: <96dac3c7-c969-4d4a-afca-85341f8a6a6e@arm.com>
+Date: Sat, 4 Oct 2025 19:56:48 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-new 2/2] mm/khugepaged: merge PTE scanning logic into a
- new helper
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org,
+Subject: Re: [PATCH] mm/khugepaged: use map_anon_folio_pmd() in
+ collapse_huge_page()
+To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
  david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
  baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, baohua@kernel.org, ioworker0@gmail.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20251002073255.14867-1-lance.yang@linux.dev>
- <20251002073255.14867-3-lance.yang@linux.dev>
- <0d55d763-81ff-4b99-bb13-3dbb9af53cdc@arm.com>
- <20251004094217.bah5q2zxczrqontm@master>
+ ryan.roberts@arm.com, baohua@kernel.org, lance.yang@linux.dev
+Cc: linux-mm@kvack.org
+References: <20251004092523.28989-1-richard.weiyang@gmail.com>
 Content-Language: en-US
 From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20251004094217.bah5q2zxczrqontm@master>
+In-Reply-To: <20251004092523.28989-1-richard.weiyang@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 7qhi3csbuyr7559x3zhfwfxayb9diq9t
+X-Rspamd-Queue-Id: 9882140004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 03AFC4000D
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1759583517-553384
-X-HE-Meta: U2FsdGVkX18idK+pzHbbLC3QNoUOoTJzuNmx/eZDlQbsxH6Wi4FVzSS/fpNcSyJC/6j7WTq6FYWz0U/KSm3A60fvdrG7kmnwXtmhH3yFl1cNC3QaVhs4QkDoG/BZ/6VN0BEhyn1EKic63wOatk2ZBugbNWVdp2mBcmdHhJWbAxuu8qL4umqakxuLZBAcWY3wl2xJD1jSAf29bt8iQ0HeU7MnrmXh9fi09aDlIwsR17AVn11XPyPk4iPbcsLZOoFCDkUCYX38O9EK0h9ETIhPfGkdq8LqPAJ8B8BrmNZUlNE1ANEQhociJc9Z3ZC8cy5jD/sGq6Gf/Fev15SnxefwRWEIn/GgBIUr7DJrx3mAvErjxxuGTnU2bhjT7P0PJn2V3KtgT84yOaiMoLZUKiO98HanQgcTDTk8EbvT/azoyiZ+1l3aaOO1tyiDKKjl5eOrbz+jARWkmUV3eJiD1SPwDVudICipbch98BlOq7QVzjZZlz6ANn9pN+VDr5k68sgKstTuTP8S/KvxXPIsRjpq53pdeauCOe67AiouPF5JvyCT8R9j4aA8TdzF6FzjZmDp0ZzriFtrgj6k37URVQIC9GDbSVUZWCZGzwqdepw0Hol0IubQuTjq5ruCjJPInBULJOh7Zo49YM9jwf+PvS4JJk8IVnXofIGnIhYjFchiltvLWRfV+Z5/Zjlo11Y6RrZ0nuT4s3MKakj0DRLVlbwn8tMR77i5ZMmgv8fWCAv9jrWPBG6+ZEInfvF8oev+Zz3FjnfiiO0WCfdSqh5jk9TIEtibxZBrHUWPC3lld9H6NhdvyXrpDaarZJ+fQ9rB9B7h308YTUbsmbDy4nC7wpGRUholp0/Say0VkkDWsOi8CBFlyzL81jmAZXzFZ/6sKmrOLhrvn0DH3Yf+141jI7rZdX1QTLoUCwLnmrkS7bV8vwnmDtSTt9wc7h1EpLU3S+iBATZDgaOnTdotX8RROkp
- exyxhTy7
- EfgoeZvT5A8rVKxxVRXsn5kRBAk1ojeJrMlJc4YMxsLwqFcQLOmxF3oDaj2I2wA8u02N98QPtNbaWxLrq51BfXCMA6NSqr01JrK3Q8NOyoQDO81UmxNNgo4TRdg8DSbgZj+g+Cl5y03+GFXklMFtMMipBWrKbIQlBKK8YGg7W8MirW8Sv1I28AvuGLS7Uaj9SQMqpn0YEOMr+XSM9b/Rklzmch2G97GTFnxvUwpSa+bnQR/U=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: sdo88z3su9aqmmc968fjrgni9qfe8nog
+X-HE-Tag: 1759588017-158610
+X-HE-Meta: U2FsdGVkX18XAEVjQg8ozfgmtM1pkLCmp3hBMh5RU5q8A/2r5yxWnNrmV4fOiaNYm4HOOVCaiAJ7Hp13ELR0lQvvLGpeuROPo1F3BqehR8jo/uLxMrr87kNcdHgaoRpL62aAiJlrKSHjSgQ/msyWJcH0jDMXsdGpkeEepV0iPSVPtOwvmaa10y1rKdcrM19epLqcEAHNFi9egoLwBXDXO4f/Bt/W8biJyH+aIJwGfttox4yBLJzcHlbk8SoiD8nVDvYAPdXO3flrWlatgotZjvp8yNmTtKkTjos8EtPbzSli8eECIlHbySTY6l5b/zsEX9Zp53Q6CSLmzvmiGlv+SzLCjXS/1i1X/iN0Vamfc5uKot5asygUCNrQQjciKfIRPj/aU2SXsZAGiuqeCC+Ry/v4VaSTohaY+REXGgJhvKR31tAHkxQrLmVZKihiInPwDAgDhCD7srwma4pxBwRem8tPu6FUb/OfWPaWd6SYsIa/ZkzvE91EZ4AwTS8BiTIiNGlBcpeizIqwUW+rDhI/0+aTzPPG8u1+HTpdzkQS2lMbqpkTTSR2bhwTQr96n182B6xhDT5mpalk8m5IYGbG9O8INreYGH89gMSlZYk9HOvm2CmP0a0zSFgbrBxxIx+zL22GllPhJPvj7bjG+J4tutGVerSVHTYvJ7Jlb63BZ8g6zoak+R+nIan1YSLdM0W0XX329mI2BDFl4rQt6DknoLCUJfmVDf52+CmJnJzO9MXHOF8R4yj3iMVRrue91F6fYRicgd1HpulgrwBmWs9L3NGXZPN9ffoNpYjE4NkO/W/OkxRQw0SP7ODsoZvMKvWrW+xDpYoX0Th00CgDWhvkkPRLTxsVhCbPj6TZgEBhNgAGl3hvdLifk5XQU8Kf4p6qQHuAq1dIMdt3fjgj+UxF0WrvGEwH1iGV8fxZNFORL5P9jVt39MK6kk4B3lGcKajPrn7KojlW6Duuki81xbV
+ gFhTDGyy
+ lxnx/dzBenTAziMcZtmgrpcYjvdF5vtQy8P81j+lX2lZiQc7NH4vyBarVe6qWXJW2O3yJdWdYjuBXyCjewu85wHDeE8A1n4HYZyywrvJk5C9koqFuxQrhn4ONKI89T8VieHoWEqY/2q2CplFsXX/TmwR+CSbbbkfbtvNLb1OEtQJ1EKQwR8yK8GHIPBfHXHqip+sRRdPcl3PfWIldtRYTrfKmz7K6UpbNXEwBGyJOHZiYROBHmdSART/ZZ7mcXzlUrHh91KPYF0Q5n6jIQ4DofGgzFju6dpFwisWq75eij9/u8P3unEU5Zyjgw9sDB+SPcJZp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,36 +89,117 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On 04/10/25 3:12 pm, Wei Yang wrote:
-> On Fri, Oct 03, 2025 at 10:35:12PM +0530, Dev Jain wrote:
->> On 02/10/25 1:02 pm, Lance Yang wrote:
->>> From: Lance Yang <lance.yang@linux.dev>
->>>
->>> As David suggested, the PTE scanning logic in hpage_collapse_scan_pmd()
->>> and __collapse_huge_page_isolate() was almost duplicated.
->>>
->>> This patch cleans things up by moving all the common PTE checking logic
->>> into a new shared helper, thp_collapse_check_pte().
->>>
->>> Suggested-by: David Hildenbrand <david@redhat.com>
->>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->>> ---
->> In hpage_collapse_scan_pmd(), we enter with mmap lock held, so for
-> This is true for the first loop, but we will unlock/lock mmap and revalidate
-> vma before isolation.
+On 04/10/25 2:55 pm, Wei Yang wrote:
+> Unify the process to install pmd folio.
 >
->> an anonymous vma, is it even possible to hit if (!folio_test_anon(folio))?
->> In which case we can replace this with VM_BUG_ON_FOLIO and abstract away
->> till the folio_maybe_mapped_shared() block?
-> But it looks still valid, since hugepage_vma_revalidate() will check the vma
-> is still anonymous vma after grab the mmap lock again.
+> No functional change is intended.
 >
-> My concern is would VM_BUG_ON_FOLIO() be too heavy? How about warn on and
-> return?
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
 
-Frankly I do not have much opinion on the BUG_ON/WARN_ON debate since I haven't
-properly understood that, but this BUG_ON is under CONFIG_DEBUG_VM anways. But
-if you want to change this to WARN then you can do it at both places.
+Base commit on which this patch applies?
 
+> ---
+>   include/linux/huge_mm.h |  6 ++++++
+>   mm/huge_memory.c        | 18 ++++++++++--------
+>   mm/khugepaged.c         |  9 +--------
+>   3 files changed, 17 insertions(+), 16 deletions(-)
 >
+> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> index e3ed008a076a..becfba48d17e 100644
+> --- a/include/linux/huge_mm.h
+> +++ b/include/linux/huge_mm.h
+> @@ -539,6 +539,8 @@ void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
+>   			   pmd_t *pmd, bool freeze);
+>   bool unmap_huge_pmd_locked(struct vm_area_struct *vma, unsigned long addr,
+>   			   pmd_t *pmdp, struct folio *folio);
+> +void map_anon_folio_pmd(struct folio *folio, pmd_t *pmd,
+> +		struct vm_area_struct *vma, unsigned long haddr, bool in_pf);
+>   
+>   #else /* CONFIG_TRANSPARENT_HUGEPAGE */
+>   
+> @@ -629,6 +631,10 @@ static inline bool unmap_huge_pmd_locked(struct vm_area_struct *vma,
+>   	return false;
+>   }
+>   
+> +void map_anon_folio_pmd(struct folio *folio, pmd_t *pmd,
+> +		struct vm_area_struct *vma, unsigned long haddr, bool in_pf)
+> +{}
+> +
+>   #define split_huge_pud(__vma, __pmd, __address)	\
+>   	do { } while (0)
+>   
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index f13de93637bf..bfe38ca60a10 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -1217,8 +1217,8 @@ static struct folio *vma_alloc_anon_folio_pmd(struct vm_area_struct *vma,
+>   	return folio;
+>   }
+>   
+> -static void map_anon_folio_pmd(struct folio *folio, pmd_t *pmd,
+> -		struct vm_area_struct *vma, unsigned long haddr)
+> +void map_anon_folio_pmd(struct folio *folio, pmd_t *pmd,
+> +		struct vm_area_struct *vma, unsigned long haddr, bool in_pf)
+>   {
+>   	pmd_t entry;
+>   
+> @@ -1228,11 +1228,13 @@ static void map_anon_folio_pmd(struct folio *folio, pmd_t *pmd,
+>   	folio_add_lru_vma(folio, vma);
+>   	set_pmd_at(vma->vm_mm, haddr, pmd, entry);
+>   	update_mmu_cache_pmd(vma, haddr, pmd);
+> -	add_mm_counter(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
+> -	count_vm_event(THP_FAULT_ALLOC);
+> -	count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_ALLOC);
+> -	count_memcg_event_mm(vma->vm_mm, THP_FAULT_ALLOC);
+>   	deferred_split_folio(folio, false);
+> +	if (in_pf) {
+> +		add_mm_counter(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
+> +		count_vm_event(THP_FAULT_ALLOC);
+> +		count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_ALLOC);
+> +		count_memcg_event_mm(vma->vm_mm, THP_FAULT_ALLOC);
+> +	}
+>   }
+>   
+>   static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
+> @@ -1271,7 +1273,7 @@ static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
+>   			return ret;
+>   		}
+>   		pgtable_trans_huge_deposit(vma->vm_mm, vmf->pmd, pgtable);
+> -		map_anon_folio_pmd(folio, vmf->pmd, vma, haddr);
+> +		map_anon_folio_pmd(folio, vmf->pmd, vma, haddr, true);
+>   		mm_inc_nr_ptes(vma->vm_mm);
+>   		spin_unlock(vmf->ptl);
+>   	}
+> @@ -1877,7 +1879,7 @@ static vm_fault_t do_huge_zero_wp_pmd(struct vm_fault *vmf)
+>   	if (ret)
+>   		goto release;
+>   	(void)pmdp_huge_clear_flush(vma, haddr, vmf->pmd);
+> -	map_anon_folio_pmd(folio, vmf->pmd, vma, haddr);
+> +	map_anon_folio_pmd(folio, vmf->pmd, vma, haddr, true);
+>   	goto unlock;
+>   release:
+>   	folio_put(folio);
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index f4f57ba69d72..cd187d10dee6 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -1224,17 +1224,10 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
+>   	__folio_mark_uptodate(folio);
+>   	pgtable = pmd_pgtable(_pmd);
+>   
+> -	_pmd = folio_mk_pmd(folio, vma->vm_page_prot);
+> -	_pmd = maybe_pmd_mkwrite(pmd_mkdirty(_pmd), vma);
+> -
+>   	spin_lock(pmd_ptl);
+>   	BUG_ON(!pmd_none(*pmd));
+> -	folio_add_new_anon_rmap(folio, vma, address, RMAP_EXCLUSIVE);
+> -	folio_add_lru_vma(folio, vma);
+>   	pgtable_trans_huge_deposit(mm, pmd, pgtable);
+> -	set_pmd_at(mm, address, pmd, _pmd);
+> -	update_mmu_cache_pmd(vma, address, pmd);
+> -	deferred_split_folio(folio, false);
+> +	map_anon_folio_pmd(folio, pmd, vma, address, false);
+>   	spin_unlock(pmd_ptl);
+>   
+>   	folio = NULL;
 
