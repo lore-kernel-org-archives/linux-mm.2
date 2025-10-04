@@ -4,116 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0D0ECAC5BB
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Oct 2025 09:31:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BE53CAC5BB
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Oct 2025 09:39:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D060E8E0013; Sat,  4 Oct 2025 05:31:21 -0400 (EDT)
+	id C2E4C8E000C; Sat,  4 Oct 2025 05:39:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8EFC8E000C; Sat,  4 Oct 2025 05:31:21 -0400 (EDT)
+	id C05FF8E000B; Sat,  4 Oct 2025 05:39:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE7E08E0013; Sat,  4 Oct 2025 05:31:21 -0400 (EDT)
+	id B42E68E000C; Sat,  4 Oct 2025 05:39:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E4688E000C
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 05:31:21 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5D40213C05A
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 09:31:21 +0000 (UTC)
-X-FDA: 83959913562.28.D9D71AA
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A35B78E000B
+	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 05:39:31 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 337811A0967
+	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 09:39:31 +0000 (UTC)
+X-FDA: 83959934142.18.ED8A464
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 92AA3180003
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 09:31:19 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=AMlhrgUf;
-	spf=pass (imf24.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 432154000D
+	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 09:39:29 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=gLxYlWyC;
+	spf=pass (imf04.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
 	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759570279;
+	s=arc-20220608; t=1759570769;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qiVUpyogTE7dsYhyk57MOUEnN9shDSt43s7j3vLTe4g=;
-	b=Bok+kemNFc4qcQnLg9O7bqoikw6XlY5/hURlOPJYbkWMEr6Nf1tScIYkzCHPnDN9qhkted
-	YMQIhCt0j5o7fVhLgCkYkca07R9ojidZHatF3BciJj3ZB4Bmuzb7JxW+h/EE9mT8f97UTp
-	2rYz6FCTsaSNdIFtNQtk0EYeeclECMg=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=AMlhrgUf;
-	spf=pass (imf24.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759570279; a=rsa-sha256;
+	bh=hwiOFMXp5UwwYIx996Mp0qUz+Rdrj5Emf55lrlBPTfM=;
+	b=hSIBLCmG97UhVW4lgjOdtgvKey3rMGzKrrJ/fjhN54ymkq8iK0zn5bhvzhu81/SbIClf8h
+	N52Ptkcmyp9BQJAQLln4DezCOhtIrb4bZcxJCT2GbG0CUYe8oR/NHB4hOZhXN5exlAmr1u
+	s8yKcS8awRlzIRkJYTEc4NYVl/mle7Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759570769; a=rsa-sha256;
 	cv=none;
-	b=KfwiGFMx4HgKMIlomv9MTNFGDIo7dbdA++AggMJ6B8VopclWSfyNeOJIB7OQBlhpxTVrg8
-	RlDFKehWgA07RuK9UyBqZf6j5y0JZBVHtZeDo68yHE/4PYQJ3SbbkUjwzvZ4C8vnT+uPWd
-	Psja9XGH3VbhbLE1Fw89w2NQEoSlD9o=
+	b=HyNhnVLK/Jllak4QH4P0iExWNUNRLLq0EZKWEDV50tTW+fzo2ONy0LSfr8qFc09QxCBOg2
+	kf+rk2INhAR8wYHzo0rYJehCyVpzg7m3Asnf4XexlfUc4wzFGfYojuaApICgcZX+Dl6X+K
+	slnn86GGJWw9iuBAiCLXGd6U8v5QWRM=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=gLxYlWyC;
+	spf=pass (imf04.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1759570278;
-	bh=D0Fu/ldQhntehM2Mq/IXQJTZKKJwzHie8we5EhgLjv8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AMlhrgUfj67oXsQPTFjfkhXxPYErzu07l7zcQuFt1VeLOO4l1kddXtiTb2X/cetOS
-	 6XMF0S8g5Fu73Rg3lAVLMWykZe56IdRC60HwD9pv/MEZTOZ6Rsmkio0eJfbmu1nwCK
-	 d4IdxOltI8YwNAtsLWvnJxFMf/9AVfESz8Ub5ydUncWsPC7OnRkCO+XAq+H4dRQyS2
-	 llItYjnG94oPb9HEZHBOeRVHE+Lsuht91g6GWGJTZzTqRPBN3VlqNnsa57784xcp1/
-	 Of2brQuMsVBOznatNjK2ireFQDvmFsXBo6sqcHe+RO6GcwaxxUcglmxauY2WbuVjd7
-	 UuGUKAQRIUOaA==
-Received: from debian-rockchip-rock5b-rk3588.. (unknown [IPv6:2a01:e0a:5e3:6100:2e0:4cff:fe03:d8c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	s=mail; t=1759570767;
+	bh=qisPUywAbG75IngeanB4QRWIZ3GHsT6vh+Z8ufjXF68=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gLxYlWyCPWNrBp7a7jJiAVFHXUsoxmnDJmdwJfGbhsSLfVzaamN1+Mu/C/H4snDWv
+	 1vTK+1BMDuhsEbugYcUo9aLzxlm42VZkwXqFLT3bA/aJ9ifD0kyjvLrOHOtOh04e9P
+	 sdy/EHQa78XMogigp2dQMaWfhSDGX6I14G4AdzY+1AOqM2r5lH7flkL+VXh3Sxid++
+	 oocuhJKL0AKYis3/uW2TF6YxxT1DJO4PZr+7BIjDIbD3ywew4RmJ2FwhEA6/RUfGVr
+	 Pmrzr5DmT+7UMout1aiJSIUVfbzMhoUuH2kNEZ8iD6O2JkmfsiYw+uGsFXXe0wiAaK
+	 +yWAZc6KypL0w==
+Received: from [IPV6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa] (unknown [IPv6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: loicmolinari)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 9C0FC17E13DA;
-	Sat,  4 Oct 2025 11:31:17 +0200 (CEST)
-From: =?UTF-8?q?Lo=C3=AFc=20Molinari?= <loic.molinari@collabora.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Rob Herring <robh@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Melissa Wen <mwen@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	=?UTF-8?q?Lo=C3=AFc=20Molinari?= <loic.molinari@collabora.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	=?UTF-8?q?Miko=C5=82aj=20Wasiak?= <mikolaj.wasiak@intel.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Nitin Gote <nitin.r.gote@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Christopher Healy <healych@amazon.com>
-Cc: linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org,
-	linux-mm@kvack.org,
-	kernel@collabora.com
-Subject: [PATCH v3 10/10] Documentation/gpu/drm-mm: Add THP paragraph to GEM mapping section
-Date: Sat,  4 Oct 2025 11:30:53 +0200
-Message-ID: <20251004093054.21388-11-loic.molinari@collabora.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251004093054.21388-1-loic.molinari@collabora.com>
-References: <20251004093054.21388-1-loic.molinari@collabora.com>
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 4820A17E055D;
+	Sat,  4 Oct 2025 11:39:26 +0200 (CEST)
+Message-ID: <f9f92476-c218-40d0-bb45-382252e2f288@collabora.com>
+Date: Sat, 4 Oct 2025 11:39:24 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6/8] drm/panthor: Introduce huge tmpfs mount point option
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, Rob Herring <robh@kernel.org>,
+ Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
+ Melissa Wen <mwen@igalia.com>, =?UTF-8?Q?Ma=C3=ADra_Canal?=
+ <mcanal@igalia.com>, Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Al Viro
+ <viro@zeniv.linux.org.uk>, =?UTF-8?Q?Miko=C5=82aj_Wasiak?=
+ <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>,
+ Nitin Gote <nitin.r.gote@intel.com>, Andi Shyti
+ <andi.shyti@linux.intel.com>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ linux-mm@kvack.org, kernel@collabora.com
+References: <20250929200316.18417-1-loic.molinari@collabora.com>
+ <20250929200316.18417-7-loic.molinari@collabora.com>
+ <20250930123416.4ff59b11@fedora>
+ <d3b927b9-ddcb-492a-a72c-d42abbb11cff@collabora.com>
+ <20250930185216.0219a542@fedora>
+Content-Language: fr
+From: =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>
+Organization: Collabora Ltd
+In-Reply-To: <20250930185216.0219a542@fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 92AA3180003
-X-Rspamd-Server: rspam05
-X-Stat-Signature: pc6kck88g1b7i8ww9auuor9kokdmkx71
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 432154000D
+X-Stat-Signature: mbrmzg3ttopjqa9eswgtioscd3cjyiqb
 X-Rspam-User: 
-X-HE-Tag: 1759570279-433811
-X-HE-Meta: U2FsdGVkX1+40aXb+vO9FYrTdJdA39hsz0lRHIFzZN7cgil83rzco8tLR/A/kQn+EOm0hrznrIM5WjWp8HmcqqbnrLHkoCh6sgKB6sOvyDTDI4s0agHWYJt2U1e6qf0bQ8W0Z+SDzjnIDh/K6YLNBjVUFY2cUHWW0hDVHzVpZudhKpXwOXGKVoEuq4rjQVd1VWu/1MOJv3OoBfxU7mPwlTe+doufJfBo2OI9zfsubZqtGS6g2joCMCPcJ404KgxoDOrcBH1x///0dPKfTZt2qj9xHkCx7L/lwIU60fOQYfcTCEtF+leAev0Y5/adGxmGFQlZ+n4LZcyxpx7IhWpEBwnIDTuU6K3eKckIpV9E2cyvyHtQ0exwSWjA7gWNfawOlipLQrv4zutBUXn8WIQalO/gT0UeSXrC3Hq7Zn3tMpSiL6gEFMnuQf3HatBuff9aIuAFbZgw/X5YdCEzZ4e3rhkDTpcmqK1FsUwg0PxkQv5cV/4R2TlwdaixII+RhQBAYV3Sf2oII9uC+wspQgIV3J28vkMatSPe6X0TTW774j4i22xj/RSRuGCZ4rUgAUtfdb96UWtGEPhZB9pjziOyvVtx1muQb/UHpw0aeOJhJN+bE8hEsRbDxrVXuc5pfe+u6q/zS+WZNKKcaUR2ncXcc0bqbE17sU1qpz2nWyvof9YD0m4jM4a2N4SGc2Z5cN+61P2/566tbdo13pZD6nmHe9/xaspemY7LU0TU6YSLO6DVDutmDfwhbNU+uzPTppn4E9UHnab886wPL8KIMzwDtRTiJV7y3ZNnIuok6in764HB84tJA+PK/ja8OyfiVPhXRedK8+v/OUgXEWTl9uJef8QxivboIsArQzDvcwccGVQLzbuJ1RbZ1Bv+sGP2xZM9G9Kd//whpTpokY8EMsXYqXRS67SENHCLdDFLDHSr6cNnROwnS/md60XrzjUJ+bg5srIIabLbjs3vbJEHgi1
- CZ1hoW23
- A8ums0ko+iXoJZCrCGqsxRfxOMdl1TvyPvREWOt+wsB/5ROSE/bGGsF6O1kUCtsFla+U/PpO4ubPLb3XqzrJyxBNi2J6ushDU8sS3p7UrPeeR2OL59XlaWEHVx7tU+haTAw3C7S3bYNlV2tvMseUQhL2cJAbyNAcFnQcQIpU5XiuGRuAzRyJunKO4LlpPgfnR3VK2mPd49Mm6QMB441OGfM+JG86MoWAc1LztKF6898T+1HadHmD162doCfKi9MSf688mhi+VS+vn1WNAI1iDBds5JCNu5UBx0TlF4PEf+aLvYp8HDKNsnE7CZaSsEU53PSS7sl5x2R6Qcp/YPHH+K7DwLcTOwh1Yq/kvNus9NWhU9OxFx27Gbewia5kdKbSZqMGxTvKMJ+1WY00=
+X-HE-Tag: 1759570769-506446
+X-HE-Meta: U2FsdGVkX1/ZPVD66UGl2ZYowmHFYbTd3JtGrnNXriQOl5tYE/BrExz6W+8tB3qfoNWwB+uFhvSGjDAlBMnUxRX/GPk8Dwu31Rd85SYwQxmOChhaD0ZWazIH2BcYqMba4QXzRTe7jRyk4+DZW1+rcfrZwHzrCJAuL29hPWnbS+g5jwMaQRGc6lJxxqqCsyulnjaeMw6s4YzNEU/t+ag6MAAvzqoqap1W5XJtH8CyJLldudbTLqQ4w2QBGVeL4BoQ3FR4N41stLqHVyFyvhQtV3hDLzQedcX646PMh4I2B94dXs0IyhqmlROoYmFCv4NUY9ZcPrp5xj+qh3aFcdNHsvnyQw2l9698IC7EM8ShtwYNlkX2ZkImDrtp8i0r2AVufVkxIfY1JXlAGYh6WIGzEnbS24+YnpVTrQ+SVRaXnpwJhnq4nKceLq/66dks+EIFfYR3ddjHtGQLUikJ6CsAdoigqrZsRvu2+kFO/AGxiUePfigpNcb0GMvcVYAVEyYQdKiXqHuUPYiztxgn9Wd+8j+PwrhGeJyTV0QZQfujHpOH18MS+891b3Hx75IxpKSkqH07zQNo7qJLHbFmbPZsl8L2Gv6wVcS2nIJW6+9QlF1WLqSDJjhtqKX2T+a7Typp1gjW9RSZvWtL6fIMteVTLSvHUlMEnRT/tCLO1JlCWtc6N/TJC/h5Ra1y+meKh8Pw/Z/MO9Rv4fXvxORB+gQNTiVenVWogv2j5NCUoLujBWOo35bh/7SjzlGONdsWqYaBCgCCEuB44KfhYeZmnkbUZkisRkKyg+k8jai5SDZRJaOTx+pwEL+juTavJZGwvkiUMdwxK7qPe3yxGCfMiNv+hQQdi7uSNNtXvr2I16hpL3FjF5oUZgkJ5c0aCTJmGoG40y7dt2mv85Mf8wj6MQkVDuYN4FF5w0gjto80xDlCIzqjVxnc9a+OjrSvzhk8d+66O5zNDI2HmhGwyubR6x2
+ Uouo+X2O
+ 7WWQ4Rbvmn0Ut/3BaLSUoMdZWvDYuPguabYdeH6fdHETij813SMdSLmg7ieUmnTeLXqqPz9Y00oH3/vhbXUc/PgVSXiyrZmY4CEXikOHc4QUG978YHZfmPICwgQOIh5qxWrkI21MHtwnathrxjqfg5XzmIc/K/jG+TRlWeB5mZ57uy6hBxZ4DCezUMTaap4+BpMKpHj1GPG7qd2n7Krp+yLdp0f7w/tiiTJz6zLE1VK9+cFAXc/j2KRpmg7c6CrwTt1H2GTrREUzSRt0HqUhNqsehIT2oS268W3cNhVDLPfJOYP8d+FyUMCIc3LNzdS66N+iQ0TQmonVsPZfvcX5QnrVMdlp68lRppeV8N9vKaSMXZjmXTub/j3kV9nIYGcW8k7NEaAIFkTmbTjkemWgiT/rV/J0sMj9ht6mJebbOYMGjd737vu1+pUG+oj418XBEGzBxUTQfUuu3eQc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,57 +117,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a paragraph to the GEM objects mapping section explaining how
-transparent huge pages are handled by GEM.
+On 30/09/2025 18:52, Boris Brezillon wrote:
+> On Tue, 30 Sep 2025 18:31:11 +0200
+> Loïc Molinari <loic.molinari@collabora.com> wrote:
+> 
+>> On 30/09/2025 12:34, Boris Brezillon wrote:
+>>> On Mon, 29 Sep 2025 22:03:14 +0200
+>>> Loïc Molinari <loic.molinari@collabora.com> wrote:
+>>>    
+>>>> diff --git a/drivers/gpu/drm/panthor/panthor_device.h b/drivers/gpu/drm/panthor/panthor_device.h
+>>>> index 4fc7cf2aeed5..54ca61567426 100644
+>>>> --- a/drivers/gpu/drm/panthor/panthor_device.h
+>>>> +++ b/drivers/gpu/drm/panthor/panthor_device.h
+>>>> @@ -135,6 +135,9 @@ struct panthor_device {
+>>>>    	/** @devfreq: Device frequency scaling management data. */
+>>>>    	struct panthor_devfreq *devfreq;
+>>>>    
+>>>> +	/** @huge_mnt: tmpfs mount point with Transparent Hugepage enabled. */
+>>>> +	struct vfsmount *huge_mnt;
+>>>
+>>> Now that we have a helper to create a huge mountpoint, wouldn't it
+>>> make sense to have this field in drm_device instead of having each
+>>> driver add a huge_mnt field to their <driver>_device object.
+>>
+>> Not sure this should be enforced for all DRM drivers since most of them
+>> don't create separate huge mountpoints (only 4 for now including this
+>> patchset) and I guess some maintainers might prefer to depend on the
+>> sysfs interace to enable huge pages.
+> 
+> I'm not saying we should create the huge mountpoint by default, but if
+> this is a generic helper, it makes sense to also manage this mountpoint
+> internally. In the end, it'd be a small price to pay for drivers that
+> don't need it (the size of a pointer in the drm_device object), and
+> with this in place, driver wouldn't even have to call
+> drm_gem_shmem_huge_mnt_free() manually (can be automated with a
+> drmm_add_action_or_reset() calling kern_unmount() inside
+> drm_gem_shmem_huge_mnt_create()).
 
-Signed-off-by: Loïc Molinari <loic.molinari@collabora.com>
----
- Documentation/gpu/drm-mm.rst | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+Ok. I've just sent a v3 of the series with the huge vfsmount stored in 
+the drm_device struct. This also allowed to get rid of some of the 
+*_with_mnt helpers.
 
-diff --git a/Documentation/gpu/drm-mm.rst b/Documentation/gpu/drm-mm.rst
-index d55751cad67c..0ce6e27f8463 100644
---- a/Documentation/gpu/drm-mm.rst
-+++ b/Documentation/gpu/drm-mm.rst
-@@ -283,6 +283,8 @@ made up of several fields, the more interesting ones being:
- 		void (*open)(struct vm_area_struct * area);
- 		void (*close)(struct vm_area_struct * area);
- 		vm_fault_t (*fault)(struct vm_fault *vmf);
-+		vm_fault_t (*huge_fault)(struct vm_fault *vmf,
-+					 unsigned int order);
- 	};
- 
- 
-@@ -290,7 +292,7 @@ The open and close operations must update the GEM object reference
- count. Drivers can use the drm_gem_vm_open() and drm_gem_vm_close() helper
- functions directly as open and close handlers.
- 
--The fault operation handler is responsible for mapping individual pages
-+The fault operation handlers are responsible for mapping individual pages
- to userspace when a page fault occurs. Depending on the memory
- allocation scheme, drivers can allocate pages at fault time, or can
- decide to allocate memory for the GEM object at the time the object is
-@@ -299,6 +301,19 @@ created.
- Drivers that want to map the GEM object upfront instead of handling page
- faults can implement their own mmap file operation handler.
- 
-+In order to reduce page table overhead, if the internal shmem mountpoint
-+"shm_mnt" is configured to use transparent huge pages (for builds with
-+CONFIG_TRANSPARENT_HUGEPAGE enabled) and if the shmem backing store
-+manages to allocate huge pages, faulty addresses within huge pages will
-+be mapped into the tables using the huge page fault handler. In such
-+cases, mmap() user address alignment for GEM objects is handled by
-+providing a custom get_unmapped_area properly forwarding to the shmem
-+backing store. For most drivers, which don't create a huge mountpoint by
-+default or through a module parameter, transparent huge pages can be
-+enabled by either setting the "transparent_hugepage_shmem" kernel
-+parameter or the "/sys/kernel/mm/transparent_hugepage/shmem_enabled"
-+sysfs knob.
-+
- For platforms without MMU the GEM core provides a helper method
- drm_gem_dma_get_unmapped_area(). The mmap() routines will call this to get a
- proposed address for the mapping.
--- 
-2.47.3
+> 
+>>
+>>>> +
+>>>>    	/** @unplug: Device unplug related fields. */
+>>>>    	struct {
+>>>>    		/** @lock: Lock used to serialize unplug operations. */
+>>>    
+>>
+>> Loïc
+> 
 
+Loïc
 
