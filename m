@@ -4,121 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55EE7CAC5B0
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Oct 2025 09:42:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F708CAC5BB
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Oct 2025 13:08:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B71788E0015; Sat,  4 Oct 2025 05:42:22 -0400 (EDT)
+	id 4B5F28E0006; Sat,  4 Oct 2025 09:08:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B22558E000B; Sat,  4 Oct 2025 05:42:22 -0400 (EDT)
+	id 466738E0002; Sat,  4 Oct 2025 09:08:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5F698E0015; Sat,  4 Oct 2025 05:42:22 -0400 (EDT)
+	id 3A3C28E0006; Sat,  4 Oct 2025 09:08:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 94E378E000B
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 05:42:22 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5E15F5C307
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 09:42:22 +0000 (UTC)
-X-FDA: 83959941324.17.C111632
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5F0FD120002
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 09:42:20 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RH+mARzR;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759570940; a=rsa-sha256;
-	cv=none;
-	b=ESfgxprNJEdrNR4XQ88lB7mz3l7tTqKD1aht8bgoSwWcnAeUuuAQT1PuS2FXN4T3O62okR
-	yW1HmwsHgjQT1cglC8YXSNA40mmjD9n5FLV/LOfxfPxGlQAoCZIXYeEaiQFOLuhXMAbG12
-	vzzNOt5bXhRMRt8uPdxp0KjW89ZqoqI=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RH+mARzR;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A5E18E0002
+	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 09:08:35 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BD6ABC0139
+	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 13:08:34 +0000 (UTC)
+X-FDA: 83960460948.11.FEFB0C7
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf03.hostedemail.com (Postfix) with ESMTP id CC37620011
+	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 13:08:32 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=none;
+	spf=pass (imf03.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759570940;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1759583313;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GslXQjNzh/AIqv26b+mMupzmqLiHs7UYgH8GeJMNm98=;
-	b=gF7IZM9K4LVPGQ/4UQ8pM6GzEfMS/VCD01ZkVkHb5mksdA+oSEqELzrrz71S0V8R4sR+kz
-	/St9a7kTFnuQQ1dpnG7GGGs4WoPIozehjDcQfOl+EWngcQYie5dM8cHVDw6Knq+EFCIxLx
-	LfXP36bCqdaYfYEmAxpAPEZbH88I1nE=
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b3d196b7eeeso478916666b.0
-        for <linux-mm@kvack.org>; Sat, 04 Oct 2025 02:42:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759570939; x=1760175739; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GslXQjNzh/AIqv26b+mMupzmqLiHs7UYgH8GeJMNm98=;
-        b=RH+mARzR2IcItwFgSxcaWnAkaGwEQFVix4qTfPsrv50BFJKr8q8czqIU503BbMB0GS
-         DuO2e95VqL/qEAs5r/YA7NZaYGpHL4MiTlQmHeeDcw7cJ8H9ts7y4PG7uBRJOyWJcKgI
-         3XaZpSggDuP6Zu7wg/5sRboRg0Z7avqmYI7lk60HHin+d4JtmDEXtOWaDtNA4V5FyN94
-         EDwxo48WtLWiSqR13B1TcYs0lHyXddz6Ys4wIaVmliSItmPVcsKqOtIAIvf+7cgUIlbx
-         VhAYaZX8Fr/vbKN0N5ekd4I86NH7D/XVHSrH3Ww7LJN6ymu7pTtlnDqA9RAQNQMoHE3O
-         JtUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759570939; x=1760175739;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GslXQjNzh/AIqv26b+mMupzmqLiHs7UYgH8GeJMNm98=;
-        b=q05TiGRMS3Lq8Y7HZx899tZ6SlETKXeRvuRcig7GYhZ5hH2mfq8kk/4yvcoW8wgyV6
-         x+WNEZyKXIldyngST0H8Hf8aWxH8f89lOfgPEsEMLbM6WT66vztgwOGlDJkgmGO2UxEY
-         b9ABXKway/XxUHyRJjh95+/cByvrUEQ+EVl+ChR9sXAITsirBdEJahedgo6urxVdNRQt
-         U4RuyA83WLo8rdLvvuqNBXLoMTiJjbi8q9MaRH3gt8daCMrOhlmVYzt3KNKG7bL0i61v
-         IC01OfGdHh/4hvEYvf8VlVbiFIgPolhMoBm4cRWhG9lFdhe0fTzuMCQlF5e2xqL9EhNQ
-         +F1A==
-X-Forwarded-Encrypted: i=1; AJvYcCX+mec7tIsDIjKprs8ndv/i25cmy3dBLPcOi5jKWssxTFztVQ7++vgM7vE9FuJenGB69AL8XAzdVw==@kvack.org
-X-Gm-Message-State: AOJu0Yx0QIVqWdvkEzMXcr3RLRvrmTLmA4LMz2rNLV5Gg7f4sacsc+la
-	DPeMmC0feFQMZ0IjjKvD7EMDo2d7Jls/5dCanex4Xi6iLwV5gm5hqD/T
-X-Gm-Gg: ASbGncvAwTZCwhrOYUmbpfA3gcHqmAoch5LAlSQR/T37jAYvIJ9uAY1iZRSztYhZ47V
-	FT6GU1JQReOBevmRb/iPjH6ZTMAMT6hcLEbA1+gXfxc62HsjMhbCBN/QTHNP+iXf+jHAdYVdB3T
-	vD0voq7VMRDD5seVWypK7v3p8mYaX/aO/vq5mkEMYsjj/r7K/Kw1VegN2KAlJfIOjeSrf6npFfp
-	5QaDCTQUSZGXtoiKPf/DPpYnNPN/nrunhZ78/RUSt3JWe2+i9kY7uLO+J8FFJb6RQzdO1UZHz1P
-	jrPmLlE4wziRDW92AHAWU+V6AXjcvzM8EsZyNGMvNemAUSHA0LK2+vWMxqjCdBEuaNa/QPsD2qp
-	9grt0LlZwx8uqI0D1SCrXefWrNokJuthL1/HRAu5rebZ2cInYzVNBJ9tP
-X-Google-Smtp-Source: AGHT+IELMv2JCHsGDeiciQPnXFlCugQOB1G8gJd+aFMXhX5vxBQh2qDM8E/2p3liA1SXVMjKe+xQxg==
-X-Received: by 2002:a17:907:9728:b0:b40:448d:cdb0 with SMTP id a640c23a62f3a-b49c33501c3mr693267666b.41.1759570938685;
-        Sat, 04 Oct 2025 02:42:18 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b4865a83bd0sm654284866b.24.2025.10.04.02.42.18
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 04 Oct 2025 02:42:18 -0700 (PDT)
-Date: Sat, 4 Oct 2025 09:42:17 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Dev Jain <dev.jain@arm.com>
-Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org,
-	david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
-	npache@redhat.com, ryan.roberts@arm.com, baohua@kernel.org,
-	ioworker0@gmail.com, richard.weiyang@gmail.com,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH mm-new 2/2] mm/khugepaged: merge PTE scanning logic into
- a new helper
-Message-ID: <20251004094217.bah5q2zxczrqontm@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251002073255.14867-1-lance.yang@linux.dev>
- <20251002073255.14867-3-lance.yang@linux.dev>
- <0d55d763-81ff-4b99-bb13-3dbb9af53cdc@arm.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Kb+7ePhaxZt3mzsQ6zqvpk20jy2OaWb3ERJe5vk5NtM=;
+	b=Zv+9HYNPhmABz0j4KWMU6DuOF03krh5dUSLATC7b2acZ4xC+g1Q0dfhFsMfxb791qOeTk4
+	At7JdgcqOsXrJfHFAAZYaok5b8PSqNd9+pf2ABZ5h8TRMMnpV7e+OQIlU+XclXOjFwZcZ0
+	4WgzYolVWxJf9qNDkRhqiAuUIMQvwCY=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=none;
+	spf=pass (imf03.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759583313; a=rsa-sha256;
+	cv=none;
+	b=0a+n/zcfNgSdciKRVFEH9HZeD13dMzvNqZAQqb5H2+3jldDnRNIFqWvCJccWIDiJS81u7/
+	1fY0IUIzyTuArjgyyUHFyE5w8Nf3hvQIvxYENorg2sMgMtSXX7w56gmCj49+bJTs364gu8
+	JLri7nAIhiRC4SRXqDw10Mptd5c4VN0=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CF89C153B;
+	Sat,  4 Oct 2025 06:08:23 -0700 (PDT)
+Received: from [10.163.66.97] (unknown [10.163.66.97])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 800663F66E;
+	Sat,  4 Oct 2025 06:08:29 -0700 (PDT)
+Message-ID: <766f5a8a-851f-4178-8931-5355472d5558@arm.com>
+Date: Sat, 4 Oct 2025 18:38:25 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0d55d763-81ff-4b99-bb13-3dbb9af53cdc@arm.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5F0FD120002
-X-Stat-Signature: q9mfb7dsqshap1mieptdgwrwdysc4zf3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: readahead: make thp readahead conditional to
+ mmap_miss logic
+To: Roman Gushchin <roman.gushchin@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ linux-mm@kvack.org
+References: <20250930054815.132075-1-roman.gushchin@linux.dev>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20250930054815.132075-1-roman.gushchin@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1759570940-739761
-X-HE-Meta: U2FsdGVkX1/sou/KcQGtQUmLeZlV4AS6S88nrfeBuhGSJvPtVO2H9pqp5E/4VDfV9k86wOvKLvlOysmJtbkRpYOHKUo0kxY6o7JWU8YDtADlixVRI6rykqATfUjVb7tQRCMrL94a7Lz2Kg5taY8ic6WlHrhsKps7FoJY6PhBdJQWFsftF6ggJwL6fk9EIwQB4h5RimKXpIMXp//kZXZk+tN7/5P/TPQq00ALWCLVwhpGYX28QIBPmJoD+wiLxL098zt9N4WM8tiv3YaL9zN/LR9fgt3WL/Aq527gRnCVU4x7VcKXHnwh5ZjWWuk+mZDXbzZid5oMJKoO9SN8QfKxwSRhxp4jHb58YBcJ4pWtAzpRFJEbbsFxeRWWY2WcT+fFA8M3kfMoKpvtP1MYbG2ebfSard0uDXdmUfm5V0f3fkTH2KfEdhKm0RSgGOfB2rTDjoRyubUY9+TQxo/aIdBEmjfac++msLmfbcwIW/btYkTtR3Xce3PG1VNaG3LSh74gVsfJiunciFiiFS9nGiR5jGZFauGfAR5d+Uij3d13J/y5reImdnjMnWW4vmWlQRgmJl6RchiHQnLHuaSlBl9FQXRtTaaLxeAM+MNMwFcnTXzofe3vJCc+MSQBdKf1CPrZwfhk/MtAeiplHqz6vqPY3Z4Ruyni6ZCT7YhT3uSkKuZeM5ND2k4IE2fIfCiHcghN9l9SWGyJ7Gjy8p7bIr8eBJ90VAh8zS+E7Ld/q5uZLtb15rCAnCyyVT32izS78OqSk6vzfI+frM/dqFQJl9wMWRi0zOcDcMkCf0xLyLJ/hRsyJ0X5LnE4Qd+ogqwODa20NzEBB05KqNoqU2ytt7IaXlVeVYWvFtwQOvvjht71/BAzxm6Ki1DTRYTl2OKlJ7SaSi+Ppfq/HSig3zeqH+uNr6xTSKDN7aguTP5p2qPrPYKlEwjryGrkdSQlIdkli42dlkT4kSQAIRyWjBB3GVx
- b3yFDLUk
- 6EziEcxlWFOm4w54/3IESbi2DY9vbyDRzDhAXVh9ZgsPN5vGDJ0HhJ2OcBVg0KrLY8kNyJL2BOuxtCGChmfrrJmHhGK3gDluFVpUiDmIJ3cHgeH3YRX2ynqWf1UQ0i9HddZ315/SiitYCRHbWWqz6NG1NJ4hkVp2hN/OZF2fbbI3v/441uDXMt25YBr1W1th7NXIHVrNM8J+MXmp6uQK9O8e1u3duzfacDeYDE+AylnOT02/guPqZTrPCfaZhpijIoYNUYYNX0X8J/ykWi2eGXR9sLY/TrjoVtr401m6Oj0mie02Q4hVPINAegonPvRyHlfrET+WtnTHBRTzTCmI56cWdXursJU3vfrkOflVA4ialSxAbaop+C7OssbRKKCAey8AwB4Pj1SolAsii8szXIOmL7xVJ6kOlZFDG4pKcVsUcuOhbIoqWrIVJcrKI5R2+BGltV6o0E0QbnMaTQbWypaYHuKAX3W9zcNwuOw0s4C2D3AJYkCmLuSoS1LM73quokYwTkICXuFRt4d4PVTeyDqqM9NflWojpkFgsw64JuR6U8fjLr5s1OGI9jxf5PucyZKwtloTmtwZ3IzlMiJPr9mSCJxHxT0pJh3kZffFA4AeooOaQj7aAAwa4r4UN5E6mkrcPpA9qmxZlLq0IyygqkCJsQCnHfvmj41RloM1QYQnva6I4zAIxQWcV3lwbLCraDCF/Wb6o0ihicvtdflMn2caKo4kZb8YwT0t0Lougk0dCNRw=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CC37620011
+X-Stat-Signature: spcmucsbwmnwya9otcuunesz9c9zk35x
+X-HE-Tag: 1759583312-966959
+X-HE-Meta: U2FsdGVkX1/yyyM5Mgwf8HZN2IlQgBHEKtONxZUx9xTvxkWs6u/4O4+RWLx4Vv0tOy11UvZy5Rc89tptt1lkxm0GeeYYjWXxwXewDGlqJkBYivIntAYamFckts4INiz8StRpUHIAm1swdeUm/2ZBjmFVyUgFSYOc/gL3w7+ghtRCKipA6mKUCnclSjMbErUL6dWR7DeLUyhZWm8Pz20wPav1rAfXgBWRHPzCE8tJ7swz39pknpH+BN1ED0M3Ej1XmSxAEoUVUv8ZeYZkOqhs/n/c20/8YmRVTNts3e1ludA7XqhZ5MMHIhMgm7wmvLZBlbEJJJCuktJprUcUjzTUlxYISS1+7/N+MzQeo8SXB4cjjfGU862VnbcSrnOhv5jDEB+4dHQcn1GnCTLFIWE3xXXEv4I4N3Y+sOe7kw3s9Heou6tsPgmjCBt1wLPeR0vXvY6wxHZqWAhTUkPCi8cCPGGyr7M+n1krD3fNHXpZIrOwb79aoqnXBh6O1URuwUn9PT/kGXndW4DEhY/sQhJT4bywilEtxBTpghpV9It/BX1wpDuMg5FzGHNAgV4fISXlKKSkwqXMDsV4uwuM9dWfkRlI3rw20j18d7T68VaEErPtHIf5ye9glpjjnospmMRbmJOHfDeBVN/R64wFfnYHg+oj9yj2xfvK+FjDzmRKnj3v4X4MIXrDB3WjD44+Jz7mT2yPRC8ky39Ip9sZIjI5rGQX8NRtehnl0jFk7vkzOn0QVMC6vHJ2//ZEkiKw/GvCR+Xsduo18rypZx8b8HlqMr3BXgPFVK+r8zsd0aBGuJ2VkWomg3zVqRqnwqgyVO1S+Vbq4w8G1v19GQYrvfK8y873XibmtdObhNIg5ceFUlLRFb53OZykfd8gaZBEMKgdFZ1L+kreHZ0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,37 +86,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 03, 2025 at 10:35:12PM +0530, Dev Jain wrote:
+
+On 30/09/25 11:18 am, Roman Gushchin wrote:
+> Commit 4687fdbb805a ("mm/filemap: Support VM_HUGEPAGE for file mappings")
+> introduced a special handling for VM_HUGEPAGE mappings: even if the
+> readahead is disabled, 1 or 2 HPAGE_PMD_ORDER pages are
+> allocated.
 >
->On 02/10/25 1:02 pm, Lance Yang wrote:
->> From: Lance Yang <lance.yang@linux.dev>
->> 
->> As David suggested, the PTE scanning logic in hpage_collapse_scan_pmd()
->> and __collapse_huge_page_isolate() was almost duplicated.
->> 
->> This patch cleans things up by moving all the common PTE checking logic
->> into a new shared helper, thp_collapse_check_pte().
->> 
->> Suggested-by: David Hildenbrand <david@redhat.com>
->> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->> ---
+> This change causes a significant regression for containers with a
+> tight memory.max limit, if VM_HUGEPAGE is widely used. Prior to this
+> commit, mmap_miss logic would eventually lead to the readahead
+> disablement, effectively reducing the memory pressure in the
+> cgroup. With this change the kernel is trying to allocate 1-2 huge
+> pages for each fault, no matter if these pages are used or not
+> before being evicted, increasing the memory pressure multi-fold.
 >
->In hpage_collapse_scan_pmd(), we enter with mmap lock held, so for
+> To fix the regression, let's make the new VM_HUGEPAGE conditional
+> to the mmap_miss check, but keep independent from the ra->ra_pages.
+> This way the main intention of commit 4687fdbb805a ("mm/filemap:
+> Support VM_HUGEPAGE for file mappings") stays intact, but the
+> regression is resolved.
+>
+> The logic behind this changes is simple: even if a user explicitly
+> requests using huge pages to back the file mapping (using VM_HUGEPAGE
+> flag), under a very strong memory pressure it's better to fall back
+> to ordinary pages.
+>
+> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Cc: Jan Kara <jack@suse.cz>
+> Cc: linux-mm@kvack.org
+> ---
+>   mm/filemap.c | 40 +++++++++++++++++++++-------------------
+>   1 file changed, 21 insertions(+), 19 deletions(-)
+>
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index a52dd38d2b4a..b67d7981fafb 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -3235,34 +3235,20 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+>   	DEFINE_READAHEAD(ractl, file, ra, mapping, vmf->pgoff);
+>   	struct file *fpin = NULL;
+>   	vm_flags_t vm_flags = vmf->vma->vm_flags;
+> +	bool force_thp_readahead = false;
+>   	unsigned short mmap_miss;
+>   
+> -#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>   	/* Use the readahead code, even if readahead is disabled */
+> -	if ((vm_flags & VM_HUGEPAGE) && HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER) {
+> -		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
+> -		ractl._index &= ~((unsigned long)HPAGE_PMD_NR - 1);
+> -		ra->size = HPAGE_PMD_NR;
+> -		/*
+> -		 * Fetch two PMD folios, so we get the chance to actually
+> -		 * readahead, unless we've been told not to.
+> -		 */
+> -		if (!(vm_flags & VM_RAND_READ))
+> -			ra->size *= 2;
+> -		ra->async_size = HPAGE_PMD_NR;
+> -		ra->order = HPAGE_PMD_ORDER;
+> -		page_cache_ra_order(&ractl, ra);
+> -		return fpin;
+> -	}
+> -#endif
+> -
+> +	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+> +	    (vm_flags & VM_HUGEPAGE) && HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER)
+> +		force_thp_readahead = true;
+>   	/*
+>   	 * If we don't want any read-ahead, don't bother. VM_EXEC case below is
+>   	 * already intended for random access.
+>   	 */
+>   	if ((vm_flags & (VM_RAND_READ | VM_EXEC)) == VM_RAND_READ)
+>   		return fpin;
+> -	if (!ra->ra_pages)
+> +	if (!ra->ra_pages && !force_thp_readahead)
+>   		return fpin;
+>   
+>   	if (vm_flags & VM_SEQ_READ) {
+> @@ -3283,6 +3269,22 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+>   	if (mmap_miss > MMAP_LOTSAMISS)
+>   		return fpin;
+>   
 
-This is true for the first loop, but we will unlock/lock mmap and revalidate
-vma before isolation.
+You have moved the PMD-THP logic below the VM_SEQ_READ check, is that intentional?
+So VMAs on which sequential read is expected will now use the common readahead algorithm,
+instead of always benefitting from reduced TLB pressure through PMD mapping, if my understanding
+is correct?
 
->an anonymous vma, is it even possible to hit if (!folio_test_anon(folio))?
->In which case we can replace this with VM_BUG_ON_FOLIO and abstract away
->till the folio_maybe_mapped_shared() block?
-
-But it looks still valid, since hugepage_vma_revalidate() will check the vma
-is still anonymous vma after grab the mmap lock again.
-
-My concern is would VM_BUG_ON_FOLIO() be too heavy? How about warn on and
-return?
-
--- 
-Wei Yang
-Help you, Help me
+> +	if (force_thp_readahead) {
+> +		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
+> +		ractl._index &= ~((unsigned long)HPAGE_PMD_NR - 1);
+> +		ra->size = HPAGE_PMD_NR;
+> +		/*
+> +		 * Fetch two PMD folios, so we get the chance to actually
+> +		 * readahead, unless we've been told not to.
+> +		 */
+> +		if (!(vm_flags & VM_RAND_READ))
+> +			ra->size *= 2;
+> +		ra->async_size = HPAGE_PMD_NR;
+> +		ra->order = HPAGE_PMD_ORDER;
+> +		page_cache_ra_order(&ractl, ra);
+> +		return fpin;
+> +	}
+> +
+>   	if (vm_flags & VM_EXEC) {
+>   		/*
+>   		 * Allow arch to request a preferred minimum folio order for
 
