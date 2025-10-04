@@ -4,99 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48FF2CAC5BB
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Oct 2025 04:12:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ADC1CAC5B0
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Oct 2025 04:37:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BB5B8E0008; Sat,  4 Oct 2025 00:12:09 -0400 (EDT)
+	id D7E9B8E0005; Sat,  4 Oct 2025 00:37:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4931F8E0002; Sat,  4 Oct 2025 00:12:09 -0400 (EDT)
+	id D56D68E0002; Sat,  4 Oct 2025 00:37:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D0268E0008; Sat,  4 Oct 2025 00:12:09 -0400 (EDT)
+	id C93658E0005; Sat,  4 Oct 2025 00:37:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B4BD8E0002
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 00:12:09 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7F8851A0A19
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 04:12:08 +0000 (UTC)
-X-FDA: 83959109136.08.19856B0
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B7A1A8E0002
+	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 00:37:24 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4DB40455E6
+	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 04:37:24 +0000 (UTC)
+X-FDA: 83959172808.06.479BA9D
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A54AD180006
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 04:12:06 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DqfQHeXt;
-	spf=pass (imf06.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6490140005
+	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 04:37:22 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TeDOSUoF;
+	spf=pass (imf07.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759551126;
+	s=arc-20220608; t=1759552642;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G1FMci1EMwWYl4LzKrGkXp3JLbCopyApeUNyqyTFkQU=;
-	b=3IiNmJIfKUdZfarjyAJPfoVMUmtN+93JLDLULsVBLW+ouZaZLv2BBIWdlrxm2KaRQWx1GF
-	crU9ovhoUuHLGBSFydB4YOyRD5gEDDaH/GYvB03iPtkr7J+YXKLpnjF/6YCbA4VzhKuecM
-	UYfeUN9icShWV5xrfEAk74B+BA4yO/4=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DqfQHeXt;
-	spf=pass (imf06.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759551126; a=rsa-sha256;
+	bh=u0XiqxfOq9vlqMHc1NeoH/5IygmQCzOyK8BHyyYUppI=;
+	b=FRNd7ppj5dNRtWfoVSIDfDdin4T3o5mdXuwnUgTz5iphldLdsBBcH8o79+56VEm06q+889
+	s+zk41TIe1UK5BtXQdikq1rVfU3ecRhk/7pqsmgaG9seo/SuecKobcv8yd27WZyu4JEm2W
+	kbMB8fmaRI/sqbrUB1GHskNoT5OVz2Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759552642; a=rsa-sha256;
 	cv=none;
-	b=b9BTnDQZBAgGkcNMfja71c9WHienhXUcBBkOJwZ7J5rADhCl7unCLwncTbbC6RxHDiRlev
-	fEVCWcSzCpNaz/RlhKUtmIVygLlb1bYIvqU/enZyLTS36wAJK0Du8RguygIeEHpigWeeBh
-	ZC0HBhWB7LCFgaxXTfJ4dIP0OnZext0=
+	b=tOxg3oLZyBGwt+GEJZcyylLSVy+4tYZUFKWjROFXrBiNZeyEMegfD4Hs7Y5fjaC/asJF+p
+	xsiTL+11xw9PAmmwo8mbj3G++nob4P/09u7YGcIzJbq8bM0clKT2NaMjqnwe5VWHI2uAHx
+	NxDryhw+q+TK/MkxmF3QQ59N11Yi6ag=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TeDOSUoF;
+	spf=pass (imf07.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759551126;
+	s=mimecast20190719; t=1759552641;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=G1FMci1EMwWYl4LzKrGkXp3JLbCopyApeUNyqyTFkQU=;
-	b=DqfQHeXtbUWkoJQYnQ+cDWcTG2n7oGGdM75ps2s8lb3gfiiAYIZgfkuE8CBJObP2oM8LdO
-	aAKdxdX6aq1K2iFNvn4p0b5d3mpI2vodrY7TrCCGpLrltfXB+JiXanBaOIq1RdbUedpB02
-	tdd+wVU+BySM3bzon2gcgQiT9zuhREM=
+	bh=u0XiqxfOq9vlqMHc1NeoH/5IygmQCzOyK8BHyyYUppI=;
+	b=TeDOSUoFti5IJ4KVLgvicpMLCA/3ohpEXWxuBwIXa8rKR3dQO56/b/ShfwQnoFjDiP9q0+
+	oEJ5++Sx413nc7oSOhT3NXz+awA4QMoqkNi+ZeYkbsB8ZVBX9fnJQ6r/HBSmzsppk1aP29
+	9jsPMrwuABP4Vyb20MXCdz2InzkcG18=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-572-sb34xGJwPW-Pi7P9XxP_Qg-1; Sat,
- 04 Oct 2025 00:12:04 -0400
-X-MC-Unique: sb34xGJwPW-Pi7P9XxP_Qg-1
-X-Mimecast-MFC-AGG-ID: sb34xGJwPW-Pi7P9XxP_Qg_1759551123
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-638-MPe9zfsJM5KkIdarp91mbw-1; Sat,
+ 04 Oct 2025 00:37:13 -0400
+X-MC-Unique: MPe9zfsJM5KkIdarp91mbw-1
+X-Mimecast-MFC-AGG-ID: MPe9zfsJM5KkIdarp91mbw_1759552632
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D70E51800452;
-	Sat,  4 Oct 2025 04:12:02 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9A3D51800452;
+	Sat,  4 Oct 2025 04:37:12 +0000 (UTC)
 Received: from localhost (unknown [10.72.112.27])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A818B300018D;
-	Sat,  4 Oct 2025 04:12:01 +0000 (UTC)
-Date: Sat, 4 Oct 2025 12:11:57 +0800
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6E62A19560AB;
+	Sat,  4 Oct 2025 04:37:11 +0000 (UTC)
+Date: Sat, 4 Oct 2025 12:37:07 +0800
 From: Baoquan He <bhe@redhat.com>
 To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
 	Michal Hocko <mhocko@kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>, Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH v3 09/10] mm/vmalloc: Update __vmalloc_node_range()
- documentation
-Message-ID: <aOCejd0aghFS8iSO@MiWiFi-R3L-srv>
+	LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 10/10] mm: kvmalloc: Add non-blocking support for
+ vmalloc
+Message-ID: <aOCkc27YVRVa8PBW@MiWiFi-R3L-srv>
 References: <20251001192647.195204-1-urezki@gmail.com>
- <20251001192647.195204-10-urezki@gmail.com>
+ <20251001192647.195204-11-urezki@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251001192647.195204-10-urezki@gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Rspamd-Queue-Id: A54AD180006
+In-Reply-To: <20251001192647.195204-11-urezki@gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Stat-Signature: wn6jm7fufwcjyyg6r9syknndxu3rgwci
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: awceap1h4ij5gcy917igbicgg1i485uk
-X-HE-Tag: 1759551126-508876
-X-HE-Meta: U2FsdGVkX18xZU5uhrPpWBCXaCZOzWvyOpBmto3yJXJXrzomzjX8vDEfgQLSlTv0dVm+fvF5Yuwy/ouy14udf/tpOQQ7tFj2d9+v49SzXC//1Hj6hqmCW0velw/KFxr0N4TNReS0Q/3wzJV3iW6aEnj+SkWwc/HRZa6uZ+r6MfX8iISUs2w2sq21lplC7iplp+mahMhrbOPVUImdFYOWxpVVGYd0PQupnheKSZx6MW3lu2lpId8I0jd+EniWhgjfw9ejGaOmRQKWVTULIPKZQGOqzeNOvTBAmhkyxE3pGJswJ60v/ovdnWb/XdCkMrHQ4KYmwoarVpn38ZDd5PjxHpwEJ7CrahnkuYs/Hv96IL3fMw1ktYFrzvUBdOdkH+oQ2dNCEIvPHFjZzyjBhDtzCV9p/LUfO0pkqOdLddZqkN+68an+qHUoiZN2rnc1aZZZEDtONAzB8FsMULtQW8uNug7Z/+VOdz3aCaCCFc5st00WtfRhnR1WkEkE5rZqhWJlOEzgt+dblpTWwVhMCBgO8bHP8qlOFML/EgW7T/qk8ubjMKJC7DZnhAhpjTGBRD4cYKco9C+FlzO94RnDDsLPozWkCYr4vDKhCGredKsy3o8af9eaQeTD67PKXm2BmwSbbUFaOeGWBWIKeGUAjrn3cSVpD3NTswYQOw6cUwbfMylItKXX9F3tKwo7DDmUlLzzhxQ083zMbJkoXdPg+ebiTa2IQbNKvIW0aXRMDvlLxfefza3OFvxuC4jks3Ew2eDLTZdfSdYjIxzAuHf7smN5YjFg+iriVqUGHwtUQFX8JhI/ip+uUZa8dSpvMKEgbhfdRzRGuvWGgncVQhv3BPtxPXToGTGDZ7hZH9Abzcy6R+cU8jGpuSeyHXOp1Q8W38TLyea5O5EZgNQF+SP9LnZR+Qp6RGyPUL+kAVVN1NUxfVJ5ug28P6lYibupJCMSaAQl6pQ22hh9QJQ9NZ21k66
- NKdEI9wE
- zz8gueoBjzA1Hyp7uZlPj8bnTvl1aZTPz4u5roIujE4RD5tEIq4uYduqhKwjA+Y9Onf7yTSF1qXuKHdGBgwb15Au6M2RnrDlVX9P3GKmnJliz2bCwfEH8hs6SYoHA/pdix4lvAiJE071aTej+ukB2Q59CAXTogbqU3en9QW26EjZ5KKZDDUz0WEvDprlsUbhMqvhLgY7dv5lD13YWoUKoYgaRFAmxic7tA28eYiVjiCyDRFMwRi64wpcBsirKfmk/EjhOPijv00NzxwAIigN9T96No4rOthxEUOlpp0qukeAL+DNjMHnR2JhqBYhVEN+PnS8RHhy2XCQMOs7rtP53gD9Vbyj3FJw3m0YrzWwkNe43+gICvJWlfvcszG0niBmAGaj0KA7BJ9JG8tSt2Sz7Rrr8EbjFTs3wGEBhOBACl44qX75LcGoFe4RZ4s/mzGwDsHPXcyR2EBdJqEtuBNZ85edIJ62DsYvey6UoBkeOOOGwhT9mELWxl+cP2n/XYcDTlJec3kbNcfP1yPSd0ME7vPq/1g==
+X-Rspamd-Queue-Id: 6490140005
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1759552642-235755
+X-HE-Meta: U2FsdGVkX19hNGGV6WY+qLO1iNHpiMGQe4p2rnPmbDgOp6NznqAiPNKlCbBS2i7hNG58Ue1nzMKEJx2Z5ZwF6mmK3qBi6LOJxMK0bYvJXb4HwSsPqdSfL/sTPT9TN6nQZ9tJEEwBR9GGwg5zyl5CpqXqrn9PcW0DaHz99kb00bIuU9M5u1AkRxmxKzn+6SP6C+GcJmeoVKKMwU/RA+4e70bwPru4rHdGgz+Nqzhk+rlfkzWsaC1MP5s+6NLt2qYSyaFn2XYAD/4LpbwcTWylcqm3OVB1/yg6hcdcSHMwBQpAwOcZJeInwH6b+BdyYHKdd0ItR3nDYMwpzn4WJZ+YLzUtw/kNMQKjvZVx3pQAElzJ7ebQCva+Qmi7gr2Ac9uvD4sk8/I+FPFjQajtiqkGc3BQY0JgUBfAmqApKYiYreez6aRrOhj4+AvGQOChckysoTjlEaA7ivvn+pf9yLiznVBJuuHpSHDikGWMcGbwb+dE4GqmNX0Q6+jlUdQmgYQTVw6VcYZKR2XAxQaj2wbMG32AV3SG8C96Wl6MXNeMDIjK65fa+Ksjita0kRm4glH00qx6VTMtdCflmJyHE9Ut2jDAiEfUSyUZfq14gMcxUwqxd2qtqpx/vBAmCZn647U3n+yTJSYxUWmOi5qU/o6XkaWmQn8+nY768Cg/6qwsDhrhb6PDh85IWChmFRL2WOXCNJxsG6svEk8R7z+9hot8CU8c4wLWCUbXnuYPWnILGMEbH7h2NkYVQYTSUbdvpWrDBkaRL2iyR4ihJIK1laTJexDh/rpMbyOlV/IDuHCV8HXOtfKROGLMhiRDsTmXhHhX7O5h73fk8GhHV7JGNRCvH2l1d86p0fiS+ZEmk+SBtcgG7XIUwOuGwPItP3QfPm2tkYjOeG/Bt2XbT3g9s+PyU3fH+73rf3QM55IeMrz45dK2AzQYO34g/8Uv3sKB10ZyZ/blFEYupCL/YRWP9aF
+ yolmmG5M
+ VGM2f4mQe18jBLATxDqVKc1/94P9u3vN9yZIiMja/RAJAxLuNqeodfsFORM2x1LUNR6OI9d//2DSdEqz8vsDJyOksjiQq0Ek0KQjFDknpietm9URup3vG9niP/zOcMiIbhRJ8tWdG/UDM60YUaOR6apFY+ROw/RJor2d3aLeYWYnoTds/Yc8q5otxWAgjehTmxb/VLwLUUwzjNfwSlC6FXNmdeogtgQXZ63uW7JYLSm566XN6PpXJ+jqrdABHk4feOnCh7qTAp3J8WUq0MMI7NdCVOAuezDY5FRpGGrVYMIATdqvz9owPkL5wqIGBljpTzgZjSIzzxbCT1Z2nUgZBV8iJjkwbGzD9Iuc0VL+l9cGRi/sCA3yRlPBphZenTcKDQzm2M36JGbf5mKG/naZWPnSN10GqVImTBQzqg588xj9Oy4yqlD9lUYtgyg390Uup8VIH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,61 +106,81 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 10/01/25 at 09:26pm, Uladzislau Rezki (Sony) wrote:
-> __vmalloc() function now supports non-blocking flags such as
-> GFP_ATOMIC and GFP_NOWAIT. Update the documentation accordingly.
+> Extend __kvmalloc_node_noprof() to handle non-blocking GFP flags
+> (GFP_NOWAIT and GFP_ATOMIC). Previously such flags were rejected,
+> returning NULL. With this change:
 > 
-> Acked-by: Michal Hocko <mhocko@suse.com>
+> - kvmalloc() can fall back to vmalloc() if non-blocking contexts;
+> - for non-blocking allocations the VM_ALLOW_HUGE_VMAP option is
+>   disabled, since the huge mapping path still contains might_sleep();
+> - documentation update to reflect that GFP_NOWAIT and GFP_ATOMIC
+>   are now supported.
+> 
 > Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 > ---
->  mm/vmalloc.c | 21 +++++++++++----------
->  1 file changed, 11 insertions(+), 10 deletions(-)
+>  mm/slub.c | 19 +++++++++++++------
+>  1 file changed, 13 insertions(+), 6 deletions(-)
+
+Reviewed-by: Baoquan He <bhe@redhat.com>
+
 > 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index d7e7049e01f8..2b45cd4ce119 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3881,19 +3881,20 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
->   * @caller:		  caller's return address
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 584a5ff1828b..3de0719e24e9 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -7018,7 +7018,7 @@ static gfp_t kmalloc_gfp_adjust(gfp_t flags, size_t size)
+>   * Uses kmalloc to get the memory but if the allocation fails then falls back
+>   * to the vmalloc allocator. Use kvfree for freeing the memory.
 >   *
->   * Allocate enough pages to cover @size from the page level
-> - * allocator with @gfp_mask flags. Please note that the full set of gfp
-> - * flags are not supported. GFP_KERNEL, GFP_NOFS and GFP_NOIO are all
-> - * supported.
-> - * Zone modifiers are not supported. From the reclaim modifiers
-> - * __GFP_DIRECT_RECLAIM is required (aka GFP_NOWAIT is not supported)
-> - * and only __GFP_NOFAIL is supported (i.e. __GFP_NORETRY and
-> - * __GFP_RETRY_MAYFAIL are not supported).
-> + * allocator with @gfp_mask flags and map them into contiguous
-> + * virtual range with protection @prot.
+> - * GFP_NOWAIT and GFP_ATOMIC are not supported, neither is the __GFP_NORETRY modifier.
+> + * GFP_NOWAIT and GFP_ATOMIC are supported, the __GFP_NORETRY modifier is not.
+>   * __GFP_RETRY_MAYFAIL is supported, and it should be used only if kmalloc is
+>   * preferable to the vmalloc fallback, due to visible performance drawbacks.
 >   *
-> - * __GFP_NOWARN can be used to suppress failures messages.
-> + * Supported GFP classes: %GFP_KERNEL, %GFP_ATOMIC, %GFP_NOWAIT,
-> + * %GFP_NOFS and %GFP_NOIO. Zone modifiers are not supported.
-> + * Please note %GFP_ATOMIC and %GFP_NOWAIT are supported only
-> + * by __vmalloc().
+> @@ -7027,6 +7027,7 @@ static gfp_t kmalloc_gfp_adjust(gfp_t flags, size_t size)
+>  void *__kvmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), unsigned long align,
+>  			     gfp_t flags, int node)
+>  {
+> +	bool allow_block;
+>  	void *ret;
+>  
+>  	/*
+> @@ -7039,16 +7040,22 @@ void *__kvmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), unsigned long align,
+>  	if (ret || size <= PAGE_SIZE)
+>  		return ret;
+>  
+> -	/* non-sleeping allocations are not supported by vmalloc */
+> -	if (!gfpflags_allow_blocking(flags))
+> -		return NULL;
+> -
+>  	/* Don't even allow crazy sizes */
+>  	if (unlikely(size > INT_MAX)) {
+>  		WARN_ON_ONCE(!(flags & __GFP_NOWARN));
+>  		return NULL;
+>  	}
+>  
+> +	/*
+> +	 * For non-blocking the VM_ALLOW_HUGE_VMAP is not used
+> +	 * because the huge-mapping path in vmalloc contains at
+> +	 * least one might_sleep() call.
+> +	 *
+> +	 * TODO: Revise huge-mapping path to support non-blocking
+> +	 * flags.
+> +	 */
+> +	allow_block = gfpflags_allow_blocking(flags);
 > +
-> + * Retry modifiers: only %__GFP_NOFAIL is supported; %__GFP_NORETRY
-> + * and %__GFP_RETRY_MAYFAIL are not supported.
-
-Do we need to update the documentation of __vmalloc_node_noprof()
-accordingly? I see it has below description about "Retry modifiers"
-where gfp_mask is passed down to __vmalloc_node_range_noprof() directly
-but have different description. Not sure if I missed anything.
-
-===
- * Retry modifiers: only %__GFP_NOFAIL is supported; %__GFP_NORETRY
- * and %__GFP_RETRY_MAYFAIL are not supported.
-===
-
->   *
-> - * Map them into contiguous kernel virtual space, using a pagetable
-> - * protection of @prot.
-> + * %__GFP_NOWARN can be used to suppress failure messages.
->   *
-> + * Can not be called from interrupt nor NMI contexts.
->   * Return: the address of the area or %NULL on failure
->   */
->  void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
+>  	/*
+>  	 * kvmalloc() can always use VM_ALLOW_HUGE_VMAP,
+>  	 * since the callers already cannot assume anything
+> @@ -7056,7 +7063,7 @@ void *__kvmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), unsigned long align,
+>  	 * protection games.
+>  	 */
+>  	return __vmalloc_node_range_noprof(size, align, VMALLOC_START, VMALLOC_END,
+> -			flags, PAGE_KERNEL, VM_ALLOW_HUGE_VMAP,
+> +			flags, PAGE_KERNEL, allow_block ? VM_ALLOW_HUGE_VMAP:0,
+>  			node, __builtin_return_address(0));
+>  }
+>  EXPORT_SYMBOL(__kvmalloc_node_noprof);
 > -- 
 > 2.47.3
 > 
