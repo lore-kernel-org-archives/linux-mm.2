@@ -4,106 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C66BCAC5BB
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Oct 2025 22:54:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60964CAC5B0
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Oct 2025 00:04:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD0568E0003; Sat,  4 Oct 2025 18:54:23 -0400 (EDT)
+	id 4A9A18E0003; Sat,  4 Oct 2025 20:04:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA8688E0002; Sat,  4 Oct 2025 18:54:23 -0400 (EDT)
+	id 45B458E0002; Sat,  4 Oct 2025 20:04:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE5238E0003; Sat,  4 Oct 2025 18:54:23 -0400 (EDT)
+	id 348C48E0003; Sat,  4 Oct 2025 20:04:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BE6FB8E0002
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 18:54:23 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 29C7AB75AF
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 22:54:23 +0000 (UTC)
-X-FDA: 83961937206.23.97FC120
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 7F7FF1A0007
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 22:54:20 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=d5IqzDYe
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 239528E0002
+	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 20:04:19 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 55BE085A0E
+	for <linux-mm@kvack.org>; Sun,  5 Oct 2025 00:04:18 +0000 (UTC)
+X-FDA: 83962113396.01.8283054
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 60BF720004
+	for <linux-mm@kvack.org>; Sun,  5 Oct 2025 00:04:16 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IPiAmOna;
+	spf=pass (imf13.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759618461;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1759622656;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ujT45zKa5is3+8neivqZuFX3zu1g7WFWJ9dwConA+qY=;
-	b=7UaaHIxc+hjsEh59dWWcdyXO2LPbGUH+EV6j1zysUgcofPJlrRL3vnXAGRJ9Vo/w+AzA4n
-	gkubUc2sY4BA8O60J26zA/iniisUcTY4UpKT3Rs0fgfQNi92RgAjPyYStzn7UdP65ygZph
-	YEjsEK2EoBKBzifNZBmv8scclh0NHPo=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=d5IqzDYe;
-	spf=none (imf19.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759618461; a=rsa-sha256;
+	bh=SuazfCg0JUEN6Q1wK7YMCSmIa0jdH/LBDbSMDJSl8bM=;
+	b=Z3sldCIf4NqHo2Dvv/4Ao+7Ty4mazVnzIWRToTtcs1rZmOnbQcPW6sztNC5/xvp3AC8p/G
+	Cu2Jgxt9G7E1BNtaRgNPR2RTSp2ylvouVwi/TkUnD8S4p5FoA4gKgQItGyUMWF40A6mlsc
+	TGJsPceyW84qmKPwHyqcw2lEYqGSksk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759622656; a=rsa-sha256;
 	cv=none;
-	b=8eKS56WD4DdoseJ4pdHzH//Yn6tEqgkdpyA2i/MxT2fw6pGhFUVqLgsV1XipDDDaFQQquM
-	rNtHw3z4fJASVPsF52BNdAMUOcHnpaonB6mf8tMJzMQmna8VntvBQ5H2uumSCgHyOdhtS8
-	C2GAikLV3mw0EFKG7wiGIWJMMSA3I7c=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=ujT45zKa5is3+8neivqZuFX3zu1g7WFWJ9dwConA+qY=; b=d5IqzDYe+HXRidEcWznZzwC/4f
-	5kRWZwuFXUEVgtUB8JiBrYzNeMp0dHGKbOGpTGN2UYlBYMEFYuYbP2j3lwT4xYVNMYZpwnlzLCI2K
-	Woh1QqOBjv5v3PXKJVbqGv72E053WYacalKFdg19OJ9in5Jt2Lq01UzCaFdLCX0UivvgrTrgUPUwM
-	kNnPQZRKuKAScSTFv6BFsiqiTTe1XJZaqE2AVQZZPejK38XCxmZRvmHzradrxsVW2WwRIvxLohU0u
-	I2eRM1xnKZiT8IimYKpEJLuQ0hGhXSMjje+kYwKXCoWIDtUohnBzGXH/SLeXtW/q3OS6sNCpHUkUo
-	kkaA3ByQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v5B8W-0000000DL0J-0gTh;
-	Sat, 04 Oct 2025 22:53:56 +0000
-Date: Sat, 4 Oct 2025 23:53:55 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: =?iso-8859-1?Q?Lo=EFc?= Molinari <loic.molinari@collabora.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Rob Herring <robh@kernel.org>, Steven Price <steven.price@arm.com>,
-	Liviu Dudau <liviu.dudau@arm.com>, Melissa Wen <mwen@igalia.com>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	=?utf-8?Q?Miko=C5=82aj?= Wasiak <mikolaj.wasiak@intel.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Nitin Gote <nitin.r.gote@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Christopher Healy <healych@amazon.com>,
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org, linux-mm@kvack.org,
-	kernel@collabora.com, kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v3 01/10] drm/shmem-helper: Add huge page fault handler
-Message-ID: <aOGlgz3E3kzK1_BH@casper.infradead.org>
-References: <20251004093054.21388-1-loic.molinari@collabora.com>
- <20251004093054.21388-2-loic.molinari@collabora.com>
+	b=WVDcMRdTJb6zjphHyXpAn1NjsBfZpLEnYEgLR2SGxeAEzPJ/BlvrTZCsCz+Xox2GIFs7jc
+	fl2PLR53mtF5CquIeRS8SkrM3M4zIsv3Ss93w3HvdS/5wOU3rkz7jaCsqIfgFcbdierLfY
+	plA3z42F7bHpiYZuAWaklj26Vm7ky04=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IPiAmOna;
+	spf=pass (imf13.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-63963066fb0so2367355a12.3
+        for <linux-mm@kvack.org>; Sat, 04 Oct 2025 17:04:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759622655; x=1760227455; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SuazfCg0JUEN6Q1wK7YMCSmIa0jdH/LBDbSMDJSl8bM=;
+        b=IPiAmOnaTKkDHELf+FX+j5aaYZVK8IDQpO/dNMRuoB5IQ7urcFvfhGvMbjDQqIRHx6
+         WF60DAvWeYFY/JsyxhHvxvSCRdlM0mcgBvsvZBwSoGiLrLB8kQfKt/zBi4ud1yIhoIsN
+         9QNwrCGPNHBNtCCxmCIdxtNZzN/AiSQ5kYZPgz5l7Eva3WMFtF1Ox8laC8lS+bLiZZKX
+         XB9ZFOQevqMNCBB1qfQ+TbaSJdM43aHAqSVtr92sq8tem+3cAQO/5qaFYpL15v5FFP+3
+         rFWjiMHy3O8HCymNzXSgRyu9YUY80GJGi1eMKbtkaBDft2lN18X9pahHIXzk1h8HIq1y
+         +p6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759622655; x=1760227455;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SuazfCg0JUEN6Q1wK7YMCSmIa0jdH/LBDbSMDJSl8bM=;
+        b=UIy2XcbFDUAbqlk2MQeg+P1yx3optL4V2ZPWIhnQcs8E9QcUE0JattEKwtdQ0wqAVi
+         5pEHuFv9MK1LKVpjo0NWhZMGKtizViKoXHtWnB+s11BRgsZ2eIkSp6Ru+hUd907gwByh
+         XaGzWOE9TvoLOMqkjLZ09cWSHz6vZn4MKndHmfObQ8ks4RwygI4MbxM/nH893ow39xtA
+         AquthodxSO2S6WvRBqLcqWnj8EAaX8ftGqMqZTqMiSjQB8HFVzeYk4jkbZ+PQzv71AbB
+         Zbe32o9m8xvEfKmYBa3wiPs4CJ1eKrsyLSFFfyvvO8K22+EHvUaHvMxtcwBn8+4XRGX/
+         xSEw==
+X-Forwarded-Encrypted: i=1; AJvYcCV2Sfi5cNO8h9Or/H0CiUZvnAmI7lLimUAuqQH7vmHH7Pgq478cQtWgZONBTeGCsOQP5+X4aVVbzA==@kvack.org
+X-Gm-Message-State: AOJu0YzSvG8mmk9PfFAYLHpCrNBa6h4LZh4BEDyrw3mNwgF8jbdUcfwl
+	gqIUwcY8zKGZiShf7lbWsOpCgRiF5+XXQG4iyMDFNlmueEE7cwZQyvkc
+X-Gm-Gg: ASbGncspN2xk3CnUlDW1sIP1bDdSKnKxHVTRzHpicxB2twVOMRAgAa6NWGDgfFzWwyW
+	6rbUsxFiKHx1cqVjSHDvPTAoanBQrDoL4Rk23wMjc2oec2Sez+OO3Y3vfQd4JvOmsCYmQOukE3/
+	C/u0cnA4lITrrUAhYHyqZmWIhRNlsvHnD8jDstZynn688OdNlwM5M/jOO8Hoom99shGcgn6yEyY
+	jlSvXNXYE5BDV1wirSaY33q54xnhWJmUCLfl6xO9iVxbaG+d3gKkVjeUvRDnJ96aEaUy+RxPuu+
+	NK8tDj9jFZVhonw0O/i0q5B98Z8d9vMSKVEiPF+EiB9AcYr2Q/QHSrR0UbP4axBI6udO9HPXkeg
+	rwq/wZToyEBOnVJ7PYgX5yiVQD17rqNoCzutMJly/I3VaevA/1vd7bccn
+X-Google-Smtp-Source: AGHT+IExBZMBuqUh5CVS8KHs+bbxVO9mFkhOpIwnUmP6PDbjBSwp7A03wss0RXgBDhl9Y+HcyF8+BQ==
+X-Received: by 2002:a05:6402:3582:b0:632:a8c1:f783 with SMTP id 4fb4d7f45d1cf-639346ceb41mr8370417a12.3.1759622654476;
+        Sat, 04 Oct 2025 17:04:14 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6376b3abcd7sm6982792a12.2.2025.10.04.17.04.13
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 04 Oct 2025 17:04:13 -0700 (PDT)
+Date: Sun, 5 Oct 2025 00:04:13 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Dev Jain <dev.jain@arm.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+	npache@redhat.com, ryan.roberts@arm.com, baohua@kernel.org,
+	lance.yang@linux.dev, linux-mm@kvack.org
+Subject: Re: [PATCH] mm/khugepaged: use map_anon_folio_pmd() in
+ collapse_huge_page()
+Message-ID: <20251005000413.ogmobshcbsw34b5v@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20251004092523.28989-1-richard.weiyang@gmail.com>
+ <96dac3c7-c969-4d4a-afca-85341f8a6a6e@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251004093054.21388-2-loic.molinari@collabora.com>
-X-Rspamd-Queue-Id: 7F7FF1A0007
+In-Reply-To: <96dac3c7-c969-4d4a-afca-85341f8a6a6e@arm.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Stat-Signature: saxfpxkjifpheu5a9dxh5xf5xbw5egds
+X-Rspamd-Queue-Id: 60BF720004
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ichgepmrfmhzgyxix5sopn6yooqsx845
-X-HE-Tag: 1759618460-345465
-X-HE-Meta: U2FsdGVkX187ZjqxSuFwXnwy/XWURd+0LzHrb81/IRkbfAP4ct9IXxQl/nyBK7xyESaH7c6eAcF8GV0AkMnDVKEcy8oeYa32E5PAaBaLV4xBRk4nQkPVlRl7IW6fzJYQ0BLI/Mdxyson4gLMlAgcZ+DloxnFlE0z+p2rKM4jOfHPzplDC4zcNAI+RgmH+FP5SYndkhxwAor6eckN0HPA7AqncpfoTNquiXubyuPEWFETDP6CFzisJgYs1pObZihSKUUanxU6NMshcv+FlYGMta70ABEJsKRaFzC3fL/j3gktrBm0G1wV9dS6BD1SbbgJXDi+ugkIvnJapN+U0Hg1w9qGzf3ioJxvNiKsaaDqadg4iDu8OyXb7BraXuF+pUl9P/INJD2iA/kCbxIK79IqVq8vwZXv6PQ2MXU/J4LP1qu8FXGrFPYh5b/xfft493YC4XiGDn8VbUEpSpCt/NfIjc5Assn5qmpoEYxVtePHAB2JSm0c+/W4I1FNU7HTlAh0+sGLSQAhzrCIB6M+ekaKizUcAi5xaYXDARBX8vbrKgVVURldcoTXFLd5JKw7elg1On1Y4aY3rH4NvQpG9z416nikW5mLDYHYBCl+GYv29a616si2DbBXpySg58sF0VDqywNKUmVc9LI29HQQ4GnbHnUr9A1ZChF8nyiyjErafMbJ1vvWPhCbotKEtHbAvwXYDQH3Wtwfl5uyIo4hD1p+9jTVwWDrbW2Ab943BEeIbY+E5i9oPunJgXbBrO8PzEIti8eNUAHlxAfCjBncFFhxySWVjF2hPdQq/FbU9fXAPpmju+cSmpgym8ciQ4z+QncFs+bYEifpMhPYkZe7C3BCfR55ghdmNxebE7zGyt9XaAF8hpVokv3TtxEyHDSr11dCoD3Macgt/sX0Uf7mQNoTmCEz/G2cingPIfgTiay2D43oHIn6hJAs2v+vr6DuT7rKzdCnfgAJf2mD7pUtj3Q
- zKXR402/
- wr4IWYFEDULn52tN3850kYv/nW+NmG6VE8e4YVxLJmby9ytoW6Y/Fd5J4dpl9mF++lljFpJACDvIKxIfqBgBaKvpndIlZ8AvQimOTk98b/suXuqdT/x5UFlZFpZPGilL9aBU/Hew8bZ8Uj8KM2hezBX0ps98Bj0QlhMucCuQRQcgYjlAaFjy0/0IsUW1ZlbOjyy8574L7P0JQ4HnLYlfBMNgixzqq4S2tC0bZSU23WMmSAWQSX+k5fGsvlA==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1759622656-928811
+X-HE-Meta: U2FsdGVkX18t+b0HvwPaOwJqvgfyzabxGxKawGjodE3tVeO5W3N2dlbhaBoaOj3VKHBGUHAH32GjDC7KfJiL+qWWLsJ0JczV6eCoMe1lw9UQdglt3ZThj5AzAnfATCDn9NeoKkoIj1DvYW/4X+kXXEGKbAlWpJ0W1k+/tsqMhK7BQtSv1FByBsgq2zCKTiT+7zFBTqxThpjAx4v1uiuBuk9cqfEkCMVfkjvpiPqbF1gQqq3bhisjELWeNYEccFyauuA6tbr6PSrE0GfsAy8Z2Jg9lLoPtH+x4mO7TwR3AWyaRLz6di3CNyX3gbixDYrRETfi0yhEkwKT4SRBqxShv4N8FiusOyOsl2RkHxprsWDtxzxe5httS3f8RlAJFhl0xYY9hfUNUB99ubT7xIbwRJHTjxwJa9774MJleYOXsEJz87FtEvAnb0Mlw8AMyEsPnc+aCWEqC35ip/my5x02KWLWafyq7Ba1+NC+7fYddhy3A04xd6P7JefHrTyxunxPv9GMtGIR2D4gSAg7A7xvpugS69lD7dBf269adrMhGN3TdY2y/9kdKhPtRw5jue1jzPBfjyXJP8JAz5a468VudvaDSZ9qu4uQdIQk/tRkiHSeKf/tUmfgeopZ+hgIjBjAyMXGgtQuKRZ5UBsCp2t7wUgeG/0GxFg2viR9mI4Duk9ewJbrNkWiuK6TQD63E3fyjJymrOjDejWtRDbA/xwdX2hrMIUZm3GZXgRIX51xMcSXmMAaLdRy1RSoN3m8UpojLWm/1hdrLogAEAsfTdNjUBb4p7IaPWwKjSivcEc1a+CvULL84Zs/Qh4GEvkcOMLgC8ONGPYBIIcgRMUaRNp1WMP5GLJs9M2MpJ+rwLnJvW7hbGAS2rz3jrUWMAeSSBXL31DEXnKqfsr5K5lZas0iIzSW+6Cmhxwk4rN8DC0GBOvl4XQiQbEiO0d1LhcELXqQhsJA7kC5l4IqMp4pslH
+ BtQ+XKis
+ cLTTDsWGgLz+xVk5HzJrxh9roZh8MTJFZM/9dIr3t7dKo7WJW4J0mCkgj1IHcUCDg7h/Guv3a9gOEy3sISe/nvbe52+V/QHq7YZeldARB4SgZw2xcgd8GqeWpgHstkaKFxa60DehTi4oS/3rDisibeVNIEJAIhSjckBi6nfeQTqu1EDh6R7dYvJFyDvUzyIZZNrlTrrELNjKDBr9s4zk8R862hdpztCvcQebVHQwRB24N2ElnCMYkUTmxoQQKedWED8oHgmJnA57H7Ta0jz+9/moNHHGH6RH14l2u849rmEZZViHZO3+d6sTRhkf6VMXG5s+cKpLY/pE0hSdo+uzDSnRROJPjOU+zXJsd8QNABFM1YzSYzZb5fMXdb37ZSRBb8mIB3qkgQ44yjnx7acWSm/6hncnwlCyElH96b/VywvGVB7zDk+VUeQ9pMCXYyXIyFTFdYXFgY0j8h3L3bsv0AjW5k7n9Le+w4fP2xDocvB8xz0OfaEInKxdDOqSi3zeIwY1joeFAg9BmZQ0k2qNiOD7ZlwNBO4Ur86/deLuueKZcgBzaV4VAP1XQ0dqWTunrBbxf1sbA3iUdRfuC+5pxzJjwY0/DlhCRE23JuQFjdYk4XeBzxzLok7qutysgGTQwlJxXphYaAhLi43ewD/UvmgYmtFfSydhGWQPgJgPsQv0BQ+iR2xclxIMKYzfClHpWtx4cVS/KHvZbH0oAFUSd5z+jEgrcoCClzu+fv2xSOdHu9laqDMh5OoAUjDrQ/lrtAXl4iLr+K9gXdJOu6+zXJS5wHQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,13 +125,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 04, 2025 at 11:30:44AM +0200, Loïc Molinari wrote:
-> -static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
-> +static vm_fault_t drm_gem_shmem_huge_fault(struct vm_fault *vmf,
-> +					   unsigned int order)
+On Sat, Oct 04, 2025 at 07:56:48PM +0530, Dev Jain wrote:
+>
+>On 04/10/25 2:55 pm, Wei Yang wrote:
+>> Unify the process to install pmd folio.
+>> 
+>> No functional change is intended.
+>> 
+>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>
+>Base commit on which this patch applies?
+>
 
-From the mm side, we'd much rather you implemented ->map_pages than
-->huge_fault.  It's far more flexible; for example it'll support ARM's
-contpte which ->huge_fault() doesn't.
+The base commit is 
 
+696ef26cfef2 2025-10-03 mm: redefine VM_* flag constants with BIT()
+
+on latest akpm/mm-new branch.
+
+-- 
+Wei Yang
+Help you, Help me
 
