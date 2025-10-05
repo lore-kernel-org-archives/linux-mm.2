@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C08FCAC5BB
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Oct 2025 02:13:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB8A6CAC5BB
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Oct 2025 02:35:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC6088E0003; Sat,  4 Oct 2025 22:13:13 -0400 (EDT)
+	id D591B8E0005; Sat,  4 Oct 2025 22:35:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B76978E0002; Sat,  4 Oct 2025 22:13:13 -0400 (EDT)
+	id D30E88E0002; Sat,  4 Oct 2025 22:35:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8C6E8E0003; Sat,  4 Oct 2025 22:13:13 -0400 (EDT)
+	id C6DB08E0005; Sat,  4 Oct 2025 22:35:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 959F98E0002
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 22:13:13 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B314E8E0002
+	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 22:35:53 -0400 (EDT)
 Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C63701402A2
-	for <linux-mm@kvack.org>; Sun,  5 Oct 2025 02:13:12 +0000 (UTC)
-X-FDA: 83962438224.26.35F4DE6
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D18D440008
-	for <linux-mm@kvack.org>; Sun,  5 Oct 2025 02:13:10 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HpvFpLx9;
-	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4E357861D1
+	for <linux-mm@kvack.org>; Sun,  5 Oct 2025 02:35:53 +0000 (UTC)
+X-FDA: 83962495386.26.45A1058
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 80E71A0009
+	for <linux-mm@kvack.org>; Sun,  5 Oct 2025 02:35:51 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JOFLrU8G;
+	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759630391;
+	s=arc-20220608; t=1759631751;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OP9wXA53d6BP9LdL5Hoy01dmDI1cUKyIJEndcIwA2f0=;
-	b=0TS8XznFBKv44lA21iyUcUQhxYgpPNMKBUnVgK5v6ssSsqFm3+Ea7TDp3U9+NuhrgFLOmI
-	L7xB7S8hp27ByTeLwL6AMjBTHHD8DpQEJiFYKS16IncGTFqn+K7gSZNF4EZliLVu0UTjkd
-	ImEtyS3UUqlaeXX3kvk5LeLxgIcUArk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759630391; a=rsa-sha256;
-	cv=none;
-	b=69bs4HuCX40WvqBuKwlHLkO1ZmZOu+ifN0Bvcvvfp9PM8Um4GL/5OlMpyYN5QhN0aO+LoZ
-	4maPqiNN7EirrrxSvaYs8Kkk1eWNEOgwByD4J4LdajvEGYqSdJmpu/FARvIgYn+NIHNvwB
-	M0QsAezR0FFXrccXJ3R6g6LC6NFlCGk=
+	bh=rzegS9FRnJ2j9ah3b1IUHaBCWuWvwbJb5MYOfqPsxeI=;
+	b=LWkOjh15EBJ4m0ZGTb8B9id6f4Sbh+Yt+ePlFdMoW/Xx2H/+DENY2/cmfo+8idxf+7CBkI
+	PH+5Wh+xuNKgNn8vaNFIbzFLZICmy2LG4b9ydL1yNRtt2TYT3zRL4639XHPxXanms8UvZ/
+	LxTH7ck+/JhWMmThIc2Cdnc37GvSiH8=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HpvFpLx9;
-	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JOFLrU8G;
+	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <31c3f774-edb7-420a-a6a8-3e21f2abd776@linux.dev>
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759631751; a=rsa-sha256;
+	cv=none;
+	b=qJyNUzo2X8PgL+NomQaB0BQUeTEZHpKbU9wYGpTvP4dSbFnt7+3iwhXy36kdq9n4o5Ndzv
+	LRXAJfPtWMGgAZ4q1gT1sCki17KjpNPAZ5yCaIj4WeeHiEqk1ytt+Pe01gSxlMw/leolBf
+	itZ2rY4bgn1pcMxsHzRFZOsxGRrMxnU=
+Message-ID: <054ca3f1-b219-49dc-9c4a-6f648b9df7f1@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759630388;
+	t=1759631749;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OP9wXA53d6BP9LdL5Hoy01dmDI1cUKyIJEndcIwA2f0=;
-	b=HpvFpLx9tFKGwu1dZrNOffzNFVUw/fe7sids+KZNIb5yFk2SsMGPgTqkHJnz9R+ktyx1gH
-	b58wtfZKAc/08cvjc59ZftyVFiRs7q2iMCA6hZ5zuwburCYu75/klygAGUbZjlC7KfMWKf
-	RQmVk/XCRnZoRZuQrEKilTbz8Xi7BGE=
-Date: Sun, 5 Oct 2025 10:12:34 +0800
+	bh=rzegS9FRnJ2j9ah3b1IUHaBCWuWvwbJb5MYOfqPsxeI=;
+	b=JOFLrU8G99lkQF3OoatNpr66U50Pfg1ZU/7dq5EBnDcJgt4aEWA316Jrgw5CizIXFRoihi
+	0NBV3vaWX2cGINyeNUZ1qsEUDP1P71ltkzyl/GVVuis5iKIA0s4rIm1eFTzFNdvM++Xzk1
+	YH9zzU0ITLVrl7d0EsspbGMgK6RsLco=
+Date: Sun, 5 Oct 2025 10:35:39 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH mm-new v2 1/1] mm/khugepaged: abort collapse scan on
- non-swap entries
+Subject: Re: [PATCH mm-new 2/2] mm/khugepaged: merge PTE scanning logic into a
+ new helper
 Content-Language: en-US
-To: Wei Yang <richard.weiyang@gmail.com>
+To: Wei Yang <richard.weiyang@gmail.com>, Dev Jain <dev.jain@arm.com>
 Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
- dev.jain@arm.com, hughd@google.com, ioworker0@gmail.com,
- kirill@shutemov.name, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- mpenttil@redhat.com, npache@redhat.com, ryan.roberts@arm.com, ziy@nvidia.com
-References: <20251001032251.85888-1-lance.yang@linux.dev>
- <20251001085425.5iq2mgfom6sqkbbx@master>
- <1d09acbf-ccc9-4f06-9392-669c98e34661@linux.dev>
- <20251005010511.ysek2nqojebqngf3@master>
+ ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, ryan.roberts@arm.com, baohua@kernel.org,
+ ioworker0@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20251002073255.14867-1-lance.yang@linux.dev>
+ <20251002073255.14867-3-lance.yang@linux.dev>
+ <0d55d763-81ff-4b99-bb13-3dbb9af53cdc@arm.com>
+ <20251004094217.bah5q2zxczrqontm@master>
+ <f235a557-d031-4fcd-8c68-81d9ab7b54e0@arm.com>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20251005010511.ysek2nqojebqngf3@master>
+In-Reply-To: <f235a557-d031-4fcd-8c68-81d9ab7b54e0@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D18D440008
-X-Stat-Signature: hhyx6k43ogg3uncuaogcd1szw9axbk3d
+X-Rspamd-Queue-Id: 80E71A0009
 X-Rspam-User: 
-X-HE-Tag: 1759630390-225134
-X-HE-Meta: U2FsdGVkX19qWMpbQdejLaFne1sjk2M4f40BMKIiZAw8hER04UW0m2ddXDtlcXIoQi/sPoO/A4p059qNDB3XtvOxeBDk9/lteWaYornaQyjmr/JKPpdbV5uTmnHie9foPE9hc3o9j2hC4JenwdTQbevZeRECaNukDGzZ+JE9fxEsbZrToD1T0gYS5Cs9WPDKpnUVzkO3Asg7PR5IZkgQmcffICtwokm6e4KSccd+kY4voRLv+oG2sNtcbulFm/zEYRHBf8lHkj7IOU0pWIqBNgqWyvfqdOcTJvoo05va4TNSz9SDJD5OjM6kNja5gdVjUr6B1oWRUoT6oXmrp3bqY55EhscfCH6nGjad+TgThUwCDeuFItXid+U7Y9y3eV9lD/6mmrgEAejRaIluydHAYbqv4XkqrYJ3J5uXAza+LBRXQakAyCql7HZ20/+b4cJix9rssNp8+gvrHHpaKjLiCFX8ZB1o9Czqf9oUITULkz1a4460yCk96gCjebvEGTVB7yNWRVcWSADHXKtADF4juSiih37osFefa/XJkA5E66y1iXXNIiHinQtZmF6+9xPf7Q6sloqHFn3a+PwxzFOf5HCande2YKRJs3WhrUg9eO7KLGqaRGh0MglQCZ2RQ1yxiCMOArX3ehpog+izroZSCp+z/0Sd8mXVuWQlsFRc2vYbWJKGrSEBzvgb3FuWfnh4CvaVlAD2kJbpXQvgD8Rdw3bBmgmTR6zRb+0hUKmQ2OYRMISGZRtbPtvAVggYzMyGDfMPZUDTkgi04yqVw7m86Z+zo74ov9Vof8qYn/If3BahUR6DZJkg/o99u6x3mq+l7tgOIU7gh0/fLmJv1d+TmIDvJoiKfD0niqrXciS8cobxQvN41OYa2v3YsrfX0xr2hnT5rY8yUJZFqA0Qk4I1/1T3Cbw5cqexihFGDlsAgtkbEi08K9FVUYOoAw12L1SGurFmEFNTxyo04r5oIEW
- I6w6RFlz
- VnG/jLfHuiSSQmAXckrSoKQNDESwk/j8PjQJF0TrKu/8olMQRdCDmIRhLKHWjInHpLCemxczDvQ42r4NpJbGcFDk2Y5k2L0fVViJ1SNJIPsOQhCx6oTFv1FixbodUIIJQAS8r5GSaGhLMX6Ce6/PrVjcHJ+8YoXfTxbCGJ6SpXPClMh35TRli5DdQRB6K9yfLN8GyvE4ubS9blR+iHupwvYvdns6lyH5+JmTy5VSLLPjOf88FnMMA5oPRlq6wiDr28tWgu7gf39s12VeF6yxxnPlaupYXr4DpEGTTw5M9x0axNCydyvneZYR9wzGoRssr6OtpZ8KbEPFSqLEnCFQmU/JU/IMzSir3oMzT
+X-Rspamd-Server: rspam07
+X-Stat-Signature: a6muno1oo7ai7y8qqzmrkartotq7smyu
+X-HE-Tag: 1759631751-809179
+X-HE-Meta: U2FsdGVkX190U7K0fmVrMoOb7o/EWSMYI0VbWv1IrtqHlwFU7kYZITxU13i8/z32TYJFl2Q88XiYK9jwJPLZbMQo9hvwikMvYUS0A7+Zq1wmZw3+HHYdcxKDE54Ju4Ym4zZeg3rw8VTCUfo8FQMwaFIapdbVQK1ZfCvnpFTbgiN+ILzctT6p04EAkOvpS+XEhEJzf8Mb+E2uGFkBdHQ4V5I3sXWajOhDvVW3m+hUEOJ0kkwYCH0GMFoWQjrAM/vMoGVdFtJnDay0afUE6Tn7bmBIrPK+PPi2ZHp75xqJm67FcojdG5+cOPmt823k/hDiAvrkhuYH9qrTGme0K/hoSHbAQa7rfRLc6F1RIkDVuzDkYGHv392AGMHhkF/E+C+byAvZm9oBx+TuMEO549J5AGRWYCpKBwS2LwdCOrSEga2lTBgYkUHFPL2JpKBWvw40Xv7HvHa9Zhjh8ohqjQBY5pldvu1D8DNX1ie6cY/6oya4TEzRGg2XVZeaVYiYzxUmSA7595rBNbPw1fnHTsQukn29D13oMpzAEaUn4WdVkuylMUBpnzIz338sqWL/HV+QO9gH1G+5aAkJHi2qRzrlm36qhUmhlLQpUfL2egpvaPIRW8+OM8uzcDFBiBTFGniLQpCTfW9OmQSkkF8zgGt9nQgsBAbOpFsf/g5Slfz285bnQVtGs+hcEh4PA5DhFjny39m71x1PeO2JRC5S/H6orqHhGu588h/zC/5q9qWLYoW2M4IY6JBKcDBPtiBkz1A7hd7nPSSOTS6dsO2aGKM7gPHDwGXwh8warxoW0s9pDEHh43KuYzkDuvQrFe3SIijQBfBfVi/tvvmpjbvwxkOJSMQN8yoCbf4gLwFBlE0CsIsOOKX6FRsR3EAC+XMEGRyNA6ASBXvMFx51Q8G6V1/nmrlVImntyRF47PI3LZGeM2zVOEkqywjIr51+n6odh9znnjmueAWAQCIMfq+45A5
+ eIFwHDQK
+ SrGGnjjWWVBZPpy4dAAi9AeZUyZmeSz1AzWUEh20sSxXM0Zz8ZClQvDsj8N7XQH+en9AGcd+Om+0g+1fjg2SIPIcplwlgBj1CXEfMfqchDk+0h/LMh3Y3HGW0nlGLUDQAOOcBaDEtVQD+JmYi7lig+7FIiF6TcHoD59pHUnXxko6YIohpBUDxwlaPP59wiGx8G0oSECgkT1ts5Wnh9sVCwTPx4UHxEqSFYyju2Cw2hEHHY7gVN5SB0dxBvGirpH5g8EZgVdL233AuMBQcGQJ7QxFMJNKcAN52Lnv/KK9qsmOj+RQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,79 +99,50 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2025/10/5 09:05, Wei Yang wrote:
-> On Wed, Oct 01, 2025 at 06:05:57PM +0800, Lance Yang wrote:
->>
->>
->> On 2025/10/1 16:54, Wei Yang wrote:
->>> On Wed, Oct 01, 2025 at 11:22:51AM +0800, Lance Yang wrote:
+On 2025/10/4 21:11, Dev Jain wrote:
+> 
+> On 04/10/25 3:12 pm, Wei Yang wrote:
+>> On Fri, Oct 03, 2025 at 10:35:12PM +0530, Dev Jain wrote:
+>>> On 02/10/25 1:02 pm, Lance Yang wrote:
 >>>> From: Lance Yang <lance.yang@linux.dev>
 >>>>
->>>> Currently, special non-swap entries (like migration, hwpoison, or PTE
->>>> markers) are not caught early in hpage_collapse_scan_pmd(), leading to
->>>> failures deep in the swap-in logic.
+>>>> As David suggested, the PTE scanning logic in hpage_collapse_scan_pmd()
+>>>> and __collapse_huge_page_isolate() was almost duplicated.
 >>>>
->>>> hpage_collapse_scan_pmd()
->>>> `- collapse_huge_page()
->>>>       `- __collapse_huge_page_swapin() -> fails!
->>>>
->>>> As David suggested[1], this patch skips any such non-swap entries
->>>> early. If any one is found, the scan is aborted immediately with the
->>>> SCAN_PTE_NON_PRESENT result, as Lorenzo suggested[2], avoiding wasted
->>>> work.
->>>>
->>>> [1] https://lore.kernel.org/linux-mm/7840f68e-7580-42cb-a7c8-1ba64fd6df69@redhat.com
->>>> [2] https://lore.kernel.org/linux-mm/7df49fe7-c6b7-426a-8680-dcd55219c8bd@lucifer.local
+>>>> This patch cleans things up by moving all the common PTE checking logic
+>>>> into a new shared helper, thp_collapse_check_pte().
 >>>>
 >>>> Suggested-by: David Hildenbrand <david@redhat.com>
->>>> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 >>>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
 >>>> ---
->>>> v1 -> v2:
->>>> - Skip all non-present entries except swap entries (per David) thanks!
->>>> - https://lore.kernel.org/linux-mm/20250924100207.28332-1-lance.yang@linux.dev/
->>>>
->>>> mm/khugepaged.c | 32 ++++++++++++++++++--------------
->>>> 1 file changed, 18 insertions(+), 14 deletions(-)
->>>>
->>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->>>> index 7ab2d1a42df3..d0957648db19 100644
->>>> --- a/mm/khugepaged.c
->>>> +++ b/mm/khugepaged.c
->>>> @@ -1284,7 +1284,23 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
->>>> 	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
->>>> 	     _pte++, addr += PAGE_SIZE) {
->>>> 		pte_t pteval = ptep_get(_pte);
->>>> -		if (is_swap_pte(pteval)) {
->>>
->>> It looks is_swap_pte() is mis-leading?
+>>> In hpage_collapse_scan_pmd(), we enter with mmap lock held, so for
+>> This is true for the first loop, but we will unlock/lock mmap and 
+>> revalidate
+>> vma before isolation.
 >>
->> Hmm.. not to me, IMO. is_swap_pte() just means:
+>>> an anonymous vma, is it even possible to hit if (! 
+>>> folio_test_anon(folio))?
+>>> In which case we can replace this with VM_BUG_ON_FOLIO and abstract away
+>>> till the folio_maybe_mapped_shared() block?
+>> But it looks still valid, since hugepage_vma_revalidate() will check 
+>> the vma
+>> is still anonymous vma after grab the mmap lock again.
 >>
->> !pte_none(pte) && !pte_present(pte)
->>
+>> My concern is would VM_BUG_ON_FOLIO() be too heavy? How about warn on and
+>> return?
 > 
-> Maybe it has some reason.
-> 
-> I took another look into __collapse_huge_page_swapin(), which just check
-> is_swap_pte() before do_swap_page().
-> 
-> We have filtered non-swap entries in hpage_collapse_scan_pmd(), but we drop
-> mmap lock before isolation. This looks we may have a chance to get non-swap
-> entry.
+> Frankly I do not have much opinion on the BUG_ON/WARN_ON debate since I 
+> haven't
+> properly understood that, but this BUG_ON is under CONFIG_DEBUG_VM 
+> anways. But
 
-Thanks for pointing that out!
+Yeah, VM_BUG_ON_FOLIO() is under CONFIG_DEBUG_VM, so it won't affect
+production kernels.
 
-Yep, there is a theoretical window between dropping the mmap lock
-after the initial scan and re-acquiring it for isolation.
+> if you want to change this to WARN then you can do it at both places.
 
-> 
-> Do you think it is reasonable to add a non_swap_entry() check before
-> do_swap_page()?
+It should flag such an impossible condition there during development.
+So, I'd prefer to stick with VM_BUG_ON_FOLIO().
 
-However, that seems unlikely in practice. IMHO, the early check in
-hpage_collapse_scan_pmd() is sufficient for now, so I'd prefer to
-keep it as-is :)
-
-
+@Wei please let me know if you feel strongly otherwise :)
 
