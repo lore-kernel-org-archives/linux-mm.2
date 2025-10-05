@@ -4,119 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B3A9CAC5B0
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Oct 2025 02:55:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2103CAC5BB
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Oct 2025 04:49:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 595308E0007; Sat,  4 Oct 2025 22:55:49 -0400 (EDT)
+	id 895888E0003; Sun,  5 Oct 2025 00:49:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56CFF8E0002; Sat,  4 Oct 2025 22:55:49 -0400 (EDT)
+	id 846E28E0002; Sun,  5 Oct 2025 00:49:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AA288E0007; Sat,  4 Oct 2025 22:55:49 -0400 (EDT)
+	id 734C88E0003; Sun,  5 Oct 2025 00:49:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 395B98E0002
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 22:55:49 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B3A85C029D
-	for <linux-mm@kvack.org>; Sun,  5 Oct 2025 02:55:48 +0000 (UTC)
-X-FDA: 83962545576.14.5526D4A
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B20F3100006
-	for <linux-mm@kvack.org>; Sun,  5 Oct 2025 02:55:46 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UEQdsG6p;
-	spf=pass (imf05.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 595AA8E0002
+	for <linux-mm@kvack.org>; Sun,  5 Oct 2025 00:49:39 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E0F5086301
+	for <linux-mm@kvack.org>; Sun,  5 Oct 2025 04:49:38 +0000 (UTC)
+X-FDA: 83962832436.18.0EB392B
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 2AB3A1C0007
+	for <linux-mm@kvack.org>; Sun,  5 Oct 2025 04:49:36 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=j9nwXLqR;
+	spf=pass (imf18.hostedemail.com: domain of rientjes@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759632946;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1759639777;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D8BCNZ0lNV57EM+z6vT49MVV36oUuaBZsQgPJ0ih96g=;
-	b=JYyCz0sF8IKTP6Edei0mpGDHpLwOudlPti4wKFE9mG16EXd8PMPZLVc03KNs2UwLOa1utY
-	zlPOKtu4ZGqF/SqZl/vpe2+kR2Lgx26YxtXrMkYD7RFs6QdnzhXJqWjZ5e1bRmvNJ2UDuj
-	nExRTIQo2IOcFeh3MrrEdrWUForgedE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759632946; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=YtRjel1HG5STXuZLFeW7ky9+MooC7qPIEizO0OKUdcE=;
+	b=2bvEBEcdcaZTfcv/d3Yrd3cWL02zlpY12QhfakYYiViHpPK9MVBYK/fJOGhpQkm7ytfO0x
+	13AtzzxCLJNziAA5g4IgQc4rVpVATNG5tGoKOaeoAB9aIe1oMnYvDu4Whc24UYO5sEh/1g
+	okATjAhUJ/ppz/CLWuuxET5AWStuiYc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759639777; a=rsa-sha256;
 	cv=none;
-	b=S7nbrBg8DoSnhvJWe4VQKM/8eS0yYvBABR3AgvWxlu16Urahw206c4C6lb8BZ8tA6GIR3+
-	sE6zqdPqK+zCUe2XW0GtsmsJbY+XAcgFhH/7pNOL6MG+0/PO04R72lTqEPHqQyEcxx+IEv
-	MK+5k5WfZkpfAMh62qR/wzO6LiU+Lzg=
+	b=gcLSaD6rWHTM7L+keAHOYtvCPi6IIhhDaKoAM8WWcMka+hGZHL1/o1rSjZmimqhbPzMt1N
+	djado0V/ganofjRjx+lWbN1VfXzPGGl0z7VivydcnCExB4nZ95ztJPVJD09iOH2B42OyLs
+	g1J0nn0skDygWcI3qWfVJ6rHYVF5s48=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UEQdsG6p;
-	spf=pass (imf05.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-634cef434beso8324671a12.1
-        for <linux-mm@kvack.org>; Sat, 04 Oct 2025 19:55:46 -0700 (PDT)
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=j9nwXLqR;
+	spf=pass (imf18.hostedemail.com: domain of rientjes@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2731ff54949so156185ad.1
+        for <linux-mm@kvack.org>; Sat, 04 Oct 2025 21:49:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759632945; x=1760237745; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=D8BCNZ0lNV57EM+z6vT49MVV36oUuaBZsQgPJ0ih96g=;
-        b=UEQdsG6pEZ/Jwb12WehezC+7lsC40K+R67JA73ofJZv29e2w8ULU3b43Yn9Acr5zQR
-         X/pTyJxpCYaa+zu1IEdUAR1PpokS6GLIUMgR05WSLf9MymQRlCpUmvysVW7zm6Q+/GT/
-         qHK1IAmOF1TblqKf/d6hhB43H47GgH/I7baECSuHQ8hs7ACJyGRi0EySAhU5jefQBnki
-         GiHh/VmO55ssK9zqRX4zBJmLIdDsSpZpeO/idGplCh4WBjA1hC4M5MNeYekD+iwupHLf
-         QaN6HxfzD38UXU9zl++3oJKVj3lVKFIvd8DtRlZwEJUdYkTMs+DWTVBgwI9m1H7NKGuq
-         pZCg==
+        d=google.com; s=20230601; t=1759639776; x=1760244576; darn=kvack.org;
+        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=YtRjel1HG5STXuZLFeW7ky9+MooC7qPIEizO0OKUdcE=;
+        b=j9nwXLqRj6ARHhTJ3lbWzAYPBbD6n9mKvOdsVB8PRdDRw/Q5Sqx/RBkrrUZITECesO
+         KA0hx8h9AsZdiuBO/ui2tuiYNC4aDyGYn6IAdOTeImwnLtYup0iOuI+Rq3pcKX1JVfel
+         aPoPckamAOkUmpw1ldopB4UueMXbYXrZKIhF2TjfDQRuIurLzH9GdsAcmf6YxSjENjIq
+         M+kT4bzaZif9VbqBJZ9eEUCTZrb8BKxV146SauwYrfiYk4DcOP6ViPFas6mlAFlfv3Hp
+         1tkdWsWhFiu2tzEIHyiUOyGQ9J6C8fTAiUj8d9B1SOhJwX0lijKRlgWMwdKcRzhKgH9K
+         +7Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759632945; x=1760237745;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=D8BCNZ0lNV57EM+z6vT49MVV36oUuaBZsQgPJ0ih96g=;
-        b=qcEHzdoorLUcCr3g5O+0z7x8zAMr07z0p4yGo4Xu3HPI4rcKhXV0WkME5jnx3cXFPX
-         WMsyEhTelNcCHzt71PRXrCDLbi8TTpSz1ClwohUyXpdvFb9LR3ap/IpPKM9kRn7rduTq
-         DhhPn8P8onGo+iNRuSge+MXWuNr8HQYFEROHGzUj+dpDFIDwPPyynfKhLv7tgvtN5Ybh
-         vJU3joOKYYtsYJsVpWNbv5r6RImwJf0HyzUGo86wfh0sLaDYjMFvxCglTHmqNKhjihhJ
-         FYCEoELj6gkFKS8EtFCDaaSZ5E6hYrjP/pqp1EsH2gzd1+vu/8/J/CpwaAoKBFvmpRsg
-         gXWA==
-X-Forwarded-Encrypted: i=1; AJvYcCXK7sK0sPQvWbmLWpbPcSwruDbLoOMExrFhZZinf3AS+n1nL9BywCcl8Eappez6SefK9lTk/w5cCg==@kvack.org
-X-Gm-Message-State: AOJu0Yyajs08b5brDiMKbeMZcJSKiQkD5qVlFK0vgiruOrC5sDTo4Mfc
-	4/EtvyXZM+aqnp5gCGqXF7RnHjbYgmQgGJsPa7AiqmBZaSuoUONcmJni
-X-Gm-Gg: ASbGnctEoMEKV4OrG/N8hUMJ6Gu0WfM16HiUYXtD14FkidStlEUCrqqtkB607JqG/zR
-	JG5kV6C+k3X6/Tui49Z06wrYC9ilNGiZ+ZuPhhf1e3qqWt+/moAKtUIn2MxSMDpL34oq/aAU/oO
-	VvdVR5aaNeQnPNGGAOzXZJ8YEeU2xtAAVEWpiQDPVsKmZSEhlzj1zjC4AGChAYx8VbMntk1R0b6
-	ubqssPNq8xSiA983nGfjlQuSpClwyewQp1/R0W3xibD93TWIvf1Y4qEHUMzsCOcQkdHsIZBPyyb
-	HZTI/dyhuCXDjK1WEGGdD0A94KyROhXXUKVZjkMRTS5k7qCbd72yOByOsMConnacILuCyVmubyl
-	L0+eBpVRsgiSFQ5GyuHgpD6vQMtqeYCMk1YeFRqIhQNskVUJe6mfcv4VE
-X-Google-Smtp-Source: AGHT+IF4EJMW6MRY8RIO9e+n0hGlTNQW9SFLJJn+e/FP/UQUZFcLmdhdqGU2p+LdUMLECjEFc1ZvPA==
-X-Received: by 2002:a17:907:728f:b0:b37:3d20:f35c with SMTP id a640c23a62f3a-b49c1974d9dmr951749566b.12.1759632944560;
-        Sat, 04 Oct 2025 19:55:44 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b486970b0c7sm854975666b.57.2025.10.04.19.55.44
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 04 Oct 2025 19:55:44 -0700 (PDT)
-Date: Sun, 5 Oct 2025 02:55:43 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org
-Subject: Re: [PATCH] mm/khugepaged: use map_anon_folio_pmd() in
- collapse_huge_page()
-Message-ID: <20251005025543.wumnymjkerg3srxq@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251004092523.28989-1-richard.weiyang@gmail.com>
- <aOHOaYG6gjnfrsmR@casper.infradead.org>
+        d=1e100.net; s=20230601; t=1759639776; x=1760244576;
+        h=mime-version:message-id:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YtRjel1HG5STXuZLFeW7ky9+MooC7qPIEizO0OKUdcE=;
+        b=A8cpWyyWJYZr5VL7BV7hkbqBCSpeXHN75jFUlG0RbuU33/CR7KzD9JD6Ws/oiXa8u5
+         j26Oe+LHy+pDCtOdlVJiYfx2ht5FWAdnrTzPhn9roVU3zFgBvSvXiSfb8YUqS322dNI1
+         KBQWCVg99zfNDS2JxE/EowVwLTszFnn4x6H323gKtMJXCHBzsmUjmAPlYtq2qck3A23g
+         H6s2ctRUb/9j+Yv2CsAwdPwUSAqC2bNJfC7MAHSwOGuP86LIhQI1Xwkhu+ELiJE32B9D
+         OxpEW6EHHBGWZzRq+WWm8uNcgwk34wEstp6MxzwtGYkVEgAOOYlfDnId8w5D6nVVCwMo
+         Hcsg==
+X-Gm-Message-State: AOJu0YzhXVw7U5QKVlblVMJz1SoKe5DzYVd6SrsmwyP7tYbFYSUFssWB
+	Np23ORoQCFwcPzIe7Z6XI/cjuI4JngvNnCUFN1L5+X8L0D2JDJ+oW8ocaugyL6y57g==
+X-Gm-Gg: ASbGnctOehbbrJ5q3idYanBYr9DLt88uqlrOeNGznZu4OGkFTzBnkin5XUnAoJ3Gt3Y
+	h8++C0lXjMM0cz9xdzKg0sasl4ErygL6mE0R3s4xLwCLHNvo6HQ7cMnp1atvtBndFSNIsyADBIx
+	4cz9j2GpDDWg1Tc+vyp9uthjhzHftRty/DAHZuznxj4ZMtXzPlMEiDauk/xOrJFRqNKOsSO79mK
+	4JMfKgO/7Y8d3E58Ch4BqUsZWQZnOvaoR7bJsWa1A+y0joW7R1RU8T5lON/GrqXatnUZk7unz77
+	RAcqK/PSVv0+gCPaPXOkHx/vuJp5dOzPypN8cucmebCl03G4FE/vx6oW/OvOBxsDdGBxo7v8Rg8
+	p8CMbrvwJb3baxQVGNwHpkklDnOpG5YYad0eMgVlW63lBvjjy43fQ0ELvwogbZs5YStQOmpDzMP
+	f0LFA30Lc48Yth6g9V32FdTQz51KRrAZ+FyzvslTKcdgQBzk0tVxzWpu8hl2qu6N3OILoliFoWk
+	qjNo9Cbd2YlvdQGNc6RE9cf/75R
+X-Google-Smtp-Source: AGHT+IGl2dZ4bBXbAE3dltXggDm/JaFJh+YfPTUIUtiSp316mGfJLHul8RCceskvrrqOdr7ugKUMyQ==
+X-Received: by 2002:a17:902:e550:b0:27e:e96a:4c6 with SMTP id d9443c01a7336-28ea7ec09dbmr3993895ad.2.1759639774950;
+        Sat, 04 Oct 2025 21:49:34 -0700 (PDT)
+Received: from [2a00:79e0:2eb0:8:2b1a:83b3:ba8a:7851] ([2a00:79e0:2eb0:8:2b1a:83b3:ba8a:7851])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-28e8d11191bsm93535125ad.11.2025.10.04.21.49.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 04 Oct 2025 21:49:34 -0700 (PDT)
+Date: Sat, 4 Oct 2025 21:49:33 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: Alexander Graf <graf@amazon.com>, 
+    Anthony Yznaga <anthony.yznaga@oracle.com>, 
+    Dave Hansen <dave.hansen@intel.com>, David Hildenbrand <david@redhat.com>, 
+    David Matlack <dmatlack@google.com>, 
+    Frank van der Linden <fvdl@google.com>, James Gowans <jgowans@amazon.com>, 
+    Jason Gunthorpe <jgg@nvidia.com>, Junaid Shahid <junaids@google.com>, 
+    Mike Rapoport <rppt@kernel.org>, 
+    Pankaj Gupta <pankaj.gupta.linux@gmail.com>, 
+    Pasha Tatashin <tatashin@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
+    Praveen Kumar <kpraveen.lkml@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
+    Vishal Annapurve <vannapurve@google.com>, 
+    "Woodhouse, David" <dwmw@amazon.co.uk>
+cc: linux-mm@kvack.org, kexec@lists.infradead.org
+Subject: [Hypervisor Live Update] Notes from September 22, 2025
+Message-ID: <365acb25-4b25-86a2-10b0-1df98703e287@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aOHOaYG6gjnfrsmR@casper.infradead.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Type: text/plain; charset=US-ASCII
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B20F3100006
-X-Stat-Signature: 1pzuga5x436cer4rhh69udwcxn8c89e9
+X-Rspamd-Queue-Id: 2AB3A1C0007
+X-Stat-Signature: 5irzyp5iqbjnpj4r3oc3ct9j4bocf9rb
 X-Rspam-User: 
-X-HE-Tag: 1759632946-279592
-X-HE-Meta: U2FsdGVkX1+s8DBKAba4mdgD6qpj9e+42td/i+Bm9IVjxJcMPrHUyuc9ljOFIoF/8Wc3WKzuikO62QIxjiCMQSP3aNGmmAj8xTWJAoqZd6eY45w765TE+tJESmYg0tBis2qQ8XxmVHxPSSHwyM9I7NJREYCkbI+4yj/8lfCsUVgrSUYjz+jcsf19ZyHNwRPKnlvqQQlbKfhIO4LKC2UUiPNPoitl+o4Y62l8Kiwh+rmF4zslydq3dejGT3oGM4e/mQ/fJWk2GzzDC29MOrxfqmntIJClhpzs2A9mGSDfPIWpbvE5+rUPn05usCWSkXaJRv0DUEJrgMoWWyFcCr+P6MYXwxh6lSfBYi9E2unjo9Q/YG2zoHxbwcxfcq33tFzvgHKbmCfRHfqI1jSFF9uLbGMuAkLYt1b5juzCiflMsx929lKDGxm00mF5KfkFmoBiQ5ettjvLqimoOszNrcWnmnw7364mMTj1t28bqj7sIa/Nk36s7rPkI1Ubs2bti+yBo4wiYxF27PdprEnpmDgBlLBmH4q4Q8nIrQ2BYkkPs/9tQS3oseoP41DlYwb84GZl0K0VMrhjfdpuv+SOwQKZWu85DEi/SykfkFCpF73/Co7OA2+OKhNxwkrNZpxg5hSDFj7GfrZbr4rRAZv7QrUJd+EzlraIcX5h9efuah7k7xto5KAyXhmicE25WW3AgdxYI/3jCk57vX0hu/vISJh2o9e+oBvFe9jSbmmKf39WLSgMfMv5JPkEtaLmZCbJIFwzYN0CB0Z1bbldl06/qhzarDUSEOxy83HDXkeQ3OD2D80ZnO3dVq8dpGT2l6KSrcB8CjaE1BO8a0MjMc8cJTZdS3/U/Rq+avnj6e021Jxc8eqH+ljm6PchUKEG/SW4VIbEy6NHQYre1Rnq2HRxnoRQ/DCnNjbG8RN/+0f3sIuVDsSiL5V0TTXDQ9jitBSMJs7vK9lliQfOm7fXh/Ukm37
- wOxCZ4bp
- 8tx1I1fVm+qJTAsILbCfMO1gPQFbDiBsBaz67DpRc+eQnLI0GdsSIjCn4dhSmI3WoO+wbTaXjqtElCPPVNLbwOfJwkfveurA+N8OXE4kSZl314A+PYg0bc6VMzSlaZgdgdRgqtrbOMaqd5lT4Ah7S1SdwAsmZvymHZ1d/ieIiFRbdPmBUwjxCsq1mbhmBekz7KLL+jPQFXnvcz0+MZAZvvflccGinAV37yZtajdBMqO8pdrbA4poAroaf/bbG3I1L1Cf0o5VNt/LLg/UhX8ixPGHwRGl3HQiwQPwv+rTeD8cixPIgUeD0Kf5r8vQMHhC4mwlPLeqgK9pmqrEnqxkpsn4YjOTt4HFGwVZNLW7Rto8ZVnfS/xhIcW8ftE3+KhBP9jSorQwVDWgmETM3NujjXz/1Yt8vqLPGMZnVjpReF1Hlktmk2IirdBQQ0EziYrxhxEAPGMp8CqXTzsPgor/8UTbvN19Z7I4/emff6cPSs1SseFoxi9zoXJWozDq2M4Bed5lbiFqqusTg152g/ygPYZKro2j2DFsSl2Xd/7bysGKqUIT75TYCGSWgjx/bi41eKGSikLhLyjK2ytrJA+wNvprNjS4cFLcQwrneiq6X6LcjG9SFjyBb4X5N57vuutzstfvS3rsW4UpQsii8V43YBFWj0+THs6+KMi4ZftZ943nZ2mwmFDsCZ+C/sl1gUcqgY7qLBjsXM/Rnlduz21/0VKRXylGyc8CITHqGkUQ0UIrFFDt8cIVl3pe8HX/WhibQaNpU
+X-HE-Tag: 1759639776-567423
+X-HE-Meta: U2FsdGVkX18fuoprY4QN4+AuMURwPmnuWwI7b5ri+6P2W47FAbBBQyhK9y2FLyKLyAa4gfxC9yoHTUF5wvtSu8jUOjXIy1v0OFo37nsjLOOUiRxh/tQ5hHlRy7hzETgOq634T3Zpn1a2xL8kXIDBKArK6XlE43pgSL0f8RbCjF32tYQsTKHM6K8NwYr9iQIPxL8263PAnXfH/wqfVWJNazy5QMYjgR7IKDOTZusEEjjfsXjCUWfOYT/JEbZ20sphQy+/t8KMvWuLP5TvZvtw1+JNxEkZjJU+yKsQTQFg02yr7B3ZPKNjhJk4vgv+Vyke6gyMKQId6m0lehvCl42tQ2Ns8DePBE1pGeZVPPEtEIDPh5d0/XwTfAVzFOnTE3z8D644rt1XGy2+ytN6l0Mp92mmyz3GFDVfgX1LXSDTelZld/5jsVW66ZIOVrFz9nTt6HpxDD74dJWkZehvM8bNc0zbYm/Sunu7u0QOC9ALuahvZoTvy7biXU8tLEM4jQRhwoU/3edfQdnURvSZPIoI4CxbdcmbCYsf7o0wdcZ14k27/c6NqZBJzUEHC546BcFC0Wy9+sHpCCqCFvRR6Y2pRIXaL0y0FfWX3VXeE2mmWiZE7tq84ITMpoLA+5lE5M5V9OhybkpjlaJu9gtIQYIq/+pmASaA7zUkO3x4zIERNiKHo9yZh6ISpkFAzzCL8aSaCmi6nQA0usAo6seE/Retro1B4PNXLxBDGMo4MvY1wht2io/eS25rqaXBpzUsD25CpA+3zryAClriwWKXFSsUer6Q7r7YgWwMdsxwzV3tYUsdkadHqigX/nySLpV4Js6A6uoGvSYqmU3r8IorELFLcTVpVkveGsmiSmXj+ckoxGyPEIv2hoy5usTKBzpjPFcTF9g6A4zbIIRFSzt3A7bg2eZVN2/UmskDTR/46kCwJLq6dG38odQSfPNI+DDLMNDXbqdpZ2dFWAVBj3PAT7W
+ ldYnOO4r
+ bioc++RoeCfsofTO3i/g71oufJ1Y70HeQ/kIZNHeOz6Js6IrtZ1ZrSBbJDQA3rlty54281HjXkHgZgjLKhFS8ffaGZ/G8B3gYD4KcX4a4ruZ0V3J/DwdEmanhz2uY6TpWsOIWaboJnJx4jPQ0j9Qz1rZZFm8hnkGqQKsMOGzVQ/FNr9B6zoiCUn+xxGC8ejPSR0eIbZMJC7+ARUWQ3ZVRwUsbAhp5gscmWNiJ6XXLSfth1KTBZMHlbZnJIOvS5+Z3QGhurl//3OOavdkJ0Tak1BjDPR5lrodJvLt3rSOZlRrh2F0M9oHoIdRojJ9+xCv8AVQFD8x8zlGSIy9+IiFwivFwYbZ8AkZ4K0rz/YQUeTrMp1S0rHYSOwZlQhIyR7nV9PdL/iqPOmfLE3INdEGsvHN7PMtUNyLlKrsL/+dLXUPMj3Xbv9SnaXICZfPm2DMmoDeURAKjy+gLp764dZMNoqwF+vYSQwYwZkYV
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,62 +123,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Oct 05, 2025 at 02:48:25AM +0100, Matthew Wilcox wrote:
->On Sat, Oct 04, 2025 at 09:25:23AM +0000, Wei Yang wrote:
->> +void map_anon_folio_pmd(struct folio *folio, pmd_t *pmd,
->> +		struct vm_area_struct *vma, unsigned long haddr, bool in_pf);
->
->It's generally a bad idea to have a 'bool' flag like this because it's
->not immediately obvious in the callers what 'true' means.
->
->> -static void map_anon_folio_pmd(struct folio *folio, pmd_t *pmd,
->> -		struct vm_area_struct *vma, unsigned long haddr)
->> +void map_anon_folio_pmd(struct folio *folio, pmd_t *pmd,
->> +		struct vm_area_struct *vma, unsigned long haddr, bool in_pf)
->>  {
->>  	pmd_t entry;
->>  
->> @@ -1228,11 +1228,13 @@ static void map_anon_folio_pmd(struct folio *folio, pmd_t *pmd,
->>  	folio_add_lru_vma(folio, vma);
->>  	set_pmd_at(vma->vm_mm, haddr, pmd, entry);
->>  	update_mmu_cache_pmd(vma, haddr, pmd);
->> -	add_mm_counter(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
->> -	count_vm_event(THP_FAULT_ALLOC);
->> -	count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_ALLOC);
->> -	count_memcg_event_mm(vma->vm_mm, THP_FAULT_ALLOC);
->>  	deferred_split_folio(folio, false);
->> +	if (in_pf) {
->> +		add_mm_counter(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
->> +		count_vm_event(THP_FAULT_ALLOC);
->> +		count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_ALLOC);
->> +		count_memcg_event_mm(vma->vm_mm, THP_FAULT_ALLOC);
->> +	}
->>  }
->
->And it's really not necessary here.  There's probably better naming
->available, but a good pattern to follow here would be:
->
->void map_anon_folio_pmd_nopf(struct folio *folio, pmd_t *pmd,
->		struct vm_area_struct *vma, unsigned long haddr)
->{
->...
->}
->
->static void map_anon_folio_pmd_pf(struct folio *folio, pmd_t *pmd,
->		struct vm_area_struct *vma, unsigned long haddr)
->{
->	map_anon_folio_pmd_nopf(folio, pmd, vma, haddr);
->	add_mm_counter(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
->	count_vm_event(THP_FAULT_ALLOC);
->	count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_ALLOC);
->	count_memcg_event_mm(vma->vm_mm, THP_FAULT_ALLOC);
->}
+Hi everybody,
 
-Thanks for the comment.
+Here are the notes from the last Hypervisor Live Update call that happened 
+on Monday, September 22.  Thanks to everybody who was involved!
 
-Will adjust it.
+These notes are intended to bring people up to speed who could not attend 
+the call as well as keep the conversation going in between meetings.
 
--- 
-Wei Yang
-Help you, Help me
+----->o-----
+Pasha updated LUO v4 by syncing with linux-next and was going over all 
+feedback.  The session support had been added and he planned on sending 
+the next series over the next couple days.  No major changes other than 
+the session support.  There was a lot of discussion about versioning but 
+that will not be included in the next series.
+
+There were no major updates on luod, the design doc continued to be 
+receiving feedback.  We planned on sending this to the googleprodkernel 
+GitHub when ready[1].
+
+----->o-----
+We discussed memfd preservation and the 1GB limitation.  Pratyush noted 
+that he had worked through all feedback based on v5.  The next version 
+will still have the 1GB limitation and we're waiting for Mike's series 
+before addressing that.  Once we have the vmalloc support, this will be 
+more straightforward.
+
+Pratyush noted that the next steps for memfd preservation would be sparse 
+memfds and hugepages.  He suggested that guest_memfd may be simpler as an 
+extension.  Pasha noted that HugeTLB support would actually be harder.
+
+Vmalloc support should make it into the next merge window and then memfd 
+support can avoid the 1GB limitation, so it may be possible for the next 
+merge window to lift the 1GB limitation and include sparse memfd support.
+
+----->o-----
+Chris discussed preservation of memory with split folios and the error 
+path.  If a folio is preserved and then it is split, the preservation 
+needs to be undone before preserving it again.  Pasha said that this 
+simply could not happen because KHO memory is not migratable.  Jason noted 
+that memfd would have to prevent any split, including in cases of page 
+fault with pinning.
+
+Pratyush noted that we may want to add some debugging assertions to ensure 
+all KHO memory is pinned, cannot be migrated, and the folio cannot be 
+split.
+
+Vishal noted for Confidential Computing that folios are sometimes split to 
+handle the sharing of pages, the conversion of shared <-> private guest 
+memory.  Since the guest can ask for this conversion during brown out, 
+we'll need to ensure that this can't happen.
+
+----->o-----
+Chris updated the status of PCI preservation and sending out v2 of those 
+patches.  The current patch series only preserves the bus master bit.  He 
+asked for any feedback to be provided on the list as he was planning on 
+pushing for this to be merged after LUO v4 is landed.
+
+We discussed where to merge the changes when they are ready, the consensus 
+was that this would go through the PCI maintainer tree but after the LUO 
+APIs are already merged upstream.
+
+----->o-----
+Andrey provided an update on KSTATE, he said he will would be willing to 
+go over the current status and plans through the end of the year in the 
+next sync so we planned on carving out some time in the next instance.
+
+----->o-----
+Vipin went over VFIO device preservation at Google as a follow-up to the 
+KVM forum[2].
+
+Vipin noted the internal approach will be different from what is sent 
+upstream.  Vipin discussed passing VFIO device file descriptor to the LUO 
+ioctl for preservation similar to what is being done for memfd.  There was 
+an open question on whether VFIO cdev should be shown in /dev/vfio/devices 
+until the VMM has reclaimed the device from LUO.  Jason suggested that it 
+should either error out or cancel the live update (resets the device and 
+operates normally).  Pasha suggested that if the fd had not been reclaimed 
+after kexec then it should reset the device.
+
+Vipin discussed interrupt preservation and the internal approach for doing 
+this.  There's an alternative of disabling interrupts on the device before 
+kexec and then after kexec, set up new interrupts and blindly inject all 
+configured interrupts.  At KVM Forum there was feedback provided about 
+side effects of this for Windows guests.  Jason suggested sending patches 
+for this alternative as a starting point.
+
+----->o-----
+Next meeting will be on Monday, October 6 at 8am PDT (UTC-7), everybody is
+welcome: https://meet.google.com/rjn-dmzu-hgq
+
+Topics for the next meeting:
+
+ - update on latest status of LUO and next steps for merge into akpm's
+   tree
+ - update on the status of versioning support and anticipated timelines
+   for inclusion
+ - update on the status of stateless KHO RFC patches that should simplify
+   LUO support
+ - update on memfd preservation, vmalloc support, and 1GB limitation
+ - discuss guest_memfd preservation use cases for Confidential Computing
+   and any current work happening on it, including overlap with memfd
+   preservation being worked on by Pratyush
+   + discuss any use cases for Confidential Computing where folios may
+     need to be split after being marked as preserved during brown out
+ - [20 min] Andrey will discuss the current status of KSTATE and plans for
+   it through the end of this year
+ - [25 min] Samiullah will discuss IOMMU preservation plans to get early
+   alignment with stakeholders
+ - later: testing methodology to allow downstream consumers to qualify
+   that live update works from one version to another
+ - later: reducing blackout window during live update
+
+Please let me know if you'd like to propose additional topics for
+discussion, thank you!
+
+[1] https://github.com/googleprodkernel/linux-liveupdate
+[2]
+https://gitlab.com/qemu-project/kvm-forum/-/raw/main/_attachments/2025/VFIO_device_DiiwG94.pdf 
 
