@@ -4,119 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60964CAC5B0
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Oct 2025 00:04:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6594ECAC5B0
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Oct 2025 00:09:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A9A18E0003; Sat,  4 Oct 2025 20:04:19 -0400 (EDT)
+	id BBABE8E0005; Sat,  4 Oct 2025 20:09:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45B458E0002; Sat,  4 Oct 2025 20:04:19 -0400 (EDT)
+	id B92E48E0002; Sat,  4 Oct 2025 20:09:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 348C48E0003; Sat,  4 Oct 2025 20:04:19 -0400 (EDT)
+	id AA79C8E0005; Sat,  4 Oct 2025 20:09:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 239528E0002
-	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 20:04:19 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 55BE085A0E
-	for <linux-mm@kvack.org>; Sun,  5 Oct 2025 00:04:18 +0000 (UTC)
-X-FDA: 83962113396.01.8283054
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 60BF720004
-	for <linux-mm@kvack.org>; Sun,  5 Oct 2025 00:04:16 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IPiAmOna;
-	spf=pass (imf13.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 999518E0002
+	for <linux-mm@kvack.org>; Sat,  4 Oct 2025 20:09:29 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3CDB01DDE18
+	for <linux-mm@kvack.org>; Sun,  5 Oct 2025 00:09:29 +0000 (UTC)
+X-FDA: 83962126458.18.3B29B2E
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3AB1B8000F
+	for <linux-mm@kvack.org>; Sun,  5 Oct 2025 00:09:26 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=RWaA1rvx;
+	spf=pass (imf30.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759622656;
+	s=arc-20220608; t=1759622967;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SuazfCg0JUEN6Q1wK7YMCSmIa0jdH/LBDbSMDJSl8bM=;
-	b=Z3sldCIf4NqHo2Dvv/4Ao+7Ty4mazVnzIWRToTtcs1rZmOnbQcPW6sztNC5/xvp3AC8p/G
-	Cu2Jgxt9G7E1BNtaRgNPR2RTSp2ylvouVwi/TkUnD8S4p5FoA4gKgQItGyUMWF40A6mlsc
-	TGJsPceyW84qmKPwHyqcw2lEYqGSksk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759622656; a=rsa-sha256;
-	cv=none;
-	b=WVDcMRdTJb6zjphHyXpAn1NjsBfZpLEnYEgLR2SGxeAEzPJ/BlvrTZCsCz+Xox2GIFs7jc
-	fl2PLR53mtF5CquIeRS8SkrM3M4zIsv3Ss93w3HvdS/5wOU3rkz7jaCsqIfgFcbdierLfY
-	plA3z42F7bHpiYZuAWaklj26Vm7ky04=
+	bh=ILory6nQAFzpHa/zvj9oJELdDq7FIvPPiBGgCT8DreY=;
+	b=u9AKb7nCjf8PUNA3sKpb+MM1WiOBr5izirACEAujFs6AuCzLKdAFcLAKQebR1eZT4ZfZeG
+	dcKNzJDGrDuP/zlr+cRORJyadX5dEZ1pQh6EfIR3xoNtwNikzKnTcd3HiwvqFeqoWaTsG6
+	/RGmg/vAeuAbM0/LhsatZv37Yrb82Cw=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IPiAmOna;
-	spf=pass (imf13.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=RWaA1rvx;
+	spf=pass (imf30.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-63963066fb0so2367355a12.3
-        for <linux-mm@kvack.org>; Sat, 04 Oct 2025 17:04:16 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759622967; a=rsa-sha256;
+	cv=none;
+	b=L4YOlRUK6b6zRkeVChNNIkDswXTx3+3HUmY7VnQwDKPf4JMn3f+Noi9lnMbixzIfi7PAD5
+	2ST1b34QfEIyBN9nyTZDr+2ahGOnT5ootKB16iBZrI9v+ifbB2tq21DT6TqqFG8TJdG4Cv
+	JDkZcUJcbmGEYQ9MzV/P6LNqd4+5Yqw=
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b07e3a77b72so791303066b.0
+        for <linux-mm@kvack.org>; Sat, 04 Oct 2025 17:09:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759622655; x=1760227455; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1759622965; x=1760227765; darn=kvack.org;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SuazfCg0JUEN6Q1wK7YMCSmIa0jdH/LBDbSMDJSl8bM=;
-        b=IPiAmOnaTKkDHELf+FX+j5aaYZVK8IDQpO/dNMRuoB5IQ7urcFvfhGvMbjDQqIRHx6
-         WF60DAvWeYFY/JsyxhHvxvSCRdlM0mcgBvsvZBwSoGiLrLB8kQfKt/zBi4ud1yIhoIsN
-         9QNwrCGPNHBNtCCxmCIdxtNZzN/AiSQ5kYZPgz5l7Eva3WMFtF1Ox8laC8lS+bLiZZKX
-         XB9ZFOQevqMNCBB1qfQ+TbaSJdM43aHAqSVtr92sq8tem+3cAQO/5qaFYpL15v5FFP+3
-         rFWjiMHy3O8HCymNzXSgRyu9YUY80GJGi1eMKbtkaBDft2lN18X9pahHIXzk1h8HIq1y
-         +p6g==
+        bh=ILory6nQAFzpHa/zvj9oJELdDq7FIvPPiBGgCT8DreY=;
+        b=RWaA1rvxWplZTatsixxQK85O7KIZdBhhhZeP91Hcjv1Y3NNfv5sLnsQwi8BLRVZs4P
+         u3apSCK1zD78zqjfekYeqpuwQL829E9ohox/n5+eQGyPrk+5ShO1a0q+eJCTKooQoJ2J
+         r84ktf1PMzRqh70Q5cGNax2OBQrXE6n5oXa/83JvjoELCEW0vY+aPgK11Tss21NRLhGS
+         0swnNC3sFbc/pv25k2sJr2s3d+xsCipr5X+QlJDH6XUSNJMz6eD+0atsqFX+0Mp5w+bb
+         vIEXdQPkDiJr2r7Z7cB/dLA68ixoiMSEZSfOYqqduD2clARmd8AnldBf0k/Fm+OzHl8O
+         jJyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759622655; x=1760227455;
+        d=1e100.net; s=20230601; t=1759622965; x=1760227765;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=SuazfCg0JUEN6Q1wK7YMCSmIa0jdH/LBDbSMDJSl8bM=;
-        b=UIy2XcbFDUAbqlk2MQeg+P1yx3optL4V2ZPWIhnQcs8E9QcUE0JattEKwtdQ0wqAVi
-         5pEHuFv9MK1LKVpjo0NWhZMGKtizViKoXHtWnB+s11BRgsZ2eIkSp6Ru+hUd907gwByh
-         XaGzWOE9TvoLOMqkjLZ09cWSHz6vZn4MKndHmfObQ8ks4RwygI4MbxM/nH893ow39xtA
-         AquthodxSO2S6WvRBqLcqWnj8EAaX8ftGqMqZTqMiSjQB8HFVzeYk4jkbZ+PQzv71AbB
-         Zbe32o9m8xvEfKmYBa3wiPs4CJ1eKrsyLSFFfyvvO8K22+EHvUaHvMxtcwBn8+4XRGX/
-         xSEw==
-X-Forwarded-Encrypted: i=1; AJvYcCV2Sfi5cNO8h9Or/H0CiUZvnAmI7lLimUAuqQH7vmHH7Pgq478cQtWgZONBTeGCsOQP5+X4aVVbzA==@kvack.org
-X-Gm-Message-State: AOJu0YzSvG8mmk9PfFAYLHpCrNBa6h4LZh4BEDyrw3mNwgF8jbdUcfwl
-	gqIUwcY8zKGZiShf7lbWsOpCgRiF5+XXQG4iyMDFNlmueEE7cwZQyvkc
-X-Gm-Gg: ASbGncspN2xk3CnUlDW1sIP1bDdSKnKxHVTRzHpicxB2twVOMRAgAa6NWGDgfFzWwyW
-	6rbUsxFiKHx1cqVjSHDvPTAoanBQrDoL4Rk23wMjc2oec2Sez+OO3Y3vfQd4JvOmsCYmQOukE3/
-	C/u0cnA4lITrrUAhYHyqZmWIhRNlsvHnD8jDstZynn688OdNlwM5M/jOO8Hoom99shGcgn6yEyY
-	jlSvXNXYE5BDV1wirSaY33q54xnhWJmUCLfl6xO9iVxbaG+d3gKkVjeUvRDnJ96aEaUy+RxPuu+
-	NK8tDj9jFZVhonw0O/i0q5B98Z8d9vMSKVEiPF+EiB9AcYr2Q/QHSrR0UbP4axBI6udO9HPXkeg
-	rwq/wZToyEBOnVJ7PYgX5yiVQD17rqNoCzutMJly/I3VaevA/1vd7bccn
-X-Google-Smtp-Source: AGHT+IExBZMBuqUh5CVS8KHs+bbxVO9mFkhOpIwnUmP6PDbjBSwp7A03wss0RXgBDhl9Y+HcyF8+BQ==
-X-Received: by 2002:a05:6402:3582:b0:632:a8c1:f783 with SMTP id 4fb4d7f45d1cf-639346ceb41mr8370417a12.3.1759622654476;
-        Sat, 04 Oct 2025 17:04:14 -0700 (PDT)
+        bh=ILory6nQAFzpHa/zvj9oJELdDq7FIvPPiBGgCT8DreY=;
+        b=Til3HNpiUt3PT3F1dea2U6T4hdxauzGP5fvoMDWshlHjKwfITk5uQ3knrYNnaDJNE9
+         ScGaLzxr9p7gijn1kEZRRHKMKM8F/SRRbxOl/+LEdgWjRuiDbkLvh4ewoMWhr5xIj4JA
+         UXLYK8U7wWDdEM9Sw0Nv5iEvjvaAFVjhSIvm4cncdKUaiw4r9b/+I14gkHNsYbjkE5h4
+         KiPCHv1qWKC4uOXhO4c0AtGJvTfwyqwXcYHIAr4Eo0zJ/6dLdYXpfdVwcBRi1ccXwyRb
+         2fQIBQTr7l3iJABBa9PcMJ71EiM57DQf5vOPU6ItmgmloADxwAqfFFrtPSn1nijuyb4A
+         sGOw==
+X-Forwarded-Encrypted: i=1; AJvYcCVoPjmBSLXfh9mp4KU2UbjyacNOd1G0PcN/sHPf9wLOlyk2HCw4UzkwwW95N8TfJ9KeTgnU8nAEQg==@kvack.org
+X-Gm-Message-State: AOJu0Yww1hfufX1sFeWltB8vdg5U6LHaPpjwLJnTEGPj8y+fGK8tW0Dq
+	6wOxvOi+C3W2XM/idYvCUPU7YsSNOVjsVK0/GUOAnUYKFG2Vmwrt4W0I
+X-Gm-Gg: ASbGnctQscwWmQV/EbSuPH3eDj7JKSHG+JRDwZUNq/ImNTcvSM1XpGRl/PAUlqmZRa+
+	bPNwLPDHnGB8hTX3S3juq0AzQpnBIr11iaaR7tMdarWT5E9v9j77yz5JRju5JMp2TkgbHp9r87z
+	5W1xF7OI5OrDlctqqSJ/pXTqq5FsL/MBDRWGMmoWq3tED2WP6RWA8GorBBmZkhO+2Ti01TF45TE
+	+LtzOJAQGfFbB9IGQlrYekFl1dcH3JRxP1u5YRckXtuNhNATyvb/nkCwzQXnSNN9TsOTivFrsPi
+	qBWG7B/Kie5X3bs09I3WNwfqIdR+mCF1bQG6R9jdSeq5wt9QaR8Ev31U6wEZnxbOfEt5JIm2ZeO
+	6rUsjwSmbNCSdZ9nr0RbMYo7LDyYbsEp4QmxGeZB7pBCdZkiwE8Ex1FSM
+X-Google-Smtp-Source: AGHT+IFSSaw+WA7f+ppkS59hVxMWUv9Shlb4zADNt8mJ106zoE+TuGfAh9ikoKnL6R/erYEm7MiKHw==
+X-Received: by 2002:a17:907:1c12:b0:b07:6390:322d with SMTP id a640c23a62f3a-b4859c7a1ccmr1583992166b.9.1759622965466;
+        Sat, 04 Oct 2025 17:09:25 -0700 (PDT)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6376b3abcd7sm6982792a12.2.2025.10.04.17.04.13
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b4865a7c660sm784755966b.22.2025.10.04.17.09.24
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 04 Oct 2025 17:04:13 -0700 (PDT)
-Date: Sun, 5 Oct 2025 00:04:13 +0000
+        Sat, 04 Oct 2025 17:09:25 -0700 (PDT)
+Date: Sun, 5 Oct 2025 00:09:24 +0000
 From: Wei Yang <richard.weiyang@gmail.com>
-To: Dev Jain <dev.jain@arm.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org,
 	david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
 	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
 	npache@redhat.com, ryan.roberts@arm.com, baohua@kernel.org,
 	lance.yang@linux.dev, linux-mm@kvack.org
 Subject: Re: [PATCH] mm/khugepaged: use map_anon_folio_pmd() in
  collapse_huge_page()
-Message-ID: <20251005000413.ogmobshcbsw34b5v@master>
+Message-ID: <20251005000924.bo7nxresftryfeqf@master>
 Reply-To: Wei Yang <richard.weiyang@gmail.com>
 References: <20251004092523.28989-1-richard.weiyang@gmail.com>
  <96dac3c7-c969-4d4a-afca-85341f8a6a6e@arm.com>
+ <20251005000413.ogmobshcbsw34b5v@master>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <96dac3c7-c969-4d4a-afca-85341f8a6a6e@arm.com>
+In-Reply-To: <20251005000413.ogmobshcbsw34b5v@master>
 User-Agent: NeoMutt/20170113 (1.7.2)
-X-Stat-Signature: saxfpxkjifpheu5a9dxh5xf5xbw5egds
-X-Rspamd-Queue-Id: 60BF720004
+X-Stat-Signature: 3e9u1adcsj88cnn88ba48pppcney933r
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1759622656-928811
-X-HE-Meta: U2FsdGVkX18t+b0HvwPaOwJqvgfyzabxGxKawGjodE3tVeO5W3N2dlbhaBoaOj3VKHBGUHAH32GjDC7KfJiL+qWWLsJ0JczV6eCoMe1lw9UQdglt3ZThj5AzAnfATCDn9NeoKkoIj1DvYW/4X+kXXEGKbAlWpJ0W1k+/tsqMhK7BQtSv1FByBsgq2zCKTiT+7zFBTqxThpjAx4v1uiuBuk9cqfEkCMVfkjvpiPqbF1gQqq3bhisjELWeNYEccFyauuA6tbr6PSrE0GfsAy8Z2Jg9lLoPtH+x4mO7TwR3AWyaRLz6di3CNyX3gbixDYrRETfi0yhEkwKT4SRBqxShv4N8FiusOyOsl2RkHxprsWDtxzxe5httS3f8RlAJFhl0xYY9hfUNUB99ubT7xIbwRJHTjxwJa9774MJleYOXsEJz87FtEvAnb0Mlw8AMyEsPnc+aCWEqC35ip/my5x02KWLWafyq7Ba1+NC+7fYddhy3A04xd6P7JefHrTyxunxPv9GMtGIR2D4gSAg7A7xvpugS69lD7dBf269adrMhGN3TdY2y/9kdKhPtRw5jue1jzPBfjyXJP8JAz5a468VudvaDSZ9qu4uQdIQk/tRkiHSeKf/tUmfgeopZ+hgIjBjAyMXGgtQuKRZ5UBsCp2t7wUgeG/0GxFg2viR9mI4Duk9ewJbrNkWiuK6TQD63E3fyjJymrOjDejWtRDbA/xwdX2hrMIUZm3GZXgRIX51xMcSXmMAaLdRy1RSoN3m8UpojLWm/1hdrLogAEAsfTdNjUBb4p7IaPWwKjSivcEc1a+CvULL84Zs/Qh4GEvkcOMLgC8ONGPYBIIcgRMUaRNp1WMP5GLJs9M2MpJ+rwLnJvW7hbGAS2rz3jrUWMAeSSBXL31DEXnKqfsr5K5lZas0iIzSW+6Cmhxwk4rN8DC0GBOvl4XQiQbEiO0d1LhcELXqQhsJA7kC5l4IqMp4pslH
- BtQ+XKis
- cLTTDsWGgLz+xVk5HzJrxh9roZh8MTJFZM/9dIr3t7dKo7WJW4J0mCkgj1IHcUCDg7h/Guv3a9gOEy3sISe/nvbe52+V/QHq7YZeldARB4SgZw2xcgd8GqeWpgHstkaKFxa60DehTi4oS/3rDisibeVNIEJAIhSjckBi6nfeQTqu1EDh6R7dYvJFyDvUzyIZZNrlTrrELNjKDBr9s4zk8R862hdpztCvcQebVHQwRB24N2ElnCMYkUTmxoQQKedWED8oHgmJnA57H7Ta0jz+9/moNHHGH6RH14l2u849rmEZZViHZO3+d6sTRhkf6VMXG5s+cKpLY/pE0hSdo+uzDSnRROJPjOU+zXJsd8QNABFM1YzSYzZb5fMXdb37ZSRBb8mIB3qkgQ44yjnx7acWSm/6hncnwlCyElH96b/VywvGVB7zDk+VUeQ9pMCXYyXIyFTFdYXFgY0j8h3L3bsv0AjW5k7n9Le+w4fP2xDocvB8xz0OfaEInKxdDOqSi3zeIwY1joeFAg9BmZQ0k2qNiOD7ZlwNBO4Ur86/deLuueKZcgBzaV4VAP1XQ0dqWTunrBbxf1sbA3iUdRfuC+5pxzJjwY0/DlhCRE23JuQFjdYk4XeBzxzLok7qutysgGTQwlJxXphYaAhLi43ewD/UvmgYmtFfSydhGWQPgJgPsQv0BQ+iR2xclxIMKYzfClHpWtx4cVS/KHvZbH0oAFUSd5z+jEgrcoCClzu+fv2xSOdHu9laqDMh5OoAUjDrQ/lrtAXl4iLr+K9gXdJOu6+zXJS5wHQ==
+X-Rspamd-Queue-Id: 3AB1B8000F
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1759622966-861202
+X-HE-Meta: U2FsdGVkX18ZOYCvoa+iz8eoTT1v1vhcGoHbt9sMGA1cObQcLdO+/yYsNBLvPbi44HQJJxqsfh3ftVJBeISZdLk0N3+nRcogWIio7RkhJdKwARU95mpFI4gETi7EGc0FuA8/lVVe4Mjk9DkoJ0bKcD4sDFtRxP7/TH5OVFoNILsYlp6SKGStdYcAmaMz+B20zshg4U1ttlyv0Bz+dBlJVFWsTGZjqXad2aNLGuPG0MVn1fZhVh8zKN6HTqM/ZtW6PN8hCyt5LaCvwPp8/eootgEWar1+ReSxm/V5yMdwzMJKlH4djTjKRygABBiGZmCGttERSynlc+/ROnOD1VCni6y9Ms3M1B2kJC1wTJah2xNbKG2Pi7g8O9/5Qzqke4x6dvBVnaqyBedaqmBX8o9GSewUnonrhe7Edhe/EorXnn89vq6EP+D7x6Ago4H0+3LUakD4SDDFs+WrOhh4IpEBGgRs34n+WTHR1Khr6RoQ4R94I2Xtlm31F17fJgQSZ3OirLGgi+DP2hsuEsGYFtc6lYS7GhDEd2783bRmKERsk+Z1zmwtIcjSn48BC7w7JyQ4GtdoYNavsBa0Q4z8HRB7eRJQFwc/QIdfhvN06tID8csoDafH/137XZjwJOkNx6iWRGuo1u1rllqEyaq/MK0S6c1q1RKQiImq7hBhBG/zn0ANd8tCVSCScRemsoFYSxvvHEeC7N5hIV0pyInd2dvPvZdl2GPVGmOElTMqUm+JKKyMLTR8w512UFsdX2tV4X1NU3DasO/07lOQu4nYKjlpFzl/HE7wasUxnkhbybIP+JKvFgrQDzCLTIUJWgvhJs+cZyWKrX7q+5dFx+77MDqMUADNI+C/C05U5gRB5WkcaIm6pUsFJDq5XYDGQ9WkU5ck0KyKG2cx9ynMhlD5i90h1TTMnXTLI1uLvfNcDOz++mWUBjmi2FHyoL1TnQxb9T5oQ5maB4u5dtmv8uFK8wx
+ E6aXiJp+
+ m6vjy5EOt/5F6O8pdqsaoR00/mGeP8/o+AgytAzTDunVf76I87QB15aGtViFK05jJaJeZfubi/7osGtCq7Gj5//A2716N6eTZcNANOXqdl8wazdFTs2nRbXiVFDrT9a5vfiPnl3ifvgu94DFE/GYReDi5n8EZIUdprrm1cbqLAw+wu9VLUEBrkX1s2DhYAPjaODQGwMpGsMqV2x7rsSvxkuVymAS7TPsQ3UbKiXUOeztSkn8Xm5fDAfHHNNd6udZJNEBUIULF+f4vZFSM9UgDIacgcZ4QWs4qcj96cTmG4Qrh2IXFmzOuynsJhyiTdbltPL4uqwGyq51722cfO7UjYaxw4m8kAVDxTmf8p7FInUcHhx6acKtNpQovdkxq/EN2m0Q/i7wjS209vfG5nnhnIDtWjdFro0FsNgK4zMwRptvixdUimVUKAGZ0m0jq2CKtTlyvBDSR9XwLvu9YXtdXCBNNU+UexxdTaNBjFlwAVs0cGWtFgsW1Tm5Ac62/pj1GWEf8PIDDPj+n4EZ++TmrUIXfKMvpE1E5qWLZRCsVHKPETIuv89SCw/4/PPHdzcGU4hHFcV0ls2L0U8r9FiElD/q/SBfD3ZOVgJcqoqw9xKEkUvg9LPbSgzjuY5qT67gbFxGNqTXOyC51sx6nJ8udPghy7sKPKbl/bjB9QMAD4Dk5fsHOGnSPD3Jml62iYwEdhp4X5U/YEUcKRPvxoX3CkhOCUIXln6cGu8rNv38T8OAMy3QedVqeLhYmujAJknpqxOH+CNslXy1vmYZN1pJcCQJ7ZCiHLSNL7+X8pUbWMARrvbk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,23 +126,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 04, 2025 at 07:56:48PM +0530, Dev Jain wrote:
+On Sun, Oct 05, 2025 at 12:04:13AM +0000, Wei Yang wrote:
+>On Sat, Oct 04, 2025 at 07:56:48PM +0530, Dev Jain wrote:
+>>
+>>On 04/10/25 2:55 pm, Wei Yang wrote:
+>>> Unify the process to install pmd folio.
+>>> 
+>>> No functional change is intended.
+>>> 
+>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>>
+>>Base commit on which this patch applies?
+>>
 >
->On 04/10/25 2:55 pm, Wei Yang wrote:
->> Unify the process to install pmd folio.
->> 
->> No functional change is intended.
->> 
->> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>The base commit is 
 >
->Base commit on which this patch applies?
+>696ef26cfef2 2025-10-03 mm: redefine VM_* flag constants with BIT()
+>
+>on latest akpm/mm-new branch.
 >
 
-The base commit is 
+Forget to mention, with this [1] change applied.
 
-696ef26cfef2 2025-10-03 mm: redefine VM_* flag constants with BIT()
-
-on latest akpm/mm-new branch.
+[1]: https://lkml.kernel.org/r/20251002013825.20448-1-richard.weiyang@gmail.com
 
 -- 
 Wei Yang
