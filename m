@@ -4,173 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57EE4CCA471
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 07:37:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11D8FCAC5B8
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 07:54:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 990EB8E0013; Mon,  6 Oct 2025 03:37:44 -0400 (EDT)
+	id 4FCC28E0003; Mon,  6 Oct 2025 03:54:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91A368E0002; Mon,  6 Oct 2025 03:37:44 -0400 (EDT)
+	id 4D4AF8E0002; Mon,  6 Oct 2025 03:54:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76D4C8E0013; Mon,  6 Oct 2025 03:37:44 -0400 (EDT)
+	id 411BD8E0003; Mon,  6 Oct 2025 03:54:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E9378E0002
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 03:37:44 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 295161A04AC
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 07:37:44 +0000 (UTC)
-X-FDA: 83966884848.30.095B180
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 09C9C180003
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 07:37:41 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JWyUkupH;
-	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 318D58E0002
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 03:54:52 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A5D161DE616
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 07:54:51 +0000 (UTC)
+X-FDA: 83966927982.19.E2EE943
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf09.hostedemail.com (Postfix) with ESMTP id E4373140006
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 07:54:49 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SYr6w+L6;
+	spf=pass (imf09.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759736262;
+	s=arc-20220608; t=1759737289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7c4mRTEqZdZGm9RTIQw/5XdulTJUNtDD37vH797NP3U=;
-	b=SlF86wVMxGgQ1rjzublk97AuxsFgsHGhlvbpiWgW508Kf1EUdmAIiHaOVUdEjx4EiZufEz
-	0B8xzZZO0tzBeDsxXfDADqtfPNnpU/6BqWchP/hR/KgWbADLB1n8wa8Pu9KMf0F1hz52NU
-	rfYXiq2IBnGLPSa5XJVcZMh/glNg9RQ=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JWyUkupH;
-	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759736262; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=NV9odVNENStyxZ7qLDwj7Wax6ioI4vbGv9QWrXdlsOc=;
+	b=ynJOcbmJ4cPreg8k1mGWC1DFl22L74JaH81QJOaooGI9i6FF0rB/Ohyaab5ylJA5eJY3lM
+	3vO27EhXvk8bGqkQMFUCQGWQrX1VE/QzfwwH+kTlWNQRFFVSd790qeauFNoBwKXuXsPc1Q
+	nvioBSuxc50TcEtWve87ai6t2nCex9E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759737290; a=rsa-sha256;
 	cv=none;
-	b=YDiRTP8FFOwF65JifAT2m9VR0BaxwlImj6DAEyG1AaxQ55/ie0XVPase3EbNwFWYmgr+bq
-	M8pFrjT5bxrA3cr8s7yVI+bkdZlWgMPu5XOtvaOJTEvb5fIqEytA6hyuKPI7/oYUumq1/R
-	75be80/O2pbVh1OXvFVI5SE7c6ldcYE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759736261;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=7c4mRTEqZdZGm9RTIQw/5XdulTJUNtDD37vH797NP3U=;
-	b=JWyUkupHDf2Jcso+uTfKjGZUG9z5ugxLpmxDNSMU/PM8Hn10Z2WKMNYO0/Jxbq6DiSSZWR
-	fUb9meCCYgPuv7DF689ufc23gOofXp7SFnAIcpSbapWG2Fam7v2v9n05cqXBTSoxteYES7
-	PCkGfwNh/dZpfHdhwPth7Bj7zeTqdrw=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-518-8sZsb2ILN-Od-BtRWoDPbw-1; Mon, 06 Oct 2025 03:37:40 -0400
-X-MC-Unique: 8sZsb2ILN-Od-BtRWoDPbw-1
-X-Mimecast-MFC-AGG-ID: 8sZsb2ILN-Od-BtRWoDPbw_1759736259
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-46e38957979so16508385e9.3
-        for <linux-mm@kvack.org>; Mon, 06 Oct 2025 00:37:40 -0700 (PDT)
+	b=6lNV1jYNX3G8EttocnhOb/9SyijDQVlhJyNwcYsnLesL/QDT0ZgUvsegxbjv22W7Vg/Tmt
+	hgkNzq44BGd+oU7VKwgtjxdbC+BxtsaZYNNzkC2WTNZ4HyKmzZCU+mKTehCsvnq9SUxylS
+	M+4zFnItDiphcSarQXbu/xIloThqaSw=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SYr6w+L6;
+	spf=pass (imf09.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-27d4d6b7ab5so65236685ad.2
+        for <linux-mm@kvack.org>; Mon, 06 Oct 2025 00:54:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759737289; x=1760342089; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NV9odVNENStyxZ7qLDwj7Wax6ioI4vbGv9QWrXdlsOc=;
+        b=SYr6w+L6sLdCdUYdkoI3OufMDEfxwSD3PDDFPxbwjftvCmES5/gcIJ1SQLFhnQUX1T
+         KSW/OBjYZszht+nH7QwEkVwlpL2DAE2AqnknAT5qKIoU/pPUn37uBGX/UE7BwsKkjyHO
+         BVe/D/aznyXdyXRCICX6MH6s3I1hPdlCY4kPV2CI0S3vtAHFguAGJaxBRMZGQsRo8dEG
+         hRIcV/qHJw2JIknS7bgJ6zkZs9OFlUdX4zWuzOvb65TmVz+1zmdpYPrsOIp+R/Fz+XcQ
+         K1i/H+GEk1BE7IlUpoPOoqNlLp6i55OyCL/502OYbzWVOpAhvmPFMXiq2FwEQSasZZ/j
+         CQoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759736259; x=1760341059;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1759737289; x=1760342089;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=7c4mRTEqZdZGm9RTIQw/5XdulTJUNtDD37vH797NP3U=;
-        b=pRopV1BGyK2qzo5I/JNzvBeCUVZnpGGOTP4+byyLWxMOPrgYAuOSuwu25fPiUROo6K
-         iBqWCRXPxUUYV+tlZIgWtxl5y9nqgtnMRuT04NL/U+98xom+Zxq5fuB2LE+jjxnJnKQc
-         OTswi8nvjP+Sh13v3yj92QYQpXMExE2SidPt/hP6D/43KN6zFvnDt1vOEBYjZ+jzz7zz
-         HsplJtmEfPnZi5+TPdAbqFFdyuCWvdZs84+iy2mUTSgXILbsVTykKgyH8f1PvDLR6Ri9
-         zeYiRsPs1i9LGbWS01l0XcfDr08ZwEEE3hfKldxPhIY9TZFnWo4q2boyecMgKoUikpOm
-         pMbw==
-X-Gm-Message-State: AOJu0Yx7iMkyp2DjEV5H4Tdzyw0eaawABonykYsprqhF7LhdNohp9xd2
-	rZLLOgIydxruwanCxzxNcxcBFJ/70t+6IGKEt0/IirkupRhloGKADThOX0d1OvI8BMhDF37jlth
-	2/aI0NO1jruLHTpm+9ZiG+ql9qBmQSo8xthvN6fRKXQaYizFmN705
-X-Gm-Gg: ASbGnctslmzy+KQxeRSZ816AMgkvTM7vlZj+MjaHEqgL1An8fIasFxLnrumCsv9uWbo
-	/m+gKAneXanFhj+NmmNmbtVOOLXoyGACBAKpSUnbY2dMKTmf01azKMchEm4Q4yMTEObKHHpTcYR
-	Gu/eLU43Zv7DguvtZWS7Q3/TY+gB3knOAIihYd1yLG39hf5wF6cmUNDMXawXY0LCRSe3uqDfj+C
-	iE+2fGMne4Ifi8uDCJdAdVbBmpQ2jY+Zshjtc3rGSYjU9Iv9bPjWiYs53TNMssM7j5NWqdbCT6d
-	QNS6L/5HI6QicQrAtqQUuhLyoZ9SotODu+RqQHgA0OpYLZykZC0nSGz09YMMi+vGrEABrc/x8lC
-	aFbTWosef
-X-Received: by 2002:a05:600c:8b32:b0:46e:42cb:d93f with SMTP id 5b1f17b1804b1-46e71109fdamr78874075e9.15.1759736258919;
-        Mon, 06 Oct 2025 00:37:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFRMSS2VJCwM83W0PXSsMxtlWivQYq+uynZFL3Dbx2bgu3Fi6f7hITjd2kxM2lB1ZJRAGCqvA==
-X-Received: by 2002:a05:600c:8b32:b0:46e:42cb:d93f with SMTP id 5b1f17b1804b1-46e71109fdamr78873765e9.15.1759736258481;
-        Mon, 06 Oct 2025 00:37:38 -0700 (PDT)
-Received: from [192.168.3.141] (tmo-083-110.customers.d1-online.com. [80.187.83.110])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8f4ab0sm19527928f8f.52.2025.10.06.00.37.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Oct 2025 00:37:37 -0700 (PDT)
-Message-ID: <6db79bb0-382e-4c3c-89e0-4c7822d4dfca@redhat.com>
-Date: Mon, 6 Oct 2025 09:37:34 +0200
+        bh=NV9odVNENStyxZ7qLDwj7Wax6ioI4vbGv9QWrXdlsOc=;
+        b=RT9rQv9YTirJCjl8lk8wq97gZquFvlQ9V5NZ6IyvXzoZGnT9J777WBpzGWGqM9eBwK
+         WI/uvO3+//L2537ltn+jMSmMS6Od3/Wq3VvoOsO/M4HSsgU7Zq0S2qCnwXHLZBz8CLai
+         ytTCa3YHmE26LxlUxnnIItChxlV5KLeQH60+hw1dyYB3N/bw1ru7ZQhdPkITGC0zvj7L
+         NESI0lAfQaGTCa/UykLbFMFFvR+MCuTlWm1c0AapbLtt84RLOtqXqJCHBcNvdtFrwWpx
+         qoH6VdPjVw5cdsJz+1w2ZXM2Be9KrqjWe8wV4xQhQswT/IjTlEAxKYrffNh8mGPFCwJH
+         YKhQ==
+X-Gm-Message-State: AOJu0YyuXAT/gFXew2OhA62ElUesheP59s0pPSJHRNzwgJaosnk677H8
+	/vFwTjNPfjsXDTTZ4AIBPlPSwvGMD57yt3HlG6XMPvv8fU6cZMzNbYaf
+X-Gm-Gg: ASbGncsJdAb1XZFvL73axKYl0f83PUnfLRNhvfrSmAsxFYjnAlSMuvMUepBwgJvcgTD
+	aLnxGnXKxv8veuOqgJI6pr3ymDNLixl1uQ2OnuMJ+kmvXK+7DuovFiVDARxN1iBRQcvScemfldj
+	b1pEvABuF2+oVkbcNtnm1C9Sz2NiygCLgf7KYL2dIWDU00sMP8uXGb9KxQRIC70OXqUZJZL3CZO
+	nCtB9OQUJhLk0WmvVMA6WEMtF7ynbIBtRXsKR6Lics8RQT1bxr54WoEqa1nBzf1ZTQ6INrIbwZp
+	ZMd5ZO534X3TNN6ayGjnIatoOkANLUECfG02IgMkGGiS57+5YxiX38lkbxtCjDqNDM9eq8JvWX7
+	o8wEOMmd/nNiIgr2YpzWZxXL7OUmpWTjLh7/Ph74IWnP7g32hB7oqV8qNnxHrxjnM6hh7S1ug74
+	M6ocm1G0VeaOrnM/MXgQi/QbAzYFDPki97MLvvmA==
+X-Google-Smtp-Source: AGHT+IHru+Vra/1nFYTR3oq1XBmM931fRClgQ3HO7MJwzWrhDgBX9rVkYzz59sy4NX2Ta5aYjCDBqA==
+X-Received: by 2002:a17:903:1b03:b0:269:d978:7ec0 with SMTP id d9443c01a7336-28e9a62ffb0mr153066685ad.28.1759737288688;
+        Mon, 06 Oct 2025 00:54:48 -0700 (PDT)
+Received: from deepanshu-kernel-hacker.. ([2401:4900:87f7:8f89:cdb3:c13:8077:eea1])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-28e8d1260cfsm123706915ad.48.2025.10.06.00.54.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Oct 2025 00:54:47 -0700 (PDT)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: muchun.song@linux.dev,
+	osalvador@suse.de,
+	david@redhat.com,
+	akpm@linux-foundation.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	broonie@kernel.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] hugetlbfs: skip PMD unsharing when shareable lock unavailable
+Date: Mon,  6 Oct 2025 13:24:36 +0530
+Message-ID: <20251006075436.8417-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] hugetlbfs: skip PMD unsharing when shareable lock
- unavailable
-To: Deepanshu Kartikey <kartikey406@gmail.com>, muchun.song@linux.dev,
- osalvador@suse.de, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, broonie@kernel.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
-References: <20251003174553.3078839-1-kartikey406@gmail.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
- ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZoEEwEIAEQCGwMCF4ACGQEFCwkIBwICIgIG
- FQoJCAsCBBYCAwECHgcWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaJzangUJJlgIpAAKCRBN
- 3hD3AP+DWhAxD/9wcL0A+2rtaAmutaKTfxhTP0b4AAp1r/eLxjrbfbCCmh4pqzBhmSX/4z11
- opn2KqcOsueRF1t2ENLOWzQu3Roiny2HOU7DajqB4dm1BVMaXQya5ae2ghzlJN9SIoopTWlR
- 0Af3hPj5E2PYvQhlcqeoehKlBo9rROJv/rjmr2x0yOM8qeTroH/ZzNlCtJ56AsE6Tvl+r7cW
- 3x7/Jq5WvWeudKrhFh7/yQ7eRvHCjd9bBrZTlgAfiHmX9AnCCPRPpNGNedV9Yty2Jnxhfmbv
- Pw37LA/jef8zlCDyUh2KCU1xVEOWqg15o1RtTyGV1nXV2O/mfuQJud5vIgzBvHhypc3p6VZJ
- lEf8YmT+Ol5P7SfCs5/uGdWUYQEMqOlg6w9R4Pe8d+mk8KGvfE9/zTwGg0nRgKqlQXrWRERv
- cuEwQbridlPAoQHrFWtwpgYMXx2TaZ3sihcIPo9uU5eBs0rf4mOERY75SK+Ekayv2ucTfjxr
- Kf014py2aoRJHuvy85ee/zIyLmve5hngZTTe3Wg3TInT9UTFzTPhItam6dZ1xqdTGHZYGU0O
- otRHcwLGt470grdiob6PfVTXoHlBvkWRadMhSuG4RORCDpq89vu5QralFNIf3EysNohoFy2A
- LYg2/D53xbU/aa4DDzBb5b1Rkg/udO1gZocVQWrDh6I2K3+cCs7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20251003174553.3078839-1-kartikey406@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: KIzkgoimHMZgVyueAreBJWpT6zNaJ5pIdCtUNclnXcM_1759736259
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: cxefr4abzm4q6kukfsmkzs8xzea3j1fz
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 09C9C180003
-X-Stat-Signature: wrxmpzcc8y8fo7bukkmb8urzgofomq8p
-X-HE-Tag: 1759736261-551701
-X-HE-Meta: U2FsdGVkX1/c41kvJ6OWhHmlJrsGHLyy5SdJl7bz0bmb1+Edqt+itm6hr+FOmJU9kz9fB17zWkxHdiN9vVTI11Omm5seJGzcyjqtgYThExWKHopR48TZbfBaIns1nCAKN2GWK1pJekTywdUbB1XPmLQDL8dZ0r02oLDMVOt3Y2EdFEhAkpBeD9th5jrZVndB06TfMWRGvMyF4qqPdSqz9ziwxoErCdv3Rkhv11lsMnPgMwPepHEn863TKKtlncFg5+U0UIVF91YxUX5Q8pbxVToW1v0gO3WmFOr9yvNHK7YDsoD0RNaCe8F0gm5xzR3MZQMBoXHhZc3/K/btI3TksCO+4ZLMeNNYvFy9VAM2l+5kMIaCUVOivQ7DSCEHL1JML+Mz8VWo6gG0jfnEh//nqXO95NGofxXM7bgHDrfj0lySF3/MAWdjHnWcin5tLcjXMuhtK+zUjhDY4SzMFLi/rBrZvBHSZ/yrAz99oUTN7aUQpVZ25KA4C2+3yV9cMZ/O7C/TeKs06qDaw/vw7jP5yuEpHtR11eh9Dimf/WIxBRyy54oKI0F5gF7XybT2YengnQczgtHSG5fveA5DCXaf27coMJytO4k7hVdU00sfzGgh4GqjYX0ZHTH0kmzZ2PA/AUHf8LHBK6VxMLJ3hHNAJq/X5rtDrdyEI/Y7/KEkrUlfyTCHL/0FCBF1Eu1d17h3RR+smn6WUWQpIJZwRoNNtedVpmH6+Mi3enoKeuOZklXwY75ceclyX4Ah3wGcNOiD+/tt+1gzlEJmjyyMKGVxpvXOCoRe4hzdWsG2EEakwCdzjNVKoHu2za3ah0dfMM5vImBTFSn9EoQM6dIu9W8VAs7Lpt+xpTjSevbsv5rHHgQRnRhGlA/x7B+0ja4w2d9EwG5HxfrDJaRkmzoCePu9tcJWh0vLblPxrFaVf7/TPyivGQtdGReb9Y4dhY/D24fN1PDFZxYIr45Xd4SZuBE
- eGjLvZlA
- 6FMBlm5XgaQ02JvVkhmejdxUvsoYd/3PbvN+hwGeevekSvwkSkHjE630kjkNugTA8Kx9DGL1drjkto1kArX+0FNTBePdMF1l0SNrW4ciSO6RezJZ018qIcF+WO4F5GgceE6nHmQ5nBQrc/stgfPZHqfk9f8FmZAsmgA2xW5YsusaReZiO1rDgkbsUrlmnOVeojFHkuUEN4JD8EM9lQvOCbmgkwd/Rdw+VRu7YkpjyDVc7H6Q=
+X-Rspamd-Queue-Id: E4373140006
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1759737289-674242
+X-HE-Meta: U2FsdGVkX19RWXlb1mm2gSl+G3dkCl3lMlaaVtDCp5p0qtDnjr83ec7apqx4J+zZyGs9mTC1BiDLriFvqnlWvYIr9xEyo6G8sIUT4e35vUAERvIoBm5GHSTbPr5IBDQvSk+4/KtD0vhMaBjyRUmXVD4xcTmYb3LL82/wLnVThPZ3UeGiDkveN5/p3EkEqpzgYCWqCKtS4ERZ/u+T2XeHDp37L72A5F64WrJqdfYD/c2pYflzBqXA24NUsk68bBF3a7nMXnq89yOeZWmATFROjZ6T/jaCYHNSpKvpbfp1HHpJ32H0Oxl2cZ3Tey23IoIXWjutOQqM3naN07MKJVR5GmYBSAU4/8p+Uj1qPE6fhfzV4jUuuxU6lwQX57PYXe2f0Scs4NbnI4um8jE+jwC9ze51NN+Rs67Ptvf3hATXKC+Lf9JkhUJ1akWzqpM5E0RaO7iCdPHWSBEltg2AoVCxo4zc0mxV3Cy4TcVyZmw/5cHn4/Z1cuzG3u0POK6kGkbfcBHRcDR/ItLph9TYp2lnsZMbolzOVUZ/L4MCpOwHh+42iB6TaVTLFg0khD0R/CVvWzpRy6/0ukgo/KmpesmTpriTaJkcbM7rOmoAKTrgBUkMHCSEqkczfp+FWtd2NNbqYiWu78RAsLZxVOlUUZXmRoaexOSaMThGWCc21VS9DRJ21FhywVcN+v6lTIGobSDEVMMhLItEUjHTZNIP4k4Hds5lg1uVVG5L2t08Db4IqZ2SXfwcgiM6bU4y0nuvcLudHZeMoTYGLYskUm0N9MgoRAHnrqRom4mVBiwI5ivlU+muQIjSQq82o4H4LfM/NFwbDrXTS3BwSFN4u3422y3p+DKphISKqhG21gZJ7XJDLpC5bHupoF5orV9qTMyfthP73MsxDS+NHdfF3mvVOVwqnLpqkCUQnhs49ano5XTKf1mG4E1vxQJ1Yko/mw+WYaKCeiMom9dd6vW98UDRjws
+ cL3SGhKg
+ 4A5lgNEna5IADSPP6JnmbZhamKbJQ+Cmq0Da8bg9arM5jS/nL6iPyqBZTQT6O0lmNQOfn5arZR4Hy5304lr2/rU/KVkH5H6Nh3E1q0s8oLZwAXSJxcEKBsheSFRscq/xeb1lehZD1ECtGWNphLjZE0WWeJYK5VAQZxR9MJzkFKF1XLaRen/QCrAJajOA15+/I7k1xezlWYy+78RnaISCWD08/aCqQdoNgrLnhxLH/WYAUK+Er5KeC5kee1Iyg4bLnf3Eal+yEJLQ+m+RlWSI4V+uVvlggvSYTFzGOMHVKvWuGbqidktBcag2XGRkjuMWcqUneyd7+u7bLJRoFswk/wbidEVvxu18uKZyuCY3DN4NLOpw6bIx91mmDcyuq+cqvE8lSX+jxflTXK8bso6gA904BEpZseLVcLG6MnXnS4qa9AmIuaa/bMSHYK3/y1oweQLzgZFYEnNCtaCejJneFl814YzDxojz8ABG2v+wjsiJgK2HZYLvZhkAvVgBoRxrEOj7r
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,146 +125,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 03.10.25 19:45, Deepanshu Kartikey wrote:
-> When hugetlb_vmdelete_list() cannot acquire the shareable lock for a VMA,
-> the previous fix (dd83609b8898) skipped the entire VMA to avoid lock
-
-The proper way to mention a commit here
-
-"... fix in commit dd83609b8898 ("hugetlbfs: skip VMAs without shareable 
-locks in hugetlb_vmdelete_list") skipped ..."
-
-> assertions in huge_pmd_unshare(). However, this prevented pages from being
-> unmapped and freed, causing a regression in fallocate(PUNCH_HOLE) operations
-> where pages were not freed immediately, as reported by Mark Brown.
-> 
-> The issue occurs because:
-> 1. hugetlb_vmdelete_list() calls hugetlb_vma_trylock_write()
-> 2. For shareable VMAs, this attempts to acquire the shareable lock
-> 3. If successful, huge_pmd_unshare() expects the lock to be held
-> 4. huge_pmd_unshare() asserts the lock via hugetlb_vma_assert_locked()
-> 
-> The v2 fix avoided calling code that requires locks, but this prevented
-> page unmapping entirely, breaking the expected behavior where pages are
-> freed during punch hole operations.
-> 
-> This v3 fix takes a different approach: instead of skipping the entire VMA,
-> we skip only the PMD unsharing operation when we don't have the required
-> lock, while still proceeding with page unmapping. This is safe because:
-
-It's confusing to talk about fix versions. If you want to reference 
-previous discussions, rather link to them.
-
-> 
-> - PMD unsharing is an optimization to reduce shared page table overhead
-> - Page unmapping can proceed safely with just the VMA write lock
-> - Pages get freed immediately as expected by PUNCH_HOLE operations
-> - The PMD metadata will be cleaned up when the VMA is destroyed
-> 
-> We introduce a new ZAP_FLAG_NO_UNSHARE flag that communicates to
-> __unmap_hugepage_range() that it should skip huge_pmd_unshare() while
-> still clearing page table entries and freeing pages.
-> 
-> Reported-by: syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
-> Reported-by: Mark Brown <broonie@kernel.org>
-> Fixes: dd83609b8898 ("hugetlbfs: skip VMAs without shareable locks in hugetlb_vmdelete_list")
-> Tested-by: syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
-> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-> 
-> ---
-> Changes in v3:
-> - Instead of skipping entire VMAs, skip only PMD unsharing operation
-> - Add ZAP_FLAG_NO_UNSHARE flag to communicate lock status
-> - Ensure pages are still unmapped and freed immediately
-> - Fixes regression in fallocate PUNCH_HOLE reported by Mark Brown
-> 
-> Changes in v2:
-> - Check for shareable lock before trylock to avoid lock leaks
-> - Add comment explaining why non-shareable VMAs are skipped
-> ---
->   fs/hugetlbfs/inode.c | 22 ++++++++++++----------
->   include/linux/mm.h   |  2 ++
->   mm/hugetlb.c         |  3 ++-
->   3 files changed, 16 insertions(+), 11 deletions(-)
-> 
-> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-> index 9c94ed8c3ab0..519497bc1045 100644
-> --- a/fs/hugetlbfs/inode.c
-> +++ b/fs/hugetlbfs/inode.c
-> @@ -474,29 +474,31 @@ hugetlb_vmdelete_list(struct rb_root_cached *root, pgoff_t start, pgoff_t end,
->   	vma_interval_tree_foreach(vma, root, start, end ? end - 1 : ULONG_MAX) {
->   		unsigned long v_start;
->   		unsigned long v_end;
-> +		bool have_shareable_lock;
-> +		zap_flags_t local_flags = zap_flags;
->   
->   		if (!hugetlb_vma_trylock_write(vma))
->   			continue;
-> -
-> +
-> +		have_shareable_lock = __vma_shareable_lock(vma);
-> +
->   		/*
-> -		 * Skip VMAs without shareable locks. Per the design in commit
-> -		 * 40549ba8f8e0, these will be handled by remove_inode_hugepages()
-> -		 * called after this function with proper locking.
-> +		 * If we can't get the shareable lock, set ZAP_FLAG_NO_UNSHARE
-
-What do you mean with "If we can't get the shareable lock"? 
-__vma_shareable_lock() doesn't tell us whether we grabbed the lock, but 
-whether we have to grab the lock?
-
-I see now R-b/Ack from hugetlb maintainers and this seems to be getting 
-rather complicated now and I cannot really easily judge what's right or 
-wrong now.
-
-@Muchun, Oscar, can you take a look?
+Apologies for confusion. Please disregard this patch . As, it is creating a lot of confusion.
+I will create patch v4 with proper commit message and previous link
 
 
-> +		 * to skip PMD unsharing. We still proceed with unmapping to
-> +		 * ensure pages are properly freed, which is critical for punch
-> +		 * hole operations that expect immediate page freeing.
->   		 */
-> -		if (!__vma_shareable_lock(vma))
-> -			goto skip;
-> -
-> +		if (!have_shareable_lock)
-> +			local_flags |= ZAP_FLAG_NO_UNSHARE;
->   		v_start = vma_offset_start(vma, start);
->   		v_end = vma_offset_end(vma, end);
->   
-> -		unmap_hugepage_range(vma, v_start, v_end, NULL, zap_flags);
-> -
-> +		unmap_hugepage_range(vma, v_start, v_end, NULL, local_flags);
->   		/*
->   		 * Note that vma lock only exists for shared/non-private
->   		 * vmas.  Therefore, lock is not held when calling
->   		 * unmap_hugepage_range for private vmas.
->   		 */
-> -skip:
->   		hugetlb_vma_unlock_write(vma);
->   	}
->   }
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 06978b4dbeb8..9126ab44320d 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -2395,6 +2395,8 @@ struct zap_details {
->   #define  ZAP_FLAG_DROP_MARKER        ((__force zap_flags_t) BIT(0))
->   /* Set in unmap_vmas() to indicate a final unmap call.  Only used by hugetlb */
->   #define  ZAP_FLAG_UNMAP              ((__force zap_flags_t) BIT(1))
-> +/* Skip PMD unsharing when unmapping hugetlb ranges without shareable lock */
-> +#define  ZAP_FLAG_NO_UNSHARE         ((__force zap_flags_t) BIT(2))
-
-That's nasty: this is hugetlb-specific stuff in a generic mm.h header 
-using generic mm flags.
-
-I'm sure we can find a way communicate that in a different way within 
-hugetlb code and leave the generic ZAP_* flags alone?
-
--- 
-Cheers
-
-David / dhildenb
-
+Deepanshu
 
