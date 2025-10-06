@@ -4,141 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7D19CCA470
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 21:02:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9047ACAC5B8
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 21:07:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C0B48E001A; Mon,  6 Oct 2025 17:02:41 -0400 (EDT)
+	id 97D4A8E0027; Mon,  6 Oct 2025 17:07:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 098718E0002; Mon,  6 Oct 2025 17:02:41 -0400 (EDT)
+	id 92D2D8E0002; Mon,  6 Oct 2025 17:07:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEFD28E001A; Mon,  6 Oct 2025 17:02:40 -0400 (EDT)
+	id 81C7A8E0027; Mon,  6 Oct 2025 17:07:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DBC408E0002
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 17:02:40 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7F89FBABB1
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 21:02:40 +0000 (UTC)
-X-FDA: 83968913280.14.328690C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 3B8991C0006
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 21:02:38 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=etQo3ig1;
-	spf=pass (imf18.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759784558; a=rsa-sha256;
-	cv=none;
-	b=6/0By/9zxHwVU7Sfue8Rv3CQxdr7luGb3fSw69ix4NR5p9+QgI4aT90XJaFNAqSSa6QI12
-	bHNvHj0g+jATEaUpxiKLI3E+93H+go0ResRycCYHEShlgb5L8eEXdcrKrSUdw0O5QlpOM6
-	/EF6kt6To72s5bhTgA/wjY+1uei217s=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=etQo3ig1;
-	spf=pass (imf18.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D3108E0002
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 17:07:09 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 44371160739
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 21:07:09 +0000 (UTC)
+X-FDA: 83968924578.07.ED1F246
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 65C95C0007
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 21:07:07 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mJ6cQcHP;
+	spf=pass (imf22.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759784558;
+	s=arc-20220608; t=1759784827;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ymk03Atrx/x0O99GjOXWpG6K/ZE8/FGkAGFxmtXS5cQ=;
-	b=mcpvWWh1NWxeOzNDaZvFtkw7+/KqOhQrosOE2R+ahIEw7ZREJ/X+lb4+p/vaYiFSI4QByh
-	dUkT2nViass9YcA0CFMWeAEknaKsGAR1Aj7ybYVH0lwUz6ZbtsCFJzzOvIm7sYQNziPCSU
-	TeetLSCv5yHGUfEl/atPpUc2N7SwwEA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759784557;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ymk03Atrx/x0O99GjOXWpG6K/ZE8/FGkAGFxmtXS5cQ=;
-	b=etQo3ig1soEliSSZ0JikuQGsYy+owZiWBARz9/AnwTgnJkB3FJLTxzjjwHRKdwGsrwFvG3
-	9+LY2odk9MYZ6CKmS3F/gNPk3/vkS+HgZuz5Qj48GxqI/0xyBp/qay73MhWw9b0SQ9q0Ud
-	QkZoTPZV9RJbHBwq3MBqbrQBtWfycGY=
-Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com
- [209.85.222.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-411-i2y3vzypNB2HP6EwCgl8Jw-1; Mon, 06 Oct 2025 17:02:36 -0400
-X-MC-Unique: i2y3vzypNB2HP6EwCgl8Jw-1
-X-Mimecast-MFC-AGG-ID: i2y3vzypNB2HP6EwCgl8Jw_1759784556
-Received: by mail-ua1-f69.google.com with SMTP id a1e0cc1a2514c-8e35054fa3bso7326841241.2
-        for <linux-mm@kvack.org>; Mon, 06 Oct 2025 14:02:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759784556; x=1760389356;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:to:from:date:x-gm-message-state:from:to:cc:subject:date
+	bh=ycCXn7HCBHZVIgihBYyqRnShLRsn7MlEdfR5jY2NQjs=;
+	b=HEVDyPutvtBgfetoINY/XEmdCNTihr2QsmEpm9JlycnfsAL38vL0Hgnzh7JeWHkJlDJdow
+	qQT9MSzdKpxVkjVlp+8WYuo8VaHnr3IzcCaxxI0/nfEkocIcwDt/aQo4EqzbV4+eM+/vKR
+	inQ2u1JNk07+fRxTNupqspn5UsCFxIE=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mJ6cQcHP;
+	spf=pass (imf22.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759784827; a=rsa-sha256;
+	cv=none;
+	b=IA8unKY/KIyhqjwi3LQ1Wf0EbKSz9xGvo9h63dbUd4NF40g+73qUXo5A6GZGDRcur+Zxa5
+	LMp2nRmUK5PHJilcENl/D9zsZoGahdvihroimtn6c3UcIR/q4JuS0ozOH8+XU+rsoqsF+h
+	sojldwmcQad4aAIfIpnuK0+0l+8DPSQ=
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-339e71ccf48so1515066a91.3
+        for <linux-mm@kvack.org>; Mon, 06 Oct 2025 14:07:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759784826; x=1760389626; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ymk03Atrx/x0O99GjOXWpG6K/ZE8/FGkAGFxmtXS5cQ=;
-        b=cS5RoDVIHwc1pEHLaDvEXCaVUtWH92RmK1IRXuNmULvlkHUxHqEY8VUQ55xq8gmnL2
-         6HuzrnTlv6RTRf/YBxniBPf8kU3TwfQbZcTFFTYpPlJc4yakOf2sAE0VzYLmtyWwo45u
-         GlzWI7G5qzJHpnH96xM6IsVyJumBfVZqfbtaCpsZDQq4Z44uFq7ItfyqyHC1X12oxjWD
-         J1nMhIQpIUL6nFPCxEzB4wQJV0Rrc8liNNZmXg4r8iSUvPjdEU1GrKj2YJsEMwuGdl3+
-         qPRs2ImtDIQ0SCaR60xtOODA8elNfc1RyFqJHtmW/qimYwV9wAkf1ZhEWrPWRKNqYLom
-         E96w==
-X-Forwarded-Encrypted: i=1; AJvYcCVDRED63RFz3JUIJ4uhg9IiT2aYtzWnCVOkjKJEQdkUfGXizlHeOXXwqMYkJmluJCM2Mzbdxln1ig==@kvack.org
-X-Gm-Message-State: AOJu0YwVNcPl51/6vNWSy8mbUHqZhZgZ+ikWSvcd5Dz3KtoFXdaTAG8c
-	+1Y/h2jypCM4AwrQi/euALlCdXrPRLqWDHLNWNxyhTGuXO7XZCE+oSoET0uyD9g5XWElC9+EJqx
-	+yYxCAI6iDnERmNyNnS9hNOAmt7CWV5Wf7HyRTtqj3CpWucubCs1e
-X-Gm-Gg: ASbGnctINvWYgllkwGoNPSJQudYYAEgQau3dxjOIkGUC0XYdyI+CEElUO6HTuhHmTZi
-	WTaKIM69HlLdrMSE3BAZfv5048btNmd+P9ErEK8zcIrvGcP/kDWrQIg3xgRr09nvuLP3GfT6nk0
-	USy03Qxt0CAfT9LnKusGwzvFp4xsLlvxE3bohuADbwkb6I3U7e7Pd/bFQ/pRwNnhmsnSuOs8fch
-	jrdbYYb0qAJTbjem4Xy2QEgfdupagiAaEoikYv9eMo2AULgpFcPHcIQUtVzWarqaGL8oQrdgIGg
-	ek0AOvU7dXMQkDPmYF7c3UFmU1E7novitz6r2g==
-X-Received: by 2002:a05:6102:32c4:b0:519:f3b6:a1ae with SMTP id ada2fe7eead31-5d41d113720mr5161975137.22.1759784555823;
-        Mon, 06 Oct 2025 14:02:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGUIbyFy0bAXxq3hF6obawCdsm67GU+uNu9K0VYS4VwETotxyroLK2fz6RCNecsQisNvYCK5g==
-X-Received: by 2002:a05:6102:32c4:b0:519:f3b6:a1ae with SMTP id ada2fe7eead31-5d41d113720mr5161917137.22.1759784555258;
-        Mon, 06 Oct 2025 14:02:35 -0700 (PDT)
-Received: from x1.local ([142.188.210.50])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-878bae60146sm130567276d6.11.2025.10.06.14.02.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Oct 2025 14:02:34 -0700 (PDT)
-Date: Mon, 6 Oct 2025 17:02:31 -0400
-From: Peter Xu <peterx@redhat.com>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	James Houghton <jthoughton@google.com>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Ujwal Kundur <ujwal.kundur@gmail.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>, Hugh Dickins <hughd@google.com>,
-	Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH v3 1/4] mm: Introduce vm_uffd_ops API
-Message-ID: <aOQuZy_Hpu1yyu29@x1.local>
-References: <20250926211650.525109-2-peterx@redhat.com>
- <f1da3505-f17f-4829-80c1-696b1d99057d@redhat.com>
- <aNwmE11LirPtEuGW@x1.local>
- <f409cbe7-7865-45ab-af9a-6d5108bc5ad4@redhat.com>
- <aNw_GrZsql_M04T0@x1.local>
- <43d78ba7-8829-4a19-bdf3-d192a62cdac4@redhat.com>
- <aN08NxRLz7Wx0Qh4@x1.local>
- <ad124fb6-a712-4cf5-8a7e-2abacbc2e4be@redhat.com>
- <aN_XZbQjuYx-OnFr@x1.local>
- <cq3zcvnajs55zr7cplf5oxxjoh54fb7tvo23hehd5dmh4atvum@6274mneik6hu>
+        bh=ycCXn7HCBHZVIgihBYyqRnShLRsn7MlEdfR5jY2NQjs=;
+        b=mJ6cQcHPDe1Z5XOvxjgpXkBHl+l1/ZLvj9O49csWBEU28/uDdy9na3TcBM+7SXlqG2
+         ARqtDk+GjLgFRB+lXlB1H74nnt2mqb3z+Ke89CslWDupxfomG/zhOOLTR+ORxBV2xCSs
+         E8zCIbiXaeMfpGS6nAzmgJaoCE7WRmO3YDXrkh2pSYax9ubzUBUxxQ19vUVOL4ASVK77
+         8Vg9L/fCq6fnjoUJIoPCIwLNzoYgLzjWj6XN/7/wokCv/KQJmFtj8pEOaoKvFNrJATix
+         i9XuBsvSD78C9xorYr3Ivthb0hnh1HYYHxI7gU+C0gpv854SNe3ojV8v5qhqLYQzpuKc
+         p5OA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759784826; x=1760389626;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ycCXn7HCBHZVIgihBYyqRnShLRsn7MlEdfR5jY2NQjs=;
+        b=JMIcFUslvr/iqV6v4CQBEapZgqO2oVdrAT6PnbC/ggLe8NEqJjBSUa0louEqjEiCnJ
+         3Ff54iJ4/bTG4wkotyKpid/Rs0Gdj7jliBZko7Mb4z+l1ZacyKuyAtTjHH/QHe72SM9t
+         vnna4jj4A0Xc1s7BpgKgwCdVTSemNoBz9Z6KgjqceKjpNo8U0YnHCuppcH7A/JzpQhRi
+         QR//bb85h4HorihrVj4joU5ABasw5WEauOJ8ttw2OQOBRD3j0eXeHlFGWrjHAZKvptED
+         ZjMB8hBH/m9767CiWLm+wbBdRzvxhyC46b4A6El8cPu9bKCjb+fb6QeNZLfcVhTN/T4s
+         Uf7A==
+X-Forwarded-Encrypted: i=1; AJvYcCUkk53sjkaC99rBAbL+Glz8293kvmvNT67awQtMvh+ye2mel3HiV2fK1WyQnzdYGvS6XGiEPkbIsA==@kvack.org
+X-Gm-Message-State: AOJu0Yxrp1ripX0RkKyR5sgH7fat80gX6AOcV7cVEW1YnhLARuxI/ror
+	Y80XrBCWDCHIXpJJ8OaZBIP0vflq12p8t/escNKznNraSd0J2amtZEMoBR304N8+uOlybn8lg1H
+	/pyPuIMLqg4WWuy/cmUBajGlCd69a5sU=
+X-Gm-Gg: ASbGncuB7JLLZDvGY068NxwfdNf0Pq/EqHgI/9nNcldf/r1aFKdqued3P6PJsTd8MiX
+	pJrn2jX7YpFIskoQJ4a/CFIbyrjgiWs1ONylPasG1OT0h0y/tLpmFFJuh1GrmhY0JqVz8dIPnqx
+	kw0srixU4K701POe+DcVfqn4jwlw7WWAnDjCFCzxyJJAyCjUK8O2B/FF0Zxi3alyGYSVo7pdBrJ
+	rN3DEDeomiqoEPYHPd4OGx65XSCVL8OXh69LXGG/G9SUwA=
+X-Google-Smtp-Source: AGHT+IFwvar+wsG4FBl5vSzTKtvzzcZSSsUwcJKm4NYVGJjyCTw+UOVFKL0QtUgf1sIodiucxXoPhufdjxE1FCU+EnA=
+X-Received: by 2002:a17:90b:4d0b:b0:32e:43ae:e7e9 with SMTP id
+ 98e67ed59e1d1-339c27a50ffmr18199311a91.17.1759784826013; Mon, 06 Oct 2025
+ 14:07:06 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <cq3zcvnajs55zr7cplf5oxxjoh54fb7tvo23hehd5dmh4atvum@6274mneik6hu>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ovbFqCu6LqRi-skvvq50eaG_vYM5cVYXjT0cQ2O6qvQ_1759784556
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+References: <20250930055826.9810-1-laoar.shao@gmail.com> <20250930055826.9810-8-laoar.shao@gmail.com>
+In-Reply-To: <20250930055826.9810-8-laoar.shao@gmail.com>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Mon, 6 Oct 2025 14:06:50 -0700
+X-Gm-Features: AS18NWA5h_LyhLDePhUuadn5dRHPb5TmltG_t5VK7dL6TJb8Nc89-wJV0_TukYU
+Message-ID: <CAEf4BzaGRDiW3fRt3i+7vvRB+oQszKjaLWVMSU6JrfmXHsJ45w@mail.gmail.com>
+Subject: Re: [PATCH v9 mm-new 07/11] bpf: mark vma->vm_mm as __safe_trusted_or_null
+To: Yafang Shao <laoar.shao@gmail.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, hannes@cmpxchg.org, usamaarif642@gmail.com, 
+	gutierrez.asier@huawei-partners.com, willy@infradead.org, ast@kernel.org, 
+	daniel@iogearbox.net, andrii@kernel.org, ameryhung@gmail.com, 
+	rientjes@google.com, corbet@lwn.net, 21cnbao@gmail.com, 
+	shakeel.butt@linux.dev, tj@kernel.org, lance.yang@linux.dev, 
+	rdunlap@infradead.org, bpf@vger.kernel.org, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 65C95C0007
+X-Stat-Signature: mcjpokf4di4rgczb9bewdnptmmma3t7f
 X-Rspam-User: 
-X-Stat-Signature: c9x86bjaas1w3cjxz7ei6pf7g9r4kkz6
-X-Rspamd-Queue-Id: 3B8991C0006
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1759784558-293081
-X-HE-Meta: U2FsdGVkX19FxoqawryScK79/q9Z5XWXmd+d0hPAG91H6L19n6LTRbGxM3FWk4n9ES6JRUltdQMglP4/bhZ6C8ULU4OPTcvlcmMedkfCs/eQPmLW/JNBrxB/navPA8UfayMAzH89MCaGkwnlenSfsaSkdDdV7/CE07NNwiAHjy3DqVaizZLUipKu+J2YcLFheQ6klo3GDS/a/8cFLyq8fVlgps3jEXDMEltp5qBHRZd41IrTIiwCXY4xsT7JJDZ7T36v7+jkJd1PbwsKjDZ0HTE5NRhMjT1MtvlOZaRQHE2K55+hD7CtumHynVbAE9fJsTm3rWntXfrAWAAGLE1+CDEb1C9hA7wrfYTZhcId90ABC3MO8Oia2vB2Dg6ILLAfci/HXni1hVKAFjgmV47dCyCgIZxRnNDm41yLjGBDtcycDVd2vpH9DgG8bm9x9pUpTj1Japiw6zEAWDBKMuw2+iwuHKeCUNZ0XJhHu8YgTY0CoVa72VyEM9yKulWG6SEnemjNilwJFwNP6+vODf8pkx+5lFh1GKdnWrclpJS7IYoF6XE6UwAShSIMi2vdr2nrKtoeGFW52ilM7V2OKUOpBXtCxB7NUJe63g4IieVQI2HD20H3LGsB6X/MNhcyn964GuQZKJOUdgLSPyTpru7rLtPjLSXGqMStJZnSrmahwXiQPHE336ijPw5Bgs81AqMX2qQPxWCJaD+rMoUNZU12i5lmGTpsFdmi9o9XwU9IELmchPVr0ydQ6jx1rfPKytQj48cwPxofpjOUgOJ+AtQ6I0nHGu12eoqm7ep9PklKTREipiGJ8+09/1oGJrYkEG+L46OLDSp9tcoVZ9pkqWVMqGRJyCDPlh3UxafVu1PQe4cMkJcpriQv5nxE7sLapsY+xsgBcymodm4FsgNarIAa8ropxBVHIy8Ovk+TUufKrtQhTvmiv8I0M3hP4fsrqBnMMF/x0PIfqPOP0w6qVr1
- SPg1jv3X
- xdKLHupbeZcgXLchAVktPKzymb/EKAUH85w2p9iuzJmjhJ+rnq5MQwDirvdKhQOo3F01/vR2HIl7p4Ae8gyJ4pSnXpbTqTyeYdcz8YEATRZNZXLQ/1wDSxyiK2Vz01N6bdLN4PipuSrIgoTKYNEBq7f+bSTapCca7gID3OEzM3/0zbNn0lrJGCzvwHimbuqP+ZBEKFuT4OhehgiONj6TRVAKNIIEKMWodhoACuB6aGk4tKLeRnmnyQDTWKppM4bUoM64f6s6dnBEP2tYUlteTW1Q4MBWXbg5xwLZc79amLroa6dcMP+gbvk/GA3rex3HcECKwLyNtRxzxNMAkznzjyyIDH9MMXAL/EjL0H45utADZp0OQY064fiF6Py17RANQ6M1ysAlOwzJcjG1UBZofqGPDaWkxmoXK9thWqYmOSocxnm0A3iA2Sxkg37Y3j+zkWNy6qgPa7TzGpx0eGQTzCCg5khsXq+pdPT+KP37Jqh4RmjD0sW2dGAtHf91Asr74+PNMD+nLrWd1+IzxuJKH6tSYruMO+Bd8+6qUKOU7qWg5U0jouYJ5kZKwIE33Rom1UozXN/ysY5PFSj8LClYAntatRhOMRVUA2B2q
+X-HE-Tag: 1759784827-803463
+X-HE-Meta: U2FsdGVkX1+n5Ftzt6j31WU9WbL1/ohaq4vMF37fvE4D36cn4qzb9iK93k525Hh+udLvnCUiN+aHgqeWpRtQp+qcL92VoViOHrVjMyNzaxqC+eJOwiACE4wWWKGZZxknLU811F2PzXlRu9vTy2gvczfjMwtZZpGbd0cu89ZUhmwiDn3Ir7aWuRiauFvvl21z/rpVUDuN2Lvvfact/7aKZTOCtgW46gBGfDtx3rlcrm3LhRcIbJMzqYegdAA3nqQV7dJT6NQtp0wujYdBRAwghfLY+mExNENQnmEq9fy1GzjiylvhG0gDt5jJl+NeMr9VvVpsV7YfLGuH+Gn/heOL+mF1ssdXUmARgxdpI8b+H0k4c+vhkwbZuBGHoJOEW99z+zDegpjmAswNRQ5e3niRRXHErgLIloD/04ThKJpSXgeMSFUUdivLVFG/x1fe0zNiEbpBRq4qn81nlG7Hu2Hp1OPmSDvhor2UqjUJk5k7L4xKe6rglhdEhNG8EFaxVoVb4r2jGBRzwaSuM2TYGDaux2hh80UC1up3LWuSIcfsoULZ57S4+o49nIuItvLP/x3C3LqmxeReas001gTCWzKagnr6fJzbXG4B38prsMYQ/VqMgvRIG5P+SQap0k29sI5EbmwhlUBRXhhSJRLn73YF7a1tL3o8i2FQK3obMpjGRHmMScAcybNQ8BVv2QfC7f3Chv51uO8ekrbiefF9LlzeSIf7oZzExHL86/1toM0yXTTYXXOuUYmoHQ/jhb8pd2anxJYbGuwWzBSodej1JTs+5s/djh3wiAG3dH3NyInbEHpXFLlJRikfdCBed6Q9+xa2ydn4rvq9ZkqdWOBm+j9UGpmpcWyQRrQPR3N793D4Pk6mPQXw3TrUw2Fdkk0csxwQCRLrXvmRsv9ZuH07ikSveAL2Rtb4Uo2OM7dkIL6ju5o1CB5JjxnuvGtNWpuduahEeNR4hUcXSJQvqMnIJP6
+ ZbljatgX
+ 5nj4oNligFJp7mAHUt9+ivirKKukphVkVVkBJl4XqI7w6T65JlIHqY+qdtvYUHqZ1FvX7/51jGOTL6uhKA8nnymp7APlNKKJ0nrjbyxq9jujPAtBL2jhuoBP3zmAZ/2E4SI+DuiXEgzZdBrc2eqSM2Gte9VMCMtRAIjadABqgoUVObghFY6b0Dj7Jz1QiTymIQmtQCDj+spzR8UPpjnNXL1mofIV7fhLZniI/w5G3Wq2MXV6INdujgFE6vs7k8KM+56w70o2XZqqcXmh/hKo+bgA12zKg+peBLRMIxW/tJA/AEgHN2o17cm61u7FPdbbjMLBQjOzLJ8HoS6THr1kle1ow901lS1QeC+Amx9J4OxHpdVIBerreWPb1yFzkl7SAIHtQCajOB3q2zPwbkrcNwUilBHGRBHgEaaJirSnLfd3EMAqhzXmI3dnmuCt5PQQUYL89rOlJRPhCi8dkm+3r/Xi9GKnXPzEofjwhDI8rM+EQ6QnMAYDb8daHmZJBgFdT3jjF66+3UkadF/1hfkQRgxb7ss4sRDBXWuw97cBCmlpvQm8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,102 +125,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 06, 2025 at 03:06:39PM -0400, Liam R. Howlett wrote:
-> * Peter Xu <peterx@redhat.com> [251003 10:02]:
-> > On Wed, Oct 01, 2025 at 04:39:50PM +0200, David Hildenbrand wrote:
-> > > On 01.10.25 16:35, Peter Xu wrote:
-> > > > On Wed, Oct 01, 2025 at 03:58:14PM +0200, David Hildenbrand wrote:
-> > > > > > > > > I briefly wondered whether we could use actual UFFD_FEATURE_* here, but they
-> > > > > > > > > are rather unsuited for this case here (e.g., different feature flags for
-> > > > > > > > > hugetlb support/shmem support etc).
-> 
-> I think this supports the need for a code clean up before applying an
-> API that generalizes it?
-> 
-> I would expect the uffd code that needs the same uffd_feature would
-> logically have the same uffd flags for the uffd_ops, but that's not the
-> case here?
-> 
-> Is this because uffd_feature != UFFD_FEATURE_* ... or are the internal
-> UFFD_FEATURE_* not the same thing?
-> 
-> > > > > > > > > 
-> > > > > > > > > But reading "uffd_ioctls" below, can't we derive the suitable vma flags from
-> > > > > > > > > the supported ioctls?
-> > > > > > > > > 
-> > > > > > > > > _UFFDIO_COPY | _UFDIO_ZEROPAGE -> VM_UFFD_MISSING
-> > > > > > > > > _UFFDIO_WRITEPROTECT -> VM_UFFD_WP
-> > > > > > > > > _UFFDIO_CONTINUE -> VM_UFFD_MINOR
-> > > > > > > > 
-> > > > > > > > Yes we can deduce that, but it'll be unclear then when one stares at a
-> > > > > > > > bunch of ioctls and cannot easily digest the modes the memory type
-> > > > > > > > supports.  Here, the modes should be the most straightforward way to
-> > > > > > > > describe the capability of a memory type.
-> > > > > > > 
-> > > > > > > I rather dislike the current split approach between vm-flags and ioctls.
-> > > > > > > 
-> > > > > > > I briefly thought about abstracting it for internal purposes further and
-> > > > > > > just have some internal backend ("memory type") flags.
-> > > > > > > 
-> > > > > > > UFFD_BACKEND_FEAT_MISSING -> _UFFDIO_COPY and VM_UFFD_MISSING
-> > > > > > > UFFD_BACKEND_FEAT_ZEROPAGE -> _UFDIO_ZEROPAGE
-> > > > > > > UFFD_BACKEND_FEAT_WP -> _UFFDIO_WRITEPROTECT and VM_UFFD_WP
-> > > > > > > UFFD_BACKEND_FEAT_MINOR -> _UFFDIO_CONTINUE and VM_UFFD_MINOR
-> > > > > > > UFFD_BACKEND_FEAT_POISON -> _UFFDIO_POISON
-> > > > > > 
-> > > > > > This layer of mapping can be helpful to some, but maybe confusing to
-> > > > > > others.. who is familiar with existing userfaultfd definitions.
-> > > > > > 
-> > > > > 
-> > > > > Just wondering, is this confusing to you, and if so, which part?
-> > > > > 
-> > > > > To me it makes perfect sense and cleans up this API and not have to sets of
-> > > > > flags that are somehow interlinked.
-> > > > 
-> > > > It adds the extra layer of mapping that will only be used in vm_uffd_ops
-> > > > and the helper that will consume it.
-> > > 
-> > > Agreed, while making the API cleaner. I don't easily see what's confusing
-> > > about that, though.
-> > 
-> > It will introduce another set of userfaultfd features, making it hard to
-> > say what is the difference between the new set and UFFD_FEATURE_*.
-> 
-> If it's not using UFFD_FEATURE_ defines, then please don't use
-> uffd_feature for it in the uffd_ops.  That seems like a recipe for
-> confusion.
-> 
-> > 
-> > > 
-> > > I think it can be done with a handful of LOC and avoid having to use VM_
-> > > flags in this API.
-> > 
-> > I waited for a few days, unfortunately we didn't get a second opinion.
-> 
-> Sorry, been pretty busy here.
-> 
-> If we can avoid the flags/features, then I'd rather that (the derived
-> from uffd_ops == NULL for support).  We can always add something else
-> later.
-> 
-> If we have to have a feature/flag setting, then please avoid using
-> uffd_feature unless we use it with UFFD_FEATURE_ - which I think, we've
-> ruled out?
+On Mon, Sep 29, 2025 at 11:00=E2=80=AFPM Yafang Shao <laoar.shao@gmail.com>=
+ wrote:
+>
+> The vma->vm_mm might be NULL and it can be accessed outside of RCU. Thus,
+> we can mark it as trusted_or_null. With this change, BPF helpers can safe=
+ly
+> access vma->vm_mm to retrieve the associated mm_struct from the VMA.
+> Then we can make policy decision from the VMA.
+>
+> The "trusted" annotation enables direct access to vma->vm_mm within kfunc=
+s
+> marked with KF_TRUSTED_ARGS or KF_RCU, such as bpf_task_get_cgroup1() and
+> bpf_task_under_cgroup(). Conversely, "null" enforcement requires all
+> callsites using vma->vm_mm to perform NULL checks.
+>
+> The lsm selftest must be modified because it directly accesses vma->vm_mm
+> without a NULL pointer check; otherwise it will break due to this
+> change.
+>
+> For the VMA based THP policy, the use case is as follows,
+>
+>   @mm =3D @vma->vm_mm; // vm_area_struct::vm_mm is trusted or null
+>   if (!@mm)
+>       return;
+>   bpf_rcu_read_lock(); // rcu lock must be held to dereference the owner
+>   @owner =3D @mm->owner; // mm_struct::owner is rcu trusted or null
+>   if (!@owner)
+>     goto out;
+>   @cgroup1 =3D bpf_task_get_cgroup1(@owner, MEMCG_HIERARCHY_ID);
+>
+>   /* make the decision based on the @cgroup1 attribute */
+>
+>   bpf_cgroup_release(@cgroup1); // release the associated cgroup
+> out:
+>   bpf_rcu_read_unlock();
+>
+> PSI memory information can be obtained from the associated cgroup to info=
+rm
+> policy decisions. Since upstream PSI support is currently limited to cgro=
+up
+> v2, the following example demonstrates cgroup v2 implementation:
+>
+>   @owner =3D @mm->owner;
+>   if (@owner) {
+>       // @ancestor_cgid is user-configured
+>       @ancestor =3D bpf_cgroup_from_id(@ancestor_cgid);
+>       if (bpf_task_under_cgroup(@owner, @ancestor)) {
+>           @psi_group =3D @ancestor->psi;
+>
+>           /* Extract PSI metrics from @psi_group and
+>            * implement policy logic based on the values
+>            */
+>
+>       }
+>   }
+>
+> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+> Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> ---
+>  kernel/bpf/verifier.c                   | 5 +++++
+>  tools/testing/selftests/bpf/progs/lsm.c | 8 +++++---
+>  2 files changed, 10 insertions(+), 3 deletions(-)
+>
 
-Yes, there was no plan to use UFFD_FEATURE_* in vm_uffd_ops.  It's because
-UFFD_FEATURE_* was introduced to almost let userapp have a way to probe the
-capability of the kernel, rather than the layer to describe what features
-userfaultfd has.
+Hey Yafang,
 
-For example, we have UFFD_FEATURE_MISSING_SHMEM declaring that "the current
-kernel supports MISSING mode userfaultfd on shmem".  This feature flag is
-essentially of no use for any other memory types, hence not applicable to
-vm_uffd_ops.  OTOH, we don't have a feature flag to represent "userfaultfd
-MISSING mode".
+This looks like a generally useful change, so I think it would be best
+if you can send it as a stand-alone patch to bpf-next to land it
+sooner.
 
-Thanks,
+Also, am I imagining this, or did you have similar change for the
+vm_file field as well? Any reasons to not mark vm_file as trusted as
+well?
 
--- 
-Peter Xu
-
+> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+> index d400e18ee31e..b708b98f796c 100644
+> --- a/kernel/bpf/verifier.c
+> +++ b/kernel/bpf/verifier.c
+> @@ -7165,6 +7165,10 @@ BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct socket) {
+>         struct sock *sk;
+>  };
+>
+> +BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct vm_area_struct) {
+> +       struct mm_struct *vm_mm;
+> +};
+> +
+>  static bool type_is_rcu(struct bpf_verifier_env *env,
+>                         struct bpf_reg_state *reg,
+>                         const char *field_name, u32 btf_id)
+> @@ -7206,6 +7210,7 @@ static bool type_is_trusted_or_null(struct bpf_veri=
+fier_env *env,
+>  {
+>         BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct socket));
+>         BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct dentry));
+> +       BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct vm_area_struct=
+));
+>
+>         return btf_nested_type_is_trusted(&env->log, reg, field_name, btf=
+_id,
+>                                           "__safe_trusted_or_null");
+> diff --git a/tools/testing/selftests/bpf/progs/lsm.c b/tools/testing/self=
+tests/bpf/progs/lsm.c
+> index 0c13b7409947..7de173daf27b 100644
+> --- a/tools/testing/selftests/bpf/progs/lsm.c
+> +++ b/tools/testing/selftests/bpf/progs/lsm.c
+> @@ -89,14 +89,16 @@ SEC("lsm/file_mprotect")
+>  int BPF_PROG(test_int_hook, struct vm_area_struct *vma,
+>              unsigned long reqprot, unsigned long prot, int ret)
+>  {
+> -       if (ret !=3D 0)
+> +       struct mm_struct *mm =3D vma->vm_mm;
+> +
+> +       if (ret !=3D 0 || !mm)
+>                 return ret;
+>
+>         __s32 pid =3D bpf_get_current_pid_tgid() >> 32;
+>         int is_stack =3D 0;
+>
+> -       is_stack =3D (vma->vm_start <=3D vma->vm_mm->start_stack &&
+> -                   vma->vm_end >=3D vma->vm_mm->start_stack);
+> +       is_stack =3D (vma->vm_start <=3D mm->start_stack &&
+> +                   vma->vm_end >=3D mm->start_stack);
+>
+>         if (is_stack && monitored_pid =3D=3D pid) {
+>                 mprotect_count++;
+> --
+> 2.47.3
+>
 
