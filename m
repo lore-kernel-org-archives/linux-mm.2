@@ -4,130 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E498ACAC5B8
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 11:45:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE8C9CCA471
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 12:07:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 330368E0006; Mon,  6 Oct 2025 07:45:07 -0400 (EDT)
+	id ED4EC8E0008; Mon,  6 Oct 2025 08:07:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 307FE8E0002; Mon,  6 Oct 2025 07:45:07 -0400 (EDT)
+	id EAC718E0002; Mon,  6 Oct 2025 08:07:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 21DB18E0006; Mon,  6 Oct 2025 07:45:07 -0400 (EDT)
+	id DE9318E0008; Mon,  6 Oct 2025 08:07:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 10FAE8E0002
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 07:45:07 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C6F2D8E0002
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 08:07:51 -0400 (EDT)
 Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6BABBBA09B
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 11:45:06 +0000 (UTC)
-X-FDA: 83967508212.25.E2F0D09
-Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4952514000B
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 11:45:04 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="M XKOjOL";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=OPT1V0fd;
-	spf=pass (imf23.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.155 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 622AABA090
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 12:07:51 +0000 (UTC)
+X-FDA: 83967565542.25.344BC75
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 86E0E1C0013
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 12:07:49 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Mf+ZdI48;
+	spf=pass (imf20.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759751104;
+	s=arc-20220608; t=1759752469;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HjqEAAukTgzfOHeJKHDdRAAY+8Vu3pAM3H7CL2nOoeI=;
-	b=xlnQNJmtT2fA4Dqwxmhk7d0Ijq2e13VqimW3/Xvx6GDc0msH60QLnSAK+k3EjGKG7oZ76I
-	9+lNvE0ItX7gqIKkJE8E512kE4BxwXrdiWHYO1epoJ598VTyQpl9+/JFhn2c4Hz7YWan56
-	0xEpoU7VMIqjMKSyifR/dNasX1D1lCY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759751104; a=rsa-sha256;
-	cv=none;
-	b=ePyNnQ/8LyEmvnq4HEvNrGwF1xIVWZrbd8Br+VgXXr2fFi2dPnsQPNQpWrm1k/Oww2t53C
-	TMXH6rJa434MgfDQ5ZEOVIAlpCUlM8IXLve6C3qsuSTLUFIgHMgJl9XoWAe25Xyvg75ty5
-	LvQUOY0kVNx16ay/XqN6FQ5T2G/81k0=
+	bh=YLus2oidZhuPLLCuKN6qeIc9LNAh5RPLc15/go5eJq0=;
+	b=OBpGTLHBjb431wpNp+Oj0q1AyXQybbyI5UkYam9CaQPT5ZBtvTIS4yemRxIt4TI8oEp+S/
+	0IHe3YAdbDO7A2QUkDxp3qClyqRbu9yVv9v/9q2U20kc22nliTpMqKOKuV6OxPxWXUHeD4
+	H7TZ4zCDh8hnRW8x7rgHxnoJ95VJztQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="M XKOjOL";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=OPT1V0fd;
-	spf=pass (imf23.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.155 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 7F59414000B7;
-	Mon,  6 Oct 2025 07:45:03 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Mon, 06 Oct 2025 07:45:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1759751103; x=
-	1759837503; bh=HjqEAAukTgzfOHeJKHDdRAAY+8Vu3pAM3H7CL2nOoeI=; b=M
-	XKOjOLhmgf2LnK44hgEMW8QcIjoh9davzquDZHeKPKgpHtmrbSnOHdrqoxDV/cC5
-	ABHMLYgzAQPh1+b4wGuPB2koo69Bs+NbUgYU770mmTeUwPyulZz+i2S+Q9mwvxJQ
-	wz7QnSL0MA4uXgzbTW9dtZx/6A6C4dekxcyh6XoWkLW+etIQvfmhD9gEY/ObffGx
-	GtlcqpnVFuEb+mT5SOQn5MByl0GGxjOuoe6XSzbsBB8TX6rnQNyfj40Ynv3S/p39
-	2jHD+fHJPDNgyjrgPCdAZPKnjjfFq93xYW3bm04q0/eWq1fK4kYaZH3G2eUGJ2Tm
-	suhjhGv5Z7YimdzEBkSiQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1759751103; x=1759837503; bh=HjqEAAukTgzfOHeJKHDdRAAY+8Vu3pAM3H7
-	CL2nOoeI=; b=OPT1V0fdLufgqRUk1MBEuWqeTB2fkPeyTQ52GpyFyU5LKgby24H
-	2vJY7+Mz+2d+zn7SzP+GJjC4r/AqpF/b319yATcMd2ZSB5uZYSBd6NT3TWTsepTp
-	IOVd8JNF4ex3XdNMSA+QpNVyehRgHHBg+5QJGN4UZUX55f75/GXc3fG9NBz1p78g
-	DrdYiZ7ZXl9mwPnJYeCVdDCozoELaDn1F1FkBp61TfIXQi0H8dTp1OBownHXrXks
-	HoKuSNDuS0UKwHYkyT8xYAeIze1s7UIa6bNHmhwIO/KitOdvOIoAgXyH+6kCpOC9
-	dLO2IOtJyu/YUzJtBe9wlLRxHXfE1GC+2sQ==
-X-ME-Sender: <xms:vqvjaKNSJbfSKpov_G6G0H4DfcvV8zOj_h2PIm6_o_kraWDtGLniaQ>
-    <xme:vqvjaMCi2zvGFfp7Frhp9RrJ8p1FEnvAW_0T4jjAzlhK8D-5PpZ9ywvn3GuwpO75b
-    VUDeW0Qzn7y5pbF-VrNhIZ6mTEGpKMHoLp7eMuC8NW2OOSzOrSPbqI>
-X-ME-Received: <xmr:vqvjaL6j2rU_yo_zJNTgczcTewGdWWjLCTrQVnOn2BVL73XnKhwNdREF0tbDBw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdeljeegiecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtf
-    frrghtthgvrhhnpeejheeufeduvdfgjeekiedvjedvgeejgfefieetveffhfdtvddtledu
-    hfeffeffudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
-    hmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepuddt
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehtohhrvhgrlhgusheslhhinhhugi
-    dqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepfihilhhlhiesihhnfhhrrggu
-    vggrugdrohhrghdprhgtphhtthhopehmtghgrhhofheskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhgpdhrtghpthhtoheplhhinhhu
-    gidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:v6vjaG7jXm1GsW0jvpVHuC1o6oTXB9UWFX_XdxVJiJNAa57UAUW1iw>
-    <xmx:v6vjaNQS5HIzmlX0E-LJ0j3ln7s11CHdhrQBlvwSMHWsZV0SSR7oyQ>
-    <xmx:v6vjaO-M6MnNIKrP1wGQUIwcgDLhQBJEiD0vSANfYKfHrYBFsbkQ7g>
-    <xmx:v6vjaOZ9cZ5PXKYI4VSouKLFqrqpWsCDWWo9xB7rCTCosS2E59h1yQ>
-    <xmx:v6vjaPyiyO-m4ZzxGIf5bxczMOjchUSB_v6gHA3oqywItLxZcI9vv-PT>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 6 Oct 2025 07:45:02 -0400 (EDT)
-Date: Mon, 6 Oct 2025 12:44:59 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Matthew Wilcox <willy@infradead.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Linux-MM <linux-mm@kvack.org>, linux-fsdevel@vger.kernel.org
-Subject: Re: Optimizing small reads
-Message-ID: <4bjh23pk56gtnhutt4i46magq74zx3nlkuo4ym2tkn54rv4gjl@rhxb6t6ncewp>
-References: <CAHk-=wj00-nGmXEkxY=-=Z_qP6kiGUziSFvxHJ9N-cLWry5zpA@mail.gmail.com>
- <flg637pjmcnxqpgmsgo5yvikwznak2rl4il2srddcui2564br5@zmpwmxibahw2>
- <CAHk-=wgy=oOSu+A3cMfVhBK66zdFsstDV3cgVO-=RF4cJ2bZ+A@mail.gmail.com>
- <CAHk-=whThZaXqDdum21SEWXjKQXmBcFN8E5zStX8W-EMEhAFdQ@mail.gmail.com>
- <a3nryktlvr6raisphhw56mdkvff6zr5athu2bsyiotrtkjchf3@z6rdwygtybft>
- <CAHk-=wg-eq7s8UMogFCS8OJQt9hwajwKP6kzW88avbx+4JXhcA@mail.gmail.com>
+	imf20.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Mf+ZdI48;
+	spf=pass (imf20.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759752469; a=rsa-sha256;
+	cv=none;
+	b=7UUxJHeV6Dau+zRxJna6w0rTOPlPDeIP4E6H/LG2XHD261x/WCI5laJDZOVXLqxG5MAnA2
+	gqDKSCWgtP0lD9TKp8UE9UfFGqNnwtfhzs9epdwVoq4Ah1+ZqsYcqlzGOuMNYLi9M7JUEs
+	j1mKbiG2V8Usz8TvTMEgZprcIutPUz8=
+Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id E7E6D92EEB;
+	Mon, 06 Oct 2025 12:07:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1759752468;
+	bh=YLus2oidZhuPLLCuKN6qeIc9LNAh5RPLc15/go5eJq0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Mf+ZdI485yDQ+PKFOAkxc3ov9ZwjDgt6kvSgRE6M3ZzluDdlDxy66UmT/zfUngDeL
+	 VIuayN8BcTdaoVROApToZy+38cbx97ER3vxC2waa2GpTWzsualnliNoEshPWEYefW/
+	 VUv+yv0oys7msaqm0CPBfyTBMLPL2Hkbr4y6vadY=
+Date: Mon, 6 Oct 2025 12:07:30 +0000
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
+	Chris Li <chrisl@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH] mm: skip folio_activate() for mlocked folios
+Message-ID: <aOOxAtD9oeiYlo7G@shell.ilvokhin.com>
+References: <aN_bix3wDpwYPoVp@shell.ilvokhin.com>
+ <hnpzad4aehmp6ncgwhlinzx55z3zst5dlkhsjphpazccy5lzpv@hfj2eyewuplz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHk-=wg-eq7s8UMogFCS8OJQt9hwajwKP6kzW88avbx+4JXhcA@mail.gmail.com>
-X-Rspamd-Queue-Id: 4952514000B
-X-Stat-Signature: fuy3j7eb6j9i38s3iknx473u3qcm3oc5
+In-Reply-To: <hnpzad4aehmp6ncgwhlinzx55z3zst5dlkhsjphpazccy5lzpv@hfj2eyewuplz>
+X-Stat-Signature: ri4abs9ab5tsxfyj7bk81nsb8cu59z8y
+X-Rspamd-Queue-Id: 86E0E1C0013
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1759751104-633030
-X-HE-Meta: U2FsdGVkX19B0oaRYDt6Pbompc/om2V79A/ESdqZjh0EYhxs/ofH+ICd8qu7Rfqpbud11+KNuHhsCEV7Z8oElZEkaP9ipfSyUFnGD1wwQ/ePJr/KbuUMHyNmy3cN531vR4qKZvvlufWXstiw0ECBbrPfXVzIitaJYPNEX3hhMk+01Pc4sFbQMo97SCKxGzeeqa+HeezCufghl7bvJ0evi14C2w8S3YkQWg8PTIr/fYJTAxLDVySH8krTyJyTR4uCHawN7AQyO2almj+cbClICmNx4BznmyXV3C3Iy33TAqwSAm6Ibwp/IMENDG4ERuwU+q2qrBfPoMRHCXw2mOvj8VRMQriCRp0Y70ZtaWUz08W3+V+Pg4lZn6UeTZI6zm3TpZQ/u21U1G0361sV1tTMxrhwUANpWjjM0w3R2pH1tgNCvjCfFHdDrqUUVeGLhpoQqVrSssKtgc+gtPjHRxI3vsfXzpCT0bwVbfdOJba8XIPHKK9CX4a41xUd5u+I1zYwL5F8vycPfe+13iA2mxcK3nTP1HfFJlZ5sy4R29quGJYIwmNQHIoDxbaiRZ+o1YxFrlgYsXUBLOMI9w2ogJp5PanX/eSdn3jBdwR4ykBsZIOuQ/EHX3XDeu34OBnF+cbeAhYjsUckjRqOA+QTR5yhJeu1c1+L3l6HHYRr3K2sjSH0tdTebX6+80asRDcim2tOXMN36Heka4M51vmNn9c7nw3OBPfJULUB0sjHMFNmAMuZncEn5v9DIQvE/Si6qWZVC6TEy64MNFYEYcexd2SXA3XxwJEl0U4AZIpmuXecGxiiUucB0baRPQm5dQBpKapA6Pw37NewqdGFqC9ISjn8WZKmnDwl0wWAiuj1AjkYnoIdknr4c3UinJNlutE9dGleotmmYKKMXkey1hj/DGSLUoZcZXN5NTy0CLAb7JNVmgRebCMCO+8sPT75PoN008C2hUINACJpuEWf1bMGXov
- crqKNY4g
- TfDGVTXTekh+jZ4ZNno0YzuYU1TUGTiyMMkA623Z6SgzRk9LGudBLkYusF/qcBKhJGcXqVrvY2GurJu5ObolNwt6tIITuVGvWeVM2hqnd7fFsij8nezBluBJ8wGTkXVvp6gnprpTnxNv6f/NA33d2rlGBaXvzphLJVE3bQaBHFBikz08OoYE2kOg2Aqx2n0oHAvPQr4EmLq7ai/t2FDHIA66sWVPg8UmmNA/ICstgvYulj+CXqWOBuJsBqI7dsRNx14uoll+DaaFDBfbARbQcOKMwaW3iARXoOIYvVcZ8PSbrAp0P6ziQnplHmahJT4r7JXERPGwF7ovDWgkm78Ry+MhnL5yUt321jTqRNiFgEbMI1TY=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1759752469-687369
+X-HE-Meta: U2FsdGVkX1+MzCdFKRmneQ9q4rAVLBJDz+baEiX7+ffsZQqG6j1kdC5UvlaaimB6PXCMSj8it3pAS/EacE8YF0G46Mea9jpwkEL/3FQeDgCERehPjqBMR8GSZq/Ly7NbRJmdQA5jHLKPRXpKJSP8uP8PAXVPFxy4ZfOU7/W9beHTOGTu9DGRy6rD+n5fUknu8sG94OIahNXT9sbqq7MuUOon8x0kpk2X4tm2tiYNaueNqNGBZbaMQE4mfz/eO/VNT3d890+9sbOAhVe0/XM0xysAtI8tLPht3ObtylIhdAkO22RRwMEpMP6SEMCfiflDtpxcN5Ui1HbLAcL6dq363ybJ77oloN6BBzmsHmZTLCyTsTcBiFPw2DzBqUicaFge301Yty4txu7PaiQdYRQraBY1HKgqiflNUIzUHlX9yQB7VPuSPVbWPDPOqIeSZVe1IgtUf+QYt7r9zaNKGXDWO4Fdc44MekxypNayBpOZGNkb+h9lEwESYp8RtFHdO5nqcWeHFW5GDcrRChbmrQ4gIMiQWrBQ5MQ25GnJB5tmzhjD6PZFMy9RV0wgWdiO5JLnyRLd3tQ3uoBC3mcw1tT8NTBKfnHYjO0H3mdVEjN7u1S2iZjDyPe8Ffg6cq6cGVUjyaEgOK3i71nVlrRdLusnYdFDmqzSDVdyRPEhDDyJxPXEAONnOx26X/tVkhzPELfc6McHmvnTiMy/3yA3RupcMlvR+/D9roAwdM+oY0iwqTJzWOwveUXnvHt/LsxhFdsuRA4lTgJcD/K9+WWipmmSTkxMICMLFd9VFrOHb5WJJcyOuDDUTuhGyuglH8NfA81lyVn84cdDH9FAb6/VgIYhXxupqCsrctB1MAZQyDhvA3RLTmYHQjvQpMGJY8MXfgSEORUK1rYuJY7xL9envSkBCPtTGyu2uOGd06bjwET+KMVLvUZr/XcMVfikviPXdeA6pS4Y8NQ3GBYpJIqtkg1
+ Ttci8FeH
+ 5Il2qltSO+d8FNaizlJ840nul7JiGQ1XPCw7O/jB1VjxLZke3lUpcu4KBy49q88Zi6xXLK/RV6A/q/70ABNP09b9FwxAChIWFKbFssDs3Zmr89M1qf/SpqhTgLG8LhtusbLTkJSgsJk1kSHfuAE56xVkj3yAvOmCXTe4sDDAa9g9ntSOrve/3pXFWjNV9Ohu8bxrt5wgn981HlblPs27qtNnem5FYQeEFf1qM71y2Dql8yOgouhKTXMPjFK8EfD4Lrx02ELa59UHCWqFf9Qisk4dcxBjUV9wGYGi4YaMWuOMhuRDVftzGOEZ3HOvwzVupkvsMtporGws3BeaJlMQSNRAG1grXCL2MZJCxP0I5eQWkJnQ94sqkfzU8WTEj6aTkNW5xevVZ2mm6Pfs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,220 +95,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 03, 2025 at 10:49:36AM -0700, Linus Torvalds wrote:
-> I'd love it if somebody took a look. I'm definitely not going to spend
-> any more time on this during the merge window...
+On Fri, Oct 03, 2025 at 03:41:05PM +0100, Kiryl Shutsemau wrote:
+> On Fri, Oct 03, 2025 at 02:19:55PM +0000, Dmitry Ilvokhin wrote:
+> > __mlock_folio() should update stats, when lruvec_add_folio() is called,
+> 
+> The update of stats is incidental to moving to unevicable LRU. But okay.
+> 
 
-Below is my take on this. Lightly tested.
+Good point. I'll rephrase commit message in terms of unevicable
+LRU instead of stat updates in v2.
 
-Some notes:
+> > but if folio_test_clear_lru() check failed, then __mlock_folio() gives
+> > up early. From the other hand, folio_mark_accessed() calls
+> > folio_activate() which also calls folio_test_clear_lru() down the line.
+> > When folio_activate() successfully removed folio from LRU,
+> > __mlock_folio() will not update any stats, which will lead to inaccurate
+> > values in /proc/meminfo as well as cgroup memory.stat.
+> > 
+> > To prevent this case from happening also check for folio_test_mlocked()
+> > in folio_mark_accessed(). If folio is not yet marked as unevictable, but
+> > already marked as mlocked, then skip folio_activate() call to allow
+> > __mlock_folio() to make all necessary updates.
+> > 
+> > To observe the problem mmap() and mlock() big file and check Unevictable
+> > and Mlocked values from /proc/meminfo. On freshly booted system without
+> > any other mlocked memory we expect them to match or be quite close.
+> > 
+> > See below for more detailed reproduction steps. Source code of stat.c
+> > is available at [1].
+> > 
+> >   $ head -c 8G < /dev/urandom > /tmp/random.bin
+> > 
+> >   $ cc -pedantic -Wall -std=c99 stat.c -O3 -o /tmp/stat
+> >   $ /tmp/stat
+> >   Unevictable:     8389668 kB
+> >   Mlocked:         8389700 kB
+> > 
+> >   Need to run binary twice. Problem does not reproduce on the first run,
+> >   but always reproduces on the second run.
+> > 
+> >   $ /tmp/stat
+> >   Unevictable:     5374676 kB
+> >   Mlocked:         8389332 kB
+> 
+> I think it is worth starting with the problem statement.
+> 
+> I like to follow this pattern of commit messages:
+> 
+> <Background, if needed>
+> 
+> <Issue statement>
+> 
+> <Proposed solution>
+>
 
- - Do we want a bounded retry on read_seqcount_retry()?
-   Maybe upto 3 iterations?
+Thanks for suggestion, v2 commit message will much this pattern.
 
- - HIGHMEM support is trivial with memcpy_from_file_folio();
+> > 
+> > [1]: https://gist.github.com/ilvokhin/e50c3d2ff5d9f70dcbb378c6695386dd
+> > 
+> > Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
+> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> 
+> Your Co-developed-by is missing. See submitting-patches.rst.
+> 
 
- - I opted for late partial read check. It would be nice allow to read
-   across PAGE_SIZE boundary as long as it is in the same folio;
+I followed an example of a patch submitted by the From: author from
+submitting-patches.rst. This example doesn't have Co-developed-by tag
+from the From Author. That's being said, I found both cases usage in the
+mm commit log, so I'll add mine Co-developed-by tag in the v2.
 
- - Move i_size check after uptodate check. It seems to be required
-   according to the comment in filemap_read(). But I cannot say I
-   understand i_size implications here.
-
- - Size of area is 256 bytes. I wounder if we want to get the fast read
-   to work on full page chunks. Can we dedicate a page per CPU for this?
-   I expect it to cover substantially more cases.
-
-Any comments are welcome.
-
-diff --git a/fs/inode.c b/fs/inode.c
-index ec9339024ac3..52163d28d630 100644
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -482,6 +482,8 @@ EXPORT_SYMBOL(inc_nlink);
- static void __address_space_init_once(struct address_space *mapping)
- {
- 	xa_init_flags(&mapping->i_pages, XA_FLAGS_LOCK_IRQ | XA_FLAGS_ACCOUNT);
-+	seqcount_spinlock_init(&mapping->i_pages_delete_seqcnt,
-+			       &mapping->i_pages->xa_lock);
- 	init_rwsem(&mapping->i_mmap_rwsem);
- 	INIT_LIST_HEAD(&mapping->i_private_list);
- 	spin_lock_init(&mapping->i_private_lock);
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 9e9d7c757efe..a900214f0f3a 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -522,6 +522,7 @@ struct address_space {
- 	struct list_head	i_private_list;
- 	struct rw_semaphore	i_mmap_rwsem;
- 	void *			i_private_data;
-+	seqcount_spinlock_t	i_pages_delete_seqcnt;
- } __attribute__((aligned(sizeof(long)))) __randomize_layout;
- 	/*
- 	 * On most architectures that alignment is already the case; but
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 751838ef05e5..fc26c6826392 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -138,8 +138,10 @@ static void page_cache_delete(struct address_space *mapping,
- 
- 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
- 
-+	write_seqcount_begin(&mapping->i_pages_delete_seqcnt);
- 	xas_store(&xas, shadow);
- 	xas_init_marks(&xas);
-+	write_seqcount_end(&mapping->i_pages_delete_seqcnt);
- 
- 	folio->mapping = NULL;
- 	/* Leave folio->index set: truncation lookup relies upon it */
-@@ -2659,6 +2661,57 @@ static void filemap_end_dropbehind_read(struct folio *folio)
- 	}
- }
- 
-+static inline unsigned long filemap_fast_read(struct address_space *mapping,
-+					      loff_t pos, char *buffer,
-+					      size_t size)
-+{
-+	XA_STATE(xas, &mapping->i_pages, pos >> PAGE_SHIFT);
-+	struct folio *folio;
-+	loff_t file_size;
-+	unsigned int seq;
-+
-+	lockdep_assert_in_rcu_read_lock();
-+
-+	seq = read_seqcount_begin(&mapping->i_pages_delete_seqcnt);
-+
-+	xas_reset(&xas);
-+	folio = xas_load(&xas);
-+	if (xas_retry(&xas, folio))
-+		return 0;
-+
-+	if (!folio || xa_is_value(folio))
-+		return 0;
-+
-+	if (!folio_test_uptodate(folio))
-+		return 0;
-+
-+	/* No fast-case if readahead is supposed to started */
-+	if (folio_test_readahead(folio))
-+		return 0;
-+	/* .. or mark it accessed */
-+	if (!folio_test_referenced(folio))
-+		return 0;
-+
-+	/* i_size check must be after folio_test_uptodate() */
-+	file_size = i_size_read(mapping->host);
-+	if (unlikely(pos >= file_size))
-+		return 0;
-+	if (size > file_size - pos)
-+		size = file_size - pos;
-+
-+	/* Do the data copy */
-+	if (memcpy_from_file_folio(buffer, folio, pos, size) != size) {
-+		/* No partial reads */
-+		return 0;
-+	}
-+
-+	/* Give up and go to slow path if raced with page_cache_delete() */
-+	if (read_seqcount_retry(&mapping->i_pages_delete_seqcnt, seq))
-+		return 0;
-+
-+	return size;
-+}
-+
- /**
-  * filemap_read - Read data from the page cache.
-  * @iocb: The iocb to read.
-@@ -2679,7 +2732,10 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
- 	struct file_ra_state *ra = &filp->f_ra;
- 	struct address_space *mapping = filp->f_mapping;
- 	struct inode *inode = mapping->host;
--	struct folio_batch fbatch;
-+	union {
-+		struct folio_batch fbatch;
-+		__DECLARE_FLEX_ARRAY(char, buffer);
-+	} area __uninitialized;
- 	int i, error = 0;
- 	bool writably_mapped;
- 	loff_t isize, end_offset;
-@@ -2693,7 +2749,34 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
- 		return 0;
- 
- 	iov_iter_truncate(iter, inode->i_sb->s_maxbytes - iocb->ki_pos);
--	folio_batch_init(&fbatch);
-+
-+	/*
-+	 * Try a quick lockless read into the 'area' union. Note that
-+	 * this union is intentionally marked "__uninitialized", because
-+	 * any compiler initialization would be pointless since this
-+	 * can fill it will garbage.
-+	 */
-+	if (iov_iter_count(iter) <= sizeof(area)) {
-+		size_t count = iov_iter_count(iter);
-+
-+		/* Let's see if we can just do the read under RCU */
-+		rcu_read_lock();
-+		count = filemap_fast_read(mapping, iocb->ki_pos, area.buffer, count);
-+		rcu_read_unlock();
-+		if (count) {
-+			size_t copied = copy_to_iter(area.buffer, count, iter);
-+			if (unlikely(!copied))
-+				return already_read ? already_read : -EFAULT;
-+			ra->prev_pos = iocb->ki_pos += copied;
-+			file_accessed(filp);
-+			return copied + already_read;
-+		}
-+	}
-+
-+	/*
-+	 * This actually properly initializes the fbatch for the slow case
-+	 */
-+	folio_batch_init(&area.fbatch);
- 
- 	do {
- 		cond_resched();
-@@ -2709,7 +2792,7 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
- 		if (unlikely(iocb->ki_pos >= i_size_read(inode)))
- 			break;
- 
--		error = filemap_get_pages(iocb, iter->count, &fbatch, false);
-+		error = filemap_get_pages(iocb, iter->count, &area.fbatch, false);
- 		if (error < 0)
- 			break;
- 
-@@ -2737,11 +2820,11 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
- 		 * mark it as accessed the first time.
- 		 */
- 		if (!pos_same_folio(iocb->ki_pos, last_pos - 1,
--				    fbatch.folios[0]))
--			folio_mark_accessed(fbatch.folios[0]);
-+				    area.fbatch.folios[0]))
-+			folio_mark_accessed(area.fbatch.folios[0]);
- 
--		for (i = 0; i < folio_batch_count(&fbatch); i++) {
--			struct folio *folio = fbatch.folios[i];
-+		for (i = 0; i < folio_batch_count(&area.fbatch); i++) {
-+			struct folio *folio = area.fbatch.folios[i];
- 			size_t fsize = folio_size(folio);
- 			size_t offset = iocb->ki_pos & (fsize - 1);
- 			size_t bytes = min_t(loff_t, end_offset - iocb->ki_pos,
-@@ -2772,13 +2855,13 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
- 			}
- 		}
- put_folios:
--		for (i = 0; i < folio_batch_count(&fbatch); i++) {
--			struct folio *folio = fbatch.folios[i];
-+		for (i = 0; i < folio_batch_count(&area.fbatch); i++) {
-+			struct folio *folio = area.fbatch.folios[i];
- 
- 			filemap_end_dropbehind_read(folio);
- 			folio_put(folio);
- 		}
--		folio_batch_init(&fbatch);
-+		folio_batch_init(&area.fbatch);
- 	} while (iov_iter_count(iter) && iocb->ki_pos < isize && !error);
- 
- 	file_accessed(filp);
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> > ---
+> >  mm/swap.c | 10 ++++++++++
+> >  1 file changed, 10 insertions(+)
+> > 
+> > diff --git a/mm/swap.c b/mm/swap.c
+> > index 2260dcd2775e..f682f070160b 100644
+> > --- a/mm/swap.c
+> > +++ b/mm/swap.c
+> > @@ -469,6 +469,16 @@ void folio_mark_accessed(struct folio *folio)
+> >  		 * this list is never rotated or maintained, so marking an
+> >  		 * unevictable page accessed has no effect.
+> >  		 */
+> > +	} else if (folio_test_mlocked(folio)) {
+> > +		/*
+> > +		 * Pages that are mlocked, but not yet on unevictable LRU.
+> > +		 * They might be still in mlock_fbatch waiting to be processed
+> > +		 * and activating it here might interfere with
+> > +		 * mlock_folio_batch(). __mlock_folio() will fail
+> > +		 * folio_test_clear_lru() check and give up. It happens because
+> > +		 * __folio_batch_add_and_move() clears LRU flag, when adding
+> > +		 * folio to activate batch.
+> > +		 */
+> >  	} else if (!folio_test_active(folio)) {
+> >  		/*
+> >  		 * If the folio is on the LRU, queue it for activation via
+> > -- 
+> > 2.47.3
+> > 
+> 
+> -- 
+>   Kiryl Shutsemau / Kirill A. Shutemov
 
