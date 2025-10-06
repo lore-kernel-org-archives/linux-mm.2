@@ -4,118 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74068CCA471
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 10:06:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C642BCCA472
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 10:37:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C17B58E0005; Mon,  6 Oct 2025 06:06:20 -0400 (EDT)
+	id 0502A8E0003; Mon,  6 Oct 2025 06:37:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC8508E0002; Mon,  6 Oct 2025 06:06:20 -0400 (EDT)
+	id 0274C8E0002; Mon,  6 Oct 2025 06:37:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADE268E0005; Mon,  6 Oct 2025 06:06:20 -0400 (EDT)
+	id EA6548E0003; Mon,  6 Oct 2025 06:37:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E30E8E0002
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 06:06:20 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 42251B9150
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 10:06:20 +0000 (UTC)
-X-FDA: 83967259320.12.9852807
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 3B3AF120002
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 10:06:17 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BllOJPaD;
-	spf=pass (imf29.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D73878E0002
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 06:37:46 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 40D741A0522
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 10:37:46 +0000 (UTC)
+X-FDA: 83967338532.02.3CB766C
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 50FC910000D
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 10:37:43 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of shiju.jose@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=shiju.jose@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759745178;
+	s=arc-20220608; t=1759747064;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qdL3Gjg4YnZQbKleKeTBCKkou2FNTLhQNiPxLrTgrlE=;
-	b=l+4UsXvqphthW07i3q7dHirC+gOEQcftkmmOMd+5oeJhrlwhkK1SAPniWm0lvJHh2XS+nm
-	Xog1LMK9fPixCtT+wYGRbcSg5/SDn44FnRcckR4XzSf20DE0RNleSho2HXcpYa9jjPNc8V
-	sUC0cwrDicYz5QjMI/uwCOF+IURN798=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BllOJPaD;
-	spf=pass (imf29.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759745178; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5a0V+ktkM0zmP/i/KvTfiBf3YEBIe7ryg6F09ELHLbA=;
+	b=AL/JTikR3uqGQEV3wV8VW/feoXcD2jspwDHvmfv+lpLCv5+N3mbS4SkzmUHjJYQKM5n2Pv
+	AxM641Di/olejV6np+jfIc8VK+qNUKQbV+VNnH/PnFSSmS5rcesk9ZLeQfJUf3dvZXsh4u
+	d8Qaq6RbWgoM70yL4J4f/v+C5/gwZCo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759747064; a=rsa-sha256;
 	cv=none;
-	b=UXFQZmcTSvGYbgqxev2LX/fGse7oVoctuO9BWTxvq2sLjn2UG4QmByZiZMy1Ot2kzZS6Vp
-	DPTNdpO0XEJpBKTXtWyRAoc69DvxrXLrCyJPrQryBLIEB2Dedq/+EluQp1XYLHsjXFn35/
-	yW/hNaKuJUIB9izR63zxIm6CsWQ6xIk=
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-57bd482dfd2so5225832e87.2
-        for <linux-mm@kvack.org>; Mon, 06 Oct 2025 03:06:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759745176; x=1760349976; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qdL3Gjg4YnZQbKleKeTBCKkou2FNTLhQNiPxLrTgrlE=;
-        b=BllOJPaDwhnDNIOZU6XhQbpJTJrsVR3eBRl1DJAPhcvxZzKTred+pQZFwz6UfND6ZQ
-         O52O3SWpepd9QeGf+A8fsWUlkcFbWPSjlWIIoY0y/ideb9nw7wimLx8TXbkFxO+6w6q5
-         lHMN8Fpp3GTZCaPeAC1Ayv7HPePxKQOY+nsXcpJkcrzualc7Z1YymTo7wRC6v+tau0Tj
-         LnqBuFOF+Cwd4e5fB/4GAyI62kIugS3/Na/v7wh32SPvzmcxNQLsY2GPXJHh8FJYqA4Y
-         AWEdGhznAbqsFTl2hIc0t2Q7PgvTTkH8ec4hemwApFruaPQ0lLWlrJ8TpqJVlum9LT60
-         d9HA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759745176; x=1760349976;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qdL3Gjg4YnZQbKleKeTBCKkou2FNTLhQNiPxLrTgrlE=;
-        b=Mp2lR9I4Toq0kAHwtzObbdlD2Sl1bks/5/vJ4E5DRLmVQAPiHFb9wKTiev8Y09JEBs
-         KjYpsZ7tZl+zI4uW8rK/sE/zlp9O0bdbJh7Rz1NhlEBTA2TNBog430zKJSKtJQEdco6C
-         /++SigPi6kAmNpOYD8vq8xz7+wsXoKLoBZQMEoEm85kKYcBirFkVVhxFx8AMnXNE8Otw
-         FMdrHSzhZx4hSmgrXCPpbCZAZgzgyqkXgUz0JXL/Ramho9Z8vLlMG1J5fR7b35Q85/7E
-         9Xr+Nb52djIE4VDQY7pB08vnvzhpux5MfuKoXBcvyvl6Js6LpDiw5VXqkCOvsR8B5htO
-         UrEg==
-X-Forwarded-Encrypted: i=1; AJvYcCU7LNcdJQeo3quuMjnzVnzgLZ5kaHO6SP2AVLeMuXF5Dm/Pyph7d0cSMMlSh40C2LchJLDZm3hX6g==@kvack.org
-X-Gm-Message-State: AOJu0YxEqhQhh15+b278r2m+kRLNix/f/5LMFTN2CiuX6fpPP0JmBqfZ
-	F8/2P1G2OMFSM3BIX/Nnz2RrYigLWpLkfwJ2rp1VvnY/sfToOWxNMOQY
-X-Gm-Gg: ASbGncvqnyIgXZlbSVgQ4wMk1ndTc8C5N+BXE/PB3vE6cx3WwwhSHkuuLqZdIQjTBHC
-	ERIhskQ96aY4i67npKbXq7YZpYw43hw8D0Od5Slsz94cwKxybYUCPlom/7f4KVxXLmLoW/i7mq4
-	SMxjcxNJLByKtPL1p/ylGAMQ2q9waEYnf8beFwJQ+hiXd2JfVPO2KN65SlvZeTlFKR1rudq6hT+
-	sjPJVYrwxJMaFwu6GiqxRKVlNazIpQcL6nvt3EblMb02KbkyVI1w+C7PWFeR7xTmPwkOBcmeP/h
-	wW05tfW8bFhlf1o5SlCCi35BABXvhGCnD9SQgXSTBb4nrGTUQ70K4RbbUe6SKrk4baf2njDvqJv
-	fbR2DjtuhWP2hNA==
-X-Google-Smtp-Source: AGHT+IGkGnHbLIn801xCGU82RWbYfOTtwD3A6j+paaPOoROSvLFCIITJYaZdYOz0jWnjfr9kA2bjBA==
-X-Received: by 2002:ac2:5684:0:b0:560:9702:4fe6 with SMTP id 2adb3069b0e04-58cb9f0b790mr4028661e87.24.1759745175951;
-        Mon, 06 Oct 2025 03:06:15 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-58b0118d372sm4887469e87.87.2025.10.06.03.06.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Oct 2025 03:06:15 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Mon, 6 Oct 2025 12:06:13 +0200
-To: Baoquan He <bhe@redhat.com>
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>, linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>, Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH v3 09/10] mm/vmalloc: Update __vmalloc_node_range()
- documentation
-Message-ID: <aOOUlW0SbBcPM6Mq@milan>
-References: <20251001192647.195204-1-urezki@gmail.com>
- <20251001192647.195204-10-urezki@gmail.com>
- <aOCejd0aghFS8iSO@MiWiFi-R3L-srv>
- <aOCqSrnazd2YwGbe@MiWiFi-R3L-srv>
+	b=5OCfflx14/I9wPvKh5tGyngXYV1tdZjU1Njc+o3sNyPKl8yuTd4oWzfoTFBfFvF3d9MCkl
+	RrJYA/z3o250Ky7j2cJO5H+tYWoaPTPQoCDIrJPB6p3UFzcBzfgl94o4As+bb3rqncW1JX
+	4Fxf5LkxsXmqoBtmthNmkmNPLG5jOKY=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of shiju.jose@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=shiju.jose@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cgG0z0LfWz6L4xs;
+	Mon,  6 Oct 2025 18:37:07 +0800 (CST)
+Received: from dubpeml500006.china.huawei.com (unknown [7.214.146.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id BC60F1402CB;
+	Mon,  6 Oct 2025 18:37:39 +0800 (CST)
+Received: from dubpeml100008.china.huawei.com (7.214.145.227) by
+ dubpeml500006.china.huawei.com (7.214.146.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 6 Oct 2025 11:37:39 +0100
+Received: from dubpeml100008.china.huawei.com ([7.214.145.227]) by
+ dubpeml100008.china.huawei.com ([7.214.145.227]) with mapi id 15.02.1544.011;
+ Mon, 6 Oct 2025 11:37:39 +0100
+From: Shiju Jose <shiju.jose@huawei.com>
+To: Borislav Petkov <bp@alien8.de>, Jonathan Cameron
+	<jonathan.cameron@huawei.com>
+CC: "rafael@kernel.org" <rafael@kernel.org>, "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>, "rppt@kernel.org" <rppt@kernel.org>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>, "tony.luck@intel.com" <tony.luck@intel.com>,
+	"lenb@kernel.org" <lenb@kernel.org>, "Yazen.Ghannam@amd.com"
+	<Yazen.Ghannam@amd.com>, "mchehab@kernel.org" <mchehab@kernel.org>, Linuxarm
+	<linuxarm@huawei.com>, "rientjes@google.com" <rientjes@google.com>,
+	"jiaqiyan@google.com" <jiaqiyan@google.com>, "Jon.Grimm@amd.com"
+	<Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "naoya.horiguchi@nec.com"
+	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
+	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
+	<duenwen@google.com>, "gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
+	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>, "Roberto
+ Sassu" <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
+	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>
+Subject: RE: [PATCH v12 1/2] ACPI:RAS2: Add ACPI RAS2 driver
+Thread-Topic: [PATCH v12 1/2] ACPI:RAS2: Add ACPI RAS2 driver
+Thread-Index: AQHcHC9WuMPoKRXbY02Oy+WxUZ/jerSMt+SAgAK0t2CAABfigIAEdNLAgAOLbYCAABR4AIACsFkAgBrSt9A=
+Date: Mon, 6 Oct 2025 10:37:39 +0000
+Message-ID: <6ac4ad35975142df986bfcb27d1e9b2c@huawei.com>
+References: <20250902173043.1796-1-shiju.jose@huawei.com>
+ <20250902173043.1796-2-shiju.jose@huawei.com>
+ <20250910192707.GAaMHRCxWx37XitN3t@fat_crate.local>
+ <9dd5e9d8e9b04a93bd4d882ef5d8b63e@huawei.com>
+ <20250912141155.GAaMQqK4vS8zHd1z4_@fat_crate.local>
+ <9433067c142b45d583eb96587b929878@huawei.com>
+ <20250917162253.GCaMrgXYXq2T4hFI0w@fat_crate.local>
+ <20250917183608.000038c4@huawei.com>
+ <20250919103950.GCaM0y9r6R6b5jfx8z@fat_crate.local>
+In-Reply-To: <20250919103950.GCaM0y9r6R6b5jfx8z@fat_crate.local>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.48.146.252]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aOCqSrnazd2YwGbe@MiWiFi-R3L-srv>
-X-Rspamd-Queue-Id: 3B3AF120002
-X-Stat-Signature: 78h3a5gjbwnzu9ixxfcdfwcidiceds8j
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 50FC910000D
+X-Stat-Signature: oxwb7qd1xttntc3p4unw3us65bn1ijbx
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1759745177-864301
-X-HE-Meta: U2FsdGVkX18OnJbhJ590K1s0LLJtHlihV38Bt+ipw3bizif2z/6vuLKMjwavDa2qmQP0wqsjuVUrwIYg17eJo4ilzsj07aPvX3ET7fFw5ar7DkyD+BFCperBzRCAHHGCMvQqDaoN7jG+yDnlRpWQEeLV0bkXbZ8fipB7lJStD75GV3I2BwmeAIgjtttJT9PAfhxSBFyUWPAoaZ1mcmEHbatm6tL55CrENYwuIborg4c1PnGFcu8aeamhT1oVmYS4xp211m2/fUfXNnl8mRIqBAzUXJTitvoLfM+ovRc68Srat+pp405ChHXKiXQJ9cOX3QZ8lzolE/IrHesmxvQ2VprPEn3tGnZcASaxsx4BXwbBn2MNliO5Qid/Xcd7yX5+6bio+rSalKHgYc6Tv7ez4yel5ttYZvwvHYQLjahxJjpTlkI4Rk9tqoug40vdk8jwiFXph+GOM6FEGJ11QlljtAvUyFZORjzhkht2lF+R7f9wM1YouSkS1HQ8jCol2up6BhvA7ESMysdxsSg8hHwY8O+liIu2GJI/NKlwR6IhadfN+rnYM4luXoIs/VvthSZrtYqpi5LtXFFjOwtb0GNBt8zCZyxg7G06ig6JdQBhluTiHTjJlqnzKl7//Nv3UexZhFBHmmtfP03MDQuxPKYrWZXd1vr7m5liLMfZphdeK6TzZKMIXkC20eieDnriFC/yKi488AFYjean2KOEzFRbTec4nhNGX4dyiNlz7zDQgmmvveAL+7dnku1EABspZ7+CpYGcN/gf+iSM7kUOe3msJ60wFwRRxM/zkBgd76SQy7eM+9ARjlEoaVPawl2DHzWuXlnTCmymPl2kXLNYp3aj/df/tLl3caoFrDE89SbAu2zVNHajdIxULYgrFkk3uJI/iFXBWQp3YpVMJDK+SwcF+NkEyR7B/xXgrVikzWvTdhIXyxXhd/HZCSc2URc8Bo0CIYGklY8EsgPxueAvfte
- Da1lOZWU
- 0FrFUCfeEKFWvlXeavLhHYsEjYF/fGfnlTXtS1hfAoxiQLXaZgpQm83yQIiSG4rdRrVZtWi2F19N35jOnkE8fOc5GE6gtv5fM/FrcUn4M6BJ1p6KhTxb/7xL09kNVepwYh1XHJiGf0WIvX1dJdSpSBgfmfdN+gpyuXYbozITO5BlHhoo6dw2XdD2UHFlxsvJj7XRC78LPojTZD4w6el3+hTx9+LJaYyOBJidT0ZvS2dOKGLuujafiiA/Efq0dq3J3DAPzE+hmtZR+RTHCNMJOFu/4NXJESEetptUCY0A2r3Zr3mdqlCvqa9/6GvuSRrG2gDcWwkzWav50hs9dHGfa39w1yWPBbjvuSKeiPFqsRmLCBSVMvl4bsbKkO/UDlu43oaRPfRqmgvK5hkngEL8W8GOCWgwCvJ/jaqcuTZE7aO3UscHayLgpXC+vtW8dQY40VgwMSvTu4Q6oOhbb/KRP1SC8p06LPPwOIoZPa7yWXuYQIE8Pou3uB5qHLAKE7RvebEF7XATqZLuEUKT+k9vNUdK5WA==
+X-HE-Tag: 1759747063-222201
+X-HE-Meta: U2FsdGVkX1+6WDEZ86sQFW50CT93kqvNFGh7DbjOEDTqPczxDKyraGgA5O2yPmY7rt+TlyiHqqeQtuaUFNFO8NPhfkUMW67wLxRmArMpge33zYF+YDt9lOvsUYxuUfNLdNrmDdJCIb91ctw0PQBCmZVGY7VIh16wgIyEXrSUh0vWXtqxs45tquXn7UJExdtZmjhOo1H7QGbrxpHgW0Etg2C1ioBx3aI1Bd//xspWPnu68tluoIQvsEMI5FsOn8d6uF/hHFapfvdBcBi6eMsBMRIP0DzuhphUcUKJpbiibRwPnvZMEFRTcB23oNH/jlpnTwvYa2rkqL08FPS9Tdm6/3+q4EVimQ10G1X+ZjOWAjAZK7N/kdHrI/Tm1cK96LLiEC1NAQ7TZReo1n/2WPLaRUZziVGJ/3JwDX39pi/Yq/jQSNNSjcdkg9DJKSrGySoR/1BD0LqBzlEqCruwdMPGhkEF+WuNciDR9rwPQgLggD1V7gJevfY0ZhBsO7U0ASp/+Wma+gNZXI9aYYjJxCwJRikUvm2opjVDBx7+FbQhxbDFZG0egfiaLVh01QPYBUFG/QROu24t5rOrzp3XVJZPRglDyTl4NB4cwJraBJhcVQhzSVUPUzFnfLSbKOYyU6iSa+zT/mh0Cj+4tqlCkvQHl8RDS18WmSS9GLCyn39iauGhn8hXWRociCb2PZeOVLYKjIjF3hPpgLrG77DX01mjudR4+e+gQAWHxVHbSG1Q6vCv+z+s1eo7KXvNLLn/aEnwTmvlk2uTP7o1INmsqw8SDvG8dkAw+Gx5rHaVArskpFearzsrgajOw/mqUaTGPW+5JZzPjJTaDol9gln/IpciRPDBGie/wA7EkwmpLz1FPUfW4UxuMdW+n9BoVAe1Ibo1tUuR4jkZ+9XKRkSAnQ9YrVfiW0kPZSjhn3iAa8dQT8TGQqy5tOB3VETh/s4noFWIksC0xlbT4hzmCmMsE/l
+ 6GqRZk3W
+ oq/6yvZXGx0WhE8TXL/QaADn8IiDv55QZAwbH5J+zPkHgZ7Lo+x+IT6WG3Z6MRR6EIl46It4eBLJ8PsGe6YI1Q1rtUAl53aDWvrbUv37ECJlVWlU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,85 +128,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 04, 2025 at 01:02:02PM +0800, Baoquan He wrote:
-> On 10/04/25 at 12:11pm, Baoquan He wrote:
-> > On 10/01/25 at 09:26pm, Uladzislau Rezki (Sony) wrote:
-> > > __vmalloc() function now supports non-blocking flags such as
-> > > GFP_ATOMIC and GFP_NOWAIT. Update the documentation accordingly.
-> > > 
-> > > Acked-by: Michal Hocko <mhocko@suse.com>
-> > > Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> > > ---
-> > >  mm/vmalloc.c | 21 +++++++++++----------
-> > >  1 file changed, 11 insertions(+), 10 deletions(-)
-> > > 
-> > > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > > index d7e7049e01f8..2b45cd4ce119 100644
-> > > --- a/mm/vmalloc.c
-> > > +++ b/mm/vmalloc.c
-> > > @@ -3881,19 +3881,20 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
-> > >   * @caller:		  caller's return address
-> > >   *
-> > >   * Allocate enough pages to cover @size from the page level
-> > > - * allocator with @gfp_mask flags. Please note that the full set of gfp
-> > > - * flags are not supported. GFP_KERNEL, GFP_NOFS and GFP_NOIO are all
-> > > - * supported.
-> > > - * Zone modifiers are not supported. From the reclaim modifiers
-> > > - * __GFP_DIRECT_RECLAIM is required (aka GFP_NOWAIT is not supported)
-> > > - * and only __GFP_NOFAIL is supported (i.e. __GFP_NORETRY and
-> > > - * __GFP_RETRY_MAYFAIL are not supported).
-> > > + * allocator with @gfp_mask flags and map them into contiguous
-> > > + * virtual range with protection @prot.
-> > >   *
-> > > - * __GFP_NOWARN can be used to suppress failures messages.
-> > > + * Supported GFP classes: %GFP_KERNEL, %GFP_ATOMIC, %GFP_NOWAIT,
-> > > + * %GFP_NOFS and %GFP_NOIO. Zone modifiers are not supported.
-> > > + * Please note %GFP_ATOMIC and %GFP_NOWAIT are supported only
-> > > + * by __vmalloc().
-> > > +
-> > > + * Retry modifiers: only %__GFP_NOFAIL is supported; %__GFP_NORETRY
-> > > + * and %__GFP_RETRY_MAYFAIL are not supported.
-> > 
-> > Do we need to update the documentation of __vmalloc_node_noprof()
-> > accordingly? I see it has below description about "Retry modifiers"
-> > where gfp_mask is passed down to __vmalloc_node_range_noprof() directly
-> > but have different description. Not sure if I missed anything.
-> > 
-> > ===
-> >  * Retry modifiers: only %__GFP_NOFAIL is supported; %__GFP_NORETRY
-> >  * and %__GFP_RETRY_MAYFAIL are not supported.
-> > ===
-> 
-> Sorry, I copied the wrong sentences. Below is copied from documentation
-> of __vmalloc_node_noprof().
-> ====
->  * Reclaim modifiers in @gfp_mask - __GFP_NORETRY, __GFP_RETRY_MAYFAIL
->  * and __GFP_NOFAIL are not supported
-> ====
-> 
-> 
-> > 
-> > >   *
-> > > - * Map them into contiguous kernel virtual space, using a pagetable
-> > > - * protection of @prot.
-> > > + * %__GFP_NOWARN can be used to suppress failure messages.
-> > >   *
-> > > + * Can not be called from interrupt nor NMI contexts.
-> > >   * Return: the address of the area or %NULL on failure
-> > >   */
-> > >  void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
-> > > -- 
-> > > 2.47.3
-> > > 
-> > 
-> 
-We need. But i am not sure it should be fully copy-pasted from the
-__vmalloc_node_range_noprof(). At least __GFP_NOFAIL is supported
-and thus stating that it is not - is wrong.
-
-It has to be fixed but not by this series because when __GFP_NOFAIL
-support was introduced the doc. should have to be updated accordingly.
-
---
-Uladzislau Rezki
+Pi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+RnJvbTogQm9yaXNsYXYgUGV0a292IDxicEBh
+bGllbjguZGU+DQo+U2VudDogMTkgU2VwdGVtYmVyIDIwMjUgMTE6NDANCj5UbzogSm9uYXRoYW4g
+Q2FtZXJvbiA8am9uYXRoYW4uY2FtZXJvbkBodWF3ZWkuY29tPg0KPkNjOiBTaGlqdSBKb3NlIDxz
+aGlqdS5qb3NlQGh1YXdlaS5jb20+OyByYWZhZWxAa2VybmVsLm9yZzsgYWtwbUBsaW51eC0NCj5m
+b3VuZGF0aW9uLm9yZzsgcnBwdEBrZXJuZWwub3JnOyBkZmVyZ3Vzb25AYW1wZXJlY29tcHV0aW5n
+LmNvbTsgbGludXgtDQo+ZWRhY0B2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWFjcGlAdmdlci5rZXJu
+ZWwub3JnOyBsaW51eC1tbUBrdmFjay5vcmc7IGxpbnV4LQ0KPmRvY0B2Z2VyLmtlcm5lbC5vcmc7
+IHRvbnkubHVja0BpbnRlbC5jb207IGxlbmJAa2VybmVsLm9yZzsNCj5ZYXplbi5HaGFubmFtQGFt
+ZC5jb207IG1jaGVoYWJAa2VybmVsLm9yZzsgTGludXhhcm0NCj48bGludXhhcm1AaHVhd2VpLmNv
+bT47IHJpZW50amVzQGdvb2dsZS5jb207IGppYXFpeWFuQGdvb2dsZS5jb207DQo+Sm9uLkdyaW1t
+QGFtZC5jb207IGRhdmUuaGFuc2VuQGxpbnV4LmludGVsLmNvbTsNCj5uYW95YS5ob3JpZ3VjaGlA
+bmVjLmNvbTsgamFtZXMubW9yc2VAYXJtLmNvbTsganRob3VnaHRvbkBnb29nbGUuY29tOw0KPnNv
+bWFzdW5kYXJhbS5hQGhwZS5jb207IGVyZGVtYWt0YXNAZ29vZ2xlLmNvbTsgcGdvbmRhQGdvb2ds
+ZS5jb207DQo+ZHVlbndlbkBnb29nbGUuY29tOyBndGhlbGVuQGdvb2dsZS5jb207DQo+d3NjaHdh
+cnR6QGFtcGVyZWNvbXB1dGluZy5jb207IHdic0Bvcy5hbXBlcmVjb21wdXRpbmcuY29tOw0KPm5p
+ZmFuLmN4bEBnbWFpbC5jb207IHRhbnhpYW9mZWkgPHRhbnhpYW9mZWlAaHVhd2VpLmNvbT47IFpl
+bmd0YW8gKEIpDQo+PHByaW1lLnplbmdAaGlzaWxpY29uLmNvbT47IFJvYmVydG8gU2Fzc3UgPHJv
+YmVydG8uc2Fzc3VAaHVhd2VpLmNvbT47DQo+a2FuZ2thbmcuc2hlbkBmdXR1cmV3ZWkuY29tOyB3
+YW5naHVpcWlhbmcgPHdhbmdodWlxaWFuZ0BodWF3ZWkuY29tPg0KPlN1YmplY3Q6IFJlOiBbUEFU
+Q0ggdjEyIDEvMl0gQUNQSTpSQVMyOiBBZGQgQUNQSSBSQVMyIGRyaXZlcg0KPg0KPk9uIFdlZCwg
+U2VwIDE3LCAyMDI1IGF0IDA2OjM2OjA4UE0gKzAxMDAsIEpvbmF0aGFuIENhbWVyb24gd3JvdGU6
+DQo+PiBUaGlzICdmaXJzdCBjb250aWd1b3VzIHJhbmdlJyBpcyBhbiBhdHRlbXB0IHRvIERUUlQg
+aW4gYSBjb3JuZXIgY2FzZQ0KPj4gdGhhdCBpcyByZWFsIGJ1dCB3aGVyZSB0aGVyZSBpcyBub3Qg
+YW4gb2J2aW91cyByaWdodCB0aGluZyBkdWUgdG8gc3BlYw0KPmxpbWl0YXRpb25zLg0KPg0KPlRo
+YW5rcyBmb3IgdGFraW5nIHRoZSB0aW1lIHRvIGV4cGFuZC4gVGhlIGdpc3Qgb2YgdGhpcyBuZWVk
+cyB0byBiZSBpbiBhIGNvbW1pdA0KPm1lc3NhZ2UgZm9yIGZ1dHVyZSByZWZlcmVuY2UuDQo+DQo+
+SE9XRVZFUiwgSSdtIHN0aWxsIG5vdCBjbGVhciAqd2h5KiB3ZSdyZSBqdW1waW5nIHRocm91Z2gg
+aG9vcHMgd2hpY2ggd2UNCj5wcm9iYWJseSBzZXQgdXAgb3Vyc2VsdmVzIHdpdGhvdXQgZXZlbiBr
+bm93aW5nIHdoeS4uLiBhdCBsZWFzdCBpdCBsb29rcyBsaWtlIHRoaXMNCj5mcm9tIHdoZXJlIEkn
+bSBzdGFuZGluZy4NCj4NCj5TbyB3aHkgbm90IHN0YXJ0IGEgc2NydWIgb24gdGhlIHdob2xlIHN5
+c3RlbT8gV2h5IGRvIHdlIGNhcmU/DQo+DQo+U2NydWIgaXMgImNoZWFwIiBpbiB0aGUgc2Vuc2Ug
+dGhhdCBpdCBydW5zIGluIHRoZSBiYWNrZ3JvdW5kIGFuZCBpcyB0aGUgbG93ZXN0DQo+cHJpb3Jp
+dHkgYW5kIGV2ZXJ5dGhpbmcgZWxzZSBvdmVycmlkZXMgaXQuDQo+DQo+U28gd2h5IGRlc2lnbiBh
+biBpbnRlcmZhY2Ugb25seSB3aGVuIHRoZXJlJ3MgYSBuZWVkIHRvIGRlc2lnbiBvbmUgYW5kIGRv
+IHRoZQ0KPnNpbXBsZXN0IHRoaW5nIG5vdywgZm9yIHN0YXJ0ZXJzPyBHYXRoZXIgc29tZSBleHBl
+cmllbmNlIGFuZCB0aGVuIGltcnBvdmUgaXQgYnkNCj5hY3R1YWxseSBkZXNpZ25pbmcgYW4gaW50
+ZXJmYWNlLi4uDQoNCkhpIEJvcmlzLA0KDQpTb3JyeSBmb3IgdGhlIGRlbGF5IGluIHJlcGxheWlu
+Zy4NCg0KV2UgaGF2ZSBhIHByb3RvdHlwZSBsb29raW5nIHRvIHNpbXBsaWZ5IHRoaW5ncyBhcyBm
+b2xsb3dzIChsZWF2aW5nIHBlciBub2RlIGFuZA0KcmFuZ2UgY29udHJvbCBmb3IgZnV0dXJlIHdv
+cmspLCBidXQgYmVmb3JlIEkgcG9zdCBpdCAod2FpdGluZyBmb3IgcmMxKSBJJ2QgbGlrZSB0byBk
+aXNjdXNzDQp0aGUgYXBwcm9hY2ggYW5kIGEgZmV3IG9wZW4gcXVlc3Rpb25zIg0KDQoxLlNjcnVi
+IHJhdGUNCjEuMS4gU2NydWIgcmF0ZSBpcyBjb21tb24gYWNyb3NzIHRoZSBOVU1BIG5vZGUgZG9t
+YWlucy4NCjEuMi4gQ29tbW9uIG1pbiBzY3J1YiByYXRlIGlzIG1heCBvZiBtaW4gc2NydWIgcmF0
+ZXMgYWNyb3NzIG5vZGVzLg0KMS4zLiBDb21tb24gbWF4IHNjcnViIHJhdGUgaXMgbWluIG9mIG1h
+eCBzY3J1YiByYXRlcyBhY3Jvc3Mgbm9kZXMuDQoxLjQuIFNjcnViIHJhdGUgYWxsb3dlZCB0byBj
+aGFuZ2Ugb25seSBpZiBOTyBkZW1hbmQgYW5kIHBhdHJvbA0KICAgc2NydWJiaW5nIGlzIGluIHBy
+b2dyZXNzIGFuZCBzaG91bGQgYmUgd2l0aGluIG1pbiBhbmQgbWF4DQogICByYW5nZSBvZiBzY3J1
+YiByYXRlcy4NCg0KMi4gRGVtYW5kIHNjcnViYmluZyBhbmQgQmFja2dyb3VuZCAocGF0cm9sKSBz
+Y3J1YmJpbmcNCjIuMS4gQmFja2dyb3VuZCBzY3J1YmJpbmcgcmVxdWVzdCBlbmFibGVzIEJHIHNj
+cnViYmluZw0KICAgICBvbiBhbGwgTlVNQSBub2Rlcy4NCg0KMi4yLiBGb3IsIGRlbWFuZCBzY3J1
+YmJpbmcgcmVxdWVzdCAyIG9wdGlvbnMgYXJlIGlkZW50aWZpZWQsDQogICAgIHdpdGggKGIpIHRy
+aWVkLiBQbGVhc2Ugc3VnZ2VzdCB0aGUgcmlnaHQgYXBwcm9hY2g/DQphKSBFbmFibGUgZGVtYW5k
+IHNjcnViYmluZyBvbiBhbGwgTlVNQSBub2RlcywgaG9wZSBmb3INCiAgICAgdGhlICdSZXF1ZXN0
+ZWQgQWRkcmVzcyBSYW5nZShJTlBVVCknIGZpZWxkLCBjYW4gdXNlDQogICAgIGFkZHJlc3Mgc2V0
+IHRvIHNjcnViIGFuZCBQQUdFX1NJWkUob3Igc2ltaWxhcikgZm9yIGFsbCB0aGUNCiAgICAgbm9k
+ZXMuIEZvciBSQVMyLCBvbmx5ICdhZGRyJyBzeXNmcyBhdHRyaWJ1dGUgaXMgYWRkZWQgbm93DQog
+ICAgIGFuZCAnc2l6ZScgc3lzZnMgYXR0cmlidXRlIGlzIHJlbW92ZWQuDQpiKSBFbmFibGUgZGVt
+YW5kIHNjcnViYmluZyBvbiBhIE5VTUEgbm9kZSBmb3Igd2hpY2gNCiAgICAgdGhlIHJlcXVlc3Rl
+ZCBhZGRyZXNzIHRvIHNjcnViIGlzIHdpdGhpbiB0aGUgUEEgcmFuZ2Ugb2YNCiAgICAgdGhhdCBu
+b2RlLg0KDQoyLjMuIERlbWFuZCBzY3J1YmJpbmcgaXMgbm90IGFsbG93ZWQgd2hlbiBiYWNrZ3Jv
+dW5kIHNjcnViYmluZw0KICAgICBpcyBpbiBwcm9ncmVzcy4NCg0KMi40LiBJZiAyLjIuIChiKSBp
+cyBjaG9zZW4sIHNob3VsZCBrZXJuZWwgYWxsb3cgQkcNCiAgICAgIHNjcnViYmluZyBvbiByZXN0
+IG9mIHRoZSBub2Rlcywgd2hlbiBkZW1hbmQgc2NydWJiaW5nIG9uDQogICAgICBzb21lIG5vZGUv
+cyBpcyBpbiBwcm9ncmVzcz8NCg0KMi41IFRoZSBzdGF0dXMgb2YgdGhlIEJHIHNjcnViYmluZyBl
+eHBvc2VkIHRvIHRoZSB1c2VyIHNwYWNlDQogICAgaW4gJ2VuYWJsZV9iYWNrZ3JvdW5kJyBzeXNm
+cyBhdHRyaWJ1dGUuDQoNCjIuNiBUaGUgc3RhdHVzIG9mIHRoZSBkZW1hbmQgc2NydWJiaW5nIGV4
+cG9zZWQgdG8gdGhlDQogICAgICAgdXNlciBzcGFjZSBpbiAnYWRkcicgc3lzZnMgYXR0cmlidXRl
+LiBIb3dldmVyIHdoZW4gdGhlDQogICAgICAgZGVtYW5kIHNjcnViYmluZyBpcyBvbiBtdWx0aXBs
+ZS9hbGwgbm9kZXMgYXJlIGluIHByb2dyZXNzLA0KICAgICAgIHdoaWNoIGRlbWFuZCBzY3J1YmJp
+bmcgc3RhdHVzIGFuZCBhZGRyZXNzIGluICdhZGRyJyBzeXNmcyBhdHRyaWJ1dGUNCiAgICAgICBh
+cyBzdGF0dXMgc2hvdWxkIGJlIGV4cG9zZWQgdG8gdGhlIHVzZXIgc3BhY2U/DQphKSBNYXkgYmUg
+dGhlIHN0YXR1cyBvZiB0aGUgZmlyc3QgZGV0ZWN0ZWQgbm9kZSB3aXRoIGRlbWFuZCBzY3J1YmJp
+bmcNCiAgICAgaXMgaW4gcHJvZ3Jlc3M/DQpiKSBEb2VzIG5vdCBzaG93IHRoZSBzdGF0dXMgYXQg
+YWxsLCBqdXN0IGZhaWwgdGhlIHJlcXVlc3QgaWYgdGhlDQogICAgZGVtYW5kIHNjcnViYmluZyBp
+cyBhbHJlYWR5IGluIHByb2dyZXNzIG9uIGEgbm9kZS9hbGwgbm9kZXM/DQpjKSAgQW55IG90aGVy
+IHN1Z2dlc3Rpb24/DQoNClRoYW5rcywNClNoaWp1DQoNCj4NCj5UaHguDQo+DQo+LS0NCj5SZWdh
+cmRzL0dydXNzLA0KPiAgICBCb3Jpcy4NCj4NCj5odHRwczovL3Blb3BsZS5rZXJuZWwub3JnL3Rn
+bHgvbm90ZXMtYWJvdXQtbmV0aXF1ZXR0ZQ0KDQo=
 
