@@ -4,69 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A99E6CCA472
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 07:33:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0E69CCA472
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 07:34:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF3FA8E000F; Mon,  6 Oct 2025 03:33:56 -0400 (EDT)
+	id 396408E0012; Mon,  6 Oct 2025 03:34:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCC558E0002; Mon,  6 Oct 2025 03:33:56 -0400 (EDT)
+	id 36E258E0002; Mon,  6 Oct 2025 03:34:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D08988E000F; Mon,  6 Oct 2025 03:33:56 -0400 (EDT)
+	id 283EC8E0012; Mon,  6 Oct 2025 03:34:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C1F608E0002
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 03:33:56 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7CD7D1604DB
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 07:33:56 +0000 (UTC)
-X-FDA: 83966875272.12.11E2C75
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 172B18E0002
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 03:34:55 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9E034593B4
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 07:34:54 +0000 (UTC)
+X-FDA: 83966877708.25.06E4145
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 898D0180005
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 07:33:54 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=frPhOAL8;
-	spf=pass (imf16.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
+	by imf12.hostedemail.com (Postfix) with ESMTP id A2E114000D
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 07:34:52 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b="PoQ/YiiM";
+	spf=pass (imf12.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
 	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759736034;
+	s=arc-20220608; t=1759736093;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jq/UoXt4j3qjuV6RCbRgHklwEjSfmtMT8rEkHm49Obk=;
-	b=oVXlq8vSgtz6vuc+eSONBgY2ZKnaDWof65YCDaYKMhYZNLCC/XQS4yziCWE0VqA9TNA+jy
-	vJQSdXdIpGnwgpVMvqjGHn/zwod7myxa0E1ayuKXurZ6KtMoYZpgtOwAHGhByd5GLl07pK
-	lIi9CoZYin+6Pxo9E87evjA9NMD0xFA=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=frPhOAL8;
-	spf=pass (imf16.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759736034; a=rsa-sha256;
+	bh=ozcpBdnyfdd/ZDqukq1l7To0tr8KGWvOtxowtir4dKQ=;
+	b=XKbJMSYlMNX8Z/Vx7LiUuLSHguHm1N6PLicrt4geLED5Ze5zt5Vg4Su3XInFd4hv5ycO/Y
+	UgjxuGzrgFmCDEvIpLu+YefTQz2ZDezE2PrWiC2WDkZW+Rp71JibuiMVjkLhxBnEXU+Wf1
+	aaAZWqEutbt00OXp+/GaZkzzkZrfHSs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759736093; a=rsa-sha256;
 	cv=none;
-	b=qOC7YI4ETIllzOZpxiuRIcNgm2WLXPNt4L06iApz9tN8hZzx57nn4h6X+Wchbfg81cSmKO
-	6ySsXfRya2qnxsjRhZz4DW6Opvk4ThoJeyTY+CKMmiGqZJLXeHdrXA8ZfW9MDXyyGDoQwl
-	MYpxV+RKdN49cxwHU75uXRQygPFT2Uc=
+	b=VYzMy55luxZmcNgD6MRm8DKwxkKzKZ6LA33R5nmpoRY5nre+zyPHKTHqwv2ptDfvkRpz1p
+	XELxfHWWsH0J0fAWh1QCWAZdzS04PKeyVNhVatAKroi7ij4+MtwZcAColJXQK1osDBgRHs
+	83nHvGeWiNy/WPk4TssSyx6VYuJCwCg=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b="PoQ/YiiM";
+	spf=pass (imf12.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1759736032;
-	bh=JN355CCyCVKvUpgMjATr9ZWbBiGHbvnXdiVQNUERFYg=;
+	s=mail; t=1759736090;
+	bh=cyJ5srnHpafo4ER0mz30QQ3DiJ+SG1hcqAgPohc0gWQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=frPhOAL8JAjtRfCY41p0+tUStstyq2+cTGabzZX6jdO8BwpAzqmjmN6541GXDLYvm
-	 5IJXI1yDrGUot6bFS9DIxsoL8LQu35b+sUnYk9Cnwt8R2+/kLTJEEUAw2iPJAPRnsg
-	 J1p5zI1PI1n000TCUJVMmcJMG/iAfE37SD4A+cysHJp0XM5PU6ZjUV2ZxMmKTPGyCb
-	 +BFlRatiA9+SbxINJvvV8fERS9FMmgNz6HTRTdZrCc76Tf3DDXrmhtjCBQll522VO9
-	 5djNQua/PgXxlS2Jv3l1tU8XRvg7bpiIPKsh7VR1OJ/q7szUKSzgR/2EZ00pWY2L91
-	 6t3VDn0pBfMxg==
+	b=PoQ/YiiMvz9JD0Hb2DlORjF32GeBQwm7MmS6druJoNptw3EwNamn/Z0oO9tzIvLRv
+	 hLw+gK9eAYt4GxcA08aws73XWzFgJwl/UAQCVRHPiBHBzslqXRSVFCEq/vazN+TXzz
+	 DPHdwPkR1uqUBaTM5QzP1qHfx6lfuHEyh0jqTgU1BlWU1jZrigD//eidkOss/R+0O7
+	 yKngUsRiMKYisxTVLwNVxj7IcAbFrSceEmq9rPgtmqxwvkdjxrxMIquDI6Rfli1MFa
+	 NT/VB1RL0trcZaqMKJ6ZOhoTveHq+sHWPDIgcnZUcq+OXSwOxSJRCvv8X8Jita3C2c
+	 LE6T/vymqWWkQ==
 Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 681EF17E127C;
-	Mon,  6 Oct 2025 09:33:51 +0200 (CEST)
-Date: Mon, 6 Oct 2025 09:33:47 +0200
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 9BCDB17E0B83;
+	Mon,  6 Oct 2025 09:34:49 +0200 (CEST)
+Date: Mon, 6 Oct 2025 09:34:46 +0200
 From: Boris Brezillon <boris.brezillon@collabora.com>
 To: =?UTF-8?B?TG/Dr2M=?= Molinari <loic.molinari@collabora.com>
 Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
@@ -85,25 +85,25 @@ Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
  Christopher Healy <healych@amazon.com>, linux-kernel@vger.kernel.org,
  dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
  linux-mm@kvack.org, kernel@collabora.com
-Subject: Re: [PATCH v3 09/10] drm/panfrost: Introduce huge tmpfs mount point
+Subject: Re: [PATCH v3 07/10] drm/panthor: Introduce huge tmpfs mount point
  option
-Message-ID: <20251006093347.74ea0f51@fedora>
-In-Reply-To: <20251004093054.21388-10-loic.molinari@collabora.com>
+Message-ID: <20251006093446.2e1fd0a8@fedora>
+In-Reply-To: <20251004093054.21388-8-loic.molinari@collabora.com>
 References: <20251004093054.21388-1-loic.molinari@collabora.com>
-	<20251004093054.21388-10-loic.molinari@collabora.com>
+	<20251004093054.21388-8-loic.molinari@collabora.com>
 Organization: Collabora
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A2E114000D
+X-Stat-Signature: or59195euyj5qfp8bqcfi4k3w116etjn
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 898D0180005
-X-Stat-Signature: uqst88bejt6y47jiz8848bozguxged1q
-X-HE-Tag: 1759736034-139987
-X-HE-Meta: U2FsdGVkX18keY7+QfZLCjf9ydEfpPxc/DcXWIobyTX54ifJkT+IqrWBKlzofyVx1h4tJtlP9WE6rkpQdglpZhRM0B6gzo78mPtStLlcGbLkMNDcEz57NSqPhCm04ZwdR/ZFanrGvXMQ8gWQoLzg96ZPCgppbxxTOQaqazXWbs/YskBsc2uma/FmKyC3uBS1jn4LUR8sT+5tunOEjbcFwM1T2mN7H6vyjesUvNXYmFfTwC95iyijX5wKIcncH4dVPla7nOT3KyCiHPojw6O9OFA61MeL7r7OaXQ6LKnL4FxbjCp6R2kZpvDOifnSaoeqpk4UY8uI6ij96lf47M7Kdr26xWCrUV3k9BTabynaqsIvM5upl7fWbH/G1BrhKj2CeU0CBYJ9ogWUOgHAxXBBV0YrZfRoAtcGRd87AivojCUoL4ejPjetFO/14+gvbLj4wIV7GuXmefVvK+BCmPlSq/+Kq430CHuINcCJ7C0i3MHePK7Q1Bbo+tivJyaV4a9c0wmBe5LZlKxABp2hC0JfzW1TFtpiC7vgWyuOxTrjMXykTiyHEYfrpHWT5nmfwFN343moRZG4+Rmbvk2/0sXrL+qeOU3It+8RntJlwqISNyIOazIQ3EH4D8RMJ4tqxFYqAFYozXTG9mab8pQ7KdgEyVIf0I3bXAalcJjG9e7EKb8bJkUCvsxXZpDufg98IeRL5o8iiivpTDTZNRajfFhhdzy2UhxXu+y8oVT5evnWmbfk2nPsS/KTKRA1IC4cKesxPRysQa/EW48ay643JMenencu70klFUv3voaLNLsZnXNTbQD5itBFlFlo7cQkpBS1omQHfVxPjjwAeyAq4yaA7clMd8+aGNVNOhgIL9CuNE7gYoWt2XvDHfKuN1BgEL+RVRdBGiAi9j90kW6vcYoGWsBXWCC2shyLauQWCwENZG3Aupp7Hz8bEuJOeV+5XFosmvlocGfDTJVnkYkghrV
- CdcB9MHq
- nlWi5OYqHJ0nI7rM/+1wSYzCSNn7M0n0IFc51meEsYE0/XpwwfdJGVMpI30eathIdaG+A3HqS3u5ftrhxWQsNtm7Akrtz0wh5u47y1XkZ8G4X92IIraeppfoJmdgNhqcNbnjKSmZ0hMC+sQtI/b9ee22ifaOH7ZsK+YpUpxj88cdpIL0JG2hiDaJc9jxg0IZESfsqEEhako4AWBkK89ZyvQBNrun3MrMC02pEWbUKMQNu7HYuDPZO4hgLdaeC4tJJAfOTmop5eKtP4+nbtXTyQqlG/Co46fNuxY6bB+bFhDqqHhwdlIRGkNvGu3xBzJo28OM4mieA4u8Lj1xCiCRvexKpI0MPEokgSbKIrDhbAroYBJNLUe0yLrXkloO7hnJk508/MW5V7KqYiwqODxehZuW6tbJFx35lkK/v
+X-HE-Tag: 1759736092-183604
+X-HE-Meta: U2FsdGVkX1+9u7GN3GFK7PZ0zhPXdjNAMcFHmVoj4zhPszCVG3pzK8cyS2SPWYSThhUakcl88genN5qOWHSnz2d/pggJe9KBQ1Vbd4QSw/emcKUXwQKwgBo3yPezl+jUP5NGXlNu5ggdQPKGZopPLZoFFmvfCPcft2UdCx9YSayAFcVgQCesSzdgeovNmi2JwuAmVHFxPle/AOx+1IILc8k5n24PKxfgeCGaBE3Kca0Scff3uX4XxdwIY6kjghw8J7Ow0QuziMhGW10bmXK3wR0/3N39SAIMRE9rLM5vO25LhVo5VkDQRbYXcWE3vqAXGYgSZCIqlw1Ws2L1p1gvW5nEcU2I7aqjIzXhcOLDFOIVg4Vo5ZB8n3ef8QYlnuYV+sc0Un6Re6LOm0lyZjo15/z6iHUHAddBEeG2fPItosjqOuUrOSVnhZuHrsL0dJdrlGstZn0ypsNBVDqhoYBkBGEr1TKhwqtcMm0BtZrkzCJjWngLsuKGc1vzd1VA/MwHKmYBgJMvopX8bHk9MnDTk3faQRi3/XUIq05hSjcP3O4KSWIGQ1Zi+5iVeiWQxMp84QNn1aGK+zYtDgV/zbuHYgWdydqQ7iUbWYqKPPJVLPHC2HQUeiYLiN9UuEPG/T3U0Hmzbl+CHYggiXK9YTgpyhOFJv8Fg4UCJC0OkSEimw+t1RbJmpSBbvjFBRMxzQhQIPFmKthBbnIebCKOXo6O5wmRYyemVKH2Ik/PhaP7siRr7ueW0VEO1WrWjlIvDN4/MGUkk9ffwtLj79OiqR+je3MhEdV5rHOsg0qru2vS1VpWY5ih1itUw1vr3uZ549x2QbmbNpHSAtuLzp64P2SkRVqzXNNZnbrYgZZCmzc0YdS8wzCmY3z32cx3YjpoNiCeUEcejVfeYjuxui5EZ5tFIUGixg/g9da5F3qIAycyw91zuKO7ikfssupF2G/ewyYWsK0kuPRDE/LFcNAlUvu
+ 9AldnBaf
+ NtihOZGki520En18smkI3CSTaXmi3+U/7bR5+HhJ2Oh0ehMJzM00tni5rPGbRFJvJeUhFDQftQFhkP/0E24s8TTeUmejNixa3WPlarhUZhO1begJe+H8xlEkUmQG5hawT5ilotUHdkS5RszqbqdDMpk6gjZXj78DECizccHHaxsUPHCCmRQYExMxweC5XgOoL622Mirko0LtyXjYXcmh3iRmwQGFF2yrzIwPfVDgB8OR+4WHxnoJYb21DeFmw32pQfhfzDV2hyX0MsGeXrTk+qIU8I7W3DbgbaBXUByZ3H7P2T5Zn03Zg8KAgiVBw1jNgtY8ClwFUxV2JBTd8lGJCFYWTWgisBuXigicshL0DbpKbCOOBTulVN6/SPSj2WkiFBbeRcyjDJUt3fBugCjvy8ZATZI+B35ZEhjrF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,10 +112,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat,  4 Oct 2025 11:30:52 +0200
+On Sat,  4 Oct 2025 11:30:50 +0200
 Lo=C3=AFc Molinari <loic.molinari@collabora.com> wrote:
 
-> Introduce the 'panfrost.transparent_hugepage' boolean module parameter
+> Introduce the 'panthor.transparent_hugepage' boolean module parameter
 > (false by default). When the parameter is set to true, a new tmpfs
 > mount point is created and mounted using the 'huge=3Dwithin_size'
 > option. It's then used at GEM object creation instead of the default
@@ -126,154 +126,150 @@ Lo=C3=AFc Molinari <loic.molinari@collabora.com> wrote:
 > - use huge tmpfs mountpoint in drm_device
 >=20
 > Signed-off-by: Lo=C3=AFc Molinari <loic.molinari@collabora.com>
-
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-
-A couple minor nits below.
-
 > ---
->  drivers/gpu/drm/panfrost/panfrost_device.c |  3 +++
->  drivers/gpu/drm/panfrost/panfrost_drv.c    |  6 ++++++
->  drivers/gpu/drm/panfrost/panfrost_drv.h    | 11 +++++++++++
->  drivers/gpu/drm/panfrost/panfrost_gem.c    | 19 +++++++++++++++++++
->  drivers/gpu/drm/panfrost/panfrost_gem.h    |  2 ++
->  5 files changed, 41 insertions(+)
->  create mode 100644 drivers/gpu/drm/panfrost/panfrost_drv.h
+>  drivers/gpu/drm/panthor/panthor_device.c |  3 +++
+>  drivers/gpu/drm/panthor/panthor_drv.c    |  7 +++++++
+>  drivers/gpu/drm/panthor/panthor_drv.h    | 11 +++++++++++
+>  drivers/gpu/drm/panthor/panthor_gem.c    | 19 +++++++++++++++++++
+>  drivers/gpu/drm/panthor/panthor_gem.h    |  2 ++
+>  5 files changed, 42 insertions(+)
+>  create mode 100644 drivers/gpu/drm/panthor/panthor_drv.h
 >=20
-> diff --git a/drivers/gpu/drm/panfrost/panfrost_device.c b/drivers/gpu/drm=
-/panfrost/panfrost_device.c
-> index 04bec27449cb..a189bfaac959 100644
-> --- a/drivers/gpu/drm/panfrost/panfrost_device.c
-> +++ b/drivers/gpu/drm/panfrost/panfrost_device.c
-> @@ -12,6 +12,7 @@
->  #include "panfrost_device.h"
->  #include "panfrost_devfreq.h"
->  #include "panfrost_features.h"
-> +#include "panfrost_gem.h"
->  #include "panfrost_issues.h"
->  #include "panfrost_gpu.h"
->  #include "panfrost_job.h"
-> @@ -266,6 +267,8 @@ int panfrost_device_init(struct panfrost_device *pfde=
-v)
->  	if (err)
->  		goto out_job;
+> diff --git a/drivers/gpu/drm/panthor/panthor_device.c b/drivers/gpu/drm/p=
+anthor/panthor_device.c
+> index 81df49880bd8..3c0387156bb9 100644
+> --- a/drivers/gpu/drm/panthor/panthor_device.c
+> +++ b/drivers/gpu/drm/panthor/panthor_device.c
+> @@ -17,6 +17,7 @@
+>  #include "panthor_devfreq.h"
+>  #include "panthor_device.h"
+>  #include "panthor_fw.h"
+> +#include "panthor_gem.h"
+>  #include "panthor_gpu.h"
+>  #include "panthor_hw.h"
+>  #include "panthor_mmu.h"
+> @@ -269,6 +270,8 @@ int panthor_device_init(struct panthor_device *ptdev)
+>  	if (ret)
+>  		goto err_unplug_fw;
 > =20
-> +	panfrost_gem_init(pfdev);
+> +	panthor_gem_init(ptdev);
 > +
->  	return 0;
->  out_job:
->  	panfrost_job_fini(pfdev);
-> diff --git a/drivers/gpu/drm/panfrost/panfrost_drv.c b/drivers/gpu/drm/pa=
-nfrost/panfrost_drv.c
-> index 22350ce8a08f..e376e70a3379 100644
-> --- a/drivers/gpu/drm/panfrost/panfrost_drv.c
-> +++ b/drivers/gpu/drm/panfrost/panfrost_drv.c
-> @@ -862,6 +862,12 @@ static const struct drm_driver panfrost_drm_driver =
+>  	/* ~3 frames */
+>  	pm_runtime_set_autosuspend_delay(ptdev->base.dev, 50);
+>  	pm_runtime_use_autosuspend(ptdev->base.dev);
+> diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/pant=
+hor/panthor_drv.c
+> index fdbe89ef7f43..a2be3b904ca2 100644
+> --- a/drivers/gpu/drm/panthor/panthor_drv.c
+> +++ b/drivers/gpu/drm/panthor/panthor_drv.c
+> @@ -1556,6 +1556,7 @@ static const struct file_operations panthor_drm_dri=
+ver_fops =3D {
+>  	.read =3D drm_read,
+>  	.llseek =3D noop_llseek,
+>  	.mmap =3D panthor_mmap,
+> +	.get_unmapped_area =3D drm_gem_get_unmapped_area,
+>  	.show_fdinfo =3D drm_show_fdinfo,
+>  	.fop_flags =3D FOP_UNSIGNED_OFFSET,
+>  };
+> @@ -1623,6 +1624,12 @@ static const struct drm_driver panthor_drm_driver =
 =3D {
 >  #endif
 >  };
 > =20
 > +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> +bool panfrost_transparent_hugepage;
-> +module_param_named(transparent_hugepage, panfrost_transparent_hugepage, =
-bool, 0400);
+> +bool panthor_transparent_hugepage;
+> +module_param_named(transparent_hugepage, panthor_transparent_hugepage, b=
+ool, 0400);
 > +MODULE_PARM_DESC(transparent_hugepage, "Use a dedicated tmpfs mount poin=
 t with Transparent Hugepage enabled (false =3D default)");
-
-Same here, I'd go for [panfrost_]enable_thp.
-
 > +#endif
 > +
->  static int panfrost_probe(struct platform_device *pdev)
+>  static int panthor_probe(struct platform_device *pdev)
 >  {
->  	struct panfrost_device *pfdev;
-> diff --git a/drivers/gpu/drm/panfrost/panfrost_drv.h b/drivers/gpu/drm/pa=
-nfrost/panfrost_drv.h
+>  	struct panthor_device *ptdev;
+> diff --git a/drivers/gpu/drm/panthor/panthor_drv.h b/drivers/gpu/drm/pant=
+hor/panthor_drv.h
 > new file mode 100644
-> index 000000000000..60454611b6a6
+> index 000000000000..27fe9b6f77bd
 > --- /dev/null
-> +++ b/drivers/gpu/drm/panfrost/panfrost_drv.h
+> +++ b/drivers/gpu/drm/panthor/panthor_drv.h
 > @@ -0,0 +1,11 @@
 > +// SPDX-License-Identifier: GPL-2.0 or MIT
 > +/* Copyright 2025 Amazon.com, Inc. or its affiliates */
 > +
-> +#ifndef __PANFROST_DRV_H__
-> +#define __PANFROST_DRV_H__
+> +#ifndef __PANTHOR_DRV_H__
+> +#define __PANTHOR_DRV_H__
 > +
 > +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> +extern bool panfrost_transparent_hugepage;
+> +extern bool panthor_transparent_hugepage;
 > +#endif
 > +
 > +#endif
-> diff --git a/drivers/gpu/drm/panfrost/panfrost_gem.c b/drivers/gpu/drm/pa=
-nfrost/panfrost_gem.c
-> index 85d6289a6eda..c3883a639e13 100644
-> --- a/drivers/gpu/drm/panfrost/panfrost_gem.c
-> +++ b/drivers/gpu/drm/panfrost/panfrost_gem.c
-> @@ -1,5 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0
+> diff --git a/drivers/gpu/drm/panthor/panthor_gem.c b/drivers/gpu/drm/pant=
+hor/panthor_gem.c
+> index 156c7a0b62a2..49b7d288bfdf 100644
+> --- a/drivers/gpu/drm/panthor/panthor_gem.c
+> +++ b/drivers/gpu/drm/panthor/panthor_gem.c
+> @@ -1,6 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0 or MIT
 >  /* Copyright 2019 Linaro, Ltd, Rob Herring <robh@kernel.org> */
+>  /* Copyright 2023 Collabora ltd. */
 > +/* Copyright 2025 Amazon.com, Inc. or its affiliates */
 > =20
 >  #include <linux/cleanup.h>
->  #include <linux/err.h>
-> @@ -9,9 +10,27 @@
+>  #include <linux/dma-buf.h>
+> @@ -11,10 +12,28 @@
+>  #include <drm/panthor_drm.h>
 > =20
->  #include <drm/panfrost_drm.h>
->  #include "panfrost_device.h"
-> +#include "panfrost_drv.h"
->  #include "panfrost_gem.h"
->  #include "panfrost_mmu.h"
+>  #include "panthor_device.h"
+> +#include "panthor_drv.h"
+>  #include "panthor_fw.h"
+>  #include "panthor_gem.h"
+>  #include "panthor_mmu.h"
 > =20
-> +void panfrost_gem_init(struct panfrost_device *pfdev)
+> +void panthor_gem_init(struct panthor_device *ptdev)
 > +{
 > +	int err;
 > +
-> +	if (!panfrost_transparent_hugepage)
+> +	if (!panthor_transparent_hugepage)
 > +		return;
 > +
-> +	err =3D drm_gem_huge_mnt_create(pfdev->ddev, "within_size");
+> +	err =3D drm_gem_huge_mnt_create(&ptdev->base, "within_size");
 > +	if (err && err !=3D -EEXIST) {
-> +		drm_warn(pfdev->ddev, "Can't use Transparent Hugepage (%d)\n",
+> +		drm_warn(&ptdev->base, "Can't use Transparent Hugepage (%d)\n",
 > +			 -err);
-
-I think errors are printed as negative values elsewhere, so I'd stick to err
-not -err here.
-
 > +		return;
 > +	}
 > +
-> +	drm_info(pfdev->ddev, "Using Transparent Hugepage\n");
-
-
-Here's a shorter version of the same thing (I dropped the EEXIST based on
-my comment on patch 3).
+> +	drm_info(&ptdev->base, "Using Transparent Hugepage\n");
 
 	if (err)
-		drm_warn(pfdev->ddev, "Can't use Transparent Hugepage (err=3D%d)\n", err);
+		drm_warn(&ptdev->base, "Can't use Transparent Hugepage (err=3D%d)\n", err=
+);
 	else
-		drm_info(pfdev->ddev, "Using Transparent Hugepage\n");
+		drm_info(&ptdev->base, "Using Transparent Hugepage\n");
 
 > +}
 > +
 >  #ifdef CONFIG_DEBUG_FS
->  static void panfrost_gem_debugfs_bo_add(struct panfrost_device *pfdev,
->  					struct panfrost_gem_object *bo)
-> diff --git a/drivers/gpu/drm/panfrost/panfrost_gem.h b/drivers/gpu/drm/pa=
-nfrost/panfrost_gem.h
-> index 8de3e76f2717..1a62529ff06f 100644
-> --- a/drivers/gpu/drm/panfrost/panfrost_gem.h
-> +++ b/drivers/gpu/drm/panfrost/panfrost_gem.h
-> @@ -124,6 +124,8 @@ drm_mm_node_to_panfrost_mapping(struct drm_mm_node *n=
-ode)
->  	return container_of(node, struct panfrost_gem_mapping, mmnode);
+>  static void panthor_gem_debugfs_bo_init(struct panthor_gem_object *bo)
+>  {
+> diff --git a/drivers/gpu/drm/panthor/panthor_gem.h b/drivers/gpu/drm/pant=
+hor/panthor_gem.h
+> index 80c6e24112d0..2eefe9104e5e 100644
+> --- a/drivers/gpu/drm/panthor/panthor_gem.h
+> +++ b/drivers/gpu/drm/panthor/panthor_gem.h
+> @@ -136,6 +136,8 @@ struct panthor_gem_object *to_panthor_bo(struct drm_g=
+em_object *obj)
+>  	return container_of(to_drm_gem_shmem_obj(obj), struct panthor_gem_objec=
+t, base);
 >  }
 > =20
-> +void panfrost_gem_init(struct panfrost_device *pfdev);
+> +void panthor_gem_init(struct panthor_device *ptdev);
 > +
->  struct drm_gem_object *panfrost_gem_create_object(struct drm_device *dev=
+>  struct drm_gem_object *panthor_gem_create_object(struct drm_device *ddev=
 , size_t size);
 > =20
->  struct drm_gem_object *
+>  int
 
 
