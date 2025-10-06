@@ -4,85 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06D08CAC5B8
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 12:14:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08850CCA471
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 12:27:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 657D48E000A; Mon,  6 Oct 2025 08:14:09 -0400 (EDT)
+	id 4A1E88E0005; Mon,  6 Oct 2025 08:27:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62F3A8E0002; Mon,  6 Oct 2025 08:14:09 -0400 (EDT)
+	id 479C28E0002; Mon,  6 Oct 2025 08:27:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56CB18E000A; Mon,  6 Oct 2025 08:14:09 -0400 (EDT)
+	id 3B6228E0005; Mon,  6 Oct 2025 08:27:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 441EE8E0002
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 08:14:09 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C963913B45D
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 12:14:08 +0000 (UTC)
-X-FDA: 83967581376.21.4FC3FD6
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf03.hostedemail.com (Postfix) with ESMTP id AE75D20002
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 12:14:06 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf03.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DB608E0002
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 08:27:54 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C612D13B4D7
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 12:27:53 +0000 (UTC)
+X-FDA: 83967616026.18.673D5E1
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 903B81A0003
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 12:27:51 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=usqtrK+T;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CcQacKOT;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=usqtrK+T;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CcQacKOT;
+	spf=pass (imf19.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759753671; a=rsa-sha256;
+	cv=none;
+	b=GwqcptXvyN+qNrYZUkDbWhJsifCZnN1V6bPCOpdhJL/AV+HkeuOnHJjK31a2GWFdvNQqd2
+	dEVcmPB92/LCm/c9FXW7o0OPflMNArFa/EQN2RhjrHNBxy7RuMoHcxR6/uEbXj59Xd+KN7
+	Yj/UR9idpdWIfWJfv2YWCZLBLvD76t8=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=usqtrK+T;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CcQacKOT;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=usqtrK+T;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CcQacKOT;
+	spf=pass (imf19.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759752847;
+	s=arc-20220608; t=1759753671;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=W/N8w/X5/6A+i1bNWZkBrJvAuFqWFqiVFijqUr8HYU8=;
+	b=R3Up7/n9BunXit6ZBiPeeIsFrYTIn6KbXBYjQy20pzEAaF0bYTzpxLV3MaPlgtdkmS08H0
+	QFwfvSV9VUP/n28gKPZOnn4NjxAY5iYRP9ivgpUK1lXfDDHB9u5cHy5tIpSIzH+xws9UX2
+	1dB9gARCp1VQ6w2qgBSpi7mFC2iddUg=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 22D401F45B;
+	Mon,  6 Oct 2025 12:27:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1759753670; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OR/8CTxYA1VZDFce7ARdTY+r5bwCEWAeUsYAStFBia8=;
-	b=lNoxLwAe1GaZT2Mg7UFH1fYX9MvCexTsWTjpJiaaJqr9vQbf9Y/LhlyJhfNFXPEcnHKirj
-	JksASa2UH4u0ms2XO0Hx617l1BXaSS//U9HBGovbcgi9qz7ryj2gWnQhuPnzzuz4kssg5q
-	3AcfMTB08yletfkIvDmyELClCwb/6ko=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf03.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759752847; a=rsa-sha256;
-	cv=none;
-	b=kTq9fGKaH2ZCgj+GAG03DnSRF/D6HZXrhzNb+HUCZn9BlQH3ileuRDm3uuTV7RtOeocyZS
-	6USDHKGxKtenZj7mA3L5XqJHW62CKlUjgHHA+Oh+HwphgkJ4DF/KsPav30jMROzZY2Z/jn
-	8eJQMOmXeaXbh9qztFAKtStqKePPECo=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A7B9A1515;
-	Mon,  6 Oct 2025 05:13:57 -0700 (PDT)
-Received: from [10.57.81.160] (unknown [10.57.81.160])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0AAD73F738;
-	Mon,  6 Oct 2025 05:14:03 -0700 (PDT)
-Message-ID: <66251c3e-4970-4cac-a1fc-46749d2a727a@arm.com>
-Date: Mon, 6 Oct 2025 13:14:02 +0100
+	bh=W/N8w/X5/6A+i1bNWZkBrJvAuFqWFqiVFijqUr8HYU8=;
+	b=usqtrK+TmjksJl2a/CxQ+wYENLyYyi5sf8CZiHKfYp7iWO/99o240xW3a6M3gEna9bsKcU
+	KTyKOlqz/2ZHMF3xC+h3xY70NRL9K6RLuJTDH/44pGYgXws9j9XAEBQk0oAmvmAcNN4bzB
+	is8AYuWk9YLWBCALmIuozIZqCMZj6EI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1759753670;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W/N8w/X5/6A+i1bNWZkBrJvAuFqWFqiVFijqUr8HYU8=;
+	b=CcQacKOTPAw4+hTxz7jwmT4blyIjGwNgb3fH0Urxj3J20aSj35LkuIg78UqdBkA+9AygDE
+	FGjxyd0730dUzIAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1759753670; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W/N8w/X5/6A+i1bNWZkBrJvAuFqWFqiVFijqUr8HYU8=;
+	b=usqtrK+TmjksJl2a/CxQ+wYENLyYyi5sf8CZiHKfYp7iWO/99o240xW3a6M3gEna9bsKcU
+	KTyKOlqz/2ZHMF3xC+h3xY70NRL9K6RLuJTDH/44pGYgXws9j9XAEBQk0oAmvmAcNN4bzB
+	is8AYuWk9YLWBCALmIuozIZqCMZj6EI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1759753670;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W/N8w/X5/6A+i1bNWZkBrJvAuFqWFqiVFijqUr8HYU8=;
+	b=CcQacKOTPAw4+hTxz7jwmT4blyIjGwNgb3fH0Urxj3J20aSj35LkuIg78UqdBkA+9AygDE
+	FGjxyd0730dUzIAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6925E13995;
+	Mon,  6 Oct 2025 12:27:49 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id zA10FsW142g+dgAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Mon, 06 Oct 2025 12:27:49 +0000
+Date: Mon, 6 Oct 2025 14:27:47 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Deepanshu Kartikey <kartikey406@gmail.com>
+Cc: muchun.song@linux.dev, david@redhat.com, akpm@linux-foundation.org,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	broonie@kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] hugetlbfs: skip PMD unsharing when shareable lock
+ unavailable
+Message-ID: <aOO1w3OMc7c563w3@localhost.localdomain>
+References: <20251006075436.8417-1-kartikey406@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] fsnotify: Pass correct offset to fsnotify_mmap_perm()
-Content-Language: en-GB
-To: David Hildenbrand <david@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Amir Goldstein <amir73il@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20251003155238.2147410-1-ryan.roberts@arm.com>
- <edc832b4-5f4c-4f26-a306-954d65ec2e85@redhat.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <edc832b4-5f4c-4f26-a306-954d65ec2e85@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: mzw336zs9ohefxe13ong8t8y4zopupz5
-X-Rspamd-Queue-Id: AE75D20002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251006075436.8417-1-kartikey406@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1759752846-838227
-X-HE-Meta: U2FsdGVkX18tteFk6Gf+Y14Ayxmi+BE/60DQNZVcxevkbLUIXa7ADcXRwuesiG22sNbe5Jnky7pSEMpJnq0FxzdmtR3sW1s2A0j1AtWdgZsSiQDM2fWGX+prbUWCRHs+mlGBl0HrOEBhG6+5LeGxwMmQZ5ycRuvpdPvcQTskBFbRJx09GM9sGZ0lSkaGmn87Og7cuEqB+bHWigmgEsQ5DHQxsl0LC9wcBHV9MLPw3LA1JIeOd3lWd2dcylP/UIlCQEkhVH2824V2/Wpe//1qwiwkfQF09h9dJVPuP5j+1smB8OHTRqfhnTnOQZgDjFUTQFxP3jD4TKeGnmLWYlHaYk34maC4+KcG7dzOWNXgUM5Z3XvpUwL5L3j1pQDxWa5p1ZpjXQ8yN/szPe7TZM1nfk2qwymEVXCTSZovfmpTu/LHLeDKN5hfQvnOrRSsZi9NUrywKQN+X1/wKKqijkZf3UmX1/gPIC39GkRQvNkVve/jZghtyUHPXCHD5NSOXOX9C4R5npZqXVZxHgKDIi6rde3NFCoOVgXYYHb6bGXkl2O6J9npCA2RaFnz7QoFJQKNzWAymYPcwNYcGEjwhfqvQZDNyzlr+98N8a3RvYZfEPBtYn4ujObuSiJTzr3i6vtC419KgncVTJ72Rt0lT59mbf9Gsu2v8AacDn54vXZHWLK+Zh6ReyKyTdGGiWP3s/6MQXVadw0Vfc+FOOhnliI5LrDv4v+GVl9sBrG9sfJGt/9Oved4fb3YUtbK+9Ar8e4/sy96BcVnkFTQiHVZ0PMC4yHaYumrDbxjMo+EOM3JT8NkJjYNhdN1VoKnis665I29TQn6f0ZuTv10Caonio1I4XElPwEtpODc3lKeKtlW76ctCbN2FTZ6IDtg4Nsteip0kNWxa8/gab2290vE8sPanW8slKC5riImf23imeLqgiWSsRywbmbWs5PG2d4BgWKH6IM28plp4EkkDP0Wcqo
- tObjgZ89
- 9WrX6RTlN76tOVEJgjEXYuD4cPiGraC1wZXdvYOhaPyfHRjyt1HPU9ikzKz/92LOMbtk8pPiHeps4QeSh+CV1Xi2b2zkbmWALWiyUdVsKW8qvbLHJE4qKP3Dij2qvj65zt+cG2SGzJ7w5TQgMzp8KH4RKd9wRDs4F2nUmAl/+X59hrTuOVv28C6yj/Ob1/OEjKXHBCewfrKnOeV55fRx1Kl9TfY2e1GjmxPxzC1LMPYvfBoOIMuSLsqWhegXWKebT8LFQaWnmkZPVy+1Cx25Xk5BZytut4fNi71zYdGZ8SwHt9Qw=
+X-Stat-Signature: bayhch6dppeppf3pu15kamnadebhsobg
+X-Rspamd-Queue-Id: 903B81A0003
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1759753671-826864
+X-HE-Meta: U2FsdGVkX18cpncQpXZnt083LctxyIpurBKj3cItGh+e8hiqrzqFGbpCgIRUJNzkyMc2h8cfJqfpaBhkTUqUqhCkVctSBtYJBFCXU//p/2YQ00irmg87JtW/5gzOb4/C1QSeJDiZnPiJekgY+h0OwsyE/Q5iCKdysXv10dab5vvRE0r9EkP/YQ9JT/+YeM3bOiydO6RN352PA/MNdU0Ml2hiJCsXkY6Sb6zxqmiq0UxEFIA9MkJ2OBivII6BW5lWSaC7MsDU3+FnRDGSgNXyRL45nfPUX8wVdrqHaKWecpIEYaPD4nvkFRx4gIaxm9AEhebh8rypTeODLtLFKBemSR30Flon2ho3mdrtTn0M5ghCZM+kHlcKzOeiMAxrJXaMj0RJRxXPgKoocXMy7HrRoFZXU0+TjBym31LrUaBVSKTF/c3QumjJ1gCcZXOrJaJZ0Tx7Z9tdWwPl0IpSuCjBJHavZgivboPKB0x4tf4orLT08e0Jk/WbCQKJq57Iax/rUx0TZpAVo3gp483FRuhioMn78g3tOHG3RCjFNx6rIuG/CVOybG2lZNdOT5TYNq6CaoxHLH6/ldKyEvjcj44R73NCrJ7iklw7MIbSK3hjejTHftSkp1IjWsYF9ho2GNA/HIJWBwCo6dCUSwPPAApkcOLBYiq52TsTcUImY4C1M/BbIFIO4c3jPS8nBP2Z9F0In9Z2tPrZNpj0bO+/lmz8wVivjr3AJPqAs+y+hy50MSvA3F28yfAFP1kNn/vQIeBZEQ4oFkf6BW0Lmr6p74GxN2d+yCKQg9qx8SlSb0pPTXzxiquU+tyvWIGucILTBHwkv87Cbf2lSdiMT4o+h65Bq5XkT5nc0bfT3nh45p7pKjhPeO8IIcw5vIS0ElDQEafZe43Z4Cvb6AM73xMI9+SN6wAC51TGTM9BotPly4mZCBuaq18c1MTVjX1AkklW2HRZj6Gp1KFB1AUUWbuipUt
+ OKAK/SGk
+ /SLTFOmOKXBGOzms1dmvMB4G9Oh2Nb233FVm5QKMf/jTVIBOvliK+v7vnMIUzQpL9i/qhKpt/9Onn8Olh9s4ioCcvHXhxCcXgAXjgmKyyQQm6EUZ/pns27cKv+ZPgkcjMRWOGJB63Z8PVtsRdjVjjG1/5K2q0hpekc6TRyOZ7D3I+PYvebV3Lvj7YBFGccysu9c/5VeMe+LRc3+EyAdhdwYWnQkGZSaj5d+Sc7f+fKQNiPSqtpg5Aup8fS6e40ea5zkoXgj68M4b7SG3VwK3+mvvomBV8x2iXN4J8xTnml2QuarpxUhwf+/GZdxyV/hdVa3PQuaOlbxKd5XC/m/APwaiXzQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,36 +134,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 06/10/2025 12:36, David Hildenbrand wrote:
-> On 03.10.25 17:52, Ryan Roberts wrote:
->> fsnotify_mmap_perm() requires a byte offset for the file about to be
->> mmap'ed. But it is called from vm_mmap_pgoff(), which has a page offset.
->> Previously the conversion was done incorrectly so let's fix it, being
->> careful not to overflow on 32-bit platforms.
->>
->> Discovered during code review.
->>
->> Cc: <stable@vger.kernel.org>
->> Fixes: 066e053fe208 ("fsnotify: add pre-content hooks on mmap()")
->> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
->> ---
->> Applies against today's mm-unstable (aa05a436eca8).
->>
-> 
-> Curious: is there some easy way to write a reproducer? Did you look into that?
+On Mon, Oct 06, 2025 at 01:24:36PM +0530, Deepanshu Kartikey wrote:
+> Apologies for confusion. Please disregard this patch . As, it is creating a lot of confusion.
+> I will create patch v4 with proper commit message and previous link
 
-I didn't; this was just a drive-by discovery.
+Hold on, let us try to avoid more traffic than necessary :-)?
+I plan to have a look at this later today.
 
-It looks like there are some fanotify tests in the filesystems selftests; I
-guess they could be extended to add a regression test?
 
-But FWIW, I think the kernel is just passing the ofset/length info off to user
-space and isn't acting on it itself. So there is no kernel vulnerability here.
-
-> 
-> LGTM, thanks
-> 
-> Acked-by: David Hildenbrand <david@redhat.com>
-> 
-
+-- 
+Oscar Salvador
+SUSE Labs
 
