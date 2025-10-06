@@ -4,89 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2AECCCA471
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 23:16:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1376CCA470
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 23:21:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A2B28E0008; Mon,  6 Oct 2025 19:16:37 -0400 (EDT)
+	id 3D0BC8E000F; Mon,  6 Oct 2025 19:21:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 179E98E0002; Mon,  6 Oct 2025 19:16:37 -0400 (EDT)
+	id 3A8788E0002; Mon,  6 Oct 2025 19:21:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B6E68E0008; Mon,  6 Oct 2025 19:16:37 -0400 (EDT)
+	id 2E5318E000F; Mon,  6 Oct 2025 19:21:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EDCB38E0002
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 19:16:36 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8CB3C14078E
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 23:16:36 +0000 (UTC)
-X-FDA: 83969250792.12.5FEBB4E
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 881B18000F
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 23:16:34 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nF+BhiMO;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D41E8E0002
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 19:21:42 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A85F4BAF38
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 23:21:41 +0000 (UTC)
+X-FDA: 83969263602.26.7C51D01
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 01827100006
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 23:21:39 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ImO3W1Sk;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759792900; a=rsa-sha256;
+	cv=none;
+	b=q7DwL+LpP+rC9wCSipufuwo+2XEqLEQOO/jCpF6ijhfKQiXBiAmpFHLpPTJZXY5owxIG2a
+	eRhDz4jsA0lflVKxGNYv2YtfMD+cc2r/Q9NfEH7jk3XZc3VxYlN/d38gHZYuTf3hOr/j58
+	wldLsO+5xvBtBHnc9YTDgLP8NbiUYR4=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ImO3W1Sk;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759792594;
+	s=arc-20220608; t=1759792900;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YAQqFRBgLjNWMysHHUTdJ9birnJGsiwpBAJwhsVCFOg=;
-	b=QvxKU8Py4GlmuXNki0DsWq/0gKYOkk+RwXxjISyfJB6OeYjqlhV1G2ReRD4iNoun8eE2Er
-	GN3xRegWfnuvaCB2aRLb8zcqL6rgTBA5e2A16O9uK1BXNEb54gEQOS/rrin4bTHUThlSpg
-	01zFYcV2MpYLqGDJVIHUaY4hNmYiokU=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nF+BhiMO;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759792594; a=rsa-sha256;
-	cv=none;
-	b=O+zyctBi0jORH86Z+QL0jnJ0iHFixmPR82FBWs5s8W+04+E5FM3h5ERpbe1XddW8jP+NJz
-	425hxjU+RFjQywYMgqYJlHos1aC6FxrN8Mf5DFw5TBgUxfuhr9AuO2whrfO2s76nqkcdzh
-	PvjV2ivuNgxuUmdbyUbhWyP4k6yED5o=
-Date: Mon, 6 Oct 2025 16:16:25 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759792592;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YAQqFRBgLjNWMysHHUTdJ9birnJGsiwpBAJwhsVCFOg=;
-	b=nF+BhiMOqJadidPnvsG16Wzer5kVYzDfO7ORmBZTFX9lkhuTKv4g3I2r2j5XzU/XsPVsd4
-	wV6tZYU3bCeNpCCTY7mVL/D1/ty6zvNghVe48V8Do81JIFyAa8Ub/YRpYyCEdkJw4fcWiP
-	IuzUXSZ9JV214J+uFpsku/o1xXlL1qE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
-	roman.gushchin@linux.dev, muchun.song@linux.dev, david@redhat.com, 
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, 
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v4 3/4] mm: thp: use folio_batch to handle THP splitting
- in deferred_split_scan()
-Message-ID: <x4d36plhxcbyp76q4gmesktnnh7yi7bfifx3amk3fwx2moqkk6@77umpnw6rkg3>
-References: <cover.1759510072.git.zhengqi.arch@bytedance.com>
- <304df1ad1e8180e102c4d6931733bcc77774eb9e.1759510072.git.zhengqi.arch@bytedance.com>
+	bh=BlF8MRmuAY5ZGP/hSG05FFgxKgRsiLUZrKxnhJp/7YA=;
+	b=tDkeZQb4LYtlOXV+u1MkjwONcnBpy+eGJE6h9fKNeMw0MtklNPtetcEQzSwyUwTQlOvtGe
+	XyJrEmi97oSMhA9DyNQ/xvbBNGmZR6U5bOFLOn975jSARPcsoBgr6LfqEU6h1AAQK1baSR
+	+SeC0oqVS/234mp7TUV5/IM2DZZZTPs=
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7841da939deso5079955b3a.2
+        for <linux-mm@kvack.org>; Mon, 06 Oct 2025 16:21:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759792899; x=1760397699; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BlF8MRmuAY5ZGP/hSG05FFgxKgRsiLUZrKxnhJp/7YA=;
+        b=ImO3W1SkdOh+XFViIzM5fsZdomrqBTLzT2rmYsJjQ8gRcyugU87gE+GNnUENVE+hbR
+         WSEH+WvzQzUJ61/723Nbh9T2lhoxH6jztJrntDXwwAJnA0knVjAGcMaWnsS7TfFtL0ZN
+         hDoKjm3cZVPJ439XBsCRpqtmeeZocD55Yshw39HlPwX+cCo9L4PUe8oWHOy0SD4ZA3iA
+         6+u3m6Mk9LOfbsxzEU552DBfkxqOKNSDH9ugjTcOckQLf2fycHws2KTX5cHOQ2vt2t35
+         q5GWaM+9yjPIJH7N/7T9d1NoMv05QN/9tmAhnppw38/yXmEZmVItJdGgtG3wvOhLONKf
+         gqjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759792899; x=1760397699;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BlF8MRmuAY5ZGP/hSG05FFgxKgRsiLUZrKxnhJp/7YA=;
+        b=V/aMIoz0P3jQuwZlwmeVpolh1Gd4OxE1aJ72+RqaE6Eawn0nOk6uaAW9+okwhmq+jK
+         p6iCT80sj+RdL5pCfoe7Z1vsWn5bPjnGZAu7eOKN93y0tu2xpuM5YKl25g+2O5VwOKtx
+         RUae8s9sYZlpVxKv7Iey7dRsKqygn/W0OWJ6Vd8UEF5Bk/OIOByd/FRSKbpbE0X8s57D
+         +IKulgydHkGefVPHIkXkInGAKXdsGlvyXlZUZGQIKVLKIQ4zEqvrEqeolNiDCkcPqjtC
+         HCtjDYmXs/F9ZOvyadLGyMhzoJDkwRaoH22hsT8JTfgQiC8qfqPi89DpHv7XkklkKkvh
+         IfCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU5a4OzXQAdD/TmCuUgoUv1gaCIFcTiTJBxqoAEKq2FilLIgNGnl1M0kMAuPXXy6u9ESOVpLprRlg==@kvack.org
+X-Gm-Message-State: AOJu0YwuJMvZns6v6YUp4nIfuEm60kxtxR4FIUHeG9dxH0MI//7AQEvv
+	t0tzk493a/TeoIVuZrqHSXRAUt0YKO7k4qQwl7ak/wakzbmKiL76vZz7Sk/RiDom18/co131BcT
+	00LDyWl9spxPppwQj9NRoYy7+m4f24J0=
+X-Gm-Gg: ASbGncu2xncbSgVFO/WF8xj+022rkPaSzCDlTvGwOBa9PCzaUYORe+h2wyd3G0mEvuD
+	OVZihns5WuShx38caarqIx8Pj+3Ou+42UfOUqRwQ4CyZX1fOEsclNePI8XbIfsLtCetTgTzGwEG
+	kaKVYIKIGXUX0cXwqKxHcoqmHEUP+Ij4SK8ROk+Xb2G5V7GjqcTP1Z8h2R41ekKvKj5BeP+DbNY
+	UUt6GsE4NhKz1dagWr+ugv/ZRJmemiveqjDrJntYP5fsNk=
+X-Google-Smtp-Source: AGHT+IFbiIZLWXUzbg0MpPNz8jI3+5uhR1e00vTKI1xy/5u7Pb90M6pGakUvtknMmHcQXhggccYvP9be6Tx3vlFcycs=
+X-Received: by 2002:a17:903:b83:b0:26e:62c9:1cc4 with SMTP id
+ d9443c01a7336-28e9a54ef95mr136288395ad.4.1759792898721; Mon, 06 Oct 2025
+ 16:21:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <304df1ad1e8180e102c4d6931733bcc77774eb9e.1759510072.git.zhengqi.arch@bytedance.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 881B18000F
-X-Stat-Signature: zbajuwhbpaugxdqr4odrk8xts74jc3yt
+References: <20250818170136.209169-1-roman.gushchin@linux.dev>
+ <20250818170136.209169-2-roman.gushchin@linux.dev> <CAP01T76AUkN_v425s5DjCyOg_xxFGQ=P1jGBDv6XkbL5wwetHA@mail.gmail.com>
+ <87ms7tldwo.fsf@linux.dev> <1f2711b1-d809-4063-804b-7b2a3c8d933e@linux.dev>
+ <87wm6rwd4d.fsf@linux.dev> <ef890e96-5c2a-4023-bcb2-7ffd799155be@linux.dev>
+ <CAADnVQ+LGbXXHHTbBB9b-RjAXO4B6=3Z=G0=7ToZVuH61OONWA@mail.gmail.com>
+ <87iki0n4lm.fsf@linux.dev> <a76ad1e9-07d5-4ba1-83e4-22fe36a32df0@linux.dev> <877bxb77eh.fsf@linux.dev>
+In-Reply-To: <877bxb77eh.fsf@linux.dev>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Mon, 6 Oct 2025 16:21:24 -0700
+X-Gm-Features: AS18NWDafFk0nrI4dX1WXSkb90Zju3Gm0uidZQfWzJfIM8rRKysrrjNo3H_c-hs
+Message-ID: <CAEf4BzafXv-PstSAP6krers=S74ri1+zTB4Y2oT6f+33yznqsA@mail.gmail.com>
+Subject: Re: [PATCH v1 01/14] mm: introduce bpf struct ops for OOM handling
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Martin KaFai Lau <martin.lau@linux.dev>, Alexei Starovoitov <alexei.starovoitov@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, linux-mm <linux-mm@kvack.org>, bpf <bpf@vger.kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@suse.com>, 
+	David Rientjes <rientjes@google.com>, Matt Bobrowski <mattbobrowski@google.com>, 
+	Song Liu <song@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1759792594-6533
-X-HE-Meta: U2FsdGVkX18yzjniG5QHk1+CGn/WdJXFKCV8MGHdVEMPHA+NFPqpN1qn+DMENfWfLjUmsngbR78D98rB/eJp8VnVMfMJ3LZdCdNJXZz0Z1g4WOWfTCsPTAcWUgdyF0QOYK71LdYR6ornL1mz75RukLoh1oWsXVXVeUN/P83ggSTTUKk/z3ABEgIwfeQLZSlThSn7AG9e/80z3S58yaxwCaHSr20sNbBgf/VPFxH/3nJfZiAEZQpMZE7PSXBffZXdI8DcVddt7SG09CkGrQV0nwPPFnKDPiEYTpUkVIxvrrmkAMe/bPMvbSlRylS3t6DIgKfDDakYgnVghEaJg/Q7tRAeiELLiHrY1dK8affW6g1wimaKKteo+3Ge7WRTMbhimm/xun9u0cEVMjSfwdcDxKGrzutRxS6IaMkyfI73GT12CJuUc2jkxBaQbcNRGQARhPnn7e1smpc8wlHXf/2i6Z1/fdKlAbzjUML2L2EHLOWoo+LzApvF4N2B0yVQ8onYfTe8xxRm7SSrLfskPAiHHFji21o3xEQF+mm7Eiagjk/DKpwCvDHDW9iBwbNiPKTAG1S1ni7ok8moYXRj7YsLJVPNZ0fXRb9SQOwMplaVoaU5D9xXBO0akWMZG2yyD/8YEiLFed7+SvY/lBY4Dy2HFYJ09Z95w1YOhVyjme+sPNUgNj/ABsyzGwL8p2iYcJWuXKCFt8uiXnGfA3iBANH3tK9zxtagH2FwINYPI8WWzsAwSFTzzW/ECuo/SwYN7vlAM/YBhWEpXJfHj+7NGRRMM1i8/+y6RVxMlx4ufJNiF47ahvn8BVK1zC9o/rQUPkc7/9atROeOVEXlKAkjB8yQytKp3hLMSPl7ab5IoEyb7IRgcScxqkiHAn+8qPJyf8W7cAqLz5Sj4s/ojrcVkpmCRh71uDOCKQgAInvbvpEuvUE76Xg43urSyMB+hGvSY1P6YURdDHYdRsGmrgYtoKc
- LdwvTRZw
- yNuwvVzV+Bjxe++hHdlcAMiZ0NXMuavGBRB6iF5S3hN3Xu7fxjfZqJqF81r+hpIWbON+0a8mWGFQ9VtmvUwDpDYUuSDVVZjf7waCBZnDRL4YZ6sYbfHgTnLgNMdVnW0iXxyltddQW3w2Fs62F+HDYkG14heXSkMdVRX0NlJAGt7cxQvsytESAl8+bce2/9dOOwYhjs4lX4DiP+O1TtDvub88Baqw/o7FrqHzqqzX5jsEUIWZ95Pp0ucNqTcP8LAx+X1I9hD18mf09sewjuCuVgk2Aql6fE6ECMCRNeRhBxebUSn5NBmcaVYj2JsMfj40Dj2ME52H/+frgIVg=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 01827100006
+X-Stat-Signature: 8qr5cmq6uoxiwj9kqgxoheij68ckhmbp
+X-HE-Tag: 1759792899-291022
+X-HE-Meta: U2FsdGVkX18C0Ol78147uC0axgnMZV4g5MbMN+ymOvgCIoNJac6x1bybiivmgS0m5eRGEap3GcmuzHIsW7dBg1Ghl8D+2miqI8M7ZL1z4xLQmEK88PiUXHJvpwqP3qkrij7Ez1DstVcvZgpkvvzZheC3Vcx7LA+RDp/2GKkl5BUbspINep5F1XjqlPblJx9En66vuIpSKxHMBKc4pBB6OKvEo7iONYSh/hCp6N0mEu06Dd1Ec8rgW9BqIurMEayppV4w3lBMdRVlO7xjPPliHJ7cT+NZWcWUUyYVIFkfYSzBc+E0BSVeHie+Ou0b7tQT3b4ZXzNbLgTTa3dJ81uPj83hDS7SYskF8C9b2cxCXJtfbGxbepuKBGjXwnngnlDeyD4sYgNYOg7e4ERzTFXVsSb/YaKjdIv/KiJOK32CEWqit2Px1AQBWxp8OM2LHQqcB/mTDZ8dn5aouIDl3T43pZO+n/T0FDwLx0V6cUpQ5nPgFXgZNkjkxw0Bp/3u/yCOvXl8/M/cxTNnGM5sibV5A0wyUy+JbbCW/+RsmXzGygfGmJkDRnf8SbxHegOf/JV6OhZO+tcotPG3+9Cwu11NwvdqXnQ4wBeDuzmhb4Tqo0lRlR3N95a0IbVDOvuEYAQ+HkQdAobsfzpqMvOHvcXupnjbtSi1VOt+DrkME8WjyQMbFC40CCBcW1YahR47wI45vnyPrWxWsoEpC9e2JP7iPm447mUGvOm++RxfSWvKgTzFXsDngzMIi1DaYncstJaVK67VEeZfiPmT262841MmWgE9FzvQNi945qj52XpxoToKs0ulE8/0JzmhvjhOYcMMGuq9bi701i7SXEQF95ZZFXI6c87ApP7bjj2B4XN4AKMWkXY2kQxeNYWlAqB8ShgnnGMoumdZrZWZOSDn3VRUFtyMnOwEW7R2CbaGBQdAGwd1QW6GMiunxQe12Bz/zUO+j2Oitg948QaZWHcW2kz
+ qiiqCZTg
+ yHD7Jq68H/rXqieD65lDhRWJFrke1xkqDw9Pf087f60wdL+EQmrddtkDOY/oJWXwcwvERulrWj/1rugsqvr8JXa/3XMw5vHqksD+4Bu7WS2HPSjPfImswEG4iEA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,205 +125,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 04, 2025 at 12:53:17AM +0800, Qi Zheng wrote:
-> From: Muchun Song <songmuchun@bytedance.com>
-> 
-> The maintenance of the folio->_deferred_list is intricate because it's
-> reused in a local list.
-> 
-> Here are some peculiarities:
-> 
->    1) When a folio is removed from its split queue and added to a local
->       on-stack list in deferred_split_scan(), the ->split_queue_len isn't
->       updated, leading to an inconsistency between it and the actual
->       number of folios in the split queue.
-> 
->    2) When the folio is split via split_folio() later, it's removed from
->       the local list while holding the split queue lock. At this time,
->       this lock protects the local list, not the split queue.
+On Fri, Oct 3, 2025 at 7:01=E2=80=AFPM Roman Gushchin <roman.gushchin@linux=
+.dev> wrote:
+>
+> Martin KaFai Lau <martin.lau@linux.dev> writes:
+>
+> > On 9/2/25 10:31 AM, Roman Gushchin wrote:
+> >> Btw, what's the right way to attach struct ops to a cgroup, if there i=
+s
+> >> one? Add a cgroup_id field to the struct and use it in the .reg()
+> >
+> > Adding a cgroup id/fd field to the struct bpf_oom_ops will be hard to
+> > attach the same bpf_oom_ops to multiple cgroups.
+> >
+> >> callback? Or there is something better?
+> >
+> > There is a link_create.target_fd in the "union bpf_attr". The
+> > cgroup_bpf_link_attach() is using it as cgroup fd. May be it can be
+> > used here also. This will limit it to link attach only. Meaning the
+> > SEC(".struct_ops.link") is supported but not the older
+> > SEC(".struct_ops"). I think this should be fine.
+>
+> I thought a bit more about it (sorry for the delay):
+> if we want to be able to attach a single struct ops to multiple cgroups
+> (and potentially other objects, e.g. sockets), we can't really
+> use the existing struct ops's bpf_link.
+>
+> So I guess we need to add a new .attach() function beside .reg()
+> which will take the existing link and struct bpf_attr as arguments and
+> return a new bpf_link. And in libbpf we need a corresponding new
+> bpf_link__attach_cgroup().
+>
+> Does it sound right?
+>
 
-I think the above text needs some massaging. Rather than saying lock
-protects the local list, I think, it would be better to say that the
-lock is not needed as it is not protecting anything.
+Not really, but I also might be missing some details (I haven't read
+the entire thread).
 
-> 
->    3) To handle the race condition with a third-party freeing or migrating
->       the preceding folio, we must ensure there's always one safe (with
->       raised refcount) folio before by delaying its folio_put(). More
->       details can be found in commit e66f3185fa04 ("mm/thp: fix deferred
->       split queue not partially_mapped"). It's rather tricky.
-> 
-> We can use the folio_batch infrastructure to handle this clearly. In this
-> case, ->split_queue_len will be consistent with the real number of folios
-> in the split queue. If list_empty(&folio->_deferred_list) returns false,
-> it's clear the folio must be in its split queue (not in a local list
-> anymore).
-> 
-> In the future, we will reparent LRU folios during memcg offline to
-> eliminate dying memory cgroups, which requires reparenting the split queue
-> to its parent first. So this patch prepares for using
-> folio_split_queue_lock_irqsave() as the memcg may change then.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
+But conceptually, what you describe is not how things work w.r.t. BPF
+links and attachment.
 
-One nit below.
+You don't attach a link to some hook (e.g., cgroup). You attach either
+BPF program or (as in this case) BPF struct_ops map to a hook (i.e.,
+cgroup), and get back the BPF link. That BPF link describes that one
+attachment of prog/struct_ops to that hook. Each attachment gets its
+own BPF link FD.
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+So, there cannot be bpf_link__attach_cgroup(), but there can be (at
+least conceptually) bpf_map__attach_cgroup(), where map is struct_ops
+map.
 
-> ---
->  mm/huge_memory.c | 85 ++++++++++++++++++++++--------------------------
->  1 file changed, 39 insertions(+), 46 deletions(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 134666503440d..59ddebc9f3232 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3782,21 +3782,22 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->  		struct lruvec *lruvec;
->  		int expected_refs;
->  
-> -		if (folio_order(folio) > 1 &&
-> -		    !list_empty(&folio->_deferred_list)) {
-> -			ds_queue->split_queue_len--;
-> +		if (folio_order(folio) > 1) {
-> +			if (!list_empty(&folio->_deferred_list)) {
-> +				ds_queue->split_queue_len--;
-> +				/*
-> +				 * Reinitialize page_deferred_list after removing the
-> +				 * page from the split_queue, otherwise a subsequent
-> +				 * split will see list corruption when checking the
-> +				 * page_deferred_list.
-> +				 */
-> +				list_del_init(&folio->_deferred_list);
-> +			}
->  			if (folio_test_partially_mapped(folio)) {
->  				folio_clear_partially_mapped(folio);
->  				mod_mthp_stat(folio_order(folio),
->  					      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
->  			}
-> -			/*
-> -			 * Reinitialize page_deferred_list after removing the
-> -			 * page from the split_queue, otherwise a subsequent
-> -			 * split will see list corruption when checking the
-> -			 * page_deferred_list.
-> -			 */
-> -			list_del_init(&folio->_deferred_list);
->  		}
->  		split_queue_unlock(ds_queue);
->  		if (mapping) {
-> @@ -4185,35 +4186,40 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
->  {
->  	struct deferred_split *ds_queue;
->  	unsigned long flags;
-> -	LIST_HEAD(list);
-> -	struct folio *folio, *next, *prev = NULL;
-> -	int split = 0, removed = 0;
-> +	struct folio *folio, *next;
-> +	int split = 0, i;
-> +	struct folio_batch fbatch;
->  
-> +	folio_batch_init(&fbatch);
-> +
-> +retry:
->  	ds_queue = split_queue_lock_irqsave(sc->nid, sc->memcg, &flags);
->  	/* Take pin on all head pages to avoid freeing them under us */
->  	list_for_each_entry_safe(folio, next, &ds_queue->split_queue,
->  							_deferred_list) {
->  		if (folio_try_get(folio)) {
-> -			list_move(&folio->_deferred_list, &list);
-> -		} else {
-> +			folio_batch_add(&fbatch, folio);
-> +		} else if (folio_test_partially_mapped(folio)) {
->  			/* We lost race with folio_put() */
-> -			if (folio_test_partially_mapped(folio)) {
-> -				folio_clear_partially_mapped(folio);
-> -				mod_mthp_stat(folio_order(folio),
-> -					      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
-> -			}
-> -			list_del_init(&folio->_deferred_list);
-> -			ds_queue->split_queue_len--;
-> +			folio_clear_partially_mapped(folio);
-> +			mod_mthp_stat(folio_order(folio),
-> +				      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
->  		}
-> +		list_del_init(&folio->_deferred_list);
-> +		ds_queue->split_queue_len--;
->  		if (!--sc->nr_to_scan)
->  			break;
-> +		if (!folio_batch_space(&fbatch))
-> +			break;
->  	}
->  	split_queue_unlock_irqrestore(ds_queue, flags);
->  
-> -	list_for_each_entry_safe(folio, next, &list, _deferred_list) {
-> +	for (i = 0; i < folio_batch_count(&fbatch); i++) {
->  		bool did_split = false;
->  		bool underused = false;
-> +		struct deferred_split *fqueue;
->  
-> +		folio = fbatch.folios[i];
->  		if (!folio_test_partially_mapped(folio)) {
->  			/*
->  			 * See try_to_map_unused_to_zeropage(): we cannot
-> @@ -4236,38 +4242,25 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
->  		}
->  		folio_unlock(folio);
->  next:
-> +		if (did_split || !folio_test_partially_mapped(folio))
-> +			continue;
->  		/*
-> -		 * split_folio() removes folio from list on success.
->  		 * Only add back to the queue if folio is partially mapped.
->  		 * If thp_underused returns false, or if split_folio fails
->  		 * in the case it was underused, then consider it used and
->  		 * don't add it back to split_queue.
->  		 */
-> -		if (did_split) {
-> -			; /* folio already removed from list */
-> -		} else if (!folio_test_partially_mapped(folio)) {
-> -			list_del_init(&folio->_deferred_list);
-> -			removed++;
-> -		} else {
-> -			/*
-> -			 * That unlocked list_del_init() above would be unsafe,
-> -			 * unless its folio is separated from any earlier folios
-> -			 * left on the list (which may be concurrently unqueued)
-> -			 * by one safe folio with refcount still raised.
-> -			 */
-> -			swap(folio, prev);
-> +		fqueue = folio_split_queue_lock_irqsave(folio, &flags);
-> +		if (list_empty(&folio->_deferred_list)) {
-> +			list_add_tail(&folio->_deferred_list, &fqueue->split_queue);
-> +			fqueue->split_queue_len++;
->  		}
-> -		if (folio)
-> -			folio_put(folio);
-> +		split_queue_unlock_irqrestore(fqueue, flags);
-
-Is it possible to move this lock/list_add/unlock code chunk out of loop
-and before the folios_put(). I think it would be possible if you tag the
-corresponding index or have a separate bool array. It is also reasonable
-to claim that the contention of this lock is not a concern for now.
-
->  	}
-> +	folios_put(&fbatch);
->  
-> -	spin_lock_irqsave(&ds_queue->split_queue_lock, flags);
-> -	list_splice_tail(&list, &ds_queue->split_queue);
-> -	ds_queue->split_queue_len -= removed;
-> -	spin_unlock_irqrestore(&ds_queue->split_queue_lock, flags);
-> -
-> -	if (prev)
-> -		folio_put(prev);
-> +	if (sc->nr_to_scan)
-> +		goto retry;
->  
->  	/*
->  	 * Stop shrinker if we didn't split any page, but the queue is empty.
-> -- 
-> 2.20.1
-> 
+Having said that, we do have bpf_map__attach_struct_ops() already
+(it's using BPF_LINK_CREATE command under the hood), and so perhaps
+the right way is to have bpf_map__attach_struct_ops_opts() API, which
+will accept optional extra attachment parameters which will be passed
+into bpf_attr.link_create.struct_ops section of UAPI. That thing can
+have target FD, where FD is cgroup/task/whatever we need to specify
+attachment target. Just like we do that for BPF program's
+BPF_LINK_CREATE, really.
 
