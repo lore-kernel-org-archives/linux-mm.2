@@ -4,133 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BC88CAC5B8
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 17:23:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23BB4CCA470
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 17:27:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 519DD8E001C; Mon,  6 Oct 2025 13:23:53 -0400 (EDT)
+	id 7E1348E001D; Mon,  6 Oct 2025 13:27:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CA388E0002; Mon,  6 Oct 2025 13:23:53 -0400 (EDT)
+	id 7B8C68E0002; Mon,  6 Oct 2025 13:27:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B86A8E001C; Mon,  6 Oct 2025 13:23:53 -0400 (EDT)
+	id 6CE2D8E001D; Mon,  6 Oct 2025 13:27:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 243F48E0002
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 13:23:53 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CE7D087A0D
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 17:23:52 +0000 (UTC)
-X-FDA: 83968361904.06.CD50620
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	by imf27.hostedemail.com (Postfix) with ESMTP id F046640013
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 17:23:50 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=HVB+3jNt;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5965E8E0002
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 13:27:38 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EA17713B937
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 17:27:37 +0000 (UTC)
+X-FDA: 83968371354.04.70167B9
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf09.hostedemail.com (Postfix) with ESMTP id ED0CE14000C
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 17:27:35 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=UkedZVBo;
 	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf27.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	spf=pass (imf09.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759771656; a=rsa-sha256;
+	cv=none;
+	b=KWIWS29L2jLKOxrdasBXXXUZZ+d/qwq5JvE30OZffj2RSLwiidRuXV1Q8US77ew0MAx09P
+	YsBcRCrXXeG/lX0ScnBYMZv5vCQpHrqZ3fQ95T0ftdjUvoi9NfJ5yCkaRQX+e/4EzCoAtR
+	ZbcrNSh/LnKw8YQv2gL/+eeaFRADeg8=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=UkedZVBo;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf09.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759771431;
+	s=arc-20220608; t=1759771656;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eiMWaxwcwGco8r+FHYAdZ8/rgwTBKI1DQmsAsIjVEPg=;
-	b=HdocO2m9KVqnkHY1u3THFydhF0Ey7112ZEcWJa+y7jLmHHcLXp1CqVTnaiiFvECm5rW+qz
-	2HTqChwlG8bgoh0RfuqxXYnIvQJtIdeVxNnCsup8Ol0Pr6anLr7qb/Ti7Nvg9kHxYM0bPL
-	iVuHwWB+IjT3UPiLk0mJO3K5aRUnQNo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759771431; a=rsa-sha256;
-	cv=none;
-	b=6skbT5DTyHdsIeFbO/06j/RaC4vnGCHQFluUum9142MdJARa2n3p2emcvP6i5k9lzLdIQD
-	TEn3G6vE7/YdbUySo0p5RPyBpiIojIAmJL7OnCfOjquuXlYC6fHtX3+zWn5+WKZM4RH6Ao
-	KDLp1CS3DTs+S1nuBZNt+Hi+P2ofQ5Y=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=HVB+3jNt;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf27.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-856cbf74c4aso655310585a.2
-        for <linux-mm@kvack.org>; Mon, 06 Oct 2025 10:23:50 -0700 (PDT)
+	bh=Ku0CTKpCW0+jCKseUl9YA3cobk32kED67HOsvkr/Nvw=;
+	b=1XWQq078qLfA0raLSKR3fkoZtjdSGBQDfC0FHa+zBmc7etRDqZfnZyLQzNeBEwl6lBAD2Z
+	Buv0k9kKhh741aoGZYbo5PTWwjW23BdRzGFU4pKQ0vdFEbaX60Jx36QZPtjcOvt58piuEI
+	lIOyJCLCvNSnfUNr1wofBJxkq4V24Rg=
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4da7a3d0402so57383301cf.0
+        for <linux-mm@kvack.org>; Mon, 06 Oct 2025 10:27:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1759771430; x=1760376230; darn=kvack.org;
+        d=soleen.com; s=google; t=1759771655; x=1760376455; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eiMWaxwcwGco8r+FHYAdZ8/rgwTBKI1DQmsAsIjVEPg=;
-        b=HVB+3jNt2Ut6UMDJpTNicvXHMDsk8B5VLSfmmKMJ7tp2W+4Lw+SXER0DNty2m1C8gt
-         K2U4JFosLf1at5Fw4VkJTnbjqGzdy5+/krp+mFZM2DpmgQgLNjzXRCJ6CUigGBjbeLnX
-         v1vXDtfH2x1xW1ctl1PSGvVV315TQaD0/GvLQkdWdnehwlpNKAp4r5xgw66kkLkRNJT7
-         7AoDWRD+KJFAj4ihfA/rtcp4l3WDIt12XcTlHZDYqlbqx0FONrinzHrM7ZpnyWrqBTOA
-         zrlBrR6UJ2hD2UxdrLmmIG2T8SNdM0fh7G7QwVOHZFXpiqb6R6LmjntmbN8cWI/jK/Ct
-         vtbA==
+        bh=Ku0CTKpCW0+jCKseUl9YA3cobk32kED67HOsvkr/Nvw=;
+        b=UkedZVBo9YIbipt4PGtysZOOHbQjIcUbI3xRynvCHQDLyLC16eVzlDzknw9kZPcD8+
+         zze29qK+oy4OOjr6n9c44unn2fDCwU+fPclApjVrBdOBICd3oPigJUtEkIEHUe8E7dwu
+         SfFCzFw6HBBlD7SG3E6AF7gX3KVwB7JB2FjXLP7CVAkq2uQPeno3j9zz3bIdic6NZNtV
+         +H2QmcI5WJyb8jt5R/AUVF7EcE9oTaHJ0XHd7JyE0W50PZNPXZqTZDc8YeWlnjqUq1lo
+         sDmtqqRV4YGTmwv8n4lqtLDGCBE++ayJ7RUmr5AocmQOYw62iDhMk2RvwTINPRYCcYtc
+         D8Hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759771430; x=1760376230;
+        d=1e100.net; s=20230601; t=1759771655; x=1760376455;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eiMWaxwcwGco8r+FHYAdZ8/rgwTBKI1DQmsAsIjVEPg=;
-        b=TGx3xx31+7/yHhTFMZCLfM3CFuhJj+VLT6paTTBSpNc3GubuwJ5V17zrGEjWw+AuHP
-         nbAodyqLQ4Zk/vzbHhYZ5GtLQIDtrjfjuVNMTrp0RGjr3cnJ8BPVZpTgu+/As+fsXzlx
-         JCvKq3kpcAV3zud3hLS+KMx3rISHvPEU1NOSRsL5NopeN0WxnHvfelcJcMBJ5u+1R6yY
-         dWBRvObk8T9DEfkcZdMkirNMf5bTunphJfN174GQoUy6bK2KxWx+fsaEQ1lU5c1CCzqh
-         MmjSBpJeOcnafkcL2Rn2K+Yx9vuXl5EayQlEsXCKhJBOva+go94Q2UuB3rHAPI+uzVUB
-         ZJxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVxpjlr8QfvTKtQ+If3o76S0uWwHL4df2nI4TKTuPSnvOHk69at+VTNRTWmnnW2bfMmx/WrHaYrcA==@kvack.org
-X-Gm-Message-State: AOJu0YzpyO9VDQtTGN3JHAoWDp66oKfqDjVK6JfdU2a5Rj0URubHVaBu
-	qTYuR0iuHMuwSqCZ0DItUSwMbDKtyNbzoTRrxrPZ5v/Zf3xZpkbTtlAfk1eGSAx1CihFQ91o+VW
-	gpL2Pccby3RxCL2zGc6xlqUYgz48OrxWvVwaCUq7QFA==
-X-Gm-Gg: ASbGncs2JAFtLYbImOLiQHw1cloCZxhxeMNzeywU8etfQ0bMYy2FFQtpMVTICXxdRKK
-	VByQ+49i5vAbsSx3Rlh/cEZ6i/wZD2CwpfsDvZ9s0akEXb1KUAaNL96wbv0gZex1SBFYN+VN5ni
-	iS6+sGNL+9eMjjHThMKEuT1tFJtHnJEc1s5buutOcUdw2jqvvSKxovwDFU/LyL0XUDbwsU47ISD
-	SDW9F1hfocuYZ/MluXc+4sWpDoLI2BnK8U4u2k=
-X-Google-Smtp-Source: AGHT+IFv/eQIGSPIMF5AtEJ9/NjM4NT3tDLx/ni0W3avlG1qBmkP6qV6SoLJbkqgHaLD5t7vOoviSBII4unw5QD/72E=
-X-Received: by 2002:a05:620a:469e:b0:85e:5022:33a2 with SMTP id
- af79cd13be357-87a3a34d387mr1695495985a.39.1759771429425; Mon, 06 Oct 2025
- 10:23:49 -0700 (PDT)
+        bh=Ku0CTKpCW0+jCKseUl9YA3cobk32kED67HOsvkr/Nvw=;
+        b=oDlfMRuNA3HmmdAb9QorBPD0s2Y5BuGZ7m/kkQHma4YvKSYfVML9y8Ob9DOTwkvisF
+         74XLbhd+KHBY8nLZAbCaF6MKGsf0PbYN5RJEExQeY9XYr9fRFJ6y8BBthDNXBSuzweCQ
+         M87Y7Z/cNb2fhfdU4zy2wZd0g5wmCczsjzSlY2ffx/PL94KPwDsn77T2wfQxm4gdeFzX
+         iQgsPxMChP4KQtvdkUsJSw7maqS9CRTSFW0y4VLUxpHVs849V+OxHvk96cXYkv0OOLOW
+         zXj6v+dbFcLRHAx+NqNQXyDNVvogXOt55ltjgUwuTm1pYArc38iHTH9nU7CRSYu29Kkq
+         RQug==
+X-Forwarded-Encrypted: i=1; AJvYcCW3rcvvjvbtijCAZ6IlDCq+fq9K3sRqYFECcVgGypj82jxFxx48NHn8yZenodeZ7dShp13277mohQ==@kvack.org
+X-Gm-Message-State: AOJu0YwP+yczXNNhMNX5GMcUm7ypJ/Er4wnXAhl+j3vmqH53EA3BBteu
+	/zl83ymmsZhkzFfSgm3iH6vTjXc+D6uqZ9hxzVXpRZ4s8BtRHU7wzQfLLJ2NBnRz5Fh3wm3Xajd
+	8oMnsRNn1tGzgBDbhGGbNVfj/93+QQDSSQxIbvc6BCw==
+X-Gm-Gg: ASbGnctt1VKkagc3TiVuki/mhuStbvSRiMXFrVeHkFU8B5FA5jyk6uGNAqkqzfrB23s
+	wI18kt7XqU2f6wNmU45rAsYkHkzaX5dcvXBZDY6jxX6qXai+qA69a153KT9qdfZOAsA0/01qh5H
+	dRlRdtezNrin6q5pImDRL0VNZqmCODk5vo4oWvZtYyX87KbDAsQ4opqXgDEvYmHwkNawMPV5Y7u
+	zMYVi299IYm9ogUHH2Gl9JeywgptA31qjQW1dE=
+X-Google-Smtp-Source: AGHT+IGjwaWmNcZg1BOGu3Lg22in3+tENKw0l6sBQmtPIPzfXbP/uKdYn+6Dbs6vJDK/UWx2hnc6bcJqDsmk/KFcfOE=
+X-Received: by 2002:a05:622a:4a05:b0:4e4:d72d:69b2 with SMTP id
+ d75a77b69052e-4e6de87d231mr5887871cf.24.1759771654434; Mon, 06 Oct 2025
+ 10:27:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
- <20250929010321.3462457-3-pasha.tatashin@soleen.com> <mafs0y0ponf6b.fsf@kernel.org>
-In-Reply-To: <mafs0y0ponf6b.fsf@kernel.org>
+References: <20251001011941.1513050-1-jasonmiu@google.com> <20251001011941.1513050-2-jasonmiu@google.com>
+ <20251006141444.GN3360665@nvidia.com>
+In-Reply-To: <20251006141444.GN3360665@nvidia.com>
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Mon, 6 Oct 2025 13:23:11 -0400
-X-Gm-Features: AS18NWCYmyLqK5As63FctOGJiEPF3B80wEZqrPZ_K5x_kzJeySLPd8Ta4rPXhIg
-Message-ID: <CA+CK2bC0j=CbTNo=V-dceZEz9mji0yTWkE7QyUzvR1SRCiAJ=A@mail.gmail.com>
-Subject: Re: [PATCH v4 02/30] kho: make debugfs interface optional
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: jasonmiu@google.com, graf@amazon.com, changyuanl@google.com, 
-	rppt@kernel.org, dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
-	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
-	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
-	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn, 
-	linux@weissschuh.net, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
-	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org, 
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
-	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, lennart@poettering.net, brauner@kernel.org, 
-	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, saeedm@nvidia.com, 
-	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, leonro@nvidia.com, 
-	witu@nvidia.com, hughd@google.com, skhawaja@google.com, chrisl@kernel.org, 
-	steven.sistare@oracle.com
+Date: Mon, 6 Oct 2025 13:26:57 -0400
+X-Gm-Features: AS18NWDfvI9sQ2V-f9FenduGtjBMq7JKIMo0f5LFRGNvBcQXIH9FiriSpPm5yuU
+Message-ID: <CA+CK2bBaQEVySFcNmyQnWayZ7K=z5FxU7wTyNtmO7ja7NNGo3Q@mail.gmail.com>
+Subject: Re: [PATCH v1 1/3] kho: Adopt KHO radix tree data structures
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Jason Miu <jasonmiu@google.com>, Alexander Graf <graf@amazon.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, 
+	Changyuan Lyu <changyuanl@google.com>, David Matlack <dmatlack@google.com>, 
+	David Rientjes <rientjes@google.com>, Mike Rapoport <rppt@kernel.org>, 
+	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F046640013
-X-Rspamd-Server: rspam02
-X-Stat-Signature: xeu7qfkkqqeidux5hhod39hx3p5xc7ro
-X-HE-Tag: 1759771430-901507
-X-HE-Meta: U2FsdGVkX1/O85f71JTpfu+QpyqXgu58MUgEoCvVXtWlspHsMJAlp+0DW/hdfUBgDgGyc4Uk0RqG23/4t3HEhvj3U/2ynSpEz+qfDXW0MZ8SjsGaOeo2YrzZbIrMPcSC+EdN09PafurRW/XnbCbvEhinmSazI85sCWXeYgY3vyWD4qxkQ26mW74D2RHEInYtN7cNsiQZXjFgABVnZMriQC93lzqOJQjNUbxo5UH/tTMtbBdNQHLTezzcgNJmLBeb8EwU1Hza0SMdl0JBTl6pcdM4WQHKG2PsApRjvEuhrLKvW5xf+H+OvJWY5bJgGvulGSXlFhw8z9/W9K4WMgpGPZTYd98QpYfttcpJXIAXYn3SePbZNpuaWh3UxXaxQ3NnYpr2QwhmRQdCkkKUc7PQN1qoK8DBuM2IrwUPxF9nrgIecJVvGgjneL4Ph/8+0lkogu/GEZ+YdTAiTtH8rqu+M14Cs3dNm3nSTg+AnV9/ZAkYYvzS+Ay4avvS644qPGcHlhf/KAqtSPWP6GYm+wU124/a3PZlhtI+NyTz8K0gmIzUkuBE+wCg3rdXHQbgLg3OLJFEegrghjhCQ/K2KJyPKjWTRwOZXvtR4cJK6EETBAFH4rvCegBTB9KkYYgrk9Ha6s8oocWwG4Rtt9Fo8AwanDTbuyzyZVe4Upr+BuVBWX6QP56eiVGV9IHwNHrsC/yxyYlNJ5aCxjsP5sVo8WLNqbz/RGLeW9ugyIdJADlktGjz/a+TC+FO57whT/0SL3qSu1o2n78v04FPJ7ca5ija3SudJAWEKKly6Uq0lX/Ffkj+Y7rwOVCJQriDprH5axYuWsEV0myU9XIJCExxZJL/xwj7JMqS8834ChFtMi37vgvMby0klIVx/kS3ufCl6mMrSESe9Gca+GaEd3GDUyu5pKGUWpMU1/lt9I4RRqz+BiAV+KoYNkzWKUdi5vCSswhnUfkGs/uqZ3C724Ffd82
- vzbQ+LsM
- zjWOw9YdiHeM3iwDE737WviFtoKTTz1cRhviJMpdapYxjGW2uGksbW8i+GtY59Y0mJAs2bqGilK5tpsBmvxuYprWhKXDPAvG+5sBa9lVxaOtu3gIVEStzGMqq4Pbt6aQKcGp3TVHv2ZyWF7DRBVO1mVmF64eYLsz29MWffRm73D80nkhIClmLoIPu4WCvRQJhG4TszxSS8ggxpymZkZWggBfcLSzOETgsp8VvNI/DwMAd708qVl7/kGx8H/5hSqmUASzjIBusU+ju7VQwAKqu8eimWRAYw1VhnFCrbWKT2u3RDBOXEgbW+n/VwFPG8XaRWLhTEabqX4xjEj/NonaadJ38Qw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: ED0CE14000C
+X-Stat-Signature: to3ahchj9x9crwh5swqomud3momtnr71
+X-HE-Tag: 1759771655-116850
+X-HE-Meta: U2FsdGVkX1/TTWQdR48DR2SxROQUPaN+echQLflnJfwaWjcb/XewSqh+DQkdmuq8WJBCxyCNbzjnRPSQnrbIKflqJRaoABq1sy35YaaBbouoUCwXKWqcnsrdRjfIvh+Pi3+m92BCI67ShXimSqewy9O0q77wXklPdiry6qVCKDD/SoH6/w5e8TOnIr0J+PxBXqKNn/ZREZTZYex17w3vYoQe7dIxoMEwsIeZR1jxQVeTFE0dOrvqrnF6SgiRh5t9CDp89/X1jJI1wRLAZfhSZh/koxP8vp385pqATGSJVcDbubw+aLxZzagx54nSxLktDO/haGlYFINIyi9BWDTgmNfhqnnwNZrf04yPAcbWMvVHhs64LEY/6HUeH6cHjJWLTRoPk7z+KqK9y2FW3B0dRKP+Sze8dqjlwBjB2OEQ5yF7lanem0d4azEBUTGTrAHML7Nlagoofy6SdrbbIjQMjFivlFDuom/jS+8uzK8F+AYQnJrS7d9gMqvZlbbMAZEHAKqKTxI46LnrRVUNuDDEEdnhC/U/YgB3etjcolDuTeiCVAOsHHq9ZHLB2LtDUES+VQ3KkpQRv4tY3MLxc+4Th1PtBj2ZTeSZ325LgfF4sEBGb4KLF9+jGROykwS1YxZNA40BDLaD07If1h4LdJol1ibTT6+70WdimcSXe51TYNooGHr1KamF51shtniyYIzpiO5OiuznEYE7CmnfHzTPnH1wQGWDX4iui8PPfZAgHfZhPYn20e+oSGZYYm7vFx0ECZ/v1JVdHulHk3u2jCj76zy4hLK1ErdkVfq5QTuzpExfW2uT6QfiM6zJi/Ne4BQWwKIE1GIjHaZdFuT/h5AUmCUOLf8wfwSUdE8NV61oT0cMvAJK8CknXMl4hJSv1ZsaS6YyAvZ6qCm4fR0w+mCZOb6NoHV2SU6nJkWj31h+ZW01vRmoNRzn/uj2ZicNkIyEnv51x07L6SbhBi0ts3c
+ bUAhqKRZ
+ CtF/eIKjyo1XqD7EbGYoxcmtyJGD4qtV7WF3i8xCJ7RT0jH5uEBJl6B9H63gGN5KWo5LwaMJ0fvlA8y8beAtD+gogCW1inLuAlfOzQFNbol9XKcoBCdS/aDaT/ggj9wdCuZGRdQvh2YY99yVGHzjSjZYESpeFfLkTGHcxx+Sh4SOO/9m+8FVZNa3NQBMGh7fj7qfb7qHrXdhe6I9qZx/HC5brTA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,101 +121,469 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 6, 2025 at 12:55=E2=80=AFPM Pratyush Yadav <pratyush@kernel.org=
-> wrote:
+On Mon, Oct 6, 2025 at 10:14=E2=80=AFAM Jason Gunthorpe <jgg@nvidia.com> wr=
+ote:
 >
-> Hi Pasha,
+> On Tue, Sep 30, 2025 at 06:19:39PM -0700, Jason Miu wrote:
+> > @@ -29,7 +30,7 @@
+> >  #include "kexec_internal.h"
+> >
+> >  #define KHO_FDT_COMPATIBLE "kho-v1"
 >
-> On Mon, Sep 29 2025, Pasha Tatashin wrote:
+> We don't bump this?
 >
-> > Currently, KHO is controlled via debugfs interface, but once LUO is
-> > introduced, it can control KHO, and the debug interface becomes
-> > optional.
-> >
-> > Add a separate config CONFIG_KEXEC_HANDOVER_DEBUG that enables
-> > the debugfs interface, and allows to inspect the tree.
-> >
-> > Move all debugfs related code to a new file to keep the .c files
-> > clear of ifdefs.
-> >
-> > Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> [...]
-> > @@ -662,36 +660,24 @@ static void __init kho_reserve_scratch(void)
-> >       kho_enable =3D false;
-> >  }
-> >
-> > -struct fdt_debugfs {
-> > -     struct list_head list;
-> > -     struct debugfs_blob_wrapper wrapper;
-> > -     struct dentry *file;
-> > +struct kho_out {
-> > +     struct blocking_notifier_head chain_head;
-> > +     struct mutex lock; /* protects KHO FDT finalization */
-> > +     struct kho_serialization ser;
-> > +     bool finalized;
-> > +     struct kho_debugfs dbg;
-> >  };
-> >
-> > -static int kho_debugfs_fdt_add(struct list_head *list, struct dentry *=
-dir,
-> > -                            const char *name, const void *fdt)
-> > -{
-> > -     struct fdt_debugfs *f;
-> > -     struct dentry *file;
-> > -
-> > -     f =3D kmalloc(sizeof(*f), GFP_KERNEL);
-> > -     if (!f)
-> > -             return -ENOMEM;
-> > -
-> > -     f->wrapper.data =3D (void *)fdt;
-> > -     f->wrapper.size =3D fdt_totalsize(fdt);
-> > -
-> > -     file =3D debugfs_create_blob(name, 0400, dir, &f->wrapper);
-> > -     if (IS_ERR(file)) {
-> > -             kfree(f);
-> > -             return PTR_ERR(file);
-> > -     }
-> > -
-> > -     f->file =3D file;
-> > -     list_add(&f->list, list);
-> > -
-> > -     return 0;
-> > -}
-> > +static struct kho_out kho_out =3D {
-> > +     .chain_head =3D BLOCKING_NOTIFIER_INIT(kho_out.chain_head),
-> > +     .lock =3D __MUTEX_INITIALIZER(kho_out.lock),
-> > +     .ser =3D {
-> > +             .track =3D {
-> > +                     .orders =3D XARRAY_INIT(kho_out.ser.track.orders,=
- 0),
-> > +             },
-> > +     },
-> > +     .finalized =3D false,
+> > -#define PROP_PRESERVED_MEMORY_MAP "preserved-memory-map"
+> > +#define PROP_PRESERVED_PAGE_RADIX_TREE "preserved-page-radix-tree"
+> >  #define PROP_SUB_FDT "fdt"
+>
+> I'de really like to see all of these sorts of definitions in some
+> structured ABI header not open coded all over the place..
+>
+> >  /*
+> > + * The KHO radix tree tracks preserved memory pages. It is a hierarchi=
+cal
+> > + * structure that starts with a single root `kho_radix_tree`. This sin=
+gle
+> > + * tree stores pages of all orders.
+> > + *
+> > + * This is achieved by encoding the page's physical address and its or=
+der into
+> > + * a single `unsigned long` value. This encoded value is then used to =
+traverse
+> > + * the tree.
+> > + *
+> > + * The tree hierarchy is shown below:
+> > + *
+> > + * kho_radix_tree_root
+> > + * +-------------------+
+> > + * |     Level 6       | (struct kho_radix_tree)
+> > + * +-------------------+
+> > + *   |
+> > + *   v
+> > + * +-------------------+
+> > + * |     Level 5       | (struct kho_radix_tree)
+> > + * +-------------------+
+> > + *   |
+> > + *   | ... (intermediate levels)
+> > + *   |
+> > + *   v
+> > + * +-------------------+
+> > + * |      Level 1      | (struct kho_bitmap_table)
+> > + * +-------------------+
+> > + *
+> > + * The following diagram illustrates how the encoded value is split in=
+to
+> > + * indices for the tree levels:
+> >   *
+> > + *      63:60   59:51    50:42    41:33    32:24    23:15         14:0
+> > + * +---------+--------+--------+--------+--------+--------+-----------=
+------+
+> > + * |    0    |  Lv 6  |  Lv 5  |  Lv 4  |  Lv 3  |  Lv 2  |  Lv 1 (bit=
+map)  |
+> > + * +---------+--------+--------+--------+--------+--------+-----------=
+------+
+> >   *
+> > + * Each `kho_radix_tree` (Levels 2-6) and `kho_bitmap_table` (Level 1)=
+ is
+> > + * PAGE_SIZE. Each entry in a `kho_radix_tree` is a descriptor (a phys=
+ical
+> > + * address) pointing to the next level node. For Level 2 `kho_radix_tr=
+ee`
+> > + * nodes, these descriptors point to a `kho_bitmap_table`. The final
+> > + * `kho_bitmap_table` is a bitmap where each set bit represents a sing=
+le
+> > + * preserved page.
+>
+> Maybe a note that this is example is for PAGE_SIZE=3D4k.
+>
+>
+> >   */
+> > +struct kho_radix_tree {
+> > +     unsigned long table[PAGE_SIZE / sizeof(unsigned long)];
+>
+> This should be phys_addr_t.
+
+Maybe u64 ? This is a preserved data, I would specify the size, and
+not care about 32-bit arches. Also, if we ever have to support larger
+physical spaces, this radix tree version would need to be bumped
+anyway.
+
+>
 > > +};
 >
-> There is already one definition for struct kho_out and a static struct
-> kho_out early in the file. This is a second declaration and definition.
-> And I was super confused when I saw patch 3 since it seemed to be making
-> unrelated changes to this struct (and removing an instance of this,
-> which should be done in this patch instead). In fact, this patch doesn't
-> even build due to this problem. I think some patch massaging is needed
-> to fix this all up.
-
-Let me fix it. I Plan to send a separate series only with KHO changes
-from LUO, so we can expedite its landing.
-
-Pasha
-
+> You dropped the macros so now we don't know these are actually
+> pointers to 'struct kho_radix_tree'
+>
+> > +/*
+> > + * `kho_radix_tree_root` points to a page thats serves as the root of =
+the
+> > + * KHO radix tree. This page is allocated during KHO module initializa=
+tion.
+> > + * Its physical address is written to the FDT and passed to the next k=
+ernel
+> > + * during kexec.
+> > + */
+> > +static struct kho_radix_tree *kho_radix_tree_root;
+> > +static DECLARE_RWSEM(kho_radix_tree_root_sem);
+> > +
+> > +static int kho_radix_tree_max_depth(void)
+> > +{
+> > +     int page_offset_bit_num =3D BITS_PER_LONG - PAGE_SHIFT;
+> > +     int order_bit_num =3D ilog2(__roundup_pow_of_two(page_offset_bit_=
+num));
+> > +     int bitmap_bit_num =3D PAGE_SHIFT + ilog2(BITS_PER_BYTE);
+> > +     int table_bit_num =3D ilog2(PAGE_SIZE / sizeof(unsigned long));
+> > +     int table_level_num =3D DIV_ROUND_UP(page_offset_bit_num -
+> > +                                        bitmap_bit_num + order_bit_num=
+,
+> > +                                        table_bit_num);
+>
+> All should be unsigned int. Below I suggest to put it in an enum and
+> use different names.. And since the function is constant it can just
+> be an enum TOP_LEVEL too.
+>
+> > +/*
+> > + * The KHO radix tree tracks preserved pages by encoding a page's phys=
+ical
+> > + * address (pa) and its order into a single unsigned long value. This =
+value
+> > + * is then used to traverse the tree. The encoded value is composed of=
+ two
+> > + * parts: the 'order bits' in the upper part and the 'page offset' in =
+the
+> > + * lower part.
+> > + *
+> > + *   <-- Higher Bits ------------------------------------ Lower Bits -=
+->
+> > + *  +--------------------------+--------------------------------------=
+---+
+> > + *  |        Order Bits        |               Page Offset            =
+   |
+> > + *  +--------------------------+--------------------------------------=
+---+
+> > + *  | ... 0 0 1 0 0 ...        | pa >> (PAGE_SHIFT + order)           =
+   |
+> > + *  +--------------------------+--------------------------------------=
+---+
+> > + *            ^
+> > + *            |
+> > + *  This single '1' bit's position
+> > + *  uniquely identifies the 'order'.
+> > + *
+> > + *
+> > + * Page Offset:
+> > + * The 'page offset' is the physical address normalized for its order.=
+ It
+> > + * effectively represents the page offset for the given order.
+> > + *
+> > + * Order Bits:
+> > + * The 'order bits' encode the page order by setting a single bit at a
+> > + * specific position. The position of this bit itself represents the o=
+rder.
+> > + *
+> > + * For instance, on a 64-bit system with 4KB pages (PAGE_SHIFT =3D 12)=
+, the
+> > + * maximum range for a page offset (for order 0) is 52 bits (64 - 12).=
+ This
+> > + * offset occupies bits [0-51]. For order 0, the order bit is set at
+> > + * position 52.
+> > + *
+> > + * As the order increases, the number of bits required for the 'page o=
+ffset'
+> > + * decreases. For example, order 1 requires one less bit for its page
+> > + * offset. This allows its order bit to be set at position 51 without
+> > + * conflicting with the page offset bits.
+> > + *
+> > + * This scheme ensures that the single order bit is always in a higher
+> > + * position than any bit used by the page offset for that same order,
+> > + * preventing collisions.
+>
+> Should explain why it is like this:
+>
+> This scheme allows storing all the multi-order page sizes in a single
+> 6 level table with a good sharing of lower tables levels for 0 top
+> address bits. A single algorithm can efficiently process everything.
+>
+> > + */
+> > +static unsigned long kho_radix_encode(unsigned long pa, unsigned int o=
+rder)
+>
+> pa is phys_addr_t in the kernel, never unsigned long.
+>
+> If you want to make it all dynamic then this should be phys_addr_t
+>
+> > +{
+> > +     unsigned long h =3D 1UL << (BITS_PER_LONG - PAGE_SHIFT - order);
+>
+> And this BITS_PER_LONG is confused, it is BITS_PER_PHYS_ADDR_T which
+> may not exist.
+>
+> Use an enum ORDER_0_LG2 maybe
+>
+> > +     unsigned long l =3D pa >> (PAGE_SHIFT + order);
+> >
+> > +     return h | l;
+> > +}
+> >
+> > +static unsigned long kho_radix_decode(unsigned long encoded, unsigned =
+int *order)
+>
+> Returns phys_addr_t
+>
+> >  {
+> > -     void *elm, *res;
+> > +     unsigned long order_bit =3D fls64(encoded);
+>
+> unsigned int
+>
+> > +     unsigned long pa;
+>
+> phys_addr_t
+>
+> > +     *order =3D BITS_PER_LONG - PAGE_SHIFT - order_bit + 1;
+>
+> ORDER_0_LG2
+>
+> > +     pa =3D encoded << (PAGE_SHIFT + *order);
+>
+> I'd add a comment that the shift always discards order.
+>
+> > +     return pa;
+> > +}
+> >
+> > +static unsigned long kho_radix_get_index(unsigned long encoded, int le=
+vel)
+>
+> unsigned int level
+>
+> > +{
+> > +     int table_bit_num =3D ilog2(PAGE_SIZE / sizeof(unsigned long));
+> > +     int bitmap_bit_num =3D PAGE_SHIFT + ilog2(BITS_PER_BYTE);
+>
+> Stick all the constants that kho_radix_tree_max_depth() are computing
+> in an enum instead of recomputing them..
+>
+> > +     unsigned long mask;
+> > +     int s;
+>
+> unsigned for all of these.
+>
+> > +
+> > +     if (level =3D=3D 1) {
+>
+> I think the math is easier if level 0 =3D=3D bitmap..
+>
+> > +             s =3D 0;
+> > +             mask =3D (1UL << bitmap_bit_num) - 1;
+> > +     } else {
+> > +             s =3D ((level - 2) * table_bit_num) + bitmap_bit_num;
+>
+> eg here you are doing level-2 which is a bit weird only because of the
+> arbitary choice to make level=3D1 be the bitmap.
+>
+> I'd also use some different names
+>
+> table_bit_num =3D=3D TABLE_SIZE_LG2
+> BITMAP_BIT_NUM =3D BITMAP_SIZE_LG2
+>
+> Log2 designates the value is 1<<LG2
+>
+> > +             mask =3D (1UL << table_bit_num) - 1;
+> >       }
+> >
+> > -     return elm;
+> > +     return (encoded >> s) & mask;
+>
+> It is just:
+>
+> return encoded % (1 << BITMAP_SIZE_LG2);
+> return (encoded >> s) % (1 << TABLE_SIZE_LG2);
+>
+> The compiler is smart enough to choose bit logic if that is the
+> fastest option and the above is more readable.
+>
+> > +static int kho_radix_set_bitmap(struct kho_bitmap_table *bit_tlb, unsi=
+gned long offset)
+> >  {
+> > +     if (!bit_tlb ||
+> > +         offset >=3D PAGE_SIZE * BITS_PER_BYTE)
+> > +             return -EINVAL;
+> >
+> > +     set_bit(offset, bit_tlb->bitmaps);
+>
+> set_bit is an atomic, you want __set_bit()
+>
+> > +     return 0;
+> > +}
+> >
+> > +static int kho_radix_preserve_page(unsigned long pa, unsigned int orde=
+r)
+>
+> phys_addr_t
+>
+> > +{
+> > +     unsigned long encoded =3D kho_radix_encode(pa, order);
+> > +     int num_tree_level =3D kho_radix_tree_max_depth();
+>
+> kho_radix_tree_max_depth() is constant, stick it in an enum with the
+> rest of them.
+>
+> > +     struct kho_radix_tree *current_tree, *new_tree;
+> > +     struct kho_bitmap_table *bitmap_table;
+> > +     int err =3D 0;
+> > +     int i, idx;
+>
+> various unsigned int.
 >
 > >
-> >  /**
-> >   * kho_add_subtree - record the physical address of a sub FDT in KHO r=
-oot tree.
-> [...]
+> > +     down_write(&kho_radix_tree_root_sem);
+> >
+> > +     current_tree =3D kho_radix_tree_root;
+> >
+> > +     /* Go from high levels to low levels */
+> > +     for (i =3D num_tree_level; i >=3D 1; i--) {
+> > +             idx =3D kho_radix_get_index(encoded, i);
+> > +
+> > +             if (i =3D=3D 1) {
+> > +                     bitmap_table =3D (struct kho_bitmap_table *)curre=
+nt_tree;
+> > +                     err =3D kho_radix_set_bitmap(bitmap_table, idx);
+> > +                     goto out;
+> > +             }
+> > +
+> > +             if (!current_tree->table[idx]) {
+> > +                     new_tree =3D kho_alloc_radix_tree();
+> > +                     if (!new_tree) {
+> > +                             err =3D -ENOMEM;
+> > +                             goto out;
+> > +                     }
+> > +
+> > +                     current_tree->table[idx] =3D
+> > +                             (unsigned long)virt_to_phys(new_tree);
 >
-> --
-> Regards,
-> Pratyush Yadav
+> current_tree =3D new_tree
+> > +             }
+>
+> else
+>
+> > +
+> > +             current_tree =3D (struct kho_radix_tree *)
+> > +                     phys_to_virt(current_tree->table[idx]);
+> >       }
+> > +
+> > +out:
+> > +     up_write(&kho_radix_tree_root_sem);
+> > +     return err;
+> >  }
+> >
+> > +static int kho_radix_walk_bitmaps(struct kho_bitmap_table *bit_tlb,
+> > +                               unsigned long offset,
+>
+> phys_addr_t
+>
+> > +                               kho_radix_tree_walk_callback_t cb)
+> >  {
+> > +     unsigned long encoded =3D offset << (PAGE_SHIFT + ilog2(BITS_PER_=
+BYTE));
+> > +     unsigned long *bitmap =3D (unsigned long *)bit_tlb;
+> > +     int err =3D 0;
+> > +     int i;
+> >
+> > +     for_each_set_bit(i, bitmap, PAGE_SIZE * BITS_PER_BYTE) {
+> > +             err =3D cb(encoded | i);
+> > +             if (err)
+> > +                     return err;
+> > +     }
+> >
+> > +     return 0;
+> > +}
+> >
+> > +static int kho_radix_walk_trees(struct kho_radix_tree *root, int level=
+,
+>
+> unsigned int
+>
+> > +                             unsigned long offset,
+>
+> phys_addr_t.  I would call this start not offset..
+>
+> > +                             kho_radix_tree_walk_callback_t cb)
+> > +{
+> > +     int level_shift =3D ilog2(PAGE_SIZE / sizeof(unsigned long));
+> > +     struct kho_radix_tree *next_tree;
+> > +     unsigned long encoded, i;
+> > +     int err =3D 0;
+> >
+> > +     if (level =3D=3D 1) {
+> > +             encoded =3D offset;
+> > +             return kho_radix_walk_bitmaps((struct kho_bitmap_table *)=
+root,
+> > +                                           encoded, cb);
+>
+> Better to do this in the caller  a few lines below
+>
+> > +     }
+>
+> >
+> > +     for (i =3D 0; i < PAGE_SIZE / sizeof(unsigned long); i++) {
+> > +             if (root->table[i]) {
+> > +                     encoded =3D offset << level_shift | i;
+>
+> This doesn't seem right..
+>
+> The argument to the walker should be the starting encoded of the table
+> it is about to walk.
+>
+> Since everything always starts at 0 it should always be
+>   start | (i << level_shift)
+>
+> ?
+>
+> > +                     next_tree =3D (struct kho_radix_tree *)
+> > +                             phys_to_virt(root->table[i]);
+> > +                     err =3D kho_radix_walk_trees(next_tree, level - 1=
+, encoded, cb);
+> >                       if (err)
+> >                               return err;
+> >               }
+> >       }
+> >
+> > +     return 0;
+> > +}
+> >
+> > +static int kho_memblock_reserve(phys_addr_t pa, int order)
+> > +{
+> > +     int sz =3D 1 << (order + PAGE_SHIFT);
+> > +     struct page *page =3D phys_to_page(pa);
+> > +
+> > +     memblock_reserve(pa, sz);
+> > +     memblock_reserved_mark_noinit(pa, sz);
+> > +     page->private =3D order;
+> >
+> >       return 0;
+> >  }
+> >
+> > +static int kho_radix_walk_trees_callback(unsigned long encoded)
+> > +{
+> > +     unsigned int order;
+> > +     unsigned long pa;
+> > +
+> > +     pa =3D kho_radix_decode(encoded, &order);
+> > +
+> > +     return kho_memblock_reserve(pa, order);
+> > +}
+> > +
+> > +struct kho_serialization {
+> > +     struct page *fdt;
+> > +     struct list_head fdt_list;
+> > +     struct dentry *sub_fdt_dir;
+> > +};
+> > +
+> > +static int __kho_preserve_order(unsigned long pfn, unsigned int order)
+> > +{
+> > +     unsigned long pa =3D PFN_PHYS(pfn);
+>
+> phys_addr_t
+>
+> Jason
 
