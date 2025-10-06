@@ -4,76 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A157CCA471
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 16:31:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2832CAC5B8
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 16:38:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABFBC8E0013; Mon,  6 Oct 2025 12:31:03 -0400 (EDT)
+	id 32EFC8E0009; Mon,  6 Oct 2025 12:38:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A70788E0002; Mon,  6 Oct 2025 12:31:03 -0400 (EDT)
+	id 2E0298E0002; Mon,  6 Oct 2025 12:38:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95E9A8E0013; Mon,  6 Oct 2025 12:31:03 -0400 (EDT)
+	id 1CF278E0009; Mon,  6 Oct 2025 12:38:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DC0A8E0002
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 12:31:03 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2A525C0644
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 16:31:03 +0000 (UTC)
-X-FDA: 83968228806.01.45200F1
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0AF4F8E0002
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 12:38:59 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9796613B65C
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 16:38:58 +0000 (UTC)
+X-FDA: 83968248756.02.DA9F993
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 82BA7180008
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 16:31:01 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nmOzWz2S;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759768261; a=rsa-sha256;
-	cv=none;
-	b=K8KWLmnrd61itKumRTPEK+HEJnVDJbjoyW4W5NGT52RaXyJeXwqiX8vb0uh7KjeOntwOKN
-	gaTUBiOqayTODeP7nl3ulMvL9vb73HL9A6IZ826dndK7gTdFjeZmjS8+npK2kIspmrP82a
-	l3io5qLKiNI76L6M1rmUYV0/B+Y8ox8=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nmOzWz2S;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	by imf05.hostedemail.com (Postfix) with ESMTP id F27E5100014
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 16:38:56 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AoCB4m1f;
+	spf=pass (imf05.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759768261;
+	s=arc-20220608; t=1759768737;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q9hSnvNFZE1xK6AW4SD9CaWkTyj3oQL+ScFRJVEMjsw=;
-	b=d3GBGrC9xJTI8I7Ifm6JztssH+B1953ggsrj7HpugPoq/mrkxjfeNAYaaPkDJSceQcH6x2
-	DXAvIgTq+bFjF5NYbohNpEzT+BRxdcaIv/0u3H3vTjWlWp0WuVLZktSaLjMjVwjCo8V4rb
-	4EnUmEBkv3Wsb+6ybtaz54PF2Z8Hwms=
+	bh=B9Ff/c/GvRCKaEBgiq14HI51MQaFwrihskWlfwJ194o=;
+	b=BS1EbphTHqZb7rEFzrSS3+ZwrMm0H9rsFnmIZTtycLnSiu5TH8jRSgPckleP1BCTPEuTvx
+	5BG5e90WJbFRZhFOzu1r8ouDt+PsWxktGgjnxCnPfQxIW3BWCBKw6yBjFQIwW9XcX61Fs2
+	WwULr2JeUm/FOa+CBV3aLAAJuLVIcxs=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AoCB4m1f;
+	spf=pass (imf05.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759768737; a=rsa-sha256;
+	cv=none;
+	b=6HnDfuYRAeRJO1RFrTTjU16l4yh2v7diaM/XH/N8Hq49Nf+Q+wc2vLVlArSKOcEZK2zR20
+	yGCFuS++75ZysJvuxFGfzq6UhwLs/b4STkT/Vy8abl6cV87FQenpcDq8X71gmquy7N2Dn5
+	z3GJN1vPcQB+NNR2WhbxVl1pMmwjejo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6551760591;
-	Mon,  6 Oct 2025 16:31:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E435C4CEF5;
-	Mon,  6 Oct 2025 16:30:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E3B436022B;
+	Mon,  6 Oct 2025 16:38:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38A48C4CEF5;
+	Mon,  6 Oct 2025 16:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759768260;
-	bh=yD0PjDQlf46RiJVrF/Aszb7CVdshcKm/wDonN3zBFKU=;
+	s=k20201202; t=1759768735;
+	bh=sxyC+M2p7vPAPhVy3ZlJCaWWCXkjXzbjOcvF/s8+J38=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=nmOzWz2SnthepQu0FPGRBR+aVkqF9ApmQ+zx91kTdSjpax06w+O1ocikxZUxhTvEl
-	 BkiQ/OdKVfDKPNQf3b8Cv0Vuv74aRdbYVmxzDhgVhHTLZyqhQenmnJj1HZ5JZctahT
-	 j3vRK2ho7EZrufPIHz0BSk+yB3W5zeHAxAMPQ9ODza2WiQAMGpi87FP23eg3+eWSU7
-	 xAwJMgbFq6blAZze7hA6lAChs0wcA40LSeN6YRe/c6r6npA76+nE84OWCU3cHivFdm
-	 /LXzBroGswAo/PYUtcx8R9abLLGBwJ9guZ+FWOq2tKSpMydDSnFGR03gTDNMfHe2Sb
-	 TGHeqGQZhy+0A==
+	b=AoCB4m1fzQ5jyR7WTLfGlF6oqK6LGxGaJeYs0kb4rShKoKCiR+8kc5RLjvkQ2kWZl
+	 N+nqPUUgBVuyONwRKAxWStMysJgoomOb5mLrd+4i8baVJ84dhQOrNBRV+gUNqSUSx7
+	 lf0XasB4zMpfRUaKdi11jD9sFZj/ShqT7GhVRoE8tvqUqtX6qPd9vb2GuaN2Tqd1cC
+	 TM9y9rH3WkMkDQ3gesAR5Df8vVIqmGVhksS29tdZikWj37vi2ndjjIBUQtW4enue3G
+	 dPTW7LuVrQgQ6oUjaXudtwNXootEyhcQ/bM0q3UTbUg5I2ou5p9PYg2TwMjKKpFDrS
+	 vXTfikQeMJI9Q==
 From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org,  jasonmiu@google.com,  graf@amazon.com,
-  changyuanl@google.com,  rppt@kernel.org,  dmatlack@google.com,
-  rientjes@google.com,  corbet@lwn.net,  rdunlap@infradead.org,
-  ilpo.jarvinen@linux.intel.com,  kanie@linux.alibaba.com,
-  ojeda@kernel.org,  aliceryhl@google.com,  masahiroy@kernel.org,
-  akpm@linux-foundation.org,  tj@kernel.org,  yoann.congal@smile.fr,
-  mmaurer@google.com,  roman.gushchin@linux.dev,  chenridong@huawei.com,
-  axboe@kernel.dk,  mark.rutland@arm.com,  jannh@google.com,
-  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  jasonmiu@google.com,
+  graf@amazon.com,  changyuanl@google.com,  rppt@kernel.org,
+  dmatlack@google.com,  rientjes@google.com,  corbet@lwn.net,
+  rdunlap@infradead.org,  ilpo.jarvinen@linux.intel.com,
+  kanie@linux.alibaba.com,  ojeda@kernel.org,  aliceryhl@google.com,
+  masahiroy@kernel.org,  akpm@linux-foundation.org,  tj@kernel.org,
+  yoann.congal@smile.fr,  mmaurer@google.com,  roman.gushchin@linux.dev,
+  chenridong@huawei.com,  axboe@kernel.dk,  mark.rutland@arm.com,
+  jannh@google.com,  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
   dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
   rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
   zhangguopeng@kylinos.cn,  linux@weissschuh.net,
@@ -93,24 +94,26 @@ Cc: pratyush@kernel.org,  jasonmiu@google.com,  graf@amazon.com,
   parav@nvidia.com,  leonro@nvidia.com,  witu@nvidia.com,
   hughd@google.com,  skhawaja@google.com,  chrisl@kernel.org,
   steven.sistare@oracle.com
-Subject: Re: [PATCH v4 02/30] kho: make debugfs interface optional
-In-Reply-To: <20250929010321.3462457-3-pasha.tatashin@soleen.com> (Pasha
-	Tatashin's message of "Mon, 29 Sep 2025 01:02:53 +0000")
+Subject: Re: [PATCH v4 03/30] kho: drop notifiers
+In-Reply-To: <mafs0bjmkp0gb.fsf@kernel.org> (Pratyush Yadav's message of "Mon,
+	06 Oct 2025 16:30:12 +0200")
 References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
-	<20250929010321.3462457-3-pasha.tatashin@soleen.com>
-Date: Mon, 06 Oct 2025 18:30:49 +0200
-Message-ID: <mafs07bx8ouva.fsf@kernel.org>
+	<20250929010321.3462457-4-pasha.tatashin@soleen.com>
+	<mafs0bjmkp0gb.fsf@kernel.org>
+Date: Mon, 06 Oct 2025 18:38:45 +0200
+Message-ID: <mafs0347woui2.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: F27E5100014
+X-Stat-Signature: gqtt1sua8ay53kg7aawc6gpk46fcyqcs
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 82BA7180008
-X-Stat-Signature: mwskw7i34hmhddyokufy1hruhzi9sji9
-X-HE-Tag: 1759768261-110478
-X-HE-Meta: U2FsdGVkX1/FVaxj/7FBj1EZXqvgGGpUUjKnCsXZFRQ3iqMqyTLEst0t/bEMi08LglTcDqvyYwrj1gXWiDVsoN/6+thztaZTK3rK7BTfol7XEVJRQGRtPpx31q6gUaBPySKvlrSsLW5tsxKTQI9LNTr9dJgUoHxqlusvPeBjq+/tcxYYtUHvP+AwWb0447MzUl+qh6fTZgviLc7mlrzqG6TXdSJWGyA53SZTq5h1W4Y6G1himCpi8jFWhNUHPGYz1Or6fhrAmWZ8F6ip3Df0ir5PsrJQgIAZeT6ZLXGd02WyN0xE4truUabh3yMOnxikOV4UB64kQPwIAHag3fjZjksLkOcGxl1XT8mZKHrrhBToIGNJxywuRpz9wtedTinhciQyrnAts/vrlCD++r4Uui3EG4RQnfafhL6Vv+/Yv8tcAqGDXYpa7Qd88UK9hTVltZ4LY6M6aB4yt/uVxM7iwisYUZ5YmIVnp9fPfSReQllhzXJEAXuWFkuCjwuz62tjQ52vq9+3DDoZZcMCO1KZg4XQoML/bdme4rGZcpgLJzS6yQnGbH/cx+CATMC+mMI716yY868CvS49Axg6KB5qQrYXXt7gfZDeCIkYsMMf9H+e00NgyoA/i2syqY+3CGV6YrilUnWh9Z6spDGIe4eqJq010+MsuD1PYt+DK7rJh3bii1O/kANLxwps0EPzdKzE4gt9SAxa897jAerCXxx+agFpL2VUcy7iarA7BY9M1sJh8+V/hE6UsfzvW70q6pyHQeK0V4HcpWqla3hAcUConKSWiyEslfe+ESAE127kpeIpuVrmqrpHmhflJfg8lmCXPp4pDNQjxIDZoYYgHeAznsws2ZlBeE6P8Ru9kv2Cwtt7DDmGBOR++CVg1M3+1jFIHweQMCeq9BdeFKqTDen85XTMf9xKsWVoFVDlOKelpt3PoY0PrY4rW4F7NgRFdJKY4gCsJ+w/z948yvz32+Z
- x5u7VVPs
- i1eCBzL0fWIBgQrg6BWPntFiPe89b+66blz2TUZs2RRIFVl/Lvl15EwbLuPTlAJGFioHlAuo9CiBrPp3w7qwIUBcyXKqhIhkWon/g5N/8xe/5i9WYmAy1dEqVW7KaUZat4Josbf/uze41vHs3TRM1XHZ+Us6G9rQuARsym2nv/S0WUFlzq1LTRQptJOnTp2C2N+D4YN2IwrdsvMFMtPYgsJEC11HBTS2S9Oyqo0l8JUMWVBdVboVIQ+o3gSWaHLZdo5azASULL8YcLZn/1RXz6kpdZZO57S0q3t4UrVt8Z8TdEQshThYir7OdLxKRJX4TLs75
+X-HE-Tag: 1759768736-91619
+X-HE-Meta: U2FsdGVkX1/Vz9HvoDWmCdNb/OA1rsF+DQuQoJgpmH4GGlSQwHHBoQlGCJ/uNQSuwCzPLBK6NRaTF3fy2VCyf1iz3fBSzKnqZPJTIPDHEGVuD4qtjwksQ5I8knj+am/g1OJNOhFZzb9/gyEeO5zi6aaB8c66QSCKmQFP73syA2h5fA+kDwjn0iJPUWwkPp1evcLRyiClNNMEyjnSXQ+QCtkEhWW0pkwYOsZvo8LXhOs4abzrWH6xxVin6pRnqszon7Q9iqE5p2XJTUmGAyUiY6Kyu8WQFDEqS3gij+66rfI4eRmGmF4G2hb2+HZdEBflQLYx8lr0FSIL2KWGfuZDH5YDU3K1oaYQmPBiJoVhLVziBH3GPFr4iUxf8DjV88dcNR6lcwgMPlg38d3svXSVv4xfXr0TyFMSGfnODFDGAn7DSAC2d0tHMwiIXq8tYLhM+/UPcvsa1qq+8ROzMhNLLFHXxky16EI42NrHKUK5hafQwCMfUJXmD5SeYqsRdMYwE0AdXzG0Rtw+5pKiTudEvAgJ4PbnMjsODxLxJ5FB4Xde+NE5E8m9WOlBnlfDniB3fSXky6S34DN1V4oKC6dwSnwLwAe2NinbnmgFmn+LImlFYTeaLnhrXPNmchnuh53WYNMQU8wz1kbF3x6y1f4wZJU9mSzA7JTJlLxIouBAmgNwlZavuEHEAY5Mqtoq+a3uwSuyFY2L+FFnzZdUxPsyS6hMWqIc7ztinPepvU6oKCFHfG7kf0GuWKFY4eJpqolxNqk0uQ662fdFRDWwsHY48I4b6Wh/VQNgb/DN2X4Db+v9g3Q2gCwZEt1befG8RxiGjE9RLqAs9+MxJFif24gIykE8nDDMrXbk6SjlYehDIiefpUzyqfPCq5YYidLwAu2QZlVH7cTLxguSh9K4ZETkq4mTkU1rdUGPVXq5t8HD8Rqmy/2tHboXyVqlkVf0R5yo0KFEjBnYdbU3LiG2qxu
+ 7Csv83hV
+ JH/ML/B6Sfi7Mkt5XCtvgY70+MCr2eK7fz0eQDwqg29PkSHwtlEWui0+FLHzY3LRmZXao27pT+/x9B5E7Z6kxBnlI1aLRLDxYfKjbQk5P/aVdUQ+NE9rk89zYlS1l8MAnVcNK8x1jRxoJuVRTg1Ie4ETXXPa6Rr4NPuiBuN11CtZtNGH+tFmihug0tzKCn43B95+EblV2JUMAnWrcpc2r6W+DSQ1YTzHMsomXr/o8rSDuJBPyyHxzJpjvGiIycOxBA5inB2XKy4531656Woqam/IndcKg9kAuLPObhMPRj0c2q9nWP0WCjr+J2OX7AfUuqHThmo130j/55o2y9aqgDIHLCt3pxXeM7rN4HM9Nfz4FJDis/f76Rs0mjQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,58 +122,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 29 2025, Pasha Tatashin wrote:
+Hi,
 
-> Currently, KHO is controlled via debugfs interface, but once LUO is
-> introduced, it can control KHO, and the debug interface becomes
-> optional.
->
-> Add a separate config CONFIG_KEXEC_HANDOVER_DEBUG that enables
-> the debugfs interface, and allows to inspect the tree.
->
-> Move all debugfs related code to a new file to keep the .c files
-> clear of ifdefs.
->
-> Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> ---
->  MAINTAINERS                      |   3 +-
->  kernel/Kconfig.kexec             |  10 ++
->  kernel/Makefile                  |   1 +
->  kernel/kexec_handover.c          | 255 +++++--------------------------
->  kernel/kexec_handover_debug.c    | 218 ++++++++++++++++++++++++++
->  kernel/kexec_handover_internal.h |  44 ++++++
->  6 files changed, 311 insertions(+), 220 deletions(-)
->  create mode 100644 kernel/kexec_handover_debug.c
->  create mode 100644 kernel/kexec_handover_internal.h
->
-[...]
-> --- a/kernel/Kconfig.kexec
-> +++ b/kernel/Kconfig.kexec
-> @@ -109,6 +109,16 @@ config KEXEC_HANDOVER
->  	  to keep data or state alive across the kexec. For this to work,
->  	  both source and target kernels need to have this option enabled.
->  
-> +config KEXEC_HANDOVER_DEBUG
+On Mon, Oct 06 2025, Pratyush Yadav wrote:
 
-Nit: can we call it KEXEC_HANDOVER_DEBUGFS instead? I think we would
-like to add a KEXEC_HANDOVER_DEBUG at some point to control debug
-asserts for KHO, and the naming would get confusing. And renaming config
-symbols is kind of a pain.
+> Hi Pasha,
+>
+> On Mon, Sep 29 2025, Pasha Tatashin wrote:
+>
+>> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>>
+>> The KHO framework uses a notifier chain as the mechanism for clients to
+>> participate in the finalization process. While this works for a single,
+>> central state machine, it is too restrictive for kernel-internal
+>> components like pstore/reserve_mem or IMA. These components need a
+>> simpler, direct way to register their state for preservation (e.g.,
+>> during their initcall) without being part of a complex,
+>> shutdown-time notifier sequence. The notifier model forces all
+>> participants into a single finalization flow and makes direct
+>> preservation from an arbitrary context difficult.
+>> This patch refactors the client participation model by removing the
+>> notifier chain and introducing a direct API for managing FDT subtrees.
+>>
+>> The core kho_finalize() and kho_abort() state machine remains, but
+>> clients now register their data with KHO beforehand.
+>>
+>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+>
+> This patch breaks build of test_kho.c (under CONFIG_TEST_KEXEC_HANDOVER):
+>
+> 	lib/test_kho.c:49:14: error: =E2=80=98KEXEC_KHO_ABORT=E2=80=99 undeclare=
+d (first use in this function)
+> 	   49 |         case KEXEC_KHO_ABORT:
+> 	      |              ^~~~~~~~~~~~~~~
+> 	[...]
+> 	lib/test_kho.c:51:14: error: =E2=80=98KEXEC_KHO_FINALIZE=E2=80=99 undecl=
+ared (first use in this function)
+> 	   51 |         case KEXEC_KHO_FINALIZE:
+> 	      |              ^~~~~~~~~~~~~~~~~~
+> 	[...]
+>
+> I think you need to update it as well to drop notifier usage.
 
-> +	bool "kexec handover debug interface"
-> +	depends on KEXEC_HANDOVER
-> +	depends on DEBUG_FS
-> +	help
-> +	  Allow to control kexec handover device tree via debugfs
-> +	  interface, i.e. finalize the state or aborting the finalization.
-> +	  Also, enables inspecting the KHO fdt trees with the debugfs binary
-> +	  blobs.
-> +
-[...]
+Here's the fix. Build passes now and the test succeeds under my qemu
+test setup.
 
--- 
+--- 8< ---
+From a8e6b5dfef38bfbcd41f3dd08598cb79a0701d7e Mon Sep 17 00:00:00 2001
+From: Pratyush Yadav <pratyush@kernel.org>
+Date: Mon, 6 Oct 2025 18:35:20 +0200
+Subject: [PATCH] fixup! kho: drop notifiers
+
+Update KHO test to drop the notifiers as well.
+
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+---
+ lib/test_kho.c | 32 +++-----------------------------
+ 1 file changed, 3 insertions(+), 29 deletions(-)
+
+diff --git a/lib/test_kho.c b/lib/test_kho.c
+index fe8504e3407b5..e9462a1e4b93b 100644
+--- a/lib/test_kho.c
++++ b/lib/test_kho.c
+@@ -38,33 +38,6 @@ struct kho_test_state {
+=20
+ static struct kho_test_state kho_test_state;
+=20
+-static int kho_test_notifier(struct notifier_block *self, unsigned long cm=
+d,
+-			     void *v)
+-{
+-	struct kho_test_state *state =3D &kho_test_state;
+-	struct kho_serialization *ser =3D v;
+-	int err =3D 0;
+-
+-	switch (cmd) {
+-	case KEXEC_KHO_ABORT:
+-		return NOTIFY_DONE;
+-	case KEXEC_KHO_FINALIZE:
+-		/* Handled below */
+-		break;
+-	default:
+-		return NOTIFY_BAD;
+-	}
+-
+-	err |=3D kho_preserve_folio(state->fdt);
+-	err |=3D kho_add_subtree(ser, KHO_TEST_FDT, folio_address(state->fdt));
+-
+-	return err ? NOTIFY_BAD : NOTIFY_DONE;
+-}
+-
+-static struct notifier_block kho_test_nb =3D {
+-	.notifier_call =3D kho_test_notifier,
+-};
+-
+ static int kho_test_save_data(struct kho_test_state *state, void *fdt)
+ {
+ 	phys_addr_t *folios_info;
+@@ -111,6 +84,7 @@ static int kho_test_prepare_fdt(struct kho_test_state *s=
+tate)
+=20
+ 	fdt =3D folio_address(state->fdt);
+=20
++	err |=3D kho_preserve_folio(state->fdt);
+ 	err |=3D fdt_create(fdt, fdt_size);
+ 	err |=3D fdt_finish_reservemap(fdt);
+=20
+@@ -194,7 +168,7 @@ static int kho_test_save(void)
+ 	if (err)
+ 		goto err_free_folios;
+=20
+-	err =3D register_kho_notifier(&kho_test_nb);
++	err =3D kho_add_subtree(KHO_TEST_FDT, folio_address(state->fdt));
+ 	if (err)
+ 		goto err_free_fdt;
+=20
+@@ -309,7 +283,7 @@ static void kho_test_cleanup(void)
+=20
+ static void __exit kho_test_exit(void)
+ {
+-	unregister_kho_notifier(&kho_test_nb);
++	kho_remove_subtree(folio_address(kho_test_state.fdt));
+ 	kho_test_cleanup();
+ }
+ module_exit(kho_test_exit);
+--=20
 Regards,
 Pratyush Yadav
 
