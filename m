@@ -4,182 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD5EDCCA470
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 22:51:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2AECCCA471
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 23:16:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F2A98E0006; Mon,  6 Oct 2025 18:51:07 -0400 (EDT)
+	id 1A2B28E0008; Mon,  6 Oct 2025 19:16:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CABF8E0002; Mon,  6 Oct 2025 18:51:07 -0400 (EDT)
+	id 179E98E0002; Mon,  6 Oct 2025 19:16:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B9368E0006; Mon,  6 Oct 2025 18:51:07 -0400 (EDT)
+	id 0B6E68E0008; Mon,  6 Oct 2025 19:16:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 798878E0002
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 18:51:07 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 05C6E87E07
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 22:51:07 +0000 (UTC)
-X-FDA: 83969186574.04.6D54294
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010062.outbound.protection.outlook.com [40.93.198.62])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 371EB40006
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 22:51:04 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=BZzp9oSI;
-	spf=pass (imf01.hostedemail.com: domain of jgg@nvidia.com designates 40.93.198.62 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759791064;
+	by kanga.kvack.org (Postfix) with ESMTP id EDCB38E0002
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 19:16:36 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8CB3C14078E
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 23:16:36 +0000 (UTC)
+X-FDA: 83969250792.12.5FEBB4E
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 881B18000F
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 23:16:34 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nF+BhiMO;
+	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1759792594;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F7o1TSggsqOwIQGE6pg/EMisfZUY+a7pSnGrqkgogUE=;
-	b=THaUuNy03feZ7R/JGTDNVtz7DBo8IL9Dx3y8pHr275/h+/F/RdgMpmv8MM0cIJjLolyiYx
-	Pv9dPkbbcEJRR7nlk5DYY3nwbCzDaOaJIxXCWoVm32giVQMuGY/q5RxOkXVja3VYDftL5r
-	o6//FdUswqw4igkGDiWCYy5knLp1tu4=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=BZzp9oSI;
-	spf=pass (imf01.hostedemail.com: domain of jgg@nvidia.com designates 40.93.198.62 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1759791064; a=rsa-sha256;
-	cv=pass;
-	b=d+CQgnZeVmJjjNgF/4WnWpm5L20xEqIv+KHtHvgw3XETnmr0kBEINAnnXZwC6KbpDHx+Qy
-	JThJWdY1dz7cuMHj3/SBys8nidO/GEf7MSG+I8593GEqiRzCfBJVYjghYrAnNx0tmFYrbi
-	mW7mtxMyh9k2Ec78wYRo43kFzVsptvg=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Rn49xCtEE/G4GI2kHviEVRZb1dljyxh124PdklHuy7U43/C6FbHiHsxZUETEcQkOfV8ebKXkuAhneUz8J61rJq3dhiSmQK0wKm+K2kgdlZmIsHzvWlnuKUQuI9WdyWb6Iyb3gnaJri5CqsSxvMBpwbeerdY31znoMScNNUXUetOQeGEkKMv8uaT2lNQGyHIe/WoZQuulFX4Z4vDDwZ8NoZeL2SHrkCRgbkJKIgXUSeZRZrKlaO5vdZMlCHZPpFnToToGCcWC/ytTpazXxMn+7Y0AjW3w4Q5AkmrcffrsYYaqFW2jJz2XSw8Fe6hHbsMhofGNElY8VIprpmjfB3TPIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=F7o1TSggsqOwIQGE6pg/EMisfZUY+a7pSnGrqkgogUE=;
- b=JLPXZgmxuRlYrGu/G8pCTa943QclxOHmRVar6rSoi9cIaphY9XG+GQiFE+S53DJ944KouXpd6weLxm2AV5MkihhVSfR3NfAqJmMWr9hiVeEhADtCn78ExjJ+TmA96BZdXgu7z9I/ELRTZnfaA857itacl94lcOaNgjCUzx4EqqL5ZBkyl8Yfy1KYgshnv9Qfgdw3VqVLqt+OXfSusVjnUFosqEq1gTLafpsrbK1jPH+LR43h3gWCJdfMAoQAwPV2Sb1FT7n4DTJkJzy1WEtOzpdPoMrpX3NbcBL/j3XCiYgWkVnv8BsQkra0X5qJn/2jB8aRrzzUOU8DYT1TV7W/hg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=F7o1TSggsqOwIQGE6pg/EMisfZUY+a7pSnGrqkgogUE=;
- b=BZzp9oSIPOpPsnNCuotiAIwsbwLryPedyFRFDUOy9uL76lYyrKbJMvhJ7tUIRzs/ZnlnTYlVe9srfrGuDk68+saMvFuj/lyi2UGzCFAG+HwAuH/c3riwhDWt6uJulI4gfkpJukQWI0YluV8qOJfkNPou7IH9CoqGw6mjdRlPLRmJwcAF2Wtx0HvqFa4nXGCzlQ1ZuEEKDXOrxBggyXLEQfMFhPowvwiTWezVtTZ32R6D5iRFssA9GaEbKaNIWnRYFVluGDc2XnMYDc/ytm2Gsa5heIOrhIXINir9+BuEcIlDxvCImUW/Va42Pa/0AWZg4uuKRTi65JZ2dnJeURrTjg==
-Received: from MN2PR12MB3613.namprd12.prod.outlook.com (2603:10b6:208:c1::17)
- by MW3PR12MB4444.namprd12.prod.outlook.com (2603:10b6:303:5c::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9182.20; Mon, 6 Oct
- 2025 22:50:57 +0000
-Received: from MN2PR12MB3613.namprd12.prod.outlook.com
- ([fe80::1b3b:64f5:9211:608b]) by MN2PR12MB3613.namprd12.prod.outlook.com
- ([fe80::1b3b:64f5:9211:608b%4]) with mapi id 15.20.9182.017; Mon, 6 Oct 2025
- 22:50:57 +0000
-Date: Mon, 6 Oct 2025 19:50:55 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Jason Miu <jasonmiu@google.com>, Alexander Graf <graf@amazon.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>,
-	David Matlack <dmatlack@google.com>,
-	David Rientjes <rientjes@google.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v1 1/3] kho: Adopt KHO radix tree data structures
-Message-ID: <20251006225055.GW3360665@nvidia.com>
-References: <20251001011941.1513050-1-jasonmiu@google.com>
- <20251001011941.1513050-2-jasonmiu@google.com>
- <20251006141444.GN3360665@nvidia.com>
- <CA+CK2bBaQEVySFcNmyQnWayZ7K=z5FxU7wTyNtmO7ja7NNGo3Q@mail.gmail.com>
+	bh=YAQqFRBgLjNWMysHHUTdJ9birnJGsiwpBAJwhsVCFOg=;
+	b=QvxKU8Py4GlmuXNki0DsWq/0gKYOkk+RwXxjISyfJB6OeYjqlhV1G2ReRD4iNoun8eE2Er
+	GN3xRegWfnuvaCB2aRLb8zcqL6rgTBA5e2A16O9uK1BXNEb54gEQOS/rrin4bTHUThlSpg
+	01zFYcV2MpYLqGDJVIHUaY4hNmYiokU=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nF+BhiMO;
+	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759792594; a=rsa-sha256;
+	cv=none;
+	b=O+zyctBi0jORH86Z+QL0jnJ0iHFixmPR82FBWs5s8W+04+E5FM3h5ERpbe1XddW8jP+NJz
+	425hxjU+RFjQywYMgqYJlHos1aC6FxrN8Mf5DFw5TBgUxfuhr9AuO2whrfO2s76nqkcdzh
+	PvjV2ivuNgxuUmdbyUbhWyP4k6yED5o=
+Date: Mon, 6 Oct 2025 16:16:25 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1759792592;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YAQqFRBgLjNWMysHHUTdJ9birnJGsiwpBAJwhsVCFOg=;
+	b=nF+BhiMOqJadidPnvsG16Wzer5kVYzDfO7ORmBZTFX9lkhuTKv4g3I2r2j5XzU/XsPVsd4
+	wV6tZYU3bCeNpCCTY7mVL/D1/ty6zvNghVe48V8Do81JIFyAa8Ub/YRpYyCEdkJw4fcWiP
+	IuzUXSZ9JV214J+uFpsku/o1xXlL1qE=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
+	roman.gushchin@linux.dev, muchun.song@linux.dev, david@redhat.com, 
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, 
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v4 3/4] mm: thp: use folio_batch to handle THP splitting
+ in deferred_split_scan()
+Message-ID: <x4d36plhxcbyp76q4gmesktnnh7yi7bfifx3amk3fwx2moqkk6@77umpnw6rkg3>
+References: <cover.1759510072.git.zhengqi.arch@bytedance.com>
+ <304df1ad1e8180e102c4d6931733bcc77774eb9e.1759510072.git.zhengqi.arch@bytedance.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CA+CK2bBaQEVySFcNmyQnWayZ7K=z5FxU7wTyNtmO7ja7NNGo3Q@mail.gmail.com>
-X-ClientProxiedBy: SA0PR11CA0050.namprd11.prod.outlook.com
- (2603:10b6:806:d0::25) To MN2PR12MB3613.namprd12.prod.outlook.com
- (2603:10b6:208:c1::17)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN2PR12MB3613:EE_|MW3PR12MB4444:EE_
-X-MS-Office365-Filtering-Correlation-Id: 99d5e976-5f58-4b62-e412-08de052ad010
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ngPdKNN/vdkPq0SyB2evStumwWCCL0mTTlX6Hd1yJWpTWheWB4UfYQgZldqR?=
- =?us-ascii?Q?dkcDRpNLRz8j6z2W0r0QegsNq493y9zHqQhr6Hsez/4FYOQ6qnFv3NMn+ZrE?=
- =?us-ascii?Q?ASOZqOllMJ73MirWPHnLohO/I4pBExgDOSsRNxK4Wi/l3aikby8zi23ZwQsj?=
- =?us-ascii?Q?pTbZiUmABUe7Wk5AV8G60hFeS4Ivw7C3Z1MqUG9bqgawIJ7BOQ+huxYvq/bA?=
- =?us-ascii?Q?2yG3ztGqLZ8alLcvRp2ab8Qcm+uaq86Hs+ZiQacz/WVfQya4Zz76V2yjLCYQ?=
- =?us-ascii?Q?mtbaftsbKZ6fGPSb/qKrvusrezCAtCCHKQJvdOjGeez7wGcJW23bUIhL72P6?=
- =?us-ascii?Q?0xKcataI4dZGtxJtnKGmGLJ/79mtonttJ61cSMbrCs6Za+/KNwzey75WA9k1?=
- =?us-ascii?Q?BoDgdihZ/jG0j98RuFeFl2A7r052x41o2u6Lp0w9yqTLKD32FO1uAV7JO+LW?=
- =?us-ascii?Q?I/8cqFashZItMJY4M91jgJSdBZF+pOzgnd2l4HKSMFBut5yL9bN5nhXuz9Mg?=
- =?us-ascii?Q?6YPTCzuEhLNDroAvTeZzhyIPVoLWUETkKOiTWBCQ/OVlAHjZWnQC3ezV1PaO?=
- =?us-ascii?Q?VN9vTNA3YtCg9eq9VRLHPPBF+AV0VUM8cGBuVj8lg++R8jOY8v86KY/u4th7?=
- =?us-ascii?Q?vQxmchDm+8VjGuxcmFvLSQZXwF6/8hJmU2KuwI1oe3gIu4TMCx5XIYAGzbis?=
- =?us-ascii?Q?6hhse+2Ct3NBz+rbwbVUTwyElUOtl6vhGZStZVCB0J/ag8XvNl+rhMlPtIg7?=
- =?us-ascii?Q?ATN9fxJtE9fvcHinGJ9UpnesYm7pTLiX69yw5EBbfAYO0V8P86lOH6GU3Rg4?=
- =?us-ascii?Q?aRSkOa2BQ3UbqDfgmKoI2cuyN87pOWJ3ieX4O4+RaECCQhkS/qSU5dMsaQup?=
- =?us-ascii?Q?Y34qhAzRLM7xEvNAv3cngMadRl/6KnOFeNoV7MAaEcjChbO2bofQVETooMve?=
- =?us-ascii?Q?TScp8Fn8CefAHBjHKqpor0ub6GwTRIceKZBbRyjcKYpOH4/gtzuQnbHklxgO?=
- =?us-ascii?Q?rhOY1VRuu7F2sZiWosnudEF4BMSqwdvSqlAOVeSx7x0IxH6bfM/rSzmuc0Pu?=
- =?us-ascii?Q?BASTKJxjHYCekjmKN2/OVGui+5BSVDD/tmPCtIQlpELaL6I8Y+pJcwg/5QUz?=
- =?us-ascii?Q?YUG7zhZx0dYqHUUbvKqGHjFAQr6gY55Xbw+DKUTSd3+tUA2QIr6fdhH8ofkm?=
- =?us-ascii?Q?ozth9j6+C7wGn+8lYtnZqUYhyYryNrysEPC8X0zaNf9KoF95sUfCvgUSUUj8?=
- =?us-ascii?Q?WS4bFbYuByy/9l6YnoWxApvcFMWNBcgzc7lbyORrR+l6g+llukhMDXBE6wGc?=
- =?us-ascii?Q?YjnezNeCenIwv5aH8m7TzzOwML336QBUtMy5rcDWYJRTaOChQOdpJ1Z4o9Az?=
- =?us-ascii?Q?mv9gOXu3zsGl45zaRJ8lUpITNP96YrCXKKDlb7qMpv1lIhI3iXFB8xUBiJKf?=
- =?us-ascii?Q?LNCN7dqSOKnyA5rQHzrX6plMRHCDE1wc?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3613.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?pCUL8/WdqRuMcJtFChm7jA2gu3yT0Jo2VHwcphV9f584IteHUXx3k6HtTf8Y?=
- =?us-ascii?Q?A5blTfUtU5uNBJ4mSvwJVR0A0ekHQO4oKpPZ5c9XR5XGCJztaj4WHMjgZ+04?=
- =?us-ascii?Q?4v2ZJDQrxEB0Ix3bmK0b8p5hQtJ0ZWU/dH+DheVzEjo6lrIpOhy+4+buge6Z?=
- =?us-ascii?Q?aSvFGxh2Ezyev1rOG68WlcYs5zxY93x+YB3SYZ0iigkmvdq7b4EaA5MgIutD?=
- =?us-ascii?Q?5WJMF+WjJUeK9hx3ZgYWXaUIKdMadgncIbyT2NZ1eaTvfuYEQHA5gkeybSh0?=
- =?us-ascii?Q?6LABFrMH5scOsLQMqHJqQLHiApG72oM+FOpFsEA95WwBhiWgRwphMRaQKOFS?=
- =?us-ascii?Q?g4Wr96D/rENNKDxCUNx63qJU9lwT62Pvj9yZflQE2z+ex3sAZzdhNjx/G8ng?=
- =?us-ascii?Q?YZb1Aw12lAegTjZ0NgDFqA+u7LtCN5hSdATArmIgLumJ0LWsbqm/LosFhT2g?=
- =?us-ascii?Q?ua+LuQGNTo9u2x026oCFVhr6C4efO/6f6xOBdFgkZ2h4nwlyak9WZ20C9wts?=
- =?us-ascii?Q?BB3l6FiQabHzVAL4ePAloLAXDeF0/Vf5MyzqoInqAjf/R2GDUpECja4K5uZa?=
- =?us-ascii?Q?P45/HNB8NTpqLet1JlJug8WxH1aBMplbf4JsJeTaFqSHQfKEE6o9eeweogG3?=
- =?us-ascii?Q?c1Baqlwnlt8ygF3M7T1oie/IqHdAQaDve5FXB3kvzhZtDKxtM8TgP8jYt3N1?=
- =?us-ascii?Q?kCDAbvc7LZwJQCfGQ/CGVyrdDWeOdQWBoZ1HR/+zYDqpv0uCqpcP6uPO6tXD?=
- =?us-ascii?Q?8/Ok4BItBRGM8CtAf2Lo9oEDMAG9HwlOek2AwEoJcq66JEDw/MImBmMupRnU?=
- =?us-ascii?Q?ZAEPHMku/unS03hYZKByJeKsLLFvCpoo2ogMJVpdNhG2gwHqQTxWUBuuuUAo?=
- =?us-ascii?Q?vkVQjhm7JBu+oWh7DvanJB9GeuYjwlb6K8HrsKn/Y6+miG10jUNrDHC6+HrU?=
- =?us-ascii?Q?MDdc5J88zhzhrQf/Zs102VxGOLMFdvcXrfi7pmIMDHlTMXyRMGyqPdgKcg25?=
- =?us-ascii?Q?TGE6Ya897r5b9fGWybcSg6rjutAbSuTxE9Jf54IU6ob6S6omR+oQME0TlRFG?=
- =?us-ascii?Q?/11bOmYWBAVoevfUtPl3R5fgQ9C92k8qxqx46mCdLvHQaesvpU8eqMn64I5T?=
- =?us-ascii?Q?fHkGU4br4Xd/I28SdLIV33ezUhiLy49vqzGXD7i73etLRtBt51HJqNm1x3z/?=
- =?us-ascii?Q?l5G2F0KlNuFpoBhpSo9nBQIeTjy1fANHU1+UAu7Yr0b0b08WMGgrsU0IeKRr?=
- =?us-ascii?Q?b9I/OKfXeb12Dh7dCGZzK1M04nWjtbWxbxdyhIyD6J4D09y3k3O4QDXVbhfY?=
- =?us-ascii?Q?gJ9jMdU/lrfd1cc5xosdcigMeaoPCyfXq89LL7Ie+ULymnKPKpHaUoBE0SHG?=
- =?us-ascii?Q?y17wNWZF7Y96las0LYNl22kaIspgZBn4iBC8i/bXMO36zfzH0pZp+5kChm/e?=
- =?us-ascii?Q?o97mb0K10HYdP5OhNlSN++hIxC2z6ttSnqqwae1mYaLpyKTt3yJs4LyDStmV?=
- =?us-ascii?Q?jF7IEf0h3vC1/+wjr2NV6um6+EjTviEK472zoDmIXdy4aeoX2FKgn+95lFa7?=
- =?us-ascii?Q?g1c1AUELMsyH4Lg/7KKR9MACKZnxEor0RLh0d9Lv?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 99d5e976-5f58-4b62-e412-08de052ad010
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3613.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2025 22:50:57.2913
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: D5WO0Ys8dI5BSOg3jIwFs8nvZaWcVQDgEWigQ2FSMzH2iNLFOxN4Xv1IcH2TH9xS
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4444
-X-Stat-Signature: 3j6isjoa776zes8s6695hypae44n3j16
+In-Reply-To: <304df1ad1e8180e102c4d6931733bcc77774eb9e.1759510072.git.zhengqi.arch@bytedance.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 881B18000F
+X-Stat-Signature: zbajuwhbpaugxdqr4odrk8xts74jc3yt
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 371EB40006
-X-HE-Tag: 1759791064-756513
-X-HE-Meta: U2FsdGVkX19tdFqSKPC3GMaaK64XdmDEajHfgWOa2/72btHzUTfEK88ZyHLHxsATV3DzkuKV5rBuJF4DljKOdGbSz+X1e+YexeHMcsu/STTkeAK7LCQVyd32sEIwCWi+/aIJew21cAxZEfShgVef6dQV9p/8050oh7ugk+jXHxUXIFXUurPcVEF8MJ8sDGLZpB+PCAcV9Yv0TeFVKZpTUxAIznOK99TZoYmAJZiUYImiVoMLpUi3Y2ZQsOde5OCS5Ft6uvQzGNb0mJcEOKiaWBua6E4OKbz+KbjL66V/Cx1+URqp3SR3wVPVf5V13dKFA2XmNS3J0zscF7yxfl46q5XZ+PxEHCUZ9qIba0RwXtAqdML0BZXgfH7pFuzvJ5HEaziUb4jMfeOYJxbb4kkOewA+NJPUmIsPQFuto8AkGV9NkLD87RAqiug9Gr5BZuMyvYjOPaY2i7c4SOkJ5nrekyE4nj1mJFQA5EsrfrwT5fBp06Td9DnV+pn3kIixC7KOd7NzaDilqKgAaSxEpeYbJB+n0eMb/lcm4YSoZSisMK1hSHi2LMARi/SSzdHiADJJkeh3nVfo71HIl3LD1+pBfK99INMG1yJYWTeC2VZj4o8a60/fYNRYO7oeZTVzKDBzcjlJtH2wBOFWW6lS30pnz/lTMLxwyac1C4ddV4LrBM9ZSonqmM3ots5lTrCvlpHouS8CFL7PqismGxzCaoL72FXp9gb/hyeAecvIoXFz0vX9A2t4uNwHV0qKwOXK1+e+wUO/imo0JOlB5kjvjlX0dF2NVA8/+r2x1krp0YqeWm67Oqi3YYLnx5lRjiwybmwNIdLqDj/3UPLP+cGts2bhCiXZjl5pzMGdhxXoah7DUkluruWHQOCZQ/4MRa/ovEBkezn8nHv+x9cJBhf9PV+1iDKUo6FyhAH1RjCb5K4uU8y4vXQkrFtzNHSd6/t6nD6tyZjeYoEdJ6/j+1bJ7m2
- oZfNkCuA
- SNUEVyyw6j6m0uA0LtR6a4kj2467jOqvL+kNaTI7zJ+RVu6553IytD17tPoMb1l6uQQ36EhoiORSY4RuXpFkphsdXPCREbBdTBYwHH/Ci18/AWvRwL2mY9RHEvx3GnHwu11gDu3uGssmC/jlfMdNfSk9tOh1ze0hW5y+9lT5SnmqqbEgnNzPxinuf3maPjIvEwAGM7kfh4g4AtrpwwS6A6G+uqYqXO2WOTU1v91IOo5DkYFIhl+OkJhyk9/eR79H7PYsMPQ/yEk6Hbu2u0+hvPRZHwHbafSRL6tN+tM3QGnrOx5KgNF8YNTT9AIKF9MdMeNhDpRzh00HvCWc4Ol77wJbhKbKbowtGWrHhI4tgm1/6A979Ia7VukJybsR+BdLQ5lMh7MKyLFFapKx0Kbh4uomoiw==
+X-HE-Tag: 1759792594-6533
+X-HE-Meta: U2FsdGVkX18yzjniG5QHk1+CGn/WdJXFKCV8MGHdVEMPHA+NFPqpN1qn+DMENfWfLjUmsngbR78D98rB/eJp8VnVMfMJ3LZdCdNJXZz0Z1g4WOWfTCsPTAcWUgdyF0QOYK71LdYR6ornL1mz75RukLoh1oWsXVXVeUN/P83ggSTTUKk/z3ABEgIwfeQLZSlThSn7AG9e/80z3S58yaxwCaHSr20sNbBgf/VPFxH/3nJfZiAEZQpMZE7PSXBffZXdI8DcVddt7SG09CkGrQV0nwPPFnKDPiEYTpUkVIxvrrmkAMe/bPMvbSlRylS3t6DIgKfDDakYgnVghEaJg/Q7tRAeiELLiHrY1dK8affW6g1wimaKKteo+3Ge7WRTMbhimm/xun9u0cEVMjSfwdcDxKGrzutRxS6IaMkyfI73GT12CJuUc2jkxBaQbcNRGQARhPnn7e1smpc8wlHXf/2i6Z1/fdKlAbzjUML2L2EHLOWoo+LzApvF4N2B0yVQ8onYfTe8xxRm7SSrLfskPAiHHFji21o3xEQF+mm7Eiagjk/DKpwCvDHDW9iBwbNiPKTAG1S1ni7ok8moYXRj7YsLJVPNZ0fXRb9SQOwMplaVoaU5D9xXBO0akWMZG2yyD/8YEiLFed7+SvY/lBY4Dy2HFYJ09Z95w1YOhVyjme+sPNUgNj/ABsyzGwL8p2iYcJWuXKCFt8uiXnGfA3iBANH3tK9zxtagH2FwINYPI8WWzsAwSFTzzW/ECuo/SwYN7vlAM/YBhWEpXJfHj+7NGRRMM1i8/+y6RVxMlx4ufJNiF47ahvn8BVK1zC9o/rQUPkc7/9atROeOVEXlKAkjB8yQytKp3hLMSPl7ab5IoEyb7IRgcScxqkiHAn+8qPJyf8W7cAqLz5Sj4s/ojrcVkpmCRh71uDOCKQgAInvbvpEuvUE76Xg43urSyMB+hGvSY1P6YURdDHYdRsGmrgYtoKc
+ LdwvTRZw
+ yNuwvVzV+Bjxe++hHdlcAMiZ0NXMuavGBRB6iF5S3hN3Xu7fxjfZqJqF81r+hpIWbON+0a8mWGFQ9VtmvUwDpDYUuSDVVZjf7waCBZnDRL4YZ6sYbfHgTnLgNMdVnW0iXxyltddQW3w2Fs62F+HDYkG14heXSkMdVRX0NlJAGt7cxQvsytESAl8+bce2/9dOOwYhjs4lX4DiP+O1TtDvub88Baqw/o7FrqHzqqzX5jsEUIWZ95Pp0ucNqTcP8LAx+X1I9hD18mf09sewjuCuVgk2Aql6fE6ECMCRNeRhBxebUSn5NBmcaVYj2JsMfj40Dj2ME52H/+frgIVg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,18 +95,205 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 06, 2025 at 01:26:57PM -0400, Pasha Tatashin wrote:
-> > > +struct kho_radix_tree {
-> > > +     unsigned long table[PAGE_SIZE / sizeof(unsigned long)];
-> >
-> > This should be phys_addr_t.
+On Sat, Oct 04, 2025 at 12:53:17AM +0800, Qi Zheng wrote:
+> From: Muchun Song <songmuchun@bytedance.com>
 > 
-> Maybe u64 ? This is a preserved data, I would specify the size, and
-> not care about 32-bit arches. Also, if we ever have to support larger
-> physical spaces, this radix tree version would need to be bumped
-> anyway.
+> The maintenance of the folio->_deferred_list is intricate because it's
+> reused in a local list.
+> 
+> Here are some peculiarities:
+> 
+>    1) When a folio is removed from its split queue and added to a local
+>       on-stack list in deferred_split_scan(), the ->split_queue_len isn't
+>       updated, leading to an inconsistency between it and the actual
+>       number of folios in the split queue.
+> 
+>    2) When the folio is split via split_folio() later, it's removed from
+>       the local list while holding the split queue lock. At this time,
+>       this lock protects the local list, not the split queue.
 
-Yeah, that is a good plan.
+I think the above text needs some massaging. Rather than saying lock
+protects the local list, I think, it would be better to say that the
+lock is not needed as it is not protecting anything.
 
-Jason
+> 
+>    3) To handle the race condition with a third-party freeing or migrating
+>       the preceding folio, we must ensure there's always one safe (with
+>       raised refcount) folio before by delaying its folio_put(). More
+>       details can be found in commit e66f3185fa04 ("mm/thp: fix deferred
+>       split queue not partially_mapped"). It's rather tricky.
+> 
+> We can use the folio_batch infrastructure to handle this clearly. In this
+> case, ->split_queue_len will be consistent with the real number of folios
+> in the split queue. If list_empty(&folio->_deferred_list) returns false,
+> it's clear the folio must be in its split queue (not in a local list
+> anymore).
+> 
+> In the future, we will reparent LRU folios during memcg offline to
+> eliminate dying memory cgroups, which requires reparenting the split queue
+> to its parent first. So this patch prepares for using
+> folio_split_queue_lock_irqsave() as the memcg may change then.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Acked-by: David Hildenbrand <david@redhat.com>
+
+One nit below.
+
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+
+> ---
+>  mm/huge_memory.c | 85 ++++++++++++++++++++++--------------------------
+>  1 file changed, 39 insertions(+), 46 deletions(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 134666503440d..59ddebc9f3232 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3782,21 +3782,22 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+>  		struct lruvec *lruvec;
+>  		int expected_refs;
+>  
+> -		if (folio_order(folio) > 1 &&
+> -		    !list_empty(&folio->_deferred_list)) {
+> -			ds_queue->split_queue_len--;
+> +		if (folio_order(folio) > 1) {
+> +			if (!list_empty(&folio->_deferred_list)) {
+> +				ds_queue->split_queue_len--;
+> +				/*
+> +				 * Reinitialize page_deferred_list after removing the
+> +				 * page from the split_queue, otherwise a subsequent
+> +				 * split will see list corruption when checking the
+> +				 * page_deferred_list.
+> +				 */
+> +				list_del_init(&folio->_deferred_list);
+> +			}
+>  			if (folio_test_partially_mapped(folio)) {
+>  				folio_clear_partially_mapped(folio);
+>  				mod_mthp_stat(folio_order(folio),
+>  					      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
+>  			}
+> -			/*
+> -			 * Reinitialize page_deferred_list after removing the
+> -			 * page from the split_queue, otherwise a subsequent
+> -			 * split will see list corruption when checking the
+> -			 * page_deferred_list.
+> -			 */
+> -			list_del_init(&folio->_deferred_list);
+>  		}
+>  		split_queue_unlock(ds_queue);
+>  		if (mapping) {
+> @@ -4185,35 +4186,40 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+>  {
+>  	struct deferred_split *ds_queue;
+>  	unsigned long flags;
+> -	LIST_HEAD(list);
+> -	struct folio *folio, *next, *prev = NULL;
+> -	int split = 0, removed = 0;
+> +	struct folio *folio, *next;
+> +	int split = 0, i;
+> +	struct folio_batch fbatch;
+>  
+> +	folio_batch_init(&fbatch);
+> +
+> +retry:
+>  	ds_queue = split_queue_lock_irqsave(sc->nid, sc->memcg, &flags);
+>  	/* Take pin on all head pages to avoid freeing them under us */
+>  	list_for_each_entry_safe(folio, next, &ds_queue->split_queue,
+>  							_deferred_list) {
+>  		if (folio_try_get(folio)) {
+> -			list_move(&folio->_deferred_list, &list);
+> -		} else {
+> +			folio_batch_add(&fbatch, folio);
+> +		} else if (folio_test_partially_mapped(folio)) {
+>  			/* We lost race with folio_put() */
+> -			if (folio_test_partially_mapped(folio)) {
+> -				folio_clear_partially_mapped(folio);
+> -				mod_mthp_stat(folio_order(folio),
+> -					      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
+> -			}
+> -			list_del_init(&folio->_deferred_list);
+> -			ds_queue->split_queue_len--;
+> +			folio_clear_partially_mapped(folio);
+> +			mod_mthp_stat(folio_order(folio),
+> +				      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
+>  		}
+> +		list_del_init(&folio->_deferred_list);
+> +		ds_queue->split_queue_len--;
+>  		if (!--sc->nr_to_scan)
+>  			break;
+> +		if (!folio_batch_space(&fbatch))
+> +			break;
+>  	}
+>  	split_queue_unlock_irqrestore(ds_queue, flags);
+>  
+> -	list_for_each_entry_safe(folio, next, &list, _deferred_list) {
+> +	for (i = 0; i < folio_batch_count(&fbatch); i++) {
+>  		bool did_split = false;
+>  		bool underused = false;
+> +		struct deferred_split *fqueue;
+>  
+> +		folio = fbatch.folios[i];
+>  		if (!folio_test_partially_mapped(folio)) {
+>  			/*
+>  			 * See try_to_map_unused_to_zeropage(): we cannot
+> @@ -4236,38 +4242,25 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+>  		}
+>  		folio_unlock(folio);
+>  next:
+> +		if (did_split || !folio_test_partially_mapped(folio))
+> +			continue;
+>  		/*
+> -		 * split_folio() removes folio from list on success.
+>  		 * Only add back to the queue if folio is partially mapped.
+>  		 * If thp_underused returns false, or if split_folio fails
+>  		 * in the case it was underused, then consider it used and
+>  		 * don't add it back to split_queue.
+>  		 */
+> -		if (did_split) {
+> -			; /* folio already removed from list */
+> -		} else if (!folio_test_partially_mapped(folio)) {
+> -			list_del_init(&folio->_deferred_list);
+> -			removed++;
+> -		} else {
+> -			/*
+> -			 * That unlocked list_del_init() above would be unsafe,
+> -			 * unless its folio is separated from any earlier folios
+> -			 * left on the list (which may be concurrently unqueued)
+> -			 * by one safe folio with refcount still raised.
+> -			 */
+> -			swap(folio, prev);
+> +		fqueue = folio_split_queue_lock_irqsave(folio, &flags);
+> +		if (list_empty(&folio->_deferred_list)) {
+> +			list_add_tail(&folio->_deferred_list, &fqueue->split_queue);
+> +			fqueue->split_queue_len++;
+>  		}
+> -		if (folio)
+> -			folio_put(folio);
+> +		split_queue_unlock_irqrestore(fqueue, flags);
+
+Is it possible to move this lock/list_add/unlock code chunk out of loop
+and before the folios_put(). I think it would be possible if you tag the
+corresponding index or have a separate bool array. It is also reasonable
+to claim that the contention of this lock is not a concern for now.
+
+>  	}
+> +	folios_put(&fbatch);
+>  
+> -	spin_lock_irqsave(&ds_queue->split_queue_lock, flags);
+> -	list_splice_tail(&list, &ds_queue->split_queue);
+> -	ds_queue->split_queue_len -= removed;
+> -	spin_unlock_irqrestore(&ds_queue->split_queue_lock, flags);
+> -
+> -	if (prev)
+> -		folio_put(prev);
+> +	if (sc->nr_to_scan)
+> +		goto retry;
+>  
+>  	/*
+>  	 * Stop shrinker if we didn't split any page, but the queue is empty.
+> -- 
+> 2.20.1
+> 
 
