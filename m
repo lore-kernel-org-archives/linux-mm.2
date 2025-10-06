@@ -4,89 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE8C9CCA471
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 12:07:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CA23CAC5B8
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 12:13:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED4EC8E0008; Mon,  6 Oct 2025 08:07:51 -0400 (EDT)
+	id C48698E0009; Mon,  6 Oct 2025 08:13:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAC718E0002; Mon,  6 Oct 2025 08:07:51 -0400 (EDT)
+	id BF90E8E0002; Mon,  6 Oct 2025 08:13:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE9318E0008; Mon,  6 Oct 2025 08:07:51 -0400 (EDT)
+	id B0EE78E0009; Mon,  6 Oct 2025 08:13:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C6F2D8E0002
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 08:07:51 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 622AABA090
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 12:07:51 +0000 (UTC)
-X-FDA: 83967565542.25.344BC75
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 86E0E1C0013
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 12:07:49 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Mf+ZdI48;
-	spf=pass (imf20.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FE348E0002
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 08:13:03 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 48BCB87A05
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 12:13:03 +0000 (UTC)
+X-FDA: 83967578646.05.6E019D3
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 204F680013
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 12:13:00 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=KaxO4xqn;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zyYuS0fQ;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=KaxO4xqn;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zyYuS0fQ;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf30.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759752469;
+	s=arc-20220608; t=1759752781;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YLus2oidZhuPLLCuKN6qeIc9LNAh5RPLc15/go5eJq0=;
-	b=OBpGTLHBjb431wpNp+Oj0q1AyXQybbyI5UkYam9CaQPT5ZBtvTIS4yemRxIt4TI8oEp+S/
-	0IHe3YAdbDO7A2QUkDxp3qClyqRbu9yVv9v/9q2U20kc22nliTpMqKOKuV6OxPxWXUHeD4
-	H7TZ4zCDh8hnRW8x7rgHxnoJ95VJztQ=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Mf+ZdI48;
-	spf=pass (imf20.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759752469; a=rsa-sha256;
+	bh=RbYTEVWJa/I0Jmvc9JTdtMIW4JnYonDMYg5KYJVrA2Q=;
+	b=E28uVMu7FIIeMvyy5HzcQaksGCPvGkV2+lg3Boi8UDD/rlvu95dbjUK1z3bISu3wjcssYd
+	lt6WNYNTAMPXWnLfy7S5BJ+xw8YGyGob9vW9cGtQ1SEuusyzuLygflTuJDoKoR5zR336Py
+	sMOIL0SignJ8N9LnG7HoHtWieHwzy2I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759752781; a=rsa-sha256;
 	cv=none;
-	b=7UUxJHeV6Dau+zRxJna6w0rTOPlPDeIP4E6H/LG2XHD261x/WCI5laJDZOVXLqxG5MAnA2
-	gqDKSCWgtP0lD9TKp8UE9UfFGqNnwtfhzs9epdwVoq4Ah1+ZqsYcqlzGOuMNYLi9M7JUEs
-	j1mKbiG2V8Usz8TvTMEgZprcIutPUz8=
-Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id E7E6D92EEB;
-	Mon, 06 Oct 2025 12:07:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1759752468;
-	bh=YLus2oidZhuPLLCuKN6qeIc9LNAh5RPLc15/go5eJq0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Mf+ZdI485yDQ+PKFOAkxc3ov9ZwjDgt6kvSgRE6M3ZzluDdlDxy66UmT/zfUngDeL
-	 VIuayN8BcTdaoVROApToZy+38cbx97ER3vxC2waa2GpTWzsualnliNoEshPWEYefW/
-	 VUv+yv0oys7msaqm0CPBfyTBMLPL2Hkbr4y6vadY=
-Date: Mon, 6 Oct 2025 12:07:30 +0000
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
-	Chris Li <chrisl@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH] mm: skip folio_activate() for mlocked folios
-Message-ID: <aOOxAtD9oeiYlo7G@shell.ilvokhin.com>
-References: <aN_bix3wDpwYPoVp@shell.ilvokhin.com>
- <hnpzad4aehmp6ncgwhlinzx55z3zst5dlkhsjphpazccy5lzpv@hfj2eyewuplz>
+	b=k3UCCYrWK7OcuEXmWnwXgth11vCzloB2jISRmuDkuVM3E7FLsAqGfskfc7RmjAKz+w3n5Z
+	lciM9wdRH9H6sg/vIwslnV77WDDPdfL9WpiJLaxiqLW8d6nSw8m5bLZAukTVt914dq3quB
+	rYIh75/uAAiaapZD95gkz1EFvUH8id4=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=KaxO4xqn;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zyYuS0fQ;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=KaxO4xqn;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zyYuS0fQ;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf30.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 6D19B33771;
+	Mon,  6 Oct 2025 12:12:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1759752779; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RbYTEVWJa/I0Jmvc9JTdtMIW4JnYonDMYg5KYJVrA2Q=;
+	b=KaxO4xqnk8T7RjnDrSaKFZtwPzUWS91zXISItIVOEkFReRVUA+YAhRjPv9b8q0dLV0EC6S
+	IWkZ1Brsyd5gT373CG/0BzKcvN67HHLCmKMuWy3fd0J0u90nkB24HXsLoRFEss/DAgBiOZ
+	MohyeHwvmyFFWn3Ua4KLyHgAS6LD34k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1759752779;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RbYTEVWJa/I0Jmvc9JTdtMIW4JnYonDMYg5KYJVrA2Q=;
+	b=zyYuS0fQh6eA03WF7ObaJ3Dj9yYyBe+b37w+dllVFy/+FDZ+iD3vT1x00YIV9Dkg6l8ILA
+	wfhHbDNmQqciymAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1759752779; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RbYTEVWJa/I0Jmvc9JTdtMIW4JnYonDMYg5KYJVrA2Q=;
+	b=KaxO4xqnk8T7RjnDrSaKFZtwPzUWS91zXISItIVOEkFReRVUA+YAhRjPv9b8q0dLV0EC6S
+	IWkZ1Brsyd5gT373CG/0BzKcvN67HHLCmKMuWy3fd0J0u90nkB24HXsLoRFEss/DAgBiOZ
+	MohyeHwvmyFFWn3Ua4KLyHgAS6LD34k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1759752779;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RbYTEVWJa/I0Jmvc9JTdtMIW4JnYonDMYg5KYJVrA2Q=;
+	b=zyYuS0fQh6eA03WF7ObaJ3Dj9yYyBe+b37w+dllVFy/+FDZ+iD3vT1x00YIV9Dkg6l8ILA
+	wfhHbDNmQqciymAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 12BC913700;
+	Mon,  6 Oct 2025 12:12:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id T4TMAUuy42hGcQAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Mon, 06 Oct 2025 12:12:59 +0000
+Date: Mon, 6 Oct 2025 14:12:57 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/dirty: Replace READ_ONCE() with pudp_get()
+Message-ID: <aOOySfntnNd8IyGv@localhost.localdomain>
+References: <20251006055214.1845342-1-anshuman.khandual@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <hnpzad4aehmp6ncgwhlinzx55z3zst5dlkhsjphpazccy5lzpv@hfj2eyewuplz>
-X-Stat-Signature: ri4abs9ab5tsxfyj7bk81nsb8cu59z8y
-X-Rspamd-Queue-Id: 86E0E1C0013
+In-Reply-To: <20251006055214.1845342-1-anshuman.khandual@arm.com>
+X-Rspamd-Server: rspam01
+X-Stat-Signature: djqj3bruzygaycpzx7u85inzkd39ixxk
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1759752469-687369
-X-HE-Meta: U2FsdGVkX1+MzCdFKRmneQ9q4rAVLBJDz+baEiX7+ffsZQqG6j1kdC5UvlaaimB6PXCMSj8it3pAS/EacE8YF0G46Mea9jpwkEL/3FQeDgCERehPjqBMR8GSZq/Ly7NbRJmdQA5jHLKPRXpKJSP8uP8PAXVPFxy4ZfOU7/W9beHTOGTu9DGRy6rD+n5fUknu8sG94OIahNXT9sbqq7MuUOon8x0kpk2X4tm2tiYNaueNqNGBZbaMQE4mfz/eO/VNT3d890+9sbOAhVe0/XM0xysAtI8tLPht3ObtylIhdAkO22RRwMEpMP6SEMCfiflDtpxcN5Ui1HbLAcL6dq363ybJ77oloN6BBzmsHmZTLCyTsTcBiFPw2DzBqUicaFge301Yty4txu7PaiQdYRQraBY1HKgqiflNUIzUHlX9yQB7VPuSPVbWPDPOqIeSZVe1IgtUf+QYt7r9zaNKGXDWO4Fdc44MekxypNayBpOZGNkb+h9lEwESYp8RtFHdO5nqcWeHFW5GDcrRChbmrQ4gIMiQWrBQ5MQ25GnJB5tmzhjD6PZFMy9RV0wgWdiO5JLnyRLd3tQ3uoBC3mcw1tT8NTBKfnHYjO0H3mdVEjN7u1S2iZjDyPe8Ffg6cq6cGVUjyaEgOK3i71nVlrRdLusnYdFDmqzSDVdyRPEhDDyJxPXEAONnOx26X/tVkhzPELfc6McHmvnTiMy/3yA3RupcMlvR+/D9roAwdM+oY0iwqTJzWOwveUXnvHt/LsxhFdsuRA4lTgJcD/K9+WWipmmSTkxMICMLFd9VFrOHb5WJJcyOuDDUTuhGyuglH8NfA81lyVn84cdDH9FAb6/VgIYhXxupqCsrctB1MAZQyDhvA3RLTmYHQjvQpMGJY8MXfgSEORUK1rYuJY7xL9envSkBCPtTGyu2uOGd06bjwET+KMVLvUZr/XcMVfikviPXdeA6pS4Y8NQ3GBYpJIqtkg1
- Ttci8FeH
- 5Il2qltSO+d8FNaizlJ840nul7JiGQ1XPCw7O/jB1VjxLZke3lUpcu4KBy49q88Zi6xXLK/RV6A/q/70ABNP09b9FwxAChIWFKbFssDs3Zmr89M1qf/SpqhTgLG8LhtusbLTkJSgsJk1kSHfuAE56xVkj3yAvOmCXTe4sDDAa9g9ntSOrve/3pXFWjNV9Ohu8bxrt5wgn981HlblPs27qtNnem5FYQeEFf1qM71y2Dql8yOgouhKTXMPjFK8EfD4Lrx02ELa59UHCWqFf9Qisk4dcxBjUV9wGYGi4YaMWuOMhuRDVftzGOEZ3HOvwzVupkvsMtporGws3BeaJlMQSNRAG1grXCL2MZJCxP0I5eQWkJnQ94sqkfzU8WTEj6aTkNW5xevVZ2mm6Pfs=
+X-Rspamd-Queue-Id: 204F680013
+X-HE-Tag: 1759752780-439909
+X-HE-Meta: U2FsdGVkX18pafSU6q6IYGRxcJ8glYUhKV04ZARm4g05JqbVsCl/sJh0rLNJejMc4uktmK3gJUFJ7w+b5OkT6641MbZT1RdevA59Z5fm2WuD/v1ofpm1+FO4ziTig6nQIFdJ58W1+O226gtrrBaLxeyGAEDg60wdQaQwVpec4/FpiuHph7xc+K2s201tvJE/pyPXP2eUBx0euUi26JBhyWi6DT1Gy9/KQwmNjvFaJbuXfBSN/E1HCdSP0a9d8nO65F8Fze3nPfqlXQGtY1fCA84SeqnEEJwplA7c5tISrHjOj9PN+HAvJEIcUCb9RAFnGIAL1YD4vNXj2sjUe9mmdWvateR1fpSopN1jWBckxYGSJD6ews2lEwn5Xkfxa0rJQKx1GWqDeGhIp+IxIr9SBbbdRcxZnPB25poYwmtqBFVY/npg0rcCOZ7+cVV/Tm3zfR9tfyF32+yeExnhBQLU6Sk8zJSandyfNIeebwdFzuo5Va5jFdDhAQdmKvJiekuelLwCFFFYZ9y+CMF+vTiD2JYHm9GUY0y6UshNkXFbDX4lnbVJvGrMAYLFI4cGxfNFrfZ5VRCua7QIGejnBnXPDCDcjoMwuk1YXc6AaXXIjt+o3TQcJGeb66z4ZWUZdnWZPUKuEiNS4S8Cp7m4nY4gqYGF5F2SjJqQX9LkXk/OVOmUc8rBzSipiAw1ymGYye727VicwgcODDFv8385ELWVnPl2CyfswO8ZSMSxSpNcAHnlROJmQKdTRh3GTDw+xAnWPJWW8GqWUy86AGCHaNvTOGo2Y/SBrVowgcbJMHTLx8GXvyUV3qHiGjPyR0MgQXjdEuQYlSvwyEy01w/mWTLojfOmQIYX0n+PKpyU+KOj9X8EwxaBzpJF68bdVSSJK6B8Zi1yLMJTujQTBqmN3sOV+06NtX1ceeG84CqAEDFIN6KV6+1ldvKsRVTt4HemwLVp4NPXeEwf232ahylJqdJ
+ pz8EPFHv
+ 05iIBZ/zLhG3cwyu8+f6WmhZwyKOU8K/Zyjwfs4MQZVpu9ZlhAcRayl8YQQYg7bKQipghsq55ANE2mJs0ExNYlYH9ecpoVrlIMhoUdyvPYfVdTUVd3NsGS0aFxMzploI8gYkTw5am9j/pXbSXhAyp12DXgIG6zOqRmEVdIlDh1yhW0WGl5TQPZTA7PHW45BaXrxxBnIx/zMjlCksRu9IBO4OOEHKCxIsyDuvbhjE5D1fvr4cUfllbHn6VzXcUzfsPT3kvo0hnj59QNfrB2+lbdqTidKKptCDN6Vm5PHe9Q9/DkPqsgPHtbWGSGfychpJdWrNguUs18x83WhRtF7T4jZacK2BB+fkc8DqK1Mwab6Iv2DPtgf0te2s8QIZ/wgndL7u5/iowAp+FuGhXc26Fl13xu35ne27J5aUoODgQmVcakFa4WTeo3USGRUvNk7VMArzRRMunHSaB3e3pQIsEb/t9RAJ7gh21tS/lf1BkbHjhrIH0npa/EJPYBg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,106 +130,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 03, 2025 at 03:41:05PM +0100, Kiryl Shutsemau wrote:
-> On Fri, Oct 03, 2025 at 02:19:55PM +0000, Dmitry Ilvokhin wrote:
-> > __mlock_folio() should update stats, when lruvec_add_folio() is called,
+On Mon, Oct 06, 2025 at 06:52:14AM +0100, Anshuman Khandual wrote:
+> Replace READ_ONCE() with a standard page table accessor i.e pudp_get() that
+> anyways defaults into READ_ONCE() in cases where platform does not override
 > 
-> The update of stats is incidental to moving to unevicable LRU. But okay.
-> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 
-Good point. I'll rephrase commit message in terms of unevicable
-LRU instead of stat updates in v2.
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
 
-> > but if folio_test_clear_lru() check failed, then __mlock_folio() gives
-> > up early. From the other hand, folio_mark_accessed() calls
-> > folio_activate() which also calls folio_test_clear_lru() down the line.
-> > When folio_activate() successfully removed folio from LRU,
-> > __mlock_folio() will not update any stats, which will lead to inaccurate
-> > values in /proc/meminfo as well as cgroup memory.stat.
-> > 
-> > To prevent this case from happening also check for folio_test_mlocked()
-> > in folio_mark_accessed(). If folio is not yet marked as unevictable, but
-> > already marked as mlocked, then skip folio_activate() call to allow
-> > __mlock_folio() to make all necessary updates.
-> > 
-> > To observe the problem mmap() and mlock() big file and check Unevictable
-> > and Mlocked values from /proc/meminfo. On freshly booted system without
-> > any other mlocked memory we expect them to match or be quite close.
-> > 
-> > See below for more detailed reproduction steps. Source code of stat.c
-> > is available at [1].
-> > 
-> >   $ head -c 8G < /dev/urandom > /tmp/random.bin
-> > 
-> >   $ cc -pedantic -Wall -std=c99 stat.c -O3 -o /tmp/stat
-> >   $ /tmp/stat
-> >   Unevictable:     8389668 kB
-> >   Mlocked:         8389700 kB
-> > 
-> >   Need to run binary twice. Problem does not reproduce on the first run,
-> >   but always reproduces on the second run.
-> > 
-> >   $ /tmp/stat
-> >   Unevictable:     5374676 kB
-> >   Mlocked:         8389332 kB
-> 
-> I think it is worth starting with the problem statement.
-> 
-> I like to follow this pattern of commit messages:
-> 
-> <Background, if needed>
-> 
-> <Issue statement>
-> 
-> <Proposed solution>
->
+ 
 
-Thanks for suggestion, v2 commit message will much this pattern.
-
-> > 
-> > [1]: https://gist.github.com/ilvokhin/e50c3d2ff5d9f70dcbb378c6695386dd
-> > 
-> > Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
-> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> 
-> Your Co-developed-by is missing. See submitting-patches.rst.
-> 
-
-I followed an example of a patch submitted by the From: author from
-submitting-patches.rst. This example doesn't have Co-developed-by tag
-from the From Author. That's being said, I found both cases usage in the
-mm commit log, so I'll add mine Co-developed-by tag in the v2.
-
-> > ---
-> >  mm/swap.c | 10 ++++++++++
-> >  1 file changed, 10 insertions(+)
-> > 
-> > diff --git a/mm/swap.c b/mm/swap.c
-> > index 2260dcd2775e..f682f070160b 100644
-> > --- a/mm/swap.c
-> > +++ b/mm/swap.c
-> > @@ -469,6 +469,16 @@ void folio_mark_accessed(struct folio *folio)
-> >  		 * this list is never rotated or maintained, so marking an
-> >  		 * unevictable page accessed has no effect.
-> >  		 */
-> > +	} else if (folio_test_mlocked(folio)) {
-> > +		/*
-> > +		 * Pages that are mlocked, but not yet on unevictable LRU.
-> > +		 * They might be still in mlock_fbatch waiting to be processed
-> > +		 * and activating it here might interfere with
-> > +		 * mlock_folio_batch(). __mlock_folio() will fail
-> > +		 * folio_test_clear_lru() check and give up. It happens because
-> > +		 * __folio_batch_add_and_move() clears LRU flag, when adding
-> > +		 * folio to activate batch.
-> > +		 */
-> >  	} else if (!folio_test_active(folio)) {
-> >  		/*
-> >  		 * If the folio is on the LRU, queue it for activation via
-> > -- 
-> > 2.47.3
-> > 
-> 
-> -- 
->   Kiryl Shutsemau / Kirill A. Shutemov
+-- 
+Oscar Salvador
+SUSE Labs
 
