@@ -4,83 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36737CAC5B8
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 13:53:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A4E5CAC5B8
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 14:13:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B5F78E0014; Mon,  6 Oct 2025 09:53:58 -0400 (EDT)
+	id 4FA338E0011; Mon,  6 Oct 2025 10:13:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78D258E0002; Mon,  6 Oct 2025 09:53:58 -0400 (EDT)
+	id 4D13B8E0002; Mon,  6 Oct 2025 10:13:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CADF8E0014; Mon,  6 Oct 2025 09:53:58 -0400 (EDT)
+	id 40E098E0011; Mon,  6 Oct 2025 10:13:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 524878E0002
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 09:53:58 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F1F058781A
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 13:53:57 +0000 (UTC)
-X-FDA: 83967832914.29.9FF3619
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5E1DD14000C
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 13:53:56 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 30B388E0002
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 10:13:23 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CB2B2140651
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 14:13:22 +0000 (UTC)
+X-FDA: 83967881844.10.3ECC1FA
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	by imf27.hostedemail.com (Postfix) with ESMTP id EEEBB4001D
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 14:13:20 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="IjiVrIZ/";
+	spf=pass (imf27.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759758836;
+	s=arc-20220608; t=1759760001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FEJ/8bgV1ek/fE6kHbi9de5agG1iCj5gCnXHtuWr7Hw=;
-	b=NnKkzul0Yt4PwsBfSQfGIlJ4/6AbzDnXi2a9cje6hswDGqaUcakrxG5RlAFu1SgApdJuQM
-	6M2PhouUq/MZ7BFWW6rXFAL3s4o0fz4yx+nPYpeUyyX4KJ0wvf061qW7R3+QMvbiie1/kl
-	zqxO+7x9OX2Su+kgSk3ur0NF6pj62sk=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=kYNqncL1pbkX5BlNCe5t6IJsqg4ck4854DVjD7R/zfI=;
+	b=3wddx/vp27BASFoP/lXH7VCMk7SQVl09aQhzwz7MwVWcJ6j3VWerTtpsUoQ2XJGZYD+Eef
+	FPcn2DkZTU4UdCb+CUcFH73VCBoU8Z5COvd9x7cP/vf5U0PDuZSeplmmhXXI4YBMeGHpAx
+	PH4t3b7Mp2OjoitQYGvZxmLG5gzBTFs=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759758836; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="IjiVrIZ/";
+	spf=pass (imf27.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759760001; a=rsa-sha256;
 	cv=none;
-	b=BBCCcLdbMBry80XWOx2moyZ5Wg0W39pk3TWMT9ptFpPyqBWXbgDX6Osj2MFheyhqRS2CDK
-	0R0WUQwQasJVcLQRTZsytqjK7fy8xuZihdgHGEgZrTmnQh/hinRLEZonJgmAkLzgtNaKyr
-	d7vQCfBTEp0bvYpzCWyHab3XzuwYXXY=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2AFAE1515;
-	Mon,  6 Oct 2025 06:53:47 -0700 (PDT)
-Received: from [10.163.66.9] (unknown [10.163.66.9])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ECFD03F738;
-	Mon,  6 Oct 2025 06:53:50 -0700 (PDT)
-Message-ID: <5b6f302e-b2bb-4ad5-a8d5-4e1a8fa2af70@arm.com>
-Date: Mon, 6 Oct 2025 19:23:46 +0530
+	b=JtqqgE0Qekx+jAuoosFZGiS+B7aOLU83LwC38KeAgk3YSxrF8920nieK/7x48XIa99D/y9
+	ivYEVSoQK6zX4Fz3Gm4tDttZpVW5CSj6Bw3/PpOtad9CzltgC0MSSG0efHwPKRMrb+z2q6
+	R5mYnF37ZCZdxc11DG+EaSXUnoKDX2o=
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7811a5ec5b6so4430089b3a.1
+        for <linux-mm@kvack.org>; Mon, 06 Oct 2025 07:13:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759760000; x=1760364800; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kYNqncL1pbkX5BlNCe5t6IJsqg4ck4854DVjD7R/zfI=;
+        b=IjiVrIZ/EfMFVit6vYOx+uln2EblGDF9u1HlsMqlCvBpWgPJ700vmi4utrZiZBDs2j
+         z2EqUxMAtIb+ihJGEFW7bIm9wT4WnfKLVkKlbr13nRouendFGKOU4EmCVuJw9XwkOQXE
+         9N0CF2YXpWbaqlMWof4FRkAjqH2IRyaJgnzyU0fFfx8QA9T+ivVtq+JUx7miEf8QdT9s
+         OJA+mvlWjjuSXCz0s6Sskqqk/qgHBo4Rmp7ZpcJsI7s2ni+pNry4qx3PbITIUIpHEf+p
+         SSVvsQ6npAnT3nXPbQU0h5Al4ShXzmovJqZ7+1xRfOOUjuSCR3/vAWBQFUu3iKunQ7Ny
+         oenA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759760000; x=1760364800;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kYNqncL1pbkX5BlNCe5t6IJsqg4ck4854DVjD7R/zfI=;
+        b=qlgDgGMus4qKtgih40Tv0ZXQSIuCvZCb8SntLniZiMFrA7/ZhJ6qsJc9hMkhTWSymz
+         8In3gANAVWm5VCLpHbIoF9cczHvqyRRArFhKIbUzFRVov8vg3BT7NViWTuMyIX7qTyrW
+         KXEwkstdjBdVWnYgpdj2jsXMCnLbbxYStTIJdvrES9/4QKUhJ7stUK2jnIQaYx/FEXXB
+         hVRN8bkknJsLaz29nQ2KPV3gEWyVd1RNzTzNyTiydHphm/MbNKayxLiSpXyYOD24poZZ
+         zZbvJZcL06RHDXp+jnPPxyUUwb4awI81s+JioJPBxWIkSqOscg/mCJQXHzQtnTqK1ZoE
+         GQXw==
+X-Forwarded-Encrypted: i=1; AJvYcCXRtyl1HuwD6DtQaVXhXuo5J57UUau/yhO9dtumhGXyadeSd0SPMFbTcot/jfPy6O4kfiLoNzzIMQ==@kvack.org
+X-Gm-Message-State: AOJu0Yzou8FOOzseOaM1YQ3JJZ19SOOgJnYh6jhRWZYwFEmta0FWrIea
+	HMNRn+IYowgaMfNliuJ3zDfl9UrnWTc5aqvETC9EvX8Ud6NqwCSdwQbr
+X-Gm-Gg: ASbGncvC0x6RSlK44XDBcJuLX39gfOG6X3QG2F8ZZefz0JDBNfyKOK14aO0ryKr/7Z6
+	YXvu8xvEm1hyUbG3h/uLmEGyC62vnXhzWjqtpmLD5jMFodUoF8bQhwrvTyLFquO38DbqtIrprxa
+	1o385LVrx2tlUPdLArhE8Y+fBIg0+SQJqgNX9KU8T0HgxvVT1juf7nYarmWzgz3LpP7/3ZiUhe+
+	dDlZReGTGjlNZ2g7QSuL9Yh1Rw3kqdn5rBtviFa+ik4jJMU8KyuqpJrD/Kr54uR+bojjSyfDf3b
+	WYhg2uwyBVRhC34WWzhzPA3GFH1oBtO4Ow20cooAikFeYvcCRWJ9avI0H+IUOxYhvYT4fZEoeZH
+	gTsQ19ZoBCb0JE2nr4i715Y6xguEnw22aEaMQcvizThm81Znsb/60u8km28VVXZnn394m4Bmi4s
+	AGF1nduuCB4CkB+yFPVb2MLa2od/A=
+X-Google-Smtp-Source: AGHT+IEPRB2b1AD/QZxok64lsH8ByJ1lFhBzYU52eoAFfWqs1FcK8vyfSV6QzsZHrEOmLe58UAsEbQ==
+X-Received: by 2002:a05:6a20:1611:b0:263:57a:bb46 with SMTP id adf61e73a8af0-32b61c78378mr16152472637.13.1759759999595;
+        Mon, 06 Oct 2025 07:13:19 -0700 (PDT)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:da26:6519:741c:efcd])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-78b0206e50esm12666243b3a.62.2025.10.06.07.13.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Oct 2025 07:13:18 -0700 (PDT)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: osalvador@suse.de,
+	broonie@kernel.org
+Cc: muchun.song@linux.dev,
+	david@redhat.com,
+	akpm@linux-foundation.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] hugetlbfs: skip PMD unsharing when shareable lock unavailable
+Date: Mon,  6 Oct 2025 19:43:11 +0530
+Message-ID: <20251006141311.23645-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] mm: Consistently use current->mm in
- mm_get_unmapped_area()
-To: Ryan Roberts <ryan.roberts@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20251003155306.2147572-1-ryan.roberts@arm.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20251003155306.2147572-1-ryan.roberts@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5E1DD14000C
-X-Stat-Signature: e15b1sxsgtpx95frswigiaqc3f9mh7pw
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: EEEBB4001D
+X-Stat-Signature: 3wzctykbaztsj7dwsscbhginuiy4on8h
 X-Rspam-User: 
-X-HE-Tag: 1759758836-168976
-X-HE-Meta: U2FsdGVkX18JhZDzF2L4PtZIpP99vfkCoMw5IhVwbMIMEZ2mOPuaT6HestQxd0W5lxTb1y8VJtqWdSdlGy7Ja2HB/5UvXs06MLjCf/TsVvzQJKBisrXfsDL4E6sj8ch+ghFWxfszPFH//h1Pv+bIfqBVyTlKlwYPQtsXw+KteJAKW1q3ooqS7YpAVGrW4kROi2OT6Y4mZTg2rDD7SJ+2wb8qunaHfZxSSLwlQu8+alvM/HHZZJZoSTa8fgX9rrWMcpDE1ULOmO8vZ9encKXrpAL7AYEQ575QKpJ0BH0wa4h5f7S/KI3ao6iNh0Cgm+rpQsS9jM3KMWbcaS7qwgrkZyQezGkhFofV/93ANCCmoH5lKskZdTMk1ctIZg0NJWiTdVY48PwVHjQ3kWPJptPNzNblrw3skqdwfM28az7iozf7vcNmio7b7X3Dj+p+qu76NowQdusVaIycpWyD375SvnfwW0wE7s0RrJx5eKMyqRLFKRJcbn3f9pHkaCgrfvBcbU8Mr7VUVwlFrEzCLOq56UceTYZqKqpJ73q22LBczoHT92rEbLPEFxIvsng7sSO1d8p4WBwancUcN8xtvzbYIFbMX1DQk6du0Xl7FcVvdZ566m1luRGhpgv13GqmypYMBagvrr/OpyCZ8693bJDvrvUBG9g8JMOmGslHisKycE9gDU6QSDXX2NCrCmH2UYkvbTMmEYN8btXo9StTjXm40FGZXUfpS5Iq8QsaS3aGZziMoSB8GLIVL/Lf5K7cPKME0kDX9V9u+j+Hs9umPmDZT0W0RiTe3eOOIOzxNUeOThE3zL5qXI8txIUKPcBDKho82EdIyGB5a2JiXZd8Ikmv64cxY0py5gT82pRcjyI/vfkk3k9FWte8ybznH1gyu0HJ0hXpBbV70G4=
+X-HE-Tag: 1759760000-519842
+X-HE-Meta: U2FsdGVkX1+QXIjaGcQ04+T+My+7jXp+WxKnugOYmbBl2lr6yzI1mPpBrhIn6NSkG05hLoTX0tnbwKJM7E2oKKif6PbrE8GLjPJqijvstYxnvL9Hno6Aj2ewaIRoQaGFQoK3HZBdckOMpGw2Qx4FfGdANwqq5NjE4yqoYemviEP/xz68uB2uH7iBw84a68PF2lV4vvYr1Ci9glVRnzSDOnUh5MSR04JUh3keuC0/U5MYYgpXDTPkbWW4D1i82ONV1QwykyOX+41NhyAzXt6rNlvnVloy8mTtcX+/jdwR1E51LYGlQM4FZmD8kq6R4TC71EG86P8BBeZ8gkOtuLJodPkcZUyZoVzReviKHUEAj0adgk+XWtrCTg75w6QPDaZ4I5Ac1WbVmDCc3NMUwmUeesIeV7tml+UHwh/NMeRzzPp+DUyRe2S1GbMOfC/NgcVazoEOgDvKe+/7mV1gJiJatjP+zWQoDyjSFZajVT1FP2cSWRimiQY6KiP+n1TLRlEr+1uI8iy+WQCzJKxEqnGLCL01rBpmcQRG4zYr3i9bprlX3+ObKniXCfxhtTZpqKZCMprjlDkSHNm0zXrE7A532fHgQYUZhfkG2P6yTg95zbJJ6rDiGu8PMY6sr+PixKr8dDqW1QLtGqqe1pt1WNa5ngGU8kdMbHBLy44Z5PRO8/oLu+/MUDsIfqGEP8j8/OoWuX6DKHmzFKuHFzXVVM1Gittae84iMrkTXseF9THreq0IBqtUWeJfLbK/etFwtnykAwUbCGfTeei2GWaxos7vQo3bD9yK6dAxEE/DeLIZAMl8L9vouHhONvQMeR4G4VGw5aN8ZyfX3K1d4rKf8wxNkq+gPxqvboHCScoAbWPEmJIEsniTOE4ROQMLtKXb5f5/3oRbqkhT5LMKHbyhLuBbP2OcgXFRZxysTWJhioJBexx9RQhAccPy8vsj4lpgUgAFRx0BfhlnL4K7W0Pdt1c
+ jPapKjR1
+ mXekG2jv4YV5oYR87OvhVLkw8FEXpraapn73BVe7RtlDVDmVeovPezJpSvIakY5Aixmg7gaw1jNiFe0gRBvfXWZvMfUtA9nm24eQe9Dr/W/VfFN3A7a23J4t8pPnEVsrRMZ6MmZYIk94BCNHES9k/wt/1pQRkYEyYVvWyq7fCTbHZmLnfpvilrmkTZyVq48d9/CfCzIfVZC2wT+RZ2P4xtiAaltNimxDQ53ku5G2Hk1BKWnLYoU7vWThWO+D6cxncFuiKBHTmZ3jDHS0h1yrIQWr9eqAvK7mngiCa7exoWmQfFsVQDwuuv0O8vHLstDlspmhoJ0FPGPp+wOlYFSPKR2Jcqx7rG/D7sSLL0D2X/QtUw+F+AtLcRj0nkdiwAlxjd+hPKe4lnqa0+usahYrNxyLWnNiAGpP45wcItgwiaCjWY5QtGvez423yz+7W89ROndVWw5M5w8SHu4XaM7arU550mSFdGyhwYMQJ6q5wlnqxXs1Ylvjr2qxsdKIC0bzOlUCD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,32 +126,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Oscar,
 
-On 03/10/25 9:23 pm, Ryan Roberts wrote:
-> mm_get_unmapped_area() is a wrapper around arch_get_unmapped_area() /
-> arch_get_unmapped_area_topdown(), both of which search current->mm for
-> some free space. Neither take an mm_struct - they implicitly operate on
-> current->mm.
->
-> But the wrapper takes an mm_struct and uses it to decide whether to
-> search bottom up or top down. All callers pass in current->mm for this,
-> so everything is working consistently. But it feels like an accident
-> waiting to happen; eventually someone will call that function with a
-> different mm, expecting to find free space in it, but what gets returned
-> is free space in the current mm.
->
-> So let's simplify by removing the parameter and have the wrapper use
-> current->mm to decide which end to start at. Now everything is
-> consistent and self-documenting.
->
-> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-> ---
->
+I agree - checking __vma_shareable_lock() directly in __unmap_hugepage_range() 
+is cleaner and simpler. I'll send v4 with that approach shortly.
 
-LGTM
+Thanks for the feedback.
 
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-
->
->
+Best regards,
+Deepanshu
 
