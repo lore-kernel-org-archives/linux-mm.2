@@ -4,84 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EC78CAC5BB
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Oct 2025 21:12:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE9A7CAC5BB
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 01:39:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82C9D8E0005; Sun,  5 Oct 2025 17:12:50 -0400 (EDT)
+	id 57FF28E0003; Sun,  5 Oct 2025 21:39:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DD7D8E0002; Sun,  5 Oct 2025 17:12:50 -0400 (EDT)
+	id 530E68E0002; Sun,  5 Oct 2025 21:39:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F3028E0005; Sun,  5 Oct 2025 17:12:50 -0400 (EDT)
+	id 446728E0003; Sun,  5 Oct 2025 21:39:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D5308E0002
-	for <linux-mm@kvack.org>; Sun,  5 Oct 2025 17:12:50 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D8184139C4E
-	for <linux-mm@kvack.org>; Sun,  5 Oct 2025 21:12:49 +0000 (UTC)
-X-FDA: 83965310058.03.CE0F56D
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf15.hostedemail.com (Postfix) with ESMTP id CE24EA0008
-	for <linux-mm@kvack.org>; Sun,  5 Oct 2025 21:12:46 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=jWfA0YLf
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 326448E0002
+	for <linux-mm@kvack.org>; Sun,  5 Oct 2025 21:39:57 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C3F981A0405
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 01:39:56 +0000 (UTC)
+X-FDA: 83965983192.17.576EC79
+Received: from baidu.com (mx24.baidu.com [111.206.215.185])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 364E2140006
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 01:39:53 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=baidu.com;
+	spf=pass (imf09.hostedemail.com: domain of wangfushuai@baidu.com designates 111.206.215.185 as permitted sender) smtp.mailfrom=wangfushuai@baidu.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759698767;
+	s=arc-20220608; t=1759714795;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f5fInq7i/nyNioLFzjHE98L6f06svbweNidQJNV3B60=;
-	b=5kaDrR66PV3l7mALMU4nQ0qHHMdPJWf9GgQ0B3DVtA6SF/rTGes7e8M/DyICwv6DGSIIGM
-	1uHNzTSu4URK6rMM+vMhpP6YUm00Stih/7VTqBJgjDL+HS6zLRUmWHh21po/wA0CnNoiq6
-	05iNBLpg7X15WDkl775A4c0/ppliiHk=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=jWfA0YLf;
-	spf=none (imf15.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759698767; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4lQlM65BSIysXlfuvtZNenZVO0NhnzEyonAcFbpKiR4=;
+	b=Js23xZNldQ5vCwPbkMgCUEIZe3CRZ4ubf62yRZoIuicp3Zqe982+5/Tp5J6BM4xy7N3PNM
+	SwTGetAhhlfWpdSJQpvgEmqOieRzsDmWPcqYjYgdBrGY6yZ1JTEfLVdFKTL2ed2IJRckMP
+	fcj+mLZN8zVBZkzQD+ZQl1e1s+4p+ks=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759714795; a=rsa-sha256;
 	cv=none;
-	b=H9UYtwCPWRVLO8WqcQ/NlBYR4LuoiHE9it99VrvqL9/aL6e1d8Cxq3g3+u7sPbWSjDWGAw
-	BNTCKBHdPkfLx56zS+QJV7pCp9Ukr8XttFRtE3WGXJzLF5B0PgstI52vWmmpGJvXlT0mQ+
-	MeIfkpzBkkTiIpIWTvWk8cMWyWriclI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=f5fInq7i/nyNioLFzjHE98L6f06svbweNidQJNV3B60=; b=jWfA0YLfpAp0oO6VrDm70DEDj+
-	oYwXh90lhU+Q/x5K3EMCmGeYLfQPPuoT2GsmYJ5alL6yRUNoDa+GjgsUGl7JzqilVlWpyeMhY5pN1
-	k0QTFsbezIqfsZJnYvt9civrinMQiJWbNO24Qa5TB7T3J5HtQPj5loDdOhHmjy3Ozvb0Ohi+WX7rc
-	/roTVt50HpOLeyOjnzvK5a3ykNsyFiaGABHDsTiKT5Jdx334tpNsArlccgsxuBD/P2jbhm8E6WtRU
-	UETA/CcQluUJKvE7io2P9Mvm7Nu/QuDXlaxet0sK9HPsazD3tn1h+HhVlvlbNw4pyl6uvuAFXTNWs
-	R/Ul7KSw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v5W1q-0000000Fzvc-0pDl;
-	Sun, 05 Oct 2025 21:12:26 +0000
-Date: Sun, 5 Oct 2025 22:12:25 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Fushuai Wang <wangfushuai@baidu.com>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, david@redhat.com,
-	mhocko@kernel.org, zhengqi.arch@bytedance.com,
-	shakeel.butt@linux.dev, lorenzo.stoakes@oracle.com,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+	b=ipatK3yVDKBbARHrBVznRnsRYn0/zkuxlaTLjMtyXlFVV+BEZpBEJ1rWKPLmQTa+K0Dm5f
+	GyQ48nu8EtPALsa2YGuI8yAnsDeNh2j/jfxgDhsPcWpsQ+ElCX6IPmzvPvdVi5ZINtywb1
+	HlPURHkBbY/K6UHowGv0uqZTX15uPA4=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=baidu.com;
+	spf=pass (imf09.hostedemail.com: domain of wangfushuai@baidu.com designates 111.206.215.185 as permitted sender) smtp.mailfrom=wangfushuai@baidu.com
+From: Fushuai Wang <wangfushuai@baidu.com>
+To: <willy@infradead.org>
+CC: <akpm@linux-foundation.org>, <axelrasmussen@google.com>,
+	<david@redhat.com>, <hannes@cmpxchg.org>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <lorenzo.stoakes@oracle.com>, <mhocko@kernel.org>,
+	<shakeel.butt@linux.dev>, <wangfushuai@baidu.com>, <weixugc@google.com>,
+	<yuanchu@google.com>, <zhengqi.arch@bytedance.com>
 Subject: Re: [PATCH] mm/vmscan: Remove redundant __GFP_NOWARN
-Message-ID: <aOLfOUgoEskd8jyE@casper.infradead.org>
-References: <20251005124329.28708-1-wangfushuai@baidu.com>
+Date: Mon, 6 Oct 2025 09:39:11 +0800
+Message-ID: <20251006013911.43917-1-wangfushuai@baidu.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
+In-Reply-To: <aOLfOUgoEskd8jyE@casper.infradead.org>
+References: <aOLfOUgoEskd8jyE@casper.infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251005124329.28708-1-wangfushuai@baidu.com>
-X-Stat-Signature: 9ayfogs9mbu3jxkgyq1mhg6godfnhsyh
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.127.72.11]
+X-ClientProxiedBy: bjhj-exc2.internal.baidu.com (172.31.3.12) To
+ bjkjy-exc17.internal.baidu.com (172.31.50.13)
+X-FEAS-Client-IP: 172.31.50.13
+X-FE-Policy-ID: 52:10:53:SYSTEM
+X-Stat-Signature: 1p6dkso5cjtod78n1in71s7ndmgnba8y
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CE24EA0008
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1759698766-272250
-X-HE-Meta: U2FsdGVkX19GsZPinEJ25tIZWExWZC3r5tqhFUIhRQw1DRiQ6LSsAzTVBsepM/6OW6v5LNE23ivkKnqI1Vo56hkYhj1jIVX5gCDeBXN8E6Q9EEEa3eQdkgwV8zEvbXijyLqPjv81BKZuG8a4HvRygBoCaG/MYWD2VcQ0/Pf24kPcQ2LrtY1Lr/Xr+fPwTXaYyDyAsV+hFvclerM+gp8LymIWkvt9F4vPXDNj79ctPzYrW4Ywlv9Q3XEJuETfRzjU5AIJWk0fNWcaYPkc16cwnOq3NDFxSApTqI8Y+n52TfHbx5+ohDn77Vpl0yUsyzZOvtYZag8Fk7N+skxWrSm2FElIb8HVGzeRMbXJ2dfexJ3MX3MI8HxUq8Kl4J1eYw8UOjlcvQn3dB1EmszO8yjXgbAWBTgGALoduG4gnaZ4wcFBcsBWh1g4gTcyqSUySragKenVjRDADcikGIHptd+r/A7Skjn9YQD31RzOaIPWfwxCvScBPTQZmdXGK45NLZggWTaH0ojee5G9MxHf/hP546tYHwu7mZDyIVFa8+67bEvIQ1Dmtjr5D2UQzQuDPYyZu/J1CuYFvSd2hc5xOO8ND2AAaHwKuMAwHLHwNU+gA6qpUuRzEsqB2xLQmOD3FdfQ3FIJV9DN1vmcvSpJsPc4yuszNJbegdWKjrRCNjIcBMnjKqbcOWm/JDGLnGfO/+lgGpgw0FPykWXdIFhFrYU9eNrbFlBIIVFSXmy/SEpznAnI1JE6FdwZ/iVNhtRYYh5V8SqNCVBONZtF6FVQs6c6YYVMqCCtWY0Zh5TKSPNcI+oR+cPUMe7MLv+EVFFV9EStaAW+OfHjayDk6bPt4fQhoPUi2TAYfE9mQXzEnQSzlL8DCvp91+cwryKqj2m9zJ59lW0ccISjrhd5DR3yTh59asCZdeDEPW3ughy4KV1p8uy+R2L2JclSoTEc4yQAUtPlNhkFOE6FGqpa/b1pgjp
- LzBgVh8C
- Kjz/MRGup1bwrvggom37vN3rooJLa05cyBH0fkcs8uTX93JWY2HTB1NerWjJFj8pTBjoRI2VTIK0/jHjCmT3p9xR9YMzsM5ue4FrlL34GJ58jMbtyupkgpN5Lu4A07pvSEIJ1CTh0A5rGAiLd61BHsR1UGlcbLpkfmOplqFQVBSAGcUPDs8wZK4THONDXXW7REUlhewObyPMFM6mvNAomDibF7JhlSlmlT6Kg
+X-Rspamd-Queue-Id: 364E2140006
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1759714793-593881
+X-HE-Meta: U2FsdGVkX18ge/tNM41117UrHO1F9H80XTSjOt/fjxPBG9C97XCuNQfP0WJnFQRLGUZdjxKzRkCg1kEnDJs7xzmj9qyLBVWT+TM3kZmQicdGM8FVVbNHVRg0RIgzuvIq4vvd5pqHihCqGIdWjQ1KUvJ7XDxCEQB8ZO3774Wo4iF/q8ed2p0jWiTeL4FDDXyFMrMbnoDgzCjTv4HbC4UwS/thh7yGtRaPwpidqWy7H8biW90VDAw+SVAmnst770nOZsYwD6/akzOvKsUEHXP358p9x7856n4ZjEjFf765/5lnhNizZxhjjOmDFtIG/MIG5p/ar7I4zay2H/IS5II1j+cmpkwZuqbXx8JiUok28/sc48XU7mAYLmIAG3ql72gJ6zMf8cWUhtXHlUdUlIPE/hUfR26q6gwqyAH4wsRX7stxE4vWpwUtqDEZc3IAQs49V70N1mAqZAc5e/wVClMOnr4Ou8SDz+UpQNp+2y+gZC7IE/Tl6XL8GBy7e0QvZkuv2Zdks/bE7u+sy4MdPyYv72L0d3sjvU0Eh63hvxJvb6UScyTXHgufPgFjBw+vmqp90CPrL91y9Yt189Ky+Q9/DsS+cR3GWKFwuCfPRWHrdW7CGcaqcdtkcqTpI3H+mF9GI/U7DWrTVOv/ueg1qin0wgF+nqiF/snkU5vu2Yf1cuVbmV2S8ptlB1jp5LA9elyzUbrmHQICPcYuPVcnwk04RQbZZEUAbcoHuS4YotoP0sN8s7epJ93+e0ern8Mb4WV49ejDnWHU/zIW4JljzrtD4p6A9vZYic7Ibk2f86GqYC7PSx3BoE7ePZFznhAhDTuVPQe9K2aEhcOj0g6BX0xpi98EJbi9pUETWLjOe5GCh2ZGuvRW9HSu5g9UZ9frZnsSaUG/TOuFlV+bkLyOOyhMk04XCpUzJsdcOzChCd0wUo/9mPXlFKUtY8P0yiIo1LebIbL/312dT0epSrOhRti
+ +09mLiB2
+ 8HWdt1XhZHTK8Wq4V+nS3Mmu3JIwV9GI7q5+8KnylwYbKg9EiQqAJ7KdcY/64b46WNB/VRUBfJUa4C5WhmnLp1Eg7vNRs8PWx5xkf+Ax8KaG8J1Yj27JB7PSTK/Pigl1x27uSZB1yDnTxNKgIrQtlk+WMRtriAgLZBCzc1QKvaef3E2E2BrHrNiH/+Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,12 +86,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Oct 05, 2025 at 08:43:29PM +0800, Fushuai Wang wrote:
-> -		.gfp_mask = (GFP_HIGHUSER_MOVABLE & ~__GFP_RECLAIM) | __GFP_NOWARN |
-> -			__GFP_NOMEMALLOC | GFP_NOWAIT,
-> +		.gfp_mask = (GFP_HIGHUSER_MOVABLE & ~__GFP_RECLAIM) | __GFP_NOMEMALLOC |
-> +			GFP_NOWAIT,
+>> -		.gfp_mask = (GFP_HIGHUSER_MOVABLE & ~__GFP_RECLAIM) | __GFP_NOWARN |
+>> -			__GFP_NOMEMALLOC | GFP_NOWAIT,
+>> +		.gfp_mask = (GFP_HIGHUSER_MOVABLE & ~__GFP_RECLAIM) | __GFP_NOMEMALLOC |
+>> +			GFP_NOWAIT,
+>
+> Please just remove the NOWARN.  There's no need to reflow the other
+> flags and break the 80 column limit.
 
-Please just remove the NOWARN.  There's no need to reflow the other
-flags and break the 80 column limit.
+OK, I will send a v2 shortly.
+
+Regards,
+Wang.
 
