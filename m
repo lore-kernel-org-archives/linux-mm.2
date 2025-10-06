@@ -4,133 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A597CCA470
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 18:03:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6011CCA470
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 18:04:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D395E8E000F; Mon,  6 Oct 2025 14:03:33 -0400 (EDT)
+	id 4FE558E001E; Mon,  6 Oct 2025 14:04:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D14CE8E0002; Mon,  6 Oct 2025 14:03:33 -0400 (EDT)
+	id 4D5C98E0002; Mon,  6 Oct 2025 14:04:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C26B28E000F; Mon,  6 Oct 2025 14:03:33 -0400 (EDT)
+	id 3EC048E001E; Mon,  6 Oct 2025 14:04:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B28568E0002
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 14:03:33 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 527D21606DF
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 18:03:33 +0000 (UTC)
-X-FDA: 83968461906.15.89B10CD
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 603C114000B
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 18:03:31 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=LfqPpyaZ;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf09.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2AF5E8E0002
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 14:04:33 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E3731C05A5
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 18:04:32 +0000 (UTC)
+X-FDA: 83968464384.17.CA0A9F2
+Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+	by imf30.hostedemail.com (Postfix) with ESMTP id E197280010
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 18:04:30 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="Y EIRcNU";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="Auk/0g+h";
+	spf=pass (imf30.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.157 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759773811;
+	s=arc-20220608; t=1759773871;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LvwmvZY5I363zl2hxXSo3p16V2l855H51CmL0I5zxCc=;
-	b=sdbrqrRDx9hpGdN1or1YOsWqPwo5SH6NmNAGHGTPbLujh7Csr3EHx+fIR7QKyJ5NL19t+b
-	HLD0OrNB2xf5fTEBXYH7wujWP1GXfOMdaYApF6Wu+KecHcjY7vbq8qXnkdZEe8cgw3tvjq
-	8mVNx2ALqlvEj1X8p6lpD2T/cO3GJPI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759773811; a=rsa-sha256;
-	cv=none;
-	b=wJjXtwdp96yz7jTpADEPuY7H4oIPlpvxCF22zGSgtJ4On3BuLkTEgdBwrC/4b6ypjUzH5I
-	odt0R+uCBh9PAnepSJa4388JumlJpyVNqfv6+MghL72VuZZcKHhJHjxy3KMqG7yKyn/+FO
-	GsH3psA3jEKEInJ/o9RQy9Hkx2wv99M=
+	bh=mvRmitREcUsAIl3c+ISPdevfWOPSl1oIN+oRFP6Q4Mc=;
+	b=nPyB5b9snjioSbJqzcWpFWf2nn1hxQ5ind2IiLnWt3Y4e9olHWzkGf9cEE4iRQ/P6PDFlb
+	nteLOTM10ywk7Elw1dlRay4wOf0aDV2Q+NasFtyI++MzMtIT0nbNJl1CmUUctH+LqgOn0o
+	zhizvrp3aOszFsgmk43PnB/1xN00/Ac=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=LfqPpyaZ;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf09.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4e6d9573c2aso12570451cf.3
-        for <linux-mm@kvack.org>; Mon, 06 Oct 2025 11:03:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1759773810; x=1760378610; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LvwmvZY5I363zl2hxXSo3p16V2l855H51CmL0I5zxCc=;
-        b=LfqPpyaZ8CAOV3JfW3svpVdcXgg8RhMj2TosamdCIJDDWcFr66dMGOYaustLPKduhQ
-         1aXNLB1tJJj9azQQ3h9g2j5mzi8fRzNjAKr0SzxipcPI8/AhUHvih2faEO1k96Q2AbaT
-         rAEINK33zinEoAw+zEwfGe2s1NG68RdmzHqa/XY7sWbjSrAozUSNaSuBmReqOQj34LYt
-         hMWlB4PzmiuRwZRZLuHbWN+7h1yW3YgZJWgxzQ6/EB0jXHKQnvEC0Htq9vvNc2zfezk0
-         xab65Fsf/uf+ujNMDPQIuJu9bhnC4q7ZpoqEFRMGCZuqJn4yryRArdUyemwE9vhKRtm+
-         NWEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759773810; x=1760378610;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LvwmvZY5I363zl2hxXSo3p16V2l855H51CmL0I5zxCc=;
-        b=Zfw/TzyX+8XXJUVfaeqQhnArK/aQ7Bxo4cHi2FlMj7Wy1JOPSrkvn2pmk5SiJcxPl5
-         WdyD9yz/d4gbX33DECA9WqjoKpdz2fdr3T9C3ezRd3CjaACsSZWp4J5EiD9hwoQ8jch9
-         mKvYSzs/VzAMr9kcBYOwgqjEYJqywLYqIH9nMiWdFHMuE5IbB3goW9e7lkJNZo10SuEw
-         FTOCga7LdQUhqVUpEVakqMS4BaCzQRDqCvuLBNmRHtTdHmI3oxwxBngOTBqf7hTZZZam
-         soiVqMwwon2pnwu9z8VSCKD+w2df6Lifexf11zwjByRo4UZFIml9a3SjlEDXoWVVZjdV
-         melw==
-X-Forwarded-Encrypted: i=1; AJvYcCWj1mqW/JtdUtXGJb0zibuOSYxIcYdUsV6hdZf5Tr/wH5DJaQlUXZKKMkvhMdujmlbpCoDT//m49A==@kvack.org
-X-Gm-Message-State: AOJu0YwlWc0PathL4XKnOECn7jzU277zML3jR+XyOjswDtk1sKTJ/neU
-	+0oikSX1/kDmeDnDxTZ8cvU79mb4uJNStFB8/BmfbrsLMTT6ivm5EX17lFz7sPw3bIQxVMZgYpv
-	SNQhvRlpo3QJ2SR9abKnuyIebau58qeNSPQ+A9bkIeQ==
-X-Gm-Gg: ASbGncu7+ZFIhG9GN2nAUUc0SQxjClUc0VoeNNauURgfp9ysCcvlbZb2M+DpnGvFUMn
-	echNzbxPMjJuAr/FuvqxR3QCplasXOFqzb2OEEUiQcAkRpcBWkZrcWLZPmWyV5Vtmw9YnzA8Yro
-	88ESPxIFwK6GGHFENEJvab6ZU/eiNVYWWSCn+SxCee3AHjv5313NVLH35skqqhg9WlMmayMxNs8
-	4hdP68UmyQoGg5BUeJ7bIkrJsmnSm3u8pzXjXA=
-X-Google-Smtp-Source: AGHT+IEVZfCkL4v+Tnkl5nUWA3GDanDfXIyCKp31DpQy1v3t8oAJmzi9nP3PButZfFc5VJpBDaeo1ldCgKUCHIfwIPE=
-X-Received: by 2002:a05:622a:1a87:b0:4df:1196:f570 with SMTP id
- d75a77b69052e-4e576b09389mr190614081cf.53.1759773810132; Mon, 06 Oct 2025
- 11:03:30 -0700 (PDT)
+	imf30.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="Y EIRcNU";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="Auk/0g+h";
+	spf=pass (imf30.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.157 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759773871; a=rsa-sha256;
+	cv=none;
+	b=myFLl8teLG9tJuoT+cRrbh84BesW75n7uLSRPFhn+m12Xp3SgE035fKtow2lCtIvk6wB1S
+	tiHrlUWkl4/w0clYcUPI22V11BETpWnj7aW8dmhwWzSmnqKc9Tl4ajr6npxdNEKJXWW7TB
+	OZVfdpbcXVUit2rPCeqiRNp9DEHUga0=
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id DF4167A0127;
+	Mon,  6 Oct 2025 14:04:29 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Mon, 06 Oct 2025 14:04:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1759773869; x=
+	1759860269; bh=mvRmitREcUsAIl3c+ISPdevfWOPSl1oIN+oRFP6Q4Mc=; b=Y
+	EIRcNUYhfrPGY19vO2hpSwLknu6Q4o6tCDjyHmm8v+9rU12jnkWTkXJi00vm0Kf/
+	5JoEk2CifeTzzxv9CJKgQX1gX1GBgmyW1gHFhHKcC23Eix7raf0mEDhwcXtKa4eg
+	HMMrILVv8x7qTinIxgRVnbMl8538/zxxY+K0ozoh7yZVxq3qoSxKL2C64QkuPZIQ
+	nSyy07if6Pp8OFcuprt8KElOhYlciQ92qnqbgpnGY7lZkATVvOCT0ckS56upNcDD
+	s8x4Bxx65xcLtJIOKoFAerSBJ61/tLmdY68p1FNZwELg/i3s04IoZBPlntKVXZDG
+	Xz5QW2qj6OdRJlcxfwlhA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1759773869; x=1759860269; bh=mvRmitREcUsAIl3c+ISPdevfWOPSl1oIN+o
+	RFP6Q4Mc=; b=Auk/0g+hdxoQ3NNFMr1/+2KxC1flPJFtsHTJHXIrFFDmJzuJ4On
+	0yAG0FoK04ncv5SVUN6Lz3D1dODTYdKIpbf6Q5VTFAefiQvIb0YdaSm21ogqmEXo
+	jZ+OkCO7wE2AIyGZPkYckyYSmS7h/1rqTkp7er3hqQPw5AYclOVdCdzZ3Tut0Wff
+	G/oBE+j6qqPuBvuZpzdcKSLjRhBci48Hp1zeGrMFmeh5CPfFpS+i9VnhDBvSVnQ+
+	1o8Ngzeyb7Glrup2L6vHTIS5/yfXhAg3S3BpKhMFjTmP3nrzhZyE1uA5dGS96cxk
+	ZADkyCJgGjRSX6kcqBra2E0x0MD6Dz+ABqA==
+X-ME-Sender: <xms:rQTkaNw84cZ5zCKLnFQ_I-ArYHhp9lCooWVyw2Was1QbpvH7_xAxNQ>
+    <xme:rQTkaAWT2R0eNX6ZfL_2MTvT7-5IQ7ZKOrTFqa3Z7L6slwgzQfIi3nN4bT7P5QuTb
+    7HmFWtsSYhJ0SP8HkdtJn3Lug9PkLI8B-2NNx8o9NezaUrOxqFY_l0>
+X-ME-Received: <xmr:rQTkaB_vc2qTV3Bb69BpuzJOmNUVzz6sPKQbZc4xXjDFdj-4QYCNQeh-cpzc1A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdelkedvudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
+    hhhuthhsvghmrghuuceokhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtf
+    frrghtthgvrhhnpeejheeufeduvdfgjeekiedvjedvgeejgfefieetveffhfdtvddtledu
+    hfeffeffudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
+    hmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepuddt
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehtohhrvhgrlhgusheslhhinhhugi
+    dqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepfihilhhlhiesihhnfhhrrggu
+    vggrugdrohhrghdprhgtphhtthhopehmtghgrhhofheskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhgpdhrtghpthhtoheplhhinhhu
+    gidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:rQTkaLshyacJTOxqkAYV_Mq3psXLsryU-csILR2ICVVXNMthP85QwA>
+    <xmx:rQTkaJ3HFfs5bn3Sz3X9Up-7-8CMZxnST_jVVVDt5CT1IP7fISuyfw>
+    <xmx:rQTkaIQcy2Z0EL9aAdbAsUlNMqEWIprPGhmJ0l1P9k9szOgHTiYI4w>
+    <xmx:rQTkaFd-RIs73pUY1abGNwXqu7TqMFPJAGAxtP9ZaBIiF_i0ZWnnPA>
+    <xmx:rQTkaOVgd5OZygrHjAovjkvWOnGwKWmsAixlN7Cm4w3ouWWnmCAP96nJ>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 6 Oct 2025 14:04:28 -0400 (EDT)
+Date: Mon, 6 Oct 2025 19:04:26 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Linux-MM <linux-mm@kvack.org>, linux-fsdevel@vger.kernel.org
+Subject: Re: Optimizing small reads
+Message-ID: <5zq4qlllkr7zlif3dohwuraa7rukykkuu6khifumnwoltcijfc@po27djfyqbka>
+References: <CAHk-=wj00-nGmXEkxY=-=Z_qP6kiGUziSFvxHJ9N-cLWry5zpA@mail.gmail.com>
+ <flg637pjmcnxqpgmsgo5yvikwznak2rl4il2srddcui2564br5@zmpwmxibahw2>
+ <CAHk-=wgy=oOSu+A3cMfVhBK66zdFsstDV3cgVO-=RF4cJ2bZ+A@mail.gmail.com>
+ <CAHk-=whThZaXqDdum21SEWXjKQXmBcFN8E5zStX8W-EMEhAFdQ@mail.gmail.com>
+ <a3nryktlvr6raisphhw56mdkvff6zr5athu2bsyiotrtkjchf3@z6rdwygtybft>
+ <CAHk-=wg-eq7s8UMogFCS8OJQt9hwajwKP6kzW88avbx+4JXhcA@mail.gmail.com>
+ <4bjh23pk56gtnhutt4i46magq74zx3nlkuo4ym2tkn54rv4gjl@rhxb6t6ncewp>
+ <CAHk-=wi4Cma0HL2DVLWRrvte5NDpcb2A6VZNwUc0riBr2=7TXw@mail.gmail.com>
 MIME-Version: 1.0
-References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
- <20250929010321.3462457-3-pasha.tatashin@soleen.com> <mafs07bx8ouva.fsf@kernel.org>
-In-Reply-To: <mafs07bx8ouva.fsf@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Mon, 6 Oct 2025 14:02:53 -0400
-X-Gm-Features: AS18NWCL5ohjgHwfiII61tAev4bzSNa8Vs80Sb--F-ZT325ugyMZfqAlQjXZbCY
-Message-ID: <CA+CK2bCN-__524n+2wti+m8K6JntCudsR1--cFH6cW9CTXnmiA@mail.gmail.com>
-Subject: Re: [PATCH v4 02/30] kho: make debugfs interface optional
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: jasonmiu@google.com, graf@amazon.com, changyuanl@google.com, 
-	rppt@kernel.org, dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
-	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
-	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
-	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn, 
-	linux@weissschuh.net, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
-	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org, 
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
-	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, lennart@poettering.net, brauner@kernel.org, 
-	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, saeedm@nvidia.com, 
-	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, leonro@nvidia.com, 
-	witu@nvidia.com, hughd@google.com, skhawaja@google.com, chrisl@kernel.org, 
-	steven.sistare@oracle.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wi4Cma0HL2DVLWRrvte5NDpcb2A6VZNwUc0riBr2=7TXw@mail.gmail.com>
+X-Stat-Signature: ek3im5t513jadtqqyef4j5wk6eqerm5w
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 603C114000B
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 5ws49tkwa5wx3pwazbcsxo3481oszbob
-X-HE-Tag: 1759773811-802180
-X-HE-Meta: U2FsdGVkX1/fCOCDpz82HSrW0I/MBil0sj0/F9wiZO2wYYUO68Q+gyyZXdKBjf66dHPWsEsoUna4JcZsRoV0j53EL9PXFeZwh58hGJ5cyLYrdyzdcXiTOopvid4eT7uaEZrEEL/DrbXwR2iqdPDs7Zkg0qnejN7JK5NUmeFYShvOdUTfdyXAZyuiUmDq9uT6546najaPrH48c4H9OSMCDUGrLI95csBkE8uZycWaZ1qRzeaKqTsWL1aovzb15EasNjWhcAJ9SMqxlZeQmxci+IQ6Mwo5GQQZQzGQ1Y6D6ZPodfsrM/0i5uOsPxuu+bAZblSP87jIpc9ONstE6u11KyuuhYJrwh/ncVGgMkbKLY3xZMa3b9isuEcQCZ4j5FjF7TWJYi8iq6FffpLw9+3jz+YPJ58esw/K+vafYYAOJL0sTrgWmFQ42HCa9mUy8IPYpUP0DAF7oZlhqnwTQNWOacPn4zL0GQdPQj9iX96/FXGENdU/m3iqSwXxv+R4GXVQPgDCh2NMVr1TfO1oNlTXlW4ZabQfxLIKtYnySYqD7HxIKvFDUpXXSdiW0ZJM/WoUN2fQ5m60eZ6zzIy7HhOEOE77bx6+BkybS/PvDyFTOLcCy5jjM5nzcKhPh9szQUrDgCf2ghjcJtEq6En4zuPNlOnP8CAeE9ba7B9bydmG/lhVRxhSqFDIPOhHrrKYz9U/6UCFRWy7ZKfZaEWHk4gvQ9GhMqI19F5039EFheqK1FojfqrjYGtmFH+N9bEoAmN5r8Pv6r3fEIfQpVb29paYhGq+cmOy1tTyF+0Cshp4DGyMAVI1wUko5nXn8QV9dr1uPGRh/AroKNEbje3gUFsey+R9IETRVdsUC0WW2lYggSM68LAzvxcOk2AEyfPDHS2MSEpFva4a9MWcsS8E6aDaXro/ZML4ln9nOEQMmSMWZmAp/yumegEBJzykh9wUiju0UHgw1GLUaXQwrsVn1Ix
- v1uEedWR
- SfvxMUoXY+jJxTzkXwZG/4tilA5kkpxe5Y/Aj9Epk25weJcKrCVrNTr23Q+cE3Yl1pQFrIFklfL2k/OakcdaislF05j06FwT4gVobBKdruHVqzv5snwxigL8OSN7kVb1MvDpSIxzhX5hu0UZjePRrHh2uN7VX9rnifnDMeU0H0J0WJKHTKPpdDw8T3tlvoBngxYBGuq+DqCVbKSxOiIusfp7Y5CZ6qaaFbVB3wBKpDBP+r5ZN68yxK3pq8W+kEdCtutsxV20/Gh/9SgiJM4fCB1EEuwuPn+A7QSCRPVWxG00b/aUThQx9mtvMZLFpTYTAxeV9Rzq8Cj10lfn3k+ybaeANDw==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: E197280010
+X-HE-Tag: 1759773870-824641
+X-HE-Meta: U2FsdGVkX19M7+H6o/EDG2zPZ/inLdjLp3jxQ8ywFp6fW15y7tLP4nMwgIPYv5pJzUPETfscfOhDmjtNayh0thOIZPzCj7/p+9IKGt4xmZMwqP4B1teOJtTgvIGiK99NoziZrQpDUApD1z15VlYNDT82lqpFPVk4V+cf40XRrcOWJfFr76tn1XtSwa9daKwE3JyIYr30+tir7cN+Bi0ZQgQqEugG6NCrSowaAYXihFdzdTzmfHjWkkZqcA44Y2ms1qVmfg7Ik9+tTPo6HXcjgbTF3bJTg7/lWuqc1UHw3AAFE7ARAo80Ly8cES15crKy2kqRVQc4uQmH7hrwy1yVWXwTm94kaoViDrnh7L9PKHaqXrQ4lACHzReoUCLNeU444brNWmHLvRKru1oOA6MItX+mpXwrSsRt28vfKb+PmuMquyX6Mshp+7732oYtruWgDsr+B1r6grtqGf6PghnDZhi7Z8KPb1tt4VmctUnmGnuJuPNlrlNpkNHd86TGQ/UJmFWzZ3Rd3B5vue+9KLJ5oppxJQ3j+puPhX2ku1BUh5Rfh8OD4V+lDUFMGwWDV/Prh0HgJa0qmDtX1yZDdetU2RGakbpDZkDwPRVIpF7KlXNQbLcYCzaqcrqfvKde2hAUCC76JxtyQr0Qt15URo+qUZhVjTlQ0tz05k8EgU30yp22reZX0ZpFXIxXY6aO/DGqpIj7wiZCz59elD8QJA69akoh55tq+L2RXLLHtquHI1YUhydV5Jni6k98c65fvNmh8jWuXHgLAgJRSWtpNBuPsrg2FpNHNCk1kTtFQJAP6BsFDU6OkBUXDwHQSzY3VrtyGyv6bBWHmL4O5DhylSzbEmHIi5UdsKJpFxN47mSCjvoxxMntZ40TdcvhBCUFz5m+K6KkBe0SHboClkRDBEWUfxXZy3TrbM7e5E3oyx4gB/a2ubSnWlD54x1QdN8/MhLpe8kcgW8JBD8XOnNZBfc
+ L0aRVE0J
+ aVJTGD2fG/28IUA5hMklsCQFEvwCT2Gj4GI2k9zZoE2RuObMrDyA89IKHSjd5oF8So9OvM/A3j2Y6dYk8wnDYjYEJSRIl6URHoSyoc4hak55BopJihwMfUtCEVuCH76oVtSV3Pvqz2tYJrhAFIgW4iqDax0TdKtNDpf+8DJhTePKB1eB4UfMv0bYsqd73GyC8+3YxHOwGzvYpbCLVs5p6sZ00i2Fq6dl9KqV6Rvf3Nbn71PE7ZLRuOqkWlNdoaXnV6nPFx5a7SYX90YUqALsMlUV82jXFgMR15eMwKo8V69430nfDJ2dRsry0nKII+JKQh7xdEJymBiC06Ch6iFHpRT64CusDubRYuiVa0x3EQtnc0heC2Ajyc7c3K2762/I7fNf/4wlDKHzlmtRDZGDgqqmHzA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,67 +138,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 6, 2025 at 12:31=E2=80=AFPM Pratyush Yadav <pratyush@kernel.org=
-> wrote:
+On Mon, Oct 06, 2025 at 08:50:55AM -0700, Linus Torvalds wrote:
+> On Mon, 6 Oct 2025 at 04:45, Kiryl Shutsemau <kirill@shutemov.name> wrote:
+> >
+> > Below is my take on this. Lightly tested.
+> 
+> Thanks.
+> 
+> That looked even simpler than what I thought it would be, although I
+> worry a bit about the effect on page_cache_delete() now being much
+> more expensive with that spinlock.
 >
-> On Mon, Sep 29 2025, Pasha Tatashin wrote:
->
-> > Currently, KHO is controlled via debugfs interface, but once LUO is
-> > introduced, it can control KHO, and the debug interface becomes
-> > optional.
-> >
-> > Add a separate config CONFIG_KEXEC_HANDOVER_DEBUG that enables
-> > the debugfs interface, and allows to inspect the tree.
-> >
-> > Move all debugfs related code to a new file to keep the .c files
-> > clear of ifdefs.
-> >
-> > Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> > ---
-> >  MAINTAINERS                      |   3 +-
-> >  kernel/Kconfig.kexec             |  10 ++
-> >  kernel/Makefile                  |   1 +
-> >  kernel/kexec_handover.c          | 255 +++++--------------------------
-> >  kernel/kexec_handover_debug.c    | 218 ++++++++++++++++++++++++++
-> >  kernel/kexec_handover_internal.h |  44 ++++++
-> >  6 files changed, 311 insertions(+), 220 deletions(-)
-> >  create mode 100644 kernel/kexec_handover_debug.c
-> >  create mode 100644 kernel/kexec_handover_internal.h
-> >
-> [...]
-> > --- a/kernel/Kconfig.kexec
-> > +++ b/kernel/Kconfig.kexec
-> > @@ -109,6 +109,16 @@ config KEXEC_HANDOVER
-> >         to keep data or state alive across the kexec. For this to work,
-> >         both source and target kernels need to have this option enabled=
-.
-> >
-> > +config KEXEC_HANDOVER_DEBUG
->
-> Nit: can we call it KEXEC_HANDOVER_DEBUGFS instead? I think we would
-> like to add a KEXEC_HANDOVER_DEBUG at some point to control debug
-> asserts for KHO, and the naming would get confusing. And renaming config
-> symbols is kind of a pain.
+> And the spinlock actually looks unnecessary, since page_cache_delete()
+> already relies on being serialized by holding the i_pages lock.
+> 
+> So I think you can just change the seqcount_spinlock_t to a plain
+> seqcount_t with no locking at all, and document that external locking.
 
-Done.
+That is not a spinlock. It is lockdep annotation that we expect this
+spinlock to be held there for seqcount write to be valid.
 
->
-> > +     bool "kexec handover debug interface"
-> > +     depends on KEXEC_HANDOVER
-> > +     depends on DEBUG_FS
-> > +     help
-> > +       Allow to control kexec handover device tree via debugfs
-> > +       interface, i.e. finalize the state or aborting the finalization=
-.
-> > +       Also, enables inspecting the KHO fdt trees with the debugfs bin=
-ary
-> > +       blobs.
-> > +
-> [...]
->
-> --
-> Regards,
-> Pratyush Yadav
+It is NOP with lockdep disabled.
+
+pidfs does the same: pidmap_lock_seq tied to pidmap_lock. And for
+example for code flow: free_pid() takes pidmap_lock and calls
+pidfs_remove_pid() that takes pidmap_lock_seq.
+
+It also takes care about preemption disabling if needed.
+
+Unless I totally misunderstood how it works... :P
+
+> >  - Do we want a bounded retry on read_seqcount_retry()?
+> >    Maybe upto 3 iterations?
+> 
+> No., I don't think it ever triggers, and I really like how this looks.
+> 
+> And I'd go even further, and change that first
+> 
+>         seq = read_seqcount_begin(&mapping->i_pages_delete_seqcnt);
+> 
+> into a
+> 
+>         if (!raw_seqcount_try_begin(&mapping->i_pages_delete_seqcnt);
+>                 return 0;
+> 
+> so that you don't even wait for any existing case.
+
+Ack.
+
+> That you could even do *outside* the RCU section, but I'm not sure
+> that buys us anything.
+> 
+> *If* somebody ever hits it we can revisit, but I really think the
+> whole point of this fast-path is to just deal with the common case
+> quickly.
+> 
+> There are going to be other things that are much more common and much
+> more realistic, like "this is the first read, so I need to set the
+> accessed bit".
+> 
+> >  - HIGHMEM support is trivial with memcpy_from_file_folio();
+> 
+> Good call. I didn't even want to think about it, and obviously never did.
+> 
+> >  - I opted for late partial read check. It would be nice allow to read
+> >    across PAGE_SIZE boundary as long as it is in the same folio
+> 
+> Sure,
+> 
+> When I wrote that patch, I actually worried more about the negative
+> overhead of it not hitting at all, so I tried very hard to minimize
+> the cases where we look up a folio speculatively only to then decide
+> we can't use it.
+
+Consider it warming up CPU cache for slow path :P
+
+> But as long as that
+> 
+>         if (iov_iter_count(iter) <= sizeof(area)) {
+> 
+> is there to protect the really basic rule, I guess it's not a huge deal.
+> 
+> >  - Move i_size check after uptodate check. It seems to be required
+> >    according to the comment in filemap_read(). But I cannot say I
+> >    understand i_size implications here.
+> 
+> I forget too, and it might be voodoo programming.
+> 
+> >  - Size of area is 256 bytes. I wounder if we want to get the fast read
+> >    to work on full page chunks. Can we dedicate a page per CPU for this?
+> >    I expect it to cover substantially more cases.
+> 
+> I guess a percpu page would be good, but I really liked using the
+> buffer we already ended up having for that page array.
+> 
+> Maybe worth playing around with.
+
+With page size buffer we might consider serving larger reads in the same
+manner with loop around filemap_fast_read().
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
