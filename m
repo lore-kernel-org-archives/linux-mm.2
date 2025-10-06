@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3728DCCA470
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 16:55:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50055CCA470
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 17:01:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C0788E000A; Mon,  6 Oct 2025 12:55:22 -0400 (EDT)
+	id 892478E000C; Mon,  6 Oct 2025 13:01:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 771A38E0002; Mon,  6 Oct 2025 12:55:22 -0400 (EDT)
+	id 869C88E0002; Mon,  6 Oct 2025 13:01:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65FC88E000A; Mon,  6 Oct 2025 12:55:22 -0400 (EDT)
+	id 77F728E000C; Mon,  6 Oct 2025 13:01:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E2388E0002
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 12:55:22 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 676048E0002
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 13:01:52 -0400 (EDT)
 Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CE13F59973
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 16:55:21 +0000 (UTC)
-X-FDA: 83968290042.08.B73C85B
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9312413B90E
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 17:01:51 +0000 (UTC)
+X-FDA: 83968306422.08.AD56DB8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3BF0720011
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 16:55:20 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dy3gP9+H;
-	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759769720; a=rsa-sha256;
-	cv=none;
-	b=jOW7m6o39d4jtXh3tsaNjBonQ4OXIWyHGMcgN4LOLRa6AB02j7jV8sTzEvdTAl5lt+YVbv
-	MLWlD+nX0kFs3JQUiqbC7J0Xy32SO3NcPYs9ewHpyF5q4lrVv5gJyVbzlhjrNz/0YjXE1V
-	6NSkNFJNxr9JO62Qi1kJmFJIXFduNEY=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dy3gP9+H;
-	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id B8C58C000C
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 17:01:49 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NgLfsYlT;
+	spf=pass (imf22.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759769720;
+	s=arc-20220608; t=1759770109;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vj7sOPjyprwfoc6fhRyUFtUgPPZEr7K+4ylmESoRr24=;
-	b=7Ke2Am0AKYdaeFOqfqdCk0It95y07Xjjq7X6t2ogliEqd0S0ZZLlWbD6L1jb/ngEgBeF81
-	VkshTlDmyfXlPUrmBAfrlK7fkmbvfMhFjzxUto7xlVybXJfqbCKD8O9Yd7Eh1WBE+poJPv
-	jpTkEu54dQhFWzSVDZxMv+zn0Gxwk90=
+	bh=yinai1lbXaVtpc5IhOc41oOTDHKO4GxGtRHWIokQ9xI=;
+	b=Af6k/PNkIXNY/+ALsGNsVEsSbVfRp76L0UKjHRvv0PQXSLYyls3BNo1YehYA349kxG7Mvl
+	U5oKeDGa6VMuYDKbHRi0D6bLgR/ppEndV35GDSUPdkLvNxZYfGjyoIaTl+FesD6s7e2pqt
+	OKqjCCXYRc5tnTmqP1Aq6WZ8R3BpEp4=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NgLfsYlT;
+	spf=pass (imf22.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759770109; a=rsa-sha256;
+	cv=none;
+	b=UZ89WG3OOPGQ0NjIgnt67/iBuZRdVW35WDW/WQPX5oPfUyX8J6sM0QWZ7OPDru0BekQ8Ji
+	prkdftcDZ5dkoGYXV5RuKIoeeENBsy8/T704UbX4ESiPyCasSPWsrJ15enGfG6lorNmqjd
+	w0eDqfXXGZj0M/sNdNigcUZP9zDeMeU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0A04E4550F;
-	Mon,  6 Oct 2025 16:55:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 802ACC4CEF5;
-	Mon,  6 Oct 2025 16:55:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2B17A43D67;
+	Mon,  6 Oct 2025 17:01:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E62C4CEF5;
+	Mon,  6 Oct 2025 17:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759769718;
-	bh=bNOBRpWkDT6nydzMvQKW3RR7QOwbofZoWQJVye/UKJQ=;
+	s=k20201202; t=1759770108;
+	bh=MG1dcQMphQ748JndS811tTZbOvZl5viKUiBdA36kux8=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=dy3gP9+Hu4E5xMMiiXrOi1KBJQZnMJOFX+Pw/lPzRsL0eNwziUiawbI2RN3scxHdq
-	 WtJQGLnrydwWN9OOe/90A84/2kWEo0S4RiuX4WyzxNemOjxh6of1Wv7pVq0CaWf/EB
-	 wi+SmriVpfAZTAO7qSUiuVlh0u6er0wRoTJX5+ocBvXSi9zDVFA790ikivH8XcP0Vy
-	 r+zc6grPhvf4IDJJvxb6hsddNYo13M0fB1zfLNvFdMXMRPZ/CaXs0qgP342leLMR4k
-	 Vz2vEmfRVbrBiBUwqweVTMGK941+ZHMntFuSxcxOxERuspsdMX2JyW8vD5zXXW3A1T
-	 kfnmY1JabGz0w==
+	b=NgLfsYlTgtpvDbSOm2NiGUojPOjwRGe/OH3C0JNNWeU0NeJOo51dJ2Ci9kDtEdQQe
+	 3k5DscndvUU0phiQ/ZHNvwhZrgX6lqwI5J/xlNMT8aZdV5u3WDO3VM8ATPykvRSGGT
+	 r5b1d+SHy8/FqS7MKcd7EdWJCNFHUCHjE9sfR1Z8e+WnV6oVs1zsX8KGWKj3S8B7Ik
+	 dfqxPViKr/BDk3+rzxCGaCa3H0MaJSLU2n1ptlHIv/2Y1ql7EfqnzAbEI1HB2hxOHp
+	 1IF9IgN+pr/DVwtODnsjwyUKJ4s19AHLk26ebEq26WDj2aZOB2f8yyO+hVGm27x+7w
+	 a51lxbN5OsjFQ==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: pratyush@kernel.org,  jasonmiu@google.com,  graf@amazon.com,
@@ -93,23 +93,24 @@ Cc: pratyush@kernel.org,  jasonmiu@google.com,  graf@amazon.com,
   parav@nvidia.com,  leonro@nvidia.com,  witu@nvidia.com,
   hughd@google.com,  skhawaja@google.com,  chrisl@kernel.org,
   steven.sistare@oracle.com
-Subject: Re: [PATCH v4 02/30] kho: make debugfs interface optional
-In-Reply-To: <20250929010321.3462457-3-pasha.tatashin@soleen.com> (Pasha
-	Tatashin's message of "Mon, 29 Sep 2025 01:02:53 +0000")
+Subject: Re: [PATCH v4 03/30] kho: drop notifiers
+In-Reply-To: <20250929010321.3462457-4-pasha.tatashin@soleen.com> (Pasha
+	Tatashin's message of "Mon, 29 Sep 2025 01:02:54 +0000")
 References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
-	<20250929010321.3462457-3-pasha.tatashin@soleen.com>
-Date: Mon, 06 Oct 2025 18:55:08 +0200
-Message-ID: <mafs0y0ponf6b.fsf@kernel.org>
+	<20250929010321.3462457-4-pasha.tatashin@soleen.com>
+Date: Mon, 06 Oct 2025 19:01:37 +0200
+Message-ID: <mafs0tt0cnevi.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
+X-Stat-Signature: kk5dc179r4pghhrwsm8cmd8tc1ughxq3
+X-Rspamd-Queue-Id: B8C58C000C
 X-Rspam-User: 
-X-Stat-Signature: 7hxn17oxb4xgnj7rtk8ks75odkkawe4a
-X-Rspamd-Queue-Id: 3BF0720011
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1759769720-176472
-X-HE-Meta: U2FsdGVkX1/PuxWKTZK9jKx04HrwXVugvo+6U06Pzo/uBdg8EiUuoPy5VY1xeV6Z1s3NJ18xjN40E/ZA0/X8iIPbVJYwIxJI1iu/zNjdyPeLKK/4JMvYj9EwB5gf/JzRJRIC7yAUfa4UgG+6wmUUkiHqBPhXzWRWKxqd6fEYhd9efPhtYsvewelDOZFyGLl5nuvY088BuwncJBQYC189aHIldb/O/Px4AO50xLpNstdaiartZSK0EcGTQsp4blozN4NqOvqKC3G057SDNAqhBMJmSDgARhcJpZ11S+RDP/Y4UhEJwgPg/Ucm9g0VjTV2bKNzEeoCXxKr3vMVk10u0CmCSPTQPkLWW4oQhXa6oHhWs16TeiMwcA2homoXEarqz3H6/RQSLJ1s5a0O5nvsugTGohmspbMOhiS1kMBhJxYbVlE4yUxD+XFZY8MEZmWcp/gqgEPxoHjgp51sSq5PUTwqB+y7NMBzIP5B5kzKdHok1ArDKEPdSqLwJOI/Uay5p/lZmPS/QWxoDH8RcrDB6y12cCnI+/1BYAf1cGtW1IeoxWmiudqyB1lQzSwDMXGe0l5U7K/y6Szr9trLlaoRtaXBMi2ypIMVkioc5nJlNzcNNOGldDaDv+YV66YH52MVSoQGiT2DMrYxUTrTEQjPi5f25z6uvgSGQLCZt1UIkyhXUfu4VXF6+payWzC9WbKUJFLwHr6mLsoVmZfEPmaDawyojbmL1Q6XQNTLzzkPGxCtolGVDlnenOYJKvDJ3TryYHNRaUOyNCax8axfelNK26DY6fQ69JZ/DhE4afXawBWDw40sdPDT0oOpPRdwnZbrMqv55/h5ejfGy4RkxOkMVddZow7TGcp0m1g6EOewALIiVVfsYmA0gFjPt47rVR3aM84rWxdYu6FnVv7wJdwjgodsZelO2gxmeZL4+tQmI8Tp/onk4EMQrEgXWxWE8hp3/QGqAwgw8QYfBYloBfQ
- l7g==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1759770109-853868
+X-HE-Meta: U2FsdGVkX19pLcq4zY6csfjXOlp7/mEhbmxl4S7sOvJiKYUhTB+y3ZhPtEbqXwAmR3qypXNZSsrIsxAWRMhjznY5pfv/PF0ImKgB2//0SiCwTkegsl6w9fx1jhYm6fLIS/2XJA//NqehswmzN1sJR7v7kAA4kPkAA/ZkVbzdnELy5edvBqgQkLvNBQBB9hx/qvnXl7zLwHl24aLU9VmCLMWkhqMAwMehW0wiqMDiUILD1JPGSlTP5JeHeVCaVNEGl4y+wnsu9aktmALE5BDd4LzF5EgNbFELyAOjLcDME+N55b3TElVR+fH1tMtVhiZ4X6so8AjeNwhUqSmgEYHZSsaEDbu7fYaNVGLTt9eiaYAG/SP7+P/SvYYAGMRMZp6NOPekc9cpFuoXfIXb4KmFY6WdpsoVmyO2e9ZTQcwQrrMzFo/fsslw0BYoo46pMmRCMa1fY6cGg6rkhd/lDLNwioOwtHEYl4te8LqUGjyZGoyBRNWzDFcGG2DnzRTM4vADFKkMBO0+P+ylIZG3ctOO5hxJEEMSpkQ6DIgnlu2zzkDOTjhqSmK/pk7o9QNySYrvcn2i2h60Urd3gLgQySdgbfMHO68LBzeF6Ful51zDOvhd6HEq0vAL4cmLHsLPbYoojWLHxKVvph/k4wdqCvLjjy2EOjlven/ilRttRpsEAEsKYPEIi2nVL/RRZQC5UgbdVzfs25OciYOngyvfJ2F5CsWicrMi94Cs1p/TwUMtoAd20zQ1N1TPfXSnD6ZiRSeWfmeNqlbU/Nz/xPTmqXyxlCmEWAdBn7+gLO8L+S1l2lVqv3KufB6fhBM18Y0ixkPYwNqEKyhBt+QHoOncd3UNpT6oHuOHomGeYY24khLaoc7oAuKvZ3ykoMc+3DElBGa5ODhXBub+GWMOEn/qLyZBJHeV5OHBiJTwVT2Q1PfFrhbvsnbQwJaUpgwi2v7v4WBn+4QwEWuZlDcuSCLdOxe
+ Kae9jhdV
+ 2xU2jHQgJPCQ+kOFGkZUXxBOuxzofh5OmmfJ5mCDIwMXiTE6WZSuDnKdQIEI2d5fj47atUu225hZPFXMz0pYbjrL7NgZkFOTQkjjErGnjosCX5jLHCGreZgGZUrTTecmuL5aET4BSycdcyhyH3td9eqC4jA/NoPcaI7g6Uu1tyImzrqKiZDe6s75GXEljK5Cf9AHhtL69G9MvGMZ0TCD9VttGyuls2GYaGH1QV1UHYntWH35FhdJzPy2OMn7de93Y7b9VKkS+llqyXG1htjLWM+W0H31mbX0BbuI8rn5WwpSS/0WVSAzx6bcwVP6M3glpmbuw
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,87 +119,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Pasha,
-
 On Mon, Sep 29 2025, Pasha Tatashin wrote:
 
-> Currently, KHO is controlled via debugfs interface, but once LUO is
-> introduced, it can control KHO, and the debug interface becomes
-> optional.
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 >
-> Add a separate config CONFIG_KEXEC_HANDOVER_DEBUG that enables
-> the debugfs interface, and allows to inspect the tree.
+> The KHO framework uses a notifier chain as the mechanism for clients to
+> participate in the finalization process. While this works for a single,
+> central state machine, it is too restrictive for kernel-internal
+> components like pstore/reserve_mem or IMA. These components need a
+> simpler, direct way to register their state for preservation (e.g.,
+> during their initcall) without being part of a complex,
+> shutdown-time notifier sequence. The notifier model forces all
+> participants into a single finalization flow and makes direct
+> preservation from an arbitrary context difficult.
+> This patch refactors the client participation model by removing the
+> notifier chain and introducing a direct API for managing FDT subtrees.
 >
-> Move all debugfs related code to a new file to keep the .c files
-> clear of ifdefs.
+> The core kho_finalize() and kho_abort() state machine remains, but
+> clients now register their data with KHO beforehand.
 >
-> Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 [...]
-> @@ -662,36 +660,24 @@ static void __init kho_reserve_scratch(void)
->  	kho_enable = false;
->  }
->  
-> -struct fdt_debugfs {
-> -	struct list_head list;
-> -	struct debugfs_blob_wrapper wrapper;
-> -	struct dentry *file;
-> +struct kho_out {
-> +	struct blocking_notifier_head chain_head;
-> +	struct mutex lock; /* protects KHO FDT finalization */
-> +	struct kho_serialization ser;
-> +	bool finalized;
-> +	struct kho_debugfs dbg;
->  };
->  
-> -static int kho_debugfs_fdt_add(struct list_head *list, struct dentry *dir,
-> -			       const char *name, const void *fdt)
+> diff --git a/mm/memblock.c b/mm/memblock.c
+> index e23e16618e9b..c4b2d4e4c715 100644
+> --- a/mm/memblock.c
+> +++ b/mm/memblock.c
+> @@ -2444,53 +2444,18 @@ int reserve_mem_release_by_name(const char *name)
+>  #define MEMBLOCK_KHO_FDT "memblock"
+>  #define MEMBLOCK_KHO_NODE_COMPATIBLE "memblock-v1"
+>  #define RESERVE_MEM_KHO_NODE_COMPATIBLE "reserve-mem-v1"
+> -static struct page *kho_fdt;
+> -
+> -static int reserve_mem_kho_finalize(struct kho_serialization *ser)
 > -{
-> -	struct fdt_debugfs *f;
-> -	struct dentry *file;
+> -	int err = 0, i;
 > -
-> -	f = kmalloc(sizeof(*f), GFP_KERNEL);
-> -	if (!f)
-> -		return -ENOMEM;
+> -	for (i = 0; i < reserved_mem_count; i++) {
+> -		struct reserve_mem_table *map = &reserved_mem_table[i];
+> -		struct page *page = phys_to_page(map->start);
+> -		unsigned int nr_pages = map->size >> PAGE_SHIFT;
 > -
-> -	f->wrapper.data = (void *)fdt;
-> -	f->wrapper.size = fdt_totalsize(fdt);
-> -
-> -	file = debugfs_create_blob(name, 0400, dir, &f->wrapper);
-> -	if (IS_ERR(file)) {
-> -		kfree(f);
-> -		return PTR_ERR(file);
+> -		err |= kho_preserve_pages(page, nr_pages);
 > -	}
 > -
-> -	f->file = file;
-> -	list_add(&f->list, list);
+> -	err |= kho_preserve_folio(page_folio(kho_fdt));
+> -	err |= kho_add_subtree(ser, MEMBLOCK_KHO_FDT, page_to_virt(kho_fdt));
 > -
-> -	return 0;
+> -	return notifier_from_errno(err);
 > -}
-> +static struct kho_out kho_out = {
-> +	.chain_head = BLOCKING_NOTIFIER_INIT(kho_out.chain_head),
-> +	.lock = __MUTEX_INITIALIZER(kho_out.lock),
-> +	.ser = {
-> +		.track = {
-> +			.orders = XARRAY_INIT(kho_out.ser.track.orders, 0),
-> +		},
-> +	},
-> +	.finalized = false,
-> +};
-
-There is already one definition for struct kho_out and a static struct
-kho_out early in the file. This is a second declaration and definition.
-And I was super confused when I saw patch 3 since it seemed to be making
-unrelated changes to this struct (and removing an instance of this,
-which should be done in this patch instead). In fact, this patch doesn't
-even build due to this problem. I think some patch massaging is needed
-to fix this all up.
-
+> -
+> -static int reserve_mem_kho_notifier(struct notifier_block *self,
+> -				    unsigned long cmd, void *v)
+> -{
+> -	switch (cmd) {
+> -	case KEXEC_KHO_FINALIZE:
+> -		return reserve_mem_kho_finalize((struct kho_serialization *)v);
+> -	case KEXEC_KHO_ABORT:
+> -		return NOTIFY_DONE;
+> -	default:
+> -		return NOTIFY_BAD;
+> -	}
+> -}
+> -
+> -static struct notifier_block reserve_mem_kho_nb = {
+> -	.notifier_call = reserve_mem_kho_notifier,
+> -};
 >  
->  /**
->   * kho_add_subtree - record the physical address of a sub FDT in KHO root tree.
-[...]
+>  static int __init prepare_kho_fdt(void)
+>  {
+>  	int err = 0, i;
+> +	struct page *fdt_page;
+>  	void *fdt;
+>  
+> -	kho_fdt = alloc_page(GFP_KERNEL);
+> -	if (!kho_fdt)
+> +	fdt_page = alloc_page(GFP_KERNEL);
+> +	if (!fdt_page)
+>  		return -ENOMEM;
+>  
+> -	fdt = page_to_virt(kho_fdt);
+> +	fdt = page_to_virt(fdt_page);
+>  
+>  	err |= fdt_create(fdt, PAGE_SIZE);
+>  	err |= fdt_finish_reservemap(fdt);
+> @@ -2499,7 +2464,10 @@ static int __init prepare_kho_fdt(void)
+>  	err |= fdt_property_string(fdt, "compatible", MEMBLOCK_KHO_NODE_COMPATIBLE);
+>  	for (i = 0; i < reserved_mem_count; i++) {
+>  		struct reserve_mem_table *map = &reserved_mem_table[i];
+> +		struct page *page = phys_to_page(map->start);
+> +		unsigned int nr_pages = map->size >> PAGE_SHIFT;
+>  
+> +		err |= kho_preserve_pages(page, nr_pages);
+>  		err |= fdt_begin_node(fdt, map->name);
+>  		err |= fdt_property_string(fdt, "compatible", RESERVE_MEM_KHO_NODE_COMPATIBLE);
+>  		err |= fdt_property(fdt, "start", &map->start, sizeof(map->start));
+> @@ -2507,13 +2475,14 @@ static int __init prepare_kho_fdt(void)
+>  		err |= fdt_end_node(fdt);
+>  	}
+>  	err |= fdt_end_node(fdt);
+> -
+>  	err |= fdt_finish(fdt);
+>  
+> +	err |= kho_preserve_folio(page_folio(fdt_page));
+> +	err |= kho_add_subtree(MEMBLOCK_KHO_FDT, fdt);
+> +
+>  	if (err) {
+>  		pr_err("failed to prepare memblock FDT for KHO: %d\n", err);
+> -		put_page(kho_fdt);
+> -		kho_fdt = NULL;
+> +		put_page(fdt_page);
+
+This adds subtree to KHO even if the FDT might be invalid. And then
+leaves a dangling reference in KHO to the FDT in case of an error. I
+think you should either do this check after
+kho_preserve_folio(page_folio(fdt_page)) and do a clean error check for
+kho_add_subtree(), or call kho_remove_subtree() in the error block.
+
+I prefer the former since if kho_add_subtree() is the one that fails,
+there is little sense in removing a subtree that was never added.
+
+>  	}
+>  
+>  	return err;
+> @@ -2529,13 +2498,6 @@ static int __init reserve_mem_init(void)
+>  	err = prepare_kho_fdt();
+>  	if (err)
+>  		return err;
+> -
+> -	err = register_kho_notifier(&reserve_mem_kho_nb);
+> -	if (err) {
+> -		put_page(kho_fdt);
+> -		kho_fdt = NULL;
+> -	}
+> -
+>  	return err;
+>  }
+>  late_initcall(reserve_mem_init);
 
 -- 
 Regards,
