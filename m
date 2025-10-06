@@ -4,85 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A5A5CCA471
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 13:25:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EBE2CCA471
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 13:29:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 614E38E0011; Mon,  6 Oct 2025 09:25:34 -0400 (EDT)
+	id C85928E0013; Mon,  6 Oct 2025 09:29:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59EB48E0002; Mon,  6 Oct 2025 09:25:34 -0400 (EDT)
+	id C36388E0002; Mon,  6 Oct 2025 09:29:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DAE68E0011; Mon,  6 Oct 2025 09:25:34 -0400 (EDT)
+	id B4BE78E0013; Mon,  6 Oct 2025 09:29:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3AA8E8E0002
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 09:25:34 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D9F34BA347
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 13:25:33 +0000 (UTC)
-X-FDA: 83967761346.18.CA1FEE5
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 4F2C740005
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 13:25:32 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=kcncp2vt;
-	spf=pass (imf11.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A27DA8E0002
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 09:29:04 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5C78259BD5
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 13:29:04 +0000 (UTC)
+X-FDA: 83967770208.03.3C48E86
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 04EFA40020
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 13:29:01 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e5FSunWt;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=udmEe+sy;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e5FSunWt;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=udmEe+sy;
+	spf=pass (imf12.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759757132;
+	s=arc-20220608; t=1759757342;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=rN5PCrh7w5JveL97Y+GSyC7b8859L6HqEd7z3OmyMK8=;
-	b=Rp2d9nKkB+H/ewO6oKObyhJ8m35Q003FfEWOf3rJLGb3MbvfT7oDKib1CXB/mWacuNPirV
-	WY9w6qOp5QBOikuc88SbGlVKjJCMjO9fwOdkYyQFqrg2NrlrMQiHad0YvcIf+i0MhQNPwR
-	0SEZrsZQbFISQ2Th+4Ht4Mi2H9GhRmg=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nmQkrksLlt0Dju/XPbVmLnx0iwCrgY81znO3vDFEw2o=;
+	b=Xm3WSrDV9xEwNbBZOZF9855MRPEgU+Y+C51EPnGaE59Xyu7E3yP/udjmITTdZAS+M2Vn6U
+	6mEq0cmh09+MxDGC6l2xuYvmrlSDAQ5+GuNmHqratCLjPviz35CrehJFf3jnUAS3N0aXAX
+	YhlEGw/6JNDNEtE+ikbiD94u6nKWAvA=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=kcncp2vt;
-	spf=pass (imf11.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759757132; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e5FSunWt;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=udmEe+sy;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e5FSunWt;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=udmEe+sy;
+	spf=pass (imf12.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759757342; a=rsa-sha256;
 	cv=none;
-	b=CDqra5sLGHhFGmZ+qcHpibbygW67gsmp0H9ntL3OYMhdMMkDW6rnnUtqki3q63KOze1vmH
-	Hf0wJMqXfnD1thPbRO4d1sOvcYo5UWExG/kuyQPnCp+IOshe6nYKjicuKv5yo1G/lYy6x5
-	wow42NNZLG76aKJMo7uacPgju/A2bKE=
-Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id DDDB192F0A;
-	Mon, 06 Oct 2025 13:25:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1759757131;
-	bh=rN5PCrh7w5JveL97Y+GSyC7b8859L6HqEd7z3OmyMK8=;
-	h=Date:From:To:Cc:Subject;
-	b=kcncp2vtH8IDwM8TCGkT2vXT5kgQCTkoz2DnDLQBil1IB9AhHY5KN8DXNv0X39cG3
-	 TWRy1et5J7ePsr0WFR1pmQquvpXVLmxv4ROOOzHgCTXO890uD9E+hgqgqrXQss5qbn
-	 079Sp4zBN0ZASjaJMdV4UwCeJwyBiXW7ZiUUXeXU=
-Date: Mon, 6 Oct 2025 13:25:26 +0000
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
-	Chris Li <chrisl@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>
-Cc: Kiryl Shutsemau <kas@kernel.org>, Usama Arif <usamaarif642@gmail.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: [PATCH v2] mm: skip folio_activate() for mlocked folios
-Message-ID: <aOPDRmk2Zd20qxfk@shell.ilvokhin.com>
+	b=iJPxgWToeUp4Fxiv9W3jw1yavItlO0bOYUGYI3k8Sb++l4bp2sfAZuYihJ/S99x25zOEcF
+	N+dXgSmCLZkY/PIuHvBlnDixWF/PAoutgj1aB8RuNA8/+r0FthuXJPwM0IgzUgxd8twRC2
+	HtBH+wZbPsYvyqYjRhjqD9Ms0N8EBBg=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6674B1F7C1;
+	Mon,  6 Oct 2025 13:29:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1759757340; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nmQkrksLlt0Dju/XPbVmLnx0iwCrgY81znO3vDFEw2o=;
+	b=e5FSunWtnLxCK0NWpRn7i1aC8/XK3geJ4CKHRjTJateym0/L7RDOqwKK5e+6t5kmTCYRsB
+	EPRwzGfp5nBJfLOOJl8S/3BAgdEii0RQZtJlMcq3VapCT6B7fgBGIuSvndiTYmhsq8YfXS
+	LFed7MyVYYL2Eja14snDPJu82aLF4ko=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1759757340;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nmQkrksLlt0Dju/XPbVmLnx0iwCrgY81znO3vDFEw2o=;
+	b=udmEe+syEUzPxvOpywR7StoUmtqqjRk58CQIRWj0dyNq58xlrCTv3cqtV620Mq2FpLegpz
+	2nF3jEdov6D6s3Cw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1759757340; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nmQkrksLlt0Dju/XPbVmLnx0iwCrgY81znO3vDFEw2o=;
+	b=e5FSunWtnLxCK0NWpRn7i1aC8/XK3geJ4CKHRjTJateym0/L7RDOqwKK5e+6t5kmTCYRsB
+	EPRwzGfp5nBJfLOOJl8S/3BAgdEii0RQZtJlMcq3VapCT6B7fgBGIuSvndiTYmhsq8YfXS
+	LFed7MyVYYL2Eja14snDPJu82aLF4ko=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1759757340;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nmQkrksLlt0Dju/XPbVmLnx0iwCrgY81znO3vDFEw2o=;
+	b=udmEe+syEUzPxvOpywR7StoUmtqqjRk58CQIRWj0dyNq58xlrCTv3cqtV620Mq2FpLegpz
+	2nF3jEdov6D6s3Cw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9CC9A13700;
+	Mon,  6 Oct 2025 13:28:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id yN+GIxvE42hUCwAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Mon, 06 Oct 2025 13:28:59 +0000
+Date: Mon, 6 Oct 2025 15:28:58 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Deepanshu Kartikey <kartikey406@gmail.com>
+Cc: muchun.song@linux.dev, david@redhat.com, akpm@linux-foundation.org,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	broonie@kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
+Subject: Re: [PATCH v3] hugetlbfs: skip PMD unsharing when shareable lock
+ unavailable
+Message-ID: <aOPEGkWdbeY2htsH@localhost.localdomain>
+References: <20251003174553.3078839-1-kartikey406@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20251003174553.3078839-1-kartikey406@gmail.com>
+X-Rspamd-Action: no action
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4F2C740005
-X-Stat-Signature: skksgxp88ewctsu45xn6p8y7kx7t8uqw
+X-Rspamd-Queue-Id: 04EFA40020
+X-Stat-Signature: f9xmddkuoqc8iwsxiys9c7x7qzs48bsz
 X-Rspam-User: 
-X-HE-Tag: 1759757132-383766
-X-HE-Meta: U2FsdGVkX18O4IlJRtPP0hJWqBWFuq7h8W2ejP9ptSGsyvxZOqeIq0SfvdIaK2IN/9iPNeWfzslPRrToRC/Kwp+QNP1efVtM+pr4+g/veaJrxY34X+YlX68jz82yg/m5di0don2Z3/rOsU7QQlxt1F3OpNNSn1NfSfXYlrcA0sF+t5zipNOVXiNyYefq1qd/UiEJBXVCOX+nORdGl+anJ9kl1l9u+SGuNT4LyILD4CNEUIIDmmO70F9G8f/z4TxnBErHXW4E+2RW/Xa0Vr9GooY4LABkYFuviv7d+se1KX35S7zFnSXdwyeYBSRtUTIBZFJtPcjTvDbuRocGN9ffvCFhOZ64ENGTat0sIKOh95adgXbZEIWH+MlsLpWNU6+8Zvno5VnaBRxPyBX/Ts/yhQYXPCcD5GtOe7f7cne18l3/NYqchnvveZ4i4gwyYV/Bt6vKgzF/04GGF6Nfz/XY7M7VrCLWSiIqSKe+kgMnJguFtF9XEftRpqbFylPVl1TS/WwIwG7crQ/zLgob+3nrQjQ6MQokvTRcy8c+A7hCWjKten4I9n2YzuitziL63jL0XytJjWLn70whNjSwgNQU5/ExCCjvANRbx05Kga/YZZ9P7+nfnlI8WBsKgglMZI6rQnGg2V7UvhCl0ZlyqLcNWwxn0uuCCyI4bw9+AC+2nQBN2VPkTID1L/2UtQzFKmJQxRox+/irBshuJgCn/l4Huj55eMLV4kqIlEiX8axj/6UmfqYxKOQkrGHGaxt8+V6RcT2l2Sax/dKN6eEhjRhxdQ+lSdeA21wWObHGXtvc3myAzSrU1Eyi8GLE5V8KkSRirCJPVYJ+bWE7tdxbw26R3O+I3UnHI1y9OA3C4EsRNpxpwOhL034EhGgNNnv2GvD77ntrnvjv3lzDz71lNG+QVf23uYb/fWF1PTTHROFJf9aFe0Pv0aS5L0Ks7vX0i1uKDqAf4NlcY6v4AjaxYRg
- /P3VC17Q
- E5khMIYBY49Ep1yquMM/ber/J8IciaWQBPRqnFn/6L3BUb7QPzmWdyrIDwJSlA49NGpToWYg0cGWDWveD18DX3U+IJd6fMTTMNyqFB5dmo8lrDM57kG23l00lNye2WKPA1/1ODj4hm4sMPtFYSTZ0cZ6H5t8qLgjLlci6KC3ONa5Lw+MN+pJlXIen5cLNeV+UGSmmhA+sE7Y5a1BVHm3p+0sSp3b+Ygadl03q/6fwD1SSnsQpLLHEeBM+C/WuGHv2Na3Ay1ANgZj0y+VYlVcE3rVdhyMfGQ9T0aVgvT+/33iipEV3EysiF+3PiLLgwfSnWeUaqaw74UHNsBD2ZiWdhHxDgkY2hcwCRxIzkL3heVskGBPnk83dfaIb6Ez4n7UzYyn3Hl2iw9pyNuUF/ng6fhMuo8N7WuDllXwH
+X-HE-Tag: 1759757341-476061
+X-HE-Meta: U2FsdGVkX1/kePD9ZAi8lkkz4cJJSdPxtsEW8Irk6YuyUMQNH8avsHQX43/efZYvm/hvnmT3jYZr/55K1tEEzqAWPaim4Y0Uwf//OjmFqj5FPVXRe3Bil8A1fdpv4QDu2GPgmGqULky8k5WcIiu9O2qxkh/dYnUV+RH77ZLKaSA4FOYoJFsG4WEFRv9B2SLjFvnn3PIOqbjwh2LLLl9NWTIhCJMu8Wbx2rrzLE8NNarVjyXzOJ+8dDJKog9lXHBGQ69dMtDMyYE1sr+ggpM42fjNlI/4y8FJvmZHoScv16mntTNXhHO0cvQTDZtGiwSBJQAUrg6aBtIvI2C4pC2Yi6QE+cwLP2y+JjmIoahP+ML4MDNCRTPiBvuIdKSV2bvmE8OICXyXf7rs0FDinLT39Pyjzs0FHfU/W4O0ZeiJh2g4dCsGlyfk4PwI+mssLkUE1OUDkFN5K8p7rof3EC28Mf0bRbfVoSFQRtMcQwfxTXQlCvp5YhEmND6GtnaPZE8Vl3ntXjUwWw9xamRMTD354Hen8eKPKWemupMr9ZAGKGnYSE1sQrc1OAuCOnWAVci5nnw+IzDw5LNo/Nes9C8cw+Qd83NzMxQwJVPrX0Gu9xy1jO50wXczIM+wBFENTG7yEinJWUiPobEXHbVO+OqPO7fF7CkGkvS9N3p9bnTQFCkjnYF+RNmHq6MA8r8hGpuQMi/rYClnKPgqsQ05ltkoA7wrnkBudIQQOIWNXtCNMMyqBytDaeS3Lm0rYjabyvxRJQv9SyivqPhrHuzK8YUsUxN8hgvAj7X5dE1M1RQhIf8l3FLO0YbJU9hXmjEKtdqdnylgeY+xEZGXnHWWXhJ265YzqMwzei+GwafjKMoseHEOKTRESA6074EelIf+KppOc9+DZpbSomjfU2TPXJg26aCcURcIo2JFl6x4xCcpoMv+wqzCCsS0MPzS6oEmLAC4xVBNKhf7APCEFlqWeqB
+ k3m8Crjy
+ /HgDDvsASfRhDTGQ8p0RsK0uUwdghVrvcTzWNAnth5QYKYaHlKaMSb4smu5qwhi1o1TMnPA/TtaQi4SeRxEngJLDai5SJxjwEhE5iD6+cAhMt64ZVgmro7zqPfDDJ0aye9HBNYvIHrOuvxRbC2pUh0j+bx4Ezgbfgj1/pk4WbkpBAxi3FfS5GYIwctw9deiFEfDvce3iTyqBUWOsON1k/GN2CMTbtDwlIyUKwJqWNzBS/HKoUis+T+Vlw4TyIeghPGOjwzEGR5npMGjDeOPdG6Uz1Kc2kksOTMkX77RDW4BM5kRRXl133vcaQpMG4RzO1uYxsp80XnlyLQSM+LKlC7LnYs+edeB2NOWtfnqijkDGdHSo8zNLSgjp44uT+uVyaENZ6CTBPy8HwY19ObPCqO29c/Hyf8Bb+D2BI4mZWoYG4A0WC4Jj9ypkeCMJKqO+Ahd0lTGcUbGzuYGJ9Udp01GKZ1w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,73 +136,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__mlock_folio() does not move folio to unevicable LRU, when
-folio_activate() removes folio from LRU.
+On Fri, Oct 03, 2025 at 11:15:53PM +0530, Deepanshu Kartikey wrote:
+> When hugetlb_vmdelete_list() cannot acquire the shareable lock for a VMA,
+> the previous fix (dd83609b8898) skipped the entire VMA to avoid lock
+> assertions in huge_pmd_unshare(). However, this prevented pages from being
+> unmapped and freed, causing a regression in fallocate(PUNCH_HOLE) operations
+> where pages were not freed immediately, as reported by Mark Brown.
+> 
+> The issue occurs because:
+> 1. hugetlb_vmdelete_list() calls hugetlb_vma_trylock_write()
+> 2. For shareable VMAs, this attempts to acquire the shareable lock
+> 3. If successful, huge_pmd_unshare() expects the lock to be held
+> 4. huge_pmd_unshare() asserts the lock via hugetlb_vma_assert_locked()
+> 
+> The v2 fix avoided calling code that requires locks, but this prevented
+> page unmapping entirely, breaking the expected behavior where pages are
+> freed during punch hole operations.
+> 
+> This v3 fix takes a different approach: instead of skipping the entire VMA,
+> we skip only the PMD unsharing operation when we don't have the required
+> lock, while still proceeding with page unmapping. This is safe because:
+> 
+> - PMD unsharing is an optimization to reduce shared page table overhead
+> - Page unmapping can proceed safely with just the VMA write lock
+> - Pages get freed immediately as expected by PUNCH_HOLE operations
+> - The PMD metadata will be cleaned up when the VMA is destroyed
+> 
+> We introduce a new ZAP_FLAG_NO_UNSHARE flag that communicates to
+> __unmap_hugepage_range() that it should skip huge_pmd_unshare() while
+> still clearing page table entries and freeing pages.
+> 
+> Reported-by: syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
+> Reported-by: Mark Brown <broonie@kernel.org>
+> Fixes: dd83609b8898 ("hugetlbfs: skip VMAs without shareable locks in hugetlb_vmdelete_list")
+> Tested-by: syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
+> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+> 
+> ---
+...
+> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+> index 9c94ed8c3ab0..519497bc1045 100644
+> --- a/fs/hugetlbfs/inode.c
+> +++ b/fs/hugetlbfs/inode.c
+> @@ -474,29 +474,31 @@ hugetlb_vmdelete_list(struct rb_root_cached *root, pgoff_t start, pgoff_t end,
+>  	vma_interval_tree_foreach(vma, root, start, end ? end - 1 : ULONG_MAX) {
+>  		unsigned long v_start;
+>  		unsigned long v_end;
+> +		bool have_shareable_lock;
+> +		zap_flags_t local_flags = zap_flags;
+>  
+>  		if (!hugetlb_vma_trylock_write(vma))
+>  			continue;
+> -
+> +
+> +		have_shareable_lock = __vma_shareable_lock(vma);
+> +
+>  		/*
+> -		 * Skip VMAs without shareable locks. Per the design in commit
+> -		 * 40549ba8f8e0, these will be handled by remove_inode_hugepages()
+> -		 * called after this function with proper locking.
+> +		 * If we can't get the shareable lock, set ZAP_FLAG_NO_UNSHARE
+> +		 * to skip PMD unsharing. We still proceed with unmapping to
+> +		 * ensure pages are properly freed, which is critical for punch
+> +		 * hole operations that expect immediate page freeing.
+>  		 */
+> -		if (!__vma_shareable_lock(vma))
+> -			goto skip;
+> -
+> +		if (!have_shareable_lock)
+> +			local_flags |= ZAP_FLAG_NO_UNSHARE;
 
-To prevent this case also check for folio_test_mlocked() in
-folio_mark_accessed(). If folio is not yet marked as unevictable, but
-already marked as mlocked, then skip folio_activate() call to allow
-__mlock_folio() to make all necessary updates. It should be safe to skip
-folio_activate() here, because mlocked folio should end up in
-unevictable LRU eventually anyway.
+This is quite a head-spinning thing.
 
-To observe the problem mmap() and mlock() big file and check Unevictable
-and Mlocked values from /proc/meminfo. On freshly booted system without
-any other mlocked memory we expect them to match or be quite close.
+First of all, as David pointed out, that comment is misleading as it looks like
+__vma_shareable_lock() performs a taking action which is not true, so that should
+reworded.
 
-See below for more detailed reproduction steps. Source code of stat.c is
-available at [1].
+Now, the thing is:
 
-  $ head -c 8G < /dev/urandom > /tmp/random.bin
+- Prior to commit dd83609b8898("hugetlbfs: skip VMAs without shareable
+  locks in hugetlb_vmdelete_list"), we were unconditionally calling
+  huge_pmd_unshare(), which asserted the vma lock and we didn't hold it.
+  My question would be that Mike's vma-lock addition happened in 2022,
+  how's that we didn't see this sooner? It should be rather easy to
+  trigger? I'm a bit puzzled.
 
-  $ cc -pedantic -Wall -std=c99 stat.c -O3 -o /tmp/stat
-  $ /tmp/stat
-  Unevictable:     8389668 kB
-  Mlocked:         8389700 kB
+- Ok, since there's nothing to unshare, we skip the vma here and
+  remove_inode_hugepages() should take care of it.
+  But that seems to be troublesome because on punch-hole operation pages
+  don't get freed.
 
-  Need to run binary twice. Problem does not reproduce on the first run,
-  but always reproduces on the second run.
+- So instead, we just skip the unsharing operation and keep carrying
+  with the unmapping/freeing in __unmap_hugepage_range.
 
-  $ /tmp/stat
-  Unevictable:     5374676 kB
-  Mlocked:         8389332 kB
+I don't know but to me it seems that we're going to large extends to fix
+an assertion.
+So, the thing is, can't we check __vma_shareable_lock in
+__unmap_hugepage_range() and only call huge_pmd_unshare() if we need to?
 
-[1]: https://gist.github.com/ilvokhin/e50c3d2ff5d9f70dcbb378c6695386dd
+ 
 
-Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-Acked-by: Usama Arif <usamaarif642@gmail.com>
----
-Changes in v2:
-  - Rephrase commit message: frame it in terms of unevicable LRU, not stat
-    accounting.
-
- mm/swap.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/mm/swap.c b/mm/swap.c
-index 2260dcd2775e..f682f070160b 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -469,6 +469,16 @@ void folio_mark_accessed(struct folio *folio)
- 		 * this list is never rotated or maintained, so marking an
- 		 * unevictable page accessed has no effect.
- 		 */
-+	} else if (folio_test_mlocked(folio)) {
-+		/*
-+		 * Pages that are mlocked, but not yet on unevictable LRU.
-+		 * They might be still in mlock_fbatch waiting to be processed
-+		 * and activating it here might interfere with
-+		 * mlock_folio_batch(). __mlock_folio() will fail
-+		 * folio_test_clear_lru() check and give up. It happens because
-+		 * __folio_batch_add_and_move() clears LRU flag, when adding
-+		 * folio to activate batch.
-+		 */
- 	} else if (!folio_test_active(folio)) {
- 		/*
- 		 * If the folio is on the LRU, queue it for activation via
 -- 
-2.47.3
-
+Oscar Salvador
+SUSE Labs
 
