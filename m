@@ -4,125 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD200CCA471
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 10:47:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C901FCCA471
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 10:47:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C5948E0006; Mon,  6 Oct 2025 06:47:53 -0400 (EDT)
+	id 2D77C8E0007; Mon,  6 Oct 2025 06:47:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 176748E0002; Mon,  6 Oct 2025 06:47:53 -0400 (EDT)
+	id 2AE968E0002; Mon,  6 Oct 2025 06:47:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 064AB8E0006; Mon,  6 Oct 2025 06:47:53 -0400 (EDT)
+	id 1EC098E0007; Mon,  6 Oct 2025 06:47:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E26F68E0002
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 06:47:52 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3977C140582
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 10:47:52 +0000 (UTC)
-X-FDA: 83967363984.10.CC94456
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7FF7D8000F
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 10:47:50 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="E597mMN/";
-	spf=pass (imf30.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A5928E0002
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 06:47:59 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8D84B59788
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 10:47:58 +0000 (UTC)
+X-FDA: 83967364236.26.AD5CFCA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D0B5CC0002
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 10:47:56 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DPLvp5HE;
+	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759747670;
+	s=arc-20220608; t=1759747677;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Nqu8YNaVpvLUtvwTbrdobGNSP1VPHVqHjVywccQvOag=;
-	b=rjAuEUcVKLMEleu6E//6ppmV03bkIajMIUDL1xHLy0OgAD+iZRPs1QYUTwFKSTSUOsZ0Gd
-	RrA2W8HJ1/IUNE/6g0DDy/ivWNOod9OpooKfJvI+y0eCoB5MnK7P+zU9Q9Tjgm1UgWS5vx
-	dyASKO7mbwjDhqSEAhNjw2fMgRFuBA8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759747670; a=rsa-sha256;
-	cv=none;
-	b=2kpQ2uGXqh5OPz8GY4Vw8gtcAtJECEvmixtGThuH559/rSU3/ZRXeUunjwrlUo4upP6e5J
-	qCFJE0kqolNMLJ6t67wpnO1YO1eKFNeybT2LiRZyt77xO3QInzHJUIX5rwoFIKiJUL4nF7
-	L0pgzI1cbSM1Irt4/zvaTfXiIYK0w/A=
+	bh=zm0vWqUs81U6a1Z4cdxFOHbZrkAr8d9nd4NS4Zy9YhQ=;
+	b=CkPfO096ENiS2vaGnifLUZLaVRQgdEGWsO7wuVmiFT35yPdrbTj4uRZFvPi2BxQs4/jgXm
+	lKXUhfStoY1t+v/eV9PF3jGFS9S6BKTCFxx0h4PHhp7JKpUvtREKwGsZpozRUaDuiwmA/7
+	oWSkY/e1F4FdLaTxMe6BG4TWF51Zwps=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="E597mMN/";
-	spf=pass (imf30.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DPLvp5HE;
+	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759747677; a=rsa-sha256;
+	cv=none;
+	b=fPRLRoEHRt9nq0fDirUX5GVt1BIVYHOT+Zb+i+aCjgD3LLor8gNpMgonTdyUfFnl2D+m1E
+	1QfiGMO5OeTA8CnuYRsUquhroFJfD7T1Dh3d3pNtD+FgmWCezOobHDaCQP5KnzzZEjWCed
+	dN1rUZbsWFEOnFjWD+VnKVdKbZXu5LQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7F5B860454;
-	Mon,  6 Oct 2025 10:47:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDD7C4CEF5;
-	Mon,  6 Oct 2025 10:47:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759747669;
-	bh=FX1Lzu7+bvM9e8qmukvbO1hpPMzmlxgfp1qFo7AK/EQ=;
+	by sea.source.kernel.org (Postfix) with ESMTP id 7922A4547A;
+	Mon,  6 Oct 2025 10:47:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A475C4CEFF;
+	Mon,  6 Oct 2025 10:47:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759747675;
+	bh=zYprqry9t4ZevNtP8tEWITF5icbe5Cfg3GMohDrfass=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E597mMN/x7YVkjNX1Bc0G8W7GHt89kk8u2seksXgi5q2H3Gw9DqBry/MoIgd7Hl/f
-	 QcuYuZ/DwxfZxXg04LwRoNwgtiAl8T7SsOstK7UXK8SyqkUmffohAckrwzORjzcTe+
-	 /i/1SV3Pn0pttPu3dXePy8Hlmyjuwx9fL801o6Qw=
-Date: Mon, 6 Oct 2025 12:47:45 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Eliav Farber <farbere@amazon.com>
-Cc: jdike@addtoit.com, richard@nod.at, anton.ivanov@cambridgegreys.com,
-	dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
-	hpa@zytor.com, tony.luck@intel.com, qiuxu.zhuo@intel.com,
-	james.morse@arm.com, rric@kernel.org, airlied@linux.ie,
-	daniel@ffwll.ch, maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org, tzimmermann@suse.de, robdclark@gmail.com,
-	sean@poorly.run, jdelvare@suse.com, linux@roeck-us.net,
-	linus.walleij@linaro.org, dmitry.torokhov@gmail.com, maz@kernel.org,
-	wens@csie.org, jernej.skrabec@gmail.com, agk@redhat.com,
-	snitzer@redhat.com, dm-devel@redhat.com, davem@davemloft.net,
-	kuba@kernel.org, mcoquelin.stm32@gmail.com,
-	krzysztof.kozlowski@canonical.com, malattia@linux.it,
-	hdegoede@redhat.com, mgross@linux.intel.com, jejb@linux.ibm.com,
-	martin.petersen@oracle.com, sakari.ailus@linux.intel.com,
-	clm@fb.com, josef@toxicpanda.com, dsterba@suse.com, jack@suse.com,
-	tytso@mit.edu, adilger.kernel@dilger.ca, dushistov@mail.ru,
-	luc.vanoostenryck@gmail.com, rostedt@goodmis.org, pmladek@suse.com,
-	senozhatsky@chromium.org, andriy.shevchenko@linux.intel.com,
-	linux@rasmusvillemoes.dk, minchan@kernel.org, ngupta@vflare.org,
-	akpm@linux-foundation.org, yoshfuji@linux-ipv6.org,
-	dsahern@kernel.org, pablo@netfilter.org, kadlec@netfilter.org,
-	fw@strlen.de, jmaloy@redhat.com, ying.xue@windriver.com,
-	shuah@kernel.org, willy@infradead.org, sashal@kernel.org,
-	quic_akhilpo@quicinc.com, ruanjinjie@huawei.com,
-	David.Laight@aculab.com, herve.codina@bootlin.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-um@lists.infradead.org, linux-edac@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
-	linux-hwmon@vger.kernel.org, linux-input@vger.kernel.org,
-	linux-sunxi@lists.linux.dev, linux-media@vger.kernel.org,
-	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-	platform-driver-x86@vger.kernel.org, linux-scsi@vger.kernel.org,
-	linux-staging@lists.linux.dev, linux-btrfs@vger.kernel.org,
-	linux-ext4@vger.kernel.org, linux-sparse@vger.kernel.org,
-	linux-mm@kvack.org, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, tipc-discussion@lists.sourceforge.net,
-	linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: Re: [PATCH v2 07/19 5.15.y] minmax: simplify and clarify
- min_t()/max_t() implementation
-Message-ID: <2025100648-capable-register-101b@gregkh>
-References: <20251003130006.41681-1-farbere@amazon.com>
- <20251003130006.41681-8-farbere@amazon.com>
+	b=DPLvp5HEFax2cyv0F35o7qNcFd+V3uCO/GgsKz62gZdlgUFE/F/WiLCf22is7pW7g
+	 88hQIm6ZXviepsQ+l3vftDMtMwloggKpUSVlPc+q/sz3RJsxRwzvCNyPo8E4U0jMTV
+	 Cu3Bz7kD5S7I1KfQIIIQwHkFHysx5c/N+ywPYCYVHdi065jf9lyH4Yls/y0m1Zmb8+
+	 Hg5ulviYrgWzJcs7Hj9PclKfTOobNM3EbsHlnSFx3Rv/b0y1ey0EfuqHvpetUrZYT8
+	 Y7qPq+tjTDy+KOAI9umWSWK29pbW6gtUX307GD0bsZgGFxSg+JonW7wlsLQxjuMdta
+	 kRMecoOh8XSjg==
+Date: Mon, 6 Oct 2025 12:47:50 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Kees Cook <kees@kernel.org>
+Cc: syzbot <syzbot+a9391462075ffb9f77c6@syzkaller.appspotmail.com>, 
+	jack@suse.cz, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk
+Subject: Re: [syzbot] [fs?] [mm?] WARNING in path_noexec (2)
+Message-ID: <20251006-wachsen-zusendung-6cc31055eb75@brauner>
+References: <68dc3ade.a70a0220.10c4b.015b.GAE@google.com>
+ <202509301457.30490A014C@keescook>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251003130006.41681-8-farbere@amazon.com>
-X-Stat-Signature: 6bthmpkf9qwzugtuie7tp158por9hasi
-X-Rspamd-Queue-Id: 7FF7D8000F
+In-Reply-To: <202509301457.30490A014C@keescook>
+X-Rspamd-Queue-Id: D0B5CC0002
+X-Stat-Signature: k1jj9ogbh83oa7kfdiiuzdjw3hrodpf9
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1759747670-605484
-X-HE-Meta: U2FsdGVkX18GGsUxjR+p+OG4SSAnDSRks7EzDChA7kjiYP/FbQE0gl9xvgDyr/QOOMRmVdf7cB4liNNBvc2T3+2E9flLQPKYb4do0a6CLbj2Cw08GTW7Qo/rnTgam/RQHRk9Hc41UWbAjF2maIwXiW6sfYA2UWy0Dl+LBmyZRmgVnkR6dCqptBGOCkxpLqolpCEXDEqU+1iRuLifnnTE99n2+ICPnmdu6OGEfrTGPBXCzYxx9N3jQgSCSzBlC9m6kO/aPQNttq8+ugqbDiNjyE0BZHpC73J/p+bQfDFQfmxiPCgj0VVxI299lhL0OzIFCYOeAibf7riiWgMyCrufTVKADANzmGzlQg5enS7+jtzLDmbla3Ol3mcxZ/gE2H9I08q8+MrHfl7+1cDOusQBZDg0nfJ0DmITL5gjhwUryZsa2fXofxyf03gpw4WAsHLp47IGwCz0XUDojxoWELJSa9iGqPc9AO+5ChYOMyMoLNfrkPYGxyHd9CwLIfvbo9yPeVjwY1vgpxi9Ino/DJYF6TJOdjbvCW9KxyVPaiH6bCFlSngNlD4lakXeeC6BseDesHK+Md9HxawGsk3+JybZ15e1A/avNpxuHVNF/8qdUiA7EGB6ZOR/GOHWjUp8djAGocnUU4sOM5lLDor4gLFary3zW3cX+Wwd7/C2yJRXlkqoJeUevQ20H+kQPVgRq+lhwy0kODJ1p9wES5UBK7OQsupmS4zx1PGch4gKC4JbXgm/2+TBZh6WLmbrlyWtBJOBuhq73b6HQKUIvFQL3sgYAlpzLhOiMjetr5DYfXT+D4ddjm/zJr/Ko/xys/XkvCCwcwtR1eaV7xQqer3bIEcJJtQ8D2VHCq8pY4V2PdfjbIo5e/Fsa389rcBc+QHbRS9va2jjwGvf+8cTDqG0B54kMEsnFbMsVRQmdcJ648ZDho/onjLET5+oyaHiFTw/855VMr13uq1kJJvzo8e/9VO
- 7gBqrTUd
- ZheLSY39RxYW6grhFD8+fM8oEnYRe49amyky7jhQYIsd7jn8Kg92nB/SBtd67xAd4QFxYpeRxPb9fFheYxGAfp+hKZ1b01ftDOsJflCa2nLgfBJW/rtotCmidz77FfTPs2byKQo7XOVIelbEV6Fpgmx2arQjepqqH3oEDdI1PbP//5JgwT6fbvPzUDt5wLy1c+omdLz1powPgeiWLD3uD7NiLliw0R/GcyYN4qSaF8v5agbxT22RHZbnYrO0x1O3Hq5jZzDM96KDEsWOP2grb+V0wyewc2W+jsC4qKRhR0XIgiqM6ingycWHF6k+3AJvGxzg2QW1OytWyar0D85V25BcxL7oc+9bgM+ZtxltDQ2zQyhOy8yqEYZfWPqd2CXM80A8ADRVeRYF8aBoHrtI56dquYx0lDEriIrDeySZ89BiTOMfp88tGWr1nFQPzhM0GATNaYf5XEE9QTEHLMEEYEZvLQlp35PZZ0Hom3LpYgObJRaKxpDUPHk9P7IGjXGt0YbH2iUi4dRjneQ+aubc0JHzsbrMG0Vtl48Svj7W2OMKDBaAUUK8ug48ofNvV2OImyrB/qzDMzDgSKoRO/N+zoRW+8RjFg3p6cbIjejUYZKhnjQoLPPlFIWZ+XOvFZ0jHnLsS4q3KieJtIMwjd4xm/5/5K9CxcqlHiFAc
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1759747676-191359
+X-HE-Meta: U2FsdGVkX18NPoWP+9EEQzPFBuP9YaPZgO2dmz8qE23ym+eXqxZGadvHZJqJ5zfJhASZy2LXdNwxCQ8NXe4KixOG0O/9xLmqBDJP9UMCDXJlQTaUvRugJ0ImEOFGsOILM+F8DxpZs0d0zStAePDqBiZkrY95U0hkA/1gLpPrIhQlr63NO4YZHg3PA8r+dsm/JeZtI8O83wg8u6873CgQBLbehuX8zzouBKo82Wq2KTTMgyC52sc2X+aERKLUMpDEoamocdP36Ilm/AaF2uE2Ni23c7GRldo00uz1UWRuBl0C121YhnjLjBis3+sregNESbZ2zmMacckrxG9wcbFLwUECdZshWpGj5lc/7VmAyXrcOIOYgdwRGO9i/qZcTf0A8TR2x+tw8LGvAo7T7GHKc7WUXNVotbas0wBXQWF/9y8j+Z0DKbWvpBQkhmkQqzDlBOeMRim0Rs0oq95pEMFgyzq0VFXVM1LJN9d9ScEcWGd0rQrSVUbVxQcp//cihCT6uyC/jGaGoOLA7GFyu0V0UEJv381cPh+I3EF3VnrEL3emOI8gDSAWFsHh7TePsa57a3X6B7I/RE1xNCDm/9vFDE0Rr1oyckaNtfcQDFIStx3kde3YKCUUoYewWJMBi4Vp8JFOUpXlP9oKhNeVKetFmU9bMd5/OwFZsIqx3Lwuw5iE7NS+PbYgQaUVrpom782hmTUGAcIcDcxFfzBycigZEf3YJxX7v/32EHfce2xpQrTFua37qbZOKljRFTJskQ2FMNvEBrZDf1j6LXA17zuBR6Nlzb3DNooM56UHbAJyNwpWtPTbMa8RJg4oBrk1K+sF0VJBJ+BVFdNJlNjBHDKTedLOeAn1b4DQTrkbBmKlA8SfdR/oMWYtKsfjWsrAgK2RPGuZD7UuW3DSNJ3flcVpn4x1KCOVFjTRINDOAVbd3Rc/Q7pFNAsmV//jyv2oRlBCOxvDDjYRe08v90vzD4A
+ 0A4XgfPF
+ EyBfBbam4HsJQ27bUi98b5IcKSFSR8SqOIkd/WLHlbFb+e5JE7hpJHKBvUJ8gCR8UtrAXV1Q85ujYBBCROoFzR+uXvdgFaovh9Y/w/13LnXQ9rxK488kgoVZpL51xRjLBTvEZopxiHQ77Cbv7mZiqck4Aa2lSS9LGHuSk2tkx0E2sjIeyvdTsffVUSMuwM6Az+TxpRbdnwLIMsSyYKprUwo82VewMpQdGwxBVFcSFsXX/tk1P6FUt2bW2oX2+FgGksAZ5aVmJwKvppfSt+E0JCVz7iiE3JgYxbAhddEqR0HR1dbm6ykJSJidNfvNc9rDNi93QhpHgjbqz7Os4Hkamaql2AjseXcrAYwS9aO1r3qA0b8EnA+JvQk8B/J5SGLzNppiIyfbDPb2H4VPPp0aKGhQMKz7I2cYscrsHfIlMaOzIP+gmnMI8ZsdF34Q4d6JUZ9OOQPNdUKael5+iMzxVYh0EWHouagMmLg/eCR/5TObczgXkNQGRPciBNOUhtfYwQ7um3r4gUTsBqGw+ypiXTSc0XFkW04pe5jvTuAtgQAhcAhxG185N1zc+YlQq7599jmR+XZHg/YftOIMFXpVJ2cCFKZ2RCmWqwA2eWvZs9NNB60aVjz3r/O8aPg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,58 +93,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 03, 2025 at 12:59:54PM +0000, Eliav Farber wrote:
-> From: Linus Torvalds <torvalds@linux-foundation.org>
+On Tue, Sep 30, 2025 at 03:04:22PM -0700, Kees Cook wrote:
+> On Tue, Sep 30, 2025 at 01:17:34PM -0700, syzbot wrote:
+> > Reported-by: syzbot+a9391462075ffb9f77c6@syzkaller.appspotmail.com
+> > 
+> > ------------[ cut here ]------------
+> > WARNING: CPU: 1 PID: 6000 at fs/exec.c:119 path_noexec+0x1af/0x200 fs/exec.c:118
 > 
-> [ Upstream commit 017fa3e89187848fd056af757769c9e66ac3e93d ]
+> Christian, this is:
 > 
-> This simplifies the min_t() and max_t() macros by no longer making them
-> work in the context of a C constant expression.
+> bool path_noexec(const struct path *path)
+> {
+>         /* If it's an anonymous inode make sure that we catch any shenanigans. */
+>         VFS_WARN_ON_ONCE(IS_ANON_FILE(d_inode(path->dentry)) &&
+>                          !(path->mnt->mnt_sb->s_iflags & SB_I_NOEXEC));
+>         return (path->mnt->mnt_flags & MNT_NOEXEC) ||
+>                (path->mnt->mnt_sb->s_iflags & SB_I_NOEXEC);
+> }
 > 
-> That means that you can no longer use them for static initializers or
-> for array sizes in type definitions, but there were only a couple of
-> such uses, and all of them were converted (famous last words) to use
-> MIN_T/MAX_T instead.
+> > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13e5fd6f980000
 > 
-> Cc: David Laight <David.Laight@aculab.com>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-> Signed-off-by: Eliav Farber <farbere@amazon.com>
+> I think is from the created fd_dma_buf. I expect this would fix it:
+> 
+> 
+> diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
+> index 2bcf9ceca997..6e2ab1a4560d 100644
+> --- a/drivers/dma-buf/dma-buf.c
+> +++ b/drivers/dma-buf/dma-buf.c
+> @@ -189,6 +189,8 @@ static int dma_buf_fs_init_context(struct fs_context *fc)
+>  {
+>  	struct pseudo_fs_context *ctx;
+>  
+> +	fc->s_iflags |= SB_I_NOEXEC;
+> +	fc->s_iflags |= SB_I_NODEV;
 
-Eliav, your testing infrastructure needs some work, this patch breaks
-the build on this kernel tree:
+Yeah, that seems like a good thing to do.
+I'm quite happy that the VFS_WARN_ON_ONCE() in there is catching all
+this!
 
-In file included from ./include/linux/kernel.h:16,
-                 from ./include/linux/list.h:9,
-                 from ./include/linux/wait.h:7,
-                 from ./include/linux/wait_bit.h:8,
-                 from ./include/linux/fs.h:6,
-                 from fs/erofs/internal.h:10,
-                 from fs/erofs/zdata.h:9,
-                 from fs/erofs/zdata.c:6:
-fs/erofs/zdata.c: In function ‘z_erofs_decompress_pcluster’:
-fs/erofs/zdata.h:185:61: error: ISO C90 forbids variable length array ‘pages_onstack’ [-Werror=vla]
-  185 |         min_t(unsigned int, THREAD_SIZE / 8 / sizeof(struct page *), 96U)
-      |                                                             ^~~~
-./include/linux/minmax.h:49:23: note: in definition of macro ‘__cmp_once_unique’
-   49 |         ({ type ux = (x); type uy = (y); __cmp(op, ux, uy); })
-      |                       ^
-./include/linux/minmax.h:164:27: note: in expansion of macro ‘__cmp_once’
-  164 | #define min_t(type, x, y) __cmp_once(min, type, x, y)
-      |                           ^~~~~~~~~~
-fs/erofs/zdata.h:185:9: note: in expansion of macro ‘min_t’
-  185 |         min_t(unsigned int, THREAD_SIZE / 8 / sizeof(struct page *), 96U)
-      |         ^~~~~
-fs/erofs/zdata.c:847:36: note: in expansion of macro ‘Z_EROFS_VMAP_ONSTACK_PAGES’
-  847 |         struct page *pages_onstack[Z_EROFS_VMAP_ONSTACK_PAGES];
-      |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
+Do you want to send a real patch I can pick up?
 
+>  	ctx = init_pseudo(fc, DMA_BUF_MAGIC);
+>  	if (!ctx)
+>  		return -ENOMEM;
+> 
+> 
+> Which reminds me, this still isn't landed either for secretmem:
+> https://lore.kernel.org/all/20250707171735.GE1880847@ZenIV/
 
-I'll drop this whole series, please do a bit more testing before sending
-out a new version.
-
-thanks,
-
-greg k-h
+It should be in mainline as:
+commit 98f99394a104cc80296da34a62d4e1ad04127013 ("secretmem: use SB_I_NOEXEC")
 
