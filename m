@@ -4,96 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D75CCCA470
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 20:34:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5457CAC5B8
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 20:35:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 84ACB8E000C; Mon,  6 Oct 2025 16:34:45 -0400 (EDT)
+	id 16DAA8E0017; Mon,  6 Oct 2025 16:35:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 821FC8E0002; Mon,  6 Oct 2025 16:34:45 -0400 (EDT)
+	id 11EA48E0002; Mon,  6 Oct 2025 16:35:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 760218E000C; Mon,  6 Oct 2025 16:34:45 -0400 (EDT)
+	id F015D8E0017; Mon,  6 Oct 2025 16:35:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 636AC8E0002
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 16:34:45 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 20555140726
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 20:34:45 +0000 (UTC)
-X-FDA: 83968842930.01.CE6EB58
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 69BC316000C
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 20:34:43 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QZBtdUVa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id D78508E0002
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 16:35:10 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A18E614073D
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 20:35:10 +0000 (UTC)
+X-FDA: 83968843980.26.84F6381
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A16E310000D
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 20:35:08 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="j/mLNtf0";
+	spf=pass (imf05.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759782883;
+	s=arc-20220608; t=1759782908;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vhXHXemV4+7gQYu3I4QUoO7WBhJC7e4U6IHRoELTUwI=;
-	b=z1q/82DRP8ArFP7nJRZ/dvBXekVcISDwQ4QGl1NyjiHk8oHtdpN36PWMoBMeTeWEZjHLf6
-	SwNbIhACw99mpuznIpqc353Eyx5EeEno0BY9mj8sJ7YVJduhiiloSk+dD3tqU/heyK2Wzp
-	u4dNlFHikGvjjmyE6Q3FR+KJCEBGiRU=
+	bh=w8A8mrbjHOp4I+EQv9aLZuINyxZFXeZgTqLUL4/gbts=;
+	b=dBVS0665pOrg28I3p+xqGl4gLwm3Lyo/i+UmB6+yhDlz516+MQr2GBNb5DhmkEZUu9B9Ma
+	keOEAILV0ANOodHUzJcSuEbP6UhA2RKqggckNqNt6eKzgJ7X2HUgJEyzP9f/Jl/fmKDJYB
+	FmWAdDTGhZHBST5JvJFNoG5zO2idezQ=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QZBtdUVa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759782883; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="j/mLNtf0";
+	spf=pass (imf05.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759782908; a=rsa-sha256;
 	cv=none;
-	b=aArc/urLqYgJTA+BHayHV/aSLAzonsytM1QR/Ukj1v3iACIcbxLBW2M2k9/mz1nEGgvwvv
-	No4L2gx1Otm3IuhwwvdCdu4ddbtdY35hWshcKpfKh4VAnR9M55KuM8CAM6mdIRKyq8bEpt
-	u07J1eQe/zkyg7wU5PyoAkaA7cKfLpQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 04EEB45890;
-	Mon,  6 Oct 2025 20:34:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EBB5C4CEFE;
-	Mon,  6 Oct 2025 20:34:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759782881;
-	bh=c3t15lOefwVAAOuvSSShpCGZ3VoHfG+ZXf5muYks8Ao=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=QZBtdUVaB/vr8yjrPFPdFk/BaAjok3QsdyhQOTFxmddT51D5FqoqKlQHNwJQeoPo8
-	 Uxo+h2WQS32HlsrrxedD/xaNoFFHq8tPMT8O27UWeZIRKlydjm/mNR6ooRuZOKjVc0
-	 idYxTx5Ofo7bXJ1h3Qf4+6jf6TkgbHGB9FQHGx43kGV0FpuDU4SIlkR6s5cnmEglYn
-	 O5g0TbG6DJ3XecHcx/44NQO+8nk3gtFwA2elL1Gu9pIa+DYQ3Wv8H6+4K6aItrOBQs
-	 4C4a1kvpqssXWGwUbrF56Dk5Oo6AXOFnBkOyKcWOjJ1iXIshqempi9MG36WDvJ5Co9
-	 /iku2fzIT/wLg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70CA039D0C1A;
-	Mon,  6 Oct 2025 20:34:32 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	b=SQqG+duEt7DfQ5w5+2wq2XALynFpQvHWW6ec6onpdZs8+JUVabGGumh6aIgklLP7zlqukM
+	jyksFhhaTtpqdql9xTQ/YOLSzD/ZdGs0ZeR25MbkyWGNtm25BDwKx9bmZEBswlURUulLu+
+	Ve5IbIpOK0ExoeaOWIuVnuiIxH7RDT4=
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-46e542196c7so36021185e9.0
+        for <linux-mm@kvack.org>; Mon, 06 Oct 2025 13:35:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759782907; x=1760387707; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=w8A8mrbjHOp4I+EQv9aLZuINyxZFXeZgTqLUL4/gbts=;
+        b=j/mLNtf0oGh6hT30hgdF/YfHzoFK7i2h1G140udnHQMELnmdEP8c81QoubLxPMduPz
+         GP7Y6fVGx8YQuTqQXFG9Vm5CxUhlxrndOuKmfy7lx1BUq0Z2fyvFo0QRZW8i2xS5855+
+         N4u+hH2NWy0n3v6MXoh7g4RpCphV3H6qi60a8n9m89QEVKyE17kTGQMfw2NoNGZ2Hp/T
+         jnwV/NJ3X13Q2gV1RArjlAVprE7r/0zYUz7e2h4zBJHod/wRs9t1O4g9AwUQmPSQ4bWn
+         iqMo8g1TeqLHCSjg8QlrEORCJkdJUgI3RaZHRwcLUyJcPlG0Q1jatvi0WwPraSlk8cap
+         dgVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759782907; x=1760387707;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=w8A8mrbjHOp4I+EQv9aLZuINyxZFXeZgTqLUL4/gbts=;
+        b=BNYBF6wl0RrS8HpkPId9xJXPISGpeqJ+jO6fMS9Ly7vVIY7b0fXmMyzGGlKTNQ7v9j
+         wCvKdUPbwc5Vz84mrdQE3cyppHd7BFdS3Gxn9ssDh62zlgFCOiZXReoKdxu2JTmjjfjq
+         6zgUdzSmaeP69DXD8AHZFyJgrpsEN1uKtcj0pZcWTJ2Pey4XGRUsz84fNLJ04HH9fWbk
+         Pb19Iwiz7qXYwo0I7NyDILHGGOpX0XK86FDI9zKsL6xGcmQkNO/htu/HHAXnfmIhqJ8p
+         0PjUGvV6uAUsOLY5dsJ7zKN25Ucnkvov0hllCSndapmYJIbwWIMAzcOE/FnPO14KZwNv
+         pJow==
+X-Forwarded-Encrypted: i=1; AJvYcCWz/Bth3NVpj3KDsLsaSA29P1RlvmlH8Qru4rN08Zft4luyxOHteWIVLJBCD9zTmrlghFL8oMK4/w==@kvack.org
+X-Gm-Message-State: AOJu0Yx+d2JvT15uG/6+7szv5YcoACoOEnSnu+Ra9WP10eCqylbb/Ii4
+	VeXd0jDekpAPoS69lxJXk4bxthlhznoGuTIBxEL5AzV1w+Py36XBo4vS
+X-Gm-Gg: ASbGncvpE4u2FQmUAYS+YUZrF0nIOIsDNoixhAp0GQBTu8lV9Y6wdIFWZjn6+Jrw5+r
+	p2jlNZFQ+N0Hdv1+wOxOREPd0+YDBHBmgIe3rjL8f2gm3kdAmiHKjt1OCyeNH/ek1E0hIG1hoFa
+	0bm+LOsQN3slY+vZ4Wb8ZWQNCTmXKNNNr5lVN9uKGWzz8NzZB564SJ29f3ApUaNyIAvSS+66hvM
+	1gmdljhaYb0B9PkRNm8/Z7sx04qL2VE89uE+UXcunaPSan27SwgA1QuvBBbtfSSgg+Iz3P1wcqQ
+	0o36jNaUJ6qu3eURqeNM7KkvtHYX+x5h7EUaM0cZy5ek469HkSQ+5kunTGa0FAumadmU7YSI1CM
+	LS68tQEi7IRpiJTh9VqF87Uz/imdb14tHi+Kabi00Drwv0dKrt7r0cHOBm/78xQo7Xvz95gVl33
+	3Hlj7IkW1SA43w
+X-Google-Smtp-Source: AGHT+IEnzSpQE+ROtayFnE2b4dPjTQF2CaZO9TdUfVNFcX6ejR4aNYCswD7XdVH/ajIMwYylIXY+YQ==
+X-Received: by 2002:a05:600c:2287:b0:45d:d86b:b386 with SMTP id 5b1f17b1804b1-46fa29f13dfmr4596085e9.14.1759782906754;
+        Mon, 06 Oct 2025 13:35:06 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e723591fcsm172334545e9.10.2025.10.06.13.35.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Oct 2025 13:35:06 -0700 (PDT)
+Date: Mon, 6 Oct 2025 21:35:03 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Eliav Farber <farbere@amazon.com>, dave.hansen@linux.intel.com,
+ peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ x86@kernel.org, hpa@zytor.com, james.morse@arm.com, rric@kernel.org,
+ daniel@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+ tzimmermann@suse.de, sean@poorly.run, jdelvare@suse.com,
+ linux@roeck-us.net, linus.walleij@linaro.org, dmitry.torokhov@gmail.com,
+ maz@kernel.org, wens@csie.org, jernej.skrabec@gmail.com, agk@redhat.com,
+ snitzer@redhat.com, dm-devel@redhat.com, davem@davemloft.net,
+ kuba@kernel.org, mcoquelin.stm32@gmail.com,
+ krzysztof.kozlowski@canonical.com, malattia@linux.it, hdegoede@redhat.com,
+ mgross@linux.intel.com, jejb@linux.ibm.com, martin.petersen@oracle.com,
+ sakari.ailus@linux.intel.com, clm@fb.com, josef@toxicpanda.com,
+ dsterba@suse.com, jack@suse.com, tytso@mit.edu, adilger.kernel@dilger.ca,
+ dushistov@mail.ru, luc.vanoostenryck@gmail.com, rostedt@goodmis.org,
+ pmladek@suse.com, senozhatsky@chromium.org,
+ andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk,
+ minchan@kernel.org, ngupta@vflare.org, akpm@linux-foundation.org,
+ yoshfuji@linux-ipv6.org, dsahern@kernel.org, pablo@netfilter.org,
+ kadlec@netfilter.org, fw@strlen.de, jmaloy@redhat.com,
+ ying.xue@windriver.com, shuah@kernel.org, willy@infradead.org,
+ sashal@kernel.org, quic_akhilpo@quicinc.com, ruanjinjie@huawei.com,
+ David.Laight@aculab.com, herve.codina@bootlin.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-um@lists.infradead.org, linux-edac@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+ linux-hwmon@vger.kernel.org, linux-input@vger.kernel.org,
+ linux-sunxi@lists.linux.dev, linux-media@vger.kernel.org,
+ netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ platform-driver-x86@vger.kernel.org, linux-scsi@vger.kernel.org,
+ linux-staging@lists.linux.dev, linux-btrfs@vger.kernel.org,
+ linux-ext4@vger.kernel.org, linux-sparse@vger.kernel.org,
+ linux-mm@kvack.org, netfilter-devel@vger.kernel.org,
+ coreteam@netfilter.org, tipc-discussion@lists.sourceforge.net,
+ linux-kselftest@vger.kernel.org, stable@vger.kernel.org, Linus Torvalds
+ <torvalds@linux-foundation.org>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>
+Subject: Re: [PATCH v2 07/19 5.15.y] minmax: simplify and clarify
+ min_t()/max_t() implementation
+Message-ID: <20251006213242.3462e746@pumpkin>
+In-Reply-To: <2025100648-capable-register-101b@gregkh>
+References: <20251003130006.41681-1-farbere@amazon.com>
+	<20251003130006.41681-8-farbere@amazon.com>
+	<2025100648-capable-register-101b@gregkh>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] page_pool: Fix PP_MAGIC_MASK to avoid crashing on
- some
- 32-bit arches
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175978287125.1522677.13468458175773865166.git-patchwork-notify@kernel.org>
-Date: Mon, 06 Oct 2025 20:34:31 +0000
-References: <20250930114331.675412-1-toke@redhat.com>
-In-Reply-To: <20250930114331.675412-1-toke@redhat.com>
-To: =?utf-8?b?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2VuIDx0b2tlQHJlZGhhdC5jb20+?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
-Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, hawk@kernel.org, ilias.apalodimas@linaro.org,
- kuba@kernel.org, almasrymina@google.com, stable@vger.kernel.org,
- deller@gmx.de, davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- horms@kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: fyi6jxemfznaukh7cnojtu3wp5f8o8hc
+X-Rspamd-Queue-Id: A16E310000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 69BC316000C
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 1xrezznfpwj6bezz18osms4nndmtj4zu
-X-HE-Tag: 1759782883-238594
-X-HE-Meta: U2FsdGVkX19iA8/EqZueAEOdmA2dYUZH43MmEH1HsmWomsAVQezbzaMB0zpfwsUm5eWHsGamcmi9POSgTELFJuLAudUo/ltSrLFvb1pygY2SOlGR10OigN6qA+V4DzH5CNK6EOmRP+yDmfYjYbWvwZYWIBRONSAV8SsI363Y2bmHU/JXewbVJQgeBDCJmXpLhrzsc15vREFkxkaf9olntp5nltsgwzf3HKOhx2gLyu3GMDuWU+2fyJHRLkgnIxQ4njC0BwrTq62yMuI2IdZbFX1PBhYei+rr2STQ6q87+Kj8WMwEdWN5XITFsR74Q6pV3GBJj2HaXIpRRbT8G1ZD3u/OsKyAgEcWa6Mh+o1b7EDl+edJAQI844q4D/WGGQW1kL/4B8Mf8JiI0OlBKs0WQvnO1VyjcNSxD7Jk0ZQo+Y3usvp0Wsh/IKdr8hRedkjbz9LC3hHwEOF3n2f700HHLCVeBxKKMqt4lz3cMvKZo1ru8Zw7Rv4tGZTXEQEqnByPl2EN16FSX9pXjMMC1pVnWVvuaGkqml2xw8zsSr4rX084M1bvobYYkfU0dKEW0LfUgnDNNuGYu758ac5KIuhw8QbfHKBuewWDc0XMnLlAUlTpyzIAmYPtJDIVCNef6tbKb8B1mpGaLtBiHO1BdGmCy2ZqarJ2rZBLy1V4To2Ax9l56q4yAeMeEruqUViMOkU5B9W7JEUEvlqDeh5jaseojK6+ABy1yPIswZWVDX/BRWOLsSO0ViBiM73Md5VCg6V4V4x3uaInz4i8qsgEsJW6xWKNNeXoLhoeSCp3jg+1JTMmAq7Tkx9fyely6qRxPw+DBBNAhhu0bGoGPP5cxrQf47G4uq1QEYmPlE82pgxr4vDiSVbKNgn0vC3pdMqxYH6+s0exRHjqqZPnMEbS6ZM6Nca+hBihqqs9dNY0dc5RGXCOg/9VtjeLJBI40QiYJYuQMSN3gABlNMiNuLlff5K
- rgfp4/HG
- Bwyy1s2Dl85ST9J/dp8kb98Nm+2ScwCgULgV1hMmGtH4j+dNDCPo4wBghUyiARJwg0Nh2Da2uDrXh94tZvDt+pKFIB3vxF6+e99HH3OfV27W7T+ZaB2CxP0wspQExxOtGmxZVQjXdI9aBgnFC+vyCsfa5Ya/vCDx7cqRs1+qu/fphvB4VgWV1lutE/t2yz5bzyflvWDt01n866ZPlF9gJqbwIaR/VHDHdhJPu6UgXitnKmW5RMNRZAtjzQrJ0tkTp/uW9de91V6r4wYLUDDNEBpr+LLUtht/jwxWPNxFVuv7hHelo5UEdgUFf3mV3d7N5PEzSIWGlCr9KFhy2iiXzrf8oxpopUcyBoW9hsEPSr3ESUDtIURcJbHuweFjcA/FJI2Szj4i+DrsJUHKIeJUZ+Cs/JSMDOX4jwwdPV7pSMh7f2TnY+L5k5oF4FETDPfFKVKAnKbuWQUf2f4HUzbT9K+l3HGKkOVcrqlxEvuLcs0vPKugRmSVf4NI4a7r2mc4HySo7EvajJ5m6ifw=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1759782908-950144
+X-HE-Meta: U2FsdGVkX1+E0kgUPyWK2dBKkdmmnpSz/TF5gXdF8x7ji1mkvPfuDz5oq+/ZM4DozHnia0Ke/twsxux2Jp06Oc7r64elzzYjp6mv9NwTSGtuqVISx2ydnEHceDmfutLUx3ocgyfrbjMS3k4Ut2EyvWpda8vKhBw+EyL88jBTpQzb6/1v4KBbiuRiEcrMhdesB/F2Rse8Lfny8GfCicqXzzo8tPlwAKd/CzDzxkh9Sil8Cvuzhz+kKlyvmuXSZ5F8MmR5x4JblHirDDDm50CsIUQhJuzx/Q75ZBE+36RFcEGbvVLbsUCoOVp+W69VyEhLZ4EP9YRNcVfaqWNGBp3qDRAI9xSxD8FhjkYKqBdzXXEQXySu7lbl5tygfXgsEMxAj9TMgtJv+0RDKcLTMmJMG6DBQIYRvCcURT4o+o1tS6QiHk45To1H+Daz2Os64s4pCMVW7UBQpHUa7E7yZ7ecBkILd8D9W9dtVOO1BsP/YwlOoZbuvKzrSq8618pJb8WsEo9LcWoggPFXxQrnc/z257fl8szkaSRVz0KcMOUT49Z2xxv3IKrTCB9Bdf/zarv68ApTCW6LxSYr+dqWslJGSVLM4g9EGvB8FSxIWXxm7sianE/Btn/6DkdPvbUk4fauFnqeZvo8ReM/+x0E8F/lUzeYuFF74nzdi+uQVNOh5UGr9xUq6SrrAKtQfUcih6JHTF8xoikVPoTZtwe/M7FW3H1VgeJ2ANhtOeQjfqxvW4IejwW+BfBw/VBOCqM9COYVMKlderR85q/y5z8DbK7PezQffyR2cu6XIkRskAuira+1uxAkky0D5SybxXko0e0FKXP96Wa84CmLgiCbZkbQApAbjcRVhulFZoutocTgonorgoiSo3dQRxX4fF4D3RULSVeLswoO5k4E/JiPpwbw1DLAQo1tXtg8sJDgB1Dlwq05tggfXb7J3lYtNkKG2w+qaQCREdEpR14pozhjMDg
+ 8WCTf9l9
+ Uy1Qqyyxhdvo1DWZDLUSszX8cOPekYZ3kQ0R9DH3pjgOvp5tcFjkAskIq454hR2O46d+lbcwgdpYYb9WKE03yDdsbZVSuhdRm5zkGNvcl/Xed2liLwvTwQRpBzoIN7xuR+mJmmlhmOJvJN38xDlVgoB40bRW3sRRO77LVMHLRCTSCd8/2mdbajyyN7tlQm5M9Rj7ZsptjV2kz61hQHeaYLG0k3TavomV3ZWe1aPOLQWpIM6lkh+ArCk7WXw+dh59dgfOt4AJsFWJBY7EsJ26AUh1UcWyIKG3ERhVfEv6/fcx2HjaUhr9baNbfpB/wkEGXc7rf4ZnuQsWPLzK9TCgwIxiEngyEpF+QiT8T4dO80yqtwYPsfQxRyaBTQI/vYwJnBre6VjAqhzgZVGYBKMwx/cDvSQ9pCBkzmPkY4i6V5mC3Am9KrSncDsdCSMCAweOm/8+OE6/1enP1P9jp1jJffZaeE0C78L5qEAGHeyFYbNwTJKuJHRXhQmHipgEVWKb3a67yNKnW4xO5h+MItKR/VPKL0mNMqQU273vYrwtaUpqVRybpuypbmn6mjHiamOZBYhqdeiCOEGtQw22Y630xMms7ZFI+B15hXIVcaPP69b+hzwhUNTCfaTJMCjNhFZrfdE14t2Mx7dBBE29SZnvQD93tSGOBqnZ0t6s4MUmL9aWaaMUe+PphVoJsuP4OvbSVdtYOq3BsEhNpkEHMAe41CLCjLTdeHsaBavrw
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,32 +159,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello:
+On Mon, 6 Oct 2025 12:47:45 +0200
+Greg KH <gregkh@linuxfoundation.org> wrote:
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+(I've had to trim the 'To' list to send this...)
 
-On Tue, 30 Sep 2025 13:43:29 +0200 you wrote:
-> Helge reported that the introduction of PP_MAGIC_MASK let to crashes on
-> boot on his 32-bit parisc machine. The cause of this is the mask is set
-> too wide, so the page_pool_page_is_pp() incurs false positives which
-> crashes the machine.
-> 
-> Just disabling the check in page_pool_is_pp() will lead to the page_pool
-> code itself malfunctioning; so instead of doing this, this patch changes
-> the define for PP_DMA_INDEX_BITS to avoid mistaking arbitrary kernel
-> pointers for page_pool-tagged pages.
-> 
-> [...]
+> On Fri, Oct 03, 2025 at 12:59:54PM +0000, Eliav Farber wrote:
+> > From: Linus Torvalds <torvalds@linux-foundation.org>
+> >=20
+> > [ Upstream commit 017fa3e89187848fd056af757769c9e66ac3e93d ]
+> >=20
+> > This simplifies the min_t() and max_t() macros by no longer making them
+> > work in the context of a C constant expression.
+> >=20
+> > That means that you can no longer use them for static initializers or
+> > for array sizes in type definitions, but there were only a couple of
+> > such uses, and all of them were converted (famous last words) to use
+> > MIN_T/MAX_T instead.
+> >=20
+> > Cc: David Laight <David.Laight@aculab.com>
+> > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+> > Signed-off-by: Eliav Farber <farbere@amazon.com> =20
+>=20
+> Eliav, your testing infrastructure needs some work, this patch breaks
+> the build on this kernel tree:
+>=20
+> In file included from ./include/linux/kernel.h:16,
+>                  from ./include/linux/list.h:9,
+>                  from ./include/linux/wait.h:7,
+>                  from ./include/linux/wait_bit.h:8,
+>                  from ./include/linux/fs.h:6,
+>                  from fs/erofs/internal.h:10,
+>                  from fs/erofs/zdata.h:9,
+>                  from fs/erofs/zdata.c:6:
+> fs/erofs/zdata.c: In function =E2=80=98z_erofs_decompress_pcluster=E2=80=
+=99:
+> fs/erofs/zdata.h:185:61: error: ISO C90 forbids variable length array =E2=
+=80=98pages_onstack=E2=80=99 [-Werror=3Dvla]
+>   185 |         min_t(unsigned int, THREAD_SIZE / 8 / sizeof(struct page =
+*), 96U)
+>       |                                                             ^~~~
 
-Here is the summary with links:
-  - [net,v2] page_pool: Fix PP_MAGIC_MASK to avoid crashing on some 32-bit arches
-    https://git.kernel.org/netdev/net/c/95920c2ed02b
+That constant seems to get (renamed and) changed to 32 in a later patch.
+I'm not sure of the rational for the min() at all.
+I think THREAD_SIZE is the size of the kernel stack? Or at least related to=
+ it.
+The default seems to be 8k on x86-64 and 4k or 8k on i386.
+So it is pretty much always going to be 96.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Linus added MIN() that can be used for array sizes.
+But I'd guess this could just be changed to 32 - need to ask the erofs guys.
 
+	David
+
+
+> ./include/linux/minmax.h:49:23: note: in definition of macro =E2=80=98__c=
+mp_once_unique=E2=80=99
+>    49 |         ({ type ux =3D (x); type uy =3D (y); __cmp(op, ux, uy); })
+>       |                       ^
+> ./include/linux/minmax.h:164:27: note: in expansion of macro =E2=80=98__c=
+mp_once=E2=80=99
+>   164 | #define min_t(type, x, y) __cmp_once(min, type, x, y)
+>       |                           ^~~~~~~~~~
+> fs/erofs/zdata.h:185:9: note: in expansion of macro =E2=80=98min_t=E2=80=
+=99
+>   185 |         min_t(unsigned int, THREAD_SIZE / 8 / sizeof(struct page =
+*), 96U)
+>       |         ^~~~~
+> fs/erofs/zdata.c:847:36: note: in expansion of macro =E2=80=98Z_EROFS_VMA=
+P_ONSTACK_PAGES=E2=80=99
+>   847 |         struct page *pages_onstack[Z_EROFS_VMAP_ONSTACK_PAGES];
+>       |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~
+> cc1: all warnings being treated as errors
+>=20
+>=20
+> I'll drop this whole series, please do a bit more testing before sending
+> out a new version.
+>=20
+> thanks,
+>=20
+> greg k-h
+>=20
 
 
