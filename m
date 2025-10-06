@@ -4,110 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34EDBCAC5B8
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 20:15:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0C20CCA470
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 20:33:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D1298E0026; Mon,  6 Oct 2025 16:15:29 -0400 (EDT)
+	id 141B98E0003; Mon,  6 Oct 2025 16:33:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A8C68E0002; Mon,  6 Oct 2025 16:15:29 -0400 (EDT)
+	id 0F2148E0002; Mon,  6 Oct 2025 16:33:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E5C98E0026; Mon,  6 Oct 2025 16:15:29 -0400 (EDT)
+	id F23068E0003; Mon,  6 Oct 2025 16:33:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CBD08E0002
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 16:15:29 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F3B781A06BC
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 20:15:28 +0000 (UTC)
-X-FDA: 83968794336.19.983F262
-Received: from lithops.sigma-star.at (mailout.nod.at [116.203.167.152])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A206940009
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 20:15:26 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	spf=pass (imf07.hostedemail.com: domain of richard@nod.at designates 116.203.167.152 as permitted sender) smtp.mailfrom=richard@nod.at
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DB4C38E0002
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 16:33:08 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9AD62BAB6B
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 20:33:08 +0000 (UTC)
+X-FDA: 83968838856.20.9800559
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 127FA4000C
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 20:33:04 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uKjbHzCh;
+	spf=pass (imf12.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759782787; a=rsa-sha256;
+	cv=none;
+	b=xnz8gtXy3Kx8S+BZuWBMS4muw/aeCHOyREJC+lETRaNjhDG9+i4GzPBgJJizobljfHeaPi
+	a6CpLkKF2E4j2dszoO9DJRIlJS6Ppr1LMAN7EQWubaF1Jw51P7vwC44BGvNcbsRsFXR/XX
+	gKIQIgMv+YR8hqhY8Qh+vEX0yTkviHY=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uKjbHzCh;
+	spf=pass (imf12.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759781727;
+	s=arc-20220608; t=1759782787;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JHH+4bf3hlBlZ1LmstUIJffws4jWpMP8V0lgu/gJTUg=;
+	b=b5aP5frXu6+KUDmYSVf7oO1BWEMlO+D8ET+RWGcCzIHmPfP3Q9ZctqrTt2nh7taISJnLBn
+	q/KP6dC642WYPyzQr6XHlYzti7HsMWmnVfd0b2414E8GFEoQiUwuoe6uDa7f20YXYVwErR
+	IUNTiqEOjVXTJkaMrze6hUQrYAPUKYA=
+Date: Mon, 6 Oct 2025 13:32:56 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1759782781;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LhjB5H9mrCqOGAXj5HXNdyEVYPj6mQQyTvJX1KEHiMI=;
-	b=A52WRKiM/qMj2f8OC4RLT8b03gGNTcYotRrHsZIhjSz8RHv6wqONu/Gkp8C9Uj1dRUuJpB
-	hbvepf71W4wLQwxlg/6/ryDNLwh7jgDQG/JGX2xepENssfcnszuziYP3SqzBWH+gSv/tKK
-	nz5TmAj71CTPXW/CYaqkf6hu0WIiCOI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759781727; a=rsa-sha256;
-	cv=none;
-	b=DLMleOu6W4DIjbsDe1Q2uvQzBwOPRSpEtXmcrgIat1SSOM03wz9pAwc67aqymkc6BV3DZe
-	HSPxqDT45FZYwE3pxQhEbuKe9z/Vu+3G+/voipLgkJd51QY2Rda+T1dlvK6Nw8nyaTh3rS
-	WszBiOy0jkv6boZYlE6gdLSeWEDbGsM=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of richard@nod.at designates 116.203.167.152 as permitted sender) smtp.mailfrom=richard@nod.at
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id 853FF2B4F9D;
-	Mon,  6 Oct 2025 22:15:23 +0200 (CEST)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id JD4v2hnJ6q9P; Mon,  6 Oct 2025 22:15:22 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id 0C4012B03C9;
-	Mon,  6 Oct 2025 22:15:22 +0200 (CEST)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id j6VbrBHYDJpt; Mon,  6 Oct 2025 22:15:21 +0200 (CEST)
-Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
-	by lithops.sigma-star.at (Postfix) with ESMTP id B486A2ABFC1;
-	Mon,  6 Oct 2025 22:15:21 +0200 (CEST)
-Date: Mon, 6 Oct 2025 22:15:21 +0200 (CEST)
-From: Richard Weinberger <richard@nod.at>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Dave Hansen <dave@sr71.net>, ksummit <ksummit@lists.linux.dev>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, 
-	linux-mips <linux-mips@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, imx <imx@lists.linux.dev>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Lucas Stach <l.stach@pengutronix.de>, 
-	Linus Walleij <linus.walleij@linaro.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Ankur Arora <ankur.a.arora@oracle.com>, 
-	David Hildenbrand <david@redhat.com>, 
-	Mike Rapoport <rppt@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Matthew Wilcox <willy@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, vbabka <vbabka@suse.cz>, 
-	Suren Baghdasaryan <surenb@google.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>, 
-	heiko <heiko@sntech.de>, 
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>, 
-	"Chester A. Unal" <chester.a.unal@arinc9.com>, 
-	Sergio Paracuellos <sergio.paracuellos@gmail.com>, 
-	Andreas Larsson <andreas@gaisler.com>
-Message-ID: <1190290449.3827.1759781721487.JavaMail.zimbra@nod.at>
-In-Reply-To: <4fcd272f-81e3-4729-922b-588ad144e39b@app.fastmail.com>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com> <497308537.21756.1757513073548.JavaMail.zimbra@nod.at> <dec53524-97ee-4e56-8795-c7549c295fac@sr71.net> <640041197.22387.1757536385810.JavaMail.zimbra@nod.at> <4fcd272f-81e3-4729-922b-588ad144e39b@app.fastmail.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+	bh=JHH+4bf3hlBlZ1LmstUIJffws4jWpMP8V0lgu/gJTUg=;
+	b=uKjbHzChnzx2wm6WdKX0G2O+LfEbF03GVh9A/3b/TBEuOow+68ow8vPjH+P53r8tVxfIYY
+	Xy3oB/BjxBm/7ZPUpEhPclJ5X/SBvU6wHFNuj3oRMrkCbsVeg6scn9Vmaf+j15PBbZiWt8
+	JoZsT/ZOhVwDT9f/n4F61TteGGFb/OA=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: JP Kobryn <inwardvessel@gmail.com>, 
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Yosry Ahmed <yosryahmed@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Tejun Heo <tj@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, LKML <linux-kernel@vger.kernel.org>, 
+	"open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, bpf <bpf@vger.kernel.org>, 
+	Kernel Team <kernel-team@meta.com>
+Subject: Re: [PATCH] memcg: introduce kfuncs for fetching memcg stats
+Message-ID: <galnconmnd4uoupb5dfa7nbfmpeovpjnov6fnxa56sslejl5em@fmhbdnn5v25e>
+References: <20251001045456.313750-1-inwardvessel@gmail.com>
+ <CAADnVQKQpEsgoR5xw0_32deMqT4Pc7ZOo8jwJWkarcOrZijPzw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [195.201.40.130]
-X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF141 (Linux)/8.8.12_GA_3809)
-Thread-Topic: Reaching consensus on CONFIG_HIGHMEM phaseout
-Thread-Index: 4qe/Jvt6A7Z6bNoIFm3Eugvg7UbUaA==
-X-Rspamd-Server: rspam01
-X-Stat-Signature: kdmktinqubxy4cz8ey9n6gyjmdnubsej
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAADnVQKQpEsgoR5xw0_32deMqT4Pc7ZOo8jwJWkarcOrZijPzw@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A206940009
-X-HE-Tag: 1759781726-796619
-X-HE-Meta: U2FsdGVkX1/s76MnZl82yw4zxX5+mffWITK8d3rEj5CiHCnC0gH5w541hEWQsaR14gtjTbMsvQxLWD/RBKAbmJwFKkMJecVI3+QRNJzLh0HvWgO+EkbJvqfN9z/WCLeARMSsDG275PPrU7AVLLdV9QN46MPUOjV7ODNFcaqn8Bxo/CRXmptMMBe0SeRPojHUew4Ppq6Z0g5i2nJRKOeCKDs6CgSWasveGmGxhfRjLZTppvbTqCx3LF12tCneDPYbhRryozT9G+2sSNVTNyy2vlqTVyKrqx1kbZcfCWyKq8G8QEXdTAUYtp1/8+MxnSjqHitShddtIxTSo/stxFO1WnWe5e0WEoHyVC0ShcQ0asQrOjf///nzEydqkU4UiYySzvJ5kd/HYWVKG+9+HMzLso6z8jFD7oYIcCZ/vVsZR++PpiqghF/ORmxG0lMvTbEkfcV/NTbv30+1/D3JEz+NhYg1b73+okRQXYxi7xS+KrLhBYOSlo5BzORBw1gYofxewVkqW4GMrm1qegRSr+ecCbOlJprEpg0v9tvd76d8RHABJeZgosJe01MxYZ05MyiAx/8+SHQvFUB81l6J9pUD0sgZlQynThwhppuYF4LqPGYlMvrVqEqbMCvz3hfaDKj0nokBW89Mrm9g/ZmaAztFHFfcCJgSRHuWdebYzHr6j3bnG8UFYU7SPBaQxsrhc1HwxcMj9PMnksxxbYYedVxq4lq+jjXfu8Sj717M3LADnerlQV//wFdI4ie7hPrOCebq6BSmvaA2YStW+0Yx/R1Q2dgene7IpOnkYgX7yC9e8IlkzGF8i8TS6324kxsz/5oPqen41Ty9tqk4MvODUiMV4BeNvkPMZRAlVVTLX0Og8jIUx24RzrVaGdC16PClJyf9XRaJeBS+bpmTsFL8Ab3nqrZR9lUaDMFxntqF7Xwd7v0T2QGZ/giqa2Rzw8MiY0/QDOTGiudbVuZL3g3YBSR
- gik552C1
- U6Aa5JupSp3vAwIL0FdQ13PcxyrVZSh+B9HABvqsZ3V+dK20etZat3iZn182OA8qVMdMTD8MAr3nD+qsFdew8gKQDA61oBA8RPyGKWKYzBuE6Wb7604MvSCzPtWG+A0/X7OhwaVmwvuliju+FK2OGupiRiL5nErdvwJyhqeeX+sPD1rgcILmCgWN/fVgTFBG1IXdvkNAg21fQa9LNXyu1c6yYBs1lXAAXVy1aK+KbM3DWoBFbc04GdjC6Z3TnbDuCPH9FZzilaY6WEwsPoUIovGiEeSVpNzXFfIS0dQt8bq/G22KnpOqxnSobDERDv0Qu8ha8w4ykpgFz69j+Mk5HKMg+5pEzqxpWwdN+
+X-Stat-Signature: em7whzgx9ubncf58aitbdszzfuc47yg4
+X-Rspamd-Queue-Id: 127FA4000C
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1759782784-807884
+X-HE-Meta: U2FsdGVkX192kgYlyK/I9z12WprymDAonzE+JxoI/dPYMcfDwvPFJmZYPeM5880NgPIEGMKANPd2QtK/NrF2K16zc96fN+R22dIR31xiO+QtBfDnn1wf5GzWq3a10Oz/yqPpgrN9tx1al1zIQ+RXSsRXrXbAM7KWdwhlIuldcuWPCO50rtFRB18nq9Im5uBLDlcKQiIptuKP3FRykiHTmEDmS2LLJuANl7h57yVcfsjjE8tJGq9AwRbmCOoMOY4GEk/hFq82koKUaHqPZaKgglJ3YmdDmsN3bu5ME0n1t8mJJLNneDkDQuQ6E8gRSMWtJoMAwu4NlwM5dEguOAeboTLBvOuASk0sXgzupnEFso15GsZBt/HnRFajUhoZkDv2ASrXcVWScLyXXix/O6yOWw6Ln9VbVlJ0bFpVWYBsqjRGHN1xAJk1XqxZQppa80vQoqlYm2yh9/Dxle3ANa8PeWwSsiUig+yPSC2xkxlOUQTThAbJ21yhXQzwZ9+6Ym6vQLuff1WdE8uGLp56yR0QnEQ05IDqDeAfqMJAmpy1/JMy5HvXHcUWTIMqu0rkS2njft0F8RS64rohbtJqE2ed8eSyG07y0Wcs26t4Zc2w3RqMdbO+a9cWiAfZkJNtttipp78ORT+g1AMPV9ufU1KyqpnBFyamvuv89DXP9ZN7pHKFxMe/cVZiYg2mKhp/ZRNzoezTtnqJ/CUKuUAe9o9vbVBu+eKtu1lipA5S3CrGTIhYnSWSjHQpqrwPMdW2RbEoweW7cfF/Og6DlPPkTi9fflKG2cFjvqOdL0EDgPJG8xye0cdeb7kliRfi8A1H1FbsQIY42RVXuyGsSqs6KS/yfsfMTT2WGvsi0DvZ/0huh7uXI00hLwL0ddGUKb6N3J9kUCan63bNHG1Lb+V4V+f58Mpao7eombNGQcw0bFeqG0Ufq2xSWJMi3TeGS6UW9LQ5DA5vAlRTe8CcMkXG0HE
+ EO3MSXja
+ HIj11JnE+Pjmy4b9Vhv2CsyuRlKwxolq0ooxY6/JMbFw35b4Yv/wSbG2TtrbM0h9EHxG/duZJ9MklcFpNJcSQJgY15z4K47zMhjje5FxX3J4BFbwpiuX3LQF3Q2/0NcZD0YUgRLrRtVYj/5EbrToVgCTFUIt392WbPGgmIwW8I56x+79Wy+COH1V7d3Ajs1SjRpjkmvVY65IVZCln2moO+Eb1EW5PnWoZqzWI5Pr9W4taJHLnYA6X0CmKxcWMaWzM4WDVEA85S90BZlPKQcm69CJX10Qi4dbJ3UvQswceSP3lnHbgw02XAwTfnmfrDW457GXE3Y4/iF/MRzKIkOeA5WM8o/jlgPrnjKAB6dFhh2o22DA+X7rtCAzQgegiK0KZkF67B/2vk4vfJbI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,27 +95,190 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
------ Urspr=C3=BCngliche Mail -----
-> Von: "Arnd Bergmann" <arnd@arndb.de>
->>> Has anybody run into actual end user visible problems when using one of
->>> weirdo PAGE_OFFSET configs?
->>
->> In the past I saw that programs such as the Java Runtime (JRE) ran into
->> address space limitations due to a 2G/2G split on embedded systems.
->> Reverting to a 3G/1G split fixed the problems.
->=20
-> Right, that makes sense, given the tricks they likely play on the
-> virtual address space. Are the 2GB devices you maintain using a JRE,
-> or was this on other embedded hardware? How common is Java still in
-> this type of workload?
+On Wed, Oct 01, 2025 at 03:25:22PM -0700, Alexei Starovoitov wrote:
+> On Tue, Sep 30, 2025 at 9:57 PM JP Kobryn <inwardvessel@gmail.com> wrote:
+> >
+> > When reading cgroup memory.stat files there is significant work the kernel
+> > has to perform in string formatting the numeric data to text. Once a user
+> > mode program gets this text further work has to be done, converting the
+> > text back to numeric data. This work can be expensive for programs that
+> > periodically sample this data over a large enough fleet.
+> >
+> > As an alternative to reading memory.stat, introduce new kfuncs to allow
+> > fetching specific memcg stats from within bpf cgroup iterator programs.
+> > This approach eliminates the conversion work done by both the kernel and
+> > user mode programs. Previously a program could open memory.stat and
+> > repeatedly read from the associated file descriptor (while seeking back to
+> > zero before each subsequent read). That action can now be replaced by
+> > setting up a link to the bpf program once in advance and then reusing it to
+> > invoke the cgroup iterator program each time a read is desired. An example
+> > program can be found here [0].
+> >
+> > There is a significant perf benefit when using this approach. In terms of
+> > elapsed time, the kfuncs allow a bpf cgroup iterator program to outperform
+> > the traditional file reading method, saving almost 80% of the time spent in
+> > kernel.
+> >
+> > control: elapsed time
+> > real    0m14.421s
+> > user    0m0.183s
+> > sys     0m14.184s
+> >
+> > experiment: elapsed time
+> > real    0m3.250s
+> > user    0m0.225s
+> > sys     0m2.916s
+> 
+> Nice, but github repo somewhere doesn't guarantee that
+> the work is equivalent.
+> Please add it as a selftest/bpf instead.
+> Like was done in commit
+> https://lore.kernel.org/bpf/20200509175921.2477493-1-yhs@fb.com/
+> to demonstrate equivalence of 'cat /proc' vs iterator approach.
 
-Sorry for the late reply, I was on vacation.
++1.
 
-No, the devices with the JRE issues are from a different customer.
-Since I work as a consultant lots of strange issues get thrown my way
+> 
+> >
+> > control: perf data
+> > 22.24% a.out [kernel.kallsyms] [k] vsnprintf
+> > 17.35% a.out [kernel.kallsyms] [k] format_decode
+> > 12.60% a.out [kernel.kallsyms] [k] string
+> > 12.12% a.out [kernel.kallsyms] [k] number
+> >  8.06% a.out [kernel.kallsyms] [k] strlen
+> >  5.21% a.out [kernel.kallsyms] [k] memcpy_orig
+> >  4.26% a.out [kernel.kallsyms] [k] seq_buf_printf
+> >  4.19% a.out [kernel.kallsyms] [k] memory_stat_format
+> >  2.53% a.out [kernel.kallsyms] [k] widen_string
+> >  1.62% a.out [kernel.kallsyms] [k] put_dec_trunc8
+> >  0.99% a.out [kernel.kallsyms] [k] put_dec_full8
+> >  0.72% a.out [kernel.kallsyms] [k] put_dec
+> >  0.70% a.out [kernel.kallsyms] [k] memcpy
+> >  0.60% a.out [kernel.kallsyms] [k] mutex_lock
+> >  0.59% a.out [kernel.kallsyms] [k] entry_SYSCALL_64
+> >
+> > experiment: perf data
+> > 8.17% memcgstat bpf_prog_c6d320d8e5cfb560_query [k] bpf_prog_c6d320d8e5cfb560_query
+> > 8.03% memcgstat [kernel.kallsyms] [k] memcg_node_stat_fetch
+> > 5.21% memcgstat [kernel.kallsyms] [k] __memcg_slab_post_alloc_hook
+> > 3.87% memcgstat [kernel.kallsyms] [k] _raw_spin_lock
+> > 3.01% memcgstat [kernel.kallsyms] [k] entry_SYSRETQ_unsafe_stack
+> > 2.49% memcgstat [kernel.kallsyms] [k] memcg_vm_event_fetch
+> > 2.47% memcgstat [kernel.kallsyms] [k] __memcg_slab_free_hook
+> > 2.34% memcgstat [kernel.kallsyms] [k] kmem_cache_free
+> > 2.32% memcgstat [kernel.kallsyms] [k] entry_SYSCALL_64
+> > 1.92% memcgstat [kernel.kallsyms] [k] mutex_lock
+> >
+> > The overhead of string formatting and text conversion on the control side
+> > is eliminated on the experimental side since the values are read directly
+> > through shared memory with the bpf program. The kfunc/bpf approach also
+> > provides flexibility in how this numeric data could be delivered to a user
+> > mode program. It is possible to use a struct for example, with select
+> > memory stat fields instead of an array. This opens up opportunities for
+> > custom serialization as well since it is totally up to the bpf programmer
+> > on how to lay out the data.
+> >
+> > The patch also includes a kfunc for flushing stats. This is not required
+> > for fetching stats, since the kernel periodically flushes memcg stats every
+> > 2s. It is up to the programmer if they want the very latest stats or not.
+> >
+> > [0] https://gist.github.com/inwardvessel/416d629d6930e22954edb094b4e23347
+> >     https://gist.github.com/inwardvessel/28e0a9c8bf51ba07fa8516bceeb25669
+> >     https://gist.github.com/inwardvessel/b05e1b9ea0f766f4ad78dad178c49703
+> >
+> > Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
+> > ---
+> >  mm/memcontrol.c | 67 +++++++++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 67 insertions(+)
+> >
+> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> > index 8dd7fbed5a94..aa8cbf883d71 100644
+> > --- a/mm/memcontrol.c
+> > +++ b/mm/memcontrol.c
+> > @@ -870,6 +870,73 @@ unsigned long memcg_events_local(struct mem_cgroup *memcg, int event)
+> >  }
+> >  #endif
+> >
+> > +static inline struct mem_cgroup *memcg_from_cgroup(struct cgroup *cgrp)
+> > +{
+> > +       return cgrp ? mem_cgroup_from_css(cgrp->subsys[memory_cgrp_id]) : NULL;
+> > +}
+> > +
+> > +__bpf_kfunc static void memcg_flush_stats(struct cgroup *cgrp)
+> > +{
+> > +       struct mem_cgroup *memcg = memcg_from_cgroup(cgrp);
+> > +
+> > +       if (!memcg)
+> > +               return;
+> > +
+> > +       mem_cgroup_flush_stats(memcg);
+> > +}
+> 
+> css_rstat_flush() is sleepable, so this kfunc must be sleepable too.
+> Not sure about the rest.
+> 
+> > +
+> > +__bpf_kfunc static unsigned long memcg_node_stat_fetch(struct cgroup *cgrp,
+> > +               enum node_stat_item item)
+> > +{
+> > +       struct mem_cgroup *memcg = memcg_from_cgroup(cgrp);
+> > +
+> > +       if (!memcg)
+> > +               return 0;
+> > +
+> > +       return memcg_page_state_output(memcg, item);
+> > +}
+> > +
+> > +__bpf_kfunc static unsigned long memcg_stat_fetch(struct cgroup *cgrp,
+> > +               enum memcg_stat_item item)
+> > +{
+> > +       struct mem_cgroup *memcg = memcg_from_cgroup(cgrp);
+> > +
+> > +       if (!memcg)
+> > +               return 0;
+> > +
+> > +       return memcg_page_state_output(memcg, item);
+> > +}
+> > +
+> > +__bpf_kfunc static unsigned long memcg_vm_event_fetch(struct cgroup *cgrp,
+> > +               enum vm_event_item item)
+> > +{
+> > +       struct mem_cgroup *memcg = memcg_from_cgroup(cgrp);
+> > +
+> > +       if (!memcg)
+> > +               return 0;
+> > +
+> > +       return memcg_events(memcg, item);
+> > +}
+> > +
+> > +BTF_KFUNCS_START(bpf_memcontrol_kfunc_ids)
+> > +BTF_ID_FLAGS(func, memcg_flush_stats)
+> > +BTF_ID_FLAGS(func, memcg_node_stat_fetch)
+> > +BTF_ID_FLAGS(func, memcg_stat_fetch)
+> > +BTF_ID_FLAGS(func, memcg_vm_event_fetch)
+> > +BTF_KFUNCS_END(bpf_memcontrol_kfunc_ids)
+> 
+> At least one of them must be sleepable and the rest probably too?
+> All of them must be KF_TRUSTED_ARGS too.
 
-I wouldn't say Java is super common but I still see it from time to time.
-=20
-Thanks,
-//richard
+The *_fetch ones don't need to be sleepable. Will marking them sleepable
+here make them more restrictive?
+
+> 
+> > +
+> > +static const struct btf_kfunc_id_set bpf_memcontrol_kfunc_set = {
+> > +       .owner          = THIS_MODULE,
+> > +       .set            = &bpf_memcontrol_kfunc_ids,
+> > +};
+> > +
+> > +static int __init bpf_memcontrol_kfunc_init(void)
+> > +{
+> > +       return register_btf_kfunc_id_set(BPF_PROG_TYPE_TRACING,
+> > +                                        &bpf_memcontrol_kfunc_set);
+> > +}
+> 
+> Why tracing only?
+
+I can see sched_ext using these to make fancy scheduling decisions and
+definitely bpf oom-killer will need these.
 
