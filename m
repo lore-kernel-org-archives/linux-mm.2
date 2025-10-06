@@ -4,117 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36107CAC5B8
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 14:54:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38FD6CCA471
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Oct 2025 14:55:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 924098E0009; Mon,  6 Oct 2025 10:54:38 -0400 (EDT)
+	id 8FFDC8E001B; Mon,  6 Oct 2025 10:55:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FBB48E0002; Mon,  6 Oct 2025 10:54:38 -0400 (EDT)
+	id 8AF9D8E0002; Mon,  6 Oct 2025 10:55:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8114A8E0009; Mon,  6 Oct 2025 10:54:38 -0400 (EDT)
+	id 7C5A68E001B; Mon,  6 Oct 2025 10:55:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F3E18E0002
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 10:54:38 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5059811A7D3
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 14:54:36 +0000 (UTC)
-X-FDA: 83967985752.30.6428D37
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 5FDC3180003
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 14:54:34 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GVtnG6up;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6AA5B8E0002
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 10:55:24 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 306F91A049C
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 14:55:24 +0000 (UTC)
+X-FDA: 83967987768.17.5D94F97
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf09.hostedemail.com (Postfix) with ESMTP id D4B4614000B
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 14:55:21 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2aMSnF0v;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=M5eZAvfL;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2aMSnF0v;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=M5eZAvfL;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759762474;
+	s=arc-20220608; t=1759762522;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=/nMWZC6mx2lLvBlTIQHePU7b4rUHTiXGBCIFc1BcdqQ=;
-	b=X5ltI487q2+i8gnjHjKVki+TfVhj5N3Bqm1MRYZFj4tHlxBHkimaYAh4B34IkSc1gJz4F3
-	RWhmn8i0geIE6HRznCGO8iREs+TbMYRo96PLfn2w+ZG0RBdEL3dV1OTdkRWFvLRe4EbHjA
-	B3nJ6RyNrpeurBqwye1yMsH8peZzhvU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759762474; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4fqqFaLRqApP2CnNxjsITNJnHLiuJAc6kIlab9Tf0uA=;
+	b=XqGfhTPY/cJj1bDAdwg5OLJ5LkS+3ZonPG78XrFTIQvjFxBLRESHfmErADMHkdrRqWl+wJ
+	9zkD6FTd87swjf/jMi85sWG5LkLma1ZcvRThhtkB7EgGzhU9tjLW9i9IClUfb+rCsJLm6y
+	ina9Tq4GG8EO+rqj/mGIB7qvK7T3k6A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759762522; a=rsa-sha256;
 	cv=none;
-	b=uOZgQqYhmjwXIeYy3bd22jMuoTNNw4glk+qNmTFUMEzfq0oLJZbNqbW9KplrkM987Q8+Hv
-	Z1UVNmEPodiveXHKAkwgPclgXpz12FMVnOPQbL7vk8rg3o8nhm5Bg6X4CscVQ9kypWAvt2
-	lW3o47o1hPCyq5x9QtuPRT76UXX2WD4=
+	b=5qPqQdWzZaWOTMnxuFTGsVHR4xPiVOJ8EOFYygVVuzPop4dxYaWkp1sjGker8iBMRj/gwZ
+	thcok0h/BOPAepr+u+CSsNNmNjOanWf7Hcp6ZGWlc8L6CCCf+x1E6ZJ19aU9c/wBg072tT
+	SyibB6uj1BETidhsLXHa1p6gvPC6m3g=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GVtnG6up;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-71d71bcab6fso50921197b3.0
-        for <linux-mm@kvack.org>; Mon, 06 Oct 2025 07:54:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759762473; x=1760367273; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/nMWZC6mx2lLvBlTIQHePU7b4rUHTiXGBCIFc1BcdqQ=;
-        b=GVtnG6upz8lwPS11oTUUWOiXtRPRbAcZw2SBKHBz5RUnuGDQ1d2VxKjqpJ29mCwghC
-         Xco0KDyR7B8jr8akKowi4mcjFlF9hm50hii0858ANkunQHqWn1OVzwNI9IvxDugBmSFk
-         IVgwnEQsijjfr2PPF4EVaOUjz0litBcgmAfvFxqsjZr+vt02rZb5Df5NqMX2zQYNS+lp
-         kc/vWwixbiyVqGjniZZk7Sz/ogHeBMJoqgjqSqWCPqdZwpls+TGwwlYICFs8AM/089Mf
-         oNoxCoqY2oe2JCUtC1QZ7npFjB/Q5unDgLko6IENHHLsuWlxpnCRmFLLbSyWN4HQovGZ
-         Tfaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759762473; x=1760367273;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/nMWZC6mx2lLvBlTIQHePU7b4rUHTiXGBCIFc1BcdqQ=;
-        b=MOj4itySGMKOuBmswGHuiPu7Br8X4muaLSGgQXPA9B0d0DEBzNg8tgglFSpc8PojdQ
-         gjrBeM2JunndtAwJ6jgQR+c26XO1nOhaLns1WBBRYPD9e4yvap+cwSGNzWArgTl2ukeQ
-         jbgAUD6avfsemYK70yTiQNQzEnx66kMaYanYjNun+1QhIzk0kcM1cXvBaZ+Ew+GZn/f0
-         dN3Mzc5zIrfkSVAmZD2Iu33MYbKSoyH1glGahmwYhXKJGXckTwqgsOI2QGZC1u38R7tq
-         TpmvEDfbp1fWQd7FDvEQTu2+f81swOu6WnW8qIJtwiV7M18IIP3HYakHzOeoYZmICL0T
-         OMQA==
-X-Forwarded-Encrypted: i=1; AJvYcCWK2Jxwv3l7Jt3fhZTYN3xrFPlNsznM3YDrtSxG1fc46D65US9TBkyDNYUuZoKchkuvwZylADYkLg==@kvack.org
-X-Gm-Message-State: AOJu0YxD4vp49yHjvlXdUxSmAe0J2OMqoHFNpugh4t8YMD+76YkyS+ff
-	59BhU3oIwvl6gIiPvNY8WrkfywaXzxvXfSEKT9jJ0NZIbBvdh84QMctO
-X-Gm-Gg: ASbGnctSyQkc1BWfGy0IuAYfmsmWtFgrB3Mc2bjRE/8moOTmGADycPM2bIpqDzZH7ih
-	8wRx76tsOQssB/dwtE3dApKQDMf4IJnrSApnoNLZgtlqQMZoxGz+e8ARPAWZY9yw4j46WScBT1D
-	u6p/xdo/kJEhbh/XePhQLkJ8zLmTgJW4Qc0zmJa3lanPveQOFTq9OrpgTY8Vf+HZUnFtZzaUpqQ
-	vUjiYXTnqEfM4Bfyjv+8hvDfX32lUMI+caCv4SQnNLBgMkSUkw5mLGpRCoyWnzs/4rKiIO+M+PL
-	WRPxEdmQ7zBxzP1eot/zYwQpOw6LjzUq1hK5GFDgh4upctE+6b0DYLVT9wm2TqLRGL5klXY7otZ
-	IPZ03EwSXdn8UKZ1qqLU+eRpnZTX8ZnTdaHthWunPGXcX3/EhGLZervkBGUiizyq/82e0ZB9YnL
-	dwrzulLBBN3zJL
-X-Google-Smtp-Source: AGHT+IGgzF4VnegrQWIU5b5yBOpwKcD6TgCX+7ECIXBS4CzsiVPeoDVDYAGiYdKi3P9JWovBlwsomg==
-X-Received: by 2002:a05:690c:6202:b0:729:62ec:9185 with SMTP id 00721157ae682-77f946783e2mr158179967b3.39.1759762473144;
-        Mon, 06 Oct 2025 07:54:33 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:9::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-77fa470f315sm26419187b3.10.2025.10.06.07.54.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Oct 2025 07:54:32 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC] [PATCH] mm/page_alloc: pcp->batch tuning
-Date: Mon,  6 Oct 2025 07:54:31 -0700
-Message-ID: <20251006145432.4132418-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	imf09.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2aMSnF0v;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=M5eZAvfL;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2aMSnF0v;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=M5eZAvfL;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 179442227F;
+	Mon,  6 Oct 2025 14:55:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1759762519; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4fqqFaLRqApP2CnNxjsITNJnHLiuJAc6kIlab9Tf0uA=;
+	b=2aMSnF0vFaUTQlRjBeQC73mAUaJTiKhdaESayJJ7YIWh5slZz+JplwjOH9AQcRWxItehy9
+	q/JF7THrUN1SgjARnPr79+jlwXqYvCA9XWXB7azw4seXgLKhauwx3vrJGbVNhCGR1uIZ0L
+	Z20kEFq43f6quNgNrSVGvKEXbBxG24k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1759762519;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4fqqFaLRqApP2CnNxjsITNJnHLiuJAc6kIlab9Tf0uA=;
+	b=M5eZAvfLOdBG4iQO2ffuDrnOH69ngkkcpu7+bOKxVaJMVvSED9zYyCAoDDkHJ6gOqsbKEL
+	NGcUGsk6NFbu4YCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1759762519; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4fqqFaLRqApP2CnNxjsITNJnHLiuJAc6kIlab9Tf0uA=;
+	b=2aMSnF0vFaUTQlRjBeQC73mAUaJTiKhdaESayJJ7YIWh5slZz+JplwjOH9AQcRWxItehy9
+	q/JF7THrUN1SgjARnPr79+jlwXqYvCA9XWXB7azw4seXgLKhauwx3vrJGbVNhCGR1uIZ0L
+	Z20kEFq43f6quNgNrSVGvKEXbBxG24k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1759762519;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4fqqFaLRqApP2CnNxjsITNJnHLiuJAc6kIlab9Tf0uA=;
+	b=M5eZAvfLOdBG4iQO2ffuDrnOH69ngkkcpu7+bOKxVaJMVvSED9zYyCAoDDkHJ6gOqsbKEL
+	NGcUGsk6NFbu4YCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F173013995;
+	Mon,  6 Oct 2025 14:55:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id pQnvOlbY42jVJQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 06 Oct 2025 14:55:18 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 8A3EAA0ABF; Mon,  6 Oct 2025 16:55:14 +0200 (CEST)
+Date: Mon, 6 Oct 2025 16:55:14 +0200
+From: Jan Kara <jack@suse.cz>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Amir Goldstein <amir73il@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v1] fsnotify: Pass correct offset to fsnotify_mmap_perm()
+Message-ID: <uyh6y4qjuj6vcpsdnexwl2xqf2jnp6ejj7esr3g3hix66ml2zi@pqsbsjtt6apl>
+References: <20251003155238.2147410-1-ryan.roberts@arm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Stat-Signature: e6z8hdb656658133jnz7hmjuef7xf8qb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251003155238.2147410-1-ryan.roberts@arm.com>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5FDC3180003
-X-HE-Tag: 1759762474-127700
-X-HE-Meta: U2FsdGVkX1/swjVTX7eDVJHZXjaw0T2DJUTuyIvqFRHLJxT959r4FrPIejLrI3Wr66niAv2vyr7revE4gzOObKZ2wW8XhYUnlYQpfse+0NiBV6mlilJraxDZTVsmxhKHtS/Klc+6xFg/8TMYGpEoGKMUZ8WZ9ZobD56ZrvkYaqi6rxI7Ux/6AJqdG+0XzvHeUdwXY6v/MejgOURiymkuT6tylJdfacOkEl6P/JwiWjz22HDqrbTnJLyZcQPXovxuScgHWlhR9gw78cLzRB5S5ouQkJRxKCppf/Db3qqXKd5bC1bc9nT9Lts3c3xIz+EI4o/bjWD1n6qzDxg/83/dC1zmwmZ0LPSoLA0pSBOn2nC61xiy82XvLULp3bcA2Oy5zR8NnWin0JiYwBwxVVuQPsjCJK4hZR2jOtXung+tkI8FqHWuOJokS3B+466EHU5Q5bYE1OVbvvooiZ5e+TWGmuXustJ2nPPcOj0PLkPNZ3/qyz6kSKvY0idbluNStDEasoI+eZglaIcgBNGmNArEAZ6tRjisLjAX4goJGzojxS/7rMwijb7IOc2aUrRPUjXXUzKa4CZCtbC22jrRa2w15n6X+JSwm4tlxqt/lfuVJw5IGF73blY6SSUAfAIWVfmjLPqY05covl6ifXZQetkGzTG+Zno5Bm/d5PDPD9MgH9iVJ4X8K9egqUJ3Jfa96wYECGPLTTDya/HbtskH7ycfNt2qI9StMVwQ1HqKW0GfQHHEFGhBBfACMIQgum2647ohYfLmX/ClXCQOeTVon0r4nPLTjKGAc8IqwGsr7wWvkJ5WkxEQ4OM9ZFTQK+LVv9PHofcQt0o9g+dEFFeSb4dB/2Boc4LZ/ZGYR9q/YdiLAoCLNI0ILCcRLyQ+elIjzE1/qnwQLstQsNm+AzZPUuAotFC4G4Fnnbtjeblpu6/bUw8rzFjfFcQT0ayescB8JoUILulbWhLJvPx4HQYhkhD
- BkWjNpu+
- akkC0lQUx0euwp7m163XjOy3s8B2Md7h3RJfX970GzZ66E5E/XrfI+SxVjtKN3yHy5zpnm90e5p4bKjQh/s3B8mY16nB4bs3qZSrFCt862wRa05OzRCBw4LlXmqgh+mmvbjsicKf1+KQBNx4/RKceoj8jdrCr7UjwTiCZ8ZcumtrcSCSgQSltGlZMfp/CU6OfdTsIZ/wnZLG8oXtKJwVnR0kuVuzMjR62lwGjQCMbdRc/UMordczGWeidQSYJydpm1QT62JuvVVJ/YsISTnX7jrOtTLjKImnqM/XrHWdVhE9b2DuG1BP3cY+DqOl42vl96zTMHDLRhslLGibfB58DvBmbkj9sJT4g4uHrPIDIDRvsC28otDYLiskRESr/7QHYuCpl4lyYyUDc9g/UTZ3GzBBbYRBhZiPq+io0HH+F9CuyE2EzDsbcX+vZNeUOiU2V1aE5pE+m3bdfBKpdByKJCAV6IJ2ZTpFmrs3WAueF6eRjT0jiTwGLx/45wlyoYSA6uhlfxG62VS2TWAZ70whca+2UI2lfiVtPyLjzazRitUZSLdIEyjqx2qkoig==
+X-Rspamd-Queue-Id: D4B4614000B
+X-Rspamd-Server: rspam02
+X-Stat-Signature: agj8oz7g3epgk3u9w6kcwxb6ngpezy38
+X-HE-Tag: 1759762521-122856
+X-HE-Meta: U2FsdGVkX19DFu1dbm9DC84X+XJLZr9SlbVdp6MSMEr2uHlOyADhxKZFTGCxXoxRCCwMeXysYw3MWnTDiJIuzljm3btDrFJi6LS04Hyjp3d5eHXS8Yn3v6bOH1UMe2IkMubPglAAwzf7WmtPiZHOm+SFwTcHY5JygIuhoHdE97yzQce69TTA6ClMfE5nphXpEoLHdmrmhurOJw4n3fMNp0T5r04PKwfbpLbttshh7vUni3pcoP8FQMxa+P/E67VrsUHXY/KyLAEa7pNl1Gf48SncoXYICbS8ws/p0mWjNm/QK/LEzPm5HwmOPQBbENXHY9QYed2yYzlnKGShuBrTPQXfhAk84m8R5QrvcxqZS5HuraqCoX2Yp8J1Eg4/S2feUhEEvKa5B1YH4KEMSrEQ/LGG61LPWoRcnllrDv898QvLa0UunZYe3ymZVljawIwKvG0unmT/dgVSLzJdMhkca4izBFUG4N034Il649ILwY+WYPePrdsNnfU+tdfulXTf57K4iszWR9AuN8tntmElfntCFbBMf78JG+/CxGVvCuLASItZCKDBskx6gSL2B7qL6nKWZQGIlh7RQfIlIxwwTRRnfYwoWEGtvX0i0qz4Tb4gJ1U9ZHcoY+B8XcW+mRMdZM8LjVAzMxD8OnE0vyinR9hl5vw3InyLQSMExBBK1701bdb3E7TmnJN+pk5ndlT5/2gNaR4SsS/OadfsEJRiaaFCPyxJTj5xrqahTcS0e3UKTsE8DsUB/jEQOouqOQYFYjVWxGiNsrYvZSMc+ZooM+UVY3mOiX0vwLH+Uke4u5Co4GUqq9bgdDXJqGJVWtJrOSFbP4CA7qeB9VWdqZCEfoHKuIZ0ZsyznDOrH9LK98Ma9moAMBU/NmArHFiYKNmEP1wjESTESeEcKaixNZ9Sehfmc3dD7Fht5zxuRrwo4mAhuDTikzNWneHD4Y7ItlQFoVBiOslSKOXbz1YyD42
+ eSljUbY3
+ rm8Ulzhm/9lLQmOEZGtfT0KmpAgjYuTeRfcS1n+xJYug800YT39NuQmod01bSRsOr4gu5UXu4Y2OnD358PczqNt2UjyjB32nQ7BsbCBTx8D9QelLkWS5cn7ABA752o3UweZDknNFaenFEqy+/Fr2o6apUFQYYlvmiasNdcGEZGEK0YXQfF8B49t+FqDHKYgnVkslEZDNM6lUl1JqWIRSKZiudPqeN/gHRThGR1i8oLusph+/ikzkUJzA/2rJbXZKtz8dmmDd8KSH8vpNY6lXNfWeDrfd2nrGK9TVdR/TPlfByPrArmcukGV3fN0BTdsMDBRsTz0IbBqWO29c37D9pmAI7R9anF5hfmzfZo8rZgHSbkzOJmbZy3IsMjmpGTVhWYYS9SEUY2xg+w992ciqnEYVz/VbQDtGZDJDCSDNcKUU9ScKIEsDQUtOvbPEzpuqaIElOsDSfe8miCoBbgExzBTp/fw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,66 +137,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Recently while working on another patch about batching
-free_pcppages_bulk [1], I was curious why pcp->batch was always 63 on my
-machine. This led me to zone_batchsize(), where I found this set of
-lines to determine what the batch size should be for the host:
+On Fri 03-10-25 16:52:36, Ryan Roberts wrote:
+> fsnotify_mmap_perm() requires a byte offset for the file about to be
+> mmap'ed. But it is called from vm_mmap_pgoff(), which has a page offset.
+> Previously the conversion was done incorrectly so let's fix it, being
+> careful not to overflow on 32-bit platforms.
+> 
+> Discovered during code review.
+> 
+> Cc: <stable@vger.kernel.org>
+> Fixes: 066e053fe208 ("fsnotify: add pre-content hooks on mmap()")
+> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+> ---
+> Applies against today's mm-unstable (aa05a436eca8).
 
-	batch = min(zone_managed_pages(zone) >> 10, SZ_1M / PAGE_SIZE);
-	batch /= 4;		/* We effectively *= 4 below */
-	if (batch < 1)
-		batch = 1;
+Thanks Ryan! I've added the patch to my tree. As a side note, I know the
+callsite is in mm/ but since this is clearly impacting fsnotify, it would
+be good to add to CC relevant people (I'm not following linux-mm nor
+linux-kernel) and discovered this only because of Kiryl's link...
 
-All of this is good, except the comment above which says "We effectively
-*= 4 below". Nowhere else in the function zone_batchsize(), is there a
-corresponding multipliation by 4. Looking into the history of this, it
-seems like Dave Hansen had also noticed this back in 2013 [1]. Turns out
-there *used* to be a corresponding *= 4, which was turned into a *= 6
-later on to be used in pageset_setup_from_batch_size(), which no longer
-exists.
+								Honza
 
-This leaves us with a /= 4 with no corresponding *= 4 anywhere, which
-leaves pcp->batch mistuned from the original intent when it was
-introduced. This is made worse by the fact that pcp lists are generally
-larger today than they were in 2013, meaning batch sizes should have
-increased, not decreased.
-
-While the obvious solution is to remove this /= 4 to restore the
-original tuning heuristics, I think this discovery opens up a discussion
-on what pcp->batch should be, and whether this is something that should
-be dynamically tuned based on the system's usage, like pcp->high.
-
-Naively removing the /= 4 also changes the tuning for the entire system,
-so I am a bit hesitant to just simply remove this, even though I believe
-having a larger batch size (this means the new default batch size will
-be the # of pages it takes to get 1M) can be helpful for the general
-scale of machines running today, as opposed to 12 years ago.
-
-I've left this patch as an RFC to see what folks have to say about this
-decision.
-
-[1] https://lore.kernel.org/all/20251002204636.4016712-1-joshua.hahnjy@gmail.com/
-[2] https://lore.kernel.org/linux-mm/20131015203547.8724C69C@viggo.jf.intel.com/
-
-Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
----
- mm/page_alloc.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index d1d037f97c5f..b4db0d09d145 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -5815,7 +5815,6 @@ static int zone_batchsize(struct zone *zone)
- 	 * and zone lock contention.
- 	 */
- 	batch = min(zone_managed_pages(zone) >> 10, SZ_1M / PAGE_SIZE);
--	batch /= 4;		/* We effectively *= 4 below */
- 	if (batch < 1)
- 		batch = 1;
- 
-
-base-commit: 097a6c336d0080725c626fda118ecfec448acd0f
+>  mm/util.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/util.c b/mm/util.c
+> index 6c1d64ed0221..8989d5767528 100644
+> --- a/mm/util.c
+> +++ b/mm/util.c
+> @@ -566,6 +566,7 @@ unsigned long vm_mmap_pgoff(struct file *file, unsigned long addr,
+>  	unsigned long len, unsigned long prot,
+>  	unsigned long flag, unsigned long pgoff)
+>  {
+> +	loff_t off = (loff_t)pgoff << PAGE_SHIFT;
+>  	unsigned long ret;
+>  	struct mm_struct *mm = current->mm;
+>  	unsigned long populate;
+> @@ -573,7 +574,7 @@ unsigned long vm_mmap_pgoff(struct file *file, unsigned long addr,
+> 
+>  	ret = security_mmap_file(file, prot, flag);
+>  	if (!ret)
+> -		ret = fsnotify_mmap_perm(file, prot, pgoff >> PAGE_SHIFT, len);
+> +		ret = fsnotify_mmap_perm(file, prot, off, len);
+>  	if (!ret) {
+>  		if (mmap_write_lock_killable(mm))
+>  			return -EINTR;
+> --
+> 2.43.0
+> 
 -- 
-2.47.3
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
