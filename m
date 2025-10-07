@@ -4,185 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11BF9CCA476
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 08:03:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A2AACCD185
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 08:32:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6191F8E000D; Tue,  7 Oct 2025 04:03:09 -0400 (EDT)
+	id 399A68E000C; Tue,  7 Oct 2025 04:32:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F41D8E0005; Tue,  7 Oct 2025 04:03:09 -0400 (EDT)
+	id 370EE8E0005; Tue,  7 Oct 2025 04:32:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B7968E000D; Tue,  7 Oct 2025 04:03:09 -0400 (EDT)
+	id 2ADD48E000C; Tue,  7 Oct 2025 04:32:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C8A658E0005
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 04:03:08 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 61CCF14083C
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 08:03:08 +0000 (UTC)
-X-FDA: 83970577656.21.0C286A8
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E9A3B1C0002
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 08:03:05 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0v4Uq8qV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="aM7fIy/N";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0v4Uq8qV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="aM7fIy/N";
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1909B8E0005
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 04:32:21 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8CCA613BCCE
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 08:32:20 +0000 (UTC)
+X-FDA: 83970651240.13.CF0F4C3
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A1E451A000E
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 08:32:18 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=poFK5QJq;
+	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759824186;
+	s=arc-20220608; t=1759825939;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wmu0jNa2/LllNseazk+8f4BK8o7kNGrbiuBCDc9lhw8=;
-	b=ptL/vz9B3dnBVHj2jXjjghYZi9tN4osEzjyue6JrZlfzRnBsjmSAdv1JlKWPRJiMvBjx2M
-	gfeGFQN/lwSDgYmBiIhPgFfAOOAfRggBaxZu17rvRax/twDrhZGvkAGgC7RzMZTz1Br3wW
-	QHXUhhfLoyhStfD8o+lQmc80bAcNsro=
+	bh=708hk4v3K6U22ycgyF+Dfx1gxlMvrf8ku8x+RwSAqRg=;
+	b=GhOTfF4UAC3oBDAS2gHbZKMd9as3xqRAs3V8+lC59xUrR1cCqUO+wX58L6oqUQHptLH/Rb
+	vzBv0FgyhL7GKNJgZDeKtZYI/icEnpdiO5GAzbnghFQMKIiLaR0ZbVRAddtfcS9hE6FgeZ
+	tkifcEzyZgRBEtlx25T1C00CuJd/o6Q=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0v4Uq8qV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="aM7fIy/N";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0v4Uq8qV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="aM7fIy/N";
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759824186; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=poFK5QJq;
+	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759825939; a=rsa-sha256;
 	cv=none;
-	b=D9UowJUHskwTFLHlYUloZ3ypy7AfUuhEcBstokjTTJI7EuSIgZ/OYW6Hx+bu2bHdM0H8ym
-	9Uy6AfhtOTDIApZCTv9Z0AlRkrvfFNH0N2+fShQazbElO+uOQqENooLCvO5Z47PCg4kzU9
-	mxceSvZEnXQRWV9QXEF2f+AhxztXF0A=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7B031336EA;
-	Tue,  7 Oct 2025 08:03:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759824184; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	b=LP7JPNuTiJ0wMfpTeyUlYOh2uPIUhYOQ8h35Sw58WZGYENGU1aXtNTCna8VifYPjS4IvD5
+	vaT3zo+6UL6cZexGawKsQMmr5YfupQPGWMQehpqJvm7Y1qrKoN9GqA0X8r4VZBw57lQuXR
+	CljEq+TpG3XCVn8Hs0k0LhGgMgEVI7k=
+Message-ID: <c89256b8-bec3-4bc8-8399-cb44794f70f1@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1759825934;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wmu0jNa2/LllNseazk+8f4BK8o7kNGrbiuBCDc9lhw8=;
-	b=0v4Uq8qVqdpyIQTXWZMhi0xiuOHfNdqD2KhHikwNTITCGtnw3/FAXugEkhTAy5I98g7mqv
-	cii9qW8TMpCeS9mGner0atKe35oFbS3+TP1cD8g1T427rWUzh3OeBynhg6UbAZTWj0zIqj
-	vRxGjG8cpMLnzv/DXWBkN8tX3w7xBRo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759824184;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wmu0jNa2/LllNseazk+8f4BK8o7kNGrbiuBCDc9lhw8=;
-	b=aM7fIy/NK/MQR3O1zzSWlghajImgM+GAw8VkUdZsltf6m06mOctZK8IY9BqtYPYKWpGUT2
-	WKFGNdGfMI3lxjAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759824184; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wmu0jNa2/LllNseazk+8f4BK8o7kNGrbiuBCDc9lhw8=;
-	b=0v4Uq8qVqdpyIQTXWZMhi0xiuOHfNdqD2KhHikwNTITCGtnw3/FAXugEkhTAy5I98g7mqv
-	cii9qW8TMpCeS9mGner0atKe35oFbS3+TP1cD8g1T427rWUzh3OeBynhg6UbAZTWj0zIqj
-	vRxGjG8cpMLnzv/DXWBkN8tX3w7xBRo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759824184;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wmu0jNa2/LllNseazk+8f4BK8o7kNGrbiuBCDc9lhw8=;
-	b=aM7fIy/NK/MQR3O1zzSWlghajImgM+GAw8VkUdZsltf6m06mOctZK8IY9BqtYPYKWpGUT2
-	WKFGNdGfMI3lxjAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4DEF813AAC;
-	Tue,  7 Oct 2025 08:03:04 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Z8NYEjjJ5GiCMwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 07 Oct 2025 08:03:04 +0000
-Message-ID: <c750ab62-a3d4-422e-ac5b-c531dfcc749d@suse.cz>
-Date: Tue, 7 Oct 2025 10:03:04 +0200
+	 in-reply-to:in-reply-to:references:references;
+	bh=708hk4v3K6U22ycgyF+Dfx1gxlMvrf8ku8x+RwSAqRg=;
+	b=poFK5QJqDXcZYwm/pfaHunbTVH62Gwx6FqZESEIDH0vgX6lQXYC8rbj8UPeUdHGaDODAak
+	viQKiHuOefku37kxtGPpa8PnhP8iE+Kns9Tw5w4yDfaA/0yX0DrIOMyBYXpPosVIo31OEn
+	ki2kZeCXxQKJMQWzEEYm4GgIgb8sFXo=
+Date: Tue, 7 Oct 2025 16:32:07 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 00/23] SLUB percpu sheaves
+Subject: Re: [PATCH mm-new v2 3/3] mm/khugepaged: merge PTE scanning logic
+ into a new helper
 Content-Language: en-US
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Suren Baghdasaryan <surenb@google.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Uladzislau Rezki <urezki@gmail.com>,
- Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
- maple-tree@lists.infradead.org, Alexei Starovoitov <ast@kernel.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
- Qianfeng Rong <rongqianfeng@vivo.com>, Wei Yang <richard.weiyang@gmail.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- WangYuli <wangyuli@uniontech.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>
-References: <20250910-slub-percpu-caches-v8-0-ca3099d8352c@suse.cz>
- <aOS0Z5N4HaBNeb_J@infradead.org>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <aOS0Z5N4HaBNeb_J@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: Dev Jain <dev.jain@arm.com>
+Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, ryan.roberts@arm.com, baohua@kernel.org,
+ ioworker0@gmail.com, richard.weiyang@gmail.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, david@redhat.com
+References: <20251006144338.96519-1-lance.yang@linux.dev>
+ <20251006144338.96519-4-lance.yang@linux.dev>
+ <586f6282-ac7e-42d2-b132-0ba067623ddc@arm.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <586f6282-ac7e-42d2-b132-0ba067623ddc@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: pt7kxycnbhjyfw4ksb39btwagxh8zot3
+X-Rspamd-Queue-Id: A1E451A000E
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E9A3B1C0002
-X-Rspamd-Server: rspam03
-X-Stat-Signature: ttqjya9itufdxpichgj7ertziu81o5ap
-X-HE-Tag: 1759824185-367233
-X-HE-Meta: U2FsdGVkX18K4WPYJQ+orOuu4TPEu3Azd1kzexd2YAPxBSGP3Y0EhOJLAAEkWUkQ6a92Uls0PeoXdZ09DXZKm6pW0XLGGqrTfoyJruimP3FZVKc8nFaVjDNpiRin5Pk2VDNPi7iuyhG4GE6ZaPsiG+cFEvdpGpXh8BEcnyTeV3PdS+UZ7PTaEwYc8SoNqE2cAAgvHbx5EQ/gYLRjUWOCaugfWv+h6b4JHI+pTE5g9gzO+ZQfkZKjEWFtNk9ZZDokNjpxQX6WscYos3GxJHv0CPESinvpwxjduUku5hetMFSzB0AlSq2BJlAFPZduTujW42WPe3hEFjXE3e1vmbjDum7tUV7BPrsCqh+nP4Ec6EOqAqBs7B7/2lGIQeEfKm4RnaTNbfy07kTAuFuwpCrvJa1c5+KuYQk+v4P7+H3keKOYXtzYIN+3YLqAU6nMUmW3RhF5k/airgOqb7rS7UBlyPw9PCeA/Wf1Nleam3mZN84tyLJmAhFZuxOfxxfl/0pl3bMoCd2CwaAdD1fjSD1Uj1RkF+jT8HU5uNMgC6Dx1puhMu0h4aV2QnkgXGhiC8ZXqUB7p6CfUQk0NafOiE0x7sPK4SuL4MCy7u19Znzj2fafSvHYOXbA+z7ocVdnrP5GXQc0ZLLSkguYscFhGQUEHza46sdn9jmKWCnz7eQXqY1ZztIlcqVXM7x/ZaFGD9FDBQkXhR5snnILrfKSEFBs7mPHQo0sc6OD6kfi9+lWaypdSWj2mCZpNtPtl1YOHAGORy2Dp4JnipU2Iig/aHTW+lWKEw5Y80Vt/dGC723j50GYZJ30Fl8YQrktQx9iPwJGa1plaX6nuZRzNG5rtGDiRLWIIZP7pPBg6dT3zgA69qj9yGndJMHc7rK3Udn3Sw/paejljdsUmVB0cGFpsVy5fpKslzrvKCc6XmYUCtzuthlmaxms5gZYJMNbEnREm1h2S5igjyK812wmQn0nWFo
- C3zmT+YM
- +3XSKscsbyE+8YI7BZmcBznW534OfpsylTHwyNBfk2JBLsBKpUhRLHuy1R6tfG4SSheXeI6iF3cY0mWjfyMgybCznpGYgaq+VLf5jzdh1x+Sg0Xjl/Vzh56UOkRDacp+dbQIeTSnlTBfUqRFDtI40xdignYyry0mHOWQv6e/FO6JcvRtzLXFb3UaetvMN5YX2nUbmH/RXLZ6Nj5VxWGjjRFri1xzG9uEVgiob3+gLfUwZvpvEaJ7XcDKUckaXNjMCEEg0JLN/3pBA22cxzUJxY84zo27m8SQScHJEI7rBgQL+BAMTGD9qAK0jgwfwi5SENJa9
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1759825938-17406
+X-HE-Meta: U2FsdGVkX1+jChQSdgDZt3d2vSZrSXW5a7bmPP+bwHXNrSTkbclAlTDNBQowNfJFx0iR/kDLHsJpS/6dd8PmogFnxFOeVLgjHlQ8xMFtgLaTpkjdDFUOYe4nSrt4dh8muJhSo6YSEU6oQ6CQstnLIWNHAJf8yhIlzSfbB+WccQ1QiDZF8hCKFtyfPCmAJux3I213iuC1PxIr6Isv+8OMoVpv4GUpVSbBMn4LFIlm6gDR7tCGgc2fAHYUg/YsEM/BEg7mLuWwTiu4wyZ0ALi1z6op75txKctH6dgGvlHlj5sROAkOQAuSNCd7nbZik7FsFI9Toy0e+Jbtmc1lPpCEJea/G5ZD4QNoFq4N0DEQOeHXXAzCT3uRxbKnS5dKN0U0nboQGTVSLiv3WyM9tX1COVU5yNoINjYWRd8RD3vMx0buB0l3Gqnh5qtIIHLa/KIq0+IGcpv63qvJrpEMAnCfKEENVc2wwCPGczjhDdvHlrfvGeAQZ9XJ2LnlBRs2M7Clm0rD8tweeXgm0h5bHEC4a4PMXXfN5mPytUjX0cXA1UWr0ryN5PdhVP7l/6e3tN4j0CSo9sfljZzQqsoYCPNOm/h3FhQeHZLFxRSy2scVQW9bfJf/a8h5nZ5DRhpuxgU/FJmmmTL0Hd1fRXJMvmQ1w8LLwJQDFRIh8FOblQmHEQyl8TySGaOASfYK7xjAViNs6xv38BX1rksI4Drvdj5ERlTAc2QAlrZmrdVn1HMQdyDOZPcYWQ72zX1MeSZyuYP3O0JTc44ltVWJpM6XjWu3CsFKtZxZ/s8XTSa02Jk7HUyrKnJgQFYlpgfQY/tMM6DxKQzfQYVJJfa7pKqlx3mnZ0Lrz4GCc+RM1gMlWMbZ0knpuxNAKsbDZrPjpeDmroDtYBcW5u8UGbqd3JNRA9W+i44htvUnkCqmrId78PuxnGyaRKSRz4BhASqolY4023V64FtL4Qk6IO0F/j4rL1c
+ riwOoyDN
+ xPzYJOdbxEQzHlBgD3jaAOIJ6+29SuzAiVbbr1ThUdlQwK9Ll4tsPtKqpay98IQjNt1o9/F6Df5Na9pYa/1bMOWwyxk9Mvxx46dc/cL62HTMaCMei6IL43Gy14Rq0+d8Kvs212Be8zSoVUOQW90RXv2ym02kqhJqdaHmwpgpb/l6W/DlMLwiutcxhwt21XM9B7jiZSfOXBdueAKXoR3T2RuFdQLucoJUn2nbGYeiZMQWNUtFKcY2u0+z8USvMECEHFmP/OvRK68uDr99fZxmUGU/h5LM8O3J6BMASG3BvDa9dFPOMZQap2BD7Mg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -191,62 +96,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/7/25 08:34, Christoph Hellwig wrote:
-> On Wed, Sep 10, 2025 at 10:01:02AM +0200, Vlastimil Babka wrote:
->> Hi,
->> 
->> I'm sending full v8 due to more changes in the middle of the series that
->> resulted in later patches being fixed up due to conflicts (details in
->> the changelog below).
->> The v8 will replace+extend the v7 in slab/for-next.
+
+
+On 2025/10/7 14:28, Dev Jain wrote:
 > 
-> So I've been reading through this and wonder how the preallocation
-> using shaves is to be used.  Do you have example code for that
-> somewhere?
+> On 06/10/25 8:13 pm, Lance Yang wrote:
+>> +static inline int thp_collapse_check_pte(pte_t pte, struct 
+>> vm_area_struct *vma,
+>> +        unsigned long addr, struct collapse_control *cc,
+>> +        struct folio **foliop, int *none_or_zero, int *unmapped,
+>> +        int *shared, int *scan_result)
+> 
+> Nit: Will prefer the cc parameter to go at the last.
 
-Maple tree uses this but through its internal layers it's not super clear.
+Yep, got it.
 
-Basically it's for situations where you have an upper bound on the objects
-you might need to allocate in some restricted context where you can't fail
-but also can't reclaim etc. The steps are:
+> 
+>> +{
+>> +    struct folio *folio = NULL;
+>> +    struct page *page = NULL;
+>> +
+>> +    if (pte_none(pte) || is_zero_pfn(pte_pfn(pte))) {
+>> +        (*none_or_zero)++;
+>> +        if (!userfaultfd_armed(vma) &&
+>> +            (!cc->is_khugepaged ||
+>> +             *none_or_zero <= khugepaged_max_ptes_none)) {
+>> +            return PTE_CHECK_CONTINUE;
+>> +        } else {
+>> +            *scan_result = SCAN_EXCEED_NONE_PTE;
+>> +            count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
+>> +            return PTE_CHECK_FAIL;
+>> +        }
+>> +    } else if (!pte_present(pte)) {
+>> +        if (!unmapped) {
+>> +            *scan_result = SCAN_PTE_NON_PRESENT;
+>> +            return PTE_CHECK_FAIL;
+>> +        }
+>> +
+>> +        if (non_swap_entry(pte_to_swp_entry(pte))) {
+>> +            *scan_result = SCAN_PTE_NON_PRESENT;
+>> +            return PTE_CHECK_FAIL;
+>> +        }
+>> +
+>> +        (*unmapped)++;
+>> +        if (!cc->is_khugepaged ||
+>> +            *unmapped <= khugepaged_max_ptes_swap) {
+>> +            /*
+>> +             * Always be strict with uffd-wp enabled swap
+>> +             * entries. Please see comment below for
+>> +             * pte_uffd_wp().
+>> +             */
+>> +            if (pte_swp_uffd_wp(pte)) {
+>> +                *scan_result = SCAN_PTE_UFFD_WP;
+>> +                return PTE_CHECK_FAIL;
+>> +            }
+>> +            return PTE_CHECK_CONTINUE;
+>> +        } else {
+>> +            *scan_result = SCAN_EXCEED_SWAP_PTE;
+>> +            count_vm_event(THP_SCAN_EXCEED_SWAP_PTE);
+>> +            return PTE_CHECK_FAIL;
+>> +        }
+>> +    } else if (pte_uffd_wp(pte)) {
+>> +        /*
+>> +         * Don't collapse the page if any of the small PTEs are
+>> +         * armed with uffd write protection. Here we can also mark
+>> +         * the new huge pmd as write protected if any of the small
+>> +         * ones is marked but that could bring unknown userfault
+>> +         * messages that falls outside of the registered range.
+>> +         * So, just be simple.
+>> +         */
+>> +        *scan_result = SCAN_PTE_UFFD_WP;
+>> +        return PTE_CHECK_FAIL;
+>> +    }
+>> +
+>> +    page = vm_normal_page(vma, addr, pte);
+> 
+> You should use vm_normal_folio here and drop struct page altogether - 
+> this was also
+> noted during the review of the mTHP collapse patchset.
 
-- kmem_cache_create() with kmem_cache_args.sheaf_capacity to be enough for
-any reasonable upper bounds you might need (but also at least e.g. 32 to get
-the performance effect of sheaves in general - this will be autotuned in the
-followup work). If there's a possibility you might need more than this
-capacity in some rare cases, it's fine, just will be slower when it happens.
+Right, I missed that vm_normal_folio() was the way to go here :)
 
-- kmem_cache_prefill_sheaf() with size being your upper bound for the
-following critical section operation, you might get more but not less if
-that succeeds
-
-(enter critical section)
-
-- kmem_cache_alloc_from_sheaf(gfp, sheaf) - this is guaranteed to succeed as
-many times as the size you requested in your prefill. gfp is there only for
-__GFP_ZERO or __GFP_ACCOUNT, where the latter will breach the memcg limit
-instead of failing
-
-- kmem_cache_sheaf_size() tells you how much is left in the prefilled sheaf
-
-(exit critical section)
-
-- kmem_cache_return_sheaf() will return the sheaf with unused objects
-
-later freeing the objects allocated via prefilled sheaf is done normally
-
-- alternatively kmem_cache_refill_sheaf() for another round
-
-The whole point compared to preallocation via bulk alloc/bulk free is if you
-have a large upper bound for some corner case but only need few objects
-typically, this way will be more effective on average.
-
-If you preallocate and know you will use everything, you can keep using
-kmem_cache_alloc_bulk() and this won't give you extra benefits.
-
-
-
-
-
-
+Thanks for the pointer!
+Lance
 
