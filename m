@@ -4,84 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AD56CCA476
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 23:41:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C55A7CCA470
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 23:42:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D486D8E0011; Tue,  7 Oct 2025 19:41:17 -0400 (EDT)
+	id 115738E0012; Tue,  7 Oct 2025 19:42:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF8B18E0005; Tue,  7 Oct 2025 19:41:17 -0400 (EDT)
+	id 0ED478E0005; Tue,  7 Oct 2025 19:42:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0EA78E0011; Tue,  7 Oct 2025 19:41:17 -0400 (EDT)
+	id 003478E0012; Tue,  7 Oct 2025 19:42:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AFB908E0005
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 19:41:17 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4BD1F1A016A
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 23:41:17 +0000 (UTC)
-X-FDA: 83972941794.05.ADD8DBE
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 7C106A000D
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 23:41:15 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QqZrbH4y;
-	spf=pass (imf25.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id E49178E0005
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 19:42:11 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AE8825872E
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 23:42:11 +0000 (UTC)
+X-FDA: 83972944062.03.0FEE257
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf05.hostedemail.com (Postfix) with ESMTP id EBD9E10000A
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 23:42:09 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BlAiRmbo;
+	spf=pass (imf05.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759880530; a=rsa-sha256;
+	cv=none;
+	b=qR3cRjefaTm3EM7Hf+4WC0K+GWe1uGxcddzx2fy/CUFjasFPm5gETqPAzD1D3fbs3kPzM3
+	0NBHHkJvmgV6/3+EGfds24k2P850qlgHhOy7oCZ5Zo/5ZA57bkI200nwpVK7mAYzXpkFmd
+	0fRLsKkN/jLf1ZXDpT6MimW0e1jVNa4=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BlAiRmbo;
+	spf=pass (imf05.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759880475;
+	s=arc-20220608; t=1759880530;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZYXV+Qnwlv/z/wJbyc9UEz70EvXyBteIQP5Vd1/xMI0=;
-	b=KBv04IjO06jONlgqDRt0vukd2C5yzaH3as8vDITM9ixFIPioFg2jiwgcF7W9O8UnRZTUQD
-	OgvlM/FtRn5IvWHD7cOjYbHUheVKFL5JW4FyxsoNiz1SYirjC0b3bXAmBzVPMF8kf3yjNf
-	AvnnaSv130GfnJufmOSm09scw3IWJWo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759880475; a=rsa-sha256;
-	cv=none;
-	b=MX5gkJofdIXeLvpiHeBAG+V8hcYUJJ+WFmacHmZ3uYlNvJPc9kWIIZdO6YsVgDhN+YWaBa
-	8Li5GK8lpa9XvYWjWlZ1kE7G/S2G1Hd+QbjX454jCj544VTSID/W9oAoao2zPm51NX/G+u
-	qClblDjA8trpBMfn0Ly/Y9z+wY9G78o=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QqZrbH4y;
-	spf=pass (imf25.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Tue, 7 Oct 2025 23:41:08 +0000
+	bh=69vstxN5iaeMoAXTOwPIMnQcC6rAdKt4sbd5u04ANzU=;
+	b=HkN89nmIG84PS4zYmtsPoXvQ34wW7Dof0eEPvtWhvBJ+e2Uh14nBSQ+4DIE1VG+6/KlDQd
+	aQrwjn916wEDYGx3MXpYHdYWOD0hydNHuuP4sC8OHB18LrU6K/t10g/I7geukDJrK6Tb0A
+	i0FF/rFylhrxAWQF+kGkYEyIaFJpfSU=
+Date: Tue, 7 Oct 2025 23:42:01 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759880473;
+	t=1759880528;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZYXV+Qnwlv/z/wJbyc9UEz70EvXyBteIQP5Vd1/xMI0=;
-	b=QqZrbH4yImYyWUDdM+niZ73T8dgbBbJWK6HWt/+yM68ii/XRRp8ZvHsewlimuAj5NYkoea
-	C0D+GPzYNCbmybAPVpvUBt8JPvK75HU/JYLx22FePVwzMcdXJQM8bVjc9yoL0q30CgyCwF
-	uEijvTQnqXHjVXvLXN7FSPTVywP1Wsw=
+	bh=69vstxN5iaeMoAXTOwPIMnQcC6rAdKt4sbd5u04ANzU=;
+	b=BlAiRmboDCZPs7XL7X0mEv7qifobtDsgXHjmE+NVxUfqnUHgwNKlg1RYUpAdu8Mmv2mLET
+	7gyRyD6jDILB8Ig4aahNRrnYtIfkoUlZZKqjml5b2JsK/crvXZsZgbDvWfPIn1fVX1/8BJ
+	DHc/JefufH9NeS0RxKebXuEDXbhdqFA=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Nhat Pham <nphamcs@gmail.com>, kernel-team@meta.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCH 3/4] mm/zswap: s/red-black tree/xarray/
-Message-ID: <yo7yflwtjp3xjqnfkvuakxamvpxlv5jnukaij2vr5gdg546if6@xcooxyrm7awp>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	David Hildenbrand <david@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, kernel-team@meta.com, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 4/4] Docs/admin-guide/mm/zswap: s/red-black tree/xarray/
+Message-ID: <4mziyxqm3nide6fh7xlbwqkuex4yf2tn6yzkwhzmy4mamazbxk@53an3oyd7amv>
 References: <20251003203851.43128-1-sj@kernel.org>
- <20251003203851.43128-4-sj@kernel.org>
+ <20251003203851.43128-5-sj@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251003203851.43128-4-sj@kernel.org>
+In-Reply-To: <20251003203851.43128-5-sj@kernel.org>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 7o3u4x7drhszyjnbaqj9tw8rm4daj4i7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7C106A000D
-X-HE-Tag: 1759880475-326469
-X-HE-Meta: U2FsdGVkX1906YBP2FY6RMBxMmcjRGHCNKQsB7bD5gQrLjR88Vq9D7/1G0VU+bDgxC3c0M3trH6zeIS4/SpcElLlafhz3RUnkRwwJ8Q7OfQsi8rBqFHadEXdd4Q6gNlK4UF0ESJzB2q6uGUKDQGLz9wxbsmcq1D/hs9NYQUdXQ1Gj1IuA0tTDTHz5Ogj1rLDlaYdLjv7OnNL7h3GkIbJC6nxALNuVc2JYJBhrHBAYa0/W3+A+RvE2p2zl7GcR4hFZxWK0OnJ7XYL+vvWhx7666TqLwCdFSiP1jeKqR1o4f9GZYdddyvUcNzx8I5cw91JfUsIbivQ7MMzNFc7fBEdgnf2tk2iK70Zs6WqUiVrp1/jqqAYKJNxydm8TBenggcXsMHLx6IXqvfK7PXinuI0GkeJmRTgzmTOCsQgKROvKmnnYaDnl/gWiZq1NwQqvWVjF/1WVEjCBwo3Iby2FwkbpSU6bXq/mrmEPc5rluhYMPotyv6YvmQ7Ue0F/mDkwNVAqEqVihqYSNW4puzlzhPtagdjsUiTq5Spn+sVHQ9RQuEd3I7msX5a5TnnnOV329X1fiKZOWue3EFk3oWV5OP4wkSVxMMsKvTaiys4B4kqAShGPI2HrlVfdBxlFMYACcCs/ttcrEmUP40m4q7pOyX4g6p4Ptg+u4gyN1Dt6xvLZ+gynBBu/W/n1LE5NA80mbqIFLB+L+0uRLTOyWGAH4KyWk3ZoQGvXldNcbna4lli/3SGpq6TmRPyZ0QPRFk6iTmeAQxR4SJNe1wzIK1AMI7yTK+t0nBTK9xyB+1GID+CWDQYTYvdoYZCcC4K6TD3YBM8W3lL0zFKW/h2vyaaW2miaLMSwlt11eAosZKsSnMz/xEsH3QgG0p2wRyplzqZ1EoLUQ7Qj51a+QfEZvUIbEijD1gMUDBsOWsJrRGCo+4jWmMjeUyduJUJExhFSjfpifHV2msCjT+Ir69krheUTaI
- pEFg+9Ug
- b//qTgVPTGGaZupv4nITu5Ybl2BVMtpo5E/x4JsxSGgeFPzpmQ+nPlVjWdxwQ+Pa9oQ5yJ7pLfLgugQKq5nFTCvuFaftR/WJoFlY0qI4h7cP2fKz90+GOzjV5ZrF2MDy5LoDCQ9KY4ujSKfgq7DTq7IP85kwy/affc5RA+ZXwN+nxWTT2eD//4dL4xWdx01ViWMssWC6amOjmm9517IZuQU7V0PL95R1yZczj
+X-Stat-Signature: k8xuoomq7m7qbtms8jdj8izxe694afb8
+X-Rspamd-Queue-Id: EBD9E10000A
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1759880529-677470
+X-HE-Meta: U2FsdGVkX18KuLCkcgQ0L5NS4roVo2gYOWUtrpN9i8APKL4tpp7ml0WOT9LCqf9iqxfI4XisZFTeddilwx/i22M8J7KxAczy9xBnPlYi7CrmBpaj4LY+E3cc20xWmAggTt0FCMjtWHs8FFhpv6JU6F7z2R0GOoZQ9nQQGqIYIp9WQfI413jGkzONmKrqSyYLkBk0cfUF4J/97DBZihWmOWif2Vgtf2TAJsDj5WkpDKKLIV5edClxRkeZS3+D/0GyMHCRBGScz0lVpWouEFVb1FgDn5YYfhyJzQIqo3hBV/dz6mRkboCPzHZPa9ywIDIyUvJi1itvbG0yS/tqgk1/gmLiiXF/vCkFMUr+EWqphAh9MYtwyUd1tBpNMXG2hsNHIemIGvqPHOt7HtQdFf0L61BCDXYY8o7KRQStXgCpEHM+XAZPAGP5WyUfPgVUAiI5KB9PI8LcRmdTEgpcHquyfDof6lUmYw7MZKZqnT+RHzm0vUnOuWeXZzvOA0jNrwDssSlLjxOidky40+j6js2Yaw4IGdoPko6IG9mi0rZf6M6KBrbM8yVia1AQUnmNVDk/ColglIRXAN6+6WRqlZmsk1AAImu9a9z3neYRjzAfOpkIH94lnN48QOalRlpIRvaqgC+nHWuLMRu48KEanUepaeyBkZRKiHXXXFallsPLO7wpkdT1dSMbv+okyqU8x1T1b8lpUMkCtOt35Fbnkn2Rg8CldgB8L3E2qlYZ00Oh7RW9GOk+YUBtMIrJpQAUzZnayiXozc7Kp7EGBZo1DWbj+px9OtJgeMwesQN9xhnoGcY7U+GeWDeqzrnNtRhKS+hnM4sT+5R3Ndy/OemiCP/Nxdfy/5RCj/GxX6npk3xV0R8mHhM6eS8FosudPFIW2/hDrVFvH1qlKPbI6aKoHJkUp6xyfFm/egA8Qlq2J5lYEPlavS6hOox7BL67C7INp7H4NkMfiXiyq6fkXuaZ4Qq
+ 9u9Rcjn/
+ v/q8SFXx/aRYq8OiHkRvPW/F8qv4qJbD2tjKZaTimTsD9Igu/NloiESMJ6X5MHMx7RUHrBhip/dLweyIbw1bkLOFB7FxiD4LLROZIhHY/NvEGFNLath2i1EhvctMEoXTm2BQty/UL+boB7QT+DQt+xHYRBqxpAcb0M0ZSgoj4AD9D9sLL8TqErgIDZwpZ6LVODakZD50xlzEWbdrSiUwLrt5TnIWIRgfu85akTcZiL8BihTc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,31 +93,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 03, 2025 at 01:38:50PM -0700, SeongJae Park wrote:
-> Changes made by commit 796c2c23e14e ("zswap: replace RB tree with
-> xarray") is not reflected on a comment.  Update the comment.
+On Fri, Oct 03, 2025 at 01:38:51PM -0700, SeongJae Park wrote:
+> The change from commit 796c2c23e14e ("zswap: replace RB tree with
+> xarray") is not reflected on the document.  Update the document.
 > 
 > Signed-off-by: SeongJae Park <sj@kernel.org>
 
 Acked-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 
 > ---
->  mm/zswap.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  Documentation/admin-guide/mm/zswap.rst | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
 > 
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index f6b1c8832a4f..5d0f8b13a958 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -175,7 +175,7 @@ static struct shrinker *zswap_shrinker;
->   * This structure contains the metadata for tracking a single compressed
->   * page within zswap.
->   *
-> - * swpentry - associated swap entry, the offset indexes into the red-black tree
-> + * swpentry - associated swap entry, the offset indexes into the xarray
->   * length - the length in bytes of the compressed page data.  Needed during
->   *          decompression.
->   * referenced - true if the entry recently entered the zswap pool. Unset by the
+> diff --git a/Documentation/admin-guide/mm/zswap.rst b/Documentation/admin-guide/mm/zswap.rst
+> index 283d77217c6f..2464425c783d 100644
+> --- a/Documentation/admin-guide/mm/zswap.rst
+> +++ b/Documentation/admin-guide/mm/zswap.rst
+> @@ -59,11 +59,11 @@ returned by the allocation routine and that handle must be mapped before being
+>  accessed.  The compressed memory pool grows on demand and shrinks as compressed
+>  pages are freed.  The pool is not preallocated.
+>  
+> -When a swap page is passed from swapout to zswap, zswap maintains a mapping
+> -of the swap entry, a combination of the swap type and swap offset, to the
+> -zsmalloc handle that references that compressed swap page.  This mapping is
+> -achieved with a red-black tree per swap type.  The swap offset is the search
+> -key for the tree nodes.
+> +When a swap page is passed from swapout to zswap, zswap maintains a mapping of
+> +the swap entry, a combination of the swap type and swap offset, to the zsmalloc
+> +handle that references that compressed swap page.  This mapping is achieved
+> +with an xarray per swap type.  The swap offset is the search key for the xarray
+> +nodes.
+>  
+>  During a page fault on a PTE that is a swap entry, the swapin code calls the
+>  zswap load function to decompress the page into the page allocated by the page
 > -- 
 > 2.39.5
 
