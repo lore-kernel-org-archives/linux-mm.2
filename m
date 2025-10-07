@@ -4,85 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54FFFCCA470
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 22:24:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7019ECCA470
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 22:34:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 836C78E000B; Tue,  7 Oct 2025 18:24:33 -0400 (EDT)
+	id 8BFAF8E000D; Tue,  7 Oct 2025 18:34:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 80DB58E0002; Tue,  7 Oct 2025 18:24:33 -0400 (EDT)
+	id 8707B8E0002; Tue,  7 Oct 2025 18:34:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 772758E000B; Tue,  7 Oct 2025 18:24:33 -0400 (EDT)
+	id 7AD468E000D; Tue,  7 Oct 2025 18:34:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 67D678E0002
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 18:24:33 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 166601DF37B
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 22:24:33 +0000 (UTC)
-X-FDA: 83972748426.27.F9E8CE8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 50B95180009
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 22:24:31 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ukVAcROf;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 685CD8E0002
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 18:34:28 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 163F2586B1
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 22:34:28 +0000 (UTC)
+X-FDA: 83972773416.09.1470F91
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 592B28000B
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 22:34:26 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=swC7I8sH;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759876466; a=rsa-sha256;
+	cv=none;
+	b=A803xfiE5n07ooc36CHcrScnk+zuU1jG9RamiUhO+e7Lfuqrfgl4ZX7SRMhohx0JInYhpw
+	zbulYlN1E5nstFUpCRZsTAD22cxtH3KqCfZdF0R6uezTzMuskk0LQvEhbI2iITsf2lmzYQ
+	BI9tCVKLz4yh87sl1HsxkZmqa8XObeQ=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=swC7I8sH;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759875871;
+	s=arc-20220608; t=1759876466;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LQm/B6eRdvax88uUNBIPNHfsZhMqnMGJMaJzqQjY+jI=;
-	b=C2wLsxZMq6fPcZazz5IP55PXYzTN3qyqD067UaT7eQhfGDf1kwqASBK34q/I/QnO9cto++
-	Hmh1y0QOVFBtPGml5+qVVbS37Cp89WePmVYoFYLqDMOStgxTTA9JM2unJTBE6HCsz/ViUr
-	mqELm7/2vtsrOIykGJbN9+IUAht4qNc=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ukVAcROf;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759875871; a=rsa-sha256;
-	cv=none;
-	b=0hx7i/YT4YpZR/F8Ea5ekmD7ONzGyczh5hA3TzYr9xq8LRLWus5rfljT5fBnxvlC6PayBh
-	cgDxPI8lATP++06f9TbNrrwfu6oJ6E9HSkwifFpzNogsoDG2E5RXRcFSD83YFixY+6KAaA
-	iMJ5Ud1SOW31b3Lskh0yh4k/NbhUh3g=
+	bh=G6cX6SLs2dhLvJpmkX/eK4MzDvKkOKzae/G89jQ0UFw=;
+	b=6QD1sqh0HsMdR6XSp29wVTdKQmGTlxBjtd9DvuXKbzog08SabWaRTfjQ3h4zjw/kupndnZ
+	1T9PCth7IdJNgkCEnffKdJC0O+O1YYVAieiWWppF4rslG5NR0hdUP1yWrR/cXcFwuYjYc9
+	MR5ctmSX2Pl25hofhGV0VcUbDtCl5Zs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A38C361CE8;
-	Tue,  7 Oct 2025 22:24:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B19C4CEF1;
-	Tue,  7 Oct 2025 22:24:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D818344FD4;
+	Tue,  7 Oct 2025 22:34:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D0EC4CEF1;
+	Tue,  7 Oct 2025 22:34:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1759875870;
-	bh=Ml84U/0i9HzLrJRmaMZo5f7luB6RAPc/Szfx7x8g9tc=;
+	s=korg; t=1759876464;
+	bh=jhp6SV6anK/PGrNJeEzIoxrnja1H0V2Sd5G7xaZKuWI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ukVAcROf2a+EK00QUVF/+Th7XtbBmcf75QzTUS5DkMOhQeTmhSUDaHWOcQeDG5qPl
-	 tiq6f7AjnoSWOaECe6PHNsHURztv/YQJbCdKcJY74XphlttG9dYewY7jaeO2D1evAE
-	 bS1dBJJBf2QspWIlOKXJqpeU/Aato4K68DMlAZGs=
-Date: Tue, 7 Oct 2025 15:24:29 -0700
+	b=swC7I8sHM52a/RUTuobaO6U2Z4PX35vJoB46A8XLLwChLLWdb+tjlShuHSqhLQq/B
+	 3lJAyXE2QD23pkR+FfzBmPgbomh2ciDvXhc3eqHLuJ76BcmmIRLytZA6MWtU5Q0LVp
+	 fg8Jt7Ecc9lQGppPfBliHnBE7PK8ug2SG3MSgpKU=
+Date: Tue, 7 Oct 2025 15:34:24 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Usama Arif <usamaarif642@gmail.com>
-Cc: muchun.song@linux.dev, osalvador@suse.de, david@redhat.com,
- linux-mm@kvack.org, hannes@cmpxchg.org, riel@surriel.com, kas@kernel.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH] mm/hugetlb: allow overcommitting gigantic hugepages
-Message-Id: <20251007152429.4c28fb85205635703229b027@linux-foundation.org>
-In-Reply-To: <20251006185607.3257340-1-usamaarif642@gmail.com>
-References: <20251006185607.3257340-1-usamaarif642@gmail.com>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: linux-kernel@vger.kernel.org, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Jan Kara <jack@suse.cz>, Dev Jain
+ <dev.jain@arm.com>, linux-mm@kvack.org
+Subject: Re: [PATCH v3] mm: readahead: make thp readahead conditional to
+ mmap_miss logic
+Message-Id: <20251007153424.1b46a4018e17d5dafd7fb126@linux-foundation.org>
+In-Reply-To: <20251006175106.377411-1-roman.gushchin@linux.dev>
+References: <20251006175106.377411-1-roman.gushchin@linux.dev>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 50B95180009
-X-Stat-Signature: njkkff5rfmckmwakpwsodx4ush7xc4qc
+X-Stat-Signature: qgxizfbadbcyqwic6pz7yg9cwbw7kjcz
+X-Rspamd-Queue-Id: 592B28000B
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1759875871-775445
-X-HE-Meta: U2FsdGVkX19410Lut+30JMAAZuds0hFi7PwIqpv5Nz21DzpeFW9BhGAm0M7LpQ5e6c/xdcNEnXIPkcqMHhtaJmKG/9cYl8kT8S8cZ8OUwTOZ9WmGhZjdW4MfmdoqBYbyuU1f9yr6dI00zv45P+mpJV1pCWtO2V6Ei05f+ljVKEgOmjZbTP0jdLk0XGF6dhmInWokKBiNLQWYFXqJ4GhT0MxiqpWQfhSc5xBND3UA3S1bPTFaKmb7mJPz0SzYyoiZA91cQYOCKOnwUVju8tfjts+oRvPaGfIpmmw2IjHHzuAj7jX+bBvw53bEKeqCfolU2ofSJ65g+1GSPvvbLd+86Bu7iTWBGOhjtCrmPNubcmKTZ1hbPcn3qG7783s27ujtfnAm0X2gCne2DGMEP9WP+sd2tbmN8KRUO9DWFBcXpUvFDywP+uskh4qHHMLSsaE4g1CgolNOdE693eGkdeP/NlS6vRK2xxB0yzLFlAsbTItQpNZAEH/V9yU34YBMgdPTaSfPPRN4F9itZWuVneIdu1U0rnzWlunTsySUQ5RRqx11Q/gVwDpH9OkskyWmyn54cErGnrf1X8D6AWmkZvnAG2GmUw+kKqTgdjTeoo9WmGEUdZo9QLUn64qLnp9CB5KcughmfiLJM9bEFow2xZZYxKFDSs03LzL03HWzfJxk3o55yAvZ+/875qMEUEa1DhXIjko3YiFEUUJAYbXlFMV/wYuzHJ9farTGIomO8TyajxKSoHIb7FyyzNNm6UtrEg60QLqby+qBaqOZD/VqUUv20FQ0NjG23nbwt1CGMu1vib9D8OSdxfwoh86qlMKdUk6ygXXd2IocVSnRk36eSZj55DAqEDE1upthndmUyY2nxshYN78l4K9K/iDIgXv1OzrXcIFNzrPpZJ7xfYQjU7WO/yAKod9BxYTbaAlVQof0Kdzz5SxRvQGOmUZ9ugthj/yGSuSDkm82MCp8SPLzcK5
- MvEXTUQa
- 2aBwdcVVft8BItFsrxNDpj0ZMBfQ5AJPXfqoUqVfzkvQBF40VLhFHsxqpwXMA/c4B9ykVVG8Qt3/tKfjHm2q1Xek0armnrvWmcW9CXsbDcWrnIa9Mfz4tWyh2Cix0Qsam4oa2n1LHKGsQfmNXPBKXFp6Mb9a9SaYLR7od0Wf8HhZ5bRQHXGdFWFXtr3l0LI38ebc8cgmYXaJb8jyfsiWlNGaIY52x99Xq09KmKOa5RawHuUl2bLIVWiEgPJ3yNU92wFtLm8z+GfImgGc=
+X-HE-Tag: 1759876466-918145
+X-HE-Meta: U2FsdGVkX1/jR1YUND67QmasW3GCVSEqMbSGMOffbJMm1EqVSFf8nzdyIUSZIjdzQamkHhX9XzDtsjTOxr6UsqHOO2gtv4UUdSom/RJ82iO+cpiRVgeaqdl1xHHBxMV0++NCoGZ6BQU4ERwAJOCe0kD5cpb9nygOSaQBPel/73tVv0UZZGExZ5oiIMjCp7z0O/wNK9CSQcVENYp+YfiFmhXe3j9LC7sJrODcKd9kJeaSTYVHba/dqb2H5rnfgFSQLrvwEXcY6A/w0efp9ZNiwNa1clg93fy02dnvAp6VYNym5GrZCPE6KIbki/BKAL77tJy9IKWKoJL2+gK5Y5NI3KjIIgRL9Y2wj7WtjxMqP4vdRln5DaSScw64oO5wNRmykhoYSm9Afs5B8HBW9ZCnBBlcCd21G+IZcWTmZhyWZzf7GCiX9KkvhJcivC6OAn8e5Ojp4TErfRjwwlPc/5Wy3Pm/XqszKVkEC1nMzj78bMcFJ9CnM9fxVLZzE1gjoQuTAsx2w5MKtdbbABHXJ1s+aQDa4CxbjWiZqSRYaDo68oW4z1ykWZcjSYM5tQ1M6hyeyoc+VyhvsSOe3+Qbp5+/aEJGCHgQUtkpl9XwwvXDf+GAjibbp8rvCwMBlvxjWfY8b00gla+wpcTt3/Wytq8aNiAsbieyfbJ+b/XdrMd5r0nkK5Q2flCvW24ANlrXDqz5moRmXej9dcdYhHsdu9ORGoCfwUuZSZR6u17bHHOLmgzZGATl0HlLWCh0KyWm2mcbMkpY2So3nukC9uSSdJAgxvzCOJ8ykujS4hynP+LuxJG9Kgk3zkjCHlZFDAPyvA9km23uCrKSFMV0486AjOU3EZFniI8xv3l7jCkD6cUa1xGT1/oR1OMxG2QbBixYSBonMCv06pbDt8Mw25xqYav4AAbGMFs6cT2jXKtlLC880a+vdM787gO3i79C0VzMDR4bYmKIR09yTPaocwiUuLw
+ sbh58wrA
+ PSYVepZP60oi9mpikPNDRGoL6W68e2qAbrbiLMdE/7RqkJWLyvu8vWth0I+ICaMZXCz+P/gua1WmdnSzpWwIiPwXEIq+nXAsPERrUghRuM25Srq2QZ63C7mLszVzaWxcnjdhT8RCE8Na5LX96GYZOCAGh90M/NzDn8KSIq+gq5B1NZik0f9PfUql4Qu7m+21+0MPJ3omhahRkPDnJ14KVIfwQSmh0NZxdZYfvmxaa4R3uq3sopKcaY+/GLX8/5Gn/cg+lVC6LPllDhAp/dsfX/SYnkiNmoP763vbKfz/Q6ij5PD9jRcFVJmzr78bND2SipLu1fhQZt9Zev7jOAWOK+ar9d0mrMshpufrkQeFFKFw/5ttux09YlRYd4/0wfkIV9bT5Q/sM4qa8uafz82k+3TdH06zaZc5GPqWt
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,25 +92,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  6 Oct 2025 19:56:07 +0100 Usama Arif <usamaarif642@gmail.com> wrote:
+On Mon,  6 Oct 2025 10:51:06 -0700 Roman Gushchin <roman.gushchin@linux.dev> wrote:
 
-> Currently, gigantic hugepages cannot use the overcommit mechanism
-> (nr_overcommit_hugepages), forcing users to permanently reserve memory via
-> nr_hugepages even when pages might not be actively used.
-> 
+> Commit 4687fdbb805a ("mm/filemap: Support VM_HUGEPAGE for file mappings")
+> introduced a special handling for VM_HUGEPAGE mappings: even if the
+> readahead is disabled, 1 or 2 HPAGE_PMD_ORDER pages are
+> allocated.
 
-Why did we do that?  Just an oversight?
+Three years ago.
 
-> -	if (hstate_is_gigantic(h))
-> +	if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+> This change causes a significant regression
 
-> -	if (hstate_is_gigantic(h))
-> +	if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+So no backport suggested?  I guess reasonable given how long 4687fdbb805a has
+been in tree.
 
-> -	if (write && hstate_is_gigantic(h))
-> +	if (write && hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+>
+> ...
+>
 
-Maybe a little helper for this?
+> for containers with a
+> tight memory.max limit, if VM_HUGEPAGE is widely used. Prior to this
+> commit, mmap_miss logic would eventually lead to the readahead
+> disablement, effectively reducing the memory pressure in the
+> cgroup. With this change the kernel is trying to allocate 1-2 huge
+> pages for each fault, no matter if these pages are used or not
+> before being evicted, increasing the memory pressure multi-fold.
+>
+> ...
+>
+> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Cc: Jan Kara <jack@suse.cz>
+> Cc: Dev Jain <dev.jain@arm.com>
 
-(Little helpers are nice sites for code comments!)
+But I'll slap the Fixes: in there, it might help someone.
 
