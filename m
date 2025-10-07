@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BDCFCCA472
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 12:20:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25ADBCCA470
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 12:20:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B48E8E0012; Tue,  7 Oct 2025 08:20:46 -0400 (EDT)
+	id 50CBF8E0013; Tue,  7 Oct 2025 08:20:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 865E18E0005; Tue,  7 Oct 2025 08:20:46 -0400 (EDT)
+	id 4BC8E8E0005; Tue,  7 Oct 2025 08:20:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72D718E0012; Tue,  7 Oct 2025 08:20:46 -0400 (EDT)
+	id 35D1C8E0013; Tue,  7 Oct 2025 08:20:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FB288E0005
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 08:20:46 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2D63083B6C
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 228138E0005
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 08:20:47 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E999A117633
 	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 12:20:46 +0000 (UTC)
-X-FDA: 83971226892.15.DA093F2
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4D12480007
+X-FDA: 83971226892.10.5357BB9
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 2DD614000C
 	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 12:20:44 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dIaW7C8q;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=urezki@gmail.com
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DVKUhdTG;
+	spf=pass (imf07.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759839644;
+	s=arc-20220608; t=1759839645;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aTAgJkdvXfIYVJGWt9rTo9DrGAL0rL30tXGrZW/Q/UA=;
-	b=BjwcHZE9fmH32s+3cCTHeu7G91CIe46Xrio64eUSd66tqjYj3UhRcbYx15JkG0Z79UzvgQ
-	goGboEjeLoJXPqNG5i5NjFNGlGkzKF2/XtLWHcPY5a8tLs6mZnchRP1tBwvgI+FBSpgmQr
-	yVMPmscyDBYZwD4Np/hwx8quQh7X4qA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759839644; a=rsa-sha256;
-	cv=none;
-	b=BFMtp+IGnsNHNo4agmwXvqVrseo4aejgAVarvvoQqUn3WRjQF2Bn2UYb/vtGYhfWDLz8IK
-	K67TmAXcvxPxOsmyAyUY2wFw5ru+2u218SCVjOIHTsFw9V4GbpoFdYwVGyIHe8arAe0/iZ
-	n1Ho1Xdg19HFltFkPvvq3XiwN1icnBs=
+	bh=FuOmVyVQXsumRDN0WySluCU+eClCoeXEAXwSkpYGp4g=;
+	b=K38Ke9SmPaP/tK3LuxuRryHlMDf7/YFz2WHk7rDyQDHz9AIH16XQ3LoXZ/y3WxUhsCkZSo
+	a6p4+r0FFBm4nI38nS6wj0t2/SnEp/xmmWa0ad3BjW/ktbYktXUaKnSa01QwxUvgK+itJ2
+	KNXwMMHIqM2O1/judwmd7MU6kSfcoqY=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dIaW7C8q;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=urezki@gmail.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-57992ba129eso7137964e87.3
-        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 05:20:43 -0700 (PDT)
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DVKUhdTG;
+	spf=pass (imf07.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759839645; a=rsa-sha256;
+	cv=none;
+	b=iEDsRCCgie406Awik+9E/bvBZgLVy00jGM/crBjSP8Qf9nB1prPQm4sVxmTXt5b7DLToT7
+	T1f4V4hx6ev8YD1uthR66+2s+1hoeKFnBmh0iUAda/W9q1ICoyG53oBBuCjEs+ajTRBfZO
+	xzbjN0olCDyEjrTjC+6lMTJfoi/f/3w=
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-58af7f8b79dso6732120e87.3
+        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 05:20:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20230601; t=1759839643; x=1760444443; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aTAgJkdvXfIYVJGWt9rTo9DrGAL0rL30tXGrZW/Q/UA=;
-        b=dIaW7C8qh6V6OapFa5xJ+yjwt88gVuU1AufCzVPaFS7yJtps0bLlpr77C8ksoLaGkU
-         7XBpgdWl2mXRUIYQ5fhDbHXjzxDCo+pLnK3aALgBP4qE90JlK74OkXcEKgo25ZLSGtY5
-         JQUtkQr6Q/EjJrc2jBOX5ExgNGKiam4PY30BP+ABC6lIjf5vSD5WpQm2+T2Ti/R/HYUJ
-         gsUqWw+F+gDRIJFOzGjQrw3rRYfudQfU/BGBdGvNnJRYZLw7sNBc3ZNMBrVnL7E6eWef
-         ljrJP+2AkXPGRGJLl4Th9zwwEECGoamDLcI5qQgMxKooXTwoy6oEhQft27wMk8Eyu3gX
-         q1yg==
+        bh=FuOmVyVQXsumRDN0WySluCU+eClCoeXEAXwSkpYGp4g=;
+        b=DVKUhdTG4w+e/9SobGxe/GRGx+t+arMpjdwB1AOacyStVE9a6XZ2YDYZcFNu6ctl+n
+         0kYPNpO1B75Iebq47dMi58wsVGNVkbG1Gh80bMhMWuOr5MlhOJOFWTToUfALN7KZDnjL
+         E8ypDeMD0pDi5EfFO2z5kWJ0q21nVdhefdiXe+w3vOvheNjJ7bJcmtDdlyjLW0hj9BHn
+         QjNkS59CTvsxSbWY7t7X7DTXMHGJBaDhdRvN+wvtEOJEg/O1+VTPc8Ja4FAF9jaWog2n
+         0L6+b1luj+tXBT0Uzk67dka3xlykJNMRGZmMUR9arakGJ/m6+R81UcdGA8pJjhrp0aVP
+         if7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1759839643; x=1760444443;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aTAgJkdvXfIYVJGWt9rTo9DrGAL0rL30tXGrZW/Q/UA=;
-        b=WiekyyEQ18eZC6ZmTWqFXCWsCwlB58cJeBWajOwSSanXx2OFBLFHwNHFgSzMi3A1/q
-         yXUVRd4SdD3EWM44gCkCeo7N0xnhOQWck6VHz/hjPG/gtDCcbTjHpbDXsV2H1SsbsyX3
-         2W2tZFFt64xroUg3IL2TbLMi4mgwRI0sWsCDOUT8e5EPsi9HHfUbvQGkoh6zlz1fxHrh
-         nrr6re55MzH9CDQk61LcqMqOBw1t75h+zNjwXqm9zuWRnInbbw/Z4A0SOUKRnTrOu4oY
-         qNKZww2uNkp2Ni+pjqse1WTA0M5MNIlfUeQCZko3Dzg+txHHEp0KNzNHMkFgYXoUmSea
-         3f6A==
-X-Gm-Message-State: AOJu0Ywu3kh/G/JCoL2F0XtDCraYzDv3WvVR1/KeFBc9xZ9SzEMJkPa8
-	N/+HUSk5eMJRRrQfi66evHtOmn5AAgF9gxPAL0Wmbu1Ixfp9ERvmsKDZQ2Fzi6As
-X-Gm-Gg: ASbGncvXASMj7odFm6fiyv9hJK97ChEQ7v//ttxAm5BppsyBcpK26/JIGaU61EXXic8
-	UVzkFZSAuDsUmXVzohdY+wEy84kOXGsabGywgY8u4UfGyR0n41XpBkb4yaD4whXVuAr0GIFjyEH
-	Z9ZDrCI5+rL8lrD9wR5edsQejHFm9JXfgDB6vPADfu1KITUm18UVXp4GDCYdSmdJt+QAycToGEJ
-	H6FahXQ6GQJjiYcPfEvzu81vuPPXBoBqCwgtuOWatz3B8Ie1PEjAbxaJ3gahhpsOzlahExeWGrA
-	hw+km2PShMGJc/yY0fP5i9fplTmmsMhFerYkm1nCSbKOwt9LXbB+5OUluHNOLb+xoN+ZBMXIz2X
-	RZQFYo21kY0Ki2wj/NEnPR6gzSVuodt3rkUlP54Vn
-X-Google-Smtp-Source: AGHT+IFVcM3R4gXRnpw+tlnoSIwV5PNPCQsvct6ThdG/Q39YghEZIMUDacX/nHdSOJk06aKFSGKo3Q==
-X-Received: by 2002:a05:6512:68c:b0:58b:2a2:2a01 with SMTP id 2adb3069b0e04-58cb984f07fmr5343552e87.5.1759839642331;
-        Tue, 07 Oct 2025 05:20:42 -0700 (PDT)
+        bh=FuOmVyVQXsumRDN0WySluCU+eClCoeXEAXwSkpYGp4g=;
+        b=jTVSeZkdvvHUz6b4uM5rBQM8CYFSZDHe8EpsyUSMlNylFwb/lf8mFwDUvJn6i6ethS
+         DPsx/R9HkghJe65jDcXHOXxJZ0AVDlfqdR1+fBVz6Olyim6eYrD3KSfOaffg6zKGHqJb
+         u4ba04Hr6thP0uF5+AaM1nRQ8MojSB166679VCfdipN8AESGpNAmQFhnBumihkKp0tBB
+         7STwABiMZ6iy/ftVzKk5pnJn97CxuW50PNhQ/WKBrEAeDd+n8nA1QhoaeW8M2ORY5pJ1
+         6El3zp5649Hl2hHZoLu07vkb/QpcZXV8sIJhKarr5ZI2ydm5uvVvttLjZx6F8IOR+Bry
+         y4yg==
+X-Gm-Message-State: AOJu0YxZCz0KevEm2YGXqNiyHLZBroVx9gEBp5LWKfr82WagyOd0i7lc
+	19yZhq8oSk3g62ce8NG/H9uLyXMFGTYbGASxThI1cjnlq8mW9XO1mkkInUHwE/8C
+X-Gm-Gg: ASbGncvgoF/lfd5e4rgSRjvJrp5QZMB5EJGllFC2+0C4u2T2PPPwaswlRbgotmwciWC
+	dHbIX9QL2vbtb0r0/rEfutqmxiC64zw16Vu8gXW01fkCXj9qWvMxrZYAAeOm+jZCy4i1Kl1ch9X
+	2miZq8TFUdo5+TA7Hy4vODm0fbU/oyx7vCJx1kFIFCrFWRcQT1CeHA1NoTLep79EgzRTxVew6c0
+	DE9PkP6QFNjNJcaKNzbACS1exihGaH4P03GKaZl4v0tlBvC+Mud8Pw8wnL0un/YL/r02VfokXZG
+	pJLRNelOXVRcrNheO42jwsGwkv/EdzArI4W3xoZwyhsFzFbzllNz/411QVdyK1+/bGq5/1dggnD
+	/IGzCQB1VTZ1pBeDhxtk0yf1tj9zD8AYYzTYF6U17xh3JZukDKO8=
+X-Google-Smtp-Source: AGHT+IEpTqLVUr842ienvFDBkvqxbi9T9sFNMNYe1H+RhBIvslkgbvZ0jDXtV54NnONs2RrzHQv/4A==
+X-Received: by 2002:ac2:4e16:0:b0:586:83e2:2295 with SMTP id 2adb3069b0e04-58cbb816b78mr4499915e87.45.1759839643348;
+        Tue, 07 Oct 2025 05:20:43 -0700 (PDT)
 Received: from localhost.localdomain ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-58b01141151sm6061947e87.59.2025.10.07.05.20.41
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-58b01141151sm6061947e87.59.2025.10.07.05.20.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Oct 2025 05:20:41 -0700 (PDT)
+        Tue, 07 Oct 2025 05:20:42 -0700 (PDT)
 From: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
 To: linux-mm@kvack.org,
 	Andrew Morton <akpm@linux-foundation.org>
@@ -97,22 +97,22 @@ Cc: Michal Hocko <mhocko@kernel.org>,
 	LKML <linux-kernel@vger.kernel.org>,
 	Uladzislau Rezki <urezki@gmail.com>,
 	Michal Hocko <mhocko@suse.com>
-Subject: [PATCH v4 03/10] mm/vmalloc: Support non-blocking GFP flags in alloc_vmap_area()
-Date: Tue,  7 Oct 2025 14:20:28 +0200
-Message-ID: <20251007122035.56347-4-urezki@gmail.com>
+Subject: [PATCH v4 04/10] mm/vmalloc: Defer freeing partly initialized vm_struct
+Date: Tue,  7 Oct 2025 14:20:29 +0200
+Message-ID: <20251007122035.56347-5-urezki@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251007122035.56347-1-urezki@gmail.com>
 References: <20251007122035.56347-1-urezki@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2DD614000C
+X-Stat-Signature: apo97mn46p14r8dh5ew7ga6o4aoqummn
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4D12480007
-X-Rspamd-Server: rspam02
-X-Stat-Signature: ixkcbgjc768cm5gsxysk8q4gj4qat1ta
-X-HE-Tag: 1759839644-38751
-X-HE-Meta: U2FsdGVkX19jObp6GfoqkX9V96GPcKGbf/SOAMiZYPy4wOyrBzeN4GVHqS/WLBAaU61aURAUY3QWZa/JMQ4PwffTxDw7j4+ZWLXgd4lfODEL0ASoQdV0uLTKhOabOgiXCpRjpKNBW54tEFPVs6EzlYJJkdumddDtkIjsUsW1rYrRHC13w+euZ6ajnuKr8Tqos3zvAFu4aB2qVZBC5pMZ5zi5euFr7JgFIEmKF1u76VU9bY+LjOb4r/fqiIdto1ZaFSQvy0UoQ3WPwDzim7TTlCfk1tBPMUAqlvwjOiZMQ/LQDOW+V4FxuCFKlC4hmttswNT9mJAXCW0A8vlZR4m94OlR6ihqQBSmsl9ECEPE2gPi4Em3tlxxE2mt2kR2yZY513BU0108T3eupfK5kF7SGatCkgDjJ1ICTODYnP4RXbzy7kYyUpqssyx3z+eqTeiv+Fg0JLF0hOtdW+f3RgMVOXCapPYIu1HH8Wx55wFMectd9B/Cp7lk5lOR2rSBfahoJlotVDZrDf08ZFFt7E5CKVpMk3mpJSlQN4rutJlyjwXxGcqJKMyRrxyiBY3trSMS/80E2dBPLuy+E+7PwwsZUcMFq4jlX/QnmsQSdi2zfdJWv6SV7gCyKz5JJsRTQYu71r1fPNuk2VH2gMxZI+ikyCeyrlndGdCrua12z8LNufyPfgnG+OSL+vsB4bK/QGfCfoTDofBdbCkP5S15hJUGoYyC8Cufl4ritG1Gbxt11oI8OPbkFaPQSwT1Gt0hRbFZy+CNj/Bvw2IUA0EeUAAtHD06rWW2E/0YsU/GuOnkPAPkQyWVRCGtHz1M9SH63LluDKdeO4sqLmOrgjpWE7yPJlnpLe5pvljPJnTwW8i6h+i/v6IZcMSfGBEYGf7kSsJ8HK/LLDmt6q9WKvfucjNwXh1cMGB+nATwvopUGdJeMLqi48y24tD6+Ims/nXo9t+x6JdgzLYQiJYoBH5FyXZ
- JmCHATZQ
- aXx5qMRPLSeAfMCnnTydKivfZZ4vlNHo5EnfxVbS+i4qiVNrj132oGJAf2xUgQjvbIJRgM+hOO6Mv8gh+IrTvzvgszxowUSEQANyCGHHZt46KH9Q7bn4DxUxhNlRQX/c15TmD8duM1OgHoikRcgiBKiq0AXcyPx4ZWVOXPZZs90BYkkuly8qoBVZwZW9GGqcBBdLRzDFhamDi/Aabcft74Jy4EO9m869Wnz5NU49pPPtirS/CXDSTL0TrMkr/onYLv5ipOR+rdCQNhc26BvaC8F1KiwVjJjJJEfa5XdPGAh1ojg5AsPN4Zu/uQcLA7nf3N1xrJEiEkg6UHi5IXcpWoQvz/odBVly+c+7Uqtnj8X/BPxSPwCVHgEROjw8bEIU/AjLD5WNQJaG/5dL+k7E4Eg5b/okw8rxabPWOeHGmWkhP9KPAR7/3hXasjCVZzbGUgS5LXcug85LYBlfl3DMuikTNJRG7Is7V/s4HoQfxkQOrM47GOBFcPCDDWNzUt3icCqwEhg6WDAhZeDXojUazrhhL9b9cskko2/yxLH/IhFuH4/sb+6csc7yCOG1CjpN0cwYVVc/FgT61+tc=
+X-HE-Tag: 1759839644-106011
+X-HE-Meta: U2FsdGVkX1/U4S983qrJBy09+ggSEStZwcaoFFSDVD+z/Fs64zwtW+cOx0FBDSuVwYX0jsG8lu/Sis4GAS5XT2FTcfz0YmK9DgePba3AdVSU+kMu9EA2fw09+nzyjyzZzLHL9imN70PMADPtmmBgeUS8YfrqHP1nKw/Vs3i3Z2snVS/g5SZFs+bCnmkMgfej6kauLQvV43OT2rcJNVjWQX5xgmwcMR4nLdXlt206hF5vP59WBQB7xNthvRN4OD3psbgwOFu2WtaRhdm2kVOqp1g8B5D4T1j+9JzUjvjMSom5ybsy6BWzV3yIwYEh7NALWAc04Aueor0FhiY0U/ECM52k8u4lROGtWUzCuC5obEZ/Plc6AUFF1syA4pypRwyB9ytnE9raf2PUhb/oTGRIFlSDGrlXfSjWEMAHE0IVYNJ0Fxao4BzwQ60NW1y5JW1g2/OQ2DPgCFX+lvVU58xeZ+MRtFs7GSKHSWTyXsY948r9p8uc69VgxsVEEdpwB8Ufs6JcwDJFPVfQQA57CusndXHWjpzEa/YQDnLxgyC581vQvE/e04n5x2z3L8F4setUonDcfEMGLZXbhzzjgJL3t8iOnUns/3yCfwdnQj6PwufvRBLYt5OgxvJ9NKKG8r9eSSrBF3ms3DZLtPcKKvDj0qxbVhugr+QkBNae384uCRhNeT3bGxM5jq6fmNyFeWuU0K1xO98JMTCRzlHSFMVm4klCNror1ZG8NcFS1k1bN3c0H9nUsrEpVeCAku65HBSONnaqxDjbu7GceUFzhzQ0f5IfugAgHnuRUumSdXTKeM5u2qZzTSX8rPOVFz9KN/9+Slp97jYhPkQuKmnF8jWs7j3bhmv4o/ThfzcDOHE8fLhlfo7V2ubKnabYQ8+dqt2MYzOcsYWKzuaSRL1vVSBmaLjy9fv18tIQYZJcCU7IbgMXcTBYAEAQ2Y7mICFn8+Bdlm5RCDSbLmjnyeIaVKH
+ 1uB47IGj
+ 3I3bv6W4Iov8oEkZJMd/9ahg22wmu1TxgnlUmANgRJc6losrnTI9/LIsArMtX++xlT1ea4qzfUJs7A4+dG2Lx+p/F3VTSve+1eFlIbAR2o6WZjPAnP2rCwuuetzs+CCikYCSZGgxD8l35z0I=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,86 +121,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-alloc_vmap_area() currently assumes that sleeping is allowed during
-allocation. This is not true for callers which pass non-blocking
-GFP flags, such as GFP_ATOMIC or GFP_NOWAIT.
+__vmalloc_area_node() may call free_vmap_area() or vfree() on
+error paths, both of which can sleep. This becomes problematic
+if the function is invoked from an atomic context, such as when
+GFP_ATOMIC or GFP_NOWAIT is passed via gfp_mask.
 
-This patch adds logic to detect whether the given gfp_mask permits
-blocking. It avoids invoking might_sleep() or falling back to reclaim
-path if blocking is not allowed.
-
-This makes alloc_vmap_area() safer for use in non-sleeping contexts,
-where previously it could hit unexpected sleeps, trigger warnings.
-
-It is a preparation and adjustment step to later allow both GFP_ATOMIC
-and GFP_NOWAIT allocations in this series.
+To fix this, unify error paths and defer the cleanup of partly
+initialized vm_struct objects to a workqueue. This ensures that
+freeing happens in a process context and avoids invalid sleeps
+in atomic regions.
 
 Acked-by: Michal Hocko <mhocko@suse.com>
 Reviewed-by: Baoquan He <bhe@redhat.com>
 Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 ---
- mm/vmalloc.c | 20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+ include/linux/vmalloc.h |  6 +++++-
+ mm/vmalloc.c            | 34 +++++++++++++++++++++++++++++++---
+ 2 files changed, 36 insertions(+), 4 deletions(-)
 
+diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+index eb54b7b3202f..1e43181369f1 100644
+--- a/include/linux/vmalloc.h
++++ b/include/linux/vmalloc.h
+@@ -50,7 +50,11 @@ struct iov_iter;		/* in uio.h */
+ #endif
+ 
+ struct vm_struct {
+-	struct vm_struct	*next;
++	union {
++		struct vm_struct *next;	  /* Early registration of vm_areas. */
++		struct llist_node llnode; /* Asynchronous freeing on error paths. */
++	};
++
+ 	void			*addr;
+ 	unsigned long		size;
+ 	unsigned long		flags;
 diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 798b2ed21e46..d83c01caaabe 100644
+index d83c01caaabe..9e29dd767c41 100644
 --- a/mm/vmalloc.c
 +++ b/mm/vmalloc.c
-@@ -2017,6 +2017,7 @@ static struct vmap_area *alloc_vmap_area(unsigned long size,
- 	unsigned long freed;
- 	unsigned long addr;
- 	unsigned int vn_id;
-+	bool allow_block;
- 	int purged = 0;
- 	int ret;
+@@ -3687,6 +3687,35 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+ 	return nr_allocated;
+ }
  
-@@ -2028,7 +2029,8 @@ static struct vmap_area *alloc_vmap_area(unsigned long size,
- 
- 	/* Only reclaim behaviour flags are relevant. */
- 	gfp_mask = gfp_mask & GFP_RECLAIM_MASK;
--	might_sleep();
-+	allow_block = gfpflags_allow_blocking(gfp_mask);
-+	might_sleep_if(allow_block);
- 
- 	/*
- 	 * If a VA is obtained from a global heap(if it fails here)
-@@ -2062,7 +2064,8 @@ static struct vmap_area *alloc_vmap_area(unsigned long size,
- 		 * This is not a fast path.  Check if yielding is needed. This
- 		 * is the only reschedule point in the vmalloc() path.
- 		 */
--		cond_resched();
-+		if (allow_block)
-+			cond_resched();
++static LLIST_HEAD(pending_vm_area_cleanup);
++static void cleanup_vm_area_work(struct work_struct *work)
++{
++	struct vm_struct *area, *tmp;
++	struct llist_node *head;
++
++	head = llist_del_all(&pending_vm_area_cleanup);
++	if (!head)
++		return;
++
++	llist_for_each_entry_safe(area, tmp, head, llnode) {
++		if (!area->pages)
++			free_vm_area(area);
++		else
++			vfree(area->addr);
++	}
++}
++
++/*
++ * Helper for __vmalloc_area_node() to defer cleanup
++ * of partially initialized vm_struct in error paths.
++ */
++static DECLARE_WORK(cleanup_vm_area, cleanup_vm_area_work);
++static void defer_vm_area_cleanup(struct vm_struct *area)
++{
++	if (llist_add(&area->llnode, &pending_vm_area_cleanup))
++		schedule_work(&cleanup_vm_area);
++}
++
+ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+ 				 pgprot_t prot, unsigned int page_shift,
+ 				 int node)
+@@ -3718,8 +3747,7 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+ 		warn_alloc(gfp_mask, NULL,
+ 			"vmalloc error: size %lu, failed to allocated page array size %lu",
+ 			nr_small_pages * PAGE_SIZE, array_size);
+-		free_vm_area(area);
+-		return NULL;
++		goto fail;
  	}
  
- 	trace_alloc_vmap_area(addr, size, align, vstart, vend, IS_ERR_VALUE(addr));
-@@ -2071,8 +2074,16 @@ static struct vmap_area *alloc_vmap_area(unsigned long size,
- 	 * If an allocation fails, the error value is
- 	 * returned. Therefore trigger the overflow path.
- 	 */
--	if (IS_ERR_VALUE(addr))
--		goto overflow;
-+	if (IS_ERR_VALUE(addr)) {
-+		if (allow_block)
-+			goto overflow;
-+
-+		/*
-+		 * We can not trigger any reclaim logic because
-+		 * sleeping is not allowed, thus fail an allocation.
-+		 */
-+		goto out_free_va;
-+	}
+ 	set_vm_area_page_order(area, page_shift - PAGE_SHIFT);
+@@ -3796,7 +3824,7 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+ 	return area->addr;
  
- 	va->va_start = addr;
- 	va->va_end = addr + size;
-@@ -2122,6 +2133,7 @@ static struct vmap_area *alloc_vmap_area(unsigned long size,
- 		pr_warn("vmalloc_node_range for size %lu failed: Address range restricted to %#lx - %#lx\n",
- 				size, vstart, vend);
- 
-+out_free_va:
- 	kmem_cache_free(vmap_area_cachep, va);
- 	return ERR_PTR(-EBUSY);
+ fail:
+-	vfree(area->addr);
++	defer_vm_area_cleanup(area);
+ 	return NULL;
  }
+ 
 -- 
 2.47.3
 
