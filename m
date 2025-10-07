@@ -4,114 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79CBBCCA470
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 16:27:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4594CCCA470
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 16:47:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C11FC8E0010; Tue,  7 Oct 2025 12:27:14 -0400 (EDT)
+	id 4EE968E000C; Tue,  7 Oct 2025 12:47:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE9BF8E0003; Tue,  7 Oct 2025 12:27:14 -0400 (EDT)
+	id 4C6808E0003; Tue,  7 Oct 2025 12:47:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B005C8E0010; Tue,  7 Oct 2025 12:27:14 -0400 (EDT)
+	id 3DBF38E000C; Tue,  7 Oct 2025 12:47:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B6558E0003
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 12:27:14 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 42BEC1DE89E
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 16:27:14 +0000 (UTC)
-X-FDA: 83971847988.05.7680184
-Received: from mail-io1-f49.google.com (mail-io1-f49.google.com [209.85.166.49])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 66E7A40012
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 16:27:12 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=G7cBw8uG;
-	spf=pass (imf11.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.49 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 287F08E0003
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 12:47:20 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DC992B7A0C
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 16:47:19 +0000 (UTC)
+X-FDA: 83971898598.14.29F76E7
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 93AB94000F
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 16:47:17 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VOJu6AZ2;
+	spf=pass (imf27.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759854432;
+	s=arc-20220608; t=1759855637;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UBD2hSu0l0klHe2PgM26i3kvAILb+lcpLzVDDzltvlo=;
-	b=xVEuA0t6K9HI5DgdGrrNVWMvpcfhXWCuFXoILtGf97D0x2Kidty+Djm+FQsYTUEmHmAX1d
-	kaBLikJ2N9O/8L0O8RB5m3ySAvxp1r3lo7vpOxMt5bMitj9DyD4Kr0ochkQh3Y4btlajeK
-	oFBYIYYC1eDbaZwykm8kDpel1GEF9kQ=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=G7cBw8uG;
-	spf=pass (imf11.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.49 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759854432; a=rsa-sha256;
+	bh=tTOFzWIRXXry9icZqnPg5XCEpLea61ztG7L2WQgFEsA=;
+	b=O5S3VLivYj4lsYfr2k2aAvzHxD3WYAmbFES8MphG6amwnaj4Nc8M9C5NOc/GCrzrGSG41Q
+	ujpJL63ECRJKvMxCZAgzQanctxnsdEO39wtFwmXoW/5nncKwVZm1jdyN7D1M0SngS4zv96
+	DosQpeTl79Tzbc6dH1I1vBu719SeD/4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759855637; a=rsa-sha256;
 	cv=none;
-	b=MlQRLMv0xO4P6L6NXceV9dxiTxJnsrsJfp/yh8MgzVFiEfBsAFMt/CXxnvSZmvgLedcjap
-	4anS9BtTLzvrN9dSpqzDHm2X6WaqYqsKQWHF0pwD5RqaCtmtZkoXUfauBHpt8YJSv9UeEp
-	/Xlp+JLK5zEj+JEIVStPYesEK29WLV0=
-Received: by mail-io1-f49.google.com with SMTP id ca18e2360f4ac-9379a062ca8so233898839f.2
-        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 09:27:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759854431; x=1760459231; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UBD2hSu0l0klHe2PgM26i3kvAILb+lcpLzVDDzltvlo=;
-        b=G7cBw8uGQUOd9hDMrkOxGIudi+IFA7KHHLIQoUMjl2D5Mam7bafguhugFwZ1V8anpH
-         avbuRHAGvVjYsk3wFPLcLqlENNCUvvptGXWfgv0DNtB5BpMrFnwoRa5+OEjEzlpQAzAZ
-         B0RabZT6+jNHrDua+dRLVbZOLJVqf31itAmYH4tgVVK798pQIFsV1t8FZY2PicEslLzJ
-         0Hj2wNeON4EhmEmHXZBGoN00XwUWMlu7hb6s4DfisS287NZhz88P/yfATFswFS11NUhH
-         cQWmJlZHPg8eWOPz0cTDajjE4Mflf1/xvEYCQrPop78tVeRMnq5AgTe3v7IX64iOy9U5
-         9mQQ==
+	b=vUiSg+VlQhZv7xQOPQkAOvGCHCZykcw3UJXHOdCAYomPBxZn77Zuk97OADTvzSD89pyNQB
+	K56/P9jg6MHnEJ8k0lkhIjUSAYQKP7n083uQOjkm0/vjOBJdN6+HxkIvaMtQHF6ijnKrCK
+	56DuoiRv3w63QkgXHpOoZHQHeMa1BeY=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VOJu6AZ2;
+	spf=pass (imf27.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1759855637;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tTOFzWIRXXry9icZqnPg5XCEpLea61ztG7L2WQgFEsA=;
+	b=VOJu6AZ2N7T8S443tKQRXpyipbkUUnqH6HdRKGw49ab9i6t8hyFrPgYPfNgCXPpDfMWrMF
+	EUQm19CziuRdTwfCC998lFA7I/IgBl7g7BvQ5XZW5LscElgddjM471w3XJn5Tee4soLqYo
+	3QiBafSrnOTCmJMObKCNItTNgc2jl0k=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-407-rxtE6jM2PACYJAmv62n0kQ-1; Tue, 07 Oct 2025 12:47:15 -0400
+X-MC-Unique: rxtE6jM2PACYJAmv62n0kQ-1
+X-Mimecast-MFC-AGG-ID: rxtE6jM2PACYJAmv62n0kQ_1759855635
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4df60ea7a1bso136094241cf.2
+        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 09:47:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759854431; x=1760459231;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UBD2hSu0l0klHe2PgM26i3kvAILb+lcpLzVDDzltvlo=;
-        b=myR8ICRsMxAkO0asWnKdzQzhqEgysayF/jWlNKjns48CZVKuchlnzhHcw7BiL6EXom
-         VztB3SqU0X7OcFSl6F9DrdPCdolMmL1TaoZzcAzybLAFiCzIP1eg3wxBTft3jhsdKeun
-         U1xmWOozX3h54ZRH38k1NbHUyVSE0uJKBhtMM//F4R7KuF3Zp8EZhF1PlvTZCUs27tvy
-         M/aXXzX4ZweqEpnMB8VBSh7lxwD6icPfjLmE60DoIGEaFAr5EmoeKO/LdGB6Ecj0f8Bp
-         q3bMJUXdAIyHDxKw2KTCeWSfCP7o8vVnRZje3uqggLLL13f86AKtbRUyB6TeiSieT7MO
-         7Wqg==
-X-Forwarded-Encrypted: i=1; AJvYcCWwgnZllXpyuBrYzijbrT3294mvVQ6DRybzoHroOG8MYPs2yj2lbVoYkyvYl+6k7R3Ftnll1I9Ybg==@kvack.org
-X-Gm-Message-State: AOJu0YwkeG0463+fbm2TFXgW4bG5xP7IMQ0KqobA+ZFiT2ORxlUywo20
-	g59RULHl6c5zN+dmm1J+yZwS8WuJIY9OMudX7KFsAEgWtR4J0rOarpXpxNUbpLRasnEyinwk4i2
-	d8TcJU6tbP777E/HB8l6f20SAwOttX/s=
-X-Gm-Gg: ASbGncvCHi11QGuOPRfKMHOgkQQ8En/t/zcrnxe6ssZ33gNZ/OVUZvo00wtj0cFdYjJ
-	EezmDepAhwIjkg8yeG2ng/CVvJULYob4coKs6WR2//rRv8SG8smrXjVIg49NoLBk6qX+nifunZe
-	laEz8DyOY6s4rmE6+8pN12rdcApfqNhKFBhJZG9B1m9FgbBXuLQjYJW10phq33kUe7BLK038tGr
-	K+DiuW58FPpDX4Xf0dwRLObz62d
-X-Google-Smtp-Source: AGHT+IGLCFTglTAa2kP1ck6r7iG/OBxuOc/X5vnBoy2Ox8YpkFznUIu4nAdIvA5gwoNVKy9bdZ/E6m0Pbw/Ia4pBasM=
-X-Received: by 2002:a05:6e02:2581:b0:426:e20b:f5d4 with SMTP id
- e9e14a558f8ab-42e7ad16b0bmr217493585ab.10.1759854431265; Tue, 07 Oct 2025
- 09:27:11 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1759855635; x=1760460435;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tTOFzWIRXXry9icZqnPg5XCEpLea61ztG7L2WQgFEsA=;
+        b=KwIujwQjxqU35E2leAwcKJ40ch6eBjQXafREgGE+j6OTDekdEcU9+ftwJICk/EfoqU
+         hha5z57RTwo+vt95K5PqFLWRUDF6U+KuJlcgLTUkn+M6jKmqYPPaBe4WBznir+Fe3mag
+         Ri2bSR41qPur3S5i7LO6FjCGAaNgxUEx7MeP1cGd9cmPN/LrittIg9fZPLD3WYOeOI45
+         aLkdlT6jbGJGwkbslKR5S+qoTYU6Geuhx5szKxSqW6gmvm3jZyQLgBxd5lqU+beEMK/e
+         wwcXrLtJJLkVTasv5a/AbiPmSbhQ2Cm6IhQXIGrBg/u7WUFrTY2jI7w7vZn7z3BSBLxc
+         7ypg==
+X-Forwarded-Encrypted: i=1; AJvYcCVdesaO1Tc8uXD2O+D3me34DZ+KohZWiEf2o2r6M9rcTL4kxWi9M+Gd/+GzrwT8sUNwvgjnjvQ2Cw==@kvack.org
+X-Gm-Message-State: AOJu0YzqbwuIV3tskY5Ef4+lOIaStqhdQawkTBgYRXj+m7M6GmAXjC+s
+	x/7dC/AYIdLtpYgOfu+EGpvt4LrYh/cBbEmlFRPYjoIRsyDSuhSiJUEU9fqWjE/1dt/GflKTkUV
+	4SKhH5JdWl1Fkr8HtaSyA5VY+QhC+m0AUCP0KKo9tyEAUNqQWRuFG
+X-Gm-Gg: ASbGncue5124t8jnlSbwtDVN1Fbn+dU8EqDhYsBmCkglk4nor+qKfgpkXxCwotbv4j6
+	qXX9JlpBp4gRt/LK+QhbHMXcXJr/PNlWHQpy++PFdL0HjsdttFY5sJui4OaWTq6vt/m2XFmnyWL
+	8wYVkDQO/8WBqGH6BJSGLAQYBCo91gJ5CPF1Ka61tOvG0/KbCgFnE6OZWs2juHqaPZ78e8yMpTr
+	Lwj34KJpoaxxFQVVJPD5nt2u/taDTVU/fgNL5psQCYk82bHiwVmt8vxzasTle9tpNX8CHDPpSva
+	RBbf4fJ6g5bmQ4TQMJJ0p2/4EEZvaEpgLqC8EQ==
+X-Received: by 2002:a05:622a:107:b0:4b7:95da:b3c7 with SMTP id d75a77b69052e-4e6ead4b0eemr3307351cf.48.1759855634989;
+        Tue, 07 Oct 2025 09:47:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF8RX884Zg/mlMH86KuApH2VeuJdNzehLkNSygcZJ0HaGfZTFTmEttK1Cc2JLQhTCyVQ+bWvw==
+X-Received: by 2002:a05:622a:107:b0:4b7:95da:b3c7 with SMTP id d75a77b69052e-4e6ead4b0eemr3306771cf.48.1759855634461;
+        Tue, 07 Oct 2025 09:47:14 -0700 (PDT)
+Received: from x1.local ([142.188.210.50])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4e55c9e78cfsm160745871cf.27.2025.10.07.09.47.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Oct 2025 09:47:13 -0700 (PDT)
+Date: Tue, 7 Oct 2025 12:47:10 -0400
+From: Peter Xu <peterx@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	James Houghton <jthoughton@google.com>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Ujwal Kundur <ujwal.kundur@gmail.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>, Hugh Dickins <hughd@google.com>,
+	Suren Baghdasaryan <surenb@google.com>
+Subject: Re: [PATCH v3 1/4] mm: Introduce vm_uffd_ops API
+Message-ID: <aOVEDii4HPB6outm@x1.local>
+References: <43d78ba7-8829-4a19-bdf3-d192a62cdac4@redhat.com>
+ <aN08NxRLz7Wx0Qh4@x1.local>
+ <ad124fb6-a712-4cf5-8a7e-2abacbc2e4be@redhat.com>
+ <aN_XZbQjuYx-OnFr@x1.local>
+ <cq3zcvnajs55zr7cplf5oxxjoh54fb7tvo23hehd5dmh4atvum@6274mneik6hu>
+ <aOQuZy_Hpu1yyu29@x1.local>
+ <akld3v2mtnjdqvs5dgwr4gnffdqf5dojwhmfylq3mkfzakjj7j@5oqqxsymkcbp>
+ <aOUa8C8bhWvo5TbV@x1.local>
+ <frnos5jtmlqvzpcrredcoummuzvllweku5dgp5ii5in6epwnw5@anu4dqsz6shy>
+ <9089d994-262f-4941-8bed-f3c6ee05a769@redhat.com>
 MIME-Version: 1.0
-References: <aOPDRmk2Zd20qxfk@shell.ilvokhin.com>
-In-Reply-To: <aOPDRmk2Zd20qxfk@shell.ilvokhin.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Tue, 7 Oct 2025 09:26:59 -0700
-X-Gm-Features: AS18NWDyUXxAHm2OhgOIQBVisQRhBDWipv0GA7qDF0rBOZJ41WWj-kV3nnRnazA
-Message-ID: <CAKEwX=O2CMnufzuU7n32BD+SD5Oapmct=YGUUQFZ=2w+u2kGvA@mail.gmail.com>
-Subject: Re: [PATCH v2] mm: skip folio_activate() for mlocked folios
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Kairui Song <kasong@tencent.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Chris Li <chrisl@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 66E7A40012
-X-Stat-Signature: ru8i5c8fqcbxcrfojb3ye51dhxkczbph
+In-Reply-To: <9089d994-262f-4941-8bed-f3c6ee05a769@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 8VKDl0SCriP4W5CLi_G-HAasYVaqsVYh4eEt5Nup3Gs_1759855635
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+X-Rspamd-Server: rspam05
+X-Stat-Signature: qj61gakxe7mies1dumiaeo3scpsmfy98
 X-Rspam-User: 
-X-HE-Tag: 1759854432-132550
-X-HE-Meta: U2FsdGVkX1+zy1S7kUNwzuMwKrbZKyJtiw0b7l/m8YNpDFXiynV3M0kBOw2cG5QgoTNf5D+Kr86hvRBZPLRlGqjdx1/OJViK8NLrPnX77/VACE3rA1LhSo2j6E0bA5y0uJvrilDP/uxwGBQK2XqYqaBu5SXi4CIQMB8Uy+yJB0eDPtDAfNs0pXaLpEqOHer2iopusTvyrJVr4ATVvvtNUMRHDcnEUDSat0FVj9M16yf4iQvz3rRH9la+H7BFmFkBVzqzpXVetX8RC60Mh0oTO/tJI7MFv8aQbHk/FQ+mJ2Dw7rMej0ReE+pOu+FX+zhgqHsuow714l3Fs8imC/DT99TS9tJ7EPNF9+AXTKlFHD+9w81sHAWHFdfF1DLezFNmD2alm4B85uLETKtTVUBWhpzKh+/7sfBVjBW7BBruybWSkdAyX3PMqpMi0sio38OFl9hBaAYY/q54cpzIDWEXh56VGqRcLQLEXrj6B2u6l3HjpDtMBgiF7VlC96vF4EvP2SdLPlcPppyC2D4ZvO0T225PZJUEUbAD4N1fC2V5cXZowbYO9b0y9gY3CdXspgZZBhScFavVY152YMn4hljXJqcPeMsKe04GkVXYyZMKj2KWb5OA7+TNP2S3rJtowRp9UOfxCT5hnnDqCZGZOKiWydMmNUFREKbxCrR5dYZKab3pSklihbt+KTBykuPUUyble3n2YU9OyxsyDs5l+7RiHICUP6J+zhDTjaxIZimL6d4GTxflcaOOFL+pndPr4BJS3oiMyxV/KKzb5Pt1GsZwtdi7byDoJnMA+i76hcaMO/wDzjMabjDdJ7FHPl0pxbYYcCu7yyWPgIHnjbA6dVsxE61AvaAJvLVjuCeg089ztgSMccszOEFM1dBnESNmnGzg1ApcgV8pnlCEShd06wVru6zO0eUJGS5mcg00nndVs4HXlwaZvrQ0DIiEoi8fwIOrNAZ9DLLFUEYzcQXHsjf
- uEoIpl/m
- 2NyWBhDNlN2zu1xQDa8KamQ+4MWJhGefOL6TpxjdN7hpKenvRIYc5DmSgQ103xFRDZA6vnwkABgXQ9pY0B4lBzJSC1yrkKFUdmk+llAwMK/hZayyONtvaCPpD97N5t25RDU8c4EBYP4JcukilFQlDc+ay6FW5mH0jywgycbVhU9DEGZLNxN1RoOSRRaBXOs7iG2MIZaWXHA2/XeFVV4NgaMH8Kn5OTMCDNDaPO4wXjCLJ+bwfcErn7Ff+bRK/UgIKVBD/9owb9+g+5NFyLycaFlXJMMAg4JpHbKs9ju1ez7EtotdIGM9OaPLvra0GB9PSqwq05bRx38p8NSmUS/FRTV9izLpUtuPP+rWraf7UYUvdwcGz7XqHA1bmUFumMTTZYi+5UyatE14CxgS9B6hN9zUGXn8wdq9o6ug7FReEK0H4R169Oty/iEEIaVYYeUMOrloIIvKvotWhHjx/3jY8gYNbuhX3mTOufIh7bbfTJPH+escJf/yRjmd/Y10/Uqh6EWCi7raaRrwxNDD4YRznRhgMxQ==
+X-Rspamd-Queue-Id: 93AB94000F
+X-HE-Tag: 1759855637-801658
+X-HE-Meta: U2FsdGVkX1+ZUZdOmWPDYbNCMDwd/tEXeR1y+5ScHOojHNw4UuWyiOQO/9Ajt6nXNT+EeFWTgbnNa0PBV/+o4XKPEJsvv2eGtilrksD1ZVnk1uUKKp3QOz3IKawxLsEi/9VHXKNklWtwmKV7zgz+fYH0Z1x18ICiiRePn8JC8a+Htrwij0d/8g1xUl+4nw2uL56YpRRmqwQeYCd5TmY54eqjXTYXLV2bkM0mnMB7NxVfEHIBJKPBIqnlYdm06Wb7QEjZc+mi0gH5y8OnUTSlfkVYtlB4J0G0ZRfEkOe2uT5GidvATnzG/2O8v8WMM2a6hg+55CdQ1eEUis24JdHlv7HAHoEGbRbNz3MnyhKxoHN7Stmc87Vxtnjq5MCKLcfVmFwU4OF46Lnm5yARwUV1qacBWs3hRWx3yJXV6lUIM9u+18Rt9I5Ft/zFmtDy2GvxhI2NOokto5Xr9lrEIizgwXbFkGsE1olXiC7J+C2WZH22ma/0t/ft9KIATYtzxD3WMCdU4Kd9TyVnRWPiKc9diM7dmyid4tZei+CDqXyNHdefJZ8GBKENYlcuBuTegiKQvVwT8M48mzKnrXrapMWywjlKMUKk7Txv4JRy2qKN3qAd2yX26fzxiImRcUstO2sZbUwWwSgt2L2eX8q9CMRppShqlbbZ/ZIx49C5Vgh9qeCINhPNhlHRVmyGm3AuiKjCQooFd2I/h+DJQjyXvMhjm33/C/WsPwjwUH6Bxq2ehXZ5XBPnxh/Jib1RnR/nfIYjyPn0fbSEEBKLZRCOzRY0yc+J/mCPrGL1gFP50dh4Q95FMzEglUQug3qGXjXbD9UdIxZ64xGNgzwGMQBe2TUHxuIOix6VGhSVztWFHnFMok5sl4vMF+SYwJYIj0sk/XYt3UHWq9G8kRXmWbooC165Myv+1MElN2JBbbZDKJMJsFZKDjh0ubHlrD0sDlpI2tCTI5LNjl9mP/ZqSEZFuJl
+ 2o6YnwO/
+ n6vj6ilogOQF9XjBKu34AKO9PTru+MIQdxnejmtW+fXGRwPHp9msDj1qQpxum22nlEZ4HT9559APPZCnrL3yHNvaNOUGr38NhBBT8luudrvw3cX92ceKa2hT7EgPlPjMIsPLIkotZ57i2HpYEA86YmVCZDgVOxw5WpBTKDo6ueCe4pt0h2hxZP0tAu0pWP/aKK2GEx0aiibijEwmVUGmR35xh4F/kfunE79Y+WG0lBpkIOMU2ievfGuz+8hNhiCAm+PZYcJ/B4gYhWVmt5n7kpixCgjTkIG7VcpyrElz3Va5rfZmYaAYtumzcvzS7T2ei2DnP09xmEHYp18pQTG/9x34Ra+U9afu2TjSbcBduuq/NO51K5FT4x1MdciwL47YSNyOsZll2+v5JJZPM/v0NM5cg8RHthbPbn2G1SU6wGz81wEzZDRp+Nzcmkc0g1nARngzqsJS3FgJW6PoPUzdEdA5E2dPy4k4j5FcTAg4SU3rQ/L7/o83z2iLF72ssAHJOMaG38MbOoO2sipl54CaFukG+JUE2MZ5MtXp/Ct+OjCAR/G5YpfFqa8ARJswdD9nXoq1/fmQU7cLZkmEvnP6TK0DaLA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,46 +147,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 6, 2025 at 6:25=E2=80=AFAM Dmitry Ilvokhin <d@ilvokhin.com> wro=
-te:
->
-> __mlock_folio() does not move folio to unevicable LRU, when
-> folio_activate() removes folio from LRU.
->
-> To prevent this case also check for folio_test_mlocked() in
-> folio_mark_accessed(). If folio is not yet marked as unevictable, but
-> already marked as mlocked, then skip folio_activate() call to allow
-> __mlock_folio() to make all necessary updates. It should be safe to skip
-> folio_activate() here, because mlocked folio should end up in
-> unevictable LRU eventually anyway.
->
-> To observe the problem mmap() and mlock() big file and check Unevictable
-> and Mlocked values from /proc/meminfo. On freshly booted system without
-> any other mlocked memory we expect them to match or be quite close.
->
-> See below for more detailed reproduction steps. Source code of stat.c is
-> available at [1].
->
->   $ head -c 8G < /dev/urandom > /tmp/random.bin
->
->   $ cc -pedantic -Wall -std=3Dc99 stat.c -O3 -o /tmp/stat
->   $ /tmp/stat
->   Unevictable:     8389668 kB
->   Mlocked:         8389700 kB
->
->   Need to run binary twice. Problem does not reproduce on the first run,
->   but always reproduces on the second run.
->
->   $ /tmp/stat
->   Unevictable:     5374676 kB
->   Mlocked:         8389332 kB
->
-> [1]: https://gist.github.com/ilvokhin/e50c3d2ff5d9f70dcbb378c6695386dd
->
-> Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> Acked-by: Usama Arif <usamaarif642@gmail.com>
+On Tue, Oct 07, 2025 at 06:14:01PM +0200, David Hildenbrand wrote:
+> > > If so, I'd prefer that rather than introducing feature-backend flags,
+> > > because I want to avoid introducing another different feature set to uffd.
+> > > 
+> > 
+> > I was talking about uffd_features.  I thought it was being renamed to
+> > flags, not modes_supported.  It was pretty late when I responded.
+> > 
+> > FWIU, David was saying we don't need both of modes and ioctl listed in
+> > the uffd_ops?
+> 
+> Right, I would have abstracted the features to clean it up and avoid using
+> VM_ flags in this interface.
+> 
+> > 
+> > I was thinking that we could just put the features directly as function
+> > pointers in the uffd_ops and check if they are NULL or not for
+> > 'support'.
+> > 
+> > ie:
+> > 
+> > struct vm_uffd_ops hugetlb_uffd_ops = {
+> >          .missing = hugetlb_handle_userfault,
 
-Acked-by: Nhat Pham <nphamcs@gmail.com>
+This is not needed because the logic to handle userfault isn't very type
+sensitive. Hugetlb is the only one that differs very lightly, but again I
+think we should better take hugetlbfs as special always as of now, per all
+the previous discussions on hugetlb unifications.
+
+> >          .write_protect = mwriteprotect_range,
+
+This is not needed.  WP processing is the same.
+
+> >          .minor = hugetlb_handle_userfault_minor,
+
+We can do that, but ultimately we do almost exactly the same for all memory
+types except a fetch on the page cache.  IMHO this will make it awkward..
+because 99% of the minor hooks will do the same thing..  OTOH, it makes
+more sense to me that the hook is defined to cover what is different on the
+memory type.
+
+I'll stop commenting on the rest.
+
+> > 
+> >          .mfill_atomic = hugetlb_mfill_atomic_pte,
+> >          .mfill_atomic_continue = ...
+> >          .mfill_zeropage = ...
+> >          .mfill_poison = ...
+> >          .mfill_copy = NULL, /* For example */
+> > };
+> > 
+> > Then mfill_atomic_copy() becomes:
+> > {
+> >          /*
+> >           * Maybe some setup, used for all mfill operations from
+> >           * mfill_atomic()
+> >           */
+> > 
+> >           ...
+> > 
+> >          dst_vma = uffd_mfill_lock()
+> >          uffd_ops = vma_get_uffd_ops(vma);
+> >          if (!uffd_ops)
+> >                  return false;
+> > 
+> >          if (!uffd_ops->mfill_copy) /* unlikely? */
+> >                  return false;
+> > 
+> >          return uffd_ops->mfill_copy(dst_vma,..);
+> > }
+> > 
+> > This way is_vm_hugetlb_page() never really needs to be used because the
+> > function pointer already makes that distinction.
+> > 
+> > Right now, we have checks for hugetlb through other functions that "pass
+> > off to appropriate routine", and we end up translating the
+> > ioctl_supports into the function call eventually, anyways.
+> 
+> Right, it would be great to get rid of that. I recall I asked for such a
+> cleanup in RFC (or was it v1).
+
+I didn't send RFC, likely you meant this reply in v1?
+
+https://lore.kernel.org/all/0126fa5f-b5aa-4a17-80d6-d428105e45c7@redhat.com/
+
+        I agree that another special-purpose file (like implemented by
+        guest_memfd) would need that. But if we could get rid of
+        "hugetlb"/"shmem" special-casing in userfaultfd, it would be a
+        rasonable independent cleanup.
+
+Get rid of hugetlbfs is still not my goal as of in this series.
+
+OTOH, I generalized shmem and removed shmem.h header from userfaultfd, but
+that was prior versions when with uffd_copy() and it was rejected.
+
+What should I do now to move this series forward?  Could anyone provide a
+solid answer?
+
+Thanks,
+
+-- 
+Peter Xu
+
 
