@@ -4,89 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27DD5CCA476
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 17:02:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7532BCCA470
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 17:11:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BEC78E000F; Tue,  7 Oct 2025 13:02:01 -0400 (EDT)
+	id B41268E000C; Tue,  7 Oct 2025 13:11:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 696AE8E0003; Tue,  7 Oct 2025 13:02:01 -0400 (EDT)
+	id AF1338E0003; Tue,  7 Oct 2025 13:11:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D2CA8E000F; Tue,  7 Oct 2025 13:02:01 -0400 (EDT)
+	id 9B9108E000C; Tue,  7 Oct 2025 13:11:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B8AE8E0003
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 13:02:01 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E7CF0119316
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 17:02:00 +0000 (UTC)
-X-FDA: 83971935600.28.7583898
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 27F3D180028
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 17:01:58 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GVsXKOAn;
-	spf=pass (imf24.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 837378E0003
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 13:11:12 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1A8A2140295
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 17:11:12 +0000 (UTC)
+X-FDA: 83971958784.26.E1FF944
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 22CF620008
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 17:11:09 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=LW8FtpRi;
+	spf=pass (imf03.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759856519;
+	s=arc-20220608; t=1759857070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a9l0/6zUDNO+xCl8q1KIbKj7hrUlRaLHv0kidIMcKjU=;
-	b=yzYy3f14K5p1U72aEB+1ahrK2CUcX8vLWex1ZKiEMOS7TWBFd7a6ZLr2DsnpnsDBYJBS3A
-	wsZywW/ZCckeSroLZ8pIL9C1B7HqW8NUhL1xYArRm7+s6G/ku+rYMmORcoffr4kGyQnNq2
-	tHWa6r2zZXiwur2ip+ZLjTtLgXy+6z4=
+	bh=AWRw1t2EiCvmQgNNdpv7LOY6AvNobjsU7Ywi4CTWVS8=;
+	b=J18ldm5sKjjocrFUGeFzmollmdwWNfHXSg2Q9hugQ7IST+V6pzXkH96C6rYo2JiTt5wdtx
+	aB8wHIr0yl6j/rRC2K1FxzSXdI4dynR3y/5qZXL23JzSk1idmEA2+QcMG469N3RPtfANQY
+	uIBZaqkeIQbUS2xtqw/PxH28g/XV7SQ=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GVsXKOAn;
-	spf=pass (imf24.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759856519; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=LW8FtpRi;
+	spf=pass (imf03.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759857070; a=rsa-sha256;
 	cv=none;
-	b=sZchaconQYExVV4oZYTymUqB9m2LQEAKXzQp31Sa7ZKGeyu7Frf95asBBowTc4j8eapfC5
-	1NQTJZ5qtF+h9Fc/mH/3PSAVbUB5nBl2bMLTLNv+NCuVGvmtbwHCoBvq+CntwOvnXLz+xf
-	DC3zxsJ8IR+zUbRlZyduKIxhX24Pu6A=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AB1E3407BE;
-	Tue,  7 Oct 2025 17:01:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8520DC4CEF1;
-	Tue,  7 Oct 2025 17:01:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759856517;
-	bh=MR5qWTAOW1zVyTLdPwwD9muosMP83f5qZfp7s+T/8Hw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GVsXKOAnGQWHMUvRXJC+HD5Ptm4rKk3wxOY0m04k1/vuFPLEHYh1doW38jWqMNOMW
-	 L/7qM0gkru7kkBntPfDcFUXYAL1plH+dhqEAgp+KQ6vTxlekXWdDnfOns9KPwLbeXH
-	 Elolz6FA56YCumDWpBov0HylXOdE0TORtEJ8uImPWRAVl/pzLNrlxZgxIFye24JnY2
-	 J5+nyBymaFOYpMgWzoep6qXlaii0EaJtnDWnfxt+SO/HNj+0bkgOqNlQbtV/G+dOlz
-	 GeHfdBkrc7bZc9x2Nx172su4AQjqB0A+lLDzUAZQS0AUQTskSrERr7EU1U5QnEltLP
-	 5wtZOGCn+mO5w==
-Date: Tue, 7 Oct 2025 10:01:56 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: acsjakub@amazon.de, akpm@linux-foundation.org, axelrasmussen@google.com,
-	chengming.zhou@linux.dev, david@redhat.com,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, peterx@redhat.com, xu.xin16@zte.com.cn,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] mm: use enum for vm_flags
-Message-ID: <20251007170156.GQ1587915@frogsfrogsfrogs>
-References: <20251002075202.11306-1-acsjakub@amazon.de>
- <20251007162136.1885546-1-aliceryhl@google.com>
+	b=lZiCUoteVJRP70T4xbzAiiHK0sNh4HO6NE7u9agYNEoYrMYH3fYuzTJ3BgmU8sNZ3SxbPt
+	soB8iXvzM8J20Nek8mhXnMrl6yuUjQUmB2SaTrpSbKjwAESc+hk8NhJ1nkENfQ+Rycu32s
+	rCiTpAbO9Vwyc/5jtHetzgexvub7Fww=
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4e4f8122660so66941821cf.0
+        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 10:11:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1759857069; x=1760461869; darn=kvack.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AWRw1t2EiCvmQgNNdpv7LOY6AvNobjsU7Ywi4CTWVS8=;
+        b=LW8FtpRip6EnvcoBX8ZaGaOU/B1hOF0uQo/uBPsJjHsokeSdE1Z06Ni5iJyOwLjb+r
+         C7QjuPhDXLmwR2g3pJPRUWjeZGcfz7oRcdy6gkmIVRgBggNkR8osqmFgep9CYLyYVPms
+         YnFx0KPb0UEXHWOs1qxp5j5zGkz+QXwFxPs7EH3E6rAep8piZfRDRApp5fg33K2WZdqA
+         3aqw1DZ52R4wkSC+MFQrVF5MhE45noTPcpfnIKWEtbTy8m0aZHhgU2tXG5E8WuQ0zE0A
+         EHxBlvv/EeMmmWPZ00wIvWjPZnWWa2H+CNN/kmH1ca6XnpluHIN+rwycGBBLPYP3NHri
+         tuCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759857069; x=1760461869;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AWRw1t2EiCvmQgNNdpv7LOY6AvNobjsU7Ywi4CTWVS8=;
+        b=C3W055EAKqJyM1HxFVT9XLVXmCSH3GzlbFzU2k48mZ+6ZoNb25rsplryEPmCPwJOg9
+         vClqeTwTxWF0DRIwd2p4Mi6c4GBzxpN9fJCs5VqfLQQa2LOuiISAUx7FlPMqH8QXFLyO
+         nzOdeO+otRNBZh/X3o9F8dRVyZbwR4zcId8wUOuqp3lgTS1U+Vn+TcY2ku6i2ZGXqpfh
+         AYFL3IZNwnYtNVa7C0IG56y9l4aAhmsZTLJ5oglcLDK9xrZ42BApKjgBrqlQBhCTgJRo
+         xBgoCY+uFjYY+UQyoH6lq7DLU2jK3H7W/vqS1r2WMY4psQU3Xnc2wZHUFGZ3dnpGcJ6w
+         VITQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX+tOYDQ7iYVLmXErL6IspO6lHK3zXYtDMfQvKGLBSE1RefasXqxj93EI6X1Nj//i6YSreQ9vpiLg==@kvack.org
+X-Gm-Message-State: AOJu0Yy+6OQdacHocsVNLXt93mYyj82qXTTz3DnE1QPKVwRhPJDgSlK5
+	hH7BGBUk7EEYcXfFko2B4kHtVZBqqdYGb9YtaQZuC2w2JuAuZwP3QFxh9GMUC4Y5dmgAjC7w3sm
+	KD1OJGeFlahRQGrhl9QHAzGaEJ+jcIVWzSKCaU7Y9wA==
+X-Gm-Gg: ASbGnct0UjH0HifqKIq0KRM38VEqEWIOHBEk5pyeEhcxTQj9FbbXvGNY/h+vU+Mxid2
+	zV7oTEAwygeEP3GrIpKhEYMzfqxZEmeIdKYZ53Lbd6bg2eT+6qCwW5qXlbr1wfM13xGzcKOt2we
+	AiZrxx00tncFhhzIJL3nzL0sYbAFguLAT+T7afWXjHDwocgE/LckydGaCfQeEENMl+q0yJ1tK/F
+	Xkg+0L1YlVozMtjdccm7vvxZHpFi+6blC32Ulc=
+X-Google-Smtp-Source: AGHT+IHrHNSARo+7sTykBDLK5vp/EH1bjDHDWCDbu2JdzrY3wt5qvUa/q+xa6X664S2uV3zZ9f8Y6nrn0eu81u0SyvY=
+X-Received: by 2002:a05:622a:54:b0:4b7:90c0:3156 with SMTP id
+ d75a77b69052e-4e6eacb4283mr5037711cf.9.1759857068563; Tue, 07 Oct 2025
+ 10:11:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251007162136.1885546-1-aliceryhl@google.com>
-X-Rspamd-Queue-Id: 27F3D180028
-X-Rspamd-Server: rspam11
+References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
+In-Reply-To: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Tue, 7 Oct 2025 13:10:30 -0400
+X-Gm-Features: AS18NWAYCCqTXJEjJ3ZrWQLLuUxvNkwdTkZyTxDoerFJF6t-dA9L3OONGiPCRQA
+Message-ID: <CA+CK2bB+RdapsozPHe84MP4NVSPLo6vje5hji5MKSg8L6ViAbw@mail.gmail.com>
+Subject: Re: [PATCH v4 00/30] Live Update Orchestrator
+To: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
+	changyuanl@google.com, pasha.tatashin@soleen.com, rppt@kernel.org, 
+	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
+	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
+	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
+	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
+	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
+	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
+	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
+	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn, 
+	linux@weissschuh.net, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
+	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org, 
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
+	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
+	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
+	chrisl@kernel.org, steven.sistare@oracle.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 22CF620008
+X-Stat-Signature: rqdga8e1jzf3iqhxuwrtxsefu4awpctk
 X-Rspam-User: 
-X-Stat-Signature: oqoiwmskqiz1swia5abwqg33ohg784fp
-X-HE-Tag: 1759856518-226994
-X-HE-Meta: U2FsdGVkX19fws1ExEsXRQHqRAAUC+UfNfOGRtwkXgJNCsAgR8z0N89+mlB2lidSRmwgfIEUSvR3j6Hu+ggFWXFFGgPpn017Izqflxm2Cq/TBJXkQ7bC/wtcFTp828oLVL3k3DYs7fmbxgg24qQy/H9TvZE84Irp/Sf7s0PIAdvYoSI9b4LnpuuAcjhtj7Fypkyjnovm2tUy0sip4YrmmAmOzv1//0kniGEA/lxCd8R7ZFNx0fev7pTOn2QvS+uXG5ERPbx8rBXkbotl0B0koa2dFU0nwjrGBOQlHbsjX5BaftNY5ZCDdVBedN9XxeY+VxS00HNnF724eGC5d/LEBpAcGGm9uf2263fhGh+QCcjXcF9+qBRAH2MITtz7CL8uq7O7WF+3/tkHawpL9AagoYIQ825YAJDj4AFciZ8iAAFBUrtg/YX4nEfLHivqF13p97KbKeCD6Os/NhqNdrbfKgG5VaAsVdRgVfdByMQS43hXxVXR0GsUgl+rrqSyOvtfeu5P7YS6NaWT62FC+YPwty2hXVGywvs+bTLHmjNC4bahHhn0ktHzP7+yKiHj014BYwnulN0C5Bp54bV/8WR9x/NEesGngkfaoiGvvIDounJQcG6aXXKoEmTEFePMnKtlWeB5JxYM5MhP5v8snBoaSa8ZWzFdqmG2bSISECxxnfvQhZFNSsBXw7BFmZyP/xQxWGNNUcP3MhlvuBjGOchzBo0Vufj9aaXW7N1mEuSANKcZTw5bmf2y9w7Fq6dIUgwIYUTG1lNR7cA89rDZicVu54h2f1w8Zh3vS1iY2jEfMDBLQKs4GUf3ho2bQd34ErEXlfZGkUlQhl4eG+c8JgAFUMTlaYM+Z2ahGsVopsMA1fGewVB292UGTin5FMtpJVW0ssPNaLb4Sq7GMccHh4RU4Uzps020lcolAzU1yyLSWRM7H6KsxRUQ2wRTiuoges10P+P8AXRjKTBJvawec+S
- ZytyA8L9
- rXU2t9r1oOhK5dTNlGyZNG3PtzOziETwDSzNToWdjJxXtEQw26CEEHfJtcQsaNggBw9Lm6E8xXQMN/MT+MjSkiP42zvhrhwrBl48MW6yvyj3SAJ1hxzyVEG32DgQCYNVHaeWONjf1Tq0jD1zDlT6nAwJWv54rO7mQZBmhuc7Q4nGuuJ/PYMQqzjgT4u5Q+neGqKtaGYgul/I5VL8dMZGBaym1LMVo+Yd5cVsxdsaLBLerpFs6pvqgvE9t1bU10/fnC42l/Evw7HYTp9hBpYLL+1+hZlc8JcKRSB8n/BpvNVVMo9h9Yu4B+6tXB9DUq2kUtyrtsJttFOtnubDKwxAL1BMLTc4QmYIxgzKKl7wT3LU4c83568PLoMYyjg==
+X-HE-Tag: 1759857069-836825
+X-HE-Meta: U2FsdGVkX19BH0ddVVyKRc/e8S1xLb7ZeT4q8Q5d8WfXy+cWgPYsnSNvFmkrPZ7Firc+INcop71SRq1i6I0lYu9qhZ+EIPCVaEJ+E+jk6By97JP/U1NRiFrIj7qY+3y/x9tTqoikux1LaCp+ckfYamOZYCcrYsnD0W9piCGZATlP07BHkfjs0vZByAge/L/tJeMGCnQJNSM4QOqp73PtEzvE4vleK0iRlW/nW6TX7skZkaNTLeJc/eEQGYm71qrTcA9DiI4pBaTWNyRhZpWPme8y0OAagjOguIq7lJZX37JifLInWY2Lqg52x1cKX2bPQHwWPDZUIRPeCQgUtPkvJIwxqPXUjoiJ/5i50o7reB1OfZoob4sX9vjyUPlgBYk+BNipTjzRyJlvOPAa+h4p9PSR4QNnnc90yeq4RZlj6vE+ffkQr8jWVUAFVAgSxoz4teLPtclYwE8WuWPzEUmMdi0bn88OsWmQkZ1NObGJ1PupaJcRD5yp83PHXyWtibcDatXmKHGM8QdwcT43cMyUcxWZfGOBnJynsL5F6ytcy7xjTHaXVxz241d9/EtD69GKdRTohMOvPzbRZWGO88qb0moXDKGASTaSkA2dXV5Z29T1mrb19WW89atQmCtxx3kV8xIqSklwHtcYPudCR/JMg3x3A2Fgu1KRhJgrraaWYbCbOvJqpN4AeXIEsPCfIRGUhsfuXnryV+bRwQ5bk4j+ARPaOEkKzSNiRZ3gmlGRxwSYU7Z6bMUhclxfo/GY1Skj17u5cWPjz4bVBUTVM/+mYtoeiLrKPqkVw0ezbLnKmDnaEy65QvrdCjo8PvKttMvRBql5V6RbpK0cG85m/XLxdt7tmhFOQL01V4demT2S1iMrLNAuEsn+kiPNU/6gZd4CsISgVWxnbmDOkTBOwMoDc1ikFjHxGiWG+liJSlMIGwu0J8sQ1JhV7xH6eGsIeMpHP0RuOgNbMIYAFdTmmfI
+ cGE+qmRW
+ VoSMn9N44EwiWN5XDHGjfr0Ix4J5Pk3prjnBL9Dbb27Vi/8hPtRaEiWEtE1LEN/dXXzIKC0ACGMNoBFulrKwIRDYe3nc7E+EXh9insY3dEiu+LVSkYW4Ulh6ov7qcqWLZDBYUV0FmsNgc1ZjLRpdl0JLtXa4qCBoheGCitNzqE9C4mW//o7rzSzC0JQZ24EznvFlYujxZhCd+HIOHcRZpel+3uPbDBK+d6Bg7tPuGDrB8Yau4JlKlxGP5Xk9tUB3/OnnTSqJ4w9hBgVzNVZhYTd/v+O5Y1IjExGbAUyOU/LOObHJ9wOqnxH9Dd+wnKuJJqjikMlcDuuMagm5GwlNK1Cru8VdMswpthQbFnKA92J/LpjflbTsdyeJLgW7KYI9vi3J2b90cd61/8+0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,180 +138,229 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 07, 2025 at 04:21:36PM +0000, Alice Ryhl wrote:
-> The bindgen tool is better able to handle BIT(_) declarations when used
-> in an enum.
-> 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-> Hi Jakub,
-> 
-> what do you think about modifying the patch like this to use an enum? It
-> resolves the issues brought up in
-> 	https://lore.kernel.org/all/CAH5fLghTu-Zcm9e3Hy07nNtvB_-hRjojAWDoq-hhBYGE7LPEbQ@mail.gmail.com/
-> 
-> Feel free to squash this patch into your patch.
-> 
->  include/linux/mm.h              | 90 +++++++++++++++++----------------
->  rust/bindings/bindings_helper.h |  1 -
->  2 files changed, 46 insertions(+), 45 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 7916d527f687..69da7ce13e50 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -273,57 +273,58 @@ extern unsigned int kobjsize(const void *objp);
->   * vm_flags in vm_area_struct, see mm_types.h.
->   * When changing, update also include/trace/events/mmflags.h
->   */
-> -#define VM_NONE		0
-> +enum {
-> +	VM_NONE		= 0,
->  
-> -#define VM_READ		BIT(0)		/* currently active flags */
-> -#define VM_WRITE	BIT(1)
-> -#define VM_EXEC		BIT(2)
-> -#define VM_SHARED	BIT(3)
-> +	VM_READ		= BIT(0),		/* currently active flags */
-> +	VM_WRITE	= BIT(1),
-> +	VM_EXEC		= BIT(2),
-> +	VM_SHARED	= BIT(3),
+On Sun, Sep 28, 2025 at 9:03=E2=80=AFPM Pasha Tatashin
+<pasha.tatashin@soleen.com> wrote:
+>
+> This series introduces the Live Update Orchestrator (LUO), a kernel
+> subsystem designed to facilitate live kernel updates. LUO enables
+> kexec-based reboots with minimal downtime, a critical capability for
+> cloud environments where hypervisors must be updated without disrupting
+> running virtual machines. By preserving the state of selected resources,
+> such as file descriptors and memory, LUO allows workloads to resume
+> seamlessly in the new kernel.
+>
+> The git branch for this series can be found at:
+> https://github.com/googleprodkernel/linux-liveupdate/tree/luo/v4
+>
+> The patch series applies against linux-next tag: next-20250926
+>
+> While this series is showed cased using memfd preservation. There are
+> works to preserve devices:
+> 1. IOMMU: https://lore.kernel.org/all/20250928190624.3735830-16-skhawaja@=
+google.com
+> 2. PCI: https://lore.kernel.org/all/20250916-luo-pci-v2-0-c494053c3c08@ke=
+rnel.org
+>
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> Changelog since v3:
+> (https://lore.kernel.org/all/20250807014442.3829950-1-pasha.tatashin@sole=
+en.com):
+>
+> - The main architectural change in this version is introduction of
+>   "sessions" to manage the lifecycle of preserved file descriptors.
+>   In v3, session management was left to a single userspace agent. This
+>   approach has been revised to improve robustness. Now, each session is
+>   represented by a file descriptor (/dev/liveupdate). The lifecycle of
+>   all preserved resources within a session is tied to this FD, ensuring
+>   automatic cleanup by the kernel if the controlling userspace agent
+>   crashes or exits unexpectedly.
+>
+> - The first three KHO fixes from the previous series have been merged
+>   into Linus' tree.
+>
+> - Various bug fixes and refactorings, including correcting memory
+>   unpreservation logic during a kho_abort() sequence.
+>
+> - Addressing all comments from reviewers.
+>
+> - Removing sysfs interface (/sys/kernel/liveupdate/state), the state
+>   can now be queried  only via ioctl() API.
+>
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 
-mmflags.h contains ... a lot of macros, but I think if you change the
-vmflags to an enum, you have to wrap every value of that enum in a
-TRACE_DEFINE_ENUM or else __print_flags on an array(?) of {value,
-string} pairs stops working.
+Hi all,
 
-Concretely, I think show_vma_flags (which uses __def_vmaflag_names) will
-stop working here.  I'm no ftrace magician here, but AFAICT the third
-argument to __print_flags is stored verbatim in the tracefs format file,
-and the userspace ftrace tools use that to convert the raw data into a
-user friendly string.  For whatever reason, enumerations aren't
-converted to their underlying integer values by default, so the
-userspace program can't do the translation.  TRACE_DEFINE_ENUM is a
-magic that makes that happen.
+Following up on yesterday's Hypervisor Live Update meeting, we
+discussed the requirements for the LUO to track dependencies,
+particularly for IOMMU preservation and other stateful file
+descriptors. This email summarizes the main design decisions and
+outcomes from that discussion.
 
-<shrug> Don't mind me :)
+For context, the notes from the previous meeting can be found here:
+https://lore.kernel.org/all/365acb25-4b25-86a2-10b0-1df98703e287@google.com
+The notes for yesterday's meeting are not yes available.
 
---D
+The key outcomes are as follows:
 
->  
->  /* mprotect() hardcodes VM_MAYREAD >> 4 == VM_READ, and so for r/w/x bits. */
-> -#define VM_MAYREAD	BIT(4)		/* limits for mprotect() etc */
-> -#define VM_MAYWRITE	BIT(5)
-> -#define VM_MAYEXEC	BIT(6)
-> -#define VM_MAYSHARE	BIT(7)
-> +	VM_MAYREAD	= BIT(4),		/* limits for mprotect() etc */
-> +	VM_MAYWRITE	= BIT(5),
-> +	VM_MAYEXEC	= BIT(6),
-> +	VM_MAYSHARE	= BIT(7),
->  
-> -#define VM_GROWSDOWN	BIT(8)		/* general info on the segment */
-> +	VM_GROWSDOWN	= BIT(8),		/* general info on the segment */
->  #ifdef CONFIG_MMU
-> -#define VM_UFFD_MISSING	BIT(9)		/* missing pages tracking */
-> +	VM_UFFD_MISSING	= BIT(9),		/* missing pages tracking */
->  #else /* CONFIG_MMU */
-> -#define VM_MAYOVERLAY	BIT(9)		/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
-> +	VM_MAYOVERLAY	= BIT(9),		/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
->  #define VM_UFFD_MISSING	0
->  #endif /* CONFIG_MMU */
-> -#define VM_PFNMAP	BIT(10)		/* Page-ranges managed without "struct page", just pure PFN */
-> -#define VM_UFFD_WP	BIT(12)		/* wrprotect pages tracking */
-> -
-> -#define VM_LOCKED	BIT(13)
-> -#define VM_IO           BIT(14)		/* Memory mapped I/O or similar */
-> -
-> -					/* Used by sys_madvise() */
-> -#define VM_SEQ_READ	BIT(15)		/* App will access data sequentially */
-> -#define VM_RAND_READ	BIT(16)		/* App will not benefit from clustered reads */
-> -
-> -#define VM_DONTCOPY	BIT(17)		/* Do not copy this vma on fork */
-> -#define VM_DONTEXPAND	BIT(18)		/* Cannot expand with mremap() */
-> -#define VM_LOCKONFAULT	BIT(19)		/* Lock the pages covered when they are faulted in */
-> -#define VM_ACCOUNT	BIT(20)		/* Is a VM accounted object */
-> -#define VM_NORESERVE	BIT(21)		/* should the VM suppress accounting */
-> -#define VM_HUGETLB	BIT(22)		/* Huge TLB Page VM */
-> -#define VM_SYNC		BIT(23)		/* Synchronous page faults */
-> -#define VM_ARCH_1	BIT(24)		/* Architecture-specific flag */
-> -#define VM_WIPEONFORK	BIT(25)		/* Wipe VMA contents in child. */
-> -#define VM_DONTDUMP	BIT(26)		/* Do not include in the core dump */
-> +	VM_PFNMAP	= BIT(10),		/* Page-ranges managed without "struct page", just pure PFN */
-> +	VM_UFFD_WP	= BIT(12),		/* wrprotect pages tracking */
-> +
-> +	VM_LOCKED	= BIT(13),
-> +	VM_IO           = BIT(14),		/* Memory mapped I/O or similar */
-> +
-> +						/* Used by sys_madvise() */
-> +	VM_SEQ_READ	= BIT(15),		/* App will access data sequentially */
-> +	VM_RAND_READ	= BIT(16),		/* App will not benefit from clustered reads */
-> +
-> +	VM_DONTCOPY	= BIT(17),		/* Do not copy this vma on fork */
-> +	VM_DONTEXPAND	= BIT(18),		/* Cannot expand with mremap() */
-> +	VM_LOCKONFAULT	= BIT(19),		/* Lock the pages covered when they are faulted in */
-> +	VM_ACCOUNT	= BIT(20),		/* Is a VM accounted object */
-> +	VM_NORESERVE	= BIT(21),		/* should the VM suppress accounting */
-> +	VM_HUGETLB	= BIT(22),		/* Huge TLB Page VM */
-> +	VM_SYNC		= BIT(23),		/* Synchronous page faults */
-> +	VM_ARCH_1	= BIT(24),		/* Architecture-specific flag */
-> +	VM_WIPEONFORK	= BIT(25),		/* Wipe VMA contents in child. */
-> +	VM_DONTDUMP	= BIT(26),		/* Do not include in the core dump */
->  
->  #ifdef CONFIG_MEM_SOFT_DIRTY
-> -# define VM_SOFTDIRTY	BIT(27)		/* Not soft dirty clean area */
-> +	VM_SOFTDIRTY	= BIT(27),		/* Not soft dirty clean area */
->  #else
->  # define VM_SOFTDIRTY	0
->  #endif
->  
-> -#define VM_MIXEDMAP	BIT(28)		/* Can contain "struct page" and pure PFN pages */
-> -#define VM_HUGEPAGE	BIT(29)		/* MADV_HUGEPAGE marked this vma */
-> -#define VM_NOHUGEPAGE	BIT(30)		/* MADV_NOHUGEPAGE marked this vma */
-> -#define VM_MERGEABLE	BIT(31)		/* KSM may merge identical pages */
-> +	VM_MIXEDMAP	= BIT(28),		/* Can contain "struct page" and pure PFN pages */
-> +	VM_HUGEPAGE	= BIT(29),		/* MADV_HUGEPAGE marked this vma */
-> +	VM_NOHUGEPAGE	= BIT(30),		/* MADV_NOHUGEPAGE marked this vma */
-> +	VM_MERGEABLE	= BIT(31),		/* KSM may merge identical pages */
->  
->  #ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS
->  #define VM_HIGH_ARCH_BIT_0	32	/* bit only usable on 64-bit architectures */
-> @@ -333,14 +334,15 @@ extern unsigned int kobjsize(const void *objp);
->  #define VM_HIGH_ARCH_BIT_4	36	/* bit only usable on 64-bit architectures */
->  #define VM_HIGH_ARCH_BIT_5	37	/* bit only usable on 64-bit architectures */
->  #define VM_HIGH_ARCH_BIT_6	38	/* bit only usable on 64-bit architectures */
-> -#define VM_HIGH_ARCH_0	BIT(VM_HIGH_ARCH_BIT_0)
-> -#define VM_HIGH_ARCH_1	BIT(VM_HIGH_ARCH_BIT_1)
-> -#define VM_HIGH_ARCH_2	BIT(VM_HIGH_ARCH_BIT_2)
-> -#define VM_HIGH_ARCH_3	BIT(VM_HIGH_ARCH_BIT_3)
-> -#define VM_HIGH_ARCH_4	BIT(VM_HIGH_ARCH_BIT_4)
-> -#define VM_HIGH_ARCH_5	BIT(VM_HIGH_ARCH_BIT_5)
-> -#define VM_HIGH_ARCH_6	BIT(VM_HIGH_ARCH_BIT_6)
-> +	VM_HIGH_ARCH_0	= BIT(VM_HIGH_ARCH_BIT_0),
-> +	VM_HIGH_ARCH_1	= BIT(VM_HIGH_ARCH_BIT_1),
-> +	VM_HIGH_ARCH_2	= BIT(VM_HIGH_ARCH_BIT_2),
-> +	VM_HIGH_ARCH_3	= BIT(VM_HIGH_ARCH_BIT_3),
-> +	VM_HIGH_ARCH_4	= BIT(VM_HIGH_ARCH_BIT_4),
-> +	VM_HIGH_ARCH_5	= BIT(VM_HIGH_ARCH_BIT_5),
-> +	VM_HIGH_ARCH_6	= BIT(VM_HIGH_ARCH_BIT_6),
->  #endif /* CONFIG_ARCH_USES_HIGH_VMA_FLAGS */
-> +};
->  
->  #ifdef CONFIG_ARCH_HAS_PKEYS
->  # define VM_PKEY_SHIFT VM_HIGH_ARCH_BIT_0
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> index 2e43c66635a2..04b75d4d01c3 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -108,7 +108,6 @@ const xa_mark_t RUST_CONST_HELPER_XA_PRESENT = XA_PRESENT;
->  
->  const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC = XA_FLAGS_ALLOC;
->  const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC1 = XA_FLAGS_ALLOC1;
-> -const vm_flags_t RUST_CONST_HELPER_VM_MERGEABLE = VM_MERGEABLE;
->  
->  #if IS_ENABLED(CONFIG_ANDROID_BINDER_IPC_RUST)
->  #include "../../drivers/android/binder/rust_binder.h"
-> -- 
-> 2.51.0.618.g983fd99d29-goog
-> 
-> 
+1. User-Enforced Ordering
+-------------------------
+The responsibility for enforcing the correct order of operations will
+lie with the userspace agent. If fd_A is a dependency for fd_B,
+userspace must ensure that fd_A is preserved before fd_B. This same
+ordering must be honored during the restoration phase after the reboot
+(fd_A must be restored before fd_B). The kernel preserve the ordering.
+
+2. Serialization in PRESERVE_FD
+-------------------------------
+To keep the global prepare() phase lightweight and predictable, the
+consensus was to shift the heavy serialization work into the
+PRESERVE_FD ioctl handler. This means that when userspace requests to
+preserve a file, the file handler should perform the bulk of the
+state-saving work immediately.
+
+The proposed sequence of operations reflects this shift:
+
+Shutdown Flow:
+fd_preserve() (heavy serialization) -> prepare() (lightweight final
+checks) -> Suspend VM -> reboot(KEXEC) -> freeze() (lightweight)
+
+Boot & Restore Flow:
+fd_restore() (lightweight object creation) -> Resume VM -> Heavy
+post-restore IOCTLs (e.g., hardware page table re-creation) ->
+finish() (lightweight cleanup)
+
+This decision primarily serves as a guideline for file handler
+implementations. For the LUO core, this implies minor API changes,
+such as renaming can_preserve() to a more active preserve() and adding
+a corresponding unpreserve() callback to be called during
+UNPRESERVE_FD.
+
+3. FD Data Query API
+--------------------
+We identified the need for a kernel API to allow subsystems to query
+preserved FD data during the boot process, before userspace has
+initiated the restore.
+
+The proposed API would allow a file handler to retrieve a list of all
+its preserved FDs, including their session names, tokens, and the
+private data payload.
+
+Proposed Data Structure:
+
+struct liveupdate_fd {
+        char *session; /* session name */
+        u64 token; /* Preserved FD token */
+        u64 data; /* Private preserved data */
+};
+
+Proposed Function:
+liveupdate_fd_data_query(struct liveupdate_file_handler *h,
+                         struct liveupdate_fd *fds, long *count);
+
+4. New File-Lifecycle-Bound Global State
+----------------------------------------
+A new mechanism for managing global state was proposed, designed to be
+tied to the lifecycle of the preserved files themselves. This would
+allow a file owner (e.g., the IOMMU subsystem) to save and retrieve
+global state that is only relevant when one or more of its FDs are
+being managed by LUO.
+
+The key characteristics of this new mechanism are:
+The global state is optionally created on the first preserve() call
+for a given file handler.
+The state can be updated on subsequent preserve() calls.
+The state is destroyed when the last corresponding file is unpreserved
+or finished.
+The data can be accessed during boot.
+
+I am thinking of an API like this.
+
+1. Add three more callbacks to liveupdate_file_ops:
+/*
+ * Optional. Called by LUO during first get global state call.
+ * The handler should allocate/KHO preserve its global state object and ret=
+urn a
+ * pointer to it via 'obj'. It must also provide a u64 handle (e.g., a phys=
+ical
+ * address of preserved memory) via 'data_handle' that LUO will save.
+ * Return: 0 on success.
+ */
+int (*global_state_create)(struct liveupdate_file_handler *h,
+                           void **obj, u64 *data_handle);
+
+/*
+ * Optional. Called by LUO in the new kernel
+ * before the first access to the global state. The handler receives
+ * the preserved u64 data_handle and should use it to reconstruct its
+ * global state object, returning a pointer to it via 'obj'.
+ * Return: 0 on success.
+ */
+int (*global_state_restore)(struct liveupdate_file_handler *h,
+                            u64 data_handle, void **obj);
+
+/*
+ * Optional. Called by LUO after the last
+ * file for this handler is unpreserved or finished. The handler
+ * must free its global state object and any associated resources.
+ */
+void (*global_state_destroy)(struct liveupdate_file_handler *h, void *obj);
+
+The get/put global state data:
+
+/* Get and lock the data with file_handler scoped lock */
+int liveupdate_fh_global_state_get(struct liveupdate_file_handler *h,
+                                   void **obj);
+
+/* Unlock the data */
+void liveupdate_fh_global_state_put(struct liveupdate_file_handler *h);
+
+Execution Flow:
+1. Outgoing Kernel (First preserve() call):
+2. Handler's preserve() is called. It needs the global state, so it calls
+   liveupdate_fh_global_state_get(&h, &obj). LUO acquires h->global_state_l=
+ock.
+   It sees h->global_state_obj is NULL.
+   LUO calls h->ops->global_state_create(h, &h->global_state_obj, &handle).
+   The handler allocates its state, preserves it with KHO, and returns its =
+live
+   pointer and a u64 handle.
+3. LUO stores the handle internally for later serialization.
+4. LUO sets *obj =3D h->global_state_obj and returns 0 with the lock still =
+held.
+5. The preserve() callback does its work using the obj.
+6. It calls liveupdate_fh_global_state_put(h), which releases the lock.
+
+Global PREPARE:
+1. LUO iterates handlers. If h->count > 0, it writes the stored data_handle=
+ into
+   the LUO FDT.
+
+Incoming Kernel (First access):
+1. When liveupdate_fh_global_state_get(&h, &obj) is called the first time. =
+LUO
+   acquires h->global_state_lock.
+2. It sees h->global_state_obj is NULL, but it knows it has a preserved u64
+   handle from the FDT. LUO calls h->ops->global_state_restore()
+3. Reconstructs its state object, and returns the live pointer.
+4. LUO sets *obj =3D h->global_state_obj and returns 0 with the lock held.
+5. The caller does its work.
+6. It calls liveupdate_fh_global_state_put(h) to release the lock.
+
+Last File Cleanup (in unpreserve or finish):
+1. LUO decrements h->count to 0.
+2. This triggers the cleanup logic.
+3. LUO calls h->ops->global_state_destroy(h, h->global_state_obj).
+4. The handler frees its memory and resources.
+5. LUO sets h->global_state_obj =3D NULL, resetting it for a future live up=
+date
+   cycle.
+
+Pasha
+
+
+Pasha
 
