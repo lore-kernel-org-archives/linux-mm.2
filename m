@@ -4,175 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 944C9CCA470
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 19:40:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BC9FCCA476
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 19:42:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B56308E0007; Tue,  7 Oct 2025 15:40:08 -0400 (EDT)
+	id 7890D8E0008; Tue,  7 Oct 2025 15:42:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B2D408E0002; Tue,  7 Oct 2025 15:40:08 -0400 (EDT)
+	id 739DB8E0002; Tue,  7 Oct 2025 15:42:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A43498E0007; Tue,  7 Oct 2025 15:40:08 -0400 (EDT)
+	id 629058E0008; Tue,  7 Oct 2025 15:42:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9444D8E0002
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 15:40:08 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2BE76B75AF
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 19:40:08 +0000 (UTC)
-X-FDA: 83972334096.19.1EAB24E
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5106C8E0002
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 15:42:03 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0A7961193FC
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 19:42:03 +0000 (UTC)
+X-FDA: 83972338926.17.6E79070
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id DE2A820002
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 19:40:05 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GPpksst3;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 79778C0013
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 19:41:59 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Q6iITTHQ;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759866006; a=rsa-sha256;
-	cv=none;
-	b=3ZuXm2d6Cuzem6oyYleqkPSssDUry6X6/FAryqmwjrnFiFgdrjy6Vga4+HPgzzP/HvLcWg
-	/lOGoTBTyJNc9b3icC/4jyGThSU00HPa1HGeJXAoTltjiALIDql+FA7Yt3ZCpMslEGjFum
-	tNax2ougeQ/zuwwGfDh41QS87R/rmk8=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GPpksst3;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	spf=pass (imf28.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759866006;
+	s=arc-20220608; t=1759866121;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9VumtYpTrX67AUkgEfTTMEIc6RIxe4xeW3+00mS96fE=;
-	b=Q1KvN0wxmKiaVfCb7kxkyKRO9oWq1uW74P42FpOYcvleH2iWtyud+tIL9FfGteskUnjtPz
-	NkIWFStUKRqvwISs0cPU0Q0SAokCyb304m2e5VbLLyzCeGW5jGl208u/DllVAHisPWBasb
-	7mk+LOuDcyCzkFiga3mcK9peBMFW1OQ=
+	bh=zRD8Y24rfOwZBHOlWyyDCKiTB/jD/NkvAE4w5vB3uEw=;
+	b=PLwyAmj1fIw4MyHGwoHzda55tdjuM9fUnymwZ15hNPkIxvMVAmT9jva/tdnpzPVd3w3qVX
+	nAX3jo8A2lIK4Fkm8/jsaOz4qudEoPxuG49oPkQ9mWzzlM+sDVE4hQhlClkVkQOvlq2Bxn
+	h77qHn0pbjt4/sDMShF5RzA+n2vnO3c=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759866121; a=rsa-sha256;
+	cv=none;
+	b=Y0MQ+7KTt2SE/hBeRS6gNacUyTrsxNfbTuq/PO0GAPe+R5bpw91j0X1f5uhUhaN7Xj5g/N
+	Vg2Sh7eDdOFWuW2iMBkyBuDs0egbZLDv7Xfoo66Nvf+MFH/hCa+d+yk18U1gRlax9dgNsq
+	/hv5CF4722Uw5OTgj6pQoIr4ML1CxIQ=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Q6iITTHQ;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf28.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759866005;
+	s=mimecast20190719; t=1759866118;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=9VumtYpTrX67AUkgEfTTMEIc6RIxe4xeW3+00mS96fE=;
-	b=GPpksst3Q3H7+gEa2JfDfCmDuS/y1kn2NjA0nfcQ43NZauNx6dWO4BjNsVZdTBsdYttJoI
-	0xwZUsyya0ePsbYvVJOazwVR7xgSzXAYdfVjVcs2BVYPAaRge4bAEL3+KtwKcpIUqr4E0z
-	rpWquRgZ6j04aCcWZ6bIa3jsEg/muEw=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zRD8Y24rfOwZBHOlWyyDCKiTB/jD/NkvAE4w5vB3uEw=;
+	b=Q6iITTHQYvb11sUb0WooAJWW+t8YUFEpn+gw+9vss1pYAjSVPinQo/ecqF1n68ldU9RsHa
+	UU/zvlK7wxdeijjcUlGr7Mx2TvqrOIV4khwTQEDB24RAmvZnAAlqGVI6v3+JvUY4zSm4/y
+	S4cHsRH4UrUxtRG7TXhO3U6oarmBHMw=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-296-ysPIk9D1Mr-ikcByKWYUtQ-1; Tue, 07 Oct 2025 15:40:02 -0400
-X-MC-Unique: ysPIk9D1Mr-ikcByKWYUtQ-1
-X-Mimecast-MFC-AGG-ID: ysPIk9D1Mr-ikcByKWYUtQ_1759866001
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3ee10a24246so3388708f8f.3
-        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 12:40:02 -0700 (PDT)
+ us-mta-460-W4CHa0mhN2-tK-dmeN1WTg-1; Tue, 07 Oct 2025 15:41:56 -0400
+X-MC-Unique: W4CHa0mhN2-tK-dmeN1WTg-1
+X-Mimecast-MFC-AGG-ID: W4CHa0mhN2-tK-dmeN1WTg_1759866116
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4dfe8dafd18so271942191cf.0
+        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 12:41:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759866001; x=1760470801;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9VumtYpTrX67AUkgEfTTMEIc6RIxe4xeW3+00mS96fE=;
-        b=YWNVnVfc20tSFKywepWZir2oRq2Xr5ru8bsbUf1CCnxZRXyjKfgOnxwOZ9a14BkCkx
-         KqzuNlbERyT+Ihjzg24JDFi5JirV00sEfGIf4f9cMlG0snVBUTrFebraPOyhLuk70tnN
-         a8axkJMOtkpr8KIgElrDUQvMECaKKywxQxiCKQd0YaldkmfUANJwuINw5P4awmaMdkdg
-         HSNdfFU1wiNtCgoYym+6l6KknLgD9MXNHMQ2zDgZMeOBqeyDi9vj+edOBLsfXFa0951J
-         b2HY4AW55vToBcVgtCvPu8cyBSa0gHI6HKS6JzX7MfylXOiFkkHboTK7k40mLFbnu4+8
-         Kgcg==
-X-Forwarded-Encrypted: i=1; AJvYcCU9rRGKN6fy1pJ6ndHVJOsQPCrv8eop6jPQTlOSQSmH6HGzg4fpGtTYlKcl4xOqOLMGEHWC6W5jyA==@kvack.org
-X-Gm-Message-State: AOJu0YwT1priiyhV7lCK8pk+d0sf2FIyMzCnvK1gnIrlBgVSITvFlLHi
-	WpIYt+F3XPObMc/a6MMBpWo9JPyrTPNgDEvfOeRQhfdfiny/SW+YnkFGmxUhIA73BkkQ+TE1ho4
-	oT1/DS3Q7VGiAEQlltIcUHY1wnHedsa7iWAv3Mtu8zQ/dfHXZrjXK
-X-Gm-Gg: ASbGncuV9YQUnSVFm86D+KTRNBHm0O+CQ7VNpdC4xbL10AMgZ9LF7M6xrLNpvnor7g7
-	qkj1tXjQts9UpoMvpSRl745E6itNTWhClqFSV9Ber4vKoa6NByWlCUMXEavlrvaSEERzYMI6wjY
-	LrkGVPEh7BFr9c5IoYv39FgVCAf6gazSCnEl18Ix/oH2Yrz1fUs4YcloRlCrYKsEw6SmjhgPvZA
-	loGvYqqHBDWAsBELg9a6njuZyXQ0g53qt2/ir7ifmXxcfNtv5MgHbCLjozJpXFMaDSUAhlusz5R
-	I+qJwSItI9/mTa7iAyUgDoDisxKyBWdF6C6aydR2uG36/KByjANbCWtQW88qrwJfqMlxogewRtg
-	zNTUr0RTH
-X-Received: by 2002:a05:6000:208a:b0:3ec:42ad:597 with SMTP id ffacd0b85a97d-4266e7dff52mr302903f8f.37.1759866001471;
-        Tue, 07 Oct 2025 12:40:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEej/svesPDrHY997doiJUMRsBCaL4lMY/21dpeNKaxMJMF1Jf9ZuSBWRwx+hr9s6QqrTCUyg==
-X-Received: by 2002:a05:6000:208a:b0:3ec:42ad:597 with SMTP id ffacd0b85a97d-4266e7dff52mr302886f8f.37.1759866001067;
-        Tue, 07 Oct 2025 12:40:01 -0700 (PDT)
-Received: from [192.168.3.141] (tmo-083-110.customers.d1-online.com. [80.187.83.110])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fa9c2a39dsm7457035e9.18.2025.10.07.12.39.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Oct 2025 12:40:00 -0700 (PDT)
-Message-ID: <ba392005-8cb1-44c6-a4ca-7608423fea62@redhat.com>
-Date: Tue, 7 Oct 2025 21:39:58 +0200
+        d=1e100.net; s=20230601; t=1759866116; x=1760470916;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zRD8Y24rfOwZBHOlWyyDCKiTB/jD/NkvAE4w5vB3uEw=;
+        b=SWKbpk+pAX1Ym5gjfB9wSBcq00cHQe7ZXmY2aq/1A13n2kgLTNPew3crE72Nrfcyqr
+         7hfz3hJJfqMqME+UW0EKd1LxPOtos50b9UMcJ8PG3S8mAim46BkhPszQzUOJOskTeqTN
+         HvPX2zNgcYlfTFLTjq6jIosG+7ZQj4LY41MiExIBGnJOvcrD1A3f9VLF6eHsWUv18XyO
+         Du2/Rui2iWmAop+eE7pRaiNB7sd5sMIk6mIuXyigHKWTHOSc//sfw8sQN0FvIuVWyvvN
+         Sh4blmGFtSqFcLXdZ7p4LnbIyDZv607s+kBn0PfgRw4++3MVnC1wENjWiulfzQAnQ8kR
+         ym3g==
+X-Forwarded-Encrypted: i=1; AJvYcCV/8CApE/j+biXSgYuKubyLXY0GYnWYxXqwlMkRMmpprq6GsTc67yGnxQSQ4MTNsp+DOlnxWWMhmg==@kvack.org
+X-Gm-Message-State: AOJu0YwqtOhTt53kvAg/+Jzb2afrGt1GUbc0N+wRtCwlSh0FWaR02shn
+	76LUHDG2wDpRP+TO5EUblS8lYPx54VsV8l/vLfYrYILvEaekfdPBiVQyVHTXkqql7mDlcMT4hL0
+	h6CnwoR5g9WIViKdFnj+Zfh/+yb07PEoa/1KIzMgZHy1e6JAupAk6
+X-Gm-Gg: ASbGncuQv6NaN4KY196ctGBJZ8o7E8pp7aGIQNGAbM7TwH/SEsvFx8IeU8P8WAKMPKO
+	mo+FJYwT50+RnTHz6BNYWkmfFDxl+VtexQXbkhKG35mNqo4Gj95rCLPclKJ4jWrw4lTNAIUSZgC
+	L/QuNKyaj7qav5DVnksLyKQAmSzkEsU+sw4TgVJah/zaCvpPZQ6MCHmpiSYjcSy1G4/UPrTEpCl
+	3MBLKW3KaLKndNm54YmQfwGJUVGRiToF01LuHgWw5FvyT0D1OC8dzUbmofHTl/9kL6nAf5fD7Eg
+	/rDkfARJ0eccedWLdRl3NKgEtSTiKNl005liqg==
+X-Received: by 2002:a05:622a:2593:b0:4dd:2d5a:4c81 with SMTP id d75a77b69052e-4e6ead6b8d2mr10550851cf.80.1759866115752;
+        Tue, 07 Oct 2025 12:41:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFGlDdIA/7LCIBCuSR0IVfWs+CBYQn3+44+6aZyv0zDCvJHB0MK6MuVqYhuG/1465hjHYnfrw==
+X-Received: by 2002:a05:622a:2593:b0:4dd:2d5a:4c81 with SMTP id d75a77b69052e-4e6ead6b8d2mr10550231cf.80.1759866114994;
+        Tue, 07 Oct 2025 12:41:54 -0700 (PDT)
+Received: from x1.local ([142.188.210.50])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4e55c9e77bcsm149262041cf.24.2025.10.07.12.41.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Oct 2025 12:41:54 -0700 (PDT)
+Date: Tue, 7 Oct 2025 15:41:52 -0400
+From: Peter Xu <peterx@redhat.com>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	James Houghton <jthoughton@google.com>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Ujwal Kundur <ujwal.kundur@gmail.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>, Hugh Dickins <hughd@google.com>,
+	Suren Baghdasaryan <surenb@google.com>
+Subject: Re: [PATCH v3 1/4] mm: Introduce vm_uffd_ops API
+Message-ID: <aOVtAMm8PqEbGANh@x1.local>
+References: <ad124fb6-a712-4cf5-8a7e-2abacbc2e4be@redhat.com>
+ <aN_XZbQjuYx-OnFr@x1.local>
+ <cq3zcvnajs55zr7cplf5oxxjoh54fb7tvo23hehd5dmh4atvum@6274mneik6hu>
+ <aOQuZy_Hpu1yyu29@x1.local>
+ <akld3v2mtnjdqvs5dgwr4gnffdqf5dojwhmfylq3mkfzakjj7j@5oqqxsymkcbp>
+ <aOUa8C8bhWvo5TbV@x1.local>
+ <frnos5jtmlqvzpcrredcoummuzvllweku5dgp5ii5in6epwnw5@anu4dqsz6shy>
+ <9089d994-262f-4941-8bed-f3c6ee05a769@redhat.com>
+ <aOVEDii4HPB6outm@x1.local>
+ <6csw4pmymno4kdtlbzd74posr3dekamq4zkje2mfkmbg5q7xbx@y3o323tbm7h3>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] s390/sclp: Remove MHP_OFFLINE_INACCESSIBLE
-To: Sumanth Korikkar <sumanthk@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>
-References: <20250926131527.3260733-1-sumanthk@linux.ibm.com>
- <20250926131527.3260733-4-sumanthk@linux.ibm.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
- ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZoEEwEIAEQCGwMCF4ACGQEFCwkIBwICIgIG
- FQoJCAsCBBYCAwECHgcWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaJzangUJJlgIpAAKCRBN
- 3hD3AP+DWhAxD/9wcL0A+2rtaAmutaKTfxhTP0b4AAp1r/eLxjrbfbCCmh4pqzBhmSX/4z11
- opn2KqcOsueRF1t2ENLOWzQu3Roiny2HOU7DajqB4dm1BVMaXQya5ae2ghzlJN9SIoopTWlR
- 0Af3hPj5E2PYvQhlcqeoehKlBo9rROJv/rjmr2x0yOM8qeTroH/ZzNlCtJ56AsE6Tvl+r7cW
- 3x7/Jq5WvWeudKrhFh7/yQ7eRvHCjd9bBrZTlgAfiHmX9AnCCPRPpNGNedV9Yty2Jnxhfmbv
- Pw37LA/jef8zlCDyUh2KCU1xVEOWqg15o1RtTyGV1nXV2O/mfuQJud5vIgzBvHhypc3p6VZJ
- lEf8YmT+Ol5P7SfCs5/uGdWUYQEMqOlg6w9R4Pe8d+mk8KGvfE9/zTwGg0nRgKqlQXrWRERv
- cuEwQbridlPAoQHrFWtwpgYMXx2TaZ3sihcIPo9uU5eBs0rf4mOERY75SK+Ekayv2ucTfjxr
- Kf014py2aoRJHuvy85ee/zIyLmve5hngZTTe3Wg3TInT9UTFzTPhItam6dZ1xqdTGHZYGU0O
- otRHcwLGt470grdiob6PfVTXoHlBvkWRadMhSuG4RORCDpq89vu5QralFNIf3EysNohoFy2A
- LYg2/D53xbU/aa4DDzBb5b1Rkg/udO1gZocVQWrDh6I2K3+cCs7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20250926131527.3260733-4-sumanthk@linux.ibm.com>
+In-Reply-To: <6csw4pmymno4kdtlbzd74posr3dekamq4zkje2mfkmbg5q7xbx@y3o323tbm7h3>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: uJm9tBJAC-fHUjCkAkf0m2I8-aMbvpZbjQc5x51QyII_1759866001
+X-Mimecast-MFC-PROC-ID: mjksK2UNuzyBIX5RuY_8qRLKJq4o8GEToSnTxrmfl8E_1759866116
 X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DE2A820002
-X-Stat-Signature: xrxn5mafx1g11chkwarkzn9b6oftop6k
-X-HE-Tag: 1759866005-13044
-X-HE-Meta: U2FsdGVkX1/0u8NvJgba87cSDxVLRQecMlnkXsW1RLrKQede1O1OWKAwH+pUWTIvZ0vVjo/y1Ub40wCDm9ecNWWmjt8cZkDalOAQiDUOuDl1ArTKtb3Pl87IHVhwo2A6Rcfm4Heb6kXQKuB3z694z16Ur5CHOWOpqUmFSINtyzreWsDJcTuU5Xe03eWUT9+yUFSiHte92H2Oh5OTE4z3meUnW7+p7pT0/Wu2+qA8xn+bmdcVSOAXJEiPmpBXAjZbcm6t19ZppZnIcXslx1H0e0JUKA0kHOmGHa2pdMEYNp1h+QT8TCXa0/FIp+V6ZlXpCQfECePRNl2M0+neCXgYFm7z3B75K4WskBxpNUQlQQsOzFL386mXU5/i0I0Ha8Hx/fHJlhJv8IWGYTJVYoLVKEK9CsUJ8WPVbXdBFVanoF5OSzAZpEqTd0f1F4Y7a2yXbcmgBJTijozk+jsFuCBWYDm5v1w1gojSg/ry3SCJB1ctnowQqfw/giheNmYivdu7nMlD27oopOG2Hlxi68+fVeAQiNYpESl5dCQZIHjpfovPpTzJ6CrFCBinD940qclVLgb1ywivObNWrrpgDuI5ISLyKpt+K5QKV7tK6DGDvb+mt3IKpN/xHSsjjnGkUv1QKN7FnRFQGeG9VbO2c1QVXaaTKPe0zZSa7m2YcbY8vG3imGIv4ahBt9+6HT0QlzxNNDU9pJzR7zqYzeEmJIDG6iH4IoNOSq39C3Gime1CVNPoPW2Qoa/N92F7/9HoGEoHJL0fV/0PF+lnaywrRU8lMr4VoT6R6trGM6YagkJes528M50ym11LHwIq55fRDrGgAkvr3nquYpJBDnRu2kYYQ/pj15yI6sBrCud5TvHEeoGecEggjBPEXQdFuNKxGImafyKTpHWV4CyKlqeEVbhPRfJdZHKjnwTzURHJTpD6un4wcJB8q1rWEccd0TUq27Q2LIJKUtGzN7VgzEQCTmD
- cU7ftVhi
- 1l30FH/cEUNGIQd7Os1tXi9GKEEp9gvb61u4pbMIZMM7Kcb+4mEEH/9wp8uUOjEA3cKb6EuXiZ6MNq7GntYS6kXNG6A==
+X-Rspamd-Queue-Id: 79778C0013
+X-Rspamd-Server: rspam02
+X-Stat-Signature: zqtka3rtw64qdcuqbu91bw3g7dem6m7y
+X-HE-Tag: 1759866119-480755
+X-HE-Meta: U2FsdGVkX1+uq9zFw7VgYaxrza4yIZAMOD/SKHhQhUNpoKZORax5fnpjmcbLevk85451FgMc1+t8d7JRUyQqlq140Oj4q2Psk1+kxnGkVW1XXqv0qtceQV/tPnG8SFkhwWarkqsz3Jvl66r+zcj6fVCoY39pHVRNa3ezfcFFQ12MwHVS5G5hB0VI7bbyDfdeBiVMcXQJ9Dn18ooHBDlc2ldMTI7+0gtbZlOG1c/TcJUHY4bU4VDuLyTdhsZyLrq2zRWv0YHbY+tSjOFOClTIibnMtigvLbWr00Ta6uQTOcWXIHhURUA0xpFToSr/QxafAggqc/SosXxBNB+0glVvhEymwhDrmZHow6aBFVNrJiCxsd1030RIlDQMfvt55Jw2P43Q3YPqFyuwAjPr0Bs8Q+RfVNuX0INQsiSnAOeXdUzKa+iKEQKaTI8ud5pOg+cuPD7VzESTa1lujU/Opuzq1i1fhwVSM6enM0XqWTIVQaQCaLuaIvmpk174T5hrDsrhf1W33squzLCXKfbtVhIVc1eXoLzTcbZvjp/rBJBzlEaoCDw6mw4PNQ99uE/yIqORFC7effAe4zN8W3u8QocMGjZ93oUrriY/ro63Nzf0b1hKM/5j2IjSVHsAndjMfXPHqipgnhIjV0FPBKu06wlW8bxAsLJqkn+bPBNCwxhU+NBjNCSLL3Qzf7Jfhubu+DBzr0S2J5NnauwAnjqjQTLx7TyL6jlUsl0perjj6gfp4J+/ZH1AYhXjyixZIuuuUzhQtIbzsf/KtiDLzEy0CaR7RrxIlBE0HNGPfxcQSC2BsDYxlfV87h4UbDWyzASbwc1RwU5zAEdk3sW/CsDb4rxzCEK/eG17TAHULt2lnhJWfZ62JK8JpszbiEqoQS8UJAQBnX+1ijDAJV5OvtPjT2NuFdYXYQ23VUDKpRkN+FzyCS143l8Jd/a6OX2Wmn0uLP72ir7J9ihlblbdwBQ+txu
+ I9wsORJF
+ eaJwGLRJov8U7PnBtvggx8buO4QvGhr4qfG4HvMZjcSCJ02g9ut7q+VbdnKz406R2OjbovVjeeO+iv1ckicLIKeMl64FngoZ9Bn918MozN1eDRg2oBUhcEZ86yAW1IB5OVb8fBQTjFB9uxaAxBiVm88XAZfkhHDAb55DKZWsoIB9fLvhhbKH13KPCyHa4c8zbFH1LysxYbEzp4UE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -181,27 +147,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26.09.25 15:15, Sumanth Korikkar wrote:
-> mhp_flag MHP_OFFLINE_INACCESSIBLE was used to mark memory as not
-> accessible until memory hotplug online phase begins.
+On Tue, Oct 07, 2025 at 02:46:46PM -0400, Liam R. Howlett wrote:
+> * Peter Xu <peterx@redhat.com> [251007 12:47]:
 > 
-> Earlier, standby memory blocks were added upfront during boottime and
-> MHP_OFFLINE_INACCESSIBLE flag avoided page_init_poison() on memmap
-> during mhp addtion phase.
+> ...
 > 
-> However with dynamic runtime configuration of memory, standby memory can
-> be brought to accessible state before performing add_memory(). Hence,
-> remove MHP_OFFLINE_INACCESSIBLE.
+> > > > 
+> > > > This way is_vm_hugetlb_page() never really needs to be used because the
+> > > > function pointer already makes that distinction.
+> > > > 
+> > > > Right now, we have checks for hugetlb through other functions that "pass
+> > > > off to appropriate routine", and we end up translating the
+> > > > ioctl_supports into the function call eventually, anyways.
+> > > 
+> > > Right, it would be great to get rid of that. I recall I asked for such a
+> > > cleanup in RFC (or was it v1).
+> > 
+> > I didn't send RFC, likely you meant this reply in v1?
+> > 
+> > https://lore.kernel.org/all/0126fa5f-b5aa-4a17-80d6-d428105e45c7@redhat.com/
+> > 
+> >         I agree that another special-purpose file (like implemented by
+> >         guest_memfd) would need that. But if we could get rid of
+> >         "hugetlb"/"shmem" special-casing in userfaultfd, it would be a
+> >         rasonable independent cleanup.
+> > 
+> > Get rid of hugetlbfs is still not my goal as of in this series.
 > 
-> Acked-by: Heiko Carstens <hca@linux.ibm.com>
-> Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-> ---
+> My example picked hugetlbfs because it is the most special of the types
+> of memory we have (so very special).  If the interface works for
+> hugetlbfs, then the rest will use a subset of the features and be happy.
+> 
+> IOW, doing the hard thing first makes what follows easy.  Doing the easy
+> thing first may mean rewriting the easy thing once you arrive at the
+> more difficult part.
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+In general I agree, but hugetlbfs is special when it is major-feature
+frozen.  IMHO we shouldn't design an API to suite hugetlbfs, but only
+trying to move it closer to all the rest of file systems as much as
+possible.
+
+So the generic API should be designed without hugetlbfs involvement.  Then
+if there is guest-memfd / hugetlbfsv2 / ... they should fit into this API.
+
+> 
+> > 
+> > OTOH, I generalized shmem and removed shmem.h header from userfaultfd, but
+> > that was prior versions when with uffd_copy() and it was rejected.
+> > 
+> > What should I do now to move this series forward?  Could anyone provide a
+> > solid answer?
+> 
+> My understanding is that we need an interface for memory types so they
+> are modularised, with the short term goal of solving the faulting
+> support for guest_memfd and the long term goal of code cleanup, or at
+> least don't make things worse.
+> 
+> I think we all agree on that?
+> 
+> I propose that we need to add the minimum amount of uffd_ops to support
+> guest_memfd's specialness without creating an interface that makes
+> things worse.
+> 
+> It is very difficult to see a reason to pass in two variables (modes and
+> ioctls) to dispatch to the correct function in a struct that could
+
+The reason is "modes" cannot directly be intepreted into ioctls.  But
+indeed ioctls can be intepreted into supported modes.
+
+> simply point to the function in the first place.  If we can avoid that,
+> then it would be good.
+> 
+> Looking at the example you pointed to here [1], It appears the minimal
+> viable product would need to implement this:
+> 
+> uffd_ops = {
+>         .get_folio = <>,
+>         .minor_fault = <>,
+>         .atomic_fill_continue = <>,
+
+These three are fundamentally the same thing.  As explained, if we have
+get_folio() we don't need the rest.  However we still need something to
+describe e.g. shmem supports MISSING mode.
+
+> }
+> 
+> Then shmem and hugetlb can define these and end up calling them in
+> today's spaghetti, but we are free to append more uffd_ops to reduce the
+> spaghetti later.
+> 
+> If using new #defines to clears up translations of features/modes and
+> ioctl codes, then please do that.  These should be removable once the
+> uffd_ops grows to support all necessary calls.
+> 
+> If there are places where you need to consult the modes/ioctls and a
+> translation does not work, then you could add something to uffd_ops that
+> is NULL for guest_memfd and use it to determine if the code path is
+> valid.  But this code should already exist for the other memory types.
+> 
+> What does everyone think?
+> 
+> [1]. https://lore.kernel.org/all/114133f5-0282-463d-9d65-3143aa658806@amazon.com/
+
+Would it look better to you if I drop uffd_modes_supported, deducing it
+from uffd_ioctls_supported?
+
+I believe that's what David mentioned very initially here:
+
+https://lore.kernel.org/r/f1da3505-f17f-4829-80c1-696b1d99057d@redhat.com
+
+I'd rather go with the two fields, but if we're trying to introduce another
+feature sets almost only for vm_uffd_ops, I'd prefer keeping it simple, and
+deduce the modes from ioctls.
+
+Is that ok for you?  So it'll have (1) get_folio(), (2) supported_ioctls.
+That's all.
+
+Thanks,
 
 -- 
-Cheers
-
-David / dhildenb
+Peter Xu
 
 
