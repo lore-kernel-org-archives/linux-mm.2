@@ -4,107 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BFC6CCA471
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 02:07:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 183BDCAC5B8
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 02:25:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A7C98E0006; Mon,  6 Oct 2025 22:07:50 -0400 (EDT)
+	id 413788E0003; Mon,  6 Oct 2025 22:25:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67FA38E0002; Mon,  6 Oct 2025 22:07:50 -0400 (EDT)
+	id 3C2DF8E0002; Mon,  6 Oct 2025 22:25:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BC6E8E0006; Mon,  6 Oct 2025 22:07:50 -0400 (EDT)
+	id 2FFE68E0003; Mon,  6 Oct 2025 22:25:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AF808E0002
-	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 22:07:50 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C97971607B6
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 02:07:49 +0000 (UTC)
-X-FDA: 83969682258.15.9A2981A
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 77067180007
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 02:07:47 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ZpMvRr7h
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1EAAD8E0002
+	for <linux-mm@kvack.org>; Mon,  6 Oct 2025 22:25:51 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B631211AA5D
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 02:25:50 +0000 (UTC)
+X-FDA: 83969727660.12.16ED77E
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C97C1100004
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 02:25:48 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jwnVEiY+;
+	spf=pass (imf14.hostedemail.com: domain of martin.lau@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=martin.lau@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759802868;
+	s=arc-20220608; t=1759803949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OuPt71NmMidGtdlQykkoZsTnnRr+qx1jmb+5gKzLx+E=;
-	b=s3ceOb4up8jiGjnyjb9eJMuCDSxP+ZlI9kX8NagyitiXA79j9BVrXtplvHWm2kzKsr/EQ4
-	VKcWSNMv47kLxL1NVY2nDoltsq34LZP5nk1m5Z+DRh0gbUoK6d6D5YWaxzPRyx6iTFaOCb
-	3GwATGEzZnZ2Ada9Lz4Te9/mYBs2Sxg=
+	bh=/MKPrETeCuyyOYuVdodsDdiZ6BmGFxYMMYFjYABmB/E=;
+	b=qz4yg1AqyxH+OZR7XRnJI2Js05qaT7XP02Q2SZRYlisGK6L56TukwJwfnE9EM9CYzR9gaL
+	zWK18XjYaXMJ4tUU4pX5TjYQ6kQqP5ihM4QIXNn9M7HHCBciUacd/hzd7Zy+4O87dtc6cT
+	G1MRvqTqCbPcCfT1cP4TgU0Hydudyus=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ZpMvRr7h;
-	spf=none (imf16.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759802868; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jwnVEiY+;
+	spf=pass (imf14.hostedemail.com: domain of martin.lau@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=martin.lau@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759803949; a=rsa-sha256;
 	cv=none;
-	b=RxjB9OwO29T5hbp25Lq6vJ17BjtSPN25TnOlPGGcGUOt8KAkhQvOP5VkeD3M+OGIZE8mvd
-	84d8mW4CeK/od6z6cOiAZTzGWrxs0WU18BPN9mZxXT2HOUzriuCuhtASP8CqzLsh0hJ5t+
-	LoSszsLB/E3iV2sgGCs12jTCyOHI1gI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=OuPt71NmMidGtdlQykkoZsTnnRr+qx1jmb+5gKzLx+E=; b=ZpMvRr7hgj3fyfMUpCnXiyu4/D
-	x8r4JH14RaG1qEJLKdCABLMvvriTI+vQZvT5ij04S8iZT3GXt0L+XG651Fx7LpsVASxDcivvVTbP8
-	YX9Cd1yMkPPdqfzGKv90q2waA3MdXdYYC2ATriV8XHbSuvclbebqTngcLex2LHUHWOHy6CSmvUOFm
-	0d/crWkbRhEPGKh5fDOkBr2JTAlMceA6torGF2cCLlbXjYDen9/ou0pjW7rN0ak8yjCPBMeH/Dtx1
-	iEE2mcdzJN+h5wq3kqEUV6aW5JT77oyVCeSSdkyH9qvkLNn7oSK9yxanWKz6teiXupLlwMdiwh00B
-	cKrtDQKA==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v5x6z-000000064Za-34GJ;
-	Tue, 07 Oct 2025 02:07:34 +0000
-Date: Tue, 7 Oct 2025 03:07:33 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Kees Cook <kees@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter <cl@linux.com>,
-	Pekka Enberg <penberg@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, Jann Horn <jannh@google.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Marco Elver <elver@google.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>, linux-mm@kvack.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>, Jakub Kicinski <kuba@kernel.org>,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Jan Hendrik Farr <kernel@jfarr.cc>,
-	Alexander Potapenko <glider@google.com>,
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
-	linux-doc@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH v4 2/2] slab: Introduce kmalloc_obj() and family
-Message-ID: <aOR15Xb6DfolYM0z@casper.infradead.org>
-References: <20250315025852.it.568-kees@kernel.org>
- <20250315031550.473587-2-kees@kernel.org>
+	b=0QpChO+QpjeZTEMkjAL4Ze8t8VKnDsvzZKBjAmadHiLfAcM9vVji6MYmhAe7hu4m2+02A0
+	Ne8Bw0Pfw5jK6aDMACbWbu1IArCMEe9hlXgRnXFnzw0rAj+xUillofVKH2wwiGZ21JLSae
+	JH+d0cQQGVhP7Na/vXKiTyD9xkZEJ04=
+Message-ID: <8726ab79-73f5-46c9-839a-d3abf6f301f4@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1759803946;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/MKPrETeCuyyOYuVdodsDdiZ6BmGFxYMMYFjYABmB/E=;
+	b=jwnVEiY+lQvyrdA2Bf1cDFGtM/Wg/zb3zEORYQVzkoph90jCCxJpGDM7JAltMeK9M7gaXK
+	S1C5GtB42Tynfz8K3GBngRpbfbnfBY3IkgfeiXf3hAwnbyxcW2AfoNQqPkmHB14NiVxnbs
+	dMex8vxR6PyXIZmZuIr7y5KxzCVBtEU=
+Date: Mon, 6 Oct 2025 19:25:40 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250315031550.473587-2-kees@kernel.org>
-X-Stat-Signature: 4naum8piwk7617x3wm5qeagabnig8gjr
-X-Rspamd-Queue-Id: 77067180007
+Subject: Re: [PATCH v1 01/14] mm: introduce bpf struct ops for OOM handling
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, linux-mm <linux-mm@kvack.org>,
+ bpf <bpf@vger.kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@suse.com>,
+ David Rientjes <rientjes@google.com>,
+ Matt Bobrowski <mattbobrowski@google.com>, Song Liu <song@kernel.org>,
+ Alexei Starovoitov <ast@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ LKML <linux-kernel@vger.kernel.org>
+References: <20250818170136.209169-1-roman.gushchin@linux.dev>
+ <20250818170136.209169-2-roman.gushchin@linux.dev>
+ <CAP01T76AUkN_v425s5DjCyOg_xxFGQ=P1jGBDv6XkbL5wwetHA@mail.gmail.com>
+ <87ms7tldwo.fsf@linux.dev> <1f2711b1-d809-4063-804b-7b2a3c8d933e@linux.dev>
+ <87wm6rwd4d.fsf@linux.dev> <ef890e96-5c2a-4023-bcb2-7ffd799155be@linux.dev>
+ <CAADnVQ+LGbXXHHTbBB9b-RjAXO4B6=3Z=G0=7ToZVuH61OONWA@mail.gmail.com>
+ <87iki0n4lm.fsf@linux.dev> <a76ad1e9-07d5-4ba1-83e4-22fe36a32df0@linux.dev>
+ <877bxb77eh.fsf@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Martin KaFai Lau <martin.lau@linux.dev>
+Content-Language: en-US
+In-Reply-To: <877bxb77eh.fsf@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: swcqdmwqen35w39enzkhunu4kf67chey
+X-Rspamd-Queue-Id: C97C1100004
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1759802867-558532
-X-HE-Meta: U2FsdGVkX1+qYYVPqdTlxRI6RtXWMpxVJAiEcPfAI1vsptPceiSOHF89L2S0uIm62XjDXAylNk9vcVN07d9uqVt6BG3OyExsSrWZ6p4x+a+AiButwEcb8WLa+VSCAXWpBchDcWKUKC2BGJMxZcLWz6TOplfuQqUCg5uc3kPHnj8Q0qoYhnHAvQlckiQ9DmiRzXQB5lqWeCB6axoPi1zRi2H2HstQiO9lfFb9xnNRJ++U9yPu37/0VqJnj0p2piaVE+wAO7vgVZim7XFCbH/MP3iPQzG3qetoxheXpeXZnXSg1CTsBAddnXVUDF0mmRm1gZkgW59HmMFvr9zfGEVEXomQeXzYVKv/0ayKZHb2pspXYBGxsZ4NQQ4AY2FETzdto/COK5fvoUqNb+yvJdOboHKMqyg5XZoZhNcwpgJI6hydDzvXFBEcFtJzji6RypTn12fyziWD+i0/LNqRj6tSphsOhtCl9vPQ3rOVotr4/3TdoBCfx+rEOxcR3/Ja3YkNuWRiKvNFofl+eMpfi+2b8IyhMbFLGUUEO4/GQdhnJ5asDcz12xHKfbp7fAWIe2XFFw3mULWInlWP3Tqxs6sOBvIaeLAZgdYB21k+PcKqrg8wvHrnO34WlvhwBJ96Q7rFzMR1iTyjtNRn19n6H11MCa5LUm7hchRs3iCOoZMU1gY3kFy6+wgm8DDirV+Y4S1LPM4iRsTFSzVubfw14PGXODGR1QsVRTnGb1h95mc55jPnwQ0jl6kOdufZPUV5xHMnavhoYatq0Gbd5PceUMK+nUtt4KgT83NHmxznOQI9Gz9F6KXpMsbjXRxka7wZ8XzSE3wyNYg5rMnVf1SSM3MNCgEH92iT5ud38v/d1/K/YC4SW0M0FTf4IVFgnWtsQwOaQq5dqyOCElHSCoRmzx7A2IVY1tiYTMwX0yu3kRaNbiAL6N5D/0yNsY+Cs+R9wEW2wKZu955fJhRqzese5Fu
- F+fjVK/0
- qHs1woUm+XhzhAh7ZXCAW8Br0WW7LOoU4H0yNql//iSTXEIaPpXALQSFdmWuOcHXQpwgufakjTdFV7hPVUvxt9bKJ8t3w52o/Jsq9pkb/eRl6I3K6A0kmIvH+xeIOwCmLO4clHP3xFLpDpcjJ6utt0+mkqnraQw5uGpVndgYMVpGn4Y1qJ9vYy13uGH4HhVUmZX7Mxkv2gK/jKaF4YPBVgUAWyiIrvr0DHjDmijmwjjnRMlwAqTlDaJj8I7sYxs+SO9kSiKJJRGsszJ/MxzdDB3OaLKij+CRB0akfJL7atiQX5rM=
+X-HE-Tag: 1759803948-66470
+X-HE-Meta: U2FsdGVkX1+Ip4Y0sL999iiD1G7OxSPfq5VYTzd6GhftL5zXtCVngVVK4LoSkKOLGu2w7PJ5hWhzZhJOsXI813FAMIuMkrfz1g0r5iFBoAcrosAq4lffimBPMc4zrWx1WA5W73QT5T6uDcARl1ifxHhJ0ntVZt7GiMUASPMrm6hGsnezg+FAEm49FCTYHq9X0dwAIQn0KWB8vZU5VGWcTl+v3gBteI09ItrsmTaW34583gkTeO3FouIz+X4xkHvHCzXNgwDybARc/cF/TtgAVw/q28OvbppaXF7kr8V2UU52esvY264pnOTWznwMqxsLJePXVyIGeF6N/RcJrzOUb6NKb39OmLnUdivpWZiTutH5cHar6g8HjSCKX9YkC7mf8BA7ZwFkTSkLl9iS4a8F05R1drU3yMw3jrATMFfRGk0pix7dZjr2trhFH+871BLXGDM7ycZ8pHz+y03DMWNzW9Hr62FrnotaLBiFvHc8nwULz9q96edeL1Txn/kutidx79vCsTvaC7i3U3QR9bNqXjTm56yznxzYmD3b6npieSfDVfIAlz9Maz8Aou/YamazETXcr7uQc56pB+YZ4iaRngteejt5zZm1V2HyrNxLDwxdrP53sYUylLaOuQsBq1oRTon0vzH0RjbrFeA26pY3tAY/FTa9A2FX4/CCI3tn7r+Hs6m7bcluuIanabRI9kbIKvfeitVUhHjCtPJR4cYUvfh3SHrIRkJ4hDbW90AvaBEeagGlQpVFw57saE6KAsLF/w64vgPY5p6WPBDdZ9qqqNNqYFtuJ+xsHx5nZ2GyGA9A1WvqM5YJfFbwmB6R6iHdCh8OzUHZ4Et6uMl4h+Juk86uhadoKQN4g6XIv4kXGwKesydNBZFgvJDz3/sM7WhgvqD5HUrX0qDBO3OnB6mgFdsXdhLwhvqZmxiD5Wgmf3hXWeaN5V/TKmNNgtVdc/da9ZGGuF5qMPL2hdj3Wy3
+ cQp/WyN3
+ Z+TwiTjcJepH+SVf05Z4B6M5MgGCcGwks/sl8LZGTNRcG8lBQTakBtQN2DRNaU3Bmidj6pyac1PXZpBuaPKDqIhvZVoMtA4HYGLkPD6IQvBmJ1a2byCx2jNoaiQO5ByIKFZdyotlzu2peKYKZQQF1bgj2AcEUZNXsHB/5F5NPjw2IYxPfKXWO05XNJWvc/ni43J3/ejGdv9TjTNqccByo1Fc2RqMyJd3nothRDD+Spucbigw5Y+OTRbuWba8qWqNmZq24tFhLbL6i7LpeuWBj0S2MpQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,56 +104,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 14, 2025 at 08:15:45PM -0700, Kees Cook wrote:
-> +Performing open-coded kmalloc()-family allocation assignments prevents
-> +the kernel (and compiler) from being able to examine the type of the
-> +variable being assigned, which limits any related introspection that
-> +may help with alignment, wrap-around, or additional hardening. The
-> +kmalloc_obj()-family of macros provide this introspection, which can be
-> +used for the common code patterns for single, array, and flexible object
-> +allocations. For example, these open coded assignments::
-> +
-> +	ptr = kmalloc(sizeof(*ptr), gfp);
-> +	ptr = kmalloc(sizeof(struct the_type_of_ptr_obj), gfp);
-> +	ptr = kzalloc(sizeof(*ptr), gfp);
-> +	ptr = kmalloc_array(count, sizeof(*ptr), gfp);
-> +	ptr = kcalloc(count, sizeof(*ptr), gfp);
-> +	ptr = kmalloc(struct_size(ptr, flex_member, count), gfp);
-> +
-> +become, respectively::
-> +
-> +	kmalloc_obj(ptr, gfp);
-> +	kzalloc_obj(ptr, gfp);
-> +	kmalloc_objs(ptr, count, gfp);
-> +	kzalloc_objs(ptr, count, gfp);
-> +	kmalloc_flex(ptr, flex_member, count, gfp);
+On 10/3/25 7:00 PM, Roman Gushchin wrote:
+> Martin KaFai Lau <martin.lau@linux.dev> writes:
+> 
+>> On 9/2/25 10:31 AM, Roman Gushchin wrote:
+>>> Btw, what's the right way to attach struct ops to a cgroup, if there is
+>>> one? Add a cgroup_id field to the struct and use it in the .reg()
+>>
+>> Adding a cgroup id/fd field to the struct bpf_oom_ops will be hard to
+>> attach the same bpf_oom_ops to multiple cgroups.
+>>
+>>> callback? Or there is something better?
+>>
+>> There is a link_create.target_fd in the "union bpf_attr". The
+>> cgroup_bpf_link_attach() is using it as cgroup fd. May be it can be
+>> used here also. This will limit it to link attach only. Meaning the
+>> SEC(".struct_ops.link") is supported but not the older
+>> SEC(".struct_ops"). I think this should be fine.
+> 
+> I thought a bit more about it (sorry for the delay):
+> if we want to be able to attach a single struct ops to multiple cgroups
+> (and potentially other objects, e.g. sockets), we can't really
+> use the existing struct ops's bpf_link.
 
-I'd like to propose a different approach for consideration.
+The existing 'struct bpf_struct_ops_link'? yeah, I think it needs to be extended.
 
-The first two are obvious.  If we now believe that object type is the
-important thing, well we have an API for that:
+> 
+> So I guess we need to add a new .attach() function beside .reg()
+> which will take the existing link and struct bpf_attr as arguments and
+> return a new bpf_link. And in libbpf we need a corresponding new
+> bpf_link__attach_cgroup().
 
-struct buffer_head { ... };
+The target_fd (or cgroup_fd) is in attr. I think it is why the bpf_attr is 
+needed during link_create (which calls .reg).
 
-	bh_cache = KMEM_CACHE(buffer_head, SLAB_RECLAIM_ACCOUNT);
-...
-	ptr = kmem_cache_alloc(bh_cache, GFP_KERNEL);
+Other than link_create, the link_detach and link_update also need to know the 
+cgroup but the cgroup_fd will not be in the attr. Only link_fd is available.
 
-It's a little more verbose than what you're suggesting, but it does give
-us the chance to specify SLAB_ flags.  It already does the alignment
-optimisation you're suggesting.  Maybe we can use some macro sugar to
-simplify this.
-
-The array ones are a little tougher.  Let's set them aside for the
-moment and tackle the really hard one; kmalloc_flex.
-
-Slab is fundamentally built on all objects in the slab being the same
-size.  But maybe someone sufficiently enterprising could build a
-"variable sized" slab variant?  If we're saying that object type is
-more important a discriminator than object size, then perhaps grouping
-objects of the same size together isn't nearly as useful as grouping
-objects of the same type together, even if they're different sizes.
-
-Might be a good GSoC/outreachy project?
+The cgroup probably needs to be stored in the link. The struct_ops has its 
+'struct bpf_struct_ops_link'. Potentially a future struct_ops can be attached to 
+non-cgroup also (e.g. attach to a netns), so maybe adding a 'void *target;' to 
+the 'struct bpf_struct_ops_link' and pass the attr to .reg(). Note that the link 
+pointer has already passed to .reg(). Then the subsystem (oom handling here) can 
+initialize the 'void *target;'.
 
 
