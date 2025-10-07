@@ -4,99 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C064ECCA470
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 19:53:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF8D2CCA470
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 20:01:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2736B8E0008; Tue,  7 Oct 2025 15:53:21 -0400 (EDT)
+	id 0157A8E0008; Tue,  7 Oct 2025 16:01:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 224238E0002; Tue,  7 Oct 2025 15:53:21 -0400 (EDT)
+	id F09048E0002; Tue,  7 Oct 2025 16:01:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1618C8E0008; Tue,  7 Oct 2025 15:53:21 -0400 (EDT)
+	id E451B8E0008; Tue,  7 Oct 2025 16:01:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 02BFF8E0002
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 15:53:20 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2CDE51A0256
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 19:53:20 +0000 (UTC)
-X-FDA: 83972367360.13.1A8D312
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D33518E0002
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 16:01:55 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 72DC71DF43B
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 20:01:55 +0000 (UTC)
+X-FDA: 83972388990.09.38BC4F5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 99D3DC000A
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 19:53:18 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cEhjVh0Y;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id D0DC8140012
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 20:01:53 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M0HQm81i;
+	spf=pass (imf23.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759866798;
+	s=arc-20220608; t=1759867313;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o1TxYCGmuroKJkQdKW/LdvluLzUXIU32HYV2hUcSpcE=;
-	b=EUYkdY6fyBFx+gAGDFZIv3X436Ahs3d0HyuhsiTn7CsQtAZoN444r70uEpC8PEmACuPDI6
-	EQqBn+Sgh0Olrdgn8c+ZgFztEuqxxWFeT1gHeGC1MfjSLaQ9MsoZ09kHDWo9+37q+OaZmD
-	MR4m+YhQr7D+J9dxsaZVXP9V+991BAQ=
+	bh=z/qTENvypN+T6XZscWhWXyKYPpC65ZHTocsm3lY0Di4=;
+	b=z/U7UkGXqP6TfWikvTcEojyY8Gi+o1wm4KJmphJelaLq28UYgxgj9jbnyOD8Zs9VIao9fx
+	8NSjq3lHPY2gAwCSC09Yp/wGcq1/zSk6nl4PdOSsPr/mHXV5jR1bOx+SFx/rGmYng1AKgv
+	DObHyKLcNygySq5qZzjx9BAY76qAJYA=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cEhjVh0Y;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M0HQm81i;
+	spf=pass (imf23.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759866798; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759867313; a=rsa-sha256;
 	cv=none;
-	b=CdYD6ORe0ZuZMWnB/xMM9AJ+eWqP3HmD4P0oRnPMF257J+5rVGJNQ+7U1qPMqEaWM+bUbI
-	+x0qdXd9OGsCj1CyNvcJzCq/FZECn5aGVhB+mlfHeUCuLDnDtc9st4C4AVlurHN3DGN/sg
-	ItOlhukpxKFRzf2AYKsYLglLlWoQMdw=
+	b=zxQ2DOhf4ms8xVJ56NYDEU/tEB6Nzsa6ALMCkLl4XIByP9U4R5r8Cvd0Y+b2NLoupM6uMh
+	3Hu++MHU7mum/XeYbpV8ihDj6WzTmBHxWHI8inJP3FfdtuGGl8uGX8p4rGtVtNfFOWF9P9
+	6ztmEUQr6tm5WVAeqCV8uh+KWxn1Mpg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B62EF60446;
-	Tue,  7 Oct 2025 19:53:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4331DC4CEF1;
-	Tue,  7 Oct 2025 19:53:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 34A4F61DD5;
+	Tue,  7 Oct 2025 20:01:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0EC4C4CEF1;
+	Tue,  7 Oct 2025 20:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759866797;
-	bh=TlsTiDVO/Guhxne2Ydgp1Bn723sJW0361/Ifv3FYjss=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cEhjVh0YsbpLOi8WHiyuxtBPjRZMoSs7xhsLwEzgcVJOxtgto2NDAtauq7manHzU4
-	 8/QMXrRPlg5vkVy43RD4dhqHRiSRMzCSLCEDhz4S3u32kb73sT7nd4Eb/T+ASgQJ0a
-	 WhvXokVvXBiGfC82rsKidkxXK9L34WxcoJ43o0wWCHtUKss9va2mNR3JKlv+sidtzQ
-	 05sb8QH8oRUxCgOffc5Tzh4E5Udszp8VUOgftw5ccrwz3nRFKNHbL8YoipiFCnhSCs
-	 HDeIyHXjB1eoYEM+ZG+lVdp/k58Iadhz70nmj7ubBO9qGTMEmcfnvY3Hp0asehlAsg
-	 ub6XD9tx/C3PQ==
-From: SeongJae Park <sj@kernel.org>
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: SeongJae Park <sj@kernel.org>,
+	s=k20201202; t=1759867312;
+	bh=+kd6dOZFIOmjSNgpR1x2QwO0MCg1WYh6jGTABkyuXDc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=M0HQm81iGSKVFOSxMqCnqXlOfEFv6hvpPMcwP5z48eSQ8imRIFnKsFkYDuHgsujXi
+	 PVKhmKCkmd/rNYLZfVCRK26CLzqWjHR0gkTPEUhMqHEzj5VnzwrZ5v80ZG7qF7vWM4
+	 zv6c+msgQaKvsRbf8770PclbOK8w0Ng779bXGzs+0S/Hd0E/+8EILbjN0zNPDjDDSJ
+	 MS05VhZrAGsvSMKfRsyRgwCL5Xtlt4a5IXmfoyNWToFbxoXCPGKftLyOmc+odxx4s3
+	 Hf6YsWifRQO0YIkeq5gwyP5PqlWbk8fR+H2zwdairp2bJwwaImKb7Scu4pfRUak66Z
+	 aTfR8LfyzWxTA==
+Date: Tue, 7 Oct 2025 10:01:51 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Daniel Sedlak <daniel.sedlak@cdn77.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	David Ahern <dsahern@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Kairui Song <kasong@tencent.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Chris Li <chrisl@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Usama Arif <usamaarif642@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v2] mm: skip folio_activate() for mlocked folios
-Date: Tue,  7 Oct 2025 12:53:13 -0700
-Message-Id: <20251007195313.7336-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <aOPDRmk2Zd20qxfk@shell.ilvokhin.com>
-References: 
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org,
+	netdev@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Matyas Hurtik <matyas.hurtik@cdn77.com>
+Subject: Re: [PATCH v5] memcg: expose socket memory pressure in a cgroup
+Message-ID: <aOVxrwQ8MHbaRk6J@slm.duckdns.org>
+References: <20251007125056.115379-1-daniel.sedlak@cdn77.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 99D3DC000A
-X-Stat-Signature: 3u7uyj63syjsaw1edpzx6jde4muossj4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251007125056.115379-1-daniel.sedlak@cdn77.com>
+X-Stat-Signature: 4zqtsqce5wu3qdqyry3ptbdp75syk3p5
+X-Rspamd-Queue-Id: D0DC8140012
 X-Rspam-User: 
-X-HE-Tag: 1759866798-78506
-X-HE-Meta: U2FsdGVkX18EWbrBbMrySM1Q5xqwshKC9+hAPm7YECkvX7GihJ/xcRo62SGS3Y03i+TT1WwHW3z/LlRssY1bWvQDD062Y7HEmdu3+BlCWMv1tq0WZq/jYEle8JuepIKgJE5HYdHGrxYPQqjkFMkATV3KiA6vaFQNmV989wlopoIi2ciCNUqtVg2oxVARpHWnJbCFn027UyeHwkq+6qrnGp6Tg2peNMgOpzTNPq10tP7FtM8zpULpCkCUuRh9IOPELuuIw0tL0BvWhwFl252Vjd4wG1ohhUGC19XuzYa1c4oAR5QVoKtc4l3LblEVSPqJXFE6N6v9SxTr//Lge7XOKZnNuM4yoikrlJDXT95IjT+sNkGxRvw+o175+JGjA9yLcdm347xqIgr37qb8wJhbSWH6csAW3fuRcEEFFNdoSQAOTTcponpfnyJNoH1aTdBkj0X8P8uJg0othjiwNjuwukhH1fQZLD0vQ5ieeOEc5hsRd04G52Y1EyGMCWYxXuNjI2qedfzq4VeiXXBb017PWhts2Rem3oZ83bFuHwCn6cyzhaAKLkK1EcABiAYg6/zSE3XHl5V5GdfrlHeH2jSo6yQrVqELM6tFSbcUD+Wu3u3cuFPElsifGv36pWCHgr83B+aaSBNMg7jnWz2eU7hnajjI2mGzmP7ME13r8BoAloo6V7KrmLqsMqLZpDskyXMhUBYqZrFAE1qmFEXbVpjxGwrizxlGawqS/MRKaDga0SMaiD2mHNdVrGm2eX70PZk5XIWt98o117vsntZODDjb3Iuy5hQXRdwLHRg58bindZMNFJ+3//eXGs2DY/SUuEKKsbS2rszDc21HVQr9Ee7c9Ma4NG4dMHNy78Bz6XYdO61s3UtZOugbqJtqtwwQr3EbUKQ+welH3eeB444XZNhl+YUr0CEzO6+bhPCoGBciXBA4YbIGPzClvqzG5jvrQ2T46WwvD8Hz9O12xu/xWk5
- OsO9KKsI
- 0giDZVtgcv3z3KsDxdfyzYAy2/RQ/M2P+mL2MtpRJ30XE8emRjjbONv3AN0LxOYVzgPkcDaF8poJxFdRwKH86zL+YKQpZ7X0QSRR8lsONOMPkLLfpG/WIO+sWhTnk/XBlQvjYRRK19Fgn/KN1PtwTnQ4fbOECr6rP0ef8JFn94mvOGdHwEhn0qu3NybM8ZBwNFht+rQL2pQq+hZ/mlrHWplbttwTnBgP8Sx6MEYbdxvuNzAb0R5hsbx+rzSTK/Vd38yyljlu1urFlTdASg4naahQmG6vCWZWxsAje3JOYNKd61TYa0lSGP1cUAUOkOMXASTOWRvpl/e4ZGnI9krmXsVq95/XMiN+yvBzyd9D2w5+ZGeYLJFxb1dnETZ3sX38ba8Qk
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1759867313-687752
+X-HE-Meta: U2FsdGVkX1+haysHQ7SJfN1sYzr6BEV3PU/jiTbnx661f/2i7VrXaHmi6DtpOB4nUdmmHP6Zgwhd43jD827aPyH3euLO1WqO3dyZyoto7M2wg+3YC4nEq+8y+7MEtSivPXc6EOTsf2D2I+WRloFPAJ68a2VROl8Ixx4UMQ0f3+JHgbDMLChEmeaVqMkrEPnAVD4TOiPKjPhilAylQ9OIbRhg9BHNAc+3nUfSWvz1cteFhgl6+eUYkZ1FlPnIPQSJ9ytta4SnGt5PbmtUAmZm5ZlDRtEnUPbsz3Miuwpw5ABmBSQni6WphvD3PNg3AuB7O+L/tQ0TSAYjlv240hWy8n3qSUgquaGbrVt/RFu3hFvdsBfuqPytl4VfonQYLyJQBL0AKfprf8EIWh7VqJCrFQnwKqgJ30cq31eSSQ8SgVtKfzEvfHwpBHllHy0ts2esveQ5L+MLYjUlYSnmU52X+gVC7EviRFSoIzmeezuFWJPda5j5yK2h2C98Kw1cPSyWfpVgekwq4PQZmUfM1ks0leXt9jw6nTvJQmr5glwkzMvPk0gkvrevLRZq4kSTTQu+aUfcMEzHQLdKLeY5DEe+RChsX3TngMHBmweOGMSn7vfGXt6knK/sztTwGpIwcVAR41BVignj5Krj/FZll8Ppi11RNdlOKP0gpCHwINwb1AhFVzc9Pz2xaq9d6GmOkVC1aPOkrCxpntt7Ozxi1I0UeFITZUvfjmKyx0dcHmfkY1uMYRe+INcIbXMZ0/WcCbWQYVesT0GRB1IQvZnIp/+RGdwoNdrItCtKVU/so/kMa6f/btffBILG/Go1rND4SBR5suPXmMxk2LE14wcIDMi7QzskO2PsaWGh5w94KAwBNWAtAxIrTXBpMmS5UIJL7+3jItviQefnaqMu9Ko4c7svLwkROQtRJHwMtWi3jHaapaqxT4RPlHXf4KMQndVkpf+AbMzuTK4Qq03k3BYEXLx
+ Sb7Mflhj
+ TI8jSCnWcisGabOyWp1iKi9swDy5zRMweFbCrj5XLCYMRTbxVi8hpf2nNqKPuz39sZDlB+0NQb6ng5AbymL+H9FZ9arHbctlycqn7iNIHyXeR0zVEpB+PIkINJP2ASMkYLM+9ngB6028EOByZnC6vcuBOYTYhNg9bivWwVPlErrNGEmsHysDDBSef2iJK+txbSXGbIMopj9eBQRKynEbmnJdF4A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,72 +105,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 6 Oct 2025 13:25:26 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+On Tue, Oct 07, 2025 at 02:50:56PM +0200, Daniel Sedlak wrote:
+...
+> 1) None - keeping the reported duration local to that cgroup:
+> 2) Propagating the duration upwards (using rstat or simple iteration
+> 3) Propagating the duration downwards (write only locally,
+>    read traversing hierarchy upwards):
+...
+> We chose variant 1, that is why it is a separate file instead of another
+> counter in mem.stat. Variant 2 seems to be most fitting however the
+> calculated value would be misleading and hard to interpret. Ideally, we
+> would go with variant 3 as this mirrors the logic of
+> mem_cgroup_under_socket_pressure(), but the third variant can be also
+> calculated manually from variant 1, and thus we chose the variant 1
+> as it is the most versatile one without leaking the internal
+> implementation that can change in the future.
 
-> __mlock_folio() does not move folio to unevicable LRU, when
-> folio_activate() removes folio from LRU.
+I'm not against going 1) but let's not do a separate file for this. Can't
+you do memory.stat.local? It'd be better to have aggregation in memory.stat
+but we can worry about that later.
 
-A trivial opinion.  So the user-visible issue is the incorrect meminfo, right?
+Thanks.
 
-I read your changelog below saying you changed this message from v1 to frame on
-unevictable LRU rather than stat accounting, and I think that's nice to
-understand the detail.  But I think further describing the resulting
-user-visible issue can be helpful at better understanding the motivation of
-this nice patch.
-
-> 
-> To prevent this case also check for folio_test_mlocked() in
-> folio_mark_accessed(). If folio is not yet marked as unevictable, but
-> already marked as mlocked, then skip folio_activate() call to allow
-> __mlock_folio() to make all necessary updates. It should be safe to skip
-> folio_activate() here, because mlocked folio should end up in
-> unevictable LRU eventually anyway.
-> 
-> To observe the problem mmap() and mlock() big file and check Unevictable
-> and Mlocked values from /proc/meminfo. On freshly booted system without
-> any other mlocked memory we expect them to match or be quite close.
-> 
-> See below for more detailed reproduction steps. Source code of stat.c is
-> available at [1].
-> 
->   $ head -c 8G < /dev/urandom > /tmp/random.bin
-> 
->   $ cc -pedantic -Wall -std=c99 stat.c -O3 -o /tmp/stat
->   $ /tmp/stat
->   Unevictable:     8389668 kB
->   Mlocked:         8389700 kB
-> 
->   Need to run binary twice. Problem does not reproduce on the first run,
->   but always reproduces on the second run.
-> 
->   $ /tmp/stat
->   Unevictable:     5374676 kB
->   Mlocked:         8389332 kB
-> 
-> [1]: https://gist.github.com/ilvokhin/e50c3d2ff5d9f70dcbb378c6695386dd
-> 
-> Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> Acked-by: Usama Arif <usamaarif642@gmail.com>
-
-Because this is a fix of a user-visible issue, I'm wondering if this deserves
-Fixes: and Cc: stable@.
-
-Anyway my comments are only trivial ones, and I think the change is good.
-
-Reviewed-by: SeongJae Park <sj@kernel.org>
-
-> ---
-> Changes in v2:
->   - Rephrase commit message: frame it in terms of unevicable LRU, not stat
->     accounting.
-
-Yet another trivial and personal opinion.  Adding a link to the previous
-version could be helpful for reviewers like me.
-
-Thanks,
-SJ
-
-[...]
+-- 
+tejun
 
