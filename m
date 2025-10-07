@@ -4,75 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78F53CCA470
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 06:31:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1396ACCA470
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 06:32:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3EA28E000E; Tue,  7 Oct 2025 02:31:09 -0400 (EDT)
+	id 5EF178E000E; Tue,  7 Oct 2025 02:32:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEEF78E0005; Tue,  7 Oct 2025 02:31:09 -0400 (EDT)
+	id 59FE78E0005; Tue,  7 Oct 2025 02:32:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2C188E000E; Tue,  7 Oct 2025 02:31:09 -0400 (EDT)
+	id 4DCE18E000E; Tue,  7 Oct 2025 02:32:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B23138E0005
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 02:31:09 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5B63387F0D
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 06:31:09 +0000 (UTC)
-X-FDA: 83970345858.18.69AF140
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B1FEE180006
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 06:31:07 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EF208E0005
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 02:32:35 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C7CC2160830
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 06:32:34 +0000 (UTC)
+X-FDA: 83970349428.20.753E031
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	by imf05.hostedemail.com (Postfix) with ESMTP id D1008100006
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 06:32:32 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	spf=pass (imf05.hostedemail.com: domain of yskelg@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=yskelg@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759818752; a=rsa-sha256;
+	cv=none;
+	b=deAx2RbHnDhvoR9ahgrPFgWyCoHNlSY2oL/5k92dMXrAeYq2iQSUYdbP+LezgSTD0qMq25
+	urLO+nj/QHCo5zUp9KeYRUTy1ImyYZfo4EEE/IuRGvpvjH9MCom7u4rMyym+jRW3vCFmnL
+	3o/Wa8ajFlJqHenT6EHoGRXlEATwNeQ=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf24.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+	spf=pass (imf05.hostedemail.com: domain of yskelg@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=yskelg@gmail.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759818667;
+	s=arc-20220608; t=1759818752;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=nm+ajaSV/xyiSzQKJfgqTW5GZsupsd8CN7JfXxujEak=;
-	b=tFav+7deuaHwEVJIATtlq9ezdEnd+IHbzlVfAwtMWn9YgMnvxtOx33wZTN6/yRd8FFjlps
-	hHGWa+Cynib8Q8cFBbdtplrDFQfDLFnfJDEN5BNaaClPlsjhjwq9xzvD23Uh4elPsSnbwp
-	CwDH7Ens96MyJ5XmyJCwt6zgoPmp5Mk=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf24.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759818667; a=rsa-sha256;
-	cv=none;
-	b=mh8Gz16vCNQKxkwOo88SKGmYdaNQkPkU2EyEmo2D1sqDiBXy3Jg6VEgxJBdKwuDf9G9Ztz
-	49k/1u7XnPUaSDnkDvciHXTLQUZBmfYiJohHF9mXpzZwVOGrpz7WfdyVVRIeyeMsmRoKoC
-	CraEU4I++QkuyZIiEyAs5Ug/XzgcVeY=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E0FF714BF;
-	Mon,  6 Oct 2025 23:30:58 -0700 (PDT)
-Received: from ergosum.cambridge.arm.com (ergosum.cambridge.arm.com [10.1.196.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id D75343F59E;
-	Mon,  6 Oct 2025 23:31:05 -0700 (PDT)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-mm@kvack.org
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm: Replace READ_ONCE() with standard page table accessors
-Date: Tue,  7 Oct 2025 07:31:00 +0100
-Message-Id: <20251007063100.2396936-1-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.30.2
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KJGCKWDOB+HDW2IfjXMw+O6nf5o51khcjA2mbC8osTg=;
+	b=jQm8K+7nZDqKIFcOdxVS0RMMd0nQmcLTYUeoBuHjDah1E1azSSDBiJTh5jfr0YX4SuOrmP
+	xwvMQ5o6jz3XgPPSvmejuzAkGp1ahgkGPRReTDPAQVsQJbQgHPBKvI4alnKa2plweMPGkY
+	GHOA7FNWiGPol5XXXy65pR2nHxWWyFI=
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-776379289dcso477063b3a.0
+        for <linux-mm@kvack.org>; Mon, 06 Oct 2025 23:32:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759818752; x=1760423552;
+        h=content-transfer-encoding:in-reply-to:organization:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KJGCKWDOB+HDW2IfjXMw+O6nf5o51khcjA2mbC8osTg=;
+        b=WqSU4Idzya9pBOSNbMWj4BXMasJAAuqIttTiHcqexBEb+DvXXhgsRbRYvBFAk1k0CF
+         HUGeIobCn5E5E1d7/HDpViwjhpmhR+S3xXXPx+pvGMUeuh7o2sPovefKFA9fpmbP3aiR
+         jCUbO6dfJtYcgBb6ahFwnEeMnNKtR7PY8qNFML93C8iDoaGPexEWrIwGMAHGVhxw69zn
+         Uxb7d5hoFtmeU2WTcwXJRK9lAkM+HlcWdwxYRJ7LW+Cp7vy+MObcO94eGZY/7xCMXzgU
+         GLVmauIRuXfAmIchJNDexFihxVuuynRB9BuObpmRQkcSqV9j6pWFH/+Ym7oxahBnzAer
+         cYKg==
+X-Forwarded-Encrypted: i=1; AJvYcCU2mutV9xlv7L1TImWoUYYGeRTvN3ihkTLMG1nu5BTRk1GQFxB8uwdcES2SlNo7dBA9+iCzTLNFVg==@kvack.org
+X-Gm-Message-State: AOJu0YwnsUR7hkr5Sln1Q4e1vpAMI7zd/d16ezBjHjY8LJ9dMRs2Sv2W
+	wKQx6TKBEipCYbkwWX/xdebHeCog3y2Vq6StgTrl2F2cI/dPdzMPA9Wp
+X-Gm-Gg: ASbGncv16kRJqxPxRxjTTbsLs5A7mtVnnOOiphz6HTEJkeZJnTaG2qoeciOKsaQJz1N
+	6oOfqNHWIf3CCsH/YWwUSnY7yPk84uNXm72QeOLdlNiyFAJndQf89Gr9Mj5wy6T73eMBfS+P9GL
+	O9dTOv7Pm534eOjhDTWoNcWqOhgL3o8mmjqHUrVNiuBXFZJSkalftrfxzbxML04NsP2ljVqe7In
+	SWG/N9YNb8XXbjm9zfn13TVjiNO94XsREg7UeXXAA8CVvLL48mBm88Vxebh2LnbeWsZAj2AC53I
+	oac+UPsQZjZG9KtZ2gtsAt4XNZuRjcoL7TdRO3DXnJbozW3Jf84kc5AG9q7OKHMslZBRxOixrmn
+	yI+8ZNSrlsxkie7yMTH5mDuKMV9XRYNoPiODMnkxZAy0zsq/zaHUtbkpqEMveqLlHPoNciMpwiR
+	ejxq67RI6tHarU2attykdPRIDkTLFk8Y9VdK/3J/ni2PFs6/PgJ/33
+X-Google-Smtp-Source: AGHT+IEhca/DKV1gkMLzYSeFHCblQernrwx8MiefUNdEs8Uem/33USeoThMFjQF25dXOu6Ao9GH78Q==
+X-Received: by 2002:a17:902:c403:b0:27e:f02a:b280 with SMTP id d9443c01a7336-28e9a65bd1cmr98147365ad.5.1759818751599;
+        Mon, 06 Oct 2025 23:32:31 -0700 (PDT)
+Received: from [192.168.50.136] ([118.32.98.101])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-28e8d110cdfsm153463955ad.13.2025.10.06.23.32.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Oct 2025 23:32:31 -0700 (PDT)
+Message-ID: <3b66d603-543d-4616-92a5-9e6e32f116be@kzalloc.com>
+Date: Tue, 7 Oct 2025 15:32:27 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: az3b1p1x7c48tcfrtkn8c6rjs9k7nryo
-X-Rspamd-Queue-Id: B1FEE180006
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] mm/migrate: make sure folio_unlock() before
+ folio_wait_writeback()
+To: Byungchul Park <byungchul@sk.com>, Hillf Danton <hdanton@sina.com>
+Cc: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+ Yeoreum Yun <yeoreum.yun@arm.com>
+References: <20251002081612.53281-1-byungchul@sk.com>
+ <20251002220211.8009-1-hdanton@sina.com>
+ <20251003004828.GA75385@system.software.com>
+ <20251003005230.GB75385@system.software.com>
+Content-Language: en-US
+From: Yunseong Kim <ysk@kzalloc.com>
+Organization: kzalloc
+In-Reply-To: <20251003005230.GB75385@system.software.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ragcmem9z5385k1r1spqrrecf16a1xjy
+X-Rspamd-Queue-Id: D1008100006
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1759818667-319439
-X-HE-Meta: U2FsdGVkX1+tLIWobfbOyaOl0Dr2dwN+7QA6Ikd/bawrdZnod01TSbeNm7aNmOnMT4CKKxqyr1v9Ov3lYvmOjamo2Ya6apY2AFe4Yny4b6LIYUfJFDeGJuXEUstDoW7qNoFhxVKh1O+32pwBYfbPi6uoPivbN6YuY6w5HwMpHUaliR4hJSsi9A9sHrZhNpPBbOK49aERVkC5hr47wJ97gOeBrdGT176bzgyqX0RDoCuErkgwiXb44ORbrNqFZr0zn/KyfUhQbzVrhFg5qREUYX20mFOmUMPLQsMjrl/KVbc4LptDUvzmyWCWth8cPDBznomukL0n/HlaL66I/C+JzcYGjw3tZfa0k5X/xhoXzLdEVaRdUK8NzNydhBIzCweto9RKhMG/uDhY6E+A+r5MYcPhdBx0+zVRv8XmsQwyNAnUhBAZPfRO+r/N8qZpeiuzmYoGCKBwJijjhqWRM20qg9+NVKphKJRfZaYQir8sXoMVvwLwcGqQ5fKxkxnj51iKHaflhZSfysOS2PI40BmEq2NyaE6O8eJnDVGMHWNd0BdUUtEbaevusxxR6aNRhfqA5e97XtW42SyHR+Xe6w7XnRefRjS6CDo3fc1mxB+KjpmR+NjWsKn291vs6kZoCLcelgZduEJaytYPQeQPwtI1b8D2uThoMvi4XMD5Pxx1HxfeZXP1mY8uIYyYv0K9ygJB/PmCr3Wv4hT6tUxUZVjhsnec+JX1c5ileVEm6QaWRV7+tJT0eqcdwQLYawwp84/+BmSitcYtKeoisTVFemmQleYH3XlsC0jvNibZtb+axhQEzpFgCbUZtn6jucac8ZnVL5EHtGPYpjS4rzo9WzhyWjfmzCG3NObBOQhg1jned2fT1xBPPsjwZmR1Oz89aVD6ekDSJ1wJtTiwAvWxmNFUw0j8rMJktL6w1iqagAskRjc9oe5QJqoMasCwakPM1TrZNmLFz6rQRr0DFlZTAoC
- R+GgaylF
- 8+PvApPwuM7c7dOeOtRxSYPYvBS+fPLXq7ZwaopN7XHmfRmyYw42RvaSECk4n+eDgnj4LNG3jeOBi43ZdMss21d24PC61A8ytFfA4QA1vLKik3RZrHmkSBFKE8DUnULR2qIQw3go1bLgFBnvrlEGJqD4YFyHN3303Qg9e28/9uU+edoormvMgmrqVzvarhFIPP0LRoww8AvhwFR99239ChOskeY/JORxXcQRTf6X7nNY/1zevxNxq3oyx9RnxURlVVP7npcn/KZKRfCSoaR5IjHiDWrMNGB2dFx7a5ZQUXs5qtiap9t5tnPN0mqDRpyovKbNoDgJSi0Ri3NhWCllzC4RXGMFVyN2Cub/fGACJ+xN2kx1JcSH7tzM2P+CT+sjDNAWTJ+V3j0OuqnGcqA23tdyeCA==
+X-HE-Tag: 1759818752-740606
+X-HE-Meta: U2FsdGVkX1+mrjo+K7eTXyI6jgWr/yLZ+qXribMeq396q71R1Zr4nVzRV6mHEY9Ls/qLAs8KAsNgYhkqjV60er6RSc/reEHSxyZSJo+FywIrpX63nNE3heLyt5/IRW0byaCKi80trUY7QkkLvLDFRNTTGRD5K1WBqnMZ3q9SjbPJtSaezQx1M1G09OOSLPWouGhq3Xyduj+XGeGVLNGakAfWWchvH4T9/3vbknsnVdeZdfXO/JovNlxJu2UgwlzwpMya7+uNrBAvv7K/TDj/tDMj6w8moxG+Yt0v2OdGRrHp0K00j+ZY3cL7UwOzJf3i4z2SZE6DNsw5i+NkzkHF4CS4YZNDmn53J1hQ4z1jXvmxag0B8JfbirbD7v5bVucMx1duJMVGzfm8hFDYkGaSOrvC4AFW74fe6EK1SidPCHRYLxb5PiQv3zL5ZyWujzDbAe6FtdiJ7QGZn7vGHGe1WG8+A4EnTDU7Q+xGeiimrGs3KG3fS1DpJByoIGbbL1jhPK6wmQvMngUxySprA+LGo1v7KUJxxZT9gY3mc4kkdQnWU4kOygozRvhC01y1rqQVz4Pei5qwCZp3Btpo2/m/IaegirFCpktBkvyzIanp56Fa0rbiCYzDIM4gdorUvjSOs/OVTcGqYdL+2yXwstNN4iTl3oFVjri8JgWG9mwj2QHtXKoMR1Oxyx0PCc3H60cfU0isEgLKVY+CfJ7mJ4YD7uiaBRLNt1cKOIustkZPUHsYAkI0HqvIIdJo84khK3JoukAcgF1Bfnu4HdW0CITO1wJMbNatpOVKRHZHrIUtO9b9H9EmG1LaX4V3oQx6VFkgc+xQbFWpGbOY3XSOAWhAj9K5BliyR5ebw9Vtbifjvegvz3FjI+AB0VwNwwPnoRMClaH2zfW9Hr18I5k+oQkj7c1PZHUae7D2V8P5ZsbqNSRIDBoz76J6/PGjidKYjKsMZzNfv+LHhu/MRb0oHvk
+ Al9B3US+
+ lJ+MfqOPAq3oMLiyty+3J67wU+WBPkMGK5HGf8MOJCCh/GmO7yfqEABPn6/emmCKLS6MmyDwI7AXtR6Ad3XNNXd6/tFyFSpPr/fM6kN8RIL+NL6g0T6bt5foxyKtSGZjybmSuvDT1vNl2maH40IzfpKHFd628JT2a8LfOTSfsadSvPeUEQ5hXzuALmA251RIkMgcePlalJjxIC5D0XI9yl+u/l/0TtexPDAFzF8FINIRBYfA4CUzHOtFNqAygfZyxd+HTLUu4+7hfFoH2Yw2KRZEXuyplUaYQ353xSqGs215zJkXhlC9agp5kN4RA2DXu+t9cwiP/f2cE0mDq9XSELubbnquN7qnZfVN910AlKXFCVqW5FbFST/vKEx8i0TGZLAkNidhlV5C0cntge9yYJKE0CPxeDVNTbn5JR2Iu4Eq+9LlgQ37bjWzGp9rpYCIsef4NLpnIi6qRC53KRCCoK+T6icQNxqTZ3kD1zGjHUGmW98k=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -81,144 +115,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Replace all READ_ONCE() with a standard page table accessors i.e pxdp_get()
-that defaults into READ_ONCE() in cases where platform does not override.
+Hi Hillf,
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
- mm/gup.c            | 10 +++++-----
- mm/hmm.c            |  2 +-
- mm/memory.c         |  4 ++--
- mm/mprotect.c       |  2 +-
- mm/sparse-vmemmap.c |  2 +-
- mm/vmscan.c         |  2 +-
- 6 files changed, 11 insertions(+), 11 deletions(-)
+Here are the syzlang and kernel log, and you can also find the gist snippet
+in the body of the first RFC mail:
 
-diff --git a/mm/gup.c b/mm/gup.c
-index 0bc4d140fc07..37e2af5ed96d 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -964,7 +964,7 @@ static struct page *follow_pud_mask(struct vm_area_struct *vma,
- 	struct mm_struct *mm = vma->vm_mm;
- 
- 	pudp = pud_offset(p4dp, address);
--	pud = READ_ONCE(*pudp);
-+	pud = pudp_get(pudp);
- 	if (!pud_present(pud))
- 		return no_page_table(vma, flags, address);
- 	if (pud_leaf(pud)) {
-@@ -989,7 +989,7 @@ static struct page *follow_p4d_mask(struct vm_area_struct *vma,
- 	p4d_t *p4dp, p4d;
- 
- 	p4dp = p4d_offset(pgdp, address);
--	p4d = READ_ONCE(*p4dp);
-+	p4d = p4dp_get(p4dp);
- 	BUILD_BUG_ON(p4d_leaf(p4d));
- 
- 	if (!p4d_present(p4d) || p4d_bad(p4d))
-@@ -3080,7 +3080,7 @@ static int gup_fast_pud_range(p4d_t *p4dp, p4d_t p4d, unsigned long addr,
- 
- 	pudp = pud_offset_lockless(p4dp, p4d, addr);
- 	do {
--		pud_t pud = READ_ONCE(*pudp);
-+		pud_t pud = pudp_get(pudp);
- 
- 		next = pud_addr_end(addr, end);
- 		if (unlikely(!pud_present(pud)))
-@@ -3106,7 +3106,7 @@ static int gup_fast_p4d_range(pgd_t *pgdp, pgd_t pgd, unsigned long addr,
- 
- 	p4dp = p4d_offset_lockless(pgdp, pgd, addr);
- 	do {
--		p4d_t p4d = READ_ONCE(*p4dp);
-+		p4d_t p4d = p4dp_get(p4dp);
- 
- 		next = p4d_addr_end(addr, end);
- 		if (!p4d_present(p4d))
-@@ -3128,7 +3128,7 @@ static void gup_fast_pgd_range(unsigned long addr, unsigned long end,
- 
- 	pgdp = pgd_offset(current->mm, addr);
- 	do {
--		pgd_t pgd = READ_ONCE(*pgdp);
-+		pgd_t pgd = pgdp_get(pgdp);
- 
- 		next = pgd_addr_end(addr, end);
- 		if (pgd_none(pgd))
-diff --git a/mm/hmm.c b/mm/hmm.c
-index d545e2494994..126c3f42e525 100644
---- a/mm/hmm.c
-+++ b/mm/hmm.c
-@@ -431,7 +431,7 @@ static int hmm_vma_walk_pud(pud_t *pudp, unsigned long start, unsigned long end,
- 	/* Normally we don't want to split the huge page */
- 	walk->action = ACTION_CONTINUE;
- 
--	pud = READ_ONCE(*pudp);
-+	pud = pudp_get(pudp);
- 	if (!pud_present(pud)) {
- 		spin_unlock(ptl);
- 		return hmm_vma_walk_hole(start, end, -1, walk);
-diff --git a/mm/memory.c b/mm/memory.c
-index 0ba4f6b71847..50f841ee6e84 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -6549,12 +6549,12 @@ int follow_pfnmap_start(struct follow_pfnmap_args *args)
- 		goto out;
- 
- 	p4dp = p4d_offset(pgdp, address);
--	p4d = READ_ONCE(*p4dp);
-+	p4d = p4dp_get(p4dp);
- 	if (p4d_none(p4d) || unlikely(p4d_bad(p4d)))
- 		goto out;
- 
- 	pudp = pud_offset(p4dp, address);
--	pud = READ_ONCE(*pudp);
-+	pud = pudp_get(pudp);
- 	if (pud_none(pud))
- 		goto out;
- 	if (pud_leaf(pud)) {
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index 113b48985834..988c366137d5 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -599,7 +599,7 @@ static inline long change_pud_range(struct mmu_gather *tlb,
- 			break;
- 		}
- 
--		pud = READ_ONCE(*pudp);
-+		pud = pudp_get(pudp);
- 		if (pud_none(pud))
- 			continue;
- 
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index dbd8daccade2..37522d6cb398 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -439,7 +439,7 @@ int __meminit vmemmap_populate_hugepages(unsigned long start, unsigned long end,
- 			return -ENOMEM;
- 
- 		pmd = pmd_offset(pud, addr);
--		if (pmd_none(READ_ONCE(*pmd))) {
-+		if (pmd_none(pmdp_get(pmd))) {
- 			void *p;
- 
- 			p = vmemmap_alloc_block_buf(PMD_SIZE, node, altmap);
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 674999999cd0..14c2722b955b 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3772,7 +3772,7 @@ static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long end,
- 	pud = pud_offset(p4d, start & P4D_MASK);
- restart:
- 	for (i = pud_index(start), addr = start; addr != end; i++, addr = next) {
--		pud_t val = READ_ONCE(pud[i]);
-+		pud_t val = pudp_get(pud + i);
- 
- 		next = pud_addr_end(addr, end);
- 
--- 
-2.30.2
+ https://gist.github.com/kzall0c/a6091bb2fd536865ca9aabfd017a1fc5
 
+I am reviewing this issue again on the v6.17, The issue is always reproducible,
+usually occurring within about 10k attempts with the 8 procs.
+
+On 10/3/25 9:52 AM, Byungchul Park wrote:
+> On Fri, Oct 03, 2025 at 09:48:28AM +0900, Byungchul Park wrote:
+>> On Fri, Oct 03, 2025 at 06:02:10AM +0800, Hillf Danton wrote:
+>>> On Thu, 2 Oct 2025 13:38:59 +0200 David Hildenbrand wrote:
+>>>>
+>>>> If it's a real issue, I wonder if a trylock on the writeback path could
+>>>> be an option.
+>>>>
+>>> Given Thanks to Yunseong for reporting the issue, testing, and confirming if
+>>> this patch can resolve the issue, could you share your reproducer with
+>>> reviewers Byungchul?
+>>
+>> Sure.  Yunseong told me it's 100% reproducable.  Yunseong, can you help
+>> him reproduce the issue, please?
+> 
+> +to ysk@kzalloc.com
+> 
+>>
+>> 	Byungchul
+> 
+
+Thank you!
+
+Yunseong
 
