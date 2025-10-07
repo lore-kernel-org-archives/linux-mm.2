@@ -4,92 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1353DCCA472
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 12:51:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C04F8CCA476
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 13:11:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12A238E000E; Tue,  7 Oct 2025 08:51:20 -0400 (EDT)
+	id 85FFC8E000E; Tue,  7 Oct 2025 09:11:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 102858E0005; Tue,  7 Oct 2025 08:51:20 -0400 (EDT)
+	id 810928E0005; Tue,  7 Oct 2025 09:11:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0176D8E000E; Tue,  7 Oct 2025 08:51:19 -0400 (EDT)
+	id 726B18E000E; Tue,  7 Oct 2025 09:11:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DF0D88E0005
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 08:51:19 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8FCA855D2F
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 12:51:19 +0000 (UTC)
-X-FDA: 83971303878.13.355BD54
-Received: from mail-internal.sh.cz (mail-internal.sh.cz [95.168.196.40])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7B61F80007
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 12:51:17 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=cdn77.com header.s=dkim2019 header.b=w82B+Cj+;
-	spf=pass (imf02.hostedemail.com: domain of daniel.sedlak@cdn77.com designates 95.168.196.40 as permitted sender) smtp.mailfrom=daniel.sedlak@cdn77.com;
-	dmarc=pass (policy=quarantine) header.from=cdn77.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B1118E0005
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 09:11:54 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EF3571DCE99
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 13:11:53 +0000 (UTC)
+X-FDA: 83971355706.16.A48E708
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf21.hostedemail.com (Postfix) with ESMTP id CE86A1C0011
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 13:11:51 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf21.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759841478;
+	s=arc-20220608; t=1759842712;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=j2I31yXma2qknyIdaRxK003EeXewJ8txeu7FUP4ZPo8=;
-	b=l3iKIrJR6DhM6MzmRT20KglooolzaiWHa2o5LFkKTOIay3XMRT234VhDWWIT94MYN55O8O
-	UBzwGRwNd+429LsWIIPQoy8CMKvkKk98+hb/zZoQUufuHLVwtSuyUbA7WFGRfJ3jG4tL1i
-	zy/oWvA9adN3maRzU+Fqy40iW1JHmXc=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=cdn77.com header.s=dkim2019 header.b=w82B+Cj+;
-	spf=pass (imf02.hostedemail.com: domain of daniel.sedlak@cdn77.com designates 95.168.196.40 as permitted sender) smtp.mailfrom=daniel.sedlak@cdn77.com;
-	dmarc=pass (policy=quarantine) header.from=cdn77.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759841478; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/HsnjIEpg+WFxBPVBaFpvOv9FLnmBcNhuPtI8pxBAck=;
+	b=sD8jTOCLJYDsVL9qaBJItzN80EeSuLr/Dt3DUBd1AG5Nww4UjUKmGTbkUVl662g2AfjKAq
+	aXlzXCexWcqhkI7kFpMBfPyEnZlDHgworVvqpsuobC1DkNh/zNQ6QQFQlPAfmj5IiWVIlV
+	wwrSLdpif2RduX0in2O1hCio8E3utaA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759842712; a=rsa-sha256;
 	cv=none;
-	b=8SDy+M7O+rVcXuYjOqLIc+soNG37uhpROs8acirtQbX3FDFsnntRvVZCjj+0ViIsYY52Ko
-	ixC/kYzMzhDGmncbY+BRvV4aLDUSBr0bky8lhMbKl6SpEIZ5AprkdIOWe8dlvbSOVAWWxZ
-	gzrHsh0ABAbZh592QT4VR8CjwRkPMw0=
-DKIM-Signature: a=rsa-sha256; t=1759841475; x=1760446275; s=dkim2019; d=cdn77.com; c=relaxed/relaxed; v=1; bh=j2I31yXma2qknyIdaRxK003EeXewJ8txeu7FUP4ZPo8=; h=From:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Transfer-Encoding;
-   b=w82B+Cj+KQ/InClUX4322yvOUwDSlIX1z8k3pYsxElgjN/8rNV41ANBU1nUwH87DBjyie3LfyrFddLx5sv5OpqfaA6Ju5zVBHs7YUQqkVtiI/5anRUOHKw0gWs4fNdud5sY2P/EsEjfMV8nBdCJ4OOYR83JSAXmRJxmjOalXNCM=
-Received: from osgiliath.superhosting.cz ([80.250.18.198])
-        by mail.sh.cz (14.1.0 build 17 ) with ASMTP (SSL) id 202510071451134462;
-        Tue, 07 Oct 2025 14:51:13 +0200
-From: Daniel Sedlak <daniel.sedlak@cdn77.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	linux-mm@kvack.org,
-	netdev@vger.kernel.org,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	cgroups@vger.kernel.org,
-	Tejun Heo <tj@kernel.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>
-Cc: Daniel Sedlak <daniel.sedlak@cdn77.com>,
-	Matyas Hurtik <matyas.hurtik@cdn77.com>
-Subject: [PATCH v5] memcg: expose socket memory pressure in a cgroup
-Date: Tue,  7 Oct 2025 14:50:56 +0200
-Message-ID: <20251007125056.115379-1-daniel.sedlak@cdn77.com>
-X-Mailer: git-send-email 2.51.0
+	b=Sj8mWT2IRmIm1nIiyQJgFkxntp3sullr2qiBvfbbGgC3ICgKx51DIb0gG4jJuFEUdjiVbG
+	B9OUrD2uJBHTYEONKNrfikKRZeszrZViNgqSiNhD2Becxau08jMix+TYcGUHDD88hAxOJT
+	TnSaDtR/cy2IVpa1Y0Scb4XcFdowVSc=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf21.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AAF521424;
+	Tue,  7 Oct 2025 06:11:42 -0700 (PDT)
+Received: from [10.163.65.24] (unknown [10.163.65.24])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 372683F66E;
+	Tue,  7 Oct 2025 06:11:44 -0700 (PDT)
+Message-ID: <b2a474e3-58a0-45f1-8015-46b30c2d0660@arm.com>
+Date: Tue, 7 Oct 2025 18:41:40 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Patch v2] mm/khugepaged: unify pmd folio installation with
+ map_anon_folio_pmd()
+To: Lance Yang <lance.yang@linux.dev>,
+ Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: linux-mm@kvack.org, Usama Arif <usamaarif642@gmail.com>,
+ baolin.wang@linux.alibaba.com, Matthew Wilcox <willy@infradead.org>,
+ david@redhat.com, lorenzo.stoakes@oracle.com, ryan.roberts@arm.com,
+ npache@redhat.com, baohua@kernel.org, Liam.Howlett@oracle.com,
+ ziy@nvidia.com, akpm@linux-foundation.org,
+ Wei Yang <richard.weiyang@gmail.com>
+References: <20251007005022.24413-1-richard.weiyang@gmail.com>
+ <ed17533d-912c-46a1-8407-29fd989f22b3@arm.com>
+ <6253b463-bdbf-4c79-b1a7-65860b76beb4@arm.com>
+ <e0566f96-09f7-406a-8c7f-da6dc476cd60@linux.dev>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <e0566f96-09f7-406a-8c7f-da6dc476cd60@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CTCH: RefID="str=0001.0A2D034E.68E50CC2.0047,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0"; Spam="Unknown"; VOD="Unknown"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7B61F80007
-X-Stat-Signature: rf5m6itw4uw1r3rxzdyhw7m8iaeg89pp
 X-Rspam-User: 
-X-HE-Tag: 1759841477-605295
-X-HE-Meta: U2FsdGVkX1/+zJjkPYm6EmRAePnBF0khGHu/RaW6HHcdHU+NQk+iYEVsYakYbl9KbRzGnTiGHYYhwf6pa7xTozWXYH6AoJGZK/xRNbUuW+gZmXXb9sYAV/yIa1IyLI/2MsGDMRtqsUeSpkn1qNS4OnzZ4wXvp5k7LaiN3B70dt2ZSwfeUUF6pqvkw5tMLqNSS7Xn6xzSpDeWqCjx236YxWG72sPQHqY+CjCrXRxYyEiFzPf1LLNyTc30vIbynqTn3TNszwLfRS+MLNOt9U1aDmaYWP6Eeuk50+rW0F2tzYk7NqxSuTfJhhR+OpHyuj05pu/MmQl2eD00l3fq8VHGFDTVlT6x/mw1gsKQvpg5+9F9TLQATDsiyjmwt2c9AUBy4z7MANHYKMlZhZhBVurRjUeIZhZhnO1i4iNBdO9mQhtQBjhjy2IDlUaHn7EU4ykF+nn4vU1Va5+jc1+O50ct+A5zCy+faz5Xl6lWbhW323Y8ELjBVkjdiL6GH6UUfTfAJg37YceDekw3nFTMq1WvuXpMMPGLrJiBf4XstDJkuLMGepnHcPyl3JIAe/66zVKI4zkgPmSMeCycJGGuU5I57sBK0V/TqUb3+PLnTKRkjHUujKHR2h1VWMsWDloga2ZCntehLEre6mDbAiHNF2/F1E1/JaDi/zkVNmdD/blhAHoANQgmZRVP4seLs1fd1ymFpfz2UGZlmUI0ose9GcqbuUAsxFUgMHfhhYEyuYcVB83bZtivrnBW/A2dto+ibQeji0SLg+m8VvgCgbHuyxMUy2ctXGzIOF924l1MBgYC0mq7gh8jZbCzEgktatP5HOUCUeD8rdQWMvoOgMYwNDEqFY7rgeNqMd0DT0V6JZGnGIohqkVBR1IAjRggkDRoMXx79W6DPPnzKwU=
+X-Rspamd-Queue-Id: CE86A1C0011
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 6eygna98uctmwe5fsdfn85f1xq38wjmr
+X-HE-Tag: 1759842711-926098
+X-HE-Meta: U2FsdGVkX1/kd0QwzTiwxCa0U8yoR31Sb1T7RbAdqK3rQp4MzoI3YCCRnTuVmk04Rdz78tic6nZS92ZETnpjHtTE+kqH4cv3heKipagrpeKSS5UmX6iddfPgyEb5HeYmYGSFtV8aybqfMHXbt+TSgvKzquzq5bAdieD7UZObjSgxOlZydMzLEm9jTe7BZbEKfeoq6sE+5PdiybSTgH+bcf5gJBRy0DDviA/01ltrZ9GIL1b5+rwT0a1eie0gqHD9/Kae504iV7YU8o2wTssewZ0aLeBRqpl9oV1GDtSa8aqkfVDziGX836CADsV3231ti3/md/cw8pO1z4cx7+3HAbHpaFpmAPbgk9NeGb1iLNd7zTYBtpBcCTK5xMtbuBswwSuGJkTXRXC8v7AH2Q7GBx9Se5/0XvyLU30OJ3NEvSdSiifrhu2RWgLpSiJS2O1WtsUOaBdAELlDwB995uDVUTl/IfQOtT1yv1x0Vyax68mu/cBpcKaZlToVrx3FkHmOiBVqLgKg9geVTn+CbjovAghYJz6L3FUgRTKnr3yw7a07c/E7nuOwAzA/HqDdMUQhikfib1ggHDoYMrnExOk5hcn7edHxXgUxuVWSta4qroXMHkwP6tiuangw4DrM33j/UdMEK7jMrjZpHVqNnXva8Q0OrJZbtQhcgVDfTE7Vq8IEyub1VsE5PaB7tUIwhFQojmMNS1smlyHnn6EIOeCyZ+5gm8qgJzDldctEUY1uj+44mgZpzJufMPCnxbgVzyYok+ha1O0B0TBrcPjRedwVll20jt/PkheWxiD2E7u7s5upSmj9M0MmqDyMu5yH4gsGqqjOTTbnTqzcXKWJjZne1wLVeS9i/deMCtb2Mjwf6r5adVRLgWqm56pj6usG/LWmIfqp/qxEWStPHnllUYFXJA8ETTyrGAblQZ5Ma76Jtyf+hIU/EqDnIno/HzzxVydz7RniEBH8l28YfNGXJC6
+ Wwkiqms/
+ oXLGFwrSoJcIp+emi77KqvHDo/YUCpeP0lKBQOvH+CLwHyGzIGpdTZLMusd8AfDX79RTAkoTCWOhiH65qw1dCi7VNX8pHh86aq7EADTS7LaEZ6GaQgQMTCSQYAjIMSZZn9um50kYPWd/lvuGhzAM8FNKpwbwwYfXUXNoKCBw2tk1HIGqO7prCJ5No98IhybCvCTcLB7YxVDfjJ9LeWss9WSSQiBSxTG9RPnx3u8+fUPuYPqtxNGGUCx+Oy4y3VYKF8DSqW8XOVKiqkVbyV/0E9h+LWrGq6m2SW+mOQdYWsYpg0Z8CWnIQuo4dsMZeqyvJdl4JIb2jvisd8959uJQUmSNmuFsDUQhpnMrfO/a4KGZFbkyeAI7PqiChi2seRBSVz7zUNfJ908gP17XQzq4lfljVAykhXcBfEL6RQrRNE3Db0MDtnKQ3dkeSCCNYXA1b1xoi2jniVIZYLihCq54exX5rU5gqmoMhU3DiX75Myrx5AD8vc7TFVDsvOg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,275 +94,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch is a result of our long-standing debug sessions, where it all
-started as "networking is slow", and TCP network throughput suddenly
-dropped from tens of Gbps to few Mbps, and we could not see anything in
-the kernel log or netstat counters.
 
-Currently, we have two memory pressure counters for TCP sockets [1],
-which we manipulate only when the memory pressure is signalled through
-the proto struct [2]. However, the memory pressure can also be signaled
-through the cgroup memory subsystem, which we do not reflect in the
-netstat counters. In the end, when the cgroup memory subsystem signals
-that it is under pressure, we silently reduce the advertised TCP window
-with tcp_adjust_rcv_ssthresh() to 4*advmss, which causes a significant
-throughput reduction.
+On 07/10/25 5:54 pm, Lance Yang wrote:
+>
+>
+> On 2025/10/7 17:54, Dev Jain wrote:
+>>
+>> On 07/10/25 9:36 am, Anshuman Khandual wrote:
+>>>
+>>> On 07/10/25 6:20 AM, Wei Yang wrote:
+>>>> Currently we install pmd folio with map_anon_folio_pmd() in
+>>>> __do_huge_pmd_anonymous_page() and do_huge_zero_wp_pmd(). While in
+>>>> collapse_huge_page(), it is done with identical code except statistics
+>>>> adjustment.
+>>>>
+>>>> Unify the process with map_anon_folio_pmd() to install pmd folio. 
+>>>> Split
+>>>> it to map_anon_folio_pmd_pf() and map_anon_folio_pmd_nopf() to be used
+>>>> in page fault or not respectively.
+>>>>
+>>>> No functional change is intended.
+>>>>
+>>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>>>> Cc: David Hildenbrand <david@redhat.com>
+>>>> Cc: Lance Yang <lance.yang@linux.dev>
+>>>> Cc: Dev Jain <dev.jain@arm.com>
+>>>> Cc: Zi Yan <ziy@nvidia.com>
+>>>> Cc: Usama Arif <usamaarif642@gmail.com>
+>>>> Cc: Matthew Wilcox <willy@infradead.org>
+>>>>
+>>>> ---
+>>>> v2:
+>>>>    * split to map_anon_folio_pmd_[no]pf() suggested by Matthew
+>>> On which branch this patch applies against ?
+>>
+>> +1, does not apply on mm-new for me. There have been multiple patches
+>> changing the same file so it will be beneficial to say what commit
+>> it applies against.
+>
+> I think this patch applies on top of the patch[1], which is based on 
+> mm-new.
+>
+> [1] 
+> https://lore.kernel.org/linux-mm/20251002013825.20448-1-richard.weiyang@gmail.com 
+>
 
-Keep in mind that when the cgroup memory subsystem signals the socket
-memory pressure for a given cgroup, it affects all sockets used in that
-cgroup, including children cgroups.
+Thanks, but this is not yet in mm-new. There are some unaddressed 
+comments there.
 
-This patch exposes a new file for each cgroup in sysfs which is a
-read-only single value file showing how many microseconds this cgroup
-contributed to throttling the throughput of network sockets. The file is
-accessible in the following path.
+Wei, please resend this patch based on mm-new. I would urge you to hold 
+off sending
 
-  /sys/fs/cgroup/**/<cgroup name>/memory.net.throttled_usec
+multiple patches all of which change the same file and have close 
+dependency, till the
 
-Just to summarize the proposals of different methods of hierarchical
-propagation of the memory.net.throttled_usec.
+first one gets merged.
 
-1) None - keeping the reported duration local to that cgroup:
-
-   value = self
-
-   Would not be too out of place, since memory.events.local
-   already does not accumulate hierarchically.
-   To determine whether sockets in a memcg were throttled,
-   we would traverse the /sys/fs/cgroup/ hierarchy from root to
-   the cgroup of interest and sum those local durations.
-
-2) Propagating the duration upwards (using rstat or simple iteration
-   towards root memcg during write):
-
-   value = self + sum of children
-
-   Most semantically consistent with other exposed stat files.
-   Could be added as an entry into memory.stat.
-   Since the pressure gets applied from ancestors to children
-   (see mem_cgroup_under_socket_pressure()), determining the duration of
-   throttling for sockets in some cgroup would be hardest in this variant.
-
-   It would involve iterating from the root to the examined cgroup and
-   at each node subtracting the values of its children from that nodes
-   value, then the sum of that would correspond to the total duration
-   throttled.
-
-3) Propagating the duration downwards (write only locally,
-   read traversing hierarchy upwards):
-
-   value = self + sum of ancestors
-
-   Mirrors the logic used in mem_cgroup_under_socket_pressure(),
-   increase in the reported value for a memcg would coincide with more
-   throttling being done to the sockets of that memcg.
-
-We chose variant 1, that is why it is a separate file instead of another
-counter in mem.stat. Variant 2 seems to be most fitting however the
-calculated value would be misleading and hard to interpret. Ideally, we
-would go with variant 3 as this mirrors the logic of
-mem_cgroup_under_socket_pressure(), but the third variant can be also
-calculated manually from variant 1, and thus we chose the variant 1
-as it is the most versatile one without leaking the internal
-implementation that can change in the future.
-
-Link: https://elixir.bootlin.com/linux/v6.15.4/source/include/uapi/linux/snmp.h#L231-L232 [1]
-Link: https://elixir.bootlin.com/linux/v6.15.4/source/include/net/sock.h#L1300-L1301 [2]
-Co-developed-by: Matyas Hurtik <matyas.hurtik@cdn77.com>
-Signed-off-by: Matyas Hurtik <matyas.hurtik@cdn77.com>
-Signed-off-by: Daniel Sedlak <daniel.sedlak@cdn77.com>
----
-Sorry for the delay between the versions.
-
-Changes:
-v4 -> v5:
-- Rebased
-- Extend commit message with design decisions
-- Rename cgroup counter
-- Link to v4: https://lore.kernel.org/netdev/20250805064429.77876-1-daniel.sedlak@cdn77.com/
-
-v3 -> v4:
-- Add documentation
-- Expose pressure as cummulative counter in microseconds
-- Link to v3: https://lore.kernel.org/netdev/20250722071146.48616-1-daniel.sedlak@cdn77.com/
-
-v2 -> v3:
-- Expose the socket memory pressure on the cgroups instead of netstat
-- Split patch
-- Link to v2: https://lore.kernel.org/netdev/20250714143613.42184-1-daniel.sedlak@cdn77.com/
-
-v1 -> v2:
-- Add tracepoint
-- Link to v1: https://lore.kernel.org/netdev/20250707105205.222558-1-daniel.sedlak@cdn77.com/
-
- Documentation/admin-guide/cgroup-v2.rst | 10 ++++++
- include/linux/memcontrol.h              | 41 +++++++++++++++----------
- mm/memcontrol.c                         | 31 ++++++++++++++++++-
- 3 files changed, 65 insertions(+), 17 deletions(-)
-
-diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
-index 51c0bc4c2dc5..fe81a134c156 100644
---- a/Documentation/admin-guide/cgroup-v2.rst
-+++ b/Documentation/admin-guide/cgroup-v2.rst
-@@ -1887,6 +1887,16 @@ The following nested keys are defined.
- 	Shows pressure stall information for memory. See
- 	:ref:`Documentation/accounting/psi.rst <psi>` for details.
- 
-+  memory.net.throttled_usec
-+	A read-only single value file showing how many microseconds this cgroup
-+	contributed to throttling the throughput of network sockets.
-+
-+	Socket throttling is applied to a cgroup and to all its children,
-+	as a consequence of high reclaim pressure.
-+
-+	Observing throttling of sockets in a particular cgroup can be done
-+	by checking this file for that cgroup and also for all its ancestors.
-+
- 
- Usage Guidelines
- ~~~~~~~~~~~~~~~~
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index fb27e3d2fdac..647fba7dcc8a 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -247,14 +247,19 @@ struct mem_cgroup {
- 	atomic_t		kmem_stat;
- #endif
- 	/*
--	 * Hint of reclaim pressure for socket memroy management. Note
-+	 * Hint of reclaim pressure for socket memory management. Note
- 	 * that this indicator should NOT be used in legacy cgroup mode
- 	 * where socket memory is accounted/charged separately.
- 	 */
- 	u64			socket_pressure;
--#if BITS_PER_LONG < 64
-+	/* memory.net.throttled_usec */
-+	u64			socket_pressure_duration;
-+#if BITS_PER_LONG >= 64
-+	spinlock_t		socket_pressure_spinlock;
-+#else
- 	seqlock_t		socket_pressure_seqlock;
- #endif
-+
- 	int kmemcg_id;
- 	/*
- 	 * memcg->objcg is wiped out as a part of the objcg repaprenting
-@@ -1607,19 +1612,33 @@ bool mem_cgroup_sk_charge(const struct sock *sk, unsigned int nr_pages,
- 			  gfp_t gfp_mask);
- void mem_cgroup_sk_uncharge(const struct sock *sk, unsigned int nr_pages);
- 
--#if BITS_PER_LONG < 64
- static inline void mem_cgroup_set_socket_pressure(struct mem_cgroup *memcg)
- {
--	u64 val = get_jiffies_64() + HZ;
- 	unsigned long flags;
- 
-+#if BITS_PER_LONG >= 64
-+	spin_lock_irqsave(&memcg->socket_pressure_spinlock, flags);
-+#else
- 	write_seqlock_irqsave(&memcg->socket_pressure_seqlock, flags);
--	memcg->socket_pressure = val;
-+#endif
-+	u64 old_socket_pressure = memcg->socket_pressure;
-+	u64 new_socket_pressure = get_jiffies_64() + HZ;
-+
-+	memcg->socket_pressure = new_socket_pressure;
-+	memcg->socket_pressure_duration +=  jiffies_to_usecs(
-+		min(new_socket_pressure - old_socket_pressure, HZ));
-+#if BITS_PER_LONG >= 64
-+	spin_unlock_irqrestore(&memcg->socket_pressure_spinlock, flags);
-+#else
- 	write_sequnlock_irqrestore(&memcg->socket_pressure_seqlock, flags);
-+#endif
- }
- 
- static inline u64 mem_cgroup_get_socket_pressure(struct mem_cgroup *memcg)
- {
-+#if BITS_PER_LONG >= 64
-+	return READ_ONCE(memcg->socket_pressure);
-+#else
- 	unsigned int seq;
- 	u64 val;
- 
-@@ -1629,18 +1648,8 @@ static inline u64 mem_cgroup_get_socket_pressure(struct mem_cgroup *memcg)
- 	} while (read_seqretry(&memcg->socket_pressure_seqlock, seq));
- 
- 	return val;
--}
--#else
--static inline void mem_cgroup_set_socket_pressure(struct mem_cgroup *memcg)
--{
--	WRITE_ONCE(memcg->socket_pressure, jiffies + HZ);
--}
--
--static inline u64 mem_cgroup_get_socket_pressure(struct mem_cgroup *memcg)
--{
--	return READ_ONCE(memcg->socket_pressure);
--}
- #endif
-+}
- 
- int alloc_shrinker_info(struct mem_cgroup *memcg);
- void free_shrinker_info(struct mem_cgroup *memcg);
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index df3e9205c9e6..d29147223822 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -3755,7 +3755,10 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
- 	INIT_LIST_HEAD(&memcg->swap_peaks);
- 	spin_lock_init(&memcg->peaks_lock);
- 	memcg->socket_pressure = get_jiffies_64();
--#if BITS_PER_LONG < 64
-+	memcg->socket_pressure_duration = 0;
-+#if BITS_PER_LONG >= 64
-+	spin_lock_init(&memcg->socket_pressure_spinlock);
-+#else
- 	seqlock_init(&memcg->socket_pressure_seqlock);
- #endif
- 	memcg1_memcg_init(memcg);
-@@ -4579,6 +4582,27 @@ static ssize_t memory_reclaim(struct kernfs_open_file *of, char *buf,
- 	return nbytes;
- }
- 
-+static int memory_net_throttled_usec_show(struct seq_file *m, void *v)
-+{
-+	struct mem_cgroup *memcg = mem_cgroup_from_seq(m);
-+	u64 throttled_usec;
-+
-+#if BITS_PER_LONG >= 64
-+	throttled_usec = READ_ONCE(memcg->socket_pressure_duration);
-+#else
-+	unsigned int seq;
-+
-+	do {
-+		seq = read_seqbegin(&memcg->socket_pressure_seqlock);
-+		throttled_usec = memcg->socket_pressure_duration;
-+	} while (read_seqretry(&memcg->socket_pressure_seqlock, seq));
-+#endif
-+
-+	seq_printf(m, "%llu\n", throttled_usec);
-+
-+	return 0;
-+}
-+
- static struct cftype memory_files[] = {
- 	{
- 		.name = "current",
-@@ -4650,6 +4674,11 @@ static struct cftype memory_files[] = {
- 		.flags = CFTYPE_NS_DELEGATABLE,
- 		.write = memory_reclaim,
- 	},
-+	{
-+		.name = "net.throttled_usec",
-+		.flags = CFTYPE_NOT_ON_ROOT,
-+		.seq_show = memory_net_throttled_usec_show,
-+	},
- 	{ }	/* terminate */
- };
- 
-
-base-commit: 312e6f7676e63bbb9b81e5c68e580a9f776cc6f0
--- 
-2.39.5
-
+>
+>
 
