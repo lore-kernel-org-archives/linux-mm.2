@@ -4,295 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2459CCA470
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 20:43:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5F7CCCA476
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 21:19:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BEA18E0008; Tue,  7 Oct 2025 16:43:39 -0400 (EDT)
+	id B98538E0003; Tue,  7 Oct 2025 17:19:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06F898E0002; Tue,  7 Oct 2025 16:43:39 -0400 (EDT)
+	id B48B98E0002; Tue,  7 Oct 2025 17:19:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2A5C8E0008; Tue,  7 Oct 2025 16:43:38 -0400 (EDT)
+	id A373F8E0003; Tue,  7 Oct 2025 17:19:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C8BA18E0002
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 16:43:38 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6B02E13A799
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 20:43:38 +0000 (UTC)
-X-FDA: 83972494116.23.573DE51
-Received: from iad-out-003.esa.us-east-1.outbound.mail-perimeter.amazon.com (iad-out-003.esa.us-east-1.outbound.mail-perimeter.amazon.com [13.216.7.111])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 04E5618000C
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 20:43:34 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=DUYvB6nE;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf24.hostedemail.com: domain of "prvs=368a8c2a2=farbere@amazon.com" designates 13.216.7.111 as permitted sender) smtp.mailfrom="prvs=368a8c2a2=farbere@amazon.com"
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1759869815; a=rsa-sha256;
-	cv=pass;
-	b=3q8uhHllVPSd4duqkWfBaFUNmg4W6KpYv4iUqtTxGha0agrwUkDLUXY4x6ok8iIS/xULIp
-	cS+Tr3dsib5qs6qc2Zp7g9l26uDBjfzna7MgW5ne8qh3fH6yaBinXrBEsbcVUG1R5I7mA8
-	TjSJXmjYSL6mcWD1XBRHNViDD3/LUvM=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=DUYvB6nE;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf24.hostedemail.com: domain of "prvs=368a8c2a2=farbere@amazon.com" designates 13.216.7.111 as permitted sender) smtp.mailfrom="prvs=368a8c2a2=farbere@amazon.com"
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759869815;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A5C98E0002
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 17:19:32 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2CBED86BC8
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 21:19:32 +0000 (UTC)
+X-FDA: 83972584584.05.EBA347D
+Received: from mail-io1-f79.google.com (mail-io1-f79.google.com [209.85.166.79])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 8FABC1C0012
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 21:19:30 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf20.hostedemail.com: domain of 34YPlaAkbAMwAGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.79 as permitted sender) smtp.mailfrom=34YPlaAkbAMwAGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1759871970;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mzDJx3EN5h1FYvNXUNuZK7tlMGXKWxed++/Eo1YPpEM=;
-	b=ywe1wY4Y7gK0BRbpz1R4xxGy94IIAvOkYe9gZrrP2GSfyYt/+/mDhHMzZokFIokabh8k4u
-	zauFtWSOIq9WIQbZDwAx27Kt3GPevH0AhxFbkjhzxRftTKf5ZeV0DshJ51BU07ppQL3K1Y
-	T9Fma/loPdNtY4AqZNdLrIZUY7Soxcs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1759869815; x=1791405815;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=mzDJx3EN5h1FYvNXUNuZK7tlMGXKWxed++/Eo1YPpEM=;
-  b=DUYvB6nEVDdmymGPuXB2vRUAsv4V5ENvF1EHMq253XAQ+CoOKJaLMgUD
-   zutUi7hbnlVa7Hq623ndH/NBlTqwTTVccgpgUAmAckd5hSPE4kUEhsBXZ
-   a0jmwm5rdmZSijDkda/Os2sKfGktvil6ydPSOkmpoEjH4ojUlGGNja+Jr
-   t1GKAj54/jc05xCc1SoYNEl7/RIFOb8U0fGfFQ1WkBqNhgWK4U7hkQnuT
-   XRRFCQG0MMbhdSTn4TeEig7UDrXT1EWN7v3inPbtGN72q3XPiRLk/r7BR
-   h9tWImk8aVVIgnnxw+NJUo0ORllAQJJlEWdz8eT23hd23THdwK5STzUoA
-   g==;
-X-CSE-ConnectionGUID: APYWf5c/QOG1WpZRTYhG1w==
-X-CSE-MsgGUID: HWRgOvLbRNmNBPl/fIPC7w==
-X-IronPort-AV: E=Sophos;i="6.18,259,1751241600"; 
-   d="scan'208";a="3922632"
-Received: from ip-10-4-7-229.ec2.internal (HELO smtpout.naws.us-east-1.prod.farcaster.email.amazon.dev) ([10.4.7.229])
-  by internal-iad-out-003.esa.us-east-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2025 20:43:32 +0000
-Received: from EX19MTAUEB001.ant.amazon.com [10.0.44.209:49236]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.82.10:2525] with esmtp (Farcaster)
- id 07eba65f-2127-44b0-85e1-7b1e300563a8; Tue, 7 Oct 2025 20:43:31 +0000 (UTC)
-X-Farcaster-Flow-ID: 07eba65f-2127-44b0-85e1-7b1e300563a8
-Received: from EX19EXOUEB001.ant.amazon.com (10.252.135.46) by
- EX19MTAUEB001.ant.amazon.com (10.252.135.108) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Tue, 7 Oct 2025 20:43:31 +0000
-Received: from DM2PR04CU003.outbound.protection.outlook.com (10.252.135.42) by
- EX19EXOUEB001.ant.amazon.com (10.252.135.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20
- via Frontend Transport; Tue, 7 Oct 2025 20:43:31 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VijQjuJxeZPrNsWjPUXVvdkqjV+HCGgM8UXz9W8kXxqfhyw4M1V2c3ZZS92ERMTPm3U7yZnIMPjUKluQ5ZKFj2ZkZ7LdTvB+rjp4aWxH2R10jkC3aZ5tpVgBmAdAfzUx6I8FBswHzzr/tUQ16V8CbRlAlCmTCaFjQTrAs5QS07DQbB1jcaXOHW34Vi9DnHza8fUaKy8O2VZ94lb+V6jM8Gzksj975wkVLdr8vMnlZ/zD424IofRWberuPfJn/Ar6o2Ji3APBxJf3QiAPa9QRo3m/l8MUMr8Ys4nGUcyfei09XjmcKuZENU0aNb3seKdTct6VAgZL7iaAP1pwFeAEJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mzDJx3EN5h1FYvNXUNuZK7tlMGXKWxed++/Eo1YPpEM=;
- b=McJ8nyoZcDtMk0olZ1LrFs15jzB0lbAKZq+bVHdVGZEBvaxoxZNiITxfiH6E9qI7s4TomPNQke4IndWtrAAiRJKZWECwjD0qcleTG14xMGFAKgvnhtU0esrFBjFa8dQoic/nU55PfypILaCSZf5Su50Zt0/O7POMpcCzOHs1t031Bt5sUw/U0j0En6wuzaX2mGivO8qLiUCoTWBQX8i8U2gVYkk0T4X5FLjPKkiaHuQXEhRwNtx1C6eKwXMbAZRvn/YRHMa9cRyb+cqxNW/zcAuqXRdEtXZM6Vw6ayCZF9Xub0e21/UnNC9gjHhP61MWZ5q/8mDUWoEmRNxWA77Qkw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amazon.com; dmarc=pass action=none header.from=amazon.com;
- dkim=pass header.d=amazon.com; arc=none
-Received: from CH0PR18MB5433.namprd18.prod.outlook.com (2603:10b6:610:181::16)
- by SA1PR18MB4710.namprd18.prod.outlook.com (2603:10b6:806:1d9::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9182.20; Tue, 7 Oct
- 2025 20:43:20 +0000
-Received: from CH0PR18MB5433.namprd18.prod.outlook.com
- ([fe80::1423:ab6b:11cc:7b0]) by CH0PR18MB5433.namprd18.prod.outlook.com
- ([fe80::1423:ab6b:11cc:7b0%7]) with mapi id 15.20.9203.007; Tue, 7 Oct 2025
- 20:43:19 +0000
-From: "Farber, Eliav" <farbere@amazon.com>
-To: David Laight <david.laight.linux@gmail.com>, Greg KH
-	<gregkh@linuxfoundation.org>
-CC: "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"peterz@infradead.org" <peterz@infradead.org>, "tglx@linutronix.de"
-	<tglx@linutronix.de>, "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de"
-	<bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com"
-	<hpa@zytor.com>, "james.morse@arm.com" <james.morse@arm.com>,
-	"rric@kernel.org" <rric@kernel.org>, "daniel@ffwll.ch" <daniel@ffwll.ch>,
-	"maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
-	"mripard@kernel.org" <mripard@kernel.org>, "tzimmermann@suse.de"
-	<tzimmermann@suse.de>, "sean@poorly.run" <sean@poorly.run>,
-	"jdelvare@suse.com" <jdelvare@suse.com>, "linux@roeck-us.net"
-	<linux@roeck-us.net>, "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
-	"dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>, "maz@kernel.org"
-	<maz@kernel.org>, "wens@csie.org" <wens@csie.org>, "jernej.skrabec@gmail.com"
-	<jernej.skrabec@gmail.com>, "agk@redhat.com" <agk@redhat.com>,
-	"snitzer@redhat.com" <snitzer@redhat.com>, "dm-devel@redhat.com"
-	<dm-devel@redhat.com>, "davem@davemloft.net" <davem@davemloft.net>,
-	"kuba@kernel.org" <kuba@kernel.org>, "mcoquelin.stm32@gmail.com"
-	<mcoquelin.stm32@gmail.com>, "krzysztof.kozlowski@canonical.com"
-	<krzysztof.kozlowski@canonical.com>, "malattia@linux.it" <malattia@linux.it>,
-	"hdegoede@redhat.com" <hdegoede@redhat.com>, "mgross@linux.intel.com"
-	<mgross@linux.intel.com>, "jejb@linux.ibm.com" <jejb@linux.ibm.com>,
-	"martin.petersen@oracle.com" <martin.petersen@oracle.com>,
-	"sakari.ailus@linux.intel.com" <sakari.ailus@linux.intel.com>, "clm@fb.com"
-	<clm@fb.com>, "josef@toxicpanda.com" <josef@toxicpanda.com>,
-	"dsterba@suse.com" <dsterba@suse.com>, "jack@suse.com" <jack@suse.com>,
-	"tytso@mit.edu" <tytso@mit.edu>, "adilger.kernel@dilger.ca"
-	<adilger.kernel@dilger.ca>, "dushistov@mail.ru" <dushistov@mail.ru>,
-	"luc.vanoostenryck@gmail.com" <luc.vanoostenryck@gmail.com>,
-	"rostedt@goodmis.org" <rostedt@goodmis.org>, "pmladek@suse.com"
-	<pmladek@suse.com>, "senozhatsky@chromium.org" <senozhatsky@chromium.org>,
-	"andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
-	"linux@rasmusvillemoes.dk" <linux@rasmusvillemoes.dk>, "minchan@kernel.org"
-	<minchan@kernel.org>, "ngupta@vflare.org" <ngupta@vflare.org>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"yoshfuji@linux-ipv6.org" <yoshfuji@linux-ipv6.org>, "dsahern@kernel.org"
-	<dsahern@kernel.org>, "pablo@netfilter.org" <pablo@netfilter.org>,
-	"kadlec@netfilter.org" <kadlec@netfilter.org>, "fw@strlen.de" <fw@strlen.de>,
-	"jmaloy@redhat.com" <jmaloy@redhat.com>, "ying.xue@windriver.com"
-	<ying.xue@windriver.com>, "shuah@kernel.org" <shuah@kernel.org>,
-	"willy@infradead.org" <willy@infradead.org>, "sashal@kernel.org"
-	<sashal@kernel.org>, "quic_akhilpo@quicinc.com" <quic_akhilpo@quicinc.com>,
-	"ruanjinjie@huawei.com" <ruanjinjie@huawei.com>, "David.Laight@aculab.com"
-	<David.Laight@aculab.com>, "herve.codina@bootlin.com"
-	<herve.codina@bootlin.com>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-um@lists.infradead.org"
-	<linux-um@lists.infradead.org>, "linux-edac@vger.kernel.org"
-	<linux-edac@vger.kernel.org>, "amd-gfx@lists.freedesktop.org"
-	<amd-gfx@lists.freedesktop.org>, "dri-devel@lists.freedesktop.org"
-	<dri-devel@lists.freedesktop.org>, "linux-arm-msm@vger.kernel.org"
-	<linux-arm-msm@vger.kernel.org>, "freedreno@lists.freedesktop.org"
-	<freedreno@lists.freedesktop.org>, "linux-hwmon@vger.kernel.org"
-	<linux-hwmon@vger.kernel.org>, "linux-input@vger.kernel.org"
-	<linux-input@vger.kernel.org>, "linux-sunxi@lists.linux.dev"
-	<linux-sunxi@lists.linux.dev>, "linux-media@vger.kernel.org"
-	<linux-media@vger.kernel.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-stm32@st-md-mailman.stormreply.com"
-	<linux-stm32@st-md-mailman.stormreply.com>,
-	"platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>,
-	"linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-	"linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
-	"linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>,
-	"linux-ext4@vger.kernel.org" <linux-ext4@vger.kernel.org>,
-	"linux-sparse@vger.kernel.org" <linux-sparse@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "netfilter-devel@vger.kernel.org"
-	<netfilter-devel@vger.kernel.org>, "coreteam@netfilter.org"
-	<coreteam@netfilter.org>, "tipc-discussion@lists.sourceforge.net"
-	<tipc-discussion@lists.sourceforge.net>, "linux-kselftest@vger.kernel.org"
-	<linux-kselftest@vger.kernel.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: RE: [PATCH v2 07/19 5.15.y] minmax: simplify and clarify
- min_t()/max_t() implementation
-Thread-Topic: [PATCH v2 07/19 5.15.y] minmax: simplify and clarify
- min_t()/max_t() implementation
-Thread-Index: AQHcN8sDDjKmCck+60iFjHMDIrVxlA==
-Date: Tue, 7 Oct 2025 20:43:19 +0000
-Message-ID: <CH0PR18MB5433D33DA8E0066EB0FEB5D7C6E0A@CH0PR18MB5433.namprd18.prod.outlook.com>
-References: <20251003130006.41681-1-farbere@amazon.com>
-	<20251003130006.41681-8-farbere@amazon.com>
-	<2025100648-capable-register-101b@gregkh> <20251006213242.3462e746@pumpkin>
-In-Reply-To: <20251006213242.3462e746@pumpkin>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH0PR18MB5433:EE_|SA1PR18MB4710:EE_
-x-ms-office365-filtering-correlation-id: 64df120c-4827-4694-413f-08de05e2266d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016|38070700021;
-x-microsoft-antispam-message-info: =?utf-8?B?YmtFRG1LMm5MclBMV2hkQWtCK0RiYTdRRFFsT2syN210WVg3Z0pVV21tcFQ2?=
- =?utf-8?B?eVlpZ0F0c3JsVUdFNGpDRWZsTGFvSUMrNkdEa1cvdUlYWGluaWdkOTFEa2pP?=
- =?utf-8?B?VHI1UGtJRUlqNUNhaytkYkdMNGk3Z2NLdFFCd1NCdmlVSmN3N3ZveU9aNkpN?=
- =?utf-8?B?WjliR2VveWdra01jSEE5K1NDZG4rZEsyQSs5TXVKYUNMSDVFSHJJbEs5MHJX?=
- =?utf-8?B?TTViMlNuTEJYenUzUDBrM3VMclJtRHNaT0E5UnRQZjdXYVAyMDRmeUx6Sks2?=
- =?utf-8?B?WGxkdDBxL0tHbkZGb3JpeDZFbEJDdzU1MnRjb3JyRWFXWG5SSDNUQkpJZHJM?=
- =?utf-8?B?VGwxWUR2czUvbG8wWVJnaWVCTVhpVGtkZzF2NEhrd2Nqa3MwaFpjZXlwQU5K?=
- =?utf-8?B?cldvL1VoOTNMbjdqWGs4TVpPbXIvWEhqV3I4Vm5kVnR4Zm0zSkxabmxoZ1h0?=
- =?utf-8?B?RTBOWVJyOGxkYVJVaUNKaWU3RXJ4ZjZwMUZXQk1lU21mSnY0V2Y2QTdhdmRJ?=
- =?utf-8?B?ZjBweTQybXZlY25mSDhrMXZYOUpLWExINTd6aEtrYi9DQmFnYlptNTFsR0lz?=
- =?utf-8?B?Z1hlbkc5UEx4Wkc4dFdPMno4YU5UdDRzU0VoMTV1RkQ3ZHBnUjhZZnRSWVlp?=
- =?utf-8?B?L1REVHJKZE1iMGxSVWh4Z2NqZlZ0c1VRUVN0WU5tN2EzVXp0ci9jVUp0dXZu?=
- =?utf-8?B?dndOajM0eC9mN1UvcXJUaUpyWTh6em8zajVVUXpoaHpKY3NNWDhIdGs3bDF5?=
- =?utf-8?B?ZG1WZTViZnVjUGdpZHllcjF2RUNsbjRuZm8zMzFEanZaa1haNDcvNTRubkVQ?=
- =?utf-8?B?OG9uS2lDcVc4b0llMlNDdjZEMWtJSmhDVUptbmRycDY3YW1xSFdDOVN2SlJv?=
- =?utf-8?B?anhtT01waXBEclkxNFBIdFBaWmNNNmZsaWZKbnBvNlhEeGFFRlZxa2krQ2k2?=
- =?utf-8?B?cWZvZ2FvOWpMVHZVcVhrN0l2TjQzNHFOUFlBcDJ1SkNZMkRwRmo0VHNFc2h2?=
- =?utf-8?B?WklXMEpCWDdwMnJHOFlFdXNodGV1aUt2bmo2V2dlcnBlVDRFb3p5T1VTcEVk?=
- =?utf-8?B?MFRNb0JMSktRWEhGOUlZWkEzY2dIVmNRbnc5WVNxcTJadTBrMm5ORldXRVpI?=
- =?utf-8?B?STE1TEdCTm81Nm9NVG5Ubk0vcENENmVya2ppcXhidzhnUWtuSGxrVGlhd2dH?=
- =?utf-8?B?dlBHZTlPNjVWdWVGNTJjaWtYcmZPRWJjNFhUSEdGdys3dzkyV0V2RjZuQ3ln?=
- =?utf-8?B?dy9kR1ZyL3FEeld4ZmRzNXN1b1B1QnkvYUV6MUk3SFNQb3ZPY0pnSTNTUm1w?=
- =?utf-8?B?elgweFkwQ0x2TzZDQml2U3JtMDVWQzd1YVFQK1NCeUhEQmFHOHdDZkdqdnBN?=
- =?utf-8?B?T0JqUUp2SlpYK3FFUU9ocERIZWhxNUxtSFJ3OEVITmp4ZmVVUG85NDA1Q3lp?=
- =?utf-8?B?NFQvN0lWaWdtV2I0NFl1aTNhWkoxUDF4blVUcllyOFJ3T1NrcnpSeG9GSDZQ?=
- =?utf-8?B?aTNEUFRLSDU1K08zWWYzRk4wTGtUdk5yYnkvQjhZYnh2cnhvYTFYZlVRTkJJ?=
- =?utf-8?B?dVFEK2YreEZGc1VBZng4Uy9UZ2c3NEJ2Um44YlZpeHRVOHB5Uk0vZ0lGNlBI?=
- =?utf-8?B?NnVMRi9aQ1BhcVlVRUZFTjN2cWZDOVRzaXZzU0QzL1VtbW9ENlpuek5QVEdU?=
- =?utf-8?B?T1dmS014cldFaXR0Wm5FYXpYRmRNVU42L0w2dWdvQjBoL2hSV0FpcHpRaWZk?=
- =?utf-8?B?WjN1alVLOUJWYlROblZqeGp2ekpEUGVhMHhDekFXb3dtM0xkNzNXQjJITVVY?=
- =?utf-8?B?WmpPakhRSGp6TE9PRlhnUjlMQ2gySGd3Z3FtNXhTSklyaFBFb096TGVUazlV?=
- =?utf-8?B?cy9FN3VZVlh3S2s1d1RQYXp6ek9BN0xwNUFYMHMyOGN4bzF5UjhSNkRJMVVU?=
- =?utf-8?B?WHp2YTRobzU0cHdHSlMrUW5CZXU0RTYveTV2MVI0bnJ2ZUZ3UCtmaFVpdktO?=
- =?utf-8?B?U3RQYzc0M0FUSStoT09aU09Mbk1RNDdzamphR2Q5dElJbUYzMjZZbDg0TFcx?=
- =?utf-8?Q?QpKV4i?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR18MB5433.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(38070700021);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?VGlYcmJPbENiYmtPNDUwLzJnT0tDZ254eWNpQzdTdTVFOENLZlBsamU3KzlT?=
- =?utf-8?B?UGpqU0xPb0dnN0VCbStiWkJLS1FlYTMxaC9BRmZUU0lPUzBLNCs5UDEvcE12?=
- =?utf-8?B?anQ3QlBQWEVYakpFcnBSZkc0TnQ3aEUzQ0FWRHJIZEZNbGRuT2tnSks1WTNN?=
- =?utf-8?B?RVJuS0dKdDdIRlNaT216bzF6WEl1Rnh0SjU0L1Q5bnlBa3VIc3RScHo2dkUw?=
- =?utf-8?B?SW9IdEVUeENrUzQwZU90TXAvTW5obVpLMWczSmhyWENLTUZIUFhGb1pWT093?=
- =?utf-8?B?MlhDalU5Szg1QVVrenpmRG1OakI2MnlIYnhUeURIRTRidXpQdUN1YjNYRlYx?=
- =?utf-8?B?SElRYXpPRHB2dzhmWTFndUtjbis5eUMvM0xOb1Eyd0hrd0hLVkNzSCs1cG84?=
- =?utf-8?B?bVZFdzBTQy9qVjlwUHlqUGkvSDBiS2hJNFNMYkhPZUhGTHUwZ3ZDZWpaM1hU?=
- =?utf-8?B?dm96aFdZRU9TMkd1MVA3VHA3U2xCMnNmRXZ3MFdlOUM2bmlHOG8zZmdmNFNZ?=
- =?utf-8?B?d3UvUnFWN3ZHMXcyRzhmNGJ2b3ZkVVFTY2lHYWpIeVJ0UFF2NEJobzYzVlY3?=
- =?utf-8?B?SlFYWEQ4R3JDa21rcHRGV2RmK1cwc1Jmays1WVdpOXF4NXpsYjIzM2VmMWp3?=
- =?utf-8?B?MXN0bm5sTC9HVEF3VjQ1S05DbkQ3SnFBMmloVkhicHhJNFFrMUpRMjJpdHRs?=
- =?utf-8?B?RTlNOHQrMy93Nk8xM3k3Nnk2blRaaDJHUi81bHlxczNQRlFQd0x5UVlMS3dC?=
- =?utf-8?B?dUpyQ1RGWllHM0ZtMHhid0NUbUpkdjFmQmxWMnl0OCsweGpCUHZxSXM3ckRn?=
- =?utf-8?B?UW1UWUpvUjhma2RWVnNZYjNjdSs0eG9YanVTY01pNi9BNGJIUUFJYTltRGNN?=
- =?utf-8?B?OWMvU2JORzQ5cGE3TTYremJ2MHo1WXRwMDJWWEFTdGE2V0Z4bWtJNTlVbmNP?=
- =?utf-8?B?ZkUwL0dXQnhiQ3MxVEVaL3dHdnVBcDJnUW9Iby96eVlHTUd0Yk5IT0FWcXNN?=
- =?utf-8?B?MFAyMkZHT3M4OHVnTUpFVk5jVXVkWGFaOWphT1UxTW5xYlh0eWp1dmdDTW11?=
- =?utf-8?B?U1ExaXl5UmZuSXpvdXZ5TWk4VnlvTGYzZjJGcGtWdzErQmtzb2ZDMjBEOVd4?=
- =?utf-8?B?ZmlvUEZlb2RKMjFIQXIvMXBvTXNIK0ZSZjU3ekJNWFhDTDYwZFRCQTQ4dVJU?=
- =?utf-8?B?RCtvV2kzU0RiTm1tUFh0YzZQZCtpTFVwcFFzRTFBSEw1d1BLRkQ0UWFPLzE2?=
- =?utf-8?B?YmtQTkI2cEZCZ3ZlVDY5d01HWGZjdmViQUlSaXQvVDY3dVNUd3NLU2tIcUNW?=
- =?utf-8?B?Y05ZdGVqMWRyUzJRU2t6QWhEUXlIWk5HMWpoQkg1N0JlMUJUaWMxaFdncWF1?=
- =?utf-8?B?d2hDMkt0Q1pGeUFSUnhabE10ZVJxTGtYSmYvNXlYT0lhTVlFdVo0cXNyMXdH?=
- =?utf-8?B?Y2xtRkFoVDFIcklJRUtXMUdTSFY4UFBjSHBqbjdsRUFBT0l3aDZnTEdlSHVa?=
- =?utf-8?B?UHdYNTkyVXYrcmF0aS9DQVgvdzFFWC8wREtzdCtRZFlJVVdZeTBYSy8vV0h1?=
- =?utf-8?B?Vm84ak9pcGQxYWpJZVI4Wk5FRFJyejNwbTEyYVFtYm5iSGt5YnhlQVpHOEE4?=
- =?utf-8?B?ejU5WmJkNjByV1FWNEdjNjJFN3ZCaWFQdTlGSVhrZnJDU1VkRi90cC9RQjNK?=
- =?utf-8?B?Z1FwK0p2TW16WXVhNG1QS0JRTEo5Y2NwcmZienREV3c3QkJ3b2ZaRGRQL1V4?=
- =?utf-8?B?VUR4U25DUHV5V25ZOUZjRGhVZkVCVWU5Z3IxRDlwR1d1ZmwvVUswRlJXOWRG?=
- =?utf-8?B?WHFmVkxNY3cyNTVYL3NDTEdmczlJL0tqcG0yN1Y3cDhBU1pKV3VoVHBFODJY?=
- =?utf-8?B?NnZPNkhFeXNnWDRjcUptaFRxWGlzeDJ5ZW5VbHFGa0lla2x2cEhxejFsamsy?=
- =?utf-8?B?aDZ3ZlBsQ1A3RGRYVXdwZTBvbWZEaVZhRWo3cHhIT3NSQnVHeGNRRVh2UzFr?=
- =?utf-8?B?dmR0bVBLb3o1YXgyaGNhMVBWM0p5NTR0K2piNkQ3TmpBbC85U1M2UUxlSUNy?=
- =?utf-8?B?WVZVV2NZR0k2bEhEYUZFMHpWdGRlL0JzUGQ0U0k0dlEwbVZPYk4xYmVBY01Q?=
- =?utf-8?Q?tQ+E=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=ShHCYOodBDNFzzMlGiRMqwNQ9s0/RlmoGajumCuww7s=;
+	b=e9/P1BnCHboGeRWGTa4+lZtAxLxyw4tKyqDrTr/qKe1LHanVODAsVfL8YLIT779WeqD6nx
+	sQ02Tq0SCL8QL9jnzSjCkYE7731KAsiVRhzPxvIfP2krixgbUcoPE+bcpyyZ10reIXPQCn
+	j0WCK8IWUiwx9y4/xwrDqA9z5evr3TA=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf20.hostedemail.com: domain of 34YPlaAkbAMwAGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.79 as permitted sender) smtp.mailfrom=34YPlaAkbAMwAGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759871970; a=rsa-sha256;
+	cv=none;
+	b=NX8kwM8Bn8nDO+NMQLVi/3AHTd+kmBKw+0YnlxQnrbBWDJ9Hl9Jj4l1KPoqBLHqd5uCjEa
+	i28ZmG9Gw3w3hoOozMg6Ibu2eVIwF2wjHJXsFFZsFUabfJrdVeMNn2YrtZWKLOzPEw3prg
+	hNM97bb2DTL/tVSFVK2TptjAri0zj7Y=
+Received: by mail-io1-f79.google.com with SMTP id ca18e2360f4ac-91e1d4d0976so1756495439f.2
+        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 14:19:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759871969; x=1760476769;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ShHCYOodBDNFzzMlGiRMqwNQ9s0/RlmoGajumCuww7s=;
+        b=fWmcccEj+bhUiS0iz1r1hI1enKfGCsC5dQt/S0RnXE46r4VglKYCsUN3HPAIsoflnB
+         yl1f+i8s+moxd91vNKLFulP2mOWRCPclA9pkWNwpm9Dy/0xE6zD+N8v45FOTmL4TAMF3
+         apLlpEwOhLNBrx37NyGhKiA6G/8THAy9TbC7jL10BMHMb6nUUInPUu7cC+Um3798oeVH
+         1mxaiaqYUJHygbqTmB4LXihHt5mi+n+GYvxTpLYtdpHarIVIOx70oZzMpOSFTTIoUXBJ
+         FRrVLk4GyYf/4nkcNmXtnfD3n8xgOhj7qNLmhKIzMtYed5m/ooeVIzQJ7Rs45Ye1hFFA
+         lf9w==
+X-Forwarded-Encrypted: i=1; AJvYcCU9YJvdxVAzinwVvcaBYMQqPhC1fCEsHxGFTc5Bg7dLCp+kWiHX7//mXMfH8mcUMkIyZtaec/PTkg==@kvack.org
+X-Gm-Message-State: AOJu0YxeVvtnSTGl2YZyenrPjpmLlY5yd60i6RZIxpxVhZD1XOzEdIwy
+	ghvAKE5MlU7KfrukftCVC+lMDKB4sMvVYFWL9jvQnEpmFulIePa6W9JBs1X7bfJTlGFlnv6ktMq
+	x/7HpDG2AMJVn/aJdT7bxpMt3vlHTm1GRe+q9CGBFtQostZbNacaCrQw3CYo=
+X-Google-Smtp-Source: AGHT+IGbOdYVTE9pQ+l4YTwccnYczhfj0d+/cf4vQhyeoaUCFXoiyc8eW5YS8slAosdn62Y2PEw1NPLX6l0M/GniQO0RmVdSTk4I
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR18MB5433.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 64df120c-4827-4694-413f-08de05e2266d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Oct 2025 20:43:19.8259
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 5280104a-472d-4538-9ccf-1e1d0efe8b1b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: BBHPu9esaJvNEXhLA+SVv+gcnqouo/zo2LneNHHm49F5K3/Y6mwkFMuKC65iqSZqkoyf55imWc9yqcDku86saQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR18MB4710
-X-OriginatorOrg: amazon.com
+X-Received: by 2002:a05:6602:2d81:b0:8e3:2d3d:9a7d with SMTP id
+ ca18e2360f4ac-93bd19a9a40mr98350239f.18.1759871969687; Tue, 07 Oct 2025
+ 14:19:29 -0700 (PDT)
+Date: Tue, 07 Oct 2025 14:19:29 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68e583e1.a00a0220.298cc0.0485.GAE@google.com>
+Subject: [syzbot] [fuse?] possible deadlock in __folio_end_writeback
+From: syzbot <syzbot+27727256237e6bdd3649@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, miklos@szeredi.hu, 
+	syzkaller-bugs@googlegroups.com, willy@infradead.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 9cu3xbm8gedg6nuyjpbspkhhgi6get8j
+X-Rspamd-Queue-Id: 8FABC1C0012
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 04E5618000C
-X-Stat-Signature: oyo99umd1oj3154pd3x3c51en6q695q6
-X-HE-Tag: 1759869814-147041
-X-HE-Meta: U2FsdGVkX1/p6ibsrLRs4KIpIZ5hzfhrs3ndsBknmcxe2b9F+nVXH4LX2zEUW5Fkjb4aFntFIGS45s3TIKa3WZeCwSs5QYSYOiSTx/fM1O6f+opYbhkkMKyyT0fBpVH4Muy+NA+fjbveHOIcw+0RsfAtTqksao13ibNOb03c4Wr4G5uL+I+DUpEldXL5bJRfXq+hVpPsoztq8EsA36PAjgnCdnBBWZtfSPT+tRNWUKr209iXrQ2+1JRrR9SVTTOmfw0xnZ+2xArVaY1cG9xKA5ogH8jAOWYkpJrKzgBYjLZXVrOhtPps3TprDpc7183qm3gXZkd+V1AgzWmj6lGWuJJS6dZbVzVMe6+01l4vNIbG8TtfnxfOj9iUVaG1mYb4qTuAGGOIMpauleQKDy3qKImTOqA9qMZEq3oQuKbHnvJdBTAmd+IpFGMIW3loGea6Il7XwiybwOTwUHG+HhODOEuIrFLT4FtSfS4Td8VCU/VMhPKeK0tjH4NCsmSEUhSCBpM1W9pgNL4cKoiJ1NhT00OF1fzWkShCgWL/h0zbWBMepwMJyK0+vcTfX30EIQTQkVFZvM42ISczaWE2SHKsKE395nDQNZ23q1tj9TMqhpkGwjDLwAc3UivgA621YR0tjVCt89dfczA7+jylz4PkNz6AOyL4kwUQz5dZH+wVb2/QJyrP18XcYAxZV4N2og5AYUIRLmIsw95QzHWhxINSzDzzBugDvHCYpmY6rgDsh9U0396sZCz5M2qW2mSP25bhQlyuJjAGnZiGVprc0XnLQOcgZRZZmP9Vp9VGZR9yjDT8srvQPwPRRQecaMF4hzRj3LrUpGF5QOQRiS29xS6qdJbQCV+0J3LHaIjDLBsBYzMr/jJD7XixK75c3XneXEXQBgXNnx2MVBih2+sMvbvhkuL5Dptr0lcfANkwOiuuZo09WiaCo8FYMW/0NgJ+qGy767JyAqkk1UcX10hBRfB
- 8dMY726t
- IrLzKdrJgJ+xktOK5ig9nwn+uiJCWz/Z9yTaJ4ewmrxhLjMsHgmAXwEGolo33AG0/KAPDs69or3jSu71p8VhcRj30VnlcH+reSai8PRZAtYGCxjM+iQpDY36Jst5mJALLvGQoa+K25vHiEgPS4rzqCmye4j/c1Ee0syoGiA1EaCnyO3Djf80NOxA06eP3h4irFckWWJSSZqJzo3PrfNtmUfEn3DyKSQBQz7Uq2wx3Iekr+LWyBIqJwV/27GmWGJEEnTyh4mPOR6Ppaxsdg6XEo9x9hfyPabw9PpIEceRP5/rYLjl3SF+l+JIGdZ8Bm9UkBWt8XwG3zPzA59XRiX7hPl6wwzYACPvp7RarJdoBCOBsmRCk319oaUCDZAamMxiKv9lrEMczlwNKYBUmJbJ/MjFgj7beOjoeMnnIEy+exuR3oRnWNfDifJtx1KZg+/2eR2J0Th26P31XmHdexACzhtNa48UJ+Cmmtm9AbvP/0g+S6Pph57Itq/Ked3aVZ8e0Zhp/U02UUyIxHhTp8YQa4NiEi30xdvBRWzJmBt1i68uLTucMHQiU/7IBDBY+I3pZ5GRQd/8tYsJEUSGb0FbbDvqyPrvLC0a+Cu5e5mahn+ZjNLbwCV27IB65h2dOa4DGD/boiSbMKNhByp919WvmEymv0wDQRybgJ+8OGwl56WqgL3dtcwD7tRApA1u0kfrigdRadLBttn0OReIk9KkK/qUFnhOpzzN01ig1R4FEFuD9NcpnhkdUM2p7AniJ8NKaGXiPQRucdbYGXj2DITL72gufzptitbcFjqcsQP4+XrUuZySN/JhAyqEtch9VyVZ5jroUsQWo75828UXizmVL7il7lzfslbSYnHH60VkHHbES/DRa0/Gcl7Jko9Jcc8DTPqYO5wiNGCZhoXaRTaRCZrRmeU2HdQHByBXa/wl4VssMvRVEzfIYgx3GzzM8kqLujm4Y9p6vDUsI4pXlggRnvFnj7lxT
- LdfVtLuC
- uhSsoupTvcTMcuu8mLcFjuu3lQk0cC/x41ajmy4XBwy4KZcgxaYf0J6xhcqGfp6oDeo33um1vymksePJPv9hOcjY00xuCBIhROQZy5RALT52aQBCurxPfv8Nu5Fs/KHm/R4rnCEnHzUdP/gGZfJvxSLmofwTwlGY7YGN2BU16T89KuWtSGXOYDIBO88AwmrovG4FteWNCc9xrA5gnsepB+OnzxSCWWZ/jzUYpoGiO7A4tEMWi8eoOXOtanUx2wi2
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1759871970-920003
+X-HE-Meta: U2FsdGVkX18Gy4Fk+tecBVJ23JqCcLs51zEQBCT+jvzH26aZLuf242Nr9z2e4sM7ZF0LNgFwwUAWhvYBmYwe5MOlAQqkT+RGIQBBUCVJL9FkEzcpmcB0m3W3Ubk0CXcwzJUxEFyenwGIrflmh7ieZbFuECkoYHV7oDvYU2Fo8fZFxxBc+t9p+eHevLLnFp0cKcgUueSdv/x8EkE1XRWqPVOMjt4ezu7zEt44P8dfXrvFEX8kBs8nU3watabV7VW0by3Z/DyB+cYm8CAPjzJikXFeKBP61YuUvVZqHTPZpUOhAOcVT+Su16KNam1136gt7d0lIHsPN91PdTJIzLeDlrhyTWuPUA6M8KnJWxk5EYVUb6v0oIEChgLhjBnfITgGI8oqXzDumeWCcTANswf3Ji1KiryNtmqoxrEhMuBRD+pViK9qwWwsyWhs6ZePYgQMdv+YGFfiz0Ujy2d2zYGBJWqMOvb6rqOUKf2JL6ZAJ16qL3AOVGhyIqB2bed6/FyRFoAHtquTZ03+YrPpzR41R9HBWEUroTXY7U9l5MGycvVapDyH1Eihu3RjFatiq9CKf7NhWN6P9dc1VooUXCi/JfjfCUyBV/iRJIoGK68F0Pru9v16+1viGDlJlnCo6kMGjS+8tvsY6dWWm/cWjrA0C7bly7m1LqhWvxaDADY74ytdLjbAJsyinV4XGNfjjwNXldPl/s0RY0c7hF82uW20GoaOu/TNNsLRrDtz59T2AB32H0JWx1r1WkIGTKBr90u5VUOtRl8hnE9yIukDuZtGqD/FtRJ6X3QtureXCpdmsQH0KgnFx0W/jdp0z5+qbUQy0UTtwXAbnPhjzf1Ikvo/MmG8Lx5v2bOf0E/Q8Ky0aO8xIUlvLFNuUtjLsBRzhmOYVYF+1j0FaOGSSL+zBbZ92MiA9PUF9+8uzm9L4KgUdJCpAAEGRZi8QoYe/z6FGEFJodWxcInmWyz0g2QCMtF
+ urvjsWrP
+ r+S+t/tNFwh5mNl3ri3fIaH3RMpdWmjb8VlP2/Gnx1GxD+HMwJoiJCYehMT280SrzeBAhaNZ17ksd/aslFXIhmlj0weM23xFKjBChdqpVAUq4vV6OGZYBuRmqMfrEnPxYk/8xa9Bipkc6Z+rbmSmyHT1O0pvEnF3qyTOvrTkcVqb80uWQtpP+q569nDHnMFNjf2urGCmxOQA0UDtM1o3ayS0dq941L+mWFu5cTh7qLLVcdhqi1aNYw35nzqYCc0NPaesBUvITwVLlABoRJ+VP4EhDuMzgNXxp8H9d6T+Qbz3XM21pUc5TQozMhPj7Mtt9v9/U9bv4whb9CMF85Rx4v3jpPK/5yweuoOfC7eruQwNFEwmy6wGzqe/Ci2GkFyloGQ90SMPYvgomN3pjLPhELnOnZjjklSsbBGu4etJnMsmPqfWg6L0nooerEqZSt2Ub4cdJ368b7CzQr6EKDQqApQB1iC+4/OjjzYaUx+p1UXVQHba6F7IIu5591H/eQqKHZcqsQJ5ep9V+KjZn4210qZGZjFzY0xJMCYgegUr8rNepFszrPN2ZIscxEBZxLlKDn4oYt4IQ6pzStO6HYDAjHcdoktyuDYmEM/KzfAivXO1NhGHAim5rRd3lq1fsynrbBmBKjFM4UoawJeh66x7U0HriGlv21q9GGvGARxsF5P4TaQFsMQvCJyELPSFF3UkqY/FjsDIRwefIfuHjYqLAkfdtFGz32fILFFuEWW+Zn5In/I0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -301,54 +95,418 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-PiBPbiBNb24sIDYgT2N0IDIwMjUgMTI6NDc6NDUgKzAyMDANCj4gR3JlZyBLSCA8Z3JlZ2toQGxp
-bnV4Zm91bmRhdGlvbi5vcmc+IHdyb3RlOg0KPg0KPiAoSSd2ZSBoYWQgdG8gdHJpbSB0aGUgJ1Rv
-JyBsaXN0IHRvIHNlbmQgdGhpcy4uLikNCj4NCj4gPiBPbiBGcmksIE9jdCAwMywgMjAyNSBhdCAx
-Mjo1OTo1NFBNICswMDAwLCBFbGlhdiBGYXJiZXIgd3JvdGU6DQo+ID4gPiBGcm9tOiBMaW51cyBU
-b3J2YWxkcyA8dG9ydmFsZHNAbGludXgtZm91bmRhdGlvbi5vcmc+DQo+ID4gPg0KPiA+ID4gWyBV
-cHN0cmVhbSBjb21taXQgMDE3ZmEzZTg5MTg3ODQ4ZmQwNTZhZjc1Nzc2OWM5ZTY2YWMzZTkzZCBd
-DQo+ID4gPg0KPiA+ID4gVGhpcyBzaW1wbGlmaWVzIHRoZSBtaW5fdCgpIGFuZCBtYXhfdCgpIG1h
-Y3JvcyBieSBubyBsb25nZXIgbWFraW5nIA0KPiA+ID4gdGhlbSB3b3JrIGluIHRoZSBjb250ZXh0
-IG9mIGEgQyBjb25zdGFudCBleHByZXNzaW9uLg0KPiA+ID4NCj4gPiA+IFRoYXQgbWVhbnMgdGhh
-dCB5b3UgY2FuIG5vIGxvbmdlciB1c2UgdGhlbSBmb3Igc3RhdGljIGluaXRpYWxpemVycyANCj4g
-PiA+IG9yIGZvciBhcnJheSBzaXplcyBpbiB0eXBlIGRlZmluaXRpb25zLCBidXQgdGhlcmUgd2Vy
-ZSBvbmx5IGEgY291cGxlIA0KPiA+ID4gb2Ygc3VjaCB1c2VzLCBhbmQgYWxsIG9mIHRoZW0gd2Vy
-ZSBjb252ZXJ0ZWQgKGZhbW91cyBsYXN0IHdvcmRzKSB0byANCj4gPiA+IHVzZSBNSU5fVC9NQVhf
-VCBpbnN0ZWFkLg0KPiA+ID4NCj4gPiA+IENjOiBEYXZpZCBMYWlnaHQgPERhdmlkLkxhaWdodEBh
-Y3VsYWIuY29tPg0KPiA+ID4gQ2M6IExvcmVuem8gU3RvYWtlcyA8bG9yZW56by5zdG9ha2VzQG9y
-YWNsZS5jb20+DQo+ID4gPiBTaWduZWQtb2ZmLWJ5OiBMaW51cyBUb3J2YWxkcyA8dG9ydmFsZHNA
-bGludXgtZm91bmRhdGlvbi5vcmc+DQo+ID4gPiBTaWduZWQtb2ZmLWJ5OiBFbGlhdiBGYXJiZXIg
-PGZhcmJlcmVAYW1hem9uLmNvbT4NCj4gPg0KPiA+IEVsaWF2LCB5b3VyIHRlc3RpbmcgaW5mcmFz
-dHJ1Y3R1cmUgbmVlZHMgc29tZSB3b3JrLCB0aGlzIHBhdGNoIGJyZWFrcyANCj4gPiB0aGUgYnVp
-bGQgb24gdGhpcyBrZXJuZWwgdHJlZToNCj4gPg0KPiA+IEluIGZpbGUgaW5jbHVkZWQgZnJvbSAu
-L2luY2x1ZGUvbGludXgva2VybmVsLmg6MTYsDQo+ID4gICAgICAgICAgICAgICAgICBmcm9tIC4v
-aW5jbHVkZS9saW51eC9saXN0Lmg6OSwNCj4gPiAgICAgICAgICAgICAgICAgIGZyb20gLi9pbmNs
-dWRlL2xpbnV4L3dhaXQuaDo3LA0KPiA+ICAgICAgICAgICAgICAgICAgZnJvbSAuL2luY2x1ZGUv
-bGludXgvd2FpdF9iaXQuaDo4LA0KPiA+ICAgICAgICAgICAgICAgICAgZnJvbSAuL2luY2x1ZGUv
-bGludXgvZnMuaDo2LA0KPiA+ICAgICAgICAgICAgICAgICAgZnJvbSBmcy9lcm9mcy9pbnRlcm5h
-bC5oOjEwLA0KPiA+ICAgICAgICAgICAgICAgICAgZnJvbSBmcy9lcm9mcy96ZGF0YS5oOjksDQo+
-ID4gICAgICAgICAgICAgICAgICBmcm9tIGZzL2Vyb2ZzL3pkYXRhLmM6NjoNCj4gPiBmcy9lcm9m
-cy96ZGF0YS5jOiBJbiBmdW5jdGlvbiDigJh6X2Vyb2ZzX2RlY29tcHJlc3NfcGNsdXN0ZXLigJk6
-DQo+ID4gZnMvZXJvZnMvemRhdGEuaDoxODU6NjE6IGVycm9yOiBJU08gQzkwIGZvcmJpZHMgdmFy
-aWFibGUgbGVuZ3RoIGFycmF5IOKAmHBhZ2VzX29uc3RhY2vigJkgWy1XZXJyb3I9dmxhXQ0KPiA+
-ICAgMTg1IHwgICAgICAgICBtaW5fdCh1bnNpZ25lZCBpbnQsIFRIUkVBRF9TSVpFIC8gOCAvIHNp
-emVvZihzdHJ1Y3QgcGFnZSAqKSwgOTZVKQ0KPiA+ICAgICAgIHwgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXn5+fg0KPg0KPiBUaGF0
-IGNvbnN0YW50IHNlZW1zIHRvIGdldCAocmVuYW1lZCBhbmQpIGNoYW5nZWQgdG8gMzIgaW4gYSBs
-YXRlciBwYXRjaC4NCj4gSSdtIG5vdCBzdXJlIG9mIHRoZSByYXRpb25hbCBmb3IgdGhlIG1pbigp
-IGF0IGFsbC4NCj4gSSB0aGluayBUSFJFQURfU0laRSBpcyB0aGUgc2l6ZSBvZiB0aGUga2VybmVs
-IHN0YWNrPyBPciBhdCBsZWFzdCByZWxhdGVkIHRvIGl0Lg0KPiBUaGUgZGVmYXVsdCBzZWVtcyB0
-byBiZSA4ayBvbiB4ODYtNjQgYW5kIDRrIG9yIDhrIG9uIGkzODYuDQo+IFNvIGl0IGlzIHByZXR0
-eSBtdWNoIGFsd2F5cyBnb2luZyB0byBiZSA5Ni4NCj4NCj4gTGludXMgYWRkZWQgTUlOKCkgdGhh
-dCBjYW4gYmUgdXNlZCBmb3IgYXJyYXkgc2l6ZXMuDQo+IEJ1dCBJJ2QgZ3Vlc3MgdGhpcyBjb3Vs
-ZCBqdXN0IGJlIGNoYW5nZWQgdG8gMzIgLSBuZWVkIHRvIGFzayB0aGUgZXJvZnMgZ3V5cy4NCg0K
-Q2hhbmdpbmcgdGhlIGRlZmluaXRpb24gb2YgWl9FUk9GU19WTUFQX09OU1RBQ0tfUEFHRVMgdG8g
-dXNlDQogIE1JTl9UKHVuc2lnbmVkIGludCwgVEhSRUFEX1NJWkUgLyA4IC8gc2l6ZW9mKHN0cnVj
-dCBwYWdlICopLCA5NlUpDQppbnN0ZWFkIG9mDQogIG1pbl90KHVuc2lnbmVkIGludCwgVEhSRUFE
-X1NJWkUgLyA4IC8gc2l6ZW9mKHN0cnVjdCBwYWdlICopLCA5NlUpLg0KZml4ZXMgdGhlIGJ1aWxk
-IGZhaWx1cmUuDQoNClRoaXMgYWxpZ25zIHdpdGggdGhlIGNoYW5nZSBtYWRlIGluIHVwc3RyZWFt
-IGNvbW1pdA0KNDQ3N2IzOWMzMmZkKCJtaW5tYXg6IGFkZCBhIGZldyBtb3JlIE1JTl9UL01BWF9U
-IHVzZXJzIik6DQpodHRwczovL2dpdC5rZXJuZWwub3JnL3B1Yi9zY20vbGludXgva2VybmVsL2dp
-dC90b3J2YWxkcy9saW51eC5naXQvY29tbWl0Lz9pZD00NDc3YjM5YzMyZmRjMDMzNjNhZmZlZjRi
-MTFkNDgzOTFlNmRjOWZmDQoNCi0tLQ0KUmVnYXJkcywgRWxpYXYNCg==
+Hello,
+
+syzbot found the following issue on:
+
+HEAD commit:    cbf33b8e0b36 Merge tag 'bpf-fixes' of git://git.kernel.org..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=17a25ee2580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=1b4263e12240e6e1
+dashboard link: https://syzkaller.appspot.com/bug?extid=27727256237e6bdd3649
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14eaea7c580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=134c4304580000
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-cbf33b8e.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/54786e46ef23/vmlinux-cbf33b8e.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/dd6f88ce083b/bzImage-cbf33b8e.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+27727256237e6bdd3649@syzkaller.appspotmail.com
+
+wlan1: Created IBSS using preconfigured BSSID 50:50:50:50:50:50
+wlan1: Creating new IBSS network, BSSID 50:50:50:50:50:50
+=====================================================
+WARNING: HARDIRQ-safe -> HARDIRQ-unsafe lock order detected
+syzkaller #0 Not tainted
+-----------------------------------------------------
+kworker/u4:0/12 [HC0[0]:SC0[0]:HE0:SE1] is trying to acquire:
+ffffffff995aa110 (&p->sequence){+.-.}-{0:0}, at: __fprop_add_percpu_max+0x10d/0x210 lib/flex_proportions.c:186
+
+and this task is already holding:
+ffff888040a24240 (&xa->xa_lock#12){-...}-{3:3}, at: __folio_end_writeback+0x1da/0x950 mm/page-writeback.c:2996
+which would create a new lock dependency:
+ (&xa->xa_lock#12){-...}-{3:3} -> (&p->sequence){+.-.}-{0:0}
+
+but this new dependency connects a HARDIRQ-irq-safe lock:
+ (&xa->xa_lock#12){-...}-{3:3}
+
+... which became HARDIRQ-irq-safe at:
+  lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+  __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
+  _raw_spin_lock_irqsave+0xa7/0xf0 kernel/locking/spinlock.c:162
+  __folio_end_writeback+0x1da/0x950 mm/page-writeback.c:2996
+  folio_end_writeback_no_dropbehind+0x151/0x290 mm/filemap.c:1668
+  folio_end_writeback+0xea/0x220 mm/filemap.c:1694
+  end_bio_bh_io_sync+0xba/0x120 fs/buffer.c:2776
+  blk_update_request+0x57e/0xe60 block/blk-mq.c:998
+  scsi_end_request+0x7c/0x830 drivers/scsi/scsi_lib.c:637
+  scsi_io_completion+0x131/0x390 drivers/scsi/scsi_lib.c:1078
+  ata_qc_complete_multiple+0x1ae/0x280 drivers/ata/libata-sata.c:789
+  ahci_qc_complete drivers/ata/libahci.c:1887 [inline]
+  ahci_handle_port_interrupt+0x3d5/0x610 drivers/ata/libahci.c:1954
+  ahci_port_intr drivers/ata/libahci.c:1965 [inline]
+  ahci_handle_port_intr+0x19f/0x2e0 drivers/ata/libahci.c:1996
+  ahci_single_level_irq_intr+0x9b/0xe0 drivers/ata/libahci.c:2030
+  __handle_irq_event_percpu+0x295/0xab0 kernel/irq/handle.c:203
+  handle_irq_event_percpu kernel/irq/handle.c:240 [inline]
+  handle_irq_event+0x8b/0x1e0 kernel/irq/handle.c:257
+  handle_edge_irq+0x23b/0xa10 kernel/irq/chip.c:855
+  generic_handle_irq_desc include/linux/irqdesc.h:173 [inline]
+  handle_irq arch/x86/kernel/irq.c:254 [inline]
+  call_irq_handler arch/x86/kernel/irq.c:-1 [inline]
+  __common_interrupt+0x141/0x1f0 arch/x86/kernel/irq.c:325
+  common_interrupt+0xb6/0xe0 arch/x86/kernel/irq.c:318
+  asm_common_interrupt+0x26/0x40 arch/x86/include/asm/idtentry.h:693
+  __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:152 [inline]
+  _raw_spin_unlock_irqrestore+0xa8/0x110 kernel/locking/spinlock.c:194
+  spin_unlock_irqrestore include/linux/spinlock.h:406 [inline]
+  ata_scsi_queuecmd+0x3f0/0x5c0 drivers/ata/libata-scsi.c:4398
+  scsi_dispatch_cmd drivers/scsi/scsi_lib.c:1626 [inline]
+  scsi_queue_rq+0x1c91/0x2cc0 drivers/scsi/scsi_lib.c:1868
+  blk_mq_dispatch_rq_list+0x4c0/0x1900 block/blk-mq.c:2129
+  __blk_mq_do_dispatch_sched block/blk-mq-sched.c:168 [inline]
+  blk_mq_do_dispatch_sched block/blk-mq-sched.c:182 [inline]
+  __blk_mq_sched_dispatch_requests+0xda4/0x1570 block/blk-mq-sched.c:307
+  blk_mq_sched_dispatch_requests+0xd7/0x190 block/blk-mq-sched.c:329
+  blk_mq_run_hw_queue+0x404/0x4f0 block/blk-mq.c:2367
+  blk_mq_dispatch_list+0xd0c/0xe00 include/linux/spinlock.h:-1
+  blk_mq_flush_plug_list+0x469/0x550 block/blk-mq.c:2976
+  __blk_flush_plug+0x3d3/0x4b0 block/blk-core.c:1225
+  blk_finish_plug+0x5e/0x90 block/blk-core.c:1252
+  wb_writeback+0xa80/0xaf0 fs/fs-writeback.c:2233
+  wb_check_old_data_flush fs/fs-writeback.c:2301 [inline]
+  wb_do_writeback fs/fs-writeback.c:2354 [inline]
+  wb_workfn+0xaef/0xef0 fs/fs-writeback.c:2382
+  process_one_work kernel/workqueue.c:3263 [inline]
+  process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3346
+  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
+  kthread+0x70e/0x8a0 kernel/kthread.c:463
+  ret_from_fork+0x436/0x7d0 arch/x86/kernel/process.c:148
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+to a HARDIRQ-irq-unsafe lock:
+ (&p->sequence){+.-.}-{0:0}
+
+... which became HARDIRQ-irq-unsafe at:
+...
+  lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+  do_write_seqcount_begin_nested include/linux/seqlock.h:477 [inline]
+  do_write_seqcount_begin include/linux/seqlock.h:503 [inline]
+  fprop_new_period+0x1a3/0x3a0 lib/flex_proportions.c:74
+  writeout_period+0x8b/0x130 mm/page-writeback.c:615
+  call_timer_fn+0x17e/0x5f0 kernel/time/timer.c:1747
+  expire_timers kernel/time/timer.c:1798 [inline]
+  __run_timers kernel/time/timer.c:2372 [inline]
+  __run_timer_base+0x61a/0x860 kernel/time/timer.c:2384
+  run_timer_base kernel/time/timer.c:2393 [inline]
+  run_timer_softirq+0x103/0x180 kernel/time/timer.c:2404
+  handle_softirqs+0x283/0x870 kernel/softirq.c:622
+  run_ksoftirqd+0x9b/0x100 kernel/softirq.c:1063
+  smpboot_thread_fn+0x542/0xa60 kernel/smpboot.c:160
+  kthread+0x70e/0x8a0 kernel/kthread.c:463
+  ret_from_fork+0x436/0x7d0 arch/x86/kernel/process.c:148
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+other info that might help us debug this:
+
+ Possible interrupt unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(&p->sequence);
+                               local_irq_disable();
+                               lock(&xa->xa_lock#12);
+                               lock(&p->sequence);
+  <Interrupt>
+    lock(&xa->xa_lock#12);
+
+ *** DEADLOCK ***
+
+5 locks held by kworker/u4:0/12:
+ #0: ffff888030f92948 ((wq_completion)writeback){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3238 [inline]
+ #0: ffff888030f92948 ((wq_completion)writeback){+.+.}-{0:0}, at: process_scheduled_works+0x9b4/0x17b0 kernel/workqueue.c:3346
+ #1: ffffc900001e7bc0 ((work_completion)(&(&wb->dwork)->work)){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3239 [inline]
+ #1: ffffc900001e7bc0 ((work_completion)(&(&wb->dwork)->work)){+.+.}-{0:0}, at: process_scheduled_works+0x9ef/0x17b0 kernel/workqueue.c:3346
+ #2: ffff888000a240e0 (&type->s_umount_key#54){.+.+}-{4:4}, at: super_trylock_shared+0x20/0xf0 fs/super.c:562
+ #3: ffff888040a24638 (&fi->lock){+.+.}-{3:3}, at: spin_lock include/linux/spinlock.h:351 [inline]
+ #3: ffff888040a24638 (&fi->lock){+.+.}-{3:3}, at: fuse_writepages_send fs/fuse/file.c:2089 [inline]
+ #3: ffff888040a24638 (&fi->lock){+.+.}-{3:3}, at: fuse_iomap_writeback_range+0x818/0x1800 fs/fuse/file.c:2150
+ #4: ffff888040a24240 (&xa->xa_lock#12){-...}-{3:3}, at: __folio_end_writeback+0x1da/0x950 mm/page-writeback.c:2996
+
+the dependencies between HARDIRQ-irq-safe lock and the holding lock:
+-> (&xa->xa_lock#12){-...}-{3:3} {
+   IN-HARDIRQ-W at:
+                    lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+                    __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
+                    _raw_spin_lock_irqsave+0xa7/0xf0 kernel/locking/spinlock.c:162
+                    __folio_end_writeback+0x1da/0x950 mm/page-writeback.c:2996
+                    folio_end_writeback_no_dropbehind+0x151/0x290 mm/filemap.c:1668
+                    folio_end_writeback+0xea/0x220 mm/filemap.c:1694
+                    end_bio_bh_io_sync+0xba/0x120 fs/buffer.c:2776
+                    blk_update_request+0x57e/0xe60 block/blk-mq.c:998
+                    scsi_end_request+0x7c/0x830 drivers/scsi/scsi_lib.c:637
+                    scsi_io_completion+0x131/0x390 drivers/scsi/scsi_lib.c:1078
+                    ata_qc_complete_multiple+0x1ae/0x280 drivers/ata/libata-sata.c:789
+                    ahci_qc_complete drivers/ata/libahci.c:1887 [inline]
+                    ahci_handle_port_interrupt+0x3d5/0x610 drivers/ata/libahci.c:1954
+                    ahci_port_intr drivers/ata/libahci.c:1965 [inline]
+                    ahci_handle_port_intr+0x19f/0x2e0 drivers/ata/libahci.c:1996
+                    ahci_single_level_irq_intr+0x9b/0xe0 drivers/ata/libahci.c:2030
+                    __handle_irq_event_percpu+0x295/0xab0 kernel/irq/handle.c:203
+                    handle_irq_event_percpu kernel/irq/handle.c:240 [inline]
+                    handle_irq_event+0x8b/0x1e0 kernel/irq/handle.c:257
+                    handle_edge_irq+0x23b/0xa10 kernel/irq/chip.c:855
+                    generic_handle_irq_desc include/linux/irqdesc.h:173 [inline]
+                    handle_irq arch/x86/kernel/irq.c:254 [inline]
+                    call_irq_handler arch/x86/kernel/irq.c:-1 [inline]
+                    __common_interrupt+0x141/0x1f0 arch/x86/kernel/irq.c:325
+                    common_interrupt+0xb6/0xe0 arch/x86/kernel/irq.c:318
+                    asm_common_interrupt+0x26/0x40 arch/x86/include/asm/idtentry.h:693
+                    __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:152 [inline]
+                    _raw_spin_unlock_irqrestore+0xa8/0x110 kernel/locking/spinlock.c:194
+                    spin_unlock_irqrestore include/linux/spinlock.h:406 [inline]
+                    ata_scsi_queuecmd+0x3f0/0x5c0 drivers/ata/libata-scsi.c:4398
+                    scsi_dispatch_cmd drivers/scsi/scsi_lib.c:1626 [inline]
+                    scsi_queue_rq+0x1c91/0x2cc0 drivers/scsi/scsi_lib.c:1868
+                    blk_mq_dispatch_rq_list+0x4c0/0x1900 block/blk-mq.c:2129
+                    __blk_mq_do_dispatch_sched block/blk-mq-sched.c:168 [inline]
+                    blk_mq_do_dispatch_sched block/blk-mq-sched.c:182 [inline]
+                    __blk_mq_sched_dispatch_requests+0xda4/0x1570 block/blk-mq-sched.c:307
+                    blk_mq_sched_dispatch_requests+0xd7/0x190 block/blk-mq-sched.c:329
+                    blk_mq_run_hw_queue+0x404/0x4f0 block/blk-mq.c:2367
+                    blk_mq_dispatch_list+0xd0c/0xe00 include/linux/spinlock.h:-1
+                    blk_mq_flush_plug_list+0x469/0x550 block/blk-mq.c:2976
+                    __blk_flush_plug+0x3d3/0x4b0 block/blk-core.c:1225
+                    blk_finish_plug+0x5e/0x90 block/blk-core.c:1252
+                    wb_writeback+0xa80/0xaf0 fs/fs-writeback.c:2233
+                    wb_check_old_data_flush fs/fs-writeback.c:2301 [inline]
+                    wb_do_writeback fs/fs-writeback.c:2354 [inline]
+                    wb_workfn+0xaef/0xef0 fs/fs-writeback.c:2382
+                    process_one_work kernel/workqueue.c:3263 [inline]
+                    process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3346
+                    worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
+                    kthread+0x70e/0x8a0 kernel/kthread.c:463
+                    ret_from_fork+0x436/0x7d0 arch/x86/kernel/process.c:148
+                    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+   INITIAL USE at:
+                   lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+                   __raw_spin_lock_irq include/linux/spinlock_api_smp.h:119 [inline]
+                   _raw_spin_lock_irq+0xa2/0xf0 kernel/locking/spinlock.c:170
+                   spin_lock_irq include/linux/spinlock.h:376 [inline]
+                   shmem_add_to_page_cache+0x72d/0xba0 mm/shmem.c:887
+                   shmem_alloc_and_add_folio+0x846/0xf60 mm/shmem.c:1936
+                   shmem_get_folio_gfp+0x59d/0x1660 mm/shmem.c:2533
+                   shmem_read_folio_gfp+0x8a/0xe0 mm/shmem.c:5931
+                   drm_gem_get_pages+0x223/0xa20 drivers/gpu/drm/drm_gem.c:656
+                   drm_gem_shmem_get_pages_locked+0x201/0x440 drivers/gpu/drm/drm_gem_shmem_helper.c:200
+                   drm_gem_shmem_pin_locked+0x22c/0x460 drivers/gpu/drm/drm_gem_shmem_helper.c:261
+                   drm_gem_shmem_vmap_locked+0x46b/0x790 drivers/gpu/drm/drm_gem_shmem_helper.c:365
+                   drm_gem_vmap_locked drivers/gpu/drm/drm_gem.c:1279 [inline]
+                   drm_gem_vmap+0x10a/0x1d0 drivers/gpu/drm/drm_gem.c:1321
+                   drm_client_buffer_vmap+0x43/0x80 drivers/gpu/drm/drm_client.c:312
+                   drm_fbdev_shmem_driver_fbdev_probe+0x258/0x900 drivers/gpu/drm/drm_fbdev_shmem.c:160
+                   drm_fb_helper_single_fb_probe drivers/gpu/drm/drm_fb_helper.c:1650 [inline]
+                   __drm_fb_helper_initial_config_and_unlock+0x1236/0x18a0 drivers/gpu/drm/drm_fb_helper.c:1830
+                   drm_fbdev_client_hotplug+0x16c/0x230 drivers/gpu/drm/clients/drm_fbdev_client.c:52
+                   drm_client_register+0x172/0x210 drivers/gpu/drm/drm_client.c:141
+                   drm_fbdev_client_setup+0x19f/0x3f0 drivers/gpu/drm/clients/drm_fbdev_client.c:159
+                   drm_client_setup+0x107/0x220 drivers/gpu/drm/clients/drm_client_setup.c:46
+                   vkms_create drivers/gpu/drm/vkms/vkms_drv.c:201 [inline]
+                   vkms_init+0x3e0/0x4b0 drivers/gpu/drm/vkms/vkms_drv.c:221
+                   do_one_initcall+0x233/0x820 init/main.c:1283
+                   do_initcall_level+0x104/0x190 init/main.c:1345
+                   do_initcalls+0x59/0xa0 init/main.c:1361
+                   kernel_init_freeable+0x334/0x4b0 init/main.c:1593
+                   kernel_init+0x1d/0x1d0 init/main.c:1483
+                   ret_from_fork+0x436/0x7d0 arch/x86/kernel/process.c:148
+                   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ }
+ ... key      at: [<ffffffff995cb060>] xa_init_flags.__key+0x0/0x20
+
+the dependencies between the lock to be acquired
+ and HARDIRQ-irq-unsafe lock:
+-> (&p->sequence){+.-.}-{0:0} {
+   HARDIRQ-ON-W at:
+                    lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+                    do_write_seqcount_begin_nested include/linux/seqlock.h:477 [inline]
+                    do_write_seqcount_begin include/linux/seqlock.h:503 [inline]
+                    fprop_new_period+0x1a3/0x3a0 lib/flex_proportions.c:74
+                    writeout_period+0x8b/0x130 mm/page-writeback.c:615
+                    call_timer_fn+0x17e/0x5f0 kernel/time/timer.c:1747
+                    expire_timers kernel/time/timer.c:1798 [inline]
+                    __run_timers kernel/time/timer.c:2372 [inline]
+                    __run_timer_base+0x61a/0x860 kernel/time/timer.c:2384
+                    run_timer_base kernel/time/timer.c:2393 [inline]
+                    run_timer_softirq+0x103/0x180 kernel/time/timer.c:2404
+                    handle_softirqs+0x283/0x870 kernel/softirq.c:622
+                    run_ksoftirqd+0x9b/0x100 kernel/softirq.c:1063
+                    smpboot_thread_fn+0x542/0xa60 kernel/smpboot.c:160
+                    kthread+0x70e/0x8a0 kernel/kthread.c:463
+                    ret_from_fork+0x436/0x7d0 arch/x86/kernel/process.c:148
+                    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+   IN-SOFTIRQ-W at:
+                    lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+                    do_write_seqcount_begin_nested include/linux/seqlock.h:477 [inline]
+                    do_write_seqcount_begin include/linux/seqlock.h:503 [inline]
+                    fprop_new_period+0x1a3/0x3a0 lib/flex_proportions.c:74
+                    writeout_period+0x8b/0x130 mm/page-writeback.c:615
+                    call_timer_fn+0x17e/0x5f0 kernel/time/timer.c:1747
+                    expire_timers kernel/time/timer.c:1798 [inline]
+                    __run_timers kernel/time/timer.c:2372 [inline]
+                    __run_timer_base+0x61a/0x860 kernel/time/timer.c:2384
+                    run_timer_base kernel/time/timer.c:2393 [inline]
+                    run_timer_softirq+0x103/0x180 kernel/time/timer.c:2404
+                    handle_softirqs+0x283/0x870 kernel/softirq.c:622
+                    run_ksoftirqd+0x9b/0x100 kernel/softirq.c:1063
+                    smpboot_thread_fn+0x542/0xa60 kernel/smpboot.c:160
+                    kthread+0x70e/0x8a0 kernel/kthread.c:463
+                    ret_from_fork+0x436/0x7d0 arch/x86/kernel/process.c:148
+                    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+   INITIAL USE at:
+                   lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+                   do_write_seqcount_begin_nested include/linux/seqlock.h:477 [inline]
+                   do_write_seqcount_begin include/linux/seqlock.h:503 [inline]
+                   fprop_new_period+0x1a3/0x3a0 lib/flex_proportions.c:74
+                   writeout_period+0x8b/0x130 mm/page-writeback.c:615
+                   call_timer_fn+0x17e/0x5f0 kernel/time/timer.c:1747
+                   expire_timers kernel/time/timer.c:1798 [inline]
+                   __run_timers kernel/time/timer.c:2372 [inline]
+                   __run_timer_base+0x61a/0x860 kernel/time/timer.c:2384
+                   run_timer_base kernel/time/timer.c:2393 [inline]
+                   run_timer_softirq+0x103/0x180 kernel/time/timer.c:2404
+                   handle_softirqs+0x283/0x870 kernel/softirq.c:622
+                   run_ksoftirqd+0x9b/0x100 kernel/softirq.c:1063
+                   smpboot_thread_fn+0x542/0xa60 kernel/smpboot.c:160
+                   kthread+0x70e/0x8a0 kernel/kthread.c:463
+                   ret_from_fork+0x436/0x7d0 arch/x86/kernel/process.c:148
+                   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+   INITIAL READ USE at:
+                        lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+                        seqcount_lockdep_reader_access include/linux/seqlock.h:72 [inline]
+                        fprop_fraction_percpu+0x170/0x400 lib/flex_proportions.c:155
+                        __wb_calc_thresh+0x119/0x4a0 mm/page-writeback.c:913
+                        wb_bg_dirty_limits mm/page-writeback.c:2130 [inline]
+                        domain_over_bg_thresh mm/page-writeback.c:2144 [inline]
+                        wb_over_bg_thresh+0x154/0x3d0 mm/page-writeback.c:2165
+                        wb_check_background_flush fs/fs-writeback.c:2257 [inline]
+                        wb_do_writeback fs/fs-writeback.c:2355 [inline]
+                        wb_workfn+0xb1c/0xef0 fs/fs-writeback.c:2382
+                        process_one_work kernel/workqueue.c:3263 [inline]
+                        process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3346
+                        worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
+                        kthread+0x70e/0x8a0 kernel/kthread.c:463
+                        ret_from_fork+0x436/0x7d0 arch/x86/kernel/process.c:148
+                        ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ }
+ ... key      at: [<ffffffff99ac9760>] fprop_global_init.__key.1+0x0/0x20
+ ... acquired at:
+   lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+   seqcount_lockdep_reader_access include/linux/seqlock.h:72 [inline]
+   fprop_fraction_percpu+0x130/0x400 lib/flex_proportions.c:155
+   __fprop_add_percpu_max+0x10d/0x210 lib/flex_proportions.c:186
+   wb_domain_writeout_add mm/page-writeback.c:562 [inline]
+   __wb_writeout_add+0xa5/0x290 mm/page-writeback.c:586
+   __folio_end_writeback+0x4d5/0x950 mm/page-writeback.c:3003
+   folio_end_writeback_no_dropbehind+0x151/0x290 mm/filemap.c:1668
+   folio_end_writeback+0xea/0x220 mm/filemap.c:1694
+   fuse_writepage_finish fs/fuse/file.c:1837 [inline]
+   fuse_send_writepage fs/fuse/file.c:1887 [inline]
+   fuse_flush_writepages+0x6c8/0x900 fs/fuse/file.c:1912
+   fuse_writepages_send fs/fuse/file.c:2091 [inline]
+   fuse_iomap_writeback_range+0x923/0x1800 fs/fuse/file.c:2150
+   iomap_writeback_range fs/iomap/buffered-io.c:1593 [inline]
+   iomap_writeback_folio+0xe72/0x1c80 fs/iomap/buffered-io.c:1718
+   iomap_writepages+0x162/0x2d0 fs/iomap/buffered-io.c:1770
+   fuse_writepages+0x2ad/0x380 fs/fuse/file.c:2220
+   do_writepages+0x32b/0x550 mm/page-writeback.c:2604
+   __writeback_single_inode+0x145/0xff0 fs/fs-writeback.c:1719
+   writeback_sb_inodes+0x6c7/0x1010 fs/fs-writeback.c:2015
+   __writeback_inodes_wb+0x111/0x240 fs/fs-writeback.c:2086
+   wb_writeback+0x44f/0xaf0 fs/fs-writeback.c:2197
+   wb_check_background_flush fs/fs-writeback.c:2267 [inline]
+   wb_do_writeback fs/fs-writeback.c:2355 [inline]
+   wb_workfn+0xb63/0xef0 fs/fs-writeback.c:2382
+   process_one_work kernel/workqueue.c:3263 [inline]
+   process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3346
+   worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
+   kthread+0x70e/0x8a0 kernel/kthread.c:463
+   ret_from_fork+0x436/0x7d0 arch/x86/kernel/process.c:148
+   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+
+stack backtrace:
+CPU: 0 UID: 0 PID: 12 Comm: kworker/u4:0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Workqueue: writeback wb_workfn (flush-0:42)
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ print_bad_irq_dependency kernel/locking/lockdep.c:2616 [inline]
+ check_irq_usage kernel/locking/lockdep.c:2857 [inline]
+ check_prev_add kernel/locking/lockdep.c:3169 [inline]
+ check_prevs_add kernel/locking/lockdep.c:3284 [inline]
+ validate_chain+0x1f05/0x2140 kernel/locking/lockdep.c:3908
+ __lock_acquire+0xab9/0xd20 kernel/locking/lockdep.c:5237
+ lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+ seqcount_lockdep_reader_access include/linux/seqlock.h:72 [inline]
+ fprop_fraction_percpu+0x130/0x400 lib/flex_proportions.c:155
+ __fprop_add_percpu_max+0x10d/0x210 lib/flex_proportions.c:186
+ wb_domain_writeout_add mm/page-writeback.c:562 [inline]
+ __wb_writeout_add+0xa5/0x290 mm/page-writeback.c:586
+ __folio_end_writeback+0x4d5/0x950 mm/page-writeback.c:3003
+ folio_end_writeback_no_dropbehind+0x151/0x290 mm/filemap.c:1668
+ folio_end_writeback+0xea/0x220 mm/filemap.c:1694
+ fuse_writepage_finish fs/fuse/file.c:1837 [inline]
+ fuse_send_writepage fs/fuse/file.c:1887 [inline]
+ fuse_flush_writepages+0x6c8/0x900 fs/fuse/file.c:1912
+ fuse_writepages_send fs/fuse/file.c:2091 [inline]
+ fuse_iomap_writeback_range+0x923/0x1800 fs/fuse/file.c:2150
+ iomap_writeback_range fs/iomap/buffered-io.c:1593 [inline]
+ iomap_writeback_folio+0xe72/0x1c80 fs/iomap/buffered-io.c:1718
+ iomap_writepages+0x162/0x2d0 fs/iomap/buffered-io.c:1770
+ fuse_writepages+0x2ad/0x380 fs/fuse/file.c:2220
+ do_writepages+0x32b/0x550 mm/page-writeback.c:2604
+ __writeback_single_inode+0x145/0xff0 fs/fs-writeback.c:1719
+ writeback_sb_inodes+0x6c7/0x1010 fs/fs-writeback.c:2015
+ __writeback_inodes_wb+0x111/0x240 fs/fs-writeback.c:2086
+ wb_writeback+0x44f/0xaf0 fs/fs-writeback.c:2197
+ wb_check_background_flush fs/fs-writeback.c:2267 [inline]
+ wb_do_writeback fs/fs-writeback.c:2355 [inline]
+ wb_workfn+0xb63/0xef0 fs/fs-writeback.c:2382
+ process_one_work kernel/workqueue.c:3263 [inline]
+ process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3346
+ worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
+ kthread+0x70e/0x8a0 kernel/kthread.c:463
+ ret_from_fork+0x436/0x7d0 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
