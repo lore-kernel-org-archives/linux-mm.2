@@ -4,141 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4594CCCA470
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 16:47:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27DD5CCA476
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 17:02:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4EE968E000C; Tue,  7 Oct 2025 12:47:20 -0400 (EDT)
+	id 6BEC78E000F; Tue,  7 Oct 2025 13:02:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C6808E0003; Tue,  7 Oct 2025 12:47:20 -0400 (EDT)
+	id 696AE8E0003; Tue,  7 Oct 2025 13:02:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3DBF38E000C; Tue,  7 Oct 2025 12:47:20 -0400 (EDT)
+	id 5D2CA8E000F; Tue,  7 Oct 2025 13:02:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 287F08E0003
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 12:47:20 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DC992B7A0C
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 16:47:19 +0000 (UTC)
-X-FDA: 83971898598.14.29F76E7
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 93AB94000F
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 16:47:17 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VOJu6AZ2;
-	spf=pass (imf27.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B8AE8E0003
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 13:02:01 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E7CF0119316
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 17:02:00 +0000 (UTC)
+X-FDA: 83971935600.28.7583898
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 27F3D180028
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 17:01:58 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GVsXKOAn;
+	spf=pass (imf24.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759855637;
+	s=arc-20220608; t=1759856519;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tTOFzWIRXXry9icZqnPg5XCEpLea61ztG7L2WQgFEsA=;
-	b=O5S3VLivYj4lsYfr2k2aAvzHxD3WYAmbFES8MphG6amwnaj4Nc8M9C5NOc/GCrzrGSG41Q
-	ujpJL63ECRJKvMxCZAgzQanctxnsdEO39wtFwmXoW/5nncKwVZm1jdyN7D1M0SngS4zv96
-	DosQpeTl79Tzbc6dH1I1vBu719SeD/4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759855637; a=rsa-sha256;
-	cv=none;
-	b=vUiSg+VlQhZv7xQOPQkAOvGCHCZykcw3UJXHOdCAYomPBxZn77Zuk97OADTvzSD89pyNQB
-	K56/P9jg6MHnEJ8k0lkhIjUSAYQKP7n083uQOjkm0/vjOBJdN6+HxkIvaMtQHF6ijnKrCK
-	56DuoiRv3w63QkgXHpOoZHQHeMa1BeY=
+	bh=a9l0/6zUDNO+xCl8q1KIbKj7hrUlRaLHv0kidIMcKjU=;
+	b=yzYy3f14K5p1U72aEB+1ahrK2CUcX8vLWex1ZKiEMOS7TWBFd7a6ZLr2DsnpnsDBYJBS3A
+	wsZywW/ZCckeSroLZ8pIL9C1B7HqW8NUhL1xYArRm7+s6G/ku+rYMmORcoffr4kGyQnNq2
+	tHWa6r2zZXiwur2ip+ZLjTtLgXy+6z4=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VOJu6AZ2;
-	spf=pass (imf27.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759855637;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tTOFzWIRXXry9icZqnPg5XCEpLea61ztG7L2WQgFEsA=;
-	b=VOJu6AZ2N7T8S443tKQRXpyipbkUUnqH6HdRKGw49ab9i6t8hyFrPgYPfNgCXPpDfMWrMF
-	EUQm19CziuRdTwfCC998lFA7I/IgBl7g7BvQ5XZW5LscElgddjM471w3XJn5Tee4soLqYo
-	3QiBafSrnOTCmJMObKCNItTNgc2jl0k=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-407-rxtE6jM2PACYJAmv62n0kQ-1; Tue, 07 Oct 2025 12:47:15 -0400
-X-MC-Unique: rxtE6jM2PACYJAmv62n0kQ-1
-X-Mimecast-MFC-AGG-ID: rxtE6jM2PACYJAmv62n0kQ_1759855635
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4df60ea7a1bso136094241cf.2
-        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 09:47:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759855635; x=1760460435;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tTOFzWIRXXry9icZqnPg5XCEpLea61ztG7L2WQgFEsA=;
-        b=KwIujwQjxqU35E2leAwcKJ40ch6eBjQXafREgGE+j6OTDekdEcU9+ftwJICk/EfoqU
-         hha5z57RTwo+vt95K5PqFLWRUDF6U+KuJlcgLTUkn+M6jKmqYPPaBe4WBznir+Fe3mag
-         Ri2bSR41qPur3S5i7LO6FjCGAaNgxUEx7MeP1cGd9cmPN/LrittIg9fZPLD3WYOeOI45
-         aLkdlT6jbGJGwkbslKR5S+qoTYU6Geuhx5szKxSqW6gmvm3jZyQLgBxd5lqU+beEMK/e
-         wwcXrLtJJLkVTasv5a/AbiPmSbhQ2Cm6IhQXIGrBg/u7WUFrTY2jI7w7vZn7z3BSBLxc
-         7ypg==
-X-Forwarded-Encrypted: i=1; AJvYcCVdesaO1Tc8uXD2O+D3me34DZ+KohZWiEf2o2r6M9rcTL4kxWi9M+Gd/+GzrwT8sUNwvgjnjvQ2Cw==@kvack.org
-X-Gm-Message-State: AOJu0YzqbwuIV3tskY5Ef4+lOIaStqhdQawkTBgYRXj+m7M6GmAXjC+s
-	x/7dC/AYIdLtpYgOfu+EGpvt4LrYh/cBbEmlFRPYjoIRsyDSuhSiJUEU9fqWjE/1dt/GflKTkUV
-	4SKhH5JdWl1Fkr8HtaSyA5VY+QhC+m0AUCP0KKo9tyEAUNqQWRuFG
-X-Gm-Gg: ASbGncue5124t8jnlSbwtDVN1Fbn+dU8EqDhYsBmCkglk4nor+qKfgpkXxCwotbv4j6
-	qXX9JlpBp4gRt/LK+QhbHMXcXJr/PNlWHQpy++PFdL0HjsdttFY5sJui4OaWTq6vt/m2XFmnyWL
-	8wYVkDQO/8WBqGH6BJSGLAQYBCo91gJ5CPF1Ka61tOvG0/KbCgFnE6OZWs2juHqaPZ78e8yMpTr
-	Lwj34KJpoaxxFQVVJPD5nt2u/taDTVU/fgNL5psQCYk82bHiwVmt8vxzasTle9tpNX8CHDPpSva
-	RBbf4fJ6g5bmQ4TQMJJ0p2/4EEZvaEpgLqC8EQ==
-X-Received: by 2002:a05:622a:107:b0:4b7:95da:b3c7 with SMTP id d75a77b69052e-4e6ead4b0eemr3307351cf.48.1759855634989;
-        Tue, 07 Oct 2025 09:47:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF8RX884Zg/mlMH86KuApH2VeuJdNzehLkNSygcZJ0HaGfZTFTmEttK1Cc2JLQhTCyVQ+bWvw==
-X-Received: by 2002:a05:622a:107:b0:4b7:95da:b3c7 with SMTP id d75a77b69052e-4e6ead4b0eemr3306771cf.48.1759855634461;
-        Tue, 07 Oct 2025 09:47:14 -0700 (PDT)
-Received: from x1.local ([142.188.210.50])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4e55c9e78cfsm160745871cf.27.2025.10.07.09.47.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Oct 2025 09:47:13 -0700 (PDT)
-Date: Tue, 7 Oct 2025 12:47:10 -0400
-From: Peter Xu <peterx@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	James Houghton <jthoughton@google.com>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Ujwal Kundur <ujwal.kundur@gmail.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>, Hugh Dickins <hughd@google.com>,
-	Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH v3 1/4] mm: Introduce vm_uffd_ops API
-Message-ID: <aOVEDii4HPB6outm@x1.local>
-References: <43d78ba7-8829-4a19-bdf3-d192a62cdac4@redhat.com>
- <aN08NxRLz7Wx0Qh4@x1.local>
- <ad124fb6-a712-4cf5-8a7e-2abacbc2e4be@redhat.com>
- <aN_XZbQjuYx-OnFr@x1.local>
- <cq3zcvnajs55zr7cplf5oxxjoh54fb7tvo23hehd5dmh4atvum@6274mneik6hu>
- <aOQuZy_Hpu1yyu29@x1.local>
- <akld3v2mtnjdqvs5dgwr4gnffdqf5dojwhmfylq3mkfzakjj7j@5oqqxsymkcbp>
- <aOUa8C8bhWvo5TbV@x1.local>
- <frnos5jtmlqvzpcrredcoummuzvllweku5dgp5ii5in6epwnw5@anu4dqsz6shy>
- <9089d994-262f-4941-8bed-f3c6ee05a769@redhat.com>
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GVsXKOAn;
+	spf=pass (imf24.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759856519; a=rsa-sha256;
+	cv=none;
+	b=sZchaconQYExVV4oZYTymUqB9m2LQEAKXzQp31Sa7ZKGeyu7Frf95asBBowTc4j8eapfC5
+	1NQTJZ5qtF+h9Fc/mH/3PSAVbUB5nBl2bMLTLNv+NCuVGvmtbwHCoBvq+CntwOvnXLz+xf
+	DC3zxsJ8IR+zUbRlZyduKIxhX24Pu6A=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id AB1E3407BE;
+	Tue,  7 Oct 2025 17:01:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8520DC4CEF1;
+	Tue,  7 Oct 2025 17:01:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759856517;
+	bh=MR5qWTAOW1zVyTLdPwwD9muosMP83f5qZfp7s+T/8Hw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GVsXKOAnGQWHMUvRXJC+HD5Ptm4rKk3wxOY0m04k1/vuFPLEHYh1doW38jWqMNOMW
+	 L/7qM0gkru7kkBntPfDcFUXYAL1plH+dhqEAgp+KQ6vTxlekXWdDnfOns9KPwLbeXH
+	 Elolz6FA56YCumDWpBov0HylXOdE0TORtEJ8uImPWRAVl/pzLNrlxZgxIFye24JnY2
+	 J5+nyBymaFOYpMgWzoep6qXlaii0EaJtnDWnfxt+SO/HNj+0bkgOqNlQbtV/G+dOlz
+	 GeHfdBkrc7bZc9x2Nx172su4AQjqB0A+lLDzUAZQS0AUQTskSrERr7EU1U5QnEltLP
+	 5wtZOGCn+mO5w==
+Date: Tue, 7 Oct 2025 10:01:56 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: acsjakub@amazon.de, akpm@linux-foundation.org, axelrasmussen@google.com,
+	chengming.zhou@linux.dev, david@redhat.com,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, peterx@redhat.com, xu.xin16@zte.com.cn,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] mm: use enum for vm_flags
+Message-ID: <20251007170156.GQ1587915@frogsfrogsfrogs>
+References: <20251002075202.11306-1-acsjakub@amazon.de>
+ <20251007162136.1885546-1-aliceryhl@google.com>
 MIME-Version: 1.0
-In-Reply-To: <9089d994-262f-4941-8bed-f3c6ee05a769@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 8VKDl0SCriP4W5CLi_G-HAasYVaqsVYh4eEt5Nup3Gs_1759855635
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Server: rspam05
-X-Stat-Signature: qj61gakxe7mies1dumiaeo3scpsmfy98
+In-Reply-To: <20251007162136.1885546-1-aliceryhl@google.com>
+X-Rspamd-Queue-Id: 27F3D180028
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 93AB94000F
-X-HE-Tag: 1759855637-801658
-X-HE-Meta: U2FsdGVkX1+ZUZdOmWPDYbNCMDwd/tEXeR1y+5ScHOojHNw4UuWyiOQO/9Ajt6nXNT+EeFWTgbnNa0PBV/+o4XKPEJsvv2eGtilrksD1ZVnk1uUKKp3QOz3IKawxLsEi/9VHXKNklWtwmKV7zgz+fYH0Z1x18ICiiRePn8JC8a+Htrwij0d/8g1xUl+4nw2uL56YpRRmqwQeYCd5TmY54eqjXTYXLV2bkM0mnMB7NxVfEHIBJKPBIqnlYdm06Wb7QEjZc+mi0gH5y8OnUTSlfkVYtlB4J0G0ZRfEkOe2uT5GidvATnzG/2O8v8WMM2a6hg+55CdQ1eEUis24JdHlv7HAHoEGbRbNz3MnyhKxoHN7Stmc87Vxtnjq5MCKLcfVmFwU4OF46Lnm5yARwUV1qacBWs3hRWx3yJXV6lUIM9u+18Rt9I5Ft/zFmtDy2GvxhI2NOokto5Xr9lrEIizgwXbFkGsE1olXiC7J+C2WZH22ma/0t/ft9KIATYtzxD3WMCdU4Kd9TyVnRWPiKc9diM7dmyid4tZei+CDqXyNHdefJZ8GBKENYlcuBuTegiKQvVwT8M48mzKnrXrapMWywjlKMUKk7Txv4JRy2qKN3qAd2yX26fzxiImRcUstO2sZbUwWwSgt2L2eX8q9CMRppShqlbbZ/ZIx49C5Vgh9qeCINhPNhlHRVmyGm3AuiKjCQooFd2I/h+DJQjyXvMhjm33/C/WsPwjwUH6Bxq2ehXZ5XBPnxh/Jib1RnR/nfIYjyPn0fbSEEBKLZRCOzRY0yc+J/mCPrGL1gFP50dh4Q95FMzEglUQug3qGXjXbD9UdIxZ64xGNgzwGMQBe2TUHxuIOix6VGhSVztWFHnFMok5sl4vMF+SYwJYIj0sk/XYt3UHWq9G8kRXmWbooC165Myv+1MElN2JBbbZDKJMJsFZKDjh0ubHlrD0sDlpI2tCTI5LNjl9mP/ZqSEZFuJl
- 2o6YnwO/
- n6vj6ilogOQF9XjBKu34AKO9PTru+MIQdxnejmtW+fXGRwPHp9msDj1qQpxum22nlEZ4HT9559APPZCnrL3yHNvaNOUGr38NhBBT8luudrvw3cX92ceKa2hT7EgPlPjMIsPLIkotZ57i2HpYEA86YmVCZDgVOxw5WpBTKDo6ueCe4pt0h2hxZP0tAu0pWP/aKK2GEx0aiibijEwmVUGmR35xh4F/kfunE79Y+WG0lBpkIOMU2ievfGuz+8hNhiCAm+PZYcJ/B4gYhWVmt5n7kpixCgjTkIG7VcpyrElz3Va5rfZmYaAYtumzcvzS7T2ei2DnP09xmEHYp18pQTG/9x34Ra+U9afu2TjSbcBduuq/NO51K5FT4x1MdciwL47YSNyOsZll2+v5JJZPM/v0NM5cg8RHthbPbn2G1SU6wGz81wEzZDRp+Nzcmkc0g1nARngzqsJS3FgJW6PoPUzdEdA5E2dPy4k4j5FcTAg4SU3rQ/L7/o83z2iLF72ssAHJOMaG38MbOoO2sipl54CaFukG+JUE2MZ5MtXp/Ct+OjCAR/G5YpfFqa8ARJswdD9nXoq1/fmQU7cLZkmEvnP6TK0DaLA==
+X-Stat-Signature: oqoiwmskqiz1swia5abwqg33ohg784fp
+X-HE-Tag: 1759856518-226994
+X-HE-Meta: U2FsdGVkX19fws1ExEsXRQHqRAAUC+UfNfOGRtwkXgJNCsAgR8z0N89+mlB2lidSRmwgfIEUSvR3j6Hu+ggFWXFFGgPpn017Izqflxm2Cq/TBJXkQ7bC/wtcFTp828oLVL3k3DYs7fmbxgg24qQy/H9TvZE84Irp/Sf7s0PIAdvYoSI9b4LnpuuAcjhtj7Fypkyjnovm2tUy0sip4YrmmAmOzv1//0kniGEA/lxCd8R7ZFNx0fev7pTOn2QvS+uXG5ERPbx8rBXkbotl0B0koa2dFU0nwjrGBOQlHbsjX5BaftNY5ZCDdVBedN9XxeY+VxS00HNnF724eGC5d/LEBpAcGGm9uf2263fhGh+QCcjXcF9+qBRAH2MITtz7CL8uq7O7WF+3/tkHawpL9AagoYIQ825YAJDj4AFciZ8iAAFBUrtg/YX4nEfLHivqF13p97KbKeCD6Os/NhqNdrbfKgG5VaAsVdRgVfdByMQS43hXxVXR0GsUgl+rrqSyOvtfeu5P7YS6NaWT62FC+YPwty2hXVGywvs+bTLHmjNC4bahHhn0ktHzP7+yKiHj014BYwnulN0C5Bp54bV/8WR9x/NEesGngkfaoiGvvIDounJQcG6aXXKoEmTEFePMnKtlWeB5JxYM5MhP5v8snBoaSa8ZWzFdqmG2bSISECxxnfvQhZFNSsBXw7BFmZyP/xQxWGNNUcP3MhlvuBjGOchzBo0Vufj9aaXW7N1mEuSANKcZTw5bmf2y9w7Fq6dIUgwIYUTG1lNR7cA89rDZicVu54h2f1w8Zh3vS1iY2jEfMDBLQKs4GUf3ho2bQd34ErEXlfZGkUlQhl4eG+c8JgAFUMTlaYM+Z2ahGsVopsMA1fGewVB292UGTin5FMtpJVW0ssPNaLb4Sq7GMccHh4RU4Uzps020lcolAzU1yyLSWRM7H6KsxRUQ2wRTiuoges10P+P8AXRjKTBJvawec+S
+ ZytyA8L9
+ rXU2t9r1oOhK5dTNlGyZNG3PtzOziETwDSzNToWdjJxXtEQw26CEEHfJtcQsaNggBw9Lm6E8xXQMN/MT+MjSkiP42zvhrhwrBl48MW6yvyj3SAJ1hxzyVEG32DgQCYNVHaeWONjf1Tq0jD1zDlT6nAwJWv54rO7mQZBmhuc7Q4nGuuJ/PYMQqzjgT4u5Q+neGqKtaGYgul/I5VL8dMZGBaym1LMVo+Yd5cVsxdsaLBLerpFs6pvqgvE9t1bU10/fnC42l/Evw7HYTp9hBpYLL+1+hZlc8JcKRSB8n/BpvNVVMo9h9Yu4B+6tXB9DUq2kUtyrtsJttFOtnubDKwxAL1BMLTc4QmYIxgzKKl7wT3LU4c83568PLoMYyjg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,107 +95,180 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 07, 2025 at 06:14:01PM +0200, David Hildenbrand wrote:
-> > > If so, I'd prefer that rather than introducing feature-backend flags,
-> > > because I want to avoid introducing another different feature set to uffd.
-> > > 
-> > 
-> > I was talking about uffd_features.  I thought it was being renamed to
-> > flags, not modes_supported.  It was pretty late when I responded.
-> > 
-> > FWIU, David was saying we don't need both of modes and ioctl listed in
-> > the uffd_ops?
+On Tue, Oct 07, 2025 at 04:21:36PM +0000, Alice Ryhl wrote:
+> The bindgen tool is better able to handle BIT(_) declarations when used
+> in an enum.
 > 
-> Right, I would have abstracted the features to clean it up and avoid using
-> VM_ flags in this interface.
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> Hi Jakub,
 > 
-> > 
-> > I was thinking that we could just put the features directly as function
-> > pointers in the uffd_ops and check if they are NULL or not for
-> > 'support'.
-> > 
-> > ie:
-> > 
-> > struct vm_uffd_ops hugetlb_uffd_ops = {
-> >          .missing = hugetlb_handle_userfault,
-
-This is not needed because the logic to handle userfault isn't very type
-sensitive. Hugetlb is the only one that differs very lightly, but again I
-think we should better take hugetlbfs as special always as of now, per all
-the previous discussions on hugetlb unifications.
-
-> >          .write_protect = mwriteprotect_range,
-
-This is not needed.  WP processing is the same.
-
-> >          .minor = hugetlb_handle_userfault_minor,
-
-We can do that, but ultimately we do almost exactly the same for all memory
-types except a fetch on the page cache.  IMHO this will make it awkward..
-because 99% of the minor hooks will do the same thing..  OTOH, it makes
-more sense to me that the hook is defined to cover what is different on the
-memory type.
-
-I'll stop commenting on the rest.
-
-> > 
-> >          .mfill_atomic = hugetlb_mfill_atomic_pte,
-> >          .mfill_atomic_continue = ...
-> >          .mfill_zeropage = ...
-> >          .mfill_poison = ...
-> >          .mfill_copy = NULL, /* For example */
-> > };
-> > 
-> > Then mfill_atomic_copy() becomes:
-> > {
-> >          /*
-> >           * Maybe some setup, used for all mfill operations from
-> >           * mfill_atomic()
-> >           */
-> > 
-> >           ...
-> > 
-> >          dst_vma = uffd_mfill_lock()
-> >          uffd_ops = vma_get_uffd_ops(vma);
-> >          if (!uffd_ops)
-> >                  return false;
-> > 
-> >          if (!uffd_ops->mfill_copy) /* unlikely? */
-> >                  return false;
-> > 
-> >          return uffd_ops->mfill_copy(dst_vma,..);
-> > }
-> > 
-> > This way is_vm_hugetlb_page() never really needs to be used because the
-> > function pointer already makes that distinction.
-> > 
-> > Right now, we have checks for hugetlb through other functions that "pass
-> > off to appropriate routine", and we end up translating the
-> > ioctl_supports into the function call eventually, anyways.
+> what do you think about modifying the patch like this to use an enum? It
+> resolves the issues brought up in
+> 	https://lore.kernel.org/all/CAH5fLghTu-Zcm9e3Hy07nNtvB_-hRjojAWDoq-hhBYGE7LPEbQ@mail.gmail.com/
 > 
-> Right, it would be great to get rid of that. I recall I asked for such a
-> cleanup in RFC (or was it v1).
+> Feel free to squash this patch into your patch.
+> 
+>  include/linux/mm.h              | 90 +++++++++++++++++----------------
+>  rust/bindings/bindings_helper.h |  1 -
+>  2 files changed, 46 insertions(+), 45 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 7916d527f687..69da7ce13e50 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -273,57 +273,58 @@ extern unsigned int kobjsize(const void *objp);
+>   * vm_flags in vm_area_struct, see mm_types.h.
+>   * When changing, update also include/trace/events/mmflags.h
+>   */
+> -#define VM_NONE		0
+> +enum {
+> +	VM_NONE		= 0,
+>  
+> -#define VM_READ		BIT(0)		/* currently active flags */
+> -#define VM_WRITE	BIT(1)
+> -#define VM_EXEC		BIT(2)
+> -#define VM_SHARED	BIT(3)
+> +	VM_READ		= BIT(0),		/* currently active flags */
+> +	VM_WRITE	= BIT(1),
+> +	VM_EXEC		= BIT(2),
+> +	VM_SHARED	= BIT(3),
 
-I didn't send RFC, likely you meant this reply in v1?
+mmflags.h contains ... a lot of macros, but I think if you change the
+vmflags to an enum, you have to wrap every value of that enum in a
+TRACE_DEFINE_ENUM or else __print_flags on an array(?) of {value,
+string} pairs stops working.
 
-https://lore.kernel.org/all/0126fa5f-b5aa-4a17-80d6-d428105e45c7@redhat.com/
+Concretely, I think show_vma_flags (which uses __def_vmaflag_names) will
+stop working here.  I'm no ftrace magician here, but AFAICT the third
+argument to __print_flags is stored verbatim in the tracefs format file,
+and the userspace ftrace tools use that to convert the raw data into a
+user friendly string.  For whatever reason, enumerations aren't
+converted to their underlying integer values by default, so the
+userspace program can't do the translation.  TRACE_DEFINE_ENUM is a
+magic that makes that happen.
 
-        I agree that another special-purpose file (like implemented by
-        guest_memfd) would need that. But if we could get rid of
-        "hugetlb"/"shmem" special-casing in userfaultfd, it would be a
-        rasonable independent cleanup.
+<shrug> Don't mind me :)
 
-Get rid of hugetlbfs is still not my goal as of in this series.
+--D
 
-OTOH, I generalized shmem and removed shmem.h header from userfaultfd, but
-that was prior versions when with uffd_copy() and it was rejected.
-
-What should I do now to move this series forward?  Could anyone provide a
-solid answer?
-
-Thanks,
-
--- 
-Peter Xu
-
+>  
+>  /* mprotect() hardcodes VM_MAYREAD >> 4 == VM_READ, and so for r/w/x bits. */
+> -#define VM_MAYREAD	BIT(4)		/* limits for mprotect() etc */
+> -#define VM_MAYWRITE	BIT(5)
+> -#define VM_MAYEXEC	BIT(6)
+> -#define VM_MAYSHARE	BIT(7)
+> +	VM_MAYREAD	= BIT(4),		/* limits for mprotect() etc */
+> +	VM_MAYWRITE	= BIT(5),
+> +	VM_MAYEXEC	= BIT(6),
+> +	VM_MAYSHARE	= BIT(7),
+>  
+> -#define VM_GROWSDOWN	BIT(8)		/* general info on the segment */
+> +	VM_GROWSDOWN	= BIT(8),		/* general info on the segment */
+>  #ifdef CONFIG_MMU
+> -#define VM_UFFD_MISSING	BIT(9)		/* missing pages tracking */
+> +	VM_UFFD_MISSING	= BIT(9),		/* missing pages tracking */
+>  #else /* CONFIG_MMU */
+> -#define VM_MAYOVERLAY	BIT(9)		/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
+> +	VM_MAYOVERLAY	= BIT(9),		/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
+>  #define VM_UFFD_MISSING	0
+>  #endif /* CONFIG_MMU */
+> -#define VM_PFNMAP	BIT(10)		/* Page-ranges managed without "struct page", just pure PFN */
+> -#define VM_UFFD_WP	BIT(12)		/* wrprotect pages tracking */
+> -
+> -#define VM_LOCKED	BIT(13)
+> -#define VM_IO           BIT(14)		/* Memory mapped I/O or similar */
+> -
+> -					/* Used by sys_madvise() */
+> -#define VM_SEQ_READ	BIT(15)		/* App will access data sequentially */
+> -#define VM_RAND_READ	BIT(16)		/* App will not benefit from clustered reads */
+> -
+> -#define VM_DONTCOPY	BIT(17)		/* Do not copy this vma on fork */
+> -#define VM_DONTEXPAND	BIT(18)		/* Cannot expand with mremap() */
+> -#define VM_LOCKONFAULT	BIT(19)		/* Lock the pages covered when they are faulted in */
+> -#define VM_ACCOUNT	BIT(20)		/* Is a VM accounted object */
+> -#define VM_NORESERVE	BIT(21)		/* should the VM suppress accounting */
+> -#define VM_HUGETLB	BIT(22)		/* Huge TLB Page VM */
+> -#define VM_SYNC		BIT(23)		/* Synchronous page faults */
+> -#define VM_ARCH_1	BIT(24)		/* Architecture-specific flag */
+> -#define VM_WIPEONFORK	BIT(25)		/* Wipe VMA contents in child. */
+> -#define VM_DONTDUMP	BIT(26)		/* Do not include in the core dump */
+> +	VM_PFNMAP	= BIT(10),		/* Page-ranges managed without "struct page", just pure PFN */
+> +	VM_UFFD_WP	= BIT(12),		/* wrprotect pages tracking */
+> +
+> +	VM_LOCKED	= BIT(13),
+> +	VM_IO           = BIT(14),		/* Memory mapped I/O or similar */
+> +
+> +						/* Used by sys_madvise() */
+> +	VM_SEQ_READ	= BIT(15),		/* App will access data sequentially */
+> +	VM_RAND_READ	= BIT(16),		/* App will not benefit from clustered reads */
+> +
+> +	VM_DONTCOPY	= BIT(17),		/* Do not copy this vma on fork */
+> +	VM_DONTEXPAND	= BIT(18),		/* Cannot expand with mremap() */
+> +	VM_LOCKONFAULT	= BIT(19),		/* Lock the pages covered when they are faulted in */
+> +	VM_ACCOUNT	= BIT(20),		/* Is a VM accounted object */
+> +	VM_NORESERVE	= BIT(21),		/* should the VM suppress accounting */
+> +	VM_HUGETLB	= BIT(22),		/* Huge TLB Page VM */
+> +	VM_SYNC		= BIT(23),		/* Synchronous page faults */
+> +	VM_ARCH_1	= BIT(24),		/* Architecture-specific flag */
+> +	VM_WIPEONFORK	= BIT(25),		/* Wipe VMA contents in child. */
+> +	VM_DONTDUMP	= BIT(26),		/* Do not include in the core dump */
+>  
+>  #ifdef CONFIG_MEM_SOFT_DIRTY
+> -# define VM_SOFTDIRTY	BIT(27)		/* Not soft dirty clean area */
+> +	VM_SOFTDIRTY	= BIT(27),		/* Not soft dirty clean area */
+>  #else
+>  # define VM_SOFTDIRTY	0
+>  #endif
+>  
+> -#define VM_MIXEDMAP	BIT(28)		/* Can contain "struct page" and pure PFN pages */
+> -#define VM_HUGEPAGE	BIT(29)		/* MADV_HUGEPAGE marked this vma */
+> -#define VM_NOHUGEPAGE	BIT(30)		/* MADV_NOHUGEPAGE marked this vma */
+> -#define VM_MERGEABLE	BIT(31)		/* KSM may merge identical pages */
+> +	VM_MIXEDMAP	= BIT(28),		/* Can contain "struct page" and pure PFN pages */
+> +	VM_HUGEPAGE	= BIT(29),		/* MADV_HUGEPAGE marked this vma */
+> +	VM_NOHUGEPAGE	= BIT(30),		/* MADV_NOHUGEPAGE marked this vma */
+> +	VM_MERGEABLE	= BIT(31),		/* KSM may merge identical pages */
+>  
+>  #ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS
+>  #define VM_HIGH_ARCH_BIT_0	32	/* bit only usable on 64-bit architectures */
+> @@ -333,14 +334,15 @@ extern unsigned int kobjsize(const void *objp);
+>  #define VM_HIGH_ARCH_BIT_4	36	/* bit only usable on 64-bit architectures */
+>  #define VM_HIGH_ARCH_BIT_5	37	/* bit only usable on 64-bit architectures */
+>  #define VM_HIGH_ARCH_BIT_6	38	/* bit only usable on 64-bit architectures */
+> -#define VM_HIGH_ARCH_0	BIT(VM_HIGH_ARCH_BIT_0)
+> -#define VM_HIGH_ARCH_1	BIT(VM_HIGH_ARCH_BIT_1)
+> -#define VM_HIGH_ARCH_2	BIT(VM_HIGH_ARCH_BIT_2)
+> -#define VM_HIGH_ARCH_3	BIT(VM_HIGH_ARCH_BIT_3)
+> -#define VM_HIGH_ARCH_4	BIT(VM_HIGH_ARCH_BIT_4)
+> -#define VM_HIGH_ARCH_5	BIT(VM_HIGH_ARCH_BIT_5)
+> -#define VM_HIGH_ARCH_6	BIT(VM_HIGH_ARCH_BIT_6)
+> +	VM_HIGH_ARCH_0	= BIT(VM_HIGH_ARCH_BIT_0),
+> +	VM_HIGH_ARCH_1	= BIT(VM_HIGH_ARCH_BIT_1),
+> +	VM_HIGH_ARCH_2	= BIT(VM_HIGH_ARCH_BIT_2),
+> +	VM_HIGH_ARCH_3	= BIT(VM_HIGH_ARCH_BIT_3),
+> +	VM_HIGH_ARCH_4	= BIT(VM_HIGH_ARCH_BIT_4),
+> +	VM_HIGH_ARCH_5	= BIT(VM_HIGH_ARCH_BIT_5),
+> +	VM_HIGH_ARCH_6	= BIT(VM_HIGH_ARCH_BIT_6),
+>  #endif /* CONFIG_ARCH_USES_HIGH_VMA_FLAGS */
+> +};
+>  
+>  #ifdef CONFIG_ARCH_HAS_PKEYS
+>  # define VM_PKEY_SHIFT VM_HIGH_ARCH_BIT_0
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index 2e43c66635a2..04b75d4d01c3 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -108,7 +108,6 @@ const xa_mark_t RUST_CONST_HELPER_XA_PRESENT = XA_PRESENT;
+>  
+>  const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC = XA_FLAGS_ALLOC;
+>  const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC1 = XA_FLAGS_ALLOC1;
+> -const vm_flags_t RUST_CONST_HELPER_VM_MERGEABLE = VM_MERGEABLE;
+>  
+>  #if IS_ENABLED(CONFIG_ANDROID_BINDER_IPC_RUST)
+>  #include "../../drivers/android/binder/rust_binder.h"
+> -- 
+> 2.51.0.618.g983fd99d29-goog
+> 
+> 
 
