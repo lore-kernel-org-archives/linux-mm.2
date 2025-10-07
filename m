@@ -4,89 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5F7CCCA476
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 21:19:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF7D7CCA476
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 21:31:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B98538E0003; Tue,  7 Oct 2025 17:19:32 -0400 (EDT)
+	id 23E0E8E0006; Tue,  7 Oct 2025 17:31:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B48B98E0002; Tue,  7 Oct 2025 17:19:32 -0400 (EDT)
+	id 215B38E0002; Tue,  7 Oct 2025 17:31:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A373F8E0003; Tue,  7 Oct 2025 17:19:32 -0400 (EDT)
+	id 179CD8E0006; Tue,  7 Oct 2025 17:31:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A5C98E0002
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 17:19:32 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2CBED86BC8
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 21:19:32 +0000 (UTC)
-X-FDA: 83972584584.05.EBA347D
-Received: from mail-io1-f79.google.com (mail-io1-f79.google.com [209.85.166.79])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8FABC1C0012
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 21:19:30 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf20.hostedemail.com: domain of 34YPlaAkbAMwAGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.79 as permitted sender) smtp.mailfrom=34YPlaAkbAMwAGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 093628E0002
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 17:31:31 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 96E27140333
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 21:31:30 +0000 (UTC)
+X-FDA: 83972614740.22.6170404
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 87F8E4000A
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 21:31:28 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fMKH5vkd;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759871970;
+	s=arc-20220608; t=1759872688;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=ShHCYOodBDNFzzMlGiRMqwNQ9s0/RlmoGajumCuww7s=;
-	b=e9/P1BnCHboGeRWGTa4+lZtAxLxyw4tKyqDrTr/qKe1LHanVODAsVfL8YLIT779WeqD6nx
-	sQ02Tq0SCL8QL9jnzSjCkYE7731KAsiVRhzPxvIfP2krixgbUcoPE+bcpyyZ10reIXPQCn
-	j0WCK8IWUiwx9y4/xwrDqA9z5evr3TA=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6IvtNS3uo/XgOa5TX20Qh+BTwg8wn+aw958X2Z7DeeM=;
+	b=W3LVc/4zRv04q9ydvxQ1aJh1JYUM+o1Nsp6Vccc5WkoHbsFEBTNTFlC5tPA0b8YOBsNJDz
+	C63CTYv4JkA5NxsxuHvqgNKbeXouns6erGUZBsn7mPeEBnovZ2h5pTDSQdBiOqJ9oJ6Vvj
+	iJhyiGYEdDB6KngHTyqoJrmnjUFMwX4=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf20.hostedemail.com: domain of 34YPlaAkbAMwAGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.79 as permitted sender) smtp.mailfrom=34YPlaAkbAMwAGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759871970; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fMKH5vkd;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759872688; a=rsa-sha256;
 	cv=none;
-	b=NX8kwM8Bn8nDO+NMQLVi/3AHTd+kmBKw+0YnlxQnrbBWDJ9Hl9Jj4l1KPoqBLHqd5uCjEa
-	i28ZmG9Gw3w3hoOozMg6Ibu2eVIwF2wjHJXsFFZsFUabfJrdVeMNn2YrtZWKLOzPEw3prg
-	hNM97bb2DTL/tVSFVK2TptjAri0zj7Y=
-Received: by mail-io1-f79.google.com with SMTP id ca18e2360f4ac-91e1d4d0976so1756495439f.2
-        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 14:19:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759871969; x=1760476769;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ShHCYOodBDNFzzMlGiRMqwNQ9s0/RlmoGajumCuww7s=;
-        b=fWmcccEj+bhUiS0iz1r1hI1enKfGCsC5dQt/S0RnXE46r4VglKYCsUN3HPAIsoflnB
-         yl1f+i8s+moxd91vNKLFulP2mOWRCPclA9pkWNwpm9Dy/0xE6zD+N8v45FOTmL4TAMF3
-         apLlpEwOhLNBrx37NyGhKiA6G/8THAy9TbC7jL10BMHMb6nUUInPUu7cC+Um3798oeVH
-         1mxaiaqYUJHygbqTmB4LXihHt5mi+n+GYvxTpLYtdpHarIVIOx70oZzMpOSFTTIoUXBJ
-         FRrVLk4GyYf/4nkcNmXtnfD3n8xgOhj7qNLmhKIzMtYed5m/ooeVIzQJ7Rs45Ye1hFFA
-         lf9w==
-X-Forwarded-Encrypted: i=1; AJvYcCU9YJvdxVAzinwVvcaBYMQqPhC1fCEsHxGFTc5Bg7dLCp+kWiHX7//mXMfH8mcUMkIyZtaec/PTkg==@kvack.org
-X-Gm-Message-State: AOJu0YxeVvtnSTGl2YZyenrPjpmLlY5yd60i6RZIxpxVhZD1XOzEdIwy
-	ghvAKE5MlU7KfrukftCVC+lMDKB4sMvVYFWL9jvQnEpmFulIePa6W9JBs1X7bfJTlGFlnv6ktMq
-	x/7HpDG2AMJVn/aJdT7bxpMt3vlHTm1GRe+q9CGBFtQostZbNacaCrQw3CYo=
-X-Google-Smtp-Source: AGHT+IGbOdYVTE9pQ+l4YTwccnYczhfj0d+/cf4vQhyeoaUCFXoiyc8eW5YS8slAosdn62Y2PEw1NPLX6l0M/GniQO0RmVdSTk4I
-MIME-Version: 1.0
-X-Received: by 2002:a05:6602:2d81:b0:8e3:2d3d:9a7d with SMTP id
- ca18e2360f4ac-93bd19a9a40mr98350239f.18.1759871969687; Tue, 07 Oct 2025
- 14:19:29 -0700 (PDT)
-Date: Tue, 07 Oct 2025 14:19:29 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68e583e1.a00a0220.298cc0.0485.GAE@google.com>
-Subject: [syzbot] [fuse?] possible deadlock in __folio_end_writeback
-From: syzbot <syzbot+27727256237e6bdd3649@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, miklos@szeredi.hu, 
-	syzkaller-bugs@googlegroups.com, willy@infradead.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 9cu3xbm8gedg6nuyjpbspkhhgi6get8j
-X-Rspamd-Queue-Id: 8FABC1C0012
+	b=qv2zXFyTOOCT8gQO2kNCEOPP6W0HQMoNO14rJGKVxD95y7z8h67b7dbdP5JOE1LOdEHtC6
+	2/gV1CQhP+QO6CJzryiEdpPVIADRfHqNkPkbp+ADxM3cQ+gVn4j3pXAyU0RsF1M4pODYrW
+	XJ2L4TtOaIyrxmyZuB6BqKro+wgeh6s=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7591A60219;
+	Tue,  7 Oct 2025 21:31:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E86E6C4CEF1;
+	Tue,  7 Oct 2025 21:31:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1759872687;
+	bh=OcA2rmW9ILaz7YK3rji/wcS3ixoqSNZBjA9FWLhRmfE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=fMKH5vkd62MjcQveuUSO/Qm0wH1HnevbRZA3K5NxeKcaOzmJrfibwFugl2Sln/sgr
+	 UEmsTTe8Hch2qFnQue4qQ+QfkA1qHD0DbrsiTbW3CVfhmfW5YlhzCHuK0E8vboAGE6
+	 oOmgRanNGYvyQO1cL0YVs18r166igYmoHW6Th2pY=
+Date: Tue, 7 Oct 2025 14:31:26 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: linux-mm@kvack.org, Michal Hocko <mhocko@kernel.org>, Baoquan He
+ <bhe@redhat.com>, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 00/10] __vmalloc()/kvmalloc() and no-block
+ support(v4)
+Message-Id: <20251007143126.451f73cae2d3d7f5a36e4229@linux-foundation.org>
+In-Reply-To: <20251007122035.56347-1-urezki@gmail.com>
+References: <20251007122035.56347-1-urezki@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: t8i7zafjcu7w1do7ehpr6wc9zcrp8rzx
+X-Rspamd-Queue-Id: 87F8E4000A
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1759871970-920003
-X-HE-Meta: U2FsdGVkX18Gy4Fk+tecBVJ23JqCcLs51zEQBCT+jvzH26aZLuf242Nr9z2e4sM7ZF0LNgFwwUAWhvYBmYwe5MOlAQqkT+RGIQBBUCVJL9FkEzcpmcB0m3W3Ubk0CXcwzJUxEFyenwGIrflmh7ieZbFuECkoYHV7oDvYU2Fo8fZFxxBc+t9p+eHevLLnFp0cKcgUueSdv/x8EkE1XRWqPVOMjt4ezu7zEt44P8dfXrvFEX8kBs8nU3watabV7VW0by3Z/DyB+cYm8CAPjzJikXFeKBP61YuUvVZqHTPZpUOhAOcVT+Su16KNam1136gt7d0lIHsPN91PdTJIzLeDlrhyTWuPUA6M8KnJWxk5EYVUb6v0oIEChgLhjBnfITgGI8oqXzDumeWCcTANswf3Ji1KiryNtmqoxrEhMuBRD+pViK9qwWwsyWhs6ZePYgQMdv+YGFfiz0Ujy2d2zYGBJWqMOvb6rqOUKf2JL6ZAJ16qL3AOVGhyIqB2bed6/FyRFoAHtquTZ03+YrPpzR41R9HBWEUroTXY7U9l5MGycvVapDyH1Eihu3RjFatiq9CKf7NhWN6P9dc1VooUXCi/JfjfCUyBV/iRJIoGK68F0Pru9v16+1viGDlJlnCo6kMGjS+8tvsY6dWWm/cWjrA0C7bly7m1LqhWvxaDADY74ytdLjbAJsyinV4XGNfjjwNXldPl/s0RY0c7hF82uW20GoaOu/TNNsLRrDtz59T2AB32H0JWx1r1WkIGTKBr90u5VUOtRl8hnE9yIukDuZtGqD/FtRJ6X3QtureXCpdmsQH0KgnFx0W/jdp0z5+qbUQy0UTtwXAbnPhjzf1Ikvo/MmG8Lx5v2bOf0E/Q8Ky0aO8xIUlvLFNuUtjLsBRzhmOYVYF+1j0FaOGSSL+zBbZ92MiA9PUF9+8uzm9L4KgUdJCpAAEGRZi8QoYe/z6FGEFJodWxcInmWyz0g2QCMtF
- urvjsWrP
- r+S+t/tNFwh5mNl3ri3fIaH3RMpdWmjb8VlP2/Gnx1GxD+HMwJoiJCYehMT280SrzeBAhaNZ17ksd/aslFXIhmlj0weM23xFKjBChdqpVAUq4vV6OGZYBuRmqMfrEnPxYk/8xa9Bipkc6Z+rbmSmyHT1O0pvEnF3qyTOvrTkcVqb80uWQtpP+q569nDHnMFNjf2urGCmxOQA0UDtM1o3ayS0dq941L+mWFu5cTh7qLLVcdhqi1aNYw35nzqYCc0NPaesBUvITwVLlABoRJ+VP4EhDuMzgNXxp8H9d6T+Qbz3XM21pUc5TQozMhPj7Mtt9v9/U9bv4whb9CMF85Rx4v3jpPK/5yweuoOfC7eruQwNFEwmy6wGzqe/Ci2GkFyloGQ90SMPYvgomN3pjLPhELnOnZjjklSsbBGu4etJnMsmPqfWg6L0nooerEqZSt2Ub4cdJ368b7CzQr6EKDQqApQB1iC+4/OjjzYaUx+p1UXVQHba6F7IIu5591H/eQqKHZcqsQJ5ep9V+KjZn4210qZGZjFzY0xJMCYgegUr8rNepFszrPN2ZIscxEBZxLlKDn4oYt4IQ6pzStO6HYDAjHcdoktyuDYmEM/KzfAivXO1NhGHAim5rRd3lq1fsynrbBmBKjFM4UoawJeh66x7U0HriGlv21q9GGvGARxsF5P4TaQFsMQvCJyELPSFF3UkqY/FjsDIRwefIfuHjYqLAkfdtFGz32fILFFuEWW+Zn5In/I0=
+X-HE-Tag: 1759872688-88672
+X-HE-Meta: U2FsdGVkX195ER0Vs6Uk91sNTXIBiHl3/GQlKEV69s7PFB7Ffo58jABFvJDwtXGL0zQ5cxeA6X90fym9S45uJJzO1WVNGWOdlyidN25G0HhCA5SREsQHAbHjMd9/IGjg3lIKw+/3iZeihC9GtGbT2L6CMKapyRxSNijMdPxjEmi73FB1yR9VmHWKZNFOnQAnH7QVYlLzXQWl74qOcsEYnx561BinJ9H1048utWTSdsheI2uGwxfMqcBaohHBcpyxBJnPvAdEbwVVi61rcnWi5c7+zGVtH+R3Tzq1tRumPb6hlqMzvIGsb3z3qrQc5YE+2C567yE7a03+2yuBr9O+EViF4YxkHGmHPtsySIJElmffqDPOeDoywr2AXJlbeY+NUNCOfoNhoTuakSNmiCsl06MnxOYQPSS9WdzRiGTW0B70Bst0OkGj8qbD5n3SUF7ohq/UvKqwaaFdFdwEJAI63EcCYcrPd7mZcIuFnaWn96pYOGNXMecfON6FGsjCl/tTIyRB4WoHCORpzjlubtimXLlvkuU7cSNHRJwWqHVioDI4mKeTMCEQgD+kFWjlNcupAZLpbaOrjO3O2tyEfrEA2o8jsQ83XSXpbjojR9f4qSmwQyR3RkRJTFQHM2GSvJPx/RIFnlQb6nS4GzcsP5vhz922wPprFtuxj3s6pVXVaotFeegBKMZ7YM+7B/BXABV1qme8dybr3AAgfTDN1ZPJIjLT+g42kWdyCwsilnSgTGgdJT4DBOrfxoiJNtQ8bCxzjZvYe+j5jS2nvi8xqtwX7nQraZ7AI8ZWY8F8im+3WVANybSaRd4VC9UUnhbmi+amkSIsV0W1Wub7kYSEyom9FYBPc24gc/FylXf4x3sxMOvNUd00NEhesNUBQwK8htLIKxi63aphobfOEHBTZOKzwcDqfmY6PumJyj/g7q/rEb4SZI/scZoIiUYEeQ8N8LV2gyy7qVZRs9I1RQhe9gS
+ 5LKjm9pd
+ aiWk05onIUyB6a/X4EZSjtkqYUAXP29uBMY80q2Lra6D6VBWa4kF/eRfJoj1Ibw0+XkaUItPIeNv7VfyLRL0blZ2hUXDO8rsmmNXnbBNEgwPZ6XVKhMYyH3BRibNotvX4jyn4JeHby3F5nAAYz2Y7pGC7woQ37thFj5YhL2IflE1lDpGXodYoCKqCNY0SPN6DUVHw6iudYsfePmyE1XT9NbhU9LBrQAWKXhDXzH9Vdz6hI20hqLOp9EHA/4SXoK+iRbVXPH3mbWbE6tRY6FctdftYU6ppvS49lxiOV9R8RE48BJWrafA9vBz4M8EF7cwwvJ6hrzKhUx/w7Ns2cv2MSvzvEhShAkXRidp2BItXT09yH7r2X4Erm66r9H5oaXmWq5Z03lCDEOAitHBbsvLRuRxnEg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,418 +91,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Tue,  7 Oct 2025 14:20:25 +0200 "Uladzislau Rezki (Sony)" <urezki@gmail.com> wrote:
 
-syzbot found the following issue on:
+> This is v4. It is based on the next-20250929 branch. I am pretty done
+> with it, if no objections, appreciate if it is taken.
+> 
+> https://lore.kernel.org/all/20250704152537.55724-1-urezki@gmail.com/
+> https://lkml.org/lkml/2025/8/7/332
+> https://lore.kernel.org/all/20251001192647.195204-1-urezki@gmail.com/
 
-HEAD commit:    cbf33b8e0b36 Merge tag 'bpf-fixes' of git://git.kernel.org..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=17a25ee2580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=1b4263e12240e6e1
-dashboard link: https://syzkaller.appspot.com/bug?extid=27727256237e6bdd3649
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14eaea7c580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=134c4304580000
+It would be nice (and conventional) to have a [0/N]
+introduction/overview, please.  I went back through the previous
+iterations and could have kind of used
+https://lkml.org/lkml/2025/8/7/332, but that doesn't look very
+applicable.
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-cbf33b8e.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/54786e46ef23/vmlinux-cbf33b8e.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/dd6f88ce083b/bzImage-cbf33b8e.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+27727256237e6bdd3649@syzkaller.appspotmail.com
-
-wlan1: Created IBSS using preconfigured BSSID 50:50:50:50:50:50
-wlan1: Creating new IBSS network, BSSID 50:50:50:50:50:50
-=====================================================
-WARNING: HARDIRQ-safe -> HARDIRQ-unsafe lock order detected
-syzkaller #0 Not tainted
------------------------------------------------------
-kworker/u4:0/12 [HC0[0]:SC0[0]:HE0:SE1] is trying to acquire:
-ffffffff995aa110 (&p->sequence){+.-.}-{0:0}, at: __fprop_add_percpu_max+0x10d/0x210 lib/flex_proportions.c:186
-
-and this task is already holding:
-ffff888040a24240 (&xa->xa_lock#12){-...}-{3:3}, at: __folio_end_writeback+0x1da/0x950 mm/page-writeback.c:2996
-which would create a new lock dependency:
- (&xa->xa_lock#12){-...}-{3:3} -> (&p->sequence){+.-.}-{0:0}
-
-but this new dependency connects a HARDIRQ-irq-safe lock:
- (&xa->xa_lock#12){-...}-{3:3}
-
-... which became HARDIRQ-irq-safe at:
-  lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
-  __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
-  _raw_spin_lock_irqsave+0xa7/0xf0 kernel/locking/spinlock.c:162
-  __folio_end_writeback+0x1da/0x950 mm/page-writeback.c:2996
-  folio_end_writeback_no_dropbehind+0x151/0x290 mm/filemap.c:1668
-  folio_end_writeback+0xea/0x220 mm/filemap.c:1694
-  end_bio_bh_io_sync+0xba/0x120 fs/buffer.c:2776
-  blk_update_request+0x57e/0xe60 block/blk-mq.c:998
-  scsi_end_request+0x7c/0x830 drivers/scsi/scsi_lib.c:637
-  scsi_io_completion+0x131/0x390 drivers/scsi/scsi_lib.c:1078
-  ata_qc_complete_multiple+0x1ae/0x280 drivers/ata/libata-sata.c:789
-  ahci_qc_complete drivers/ata/libahci.c:1887 [inline]
-  ahci_handle_port_interrupt+0x3d5/0x610 drivers/ata/libahci.c:1954
-  ahci_port_intr drivers/ata/libahci.c:1965 [inline]
-  ahci_handle_port_intr+0x19f/0x2e0 drivers/ata/libahci.c:1996
-  ahci_single_level_irq_intr+0x9b/0xe0 drivers/ata/libahci.c:2030
-  __handle_irq_event_percpu+0x295/0xab0 kernel/irq/handle.c:203
-  handle_irq_event_percpu kernel/irq/handle.c:240 [inline]
-  handle_irq_event+0x8b/0x1e0 kernel/irq/handle.c:257
-  handle_edge_irq+0x23b/0xa10 kernel/irq/chip.c:855
-  generic_handle_irq_desc include/linux/irqdesc.h:173 [inline]
-  handle_irq arch/x86/kernel/irq.c:254 [inline]
-  call_irq_handler arch/x86/kernel/irq.c:-1 [inline]
-  __common_interrupt+0x141/0x1f0 arch/x86/kernel/irq.c:325
-  common_interrupt+0xb6/0xe0 arch/x86/kernel/irq.c:318
-  asm_common_interrupt+0x26/0x40 arch/x86/include/asm/idtentry.h:693
-  __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:152 [inline]
-  _raw_spin_unlock_irqrestore+0xa8/0x110 kernel/locking/spinlock.c:194
-  spin_unlock_irqrestore include/linux/spinlock.h:406 [inline]
-  ata_scsi_queuecmd+0x3f0/0x5c0 drivers/ata/libata-scsi.c:4398
-  scsi_dispatch_cmd drivers/scsi/scsi_lib.c:1626 [inline]
-  scsi_queue_rq+0x1c91/0x2cc0 drivers/scsi/scsi_lib.c:1868
-  blk_mq_dispatch_rq_list+0x4c0/0x1900 block/blk-mq.c:2129
-  __blk_mq_do_dispatch_sched block/blk-mq-sched.c:168 [inline]
-  blk_mq_do_dispatch_sched block/blk-mq-sched.c:182 [inline]
-  __blk_mq_sched_dispatch_requests+0xda4/0x1570 block/blk-mq-sched.c:307
-  blk_mq_sched_dispatch_requests+0xd7/0x190 block/blk-mq-sched.c:329
-  blk_mq_run_hw_queue+0x404/0x4f0 block/blk-mq.c:2367
-  blk_mq_dispatch_list+0xd0c/0xe00 include/linux/spinlock.h:-1
-  blk_mq_flush_plug_list+0x469/0x550 block/blk-mq.c:2976
-  __blk_flush_plug+0x3d3/0x4b0 block/blk-core.c:1225
-  blk_finish_plug+0x5e/0x90 block/blk-core.c:1252
-  wb_writeback+0xa80/0xaf0 fs/fs-writeback.c:2233
-  wb_check_old_data_flush fs/fs-writeback.c:2301 [inline]
-  wb_do_writeback fs/fs-writeback.c:2354 [inline]
-  wb_workfn+0xaef/0xef0 fs/fs-writeback.c:2382
-  process_one_work kernel/workqueue.c:3263 [inline]
-  process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3346
-  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
-  kthread+0x70e/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x436/0x7d0 arch/x86/kernel/process.c:148
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-to a HARDIRQ-irq-unsafe lock:
- (&p->sequence){+.-.}-{0:0}
-
-... which became HARDIRQ-irq-unsafe at:
-...
-  lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
-  do_write_seqcount_begin_nested include/linux/seqlock.h:477 [inline]
-  do_write_seqcount_begin include/linux/seqlock.h:503 [inline]
-  fprop_new_period+0x1a3/0x3a0 lib/flex_proportions.c:74
-  writeout_period+0x8b/0x130 mm/page-writeback.c:615
-  call_timer_fn+0x17e/0x5f0 kernel/time/timer.c:1747
-  expire_timers kernel/time/timer.c:1798 [inline]
-  __run_timers kernel/time/timer.c:2372 [inline]
-  __run_timer_base+0x61a/0x860 kernel/time/timer.c:2384
-  run_timer_base kernel/time/timer.c:2393 [inline]
-  run_timer_softirq+0x103/0x180 kernel/time/timer.c:2404
-  handle_softirqs+0x283/0x870 kernel/softirq.c:622
-  run_ksoftirqd+0x9b/0x100 kernel/softirq.c:1063
-  smpboot_thread_fn+0x542/0xa60 kernel/smpboot.c:160
-  kthread+0x70e/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x436/0x7d0 arch/x86/kernel/process.c:148
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-other info that might help us debug this:
-
- Possible interrupt unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  lock(&p->sequence);
-                               local_irq_disable();
-                               lock(&xa->xa_lock#12);
-                               lock(&p->sequence);
-  <Interrupt>
-    lock(&xa->xa_lock#12);
-
- *** DEADLOCK ***
-
-5 locks held by kworker/u4:0/12:
- #0: ffff888030f92948 ((wq_completion)writeback){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3238 [inline]
- #0: ffff888030f92948 ((wq_completion)writeback){+.+.}-{0:0}, at: process_scheduled_works+0x9b4/0x17b0 kernel/workqueue.c:3346
- #1: ffffc900001e7bc0 ((work_completion)(&(&wb->dwork)->work)){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3239 [inline]
- #1: ffffc900001e7bc0 ((work_completion)(&(&wb->dwork)->work)){+.+.}-{0:0}, at: process_scheduled_works+0x9ef/0x17b0 kernel/workqueue.c:3346
- #2: ffff888000a240e0 (&type->s_umount_key#54){.+.+}-{4:4}, at: super_trylock_shared+0x20/0xf0 fs/super.c:562
- #3: ffff888040a24638 (&fi->lock){+.+.}-{3:3}, at: spin_lock include/linux/spinlock.h:351 [inline]
- #3: ffff888040a24638 (&fi->lock){+.+.}-{3:3}, at: fuse_writepages_send fs/fuse/file.c:2089 [inline]
- #3: ffff888040a24638 (&fi->lock){+.+.}-{3:3}, at: fuse_iomap_writeback_range+0x818/0x1800 fs/fuse/file.c:2150
- #4: ffff888040a24240 (&xa->xa_lock#12){-...}-{3:3}, at: __folio_end_writeback+0x1da/0x950 mm/page-writeback.c:2996
-
-the dependencies between HARDIRQ-irq-safe lock and the holding lock:
--> (&xa->xa_lock#12){-...}-{3:3} {
-   IN-HARDIRQ-W at:
-                    lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
-                    __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
-                    _raw_spin_lock_irqsave+0xa7/0xf0 kernel/locking/spinlock.c:162
-                    __folio_end_writeback+0x1da/0x950 mm/page-writeback.c:2996
-                    folio_end_writeback_no_dropbehind+0x151/0x290 mm/filemap.c:1668
-                    folio_end_writeback+0xea/0x220 mm/filemap.c:1694
-                    end_bio_bh_io_sync+0xba/0x120 fs/buffer.c:2776
-                    blk_update_request+0x57e/0xe60 block/blk-mq.c:998
-                    scsi_end_request+0x7c/0x830 drivers/scsi/scsi_lib.c:637
-                    scsi_io_completion+0x131/0x390 drivers/scsi/scsi_lib.c:1078
-                    ata_qc_complete_multiple+0x1ae/0x280 drivers/ata/libata-sata.c:789
-                    ahci_qc_complete drivers/ata/libahci.c:1887 [inline]
-                    ahci_handle_port_interrupt+0x3d5/0x610 drivers/ata/libahci.c:1954
-                    ahci_port_intr drivers/ata/libahci.c:1965 [inline]
-                    ahci_handle_port_intr+0x19f/0x2e0 drivers/ata/libahci.c:1996
-                    ahci_single_level_irq_intr+0x9b/0xe0 drivers/ata/libahci.c:2030
-                    __handle_irq_event_percpu+0x295/0xab0 kernel/irq/handle.c:203
-                    handle_irq_event_percpu kernel/irq/handle.c:240 [inline]
-                    handle_irq_event+0x8b/0x1e0 kernel/irq/handle.c:257
-                    handle_edge_irq+0x23b/0xa10 kernel/irq/chip.c:855
-                    generic_handle_irq_desc include/linux/irqdesc.h:173 [inline]
-                    handle_irq arch/x86/kernel/irq.c:254 [inline]
-                    call_irq_handler arch/x86/kernel/irq.c:-1 [inline]
-                    __common_interrupt+0x141/0x1f0 arch/x86/kernel/irq.c:325
-                    common_interrupt+0xb6/0xe0 arch/x86/kernel/irq.c:318
-                    asm_common_interrupt+0x26/0x40 arch/x86/include/asm/idtentry.h:693
-                    __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:152 [inline]
-                    _raw_spin_unlock_irqrestore+0xa8/0x110 kernel/locking/spinlock.c:194
-                    spin_unlock_irqrestore include/linux/spinlock.h:406 [inline]
-                    ata_scsi_queuecmd+0x3f0/0x5c0 drivers/ata/libata-scsi.c:4398
-                    scsi_dispatch_cmd drivers/scsi/scsi_lib.c:1626 [inline]
-                    scsi_queue_rq+0x1c91/0x2cc0 drivers/scsi/scsi_lib.c:1868
-                    blk_mq_dispatch_rq_list+0x4c0/0x1900 block/blk-mq.c:2129
-                    __blk_mq_do_dispatch_sched block/blk-mq-sched.c:168 [inline]
-                    blk_mq_do_dispatch_sched block/blk-mq-sched.c:182 [inline]
-                    __blk_mq_sched_dispatch_requests+0xda4/0x1570 block/blk-mq-sched.c:307
-                    blk_mq_sched_dispatch_requests+0xd7/0x190 block/blk-mq-sched.c:329
-                    blk_mq_run_hw_queue+0x404/0x4f0 block/blk-mq.c:2367
-                    blk_mq_dispatch_list+0xd0c/0xe00 include/linux/spinlock.h:-1
-                    blk_mq_flush_plug_list+0x469/0x550 block/blk-mq.c:2976
-                    __blk_flush_plug+0x3d3/0x4b0 block/blk-core.c:1225
-                    blk_finish_plug+0x5e/0x90 block/blk-core.c:1252
-                    wb_writeback+0xa80/0xaf0 fs/fs-writeback.c:2233
-                    wb_check_old_data_flush fs/fs-writeback.c:2301 [inline]
-                    wb_do_writeback fs/fs-writeback.c:2354 [inline]
-                    wb_workfn+0xaef/0xef0 fs/fs-writeback.c:2382
-                    process_one_work kernel/workqueue.c:3263 [inline]
-                    process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3346
-                    worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
-                    kthread+0x70e/0x8a0 kernel/kthread.c:463
-                    ret_from_fork+0x436/0x7d0 arch/x86/kernel/process.c:148
-                    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-   INITIAL USE at:
-                   lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
-                   __raw_spin_lock_irq include/linux/spinlock_api_smp.h:119 [inline]
-                   _raw_spin_lock_irq+0xa2/0xf0 kernel/locking/spinlock.c:170
-                   spin_lock_irq include/linux/spinlock.h:376 [inline]
-                   shmem_add_to_page_cache+0x72d/0xba0 mm/shmem.c:887
-                   shmem_alloc_and_add_folio+0x846/0xf60 mm/shmem.c:1936
-                   shmem_get_folio_gfp+0x59d/0x1660 mm/shmem.c:2533
-                   shmem_read_folio_gfp+0x8a/0xe0 mm/shmem.c:5931
-                   drm_gem_get_pages+0x223/0xa20 drivers/gpu/drm/drm_gem.c:656
-                   drm_gem_shmem_get_pages_locked+0x201/0x440 drivers/gpu/drm/drm_gem_shmem_helper.c:200
-                   drm_gem_shmem_pin_locked+0x22c/0x460 drivers/gpu/drm/drm_gem_shmem_helper.c:261
-                   drm_gem_shmem_vmap_locked+0x46b/0x790 drivers/gpu/drm/drm_gem_shmem_helper.c:365
-                   drm_gem_vmap_locked drivers/gpu/drm/drm_gem.c:1279 [inline]
-                   drm_gem_vmap+0x10a/0x1d0 drivers/gpu/drm/drm_gem.c:1321
-                   drm_client_buffer_vmap+0x43/0x80 drivers/gpu/drm/drm_client.c:312
-                   drm_fbdev_shmem_driver_fbdev_probe+0x258/0x900 drivers/gpu/drm/drm_fbdev_shmem.c:160
-                   drm_fb_helper_single_fb_probe drivers/gpu/drm/drm_fb_helper.c:1650 [inline]
-                   __drm_fb_helper_initial_config_and_unlock+0x1236/0x18a0 drivers/gpu/drm/drm_fb_helper.c:1830
-                   drm_fbdev_client_hotplug+0x16c/0x230 drivers/gpu/drm/clients/drm_fbdev_client.c:52
-                   drm_client_register+0x172/0x210 drivers/gpu/drm/drm_client.c:141
-                   drm_fbdev_client_setup+0x19f/0x3f0 drivers/gpu/drm/clients/drm_fbdev_client.c:159
-                   drm_client_setup+0x107/0x220 drivers/gpu/drm/clients/drm_client_setup.c:46
-                   vkms_create drivers/gpu/drm/vkms/vkms_drv.c:201 [inline]
-                   vkms_init+0x3e0/0x4b0 drivers/gpu/drm/vkms/vkms_drv.c:221
-                   do_one_initcall+0x233/0x820 init/main.c:1283
-                   do_initcall_level+0x104/0x190 init/main.c:1345
-                   do_initcalls+0x59/0xa0 init/main.c:1361
-                   kernel_init_freeable+0x334/0x4b0 init/main.c:1593
-                   kernel_init+0x1d/0x1d0 init/main.c:1483
-                   ret_from_fork+0x436/0x7d0 arch/x86/kernel/process.c:148
-                   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- }
- ... key      at: [<ffffffff995cb060>] xa_init_flags.__key+0x0/0x20
-
-the dependencies between the lock to be acquired
- and HARDIRQ-irq-unsafe lock:
--> (&p->sequence){+.-.}-{0:0} {
-   HARDIRQ-ON-W at:
-                    lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
-                    do_write_seqcount_begin_nested include/linux/seqlock.h:477 [inline]
-                    do_write_seqcount_begin include/linux/seqlock.h:503 [inline]
-                    fprop_new_period+0x1a3/0x3a0 lib/flex_proportions.c:74
-                    writeout_period+0x8b/0x130 mm/page-writeback.c:615
-                    call_timer_fn+0x17e/0x5f0 kernel/time/timer.c:1747
-                    expire_timers kernel/time/timer.c:1798 [inline]
-                    __run_timers kernel/time/timer.c:2372 [inline]
-                    __run_timer_base+0x61a/0x860 kernel/time/timer.c:2384
-                    run_timer_base kernel/time/timer.c:2393 [inline]
-                    run_timer_softirq+0x103/0x180 kernel/time/timer.c:2404
-                    handle_softirqs+0x283/0x870 kernel/softirq.c:622
-                    run_ksoftirqd+0x9b/0x100 kernel/softirq.c:1063
-                    smpboot_thread_fn+0x542/0xa60 kernel/smpboot.c:160
-                    kthread+0x70e/0x8a0 kernel/kthread.c:463
-                    ret_from_fork+0x436/0x7d0 arch/x86/kernel/process.c:148
-                    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-   IN-SOFTIRQ-W at:
-                    lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
-                    do_write_seqcount_begin_nested include/linux/seqlock.h:477 [inline]
-                    do_write_seqcount_begin include/linux/seqlock.h:503 [inline]
-                    fprop_new_period+0x1a3/0x3a0 lib/flex_proportions.c:74
-                    writeout_period+0x8b/0x130 mm/page-writeback.c:615
-                    call_timer_fn+0x17e/0x5f0 kernel/time/timer.c:1747
-                    expire_timers kernel/time/timer.c:1798 [inline]
-                    __run_timers kernel/time/timer.c:2372 [inline]
-                    __run_timer_base+0x61a/0x860 kernel/time/timer.c:2384
-                    run_timer_base kernel/time/timer.c:2393 [inline]
-                    run_timer_softirq+0x103/0x180 kernel/time/timer.c:2404
-                    handle_softirqs+0x283/0x870 kernel/softirq.c:622
-                    run_ksoftirqd+0x9b/0x100 kernel/softirq.c:1063
-                    smpboot_thread_fn+0x542/0xa60 kernel/smpboot.c:160
-                    kthread+0x70e/0x8a0 kernel/kthread.c:463
-                    ret_from_fork+0x436/0x7d0 arch/x86/kernel/process.c:148
-                    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-   INITIAL USE at:
-                   lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
-                   do_write_seqcount_begin_nested include/linux/seqlock.h:477 [inline]
-                   do_write_seqcount_begin include/linux/seqlock.h:503 [inline]
-                   fprop_new_period+0x1a3/0x3a0 lib/flex_proportions.c:74
-                   writeout_period+0x8b/0x130 mm/page-writeback.c:615
-                   call_timer_fn+0x17e/0x5f0 kernel/time/timer.c:1747
-                   expire_timers kernel/time/timer.c:1798 [inline]
-                   __run_timers kernel/time/timer.c:2372 [inline]
-                   __run_timer_base+0x61a/0x860 kernel/time/timer.c:2384
-                   run_timer_base kernel/time/timer.c:2393 [inline]
-                   run_timer_softirq+0x103/0x180 kernel/time/timer.c:2404
-                   handle_softirqs+0x283/0x870 kernel/softirq.c:622
-                   run_ksoftirqd+0x9b/0x100 kernel/softirq.c:1063
-                   smpboot_thread_fn+0x542/0xa60 kernel/smpboot.c:160
-                   kthread+0x70e/0x8a0 kernel/kthread.c:463
-                   ret_from_fork+0x436/0x7d0 arch/x86/kernel/process.c:148
-                   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-   INITIAL READ USE at:
-                        lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
-                        seqcount_lockdep_reader_access include/linux/seqlock.h:72 [inline]
-                        fprop_fraction_percpu+0x170/0x400 lib/flex_proportions.c:155
-                        __wb_calc_thresh+0x119/0x4a0 mm/page-writeback.c:913
-                        wb_bg_dirty_limits mm/page-writeback.c:2130 [inline]
-                        domain_over_bg_thresh mm/page-writeback.c:2144 [inline]
-                        wb_over_bg_thresh+0x154/0x3d0 mm/page-writeback.c:2165
-                        wb_check_background_flush fs/fs-writeback.c:2257 [inline]
-                        wb_do_writeback fs/fs-writeback.c:2355 [inline]
-                        wb_workfn+0xb1c/0xef0 fs/fs-writeback.c:2382
-                        process_one_work kernel/workqueue.c:3263 [inline]
-                        process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3346
-                        worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
-                        kthread+0x70e/0x8a0 kernel/kthread.c:463
-                        ret_from_fork+0x436/0x7d0 arch/x86/kernel/process.c:148
-                        ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- }
- ... key      at: [<ffffffff99ac9760>] fprop_global_init.__key.1+0x0/0x20
- ... acquired at:
-   lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
-   seqcount_lockdep_reader_access include/linux/seqlock.h:72 [inline]
-   fprop_fraction_percpu+0x130/0x400 lib/flex_proportions.c:155
-   __fprop_add_percpu_max+0x10d/0x210 lib/flex_proportions.c:186
-   wb_domain_writeout_add mm/page-writeback.c:562 [inline]
-   __wb_writeout_add+0xa5/0x290 mm/page-writeback.c:586
-   __folio_end_writeback+0x4d5/0x950 mm/page-writeback.c:3003
-   folio_end_writeback_no_dropbehind+0x151/0x290 mm/filemap.c:1668
-   folio_end_writeback+0xea/0x220 mm/filemap.c:1694
-   fuse_writepage_finish fs/fuse/file.c:1837 [inline]
-   fuse_send_writepage fs/fuse/file.c:1887 [inline]
-   fuse_flush_writepages+0x6c8/0x900 fs/fuse/file.c:1912
-   fuse_writepages_send fs/fuse/file.c:2091 [inline]
-   fuse_iomap_writeback_range+0x923/0x1800 fs/fuse/file.c:2150
-   iomap_writeback_range fs/iomap/buffered-io.c:1593 [inline]
-   iomap_writeback_folio+0xe72/0x1c80 fs/iomap/buffered-io.c:1718
-   iomap_writepages+0x162/0x2d0 fs/iomap/buffered-io.c:1770
-   fuse_writepages+0x2ad/0x380 fs/fuse/file.c:2220
-   do_writepages+0x32b/0x550 mm/page-writeback.c:2604
-   __writeback_single_inode+0x145/0xff0 fs/fs-writeback.c:1719
-   writeback_sb_inodes+0x6c7/0x1010 fs/fs-writeback.c:2015
-   __writeback_inodes_wb+0x111/0x240 fs/fs-writeback.c:2086
-   wb_writeback+0x44f/0xaf0 fs/fs-writeback.c:2197
-   wb_check_background_flush fs/fs-writeback.c:2267 [inline]
-   wb_do_writeback fs/fs-writeback.c:2355 [inline]
-   wb_workfn+0xb63/0xef0 fs/fs-writeback.c:2382
-   process_one_work kernel/workqueue.c:3263 [inline]
-   process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3346
-   worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
-   kthread+0x70e/0x8a0 kernel/kthread.c:463
-   ret_from_fork+0x436/0x7d0 arch/x86/kernel/process.c:148
-   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-
-stack backtrace:
-CPU: 0 UID: 0 PID: 12 Comm: kworker/u4:0 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Workqueue: writeback wb_workfn (flush-0:42)
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- print_bad_irq_dependency kernel/locking/lockdep.c:2616 [inline]
- check_irq_usage kernel/locking/lockdep.c:2857 [inline]
- check_prev_add kernel/locking/lockdep.c:3169 [inline]
- check_prevs_add kernel/locking/lockdep.c:3284 [inline]
- validate_chain+0x1f05/0x2140 kernel/locking/lockdep.c:3908
- __lock_acquire+0xab9/0xd20 kernel/locking/lockdep.c:5237
- lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
- seqcount_lockdep_reader_access include/linux/seqlock.h:72 [inline]
- fprop_fraction_percpu+0x130/0x400 lib/flex_proportions.c:155
- __fprop_add_percpu_max+0x10d/0x210 lib/flex_proportions.c:186
- wb_domain_writeout_add mm/page-writeback.c:562 [inline]
- __wb_writeout_add+0xa5/0x290 mm/page-writeback.c:586
- __folio_end_writeback+0x4d5/0x950 mm/page-writeback.c:3003
- folio_end_writeback_no_dropbehind+0x151/0x290 mm/filemap.c:1668
- folio_end_writeback+0xea/0x220 mm/filemap.c:1694
- fuse_writepage_finish fs/fuse/file.c:1837 [inline]
- fuse_send_writepage fs/fuse/file.c:1887 [inline]
- fuse_flush_writepages+0x6c8/0x900 fs/fuse/file.c:1912
- fuse_writepages_send fs/fuse/file.c:2091 [inline]
- fuse_iomap_writeback_range+0x923/0x1800 fs/fuse/file.c:2150
- iomap_writeback_range fs/iomap/buffered-io.c:1593 [inline]
- iomap_writeback_folio+0xe72/0x1c80 fs/iomap/buffered-io.c:1718
- iomap_writepages+0x162/0x2d0 fs/iomap/buffered-io.c:1770
- fuse_writepages+0x2ad/0x380 fs/fuse/file.c:2220
- do_writepages+0x32b/0x550 mm/page-writeback.c:2604
- __writeback_single_inode+0x145/0xff0 fs/fs-writeback.c:1719
- writeback_sb_inodes+0x6c7/0x1010 fs/fs-writeback.c:2015
- __writeback_inodes_wb+0x111/0x240 fs/fs-writeback.c:2086
- wb_writeback+0x44f/0xaf0 fs/fs-writeback.c:2197
- wb_check_background_flush fs/fs-writeback.c:2267 [inline]
- wb_do_writeback fs/fs-writeback.c:2355 [inline]
- wb_workfn+0xb63/0xef0 fs/fs-writeback.c:2382
- process_one_work kernel/workqueue.c:3263 [inline]
- process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3346
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
- kthread+0x70e/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x436/0x7d0 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
