@@ -4,85 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E6CCCCA470
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 23:40:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB078CCA476
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 23:40:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A394F8E000C; Tue,  7 Oct 2025 19:40:31 -0400 (EDT)
+	id 299398E0010; Tue,  7 Oct 2025 19:40:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E9948E0005; Tue,  7 Oct 2025 19:40:31 -0400 (EDT)
+	id 270F18E0005; Tue,  7 Oct 2025 19:40:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8FFAD8E000C; Tue,  7 Oct 2025 19:40:31 -0400 (EDT)
+	id 1AF248E0010; Tue,  7 Oct 2025 19:40:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AF538E0005
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 19:40:31 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 16EAA14034C
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 23:40:31 +0000 (UTC)
-X-FDA: 83972939862.24.B2D80C0
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 392641C0010
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 23:40:29 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QQwYGDnf;
-	spf=pass (imf20.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id 0D74B8E0005
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 19:40:54 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D04D3119AEE
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 23:40:53 +0000 (UTC)
+X-FDA: 83972940786.28.3E55753
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1ABD240004
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 23:40:51 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ik2GK1eK;
+	spf=pass (imf04.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759880429; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759880452; a=rsa-sha256;
 	cv=none;
-	b=2Bx1dy53rlpivKKxAcuMr2XvJL3SGd87HDAKWTtP1O9PMJU+NRbjtwCImtoj1VR9wQ4QUE
-	4EgV7v1A9FW5vjFlQymioHCGr8u4+F01mTpKto7gRrWpU2tUDhGcZutGuB/HC1aHq16P4Y
-	G7GzMVtp+veF/RmVRrmhBPYf20LWfqQ=
+	b=Yi7NmWIIu37LtZJh68d8UYm/zUe0aeepdfyC6gYEzhalFPJaR5pMMWOLe0I/5NtdSLUHWV
+	nCY5wZUjKKCkXED7POVZiJUvc+2mhkiTDKKaMJbZxZqwNGgPyZfS/pVbXpgCXvOA61emab
+	iK6EJ4kBRhBY/SW/8z4GCWul5rAQrh8=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QQwYGDnf;
-	spf=pass (imf20.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ik2GK1eK;
+	spf=pass (imf04.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759880429;
+	s=arc-20220608; t=1759880452;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yKja+MW72xoxssH4FoUzg9b9lYAFP0NscU4QRLzkw/w=;
-	b=z8zue8NjSLZvNqPO0vx/KBGPMtVuXf47IXBxDvyQxKY/BpVNejJ821AbCVly+6hF1eO4E+
-	wB08Ht56w7bDUB5NkVDPmx0rolUiSNgl2YgqGY1ZpPskGTLRC6wCGoFfXWFOkc4Kg34HG5
-	Bv/cFdM1bnKlRjbKhckStJwUnIr59Aw=
-Date: Tue, 7 Oct 2025 23:40:21 +0000
+	bh=E6OD1bQXaicr9WCwyTV1JRRGSFUf3V7VjtgLaaXPLUQ=;
+	b=IT74Szjz8zmqLl9j5Baa/puGwiuAXyejgQUJkOGGtfB4nH4PBOM62i3UavO3pwxEoHGjqg
+	mO7nhi/qOiAqdaKpSN4IWrHedXIef6NGkp+Gx2MnsXV7Bt4HHjIcNL+Z1KxD3Rh5diNmZf
+	TUUEMvYsIIYHClhZm6yOW5G+mxeHzNw=
+Date: Tue, 7 Oct 2025 23:40:44 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759880427;
+	t=1759880450;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yKja+MW72xoxssH4FoUzg9b9lYAFP0NscU4QRLzkw/w=;
-	b=QQwYGDnfGC+BjMzSWhdtP2Mm6J0fN66xBNaMU/Gpm0HQgyY82FDF2eelIAZPCd7HLi/ojy
-	rQvEb3GS4EKks00ZFIT02TMeGhjoBfJJO1Zor0Li6Uc/z18wVGfADNWB4hA7xRyqs2T3Ba
-	mIx/gTUE9eOHzBZ6EuZsqdvppJ02oL0=
+	bh=E6OD1bQXaicr9WCwyTV1JRRGSFUf3V7VjtgLaaXPLUQ=;
+	b=ik2GK1eKqJ/QpncSodtUJDqaZ1CxjtRJZpZXNofmS05mT7WKjS1TA1XtUWKRbME70i+3CT
+	0BQj1BKgoLhhfoYfbSr8rpw2TuWe4dMMZU+rRfsbTNoEQEqAdNNVJyu6SRXzy0zJoHlFOf
+	gITYeZiFDARdwU/DvrwJixjCfb1CJhw=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 To: SeongJae Park <sj@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
 	Chengming Zhou <chengming.zhou@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Nhat Pham <nphamcs@gmail.com>, kernel-team@meta.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCH 1/4] mm/zswap: remove unnecessary dlen writes for
- incompressible pages
-Message-ID: <xdsrooh5v7hdkfzr4rmwg6bmg2kd7wediwk7efjexu3ken3wec@so6hlaxqvafh>
+	Michal Hocko <mhocko@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Nhat Pham <nphamcs@gmail.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, cgroups@vger.kernel.org, kernel-team@meta.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 2/4] mm/zswap: fix typos: s/zwap/zswap/
+Message-ID: <k7suwksw5kvivopboym4zny3u7rqwq3gw6rvlrcrydo7kiadvg@gumequ2fft7h>
 References: <20251003203851.43128-1-sj@kernel.org>
- <20251003203851.43128-2-sj@kernel.org>
+ <20251003203851.43128-3-sj@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251003203851.43128-2-sj@kernel.org>
+In-Reply-To: <20251003203851.43128-3-sj@kernel.org>
 X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: jfshfp8swyf6gw86r3d7z87jp9xn6ntx
-X-Rspamd-Queue-Id: 392641C0010
+X-Stat-Signature: hexqbumyzwyjdhinosj5dcpgykhryo9r
+X-Rspamd-Queue-Id: 1ABD240004
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1759880429-91154
-X-HE-Meta: U2FsdGVkX186FfNuHL1kco80Ov2KfOCaavj4csrOGofrCx8jwve+c6F1o6ruYSTS/ABmmOMtTyRu3i0v4rhtl6xLVUOrrveW40L14VZPbjWMjcugMhzOnsgi+cWDEcP1qhnyqXzr10Q1pdklH2RwAmXFzkB4kyA5GybIa5eacS0rEmf/IdGb2GIPX+st8iuor+Rzaa4zUhYilHDWPVmWVXhq0a3wgnl8pg4n52yq1YwbhAbkyMUYcshK61P51aDM00Jn0psFxjS2H9hp+BjjjyQKqsEC52asfrVe/UAsvygk4QJr7ugYiZWh4U6P94SFoBRRQvXNC7uVk06fviH0DXp76+rhy+VJtxQmPld+1v+jb6HvXAIK560pBQax5F5vd6V5sBxp0ncXIo2LZfIRFfAwQa7LhxjwB9kCz9JIagAtX+IkEwdGtlc58SXT37hgRRGwg/pcCsf5fqc3yy2Bnukvvatad9/rjGF5jM/UVY7CkEr2zUXty7Q0onS3M3kRwCuEYfn3rat7joGkjl2o5GsgAbcA3+YPaRP9aP+PukAkNqfsbIszLc5dAo5VplA32ZFNZiPbNwM8zWJiI/gKg/KdbNY0tFHYwHr8hcSjGuBBYVuwJW5wHK/uOCJPvQ0mA7b4jPFaXTBdEt8jGKxRaOewiKLnjVZAL5WXZd/wkzvr1m/GqrzV5jZqeDzaQ1kKK/HrPyhpMsRgjGqxYSyg7xupAeqHG60Lc6lpZXKIyoKbGoKjoCxJKh3gAFNsrUgU8pcCg/0jaRxbafTC5KcV7mWrNqvdCF2GrNG28dIb0Pi9TB6KFsD1UljKuy/FZI2Z5U7IwNZy8qPtDsjavX7+Yoat+MteGzPqZD/3C6MDaMlv7rInD5/Gsnt3q1DaxfTni0C6X2wQv7lFFOc41sJ8CHiJffx08S2RffVVDEdKRY0fkcbewoXGyEycgFoeCe25k0EIefbDH1q86oWV6hE
- PZ+Wl3dG
- d1NkSBYHfs8bIT2/VfjVt05Z8AD/KH/h51fQc7vmUoobeFCQVZDdXvAyFJjn3/SCnmvvjOsm9h+IGLBq3oDdzkY81xxEgAmmnVL6desCXz2ILM3j/Oq7+kWPTOC8mCdWQESv9yCK/BOOToJLqYakmyFLMl+G7KUQ11Qn/pVBcwOiHHEuMnrZv8n5/HZZLW+om4VvrAb5YhxdYYkghB1gjJczhuhHUpfANKBXR
+X-HE-Tag: 1759880451-680230
+X-HE-Meta: U2FsdGVkX18ro1Um6CtUg4Jqd1XmnLwWFj1f/ICgcUV8J6hnuUWn032R+WvShSYhcvvJHiJ8A3XdO9IFUsaKOLjysueLVmyoBy1poSehsDzXz5+Uawr3KdsXzn0J5OHJdPQJIqeO+62TYGjM/knjOdjHeLubgyAfYJ8H3TB3Gs2eW4uJrpWmjRMz9q8w4abeehfae+xcdSJS2kc6cPjnshWuCvwteW8W6khlqFflp/rnNxRQ9KgYG3NLAEYy+fa15sclbyRwCSzJ8jM5Bb127QobaTNv85MkGPVzalwu5nrztpNIhKwM+UNbxsFQZ/sVYwZai4FBAdvOKO2e0GdSQeYW/ZUqEsx4fG9WNdXp68Mai/IcWxbO08LOsZMME8P+IwmNbcz0Ryt6yOweqRLg0uGJPnNwobF+dgTXiU1NLkZSLlGJLrUhKmxPPD2m1zZpZGw/TkqkLJDDktZ/sPB65E6X6RBqSOBRPWXN2aX2MpjN91FstL2kXjXrWDfOTt2PR9HLFf8IubEQ2n+XqRaYUbknLSlcsu17uxqJL535gwQ7f6v/dG3lw3d0UI04BQWTvxh2Hg3D2eFO8NJM+tyNf4yAeQFp/4E/31FTkyEptbynJeolySJDAi6p8qK7d+HGiKBs8JdgOrmpCJfq17G6ugev9iGrTbhbWem9ojnHQ5ExnDvqaIFw4/JrNIYORB2AMPqj5nkx5W892c7wlKcFXjJZXOi8AToqoa+NKLCN7HAl6rrk96VY8DU3ei3DQk1jagMAlPNl3l6M/Qfu7QDj+zRA54aBwOq2DVY2rtFjtIJKBwGChfwkY7F68Cu3UpSGTKy9IaZzQx/4jlUjdHu6FGexAfljz4fJXdImdhh1obOfdT4G2brQ9mOxQCO2nP96ws+eLadz7IYhZHWJJPVvbTgdp/SdWt69EIMepnaMoeAck3LjvGMCkb9qWJ3pT78p89YMYQoQ+eNoHWlYeCZ
+ vMeeo+sY
+ pdDXBvEsyck1FmMrengVWSeGXN0R8oxJ8rI0b8et0rcnEeTOzJAtRDmhjobBJi1opvGw1AjJS15Kdw+8blAQClPlbSmVg8AdMOhZNPw2p5DJx78yiHZK4Q7RDSpO8DNcRcssomIw6Ww96Hs2hvJqMhIkQKv2PmAvrHuXdoluU8htQE7QBh2m+W+maNbe3qILBBCGnjBukXE89znDQkB0SvmhJ2UrvX7fjJV7lyzJzwrQmqKw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,35 +92,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 03, 2025 at 01:38:48PM -0700, SeongJae Park wrote:
-> Incompressible pages handling logic in zswap_compress() is setting
-> 'dlen' as PAGE_SIZE twice.  Once before deciding whether to save the
-> content as is, and once again after it is decided to save it as is.
-> But the value of 'dlen' is used only if it is decided to save the
-> content as is, so the first write is unnecessary.  It is not causing
-> real user issues, but making code confusing to read.  Remove the
-> unnecessary write operation.
+On Fri, Oct 03, 2025 at 01:38:49PM -0700, SeongJae Park wrote:
+> As the subject says.
 > 
 > Signed-off-by: SeongJae Park <sj@kernel.org>
 
 Acked-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 
 > ---
->  mm/zswap.c | 1 -
->  1 file changed, 1 deletion(-)
+>  mm/memcontrol.c | 2 +-
+>  mm/zswap.c      | 4 ++--
+>  2 files changed, 3 insertions(+), 3 deletions(-)
 > 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 69c970554e85..74b1bc2252b6 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -5421,7 +5421,7 @@ bool obj_cgroup_may_zswap(struct obj_cgroup *objcg)
+>   * @size: size of compressed object
+>   *
+>   * This forces the charge after obj_cgroup_may_zswap() allowed
+> - * compression and storage in zwap for this cgroup to go ahead.
+> + * compression and storage in zswap for this cgroup to go ahead.
+>   */
+>  void obj_cgroup_charge_zswap(struct obj_cgroup *objcg, size_t size)
+>  {
 > diff --git a/mm/zswap.c b/mm/zswap.c
-> index c1af782e54ec..80619c8589a7 100644
+> index 80619c8589a7..f6b1c8832a4f 100644
 > --- a/mm/zswap.c
 > +++ b/mm/zswap.c
-> @@ -894,7 +894,6 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
->  	 * to the active LRU list in the case.
+> @@ -879,7 +879,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+>  	 * acomp instance, then get those requests done simultaneously. but in this
+>  	 * case, zswap actually does store and load page by page, there is no
+>  	 * existing method to send the second page before the first page is done
+> -	 * in one thread doing zwap.
+> +	 * in one thread doing zswap.
+>  	 * but in different threads running on different cpu, we have different
+>  	 * acomp instance, so multiple threads can do (de)compression in parallel.
 >  	 */
->  	if (comp_ret || !dlen || dlen >= PAGE_SIZE) {
-> -		dlen = PAGE_SIZE;
->  		if (!mem_cgroup_zswap_writeback_enabled(
->  					folio_memcg(page_folio(page)))) {
->  			comp_ret = comp_ret ? comp_ret : -EINVAL;
+> @@ -1128,7 +1128,7 @@ static enum lru_status shrink_memcg_cb(struct list_head *item, struct list_lru_o
+>  	 *
+>  	 * 1. We extract the swp_entry_t to the stack, allowing
+>  	 *    zswap_writeback_entry() to pin the swap entry and
+> -	 *    then validate the zwap entry against that swap entry's
+> +	 *    then validate the zswap entry against that swap entry's
+>  	 *    tree using pointer value comparison. Only when that
+>  	 *    is successful can the entry be dereferenced.
+>  	 *
 > -- 
 > 2.39.5
 
