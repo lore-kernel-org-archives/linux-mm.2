@@ -4,93 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43111CCA470
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 10:25:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B358CCA476
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 10:29:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1CE58E0010; Tue,  7 Oct 2025 06:25:29 -0400 (EDT)
+	id 51BCA8E000F; Tue,  7 Oct 2025 06:29:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CDEC8E0005; Tue,  7 Oct 2025 06:25:29 -0400 (EDT)
+	id 4F3F48E0005; Tue,  7 Oct 2025 06:29:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90AF98E0010; Tue,  7 Oct 2025 06:25:29 -0400 (EDT)
+	id 430D38E000F; Tue,  7 Oct 2025 06:29:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 81ACF8E0005
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 06:25:29 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2FE851408B8
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 10:25:29 +0000 (UTC)
-X-FDA: 83970936378.30.1BDBF65
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 072B9180005
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 10:25:26 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SqKqFZgI;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 339EA8E0005
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 06:29:00 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 23BA85BA58
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 10:28:59 +0000 (UTC)
+X-FDA: 83970945198.01.3068B69
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9BC071C0013
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 10:28:55 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759832937; a=rsa-sha256;
+	cv=none;
+	b=FT1APw8x4JENgY4Z3+Q0sVj7O8Jz1GIiWx6sKy5wRYp/kF44ZaKqV/0gqLIWOb4Ui3fxww
+	W9C64stfTNbNhQz3+PLRtgvqaIjS6wHbvUgHA3+ktmwUWvhr4b1g9Lik0RQvmtMvDcTJlk
+	UMYT2FOLc9LaYasuj5wjq+z2VuEIm1E=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759832727;
+	s=arc-20220608; t=1759832937;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w1Qr/71x7vAffwB+BoaxiI5z0WOOCKgzr0UJkBVFUpE=;
-	b=NA4BLDFIHhGio6b3DrYwiKG4piBhaAAuHGkA4KF3aNcTeT6JCAYEnhnKswiMkKJeByCe6N
-	RJiBHiDQNyj8dS6Cfn0mllR9gX61p8bUgNCbs2WEy1UA7ldxhTxHPB56tWIS5HxnfT8V2+
-	ecJy9ebetftSyoT2VDftIbjfgK0yy/0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759832727; a=rsa-sha256;
-	cv=none;
-	b=vJvfKz/4ZDc4k6Be/1RNd9lBgu7xWUdHx2yxGuGdy8ulfF4CR+fPYcVQmv6AIYga9e0ZGr
-	hR9b4Q7If4PoGZr3A+XXQcldZwhv0GD37xVAN/yXCYPrUMjTGaFzbuwXjzGDnSH/M6Nw5L
-	b0ye7kTKGpVxRqQxVHMLhbkyNiZa7nk=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SqKqFZgI;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-Message-ID: <29742109-13c2-4fa6-a3a1-d12b14641404@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759832724;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=w1Qr/71x7vAffwB+BoaxiI5z0WOOCKgzr0UJkBVFUpE=;
-	b=SqKqFZgIYKoV0S7J1CAQvyvkQcIPcwSyhGfTQdAamHUi4SyOW6IQF6JGbtTOkwnMkM1rcl
-	6vugkpgjvz1qVgjBuy0wj17KViXX/gE9oDjC4CWp7PGYsMOmuHTQoaX1xWXdRN9rITI3lR
-	Z5DDHIjcA2+A6I5UU0ZU9ouNNrA27yI=
-Date: Tue, 7 Oct 2025 18:25:13 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH mm-new v2 1/1] mm/khugepaged: abort collapse scan on
- non-swap entries
-Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>, Wei Yang <richard.weiyang@gmail.com>
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
- dev.jain@arm.com, hughd@google.com, ioworker0@gmail.com,
- kirill@shutemov.name, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- mpenttil@redhat.com, npache@redhat.com, ryan.roberts@arm.com, ziy@nvidia.com
-References: <20251001032251.85888-1-lance.yang@linux.dev>
- <20251001085425.5iq2mgfom6sqkbbx@master>
- <1d09acbf-ccc9-4f06-9392-669c98e34661@linux.dev>
- <20251005010511.ysek2nqojebqngf3@master>
- <31c3f774-edb7-420a-a6a8-3e21f2abd776@linux.dev>
- <09eaca7b-9988-41c7-8d6e-4802055b3f1e@redhat.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <09eaca7b-9988-41c7-8d6e-4802055b3f1e@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+	bh=KTG4hbkLcNhKqmnGPmK/C/HVE0My/Rlyvc7dkVFURLU=;
+	b=htN4/ikvHMlwJJKtdeRroDr+fKkPIcTjH3ibepYgX2bPbFqyR7xd+ncxJEy1Uhnwrz6ocS
+	h4o9d19dgkee0+KFdLCB+g8Yv9FJ7Wvk7+tw5XpRBbnuVCN6YXIE8MMmsROyzJ06iG5XCE
+	Jicc9kP5WzWq0emtS6lkQWVAZcwuw7c=
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4cgsmv6XvGz4xNt6;
+	Tue, 07 Oct 2025 18:28:47 +0800 (CST)
+Received: from xaxapp01.zte.com.cn ([10.88.99.176])
+	by mse-fl1.zte.com.cn with SMTP id 597ASIIs016509;
+	Tue, 7 Oct 2025 18:28:18 +0800 (+08)
+	(envelope-from xu.xin16@zte.com.cn)
+Received: from mapi (xaxapp01[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Tue, 7 Oct 2025 18:28:21 +0800 (CST)
+Date: Tue, 7 Oct 2025 18:28:21 +0800 (CST)
+X-Zmail-TransId: 2af968e4eb45fc5-6256d
+X-Mailer: Zmail v1.0
+Message-ID: <20251007182821572h_SoFqYZXEP1mvWI4n9VL@zte.com.cn>
+In-Reply-To: <20251007182504440BJgK8VXRHh8TD7IGSUIY4@zte.com.cn>
+References: 20251007182504440BJgK8VXRHh8TD7IGSUIY4@zte.com.cn
+Mime-Version: 1.0
+From: <xu.xin16@zte.com.cn>
+To: <xu.xin16@zte.com.cn>, <akpm@linux-foundation.org>, <david@redhat.com>,
+        <shr@devkernel.io>
+Cc: <akpm@linux-foundation.org>, <david@redhat.com>, <tujinjiang@huawei.com>,
+        <shr@devkernel.io>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
+        <yang.yang29@zte.com.cn>, <wang.yaxin@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIGxpbnV4LW5leHQgdjIgMS8yXSBtbS9rc206IGZpeCBleGVjL2ZvcmsgaW5oZXJpdGFuY2Ugc3VwcG9ydCBmb3IgcHJjdGw=?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 597ASIIs016509
+X-TLS: YES
+X-SPF-DOMAIN: zte.com.cn
+X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
+X-SPF: None
+X-SOURCE-IP: 10.5.228.132 unknown Tue, 07 Oct 2025 18:28:47 +0800
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 68E4EB5F.002/4cgsmv6XvGz4xNt6
+X-Stat-Signature: cy7ot1mrb9jxnb1zcw9orze35o1wbfq1
+X-Rspamd-Queue-Id: 9BC071C0013
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 072B9180005
-X-Rspamd-Server: rspam02
-X-Stat-Signature: nd6urtkduqt1dqziinckzkbfxyf8bnuf
-X-HE-Tag: 1759832726-807227
-X-HE-Meta: U2FsdGVkX1+io0XBj9iov7Hc3RBDeO2/qZfiLm/d0PxdmHVrAI9ly9Dt6MZjpWh0mLLp9kIBHF6tt/OPHNhZpE0g293ijk8pwoFF68NZwmiQmqKVoHADPuVFLzq4odcGhhNGqB4ANo5InyqkAolEfLp2hGzDO2b07iHVtTALOO7cRy9o+9L9uvd0//c8vyNoURf70+YynMVul1DmuhkYNOpcUXMk52COR9JdU2rNOTd1cbXAPk/YB/QjxCAEKRAlw3t5SpTvDC5kIN9eanTDfKDAC1HSk70ELifA2D0Py/gaQXbD423vZTGXu6fXISJza/M1xy58tJuXhqpJ3KUJmWNNpHQy3nBfPvNTA2fA7bmx9FNUTJjhbpkdm0pKDKnIQ+BKbFG2oiUc1ciXGzzLCxu/OLt/VgmTmRlrq+fZAR4K+7lRBU3vV4AxanG0ROb4GdolNdkUUihI/DzK/JZc7Vt3KPN1vqU92BicSTx0qNKNBwyqAuY2yuV/GiTl6DeabIyoqccXlGyrRLwp5bmzwOROcsUy8KfuJTnYAgmRo+Yk5k7FIcrJTOXKUvBdc5YgCWKQ2Dv3STTilh9VO3XwDPED5hA1YHT6NdIdsq9IghyREC80Y/yG53Fx1+TuK50tkCPK1oA/fckuMupI9yAglJ64vbsFm45HSu1dvMaXapgNJ13ojr2REoPwEffYSSWxMdatO+CmzRLeRb5QMofhD5f8Jzx2OtP591p8GpzE/ACoVRMr/rYG1JtqPHxL+7Qs8fGYdG9tdBBry0S/rPN0VKPv4A0XlzIreAkwxkJTyDH6m6sBL6ZJRR1JxkgSJr23fbIZSwy8K+tOILd+L4QsrWgswvPM89J7IYO759ZTqhWtqV0czHRIzA9QLF+mLj9y8n7LvHHnO8oYmTGGQ6PJpqBFsIRrbZ7U1/w4dm/9u3gZS1mSWeK3oUhJx2tcOS2J2e+S86a84oURgoZGRO6
- hknujaP/
- umO/hufKWv45xQvFewetpMdZlUJNbM2goaF0V+kKm4jdbQwkQMlzMzNWt4Hs1kJL8idg61VGjN9nDw94TmNKALVMCUCl/FmmCjRgiRMpoi+WPlYhh6AeR0rPcdyzWexiA6SNPLpy3uJGHEeYKq6DYW5UpA/MujDe5jGHOACFMtACUSbZAsaja26MXE1xhGkmlD2piKoriFMBK2C/HLDajVZcIGrBPgj+sUFitGs993UMTqbA/pRyzplugOAS8kit8iX9K4bmowntkLCyp3GgLag3mlndi3Gw3wLVXRHCa0qBb8PDwrdRbOx5E9bVw9I98M0jVDTUjGhcCJBytUNiCHK4+NwK+4f+zmXa8BqHwcLCqyQMyFDyBfotjqg==
+X-HE-Tag: 1759832935-624381
+X-HE-Meta: U2FsdGVkX182NgONkZoEzwhzY95W3zBXK4SPUwza9Cp5rZvEzSNQRDfaoRC1fcXog5/Nt4k9cAIHXdtQ/rWt+e6oWBhs0vZE2nZ7a1scmZ4o61Wjsrg12cgZl38QB8dZZeqmArEknPmecGrV5zOzHRh5MOCKUyiCqhc+UxudDjOYHrJ6VMda6253qiSWO58LtqEr/KtZ1PVMhYdvPpaTOKW8+b9+DLWP06eQPAOwM+jrZHWArsC4rL6sqqvpL+sUj05T0rg40w44YLUThc8eV0jvN+FCJl/eNRcSfz9vCuvccZ6/pZsR6xJt8Rsb/8y+WZtZcIdJxdOekSx0Rvdo38+4nAhZGFzUA/JvTnMwzy9fimwl/1W5yHxweDvDnNF3OsF97gJK1AeIEc6GpVcLNQFgeJZK0PjsslF8Zn6LHQZdiLWZ3SMEAWDSwaclzzh6zKycUTkVW2ZswLormg10RY1WU84EzcHH8IRKD9Dy9c8IOSsjEAtOWWWJT/4mugEgbQZTwo3Y5D5TnULoYwj+01XJgJjEg7jlM6XaAffoVUV/wao4dLLp2eK8JUIMZbODbD+zV4PxQUIFoVeDyR1XdLHV0xZu/JzSH8gy8haGiY2ED91e5XwMjdX9x3Qr1U8mhSFabunlwfQiA7JfQdjRyf7BffGBGI2wWRIV690Q2r9Lcp7E75f8Sp8TaIbx0ugiNFomOqLqACjTbHDy8mZBEUshvNUyqAzh9QXq7DNkK3e61RxoFtFqIiy3Sgu7inPXhWliDBoPiKMelfkoe82AL5Fc1dhfVoF+l6rRJ1lv8ISbXrJdkNaKov4xMDpw3XlDCooe6w1YNO5Eiz5SECR9Bcp6U8cHpYtQ64XphXdlVYxojvtVucr2ZoPs+cuSIH1Qhv4kzuNMIY19gCm+nQ6a8zQB3QzpLTxY7IRc4tuMpTfs2ndHP3KZueJkxpCxtUBPExAkzavFj+OwcqN4+d2
+ iPc15sAf
+ f0gv+hP2gQ58wBubgYRlQxWz/ZOd0Sz8cjiYRv6kvi5B0Er+X6DPhwZ3z3Ju5mLblS0q/MdMxlQG5chjX318kNR2440O0dn2Y2PDju1FjQ0EoaLuNifCS6NpHJFfaKrjHRNCsnAM3XNJJdpRzMD12AHXnMPH2Yl3U5VEmTKbcd17vBky2EQlZhce1WqUP+TwdEzA/bNrxaNTjsz4enBIoVcWxdzJ2xvkN0KsFl2mchpr489At3manMcTn7aiRDSamgeGYObQrl2azGxwCQ4U4ht5V8IdAYEFARqB8cMNaozDPsucfqHh1FPjX7dskUrYZE94usFFZqWV6MNsHd0HkKXlBMQlT3keA3zC5ZnfJ3RZwS1A=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,235 +102,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: xu xin <xu.xin16@zte.com.cn>
 
+Background
+==========
 
-On 2025/10/6 22:18, David Hildenbrand wrote:
-> On 05.10.25 04:12, Lance Yang wrote:
->>
->>
->> On 2025/10/5 09:05, Wei Yang wrote:
->>> On Wed, Oct 01, 2025 at 06:05:57PM +0800, Lance Yang wrote:
->>>>
->>>>
->>>> On 2025/10/1 16:54, Wei Yang wrote:
->>>>> On Wed, Oct 01, 2025 at 11:22:51AM +0800, Lance Yang wrote:
->>>>>> From: Lance Yang <lance.yang@linux.dev>
->>>>>>
->>>>>> Currently, special non-swap entries (like migration, hwpoison, or PTE
->>>>>> markers) are not caught early in hpage_collapse_scan_pmd(), 
->>>>>> leading to
->>>>>> failures deep in the swap-in logic.
->>>>>>
->>>>>> hpage_collapse_scan_pmd()
->>>>>> `- collapse_huge_page()
->>>>>>        `- __collapse_huge_page_swapin() -> fails!
->>>>>>
->>>>>> As David suggested[1], this patch skips any such non-swap entries
->>>>>> early. If any one is found, the scan is aborted immediately with the
->>>>>> SCAN_PTE_NON_PRESENT result, as Lorenzo suggested[2], avoiding wasted
->>>>>> work.
->>>>>>
->>>>>> [1] https://lore.kernel.org/linux-mm/7840f68e-7580-42cb- 
->>>>>> a7c8-1ba64fd6df69@redhat.com
->>>>>> [2] https://lore.kernel.org/linux-mm/7df49fe7-c6b7-426a-8680- 
->>>>>> dcd55219c8bd@lucifer.local
->>>>>>
->>>>>> Suggested-by: David Hildenbrand <david@redhat.com>
->>>>>> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->>>>>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->>>>>> ---
->>>>>> v1 -> v2:
->>>>>> - Skip all non-present entries except swap entries (per David) 
->>>>>> thanks!
->>>>>> - https://lore.kernel.org/linux-mm/20250924100207.28332-1- 
->>>>>> lance.yang@linux.dev/
->>>>>>
->>>>>> mm/khugepaged.c | 32 ++++++++++++++++++--------------
->>>>>> 1 file changed, 18 insertions(+), 14 deletions(-)
->>>>>>
->>>>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->>>>>> index 7ab2d1a42df3..d0957648db19 100644
->>>>>> --- a/mm/khugepaged.c
->>>>>> +++ b/mm/khugepaged.c
->>>>>> @@ -1284,7 +1284,23 @@ static int hpage_collapse_scan_pmd(struct 
->>>>>> mm_struct *mm,
->>>>>>     for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
->>>>>>          _pte++, addr += PAGE_SIZE) {
->>>>>>         pte_t pteval = ptep_get(_pte);
->>>>>> -        if (is_swap_pte(pteval)) {
->>>>>
->>>>> It looks is_swap_pte() is mis-leading?
->>>>
->>>> Hmm.. not to me, IMO. is_swap_pte() just means:
->>>>
->>>> !pte_none(pte) && !pte_present(pte)
->>>>
->>>
->>> Maybe it has some reason.
->>>
->>> I took another look into __collapse_huge_page_swapin(), which just check
->>> is_swap_pte() before do_swap_page().
-> 
-> Thanks for pointing that out.
-> 
-> A function that is called __collapse_huge_page_swapin() and documented 
-> to "Bring missing pages in from swap" will handle other types as well.
-> 
-> Unbelievable horrible.
-> 
-> So let's think this through so we can document it in the changelog 
-> properly.
-> 
-> We could have currently ended up in do_swap_page() with
-> 
-> (1) Migration entries. We would have waited.
-> 
-> -> Maybe worth it to wait, maybe not. I suspect we don't stumble into
->     that frequently such that we don't care. We could always unlock this
->     separately later.
-> 
-> 
-> (2) Device-exclusive entries. We would have converted to non-exclusive.
-> 
-> -> See make_device_exclusive(), we cannot tolerate PMD entries and have
->     to split them through FOLL_SPLIT_PMD. As popped up during a recent
->     discussion, collapsing here is actually counter-productive, because
->     the next conversion will PTE-map it again. (until recently, it would
->     not have worked with large folios at all IIRC).
-> 
-> -> Ok to not collapse.
-> 
-> (3) Device-private entries. We would have migrated to RAM.
-> 
-> -> Device-private still does not support THPs, so collapsing right now 
-> just means that the next device access would split the folio again.
-> 
-> -> Ok to not collapse.
-> 
-> (4) HWPoison entries
-> 
-> -> Cannot collapse
-> 
-> (5) Markers
-> 
-> -> Cannot collapse
-> 
-> 
-> I suggest we add that in some form to the patch description, stating 
-> that we can unlock later what we really need, and not account it towards 
-> max_swap_ptes.
-> 
->>>
->>> We have filtered non-swap entries in hpage_collapse_scan_pmd(), but 
->>> we drop
->>> mmap lock before isolation. This looks we may have a chance to get 
->>> non-swap
->>> entry.
->>
->> Thanks for pointing that out!
->>
->> Yep, there is a theoretical window between dropping the mmap lock
->> after the initial scan and re-acquiring it for isolation.
->>
->>>
->>> Do you think it is reasonable to add a non_swap_entry() check before
->>> do_swap_page()?
->>
->> However, that seems unlikely in practice. IMHO, the early check in
->> hpage_collapse_scan_pmd() is sufficient for now, so I'd prefer to
->> keep it as-is :)
-> 
-> I think we really should add that check, as per reasoning above.
-> 
-> I was looking into some possible races with uffd-wp being set before we 
-> enter do_swap_page(), but I think it might be okay (although very 
-> confusing).
+The commit d7597f59d1d33 ("mm: add new api to enable ksm per process") introduce
+MMF_VM_MERGE_ANY for mm->flags, and allow user to set it by prctl() so that the
+process's VMAs are forcely scanned by ksmd. Sequently, the commit 3c6f33b7273a
+("mm/ksm: support fork/exec for prctl") support inheritsingMMF_VM_MERGE_ANY flag
+when a task calls execve(). Lastly, The commit 3a9e567ca45fb
+("mm/ksm: fix ksm exec support for prctl") fixed the issue that ksmd doesn't scan
+the mm_struct with MMF_VM_MERGE_ANY by adding the mm_slot to ksm_mm_head
+in __bprm_mm_init().
 
-How about the version below?
+Problem
+=======
 
-```
-Currently, special non-swap entries (like PTE markers) are not caught
-early in hpage_collapse_scan_pmd(), leading to failures deep in the
-swap-in logic.
+In some extreme scenarios, however, this inheritance of MMF_VM_MERGE_ANY during
+exec/fork can fail. For example, when the scanning frequency of ksmd is tuned
+extremely high, a process carrying MMF_VM_MERGE_ANY may still fail to pass it to
+the newly exec'd process. This happens because ksm_execve() is executed too early
+in the do_execve flow (prematurely adding the new mm_struct to the ksm_mm_slot list).
 
-A function that is called __collapse_huge_page_swapin() and documented
-to "Bring missing pages in from swap" will handle other types as well.
+As a result, before do_execve completes, ksmd may have already performed a scan and
+found that this new mm_struct has no VM_MERGEABLE VMAs, thus clearing its
+MMF_VM_MERGE_ANY flag. Consequently, when the new program executes, the flag
+MMF_VM_MERGE_ANY inheritance missed.
 
-As analyzed by David[1], we could have ended up with the following
-entry types right before do_swap_page():
+Root reason
+===========
 
-   (1) Migration entries. We would have waited.
-       -> Maybe worth it to wait, maybe not. We suspect we don't stumble
-          into that frequently such that we don't care. We could always
-          unlock this separately later.
+The commit d7597f59d1d33 ("mm: add new api to enable ksm per process") clear the
+flag MMF_VM_MERGE_ANY when ksmd found no VM_MERGEABLE VMAs.
 
-   (2) Device-exclusive entries. We would have converted to non-exclusive.
-       -> See make_device_exclusive(), we cannot tolerate PMD entries and
-          have to split them through FOLL_SPLIT_PMD. As popped up during
-          a recent discussion, collapsing here is actually
-          counter-productive, because the next conversion will PTE-map
-          it again.
-       -> Ok to not collapse.
+Solution
+========
 
-   (3) Device-private entries. We would have migrated to RAM.
-       -> Device-private still does not support THPs, so collapsing right
-          now just means that the next device access would split the
-          folio again.
-       -> Ok to not collapse.
+First, Don't clear MMF_VM_MERGE_ANY when ksmd found no VM_MERGEABLE VMAs, because perhaps
+their mm_struct has just been added to ksm_mm_slot list, and its process has not yet
+officially started running or has not yet performed mmap/brk to allocate anonymous VMAS.
 
-   (4) HWPoison entries
-       -> Cannot collapse
+Second, recheck MMF_VM_MERGEABLE again if a process takes MMF_VM_MERGE_ANY, and create
+a mm_slot and join it into ksm_scan_list again.
 
-   (5) Markers
-       -> Cannot collapse
+Fixes: 3c6f33b7273a ("mm/ksm: support fork/exec for prctl")
+Fixes: d7597f59d1d3 ("mm: add new api to enable ksm per process")
+Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+Cc: stable@vger.kernel.org
+Cc: Stefan Roesch <shr@devkernel.io>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: Wang Yaxin <wang.yaxin@zte.com.cn>
+---
+ include/linux/ksm.h |  4 ++--
+ mm/ksm.c            | 20 +++++++++++++++++---
+ 2 files changed, 19 insertions(+), 5 deletions(-)
 
-First, this patch adds an early check for these non-swap entries. If
-any one is found, the scan is aborted immediately with the
-SCAN_PTE_NON_PRESENT result, as Lorenzo suggested[2], avoiding wasted
-work.
+diff --git a/include/linux/ksm.h b/include/linux/ksm.h
+index 067538fc4d58..c982694c987b 100644
+--- a/include/linux/ksm.h
++++ b/include/linux/ksm.h
+@@ -17,7 +17,7 @@
+ #ifdef CONFIG_KSM
+ int ksm_madvise(struct vm_area_struct *vma, unsigned long start,
+ 		unsigned long end, int advice, vm_flags_t *vm_flags);
+-vm_flags_t ksm_vma_flags(const struct mm_struct *mm, const struct file *file,
++vm_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
+ 			 vm_flags_t vm_flags);
+ int ksm_enable_merge_any(struct mm_struct *mm);
+ int ksm_disable_merge_any(struct mm_struct *mm);
+@@ -103,7 +103,7 @@ bool ksm_process_mergeable(struct mm_struct *mm);
 
-Second, as Wei pointed out[3], we may have a chance to get a non-swap
-entry, since we will drop and re-acquire the mmap lock before
-__collapse_huge_page_swapin(). To handle this, we also add a
-non_swap_entry() check there.
+ #else  /* !CONFIG_KSM */
 
-Note that we can unlock later what we really need, and not account it
-towards max_swap_ptes.
+-static inline vm_flags_t ksm_vma_flags(const struct mm_struct *mm,
++static inline vm_flags_t ksm_vma_flags(struct mm_struct *mm,
+ 		const struct file *file, vm_flags_t vm_flags)
+ {
+ 	return vm_flags;
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 04019a15b25d..19efe3d41c75 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -2617,8 +2617,14 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+ 		spin_unlock(&ksm_mmlist_lock);
 
-[1] 
-https://lore.kernel.org/linux-mm/09eaca7b-9988-41c7-8d6e-4802055b3f1e@redhat.com
-[2] 
-https://lore.kernel.org/linux-mm/7df49fe7-c6b7-426a-8680-dcd55219c8bd@lucifer.local
-[3] https://lore.kernel.org/linux-mm/20251005010511.ysek2nqojebqngf3@master
-```
+ 		mm_slot_free(mm_slot_cache, mm_slot);
++		/*
++		 * Only clear MMF_VM_MERGEABLE. We must not clear
++		 * MMF_VM_MERGE_ANY, because for those MMF_VM_MERGE_ANY process,
++		 * perhaps their mm_struct has just been added to ksm_mm_slot
++		 * list, and its process has not yet officially started running
++		 * or has not yet performed mmap/brk to allocate anonymous VMAS.
++		 */
+ 		mm_flags_clear(MMF_VM_MERGEABLE, mm);
+-		mm_flags_clear(MMF_VM_MERGE_ANY, mm);
+ 		mmap_read_unlock(mm);
+ 		mmdrop(mm);
+ 	} else {
+@@ -2736,12 +2742,20 @@ static int __ksm_del_vma(struct vm_area_struct *vma)
+  *
+  * Returns: @vm_flags possibly updated to mark mergeable.
+  */
+-vm_flags_t ksm_vma_flags(const struct mm_struct *mm, const struct file *file,
++vm_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
+ 			 vm_flags_t vm_flags)
+ {
+ 	if (mm_flags_test(MMF_VM_MERGE_ANY, mm) &&
+-	    __ksm_should_add_vma(file, vm_flags))
++	    __ksm_should_add_vma(file, vm_flags)) {
+ 		vm_flags |= VM_MERGEABLE;
++		/*
++		 * Generally, the flags here always include MMF_VM_MERGEABLE.
++		 * However, in rare cases, this flag may be cleared by ksmd who
++		 * scans a cycle without finding any mergeable vma.
++		 */
++		if (unlikely(!mm_flags_test(MMF_VM_MERGEABLE, mm)))
++			__ksm_enter(mm);
++	}
 
-I also think it makes sense to fold the change that adds the
-non_swap_entry() check in __collapse_huge_page_swapin() into
-this patch, rather than creating a new patch just for that :)
-
-Hmmm... one thing I'm not sure about: regarding the uffd-wp
-race you mentioned, is the pte_swp_uffd_wp() check needed
-after non_swap_entry()? It seems like it might not be ...
-
-```
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index f4f57ba69d72..bec3e268dc76 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1020,6 +1020,11 @@ static int __collapse_huge_page_swapin(struct 
-mm_struct *mm,
-  		if (!is_swap_pte(vmf.orig_pte))
-  			continue;
-
-+		if (non_swap_entry(pte_to_swp_entry(vmf.orig_pte))) {
-+			result = SCAN_PTE_NON_PRESENT;
-+			goto out;
-+		}
-+
-  		vmf.pte = pte;
-  		vmf.ptl = ptl;
-  		ret = do_swap_page(&vmf);
-```
-
-@David does that sound good to you?
+ 	return vm_flags;
+ }
+-- 
+2.25.1
 
