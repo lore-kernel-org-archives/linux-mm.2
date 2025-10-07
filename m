@@ -4,90 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C855CCCA476
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 22:00:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76E32CCA470
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 22:12:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 037778E0005; Tue,  7 Oct 2025 18:00:01 -0400 (EDT)
+	id A18E78E0009; Tue,  7 Oct 2025 18:12:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F29B48E0002; Tue,  7 Oct 2025 18:00:00 -0400 (EDT)
+	id 9F0378E0002; Tue,  7 Oct 2025 18:12:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E184B8E0005; Tue,  7 Oct 2025 18:00:00 -0400 (EDT)
+	id 8DE658E0009; Tue,  7 Oct 2025 18:12:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C9B818E0002
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 18:00:00 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7CAD813A89F
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 22:00:00 +0000 (UTC)
-X-FDA: 83972686560.20.024F1D4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A84FB14000B
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 21:59:58 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eqTBKJ2M;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 48BC08E0002
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 18:12:29 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E4F691A0294
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 22:12:28 +0000 (UTC)
+X-FDA: 83972717976.04.DE4CBB3
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 21E5B80013
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 22:12:26 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="XO/FZz5a";
 	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759874398;
+	s=arc-20220608; t=1759875147;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yv9O9R181QREhkQ5a4cmT+VfOGb+38KNvLpIfqV1KKk=;
-	b=p/PbDHwSYQUsuGNzjYEb8uaUHqH/1UebllcmfCf6nkJogOc2urIpKnXY3iGTODgA0T2WxL
-	L6ke1uqAZzV8dHPPN7ddGH2zyeunXACja2tWMIan/bpJ9D9byGhkUzgn5/zqZNeCZIltxN
-	IUGw3ppMg8FRTkuu0Xsz/h+oDmajo3I=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eqTBKJ2M;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759874398; a=rsa-sha256;
+	bh=ebBRD6yGmAnfNTiFyWqKhtyfR494yORKNRgWYunUcoo=;
+	b=2Ye0UoVrlk5Q4q52bjkZbjVzWbQxeYg9y8k6752rkH+ts/CVu9T6+Ct9qcg0vi5tsacGgg
+	xUR9BSNOHvP9vJqoEv4rmXsQTHzFlHZ5QCTgW7fvT1QsZdo+7/e0kgbFagRumbmD56SZ4X
+	Rg7kwYzZG8U3FLUBZpY1REwst31G8ns=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759875147; a=rsa-sha256;
 	cv=none;
-	b=iL0aZx5xN2ytxNP01ENocZa+EUbH4mqXYgRn9ak3qOOzsc1Jdu3mZD+lnqBFzRZ8ymfYfk
-	WI5nk/feVqiVevWUEovXfSX6dkk1q8676+BO+rOb0spwf1A2ZlDKXsNenvlX+VG5Pb+ntJ
-	5zXAqtR5NRlt3Z4DBhaxAr+tWFpyFj8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 500F04045E;
-	Tue,  7 Oct 2025 21:59:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94009C4CEF1;
-	Tue,  7 Oct 2025 21:59:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1759874397;
-	bh=ehRXRPc5gq4sto6XUaGVVNc4Uvx89XC3Wfecl1rHaAg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=eqTBKJ2M8ObGhNoqy8DBYa55islBZD7ZRmjTMTsXwVL99OoeyEL4uo6QHewJll/Vv
-	 MLm8Zlu0p6IOruOhar0793ib45TmpBnhcl+5W6rW9hSLU1R8vV3kPSmzNJLoF7X8Cz
-	 issd+zGW5zc6o2ZuYQfIE0VzhoVU1SvQjo+Rmvxg=
-Date: Tue, 7 Oct 2025 14:59:55 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Gregory Price <gourry@gourry.net>
+	b=3U9hgmb6EnqqnEI8Liw/ykBs4K5q3KNcfFlabo1melV71TmCVIgW/uuTqR7XLbgQJZNPL6
+	wgovY9A+Le3kAO+gJGEKtJSe2PI+8gv+HyOsgE8DnUdfhvUsh852DjEJgcmpClKRSCnqQn
+	mazTKzU8M0ZJzel7SLp7bOy6yguFoWg=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="XO/FZz5a";
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-856cbf74c4aso839728085a.2
+        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 15:12:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1759875146; x=1760479946; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ebBRD6yGmAnfNTiFyWqKhtyfR494yORKNRgWYunUcoo=;
+        b=XO/FZz5a6z9i3Soxuzg1AYCCitBM8amVDm120j6gewT9rdo0jFgLXqk9q0GVfCsGix
+         0wMuWlTo/sjC+5XmeWZ5+huXCmpKuoVTJi/iYEJh39/24WevkFJ/NLaSQGxYEofB889y
+         GCVX4ZJqOMK3IDLkpeCMrAunHuGBKe9pUkfr7cuKq6odJaBrDt8H9VNAwLAe6Ni5ayv5
+         FvmOWLDyWTQe8OpwRu+Un78lnGmfgDvRDWbkd5kbed8hEGhNaK14acspmBcn2PNlyL8T
+         JLJ0eEoN195fjLItbGDTvnNPWjPK2KNccZhkjZFWtVPebhPPqB10tORfm1qR5GBvl+Jy
+         vWUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759875146; x=1760479946;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ebBRD6yGmAnfNTiFyWqKhtyfR494yORKNRgWYunUcoo=;
+        b=T94XYvARdLJUNQl/tpOn1LVUvwpLXlAwFUEqatK3a+xTdfX02SO+yzhm8C88KK7eDB
+         dE/+LDp058v8Oq4Gf9XxNhx7KNRXLrPVMrxrjGMOswBxkMm2KpShziIf+qx/jPoZwUI4
+         QgmNNAptsewDZf55ItSVw/Hf/3jdKWE6eLvdQi0FU3TZiGr7m5i4bK2h3lsSLP/DTzlK
+         Rf5ktt8s7Y5HB3z5O9maUZhWmSCBvsKQAebgTXq5VIToqi5LnPDh+SY9oYyOHuwkbO/a
+         V8tdfLXDc1hUz9S98QXBsOLLsRpj8nLzeKcMHkAPIiAFF6V5V3vQ0QmQlLhdO30ZM15G
+         VZyw==
+X-Gm-Message-State: AOJu0YzOTdg7jwxVqt39dDMCxu+Ll6s+IvsJ7eyVoWbX7EINQufz9tVl
+	uYIGwk1Vivt7ixYCC0ivRhzPtZ95aQYyxOg2s+GdsH72opAJGABClxL7y3URHHhhoeY=
+X-Gm-Gg: ASbGncv0IKhbzqNSRmUbQ+/vZEMpmPa4MzB7bcF/v7Asy+K8Y0wOM2QdEtDdHUoeIV6
+	bdoZD15uOZ3szQK5su2E1e9Z5OZzfoyhfgpA+8trst6zkeDgK39JA4Vwu7AJj9aQdYvQdMfDYG3
+	V5UGPw0WMx7l3hjoLX0nwbZn4IlNehqoUhYYlk6+fN23sb62I0/pFRiqtTRgZsncN+/ch9LNcAl
+	C4h35x5s5AXWHHvUp41InA23l9cUwKNI5skawBCPo/jbLZK3nLcJ20Q2E9vOFQCkEJUNEowxoj6
+	uVmLkf2/7QsXytzHe28wnUazxJz3cCE+xVEwAjJfGq5BD0Y3thk/caV2a3rOcznPO0X4Zxzap1g
+	BCifeL/w0dThNyzEaOLrTWlx85y1LcYvtJapspFXFimo95uMltX41Hr1GsXPx875srMLzgRt49j
+	5MtrqB6NSOC8wf3AI4MulGT70CZ+RcXA==
+X-Google-Smtp-Source: AGHT+IGCq+eGhr6gIxsGpM2pRbfwzcvGwatmmJT+/kgQa0cOOL2MOn7JsQF2sMQyvLhQx3NeVxG6xw==
+X-Received: by 2002:a05:620a:c4d:b0:855:24d7:5525 with SMTP id af79cd13be357-8834eff4d01mr214767985a.0.1759875146022;
+        Tue, 07 Oct 2025 15:12:26 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-87779799145sm1548566585a.56.2025.10.07.15.12.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Oct 2025 15:12:25 -0700 (PDT)
+Date: Tue, 7 Oct 2025 18:12:23 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org, corbet@lwn.net, muchun.song@linux.dev,
- osalvador@suse.de, david@redhat.com, hannes@cmpxchg.org,
- laoar.shao@gmail.com, brauner@kernel.org, mclapinski@google.com,
- joel.granados@kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Mel Gorman <mgorman@suse.de>, Michal Hocko
- <mhocko@suse.com>, Alexandru Moise <00moses.alexander00@gmail.com>, Mike
- Kravetz <mike.kravetz@oracle.com>, David Rientjes <rientjes@google.com>
-Subject: Re: [PATCH] Revert
- "mm, hugetlb: remove hugepages_treat_as_movable sysctl"
-Message-Id: <20251007145955.31dba3afad6200e885e906a5@linux-foundation.org>
-In-Reply-To: <20251007214412.3832340-1-gourry@gourry.net>
+	osalvador@suse.de, david@redhat.com, hannes@cmpxchg.org,
+	laoar.shao@gmail.com, brauner@kernel.org, mclapinski@google.com,
+	joel.granados@kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Mel Gorman <mgorman@suse.de>,
+	Michal Hocko <mhocko@suse.com>,
+	Alexandru Moise <00moses.alexander00@gmail.com>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	David Rientjes <rientjes@google.com>
+Subject: Re: [PATCH] Revert "mm, hugetlb: remove hugepages_treat_as_movable
+ sysctl"
+Message-ID: <aOWQR9H2i4J8dZZR@gourry-fedora-PF4VCD3F>
 References: <20251007214412.3832340-1-gourry@gourry.net>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+ <20251007145955.31dba3afad6200e885e906a5@linux-foundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251007145955.31dba3afad6200e885e906a5@linux-foundation.org>
+X-Rspamd-Server: rspam01
+X-Stat-Signature: kgfkxohfyue9tu4zyf9q9ycshac1tf79
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A84FB14000B
-X-Rspamd-Server: rspam03
-X-Stat-Signature: d1h9p67p7a7egyqnjc5okrwndirw36kj
-X-HE-Tag: 1759874398-901868
-X-HE-Meta: U2FsdGVkX19QJmkzcOEjXbWZcWpWgurLtNkH5bptTC7w2ONFq2/xTjuMx8YQ7AZwCMuhs0TijAVyycUVjmrXmVni6e4KsyW3COsLVsJIiU1c3BgBokiFiksRvSNPCNMRHGvBSqVxVGSYE8t6PkG6atJQU6d3ctQGsQgezonXOfgDSz6RTb5d6o8Z1N/c3GgTmuaQXYPcI1cJOYRODoMMX6PMHWD7p+be8gI20ayYmYBITRwg8IX1KdTEeYGsEpDmYqLvsXCjXwo1GeD9CtAfPmIqWfl/SeDCtM33V5lfVFhNZyQbYrzFRKIi+oX22qUVwti/GymJoYOv9zViS3YVnqU+JEJfHHxNB3iHbzPBUxFXjLYXaj39EjSi9OsLRFiiq3t4lTUuKBw0QghhwOxyzOZ2sXWVCJHntcZS+eJMSL2C51AwPnP2ID4kbUtcUdlAHCIBNMb4SJSPjAkxG0UojmH6C8UwfK3kNR4DEuAv5uTBUAIdcQHPELryNFwtdd3Sl87XhXDsecXO4PhySMtGlROmMGxI+ctrYkIFHVG/0O/rt5yLiPkD5p4GhWD3lY8uOFSq7/gg2oNvu873UDhK07bnVtvJgYH43U3vGuohb2F4LugGsBOAdJGHxIC5eeTSIzMLb3B0SVXfcCLXkZsh/iRqaDO9tLuOFK82sQ78mpke9yh+778Xd7X9tQgo0aPYDB5tU+nkndNKKfs2POoTWzbXPY8pM8Id2+P+eEYrqJ4xnc4hrlWZLGuQq7H8WyT/toHbhebvho2JC6XYizd7oQlfDLg3NIVad1dUrOpM1aFtbqo8JJwC8BJP5knnSnrDGKFiMBYOcKxA3dtf0ox2JzmIxvSrUltpB4apoE40OwUnhDvMZ1ZFUVwNE7v0BC6+0p2YMb8G2UI+jDSgqLfNgatePiyrD5XDg4G5AUohcPRKvj06oOeAiFy0F40Sgq7rI6bHGJ4qCxV2V/PHRSv
- fs7p3DAZ
- wjvsmyHmkU430BwB/sf8xNFIJ85nzFnBMu+947NbGctxTp0wqWhY+IK64fDp2Mn2v61JSMZc4npNeMyGDP0G8w8Nm8eEuSZp2Fuzqxbur2R1sTlQ4RPIFB0GsaIliPhjQqBqRqJlZvME4nbKGPohF0Q3Mc8kPaGVojV8qOaclcVKwUCtv3kcw0/oya4uynbRXiQJICr24rADorQR3lpYddGBCrFg1Je3WG0+kLzSv3mhmrByh0gtf09Mv03kW9IFIHu7HG2qezt+oQ6yYwJ+9pCVYcD8zxg4smneL1vW9Kp+RraL6BwapFyZ2cljLogm87ICz3bGMdR+OBe6Dnzbnco0DEp2N8LpkxhSORyj2tjuOioT+JIGrszs+rZjiX6V1gMuH3AX5DhLqUs5lM03LvyU6irpQbgoRuHvyje43r5iLMlo=
+X-Rspamd-Queue-Id: 21E5B80013
+X-HE-Tag: 1759875146-989221
+X-HE-Meta: U2FsdGVkX1+/BjPEhfTAFMCBQ1eOsklIqizBzWrY07ym3Ixs/UXhHg4qCbET11kzwAE+obcYCE2OEuO3xvfaUczYtpcsBgfmBX+lOXKq5tNIPgGTSAISM5HIIPm7CsnG2Is2inOx0qZtyjY6dzOp8CGTKOL2lgVM2VKtuJTy5tWINgFp+BLD/sXjcEQggdj0BGUWRBmlyeK/tJ2iymsGsqQz8k5JlYDeVaRwYz+rOYFOygi2+9x1SB2oLDz1wSA/T1vr7NC4aM3KYfYhzDqcS4b+OVcBbY9EwkGZHYU2jBbaJBjBuZs2JiL34w+qykeTql4nGUMbRZJoKi0Xgl8IqQ99PTuX1WbdZQ82RFtSb/weDgNAf2rS1w6mPpC2jtsk0oiRACbLDCKkxHweVg6wHmozP3Lbmk633g9rmCJmQWLM2NoPTw9ZCdKWa04Iz0H3a9zmCRFoffwjZnM3Mi/PooegK0Nvmv5LL/Oibb9IdEF9U32IHIrzdEiV3PTSax6xOUTDmWSjpEJfP1eHR/hocN41hf6f1Qd/N68Ti0DTZH6qSzFm8JMsGuzvo1QjRJ+Vq12MUTpj6Uqk2g+oxd61J3zaaB+2BtkbbsDb9O+h7U5m5zPZbucdyqjscmaKm5/vIlyhkG4CVdix1Gj0xUzQ1dNbXTInFEzJlk92MmVud0B/n25k5vihHTCFYNbauXp7j/YLGiU5vAz+SXj/Jm/T7IMnLmx7exzklPOUt7FVh3FATtmGWJoOJL4IvlENqNd/7L8nhrNQHDTMQGA9lpwkjoHRhuQr7ug+XsIbI8zAlfJ/BeHxiCQEzduRE8CUWppZXZc1B+m9VE4Aa1HerA4wuaHzdmQtD0nmlRPJkIzHv4Pq2RGS4a80VACvEfhH91fCKhj/Ahk8xDXv65JK7bjpEuf8GEosIVt/qkGOpF2Ypvy24x968G+UItU9fLKEvpz8a0d9F4Vrzr8NqDapkL6
+ /fVp78Tm
+ cfS/FRgQHqKLQJSgftxQX9Nc+nCcqtxfmnJkvx1JHs6noiomx6p394vIzb/Pk1LfN5laXFNzPom7U+qhDF93IdLAoTyvWetGKy5m2Ridp+U/dm7/HVODn1ldfXfnwZgv93Xs32PacnoR8X08NJC+fbIWrRo8iI2hj+Xy15WFBuOC/cHrLcUOaji9Eq4DwbHutCd5ihAHKin6GCd7fdcQeZC3QhNnM6PmxF1R9foimVcCTRHgXDlkQeeKPisCZd0BcyshmWU0uB5wxbP9pHS2v08wb4UPVv+nuZvzEVC1oZFtcbnWpnDJaOXEnm5CHxj6EZiqogCsCz+7MTVUWv4tFw4IX5kOmGeLWlVWIBjiNIcSZrEZPefvZrHD2tN1CB8xELJqh+29/W3xjOcRafZIKU5E0vcjMpZiCusYXAL8JBms0E2dM7ZZJpVrzpdB+LNiklw7jQ4nW+JFckvw/f/oOKEw4wl5OOo/zRloP6uym+39CIbDOtwGW2/eN2NbMJThfHhmj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,53 +126,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  7 Oct 2025 17:44:12 -0400 Gregory Price <gourry@gourry.net> wrote:
-
-> This reverts commit d6cb41cc44c63492702281b1d329955ca767d399.
-
-It's been seven years.  Perhaps "reintroduce hugepages_treat_as_movable
-sysctl" would be a better way of presenting this.  Not very important.
-
-> This sysctl provides some flexibility between multiple requirements which
-> are difficult to square without adding significantly more complexity.
+On Tue, Oct 07, 2025 at 02:59:55PM -0700, Andrew Morton wrote:
+> On Tue,  7 Oct 2025 17:44:12 -0400 Gregory Price <gourry@gourry.net> wrote:
 > 
-> 1) onlining memory in ZONE_MOVABLE to maintain hotplug compatibility
-> 2) onlining memory in ZONE_MOVABLE to prevent GFP_KERNEL usage
-> 3) passing NUMA structure through to a virtual machine (node0=vnode0,
->    node1=vnode1) so a guest can make good placement decisions.
-> 4) utilizing 1GB hugepages for VM host memory to reduce TLB pressure
-> 5) Managing device memory after init-time to avoid incidental usage
->    at boot (due to being placed in ZONE_NORMAL), or to provide users
->    configuration flexibility.
+> > This reverts commit d6cb41cc44c63492702281b1d329955ca767d399.
 > 
-> When device-hotplugged memory does not require hot-unplug assurances,
-> there is no reason to avoid allowing otherwise non-migratable hugepages
-> in this zone.  This allows for allocation of 1GB gigantic pages for VMs
-> with existing mechanisms.
-> 
-> Boot-time CMA is not possible for driver-managed hotplug memory, as CMA
-> requires the memory to be registered as SystemRAM at boot time.
-> 
-> Updated the code to land in appropriate locations since it all moved.
-> Updated the documentation to add more context when this is useful.
-
-I'll duck the patch for now, see what people have to say.
-
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -55,6 +55,8 @@
->  #include "hugetlb_cma.h"
->  #include <linux/page-isolation.h>
->  
-> +int hugepages_treat_as_movable;
-> +
->  int hugetlb_max_hstate __read_mostly;
->  unsigned int default_hstate_idx;
->  struct hstate hstates[HUGE_MAX_HSTATE];
-
-Could sprinkle some more __read_mostlys around here?
-
+> It's been seven years.  Perhaps "reintroduce hugepages_treat_as_movable
+> sysctl" would be a better way of presenting this.  Not very important.
 >
-> ...
->
+
+But a blink of an eye! Will fix it up if feedback is positive.
+
+> > --- a/mm/hugetlb.c
+> > +++ b/mm/hugetlb.c
+> > @@ -55,6 +55,8 @@
+> >  #include "hugetlb_cma.h"
+> >  #include <linux/page-isolation.h>
+> >  
+> > +int hugepages_treat_as_movable;
+> > +
+> >  int hugetlb_max_hstate __read_mostly;
+> >  unsigned int default_hstate_idx;
+> >  struct hstate hstates[HUGE_MAX_HSTATE];
+> 
+> Could sprinkle some more __read_mostlys around here?
+> 
+
+Makes sense, will take a look while I'm poking around.
+
+Thanks Andrew!
+~Gregory
 
