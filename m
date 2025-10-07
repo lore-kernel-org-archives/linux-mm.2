@@ -4,94 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E724CCA476
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 10:29:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D88E9CCA476
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 11:08:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C79F8E0012; Tue,  7 Oct 2025 06:29:52 -0400 (EDT)
+	id ACD198E000C; Tue,  7 Oct 2025 07:08:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89F0E8E0005; Tue,  7 Oct 2025 06:29:52 -0400 (EDT)
+	id AA4CC8E0005; Tue,  7 Oct 2025 07:08:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DC228E0012; Tue,  7 Oct 2025 06:29:52 -0400 (EDT)
+	id 9BA2B8E000C; Tue,  7 Oct 2025 07:08:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CCFB8E0005
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 06:29:52 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 142871A0263
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 10:29:52 +0000 (UTC)
-X-FDA: 83970947424.17.ABFBB5A
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 849EF14000C
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 10:29:49 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759832990; a=rsa-sha256;
-	cv=none;
-	b=kM4y/Yrw2MGFcUqrmMn3ka9UDP7ahqMcvG1b6Qvvr2+Q0BTOt4ETDlD28hc9zfgim4YEy/
-	jEmbrB8OVD/QpUTZkBOqJV0pQquErIw2bXPSfX2ojxTASh/X3vdc5aN2qkD9OjefFTo35f
-	tWIWTVAqXfNPXWvjJQ+vW/+0I8ySZTU=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A8928E0005
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 07:08:26 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 23911C08D7
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 11:08:26 +0000 (UTC)
+X-FDA: 83971044612.01.83E1593
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 23094A0010
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 11:08:23 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=m4BWn022;
+	spf=pass (imf25.hostedemail.com: domain of amir73il@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759832990;
+	s=arc-20220608; t=1759835304;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dTsj+hpSU1wAVqD1q79rqGDKIgmnZVsk//OtGQduN90=;
-	b=pkopZ4xNpMn7vwwRmkTJns/UiEJy7f0v4N5luWlBYoqVB75vf//49dJIUhEWvoyF7Nbx3W
-	2vKoRsdEyMKeJ6KotDxq6bNUs71Z4ld4AKe96rR/qtohuvkFu9tfJhAv7jkz3pNC2KfooI
-	tnIKKM2DS2vJ6H6ygBo/fx1+WrOysNc=
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4cgsp222dYz5PM34;
-	Tue, 07 Oct 2025 18:29:46 +0800 (CST)
-Received: from xaxapp02.zte.com.cn ([10.88.97.241])
-	by mse-fl1.zte.com.cn with SMTP id 597ATXmE018488;
-	Tue, 7 Oct 2025 18:29:33 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp04[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Tue, 7 Oct 2025 18:29:35 +0800 (CST)
-Date: Tue, 7 Oct 2025 18:29:35 +0800 (CST)
-X-Zmail-TransId: 2afb68e4eb8f049-615f1
-X-Mailer: Zmail v1.0
-Message-ID: <20251007182935207jm31wCIgLpZg5XbXQY64S@zte.com.cn>
-In-Reply-To: <20251007182504440BJgK8VXRHh8TD7IGSUIY4@zte.com.cn>
-References: 20251007182504440BJgK8VXRHh8TD7IGSUIY4@zte.com.cn
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <xu.xin16@zte.com.cn>, <akpm@linux-foundation.org>, <david@redhat.com>,
-        <tujinjiang@huawei.com>, <shr@devkernel.io>
-Cc: <akpm@linux-foundation.org>, <david@redhat.com>, <tujinjiang@huawei.com>,
-        <shr@devkernel.io>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-        <yang.yang29@zte.com.cn>, <wang.yaxin@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIGxpbnV4LW5leHQgdjIgMi8yXSBzZWxmdGVzdHM6IHVwZGF0ZSBrc20gaW5oZXJpdGF0aW9uIHRlc3RzIGZvciBwcmN0bCBmb3JrL2V4ZWM=?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 597ATXmE018488
-X-TLS: YES
-X-SPF-DOMAIN: zte.com.cn
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SPF: None
-X-SOURCE-IP: 10.5.228.132 unknown Tue, 07 Oct 2025 18:29:46 +0800
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 68E4EB9A.000/4cgsp222dYz5PM34
-X-Stat-Signature: 3ti5sxqk7wtf77z67fkipxrk6b1khmof
-X-Rspamd-Queue-Id: 849EF14000C
-X-Rspamd-Server: rspam06
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UYjxP2t5m3TSDV72mhr1AaddvxDwKD3qqqOjv0SKlxI=;
+	b=wealsHF3rlZZWW+gA09daKK+HEdwo7msFMmCZtGnI3LbIezze6kMRFIRXymOmv9vbp3CEe
+	JYvtJdKKGbhjZkUQfgFLbUdCqkjaJfgmeO1HQibXTaPhdsJNxtouj4cNRbHLja3JHExi0u
+	PpKgWdYCv339qdrwB3fUR+3BrW8OSxw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759835304; a=rsa-sha256;
+	cv=none;
+	b=0cVvacQFY53MBiOJY8A/lXgc1SEaYWXZ+szFqFszhnvsMjFLazAYrXz5YUBr+DmhhN6utY
+	F7Se8i4e18+/zZZZUJe9qbR0lZ/TG/b2FANbvUQCH84d7KdmdxrEpt5JI0Z3GlDoCtwt1z
+	/uqzabttwHYv9jT8T159IGN0ohocb2U=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=m4BWn022;
+	spf=pass (imf25.hostedemail.com: domain of amir73il@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b3d50882cc2so1152387766b.2
+        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 04:08:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759835302; x=1760440102; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UYjxP2t5m3TSDV72mhr1AaddvxDwKD3qqqOjv0SKlxI=;
+        b=m4BWn022qL/nbNj09wh4BdLIm43ITVG0PiL7W0AKq7zn/90O1f3aaxVaed6uyt8B23
+         kHF4VuYUg/kZMDJ6TtGnZnPJkJauYRheWJbwQQDB9vjQbjUJ1++nJM4MnnGIbLX7xWPN
+         VDAFpLkmzzJphnhe2nwoLl7zE8JVh92RKBgPMu0ElEWoOeO+Swtx5M7UujutBMjpQ3ft
+         +IGrHQOhQqNFY29JyVKMPqkyTAuuA1O2Es5y48qbCoLVH6rIdL7vKs1N3M13UDdSnj4b
+         Udd2s7lGNaflUOzSRC5okr2n2en/OY9Pk83f9sbBFv6T/6k007xV4EdtlPcIWWDgdqD/
+         6NjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759835302; x=1760440102;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UYjxP2t5m3TSDV72mhr1AaddvxDwKD3qqqOjv0SKlxI=;
+        b=KziUK1ixTzv/e51VC4elNvbXd00HO+apYEbgtEhz9nDUpougf5Ut3XpC3+QsDDmk+3
+         O3qHV6bMaMItiDp+Yih4BIiRFu000QmG9fsU0nvmzk2ifjNn4XqnvkGmFIEaiwXsW63N
+         FVgvsQMLE2nKgRZuybrmRv0QBEGMx3p8eJOg67vl9lCitJKgkPnOutQANHhgOGBBzWee
+         X+SyEapoiUUCS8F1jnvty9oVz3jxTRD4xiVK10UuBFqCB6qIyiyWuaxCB/FTkC1M0d7X
+         Q5mOEefTamBdUC/ZkYsE5Bage3dPRWD5wPGd5uFTwfcpwju4TrPSGcaRIs5Ruiit9u8w
+         +N8A==
+X-Forwarded-Encrypted: i=1; AJvYcCWnCehJc5nBfjajWUaSlvpcvV65u6ck6do0+zGjZjVD1ZBSRZVP6cNze6jPdDzo6ZZamYhq5BQseg==@kvack.org
+X-Gm-Message-State: AOJu0YwbAJV3tMAM9sDybs6+xvntY0mlO2TehQI/ZAp7B9vbMz9p1hzu
+	6b+EqHZRBAGTjl6tt1kEo6EcnXDxseMAtGKJYiIjUFueI8xEE76N1CK8h3dpaogvUZtioQP3nkM
+	eVLf37jDjidN7x3SB8qBUitFAg/+TvJg=
+X-Gm-Gg: ASbGncu064tR9NPUsTCJV+20fpFRFLItC13+SBRAlVEwpSLTYEwDzujMylhPudHb/SD
+	6RA0B+J9KW+nYzGCmD/cF6qKWcaKcWXzU9pO9hyBqTXNjckW2xVDaR3KBD5V4tGXp4ync7/Rbqx
+	KDvv3neOQte8G1ePtlgAboBM88GVTyQJPMHSlwsABzzqwK8qqZ6/oGZVGzgcaP03aT5uoN7E2+h
+	MsOiWvXzsHJP5XniNoOik0zLwwzgAiX9qzfUt67n6n4+KIojK3BBAnwC9lo1bc2WA==
+X-Google-Smtp-Source: AGHT+IHTIee9up7m92yTA0Zsk+7eOEOmCuPn1i2HEpHrFMMVIsPmZ/Ha7QPfPMEmx8EgOfImzZOVCi5jgu6WcAE+r2M=
+X-Received: by 2002:a17:906:4fce:b0:b40:98b1:7457 with SMTP id
+ a640c23a62f3a-b49c4cde268mr1621336566b.47.1759835301952; Tue, 07 Oct 2025
+ 04:08:21 -0700 (PDT)
+MIME-Version: 1.0
+References: <20251003155238.2147410-1-ryan.roberts@arm.com>
+ <edc832b4-5f4c-4f26-a306-954d65ec2e85@redhat.com> <66251c3e-4970-4cac-a1fc-46749d2a727a@arm.com>
+ <989c49fc-1f6f-4674-96e7-9f987ec490db@redhat.com> <CAOQ4uxh+Mho71c93FNqcw=crw2H3yEs-uecWf4b6JMKYDTBCWQ@mail.gmail.com>
+In-Reply-To: <CAOQ4uxh+Mho71c93FNqcw=crw2H3yEs-uecWf4b6JMKYDTBCWQ@mail.gmail.com>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Tue, 7 Oct 2025 13:08:10 +0200
+X-Gm-Features: AS18NWAe14dfNSbsR0j5kwg1mzZpCKRfTUR5zwp4QxEyNvIbDN-ZzhaGc85_2tM
+Message-ID: <CAOQ4uxh-FJMtpyDrZpRQcWV6ScranQWUia4yz+rb82yQSdjSUQ@mail.gmail.com>
+Subject: Re: [PATCH v1] fsnotify: Pass correct offset to fsnotify_mmap_perm()
+To: Jan Kara <jack@suse.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>, David Hildenbrand <david@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Stat-Signature: qnxwgqijxy4hsn6bri1em8ypf5p8pann
 X-Rspam-User: 
-X-HE-Tag: 1759832989-220816
-X-HE-Meta: U2FsdGVkX1/DmfExfzcrq8VrCdll3cpigoCsNrY8S+92l+5nR8H0P/83LNUwOoWfuBZ97jdjtn9/FRXHTE7jjWj1qsVRnVXydVTZp9jngIc4RyjUq8y9Gha6+ho8RGavzCkfrvJNfle0VBTudHvqFXGhx2sJ3WSDuRE1AKPgn7HMhT/VZWdmld6KZZGn1hlYLFy/10oKQWSu941QZyr8a9mLbA8Bv8QrZv5pPbIILFfv6QuDa0ZRlsuQlKyGKzgN6HW8R71keiDkr9BcXXfybQMh9sNYayoNxL+RazGj7qU2EtaoLDK85sCDjNw9Q5k8pKKXyLGe0pd6vqbhnBA/cjOgoi+4h2UG9a8d2sVxZ2zbR1S2kh9kEoo0BRd1TwgSKqhESAodSW+hSG2jRpGCS99VZMK1M2tRk6BhoTWUinVTiycG5IgO7yLAlATJtLFEBNCFEHMpAeaZ2Ow9/d5IoKDUpz9eoLSudvlWuqNb103uNKJI9Pm4Vgni0QELL7XYvagZG9FruhnoEYfwFTPCJwD7MIKp3+InSlqdfax67cagD/0maqfqIp6BPDW9drvuuuCn9Hn10bl063DXN6mqpjHH7NVy9s9unB6mJsBhGXSz+iLCzE0n9wQga7HMtDLLAH/EyhCqrwPV/RsMSJnQgi0+FPglApjksOJ6Q2bALpElUnhCqMlE11014VZOMt544U0k1n8SFpopGP3CA7V3lHfQxhvNpLE8hHFzQMfIMt+MJFJZdkdW8YIcSDGhghMUPa5Znza/Ot7RVyRUeThHqF9UN6eFoFwQPeB01vZ5FmsiG8QwTMoTCR8BkOIYk6A+PmK11Dq1FAsylaqei55A9wjQoREpOXt8nfb1gfHfoNN1rgiwKsUncw==
+X-Rspamd-Queue-Id: 23094A0010
+X-HE-Tag: 1759835303-977791
+X-HE-Meta: U2FsdGVkX19IdhbWTN2G4mx7c5WyB3PbL0h93AiVe62FR/LzqNk43BrvC+ONOasc+iRAaJyFMVaTFh5rcI+BKU0Z3sH3OcvuMOMhVE/ce34tSWxTTbPEbqFXQg1IysWY/yIOM3xyporfSJBRKTToQZYVEgDpl5XzpJS5XF98flaFvCmDAZ2qIUzJrKR81ZadOClkeI9p2Ypdp6CxtwR4Ss0RX9cRFfwGiqfMbItfawnmqYfpAnGDcXw2kF8kWeYZM4ceGtAzQo0Ckxw4SB5ArHOyp/57HjVKOXDTqm3dR6cVbwT7TQ0Ct3pDFAYd2Ry3CoIbHPIuVmfiv5OC6RpXazZ8EzlMwjm9oOdoUkMA0xIdRL+FRrpyecgyRpgWlwGgfwrEuyr+wB/Ka4etswZxIwq9jGuqRhRejnp8njiinNxSYlc47GnEFH0YFA0JgAMDTRG7wpnfk/U3Sy6MiwbOXxfVkfRD4SALyp7DKajikQM4q/gUr0PuGWY83EeOVHd+tcL4uucPMzaLWuWuLqtr1emCvAJWA3yHnpLugSkGd/GyNCkeAVK50n3jcBhg7UOPnJWokjiypcZgRtpJLmCK9h8S+YPgCNQaBwwFAbCsR5CHoXiyahhI2Evv3pnn2VXq2QMSn4WhIqt3kk0MTPFBTQmX+RnKTPQIvsi1yVeuI5nOq+G0oiRHhQ3D0cRs+JVKby+4jJqXy+oApnr3RFsrC9yoe3XD6XDA3zs8UDokA0S3bjm7gWuieoQudNGDXuDYvsuxeRyp4unI49otoOtSxFDuxzZJK+w0BU2rpEXAMno41hqatq4V4ZmtX7u6ANAxnIuybB7AcFbXm/aiKmviBFlpiw8BN/456TnC/TfhKVftR0sdP+zWFKpU5USoRcerMwiMlBC1iJ9fPQwz/Ml967pgVGJbxbGz5zvDMhsWE6iajR411LPutQevG+lv4djesK7rDd88tgtlq9CiZzC
+ 9281LzOw
+ GM4VuqI3Dh9bRAHN1uq/3Pjdv4ahoSZfg6SxwaHbiF6SFDRSUoLypekv9PDOSw7Ad5/dJdg35r4Qzvhr3/EFPD0Qr8X8vMav56oWykeSYRgP0qrImUo/HZX3YjcCRW2Gona0gf3vHjunCNWqVkRIK+YsxUgXy1SGHTaYTYF6041+8SbaBbnoPbvywTWAIsR0dn2YB718BcNO2LK2bfJmbRSoqbUQ2eq2PIA/voSTJJrjfDC4jyUEs9KYQGUMA8RCGaP+I6agHfQzFpDfz2u4Ls7g5OadZWnS3GnJuATgJBasZR4nxh78/LhmeUdeR5aBRRl/JLhgqIuXwS3TwCXn3QC8w5eQ0VjjDpDchi68oyV7fSM/KGXgjpjo4VKeO0TokTHvaVtOeqzbK64O7+I4NqNnvo+ZTjDU7tCy9QmEI3eA2CVGR5bgEU8yj/XPAwukihoW0LkgpT3yoJcKJ/gO1HtAhNRFeD4TWkLyWbY5ys57hkM2qm6Jk+FZ2W/Br9yiQoN3MmABCSfZzI2B8wjouG5VaOI9rrhMJp24A24um3/jRfc8Ckz8Iy9gYhA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,115 +121,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: xu xin <xu.xin16@zte.com.cn>
+On Mon, Oct 6, 2025 at 4:40=E2=80=AFPM Amir Goldstein <amir73il@gmail.com> =
+wrote:
+>
+> On Mon, Oct 6, 2025 at 3:53=E2=80=AFPM David Hildenbrand <david@redhat.co=
+m> wrote:
+> >
+> > On 06.10.25 14:14, Ryan Roberts wrote:
+> > > On 06/10/2025 12:36, David Hildenbrand wrote:
+> > >> On 03.10.25 17:52, Ryan Roberts wrote:
+> > >>> fsnotify_mmap_perm() requires a byte offset for the file about to b=
+e
+> > >>> mmap'ed. But it is called from vm_mmap_pgoff(), which has a page of=
+fset.
+> > >>> Previously the conversion was done incorrectly so let's fix it, bei=
+ng
+> > >>> careful not to overflow on 32-bit platforms.
+> > >>>
+> > >>> Discovered during code review.
+> > >>>
+> > >>> Cc: <stable@vger.kernel.org>
+> > >>> Fixes: 066e053fe208 ("fsnotify: add pre-content hooks on mmap()")
+> > >>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+> > >>> ---
+> > >>> Applies against today's mm-unstable (aa05a436eca8).
+> > >>>
+> > >>
+> > >> Curious: is there some easy way to write a reproducer? Did you look =
+into that?
+> > >
+> > > I didn't; this was just a drive-by discovery.
+> > >
+> > > It looks like there are some fanotify tests in the filesystems selfte=
+sts; I
+> > > guess they could be extended to add a regression test?
+> > >
+> > > But FWIW, I think the kernel is just passing the ofset/length info of=
+f to user
+> > > space and isn't acting on it itself. So there is no kernel vulnerabil=
+ity here.
+> >
+> > Right, I'm rather wondering if this could have been caught earlier and
+> > how we could have caught it earlier :)
+>
+> Ha! you would have thought we either have no test for it or we test
+> only mmap with offset 0.
+>
+> But we have LTP test fanotify24 which does mmap with offset page_sz*100
+> and indeed it prints the info and info says offset 0, only we do not veri=
+fy the
+> offset info in this test...
+>
+> Will be fixed.
 
-To reproduce the issue mentioned by [1], this add a setting of pages_to_scan
-and sleep_millisecs at the start of test_prctl_fork_exec(). The main change
-is just raise the scanning frequency of ksmd.
+Jan,
 
-[1] https://lore.kernel.org/all/202510012256278259zrhgATlLA2C510DMD3qI@zte.com.cn/
+FYI test enhanced and verified the bug and the fix:
+https://github.com/amir73il/ltp/commits/fsnotify-fixes/
 
-Signed-off-by: xu xin <xu.xin16@zte.com.cn>
----
- .../selftests/mm/ksm_functional_tests.c       | 57 +++++++++++++++++++
- 1 file changed, 57 insertions(+)
+Will wait with posting the test until you merge the fix to make sure that t=
+he
+commit id is not changed.
 
-diff --git a/tools/testing/selftests/mm/ksm_functional_tests.c b/tools/testing/selftests/mm/ksm_functional_tests.c
-index ac136f04b8d6..95afa5cfc062 100644
---- a/tools/testing/selftests/mm/ksm_functional_tests.c
-+++ b/tools/testing/selftests/mm/ksm_functional_tests.c
-@@ -38,6 +38,8 @@ enum ksm_merge_mode {
- };
-
- static int mem_fd;
-+static int pages_to_scan_fd;
-+static int sleep_millisecs_fd;
- static int pagemap_fd;
- static size_t pagesize;
-
-@@ -493,6 +495,46 @@ static void test_prctl_fork(void)
- 	ksft_test_result_pass("PR_SET_MEMORY_MERGE value is inherited\n");
- }
-
-+static int start_ksmd_and_set_frequency(char *pages_to_scan, char *sleep_ms)
-+{
-+	int ksm_fd;
-+
-+	ksm_fd = open("/sys/kernel/mm/ksm/run", O_RDWR);
-+	if (ksm_fd < 0)
-+		return -errno;
-+
-+	if (write(ksm_fd, "1", 1) != 1)
-+		return -errno;
-+
-+	if (write(pages_to_scan_fd, pages_to_scan, strlen(pages_to_scan)) <= 0)
-+		return -errno;
-+
-+	if (write(sleep_millisecs_fd, sleep_ms, strlen(sleep_ms)) <= 0)
-+		return -errno;
-+
-+	return 0;
-+}
-+
-+static int stop_ksmd_and_restore_frequency(void)
-+{
-+	int ksm_fd;
-+
-+	ksm_fd = open("/sys/kernel/mm/ksm/run", O_RDWR);
-+	if (ksm_fd < 0)
-+		return -errno;
-+
-+	if (write(ksm_fd, "2", 1) != 1)
-+		return -errno;
-+
-+	if (write(pages_to_scan_fd, "100", 3) <= 0)
-+		return -errno;
-+
-+	if (write(sleep_millisecs_fd, "20", 2) <= 0)
-+		return -errno;
-+
-+	return 0;
-+}
-+
- static void test_prctl_fork_exec(void)
- {
- 	int ret, status;
-@@ -500,6 +542,9 @@ static void test_prctl_fork_exec(void)
-
- 	ksft_print_msg("[RUN] %s\n", __func__);
-
-+	if (start_ksmd_and_set_frequency("2000", "0"))
-+		ksft_test_result_fail("set ksmd's scanning frequency failed\n");
-+
- 	ret = prctl(PR_SET_MEMORY_MERGE, 1, 0, 0, 0);
- 	if (ret < 0 && errno == EINVAL) {
- 		ksft_test_result_skip("PR_SET_MEMORY_MERGE not supported\n");
-@@ -542,6 +587,11 @@ static void test_prctl_fork_exec(void)
- 		return;
- 	}
-
-+	if (stop_ksmd_and_restore_frequency()) {
-+		ksft_test_result_fail("restore ksmd frequency failed\n");
-+		return;
-+	}
-+
- 	ksft_test_result_pass("PR_SET_MEMORY_MERGE value is inherited\n");
- }
-
-@@ -656,6 +706,13 @@ static void init_global_file_handles(void)
- 		ksft_exit_skip("open(\"/proc/self/pagemap\") failed\n");
- 	if (ksm_get_self_merging_pages() < 0)
- 		ksft_exit_skip("accessing \"/proc/self/ksm_merging_pages\") failed\n");
-+
-+	pages_to_scan_fd = open("/sys/kernel/mm/ksm/pages_to_scan", O_RDWR);
-+	if (pages_to_scan_fd < 0)
-+		ksft_exit_fail_msg("opening /sys/kernel/mm/ksm/pages_to_scan failed\n");
-+	sleep_millisecs_fd = open("/sys/kernel/mm/ksm/sleep_millisecs", O_RDWR);
-+	if (sleep_millisecs_fd < 0)
-+		ksft_exit_fail_msg("opening /sys/kernel/mm/ksm/sleep_millisecs failed\n");
- }
-
- int main(int argc, char **argv)
--- 
-2.25.1
+Thanks,
+Amir.
 
