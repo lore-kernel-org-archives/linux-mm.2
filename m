@@ -4,129 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3811CCA472
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 11:41:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59BADCCA470
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 12:10:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC6F18E000F; Tue,  7 Oct 2025 07:41:37 -0400 (EDT)
+	id 876C08E000E; Tue,  7 Oct 2025 08:10:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9EF28E0005; Tue,  7 Oct 2025 07:41:37 -0400 (EDT)
+	id 84DED8E0005; Tue,  7 Oct 2025 08:10:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8D978E000F; Tue,  7 Oct 2025 07:41:37 -0400 (EDT)
+	id 78AD88E000E; Tue,  7 Oct 2025 08:10:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A78518E0005
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 07:41:37 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5E05983E3C
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 11:41:37 +0000 (UTC)
-X-FDA: 83971128234.15.586D5F7
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 18BA2180008
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 11:41:34 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="cd9/Sv7m";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rpUKT5Al;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="cd9/Sv7m";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rpUKT5Al;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759837295; a=rsa-sha256;
-	cv=none;
-	b=Xysb7Rpqx8d8FCpJ+RJClrvfTyio+oOxLh4ZpNnXi/HcHvROGH0OSvOivcUxbn2ejYU+d/
-	d647UVxcnc5v5NRVT15YmRHWxTZCkTSqemb9WCFZtYrwnIfGR51sItnw3xww2of5d5bfxQ
-	pQTtEZ4I56KOqCHiPKYr1sEp8teOTg0=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="cd9/Sv7m";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rpUKT5Al;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="cd9/Sv7m";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rpUKT5Al;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 69E638E0005
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 08:10:12 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 02D458498F
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 12:10:11 +0000 (UTC)
+X-FDA: 83971200264.09.6FA2D0B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 2DACD14000A
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 12:10:09 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LD9oTq4j;
+	spf=pass (imf23.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759837295;
+	s=arc-20220608; t=1759839010;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LZkgiUG8s/GGxknPnnCcFa5imKmgKW71ZK0Go84byCA=;
-	b=EHT4cMP8gooy7DdSMpoD/biOhHbPEV6AnFFPGvM6vUZ+1olMvYaIrf9l5qunwtVGwqsPpk
-	o/jDyX7u3sEMBlihMQQ/W/ciGh1Nsk1O88CVMklKGr/G7Bi5s+iQAXdCVDsSD1m+ZZEg6k
-	cm6BX7j1z9RHtUY/Ee6XBojCKDsg9KY=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 475591F44F;
-	Tue,  7 Oct 2025 11:41:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759837293; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LZkgiUG8s/GGxknPnnCcFa5imKmgKW71ZK0Go84byCA=;
-	b=cd9/Sv7mbpynR0vya1gE3ucWIpSg3BoLSgUPV+Uf/PPVYRuwYktGc5g90fPwDNF/2joFZC
-	hBAYZxjYlcQRqZJnynu3FYyHNPO1yTn4MT2hrkUnMpVCPN9zsPTEN49CvBdhFoTSW37R3o
-	PfUlYOpn1TUOe9ea+dlL4H7ruajbadU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759837293;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LZkgiUG8s/GGxknPnnCcFa5imKmgKW71ZK0Go84byCA=;
-	b=rpUKT5AlcUCjq3cJ9UJebhZPr0XORcscgMMXrQuhKsqksuJUp7us2S/3ACi99bhjxM1FBk
-	wBEXj03Jdem6TYBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1759837293; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LZkgiUG8s/GGxknPnnCcFa5imKmgKW71ZK0Go84byCA=;
-	b=cd9/Sv7mbpynR0vya1gE3ucWIpSg3BoLSgUPV+Uf/PPVYRuwYktGc5g90fPwDNF/2joFZC
-	hBAYZxjYlcQRqZJnynu3FYyHNPO1yTn4MT2hrkUnMpVCPN9zsPTEN49CvBdhFoTSW37R3o
-	PfUlYOpn1TUOe9ea+dlL4H7ruajbadU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1759837293;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LZkgiUG8s/GGxknPnnCcFa5imKmgKW71ZK0Go84byCA=;
-	b=rpUKT5AlcUCjq3cJ9UJebhZPr0XORcscgMMXrQuhKsqksuJUp7us2S/3ACi99bhjxM1FBk
-	wBEXj03Jdem6TYBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3BB4613693;
-	Tue,  7 Oct 2025 11:41:33 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 2+WMDm385GgnfAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 07 Oct 2025 11:41:33 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id E1051A0A58; Tue,  7 Oct 2025 13:41:28 +0200 (CEST)
-Date: Tue, 7 Oct 2025 13:41:28 +0200
-From: Jan Kara <jack@suse.cz>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	linux-kernel@vger.kernel.org, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Dev Jain <dev.jain@arm.com>, linux-mm@kvack.org
-Subject: Re: [PATCH v3] mm: readahead: make thp readahead conditional to
- mmap_miss logic
-Message-ID: <3hgw6hizjyjz3c7hpuyyevehd4lqasucuitgphh37rmtztfmcd@q4j7ytdnnwje>
-References: <20251006175106.377411-1-roman.gushchin@linux.dev>
+	bh=N3kOZ6ZGIEmpHggLPNudEijuGEXi2mhTggJkYmbKlg0=;
+	b=Hva/WIDBq5kS/Xp96bjWcK+ZzcP1K3l+OqgU71ZiuIOHsTr5tcFD3hPXiZKER1T8QWyBeF
+	48m+OW7YcGCYsxHzvQ4PYK9bsC88bUguMH8MBl67ZSP+iddlDMmxGwaKUIecJK4gi1IXus
+	wS5Ats+UNWIQ60fHdH+2Z4z0i7hJoMs=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LD9oTq4j;
+	spf=pass (imf23.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759839010; a=rsa-sha256;
+	cv=none;
+	b=vrjrLLziRz7xtlpTUec7oqLq9Zhe7xTk5xeei8UEPW86LfonsMcLOwVCN2/VXRdFjct0OQ
+	y/eOypFG3EznsxshQH30Q6+jWqpg96ZLs0uJ9ETj5z6sobwPYyof7W89p4CnaXUSe/oZhc
+	27sdUUu8FWuBoB6/PvAWkIPk7rGvJrM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B6C91443DC;
+	Tue,  7 Oct 2025 12:10:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FBADC4CEF1;
+	Tue,  7 Oct 2025 12:09:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759839008;
+	bh=N6Czb2+ZTAi8kRLBoW7s3ZRCalj0NwNMB9s+8L5BhWg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=LD9oTq4jq08CjZmVNJWgEnuAZwVCZdv8sfwkIEAh/c+Oe5kq8WPOa5ZPTqlZfQB1Y
+	 CzDX/Z7o44Wj8DXBVHBYcbqxShGD991305RNKl9tWQjsBR9vCMG0D0Jpu0JZgXock7
+	 M5TpqpIefyey4KfjdjXqQVvtUTKqxuF018Nec1Xegu5HV6SkxCOc34z/TWxWsHGFrl
+	 ire6hI4YY9Ko51XhW8NG3YXirlw0Ij4LdPq2q0ry2dv2pYYxPeXmLtd2sgWiBaiGT/
+	 v2MFPjwtTslmDq8xIix4nsIVroVpF5lL/UYQu/0PaqsgEUR9Uzu6tf6whF285JRFM7
+	 h3OqwGMuIFkwA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  jasonmiu@google.com,
+  graf@amazon.com,  changyuanl@google.com,  rppt@kernel.org,
+  dmatlack@google.com,  rientjes@google.com,  corbet@lwn.net,
+  rdunlap@infradead.org,  ilpo.jarvinen@linux.intel.com,
+  kanie@linux.alibaba.com,  ojeda@kernel.org,  aliceryhl@google.com,
+  masahiroy@kernel.org,  akpm@linux-foundation.org,  tj@kernel.org,
+  yoann.congal@smile.fr,  mmaurer@google.com,  roman.gushchin@linux.dev,
+  chenridong@huawei.com,  axboe@kernel.dk,  mark.rutland@arm.com,
+  jannh@google.com,  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
+  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
+  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
+  zhangguopeng@kylinos.cn,  linux@weissschuh.net,
+  linux-kernel@vger.kernel.org,  linux-doc@vger.kernel.org,
+  linux-mm@kvack.org,  gregkh@linuxfoundation.org,  tglx@linutronix.de,
+  mingo@redhat.com,  bp@alien8.de,  dave.hansen@linux.intel.com,
+  x86@kernel.org,  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
+  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
+  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
+  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
+  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
+  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
+  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
+  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
+  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
+  saeedm@nvidia.com,  ajayachandra@nvidia.com,  jgg@nvidia.com,
+  parav@nvidia.com,  leonro@nvidia.com,  witu@nvidia.com,
+  hughd@google.com,  skhawaja@google.com,  chrisl@kernel.org,
+  steven.sistare@oracle.com
+Subject: Re: [PATCH v4 03/30] kho: drop notifiers
+In-Reply-To: <CA+CK2bA2qfLF1Mbyvnat+L9+5KAw6LnhYETXVoYcMGJxwTGahg@mail.gmail.com>
+	(Pasha Tatashin's message of "Mon, 6 Oct 2025 13:21:20 -0400")
+References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
+	<20250929010321.3462457-4-pasha.tatashin@soleen.com>
+	<mafs0tt0cnevi.fsf@kernel.org>
+	<CA+CK2bA2qfLF1Mbyvnat+L9+5KAw6LnhYETXVoYcMGJxwTGahg@mail.gmail.com>
+Date: Tue, 07 Oct 2025 14:09:57 +0200
+Message-ID: <mafs0playoqui.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251006175106.377411-1-roman.gushchin@linux.dev>
-X-Rspamd-Action: no action
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 2DACD14000A
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 18BA2180008
-X-Stat-Signature: hk8o6gw8z7tjs3ffft6dyy6m6e99hfpt
-X-HE-Tag: 1759837294-227814
-X-HE-Meta: U2FsdGVkX1/bRHCTaV5RjBQS6hLBTAMOnq4h14BvYBUPICPE40asTJSUH/t5Qj5EogStnTcSf/ofDQLMb34KeK9GwPSB2BtMCezyTaOGvFdFFJd3ZWuUP9ykhNK1Rrca1XC3l8y31HNRX1zMf2SjQmQgCLORfkLUbd7Z+KUQd0qBVzEjZochzz5QHdeOySiCiqXo9tdk5osq+cprH22A/EiygAnUHeVFjdbohsm1LiNnXy2nAEGZPSUytPvo3kXb/O0c4kjS/oCdh3Jd5hbl2dtEe3Fm0XpRDNWQsA50ihwi9bz815AIq92H7/haEzHEOEDjJ/dNHkprLtD/Sa4KscbaKmRonDQFV34YNTc43LmWbwFVS8IkoP2GqR+4gm76n071GSOmZ0e9NMP92/Pp6bfN45iC40ty2jsytbNqUcy8KCBCMz8My1HrshUaO6c+28lmmpoyNevVDUMLyR6sYC0azAvXCmaAQl2mxHRa6gaEcBuHfip4K6snuuvLbgeLC+4X71st1XWTrS+N9YIoD4BCEv1Ev9Ganc6aj9PnHM5EYpRdbL2xh2blZ6CIJXZZt/QLdQ2UaG9t1IozHb5+hrE/X5tYV2VuGgBtUHmSX4Bu8AFAob75X4iBBwYHohjT7TNyFE8oBYc2dTH05/y1UwCjtaro5rNBvkmCcti7Cz7V0fOjerx19KAWbSS8Yj6J799yiG0FNXQZHkgtjb+nnbahtThgrRgQbDAF1CEKqJkubaMv+SvYovG9OZUhKy7jKvy6dVSJp8MEfESTtDo3gHLXH3hugvQy3RHObaV0c3ofFRALZuiIcB2IECHEOvt1lJPQDF3EX7V37y1Ddayl2zuQjT+4ygeFJsJI9LPgRu+ufzUx+6BQNYeiLQtidQtldMp3wAOdzfAZ+q1gcNcgYoNlg9bXiPoU3jOaja7u37/NBSrFENcQ4udvhtNmR5kpNCxvEff7jvOVGx18HX6
- U0rgzUjb
- zmEP/j0c6gRJhkO6e2YtnbkXeF7eySDcgFSPB9dwgRz5BU88+nAfhWRWxM62IAzmQuFueKRkaGEKpN+x7J9vng/JH7y9MMCtAp8bDntFzlJi9RBHGi8wOlhNwHPCPCyQZuocS/rdnPshwZRXPYr44g5dwACJZjebJ4gPWhl4JvojGTvTT7dJV9RfUsSN4wGTeRBLu2FoBc2whk6+bYoe84AvyY+cGNKB2sSGPBkq3LSSuPN8Rr59+/JJRTGZzclEmkqEXpN2Rp861f/fCOESl+3Ekz8olpPC9ZVAz2VoWhCOsO+r8/i7jQ5qt3cRkdK3pA8q/MJuvEzG7GcJZOEfjwisSESoLtgMqCnC0xdZ/mbumUYN5OgCVT5yCwYwOeAZBRia/M+kJeCWamynBv7x21PQewDTLQM0SxBJMYgQi66eigl9dAu4nbz0c1MMYTZI1a7mCCOb3QGnHavlOVrProeEb7HwP/d0QgNcMC97tXP6c4hfRkDzBao442zqVSBJgc8/siD4RrEEcshMilJMGuiEaqFF81QUOm8nKx6TcCeB2Ya1zmvR7te16og==
+X-Stat-Signature: odpjpaqw1hnwicaysyex3hufbynuuzm4
+X-HE-Tag: 1759839009-247693
+X-HE-Meta: U2FsdGVkX19PvnIS4D2B+ykxB9yXeG1ZcTqNcyQUQoZWHjuvYxmbBCwIGnq5jeMDXUP3sxM+A+Hoo+z+efhrgom1hMydQgQGSfCskLs/6SJqxE7aZN6Rz7WGXsUhHL3aUzf8FstynNb622Z1mHi2r7FjkziHl+XCFI2pTHvEc0jKdyytRs3GUJN/VAuUkSSzxNTPFYJg0QRvdMTNf+naOqvNfAqroimr7fOag9DCLnxCYDORb55YGlQox2+wlQvcdoNQ4ZMqo/hjMV6OB1meLNcOlVF03rbXeJcwN6Hb0Eq3oLwWC6JPq4LHQJ/8YMS+Ss+U+wsmxVe9AXPCRquI6pHumSrqf2oXreU0VNzXJ+KO8kWJ6vLIldzWFC2Ruuj1V23KNfNGm3A37GMvSOVdZy2JEnExowADvTGZ862RRPi1hCmjQ1R1mSFNZXdp366aZcrOF33vaHRnyzEiA15RR6xog9pJy8wINRYvorNWrySSOYLDx+lim60HdQl+uJH2JuZ4IcpcUbwskB7U0Qay9egLQNphIz2zcVEuwOTGNVZwY/oW5T5Lmq6FJ87jrkRM7pqSjyJKj38CSjdLM8NujC9WtrY9CvfvjkH+nwEGwGG93bydcAvBnsN965iuSBzhLOa/ApLaE1VNDTPV2v0v0YOZb9FAqA24cq8QPY6/K9m5PjXvttEHIKslvNDvSqoqHppndfTWJgaeR3Q92dHZhd/ZDgZL66KcGgWcyLo1vWUxrHnpqZvlRKoYlCGWnGiAHa9POPxX4iR1Sfg3U3CSYs6Nol4Rts0eQr17pmR+/hNhpxrUI+nmPgKeJKuuMJhxjpB/HACjoK1XJ5MA5P1niMZ0xrxpayU8qYcmgL0QnTotmvhYA/i4TqTGASAFGtg+QB0fsx5LLq13GxXsVssqm6qD4jPCURBcDUVWEbfnRw2M8S2YQ7bP258IaZbf5uQ/tY2PBQcWknjRuk2p02B
+ spl+kOv/
+ 0CtWPoiIFPh/fgf5YHqf4vh/maGRVoPH1JnXj9n/4sVcc1JaAYUHX6u+gLmROCXWk6qKNgJE97W7emoRO2BzS7oQsOKBBCW8zQ+MpOEcWJkmMlF6vowqm3vU+jcnDR0H1LoMUVu7x+7iHDfQezTv4CeBotKxR2br6g4QELR42uWp6wQSykiwggvCvVujYsc/TXBvGR2nEw4xcfiHqZWNTztamAC/Dfunma84yi0U9k8TX9G4S9HE1SXhHXhfrKe74HKkVPHq0KGmAD9go3m22t+GVL46ngL4AarPSVZ0/YGx8GoDFE7VUZ4Ijy/6UZASYdoJK8iqGHsG4/ZjMTgVO9/e3uThmQwMT+vkZg1RsNEVSkL9YQxJJ9EMR2w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,145 +123,169 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 06-10-25 10:51:06, Roman Gushchin wrote:
-> Commit 4687fdbb805a ("mm/filemap: Support VM_HUGEPAGE for file mappings")
-> introduced a special handling for VM_HUGEPAGE mappings: even if the
-> readahead is disabled, 1 or 2 HPAGE_PMD_ORDER pages are
-> allocated.
-> 
-> This change causes a significant regression for containers with a
-> tight memory.max limit, if VM_HUGEPAGE is widely used. Prior to this
-> commit, mmap_miss logic would eventually lead to the readahead
-> disablement, effectively reducing the memory pressure in the
-> cgroup. With this change the kernel is trying to allocate 1-2 huge
-> pages for each fault, no matter if these pages are used or not
-> before being evicted, increasing the memory pressure multi-fold.
-> 
-> To fix the regression, let's make the new VM_HUGEPAGE conditional
-> to the mmap_miss check, but keep independent from the ra->ra_pages.
-> This way the main intention of commit 4687fdbb805a ("mm/filemap:
-> Support VM_HUGEPAGE for file mappings") stays intact, but the
-> regression is resolved.
-> 
-> The logic behind this changes is simple: even if a user explicitly
-> requests using huge pages to back the file mapping (using VM_HUGEPAGE
-> flag), under a very strong memory pressure it's better to fall back
-> to ordinary pages.
-> 
-> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Cc: Jan Kara <jack@suse.cz>
-> Cc: Dev Jain <dev.jain@arm.com>
-> Cc: linux-mm@kvack.org
+On Mon, Oct 06 2025, Pasha Tatashin wrote:
 
-Looks good. Feel free to add:
+> On Mon, Oct 6, 2025 at 1:01=E2=80=AFPM Pratyush Yadav <pratyush@kernel.or=
+g> wrote:
+>>
+>> On Mon, Sep 29 2025, Pasha Tatashin wrote:
+>>
+>> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>> >
+>> > The KHO framework uses a notifier chain as the mechanism for clients to
+>> > participate in the finalization process. While this works for a single,
+>> > central state machine, it is too restrictive for kernel-internal
+>> > components like pstore/reserve_mem or IMA. These components need a
+>> > simpler, direct way to register their state for preservation (e.g.,
+>> > during their initcall) without being part of a complex,
+>> > shutdown-time notifier sequence. The notifier model forces all
+>> > participants into a single finalization flow and makes direct
+>> > preservation from an arbitrary context difficult.
+>> > This patch refactors the client participation model by removing the
+>> > notifier chain and introducing a direct API for managing FDT subtrees.
+>> >
+>> > The core kho_finalize() and kho_abort() state machine remains, but
+>> > clients now register their data with KHO beforehand.
+>> >
+>> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+>> [...]
+>> > diff --git a/mm/memblock.c b/mm/memblock.c
+>> > index e23e16618e9b..c4b2d4e4c715 100644
+>> > --- a/mm/memblock.c
+>> > +++ b/mm/memblock.c
+>> > @@ -2444,53 +2444,18 @@ int reserve_mem_release_by_name(const char *na=
+me)
+>> >  #define MEMBLOCK_KHO_FDT "memblock"
+>> >  #define MEMBLOCK_KHO_NODE_COMPATIBLE "memblock-v1"
+>> >  #define RESERVE_MEM_KHO_NODE_COMPATIBLE "reserve-mem-v1"
+>> > -static struct page *kho_fdt;
+>> > -
+>> > -static int reserve_mem_kho_finalize(struct kho_serialization *ser)
+>> > -{
+>> > -     int err =3D 0, i;
+>> > -
+>> > -     for (i =3D 0; i < reserved_mem_count; i++) {
+>> > -             struct reserve_mem_table *map =3D &reserved_mem_table[i];
+>> > -             struct page *page =3D phys_to_page(map->start);
+>> > -             unsigned int nr_pages =3D map->size >> PAGE_SHIFT;
+>> > -
+>> > -             err |=3D kho_preserve_pages(page, nr_pages);
+>> > -     }
+>> > -
+>> > -     err |=3D kho_preserve_folio(page_folio(kho_fdt));
+>> > -     err |=3D kho_add_subtree(ser, MEMBLOCK_KHO_FDT, page_to_virt(kho=
+_fdt));
+>> > -
+>> > -     return notifier_from_errno(err);
+>> > -}
+>> > -
+>> > -static int reserve_mem_kho_notifier(struct notifier_block *self,
+>> > -                                 unsigned long cmd, void *v)
+>> > -{
+>> > -     switch (cmd) {
+>> > -     case KEXEC_KHO_FINALIZE:
+>> > -             return reserve_mem_kho_finalize((struct kho_serializatio=
+n *)v);
+>> > -     case KEXEC_KHO_ABORT:
+>> > -             return NOTIFY_DONE;
+>> > -     default:
+>> > -             return NOTIFY_BAD;
+>> > -     }
+>> > -}
+>> > -
+>> > -static struct notifier_block reserve_mem_kho_nb =3D {
+>> > -     .notifier_call =3D reserve_mem_kho_notifier,
+>> > -};
+>> >
+>> >  static int __init prepare_kho_fdt(void)
+>> >  {
+>> >       int err =3D 0, i;
+>> > +     struct page *fdt_page;
+>> >       void *fdt;
+>> >
+>> > -     kho_fdt =3D alloc_page(GFP_KERNEL);
+>> > -     if (!kho_fdt)
+>> > +     fdt_page =3D alloc_page(GFP_KERNEL);
+>> > +     if (!fdt_page)
+>> >               return -ENOMEM;
+>> >
+>> > -     fdt =3D page_to_virt(kho_fdt);
+>> > +     fdt =3D page_to_virt(fdt_page);
+>> >
+>> >       err |=3D fdt_create(fdt, PAGE_SIZE);
+>> >       err |=3D fdt_finish_reservemap(fdt);
+>> > @@ -2499,7 +2464,10 @@ static int __init prepare_kho_fdt(void)
+>> >       err |=3D fdt_property_string(fdt, "compatible", MEMBLOCK_KHO_NOD=
+E_COMPATIBLE);
+>> >       for (i =3D 0; i < reserved_mem_count; i++) {
+>> >               struct reserve_mem_table *map =3D &reserved_mem_table[i];
+>> > +             struct page *page =3D phys_to_page(map->start);
+>> > +             unsigned int nr_pages =3D map->size >> PAGE_SHIFT;
+>> >
+>> > +             err |=3D kho_preserve_pages(page, nr_pages);
+>> >               err |=3D fdt_begin_node(fdt, map->name);
+>> >               err |=3D fdt_property_string(fdt, "compatible", RESERVE_=
+MEM_KHO_NODE_COMPATIBLE);
+>> >               err |=3D fdt_property(fdt, "start", &map->start, sizeof(=
+map->start));
+>> > @@ -2507,13 +2475,14 @@ static int __init prepare_kho_fdt(void)
+>> >               err |=3D fdt_end_node(fdt);
+>> >       }
+>> >       err |=3D fdt_end_node(fdt);
+>> > -
+>> >       err |=3D fdt_finish(fdt);
+>> >
+>> > +     err |=3D kho_preserve_folio(page_folio(fdt_page));
+>> > +     err |=3D kho_add_subtree(MEMBLOCK_KHO_FDT, fdt);
+>> > +
+>> >       if (err) {
+>> >               pr_err("failed to prepare memblock FDT for KHO: %d\n", e=
+rr);
+>> > -             put_page(kho_fdt);
+>> > -             kho_fdt =3D NULL;
+>> > +             put_page(fdt_page);
+>>
+>> This adds subtree to KHO even if the FDT might be invalid. And then
+>> leaves a dangling reference in KHO to the FDT in case of an error. I
+>> think you should either do this check after
+>> kho_preserve_folio(page_folio(fdt_page)) and do a clean error check for
+>> kho_add_subtree(), or call kho_remove_subtree() in the error block.
+>
+> I agree, I do not like these err |=3D stuff, we should be checking
+> errors cleanly, and do proper clean-ups.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+Yeah, this is mainly a byproduct of using FDTs. Getting and setting
+simple properties also needs error checking and that can get tedious
+real quick. Which is why this pattern has shown up I suppose.
 
-								Honza
+>
+>> I prefer the former since if kho_add_subtree() is the one that fails,
+>> there is little sense in removing a subtree that was never added.
+>>
+>> >       }
+>> >
+>> >       return err;
+>> > @@ -2529,13 +2498,6 @@ static int __init reserve_mem_init(void)
+>> >       err =3D prepare_kho_fdt();
+>> >       if (err)
+>> >               return err;
+>> > -
+>> > -     err =3D register_kho_notifier(&reserve_mem_kho_nb);
+>> > -     if (err) {
+>> > -             put_page(kho_fdt);
+>> > -             kho_fdt =3D NULL;
+>> > -     }
+>> > -
+>> >       return err;
+>> >  }
+>> >  late_initcall(reserve_mem_init);
+>>
+>> --
+>> Regards,
+>> Pratyush Yadav
 
-> 
-> --
-> 
-> v3: fixed VM_SEQ_READ handling for the THP case (by Jan Kara)
-> v2: fixed VM_SEQ_READ handling (by Dev Jain)
-> ---
->  mm/filemap.c | 68 +++++++++++++++++++++++++++++-----------------------
->  1 file changed, 38 insertions(+), 30 deletions(-)
-> 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index a52dd38d2b4a..ec731ac05551 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -3235,11 +3235,47 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
->  	DEFINE_READAHEAD(ractl, file, ra, mapping, vmf->pgoff);
->  	struct file *fpin = NULL;
->  	vm_flags_t vm_flags = vmf->vma->vm_flags;
-> +	bool force_thp_readahead = false;
->  	unsigned short mmap_miss;
->  
-> -#ifdef CONFIG_TRANSPARENT_HUGEPAGE
->  	/* Use the readahead code, even if readahead is disabled */
-> -	if ((vm_flags & VM_HUGEPAGE) && HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER) {
-> +	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
-> +	    (vm_flags & VM_HUGEPAGE) && HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER)
-> +		force_thp_readahead = true;
-> +
-> +	if (!force_thp_readahead) {
-> +		/*
-> +		 * If we don't want any read-ahead, don't bother.
-> +		 * VM_EXEC case below is already intended for random access.
-> +		 */
-> +		if ((vm_flags & (VM_RAND_READ | VM_EXEC)) == VM_RAND_READ)
-> +			return fpin;
-> +
-> +		if (!ra->ra_pages)
-> +			return fpin;
-> +
-> +		if (vm_flags & VM_SEQ_READ) {
-> +			fpin = maybe_unlock_mmap_for_io(vmf, fpin);
-> +			page_cache_sync_ra(&ractl, ra->ra_pages);
-> +			return fpin;
-> +		}
-> +	}
-> +
-> +	if (!(vm_flags & VM_SEQ_READ)) {
-> +		/* Avoid banging the cache line if not needed */
-> +		mmap_miss = READ_ONCE(ra->mmap_miss);
-> +		if (mmap_miss < MMAP_LOTSAMISS * 10)
-> +			WRITE_ONCE(ra->mmap_miss, ++mmap_miss);
-> +
-> +		/*
-> +		 * Do we miss much more than hit in this file? If so,
-> +		 * stop bothering with read-ahead. It will only hurt.
-> +		 */
-> +		if (mmap_miss > MMAP_LOTSAMISS)
-> +			return fpin;
-> +	}
-> +
-> +	if (force_thp_readahead) {
->  		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
->  		ractl._index &= ~((unsigned long)HPAGE_PMD_NR - 1);
->  		ra->size = HPAGE_PMD_NR;
-> @@ -3254,34 +3290,6 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
->  		page_cache_ra_order(&ractl, ra);
->  		return fpin;
->  	}
-> -#endif
-> -
-> -	/*
-> -	 * If we don't want any read-ahead, don't bother. VM_EXEC case below is
-> -	 * already intended for random access.
-> -	 */
-> -	if ((vm_flags & (VM_RAND_READ | VM_EXEC)) == VM_RAND_READ)
-> -		return fpin;
-> -	if (!ra->ra_pages)
-> -		return fpin;
-> -
-> -	if (vm_flags & VM_SEQ_READ) {
-> -		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
-> -		page_cache_sync_ra(&ractl, ra->ra_pages);
-> -		return fpin;
-> -	}
-> -
-> -	/* Avoid banging the cache line if not needed */
-> -	mmap_miss = READ_ONCE(ra->mmap_miss);
-> -	if (mmap_miss < MMAP_LOTSAMISS * 10)
-> -		WRITE_ONCE(ra->mmap_miss, ++mmap_miss);
-> -
-> -	/*
-> -	 * Do we miss much more than hit in this file? If so,
-> -	 * stop bothering with read-ahead. It will only hurt.
-> -	 */
-> -	if (mmap_miss > MMAP_LOTSAMISS)
-> -		return fpin;
->  
->  	if (vm_flags & VM_EXEC) {
->  		/*
-> -- 
-> 2.51.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+--=20
+Regards,
+Pratyush Yadav
 
