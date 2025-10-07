@@ -4,124 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0801ECCA476
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 13:58:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D101FCCA476
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 14:30:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 549378E000D; Tue,  7 Oct 2025 09:58:23 -0400 (EDT)
+	id F2FBE8E000A; Tue,  7 Oct 2025 10:30:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5211C8E0005; Tue,  7 Oct 2025 09:58:23 -0400 (EDT)
+	id EB9A48E0005; Tue,  7 Oct 2025 10:30:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45DBF8E000D; Tue,  7 Oct 2025 09:58:23 -0400 (EDT)
+	id DA83A8E000A; Tue,  7 Oct 2025 10:30:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 33CB98E0005
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 09:58:23 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D141513953E
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 13:58:22 +0000 (UTC)
-X-FDA: 83971472844.23.D9E357D
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 3C8F580008
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 13:58:21 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=yEgZEMBv;
-	spf=pass (imf30.hostedemail.com: domain of 3exzlaAYKCJYI40D926EE6B4.2ECB8DKN-CCAL02A.EH6@flex--seanjc.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3exzlaAYKCJYI40D926EE6B4.2ECB8DKN-CCAL02A.EH6@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C4AAE8E0005
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 10:30:31 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 688591DCA77
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 14:30:31 +0000 (UTC)
+X-FDA: 83971553862.06.0BF7EB2
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 03CA4140023
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 14:30:28 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=CwYYfD2l;
+	spf=pass (imf26.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759845501;
+	s=arc-20220608; t=1759847429;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4rlYUY99rqPM8GfD927WUvhieIqn1G/yd0+acs0pn14=;
-	b=eI7Ky0bKKEWDsPB7tjKrTFBj4k56hqy9jjus1K4I9OT5N4e45RpoDJtooy0ApZ4PQn3BAq
-	ZFw1+yLDFzq7/8dfB0rHyL5L0yei0rf4bqizgFhtGWjVwuMG8NAPaTg2fFm31PpeLYYP2w
-	+qVrT/FuSnlAmEJiMY/pH2cwEcXt1VA=
+	bh=KIQG8fe18Cm5jfwgp1PcSo86AFXK7b2BBlHnYTtTuIM=;
+	b=diw1q6uTe6vstsUT2/3N+bMcjxYErAG35arkj8/1qJ7Tft+TdibfNOzvR1jrCQrK9HlHCj
+	1OZLZ3BOl++knYYKEbBs3an2cLXhzcHU0S/1zZUuUlVfgRZd2dtGvwPCkpY9Fs32PSb80E
+	dlH/Q5/YH2RanZA/VG5vH+P32ZzyvII=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=yEgZEMBv;
-	spf=pass (imf30.hostedemail.com: domain of 3exzlaAYKCJYI40D926EE6B4.2ECB8DKN-CCAL02A.EH6@flex--seanjc.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3exzlaAYKCJYI40D926EE6B4.2ECB8DKN-CCAL02A.EH6@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759845501; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=CwYYfD2l;
+	spf=pass (imf26.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759847429; a=rsa-sha256;
 	cv=none;
-	b=CQVDf9oJ0k5d6FnRZ3dJvJiVSKY94ebo2lHhfmDW66beH0tTxsmVHU+0enU2P14tZ5QdAt
-	6q2ZbXniZWCeHNsdEEdXNXSGUrWrjjQ38WI/vOZQB66xAd+88RDisUVtEIPcjfWNTaO0gB
-	uWzRXT/KUd0Zrpiu0d02ozG/qCo3G3c=
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b522037281bso4421905a12.3
-        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 06:58:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1759845500; x=1760450300; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4rlYUY99rqPM8GfD927WUvhieIqn1G/yd0+acs0pn14=;
-        b=yEgZEMBva9y7F7i21y9XjTXl8ObZnjtu76Ermr4NAWI1Sau6q7H53cMx9asLgRbEdZ
-         gQVwROxBt5o9vKWYceLCUB8qgo56A0HnvBbLtG1ohsDjWZzUg6ZRHbneBvf4hzPqB0r8
-         ufnvBtxAkd7MtFSyA83dd1PYgkJJMWbEYCztPZqFjP4Vi/HZT9K3MIlxrUWZNb9/xGvs
-         hX3+vWsLdUWnGE5koKQUg9uubnulHT7ssbTy7jn64mxAL8tjcbCgldRn9EZ9elEfWjhg
-         dO4hRhmrEnn4N8GtYqE90OsvVt0Ahie6lz3sE00bfOR+00KC9qiyhPEacg52AaZWgfLV
-         C+1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759845500; x=1760450300;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4rlYUY99rqPM8GfD927WUvhieIqn1G/yd0+acs0pn14=;
-        b=QiUm40uthqKMQXnXKHz/AwAdS3jQHeKjLpccfERlbG4zySScDWnnUGBVF/bFi4F4lv
-         YViIh6g19BwsWFJI+J8o5K72WgDAARyTUulGsP1ZwYP155R51XJnaeBVarnyv419e9uh
-         ryCGbVj1r4Y+T9+5BGIyDyGuF3ZtKkAb0UkrZM7/1YYK7vVjKYjOKIyhjkdUzJpHZuqC
-         kb0hyXw8OE2n9nRWXTgYlw0Q8fq0Aq7gYtSAWW0rTI4BL3cdErSduSjezsM9dhUpzjKG
-         QyrMQzUWupAbn5c8pMgbfDTNhnX08ojAsIL76xoJfy1ucZT50fciFqb372Pw7wEwsXFl
-         bL5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXk0nt8OJ/iMX2+oEgKdQBWpxua46UEde+wzxjLMZAj25+o8uOJGQDyaau42MS4zevPYdch4rel8A==@kvack.org
-X-Gm-Message-State: AOJu0YyKWNgdQo9FeUD/P1iRdSIUF3pgPVgXWNvinLAJSX24Cl1QgeBu
-	7GIC1w+r1NuUvm8QHwNv1/VGmi64fKFyiWUCzYIRCPR2nCAN++uXWRz7oQICDNbpFbSwx7QiRc4
-	hEqGLcw==
-X-Google-Smtp-Source: AGHT+IH44LYFtR2Z9aj26aSM38dj+lWGcrky74kzzSLe1xZuZzZCEhZOyIjquiME0rIkS/AaVEe3J4tloO4=
-X-Received: from pjbmw12.prod.google.com ([2002:a17:90b:4d0c:b0:329:b272:45a7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1c05:b0:335:2823:3686
- with SMTP id 98e67ed59e1d1-339c274089dmr20831446a91.2.1759845499915; Tue, 07
- Oct 2025 06:58:19 -0700 (PDT)
-Date: Tue, 7 Oct 2025 06:58:18 -0700
-In-Reply-To: <fc0bb268-07b7-41ef-9a82-791d381f56ac@amazon.com>
-Mime-Version: 1.0
-References: <20231105163040.14904-1-pbonzini@redhat.com> <20231105163040.14904-16-pbonzini@redhat.com>
- <fc0bb268-07b7-41ef-9a82-791d381f56ac@amazon.com>
-Message-ID: <aOUceqlAnsjQ8mo4@google.com>
-Subject: Re: [PATCH 15/34] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
- guest-specific backing memory
-From: Sean Christopherson <seanjc@google.com>
-To: Nikita Kalyazin <kalyazin@amazon.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oliver.upton@linux.dev>, Huacai Chen <chenhuacai@kernel.org>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Anup Patel <anup@brainfault.org>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, kvm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	Xu Yilun <yilun.xu@intel.com>, Chao Peng <chao.p.peng@linux.intel.com>, 
-	Fuad Tabba <tabba@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	Anish Moorthy <amoorthy@google.com>, David Matlack <dmatlack@google.com>, 
-	Yu Zhang <yu.c.zhang@linux.intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
-	"=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?=" <mic@digikod.net>, Vlastimil Babka <vbabka@suse.cz>, 
-	Vishal Annapurve <vannapurve@google.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Maciej Szmigiero <mail@maciej.szmigiero.name>, David Hildenbrand <david@redhat.com>, 
-	Quentin Perret <qperret@google.com>, Michael Roth <michael.roth@amd.com>, Wang <wei.w.wang@intel.com>, 
-	Liam Merwick <liam.merwick@oracle.com>, Isaku Yamahata <isaku.yamahata@gmail.com>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3C8F580008
-X-Stat-Signature: tex5i4isdwxb5jtsxwkn9x6sumo6fajy
+	b=NAos97Yvsf/PtGsCXESd+2V5TqmY3TpbEvgOGqM+KugOvovDZSLw1QUrCZ/Nr5q1VGzzHT
+	dVpsKFLl4QEvM+Qr09slT9Fu0pHtL8Q8ha/9BABEd85QgPJJx2iMUJfJyfJxJpj1pCA6hP
+	KDVaTQ7yMNGb0YW0gSs2sme1coZllWc=
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 597BF7i8031517;
+	Tue, 7 Oct 2025 14:30:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=KIQG8fe18Cm5jfwgp1PcSo86AFXK7b
+	2BBlHnYTtTuIM=; b=CwYYfD2lrxdBqH48n17aAykQR5P+PvM+gXkItNXLycqN4L
+	vYkoBl5oohmVfU+70xqsp5wXoSk2SL4RtRoJj8SL968ZQpL/KY7eQsHvYhjxQuwW
+	kX4udQrdFhoxJkY39JPU0ExVn3PCmxOYhxlXARi7lbMAqyyMuiIuqO6k+Klee753
+	gCN7u60SGOJ7jVb92f5SVMWnstdn7ip8GXG/BfMfFlJOLNJitXzIiNV746qTkHHd
+	F33eH+w9uVFPHfkE5jwBmtsfDeS93WNYsPI5D4ipFFH2X1VIgq1Zy66UDOmSE0S6
+	4k3sqKkGwrnZVjMx7nEcQVdKhMUjxT9vcbj5biTA==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49ju8aq37r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Oct 2025 14:30:27 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 597CeRC9019601;
+	Tue, 7 Oct 2025 14:30:26 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 49kdwsbv1y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Oct 2025 14:30:26 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 597EUNax53477864
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 7 Oct 2025 14:30:23 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0247420040;
+	Tue,  7 Oct 2025 14:30:23 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 936F520043;
+	Tue,  7 Oct 2025 14:30:22 +0000 (GMT)
+Received: from li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com (unknown [9.111.19.165])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue,  7 Oct 2025 14:30:22 +0000 (GMT)
+Date: Tue, 7 Oct 2025 16:30:21 +0200
+From: Sumanth Korikkar <sumanthk@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@redhat.com>, linux-mm <linux-mm@kvack.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: Re: [PATCH 0/4] Support dynamic (de)configuration of memory
+Message-ID: <aOUj_RE8z9OiIIfN@li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com>
+References: <20250926131527.3260733-1-sumanthk@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250926131527.3260733-1-sumanthk@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: PdkXKFhNzTG2BT8DipAPd1uZ87BQphbV
+X-Authority-Analysis: v=2.4 cv=BpiQAIX5 c=1 sm=1 tr=0 ts=68e52403 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=kj9zAlcOel0A:10 a=x6icFKpwvdMA:10 a=VwQbUJbxAAAA:8 a=20KFwNOVAAAA:8
+ a=VnNF1IyMAAAA:8 a=w9My_uIrVxvTaZuSxxAA:9 a=CjuIK1q_8ugA:10
+ a=HhbK4dLum7pmb74im6QT:22 a=cPQSjfK2_nFv0Q5t_7PE:22 a=pHzHmUro8NiASowvMSCR:22
+ a=Ew2E2A-JSTLzCXPT_086:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA0MDAyMiBTYWx0ZWRfX/tzvw3cApgKZ
+ ONyKqQVhsLg6ZJvP2trmG55xOCkFAKZ7rwkNlxFpvKy2DdcVbtpTE2QsTCCIuF5ZwONxvIu5fK6
+ OTJAy4WeFfjs6kdZz0a2Z8TiF2RP3FB110TP6GPoWYjNV64WXPcYHqcfNEj07g1dVRXNV1y/ZeA
+ ORaL+5YDnl0Cjphe38y2uIOOmWkX2xRbgtnxtddU+96nHVBUKtHK6EToiaeVD7Xb0iYk8YfFdJk
+ 2BwbeN6UXRxFQEr7kZ5S91yKpLmkyiV9mXqX1B8E5q4GKoLT1tdzOx0tZW04TkCC9FGTB8aP+A0
+ xixHAVY8S3Z8/IM2p7TKvjv/uwNJFpn1t0DfEd8xr50eP//PX56KYAUoeUrbIHdvDRgp+eRwF0j
+ Lv9Nm2fMvHRvOCJ9ORwsT8v84u4ZGA==
+X-Proofpoint-ORIG-GUID: PdkXKFhNzTG2BT8DipAPd1uZ87BQphbV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-07_01,2025-10-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 lowpriorityscore=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 bulkscore=0 impostorscore=0 adultscore=0 clxscore=1015
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2509150000
+ definitions=main-2510040022
+X-Stat-Signature: ym1ezbufaidxpjbpkpi6ppw3xh1urso8
 X-Rspam-User: 
-X-HE-Tag: 1759845501-133590
-X-HE-Meta: U2FsdGVkX1+C+rVcelCoe6fGRiOuKPdQO0HBCid85j+hX358T7oxXmtXxVIm/KthMex6JGLrx4iUSt9QYXLf5F9gZnM7ts61A4zlWGDqa/5Z7q3vEXQGs24/RaBUcneTjZHBieIQ2ztuX/RN9C7nq94AtkPCnRNLfoQ+JmZHHH+6Inqf1hhWQyGrv0MKA6+2n5jhqZgHgwFjfwt5ozus3Yk0i4Kr9FNtr4v7ZO2p9cBhVbthbjt0sKr8ohrSK3okGwY+KttJSoqPO7rEmUCmaUBQtMb21GTJ/NdszIr9D+EOVAb0va+L9e2MT+10NeQf+8339bcLjFmZUsrcaWSlzbcCjbMjmkhuquabsZYjKwxIStMheZg/yuR/UXP/m14BgFTOmtV/tSfu0wmqB2JgnmDGFy9YvOaNfzwxNxUe8pE1XWP8sc2SioVCztXBASVeTD6epKgqR07rmKEzWIYD0kOrfn12VpcRMtMQdDXVpJdefnL7IbqVBudxB1FQRG853UpNgCrh8yHjMWAAFpVUVFhnt25DZa8912soZ4c0qUEnZdc8N4KptUCCDeLCliCqEQfw9fsindHKJluG8t1OXYRutwLptA9gD4L4YS3JNTruSe6gRwwn1rhmlhc+hb2eLu/K6lsjEAmrmCYfjjMnqXqYGgm68fBIarCl97pYzGaCddUBS3KKpQX24NGLE29XpFIQlwiMwR9v2Y6fa15ZSQiLzvwWcK9mwFN4xdE7JqP1QeSVKO7PFaQzF1284XDpbL+C3e6sz7VkpQOCUPg18NpcQ93j7sVdR5DBsNAn2WmgCilHDLzzBzvoi+x2USHn8T/ZnVo22+y9XHlHoXZEiz2B9+J949qRS7TGl3yJOAJcVsjgP0JF2S2asnu5VeR1kiEd5WBFDvUSLU6ULttqUTZLlLgMer4o6ClDb7f542x2vjNXQ9NsLLrm3l5D0+hMWP2pi5GTPbh9WaAMhwk
- iAbq3HDh
- PetadMaYABjuBzvXg0cbzppM94K4qu2OYx2GmvuJVjPk5BbDdgFEtmeVZ2AEmWKpK2eIdkEuw/GqHHOOZIiFSlGrHjNaivi33kGC4Rq21ysX5PPsg3yCtjdloc0qBXwzvx4Bj/l8CnKUqb+ZR3sq/oy+Zj5x1+2H2Xqxb65vavL37u+/LL6qrhGfCc2JG2z6zktf18KkIKQbcF/IvcXmMNBLrUc3i/THQ18bYq0vMdJqNpV5vv+HjVz+OsCv/85NYVfUsZznRtTBxk16kLFf5Po8KPMxaieNwGt3YVWUHAb6cVvG3X4cFEBTPDoH7Fl3xgRleV3TdrBr/pyTTiwfXWAzVHyor4KMClMw2nIGnQUl3GtAtdGEGsWWQTX6MgfKDP+/Ripdv30PUzz6cJNxxBYmI7LPVjFZ9FpX2
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 03CA4140023
+X-HE-Tag: 1759847428-856002
+X-HE-Meta: U2FsdGVkX1/MDkg5hCCHVn5No0t9VAlraVsrWJ9K+36Hd6Ggo0hSLzQa0wG2H/FWadkvA94dWxCLH/BMDyV7t8aL0r1984MHuDX00wUebePwJNf8GzlRZR7A/HvUGJr1MK2GcT4aX+t0809oehM0oadeiCLAoukPfu6fkuD/BX7OcJLH3OnGODVDpeh/nFlYduOOeacbTiy3p2ZeePXYaSxrfOBSOwroMr0CsActlvbffQPg61kvdzpfcEslRh5p1yw16mG7Mu+rq4I+pB61U+7XJ8zS7zKiI5zW/4lXCYUrQ3NPQcKgAJS4fXGW7Bhh2gz08xOv2ATn0v3Plvc+2PuMQZaD8/dl0UF2kRpL4w7Hex+gq8JlDk5yZnHJ7NV0eG04Z2W9ylykms820DKk8TnVacV9IdPw0ci6OTdgufxzLS/gErP3redhHmoXt6rU4mjQLZe8/Z8cwN8C/BBPPcRrDOvrkM+5BuDuK82EGH2DtXKBR5vDU/FIOBKpUcWNglQ6tSKnhUUmO+GiVrTXiUeJAufNShSguyepy1f2GpGvWcCt57R1GhhrI5A2pha8C88pvhNXCnDXTrcMapqBKZkF4p/TOl20G9eAR5dly56/J0+0qjy9D+D2skMi19UGA4VrhU/J0g9eGI3L3egNzvVNzmqi+IGPPYo6bieJNnA707tekyC597hgig/mMcm3FgU9qREVKC2pc2yjXDoQzA5TsmJ4pityLLX1C4f3LmyIOgJlWb7kWtXY62zLFXf6WGMP1RVQBmk9Ri2FcVVhQM9dlAWgyUY1Bhr2GFQ2RxXbT97WB00Tel7IYcGXSXM9cRfcSXO/aZZNnrfwePrE3xTk3ah4a4JIwZdxfidgtEC/MqSJfNEuU3xNPN63FEp7hrqk/dYJCedkzbgjFOG+IGSIOVN2s+vNwUEC4umyOfsOkB5F8UEq4+DZOID4CAKyHtaGtOTzi6CnKn9ETqu
+ NG8LLSCO
+ BtbQvKLFRDtHWYSId085/LlJXLcjF+ufnWx4dSwDxNYFTLMyXbdJ3bYqmcr6mZn6AEVce2t3pPQkI7HPEWrESVZiqBnZTh4/r67utn96Y0m5c9/a/H42PLMNRKyF0jyWflKhmLY2AGB91P7a9Kx38ipvLVs0d2SSUL/yiGPPuEXQm8Csxf5VPctjvcVPMhg7/YZKw/4kZ56xspjua7jG7/d1md9pdvFQtFx8SjnJlkfL8Xs56o9r7CmnRtszjI5RWYk4SWNBRqfb2v0h3OoDc5S6s4uiMYO61vDryPctOQnVtN6SabSj+DkMOxzzK1riVkv85hRCPf33ft/m01MJ4iS/sD/Ts65LKk7VWu6bGML9GgbNNcB4BtMWrQxWo49BgcBts
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,58 +141,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 03, 2025, Nikita Kalyazin wrote:
-> On 05/11/2023 16:30, Paolo Bonzini wrote:
-> > From: Sean Christopherson <seanjc@google.com>
-> > 
-> > Introduce an ioctl(), KVM_CREATE_GUEST_MEMFD, to allow creating file-based
-> > memory that is tied to a specific KVM virtual machine and whose primary
-> > purpose is to serve guest memory.
+On Fri, Sep 26, 2025 at 03:15:23PM +0200, Sumanth Korikkar wrote:
+> Hi,
 > 
-> ...
-> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> > index f1a575d39b3b..8f46d757a2c5 100644
-> > --- a/virt/kvm/kvm_main.c
-> > +++ b/virt/kvm/kvm_main.c
+> Patchset provides a new interface for dynamic configuration and
+> deconfiguration of hotplug memory on s390, allowing with/without
+> memmap_on_memory support. It is a follow up on the discussion with David
+> when introducing memmap_on_memory support for s390 and support dynamic
+> (de)configuration of memory:
+> https://lore.kernel.org/all/ee492da8-74b4-4a97-8b24-73e07257f01d@redhat.com/
+> https://lore.kernel.org/all/20241202082732.3959803-1-sumanthk@linux.ibm.com/
 > 
-> ...
+> The original motivation for introducing memmap_on_memory on s390 was to
+> avoid using online memory to store struct pages metadata, particularly
+> for standby memory blocks. This became critical in cases where there was
+> an imbalance between standby and online memory, potentially leading to
+> boot failures due to insufficient memory for metadata allocation.
 > 
-> > -static int check_memory_region_flags(const struct kvm_userspace_memory_region2 *mem)
-> > +static int check_memory_region_flags(struct kvm *kvm,
-> > +				     const struct kvm_userspace_memory_region2 *mem)
-> >   {
-> >   	u32 valid_flags = KVM_MEM_LOG_DIRTY_PAGES;
-> > +	if (kvm_arch_has_private_mem(kvm))
-> > +		valid_flags |= KVM_MEM_GUEST_MEMFD;
-> > +
-> > +	/* Dirty logging private memory is not currently supported. */
-> > +	if (mem->flags & KVM_MEM_GUEST_MEMFD)
-> > +		valid_flags &= ~KVM_MEM_LOG_DIRTY_PAGES;
+> To address this, memmap_on_memory was utilized on s390. However, in its
+> current form, it adds struct pages metadata at the start of each memory
+> block at the time of addition (only standby memory), and this
+> configuration is static. It cannot be changed at runtime  (When the user
+> needs continuous physical memory).
 > 
-> I was wondering whether this restriction is still required at this stage or
-> can be lifted in cases where the guest memory is accessible by the host.
+> Inorder to provide more flexibility to the user and overcome the above
+> limitation, add an option to dynamically configure and deconfigure
+> hotpluggable memory block with/without memmap_on_memory.
+> 
+> With the new interface, s390 will not add all possible hotplug memory in
+> advance, like before, to make it visible in sysfs for online/offline
+> actions. Instead, before memory block can be set online, it has to be
+> configured via a new interface in /sys/firmware/memory/memoryX/config,
+> which makes s390 similar to others.  i.e. Adding of hotpluggable memory is
+> controlled by the user instead of adding it at boottime.
 
-Off the top of my head, I can't think of any reason why dirty logging wouldn't
-work with guest_memfd for non-CoCo VMs.  We'd likely need to explicitly enumerate
-support to userspace, and there might be some assumptions lurking in KVM, but
-fundamentally it should Just Work (TM).
+Hi David,
 
-> Specifically, it would be useful to support differential memory snapshots
-> based on dirty page tracking in Firecracker [1] or in live migration.  As an
-> experiment, I removed the check and was able to produce a diff snapshot and
-> restore a Firecracker VM from it.
-> 
-> [1] https://github.com/firecracker-microvm/firecracker/blob/main/docs/snapshotting/snapshot-support.md#creating-diff-snapshots
-> 
-> > +
-> >   #ifdef __KVM_HAVE_READONLY_MEM
-> >   	valid_flags |= KVM_MEM_READONLY;
-> >   #endif
-> > @@ -2018,7 +2029,7 @@ int __kvm_set_memory_region(struct kvm *kvm,
-> >   	int as_id, id;
-> >   	int r;
-> > -	r = check_memory_region_flags(mem);
-> > +	r = check_memory_region_flags(kvm, mem);
-> >   	if (r)
-> >   		return r;
+Looking forward to your feedback to proceed further.
+
+Thank you,
+Sumanth
 
