@@ -4,106 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93BA7CCA470
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 16:22:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79CBBCCA470
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 16:27:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EECA88E000F; Tue,  7 Oct 2025 12:21:59 -0400 (EDT)
+	id C11FC8E0010; Tue,  7 Oct 2025 12:27:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC4358E0003; Tue,  7 Oct 2025 12:21:59 -0400 (EDT)
+	id BE9BF8E0003; Tue,  7 Oct 2025 12:27:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDA098E000F; Tue,  7 Oct 2025 12:21:59 -0400 (EDT)
+	id B005C8E0010; Tue,  7 Oct 2025 12:27:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C80CB8E0003
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 12:21:59 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B6558E0003
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 12:27:14 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8C5381DDD35
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 16:21:58 +0000 (UTC)
-X-FDA: 83971834716.05.383A0ED
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	by imf04.hostedemail.com (Postfix) with ESMTP id AF71D40004
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 16:21:56 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DhmQ+yFx;
-	spf=pass (imf04.hostedemail.com: domain of 3Iz7laAkKCIIgroikx4nrmuumrk.iusrot03-ssq1giq.uxm@flex--aliceryhl.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3Iz7laAkKCIIgroikx4nrmuumrk.iusrot03-ssq1giq.uxm@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 42BEC1DE89E
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 16:27:14 +0000 (UTC)
+X-FDA: 83971847988.05.7680184
+Received: from mail-io1-f49.google.com (mail-io1-f49.google.com [209.85.166.49])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 66E7A40012
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 16:27:12 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=G7cBw8uG;
+	spf=pass (imf11.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.49 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759854116;
+	s=arc-20220608; t=1759854432;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JPke7s3EpbXC6ErmX/FPvC/unGHuc//hg1lOBj1qibA=;
-	b=rmV8zqTb10YJKf4fZeoOw2crV9X7lgKSie+ctW1vU4Bjd4cZ0vmEtLcvcz2lJ5Av0U9H/8
-	HQOfyN5uC83t6NvXS2x/c5ZVLg58AhROqpfEoOJpBDtCv57XU63LFCLR6S8EiGT6YNRhFd
-	lQMq5S5LbYLaJyXVvdsNII2IeyDQVOg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759854116; a=rsa-sha256;
-	cv=none;
-	b=xdxmB/Fa8Ij2VIx8eaF2rTalmLKf9BzUNsehXd90tuODVccnk3fUrAmGHzFKcdn7zD3ZIM
-	Z8acc28yjYD6nx+xr+9y0EsaR/w16b0Oup8EM671BxQ2mW7+mFp01GkmrRmcfWtM8ILN2S
-	IUyR34acbmsJhovbmIAEnmMH7xiOzjA=
+	bh=UBD2hSu0l0klHe2PgM26i3kvAILb+lcpLzVDDzltvlo=;
+	b=xVEuA0t6K9HI5DgdGrrNVWMvpcfhXWCuFXoILtGf97D0x2Kidty+Djm+FQsYTUEmHmAX1d
+	kaBLikJ2N9O/8L0O8RB5m3ySAvxp1r3lo7vpOxMt5bMitj9DyD4Kr0ochkQh3Y4btlajeK
+	oFBYIYYC1eDbaZwykm8kDpel1GEF9kQ=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DhmQ+yFx;
-	spf=pass (imf04.hostedemail.com: domain of 3Iz7laAkKCIIgroikx4nrmuumrk.iusrot03-ssq1giq.uxm@flex--aliceryhl.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3Iz7laAkKCIIgroikx4nrmuumrk.iusrot03-ssq1giq.uxm@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3f4fbdf144dso3431936f8f.2
-        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 09:21:56 -0700 (PDT)
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=G7cBw8uG;
+	spf=pass (imf11.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.49 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759854432; a=rsa-sha256;
+	cv=none;
+	b=MlQRLMv0xO4P6L6NXceV9dxiTxJnsrsJfp/yh8MgzVFiEfBsAFMt/CXxnvSZmvgLedcjap
+	4anS9BtTLzvrN9dSpqzDHm2X6WaqYqsKQWHF0pwD5RqaCtmtZkoXUfauBHpt8YJSv9UeEp
+	/Xlp+JLK5zEj+JEIVStPYesEK29WLV0=
+Received: by mail-io1-f49.google.com with SMTP id ca18e2360f4ac-9379a062ca8so233898839f.2
+        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 09:27:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1759854115; x=1760458915; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JPke7s3EpbXC6ErmX/FPvC/unGHuc//hg1lOBj1qibA=;
-        b=DhmQ+yFxlqAYMQ/3uXMV1q8vE/6gBP+3Uli7IEwUuj3P4aRGRGsaw/m2MvVVyNrNdD
-         s7qwbWWS7SutqNJzwJ+2IIUMxZHiUmb0tPW5I7N0dwQTM/YnMiuaTeIv7lkemgN5MAOo
-         y8MY+qCNBYc6+lDCBD8jgeR+ZiRctcRYODvzVV45/XqxvdyP4wXSfr1xficRhfmlw8gq
-         KqWJGrfn6MPF5AnWyfxUZNCldMXKbZNAZSVx36//CK0EZ+/bBlhL0ot3WW/fOStWNCt2
-         x2CzAGb6jZDZSBDfeiGLK12/KZI3IoNxHzWXksy7IA7jDVFMz7EIeN0EqHMUFSK8prit
-         CHvA==
+        d=gmail.com; s=20230601; t=1759854431; x=1760459231; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UBD2hSu0l0klHe2PgM26i3kvAILb+lcpLzVDDzltvlo=;
+        b=G7cBw8uGQUOd9hDMrkOxGIudi+IFA7KHHLIQoUMjl2D5Mam7bafguhugFwZ1V8anpH
+         avbuRHAGvVjYsk3wFPLcLqlENNCUvvptGXWfgv0DNtB5BpMrFnwoRa5+OEjEzlpQAzAZ
+         B0RabZT6+jNHrDua+dRLVbZOLJVqf31itAmYH4tgVVK798pQIFsV1t8FZY2PicEslLzJ
+         0Hj2wNeON4EhmEmHXZBGoN00XwUWMlu7hb6s4DfisS287NZhz88P/yfATFswFS11NUhH
+         cQWmJlZHPg8eWOPz0cTDajjE4Mflf1/xvEYCQrPop78tVeRMnq5AgTe3v7IX64iOy9U5
+         9mQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759854115; x=1760458915;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JPke7s3EpbXC6ErmX/FPvC/unGHuc//hg1lOBj1qibA=;
-        b=cNPMeJEd3GLKquJbyd2QRfN2MUUPA5bxswQv3mmRD6/nzHIpS51RTqsJAZ9IdkLpYu
-         UGcyY5ClUxu2/vb/1qNljIye3Vw6QGCP8vM6Y9IOsD4HDXyeRZC9YE0J6izyKgcIn3be
-         2z9M5J96En12Fasvvou/4brpd6BGU3UEjA0bgvwHo0IyU3XXkhFSRNvj6g69mLOwjuhF
-         5AJd+I6RawNALneEow6CYdnosPX/nXG+RTabUWevuraWvFjme7lSbcsRyqushaqgNjQM
-         +ZOVHQGF1UrxWY1dA961dkBAMa47bpipIw2UsCzaM/kFCrsCqsmxz1QQ4+X0Kpiovon9
-         as4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWIRMcGp5qtER+2L/1LREYi2v+7+LuXu92y59jhIf3T2nxkPwujDpMPHpXJNR+5EqqK9kie0wtCpg==@kvack.org
-X-Gm-Message-State: AOJu0YzR2uV0veo15somTdDuuo522v+FB6lHm9XAN9S6yOWnyJ0Ls9R2
-	NS1bWM8Vx2Zr2edmagEsxaKiQsNd7gHOQnj52dyvYFEUFTuWIFUPuWTMsIRwjhoTFO3WiCUoHya
-	rArMMVQePJFknz6HfvQ==
-X-Google-Smtp-Source: AGHT+IH9zRUnvVJnJ2rKg3ul1/L1v9CwXrOUbkfQHeRTwHBdeUKC3Y5EGru7TMDFalytr+scT+ACzRCj8l6otsM=
-X-Received: from wmri12-n1.prod.google.com ([2002:a05:600c:8a0c:10b0:46e:1110:d730])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1395:b0:46e:27fb:17f0 with SMTP id 5b1f17b1804b1-46fa9aa204cmr1824285e9.9.1759854115350;
- Tue, 07 Oct 2025 09:21:55 -0700 (PDT)
-Date: Tue,  7 Oct 2025 16:21:36 +0000
-In-Reply-To: <20251002075202.11306-1-acsjakub@amazon.de>
-Mime-Version: 1.0
-References: <20251002075202.11306-1-acsjakub@amazon.de>
-X-Mailer: git-send-email 2.51.0.618.g983fd99d29-goog
-Message-ID: <20251007162136.1885546-1-aliceryhl@google.com>
-Subject: [PATCH] mm: use enum for vm_flags
-From: Alice Ryhl <aliceryhl@google.com>
-To: acsjakub@amazon.de
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com, 
-	chengming.zhou@linux.dev, david@redhat.com, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, peterx@redhat.com, 
-	xu.xin16@zte.com.cn, rust-for-linux@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
+        d=1e100.net; s=20230601; t=1759854431; x=1760459231;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UBD2hSu0l0klHe2PgM26i3kvAILb+lcpLzVDDzltvlo=;
+        b=myR8ICRsMxAkO0asWnKdzQzhqEgysayF/jWlNKjns48CZVKuchlnzhHcw7BiL6EXom
+         VztB3SqU0X7OcFSl6F9DrdPCdolMmL1TaoZzcAzybLAFiCzIP1eg3wxBTft3jhsdKeun
+         U1xmWOozX3h54ZRH38k1NbHUyVSE0uJKBhtMM//F4R7KuF3Zp8EZhF1PlvTZCUs27tvy
+         M/aXXzX4ZweqEpnMB8VBSh7lxwD6icPfjLmE60DoIGEaFAr5EmoeKO/LdGB6Ecj0f8Bp
+         q3bMJUXdAIyHDxKw2KTCeWSfCP7o8vVnRZje3uqggLLL13f86AKtbRUyB6TeiSieT7MO
+         7Wqg==
+X-Forwarded-Encrypted: i=1; AJvYcCWwgnZllXpyuBrYzijbrT3294mvVQ6DRybzoHroOG8MYPs2yj2lbVoYkyvYl+6k7R3Ftnll1I9Ybg==@kvack.org
+X-Gm-Message-State: AOJu0YwkeG0463+fbm2TFXgW4bG5xP7IMQ0KqobA+ZFiT2ORxlUywo20
+	g59RULHl6c5zN+dmm1J+yZwS8WuJIY9OMudX7KFsAEgWtR4J0rOarpXpxNUbpLRasnEyinwk4i2
+	d8TcJU6tbP777E/HB8l6f20SAwOttX/s=
+X-Gm-Gg: ASbGncvCHi11QGuOPRfKMHOgkQQ8En/t/zcrnxe6ssZ33gNZ/OVUZvo00wtj0cFdYjJ
+	EezmDepAhwIjkg8yeG2ng/CVvJULYob4coKs6WR2//rRv8SG8smrXjVIg49NoLBk6qX+nifunZe
+	laEz8DyOY6s4rmE6+8pN12rdcApfqNhKFBhJZG9B1m9FgbBXuLQjYJW10phq33kUe7BLK038tGr
+	K+DiuW58FPpDX4Xf0dwRLObz62d
+X-Google-Smtp-Source: AGHT+IGLCFTglTAa2kP1ck6r7iG/OBxuOc/X5vnBoy2Ox8YpkFznUIu4nAdIvA5gwoNVKy9bdZ/E6m0Pbw/Ia4pBasM=
+X-Received: by 2002:a05:6e02:2581:b0:426:e20b:f5d4 with SMTP id
+ e9e14a558f8ab-42e7ad16b0bmr217493585ab.10.1759854431265; Tue, 07 Oct 2025
+ 09:27:11 -0700 (PDT)
+MIME-Version: 1.0
+References: <aOPDRmk2Zd20qxfk@shell.ilvokhin.com>
+In-Reply-To: <aOPDRmk2Zd20qxfk@shell.ilvokhin.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Tue, 7 Oct 2025 09:26:59 -0700
+X-Gm-Features: AS18NWDyUXxAHm2OhgOIQBVisQRhBDWipv0GA7qDF0rBOZJ41WWj-kV3nnRnazA
+Message-ID: <CAKEwX=O2CMnufzuU7n32BD+SD5Oapmct=YGUUQFZ=2w+u2kGvA@mail.gmail.com>
+Subject: Re: [PATCH v2] mm: skip folio_activate() for mlocked folios
+To: Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Kairui Song <kasong@tencent.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Chris Li <chrisl@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Stat-Signature: gw985wz1q6dtdpjgscopgoxb16a6wr7w
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 66E7A40012
+X-Stat-Signature: ru8i5c8fqcbxcrfojb3ye51dhxkczbph
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AF71D40004
-X-HE-Tag: 1759854116-648380
-X-HE-Meta: U2FsdGVkX1+BnnTIrPoxE6a79ECiem9bL992zBh1mtCVkWsyIGpPL/O4o7mNVqZ0o8kPyuAh4lFMCyfm/kOkYHmczChUmSqxvX9omq/B2piT8bOBpT5hhHQCvQ4pGJqEQlJvozVZP0TzmjbNpBzhTj5DrpKVmTQoCaHbtKm8vIEhcX6sFxcspffNsKfwWwqSGSegwmDFcXK8s2346KP8YekM63aLT3lDpQoPWiDE4rX6+ujbSBr9wWw96jjjHpLVuy1te/xC+qOlbW+t9Dd0QU+mRXI6aq93daYk7szHYXs+w5qJmWEC296A7CMTYjWsTERbqR+oGtZdRtApls1CHVqkYoeeM35Z5gLXUrFy+uy52v80L1ni853ZMxFpWmffawotIXcvDzSf6JqX8U2Gyx3SKu0yHhAfvXSeTD9gg7LO+0G1jJorEwIEuNKXMGqGAnLQ+g24NYhUhvK77tnzlj79oU1BsoWU3U0/E9GIK6gk1CYYqYRpQggWCFsRCK8giXhNm7A6UQj/7R1LAiLaIBOm3IJT8usKqFJQ+KNDfyDsCNn0vtatAu8yYpX5B4VNDss1cKlpGOpKH5ox57gi7Gi+Wj8u2gJDSKEbnnXyC3J6vSD+8Pbjox3eMKNKWS9gwUrub77ahUIgv88avQmY2vzzKT0qbkIWWYYl9dqXNJCEV+mS4+5+v88d5UdEwkx7GQ5mRJNkvmxXMb1h/rRXGYP9tDR5C8Jd327e8RIY5IQ23xVk2YxI4nV0YhQBub4OlJPx9FO2je0kB0Rnt38b9FADaH9uZnEHY4Hgo/s7ldINYqLFYVbY2r18QkD9mrMsENq3ozM2MY1E/hzqq8jgyQwbf1vaSC+XurR4h6po16HH4gyaWSIFv93TsdYRSl9IC6BRkFXY/57wT8wRwXelhQ53uW8qf2eeBpxQGdZQqNk5W1BGkRQ/HJFJSQgDD5u/nK3QqFHlCOo78yBSiaG
- GZmdOcI+
- b4gE/wGt1VJV2qC0ngBYagDh6J4neZI9tM10NRHCIZqFcptApw3jlwC6tVvgMdTGprhXokeT2emiJ/aI1noGmPCpHB6J+uEO1mj3aI0tryuvdgmoBdsixFN0+1A2I/WGZfSuzT6lx+SV5xFaKZDvdozR3JjhwdNzoBe0l7lxrJ5FD+KnKkpclm45t/WdlOsX/PRGo0f/hklfCazetfpJCbtGQ0bNAClXBC1xwbZxO0Fp/VlHapO9m1qnCP5ntk9p+4Rgsufz46ASIB0HUcbCRKD5iHSODn3JOav8tvnf6z9sv6DZ/wUmdBdpp1L0TG8Ds2xtLU+8qlP6UuvoJmG0hElda5Ym79DMwIgzvoNbGg3O2xWvi9aFzVdePTc0z/ctRHHztRQ/SauByyWaXTJhyg6Qyhff8WWxPnJN/uiVdnDvgyZ7PVRGfkkRabozEuSLbiyA2Yz4h83RM+ihDH7OjIfdrQ9TR/rGGUAmb66/qsEq5zmivSb0sFh1ykg4tmH//jWw+oh6AKUs1LCOaX4gL0riOsLWftz78yLMLsrNhDHjY3Zk8yBxWi4x7sWd+o6QBUszZ2OODgEBPzliCK8WZt1CPAT9yGQSucIywXSO0OLnn9C8QDlYMDP3wHhre/l9cMK5Qxx+yQV5e6XxRupQ3Z2Tw5vJP0auwWfio5N1s022Uzwlb14XkWJ7po8gmoVIDdEkHDexcs9IiqozW20Jj5xbCbUqZXKX2VLwt5DO4igbmbk6LZE3Ki54OLwbC8QiqFKLqJHpqsJfdWBII4ozif9Mm+Q==
+X-HE-Tag: 1759854432-132550
+X-HE-Meta: U2FsdGVkX1+zy1S7kUNwzuMwKrbZKyJtiw0b7l/m8YNpDFXiynV3M0kBOw2cG5QgoTNf5D+Kr86hvRBZPLRlGqjdx1/OJViK8NLrPnX77/VACE3rA1LhSo2j6E0bA5y0uJvrilDP/uxwGBQK2XqYqaBu5SXi4CIQMB8Uy+yJB0eDPtDAfNs0pXaLpEqOHer2iopusTvyrJVr4ATVvvtNUMRHDcnEUDSat0FVj9M16yf4iQvz3rRH9la+H7BFmFkBVzqzpXVetX8RC60Mh0oTO/tJI7MFv8aQbHk/FQ+mJ2Dw7rMej0ReE+pOu+FX+zhgqHsuow714l3Fs8imC/DT99TS9tJ7EPNF9+AXTKlFHD+9w81sHAWHFdfF1DLezFNmD2alm4B85uLETKtTVUBWhpzKh+/7sfBVjBW7BBruybWSkdAyX3PMqpMi0sio38OFl9hBaAYY/q54cpzIDWEXh56VGqRcLQLEXrj6B2u6l3HjpDtMBgiF7VlC96vF4EvP2SdLPlcPppyC2D4ZvO0T225PZJUEUbAD4N1fC2V5cXZowbYO9b0y9gY3CdXspgZZBhScFavVY152YMn4hljXJqcPeMsKe04GkVXYyZMKj2KWb5OA7+TNP2S3rJtowRp9UOfxCT5hnnDqCZGZOKiWydMmNUFREKbxCrR5dYZKab3pSklihbt+KTBykuPUUyble3n2YU9OyxsyDs5l+7RiHICUP6J+zhDTjaxIZimL6d4GTxflcaOOFL+pndPr4BJS3oiMyxV/KKzb5Pt1GsZwtdi7byDoJnMA+i76hcaMO/wDzjMabjDdJ7FHPl0pxbYYcCu7yyWPgIHnjbA6dVsxE61AvaAJvLVjuCeg089ztgSMccszOEFM1dBnESNmnGzg1ApcgV8pnlCEShd06wVru6zO0eUJGS5mcg00nndVs4HXlwaZvrQ0DIiEoi8fwIOrNAZ9DLLFUEYzcQXHsjf
+ uEoIpl/m
+ 2NyWBhDNlN2zu1xQDa8KamQ+4MWJhGefOL6TpxjdN7hpKenvRIYc5DmSgQ103xFRDZA6vnwkABgXQ9pY0B4lBzJSC1yrkKFUdmk+llAwMK/hZayyONtvaCPpD97N5t25RDU8c4EBYP4JcukilFQlDc+ay6FW5mH0jywgycbVhU9DEGZLNxN1RoOSRRaBXOs7iG2MIZaWXHA2/XeFVV4NgaMH8Kn5OTMCDNDaPO4wXjCLJ+bwfcErn7Ff+bRK/UgIKVBD/9owb9+g+5NFyLycaFlXJMMAg4JpHbKs9ju1ez7EtotdIGM9OaPLvra0GB9PSqwq05bRx38p8NSmUS/FRTV9izLpUtuPP+rWraf7UYUvdwcGz7XqHA1bmUFumMTTZYi+5UyatE14CxgS9B6hN9zUGXn8wdq9o6ug7FReEK0H4R169Oty/iEEIaVYYeUMOrloIIvKvotWhHjx/3jY8gYNbuhX3mTOufIh7bbfTJPH+escJf/yRjmd/Y10/Uqh6EWCi7raaRrwxNDD4YRznRhgMxQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,159 +120,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The bindgen tool is better able to handle BIT(_) declarations when used
-in an enum.
+On Mon, Oct 6, 2025 at 6:25=E2=80=AFAM Dmitry Ilvokhin <d@ilvokhin.com> wro=
+te:
+>
+> __mlock_folio() does not move folio to unevicable LRU, when
+> folio_activate() removes folio from LRU.
+>
+> To prevent this case also check for folio_test_mlocked() in
+> folio_mark_accessed(). If folio is not yet marked as unevictable, but
+> already marked as mlocked, then skip folio_activate() call to allow
+> __mlock_folio() to make all necessary updates. It should be safe to skip
+> folio_activate() here, because mlocked folio should end up in
+> unevictable LRU eventually anyway.
+>
+> To observe the problem mmap() and mlock() big file and check Unevictable
+> and Mlocked values from /proc/meminfo. On freshly booted system without
+> any other mlocked memory we expect them to match or be quite close.
+>
+> See below for more detailed reproduction steps. Source code of stat.c is
+> available at [1].
+>
+>   $ head -c 8G < /dev/urandom > /tmp/random.bin
+>
+>   $ cc -pedantic -Wall -std=3Dc99 stat.c -O3 -o /tmp/stat
+>   $ /tmp/stat
+>   Unevictable:     8389668 kB
+>   Mlocked:         8389700 kB
+>
+>   Need to run binary twice. Problem does not reproduce on the first run,
+>   but always reproduces on the second run.
+>
+>   $ /tmp/stat
+>   Unevictable:     5374676 kB
+>   Mlocked:         8389332 kB
+>
+> [1]: https://gist.github.com/ilvokhin/e50c3d2ff5d9f70dcbb378c6695386dd
+>
+> Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> Acked-by: Usama Arif <usamaarif642@gmail.com>
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
-Hi Jakub,
-
-what do you think about modifying the patch like this to use an enum? It
-resolves the issues brought up in
-	https://lore.kernel.org/all/CAH5fLghTu-Zcm9e3Hy07nNtvB_-hRjojAWDoq-hhBYGE7LPEbQ@mail.gmail.com/
-
-Feel free to squash this patch into your patch.
-
- include/linux/mm.h              | 90 +++++++++++++++++----------------
- rust/bindings/bindings_helper.h |  1 -
- 2 files changed, 46 insertions(+), 45 deletions(-)
-
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 7916d527f687..69da7ce13e50 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -273,57 +273,58 @@ extern unsigned int kobjsize(const void *objp);
-  * vm_flags in vm_area_struct, see mm_types.h.
-  * When changing, update also include/trace/events/mmflags.h
-  */
--#define VM_NONE		0
-+enum {
-+	VM_NONE		= 0,
- 
--#define VM_READ		BIT(0)		/* currently active flags */
--#define VM_WRITE	BIT(1)
--#define VM_EXEC		BIT(2)
--#define VM_SHARED	BIT(3)
-+	VM_READ		= BIT(0),		/* currently active flags */
-+	VM_WRITE	= BIT(1),
-+	VM_EXEC		= BIT(2),
-+	VM_SHARED	= BIT(3),
- 
- /* mprotect() hardcodes VM_MAYREAD >> 4 == VM_READ, and so for r/w/x bits. */
--#define VM_MAYREAD	BIT(4)		/* limits for mprotect() etc */
--#define VM_MAYWRITE	BIT(5)
--#define VM_MAYEXEC	BIT(6)
--#define VM_MAYSHARE	BIT(7)
-+	VM_MAYREAD	= BIT(4),		/* limits for mprotect() etc */
-+	VM_MAYWRITE	= BIT(5),
-+	VM_MAYEXEC	= BIT(6),
-+	VM_MAYSHARE	= BIT(7),
- 
--#define VM_GROWSDOWN	BIT(8)		/* general info on the segment */
-+	VM_GROWSDOWN	= BIT(8),		/* general info on the segment */
- #ifdef CONFIG_MMU
--#define VM_UFFD_MISSING	BIT(9)		/* missing pages tracking */
-+	VM_UFFD_MISSING	= BIT(9),		/* missing pages tracking */
- #else /* CONFIG_MMU */
--#define VM_MAYOVERLAY	BIT(9)		/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
-+	VM_MAYOVERLAY	= BIT(9),		/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
- #define VM_UFFD_MISSING	0
- #endif /* CONFIG_MMU */
--#define VM_PFNMAP	BIT(10)		/* Page-ranges managed without "struct page", just pure PFN */
--#define VM_UFFD_WP	BIT(12)		/* wrprotect pages tracking */
--
--#define VM_LOCKED	BIT(13)
--#define VM_IO           BIT(14)		/* Memory mapped I/O or similar */
--
--					/* Used by sys_madvise() */
--#define VM_SEQ_READ	BIT(15)		/* App will access data sequentially */
--#define VM_RAND_READ	BIT(16)		/* App will not benefit from clustered reads */
--
--#define VM_DONTCOPY	BIT(17)		/* Do not copy this vma on fork */
--#define VM_DONTEXPAND	BIT(18)		/* Cannot expand with mremap() */
--#define VM_LOCKONFAULT	BIT(19)		/* Lock the pages covered when they are faulted in */
--#define VM_ACCOUNT	BIT(20)		/* Is a VM accounted object */
--#define VM_NORESERVE	BIT(21)		/* should the VM suppress accounting */
--#define VM_HUGETLB	BIT(22)		/* Huge TLB Page VM */
--#define VM_SYNC		BIT(23)		/* Synchronous page faults */
--#define VM_ARCH_1	BIT(24)		/* Architecture-specific flag */
--#define VM_WIPEONFORK	BIT(25)		/* Wipe VMA contents in child. */
--#define VM_DONTDUMP	BIT(26)		/* Do not include in the core dump */
-+	VM_PFNMAP	= BIT(10),		/* Page-ranges managed without "struct page", just pure PFN */
-+	VM_UFFD_WP	= BIT(12),		/* wrprotect pages tracking */
-+
-+	VM_LOCKED	= BIT(13),
-+	VM_IO           = BIT(14),		/* Memory mapped I/O or similar */
-+
-+						/* Used by sys_madvise() */
-+	VM_SEQ_READ	= BIT(15),		/* App will access data sequentially */
-+	VM_RAND_READ	= BIT(16),		/* App will not benefit from clustered reads */
-+
-+	VM_DONTCOPY	= BIT(17),		/* Do not copy this vma on fork */
-+	VM_DONTEXPAND	= BIT(18),		/* Cannot expand with mremap() */
-+	VM_LOCKONFAULT	= BIT(19),		/* Lock the pages covered when they are faulted in */
-+	VM_ACCOUNT	= BIT(20),		/* Is a VM accounted object */
-+	VM_NORESERVE	= BIT(21),		/* should the VM suppress accounting */
-+	VM_HUGETLB	= BIT(22),		/* Huge TLB Page VM */
-+	VM_SYNC		= BIT(23),		/* Synchronous page faults */
-+	VM_ARCH_1	= BIT(24),		/* Architecture-specific flag */
-+	VM_WIPEONFORK	= BIT(25),		/* Wipe VMA contents in child. */
-+	VM_DONTDUMP	= BIT(26),		/* Do not include in the core dump */
- 
- #ifdef CONFIG_MEM_SOFT_DIRTY
--# define VM_SOFTDIRTY	BIT(27)		/* Not soft dirty clean area */
-+	VM_SOFTDIRTY	= BIT(27),		/* Not soft dirty clean area */
- #else
- # define VM_SOFTDIRTY	0
- #endif
- 
--#define VM_MIXEDMAP	BIT(28)		/* Can contain "struct page" and pure PFN pages */
--#define VM_HUGEPAGE	BIT(29)		/* MADV_HUGEPAGE marked this vma */
--#define VM_NOHUGEPAGE	BIT(30)		/* MADV_NOHUGEPAGE marked this vma */
--#define VM_MERGEABLE	BIT(31)		/* KSM may merge identical pages */
-+	VM_MIXEDMAP	= BIT(28),		/* Can contain "struct page" and pure PFN pages */
-+	VM_HUGEPAGE	= BIT(29),		/* MADV_HUGEPAGE marked this vma */
-+	VM_NOHUGEPAGE	= BIT(30),		/* MADV_NOHUGEPAGE marked this vma */
-+	VM_MERGEABLE	= BIT(31),		/* KSM may merge identical pages */
- 
- #ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS
- #define VM_HIGH_ARCH_BIT_0	32	/* bit only usable on 64-bit architectures */
-@@ -333,14 +334,15 @@ extern unsigned int kobjsize(const void *objp);
- #define VM_HIGH_ARCH_BIT_4	36	/* bit only usable on 64-bit architectures */
- #define VM_HIGH_ARCH_BIT_5	37	/* bit only usable on 64-bit architectures */
- #define VM_HIGH_ARCH_BIT_6	38	/* bit only usable on 64-bit architectures */
--#define VM_HIGH_ARCH_0	BIT(VM_HIGH_ARCH_BIT_0)
--#define VM_HIGH_ARCH_1	BIT(VM_HIGH_ARCH_BIT_1)
--#define VM_HIGH_ARCH_2	BIT(VM_HIGH_ARCH_BIT_2)
--#define VM_HIGH_ARCH_3	BIT(VM_HIGH_ARCH_BIT_3)
--#define VM_HIGH_ARCH_4	BIT(VM_HIGH_ARCH_BIT_4)
--#define VM_HIGH_ARCH_5	BIT(VM_HIGH_ARCH_BIT_5)
--#define VM_HIGH_ARCH_6	BIT(VM_HIGH_ARCH_BIT_6)
-+	VM_HIGH_ARCH_0	= BIT(VM_HIGH_ARCH_BIT_0),
-+	VM_HIGH_ARCH_1	= BIT(VM_HIGH_ARCH_BIT_1),
-+	VM_HIGH_ARCH_2	= BIT(VM_HIGH_ARCH_BIT_2),
-+	VM_HIGH_ARCH_3	= BIT(VM_HIGH_ARCH_BIT_3),
-+	VM_HIGH_ARCH_4	= BIT(VM_HIGH_ARCH_BIT_4),
-+	VM_HIGH_ARCH_5	= BIT(VM_HIGH_ARCH_BIT_5),
-+	VM_HIGH_ARCH_6	= BIT(VM_HIGH_ARCH_BIT_6),
- #endif /* CONFIG_ARCH_USES_HIGH_VMA_FLAGS */
-+};
- 
- #ifdef CONFIG_ARCH_HAS_PKEYS
- # define VM_PKEY_SHIFT VM_HIGH_ARCH_BIT_0
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 2e43c66635a2..04b75d4d01c3 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -108,7 +108,6 @@ const xa_mark_t RUST_CONST_HELPER_XA_PRESENT = XA_PRESENT;
- 
- const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC = XA_FLAGS_ALLOC;
- const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC1 = XA_FLAGS_ALLOC1;
--const vm_flags_t RUST_CONST_HELPER_VM_MERGEABLE = VM_MERGEABLE;
- 
- #if IS_ENABLED(CONFIG_ANDROID_BINDER_IPC_RUST)
- #include "../../drivers/android/binder/rust_binder.h"
--- 
-2.51.0.618.g983fd99d29-goog
-
+Acked-by: Nhat Pham <nphamcs@gmail.com>
 
