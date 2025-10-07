@@ -4,133 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC2BFCCA476
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 17:56:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C889ECCA476
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 17:57:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E9688E000D; Tue,  7 Oct 2025 13:56:18 -0400 (EDT)
+	id 07DAB8E000F; Tue,  7 Oct 2025 13:57:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 499288E0003; Tue,  7 Oct 2025 13:56:18 -0400 (EDT)
+	id 0558F8E0003; Tue,  7 Oct 2025 13:57:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 388968E000D; Tue,  7 Oct 2025 13:56:18 -0400 (EDT)
+	id ED4D78E000F; Tue,  7 Oct 2025 13:57:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 231108E0003
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 13:56:18 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C068716026E
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 17:56:17 +0000 (UTC)
-X-FDA: 83972072394.12.3ED715F
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 63D6D1C0006
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 17:56:15 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=QtKDcyow;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf18.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759859775; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DD7BE8E0003
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 13:57:05 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 81EBC57EA6
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 17:57:05 +0000 (UTC)
+X-FDA: 83972074410.25.390CC1B
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 7A4A9140015
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 17:57:03 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Hryn9ECz;
+	spf=pass (imf26.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759859823; a=rsa-sha256;
 	cv=none;
-	b=WxnT1eHECeut87JJ06h4FwEDJPCQtczxsaj7umj2BKW/p6UKP+FzF+Oy6/R6loWVu3rp97
-	oNZ2LwJj+cPrg6AmGUB7d2NDj162oPm0OmLkNRKOfKfg8V8pEa2C2yqSRjT+WbyjR32/JM
-	c+M7PhBDMaucA2mYZhH0xNN7qn6AEUU=
+	b=keZPzeqlcaiXkqmh11CdlnMrCUynYbNoLVg1AgpuahYCqKrdISZd7CSh4JpgB5lolHfOOS
+	X2NwB9qRYJSzYwntIRxBxJhBt7bsGI2n7p4ub0RuNEfAT5DnHh9Lloai56K6KFDFGJnwnU
+	N8M0CzoPiUOGv2tv4eC2xEImD3f2m6U=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=QtKDcyow;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf18.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Hryn9ECz;
+	spf=pass (imf26.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759859775;
+	s=arc-20220608; t=1759859823;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5Ip2faPvSaL5hQutEabPCv/m/yn7K8QTSsXH+7JXA9U=;
-	b=66Dp2bPdazQpU3QG63LW9Lugp1T9lvOPI6Y1nPu0cP/bNSsOeq9k3XpEpt0/3JFB5YLDQ4
-	W/pATGV9VIcuC5nfvWXOBbDxj0sz9yIPyxJJBlKMHWLtquiMbb0Ju8n39kGQlPKBijMF6D
-	th7WPVtXnFOat0X37bbKRY22rvubIeI=
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 597HKPJ7004491;
-	Tue, 7 Oct 2025 17:56:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=5Ip2faPvSaL5hQutEabPCv/m/yn7K8
-	QTSsXH+7JXA9U=; b=QtKDcyowrIK7ft2mhiDL/miKmtQri0B50qIimXQioE7NYk
-	MWwWD7xNJw5PHbByJsck7FdieMu5TW4gnnflT2+S9jDj9zF7HMUsRi8uhA/eQPJI
-	3a3fCdaaBGEZqt2NEO79DvNTR6eMwL9JnmJohJ9IUVhqpQdIVfcpY+MSPYNBo9wk
-	OG5ql75sIccxS0UhjYH5Ewjt+BN5Y/0GwmgmNiZvelt5Pdu2RkmAQo2xmQ0BrPRm
-	UZeDBx0AprSnKzLdFwPQBk35FrT2TQ/Mmin03ooyhs11se5GMmEGZus0D5LkWCvy
-	VqZv5kidiN5g78FagLE9AUChk4n9TGoe7+UUMe8A==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49ju3h0vnw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Oct 2025 17:56:13 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 597G5VFo000886;
-	Tue, 7 Oct 2025 17:56:12 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49ke9y4s56-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Oct 2025 17:56:12 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 597Hu8QF52232618
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 7 Oct 2025 17:56:08 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 84CC320043;
-	Tue,  7 Oct 2025 17:56:08 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 23CC22004D;
-	Tue,  7 Oct 2025 17:56:08 +0000 (GMT)
-Received: from li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com (unknown [9.111.19.165])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue,  7 Oct 2025 17:56:08 +0000 (GMT)
-Date: Tue, 7 Oct 2025 19:56:06 +0200
-From: Sumanth Korikkar <sumanthk@linux.ibm.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: Re: [PATCH 0/4] Support dynamic (de)configuration of memory
-Message-ID: <aOVUNmDiWgrDJ1dJ@li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com>
-References: <20250926131527.3260733-1-sumanthk@linux.ibm.com>
- <ab366c03-8c78-449d-bfc4-2d155212d9d7@redhat.com>
+	bh=wbA3BYEyn+mxKLyud6a/KO/PAxmrcSw7SZSIkfU9Jro=;
+	b=g/DkmsBaOYjdEsweKQsjTKsvlXtghVGeo5Ie5wv7iIw6SkYkUkEn2Qm/9lMHYI3X1rSiYN
+	L5taWvAio4ldm/U0O3BILPPXNOvDfPzftJwwXc8gCLTESACdKSZmHImZOlSPQ5xgrWivB7
+	2TLmNNxbvAUWoFJkvJus57u5nSz8zNg=
+Date: Tue, 7 Oct 2025 10:56:54 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1759859821;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wbA3BYEyn+mxKLyud6a/KO/PAxmrcSw7SZSIkfU9Jro=;
+	b=Hryn9ECzWmsNJwns1EtidDA4yExpGmfII0Nmt0EwJ6MNEYvgE1tvHAy9mvDQqEDXdkZJgq
+	5jWCrMEh6pwZP8Bk6ppCt9sM4KaJCJXIqlvy/LENuBa1BR1zZT5auynWh/UoiRA8e2Jldz
+	LzY5C/Nnfqy4n4x9eKaG0R1ZlQDTMhU=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
+	roman.gushchin@linux.dev, muchun.song@linux.dev, david@redhat.com, 
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, 
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v4 4/4] mm: thp: reparent the split queue during memcg
+ offline
+Message-ID: <sdpkprxqf43emy5sttfzxnv4aemlarimdybdva4xyywyndajtx@zyvckuxgujzm>
+References: <cover.1759510072.git.zhengqi.arch@bytedance.com>
+ <a01588414c9911f2bc912fa87f181aa5620d89d4.1759510072.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ab366c03-8c78-449d-bfc4-2d155212d9d7@redhat.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA0MDAxOCBTYWx0ZWRfXylUUU/jt24f5
- tQuSC7DX/ep+Nx3a70qKiQTRUwJ+I9sYyTmr0NLmAUv1eIkYwn8gTSXUkQbC4PcQY5Hqj/5JxvW
- uel0UHlhnqgxOwgfLbn0CoOdxZFqEc1+hoEhRyhfINkmo7XmULy5Nk+OspLE5kbzYDZpsiHnntt
- 8m19KVrTH+drppv2C9UTKFLTYA6VyeR2JMPc+DhtgUO2nWnOjJxqoLG9c3cxJmExK2LMWQf+87F
- /IalMiEAagLF45wlZFpdxpP3TMAUHQXzkY2WrAc7PZyt/DargJxkN0sE3JJiFBQ4NcDFbGzU303
- 7CcUwxPuPzBKqP85mErumtN1sxfGtz0eJUHJIbQDx8rsyM7KHHBKJ8tpmakbMYIb2h17UQ9hkAt
- lSQXtQ7xrqGoYL1cIDYu+Z2ZYI4PYg==
-X-Authority-Analysis: v=2.4 cv=I4dohdgg c=1 sm=1 tr=0 ts=68e5543e cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=x6icFKpwvdMA:10 a=92Z1TgZWQHc7t2sYIh8A:9
- a=CjuIK1q_8ugA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: oLSBHSvNKQ11hi5t5Mg7NEpb4gBzW7cf
-X-Proofpoint-ORIG-GUID: oLSBHSvNKQ11hi5t5Mg7NEpb4gBzW7cf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-07_02,2025-10-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0 spamscore=0
- bulkscore=0 suspectscore=0 clxscore=1015 priorityscore=1501 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2510040018
+In-Reply-To: <a01588414c9911f2bc912fa87f181aa5620d89d4.1759510072.git.zhengqi.arch@bytedance.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 63D6D1C0006
-X-Stat-Signature: cw8r5qdnssu1f6knkoenhckkujtirud4
-X-HE-Tag: 1759859775-163032
-X-HE-Meta: U2FsdGVkX1+HJ8S/emLyEOew5MpLITbUzLt4tpYhykMMLbI9E/rE5UxDM5zv2brZcFG1lIjzIoVHUrwGpOribtyddwuzPvRd5ZoLH4VYxIt4TQPAy6+4NvVOFmiqyJ2n1iXw+gz7RS9fNrhfRInucrfTmYYbgwlqzi9Xrid4GpElNrbvinKKgXy/oyebB3aecLYlyJv+orkw15bfQLE5Gqwme5gJfb8NVWApNVYx1EjYP7cka89iy+MhEFyfTQR4UC/sRu9YMuhxpzaq4uU1Zh16WpcdTITW3YWDSt+30Dqz2+xGgVeir/eqmDBxm382Z0U7exeg+1e++MEl2Ta8+V39QSx7551doCwlKn020lENP1c1FgQ/Pv7TD9MbxtfTmDTNOSlS1UTe6wjaLejntXpPDZQXptcEI2LIZaoUPsFh+Wz0UfJ9TIqK4zrZJO1cTQh0eV8SLgcQFziC1+nnTFSYoItkKTsT3S8JVDfaDTem2uOAOJVqGoj+8ZGggn5poadOANb7IiJPsdAFvk90RUyxdIw660lFV2DejscUWWbY2JVaNfIy8bYg0WQ85XLpsI+M+0W9SNl0ZF0j6YwsdxfQ9Z23QOBcWNrf4l6MzjLPBejRabM7KGFuhXbtwpy3rGNrl42oK2knHm3rvROK4N9wQHmZQPhNlMmipj0msJyowMAIZqEGc4y0EFbW+dpoX8RjnxOTUXQ1XvHJOSbqkghp/0Cq1Dy7Y2EGyazfzm9zRsnrP35s6ygitMhuh0pd0k2dGebY/6TBOulaZt0pqa1pCKqCTOKlQ1bCuS9XU4eYEY/9JYwAtoPtSzK8FUCu7GOhleJR7oMitaoNpgFOqutVcynohhSQHmpiANPBpSEQD1hIB5Enx2l3+A5bjcSzUzkZcFBHv09hSMNE6fg1Ub+kI8moE1WG269wIC4FNvq7SnVp57XNbWw5Q7O7WNR2dqTHR/S5OjdJNZAetkJ
- 17RnJptp
- 3pD/iGDo1GrNzwnKOQtDfVKoaQmHrezoPaOHFgjdmSOClu49iA1evHbpTM8cCVTXtfUUrDUdu+I9CFwgaMrxvocEYpcPx06wCu0BpSioeJpSe0VFYO2xcLH7M5T65q4C93xYo8YvB91tvrhgibyt9csuYjtsTk9qRGB9hVf6SiXVUawfgBO0I9RilXF9IofKFzoO2+BR7G40VgqfGXZGHEfAhSxzDJ645N+L5
+X-Stat-Signature: q6nqsxhsrbe7jpppxe9wxa4a8bwhk4fi
+X-Rspamd-Queue-Id: 7A4A9140015
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1759859823-630675
+X-HE-Meta: U2FsdGVkX18Ga5oC7XtA69toCTMkXY2FXkA1B/tJgpvn9NuCNyR501jFKQtmS2OGmpn3sa8K0wasb1tnjea9Jg2Tgzl/bm1j30xg6IU+rv6UueIi42cnGl/aM6jMlus3n6yxfwIz6dmRICZGRjPAqLoI3Ecd6qDvfU4RJm/Jk78W4QvuRpwxtJv/NR7lRxF4tn3NpkkeGVhVk9+aVS0Cao7LY3sl6aPpyDJRucAZTca9smBO+p2fme4fQoOkioQYMmPHVuoEDhMIzfGv+2HmC+EeTuK7cts1bwRQ7Qv4baPEl2wn+Oj3CroQVBUMT3RMon/4but/0lVpFuYulGVSb9Tk8xnCoZzOJf0LDWUfVZQkH9hNzb+QTKxMBJ86L+btm727R2dpSHe1NapniMnfJHpmJ3MrBOzqpMLb4ADKf3t+g1HMwUF4CUQFHAPCAUcONcn8kgiffsCxrmLTJ9RonxxZcsaXyZcfBqsvcqCHou7sDqlnEJ5mMH1vgfaAI42laDRCfCi/uvzEOjZ992/+3Q//GIPlaRlTzZseU+bffiMiGMuOPaxPmVoMqjXp8K1AntvO2Daf7hjdQ15JghvEnoL2xp47JVKprPk7ARbBNcCCL9b+XMsYQxU4K5LZP5a5/ZLpD5mGsE2kglV6jhYFJNpwqWejAtC8QcqZqtgv6soR9CmaL4jlL/lqjTev0iE16ZK7sLXBP0RBi3agEwZy2pi761kKKcwEyQBuqfWpmNqYVRa5uxpe1jcCoe9dyoL3H4c7bcUkiRMQjflQgg8JOdmpMifPRwTyc1ZHZLTo5aUCjaTiVxms+BNAlglohgQspXGa/ymEJXdn0X9uRUG7wphP/TI7pmmBMpmD216KS/wCRxPfcl9phgiXnB4PWRKRz5+TtUyfAEP9fw6IvSIJI3Ta35D6zu+Xmoi5hP8vhYwk79y0r5u7gXLJ/HtXNAuXd2HWuXbhjpVFuGFmE2J
+ FITbyOMH
+ +bNTUxaZJpjFEkJ06dM0Yz4gJx0XdssCq+R0MDL42wVv1/Ax7A0f+7BF8+yUbcLaen9w7jXF946eEE9dZVMBjkr9bKyPVZB+H3mI1hCcsQCooPUqYuDA3FGSESYDjqMhHfvmwYCgQ2kMJwhHhtt7IETv60G3LecLZpRwNs6UE73jJ3/GGA92kWnhjuIqYHd5mJjzf0D+m1Ddq1UlQj+9bDSJR9p25psUchC2xZ0bXik3tEfLmHhqa4Uxu2xMFt55srJITBHwgZqyqSVaQNuBTl2y+WqltyYCduyfmjUceZNtjrmQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,118 +94,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > With the new interface, s390 will not add all possible hotplug memory in
-> > advance, like before, to make it visible in sysfs for online/offline
-> > actions. Instead, before memory block can be set online, it has to be
-> > configured via a new interface in /sys/firmware/memory/memoryX/config,
-> > which makes s390 similar to others.  i.e. Adding of hotpluggable memory is
-> > controlled by the user instead of adding it at boottime.
+On Sat, Oct 04, 2025 at 12:53:18AM +0800, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
 > 
-> Before I dig into the details, will onlining/offling still trigger
-> hypervisor action, or does that now really happen when memory is
-> added/removed?
+> Similar to list_lru, the split queue is relatively independent and does
+> not need to be reparented along with objcg and LRU folios (holding
+> objcg lock and lru lock). So let's apply the similar mechanism as list_lru
+> to reparent the split queue separately when memcg is offine.
 > 
-> That would be really nice, because it would remove the whole need for
-> "standby" memory, and having to treat hotplugged memory differently under
-> LPAR/z/VM than anywhere else (-> keep it offline).
-
-With this approach, hypervisor actions are triggered only when memory is
-actually added or removed.
-
-Online and offline operations are common code memory hotplug actions and
-the s390 memory notifier actions are none/minimal.
-
-> > s390 kernel sysfs interface to configure/deconfigure memory with
-> > memmap_on_memory (with upcoming lsmem changes):
-> > * Initial memory layout:
-> > lsmem -o RANGE,SIZE,STATE,BLOCK,CONFIGURED,MEMMAP_ON_MEMORY
-> > RANGE                 SIZE   STATE BLOCK CONFIGURED MEMMAP_ON_MEMORY
-> > 0x00000000-0x7fffffff   2G  online 0-15  yes        no
-> > 0x80000000-0xffffffff   2G offline 16-31 no         yes
+> This is also a preparation for reparenting LRU folios.
 > 
-> Could we instead modify "STATE" to reflect that it is "not added" / "not
-> configured" / "disabled" etc?
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> ---
+>  include/linux/huge_mm.h |  4 +++
+>  mm/huge_memory.c        | 54 +++++++++++++++++++++++++++++++++++++++++
+>  mm/memcontrol.c         |  1 +
+>  3 files changed, 59 insertions(+)
 > 
-> Like
-> 
-> lsmem -o RANGE,SIZE,STATE,BLOCK,MEMMAP_ON_MEMORY
-> RANGE                 SIZE    STATE BLOCK
-> 0x00000000-0x7fffffff   2G   online 0-15
-> 0x80000000-0xffffffff   2G disabled 16-31
-> 
-> Or is that an attempt to maintain backwards compatibility?
+> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> index f327d62fc9852..0c211dcbb0ec1 100644
+> --- a/include/linux/huge_mm.h
+> +++ b/include/linux/huge_mm.h
+> @@ -417,6 +417,9 @@ static inline int split_huge_page(struct page *page)
+>  	return split_huge_page_to_list_to_order(page, NULL, ret);
+>  }
+>  void deferred_split_folio(struct folio *folio, bool partially_mapped);
+> +#ifdef CONFIG_MEMCG
+> +void reparent_deferred_split_queue(struct mem_cgroup *memcg);
+> +#endif
+>  
+>  void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
+>  		unsigned long address, bool freeze);
+> @@ -611,6 +614,7 @@ static inline int try_folio_split(struct folio *folio, struct page *page,
+>  }
+>  
+>  static inline void deferred_split_folio(struct folio *folio, bool partially_mapped) {}
+> +static inline void reparent_deferred_split_queue(struct mem_cgroup *memcg) {}
+>  #define split_huge_pmd(__vma, __pmd, __address)	\
+>  	do { } while (0)
+>  
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 59ddebc9f3232..b5eea2091cdf6 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -1099,6 +1099,11 @@ static struct deferred_split *memcg_split_queue(int nid, struct mem_cgroup *memc
+>  {
+>  	return memcg ? &memcg->deferred_split_queue : split_queue_node(nid);
+>  }
+> +
+> +static bool memcg_is_dying(struct mem_cgroup *memcg)
+> +{
+> +	return memcg ? css_is_dying(&memcg->css) : false;
+> +}
 
-Mostly. Also, similar to lscpu output, where CPU status shows
-CONFIGURED/STATE column.
+Please move the above function to include/linux/memcontrol.h
 
-Also, older scripts to get list of offline memory typically use:
-lsmem | grep offline
+With that, please add:
 
-and
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-chmem -e <SIZE> would work as usual, where <SIZE> specifies amount of
-memory to set online.
-
-chmem changes would look like:
-chmem -c 128M -m 1 : configure memory with memmap-on-memory enabled
-chmem -g 128M : deconfigure memory
-chmem -e 128M : optionally configure (if supported by architecture) and
-		always online memory
-chmem -d 128M : offline and optionally deconfigure memory (if supported
-		by architecture)
-
-> > * Configure memory
-> > echo 1 > /sys/firmware/memory/memory16/config
-> 
-> The granularity here is also memory_block_size_bytes(), correct?
-
-Yes, correct.
-
-> > lsmem -o RANGE,SIZE,STATE,BLOCK,CONFIGURED,MEMMAP_ON_MEMORY
-> > RANGE                  SIZE  STATE   BLOCK CONFIGURED MEMMAP_ON_MEMORY
-> > 0x00000000-0x7fffffff    2G  online  0-15  yes        no
-> > 0x80000000-0x87ffffff  128M offline    16  yes        yes
-> > 0x88000000-0xffffffff  1.9G offline 17-31  no         yes
-> > 
-> > * Deconfigure memory
-> > echo 0 > /sys/firmware/memory/memory16/config
-> > lsmem -o RANGE,SIZE,STATE,BLOCK,CONFIGURED,MEMMAP_ON_MEMORY
-> > RANGE                 SIZE   STATE BLOCK CONFIGURED MEMMAP_ON_MEMORY
-> > 0x00000000-0x7fffffff   2G  online 0-15  yes        no
-> > 0x80000000-0xffffffff   2G offline 16-31 no         yes
-> > 
-> > * Enable memmap_on_memory and online it.
-> > (Deconfigure first)
-> > echo 0 > /sys/devices/system/memory/memory5/online
-> > echo 0 > /sys/firmware/memory/memory5/config
-> > 
-> > lsmem -o RANGE,SIZE,STATE,BLOCK,CONFIGURED,MEMMAP_ON_MEMORY
-> > RANGE                  SIZE  STATE  BLOCK CONFIGURED MEMMAP_ON_MEMORY
-> > 0x00000000-0x27ffffff  640M  online 0-4   yes        no
-> > 0x28000000-0x2fffffff  128M offline 5     no         no
-> > 0x30000000-0x7fffffff  1.3G  online 6-15  yes        no
-> > 0x80000000-0xffffffff    2G offline 16-31 no         yes
-> > 
-> > (Enable memmap_on_memory and online it)
-> > echo 1 > /sys/firmware/memory/memory5/memmap_on_memory
-> > echo 1 > /sys/firmware/memory/memory5/config
-> > echo 1 > /sys/devices/system/memory/memory5/online
-> 
-> I guess the use for memmap_on_memory would now be limited to making hotplug
-> more likely to succeed in OOM scenarios.
-
-Yes. with memmap-on-memory enabled, mainly in OOM situations.
-
-However, it also provides flexibility to the user to configure few
-memory blocks with memmap-on-memory enabled and few with
-memmap-on-memory disabled (When the user needs continuous physical
-memory across memory blocks).
-
-> > Patch 4 removes the MEM_PREPARE_ONLINE/MEM_FINISH_OFFLINE notifiers. It
-> > is no longer needed.  Memory can be brought to accessible state before
-> > adding memory now, with runtime (de)configuration of memory.
-> 
-> Nice.
-
-Thank you David
 
