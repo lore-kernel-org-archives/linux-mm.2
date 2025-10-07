@@ -4,109 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1396ACCA470
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 06:32:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72E59CAC5B0
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 06:34:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5EF178E000E; Tue,  7 Oct 2025 02:32:35 -0400 (EDT)
+	id D1F3F8E000F; Tue,  7 Oct 2025 02:34:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59FE78E0005; Tue,  7 Oct 2025 02:32:35 -0400 (EDT)
+	id CD00F8E0005; Tue,  7 Oct 2025 02:34:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DCE18E000E; Tue,  7 Oct 2025 02:32:35 -0400 (EDT)
+	id BBE338E000F; Tue,  7 Oct 2025 02:34:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EF208E0005
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 02:32:35 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C7CC2160830
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 06:32:34 +0000 (UTC)
-X-FDA: 83970349428.20.753E031
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D1008100006
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 06:32:32 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	spf=pass (imf05.hostedemail.com: domain of yskelg@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=yskelg@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759818752; a=rsa-sha256;
-	cv=none;
-	b=deAx2RbHnDhvoR9ahgrPFgWyCoHNlSY2oL/5k92dMXrAeYq2iQSUYdbP+LezgSTD0qMq25
-	urLO+nj/QHCo5zUp9KeYRUTy1ImyYZfo4EEE/IuRGvpvjH9MCom7u4rMyym+jRW3vCFmnL
-	3o/Wa8ajFlJqHenT6EHoGRXlEATwNeQ=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of yskelg@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=yskelg@gmail.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A60228E0005
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 02:34:23 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 57C891607D0
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 06:34:23 +0000 (UTC)
+X-FDA: 83970354006.30.DA13945
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf10.hostedemail.com (Postfix) with ESMTP id EB72FC0006
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 06:34:20 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="wK8UyY/F"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759818752;
+	s=arc-20220608; t=1759818861;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KJGCKWDOB+HDW2IfjXMw+O6nf5o51khcjA2mbC8osTg=;
-	b=jQm8K+7nZDqKIFcOdxVS0RMMd0nQmcLTYUeoBuHjDah1E1azSSDBiJTh5jfr0YX4SuOrmP
-	xwvMQ5o6jz3XgPPSvmejuzAkGp1ahgkGPRReTDPAQVsQJbQgHPBKvI4alnKa2plweMPGkY
-	GHOA7FNWiGPol5XXXy65pR2nHxWWyFI=
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-776379289dcso477063b3a.0
-        for <linux-mm@kvack.org>; Mon, 06 Oct 2025 23:32:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759818752; x=1760423552;
-        h=content-transfer-encoding:in-reply-to:organization:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KJGCKWDOB+HDW2IfjXMw+O6nf5o51khcjA2mbC8osTg=;
-        b=WqSU4Idzya9pBOSNbMWj4BXMasJAAuqIttTiHcqexBEb+DvXXhgsRbRYvBFAk1k0CF
-         HUGeIobCn5E5E1d7/HDpViwjhpmhR+S3xXXPx+pvGMUeuh7o2sPovefKFA9fpmbP3aiR
-         jCUbO6dfJtYcgBb6ahFwnEeMnNKtR7PY8qNFML93C8iDoaGPexEWrIwGMAHGVhxw69zn
-         Uxb7d5hoFtmeU2WTcwXJRK9lAkM+HlcWdwxYRJ7LW+Cp7vy+MObcO94eGZY/7xCMXzgU
-         GLVmauIRuXfAmIchJNDexFihxVuuynRB9BuObpmRQkcSqV9j6pWFH/+Ym7oxahBnzAer
-         cYKg==
-X-Forwarded-Encrypted: i=1; AJvYcCU2mutV9xlv7L1TImWoUYYGeRTvN3ihkTLMG1nu5BTRk1GQFxB8uwdcES2SlNo7dBA9+iCzTLNFVg==@kvack.org
-X-Gm-Message-State: AOJu0YwnsUR7hkr5Sln1Q4e1vpAMI7zd/d16ezBjHjY8LJ9dMRs2Sv2W
-	wKQx6TKBEipCYbkwWX/xdebHeCog3y2Vq6StgTrl2F2cI/dPdzMPA9Wp
-X-Gm-Gg: ASbGncv16kRJqxPxRxjTTbsLs5A7mtVnnOOiphz6HTEJkeZJnTaG2qoeciOKsaQJz1N
-	6oOfqNHWIf3CCsH/YWwUSnY7yPk84uNXm72QeOLdlNiyFAJndQf89Gr9Mj5wy6T73eMBfS+P9GL
-	O9dTOv7Pm534eOjhDTWoNcWqOhgL3o8mmjqHUrVNiuBXFZJSkalftrfxzbxML04NsP2ljVqe7In
-	SWG/N9YNb8XXbjm9zfn13TVjiNO94XsREg7UeXXAA8CVvLL48mBm88Vxebh2LnbeWsZAj2AC53I
-	oac+UPsQZjZG9KtZ2gtsAt4XNZuRjcoL7TdRO3DXnJbozW3Jf84kc5AG9q7OKHMslZBRxOixrmn
-	yI+8ZNSrlsxkie7yMTH5mDuKMV9XRYNoPiODMnkxZAy0zsq/zaHUtbkpqEMveqLlHPoNciMpwiR
-	ejxq67RI6tHarU2attykdPRIDkTLFk8Y9VdK/3J/ni2PFs6/PgJ/33
-X-Google-Smtp-Source: AGHT+IEhca/DKV1gkMLzYSeFHCblQernrwx8MiefUNdEs8Uem/33USeoThMFjQF25dXOu6Ao9GH78Q==
-X-Received: by 2002:a17:902:c403:b0:27e:f02a:b280 with SMTP id d9443c01a7336-28e9a65bd1cmr98147365ad.5.1759818751599;
-        Mon, 06 Oct 2025 23:32:31 -0700 (PDT)
-Received: from [192.168.50.136] ([118.32.98.101])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-28e8d110cdfsm153463955ad.13.2025.10.06.23.32.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Oct 2025 23:32:31 -0700 (PDT)
-Message-ID: <3b66d603-543d-4616-92a5-9e6e32f116be@kzalloc.com>
-Date: Tue, 7 Oct 2025 15:32:27 +0900
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=uVfcmzXuLVfDwhNrv1TlHQB+p2roeVM6ucFNuJd12fY=;
+	b=oebb+rceRGIdQHTLSa213pDbSNk0ddUK9Fk+N+vyjifTksTnuzyT+o8VHQrQclOGjbBcqM
+	8deDUAihHyB8VWcg3qCJhC+9BT1Sr0VBH3FcUaFoyf59JP6uE0wWXxgzhsXvCm5/j32HI2
+	M/uZ/t2wl1aRCgn1G8ANxxWEIHgaHug=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="wK8UyY/F";
+	spf=none (imf10.hostedemail.com: domain of BATV+9bec3b6c30788c3eacbc+8080+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+9bec3b6c30788c3eacbc+8080+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759818861; a=rsa-sha256;
+	cv=none;
+	b=Gvab6J7PsBKoqYE2HVJHuVdyQC2F4EeG8ddrd/5n6sepAimAdxJtS5tTTEJCMCvavhAwe7
+	3uk3JvneKUnwGdKP0vqyEV/mFnZ8KWGvNoM2QIs3RNZcrbQXSNJU0gZ7qXBzhBfyA2w1bx
+	O9yEvH8FYlcf9jOe8hU3N8KHxWKEiS8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=uVfcmzXuLVfDwhNrv1TlHQB+p2roeVM6ucFNuJd12fY=; b=wK8UyY/FgUQyb31PnejaUKkwpa
+	XEmwvUlS6rQgQiXB2qWa7aS7EsrDolYMqYvooT2UVavUZenjq2NxqnmoCKCzOZ2cOBN6yW4DmkuNK
+	xFNNlLVvx4/30OiectqlKBAsfZnhsFsZl2k27nF5LiJzB/2hyNh3/+k/YoMOmtSsSwDVBw0ahzG25
+	wr3R2NtaaeC9cqtM1QBLm05Ed7NAiZdcBF5Tpx1K9r8mwwd57kxn8/cGC73Xzj+F91L8YbdFBKo18
+	A2g4K7iFyWynn3zK3JIZZ6mrkVV01bP6qZU/56mHIZILVfBtdRrtHPCRHWcMLDmGR23vpjwkqpEG/
+	yvzyl5yw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1v61H5-00000001NCF-2XwD;
+	Tue, 07 Oct 2025 06:34:15 +0000
+Date: Mon, 6 Oct 2025 23:34:15 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
+	maple-tree@lists.infradead.org, Alexei Starovoitov <ast@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	WangYuli <wangyuli@uniontech.com>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>
+Subject: Re: [PATCH v8 00/23] SLUB percpu sheaves
+Message-ID: <aOS0Z5N4HaBNeb_J@infradead.org>
+References: <20250910-slub-percpu-caches-v8-0-ca3099d8352c@suse.cz>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] mm/migrate: make sure folio_unlock() before
- folio_wait_writeback()
-To: Byungchul Park <byungchul@sk.com>, Hillf Danton <hdanton@sina.com>
-Cc: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
- Yeoreum Yun <yeoreum.yun@arm.com>
-References: <20251002081612.53281-1-byungchul@sk.com>
- <20251002220211.8009-1-hdanton@sina.com>
- <20251003004828.GA75385@system.software.com>
- <20251003005230.GB75385@system.software.com>
-Content-Language: en-US
-From: Yunseong Kim <ysk@kzalloc.com>
-Organization: kzalloc
-In-Reply-To: <20251003005230.GB75385@system.software.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ragcmem9z5385k1r1spqrrecf16a1xjy
-X-Rspamd-Queue-Id: D1008100006
-X-Rspamd-Server: rspam06
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250910-slub-percpu-caches-v8-0-ca3099d8352c@suse.cz>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Stat-Signature: tmj51uttkcaxnrg5ays5fq7wtotem16k
+X-Rspamd-Queue-Id: EB72FC0006
 X-Rspam-User: 
-X-HE-Tag: 1759818752-740606
-X-HE-Meta: U2FsdGVkX1+mrjo+K7eTXyI6jgWr/yLZ+qXribMeq396q71R1Zr4nVzRV6mHEY9Ls/qLAs8KAsNgYhkqjV60er6RSc/reEHSxyZSJo+FywIrpX63nNE3heLyt5/IRW0byaCKi80trUY7QkkLvLDFRNTTGRD5K1WBqnMZ3q9SjbPJtSaezQx1M1G09OOSLPWouGhq3Xyduj+XGeGVLNGakAfWWchvH4T9/3vbknsnVdeZdfXO/JovNlxJu2UgwlzwpMya7+uNrBAvv7K/TDj/tDMj6w8moxG+Yt0v2OdGRrHp0K00j+ZY3cL7UwOzJf3i4z2SZE6DNsw5i+NkzkHF4CS4YZNDmn53J1hQ4z1jXvmxag0B8JfbirbD7v5bVucMx1duJMVGzfm8hFDYkGaSOrvC4AFW74fe6EK1SidPCHRYLxb5PiQv3zL5ZyWujzDbAe6FtdiJ7QGZn7vGHGe1WG8+A4EnTDU7Q+xGeiimrGs3KG3fS1DpJByoIGbbL1jhPK6wmQvMngUxySprA+LGo1v7KUJxxZT9gY3mc4kkdQnWU4kOygozRvhC01y1rqQVz4Pei5qwCZp3Btpo2/m/IaegirFCpktBkvyzIanp56Fa0rbiCYzDIM4gdorUvjSOs/OVTcGqYdL+2yXwstNN4iTl3oFVjri8JgWG9mwj2QHtXKoMR1Oxyx0PCc3H60cfU0isEgLKVY+CfJ7mJ4YD7uiaBRLNt1cKOIustkZPUHsYAkI0HqvIIdJo84khK3JoukAcgF1Bfnu4HdW0CITO1wJMbNatpOVKRHZHrIUtO9b9H9EmG1LaX4V3oQx6VFkgc+xQbFWpGbOY3XSOAWhAj9K5BliyR5ebw9Vtbifjvegvz3FjI+AB0VwNwwPnoRMClaH2zfW9Hr18I5k+oQkj7c1PZHUae7D2V8P5ZsbqNSRIDBoz76J6/PGjidKYjKsMZzNfv+LHhu/MRb0oHvk
- Al9B3US+
- lJ+MfqOPAq3oMLiyty+3J67wU+WBPkMGK5HGf8MOJCCh/GmO7yfqEABPn6/emmCKLS6MmyDwI7AXtR6Ad3XNNXd6/tFyFSpPr/fM6kN8RIL+NL6g0T6bt5foxyKtSGZjybmSuvDT1vNl2maH40IzfpKHFd628JT2a8LfOTSfsadSvPeUEQ5hXzuALmA251RIkMgcePlalJjxIC5D0XI9yl+u/l/0TtexPDAFzF8FINIRBYfA4CUzHOtFNqAygfZyxd+HTLUu4+7hfFoH2Yw2KRZEXuyplUaYQ353xSqGs215zJkXhlC9agp5kN4RA2DXu+t9cwiP/f2cE0mDq9XSELubbnquN7qnZfVN910AlKXFCVqW5FbFST/vKEx8i0TGZLAkNidhlV5C0cntge9yYJKE0CPxeDVNTbn5JR2Iu4Eq+9LlgQ37bjWzGp9rpYCIsef4NLpnIi6qRC53KRCCoK+T6icQNxqTZ3kD1zGjHUGmW98k=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1759818860-301137
+X-HE-Meta: U2FsdGVkX1/nJRcgsDS1KB34IRNAauHzhzikhQ6YxbVmT1YuiL7CR0U7TrinaIYYOaeUbrYI8Wc+pCRQIDpu5iLFoGAY9i6feKm0jrdGNyhJrPQCRhOwggh8v2zRvyTcy1aS5AdHSMLHrCX3I1t6BpfCgD666apKS+f7R/UUkHTmvV6huqCvQG0LAGW+W/JA6LKNdkmZOs2eWanmkf/ip4DTriMAWgtOkTiFBnQuNmAZov7VD3QCSLe+gu+uPTWyg6R5hftX9y4GIO9BN5v5ox+M6soTItZnD0rrLv0zFGtcDUmG3Y1bZqp2rZyjF3RMbw34VPkbSNNGsjU58Qn6NdjJShLe76hLrTymjpgX2kCNQALZbanDlwvIhJ7h5qTvZsVAPHMcwrf2fXKuYNTwzeYvBHSfyf0sP11C9ONjbUKQc8k3Z2B5yyXXNWFrPUP5WNSe5EJFrVbDw9dfron4MPbKot0SJOv83jQjl6OxmCfpAGMVDls2xHJpWOaWIbpleROtYuB9xLA+4W3096LMFtnUfjCX+M7uYKfVefzSU0rog9AxQ/QhwKf0isQ1Os+LNpL2pPnINGgKszRZK7fBaZPiUrFXHmW3/1MhYA5t0q+cUg/9Eap+UIaO7Ap8my+m+lSdYR0asaQriJIF+CbIbuoKOV4oAE6X1Z4vpEiFUYFi0lB5SNlhJf4G81HVjTU+fkzga9NA88aW7FBWl/OK9afxstd86WjPgwkgO9E1QxkvUsLVVeF+3Tp8Hveajibcsd64wDkrcIiVscQuAhK4ZSkwTVyWOARnHKXK++HTAGNgBpAT9q/9LSzn95mMJIuPK+UMLMa5UDU7K96+PehwTB9c6dPUsSFw3cGoCgMHbJKaoIVlPMM2Z5eKggUjXp6cyXo463iDU7m65qjdNNW8+xlHIb2f1+d2gawRczKiCp5Gyn4Mfu3z7ahS9heOxLnFA1vZDTAaH1cg+Dh7o8v
+ y1iHNw1j
+ XEDAFtmQclXPfnkqZEvyg5ybMGvUoovIDIxQN69IgDF/9EydgHLYsFKMiep5h1exh+Vx6ng86naSiHxqK3ZEOdLrgb8Y7u35fONogMGZHZvl1F0UtFkzBu9r+gyFlmBIISmMVTZP3oL1Nmhv/LLs6nTeNo3xhp1gj+iNp9PmceGCBWQdn+cURt2PXzeEomYQHMbYVsmOsZrwdE+j6TfCfKFQEHbKGY1EYRhjQRQZ3moZxcg92VbG7gdHH+023QkMDm/w53iXEuacQOHbcVG/pQxzdcxDmBKjW0m0wK6hWipqUr7L0zCEwYcxgeogy8lUcUyyz/rQEyrtVnq3w3rW4LT9Vp4ijjguvMBHy/eD4kwwr6/IfESzLASvAdQXjikK4aVS+O1/BIGboNOZpLzfpT8bjbvPEQSwaxfAjnMZTNvcgTSP7OlKJtYczzj89lrNup93TL6fPcnOPHQHOVDKNhH1/QucxfTe6tqf4+nWKc09wvpkB2c4pOl78Lg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,38 +105,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Hillf,
-
-Here are the syzlang and kernel log, and you can also find the gist snippet
-in the body of the first RFC mail:
-
- https://gist.github.com/kzall0c/a6091bb2fd536865ca9aabfd017a1fc5
-
-I am reviewing this issue again on the v6.17, The issue is always reproducible,
-usually occurring within about 10k attempts with the 8 procs.
-
-On 10/3/25 9:52 AM, Byungchul Park wrote:
-> On Fri, Oct 03, 2025 at 09:48:28AM +0900, Byungchul Park wrote:
->> On Fri, Oct 03, 2025 at 06:02:10AM +0800, Hillf Danton wrote:
->>> On Thu, 2 Oct 2025 13:38:59 +0200 David Hildenbrand wrote:
->>>>
->>>> If it's a real issue, I wonder if a trylock on the writeback path could
->>>> be an option.
->>>>
->>> Given Thanks to Yunseong for reporting the issue, testing, and confirming if
->>> this patch can resolve the issue, could you share your reproducer with
->>> reviewers Byungchul?
->>
->> Sure.  Yunseong told me it's 100% reproducable.  Yunseong, can you help
->> him reproduce the issue, please?
+On Wed, Sep 10, 2025 at 10:01:02AM +0200, Vlastimil Babka wrote:
+> Hi,
 > 
-> +to ysk@kzalloc.com
-> 
->>
->> 	Byungchul
-> 
+> I'm sending full v8 due to more changes in the middle of the series that
+> resulted in later patches being fixed up due to conflicts (details in
+> the changelog below).
+> The v8 will replace+extend the v7 in slab/for-next.
 
-Thank you!
+So I've been reading through this and wonder how the preallocation
+using shaves is to be used.  Do you have example code for that
+somewhere?
 
-Yunseong
 
