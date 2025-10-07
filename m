@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81F49CCA470
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 23:47:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD956CCA470
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Oct 2025 23:48:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0D218E0013; Tue,  7 Oct 2025 19:47:45 -0400 (EDT)
+	id 0B2598E0014; Tue,  7 Oct 2025 19:48:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A961D8E0005; Tue,  7 Oct 2025 19:47:45 -0400 (EDT)
+	id F2CB68E0005; Tue,  7 Oct 2025 19:48:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 985828E0013; Tue,  7 Oct 2025 19:47:45 -0400 (EDT)
+	id E1B288E0014; Tue,  7 Oct 2025 19:48:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 847068E0005
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 19:47:45 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2ADE51DF87B
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 23:47:45 +0000 (UTC)
-X-FDA: 83972958090.27.7CA6950
-Received: from mail-il1-f173.google.com (mail-il1-f173.google.com [209.85.166.173])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 678E4A0005
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 23:47:43 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fKgEKKL0;
-	spf=pass (imf15.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.173 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id CCBAA8E0005
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 19:48:54 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6E075868FD
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 23:48:54 +0000 (UTC)
+X-FDA: 83972960988.11.C6A4871
+Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A303640002
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 23:48:52 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HlxWKl6J;
+	spf=pass (imf12.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.42 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759880932; a=rsa-sha256;
+	cv=none;
+	b=RN/pUm/YWtuItTLqBNnX7L1CfbucB04vRvwAesZnaruxbpJOcHI8g0NKH3fvFhIZidy1q/
+	TiSXSOIgjvRozsLFcsjF6E/+HmS9ZXk02Yba5oUxLIZPMCwS83DnUg65ydwT5Wm8DmL1b5
+	6ra8868NSYE3VqAHExVGbXr2sVI4hPk=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HlxWKl6J;
+	spf=pass (imf12.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.42 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759880863;
+	s=arc-20220608; t=1759880932;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e8uqJbociTCPUWHWK2qTozHBwaCrC9wN6OtLhywvsgk=;
-	b=yjB6P0P6toNm1xlL6ZLpxlxGnqFOV3/f/ITimcc5SkXjSJljNbpiMUvHCESVRe5RN6zkZI
-	YODb7WMHV+KvWFslUa0A7xwK3FNbCp1RRU7Dr8G/SzS9JencRIY96t/4iZYt111zBli7Iz
-	EDHFxMrpPH44hY4GoVJhpaFaXXAx9CA=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fKgEKKL0;
-	spf=pass (imf15.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.173 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759880863; a=rsa-sha256;
-	cv=none;
-	b=aEWiw95crQG7EeF1/94J4HaOI83PP5M93MbHoP8sjempnJND8LYrgjXuaWmR3nCsU6PySg
-	++eFN8KX5qEoAn9xnEJsZhnQ1vEFfQXOB0aejT/2lhO+s4PQYnETFbHr0kzOKePY5ou0Z9
-	+6UV5bKR0Uszq7TBg6Ulm4tPL1H/2EU=
-Received: by mail-il1-f173.google.com with SMTP id e9e14a558f8ab-42f62c671a3so22975545ab.1
-        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 16:47:43 -0700 (PDT)
+	bh=KTrkGXnyKHFVa/Dswya3ynmDrTauPJRZ5aGaaq8QjdM=;
+	b=AwEveAg2+fS+/fkeElmiju0Ur7G2FpkSQyLiX1eQjhNs7Z4z5SoaAYbNzj3QY33nYKR5v5
+	8FrCtGNZH1UXFOP/X0JukitAvLkIpo0Eccg6W9V5982CPedaCld6XLQ1Sd0LguYh9TPhEl
+	pP1W8BZXQdLtW7tLOkSDkJQmslJ8Pxg=
+Received: by mail-io1-f42.google.com with SMTP id ca18e2360f4ac-9379a062ca8so250213439f.2
+        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 16:48:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759880862; x=1760485662; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1759880932; x=1760485732; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=e8uqJbociTCPUWHWK2qTozHBwaCrC9wN6OtLhywvsgk=;
-        b=fKgEKKL0a8Sc70GUP1yeF529xOv4Mr6Fyw1P3SAJKkm9XE/KJg/qHi2jnyjt3Ryukn
-         JfizCQVi7lRh0vDJPQGzaHgktt5F+4gwVAR02L8zMiGGhymXLoiVzWx4GcUVvMNKN3TY
-         QgO055hN+zB2JpY+mvb4M+o9PUXPLwnEWAw2kKBwS4MRjWfJAn4pOM1vtRp4unnd7sHX
-         SHepRuoIzaeU1ACrFlTMvJvzqEyf5eFJ7oEY3R7zNrwOfvEnEf3mqsu6VUDQuV4w1t89
-         1LwDPjg7pHujnthE+MDifodUj86Gb/k3wzn+AJ/RSb0xIUwL8cp5bxyJWQXWuKJOsx93
-         +ITw==
+        bh=KTrkGXnyKHFVa/Dswya3ynmDrTauPJRZ5aGaaq8QjdM=;
+        b=HlxWKl6Jusj2EChEx/8NXUouiziLtCDiyMJKz0TM3NWsXvDf5rbIe+To7MECWtxRpB
+         alhVuCLTCrzAvkB7H7teig2RpHMn5VKPxhONkdI2TyKlDY04jyNDCKGuCm+brI4PyEhC
+         qDQOkk6vUGvitgPpFg0rFLEdzakANb3nx9tL30J4Ppgyd2+BiGncTeuql+C68JqHErL8
+         6gJYhSjPQvrc8RF81PY1/cnEIDvN0vGQa+3KZIfEqgExQxbAeDxwn3qB946YHc3rOtHH
+         NAscx2gOXZCN7o3WadOF2apmuiPDUXlP1wsby34YTbn39vZ09oKKoVu/MfKyU4+8g+3V
+         07JA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759880862; x=1760485662;
+        d=1e100.net; s=20230601; t=1759880932; x=1760485732;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=e8uqJbociTCPUWHWK2qTozHBwaCrC9wN6OtLhywvsgk=;
-        b=k+zybYWL2Jvuvek5qNkE30pLReG1AAv7PFdEz0TMT948avyNfsUSN78TiYonvHREXy
-         7a2OL2lvm8rBSGd439rmz3O93xP0UMyqxQJY9JqtQgKCQQ5U1JJkTsRVqfLAvRNpgTrj
-         1oXfQRVdHqivXXc8XO6bQYmtLVjeITQ4PyWliLxnk3cuSbVT3E1zmd3RgXc/GIcw08pR
-         kqarSMOLt2RaRoBK13OwZiLDYhbrOH0HmQTeVjF4P29crxJ+1UYKnbHrT/UPQ7N97r+u
-         Py+uZoWvVylhS0U/g6xvMwJ15WA208wboZou9o7glILMdIXZ3oUA2hDnVKuj/fcJAjAt
-         LVoQ==
-X-Gm-Message-State: AOJu0YzlHWyU2ztrVHGHzKx4TQ7B4ixI8/1Zhk/QGgkp7+MdxXdNDhjI
-	pEVO4qpyWocmdOUXNj/2NFFHQLliuU6FTKnTlfXvB36oaK4m+TCVR/5EpuOk8zfi2Am9RKiFq0j
-	wvsFISMB6S/IkEloBU+boAp2RU/7nMd0=
-X-Gm-Gg: ASbGncsqZQdL5SrD0DBXZSm10+dBWgPyL1gaxE4Q3/xB5o7QYk5KabP4jvksSdlQTsE
-	TC4hMYyBwCOY78486BQNkTUTz/hCnOpbz1iDEMP6YNVJtSv6Oa9AW/8QIDJq6EqaMDxhb8VJ66x
-	Zs0+Uuks+49jres73uLWYvgQK8YfkmHWsI4FC1uR77QY1whk1ad6lBFDzGGWSCHR/4kIAzVEsRj
-	/zIc0eGgn74U5BZiKQLE3aKFd6V2bQK3cD6LiHNODZaExQxh4HvXIlIdw==
-X-Google-Smtp-Source: AGHT+IEOJY+PdMJ6V7JuvY1Ev+IpEta4MF1QsBaLVOP1B3MDOAgcBn3U3Oy9frc2219+tl0gG9cbLnSiIgiHzr58/0k=
-X-Received: by 2002:a05:6e02:218e:b0:427:d62b:45f7 with SMTP id
- e9e14a558f8ab-42f8743ba4amr12086685ab.27.1759880862230; Tue, 07 Oct 2025
- 16:47:42 -0700 (PDT)
+        bh=KTrkGXnyKHFVa/Dswya3ynmDrTauPJRZ5aGaaq8QjdM=;
+        b=q7xspEuF/aSiz5PH2UOr4iCcMzho74WEAwtGqdwMlwiGvj0c0m/iTECkHhg0gZJqLn
+         4DhNkK3DJ74sVTG0BK+GibMbgXkHU16YORKc/6534Y6xFZ64adUKGx4bftxGLgoSqgM+
+         cp/YAnZTxZzdgTLbP4sWq3anyXeNHo+dwpD6IHft9kA+CFzgZcXnbttMMAO5acx/KOlF
+         P9vWbWYzlEI1b1X0PpcEXR0+NAitUWNh2VzL5r/vg63eMrgPCNddjfQc5jCjJlZCwdFR
+         YwAgVc47+EsmWPl1YY5kGKWdOTvVXlBfUnnQx8Gpbpu8LGz/9C5OQWd6eEIw3yjYUYRy
+         9K7Q==
+X-Gm-Message-State: AOJu0YwkF1L9ParHiTPBUjnBtjnEKOhCb8+EwtyLhTLIk8lbP7HCSZ4r
+	RMnKHfrFxmAHZXgXMymmklMrKkR2gSMnsZ2R4mj6jCUqZq3vtIpo0W3KweZr65jIfb1gryO/bDh
+	vav24AhRxIulYtfpIqweZln4DD9tO1lI=
+X-Gm-Gg: ASbGncvg+In/cv2ZE7pNuN6G3zfgYt7SOSIKigvpcmEi1F0nK96+47ZbD13JObtIINt
+	8m8u6iTS+2/weruCazJY2P6Px+Tr52F+6gFr94l4zkQlUPbOkY2LlmnLZ6wPQUysOudZCwWahNW
+	lqfU+HGfTA4h1Xi9pPdHGkglpsqOgpBvRZiohHJOeOkKx3RL1g4Q8SQAkteplwVGqNyZ6TQy5jd
+	t4W+uJ2dFVbEiIxVsNCcZGTaKQAUoRN2MiV4NHqewx2gWGJG+FXY2UYgg==
+X-Google-Smtp-Source: AGHT+IGj19t24JgCl5KO9V5v1EPwjahIu3R5hY3KOGEPtfgUylqfyLaq6Gthhlzw4D29h6T3Jq4pX4DjEtbtAWVOp6w=
+X-Received: by 2002:a05:6602:3f03:b0:8eb:13e6:aed9 with SMTP id
+ ca18e2360f4ac-93bd1966acamr130126539f.12.1759880931714; Tue, 07 Oct 2025
+ 16:48:51 -0700 (PDT)
 MIME-Version: 1.0
 References: <20251007-swap-clean-after-swap-table-p1-v1-0-74860ef8ba74@tencent.com>
- <20251007-swap-clean-after-swap-table-p1-v1-2-74860ef8ba74@tencent.com>
-In-Reply-To: <20251007-swap-clean-after-swap-table-p1-v1-2-74860ef8ba74@tencent.com>
+ <20251007-swap-clean-after-swap-table-p1-v1-4-74860ef8ba74@tencent.com>
+In-Reply-To: <20251007-swap-clean-after-swap-table-p1-v1-4-74860ef8ba74@tencent.com>
 From: Nhat Pham <nphamcs@gmail.com>
-Date: Tue, 7 Oct 2025 16:47:31 -0700
-X-Gm-Features: AS18NWBHmLfrrKKqG3H79QtZObTXiBcAvofr9N7p5pHKmfoJZayOaz3kmQE_c2I
-Message-ID: <CAKEwX=Oa3HPQSE5rrFh1DdfoSMtZ4Og5cfTyri5cOqHYzjnkDg@mail.gmail.com>
-Subject: Re: [PATCH 2/4] mm, swap: rename helper for setup bad slots
+Date: Tue, 7 Oct 2025 16:48:40 -0700
+X-Gm-Features: AS18NWBEVi01jmt9rUQqVyEgBnbeYQcYv9BfSDryjudvNduK48EulZs4TumR5Z8
+Message-ID: <CAKEwX=OfcTDH08VrTMFL-uQyBay11H=NccYWVo73XNHVVf7bEw@mail.gmail.com>
+Subject: Re: [PATCH 4/4] mm/migrate, swap: drop usage of folio_index
 To: Kairui Song <ryncsn@gmail.com>
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
 	Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
@@ -104,14 +104,14 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 678E4A0005
-X-Stat-Signature: hqfki7c9gbz79d1f1joni3o3segpe7su
 X-Rspam-User: 
-X-HE-Tag: 1759880863-391091
-X-HE-Meta: U2FsdGVkX1/VvfKtjMiClgi+TgBbuIKFpXAI4zAxXFYNFJhwLNTalDSc6jTzSWLvxW/W3mJrTzLG1iE+r9uyR/IG7ddU6RSXBjfyp5bfW1jHgMdhQxrZAkHlTIVH978mvjGByxfc1Db+HMWdd8CMz/LobNofHfihNdl4VW5m5AKMui/3GU15/Qvn27mgR9kuPkkPZF+4y24bvyB4RZTmnhacq3b/H5wtsDb9UkTFyhCpPdSNyBk6Fn6HT2rRV39Aur6qqC/1400QAsWRFO+LLCbzAMjIOEHrnCItMHy7VlDaN948OTcc8MDRBs7Pq4I6TeImJL6nUn0OoAJaoWBXE/BGlIZ7W58UudPpMHZR+ACHH+zGzkehkl75nW4zTetz0BQP8lHcGnDkwA03DZQ+xvbM4m0hox7RNK9OcBV0jShQJlKOi6dX2rrxpeiElqPPywcMdp0Ev6NPdtQuegTcR+r7XTeSuBkjbfpRWXh/FbcjPMrBVX23tkNoFg46eUyFrCivLiTrSSO5bFIyRPTcZR43U0oogS8XNa9B7DlKKsvo1UeqmIueZ3Gvk6lm9gD95wIX2tJQcPXl5Auz+9qbCNIzLm9vwdR7BX3MqOqHeqUCJ0VxNiagN7eddNDvA9+HlF0K5+m0/BRp09WrJMJz2hT921PGZ/RL/7sYxo77bKaALpV1xsTnQvk9wDbDyKL9a7xmZZPeGcUTyocSvwyc/rqItQJJySaPKaueBTC3RJqO+aY8ZWSjCJd5b1E2TG77XLgXha8XZiYoL1LD1WL+it+bnhNtb/PYTyINFQn3MNibQYX7Tmoqp/RKpaz6GzOgVrkmYNK9J49lVfZWpGjqnWHOgbp/2mCSvPcfuWfUQdHg1GNRec7Pbde8pkypbTfRHgq74DHsrcdjB6x2C0+1csA3nn8p3ZXgNbr16ubdSfNW8V/24Aj127HcGhldXu8qvFsWZimGWqi1GmDOajx
- lWNV2f0w
- AIJwkGXdhUQCt7sANKxILw6dlGaTnHP5PepAM/T9rkxoO4OijDcIt4syGtVT45jsQqcunC6ULywbRiHDQsMng7r2ac7Uq2ybCp3gs5i9Htl6o9gMhPX101Z9lBapcY/GDLX54fxJj0y5P1Spf6u+unUEyxg40+Ydw6sixwB2QzNJCKYk9F41BLkR8NbFglVIA6zGmF3Nib2WHunTGww+QhBQg/7g2DD9+H1pyxSk7g6YexL3NPkKa9TVRA6kGS3CJYjbGrcRvx9KgQJezSRdGHUHguBeyZEtKqWXMDHR6CZ07/14P9knG4+h0+d6VyOrU29hBTgyHCrMWdUMpdY/o3b09wlNpRFwMNht2OwwZuFgGOg2j7eEL2V4P8VgsnlWZDrRlKaiVJALWg/jrQz4Y/tkf5Q==
+X-Stat-Signature: ue6w7cjt6dkowz1aogor7u674ksx5cdx
+X-Rspamd-Queue-Id: A303640002
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1759880932-592637
+X-HE-Meta: U2FsdGVkX194W51qSQtoeQYdr9L8QnvYSITUOGzgxE5x8IFxr22FqgVrXD6xgVAgMRGPcNlxdCKYvVc2vnWWI7RU4NcYW6HLuXFACoDHEpkNNG9SnD9iFiGJo3x+XU7zwIcEPFB8eX3OmIiMWyIUrd3XOUL709yY4VNGmcvD14Ui8QuqHCUGrmLC+RvqdznyEIwJrzT1y2CBVFvvnfuS5paTuYG2cbGoVHwJ50ugREEWzadTL0DXsOAzdwgt8qADWjtSruyueJ99LBWhygj0rmomAzeyTjCqA0g7h41EBxldpcTOuW/iWBGL7ndeTuYaKLlxnUcSHZGtLfIfEBc8+5nKeVNhYGcolk+f7EK9kWnNQmEWjeZfn+IWIeccTJOUQoK8F2vMsNp2WDWozM7d2+4u+hbeSatdpDPFUN05RT47M6YfPVg/n/mYStr1dLDyhCF9rR0CZ2DhxWA7nR+yhfF46TbN+265yvrd7NUh/69yCgvwRTwGoUL+T4vNSu+9OpRhWtlUyHyRf73Xb8wQUTtt2bnYS/BC6tNjUYX88DNQaQN/pPuecJLIl0IJHC9hzuKXZb9okz1WM2OD4e1FpnRXNds2Lqrc3YhXIY0I/nwtaGHKoGyvfi8CVKCR4rRiwq1zU2hwoaLSM+QHaEaTZ14kj9TUqdW7pNq3SBGJkl6vTz5SkuLclnet1rO0DRnBYNuj9+xemCEfhqlhxRaofH1aaVp1zQIqLGDpOJFEasopFpVRzFLld5bCf9PiSVHMrYc6j1P9tTcbjwsnAtJlFlVdjvWx96NMHXVY6OFEBYvdKcj3TA54bLAIf/xPxOgcZDd/QQLI1C3UkwgErEcb2ISIm7Qzd/WWTnlaXExj8fUEWFc2iLj4mtRTLvt5BGF6CvCFs6kun+N83GFy9QeBBQaA0AR4l9uCZWrIB9q2butYVgwEZQEgxd+lgmsDVcs/5WtkIguI5f+dOrsxqqu
+ G+3Ip9M2
+ px1eubnpEqvN4vNYXCBPo2OSdgiB5TckytPyXoTAHvQCJlo4ks0XEQEhWVoV69oRQEoaaaxuDSnvGT/xG0V3L4CMlKNWolIlD4ge4bZ60kfuwDT2XuebWXdCPra33bgex1inAOPVeUzZvzZ7LJp11rt30n2v66TNRqmJPPbXSZtQWBzcjDb7xyHuXr4ONfHO2RWER5Up0pN8gTCLlu1kStjuO3iqsADmjxW4unOF6z8lpn1EXMzzJZh1Hk+xEUUKeiKkJd3jY2kS1NIvD+h5IVOcwt8ndotBNrmW5+IfyVpMWSu4iZIJHh7DhA+nRYZyVuY+ptDHxrt9WSgLbS6VXT+mZitpITP87WI9w9fv+HZr6TiXlxxlpTwz6/HcpIRyIZGS0iabzNkbmCLACMNoqnNAXD13rUs5//QWq4cjetcKCXA+QjcodOIWGmwj2m4qCw5SvoaJGek7d3odzEIl5le/0TBNJr79LhKTu
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,14 +125,11 @@ On Mon, Oct 6, 2025 at 1:03=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrote=
 >
 > From: Kairui Song <kasong@tencent.com>
 >
-> The name inc_cluster_info_page is very confusing, as this helper is only
-> used during swapon to mark bad slots. Rename it properly and turn the
-> VM_BUG_ON in it into WARN_ON to expose more potential issues. Swapon is
-> a cold path, so adding more checks should be a good idea.
->
-> No feature change except new WARN_ON.
->
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+> This helper was used when swap cache was mixed with swap cache. Now they
+
+mixed with page cache? ;)
+
+With that nit fixed:
 
 Acked-by: Nhat Pham <nphamcs@gmail.com>
 
