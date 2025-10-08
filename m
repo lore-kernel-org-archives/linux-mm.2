@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8EFDCCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 15:30:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DE94CCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 15:31:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BC908E0016; Wed,  8 Oct 2025 11:30:49 -0400 (EDT)
+	id BBA0B8E002E; Wed,  8 Oct 2025 11:31:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 046268E0002; Wed,  8 Oct 2025 11:30:48 -0400 (EDT)
+	id B6AAA8E0002; Wed,  8 Oct 2025 11:31:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9E9F8E0016; Wed,  8 Oct 2025 11:30:48 -0400 (EDT)
+	id A59D38E002E; Wed,  8 Oct 2025 11:31:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D8EFE8E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 11:30:48 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8735687D71
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 15:30:48 +0000 (UTC)
-X-FDA: 83975334576.20.E50F1DA
-Received: from pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.155.198.111])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 6247E1C001B
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 15:30:46 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=WQqVEjVz;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf18.hostedemail.com: domain of "prvs=36971892a=farbere@amazon.com" designates 35.155.198.111 as permitted sender) smtp.mailfrom="prvs=36971892a=farbere@amazon.com"
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 947538E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 11:31:17 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4995F13B707
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 15:31:17 +0000 (UTC)
+X-FDA: 83975335794.08.4710371
+Received: from pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.35.192.45])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 14BAA120018
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 15:31:14 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=K+Qpn+Eq;
+	spf=pass (imf29.hostedemail.com: domain of "prvs=36971892a=farbere@amazon.com" designates 52.35.192.45 as permitted sender) smtp.mailfrom="prvs=36971892a=farbere@amazon.com";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759937475; a=rsa-sha256;
+	cv=none;
+	b=QWamvZZaFD6SYFnjBLfN0pm8bUtjTeux5zzIeMeJHjse7C69Om+96r1+Jiq4Nd51RJxohX
+	wxU1iZXZX4ckoDtE5HKJ46BBYpf1Zd0Bia4L2ZDVb4tK1pBMvWpfwP6uqkypxoLWIqPjY4
+	2NUbz9/GvWeswszQR5+atqhbjjZjZgU=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=K+Qpn+Eq;
+	spf=pass (imf29.hostedemail.com: domain of "prvs=36971892a=farbere@amazon.com" designates 52.35.192.45 as permitted sender) smtp.mailfrom="prvs=36971892a=farbere@amazon.com";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759937446;
+	s=arc-20220608; t=1759937475;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/92zpxyjeHvGlOVhJoOGNENC+jRdBRPJKKvWmFCfMhU=;
-	b=1q9y/vwFa0ZH8u0vE6JIl90uo7dh1OrCMnLwUZD8382dHoVK2kM0wcNtt0t+/EVXLEDfjR
-	Nqmxu2wpYjBqetC7ORKQpZunwRwmBgw7i4oqw5fbm34b+Ia5/E5XbYihy3wnLYE0tjz+RG
-	ngbOr+LiC/Y5SAnp82DdCG9P2qIqE5k=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759937446; a=rsa-sha256;
-	cv=none;
-	b=ibUWUbvg0Suzn1dPkEI8etTK6zqd3tE5/Hu+UBtD9i7T5HLqJ7muL2uhxJbdCz7WDA4J/r
-	nMQLwvj59NnFSDN49UTVcni60WueI0IDoAfoywYY+oD3/G65KREul51SBHuLxRwFzokesk
-	83V794vUQ+9+npNX4Homrvx7b+Aou3M=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=WQqVEjVz;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf18.hostedemail.com: domain of "prvs=36971892a=farbere@amazon.com" designates 35.155.198.111 as permitted sender) smtp.mailfrom="prvs=36971892a=farbere@amazon.com"
+	bh=4vb6NSqQR6ex3kWRbhDvcIC1XoiVTA7hMRv6Rl9gJRM=;
+	b=TZRQkxa4G5o2/8qs6bitKSHeEVe6Of2R2FeoXQkAVIE7IaapbICgunrBbmx8XqBoIQtub3
+	I/HcU7rh9pcfdB1+haHc6Uj3ys+qMqmIdA7d3YPaLcd3C76am3OiKL7ea8Hm31F64qBgHM
+	rgLaZFWxQ6ep3wPhWsJndeV8TGMhgAM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1759937446; x=1791473446;
-  h=from:to:subject:date:message-id:in-reply-to:references:
-   mime-version:content-transfer-encoding;
-  bh=/92zpxyjeHvGlOVhJoOGNENC+jRdBRPJKKvWmFCfMhU=;
-  b=WQqVEjVz1gQP8JcdgdV+Zh1nN/KjphcFncqfgOcOM291zj0kbHnpm7X2
-   yvGPzFLe+E7Vk6rRcCApG6I5efJk9YHZ9NKR2PS/78+f3EHmDe+ugIxyp
-   JItC3Bu0MC3ydQ02Z0WoX5qm8uCCgenEkk89oRKb/uiMfBN0gjRakkq3e
-   LOhfONYz6RaD4iMNO8Ovmf0uHzkmN2Flq5Dlxu+l5rhvwTpGs1gqu1SCm
-   omjIjftdT0OYuj1Ug6f/uTWRf21jRQEHmEJYBTqqp3mFsTOKo/VB1LAFb
-   K0h26+CaNpwYHYzOhZtexJ8wR9/z7gD8LkGGOt11tnR5vUPn2CsIlsKQu
+  t=1759937475; x=1791473475;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=4vb6NSqQR6ex3kWRbhDvcIC1XoiVTA7hMRv6Rl9gJRM=;
+  b=K+Qpn+Eq4srUahIDvVnfIiDET7hFcJMLxRuAxbjeT4hYY/t19z773LFa
+   iF1vw81Mx6hMiuqjsDy3Twj2aqMivplWT/j+nzrYTRBWSXWtWWZ78Q03P
+   E92pJdSpCoG78T+XWUrr+xT8EzQFubtHYDLj5mPvvHlDzIWKdX3tsw7aV
+   RvWKa6zvrCjGkHGch51w7fu01skPjtIhbmyyJsJuoAdrdfVv1I2KmEaow
+   3uc7Ky3dmOItAbNP4xy/E089FqRFBtkkGzIXDy1uypEP3bKFwRHJpwBH4
+   D1U6GNbAE9JNFKuTYb7+1IoWhsO9iRfIXPQy46l2khXSCOF36VMohlhbZ
    A==;
-X-CSE-ConnectionGUID: UKCBinIHRXu1RbSMKoZX4g==
-X-CSE-MsgGUID: RPRMtFp2S7WrU04wLGVbHQ==
+X-CSE-ConnectionGUID: vSaBz5PhTsunYvGPPxfYOg==
+X-CSE-MsgGUID: yH7yVe3dRluW95yVSErRYQ==
 X-IronPort-AV: E=Sophos;i="6.19,213,1754956800"; 
-   d="scan'208";a="4410563"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2025 15:30:43 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [10.0.38.20:57983]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.25.156:2525] with esmtp (Farcaster)
- id 44875d22-f92b-49db-99ac-a03489ce84c2; Wed, 8 Oct 2025 15:30:43 +0000 (UTC)
-X-Farcaster-Flow-ID: 44875d22-f92b-49db-99ac-a03489ce84c2
+   d="scan'208";a="4322243"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2025 15:31:12 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [10.0.7.35:31857]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.2.125:2525] with esmtp (Farcaster)
+ id 17bd1fb8-7218-4dda-82a4-1941339f1880; Wed, 8 Oct 2025 15:31:11 +0000 (UTC)
+X-Farcaster-Flow-ID: 17bd1fb8-7218-4dda-82a4-1941339f1880
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Wed, 8 Oct 2025 15:30:43 +0000
+ Wed, 8 Oct 2025 15:31:11 +0000
 Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
  (172.19.116.181) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Wed, 8 Oct 2025
- 15:30:30 +0000
+ 15:30:58 +0000
 From: Eliav Farber <farbere@amazon.com>
 To: <gregkh@linuxfoundation.org>, <jdike@addtoit.com>, <richard@nod.at>,
 	<anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>,
@@ -122,9 +122,11 @@ To: <gregkh@linuxfoundation.org>, <jdike@addtoit.com>, <richard@nod.at>,
 	<linux-mm@kvack.org>, <netfilter-devel@vger.kernel.org>,
 	<coreteam@netfilter.org>, <tipc-discussion@lists.sourceforge.net>,
 	<linux-kselftest@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: [PATCH v3 03/19 5.15.y] minmax: deduplicate __unconst_integer_typeof()
-Date: Wed, 8 Oct 2025 15:29:28 +0000
-Message-ID: <20251008152946.29285-4-farbere@amazon.com>
+CC: Christoph Hellwig <hch@infradead.org>, "Jason A. Donenfeld"
+	<Jason@zx2c4.com>, Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH v3 04/19 5.15.y] minmax: fix indentation of __cmp_once() and __clamp_once()
+Date: Wed, 8 Oct 2025 15:29:29 +0000
+Message-ID: <20251008152946.29285-5-farbere@amazon.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251008152946.29285-1-farbere@amazon.com>
 References: <20251008152946.29285-1-farbere@amazon.com>
@@ -132,18 +134,18 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [172.19.116.181]
-X-ClientProxiedBy: EX19D032UWA001.ant.amazon.com (10.13.139.62) To
+X-ClientProxiedBy: EX19D037UWC003.ant.amazon.com (10.13.139.231) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6247E1C001B
-X-Rspamd-Server: rspam02
-X-Stat-Signature: m8yh48t1dhfcomct3ypcrbofh95udggq
-X-HE-Tag: 1759937446-910182
-X-HE-Meta: U2FsdGVkX18EBPLDOAI5fj+IBrFEqucMgd3XkiAOArz/aMaa2c88YWv+NyU0y/hu5irG0tqrnzgFcMG6xEYp6G1uRPPzkJns/v54HPI2YfGwhsCTK8dhNt7AuHx7iV1inqh/Pkt0EeL6/b3lM7OcSRV6EGmgKoCZK9H813TzCG1nnMip2pi2u+47wDpmBjn1pVxK9XHAtRuqnMoohJ7odJ99yiMztNc98LevHeCC0lJmBhNerxDeeJr487ab0YtcB2v1yPKvY1+g70U3u9mE6a53GRE8dIDGJzFEy3Qa3QUHzThDXwO/LljIvusgpFOxgByd7Um3a5Gppm5QwT8l1QzEU19Narie43RbnSb4jsDzz2HF9mhOXwt6V/xHGOsRq+HKoqKl8TJ0BoTynberIoz0uvO+Noacqta6YLLI+/wXB6wF+LVQBlRGQRhyAMQCiasN662WGAoAnrPuCZ3hAnD6nMwr1aH2PRs84qs7FXGpMtO2H3kkhrCXyVZdijHKxdJtSZ50R3PvYgnwe1IppEFPQK0qO0ecAAdYqwlwnt7q4mrpH3X8SIZTYxlrXr+IbTS0pOJ51wgXyy/3Kj/QJzdPB4OMWRyZfdHgZRfOMPD37Em8h+ENbJSbww1Dh59h40iv9d/Mi0biXzf9AyqIXIINVKvT9cvyohH0Jnql6a7fFL1cDoK/W/DQTOi1wGgybFvXTfjnrSWHjVLKRc2EZBeUBEE1gTYV08AdEbgg75Gq57DYuAE7PZg7f/S2yIPtsQF3RYkwLZ1f+kUY/kOGu4kxUeENz1CPArc4B5/VtNtM0sgQGUKlE6SiJUmYIG0OAA/evmBbzTN0jsQsNNQ9GbkMl8V0l7tcpM1+xCeTeElA9HkLSueLs8pqORX00TnBTPHzY+pVslBtNjv6bDuLFDGR1PUWDjDRiX7LK/jWDOhRcN2SFCvss3Bm617JL5+MBpJtSMI96t9s8k8LCHH
- kq3nZnbp
- 27ud97bUN8x3Agu7hILxtpC1M9mRAefZjotvDGcwAmn2pITfCqMB49K74614cH3yfXvihKNjYDw9tjMbalVJiQACjDj5639xLQSQai2Pqt4hsK0/S1+h9amdeFyZsdIcqHOJNpJKHasyggipbK5/D96bdfNIUXBORt6tisTeg5hT9hHcAOUXlbjJ9rFAQTTfqhuXh2OsG4T4TzTv9lL3JA+3e+sV/mdoQ0M6L1rLG9rTulQmoiWSwjH2iqX35erZZahizSpwmKGNhX9vBJPExzjnegHf10gm1FJZIwPTnC2JhblvLlvq7ReEMKpDEyperuyHYH9pQEIam1UpO+N76S7K2SAY9l009VK6Qk2iQ7cQE36YtiFbUr71DAOmAJpMR2pAiA6c9QmEZxyIoNit+KD9F1BPwjvIUW/pbgSmpWsFb+WXTE4vdWuNeB4DXTGu0Tx+Y65iFWyAZDqpyF+8YTLB9lqhzfCcdH+wShb9xHrzmTezRi+MvXt9s5Cnnaw8/azassRNg5W75bivtK6l+Rk4t+V/0fz2N3Ov8zIESbyOW9+Do4GqqTIp85IggCQVUshj3tgyHJe1DM/DcZvrEEqwsGyd8w0T3moqPOlve8B4TKHU9fDhTX63JG8e4j4AmtHgdQHXEIawWe4x2OXHvwRyXOb03oiFHVL3M38Q3kLgv7Oqhf7qh8UsBZ1Ic9n4hPigfW1D3245mysKQcfq/vWuf+vcFSMW7c3myVZrRCOxwdoUG+lbaRaMxA4344S8JQ6O/a4rNOKhxfDqy+0GWpCiqSbGdeIE+TYWRN/JLq1aVo5RLJlyGeXza63AE7nlneJhJYEYaN1xzorR+sUlL2ZvImuFd2TkXrzO3Nvxer/iFHlr9n9I6ahbUzvFZ8TaBAmviE0p1sHDAz77Y4s8aQ/4lD71EZRH5GTMJkaFQVNSEKjA7/B0B0ZZwrLh5pIyIx0KHog2e4ftk0oM6VaYOg8wAvQef
- WnuIjJm5
- 4p3xE2+mOf86hm9SumJkWwxxdJy5+bZ2Oi8pwYmJOZAX2sfQBSbkERp3uGGh68MSNKoQ24vs3uKjz1HmgdMxpdX8EohRfSqV
+X-Stat-Signature: b8afry1n4b8myyzmdmajioqychs9kzqo
+X-Rspamd-Queue-Id: 14BAA120018
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1759937474-323328
+X-HE-Meta: U2FsdGVkX18Kj6Xj4V4+VZ6SJ2nZrnF5k7CPNE+psRtJ4JH3nUcwXC9rFwUTK6tHX6PUnGk1DRpYxYTMgvzo37c/J6XgmbbIEX3Nf2RHOAbZV7s4ejNzQzEdnWHugLgakGUf95PFx9Yyy+qfzy+a/W4fL7cNEKjsVR88fmftvx6RzJF6znFX/a1l9hkKr5BNzy/boM4x/rF/uMfIB3floVB8T8aGj873Mu2AYk720+jny2QV2DNdvUVOibuRa2bISYoKamgg5av1svRwfz3L9uD3zCZq9dUZJs8U7MwqQe+OOvJzjpgDYbpbL/AleKm5TRj7KHeozIEvU0348CTSO12sF0paN570Of6MRtuOon6vfl8wPmSJOsd9nktS4eN4WN0W2BTz7WbK6Jwck3u/1MQiCKg/A4BauHGr3CujgW+gkiv1yqzNsgE279LEhBCBpDzB3AioUHIwPAX6WOZWwur6oLKi9z5DRxHYRq2mtTw5u97Kt2ZLE859Qj/+L3tH3JcbodSG5ADhGxuZTer2YDFlQOPxpfrMUC/pXm3qVjlFUqQHBj23PE646Q4KMbkpGvoLnjXsSR9M/MJ19kSpe0jV1Zj5KOLCJOhpSeqgZiN4j4zmaQQZasLZat7fpoY3tPv+pApcmRY8mwgxp2aakiU9BoAg1ffDXWgOBuvPRMGxM5yZj6bMvUX/rtEJfRtezhnixjm+4vANNhPqicYC2ffeZH14jdcZh8adnoXrVznuXW+RwbnNYmApMJvPz7q+dWKhkojlHT5uQ066r8aZAYTPPrpomxumS8zB1PWlMeefHWk0Ja2PaqaDL3WR/G0uM6yftpHmajhIK2ktxRiAdx+CpeuvuWbKUt2dqFsW48atnT06pTrSldd9Ayv0vOt68btRs+QwnH86XKnMlwyqqLpL2Hr7JBS4igMdKFOVdUJpGdoESj0OvhvpjIljRthclxL1z8zXLswWTWQibZT
+ FYxS6BhR
+ xwI9S36VGhZSr6oLHhcL1qPgE2WYCLZ5kN5dSh2dWHcuLFTeCeXzaj6u3dgenEwARu3RdxCQ53W0HjgOafKLm2he+wOVyMnNOnY5AyTN/7Ef8PkfAeeLHuvXGAspBm9UzTjBRH/UzbtSjUhVB9lZSLoGBEXu/xbw5q8gjd4xxmX5JzBR0C7LusHcKqabvawGrNSAn1FzjVR5WkTE+XKxomuxG5fpjnmqqKPOG6KUanlr6UeuzYP0Fso0f8HSU8inMDfMYjzCFN02peBAGmjhk7ymjtqbIiDtqAWGUDTJ/nrVAIXx111lMZVAGQbZxmtSB57+xoDYR9hvpKPOs5hnMaJ0I2KTjWIjw22Pzimcz1HUVSSZznGU/8BErsaB+9Ys5ny8LQqTpnEGXtxWWjodydcVYuu6RauWZBCWndbfWOD++x85mv/8oN2VmzEKc3IwfZqvjKiCwx1e8Bt0Lhzakuf85sFQrb3kMfaEl04HcxGwD5OlW0dFjpJun5W0NoIWeyWl8wLut9JPaAYcAPpQhPILDJaH+BxofoCxw7qTrwCmDVr4ReQ85+6ZIyjUEFJuty4M8U567wSiwrwEtNV9HAypF8ytzYHgAMMEE4YQ+ThVXLZQjWKIJbe2z9+gDZfCLvuSPkM35Ce9GXGbo+tXw9eVtQegNvBr2xNO2yBDBBb0vFGd16jXnGxX6XPv6FkBFkrYRxW5eYYVY+RzNqHTbVFDPnS891jWXKsT8l5bhsLlkv2uxm1n3GGHS/UeoLkVZ1mqTMx/agQW88UGTrfAZSvGfN7d+qw7fZDSfc244KazIATmf1sg4af+82UIYTpnTjmA/Npx1/S5Yhtf4g6jq3TTHW6aDfWinl5om3v/8r/z6ppJ0vJotQx5QQi10aNRjp2maNQq9zTdJ95y1qEyh46VxdAExa+bn3g0Gfl5W6MsCKQBNoM8S5BkBidrAQXC1u6KHL63yHS8ZkIUY3b+TH8YCg5Zg
+ jHwZ1oKE
+ A3f6+JwKNC3BHnM3SS5ppXB4lkodTNQML203Fn7QqJCypDdCwXwna8VedyTP82HNd72HDxKbc6Z+EtBWJUHXcUjA5osD60lODhVYi6qUD2AShzFEs/T7mBJzxDCJopigmZZ0Sr5QvM3OQV0Hy6IXAKYnt3UBSijexmG9R/mhYC+fMWRqDMYkwgKPkA0Nq6qOJPy/NwwY/cQtHuLEPjZtug==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -152,71 +154,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: David Laight <David.Laight@ACULAB.COM>
 
-[ Upstream commit 5e57418a2031cd5e1863efdf3d7447a16a368172 ]
+[ Upstream commit f4b84b2ff851f01d0fac619eadef47eb41648534 ]
 
-It appears that compiler_types.h already have an implementation of the
-__unconst_integer_typeof() called __unqual_scalar_typeof().  Use it
-instead of the copy.
+Remove the extra indentation and align continuation markers.
 
-Link: https://lkml.kernel.org/r/20230911154913.4176033-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Herve Codina <herve.codina@bootlin.com>
+Link: https://lkml.kernel.org/r/bed41317a05c498ea0209eafbcab45a5@AcuMS.aculab.com
+Signed-off-by: David Laight <david.laight@aculab.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 ---
- include/linux/minmax.h | 25 ++-----------------------
- 1 file changed, 2 insertions(+), 23 deletions(-)
+ include/linux/minmax.h | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
 diff --git a/include/linux/minmax.h b/include/linux/minmax.h
-index aac0b7d23768..62b0c0a3cf30 100644
+index 62b0c0a3cf30..2ec559284a9f 100644
 --- a/include/linux/minmax.h
 +++ b/include/linux/minmax.h
-@@ -168,27 +168,6 @@
-  */
- #define max_t(type, x, y)	__careful_cmp(max, (type)(x), (type)(y))
+@@ -46,11 +46,11 @@
+ #define __cmp(op, x, y)	((x) __cmp_op_##op (y) ? (x) : (y))
  
--/*
-- * Remove a const qualifier from integer types
-- * _Generic(foo, type-name: association, ..., default: association) performs a
-- * comparison against the foo type (not the qualified type).
-- * Do not use the const keyword in the type-name as it will not match the
-- * unqualified type of foo.
-- */
--#define __unconst_integer_type_cases(type)	\
--	unsigned type:  (unsigned type)0,	\
--	signed type:    (signed type)0
--
--#define __unconst_integer_typeof(x) typeof(			\
--	_Generic((x),						\
--		char: (char)0,					\
--		__unconst_integer_type_cases(char),		\
--		__unconst_integer_type_cases(short),		\
--		__unconst_integer_type_cases(int),		\
--		__unconst_integer_type_cases(long),		\
--		__unconst_integer_type_cases(long long),	\
--		default: (x)))
--
- /*
-  * Do not check the array parameter using __must_be_array().
-  * In the following legit use-case where the "array" passed is a simple pointer,
-@@ -203,13 +182,13 @@
-  * 'int *buff' and 'int buff[N]' types.
-  *
-  * The array can be an array of const items.
-- * typeof() keeps the const qualifier. Use __unconst_integer_typeof() in order
-+ * typeof() keeps the const qualifier. Use __unqual_scalar_typeof() in order
-  * to discard the const qualifier for the __element variable.
-  */
- #define __minmax_array(op, array, len) ({				\
- 	typeof(&(array)[0]) __array = (array);				\
- 	typeof(len) __len = (len);					\
--	__unconst_integer_typeof(__array[0]) __element = __array[--__len]; \
-+	__unqual_scalar_typeof(__array[0]) __element = __array[--__len];\
- 	while (__len--)							\
- 		__element = op(__element, __array[__len]);		\
- 	__element; })
+ #define __cmp_once(op, x, y, unique_x, unique_y) ({	\
+-		typeof(x) unique_x = (x);		\
+-		typeof(y) unique_y = (y);		\
+-		static_assert(__types_ok(x, y),		\
+-			#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
+-		__cmp(op, unique_x, unique_y); })
++	typeof(x) unique_x = (x);			\
++	typeof(y) unique_y = (y);			\
++	static_assert(__types_ok(x, y),			\
++		#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
++	__cmp(op, unique_x, unique_y); })
+ 
+ #define __careful_cmp(op, x, y)					\
+ 	__builtin_choose_expr(__is_constexpr((x) - (y)),	\
+@@ -60,16 +60,16 @@
+ #define __clamp(val, lo, hi)	\
+ 	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
+ 
+-#define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({	\
+-		typeof(val) unique_val = (val);				\
+-		typeof(lo) unique_lo = (lo);				\
+-		typeof(hi) unique_hi = (hi);				\
+-		static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
+-				(lo) <= (hi), true),					\
+-			"clamp() low limit " #lo " greater than high limit " #hi);	\
+-		static_assert(__types_ok(val, lo), "clamp() 'lo' signedness error");	\
+-		static_assert(__types_ok(val, hi), "clamp() 'hi' signedness error");	\
+-		__clamp(unique_val, unique_lo, unique_hi); })
++#define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({		\
++	typeof(val) unique_val = (val);						\
++	typeof(lo) unique_lo = (lo);						\
++	typeof(hi) unique_hi = (hi);						\
++	static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
++			(lo) <= (hi), true),					\
++		"clamp() low limit " #lo " greater than high limit " #hi);	\
++	static_assert(__types_ok(val, lo), "clamp() 'lo' signedness error");	\
++	static_assert(__types_ok(val, hi), "clamp() 'hi' signedness error");	\
++	__clamp(unique_val, unique_lo, unique_hi); })
+ 
+ #define __careful_clamp(val, lo, hi) ({					\
+ 	__builtin_choose_expr(__is_constexpr((val) - (lo) + (hi)),	\
 -- 
 2.47.3
 
