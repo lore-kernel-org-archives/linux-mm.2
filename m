@@ -4,127 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17A5ECCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 06:03:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D075CCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 06:04:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C2A18E000A; Wed,  8 Oct 2025 02:03:14 -0400 (EDT)
+	id D268E8E000B; Wed,  8 Oct 2025 02:04:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 272ED8E0002; Wed,  8 Oct 2025 02:03:14 -0400 (EDT)
+	id CD70C8E0002; Wed,  8 Oct 2025 02:04:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 188BF8E000A; Wed,  8 Oct 2025 02:03:14 -0400 (EDT)
+	id C13F08E000B; Wed,  8 Oct 2025 02:04:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F36E58E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 02:03:13 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 77CB31603F2
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 06:03:13 +0000 (UTC)
-X-FDA: 83973904266.04.5BAF6C8
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9EBC520010
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 06:03:11 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=USDLcuIT;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AD46D8E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 02:04:42 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 561BEC03E7
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 06:04:42 +0000 (UTC)
+X-FDA: 83973908004.18.203B7B4
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 0B07FC0004
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 06:04:39 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=xIXq2OjG
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759903391;
+	s=arc-20220608; t=1759903480;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tBzereJRTdGWw5Bv4VX5a6USN6lK2ZJ/saFJPUjeViY=;
-	b=cetKEtiwQriqyVgYc3Tms56+5dhbDObxQKyLefwTEUF5dJKhh3+IH+tZZ+gYpULZ6UK5NJ
-	zy8yvNNLCuWytFu1SeCBwcgN2ShUOlaMHpbO0dQgEN21/UJyjOVKa8MaxKHHa3QEsgDB24
-	MzQiWvUcoC02wZaRvMz8yqGgs+wwiJE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759903391; a=rsa-sha256;
-	cv=none;
-	b=GlcxKLQR38U4+GkNlComn46MwXTCyukYj7HE5Jj1P6suk/CMzeoAQaBaflY3PB5J2eG3Lp
-	GehZ8VMb2PaXPYnRaCFlAMLrxzpuGUl4LcbNRg5//c4PMaikNWQQ/Hgj5iN16W/GQHA9lj
-	qysrkD42coFuQuldxxA/GsvPGth0JKg=
+	bh=9i/hW2gsNIwvxGPBjR3UaQnJZD5u1DTKjwq3K7Rz45A=;
+	b=ffOoLHCxVc9DM+4soRBifYfHWeyZD9N8FynwAWKU00jnyHr70QtLtKq4EnXn5iczxHESv+
+	NVyEatSLzZmvB4gq9QgkqXEuvS7I0vqRO+iBe1gzHnGWkPqElCKbeNSqVlzbst6ofAOcJe
+	gbl7RYBBLVNjxoUYydCtfPLTXfeBfV0=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=USDLcuIT;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-856701dc22aso728768385a.3
-        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 23:03:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759903391; x=1760508191; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tBzereJRTdGWw5Bv4VX5a6USN6lK2ZJ/saFJPUjeViY=;
-        b=USDLcuIT7xZSea76RXpzKyunEvD5krpMwLgIVtsgKXYJDakravg8jmpbD+8+fJ7IyQ
-         6V7MmszKnPSqjZ7+xAw43cKnRkKX00UsurMp5QwKG5mp7MJ7ElNGAXTGajIHdl2u0F+Z
-         k9NXrjrwpkMWuCyRlBUCVh+RrUVb0/i9pw3piYQtdI+wGeGhUDgqOoLKdc1BAP6NbMNw
-         XhzIm//+cX6OAkcHzYUpur5lN5bttEJr/0keMDy2xbXp3ttFgt9dtf9x9uZ5oHzGjh/S
-         WevxhDPhIKEc43iX+8GHb9fJ/SO9l5k76zZKFMD0ZtN+vYhyl/xbc+c4LvdiZF1rBJXH
-         nvcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759903391; x=1760508191;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tBzereJRTdGWw5Bv4VX5a6USN6lK2ZJ/saFJPUjeViY=;
-        b=etANrictx7NWzqxczxXs6Va/IxxAf+CeuqO8u+u+fsjXo6ZIKgWH/y3SIRelp/PX9/
-         mHlqr0Jb5DCYCLXxNoKgAMgjGvJCZKOmibg+2+pcIIEOOwzBOpGDMVc9A97PjXTdc4gh
-         UJfph4jxe7522YNu679AYhMoWutlQphPo0UhP4e/QadfDVBfCYph8uGLt20PjSa68PR2
-         K6J+sivkS6miPxBb3ivJvMKzOQVM/kUHgm+biIQIamqAZBxGlzc2x/mge5uIIBsS8pb4
-         HxYsx3b0+/PbaKtZhmYPYW/4v/CKK1lz4tsqGhHE/WUl1QyP+nHsm2nraJQKPhe06mSZ
-         WFrw==
-X-Forwarded-Encrypted: i=1; AJvYcCXgcJB8vR5DgsGoHF+sOgCv4ieQX7Qlx6NJEBkIRUxwCOnkE3/tiojN0m2z/2zn0rChH39IwbFS1Q==@kvack.org
-X-Gm-Message-State: AOJu0Yx0LZUyziWvsRJYyQ3UI9pi5yiXLzBc+eg+8IFm7zeSP1LkuOIw
-	ro1sd3oppU+e7qECb6zLgfC49/5Rc0bUCgzWKinKnd9/REv8AQtBONrcAl2pzHEPFbB1lSubTZx
-	0QK9LcqLAH3MkWEQl9+lGhlkXapJszM8=
-X-Gm-Gg: ASbGncsT8uBuIfy/dwEe7RbDIdVWF9f/4tUlXj/xoQ8XCQKyFzzFjBs8wMhjhKPI+Ju
-	FSrsURvRbcbyT5TOfyequeIAA1aI8dY3zQQ7A35ufM9MMVPb3qdrvAm1ge3iny9PQZZeT4nFk0H
-	0mNXHkHKQ0acA2i4jYCnWbqTowBCKsOU1+UefR38D/ate4X8iDQJIbnAO6y3u3LhP48JznsCE29
-	xSSZtFGQSxhRgmM3qoA8kemrfv9QvvcPIP2AyN0wHP1iKb1/OcwfZgB1LKh7RY23D+WV9i++I0=
-X-Google-Smtp-Source: AGHT+IGN1fUle74mm+Dey9XN+9R2Hgx9711f1pzgYvQjJUJA/sik2SzgKknv0h0WalhCBF/jq/ow+URmBR5p54sJHtw=
-X-Received: by 2002:a05:6214:2a8a:b0:785:c20b:f602 with SMTP id
- 6a1803df08f44-87b2ef94a07mr29281856d6.61.1759903390435; Tue, 07 Oct 2025
- 23:03:10 -0700 (PDT)
+	imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=xIXq2OjG;
+	dmarc=none;
+	spf=none (imf10.hostedemail.com: domain of BATV+fec44d0e9bb002d05706+8081+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+fec44d0e9bb002d05706+8081+infradead.org+hch@bombadil.srs.infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759903480; a=rsa-sha256;
+	cv=none;
+	b=G6Vq9vCg6+hV4UPZlthkQHYuBO2HtNZipK0Ph+W/KtMXYWc/zQrO018G4QN9apPFqxd0ST
+	ZSSNahr4P1oZdbh3WEriGCLMtUm6uSOaFC3RF9J/NygguXb5fJ3MBhk2VBeFSdEpRgmbZ4
+	9uXtKtK72Yg2gNG6l+fyUHwGq6es25U=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=9i/hW2gsNIwvxGPBjR3UaQnJZD5u1DTKjwq3K7Rz45A=; b=xIXq2OjG57P+Qt2gk0FH0OvWkK
+	Vd+ovtPhdeofYhBwG6boyowN0XgTdPjAZkmLA2CHdgmhSwYQ1e8LrpkUjOXt63w888HO2idXPbUjv
+	gBFqaY7J7u2OP7puYZ3zvwJLi2fvAEj5w49jTK2iCAZGo20X1snDjfrARFJK0uMI1eo8VkAL3U2iu
+	5GT1x06quwBEdppdk4fHQGr74EY5fP7bqoICxMgBrISd9jWPTGbQV1105mgcetFA7F0NlekJXo4p1
+	r07Mk9iSassaNZu6epxkVWDPk2pukrHx2T3EE4odUIXfTvDZeBbu+sz9zi6Y5UVXXqZ6iDFGvJNuk
+	CpBxUrqQ==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1v6NHv-00000003GA6-11Tx;
+	Wed, 08 Oct 2025 06:04:35 +0000
+Date: Tue, 7 Oct 2025 23:04:35 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Christoph Hellwig <hch@infradead.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
+	maple-tree@lists.infradead.org, Alexei Starovoitov <ast@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	WangYuli <wangyuli@uniontech.com>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>
+Subject: Re: [PATCH v8 00/23] SLUB percpu sheaves
+Message-ID: <aOX-87tPdtuPb9Uh@infradead.org>
+References: <20250910-slub-percpu-caches-v8-0-ca3099d8352c@suse.cz>
+ <aOS0Z5N4HaBNeb_J@infradead.org>
+ <c750ab62-a3d4-422e-ac5b-c531dfcc749d@suse.cz>
 MIME-Version: 1.0
-References: <20250930055826.9810-1-laoar.shao@gmail.com> <20250930055826.9810-4-laoar.shao@gmail.com>
- <CAADnVQJtrJZOCWZKH498GBA8M0mYVztApk54mOEejs8Wr3nSiw@mail.gmail.com>
- <CALOAHbATDURsi265PGQ7022vC9QsKUxxyiDUL9wLKGgVpaxJUw@mail.gmail.com>
- <CAADnVQ+S590wKn0rdaDAHk=txQenXn6KyfhSZ3ks6vJA3nKrNg@mail.gmail.com>
- <CALOAHbBcU1m=2siwZn10MWYyNt15Y=3HwSGi7+t-YPWf0n=VRg@mail.gmail.com>
- <CAADnVQKzW0wuN3NfgCSqQKVqAVRdKVEYMyJg+SpH0ENKH6fnMA@mail.gmail.com>
- <CALOAHbBzS2RunZzEk8-rkU60M8jKEJ8FwiPgZqNeoXDy++L5hA@mail.gmail.com> <CAADnVQKLbc4iZDGWbbhqwr8hKhAZhyLjiZuuz_RBd2f9LH45rQ@mail.gmail.com>
-In-Reply-To: <CAADnVQKLbc4iZDGWbbhqwr8hKhAZhyLjiZuuz_RBd2f9LH45rQ@mail.gmail.com>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Wed, 8 Oct 2025 14:02:34 +0800
-X-Gm-Features: AS18NWB7YAjB1_r1_mFRyGxWlvWmvmCic0bUl2k22vQ5MpJjGUViYxml_XAQVh4
-Message-ID: <CALOAHbCOQ_S-b+8pMxwGsjoc9QnAdij=gjkPEm0--cR7iCRQ3w@mail.gmail.com>
-Subject: Re: [PATCH v9 mm-new 03/11] mm: thp: add support for BPF based THP
- order selection
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Liam Howlett <Liam.Howlett@oracle.com>, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, Johannes Weiner <hannes@cmpxchg.org>, usamaarif642@gmail.com, 
-	gutierrez.asier@huawei-partners.com, Matthew Wilcox <willy@infradead.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Amery Hung <ameryhung@gmail.com>, 
-	David Rientjes <rientjes@google.com>, Jonathan Corbet <corbet@lwn.net>, 21cnbao@gmail.com, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>, lance.yang@linux.dev, 
-	Randy Dunlap <rdunlap@infradead.org>, bpf <bpf@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c750ab62-a3d4-422e-ac5b-c531dfcc749d@suse.cz>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9EBC520010
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 96cy41cptqsbopjye1din51s93tzqb73
-X-HE-Tag: 1759903391-205607
-X-HE-Meta: U2FsdGVkX196SClejNd0nT2FCVU7efVQU1iyNiz3haBF8+ObqnUkk4eU8RZXW71vWgAkz2al61Gm4OInnkCUkuIgM/lH5sPdBKJhA7kDZtS9m3xXsCDKJ+v8fHRIKfyvjCuAA+q04L1uYR4msNZkaVjSipG2K3ZsmLgApHWKFq5leK+dm6KETr1J+bXpnr8AMnJY3dYtGPPuNvEuwKm0Aqow3KTZyh/6jTrJgF0iN6ku6G4TGx08KnUiFOV3vVeMiDU1IdFO1CabKuqoxkklopcN7Bw28I3vN6trwKxnSnUJouwL70mQXBo4vIA0lqtT8GqnGmBeSZgVhI+ZCQe/vbwe/i/iWgSnULkCVzajp77/R3i24uuSt1cysGQQndX8yfTaBC2e3Xv5iRdtm9j01mRttIF3HTAflhboq5R88wPIk/eUv/o1scsC+wHq/e2BjnyubHPjkX75XM8ik9wYZULQpANA+HtzYDuUE+NvpQnbHZzgcXSN1vIATvYb1MHwM92jo41kJelRlC3KJUIf3P+lv7jpWwB1XWkT5ao8CC5dFUSVj50YnRTCKE848pdEczQ3Z/D/53kyBOwwg7lCF4Cq1xAmztkNDim51+peiuVvH5w5Dg+E0lvnZFJkkjtpHjH9vCMKM+p6TBg6I7813dHlc7Od3t8zi2RBn2IeO6Ph8ncqXa3+1j3rB2BnzfUG/5GsHaMGm5hGmTDe6UOiJCbGuj0C8m9sCJWwuT2Cvc5+2LkH6lM0L1OljWRriih9OkhPKg3oNrESXLs0/xZZuzsGDzQF+aATKe65VbZbdi65iE9i5wMQRHXEbd//ltxHs+RyNTxkjVwliIKqgI6GfsBWFBgzaWJ4taxin/HznyVwGf3a0wd+Ucj+1mI1VUmLrclsW2+Bk6mViMbXtlxpVCWyU5DJAKyJykxU2VX0Ye/ztR9Yycd8VEfxShidK+YoLN+rQIDWFIF7AGtfIWx
- v4LffiPe
- Iha29eG9aL9toIYe8ztSgKidqfUPRSQENKXc4XfW9nBarvHilEhMetvBjFHqytzBgQ+vtFjSpCyi/bFincgZGZZQE65iNOSwPkArnFNJaQ8FWSribHyLuXJECj8U6iOxy5PLxO7Iksq2Akt8fV+IhsTbL0C1ToZ2ONRaD0x8pu6lLz0onD1ilyOe7uHB3N6Qc0dnqhHWUBtl6+l7n7yDB5ZLXb9hOCKha2P8Cmr0Bp3DkWvo8uGpylXY6AhKFuXs5Ccdz7cAEGuMrID9oo0d6WXk8vyciwfDMWjj0yDp5WIn5LCvrRWCaTPigMbNxKQS2ig5ew1RmfIa8Vc82WCxctU6Nc1UcLDTDQXaGHB8i6f9J3HTHfnPzJowgOLRj036Tlvheck9VL/TU9zb3LgBc5ntsyf10cIeQ9CNbsYIB2FekyvPGZKv8lwWtbHF2v0QYJt4a9ikS+UmjXygOkGLXr69TjrmDcJMjy2U6DYUmh//F7oKM00dnziuW2g==
+X-Rspamd-Queue-Id: 0B07FC0004
+X-Rspamd-Server: rspam03
+X-Stat-Signature: dnc843j5xy3m9eoin4n8ppe94b69ojk3
+X-HE-Tag: 1759903479-38005
+X-HE-Meta: U2FsdGVkX189F1NAsjIXBElKhSRMcqMCCN1G/V+pyACgPJdz6BPmIVX86c37UO8yy6dI3f3f+tBfEp6zUOWkQ8vrbLb/hS0OGMuX+851kvyBa8ah8SmuNWiWmoWKY4mOMv52dyR7SdmW7OgiZNsOkyEn8xVIjjd8V7WXdS/sjy01UgD3I+mlag12Bi94acHC/lRqdL+1UEHbMLdJWAhwmBacRdSpQ4fK1xkV5qmDK/wLWPs00DhglKDxtMereZpWIhxbm7v9dkBCxcopqAdYORUG+HQygFaSxDLNInPFvxOpHK7UzDitKKuthX0jkTJLoYOX3BeVtmFmNqPFJulI2A6aTgM7t2JnW/n4bzsLEKN/AfJMvJxVYlj6VCjZSq4Q9DfZHwz9TxtuqUMEoFdQp98AZhTTBBCGbZ1uzUFYFn4ACJbDh5TqpRVstDkH8dhNpD4+9BFh0fEmSf5sB7uugp8c78sF+pjXMEAFTr3hxiVV/a6VT7vyRRvOFjnxx3YZ0YbijNNOBkCeqGn3IfxEPyAUsCmq7+6bLm3S8NdnARYTt1fSPHuHBEmfHt07bCeiWUYZa4bhaUkmD7N9qWK3ZwWBSJNqtjqAYwO4D1nzamUtWcHR/uHzdWqL9k7g5NCMjkqvkL+4Q5ESvPxwAuvCXwTLjY8iYN/Z2FB2HxOlqpA7vUeDkMj9ZLikIKqh8o3Msh1iVW9PlU3GNftbqYtdGZMQkOI4lP1iP9lHs7mDcq84EMOFdIb2J902z0bpEgLs0xme7YtRfMJXHMPDvfMaGkyD47vfLIOtRIXaCoK0yp2DSM/fTksgwGI/tOqhZn0fd8X6SHvJehpN00JTDYJAhr0w+RroINb//t/F0HLwp52QGYYE9/zAifjjfkF6KKsSCHS1CsIMmLdKPoqcJx0txgBe2TGInAr+eReYn0mcHEQsuwPtCqVsA9e2nCIEGrBgWx3y/08Z7wkSz5daWKZ
+ HJWN2jG4
+ qH7AdQbgKFdPhmHA0R4Ob585xR3hdy8eWlZWe+8u81QBK26yGk6NM1JdKUQDXyZ4Kdbs9EGuL99jzFU3Uxhv09Gsyb4ZapGGYnWh2oSBVieJNxier/qXOvyrCJPhyAthEP7ATW07zGrJOHVdVrrhmRXAXJXsLnIn/2HBEFOmbzq89qzrkav35TL36aaLZZCgsdd4gsYBzphrSdZ5E52GbaP5mJiT1/xFfFGypXtSGAk9i8IT0Kd92VfVzdyDBuL5E+/O1yLzmIX78kxHTmFKSIrSpU+xzbIptrK8mSXlAJc0W3IiFWhh9wdfPGvYrmCub97+XQcvwpesC5BuK6NfabQZxM/JRjFrB15kgeezK15kRf+yKdsaf3AoN2PHrSURNcTziu/yOgLIYdE/lxEjjYtQVLMdbF3t6wdXEPM14fKYioIRIQgIDjgc/vB9gghNzQWAiUrY5dJnIt2vKTuI7JmFqH/Qy2GKN6Jc1qdaNOucBxfZKBzMI08gLI6LL8fjLminn9rAY7B286eo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,74 +108,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 8, 2025 at 12:39=E2=80=AFPM Alexei Starovoitov
-<alexei.starovoitov@gmail.com> wrote:
->
-> On Tue, Oct 7, 2025 at 9:25=E2=80=AFPM Yafang Shao <laoar.shao@gmail.com>=
- wrote:
-> >
-> > On Wed, Oct 8, 2025 at 12:10=E2=80=AFPM Alexei Starovoitov
-> > <alexei.starovoitov@gmail.com> wrote:
-> > >
-> > > On Tue, Oct 7, 2025 at 8:51=E2=80=AFPM Yafang Shao <laoar.shao@gmail.=
-com> wrote:
-> > > >
-> > > > On Wed, Oct 8, 2025 at 11:25=E2=80=AFAM Alexei Starovoitov
-> > > > <alexei.starovoitov@gmail.com> wrote:
-> > > > >
-> > > > > On Tue, Oct 7, 2025 at 1:47=E2=80=AFAM Yafang Shao <laoar.shao@gm=
-ail.com> wrote:
-> > > > > > has shown that multiple attachments often introduce conflicts. =
-This is
-> > > > > > precisely why system administrators prefer to manage BPF progra=
-ms with
-> > > > > > a single manager=E2=80=94to avoid undefined behaviors from comp=
-eting programs.
-> > > > >
-> > > > > I don't believe this a single bit.
-> > > >
-> > > > You should spend some time seeing how users are actually applying B=
-PF
-> > > > in practice. Some information for you :
-> > > >
-> > > > https://github.com/bpfman/bpfman
-> > > > https://github.com/DataDog/ebpf-manager
-> > > > https://github.com/ccfos/huatuo
-> > >
-> > > By seeing the above you learned the wrong lesson.
-> > > These orchestrators and many others were created because
-> > > we made mistakes in the kernel by not scoping the progs enough.
-> > > XDP is a prime example. It allows one program per netdev.
-> > > This was a massive mistake which we're still trying to fix.
-> >
-> > Since we don't use XDP in production, I can't comment on it. However,
-> > for our multi-attachable cgroup BPF programs, a key issue arises: if a
-> > program has permission to attach to one cgroup, it can attach to any
-> > cgroup. While scoping enables attachment to individual cgroups, it
-> > does not enforce isolation. This means we must still check for
-> > conflicts between programs, which begs the question: what is the
-> > functional purpose of this scoping mechanism?
->
-> cgroup mprog was added to remove the need for an orchestrator.
+On Tue, Oct 07, 2025 at 10:03:04AM +0200, Vlastimil Babka wrote:
+> Basically it's for situations where you have an upper bound on the objects
+> you might need to allocate in some restricted context where you can't fail
+> but also can't reclaim etc. The steps are:
 
-However, this approach would still require a userspace manager to
-coordinate the mprog attachments and prevent conflicts between
-different programs, no ?
+Ok, so you still need a step where you reserve, which can fail and
+only after that guarantee you can allocate up to the reservation?  I.e.
+not a replacement for mempools?  Just asking because I recently had
+to implement a mempool_alloc_batch to allow grabbing multiple objects
+out of a mempool safely for something I'm working on.
 
->
-> > My position is that the only valid scope for bpf-thp is at the level
-> > of specific THP modes like madvise and always. This patch correctly
-> > implements that precise design.
->
-> I'm done with this thread.
->
-> Nacked-by: Alexei Starovoitov <ast@kernel.org>
-
-Given its experimental status, I believe any scoping mechanism would
-be premature and over-engineered. Even integrating it into the
-mm_struct introduces unnecessary complexity at this stage.
-
---=20
-Regards
-Yafang
 
