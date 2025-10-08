@@ -4,124 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96614CCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 04:10:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65DE6CCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 04:20:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC58C8E0006; Wed,  8 Oct 2025 00:10:40 -0400 (EDT)
+	id 907AD8E000C; Wed,  8 Oct 2025 00:20:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A760B8E0002; Wed,  8 Oct 2025 00:10:40 -0400 (EDT)
+	id 8DFC58E0002; Wed,  8 Oct 2025 00:20:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 964628E0006; Wed,  8 Oct 2025 00:10:40 -0400 (EDT)
+	id 7F61A8E000C; Wed,  8 Oct 2025 00:20:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 814DC8E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 00:10:40 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2EC1D119D8B
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 04:10:40 +0000 (UTC)
-X-FDA: 83973620640.30.A49BF9F
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 3E36B140006
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 04:10:37 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YIcj93Pe;
-	spf=pass (imf23.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DF148E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 00:20:20 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 01F6F58B58
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 04:20:19 +0000 (UTC)
+X-FDA: 83973645000.01.D835E7F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7098F180006
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 04:20:18 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J6CHq2N3;
+	spf=pass (imf16.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759896638;
+	s=arc-20220608; t=1759897218;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k4kMP+g5RiEZcnhoRkeve+Z9tYSilH0RKGWoeHvR8Vo=;
-	b=yQO8Dw47YC5lMxckESCyfYIgSen4NBn/gnJqNIkmL1YYVb8pMNjXcQtJ58GWX61kSrclgw
-	EkHOGpwji7K2KZvpZW5fs4zV6EgzfbDhW71RqLWW/7XEGcT0ggDhmfNVLPY/zybSwoRafj
-	ylHwaOSpZ+rWkvNDIAy4pEYA+kGg0n8=
+	bh=yr7z8PhZygVSoS108WVvwngH/9alXoXTbymUYSPCbfg=;
+	b=oKGUtcDMSYB1+GaQ8gGLOYep4C2KjOhTH5EFe7vCB2qTYOq5Pg/hXW9PByzhs/HQOfJfm1
+	9lk+eRQlnEDEe9n4tipLaJAj55DiaCWwXtXv0++S4ebzdMWZKGd36Qgn+LSxrPxjtm7aKL
+	MH89RDdNOGVyMsDYE4j3F2RfXiFpIpw=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YIcj93Pe;
-	spf=pass (imf23.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759896638; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J6CHq2N3;
+	spf=pass (imf16.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759897218; a=rsa-sha256;
 	cv=none;
-	b=in0UXfZcKMYYG5ywJTtZOnOSdMT/3Bm414PAWB0AIK71uCXkzd6JSIsQM3ppBo/s9ubKWX
-	gjgvRf62n9aG2S+qL3lbFmMFgw2+tygHE0rzkZd0Db3oBmfSiJWOpahlCBa98lY+q1BFeU
-	rWta5ZNdNd2aGEkcpqmRdJ+RDtZRGJc=
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3f42b54d1b9so1732075f8f.0
-        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 21:10:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759896637; x=1760501437; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k4kMP+g5RiEZcnhoRkeve+Z9tYSilH0RKGWoeHvR8Vo=;
-        b=YIcj93PeIb2kxl+6XjPbrt92Kj8VcPOAjM+faLYngN1Z20642a6IOF6qhwWHKzh/67
-         ASRZcK2fEKDlWUj+ZVdm0MNzl+bIs9vOTyBus2/+tHnNtnMwSdb5Y3wZgyqvHlvoD8XU
-         OVOpL3YeGD8YvsJpHEfWfv0bvh+tBP1JvJSDA8WiHtgrb0lI3JAfPpLaecmDeSzrUURQ
-         JYMgT4sRd0j1pEsWFsgDHyKX7FqJfe7yqgP2lpKHEpgn7HCzWzJpNTIKqz2RyzSfZuRN
-         vxp1g3Q2nSZvLTFFFLKjnAM+LOPNuu6LcqsljqdpNK2y/bEWO/vZ7sGK43vtsbE/5YUY
-         eBUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759896637; x=1760501437;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=k4kMP+g5RiEZcnhoRkeve+Z9tYSilH0RKGWoeHvR8Vo=;
-        b=nxQ6HOPgpmHJndBAhOhovtvqkS8Rkx13jfGy8Ga0+VuXWWt/h5ECuf7gyWAW2Cnmi2
-         yqn3lVr1lRP+QX7KoUTi/HgI0SD3MSFVLwnn9Uiy3AylxzaLmSqcYBkzq3xvXdz8hQZw
-         BS+E9gnZeE6r6s/BTViEktK0h76dgL2H/ch+fFM0b9hNlr2XgxB/W526EJqd1NwHhIW4
-         ibM/+JGwG9aRxg7AoQ+8u7E7BWgVB3OZgED3YrUa0T2ZMurR12wu+ZD8WOT+QuA2Qfs5
-         dYkXCd76LQuJzQkI6sa+ZGUE90PtKvvFpZDwn7G9DgS25P+KLTPpDcqRn0sZgnrSOioi
-         W4Bw==
-X-Forwarded-Encrypted: i=1; AJvYcCUBcQDt5KH76llLiCfdzmDldreqFQSTEB6ni5VqALhN4wb9XH2fqQY00Pvfr5ny72CNUXIgKS0/YA==@kvack.org
-X-Gm-Message-State: AOJu0Yy0ikoYbI2L+lMQ42jOxtTExvdhCXaa+33031BLHjLHpcak2aqp
-	AV9swF7z+bWt8Bzt8nzObV36f6znpdMBhhVXG+tys5ymIs+kcnSalzoixlszn88a/+HeSfZNIp3
-	hpsjWSXKTpPoB9jRL58PzjB7tmR6VND8=
-X-Gm-Gg: ASbGncs8t20uQZfM0pwydNM3qkMRUk+pdV9rfM4lfS6DC4LNNCUxIvMCHLfM7ctR16U
-	22Yyujhg2YgmlLEawCwGQtsT4ucZFuWgMJkQ5SST6rXUbdE76hl5ZzCd4MyyIAQ9zpv+DLF3GRr
-	TdGcZBvCgSJqteBsu3ONlQpL37ovS/WbwjDTMJImO74y6eBdJrJBUSgPyKkpDIDQhcAdKEikrUF
-	O8V/S2rgjqEBHS9inhXvqNBfncw2dg4WmenbimtM4JpVjKLqtDf3dSX93W+8GzndQpQBEDQT6g=
-X-Google-Smtp-Source: AGHT+IEbTF1Padja2a5VYTPxu9e01sfQgU7xUDhedDQcSi45ZcqbFc2By50SOlGmeATDd+z0rHt0ZHSn8owfVsEk02s=
-X-Received: by 2002:a5d:588b:0:b0:425:7f10:ada7 with SMTP id
- ffacd0b85a97d-42667458124mr907732f8f.20.1759896636654; Tue, 07 Oct 2025
- 21:10:36 -0700 (PDT)
+	b=UXOfH1KCoDLTb+ZFB+eZuqZMLIWA/XlJR/oheVJVz70XwKsfKENEwOPIc0j2fJ9BBBu/op
+	TFzeU81SioGsSv643GLBy1twaQKraj1qqO63J6uwKID8a4ViXc/ueRGQ724ldrbx/V6uSn
+	0xpcXDwgUf8kx1ifIPz2dVsYMqjmGKE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B9D0160260;
+	Wed,  8 Oct 2025 04:20:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E2A7C4CEF4;
+	Wed,  8 Oct 2025 04:20:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759897217;
+	bh=gIXJCsumt6skJ3sfqf5pbZAzlXWzbFT/QpJ0QJ0WoEs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=J6CHq2N3l4B147CgJt+zLqKYq2OtHwUWOsO4RanJM4icby3afXquF+ndgYR6fOYWP
+	 H6OZ/NXfzhSG3ZWIrXgmRzfzJY6TdzUbkHIqcFx9jRuywjXfZ30C/ThFcJTssakaHa
+	 8Pl8ETsSK4AyBuzZstrEd3Z+lNP+xUGQozD3xFAuMI7GnQHPjOrN8VoYC7s+PuJIdL
+	 Sl/LucC+GWoVX24kZ80gXhCu1Zs8uXu1c7fSbZPdvVAmGxtpf/98jY+G3TKds5KbWT
+	 ai2+dQBiC4bZTzbrfJnZsICkltmpxolSNNxBAdpghqjU9ZLCyE+8IndaxY2QfLJdx4
+	 9jMu/5qAYT2JA==
+Date: Tue, 7 Oct 2025 21:20:17 -0700
+From: Kees Cook <kees@kernel.org>
+To: Marco Elver <elver@google.com>
+Cc: "Christoph Lameter (Ampere)" <cl@gentwo.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Vlastimil Babka <vbabka@suse.cz>, Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, Jann Horn <jannh@google.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>, linux-mm@kvack.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>, Jakub Kicinski <kuba@kernel.org>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Jan Hendrik Farr <kernel@jfarr.cc>,
+	Alexander Potapenko <glider@google.com>,
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+	linux-doc@vger.kernel.org, llvm@lists.linux.dev,
+	Matteo Rizzo <matteorizzo@google.com>
+Subject: Re: [PATCH v4 2/2] slab: Introduce kmalloc_obj() and family
+Message-ID: <202510072114.52B93ED736@keescook>
+References: <20250315025852.it.568-kees@kernel.org>
+ <20250315031550.473587-2-kees@kernel.org>
+ <aOR15Xb6DfolYM0z@casper.infradead.org>
+ <202510071001.11497F6708@keescook>
+ <e019c59a-ba8b-ec04-dc5b-923cf9dd9d9c@gentwo.org>
+ <CANpmjNMsSGY+QEn=GV8S2sXuuQsioikPR+OhGa3+6EoTqYPkHQ@mail.gmail.com>
 MIME-Version: 1.0
-References: <20250930055826.9810-1-laoar.shao@gmail.com> <20250930055826.9810-4-laoar.shao@gmail.com>
- <CAADnVQJtrJZOCWZKH498GBA8M0mYVztApk54mOEejs8Wr3nSiw@mail.gmail.com>
- <CALOAHbATDURsi265PGQ7022vC9QsKUxxyiDUL9wLKGgVpaxJUw@mail.gmail.com>
- <CAADnVQ+S590wKn0rdaDAHk=txQenXn6KyfhSZ3ks6vJA3nKrNg@mail.gmail.com> <CALOAHbBcU1m=2siwZn10MWYyNt15Y=3HwSGi7+t-YPWf0n=VRg@mail.gmail.com>
-In-Reply-To: <CALOAHbBcU1m=2siwZn10MWYyNt15Y=3HwSGi7+t-YPWf0n=VRg@mail.gmail.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Tue, 7 Oct 2025 21:10:25 -0700
-X-Gm-Features: AS18NWAHpHX-o2MgG3uRPCIrdO8_WsGJ2z7_dnabrBdSIRdjp2sl6QIslommR8o
-Message-ID: <CAADnVQKzW0wuN3NfgCSqQKVqAVRdKVEYMyJg+SpH0ENKH6fnMA@mail.gmail.com>
-Subject: Re: [PATCH v9 mm-new 03/11] mm: thp: add support for BPF based THP
- order selection
-To: Yafang Shao <laoar.shao@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Liam Howlett <Liam.Howlett@oracle.com>, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, Johannes Weiner <hannes@cmpxchg.org>, usamaarif642@gmail.com, 
-	gutierrez.asier@huawei-partners.com, Matthew Wilcox <willy@infradead.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Amery Hung <ameryhung@gmail.com>, 
-	David Rientjes <rientjes@google.com>, Jonathan Corbet <corbet@lwn.net>, 21cnbao@gmail.com, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>, lance.yang@linux.dev, 
-	Randy Dunlap <rdunlap@infradead.org>, bpf <bpf@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 3E36B140006
-X-Rspamd-Server: rspam11
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANpmjNMsSGY+QEn=GV8S2sXuuQsioikPR+OhGa3+6EoTqYPkHQ@mail.gmail.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7098F180006
+X-Stat-Signature: wund5s91519nwinfab8n1udx1t8izfba
 X-Rspam-User: 
-X-Stat-Signature: uyqth6qdushu3ucdjf5uy681766f7mfi
-X-HE-Tag: 1759896637-889598
-X-HE-Meta: U2FsdGVkX18atnJqJuYvnpAV37b1IiG4KgpGyAPeON2ZauWPp0ApEMK91y9y4UBNwmcGJORoeAddzJ2pMcwHWvSrudz66p9mtAKAn4IlZy8k6zeJvPbI/84ETgl5uVx/sdyhurlBRpWO5Hzyb+daZjQPYQv0rlEC/9/iOP9P62UbSei0gQhFI+thKW0lnuuc25B8bOcSgNDVSa5nH8uoBC75+IQmyWsypLTZRLPjrCCzZXRKAFeQ7y2O9zfg6USx45d6Edb5J5C1YVVCkxn6OZ6pTz7f0Yn9w4xAKNUPk/CNtqWj21Sn6g30d1FB5FxEYBiEkesS6vc10KFJ4cWdsHs1AcFIZyi35eZGYU82bGeBv42Sesq7Ndb1ATMCzMFufpwAD6suUHLhXLRnQGWfncAqnzSqmFE9bGdnGO0mj66K8FgXDSM94ecVZ8ra3QxSfF13SVByoxFLUr8sUEf3my4vUbk5WnacCMuTCx7//vCeLGpLOibNVYyfTI1vFA2icHF+vOJ+kNnAWfyaLpA3uOjebmxpNMCG5Ys0erz8cMHxo6AwRUQKho6GbJjIGHd2oJbeZUJg+Dt97FVvY02WSFX6PF9cOaPjP44/3FbWOLVmrojxYlhS9C8Ci8nfO8IDuEKtlGplYG0H8iz53LkStBrH0z26K7uxhsJ2//TgE5eVRt+khSb8qImZfJARgtxCQ7fULvu0VfRiwjECqLPI52yBKV0E4VrJ4mEjoZIv+NRpUa59UlFUk+eLHU9Kf9e3MveS2biXGa7xQlhLECcZ0qAs+MqeumY1cXb1IKgMk6nvd0ch/lqHR25fEzk9/wPrMPX6kZchv9aVXYHbsHDNSZotscsyWb7eTGdIPX0KEFuNNeRkTzc5qxoubIvEzkldhaSO20r6WHniRHCe55r4AYnLB+Yxx0rO/FcaDWylpHLnc2CMFdpgaHxAsQRn7KBjNuxDju+pVVT4t3pv1px
- pUU8Qwg7
- NrvM+xtZFm5Q9PcDwg+tJmZ+MswdLZ/Jrh1jZlI960bSFMLBUvhIosqrDC3Dc67j9J2AdclHlodgAWFNiBKLMowFndMgg0R2pkZh54EL80YhCgIfz3YhfmkwsatXNIkbVTXpuN0J8WiONjBg2s3x+JLNhbNRaZFtH03pgY+7Pj4kTblKnGH5UrjKWdBnvyywVbmy/V3sKex2hB+T38947JGT4vsASNuw4T3iR/iHseN5nRsHaX8ADFa3/FxWxq3DH6FBtlduFQsv5w/esZIjS/JVnbka4Ji8ABGgEz767klItKGOVqRYcAT7KiLrCcClUlirKpDXDlD2FWLeSY/xDSSj8WJIUu2/oHSz3g/HbFGnlYZVZ1m9i7z1/faRTyij5AQkJkehvgSXBHo5TD3yMRZ0JY5bDEWWgUVTLFwwUNrWu4ipu7/MAJ5aofNTkxLj4m0b2uz008JDPiA6q8IEpFzPDgQ==
+X-HE-Tag: 1759897218-745702
+X-HE-Meta: U2FsdGVkX18cTms0l3c8qJn8rKBXItjfFS6Yf7Ja8NzlJI9MoaptMQIJee7Ms2kUcOrQ4lAKOSKkCZoJ6hpVpLEyIvtq7yi/rCjwYllBF/ypJKlFHxs/e/3Jijh4KqDsdvddcVX0PVZN28DJ/IyJlnRhdeD3qGLApkN32NiuohRzyIcg4vgYrW3VG7AvFGv1No3u0XAZMeb4AQ4UYQpY+jNP/lKK8sULWiIVHq5OjyqWE61OzcI1pADdny8DcS9uq3DD7odt6kXopchxTmp9/k30TMHt2eoG42GQv9L9WhCALGQ8Wh/nALLUODCHKJjqqjvpV6PJMomf2alXwgvEuJ7uVL+qq8r9x65oQgjGbpjn80cQJxiEuifF7B9xDRJd6K0H4DlbQ0W7NzyDuSszotMWCJ8yOQrDWW+jPis/Q4IXs+BIHxMypyEUwm/NKllWPA1jwGXuJcO/Xiytet5R27aHdrDvx+1Ae8Dp1EUL55gTdG64dePz3XidRg2f3LlW3/VQOB5Yn3Ok6M3puhCg/nf9sNq5A0rMn9IIRxzfP6rf+Zd8PpfbECbwkyLEIo77WLJ/24bCNSsfeRimnF4o2W39GmP4qA37hsb2Cqu9E3KjV6FXcTBz+WHgmQ/G2eEB8TBVJqbpkGIkkbbpnAeQQKtGQB9B6wkIVUPljwvZzi/3y7GO+6UBEf8jjiOe6fjONLDC76/0MwJo7E0/qnV7B0w9KwMX8I8USA7PtVBolccoIR1FuHHK6eH8utWBcv0z6kdnGg21MfMjQvTmc/JLJ+XIx1w278mM7v5EIbFRP4t8Hs/STQ4YXENXETgQ9GBCOqa84+YkqKut+ZweyNWYkrrExaLvkr81oVQbWZTOHZQPuUwZJFxbe06DuTH6GEr/7QSaIZmFIKlHYLhrMQm8ry4tpqVoYrJx503R/P4pQs8iJPoOPXTeDsJ10alrIpylHavH6rHQDdIwm5RNQwP
+ UrKST9P/
+ 2ohSomtPXDdPdPLrvX8U8FPQkD1o3ItTkELMWtMa6xf9fSu50FOMBW6S7QnnvCaEsiMyl6QvUDkjMbdkXMEaBEkm7AKGgZaNP64rjkaUaS1jUj9BRKpjvRmPi0EaS5oTQhSBWTHAGdE+/hCpkZtHfQE/lhynZJCKZU3mMJFMU111fRSzC31nQxXRtxS0Vj4cPwYPNZb18jbfcT+vVq/ehVQ1C54sIRa6BJGrVBHC12NeiTL+lqwFwj9O0SxSKXsS01+zq08A3kogCtIOI8UbsEIXTrsxksWBmMhZZEN467XWGAI0rIymjfgGnPUVT1l3OH4d5bXfk1bV/MMJ9kZYYYLzrsA+Rebr2++N870gK3xeEiOIVpHarf4TvpwKLkGMLlpxWNTU4uhHFUax7jIQxFgSQyR2rwb7gdS7Eqd9sNtsxpfHI866+fbhQAtlvKZ4856NuYYcKspgvd9zWUUUGGJO4YmyxLzZnCtkydZHqXF9AS/esrKcfYnts2e6xrMUBrB+E2h1AqGWnUBOPn0A/tv0fAquTY+UaKRXlnw6N/BRnR+aToA+Y5T4wMw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,42 +122,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 7, 2025 at 8:51=E2=80=AFPM Yafang Shao <laoar.shao@gmail.com> w=
-rote:
->
-> On Wed, Oct 8, 2025 at 11:25=E2=80=AFAM Alexei Starovoitov
-> <alexei.starovoitov@gmail.com> wrote:
+On Tue, Oct 07, 2025 at 08:18:28PM +0200, Marco Elver wrote:
+> On Tue, 7 Oct 2025 at 19:47, Christoph Lameter (Ampere) <cl@gentwo.org> wrote:
 > >
-> > On Tue, Oct 7, 2025 at 1:47=E2=80=AFAM Yafang Shao <laoar.shao@gmail.co=
-m> wrote:
-> > > has shown that multiple attachments often introduce conflicts. This i=
-s
-> > > precisely why system administrators prefer to manage BPF programs wit=
-h
-> > > a single manager=E2=80=94to avoid undefined behaviors from competing =
-programs.
+> > On Tue, 7 Oct 2025, Kees Cook wrote:
 > >
-> > I don't believe this a single bit.
->
-> You should spend some time seeing how users are actually applying BPF
-> in practice. Some information for you :
->
-> https://github.com/bpfman/bpfman
-> https://github.com/DataDog/ebpf-manager
-> https://github.com/ccfos/huatuo
+> > > But all of that is orthogonal to just _having_ the type info available.
+> >
+> > iOS did go the path of creating basically one slab cache for each
+> > "type" of kmalloc for security reasons.
+> >
+> > See https://security.apple.com/blog/towards-the-next-generation-of-xnu-memory-safety/
+> 
+> We can get something similar to that with:
+> https://lore.kernel.org/all/20250825154505.1558444-1-elver@google.com/
+> Pending compiler support which is going to become available in a few
+> months (probably).
+> That version used the existing RANDOM_KMALLOC_CACHES choice of 16 slab
+> caches, but there's no fundamental limitation to go higher.
 
-By seeing the above you learned the wrong lesson.
-These orchestrators and many others were created because
-we made mistakes in the kernel by not scoping the progs enough.
-XDP is a prime example. It allows one program per netdev.
-This was a massive mistake which we're still trying to fix.
+Right -- having compiler support for dealing with types at compile time
+means we can create the slab caches statically (instead of any particular
+fixed number, even the 16 from RANDOM_KMALLOC_CACHES). Another compiler
+feature that might help here is getting a unique u32 for arbitrary type
+info, which is also how KCFI works:
+https://lore.kernel.org/linux-hardening/20250926030252.2387681-1-kees@kernel.org/
 
-> > hid-bpf initially went with fmod_ret approach, deleted the whole thing
-> > and redesigned it with _scoped_ struct-ops.
->
-> I see little value in embedding a bpf_thp_struct_ops into the
-> task_struct. The benefits don't appear to justify the added
-> complexity.
+My main issue is that I prefer explicitly exposing the type instead of
+having the compiler have to guess. We want it for more than just slab
+isolation (e.g. examining alignment).
 
-huh? where did I say that struct-ops should be embedded in task_struct ?
+> Note, this mitigation is likely not as strong as we'd like to without
+> SLAB_VIRTUAL (or so I'm told): https://lwn.net/Articles/944647/
+
+True, but both "halves" are needed -- SLAB_VIRTUAL isn't as robust
+without the type separation either.
+
+-Kees
+
+-- 
+Kees Cook
 
