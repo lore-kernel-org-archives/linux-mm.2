@@ -4,136 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F90ECCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 20:27:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32AA7CAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 20:46:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DC548E0045; Wed,  8 Oct 2025 16:27:22 -0400 (EDT)
+	id 6B8FE8E0010; Wed,  8 Oct 2025 16:46:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B3A98E0002; Wed,  8 Oct 2025 16:27:22 -0400 (EDT)
+	id 691078E0002; Wed,  8 Oct 2025 16:46:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F0F68E0045; Wed,  8 Oct 2025 16:27:22 -0400 (EDT)
+	id 5CEFC8E0010; Wed,  8 Oct 2025 16:46:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EC688E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 16:27:22 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D8E7A88193
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 20:27:20 +0000 (UTC)
-X-FDA: 83976081840.08.9351D1B
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	by imf01.hostedemail.com (Postfix) with ESMTP id E2E3740006
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 20:27:18 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=XlAcSH8Z;
-	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759955239; a=rsa-sha256;
-	cv=none;
-	b=ctYVowIH5J5VPMqc/FOSdVLdtj3l2UpiIFmHFOr8kb+FtgqpkjsIIfRn/UO8mKlQc/Ssic
-	1Sw8o7/Ug/ZQSmqTc74nDFj92iCVUICNRQItZHP+XzU9/cc9RMEy8qvhmyelQtwsj8kVye
-	XlUK03HvFm8INddHaj6zVd91eaCmdV4=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=XlAcSH8Z;
-	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C2318E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 16:46:34 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E1C0A1DE6B4
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 20:46:33 +0000 (UTC)
+X-FDA: 83976130266.03.C6610A8
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+	by imf24.hostedemail.com (Postfix) with ESMTP id EE8C418000E
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 20:46:31 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=EzJLqeE8;
+	spf=pass (imf24.hostedemail.com: domain of tamird@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=tamird@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759955239;
+	s=arc-20220608; t=1759956392;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ft9wlTfMhhvdI9XX1KOPoXEFZYD/S9J3oHik50ZJpxk=;
-	b=WY7wpPhgbgtcLGhSJHTDsETFMZTRjWEsRK7/uFo2jDuKJNRHLxoIjsDaOmmNfb4LWr8wpe
-	tK7gz/qswumjHnaqn+vwOUOei9odixflSdJJYohHtsjgvGivnzlK+Rl12S1JWCnEEPIOya
-	HjNM5tSq6iaWBI8xetpWziIe+T7x6ZQ=
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4df2911ac5aso1107571cf.2
-        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 13:27:18 -0700 (PDT)
+	bh=rxhkbVa/uEXngkfUo+dBA3TFbsCdSBF++Qy9JKTTAdY=;
+	b=uZG4lItdeTsvFeYMm5pB9qPBoPjYsS+PJfqJLUlpa+EB0zQQbIzarCaucF07zLigsUytg/
+	wnZWTuqyza8tcPO3uAcGxmvvD6OhKRfQk8DISnfHZFMEtUy9+tjixXTK7+Mkp5oI/F7YzG
+	qye/2bp+/0zVlhqsMa8T+axR/oUWZQY=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=EzJLqeE8;
+	spf=pass (imf24.hostedemail.com: domain of tamird@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=tamird@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759956392; a=rsa-sha256;
+	cv=none;
+	b=TXelaM1HD4Y6MOFf0Dw2gAc2jXK1++6uYPOG2FOU3olnZkZXg8GpoRFgFFL051HwDWKFNH
+	gQik2h5nkhyxbHKWK2xXRFg0t6P8Irtdp/cTXgqbXShFXLx97rACiz0n9AbaUIGayqtzpT
+	qBREnuUVpGAhGQlAEUi1YzIU697Kd6M=
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-3637d6e9923so1811251fa.3
+        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 13:46:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1759955238; x=1760560038; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1759956390; x=1760561190; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ft9wlTfMhhvdI9XX1KOPoXEFZYD/S9J3oHik50ZJpxk=;
-        b=XlAcSH8ZIYcTzLOhvZaPGpdxtWjna6IVAoB9CBl5lXjPEZFABHDhrZlP8ValezJbVK
-         ShOt79Qe4PJJBFnLcvUsbmFHTVY2E0sNew9kvkKLWo6I1wnZNCuh9eqeCvJj4LZwowZ4
-         HkcsqKUTIpoH6B6o+QR/ox273JKWbjf4Mb9Z1h3FyJf3yB9DA5Sj+oDBeec2/YyADeHq
-         kuaLHoeTTsOPQsAn9+RJD8RJ/6oQASCK2Gh6LRr8ULqvfAWp4GD8OiMnzs+1DwCOdX+O
-         Du7JQ5O5hlo6qByt6f0JOPyhpowcSBPhzkcwcsNll2rGS35uWELnEJtsPprs7wiPJVQ7
-         sPtA==
+        bh=rxhkbVa/uEXngkfUo+dBA3TFbsCdSBF++Qy9JKTTAdY=;
+        b=EzJLqeE8WixDH88KsIaL/ld2u3Y7Nh31HEzBk/M/vqfDtf2Xff35JTeqmH6FK6FO2S
+         SJy3NDRfChH/4zKHJb4MC14yyAqLEQvQA+DTmJmpawLwBUmmOBKA73ROu6bWwMjtUEEj
+         CKRWbQROPZuBMBqGI80Gy01R0AQpLNW47DamiEh3R+6eOwhP3vGQ4eERGMHO4q0MDllc
+         LwIcrJLYAXToDxqCvi6rjJHMfxUuUOJ+/g2Su2amB0KBYpZzcwE9WV47qwfzTHm0fgEy
+         o3Ovf7OVmJ0Mg3OYDXc/nKzrqLZbQT1xxAjLTAAIDDPIcKxaQFhZ9zQRj8zt0zmpky9z
+         S2NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759955238; x=1760560038;
+        d=1e100.net; s=20230601; t=1759956390; x=1760561190;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ft9wlTfMhhvdI9XX1KOPoXEFZYD/S9J3oHik50ZJpxk=;
-        b=lNb4biN1RaH5wu1yXsoX8+Kd1aoLxocLyYGIE4PgUERneD6d4HxEDrXB1U46GSvvB5
-         272iOL9x7ha+u8nZC/PaXYw5bZoWOODjqT8UnHCBOdEHKoFcce0Qo7H345VnMO0RUpPr
-         NTJ2/WKRqdRa7qvnWQHIv4UPyjsI9FQQYdDQg9RQoVMlAYWZ6rR26retSstvC7yC1x7Q
-         QQw2PG5cjaR0PyRcACzWFi3w8Ckf8EFDOI2dpi0ofVtQyFtCIBnRqz6pNPhl5eDjMivW
-         R9r4b9Qs4I4QWURX9L3TN14394xQyYpQ2zqK+dBjSoiRh+JxDBB5/zMiEaDOEc/G9GbP
-         nR+g==
-X-Forwarded-Encrypted: i=1; AJvYcCUjaIxXCCgBvMV5sVpAxGQ+Yb028UjWIh0U1M6rrJZFGj9mMDq8O2iJBnKOhy5y/1LcxpbcAQDH6Q==@kvack.org
-X-Gm-Message-State: AOJu0YzQ0+g7260PC2M44TTbpGQsN+oCoiso51xoyVfceDvJRWYu7CU2
-	IYi60a2wForoEA95S8/BrNONOr2BIAgK2c7patzcawf+HY7+EIylP896sHEI+sVtsF0c6exygH+
-	gaeD/uPYiyCcEYlWn4rh94PfQt1/LQWgMnmXtbMxr+w==
-X-Gm-Gg: ASbGncsiNgYTMdJ1Y6Meipj26B1fUxEuZzxABQUO2pbu8eK5uWhHf+MRvarR8qEeurx
-	Jd6OZHctGYvE1cUmSN735/v9qfQcFT+9aRvYYPezfjiKcfSYhqJoKbPXB7J2vXcuedpDiHMPUPl
-	8nagFCxLCv/wQd57TAmqoqoPoALUOnWOL3OWNVjJJ7e82e8hbMkN4xAhGo3C9UlPLEwctzqoytG
-	Sx09j5PD7wHEJvt9lzUgMX7k2NH
-X-Google-Smtp-Source: AGHT+IGAPqmJcgL16UIg0d4+RNt3XKw0htJPMbSHIFhskDVjDGNvAxn7Z6jrk84cREgUa1kvsB4Hz5CuCuJTQ1VRagg=
-X-Received: by 2002:ac8:5e4d:0:b0:4e5:6c5e:430a with SMTP id
- d75a77b69052e-4e6ead671a1mr74767911cf.64.1759955237650; Wed, 08 Oct 2025
- 13:27:17 -0700 (PDT)
+        bh=rxhkbVa/uEXngkfUo+dBA3TFbsCdSBF++Qy9JKTTAdY=;
+        b=J1EVJjm28Vv/B9/9QwtWy/9qam9Ao3iKYWwyyBZYXGK8OI31DcOhmiq1H5yAzO0I4d
+         KVqAO3s0EHVogn+8s8qD4rINZKFqPO4+RLdVcXmPPRxu4R9SpZ2a0pQNI8w39l2rfNcN
+         i7skbHoBnxS/fqA583hPq/4tPEH3ojAuRtt0MlmW7PHfQTcwHRFVUuDmaH670mDT+ldk
+         AJXcO4v86pCIcTXvowc+sQ9Uj7XPD+qXJ/YK3TvidFRgLJJZaLJ3rvsUtfPIKKIogYN6
+         E3S6wvo/7g4ETjzBEbZmF0SbGD3sU0fgvyoFX2wY2XukT663XT5dvuJtW79r+z8Nlo+h
+         UuDg==
+X-Forwarded-Encrypted: i=1; AJvYcCWWdG/9lqclltsqrDjcR3dEPgehYjMY5kVzVjX479I/7pzfCyssjA75pvOD+KZ5KY6hXXTykKs6mw==@kvack.org
+X-Gm-Message-State: AOJu0YytAV7O3M1agzXquTKP6Buw2k+dhtjVWka07u259uNohBGgZlz8
+	K7zcAAXOQXyHYVMmt8ZB9Wf6J0Xjkfyur9vSszsv1vQqJHjVWkHG3267XIqvdJhMY+qvi+FwS9V
+	dLqKRv9npt/0N9bijckZyAwyniZvKWCI=
+X-Gm-Gg: ASbGncvKw5FEJj+ftwjjhDpaA1iZdXDM7U00xPui9xAr4iugftdvDNPMvqk2GstDF5R
+	aAB9M/cf7dXniT/aIjTAxmnF6yRqu+Yg9eS75vZh9ap5v42pHTwJlnDYEp5UxqlSlvUmJrl1Iai
+	HEeJUuPlkO3D7TJ1gMNw8dG74uAifEX/ByLtKerR8//NWd0we6uu/Rz3xrOxpomsmE8Ky67iUY/
+	BgN3yZNTXzYlcAV2Gfun4GsBsP1XKyXqYBfejy7rgZUGn6pI/hJnA7wORK1L2AkuB8dUPrZUMki
+	RdZU7kX+n0nnXT0LX8HUnGO3YsBkZRgXqdF8EFJ/vTmd
+X-Google-Smtp-Source: AGHT+IFJhp/tSRDD6lbiN5FsweIVaBTWj0SEmB759OfG5ef5vYNgy9NHDR6XMGwyweNedzBOPTYTzZLdyknCujsFpWk=
+X-Received: by 2002:a05:651c:1992:b0:372:8ccc:2629 with SMTP id
+ 38308e7fff4ca-37609ea7f6fmr12329021fa.34.1759956389715; Wed, 08 Oct 2025
+ 13:46:29 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
- <CA+CK2bB+RdapsozPHe84MP4NVSPLo6vje5hji5MKSg8L6ViAbw@mail.gmail.com>
- <CAAywjhSP=ugnSJOHPGmTUPGh82wt+qnaqZAqo99EfhF-XHD5Sg@mail.gmail.com>
- <CA+CK2bAG+YAS7oSpdrZYDK0LU2mhfRuj2qTJtT-Hn8FLUbt=Dw@mail.gmail.com> <20251008193551.GA3839422@nvidia.com>
-In-Reply-To: <20251008193551.GA3839422@nvidia.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Wed, 8 Oct 2025 16:26:39 -0400
-X-Gm-Features: AS18NWDStUB3aziIoEu9unN2oxgQKkUZyxSI_-rUVqTnIsSkLapICWThr2gCAYY
-Message-ID: <CA+CK2bDs1JsRCNFXkdUhdu5V-KMJXVTgETSHPvCtXKjkpD79Sw@mail.gmail.com>
-Subject: Re: [PATCH v4 00/30] Live Update Orchestrator
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Samiullah Khawaja <skhawaja@google.com>, pratyush@kernel.org, jasonmiu@google.com, 
-	graf@amazon.com, changyuanl@google.com, rppt@kernel.org, dmatlack@google.com, 
-	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
-	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
-	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
-	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
-	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
-	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
-	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
-	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
-	song@kernel.org, zhangguopeng@kylinos.cn, linux@weissschuh.net, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
-	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
-	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, chrisl@kernel.org, 
-	steven.sistare@oracle.com
+References: <20251008124619.3160-1-work@onurozkan.dev> <20251008124619.3160-3-work@onurozkan.dev>
+ <CAJ-ks9mtfVmP+SwZvBVuQSwViiqo2ZngSGQuU5Y7A-Q_JSwjKQ@mail.gmail.com> <20251008225002.011378ed@nimda.home>
+In-Reply-To: <20251008225002.011378ed@nimda.home>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Wed, 8 Oct 2025 13:45:53 -0700
+X-Gm-Features: AS18NWCgbeEJXhSg6SR3UxIn3ImEaYtYHA2yKjUMu36X7Q4evawJbCU6rPxkSEU
+Message-ID: <CAJ-ks9nMziN2LU=T=XGhV8xau6UfGXOMZ49+2Lrt8KGbL7Qngg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] rust: xarray: abstract `xa_alloc`
+To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
+	linux-kernel@vger.kernel.org, acourbot@nvidia.com, airlied@gmail.com, 
+	simona@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
+	tzimmermann@suse.de, corbet@lwn.net, lyude@redhat.com, 
+	linux-doc@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: EE8C418000E
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: yrgz6ghabdzq4fiec5rada56jyrt87hi
-X-Rspamd-Queue-Id: E2E3740006
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1759955238-458455
-X-HE-Meta: U2FsdGVkX18tgx5GRYLyT+U+alEYEE0gTqiYNF74ahb+NSZmEDwB8We5qHDgGvO7WB9u+z5WxMxpXnRbRwc7Y3SdhrvCHDtMaZ4jm7dL10Ez8Mo2rUEWacBxXx4AnarzzU/stL/PCM1e/iy0dRwcyUPpFHk/GSM3x1YiqNhkvu98cW/COdcfogGrV3/D4Qdch8pbKmPUNVqPI4qQ7TSj2NRioTCbul3fk4vCrqu8K7bs4KIaZ9VpNMQr5z4JLupARTCWWNa2/MXYj/zE6bzI50OZAOs8W28dAAnNSGhBbjplc6eU1rvlzFO4egjhsBZUhaIlgtLOjGi1eeLwv7IsIyxtgKk+KqIF7BcXXk0sLdj3XlXM1kFMF4VhMDpVOOwX0o6aiJYWs7AIFoMA2Beox9UG9vFclq0dyv3vkBwTPDmGIsIsCOtqJ1i47VAJH/tFE1dsC21OMVRZNrugQmMCUO52ptscRrEzmnHr5FFw3xRH6yJowHVQSyZKfoMTAohQOIDUEsaCRVvZFUtDC1XnIHZf3fJbwQJWPg7p04MUDpNZUOWMNtW7bmP6JxzGJniO+sdne7YINU0tgID+HwX+bW2tkWK7f6hVaPU/uFkxMMAh0/1VFgEX1fAigq31NCUxO9q7hSZ1JwApJ3v0NGzLi7ZuaJVI8nxSj8oh4llLCtmHsKhaih6SNgxWPVAOphc593dzZNAishVmNK64c36uzQiDBXWMBPEdAsQ999oSnhQ5EhHE77hyq5dQCcg10XujlHvfaICCiJhmCSVXgx3hR92E67SSAKF4N//7TRq7sas5GKbx6v5DwwrcSWg3pOY40HqbIVJXk7FQDSbiJQ1RqwYdvH0MI0jKRYotpCvTMkP5UMd3tHNdM0yHMGMNec6fchH8OuTAxzbkRkrSYyeyEEAUccRrgHxnRevhupIS8t8wBcSLUj4Z6tFQHq8VXolWt30WDCe6JUiygw4Cf5X
- FEbO8BbN
- RhnUCuYQwzdQtOnuFQmIxLpAPAoh6FOgT6JiQD10No3iqj6jV6z17IHh4R9GYY+tyLDvTJ0Z9jQCto9GHj6y/nR/lf14OdawVAufFDFd+4umeWAF6m2iuG30FtTMNPh8wNx9ncwEVddHuc/0ouYaaYrZGcchjIAsTFXan7UZD0WAIGCgaoE35jihyPELKyICMH6er10TJekHMjbBfJD/uQleJ+6ufNGBCdDzP/jMOKIRUT6VntJKnK0CjkbrMgRpRI901s1ma9sMGXJHyvwMCygqx0Qpk6RAYs5le
+X-Stat-Signature: omy4ycmbo99ng6u1r5wfxeyjjbascqhj
+X-HE-Tag: 1759956391-13327
+X-HE-Meta: U2FsdGVkX19kPRO7H/JR/RWjNvuTewaHEkrhEKQY2mWGLsQ8kTk+BOWcq684hiNT8fSigzL6JnIIG/ZCGxjGH9ykUsIYUmnfegqkWvqrU1fda/SbtwhvoGjxMRAQqlRqwNInJ7yqo3tF874LVKKhCe8+CTLY+X+abZy4vQyeaM1b6IjdfnH++wNnUiQyQOAmxcdmMy05fMD144Qj9hOKuwEhF3f40K/MM/bVv+E7Q2cvz/JF6kmTo4z3CcH6AGAj7FNohl42TgAAZnLIxnWiitqu6DVsSLc9Qf16qiNkYTUpXf05dSI/w7IXylxdYDpbZMHb01Ocrk9VegQM+anTh+lcljjmpt+SP8iGLJa0CeG8IC0tDTXa9pLsfgx/4x73k6K9uX5KgZbv+1my3pg4sI+MDtCZ2HQtBySlo/uDwkItYTKVPr8Cd1N2vQfEVeECzbRDdMIbYds+OIO0Oa3n2Im8HWXaGB4k2alF9/7JpZquqPheSzmYHU8Op3pSLHiYyX/u/bcMiArjDsROJX9aAQmHd3PMGN3RZcWcqLklgsc/UwZa/MvnS3/00Ig60QmuzvD1g9qzRlyOnQPrvGQrdG9eJvmG5Bs6vDTK6oO6GF2lpHhqWVZo5QVEDuiRnL7An5w31Q6znQC+v/3Nm2a55tOkPxCh4HAvvJri6GwugAvSPsTsDEMZyndoBmikvSNKL+LxAFyfAO9omuKkbPYjQ+7MoqqlS1tdIrsIqXR2/7+w6ZNltAaV6kE2j/FdV6eNS3/70uFwRtLL3UHTPp7uyQs0H/J31Pk+yuSnpDy4L3HrWKDtcubSJHqVdS7UvXip1hqs17FtA0bzASaoY9kpXUm7+aC6xM8NgQ9PwXYolywCptZZdfANAJfblPD9xq8oxXWywOTsnxe3oW+ZTA/NLz+uC8uIB3cME+SDJfeQnQKXk8bjYQUTq6f/pLR9qSE3tCjb048IcUBWyFV/Z2f
+ Nr+4DHHx
+ 8yroVfXIwTMVynVsHqtPn/pbcjBVIio4pKKDL8EN3VGuAwkcuDH6+cIaHvCP9H7v18eZxhVJZOGUr0UVvJ6ku45GGMD31oTNw5AyBmpQhkB+OI3OvScn6uAF0DLUIehzOf/RO74hu1f6ChQfAMHuOdS1p4sagmUXsq73V+YtwOWiRTsv1ThCsykBHz1j7V+sLwPGh2WvbeZ+sabPCrVgQ4DAbXb7dQDa2WhnthSSjIO3AWuaqulDK7NqSPVdtSDLhN8iOlwu4rz68kdq+TwCKLwt3EjB+eR0vuV1Pp5HoqOs051e0akX+NaqFF0t5ATrRZfw5MA+HLk0w/uuF6uS0mNHewW2RKOUPgc+dQErozk3FxXplMBU0rJe/7N1dZiG0/55A26tAOqy1R4Vnfsuj0pyQBNa1bcS9pTtvXQk3MLQICxUx3kaRw9i6N2iKayC5UnelSYQYCxuEAyK9bRQkoG9knAP5Gql0WiGMnO4cht/kGtLaBM9GN3fVnX6IyRgXGWkFknHuQ/mjYcr3uOUEo6pB1uhJu0NGwNTn
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,63 +123,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 8, 2025 at 3:36=E2=80=AFPM Jason Gunthorpe <jgg@nvidia.com> wro=
-te:
+On Wed, Oct 8, 2025 at 12:50=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.dev=
+> wrote:
 >
-> On Wed, Oct 08, 2025 at 12:40:34PM -0400, Pasha Tatashin wrote:
-> > 1. Ordered Un-preservation
-> > The un-preservation of file descriptors must also be ordered and must
-> > occur in the reverse order of preservation. For example, if a user
-> > preserves a memfd first and then an iommufd that depends on it, the
-> > iommufd must be un-preserved before the memfd when the session is
-> > closed or the FDs are explicitly un-preserved.
+> On Wed, 8 Oct 2025 09:59:12 -0700
+> Tamir Duberstein <tamird@gmail.com> wrote:
 >
-> Why?
+> > On Wed, Oct 8, 2025 at 6:05=E2=80=AFAM Onur =C3=96zkan <work@onurozkan.=
+dev> wrote:
+> > >
+> > > Implements `alloc` function to `XArray<T>` that wraps
+> > > `xa_alloc` safely, which will be used to generate the
+> > > auxiliary device IDs.
+> > >
+> > > Resolves a task from the nova/core task list under the "XArray
+> > > bindings [XARR]" section in "Documentation/gpu/nova/core/todo.rst"
+> > > file.
+> > >
+> > > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
+> > > ---
+> > >  rust/kernel/xarray.rs | 41
+> > > ++++++++++++++++++++++++++++++++++++++++- 1 file changed, 40
+> > > insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
+> > > index 90e27cd5197e..0711ccf99fb4 100644
+> > > --- a/rust/kernel/xarray.rs
+> > > +++ b/rust/kernel/xarray.rs
+> > > @@ -10,7 +10,7 @@
+> > >      ffi::c_void,
+> > >      types::{ForeignOwnable, NotThreadSafe, Opaque},
+> > >  };
+> > > -use core::{iter, marker::PhantomData, pin::Pin, ptr::NonNull};
+> > > +use core::{iter, marker::PhantomData, ops::Range, pin::Pin,
+> > > ptr::NonNull}; use pin_init::{pin_data, pin_init, pinned_drop,
+> > > PinInit};
+> > >
+> > >  /// An array which efficiently maps sparse integer indices to
+> > > owned objects. @@ -268,6 +268,45 @@ pub fn store(
+> > >              Ok(unsafe { T::try_from_foreign(old) })
+> > >          }
+> > >      }
+> > > +
+> > > +    /// Allocates an empty slot within the given `limit` and
+> > > stores `value` there.
+> > > +    ///
+> > > +    /// May drop the lock if needed to allocate memory, and then
+> > > reacquire it afterwards.
+> > > +    ///
+> > > +    /// On success, returns the allocated index.
+> >
+> > Returning the index is not a very good abstraction. Would the
+> > reservation API meet your needs?
+> >
+> > https://lore.kernel.org/all/20250713-xarray-insert-reserve-v2-3-b939645=
+808a2@gmail.com/
+> >
+> > If yes, I would appreciate your tags there.
 >
-> I imagined the first to unpreserve would restore the struct file * -
-> that would satisfy the order.
+> It should be "allocated key", I misdocumented it. I don't have a
+> use-case for this implementation, I am just trying to help on the nova
+> task list:
+>     https://docs.kernel.org/gpu/nova/core/todo.html#xarray-bindings-xarr
 
-In my description, "un-preserve" refers to the action of canceling a
-preservation request in the outgoing kernel, before kexec ever
-happens. It's the pre-reboot counterpart to the PRESERVE_FD ioctl,
-used when a user decides not to go through with the live update for a
-specific FD.
+I think implementing things without understanding the use-case is a
+good way to build the wrong thing.
 
-The terminology I am using:
-preserve: Put FD into LUO in the outgoing kernel
-unpreserve: Remove FD from LUO from the outgoing kernel
-retrieve: Restore FD and return it to user in the next kernel
+> The task mentions "generate the auxiliary device IDs", which should be
+> the returned key, right?
 
-For the retrieval part, we are going to be using FIFO order, the same
-as preserve.
+I dunno.
 
-> The ioctl version that is to get back a FD would recover the struct
-> file and fd_install it.
+> There is also this reference [1] that shows that the returned key will
+> be useful.
 >
-> Meaning preserve side is retaining a database of labels to restored
-> struct file *'s.
->
-> As discussed unpreserve a FD does not imply unfreeze, which is the
-> opposite of how preserver works.
->
-> > 2. New API to Check Preservation Status
-> > A new LUO API will be needed to check if a struct file is already
-> > preserved within a session. This is needed for dependency validation.
-> > The proposed function would look like this:
->
-> This doesn't seem right, the API should be more like 'luo get
-> serialization handle for this file *'
+> [1]: https://lore.kernel.org/all/aOTyVzpJNDOaxxs6@google.com/
 
-How about:
+Sure, it's useful - the reservation API also exposes it. But it is not
+a proper abstraction.
 
-int liveupdate_find_token(struct liveupdate_session *session,
-                          struct file *file, u64 *token);
+Cheers.
 
-And if needed:
-int liveupdate_find_file(struct liveupdate_session *session,
-                         u64 token, struct file **file);
-
-Return: 0 on success, or -ENOENT if the file is not preserved.
-
-Pasha
+Tamir
 
