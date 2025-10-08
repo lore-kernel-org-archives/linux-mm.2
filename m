@@ -4,92 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF2ABCAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 19:50:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5B1CCCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 19:52:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59E1F8E004F; Wed,  8 Oct 2025 15:50:17 -0400 (EDT)
+	id 025098E0050; Wed,  8 Oct 2025 15:52:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54E9F8E0002; Wed,  8 Oct 2025 15:50:17 -0400 (EDT)
+	id F181A8E0002; Wed,  8 Oct 2025 15:52:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 465B08E004F; Wed,  8 Oct 2025 15:50:17 -0400 (EDT)
+	id DB8B18E0050; Wed,  8 Oct 2025 15:52:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3538B8E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 15:50:17 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D0305C0714
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 19:50:16 +0000 (UTC)
-X-FDA: 83975988432.25.1399453
-Received: from forward500b.mail.yandex.net (forward500b.mail.yandex.net [178.154.239.144])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B5EDF40011
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 19:50:14 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=onurozkan.dev header.s=mail header.b=iTHDHS8m;
-	spf=pass (imf11.hostedemail.com: domain of work@onurozkan.dev designates 178.154.239.144 as permitted sender) smtp.mailfrom=work@onurozkan.dev;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C13158E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 15:52:31 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7F86C460DF
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 19:52:31 +0000 (UTC)
+X-FDA: 83975994102.08.2D17869
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf30.hostedemail.com (Postfix) with ESMTP id F25018000F
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 19:52:28 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AKAlqxU4;
+	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759953015;
+	s=arc-20220608; t=1759953149;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aidSHiomRyJ68d+Z7mwP/WOC8Nu++7GfxKmsEuxZL0Y=;
-	b=Ntvdn4WaERrRWGm3QQ4kx7u9DpO7fOEmQfFr9cbZEOh1Ua5kB/zXe0BY3UlUloHl1BoPmD
-	1fxWurwEwhHlczfu8RmILpbmCYvvfaHXZaHeIwofCm57NM4M+BKcf5krrnzTW6NXwVrlVq
-	LGWHDXmeL5YQxW4Jcgp8LupNt6a7tJE=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=onurozkan.dev header.s=mail header.b=iTHDHS8m;
-	spf=pass (imf11.hostedemail.com: domain of work@onurozkan.dev designates 178.154.239.144 as permitted sender) smtp.mailfrom=work@onurozkan.dev;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759953015; a=rsa-sha256;
+	bh=RtTlwRw/t9hpT+l94+pAzSz0mGXw5QPtsOjkoODOmNY=;
+	b=UjfGQS6+32cIMbWh2ikeuhi891ktTc7Ya1bTGKPRdrlrPTJ5NT3LYO9Ek649jYIyEsl9uS
+	YythXPpjaA2/jAAnVCCeHZVg5+fghDslPCgVtbPoeaUVS0dy1oc/rboY7NXSToOKmvjpOo
+	2+gVzeH8sB0lFxb7ADVWKYYSTmnXJWM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759953149; a=rsa-sha256;
 	cv=none;
-	b=jYW7bH7/0UaSJU3XME6P7Fj4l2ebR1XNa0nmDCV8jE4B/GE0RasgZeB4n7r3gbKvvIWCL6
-	0eYj4ulVmhFiTO9B9rnm+vT0wNze1AW0vVGUz58kcJB8p/ZbcWX+Yk3Mra55szq8ldlL1p
-	aRPub31+jhKoLqSOPPRaTL+UGAngZ/w=
-Received: from mail-nwsmtp-smtp-production-main-71.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-71.sas.yp-c.yandex.net [IPv6:2a02:6b8:c24:942:0:640:e3c0:0])
-	by forward500b.mail.yandex.net (Yandex) with ESMTPS id A4C8FC16BA;
-	Wed, 08 Oct 2025 22:50:12 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-71.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 4osbeDSLxuQ0-JRjQwJ60;
-	Wed, 08 Oct 2025 22:50:11 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1759953011;
-	bh=aidSHiomRyJ68d+Z7mwP/WOC8Nu++7GfxKmsEuxZL0Y=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=iTHDHS8m61dQbStfx6p7wgmXgY37iaY49Yi7jcclZCiCiWYsj37RvbH4iSZ0kMKA9
-	 0XXHakq9hDleSRtOQGrdRMTOLt4xS0rmUKwKMHavZb2LKF5rF1/+wkp8j1uT2r706Y
-	 gIr2DhgWkcl9o6qepF7aKUUjeF689xNkFupAVRHM=
-Date: Wed, 8 Oct 2025 22:50:02 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- dakr@kernel.org, linux-kernel@vger.kernel.org, acourbot@nvidia.com,
- airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, tzimmermann@suse.de, corbet@lwn.net, lyude@redhat.com,
- linux-doc@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 2/4] rust: xarray: abstract `xa_alloc`
-Message-ID: <20251008225002.011378ed@nimda.home>
-In-Reply-To: <CAJ-ks9mtfVmP+SwZvBVuQSwViiqo2ZngSGQuU5Y7A-Q_JSwjKQ@mail.gmail.com>
-References: <20251008124619.3160-1-work@onurozkan.dev>
-	<20251008124619.3160-3-work@onurozkan.dev>
-	<CAJ-ks9mtfVmP+SwZvBVuQSwViiqo2ZngSGQuU5Y7A-Q_JSwjKQ@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
+	b=wJqiUhyVCAuhQFYuDy2lq2qFThf/DP62muYjHsvptGZcW4WHlxUiPjt+MDB434c3YiPD9f
+	+6ixDDppi9G1OJJ43naSp1saG9k9+VmpS/gzXh4/TVdhK6Tvq7eK25vAn5gVJk5UPiMBo0
+	BFQfpR3dJ4fIt/idoKvCxw66tu0h3VA=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AKAlqxU4;
+	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1759953148;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=RtTlwRw/t9hpT+l94+pAzSz0mGXw5QPtsOjkoODOmNY=;
+	b=AKAlqxU4+Icxrnmj+wGyWqPwFKKTtFeVh33XXj9pneYNBkZzmtJ968dbQGvdPrkAmsEKMI
+	iIkXpPVo0g9z1kn4+iG7tjaq3GYa/sbLX1litS8TlEFLMSb9OwB4qXKYrZDZE7fNE2XiH4
+	bkt2VzBQBFkhwGBhaLTdnvljpSct+K0=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-480-KK7paCK1Nqy8xKdOxaNOJw-1; Wed, 08 Oct 2025 15:52:27 -0400
+X-MC-Unique: KK7paCK1Nqy8xKdOxaNOJw-1
+X-Mimecast-MFC-AGG-ID: KK7paCK1Nqy8xKdOxaNOJw_1759953146
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-46e4fa584e7so1012955e9.0
+        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 12:52:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759953145; x=1760557945;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RtTlwRw/t9hpT+l94+pAzSz0mGXw5QPtsOjkoODOmNY=;
+        b=Kd7xvzEHoFDbK1pW5xrmUWR0eE30YP4BzxQz/pwTr7LC8C6M0soCYBvTSaE5uEsQsT
+         JwN142A2Yp9dhmChJ2STjtCW9iA4AhQvXEntP3jqZ+zlxMWkkf+C2Hth2vp29OskjHml
+         ckrTlohpQ1f7yYAURkvTRL+piImPsuKA8xggX3DhpU25WC8SJ4wSWLB+CxfUm9TBAOWg
+         QkDgCt+FFdHjM6BUMDVMZ897BVpwbmmJJsGxwzeHVyczSEu/9M9uPueX+zTTWPYG/lZa
+         9RYCse2y1GkTUomwX3CQR5byTwera4ml0gmKNyQ6Lh2kcYjOZKhPWlTWPMUVOGB1UwHp
+         HHJQ==
+X-Gm-Message-State: AOJu0Yy1g41txD7lAAA9x1SSYihIfahTdGP8U+Zdau2NYkvT2Dib/oOr
+	B9oQa+v/lIwytQQJbFgMtOVFGFykESTjI4x38mfZbHmm9+LjIXhB/PN9y3FQ9ATSIFUfdkipJz8
+	lqpA4guwEJ07X9kqcDxtjoy7I5LyaYeQOltebdN5b/2A1Y/IRHIAd
+X-Gm-Gg: ASbGncvuaEU8pVyPO252M7hdmS/aNjl1zTOLVEVzGEAPxisf8wbHdW1SERmRqkaJZMX
+	IWUf6liXOsCpJZ36WwcGH96e3jzepzKLaQSu9rLWu7/XeqE//dzTuxMB1IzxWeyaLNaoSz9eM0T
+	APkWPtDdHRSODAFg09r9CrLXJFBqXXTIA7UNIqyQWCQoU9uw03/ajvf5gxi7V2i0X7LHJYMn/RI
+	RsRg9eV7pHTyP0FfDqE8oeoUpKdNG/OxrTURNwNvH+g9un8FOrwEhn32aIVJdNVs7H1yQwZ4wSo
+	DuAzBAOmdyvrIs4BLLpW1WwJxvKOUWdWWCfEVAyoa190gm9Rfm9bVZBvtH5+m7TNLp8fdAFQORz
+	EejSxYZ0g
+X-Received: by 2002:a05:600c:529a:b0:46e:3e25:1626 with SMTP id 5b1f17b1804b1-46fa9aefe15mr33101705e9.19.1759953145621;
+        Wed, 08 Oct 2025 12:52:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFMCtqEpQgXh2ZeUUnrUMZuhOCP6i4VisyQMUewSPB0pVRauuNVK/j/FRYcpK2qrZwm7+c6bg==
+X-Received: by 2002:a05:600c:529a:b0:46e:3e25:1626 with SMTP id 5b1f17b1804b1-46fa9aefe15mr33101455e9.19.1759953145211;
+        Wed, 08 Oct 2025 12:52:25 -0700 (PDT)
+Received: from [192.168.3.141] (tmo-083-189.customers.d1-online.com. [80.187.83.189])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8e9719sm31915894f8f.31.2025.10.08.12.52.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Oct 2025 12:52:23 -0700 (PDT)
+Message-ID: <1763f0d9-37fc-4c3e-b31b-2cfac33d5c95@redhat.com>
+Date: Wed, 8 Oct 2025 21:52:09 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B5EDF40011
-X-Stat-Signature: 5sk1co1did46kt3u5gqopxkau8k4d4r6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Revert "mm, hugetlb: remove hugepages_treat_as_movable
+ sysctl"
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, corbet@lwn.net, muchun.song@linux.dev,
+ osalvador@suse.de, akpm@linux-foundation.org, hannes@cmpxchg.org,
+ laoar.shao@gmail.com, brauner@kernel.org, mclapinski@google.com,
+ joel.granados@kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Mel Gorman <mgorman@suse.de>,
+ Michal Hocko <mhocko@suse.com>,
+ Alexandru Moise <00moses.alexander00@gmail.com>,
+ David Rientjes <rientjes@google.com>
+References: <20251007214412.3832340-1-gourry@gourry.net>
+ <402170e6-c49f-4d28-a010-eb253fc2f923@redhat.com>
+ <aOZyt-7sf5PFCdpb@gourry-fedora-PF4VCD3F>
+ <f4d0e176-b1d4-47f0-be76-4bff3dd7339a@redhat.com>
+ <aOa0UPnxJVGvqc8S@gourry-fedora-PF4VCD3F>
+ <b6d472ba-e6cf-4c96-935d-88c842ab3cd8@redhat.com>
+ <aOa_A_i1HUt1wzCj@gourry-fedora-PF4VCD3F>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aOa_A_i1HUt1wzCj@gourry-fedora-PF4VCD3F>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: R_MnkWkSJAKmagUgev8PFnYFS0oywISl1WuZ5sqgDGw_1759953146
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Stat-Signature: tmxnx4gb3atakafo133bjxa7k6jqdhbq
 X-Rspam-User: 
-X-HE-Tag: 1759953014-422695
-X-HE-Meta: U2FsdGVkX18hbeSehj5ut2sgV+jdFqmGu+gqdPUy4wtx67NiG2vRZgtPWOZfVKFc7jMUELIawno17gVo11w2cQy9mUyBWB7Pv8AECiFwhY8i2a9bSyvs4cMieoorqqYgdHzfyfKJ9EBf7xem0zSDpa8gsrQVCOxzzXfhpikjt6X0UzBmbILNh9347PMI6qvVZzRF7P370CpZ4uXcFWsZDO+w0udu/Pytjj3yjX7i6VuexW7CiAcufGVAOiUkwI4RC4SuVNpvXWpVXplJOjGlpmuXIKjpATYwflvdDwyJm06EkdreHNfvgYdG9h80nCmU6QwpkthX48YYz7BH4BDoGG/0kyb7hu2s4vyPG34KmY55nttN0qIS0mVonn1TtouzCYz9b/M/QLPBVcT+aTbc4O1R82rwV9KjKcyYAnWoNpz40581No6LPhv0T35DN4A+1DAcWBhXFQr929g2IXOM6eKV1uyjKOoFaJh3ndbU+IerOpsm/GYnqNXYGJMnDZvuZsGg3o7Wp7L0U1yH0w+Il4YhXYnW5CJmPj923F4jRFUXzCZRHP4hxMUpASr9JG5gODbMaQAJMw2Jn7jm8oLCI/FISKSPXAf759HPdv+Q9HW7iRCtq1hi9jwyaNn0rLZz4AMiXtBLLF9aaSN4svPgz0/ZjPeeRpTqxyA3DOkdgrSsiyF/I9Jh7tPSShUE3V0oNr5infzcSu7iuscZIrnoC9bZtLabwmIh2HP6lJRgl8Frh+waDZ+ef5vybLQ3O/pvhETpoKy+9apUEQ7IzfAuvNslJT8SGPCPDScaIYV19WFGGabCAdavrUChAWrc7ldSj7CmAFbyvoqGaF1cNNbgLiorEPo/aQxfcSq83xaNfaeElBu2iJ7fOgtzhxJ8TeKAd/t0ATrmU19Iav7WvSYm0EQcumaBvoBgSKYFRLYx80lwpgWbaCjShsCjb8B42bcckIE4Zh8eSKexh/wE8G6
- sHx7gtBp
- osfQVH+JnjSNbbmQlyQCaBm7EznmUzHaZEvhyaQe21eGygnuUwyUoi2RCCPwzvlAd4Yu0kYqBaCDqT/S6rwYHi5eHGIU11fPiTPSAJQJs8a8uu9gTbk4PmJDeREU06m4OMi8QtD2XPTHAVNjOAn78/qTSFl0AKwkYW9AflQDvQLHF1p1YG+teSBI7GVMIM3IQepxUx0bq0HaJ3x0w6cDRGhFQSyrcX4fZvOUrdjk/uRQEWA/Rx8tF0y71lWW+XKZhVyHHRaYfq2KsI4L82K4FJaJYgdUDSC7yVt9Bhw4Tvk/QzhwXReeEyBe9+v8hJ+RJu/7mmGwH/1gLsJhD8VQW3N2AB7vy+pAA7vOw8j+PEhp3ADd27+vZHsV61RzzAAQ9RVUextL+ZjRy7AsVsHw5wo7Q5kjLxov06CSoKwJpGJEOeNICFzofS5UZvJhNU5OqOTuv7dhpWZZgnMrXyaGgIysLe+BhGx1aqJzemxC8Hf3bVgHNQABtrd1A7bwaEhm+tME9
+X-Rspamd-Queue-Id: F25018000F
+X-HE-Tag: 1759953148-353280
+X-HE-Meta: U2FsdGVkX1+cESbw+tqGExEYyEuCv3sqVSj6vWq2h12k1tOSOkKORSTk0rHdUsfEB3uvj/VctLHBrXdAZJ/IPgN90iKRe/ou4e6doRdgVlfFQywiZKQQZKkkS6F5EGPmiWM+477GGoFN6QjitVEzHZJCHOrafmVB+ceKLfTmBfayLo74hIwV5eC3k4LYZ9Q3+EnYjO0RXYLO1VQrWd9BJI+sKmcl46CatRaxstvnRb7zM5vdgH43JrlyTKLcym3LKgngO01IEnQcY0iDRUOBSR4PBnye+LE3kA8GEL5Yjsj4dKXTks4Popz0lG79bzTxV2yU2XIAdiK5GDb3/70jmjls2StAA1f0fNH/IwTHvzeAgrBppQVfJMXkB4aFfCQfF+EX/JnMMmIqv1kjXsS/hwKksTPuKeC79U94l1Pa7C86UVH4tuGt363copVoBMz5+LCH7qzxo/3YYR+viB+lPBTqGvKeNJNUmbk1MauXnniwQLK9SJMsvzFoJTiVm80aFSkawqq7Ul8gj/mehQM9E3TgED4zdkx0E1hd4tURUYgkC0f0LJiYufxVmTb7vNxGfGzJFIYjaXsLWfDZvRIc5u5Rsnd9v4Ce0uyxxxt9KUFE6sbLYcyA3rqTYVjLHsXPjYS542Qrzywox7DrR4Zv1g58m3h63ErQyjP7mxJJGkBdAaV6ri6bVcjh9kLUEL8kNVhOZ7TwSt3Rqu/4Qk9q/L3demzpHeQs3LZaQhNbK16DjdP6Vu0MS+jqHSfdm85QbA06en02nrcy9Nx3mCcu8hfzwFfBIV7h32VfkkZOmP2FG2xQ58CWB4TSVSJibkvpeJPR8fLHEE0cD1LUWQ55HS563TT64bhzLF0xJWewRiRsUbWXMi2QJW4nfI8cTED6cyfhejVfHGUzz6yZjXJBDAnwOFost2UG6+NUl1JSyGX9NkAqZzB8MZq6xV1iFV43LnFSh+4NQ1SzmjXXeI7
+ 3CLuNxul
+ PgWskBJJ89hyn3+u/gJxlN1VlthSrLOv3BJqNbzB5b9f/+x2+QxAMa9Pd7avK3ZbUWBtOTgTLZGp8iwo9DymXCzAPOAvEmg06O3e6m2p/0dGCp14Q9ocX1vvQWY3f9u22hOFFrF/90FjnAwe04nf3kGRN42GS6gwpqGpJylli+ryYEzH/M7v6m/8/gPeqAJVfa+T/TVOirpwEdm54tDopIWTqDCFYmss2vbdwo2yHwAN3XiKBnFggYKcQvTA5KKRyO23hLvaOIu0SwpG2SJn/ou19GRxPr5HLPAq/xBKCE4uDt8fGB4TLMnL2Jco2oQtL7lSRrGV+olpqcBKuq1r53hxhZAlLJNsLTFwcSgXCV6viOy4N9mzZ3gjlsPlYIAwTjXry17G6lJQ8apzTK/nA/aSyKwcuZuhVQJgbIjA+NPKgFjvoXoJgr3m/FtPZtQ4sERdXn5byEPLuRd7mjqNn6GTMqxzcg/bMVqZtZ05s67h35CSPpLKPJ5mqjQzewSP5Q0wc147CNU26/ClGrQgRRPIQgSzzVq3sXhs2EdIY/+XLz/OJ367J9fD6lXmIpH5JR3QgzAPFpaqeJDYdcIfHWY31BPM4jZddVzWoFeiAnx25WSnBuKKZxwQFIQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,74 +188,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 8 Oct 2025 09:59:12 -0700
-Tamir Duberstein <tamird@gmail.com> wrote:
+On 08.10.25 21:44, Gregory Price wrote:
+> On Wed, Oct 08, 2025 at 09:01:09PM +0200, David Hildenbrand wrote:
+>>>
+>>> fwiw this works cleanly.  Just dropping this here, but should continue
+>>> the zone conversation.  I need to check, but does this actually allow
+>>> pinnable allocations?  I thought pinning kicked off migration.
+>>
+>> Yes, it should because longterm pinning -> unmovable.
+>>
+> 
+> You know i just realized, my test here only works before I allocated 1GB
+> pages on both node0 and node1.  If I only allocate 1gb hugetlb on node1,
+> then the migrate pages call fails - because there are no 1gb pages
+> available there.
+> 
+> I imagine this would cause hot-unplug/offline to fail since it uses the
+> same migration mechanisms.
+> 
+> Worse I would imagine this would fail for 2MB.
+> 
+> Seems like the 1GB limitation is arbitrary if 2MB causes the same issue.
 
-> On Wed, Oct 8, 2025 at 6:05=E2=80=AFAM Onur =C3=96zkan <work@onurozkan.de=
-v> wrote:
-> >
-> > Implements `alloc` function to `XArray<T>` that wraps
-> > `xa_alloc` safely, which will be used to generate the
-> > auxiliary device IDs.
-> >
-> > Resolves a task from the nova/core task list under the "XArray
-> > bindings [XARR]" section in "Documentation/gpu/nova/core/todo.rst"
-> > file.
-> >
-> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> > ---
-> >  rust/kernel/xarray.rs | 41
-> > ++++++++++++++++++++++++++++++++++++++++- 1 file changed, 40
-> > insertions(+), 1 deletion(-)
-> >
-> > diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-> > index 90e27cd5197e..0711ccf99fb4 100644
-> > --- a/rust/kernel/xarray.rs
-> > +++ b/rust/kernel/xarray.rs
-> > @@ -10,7 +10,7 @@
-> >      ffi::c_void,
-> >      types::{ForeignOwnable, NotThreadSafe, Opaque},
-> >  };
-> > -use core::{iter, marker::PhantomData, pin::Pin, ptr::NonNull};
-> > +use core::{iter, marker::PhantomData, ops::Range, pin::Pin,
-> > ptr::NonNull}; use pin_init::{pin_data, pin_init, pinned_drop,
-> > PinInit};
-> >
-> >  /// An array which efficiently maps sparse integer indices to
-> > owned objects. @@ -268,6 +268,45 @@ pub fn store(
-> >              Ok(unsafe { T::try_from_foreign(old) })
-> >          }
-> >      }
-> > +
-> > +    /// Allocates an empty slot within the given `limit` and
-> > stores `value` there.
-> > +    ///
-> > +    /// May drop the lock if needed to allocate memory, and then
-> > reacquire it afterwards.
-> > +    ///
-> > +    /// On success, returns the allocated index.
->=20
-> Returning the index is not a very good abstraction. Would the
-> reservation API meet your needs?
->=20
-> https://lore.kernel.org/all/20250713-xarray-insert-reserve-v2-3-b93964580=
-8a2@gmail.com/
->=20
-> If yes, I would appreciate your tags there.
+Yeah, with hugetlb allocations there are no guarantees either. It's just 
+that page compaction / defragmentation makes it much less likely to fail 
+in many scenarios.
 
-It should be "allocated key", I misdocumented it. I don't have a
-use-case for this implementation, I am just trying to help on the nova
-task list:
-    https://docs.kernel.org/gpu/nova/core/todo.html#xarray-bindings-xarr
+-- 
+Cheers
 
-The task mentions "generate the auxiliary device IDs", which should be
-the returned key, right?
+David / dhildenb
 
-There is also this reference [1] that shows that the returned key will
-be useful.
-
-[1]: https://lore.kernel.org/all/aOTyVzpJNDOaxxs6@google.com/
-
-Regards,
-Onur
 
