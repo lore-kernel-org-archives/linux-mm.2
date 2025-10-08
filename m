@@ -4,120 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EC10CCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 09:55:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52583CAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 10:14:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE0F88E0002; Wed,  8 Oct 2025 05:55:50 -0400 (EDT)
+	id 5E3CF8E001D; Wed,  8 Oct 2025 06:14:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6A528E001C; Wed,  8 Oct 2025 05:55:50 -0400 (EDT)
+	id 5944A8E001C; Wed,  8 Oct 2025 06:14:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C93888E0002; Wed,  8 Oct 2025 05:55:50 -0400 (EDT)
+	id 4AA098E001D; Wed,  8 Oct 2025 06:14:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A91318E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 05:55:50 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6DF671A0422
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 09:55:50 +0000 (UTC)
-X-FDA: 83974490460.14.80BDAC8
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	by imf01.hostedemail.com (Postfix) with ESMTP id ACCD740012
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 09:55:47 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 395948E001C
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 06:14:35 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E6E401A044D
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 10:14:34 +0000 (UTC)
+X-FDA: 83974537668.04.6F4A092
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8F15F40012
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 10:14:32 +0000 (UTC)
 Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=S+tEARiO;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="VHWbC/iS";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf01.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759917347;
+	s=arc-20220608; t=1759918472;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=0QIUQx2vcFr7MGG3evz1dHWpDn/cIwYRaSBxcUSI4a4=;
-	b=Y15TqKYml7f4PgjAn6czO4XZ6diBN9mreffegGQNOP1qRHxZCv/GQikJ99Yp5o8gzAMs4I
-	/jTzaxKVDvX5ShT6XDRYN6CiqqcT4h6JCyONNiugU34NnzF5Rq2LZgSMsGPVvt8sMuIJbd
-	/b6sNIX/xqnuAqjtpTFsRL8zwXkP0m8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759917347; a=rsa-sha256;
-	cv=none;
-	b=n3UbIC8Br57isLv2RwgXoD2LgB9r9V37g6M4FuiqHsdg2o19Vr+MOpR7Nx0C3PDhiBmB1v
-	PkG8GVfVZxeqVDYOYnLE93zFvmjP1E6O/ClCM/1BMYP7EhRVGOMQn8xVzCw67sD5kxlYZ2
-	iFZ9FiDPs9sZ7ssz+JFqpns2hnGBWmI=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cs9U3hHfPxfmlIM6BVaiwoAYUcpEw8JWQAav9+M27Fw=;
+	b=rJNf6lY9bc2oBkC8E548KRh4jol6lvC7147pdembez97knwN64tsRd+McoOysJyBgsMc3/
+	TjE4C/frBwVqyqfh2rQSaFZ2Opt2+hD2uygq8SidiYMNt9l2OwGt2CogUOzaSLq509i3/f
+	YSv8EskcURl5hClkAV9/Ygo7GPGq1us=
 ARC-Authentication-Results: i=1;
 	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=S+tEARiO;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b3dbf11fa9eso1308499066b.0
-        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 02:55:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759917346; x=1760522146; darn=kvack.org;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=0QIUQx2vcFr7MGG3evz1dHWpDn/cIwYRaSBxcUSI4a4=;
-        b=S+tEARiOrjsT6H0amDqjUmhwaJXaolWOnh+CqhiwcnA1qIyqg7/taxONBi6X7goVv9
-         qop6CyYcF3hsHsGi6j6u1gVrnhrHZXrifIUeQe2bd71u6am27CIeQ47k+7I6ZnvoS8IG
-         fhSH8NqwWAcD5RuZ4Yum0UhkaUiPYy0jYVMENqUYloJ0PasBimsLyKyTvIhi2ps429u7
-         nT4PQM72E0fz41OS4iNQsUN4MsjXnRzaLkzDQ25T6y54Pu+0w1J7RDhPKfuLH2vTeZR3
-         9aiDg2Xeay+9vOi3RScDGdK0/xWLzajBxQ3hQci3fKVc5kjtgf/tmZVXxs9XICTZivWc
-         3MTw==
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="VHWbC/iS";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf01.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759918472; a=rsa-sha256;
+	cv=none;
+	b=OVvdqtPQN1cYYCXa8rKawWM0WT0u4B1tKqz4WMb57gkk0Lqjo0w9I3vl1/CQZkNdHbRcWq
+	WC91o2V5glQBacUizF+6pz9SawNLhdd4w6W9EvTktOeglQDp5VwXn1fCMpy16zu1ZP+y4p
+	f0s+1OswbU6p6R+uoehKiEbh7uXb1sw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1759918471;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=cs9U3hHfPxfmlIM6BVaiwoAYUcpEw8JWQAav9+M27Fw=;
+	b=VHWbC/iS0ub07P14PIVmmlY7eT+Rhi+SfGIwOXRxsiHanovTVeFasM9gooKvvODbRuQHfF
+	vO5/1D+RiPcP4fAMjgu+F7nCW7DSNMGFYiejnhHotsNfknLz6v3VuX1I6U8YeapP9teaVF
+	GjGfB8Z9YGgp0c1X8aZWvULYGITWN2U=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-287-C3K0dih9NqaVsn-ugTX90A-1; Wed, 08 Oct 2025 06:14:30 -0400
+X-MC-Unique: C3K0dih9NqaVsn-ugTX90A-1
+X-Mimecast-MFC-AGG-ID: C3K0dih9NqaVsn-ugTX90A_1759918469
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3efa77de998so4442242f8f.0
+        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 03:14:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759917346; x=1760522146;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0QIUQx2vcFr7MGG3evz1dHWpDn/cIwYRaSBxcUSI4a4=;
-        b=dm8EPO2J7vwCNeH/mo9vxqfGF4eSfbfzXK3k4IEdNPVfxIrtIrSPhKMtqlj4I+1CAM
-         +IVyamVINxxeVXw80MtJEil3fcgAdBSEogVCmeN0A15c5yrejDTKqRwDn+Rk5WAuOLJr
-         BECEKf9leoMt24aBz4aB6wghM7pyRekKkEdY/P2E/m+fzwKaueOLA/Swou/2a0JYnYug
-         cqdNi6wGyAnW34VnLQrrmYIxbdvEShn/gKr22v+CBRO92m1+arQMxpxL3iyJnBCEnkkx
-         ZPB9kxkCcYRK5MXChGjl2Xb+/Jn6S4F3K8h19CLppTXUwfqJZCTSX1uGZtn1KVzWUgeH
-         ek+w==
-X-Gm-Message-State: AOJu0Yxy66W+Zn+R61TFaswmBm4aXWLpDYewCTst+uchJ4Zh7me1rLj0
-	toB49OSSotKVw4EOn8vaJWfKglWfcTdv45iwhLmX5xbFQvDne1cdqe9i
-X-Gm-Gg: ASbGnctnobOJaq0Jk5ugMgVPCB50fegR4pdKvzsqY2spYgGxApnAuKx7yNHocF9AMkr
-	hrkueJHhDu6W+8V1Rb3m4ipKbY32aDYDdCZUgqyPlgiMP9nI5hA3HByZbovg4rd3+xZMeXPV0fy
-	lny8wmbRtloDQ6lCfAsO9g2tCRBRzfJMgYzhxo+mAJoaVB/cChuy8sGsuIumkNdFGFzVpE9/Yh4
-	25gLKNs2RUqDxGh80RynWhiQ+Vg+9IUlKDKLOmSiFpzKBIIPEeHG4WfElNq0BQ25yWyMTboD9fz
-	fiXM/mYvpyq+qlv7KxZEqQySi4YDQKpdT/a4YjE363t9GLxkMJEvUrIj3Z4rhXdyaCT6VtPvMwi
-	TSrPyfgsghkWPHMvfEhDFkDaxhI3+oO0wiBOTAjd/IMZA6aAm9ozLh1Tc1lv0
-X-Google-Smtp-Source: AGHT+IE+2DS6uo2XBoZmGkiTNVlDuro4gobXDgIU1ONZStmGw5cgMrMDap66bO6ZA7BkbCKz2sfsdQ==
-X-Received: by 2002:a17:906:ee89:b0:b04:25ae:6c76 with SMTP id a640c23a62f3a-b50ac8e51eamr265431166b.47.1759917346078;
-        Wed, 08 Oct 2025 02:55:46 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b4865e78242sm1614697766b.35.2025.10.08.02.55.45
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 08 Oct 2025 02:55:45 -0700 (PDT)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	wangkefeng.wang@huawei.com
-Cc: linux-mm@kvack.org,
-	usamaarif642@gmail.com,
-	willy@infradead.org,
-	Wei Yang <richard.weiyang@gmail.com>
-Subject: [Patch v3 2/2] mm/khugepaged: unify pmd folio installation with map_anon_folio_pmd()
-Date: Wed,  8 Oct 2025 09:54:53 +0000
-Message-Id: <20251008095453.18772-3-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20251008095453.18772-1-richard.weiyang@gmail.com>
-References: <20251008095453.18772-1-richard.weiyang@gmail.com>
+        d=1e100.net; s=20230601; t=1759918469; x=1760523269;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cs9U3hHfPxfmlIM6BVaiwoAYUcpEw8JWQAav9+M27Fw=;
+        b=xVMypyoXcl0b4k+1D8ulJ7O4dyZeHi9/4OaxxpVqW0AxqzRSKJpGoDc3cmHw8tBgg4
+         JE7sxAEvVGZZIcFCeUWlBrIPdMUhDAElBgwIOMIMwcwAqyw0blBRh0qMAKKr6GfdFDcn
+         Xv7Eo66cHs5QSyMs/YrxrdWcr6JHcsC2so8P0x+sG2yodn5GlFzDpZrejwx7V2ikGsg9
+         WitE1M884hSVArpS/XEaR8qQYEYaaNRZiqYlt05KbjXn/K38vvENgrqDwTo0SRMx5l1m
+         q/6BLDYaAs7tf0LE0jxvHeFDv3ivZpCQwUqAsOozjybb8lutDgXW6HHtiZyYQ3FUPoWB
+         CpWw==
+X-Gm-Message-State: AOJu0YycTRmoDVaouFilQ7wcn5JQBDaYxzfgXxlbF2v8xSfVi8/Wheiq
+	0IFpmmj8vFSmIcczr0wtTUF32xtjUvpmSPSnPY8Af7CtS3zMi8MW3y9WXFg1Fy/yj1N+7/R8RQu
+	JZHqS1iVP3Tusw1kWRipqrd9ouhWu87sHvLgmZPzr8jTgwnyb8rrP
+X-Gm-Gg: ASbGncv2/BNdpr3YITJ861i5AJH1C/motmYtlGjFhKYVWTxXdDOokiWkJSy5e7i1jkE
+	yke04NBjXfokJTn9+q1r8Q3k/sVuh3CwuvEf8/KIciLqXP0fY55C7kmocQwMAhXA73YnhTgj0cS
+	OqWQvIrOZPu5884YyDeNLerIKwPd1CkPPMigF+Vr7hrleDHfzdFIR6rwNLeYflyssirYB8aVlpm
+	qrraHyCc3EacSxjdoRjBkZxl9D7yHFgFUOM3Fd/I4r1vzOOwWxf6Xzqd/CwrR7D/IxsndSwVlb2
+	JLN8RHGjcsh6wpQr4K4l2XjUUY+5FYkEs2hmzxNvyIHND1NcvMwKiyYz3/sVRq4b6MjFy2zpc/W
+	Evq+eWWzH
+X-Received: by 2002:a05:6000:43c5:20b0:3ee:15b9:97c4 with SMTP id ffacd0b85a97d-4266e8ddf61mr1442838f8f.52.1759918469363;
+        Wed, 08 Oct 2025 03:14:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEF1OH8QUpol5NaCJeKFfOHuuTVHxdXceqeY+FoGelLDM8WoPvzGVLlj3NEGVKasBPrlKen1g==
+X-Received: by 2002:a05:6000:43c5:20b0:3ee:15b9:97c4 with SMTP id ffacd0b85a97d-4266e8ddf61mr1442818f8f.52.1759918468937;
+        Wed, 08 Oct 2025 03:14:28 -0700 (PDT)
+Received: from [192.168.3.141] (tmo-083-110.customers.d1-online.com. [80.187.83.110])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8f01a0sm29094354f8f.48.2025.10.08.03.14.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Oct 2025 03:14:28 -0700 (PDT)
+Message-ID: <99824e33-bf25-40ef-b969-a48e3b916ad1@redhat.com>
+Date: Wed, 8 Oct 2025 12:14:25 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm/compaction: check the range to
+ pageblock_pfn_to_page() is within the zone first
+To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ vbabka@suse.cz, surenb@google.com, mhocko@suse.com, jackmanb@google.com,
+ hannes@cmpxchg.org, ziy@nvidia.com, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, rppt@kernel.org, iamjoonsoo.kim@lge.com
+Cc: linux-mm@kvack.org
+References: <20251002033140.24462-1-richard.weiyang@gmail.com>
+ <20251002033140.24462-2-richard.weiyang@gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20251002033140.24462-2-richard.weiyang@gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 5jK-oTL_76jHJqJxMIxOm6MRg3GzW8yCzfhtNZxiggU_1759918469
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: ACCD740012
-X-Rspamd-Server: rspam02
-X-Stat-Signature: mo1tp8jrcijrq461ka3e5f3rnbutg1mq
-X-HE-Tag: 1759917347-772976
-X-HE-Meta: U2FsdGVkX1+dQBNd13FGLi6z71MgHq6aICncUI+R5V550q3YWGbH0De0f5SmLxYyvryUzOtQTNPU25e5cQibd+NXgHchatgaLCtQw9y38iLhvh1C5hluIy5Gl60eQrkO8qB1D0Uh/ePfwsPJAIIuaglRwNWBUhQyGCF1LU6rLLxrkxKnP/dk6E5air347dU+dQL7C7P/DkZMYeXbs1pukiDyWk0PIrWmxJFRr0ocyUpYGj5gP00TyFoY+qmQCKHUjusSOunWn/g6EP/R9djdajc7TbixgdSH8SWGPRmLUNJEr6Rg15hYuVdhBCmuiZTCH3RuZB3WXlkz/Z1bw0V2+GOHRpppQRBXwOYjR47jpACxkRsQbOKwJb27P2FxPFdkSElMepkDm0t6CXh57YiaTf2ZZDNe3N1D5Fn6B54PUCjJxZI1Nidf3IB9IWi2qFKw3gXr0hhdPrxqT+DBYCNXLg3KyesxNRRV9M0DVBU6c194ZmB4Yu0ndbZDPugm6rfV17fcJca3UHzeoBDuVW5Vrq+esMyhMgfRX6M22mdMQAi8vflTTTWIOFABUByxHMWuM+9nxbqa9B7PfI9TARq8a/ejIkieodOlkrGLQpg1owGnFxjAzhYSpePTQtP38y6wFbDeIUhXXfWj24wUzT7BH3yfyLpqxK5lARFEN6yIP+kqnV6/A+y5weVy0lfB8MhFnakmvMidSnzjiWQv/+eNxMI/cBRocQNMr7vDJ4Kkmsm85SDJ5DAgohJXu+RPiPB0alq0dqeBw7bLzQDsOj8l/Im05rMrpFZa8Wcs6JSX0yVE3v+vMPwHkkMNtQ867kMd01GhU4tdyJo5gWnZGrLWjdDptCk2t0lK5pghq2iJVsHGWRLsibp047ODEY+QH7/3L/HJWS8aEi6jPoUpj8PPQLKldtiKnKRdD/c1ryAZKJ7uznyuc9F1WPPbJgRmaJRgO/NR+S90UfcdyS654Ds
- z+71wQWV
- Ts1c6t+5rYgTPoXmCycDgyL27ygHaKagBZMh1aq1rkBbyu1Q6Eckb3TkhXqxpaXYrhnjlYfD0BiHxCISIlHX4kju3QLFItwV6FFXcVnMbdEeBRKg5C0vXGAJNJP9NMK/th7rGbARUizmqLKmHby5Ysa9FYi3bzDA3LYamslZX4qtzFvNmpRNsDeNtSZMi5vWZNuUEq9COFehR9ABfDfYA0y34o1CkNl5zuPrMQMOu1n1vgl0uRu1oO4k4TBtfy8i1YuClLYU+jvBIl5spiN6FhtQ66JJoNGzXwoaL4d0Ebi9H223XM6cJtiJegMQD+Iu6Hy98B5861kZQLWvZrTgUdRf0LVAywRWTn0UzjPkyfhm7ltJ6vFXxaVy35wPj6yX3JSuBJjw/JZ2Kc6s+EdgWsj7ZXkLgHqHqIhR4VupkXN3aNQhq4DOiyZlnvL/jtpP/at4S4coMDunYs2BtHebflzedJWiaOZq/kBfSC1NrKjqZkbDuXn13JvbyLd9uXpjwfJ8ImZ2KBgOoKXLoCHHfLwy+tYYHmau0T8N/ufHJcrYOvyxkuZtjWfMcevFUjlCksNSrzo++7Ot1ZdKk7FtOOwZSSVkKXev8C7F3Rqwzrfj9z4aP4iEw+YLc5hj6b3Caia3X4pv+Laq4w/omvsIid8ARiOWac5bXupVOKDIQZJfoKK5Aw6T1UeTPfEOsPrMJUfGRqa/mg8PWLgVZUdud/Sp7aeRLFmbaKKbEWe59RmSAn69uDDYGVf5Xcb8s6WmqhkshymM158zp8wI=
+X-Rspamd-Queue-Id: 8F15F40012
+X-Rspamd-Server: rspam03
+X-Stat-Signature: k5heay4d5t4fs6p8esakszctw15xrm38
+X-HE-Tag: 1759918472-662992
+X-HE-Meta: U2FsdGVkX18l95vs2JpdzLFybaY/ZhWE9ygeUL0uVw6wsxU0oIV8ZnV4aFyJu1a9gUKmP4+qaw6sLCRQOHmqqx7c0G8H3IU70FZO8FiGEBrrGixEZK56W752i4vl/rzSAOVWYGWv2ApEjEE5f8Ff6tBOErYUZ96KAJ4G6QE1vgo/ry8KaoinloYLhjhkp1eIzEs3/ussUTKAC6rwawbiIEI+/2pjlIjfumdr5PTtNZgmkmecoY7BztflS+HMcPoUnXVaD+6uiHZ1Y3gjsFMN9bx0nE2/p6ttTeXYPsBDUX7MNWYONMHyNwTTgSJt33fToLIN5bE9Yaw/oYZkjTDny12SM7NV5zWXgtK67Vn3wxJIH7siXonA6EH0dYSnoHaEgcYFEIMIFtuD8PfAuKjrZhpYsbmrfsBU1Ve6wFrxi+g+0lZVcbJ53Vqu9zUy2vA3RtOD8ctDGYSPXGks9cnzdpiIRO+5+VXJ05/9mSHLFfYZsJPjk362uSOWOQPcqmRWVHuPF72vQyrZclGAzZxYOmlli6qyzIktU9StNzQ6jxWdLFzNyfbpHm/184HHdlSuCKyE1WkHVrbIow2KkH1bAZ4n+x0ToR/X93RUjbL+2qTOBHYVhbmULNlPxndUxz/iYstHw8GVbddzusUtuuUnmCRHi9nkEant+3gX3wV9LoQhJUAh5VHnaiJSm5HQWAWDTHGn5go9PEArWc9vh9r01RHtDuV2rEWNCvHlHcBkNHnfEtGnvT6Y5nqYZEWLhyZjU6LvBs3fu67NB2SIl+BHNLxqTSW9R/9afTAF+RzmA4D9nuaFLbGAwr2BHxEAku6aODxop6sG9kp6rA6Fv2bk4Jjf8+Lb8XSbJssheXYZhghC7HLkbm6zQmGBu18lmX02BNYoNDGlMGPgnIOpimMd5EW+0EsQzS84zUCCeUsnjrTIzTOv4z9Z8g5ewVYaAltpGTCvKoKiTxiFjTJr0Nz
+ kVnRgbRj
+ 6HwdVWjGthQV/zhrUDlR4EHlG6oVKKQQiCCuXPiZe+/q72lKRNa9Wz/RN5STVdo3NzkAPynDc0BiowjPvd5jde1kWcwzrzmQd+PyD4cCORQSL9bz4h4FPcnQr8O/ch3k/tD+binbuPfowGE3qXleO1kJ4JmfLpnLfwnzj8fqdcSgfM6NpB1olawZ0bkjpSO/b8Wr4BWphZPz5w6lR30JQhdpMfYy/aAeqb6lLzG9JejuxWcsh+uQpZ6cjAwrr+QTBqxKs6NGbZ5m8aWX091bRDqpUVm2xt/O8rRBYtm+iO9ODGeFG+O0rMjGF1aqIfPZLnZTZfTuueVk+FFxZSyPFYCaVAGVaX+YUPV4qqZ9Z7SBrPysVb3yinLljN9a4ZMeLP91D4D+g4P1t9Ws2JQs/o51h0ELu1zAOoBK+BwBSKt7f6gGqgVykwQNnQOG91us1Riu241P2klDF8rxvJrr7eJQ9RIoM8knH9uzrAE8OKrATb6IddV9CB0EfHHks213LbaIqSiYQwXIazvSfpwARTwQ1WpQU72RLOJ1Ju6ck+E8X2iQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,139 +179,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently we install pmd folio with map_anon_folio_pmd() in
-__do_huge_pmd_anonymous_page() and do_huge_zero_wp_pmd(). While in
-collapse_huge_page(), it is done with identical code except statistics
-adjustment.
+On 02.10.25 05:31, Wei Yang wrote:
+> Function pageblock_pfn_to_page() is introduced by commit 7d49d8868336
+> ("mm, compaction: reduce zone checking frequency in the migration scanner"),
+> where there is no requirement on start_pfn/end_pfn except they are in
+> the same pageblock.
+> 
+> So at that time, pageblock_pfn_to_page() would be passed with pfn
+> without compared with zone boundary.
+> 
+> But after commit 7cf91a98e607 ("mm/compaction: speed up
+> pageblock_pfn_to_page() when zone is contiguous"), pageblock_pfn_to_page()
+> would think the range is valid and in the same zone if zone->contiguous,
+> even the range doesn't belong to this zone.
+> 
+> For example, in fast_isolate_freepages(), min_pfn is assigned to
+> pageblock_start_pfn() and passed to pageblock_pfn_to_page() without
+> checking with zone_start_pfn. And mostly, the end_pfn is not checked
+> with zone_end_pfn() before using.
+> 
+> To make this function robust, check the range is within the zone first.
+> 
+> Fixes: 7cf91a98e607 ("mm/compaction: speed up pageblock_pfn_to_page() when zone is contiguous")
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
+> ---
+>   mm/internal.h | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 38607b2821d9..8e1a3819c9f1 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -724,6 +724,9 @@ extern struct page *__pageblock_pfn_to_page(unsigned long start_pfn,
+>   static inline struct page *pageblock_pfn_to_page(unsigned long start_pfn,
+>   				unsigned long end_pfn, struct zone *zone)
+>   {
+> +	if (start_pfn < zone->zone_start_pfn || end_pfn > zone_end_pfn(zone))
+> +		return NULL;
+> +
+>   	if (zone->contiguous)
+>   		return pfn_to_page(start_pfn);
+>   
 
-Unify the process with map_anon_folio_pmd() to install pmd folio. Split
-it to map_anon_folio_pmd_pf() and map_anon_folio_pmd_nopf() to be used
-in page fault or not respectively.
+fast_isolate_around() adjusts the range to the zone boundaries before 
+calling fast_isolate_around().
 
-No functional change is intended.
+isolate_migratepages_range(), isolate_freepages_range(), 
+isolate_freepages() and isolate_migratepages similarly all seem to take 
+the zone range into account as well.
 
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Usama Arif <usamaarif642@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Acked-by: Lance Yang <lance.yang@linux.dev>
+Only fast_isolate_freepages is a bit more tricky. It definitely takes 
+the end into account. The start comes from cc->free_pfn but IIRC it's 
+always above the zone_start_pfn.
 
----
-v3:
-  * add static inline and put bracket into separate lines
-  * rebase on latest mm-new
-v2:
-  * split map_anon_folio_pmd_[no]pf() suggested by Matthew
----
- include/linux/huge_mm.h |  7 +++++++
- mm/huge_memory.c        | 14 ++++++++++----
- mm/khugepaged.c         |  9 +--------
- 3 files changed, 18 insertions(+), 12 deletions(-)
+So I wonder -- if we want to add such a check --  whether it should 
+instead be a VM_WARN_ON_ONCE()?
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index bb48cb50c0ec..588e3522a1d0 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -542,6 +542,8 @@ void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
- 			   pmd_t *pmd, bool freeze);
- bool unmap_huge_pmd_locked(struct vm_area_struct *vma, unsigned long addr,
- 			   pmd_t *pmdp, struct folio *folio);
-+void map_anon_folio_pmd_nopf(struct folio *folio, pmd_t *pmd,
-+		struct vm_area_struct *vma, unsigned long haddr);
- 
- #else /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
-@@ -633,6 +635,11 @@ static inline bool unmap_huge_pmd_locked(struct vm_area_struct *vma,
- 	return false;
- }
- 
-+static inline void map_anon_folio_pmd_nopf(struct folio *folio, pmd_t *pmd,
-+		struct vm_area_struct *vma, unsigned long haddr)
-+{
-+}
-+
- #define split_huge_pud(__vma, __pmd, __address)	\
- 	do { } while (0)
- 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index e86699306c5e..09198906667b 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1302,7 +1302,7 @@ static struct folio *vma_alloc_anon_folio_pmd(struct vm_area_struct *vma,
- 	return folio;
- }
- 
--static void map_anon_folio_pmd(struct folio *folio, pmd_t *pmd,
-+void map_anon_folio_pmd_nopf(struct folio *folio, pmd_t *pmd,
- 		struct vm_area_struct *vma, unsigned long haddr)
- {
- 	pmd_t entry;
-@@ -1313,11 +1313,17 @@ static void map_anon_folio_pmd(struct folio *folio, pmd_t *pmd,
- 	folio_add_lru_vma(folio, vma);
- 	set_pmd_at(vma->vm_mm, haddr, pmd, entry);
- 	update_mmu_cache_pmd(vma, haddr, pmd);
-+	deferred_split_folio(folio, false);
-+}
-+
-+static void map_anon_folio_pmd_pf(struct folio *folio, pmd_t *pmd,
-+		struct vm_area_struct *vma, unsigned long haddr)
-+{
-+	map_anon_folio_pmd_nopf(folio, pmd, vma, haddr);
- 	add_mm_counter(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
- 	count_vm_event(THP_FAULT_ALLOC);
- 	count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_ALLOC);
- 	count_memcg_event_mm(vma->vm_mm, THP_FAULT_ALLOC);
--	deferred_split_folio(folio, false);
- }
- 
- static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
-@@ -1356,7 +1362,7 @@ static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
- 			return ret;
- 		}
- 		pgtable_trans_huge_deposit(vma->vm_mm, vmf->pmd, pgtable);
--		map_anon_folio_pmd(folio, vmf->pmd, vma, haddr);
-+		map_anon_folio_pmd_pf(folio, vmf->pmd, vma, haddr);
- 		mm_inc_nr_ptes(vma->vm_mm);
- 		spin_unlock(vmf->ptl);
- 	}
-@@ -1962,7 +1968,7 @@ static vm_fault_t do_huge_zero_wp_pmd(struct vm_fault *vmf)
- 	if (ret)
- 		goto release;
- 	(void)pmdp_huge_clear_flush(vma, haddr, vmf->pmd);
--	map_anon_folio_pmd(folio, vmf->pmd, vma, haddr);
-+	map_anon_folio_pmd_pf(folio, vmf->pmd, vma, haddr);
- 	goto unlock;
- release:
- 	folio_put(folio);
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index abe54f0043c7..e947b96e1443 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1224,17 +1224,10 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
- 	__folio_mark_uptodate(folio);
- 	pgtable = pmd_pgtable(_pmd);
- 
--	_pmd = folio_mk_pmd(folio, vma->vm_page_prot);
--	_pmd = maybe_pmd_mkwrite(pmd_mkdirty(_pmd), vma);
--
- 	spin_lock(pmd_ptl);
- 	BUG_ON(!pmd_none(*pmd));
--	folio_add_new_anon_rmap(folio, vma, address, RMAP_EXCLUSIVE);
--	folio_add_lru_vma(folio, vma);
- 	pgtable_trans_huge_deposit(mm, pmd, pgtable);
--	set_pmd_at(mm, address, pmd, _pmd);
--	update_mmu_cache_pmd(vma, address, pmd);
--	deferred_split_folio(folio, false);
-+	map_anon_folio_pmd_nopf(folio, pmd, vma, address);
- 	spin_unlock(pmd_ptl);
- 
- 	folio = NULL;
 -- 
-2.34.1
+Cheers
+
+David / dhildenb
 
 
