@@ -4,136 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9158CAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 10:28:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D98FCCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 10:33:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0ACB28E0020; Wed,  8 Oct 2025 06:28:50 -0400 (EDT)
+	id EE6338E000D; Wed,  8 Oct 2025 06:33:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05D878E0005; Wed,  8 Oct 2025 06:28:50 -0400 (EDT)
+	id E97728E0005; Wed,  8 Oct 2025 06:33:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8E408E0020; Wed,  8 Oct 2025 06:28:49 -0400 (EDT)
+	id D86318E000D; Wed,  8 Oct 2025 06:33:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D7F1B8E0005
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 06:28:49 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 715AAB9BAC
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 10:28:49 +0000 (UTC)
-X-FDA: 83974573578.09.A66C746
-Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 629CBC0007
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 10:28:47 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="K BzOQph";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=qxtypbvC;
-	spf=pass (imf28.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C77358E0005
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 06:33:08 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 96C31160118
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 10:33:08 +0000 (UTC)
+X-FDA: 83974584456.19.5233557
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9D0AD1C001D
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 10:33:06 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LeqDFI6H;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759919327;
+	s=arc-20220608; t=1759919586;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8s9JwsgCp3XHvfocy4wxTpe9hcmn8+BULhzOHWqui6A=;
-	b=l1NAXzxUnYtU81L+mqHhdeK4mBMc4kRrJTH9CRHCXDQzcDZDQRoHPebZ9jhETToD/x+bW6
-	k4dx+KA3zXF8glBxEpGt5Q+FIhoS5qZifCokFudranbm02anDcupb8Dtv1WKi2rqrW7GXd
-	tnuiFi72ppS7VoOgvyBlua7XRELUfK0=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="K BzOQph";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=qxtypbvC;
-	spf=pass (imf28.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759919327; a=rsa-sha256;
+	bh=o8icbrcXzTRCL5crimPXEf38lTPLnUQkfyNRpAzdLqg=;
+	b=JFSIbnQlPM0hiBvoD2FMrdzOZOIHaebAIaibvTKAsrPN5x2ZRV4/IangjM7FnsTZXz6aZa
+	4saKAzFIgaNJEKLyhlOT1Ik+5/ipNik31mBq0I7fDqTlk7G95X9s41mSxHvcUdSOWbruPC
+	wkXgnHIBUJn7Gq884oc8aDLVKD6tkQU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759919586; a=rsa-sha256;
 	cv=none;
-	b=m6cIIv0pIkHjQxulc0eqy6WLdaLfBCndWl3AbPesNykpf2y4ni/TsLh8E0ihFMqkops0tb
-	Hxt2jsEAFw46pjy5KsHfA1Z5FktKBPaVRg3m1rBzstabGD8gnIM7LOk2p48TF4Ahv7NhEB
-	HKEFpdbEA9iBA0+vhhU6tdQ/54LnAFM=
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 549C07A0199;
-	Wed,  8 Oct 2025 06:28:46 -0400 (EDT)
+	b=uwIq52iW+csu2HdH2skhGHIgKjT4RvQsPrmTWvbiVAEMhzOvsljFUm2XyafssBVkq0071e
+	kCZgiUTu5slRVZjOhaTDfnC4DVr+8NskfXuc7v6zmWTAmgT/L16IO0erLudIC+UQm4xbuE
+	765BZNCcuIbiyU5I+HTUV9tFYbYW1To=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LeqDFI6H;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9BD5461F54;
+	Wed,  8 Oct 2025 10:33:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADEF7C4AF0B;
+	Wed,  8 Oct 2025 10:33:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759919585;
+	bh=ebKkEsnGtJg9BHiElx4TZYX6g1+ZOgVHkaaIq2OEWwk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LeqDFI6HpfBKRsb/79toHGw54ncCDPykuSei3jXbsAFhv7aAaRqY1jtB8imBkP7Sj
+	 LZCe4iVND7ScZ7a9ycNRk1sqNVSFwStpLYLdmn+juVwXo/2qQ27H+3d8WzyA9eX3Dv
+	 /4rOnellhZIZp7+nQ/SaFwrV3wEmF+jzDRFwC3ZHeppTWB4yIbiTKznH9UsY1/DYk0
+	 jEizPqqaCKEqNwNLObQTWggy5nxIVi1vRBHopJOkDOcUZkz99K4K1JMmtobjtvUAhd
+	 yv3t9Bekyd8Kv/nZNTFHXeJ9YDogW3YBIVieqib0mZTM+8ElmLrR3LcyxBj/LLzIvo
+	 OiDLFoTYkDdrQ==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id D48AEF4006A;
+	Wed,  8 Oct 2025 06:33:03 -0400 (EDT)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Wed, 08 Oct 2025 06:28:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1759919326; x=
-	1760005726; bh=8s9JwsgCp3XHvfocy4wxTpe9hcmn8+BULhzOHWqui6A=; b=K
-	BzOQphOoeZLiw7TOjjmlGk6nQLgu+Gi/fX0/Seftx0oBYoWU7tndGQPI/WBhV6Lg
-	0Pht51ip40jWSXJBIAYbxwCeBRNSIqmInhdgWQIOF0PbEe38nvTpc5Tu13jtsQaM
-	A8xbwLSOo2m4dK0maQgmmrW9YQcOL1vumFgklw4wXV5KvjaUiAG2AXbWxkdFJurO
-	JDKK4ea65M5nGZ16Iid+vnirZ6kXJRMxhzEzcNjPEAFWXiDLHN4dgkGQn3XCePhq
-	e/wvP923bVbpcRGthAJyo4QYm0r+jibl3pAn2nSZGKfr/LT9lDBQAQCeL+5c0NBt
-	qlh+y8uvqtObe2xI+AE4A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1759919326; x=1760005726; bh=8s9JwsgCp3XHvfocy4wxTpe9hcmn8+BULhz
-	OHWqui6A=; b=qxtypbvCaMce7vvdfT8394eCBxgXivc12tZMpMndGyJ1Qztxe4Y
-	UqTIi1V3y6Rvu7UT2XW/UdI/ER/9+vpQdlgnmZ0EByKQMQw6h5ZNpurSESAfCt7D
-	QE/q3pI8kXV9kd1J/7ZsT2SmbCo5gq9gQOqOWskii35rfRE67pUDGCB2eY91IGhl
-	Ggcw6sOwwgNvxDSDP8gSVWJR+AnvywLABNoRZCwCOptv+4OvCLWFy1EgayvFjE09
-	PO2mVE3/GXp9hHi82IbuLZynSgjItMBFzIrFTkL/1Pi3iyIW/Yb/fP9HmzqM0utG
-	WsGOkkAQgXM1qlppy9CKGDKWlvUtAkH2MmA==
-X-ME-Sender: <xms:3TzmaAPkWcuFjSO0zURJMYpZ_qul2uY8Orjd9mxyCnyasI2mCK1Kzw>
-    <xme:3TzmaKDIWVWG4dBgB_jFjXzBCEDA1YdacOMtJyyrCYWzy_ncvZ6iMr3wKGjVKVk7K
-    WnUGKs9g0eUsS55kr5sg7otvsee1bOjqxSCE1PMq5fd3rLxWlK1O0k>
-X-ME-Received: <xmr:3TzmaB4EGBH2_-CI-GoqXjywtnXfJetpTZuoBPl7cV8-L2x3WF6sMNCrvjURAw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddutdeftdeiucetufdoteggodetrf
+  by phl-compute-02.internal (MEProxy); Wed, 08 Oct 2025 06:33:03 -0400
+X-ME-Sender: <xms:3z3maEPgXEJLz2KM41mvujuUPTcYRX6iiSpBjDCMRxygDNtOSlFeLA>
+    <xme:3z3maDwe3-HOGSY4do_Gqb7qN0Jo3uIoyw4ZNz2m-kYUMX-r7Z5hlM15zwzZyCoKe
+    ZIK8CMsMxD6GCLMMSZ_5nwBsqnoS7RDOQlz3_LwZodgSNEueAuiAU3v>
+X-ME-Received: <xmr:3z3maCOCToqIh9PXwKLy6Z6olts7GiYzL102t3BreEgBWIXZyMCiPYIwrdNrdQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddutdeftdejucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
-    ftrfgrthhtvghrnhephefhleekgedvfeffkefhteetjeffhfegffduieeuueekhfejkeeu
-    geelhfekfedvnecuffhomhgrihhnpegrrhgthhgpihhmphhlvghmvghnthhspghflhhush
-    hhpggutggrtghhvggpphgrghgvrdhmmhenucevlhhushhtvghrufhiiigvpedtnecurfgr
-    rhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgdpnh
-    gspghrtghpthhtohepuddtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehtohhr
-    vhgrlhgusheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepfi
-    hilhhlhiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehmtghgrhhofheskhgv
-    rhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhgpd
-    hrtghpthhtoheplhhinhhugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhr
-    gh
-X-ME-Proxy: <xmx:3TzmaE4sl4OHaM3c8yxVyg9_bKsiGyP-CtoECDT4kQVQOQPYSDlRUQ>
-    <xmx:3TzmaDRa1OhzGvsAR1I0q3VyJtgLfyK_pw-V5g429YZSbK_C0wzGZQ>
-    <xmx:3TzmaM8w1-3blSi23ay6aagdQ5fEyfHfbXNpng7Hgee9WgeFVcGu2A>
-    <xmx:3TzmaEaEyKSkMlc9BiJxkvVktn4ZsG1Fw4fqWvrRBfNJDNBobt2Xiw>
-    <xmx:3jzmaFyehVO5ipMvNxbrHr-mINfi0cyr2Et4BljQDHZbty_Be-eAK5ml>
-Feedback-ID: ie3994620:Fastmail
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepheeikeeuveduheevtddvffekhfeufefhvedtudehheektdfhtdehjeevleeuffeg
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepfedvpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehsjheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepugesihhlvhhokhhhihhnrd
+    gtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhr
+    ghdprhgtphhtthhopehshhhikhgvmhgvnhhgsehhuhgrfigvihgtlhhouhgurdgtohhmpd
+    hrtghpthhtohepkhgrshhonhhgsehtvghntggvnhhtrdgtohhmpdhrtghpthhtohepnhhp
+    hhgrmhgtshesghhmrghilhdrtghomhdprhgtphhtthhopegshhgvsehrvgguhhgrthdrtg
+    homhdprhgtphhtthhopegsrghohhhurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    tghhrhhishhlsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:3z3maGQQEIn_9blyobQI1AT6SA-kIjq1QWm2DQ2Hcg4V1T1YeLICvw>
+    <xmx:3z3maFXKjvvo7oqtsl0v32XslPUruNAv8C7amGimTl6qXKpC2wLmww>
+    <xmx:3z3maPRmfX_CmQaDOSbs0ExcLsL50UPU2l9c5ix32X8XrdPQoypueQ>
+    <xmx:3z3maAtPNXOaxJHYTTGUhOyWXPRRtpTXg0G7WlMMNCjcAxigVG5ocw>
+    <xmx:3z3maAao22rxt42G-lDKVLKVh12lCW6sJLhSETLJ_B9JqMPneYJplngV>
+Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 8 Oct 2025 06:28:45 -0400 (EDT)
-Date: Wed, 8 Oct 2025 11:28:42 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Matthew Wilcox <willy@infradead.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Linux-MM <linux-mm@kvack.org>, linux-fsdevel@vger.kernel.org
-Subject: Re: Optimizing small reads
-Message-ID: <bbagpeesjg73emxpwkxnvaepcn5hjrsrabaamtth2m26khhppa@7hpwl2mk3mlc>
-References: <CAHk-=wgy=oOSu+A3cMfVhBK66zdFsstDV3cgVO-=RF4cJ2bZ+A@mail.gmail.com>
- <CAHk-=whThZaXqDdum21SEWXjKQXmBcFN8E5zStX8W-EMEhAFdQ@mail.gmail.com>
- <a3nryktlvr6raisphhw56mdkvff6zr5athu2bsyiotrtkjchf3@z6rdwygtybft>
- <CAHk-=wg-eq7s8UMogFCS8OJQt9hwajwKP6kzW88avbx+4JXhcA@mail.gmail.com>
- <4bjh23pk56gtnhutt4i46magq74zx3nlkuo4ym2tkn54rv4gjl@rhxb6t6ncewp>
- <CAHk-=wi4Cma0HL2DVLWRrvte5NDpcb2A6VZNwUc0riBr2=7TXw@mail.gmail.com>
- <5zq4qlllkr7zlif3dohwuraa7rukykkuu6khifumnwoltcijfc@po27djfyqbka>
- <CAHk-=wjDvkQ9H9kEv-wWKTzdBsnCWpwgnvkaknv4rjSdLErG0g@mail.gmail.com>
- <CAHk-=wiTqdaadro3ACg6vJWtazNn6sKyLuHHMn=1va2+DVPafw@mail.gmail.com>
- <CAHk-=wgzXWxG=PCmi_NQ6Z50_EXAL9vGHQSGMNAVkK4ooqOLiA@mail.gmail.com>
+ 8 Oct 2025 06:33:03 -0400 (EDT)
+Date: Wed, 8 Oct 2025 11:33:01 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Dmitry Ilvokhin <d@ilvokhin.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v2] mm: skip folio_activate() for mlocked folios
+Message-ID: <x6u2afqqwqpoabtpq24n64owlwagolt63csvaibg33p6t2ywuf@beayabw66enb>
+References: <aOPDRmk2Zd20qxfk@shell.ilvokhin.com>
+ <20251007195313.7336-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHk-=wgzXWxG=PCmi_NQ6Z50_EXAL9vGHQSGMNAVkK4ooqOLiA@mail.gmail.com>
-X-Stat-Signature: 8xr38wukc4b7xapn4nr1riwa35d5dz1g
-X-Rspamd-Queue-Id: 629CBC0007
+In-Reply-To: <20251007195313.7336-1-sj@kernel.org>
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 5iwrkwcyuscaycw6431ahqune16axrrz
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1759919327-293098
-X-HE-Meta: U2FsdGVkX19yVwOq5URarKzGE2OuMkHmBiodhK4ydW4wS44FzIW3W6ye4BEs0lErkpjfCCg56o0GT/+KO6TUvIozDEzttziCDbxk9r86c6PjSxFQnSRDAN9Wry/Ble/d2jpfCTyp4xyZLv8qEIJAiEzJ1wGnPEANyZBUG4Fde5RnNvc/MukqM37a1/P3e3qsTroTik1776C2WowXs48rkUbJ46Hm5/1l9DE1bSB/D+qTQrQIIF8URKsLTzlsMP/tigFc0yR3yOd8mYeskpIMKoZ3X5jjKicuiYSEN9/Y3NWMlP6UddxERr46f6X0Y2D3AMQ1k4qEIRYGsO9vhCSSqKLG1MMuR/WzSROU/LLXrkXl3D8tXV9SXEzvi34Anru5PL5JB2DFkX8PhJaGrhqImN0sT8meAx4QKG0zmwB5aCXUW/v0cDWk/J1rS8xuy1LLkelRVWQVkwTjXEHVuIhaqFF/wHD878IkcK0UAqzWao1QIsDG/tbbH7Oi2YeFpo0juy21TFqY60TCNT8OAEUW5MaQGKYXNaPwDL6gllRvsheSyLVkXipixUfsme+pFWA68hUbtRiBO33Lsmfrys9E0nSp4OurdsfBj3xK44uPaU7Ps7LjHmUJCsM8wvcK52i+kJYuYjAxxh0etXbdaGMx1S5llYQa3EMX+Ol1oUD56Km/tQTeyT+AhsxAfVjp9Fj6CitfOODhFuzXBU4RCjQfyDRdwTSLMHEWz9ENH+NNosV6H+munKwY/EIaeXIfo7c3CVKKQtS9I0ANQhF/lZFCMTazS3yYVkYZ+oA+YzpChWzfucRRs8VJTpBVMHtLRuLjnR0UUJcyFlF52lVGDA+Yi5cCCtb9gPyrASlj5svMRI/wTJ2kRwzFNJ1DW91FAWtP8JHPSm5nm06j3cwFwYaXz60cs7Tom47aPW4Y4dW/YuPFN0NByfOGlxR6YcbooVGZjWYlYCg028Mp2D5bmXz
- fSCfyzSF
- iFKFm1rm08CG1q4mhV0z57QqiRJ5NMSFFetVgNah2MMDB/hQiZf/9AAlJ8wS6ayRLfMftjegiZPaoZNfi/tcVHhW+7REB8FbS7gm4NH/LHl2YMq4d3Zxcc/7AwexvG9qSJVKQw9Bx9bcT9f6In+gBs4qAVYumfJVR4NxP/hzLJB/rTTFbm1VXJanAs72ngGKpgoRSosZQ6UMEJyEflP72pocDX/J82LGP2a67rSGDab0bMzRF9eeboBf1HBjSIZvioyVkbhysvm8jzniQK0/bA4DOA53pk2IlH8Ec7ICHtzzZ5FlhnZ1p7/PuEe8MFASliPYmDlT6N0xvfii1/mtQcU5lrQu+b0SX/9PdnNzz718EoUGXxrAdlDqpWNhxi9Iqv7VpXgcjBekx5h84b2ZUb8e6DTUoB75OUX8ukRNAMd9yswpaBJExF4PU8t8DRCVzCT2OlH5D4gmRsLbBXf1iFYEQ8Q==
+X-Rspamd-Queue-Id: 9D0AD1C001D
+X-HE-Tag: 1759919586-382621
+X-HE-Meta: U2FsdGVkX1/8kUhvj0F9W5j1LIxpc3H9V51HeXghVgh8aEZ7EEbHTU+3UlCEsSvYezL78l0yx61r4umBIZ8Ose65hopuypqGcwAEz4uye3vLTkCWr0+XOBwF9Zl0IEhM+c8NuapkzMloqyXG5JYis8SJHXjYDZzWzp3Lrmbb5njFTyzgnilG0oOOsye5+MUkFAlButaGAj+sLlD10YxxeV96Q/o4cfAF5igkhvFHlxJT2ZxbYU9RDI5++Fp7YP4QnJvI+cqIxIj+QzUiMqmYz1Cjr2hsRjwBhDAqfg7sla0M9Dhx+H09t2V4bZKiKqMiOPhY5AqR9tBTqeDiWu4UsLuo42ZBldb3txvGAsP3on2mQcrC9gUmA2SSPGTjU9UucDi+PBDyrjKSPjBdsCUk4VkWdyv1vzIdMZGQ02jEKI4QIPkvAmZ6QhySc5eOwogpHvi5Agu18Nrp3b4+GEQChbbXZb/TaATXCuiXDvgNy1GEfTIUJ3pwnFxQtmBUss1EMhkJrAk6ywRxzz8NDtgkEtRdwIhb67Rtuoq5lWcbkcpjc8S36AhrTUhP/S5IhmU/ODam6K2k/lTTLFCblGcdpQBaHDGnMM80hFRKF5gksBZeIEia7oKTh16Uza3t56Hi68/NCetCJ5X7h8U28OCl874ev3tg1XxrLYslI3akAdnRXMDos+OtM9h+E11tZnZxWjOeUCISlbzYyVfiTaqFuQPlc3L9sIbr1/QsAqGMX1aIWi7AuR13t4TRhqoAVVqmhIGQV/g/uI9aDNxr0LkBBdAoGURuv3+UqyQy6vSUXkPOODfZVOHN6nAcs0X48nKnSwJRzvfAMbe6SQFsG9+/AvAXTagbnknbo0pZHkgbSSLWBVryNfNJhJktuu5tG6UExlHxoLm0gML70z5LemYAPw6fiOw5Ay9guNWV7BJFl3GWaGd1S9ZjKjIJR1PYE5dnPXU2CBUn8TEOkRzqBke
+ tqM1Fafw
+ zYqJJj6xifl5qYxPVsecmFEv080pqlqOeDiUm6jbJDOkTbJa1ilyPfmz5FZ39nONw471PjM3oalTixG+qFvfNTumXlp4X2/CGL/5oqd+9vUbuSVaXNJIr+NVsTgJuQP5JK7F1Wad4y0q7GSplZwupUFLJf9PAZ4KIO+XAMPv+gkJ6aUlQ4wXKaQweKMH3c5wSN7Kot09vK5l7nWnzKuriPW8KwtAyu6Pj+Yd1RXi9LY9ZTQVpd+6/3UP0LnTyVhJJJb76i8MBRDEvQL46h2O6Ew+tWeaGv7tlXzcgQv7w514BLK2fuOxddo1f5l3RQqZTt1QI/rtlDVrfFVzWD/+itl4/P6pQGIvt+FmkU9nXjEZ6C95apoGwsKKz07f7Fxq/DAb8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,167 +131,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 07, 2025 at 03:54:19PM -0700, Linus Torvalds wrote:
-> On Tue, 7 Oct 2025 at 15:35, Linus Torvalds
-> <torvalds@linux-foundation.org> wrote:
-> >
-> > But I think I'll try to boot it next. Wish me luck.
+On Tue, Oct 07, 2025 at 12:53:13PM -0700, SeongJae Park wrote:
+> On Mon, 6 Oct 2025 13:25:26 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
 > 
-> Bah. It boots - after you fix the stupid double increment of 'already_copied'.
+> > __mlock_folio() does not move folio to unevicable LRU, when
+> > folio_activate() removes folio from LRU.
 > 
-> I didn't remove the update inside the loop when I made it update it
-> after the loop.
+> A trivial opinion.  So the user-visible issue is the incorrect meminfo, right?
+
+The user-visible effect is that we unnecessary postpone moving pages to
+unevictable LRU that lead to unexpected stats: Mlocked > Unevictable.
+
+> > ---
+> > Changes in v2:
+> >   - Rephrase commit message: frame it in terms of unevicable LRU, not stat
+> >     accounting.
 > 
-> So here's the slightly fixed patch that actually does boot - and that
-> I'm running right now. But I wouldn't call it exactly "tested".
-> 
-> Caveat patchor.
+> Yet another trivial and personal opinion.  Adding a link to the previous
+> version could be helpful for reviewers like me.
 
-My take on the same is below.
+You probably missed recent Linus rant on Link: tags :P
 
-The biggest difference is that I drop RCU lock between iterations. But
-as you said, not sure if it is sensible. It allows page faults.
-
-Other thing that I noticed that we don't do flush_dcache_folio() in fast
-path. I bypassed fast path if ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE.
-
->  mm/filemap.c | 33 +++++++++++++++++++++++++--------
->  1 file changed, 25 insertions(+), 8 deletions(-)
-> 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 60a7b9275741..ba11f018ca6b 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -2792,20 +2792,37 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
->  	 * any compiler initialization would be pointless since this
->  	 * can fill it will garbage.
->  	 */
-> -	if (iov_iter_count(iter) <= sizeof(area)) {
-> +	if (iov_iter_count(iter) <= PAGE_SIZE) {
-
-PAGE_SIZE is somewhat arbitrary here. We might want to see if we can do
-full length (or until the first failure). But holding RCU read lock whole
-time might not be a good idea in this case.
-
->  		size_t count = iov_iter_count(iter);
-> +		size_t fast_read = 0;
->  
->  		/* Let's see if we can just do the read under RCU */
->  		rcu_read_lock();
-> -		count = filemap_fast_read(mapping, iocb->ki_pos, area.buffer, count);
-> +		pagefault_disable();
-> +		do {
-> +			size_t copied = min(count, sizeof(area));
-> +
-> +			copied = filemap_fast_read(mapping, iocb->ki_pos, area.buffer, copied);
-> +			if (!copied)
-> +				break;
-
-filemap_fast_read() will only read short on EOF. So if it reads short we
-don't need additional iterations.
-
-> +			copied = copy_to_iter(area.buffer, copied, iter);
-> +			if (!copied)
-> +				break;
-> +			fast_read += copied;
-> +			iocb->ki_pos += copied;
-> +			count -= copied;
-> +		} while (count);
-> +		pagefault_enable();
->  		rcu_read_unlock();
-> -		if (count) {
-> -			size_t copied = copy_to_iter(area.buffer, count, iter);
-> -			if (unlikely(!copied))
-> -				return already_read ? already_read : -EFAULT;
-> -			ra->prev_pos = iocb->ki_pos += copied;
-> +
-> +		if (fast_read) {
-> +			ra->prev_pos += fast_read;
-> +			already_read += fast_read;
->  			file_accessed(filp);
-> -			return copied + already_read;
-> +
-> +			/* All done? */
-> +			if (!count)
-> +				return already_read;
->  		}
->  	}
->  
-
-diff --git a/mm/filemap.c b/mm/filemap.c
-index d9fda3c3ae2c..6b9627cf47af 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -2752,29 +2752,48 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
- 
- 	iov_iter_truncate(iter, inode->i_sb->s_maxbytes - iocb->ki_pos);
- 
-+	/* Don't bother with flush_dcache_folio() */
-+	if (ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE)
-+		goto slowpath;
-+
- 	/*
- 	 * Try a quick lockless read into the 'area' union. Note that
- 	 * this union is intentionally marked "__uninitialized", because
- 	 * any compiler initialization would be pointless since this
- 	 * can fill it will garbage.
- 	 */
--	if (iov_iter_count(iter) <= sizeof(area)) {
--		size_t count = iov_iter_count(iter);
-+	do {
-+		size_t to_read, read, copied;
-+
-+		to_read = min(iov_iter_count(iter), sizeof(area));
- 
- 		/* Let's see if we can just do the read under RCU */
- 		rcu_read_lock();
--		count = filemap_fast_read(mapping, iocb->ki_pos, area.buffer, count);
-+		read = filemap_fast_read(mapping, iocb->ki_pos, area.buffer, to_read);
- 		rcu_read_unlock();
--		if (count) {
--			size_t copied = copy_to_iter(area.buffer, count, iter);
--			if (unlikely(!copied))
--				return already_read ? already_read : -EFAULT;
--			ra->prev_pos = iocb->ki_pos += copied;
--			file_accessed(filp);
--			return copied + already_read;
--		}
--	}
- 
-+		if (!read)
-+			break;
-+
-+		copied = copy_to_iter(area.buffer, read, iter);
-+
-+		already_read += copied;
-+		iocb->ki_pos += copied;
-+		last_pos = iocb->ki_pos;
-+
-+		if (copied < read) {
-+			error = -EFAULT;
-+			goto out;
-+		}
-+
-+		/* filemap_fast_read() only reads short at EOF: Stop. */
-+		if (read != to_read)
-+			goto out;
-+	} while (iov_iter_count(iter));
-+
-+	if (!iov_iter_count(iter))
-+		goto out;
-+slowpath:
- 	/*
- 	 * This actually properly initializes the fbatch for the slow case
- 	 */
-@@ -2865,7 +2884,7 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
- 		}
- 		folio_batch_init(&area.fbatch);
- 	} while (iov_iter_count(iter) && iocb->ki_pos < isize && !error);
--
-+out:
- 	file_accessed(filp);
- 	ra->prev_pos = last_pos;
- 	return already_read ? already_read : error;
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
 
