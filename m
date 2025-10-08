@@ -4,117 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBC62CCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 08:05:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2604ACAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 08:08:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0546B8E000E; Wed,  8 Oct 2025 04:05:47 -0400 (EDT)
+	id 676208E0010; Wed,  8 Oct 2025 04:08:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F20998E0002; Wed,  8 Oct 2025 04:05:46 -0400 (EDT)
+	id 625FB8E0002; Wed,  8 Oct 2025 04:08:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E10948E000E; Wed,  8 Oct 2025 04:05:46 -0400 (EDT)
+	id 4ED238E0010; Wed,  8 Oct 2025 04:08:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CFCBC8E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 04:05:46 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 48D2658FAD
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 08:05:46 +0000 (UTC)
-X-FDA: 83974213092.22.5919AF4
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3791E8E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 04:08:44 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DFDD6C0451
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 08:08:43 +0000 (UTC)
+X-FDA: 83974220526.21.A151156
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E8DBD80015
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 08:05:43 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ErINyHjp;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759910744; a=rsa-sha256;
-	cv=none;
-	b=vxYT7Bpf/J5Oxl49UyNBBqwdKJPE1yhnn0yK4TJHLT4OhPWXKPQkunSZaE+IyWkefuKmRU
-	b2CChFTO/ot/wwVgxbvZsft0Vv3RMlossLo7TwIyHUjYsy81Ebs2w0W6so2t+Oy2STpYya
-	cZV1KaEUOuXNVL8AqseJyxV+fkl3k2M=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ErINyHjp;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	by imf24.hostedemail.com (Postfix) with ESMTP id 79226180009
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 08:08:41 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ABb3eiDv;
+	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759910744;
+	s=arc-20220608; t=1759910921;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fckckqu8FhSLe+YJGblmZ5Veu3gXLrLCsl3rTsripxs=;
-	b=V7NKMyKcQJfCiag/751lATvPvbgRcIjmH5k2kzfjBbNCzYGXClptdx2z3vujvmR6d52DF/
-	XjUq1NcWCPotIXauuVRlBaZeIEyVz7UhvSwd7bTIxUSeWF/xJaU0emnL3JtBgc3+e3msEM
-	L8EOOH+RjXaOrOzm3m7T5jMrNbl0XRE=
+	bh=qUJOe88Utm5QNIgMeCqO4mlDI62Txc3nSegvqhoAV8o=;
+	b=r75PPJtj7/pwG+FTjtTfa8gbV0H8Egm44cIn2IaqDFLBvs8uJBFq0F9KgOhDRV6kKhwP7g
+	QivjY1uNLzShDiRdqZVBlbVxl0GPlSMIaaTrHxfCa54Py1VU3YJo7iNezVNnLEJ27/Knxv
+	Zg5jifY8P1JasboFjnGGipl6zThlfIM=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ABb3eiDv;
+	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759910921; a=rsa-sha256;
+	cv=none;
+	b=0hMNo5JR5PW5iZdIvAsrB0NcIMyvdjoZIwdPr4oaMgBWcfrbs3cWQevXXZh4McOA0DaIN/
+	LWilTscXMeNvuBRirH+N/kEgOsTjUrQxQ1/DYD+9vSJJxZVUEv+0dLxREhsH7Yw/2ov54J
+	cfnD9FdT3WkUhIJe1B9b8ETLg+EnNhA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759910743;
+	s=mimecast20190719; t=1759910920;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Fckckqu8FhSLe+YJGblmZ5Veu3gXLrLCsl3rTsripxs=;
-	b=ErINyHjpcPMn/buFcwqkkyl7/ECnVH/DPVQJb6X2mWY3ioFBpzcs7J6wS9FNyZY810vTOG
-	bxu6lGSxvspMEOL+VbdUIDcDycRrZXJCdT6MichQdnDYrwL68b+AqtpWezRJzrJ8fnDaj8
-	xj9Fq3A83jAaps2N2ODbeZuwnErPpwQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=qUJOe88Utm5QNIgMeCqO4mlDI62Txc3nSegvqhoAV8o=;
+	b=ABb3eiDvq7SNBofTwALI3bsy9DLnMArcnxQc5gJZ2s65nbh2tZgwXK2zJw8e67BXFuzXZl
+	De/INLiSlVW6I+j5AaVHrR9mbgpqwBjbScRSARphZ1d6BVGo2GqZZ39phKyXt4pblLSTDL
+	mn3U9bOTRM3erD+bKoKZ0roRypW6/70=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-278-omd15FybNnGUMTu3_pJABA-1; Wed, 08 Oct 2025 04:05:41 -0400
-X-MC-Unique: omd15FybNnGUMTu3_pJABA-1
-X-Mimecast-MFC-AGG-ID: omd15FybNnGUMTu3_pJABA_1759910741
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-46e35baddc1so35648175e9.2
-        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 01:05:41 -0700 (PDT)
+ us-mta-128-l2kuCXevNZOL5Htiae5CTg-1; Wed, 08 Oct 2025 04:08:39 -0400
+X-MC-Unique: l2kuCXevNZOL5Htiae5CTg-1
+X-Mimecast-MFC-AGG-ID: l2kuCXevNZOL5Htiae5CTg_1759910918
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-401dbafbcfaso4318411f8f.1
+        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 01:08:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759910740; x=1760515540;
+        d=1e100.net; s=20230601; t=1759910918; x=1760515718;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Fckckqu8FhSLe+YJGblmZ5Veu3gXLrLCsl3rTsripxs=;
-        b=XcsqUAo2EQt+Bx7pi53KHA2nMUuNJeNDzjAuIp/13lICaYpYzIBrjveNk6r92fZw0O
-         5xNlOAw8RQRLhtY0hjOPNU3T9A/X/tdIygC+GUvXRt7cIqBKqpFgL8j8mRnTQ7ThfE7I
-         KBE2EuRwa1t6RQJzX4Pjd+p/794FYdMZtnpvryvKQ7Ryqem1Rd3oMFryuO9B2QRvDVh2
-         EXO2XjrRj5nBswE47xEghxOmxL92+LAldSQpN9gbqfw0BKZGDDtNAK9i1d5h4zp0MK0/
-         bbzEhd4TmCZO3QM2GpLIZ21PwQefET0yqmYkz/Hek8krC8KR4osri0ReGFSVTom2JgY2
-         Zb0w==
-X-Forwarded-Encrypted: i=1; AJvYcCXypZfUpyozR2UwZpiTzt4IF2CO/MTPkoCYR6n8TkkgmJXCsEz5ZSK+PaQyirNwL+5wPioVYUbtkA==@kvack.org
-X-Gm-Message-State: AOJu0Yz/L3uWW3HWH3Mf7pe6NbEiISuCWhRrtF4korq5aGfqOkFPLje8
-	5evi1pnuWaVt7rYcA1n6UG0gfW4q9Nw379Bo4ycZZ3tyoN4PYvmMkSj9uUonql/xINQzZ6+AxXj
-	DM/IDG/Q7wGMy8Ch+DsCr+b5Jr+NyTY498s9VAjXflvQfoXrmkhl0
-X-Gm-Gg: ASbGncss1s9V8885kdtbngBj841wkLgHrrPGYmCWbBo3N6pBs1pBgy43NtvrZ/fAtkC
-	2Ws2bBDccxexiskGEsSsoB4sVB0k6XQLE9fRRZydoNcKWHrqryWa1Ctbs8IgUgCL55QGycNZrHK
-	sokey9xiXoGh5HQxdILLE/huS2xfck8PCJjhNkVWnqyk7CeR6VRr747v8oc+BTti0n3Q70LXIfx
-	2ZGqumXBNZH8ExiJI80k0ZaW/aOZiXTmw/qmz65jpzt9BRlGng2MkBsQYoqizBNcxsGsVWxwPXz
-	c8qe1fsL7u8izSfIcHpaIuwBgPzpWhgtBukoFiTrzkbkXtGOoOLN1PHjyw9CQojhUZ9Ww/2uQ6W
-	mI445hTAd
-X-Received: by 2002:a05:600c:1395:b0:46e:37fc:def0 with SMTP id 5b1f17b1804b1-46fa9a9efaamr17049975e9.9.1759910740319;
-        Wed, 08 Oct 2025 01:05:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG01JXdA7zG4WT7hRXme96s2VqM9oTOcf5aTlv4lkpg5WkgJHOM8zu4tbyk7O6KwitLxTnxnw==
-X-Received: by 2002:a05:600c:1395:b0:46e:37fc:def0 with SMTP id 5b1f17b1804b1-46fa9a9efaamr17049655e9.9.1759910739866;
-        Wed, 08 Oct 2025 01:05:39 -0700 (PDT)
+        bh=qUJOe88Utm5QNIgMeCqO4mlDI62Txc3nSegvqhoAV8o=;
+        b=A9O2fM5CFPPmBpOyOMEfEOxzGwWy6mx6zuqg/kgLWofu2rCO3v4lPYjO9YkHLJADlf
+         mVWciKtd3iKK6s7PCITXjx1DHU8SoYLHl8dKt3Te3xOjpP7TYxhjZmiFfuCCBlMbpaQl
+         /Jy7V9NmzTqCdtBzNvFpQ8+OKlDFOLyS48en8I8nTntT/cWge08lh3lZkFbv+a0WZHMt
+         MCwRPGJcA/cHi5INcP/YH1OWEh6q99tU7sLPm/AOBM5momw5qD3/cJi41DqNZGq8tnlX
+         N8tM23GaWbNkhqst3k+0E1R5MojmUOmKnjk6HhSlbpSj89+tSO23v2+HqctBptYCAp20
+         SnIw==
+X-Forwarded-Encrypted: i=1; AJvYcCVi/+TbCf+ZyFxSxnDcn56HbvUak76sKgFLAJCceLJtoP5Rt103SWJvyXrmGnrV7W17cs4NIXLeeg==@kvack.org
+X-Gm-Message-State: AOJu0YyvNyCYYVqVv0BLWxbLuQLgCzTkMcDX1g3M8ue8RH38RQXih66N
+	23BFcRuCPCY5rO+s8mMQaad/+rUJo07bHROaBZRBidIMxYRGXgy/MjzLJCrrpZl0/4Gp5cH+MQA
+	4UxNgmf0UZJH2VBcDr931zqZirEiMNEaGDYR5iAItLveDNk15tmiW
+X-Gm-Gg: ASbGncv1/QD/zeJrbRZDWGhHZHglTnVtGW5ZEZuQWUEp1zpcLUXmr/2A/BMSFg57zmH
+	MVxn8rx8YOQA3pcoGyW9UGDxQjYzkhTpkd3o46m/AxDUZ4l9o1FdxXx2KWT4pVoB6eaQmT86UoN
+	qGz30s9u9tElOqVBG4wNdrKHV4DjUoz+xf8A3MyFblacUfN+rjyc6fSOoUQLOf+tpFUBzNWpE2I
+	W9i37celHzZFa0CulfgpH9NwnLX2ZLjPje9X5cN/1HQN+vLeapdTwD6TNGp9JI0iyfxgFR9/0S2
+	+p5Iq67Ze5y5J8fRLc7bH4A4QWYWLary7W7RAiUXIHt+YNTEm0E+icbmwIRRB48fyMR5WEkL6pU
+	sSJ/tsdQC
+X-Received: by 2002:a05:6000:230e:b0:425:76e3:81c5 with SMTP id ffacd0b85a97d-4266726c314mr1495470f8f.17.1759910918429;
+        Wed, 08 Oct 2025 01:08:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHeXMx3ZBbvp7+9qSDMAqpT3IYsrp+qNxlZMMZPXXl0yLI8Wog+oOvMr+BPXNZWvH4I9ELECQ==
+X-Received: by 2002:a05:6000:230e:b0:425:76e3:81c5 with SMTP id ffacd0b85a97d-4266726c314mr1495424f8f.17.1759910917942;
+        Wed, 08 Oct 2025 01:08:37 -0700 (PDT)
 Received: from [192.168.3.141] (tmo-083-110.customers.d1-online.com. [80.187.83.110])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8ac750sm29018283f8f.24.2025.10.08.01.05.38
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fa9bf87c1sm27190025e9.3.2025.10.08.01.08.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Oct 2025 01:05:39 -0700 (PDT)
-Message-ID: <60066a80-4758-4034-bbd8-25d9c24861b9@redhat.com>
-Date: Wed, 8 Oct 2025 10:05:37 +0200
+        Wed, 08 Oct 2025 01:08:37 -0700 (PDT)
+Message-ID: <27e002e3-b39f-40f9-b095-52da0fbd0fc7@redhat.com>
+Date: Wed, 8 Oct 2025 10:08:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] s390/sclp: Add support for dynamic (de)configuration
- of memory
-To: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>,
- LKML <linux-kernel@vger.kernel.org>, linux-s390
- <linux-s390@vger.kernel.org>, Gerald Schaefer
- <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>
-References: <20250926131527.3260733-1-sumanthk@linux.ibm.com>
- <20250926131527.3260733-3-sumanthk@linux.ibm.com>
- <4e832570-32f8-46a5-80d0-40570db862b2@redhat.com>
- <aOYIwEGgrjpNMGKD@li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com>
+Subject: Re: [PATCH v9 mm-new 03/11] mm: thp: add support for BPF based THP
+ order selection
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ Yafang Shao <laoar.shao@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Liam Howlett <Liam.Howlett@oracle.com>, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, Johannes Weiner
+ <hannes@cmpxchg.org>, usamaarif642@gmail.com,
+ gutierrez.asier@huawei-partners.com, Matthew Wilcox <willy@infradead.org>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Amery Hung <ameryhung@gmail.com>,
+ David Rientjes <rientjes@google.com>, Jonathan Corbet <corbet@lwn.net>,
+ 21cnbao@gmail.com, Shakeel Butt <shakeel.butt@linux.dev>,
+ Tejun Heo <tj@kernel.org>, lance.yang@linux.dev,
+ Randy Dunlap <rdunlap@infradead.org>, bpf <bpf@vger.kernel.org>,
+ linux-mm <linux-mm@kvack.org>,
+ "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>
+References: <20250930055826.9810-1-laoar.shao@gmail.com>
+ <20250930055826.9810-4-laoar.shao@gmail.com>
+ <CAADnVQJtrJZOCWZKH498GBA8M0mYVztApk54mOEejs8Wr3nSiw@mail.gmail.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -160,21 +170,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aOYIwEGgrjpNMGKD@li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com>
+In-Reply-To: <CAADnVQJtrJZOCWZKH498GBA8M0mYVztApk54mOEejs8Wr3nSiw@mail.gmail.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: XGZj29tr7MOdOnvIKUxHR6Pf1-SLmzE2UMSgNOLMTlc_1759910741
+X-Mimecast-MFC-PROC-ID: 41nsnQfacuDR97jpcEjmpxkQuUbxPCU4i1Z6pq4lkPY_1759910918
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: s8ed7f8goaseddts9kb46k1ydxpuzthc
+X-Rspamd-Queue-Id: 79226180009
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E8DBD80015
-X-Stat-Signature: 1xmo8k4n7c4ignwmf1e7dryrifmt1m4t
-X-HE-Tag: 1759910743-215055
-X-HE-Meta: U2FsdGVkX19MXKLvQQ0Qg4Je0w0gwgY18Fy7FII/GxgLXD7ROHJimrwaqpZG+g+cyBF8ihCaTj51LBjxfzMSGvE4Kzerfyk6xD+kf9Mg2/dYTnIXcZZ3x5RGJYcLsG3asVxBur32mkPre63d9HWTJkryAsvgKeVVhOG3MGyWft705Z9h2lYLLE9oMR9edD3bZcCv2H4ySnpcrrZNX7h6NVS/9FfIHtmDDP/hPNg+7OBUmIoS3gY0GDVoKU5q4G7xxpb2KmSJuOaeO+Pg21rK1rT0Ys9LXRzFscr4fDAjaah1IW3mmh+nE9tI3bvzMHYcV8yIoeOnbEX9eHgI4VU8/J+XTmgB9u6pBcUOc1NyDPGtqVrEo42e4hpujXUBGpCQC7wwn1DPxatbGOX/6x/bL4vZHEfLInXqq5bNOCy1ZaD0VSrj8Yu3mqzrjFUn3GgO5hSY0qzv+YLn72ZFogJXeab6jMSaRvn9uWIzudemLTG7H+TOyyJfvvKgA8LncXuyRuQ8SI+i6w7wbz0X89nuFrAQ0MiapOMl1/l4CSzvPkwFz8L2lT6u+Y/nJhTp/yYQ3hhyKqzU/zdAg/kE3Lhgk/FRp+APBmeBWlpAqjt+lezeZZc24iH39M/Cibn8k5YkCNVls0GIPlGZLk0V2eDy5ZCe4+KjPjeUtzIcPMv5PoU0lTJBu9fRd3j822wwbh97s4Oz7PvmWZzVPH6lXQ7nb4pGIC0A8bh4Gg0NM43ysWZqHqtVD1oapusIkXFj9dMK+sOw9pGC7yO0SetXf62cIcUlT3+JkMBMIqnVYKUY1FxSZSeqr5SuVDP4xvgBOLJCq3GtgeoyPXryCe2cINaTrGmlp2isErCff/HanPQBnSUSWQGBLMS8IbrQnc8+Zb6fVRhoRXB/dOG0LvD1/Cp8R00t3i2VtYKczD4+CVugwxbeteN6Xy8C3AMx7uOL2ERxL8mrrXheLdh2bt/97/m
- NO/1NJia
- +f5ue3xBbMqHxnhFqAfubxfl+LwJ1vzAV5V/1lPq4VeJ+M13s+ZW/GkfFCHPuDcZqfBYJCndNOg0ODDKda47UvngoGgueLyDWm2EG0dw6o1CBN26cX8gDMrKgb0UaJetay+CaBtC4dSoDlXf9wMWb6yjOm5E/tlgAOmsLqUJvmZ4pTaUUDLVVVZHpHmECDZ7lUit2plfGQTb4BJogAlXbKZLqbxZnxjLqGrl0FiydOFX3nVh7KmMyn1PITS9OUksI7gPZaflmPbXlQ3TtmvzvceY3T7fAkIqc4pb5lm4cPafeWKk+TOnmNX7VpZSi+iCMrDJeU+DOkJYtRD/r42dbo5QdAtn01DEfj3mUJ7cZ5n5fRz9p3A3tdi4usp8k+8myEXmb
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1759910921-100547
+X-HE-Meta: U2FsdGVkX18lYrIZeIFoNHzM/WUwYnrj/sQUDKsvI+oOLUM2UDEIlFE3kZ4n+HSnn7ckXNdsXpTL2mbrAazhTTmW78s94mhzfaLaB6rR3Czvw0iv79EDrGqxxoUzV18v9H5JR8Ane9yU0MJgRncDOLr9vDij6XwRmNpsCF5PG3PR605zmwOGEVdcSmbd0b3W594NoTuLVSC6zhRpoZwwqX6aCgyCBWPw10i2fDrzuQGjogCZTK99J3kCLTaOsZxBzZcbwlnwFiai/3qS4v0OqNaSVy2QDM4Nmj3xS6UUKjMb6l+182vitpzNuUN6RuMvnomGzvAkLiuA4mpnE/aKZ1OyFa1Ot94F/ntJFQnz2h8Dlu0h1b82X4f57ecU9O6/vlmnnd2BZQitJKqNeywTqTuhLipJbkxw/Sf6M6DQRzoVyIxMk2ktlgLy9+6k3efLHvxL1e8q/C5rZwGJSFvMUzGbgNJP78dFffhzDnypigpvXZ1N+vV7u0r85Yb2v+4QVrTKLtOCOSBXm+6ZjY3L8bsYhiAGMLBD43BxCVxRQ2+3WDfumLJaLr+kSf+l5hQCsDTizeRzgZcWEGHCMjmUam47JzLmNMZWmBwyC1oGdSSy78NuAhQjq1HDFztxscG3aHaIlt9AbohFLpqZombYKOq3KS2lFJ8mgZ1ZHIOKRI3elznrGF3bqxet+0EcQLtXN4oq9BiZZ5PeqSm0U0rutFo9MmmHuJ1dB6wqZ32kIuh+V++B26AOnyWygywmPBS+9NY1ZHBzca5CHhLhEPoIpXhoxwMp+xdFwswYigpclkZ/SyegnHdBkYs+nqYUrcDZR6/SfXpQaNHJsRfkI8WRQFgBUjkYvgaurkCsfHmpial0Q0GpRTXt88AhsuqegyKqahl1mQwqu+6Z8YOKtlg8xHkTZfTbNnLpXwT0kVJ9TJ+woMFVIWGr3/JjruV2dHcKyZgZ1uIXdLifMTG9fPP
+ YtYFS0ZC
+ BWinLEAVOrBmkXwDMDP8+FHMosr/jDBtSgAaotZe/YrBSmZJwfjo1EAph9BdpGu5Drm28GMfUVSqDC7OZeC8gxPYVHzc5n//tNrd8j0xR/5H1seoCEmAe8YrLoXGQWpVOn+WzI6hVE8wZSUvYAf/Fri2i3nq5ltcZmmalPk4Xl39WNVo3h8FUDj+8wvaphkOG1LDRpER3Dv2zqNsIclJpHF0NdVWUSxpKxR8EH9e41Wk9GxDeL66CKk1nOXxdSTgASix3EvePEEKzYcmzJUBCdaFntJdhwPoVFfCBadHkuWUNwNWOD+e0SkgIhbPtO8lA16qSAxe61VUBz0/iUCgNw1Sm16lwukTEr9hCH2sWLLgSv0HiZ3JWogAmis9fEc0qAYpcnarl3Sm3Js20Z8OUF18dna3GpoISykXos1M9gCSNRTsyPIUWqcslIjdppKLMPLGbzulWY+qxakdVaF/0gX9GfBpQ7x8KhcHbfUIRmvKn6v1135Gcs0+gxO1KGtV5+2Ll
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -183,162 +193,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->> Is there any reson this notifier is still needed? I'd assume we can just allow
->> for offlining + re-onlining as we please now.
+On 03.10.25 04:18, Alexei Starovoitov wrote:
+> On Mon, Sep 29, 2025 at 10:59 PM Yafang Shao <laoar.shao@gmail.com> wrote:
 >>
->> In fact, I'd assume we can get rid of the notifier entirely now?
+>> +unsigned long bpf_hook_thp_get_orders(struct vm_area_struct *vma,
+>> +                                     enum tva_type type,
+>> +                                     unsigned long orders)
+>> +{
+>> +       thp_order_fn_t *bpf_hook_thp_get_order;
+>> +       int bpf_order;
+>> +
+>> +       /* No BPF program is attached */
+>> +       if (!test_bit(TRANSPARENT_HUGEPAGE_BPF_ATTACHED,
+>> +                     &transparent_hugepage_flags))
+>> +               return orders;
+>> +
+>> +       rcu_read_lock();
+>> +       bpf_hook_thp_get_order = rcu_dereference(bpf_thp.thp_get_order);
+>> +       if (WARN_ON_ONCE(!bpf_hook_thp_get_order))
+>> +               goto out;
+>> +
+>> +       bpf_order = bpf_hook_thp_get_order(vma, type, orders);
+>> +       orders &= BIT(bpf_order);
+>> +
+>> +out:
+>> +       rcu_read_unlock();
+>> +       return orders;
+>> +}
 > 
-> I was initially uncertain about contains_standby_increment() use case
-> and didnt change it here.  However, after testing by removing the
-> contains_standby_increment() checks, I observed that the common memory
-> hotplug code already prevents offlining a memory block that contains
-> holes. This ensures safety without relying on these checks.
-> 
-> c5e79ef561b0 ("mm/memory_hotplug.c: don't allow to online/offline memory blocks with holes")
+> I thought I explained it earlier.
+> Nack to a single global prog approach.
 
-Rings a bell :)
+I agree. We should have the option to either specify a policy globally, 
+or more refined for cgroups/processes.
 
-> 
-> i.e. #cp define storage 3504M standby 2148M
-> This leads to a configuration where memory block 27 contains both
-> assigned and standby incr.
-> 
-> But, offlining it will not succeed:
-> chmem -d 0x00000000d8000000-0x00000000dfffffff
-> chmem: Memory Block 27 (0x00000000d8000000-0x00000000dfffffff) disable
-> failed: Invalid argument
-> 
-> Hence, I will remove it. Thanks.
+It's an interesting question if a program would ever want to ship its 
+own policy: I can see use cases for that.
 
-Cool!
-
-> 
->>> -	case MEM_PREPARE_ONLINE:
->>> -		/*
->>> -		 * Access the altmap_start_pfn and altmap_nr_pages fields
->>> -		 * within the struct memory_notify specifically when dealing
->>> -		 * with only MEM_PREPARE_ONLINE/MEM_FINISH_OFFLINE notifiers.
->>> -		 *
->>> -		 * When altmap is in use, take the specified memory range
->>> -		 * online, which includes the altmap.
->>> -		 */
->>> -		if (arg->altmap_nr_pages) {
->>> -			start = PFN_PHYS(arg->altmap_start_pfn);
->>> -			size += PFN_PHYS(arg->altmap_nr_pages);
->>> -		}
->>> -		rc = sclp_mem_change_state(start, size, 1);
->>> -		if (rc || !arg->altmap_nr_pages)
->>> -			break;
->>> -		/*
->>> -		 * Set CMMA state to nodat here, since the struct page memory
->>> -		 * at the beginning of the memory block will not go through the
->>> -		 * buddy allocator later.
->>> -		 */
->>> -		__arch_set_page_nodat((void *)__va(start), arg->altmap_nr_pages);
->>> +	default:
->>>    		break;
->>> -	case MEM_FINISH_OFFLINE:
->>> +	}
->>> +	return rc ? NOTIFY_BAD : NOTIFY_OK;
->>> +}
->>> +
->>> +static ssize_t config_mblock_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
->>> +{
->>> +	struct mblock *mblock = container_of(kobj, struct mblock, kobj);
->>> +
->>> +	return sysfs_emit(buf, "%u\n", READ_ONCE(mblock->config));
->>> +}
->>> +
->>> +static ssize_t config_mblock_store(struct kobject *kobj, struct kobj_attribute *attr,
->>> +				   const char *buf, size_t count)
->>> +{
->>> +	unsigned long long addr, block_size;
->>
->> "unsigned long" should be sufficient I'm sure :)
-> 
-> Left over. I will do so.
-> 
->>> +	struct memory_block *mem;
->>> +	struct mblock *mblock;
->>> +	unsigned char id;
->>> +	bool value;
->>> +	int rc;
->>> +
->>> +	rc = kstrtobool(buf, &value);
->>> +	if (rc)
->>> +		return rc;
->>> +	mblock = container_of(kobj, struct mblock, kobj);
->>> +	block_size = memory_block_size_bytes();
->>> +	addr = mblock->id * block_size;
->>> +	/*
->>> +	 * Hold device_hotplug_lock when adding/removing memory blocks.
->>> +	 * Additionally, also protect calls to find_memory_block() and
->>> +	 * sclp_attach_storage().
->>> +	 */
->>> +	rc = lock_device_hotplug_sysfs();
->>> +	if (rc)
->>> +		goto out;
->>> +	for_each_clear_bit(id, sclp_storage_ids, sclp_max_storage_id + 1)
->>> +		sclp_attach_storage(id);
->>> +	if (value) {
->>> +		if (mblock->config)
->>> +			goto out_unlock;
->>> +		rc = sclp_mem_change_state(addr, block_size, 1);
->>> +		if (rc)
->>> +			goto out_unlock;
->>>    		/*
->>> -		 * When altmap is in use, take the specified memory range
->>> -		 * offline, which includes the altmap.
->>> +		 * Set entire memory block CMMA state to nodat. Later, when
->>> +		 * page tables pages are allocated via __add_memory(), those
->>> +		 * regions are marked __arch_set_page_dat().
->>>    		 */
->>> -		if (arg->altmap_nr_pages) {
->>> -			start = PFN_PHYS(arg->altmap_start_pfn);
->>> -			size += PFN_PHYS(arg->altmap_nr_pages);
->>> +		__arch_set_page_nodat((void *)__va(addr), block_size >> PAGE_SHIFT);
->>> +		rc = __add_memory(0, addr, block_size,
->>> +				  mblock->memmap_on_memory ?
->>> +				  MHP_MEMMAP_ON_MEMORY | MHP_OFFLINE_INACCESSIBLE : MHP_NONE);
->>> +		if (rc)
->>> +			goto out_unlock;
->>
->> Do we have to undo the state change?
-> 
-> Intention was to keep error handling simple. In case of failure in
-> add_memory(), we would have state set to 1 (not given back). But,
-> subsequent configuration request for that block will not have an impact.
-
-I mean, if we can cleanup easily here by doing another 
-sclp_mem_change_state(), I think we should just do that.
-
-I'd assume that sclp_mem_change_state() to 0 will usually not fail (I 
-might be wrong :) ).
-
-[...]
-
->>> -static int __init sclp_detect_standby_memory(void)
->>> +static int __init sclp_setup_memory(void)
->>>    {
->>>    	struct read_storage_sccb *sccb;
->>>    	int i, id, assigned, rc;
->>> +	struct mblock *mblocks;
->>> +	struct kset *kset;
->>>    	/* No standby memory in kdump mode */
->>>    	if (oldmem_data.start)
->>
->> Wouldn't we still want to create the ones for initial memory at least?
-> 
-> Intention was the following:
-> configuration and deconfiguration of memory with optional
-> memmap-on-memory is mostly needed for only standby memory.
-> 
-> If standby memory is absent or sclp is unavailable, we continue using
-> the previous behavior (only software offline/online), since the sclp
-> memory notifier was not registered in that case before either.
-
-I mean, probably nobody in the kdump kernel cares about it either way, 
-agreed.
+So I agree that we should make it more flexible right from the start.
 
 -- 
 Cheers
