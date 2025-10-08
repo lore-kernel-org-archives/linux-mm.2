@@ -4,80 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F09B7CCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 04:40:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E30B4CCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 04:40:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 514DC8E0012; Wed,  8 Oct 2025 00:40:17 -0400 (EDT)
+	id 42AC88E0015; Wed,  8 Oct 2025 00:40:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49E408E0002; Wed,  8 Oct 2025 00:40:17 -0400 (EDT)
+	id 3DB898E0002; Wed,  8 Oct 2025 00:40:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3666E8E0012; Wed,  8 Oct 2025 00:40:17 -0400 (EDT)
+	id 2A32E8E0015; Wed,  8 Oct 2025 00:40:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 202658E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 00:40:17 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E2F261403CF
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 04:40:16 +0000 (UTC)
-X-FDA: 83973695232.29.D6FD1F0
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 12BA780008
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 04:40:14 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 154978E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 00:40:25 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D98631A035D
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 04:40:24 +0000 (UTC)
+X-FDA: 83973695568.21.10DEC71
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 06FBE8000C
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 04:40:22 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
 	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none);
-	spf=pass (imf30.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
+	spf=pass (imf02.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759898415;
+	s=arc-20220608; t=1759898423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FgeK9txdpLwb4kWStPacRxPPvf5dOZwITmGfD3OrnjM=;
-	b=2BmK+ZwlEfXvginHL8INK9EgWjM6F6lxH6pEWy2egZMRa+9cqrMxsCgCsCZQ9U8f+L/pyc
-	FM3/AmvlyQkzbUuL+r6C+JogQzMux9U/gm2noVMi9QUizowvo4UY8B7X9b9j+PaoCRI5L+
-	TZg/kgrNsXCadi9pRc0J/KwJzWDmjdY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759898415; a=rsa-sha256;
+	bh=w4CdxE8CMoT0aWE1+y5A5fa72do+/1xnsq0UYyqE6iA=;
+	b=hP/Xus1RtDo3g+v2BJz1t2aHF3iL1S57joD2LQwLUOEQ85WJmG9HprWy+ZUNQoIsmAkZH5
+	z/g78/VHUs+6fOY04FDbcJc9rqbTuzg2QsSQOOvSgykO0wyCLD875ZnGelJUG/KXJv4Snc
+	FdTvUFhSXGLlYP123a0qf5EXEyrxS9c=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759898423; a=rsa-sha256;
 	cv=none;
-	b=CsiWX531vhjo8bBRlnHY9HHShK1cmkPkIYE3kz2HXgcICUgvr1JoNCS86IEEGiy8Y8429q
-	lunK8OW0L13HeIHvexuD9oViNlAYbK93QZfmC/xwUfJrQL72TJOuXAYWZ3WXTmm+o59Hcs
-	rtpZxE8V82dk5fEhnTeu4Jl2WO3M0mg=
+	b=taB7//ehNKlaGy5fiJiztuNQrviOj93kx9SkZPkMMGbFYO8YqOgylBwibgA//Qdh3aizOY
+	eOmGNIXDqHLm0hb7seVZOaWZaIADXTVvetqBA3gRHKAS1SbpiT4dflB5tcbOTaFmcvUswy
+	MdvyFHmyKybObKBqfSSoyPoDR2Aj0Es=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
+	imf02.hostedemail.com;
 	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none);
-	spf=pass (imf30.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-46e3a50bc0fso55736645e9.3
-        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 21:40:14 -0700 (PDT)
+	spf=pass (imf02.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3ecdf2b1751so4883898f8f.0
+        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 21:40:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759898413; x=1760503213;
+        d=1e100.net; s=20230601; t=1759898421; x=1760503221;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FgeK9txdpLwb4kWStPacRxPPvf5dOZwITmGfD3OrnjM=;
-        b=rUbAPlf1e1QI8mxZ1dHIGgTwjCoMAtkWumvOTkBk7BNMoJw2uvXWUekvOWaLfeUqSP
-         yNpES8QHjXcTyOVSuYzul0vE1/TYvVcItvTfdQJv0s7adsPW8uF4pY3NPBwpvv7uwfIL
-         X78rWX/kUp15uKO94kj9BjNsi7b+OLClf/7VT5owCfwdiuBRxLtnl42DuMgcqoyQPcvI
-         hKukQKm4PZ8HgPSKY42mh7S0yb4b8vV14FxmCktAEKHuY7lRPWWiUYr+BmBjccIjbh8P
-         oI/CQbc9tLGy9SMuwkAVqbPrN3Mw9f5fbYJ6i4oXKhfwo8tF+zg7lJZBAPdyXZK9gnA6
-         jLVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWIbOK6GdLYSAHEv6WJkeaRvgKkv342kp8u3Nf8K3jN73B+I4dzAEvWvKQ3wCmUjdk/7Ag8sHed9g==@kvack.org
-X-Gm-Message-State: AOJu0Yw84HGVskbiQC63qnioUhCnW649Bj4+A2cPAsryUcOWCM4yAz7B
-	Wvru4zUnApHLoHTwsiMII+TuiuM60QzbXN5b4H+j1pETncvYyDoI4+ZD
-X-Gm-Gg: ASbGncuSm9WxAEsYIoTibJ6AtRyYFniHzCNBY1QNRFwmVznQuyaZufZ1NDj/rBu2arc
-	Jara6s9O/OeIF9IB1dt9nQakRKNr+A8GROKRZTSYlvrvOK4IEhCOY3DF4UdxstLeGTauMCZCgfE
-	j9KjtY40CRV1S8PCxvdf21pVpdi2DfGWqCc66yMCgYqvujOzL+PhKYQ8v6laA6TPd5r/TE2PyFD
-	rpKS3r2rv4zt6VKtnR8eu745r1PvDuCFy9Us1TdW45SMHeR5IfuHxoFimu3yBJAk0vY4PQiRgqw
-	35TaCyr5TtQxC2XWummWxHiWlzVJgkK6LuwMihUWRN5mGeEpbgIErrULIceoWGGKznjhr48S1/l
-	weohydeVmhg7Aw8xyfmkqHgSNYfO/bngERsPJkek=
-X-Google-Smtp-Source: AGHT+IFFXobL07i2VJMhEzLhFg05M47YN+wsWxZdEN4xGgG8V0Gor51hRV6tBPzlCpXcq9XDuLQd5g==
-X-Received: by 2002:a05:600c:37c9:b0:46e:477a:f3dd with SMTP id 5b1f17b1804b1-46fa9b1b18emr11613395e9.36.1759898413470;
-        Tue, 07 Oct 2025 21:40:13 -0700 (PDT)
+        bh=w4CdxE8CMoT0aWE1+y5A5fa72do+/1xnsq0UYyqE6iA=;
+        b=t92H2XzlEQB55/Tnpschrd8J9T8hQYmo8SoUbz8bXITOBxJKMrNyeiODFZUCx6QlOw
+         RzugEU0R/c3RhBvEN+ZIFNz5OAef/XnHARfV6J3rgggE0iNBqp/K3AfiFJpwPjgjKp/G
+         bChdS28HsTitampUJaM6SmQKNZ0BbsZHLBipptu0P7md+NCVM2XatTuB7bfq1pRO7nUe
+         ga7Ah2n5LCXGznG6T9MjVl9jwR1UJeB4HvIvNmo9WlseYTalU4fXagwHzhzHtwz8Kcnf
+         dOXx/BUBbnM1M1MdY4le6I8Zmatl93OV5bLf8UqsSMiPOW7vRGJs0P1AAFOeQPCE0Cbl
+         aOHw==
+X-Forwarded-Encrypted: i=1; AJvYcCVqbjm2t+ZlP5+czolwCgREYHdTXqg+nzKmAlaXCTC7m++hSBSw0G67UIaBeUYuwuBIWAI87ocf8A==@kvack.org
+X-Gm-Message-State: AOJu0Yyj1cH5MDHgeICGBhOA5Xr/cI8Kece3YroGtkP3vF5Yn15YioK0
+	hCAJ/22I78pfEnIpUDesXTy/ecidWlrUEOiCSlKFNL0jkC60NoEaYJAw
+X-Gm-Gg: ASbGnctTzS2++BKEGXjz0F8UlKgTvN6GFuMdWjez7Q0VQHGeBkopE7yxN3xHm5u2+Cs
+	lNlOu34TqWvgUgtoq9slq7sNQ3dX35ztXUCFYJHKmv2gciMAykhdS8aV/CFDJFMbcOovaP+5bJe
+	ILyt/WMzjQ4AGEIB5rjOlCKMliVCFoCXOCdzotk19mAbm0dbIKTiPrWIFxBCFjjzy04a83STtz6
+	Ti2gSmf3o6QxYmfpsAu8YSoHkJu/1n+kPbsw/QAC8LCzBK0YTPUwQX9yGqHsDdb40zyATDF6g6P
+	qya9X4aG7ERvlv/cZL5JMjlO4/q9REges6yMyf64ntvqfhzk6V/CgQLY+cKc8sVlFSKPDqhn2pz
+	6nlh0u15h/bDaK1hJTdZL9v7uohxCQQ0oQ6tie3s=
+X-Google-Smtp-Source: AGHT+IHch9/ftJLZar+bagytdzxWRTkDWRmOOzIGqnFNZ4Rsbi6RYB3Zvqgd5s1fv1Io5v5ehi2r0A==
+X-Received: by 2002:a05:6000:26c2:b0:3e7:5f26:f1e5 with SMTP id ffacd0b85a97d-4266e7beb57mr772457f8f.23.1759898421384;
+        Tue, 07 Oct 2025 21:40:21 -0700 (PDT)
 Received: from localhost.localdomain ([2a09:0:1:2::30b2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8a6c49sm28159164f8f.3.2025.10.07.21.40.08
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8a6c49sm28159164f8f.3.2025.10.07.21.40.13
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 07 Oct 2025 21:40:13 -0700 (PDT)
+        Tue, 07 Oct 2025 21:40:21 -0700 (PDT)
 From: Lance Yang <lance.yang@linux.dev>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -94,22 +94,22 @@ Cc: ziy@nvidia.com,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH mm-new v3 2/3] mm/khugepaged: use VM_WARN_ON_FOLIO instead of VM_BUG_ON_FOLIO for non-anon folios
-Date: Wed,  8 Oct 2025 12:37:47 +0800
-Message-ID: <20251008043748.45554-3-lance.yang@linux.dev>
+Subject: [PATCH mm-new v3 3/3] mm/khugepaged: merge PTE scanning logic into a new helper
+Date: Wed,  8 Oct 2025 12:37:48 +0800
+Message-ID: <20251008043748.45554-4-lance.yang@linux.dev>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251008043748.45554-1-lance.yang@linux.dev>
 References: <20251008043748.45554-1-lance.yang@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Stat-Signature: iaetfucpac3qi9n5ec1t1c7g5hbhjmke
+X-Rspamd-Server: rspam05
+X-Stat-Signature: dadjiubejgsu47hxx55om3h7xcbbtu3m
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 12BA780008
-X-HE-Tag: 1759898414-415251
-X-HE-Meta: U2FsdGVkX19x7UlxcX+ReCMay2Z0reN8/JL9RdVCM2mVR+kjljLi8BIi9jWZ+/d1a+tuzZmATq/IIoxYILc6G+lrifB90HcZsaYmeHW82m8lGUvsre/yfsID9ldD2qzPAS0vVX33V2lFOCAOy46q9xSJPmNMI8OZWpEhgvYQ26lvhIEA92Bhl6m9idqfQM1HZ7+eqcos+TV8xtome+88ENqReq8UgyONTdWGkkrfOBBmojYKv5u+c7/ZvvoSQd6qhGHiGMTR4X4LLc2OFNhX13DNx0T5dq0ono2Tu845BngVZ3JwP5hVppOjjJQmFGn3nv7T5tXEz524z9aRLMx9z8DxfSQ24CB5n0g7AtKXmVmNrXQEXp5r0S4VSm7ddFKfLKDG3jlTkIY408g67ULxETR/yRe6EQ8EATcNSSD47ol/Kj0ZLiyh9/ICkH4R2blhUg2uwXg2m9zQ4oYY4khZH/iL/3cZF2q3ALjv6WUTTfCHxcEQJJbFnjDJou5QnCpTmAUBhgzX4ZEfsm6w5yqDhKdZuWG+mg9kr8K8vB9aZE8QN2hhf9lSaCIBJksIpavzs0TzfA03PhaGmhvwEqhvnl/xXWkFtEU8vfzGVfpDg1R6dYPlqQr7HX1UnQR/hiDriSdpGFo9/Usbez+xggXG6YJbaFZt2pSQvfi8OXZLxxV8hYeP0yxo+klc8MZg/owxnv1uqUGpIEr+KtNPYxnLCFFDBJhvae+CpHvszEv9qHz0EWp2YoI+xIXG4lMeJV8MLja9AumkMh92PQr7ZbxDvoVMNkMS7iVpFIlGwSQB1OAL9DnL4PA7gw+TOo/YuKvwqa9dUKrp1uAjrpTddS7XQpJLAqis0txqUD8Vc+9XzmM8kH7N2vyuh0McMWLUU5zvFRzWGLWBF9fsqnBk0i5quDEmCUvz2Bu9EFznyycUoNixuT62AHm/oQxmJWz+2GoFPkEb7csN4WNG+Q2BZOf
- s7jYSds/
- /PGQ7BudqmuM5q1p4sFJ2gGRlG9JOo2ebstTbARfB0caT2Ae56XsNkhdFLzV8LEC/9uMHXmzb1HKbpbrLKjfM7GOwN/7Ugl77HhsVumSntX5E1vcm7OEDNsns6ISNv4Z64wM3yevxDgfz1sCQlx+Wy6CDoogQ7HzUxMlcJDJqNGIAYXdU1kNZch5EmAC4oY51sxvQTJwGi6drUfcqs1heg3XOrnI+m+xGKu2a0Jt9bXQK7IOtuzOIVB5NnpIKJNZfIJQhKaxXjPLuVODWVItOrKC7vl8JBVAd/7U6Iunv1DcAnQnffDcEZW9kLseRJ3H9C8QLaEFCm1BkMLWaC8m/20MH+IDeIoHnT6kMbr7rGvoKN+Lp5gwHbYhT1dWLoFcCFrJ5f8urE//5jYHTOrunvW5CdoxuEkNvPEq0+GYL4vnaz5vbrlCkwimOs/TLdHVUpagfp2YfI157i4/6VhjIP/mpFBr2NacB0AI37qrTuevTTU246mdQHEyMtH8HrQsKXnw9x7C4VDpOn0vO3avAjZMhD/YSbRmycnITtJqKTAI6Nepr2nABesCeGeTMGJBZusoK5rOlgkian6WJ1wjbqTKcLvvi9vzkeGW31OcuS9T46lXZ+J5VB+T/iNJcItGDE8lTppNvYEGlvNcEZg9vI/pYjcpUWI0G+BMRz9ptrEvUfMrge4Csyt9oGDaZBRoKrY49W7yeFFiBb6Q=
+X-Rspamd-Queue-Id: 06FBE8000C
+X-HE-Tag: 1759898422-982979
+X-HE-Meta: U2FsdGVkX18+9CCwVN5s+JAzNlzPfxNy5jYwdoX9oOHpb+SAbsaWrrwc4axAbr8JrMLv33Wv8zVyvB0/84/xg/3WpyNMmtgl1iKlmxjuqrjDrPBdBnsQwWYjau330JN+LiHDhG/3jJ/LUFUi3TndVC2RPq3119Rgt5oj/77K8UWB7SdxaEI0U7+UCpj8ZVjBYoKnxuL90R0AvufA3Hcn+SAveM0PBgIW/7D9h0zcsVJ0vyGbfeFFOv8G3ZkOxTurn6qW+YI1wWzmd0XH+bYz10ggUEDd2LDzqEcHh4KzVGPeiUX0dBR5N7cuDtJb7S+vqB/UT65b+ZGOiDDZQrGK/nghhz6xlA7QMaDwapOVREGbH1mog00u4TZWN/xuStMwK05Tr8Zu5wUPUgDmlw/+3NKFJtFmUXoAU9pSjOskNx9e0fnqlSVQp0XcGLu4Lj8mUpxyLimDqXE2GtlI33AYvKvjQFU6Zd22OpgCL1zA48RSQLs2rvKZeIdUbXgRiJZIC8CfgsOVtRF+PrS3w8bxPutoJ5jIGyA8toL5JtdQNy/GChchnCl4rj1hihKi+K3iVQWuX3KXr+WYScn7+tuzKncnZSEGottv8zZdFuWLwxl3fJoKSHqOfugvuleuJVOUmLQEzuJqTWlka/cVi8OHsrqeZAEn+Tl2zJLvWg68vytC3YhMoJKnp/2q41AS2v/pHwE4VLcDGUcw6ExU+OO36BdR4nlk1YapQq7RgO8aadsf9XBHaiJOJoPfA8DQFfZSymGXIUHx12ApdgJYpMwivOT/BB//jGc31hwnpJiCaPm/b2DRhozU5FOz+CW+iD7mbI8NGkt44Ux7mn4mTVoOaIfNSOUY1aJmYJyuqV7h8mBeANxSo6k0M/5o2a9y9gobAl6cwUHf5v51Q31Td31EhrfbXMqOIa+q4nwG8zGyw+x/HW1bAHL6mzOM6VFANfoY5MOZ1ThiG5tYcagPDKC
+ ibccyIgJ
+ ojjxI02DKAT5Gke8wlHbWJNfc6IlbzURGR0/py2o1Z3QsEcAPezMHMyNstAsVjr6hKliQPd/l2IKcdyTJZHTKDZBMXuEwafwmY6rn+Z3xc+gCe9zpoXp0hfg4LD3xRRK+BeKAhESiPqTS/wikfC9FuQU2yTODzhZZdGQQcTAKXKcx1264t+5Ufksc65nuUOQngLXhQbmDPv6cvMWX/9TZjIP2MtZJIi88NWM4vvdSOsEjuNfDEoV4iSaB4vi9SL4tJVrmorAYvCbvnF0bhiAqfIuVRbJfNtixqETAhIUz7uehuQRZTc1S/NnmuI/zeJk4Eh0PN5mlIwOLJoCZKdxbGCtB/fdZ4ltSolb4vQej+zMDiK0W0q3ZlYcOii5pN7VijCWHnZMysEqbqDN+Wo7vJD9OF1Bi1UCGR+zBs12WbVetlP0aFZf/hwLbhVVAB3284X9CjmTFGHr/yWAa8xnkkGeoowUtUNY7eMx9SpXBe49eOsuKgwx6J2P7Gy87O9Ua6JwJuSrhDqXP09tyyaJvZp63Wk3b1/DS/9IPR2ItkwbzQYhmletl18sqGmKVFaHCiSh5uUBki2h8M453fgRDRUQbbJ3m2vaNzPa9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,51 +120,318 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Lance Yang <lance.yang@linux.dev>
 
-As Zi pointed out, we should avoid crashing the kernel for conditions
-that can be handled gracefully. Encountering a non-anonymous folio in an
-anonymous VMA is a bug, but a warning is sufficient.
+As David suggested, the PTE scanning logic in hpage_collapse_scan_pmd()
+and __collapse_huge_page_isolate() was almost duplicated.
 
-This patch changes the VM_BUG_ON_FOLIO(!folio_test_anon(folio)) to a
-VM_WARN_ON_FOLIO() in both __collapse_huge_page_isolate() and
-hpage_collapse_scan_pmd(), and then aborts the scan with SCAN_PAGE_ANON.
+This patch cleans things up by moving all the common PTE checking logic
+into a new shared helper, thp_collapse_check_pte(). While at it, we use
+vm_normal_folio() instead of vm_normal_page().
 
-Making more of the scanning logic common between hpage_collapse_scan_pmd()
-and __collapse_huge_page_isolate(), as suggested by Dev.
-
+Suggested-by: David Hildenbrand <david@redhat.com>
 Suggested-by: Dev Jain <dev.jain@arm.com>
-Suggested-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
 Signed-off-by: Lance Yang <lance.yang@linux.dev>
 ---
- mm/khugepaged.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ mm/khugepaged.c | 243 ++++++++++++++++++++++++++----------------------
+ 1 file changed, 130 insertions(+), 113 deletions(-)
 
 diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index e3e27223137a..b5c0295c3414 100644
+index b5c0295c3414..7116caae1fa4 100644
 --- a/mm/khugepaged.c
 +++ b/mm/khugepaged.c
-@@ -573,7 +573,11 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
- 		}
+@@ -61,6 +61,12 @@ enum scan_result {
+ 	SCAN_PAGE_FILLED,
+ };
  
- 		folio = page_folio(page);
--		VM_BUG_ON_FOLIO(!folio_test_anon(folio), folio);
-+		if (!folio_test_anon(folio)) {
-+			VM_WARN_ON_FOLIO(true, folio);
-+			result = SCAN_PAGE_ANON;
-+			goto out;
++enum pte_check_result {
++	PTE_CHECK_SUCCEED,
++	PTE_CHECK_CONTINUE,
++	PTE_CHECK_FAIL,
++};
++
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/huge_memory.h>
+ 
+@@ -533,62 +539,139 @@ static void release_pte_pages(pte_t *pte, pte_t *_pte,
+ 	}
+ }
+ 
++/*
++ * thp_collapse_check_pte - Check if a PTE is suitable for THP collapse
++ * @pte:           The PTE to check
++ * @vma:           The VMA the PTE belongs to
++ * @addr:          The virtual address corresponding to this PTE
++ * @foliop:        On success, used to return a pointer to the folio
++ *                 Must be non-NULL
++ * @none_or_zero:  Counter for none/zero PTEs. Must be non-NULL
++ * @unmapped:      Counter for swap PTEs. Can be NULL if not scanning swaps
++ * @shared:        Counter for shared pages. Must be non-NULL
++ * @scan_result:   Used to return the failure reason (SCAN_*) on a
++ *                 PTE_CHECK_FAIL return. Must be non-NULL
++ * @cc:            Collapse control settings
++ *
++ * Returns:
++ *   PTE_CHECK_SUCCEED  - PTE is suitable, proceed with further checks
++ *   PTE_CHECK_CONTINUE - Skip this PTE and continue scanning
++ *   PTE_CHECK_FAIL     - Abort collapse scan
++ */
++static inline int thp_collapse_check_pte(pte_t pte, struct vm_area_struct *vma,
++		unsigned long addr, struct folio **foliop, int *none_or_zero,
++		int *unmapped, int *shared, int *scan_result,
++		struct collapse_control *cc)
++{
++	struct folio *folio = NULL;
++
++	if (pte_none(pte) || is_zero_pfn(pte_pfn(pte))) {
++		(*none_or_zero)++;
++		if (!userfaultfd_armed(vma) &&
++		    (!cc->is_khugepaged ||
++		     *none_or_zero <= khugepaged_max_ptes_none)) {
++			return PTE_CHECK_CONTINUE;
++		} else {
++			*scan_result = SCAN_EXCEED_NONE_PTE;
++			count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
++			return PTE_CHECK_FAIL;
 +		}
++	} else if (!pte_present(pte)) {
++		if (!unmapped) {
++			*scan_result = SCAN_PTE_NON_PRESENT;
++			return PTE_CHECK_FAIL;
++		}
++
++		if (non_swap_entry(pte_to_swp_entry(pte))) {
++			*scan_result = SCAN_PTE_NON_PRESENT;
++			return PTE_CHECK_FAIL;
++		}
++
++		(*unmapped)++;
++		if (!cc->is_khugepaged ||
++		    *unmapped <= khugepaged_max_ptes_swap) {
++			/*
++			 * Always be strict with uffd-wp enabled swap
++			 * entries. Please see comment below for
++			 * pte_uffd_wp().
++			 */
++			if (pte_swp_uffd_wp(pte)) {
++				*scan_result = SCAN_PTE_UFFD_WP;
++				return PTE_CHECK_FAIL;
++			}
++			return PTE_CHECK_CONTINUE;
++		} else {
++			*scan_result = SCAN_EXCEED_SWAP_PTE;
++			count_vm_event(THP_SCAN_EXCEED_SWAP_PTE);
++			return PTE_CHECK_FAIL;
++		}
++	} else if (pte_uffd_wp(pte)) {
++		/*
++		 * Don't collapse the page if any of the small PTEs are
++		 * armed with uffd write protection. Here we can also mark
++		 * the new huge pmd as write protected if any of the small
++		 * ones is marked but that could bring unknown userfault
++		 * messages that falls outside of the registered range.
++		 * So, just be simple.
++		 */
++		*scan_result = SCAN_PTE_UFFD_WP;
++		return PTE_CHECK_FAIL;
++	}
++
++	folio = vm_normal_folio(vma, addr, pte);
++	if (unlikely(!folio) || unlikely(folio_is_zone_device(folio))) {
++		*scan_result = SCAN_PAGE_NULL;
++		return PTE_CHECK_FAIL;
++	}
++
++	if (!folio_test_anon(folio)) {
++		VM_WARN_ON_FOLIO(true, folio);
++		*scan_result = SCAN_PAGE_ANON;
++		return PTE_CHECK_FAIL;
++	}
++
++	/*
++	 * We treat a single page as shared if any part of the THP
++	 * is shared.
++	 */
++	if (folio_maybe_mapped_shared(folio)) {
++		(*shared)++;
++		if (cc->is_khugepaged && *shared > khugepaged_max_ptes_shared) {
++			*scan_result = SCAN_EXCEED_SHARED_PTE;
++			count_vm_event(THP_SCAN_EXCEED_SHARED_PTE);
++			return PTE_CHECK_FAIL;
++		}
++	}
++
++	*foliop = folio;
++
++	return PTE_CHECK_SUCCEED;
++}
++
+ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+ 					unsigned long start_addr,
+ 					pte_t *pte,
+ 					struct collapse_control *cc,
+ 					struct list_head *compound_pagelist)
+ {
+-	struct page *page = NULL;
+ 	struct folio *folio = NULL;
+ 	unsigned long addr = start_addr;
+ 	pte_t *_pte;
+ 	int none_or_zero = 0, shared = 0, result = SCAN_FAIL, referenced = 0;
++	int pte_check_res;
  
- 		/* See hpage_collapse_scan_pmd(). */
- 		if (folio_maybe_mapped_shared(folio)) {
-@@ -1340,6 +1344,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
- 		folio = page_folio(page);
+ 	for (_pte = pte; _pte < pte + HPAGE_PMD_NR;
+ 	     _pte++, addr += PAGE_SIZE) {
+ 		pte_t pteval = ptep_get(_pte);
+-		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
+-			++none_or_zero;
+-			if (!userfaultfd_armed(vma) &&
+-			    (!cc->is_khugepaged ||
+-			     none_or_zero <= khugepaged_max_ptes_none)) {
+-				continue;
+-			} else {
+-				result = SCAN_EXCEED_NONE_PTE;
+-				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
+-				goto out;
+-			}
+-		} else if (!pte_present(pteval)) {
+-			result = SCAN_PTE_NON_PRESENT;
+-			goto out;
+-		} else if (pte_uffd_wp(pteval)) {
+-			result = SCAN_PTE_UFFD_WP;
+-			goto out;
+-		}
+-		page = vm_normal_page(vma, addr, pteval);
+-		if (unlikely(!page) || unlikely(is_zone_device_page(page))) {
+-			result = SCAN_PAGE_NULL;
+-			goto out;
+-		}
  
- 		if (!folio_test_anon(folio)) {
-+			VM_WARN_ON_FOLIO(true, folio);
- 			result = SCAN_PAGE_ANON;
+-		folio = page_folio(page);
+-		if (!folio_test_anon(folio)) {
+-			VM_WARN_ON_FOLIO(true, folio);
+-			result = SCAN_PAGE_ANON;
+-			goto out;
+-		}
++		pte_check_res = thp_collapse_check_pte(pteval, vma, addr,
++					&folio, &none_or_zero, NULL, &shared,
++					&result, cc);
+ 
+-		/* See hpage_collapse_scan_pmd(). */
+-		if (folio_maybe_mapped_shared(folio)) {
+-			++shared;
+-			if (cc->is_khugepaged &&
+-			    shared > khugepaged_max_ptes_shared) {
+-				result = SCAN_EXCEED_SHARED_PTE;
+-				count_vm_event(THP_SCAN_EXCEED_SHARED_PTE);
+-				goto out;
+-			}
+-		}
++		if (pte_check_res == PTE_CHECK_CONTINUE)
++			continue;
++		else if (pte_check_res == PTE_CHECK_FAIL)
++			goto out;
+ 
+ 		if (folio_test_large(folio)) {
+ 			struct folio *f;
+@@ -1264,11 +1347,11 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 	pte_t *pte, *_pte;
+ 	int result = SCAN_FAIL, referenced = 0;
+ 	int none_or_zero = 0, shared = 0;
+-	struct page *page = NULL;
+ 	struct folio *folio = NULL;
+ 	unsigned long addr;
+ 	spinlock_t *ptl;
+ 	int node = NUMA_NO_NODE, unmapped = 0;
++	int pte_check_res;
+ 
+ 	VM_BUG_ON(start_addr & ~HPAGE_PMD_MASK);
+ 
+@@ -1287,81 +1370,15 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+ 	     _pte++, addr += PAGE_SIZE) {
+ 		pte_t pteval = ptep_get(_pte);
+-		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
+-			++none_or_zero;
+-			if (!userfaultfd_armed(vma) &&
+-			    (!cc->is_khugepaged ||
+-			     none_or_zero <= khugepaged_max_ptes_none)) {
+-				continue;
+-			} else {
+-				result = SCAN_EXCEED_NONE_PTE;
+-				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
+-				goto out_unmap;
+-			}
+-		} else if (!pte_present(pteval)) {
+-			if (non_swap_entry(pte_to_swp_entry(pteval))) {
+-				result = SCAN_PTE_NON_PRESENT;
+-				goto out_unmap;
+-			}
+ 
+-			++unmapped;
+-			if (!cc->is_khugepaged ||
+-			    unmapped <= khugepaged_max_ptes_swap) {
+-				/*
+-				 * Always be strict with uffd-wp
+-				 * enabled swap entries.  Please see
+-				 * comment below for pte_uffd_wp().
+-				 */
+-				if (pte_swp_uffd_wp(pteval)) {
+-					result = SCAN_PTE_UFFD_WP;
+-					goto out_unmap;
+-				}
+-				continue;
+-			} else {
+-				result = SCAN_EXCEED_SWAP_PTE;
+-				count_vm_event(THP_SCAN_EXCEED_SWAP_PTE);
+-				goto out_unmap;
+-			}
+-		} else if (pte_uffd_wp(pteval)) {
+-			/*
+-			 * Don't collapse the page if any of the small
+-			 * PTEs are armed with uffd write protection.
+-			 * Here we can also mark the new huge pmd as
+-			 * write protected if any of the small ones is
+-			 * marked but that could bring unknown
+-			 * userfault messages that falls outside of
+-			 * the registered range.  So, just be simple.
+-			 */
+-			result = SCAN_PTE_UFFD_WP;
+-			goto out_unmap;
+-		}
++		pte_check_res = thp_collapse_check_pte(pteval, vma, addr,
++					&folio, &none_or_zero, &unmapped,
++					&shared, &result, cc);
+ 
+-		page = vm_normal_page(vma, addr, pteval);
+-		if (unlikely(!page) || unlikely(is_zone_device_page(page))) {
+-			result = SCAN_PAGE_NULL;
+-			goto out_unmap;
+-		}
+-		folio = page_folio(page);
+-
+-		if (!folio_test_anon(folio)) {
+-			VM_WARN_ON_FOLIO(true, folio);
+-			result = SCAN_PAGE_ANON;
++		if (pte_check_res == PTE_CHECK_CONTINUE)
++			continue;
++		else if (pte_check_res == PTE_CHECK_FAIL)
  			goto out_unmap;
- 		}
+-		}
+-
+-		/*
+-		 * We treat a single page as shared if any part of the THP
+-		 * is shared.
+-		 */
+-		if (folio_maybe_mapped_shared(folio)) {
+-			++shared;
+-			if (cc->is_khugepaged &&
+-			    shared > khugepaged_max_ptes_shared) {
+-				result = SCAN_EXCEED_SHARED_PTE;
+-				count_vm_event(THP_SCAN_EXCEED_SHARED_PTE);
+-				goto out_unmap;
+-			}
+-		}
+ 
+ 		/*
+ 		 * Record which node the original page is from and save this
 -- 
 2.49.0
 
