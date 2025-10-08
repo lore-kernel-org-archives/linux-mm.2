@@ -4,127 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2604ACAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 08:08:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8C7DCCD185
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 08:18:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 676208E0010; Wed,  8 Oct 2025 04:08:44 -0400 (EDT)
+	id 4DBC98E0011; Wed,  8 Oct 2025 04:18:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 625FB8E0002; Wed,  8 Oct 2025 04:08:44 -0400 (EDT)
+	id 4B3B98E0002; Wed,  8 Oct 2025 04:18:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4ED238E0010; Wed,  8 Oct 2025 04:08:44 -0400 (EDT)
+	id 3A2378E0011; Wed,  8 Oct 2025 04:18:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3791E8E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 04:08:44 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DFDD6C0451
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 08:08:43 +0000 (UTC)
-X-FDA: 83974220526.21.A151156
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 79226180009
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 08:08:41 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ABb3eiDv;
-	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2926B8E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 04:18:20 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CD580B98F1
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 08:18:19 +0000 (UTC)
+X-FDA: 83974244718.22.BB061D6
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 95562A000D
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 08:18:17 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XEhyXyt7;
+	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759910921;
+	s=arc-20220608; t=1759911497;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qUJOe88Utm5QNIgMeCqO4mlDI62Txc3nSegvqhoAV8o=;
-	b=r75PPJtj7/pwG+FTjtTfa8gbV0H8Egm44cIn2IaqDFLBvs8uJBFq0F9KgOhDRV6kKhwP7g
-	QivjY1uNLzShDiRdqZVBlbVxl0GPlSMIaaTrHxfCa54Py1VU3YJo7iNezVNnLEJ27/Knxv
-	Zg5jifY8P1JasboFjnGGipl6zThlfIM=
+	bh=g2/UyH6Gp/CXE49aAkLm4ZAwJ2vJKxqomz6AYx7ZppY=;
+	b=1L5KZH8xMS+vBlQ1P0DkZsb/nPsw4Y7ulQ0CRLA2Dqp38aKCSlNSGY7rSW7NX2AitpbfoO
+	e6mxvO4KpUepafGuyXFyhrri3GX7y4uWdznQPGJ2R0Pxg/5lGjR3V2QSU8wzKA6nO2goGo
+	wa7aYSn7ZM6WsYXJyPxcSqcd3ZW7z5Y=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ABb3eiDv;
-	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XEhyXyt7;
+	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759910921; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759911497; a=rsa-sha256;
 	cv=none;
-	b=0hMNo5JR5PW5iZdIvAsrB0NcIMyvdjoZIwdPr4oaMgBWcfrbs3cWQevXXZh4McOA0DaIN/
-	LWilTscXMeNvuBRirH+N/kEgOsTjUrQxQ1/DYD+9vSJJxZVUEv+0dLxREhsH7Yw/2ov54J
-	cfnD9FdT3WkUhIJe1B9b8ETLg+EnNhA=
+	b=c6FtgN+fSJFv5Np+CyxC/r1KVF9q+4IuX97OcnC9TMRj1Srshi1zm/BUw4NyPqFJlKdYaN
+	dy2TIK1K4d3vVsm0UIKvktolTdz2WvbYNlxFjYFtrJ4eHsTLiRuNlhmzPZn+CxS91KySgH
+	OQYrz7keEAFF0LCnGh60tucQjtJkTrA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759910920;
+	s=mimecast20190719; t=1759911497;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qUJOe88Utm5QNIgMeCqO4mlDI62Txc3nSegvqhoAV8o=;
-	b=ABb3eiDvq7SNBofTwALI3bsy9DLnMArcnxQc5gJZ2s65nbh2tZgwXK2zJw8e67BXFuzXZl
-	De/INLiSlVW6I+j5AaVHrR9mbgpqwBjbScRSARphZ1d6BVGo2GqZZ39phKyXt4pblLSTDL
-	mn3U9bOTRM3erD+bKoKZ0roRypW6/70=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=g2/UyH6Gp/CXE49aAkLm4ZAwJ2vJKxqomz6AYx7ZppY=;
+	b=XEhyXyt78a9FH358LcvaYz2KU0VBPPA62f9jwQpYDFsg+6IiEiCuduwHkml5ibH82He0io
+	/lMwuuBPCx6XW9zvBJExvaWxzkp0v1p2a+/iX6Xl3f30WX0utGkOg6TUu7n4XV5dqMaegy
+	mi4BKmfnwXnt5BL6GHo7/OLhZzQqtes=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-128-l2kuCXevNZOL5Htiae5CTg-1; Wed, 08 Oct 2025 04:08:39 -0400
-X-MC-Unique: l2kuCXevNZOL5Htiae5CTg-1
-X-Mimecast-MFC-AGG-ID: l2kuCXevNZOL5Htiae5CTg_1759910918
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-401dbafbcfaso4318411f8f.1
-        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 01:08:39 -0700 (PDT)
+ us-mta-689-Vz6C3PTIOvWNGFXJ7MEJsA-1; Wed, 08 Oct 2025 04:18:15 -0400
+X-MC-Unique: Vz6C3PTIOvWNGFXJ7MEJsA-1
+X-Mimecast-MFC-AGG-ID: Vz6C3PTIOvWNGFXJ7MEJsA_1759911495
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-46e38bd6680so24212725e9.1
+        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 01:18:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759910918; x=1760515718;
+        d=1e100.net; s=20230601; t=1759911494; x=1760516294;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qUJOe88Utm5QNIgMeCqO4mlDI62Txc3nSegvqhoAV8o=;
-        b=A9O2fM5CFPPmBpOyOMEfEOxzGwWy6mx6zuqg/kgLWofu2rCO3v4lPYjO9YkHLJADlf
-         mVWciKtd3iKK6s7PCITXjx1DHU8SoYLHl8dKt3Te3xOjpP7TYxhjZmiFfuCCBlMbpaQl
-         /Jy7V9NmzTqCdtBzNvFpQ8+OKlDFOLyS48en8I8nTntT/cWge08lh3lZkFbv+a0WZHMt
-         MCwRPGJcA/cHi5INcP/YH1OWEh6q99tU7sLPm/AOBM5momw5qD3/cJi41DqNZGq8tnlX
-         N8tM23GaWbNkhqst3k+0E1R5MojmUOmKnjk6HhSlbpSj89+tSO23v2+HqctBptYCAp20
-         SnIw==
-X-Forwarded-Encrypted: i=1; AJvYcCVi/+TbCf+ZyFxSxnDcn56HbvUak76sKgFLAJCceLJtoP5Rt103SWJvyXrmGnrV7W17cs4NIXLeeg==@kvack.org
-X-Gm-Message-State: AOJu0YyvNyCYYVqVv0BLWxbLuQLgCzTkMcDX1g3M8ue8RH38RQXih66N
-	23BFcRuCPCY5rO+s8mMQaad/+rUJo07bHROaBZRBidIMxYRGXgy/MjzLJCrrpZl0/4Gp5cH+MQA
-	4UxNgmf0UZJH2VBcDr931zqZirEiMNEaGDYR5iAItLveDNk15tmiW
-X-Gm-Gg: ASbGncv1/QD/zeJrbRZDWGhHZHglTnVtGW5ZEZuQWUEp1zpcLUXmr/2A/BMSFg57zmH
-	MVxn8rx8YOQA3pcoGyW9UGDxQjYzkhTpkd3o46m/AxDUZ4l9o1FdxXx2KWT4pVoB6eaQmT86UoN
-	qGz30s9u9tElOqVBG4wNdrKHV4DjUoz+xf8A3MyFblacUfN+rjyc6fSOoUQLOf+tpFUBzNWpE2I
-	W9i37celHzZFa0CulfgpH9NwnLX2ZLjPje9X5cN/1HQN+vLeapdTwD6TNGp9JI0iyfxgFR9/0S2
-	+p5Iq67Ze5y5J8fRLc7bH4A4QWYWLary7W7RAiUXIHt+YNTEm0E+icbmwIRRB48fyMR5WEkL6pU
-	sSJ/tsdQC
-X-Received: by 2002:a05:6000:230e:b0:425:76e3:81c5 with SMTP id ffacd0b85a97d-4266726c314mr1495470f8f.17.1759910918429;
-        Wed, 08 Oct 2025 01:08:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHeXMx3ZBbvp7+9qSDMAqpT3IYsrp+qNxlZMMZPXXl0yLI8Wog+oOvMr+BPXNZWvH4I9ELECQ==
-X-Received: by 2002:a05:6000:230e:b0:425:76e3:81c5 with SMTP id ffacd0b85a97d-4266726c314mr1495424f8f.17.1759910917942;
-        Wed, 08 Oct 2025 01:08:37 -0700 (PDT)
+        bh=g2/UyH6Gp/CXE49aAkLm4ZAwJ2vJKxqomz6AYx7ZppY=;
+        b=APyGX6BDmKsx5ds/8eUdUF3jcNP3FPARNgytjGAGBfprhpYd1e5/5RMgw/ElshsLVo
+         O6pAQL7yFrYZelEUycvw+v9r6DSIuKoubJP5xNQoHKHBqXO+n97+NUxruV7Vwx2pPikV
+         pQymRlmPivK1EzxdwQMzpdocw7FIo+VRoABPBxisgQ0M8WEp0CK7X9kEshnodDbsrVWA
+         V6ybvOLP5WXD9ukN2cdXodzfNZ7MZMDSEp53F6WuBVaBNbl4ZUL91aJmSMwkfnTwkWG/
+         od8XoRbp+jsPAlbnGUBJDpgEXo/1L6PCU5MYyW8G1YDMMzBqXP0zkggHPC+JHGW4GoRB
+         PwOw==
+X-Forwarded-Encrypted: i=1; AJvYcCXgTWrzRjKGSy8S3rElfJSzzCDi4E3HVmNaueWrKZVQ11Q1qwbpOei5GN80vqpuOcwZQeBGvOebEw==@kvack.org
+X-Gm-Message-State: AOJu0YywzGGCO0PEM0mRD1dhJFWolSdPm3ACXriGYO498Deb9IGXiqJw
+	BYaXPoWqvTxRmhskTwFreYB18PmMxL0y+xPzK9mmpRZioWV3tMxd8AUIksz3wxR0/fMZWsJeTyh
+	NMg66eyYUtKM0HITACVKHQZGUUC/dCfLjaGFyWpADjNOl8Nw5A+gC
+X-Gm-Gg: ASbGncsU8WBLH3qKtwDwAGhSwsMuhhkYIB4flz5uRGPDsLaxOImDlFXMK4r3YmbXNK6
+	VSTNogQhiTdLkywVcfn7lvTBCb5lcQwUvS7GT9tGqnofz/9r95QjhDZfMZtXbfTK1ssvOXhzl14
+	7XG4Lg/sE0r/i6TmnaVKGwElXz0yPv7keab09B/o2Aco4j9Qj7eXp+xI5SkLwIph0P3XRBNIplW
+	GL1k7WCRq1KQRO7Im0EMGRNRoj1nYwr1LWeFypOq04XDcuZh7J0oC1vGJmWHPAo7/PrK4scKWah
+	St7FFunmkbyxRbK+XKwxraXSJCei3/4iuxArWxOLqDb2gyKBhj7v5EqN5EfX0z9ZxIuVgAg4wFX
+	6WpDpeVr8
+X-Received: by 2002:a05:600d:8221:b0:46f:aa02:98b2 with SMTP id 5b1f17b1804b1-46faa02ed74mr10646605e9.19.1759911494573;
+        Wed, 08 Oct 2025 01:18:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHnk/Uz45vHv0Js/TEnqVijah4F9gyUTG/QIQ/MO0GiLdnBWej945AxIiLU6GGin5Yz5QFb0w==
+X-Received: by 2002:a05:600d:8221:b0:46f:aa02:98b2 with SMTP id 5b1f17b1804b1-46faa02ed74mr10646415e9.19.1759911494097;
+        Wed, 08 Oct 2025 01:18:14 -0700 (PDT)
 Received: from [192.168.3.141] (tmo-083-110.customers.d1-online.com. [80.187.83.110])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fa9bf87c1sm27190025e9.3.2025.10.08.01.08.34
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fa9c162f0sm26588105e9.9.2025.10.08.01.18.10
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Oct 2025 01:08:37 -0700 (PDT)
-Message-ID: <27e002e3-b39f-40f9-b095-52da0fbd0fc7@redhat.com>
-Date: Wed, 8 Oct 2025 10:08:33 +0200
+        Wed, 08 Oct 2025 01:18:13 -0700 (PDT)
+Message-ID: <3c572565-0b21-4136-b0e0-59a5ed858104@redhat.com>
+Date: Wed, 8 Oct 2025 10:18:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 mm-new 03/11] mm: thp: add support for BPF based THP
- order selection
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Yafang Shao <laoar.shao@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Liam Howlett <Liam.Howlett@oracle.com>, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, Johannes Weiner
- <hannes@cmpxchg.org>, usamaarif642@gmail.com,
- gutierrez.asier@huawei-partners.com, Matthew Wilcox <willy@infradead.org>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Amery Hung <ameryhung@gmail.com>,
- David Rientjes <rientjes@google.com>, Jonathan Corbet <corbet@lwn.net>,
- 21cnbao@gmail.com, Shakeel Butt <shakeel.butt@linux.dev>,
- Tejun Heo <tj@kernel.org>, lance.yang@linux.dev,
- Randy Dunlap <rdunlap@infradead.org>, bpf <bpf@vger.kernel.org>,
- linux-mm <linux-mm@kvack.org>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>
-References: <20250930055826.9810-1-laoar.shao@gmail.com>
- <20250930055826.9810-4-laoar.shao@gmail.com>
- <CAADnVQJtrJZOCWZKH498GBA8M0mYVztApk54mOEejs8Wr3nSiw@mail.gmail.com>
+Subject: Re: [PATCH mm-new v3 1/1] mm/khugepaged: abort collapse scan on
+ non-swap entries
+To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org
+Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, dev.jain@arm.com, hughd@google.com,
+ ioworker0@gmail.com, kirill@shutemov.name, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, mpenttil@redhat.com, npache@redhat.com,
+ ryan.roberts@arm.com, ziy@nvidia.com, richard.weiyang@gmail.com
+References: <20251008032657.72406-1-lance.yang@linux.dev>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -170,21 +157,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAADnVQJtrJZOCWZKH498GBA8M0mYVztApk54mOEejs8Wr3nSiw@mail.gmail.com>
+In-Reply-To: <20251008032657.72406-1-lance.yang@linux.dev>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 41nsnQfacuDR97jpcEjmpxkQuUbxPCU4i1Z6pq4lkPY_1759910918
+X-Mimecast-MFC-PROC-ID: 0u7o7HUgUf-3yDrHc2FneOB8_EQZ7VgybLWxp7KWhvw_1759911495
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: s8ed7f8goaseddts9kb46k1ydxpuzthc
-X-Rspamd-Queue-Id: 79226180009
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 95562A000D
+X-Stat-Signature: biqsfycbuzat5wrtqgsckm8kjqux8xgm
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1759910921-100547
-X-HE-Meta: U2FsdGVkX18lYrIZeIFoNHzM/WUwYnrj/sQUDKsvI+oOLUM2UDEIlFE3kZ4n+HSnn7ckXNdsXpTL2mbrAazhTTmW78s94mhzfaLaB6rR3Czvw0iv79EDrGqxxoUzV18v9H5JR8Ane9yU0MJgRncDOLr9vDij6XwRmNpsCF5PG3PR605zmwOGEVdcSmbd0b3W594NoTuLVSC6zhRpoZwwqX6aCgyCBWPw10i2fDrzuQGjogCZTK99J3kCLTaOsZxBzZcbwlnwFiai/3qS4v0OqNaSVy2QDM4Nmj3xS6UUKjMb6l+182vitpzNuUN6RuMvnomGzvAkLiuA4mpnE/aKZ1OyFa1Ot94F/ntJFQnz2h8Dlu0h1b82X4f57ecU9O6/vlmnnd2BZQitJKqNeywTqTuhLipJbkxw/Sf6M6DQRzoVyIxMk2ktlgLy9+6k3efLHvxL1e8q/C5rZwGJSFvMUzGbgNJP78dFffhzDnypigpvXZ1N+vV7u0r85Yb2v+4QVrTKLtOCOSBXm+6ZjY3L8bsYhiAGMLBD43BxCVxRQ2+3WDfumLJaLr+kSf+l5hQCsDTizeRzgZcWEGHCMjmUam47JzLmNMZWmBwyC1oGdSSy78NuAhQjq1HDFztxscG3aHaIlt9AbohFLpqZombYKOq3KS2lFJ8mgZ1ZHIOKRI3elznrGF3bqxet+0EcQLtXN4oq9BiZZ5PeqSm0U0rutFo9MmmHuJ1dB6wqZ32kIuh+V++B26AOnyWygywmPBS+9NY1ZHBzca5CHhLhEPoIpXhoxwMp+xdFwswYigpclkZ/SyegnHdBkYs+nqYUrcDZR6/SfXpQaNHJsRfkI8WRQFgBUjkYvgaurkCsfHmpial0Q0GpRTXt88AhsuqegyKqahl1mQwqu+6Z8YOKtlg8xHkTZfTbNnLpXwT0kVJ9TJ+woMFVIWGr3/JjruV2dHcKyZgZ1uIXdLifMTG9fPP
- YtYFS0ZC
- BWinLEAVOrBmkXwDMDP8+FHMosr/jDBtSgAaotZe/YrBSmZJwfjo1EAph9BdpGu5Drm28GMfUVSqDC7OZeC8gxPYVHzc5n//tNrd8j0xR/5H1seoCEmAe8YrLoXGQWpVOn+WzI6hVE8wZSUvYAf/Fri2i3nq5ltcZmmalPk4Xl39WNVo3h8FUDj+8wvaphkOG1LDRpER3Dv2zqNsIclJpHF0NdVWUSxpKxR8EH9e41Wk9GxDeL66CKk1nOXxdSTgASix3EvePEEKzYcmzJUBCdaFntJdhwPoVFfCBadHkuWUNwNWOD+e0SkgIhbPtO8lA16qSAxe61VUBz0/iUCgNw1Sm16lwukTEr9hCH2sWLLgSv0HiZ3JWogAmis9fEc0qAYpcnarl3Sm3Js20Z8OUF18dna3GpoISykXos1M9gCSNRTsyPIUWqcslIjdppKLMPLGbzulWY+qxakdVaF/0gX9GfBpQ7x8KhcHbfUIRmvKn6v1135Gcs0+gxO1KGtV5+2Ll
+X-HE-Tag: 1759911497-873144
+X-HE-Meta: U2FsdGVkX1/0UWiJpq392g6NxjSsK6tnFmuEwHQDmeiLAuwNNDBrko8KmUBHLl/PIljOKfqrdIww6e6C1yvuUcYrGKxtX4zngSHXUsJSD8k1mJl4TBQ2J5W+XSM4BtIvrbhvioz8UGzAQ3R0jdGGRRg+xY+wzRHa1lk3/P/A3+1I+FBZ/NkuMFTc1dbY9u6hXcaZ/2EjLISHJApMovrzpqpoTKLhKviDSNP5aacfw6T6g9jD7b0VNq+vBMa+PTmYRIFP+rZDWG30UdbUVtUmfv5cwz5Sxll+lJeIyPOECXrm9z3NqhbE65PmwrAe68nJp2V4LCbu+ea5z7k6+q17pZSkrOgig8uQIJyHhQvYGCkDGF1DtLZT/7gSTOUC3TccoK2NH/0wbIPKNhkn697JwUFhCmrtNPgBA6JkayrExFiZM98swweYEbh95Pct35oJ54jgPLE84FQJp3zKqNJYmmXGGDS6Khk4rKx2w99WJIuhTKtCt8QCqt0MSft4O9wPgbrJiurXMIpN7TwJ/jaUg7ryiJRJcFIj1wFHLGHzfpaMe9U+OGM4T/ork/wBPA0rDBiLBIppEcPf8mpQDmxvDpXu9Jwfd0cJRPzx1DCxGmeCp4rN+JoNo+SpXmYChUj9pYSGxFcbNMJrGb9D8mu8u4K0EOQUoVzS4ZgJOHeyg79ZONQD5UtXzC+WPk9aWuu8KHq8gRaxHSkXO9JTt2xRKffbnnzz7vKs7CP3fw9v5CF/Ijd4qicfxbNnOqsva/KnX8yYSjKCl9uzIrGDJP01HVxr5zN0gWneRswBX//jY0HM2RyVhbG/YYTMNbv8TlB68maEkmh/82LyWMR/gAx3lErK92zEXUZn4dNfb0MaY75L8LWzX3j/wYgnfUqWXb9ZRHqaBN79llTxViU1hEQK3Yi5K/TeQxA32wZOCdSXIkn7OvaZivJIz6iZbCZJHnGmvSWWwrHPPEAMmCP+QFi
+ UiMGjVMH
+ HQxf8e4sYQ6BB8kwK2JWqfzrdGMeFAkfD+2u/Uh3IZPdsJH46Vu9uzEKe75vs2YXM62n4xwLxWa/p9B5UjtS78UepYUhDYKv/cxUED58Koh/cpn4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -193,44 +180,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 03.10.25 04:18, Alexei Starovoitov wrote:
-> On Mon, Sep 29, 2025 at 10:59 PM Yafang Shao <laoar.shao@gmail.com> wrote:
->>
->> +unsigned long bpf_hook_thp_get_orders(struct vm_area_struct *vma,
->> +                                     enum tva_type type,
->> +                                     unsigned long orders)
->> +{
->> +       thp_order_fn_t *bpf_hook_thp_get_order;
->> +       int bpf_order;
->> +
->> +       /* No BPF program is attached */
->> +       if (!test_bit(TRANSPARENT_HUGEPAGE_BPF_ATTACHED,
->> +                     &transparent_hugepage_flags))
->> +               return orders;
->> +
->> +       rcu_read_lock();
->> +       bpf_hook_thp_get_order = rcu_dereference(bpf_thp.thp_get_order);
->> +       if (WARN_ON_ONCE(!bpf_hook_thp_get_order))
->> +               goto out;
->> +
->> +       bpf_order = bpf_hook_thp_get_order(vma, type, orders);
->> +       orders &= BIT(bpf_order);
->> +
->> +out:
->> +       rcu_read_unlock();
->> +       return orders;
->> +}
+On 08.10.25 05:26, Lance Yang wrote:
+> From: Lance Yang <lance.yang@linux.dev>
 > 
-> I thought I explained it earlier.
-> Nack to a single global prog approach.
+> Currently, special non-swap entries (like PTE markers) are not caught
+> early in hpage_collapse_scan_pmd(), leading to failures deep in the
+> swap-in logic.
+> 
+> A function that is called __collapse_huge_page_swapin() and documented
+> to "Bring missing pages in from swap" will handle other types as well.
+> 
+> As analyzed by David[1], we could have ended up with the following
+> entry types right before do_swap_page():
+> 
+>    (1) Migration entries. We would have waited.
+>        -> Maybe worth it to wait, maybe not. We suspect we don't stumble
+>           into that frequently such that we don't care. We could always
+>           unlock this separately later.
+> 
+>    (2) Device-exclusive entries. We would have converted to non-exclusive.
+>        -> See make_device_exclusive(), we cannot tolerate PMD entries and
+>           have to split them through FOLL_SPLIT_PMD. As popped up during
+>           a recent discussion, collapsing here is actually
+>           counter-productive, because the next conversion will PTE-map
+>           it again.
+>        -> Ok to not collapse.
+> 
+>    (3) Device-private entries. We would have migrated to RAM.
+>        -> Device-private still does not support THPs, so collapsing right
+>           now just means that the next device access would split the
+>           folio again.
+>        -> Ok to not collapse.
+> 
+>    (4) HWPoison entries
+>        -> Cannot collapse
+> 
+>    (5) Markers
+>        -> Cannot collapse
+> 
+> First, this patch adds an early check for these non-swap entries. If
+> any one is found, the scan is aborted immediately with the
+> SCAN_PTE_NON_PRESENT result, as Lorenzo suggested[2], avoiding wasted
+> work. While at it, convert pte_swp_uffd_wp_any() to pte_swp_uffd_wp()
+> since we are in the swap pte branch.
+> 
+> Second, as Wei pointed out[3], we may have a chance to get a non-swap
+> entry, since we will drop and re-acquire the mmap lock before
+> __collapse_huge_page_swapin(). To handle this, we also add a
+> non_swap_entry() check there.
+> 
+> Note that we can unlock later what we really need, and not account it
+> towards max_swap_ptes.
+> 
+> [1] https://lore.kernel.org/linux-mm/09eaca7b-9988-41c7-8d6e-4802055b3f1e@redhat.com
+> [2] https://lore.kernel.org/linux-mm/7df49fe7-c6b7-426a-8680-dcd55219c8bd@lucifer.local
+> [3] https://lore.kernel.org/linux-mm/20251005010511.ysek2nqojebqngf3@master
+> 
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+> ---
 
-I agree. We should have the option to either specify a policy globally, 
-or more refined for cgroups/processes.
+Sorry for not replying earlier to your other mail.
 
-It's an interesting question if a program would ever want to ship its 
-own policy: I can see use cases for that.
+LGTM.
 
-So I agree that we should make it more flexible right from the start.
+We can always handle migration entries later if this shows up to be a 
+problem (this time, in a clean way ...) and not count them towards 
+actual "swap" entries.
 
 -- 
 Cheers
