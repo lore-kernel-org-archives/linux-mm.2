@@ -4,99 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52C38CCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 16:29:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B3EBCAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 16:31:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 621AC8E0047; Wed,  8 Oct 2025 12:29:08 -0400 (EDT)
+	id D2C2F8E0029; Wed,  8 Oct 2025 12:31:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F9508E0002; Wed,  8 Oct 2025 12:29:08 -0400 (EDT)
+	id CDC758E0002; Wed,  8 Oct 2025 12:31:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 536A28E0047; Wed,  8 Oct 2025 12:29:08 -0400 (EDT)
+	id BCB6D8E0029; Wed,  8 Oct 2025 12:31:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 43CD58E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 12:29:08 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C710213B7DF
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 16:29:07 +0000 (UTC)
-X-FDA: 83975481534.27.869EBBA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1F332160010
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 16:29:05 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t2WFr94n;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A6BF68E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 12:31:34 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 27A1D45FD0
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 16:31:34 +0000 (UTC)
+X-FDA: 83975487708.11.50D170B
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3A0901C001D
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 16:31:32 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=QD4YkTaK;
+	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.48 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759940946;
+	s=arc-20220608; t=1759941092;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tAlWkXP8yoPSFJfKOYN2IH5L0uH6at3rppYy1RN9XCk=;
-	b=IKyFuftQ6GioZs73RUvczR3Ivl6qHrTasjUIENaMBkXAbCs66ompmFOJkbiQmjeXwQ1Es9
-	nTmY5jpBei5+jQRZD3IN+fvzbTwsAnr92uy/7/OMlrDfYdZj762bk9699lXhhwji4WyXQh
-	jxgkz+hseQyiSl0dFVUubA47kyhQ7i8=
+	bh=ftJpOb1xcFQZv0a+i4an7Jz1/tLAQUsdU9C49sUWsFQ=;
+	b=571tbFD1yG8eJWBwmUXFKOkfUQZfaHpo6Y6xWD+P57j23ZfnZhNi/Tv0mRP3SGpv1Pf6jx
+	05bMCbuH7L67WLHPBQcRbCaV3rHy+deawQ6iP12El0qV2ovTdqpuJVqTFLEWtYxJLlWWEE
+	Wa2iVov2lptaPD9IokSufJTLrQRjCK8=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t2WFr94n;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759940946; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=QD4YkTaK;
+	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.48 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759941092; a=rsa-sha256;
 	cv=none;
-	b=dPCJwL6112WxUEh+az+cTsfz22dZzSH2nvIasioOPSXfFN+Ufnr4E+wNqF2jmiNlNdEbme
-	48wRkUagbe4v6spHqLJw+aFlrRbblYhXXLWVuwP+ELLxovSv0j8XYsXNyvBYWxXl9tCzAA
-	PkuNjAbM+h+lfp+W2jvCg2Rih2QIisE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C2D0345796;
-	Wed,  8 Oct 2025 16:29:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82EF8C4CEE7;
-	Wed,  8 Oct 2025 16:29:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759940944;
-	bh=JVQxE9TnJdgpGTrkD0m9zQf/OeSnxvr0yOVTLH/dUZE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t2WFr94nH31O0NGpLab7G3P1+1WO+wC/oYzHcqO4iw18yOqKIpSpCr5qKVijWddMl
-	 mUze/11E8cDL1vw1ibXJtuKSwSyjFvfxsum9AbJNGF+omAtGgef2NqT5SNQt39jDFs
-	 QvIS0gqFcJHwkgTzXTfxInEygAgdUZXE8Q7zpBmw/VDRzPhrsCCB79iESd6UFkiTT2
-	 DVQ/a/ftenFCvPV48lZWMTLNpWcCIpwCaQjg2Fm5J0RMpV8sKOzRqru3CYC0oP9aAj
-	 bl+u5V8Rsw0/5EhZ/EGRkLKmyjaLP+YT35q+92T2xDz6f76No9WsFdt4iPSo3NuwvD
-	 KEiKT4Pjqy9lA==
-From: SeongJae Park <sj@kernel.org>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	Dmitry Ilvokhin <d@ilvokhin.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Kairui Song <kasong@tencent.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Chris Li <chrisl@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Usama Arif <usamaarif642@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v2] mm: skip folio_activate() for mlocked folios
-Date: Wed,  8 Oct 2025 09:29:01 -0700
-Message-Id: <20251008162901.6652-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <x6u2afqqwqpoabtpq24n64owlwagolt63csvaibg33p6t2ywuf@beayabw66enb>
-References: 
+	b=emfoYhzk84rZ145zXO8Ak2LNQxRO2skTQgw27WtNo6bkmSz92IyuJ3NszQWFz3hJKP2ZJa
+	qbpx7NnzRazKX5ANV9u4w2B2YIEsipypKhcNIt33/RyuKbyJhoTjwL9SajFKTzUcRdD+5L
+	IIfSdTMK9i8jrBpPfX9VdHxImH2TW8A=
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-80ff41475cdso932696d6.2
+        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 09:31:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1759941091; x=1760545891; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ftJpOb1xcFQZv0a+i4an7Jz1/tLAQUsdU9C49sUWsFQ=;
+        b=QD4YkTaKzm+o7OJT6padmw2VgQFldz32PFnYDD3a6eRVoyrD9bdlVU1lGw6D1Yrhz7
+         wigXU23b20t/lNTbAaH6xf9XhwzOykwihtIVLEYv/9QBv54N6s+RERF2tmtlfliC3i0x
+         5T+MsLsdO66jp9ZM58JnPgMquCE7MjwvPc0ZNO3BuoGmABMdUE3gegSPgZDkfpvKizbl
+         3bK8qji0eTe+rmGdM8Omk4DwmJbK5Hek45T6HRFWn99xZaOmU1QbrAu/70zzva4UEnMb
+         0iCicAGL02Cu9RvjAxoEvp5zOWLGMnyKU42BhMcIJ4w8pJcXZ8wJ8TbRNifp3O45pyZ+
+         p3ZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759941091; x=1760545891;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ftJpOb1xcFQZv0a+i4an7Jz1/tLAQUsdU9C49sUWsFQ=;
+        b=SA7bxcAlZYh8CHmUMuoyGll6xVWwqH0T+mT6o1BcE3S/LzsWVvEBaiSgd0yDk8V002
+         5jGU5lGrPAFnZgMTpvergve0Tu4vi7pdo87dtyZQzSH2hU/FAUUbmUcNoCRagjsqz4Ec
+         aGGjTsdgEEs73R2n8J8tvMvVIw3+jFR4BY6jrKZYtc3ZSOws9mDPEY0stjJ5B94mFEPc
+         EgSd+PK5wwLFdGIaToy0n4n5PYMIRPB+aS8rUeiqFKpNfUkzXTWR25/DxbEAjdKRIg3h
+         CMpscTQL/kv4Fff7jX9I43FIZITU9BNjC5KWnCxbDBt3ai0N2y2QZLihxsd4/CPIKuRd
+         mLoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCULiroiL6DXMmHINUjAbaaY3wK/upUOt1nP8DJs6rQtfO8EFwQXbcXMZpE1ll+Vf60xM4+TwNRGXA==@kvack.org
+X-Gm-Message-State: AOJu0YwZk4/atGBgKC0s/4e3gVw0l58Aok6ZHI3X9lmlhnswJRffbp8q
+	pBXJItwcMkAEBiDeRhDlvXPZccJb5X/NV+F2e97KYoukWn9U3F9o/qN4aseCdcV5BCc=
+X-Gm-Gg: ASbGncv34vgSMtGjbZCOCDL/DlMOdtab2CAPBL56pcWdWwrme8pOkukXLEMgtvaCSgi
+	mCo3jNAyMAag/j7yUIDfO7GDnMslh6q/NSdyKG1bOuUwFmnINzm4hpuUe+cpr79GS0MIoPPL2Sy
+	/e20I9lIPZeti1QR7ZhOdlPyLztIgbIQD7biRb88FIE1oFLivV0ASc9SemI6tnfnSmEz0SQEyT9
+	n9rTFTFRdnsD6q1xjFMy/G3nL9kZfken5uT1vtyJvltGOCqkAFpxaTK90Yj9QqeA5d0CyJWWjXB
+	c5rMt0Izly+SvIdEHe9Vxs9bG8ha/QhRbdTTmzkbmCS7gOKIvyMJNzsOiqi/XR/xHc8DXFNbUbE
+	dlJvtIgEGGjc+rWqxPEFfi/GN4QLcebr2ZWWUiIq5L1aAitzJDI/YVV8R5veKRONiYGLU1RA7+p
+	9jlJtrfSwDLZk5H0pjfMvwHgKs/+aLOVYAk0qTyZVYLyP+5Gk0IJc=
+X-Google-Smtp-Source: AGHT+IH3li9YLOy2HwLU9l6NJx1hAvZugBHxS1HCl35MSzFjO8cle36MgAd2/H/V1sd72ii7wdm6jg==
+X-Received: by 2002:ad4:4ea6:0:b0:73f:a7c8:980b with SMTP id 6a1803df08f44-87b21001056mr61864846d6.4.1759941084963;
+        Wed, 08 Oct 2025 09:31:24 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-878bb446e8esm164513976d6.18.2025.10.08.09.31.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Oct 2025 09:31:24 -0700 (PDT)
+Date: Wed, 8 Oct 2025 12:31:22 -0400
+From: Gregory Price <gourry@gourry.net>
+To: David Hildenbrand <david@redhat.com>
+Cc: Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, corbet@lwn.net,
+	muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org,
+	hannes@cmpxchg.org, laoar.shao@gmail.com, brauner@kernel.org,
+	mclapinski@google.com, joel.granados@kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Mel Gorman <mgorman@suse.de>,
+	Alexandru Moise <00moses.alexander00@gmail.com>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	David Rientjes <rientjes@google.com>
+Subject: Re: [PATCH] Revert "mm, hugetlb: remove hugepages_treat_as_movable
+ sysctl"
+Message-ID: <aOaR2gXBX_bOpG61@gourry-fedora-PF4VCD3F>
+References: <20251007214412.3832340-1-gourry@gourry.net>
+ <402170e6-c49f-4d28-a010-eb253fc2f923@redhat.com>
+ <aOZ8PPWMchRN_t5-@tiehlicka>
+ <271f9af4-695c-4aa5-9249-2d21ad3db76e@redhat.com>
+ <aOaCAG6e5a7BDUxK@tiehlicka>
+ <83e33641-8c42-4341-8e6e-5c75d00f93b9@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ynzxx1odbfp7fp8djyn6jj3x8fw3s3gz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <83e33641-8c42-4341-8e6e-5c75d00f93b9@redhat.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3A0901C001D
+X-Stat-Signature: o5ke9mr1sb5o53nh1ioau9jrfiyci9yu
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1F332160010
-X-HE-Tag: 1759940945-4480
-X-HE-Meta: U2FsdGVkX1+jvkGKMIipIKbTF18RRV4eHiVvTww/mcOLibndBSFHTnloTkQpIXOkNIhdV9Hk5ScbDLcakfUGFwOQ2xAbWLTlLaNgT2fqIZftZsyH6tp0F2rZjDmkxRn0Jfum9KzuieOqX3wp+KIlX8vqLLdYPxKv7hSvr2cQs+SCi4bNYAbBqrIRnBN53jry80768XQA8TkPKpBYTLujIxOa9Coh7d1aGRo8MCfw17bg9t4umSyOYK1MJzAAxh9cfqSplJ0PlPF0g59bPVGEAs9ATIR4rEG8SLn2eHWq9ioivuzZ6+YoDEzioV1Zyx5NxUTgXCGV/9oyACMj/LD6xYuDQYbpWJDuw/LTIqiBpQw9x84QLTj98/YoI7ryPhSqvyt0HlcObNgM8iNDf/whFMofqttsp8Y3Bb4z9cjlVLz2ZNn/8pZQp4FtlNzBX0/kdubuFldMvpVQidt4cNjWeeak0RXZX7UaNcdc3OYdEreIme2KngDE3pG+pAjktDpLiYG2IcNVhardXP7I82eblnSI3E4QXNB1tZ8rR0TmfQqrbtlUCJxSrx5HsusfvaePf8P0hyDeCJjIlR1VAY0qnbxk6pk7+6cS12Q1x5R8UfZOezqsnCTLIT9oboln0NHGthM3yKJ0EYKWtuD98ZmKg31q1kXG72pUXEWFto348uRy9Jn9N9Hr1F6U+NcmXjaVud9ysIhX9f/XAxzHVhXip78DnBFJfz09osHYqh0dA6kB11gDT2K/netcuHJyM+jn0EtosZKKHJIQGyYjTmXmZxifN+KPom8mTm45byMVj4PcmKLRfTyf0NAjO2dUeY1tREVB3I0nu9giv/oruwuYqf6m3ESyQchPygEvdHCIV2FsiWuVH+61cZKP3CJ5VaX4eOcvB+2GRarWJAqGk90P/4tvy05QlNSQrWI6BwnMhFuAyiOXt+Fr7oEYxHw7/PuoRo0griC8Btfy9taE5fw
- Hjd1JJf5
- qtHW8b2E+bGvncQKeh0qB/Szg/x3VJkQIht3PAK9uxlqx5PovS6H5BrctfKyDQM+OJ/r9vz3hN1h3bV3u45b+ku7BjahkMIhBhJRrs8YghIjsp7FOnu8M4P/VBnYP7u8dhGAlb0SMNtfIMPLXF5AEvzAxIaC1/I7awi/1u17wJXgK9KRkVMt0Re1fS7o+0hSGKbqn7B8Dr3II4yv0H7Ov8A4iXmy+xtW5Gt+lkqvzVwr9GebrX9bDRcZF0pnFXuNK2OdM2twNtXKHo1mGOXrabU9b0NwgbN32b3HUQSQpoyWzhpm3VxQU14XkamXpJpO5fYQFttycI0TrzgeDvXpnPGkWGKTey7qWIWcepIMz8Wb+1FdKV1Il4qA90DgybSX1Ix3/1FuHOsXNpPthx8Ud+bZO9g==
+X-HE-Tag: 1759941092-483647
+X-HE-Meta: U2FsdGVkX19ggKUppPduPDK6A7ssRxpEEX8aBynI8T3gEp40d8Jw+gN6cN51rBDekOQIweZGnA+P7IeMM7KwZKVK5Upu5rmuiUVKOw8K5reUV0esYwTnI06LLlZhwCWQHSJIGP+owZty2F1R8wLFtTKfOErI9ch/slne4yRKnO4n3WtkFfPrFvdUQ7DwchfUYA310PGGxN6XGGgU3mOJJLMs412wOKhYUVYpHVmsRxgtQzVxmq5oWOHIOJsP/kHnDzc+IvC5inTPWBVtoDULqF5FWdU/Aya01sHJi37xxzTqlMdEd9CgNAe71UEilecg5ZxVYSv/1Awj3egM4iJVDGXGUNDM7T3AqN/RcUQh5up2/rp7YN5oY0ea3BIpNooNYJC822DNHFH0faGl24WAwCLW1sGGTjycq05Ei4MPqjlp+amVvJbaMjHuGuH6fCuYBH2Y7ibT72K02X0eDKnK3ldE4shibgxJDvy6uelboB6EiNFlEFll7Nc/7JGgKjylhxn7+Xdd2vhWcUvXG/IfoSFD6o1h/shFmNMMOoHtQS2SQn5kil2hCTb9D935EjzdsHZKpU14kSgZybD6J2TFMMC2/v3vSwueY2Yh5+YfQqWaftQYT9/Hf8j7Sjhnk+v92yQ7060bvkAcAxhvLlXa+XMbUZCbRfsFQ4Rdt7Jg9bxaUhkbsdEAfdj8oLMZO5CxxsiYcdg+wN5Rq7em0A1Mwr5bLw5gH7lsf8fLF39fGJHYfPRDMPTIgWUH3ze3/KdSeL0ggu0Dz4bBCWjzFAXkLkPucwRIuX/NSDVsCtNb9J1E25UX6byEQc9bXjFLP73hJljM2FxkyPsarJ3qQcmq/fmSfT9qp6ezBtiIxOkt+e0zAs94silcojqAbuQjJP5rqqboZ08BzpBpEojchN5VoYOeq9N+GFDmwZT4EgXV26RPMqVojTi6icrkDJuI+4feY6nLOjq2fZR2AuyC5Gy
+ ILY6gE6L
+ LqL7FNBF97EMO0tP4iJmqEyIWNlBVhS3Bth0aZTw6leaEtNOaS9b89LxzjEP/jVPx2uJH4oP7U7uFqCsdDDBix54kxkM+18eHVjv40YjVu0mO84ssT4LCjy+hoJWM3zoi8qTg9GC/egJ/h4Evigr6Zbrd799GbinItvheW9cfBoLnLLdDSnfKa9spjhzbKbXW0sZ9sieLCynx0+e9haTHn2SMHTHyJi8NQz8Y5iOvubE9lAQg7oPkDjzZTiojIwJcDLtLJb8OP0zysftmgHupQNnXT52FMuQDP/RHRy5KIkieC1tlVnaF3IXJqYNPVmKVNu3bA3aafP8b+xJm0dBwUWW9uBZVomKdN6aI4SSiBaFzEDOb6vtASk0iGAtqg/n0rbW9zcSq9R5FSIkZ7vb2Q7FkNHNOmZSnSH+lJFsClJHUUYgaY8+OWuiC7MQaoxH9GAgj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,43 +131,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 8 Oct 2025 11:33:01 +0100 Kiryl Shutsemau <kas@kernel.org> wrote:
+On Wed, Oct 08, 2025 at 05:43:23PM +0200, David Hildenbrand wrote:
+> On 08.10.25 17:23, Michal Hocko wrote:
+> > On Wed 08-10-25 17:14:26, David Hildenbrand wrote:
+> > > On 08.10.25 16:59, Michal Hocko wrote:
+> > > > yes, I do agree. This is just muddying the semantic of the zone.
+> > > > 
+> > > > Maybe what we really want is to have a configurable zone rather than a
+> > > > very specific consumer of it instead. What do I mean by that? We clearly
+> > > > have physically (DMA, DMA32) and usability (NORMAL, MOVABLE) constrained
+> > > > zones. So rather than having a MOVABLE zone we can have a single zone
+> > > > $FOO_NAME zone with configurable attributes - like allocation
+> > > > constrains (kernel, user, movable, etc). Now that we can overlap zones
+> > > > this should allow for quite a lot flexibility. Implementation wise this
+> > > > would require some tricks as we have 2 zone types for potentially 3
+> > > > different major usecases (kernel allocations, userspace reserved ranges
+> > > > without movability and movable allocations). I haven't thought this
+> > > > through completely and mostly throwing this as an idea (maybe won't
+> > > > work). Does that make sense?
+> > >
 
-> On Tue, Oct 07, 2025 at 12:53:13PM -0700, SeongJae Park wrote:
-> > On Mon, 6 Oct 2025 13:25:26 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
-> > 
-> > > __mlock_folio() does not move folio to unevicable LRU, when
-> > > folio_activate() removes folio from LRU.
-> > 
-> > A trivial opinion.  So the user-visible issue is the incorrect meminfo, right?
+I'd also considered something between NORMAL and MOVABLE, something like
+ZONE_NOKERNEL or ZONE_USER. But that seemed excessive.
+
+> > That is why I called it user allocations because those are supposed to
+> > be configured for userspace consumation and planned for that use. So you
+> > would get pretty much a guarantee that no kernel allocations will fall
+> > there.
 > 
-> The user-visible effect is that we unnecessary postpone moving pages to
-> unevictable LRU that lead to unexpected stats: Mlocked > Unevictable.
-
-Thank you for clarifying!
-
+> What could end up on it that would not already end up on ZONE_MOVABLE? I
+> guess long-term pinned pages, secretmem, guest_memfd, gigantic pages.
 > 
-> > > ---
-> > > Changes in v2:
-> > >   - Rephrase commit message: frame it in terms of unevicable LRU, not stat
-> > >     accounting.
-> > 
-> > Yet another trivial and personal opinion.  Adding a link to the previous
-> > version could be helpful for reviewers like me.
+> Anything else?
 > 
-> You probably missed recent Linus rant on Link: tags :P
+> I'm not quite clear yet on the use case, though. If all the user allocations
+> end up fragmenting the memory, there is also not a lot of benefit to be had
+> from that zone long term.
+>
 
-I didn't miss it [1] :)  And I pretty sure Linus wouldn't be angry for this,
-since what he dislikes is meaningless Link: tags on commit messages.  We are
-discussing something about changelog after the '---' line, which will anyway
-not added to the commit message.  Also I'm saying a link in a general form, not
-specifically Link: tag.
+The only real use case i've seen is exactly: 
+ - Don't want random GFP_KERNEL to land there
+ - Might want it to be pinnable
 
-[1] https://lwn.net/Articles/1037069/
+I think that covers what you've described above.
 
+But adding an entire zone felt a bit heavy handed.  Allowing gigantic in
+movable seemed less - immediately - offensive.
 
-Thanks,
-SJ
-
-[...]
+~Gregory
 
