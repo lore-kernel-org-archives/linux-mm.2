@@ -4,116 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 773E1CAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 08:58:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AF07CCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 09:00:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 955E18E0005; Wed,  8 Oct 2025 04:58:33 -0400 (EDT)
+	id 626418E000C; Wed,  8 Oct 2025 05:00:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92DA78E0002; Wed,  8 Oct 2025 04:58:33 -0400 (EDT)
+	id 5FD728E0002; Wed,  8 Oct 2025 05:00:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 843978E0005; Wed,  8 Oct 2025 04:58:33 -0400 (EDT)
+	id 4EC6A8E000C; Wed,  8 Oct 2025 05:00:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7277C8E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 04:58:33 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0176113AF39
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 08:58:32 +0000 (UTC)
-X-FDA: 83974346106.23.3A58F95
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 89DA6140006
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 08:58:30 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZRgAPuN7;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf23.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F5BE8E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 05:00:22 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BB66BB99BE
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 09:00:21 +0000 (UTC)
+X-FDA: 83974350642.10.5268128
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3D2EE8000E
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 09:00:19 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BwWsZbb8;
+	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759913910;
+	s=arc-20220608; t=1759914019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aCkfyt5I/VmtvqgtnNAWpB9LnANN2vnP/klB7sFCMlE=;
-	b=HzKxHJQ0qGF/b/PA4Z1KXmusVSC9ME6/co9kn3pzwR9W5gN5JBWlhSbZfGSZj8Kn4Vm+cr
-	CpXa+QHIiFQykaLKkg6EjHaXC7lZhD9m9Zi/oNKBj+tvVinl4xWiKVvgKu36aZdhwlsvEW
-	fqhcvjuHwPrSKeD1akP1ZK4IuAJQhJU=
+	bh=bNb165tATUdzEB7JEIVixwqTS/ioT+20Th0ZR/SpPvM=;
+	b=Il+SljhGSqk95jXNaPzgX16Id+Xa/VSNA1EDe6u7EBHNsgxjMXCR9AXB8Pey4MxE4sHoyI
+	5dLA6jLYkS9q6so1Aj0M9jURoXH/4UD4akHOmyF4souIAD4wUo/gr8tu8GTIV6n8Q02gjs
+	WsylI3RgKrYX3M/sh4N5pKgnsiEC8FU=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZRgAPuN7;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf23.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759913910; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BwWsZbb8;
+	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759914019; a=rsa-sha256;
 	cv=none;
-	b=VbthVUVoWRL4ouQ90B64iINc1izRvdzHTbHIj2yxpP2S64KKMx2wrgyUT/CpxWgR2leDdr
-	YWc3mcGVigSMswQEDPyb8EDIc9/W2Nzu1ZNBltk6wxIm/rOpHg8Ehh/GTXMnEFfamDzhH8
-	dYbP02bAD0pKwz+VaSAUiKRlzfzATWg=
+	b=IeQumCV0AndpLvsLfGtNIRBoCWFci/5yWvCALa09c2CW2khyxYRijIJw/1hmZFmcbd9SHb
+	cahoGPBMA5QcCtEb+kEd+LGMzjtaYsebj6Q81v+EY90XYe5so+WTVG2RhDG3fk4aV69/uQ
+	Ziv2QOPteuVwLNUvP1LUXJh5TZQLU3o=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759913909;
+	s=mimecast20190719; t=1759914018;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=aCkfyt5I/VmtvqgtnNAWpB9LnANN2vnP/klB7sFCMlE=;
-	b=ZRgAPuN7SpqGjjc4JIZrYjSnFScHvehXZZFBibMTTMRP/JmpMz67lxet7mAr0PaRFb5fOp
-	u/jhWctbl58JtYiwBDfrJ+780FvbFupl+KU1c/TDE1pZ0h8vkzSbPDe2O8fRdCd6QtDGsq
-	pfFRROmHsAnhg6CScgs0lWtxRIgekpI=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=bNb165tATUdzEB7JEIVixwqTS/ioT+20Th0ZR/SpPvM=;
+	b=BwWsZbb8AZFk0ZbUAOC+mh3AlcEfGreD3MYi933HAMa5xNpRRw1V02m1K0SpwZcWbmRgcT
+	OkiQSzsWlDMlvDYiATzH3fEChDwXYLI15pzzG5enofsYQ77pqkypVEBPfcwUEGBpd9kpam
+	f9D/KTIv7jo/4qAZ7sIdTmO+fMKemYY=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-18-si-HmgRYMci1QVaS9kQMjA-1; Wed, 08 Oct 2025 04:58:28 -0400
-X-MC-Unique: si-HmgRYMci1QVaS9kQMjA-1
-X-Mimecast-MFC-AGG-ID: si-HmgRYMci1QVaS9kQMjA_1759913907
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3ee13e43dd9so4220569f8f.1
-        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 01:58:28 -0700 (PDT)
+ us-mta-691-olrpcsyfOPm4fwEZMozXRw-1; Wed, 08 Oct 2025 05:00:17 -0400
+X-MC-Unique: olrpcsyfOPm4fwEZMozXRw-1
+X-Mimecast-MFC-AGG-ID: olrpcsyfOPm4fwEZMozXRw_1759914016
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-46e39567579so31335895e9.0
+        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 02:00:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759913907; x=1760518707;
+        d=1e100.net; s=20230601; t=1759914016; x=1760518816;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=aCkfyt5I/VmtvqgtnNAWpB9LnANN2vnP/klB7sFCMlE=;
-        b=MYzw3bgD733HuLmrrWxuuKpMEPpVhbVFXttloO9uXY3JX59c+TR0J0A4MHgsFSWLj4
-         Xpxb7PJH2vVnSlK5SlmpZIJjPqJ3nO1g2YNKBHABTrXC+yT1vAoGSQfrWu/k+c3hVOZf
-         WuGkUpGpbRFVhg+qN+08M6sGtDCg6G+YYCEPC8uSLc7uL93oVb0O5OzsKH2Ih6nAwtIg
-         Qbo9R49JluF56rJjNm/wL4m/rdohaFQqos7FCqglrhI+ZYOdxd3+kKE1by+LJWt5E7Z6
-         GcvjopeCNu2kjAPG9ENadjy8YRx69Ox7GLaSjYYdrFOMcyPGB/Qi4DvXd/MqXc/dYpFY
-         npdg==
-X-Forwarded-Encrypted: i=1; AJvYcCUajLUQaqwYjgo+2GWJ3Ogu4O8lrP+EjcB5p/50yQ3D5X9N58Hpnbvok6afczc03dR9YxflUmX8+A==@kvack.org
-X-Gm-Message-State: AOJu0Yxf2dWgfdgwmKA1vZXWWu3VQ0e79RNXyByQwkEK7jB5kV8ZBB82
-	sOteDCK9EKa190hKAEKJzOmStl+qXws3Y68vAGBG8PC27PiLW7GwZXUosl/yCK1h9BTiwxPuSfS
-	SPqaSeZQK5Xq09U/JRsHVNs9Cmi3aCgHrYy5B/F8g1eClGQ2JXjMX
-X-Gm-Gg: ASbGnct5/trlouEwZKtSzKHiwHemyGuQvlerRPGOzAhAGIBPbf2JBQ6GSDYVlWETPBU
-	dP+QWFtaQ8GO5R6DY4Y5wMDO/IevuEsSqFRC+ifbl+xbdyq8FZDuO8aDx/EQaayGJ0/QYA4l7Qq
-	AE5zhy503fBCsqMZbwL7jjRGpQxMWRaQ2c2gEq2k4msFWE3Bn9jjdhzMaOZDgQ1QAbQUEBbAI/q
-	lOb1uIJgCHv+c0jJkuUN9jqcWU3WmJzpjkzcUesr32KRLHxmqeN3Xgwewk5kJbdnnVPC4M11jYj
-	3lG07OfhnmlnXi7wpQ/Z7POuZd0uqqYUZWPHDwAP7iIsnrCfCGrXFOqmO+KBrYn2WG7parStZ1j
-	ZBX0dFHcy
-X-Received: by 2002:a05:6000:40c7:b0:3e7:68b2:c556 with SMTP id ffacd0b85a97d-4266726c44fmr1368226f8f.26.1759913907322;
-        Wed, 08 Oct 2025 01:58:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHeKz3b4r2qfAkjDy90jbChwaRK5kUNQF21Ofr8oD6OHDyol5EbgRMerKt5zFgrHRyjWGc/Ng==
-X-Received: by 2002:a05:6000:40c7:b0:3e7:68b2:c556 with SMTP id ffacd0b85a97d-4266726c44fmr1368193f8f.26.1759913906885;
-        Wed, 08 Oct 2025 01:58:26 -0700 (PDT)
+        bh=bNb165tATUdzEB7JEIVixwqTS/ioT+20Th0ZR/SpPvM=;
+        b=TPTFsT7jOy0r8xMI8+FIe9bf1zAN5BJ+Q4Y/44bBD7748UmPGkrXV7QI36dWP7aVdl
+         Q41JLlwrNrC1SBdIwi1+YzBCCqMDVnXFBrRHDkx9p+jA0S6vAvmxS5cvBDMT4biRJOqO
+         9VV6u7MH+uILHu2r/UNlsWUA16WW+ZM8otSe6WUfbEzLah9Z3sHCXZyPMTamPHEWB43m
+         RMkMw0cmrcXUPUpCtpucKHz7pBFl6hOY9fd5yplJyoln0x2sLJzIr/vN+ktoVAVPszw3
+         ezesn4LhQFk/ET+HFV1z4gnNNh1WLGL7er9PySoGbPNvCTENYumZTXckuZlXpNEhZpYB
+         45Zg==
+X-Forwarded-Encrypted: i=1; AJvYcCWIsKNAVVu5KIvuv929UsbXIFCNNBt5wivMxaNeU2P9Zlty+IDrHPBeJe5J6yFbuD0DZfHhPLEuLQ==@kvack.org
+X-Gm-Message-State: AOJu0YwyVtlXN1kWNeeIfV+2fGPTYXKU/SpBOHGQXVw46uIQd7z/8IxG
+	5rMaQ2G0n7zofeH1KeL1Sy/Eupe/iISQqLP9hlWLzu9zvJqEbo0EEyttZ187i58kmbN/Drt9MW9
+	WvH+fIg28oFTLTU/ihDvTEpWgUa8OFoOYFIMdAyicnevLaNrboouU
+X-Gm-Gg: ASbGncsIBlSvDR9v8vEA0vupQyjg8XsGP8pGkX6G93TqhM+wCHvlfuLvhr47aQE1kEt
+	n7raD/NijNTfhCDuXD+x1hI3yP8ZQU5iHHBLTyS4TqKsaF7A2DC1lOexJLHPKX3iTTQqenIuJim
+	M5xgor6fg3vbuJjGTiq3E6uKNWOeU4zdOjR2/oJTvQfcH/es/VDFpDHA5aZCImyYbU6lVOHLehF
+	LrWZ5c/77BvraB2kCZznzb1uEAlUPoU9ysvwek8Et/Q5upZyMmrnLaVxer4j7bf2hQ6xGxB5Ygb
+	0OXXiEANlC9Yifh66XmZNXivy7rCXKxyps3mPG2PhRFCpAPd4924rjbBUp63oiqisT3KukPiYDr
+	wkJdOkk8a
+X-Received: by 2002:a05:600c:474d:b0:459:d451:3364 with SMTP id 5b1f17b1804b1-46fa9af81d5mr18773325e9.24.1759914015784;
+        Wed, 08 Oct 2025 02:00:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHj5sfOcndDzAGeB9+llIRFsdMQVfmW8QZxnb1MAChDDnGTI6DfgD3G8B8EpgzHWOlxYFknRA==
+X-Received: by 2002:a05:600c:474d:b0:459:d451:3364 with SMTP id 5b1f17b1804b1-46fa9af81d5mr18773025e9.24.1759914015233;
+        Wed, 08 Oct 2025 02:00:15 -0700 (PDT)
 Received: from [192.168.3.141] (tmo-083-110.customers.d1-online.com. [80.187.83.110])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8a6c3esm29244385f8f.1.2025.10.08.01.58.24
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fa9bf8295sm28492525e9.3.2025.10.08.02.00.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Oct 2025 01:58:26 -0700 (PDT)
-Message-ID: <402170e6-c49f-4d28-a010-eb253fc2f923@redhat.com>
-Date: Wed, 8 Oct 2025 10:58:23 +0200
+        Wed, 08 Oct 2025 02:00:14 -0700 (PDT)
+Message-ID: <1c2fae79-69ad-45c2-8da7-31b3cd6dcda0@redhat.com>
+Date: Wed, 8 Oct 2025 11:00:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "mm, hugetlb: remove hugepages_treat_as_movable
- sysctl"
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
-Cc: corbet@lwn.net, muchun.song@linux.dev, osalvador@suse.de,
- akpm@linux-foundation.org, hannes@cmpxchg.org, laoar.shao@gmail.com,
- brauner@kernel.org, mclapinski@google.com, joel.granados@kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- Mel Gorman <mgorman@suse.de>, Michal Hocko <mhocko@suse.com>,
- Alexandru Moise <00moses.alexander00@gmail.com>,
- Mike Kravetz <mike.kravetz@oracle.com>, David Rientjes <rientjes@google.com>
-References: <20251007214412.3832340-1-gourry@gourry.net>
+Subject: Re: [PATCH mm-new v2 1/1] mm/khugepaged: abort collapse scan on
+ non-swap entries
+To: Lance Yang <lance.yang@linux.dev>, Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
+ dev.jain@arm.com, hughd@google.com, ioworker0@gmail.com,
+ kirill@shutemov.name, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ mpenttil@redhat.com, npache@redhat.com, ryan.roberts@arm.com, ziy@nvidia.com
+References: <20251001032251.85888-1-lance.yang@linux.dev>
+ <20251001085425.5iq2mgfom6sqkbbx@master>
+ <1d09acbf-ccc9-4f06-9392-669c98e34661@linux.dev>
+ <20251005010511.ysek2nqojebqngf3@master>
+ <31c3f774-edb7-420a-a6a8-3e21f2abd776@linux.dev>
+ <09eaca7b-9988-41c7-8d6e-4802055b3f1e@redhat.com>
+ <29742109-13c2-4fa6-a3a1-d12b14641404@linux.dev>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -159,21 +163,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20251007214412.3832340-1-gourry@gourry.net>
+In-Reply-To: <29742109-13c2-4fa6-a3a1-d12b14641404@linux.dev>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: JFuguDMVhEHSfrS3dXLJp6kWHvFfCV-bZlNrqRpEV2Y_1759913907
+X-Mimecast-MFC-PROC-ID: 8pIvXA_TkgvXBkudgdopyNmoxlG-umIsZF8wPxur_MA_1759914016
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3D2EE8000E
+X-Stat-Signature: 7cmnc4dq7weymfcoirsrs134z9wqxgjx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 89DA6140006
-X-Rspamd-Server: rspam03
-X-Stat-Signature: sngdpim7n8ycosx87yfq3asy1x8oysy1
-X-HE-Tag: 1759913910-846264
-X-HE-Meta: U2FsdGVkX1+hh706y5MduSR3mCLj9ccgpQ/sksg8OedI0NZCusKC0R5+8DL1q3/bD/tAeV5t6FMof9FuK/i27hYyZOoeLi9rCW9EH8IbO+J8eWfWBnGq5lVbmY5KuN/LZWWkTXgUfCaUFqJy3cnj6jYK4HlDKxq2M4od+qQwjAFvcXD6Z+z9aVmuuOWzSw25hks0c4S1ms1SdsyZxjyRw0QEANIJKfo2JHJBUEnU29gWVJKzdYUxV0i9i5qD5ojzCOZ/9o4O429WGODqCW/ENyVR/3IKhvyZQezz60QmOI3Icu/PINrfwrGPWcq7q4qbXrDiaGkjXQCUDA6IyDMIGEXGKY5WEHHDEcU91XeH31PL5VOKA/x8hwwVVAPPjtAdJ1ZDNCUM/od4ztZeNwBL7cctYHsCAlYhWsDch6jR7oTlDT+rUoL4fU9Jxewt/pw+NHiPFp0fT5V+GLHlQuYQdIxbDHz1wQtCQ+aT5ZYbw7cUcsNipqt7ICyanJ9FB8auSc73OOuZAhzvjO5MShhDEkgXFSnQ8yDYKrA4D/WmFov9k6s5dY0W5d+XEof+o6bHVvkCI5QgCzyDTOjU83WWDmQvxFiLdIgf4pbE/8tQpSSOck3gtC93eVC4lfmAzHcIx3bB+DFc2JXb6TskW7Sic+jZofsgb4ZC07ibA6VYXqjqGfwi8GY0+tpGZ/NQBh5+JYV4wosY87zC4H5EBNfLLLsa8aCghsVk309GIRTN9vMnpQmsJBw4t8yE5KoTwzLFucMX/y1DU6OoDoTBvUw1Axm0fNEdttPcWmfdQZVISZ3L7N/Ds1+uPKGe8VqtAKfoD6JlNj6WD2fUEWk7pFvLu9x1M0CRVi//swq87qZG/Jte2QybGc6XLffb6xF/8G/23+tnYuDo/BA1AeUHJSGsuvZQ5NIhdsHhDelwy/R7zobxB3Ba5PeKVat8ZtzNwmTbievEcq4K1Z+g6nEblUv
- CgYe+U4N
- yObwKEPJT0BF6+fyNQUrZDJFTv768clxpbiwAi2qgxYNZtbg6xZdYiCJ8rhHMYXyF+PsuPMbZFtT3dub0WznyMbxqs8L8SEXxLuwzhZkPVNd7uV9FarW4xj3zIeQQCUPizTC6qnuCS9OgXNgIo2Vwa0tIilosyK9qXhI3cR/DEZFz/wlZjV0Gmc+2sqKjlMrrhsjEjbeetaehlyIV7coV2F0+ZhoJoHcLL39TSUaGqv92IBj9PtOamSDITbGs8tx4p22DLIsdZSKVSMG2lXz/IJ2rAd46hC/Ef6kw2jeklAlguVnS7MhXuG8/KLi7X8BnO3uRODlY3QccWCKUItOE/4P7LoSjWwFFfhVQo+cCU2jTdThba1Bg9bNeMzeW5CkGv68E6vNlREaiJ2WX08SQpbOi6TXv6+nEDvPM5GZu8UvV94tagw2oIj+vfux0fm++2qS7TUQmMpV4eEAS1a8MiXogvUc8RRc26G9DEHeCWPfYI+Qq6wcLlaf9gQ0VG8IJdy2UH+fzaqnOscvc66sjsxYI1OIzWn0lRB3X3SE7pg9PtRRd6XPXG6A7hOJ104f3yF0e4ECV+mkDaka3G7QOBkwDnUDtDeL9W+E1zFlAXu8gVXI8tBlLhVcvMZwt/voy+9KrLqR5HNMkvAhgxWAy2UcYnk25Ro45hggj9PUZgVOjyKW0/5s+c6yqzoEUkUnGtTJAjFR/0ZroH5c8T/Y+u0NqpaBqRwlWD0xJqbYfnMYEr+9K1ahD6AiPIdyllQZ/8Z8T
+X-HE-Tag: 1759914019-405105
+X-HE-Meta: U2FsdGVkX18up9lIQHG3eUaIYEmOCc/y5wGojQ7bNI9UAAyDZlWrvdcrZlLvClaHcJirMDPYpoq1jTPLL/nmhKGkhKtXpMT0ywa/m4Bm5jxpgTZMtUSdV7iUFHr6+ncc3MO35v70DwXk38vkF+dfrOAB++I6eK326riPjgXaptjPtLZ/NnefD7JRqkn2ABre0exUKVWvRvUpQXY95AWM3nHnlNHzfoR+Qdv3s9wPgQ2yzMYtwjZV/ugtVz9RPEAP/+cWTWGUhcPxJof7h+CXLHSLDurlE7HsAwyeivHU0705I98Fysv8ohnG6lHPTX5YHKbUNQUykd7cAnk45iYNpCdS31kZjwylHW1gQz4PCDFCvPD0ZVTwHojjKIfMelaN+nFLQsRpm8GfTFePliujH9h6B3ewnfP+0u6vyMap4juewKb2ggA6ZNTsRjYt/9nUDEmc5zew2kowr1cIqphMHGBbMZjNdakZRS7KzqHID80POKnGxokFzwJZyi8Bpg0e0um3g7fkUbvPYaB6tu4lVZKyU1PHP9PIzOfXjH8aWsVLsza4PtAfbbbfRSNwB3hTUTQW7U4vzN2eWq3qjMwVHq/C7BUQlbNSHY66B0/UDcmTp22QSJyVj10+OZ5mNz7ARcBw3ICeSYd0q6Gg0JP+WvHG4u0tR0mH14dPlt2ZB7pHoiqUCc2R4AigEGJGzMo+Ac4XdKyXSVTqyhRYHR1eNO/0EVpuXXNBXYaW2vwx46UvShykvPdukiTmZi22tgUhg7v7kQ4JPe2tRB4nUKuwKHrXqhbAyttGEkzB4rcJsyXFXu+m9Y7Sfado9CRCGc4Ek31Yz7gZdGWkFXHo4tArgAWyS0s62jK8kA228DTB/UpyZrlEiLNPj2pzfTSwCNQsj8fD82IXtGv8YxArx8TtV+0CAufwqRz1sfKaQRp+H+pqg1C+YXnQMvAw9s+Vso6ZELUglzuWkzdWbkIX2tc
+ 1BsGHNzY
+ G2BxF5397MGGKkrjjzqlG6eJlO+PyrLUiyDKW3paMRXJTqj6FhzaT2IpG47TG2cSuAABOA8vx2EW0fJQ7b7zAWP/vhfR5DHkhHedUfo4gx4ZfkmYaiBGqRRF5hfdqpVKHlXBQN4KcAY+19zU0xVHeuGFwqEl0Gt5jtfGy4oggPBnw+LPDENrAf1Yl3lhRVeDgmOHDCMdTWkpbmS3FVhERbYENJ4nD8h/gIxqh0XsTP29Ti/BVvHen06Qy7HvGKfOHtw1r+DvTUCbd8BPjzIG4PGerdUSGACQ16xEGsqhAQZkqwruMQzJkVDbp0YnqCA6/zrmmKw0yn1r3+COfQ08iE6lGx7+6CLV5+WuSFCu2GSe2SAMV/Cu5U5l8PSVfUFGOCUqEWYSO5YKTKiuYEjDHsO5VCm03MPj3Io/K07ykn8DulhBo2G6dJbJsL5qqMHq/1bIwXUv6EiND2c/tBeuamCN9fJPF1NeaO6RpOc9v+eStPC4/tmSSEgQifsAjg/DHNjsE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,181 +186,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07.10.25 23:44, Gregory Price wrote:
-> This reverts commit d6cb41cc44c63492702281b1d329955ca767d399.
+> Second, as Wei pointed out[3], we may have a chance to get a non-swap
+> entry, since we will drop and re-acquire the mmap lock before
+> __collapse_huge_page_swapin(). To handle this, we also add a
+> non_swap_entry() check there.
 > 
-> This sysctl provides some flexibility between multiple requirements which
-> are difficult to square without adding significantly more complexity.
+> Note that we can unlock later what we really need, and not account it
+> towards max_swap_ptes.
 > 
-> 1) onlining memory in ZONE_MOVABLE to maintain hotplug compatibility
-> 2) onlining memory in ZONE_MOVABLE to prevent GFP_KERNEL usage
-> 3) passing NUMA structure through to a virtual machine (node0=vnode0,
->     node1=vnode1) so a guest can make good placement decisions.
-> 4) utilizing 1GB hugepages for VM host memory to reduce TLB pressure
-> 5) Managing device memory after init-time to avoid incidental usage
->     at boot (due to being placed in ZONE_NORMAL), or to provide users
->     configuration flexibility.
+> [1]
+> https://lore.kernel.org/linux-mm/09eaca7b-9988-41c7-8d6e-4802055b3f1e@redhat.com
+> [2]
+> https://lore.kernel.org/linux-mm/7df49fe7-c6b7-426a-8680-dcd55219c8bd@lucifer.local
+> [3] https://lore.kernel.org/linux-mm/20251005010511.ysek2nqojebqngf3@master
+> ```
 > 
-> When device-hotplugged memory does not require hot-unplug assurances,
-> there is no reason to avoid allowing otherwise non-migratable hugepages
-> in this zone.  This allows for allocation of 1GB gigantic pages for VMs
-> with existing mechanisms.
+
+I replied to the new version.
+
+> I also think it makes sense to fold the change that adds the
+> non_swap_entry() check in __collapse_huge_page_swapin() into
+> this patch, rather than creating a new patch just for that :)
 > 
-> Boot-time CMA is not possible for driver-managed hotplug memory, as CMA
-> requires the memory to be registered as SystemRAM at boot time.
+> Hmmm... one thing I'm not sure about: regarding the uffd-wp
+> race you mentioned, is the pte_swp_uffd_wp() check needed
+> after non_swap_entry()? It seems like it might not be ...
 > 
-> Updated the code to land in appropriate locations since it all moved.
-> Updated the documentation to add more context when this is useful.
-> 
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Mel Gorman <mgorman@suse.de>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Alexandru Moise <00moses.alexander00@gmail.com>
-> Cc: Mike Kravetz <mike.kravetz@oracle.com>
-> Suggested-by: David Rientjes <rientjes@google.com>
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> Link: https://lore.kernel.org/all/20180201193132.Hk7vI_xaU%25akpm@linux-foundation.org/
-> ---
->   Documentation/admin-guide/sysctl/vm.rst | 31 +++++++++++++++++++++++++
->   include/linux/hugetlb.h                 |  4 +++-
->   mm/hugetlb.c                            |  9 +++++++
->   3 files changed, 43 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
-> index 4d71211fdad8..c9f26cd447d7 100644
-> --- a/Documentation/admin-guide/sysctl/vm.rst
-> +++ b/Documentation/admin-guide/sysctl/vm.rst
-> @@ -40,6 +40,7 @@ Currently, these files are in /proc/sys/vm:
->   - enable_soft_offline
->   - extfrag_threshold
->   - highmem_is_dirtyable
-> +- hugepages_treat_as_movable
->   - hugetlb_shm_group
->   - laptop_mode
->   - legacy_va_layout
-> @@ -356,6 +357,36 @@ only use the low memory and they can fill it up with dirty data without
->   any throttling.
->   
->   
-> +hugepages_treat_as_movable
-> +==========================
-> +
-> +This parameter controls whether otherwise immovable hugepages (e.g. 1GB
-> +gigantic pages) may be allocated from from ZONE_MOVABLE. If set to non-zero,
-> +gigantic hugepages can be allocated from ZONE_MOVABLE. ZONE_MOVABLE memory
-> +may be created via the kernel boot parameter `kernelcore` or via memory
-> +hotplug as discussed in Documentation/admin-guide/mm/memory-hotplug.rst.
-> +
-> +Support may depend on specific architecture and/or the hugepage size. If
-> +a hugepage supports migration, allocation from ZONE_MOVABLE is always
-> +enabled (for example 2MB on x86) for the hugepage regardless of the value
-> +of this parameter. IOW, this parameter affects only non-migratable hugepages.
-> +
-> +Assuming that hugepages are not migratable in your system, one usecase of
-> +this parameter is that users can make hugepage pool more extensible by
-> +enabling the allocation from ZONE_MOVABLE. This is because on ZONE_MOVABLE
-> +page reclaim/migration/compaction work more and you can get contiguous
-> +memory more likely. Note that using ZONE_MOVABLE for non-migratable
-> +hugepages can do harm to other features like memory hotremove (because
-> +memory hotremove expects that memory blocks on ZONE_MOVABLE are always
-> +removable,) so it's a trade-off responsible for the users.
-> +
-> +One common use-case of this feature is allocate 1GB gigantic pages for
-> +virtual machines from otherwise not-hotplugged memory which has been
-> +isolated from kernel allocations by being onlined into ZONE_MOVABLE.
-> +These pages tend to be allocated and released more explicitly, and so
-> +hotplug can still be achieved with appropriate orchestration.
-> +
-> +
->   hugetlb_shm_group
->   =================
->   
-> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> index 526d27e88b3b..bbaa1b4908b6 100644
-> --- a/include/linux/hugetlb.h
-> +++ b/include/linux/hugetlb.h
-> @@ -172,6 +172,7 @@ bool hugetlbfs_pagecache_present(struct hstate *h,
->   
->   struct address_space *hugetlb_folio_mapping_lock_write(struct folio *folio);
->   
-> +extern int hugepages_treat_as_movable;
->   extern int sysctl_hugetlb_shm_group;
->   extern struct list_head huge_boot_pages[MAX_NUMNODES];
->   
-> @@ -926,7 +927,8 @@ static inline gfp_t htlb_alloc_mask(struct hstate *h)
->   {
->   	gfp_t gfp = __GFP_COMP | __GFP_NOWARN;
->   
-> -	gfp |= hugepage_movable_supported(h) ? GFP_HIGHUSER_MOVABLE : GFP_HIGHUSER;
-> +	gfp |= (hugepage_movable_supported(h) || hugepages_treat_as_movable) ?
-> +	       GFP_HIGHUSER_MOVABLE : GFP_HIGHUSER;
 
-I mean, this is as ugly as it gets.
-
-Can't we just let that old approach RIP where it belongs? :)
-
-If something unmovable, it does not belong on ZONE_MOVABLE, as simple as that.
-
-Something I could sympathize is is treaing gigantic pages that are actually
-migratable as movable.
-
-
-Like
-
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 526d27e88b3b2..78da85b1308dd 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -896,37 +896,12 @@ static inline bool hugepage_migration_supported(struct hstate *h)
-         return arch_hugetlb_migration_supported(h);
-  }
-  
--/*
-- * Movability check is different as compared to migration check.
-- * It determines whether or not a huge page should be placed on
-- * movable zone or not. Movability of any huge page should be
-- * required only if huge page size is supported for migration.
-- * There won't be any reason for the huge page to be movable if
-- * it is not migratable to start with. Also the size of the huge
-- * page should be large enough to be placed under a movable zone
-- * and still feasible enough to be migratable. Just the presence
-- * in movable zone does not make the migration feasible.
-- *
-- * So even though large huge page sizes like the gigantic ones
-- * are migratable they should not be movable because its not
-- * feasible to migrate them from movable zone.
-- */
--static inline bool hugepage_movable_supported(struct hstate *h)
--{
--       if (!hugepage_migration_supported(h))
--               return false;
--
--       if (hstate_is_gigantic(h))
--               return false;
--       return true;
--}
--
-  /* Movability of hugepages depends on migration support. */
-  static inline gfp_t htlb_alloc_mask(struct hstate *h)
-  {
-         gfp_t gfp = __GFP_COMP | __GFP_NOWARN;
-  
--       gfp |= hugepage_movable_supported(h) ? GFP_HIGHUSER_MOVABLE : GFP_HIGHUSER;
-+       gfp |= hugepage_migration_supported(h) ? GFP_HIGHUSER_MOVABLE : GFP_HIGHUSER;
-  
-         return gfp;
-  }
-
-
-Assume you want to offline part of the ZONE_MOVABLE there might still be sufficient
-space to possibly allocate a 1 GiB area elsewhere and actually move the gigantic page.
-
-IIRC, we do the same for memory offlining already.
-
-
-Now, maybe we want to make the configurable. But then, I would much rather tweak the
-hstate_is_gigantic() check in hugepage_movable_supported(). And the parameter
-would need a much better name than some "treat as movable".
+If we check non_swap_entry(), there is no need to check for other 
+markers, agreed.
 
 -- 
 Cheers
