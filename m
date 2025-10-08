@@ -4,113 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52583CAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 10:14:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62739CAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 10:17:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E3CF8E001D; Wed,  8 Oct 2025 06:14:35 -0400 (EDT)
+	id 8F7CF8E001C; Wed,  8 Oct 2025 06:17:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5944A8E001C; Wed,  8 Oct 2025 06:14:35 -0400 (EDT)
+	id 8CFA28E0005; Wed,  8 Oct 2025 06:17:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AA098E001D; Wed,  8 Oct 2025 06:14:35 -0400 (EDT)
+	id 7E5728E001C; Wed,  8 Oct 2025 06:17:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 395948E001C
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 06:14:35 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E6E401A044D
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 10:14:34 +0000 (UTC)
-X-FDA: 83974537668.04.6F4A092
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D6D08E0005
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 06:17:38 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 05FB045C37
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 10:17:38 +0000 (UTC)
+X-FDA: 83974545396.13.7E9D4A4
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8F15F40012
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 10:14:32 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="VHWbC/iS";
+	by imf28.hostedemail.com (Postfix) with ESMTP id A9AA1C000A
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 10:17:35 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=T7QAB+gr;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	spf=pass (imf28.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759918472;
+	s=arc-20220608; t=1759918655;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cs9U3hHfPxfmlIM6BVaiwoAYUcpEw8JWQAav9+M27Fw=;
-	b=rJNf6lY9bc2oBkC8E548KRh4jol6lvC7147pdembez97knwN64tsRd+McoOysJyBgsMc3/
-	TjE4C/frBwVqyqfh2rQSaFZ2Opt2+hD2uygq8SidiYMNt9l2OwGt2CogUOzaSLq509i3/f
-	YSv8EskcURl5hClkAV9/Ygo7GPGq1us=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="VHWbC/iS";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759918472; a=rsa-sha256;
+	bh=lRDvi6r03uPeYR37zgwdK7WAMAQMJE9pk5vVw7oFEH0=;
+	b=xRqKke5rIite1l8HttIXCvKns0MeluWIQ1s5SXnlJT8LhPeb3weeNeFrHWd/uATR001Pf6
+	nUgk5VayGr5SKkt9SOJEw/4UHoeltc917uO1D3yKqK3aT7N1H5l68IkACZnoSFB/L/5Hds
+	NnApGopIxbJ3bsSsyQe6OgP3qwHjHEA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759918655; a=rsa-sha256;
 	cv=none;
-	b=OVvdqtPQN1cYYCXa8rKawWM0WT0u4B1tKqz4WMb57gkk0Lqjo0w9I3vl1/CQZkNdHbRcWq
-	WC91o2V5glQBacUizF+6pz9SawNLhdd4w6W9EvTktOeglQDp5VwXn1fCMpy16zu1ZP+y4p
-	f0s+1OswbU6p6R+uoehKiEbh7uXb1sw=
+	b=snDfFgCgxqv6+jUP5880kKl/TYSb/eHfpTJgpReEGkv5aQgHJGplnLRBan4Zf4CeIkbf9l
+	NFjXcxkUFMw1MLMoykdpX8ijTd7O9j+Ltw9UoWLbf+z7Vp5w6mBYiJJGJnHFP26+GVAb1u
+	s8/2yZ3sNdytfOUdWHCkSGMK8rRvv10=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=T7QAB+gr;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf28.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759918471;
+	s=mimecast20190719; t=1759918655;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=cs9U3hHfPxfmlIM6BVaiwoAYUcpEw8JWQAav9+M27Fw=;
-	b=VHWbC/iS0ub07P14PIVmmlY7eT+Rhi+SfGIwOXRxsiHanovTVeFasM9gooKvvODbRuQHfF
-	vO5/1D+RiPcP4fAMjgu+F7nCW7DSNMGFYiejnhHotsNfknLz6v3VuX1I6U8YeapP9teaVF
-	GjGfB8Z9YGgp0c1X8aZWvULYGITWN2U=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=lRDvi6r03uPeYR37zgwdK7WAMAQMJE9pk5vVw7oFEH0=;
+	b=T7QAB+grxwMrcLCDzdM54gifq9k2FjLG5gku7QWrf3Q29OYqFtNr6aE4SlixYrV/t5EmRv
+	lLmCn0eM9YhUXLSp3QkDBQ+CtRMK1cVhfqWwryfzYrUP6qnr5fJwiSJICWrywZA8ho3NMG
+	mV5JeybS9GudTIJEs9zIX4iBm8U2lT0=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-287-C3K0dih9NqaVsn-ugTX90A-1; Wed, 08 Oct 2025 06:14:30 -0400
-X-MC-Unique: C3K0dih9NqaVsn-ugTX90A-1
-X-Mimecast-MFC-AGG-ID: C3K0dih9NqaVsn-ugTX90A_1759918469
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3efa77de998so4442242f8f.0
-        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 03:14:30 -0700 (PDT)
+ us-mta-209-7nu5SFVONbiOWbZYrhy73w-1; Wed, 08 Oct 2025 06:17:33 -0400
+X-MC-Unique: 7nu5SFVONbiOWbZYrhy73w-1
+X-Mimecast-MFC-AGG-ID: 7nu5SFVONbiOWbZYrhy73w_1759918653
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-42557bdbe50so362701f8f.1
+        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 03:17:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759918469; x=1760523269;
+        d=1e100.net; s=20230601; t=1759918652; x=1760523452;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=cs9U3hHfPxfmlIM6BVaiwoAYUcpEw8JWQAav9+M27Fw=;
-        b=xVMypyoXcl0b4k+1D8ulJ7O4dyZeHi9/4OaxxpVqW0AxqzRSKJpGoDc3cmHw8tBgg4
-         JE7sxAEvVGZZIcFCeUWlBrIPdMUhDAElBgwIOMIMwcwAqyw0blBRh0qMAKKr6GfdFDcn
-         Xv7Eo66cHs5QSyMs/YrxrdWcr6JHcsC2so8P0x+sG2yodn5GlFzDpZrejwx7V2ikGsg9
-         WitE1M884hSVArpS/XEaR8qQYEYaaNRZiqYlt05KbjXn/K38vvENgrqDwTo0SRMx5l1m
-         q/6BLDYaAs7tf0LE0jxvHeFDv3ivZpCQwUqAsOozjybb8lutDgXW6HHtiZyYQ3FUPoWB
-         CpWw==
-X-Gm-Message-State: AOJu0YycTRmoDVaouFilQ7wcn5JQBDaYxzfgXxlbF2v8xSfVi8/Wheiq
-	0IFpmmj8vFSmIcczr0wtTUF32xtjUvpmSPSnPY8Af7CtS3zMi8MW3y9WXFg1Fy/yj1N+7/R8RQu
-	JZHqS1iVP3Tusw1kWRipqrd9ouhWu87sHvLgmZPzr8jTgwnyb8rrP
-X-Gm-Gg: ASbGncv2/BNdpr3YITJ861i5AJH1C/motmYtlGjFhKYVWTxXdDOokiWkJSy5e7i1jkE
-	yke04NBjXfokJTn9+q1r8Q3k/sVuh3CwuvEf8/KIciLqXP0fY55C7kmocQwMAhXA73YnhTgj0cS
-	OqWQvIrOZPu5884YyDeNLerIKwPd1CkPPMigF+Vr7hrleDHfzdFIR6rwNLeYflyssirYB8aVlpm
-	qrraHyCc3EacSxjdoRjBkZxl9D7yHFgFUOM3Fd/I4r1vzOOwWxf6Xzqd/CwrR7D/IxsndSwVlb2
-	JLN8RHGjcsh6wpQr4K4l2XjUUY+5FYkEs2hmzxNvyIHND1NcvMwKiyYz3/sVRq4b6MjFy2zpc/W
-	Evq+eWWzH
-X-Received: by 2002:a05:6000:43c5:20b0:3ee:15b9:97c4 with SMTP id ffacd0b85a97d-4266e8ddf61mr1442838f8f.52.1759918469363;
-        Wed, 08 Oct 2025 03:14:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEF1OH8QUpol5NaCJeKFfOHuuTVHxdXceqeY+FoGelLDM8WoPvzGVLlj3NEGVKasBPrlKen1g==
-X-Received: by 2002:a05:6000:43c5:20b0:3ee:15b9:97c4 with SMTP id ffacd0b85a97d-4266e8ddf61mr1442818f8f.52.1759918468937;
-        Wed, 08 Oct 2025 03:14:28 -0700 (PDT)
+        bh=lRDvi6r03uPeYR37zgwdK7WAMAQMJE9pk5vVw7oFEH0=;
+        b=YjKw2SNFFg9TTCF+h7q28Ra452eiaijzyHsr7ERpBX54sFXovqblga6rbpWdfkOhAU
+         Vi+bBLNcHdVaCGRowZBikXFyFQ/3wD31ifm6N4cgWOetvuuKDl7g8UY4Wu5FDg8k8xZR
+         MomR4bAR42HMRbl9n+Q9pa7emkeJdVTiR3msqK5B/wvJcYa0RGbF/cpkDzQtFpk96/Ev
+         J5I+drM+qW9e2OwgH9t1niQwoDDM0jOgrFAQgR0VvINd1HPEN8J47yVoMHoKYcdCWoG+
+         WFL/eHtREqFDEdin8+eazBSI6a3e4DH9LtDi4VjHmnkZOpHX00bV9WTX26RCOFPajxZP
+         K1XQ==
+X-Gm-Message-State: AOJu0Yy/YMx47vRn4g0sqeKyareSLIwItdkdsdmmIoqEFJGcyj/DlUha
+	U4jBqKSdzfMcYOrsKiY/CYHqcjBKYxll9TPAhVcnX6GvDMw6y3076Y+K49s2LgSyomLMw9KN3vG
+	+/d7or2z6kH6dtrdkGWa4YZAcsO3mLEf1I4UYhdwRFseRkJpoQr9q
+X-Gm-Gg: ASbGncuEGbOCf8DId0uo12WfS08KO5Kfsc5B+a/7n9dvTaRcVcHVSNStMe5xhTnn8yG
+	h6av7/kbGYvKJJS+GTnRcad7g8bEw4NGVtbvv5M8lXBQxPoNj8/aZQ8sZOTqB/ERbTIJox0TuJe
+	N4vEb63ZqKYxAa/kViyNnbXFBiTN2DiUINO2ZA5RREo7MFKUlxjyrBTKRjKowSvK/0LjHFBJPoO
+	2ipHzFvF4OEx4HxXm8AJNyaga/Rq/osX/a1XckGNASQr3S9xJ51WBRSMUGQbvTSD385+Q2wUilc
+	JY9tNBHtaQaT9ghX4XK97ub5KP7nFYPJw/0jLAcRkrCQzbxslgJPfoUx4JatStbT5n7Kzu+negv
+	RnLudLkhn
+X-Received: by 2002:a5d:5f96:0:b0:3ec:42f9:952b with SMTP id ffacd0b85a97d-42666a9e191mr1946963f8f.4.1759918652684;
+        Wed, 08 Oct 2025 03:17:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEOfjNjaQsJeBkA4XuZWZLsL4rqOZFlXg1C3d/K+oQ+OmoGGfCjv34iLAg3rUh+O4tgAsz4VQ==
+X-Received: by 2002:a5d:5f96:0:b0:3ec:42f9:952b with SMTP id ffacd0b85a97d-42666a9e191mr1946942f8f.4.1759918652335;
+        Wed, 08 Oct 2025 03:17:32 -0700 (PDT)
 Received: from [192.168.3.141] (tmo-083-110.customers.d1-online.com. [80.187.83.110])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8f01a0sm29094354f8f.48.2025.10.08.03.14.26
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8e980dsm31801095f8f.36.2025.10.08.03.17.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Oct 2025 03:14:28 -0700 (PDT)
-Message-ID: <99824e33-bf25-40ef-b969-a48e3b916ad1@redhat.com>
-Date: Wed, 8 Oct 2025 12:14:25 +0200
+        Wed, 08 Oct 2025 03:17:31 -0700 (PDT)
+Message-ID: <3ec7d5c9-27c4-4395-b859-8931eed72272@redhat.com>
+Date: Wed, 8 Oct 2025 12:17:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/compaction: check the range to
- pageblock_pfn_to_page() is within the zone first
+Subject: Re: [PATCH 2/2] mm/compaction: fix the range to
+ pageblock_pfn_to_page()
 To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
  vbabka@suse.cz, surenb@google.com, mhocko@suse.com, jackmanb@google.com,
  hannes@cmpxchg.org, ziy@nvidia.com, lorenzo.stoakes@oracle.com,
  Liam.Howlett@oracle.com, rppt@kernel.org, iamjoonsoo.kim@lge.com
 Cc: linux-mm@kvack.org
 References: <20251002033140.24462-1-richard.weiyang@gmail.com>
- <20251002033140.24462-2-richard.weiyang@gmail.com>
+ <20251002033140.24462-3-richard.weiyang@gmail.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -156,21 +156,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20251002033140.24462-2-richard.weiyang@gmail.com>
+In-Reply-To: <20251002033140.24462-3-richard.weiyang@gmail.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 5jK-oTL_76jHJqJxMIxOm6MRg3GzW8yCzfhtNZxiggU_1759918469
+X-Mimecast-MFC-PROC-ID: DJ8hb7OvT1jyj6XgDr05ajgLJzNk_JCTePKX8VjOZss_1759918653
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8F15F40012
-X-Rspamd-Server: rspam03
-X-Stat-Signature: k5heay4d5t4fs6p8esakszctw15xrm38
-X-HE-Tag: 1759918472-662992
-X-HE-Meta: U2FsdGVkX18l95vs2JpdzLFybaY/ZhWE9ygeUL0uVw6wsxU0oIV8ZnV4aFyJu1a9gUKmP4+qaw6sLCRQOHmqqx7c0G8H3IU70FZO8FiGEBrrGixEZK56W752i4vl/rzSAOVWYGWv2ApEjEE5f8Ff6tBOErYUZ96KAJ4G6QE1vgo/ry8KaoinloYLhjhkp1eIzEs3/ussUTKAC6rwawbiIEI+/2pjlIjfumdr5PTtNZgmkmecoY7BztflS+HMcPoUnXVaD+6uiHZ1Y3gjsFMN9bx0nE2/p6ttTeXYPsBDUX7MNWYONMHyNwTTgSJt33fToLIN5bE9Yaw/oYZkjTDny12SM7NV5zWXgtK67Vn3wxJIH7siXonA6EH0dYSnoHaEgcYFEIMIFtuD8PfAuKjrZhpYsbmrfsBU1Ve6wFrxi+g+0lZVcbJ53Vqu9zUy2vA3RtOD8ctDGYSPXGks9cnzdpiIRO+5+VXJ05/9mSHLFfYZsJPjk362uSOWOQPcqmRWVHuPF72vQyrZclGAzZxYOmlli6qyzIktU9StNzQ6jxWdLFzNyfbpHm/184HHdlSuCKyE1WkHVrbIow2KkH1bAZ4n+x0ToR/X93RUjbL+2qTOBHYVhbmULNlPxndUxz/iYstHw8GVbddzusUtuuUnmCRHi9nkEant+3gX3wV9LoQhJUAh5VHnaiJSm5HQWAWDTHGn5go9PEArWc9vh9r01RHtDuV2rEWNCvHlHcBkNHnfEtGnvT6Y5nqYZEWLhyZjU6LvBs3fu67NB2SIl+BHNLxqTSW9R/9afTAF+RzmA4D9nuaFLbGAwr2BHxEAku6aODxop6sG9kp6rA6Fv2bk4Jjf8+Lb8XSbJssheXYZhghC7HLkbm6zQmGBu18lmX02BNYoNDGlMGPgnIOpimMd5EW+0EsQzS84zUCCeUsnjrTIzTOv4z9Z8g5ewVYaAltpGTCvKoKiTxiFjTJr0Nz
- kVnRgbRj
- 6HwdVWjGthQV/zhrUDlR4EHlG6oVKKQQiCCuXPiZe+/q72lKRNa9Wz/RN5STVdo3NzkAPynDc0BiowjPvd5jde1kWcwzrzmQd+PyD4cCORQSL9bz4h4FPcnQr8O/ch3k/tD+binbuPfowGE3qXleO1kJ4JmfLpnLfwnzj8fqdcSgfM6NpB1olawZ0bkjpSO/b8Wr4BWphZPz5w6lR30JQhdpMfYy/aAeqb6lLzG9JejuxWcsh+uQpZ6cjAwrr+QTBqxKs6NGbZ5m8aWX091bRDqpUVm2xt/O8rRBYtm+iO9ODGeFG+O0rMjGF1aqIfPZLnZTZfTuueVk+FFxZSyPFYCaVAGVaX+YUPV4qqZ9Z7SBrPysVb3yinLljN9a4ZMeLP91D4D+g4P1t9Ws2JQs/o51h0ELu1zAOoBK+BwBSKt7f6gGqgVykwQNnQOG91us1Riu241P2klDF8rxvJrr7eJQ9RIoM8knH9uzrAE8OKrATb6IddV9CB0EfHHks213LbaIqSiYQwXIazvSfpwARTwQ1WpQU72RLOJ1Ju6ck+E8X2iQ=
+X-Rspamd-Queue-Id: A9AA1C000A
+X-Rspamd-Server: rspam02
+X-Stat-Signature: dxz5runbfk3ggyjxukti7wxqfyu1zr5m
+X-HE-Tag: 1759918655-3268
+X-HE-Meta: U2FsdGVkX18lVK5kHtD75xKEITFkoLIEaELfgfLIJl9iaoNB8tc2xV8+GnThkHNWdFHm6GyyG2SXYpX0yQmXE0XiSYjjlec0PpmJ4UQGXtmkHrtwIXNAeOUA69mIj06xBOycesvNBMkZswsRo1sY9S64Ss4EpeJck2bYeMxBE3bHUa6taXV4qaAqBohp4kGtxWvnvITcnbydX/Nz+m9NgasH09uFAAXoZujp7wRIZJaFMuGexfalWYIKraorEtqjC+O7RzvOvV4PKCOEiZNobmv6LWe4B+3QExA12Bq9JMeoXtxOC5RkF5cK06Gvnp46nXiCFbpc9YrArUYz92ZfweNMh3Zo+QOwGgzs0ueD9GnI5HvVE1aSliKl/oXE07plknmYiYi72GeZVqUHriAz8FjqiRrPSX2hs3HhopKOU2mnQpxXsqnXncIvCk1fizEXKhw1aJl7OSx65vbzvY0+CAD7/Rl6S7EjOey+XlCiBVoX5Kku2pbfR1kIK0NQk4YFaG0B6pXLwY0dALD0Sn3pQ6I52C3GPmsVXh4Vy8PHwqnQXoueTFG+Zdx6l2yIOOyIyI4qvnq9FDzMF/q5Kyk2il0fUIGo/4GAUnRzqSzL+bpg7PbnJeoTelHNrjaJeL0gGh0Ok82cR+4kCre+qoDIB2p8ws0AjeuAh0ObH99LWbqxHm0hMgyeC5nZ7WTmoKgNIUW6clAK/dFu/UO6vd8peN6QIhBgdVkBodd7gVIh1zEzLXLLG2PjeCSHZy5Z56P3YR3ZnSC5ALUn/s4Gg7EQsga+Gi9kJkpM7EgQdqDrVHdmIlfZMcoq3EnyZZamWtCHiT7bbrb78/Uzad7Y7XXMoAx+vLGpsiPEYAWJAbFG+scw54MkI3iKP5MddDrGXcgU2FpDz46K5Yrtkc7T4RMhnooN4R/gFyijzpUqX36Y0h57fXkARUcozAv6v8/Cjm7imx4y6jCql6jhZACzQeC
+ TdzaB0V8
+ 1kEF0fU1meq4ZsUINNiXyN/AfR3X1ZoIxdy6hCzgFD6UbBJKQzn6CSAR/o0CSjxcSHEmjlwoT6ZZzUWEPNmdleyWGZLnWDdu8gSrrtIXOIx8PEU0b45IyBT4hfQR4mxSed4pRkTi63R1Tdm0DBfOOW6UZtW2lk+in9ec8R7+lPBN0mDdiWtNl4nYGZSKIvJ0fnUALA+o3U0evxYAfkWsnFRXnj7Bt6CN4KJ/IUoODW5agVZxvfMWLLooCmWGjy65w6ijczQLJoM/NhTYDh7rbsCFu120lHL+D4JRqWE/Uh2SBQOr8UqpC5C5hA2jBpFD9Df8qL5ifLAjl62dNAtp5Kz4dxZh3xFnG1lnLM6aQx839KgDZYn5u+W9uBH/Ayt09feYMcUm63RX1wSl/80iqvCHlGcN0oQnxQIVq4k9hi3yizKOC3PeQOj1XycbyBVa4q2Zo9QKepj0+u6HM/k3aALKtkJ7KRv25Vi/W2UxAVmiTuBi1TcSeCceS+w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,62 +180,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 02.10.25 05:31, Wei Yang wrote:
-> Function pageblock_pfn_to_page() is introduced by commit 7d49d8868336
+> Current code may skip some part of the range to
+> pageblock_pfn_to_page() to check whether the range is in the same zone.
+> 
+> Function pageblock_pfn_to_page() is first introduced by commit 7d49d8868336
 > ("mm, compaction: reduce zone checking frequency in the migration scanner"),
-> where there is no requirement on start_pfn/end_pfn except they are in
-> the same pageblock.
+> in which it checks and isolates on the same range [pfn, block_end_pfn].
 > 
-> So at that time, pageblock_pfn_to_page() would be passed with pfn
-> without compared with zone boundary.
+> While after commit e1409c325fdc ("mm/compaction: pass only pageblock
+> aligned range to pageblock_pfn_to_page"), we operate on two different
+> ranges for check and isolation.
 > 
-> But after commit 7cf91a98e607 ("mm/compaction: speed up
-> pageblock_pfn_to_page() when zone is contiguous"), pageblock_pfn_to_page()
-> would think the range is valid and in the same zone if zone->contiguous,
-> even the range doesn't belong to this zone.
+>    * [block_start_pfn, block_end_pfn] to check it is in the same zone
+>    * [pfn, block_end_pfn] to do isolation
 > 
-> For example, in fast_isolate_freepages(), min_pfn is assigned to
-> pageblock_start_pfn() and passed to pageblock_pfn_to_page() without
-> checking with zone_start_pfn. And mostly, the end_pfn is not checked
-> with zone_end_pfn() before using.
+> It miss some range to check when start_pfn and zone->zone_start_pfn is
+> in the same pageblock but (start_pfn < zone->zone_start_pfn). The range
+> before zone_start_pfn is missed.
 > 
-> To make this function robust, check the range is within the zone first.
+>           start_pfn     zone_start_pfn
+>      +----+-------------+-------------------+
+>      block_start_pfn                        block_end_pfn
 > 
-> Fixes: 7cf91a98e607 ("mm/compaction: speed up pageblock_pfn_to_page() when zone is contiguous")
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
-> ---
->   mm/internal.h | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 38607b2821d9..8e1a3819c9f1 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -724,6 +724,9 @@ extern struct page *__pageblock_pfn_to_page(unsigned long start_pfn,
->   static inline struct page *pageblock_pfn_to_page(unsigned long start_pfn,
->   				unsigned long end_pfn, struct zone *zone)
->   {
-> +	if (start_pfn < zone->zone_start_pfn || end_pfn > zone_end_pfn(zone))
-> +		return NULL;
-> +
->   	if (zone->contiguous)
->   		return pfn_to_page(start_pfn);
->   
+> This leads to the range check is passed, but it will isolate a range in
+> two different zones.
 
-fast_isolate_around() adjusts the range to the zone boundaries before 
-calling fast_isolate_around().
-
-isolate_migratepages_range(), isolate_freepages_range(), 
-isolate_freepages() and isolate_migratepages similarly all seem to take 
-the zone range into account as well.
-
-Only fast_isolate_freepages is a bit more tricky. It definitely takes 
-the end into account. The start comes from cc->free_pfn but IIRC it's 
-always above the zone_start_pfn.
-
-So I wonder -- if we want to add such a check --  whether it should 
-instead be a VM_WARN_ON_ONCE()?
+Can that actually happen? I recall that a zone always spans full pageblocks.
 
 -- 
 Cheers
