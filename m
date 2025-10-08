@@ -4,86 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5213FCAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 16:18:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E31ACCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 16:24:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40D968E0044; Wed,  8 Oct 2025 12:18:03 -0400 (EDT)
+	id 750268E0045; Wed,  8 Oct 2025 12:24:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E4938E0002; Wed,  8 Oct 2025 12:18:03 -0400 (EDT)
+	id 7278C8E0002; Wed,  8 Oct 2025 12:24:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3218A8E0044; Wed,  8 Oct 2025 12:18:03 -0400 (EDT)
+	id 63E8A8E0045; Wed,  8 Oct 2025 12:24:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FC208E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 12:18:03 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E5CCB160675
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 16:18:02 +0000 (UTC)
-X-FDA: 83975453604.03.BB50A77
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 229BB80015
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 16:18:00 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VrGcwYCL;
-	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759940281; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FA988E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 12:24:31 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DFE0559EA0
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 16:24:30 +0000 (UTC)
+X-FDA: 83975469900.08.7C2C1D3
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 8E8D01A0014
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 16:24:28 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b="VD+mXCx/";
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.44 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759940668; a=rsa-sha256;
 	cv=none;
-	b=keuT4Hj/lyBgR+ZIss7xHIX4y2diQCJCM2Jmq1wLhwxHnjFfA/9DrCoKSDww1qMpzCgACm
-	eI0iaBgRGN+zaQphJ9MmC61VShMc3fsKM4+/XesTYOdw3oa7dZZgIRk5rVa0Vx9lOoPDzI
-	Lm04PkOSiJfPxFwX4NkoGYserTC+GQI=
+	b=Nc+dZ1OrUEaXP+61Hrlz4LqF1pyRfH04kRy0PZN0hYLOprZHCUGnkngC5VVVotiCqIfe9I
+	AqgH5y/FKP5O4o0j27XiJNR2Chj+cvU79V1Xeho7rPf6fNWRRD7EPQb+bE+UZCHnWIxfEP
+	V3cIMgzp5gr2zckOUg/uoDKQCI6B7iE=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VrGcwYCL;
-	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b="VD+mXCx/";
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.44 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759940281;
+	s=arc-20220608; t=1759940668;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I6aq5SwqQxzUQvtsSeg2YfAbu8H4ci5QlEizppPzgCA=;
-	b=uXXKMEJ2hXb+eHaOL/rI3w9g6mLRaj0f6pw8n0HhVR9Edt65rYIcePTnKDNNM5hAhka1ID
-	Yssaz4ZSHPmyu+/8/59hwPO71RuwfBBQo6bQpAPpmotUTwq5hbWEWAnEhB5MPGBMgsu7ba
-	NdTQ+U2+l6gRs6sBIuF3s/v7u0wmy1g=
-Date: Wed, 8 Oct 2025 09:17:49 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759940279;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I6aq5SwqQxzUQvtsSeg2YfAbu8H4ci5QlEizppPzgCA=;
-	b=VrGcwYCLWpAJ2NulmMTuWCkvfMN/ckxDBVcdI0JkZMWibwGNfNcSz/5/hPzNCk+XrhbUe1
-	myi6ilVzSrQ7r6HM3rqz3YYyDmKybND1HHfKj1m4t9PDNTaLX/mGmlHEPJwWjzKzNRJx+l
-	cpzd1/qjHqNrKn+W568iUpWpU4HjwYc=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com, hughd@google.com, yangge1116@126.com, 
-	david@redhat.com
-Subject: Re: [PATCH v2] mm: skip folio_activate() for mlocked folios
-Message-ID: <ltvv3v4vibvlglpch6urayotenavpzxc7klbcyowjb4wrv3e7z@pzovtvtbmnsp>
-References: <aOPDRmk2Zd20qxfk@shell.ilvokhin.com>
+	bh=gGv8gU8Wgrbxfvqd2t7G8Us4a0ybRRasjTDl8ZOYS+I=;
+	b=Vt6zbV07ZrVYU7cmFzABPw57+mcfl+udm3XtoOnKOfICtRbuXSGDIEodAn89NMQlFyGYLb
+	5MVs/dc4k4CyCxFoCKNLL6CSYU3Y20VJpRV8En5Q/XWpuUpeJ+qNDN/bkNHIczXn6yn1hn
+	Dj0IvDVJ5GsWJkPPU6aHOA+aqQjbkIo=
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6318855a83fso183188a12.2
+        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 09:24:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1759940667; x=1760545467; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=gGv8gU8Wgrbxfvqd2t7G8Us4a0ybRRasjTDl8ZOYS+I=;
+        b=VD+mXCx/g/5BvmPRhsMCjiakWdL8GYPdPXPsqL70VHX75rL/j3jZj0jDIwXjSGeYpB
+         AOmxjKCe0Cl5BZqWbj7I+7ep6wh2xNhSK693gv0sW9862VWEPeA4MR/WCJMCPzEkXDq0
+         5j1+eZ2sm7Hpi2KliZv1aAjgBfd1MIZ6tG39Y=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759940667; x=1760545467;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gGv8gU8Wgrbxfvqd2t7G8Us4a0ybRRasjTDl8ZOYS+I=;
+        b=AAX0MBuaC8hVlGQzocXCCcPiqs2Vs+4E+dY4dyE+zjpvssd/V8EU+gV2JQRVrgFNxL
+         AWCBnoL4+0KlANNmu4/6yiGx9dmKXboEaU1qWO9nHLzNmcL+e/+sOZjiWSar2boaGGAy
+         1mn7TvnCLndcHcqvA2FAH6JNJ/Wq0ikBm0QcW/ohBtO9VRdT6h6E3bjNn2YJM4a4ZNFC
+         PzXKORhrgjEvhIzhQYcPQaxjTGxyzJ8hMB5dqCOwpsZhjn7rM67M1q4DNQaPlr3Rrw2r
+         iDLY7C5sPwoJ4apwEq0WUj3vTmvkLTN8Uq+bgvC6NcoA+cTiZRutMx5qDAeRthYxtkvv
+         dJ2w==
+X-Forwarded-Encrypted: i=1; AJvYcCUiUll/+CW1C0fOiGh0mV4LJ3GMHGGCTlp8kVtNtdh/w7tpZeQptWroMOkDnk6j9H2d0BiK/aiCLQ==@kvack.org
+X-Gm-Message-State: AOJu0YxFycxb1axlYApZ1nv+O1j6RZcrlL6mcViqg8Xedq+Hlv2lt4E8
+	60up38kLCUXCC/waoxwUuRrp14ZIjf9TO9n2ACovSEmazWpPx+LrwU8REByiismSIKhB8+sB2g8
+	10l1wHCE=
+X-Gm-Gg: ASbGnct0322lQ8mOwYbmnI03X1B1QSPBOZAsi1ynw7MKyvTQKxaiiTYnBYrfa1FrGAo
+	LfSeUCp8cA9eZ4vkxTML9TrZXOzuQQ+oOHlb0Qhej4DKJ06qCJ3LKy/NdecdIwSh68kprOvKBxV
+	1bPsT8s5tRodfdzup1t9QNmoMs2HiaelBQemOKDBzs+ElHYLY/zQlEcVtt6795OzMX3Qacjkxtt
+	pcNfdNSGoJbTFj1A27gRbqOG/gjfWuwF3OwZAH9Q7iSiQYdMGg+qDVZrCbxy8uCs2Hlgv8WYJFK
+	pGXv9Rfazcynw5PkKxVCh16Wih8Q0zDGH+yJKmDL/H2dIwMBTY7FxwGHuFeFQvuVgt3gxgVKPPy
+	1EY+tIKtRcZvdLkI/oLySMZet5dkgy23z1TPm0ZEorujAKJqg/+5LvSnn3M8q8s8QVdJvYmIRk5
+	ovoA3I7hhMn4P2XGznNkQXOiQJ+d6Ogo4=
+X-Google-Smtp-Source: AGHT+IHK5VcQyu35jqEev4Rodb4l9u78NBAW576siMZGOdifu6DZiSafV7rpkRFGUGhy6AqDSjkLhg==
+X-Received: by 2002:a05:6402:1e8a:b0:638:1599:6c34 with SMTP id 4fb4d7f45d1cf-639d5c38143mr3494340a12.21.1759940666581;
+        Wed, 08 Oct 2025 09:24:26 -0700 (PDT)
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com. [209.85.208.44])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-639f30fb7dfsm342354a12.19.2025.10.08.09.24.25
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Oct 2025 09:24:25 -0700 (PDT)
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-63963066fb0so1235777a12.3
+        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 09:24:25 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWAzbti1d6Y2Lmc1yLmnmWdEijmQcpOZb48yj8li8hwWKzeRBztvHDCScnCAUfa/0D1RYmcLRnM4Q==@kvack.org
+X-Received: by 2002:a05:6402:5193:b0:634:c1a5:3106 with SMTP id
+ 4fb4d7f45d1cf-639d5c5a3dfmr3717885a12.31.1759940665182; Wed, 08 Oct 2025
+ 09:24:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aOPDRmk2Zd20qxfk@shell.ilvokhin.com>
-X-Migadu-Flow: FLOW_OUT
+References: <CAHk-=wgy=oOSu+A3cMfVhBK66zdFsstDV3cgVO-=RF4cJ2bZ+A@mail.gmail.com>
+ <CAHk-=whThZaXqDdum21SEWXjKQXmBcFN8E5zStX8W-EMEhAFdQ@mail.gmail.com>
+ <a3nryktlvr6raisphhw56mdkvff6zr5athu2bsyiotrtkjchf3@z6rdwygtybft>
+ <CAHk-=wg-eq7s8UMogFCS8OJQt9hwajwKP6kzW88avbx+4JXhcA@mail.gmail.com>
+ <4bjh23pk56gtnhutt4i46magq74zx3nlkuo4ym2tkn54rv4gjl@rhxb6t6ncewp>
+ <CAHk-=wi4Cma0HL2DVLWRrvte5NDpcb2A6VZNwUc0riBr2=7TXw@mail.gmail.com>
+ <5zq4qlllkr7zlif3dohwuraa7rukykkuu6khifumnwoltcijfc@po27djfyqbka>
+ <CAHk-=wjDvkQ9H9kEv-wWKTzdBsnCWpwgnvkaknv4rjSdLErG0g@mail.gmail.com>
+ <CAHk-=wiTqdaadro3ACg6vJWtazNn6sKyLuHHMn=1va2+DVPafw@mail.gmail.com>
+ <CAHk-=wgzXWxG=PCmi_NQ6Z50_EXAL9vGHQSGMNAVkK4ooqOLiA@mail.gmail.com> <bbagpeesjg73emxpwkxnvaepcn5hjrsrabaamtth2m26khhppa@7hpwl2mk3mlc>
+In-Reply-To: <bbagpeesjg73emxpwkxnvaepcn5hjrsrabaamtth2m26khhppa@7hpwl2mk3mlc>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Wed, 8 Oct 2025 09:24:06 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiZvzPZbzWt2Cuww3myOjQmvoaRtqme0jRawoUQnvWCrA@mail.gmail.com>
+X-Gm-Features: AS18NWB5H0D_6NxOrszgcVIeZjT3XVd-PPCC5ZrYzJUv77q1XMrMBBR0-VbvhII
+Message-ID: <CAHk-=wiZvzPZbzWt2Cuww3myOjQmvoaRtqme0jRawoUQnvWCrA@mail.gmail.com>
+Subject: Re: Optimizing small reads
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Matthew Wilcox <willy@infradead.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Linux-MM <linux-mm@kvack.org>, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: qe8pwhik3i6prrzmw37xc4syuowwt335
+X-Rspamd-Queue-Id: 8E8D01A0014
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Stat-Signature: id7uaw6ptjai6stk498tqci3oo4hsqq9
-X-Rspamd-Queue-Id: 229BB80015
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1759940280-762605
-X-HE-Meta: U2FsdGVkX1+OrLtWuEbAWR2+gqhT1vMQyyNSg2TCs9DjEzBmvALhjg3K5KVzgQTi5bOydJso6Wm2Lequp3Df1amRxRugFG+x70M9Dk4pQeq9Ugfh2XSYzKcr6vpYQBS32nxRrJ42H1KqPBwHVTbNlc3TPYL+5m+r1gyQKvlaW4BbfJEidHsnNhxw+YwwmPuFcdff/xk7h8cBZ1CaEHl0GKcjO4OpGr3Mnj00R/mTs/kwNqSzzOKqOu+MJP9fkd75W/xPYnT2ReK5y0T5YhVzMHeKKKDywCWexe7KlIjmsyic/YGoHtO3et5t3AgWvV1/gjHlN/UrjJFvYPLCPQ/KC9pcilDLgwmH3pcB40VjdZW+hF/8LXIXwivtV/n+vX7fAeOK2CE4whzsEBasgr6Og2VDPv70GuJIpOu1VyJ6uthOopwNS+YSks22aL5J6AR5+eHZytyyd+WfD4z2jDoMZpIup2jfz/8ugHUT5aYTOZxzwyX3W+TAiz1qWzCee8oRhtvf7nwg+x1l5/pmz1nuTKowY9RzF2JIT/1+ILOzJchcsdQU5ZEX7Y5tDXQuMbh+ajOLfi544Urlua2pnvF8IVYuRr7v/BTgEVlSkRsNulI8A3xdNYM7eZWTyb9A+vPoG5OWYIki1Xx7Wa8q/8F7bfbgqoCe0u5jZv3Lean1Wj9oc4fo9INOQ459BG5IbDrMcQyjF9zBUOSUeUHRhtT5wI4plZYqQT7mVCFH0e2qieQvvNZZp1U/nGDZfR7MzCPqOOqOvIywwmV7KqRdaVLkeXUluspLo3nStlPTWik+uDRc06m+q4Is8x2dsBSqFm2TAt2aETeKyWFaFZP2LCNXH6q0nTpMm3v8jL9eDeO+8sQq7Zw9LejGTZRWm9v9/eYt8PsH6zV5p/r7Af6FLcCnOeeVItZmZG19RGo1YyG87O62k3vTflOiulD4VjwYreSGVxVfoeaKlO0SRpCYKZi
- SJwEbLHS
- PFPNpvM8n+M5IwpUnlVP9imOM4eAKs9YA/T4btVIo3SHyM8x+MdZzzWFwYc+8a3YT+Ep17+2m2NDUIcyiteHrbCMBoKoyvSAOdbIxe3E/UFy03rmgfD+ueeM76JBrXy/8Em2gSOq4Pb4NgU4u4Txs1PWSVA8wKmZoZOqvu+ZzlOzXJ1hPITdyXrJAfXUpNGLkg0FP7dRz77P5vU78tOR/q9rC/iekI0q67xcDdeDXSIld7ixqpwqTvCTxyfCM7oZ0HRe5DR5jgjijsILtIh6vlMYlO1H6R2fb3NqeP7LXcQtyJOQhW0UzXOqrTToqk8wCLKtob0nnb8cvChy3RLS42Lg2uOdX6AKZLkAWxL7Yi6l1crhNfVNrV+QuNXi9ciJo6Luse/2BerNEfMYbTowiKkRIkQ==
+X-HE-Tag: 1759940668-234293
+X-HE-Meta: U2FsdGVkX1/vVuh5UUmcVcPg4tZhtbPe13cf9GJbglw51xsXDgWseUErap68GAaVTBTdGaCu8AqavWEoa5C7IHv0btI+4ZKRWcqbpa07XTLwppk7F0dIW+PFE//UElgr7rOlLaY4WXhuVlUKRmSVKygX8r3kgHCZ9rXjV1lLGnRjJMkejKJpOX9VliybGVdrCwge/VVV5UOM0idJ/BptjxCRY+z0rOuK07gcVxNrM3QDYS+ohSpdH37VOy5Zp5AAghm9pfAFUJ0Z3XgQ85iNGGE5LMhBnGNWWZhtqg0InnRyPlWlAiW1qExQGpZFoGCHTE7wpbq3j/7DS3CRRwGmYOU9WeJoGtI4OopqZc+vAH6MTh+bwRtMr6LBcg4dS7GhQAFw8vG1QAUtZfDFLF541d/7hY7pibF221bH8weTUZ04LIm/FxV8pzA9Er1jAc0k0JD5+ogWZmW/TUia8uU9ezCuVrO4uj82gcflotq6ECq4DJ6ay4AgkBQRrEH8E9xfXy2/oP+8YXY8ArI0gSBjUZJi7rvejQSW97/gtXi9R0hb9vnvAP7KI3QWus2WITcpKeeSTawnovTJZrbRWCSaWymOtpiijCnMSTq3HDtUTbCjmZDIRmAbxXDKEEz5lpznHjpMEZFP5LUch6l0cGsKRZAiKrcKWgKvMG4PyjuadJTL/tNGRi3vs6WbDj29NyAdNfZ+quvLzi0ZSBIZigDnvPbfqgoFjeu749W9MybKkitflBlmjG5fPCClDcGaE+p/M0UNQiBPtQKr4nwcfRMsudEZ4rmvMOk+g8mXVnGiOtcDtffaVSCzJ+el8VgeUKBincxhbaCveQ6uyNyMDZkmHxW4P0wAwpjq3KBNKXLaaSiCp6+b8u8BXhsZVf8CIuG+wD6BqaxXn5F+asgG1OqnNokMFziJQgyshynhNKN7STgkKfbUV9yZUDW/D2eNm+9NGSXNRBxZt19ohhlwFll
+ DMkZ82zo
+ 4Qshf0ukYTcoo+TtXloHUCj22G4h1TK5kCHs7tVC8n+cIk8HdFb0IF00qUXWbbNi41NZ9EcUu7eLUg3AlAcw9edvV0F7+2p3dxTXnnZeGldl9W3LLLWwEiZggp652JRZt3folS1i+1gid1n1EoDE3zuu4VUXMy7O61aZUBdfAcHJXajQTvmEEs8+B1BLwtMm5tm8AzkcRGXs9D2vd2qzjkxHDTQW8/Wo3oeFfWU0/ylBeKBT+DVyW5Jg6CIeyMH+WoxkYQIyKDYWuaqD6Xh/EidjZMkN1y12ijNmc+pzmf2wlcDNv46yLxVS2a0r3Hui2jutTVExLEy5DIWkKAWeVDiEahCPHf6P8pWy+TgEKWGoVk8l91ZlMpPNGIM2frYn2POln1iCGz0K4opLtUfz8j41uwsC7GUt85Ob1ME7Kpz9weDJrZ/rxfJRONOxSYXNV6pOAuWxLJIi6UdxTTe0/a0oCk9fQlOGH/eHX/mN7BWnS2faLCPAVXUJho3xj+oBOa1Ek
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,81 +133,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[Somehow I messed up the subject, so resending]
+On Wed, 8 Oct 2025 at 03:28, Kiryl Shutsemau <kirill@shutemov.name> wrote:
+>
+> PAGE_SIZE is somewhat arbitrary here. We might want to see if we can do
+> full length (or until the first failure). But holding RCU read lock whole
+> time might not be a good idea in this case.
 
-Cc Hugh, yangge, David
+There are other considerations too. If you do large reads, then you
+might want to do the gang lookup of pages etc.
 
-On Mon, Oct 06, 2025 at 01:25:26PM +0000, Dmitry Ilvokhin wrote:
-> __mlock_folio() does not move folio to unevicable LRU, when
-> folio_activate() removes folio from LRU.
-> 
-> To prevent this case also check for folio_test_mlocked() in
-> folio_mark_accessed(). If folio is not yet marked as unevictable, but
-> already marked as mlocked, then skip folio_activate() call to allow
-> __mlock_folio() to make all necessary updates. It should be safe to skip
-> folio_activate() here, because mlocked folio should end up in
-> unevictable LRU eventually anyway.
-> 
-> To observe the problem mmap() and mlock() big file and check Unevictable
-> and Mlocked values from /proc/meminfo. On freshly booted system without
-> any other mlocked memory we expect them to match or be quite close.
-> 
-> See below for more detailed reproduction steps. Source code of stat.c is
-> available at [1].
-> 
->   $ head -c 8G < /dev/urandom > /tmp/random.bin
-> 
->   $ cc -pedantic -Wall -std=c99 stat.c -O3 -o /tmp/stat
->   $ /tmp/stat
->   Unevictable:     8389668 kB
->   Mlocked:         8389700 kB
-> 
->   Need to run binary twice. Problem does not reproduce on the first run,
->   but always reproduces on the second run.
-> 
->   $ /tmp/stat
->   Unevictable:     5374676 kB
->   Mlocked:         8389332 kB
-> 
-> [1]: https://gist.github.com/ilvokhin/e50c3d2ff5d9f70dcbb378c6695386dd
-> 
-> Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> Acked-by: Usama Arif <usamaarif642@gmail.com>
-> ---
-> Changes in v2:
->   - Rephrase commit message: frame it in terms of unevicable LRU, not stat
->     accounting.
-> 
->  mm/swap.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/mm/swap.c b/mm/swap.c
-> index 2260dcd2775e..f682f070160b 100644
-> --- a/mm/swap.c
-> +++ b/mm/swap.c
-> @@ -469,6 +469,16 @@ void folio_mark_accessed(struct folio *folio)
->  		 * this list is never rotated or maintained, so marking an
->  		 * unevictable page accessed has no effect.
->  		 */
-> +	} else if (folio_test_mlocked(folio)) {
-> +		/*
-> +		 * Pages that are mlocked, but not yet on unevictable LRU.
-> +		 * They might be still in mlock_fbatch waiting to be processed
-> +		 * and activating it here might interfere with
-> +		 * mlock_folio_batch(). __mlock_folio() will fail
-> +		 * folio_test_clear_lru() check and give up. It happens because
-> +		 * __folio_batch_add_and_move() clears LRU flag, when adding
-> +		 * folio to activate batch.
-> +		 */
+This low-latency path is unlikely to be the best one for big reads, in
+other words.
 
-This makes sense as activating an mlocked folio should be a noop but I
-am wondering why we are seeing this now. By this, I mean mlock()ed
-memory being delayed to get to unevictable LRU. Also I remember Hugh
-recently [1] removed the difference betwen mlock percpu cache and other
-percpu caches of clearing LRU bit on entry. Does you repro work even
-with Hugh's changes or without it?
+I agree that the exact point where you do that is pretty arbitrary.
 
-[1] https://lore.kernel.org/all/05905d7b-ed14-68b1-79d8-bdec30367eba@google.com/
+> filemap_fast_read() will only read short on EOF. So if it reads short we
+> don't need additional iterations.
+
+That's only true in the current stupid implementation.
+
+If we actualyl do page crossing reads etc, then filemap_fast_read()
+will return partial reads for when it hits a folio end etc.
+
+Right now it does that
+
+                /* No partial reads */
+                return 0;
+
+but that's a *current* limitation and only makes sense in the "oh,
+we're going to have to fall back to the slow case anyway" model.
+
+In the "we'll try again" model it's actually not a sensible thing.
+
+            Linus
 
