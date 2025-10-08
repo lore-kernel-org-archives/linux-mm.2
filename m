@@ -4,122 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25620CAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 15:23:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE4F7CAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 15:30:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5678D8E002B; Wed,  8 Oct 2025 11:23:50 -0400 (EDT)
+	id 21B638E002C; Wed,  8 Oct 2025 11:30:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53F7C8E0002; Wed,  8 Oct 2025 11:23:50 -0400 (EDT)
+	id 1F2FE8E0002; Wed,  8 Oct 2025 11:30:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 454BC8E002B; Wed,  8 Oct 2025 11:23:50 -0400 (EDT)
+	id 1081E8E002C; Wed,  8 Oct 2025 11:30:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 348688E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 11:23:50 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0679713B66D
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 15:23:50 +0000 (UTC)
-X-FDA: 83975317020.07.760006B
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	by imf01.hostedemail.com (Postfix) with ESMTP id C933140014
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 15:23:47 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=DqRiEOvz;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=mhocko@suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759937028; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F20F68E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 11:30:11 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7E932C060A
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 15:30:11 +0000 (UTC)
+X-FDA: 83975333022.14.8E5BAF1
+Received: from pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.83.148.184])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 669F2C0006
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 15:30:09 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=EkdX5s2t;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf10.hostedemail.com: domain of "prvs=36971892a=farbere@amazon.com" designates 35.83.148.184 as permitted sender) smtp.mailfrom="prvs=36971892a=farbere@amazon.com"
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759937409; a=rsa-sha256;
 	cv=none;
-	b=oadPwYbC7GrRh45Yceo/6QkKp66/uOp9fSwJXg0+IHswbU//q3+tLWbGYsobH574wYO1TW
-	mHRIfBxaftC6dNMDFVgGufrtZhhyGskSjeB+ooW+8KXPm/maqIaNlLaFMH4Rp5z3WwN3iw
-	q9JKx8oE8Vea0xgcvpcDXcoUd8ZSMW0=
+	b=ptR4HdHMba0hSCsakazIcrva5SEJIMyHM4ojKfpvt5WCsl5vXiZOVD6Qx0Yo51WV26M8W5
+	jMjEN7uF2utoieEf2b/aqe25vzyV2l4/pyxMEJJnJ1SR9gy4qxF+49kCZbCGlfZbVsNUaD
+	sqbLxk8f65KSzx04W8KpDK5MFjeTN9A=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=DqRiEOvz;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=mhocko@suse.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=EkdX5s2t;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf10.hostedemail.com: domain of "prvs=36971892a=farbere@amazon.com" designates 35.83.148.184 as permitted sender) smtp.mailfrom="prvs=36971892a=farbere@amazon.com"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759937028;
+	s=arc-20220608; t=1759937409;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VEFKGIEcuas2Pari3eoGaAS3BufIbyvqNDimCw+KvpQ=;
-	b=Kk66Ur7XeHr0vl1DNII6uZHfS76Fb34+pPBgTY8sQiV/wzYoJjRp14Mu7ft0Dl8cAtG0ZE
-	13OrjpWjKZGt6iUUGtvh/lzizevsGP8znfdtWNhTh/VYvTNlCtQPbU5EYS/DJZljSkY+75
-	PbhDwfhsmDmnUrC+3gbX0J26oKdnva0=
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-afcb78ead12so1375959966b.1
-        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 08:23:47 -0700 (PDT)
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=6cTKEV+ZWAzAeKhYDhuZKam17XzSPB7XFB7f4qhxTuM=;
+	b=5mGuOAD91hzVkKyMoyzc6Olqkkno0xBXrgw7MsOGzk1wnCtQx2UqxRzk7ZtiiWcFDci6pJ
+	6hxn/rkFuiRTWxoyuAdHu4sp5bIVrcLHCMlxjRX+iP6vaZoqFtoec1HAvf4IZtPoa5X/Xm
+	2IgZKTiaio7vWBHaNT1pTm5yOmI5gug=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1759937026; x=1760541826; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VEFKGIEcuas2Pari3eoGaAS3BufIbyvqNDimCw+KvpQ=;
-        b=DqRiEOvzVOhLHbPeGWNqB+PRvcOsNZ9KeOP+ssryMs3eubJHboQXsRL2I0W8IPzYJK
-         zUc7iJcaemslQ3GC8+dqOLpo964qzUATr+ljkUL9KGJ2Ilg+pO5LOFitPhqj/35zrAif
-         +B45jfWcYLQBzFHft2MJVxBI/b0IBajDDvleqT1jpqFnc1tA7ZWRlVPexUJTVi/wr6cg
-         F+y6FhdJNFsVYZKP12r7uiGksN3he4pvQvM3d1C7fK6eWkk35uerze1vhZQaAxYOXQgY
-         WtA1G374RayZ2KQbcXumIZmUhtq/Umay9QmdB9uJucNW2OHqGKNljz5hiWB9cRo64jR2
-         LW2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759937026; x=1760541826;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VEFKGIEcuas2Pari3eoGaAS3BufIbyvqNDimCw+KvpQ=;
-        b=kPji4bHksnu/+g8CUOujbS/PEiX2AXKyfQMLa+kLZQBIgG2KS+V6Hc4quvW+SkrgJm
-         otH0LjZ4BYJjKF+thshsVTFHZM24vCs/R1W2j7DFV+nh04EOUP2yiW/Pmwa4jSjNJsPa
-         bbI9t8H6cnOwoKbh75ewMs8pEbzxVwchEkoI0xQUC/UuDs7oGhJCHCCYT+G/e0zORAfa
-         ZgxNiF8hNGVbRQjjCIy4M2u+ap36jmEDzpoJjTPsOue/qfHhMy/qMuQodBSMzFKTJ4H2
-         YM73W8wkItIRLz53kJ9nLkTwp0gD3BNHpWUrDLPqpqPx0nkUv1ZmrYO858sFR8OCOgyu
-         n8UQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX8JQBAcswm+02Pjg2W78iI/13e88qWB1A/gyKKmwM4pyOzxhwa1FW7/qMPf9G53qPUOYFi0ITfTw==@kvack.org
-X-Gm-Message-State: AOJu0YwZyl6doh5aiwp5cFgQ1xDWAbfc7FH19EB5Knx6YmsMhYwF6Znu
-	Dz2ILWk07JjxsnpLxs3mpLeROH8JMyPkhQ+pJ9jhenXnQTLhBNS8LUPN8HVKmGThkKs=
-X-Gm-Gg: ASbGncsBUGXyOxHZp7prESWlXy8T7Rs/l2Y0U4mwZvk2LfvAvyQ3/ZNLcRjnds/yi8k
-	Jp3ypJnM3DDRJX4kUag0dzuIPtOBacU6n66SfDoJ5+QuptKJ8OKpS4tcS24QqD5b3Prdot0TeKW
-	2bYOIE1LkIWho3UZ/F+B+33ZDlDqGo+ZB/VJgaRiHW7rmffzVEEdFJ4+r6piuqnZ9pI5Xv5kP01
-	9eFul7FLj354aZ2LMuNkOmkTl3xUM6KdcUxInOuePcEYgRURHd2jq5SHoVyBKs0HHVUro23rfBb
-	4uqbgTPMK66iLUkvdSl8qQvC3iP7bTr0TQDHEFcRT6w+WhwfWW6veW65ElAZBhIOLqTMsk2fz36
-	ywumogwy/3Hn0zMc8v9Den6n8FNiubjt5fnjbl/A+Fuz3jBj6qf/zoGyLlW+o
-X-Google-Smtp-Source: AGHT+IGNuMGqHdw+uNNDnAnIMkPJmLsC8kdVFIi2VETZkBtQkqYRsFlkZfBi/u6TL2LUyonVmTrK0w==
-X-Received: by 2002:a17:907:c14:b0:b45:8370:eef6 with SMTP id a640c23a62f3a-b50aaa9d0f5mr485367066b.19.1759937026160;
-        Wed, 08 Oct 2025 08:23:46 -0700 (PDT)
-Received: from localhost (109-81-95-234.rct.o2.cz. [109.81.95.234])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b486970b2ffsm1711555666b.47.2025.10.08.08.23.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Oct 2025 08:23:45 -0700 (PDT)
-Date: Wed, 8 Oct 2025 17:23:44 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org, corbet@lwn.net,
-	muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org,
-	hannes@cmpxchg.org, laoar.shao@gmail.com, brauner@kernel.org,
-	mclapinski@google.com, joel.granados@kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Mel Gorman <mgorman@suse.de>,
-	Alexandru Moise <00moses.alexander00@gmail.com>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	David Rientjes <rientjes@google.com>
-Subject: Re: [PATCH] Revert "mm, hugetlb: remove hugepages_treat_as_movable
- sysctl"
-Message-ID: <aOaCAG6e5a7BDUxK@tiehlicka>
-References: <20251007214412.3832340-1-gourry@gourry.net>
- <402170e6-c49f-4d28-a010-eb253fc2f923@redhat.com>
- <aOZ8PPWMchRN_t5-@tiehlicka>
- <271f9af4-695c-4aa5-9249-2d21ad3db76e@redhat.com>
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1759937409; x=1791473409;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=6cTKEV+ZWAzAeKhYDhuZKam17XzSPB7XFB7f4qhxTuM=;
+  b=EkdX5s2tLbOjIdVoBR/fdVIPdFmvTQ3HokleyTqmIIYAbQFb7xCp0EBS
+   ToyPi1EjghnPvrsB0QYA7H1RD3x1nlutb+vK8PiEVpTaLZtHJiquwa3D7
+   uASWKsPHvPteR9CD0Kq+pqP7GdThtycTgk+Yx93hqAxKKB1hyukWCF1L4
+   dqQjwr66JDWab9yTMFxGRx+dVYO6f+4Gk7rix5/u0Oe2/TaScMZOjqs3s
+   FBcL2iaJ26yWluRRSB2ITJJbHPtBU9k/Zqowjrj4/EqhxJyXXk0O/yqgs
+   kXb4X1ttPos/wzZiRgUS69mvbAl0C9DmbAdfeh3NsngYP/BoXp1s2UtS5
+   g==;
+X-CSE-ConnectionGUID: +r/ORJCDT3mdkeM9bLhVCA==
+X-CSE-MsgGUID: 5xwXbkFvQYqm5UYp+BBs7A==
+X-IronPort-AV: E=Sophos;i="6.19,213,1754956800"; 
+   d="scan'208";a="4330400"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2025 15:30:06 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [10.0.38.20:22420]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.27.3:2525] with esmtp (Farcaster)
+ id 93ca9f84-9d14-4911-90f5-a97300a639c2; Wed, 8 Oct 2025 15:30:06 +0000 (UTC)
+X-Farcaster-Flow-ID: 93ca9f84-9d14-4911-90f5-a97300a639c2
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Wed, 8 Oct 2025 15:30:05 +0000
+Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
+ (172.19.116.181) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Wed, 8 Oct 2025
+ 15:29:52 +0000
+From: Eliav Farber <farbere@amazon.com>
+To: <gregkh@linuxfoundation.org>, <jdike@addtoit.com>, <richard@nod.at>,
+	<anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>,
+	<luto@kernel.org>, <peterz@infradead.org>, <tglx@linutronix.de>,
+	<mingo@redhat.com>, <bp@alien8.de>, <x86@kernel.org>, <hpa@zytor.com>,
+	<tony.luck@intel.com>, <qiuxu.zhuo@intel.com>, <james.morse@arm.com>,
+	<rric@kernel.org>, <airlied@linux.ie>, <daniel@ffwll.ch>,
+	<maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
+	<tzimmermann@suse.de>, <robdclark@gmail.com>, <sean@poorly.run>,
+	<jdelvare@suse.com>, <linux@roeck-us.net>, <linus.walleij@linaro.org>,
+	<dmitry.torokhov@gmail.com>, <maz@kernel.org>, <wens@csie.org>,
+	<jernej.skrabec@gmail.com>, <agk@redhat.com>, <snitzer@redhat.com>,
+	<dm-devel@redhat.com>, <davem@davemloft.net>, <kuba@kernel.org>,
+	<mcoquelin.stm32@gmail.com>, <krzysztof.kozlowski@canonical.com>,
+	<malattia@linux.it>, <hdegoede@redhat.com>, <mgross@linux.intel.com>,
+	<jejb@linux.ibm.com>, <martin.petersen@oracle.com>,
+	<sakari.ailus@linux.intel.com>, <clm@fb.com>, <josef@toxicpanda.com>,
+	<dsterba@suse.com>, <jack@suse.com>, <tytso@mit.edu>,
+	<adilger.kernel@dilger.ca>, <dushistov@mail.ru>,
+	<luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <pmladek@suse.com>,
+	<senozhatsky@chromium.org>, <andriy.shevchenko@linux.intel.com>,
+	<linux@rasmusvillemoes.dk>, <minchan@kernel.org>, <ngupta@vflare.org>,
+	<akpm@linux-foundation.org>, <yoshfuji@linux-ipv6.org>, <dsahern@kernel.org>,
+	<pablo@netfilter.org>, <kadlec@netfilter.org>, <fw@strlen.de>,
+	<jmaloy@redhat.com>, <ying.xue@windriver.com>, <shuah@kernel.org>,
+	<willy@infradead.org>, <farbere@amazon.com>, <sashal@kernel.org>,
+	<quic_akhilpo@quicinc.com>, <ruanjinjie@huawei.com>,
+	<David.Laight@ACULAB.COM>, <herve.codina@bootlin.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<linux-um@lists.infradead.org>, <linux-edac@vger.kernel.org>,
+	<amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+	<linux-arm-msm@vger.kernel.org>, <freedreno@lists.freedesktop.org>,
+	<linux-hwmon@vger.kernel.org>, <linux-input@vger.kernel.org>,
+	<linux-sunxi@lists.linux.dev>, <linux-media@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
+	<platform-driver-x86@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
+	<linux-staging@lists.linux.dev>, <linux-btrfs@vger.kernel.org>,
+	<linux-ext4@vger.kernel.org>, <linux-sparse@vger.kernel.org>,
+	<linux-mm@kvack.org>, <netfilter-devel@vger.kernel.org>,
+	<coreteam@netfilter.org>, <tipc-discussion@lists.sourceforge.net>,
+	<linux-kselftest@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: [PATCH v3 00/19 5.15.y] Backport minmax.h updates from v6.17-rc7
+Date: Wed, 8 Oct 2025 15:29:25 +0000
+Message-ID: <20251008152946.29285-1-farbere@amazon.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <271f9af4-695c-4aa5-9249-2d21ad3db76e@redhat.com>
-X-Stat-Signature: 4erqrahwqdb8u8iia9jnxbawxbjgh7ew
-X-Rspamd-Queue-Id: C933140014
-X-Rspamd-Server: rspam06
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [172.19.116.181]
+X-ClientProxiedBy: EX19D032UWA001.ant.amazon.com (10.13.139.62) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 X-Rspam-User: 
-X-HE-Tag: 1759937027-866591
-X-HE-Meta: U2FsdGVkX1+r23GTOBx9QiyYuIs07//gQ1UdcCGVBzIRbRFMtCcIrZZwqU+puNAIrf/LVtxqrNTl3xnvJ9GiCjXkkWXf8xwXB3SKHPpcH45gFf6WZPe8pjNIs/ASnxyX2ijtbRpOaUKkkFbkTC6DHNwevqHeliu4DLQBV5OixZhNowjkrdhrYON/e4nR/FeaA8yTyKY7a6+D9u8aC7l3Px4yo9FlugJeWrPxeVQSNeQg1OJQBi0Y91SR/IHRdivLfreJ27Y0udVaRR+PFwOjU50nHUHj5qY5SfdGjcTMbRnDsyjcvPbMUBchg5dlCwvokg15Gr4TjDSchRbYKOT/sL/Gi4c/1qrx8giP9yXWBocWALaw4uOQO6SyUQ41qgqoKCkOct35JbN2SJk3dh3siqBYfos4YGf6ldK486niPk6CrDMqSBp7AzAhGHaPwutfX8xPhffMuUpCZOQZl5HCzLohF57UKhUCl+AnUTG+sObIWvqxCFmD9vA+URY3p0oRj8scK1z5T7HJ5Phi+G+wBVMb0OhNhv59rmVkH4DiweYRNQVxlvI8tW+6HxJ7JjRsexPk5ktk01W+uWB16uh+O/UmD4EpL4HHKA9x2ehwGCjLz7QHeQZ5fQdWHiLbKKH3Ak77Lcy/mc7JEWYWof8J8Cnvd8X93nDqe0O6D8UtwIlRMjHkzTbzDwEimbzEi5pkuikxHlzS3h2L4CmVRx2R/71l1ZOG7RqLqr5bltvhVb/J3tqJ3wyucC6VsV4JV9wGVaF60gI5tLiYYOa5JIsSFOzxE7MKvRopdClJVuXRKQKaxHFLhomW3JaHzkRSFhw5eooQ5ixvnRAIwIeqaksJpvwSFVkP1fUp89yCZwzFtufVLUrpIYc/93b1QDl98bEo56xfN21dL08qgGIp1Ez6NBGlLxV8wWVsMeZmVPauBOT64kRqHHrUgKvxi1pgZzWkkGQoM5Gm9CpkOjIKdho
- 6sma5gRg
- DK8tX1Cwsx0cIsDO78S9AywJPS3q0/nczBDEVYTJLBn++ir2WSCLWjv6neQGTFwUTaCdZga8RN+Gc+UHP2dzoMFZ0j6J4E0UkwEmEk7lwcOXhg0N7Gp7R8atF0uJFFdYWGl8sJf0e+l6OvMjucYsgKKrogSBcifmKdvJ/GVF7+L8REzCFugaiUf8y6N115dCAriZT6dHcMBxPoIRPff+K6hJ4/cQVxRC6kdnyxrhFNbaZRPnbK6M5Xu6NZaqt4sMZGdkQFsqJ/jilGqbpmdERsXQvQps3g7Z1whfdPar6DXk9C+w4kiypR7LkOdXl1AjxRSPq12s3jcjgcemDvn6oeDIlxGGs0ie8Hj46oEhIPAmcKvyTlKb2TNWAj63wpk/bJGJUQUYBpNiToVihFSS/1n9IqEHUMpD8qgQ2kS4vsOb0EEYSdC5z0RUtPw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 669F2C0006
+X-Stat-Signature: cwkiwt8pd35b4u3o8kcrq1ou1uyuwewt
+X-HE-Tag: 1759937409-76981
+X-HE-Meta: U2FsdGVkX19tC1hDD6UpYGYRNne9VYcbMy62wCOu9JTzMZKrQX332ZqDQv3C2X7UQa2uGx6eVNUSps5VF1EdcaWepCrQZLMZs4TcV8bbRCqs6CzY5CKRNVk8AZVG5l3rPoFMw3/K8d47zpDjAtGnQpcoaDam5L+AH6k2nM3w8sPlyAiZ72KaTPh0NB6so4VVPz0/1JICvuIBhtbG9y8IoFCqOQxgDnLy5LPSQdVEAg1e6nvWwM4FTYjMg9C07QYfsU5VxJ3qnQmggFbdnltKik4eXCCo5VRCm3lj/PQHk7uaWKINql57Xyao0dtWC1w/3t49IEcij5juqr1rU+lOguT2QRIdMo1R3uv7358E6ePP6ra8Md4npDzL51zG/K5Z9UPt3MzvdHYMk3oXzd259XvaAYYI9T4SJAMLAp63f4HRQs9O1yeVQnyaPqqB90lPI4ELiXoCboXj20g1I4JR8iZXt4Ohk7oWnqsaGoUGNmRicC/2zWgdOSZfvoz/oxtLnwSNIS0rJMm6zJMDdIM/nH7jpyMkHxoSDt8uuEVKebBLcDyrebuntcgvrmwx9juXzYCn/lTcjbcWDsbZOW6i2OTk2xglQ8JlbZqDPoG4CtnxnYZ/PK+z4ETnRG3vR+CdvKPfosvB8tIUcHkoL+Po5i+ml9v6XLaxri/cZCkN+H7ahWpnRBclw2SmduzzLy27Qajpuz4t3OU9tnp/loqOKUx4DctAE0/IoU7DHc7XbTeOYn79OOdgHES8bG5ijzJteyGUF8Wvf1WAJA5iXW2kKb/zaoJV0XJbMZyKMjgiKnwt1EnOS5tiTEvDJfAeyngFur0Q8q4WTuqoAZKT5kWV8+En6sriLKqFI3PVjLaYCA0yhimlb5DF/Nyl5IrT2MOEYH8f1SUo9xr533XDqIMDJ8hFKAuxOLYY4K0WG10WJRQZx94Xjs9Dg+NnpxxI/C9heeKKSQ/ZG6TkBzlUr/X
+ 1WMGpTPB
+ zrxAA9czMWcuQ7qtDeUgpeD2RgTRy2hBAeZODfGqjZBsHx+J2gAV1z+4Z4mrjIe+pJKT1/FrKeDWqnmfW85XNGFSeQSVhRWj4oO69N7lNm7I3c8+y8/vvcgTCOR7iTu8SJprzyHgTm5/PJy6mD32HUehJclgKcTrtOfkI8wpLUdhCVcCORxDd11AtlSi8B+nYe8GRYTn1wgOlT9+0/vCKwZ4BOu44PP2J8+cj3qWlQNfn2+som7IMr6O8HySrNdkRxBz7HiRFt0Od3sn8i35DffeFc4Pdq6EbJAOLj6Npwx8xEUJdDachmMOwOJwM8eYSU7uX36mra9vu1ElMWcQaMwv6j5W3vbkMN6+bXwegOXNDEIBrk/5kVdLAZljiKP0OHDM43ZMHj48huzgYzdNRguftAirEmH3elX3mdUmA8FtVwDLGk8Bro6Yv0TeQRqESiV0nmeH7hc114YLIlmbtD0SpEInBU2QN7KWbM/z+Kjz8RlavMwrBKafw88EnyUUfKYpvYMzjEGQZa0B6ByGqHqRtp/96hFUaQjYKCHF4nEIDl9d1+l8zmPf2/a26Vz1QJwfsx5erI340tnFyLt6/AOcPjX/QxGLJecJVZ67dL/NfVIRvPqWKwlep3/WlpKqCqRaC8H0LgTL4n4NvwkycTXyMqUV8yGixFIBcEQYz6Ls+gu33qNWRsGuRWmMRYkQqI/RSrXICW4LKSDFa0eS78mD0cOm0SyykSv150em3bnwAtJCBadplpvvfLA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,56 +147,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 08-10-25 17:14:26, David Hildenbrand wrote:
-> On 08.10.25 16:59, Michal Hocko wrote:
-> > On Wed 08-10-25 10:58:23, David Hildenbrand wrote:
-> > > On 07.10.25 23:44, Gregory Price wrote:
-> > [...]
-> > > > @@ -926,7 +927,8 @@ static inline gfp_t htlb_alloc_mask(struct hstate *h)
-> > > >    {
-> > > >    	gfp_t gfp = __GFP_COMP | __GFP_NOWARN;
-> > > > -	gfp |= hugepage_movable_supported(h) ? GFP_HIGHUSER_MOVABLE : GFP_HIGHUSER;
-> > > > +	gfp |= (hugepage_movable_supported(h) || hugepages_treat_as_movable) ?
-> > > > +	       GFP_HIGHUSER_MOVABLE : GFP_HIGHUSER;
-> > > 
-> > > I mean, this is as ugly as it gets.
-> > > 
-> > > Can't we just let that old approach RIP where it belongs? :)
-> > > 
-> > > If something unmovable, it does not belong on ZONE_MOVABLE, as simple as that.
-> > 
-> > yes, I do agree. This is just muddying the semantic of the zone.
-> > 
-> > Maybe what we really want is to have a configurable zone rather than a
-> > very specific consumer of it instead. What do I mean by that? We clearly
-> > have physically (DMA, DMA32) and usability (NORMAL, MOVABLE) constrained
-> > zones. So rather than having a MOVABLE zone we can have a single zone
-> > $FOO_NAME zone with configurable attributes - like allocation
-> > constrains (kernel, user, movable, etc). Now that we can overlap zones
-> > this should allow for quite a lot flexibility. Implementation wise this
-> > would require some tricks as we have 2 zone types for potentially 3
-> > different major usecases (kernel allocations, userspace reserved ranges
-> > without movability and movable allocations). I haven't thought this
-> > through completely and mostly throwing this as an idea (maybe won't
-> > work). Does that make sense?
-> 
-> I suggested something called PREFER_MOVABLE in the past, that would prefer
-> movable allocations but nothing would stop unmovable allocations to end up
-> on it. But only as a last resort or when explicitly requested (e.g.,
-> gigantic pages).
-> 
-> Maybe that's similar to what you have in mind?
+This series backports 19 patches to update minmax.h in the 5.15.y branch,
+aligning it with v6.17-rc7.
 
-Slightly different because what I was thinking about was more towards
-guarantee/predictability. Last resort is quite hard to plan around. It
-might be a peak memory pressure to eat up portion of a memory block and
-then fragmenting it to prevent other use planned for that memroy block.
-That is why I called it user allocations because those are supposed to
-be configured for userspace consumation and planned for that use. So you
-would get pretty much a guarantee that no kernel allocations will fall
-there.
+The ultimate goal is to synchronize all longterm branches so that they
+include the full set of minmax.h changes.
+
+6.12.y was already backported and changes are part of v6.12.49.
+6.6.y was already backported and changes are part of v6.6.109.
+6.1.y was already backported and changes are currently in the 6.1-stable
+tree.
+
+The key motivation is to bring in commit d03eba99f5bf ("minmax: allow
+min()/max()/clamp() if the arguments have the same signedness"), which
+is missing in kernel 5.10.y.
+
+In mainline, this change enables min()/max()/clamp() to accept mixed
+argument types, provided both have the same signedness. Without it,
+backported patches that use these forms may trigger compiler warnings,
+which escalate to build failures when -Werror is enabled.
+
+Changes in v3:
+- Fix fs/erofs/zdata.h in patch 06/19 to use MIN_T instead of min_t to
+  fix build on the following patch (07/19):
+In file included from ./include/linux/kernel.h:16,
+                 from ./include/linux/list.h:9,
+                 from ./include/linux/wait.h:7,
+                 from ./include/linux/wait_bit.h:8,
+                 from ./include/linux/fs.h:6,
+                 from fs/erofs/internal.h:10,
+                 from fs/erofs/zdata.h:9,
+                 from fs/erofs/zdata.c:6:
+fs/erofs/zdata.c: In function ‘z_erofs_decompress_pcluster’:
+fs/erofs/zdata.h:185:61: error: ISO C90 forbids variable length array ‘pages_onstack’ [-Werror=vla]
+  185 |         min_t(unsigned int, THREAD_SIZE / 8 / sizeof(struct page *), 96U)
+      |                                                             ^~~~
+./include/linux/minmax.h:49:23: note: in definition of macro ‘__cmp_once_unique’
+   49 |         ({ type ux = (x); type uy = (y); __cmp(op, ux, uy); })
+      |                       ^
+./include/linux/minmax.h:164:27: note: in expansion of macro ‘__cmp_once’
+  164 | #define min_t(type, x, y) __cmp_once(min, type, x, y)
+      |                           ^~~~~~~~~~
+fs/erofs/zdata.h:185:9: note: in expansion of macro ‘min_t’
+  185 |         min_t(unsigned int, THREAD_SIZE / 8 / sizeof(struct page *), 96U)
+      |         ^~~~~
+fs/erofs/zdata.c:847:36: note: in expansion of macro ‘Z_EROFS_VMAP_ONSTACK_PAGES’
+  847 |         struct page *pages_onstack[Z_EROFS_VMAP_ONSTACK_PAGES];
+      |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
+
+- Increase test coverage using `make allyesconfig` and
+  `make allmodconfig` for arm64, arm, x86_64 and i386 architectures.
+
+Changes in v2:
+- Fix the order of patches 6 - 10 according to order in mainline branch.
+- Use same style of [ Upstream commit <HASH> ] in all patches.
+
+Andy Shevchenko (1):
+  minmax: deduplicate __unconst_integer_typeof()
+
+David Laight (8):
+  minmax: fix indentation of __cmp_once() and __clamp_once()
+  minmax.h: add whitespace around operators and after commas
+  minmax.h: update some comments
+  minmax.h: reduce the #define expansion of min(), max() and clamp()
+  minmax.h: use BUILD_BUG_ON_MSG() for the lo < hi test in clamp()
+  minmax.h: move all the clamp() definitions after the min/max() ones
+  minmax.h: simplify the variants of clamp()
+  minmax.h: remove some #defines that are only expanded once
+
+Herve Codina (1):
+  minmax: Introduce {min,max}_array()
+
+Linus Torvalds (8):
+  minmax: avoid overly complicated constant expressions in VM code
+  minmax: add a few more MIN_T/MAX_T users
+  minmax: simplify and clarify min_t()/max_t() implementation
+  minmax: make generic MIN() and MAX() macros available everywhere
+  minmax: don't use max() in situations that want a C constant
+    expression
+  minmax: simplify min()/max()/clamp() implementation
+  minmax: improve macro expansion and type checking
+  minmax: fix up min3() and max3() too
+
+Matthew Wilcox (Oracle) (1):
+  minmax: add in_range() macro
+
+ arch/arm/mm/pageattr.c                        |   6 +-
+ arch/um/drivers/mconsole_user.c               |   2 +
+ arch/x86/mm/pgtable.c                         |   2 +-
+ drivers/edac/sb_edac.c                        |   4 +-
+ drivers/edac/skx_common.h                     |   1 -
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h           |   2 +
+ .../drm/amd/display/modules/hdcp/hdcp_ddc.c   |   2 +
+ .../drm/amd/pm/powerplay/hwmgr/ppevvmath.h    |  14 +-
+ .../amd/pm/swsmu/smu11/sienna_cichlid_ppt.c   |   2 +
+ .../drm/arm/display/include/malidp_utils.h    |   2 +-
+ .../display/komeda/komeda_pipeline_state.c    |  24 +-
+ drivers/gpu/drm/drm_color_mgmt.c              |   2 +-
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c         |   6 -
+ drivers/gpu/drm/radeon/evergreen_cs.c         |   2 +
+ drivers/hwmon/adt7475.c                       |  24 +-
+ drivers/input/touchscreen/cyttsp4_core.c      |   2 +-
+ drivers/irqchip/irq-sun6i-r.c                 |   2 +-
+ drivers/md/dm-integrity.c                     |   4 +-
+ drivers/media/dvb-frontends/stv0367_priv.h    |   3 +
+ .../net/ethernet/chelsio/cxgb3/cxgb3_main.c   |  18 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c |   2 +-
+ drivers/net/fjes/fjes_main.c                  |   4 +-
+ drivers/nfc/pn544/i2c.c                       |   2 -
+ drivers/platform/x86/sony-laptop.c            |   1 -
+ drivers/scsi/isci/init.c                      |   6 +-
+ .../pci/hive_isp_css_include/math_support.h   |   5 -
+ drivers/virt/acrn/ioreq.c                     |   4 +-
+ fs/btrfs/misc.h                               |   2 -
+ fs/btrfs/tree-checker.c                       |   2 +-
+ fs/erofs/zdata.h                              |   2 +-
+ fs/ext2/balloc.c                              |   2 -
+ fs/ext4/ext4.h                                |   2 -
+ fs/ufs/util.h                                 |   6 -
+ include/linux/compiler.h                      |   9 +
+ include/linux/minmax.h                        | 264 +++++++++++++-----
+ kernel/trace/preemptirq_delay_test.c          |   2 -
+ lib/btree.c                                   |   1 -
+ lib/decompress_unlzma.c                       |   2 +
+ lib/logic_pio.c                               |   3 -
+ lib/vsprintf.c                                |   2 +-
+ lib/zstd/zstd_internal.h                      |   2 -
+ mm/zsmalloc.c                                 |   1 -
+ net/ipv4/proc.c                               |   2 +-
+ net/ipv6/proc.c                               |   2 +-
+ net/netfilter/nf_nat_core.c                   |   6 +-
+ net/tipc/core.h                               |   2 +-
+ net/tipc/link.c                               |  10 +-
+ tools/testing/selftests/vm/mremap_test.c      |   2 +
+ 48 files changed, 290 insertions(+), 184 deletions(-)
 
 -- 
-Michal Hocko
-SUSE Labs
+2.47.3
+
 
