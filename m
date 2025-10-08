@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9EE6CCA476
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 00:00:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71145CCA476
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 00:53:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF94F8E0016; Tue,  7 Oct 2025 20:00:21 -0400 (EDT)
+	id 6E94E8E0003; Tue,  7 Oct 2025 20:53:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED0AB8E0005; Tue,  7 Oct 2025 20:00:21 -0400 (EDT)
+	id 699728E0002; Tue,  7 Oct 2025 20:53:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0E308E0016; Tue,  7 Oct 2025 20:00:21 -0400 (EDT)
+	id 588D88E0003; Tue,  7 Oct 2025 20:53:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CFC6D8E0005
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 20:00:21 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 88528B8A64
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 00:00:21 +0000 (UTC)
-X-FDA: 83972989842.10.B9A9877
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E080214000B
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 00:00:19 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="LkT/Y1g8";
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E61F8E0002
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 20:53:48 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A22AA16036C
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 00:53:47 +0000 (UTC)
+X-FDA: 83973124494.01.B02936C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id DE39916000A
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 00:53:45 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="PT4mQTP/";
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759884826; a=rsa-sha256;
+	cv=none;
+	b=sS4wQJzUicTQKKWuYjODspqfIpz4uvVzvGzFQQUuBtjV7LhVl32RbKTOg9FtTdBovVRcPj
+	jWLUoKNzzNqHfqA4BoY927WpYmMgcFa1T4n+0kVeqomcWh6cSAbwiMIyUA03ngP1lz8d73
+	QtFw6g7rUN52YFhasGf7aOSM41329G4=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="PT4mQTP/";
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759881619;
+	s=arc-20220608; t=1759884826;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oWmLOLAMJI+oqnSCIm//JaBVbYEaEXBJmr1f5F68L40=;
-	b=KUIlO+IN7OfIp9TueGrW9RhYyyckGlI14xH9Jk9g8OxNKP2BJf537z2t5/Vw6MRCN/9N77
-	faTErxjWUvKLNAWowsUtf63aiaGH1iyAE1Z0owf2zMOMEI6X+avkm9nhVFblm6g/j3eu4x
-	N+DDWJeNlazLLV57nOzyNJV4yMJ5WTQ=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="LkT/Y1g8";
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759881619; a=rsa-sha256;
-	cv=none;
-	b=PLQ2Hh2eurZOjIxUIcy8QzWfOWZYNC/1zmV8cd5s6PaXzA6qJOvt4x3aHWrSvaQL5dh0P4
-	xBJ2bY30SzNvo0RyW7wgKPolGB70+BZ5OubYddd9Fi6z0s70+/KoyJFGqmn8U6TaNIRV5C
-	Axe9AfZAyKBBei/Aeci8eUCK+ZKw3wc=
+	bh=E6Us2eJbtOq+WD7KkAszcbGrpA0B58B3AL3OEitRlxI=;
+	b=NrTVEJUI47f0aENRnecbX4/3/g6eh2ISNUqd47XQU0ck1BWGXE6k6Afv4dZe7wEswyl1Yp
+	GTFA1eHriJHHXip/vlG8+TKLuToYy8/2z7HzpeSCqBoNsxYwnAS3JjmD5/uX7MAL6NTNdM
+	PmkIpSvPpRBRVsqnVrrDk8WpOp5SY20=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E6540600AE;
-	Wed,  8 Oct 2025 00:00:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7425BC4CEF1;
-	Wed,  8 Oct 2025 00:00:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759881618;
-	bh=XJBMwUPakCIENOJ5JGM6h6npOfSqG5BKOSRQWEqhaWc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LkT/Y1g8sW+oeGcLJAYTuRKgha8oR+0vHhIYAkMnM/ilfxGTXWXxZ5EM23ntytBIz
-	 vGe6WnBWm3S209VzN6FRC7thPPFPe6NsFMSmj8rF6dPa8xDX/pilKIa1WnoGBzHHfv
-	 5Xw42YfvsCJkTLQvVhJeXM6cRl8j3ippxyUdrXkoCjt8TG+CWL42VX8ZnHBmb0Ue9u
-	 qCQcTqRLI3gavlc4WWgcUdFMRjzNdHjxi+cyNb78GpNTPoBoE9eCYgF5aJ2wVZmeMB
-	 7St8oTWhkrLjLh2n4ohruEHP2soTgKccT3fMOOzHMNH5KfHuSpRogI4ssf2n9GcG/z
-	 rmOW68YW8kreA==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	kernel-team@meta.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH 03/11] mm/damon/core: implement DAMOS_QUOTA_NODE_MEMCG_USED_BP
-Date: Tue,  7 Oct 2025 17:00:14 -0700
-Message-Id: <20251008000014.2845-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250619220023.24023-4-sj@kernel.org>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E080214000B
-X-Stat-Signature: qwfwbagdnq1qx9smatkkj6uugqbbqhzr
+	by sea.source.kernel.org (Postfix) with ESMTP id 8033144CED;
+	Wed,  8 Oct 2025 00:53:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36594C4CEF1;
+	Wed,  8 Oct 2025 00:53:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1759884824;
+	bh=1/BSCo/joxh3w0gawL9XVBCVbqacTF5mYaO97AtXT5s=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=PT4mQTP/K6GkWEsNf4ei2POarUVxGgv3MHpmHQcTv80pfoGWUt0yxbUzuKJSoyP1D
+	 RTdHMumSMr2EloY0EbO2htHUtkg4jgpM8Dqbbd0EbEgX23Ovl+iW+6HYEp2cabfhRQ
+	 ejoIL9iUlKMHQ5zLx+MTg1jnQ/Kwoy4S3lETa+10=
+Date: Tue, 7 Oct 2025 17:53:43 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: linux-kernel@vger.kernel.org, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Jan Kara <jack@suse.cz>, Dev Jain
+ <dev.jain@arm.com>, linux-mm@kvack.org
+Subject: Re: [PATCH v3] mm: readahead: make thp readahead conditional to
+ mmap_miss logic
+Message-Id: <20251007175343.107b17191734cddd7bbdeb54@linux-foundation.org>
+In-Reply-To: <87play1fzy.fsf@linux.dev>
+References: <20251006175106.377411-1-roman.gushchin@linux.dev>
+	<20251007153424.1b46a4018e17d5dafd7fb126@linux-foundation.org>
+	<87play1fzy.fsf@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: txk9w4f4syiug6bae6t9hw6sreazpnrx
+X-Rspamd-Queue-Id: DE39916000A
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1759881619-405435
-X-HE-Meta: U2FsdGVkX18Mz+bF27PrEFbGEP1KgkboJ3fqJGn0PeILFn+Jz5ooBFBWW0z1g54a9JBx+wj1TJ3HIzzBMX35qNkM3koeo9OEDO9bUvrr+lNozQOqc45SZluny+Oe5cqqgFZ9hZP6b5kZE5a+lb5fiRLd9uLNnjJwY0d9N+nZ6mC0l+saQ8kXdlcCI+qtSe4eF3KkDiD6sspIyZdPgHTvW7mzgyoZ7a8YL2mayHtyxLcPOOAyo46JYls8cis9iJE2ckW2F1FVXDhHPwW+50sgHW9+nG2sz2dUnFt6sw8XL1JRe9uUTHm2TmKnmQ1oPxzKFRTfbcOe9aHTeuOxB+PaEJ4dMzCIi3tmsyqytEBdb81dEH4AygsxmqIjkG2yTKxl5D18yj5nLZP80J0fYzOs4DgnpMnsi8fbTnX9N5dKRLStqV3BTpu5IaGhQxH2XHDlGzCMWIrkQxGtaPKK/iAsdrkzyYCnxRoz6rumAaJZ+hbwUDcj3CTssgtm7qQ9SCzJSG0PfrZaHT5S+kWm+2SDgBQsSOf2UHrV9cAcpiiAiiZ2SbJt7PFhCZghZV5Tsz9TS/05lwgSTEC/DPPL+HF9ReuOzZupW47KPQHJVwQdmagCIbBl6x9grVgTuVVhXdViVs0LtfRnHIDARO6HJGKvXEf+qLfFtXK70E8S1IKdsKNzAVUuvHysVcyf/lhCs0j0D2B4fDwJceTrQpMhcTDtAl2TEg+/V6m7/O6WEKyKeh2PIix4WxsXHgR92AAOnEh04DnbnKDVrJ3EOOp/FirYTtZVkxrFCZAeTR0YmJaaoHSKVH10Ilq+CG1blicJiwxmb923ajEXCqpnq/gQUQdOtk0D02rk5CleFPWdEYhsKBlgHDPlgnPwasrJtiaMSyeBghEMt0SC+J/0Ougck1TA4Q9M5ubRhZ4B3PnsBBGCJrMtEX/uvSpieMa28H4UYSrDrcVNVvGCMu49LRDQ9+3
- qeKLzaCO
- O9wLaq+b9ZyXdKl6m7HqPRpm+claLVytrK8is+X0PBCjUHVnCboEoEQhJZIoOjU8gomvRifDpYSm6r5Pq+3pEi/H1ayopsjn4IGwVgMcXcat/JH2tvmlHKAVc+hcG7ykis3O3gD+8+lPzlBYkXHlmNsUR8pLQEhRlmxguw2oSi2oV53Gnl1/EDCzGsoEoLy5rrOLPFm3/X6oqPRx5zPA8y35qVrtX+xbsYXlQyv92fVjWRuW2mYmS4VmBWomcwGhL6UWm6RKLE1h1MHn1OVpzdwpaCw==
+X-HE-Tag: 1759884825-792171
+X-HE-Meta: U2FsdGVkX19F5QRDgUeQgIMc0jVQ0nUjSC6FXZZJeM2Mf9xNmKLCCfGEWmiGiJmHE19XXRQPiDjTr8AVnl+sf/dOEjqO3fmQDmsGdbSwTSiT9jh0IzINbAmqFWDx/zqyvVfLphu11bFzkRJCnB7GvuxUREYILIb9jz9KkmBED1R6CYL0QhcaWkdRbE8fv8b5Pl9A5ip6rzLN68Q96u4j3q+7fV8O/NWhPz9AF3tQhh7tn4FFsk82CBzWS8eafwGfYJl/JVkzcu3N2Ue4x7lW0XxhUePTj1iJcVh4cRFIKGymqxdl9TIVs3RrbY9b3wFEqPzpqU+R0HcJvL0QvMIK7CI/hoISXWh2MCKdYG2MWto84lluTY8sthtc+5xYggYsO4zVofDAgzlljxxaRCoqiGL+LsEB8PI0+P0kbCyrsDnxCwPXBPMeMak7k+MQD6aHdPsWpvXgD7p1FvB0GLeYXle7FrzDwSgfESYao3tldsMN2F1rzI3i6KHa9Th7AG9alWhmD4nfoVXaJDvd/KEboeCmTbbEnxabyegie2SSUHxOPoYsd/fGamdZXoUZE6mIFPPYF2HpF2KRdzWK1hqUQ8wLZGUAT+ssVQTpPblKfRs7WznG8dS0i5db7O6YOFvmcB23tG+YB5cZAtBRGBTHqKH48HgMbafQm1nrvvn0xdyqoGS5MzizI01p3bwjBot4gS4+MueTHNst+Lb/NIoaDyAFw6Z9NApOyhLOTIfHjZTof0yLwdegl92qfsOsqmfZPBbVOdCEX0AHGLqWEfQKRxDnBqzBmQ/f28nDORwlVRGIh3b4uaV0fOQ+pCHwWyK859WdsBTi21bVYBOScXgWCDo4D4mysqZ0IqTLxBwhjz17omDkMAYlfPfze+/HorVBGNrfOddPYag0BSlFMohuAknzCf6EL69WCMH7x6xnU5FqfwxVWlJzHZOPJkjRY0AsdNEeqxG9OvIiqVU2aPt
+ buKJTdH2
+ kYCW2GlQ3tzWBGDZOLu9yC7521jyliFhp2Nbdm0Xa+z6bme/GwCjqf/PmwXKaJhh6F6Ywk56EB/bl+D6WNn+VUKElhcGnQEBeOfF2td760idJRJmn39AKaQZ5Gu/0NxHGZz1m+fQ34PQnZPWh0BN85/gzebGUOvf+8rKD3kgtlO+vd7RoWWj7JNI8GIeA3QCDAN2XqKof8yZTDv++rWSYw3w0kh8Ma/9TYLbUE9z4ZqdLe/oHvlTfmHTvaqmHXhSo1LUBb0z3NQqRSCqVXCqXGs1Wa+3hrdWzWRpY8U4FaEszbRwNdeLxxuzXjCMrEcV4tjhIytaWCHVXCC6viIyYtDgN/rgXxAGb0zaAOsTvsWYPKn7esYu/4uxg6W6eCJT39Uoi6n3X4rDCTu/3rXGTOXaJjL5Guh7j1SHd
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,61 +94,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 19 Jun 2025 15:00:15 -0700 SeongJae Park <sj@kernel.org> wrote:
+On Tue, 07 Oct 2025 15:52:49 -0700 Roman Gushchin <roman.gushchin@linux.dev> wrote:
 
-> Implement the behavior of DAMOS_QUOTA_NODE_MEMCG_USED_BP.  It uses sum
-> of active/inactive anon/file pages of a given cgroup on a given NUMA
-> node as the value of the metric.
+> >> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+> >> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+> >> Cc: Jan Kara <jack@suse.cz>
+> >> Cc: Dev Jain <dev.jain@arm.com>
+> >
+> > But I'll slap the Fixes: in there, it might help someone.
 > 
-> Signed-off-by: SeongJae Park <sj@kernel.org>
-> ---
->  mm/damon/core.c | 32 ++++++++++++++++++++++++++++++++
->  1 file changed, 32 insertions(+)
+> I'd do exactly what you suggested: Fixes + no stable backport.
 > 
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index d675dd932a23..1481b43f2710 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-[...]
-> +static unsigned long damos_get_node_memcg_used_bp(
-> +		struct damos_quota_goal *goal)
-> +{
-> +	struct mem_cgroup *memcg;
-> +	struct lruvec *lruvec;
-> +	unsigned long used_pages;
-> +	struct sysinfo i;
-> +
-> +	rcu_read_lock();
-> +	memcg = mem_cgroup_from_id(goal->memcg_id);
-> +	mem_cgroup_flush_stats(memcg);
-> +	lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(goal->nid));
-> +	used_pages = lruvec_page_state(lruvec, NR_ACTIVE_ANON);
-> +	used_pages += lruvec_page_state(lruvec, NR_INACTIVE_ANON);
-> +	used_pages += lruvec_page_state(lruvec, NR_ACTIVE_FILE);
-> +	used_pages += lruvec_page_state(lruvec, NR_INACTIVE_FILE);
-> +	rcu_read_unlock();
+> But I guess it still might end up in the LTS tree thanks to
+> the automation picking up all fixes. Should be ok too.
 
-mem_cgroup_flush_stats() calls css_rstat_flush() which may block.  But the
-above diff is putting it inside an RCU read-side critical section.  Actually
-only mem_cgroup_from_id() needs to be called inside an RCU read-side critical
-section.  I will revise the next version to call rcu_read_unlock() right after
-mem_cgroup_from_id().
+They've been asked not to override the MM developers' decisions (ie, mm
+is special).
 
-Also, mem_cgroup_from_id() could return NULL if the memcg is removeed while
-DAMON is running, but this diff is not checking the NULL return case.  I will
-add the handling in the next version.
+I'm not sure how reliable this is...  And I'm not sure how they
+identify the dont-do-that patches.  Maybe mm/*, maybe mm.git, maybe
+s-o-b:akpm.  But I haven't seen any transgressions in a year or three.
 
-> +
-> +	si_meminfo_node(&i, goal->nid);
-> +	return used_pages * PAGE_SIZE * 10000 / i.totalram;
-
-i.totalram is in number of pages unit, but the above code is assuming it is in
-bytes unit.  This makes the result significantly wrong.  I will fix this in the
-next version.
-
-
-Thanks,
-SJ
-
-[...]
 
