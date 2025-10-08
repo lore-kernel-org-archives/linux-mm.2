@@ -4,125 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D98FCCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 10:33:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81088CCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 11:14:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE6338E000D; Wed,  8 Oct 2025 06:33:08 -0400 (EDT)
+	id 7A5068E001B; Wed,  8 Oct 2025 07:14:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E97728E0005; Wed,  8 Oct 2025 06:33:08 -0400 (EDT)
+	id 755B98E0005; Wed,  8 Oct 2025 07:14:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D86318E000D; Wed,  8 Oct 2025 06:33:08 -0400 (EDT)
+	id 61C8A8E001B; Wed,  8 Oct 2025 07:14:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C77358E0005
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 06:33:08 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 96C31160118
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 10:33:08 +0000 (UTC)
-X-FDA: 83974584456.19.5233557
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9D0AD1C001D
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 10:33:06 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LeqDFI6H;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D7588E0005
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 07:14:43 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D8BA0B9AA8
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 11:14:42 +0000 (UTC)
+X-FDA: 83974689204.23.0322A7E
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 8E2EDC0006
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 11:14:40 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kVw51J2j;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=33peweNC;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kZPVtsqf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=uN3dwGld;
+	spf=pass (imf28.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759919586;
+	s=arc-20220608; t=1759922081;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o8icbrcXzTRCL5crimPXEf38lTPLnUQkfyNRpAzdLqg=;
-	b=JFSIbnQlPM0hiBvoD2FMrdzOZOIHaebAIaibvTKAsrPN5x2ZRV4/IangjM7FnsTZXz6aZa
-	4saKAzFIgaNJEKLyhlOT1Ik+5/ipNik31mBq0I7fDqTlk7G95X9s41mSxHvcUdSOWbruPC
-	wkXgnHIBUJn7Gq884oc8aDLVKD6tkQU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759919586; a=rsa-sha256;
-	cv=none;
-	b=uwIq52iW+csu2HdH2skhGHIgKjT4RvQsPrmTWvbiVAEMhzOvsljFUm2XyafssBVkq0071e
-	kCZgiUTu5slRVZjOhaTDfnC4DVr+8NskfXuc7v6zmWTAmgT/L16IO0erLudIC+UQm4xbuE
-	765BZNCcuIbiyU5I+HTUV9tFYbYW1To=
+	bh=fc/04qoN/PMDbssSJP/92cG5yZ5biHITDhDiKMO97Aw=;
+	b=FlXLRDVm4sqWrrBsJGWJgjJ9EYg+OjXXloD5YfaxNuPh59pnHJkvusI3+uvOZiSoVpbGE7
+	Z0glLO2jLYuTcvfgPjsRCSkm2ykjhaWDd701hLaEcNyHMZWBETqsEMzn6fri4Jt7C4XbIa
+	Q52koQva9zvjUJl93YSdtnybV+5/b4s=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LeqDFI6H;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9BD5461F54;
-	Wed,  8 Oct 2025 10:33:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADEF7C4AF0B;
-	Wed,  8 Oct 2025 10:33:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759919585;
-	bh=ebKkEsnGtJg9BHiElx4TZYX6g1+ZOgVHkaaIq2OEWwk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LeqDFI6HpfBKRsb/79toHGw54ncCDPykuSei3jXbsAFhv7aAaRqY1jtB8imBkP7Sj
-	 LZCe4iVND7ScZ7a9ycNRk1sqNVSFwStpLYLdmn+juVwXo/2qQ27H+3d8WzyA9eX3Dv
-	 /4rOnellhZIZp7+nQ/SaFwrV3wEmF+jzDRFwC3ZHeppTWB4yIbiTKznH9UsY1/DYk0
-	 jEizPqqaCKEqNwNLObQTWggy5nxIVi1vRBHopJOkDOcUZkz99K4K1JMmtobjtvUAhd
-	 yv3t9Bekyd8Kv/nZNTFHXeJ9YDogW3YBIVieqib0mZTM+8ElmLrR3LcyxBj/LLzIvo
-	 OiDLFoTYkDdrQ==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id D48AEF4006A;
-	Wed,  8 Oct 2025 06:33:03 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Wed, 08 Oct 2025 06:33:03 -0400
-X-ME-Sender: <xms:3z3maEPgXEJLz2KM41mvujuUPTcYRX6iiSpBjDCMRxygDNtOSlFeLA>
-    <xme:3z3maDwe3-HOGSY4do_Gqb7qN0Jo3uIoyw4ZNz2m-kYUMX-r7Z5hlM15zwzZyCoKe
-    ZIK8CMsMxD6GCLMMSZ_5nwBsqnoS7RDOQlz3_LwZodgSNEueAuiAU3v>
-X-ME-Received: <xmr:3z3maCOCToqIh9PXwKLy6Z6olts7GiYzL102t3BreEgBWIXZyMCiPYIwrdNrdQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddutdeftdejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepheeikeeuveduheevtddvffekhfeufefhvedtudehheektdfhtdehjeevleeuffeg
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepfedvpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopehsjheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepugesihhlvhhokhhhihhnrd
-    gtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhr
-    ghdprhgtphhtthhopehshhhikhgvmhgvnhhgsehhuhgrfigvihgtlhhouhgurdgtohhmpd
-    hrtghpthhtohepkhgrshhonhhgsehtvghntggvnhhtrdgtohhmpdhrtghpthhtohepnhhp
-    hhgrmhgtshesghhmrghilhdrtghomhdprhgtphhtthhopegshhgvsehrvgguhhgrthdrtg
-    homhdprhgtphhtthhopegsrghohhhurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
-    tghhrhhishhlsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:3z3maGQQEIn_9blyobQI1AT6SA-kIjq1QWm2DQ2Hcg4V1T1YeLICvw>
-    <xmx:3z3maFXKjvvo7oqtsl0v32XslPUruNAv8C7amGimTl6qXKpC2wLmww>
-    <xmx:3z3maPRmfX_CmQaDOSbs0ExcLsL50UPU2l9c5ix32X8XrdPQoypueQ>
-    <xmx:3z3maAtPNXOaxJHYTTGUhOyWXPRRtpTXg0G7WlMMNCjcAxigVG5ocw>
-    <xmx:3z3maAao22rxt42G-lDKVLKVh12lCW6sJLhSETLJ_B9JqMPneYJplngV>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 8 Oct 2025 06:33:03 -0400 (EDT)
-Date: Wed, 8 Oct 2025 11:33:01 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Dmitry Ilvokhin <d@ilvokhin.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v2] mm: skip folio_activate() for mlocked folios
-Message-ID: <x6u2afqqwqpoabtpq24n64owlwagolt63csvaibg33p6t2ywuf@beayabw66enb>
-References: <aOPDRmk2Zd20qxfk@shell.ilvokhin.com>
- <20251007195313.7336-1-sj@kernel.org>
+	imf28.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kVw51J2j;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=33peweNC;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kZPVtsqf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=uN3dwGld;
+	spf=pass (imf28.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759922081; a=rsa-sha256;
+	cv=none;
+	b=6KwadKzvL4w4vrsJYJSglqUa/uqNtzQmUk/VBtZgQdX7FCTovQ4tf58OAT47GVkA9sbSF6
+	8AQULPU63A63kTKt50heNQtsjIr1NqNlWgGb8cV6vXL9eTPLcOgbeCZ8i86Z92WZ6PNz9g
+	hYQgVhHXM4L+co+AQhH02GGTDFGxZmI=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C73731F395;
+	Wed,  8 Oct 2025 11:14:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1759922078; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fc/04qoN/PMDbssSJP/92cG5yZ5biHITDhDiKMO97Aw=;
+	b=kVw51J2j/E7tVEzyyLxqoBAdREbgmWnsf7WzPsMcIJapYif0H4STyvrK1SMgv22387PxqI
+	iWllC/fTDgNaYsMzOPRNJfRU3i4BtM2copjCIkvFfrTnaixx906B7oZvwmlwWnEEGV8mq8
+	pyBciYIPSqmTg15kLuNUZr0lw252dXE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1759922078;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fc/04qoN/PMDbssSJP/92cG5yZ5biHITDhDiKMO97Aw=;
+	b=33peweNCNeyqrEz6ctw6e1p+yxnDOi1e0j0cOxH6XAGtg1VtpaoD0rsyURzQ+lsAPoG63b
+	GUvKBK03sGptvNBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1759922077; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fc/04qoN/PMDbssSJP/92cG5yZ5biHITDhDiKMO97Aw=;
+	b=kZPVtsqfdZ2/Jrw2DnxoypL8H4w9ijLGDAr+bd4fOEHIR4vWQsag1GLODvhW7ST0+TQyd+
+	mmTSJVnAtnPbRi9kA8G1rWBUOg5Sst6e7vlnCo7sJrO9qOAg0nV5CVBlj0dj+p20nyq50o
+	V5jHx7B+iVqolmZVQzvgXCx31OFC+cs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1759922077;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fc/04qoN/PMDbssSJP/92cG5yZ5biHITDhDiKMO97Aw=;
+	b=uN3dwGld1DTLfMpItq+thAviWSsxYb24QSwhOHDw+hd5D1u1kB8cdEE+PF4kP/EqVXs1lc
+	fZvmJxbm3ZmFkTBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B498713693;
+	Wed,  8 Oct 2025 11:14:37 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id YQ0FLJ1H5mizIwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 08 Oct 2025 11:14:37 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 386DDA0ACD; Wed,  8 Oct 2025 13:14:37 +0200 (CEST)
+Date: Wed, 8 Oct 2025 13:14:37 +0200
+From: Jan Kara <jack@suse.cz>
+To: Joshua Watt <jpewhacker@gmail.com>
+Cc: jimzhao.ai@gmail.com, akpm@linux-foundation.org, jack@suse.cz, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	willy@infradead.org, linux-nfs@vger.kernel.org
+Subject: Re: [PATCH] mm/page-writeback: Consolidate wb_thresh bumping logic
+ into __wb_calc_thresh
+Message-ID: <ywwhwyc4el6vikghnd5yoejteld6dudemta7lsrtacvecshst5@avvpac27felp>
+References: <20241121100539.605818-1-jimzhao.ai@gmail.com>
+ <20251007161711.468149-1-JPEWhacker@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251007195313.7336-1-sj@kernel.org>
-X-Rspamd-Server: rspam01
-X-Stat-Signature: 5iwrkwcyuscaycw6431ahqune16axrrz
+In-Reply-To: <20251007161711.468149-1-JPEWhacker@gmail.com>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8E2EDC0006
+X-Stat-Signature: 6herebriaq6r9t7xwoozqmswt9a1xm1q
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9D0AD1C001D
-X-HE-Tag: 1759919586-382621
-X-HE-Meta: U2FsdGVkX1/8kUhvj0F9W5j1LIxpc3H9V51HeXghVgh8aEZ7EEbHTU+3UlCEsSvYezL78l0yx61r4umBIZ8Ose65hopuypqGcwAEz4uye3vLTkCWr0+XOBwF9Zl0IEhM+c8NuapkzMloqyXG5JYis8SJHXjYDZzWzp3Lrmbb5njFTyzgnilG0oOOsye5+MUkFAlButaGAj+sLlD10YxxeV96Q/o4cfAF5igkhvFHlxJT2ZxbYU9RDI5++Fp7YP4QnJvI+cqIxIj+QzUiMqmYz1Cjr2hsRjwBhDAqfg7sla0M9Dhx+H09t2V4bZKiKqMiOPhY5AqR9tBTqeDiWu4UsLuo42ZBldb3txvGAsP3on2mQcrC9gUmA2SSPGTjU9UucDi+PBDyrjKSPjBdsCUk4VkWdyv1vzIdMZGQ02jEKI4QIPkvAmZ6QhySc5eOwogpHvi5Agu18Nrp3b4+GEQChbbXZb/TaATXCuiXDvgNy1GEfTIUJ3pwnFxQtmBUss1EMhkJrAk6ywRxzz8NDtgkEtRdwIhb67Rtuoq5lWcbkcpjc8S36AhrTUhP/S5IhmU/ODam6K2k/lTTLFCblGcdpQBaHDGnMM80hFRKF5gksBZeIEia7oKTh16Uza3t56Hi68/NCetCJ5X7h8U28OCl874ev3tg1XxrLYslI3akAdnRXMDos+OtM9h+E11tZnZxWjOeUCISlbzYyVfiTaqFuQPlc3L9sIbr1/QsAqGMX1aIWi7AuR13t4TRhqoAVVqmhIGQV/g/uI9aDNxr0LkBBdAoGURuv3+UqyQy6vSUXkPOODfZVOHN6nAcs0X48nKnSwJRzvfAMbe6SQFsG9+/AvAXTagbnknbo0pZHkgbSSLWBVryNfNJhJktuu5tG6UExlHxoLm0gML70z5LemYAPw6fiOw5Ay9guNWV7BJFl3GWaGd1S9ZjKjIJR1PYE5dnPXU2CBUn8TEOkRzqBke
- tqM1Fafw
- zYqJJj6xifl5qYxPVsecmFEv080pqlqOeDiUm6jbJDOkTbJa1ilyPfmz5FZ39nONw471PjM3oalTixG+qFvfNTumXlp4X2/CGL/5oqd+9vUbuSVaXNJIr+NVsTgJuQP5JK7F1Wad4y0q7GSplZwupUFLJf9PAZ4KIO+XAMPv+gkJ6aUlQ4wXKaQweKMH3c5wSN7Kot09vK5l7nWnzKuriPW8KwtAyu6Pj+Yd1RXi9LY9ZTQVpd+6/3UP0LnTyVhJJJb76i8MBRDEvQL46h2O6Ew+tWeaGv7tlXzcgQv7w514BLK2fuOxddo1f5l3RQqZTt1QI/rtlDVrfFVzWD/+itl4/P6pQGIvt+FmkU9nXjEZ6C95apoGwsKKz07f7Fxq/DAb8
+X-HE-Tag: 1759922080-121501
+X-HE-Meta: U2FsdGVkX18BPiu8s9ogXpHIhOg2LvzlsiPqw2ZFRZYCl3hO0Uv5r1sc+0ESvnwQbAh66wy3mCzG7kKkGO886tX5rT5j90G7IVzFfU/4em7sh4uc0uBC9G5R+jeE1N4Goxcei+xevBKjbzLqAnUM5MjK06hALiz6jqbexxnlbMxdUToUc4H8gig06DmVXRY/2Lod874BTO28MXrOanxAMyBmRWLRV+L3iP94XFHglQHPg9dZCCsXIvTN9MmVMVn8Ec5Qx8wRpxOjIFcUjgWOyBjMQbxUhKMNLbK4HugRzpcdBWc78RTOaasZn91eQ+2TRFRP5j6Ra3LEMTglJN6l0uTtwWt+M7feKG1B0glKnd02yiY6fBJhnTa04NrI/1X5eRimXVnNBSxKgzvYva2RJe11ke7U/oVGxB1i/Ps157tFf9UqCp+2S/ta6y77vmluUmZc04bZgPh+w4RG3BKlDAqMiejeg4kwaghS1nY5qhztXBYJXGFditfWoytoi+4a2DaGSEk3XEgEi2jMMDJmwWoeIIFZwe+28ukT0VlAmcmQMiHtvomAWEb6zx630WQTrC9Ar/JqvJNdKMHQxg6qtTsHFW1XXIr20XXLvbYOSHcLQRvytsMh5k4IIS0cPf2syzzrfGffHP8MltlCuRtqCwnqPYnDn94EffPjHh+RPwRyj4G0fE4xSkkPLuHzEhfbWBB4gKmaQHwq9Mm3TYNlXYk/x2QiIGkq4EURtSBzclwSpBW59gjs6FdMyjyareKFumK7/hzUifyzTsWHL7RwUbR2EpiBthw+aQ8p6xjXf5vlo41cRErxLVErxu7JObI/AU3dsmYJrHQUt9E0fwuSoq0kAxAKEdO6pYmftECZQCXSI/p2QGiy7V5cBylWKtXbv4ZD2kJY61nUblJOClvQMEcbNMTEeYJw58uAFGRIo0FKazZgt2G++Hy8IM1byqrN+USm9VMVHzB5v5EM4ob
+ mZaBQbYx
+ tQLtSUfaqjFw7NCa1ANEFAmgEDh4Y+6XLG5WTUD5M5poVvf66b22SPSyT9qbxRT8NPJdMsszK9RpEfn7Z3nHQHQXagI0NPr5ToqR1toadWfQ3ojuNngoj1OQtELGjas3Bi3v65f/mjHG+3TW0ghVqN9Ax+C3bTeMHn5420TPv3mfxbH5zfM+F2fyYK6tDKAL/fig/t62Ty+LNl7noZqW5CxixuAKN2kOMTc2Swbp0b+mtBsSF9+v44gDOfxiETHSBtoqlSKEigae9ZwBhEPakbQpp+FKzvFAmiANJMlKXVX1LAYGsUH8wf0CRHD4mdcUJEj/gHP+bqhRjHrMq4dvJ56N0Fzfmx7S5MXpjxT4abHjw+A+WcY2Z0olxtgEYQFi+O6w2wN2EdoaeyHrPnIynr6bdi5NnwqSvK6AXDdTrQR+N6S3mZ6we8RqdeYnGhXIRR8/aLgduCaeK5qRZADPgS7x7IzQUT6KZvcwR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,27 +136,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 07, 2025 at 12:53:13PM -0700, SeongJae Park wrote:
-> On Mon, 6 Oct 2025 13:25:26 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+Hello!
+
+On Tue 07-10-25 10:17:11, Joshua Watt wrote:
+> From: Joshua Watt <jpewhacker@gmail.com>
 > 
-> > __mlock_folio() does not move folio to unevicable LRU, when
-> > folio_activate() removes folio from LRU.
+> This patch strangely breaks NFS 4 clients for me. The behavior is that a
+> client will start getting an I/O error which in turn is caused by the client
+> getting a NFS3ERR_BADSESSION when attempting to write data to the server. I
+> bisected the kernel from the latest master
+> (9029dc666353504ea7c1ebfdf09bc1aab40f6147) to this commit (log below). Also,
+> when I revert this commit on master the bug disappears.
 > 
-> A trivial opinion.  So the user-visible issue is the incorrect meminfo, right?
-
-The user-visible effect is that we unnecessary postpone moving pages to
-unevictable LRU that lead to unexpected stats: Mlocked > Unevictable.
-
-> > ---
-> > Changes in v2:
-> >   - Rephrase commit message: frame it in terms of unevicable LRU, not stat
-> >     accounting.
+> The server is running kernel 5.4.161, and the client that exhibits the
+> behavior is running in qemux86, and has mounted the server with the options
+> rw,relatime,vers=4.1,rsize=1048576,wsize=1048576,namlen=255,soft,proto=tcp,port=52049,timeo=600,retrans=2,sec=null,clientaddr=172.16.6.90,local_lock=none,addr=172.16.6.0
 > 
-> Yet another trivial and personal opinion.  Adding a link to the previous
-> version could be helpful for reviewers like me.
+> The program that I wrote to reproduce this is pretty simple; it does a file
+> lock over NFS, then writes data to the file once per second. After about 32
+> seconds, it receives the I/O error, and this reproduced every time. I can
+> provide the sample program if necessary.
 
-You probably missed recent Linus rant on Link: tags :P
+This is indeed rather curious.
 
+> I also captured the NFS traffic both in the passing case and the failure case,
+> and can provide them if useful.
+> 
+> I did look at the two dumps and I'm not exactly sure what the difference is,
+> other than with this patch the client tries to write every 30 seconds (and
+> fails), where as without it attempts to write back every 5 seconds. I have no
+> idea why this patch would cause this problem.
+
+So the change in writeback behavior is not surprising. The commit does
+modify the logic computing dirty limits in some corner cases and your
+description matches the fact that previously the computed limits were lower
+so we've started writeback after 5s (dirty_writeback_interval) while with
+the patch we didn't cross the threshold and thus started writeback only
+once the dirty data was old enough, which is 30s (dirty_expire_interval).
+
+But that's all, you should be able to observe exactly the same writeback
+behavior if you write less even without this patch. So I suspect that the
+different writeback behavior is just triggering some bug in the NFS (either
+on the client or the server side). The NFS3ERR_BADSESSION error you're
+getting back sounds like something times out somewhere, falls out of cache
+and reports this error (which doesn't happen if we writeback after 5s
+instead of 30s). NFS guys maybe have better idea what's going on here.
+
+You could possibly workaround this problem (and verify my theory) by tuning
+/proc/sys/vm/dirty_expire_centisecs to a lower value (say 500). This will
+make inode writeback start earlier and thus should effectively mask the
+problem again.
+
+								Honza
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
