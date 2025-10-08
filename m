@@ -4,116 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65DE6CCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 04:20:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47606CAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 04:25:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 907AD8E000C; Wed,  8 Oct 2025 00:20:20 -0400 (EDT)
+	id 5DF728E0010; Wed,  8 Oct 2025 00:25:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DFC58E0002; Wed,  8 Oct 2025 00:20:20 -0400 (EDT)
+	id 5B7758E0002; Wed,  8 Oct 2025 00:25:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F61A8E000C; Wed,  8 Oct 2025 00:20:20 -0400 (EDT)
+	id 4CCE98E0010; Wed,  8 Oct 2025 00:25:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DF148E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 00:20:20 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 01F6F58B58
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 04:20:19 +0000 (UTC)
-X-FDA: 83973645000.01.D835E7F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7098F180006
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 04:20:18 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J6CHq2N3;
-	spf=pass (imf16.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A4FA8E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 00:25:58 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DFC811A035A
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 04:25:57 +0000 (UTC)
+X-FDA: 83973659154.07.0DD25F3
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 0D2C440008
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 04:25:55 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Mqm5mHHg;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759897218;
+	s=arc-20220608; t=1759897556;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yr7z8PhZygVSoS108WVvwngH/9alXoXTbymUYSPCbfg=;
-	b=oKGUtcDMSYB1+GaQ8gGLOYep4C2KjOhTH5EFe7vCB2qTYOq5Pg/hXW9PByzhs/HQOfJfm1
-	9lk+eRQlnEDEe9n4tipLaJAj55DiaCWwXtXv0++S4ebzdMWZKGd36Qgn+LSxrPxjtm7aKL
-	MH89RDdNOGVyMsDYE4j3F2RfXiFpIpw=
+	bh=ZQ9dTtq2r031HzJ132CMq6x9QAKtupQ430h8sMV5noY=;
+	b=u6H+/jWCXS16U/zNj59ZWnDi3P26Q9bthBKsvdCnA5aGqqDielU3IDUVvEt0pmrlvm3Yb8
+	PjP3knE9RYukOqxLbmDuZvTR7o4fzMJWA4BZUFSj3VGO7v63116t8k7g1CW/nbQTWySjVJ
+	KIWrQ0+b9rO85kUNMgtAO14akIE4gvQ=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J6CHq2N3;
-	spf=pass (imf16.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759897218; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Mqm5mHHg;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759897556; a=rsa-sha256;
 	cv=none;
-	b=UXOfH1KCoDLTb+ZFB+eZuqZMLIWA/XlJR/oheVJVz70XwKsfKENEwOPIc0j2fJ9BBBu/op
-	TFzeU81SioGsSv643GLBy1twaQKraj1qqO63J6uwKID8a4ViXc/ueRGQ724ldrbx/V6uSn
-	0xpcXDwgUf8kx1ifIPz2dVsYMqjmGKE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B9D0160260;
-	Wed,  8 Oct 2025 04:20:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E2A7C4CEF4;
-	Wed,  8 Oct 2025 04:20:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759897217;
-	bh=gIXJCsumt6skJ3sfqf5pbZAzlXWzbFT/QpJ0QJ0WoEs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J6CHq2N3l4B147CgJt+zLqKYq2OtHwUWOsO4RanJM4icby3afXquF+ndgYR6fOYWP
-	 H6OZ/NXfzhSG3ZWIrXgmRzfzJY6TdzUbkHIqcFx9jRuywjXfZ30C/ThFcJTssakaHa
-	 8Pl8ETsSK4AyBuzZstrEd3Z+lNP+xUGQozD3xFAuMI7GnQHPjOrN8VoYC7s+PuJIdL
-	 Sl/LucC+GWoVX24kZ80gXhCu1Zs8uXu1c7fSbZPdvVAmGxtpf/98jY+G3TKds5KbWT
-	 ai2+dQBiC4bZTzbrfJnZsICkltmpxolSNNxBAdpghqjU9ZLCyE+8IndaxY2QfLJdx4
-	 9jMu/5qAYT2JA==
-Date: Tue, 7 Oct 2025 21:20:17 -0700
-From: Kees Cook <kees@kernel.org>
-To: Marco Elver <elver@google.com>
-Cc: "Christoph Lameter (Ampere)" <cl@gentwo.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Vlastimil Babka <vbabka@suse.cz>, Pekka Enberg <penberg@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, Jann Horn <jannh@google.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>, linux-mm@kvack.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>, Jakub Kicinski <kuba@kernel.org>,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Jan Hendrik Farr <kernel@jfarr.cc>,
-	Alexander Potapenko <glider@google.com>,
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
-	linux-doc@vger.kernel.org, llvm@lists.linux.dev,
-	Matteo Rizzo <matteorizzo@google.com>
-Subject: Re: [PATCH v4 2/2] slab: Introduce kmalloc_obj() and family
-Message-ID: <202510072114.52B93ED736@keescook>
-References: <20250315025852.it.568-kees@kernel.org>
- <20250315031550.473587-2-kees@kernel.org>
- <aOR15Xb6DfolYM0z@casper.infradead.org>
- <202510071001.11497F6708@keescook>
- <e019c59a-ba8b-ec04-dc5b-923cf9dd9d9c@gentwo.org>
- <CANpmjNMsSGY+QEn=GV8S2sXuuQsioikPR+OhGa3+6EoTqYPkHQ@mail.gmail.com>
+	b=LNgs3mgEYR7aGMNgSmV7ZLrMcWpt733HChUbjkelkaOUrNi8mZwjrXqNn5IT7bnXmG/4oH
+	Ni5Ej+//ZVQzcQ4K7EaBAuLdu6M1CjmmWKT4ZFAYN6vTtfn01lmiGCNrJ1mELUzdxP5X1a
+	b6n2T7gj4bTDlNNOnHdjzhmncsuRJ5A=
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-78febbe521cso76287006d6.2
+        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 21:25:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759897555; x=1760502355; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZQ9dTtq2r031HzJ132CMq6x9QAKtupQ430h8sMV5noY=;
+        b=Mqm5mHHgjXA/4jD6bB2bXzQjkoU+RvDYZ0mbuAd+cYQCksKSWbWE+60Th1VtWBxBpW
+         VYpA6W0QbW+uyaGxDnYTgnNpmoxgLpQ79RI3oEQ2o7gYybNriyFAV54L3HJff0jB74Ep
+         +A1D1pY3KpuoNlZPEais+akC6TH6ldHB6LEefbKrxHYXdcg1Xgwd0mQaWiTAf/J9/1LC
+         P0Yhm/AKKmKXLkBa4tdsRtf8p217tOi+ci2WckoVB1vo3UCgs6Z3zDGwz246qCstkfxA
+         HneD3Nuou/y4uzznIhBMIIF24Vmhj8qUpkEivK5vPRiOwF5lWbwQy2Ve8AqmLkakMG82
+         /6Gw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759897555; x=1760502355;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZQ9dTtq2r031HzJ132CMq6x9QAKtupQ430h8sMV5noY=;
+        b=iLzQgFlwQcOzznJtYtXW1oOATV7w8o/Dha703LfSIHs2IAgEJWJabKaAA76AwUJ1FW
+         p1yta01SKJTAwqVPjm4XGTQcqfOIxyXQA5O/AFVKumjixulSNQOmFiBbIhaRb0YRxBcC
+         2W6nUy1qIaDaiYdc43ifJvOl4h+uxFRbuUAa3UYGTcJtlQRm7IkFxDIQ/G/ZvAtFUqEj
+         Hfui9k9WB/vhBGVd4HldtgP1Uk03RN9SdzkPyW2E6ky7dv5AqKiztOEPjWWWbhwsgxxU
+         tQ6lQ4/GSjcJ1FpIg1tXGa2Mcq5ouih4GCVayfzZ9ynvrCkfKHy8A4bFg69z7P4nVZ/5
+         Ln3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUaBvLmk25IqTQTeETWL65C2htEQLS9L23hlIO64HHDTratCGxkcZC/UMuNiiZ1GSELaBUuA6Jfyg==@kvack.org
+X-Gm-Message-State: AOJu0YzFntvn/pwjCvOBtE9a2Kb+nbCTYcBP7azNMHhoE9zce2tHIqhy
+	21dMMU1TOe6dckgfhTi4JGxe6JvN4DEDI7s74o8yuNu1TVZe1Kc0Nd2CtBXNdpDSiwp7kszLVYe
+	adSu6kNqExc7svYy3hH766rSngVmfjes=
+X-Gm-Gg: ASbGnctulMX5uNnkQegyTOY6edLgwLH5PRpBexwtLvYsuwErd+kifjiYBG+oHtnbE6u
+	VOru70DWkI2nlIP2vmZ8vsn6PSBKKAqVKgsCanlbZQgfdmdQCByFwXd/Dy6ixEThM+dd+JN2Cbs
+	/OYVK9TeIAjZEDuvhGtTru9iKRlwm5hnxPdVXVZu65vIJJWEx/HY0tCyDJW5abWDiOEVBCDYhQb
+	D0Xzsz4k/Jn7uB6JP8Kqj6CzfblJ/PVnTNUjt5VkWry0gEt/OKY1QBsjHu5TKob
+X-Google-Smtp-Source: AGHT+IGCzC/VmZmzeTX400uWDZErCSGt3UANlTSe4ykGek43SJ+F9tUSaXyAxxMkUOYFF2TqLUurlhwf+xhIS36qFZk=
+X-Received: by 2002:a05:6214:62c:b0:77e:c29b:679b with SMTP id
+ 6a1803df08f44-87b2ef7fc5amr24134816d6.65.1759897554997; Tue, 07 Oct 2025
+ 21:25:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANpmjNMsSGY+QEn=GV8S2sXuuQsioikPR+OhGa3+6EoTqYPkHQ@mail.gmail.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7098F180006
-X-Stat-Signature: wund5s91519nwinfab8n1udx1t8izfba
+References: <20250930055826.9810-1-laoar.shao@gmail.com> <20250930055826.9810-4-laoar.shao@gmail.com>
+ <CAADnVQJtrJZOCWZKH498GBA8M0mYVztApk54mOEejs8Wr3nSiw@mail.gmail.com>
+ <CALOAHbATDURsi265PGQ7022vC9QsKUxxyiDUL9wLKGgVpaxJUw@mail.gmail.com>
+ <CAADnVQ+S590wKn0rdaDAHk=txQenXn6KyfhSZ3ks6vJA3nKrNg@mail.gmail.com>
+ <CALOAHbBcU1m=2siwZn10MWYyNt15Y=3HwSGi7+t-YPWf0n=VRg@mail.gmail.com> <CAADnVQKzW0wuN3NfgCSqQKVqAVRdKVEYMyJg+SpH0ENKH6fnMA@mail.gmail.com>
+In-Reply-To: <CAADnVQKzW0wuN3NfgCSqQKVqAVRdKVEYMyJg+SpH0ENKH6fnMA@mail.gmail.com>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Wed, 8 Oct 2025 12:25:18 +0800
+X-Gm-Features: AS18NWBI41AxLcXzli8BL1gzQnleRiXmQ_JGmwEiCOIcXhbDR3K7nn2-xDL2UY0
+Message-ID: <CALOAHbBzS2RunZzEk8-rkU60M8jKEJ8FwiPgZqNeoXDy++L5hA@mail.gmail.com>
+Subject: Re: [PATCH v9 mm-new 03/11] mm: thp: add support for BPF based THP
+ order selection
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Liam Howlett <Liam.Howlett@oracle.com>, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, Johannes Weiner <hannes@cmpxchg.org>, usamaarif642@gmail.com, 
+	gutierrez.asier@huawei-partners.com, Matthew Wilcox <willy@infradead.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Amery Hung <ameryhung@gmail.com>, 
+	David Rientjes <rientjes@google.com>, Jonathan Corbet <corbet@lwn.net>, 21cnbao@gmail.com, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>, lance.yang@linux.dev, 
+	Randy Dunlap <rdunlap@infradead.org>, bpf <bpf@vger.kernel.org>, 
+	linux-mm <linux-mm@kvack.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1759897218-745702
-X-HE-Meta: U2FsdGVkX18cTms0l3c8qJn8rKBXItjfFS6Yf7Ja8NzlJI9MoaptMQIJee7Ms2kUcOrQ4lAKOSKkCZoJ6hpVpLEyIvtq7yi/rCjwYllBF/ypJKlFHxs/e/3Jijh4KqDsdvddcVX0PVZN28DJ/IyJlnRhdeD3qGLApkN32NiuohRzyIcg4vgYrW3VG7AvFGv1No3u0XAZMeb4AQ4UYQpY+jNP/lKK8sULWiIVHq5OjyqWE61OzcI1pADdny8DcS9uq3DD7odt6kXopchxTmp9/k30TMHt2eoG42GQv9L9WhCALGQ8Wh/nALLUODCHKJjqqjvpV6PJMomf2alXwgvEuJ7uVL+qq8r9x65oQgjGbpjn80cQJxiEuifF7B9xDRJd6K0H4DlbQ0W7NzyDuSszotMWCJ8yOQrDWW+jPis/Q4IXs+BIHxMypyEUwm/NKllWPA1jwGXuJcO/Xiytet5R27aHdrDvx+1Ae8Dp1EUL55gTdG64dePz3XidRg2f3LlW3/VQOB5Yn3Ok6M3puhCg/nf9sNq5A0rMn9IIRxzfP6rf+Zd8PpfbECbwkyLEIo77WLJ/24bCNSsfeRimnF4o2W39GmP4qA37hsb2Cqu9E3KjV6FXcTBz+WHgmQ/G2eEB8TBVJqbpkGIkkbbpnAeQQKtGQB9B6wkIVUPljwvZzi/3y7GO+6UBEf8jjiOe6fjONLDC76/0MwJo7E0/qnV7B0w9KwMX8I8USA7PtVBolccoIR1FuHHK6eH8utWBcv0z6kdnGg21MfMjQvTmc/JLJ+XIx1w278mM7v5EIbFRP4t8Hs/STQ4YXENXETgQ9GBCOqa84+YkqKut+ZweyNWYkrrExaLvkr81oVQbWZTOHZQPuUwZJFxbe06DuTH6GEr/7QSaIZmFIKlHYLhrMQm8ry4tpqVoYrJx503R/P4pQs8iJPoOPXTeDsJ10alrIpylHavH6rHQDdIwm5RNQwP
- UrKST9P/
- 2ohSomtPXDdPdPLrvX8U8FPQkD1o3ItTkELMWtMa6xf9fSu50FOMBW6S7QnnvCaEsiMyl6QvUDkjMbdkXMEaBEkm7AKGgZaNP64rjkaUaS1jUj9BRKpjvRmPi0EaS5oTQhSBWTHAGdE+/hCpkZtHfQE/lhynZJCKZU3mMJFMU111fRSzC31nQxXRtxS0Vj4cPwYPNZb18jbfcT+vVq/ehVQ1C54sIRa6BJGrVBHC12NeiTL+lqwFwj9O0SxSKXsS01+zq08A3kogCtIOI8UbsEIXTrsxksWBmMhZZEN467XWGAI0rIymjfgGnPUVT1l3OH4d5bXfk1bV/MMJ9kZYYYLzrsA+Rebr2++N870gK3xeEiOIVpHarf4TvpwKLkGMLlpxWNTU4uhHFUax7jIQxFgSQyR2rwb7gdS7Eqd9sNtsxpfHI866+fbhQAtlvKZ4856NuYYcKspgvd9zWUUUGGJO4YmyxLzZnCtkydZHqXF9AS/esrKcfYnts2e6xrMUBrB+E2h1AqGWnUBOPn0A/tv0fAquTY+UaKRXlnw6N/BRnR+aToA+Y5T4wMw==
+X-Rspamd-Queue-Id: 0D2C440008
+X-Rspamd-Server: rspam03
+X-Stat-Signature: gxhubjgqium47dgworon6qriucjy5cws
+X-HE-Tag: 1759897555-6692
+X-HE-Meta: U2FsdGVkX19LzP9ZcSBS37cV2tBksmYo/mGeBG0peKQdOOK5YE2KOFwYtR6+Y2mBIqw8CIqEvlwBMkEUX+RnGOGXh95pL6iKEJ/qnhDvNWAzdrgmBxd/95TBBuSWBFfwHKFKVei9qbLq9l8HpRLbLoOsYG08ySXOsiKnto7N0f3rBvy8yd+TBsjAAsTrmSTvVUvwhY2hKfLVCPNX4ZEqCcDTj+xaFgmQe4CrFZYW9o/EB1uW3elL81n+88Pc8o/YbbAdCrElUWxXRD/fMFEb8p+qHG24qpxr0cfkOviGUXIkGGlrnjSNQ8sCjuZsa7dPKqaGdOTjLXecaFmo00CTPEUSlXdQAEvw5Ho+N5V9jJdSZwVbBsc7JGSvVeUYFE1j8EdsX/Gs+HmNSr9ynX52O0jpsfNYqvLrKhtY0miLKV+H2f+koxWabfKWKfcq88gkbD/awNlmJ++xs+r2xoZYWp3ejVed3Pkxty3clIwxbHO/xqJ/9OrBWXvQNXNOM2gV2ewlj/SnP/+k18bK6ODzDNNdq0Vt86MzzCOZxLvO6YrEhmdIkz1yojLiZoAV5GdqW4PPNo14fh2J+XbHm+WoeHuFMqs3XQ8YLNAMgGovXDvj1M6R82xX0GRqC379U7ccGu00rwt+ybvY2K82nPU4uNTnO1Jl0ZP9Z2epPulEIbWkViF/0MvkgFj5JLLoDG4VM4tfREhiQTtdQFpXBV+c4r7LbLnRxDac9jMvPIXPGXrMFMJR6PSzutrxzvuFbozg2d9sZ1JoZacE44rWD+2EX7SETkXLMx7I7794BAfGjx56VrGJ4nKqNA0mdFfF5oZDqO+fnaP2nOUr0gMnJXD24BewWkGlu7efO8KN5xOg1NjR4JSw2J378P54dxQbw03V/WrNq3CTE4AhUDsAQhFoXijf8bB3Ig/gDVFL0f/ZGUxBYBO87Nxqt1eZDn1sOWRy8TcE/crhZpAQ10s4BnS
+ /QYOheKR
+ HHIL8OTT1Td5lRLVQxp7Oe42cneSQBs2VQPKN8ijyxnDZaYegRg7OPklLRu6DOi0en8P+5SHtMfC6zYLQEREg/gZu1ZsIp/lEOTmooXGPAadJAJNJPLFSC0S6FJgPpoxRcPs10usT6TgOYPx0Fr8sm9aUwb7eoUQFOz0ha/4b9jdBCpb9wYLgwurgAHMIsfAhPMzTQ6qwZCzKOjKWCXiJCa64Qa/YcckkmdcWpd5Eq/QMJnG6ceelyn3AJkW2Vwx0/NupaKnlwrxdqNAMIWk2zTeQFhjS0A1Dhmh1gOH5rCMwZOSSKuwGIGBsbqu/GsdiLXxzu42r18sYCvDbjvBDHcrT5aGWocEK0hffMMS+LYj4RqzFsPfj0DmDva7WZFL1tgk5qn40jTX6eKfkr/YlsXL7q1SLYL/aTfaHSI6vTVAYLfeZlgjWkwzQqZhePeQHWQfL/0l7jCTJKIX8mUcdmVM2NA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,44 +131,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 07, 2025 at 08:18:28PM +0200, Marco Elver wrote:
-> On Tue, 7 Oct 2025 at 19:47, Christoph Lameter (Ampere) <cl@gentwo.org> wrote:
+On Wed, Oct 8, 2025 at 12:10=E2=80=AFPM Alexei Starovoitov
+<alexei.starovoitov@gmail.com> wrote:
+>
+> On Tue, Oct 7, 2025 at 8:51=E2=80=AFPM Yafang Shao <laoar.shao@gmail.com>=
+ wrote:
 > >
-> > On Tue, 7 Oct 2025, Kees Cook wrote:
+> > On Wed, Oct 8, 2025 at 11:25=E2=80=AFAM Alexei Starovoitov
+> > <alexei.starovoitov@gmail.com> wrote:
+> > >
+> > > On Tue, Oct 7, 2025 at 1:47=E2=80=AFAM Yafang Shao <laoar.shao@gmail.=
+com> wrote:
+> > > > has shown that multiple attachments often introduce conflicts. This=
+ is
+> > > > precisely why system administrators prefer to manage BPF programs w=
+ith
+> > > > a single manager=E2=80=94to avoid undefined behaviors from competin=
+g programs.
+> > >
+> > > I don't believe this a single bit.
 > >
-> > > But all of that is orthogonal to just _having_ the type info available.
+> > You should spend some time seeing how users are actually applying BPF
+> > in practice. Some information for you :
 > >
-> > iOS did go the path of creating basically one slab cache for each
-> > "type" of kmalloc for security reasons.
+> > https://github.com/bpfman/bpfman
+> > https://github.com/DataDog/ebpf-manager
+> > https://github.com/ccfos/huatuo
+>
+> By seeing the above you learned the wrong lesson.
+> These orchestrators and many others were created because
+> we made mistakes in the kernel by not scoping the progs enough.
+> XDP is a prime example. It allows one program per netdev.
+> This was a massive mistake which we're still trying to fix.
+
+Since we don't use XDP in production, I can't comment on it. However,
+for our multi-attachable cgroup BPF programs, a key issue arises: if a
+program has permission to attach to one cgroup, it can attach to any
+cgroup. While scoping enables attachment to individual cgroups, it
+does not enforce isolation. This means we must still check for
+conflicts between programs, which begs the question: what is the
+functional purpose of this scoping mechanism?
+
+>
+> > > hid-bpf initially went with fmod_ret approach, deleted the whole thin=
+g
+> > > and redesigned it with _scoped_ struct-ops.
 > >
-> > See https://security.apple.com/blog/towards-the-next-generation-of-xnu-memory-safety/
-> 
-> We can get something similar to that with:
-> https://lore.kernel.org/all/20250825154505.1558444-1-elver@google.com/
-> Pending compiler support which is going to become available in a few
-> months (probably).
-> That version used the existing RANDOM_KMALLOC_CACHES choice of 16 slab
-> caches, but there's no fundamental limitation to go higher.
+> > I see little value in embedding a bpf_thp_struct_ops into the
+> > task_struct. The benefits don't appear to justify the added
+> > complexity.
+>
+> huh? where did I say that struct-ops should be embedded in task_struct ?
 
-Right -- having compiler support for dealing with types at compile time
-means we can create the slab caches statically (instead of any particular
-fixed number, even the 16 from RANDOM_KMALLOC_CACHES). Another compiler
-feature that might help here is getting a unique u32 for arbitrary type
-info, which is also how KCFI works:
-https://lore.kernel.org/linux-hardening/20250926030252.2387681-1-kees@kernel.org/
+Given that, what would you propose?
+My position is that the only valid scope for bpf-thp is at the level
+of specific THP modes like madvise and always. This patch correctly
+implements that precise design.
 
-My main issue is that I prefer explicitly exposing the type instead of
-having the compiler have to guess. We want it for more than just slab
-isolation (e.g. examining alignment).
-
-> Note, this mitigation is likely not as strong as we'd like to without
-> SLAB_VIRTUAL (or so I'm told): https://lwn.net/Articles/944647/
-
-True, but both "halves" are needed -- SLAB_VIRTUAL isn't as robust
-without the type separation either.
-
--Kees
-
--- 
-Kees Cook
+--
+Regards
+Yafang
 
