@@ -4,117 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9A3CCCA472
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 14:05:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C44DCCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 14:13:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F3D438E0013; Wed,  8 Oct 2025 10:05:21 -0400 (EDT)
+	id B810F8E0018; Wed,  8 Oct 2025 10:13:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEEB28E0002; Wed,  8 Oct 2025 10:05:21 -0400 (EDT)
+	id B58868E0002; Wed,  8 Oct 2025 10:13:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB5B78E0013; Wed,  8 Oct 2025 10:05:21 -0400 (EDT)
+	id A95A78E0018; Wed,  8 Oct 2025 10:13:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C92308E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 10:05:21 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 66FFFBA39A
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 14:05:21 +0000 (UTC)
-X-FDA: 83975119242.24.6F76E02
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 6497B1C0027
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 14:05:19 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=jtoAlc48;
-	spf=pass (imf20.hostedemail.com: domain of aliceryhl@google.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=aliceryhl@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 984F98E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 10:13:45 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 20DDF13B4EB
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 14:13:45 +0000 (UTC)
+X-FDA: 83975140410.01.35BFD56
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C28E918000A
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 14:13:42 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf16.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759932319;
+	s=arc-20220608; t=1759932823;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pnFNM1hwuEwchUfhEuJaKySc2Ut3Y6Tp66F6XTEbLGo=;
-	b=XsnNCoifJxrfa0K3zZv99BfA20DEaVl1oXGgiuySjpORPb60GsnRz5GOmd8YsaqGErd32A
-	GS3OiMR/aio6q5ugflO2U2fIxH5auFHxaL+OhI2HkOt6n8B90xuxh8/XtnpSYOT9M8q+tz
-	iozhPCY9uj6pjqFHgpicJc2WisfSiNE=
+	 in-reply-to:in-reply-to:references:references;
+	bh=rf1zxpmZxhU8kb2GUm4ig3h0L/GcsL20Cabsuz7TTEY=;
+	b=zpbOM90iSSV/aIGdV3JWNUYRgQxLTnhSFijcF5KsDFUZA8lXICkBmGVbfMVoy3D41E3j8b
+	zB4Np3pBTnMhufcKvOkHxdzMfLZCWHctzQgzsB1xF4dAOZE6EWY2RhK2dUVtTHQAs1kwgx
+	eWRlrHl4LQ/naWXS61Ywx0HUGlZMa8s=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=jtoAlc48;
-	spf=pass (imf20.hostedemail.com: domain of aliceryhl@google.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=aliceryhl@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759932319; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf16.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759932823; a=rsa-sha256;
 	cv=none;
-	b=fz/Af7Rf4/ax4CSyEHRxBvzgh2CkE6EAZmtkiUY/kMoghqIR4Fm7DV72WD9Qw6huFFIXoi
-	v1BVNP76EuARMLeu21GWvrnw1vUilVuMUsY5n632dTH86JxAE5NDgGhlbh3XeoD/1bJ2m2
-	Ia04rKe36v25wBM1CGefS8Q1v/oV1WQ=
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3ee12332f3dso6625776f8f.2
-        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 07:05:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1759932318; x=1760537118; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pnFNM1hwuEwchUfhEuJaKySc2Ut3Y6Tp66F6XTEbLGo=;
-        b=jtoAlc48gLnUdXl8yrIP93TnJV0iFu0KO0+DuIkuHsPNIw6pjkmogthUwewB85IOkY
-         N2ZSV8YyIFEuxVh3ZScALRtubtKbVNxCfhWaO9wwBY72y0Jio4YYKSrPVxproKjuppcR
-         w08jtZ4A3TeDDzCzzqqbB/0LTbDAsTYENtX84E66YUlM7AGg6PD2O04Px4Kko4Q8QrKi
-         Y9OIvY7exuPu3bmjzV3JLfpPx44SbapqxJ4Q/RbgyyVaTxE+zgzqy/fQl4G1DrVXPZ1a
-         Kct/Ce4Fwo4o5x7ZQ15y/XpmxMff4AveQnUqW7P8Fux0X4b7ba6oEbH7fy6/X0PcfmAq
-         riGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759932318; x=1760537118;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pnFNM1hwuEwchUfhEuJaKySc2Ut3Y6Tp66F6XTEbLGo=;
-        b=Pb7+9RWjIMX7Ci8g4Zp6VRl3U62ok6o1ZFBoDSNhVBGR2DGIhHj+kJuNGBBylcK9rD
-         466m9/xjKB+zJEtNzeoZE+VaUvie4rJG9RsdXDGakvTp6/5L0pvKHQuoIgcNlv4mWzpu
-         gRTTjfvaVGHUcZ27VkoCq0wWmDh01yCpdUB/nRCfZ8nBqrkGoHKdop0fGXvhjjeVYuBC
-         CDmTYTZXN1rXMJhPr45e4v6c1lfPmWLmzORYOzHehbgoCnKbvKa8OM+wgG3wzwdx7qpS
-         rTit1lCpnZIQZT3oAhDAAvQMdl9DH3X2ALEBxMcBYNilCgENSEaV7ajXQB6fWORnzgUw
-         J+Pg==
-X-Forwarded-Encrypted: i=1; AJvYcCWSBzQOCU/tQtYkbz93+U+McrcNZRYN9LOGvPnYXK31TNN+3h6wO5v17K//GTUGxl35f2utrvCrHA==@kvack.org
-X-Gm-Message-State: AOJu0Yw+rNrcUrAhqqIfzJ5Ub3U6Rmnmkuc3Gw3P8zhF+LINg8lC32+p
-	8H6jXLyN8+eOraAreh7KBIJlmVuMWaHXu6O/blm5Cb12I8H6zOp62w12mH85JgjIRAgvWtyIxQM
-	Mo1rAMey+d9joC+PgAaMFGDJWhwQZ30+iKlzBk6y0
-X-Gm-Gg: ASbGncv+6NEzSV1RAK79XXI5OpEmTOQ+aTjW52nq4g6+7Wd4m4PXbCZHyjLlLO2YEqw
-	+gsNMvcnJM1XVAzzenqlrSg/2HUnBeW+oCpZBcrVGsGHTFrmKyQir3vrMjuIMurEE7+ECNnA2vL
-	2cXPJ18ntZGP1BcqXsw2YaFz2tIFRb9ZjvYqVDFL6K0KJBS8a894KCDfrIB+bbNlW2Bgazb1pQp
-	sQTgMvBwgvrYl3k2dCMpO2GkNv0VoMisG6y1IlOa/4pi0LoZw1KbK9fRmpxmqrW50E=
-X-Google-Smtp-Source: AGHT+IEtL1VUjwteFF0aUMusK9O6vaSfUkvwFkxXShRQV/K9msyLkRj+XdqkEBNkBGqLRAXp1DSu3/HCWH6QZ7gPJbw=
-X-Received: by 2002:a05:6000:2c0d:b0:3ec:df2b:14e2 with SMTP id
- ffacd0b85a97d-4267260e143mr2316476f8f.51.1759932317676; Wed, 08 Oct 2025
- 07:05:17 -0700 (PDT)
+	b=zNn9GRcjQs858sSwJbQ71Tcc0/QbYHBQBq1m1UP1Mxg6yhuz+90H3riPKtfpLwIPmugyVc
+	cE6/V2VTu9DLbfDennThavpin0m61YeUAL9k8OBYfgOn3QToWuYZZ3l4Xk9GSK2xFCpycE
+	S7jUFvR0LPap/Z3Br0LfZTVhxOKYJIs=
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4chZfv4gGzz6L4vx;
+	Wed,  8 Oct 2025 22:11:03 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 964541400DB;
+	Wed,  8 Oct 2025 22:13:36 +0800 (CST)
+Received: from localhost (10.122.19.247) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 8 Oct
+ 2025 15:13:35 +0100
+Date: Wed, 8 Oct 2025 15:13:33 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: <dan.j.williams@intel.com>
+CC: Catalin Marinas <catalin.marinas@arm.com>, <james.morse@arm.com>,
+	<linux-cxl@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-acpi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+	<linux-mm@kvack.org>, Will Deacon <will@kernel.org>, Davidlohr Bueso
+	<dave@stgolabs.net>, "H . Peter Anvin" <hpa@zytor.com>, Peter Zijlstra
+	<peterz@infradead.org>, "Yicong Yang" <yangyicong@huawei.com>,
+	<linuxarm@huawei.com>, Yushan Wang <wangyushan12@huawei.com>, Lorenzo
+ Pieralisi <lpieralisi@kernel.org>, "Mark Rutland" <mark.rutland@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner
+	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, <x86@kernel.org>, Andy Lutomirski <luto@kernel.org>
+Subject: Re: [PATCH v3 6/8] cache: Support cache maintenance for HiSilicon
+ SoC Hydra Home Agent
+Message-ID: <20251008151333.00001b94@huawei.com>
+In-Reply-To: <68bf52fa851d9_75e3100ac@dwillia2-mobl4.notmuch>
+References: <20250820102950.175065-1-Jonathan.Cameron@huawei.com>
+	<20250820102950.175065-7-Jonathan.Cameron@huawei.com>
+	<68bf52fa851d9_75e3100ac@dwillia2-mobl4.notmuch>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-References: <20251008124619.3160-1-work@onurozkan.dev> <20251008124619.3160-3-work@onurozkan.dev>
- <aOZhS9nTDnH3Zh7N@google.com> <aOZpwUD50MwSBycB@casper.infradead.org>
-In-Reply-To: <aOZpwUD50MwSBycB@casper.infradead.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 8 Oct 2025 16:05:05 +0200
-X-Gm-Features: AS18NWCZJ-_06NHTt-9pvac60ma3Z_7vD0cIto5b6ZZ5rLx2-etkF4_odDy_JZs
-Message-ID: <CAH5fLghoDEKnpq6WaD3zzV9UHm6gYzYXCOG_Q=pOUomcNcQhPg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] rust: xarray: abstract `xa_alloc`
-To: Matthew Wilcox <willy@infradead.org>
-Cc: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, tmgross@umich.edu, dakr@kernel.org, 
-	linux-kernel@vger.kernel.org, acourbot@nvidia.com, airlied@gmail.com, 
-	simona@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
-	tzimmermann@suse.de, corbet@lwn.net, lyude@redhat.com, 
-	linux-doc@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 6497B1C0027
-X-Rspamd-Server: rspam11
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.122.19.247]
+X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C28E918000A
+X-Stat-Signature: 7shroaynzo87r8n57en9a3wku8szcf9o
 X-Rspam-User: 
-X-Stat-Signature: 5m15o9mfgzgo6fdjb45wc3eeb798ctb8
-X-HE-Tag: 1759932319-347930
-X-HE-Meta: U2FsdGVkX1+k7OScOqHpI78/MMw2mDFTm/HxooEzYhP1EEZoDlM0blEkinc/gSw+yz51KMZ+Fc6vNoLTmq1E1iTZNwR5lOlgOj6xA34iqFuOVlD0h41XvqR9xJEmVXUBVfne88O7EtNBgx3Sf4dsy1JP70nf4Nhju2pxhBqF6v8vMZrLsfMPdnMqt8HzeMR/qrUgQzViGIISoutcYInr7Fdy6/5J84ZC59f4v0kXmfvf3JdFUvccKUuT9bVivn1ch60YzQcLuokQgS2CIS5yxYrDm5ygSWYgKXh5JeKZeCDeX85KUakuoFwUjjCglBTExgFcZ17mg7I62jNdvaAmi6ZZB6Jnd5L99J7Yo9NkSZICT5VrDPwLIUcoGcwLiwv42CmvTDxELSCi8DaC/fuJRRRzS1Bpmj42HZW44qQC/Qg3NRlaSGtOnLcEhbCjya5z4V9xdI2FSKYSVPmlRDNanMcCjZ+95vs/W6KXbfpyHdSFZdVzBz6GfVHCj/y2FR7+OA9SDC5WzCFhc5Sd8r/wVd/1Sp44i+V6QIbnGBPriYM6KWK34NOIbZ6Ou3sSwfZjPx87sCBCz+kG9rQOZQPyIrDEwgX5NjaK0or+4QT2j0ZUYNNT7w0eksHG+ZiCAuXDYAA6NXCLCynetGA4/7NY0NRp8Ivs3+SXEFshIQQGjbVfLZ59VPgc75nu5Hlkb5Q/jjkUBvZ712xXpJdIY4VsbszcEmGdamgiV2pkbCKoUB1C4shAhbPLDHbpXxia/6EiVWxeGo4pEmWIY/rcOUP30PnuPTfpGb10kqPuNNsCgK9SKrBoRXhDs6Peg7/sg4AKkNDW1YqnxxlSxKFlXjgrgs1qOkwUNMX6dUo+0VOweaayWT85FTwrHGqWYcX7R7NiVcIi5sm2Dnm6ixpVJzHLnTWXB0Xgd3XKhMW9n7cxSCePxPI7i3iCiENWNWAsk3h6dz+ZznWTrf3Dydh9XSj
- 6NyWHM6s
- fw7LSSNbBW8lHM4Z/TbUPQiRy6GppvwW/WsE4uU5jI0F1KMc78fInb4imzsIrp1+o0KGz0ncqA7Ot71WJ/Cy7m3PyBoxhX0/Wz2fAcAuparvMbDY0y6i7F0eVdtYxzzgu02M8lkFhaj+TNUVp3wAJJlOULAb9ENQ/ZtssPjW66M4fiTwGBF8pI6NYVtrN9gQ1XmzbjsaLS8jpFOI/xcz8l9aKs6SqakGXjFqeAhgP7UWW9q9NYWYx38sS5b62qJzmYGywexaN/RPaMrtJtV4soRKAcXrl3hKSC4XN41vQG6/h9Ukl8QVWKS+1dP3ADebQjlCd8vfvCpZGba3KENN+HVvMEFJ8LxuveBedO2ohQBKOGJJ6INznsFK/XQSNV3bYjflkUgXTF5nRGtI=
+X-HE-Tag: 1759932822-924248
+X-HE-Meta: U2FsdGVkX1+MCjbugyAHH9hfuIqu7SXjMOK+kMe7MVkNFr1q8wjxKBQboFPPjoJqMMlgQzGGLBKLIFaRZxAS+/crD/ZkWgfrLbEKu1sp/JMYsR4OxbhnqSTF0iqZcB0EvnSA43QuLwO06gi88EvpjIKoNqdourcdTtBvtA5F+4koqZSWhEqi52hiq3ME5RPQx/sJ2azgA3gQxg7ufo1jehSSmsit2mx++sOT3zuo6q9zilCBgx9ERJZ/huK1QSzfGe3AeTNYUv//xP03PMhzHLxOgtHJFGW/hlTBv8gKAN3GnpI2dniSpxvfuyunDqhBLXt2SwNPsBu/e5Q8S96r+AP6J4XnLzlPWCtBlQFYxNFBtLQg1jkLb7tNa8MzVNdr/Cg5LooaicDCQVkwjnp9FdZH9tZO3nllQI2xqqonDRqjJ6E5wMOgPkEkBXJF5lHethYTPvkFznrzDX8SXIAyF+gZXg4y8KbOS5FYbd7GDP/TClJHBV0BSw25SaGPmEHc/F2KdeWYCadxvarGtTtNXE/v3od/FJS6jpiLzmCGHUZsaEYr2GLfbr8m0bvC5T8AsAsy725pQN/G5EfGeAmdRjw8HrDD7pQaoodwAWx4XgnDm3yvuEu6jHARphNjQ24Zk1oXqvYhYVP/jSSSUxTJA7sB/WqetrrU/uWbIljgSpp9Nrka82i8k5oTFOlH92qX8f9cKEwUpNLrt9VOOZ9r8zFRvsFjmVvYBDJtM63aZMF06k7Z/wuKSEENhxVgDv/7JxkAIfALDg4EWk8R26CMKYep2HtvkdQlJXrGY5ApQRlwotdSbM0ekuLNb+XYyNle8CLZK0yXxBTBqR73TvbVtrOq85Ysa5tw+S/PHkVG1psP4ikuVf4HwUU59HhUaUPKrZICGF+Pof8occ0Xsc03d+6NyQtyj2dc9A9LyGMf3e8tKABlKHG9p+1xSwwrbtzzueqJZZPZGCDQ5JLEsXK
+ 4ssXo/7v
+ b7ZuZMdgtlX1PfORHKN+VGDDLvto9tUhA2zG8rvOaQC4zLxFZIv932OLbWlFgp48LP/fbUryZIj2vh9ijgYBJRzBNxoU+MQY3UNNzowTZ7H0sOPyMqe9C6HpuMo6GubUXlf0u1nv+s7eDJIsQDRyGkHqJgG2OAt7NEYXnufY8eBVn3h6WaZFF3y084iSll7j4f2D5AaYxMutjme0VQVNIZVG716hC8OiIBbkzyCrLtXLgYkOONVkSz9dw/xsOcLhrXsF6OpVT05cWVLCXAG8EtOkDT2PJ99WVf2yjdRhSc/IQQatQl1gvEocYQqNb+4Gm5DD4rLJPX+MTArU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,24 +103,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 8, 2025 at 3:40=E2=80=AFPM Matthew Wilcox <willy@infradead.org>=
- wrote:
->
-> On Wed, Oct 08, 2025 at 01:04:11PM +0000, Alice Ryhl wrote:
-> > > +        limit: Range<u32>,
-> >
-> > The Range type is inclusive/exclusive but xa_limit is
-> > inclusive/inclusive. They should match to avoid confusion.
->
-> ... and xa_limit is inclusive at the top end to be sure that we can
-> actually allocate 2^32-1.  Or does Range handle that by using 0 to mean
-> that 2^32-1 is allowed?
+On Mon, 8 Sep 2025 15:04:42 -0700
+dan.j.williams@intel.com wrote:
 
-Rust has multiple range types for inclusive and exclusive cases. The
-Range type is usually used for indexing arrays where the length fits
-in the integer type. To include 2^32-1, you have to use RangeInclusive
-instead of Range. It should be possible to write code that handles all
-of the range types without repetition.
+> Jonathan Cameron wrote:
+> > From: Yushan Wang <wangyushan12@huawei.com>
+> > 
+> > Hydra Home Agent is a device used to maintain cache coherency. Add support
+> > of explicit cache maintenance operations for it.
+> > 
+> > Memory resource of HHA conflicts with that of HHA PMU. A workaround is
+> > implemented here by replacing devm_ioremap_resource() to devm_ioremap() to
+> > workaround the resource conflict check.
+> > 
+> > Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+> > Co-developed-by: Yicong Yang <yangyicong@hisilicon.com>
+> > Signed-off-by: Yushan Wang <wangyushan12@huawei.com>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
+> [..]
+> > +static int hisi_soc_hha_probe(struct platform_device *pdev)
+> > +{
+> > +	struct hisi_soc_hha *soc_hha;
+> > +	struct resource *mem;
+> > +	int ret;
+> > +
+> > +	soc_hha = cache_coherency_device_alloc(&hha_ops, struct hisi_soc_hha,
+> > +					       ccd);
+> > +	if (!soc_hha)
+> > +		return -ENOMEM;
+> > +
+> > +	platform_set_drvdata(pdev, soc_hha);
+> > +
+> > +	mutex_init(&soc_hha->lock);
+> > +
+> > +	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> > +	if (!mem)
+> > +		return -ENODEV;
+> > +
+> > +	/*
+> > +	 * HHA cache driver share the same register region with HHA uncore PMU
+> > +	 * driver in hardware's perspective, none of them should reserve the
+> > +	 * resource to itself only.  Here exclusive access verification is
+> > +	 * avoided by calling devm_ioremap instead of devm_ioremap_resource to
+> > +	 * allow both drivers to exist at the same time.
+> > +	 */
+> > +	soc_hha->base = ioremap(mem->start, resource_size(mem));
+> > +	if (IS_ERR_OR_NULL(soc_hha->base)) {
+> > +		ret = dev_err_probe(&pdev->dev, PTR_ERR(soc_hha->base),
+> > +				"failed to remap io memory");
+> > +		goto err_free_ccd;
+> > +	}
+> > +
+> > +	ret = cache_coherency_device_register(&soc_hha->ccd);
+> > +	if (ret)
+> > +		goto err_iounmap;
+> > +
+> > +	return 0;
+> > +
+> > +err_iounmap:
+> > +	iounmap(soc_hha->base);
+> > +err_free_ccd:
+> > +	cache_coherency_device_free(&soc_hha->ccd);  
+> 
+> I understand that this scheme works because ccd is the first member and
+> that is forced at alloc the same way fwctl does it. However, fwctl hides
+> confusing code like this behind put_device() in the free path. So I would
+> say if you want to borrow the "_alloc(ops, drv_struct, member)" approach do
+> also hide the "offsetof(drv_struct, member) == 0" in the object release
+> path and not have eye-popping code like:
+> 
+>     cache_coherency_device_free(&soc_hha->ccd)
+> 
+> ...that throws away the allocation side cleverness into a cloud of reader
+> confusion. Either make this an actual "device" or otherwise have a kref.
+> 
+The device option is out because Greg KH was not keen on me using that
+infrastructure when we don't have any userspace ABI. 
 
-Alice
+Kref seems fine but because we have to pass an explicit release to kref_put()
+we end up either with the odd looking
+
+kfree_put(&soc_hha->cci, cache_coherency_ops_inst_free);
+
+or wrapping it up with a helper along the lines of
+cache_coherency_ops_instance_put(&soc_hha->cci);
+
+That seems reasonable but given there is no real reference counting going on
+(the reference count == 1 from alloc to this call) using an actual kref is
+perhaps overkill because this is really the same as having no kref and
+just implementing.
+
+void cache_coherency_ops_instance_put(struct cache_coherency_ops_inst *cci)
+{
+	kfree(cci);
+}
+
+So other than a rename it is the same as current implementation. :(
+
+So for now I'm thinking have the helper and use a kref even if it's rather
+silly just because it will then behave how people (hopefully) expect it to.
+
+Jonathan
+
+
+
+
 
