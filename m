@@ -4,134 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2061FCAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 16:41:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D78CFCAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 16:46:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EBC38E0048; Wed,  8 Oct 2025 12:41:15 -0400 (EDT)
+	id 3FDD68E0049; Wed,  8 Oct 2025 12:46:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79B238E0002; Wed,  8 Oct 2025 12:41:15 -0400 (EDT)
+	id 3AE7D8E0002; Wed,  8 Oct 2025 12:46:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B16C8E0048; Wed,  8 Oct 2025 12:41:15 -0400 (EDT)
+	id 2EB258E0049; Wed,  8 Oct 2025 12:46:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 58BC18E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 12:41:15 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 09B09140676
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 16:41:15 +0000 (UTC)
-X-FDA: 83975512110.25.A29EED9
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3FBA0100006
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 16:41:13 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=TTbYmOdH;
-	spf=pass (imf05.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.177 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1983C8E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 12:46:04 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B110E1A061B
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 16:46:03 +0000 (UTC)
+X-FDA: 83975524206.04.F8EC9A9
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 8D72A20007
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 16:46:01 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf13.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759941673;
+	s=arc-20220608; t=1759941962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y0QDDkoHx1oddr1kYoPe9XtgfxjyTTRXUHnhEvUEaHE=;
-	b=59kx2wiU0STO6qzSyfF2JQ1+pFmm1RRAEg7//c6d0YCX9eQKXeEaVjm5o5zlFV9IRmDFD9
-	AgvJsjxnCO+Svar2i0g9FuuwacDDV0DfVpVCP31/kLFCLPohfnkRXW92jE1isebwcIPrgR
-	pJM6hsrb5kYjjaqX76ehAoRgbHg+ah0=
+	 in-reply-to:in-reply-to:references:references;
+	bh=1Qjfa07xpfRJoAOuSmQvWkQhBubuU+eaKhSs6ZaJ8nA=;
+	b=aDVpAMOFZ7zF+I91sUpLooJn7yf5j+3Nkh6R7uRnPYAX/+pL3EHEH+eZE0aYX4aulQA+1O
+	/57gHs5PDGqYWvw2xoaYXSsSbGT+CbiY4YkTDOfTO0ZxtVGU5MpDCvU/21qXjm1TjmfDbJ
+	nFPUwIw/gFcgVeI+qO0BFBx1RYs5CPs=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=TTbYmOdH;
-	spf=pass (imf05.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.177 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759941673; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf13.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759941962; a=rsa-sha256;
 	cv=none;
-	b=Kz6Of/Ot/Rz7LXiBj7gWqb2oOJrmd5N5jikWlvgm/pDMspF1RwvjH7LTqcqfOqigGXFLul
-	NIY1mYa+b0feR1fC+srCJ16g+Pn3liZOicRrCKy+VhFT9vW0v3irQpv63AzIuJmzqnq8q8
-	pG8oRV+qRH75NJEJjy3E/e8i2iFZ+jU=
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-856701dc22aso1145885a.3
-        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 09:41:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1759941672; x=1760546472; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Y0QDDkoHx1oddr1kYoPe9XtgfxjyTTRXUHnhEvUEaHE=;
-        b=TTbYmOdH/jKG4uUU2vyWMBxT2HU3TkAa7OuyPELgYOQOalgK/A32ns5TyYOPx4kcr4
-         5kn3UOcwIacbxsKVI0mLFwwuLLr/qpnTARpVPry8mUjnDhlgSmSatayze28gKgqvyiXz
-         WL/ZFaTItEAhC6MaJ+uurEmU7YkpBERQIGKU+8z63zzYWmR7cbVIR150L2HgN2Wcw1pW
-         uxyJc2owBWY+5OWyFj4rpq30E23mBGkWhjk9a1Mq+eF8ghuTSGJje+/wP1BhX8KFlwMJ
-         lHxnhWKi/gXllS4iwdS5MN/CawpMNllM1y3jAW0U0x5wT4v1fMOfS2Py+MgTK0EnEQYf
-         Q2fA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759941672; x=1760546472;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Y0QDDkoHx1oddr1kYoPe9XtgfxjyTTRXUHnhEvUEaHE=;
-        b=P69XFxKQ3aeyy6j3fxCr+e9cUBei+IHMpBbsLiD6u9G3wXyNT3wgAe5oplad68qDvd
-         yfg+kEdaH16+AlB4yqk9zj3663XslePv+FYkoQYK2RxQggR055jeLVHuzdi8slVCnFDZ
-         QFgYxgdnenSsaFysLk7Ah19WfUkSsDufLEhhjrhoxN92Q5Fs73k5QlCdzlxAXU8RQAWy
-         tvly59+Bk/izGIJMEAQvXzEJWF2IUgiFDauNJgzqxSyrFUZenl0UwrAC2Ok+2HLJNXcn
-         xLCfztEPDp5aJy/2+/fUbAaUpTMmHHdahMv8DDKaQAbJbDMIWFbyEhYauhZopUOQrVw7
-         RVVw==
-X-Forwarded-Encrypted: i=1; AJvYcCX0Fgn50MYn/42NoFcjD9dKuwXdT9cASnDmZ4cJNPkjrL4kWVaQU2ybyeNDu58+7+OKoBw6y1QcvQ==@kvack.org
-X-Gm-Message-State: AOJu0YxVINk9FwvOx9iCI6uenoyzGgFE6WBa6LXA8b8fM71Xe32oeACa
-	9vvO0ZA/vJU3igFw9pIoEpmkweo5OE8YKqXnaYozYffBxZMkXX+fLlC+lqjlahm93nHHSKhtBao
-	+YWy6BGOJVhrUof2e0Xawvfsv1ytTf88nqp8yIwom3w==
-X-Gm-Gg: ASbGnctSuig/KrAWawplE2TwNQpRq8SH17bVxBaRTalldf9emVqkzTXUBYSs576ejMV
-	7P5qiWsZx8n4d7AgGMTFAR5HJFPdN2m5HlkiIIZOU7+TMNEZR1DqG938qnFOPbDwROnP1YzjwUg
-	tP4xjr6aku7/s1oO0A0Ppm9uJu6Z7IMjDmqJTe14dksaqT+OHCBW1yT5X466XVDVhIMFzh7vpO3
-	jhViTlzQyzySCyFqYv32R3QtWVK
-X-Google-Smtp-Source: AGHT+IE3RKIZb1iIOLaTyMNTcxfyaBM7YSPyWPYytKjmmpW9kMu81LYT+MqTFPjCR/XhBeZkyeuypkTguw/UEdpotf8=
-X-Received: by 2002:a05:620a:410c:b0:829:b669:c791 with SMTP id
- af79cd13be357-88352d9a448mr549049785a.78.1759941671964; Wed, 08 Oct 2025
- 09:41:11 -0700 (PDT)
+	b=eUUNaci+16gGUzYDXy7VQImDv0NU3QC/R3G9WVnE2b+73Gwb/T6sILIposuXvnzp0aSjyL
+	5e4ZMtTC8AKn0EqdsZCbmDfwR8GyA7Ll6MtVfu8RZA7UZiS97Oa0ARvvOXO7LNBNoPA4GC
+	syfbQYSBcJb3OLEB4ESn8MHt9mA5hss=
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4chf1r1fCvz6839B;
+	Thu,  9 Oct 2025 00:42:40 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1CCB61400D9;
+	Thu,  9 Oct 2025 00:45:59 +0800 (CST)
+Received: from localhost (10.122.19.247) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 8 Oct
+ 2025 17:45:54 +0100
+Date: Wed, 8 Oct 2025 17:45:51 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: <dan.j.williams@intel.com>
+CC: Catalin Marinas <catalin.marinas@arm.com>, <james.morse@arm.com>,
+	<linux-cxl@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-acpi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+	<linux-mm@kvack.org>, Will Deacon <will@kernel.org>, Davidlohr Bueso
+	<dave@stgolabs.net>, "H . Peter Anvin" <hpa@zytor.com>, Peter Zijlstra
+	<peterz@infradead.org>, "Yicong Yang" <yangyicong@huawei.com>,
+	<linuxarm@huawei.com>, Yushan Wang <wangyushan12@huawei.com>, Lorenzo
+ Pieralisi <lpieralisi@kernel.org>, "Mark Rutland" <mark.rutland@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner
+	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, <x86@kernel.org>, Andy Lutomirski <luto@kernel.org>
+Subject: Re: [PATCH v3 3/8] lib: Support
+ ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+Message-ID: <20251008174551.00000e95@huawei.com>
+In-Reply-To: <68bf43b1dd06f_75e3100ed@dwillia2-mobl4.notmuch>
+References: <20250820102950.175065-1-Jonathan.Cameron@huawei.com>
+	<20250820102950.175065-4-Jonathan.Cameron@huawei.com>
+	<68bf43b1dd06f_75e3100ed@dwillia2-mobl4.notmuch>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
- <CA+CK2bB+RdapsozPHe84MP4NVSPLo6vje5hji5MKSg8L6ViAbw@mail.gmail.com> <CAAywjhSP=ugnSJOHPGmTUPGh82wt+qnaqZAqo99EfhF-XHD5Sg@mail.gmail.com>
-In-Reply-To: <CAAywjhSP=ugnSJOHPGmTUPGh82wt+qnaqZAqo99EfhF-XHD5Sg@mail.gmail.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Wed, 8 Oct 2025 12:40:34 -0400
-X-Gm-Features: AS18NWBehU4q9WUE9mwN1N00X-Mv4SLEo64BJ5126E8o614dVWx--_4ZFo216so
-Message-ID: <CA+CK2bAG+YAS7oSpdrZYDK0LU2mhfRuj2qTJtT-Hn8FLUbt=Dw@mail.gmail.com>
-Subject: Re: [PATCH v4 00/30] Live Update Orchestrator
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
-	changyuanl@google.com, rppt@kernel.org, dmatlack@google.com, 
-	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
-	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
-	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
-	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
-	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
-	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
-	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
-	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
-	song@kernel.org, zhangguopeng@kylinos.cn, linux@weissschuh.net, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
-	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
-	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, chrisl@kernel.org, 
-	steven.sistare@oracle.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: tim9ghn5bj5rg3k11oj68a7g67dc9p18
-X-Rspamd-Queue-Id: 3FBA0100006
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.122.19.247]
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 8D72A20007
+X-Stat-Signature: ami73ubnznku5q3ghmirdazwii38yzb6
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1759941673-613294
-X-HE-Meta: U2FsdGVkX1+SuBQuQY81t7F36eHySJi0Crohhox3BWJXchQhyNpMw0fuJNg9IlYJc/daxc3e8q1+zL4gd36z1bq1L6d8RTZVqJQnBE2P/VZweyO2VRJjkNRDF6NhAYguUdzsS1967ID7RRWDdW6DmAHDpNmzcdZ3UqR4hctKt/HkNPGrXKZDpvZPlhz1N8v0jJLlKWtkvnBZCQ2rMGspfNR9REUuEpFVKYbw443dc1p1gsjxx2ypsLGgv22nJS4hQtveOSA4op/wQa/d0YCVSVgmAfFTqmqKfxG7Gz4u2T82zP66K4jvoEqDzFY+fVHJFDW+BhAqZ6ReI8dfXKXUVKaWUwmPHysUET/VD8wWecPFT0UgkwFS+fRCQDdEHbRFoVVD68M8sZDYClsOeY06VISmKOPnvpQEXLEjMPLjeYG6O7Y8sERQlX4eizwyrEhVVfVeHQwX9+TRSa5HJxbRyhjh3x6RsU19ZfSfcmGBvoxv4ayL7Re6DrqQ8tya2gc0fzPSu+m8LPIyhyd4wILlwf7geRzG7EYeF8oylDK2Fhw6cy9EZKJ+iGdnWfWM4TUJYptXl7B0+Lq+AZQ9Tc+e3teQkbdngCGjER6u4nWwbA7cgPxgsU3EPmhRB7Dr+VKAPQor39mBfADrNiNzgCE+SU2rTIQjaNeixyFA4zCchMhCfTvZ/3uubb4cDSI1+BE1FUY7J3i+v/9+abXiVGNtgaDwtgFsrhyOjaWtQCG3SGUkmQqA1vvp+zfqZPLUG5jp36VPS8Z+pDzVNTYDMfbJPwPQZd7g12k9HeXiBeW9cx/5aQQ035pFFumj65FoG3Am60oonN3OW/BilxYZDN3H92LsEjJQO9it/e0qa7biBOaA9Yqw03aG9QGB++Z3MZLj0Bn+uEVZLix2AV8kJ1uj0ue5O8wLDNuYJBid0dYFnPXmWpOF+ta55021SGDGDxqbYxZlRcuSQGKWRzS1DiV
- 0zeRX/AD
- R5ELM
+X-HE-Tag: 1759941961-598306
+X-HE-Meta: U2FsdGVkX1/DMmcEyHPKu+dD9+W49GDwWis7lgGxGSniEq35+0LuBmRDhNg6IRiBnXbGH3kmvMZplQupG8pgm+vvV8vaIc4+VmYVEH8+le/tSJrYoXr/rCQKP9AIks++L57oA1cWzLBahVPXjddmpX9Cm+U7mzggExq0v+dGRVjCwcfCzN6YZkez4WljTZJXgg94aB6IIk7hB+xjfIWTS29i8wgyU0PZEF8KPzhWiulevnt5T7LcnyNx4mNIytw6hMPsTUcN6tHTOxSs0ax9b8yKwAr3isBajD1FFfMz1Jjuoxrnxrl5yJ3d8am5qE/B2Qsd5zQ9DjgK4zX8IQMeGrZmQVClslEBaAAKdWTfxBGItSO3augKs7R+WCF8UF+ISPjSsE+/dS0kHOzv9Gq57qtRMGneLRo9YxXX43xPcWkCPdTw52wHSJSnjkgYDmruzdFW32CkhV1tj42tsle9hqNUVcPtRoy/9qrc+zkRN+XXLd3xqIKIeisygegt/GTN66ktuwp3dMl1kqhCLi3hBGGf6tCKAeYTldjrc5HeRfnG/z4Kulkbhwg9OjiaOqy1twGWQj5jOnndMfVHkwAvC7xZ+iU9stztStakX54VcsVwRIrwjtvND1+qyxmVKAZ4bHHgj5z1yABT9cnul5fFbfyf3MprZ9JzlT0MN7ZUpkRwgMSS5pXGONNiMZz8jSJp/hOIuANTST9sW2EqQsuSH/bpPanJFMEwjknaRQH6Y0xBlwD934WdQsl/AUPodDMJZBdYdO+bZ3P4OrJ4uU830YFFlx6NMhQ/6NbXDPYpjw44ISrPQF1Zh/RcCYm8u0wAB675e923GtCtXl0JaiNN8w1K5B1fk+q8Fdkc7lAk8k3jbYghc66lYDvl0UP1jy9NNJWKc3SkwLS8FvwLoOWNELhnmwxmbqn+CuYyz0Oj/tzHUvF+o66DrlirHlNd+e5ARXiQSy3m5lAc+VgPsVv
+ /atjt2qk
+ q6QGC9jxdkBnU4BM242ZGIJsS7c1yVVDjz4WNrQjZz9LqYhXa2uabpP+3DqsH2q4GeDO9gxi5J3/b5k/wGvvTLeCWc+ZjlmoMhsgx4FYZWCHxZF+ZMCHrlE9BwPSTo8qOQRxT+xfFVpQLKs1K80AB+YNPtPVOqQvcOvgqdLlXouk2iBf5oXhNoUb/D5KMWlsrdqtL/l/Doj10ioyMfa4DRPbbMJUScqqlaCt3GDMjSG/X904Aoiu2wplwI+DZMuCzRCxgQuVTn3CUdwyV64nhHjQTU2R43E9WFojhkDxRGayJkPsWOpEFRsIv+8wcfmyxkxrhc71n+ZZ8cmh1YxLzGz1+vyR8h6hKTVFMbLALeCOioDhsW+e4Rs77Bg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,182 +103,172 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 8, 2025 at 3:04=E2=80=AFAM Samiullah Khawaja <skhawaja@google.c=
-om> wrote:
->
-> On Tue, Oct 7, 2025 at 10:11=E2=80=AFAM Pasha Tatashin
-> <pasha.tatashin@soleen.com> wrote:
-> >
-> > On Sun, Sep 28, 2025 at 9:03=E2=80=AFPM Pasha Tatashin
-> > <pasha.tatashin@soleen.com> wrote:
-> > >
-> > > This series introduces the Live Update Orchestrator (LUO), a kernel
-> > > subsystem designed to facilitate live kernel updates. LUO enables
-> > > kexec-based reboots with minimal downtime, a critical capability for
-> > > cloud environments where hypervisors must be updated without disrupti=
-ng
-> > > running virtual machines. By preserving the state of selected resourc=
-es,
-> > > such as file descriptors and memory, LUO allows workloads to resume
-> > > seamlessly in the new kernel.
-> > >
-> > > The git branch for this series can be found at:
-> > > https://github.com/googleprodkernel/linux-liveupdate/tree/luo/v4
-> > >
-> > > The patch series applies against linux-next tag: next-20250926
-> > >
-> > > While this series is showed cased using memfd preservation. There are
-> > > works to preserve devices:
-> > > 1. IOMMU: https://lore.kernel.org/all/20250928190624.3735830-16-skhaw=
-aja@google.com
-> > > 2. PCI: https://lore.kernel.org/all/20250916-luo-pci-v2-0-c494053c3c0=
-8@kernel.org
-> > >
-> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > Changelog since v3:
-> > > (https://lore.kernel.org/all/20250807014442.3829950-1-pasha.tatashin@=
-soleen.com):
-> > >
-> > > - The main architectural change in this version is introduction of
-> > >   "sessions" to manage the lifecycle of preserved file descriptors.
-> > >   In v3, session management was left to a single userspace agent. Thi=
-s
-> > >   approach has been revised to improve robustness. Now, each session =
-is
-> > >   represented by a file descriptor (/dev/liveupdate). The lifecycle o=
-f
-> > >   all preserved resources within a session is tied to this FD, ensuri=
-ng
-> > >   automatic cleanup by the kernel if the controlling userspace agent
-> > >   crashes or exits unexpectedly.
-> > >
-> > > - The first three KHO fixes from the previous series have been merged
-> > >   into Linus' tree.
-> > >
-> > > - Various bug fixes and refactorings, including correcting memory
-> > >   unpreservation logic during a kho_abort() sequence.
-> > >
-> > > - Addressing all comments from reviewers.
-> > >
-> > > - Removing sysfs interface (/sys/kernel/liveupdate/state), the state
-> > >   can now be queried  only via ioctl() API.
-> > >
-> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >
-> > Hi all,
-> >
-> > Following up on yesterday's Hypervisor Live Update meeting, we
-> > discussed the requirements for the LUO to track dependencies,
-> > particularly for IOMMU preservation and other stateful file
-> > descriptors. This email summarizes the main design decisions and
-> > outcomes from that discussion.
-> >
-> > For context, the notes from the previous meeting can be found here:
-> > https://lore.kernel.org/all/365acb25-4b25-86a2-10b0-1df98703e287@google=
-.com
-> > The notes for yesterday's meeting are not yes available.
-> >
-> > The key outcomes are as follows:
-> >
-> > 1. User-Enforced Ordering
-> > -------------------------
-> > The responsibility for enforcing the correct order of operations will
-> > lie with the userspace agent. If fd_A is a dependency for fd_B,
-> > userspace must ensure that fd_A is preserved before fd_B. This same
-> > ordering must be honored during the restoration phase after the reboot
-> > (fd_A must be restored before fd_B). The kernel preserve the ordering.
-> >
-> > 2. Serialization in PRESERVE_FD
-> > -------------------------------
-> > To keep the global prepare() phase lightweight and predictable, the
-> > consensus was to shift the heavy serialization work into the
-> > PRESERVE_FD ioctl handler. This means that when userspace requests to
-> > preserve a file, the file handler should perform the bulk of the
-> > state-saving work immediately.
-> >
-> > The proposed sequence of operations reflects this shift:
-> >
-> > Shutdown Flow:
-> > fd_preserve() (heavy serialization) -> prepare() (lightweight final
-> > checks) -> Suspend VM -> reboot(KEXEC) -> freeze() (lightweight)
-> >
-> > Boot & Restore Flow:
-> > fd_restore() (lightweight object creation) -> Resume VM -> Heavy
-> > post-restore IOCTLs (e.g., hardware page table re-creation) ->
-> > finish() (lightweight cleanup)
-> >
-> > This decision primarily serves as a guideline for file handler
-> > implementations. For the LUO core, this implies minor API changes,
-> > such as renaming can_preserve() to a more active preserve() and adding
-> > a corresponding unpreserve() callback to be called during
-> > UNPRESERVE_FD.
-> >
-> > 3. FD Data Query API
-> > --------------------
-> > We identified the need for a kernel API to allow subsystems to query
-> > preserved FD data during the boot process, before userspace has
-> > initiated the restore.
-> >
-> > The proposed API would allow a file handler to retrieve a list of all
-> > its preserved FDs, including their session names, tokens, and the
-> > private data payload.
-> >
-> > Proposed Data Structure:
-> >
-> > struct liveupdate_fd {
-> >         char *session; /* session name */
-> >         u64 token; /* Preserved FD token */
-> >         u64 data; /* Private preserved data */
-> > };
-> >
-> > Proposed Function:
-> > liveupdate_fd_data_query(struct liveupdate_file_handler *h,
-> >                          struct liveupdate_fd *fds, long *count);
-> >
-> > 4. New File-Lifecycle-Bound Global State
-> > ----------------------------------------
-> > A new mechanism for managing global state was proposed, designed to be
-> > tied to the lifecycle of the preserved files themselves. This would
-> > allow a file owner (e.g., the IOMMU subsystem) to save and retrieve
-> > global state that is only relevant when one or more of its FDs are
-> > being managed by LUO.
-> >
-> > The key characteristics of this new mechanism are:
-> > The global state is optionally created on the first preserve() call
-> > for a given file handler.
-> > The state can be updated on subsequent preserve() calls.
-> > The state is destroyed when the last corresponding file is unpreserved
-> > or finished.
-> > The data can be accessed during boot.
-> >
-> > I am thinking of an API like this.
+On Mon, 8 Sep 2025 13:59:29 -0700
+dan.j.williams@intel.com wrote:
 
-Sami and I discussed this further, and we agree that the proposed API
-will work. We also identified two additional requirements that were
-not mentioned in my previous email:
+> Jonathan Cameron wrote:
+> > From: Yicong Yang <yangyicong@hisilicon.com>
+> > 
+> > ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION provides the mechanism for
+> > invalidating certain memory regions in a cache-incoherent manner. Currently
+> > this is used by NVDIMM and CXL memory drivers in cases where it is
+> > necessary to flush all data from caches by physical address range.
+> > 
+> > In some architectures these operations are supported by system components
+> > that may become available only later in boot as they are either present
+> > on a discoverable bus, or via a firmware description of an MMIO interface
+> > (e.g. ACPI DSDT). Provide a framework to handle this case.
+> > 
+> > Architectures can opt in for this support via
+> > CONFIG_GENERIC_CPU_CACHE_MAINTENANCE
+> > 
+> > Add a registration framework. Each driver provides an ops structure and
+> > the first op is Write Back and Invalidate by PA Range. The driver may
+> > over invalidate.
+> > 
+> > An optional completion check operation is also provided. If present
+> > that should be called to ensure that the action has finished.
+> > 
+> > When multiple agents are present in the system each should register with
+> > this framework and the core code will issue the invalidate to all of them
+> > before checking for completion on each. This is done to avoid need for
+> > filtering in the core code which can become complex when interleave,
+> > potentially across different cache coherency hardware is going on, so it
+> > is easier to tell everyone and let those who don't care do nothing.
+> > 
+> > Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+> > Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
+> > v3: Squash all the layering from v2 so that the infrastucture is
+> >     always present.
+> >     Suggestions on naming welcome. Note that the hardware I have
+> >     available supports a much richer set of maintenance operations
+> >     than Write Back and Invalidate, so I'd like a name that
+> >     covers all resonable maintenance operations.
+> >     Use an allocation wrapper macro, based on the fwctl one to
+> >     ensure that the first element of the allocated driver structure
+> >     is a struct cache_coherency_device.
+> >     Thanks to all who provided feedback.
+> > ---
+> >  include/linux/cache_coherency.h |  57 ++++++++++++++
+> >  lib/Kconfig                     |   3 +
+> >  lib/Makefile                    |   2 +
+> >  lib/cache_maint.c               | 128 ++++++++++++++++++++++++++++++++
+> >  4 files changed, 190 insertions(+)
+> > 
+> > diff --git a/include/linux/cache_coherency.h b/include/linux/cache_coherency.h
+> > new file mode 100644
+> > index 000000000000..cb195b17b6e6
+> > --- /dev/null
+> > +++ b/include/linux/cache_coherency.h
+> > @@ -0,0 +1,57 @@
+> > +/* SPDX-License-Identifier: GPL-2.0 */
+> > +/*
+> > + * Cache coherency maintenace operation device drivers
+> > + *
+> > + * Copyright Huawei 2025
+> > + */
+> > +#ifndef _LINUX_CACHE_COHERENCY_H_
+> > +#define _LINUX_CACHE_COHERENCY_H_
+> > +
+> > +#include <linux/list.h>
+> > +#include <linux/types.h>
+> > +
+> > +struct cc_inval_params {
+> > +	phys_addr_t addr;
+> > +	size_t size;
+> > +};
+> > +
+> > +struct cache_coherency_device;
+> > +
+> > +struct coherency_ops {
+> > +	int (*wbinv)(struct cache_coherency_device *ccd, struct cc_inval_params *invp);
+> > +	int (*done)(struct cache_coherency_device *ccd);
+> > +};
+> > +
+> > +struct cache_coherency_device {
+> > +	struct list_head node;
+> > +	const struct coherency_ops *ops;
+> > +};  
+> 
+> Why is this called a device when there is no 'struct device'?
+> 
+> This is just 'cache_coherency_ops'.
 
-1. Ordered Un-preservation
-The un-preservation of file descriptors must also be ordered and must
-occur in the reverse order of preservation. For example, if a user
-preserves a memfd first and then an iommufd that depends on it, the
-iommufd must be un-preserved before the memfd when the session is
-closed or the FDs are explicitly un-preserved.
+That's fair. The device went away as Greg KH quite reasonably didn't like the
+idea of a struct device with no userspace ABI at all.
 
-2. New API to Check Preservation Status
-A new LUO API will be needed to check if a struct file is already
-preserved within a session. This is needed for dependency validation.
-The proposed function would look like this:
+I'll change the various register / unregister to use terminology
 
-bool liveupdate_is_file_preserved(struct liveupdate_session *session,
-struct file *file);
+cache_coherency_ops_instance_register() etc to make it clear it
+isn't just a register one global set of ops.
 
-This will allow the file handler for one FD (e.g., iommufd) to verify
-during its preserve() callback that its dependencies (e.g., the
-backing memfd) have already been preserved in the same session.
+> 
+> Are you sure that this structure does not need something like "priority" or
+> "level" indicator to know where the ops should be sorted in a list? Or is
+> it the responsibility of the arch to make sure that the registration order
+> of the ops structures follows the hierarchy order of the caches?
 
-Pasha
+For all known implementations where we actually need this (so hosts with CXL
+or similar) the implementation is in a device somewhere on the coherency fabric
+that is capable of causing appropriate invalidation messages to be issued
+to all caches to the point where it knows that it there are no copies in
+the wrong state anywhere. In a simple model an offload agent has grabbed
+exclusive ownership of the line and written the content to memory.
+
+The multiple 'device' support is about different cachelines being the
+responsibility of different cache flushing 'devices' (interleave, multiple
+sockets etc), not a single line being flushed from different places.
+
+The PSCI spec alpha (that never went further) did allow for a case where a
+complex timing dance was needed but IIRC even that didn't assume an ordering
+constraint across the various devices.  It envisioned a stop world situation
+where all fetches were disabled until the line was definitely flushed by everyone.
+Thankfully we don't know of any implementation that needs that.
+
+We might need to extend things in future, but for now no ordering needed.
+
+> > diff --git a/lib/cache_maint.c b/lib/cache_maint.c
+> > new file mode 100644
+> > index 000000000000..05d9c5e99941
+> > --- /dev/null
+> > +++ b/lib/cache_maint.c
+> > @@ -0,0 +1,128 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * Generic support for Memory System Cache Maintenance operations.
+> > + *
+> > + * Coherency maintenance drivers register with this simple framework that will
+> > + * iterate over each registered instance to first kick off invalidation and
+> > + * then to wait until it is complete.
+> > + *
+> > + * If no implementations are registered yet cpu_cache_has_invalidate_memregion()
+> > + * will return false. If this runs concurrently with unregistration then a
+> > + * race exists but this is no worse than the case where the device responsible
+> > + * for a given memory region has not yet registered.
+> > + */
+> > +#include <linux/cache_coherency.h>
+> > +#include <linux/cleanup.h>
+> > +#include <linux/container_of.h>
+> > +#include <linux/export.h>
+> > +#include <linux/list.h>
+> > +#include <linux/memregion.h>
+> > +#include <linux/module.h>
+> > +#include <linux/rwsem.h>
+> > +#include <linux/slab.h>
+> > +
+> > +static LIST_HEAD(cache_device_list);
+> > +static DECLARE_RWSEM(cache_device_list_lock);
+> > +
+> > +void cache_coherency_device_free(struct cache_coherency_device *ccd)
+> > +{
+> > +	kfree(ccd);
+> > +}
+> > +EXPORT_SYMBOL_GPL(cache_coherency_device_free);  
+> 
+> Why do you need a new GPL export wrapper for kfree?
+As per your other comment this will become a kref_put() I think.
+> 
+
 
