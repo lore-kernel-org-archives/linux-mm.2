@@ -4,95 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DED5CAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 19:57:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3783CCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 19:59:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7A4F8E003C; Wed,  8 Oct 2025 15:57:09 -0400 (EDT)
+	id 3DE2C8E0051; Wed,  8 Oct 2025 15:59:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B523C8E0002; Wed,  8 Oct 2025 15:57:09 -0400 (EDT)
+	id 3B5908E0002; Wed,  8 Oct 2025 15:59:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8FB78E003C; Wed,  8 Oct 2025 15:57:09 -0400 (EDT)
+	id 2F2708E0051; Wed,  8 Oct 2025 15:59:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 97E648E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 15:57:09 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 43BDF13BA2B
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 19:57:09 +0000 (UTC)
-X-FDA: 83976005778.15.02B15F0
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf30.hostedemail.com (Postfix) with ESMTP id DCB8780017
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 19:57:06 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=p7Qh7IUt
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759953427; a=rsa-sha256;
-	cv=none;
-	b=hpz3R8AiuyFva+MASc7SWUgLUdiGxr7tLN29xJWZdr3G72turS+an/FgHZ/EJhOjxJ1IG5
-	jjfbffiypP/S+9rLP9vEJyAgiQL3P/4YjYuZbcUUzvCdNRHcwlMIWiCNClK7dtzo1H2eVb
-	ZK89uU32al03lrx+uFrSKI7lLU0xucQ=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=p7Qh7IUt;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F3928E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 15:59:20 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BED3A5A20D
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 19:59:19 +0000 (UTC)
+X-FDA: 83976011238.01.A7C8F49
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E0DEDA000E
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 19:59:17 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="EV/cXXbs";
 	dmarc=none;
-	spf=none (imf30.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759953427;
+	s=arc-20220608; t=1759953557;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GGaoS/61gkMrgKWFTNNh8sJ3cDZ7GISkiMTek91mBGo=;
-	b=lT0A53s7VybFcAO4KlkFjzZ7HVghTdv6Xc4EUwcsLB0D6QGnGY00PV3MibU1tz59qiY47a
-	0zDT1AkSl8lVeVSMQ9BFzg18JPgRLvOlmzAEsMC7lW6gSh5AE+cQ6hJ2PAjQGaum/oonlD
-	LrDhXEuuOIFIqqEyuwjyCeYGHRPUuls=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=GGaoS/61gkMrgKWFTNNh8sJ3cDZ7GISkiMTek91mBGo=; b=p7Qh7IUtTzlFf784v86b9RAkZ9
-	w3NpwpZfygMr8JVNcnR/sJBi3jipjlhqK8abdzeRo7tlRUqTKm4FoR0OQLAGZYthiGIJ0WmKuBcFC
-	KbgCT4u4YQD+3CYM4U0ZML/k40/ZBAZ2xM3rf1q1uRoq4QFFHtPeCKnpwsIZUr5kCjSSpa8cMe3AL
-	zJJFHn3omQWuVeVrDdTcBgGeYY1+XCphcWGhNCm6v3w2zbNu1kbPZEVvTrzMpYjZ2VNUJyvy6ujQa
-	mgejra8dSceGA8U6lAGrnXuJESBDEbkNtEgevAgVwTca3AB9HkPsMeJBPhrVMfTuDg7WwdmxFjliT
-	QIwPf4xg==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v6aHL-0000000BzdY-2SAf;
-	Wed, 08 Oct 2025 19:56:51 +0000
-Date: Wed, 8 Oct 2025 20:56:51 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Lu Baolu <baolu.lu@linux.intel.com>
-Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
-	Jann Horn <jannh@google.com>, Vasant Hegde <vasant.hegde@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Andy Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>,
-	iommu@lists.linux.dev, security@kernel.org, x86@kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH v5 1/8] mm: Add a ptdesc flag to mark kernel page tables
-Message-ID: <aObCAwbf1-Sxepni@casper.infradead.org>
-References: <20250919054007.472493-1-baolu.lu@linux.intel.com>
- <20250919054007.472493-2-baolu.lu@linux.intel.com>
+	bh=bQgR6a95356dPsVrbrUk33Cag4UDOjeL50G3GytdiSY=;
+	b=cWkkjNwrMLwk7Tz4UPPaUMFC/ekv00JlTAaYO39J2bVTsX7sIXH8AaFPnGQugv3p6JHKx9
+	4tYlqC16r3+osfNb/+YSdDQTJwdFbNHIyxvPqVLOGDlt68JXxQ94v6hblPQ8SBMN7A0WgM
+	RMRGfGureX3ZyAw8A8oSyQo7uXVWQOA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759953557; a=rsa-sha256;
+	cv=none;
+	b=RdOsEG8B3WkXjrWzITiMgITMCkOpOQng3hjVIv29FGRFNDdoXKiuPab8756zIAd412Sm4c
+	9r+RemxgEGKIhxAqcJDAW9ylBx/wYSGgdowgqcIHKndxQQ9cxaInoty6iSMCgh47c9LS/J
+	6d3jZe3KQIp/N8WHNhBk8AyvXcAPQcs=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="EV/cXXbs";
+	dmarc=none;
+	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-7946137e7a2so3413056d6.0
+        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 12:59:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1759953557; x=1760558357; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bQgR6a95356dPsVrbrUk33Cag4UDOjeL50G3GytdiSY=;
+        b=EV/cXXbsznL3RXayfT9GcJ80bFqDBjDpk+WpMGjMrH0mZ7MuDqsnpGviaxbkgTnIPY
+         WPlmC58tVa1pq/88D8Uq0wTNqCBxPW9dmzqqRl4ttPUWL6LLfh0/5yIaJaB2yEIvs3yv
+         N8aNXglKWcNwUSkb5F2WaEehs4wYj78w8Ydwqty01gysMZboXe9A4yb8VGZdhOJmjgvt
+         0qiZmlNTTST7dBuNWDfFPQe/IGCb0I2V7F3LtqAzWfilrY+D6N04P3YWNCGd1mFl0YzS
+         TNaYfHBICKJL9fGzQB8ojmmt4GSGl8Bh4XPFc6NrILF+wop32qBmkYGeJr8/XzwaqyUC
+         zuKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759953557; x=1760558357;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bQgR6a95356dPsVrbrUk33Cag4UDOjeL50G3GytdiSY=;
+        b=fP6AlSLKznDRDIQUZ3OxvrtKbHTbu2rXJZyRRvOk796q0pVUa0VJJ46U9slX6Jon64
+         pj4Ztmo9jCpTX6ZGly/9PQlqnkqGdE849y5/OCIfjmhnyfGxNFnIwL22ezQXc4x74/mK
+         tIDKG56TWv6xnjhAmtZ+uNVYWTbY6NN1Rr84xuGlMWQ4N9vxm3jdaw2z3ZnYKOhTTrTH
+         Dw3pLVBd982OY3VblrLlH0HPWVOVPErbDh1Dbd3ZN2ItLuqAuLYK/8O913OagGGbz9ge
+         ZHvVcfn38VBiAJZ+zAoxnQYg09rLQPKNjEs2lYehTozQzoHBO0wah5GAi73yvfKEl2cV
+         wF7g==
+X-Gm-Message-State: AOJu0Yzqzh0B9z9cKthD2A3YaUNQVYO0Px2npgPBs3aU1D/diNfJzEP7
+	nbPsVRn1o0Qqa/sbJnwCkjPBZGzBh9VFN3JF6AvvL6D3lEeqAaYFrrRNnX8vHJkQJR0=
+X-Gm-Gg: ASbGnctQdEyiNLBzTRYHuU0Vt9a5GOKhOjcON0pdb54KnB0gTyzIBejVVCreOW+Xr9H
+	tmg1m4QnG2CpEag/kK/R9x2iiit1sWYjqP+XNtH7KaixnGLyY2JWass8EqvZ0LZdKqhghNGDPPK
+	U7y8lkWip8pcaWOOGFUpyWj4VDbUcS2mHK/7ZcZjlYRer1rQp5XC5wjr7cAZz8K1pzfvYc2kOb5
+	Aqko7awKbzzC26ZMZr9JG7m1Kq8WGV9uLdFYBMiAppRFTs/aVm61MI3osnYh4pkSJ1NYW0Tcriq
+	xp29DNWsg0+VTds76rIFs4OHI4uCVg83ypfRAiCmNSpG9D1ZX2UW6XcIZee7KTBxZxL4cIYo5An
+	1IL1jGHNC+NQdru/sxjEUNPAtlQ6gZTQdWifkDHZuwRXSMfTB7jw4mWUBsR1NfMqfzMu+UV6qRq
+	GWWTvER0oGsshL2IhbzpmdYfRAKiVe2y7Qdiv9t0+u
+X-Google-Smtp-Source: AGHT+IGOIjFNFX0UWzmMPfhHtuIlkaHHvw+0tGaxRx+44ltIOKx7Dm5ffks6WimcIFao6ap2lPWKnw==
+X-Received: by 2002:a05:6214:410f:b0:77e:aba2:c8a7 with SMTP id 6a1803df08f44-87b21000e61mr61430946d6.13.1759953556821;
+        Wed, 08 Oct 2025 12:59:16 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-878be61f6bcsm169735486d6.65.2025.10.08.12.59.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Oct 2025 12:59:16 -0700 (PDT)
+Date: Wed, 8 Oct 2025 15:59:14 -0400
+From: Gregory Price <gourry@gourry.net>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-mm@kvack.org, corbet@lwn.net, muchun.song@linux.dev,
+	osalvador@suse.de, akpm@linux-foundation.org, hannes@cmpxchg.org,
+	laoar.shao@gmail.com, brauner@kernel.org, mclapinski@google.com,
+	joel.granados@kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Mel Gorman <mgorman@suse.de>,
+	Michal Hocko <mhocko@suse.com>,
+	Alexandru Moise <00moses.alexander00@gmail.com>,
+	David Rientjes <rientjes@google.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>
+Subject: Re: [PATCH] Revert "mm, hugetlb: remove hugepages_treat_as_movable
+ sysctl"
+Message-ID: <aObCks3bwrT27CIu@gourry-fedora-PF4VCD3F>
+References: <20251007214412.3832340-1-gourry@gourry.net>
+ <402170e6-c49f-4d28-a010-eb253fc2f923@redhat.com>
+ <aOZyt-7sf5PFCdpb@gourry-fedora-PF4VCD3F>
+ <f4d0e176-b1d4-47f0-be76-4bff3dd7339a@redhat.com>
+ <aOa0UPnxJVGvqc8S@gourry-fedora-PF4VCD3F>
+ <b6d472ba-e6cf-4c96-935d-88c842ab3cd8@redhat.com>
+ <aOa_A_i1HUt1wzCj@gourry-fedora-PF4VCD3F>
+ <1763f0d9-37fc-4c3e-b31b-2cfac33d5c95@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250919054007.472493-2-baolu.lu@linux.intel.com>
+In-Reply-To: <1763f0d9-37fc-4c3e-b31b-2cfac33d5c95@redhat.com>
+X-Rspamd-Server: rspam01
+X-Stat-Signature: obbp36bws1fyshn5h97actdnsa9rkpj1
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DCB8780017
-X-Stat-Signature: dzbfkz4swrui6z7r71kknnuk3qjsa9g4
-X-HE-Tag: 1759953426-472232
-X-HE-Meta: U2FsdGVkX1+cx7Jh/N9uPrPPtC+ZJcG3Bj5yHFKsbUtP86FZ9itWSiUQG1dwu/IUNwsXIaiiAkmWpEZh56TNBMcIlhnEoC3cySdNiZmm8/IveKMlsgyDrelUgd5p8Unn1rlMI5GEOqoxq9Y7SaMl843e+zQHOhzcngjc0Ul9xSL/lfF7aYgXAWZhoBYQhZ5RoKc83ILRFTBon0hWpXM7x+zgubsmWWxSS8cWeGtv13sQEuQQ+wouGVG+KyY2idAD1eHPVM8RDn28FGGxhUXH/zhsaJk75L7DEg5OX6Cwz26vIZGrY9QOzUJZOWwIzlY5N7ZQ+fyafMZtdG3htdvoIsq5uz1Viz6fXSG06YW6Rtxn0yE9DTkuqjVU+dlHS8PtXpmVUz5XtqsCFKqNI8ky+fSNuZXFuAoAD7FmPklACX8KguDAFfClvaSJbTnfxRbASVWCFDr0iZxpS+l7BdkWuksjLBGWC9OnWXHT6Q8UxViVKh3xHM/wV/0TLm+FBNx4eY9TpEknZOTF9sFgQRT9wKchnDUJKyV3J1pN37fXhvZH/B9UfkZ3sH0zHJEdjaM6jZnR2na1EEZNUo+5LUJ9fz98TEuUr/s2PGtvnI9Fz0PBCBCNs8wY4PVJf9bZV7O266RLYrElNi+hQVRWTpRazJ1SQg655lHPaMA8N4OAFqQ7o5/4qsspux6wyAnXc3P6bVihHdQCRafTat0kM6AutazqIhufO+aMuaVYK0k7vVm5nO3k2M5I0MumrGDFlg6Y2MPUfLDl4P7ls7mNRf9gdaTXtQm5EuRcur+PsA/ZSKIwM+aMqT9dk616w7Beujs39ZElpn7QCcmRKuomjPN1mhx0vcyBY0QsE+c3q5czSamI0q5gukykYy4+51YnU+rkoJ+Ick6qLowqqJ1xF14Hm9xlXOd6qP2bM6OlHvb+jVlqAoHQo7UO9eK5U6Oqs+NboZJcHOH1Zr3+caQno19
- uc9F8dfb
- vtDzfRvsAHCEDG/nftJjsqMFBkoryx3SCmcOyZXrzyoVV2KZpXbNpAEFg4SQo8wFcZGaJx3vksKgFHARZY3vtlD9lW35p3oyi/G4zA3tPxR527LCQ03nvlK8YfubLOYpsR7Ti+9lyE7XUzAJZob/nFtjDqxNmSn3t4kL1QQgNiorYq0g9V2gQulx9u5zy2Wh1vY5V6f7nZvO3AOTnw1Fp9rCsjA==
+X-Rspamd-Queue-Id: E0DEDA000E
+X-HE-Tag: 1759953557-512616
+X-HE-Meta: U2FsdGVkX19MG6ryj1AOs6KXKIt5wqRiEkvLUyGBkTZcrdZEtuSCjWtuIZ1ziUX4yG4M7R+dYsTDnMGwSEYEm8Rmz9mV8hGwhJd3McSoOYYI25laB+FCerOVAvCGUg2IQp3wBOqBD1FBX6mvHT86Bg53ymEmTQ8cRQedJVIjkl8cZTU9g7OEd25Jlu/mMseJnaciSG0UHVpj07SozEIydO29551EE6iBTiHWSyo9BasaXOk03u3MnmHg8G7EoYPPRty/teo6gQ22SMTeRmAurlylO5prWQAXeDgtw5sl6eQm79sk9uNQcRskZDyLAwqsLqfPHuWZAAJZ2P1wYVZMcdDEPVyAJ1KFoDeRrF9oO8XcjKY8mJjdd6chu76L4XsWCQfY1K8Ki2vPd0Pii/8Z7LZq4JZDEcTpD1BQNkZTItKxv9yoAxfhwM5n6JkPlspkOHDmYCscKSIXQjJlckSRytXoU2HT0h1ODFgj1F97MqBbZue3Ke8/Y/lhazqLEE46E0bK+XHuFtHLJxszNmb2EwHZXSwwwMAUL0NSUnnOspBgRkgD2QwxEAmABTBP5TtDgBZGcyOqTrE2L5d5uelvvA9Zv/c0zgZOQc0I4maihqCGKpopkN94gYUWyZdyx4HxO0Qf4oiDmUrCS24ptqN39jIciTCKGeaGozCucBGDFt30SvQ5oXB6FCs0ehkFDQHrSYDlW6nv+SkFk7LTjbTivKBxAyDhapgxcMtxlMgQ5hI6H/dql5XicWSQnJPR0uIuvVr1TV8LfsCRHk8SMtw1OyyLfJKI+o31CRYgSQ1EB8rc2AUBiVlk2XgIIRfJFEhdftYnHD2Alxm2T18iUpmq4klflQdEcyG9pTUxYFkNaGtZp6PbegHxJpAgnvtp0UsyzTfZxYmInF3vR3X52lhuuDfmq9Ia+R0rPqzudJuzIA/Ue+gm3QQcLQRvbVrSnYQ+/n1uonwbpxict7Cyr4U
+ ClLou6Le
+ AuGwNMHnxkz1WYR7IHidkjSDUo0wkvynRDYVy/YZ2F26PClg6/FACZT3pWQdsO4uowPb9ksnDq/23AHyd90eSWC7XcwkAAhUTX785YnqceNOUaMha38Iukak/HFAqD/B1nrJk+sukaHK5as9IrentIlJIluaW0RZ9SPFuHYjr/i2bEU2MSvrlSu/sjVxW10J9UccqoOqttn7rRO7kcLjOres+31IvNc/8VWDBqtfilQ9pJrmf08kWT4hF/1c5/HHC7xpmUCknt2+5P3B3ALE+RK2XbsBd3xixx40OBjgrD98dmevaREpSPysVuGcrXMWg+n6RiXyE52/0pWgPaGuugR1BNHX51g5Bbh+VuA89nQR1znyMCq18RpOy7ny627hiSMSl8WbyigYE+oXNCyaTWsf5GC/w3Iml47YoXoVMStzivklflOY/IDT+pmdsAB5JeRMT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,28 +132,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 19, 2025 at 01:39:59PM +0800, Lu Baolu wrote:
-> +static inline void ptdesc_set_kernel(struct ptdesc *ptdesc)
-> +{
-> +	struct folio *folio = ptdesc_folio(ptdesc);
-> +
-> +	folio_set_referenced(folio);
-> +}
+On Wed, Oct 08, 2025 at 09:52:09PM +0200, David Hildenbrand wrote:
+> On 08.10.25 21:44, Gregory Price wrote:
+> > On Wed, Oct 08, 2025 at 09:01:09PM +0200, David Hildenbrand wrote:
+> > > > 
+> > > > fwiw this works cleanly.  Just dropping this here, but should continue
+> > > > the zone conversation.  I need to check, but does this actually allow
+> > > > pinnable allocations?  I thought pinning kicked off migration.
+> > > 
+> > > Yes, it should because longterm pinning -> unmovable.
+> > > 
+> > 
+> > You know i just realized, my test here only works before I allocated 1GB
+> > pages on both node0 and node1.  If I only allocate 1gb hugetlb on node1,
+> > then the migrate pages call fails - because there are no 1gb pages
+> > available there.
+> > 
+> > I imagine this would cause hot-unplug/offline to fail since it uses the
+> > same migration mechanisms.
+> > 
+> > Worse I would imagine this would fail for 2MB.
+> > 
+> > Seems like the 1GB limitation is arbitrary if 2MB causes the same issue.
+> 
+> Yeah, with hugetlb allocations there are no guarantees either. It's just
+> that page compaction / defragmentation makes it much less likely to fail in
+> many scenarios.
+> 
 
-So this was the right way to do this at the time.  However, if you look
-at commit 522abd92279a this should now be ...
+Gotcha, well I am open to suggestions.  This chicken bit here feels like
+a sufficient guardrail, but I'm happy to explore the ZONE discussion
+further if we think that's fruitful.
 
- enum pt_flags {
- 	PT_reserved = PG_reserved,
-+	PT_kernel = PG_referenced,
- 	/* High bits are used for zone/node/section */
- };
-[...]
+Joshua Hahn (cc) did privately question whether zonelist ordering breaks
+for such a configuable zone.  If memory can't live in ZONE_NORMAL or
+ZONE_MOVABLE, but you want it to have some combination of attributes
+between the two, it can't also live above ZONE_MOVABLE I don't think.
 
-+static inline void ptdesc_set_kernel(struct ptdesc *ptdesc)
-+{
-+	set_bit(PT_kernel, &pt->pt_flags.f);
-+}
-
-(etc)
+~Gregory
 
