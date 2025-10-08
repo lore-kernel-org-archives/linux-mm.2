@@ -4,79 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33584CAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 04:40:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE3F3CAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 04:40:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E47F8E0005; Wed,  8 Oct 2025 00:40:02 -0400 (EDT)
+	id 1440C8E000A; Wed,  8 Oct 2025 00:40:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BC258E0002; Wed,  8 Oct 2025 00:40:02 -0400 (EDT)
+	id 0F4E48E0002; Wed,  8 Oct 2025 00:40:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AB7F8E0005; Wed,  8 Oct 2025 00:40:02 -0400 (EDT)
+	id F26208E000A; Wed,  8 Oct 2025 00:40:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EABF8E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 00:40:02 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EF8F7C03B3
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 04:40:01 +0000 (UTC)
-X-FDA: 83973694602.10.2827667
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2339C180006
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 04:39:59 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DDEFF8E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 00:40:11 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6D597585C2
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 04:40:11 +0000 (UTC)
+X-FDA: 83973695022.26.F169386
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 94F994000A
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 04:40:09 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
 	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759898400; a=rsa-sha256;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none);
+	spf=pass (imf27.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759898409; a=rsa-sha256;
 	cv=none;
-	b=ef/5BRy12P/7Ozs4Q2DCyzJlznZFwEnuGsWuf+sVyRrG3e4KTgl90S3ykL8KFcOKHA5r7B
-	NZsT6oYxiXSsrhTDtzFXDFZ6n41VJzUHma0xZXbVGTZEYm1WdvXVZDKvfXsq0ClILophbq
-	zmnXs3Oi7sdPwFrnalLjI+zX3PRh6H8=
+	b=4LnKMhxR18pQ9tf0jH+0QiiFSyUEt283EXLWH+5YgiIbQf3t7YXMZMtAUJHXn2qsutjwEP
+	NEKydhxCakBo0KyJn0hsTynUbvIgsTD6hNDxt/1UaTVvzGnmzToxso08azlOUsiqaVsM3i
+	zsyTn/JXAKQJGhnhKSp/PKQWLylL1pE=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
+	imf27.hostedemail.com;
 	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none);
+	spf=pass (imf27.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759898400;
+	s=arc-20220608; t=1759898409;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=Mvv7sSqOor4odYLPDAZ6ntZ/NXZIV6IKoEJT47Ds+1s=;
-	b=xnQETlvJjoY3K6/oIMEgqcxQqf6ocC1mP2gD50bJxyhD0CTzyYCVui6NyMXaZvWDxX+etm
-	yMehtYgsc56myl0erfUVIwbKbI+iMC/Snv32CfqabB1Pn5l0UK4gqZbjZ70T+7eU1oDmfJ
-	BmDp659jTA1IUKCAk3co1R3yV90Mb9o=
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-421b93ee372so3240368f8f.2
-        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 21:39:59 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references;
+	bh=O1vidbU4o/R9Ye6BnVqcmKpIlA05IhBIAjHHRerQXS0=;
+	b=J3GCTV+CL8icxDaqgegtF2i3gf4R2eKxSlz+L74vGtGKfq0UR1mtBVGu+aVo41iy43M1nL
+	AvDVnYJXsgceNJbKq/IzKXyzJwhTaFOZxDyw6yMg7pvuMTPjNNGryFUA//9aKxL/4pSs5z
+	SLFDy/poxMRawfH8SC7OholRz0vkHT4=
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3ee12807d97so6032329f8f.0
+        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 21:40:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759898399; x=1760503199;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Mvv7sSqOor4odYLPDAZ6ntZ/NXZIV6IKoEJT47Ds+1s=;
-        b=KWKJadBUfccZqV/vi8oB3MO8/BwqfWJtiswctn3HZ+Py8Knf+qgt80t/MaiQLUstEu
-         rQMIXgDcsbEcKiNlUuwi5bWY35TBWtEOIHZpnU1ywQBREneemVxQkJaQEGcmAw8vc6Cr
-         tF4fJKJX/G4RG7xJoqaHotnQy1CcpD54K2LjDLOdpFhQtLg0imJ6A1sR974HPB3aj1Cd
-         ++rCZbQlF1iupE0wv3GgBERLGz8tGydToi/Qam7etnqK/fFhoabNfbCH2L2koqGrcwo4
-         7uG0TzHc8CHSpIUxbFwmcJvZoenF9de0JWGohgjb98LciU2IqQK0RMzxlvcaUcNlt5yv
-         Vrfw==
-X-Forwarded-Encrypted: i=1; AJvYcCU6i1DzgRiMnVvs7w1NXuu1gGGZhqGdKSvjUezdkt3ZQoujCCtkZ8Ec55K1RWb7jPFluU6YoG3Bgw==@kvack.org
-X-Gm-Message-State: AOJu0YwmOJGRXftQG2fgh8S0BXVOMFlcGQNcFXFNgH3wATqx3VDoA4UI
-	h0vRX5Xld7mAQHqYgbgBx/Vww+Dtnb1JYN9dLV30GCo1ux7tJIsekelf
-X-Gm-Gg: ASbGncufkdj8Y2qsWhiI0UTyIPVH8ziBeHnZ0A10JdJB4Y/eEP4iLBbV60WbMoQyBoa
-	V1ybA3pyEVZ7dQnUBmwOvBjtxVIbt4BHrIhGFyIH53JhhRKhENe8NjuZMA2xKPcMTwJbyrjPEwH
-	jjudVzIhcym7/4Wvo3iRT+GhVMwppEdJuPwL67hsPZlwJi5G6+DX6xdXkC9r/RjRFtj82nlvjcA
-	f1KKOwycB12j77o1QZbq1GpE1OO/nvVMdqeJ2I9ann1RN3iCuUy+gRzftvfb4WCMlpTdSg6cTSC
-	y4CnF0MK6Rdk0zBdH/GnHu5XZh+oyk8u4fEt2m1fJj7Mmyw/7P/Vj3otZ5gcyYzAkfRE3whDQzK
-	tBXJTE/V+0xWfYvPeG71iSAxCi4comVbpO0JUVKQ=
-X-Google-Smtp-Source: AGHT+IHsgqJLs4+bfAfvT/DMNOM9+GORw/CjObpAPKIew63euSQ+3GLqLlo1CMK/HKXVHgHZZ72ECQ==
-X-Received: by 2002:a05:6000:4202:b0:425:72b3:7368 with SMTP id ffacd0b85a97d-4266e8e6d2emr879161f8f.56.1759898398560;
-        Tue, 07 Oct 2025 21:39:58 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1759898408; x=1760503208;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=O1vidbU4o/R9Ye6BnVqcmKpIlA05IhBIAjHHRerQXS0=;
+        b=vEVNsxAupoNLueLIJyQygDe1phwWc/vZjtsgHMq3Wd5T+3UNo45H4oK9+dq78Nb599
+         Em++7hbON8RDeff0fbvcAfUVlcU9h1f2AX7apBPGgDjTGBvwjjYA1YfvIH3oaxKFv3h9
+         puArts7OUo2Wcf3DRJtNTLKJr8DhZ6sNgvsZ5s1N5ZgO2zfCRaegR8As2cUAW1LtehvY
+         nbd4K+itW0LmyE04cWFxxQVTFP7NNRC5zUcrqPgomPNBHGChRON5X52+Z2jKN67DbwEM
+         cbgfZY+odvpCRX+T2ZYUTiyEZSzqaK85I6im1YUIOT9rbZYtuLbgpjAMOh0NG1ABsHqB
+         7nmw==
+X-Forwarded-Encrypted: i=1; AJvYcCXb2doqn0gBnfxQvchdx9P4/1ChXw+ROBDpLFjrAU920ObahUjOf8PCC/wDMONcbLIN0C9syCasXg==@kvack.org
+X-Gm-Message-State: AOJu0Yy5PE+sglHc5YXQwiCrDA0CBG+rdSVJKQN2o66RPIWYfKNNymeH
+	r8j3nxVTKUGfOIbfPSpsyJxYYtwaIHxBVOKGzcVA8hfAXiko1L3boSJX
+X-Gm-Gg: ASbGncus4Qikt6llkEjJYXk7i231V5E2p2aUeZn2An89IX4TFQUOhT9JD4LL8FXoKkk
+	atj6V0y8HPtwEyyqJ+kcpjwOOYS3xfxUHaby992+JhkAXGKgVlYdAUjPKDQwRGh6wbX0z3QCbTj
+	+xgCopbgRiFPePGxmM5/dtOznG1MQLNB9H0Bd/YtVXnhLUyKmFabHe9B43c+HgRoH36eIDAHjYN
+	ecWJJVjk/tYhCFB/bBaeQ/vxwi7cHjUrlCmgzQreV7ChRQZB0n4ZAj0nJQiItx9aY1Idyf//wyx
+	7Ti+Nu5WSlNjUkefhzGQx4tCBRHD8surbU/dS6yBB38qf5KbH25CdsNlLGozo3fX0eiCKolZ5Py
+	KQysr6aQChxu+g5mHA0VjnEEoxUfJxYAW/sImlsI=
+X-Google-Smtp-Source: AGHT+IHOpwHZ85+agtOAF2qCT7IEMETz9GhbzRlWnNeqadDo/gCzv+K2+p7rO5lMYvUpSyxh4Ub+DQ==
+X-Received: by 2002:a05:6000:2890:b0:3ea:f4a1:f063 with SMTP id ffacd0b85a97d-4267b3394cdmr964670f8f.55.1759898408068;
+        Tue, 07 Oct 2025 21:40:08 -0700 (PDT)
 Received: from localhost.localdomain ([2a09:0:1:2::30b2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8a6c49sm28159164f8f.3.2025.10.07.21.39.53
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8a6c49sm28159164f8f.3.2025.10.07.21.40.01
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 07 Oct 2025 21:39:58 -0700 (PDT)
+        Tue, 07 Oct 2025 21:40:07 -0700 (PDT)
 From: Lance Yang <lance.yang@linux.dev>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -91,21 +92,24 @@ Cc: ziy@nvidia.com,
 	ioworker0@gmail.com,
 	richard.weiyang@gmail.com,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH mm-new v3 0/3] refactor and merge PTE scanning logic
-Date: Wed,  8 Oct 2025 12:37:45 +0800
-Message-ID: <20251008043748.45554-1-lance.yang@linux.dev>
+	linux-mm@kvack.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: [PATCH mm-new v3 1/3] mm/khugepaged: optimize PTE scanning with if-else-if-else-if chain
+Date: Wed,  8 Oct 2025 12:37:46 +0800
+Message-ID: <20251008043748.45554-2-lance.yang@linux.dev>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20251008043748.45554-1-lance.yang@linux.dev>
+References: <20251008043748.45554-1-lance.yang@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: qwumk14zuu4zsg1j789didiaan8jbsi3
-X-Rspamd-Queue-Id: 2339C180006
-X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1759898399-158212
-X-HE-Meta: U2FsdGVkX18aR8ElLdppVaQDiICdPFVAHePtLK3bfurTfbmwrSje3D2NJpxXAzE/dSO93WcDWPMRFtkWce46JWojbpc0cFKFSeu77Yi76VnDKMfjmCfczLw8xu09HJANNdVOkpJvv3qWlMudFkO1oDF8qifqLiIB1w29laglIONKzMlpDDpkZIzvTVNh4zpr9eMkfp4cbYtj4wJX0LmqsUJPvvDXPMJL+jTQqIta2e0eJbdJHyj4ZAeCemuxBsqOdWGXn/uSMmlTGnvnqFU4UWUnKAQy7c11skdr2VRY+Y62sFqjPxBo6XDewWltg9LTtSlYBOckpu2+lzlg3zpNN7UFk9U23g4x4lljIZS5uHMH+++IsDd5BkPYXo6EKRUT4auoXrWKvDh4WZd3yvAbVa2M0hN/eCTcXHhmA+6jZNPN+BJzw5uMBFUUpTXuwey0ewe2wrU98wEOFKe1XofgGhiB7waVURFZRxRlIrYvlnGAJ6tvkiZCbFRztz0JKR5nUsu+2aKO8UzPPCso4K7etdrQzg4X4yRo2VMta/2d9vLef7C/YzXiSghcXI0vgqYjtvYXG/QVrcw7+71xqcUOfe0CWnoxFWnW+baPCEOKEK9J4O9XFVrYaAK+4fLgWqQQhyMvuDUAEffXeKymw9+Qx7UUelwsGzggMq4O4GmtgZqbT/pQdXH9T8cGReQfnTQrIIdOxrzVPMNc65FoCuqUXD18t0xg92No0oO1UKcB2MtFGdwCtByg0KG6w890wQvv7OdrdsG6LDaCAeJCZqz1zjRxDqLWWDuU4B0mzM7V4AgCWPVr36IPiVP6j2vUKFNTKV4m0eFjhy6hKJHeitLTrjFLu5EfxBwW93YpcRl4Z1i12i9CGLFe1XKYTzSa8cGw/RX2F5bvi8SgHEtjU0cIZcoNjKD2s6j2TJNZkoxuGwqprudQWU1Q78ODpCfv9+FaKzwyO0/2Slw4OAHBfjC
- ikZvY3Od
- z8ADyYeZdh5qS70Sf3PwKAKGIn3hAJy0TfZxf9Mv9thHXGXy+EZ6ldilaJ3DdT2uztCwEebvxC8I2S29ErwcAo1GeVx/IIq2TQL5P1c8P6/SKve3+Dz9JrfAd/lvh3HC1d0OUJ1FF3B2sT+8pwepsSw7Sci6g0FWBcY9BFQk63n/eSfSIwwDN2oLsLrFOjQ8914PfdXhFBCDgGO89TehBmWMz6hLXQgHHc5Ll0VJPIi3mz7peqOjooji/+oCDmh8h3ws3eFBc76xOo2L8zm11wTrAt2xVNu2GWwCQKuxTomok7FPqnBcYhUBhmBD75flssXj3sC4etfIiu1nJ5rVJYnBDMWdakv5TZVfVjytpksW2/meqaLImv/Bbi+9qbQWydMaNDfhBhdCdWH1/tEJgC0LVJ79yINZn50Izyg147anNGJWvFlwBOZKEgDNxXFuiUXhNKKhIrRLVeF1oyeLgvQuRQ+A+iVsM0w/u3AcZaSh3/mMfOFn5vKfIktun7+R5o4AyxduC0fXOdFbI/CKnwjUMrP0annWqUA4A
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 94F994000A
+X-Stat-Signature: 54w8crq15uiopd1c5dexdrg57kf5dxoz
+X-HE-Tag: 1759898409-343490
+X-HE-Meta: U2FsdGVkX1+vLT9TU4BdnrJNhZdg/FNymyneVF/iSw18y2KorAMSRJ3dcm0F8H5lmFzJjQ826PnDkh+QcVfwf89tXePaeTtKUn8NNM2glDy4UKADSpBnF1rVx1/+5v4drhKxh94nu12mDvGISRRii4NfuMJmGhhh7PLfkoojyJr7DScQwi3lU0agPV28RafEgc5SlFlp4kwcb1/ZSCNOiY9RpxepmvFihUWaU05AEBh9D3H1TnzGCi9sLxwXssVjO0BRSBNmpT1u1ASsO6yX4NdTq1mh1ldNoU4UkXscNX7IyMDa4diV3DYenhEgqxqY/ZSAuMsskYNXq9SbbMFdYDYtuZLbBYZ7T3lpQ+r6A5+R+fXNSoYcFQn/csUyOu6ri9sZgsbvGsPiRu4NEr3Bms09q5kn5L478o8R48B/IqkwIBZRDF2oHAoILt5vLd5UwphIotq6oEpD9DpbaAloHy/gJBAne08rFzf2GRGkX9a5u0ObT7ytD/XR/Ir461i/eURntZfgs3TTueX0AmT7acyz2m1i7TnUy4NGobxngMPueiUtMJmGXHTSfFVYun0Yv2eEr/NcGuE5P+WxAR6HFu+pL6hGsvRBALhHnUZTIxF5rKf8gnMRUBWoTWYFbZE6Yb8tcvdc9YBN4jWmxDllE3oMs6TO9BkWC0MDkMe7W3L82GmPNsPnffH5glw8vkS4rXcprvaqeAn1QTprnt7LBUosWrJ7utotUNL/AOIYtg2QMd30uoXUwH2zS7F3OdibrSTcIxiPuXjILIcwY8EJFehakoNeUZeB8JfD87j795jYgT5vOSWteAhzeDIh/Zd/T5/9UZ+jivLpN+lVS/u8zhVj4zqgMa0fc8uqxlm+kfnyM8JPFBHLT2AQyBGWR78x9+sSxd3xm7VUcxIxajGcho1969tvcS4JMfwBT69KYagtE1AWnQyIBgDxXjZZCHuzKk7SmaL8lPTxkTo5Fpv
+ yV7aB5dO
+ W/PH92Jnm2nymcqmfTdetXxPUl9/ERNzW6BwlrHGxvIxfrAZ2UVxR7OIK+XVWCuHhjNg6F2jK1x9GsdgckJXPeoqpf5Z9pgFN9vFTXL7ddMdVjDMx7IDZ8Ty8M0i9GZmONzZ3sX2xHkfqT+bchhEJqiDDfPeqUFtgA+2ZGw3Oa4MfSx0wkq1jIo/eZuSluGVvIJZvVXMivdphscCWy7WYiEjDiGSxPMAggBty3FaqNmS5Fr5GhRTr+eYcHbo4FEmMK/q3Ucp/nGgRQUeHwarNw37wl62/ZyXB2TeeLmt9LT9GYGwAtto3YOxeNbvaeEsPPE/jYu3q6gePHjuLKYuRmEAJZEWm0j/QYkafhr4K6v3/YPMcUq3mivcu7Fbqz92NPfic2z82yXo+mXawtTBylpA5p5i/HAEq9wv8klxl5D74mT0CBeEzfE0Y0MljLj1nak/1KWPMI+ViDkEwS5f4ZO1sZP3bKbjWXx8ownXjGX9dYNB5E/7RBB8X6Q4ugq7YUYQotFvIRi79OLAk9ShzprvNk/CnOLE6i03JS7LCn2kpZDu5XgyBtZmkxi6NKeBQkzXlAJpwhF7wBIgAZ0d/P1bLjHGnekQ4Q8b0aFls65zZmQU1iR6N2+SaUoibmKoAvAYXvefH4lHiYYvOr0XTz5LR/ABIpcA7xH7xCzn785FTAGNFPOQvsgQkzQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,48 +118,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+From: Lance Yang <lance.yang@linux.dev>
 
-This series cleans up the almost-duplicated PTE scanning logic in the
-collapse path.
+As pointed out by Dev, the PTE checks for disjoint conditions in the
+scanning loops can be optimized. is_swap_pte, (pte_none && is_zero_pfn),
+and pte_uffd_wp are mutually exclusive.
 
-The first one is a preparatory step that refactors both loops to use
-a single if-else-if-else-if chain for checking disjoint PTEs.
+This patch refactors the loops in both __collapse_huge_page_isolate() and
+hpage_collapse_scan_pmd() to use a continuous if-else-if-else-if chain
+instead of separate if blocks. While at it, the redundant pte_present()
+check before is_zero_pfn() is also removed.
 
-The second one replaces VM_BUG_ON_FOLIO() with a more graceful
-VM_WARN_ON_FOLIO() for handling non-anonymous folios.
+Also, this is a preparatory step to make it easier to merge the
+almost-duplicated scanning logic in these two functions, as suggested
+by David.
 
-The last one then extracts the common logic into a shared helper.
-
-Thanks,
-Lance
-
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Suggested-by: Dev Jain <dev.jain@arm.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
 ---
-This series applies on top of patch[1], which is based on mm-new.
-[1] https://lore.kernel.org/linux-mm/20251008032657.72406-1-lance.yang@linux.dev
+ mm/khugepaged.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-v2 -> v3:
-- #02 Collect Reviewed-by from Wei and Dev - thanks!
-- #03 Use vm_normal_folio() and drop struct page altogether (per Dev)
-- #03 Move the cc parameter to the end (per Dev)
-- https://lore.kernel.org/linux-mm/20251006144338.96519-1-lance.yang@linux.dev
-
-v1 -> v2:
-- #01 Update the changelog (per Dev)
-- #01 Collect Reviewed-by from Wei, Dev and Zi - thanks!
-- #03 Make more of the scanning logic common between scan_pmd() and
-      _isolate() (per Dev)
-- https://lore.kernel.org/linux-mm/20251002073255.14867-1-lance.yang@linux.dev
-
-Lance Yang (3):
-  mm/khugepaged: optimize PTE scanning with if-else-if-else-if chain
-  mm/khugepaged: use VM_WARN_ON_FOLIO instead of VM_BUG_ON_FOLIO for
-    non-anon folios
-  mm/khugepaged: merge PTE scanning logic into a new helper
-
- mm/khugepaged.c | 242 ++++++++++++++++++++++++++----------------------
- 1 file changed, 130 insertions(+), 112 deletions(-)
-
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index bec3e268dc76..e3e27223137a 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -548,8 +548,7 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+ 	for (_pte = pte; _pte < pte + HPAGE_PMD_NR;
+ 	     _pte++, addr += PAGE_SIZE) {
+ 		pte_t pteval = ptep_get(_pte);
+-		if (pte_none(pteval) || (pte_present(pteval) &&
+-				is_zero_pfn(pte_pfn(pteval)))) {
++		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
+ 			++none_or_zero;
+ 			if (!userfaultfd_armed(vma) &&
+ 			    (!cc->is_khugepaged ||
+@@ -560,12 +559,10 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+ 				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
+ 				goto out;
+ 			}
+-		}
+-		if (!pte_present(pteval)) {
++		} else if (!pte_present(pteval)) {
+ 			result = SCAN_PTE_NON_PRESENT;
+ 			goto out;
+-		}
+-		if (pte_uffd_wp(pteval)) {
++		} else if (pte_uffd_wp(pteval)) {
+ 			result = SCAN_PTE_UFFD_WP;
+ 			goto out;
+ 		}
+@@ -1321,8 +1318,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 				count_vm_event(THP_SCAN_EXCEED_SWAP_PTE);
+ 				goto out_unmap;
+ 			}
+-		}
+-		if (pte_uffd_wp(pteval)) {
++		} else if (pte_uffd_wp(pteval)) {
+ 			/*
+ 			 * Don't collapse the page if any of the small
+ 			 * PTEs are armed with uffd write protection.
 -- 
 2.49.0
 
