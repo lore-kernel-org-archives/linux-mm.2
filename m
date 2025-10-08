@@ -4,122 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B373CCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 03:25:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02D26CAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 03:29:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1EB58E0013; Tue,  7 Oct 2025 23:25:43 -0400 (EDT)
+	id 55E298E0014; Tue,  7 Oct 2025 23:29:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCF8E8E0002; Tue,  7 Oct 2025 23:25:43 -0400 (EDT)
+	id 535F88E0002; Tue,  7 Oct 2025 23:29:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBE128E0013; Tue,  7 Oct 2025 23:25:43 -0400 (EDT)
+	id 44C3D8E0014; Tue,  7 Oct 2025 23:29:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AB2448E0002
-	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 23:25:43 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 59D1E859D2
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 03:25:43 +0000 (UTC)
-X-FDA: 83973507366.17.AC2E572
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 6C3B116000C
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 03:25:41 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=kRQ3241y;
-	spf=pass (imf08.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 315BD8E0002
+	for <linux-mm@kvack.org>; Tue,  7 Oct 2025 23:29:16 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CBBED13AA97
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 03:29:15 +0000 (UTC)
+X-FDA: 83973516270.18.50A777F
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 06EE8140002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 03:29:13 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=none;
+	spf=pass (imf09.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759894154; a=rsa-sha256;
+	cv=none;
+	b=yxMbbhZJFyrT/9ig1mX/QnCDKzchepdCGZnG0DmL1XNpOigzurzOx0hGcMYywQn5ZJL3ov
+	rjcGb52CXTnBOUx/U/yOV+SS8uVK+sXLtn26TlQUy8cDQZZQ2HSqETELgMDlK1PO1IBAml
+	aAhyQtHcAOnSbb2lHr1WhH7+qsi7aGw=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=none;
+	spf=pass (imf09.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759893941;
+	s=arc-20220608; t=1759894154;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Aq7/8dQHrmRmSKQ6xABjHJxjL0wL6AjJEcMgMgkiMrU=;
-	b=8DCYTdAfASS9LSQbR+BA8HM90FpvcjFDM0P/7pyomx16aZVHjUxV7yfaOQJMeuBRJCeVwB
-	Db3ypoLbahKSzoZAtC31//ba09jjC6hLvNMAK69a87el6cATnIYw8htJuEFx4qQMh/xjDu
-	oGULmRA57zpORpZ4vugth54MkOj9lfw=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=kRQ3241y;
-	spf=pass (imf08.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759893941; a=rsa-sha256;
-	cv=none;
-	b=m+NgJVWJug6WArTu1ag58BIw75bVZtP43qqeBu3HDnZjurloKSEr72b9249+h2DjAAS2UT
-	xSucNyOqFs7pwuavSEKPV3HnY0uadHYuuRusXYwPTCQVmhc2bNJeC5WioiI38RkSLpzIGP
-	fsygdbOwWKe4cm0yDXwIJf7tNe8LnA8=
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3ee130237a8so4958683f8f.0
-        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 20:25:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759893940; x=1760498740; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Aq7/8dQHrmRmSKQ6xABjHJxjL0wL6AjJEcMgMgkiMrU=;
-        b=kRQ3241yrq8kY9dZL8PTCHI2TtIUmNwEvJdUZk0XADvc5IhLlO/OIHfCG/xIfuY2CX
-         zIEQ2cQVXeMQbGUyOw6hf/JbMpEyTqYZdJjAjLy8FRGGKtJOf5ZzLQZ4q7KqcSS4ddTi
-         8CS50kIzlj2NKZj/tIjrcLtBbgr4TNstYiJxUdmxcx9z9ynJk/ZyfTynbBhbFuDH00Qp
-         YMVJ3ycjfC+RpvPbld84+UshF2fPPSD0+h6PuqvzYTGI38h6cg7IJcQFRxop+9tRqX4T
-         y4+3xR/KHS5J8G4cTFCShezQ3UfiCC3WwH2AB9kkBFLuxwLc51FC06YnnOl6d+NgfUYF
-         wRbQ==
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=j4qILVJfm7DfhssJ0ueEnYCl55Tf6EovTh892sb6XGE=;
+	b=0MoxZzUpTEWvd+ZlYZYLqieG/VeqEsoKFTMS1+B8qhkZXiIdP1geqBZ8nKNyhVScyrKXBC
+	srO90MJzVkoAG7GsNQ8aAElMS1Y8INX6w9xR28hEnquFC6xuN1wp+BtsY3CyZKaBf+fxJ8
+	CGY5Vp6IFRCs5JC5WLx/Cm+6VJWSvS8=
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3ed20bdfdffso6101980f8f.2
+        for <linux-mm@kvack.org>; Tue, 07 Oct 2025 20:29:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759893940; x=1760498740;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Aq7/8dQHrmRmSKQ6xABjHJxjL0wL6AjJEcMgMgkiMrU=;
-        b=v25N1F5SknNKqidGtJWDgD8ilYya5a27Et/Je7oIBIDe52BSnpJaXsIyO9XD3CZ+T4
-         RVtZM1bzK9IzR4fa8GEIjUKw4Ppb+8cv7rvga8nzIqLdpAtJIu+QbAOe7bFHs+cTcP+o
-         37Pb0/wQI5yx44G19EXLEsX0OBlXF+CIYya9qYq31Y87motg+5J7AB6MMb7a/IVLeHQ1
-         hppVdzSKou+u5T98u/1wpiKCPFHmPTMFOGe0BjWEvZCrIoQRURsZvFqqXwH6wwQ9xNX5
-         ENgwumXD7xni0gg1BwzfZhiqQ6bCT9RK8C6GkQ4DC3c9ZwLSCTnMAI2XWDc4AqIQVr7x
-         fuIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXDpahdKLLqRAIWdd0a2H/yYc8MHhNrv9ydeyve1PabkDB+qpwB5fcNMCAcGpIj6XvucaP3YjAMMA==@kvack.org
-X-Gm-Message-State: AOJu0Yw2tZIAStZKDXgR7m20rRCwMoEJWWbKwE55QqTGp/QxvDW5Txya
-	h0Fottu3NX5RhsnCTljD7gWcZwMNHVsww2rWg+aj6orVUzsj+9nU9uBCyFSD/bX9Ppqkj0lqZwD
-	9NnNKA8umV/+MQynE2btM1eBT1N7yyxY=
-X-Gm-Gg: ASbGncuTQiyTBZvA4zRJVT2J7hdBesYLamb/WlE7rNqi9rok1m/upWmmS7Sqr/L513L
-	cHWXnmiA682tgPomxqHQ9TY2kDt0FgCMZSDdJOcLK2FgKqQu4I3EmCmh7Oybi7mxfxuHhmxhzYL
-	16iZhJP7sZnYi0GK0JHicukhl3dqqH5tDOs6RY8I9yJaCyKyAGh6hO/YomOthIvKMceaZ3HcQTr
-	AKF0Ga6ud+0TwOae5yLaP2WdGwjxqkq8ZYCq2vgWVN3Hda7XTYlFvLVzosJVbaW
-X-Google-Smtp-Source: AGHT+IHeswXWseQTzOZVDgPDpClSJjRdYqa3Gk+TNJHyXQ0PCdIukEVOo3TQExJxoJHeGY0CBioSlo3kBJaFQswByNk=
-X-Received: by 2002:a5d:5d02:0:b0:425:7c1b:9344 with SMTP id
- ffacd0b85a97d-42666ab87c3mr807115f8f.15.1759893939583; Tue, 07 Oct 2025
- 20:25:39 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1759894153; x=1760498953;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=j4qILVJfm7DfhssJ0ueEnYCl55Tf6EovTh892sb6XGE=;
+        b=jBk8kB3Kd4ZvvM3p5AIjAN/2NpbeZQw9s0NxTP7HZAE25JFbaMT2nq5dY/ObnjZcJg
+         rp2vXV7IAyhSXUv5Svo2TRhNzzPrpQW5KOt9tCHqn6LAuCmcEw7D3IoFp5QeENGLXEGl
+         GXq7PNivVgBgUtnkYITx4ERPEWdIP0lc8HvkAlGL6YrCyAp/DEdavrLjzShVrq9r6Qba
+         yUn0Dv9K/jw50a/BCV5h2/xuQcCUnuVxyMdfqMprRDQmp74F9C6FlJwmnSp/Wh2s9mvs
+         gx8LjEpZna+eLzN8Z//JVCVHrCmVa3VV71cQuYAscgiAhrh414mqlDSia6OWmZARR+Vv
+         uuvA==
+X-Forwarded-Encrypted: i=1; AJvYcCUQpIeD7V9Ws3chvfVzpTboS+E3vIhIDprd7jaOThWB4P7JaHZVtRXoR+nS1jrzB3VUt8MVdtZMmg==@kvack.org
+X-Gm-Message-State: AOJu0YxGJiHUf67CfWnixxf7qthG1RBsRXBq3epvkn0oPFgy7dnE4EMp
+	2BAOyVLx1o/GmtkLgLCyp1Hf6Z1+JQiO8jxf8/lycifNo7vkh5aL0tdq
+X-Gm-Gg: ASbGncu2YLv9/TTJ9seyQDcEe6zOTevN6D6oaQE0ONx2wBAmgvfOpfV/nzK0XuH9Uj9
+	dnoCSAxp6m67F/vizTbFtN1Tk8amlnUd7vn6xtBEgSL66M3h0lEoBNy502rH7fYHQKSWscgCnbO
+	2X039kAPuavtzHxybjJzn+UEGxFw9QInfUPwKp+mmo/T3UphL5AIgM4t0RZuFl1MpvkBxiF8pbf
+	+ARqpXget9b6yRmkU9X/LAWzRm9cwbDeVgB+QK5R5eo2HsGajbPLDQ42ArdKrSSL0/eMSBUHC6h
+	M0HRuqjhRUSpFfD4zZvBZZ7vp9kL/EF2kV7Lp1Ip72IWUXRGvsmhiY4GAMjlIYXnEUoFV5r50Aw
+	QdrFGxySst7E9/ee4njD1byDzt4LUxk+f5ItbAN8=
+X-Google-Smtp-Source: AGHT+IEqyPpRTF2bZhw/gcKv2q3t9mfW/SB+36ieW0hvddjq7ne03GNKUlJjLVfRv6Vn4FOWpuwBsQ==
+X-Received: by 2002:a05:6000:2305:b0:3ec:dd26:6405 with SMTP id ffacd0b85a97d-42666ac73a0mr986043f8f.26.1759894152435;
+        Tue, 07 Oct 2025 20:29:12 -0700 (PDT)
+Received: from localhost.localdomain ([2a09:0:1:2::30b2])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8abe90sm27644519f8f.23.2025.10.07.20.29.05
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 07 Oct 2025 20:29:12 -0700 (PDT)
+From: Lance Yang <lance.yang@linux.dev>
+To: akpm@linux-foundation.org
+Cc: david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	dev.jain@arm.com,
+	hughd@google.com,
+	ioworker0@gmail.com,
+	kirill@shutemov.name,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	mpenttil@redhat.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	ziy@nvidia.com,
+	richard.weiyang@gmail.com,
+	Lance Yang <lance.yang@linux.dev>
+Subject: [PATCH mm-new v3 1/1] mm/khugepaged: abort collapse scan on non-swap entries
+Date: Wed,  8 Oct 2025 11:26:57 +0800
+Message-ID: <20251008032657.72406-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-References: <20250930055826.9810-1-laoar.shao@gmail.com> <20250930055826.9810-4-laoar.shao@gmail.com>
- <CAADnVQJtrJZOCWZKH498GBA8M0mYVztApk54mOEejs8Wr3nSiw@mail.gmail.com> <CALOAHbATDURsi265PGQ7022vC9QsKUxxyiDUL9wLKGgVpaxJUw@mail.gmail.com>
-In-Reply-To: <CALOAHbATDURsi265PGQ7022vC9QsKUxxyiDUL9wLKGgVpaxJUw@mail.gmail.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Tue, 7 Oct 2025 20:25:28 -0700
-X-Gm-Features: AS18NWATPwVk-W8hdC0xrQiJYrJaEbx7Di3QWbBv11leFl2ACmYaQhhy44lYgpI
-Message-ID: <CAADnVQ+S590wKn0rdaDAHk=txQenXn6KyfhSZ3ks6vJA3nKrNg@mail.gmail.com>
-Subject: Re: [PATCH v9 mm-new 03/11] mm: thp: add support for BPF based THP
- order selection
-To: Yafang Shao <laoar.shao@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Liam Howlett <Liam.Howlett@oracle.com>, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, Johannes Weiner <hannes@cmpxchg.org>, usamaarif642@gmail.com, 
-	gutierrez.asier@huawei-partners.com, Matthew Wilcox <willy@infradead.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Amery Hung <ameryhung@gmail.com>, 
-	David Rientjes <rientjes@google.com>, Jonathan Corbet <corbet@lwn.net>, 21cnbao@gmail.com, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>, lance.yang@linux.dev, 
-	Randy Dunlap <rdunlap@infradead.org>, bpf <bpf@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6C3B116000C
-X-Stat-Signature: zxwnjfiwryetom67h4hkb56tj76byk6a
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: jf7j8deawus1bibmqe9fo1wiguc1snmg
+X-Rspamd-Queue-Id: 06EE8140002
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1759893941-657703
-X-HE-Meta: U2FsdGVkX1/wOVl6VW3VNtK70QQkkEgAC2wCKt7v1z6HJEjiqNIMlVFTFwNE4tQ8r1yycK1NdW2ywwTNYwDoFz9XBIsnb87TpvDm3xeHncrlH1ZqWxWHImBrCV6N/7DhcTBb+iveiCW837kzNxz1FGDOzc9D2rj/Ht3BNhu1snPdBLKnaWzJY2RKc4AaVpeYQ7aEi+dBnyJW2zwDAX5h2xcwP9Ysa7VUNUTQeBGVCoKnp79/peoqkLC3nSyjYfEqw4AwVDiVj6oxcPbvCqKA8T1qNUXFwi+uFnKwh+kN8cCnc8rOA0Cm5/MujUCi0U/HaAFMOsbt+HnZNbViYHlmPTZYRjOQgSO5Z851U8Jgra+wsP/3fAiHo/Om4BAFqXyE63mVM60Z9jD35zQySl4k1QO47eZjMwGJvvf6DMKMuhEz31wbQOmB9RV2IZ2fOiLa9+u0HLDGd9WluYD4GCzrPvxgNSD3i/x8b/ikuoE/MmB04lW2kfHjv8/Nt6/Citj2hzX+9fRn+tTRT3xzB1bNUjntDNy7RGl4Lw9UwuSKVfq3TpidmOQKs6s78KI35H2XovxV0t8Nt6YbOtoNxwtrVU7bVF6wXAOaWE6kacSdPyk9n2vheDQ5R0TwIFG5Gibp80drrQ0N0y2uas8Nk3usT6T6GN+IcnRkAFjiSjifyzEfNBPjhiNxYAsveI5K3oCjTnOyH5kB2IDYZKLiQZX2U2qe6jzlR8WEZEHtZB1pRhvg9Fe59TZp6CeEaybT4cNUNjaliiuvPMmt0QRhgTkMrIvD8tizXEF4hcQmzLO6udKBzjZAelfA7cHScNe4Wo+h5jIBjYx4sAL39/pEDRG9YjKZ2+sJ4KdJjAiOBPE3mPD7uFbs+BabuyNFI7S45OMa2+FrcNXZTBlE7/JYTVgt24slIE7TL8lCEql8imdUj9UYt3fDPkDHNUDmBK++Q/JCXGbj5ogTxHiw7UvzuBl
- 2pu3GG7s
- R8ta0LjegQf0SQGcUKQKTtRWClP9suqUUrJ6+uVstQIzeEBXeQ2aW8AgzYSveb10Qs2Ob6FNEfOvkAOJOYUfVJT/tdA6Kn5DHCvPpBJn8gZgyEOPE9jyiO6mmjJ9hJFZamBr4d6/G95hYi085gryOipW8ggk+tuoo3rHlPYUHMGXSkj2UpyUOeNk3cyOMiYRZZPXZAXBWhDkLPbj1k73gLSZsJSVvrh1yHPaVlte+L3IjiRwqvDc6rhILGJdPCZLrGPDpqSNRTdzEtT1v3T7I9zajK6otdEUYtT60iDbsrSTPHS436G74yfLeYVeVbCc3rPlsFqZVtTpkYmOinRs/N6wl7dLRY6VGwBmnvpJIKKDrrtmnmIS7CMcacbff1WGh6GXMD5RrA5oup7Bh/Oh+JqReN3FZmCONGGu1fo47T2JDt7mRH789jTdhGZJtGBMkId/Oc4/jcKbTEgC8qQNWtTs7ORGLMyaDGpB7
+X-HE-Tag: 1759894153-259558
+X-HE-Meta: U2FsdGVkX18hbDC/RUEDxIuYDrwBuHWpyAlL+Js+3qdctzaCdqGI0mLnZIlA2Sr/Wm+ZS5sxiZms8GasnvNTzv9P8niPxXeO0Fl8qWRtN1vnZnk362jFJFGkhK8kWsSTZspthRtK6RN65HC2lnzlelsdTCWroUKCkswdowX5qQ1HHg+fILJDuZx19f6yXu8R4jnDwapxH9xiI3XCufFBUv+eDvCGQ9R7lgBbbu4tAGf6bG4GDa4d2rf4aKV7ZIyltuGx1+k85wzIsFzxJInQOD/CG/uOeDTjIRyyeZsmuMFbW9u/HA2n/Gj9Lo9mpW7qJayUITFWBnxxCB8+yJCJgXwOwDECuMLS9zAgIJFyloZOIIsMgOPHerxaydIYkLXYFdJhVn6EHZh0hprAF+fBR8ZyBMpNPTrdh0p2T8/RrKforyyvvFciWt216XkpSKaw5mw18m5E8PR+lVkP/oXpjLMWEJmuN3frnzCZmgapokn9EW3GE4MSUxkK//DZ0us0Lc4wJA1HzIC/BHvkTGUhVxHSUTdwoIw5cGeZU5UGD0/o9JI0/Aw89T1j7zIb7XDE8bFHNwB5KiFNIxsCf/XRALZQ4suWN60nemmH/5xoANAjm3Kp7QEjjaTFruknj/gkyDBXoeicPkLO43CKYbxL8feS5QKI/nQxfINJ/pFGv7pkROH/DN9Le+EKrh0HCp6nak8/LDyj9p9ozw2jvmko/+JLFtMG1A0v8byab5bGMh+V3u+a3ZDyxhqizQz+2AgmT7x5yCttkFoKNLtVQth6347zqIV4Wx+omKnn9GGagpFxFndoE2VoF76ud9i/YMEw+WLhHaPJDajz6wR0u+oCadaQdVnEgx9lo+lLe8gskXt79LiFlIBiBxGUiVCvgF4IinHcUXVqWlrYE3ZIHOH4960GftDXNQAcZdkQzWyr/oCrleYHcFXXYobdFxl9skf2p8fH1DqZkpiM+DknXBt
+ 6EII+2cn
+ D3sxOEzh2biopv8MXti5wEm63ubKg12c4eQfl2W2/L/OeD8qW/Wa6Hhlt3ikBYRx/d8b3xZ0Y1RojP8mHq/+YvS4dT4Cbit7VEM/YtMGsUlB8/pPtpbXatfsaa4fkTvH1FjIkj+WMRsX4dFKBZtyu3SIEshthh3h0M6XIDJU4nFamcRkF+h43Po60rcnhCpl70ygITuWmNaR7lk9QQBQbNBjZRLlDHi/yxc8gMGpx2MOQbLY64Xs+XZtl17mWUz4f15AAsTJbvblSswqTER097qtzQd7cYdBtJTn58BcfvfH7s13RNL37FPJJDe8Zlpj2Pl+EMqzXlbIBdFb8T67/cpon5hoaNo7zeED/l9soZ+1usYzhOnp4wE14EfgnhHVLwzMnLBgSvOysmlLC71Wlpw8GHlMZ/0iBHk/H3vMUoIvG6yrfsGX8Me1YDGJYfRjfAjb+kls9vOeQRwYcC2FHmQeeBJbsLplWW5CK8QU5jOmDdT9q/+cgGYbSRR8Nk1BXUIW2ozaMC2JNbviFSWixfgYqCOGGWVUYP6Di2priAKKytJE2HYQdrY9WSoftqH5kaUFeGZmU3wV1iwSsbvkDb3DxeNUuFtyb3q5NAqP+BJszcOD0HS3txZr1i8/AQ1EVG1onuDLzCLW8zYuoWlIHDUwyvxPK6PuvjygGAD1ZnVj5Mi4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,40 +118,154 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 7, 2025 at 1:47=E2=80=AFAM Yafang Shao <laoar.shao@gmail.com> w=
-rote:
-> has shown that multiple attachments often introduce conflicts. This is
-> precisely why system administrators prefer to manage BPF programs with
-> a single manager=E2=80=94to avoid undefined behaviors from competing prog=
-rams.
+From: Lance Yang <lance.yang@linux.dev>
 
-I don't believe this a single bit. bpf-thp didn't have any
-production exposure. Everything that you said above is wishful thinking.
-In actual production every programmable component needs to be
-scoped in some way. One can argue that scheduling is a global
-property too, yet sched-ext only works on a specific scheduling class.
-All bpf program types are scoped except tracing, since kprobe/fentry
-are global by definition, and even than multiple tracing programs
-can be attached to the same kprobe.
+Currently, special non-swap entries (like PTE markers) are not caught
+early in hpage_collapse_scan_pmd(), leading to failures deep in the
+swap-in logic.
 
-> execution. In other words, it is functionally a variant of fmod_ret.
+A function that is called __collapse_huge_page_swapin() and documented
+to "Bring missing pages in from swap" will handle other types as well.
 
-hid-bpf initially went with fmod_ret approach, deleted the whole thing
-and redesigned it with _scoped_ struct-ops.
+As analyzed by David[1], we could have ended up with the following
+entry types right before do_swap_page():
 
-> If we allow multiple attachments and they return different values, how
-> do we resolve the conflict?
->
-> If one program returns order-9 and another returns order-1, which
-> value should be chosen? Neither 1, 9, nor a combination (1 & 9) is
-> appropriate.
+  (1) Migration entries. We would have waited.
+      -> Maybe worth it to wait, maybe not. We suspect we don't stumble
+         into that frequently such that we don't care. We could always
+         unlock this separately later.
 
-No. If you cannot figure out how to stack multiple programs
-it means that the api you picked is broken.
+  (2) Device-exclusive entries. We would have converted to non-exclusive.
+      -> See make_device_exclusive(), we cannot tolerate PMD entries and
+         have to split them through FOLL_SPLIT_PMD. As popped up during
+         a recent discussion, collapsing here is actually
+         counter-productive, because the next conversion will PTE-map
+         it again.
+      -> Ok to not collapse.
 
-> A single global program is a natural and logical extension of the
-> existing global /sys/kernel/mm/transparent_hugepage/ interface. It is
-> a good fit for BPF-THP and avoids unnecessary complexity.
+  (3) Device-private entries. We would have migrated to RAM.
+      -> Device-private still does not support THPs, so collapsing right
+         now just means that the next device access would split the
+         folio again.
+      -> Ok to not collapse.
 
-The Nack to single global prog is not negotiable.
+  (4) HWPoison entries
+      -> Cannot collapse
+
+  (5) Markers
+      -> Cannot collapse
+
+First, this patch adds an early check for these non-swap entries. If
+any one is found, the scan is aborted immediately with the
+SCAN_PTE_NON_PRESENT result, as Lorenzo suggested[2], avoiding wasted
+work. While at it, convert pte_swp_uffd_wp_any() to pte_swp_uffd_wp()
+since we are in the swap pte branch.
+
+Second, as Wei pointed out[3], we may have a chance to get a non-swap
+entry, since we will drop and re-acquire the mmap lock before
+__collapse_huge_page_swapin(). To handle this, we also add a
+non_swap_entry() check there.
+
+Note that we can unlock later what we really need, and not account it
+towards max_swap_ptes.
+
+[1] https://lore.kernel.org/linux-mm/09eaca7b-9988-41c7-8d6e-4802055b3f1e@redhat.com
+[2] https://lore.kernel.org/linux-mm/7df49fe7-c6b7-426a-8680-dcd55219c8bd@lucifer.local
+[3] https://lore.kernel.org/linux-mm/20251005010511.ysek2nqojebqngf3@master
+
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
+---
+v2 -> v3:
+ - Collect Acked-by from David - thanks!
+ - Collect Reviewed-by from Wei and Dev - thanks!
+ - Add a non_swap_entry() check in __collapse_huge_page_swapin() (per Wei
+   and David) - thanks!
+ - Rework the changelog to incorporate David's detailed analysis of
+   non-swap entry types - thanks!!!
+ - https://lore.kernel.org/linux-mm/20251001032251.85888-1-lance.yang@linux.dev/
+
+v1 -> v2:
+ - Skip all non-present entries except swap entries (per David) thanks!
+ - https://lore.kernel.org/linux-mm/20250924100207.28332-1-lance.yang@linux.dev/
+
+ mm/khugepaged.c | 37 +++++++++++++++++++++++--------------
+ 1 file changed, 23 insertions(+), 14 deletions(-)
+
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index abe54f0043c7..bec3e268dc76 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1020,6 +1020,11 @@ static int __collapse_huge_page_swapin(struct mm_struct *mm,
+ 		if (!is_swap_pte(vmf.orig_pte))
+ 			continue;
+ 
++		if (non_swap_entry(pte_to_swp_entry(vmf.orig_pte))) {
++			result = SCAN_PTE_NON_PRESENT;
++			goto out;
++		}
++
+ 		vmf.pte = pte;
+ 		vmf.ptl = ptl;
+ 		ret = do_swap_page(&vmf);
+@@ -1281,7 +1286,23 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+ 	     _pte++, addr += PAGE_SIZE) {
+ 		pte_t pteval = ptep_get(_pte);
+-		if (is_swap_pte(pteval)) {
++		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
++			++none_or_zero;
++			if (!userfaultfd_armed(vma) &&
++			    (!cc->is_khugepaged ||
++			     none_or_zero <= khugepaged_max_ptes_none)) {
++				continue;
++			} else {
++				result = SCAN_EXCEED_NONE_PTE;
++				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
++				goto out_unmap;
++			}
++		} else if (!pte_present(pteval)) {
++			if (non_swap_entry(pte_to_swp_entry(pteval))) {
++				result = SCAN_PTE_NON_PRESENT;
++				goto out_unmap;
++			}
++
+ 			++unmapped;
+ 			if (!cc->is_khugepaged ||
+ 			    unmapped <= khugepaged_max_ptes_swap) {
+@@ -1290,7 +1311,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 				 * enabled swap entries.  Please see
+ 				 * comment below for pte_uffd_wp().
+ 				 */
+-				if (pte_swp_uffd_wp_any(pteval)) {
++				if (pte_swp_uffd_wp(pteval)) {
+ 					result = SCAN_PTE_UFFD_WP;
+ 					goto out_unmap;
+ 				}
+@@ -1301,18 +1322,6 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 				goto out_unmap;
+ 			}
+ 		}
+-		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
+-			++none_or_zero;
+-			if (!userfaultfd_armed(vma) &&
+-			    (!cc->is_khugepaged ||
+-			     none_or_zero <= khugepaged_max_ptes_none)) {
+-				continue;
+-			} else {
+-				result = SCAN_EXCEED_NONE_PTE;
+-				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
+-				goto out_unmap;
+-			}
+-		}
+ 		if (pte_uffd_wp(pteval)) {
+ 			/*
+ 			 * Don't collapse the page if any of the small
+-- 
+2.49.0
+
 
