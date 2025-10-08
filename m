@@ -4,119 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEE51CAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 17:59:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4EDBCAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 18:06:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A41FC8E000B; Wed,  8 Oct 2025 13:59:44 -0400 (EDT)
+	id 1C4758E000C; Wed,  8 Oct 2025 14:06:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F1CD8E0002; Wed,  8 Oct 2025 13:59:44 -0400 (EDT)
+	id 174DA8E0002; Wed,  8 Oct 2025 14:06:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E1AC8E000B; Wed,  8 Oct 2025 13:59:44 -0400 (EDT)
+	id 064458E000C; Wed,  8 Oct 2025 14:06:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 789858E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 13:59:44 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id ECA1588128
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 17:59:43 +0000 (UTC)
-X-FDA: 83975709846.15.676A59C
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 0BE7918000E
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 17:59:41 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=D3jzRWUc;
-	spf=pass (imf24.hostedemail.com: domain of vpetrucci@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=vpetrucci@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E56678E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 14:06:15 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8193287FB1
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 18:06:15 +0000 (UTC)
+X-FDA: 83975726310.28.BFD3258
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 96EEA1C0006
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 18:06:13 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=1tmZCK1x;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
+	spf=pass (imf21.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759946382;
+	s=arc-20220608; t=1759946774;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W4KMzvetLm4Fr+s7TfComD4+hPnzZgOsbtBlAc/YQSE=;
-	b=wf2wr58u1ACXeRFWyI+XCsM8nuh1hxxJAoK53menBbGM8qdO5BzGGBVL1kpBFzt4j+BKWu
-	2o706Sp+M93V5wmepe6AWHR7n7LT255JdXMYhaT6QXaTEa0n6dXmNBZHpuz5/pJhZm3cBX
-	S91zzRYpnLtpnl/6S05BYhC1OI1bDoo=
+	bh=16JmNkh/L9J4E7GX4fUjY6xQHv/dDmWkutKst5l0AuI=;
+	b=ecdjv1YCikindt94VpRvakke27V7S5PVRLkjmNtMxDcqpePz+Opwr/dpcivVJwibKoX0ed
+	pBUqYTZiN7R1QIOHpu1WFm7NnktSMqgMLp2zfdfBiVsgRYIawbH94vraL117AM6wN+KzTH
+	5zi9BAb6nSKBU2jXBhj/Z5pCkXKcgC0=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=D3jzRWUc;
-	spf=pass (imf24.hostedemail.com: domain of vpetrucci@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=vpetrucci@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759946382; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=1tmZCK1x;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
+	spf=pass (imf21.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759946774; a=rsa-sha256;
 	cv=none;
-	b=0GmsjwHfXlhiHOvoX8dFd9EqO6AgpwMGysJ0BzcyIHj4vqchl9tNYUFQYqXDhwT/hyYmgP
-	BRaCvjKgL3SSRh6iOhyTU6SSi9G0JA3Gv2Kg2bDm2ntRmViRL2Qyap6hTGNvNFm6HzGFru
-	42+DajekfjJO+OEeMaZ9EjJHKSXjtPM=
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-46e37d6c21eso928125e9.0
-        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 10:59:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759946380; x=1760551180; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=W4KMzvetLm4Fr+s7TfComD4+hPnzZgOsbtBlAc/YQSE=;
-        b=D3jzRWUcK1LfnpPTpbywPK3ZKpRQibF0BcT1UgldSV5eu8nKG7u1a7eX0XxaaTBHZ2
-         izzenzHjDIGWXs5YSXK1ZGSd6EMvwVZF4LIOmYm3yx5eYvX+BozV2RMTL4r06KbQgySj
-         bkAAm0YaQSxOAhLSEA6sB1nxQnWmPWn7dn++8XUhIUP9SEiW5u0VPoizymj8AEqp6pYo
-         F+Y45lHrP+l4Z9+q2ksfQ8D7IQmCSiUwkQHTIB23vtb6wZ+zwtMRPbrEpNfK0IW98JgS
-         Nbe+SD5h3SUewr793Dup+qEv8gBgjK/q1Cq9jqTCrAdu2wvcx8UOTBXHKkB9kYKVShzV
-         n0hA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759946380; x=1760551180;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W4KMzvetLm4Fr+s7TfComD4+hPnzZgOsbtBlAc/YQSE=;
-        b=vePobQeDFd59HQKzuUzHwSOIYBCMWbzU5v7nAQTTB0x+GPAr91dbbnKtAn1IRyLiP1
-         HIik2SkswdUtL4DLiqHb7Bcq3CEetEpGCBw0AioT0pdOc89rNUW+4w5MGRlGuosid4ph
-         NjhTqQJL525C3oSxMOoAL+1k8z2skYojVvNAYuOaKKNX9RbtfyoH0HtFwfn5afEaGysL
-         XUAUPJ8pkbac9fIo8RSZ/Fl0nnaqfRrnUXSckeFf+gIwNXBE2NmCHNSgzzJOj6XIB7/Y
-         MeKsmS1qzjjahXWxpUfTC3qBI55Bbfb30jfVA77tETwXU0IVADYnllghqdymFRpK0PiU
-         FpZA==
-X-Forwarded-Encrypted: i=1; AJvYcCW+6YlK2sxu+jx7Zjb3JvxPy0nX1deUlMXhTBw0t2mkpWs3z5nPieHCiA/E4kUXSt2q5tmGvUXrcg==@kvack.org
-X-Gm-Message-State: AOJu0YzcMxQ2ewPw7b70GMl2cNjPgTc+pU7x/eT8AAFob0JMIeYmLSls
-	x/EXNSTjvHkn4HXk+AB0hBZiL5jLRT7Lmg4ewmtVMTorWm3bdBb50Q9wT82SxcplVH0ld5GdB0A
-	lm7mSCv8Fw5iBA4itNtmzxhfYmegO5OM=
-X-Gm-Gg: ASbGncsCa3BoXrvbrFXwAvPyfyTdqkfVE/viiqGiaH0WPuU84Ge8MzTPRnu+1D4OWXw
-	8GVakGMB7dmlST6A0mw00BnR95RrybzeV7mHoPhszEEIkPuZqKEuqfnbhL7U61UA1ZTQwDpqj1o
-	o0pH9EGiZLLnavSUxvRCvzFhZIr9IhxDQ338yWR/wjoZqtQ+NWHb/3+M69Z7hJVQ0evHnFVYU8Z
-	SI8mHPcuUJ6jUUwhJnvgBNqb6dqjkMVJ7dmbYVS5g==
-X-Google-Smtp-Source: AGHT+IHtL0KOVOKNLlIeSlInpWJTE/TPrTabMwA574I5VxH1lyBXgMOecBg0iKJOGtptnGSTnD9bSOmqK3DPheF4dX8=
-X-Received: by 2002:a05:6000:2681:b0:425:7153:80af with SMTP id
- ffacd0b85a97d-4266e8dab65mr2663968f8f.49.1759946379883; Wed, 08 Oct 2025
- 10:59:39 -0700 (PDT)
+	b=bLC/CRxVu3kwftBlGbeuyi7Kmy5agzG0VP3cZxOMlWJz4ADqZmGlNekC/YIDNzHMX2Jisp
+	6/ENMCZ3U0t9Q2JwcP1F4hEfylSyUnp2y1X1D/uM3wJqVeI/m8SUQyKBmKi8R20k6wi7ED
+	u1ikPQeshnu3nCnKyoAuWvEZ5Yo81EE=
+Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id 9E6F29305A;
+	Wed, 08 Oct 2025 18:06:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1759946771;
+	bh=16JmNkh/L9J4E7GX4fUjY6xQHv/dDmWkutKst5l0AuI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=1tmZCK1xDLJY1mwyn5+k+gXAM/CsAd+zcMYGvjqdJ4HUf9aOb/PgympVIgtUtxGut
+	 ObW3bpDePslTWcJRn49K67MSfNylKstPsmlPZjy6W3wxa9gat59jREPBBMIo3M6JFg
+	 XtZGrjt65SQ/0jW/Ua0H25O4Vfwkw5222rJqKzlY=
+Date: Wed, 8 Oct 2025 18:06:07 +0000
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
+	Chris Li <chrisl@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com,
+	hughd@google.com, yangge1116@126.com, david@redhat.com
+Subject: Re: [PATCH v2] mm: skip folio_activate() for mlocked folios
+Message-ID: <aOaoD0HQk7YPeLkE@shell.ilvokhin.com>
+References: <aOPDRmk2Zd20qxfk@shell.ilvokhin.com>
+ <ltvv3v4vibvlglpch6urayotenavpzxc7klbcyowjb4wrv3e7z@pzovtvtbmnsp>
 MIME-Version: 1.0
-References: <20250910144653.212066-1-bharata@amd.com> <aMGbpDJhOx7wHqpo@casper.infradead.org>
- <aMGg9AOaCWfxDfqX@gourry-fedora-PF4VCD3F> <7e3e7327-9402-bb04-982e-0fb9419d1146@google.com>
-In-Reply-To: <7e3e7327-9402-bb04-982e-0fb9419d1146@google.com>
-From: Vinicius Petrucci <vpetrucci@gmail.com>
-Date: Wed, 8 Oct 2025 10:59:01 -0700
-X-Gm-Features: AS18NWANBul6dbj_HkmY5fIi05_D6Oecvga0iBOa6pPxhI_sCfcpoYxSf9FgW9E
-Message-ID: <CAEZ6=UOXG2Ju9P4-gYKnzZeyV2PAQoCA70QtmxEBJ-Dqc=0tdA@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 0/8] mm: Hot page tracking and promotion infrastructure
-To: David Rientjes <rientjes@google.com>
-Cc: Gregory Price <gourry@gourry.net>, Matthew Wilcox <willy@infradead.org>, 
-	Bharata B Rao <bharata@amd.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Jonathan.Cameron@huawei.com, dave.hansen@intel.com, hannes@cmpxchg.org, 
-	mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org, 
-	raghavendra.kt@amd.com, riel@surriel.com, sj@kernel.org, weixugc@google.com, 
-	ying.huang@linux.alibaba.com, ziy@nvidia.com, dave@stgolabs.net, 
-	nifan.cxl@gmail.com, xuezhengchu@huawei.com, yiannis@zptcorp.com, 
-	akpm@linux-foundation.org, david@redhat.com, byungchul@sk.com, 
-	kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com, 
-	balbirs@nvidia.com, alok.rathore@samsung.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: y4nyz9sg1tpohtkme561qbk9qsdm756r
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ltvv3v4vibvlglpch6urayotenavpzxc7klbcyowjb4wrv3e7z@pzovtvtbmnsp>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0BE7918000E
-X-HE-Tag: 1759946381-815964
-X-HE-Meta: U2FsdGVkX1/SUMSJNZiRwXoxcISUf+ud2P3zFCWfY54pzQDwtllR4enLDg1zIW+BdfGetFDLbxhW227zqmPPcdzjY/0M+pETG0VqinFlXsTIwuuVQG5Mu18AOF/HOFp4BhKRfFOCa7LwrhQhG+m+B1e2IO/VtB4ln4Z4CW0yovxKv7NARSwIZusr5b5FZQjv3ZMMwvvriT264khcC19m5A+lC7YLN2jY9ynFu26orfwkjy/A/deqfTfBiIVHvNDOQt8ApyA04QObkjKcks26jPQLm4iE2vUgV3kOQzlmFZ+On2wpcePpwzepT+0zg37SF3QsP8QfQVT3QL1WAInHLS9UYzUT3MdmkOZzSOfAN4Yynx4gHBPXxBlQQwOd1WNCkhTinfKgyCFSg8CAkGTG29jte45m61o7FmiAHeoD1XZUuF9YlZLRbcwzADoIy/2+SeQBYEK4CHhkyesCd1/5bKBOoCPvrUKizS07H+umMWYhWiyoneM/TqkXII4eRy88VhDc5DVVE3edRjgpSFuGD0hH9m3vrV6XqVCyMEVBHFhX+cyYVR/2onDENYus+b4ZgsRv5QBEF7hmxbKK4lIbGM5TCaofYn/t1t+9RRJPuvgcqlPgyAd4d/BZUIFtHiefWhmfkNVklkxdeVYkdbuH80d6JEJ2EkM+zX/ORY4P8D2CRPsrnnbGvEQ0AnxaO7f8XN2eBSxVTUpFFcWofnOvHGe/Cx54jc4dIAwgZmhLZ7nm48qhxnxEYZTFJaDVp7+kOl8mh3RZ1u3sekxLmcNP8wnCEOh5XYc2lEqJXP33XJdTkSU0/+JtGamWkbO/ASaWQW4+CzSrsuAcWFe7OPUuSroZfIvyvl8YkAqcxpD10rIHyFwL4kwEO+43IMfcHJhLAcGS0mcKfoXANjZvSZQJQoceVd4WiEF7t6edOtoTXS/EsN8VFPQTS3KSg8VvtCIPB6vdb79qiXMyzMWxXKQ
- ACsFz2xp
- MWuwTS/UC23UcOEYV2RrhlZrQ7HFck1u2PpmA30g/5NPr5lvIGdD1gWGf9c9z4x96zvn2E32iDD919x7Bg7t+d4xdrsDXxWuWINGCcrNSG5be16kYgGKpeBuJplC2StNSwhq7gDQTZTrE/AQkYAPCKZnMjWG7z7yT7hZ4m0cjLLY/WSTL4nHQKuJEKe11eLPcXFtuTqeV9PihThiNDghqVk+5e+OoSwqneEi2C4YUZGZk2SakzTsjMdGl7sYH25ie1NiqlRK6vkzJjQ5WT590exgeqK9jPmdB39XnXB49Vrg6oxqMOsCNctR2c7AI6t0TT988UHch1l5CkA+6IV0cUImwmBzU2duGeYIUJ7E8ine+i4CproCYmyYUN8JQl3JZdQB/P1ohVI9amK7FaddrTmJf37YIw5WGXpGeDkVSBNVRB1mfGKcBIZFH+lkRFL1Hsvqvq5cz7Dcu7WtM28Qnqu+LQD/tME7M5F4S
+X-Rspamd-Queue-Id: 96EEA1C0006
+X-Rspamd-Server: rspam03
+X-Stat-Signature: im4kk4fc4bspogy4yudhtb3dc6otadsw
+X-HE-Tag: 1759946773-449446
+X-HE-Meta: U2FsdGVkX1/s/H49EWlCVzsUAgnJn2pmno2E8IhkhWG0dlclf6KM3SvJlZqNQsgVRc/wMk0fR7ybkYBuQPk4M3MDFv5oyvdjN4KL6lsFvKijYSb6/Ke4fAB0ra/mDoDaaaF3/9e4/ZlJTylJSlOi1ViZufuFdoN1hUWIJPDgFMcLG0HU3HqbbjM9bihBKv4UH4Yc+Zxwqbuy7Y9G3NyqLlFUhPKSmWL3R0pRzCRdRwR03Je6HvolmQHA1Tof+KO1vZkpZcC1cb6+1w1/yu1IGVmwkQZIJObpiOW3F3vglAEEZ9m3Q3wbJipxJ2gaCH2wzbuU5QSfFZ0RyxUi3tCOhx12CjZulOUnLQcPFIiWwqnXS41ctr4y/pO16finyTwzQPCsdN/CX0lTOgB3IJy1qX5NpjpKU/srT8Mz4LePdGzh/I2FhY2lnHRpeFcah2AIVWakqQnqwCMP1PS+JmvNgDtW0DTXtSVO4jJ3qHY/27WvFjQq5kUODsey+mQ3U7ewkyStEuYWdQjq0F4cuzNu7PyFOvfMJVvs0CEMMrQmGdiIPPqh/YJ+F9324eH0rjTA1Tk/5bUqj/hi2H2MnHlGbLfRq3L7EDkWi/4PJCA5HVFh5rNz2HJYA6HBdM0gX4zpPFdjebVJImjqupY1kNMEPF4RmON4KMV9kLVMhkpeuYns9FHdqgQF8HwRQPIqjC2QWaZODqBHQ4SrUSYCGGedBBt6nJ21g7nHoNiOXkbbjQoATrcjDVFMkNzzjHqUnV6bFJRjuhkXTPDOcZcOyR+aLyuQfhUcbIwg7/ekjSc9bOx4096PlN6egz0ntCJEjsQQblQJVNNVNnf6HzmbhvTvMOUDadMxGVRohfVcyFdHSkdLszKZp8aPmP6PTDgV9L3nAe/Br9+kv0X8P7TS4QBQ6LdJcCDx+uvPxZB9s4m2nFdscFbrCIYgG/Siy8OO8eOKWxmJlVNE9FehcbwhHSe
+ qbAgY2kz
+ P9e9kQAbsH+sta2ulBMt68l/Rq4YgnoMDumvkgElvDU+S6KbgqWWXccEbDkZwVTjAWF+37tAbtMDX/THeCtLuFrsTZ3pSR6cvRdNx7ns0SPJbwn2kdJoY5Jr5eo/C4hptlNEa8gm6vphaF52wb2JxlFm0vYqg4FSY5P1pan8UDeeZAJjNWKbGXQG16gHHnsna0yW0Cri7Xeau/cP8NI9v9GUZ4bV8xBUAQ7InDloHG0aOWTpza/u9I2pxLMTyHIUVxev1UPiaLEYHURo/YNW/hidlFYng20ZOwgXBsL7ZprVHNzNyffGCRbMpADexaJg6PeKBKf3ftW2/nBzFM84mGqZbVw3lpFX3iPNDCapYFvySGKqLwqYZxkimCzzLMCZ4jzZvdg3f3/seGj+vDuEl1pE+prb+SzuW/bRTJH/dNugWGYqpwltzW/l/xg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,34 +97,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David,
-
-On Tue, Sep 16, 2025 at 1:28=E2=80=AFPM David Rientjes <rientjes@google.com=
-> wrote:
+On Wed, Oct 08, 2025 at 09:17:49AM -0700, Shakeel Butt wrote:
+> [Somehow I messed up the subject, so resending]
+> 
+> Cc Hugh, yangge, David
+> 
+> On Mon, Oct 06, 2025 at 01:25:26PM +0000, Dmitry Ilvokhin wrote:
+> > __mlock_folio() does not move folio to unevicable LRU, when
+> > folio_activate() removes folio from LRU.
+> > 
+> > To prevent this case also check for folio_test_mlocked() in
+> > folio_mark_accessed(). If folio is not yet marked as unevictable, but
+> > already marked as mlocked, then skip folio_activate() call to allow
+> > __mlock_folio() to make all necessary updates. It should be safe to skip
+> > folio_activate() here, because mlocked folio should end up in
+> > unevictable LRU eventually anyway.
+> > 
+> > To observe the problem mmap() and mlock() big file and check Unevictable
+> > and Mlocked values from /proc/meminfo. On freshly booted system without
+> > any other mlocked memory we expect them to match or be quite close.
+> > 
+> > See below for more detailed reproduction steps. Source code of stat.c is
+> > available at [1].
+> > 
+> >   $ head -c 8G < /dev/urandom > /tmp/random.bin
+> > 
+> >   $ cc -pedantic -Wall -std=c99 stat.c -O3 -o /tmp/stat
+> >   $ /tmp/stat
+> >   Unevictable:     8389668 kB
+> >   Mlocked:         8389700 kB
+> > 
+> >   Need to run binary twice. Problem does not reproduce on the first run,
+> >   but always reproduces on the second run.
+> > 
+> >   $ /tmp/stat
+> >   Unevictable:     5374676 kB
+> >   Mlocked:         8389332 kB
+> > 
+> > [1]: https://gist.github.com/ilvokhin/e50c3d2ff5d9f70dcbb378c6695386dd
+> > 
+> > Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
+> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> > Acked-by: Usama Arif <usamaarif642@gmail.com>
+> > ---
+> > Changes in v2:
+> >   - Rephrase commit message: frame it in terms of unevicable LRU, not stat
+> >     accounting.
+> > 
+> >  mm/swap.c | 10 ++++++++++
+> >  1 file changed, 10 insertions(+)
+> > 
+> > diff --git a/mm/swap.c b/mm/swap.c
+> > index 2260dcd2775e..f682f070160b 100644
+> > --- a/mm/swap.c
+> > +++ b/mm/swap.c
+> > @@ -469,6 +469,16 @@ void folio_mark_accessed(struct folio *folio)
+> >  		 * this list is never rotated or maintained, so marking an
+> >  		 * unevictable page accessed has no effect.
+> >  		 */
+> > +	} else if (folio_test_mlocked(folio)) {
+> > +		/*
+> > +		 * Pages that are mlocked, but not yet on unevictable LRU.
+> > +		 * They might be still in mlock_fbatch waiting to be processed
+> > +		 * and activating it here might interfere with
+> > +		 * mlock_folio_batch(). __mlock_folio() will fail
+> > +		 * folio_test_clear_lru() check and give up. It happens because
+> > +		 * __folio_batch_add_and_move() clears LRU flag, when adding
+> > +		 * folio to activate batch.
+> > +		 */
+> 
+> This makes sense as activating an mlocked folio should be a noop but I
+> am wondering why we are seeing this now. By this, I mean mlock()ed
+> memory being delayed to get to unevictable LRU. Also I remember Hugh
+> recently [1] removed the difference betwen mlock percpu cache and other
+> percpu caches of clearing LRU bit on entry. Does you repro work even
+> with Hugh's changes or without it?
 >
-> I've been pretty focused on the promotion story here rather than demotion
-> because of how responsive it needs to be.  Harvesting the page table
-> accessed bits or waiting on a sliding window through NUMA Balancing (even
-> NUMAB=3D2) is not as responsive as needed for very fast promotion to top
-> tier memory, hence things like the CHMU (or PEBS or IBS etc).
 
-First, thanks for sharing your thoughts on the promotion
-responsiveness challenges, definitely a critical aspect for tiering
-strategies.
+Thanks Shakeel for mentioning Hugh's patch, I was not aware of it.
+Indeed, I could not reproduce problem on top of Hugh's patch anymore,
+which totally make sense, because folio_test_clear_lru() is gone from
+__folio_batch_add_and_move().
 
-We recently put together a preliminary report using our experimental
-HW that I believe could be relevant to the ongoing discussions:
-A Limits Study of Memory-side Tiering Telemetry:
-https://arxiv.org/abs/2508.09351
+Now I wonder does folio_test_mlocked() check still make sense in the
+current codebase?
 
-It's essentially an initial step toward quantifying the benefits of
-HMU on the memory side, aiming to compare promotion quality (e.g.,
-hotness coverage and accuracy) across HMU, PEBS-based promotion, and
-NUMA balancing (promotion path).
-Hopefully, this kind of work can help us better understand some of the
-trade-offs being discussed, support more data-driven comparisons, and
-spark more fruitful discussions...
-
-Best,
-Vinicius
+> [1] https://lore.kernel.org/all/05905d7b-ed14-68b1-79d8-bdec30367eba@google.com/
 
