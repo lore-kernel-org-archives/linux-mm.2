@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E919CAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 15:32:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA167CAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 15:33:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECA808E0034; Wed,  8 Oct 2025 11:32:45 -0400 (EDT)
+	id 52F198E0035; Wed,  8 Oct 2025 11:33:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7B178E0002; Wed,  8 Oct 2025 11:32:45 -0400 (EDT)
+	id 5068C8E0002; Wed,  8 Oct 2025 11:33:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D42B28E0034; Wed,  8 Oct 2025 11:32:45 -0400 (EDT)
+	id 41C8F8E0035; Wed,  8 Oct 2025 11:33:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BEECF8E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 11:32:45 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5DCDE59CA9
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 15:32:45 +0000 (UTC)
-X-FDA: 83975339490.20.2A2AA34
-Received: from pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.245.243.92])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 020C180010
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 15:32:42 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=WoqtXhuI;
-	spf=pass (imf02.hostedemail.com: domain of "prvs=36971892a=farbere@amazon.com" designates 44.245.243.92 as permitted sender) smtp.mailfrom="prvs=36971892a=farbere@amazon.com";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759937563; a=rsa-sha256;
-	cv=none;
-	b=XPiFCwIJ+ztK2k1w4li7uY1GCZrEwQWL9VPfXQCrvtPNhfugZUSlIcKYXhmPELWreJ2jAc
-	qn2VI/3p031uvctRmORRExbQbgNe6Ih2zD4bV6wgTZS2tN21sZW7I+5CNrz+lN9egOylGV
-	n4mgi/5w/jmhiqI69FQ+gwoMNSOtGiA=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=WoqtXhuI;
-	spf=pass (imf02.hostedemail.com: domain of "prvs=36971892a=farbere@amazon.com" designates 44.245.243.92 as permitted sender) smtp.mailfrom="prvs=36971892a=farbere@amazon.com";
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3094B8E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 11:33:03 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B372E45F9E
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 15:33:02 +0000 (UTC)
+X-FDA: 83975340204.24.3C09F59
+Received: from pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.26.1.71])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 908041C0016
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 15:33:00 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=SZsOKLM9;
+	spf=pass (imf20.hostedemail.com: domain of "prvs=36971892a=farbere@amazon.com" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=36971892a=farbere@amazon.com";
 	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759937563;
+	s=arc-20220608; t=1759937580;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xkEPvUKyQPfYOtTnd+JXsEAKoNLEM/0U49oHM5nqIDU=;
-	b=v1BUBMvtykOX9pYS0P6pHrelbkJQcgPz1OFo8MpEk5o/LPq1VFvOTTe0WG1E5zjYx33xSu
-	9IO8AUId586Yt3yxwAzpvbpWyeDQ0UTWRx8iO0xEqZdVgKsUHuDmKH123MYDayPsB4o140
-	3DRQ4xODzEvW3NzJtCfvOPv8mj+RULo=
+	bh=LIWZLyJTB267mf1gB+7eM+QKWeNJa7R50sbMR1WI3N0=;
+	b=40SYjvSODHl3R3Sq3+9KJY1mvA4Gsa7GgVRYUOlHeXfUOK2VN0joyUbM+Q68WCsWAh+88F
+	JD53poN1YMCk10jYe2MZHnWyX21Y74vEOrwxdQfURAktRkfaR83asd9L7KrmgLR4PGDIQM
+	rdbKEQQj+IOZFkuOjQNKmW+7ihbWiWk=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=SZsOKLM9;
+	spf=pass (imf20.hostedemail.com: domain of "prvs=36971892a=farbere@amazon.com" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=36971892a=farbere@amazon.com";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759937580; a=rsa-sha256;
+	cv=none;
+	b=Y+IczjWIYWi7ZHId1HpFcbfVcM0jUamxFtCaDV7BFKLmr/AGyUlXRoTT9v+NkLxMhQrHqx
+	VD1RZnLjPIs0ZRF1eicWYXeBVwYll/n6uN/JfIARrmMulnwcePGHgTLcg0sUBHXiCwKTgP
+	Gq5YMvqOwXlvG3CtPiO2nAPpasufnIQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1759937563; x=1791473563;
+  t=1759937580; x=1791473580;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=xkEPvUKyQPfYOtTnd+JXsEAKoNLEM/0U49oHM5nqIDU=;
-  b=WoqtXhuIJ38I5+CL7ovPdH3kPnrQzFR1YZt1HbkXTIuK2Xi8V40HQoWG
-   vaQqbrApm//DYatnNYLg3PS4X9uPSAFRw9UEl2mIO8h9DKKQ6ib2qxJDw
-   SzeOuwLabEr1euKEg6VlWLcpgHFDxH6EJEkbXYRfPXy+BVYjV4fsWw6ns
-   EefWKHY0kpLCKSwgS+b4gM4xzW7S6gPj99a9sudQPFNLIx9Rj88vxl8vg
-   FBIjFm91kOBiHYOMKVyfwoqLKgIcS9O6MdLt5swq0u5CjJKWFGOQ3NUQP
-   HOuGh8405b339pHMKvtRieo1WhVcACtX8Y7SukByM2itMnb2KQ8KHPx8A
+  bh=LIWZLyJTB267mf1gB+7eM+QKWeNJa7R50sbMR1WI3N0=;
+  b=SZsOKLM91fG2rPAPeEIOaMI8JV3vzv2wyI1VSHd+Lvv2axRwvGswWvy3
+   HTYoBz4YHRJ1r305lsUXraG67leDVkdxHmkg0jHE8NKcYf9lzqfidv14p
+   fXwiK3IzJVTXtlr/rDhaCIA8Tu4YRhAshPCNoiBUfX1d/SbcFmmSdwloU
+   Al7K2WsoSCwkRSz4mihsxj7U+kuthj/2PzPTtoyXCPb8d/EuPSB2QVhVv
+   OOlFHNXg4Yuu2L7q6ax/GMKM3kUp/sYNB0GnESvKSoG3mrv1nAM672BYS
+   d62qUvKuBPDNfvaQYSxSt1zybWKR9O9U/97TclA/EshRNXXvMmyWO92yB
    Q==;
-X-CSE-ConnectionGUID: 1l1j8F8/R0O5YqH9bBt9dg==
-X-CSE-MsgGUID: 9jhKXSElS+C4fdkMXST5jw==
+X-CSE-ConnectionGUID: C0fPTfJ2Sb+HaXYqhUIJkA==
+X-CSE-MsgGUID: FfMpWZ+cT8iGEwxcwe4Cww==
 X-IronPort-AV: E=Sophos;i="6.18,281,1751241600"; 
-   d="scan'208";a="4534017"
-Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
-  by internal-pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2025 15:32:40 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [10.0.21.151:29235]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.32.215:2525] with esmtp (Farcaster)
- id 598c4386-b8dd-4a9e-bdb3-5a41bd32dd6d; Wed, 8 Oct 2025 15:32:40 +0000 (UTC)
-X-Farcaster-Flow-ID: 598c4386-b8dd-4a9e-bdb3-5a41bd32dd6d
+   d="scan'208";a="4530353"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2025 15:32:59 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [10.0.21.151:61111]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.25.156:2525] with esmtp (Farcaster)
+ id 2afb6f4e-bebd-41f5-920d-a5551f70852a; Wed, 8 Oct 2025 15:32:59 +0000 (UTC)
+X-Farcaster-Flow-ID: 2afb6f4e-bebd-41f5-920d-a5551f70852a
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Wed, 8 Oct 2025 15:32:39 +0000
+ Wed, 8 Oct 2025 15:32:52 +0000
 Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
  (172.19.116.181) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Wed, 8 Oct 2025
- 15:32:26 +0000
+ 15:32:39 +0000
 From: Eliav Farber <farbere@amazon.com>
 To: <gregkh@linuxfoundation.org>, <jdike@addtoit.com>, <richard@nod.at>,
 	<anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>,
@@ -122,11 +122,12 @@ To: <gregkh@linuxfoundation.org>, <jdike@addtoit.com>, <richard@nod.at>,
 	<linux-mm@kvack.org>, <netfilter-devel@vger.kernel.org>,
 	<coreteam@netfilter.org>, <tipc-discussion@lists.sourceforge.net>,
 	<linux-kselftest@vger.kernel.org>, <stable@vger.kernel.org>
-CC: Linus Torvalds <torvalds@linux-foundation.org>, David Laight
-	<David.Laight@aculab.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: [PATCH v3 10/19 5.15.y] minmax: simplify min()/max()/clamp() implementation
-Date: Wed, 8 Oct 2025 15:29:35 +0000
-Message-ID: <20251008152946.29285-11-farbere@amazon.com>
+CC: Linus Torvalds <torvalds@linux-foundation.org>, Arnd Bergmann
+	<arnd@kernel.org>, David Laight <David.Laight@aculab.com>, Lorenzo Stoakes
+	<lorenzo.stoakes@oracle.com>
+Subject: [PATCH v3 11/19 5.15.y] minmax: improve macro expansion and type checking
+Date: Wed, 8 Oct 2025 15:29:36 +0000
+Message-ID: <20251008152946.29285-12-farbere@amazon.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251008152946.29285-1-farbere@amazon.com>
 References: <20251008152946.29285-1-farbere@amazon.com>
@@ -136,14 +137,14 @@ Content-Type: text/plain
 X-Originating-IP: [172.19.116.181]
 X-ClientProxiedBy: EX19D042UWB004.ant.amazon.com (10.13.139.150) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
+X-Stat-Signature: mz485sha8tsaubrwyazrbcbhnas69918
 X-Rspam-User: 
-X-Stat-Signature: hw1jt7a61fnnhmqohws5rdtzy64ddfqy
-X-Rspamd-Queue-Id: 020C180010
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1759937562-344635
-X-HE-Meta: U2FsdGVkX1+OfkKMflK6OV8hi6xPox/OXQLwiet0iUT6PiBo5NafY58kCasD25vAYbinRkhs+EvUDq4grLInN9b91sO7md17Apm4eTbD2J5ZpISd4OfXiE673143tOwIw3TpBLgLaKXPqMK+3aGroJmNgTyXibIQcbsnwsh2R/wmaTVclZVQPSSOLjBh2HnXfwKVo1Yse+ASojhiLs7uZr3PKkhf1XfoaimDojaYQ49XoIx8Id6EdF1QpvJP8OzbjiaQTH124FQHqpzbccpXHnF3KYOi+z/fDplnaIOYKhSSw3n0DqnjVtQfOCVbS2xBcTn4MGRdofXF4x+W2IKUIOeRacVhwkWvd45AK/v+ba8f+zs/+eCa9YxvcbpMEhZpMhWWPfWXraln9P6yQN93IpzdjNvtEqymOpqlM41NEWUy0tYOYUJKqAsJzBMXh/K9zM4xHKla+ohouksO0V2y2nGTXT409gsZNOxVK7RlrpKOGFwtlfKoM9ZEiinBagp1y5MASvVtWFyhypLujqlwfRyABCNtra8AXrUz0y2CgsCqQl4Xa6ewi73AtP+H9MrPT8822jP1cbz40yBnm59fXHmDSUI3/ubGfMrdTD/iGSGmUQWFxtws54B7wHm4Tvb/mJP/xi63yRT2s/iKrWETxCwNBsedy49llucWSR4VLLH5JfBEDz2r7wLzwtsCl3OUuFyqTuHXRA1IB+zHEADybOOyah6X0Ovnw27laIXnMPkbb/yBJAjLEOfvtqfL9bhrfE5heeKBkdDkgD76tR/BkqNZxMBlNO7G0WRbq8fjiEriGpmctId04VzmQd+8QygewKY+BRtNHJnhLOC5sl7PaaEvy+984t9kGrMG5P51VM9aXwvceHwK6XqaqprvgVB3EnqrSUBBf3Xy/P57uLEBCjZEXbSq9MvfNXJP9LrdC1vfpa2dh2s7WDDnsYXGl8y7O2JxuJJznGRzbly+6BE
- oJK9nb0e
- 0WJwpJMruibbxPjR4nuWCKTrbFPdiyk+CK4Jssb/Psvfkt91v0DbNMVAvo7H91IauKksgQ13amSG3G0IFT8hR3/sAn+axIvV6pOXYrZvVbH7asZ73DED1iUHFf8a/vzhgBz+xfpXKtXoiJgJ8iknwnoW3zb8+oBma33eD86K68CmXEcc/lmRnzHOr5N0OnDvClbnSv6pvFdhG3cyqu6aPhTO8NTyljgJJ5pnKp4KbNtWleFUORDyo/s64H8kqPDC4hAxyJnLnN6aEHSYRx691HV2zalqKAiAm8JAnR46xrdtazaZpjXHrpg+7R/jO1ohBkSKV4RKQYF2L9Egs93HQUOtSsVCyxwbg+SFNY1u1/2pqvtsX/EJeFJY6J4CC2mp1TNRSv3dybUnL3EE3Ci3japbIbrKWj1RyaWnJM2+GGoe+p2yygBRrsnE48lAqaND2UdNDhd1q/8ehnDUZXKPyGBxy7pemyVu3JOSDO9hgUjJ5UXR2FXqtRjjxeArULRUN1EuIrI1x1aRsBPWWhZosiwNZiiIjwuq7WyKKyEd2KZS+STzv8tWZi8/vVBU/KzYCxD71ylnzcQJIvW5g1zs8RWfCtHcmA6Yr8dksi8/o2VFovXylLb7131FUnd8FVFkOk5K/KaAXlJ7dwh/zXd7z45o79peEwfmMqj5yylnWEnlNskei7BDlqdmr66ikPyuXlSMQJFjq49nf1pQP4jsQ/moAje3P+JigIO5kphDNoY5hK7RsiDdlpxF2T+8ML9z3FJ+dyHO2q+oba5w7af95EVXBsWc0LR2RoVsG0birhe2P7pV9Zh9EGblfY1kcA2G9JdTCT/aY2dy9y8MOdLufmvT+5QhMsyBwOGFwGP4DQcjqyVW/2T3TP1XfYeofgOeZEau/
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 908041C0016
+X-HE-Tag: 1759937580-405917
+X-HE-Meta: U2FsdGVkX1+VI3HnS0XW03OIp47FKBWsWILxYZ52n+9vlQixOL2RQYWN20Z9/QYlEi9HVnVAsXrWR4EzgzbTVOJCA9+I0/xUyfWSKI++N0jcJrSXzocos1LWzSdaX+1p6sqD3WWqbr7ooX2IY2oUVyDb1+b8pvAHDmy7F4BmV8h7D89n5Isd2DqdfG0W4jzy0NLtb29UcOKr5kbK0FKY0ooLnrAClWiYr3n1i4/ts1oNKmgDRhlqdUF6UbyTkcExBWnHzjpFyo7ZmV0EMPvKpEMh6OMlIJLiChs9y0vI2TJWmxkVdfw/nv/C8TbZATfuMReg3q5dxDlT7nCYObXJOdpqJyyBoIDbMP9c+G0xj6pJrZYLyHalM55C1etIvSwHiqHTO6BWqn3h39s0NJGHSw+ccW0VkHrqot8MDmUf12peKOyWHZA5Jo1afviuBnrl2k/rEowUlD0/C4ffzI1ZEhg/nUWbkC49onoZzgAdhLkHye0DgD3dz4lSLESyhLWpRH/ysBz2aei4X1WOOvcxdXhxeku6CpQXwKB3BMh3HrbhKsAUc0NTNRjMOXs6MRxblPX6g5P9V2tmIpHcUmm63YvnlsLNkbXeM/bxGD1VZxnsv2/wLR/ImwWYMphJEeVD70ahb2xdZLvcfPi50B44EZzVUEBRW4IffeLi7R7d+jkbbNRL4dJXThPmOkV7pi1ycVWsgytH4+R5eYzkLUCbu0mZtoKptUGoVuMQBgno2mPzPdv70C1CC/yG896INp98bDG/ZdjDy354YzuCo08tRsVGjtbmXI2xmK16TF0TlcYzW3j8VJEJbm/U7bp39hbhUvarFywKdMhPWZ2nuir/bK80xzz0uyvT+bTjqEZ3ZHoK77v9rKtb4MmvPS9isP3yHSJoYpXZFkBSoGknpAT43YGF1iuCZqDgYgmYxcDgS56b3Az6HTV/1w0Mwf8rd8z0q9QJubP9zcpRaTjXNA1
+ MMZPUJNE
+ KYebc1TnzN1HTBY2fVrNnGj8pQ4Ab83ys9wKx+l5Llm/KUoZi8Tn4k+6ZQSE+fWqpHIDxqDyK4Gy0yHvAtMRLuLJNj8LXXL1XinAhltdTPmL1ZJn7AUIaypqio7RVrtHTQWGzDNJfv7xgFEEKJJeE6MtLxmhlkjVwzXD/7deYykicoa3qc8h0g6KQ7N9Wtd8lqKn8U/0DkV6mNwxvW45siNiX0gsOdfNINw4N3P1mn+oUyBWGSf8NVjx83JRBrevrRxspBVzy6zZXV7tArOcM+y98jVdBVfe3GxcsD27OEOjxH89KdVQo06dR8Baxv1ulxYSm2J+PYSkgtl5LJZG3ONLS+8R19Z9oyRIUJdztzV6dT3GNOmiYKEwn4YTN1LwZqG+EFhfK1qKyW8u0DLOxWhW7MOW4+uC+b1tjqyb933pdU0DcyJL3sM6M47rt4khatRrhZb/opdFdvjHs8MoRXFR9ERpyGzUHFO2EBYSPrJAkQo+i8phg+eXfUkV2w+pJr3rxxvJhT2EQVfKr4r8Q+OxkyYT9uraMuIrtFdvBftxpD4HgjGTH9Hlol/LwEhqCljFiyCEPdh5NvNZpKkOVRDSMzZBFzo9Cyu90bD/DtgsLtWKu2fpqmNpP/F4x0ES2PorD2zO8z2rw5sDqEgt889cu6eJsVc0eoz2/IWIYzpomwXGx/wKCJZosC+GiZJTSH5B9+OsmJRUBpnB/hPBVwG9mS9RkaAhCwyyRvVaTKbrwDQ3JJo/T//sxgyDUA1PacINX0XeKJJ4nY+rRW7t7qLMXp7hw9clTmi6Xe4J2hrncmC1O/teBmVYqTUVvveDcJZy+yD/NblsDPOgzQor8VJ3CBGLX6hvSMZrQHk7jbJYAisWhEchpJTISw5JZzNIAZD3I+pb1SK68s/4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -154,137 +155,199 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit dc1c8034e31b14a2e5e212104ec508aec44ce1b9 ]
+[ Upstream commit 22f5468731491e53356ba7c028f0fdea20b18e2c ]
 
-Now that we no longer have any C constant expression contexts (ie array
-size declarations or static initializers) that use min() or max(), we
-can simpify the implementation by not having to worry about the result
-staying as a C constant expression.
+This clarifies the rules for min()/max()/clamp() type checking and makes
+them a much more efficient macro expansion.
 
-So now we can unconditionally just use temporary variables of the right
-type, and get rid of the excessive expansion that used to come from the
-use of
+In particular, we now look at the type and range of the inputs to see
+whether they work together, generating a mask of acceptable comparisons,
+and then just verifying that the inputs have a shared case:
 
-   __builtin_choose_expr(__is_constexpr(...), ..
+ - an expression with a signed type can be used for
+    (1) signed comparisons
+    (2) unsigned comparisons if it is statically known to have a
+        non-negative value
 
-to pick the specialized code for constant expressions.
+ - an expression with an unsigned type can be used for
+    (3) unsigned comparison
+    (4) signed comparisons if the type is smaller than 'int' and thus
+        the C integer promotion rules will make it signed anyway
 
-Another expansion simplification is to pass the temporary variables (in
-addition to the original expression) to our __types_ok() macro.  That
-may superficially look like it complicates the macro, but when we only
-want the type of the expression, expanding the temporary variable names
-is much simpler and smaller than expanding the potentially complicated
-original expression.
+Here rule (1) and (3) are obvious, and rule (2) is important in order to
+allow obvious trivial constants to be used together with unsigned
+values.
 
-As a result, on my machine, doing a
+Rule (4) is not necessarily a good idea, but matches what we used to do,
+and we have extant cases of this situation in the kernel.  Notably with
+bcachefs having an expression like
 
-  $ time make drivers/staging/media/atomisp/pci/isp/kernels/ynr/ynr_1.0/ia_css_ynr.host.i
+	min(bch2_bucket_sectors_dirty(a), ca->mi.bucket_size)
 
-goes from
+where bch2_bucket_sectors_dirty() returns an 's64', and
+'ca->mi.bucket_size' is of type 'u16'.
 
-	real	0m16.621s
-	user	0m15.360s
-	sys	0m1.221s
+Technically that bcachefs comparison is clearly sensible on a C type
+level, because the 'u16' will go through the normal C integer promotion,
+and become 'int', and then we're comparing two signed values and
+everything looks sane.
 
-to
+However, it's not entirely clear that a 'min(s64,u16)' operation makes a
+lot of conceptual sense, and it's possible that we will remove rule (4).
+After all, the _reason_ we have these complicated type checks is exactly
+that the C type promotion rules are not very intuitive.
 
-	real	0m2.532s
-	user	0m2.091s
-	sys	0m0.452s
+But at least for now the rule is in place for backwards compatibility.
 
-because the token expansion goes down dramatically.
+Also note that rule (2) existed before, but is hugely relaxed by this
+commit.  It used to be true only for the simplest compile-time
+non-negative integer constants.  The new macro model will allow cases
+where the compiler can trivially see that an expression is non-negative
+even if it isn't necessarily a constant.
 
-In particular, the longest line expansion (which was line 71 of that
-'ia_css_ynr.host.c' file) shrinks from 23,338kB (yes, 23MB for one
-single line) to "just" 1,444kB (now "only" 1.4MB).
+For example, the amdgpu driver does
 
-And yes, that line is still the line from hell, because it's doing
-multiple levels of "min()/max()" expansion thanks to some of them being
-hidden inside the uDIGIT_FITTING() macro.
+	min_t(size_t, sizeof(fru_info->serial), pia[addr] & 0x3F));
 
-Lorenzo has a nice cleanup patch that makes that driver use inline
-functions instead of macros for sDIGIT_FITTING() and uDIGIT_FITTING(),
-which will fix that line once and for all, but the 16-fold reduction in
-this case does show why we need to simplify these helpers.
+because our old 'min()' macro would see that 'pia[addr] & 0x3F' is of
+type 'int' and clearly not a C constant expression, so doing a 'min()'
+with a 'size_t' is a signedness violation.
 
+Our new 'min()' macro still sees that 'pia[addr] & 0x3F' is of type
+'int', but is smart enough to also see that it is clearly non-negative,
+and thus would allow that case without any complaints.
+
+Cc: Arnd Bergmann <arnd@kernel.org>
 Cc: David Laight <David.Laight@aculab.com>
 Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 ---
- include/linux/minmax.h | 43 ++++++++++++++++++++----------------------
- 1 file changed, 20 insertions(+), 23 deletions(-)
+ include/linux/compiler.h |  9 +++++
+ include/linux/minmax.h   | 74 ++++++++++++++++++++++++++++++++--------
+ 2 files changed, 68 insertions(+), 15 deletions(-)
 
+diff --git a/include/linux/compiler.h b/include/linux/compiler.h
+index 4f03dfb6de0d..ee9e39d315c8 100644
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -258,6 +258,15 @@ static inline void *offset_to_ptr(const int *off)
+  */
+ #define is_signed_type(type) (((type)(-1)) < (__force type)1)
+ 
++/*
++ * Useful shorthand for "is this condition known at compile-time?"
++ *
++ * Note that the condition may involve non-constant values,
++ * but the compiler may know enough about the details of the
++ * values to determine that the condition is statically true.
++ */
++#define statically_true(x) (__builtin_constant_p(x) && (x))
++
+ /*
+  * This is needed in functions which generate the stack canary, see
+  * arch/x86/kernel/smpboot.c::start_secondary() for an example.
 diff --git a/include/linux/minmax.h b/include/linux/minmax.h
-index fc384714da45..e3e4353df983 100644
+index e3e4353df983..41da6f85a407 100644
 --- a/include/linux/minmax.h
 +++ b/include/linux/minmax.h
-@@ -35,10 +35,10 @@
- #define __is_noneg_int(x)	\
- 	(__builtin_choose_expr(__is_constexpr(x) && __is_signed(x), x, -1) >= 0)
+@@ -26,19 +26,63 @@
+ #define __typecheck(x, y) \
+ 	(!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
  
--#define __types_ok(x, y) 					\
--	(__is_signed(x) == __is_signed(y) ||			\
--		__is_signed((x) + 0) == __is_signed((y) + 0) ||	\
--		__is_noneg_int(x) || __is_noneg_int(y))
-+#define __types_ok(x, y, ux, uy) 				\
-+	(__is_signed(ux) == __is_signed(uy) ||			\
-+	 __is_signed((ux) + 0) == __is_signed((uy) + 0) ||	\
-+	 __is_noneg_int(x) || __is_noneg_int(y))
+-/* is_signed_type() isn't a constexpr for pointer types */
+-#define __is_signed(x) 								\
+-	__builtin_choose_expr(__is_constexpr(is_signed_type(typeof(x))),	\
+-		is_signed_type(typeof(x)), 0)
++/*
++ * __sign_use for integer expressions:
++ *   bit #0 set if ok for unsigned comparisons
++ *   bit #1 set if ok for signed comparisons
++ *
++ * In particular, statically non-negative signed integer
++ * expressions are ok for both.
++ *
++ * NOTE! Unsigned types smaller than 'int' are implicitly
++ * converted to 'int' in expressions, and are accepted for
++ * signed conversions for now. This is debatable.
++ *
++ * Note that 'x' is the original expression, and 'ux' is
++ * the unique variable that contains the value.
++ *
++ * We use 'ux' for pure type checking, and 'x' for when
++ * we need to look at the value (but without evaluating
++ * it for side effects! Careful to only ever evaluate it
++ * with sizeof() or __builtin_constant_p() etc).
++ *
++ * Pointers end up being checked by the normal C type
++ * rules at the actual comparison, and these expressions
++ * only need to be careful to not cause warnings for
++ * pointer use.
++ */
++#define __signed_type_use(x,ux) (2+__is_nonneg(x,ux))
++#define __unsigned_type_use(x,ux) (1+2*(sizeof(ux)<4))
++#define __sign_use(x,ux) (is_signed_type(typeof(ux))? \
++	__signed_type_use(x,ux):__unsigned_type_use(x,ux))
++
++/*
++ * To avoid warnings about casting pointers to integers
++ * of different sizes, we need that special sign type.
++ *
++ * On 64-bit we can just always use 'long', since any
++ * integer or pointer type can just be cast to that.
++ *
++ * This does not work for 128-bit signed integers since
++ * the cast would truncate them, but we do not use s128
++ * types in the kernel (we do use 'u128', but they will
++ * be handled by the !is_signed_type() case).
++ *
++ * NOTE! The cast is there only to avoid any warnings
++ * from when values that aren't signed integer types.
++ */
++#ifdef CONFIG_64BIT
++  #define __signed_type(ux) long
++#else
++  #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux)>4,1LL,1L))
++#endif
++#define __is_nonneg(x,ux) statically_true((__signed_type(ux))(x)>=0)
+ 
+-/* True for a non-negative signed int constant */
+-#define __is_noneg_int(x)	\
+-	(__builtin_choose_expr(__is_constexpr(x) && __is_signed(x), x, -1) >= 0)
++#define __types_ok(x,y,ux,uy) \
++	(__sign_use(x,ux) & __sign_use(y,uy))
+ 
+-#define __types_ok(x, y, ux, uy) 				\
+-	(__is_signed(ux) == __is_signed(uy) ||			\
+-	 __is_signed((ux) + 0) == __is_signed((uy) + 0) ||	\
+-	 __is_noneg_int(x) || __is_noneg_int(y))
++#define __types_ok3(x,y,z,ux,uy,uz) \
++	(__sign_use(x,ux) & __sign_use(y,uy) & __sign_use(z,uz))
  
  #define __cmp_op_min <
  #define __cmp_op_max >
-@@ -51,34 +51,31 @@
- #define __cmp_once(op, type, x, y) \
- 	__cmp_once_unique(op, type, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
+@@ -53,8 +97,8 @@
  
--#define __careful_cmp_once(op, x, y) ({			\
--	static_assert(__types_ok(x, y),			\
-+#define __careful_cmp_once(op, x, y, ux, uy) ({		\
-+	__auto_type ux = (x); __auto_type uy = (y);	\
-+	static_assert(__types_ok(x, y, ux, uy),		\
- 		#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
--	__cmp_once(op, __auto_type, x, y); })
-+	__cmp(op, ux, uy); })
+ #define __careful_cmp_once(op, x, y, ux, uy) ({		\
+ 	__auto_type ux = (x); __auto_type uy = (y);	\
+-	static_assert(__types_ok(x, y, ux, uy),		\
+-		#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
++	BUILD_BUG_ON_MSG(!__types_ok(x,y,ux,uy),	\
++		#op"("#x", "#y") signedness error");	\
+ 	__cmp(op, ux, uy); })
  
--#define __careful_cmp(op, x, y)					\
--	__builtin_choose_expr(__is_constexpr((x) - (y)),	\
--		__cmp(op, x, y), __careful_cmp_once(op, x, y))
-+#define __careful_cmp(op, x, y) \
-+	__careful_cmp_once(op, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
- 
- #define __clamp(val, lo, hi)	\
- 	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
- 
--#define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({		\
--	typeof(val) unique_val = (val);						\
--	typeof(lo) unique_lo = (lo);						\
--	typeof(hi) unique_hi = (hi);						\
-+#define __clamp_once(val, lo, hi, uval, ulo, uhi) ({				\
-+	__auto_type uval = (val);						\
-+	__auto_type ulo = (lo);							\
-+	__auto_type uhi = (hi);							\
+ #define __careful_cmp(op, x, y) \
+@@ -70,8 +114,8 @@
  	static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
  			(lo) <= (hi), true),					\
  		"clamp() low limit " #lo " greater than high limit " #hi);	\
--	static_assert(__types_ok(val, lo), "clamp() 'lo' signedness error");	\
--	static_assert(__types_ok(val, hi), "clamp() 'hi' signedness error");	\
--	__clamp(unique_val, unique_lo, unique_hi); })
--
--#define __careful_clamp(val, lo, hi) ({					\
--	__builtin_choose_expr(__is_constexpr((val) - (lo) + (hi)),	\
--		__clamp(val, lo, hi),					\
--		__clamp_once(val, lo, hi, __UNIQUE_ID(__val),		\
--			     __UNIQUE_ID(__lo), __UNIQUE_ID(__hi))); })
-+	static_assert(__types_ok(uval, lo, uval, ulo), "clamp() 'lo' signedness error");	\
-+	static_assert(__types_ok(uval, hi, uval, uhi), "clamp() 'hi' signedness error");	\
-+	__clamp(uval, ulo, uhi); })
-+
-+#define __careful_clamp(val, lo, hi) \
-+	__clamp_once(val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
+-	static_assert(__types_ok(uval, lo, uval, ulo), "clamp() 'lo' signedness error");	\
+-	static_assert(__types_ok(uval, hi, uval, uhi), "clamp() 'hi' signedness error");	\
++	BUILD_BUG_ON_MSG(!__types_ok3(val,lo,hi,uval,ulo,uhi),			\
++		"clamp("#val", "#lo", "#hi") signedness error");		\
+ 	__clamp(uval, ulo, uhi); })
  
- /**
-  * min - return minimum of two values of the same or compatible types
+ #define __careful_clamp(val, lo, hi) \
 -- 
 2.47.3
 
