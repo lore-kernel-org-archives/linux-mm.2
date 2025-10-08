@@ -4,117 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32AA7CAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 20:46:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD023CAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 20:54:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B8FE8E0010; Wed,  8 Oct 2025 16:46:34 -0400 (EDT)
+	id 0D6668E001B; Wed,  8 Oct 2025 16:54:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 691078E0002; Wed,  8 Oct 2025 16:46:34 -0400 (EDT)
+	id 0873E8E0002; Wed,  8 Oct 2025 16:54:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5CEFC8E0010; Wed,  8 Oct 2025 16:46:34 -0400 (EDT)
+	id EB9308E001B; Wed,  8 Oct 2025 16:54:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C2318E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 16:46:34 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E1C0A1DE6B4
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 20:46:33 +0000 (UTC)
-X-FDA: 83976130266.03.C6610A8
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	by imf24.hostedemail.com (Postfix) with ESMTP id EE8C418000E
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 20:46:31 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=EzJLqeE8;
-	spf=pass (imf24.hostedemail.com: domain of tamird@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=tamird@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DA1438E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 16:54:23 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 98A9511AC88
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 20:54:23 +0000 (UTC)
+X-FDA: 83976150006.10.7491134
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 7FD971A0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 20:54:21 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aNpYkMKZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759956861; a=rsa-sha256;
+	cv=none;
+	b=01LhDvpntpvC8hkzsZBSPabzqgIcPw11hr9C4qO2kEe1Ut44iVci7h5ALIEcAbQckBCSeQ
+	xb12jDVSZSZA16canOg4c+xotERy4jIRNJaJnjjE7tBsbNe/qfuTrcECMQO2Yh6Tj4Djqa
+	6t+mOaDjgGnm5D9FwgOpI/ys+5WdItM=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aNpYkMKZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759956392;
+	s=arc-20220608; t=1759956861;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rxhkbVa/uEXngkfUo+dBA3TFbsCdSBF++Qy9JKTTAdY=;
-	b=uZG4lItdeTsvFeYMm5pB9qPBoPjYsS+PJfqJLUlpa+EB0zQQbIzarCaucF07zLigsUytg/
-	wnZWTuqyza8tcPO3uAcGxmvvD6OhKRfQk8DISnfHZFMEtUy9+tjixXTK7+Mkp5oI/F7YzG
-	qye/2bp+/0zVlhqsMa8T+axR/oUWZQY=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=EzJLqeE8;
-	spf=pass (imf24.hostedemail.com: domain of tamird@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=tamird@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759956392; a=rsa-sha256;
-	cv=none;
-	b=TXelaM1HD4Y6MOFf0Dw2gAc2jXK1++6uYPOG2FOU3olnZkZXg8GpoRFgFFL051HwDWKFNH
-	gQik2h5nkhyxbHKWK2xXRFg0t6P8Irtdp/cTXgqbXShFXLx97rACiz0n9AbaUIGayqtzpT
-	qBREnuUVpGAhGQlAEUi1YzIU697Kd6M=
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-3637d6e9923so1811251fa.3
-        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 13:46:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759956390; x=1760561190; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rxhkbVa/uEXngkfUo+dBA3TFbsCdSBF++Qy9JKTTAdY=;
-        b=EzJLqeE8WixDH88KsIaL/ld2u3Y7Nh31HEzBk/M/vqfDtf2Xff35JTeqmH6FK6FO2S
-         SJy3NDRfChH/4zKHJb4MC14yyAqLEQvQA+DTmJmpawLwBUmmOBKA73ROu6bWwMjtUEEj
-         CKRWbQROPZuBMBqGI80Gy01R0AQpLNW47DamiEh3R+6eOwhP3vGQ4eERGMHO4q0MDllc
-         LwIcrJLYAXToDxqCvi6rjJHMfxUuUOJ+/g2Su2amB0KBYpZzcwE9WV47qwfzTHm0fgEy
-         o3Ovf7OVmJ0Mg3OYDXc/nKzrqLZbQT1xxAjLTAAIDDPIcKxaQFhZ9zQRj8zt0zmpky9z
-         S2NA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759956390; x=1760561190;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rxhkbVa/uEXngkfUo+dBA3TFbsCdSBF++Qy9JKTTAdY=;
-        b=J1EVJjm28Vv/B9/9QwtWy/9qam9Ao3iKYWwyyBZYXGK8OI31DcOhmiq1H5yAzO0I4d
-         KVqAO3s0EHVogn+8s8qD4rINZKFqPO4+RLdVcXmPPRxu4R9SpZ2a0pQNI8w39l2rfNcN
-         i7skbHoBnxS/fqA583hPq/4tPEH3ojAuRtt0MlmW7PHfQTcwHRFVUuDmaH670mDT+ldk
-         AJXcO4v86pCIcTXvowc+sQ9Uj7XPD+qXJ/YK3TvidFRgLJJZaLJ3rvsUtfPIKKIogYN6
-         E3S6wvo/7g4ETjzBEbZmF0SbGD3sU0fgvyoFX2wY2XukT663XT5dvuJtW79r+z8Nlo+h
-         UuDg==
-X-Forwarded-Encrypted: i=1; AJvYcCWWdG/9lqclltsqrDjcR3dEPgehYjMY5kVzVjX479I/7pzfCyssjA75pvOD+KZ5KY6hXXTykKs6mw==@kvack.org
-X-Gm-Message-State: AOJu0YytAV7O3M1agzXquTKP6Buw2k+dhtjVWka07u259uNohBGgZlz8
-	K7zcAAXOQXyHYVMmt8ZB9Wf6J0Xjkfyur9vSszsv1vQqJHjVWkHG3267XIqvdJhMY+qvi+FwS9V
-	dLqKRv9npt/0N9bijckZyAwyniZvKWCI=
-X-Gm-Gg: ASbGncvKw5FEJj+ftwjjhDpaA1iZdXDM7U00xPui9xAr4iugftdvDNPMvqk2GstDF5R
-	aAB9M/cf7dXniT/aIjTAxmnF6yRqu+Yg9eS75vZh9ap5v42pHTwJlnDYEp5UxqlSlvUmJrl1Iai
-	HEeJUuPlkO3D7TJ1gMNw8dG74uAifEX/ByLtKerR8//NWd0we6uu/Rz3xrOxpomsmE8Ky67iUY/
-	BgN3yZNTXzYlcAV2Gfun4GsBsP1XKyXqYBfejy7rgZUGn6pI/hJnA7wORK1L2AkuB8dUPrZUMki
-	RdZU7kX+n0nnXT0LX8HUnGO3YsBkZRgXqdF8EFJ/vTmd
-X-Google-Smtp-Source: AGHT+IFJhp/tSRDD6lbiN5FsweIVaBTWj0SEmB759OfG5ef5vYNgy9NHDR6XMGwyweNedzBOPTYTzZLdyknCujsFpWk=
-X-Received: by 2002:a05:651c:1992:b0:372:8ccc:2629 with SMTP id
- 38308e7fff4ca-37609ea7f6fmr12329021fa.34.1759956389715; Wed, 08 Oct 2025
- 13:46:29 -0700 (PDT)
+	bh=VzzKA6aKDepvaCMfSfxGkQcpjStESyFonwEwWa7HQEY=;
+	b=mrqNIKzl6+ksDwfps2XL0mkOR/i7AY0Zm4EI0r65nf8AgrXMbBvO7DcH0GpFy+X8/2ATig
+	Jv7ZQDOCDp84UDYawxTiOYBsS0tOvNqYF2HgWkkM79FOdXQTx95T3VdzI9TmMRwZVNtdGs
+	DMYzk405JwNHoTjO41fvJYGfokycGbA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1BD2543266
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 20:54:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE16C4CEF4
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 20:54:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759956860;
+	bh=agL9NQjRm83/yHaWQQb9LP2YNW141HDrTz3t3n7+nWc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=aNpYkMKZfCFMWJKhtFzH9ssZDk+h5QDwRDs6/raKHPcAjEdn5aAlINFU1ys/sGiE3
+	 v0oOf3aZOVksaFkJyHY1P2B56MsfVxccy5i25BCfvczrn7YXWpCJKvQesr35u69+Sk
+	 mbh7+wFiNRR6n4lZ3TETnyHaLccM8C43xfjOz5Datmuaqwvqh7kn+7j4OXcnYvoM5j
+	 R+noBr0BQQK+dHuhCP6V0ldfVYyUkS5pXM5nJ4RxksOe0hbz8Uwc0hU1DwAwQbntoT
+	 2sbikPEgHZCvPhlZK8ArXxkuNFD6+WFWLMn753uGqV1mLzXcMsmIENMnJ4uCDPnoiN
+	 ppLiDdXRuMtew==
+Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-6360397e8c7so393983d50.0
+        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 13:54:19 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yy1Whbux58DoHVZ/jkuDxw1kUMep/arbOhNqYBZPJz0BzOsLuQE
+	R5PWQl9U0iUaA4bJVzdXtjXKWLK69P98quY3wtXOZQ3Zu5nFpecWzUn5NpL/gqXJc3SQdoMgY3W
+	oFFqbTkcv42hXidYQ+ho6qjWgs3mI1bi6HMbn/384nA==
+X-Google-Smtp-Source: AGHT+IGXcPsre3jPnzCXfW/NrHxTfes0Zrdq4yHGtjhgwz7kNPMXwSCxT4ITZ6YQG7WRPEjbYGDlrMXAh/E7qHIvmVo=
+X-Received: by 2002:a05:690e:2486:b0:628:2e16:6566 with SMTP id
+ 956f58d0204a3-63ccb6763d1mr4749241d50.0.1759956859230; Wed, 08 Oct 2025
+ 13:54:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20251008124619.3160-1-work@onurozkan.dev> <20251008124619.3160-3-work@onurozkan.dev>
- <CAJ-ks9mtfVmP+SwZvBVuQSwViiqo2ZngSGQuU5Y7A-Q_JSwjKQ@mail.gmail.com> <20251008225002.011378ed@nimda.home>
-In-Reply-To: <20251008225002.011378ed@nimda.home>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 8 Oct 2025 13:45:53 -0700
-X-Gm-Features: AS18NWCgbeEJXhSg6SR3UxIn3ImEaYtYHA2yKjUMu36X7Q4evawJbCU6rPxkSEU
-Message-ID: <CAJ-ks9nMziN2LU=T=XGhV8xau6UfGXOMZ49+2Lrt8KGbL7Qngg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] rust: xarray: abstract `xa_alloc`
-To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
-	linux-kernel@vger.kernel.org, acourbot@nvidia.com, airlied@gmail.com, 
-	simona@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
-	tzimmermann@suse.de, corbet@lwn.net, lyude@redhat.com, 
-	linux-doc@vger.kernel.org, linux-mm@kvack.org
+References: <20251007-swap-clean-after-swap-table-p1-v1-0-74860ef8ba74@tencent.com>
+ <20251007-swap-clean-after-swap-table-p1-v1-1-74860ef8ba74@tencent.com>
+In-Reply-To: <20251007-swap-clean-after-swap-table-p1-v1-1-74860ef8ba74@tencent.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Wed, 8 Oct 2025 13:54:06 -0700
+X-Gmail-Original-Message-ID: <CACePvbWs3hFWt0tZc4jbvFN1OXRR5wvNXiMjBBC4871wQjtqMw@mail.gmail.com>
+X-Gm-Features: AS18NWDV4-kH86tXLtXJeQUM8aNsKlZYE7T0tTk3LlA5GEJjYTJActBrpZqaAP8
+Message-ID: <CACePvbWs3hFWt0tZc4jbvFN1OXRR5wvNXiMjBBC4871wQjtqMw@mail.gmail.com>
+Subject: Re: [PATCH 1/4] mm, swap: do not perform synchronous discard during allocation
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@redhat.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: EE8C418000E
-X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: omy4ycmbo99ng6u1r5wfxeyjjbascqhj
-X-HE-Tag: 1759956391-13327
-X-HE-Meta: U2FsdGVkX19kPRO7H/JR/RWjNvuTewaHEkrhEKQY2mWGLsQ8kTk+BOWcq684hiNT8fSigzL6JnIIG/ZCGxjGH9ykUsIYUmnfegqkWvqrU1fda/SbtwhvoGjxMRAQqlRqwNInJ7yqo3tF874LVKKhCe8+CTLY+X+abZy4vQyeaM1b6IjdfnH++wNnUiQyQOAmxcdmMy05fMD144Qj9hOKuwEhF3f40K/MM/bVv+E7Q2cvz/JF6kmTo4z3CcH6AGAj7FNohl42TgAAZnLIxnWiitqu6DVsSLc9Qf16qiNkYTUpXf05dSI/w7IXylxdYDpbZMHb01Ocrk9VegQM+anTh+lcljjmpt+SP8iGLJa0CeG8IC0tDTXa9pLsfgx/4x73k6K9uX5KgZbv+1my3pg4sI+MDtCZ2HQtBySlo/uDwkItYTKVPr8Cd1N2vQfEVeECzbRDdMIbYds+OIO0Oa3n2Im8HWXaGB4k2alF9/7JpZquqPheSzmYHU8Op3pSLHiYyX/u/bcMiArjDsROJX9aAQmHd3PMGN3RZcWcqLklgsc/UwZa/MvnS3/00Ig60QmuzvD1g9qzRlyOnQPrvGQrdG9eJvmG5Bs6vDTK6oO6GF2lpHhqWVZo5QVEDuiRnL7An5w31Q6znQC+v/3Nm2a55tOkPxCh4HAvvJri6GwugAvSPsTsDEMZyndoBmikvSNKL+LxAFyfAO9omuKkbPYjQ+7MoqqlS1tdIrsIqXR2/7+w6ZNltAaV6kE2j/FdV6eNS3/70uFwRtLL3UHTPp7uyQs0H/J31Pk+yuSnpDy4L3HrWKDtcubSJHqVdS7UvXip1hqs17FtA0bzASaoY9kpXUm7+aC6xM8NgQ9PwXYolywCptZZdfANAJfblPD9xq8oxXWywOTsnxe3oW+ZTA/NLz+uC8uIB3cME+SDJfeQnQKXk8bjYQUTq6f/pLR9qSE3tCjb048IcUBWyFV/Z2f
- Nr+4DHHx
- 8yroVfXIwTMVynVsHqtPn/pbcjBVIio4pKKDL8EN3VGuAwkcuDH6+cIaHvCP9H7v18eZxhVJZOGUr0UVvJ6ku45GGMD31oTNw5AyBmpQhkB+OI3OvScn6uAF0DLUIehzOf/RO74hu1f6ChQfAMHuOdS1p4sagmUXsq73V+YtwOWiRTsv1ThCsykBHz1j7V+sLwPGh2WvbeZ+sabPCrVgQ4DAbXb7dQDa2WhnthSSjIO3AWuaqulDK7NqSPVdtSDLhN8iOlwu4rz68kdq+TwCKLwt3EjB+eR0vuV1Pp5HoqOs051e0akX+NaqFF0t5ATrRZfw5MA+HLk0w/uuF6uS0mNHewW2RKOUPgc+dQErozk3FxXplMBU0rJe/7N1dZiG0/55A26tAOqy1R4Vnfsuj0pyQBNa1bcS9pTtvXQk3MLQICxUx3kaRw9i6N2iKayC5UnelSYQYCxuEAyK9bRQkoG9knAP5Gql0WiGMnO4cht/kGtLaBM9GN3fVnX6IyRgXGWkFknHuQ/mjYcr3uOUEo6pB1uhJu0NGwNTn
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7FD971A0002
+X-Stat-Signature: jzkcqfw485w1yqf89uapn99qi7ynp71s
+X-HE-Tag: 1759956861-802316
+X-HE-Meta: U2FsdGVkX1/WHRvkR0+pZrEGiQzYOs6IrzGPVGdif6YLyXR48qowxzAWcCtgOQKNK3ZBHJF1/QBxYSD4Un+r0sK4vmknCMV8LBkpsjggID+IrxeZFLkDFzSxt3pxfKmwQIuSkLfO+OIGmmhd8POHH5j+ZMnKKxVHH7WLR0YD4s5UApllUtZmZcf4NImuFNj+QsKZJtn8oGOFW2tKI8uKUgGg/2koSw0G8fq+J6cL2ApYFNOWkKUQvJcojIceLVnEKmszZrvRs/J7wxDDZAuQFDsr9SDDAO5XThY/m1Y8IL7KSp2g0pKhFoxM3FIKmOcqeLyeyMtvd3IXT85UqsQbsltqL7DQXlQ9bNDaIuG1L1CQi/sxKzRuHFuiElWBsWmYr7P7lSLoSbyXo5N/hFWm+1VKf0BlGgQlIXouiIPKpRQ7O3SevarEtAKwnzka+wpE6bUtMkoOYjoVWZb/U3E7n8m/+u+RdYC02/Yj0EUV+tUqtsnw8se40Eys96OLi4Ci6cCrJV5KXVTJ25f2TqLtzv4+LqFNqaRGIEcvKWmfEUjx2SXVoJfa4ik79gkw3FNXrI24e2tBUbHvUlsRIEzemV/NNJHPumVydG8zMGlIQ8xnfoFYHDd9q9TfKIuneNwG+uaBvbOSp+1Zvzj9Lt7VtyJmAixq7M14rXn7LXxHcEFUpLAY+4i17+jTm5+DnGbAanA5IXi522B1daq/YP6i976pV9XzkrxL0iC/j5KDNtMLzKN91+JCDnM7AvzeZPmJDpNnMM3U9+5tu6yXL/TwAPDUVGR9b+uQ+jY+eMTgX9a7JO1bgwELIRWhwFjHT5yyVvU9FK/BnbSy7ba6qtk+q1piHv+M3mc5GNoVi4YfWS3hMZNVnJLvWcubOb2iZSGShhp5ATFiwkx5/5Z6NuE9GymdcO8KiXz+Ej56i1ZDESAaJjps3WWzhe9lFJZzbXKtFlIc/gmcJTYphz9MIXe
+ XzyzJKzU
+ tXIcPnCeJXtB/C5zDJ2cGNwGe9D2B70aFGeWG+hJxMeeyMS6B89TW0X3KFwW67OLESl8/2jeMuJ4747RWXY3lUv6lnkHlHAP+2YbVLTlZK16FX8BTrqGeZ9S/de4C0Fj8sMVLhCBPeszg8S5tXRgkTIZl7re5x6MUVkkKAgQT9SDYBBdX15Tr19/kkEhI1632PqjkxGppBWEEFQMQyDV0vPhoeiDLezGljWtf+tOqGIKYc4d0C4ic11MXDDdhJjk2y8/FVpaLFj/FnSpdc3paEhhlbYE8pgzVe7kyiAK3QGs29n5gGBnGYv/Ar6XM3SYgklZT/NfnAw4+trm62xmxtPvlKLLoewgZcz3/K7ggAXIiiIQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,86 +108,191 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 8, 2025 at 12:50=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.dev=
-> wrote:
+Hi Kairui,
+
+First of all, your title is a bit misleading:
+"do not perform synchronous discard during allocation"
+
+You still do the synchronous discard, just limited to order 0 failing.
+
+Also your commit did not describe the behavior change of this patch.
+The behavior change is that, it now prefers to allocate from the
+fragment list before waiting for the discard. Which I feel is not
+justified.
+
+After reading your patch, I feel that you still do the synchronous
+discard, just now you do it with less lock held.
+I suggest you just fix the lock held issue without changing the
+discard ordering behavior.
+
+On Mon, Oct 6, 2025 at 1:03=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrote=
+:
 >
-> On Wed, 8 Oct 2025 09:59:12 -0700
-> Tamir Duberstein <tamird@gmail.com> wrote:
+> From: Kairui Song <kasong@tencent.com>
 >
-> > On Wed, Oct 8, 2025 at 6:05=E2=80=AFAM Onur =C3=96zkan <work@onurozkan.=
-dev> wrote:
-> > >
-> > > Implements `alloc` function to `XArray<T>` that wraps
-> > > `xa_alloc` safely, which will be used to generate the
-> > > auxiliary device IDs.
-> > >
-> > > Resolves a task from the nova/core task list under the "XArray
-> > > bindings [XARR]" section in "Documentation/gpu/nova/core/todo.rst"
-> > > file.
-> > >
-> > > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> > > ---
-> > >  rust/kernel/xarray.rs | 41
-> > > ++++++++++++++++++++++++++++++++++++++++- 1 file changed, 40
-> > > insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-> > > index 90e27cd5197e..0711ccf99fb4 100644
-> > > --- a/rust/kernel/xarray.rs
-> > > +++ b/rust/kernel/xarray.rs
-> > > @@ -10,7 +10,7 @@
-> > >      ffi::c_void,
-> > >      types::{ForeignOwnable, NotThreadSafe, Opaque},
-> > >  };
-> > > -use core::{iter, marker::PhantomData, pin::Pin, ptr::NonNull};
-> > > +use core::{iter, marker::PhantomData, ops::Range, pin::Pin,
-> > > ptr::NonNull}; use pin_init::{pin_data, pin_init, pinned_drop,
-> > > PinInit};
-> > >
-> > >  /// An array which efficiently maps sparse integer indices to
-> > > owned objects. @@ -268,6 +268,45 @@ pub fn store(
-> > >              Ok(unsafe { T::try_from_foreign(old) })
-> > >          }
-> > >      }
-> > > +
-> > > +    /// Allocates an empty slot within the given `limit` and
-> > > stores `value` there.
-> > > +    ///
-> > > +    /// May drop the lock if needed to allocate memory, and then
-> > > reacquire it afterwards.
-> > > +    ///
-> > > +    /// On success, returns the allocated index.
-> >
-> > Returning the index is not a very good abstraction. Would the
-> > reservation API meet your needs?
-> >
-> > https://lore.kernel.org/all/20250713-xarray-insert-reserve-v2-3-b939645=
-808a2@gmail.com/
-> >
-> > If yes, I would appreciate your tags there.
+> Since commit 1b7e90020eb77 ("mm, swap: use percpu cluster as allocation
+> fast path"), swap allocation is protected by a local lock, which means
+> we can't do any sleeping calls during allocation.
 >
-> It should be "allocated key", I misdocumented it. I don't have a
-> use-case for this implementation, I am just trying to help on the nova
-> task list:
->     https://docs.kernel.org/gpu/nova/core/todo.html#xarray-bindings-xarr
+> However, the discard routine is not taken well care of. When the swap
+> allocator failed to find any usable cluster, it would look at the
+> pending discard cluster and try to issue some blocking discards. It may
+> not necessarily sleep, but the cond_resched at the bio layer indicates
+> this is wrong when combined with a local lock. And the bio GFP flag used
+> for discard bio is also wrong (not atomic).
 
-I think implementing things without understanding the use-case is a
-good way to build the wrong thing.
+If lock is the issue, let's fix the lock issue.
 
-> The task mentions "generate the auxiliary device IDs", which should be
-> the returned key, right?
+> It's arguable whether this synchronous discard is helpful at all. In
+> most cases, the async discard is good enough. And the swap allocator is
+> doing very differently at organizing the clusters since the recent
+> change, so it is very rare to see discard clusters piling up.
 
-I dunno.
+Very rare does not mean this never happens. If you have a cluster on
+the discarding queue, I think it is better to wait for the discard to
+complete before using the fragmented list, to reduce the
+fragmentation. So it seems the real issue is holding a lock while
+doing the block discard?
 
-> There is also this reference [1] that shows that the returned key will
-> be useful.
+> So far, no issues have been observed or reported with typical SSD setups
+> under months of high pressure. This issue was found during my code
+> review. But by hacking the kernel a bit: adding a mdelay(100) in the
+> async discard path, this issue will be observable with WARNING triggered
+> by the wrong GFP and cond_resched in the bio layer.
+
+I think that makes an assumption on how slow the SSD discard is. Some
+SSD can be really slow. We want our kernel to work for those slow
+discard SSD cases as well.
+
+> So let's fix this issue in a safe way: remove the synchronous discard in
+> the swap allocation path. And when order 0 is failing with all cluster
+> list drained on all swap devices, try to do a discard following the swap
+
+I don't feel that changing the discard behavior is justified here, the
+real fix is discarding with less lock held. Am I missing something?
+If I understand correctly, we should be able to keep the current
+discard ordering behavior, discard before the fragment list. But with
+less lock held as your current patch does.
+
+I suggest the allocation here detects there is a discard pending and
+running out of free blocks. Return there and indicate the need to
+discard. The caller performs the discard without holding the lock,
+similar to what you do with the order =3D=3D 0 case.
+
+> device priority list. If any discards released some cluster, try the
+> allocation again. This way, we can still avoid OOM due to swap failure
+> if the hardware is very slow and memory pressure is extremely high.
 >
-> [1]: https://lore.kernel.org/all/aOTyVzpJNDOaxxs6@google.com/
+> Cc: <stable@vger.kernel.org>
+> Fixes: 1b7e90020eb77 ("mm, swap: use percpu cluster as allocation fast pa=
+th")
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>  mm/swapfile.c | 40 +++++++++++++++++++++++++++++++++-------
+>  1 file changed, 33 insertions(+), 7 deletions(-)
+>
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index cb2392ed8e0e..0d1924f6f495 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -1101,13 +1101,6 @@ static unsigned long cluster_alloc_swap_entry(stru=
+ct swap_info_struct *si, int o
+>                         goto done;
+>         }
+>
+> -       /*
+> -        * We don't have free cluster but have some clusters in discardin=
+g,
+> -        * do discard now and reclaim them.
+> -        */
+> -       if ((si->flags & SWP_PAGE_DISCARD) && swap_do_scheduled_discard(s=
+i))
+> -               goto new_cluster;
 
-Sure, it's useful - the reservation API also exposes it. But it is not
-a proper abstraction.
+Assume you follow my suggestion.
+Change this to some function to detect if there is a pending discard
+on this device. Return to the caller indicating that you need a
+discard for this device that has a pending discard.
+Add an output argument to indicate the discard device "discard" if needed.
 
-Cheers.
+> -
+>         if (order)
+>                 goto done;
+>
+> @@ -1394,6 +1387,33 @@ static bool swap_alloc_slow(swp_entry_t *entry,
+>         return false;
+>  }
+>
+> +/*
+> + * Discard pending clusters in a synchronized way when under high pressu=
+re.
+> + * Return: true if any cluster is discarded.
+> + */
+> +static bool swap_sync_discard(void)
+> +{
 
-Tamir
+This function discards all swap devices. I am wondering if we should
+just discard the current working device instead.
+Another device supposedly discarded is already on going with the work
+queue. We don't have to wait for that.
+
+To unblock the current swap allocation.  We only need to wait for the
+discard on the current swap device to indicate it needs to wait for
+discard. Assume you take my above suggestion.
+
+> +       bool ret =3D false;
+> +       int nid =3D numa_node_id();
+> +       struct swap_info_struct *si, *next;
+> +
+> +       spin_lock(&swap_avail_lock);
+> +       plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail=
+_lists[nid]) {
+> +               spin_unlock(&swap_avail_lock);
+> +               if (get_swap_device_info(si)) {
+> +                       if (si->flags & SWP_PAGE_DISCARD)
+> +                               ret =3D swap_do_scheduled_discard(si);
+> +                       put_swap_device(si);
+> +               }
+> +               if (ret)
+> +                       break;
+> +               spin_lock(&swap_avail_lock);
+> +       }
+> +       spin_unlock(&swap_avail_lock);
+> +
+> +       return ret;
+> +}
+> +
+>  /**
+>   * folio_alloc_swap - allocate swap space for a folio
+>   * @folio: folio we want to move to swap
+> @@ -1432,11 +1452,17 @@ int folio_alloc_swap(struct folio *folio, gfp_t g=
+fp)
+>                 }
+>         }
+>
+> +again:
+>         local_lock(&percpu_swap_cluster.lock);
+>         if (!swap_alloc_fast(&entry, order))
+>                 swap_alloc_slow(&entry, order);
+
+Here we can have a "discard" output function argument to indicate
+which swap device needs to be discarded.
+
+>         local_unlock(&percpu_swap_cluster.lock);
+>
+> +       if (unlikely(!order && !entry.val)) {
+
+If you take the above suggestion, here will be just check if the
+"discard" device is not NULL, perform discard on that device and done.
+
+> +               if (swap_sync_discard())
+> +                       goto again;
+> +       }
+> +
+>         /* Need to call this even if allocation failed, for MEMCG_SWAP_FA=
+IL. */
+>         if (mem_cgroup_try_charge_swap(folio, entry))
+>                 goto out_free;
+
+Chris
 
