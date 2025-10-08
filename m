@@ -4,121 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 336BACCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 18:58:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34AFFCAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 18:59:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 884638E001A; Wed,  8 Oct 2025 14:58:30 -0400 (EDT)
+	id 921568E002D; Wed,  8 Oct 2025 14:58:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85BA68E0002; Wed,  8 Oct 2025 14:58:30 -0400 (EDT)
+	id 8D22C8E0002; Wed,  8 Oct 2025 14:58:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74A768E001A; Wed,  8 Oct 2025 14:58:30 -0400 (EDT)
+	id 816418E002D; Wed,  8 Oct 2025 14:58:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 64D148E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 14:58:30 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DB9611A0676
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 18:58:29 +0000 (UTC)
-X-FDA: 83975857938.18.E74B05D
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E247A140009
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 18:58:27 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=LnrGRkOX;
-	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 6E3AD8E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 14:58:59 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3D2F811ABA5
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 18:58:59 +0000 (UTC)
+X-FDA: 83975859198.22.44BDBC0
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2A7314000D
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 18:58:56 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bAWpZV9G;
+	spf=pass (imf01.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759949908;
+	s=arc-20220608; t=1759949937;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CgUP0/WmGKx+IVOsX9zNZJUjUIw/PkapcpGfi4V2VtU=;
-	b=n9u7oNZogtytcaNVI7+9kBPI5lI/3ghC9cvivkdjJIAhqgwRPxZHUYR+JEQ9X9fFKv5HKA
-	tl5AgkKGZu8AvasBg08e9QjOHwkeZVBcoi2/QfK6SDS0MWQRMZbvlLAllNdiy/lRG4sTWa
-	WFdUAjYnld690c4Xgxtd17ZWKog6Mvc=
+	bh=Vn4CeiQ0r8D1fLDDSKVzE9nFg8D/XnQ/f/O/x7Mav0A=;
+	b=tzyxwOvg7y5P0kn1nPNI115J5JY8mmp0ugEwMhb2AI1SCqLmrerNJfDW+YuZGg9RMVwA+d
+	k1jVO6B+5kG626Aron0yGzFNNsVqCyCDbXUT3u0kXnLVTNVPf6aLQKerLqdTLkurbU6SfC
+	hPMOcrZRrkMDdpOMVUAB9n0Su2O/W/U=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=LnrGRkOX;
-	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759949908; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bAWpZV9G;
+	spf=pass (imf01.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759949937; a=rsa-sha256;
 	cv=none;
-	b=vvzFpDVf8rK+vA7mckffBedrhGNm400Qkh1rXHIk068ET+qKsnryS1CpcJr+E6AMTOYluh
-	JeJONv6NC8/i+VoB14VkTHImz2PsFV6XEX688TXxFf9Uc292qCu53K51fRiApGcaLzGwJU
-	xiYlYRlLjdxC1McWOYSbIsw1XWJmXKw=
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4dfd1f48d4cso1066781cf.0
-        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 11:58:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1759949907; x=1760554707; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CgUP0/WmGKx+IVOsX9zNZJUjUIw/PkapcpGfi4V2VtU=;
-        b=LnrGRkOXpTRqD/Rpk+FGIs/g5Lv5mkWnPd+yRa8I30QiPvt8DrEYO21NIMtNLz+AlW
-         U1whrX60W3CZ2ETRzJoGii2jMrXVvRikjmC4EEGecYFtpnynaeVUsXwC1C6bXZtl37AF
-         dYwSNeywOYZL5MjHZR4sJobAwpgW5zw7jnP/O+rNLGhXhT15QsJuMtiZO4r3BPDobDiv
-         ZggJO5NGEsWiBNv+CWE75wXHdSJV9nlbONcu169bMcBGZ5G9YOlP/lyA5ZNQJRs3x3MT
-         MOImwngLugIlJkz6lFwnbwRyfdwS/HTiGDtV8sbMzYgnZLm2xJwOeYBhr4lvkvaQNCKq
-         ovfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759949907; x=1760554707;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CgUP0/WmGKx+IVOsX9zNZJUjUIw/PkapcpGfi4V2VtU=;
-        b=HdLzWwffY22l9LYMeuJcvoMa+8aDj3mDa3kv6SxWXxT4UI+UOE7JDxMXPDIOLdrsod
-         JoRF08UtH+GGB0u0iZ/gZ5UQkyf+NNladk9sp4kzDLS0AiBpGszorDxIBD6qiUmQGh3P
-         f/vOQxomO7p8aAuUalRHApNvBiAofyGv6qbAA/Fcrk7grQ9yj3sRTzxg+sipEDhpU1UF
-         RJdEooSXIHsEU3fHdGMslzaDcYV7iUWo41vgiwXwz5g2GGOza+oOYhfsuJ+mRxwafxRa
-         aMCp8U9UohthG4ziqwH5QnZoD8ulkxXZ0ermRPM14iDxWtfevTfoYum6/QWz1hXtqxyV
-         HVdQ==
-X-Gm-Message-State: AOJu0Yx7BjzaA+fypwY8coj5O5oDo4JTDXto9G5OORdk+acqZbq0ZNoC
-	vj/MxXd18I49ju1AjSMU1yW91PwnAvTUr1A4Fsg7EvSY2ZNF4auQKzjtanWSYyek39s=
-X-Gm-Gg: ASbGncvnrPfwu4N9tjuXHcROlnKfNcLqd/BLiMehu1dvaUpeuGnRtMcZ2Ow2VW80i3i
-	MC6ihd2bXtsD2D1peYqq2NYPTInwXmJkTxX+sla9ms5t7jvgcRIvfZzJnvly3//Ybns3MIwQ7xS
-	tVqB6+Nsztb81bqAuoL061hbG2JLSU/6uCJQPv/DGEzPu2FtUGBH6xdRy4gXxOueHmdgDjIUHCt
-	C03Tty3E2qR4bsc7XhLgulmo0dN+QOFeUFBDktbBsNnzWMc4sWXYfl+n5rgQ3+D+z3Dn17KwKVN
-	u9HUE93MJ+hrhAQMmNkVrDxpjMfItSD92YGQDty7QW4l992YPC8ih3HmXZeZ3zQ0jughbtPuTm3
-	qBD3kLpObMP6jC2fj35rDB9b3Q67H6PCGF9TCPCIWvzl5Ty4lU9BMhlQKXNxdKNjSOZziqF3xem
-	X+4oZJ2US/pE/9wXblvOO9jd+I6vXe02psCQ8jsCc/
-X-Google-Smtp-Source: AGHT+IH5XZl1zP5WV2H5vB1vEumTSPp138/9F+4pHEKVvEJpneB5APkZUlKul8CuzBvyHU3k2KlKsQ==
-X-Received: by 2002:a05:622a:4c18:b0:4d9:f929:1531 with SMTP id d75a77b69052e-4e6eace963bmr71897761cf.23.1759949906731;
-        Wed, 08 Oct 2025 11:58:26 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-878bb53d91fsm166731966d6.23.2025.10.08.11.58.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Oct 2025 11:58:26 -0700 (PDT)
-Date: Wed, 8 Oct 2025 14:58:24 -0400
-From: Gregory Price <gourry@gourry.net>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-mm@kvack.org, corbet@lwn.net, muchun.song@linux.dev,
-	osalvador@suse.de, akpm@linux-foundation.org, hannes@cmpxchg.org,
-	laoar.shao@gmail.com, brauner@kernel.org, mclapinski@google.com,
-	joel.granados@kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Mel Gorman <mgorman@suse.de>,
-	Michal Hocko <mhocko@suse.com>,
-	Alexandru Moise <00moses.alexander00@gmail.com>,
-	David Rientjes <rientjes@google.com>
-Subject: Re: [PATCH] Revert "mm, hugetlb: remove hugepages_treat_as_movable
- sysctl"
-Message-ID: <aOa0UPnxJVGvqc8S@gourry-fedora-PF4VCD3F>
-References: <20251007214412.3832340-1-gourry@gourry.net>
- <402170e6-c49f-4d28-a010-eb253fc2f923@redhat.com>
- <aOZyt-7sf5PFCdpb@gourry-fedora-PF4VCD3F>
- <f4d0e176-b1d4-47f0-be76-4bff3dd7339a@redhat.com>
+	b=ZHGUtxS11hIKxMEsJlzxppx9jjmqVr9UB1t3WlGp7GVvjAYNBUY0ysfGBWodMxoA6xRT4C
+	whpv5pwiwTssho879waVrnAZZsOTajWat4cTUIrfFie6KtFNbst4LHct2Lm/Cxk4kOWbcz
+	7UzokJg8z6iqpn79e0IfdQeXcJgyBsA=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1759949934;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Vn4CeiQ0r8D1fLDDSKVzE9nFg8D/XnQ/f/O/x7Mav0A=;
+	b=bAWpZV9GgcU6ICDKvxnFP/BX5aTzYHu83vlKFmn8sop/6mwxvNFV4Gbb57/60XhwrsHmN/
+	nlXpscz7x1d1+uEhGdVcRQiOu698MexiqvJR21p2ou7uq7NLluZLTsb/GfbtevazchB6gS
+	50+qEMBoZzXgBXA8fulFj+VYVWDOIHg=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Daniel Sedlak <daniel.sedlak@cdn77.com>
+Cc: "David S. Miller" <davem@davemloft.net>,  Eric Dumazet
+ <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
+ <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,  Jonathan Corbet
+ <corbet@lwn.net>,  Neal Cardwell <ncardwell@google.com>,  Kuniyuki
+ Iwashima <kuniyu@google.com>,  David Ahern <dsahern@kernel.org>,  Andrew
+ Morton <akpm@linux-foundation.org>,  Shakeel Butt
+ <shakeel.butt@linux.dev>,  Yosry Ahmed <yosry.ahmed@linux.dev>,
+  linux-mm@kvack.org,  netdev@vger.kernel.org,  Johannes Weiner
+ <hannes@cmpxchg.org>,  Michal Hocko <mhocko@kernel.org>,  Muchun Song
+ <muchun.song@linux.dev>,  cgroups@vger.kernel.org,  Tejun Heo
+ <tj@kernel.org>,  Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>,
+  Matyas Hurtik
+ <matyas.hurtik@cdn77.com>
+Subject: Re: [PATCH v5] memcg: expose socket memory pressure in a cgroup
+In-Reply-To: <20251007125056.115379-1-daniel.sedlak@cdn77.com> (Daniel
+	Sedlak's message of "Tue, 7 Oct 2025 14:50:56 +0200")
+References: <20251007125056.115379-1-daniel.sedlak@cdn77.com>
+Date: Wed, 08 Oct 2025 11:58:46 -0700
+Message-ID: <87qzvdqkyh.fsf@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f4d0e176-b1d4-47f0-be76-4bff3dd7339a@redhat.com>
-X-Stat-Signature: 5dds754i8hcnotzht4cd8oyws4q415uh
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: dwozcrarq66x3z8e1bc4ny4g3ozyp9qp
+X-Rspamd-Queue-Id: 2A7314000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E247A140009
-X-HE-Tag: 1759949907-46491
-X-HE-Meta: U2FsdGVkX1+OvoaMRxygBFtBYSTZJszNB1yIDlHvq7rK4JIfpLgikpq62E2az4+0rdu1sF0WAEtjfe5vOSoXckrGxY2XYJR32FITMNRVOp6C7V1xHmIsylumqlkeGTUOibuUypeN/7LHx42UGEJhw/eLpxLWyOoUsFAYdAQ47tCuwlftygGYzUFNG1rcICUuhjtsfu2pT9hZr64p46pDlSjgWJduaX9QaOiAatuIvPkqmNg9VKBR+cPy0ze7jSownKjU9pzMRUG/EyLUjwKdcaMZlYXNZspv0j+DnEahxG2PGtv5zf/vmwOxZow91iozKeMllrq7uHhxLPKDebXEoljojqNQRE89Zx1rHoXcTQ/Qxoa8aqRxW2J8f/Hs52bwCORyVJsqLcOot9VpmBlF+PKvz6ocAegxT8tiBPsJZHXj9oKHKaiPUyxLf49idsqesv/lwh7dNekOAHkdVDIUKu/qu9z9Efa8CHS4iXd5dtVfNPMoXkX05rcD/4qzL0dHe9Jzhh9ufQE3OQRbRBQ6yEdbdy+ZqyDNjjXNa9UWHgALjZVBw6Exk6bCqbGiQl0+7GLCqD8PgKHTIE432s8ysZaPSANIvkUs7icfkUJKjr5x7qnuL66T2KRWQ4K2v85yhK3SrnHXI+zf+5N/ZkIDkgfja6ut+AvMep9ZDVV5ohTt+uBfEEhkfW5Yz5us/FMtY90r7XH7eeirgsDhqEqlxCR/YwMBS3t7amPwM7oMHmE4eRC/WwKjSE2valww0LnXE1Nzu4PbLWfZcCLVLj5ffKqAlMuLzDm9slZWc1EP5UI2B7rIq4olOuEtCkm+5+P/mfkdw9tLeZMUHanVNM1kSNk0zq/YSrwAggRnYdZaweLxBxzJSyIFdldJJr0piBE0/2oHHS24HcLM/udvRT7nXQQHRlFCSDnbB712q9tIH4xHVQEPccctZgpwl914H+NPSgvsK3cDbJJX3mFxU1i
- Ot5dpcII
- /STDXBnqNmKfh50LsiSnCsX69eiryVxtaP0PUQCUSA5e9Ojv+ey70qUx4esr3ebTrBdMAn2WK+tQFr1P/iS0LE5ma0W0pWo0zvsAvyFOkE+gcn0a/jldI+GPimoPNxZiQyfQV3qfgjbezhV1gJTEJbrKBz6SumuRne3uomUfjekKOUg5xMlwhKR5F0P1u5oZmUlgBSr1VHL5EhUokYCEybjrL2993LpE5W6cf2ySTMwVXNwknNN4uyvPg1PWCO0Cr0qF5zH2okgc5FUAovMllKTtB3eNY6DhYyqb2yiY0TymYrrf1WFMi0YSvL/fiwXsMBJnPTuI0zIu204SwGuZ+ojnk1cQLYmtL8gVvnC/MdaOu/UJKD1CayPpaA56DPLsZJ+ERbFOtwCTF2FdmGQYO2RoyoSK1YEh6agUtbwOPab+cUflDHten1CO/tCqDkP8PlpSKP9fNkPDT7ScUIXudlxyUtPDaFMr6fvnUanqXh2z9qhN9PNgYzoIlWEfNhLnigF9E
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1759949936-464990
+X-HE-Meta: U2FsdGVkX18V5+UEythiB3Gx4P+Rjtui4UullBtdoxfJj3czSRDAbTb34TjHSENwavucNN/M8XhsmBUXPbkNEe3MEZNf6nRLKNLH3ye0bCNaZP09KjKQBp3dbrIaP4E+cWXl2Qx3+tbUL3s8gzZuQDzmpu2ZZVJSmTnHqPyJe2ktVsapfzDw9J3EtRiz+lJiJCehxrxQR8PsGgk6qOa6yNSWN1Wn+nyuCxq3pE41NO6Z5ucl77bQQzQ9rHIDCVcq6SzLlyJLldqYH4LGyzVJ0mz2LjZTlGKSiNxgp1FNsiJxUcqSynoq3/td3Q5OkjpjxHXRZ7e0XWJsJNK4hoJo2gcZ0BtexIL5U1mmwYpeyXRLp07LefJ8pwKGgL7rL7tVQpvD7u5wEMeuiMIBpybUDvMaI4FnfpXNESkv6+5P/IQvi3GoV28AvJC0b986nTmM4BVOjJnC/D1AsP0cWaPCoEkXpTmniuwBe8EyHjXKvaa5EseCRoJW6Z6KDHmiNCti9WqNMJKIxM9rvgNFhjp1Wl376TMdZjoHSdz63EM+0J4VT5kIHtYWBNtTWZ8YPVCCeNGSJiNhUa6BllNPTUBeS/avlLuyt5/r5PXz32k9LfuY7WpcAQHrPx631xY3mtOmGMT0293KBYr2WvOgFrbZAWg6UKmtTaIzZOGVGpNGTkJNTqQTKXDVaWdQ2ciSpi6yy76+Cl/A6FZv3rKCNajcD9s+JdfyQFpqKfyRLJ6eLckkSKZ8Wor1q2KFZjJUIoX/ccN3pZjmQcJDaqWCcUcRL97i2ppqE+hl3YfIIsch6pP9lP6KdEL8rC+edJKtxa6TOXDxopvqVNHsxhWsQo2nLk4OHbG1gzAmo93LigDBXN0jy3vy1hC8SAZGnI/h72LRCcoKYk9LiMLXi/5CPJ7nNNoxw8J7MnoGTtQB15JZRmMJIXfAWEjVullVT3C6x6sV9nH9CmDimjMDDEdtu4v
+ FlbofibY
+ RKQdsULJ6TW098ziUWVJ+N0nsrmuCF/Q+RLvBiwr4QI/V6ii6rVlQuKzFQCDkI+pfUBVQwebYHIymRQ+7mZdL/nTzCtj1y8fnJQXF7J2hlZmVvhNd+aU3KqCA7sGRywITIVAHRC956dDhFcJWjs6vHy7TyiErnaya5sfSGsPh5a1ExvsOMWPOyBLYRrlQxNVrtk0lg8f8iuC9zUrxOMV76wo1c8rDqAfMUYZ3rhyYgtcBmKjc49XLDvph076I+ZWiPeJKhJNTbI61XAxGxWBKwAft+A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,222 +98,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 08, 2025 at 04:44:22PM +0200, David Hildenbrand wrote:
-> On 08.10.25 16:18, Gregory Price wrote:
-> > On Wed, Oct 08, 2025 at 10:58:23AM +0200, David Hildenbrand wrote:
-> > > On 07.10.25 23:44, Gregory Price wrote:
-> > > I mean, this is as ugly as it gets.
-> > > 
-> > > Can't we just let that old approach RIP where it belongs? :)
-> > > 
-> > 
-> > Definitely - just found this previously existed and wanted to probe for
-> > how offensive reintroducing it would be. Seems the answer is essentially
-> > "lets do it a little differently".
-> > 
-> > > Something I could sympathize is is treaing gigantic pages that are actually
-> > > migratable as movable.
-> > > 
-> > ...
-> > > -       gfp |= hugepage_movable_supported(h) ? GFP_HIGHUSER_MOVABLE : GFP_HIGHUSER;
-> > > +       gfp |= hugepage_migration_supported(h) ? GFP_HIGHUSER_MOVABLE : GFP_HIGHUSER;
-> > > 
-> > > Assume you want to offline part of the ZONE_MOVABLE there might still be sufficient
-> > > space to possibly allocate a 1 GiB area elsewhere and actually move the gigantic page.
-> > > 
-> > > IIRC, we do the same for memory offlining already.
-> > > 
-> > 
-> > This is generally true of other page sizes as well, though, isn't it?
-> > If the system is truly so pressured that it can't successfully move a
-> > 2MB page - offline may still fail.  So allowing 1GB pages is only a risk
-> > in the sense that they're harder to allocate new targets.
-> 
-> Right, but memory defragmentation works on pageblock level, so 2 MiB is much
-> MUCH more reliable :)
-> 
+Daniel Sedlak <daniel.sedlak@cdn77.com> writes:
 
-fwiw this works cleanly.  Just dropping this here, but should continue
-the zone conversation.  I need to check, but does this actually allow
-pinnable allocations?  I thought pinning kicked off migration.
+> This patch is a result of our long-standing debug sessions, where it all
+> started as "networking is slow", and TCP network throughput suddenly
+> dropped from tens of Gbps to few Mbps, and we could not see anything in
+> the kernel log or netstat counters.
+>
+> Currently, we have two memory pressure counters for TCP sockets [1],
+> which we manipulate only when the memory pressure is signalled through
+> the proto struct [2]. However, the memory pressure can also be signaled
+> through the cgroup memory subsystem, which we do not reflect in the
+> netstat counters. In the end, when the cgroup memory subsystem signals
+> that it is under pressure, we silently reduce the advertised TCP window
+> with tcp_adjust_rcv_ssthresh() to 4*advmss, which causes a significant
+> throughput reduction.
+>
+> Keep in mind that when the cgroup memory subsystem signals the socket
+> memory pressure for a given cgroup, it affects all sockets used in that
+> cgroup, including children cgroups.
+>
+> This patch exposes a new file for each cgroup in sysfs which is a
+> read-only single value file showing how many microseconds this cgroup
+> contributed to throttling the throughput of network sockets. The file is
+> accessible in the following path.
+>
+>   /sys/fs/cgroup/**/<cgroup name>/memory.net.throttled_usec
 
-================== test =======================
+Hi Daniel!
 
-# echo 1 > /proc/sys/vm/movable_gigantic_pages
-# echo 1 > /sys/devices/system/node/node0/hugepages/hugepages-1048576kB/nr_hugepages
-# echo 1 > /sys/devices/system/node/node1/hugepages/hugepages-1048576kB/nr_hugepages
-# ./huge
-Allocating 1GB hugepage
-Binding hugepage to NUMA node 1
-Faulting page in
-Resetting mbind policy to MPOL_DEFAULT (local policy)
-Migrating
-Migrated pages from node 1 to node 0, pages not moved: 0
+How this value is going to be used? In other words, do you need an
+exact number or something like memory.events::net_throttled would be
+enough for your case?
 
-================== patch  =======================
-
-commit 395988dc319771db980dab3f95ed9ec8f0b74945
-Author: Gregory Price <gourry@gourry.net>
-Date:   Tue Oct 7 10:11:51 2025 -0700
-
-    mm, hugetlb: introduce movable_gigantic_pages
-
-    Signed-off-by: Gregory Price <gourry@gourry.net>
-
-diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
-index 9bef46151d53..1535c9a964dc 100644
---- a/Documentation/admin-guide/sysctl/vm.rst
-+++ b/Documentation/admin-guide/sysctl/vm.rst
-@@ -54,6 +54,7 @@ Currently, these files are in /proc/sys/vm:
- - mmap_min_addr
- - mmap_rnd_bits
- - mmap_rnd_compat_bits
-+- movable_gigantic_pages
- - nr_hugepages
- - nr_hugepages_mempolicy
- - nr_overcommit_hugepages
-@@ -624,6 +625,22 @@ This value can be changed after boot using the
- /proc/sys/vm/mmap_rnd_compat_bits tunable
-
-
-+movable_gigantic_pages
-+======================
-+
-+This parameter controls whether gigantic pages may be allocated from
-+ZONE_MOVABLE. If set to non-zero, gigantic hugepages can be allocated
-+from ZONE_MOVABLE. ZONE_MOVABLE memory may be created via the kernel
-+boot parameter `kernelcore` or via memory hotplug as discussed in
-+Documentation/admin-guide/mm/memory-hotplug.rst.
-+
-+Support may depend on specific architecture.
-+
-+Note that using ZONE_MOVABLE gigantic pages may make features like
-+memory hotremove more unreliable, as migrating gigantic pages is more
-+difficult due to needing larger amounts of phyiscally contiguous memory.
-+
-+
- nr_hugepages
- ============
-
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 42f374e828a2..834061eb2ddd 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -172,6 +172,7 @@ bool hugetlbfs_pagecache_present(struct hstate *h,
-
- struct address_space *hugetlb_folio_mapping_lock_write(struct folio *folio);
-
-+extern int movable_gigantic_pages __read_mostly;
- extern int sysctl_hugetlb_shm_group;
- extern struct list_head huge_boot_pages[MAX_NUMNODES];
-
-@@ -924,7 +925,7 @@ static inline bool hugepage_movable_supported(struct hstate *h)
-        if (!hugepage_migration_supported(h))
-                return false;
-
--       if (hstate_is_gigantic(h))
-+       if (hstate_is_gigantic(h) && !movable_gigantic_pages)
-                return false;
-        return true;
- }
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index a0d285d20992..3f8f3d6f2d60 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -54,6 +54,8 @@
- #include "hugetlb_cma.h"
- #include <linux/page-isolation.h>
-
-+int movable_gigantic_pages;
-+
- int hugetlb_max_hstate __read_mostly;
- unsigned int default_hstate_idx;
- struct hstate hstates[HUGE_MAX_HSTATE];
-@@ -5199,6 +5201,13 @@ static const struct ctl_table hugetlb_table[] = {
-                .mode           = 0644,
-                .proc_handler   = hugetlb_overcommit_handler,
-        },
-+       {
-+               .procname       = "movable_gigantic_pages",
-+               .data           = &movable_gigantic_pages,
-+               .maxlen         = sizeof(int),
-+               .mode           = 0644,
-+               .proc_handler   = proc_dointvec,
-+       },
- };
-
- static void __init hugetlb_sysctl_init(void)
-
-
-================== huge.c =======================
-#define _GNU_SOURCE
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/mman.h>
-#include <string.h>
-#include <errno.h>
-#include <sys/syscall.h>
-#include <linux/mempolicy.h>
-#include <stdint.h>
-#include <time.h>
-
-#ifndef MAP_HUGE_SHIFT
-#define MAP_HUGE_SHIFT 26
-#endif
-
-#ifndef MAP_HUGE_1GB
-#define MAP_HUGE_1GB (30 << MAP_HUGE_SHIFT)
-#endif
-
-static long mbind_syscall(void *addr, unsigned long len, int mode,
-                          const unsigned long *nodemask, unsigned long maxnode, unsigned flags) {
-    return syscall(__NR_mbind, addr, len, mode, nodemask, maxnode, flags);
-}
-
-static long migrate_pages_syscall(pid_t pid, unsigned long maxnode,
-                                  const unsigned long *from, const unsigned long *to) {
-    return syscall(__NR_migrate_pages, pid, maxnode, from, to);
-}
-
-int main() {
-    size_t size = 1UL << 30; // 1GB
-    int node_from = 1;
-    int node_to = 0;
-
-    printf("Allocating 1GB hugepage\n");
-    void *addr = mmap(NULL, size, PROT_READ | PROT_WRITE,
-                      MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB | MAP_HUGE_1GB, -1, 0);
-    if (addr == MAP_FAILED) {
-        perror("mmap hugepage");
-        return 1;
-    }
-    printf("Binding hugepage to NUMA node %d\n", node_from);
-    unsigned long nodemask = 1UL << node_from;
-    if (mbind_syscall(addr, size, MPOL_BIND, &nodemask, sizeof(nodemask) * 8, 0) != 0) {
-        perror("mbind");
-        munmap(addr, size);
-        return 1;
-    }
-    printf("Faulting page in\n");
-    ((volatile char *)addr)[0] = 0;
-    printf("Resetting mbind policy to MPOL_DEFAULT (local policy)\n");
-    if (mbind_syscall(addr, size, MPOL_DEFAULT, NULL, 0, 0) != 0) {
-        perror("mbind failed to reset");
-        munmap(addr, size);
-        return 1;
-    }
-    printf("Migrating\n");
-    unsigned long from_mask = 1UL << node_from;
-    unsigned long to_mask = 1UL << node_to;
-    long ret = migrate_pages_syscall(0, sizeof(unsigned long) * 8, &from_mask, &to_mask);
-    if (ret < 0) {
-        perror("migrate_pages");
-        munmap(addr, size);
-        return 1;
-    }
-    printf("Migrated pages from node %d to node %d, pages not moved: %ld\n", node_from, node_to, ret);
-    munmap(addr, size);
-    return 0;
-}
+Thanks!
 
