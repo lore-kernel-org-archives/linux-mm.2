@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9E92CAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 20:59:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 540A1CAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 21:03:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B8CC8E0052; Wed,  8 Oct 2025 16:59:54 -0400 (EDT)
+	id A135A8E0009; Wed,  8 Oct 2025 17:03:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 267CA8E0002; Wed,  8 Oct 2025 16:59:54 -0400 (EDT)
+	id 9C2E08E0002; Wed,  8 Oct 2025 17:03:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 157CE8E0052; Wed,  8 Oct 2025 16:59:54 -0400 (EDT)
+	id 8B1418E0009; Wed,  8 Oct 2025 17:03:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 02B608E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 16:59:54 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A672911AC8F
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 20:59:53 +0000 (UTC)
-X-FDA: 83976163866.15.A7C34D9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B8A48160013
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 20:59:51 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V9kSZwg9;
-	spf=pass (imf08.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 76C2F8E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 17:03:21 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3BC7588307
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 21:03:21 +0000 (UTC)
+X-FDA: 83976172602.05.1386635
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 570F6A000A
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 21:03:19 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=deAB8ii2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759957399; a=rsa-sha256;
+	cv=none;
+	b=pMiEqJrpFsV6lnijV2UgKlYT/mFyKIzkvfShBXEYranT+XipqKdxVBoEACHRjzc0DcCgY0
+	fFcbJSdKlhqqgRyH6DhYe8Kfrqwzq/2XvrJAT1GI3Sfd/khPwUX+dANqqdxE8uMkrhBLxK
+	UJj6cyq3fGgmeLagD82ig3nIW3R1sr8=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=deAB8ii2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759957191;
+	s=arc-20220608; t=1759957399;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3wpYBzFdNUy7Yl2Lu8Dzrz5oaZLBU2NmFMCRV/02RaM=;
-	b=tGeyu1NrjT+TNdojD3KJp0fIUsd0FsdbqnN5mtl1GKn+efhla2sYFamDuM49hShkVWH7PP
-	GwkPtQummzwwtmpEKBH6lV7ws2kk0TE5hI37sU3bVWddBUHDC2fHywwiPK1km6YgLlUVp/
-	hU4nTHLMpKfihsDw4xpzZKmqzo5C+5I=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V9kSZwg9;
-	spf=pass (imf08.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759957191; a=rsa-sha256;
-	cv=none;
-	b=vz4XylIMIlmTYa2sPlit+3hmDUypqJviciHtS7ZkBx6QHPEl5YRFMFVAVIE2EoTvuU27D/
-	mokK9R1w0Iwgyn4wEILk7YI60bqrHW0aXsfAs5WpAp1ututy/B0bxC4YE/7Wp2qRydffKu
-	V9O+CdsIiv6VnHZ0LJMPnfuRlzuAnaY=
+	bh=QKeBJSjAWSqCACSg3rVZkpYp40CuPjls7hZFLIY3sO4=;
+	b=v9+mo83wRBkbqr/OFynfiTsyw7yUyIvLA019YfQYyZ6L+vomMWLD1PEspnwkM6x9nBNfef
+	e/2HTOvIbyDgTmhslxzPr8DsD7jkhhtZoV/+V0lx2y8oDU3QSrnuoETQ9FoslWBzegdipS
+	Y/+UyOQLj1dlEYh5Ae1ltl6ezi1JuPM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B37B845549
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 20:59:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93296C4CEF4
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 20:59:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B791F6202A
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 21:03:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6919AC4CEFE
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 21:03:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759957190;
-	bh=eUqCLx3itxMEwtReJ0MfCq6If7yIzpbBzgg6uk08zrU=;
+	s=k20201202; t=1759957398;
+	bh=G/ITfw+9WPz98y9dzMSfigjUmz7jNHGjpEelggGzz7Y=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=V9kSZwg9yQlkKFj2D52uI+fwafGD07n+yKH3NhTJFgoXSHRwu7GGLbezH9b1+VL1w
-	 H+pDtxXRCCQNgCuurynceA81p550Im3P4qBqah5+4v5jDwH14kfR4/VrSZqSxwjZO6
-	 l0f/Ii4mXyga+T9yP0tV0qnWvD6fE4b/zOoH+m4QXdEOOG5IkV4k/xNTQVRTSlsXRR
-	 cqvvoPVvVNjSjDxcZI7XnnsPOfbwVq/atbhKUxdLbl9TiJZqZRGg7RdrszD0/VjHgE
-	 wYspemEBm342MmNS+raj7p3B8keUdMoeQvdxCRRY14I0+jHu8o8p6saiEJDmgUb2OQ
-	 1JvGsRZtmnW/g==
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-6361a421b67so388587d50.2
-        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 13:59:50 -0700 (PDT)
-X-Gm-Message-State: AOJu0YzUvtN1LnZdr6GVBN2mIcYxqE03H3qQwo/gBdn4Lp2hv/1g5lVH
-	i/mDoaxhzoS98iRf1V2DCOMnm46G5IlGP0ucyA3Xp5ARZF6vnxzc8ucYlSz8ijlCrwSPuGZ3f+K
-	ousZX0u7GtCNRwMFJb7DagMqAVcuO1why7Np1KJrMvA==
-X-Google-Smtp-Source: AGHT+IENfMLmi+x/bpMSbJWEZ+uKHClAL8tDN6VRNwU0GfnLGeFCj2Ji7sf8qlTzCMA0o7poF6JRLsow7KuubJT8xOM=
-X-Received: by 2002:a53:cec2:0:b0:62a:b545:54b6 with SMTP id
- 956f58d0204a3-63ccb8f2f76mr3700146d50.35.1759957189849; Wed, 08 Oct 2025
- 13:59:49 -0700 (PDT)
+	b=deAB8ii2WyATx8rqBfOHToLSdCw0Q/ID7bW40yw6V6AVoUka+AQtzQ1ywzqNYxeTP
+	 OZjhZguPrFVj9r5ZpzU1RjBZJ6Jy9HbIKCVWR2dpNX8tCTACBQU2+H+aPdYSNiWeMT
+	 1JTTGlHKCuIekhqQo/dO5vR6Q/ssZcOIQ4jYizKMyNKV1oIK42QGthKQrVax2lORbc
+	 frmt4ac1Giy9I8YZGXoNuzyfY03PV4Ez1ShgSm7fPvI9za40QCS82b1xh4d9kr/hjK
+	 6FEr+B1gOBIXDuGNhTTYnW3jOfT40dNk2VI1uuOomvmdU469rzEEQ9A58Ma0Q2G5EV
+	 LZM0+0NetIFng==
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-63470a6f339so367561d50.0
+        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 14:03:18 -0700 (PDT)
+X-Gm-Message-State: AOJu0YyhoRMELms2dL3oGammpH0iBzCUFSXH7yz6y0zmbZBu7fv+0t5/
+	XXn4RqAdGmzrqP0d7ytEEfSNnkSQU6+/C37UBeFvq265522SHVVkMfop64InI1dK7K7S/Zarrl1
+	0Dzdb9oLDYFYcUbg1VReEcQHts3Qo9UsIwKKQHXipxg==
+X-Google-Smtp-Source: AGHT+IFK1Omp+xmPcKgCpqNFfD5Y+SC+MQkE+F3li4un1zZc175jgUQ1tcQjQ2L4pr2ww0RkuCdLQIaf4qCjRjFoUDo=
+X-Received: by 2002:a05:690c:9a0e:b0:724:bb55:27c6 with SMTP id
+ 00721157ae682-780e170c20dmr95905737b3.53.1759957397779; Wed, 08 Oct 2025
+ 14:03:17 -0700 (PDT)
 MIME-Version: 1.0
 References: <20251007-swap-clean-after-swap-table-p1-v1-0-74860ef8ba74@tencent.com>
- <20251007-swap-clean-after-swap-table-p1-v1-3-74860ef8ba74@tencent.com>
-In-Reply-To: <20251007-swap-clean-after-swap-table-p1-v1-3-74860ef8ba74@tencent.com>
+ <20251007-swap-clean-after-swap-table-p1-v1-4-74860ef8ba74@tencent.com>
+In-Reply-To: <20251007-swap-clean-after-swap-table-p1-v1-4-74860ef8ba74@tencent.com>
 From: Chris Li <chrisl@kernel.org>
-Date: Wed, 8 Oct 2025 13:59:38 -0700
-X-Gmail-Original-Message-ID: <CACePvbV=5A-=eqh8Fq+pmNSZ7fPq03SmUw8at-pN_N+8vFSpXQ@mail.gmail.com>
-X-Gm-Features: AS18NWCbUb_oLy12b0rJSYPGGNJHkxb5YMYEOs8q-6mh6rFyluLkQuXK1GMBb1s
-Message-ID: <CACePvbV=5A-=eqh8Fq+pmNSZ7fPq03SmUw8at-pN_N+8vFSpXQ@mail.gmail.com>
-Subject: Re: [PATCH 3/4] mm, swap: cleanup swap entry allocation parameter
+Date: Wed, 8 Oct 2025 14:03:07 -0700
+X-Gmail-Original-Message-ID: <CACePvbXTG3qN64D-zu4-N6126ZNFCKqvMuUhrxW=aXnCkrOb_A@mail.gmail.com>
+X-Gm-Features: AS18NWA4mAHlhE6n5l04RrJTU4ZEExbIpnlqnzbJgZU42WD6IdARt2KezhZIUco
+Message-ID: <CACePvbXTG3qN64D-zu4-N6126ZNFCKqvMuUhrxW=aXnCkrOb_A@mail.gmail.com>
+Subject: Re: [PATCH 4/4] mm/migrate, swap: drop usage of folio_index
 To: Kairui Song <ryncsn@gmail.com>
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
 	Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
@@ -92,14 +92,14 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B8A48160013
-X-Stat-Signature: pfbmci9sy8brwim1gwq3t9k3q7hr9ie6
 X-Rspam-User: 
-X-HE-Tag: 1759957191-29018
-X-HE-Meta: U2FsdGVkX186HCLot55JRwRqdAh8CVbZVYUlbzvWuMTxyxA3oBiCMZ6WoMYRG0M10rDCvV/eNmB/mIYPiXoAs+3uPo7xI5yMoB1LPr+4TtJs6FuSxBa/NpayytYDW8N55whxm6iww09zyPuM9tzN3nx2eood7tXeThU0nUNW5L/SfV6DQbv5kxKaOTHGH+b+8d1iCxeSS0VcUf3k0Rra/Avpujq8UjhStSuVbqXfIoL5PrqlPxtMoOLoEgzzPHcGUVFW61sz27KWpjJlnrvsFvEtvZafNCYWOxTte9Hvqbig2S5B/Y8YA+TLbsQKds6EWuibMauJXm0UZL9N2vtLnaUX2ZLP/8vzQFgBAEVBYo8ZcoRLsmU9dmLOt5Bz52inPaakXrJTpD22JntcuT0BtfzInLr7akb+qKOfjF/d+aNvkXBgDr9smT0UvbTF9otCuEDE0w5NVig5ZEZvC6EupuQTz7d+1UDnrH/b/bijolD9r1TXG1ydRIdZ1yqihMwRb9Pz0X4Muv4OIASOMMqo87k1wO9310gaoxuZKQ6Mrg0l9ORYI5NQo+JpTJeSW4AGa7QiUsdfuKJXBX+1TlolkbvImp5YzoUoAcJU1KS1TOVqWyLkoPWl1ctUcZoizpk7xpPYIw0KEEjXUIDJ+jXL7mpCN44fBpt5P6FoexNXAkIzATlFs0hajknhgQI6nY7n0B4LYTZyT0W/7W9d1XTuoieEJ//umj+ERNQDJCSINrVHuNMginEtpsgpdDFqZGW3RUXb3QyZU1mC9zUP5pwin82W5w072W9xOAciezARf8IkQfe11OQeBm8Po7B6nNHPZELQWrycE3GxOu1heU5wTWOYMNrnYPrrnpz0yKoL2JvssBW32IsECrxjq5x6ypwFVYi3oVa4sPPmlTll2YRqySQVoOxeg+M+Q4KPU4fH1IrnyVBDYkXVAI9vM1CDnlHksOdjDacgWVhnTDYRpaN
- hl5M5AuS
- ij9heXemf5072KY8x1lz3oT8xcUqPjThjO+pcfixjdYdDguRPXVbDN94mptUklERxnoFFoqKC02mAsBjLkiEuhN5V5k5UEl1T6HrelORudD35wF0xM3M6TaWW6SeNODwhT/c8UzkHSKd24nq/qHuig/JfPx3+ReKw+n4pI8txwXymFIw0Dj3OUO5VHfjl5sPXWZ+NcOompqJ5u07oSpGAYen5ErsDrdDYSsqqFRaNOb3ukhgM+c7irvAGl0YcqrIDnz1d7U56GRTFWEDKHXhBFHYVvMpMsG3P3DwtXU0Ggb6NTQpbDeh+iYpv7fs0Zzb4xN7jl47LRPJ1JHt8lHcb1aazPQZWu4HYx4KZ7cDPWhGuo3wuufLWMUom9odu7gnODivFzj9VY5eFTpc=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 570F6A000A
+X-Stat-Signature: ocf3rjjdfhd1cdq31so8cehozfqucocd
+X-HE-Tag: 1759957399-32528
+X-HE-Meta: U2FsdGVkX1/loFIkV9q8hwkcH2iQwQUq3I64QSB634QduXJ/Xm01AzSgd6BWuaS1ESBP++lGePkM7ottWUvawfYRNUiDfkiM0wQp2BvOxxDqH2fyXVbjrChL4oW7l/4Nqhn+gH+AopgwWwKms9g5wy+gSiQW2yDMR0xv9xhiiH55O5ol0DFn7mIgL5zd261TEQk7k1V2kyTHhk/AKaxDwQzjp53T3qFFcyZJldXJDiDTZeoj6dauRCriCoIoy8XWS6rbdB0WN3/T2rN64N1h+B05AZvUOYscIMgtxaiODdeqSgtGnZLtrgptLBZim1Hx3lSmgx4rikcDzvGOP35t5ZHY8ExVv6Rht81kopSlDX2/NiXp6itAeYvMIG9L7d0eaXt9nnKELdfx0KmdPErU/SrNfwFZHybWI9dlefV65/ASCNHesGSPUM3ARvcaBn40H635Kz5yX48BByOyj9u/qEiJiilGHtMJcxAnIT1Ji48tr8qtWrQtMpEobbxcQU5bCm+h3gjjdGQpwZh3O+EtTy+jq8K2MgBefvI5DGXSWa4XCygpvNkxUjyXTHzOYHfTcUPIpWRfrlxL35qJkMby8prky3tsKAopUyc9AUT9K6Fvlg4AXa1mbiyMBQRqL7/W/HOTyexRyAilO/RdRmJchKfGV8t1kXtOWe1lorKHl462kvXFSBuI5iMFrPevN6wTUrERa0GEBtWJvMmiy2QIwvBefFJHz3gNKMaK6DLbngVbqksIk0t42T0ZfqTvFUydqU1VYHu2IZ6rZfsizX6R5xnP6cXhVs8VlnGuQ0R7aywi+sa3Q1CZByiMtiG5DyDLWE5pu2S3PZhbE5wtAU1KaF5R+0lCQuPPI+jLM5T1qE96G4mksC9+7y5SGYQFP6YJ7BIiVufn1AB7q5khjF/bZjaQQ5IyCurieQs4VG9HLqBJu1Id5l4wnapnb8CDnNbBEuAhEKS33heNGaDHmXv
+ /hNhmhA4
+ eRrmxlZoN+SEKpuJWYo2KYqmNeEb3RmTUU9QBJFML92h9CzvERLfmeDM2rA7xpVJWx/WtO2T1ScACvSnmHed5meGKDPMaET8SscPt5QkrxF/Icki2vHUKy0yMO17DM9ZhKwsQxLRRVsW3wPtL9MWMtjXQH/XV0zU2L4Nt8w3DPBggByKZo6HT6RfL5rpEF1eitsWnszWbj5fLAHV8JuObp5d4X1TNTYIvymj3P0QXvJbEuzPI9EMY2aYXpfgQVN3OQRT4Kj1oZ9m0hjvs8Pa+ZTxgI6sGHguNJjfp9NsyZPWQf6y/KbO9s9E7el0ON2SW7+vSneSoRhLyM9wPHSMws20QQYG3zGVwyeHMXuxRwB+vFWpmOJAKG/tL+8bSIc46O8KF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,117 +108,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Acked-by: Chris Li <chrisl@kernel.org>
+Thanks for the cleanup.
 
-Chris
+Agree with the other fix suggested by Nhat regarding swap cache vs page cac=
+he.
 
 On Mon, Oct 6, 2025 at 1:03=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrote=
 :
 >
 > From: Kairui Song <kasong@tencent.com>
 >
-> We no longer need this GFP parameter after commit 8578e0c00dcf ("mm, swap=
-:
-> use the swap table for the swap cache and switch API"). Before that
-> commit the GFP parameter is already almost identical for all callers, so
-> nothing changed by that commit. Swap table just moved the GFP to lower
-> layer and make it more defined and changes depend on atomic or sleep
-> allocation.
+> This helper was used when swap cache was mixed with swap cache. Now they
+> are completely separate from each other, access to the swap cache is all
+> wrapped by the swap_cache_* helpers, which expect the folio's swap entry
+> as a parameter.
 >
-> Now this parameter is no longer used, just remove it. No behavior
-> change.
+> This helper is no longer used, remove the last redundant user and drop it=
+.
 >
 > Signed-off-by: Kairui Song <kasong@tencent.com>
 > ---
->  include/linux/swap.h | 4 ++--
->  mm/shmem.c           | 2 +-
->  mm/swapfile.c        | 2 +-
->  mm/vmscan.c          | 4 ++--
->  4 files changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index e818fbade1e2..a4b264817735 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -462,7 +462,7 @@ static inline long get_nr_swap_pages(void)
->  }
->
->  extern void si_swapinfo(struct sysinfo *);
-> -int folio_alloc_swap(struct folio *folio, gfp_t gfp_mask);
-> +int folio_alloc_swap(struct folio *folio);
->  bool folio_free_swap(struct folio *folio);
->  void put_swap_folio(struct folio *folio, swp_entry_t entry);
->  extern swp_entry_t get_swap_page_of_type(int);
-> @@ -560,7 +560,7 @@ static inline int swp_swapcount(swp_entry_t entry)
->         return 0;
->  }
->
-> -static inline int folio_alloc_swap(struct folio *folio, gfp_t gfp_mask)
-> +static inline int folio_alloc_swap(struct folio *folio)
->  {
->         return -EINVAL;
->  }
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 45f51745ad88..63092cc0b141 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -1617,7 +1617,7 @@ int shmem_writeout(struct folio *folio, struct swap=
-_iocb **plug,
->                 folio_mark_uptodate(folio);
->         }
->
-> -       if (!folio_alloc_swap(folio, __GFP_HIGH | __GFP_NOMEMALLOC | __GF=
-P_NOWARN)) {
-> +       if (!folio_alloc_swap(folio)) {
->                 bool first_swapped =3D shmem_recalc_inode(inode, 0, nr_pa=
-ges);
->                 int error;
->
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 732e07c70ce9..534b21aeef5a 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1425,7 +1425,7 @@ static bool swap_sync_discard(void)
->   * Context: Caller needs to hold the folio lock.
->   * Return: Whether the folio was added to the swap cache.
->   */
-> -int folio_alloc_swap(struct folio *folio, gfp_t gfp)
-> +int folio_alloc_swap(struct folio *folio)
->  {
->         unsigned int order =3D folio_order(folio);
->         unsigned int size =3D 1 << order;
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index aadbee50a851..c99f7d6d5dd9 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -1296,7 +1296,7 @@ static unsigned int shrink_folio_list(struct list_h=
-ead *folio_list,
->                                             split_folio_to_list(folio, fo=
-lio_list))
->                                                 goto activate_locked;
->                                 }
-> -                               if (folio_alloc_swap(folio, __GFP_HIGH | =
-__GFP_NOWARN)) {
-> +                               if (folio_alloc_swap(folio)) {
->                                         int __maybe_unused order =3D foli=
-o_order(folio);
->
->                                         if (!folio_test_large(folio))
-> @@ -1312,7 +1312,7 @@ static unsigned int shrink_folio_list(struct list_h=
-ead *folio_list,
->                                         }
->  #endif
->                                         count_mthp_stat(order, MTHP_STAT_=
-SWPOUT_FALLBACK);
-> -                                       if (folio_alloc_swap(folio, __GFP=
-_HIGH | __GFP_NOWARN))
-> +                                       if (folio_alloc_swap(folio))
->                                                 goto activate_locked_spli=
-t;
->                                 }
->                                 /*
->
-> --
-> 2.51.0
->
+>  mm/migrate.c |  4 ++--
+>  mm/swap.h    | 21 ---------------------
+
+Nice.
+
+Acked-by: Chris Li <chrisl@kernel.org>
+
+Chris
 
