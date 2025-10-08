@@ -4,108 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33988CAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 17:02:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8669CCA470
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 17:04:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 735638E004A; Wed,  8 Oct 2025 13:02:45 -0400 (EDT)
+	id 11C988E004B; Wed,  8 Oct 2025 13:04:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 695EA8E0002; Wed,  8 Oct 2025 13:02:45 -0400 (EDT)
+	id 0F3A68E0002; Wed,  8 Oct 2025 13:04:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55E5D8E004A; Wed,  8 Oct 2025 13:02:45 -0400 (EDT)
+	id F246B8E004B; Wed,  8 Oct 2025 13:04:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3ADE98E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 13:02:45 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B9C46C0694
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 17:02:44 +0000 (UTC)
-X-FDA: 83975566248.28.A83CD12
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A009CC0010
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 17:02:42 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ImEtogTh;
-	spf=pass (imf10.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DDEC58E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 13:04:09 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B259CC0694
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 17:04:09 +0000 (UTC)
+X-FDA: 83975569818.03.6547077
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 6C50BC000F
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 17:04:07 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=AUnKYGro;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.51 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759942963;
+	s=arc-20220608; t=1759943047;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BODKjR/Yrua4uagxV7JAKQu5Y6484FclXcvnVtP0Ids=;
-	b=bWYCCPRHvOddmd+BOY0kiWDte4F1964K/A5bVsofjP9CB80g3rXXUEZ1WZ6Ub+oGj8pIhH
-	aRtZ3o4rdk9WUaw1edNh+3Je2vmVgjwa+qZ++cRkf4TMeh3rXHw5KSl0aI6CLI44WLDFp4
-	yRF7la1CoYzdhrHOvgue5rpFL+2Eotg=
+	bh=hB4y1UGEVpwhub5wcO6FK12pD+0ug2lV04A88O4v4vw=;
+	b=CcguB/CmB6zIufX7M3LuYQVTttfo+iwjcPPaE5zTBGQV0+vI/p+ngnuDRAtsKKmB7sRh+j
+	tYbDMooLX2Mb0T6nzRpsrnjxEorqNj5Bk5FgEg5ry2mEA6dfo/6IUZtr8lE6qnHgfumdqL
+	J9NSdtgO8RAgYTCVi+LH+U187Bbpiho=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ImEtogTh;
-	spf=pass (imf10.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759942963; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=AUnKYGro;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.51 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759943047; a=rsa-sha256;
 	cv=none;
-	b=TMdCXP9HibmQXnqOmXPSmDc5lWLoXQsCKQ4ap6SKsDUEshXo4TjfskD9hY7cUjj4a3Joym
-	5jleNkGd4G91g+g0Ob+42TlaOL0D7pAe+Sh+QQOwa30FpKRC4Lcbbmwlh7vhFJpjUjj9GU
-	cufgRumdepiT7haDHstFJfDOyd+BLmE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759942960;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BODKjR/Yrua4uagxV7JAKQu5Y6484FclXcvnVtP0Ids=;
-	b=ImEtogTh0Qu0BQbbsIQhE3xhi2kpV56iAk7nUKH+E+BrfzLTe1IFnAs1u2nKXZ4WwXK+rP
-	N4Qk9gMKmXy+ZNj+q5FZFsQxoYmLp0idznsWNAYeTnVwQAUsZ+z4suI0RtYA3ZrCJZnGqD
-	4lTBro4kASUXODnrVr2/PzmbAiart0s=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Song Liu <liu.song.linuxdev@gmail.com>
-Cc: Song Liu <song@kernel.org>,  Andrii Nakryiko
- <andrii.nakryiko@gmail.com>,  Martin KaFai Lau <martin.lau@linux.dev>,
-  Alexei Starovoitov <alexei.starovoitov@gmail.com>,  Kumar Kartikeya
- Dwivedi <memxor@gmail.com>,  linux-mm <linux-mm@kvack.org>,  bpf
- <bpf@vger.kernel.org>,  Suren Baghdasaryan <surenb@google.com>,  Johannes
- Weiner <hannes@cmpxchg.org>,  Michal Hocko <mhocko@suse.com>,  David
- Rientjes <rientjes@google.com>,  Matt Bobrowski
- <mattbobrowski@google.com>,  Alexei Starovoitov <ast@kernel.org>,  Andrew
- Morton <akpm@linux-foundation.org>,  LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v1 01/14] mm: introduce bpf struct ops for OOM handling
-In-Reply-To: <CAHzjS_tq34QC4NDQd_L8crQii2QZCxZr28ywSw=gMnFnqD_z2A@mail.gmail.com>
-	(Song Liu's message of "Wed, 8 Oct 2025 00:03:37 -0700")
-References: <20250818170136.209169-1-roman.gushchin@linux.dev>
-	<20250818170136.209169-2-roman.gushchin@linux.dev>
-	<CAP01T76AUkN_v425s5DjCyOg_xxFGQ=P1jGBDv6XkbL5wwetHA@mail.gmail.com>
-	<87ms7tldwo.fsf@linux.dev>
-	<1f2711b1-d809-4063-804b-7b2a3c8d933e@linux.dev>
-	<87wm6rwd4d.fsf@linux.dev>
-	<ef890e96-5c2a-4023-bcb2-7ffd799155be@linux.dev>
-	<CAADnVQ+LGbXXHHTbBB9b-RjAXO4B6=3Z=G0=7ToZVuH61OONWA@mail.gmail.com>
-	<87iki0n4lm.fsf@linux.dev>
-	<a76ad1e9-07d5-4ba1-83e4-22fe36a32df0@linux.dev>
-	<877bxb77eh.fsf@linux.dev>
-	<CAEf4BzafXv-PstSAP6krers=S74ri1+zTB4Y2oT6f+33yznqsA@mail.gmail.com>
-	<871pnfk2px.fsf@linux.dev>
-	<CAEf4BzaVvNwt18eqVpigKh8Ftm=KfO_EsB2Hoh+LQCDLsWxRwg@mail.gmail.com>
-	<87tt0bfsq7.fsf@linux.dev>
-	<CAHzjS_v+N7UO-yEt-d0w3nE5_Y1LExQ5hFWYnHqARp9L-5P_cg@mail.gmail.com>
-	<87playf8ab.fsf@linux.dev>
-	<CAHzjS_tq34QC4NDQd_L8crQii2QZCxZr28ywSw=gMnFnqD_z2A@mail.gmail.com>
-Date: Wed, 08 Oct 2025 10:02:28 -0700
-Message-ID: <871pnd2uor.fsf@linux.dev>
+	b=gCK4RTqrg/PFMFifI6hDga02pEEsh9C8ULOtFeKkPfL+kwTOw32Tk65VSahSd3FcrF4gyp
+	7ZmxWQt0x0GcislXHOXxr2Cr6wjgOB1LOBw6ZFPReTazhq6JXEoEXL9+uRiob08CCQX1fJ
+	0o792zA2SpsN7TkgKDd6ajgFqCTvaCQ=
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b3d50882cc2so5552566b.2
+        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 10:04:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1759943046; x=1760547846; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=hB4y1UGEVpwhub5wcO6FK12pD+0ug2lV04A88O4v4vw=;
+        b=AUnKYGro9KzyI0Ms+GRC+Sokm8SP73M207+7PKAR61CHwi8sJig9qR6dp0l+n/Z4NK
+         1fz7BYbqfkkpFmBTjbaBgWtrB3/isLmfvic3jWVyY/RqGV5DEvoEUo28961Omj1z4cXO
+         Loa5ylmh4N1wRu3jWxBxbEhXmlqhyF0AXzx4k=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759943046; x=1760547846;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hB4y1UGEVpwhub5wcO6FK12pD+0ug2lV04A88O4v4vw=;
+        b=GnzoCdW2mhwsI1t+wn640hwTQ6NKVYX/Yb/HAsdDtSzRE0b3Ft59aXssQSlMWgg3hB
+         BmdWCmdnYpVcIhO1GOnkXElUNRtGxcHW9VVH9L2ttMlRBeB4yiw7eqY/t39rS/YNpcv5
+         Oe9Cq9+kP8O6OOlSdm2la7Ag54nw3re5Ih08gOOBWr8DUaxVu9RkDlQRf1NOj3617cfg
+         ZvupQJrSU+m6gdyuW6nK26HvcOKN9XzfGTUwOLcaM5q9daQTjveAqHsF6hfQnIiXD8/m
+         2Ilx6ldRWu1sxC8NHUaSHvAv1FvuaA5Eh6PjDzmEiuna727T1APtpkCa75ORcExVI0fX
+         ZjSg==
+X-Forwarded-Encrypted: i=1; AJvYcCV68qVO3O9da5VbDQKPywno5dDF5CoUxGETfFt9ufG934D9MWZs7qpCGe7iFcBqdBew+pxN9ko8wA==@kvack.org
+X-Gm-Message-State: AOJu0YzuNKaZEABFyHNc27ebzeIQFACx7oDOESqDKLwW4T7iDrfDPsRs
+	X4dPZZQ0VLgqoLLi8hdMMH2AkFVV3YHQUJ6WqxKwe4IOJvS5JTBhI1HaydymW1Op6wsMUUn2vlB
+	ZILW5YM4=
+X-Gm-Gg: ASbGnctgBaZOU12n/mnwBmc9HobYdIIiJyc7ds4HGTqNcr8FjhpZDe0Q+jt12xn6mH1
+	s5j9x/hChnj+23b0q9UVMsKdzneAO6vH19GAROaK94NXOI+xvIHT6ghLQMNyI9RGmJEW+fDErt3
+	kynGfqa092SD8PM/sU7nTrrGGS3SpVhXryu/XtvmCe117eML/yC2tbr9abC1F/oWJMa2akHkjpx
+	azsPYVHmLTC0QbI9zlrPnZP7h7tdGW8eyuvSX8acKa67MLDKDQwWR7OcBUW/OI4/A/kr96LvUFb
+	SX7ihJMEzdgMBZ1qHH0/sYPafZIB0ouLUyH5dd2x12uxXc/DqW9EuTLPGrC3H2IKGEVtFsEZNB0
+	RUQkuUF/0TOXgI5toagYEVM+T3KZQMr0zg1FybYYhkrXOugxho/Lrb5aJtRIxjm5m6U6J8eeyYL
+	rJCw/UMBpnZbRR6fNE9Kjf
+X-Google-Smtp-Source: AGHT+IGZZ50y0Rg+YazkxRcuXHs8AxJU2gPFcm7tqgGjUmwO411s/spO05RWv5wnHcGQtV1ywUC/jQ==
+X-Received: by 2002:a17:907:7287:b0:b48:70a3:d45a with SMTP id a640c23a62f3a-b50acb0e5e7mr433195466b.64.1759943045507;
+        Wed, 08 Oct 2025 10:04:05 -0700 (PDT)
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com. [209.85.208.52])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b4ffb161d92sm416813066b.21.2025.10.08.10.04.04
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Oct 2025 10:04:04 -0700 (PDT)
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-62fc0b7bf62so56029a12.2
+        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 10:04:04 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWATmjPVqfdejTOcYytDMLrU0dXftksTKMZfzausAf5YhHd4vKJb4M26/mmtgE59xxuZOBWS82ojA==@kvack.org
+X-Received: by 2002:a17:907:971b:b0:afe:d590:b6af with SMTP id
+ a640c23a62f3a-b50aaa96bb0mr522464266b.20.1759943043731; Wed, 08 Oct 2025
+ 10:04:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A009CC0010
-X-Stat-Signature: s8x7osyw9boa1kdporcjd9thte9ekb5c
+References: <CAHk-=whThZaXqDdum21SEWXjKQXmBcFN8E5zStX8W-EMEhAFdQ@mail.gmail.com>
+ <a3nryktlvr6raisphhw56mdkvff6zr5athu2bsyiotrtkjchf3@z6rdwygtybft>
+ <CAHk-=wg-eq7s8UMogFCS8OJQt9hwajwKP6kzW88avbx+4JXhcA@mail.gmail.com>
+ <4bjh23pk56gtnhutt4i46magq74zx3nlkuo4ym2tkn54rv4gjl@rhxb6t6ncewp>
+ <CAHk-=wi4Cma0HL2DVLWRrvte5NDpcb2A6VZNwUc0riBr2=7TXw@mail.gmail.com>
+ <5zq4qlllkr7zlif3dohwuraa7rukykkuu6khifumnwoltcijfc@po27djfyqbka>
+ <CAHk-=wjDvkQ9H9kEv-wWKTzdBsnCWpwgnvkaknv4rjSdLErG0g@mail.gmail.com>
+ <CAHk-=wiTqdaadro3ACg6vJWtazNn6sKyLuHHMn=1va2+DVPafw@mail.gmail.com>
+ <CAHk-=wgzXWxG=PCmi_NQ6Z50_EXAL9vGHQSGMNAVkK4ooqOLiA@mail.gmail.com>
+ <CAHk-=wgbQ-aS3U7gCg=qc9mzoZXaS_o+pKVOLs75_aEn9H_scw@mail.gmail.com>
+ <ik7rut5k6vqpaxatj5q2kowmwd6gchl3iik6xjdokkj5ppy2em@ymsji226hrwp> <CAHk-=wghPWAJkt+4ZfDzGB03hT1DNz5_oHnGL3K1D-KaAC3gpw@mail.gmail.com>
+In-Reply-To: <CAHk-=wghPWAJkt+4ZfDzGB03hT1DNz5_oHnGL3K1D-KaAC3gpw@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Wed, 8 Oct 2025 10:03:47 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wi42ad9s1fUg7cC3XkVwjWFakPp53z9P0_xj87pr+AbqA@mail.gmail.com>
+X-Gm-Features: AS18NWDZIu5RNvY1OZ00h_c_VuBUBbSYmDpRpxsYacEd419cgpTVj3E3FoQRX_o
+Message-ID: <CAHk-=wi42ad9s1fUg7cC3XkVwjWFakPp53z9P0_xj87pr+AbqA@mail.gmail.com>
+Subject: Re: Optimizing small reads
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Matthew Wilcox <willy@infradead.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Linux-MM <linux-mm@kvack.org>, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1759942962-385155
-X-HE-Meta: U2FsdGVkX19KghSCbBOu8q7Ebvl2lCiMS7li6TSXMZWp9RgVwCUQz9WRkwhqQg3EXdsY37MvgOv9wYtkIZrh3fjEXNabQ8bEMb/NIYBtCOflxhZ0poVsp1EbkGpjT0CLNe6xXQMSw6+vyF4JtZ1GuF4cGQWvZ5WhZB6XohR1J3vwfJlv7yCIbd2YtvZLquKobeApZNOoN5QAx3MWNF4DWgUxrhLjsmdL/QwSYjklM2QgPTRTLV5iyDLye9wvYqv0k/jHIxmX4XlcKprUabNeJZ/RFkGqagRR0AkxfJrcYyZ1q+npekt4KczVPjVLCKQXGk2nKaAKKXSFHHsqU3gooaW0AATHEjpZXkI+evjHSNRiFs1g4M9ZlT74+BWbRy0YlIXSO7ZkX0bH4grUx0whdd1D8pnu2fcGDPuKEbB3BuZcthyxTjv7m2d0VYGSSLp6PfW3klggFlymBTdy6RS9sbYXASZHSTJhmCZFWDvO4CZOO8SPDzQKv8s5SvsAM84YHjHOTgOeaHuI3Cbed5lMnHydpzRCnCHvhW1WYbY994/MroqAk8pSLqZJHJN8kSnv0PCN0JELNHiGnu7gtGVDQ44vvKETzKG1HVVeURlF5JWaQ1UPN4aXyp1rJvS8t0LP9D5DfqnV/WjEvhtHnIo1vBLUM5FQBavXQJWItBn8OjBsIgERc9p7mLBQxyOLD9yJeG9QGZUiKunDfRuOQf9Q3J/Y5uKerIq5L7Ffff5ceunsQgRkoZfjKBqbIC+TZAeJYQqPfX+EOgvtmjViqmSoS23Yy9MIwZ9WmHWZw7Gt2jB8ATrc7HoNKBZ4k8rUJchQDODadXwBFo31gcreHDM/6f6IH3beA3HPHz2vZCxNierdnrkvn7THaracWTh2sf6SGnJ088l/X5mhhsJhJaRGudY51f+hpnClrU+vI1qWeoZX5uBb36OExzfTrvMkylywS0SGyjwTcPSF8VJZ6ZH
- Ftb6Cosa
- 3bAIah9i7OKvoJWbQkRhe+RmkVx103k1HJ3/QjBuN/pvGS80y0iUBlBEFxY29MklXNqnHw9Z3DA4LNTgCxE8afxJLuOq6ybOfFQNr3UfgVAgLsxAuKT8sZO/nXw6P8lVlwnr7TcxrhqWjsME8AbThp6VwRY7/D49kXIdz7vVpib5Rs94PgFER5Fd3r/+0aUn1NfgjBXW1fx6s7xBMTxqcEO9oURKKv8RGh0hXYCGWG/9Yhm8JK/jSm1R+cuWqhqgOKer2sDuAcTkFj7YeflG95ujMCutcBXTn3hXDjx/6jVd7o+c=
+X-Rspamd-Queue-Id: 6C50BC000F
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 79uo6ykrm3smf96aqgb4a7migqwmees4
+X-HE-Tag: 1759943047-238562
+X-HE-Meta: U2FsdGVkX1/08LylWjvlU+THYkmqqfl3nHWsIl/llFsuTLA5nCwYJJzC+7DZrA8oWupQOpjAwquj0HTSa4DwSfznUBz0jcmIljTXmW6DxvTAoT/FxANhIk9CDDaTBV7a+rvW6QS4AxEIYXRasHOZAYgz+u7BaYU4n+Eoa3hmXjAWpjDjXnpZBK7olPT4zmEz5cgLuXvAHdgFRcYfAJCqkpXELPZ2M3h+QTu6o2AukRahz1XYNhQ/w5e1oZvIziH2JUioed8eEgHkkJYQN9ysed6XuBr1oGNn1Y1RITsnExsAwYdcZVua8EZv0ITwGLqUGE5/0gXolib96wM9oeTtgVg29eySnOFVbZsCpcQ7Ewup5CHSOdZVC/+w/tyJs8nvOYvxbrU79Sa87mlxksJsQ4qBvfhza7IOIZiyM5t0L2yFC0Kzp8PT93r1Vn2fMpvpJazK2kmQweoBSdzygiosIHvRco8lTwQS9lLCbPkmaApR58obDQnylvC87v3rf/VyWxRDAAL0BqJ1ZzgQ6ozsUa5klPUmthMyI01Immi172UeLlniaaHKs/uMFnEOzMtnOQXR27FlUKbDLvLSp7d+4FyMo/SVWUIJTcWOvULEHSUP0zeGQGhpY1dAO0+1i9OE4bhUQQ/KOmCl4C0D5vG67NOnmnVaawx3oecvQ7zfeFkJicxic/KAJR+1AEl3G81mO+W3ohDZYMtKCUWIOIUyiKkby3v7CedpBG5RH6vvUQJ5jFr245O8ZAxrf0JvlkdnJ0wshgEiGj1rpi7m7K84F0Sc7fyQJRE5GfdECyK45/YxzxtudVv6MT+xGxoAaxfnkne9vCYMZw7GJMxmC3IiozHs5DKRcGQu/8D+w2WJb4LTNOrk3dR+4BC7f+tAcNuSCHwrQRTfr4mNnfopVN08mJ18uMRL8T0qdpf2O2ip50JOlx/bZjt0dtYSmnsxWGgerBjrI2kRcwBATg3sFxu
+ vwH3oiyb
+ RD5H6GMyyDrSY8xNHYpPEs4XQFE4Zcjo8sZZfJ6chPR/qV88Bd5P0SgTZraIPybpBYSw2bZis89rv0lwJmfkFm0XrEsyX/8EW4SApp0JJzylIGvXdPwJfgaIWAx4nEa3MLpk4aSh8kiR3APTf0QcCh6fQiPRX6PjQBBZoL+uJnTZAl47C0x+uNdlFRVqY4hUJj3AIhTvbVNVZxph3ia32Il2MGr1qLSPKd+G7ZQNg0MRFuvquaV617YkeRVNHe47sOQIHWHRGgFgJYhUmf1AVz0rfNDD1gkjmz5fyzwR3cI11vHCsZBL4cfLeV/xsOxpRIRgZR+fejDE8EFZ19OPIlJmXKy2DVUkyM8veXorzWbbefN7rWx/jG/2n3kLNoS6hdCqrVUkhSBedkJbVpCiO2KgS5hHbqVTglFIrZN7Iw/qS2AEvzYcKMNI7N1VASvGH0S4zkkSsV+9upbfKXVi95SFQDAbLlBrxlp2Vk689+9JlPuS1r/ISORf+LygFNmzi4CL4q1bsXF0aUMK+NMPSOZGKNw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,52 +134,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Song Liu <liu.song.linuxdev@gmail.com> writes:
-
-> On Tue, Oct 7, 2025 at 7:15=E2=80=AFPM Roman Gushchin <roman.gushchin@lin=
-ux.dev> wrote:
-> [...]
->> >
->> > I am not sure what is the best option for cgroup oom killer. There
->> > are multiple options. Technically, it can even be a sysfs entry.
->> > We can use it as:
->> >
->> > # load and pin oom killers first
->> > $ cat /sys/fs/cgroup/user.slice/oom.killer
->> > [oom_a] oom_b oom_c
->> > $ echo oom_b > /sys/fs/cgroup/user.slice/oom.killer
->> > $ cat /sys/fs/cgroup/user.slice/oom.killer
->> > oom_a [oom_b] oom_c
->>
->> It actually looks nice!
->> But I expect that most users of bpf_oom won't use it directly,
->> but through some sort of middleware (e.g. systemd), so Idk if
->> such a user-oriented interface makes a lot of sense.
->>
->> > Note that, I am not proposing to use sysfs entries for oom killer.
->> > I just want to say it is an option.
->> >
->> > Given attach() can be implemented in different ways, we probably
->> > don't need to add it to bpf_struct_ops. But if that turns out to be
->> > the best option, I would not argue against it. OTOH, I think it is
->> > better to keep reg() and attach() separate, though sched_ext is
->> > using reg() for both options.
->>
->> I'm inclining towards a similar approach, except that I don't want
->> to embed cgroup_id into the struct_ops, but keep it in the link,
->> as Martin suggested. But I need to implement it end-to-end before I can
->> be sure that it's the best option. Working on it...
+On Wed, 8 Oct 2025 at 09:27, Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
 >
-> If we add cgroup_id to the link, I guess this means we need the link
-> (some fd in user space) to hold reference on the attachment of this
-> oom struct_ops on this is cgroup. Do we also need this link to hold
-> a reference on the cgroup?
+> On Wed, 8 Oct 2025 at 07:54, Kiryl Shutsemau <kirill@shutemov.name> wrote:
+> >
+> > Disabling SMAP (clearcpuid=smap) makes it 45.7GiB/s for mine patch and
+> > 50.9GiB/s for yours. So it cannot be fully attributed to SMAP.
+>
+> It's not just smap. It's the iov iterator overheads I mentioned.
 
-Not necessarily. I agree that the struct_ops should not hold a reference
-to the cgroup, it's better to do the opposite.
-This is why the link can have cgroup_id, not cgroup pointer.
-I think it's similar to Tejun's approach to embed cgroup_id into the
-struct ops, but potentially more flexible.
+I also suspect that if the smap and iov overhead are fixed, the next
+thing in line is the folio lookup.
 
-Thanks!
+That should be trivial to fix by just having an additional copy loop
+inside the "look up page".
+
+So you'd have two levels of looping: the outer loop over the "look up
+a folio at a time", and then the inner loop that does the smaller
+chunk size copies.
+
+One remaining pain point might be the sequence count retry read - just
+because it has that smp_rmb().
+
+Because while the *initial* sequence count read can be moved out of
+any loops - so you'd start with just one fixed value that you check -
+we do need to check that value before copying the chunk to user space.
+
+So you'd have one smp_rmb() per that inner loop iteration. That sounds
+unavoidable, but should be unnoticeable.
+
+SMAP would done in the outer loop (so once per folio).
+
+RCU and page fault protection would be at the outermost levels (so
+once per the whole low-latency thing).
+
+At least that's my gut feel.
+
+              Linus
 
