@@ -4,119 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33A69CAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 09:34:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BC66CAC5BB
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 09:43:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5888E8E000A; Wed,  8 Oct 2025 05:34:00 -0400 (EDT)
+	id 500178E0012; Wed,  8 Oct 2025 05:43:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5601F8E0002; Wed,  8 Oct 2025 05:34:00 -0400 (EDT)
+	id 4D8608E0002; Wed,  8 Oct 2025 05:43:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44E398E000A; Wed,  8 Oct 2025 05:34:00 -0400 (EDT)
+	id 3C6F68E0012; Wed,  8 Oct 2025 05:43:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F5438E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 05:34:00 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C8E8E14049E
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 09:33:59 +0000 (UTC)
-X-FDA: 83974435398.15.C22118B
+	by kanga.kvack.org (Postfix) with ESMTP id 2AB0A8E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 05:43:16 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D0EFB590AE
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 09:43:15 +0000 (UTC)
+X-FDA: 83974458750.20.B56B6B9
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 95326C000A
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 09:33:57 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OV7TkOmS;
-	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 6D46A18000A
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 09:43:13 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NbJtF8Id;
+	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759916037;
+	s=arc-20220608; t=1759916593;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pvNQ2sqsxcgVrxGJZXdoSqap7VzzZ3mjW5LxJACJ12c=;
-	b=Y/4GQN5Xjx20w/aRGN1Yj1VIXyCTrscFRZHcTPECxdaCSY/7SJPvUmGDjgsfi56O3qaEgX
-	ud7f9M3E5uRhCBc1V8v6XinLwOg5pTUE0lVNxOoSHukvg41cHCN/QmJMqZKCkKtLMdM1MH
-	0mxXKz+M5wO34iio4LgoRxT8/8dfiQA=
+	bh=JD/HSn//vajjys6bQcekYCIiWa+gYSHGEuJh3U25KF4=;
+	b=ARxtMcwoIbGM6cDvU6QNfhTKdzHzVRR+zV0ih2I+anjyq63lV30nyJYtK07vS+UxQzl++B
+	7c+pisLDKhdd1iVCyIPNelnZKH7xBi6381HIZt41go6kAV90hdJaXDcdF6F9A0KlEyVq/W
+	fw7ruZKIdC5kTdnh3jT7/mHWp1QtnlE=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OV7TkOmS;
-	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NbJtF8Id;
+	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759916037; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759916593; a=rsa-sha256;
 	cv=none;
-	b=QNHjhEKY92IVprgE+ske7V+2e+dMXBkePrGw+iK46mOqPMUJ1vQ0dzi17M/syVMsbHIpnN
-	UmSAX/8Db084zIAQZXvbvjR2OS/Eq1B+sTJve1tWxE2kTh6nfqZuN6eAJP2w0GX6BQFaMV
-	dPFgViBGMD6IcTz0dw/s6dNvUG3HkTM=
+	b=EiAUuCjtIH2LqEf7MFE3pkwzkRSi2LECRlJSJJAMeSxCYDOmw94fGcKcOgrToB1/RxJaMj
+	lXx8+vw4JI/4OACZ6kZF2LeK5LlyzBaOn0tE/ZsZ3xB9+QHk0ynHg6qMlKxTW5KEmZykPu
+	TAHSLnNjq0SUhWyt6DmTYignzixIVZ8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759916036;
+	s=mimecast20190719; t=1759916592;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=pvNQ2sqsxcgVrxGJZXdoSqap7VzzZ3mjW5LxJACJ12c=;
-	b=OV7TkOmSgisaZOAs+bl1jM68RZK2f8TnJxeIf9Wt1rj2QJdOPOC7opdHbwQLUNc+5wZjjI
-	sz3+tel447YK1aMuZELwDOfSwEc6AxrzuoRQJOhOe0yRPKS+GQKaWcwGPHZov0cI3B5Zv+
-	3DrWfjFKe3LoYvxngo+8BxdMQEUBUIA=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=JD/HSn//vajjys6bQcekYCIiWa+gYSHGEuJh3U25KF4=;
+	b=NbJtF8IdBfZ86sx3LOorrdHGilVN0mx1cwceg9sS/q9rWMWvABLuIV7se2/stUjKuRZaUA
+	CrG8M5cTrsuiJB/x6MJPQqXso2Zvm79XLaslvKu3ueZczzOqFuh6rqN4JKrNSmd2EiyCcK
+	8rAcBc6QKQZvhKEzxUD6KpRZEtUPeO0=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-650-kP-h3lyBOyqGldFLhoPDFA-1; Wed, 08 Oct 2025 05:33:55 -0400
-X-MC-Unique: kP-h3lyBOyqGldFLhoPDFA-1
-X-Mimecast-MFC-AGG-ID: kP-h3lyBOyqGldFLhoPDFA_1759916034
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-401dbafbcfaso4382457f8f.1
-        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 02:33:55 -0700 (PDT)
+ us-mta-80-E1ve7ioZPl6tSZWFUSVZ7w-1; Wed, 08 Oct 2025 05:43:09 -0400
+X-MC-Unique: E1ve7ioZPl6tSZWFUSVZ7w-1
+X-Mimecast-MFC-AGG-ID: E1ve7ioZPl6tSZWFUSVZ7w_1759916588
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-46e2d845ebeso38285685e9.1
+        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 02:43:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759916034; x=1760520834;
+        d=1e100.net; s=20230601; t=1759916588; x=1760521388;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=pvNQ2sqsxcgVrxGJZXdoSqap7VzzZ3mjW5LxJACJ12c=;
-        b=RsEBxYEWaEGlswStrUFKvQA7CSp7cpt8r7/hX6jNhfdYNzpUQUMCCxR3evaKTM52VM
-         yW6HZ9cK8tBWC06vHXGKMTKAMkrxafjAdA/erJ9yCy3OTI4zMrM5ycUHaqctqMvJpDPI
-         BiTNP0gLyB9KUxiu/I/j9kEkGDlpKw1Z8+CwKE2d8+wkx+uYsZJowr6luvQCzSPCwSxz
-         FILJbbrF6+CS8jcdPcBygppu9gpqc7g28ud6UCMXOIQM9LpuzZ4qBPsWEjCAm/eFMM/k
-         e2vlQQCKNbUMphQSa8CGr7A8MGG4DPF1z2XYdOOBLW56rNa6ZJ+/Z8BfBhpJWsdqjLs5
-         zOSg==
-X-Forwarded-Encrypted: i=1; AJvYcCWHeqRN7ipT6hOKLUUVHes4cVMy6EgVdO20DHd2c0Orj5MsFjTXHBOgF2fcWkzz0OFwZ/8BC4E5oQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy4k5mHe9IAb1cLmXOuSZnOVwvLIJDb/+YbHPfaMsEfYSbNt/s7
-	pEON2V6F0RJ6hXg28KwVMrWIIoZse0Kb4soPwEJ7WfUWbtAroLFY2avo+XHJwCGCTMPatUyEDwc
-	eoWbbeXPnZqAHB9jBkuVl0XVEcMee9hZ9ADuGL19dZYIQVpOPIPLA
-X-Gm-Gg: ASbGncsVy8dKgeu1eikAbkWAchD3x7n3u1z28+SnuUDLPP44MZ0vS1sYWsDrpgyoHg1
-	ppmT5T18eGEMG2pgYwhAdEMZaWDVnz20sgZcHeaulT8Cmep7kHjY4fcge4MVWR1i4S5dlqtn9mZ
-	6FxS98087lCsj72pwEHMmBPZi16SJajdc4lOcVvmc2kG2xphHPi0S/2X0RvgCSWDpmJZXlOGn1E
-	TIOoxQqBppjyruQn8mO7nn83WryBsFef89m6T+zSQqBcKCKXPBz59RUtaJWJVoyXV/lNennB6EJ
-	F26eT2fdpusGA1WDNe542zEkIKJXtPKn5+eD0YWApvwJMFURoeUExrG6pyPmrrpsLrPWibvS396
-	r8nYGgwlM
-X-Received: by 2002:a05:6000:2408:b0:414:6fe6:8fbd with SMTP id ffacd0b85a97d-4266e8de55dmr1525956f8f.54.1759916034445;
-        Wed, 08 Oct 2025 02:33:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHRgm9ENNBAKPQVvD/piMECVRSv9+MLaK5jztOw4UsWToxz1h/ZD5Ud2PMOKOKZArxB19KvCg==
-X-Received: by 2002:a05:6000:2408:b0:414:6fe6:8fbd with SMTP id ffacd0b85a97d-4266e8de55dmr1525932f8f.54.1759916034010;
-        Wed, 08 Oct 2025 02:33:54 -0700 (PDT)
+        bh=JD/HSn//vajjys6bQcekYCIiWa+gYSHGEuJh3U25KF4=;
+        b=mJDUe5e+x80eNXCIVFsXE7EECDSh+MkG1lMYQk6Mm+xkcfE75XBbK70GNaL0nOUncI
+         3TPP/v94K6tsGYj1NbYsiWYuYeFeWVciWbIJacznZAdidzh+EiQGMqDMj1uSgQxQMeoq
+         DPBTKAs11/z6Z9QktNyp6mrGTNN1r93KBztg1K95963GQmOJhMYmukp3H4SxzzJ3Sjkd
+         iA/r7843DlNar2ClFSpZhUZ7CoMxOlf48YfKPeOILvWDX16VPySIk3mFCggNbFqHkIO/
+         Gw9RCRWi4f73WCL+zr0ALBVwSKM1mK058tRBte1Ww2sZ54zhXmQ24ZI08CkLeWH1CFNl
+         MnoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUj6tjpz+A45AWL/YdicmZ3bK74WrQb+7irUJ4kg4gozb1iF4No9BhmAgKFQr7z+OOk6dEaT9DeBQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw87C7GIrF/eiuBIzbj53AlIV0xWIamDV6vQywCtZTWIRwakAJ1
+	/YuXDkCtwE7hVMWidzhRZEELibdD3kasNGcK8nRoyMgydIbj1+g2APfbjNI2ch5UTUSZPCbh4dx
+	BYkiCT3k06aMKd4xde7qi5cOiHCDqlnu9jq/eufyHsPljMwhqh7Xn
+X-Gm-Gg: ASbGnctc6njAVRYRARGGjVy8cAtx4mfzLyJSn3uuTREoPw98UXussev3LEmzynhPGoi
+	BdBf1r0GZLvUyTl+UBiZQXwE4ITlYvrvw3M7HSQlKM9sqYOReWfNg3zMNGxjZtJqlz8o5WLrskM
+	NNWh1tPLX1L+112STgsx5aZTmZse1szm5Alkrbf2AgJdYjq7RMVZIJBLZbh3OzD0T94vFTCUNI9
+	2UKJYC0JUr9qF3EkH13VKoDQ6J/5qaGHQCMl6P/TwdZTyAc9iSYnzd4elgPqEfiSvTgL8TRES2/
+	ChSx3azORtKyycUguCkhulRpfKw/sZJaMfElvKylMoFrYTtAq9d+GoaAV23CWkdZ7v2o6pTjvIa
+	N1it+82Dz
+X-Received: by 2002:a05:600c:1384:b0:46e:3cd9:e56f with SMTP id 5b1f17b1804b1-46fa9a89286mr19134755e9.6.1759916588194;
+        Wed, 08 Oct 2025 02:43:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFYzPp9F7S3QX2xHYqfV5S6fHz6gcoGlAerW1ZxI0fAG/Jst1h7y7+sJqtkHP4Cco90/r1u5Q==
+X-Received: by 2002:a05:600c:1384:b0:46e:3cd9:e56f with SMTP id 5b1f17b1804b1-46fa9a89286mr19134555e9.6.1759916587743;
+        Wed, 08 Oct 2025 02:43:07 -0700 (PDT)
 Received: from [192.168.3.141] (tmo-083-110.customers.d1-online.com. [80.187.83.110])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8f4cc3sm29006938f8f.55.2025.10.08.02.33.52
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fa9bf94ddsm30134765e9.2.2025.10.08.02.43.06
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Oct 2025 02:33:53 -0700 (PDT)
-Message-ID: <9f35aedb-fd67-412f-a3d3-bb6692f7c2ce@redhat.com>
-Date: Wed, 8 Oct 2025 11:33:51 +0200
+        Wed, 08 Oct 2025 02:43:07 -0700 (PDT)
+Message-ID: <abdd6107-d380-48f5-9a25-22a5f560c78b@redhat.com>
+Date: Wed, 8 Oct 2025 11:43:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 0/4] Support dynamic (de)configuration of memory
-To: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>,
+To: Heiko Carstens <hca@linux.ibm.com>
+Cc: Sumanth Korikkar <sumanthk@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>,
  LKML <linux-kernel@vger.kernel.org>, linux-s390
  <linux-s390@vger.kernel.org>, Gerald Schaefer
- <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>
+ <gerald.schaefer@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>
 References: <20250926131527.3260733-1-sumanthk@linux.ibm.com>
  <ab366c03-8c78-449d-bfc4-2d155212d9d7@redhat.com>
  <aOVUNmDiWgrDJ1dJ@li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com>
  <5e3b16ec-9ef9-483e-b97e-bff0c1915b19@redhat.com>
  <aOX_L1_2S30XhLRA@li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com>
  <1efcb368-fcdf-4bdd-8b94-a705b7806bc2@redhat.com>
- <aOYrUEr-inqogzJE@li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com>
+ <20251008091226.7407Ba1-hca@linux.ibm.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -162,21 +163,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aOYrUEr-inqogzJE@li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com>
+In-Reply-To: <20251008091226.7407Ba1-hca@linux.ibm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 6ou8xKIS-zyUPPOuIKXTBsrda8D2XSXAlpLympLSvrY_1759916034
+X-Mimecast-MFC-PROC-ID: 4GFzr_z1VzAzbVdtKRl34rEWlFyxvSXfmLlmklZ4AVQ_1759916588
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 95326C000A
-X-Stat-Signature: he5nrergc5o7cdd1wceydjr41ebbdhzh
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 6D46A18000A
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1759916037-243336
-X-HE-Meta: U2FsdGVkX18+prfgKiJhwM6FUWxUfpFVv2NSWhibAsmai6htWbpulBipQweVxshWRPuu1k0qex2RgjStIPEQ+u510RqsfHunRD3/e6hWmpXDWZNqlVjh1DHBWGu71MuyhNVtdN1rBX3OAzVTBtC3kYIL7V+Km1imTcA0ijb7xyerz9V3Ed9AetrGJsGDsmTkh+3vDAGLMbG4xdWEKoY9wzNvit+cG/Q7ELA25r9ywIO+Mugya9VsXoCEMkAAhMKdx33RJQS/HdsbL9jAB/X5G7MCcHfw5PoYP470xfkxXDz13XRgY4iVW3IOelr2E89jOEJiaZONIIvzuOaRY+kyrS0I6tK7d9aho0DaeBo37ghON6fYilZ3VYz0thdp73yXRgCd4Y0jkGGxbz5SsiHNzyyzcVHWHiHwYnBRbiyW5Ud1bqiuuZ25zuj43h/wUsgDfFbD9mN51+wElljY1MKhjgW6s3FUt2A2wkKopSfRNuz37EC+JLwCgijhErAE/tN+O3hf9T/MH5KavGSxT911GWGOLArTQ7xJnqcVHpzmF+uvqogzcvWRMArDNIxtMAj1NPsZpn5xSoWr++5FBUnI0DvhZCvaDvtmlpQLOh8OqEQBYCCTS9c88aCefsFMTCBRM4kaLCMzPP9L2nM/MD61U1DVp2HQaqMtg64FD37kJrdi0DVSGI0F/CEfK6QWt683v44jrys5UdUeJXqSvaHYng2gVAIy/8O99QLd1RU/1D0Pe0Nov3H5Fi77rhiIoT/Sp/Jci/xXJYnAKTusgy744cvs3YW8jB1yu+33zlM5YI7BSQv9yhloAfzQ/5uguCHDv24EUtCgCCC08CYdeHO+IuBBIXC2abkjwcUcEyTMPHPhzEhjTmIf18Z8x2NVN7ofvcdNIcFFvQn9c11XruuDTEdR6KHJJxqct2yYuusQlC3H6hCgHmud4WrusNRnzeQ5awXxRsB30RcjOrR+pGM
- zDe1+VIT
- kdPkrpsAG2c9+/I6usj1QoxLtCwNqtv0Urw7D
+X-Stat-Signature: w5jgptyhz8nfesbi9z8s3qbzwtsg95oa
+X-HE-Tag: 1759916593-400104
+X-HE-Meta: U2FsdGVkX1+2z/16SHVv+rv+GZRgY6ukM/eEJJaDCofNaxYRFcOUp/3UFwWpI/4W/E1du0VpQke+mu66jkEanW1AjoWSy2TUwo1RYswBbC4sd4lZeFQd0hpS/J/cI7MTfITRPjToDhVLuH5wt/1I8i4+sL8/jPyMKRn83+qMk9Pz1+B+XdeMci5CnuY4/Ibip7El0KN72C6LMcP6wpYbyZS+sadfXYWdi2uVyFfrI0wvnAmVa7H7aX1eM5UaKFOTaLw2aVCUTcszUYeDX9MlYSbGj2ciUbqB+m+Asx80gO0tP4icFNmk/pi/lNCETyWTYSRNTbj0fnNnttyeB3lKFbBIacb9zAEoiAolqi+ijiwSnThNUzwQzcaJEkNgcfuI/shYDB5g93GJwDid5/hFYZks2Fu52UzbutYTyG5wY+nRI0oSeBVoQJaCo1ZxRVdYh+rzPTyB4wtdrWyDjDXR1rUo6jIkPzh0CP+kCx9QE9SetzeUihxUkptRxtI243beuiTv1tG9JkoOI2byTdgep5Yhqt25ne4Vhdhyp1JRhtygFvhthpNw3d5rE+Cb1n5PcAc60yp05PK26xBcX60zNvbw+PiLkdLQucQGiQ9REUvU87CDWDJdQgIgFAlchV3rLTrH7BAS2e3q3SvmgNHCiejjPDXsPJaXj3J58ZLmRf+QaMa7hQtkus5bNycq8qz1Ekkwnw/xJhpCUjedlWKdRNgnwfmQcbq/Zp7U5fmSNQ8rOk8vKnH3dFBh9V8cSd/ZVp4jJYE8MaiR82p9oWEg5Yb7HxnAZYFo+vMPKC9dpsGUcdTcWLgU4IuDV2PRzvRBHY1fqVxWjsh/HDDOi5Zmw78I4MhMr8CsjCWu2emyavHtw4TC9u7mjALd4buZQtL86NYsr531LrFBET7Nd0HJtXt5ESMrD17216/P0xUREFf4ItABKCkoD5ep9aA9XnbM5pPqJMQSSN/4ADf2bEg
+ ZirFjtS6
+ 6/YjSAv9j3KxuUCQSN7wge5g3UyC/DyWKkB6hwP4zriRoa0CLSTqKvzGe7TPCXwOn7a/yW9yqD08UMYM2iTxYECtAFyjx20qOuPzJRA42kjxJw9o7IOpBEFamgFS1wA6VV3NMvaf0D0WBLIdIu87LPSbsm0Z9xaBLrFyAMZVTVkvhU5VPIOOzhaZGaohUN5bk6CKMiJzA56vQ5Cpuhl6oJTK0n/8NQY0W+humWNC0jBmNwzV04z8a5wPyrDFZ6TC9/4uDcjFBZbVrOLDB5FGFxit7tk+D2IOa6fLkIRzFUp32lYYrTSokdPUv9nzcsw2sfn+hG3ke3i9P7muPEru/3hLCzrErHW6iVm3jeYk28pH0t68r/0c0rqKOn4mQ1INUPT5/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,53 +186,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08.10.25 11:13, Sumanth Korikkar wrote:
+On 08.10.25 11:12, Heiko Carstens wrote:
+> On Wed, Oct 08, 2025 at 10:02:26AM +0200, David Hildenbrand wrote:
+>> On 08.10.25 08:05, Sumanth Korikkar wrote:
+>>>>> chmem changes would look like:
+>>>>> chmem -c 128M -m 1 : configure memory with memmap-on-memory enabled
+>>>>> chmem -g 128M : deconfigure memory
+>>>>
 >>>> I wonder if the above two are really required. I would expect most/all users
 >>>> to simply keep using -e / -d.
 >>>>
 >>>> Sure, there might be some corner cases, but I would assume most people to
 >>>> not want to care about memmap-on-memory with the new model.
->>>
->>> I believe this remains very beneficial for customers in the following
->>> scenario:
->>>
->>> 1) Initial memory layout:
->>> 4 GB configured online
->>> 512 GB standby
->>>
->>> If memory_hotplug.memmap_on_memory=Y is set in the kernel command line:
->>> Suppose user requires more memory and onlines 256 GB. With memmap-on-memory
->>> enabled, this likely succeeds by default.
->>>
->>> Later, the user needs 256 GB of contiguous physical memory across memory
->>> blocks. Then, the user can still configure those memory blocks with
->>> memmap-on-memory disabled and online it.
->>>
+> 
+> ...
+> 
 >>> 2) If the administrator forgets to configure
 >>> memory_hotplug.memmap_on_memory=Y, the following steps can be taken:
 >>> Rescue from OOM situations: configure with memmap-on-memory enabled, online it.
 >>
 >> That's my point: I don't consider either very likely to be used by actual
 >> admins.
->>
->> I guess in (1) it really only is a problem with very big memory blocks.
->> Assuming a memory block is just 128 MiB (or even 1 GiB), you can add+online
->> them individually. Once you succeeded with the first one (very likely), the
->> other ones will follow.
->>
->> Sure, if you are so low on memory that you cannot even a single memory
->> block, then memmap-on-memory makes sense.
->>
->> But note that memmap-on-memory was added to handle hotplug of large chunks
->> of memory (large DIMM/NVDIMM, large CXL device) in one go, without the
->> chance to add+online individual memory blocks incrementally.
 > 
-> Interesting. Thanks David.
-> 
-> Heiko suggested that memory increment size could also be upto
-> 64GB. In that case, it might be useful.
+> But does it really hurt to add those options?
 
-Yeha, rings a bell. But that would not be your 4GiB scenario you shared :)
+Oh, I don't think so.
+
+I was just a bit surprised to see it in the first version of this, 
+because it felt to me like this is something to be added later on top 
+quite easily/cleanly.
+
+In particular, patch #2 would get a lot lighter also in terms of 
+documentation.
+
+So no strong opinion about adding it, but maybe we can just split it 
+into a separate patch and focus on patch #2 on the real magic?
 
 -- 
 Cheers
