@@ -4,90 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AA5DCCA472
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 13:40:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9A3CCCA472
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 14:05:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D570E8E0007; Wed,  8 Oct 2025 09:40:37 -0400 (EDT)
+	id F3D438E0013; Wed,  8 Oct 2025 10:05:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2F058E0002; Wed,  8 Oct 2025 09:40:37 -0400 (EDT)
+	id EEEB28E0002; Wed,  8 Oct 2025 10:05:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6C5C8E0007; Wed,  8 Oct 2025 09:40:37 -0400 (EDT)
+	id DB5B78E0013; Wed,  8 Oct 2025 10:05:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B65898E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 09:40:37 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 52DBCBA23E
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 13:40:37 +0000 (UTC)
-X-FDA: 83975056914.23.5BFCA34
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 5444040016
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 13:40:34 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=GBcbjOBR
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C92308E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 10:05:21 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 66FFFBA39A
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 14:05:21 +0000 (UTC)
+X-FDA: 83975119242.24.6F76E02
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6497B1C0027
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 14:05:19 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=jtoAlc48;
+	spf=pass (imf20.hostedemail.com: domain of aliceryhl@google.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=aliceryhl@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759930835;
+	s=arc-20220608; t=1759932319;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lSR+OAicaMJG7hAOQdZGFYmQwq4m25NNDfS7Fm4FF1A=;
-	b=dpc7MHazkJzoqc/JfBrFA0y3I/o7+lbNfZmPFGuLCSkJK1M445Idsk6AKnODL73mPhIrg9
-	5qvFsgbz8Mr/20YIkw24BcydLWLExH+GDCBhHyT3DT1llVrxY8nftyZNpkUQEC4ldZizPu
-	MneBKiwwphj3jR7+fIwl4kU77eJeR7c=
+	bh=pnFNM1hwuEwchUfhEuJaKySc2Ut3Y6Tp66F6XTEbLGo=;
+	b=XsnNCoifJxrfa0K3zZv99BfA20DEaVl1oXGgiuySjpORPb60GsnRz5GOmd8YsaqGErd32A
+	GS3OiMR/aio6q5ugflO2U2fIxH5auFHxaL+OhI2HkOt6n8B90xuxh8/XtnpSYOT9M8q+tz
+	iozhPCY9uj6pjqFHgpicJc2WisfSiNE=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=GBcbjOBR;
-	spf=none (imf11.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759930835; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=jtoAlc48;
+	spf=pass (imf20.hostedemail.com: domain of aliceryhl@google.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=aliceryhl@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759932319; a=rsa-sha256;
 	cv=none;
-	b=7jZEAGzSiY5fr6QX14Dx57Ib+VjDg5QU8GN3ss88eH4DuQtoDu3KAA2e/XHKeXvESYRtuF
-	6k6Axqf3Sz9FtvYutvUmqKGGFmNZ4ibNzWI1ECwYtHtIz1QgJR+TF01fQZtqoSc1qBMUKU
-	dGtu9QvY9OGGvepKKCDR43/FfthSTkM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=lSR+OAicaMJG7hAOQdZGFYmQwq4m25NNDfS7Fm4FF1A=; b=GBcbjOBRjpqcrTolR56nJh8rzY
-	yWqLurKTHGY7dnX/f1klPuUKfN3G7Al+8qWBSQwWjwhFFtCYwTapWKcfGEtEjS0GkF8HwFxg1F+hD
-	HNYiwuvhwlOG98YBjchx/OCD/xFUWhMKltbqtP7rqbIgS+eavY+zM6E13GqkaiG5eDTvuII2B7uVg
-	DznQMKemRqpDeWyUVu4qtobekFIItRHUANiz4OGms8xyeG4kl4aaAwWAGzhtJqdlwVukcFlmtVAtJ
-	2yTGjOX8w73JyzRF6ijRJ4d1u7e+wCmvDRvV5l75uwkGJPtNbAEX0FjJ6pP0EkQyTatslFQG1o5Ki
-	kiwvdtPA==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v6UOv-000000064WR-2h34;
-	Wed, 08 Oct 2025 13:40:17 +0000
-Date: Wed, 8 Oct 2025 14:40:17 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	rust-for-linux@vger.kernel.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, lossin@kernel.org, tmgross@umich.edu,
-	dakr@kernel.org, linux-kernel@vger.kernel.org, acourbot@nvidia.com,
-	airlied@gmail.com, simona@ffwll.ch,
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-	tzimmermann@suse.de, corbet@lwn.net, lyude@redhat.com,
-	linux-doc@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 2/4] rust: xarray: abstract `xa_alloc`
-Message-ID: <aOZpwUD50MwSBycB@casper.infradead.org>
-References: <20251008124619.3160-1-work@onurozkan.dev>
- <20251008124619.3160-3-work@onurozkan.dev>
- <aOZhS9nTDnH3Zh7N@google.com>
+	b=fz/Af7Rf4/ax4CSyEHRxBvzgh2CkE6EAZmtkiUY/kMoghqIR4Fm7DV72WD9Qw6huFFIXoi
+	v1BVNP76EuARMLeu21GWvrnw1vUilVuMUsY5n632dTH86JxAE5NDgGhlbh3XeoD/1bJ2m2
+	Ia04rKe36v25wBM1CGefS8Q1v/oV1WQ=
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3ee12332f3dso6625776f8f.2
+        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 07:05:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1759932318; x=1760537118; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pnFNM1hwuEwchUfhEuJaKySc2Ut3Y6Tp66F6XTEbLGo=;
+        b=jtoAlc48gLnUdXl8yrIP93TnJV0iFu0KO0+DuIkuHsPNIw6pjkmogthUwewB85IOkY
+         N2ZSV8YyIFEuxVh3ZScALRtubtKbVNxCfhWaO9wwBY72y0Jio4YYKSrPVxproKjuppcR
+         w08jtZ4A3TeDDzCzzqqbB/0LTbDAsTYENtX84E66YUlM7AGg6PD2O04Px4Kko4Q8QrKi
+         Y9OIvY7exuPu3bmjzV3JLfpPx44SbapqxJ4Q/RbgyyVaTxE+zgzqy/fQl4G1DrVXPZ1a
+         Kct/Ce4Fwo4o5x7ZQ15y/XpmxMff4AveQnUqW7P8Fux0X4b7ba6oEbH7fy6/X0PcfmAq
+         riGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759932318; x=1760537118;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pnFNM1hwuEwchUfhEuJaKySc2Ut3Y6Tp66F6XTEbLGo=;
+        b=Pb7+9RWjIMX7Ci8g4Zp6VRl3U62ok6o1ZFBoDSNhVBGR2DGIhHj+kJuNGBBylcK9rD
+         466m9/xjKB+zJEtNzeoZE+VaUvie4rJG9RsdXDGakvTp6/5L0pvKHQuoIgcNlv4mWzpu
+         gRTTjfvaVGHUcZ27VkoCq0wWmDh01yCpdUB/nRCfZ8nBqrkGoHKdop0fGXvhjjeVYuBC
+         CDmTYTZXN1rXMJhPr45e4v6c1lfPmWLmzORYOzHehbgoCnKbvKa8OM+wgG3wzwdx7qpS
+         rTit1lCpnZIQZT3oAhDAAvQMdl9DH3X2ALEBxMcBYNilCgENSEaV7ajXQB6fWORnzgUw
+         J+Pg==
+X-Forwarded-Encrypted: i=1; AJvYcCWSBzQOCU/tQtYkbz93+U+McrcNZRYN9LOGvPnYXK31TNN+3h6wO5v17K//GTUGxl35f2utrvCrHA==@kvack.org
+X-Gm-Message-State: AOJu0Yw+rNrcUrAhqqIfzJ5Ub3U6Rmnmkuc3Gw3P8zhF+LINg8lC32+p
+	8H6jXLyN8+eOraAreh7KBIJlmVuMWaHXu6O/blm5Cb12I8H6zOp62w12mH85JgjIRAgvWtyIxQM
+	Mo1rAMey+d9joC+PgAaMFGDJWhwQZ30+iKlzBk6y0
+X-Gm-Gg: ASbGncv+6NEzSV1RAK79XXI5OpEmTOQ+aTjW52nq4g6+7Wd4m4PXbCZHyjLlLO2YEqw
+	+gsNMvcnJM1XVAzzenqlrSg/2HUnBeW+oCpZBcrVGsGHTFrmKyQir3vrMjuIMurEE7+ECNnA2vL
+	2cXPJ18ntZGP1BcqXsw2YaFz2tIFRb9ZjvYqVDFL6K0KJBS8a894KCDfrIB+bbNlW2Bgazb1pQp
+	sQTgMvBwgvrYl3k2dCMpO2GkNv0VoMisG6y1IlOa/4pi0LoZw1KbK9fRmpxmqrW50E=
+X-Google-Smtp-Source: AGHT+IEtL1VUjwteFF0aUMusK9O6vaSfUkvwFkxXShRQV/K9msyLkRj+XdqkEBNkBGqLRAXp1DSu3/HCWH6QZ7gPJbw=
+X-Received: by 2002:a05:6000:2c0d:b0:3ec:df2b:14e2 with SMTP id
+ ffacd0b85a97d-4267260e143mr2316476f8f.51.1759932317676; Wed, 08 Oct 2025
+ 07:05:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aOZhS9nTDnH3Zh7N@google.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5444040016
-X-Stat-Signature: j95ry491synninjo7wsci7bzc8zpq4z7
+References: <20251008124619.3160-1-work@onurozkan.dev> <20251008124619.3160-3-work@onurozkan.dev>
+ <aOZhS9nTDnH3Zh7N@google.com> <aOZpwUD50MwSBycB@casper.infradead.org>
+In-Reply-To: <aOZpwUD50MwSBycB@casper.infradead.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 8 Oct 2025 16:05:05 +0200
+X-Gm-Features: AS18NWCZJ-_06NHTt-9pvac60ma3Z_7vD0cIto5b6ZZ5rLx2-etkF4_odDy_JZs
+Message-ID: <CAH5fLghoDEKnpq6WaD3zzV9UHm6gYzYXCOG_Q=pOUomcNcQhPg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] rust: xarray: abstract `xa_alloc`
+To: Matthew Wilcox <willy@infradead.org>
+Cc: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, tmgross@umich.edu, dakr@kernel.org, 
+	linux-kernel@vger.kernel.org, acourbot@nvidia.com, airlied@gmail.com, 
+	simona@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
+	tzimmermann@suse.de, corbet@lwn.net, lyude@redhat.com, 
+	linux-doc@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 6497B1C0027
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1759930834-98769
-X-HE-Meta: U2FsdGVkX1/1TmwJ0BsyOAVYSsv4OmtjP7lUXutrZu3WH7250Ks/+Cd4siKz5XoHcce9RsOog40SJDVmudaRiRWr8+z3iC+ACSqsU3LMzOJqNcPLx5LXyksLnYkqxkERAGOB/0b9Lkvfwt804qki+6hUzSsvtTwVT1AmWNZ+5b9QyKuG3X6x8skadlboY7xjdkfzGtEAmqrE9wYz/eLrGsKgyFPg9vGFec5UlzR3f+pP3f+QnXz65n7jxo+CRlLPI/gFj/OuDsfun9g0WJce+e5MC3d0WMyhfpVxmtjaXVzKL8sFgRwzHYEVQPClD2V/J8s9L/UR7+//uvy1mdsUN98e2pSZnXG5ucmKBkdn9S2vShgckcWTsivDk/+og54MbGHg6Wpv9jzp8YQPGQbUg6RszLwzXd/kczT8AUetE2awIBsRWoyPrn83pWs2GqqPXD0VnQj7wTQIrhoVg/oWzD9I3wUx08vBDe+2HnS5VuxtOcreppMjU9SfqRhCWkY36AON8FSCZQ8CCKX8wWftrLHMcy9+Sqlyy2ahEFAgcV1WRtram4FJ4/y5fDzGvGqXULku3ln5PldSshADelNXMBgtT32gbLN5QacKwzLqZqRnO7rcMCyOtPdGHSBm9d+X6iF2TOHldY9V4o1dwu1q0xIaW1onY8dnIj81DtkeS6c6HtodbBP2R1uQKalBgdJCS2+lzKOfmSRabxdBOaCbyCBBN2gojRKe/UZz1qowgd9c2XuLMXZM67qqezv2rjvpjZIfT950oEcHCloeM+RfIio2ZIi0bjHrU56W1EdnVwTl9aRLgIKxm9OECdKTrQOqDExVssckZI58eU6aZqfPP4ASqN1J6WwGoRHtXVXvis5f/cjPZBPsAPdhvlFZn86qHUyAR/B0EhVbxEY2SJPsGZuvrywyP6f9rNbpMj5rDTY9n4Ty7eZ7WvOJrHu+7d3aworG/hhNV+wmYt0c/ca
- CPe9uKF4
- s0eqfaLq9SLBToLoDtMCa8/9Z+13KC3pERCcsZ35XueIylzASLBN0yzuqHlp2mhcvOe9j43wxRdzLaF1wJ/6K93Dd68/1SRCQbe4U3b0txtDl++EEMKmpskBrH7F8WNrciAfw09vqFDHueQ+Ih37zeQaeHx+PdDkZNfoC1benhHAk3uoyfa1xwbziFibSOhQrdWtQ4PnNO1NjG1FohfkdIIMCDwbxSsAVtYeckelwtKAOlUflah53jpO7Vpmgc71hzhE5/eSoOjXQGYc58D1joncs99dxZ2UFjzWUw3+7Jd6HM801u7AmB9MGqzj10G42n646
+X-Stat-Signature: 5m15o9mfgzgo6fdjb45wc3eeb798ctb8
+X-HE-Tag: 1759932319-347930
+X-HE-Meta: U2FsdGVkX1+k7OScOqHpI78/MMw2mDFTm/HxooEzYhP1EEZoDlM0blEkinc/gSw+yz51KMZ+Fc6vNoLTmq1E1iTZNwR5lOlgOj6xA34iqFuOVlD0h41XvqR9xJEmVXUBVfne88O7EtNBgx3Sf4dsy1JP70nf4Nhju2pxhBqF6v8vMZrLsfMPdnMqt8HzeMR/qrUgQzViGIISoutcYInr7Fdy6/5J84ZC59f4v0kXmfvf3JdFUvccKUuT9bVivn1ch60YzQcLuokQgS2CIS5yxYrDm5ygSWYgKXh5JeKZeCDeX85KUakuoFwUjjCglBTExgFcZ17mg7I62jNdvaAmi6ZZB6Jnd5L99J7Yo9NkSZICT5VrDPwLIUcoGcwLiwv42CmvTDxELSCi8DaC/fuJRRRzS1Bpmj42HZW44qQC/Qg3NRlaSGtOnLcEhbCjya5z4V9xdI2FSKYSVPmlRDNanMcCjZ+95vs/W6KXbfpyHdSFZdVzBz6GfVHCj/y2FR7+OA9SDC5WzCFhc5Sd8r/wVd/1Sp44i+V6QIbnGBPriYM6KWK34NOIbZ6Ou3sSwfZjPx87sCBCz+kG9rQOZQPyIrDEwgX5NjaK0or+4QT2j0ZUYNNT7w0eksHG+ZiCAuXDYAA6NXCLCynetGA4/7NY0NRp8Ivs3+SXEFshIQQGjbVfLZ59VPgc75nu5Hlkb5Q/jjkUBvZ712xXpJdIY4VsbszcEmGdamgiV2pkbCKoUB1C4shAhbPLDHbpXxia/6EiVWxeGo4pEmWIY/rcOUP30PnuPTfpGb10kqPuNNsCgK9SKrBoRXhDs6Peg7/sg4AKkNDW1YqnxxlSxKFlXjgrgs1qOkwUNMX6dUo+0VOweaayWT85FTwrHGqWYcX7R7NiVcIi5sm2Dnm6ixpVJzHLnTWXB0Xgd3XKhMW9n7cxSCePxPI7i3iCiENWNWAsk3h6dz+ZznWTrf3Dydh9XSj
+ 6NyWHM6s
+ fw7LSSNbBW8lHM4Z/TbUPQiRy6GppvwW/WsE4uU5jI0F1KMc78fInb4imzsIrp1+o0KGz0ncqA7Ot71WJ/Cy7m3PyBoxhX0/Wz2fAcAuparvMbDY0y6i7F0eVdtYxzzgu02M8lkFhaj+TNUVp3wAJJlOULAb9ENQ/ZtssPjW66M4fiTwGBF8pI6NYVtrN9gQ1XmzbjsaLS8jpFOI/xcz8l9aKs6SqakGXjFqeAhgP7UWW9q9NYWYx38sS5b62qJzmYGywexaN/RPaMrtJtV4soRKAcXrl3hKSC4XN41vQG6/h9Ukl8QVWKS+1dP3ADebQjlCd8vfvCpZGba3KENN+HVvMEFJ8LxuveBedO2ohQBKOGJJ6INznsFK/XQSNV3bYjflkUgXTF5nRGtI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,14 +123,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 08, 2025 at 01:04:11PM +0000, Alice Ryhl wrote:
-> > +        limit: Range<u32>,
-> 
-> The Range type is inclusive/exclusive but xa_limit is
-> inclusive/inclusive. They should match to avoid confusion.
+On Wed, Oct 8, 2025 at 3:40=E2=80=AFPM Matthew Wilcox <willy@infradead.org>=
+ wrote:
+>
+> On Wed, Oct 08, 2025 at 01:04:11PM +0000, Alice Ryhl wrote:
+> > > +        limit: Range<u32>,
+> >
+> > The Range type is inclusive/exclusive but xa_limit is
+> > inclusive/inclusive. They should match to avoid confusion.
+>
+> ... and xa_limit is inclusive at the top end to be sure that we can
+> actually allocate 2^32-1.  Or does Range handle that by using 0 to mean
+> that 2^32-1 is allowed?
 
-... and xa_limit is inclusive at the top end to be sure that we can
-actually allocate 2^32-1.  Or does Range handle that by using 0 to mean
-that 2^32-1 is allowed?
-> 
+Rust has multiple range types for inclusive and exclusive cases. The
+Range type is usually used for indexing arrays where the length fits
+in the integer type. To include 2^32-1, you have to use RangeInclusive
+instead of Range. It should be possible to write code that handles all
+of the range types without repetition.
+
+Alice
 
