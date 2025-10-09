@@ -4,92 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FAACCCD187
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 12:37:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C0CBCCD184
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 12:40:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93B308E0030; Thu,  9 Oct 2025 08:37:42 -0400 (EDT)
+	id 411E38E0076; Thu,  9 Oct 2025 08:40:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EC588E0002; Thu,  9 Oct 2025 08:37:42 -0400 (EDT)
+	id 3C3038E0002; Thu,  9 Oct 2025 08:40:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DA5D8E0030; Thu,  9 Oct 2025 08:37:42 -0400 (EDT)
+	id 2D84B8E0076; Thu,  9 Oct 2025 08:40:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 679358E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 08:37:42 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AE78013BECA
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 12:37:41 +0000 (UTC)
-X-FDA: 83978527122.04.6ADD62C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id EB2E9160012
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 12:37:39 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lpVNI5GP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of robh@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=robh@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C64F8E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 08:40:31 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BA7CB1608A7
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 12:40:30 +0000 (UTC)
+X-FDA: 83978534220.29.70F9E1B
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+	by imf12.hostedemail.com (Postfix) with ESMTP id C7F6A4001B
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 12:40:26 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=nt9cwhoA;
+	spf=pass (imf12.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760013460;
+	s=arc-20220608; t=1760013628;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bc7Qbdz031rGeQiwr543DPxZW57aCmxmgUx3ouo0t5M=;
-	b=eUm2ieJFaMGLYv6EI6OyH+ROcNGXGoQuaBEo65dfd89jO1VIZnNEWkwMTJ+6FvlA1UkyCM
-	PeeE9TRfm1QNPuK1UCKeZXA7sVo5mKre6uXpByLy3imWbOZsfRGDOZRc0pP7OrIKhpD99N
-	2JEBovhe2KBZSaiJa4c5iiicR+ww5xs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760013460; a=rsa-sha256;
+	bh=Nix9HhEL/c4sG03TDLv98d2k5tXJxnYpgmXPJuGY7No=;
+	b=X2SSS8MkPFDZQotZZ/nYDRYSI8YYqRweUjr002m9RAVJEqk7NR5MdbPsINXTv7otmGgaF4
+	069Em7n9myckkIAJrgjP3kj8en5M6EubQNL1ehsRpAYWNYWNBcpv9nuQN8nZebPHbMhiKV
+	+smaZf2NL9wecyB9nVQL5AcuUPY2TiY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760013628; a=rsa-sha256;
 	cv=none;
-	b=nnoyc8FLzV0+4T6v9H9UntmSZnD80OLyDqKBd8zsZYrFHt0fuNp/fYVW9BKrVaJSGshEyn
-	SLMKsXLOMDtzbJLRGXDSI91cLZWcef4ZTR6zwQ/yLirEUvY1HDcVxTYfAvtX7tz8OBA2bs
-	yHZXaMjfUWI3O8SV60YhI4oR4Vg1pJ4=
+	b=LwHMvjAyxKfc+JE5SXH0F2Sb+H7dQ8wcdlZ5jXBmD1/eNzc/Rq+VkXnjfPSN8De1Fkkl67
+	Ay3lrnI849wjeQs3DtBh8K9Lye+Ti8yqqTybbeUrkO8ILrCxOZdwpClq8EjhhZAJZOrKjb
+	LBOdYwlRJYxR16rgUyPOB2Z0QE+JGJI=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lpVNI5GP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of robh@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=robh@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8A9FA4089B;
-	Thu,  9 Oct 2025 12:37:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1255CC4CEF5;
-	Thu,  9 Oct 2025 12:37:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760013458;
-	bh=azd9FVCjk0aIj4ni+YQWAJAY9F/HKDjvW0AfWT0OlKo=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=lpVNI5GPx3+9zLTr6fIc28Kr+bKLW7kKmT4TlSKdjdwNxM9DoPkWtk3j3BZaDgklH
-	 YuNjCvc4VqSq1v7swX3OuldWGdI3Z41FcJkecOo4F8DzPxKtn7jEDfLKkdzvkE/dpt
-	 +Qe9nPnM/1mfGXsVpxp02XOtenfCd/kFeiAHLM3E8txzqil3zs/jMdng85Yu8I0kmZ
-	 JQZeYZuoKYR4EAogYd16fbuqFnMYr9hnFI9UTk7K7j+w3BdCfLPVm6YiRGPglFU6QK
-	 36uc9cA6hmhJ5a9utKKm0LYMhgS/tDprx3Xfadx5tktACf7FGGgrCR2HHaaBR8E54q
-	 cIkI4jy9nU+Gw==
-Date: Thu, 09 Oct 2025 07:37:36 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	imf12.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=nt9cwhoA;
+	spf=pass (imf12.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=Nix9HhEL/c4sG03TDLv98d2k5tXJxnYpgmXPJuGY7No=;
+	b=nt9cwhoAzHmYm1BIa0qGecNB1UoM90kxaDHOtHEmePWoKnnPv9fYSwKffKz+XDZ+ruXXikJ1M
+	EWDC1WZHnlDTgK+ioJuE0aL05lXgc4mVHtK5morgA6jslU7HdctdCE+sFoV23l54lX7gJDVgvNB
+	BZNfIK75FaAbKySs1kgCmos=
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4cj8bP6G53zKm9W;
+	Thu,  9 Oct 2025 20:40:01 +0800 (CST)
+Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7B49A1A016C;
+	Thu,  9 Oct 2025 20:40:18 +0800 (CST)
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 9 Oct 2025 20:40:17 +0800
+Message-ID: <4280197e-1605-4944-8627-0aca66aa7b40@huawei.com>
+Date: Thu, 9 Oct 2025 20:40:13 +0800
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: devicetree@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, 
- Rob Herring <robh+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>, 
- Alexandre Ghiti <alex@ghiti.fr>, Emil Renner Berthing <kernel@esmil.dk>, 
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- linux-riscv@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor@kernel.org>
-To: Samuel Holland <samuel.holland@sifive.com>
-In-Reply-To: <20251009015839.3460231-16-samuel.holland@sifive.com>
-References: <20251009015839.3460231-1-samuel.holland@sifive.com>
- <20251009015839.3460231-16-samuel.holland@sifive.com>
-Message-Id: <176001310599.1845440.13113067302880070823.robh@kernel.org>
-Subject: Re: [PATCH v2 15/18] dt-bindings: riscv: Describe physical memory
- regions
-X-Rspamd-Server: rspam01
-X-Stat-Signature: zecsw9axibud9z1dtjep5h39x1coocyx
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 6/8] mm: cma: add __cma_release()
+To: David Hildenbrand <david@redhat.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Oscar Salvador <osalvador@suse.de>, Muchun Song
+	<muchun.song@linux.dev>, Zi Yan <ziy@nvidia.com>, Matthew Wilcox
+	<willy@infradead.org>
+CC: <sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>, Vlastimil Babka
+	<vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>, Johannes Weiner
+	<hannes@cmpxchg.org>, <linux-mm@kvack.org>
+References: <20250918132000.1951232-1-wangkefeng.wang@huawei.com>
+ <20250918132000.1951232-7-wangkefeng.wang@huawei.com>
+ <4a4321e2-53bb-4fe5-988b-5b5eb57a855b@redhat.com>
+Content-Language: en-US
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <4a4321e2-53bb-4fe5-988b-5b5eb57a855b@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ dggpemf100008.china.huawei.com (7.185.36.138)
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 5bz6hracom63jp8y6aqc8kpfqmrxyn8f
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EB2E9160012
-X-HE-Tag: 1760013459-855636
-X-HE-Meta: U2FsdGVkX18IlqB3UiYmWtM4tDJGXOhf0mEvsA9mWSIHnrC5NJpGtPR7ioAh5Wp79kGpgP7yx1HmIW4ZH/A/R9YgQbB2mRbLlU59ibBNx1R0iMaNOXniQleqNtKx8+a45SRsUfPaXi28+RXytp2+cM1pnRhT48OJvMsCrb6KeaA13XeuK1umD9DoirKEMFuXTdfgT8gZq9RWIIoxppIZq0Nm3LOo6PvHWWv89YBKquerq/EZef/XS9qCz5k/EM2gL5rcmZasjHW6MUFew25iKQ3X01XiV6CovoXKomxlr+D/TlWUV678KSl+xC1SQAW9nFT5Tv8tKabXtQedNps5UjU6GqEkWBzdJqDSOq+afgjVZI1yqeFfTOxVwduuJ+Tr6KzosS645ZDrdlXkrWAt/5EUMP/CYmcm3VMlGVXIwdMeIYrMSg6GqsFyNdb57a4bKlv8arTadE27XBIs7Slin6Gktx4tqUYXDSNH8G9svsk6Zo1iNRx4LuJX/FyKDGy32TcCLPQgfD9EcNbCmLswiiM25pmYXWsI35Up22s/q9CFQAKCDrqJ4rWFt1qZK+w61lcqfOqEcY1BfjkYk0udHPery6/6stc+8lCCqhYo5J1/jg7KqmEwcZt8O+vRQiSs/VfOCgELEaRDCAWz4aKeyxSLXQjUkT/VG98SVFbDMuAKf16UR35PZjkACPt2DsXFt+Viwjkm9krua2k+Q9eoRGL0K59mVhf8UE2uj83yj5J+kbfPnjPFdUVscGN/iI+zygE3HR0vlp89Qko7qEPwE3j+SIDM8eINDSOZ16DAsBngkEJsJ4iXeg+5KNK8z8z1zDWr6i2nNE3ipP37PQZuY/LnMhP3lknSS2MDJI0StNtiKD6U/2/CMDUWutbFev+RAv83/iPF+4n1VNjYl/LMHRNR4SUNE8NZez/kRtB5LJtrNckYcYm+boej5Idi5vrQCFymwy1XnwdshvyYxHi
- K7mArC0z
- 8eyCxL+WLVvXOnd3MpDjZGmL6jGDzJzQztYdoqr6a9Er/oc0lCBT0wXKUMWIomWOjad4e389yTIqGKrWzbHzXHVuDo5Sp03IZtojfEsJN2Mgb6H5EDN9uM1rjwsuSpePKGoHQTkSos6vyxutNJlOLZuNxydc+P8WKaKRhaSixJy2PEWY/f3MuzRoBqIEzWGmGP7PCeg2OJR+EofdJuNwvs5S+yV51Xls23iJp6mX74bVxj+GMzfEYgOchbKz2H+b1v++wKv61LqzzaRn5W4hPxGzP+yoIRvhSBrEk7x4vECgrEbWMBj3dpq9d8eNyRT58lzoPzW9ukPmHR4EaTYeekjdGi07W7eRoNLtpnDw23So14GRlYnqKiDsQlZyd3xPudAcvN20RbOwhCw32s+hzeBkzqH6eb9icitlfpvkYjQxLURLlrAiqYwHtOFwK70wR1Pr2156Lo9mN/78o/ipZpWLvcFJXfIszsyroVbV4OiIj2dJ5xYhJSu0fSPt5QIs7R9RB
+X-Rspamd-Queue-Id: C7F6A4001B
+X-HE-Tag: 1760013626-539648
+X-HE-Meta: U2FsdGVkX1/Ldc6Y/GL1pTcp1w9iX6nlMdgVI02alUCKADwry3ba2PXoMR50O//gk8BDNnjovflNSslkLdWzo6l1Iu1zX76K/SIrAmYlJFlPwBXjE/Is9lFEOCvDq4rSSE23RrpGROyiAXxm1Yg3+HJ4xoHbIhbegLLJgHTKVPDQTxmQckqYfypT6O3oD4wCQBi9vIySZogQbyw2o5uh/dYqxFhpDSG67zIa+FzODS+MNmsCm0ShwcD7GGfvCzosP6dRClgxa9T4E2kVNeQ7U5qXvy8fE7mMif+g3+lBXftWrOHIEMd6LM/y8oeB7L1iVW3MBvg4p8mAGAI05OdGRpvXzg8O7RtSHeFk2JpUAd/9IeSlw/bJa0V9JL4pN1L3sguHdRfAjuoLakUCM0SGe5V1ZcpTD6tKtnztt0WAzgnto055c+TvOiep+L/mldU0xq7WJjbQ5xkwbebK/HNZSxHDx2LzvPNQ/LpTb7TFbf6SOSH+WqyZ8PlUo7wWrr7tsdBVx9Ct+Xv1D1R2657O8kPSxhbA/QRrrbAIxhRdJQTLEEOwOwr4G6GuWYj71csBi4j9lWbrrETUktPThB1FgANkDwtKWgeFcNhW9ZZPdPUXhnIOZ2OKvTAyByehYXvRU9c0bonLXUUHW4+ScjJ5czwmGHCsYacZzbkftI1Qu1Onc8gXZj70rBDPiFcIfUuxp3GzSVZPx3L1QMiKOdCEIihduJpopu+fcYh/OZ686TstB8x/fpSJbrM1TagzkqIe+Yq1ZPz83q3U2NBLnQj0jBk77ZJgqPuDeW7nXnrkm1TuhMgdc7VaR9ZqqXHYbUW7Up2V5kyYtCvhELId8zR/7CxkYH8L4GyJ/SdID+iO4LEvXPMoiII2KnH/YpPaNAKYAfTd7Z1zeRkD+m6htxzn18iAnPiwDiUHEIxtgs1afU2HDhI/85U04K+DCH1OQeF90DlQcfO3+pkNhSTjP1P
+ njf4xEj2
+ faXwC7CBRTXG7Vd+ZcwF7cz+rM858LjLW7aaAFEKzbnATE4CnYwMD8hz6+Nta+PlLgxEfFATq4Alrj9WIH45a2I36Tmun4tOqv3C6JRTGg1iAsXA9qD7Q7AtLoc4xmlRyfsUc6Nz5mIVTvSPUNsTxrSXEHYIf0gNqkav06yEd0hSa2qQJiASeHBmukFDU58DKIXMz8vcTavN/9GU8HQ0Oo+E42dU0Gz9lvkBjNVB/1+IGETzcbiBj0MDtDAm8oZ6XGV1bTiVG4VRP0NfPw0BDVkOW3FvbgGkU9PVmKnx58Lkwi+3Hlvdujf+86MPKJMx1Sb6PVoHT0m9dkOK+sNYBZdHDiH+JQoXorlFn/SOh1O9Vbazz15cWDcAze5y9pWs0q7fMU8z+sosqFcXayGeQhFzh7BFL0LegmLAqtt7loi9zrr3wUYhF3pw9NA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,55 +106,141 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On Wed, 08 Oct 2025 18:57:51 -0700, Samuel Holland wrote:
-> Information about physical memory regions is needed by both the kernel
-> and M-mode firmware. For example, the kernel needs to know about
-> noncacheable aliases of cacheable memory in order to allocate coherent
-> memory pages for DMA. M-mode firmware needs to know about those aliases
-> so it can protect itself from lower-privileged software.
+
+On 2025/9/30 18:15, David Hildenbrand wrote:
+> On 18.09.25 15:19, Kefeng Wang wrote:
+>> Kill cma_pages_valid() which only used in cma_release(), also
+>> cleanup code duplication between cma pages valid checking and
+>> cma memrange finding, add __cma_release() helper to prepare for
+>> the upcoming frozen page release.
+>>
+>> Reviewed-by: Jane Chu <jane.chu@oracle.com>
+>> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+>> ---
+>>   include/linux/cma.h |  1 -
+>>   mm/cma.c            | 57 ++++++++++++---------------------------------
+>>   2 files changed, 15 insertions(+), 43 deletions(-)
+>>
+>> diff --git a/include/linux/cma.h b/include/linux/cma.h
+>> index 62d9c1cf6326..e5745d2aec55 100644
+>> --- a/include/linux/cma.h
+>> +++ b/include/linux/cma.h
+>> @@ -49,7 +49,6 @@ extern int cma_init_reserved_mem(phys_addr_t base, 
+>> phys_addr_t size,
+>>                       struct cma **res_cma);
+>>   extern struct page *cma_alloc(struct cma *cma, unsigned long count, 
+>> unsigned int align,
+>>                     bool no_warn);
+>> -extern bool cma_pages_valid(struct cma *cma, const struct page 
+>> *pages, unsigned long count);
+>>   extern bool cma_release(struct cma *cma, const struct page *pages, 
+>> unsigned long count);
+>>   extern int cma_for_each_area(int (*it)(struct cma *cma, void *data), 
+>> void *data);
+>> diff --git a/mm/cma.c b/mm/cma.c
+>> index 813e6dc7b095..2af8c5bc58dd 100644
+>> --- a/mm/cma.c
+>> +++ b/mm/cma.c
+>> @@ -942,34 +942,36 @@ struct folio *cma_alloc_folio(struct cma *cma, 
+>> int order, gfp_t gfp)
+>>       return page ? page_folio(page) : NULL;
+>>   }
+>> -bool cma_pages_valid(struct cma *cma, const struct page *pages,
+>> -             unsigned long count)
+>> +static bool __cma_release(struct cma *cma, const struct page *pages,
+>> +              unsigned long count)
+>>   {
+>>       unsigned long pfn, end;
+>>       int r;
+>>       struct cma_memrange *cmr;
+>> -    bool ret;
+>> +
+>> +    pr_debug("%s(page %p, count %lu)\n", __func__, (void *)pages, 
+>> count);
+>>       if (!cma || !pages || count > cma->count)
+>>           return false;
+>>       pfn = page_to_pfn(pages);
+>> -    ret = false;
+>>       for (r = 0; r < cma->nranges; r++) {
+>>           cmr = &cma->ranges[r];
+>>           end = cmr->base_pfn + cmr->count;
+>> -        if (pfn >= cmr->base_pfn && pfn < end) {
+>> -            ret = pfn + count <= end;
+>> +        if (pfn >= cmr->base_pfn && pfn < end && pfn + count <= end)
 > 
-> The RISC-V Privileged Architecture delegates the description of Physical
-> Memory Attributes (PMAs) to the platform. On DT-based platforms, it
-> makes sense to put this information in the devicetree.
+> Are you afraid of overflows here, or why can't it simply be
 > 
-> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-> ---
+>      if (pfn >= cmr->base_pfn && pfn + count <= end)
 > 
-> Changes in v2:
->  - Remove references to Physical Address Width (no longer part of Smmpt)
->  - Remove special first entry from the list of physical memory regions
->  - Fix compatible string in example
+> But I wonder if we want to keep here
 > 
->  .../bindings/riscv/physical-memory.yaml       | 91 +++++++++++++++++++
->  include/dt-bindings/riscv/physical-memory.h   | 44 +++++++++
->  2 files changed, 135 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/riscv/physical-memory.yaml
->  create mode 100644 include/dt-bindings/riscv/physical-memory.h
+>      if (pfn >= cmr->base_pfn && pfn < end)
+> 
+> And VM_WARN if the area does not completely fit into the range. See below.
+> 
+> 
+>>               break;
+>> -        }
+>>       }
+>> -    if (!ret)
+>> -        pr_debug("%s(page %p, count %lu)\n",
+>> -                __func__, (void *)pages, count);
+>> +    if (r == cma->nranges)
+>> +        return false;
+> 
+> Would we want to warn one way or the other in that case? Is it valid 
+> that someone tries to free a wrong range?
+
+The original cma_pages_valid() check start pfn whether it is in cma
+range or not, and the range must be within the complete cma range.
+The repeatedly check "VM_BUG_ON(pfn + count > end)" in cma_release()
+is never performed since we return early after cma_pages_valid().
+
+> 
+> Note that the original code had this pr_debug() in case no range for the 
+> start pfn was found (IIUC, it's confusing) and this  VM_BUG_ON(end_pfn > 
+> cmr->base_pfn + cmr->count) in case a range was found but it would not 
+> completely match the
+
+So the VM_BUG_ON is not useful,
+> 
+> You're not discussing that behavioral change in the changelog, and I 
+> think we would want to keep some sanity checks, likely in a 
+> VM_WARN_ON_ONCE() form.
+> 
 > 
 
-My bot found errors running 'make dt_binding_check' on your patch:
+But for the error path, adding some debug info is better, a quick diff
+based on this patch, what do you think?
 
-yamllint warnings/errors:
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/riscv/physical-memory.example.dtb: / (beagle,beaglev-starlight-jh7100-r0): 'model' is a required property
-	from schema $id: http://devicetree.org/schemas/root-node.yaml#
+diff --git a/mm/cma.c b/mm/cma.c
+index 2af8c5bc58dd..88016f4aef7f 100644
+--- a/mm/cma.c
++++ b/mm/cma.c
+@@ -959,12 +959,19 @@ static bool __cma_release(struct cma *cma, const 
+struct page *pages,
+         for (r = 0; r < cma->nranges; r++) {
+                 cmr = &cma->ranges[r];
+                 end = cmr->base_pfn + cmr->count;
+-               if (pfn >= cmr->base_pfn && pfn < end && pfn + count <= end)
+-                       break;
++               if (pfn >= cmr->base_pfn && pfn < end) {
++                       if (pfn + count <= end)
++                               break;
++
++                       VM_WARN_ON_ONCE(1);
++               }
+         }
 
-doc reference errors (make refcheckdocs):
+-       if (r == cma->nranges)
++       if (r == cma->nranges) {
++               pr_debug("%s(no cma range match the page %p)\n",
++                        __func__, (void *)pages);
+                 return false;
++       }
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20251009015839.3460231-16-samuel.holland@sifive.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+         free_contig_range(pfn, count);
+         cma_clear_bitmap(cma, cmr, pfn, count);
 
 
