@@ -4,118 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87F1ACCD187
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 07:14:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33C19CCA470
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 07:19:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99AE38E0007; Thu,  9 Oct 2025 03:14:34 -0400 (EDT)
+	id 90E748E0065; Thu,  9 Oct 2025 03:19:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 972078E0002; Thu,  9 Oct 2025 03:14:34 -0400 (EDT)
+	id 8E5F58E0002; Thu,  9 Oct 2025 03:19:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 887D78E0007; Thu,  9 Oct 2025 03:14:34 -0400 (EDT)
+	id 7D3F68E0065; Thu,  9 Oct 2025 03:19:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 74C8F8E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 03:14:34 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0FA59BCB08
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 07:14:34 +0000 (UTC)
-X-FDA: 83977712868.21.5B1F805
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by imf11.hostedemail.com (Postfix) with ESMTP id CE09840004
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 07:14:31 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CF248E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 03:19:45 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0BD1F468A8
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 07:19:45 +0000 (UTC)
+X-FDA: 83977725930.27.CF3D402
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf20.hostedemail.com (Postfix) with ESMTP id BD1021C000C
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 07:19:42 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="c43Z/i4D";
+	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759994072;
+	s=arc-20220608; t=1759994382;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K8cf0AOs/mVNsDWJRMHcPMT4OicAVe2fATkFfoZ8F9E=;
-	b=JonwmJhhT7tohsCamQjc9YSq1vIi0V9A2XH0yeGV5675D3Y//KTXnY1Ltr8bucHhD9JXYE
-	Zr6Fuf6xrPm4RnOL2qwJO8RT5G9C1VNXW+6yjod0DybD6dpCximDhqRvLwKcC/mGAPpE0Q
-	NeYIM/1UnVFOFyAbnEGaEelZMa1cJ4I=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=MAf7j15IA9NV3ibFlHPooOFQlDK8wDMuEk53oehy5lI=;
+	b=QlDMcrYZCiza0prH4BXNmrEqHXdV2YJ6QaAYDbll7PqznYZxSFCw3g3D4rajULuej4AXrA
+	xeF7KZtU4RuBNhOOvOYoDPIh98GJWjmSqYZ/eR8Kt/m5Vcpehlpcc2nFr5KtgCCfl4FM6S
+	12/qWqKNlBiXMoPTpzErHexHVfiasyk=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759994072; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="c43Z/i4D";
+	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759994382; a=rsa-sha256;
 	cv=none;
-	b=N/HBZUx9dZplaZ6yiDZRQXxrz2sN64SWGyBX6XR3od0E3mJ9qMz5AVPvTLgwjH5nLmPa2d
-	Glrb99uFawbqIn8v22oEBbup90u/t5VlBIvrG+qBPScUBCX8FtFqk7YuRphhmB4/Ff0f8x
-	HYXYjbVb0s7dgZNKyOODvBpRMUzevAE=
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cj1Mm20R5z9sSd;
-	Thu,  9 Oct 2025 09:14:28 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id IrXIuvb4y-IU; Thu,  9 Oct 2025 09:14:28 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cj1Mm0p1dz9sSb;
-	Thu,  9 Oct 2025 09:14:28 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id F24048B76C;
-	Thu,  9 Oct 2025 09:14:27 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id wHEaqnf6dd0R; Thu,  9 Oct 2025 09:14:27 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id D85288B768;
-	Thu,  9 Oct 2025 09:14:25 +0200 (CEST)
-Message-ID: <3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu>
-Date: Thu, 9 Oct 2025 09:14:24 +0200
+	b=aKdEvswrwX2K2nJ4xlWGtPMTFGrc/U6M5eJ0gUyIxjgAO240BdqUepr8gWfZt20WsroKXn
+	vt/4sMCL93vtbtdc2UNsrcQtpraeCcCWVIcNwYzxFq6zcprmQuDmE+7akJEcBMoWORN0vN
+	sQyerQ3VqyCGGP+Idf8JaqZdcV9cvGk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1759994382;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=MAf7j15IA9NV3ibFlHPooOFQlDK8wDMuEk53oehy5lI=;
+	b=c43Z/i4D5zzIuLiMVsrCZN+yqr06X2RT92mpU2x+u91JrA4YH9MsDrWKq38oEuJ5XK/HLi
+	G5rCo4HM17JEhVhFOejTvGJiEP2lZKBg7Omf9bhsyvu3anV6IPgQx7zyV5mSLkMIe/ELUe
+	yicATc3EfPJzOLF6iHGptaTfC72KHsQ=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-591-NF9tnsMoMziCeCetrzz9kQ-1; Thu, 09 Oct 2025 03:19:38 -0400
+X-MC-Unique: NF9tnsMoMziCeCetrzz9kQ-1
+X-Mimecast-MFC-AGG-ID: NF9tnsMoMziCeCetrzz9kQ_1759994378
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3ecdf7b5c46so392916f8f.2
+        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 00:19:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759994378; x=1760599178;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MAf7j15IA9NV3ibFlHPooOFQlDK8wDMuEk53oehy5lI=;
+        b=g0ROUWEAjC4EiqtBLuumFGBvlLYQ57h2A+x80xIKNJ9C3ge+TlBeVKLLQEOS9TMi0H
+         gOe8gENj1giBEUosjCDe4rs9Mti2cjnpJDL1Y4AJeorjdXxhUWDGmEyXQQNurINd0S/k
+         VqW9cRPDZPAXQjRPNuzkaYKbIwVi1r8TNJqoxJboDyftCJKJ33dxEVhmbl7G7Ti4jlPU
+         QTF7jUikG0R1HRyvOXvlsKrtbMl3MCpH3PTCBg3xV7m6ZoZss7fB3uclOMZo6RZnmhd+
+         QT8IyIGyt7Ic4GeoWySxf2bTD4XgUnpm2Qq4Nq17DYBGPK6rEnT9TUx4oQvynDm6lztb
+         yUzg==
+X-Forwarded-Encrypted: i=1; AJvYcCUS62bqlCTjo87ll6ZoeCvVlx5FF90oD6zGIWUd4mqrhvKt5SmkIAxnkhDx5AzpVLbl91OgiLZLkw==@kvack.org
+X-Gm-Message-State: AOJu0YyJ3tR0VwsuqcUnv9c/vqlFKWt9Hzw08D9hVde0I0PBkjjax4Ys
+	Ap3p5/WYe/YRU4PHpO2jqv6As3lgEm1fc+y6BcG0WFBcSWd92EobQG9iPmGVk/0GY6oB+QYPmZN
+	zKjUpgleT1/uHBkoJh77hfSnDEX4r8UAfpNKxPeQpOSF7i1ccWJ9N
+X-Gm-Gg: ASbGncsiaFJDTXY05tA2U22Lz35Vidtj5puAyvF4y+/Mk73kYj4XrdJWH8iyPiubwL7
+	pmdSz6w56zSaxOyq2DZcKfwhNPQxCtNkxgiUCjAyIasItCdePuN2CgyxpE+cTD02pRRKx1zdEV2
+	eT78tQLnPuYNi3GjtIox0lAJGi6t1pi7ucL71WWhviySchdIqdwkDL9VOfUMAo7wWMVDFmqZoy0
+	lJ2R0Xgl49qCFTjuI93XGhc6kml1Ju9Fx3G+hQkcL4hJ99naiplsh7UvFzEujX1U/jYJHhJkerD
+	ItZjV/uJ3BXxN5LF8m/tG2ZXbeg/agq4Mn+npTIdpDZ5V5ZtyozBYaBiE9+H505WSozYRgdLrEE
+	ANWA99seJ
+X-Received: by 2002:a05:6000:607:b0:425:72a0:a981 with SMTP id ffacd0b85a97d-42666abb02bmr3786627f8f.2.1759994377616;
+        Thu, 09 Oct 2025 00:19:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFvd+7KvkDLhqe4fcCdP+yrbRxdeZF/qL8BolXYSkRHh/d0PcTODdY5Gee0yd7hexyiQvZxDA==
+X-Received: by 2002:a05:6000:607:b0:425:72a0:a981 with SMTP id ffacd0b85a97d-42666abb02bmr3786590f8f.2.1759994377140;
+        Thu, 09 Oct 2025 00:19:37 -0700 (PDT)
+Received: from [192.168.3.141] (tmo-083-189.customers.d1-online.com. [80.187.83.189])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46faf12fd83sm32079965e9.9.2025.10.09.00.19.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Oct 2025 00:19:36 -0700 (PDT)
+Message-ID: <b198ff9d-b96e-47c6-acaa-c3c641cd64b1@redhat.com>
+Date: Thu, 9 Oct 2025 09:19:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: (bisected) [PATCH v2 08/37] mm/hugetlb: check for unreasonable
- folio sizes when registering hstate
-To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-Cc: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Alexander Potapenko <glider@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
- Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
- dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- iommu@lists.linux.dev, io-uring@vger.kernel.org,
- Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
- Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
- kasan-dev@googlegroups.com, kvm@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
- linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
- linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, Marco Elver <elver@google.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
- Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
- virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
- wireguard@lists.zx2c4.com, x86@kernel.org,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <20250901150359.867252-1-david@redhat.com>
- <20250901150359.867252-9-david@redhat.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <20250901150359.867252-9-david@redhat.com>
+Subject: Re: [PATCH 1/2] mm/compaction: check the range to
+ pageblock_pfn_to_page() is within the zone first
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
+ mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org,
+ iamjoonsoo.kim@lge.com, linux-mm@kvack.org
+References: <20251002033140.24462-1-richard.weiyang@gmail.com>
+ <20251002033140.24462-2-richard.weiyang@gmail.com>
+ <99824e33-bf25-40ef-b969-a48e3b916ad1@redhat.com>
+ <20251009020817.y7ji6wqhrv44h5uz@master>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20251009020817.y7ji6wqhrv44h5uz@master>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: o3FU09vFAx2OgRpRkg2AELrORDj804CO2cboV-edBio_1759994378
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CE09840004
-X-Stat-Signature: adoaogjjnhsxsoxjy117wi37ma7cnkk1
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: s4h8q439r6bcpm9pzdf8xymhf9bjcbm3
 X-Rspam-User: 
-X-HE-Tag: 1759994071-194553
-X-HE-Meta: U2FsdGVkX192YuxS/FZiCg20SyuTD8uOBxeTJ02rJH9uNNB4rNKNnOaWBvWLFx8dHl5feVqE4MAnU2bCcdSTEWOLT5X5GLQiVZm6SHB1G66m3hXDEK4rpbvEf7zSYpk/3GRly0zmXH9EzWP2g47qqQu8tkA0wLa7PaGAB/7iaq6RVDpCDxVkWyxo+wuYcKq/ayll3iID1ol6K0QmLHBvrVRhz7grjwwNWB1MIcseDZKPrHnDBdeEaH91qbCcD52JZxXV1GZ8zJ28D+DkV/46EU1cS7q4BNGMOG4Za7qBfQso0PEPi3mNDsMO9lOAlSA+YFUZ8YJAm/mY/hCuKe9p2qYLjNlGNld6UD4cPY9WdLLuHtbBVlELoKjIx7sa1/fiFSdO+ymPWrcmbsveUQo+RVXwJpMd2LzvX0k5WspYvkKpqsPmp7ZUG6LYGY5n1bn7zwTcFHMqDdZ0I/gFLCDyQ684FyH9biHTFm2al6LcFyeEjJcEKwI9AhgZKUGVj/iQbZRNTOmUv+of33h4o41Lmbp56lh6eWbxJIjzygQmTwx32D+bpADxaNWm9JdA+QBb8HgTykAnelwJ7FD73HipHGYDbB3YmWbXDikte/nVA9eakNuhu3a2LmlD3l/h2u9LsUfa4d1XC0rjPcrfYWTzxGJd/aKmXYbjpCwPdEKolEsTagFQUrUYs40zjAALabzfHwCW0mfo0W7JX4SqRURQeUpbK6gzH3sMy7bFu9gfefw/eYzleYkiL5qVgSaku8383eX2/0WxrnjIXlXzqKr+h3I0kNigCxqTAlYHi2Se8T/ItmOd0s7qZKrl0CTjCvQJydKWRnsh17znai9S7zWoHjGHZsZxWuHpAyr2LnBD/cJHopqLef3XBo9Bc+GgULdrJmVp1iiJ4Trxd65SBTNkdQ7Bx12zsbzi7muPIqnIZeZpXq0S1wqoLdx6SW8VAEneC25n/VemUn1y/8SCZLT
- RR3xgn2c
- gYo1rdp9JBRIItV7S3Hwf+de9JAuTkTIhNGaNAb2ZVM39CNMyoKvLR7O5J4qOfgUVgdP6E8v6G+TwCFHtxxH7PpOPp4NXS42ycEplS0nTlxvsp19ZZdP5zKHvIoxgPFzU41SWaGuT9bAWxBHOnAHBPKjqEE2FlGvhBvnhh3YqtaTbn3lOHyzCD1nYc2E8lGkgetxo62xlGQrsXzIIJxGyuicEGhZPjcXbCdvzhJknfzeco8kewz03rnWlTFqX3Ix8fPsFqdwEj6b3cgZUJm4/GqO7YoQxJudAjWwA6dsDEcZrn2c=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: BD1021C000C
+X-HE-Tag: 1759994382-93316
+X-HE-Meta: U2FsdGVkX1/ZtPTMmzBzGT5Nhy3sT3pQI6zz3odXKIv5xNSKRWfIXFVAeYVrcT8ZVI3Mx43ze70N2ax06GRgAiUx6dZ8FCmozWFKeP5R4KlzxBjQ1uVIuAJPZDpgdzCJ0ZhA8AWVgFWFjDkoBqP2dQjIytOBV/7WG5nwcydxX0GqXk/cKtMNzgvdNRCd8p8Cc+TbprHTBdFcYLM2LU8Y7ttx6uFJOA5XjTOgOjbb8xTvUOo5LYFntmzYv3LdoZFtMRlP6FNBw4zvxtntmpRENZvHpg45b1CjANlbleBXjGuusdfNLMo4aZTEPSOgTIxLzENqtWxLdyqMrvrgW9ioYLkQ9YGdMPJIJSUReidbhmUvdGDELO8SnpeyAwd3sbBmqRcdPYf4kf61Epa5Bx+x0yHiwar6WmDKQiQnNex5PhIZ83iZn3GJlIfUBYS2e4SehCNBIQ6fjQGVRBoD493zvj9yzBNzC53kvY9iAXasT6wtk7x1s2k3VP8wiJ5yNcth8Dfpnk7cCOkKUa89STSjymOVge1nJCOM6yZq3CbPEoaYItVybGsFYonhaYos+7C9vCqj/Joe7Lhj22pR54Br3Ps03CV+hrUweeOsNabDlOxbCa2oNW8cjzOqz9BoGskR+dfkg4aMz3bxT+9n36+6DZH9ooM8FW4jkMB3OEz9U9Os1EeOPxwfSwyvTf4VzFONJvIHaGWVo6MHL4NRsOncEJPjfS+4BsElR/XBrcDOU43lxmb+r/JEgkf0GpVX0fa01Hb9r6KMYuu3dSzymrlare5ik2se+3RE17Oeud+4w3vzljXpC6nen+nvExzpcpcQqJY18AriQAHQRkmkb/UGeIuYRs/J5OJWJbaRtSYIi+KQB1Z8n18ktiDt6aFYx/KyM96ogCZt2FsCfyL+s/qXwWaiHy1lw3U/E3Zqi9L88FCKmrxVF+Z3Y0JXn9BbJayGRRWwQ2u5bsaEBeiKKwX
+ f7rGEfPY
+ 7CiwUju2o3iv+wCyG6TWBDbLp1uYDIbRyQkjFWvNILTThq6fkQDvJn9ZG/i2ALMamufonU2uJW26F5BjDVxzSP42f6k3F9/D1SeHVPD4z6+DK1NNRn6c/Xw7D9D/pdbOGVxX2kBJ4IZ3WhTa+24NfZnRMIZDev1pE7SDfG6Wy2kr+f3uoqZA5hv4w4+rIlgoqDAjjy42RRUzgL2a7seRDyP5jmGcAIyiXlJ/D5BfnEAWcXbskMk9C9Ll+ks3/IGNQ+J14cDMWC443vkx1qyanHY37IT+LxhJTv1BZIPK/aicyumluWx0E/sgvU6NHXx8Yq+Vaw53HUIttnaA+G4M6RvSbqRCZaDquUkcdYkjGbfktHVZPf0ocd5n4eu9urabqKLsJQzxpoPLSxRQ2B8ool1K6cpNXjKGnKr7moTBDz0uGbHDOJKY3vNpV+Jee7fg85opI3cZ/7GvS397aLFpdS+C1sz4nj7z/PEH4FkdC0rI0F+l9RJ5Xcf0DWMH5mkxP3M7fxQvZ9fmCMeqlSJ8k1sLbJ2aWtJrRhit55ifCbYwXx4awfaJD+Lb4PXGhEhVZEmVPyHpHQEtB6dPuYqAoXRlGgtrpiW7WswbLkmmeHDKksqLwHL0BfPT7Ryo38lCpMba9FDGYmtAW5o7+3aGH6JrBaz0f6IO2S+AEG7QaxsnNTAU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,153 +182,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David,
-
-Le 01/09/2025 à 17:03, David Hildenbrand a écrit :
-> Let's check that no hstate that corresponds to an unreasonable folio size
-> is registered by an architecture. If we were to succeed registering, we
-> could later try allocating an unsupported gigantic folio size.
+On 09.10.25 04:08, Wei Yang wrote:
+> On Wed, Oct 08, 2025 at 12:14:25PM +0200, David Hildenbrand wrote:
+>> On 02.10.25 05:31, Wei Yang wrote:
+>>> Function pageblock_pfn_to_page() is introduced by commit 7d49d8868336
+>>> ("mm, compaction: reduce zone checking frequency in the migration scanner"),
+>>> where there is no requirement on start_pfn/end_pfn except they are in
+>>> the same pageblock.
+>>>
+>>> So at that time, pageblock_pfn_to_page() would be passed with pfn
+>>> without compared with zone boundary.
+>>>
+>>> But after commit 7cf91a98e607 ("mm/compaction: speed up
+>>> pageblock_pfn_to_page() when zone is contiguous"), pageblock_pfn_to_page()
+>>> would think the range is valid and in the same zone if zone->contiguous,
+>>> even the range doesn't belong to this zone.
+>>>
+>>> For example, in fast_isolate_freepages(), min_pfn is assigned to
+>>> pageblock_start_pfn() and passed to pageblock_pfn_to_page() without
+>>> checking with zone_start_pfn. And mostly, the end_pfn is not checked
+>>> with zone_end_pfn() before using.
+>>>
+>>> To make this function robust, check the range is within the zone first.
+>>>
+>>> Fixes: 7cf91a98e607 ("mm/compaction: speed up pageblock_pfn_to_page() when zone is contiguous")
+>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>>> Cc: Vlastimil Babka <vbabka@suse.cz>
+>>> Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
+>>> ---
+>>>    mm/internal.h | 3 +++
+>>>    1 file changed, 3 insertions(+)
+>>>
+>>> diff --git a/mm/internal.h b/mm/internal.h
+>>> index 38607b2821d9..8e1a3819c9f1 100644
+>>> --- a/mm/internal.h
+>>> +++ b/mm/internal.h
+>>> @@ -724,6 +724,9 @@ extern struct page *__pageblock_pfn_to_page(unsigned long start_pfn,
+>>>    static inline struct page *pageblock_pfn_to_page(unsigned long start_pfn,
+>>>    				unsigned long end_pfn, struct zone *zone)
+>>>    {
+>>> +	if (start_pfn < zone->zone_start_pfn || end_pfn > zone_end_pfn(zone))
+>>> +		return NULL;
+>>> +
+>>>    	if (zone->contiguous)
+>>>    		return pfn_to_page(start_pfn);
+>>
+>> fast_isolate_around() adjusts the range to the zone boundaries before calling
+>> fast_isolate_around().
+>>
 > 
-> Further, let's add a BUILD_BUG_ON() for checking that HUGETLB_PAGE_ORDER
-> is sane at build time. As HUGETLB_PAGE_ORDER is dynamic on powerpc, we have
-> to use a BUILD_BUG_ON_INVALID() to make it compile.
+> Correct.
 > 
-> No existing kernel configuration should be able to trigger this check:
-> either SPARSEMEM without SPARSEMEM_VMEMMAP cannot be configured or
-> gigantic folios will not exceed a memory section (the case on sparse).
+>> isolate_migratepages_range(), isolate_freepages_range(), isolate_freepages()
+>> and isolate_migratepages similarly all seem to take the zone range into
+>> account as well.
 > 
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-
-I get following warning on powerpc with linus tree, bisected to commit 
-7b4f21f5e038 ("mm/hugetlb: check for unreasonable folio sizes when 
-registering hstate")
-
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 0 at mm/hugetlb.c:4744 hugetlb_add_hstate+0xc0/0x180
-Modules linked in:
-CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 
-6.17.0-rc4-00275-g7b4f21f5e038 #1683 NONE
-Hardware name: QEMU ppce500 e5500 0x80240020 QEMU e500
-NIP:  c000000001357408 LR: c000000001357c90 CTR: 0000000000000003
-REGS: c00000000152bad0 TRAP: 0700   Not tainted 
-(6.17.0-rc4-00275-g7b4f21f5e038)
-MSR:  0000000080021002 <CE,ME>  CR: 44000448  XER: 20000000
-IRQMASK: 1
-GPR00: c000000001357c90 c00000000152bd70 c000000001339000 0000000000000012
-GPR04: 000000000000000a 0000000000001000 000000000000001e 0000000000000000
-GPR08: 0000000000000000 0000000000000000 0000000000000001 000000000000000a
-GPR12: c000000001357b68 c000000001590000 0000000000000000 0000000000000000
-GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-GPR24: c0000000011adb40 c00000000156b528 0000000000000000 c00000000156b4b0
-GPR28: c00000000156b528 0000000000000012 0000000040000000 0000000000000000
-NIP [c000000001357408] hugetlb_add_hstate+0xc0/0x180
-LR [c000000001357c90] hugepagesz_setup+0x128/0x150
-Call Trace:
-[c00000000152bd70] [c00000000152bda0] init_stack+0x3da0/0x4000 (unreliable)
-[c00000000152be10] [c000000001357c90] hugepagesz_setup+0x128/0x150
-[c00000000152be80] [c00000000135841c] hugetlb_bootmem_alloc+0x84/0x104
-[c00000000152bec0] [c00000000135143c] mm_core_init+0x30/0x174
-[c00000000152bf30] [c000000001332ed4] start_kernel+0x540/0x880
-[c00000000152bfe0] [c000000000000a50] start_here_common+0x1c/0x20
-Code: 2c09000f 39000001 38e00000 39400001 7d00401e 0b080000 281d0001 
-7d00505e 79080020 0b080000 281d000c 7d4a385e <0b0a0000> 1f5a00b8 
-38bf0020 3c82ffe8
----[ end trace 0000000000000000 ]---
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 0 at mm/hugetlb.c:4744 hugetlb_add_hstate+0xc0/0x180
-Modules linked in:
-CPU: 0 UID: 0 PID: 0 Comm: swapper Tainted: G        W 
-6.17.0-rc4-00275-g7b4f21f5e038 #1683 NONE
-Tainted: [W]=WARN
-Hardware name: QEMU ppce500 e5500 0x80240020 QEMU e500
-NIP:  c000000001357408 LR: c000000001357c90 CTR: 0000000000000005
-REGS: c00000000152bad0 TRAP: 0700   Tainted: G        W 
-(6.17.0-rc4-00275-g7b4f21f5e038)
-MSR:  0000000080021002 <CE,ME>  CR: 48000448  XER: 20000000
-IRQMASK: 1
-GPR00: c000000001357c90 c00000000152bd70 c000000001339000 000000000000000e
-GPR04: 000000000000000a 0000000000001000 0000000040000000 0000000000000000
-GPR08: 0000000000000000 0000000000000001 0000000000000001 0000000000000280
-GPR12: c000000001357b68 c000000001590000 0000000000000000 0000000000000000
-GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-GPR24: c0000000011adb40 c00000000156b5e0 0000000000000001 c00000000156b4b0
-GPR28: c00000000156b528 000000000000000e 0000000004000000 00000000000000b8
-NIP [c000000001357408] hugetlb_add_hstate+0xc0/0x180
-LR [c000000001357c90] hugepagesz_setup+0x128/0x150
-Call Trace:
-[c00000000152bd70] [c000000000f27048] __func__.0+0x0/0x18 (unreliable)
-[c00000000152be10] [c000000001357c90] hugepagesz_setup+0x128/0x150
-[c00000000152be80] [c00000000135841c] hugetlb_bootmem_alloc+0x84/0x104
-[c00000000152bec0] [c00000000135143c] mm_core_init+0x30/0x174
-[c00000000152bf30] [c000000001332ed4] start_kernel+0x540/0x880
-[c00000000152bfe0] [c000000000000a50] start_here_common+0x1c/0x20
-Code: 2c09000f 39000001 38e00000 39400001 7d00401e 0b080000 281d0001 
-7d00505e 79080020 0b080000 281d000c 7d4a385e <0b0a0000> 1f5a00b8 
-38bf0020 3c82ffe8
----[ end trace 0000000000000000 ]---
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 0 at mm/hugetlb.c:4744 hugetlb_add_hstate+0xc0/0x180
-Modules linked in:
-CPU: 0 UID: 0 PID: 0 Comm: swapper Tainted: G        W 
-6.17.0-rc4-00275-g7b4f21f5e038 #1683 NONE
-Tainted: [W]=WARN
-Hardware name: QEMU ppce500 e5500 0x80240020 QEMU e500
-NIP:  c000000001357408 LR: c000000001357c90 CTR: 0000000000000004
-REGS: c00000000152bad0 TRAP: 0700   Tainted: G        W 
-(6.17.0-rc4-00275-g7b4f21f5e038)
-MSR:  0000000080021002 <CE,ME>  CR: 48000448  XER: 20000000
-IRQMASK: 1
-GPR00: c000000001357c90 c00000000152bd70 c000000001339000 0000000000000010
-GPR04: 000000000000000a 0000000000001000 0000000004000000 0000000000000000
-GPR08: 0000000000000000 0000000000000002 0000000000000001 0000000000000a00
-GPR12: c000000001357b68 c000000001590000 0000000000000000 0000000000000000
-GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-GPR24: c0000000011adb40 c00000000156b698 0000000000000002 c00000000156b4b0
-GPR28: c00000000156b528 0000000000000010 0000000010000000 0000000000000170
-NIP [c000000001357408] hugetlb_add_hstate+0xc0/0x180
-LR [c000000001357c90] hugepagesz_setup+0x128/0x150
-Call Trace:
-[c00000000152bd70] [c000000000f27048] __func__.0+0x0/0x18 (unreliable)
-[c00000000152be10] [c000000001357c90] hugepagesz_setup+0x128/0x150
-[c00000000152be80] [c00000000135841c] hugetlb_bootmem_alloc+0x84/0x104
-[c00000000152bec0] [c00000000135143c] mm_core_init+0x30/0x174
-[c00000000152bf30] [c000000001332ed4] start_kernel+0x540/0x880
-[c00000000152bfe0] [c000000000000a50] start_here_common+0x1c/0x20
-Code: 2c09000f 39000001 38e00000 39400001 7d00401e 0b080000 281d0001 
-7d00505e 79080020 0b080000 281d000c 7d4a385e <0b0a0000> 1f5a00b8 
-38bf0020 3c82ffe8
----[ end trace 0000000000000000 ]---
-
-
-> ---
->   mm/hugetlb.c | 2 ++
->   1 file changed, 2 insertions(+)
+> Maybe I missed something.
 > 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 1e777cc51ad04..d3542e92a712e 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -4657,6 +4657,7 @@ static int __init hugetlb_init(void)
->   
->   	BUILD_BUG_ON(sizeof_field(struct page, private) * BITS_PER_BYTE <
->   			__NR_HPAGEFLAGS);
-> +	BUILD_BUG_ON_INVALID(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
->   
->   	if (!hugepages_supported()) {
->   		if (hugetlb_max_hstate || default_hstate_max_huge_pages)
-> @@ -4740,6 +4741,7 @@ void __init hugetlb_add_hstate(unsigned int order)
->   	}
->   	BUG_ON(hugetlb_max_hstate >= HUGE_MAX_HSTATE);
->   	BUG_ON(order < order_base_2(__NR_USED_SUBPAGE));
-> +	WARN_ON(order > MAX_FOLIO_ORDER);
->   	h = &hstates[hugetlb_max_hstate++];
->   	__mutex_init(&h->resize_lock, "resize mutex", &h->resize_key);
->   	h->order = order;
+> isolate_freepages() takes care of the end_pfn, but I don't see it adjust
+> start_pfn. Or you mean low_pfn is already adjusted?
+> 
+> isolate_freepages_range() / isolate_migratepages_range() just adjust start_pfn.
+> 
+> isolate_migratepages() seems not adjust start_pfn nor end_pfn?
+> 
+> Maybe I misunderstand you, would you mind giving more detail?
+> 
+>>
+>> Only fast_isolate_freepages is a bit more tricky. It definitely takes the end
+>> into account. The start comes from cc->free_pfn but IIRC it's always above
+>> the zone_start_pfn.
+>>
+
+I don't recall all the details, but at least regarding ZONE_MOVABLE we 
+make sure that the start is aligned to MAX_ORDER_NR_PAGES and that the 
+size is aligned to MAX_ORDER_NR_PAGES, see 
+find_zone_movable_pfns_for_nodes().
+
+Note that MAX_ORDER_NR_PAGES >= PAGEBLOCK_NR_PAGES.
+
+I think the same is true for any other zone as well. (DMA / DMA32 etc 
+should always be at suitable boundaries already IIRC).
+
+Note that memory hotplug always works in section granularity, and a 
+section is always <= MAX_ORDER_NR_PAGES, so it's also guaranteed there.
+
+-- 
+Cheers
+
+David / dhildenb
 
 
