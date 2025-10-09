@@ -4,137 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1C58CCD183
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 07:22:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63103CCD183
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 07:24:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40B4A8E0066; Thu,  9 Oct 2025 03:22:27 -0400 (EDT)
+	id BFE3A8E0067; Thu,  9 Oct 2025 03:23:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BB718E0002; Thu,  9 Oct 2025 03:22:27 -0400 (EDT)
+	id BD58E8E0002; Thu,  9 Oct 2025 03:23:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25CC68E0066; Thu,  9 Oct 2025 03:22:27 -0400 (EDT)
+	id AEBD28E0067; Thu,  9 Oct 2025 03:23:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1027F8E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 03:22:27 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 97BE6468B5
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 07:22:26 +0000 (UTC)
-X-FDA: 83977732692.09.DDB6939
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CB668E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 03:23:59 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3E94B4615E
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 07:23:59 +0000 (UTC)
+X-FDA: 83977736598.03.C565466
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 437D3180006
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 07:22:24 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fcjEUCxZ;
-	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf01.hostedemail.com (Postfix) with ESMTP id D9E3B40014
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 07:23:56 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GChpJ92O;
+	spf=pass (imf01.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759994544;
+	s=arc-20220608; t=1759994637;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NR0GPPrQth8s1EL9fLV4+qP3WUCAWdzIUfVSZ9j+y5w=;
-	b=PshgvyG0q+zkRsW8U9G+zo2vNE7UaVXfjchh3G1Ywqqj/RCZyz+rz6p1UTdN5k8wj9pk90
-	dyy2xrO8lq5Pcrzlin/GkL5Udoi3SEhGVAye6Zzhyy8XBkcihrZSmNb7hS/1QaF3eHPzhz
-	LEV7/yDhGRWl5t1cYkC6GYGqSew+WQo=
+	bh=eWNm9RVbxSdHs4WXMVxPHAelQ7JHZVOamF/5YzHwKUw=;
+	b=1HGu2BmpYb+gScOAox82I8qtpbIdyJ2V3jKAb6nnl1bjLCjnSfQzI+XCm+7U9vOhxw+4TK
+	1LOcRn1qFSJ5A6VysHlrxhvgsGDN2hccDuRJKJXRUz0kKfI1/ce3UeaGjTVAaAhu7dx46y
+	7zAyDOZ8p7QkCpibz9/9H6cSmOM4Zkc=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fcjEUCxZ;
-	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GChpJ92O;
+	spf=pass (imf01.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759994544; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759994637; a=rsa-sha256;
 	cv=none;
-	b=ri2Z/NXQNByPYXGi5IsvLkFuVbGELY5gGwuUrES3936mb52aUkaHlSznKC5Xur/BFNbm4L
-	Iv7L12ePih1cXxH6nCpieOPIqYYuLgurZWFSdRBlDUOpzeNgLwvAtvIJ72V6UE68TPrPAj
-	W7hjSpMpE1IMxN2iybD/U1KmCqzxz0c=
+	b=NclH7H79IywRs426LyRsDEV6wE3royh/MOnNDMz0HH/aVSBpZMl6pHfPEp45MKJSeImnZf
+	q//9VkXC7+6J/uc00GJolGIIO46leIoiz8a4vWGy8Z7yqTWPtUmlRxrVVjqJbw59vqDc1D
+	TmUjqM/lnfEbWOWh3tKD0nUlS+6mh6g=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759994543;
+	s=mimecast20190719; t=1759994636;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=NR0GPPrQth8s1EL9fLV4+qP3WUCAWdzIUfVSZ9j+y5w=;
-	b=fcjEUCxZ7cy2E9VIZbQC4f/PlIPi5iBDfiRqsyCRNMduZp6FMvcxmSE7I8kyDBJgj6yLHt
-	QCsB9mEqcTz1FC5sxQ7mGW9xOiLvBYo0Jt/+0qXTt1/+MRU4sqiThLy5sVFtTCS7NN2BaL
-	gzcghKqCz7QmkqjXQVqNi3f6EfGzEeo=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=eWNm9RVbxSdHs4WXMVxPHAelQ7JHZVOamF/5YzHwKUw=;
+	b=GChpJ92Ofsg4efW+PyaPxKNrdSGHiUnQw+mgfZBDCw6BioBjBhMDJkWN8cPnT0xILyIn66
+	BMgE2Rn27tWnOzzp0ar8Z069tb/3gUGAMzK+fBn9guUK2xDlXssn8+nrR8xw4cAvu2u1Ma
+	QrpsSWSTagZEJLfg2sDm82fyW1FJbc4=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-172-2mX7_SrjNFqXsxGyt-sdyw-1; Thu, 09 Oct 2025 03:22:22 -0400
-X-MC-Unique: 2mX7_SrjNFqXsxGyt-sdyw-1
-X-Mimecast-MFC-AGG-ID: 2mX7_SrjNFqXsxGyt-sdyw_1759994541
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3ed9557f976so531307f8f.3
-        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 00:22:21 -0700 (PDT)
+ us-mta-78-fweLIqBGPv2fazpafJi-YQ-1; Thu, 09 Oct 2025 03:23:54 -0400
+X-MC-Unique: fweLIqBGPv2fazpafJi-YQ-1
+X-Mimecast-MFC-AGG-ID: fweLIqBGPv2fazpafJi-YQ_1759994633
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3f6b44ab789so382098f8f.3
+        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 00:23:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759994541; x=1760599341;
+        d=1e100.net; s=20230601; t=1759994633; x=1760599433;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=NR0GPPrQth8s1EL9fLV4+qP3WUCAWdzIUfVSZ9j+y5w=;
-        b=Wt1tHqF2C3ow3J6SLqzkcmhFIOAT+3+Ic1VFYdFIvm1e5OIK8qplFrHqOjzQfXrAh2
-         os9p8Gvr5XAAut+fOGZ7E9X0DZbU6mEBkFK/RGJ8e8R1WRnbTQ5B44kWA4g9PMUCJBAy
-         v8GGeZh5ttjOBSFspC+fhV7NJBZwJGeAWS/GXOJ8uMfcCNYblqdMjiFOLZPGNI+75YO6
-         kemr1ATArIHRt45YSiDTHU7ZyOI2cAHvV/CgeFzHwbNImopteazUDrHX9B+8fWuGEwi7
-         80IuBLT+JiC5Lqif7mxp0FWld7SKN7Lqp2ZVp+Vea2oXRKsUJDFiYBTDHgG9coUtybe+
-         +fIA==
-X-Forwarded-Encrypted: i=1; AJvYcCX4JBH/nRc8HcPtcEg/jDN79MvphWpKkeyTWSMMcWGKXZ9wXq6b/R5xIzVRxfMOXWVIOK0ZBKpC4Q==@kvack.org
-X-Gm-Message-State: AOJu0YzZ4UuWHfcgbxH3rYZGF7C6lHF/DeMuldn50ZOCV4rV2ej9Pcvv
-	YVl0T0Vvb0RxI6k6o59rX4DG9yQTum1WACD7ig2B/oQmRY7cW+E9c0EwmFSmGp/Zwk2yfaESSXe
-	ZLXZjmRMDYIJtvKgyilobDlUeTVlUlo+OkYuj3ZFb3y/X4TFDCpND
-X-Gm-Gg: ASbGnctA83J74KmPegh8H3kNAY/dPGxTWj6SjRC24+K7D5YZS/wKAm/dIJ5vwo3S+Dr
-	Ip5f7EPhc4LEigPmRmDeJRXNsR1/LmWelf6zF5TZedBjAA1ceGW5NnsD/zSJtbjQNEJ3hQg1ITw
-	TXkaOPMllNxNkLTHWLeGf56FKaYox+8ZtOx4bNES1pAl/NfczuKGHZtXkRJ2z37Fm51oSTlyfbO
-	KWh7y7/9XyLQ2sjYfoGCL/kiISmdmMSsoeRIgED/TAvCoCosUnszN/VXHFe8ev/uqGbPX+WEJmo
-	1X3HgIgZkU/mHL0lIpYup4dT0FvJJkZ8AYM78VdxbhgJ2zUq3jsv61S37rvyw2CfrU9jKzy1Qa2
-	LFO1ucK1I
-X-Received: by 2002:a5d:5f84:0:b0:3ee:1578:3181 with SMTP id ffacd0b85a97d-4266e8de444mr4275623f8f.49.1759994540827;
-        Thu, 09 Oct 2025 00:22:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE3pZJrfQfix+9KKt4WdXWXcZ6zm7mHa+Vng4C8E+STUwzM8VHEo7EV1uD0vgxW+NxE9Pp9bw==
-X-Received: by 2002:a5d:5f84:0:b0:3ee:1578:3181 with SMTP id ffacd0b85a97d-4266e8de444mr4275568f8f.49.1759994540323;
-        Thu, 09 Oct 2025 00:22:20 -0700 (PDT)
+        bh=eWNm9RVbxSdHs4WXMVxPHAelQ7JHZVOamF/5YzHwKUw=;
+        b=FGgZNZFzbGHg/7BBko1zqp0s08+3Bxo1ZB6YG5Bwxf0qzwaD2pmdxk+1cAMJ9pNl9s
+         qikDNr2a7XRKPQQ0DOb+3DOo7Ks3mKJspXNy/ks7fttIEPg9wnqT7E99ShmG70GyhQVc
+         RW6KwIiGJ6R6xdd4a/ccOQJ/IyYR7kSDdIWUDLZCSFQQ0jzhQAMBWg/nEg8/zZ7P76YS
+         KdZ/xIItbJVfqdF4YSVk8l40NpAxKdnQBcN2wSGN8lunqqI3P7jz3ISesgxmkwjd2WFY
+         IuSdAv7tuvtVFQXNreq9kvtaWaRVydjVj3BAyTcitbI/IyGa9s8QA5GWIwkjblj9eWsj
+         NAng==
+X-Forwarded-Encrypted: i=1; AJvYcCXgLivq/6EWi2I2aWmV5tUgbiUniS1R3YOtiUhuus51cyacFAmE52ZwIjduCC5/fe3if3c3rODfHg==@kvack.org
+X-Gm-Message-State: AOJu0Yy/nY7j3XyhvuuIve7F+zH9W4JTwKSRw+X5ohXGTujSqRwW/mye
+	Apc2mkWfhQAUKSd2F7fRC2qZnDgAO7gr44VEdfG/E2RVnfSuBSamhE0StOnu5H24Nzy83WAW3HM
+	ao6NvftrJ7DqMGxKiEQvW3XV0g+Yqwpg4r/e09E3hxXNgIG2+3SVY
+X-Gm-Gg: ASbGncskEccxAzAqJ6CYXVFt+B6CEyqNKXomUGR4fXNAXw3iQ/xXvwrGUETfHR/ffJ5
+	ujo3dkufLK9h1sbgYV1SbmVXk7eOF7P4NSmThybYFY42lh4lkURu70g0J3On5RNvkw5Cx7SoGUd
+	Hl6LBoNUtv/uUDOQCFLPbgwy2IIFaxyguEk0MOMBJ/oKSgE0WoaNReDgYODUpo5Y+fYXpXAF5Mu
+	y1YTxnxVa9yvVxyRQdHa2pIYic0BbyfnNPn3GrUqb1mMGxbcPs40xU62hE6Nua1+w5mOdTUqnME
+	p8b56aPGabDTSE/+ulXzWuWqOEtCvCUIAxVnSoGtC52eBN4p/5ZDe57Elmv6g3JTTTg/Y3mUBv3
+	X6Qvqveyy
+X-Received: by 2002:a5d:584f:0:b0:3fe:d6df:c679 with SMTP id ffacd0b85a97d-4266e8e4563mr3738207f8f.55.1759994633421;
+        Thu, 09 Oct 2025 00:23:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFuEcg4bk1Pe3uVgOdw8Gn6sWJObDLQJrWwb68mJVt1z3tdiZp/95/RumQE4BoLLosHPrY5tg==
+X-Received: by 2002:a5d:584f:0:b0:3fe:d6df:c679 with SMTP id ffacd0b85a97d-4266e8e4563mr3738187f8f.55.1759994632988;
+        Thu, 09 Oct 2025 00:23:52 -0700 (PDT)
 Received: from [192.168.3.141] (tmo-083-189.customers.d1-online.com. [80.187.83.189])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fa9d62890sm68237045e9.14.2025.10.09.00.22.15
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8a6daasm33593052f8f.7.2025.10.09.00.23.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Oct 2025 00:22:19 -0700 (PDT)
-Message-ID: <d3fc12d4-0b59-4b1f-bb5c-13189a01e13d@redhat.com>
-Date: Thu, 9 Oct 2025 09:22:14 +0200
+        Thu, 09 Oct 2025 00:23:52 -0700 (PDT)
+Message-ID: <8a65e8c1-3028-4f9c-bf1f-c8f1d3956192@redhat.com>
+Date: Thu, 9 Oct 2025 09:23:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: (bisected) [PATCH v2 08/37] mm/hugetlb: check for unreasonable
- folio sizes when registering hstate
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linux-kernel@vger.kernel.org
-Cc: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Alexander Potapenko <glider@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
- Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
- dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- iommu@lists.linux.dev, io-uring@vger.kernel.org,
- Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
- Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
- kasan-dev@googlegroups.com, kvm@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
- linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
- linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, Marco Elver <elver@google.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
- Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
- virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
- wireguard@lists.zx2c4.com, x86@kernel.org,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <20250901150359.867252-1-david@redhat.com>
- <20250901150359.867252-9-david@redhat.com>
- <3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu>
+Subject: Re: Bug: Performance regression in 1013af4f585f: mm/hugetlb: fix
+ huge_pmd_unshare() vs GUP-fast race
+To: Prakash Sangappa <prakash.sangappa@oracle.com>
+Cc: Jann Horn <jannh@google.com>, "Uschakow, Stanislav" <suschako@amazon.de>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, "trix@redhat.com"
+ <trix@redhat.com>, "ndesaulniers@google.com" <ndesaulniers@google.com>,
+ "nathan@kernel.org" <nathan@kernel.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "muchun.song@linux.dev" <muchun.song@linux.dev>,
+ "mike.kravetz@oracle.com" <mike.kravetz@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Liam Howlett <liam.howlett@oracle.com>, "osalvador@suse.de"
+ <osalvador@suse.de>, "vbabka@suse.cz" <vbabka@suse.cz>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <4d3878531c76479d9f8ca9789dc6485d@amazon.de>
+ <CAG48ez2yrEtEUnG15nbK+hern0gL9W-9hTy3fVY+rdz8QBkSNA@mail.gmail.com>
+ <2dcf12d0-e29c-4c9b-aeac-a0b803d2c2fd@redhat.com>
+ <805DB7B5-23C2-437F-BB94-2188E310FD75@oracle.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -180,21 +166,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu>
+In-Reply-To: <805DB7B5-23C2-437F-BB94-2188E310FD75@oracle.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: OhHHC9MXm0_D-w3Y9wwMdk_9_NWz2VnRrdd2FFPKNk4_1759994541
+X-Mimecast-MFC-PROC-ID: xrKGDU6DD0pIWZ7i6P1zAjYz2jEWUK3HTMpNIwoMRqU_1759994633
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: e7yz8pg9oo1od5936981czk4cowjcqe1
+X-Stat-Signature: 4mmxcwuffafmzn5qh9c38s4qtywifye9
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 437D3180006
-X-HE-Tag: 1759994544-812218
-X-HE-Meta: U2FsdGVkX18eBJxMWSaLZMSwUl6mlz8rGRPkUumVIAAQJLQSAuq1hmpRAkmOy0XFXWSW9ZSVewxxbbG/eebWdfRXOa1s+ze2XOiQjhJVJDCptq+EgVgxyFvoIGGYEjaRqAhEGE9I/2qmaLWeQONkkBX9xodKLcupYLWUDrATT+i1d7AwKxMMnGPWt/M/X5aIF/bNdR9oaRlRLLQqMg6T3suwTsFN3kchsEgQpC8FgDs4LJOrENg9L6/RHskt51roRxi2Lxf+EEG1eAgmLjWUrxxgc/yssnn5DwHb2hp/Mvb2RZaojrSs7Ed/x2AMHk5iDGS4oKXlOZEbadZyjdf42Y5ExAYaiTB4Gjwg5uDbulmcuz2emgnoHrwgqCZK7mnTCc3gdl3SRZofJ9QgvVjFr7qaouP7uD1NhzWoaR7f3B3HZZLo6u/PHr9SRlO5Rak/vSmtgOHFrPsbW/T6Seqg5n3sCyCa20GCOmN/7IpfojT5KvJsuugraGbH4kXOYiITka7FZZGSlEcdOvsGpkuxOrDiU9uuddVNa3HCY9PGGv0t4QDB/EuR6sCybLj+1s+7iNvp+u8R/f4P7tIKGUFh0uUvr+PiD9TscFwh7SGy5FPfViHDFSyjV0FNSq4/cj4ZFU9PeCVkEcOjsyxPf6ZoLorGgo3MvPqhYkvcQvY4V1C89g/MJdUGQr269OPFzQE2romqFpsGFa6eRM0SSJq9HOrTEzo/nQ6m1oNivMdV9orAqPPrcL0NA4XjZVK9OpYr6H3l42AXITSZ7KvAkZrJDmBkdOIO34ZtpXqxMA8x6z09H32H/D7Gizejum4ll95DSRXe72E2cn/oF7CGaWIzCXxbqnB6AftxTO6sNmVndHp8uTI/5eAE+5NIk5misjmjrpyyYc/xP6wANQ3qpeJK6Z7zDc4eLvKBs59otbDDWwVNiv5SYv+3JzbOBS7jo35je76hXrQ6AUrfVMLrIXR
- l3f26jFG
- m92YjwsxfWRCJmbR6sLYhtGclFAttfu2I2ZegdOnWusj3TCi16A0tk5nlwSbJ+TPshTa8KqE14sRnltfvp+V+GCnTJFHjt1uuzZpTjHp/QyISaMDpbPJ49KnC9AgrImY4mO5cEF08fWeUEv9WC0/3Q1NBlwU7CZl5uk3ftGWIxQH0Kw+Wa6H/s/pZjcpSihXq3ZUXRVSDPn33iqgWPzLKlAvQWDHCShXaRsVijOcNQLwVUmOabpo3RBMtNDRVC2CJn+zMu1pTFkTN2oO+TyjUja8HrHTvZwrIkuX+Hm6x7OgnBkuXZhJfDXusMhVfEHW0EGF/wy2qXF/cZgzMoBHKrXTtwOf3KlSXk1PyK+CUeapdHgslJLG2iWDUlyu1LrcTBh2PY3w64s8xKFzYc7nkGrYMF4HLZjrxXjYP6d6mZuCgd4EV098dOIJcoj1qx8FdpOv5U9QgqnShxcF7sdgOAwu8bvyeBmXDJ6d5ayeHpjn8FUjVpmw9SQF/Ze1ew6lOa3IE/ag3OmChh2y5jgfg4mRBgol5AgTUt6HatdeEj+/P0sQ6r7Y6eV+ypatwD0KARN1p3QQ3VkPfvgqmM029pCUvz6+Cp7HNuztoVu+ulzOVW4s=
+X-Rspamd-Queue-Id: D9E3B40014
+X-HE-Tag: 1759994636-808817
+X-HE-Meta: U2FsdGVkX1+pvGZzYozvUGSua1e+/+r6AGC8aPinvLpbg5JLlpxQ7wZsVTkBwkh00e3XWKbiHFuy52IH7fsEe0NOGHwy+B+VyP3Ww7UUxPWi9snBSdXaugZWbwQ29pQWxM5Vmoaxb9MUbxkufzUu9zoThSys4WokECsNgG5Z2VFExsAeuVvoqXoTe2BA3uNz8Cc20u+bLuXldhedsCIgtQYxBZvk8/beSAwkc4pk+bHHyKzZc3ebgCGtVbNo8mcrdG06Jx4QAEKbnznwqTkiEyxLGQAq9APUMaalq4Thcr4cHvjAcirhNXLKrsKr9BEOpn3jyCBTuVPud1uDVbaBtuEXhxsogsDvE05cg6JE6J0vRgyoIUA8MFIAmcvGm/iX/JJ2smuca5fxZqKtv7KW/XO9ja7vI0yTRfHivmx0BqznFsb1EuZxt8ttOWLYHuJZiN8mkMM6WmNVekZDhy0YRqNJYKF8IvTmJl9sx79kQ1LzN3VtceRNkATLEb82QxVRScv+wt5FufAqvMr2YlIUsJc+9ShuwpFS+FG9yiWbX8QwgSoZM7Sq/znk/ong3GPFP+6zihvjRazUx0dEBuhX0NlN1PjNjlL93QqF1hksoHvjBL9sWkpWo95Yu2KYdQlYE5uWT1gaWyX75arn+hqjS/mne+AyOLTyALA4umTltCU0vIveqZs/KGZETMdvFVqf8iVqfpUA94Los36mJfWl5DvtBxBb3KSNphY3rEDfOt4v1XTdi1da8S4LL+y+W8ymyMNIcg2/Eu7kHyTvyQYg8vQHtd5nko2uRh0uAF8VtTbmRRpj5LjCLDXAE/K5oA4suLqbbWGke0VPgr2REfIa7DcOWh0vPXZLTnBGDN1bc3VqxYk6WHwcFbMz2377+yT5NUepUMm83qxFgWlBUY8kPJD5pUiFnNtZNGLK0qGsxtAEH/gU+pcBv2+TfrysVdhuPBDNaERge6+qVborHEy
+ HbvL7voS
+ uErJoG+xmSaY7uyyOgkgA5ahRtDubtCeHXQeYmAjKuLdhybWdadLvMQstMipOGO4wsVoO77/E2KRS9N5X8x+84OIG/WFYHr8p+XGuDv7dyvpMXbs9hDudSlSBtPM4aMbbSxCItgHMS3mjzhQRSXMkVKDebDnoawkzYBiPvKCIfd0lp7wQTzfja1NPJq8wQqAlYxAJrH5dQTqNus+xj2IJcMA4F5RutKkdB1qE3JxPwCsTjqKHIwSsXXgAjj9vRBBB9wGycEeA6gI/YVEcx9feEnViZqvLYpe4ZmkJ7CSmbcV5+65SN2dIaAvcVnBOBjJzN2tL41ZcCN/FM6nkmvdp3LaAAEPEIRb0RjRyjUlagU6aceab3j5ksEH6BE3Xb5sKOeX76cuj7agERbQokDp5T9yNyIDfHSYvchiUn0ETHOqvfyQtGf8V9pDci0EQ71U27DWfzBab+12JLR9qBONSvvfeJTSlk8vbsz2axOOR8duWWZShpmXeOfRfdUMUi7GS3wh7qJvJSGphx+ACIUOYNPc6mIHALpFoesnJithqMyJrxmGTMIuGoAemkPgIO94JhaBwV6h+BvJ/wy2E30u0GsgAsFEP8imuNOC3MbzlcqBksIeEyiqHqkYiFDWI4QZzdgbTeNUafgSC4SQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -203,65 +189,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09.10.25 09:14, Christophe Leroy wrote:
-> Hi David,
+On 09.10.25 00:54, Prakash Sangappa wrote:
 > 
-> Le 01/09/2025 à 17:03, David Hildenbrand a écrit :
->> Let's check that no hstate that corresponds to an unreasonable folio size
->> is registered by an architecture. If we were to succeed registering, we
->> could later try allocating an unsupported gigantic folio size.
->>
->> Further, let's add a BUILD_BUG_ON() for checking that HUGETLB_PAGE_ORDER
->> is sane at build time. As HUGETLB_PAGE_ORDER is dynamic on powerpc, we have
->> to use a BUILD_BUG_ON_INVALID() to make it compile.
->>
->> No existing kernel configuration should be able to trigger this check:
->> either SPARSEMEM without SPARSEMEM_VMEMMAP cannot be configured or
->> gigantic folios will not exceed a memory section (the case on sparse).
->>
->> Reviewed-by: Zi Yan <ziy@nvidia.com>
->> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->> Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
->> Signed-off-by: David Hildenbrand <david@redhat.com>
 > 
-> I get following warning on powerpc with linus tree, bisected to commit
-> 7b4f21f5e038 ("mm/hugetlb: check for unreasonable folio sizes when
-> registering hstate")
-
-Do you have the kernel config around? Is it 32bit?
-
-That would be helpful.
-
-[...]
-
->> ---
->>    mm/hugetlb.c | 2 ++
->>    1 file changed, 2 insertions(+)
+>> On Sep 1, 2025, at 4:26 AM, David Hildenbrand <david@redhat.com> wrote:
 >>
->> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->> index 1e777cc51ad04..d3542e92a712e 100644
->> --- a/mm/hugetlb.c
->> +++ b/mm/hugetlb.c
->> @@ -4657,6 +4657,7 @@ static int __init hugetlb_init(void)
->>    
->>    	BUILD_BUG_ON(sizeof_field(struct page, private) * BITS_PER_BYTE <
->>    			__NR_HPAGEFLAGS);
->> +	BUILD_BUG_ON_INVALID(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
->>    
->>    	if (!hugepages_supported()) {
->>    		if (hugetlb_max_hstate || default_hstate_max_huge_pages)
->> @@ -4740,6 +4741,7 @@ void __init hugetlb_add_hstate(unsigned int order)
->>    	}
->>    	BUG_ON(hugetlb_max_hstate >= HUGE_MAX_HSTATE);
->>    	BUG_ON(order < order_base_2(__NR_USED_SUBPAGE));
->> +	WARN_ON(order > MAX_FOLIO_ORDER);
->>    	h = &hstates[hugetlb_max_hstate++];
->>    	__mutex_init(&h->resize_lock, "resize mutex", &h->resize_key);
->>    	h->order = order;
+>> On 01.09.25 12:58, Jann Horn wrote:
+>>> Hi!
+>>> On Fri, Aug 29, 2025 at 4:30 PM Uschakow, Stanislav <suschako@amazon.de> wrote:
+>>>> We have observed a huge latency increase using `fork()` after ingesting the CVE-2025-38085 fix which leads to the commit `1013af4f585f: mm/hugetlb: fix huge_pmd_unshare() vs GUP-fast race`. On large machines with 1.5TB of memory with 196 cores, we identified mmapping of 1.2TB of shared memory and forking itself dozens or hundreds of times we see a increase of execution times of a factor of 4. The reproducer is at the end of the email.
+>>> Yeah, every 1G virtual address range you unshare on unmap will do an
+>>> extra synchronous IPI broadcast to all CPU cores, so it's not very
+>>> surprising that doing this would be a bit slow on a machine with 196
+>>> cores.
+>>
+>> What is the use case for this extreme usage of fork() in that context? Is it just something people noticed and it's suboptimal, or is this a real problem for some use cases?
+> 
+> Our DB team is reporting performance issues due to this change. While running TPCC,  Database
+> timeouts & shuts down(crashes). This is seen when there are a large number of
+> processes(thousands) involved. It is not so prominent when there are lesser number of
+> processes.
+> 
+> Backing out this change addresses the problem.
 
-We end up registering hugetlb folios that are bigger than 
-MAX_FOLIO_ORDER. So we have to figure out how a config can trigger that 
-(and if we have to support that).
+I suspect the timeouts are due to fork() taking longer, and there is no 
+kernel crash etc, right?
 
 -- 
 Cheers
