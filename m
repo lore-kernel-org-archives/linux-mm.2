@@ -4,113 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22D4ECAC5BB
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 23:14:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39A73CAC5BB
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 00:37:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67D498E0008; Wed,  8 Oct 2025 19:14:46 -0400 (EDT)
+	id 2A4608E000E; Wed,  8 Oct 2025 20:37:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 654AA8E0002; Wed,  8 Oct 2025 19:14:46 -0400 (EDT)
+	id 27C5E8E0002; Wed,  8 Oct 2025 20:37:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 543928E0008; Wed,  8 Oct 2025 19:14:46 -0400 (EDT)
+	id 1B9078E000E; Wed,  8 Oct 2025 20:37:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C63A8E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 19:14:46 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B192F13BCBE
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 23:14:45 +0000 (UTC)
-X-FDA: 83976503730.28.5ED7A86
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D535CA0008
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 23:14:43 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="RN/nwAXG";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of jpewhacker@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=jpewhacker@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0B12A8E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 20:37:37 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A49F2C087F
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 00:37:36 +0000 (UTC)
+X-FDA: 83976712512.23.FF8B68F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 0D83C1C0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 00:37:34 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="lU8Vc//i";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759965283;
+	s=arc-20220608; t=1759970255;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SFbI6yfd+yg4dKJ49IX+g9zgZu5r7fNCwf9LHJwcps4=;
-	b=CTlYqojadtnxmndYp1RTAXjEqnndWTu2jeHSov7fA4cqjlbEClH0E5chOBCkXmU5CkLgCQ
-	Ev8s8tyIrBGU/o6m1Kcy/hlT2WcUzGrAwoWuv3fLTBE9dwhAzd9EcBMoshOHW0WNpVufND
-	c8UgHX92xbI8MOaZUH+nYW2CzFyZqJA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759965283; a=rsa-sha256;
+	bh=XAVEk9ZlINYUZSI/Z+UbjV2R3S7MJO8aGsqUxU36kSM=;
+	b=6Qo37KC9ilCP/vClbIwMCGAFcoXKkhRwMON9FWIesp6wlmNRVbPmgz+PLOqEdnuk9T3vvy
+	JsbL7lF1RZ9Wndmun8BzGyS3YKW39jJBUIHpiS5JGbMGQcYCPWrp31NXfxjxDaC0faXxcv
+	smHgKkckAfBSzSBO2MmXo7+ZVX20Cj0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759970255; a=rsa-sha256;
 	cv=none;
-	b=cMnmxx5CVCQCtfXMGR/ySAd+Q4lPavXh7HGA3EKTHztaHBCyaqTfD2gOnZk39o4M2NiLF4
-	UbpOOVpaZ7lnRE5QpOwRh3kmm986SP5AfZWVcwKkVWqGVWkH8FawfN8QnRKfoYhTrzoXj4
-	Ib20QyPle4s0fuSSaHqDHbH6irzanyU=
+	b=k2ttqsyltRHEGD/emqzNTMMkHeTluPjp3bTWLRQuourTYITiMsRNESyfAzFu2bvPeF8zWA
+	vCit3HR6zD8Je20AFIxy3aLCI6LTQkLE3PW0/EiuqgiFdYTF9T06bSbN4GNuJlyS3ay104
+	1Js9A9bIpIS6SjpViKNSpmfqEdxDOYc=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="RN/nwAXG";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of jpewhacker@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=jpewhacker@gmail.com
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-71d60504bf8so3874447b3.2
-        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 16:14:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759965283; x=1760570083; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SFbI6yfd+yg4dKJ49IX+g9zgZu5r7fNCwf9LHJwcps4=;
-        b=RN/nwAXGfhXHAXQ0cbDPaghy6/oxJkvdbQXEg10KBRSq7xhntYJjuknYBW04parPti
-         M0aMaziiSfMjh2j8QmAc9BcdQGsZSvh7MHURaePo9neHNr/cJILpFD95XLmqdtQ8/Gug
-         hfCb2f8WYxDfREL1pB4hBW6Clq6kLpAM3q4fYc93RW0YRsvgjwJP/BG/TZGSTr4mjvLX
-         HpHNyZz7Ob20oxeB/xAjbjJhHunk+wwZb/g6EowbYd/hAs4/0IM0v5YSpjcNy5UovrIQ
-         qG01duYT7FFoUIjp/QjyowyJX5ZUDw89q3v3/1WPNPPMjJiOsm0znoSjn6S09z6Glwjo
-         SfUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759965283; x=1760570083;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SFbI6yfd+yg4dKJ49IX+g9zgZu5r7fNCwf9LHJwcps4=;
-        b=n91VDWujmiFvh50ZVniBmECLI9Oor2JYzajHeAlsGgmbgfr7L/S761BTKKJlCcEMPI
-         iBQIRpxLHf5UBuT2ZSKX7GOwj0ss75R0Gsaf5NFSCvO0X3lSljH6vlDxYFE8jzCvWOwi
-         JWqSllmAhQPOtYHNJQ4qNoDVX3AeqgzegaHPSZmIoqwDTQK1AHyq6YNSa4+YvuFJAGpH
-         hDu+UcS+vgBdc4i/4+WvBpNr6UALv8Wf3faBmqqfAW6BUgL6Ut10fyY0v5Vzx8qC9taW
-         EuqlOJ1gFYLb4lv4CWcOw4PRq3fr/cydXRn3Mu0ptLRhOkBmVHM0ZuLV9OBi0bJdY94F
-         z/nQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVhxsbq0WtUeiRHxQQkniewsFjn+dcpIeYACI8rYnIaAevOT2x66kc4nI4dK0XbNtsHuP+U6xaO5g==@kvack.org
-X-Gm-Message-State: AOJu0Yxhe9e0qS7es5hij5Z5bpSEL8EhQf3kZyebyl6SEdSP4yF6F+eV
-	sc+Yx6+yeCRxL67BbVFCoiYqEn/xPYc8sI479bdtwyGaI8zk155sK1MgCMNylxw+EJK7WUQqqXr
-	Rcxp6K2eUOJ1A2BFuWYs9B2XhTRF5/YQ=
-X-Gm-Gg: ASbGnct/TVJ3b0kKfqT2qMAkjQ2BEKZE0gjMDjYu4UonDjFnDxDChY+MqO2r2mOYG91
-	x8LjHB9TiCuSnzV2L3bhTvOQYnlMqU2hiQlm4fMv1Q9+lvpFJ0JpoxzEJ10OAMslKj7fyBt3WNK
-	JPzS4vNCCXRxZYEus1NPAn/6MXyHPLKUBgFUo2BHOSb0RquI0a2uY0T3UEv8/gCkLQO4h3c2vhn
-	vvC/bTeR4GUMyDE27LZm1DMUguXvA1MjE7tWKqu7lOkVfF3EV3X8TFh1IkFK3z46+g=
-X-Google-Smtp-Source: AGHT+IFCEYGN+m/q1FKnlQZmsAbbOkqHlLXzoklzuXn/5KxWd8KUCLsi/0JemznMrYIDBz4LiBajWdwhGS2HtwHJwdw=
-X-Received: by 2002:a05:690e:5ce:b0:62a:38ab:fc31 with SMTP id
- 956f58d0204a3-63ccb884e07mr3868762d50.14.1759965282757; Wed, 08 Oct 2025
- 16:14:42 -0700 (PDT)
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="lU8Vc//i";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 22D6860285;
+	Thu,  9 Oct 2025 00:37:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9590C4CEE7;
+	Thu,  9 Oct 2025 00:37:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759970253;
+	bh=nFcAr73rD+SuRsT7M4DFUoPCwzGKkb7ROVMuAUGKA6U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=lU8Vc//iypA7RNySYz3PTvHx5w9B82WDq/loSga5PhvX66TLaTlDAvmlWqnlHhqE9
+	 pD/curjEAsHaBxGAwKNQXoUlLvXEoTPP5iUBvrcO/pxTz1Kq10Jo19FiT/XNcPeCld
+	 YKH77j5UkWkKz0oyrnq7LzPskzT8+l+D4w7E+ElzYIZy/C/+0/MM84sw0h7yljKItu
+	 b5dkLLjko6d7/aLTXbTRDRdUDr90YVN5hCjL8O4gJCCAyqRiFH82f2+NuXjOx8Fmfu
+	 Cl2GgcXGqkEIwEF+MXGMtW5K7NQGpiFfWLCfts6PjXrB6uRMN0CCJiAtJkOgvJ5/nR
+	 +6qrO3pQgpCvA==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	kernel-team@meta.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH 02/11] mm/damon: add a new DAMOS quota goal metric for cgroup on node memory usage
+Date: Wed,  8 Oct 2025 17:37:29 -0700
+Message-Id: <20251009003729.14889-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250619220023.24023-3-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-References: <20241121100539.605818-1-jimzhao.ai@gmail.com> <20251007161711.468149-1-JPEWhacker@gmail.com>
- <ywwhwyc4el6vikghnd5yoejteld6dudemta7lsrtacvecshst5@avvpac27felp> <CAJdd5GY1mmi83V8DyiUJSZoLRVhUz_hY=qR-SjZ8Ss9bxQ002w@mail.gmail.com>
-In-Reply-To: <CAJdd5GY1mmi83V8DyiUJSZoLRVhUz_hY=qR-SjZ8Ss9bxQ002w@mail.gmail.com>
-From: Joshua Watt <jpewhacker@gmail.com>
-Date: Wed, 8 Oct 2025 17:14:31 -0600
-X-Gm-Features: AS18NWAhRXVS4bQVIwtYDJ5b-jz2OHqNOhjsxYSwMfqqDJlxC7ftCg-fC_O8rrU
-Message-ID: <CAJdd5GaQ1LdS=n52AWQwZ=Q9woSjFYiVD9E_1SkEeDPoT=bmjw@mail.gmail.com>
-Subject: Re: [PATCH] mm/page-writeback: Consolidate wb_thresh bumping logic
- into __wb_calc_thresh
-To: Jan Kara <jack@suse.cz>
-Cc: jimzhao.ai@gmail.com, akpm@linux-foundation.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, willy@infradead.org, linux-nfs@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam01
-X-Stat-Signature: jdbokjso8xaqdxdhiqfac8a1cnnsg5c9
+X-Stat-Signature: gcedjbmsb9ny6dn4ht4qwjda89n3w9q8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D535CA0008
-X-HE-Tag: 1759965283-399588
-X-HE-Meta: U2FsdGVkX1+9ImUhLH7RA2wWJ1BGRjnPdX+D4Lb2phs0ffZSfRWx/ZZja1v1777Nmn63TWwnECqip4omL8OzTN0IsMf4pINon20f71RYkowj6h3mTqByDmRfudWsV7NS6BME1XgKkDqOpbEmWn/96TeW9SFVYwBGgb7+YDFDr5ou5AlfS/2tIfMe0IVLEQWQEYEVcvq+WYCKbe2u+Wd7uoEcpG+e3sBX1JBClWQQhEOtfhdLBk6WrbhCYpi3Qc0NVMpqRlpQpOrY/7hqYNZtrwCDtgScQjwpS+QV74D9cH4I7dDBN0+7hokulL/nKUaYxX0r8WAp7uNqUMNCmlPsI4JjRmjZ+b+IENwO9TkzVj8fmrLq2fDnSGB10CxARubcaSaNB5gsw6mOIW4Dh/NMIngugAwWnt/knEyV6C3dtHwe4ccJIjvVbRAhdx2kwVdrrz8SRGI+z0o2S6LKoIuMF8x2l6mL8DOiYgw9V1rwCZZ2LuPmAChB2q3JLT1UVDiy6xserV00t5a5ClhOd63NnVuW+WrOky7E1aBkx74W2pSPgogQZfUCm5H3SZ8zg15lYDfb3UIYDRpVX27cdo3sgVTcqAHrD7DfEZhDfCvBq663XKYD/BjxrGoX3RlRTh7ewDFBGoOTOTItFgDOxCa6Z0AJbqDIwHJ9ojJIt47iFhXiRTmplfMvL1PNuoHtuEQyg7bqRlQbR1TnkA7gbI5WiDUSEW/wuI/XzpSau65VervL5cfOY3aOo5a5gkk7P4YKwya+ZlrpbhuuAt1BaHNhZ8Mh0CdVVFFg8CoOgudO9VnI68A6RxV7U+53k2m8ecZJ3OCfs7lpqbxeuC7uLZA5ZJgNiAm6Aa4etT7jbcqyulx4X4VVIuvD4CgaMeKaCeBe2VUivb6o2S75QGvfu6JaEE6/9GpFcjqZA2uivkXFUkKyQcCI2TN7mlo+McD4cLjw1cPnFKpg2iN1PlYTRI8
- tyCac2g1
- CwuqnEqKjnfH9F7CzMryBD+39R+0E9pp5FCrd5gUj6esJr7c2Y04kQKZRw/w+PtSyyTSNyItGe8C6+GiWVJn+9J+kpWADtFFRjoFhxO9Gus6CJmbJNg6dvnITuMXz/ET6dfLglF4z7rid0uF/bxo25gx/gtihP2D+3iRYmC9gxQXo2bV3rac2g0+3yW2Zwuty7Axt3xkh6ALPzwbJbgrwzC1U6a60/OkmB4iXrR2wkcMxaozFw6xk81NbP1MjmgIPUMfz2S9Mk9BRNZfDTJv6n9nXfVDxS4lnmog+Snbtn1xktrjF5qCFQ4Dy22RbX501K1n9awj/6WlnthDmMb0VvV+Dr3UBUWQ+AWu0yGNszh7sYrS3AWRtnRW7/jwx5VLKlhXedi6jF22ZOwlfaYFDGLv9clZwcXgN+IYv+ZRZO54YpSLVNW/mJWu/O3leqUOi+QAUMysdIa7u6OFhycfUppypmsubMeGOvfIpgTHpfp+RiYKBB+/7/vdr0VgzjINMn1MxYi8pRgXasof7FXA1UBz2x/+91LUzt5S6H7KFuZJ4WVtTjlVT9oPXqH7vPliZlVWOsU5Vu3i9XL0=
+X-Rspamd-Queue-Id: 0D83C1C0002
+X-HE-Tag: 1759970254-388454
+X-HE-Meta: U2FsdGVkX18n2vVJl4g3z8fl4RC/8hpsrKQ+dYQjw61uO7zCP+yImJBeaySiYUQj79hS7bbMy2hDKVtrY0WlWOAoHeEFnG2ho+xPRH7lkOxw3pVI9Z+qYTN53fdWP9nJfMDH5UaqhUFrMyaFIV3q7Yv0PFOPP56hjr1Ppl/oXGPtejYoGFNQFsNNztv5KCxYWz89i5VCaeLOVXGPcqessFKq+pNFk/YjYvARwhaQmdmYy0nZb9HYeHgmRK3wqVd9rp9+6/PcS96T5A9FCUEym/ekb3bZ+cV7gZoRKamjyb7AhCbCGUMV0IKUaXDCXnrtCfmfl6ChUv/y5lD8VdcOO0UiG7N41P8jSCj7ISmjL2EUgvHlhT/fJeir+zGI12ZywG+FNDveAIP1IjK4/OPf4NeDquY54LXImo2wlJoULOGJENWQ0W1KOhLFB+6Wxk+Rm1M08aQlFbluFwksX2GyFlztt8J/xjuTymjWfqRePpYMlqvqGnV/kbozs/WyjH/7tk3Iipm0VpfN7lRWE2jcVJ7g0miChb3MrwmhMFvNa0zgTbQwS3uRNDa4idfF5jtAXa14gnSfhVP2NO8yegf41ab0rEXK+nXwqnf/AhRJyjFWiLP1e1F/wwdmrZvfNmnWpoM+c41wFxSUESCfeBp5q2q9VVBUEOFQXPUCjCYWWPeD2pvcmWh7szHlxqpZhbnxSLMSAl5mzsTJfuOWmE80NnG6jb67sb1RFPlwwTibJCc7OHYpRGiTdZWUNs3DEe+p14fXR3sUaPbufjF8Uy6C6ht73AAjPoucHWzR+kxYZy2h6+TEPzy6p2ZZtmrjzXQkWcrXq4yOxL0jD2rNOGGnZ2dIcWDxTEhUeaGWNHYauYJxrHz61tflN5wjycXKntLmX11ELL0eaNmzbRvxjFrQkMy0vFzAtiHQaG0t4EIuUtDzkkOYiED1BrsbFKoZ5CyI2f0Y8NRTpmGPv4t1jU5
+ OGiT8XVv
+ jInS+63JmId/55Y2Mmfqu1bgAhKWh2i85CcyW3rNiUKWAjFJXC4DB5/ePUVNY4ww5pPS5ZUzSEFxg9D91TLhUrjeS4vRwzL4LKBd3TZQOMGadhJTp2fq3F1oQzmlm9NLU/89LMVPSeL6Rv8DgFDdHU3XhAwT+ipOYENv/82F5ygkHLy7r2WKI7iRZyYjkOvj4J7jAC+Z5bEn5SQAkambX6FN5DFLOXVVUkN2rISborPNHH50xw86zgrks3skJziiWQugUGUtWH3ubSCo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,108 +94,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 8, 2025 at 8:49=E2=80=AFAM Joshua Watt <jpewhacker@gmail.com> w=
-rote:
->
-> On Wed, Oct 8, 2025 at 5:14=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
-> >
-> > Hello!
-> >
-> > On Tue 07-10-25 10:17:11, Joshua Watt wrote:
-> > > From: Joshua Watt <jpewhacker@gmail.com>
-> > >
-> > > This patch strangely breaks NFS 4 clients for me. The behavior is tha=
-t a
-> > > client will start getting an I/O error which in turn is caused by the=
- client
-> > > getting a NFS3ERR_BADSESSION when attempting to write data to the ser=
-ver. I
-> > > bisected the kernel from the latest master
-> > > (9029dc666353504ea7c1ebfdf09bc1aab40f6147) to this commit (log below)=
-. Also,
-> > > when I revert this commit on master the bug disappears.
-> > >
-> > > The server is running kernel 5.4.161, and the client that exhibits th=
-e
-> > > behavior is running in qemux86, and has mounted the server with the o=
-ptions
-> > > rw,relatime,vers=3D4.1,rsize=3D1048576,wsize=3D1048576,namlen=3D255,s=
-oft,proto=3Dtcp,port=3D52049,timeo=3D600,retrans=3D2,sec=3Dnull,clientaddr=
-=3D172.16.6.90,local_lock=3Dnone,addr=3D172.16.6.0
-> > >
-> > > The program that I wrote to reproduce this is pretty simple; it does =
-a file
-> > > lock over NFS, then writes data to the file once per second. After ab=
-out 32
-> > > seconds, it receives the I/O error, and this reproduced every time. I=
- can
-> > > provide the sample program if necessary.
-> >
-> > This is indeed rather curious.
-> >
-> > > I also captured the NFS traffic both in the passing case and the fail=
-ure case,
-> > > and can provide them if useful.
-> > >
-> > > I did look at the two dumps and I'm not exactly sure what the differe=
-nce is,
-> > > other than with this patch the client tries to write every 30 seconds=
- (and
-> > > fails), where as without it attempts to write back every 5 seconds. I=
- have no
-> > > idea why this patch would cause this problem.
-> >
-> > So the change in writeback behavior is not surprising. The commit does
-> > modify the logic computing dirty limits in some corner cases and your
-> > description matches the fact that previously the computed limits were l=
-ower
-> > so we've started writeback after 5s (dirty_writeback_interval) while wi=
-th
-> > the patch we didn't cross the threshold and thus started writeback only
-> > once the dirty data was old enough, which is 30s (dirty_expire_interval=
-).
-> >
-> > But that's all, you should be able to observe exactly the same writebac=
-k
-> > behavior if you write less even without this patch. So I suspect that t=
-he
-> > different writeback behavior is just triggering some bug in the NFS (ei=
-ther
-> > on the client or the server side). The NFS3ERR_BADSESSION error you're
-> > getting back sounds like something times out somewhere, falls out of ca=
-che
-> > and reports this error (which doesn't happen if we writeback after 5s
-> > instead of 30s). NFS guys maybe have better idea what's going on here.
-> >
-> > You could possibly workaround this problem (and verify my theory) by tu=
-ning
-> > /proc/sys/vm/dirty_expire_centisecs to a lower value (say 500). This wi=
-ll
-> > make inode writeback start earlier and thus should effectively mask the
-> > problem again.
->
-> Changing /proc/sys/vm/dirty_expire_centisecs did indeed prevent the
-> issue from occurring. As an experiment, I tried to see what the lowest
-> value I could use that worked, and it was also 500. Even setting it to
-> 600 would cause it to error out eventually. This would indicate to me
-> a server problem (which is unfortunate because that's much harder for
-> me to debug), but perhaps the NFS folks could weigh in.
+On Thu, 19 Jun 2025 15:00:14 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-I figured out the problem. There was a bug in the NFS client where it
-would not send state renewals within the first 5 minutes after
-booting; prior to this change, that was masked in my test case because
-the 5 second dirty writeback interval would keep the connection alive
-without needing the state renewals (and my test always did a reboot).
-I've submitted a patch to fix the NFS client to the mailing list [1].
+> Define a new DAMOS quota auto-tuning target metrics for per-cgroup
+> per-node memory usage.  Also extend damos_quota_goal struct to have a
+> field for specifying the cgroup of the interest.
+> 
+> Note that this commit is only for DAMON kernel API extension.  Real
+> behavior of the new metric will be implemented by a following commit.
+> 
+> Signed-off-by: SeongJae Park <sj@kernel.org>
+> ---
+>  include/linux/damon.h | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/damon.h b/include/linux/damon.h
+> index 39b835dd3c4d..43aef959d357 100644
+> --- a/include/linux/damon.h
+> +++ b/include/linux/damon.h
+> @@ -175,6 +175,7 @@ enum damos_action {
+>   * @DAMOS_QUOTA_SOME_MEM_PSI_US:	System level some memory PSI in us.
+>   * @DAMOS_QUOTA_NODE_MEM_USED_BP:	MemUsed ratio of a node.
+>   * @DAMOS_QUOTA_NODE_MEM_FREE_BP:	MemFree ratio of a node.
+> + * @DAMOS_QUOTA_NODE_MEMCG_USED_BP:	MemUsed ratio of a node for a cgroup.
+>   * @DAMOS_QUOTA_ACTIVE_MEM_BP:		Active to inactive memory ratio.
+>   * @NR_DAMOS_QUOTA_GOAL_METRICS:	Number of DAMOS quota goal metrics.
+>   *
+> @@ -185,6 +186,7 @@ enum damos_quota_goal_metric {
+>  	DAMOS_QUOTA_SOME_MEM_PSI_US,
+>  	DAMOS_QUOTA_NODE_MEM_USED_BP,
+>  	DAMOS_QUOTA_NODE_MEM_FREE_BP,
+> +	DAMOS_QUOTA_NODE_MEMCG_USED_BP,
+>  	DAMOS_QUOTA_ACTIVE_MEM_BP,
+>  	NR_DAMOS_QUOTA_GOAL_METRICS,
+>  };
+> @@ -196,6 +198,7 @@ enum damos_quota_goal_metric {
+>   * @current_value:	Current value of @metric.
+>   * @last_psi_total:	Last measured total PSI
+>   * @nid:		Node id.
+> + * @memcg:		Memcg id.
 
-Sorry for the noise, and thanks for your help.
+The name of the field is not memcg but memcg_id.  I will fix this in the next
+version.
 
-[1]: https://lore.kernel.org/linux-nfs/20251008230935.738405-1-JPEWhacker@g=
-mail.com/T/#u
->
-> >
-> >                                                                 Honza
-> > --
-> > Jan Kara <jack@suse.com>
-> > SUSE Labs, CR
+>   * @list:		List head for siblings.
+>   *
+>   * Data structure for getting the current score of the quota tuning goal.  The
+> @@ -209,6 +212,9 @@ enum damos_quota_goal_metric {
+>   *
+>   * If @metric is DAMOS_QUOTA_NODE_MEM_{USED,FREE}_BP, @nid represents the node
+>   * id of the target node to account the used/free memory.
+> + *
+> + * If @metric is DAMOS_QUOTA_NODE_MEMCG_USED_BP, @nid and @memcg_id represents
+> + * the node id and the cgroup to account the used memory for.
+>   */
+>  struct damos_quota_goal {
+>  	enum damos_quota_goal_metric metric;
+> @@ -217,7 +223,10 @@ struct damos_quota_goal {
+>  	/* metric-dependent fields */
+>  	union {
+>  		u64 last_psi_total;
+> -		int nid;
+> +		struct {
+> +			int nid;
+> +			unsigned short memcg_id;
+> +		};
+>  	};
+>  	struct list_head list;
+>  };
+> -- 
+> 2.39.5
+> 
+
+
+Thanks,
+SJ
 
