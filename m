@@ -4,92 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DAAECCA470
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 03:04:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D733CAC5BB
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 03:17:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F38B88E0060; Wed,  8 Oct 2025 23:04:11 -0400 (EDT)
+	id 98C318E0061; Wed,  8 Oct 2025 23:17:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE8DE8E0002; Wed,  8 Oct 2025 23:04:11 -0400 (EDT)
+	id 93C458E0002; Wed,  8 Oct 2025 23:17:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD7DF8E0060; Wed,  8 Oct 2025 23:04:11 -0400 (EDT)
+	id 82BA98E0061; Wed,  8 Oct 2025 23:17:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CAA0F8E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 23:04:11 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7122C4639D
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 03:04:11 +0000 (UTC)
-X-FDA: 83977081902.23.9F16659
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf14.hostedemail.com (Postfix) with ESMTP id B3AB2100002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 03:04:09 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Bx8vpW1o;
-	spf=pass (imf14.hostedemail.com: domain of chengming.zhou@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=chengming.zhou@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7069A8E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 23:17:45 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0555C13BF32
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 03:17:44 +0000 (UTC)
+X-FDA: 83977116090.09.09784A9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4F4B520002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 03:17:43 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AyPm4yay;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759979863; a=rsa-sha256;
+	cv=none;
+	b=AJXT5IP0Cp4x1tCj7v+7PeK/jIponar5mFWjA50mrA/Qsv5YTxddBS5KEVABLmHO+4tAMG
+	YH5LCyU/HsjIVldQ2VHta7GpWtmV8j3ZkgpiIDfpTmHO/ERBF/IGJokNn7p+6tqCssLED4
+	d1574VmUN3tmPvT1KnnMYWth44w8KYc=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AyPm4yay;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759979049;
+	s=arc-20220608; t=1759979863;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nc0BA2368cULBNmhkzmu+0aM1upoZ74WV8ag6VwaBtA=;
-	b=Ys3+zHqWfxnOGxznQEbwpKRIdI5pqOASqaHh4HoC9HO0v+Z/auR3lfZj837RSMgcqqcblS
-	YyG0ORwiG7HW+GSMH4NtYj4pWeNpXQb/L0SYgLEPzBn65890/QMh6oEYy+5cj1XehQzfz/
-	athfOh3o/r+8sM2M5wbBqIOglE9UTbs=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Bx8vpW1o;
-	spf=pass (imf14.hostedemail.com: domain of chengming.zhou@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=chengming.zhou@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759979049; a=rsa-sha256;
-	cv=none;
-	b=NxNy748WSrjrzpLXd9mCL0pmkP4xXHI8o1aGDqeic+ybFuloPn0LJosQhcvNe4bHfLQ3Xb
-	TeXV3WhWnKxeKttnJZppkLQ189dps/1JCGjhZOGrGJqM6VMEzSoTzyiMjjTRk+h/MKVfau
-	c5zoATIGMRfKzmNzBvTRd2/4JVXvtyo=
-Message-ID: <612e4576-437f-4c63-b56a-fa2ad62779b9@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759979048;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nc0BA2368cULBNmhkzmu+0aM1upoZ74WV8ag6VwaBtA=;
-	b=Bx8vpW1oUFLWj43pRUUUQ3p9yQWAM9Mc5ScpXQ9Ot2Ldetq+STH3gt0F6xAKeixN2Ofllf
-	fhwoKwYK1XCEhRqnEA53npfuPDmTUgjlYoykw9p4X5FpziER+YUHMod/7SPcdT303S7fmr
-	fxTGJEFylUvKfpGONQLLa+rw/PBwpsE=
-Date: Thu, 9 Oct 2025 11:03:56 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH 4/4] Docs/admin-guide/mm/zswap: s/red-black tree/xarray/
-To: SeongJae Park <sj@kernel.org>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Jonathan Corbet <corbet@lwn.net>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
- <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
- Nhat Pham <nphamcs@gmail.com>, Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@suse.cz>, Yosry Ahmed <yosry.ahmed@linux.dev>,
- kernel-team@meta.com, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20251003203851.43128-1-sj@kernel.org>
- <20251003203851.43128-5-sj@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Chengming Zhou <chengming.zhou@linux.dev>
-In-Reply-To: <20251003203851.43128-5-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+	bh=EeYH8DtDhKNv/7S6bbr+/OqhmdAFbE3SUfdoOHi3UT4=;
+	b=VBDFe2HAE6lDDQ0IGst9qKONV0pk+H3FGSApy8TejaevGh+NADQi/VK7aIoPgd2Mw61kmk
+	FOc4L4C9EnVqhO2f4El37q6nYBhgj2mRDi5xLFwvqLzqx8CyXXTNlZfRYRXq9zAdCNHiyj
+	tZur2To1EVO+ZVANoKmYItdNFXgmVDA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D6F4041790;
+	Thu,  9 Oct 2025 03:17:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F6BC4CEF5;
+	Thu,  9 Oct 2025 03:17:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1759979861;
+	bh=wPJ3c+Eh/QNy+wErZtTJ6qcki/ipw0RIOm8hLXCgx9Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=AyPm4yayNVHdTNj2bvS0OKDp+PvHhdOn440JVw+h+XkAavnCmVibloeRaBO8okAdC
+	 KEYcw2Nx0sDWNxQyvFV/DqDCm3xbgzlspwEDTi8aQngtRsH+1+5hHecjBtK+lcyphZ
+	 qRgwUAnTrM/DleGHi8A6MrCv0kwhLLhmt3CrLvok=
+Date: Wed, 8 Oct 2025 20:17:40 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Balbir Singh <balbirs@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-mm@kvack.org, David Hildenbrand <david@redhat.com>, Zi Yan
+ <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
+ <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
+ <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
+ Popple <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>, Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
+ <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>, Danilo Krummrich
+ <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter
+ <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>, Mika
+ =?ISO-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>, Matthew Brost
+ <matthew.brost@intel.com>, Francois Dugast <francois.dugast@intel.com>
+Subject: Re: [v7 00/16] mm: support device-private THP
+Message-Id: <20251008201740.d9507f4807a73058d4da23a8@linux-foundation.org>
+In-Reply-To: <20251001065707.920170-1-balbirs@nvidia.com>
+References: <20251001065707.920170-1-balbirs@nvidia.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B3AB2100002
-X-Stat-Signature: xsqgbfsztimqut4wkd797jgrdihmigtj
+X-Stat-Signature: p3cbteuca7qhn73krdgggiu46fs8cqgn
+X-Rspamd-Queue-Id: 4F4B520002
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1759979049-35443
-X-HE-Meta: U2FsdGVkX1/y3ML+h+9yGHnpiOs2qICpnEES8BS4DJOZUsxukqgbLpf++53HoTurWtx51FSWUVnhIgdVyYdyjGxlotGv/BCwPtoOkL4c/+fY0DD+PE5RrfqAe1FDFqUCSQXb6G1wfNDFLQPlhj3GyibQkv0TEJJfTofo8eo7+tksRHcixYiJJuh7J7GHdnf9CU36dokws6JTDW+QGDR9E+xdY46YsZXx7P5r9he689qf65kLrR0jF0TsQSGaUdrD4xHEhqS3Z6+3XvMuTEmlQXLNC2QYKp+AL6KmUH8Q/4Ofh5fMWL5b2lPcqbSvJST982P4Izv7VwNxm7DlFsQgeKScprwlpRzSIQcx5wsWK4Jg0selMuaVIyDxAky/7Re34TWJIJDLDTWbYuV4zoBLav20H3lpg77cQlzVxC97nD6E08cga8E2+PNRiLwFC70EIMmh5OXD2sXoVkwG4Pn4rnbxvdt0Mr69sS8/e0kjk6U4PvU22gpDBu7JoApWaRWv/oKJVYSWjl1WWfqp0ZyRyWEl7a4+tRObxj1i1bozsLmOxu3aCW8AsrZJ0bbL/QLOvG70Xr+fwXgKCuJmAN6DDGrTEljvfpa+Y2/mdl3gnbFbYxNRI6olxJ7RqncX++nP3JsgziTJHKkzczHgOd3HK10+VbGteVSOFg8EGDeWrPf7z4iQu2tdVdS/N3x9Hzwmocms86Pqn69JTN5GBSmzdzemJYHztf/OrkgZcIo/xgFyz2Q1U6SeYOk2vNIYCng56+jiaCunbz/zrdka14ZmLKfm5f/l2PuOYyvqAuH+Hkdcd5mQvlwKEHnz5KBsd+uPXm4bEka5RAPvYcNE/3GnUmppVnnRAFvi12A2vm43ArAkovf2/0noNCB0qTQE20oYm9UrjpcNbkJr4XUZnqmO+uuG5BKBLYsx9Za8gq4l3NXnux8mI9uVjVaiaBpkOeI0eAKNoYaH5IlGoS63DS5
- PRvgB0WG
- 8b5cvvfpvaGFEJQoFcc2cgKWC3cJ1czYRsIvPHrtk2EnUsclICnMBINbk+g0dbHs/Zy4iwrDDq7YndEEAOWlbb+7njN/WspeLoSJiAJB8UFnTt4ttH/OI2adeqd3blgrFcRcLVsisiaYtJIJdWQzEOqH+lpqq/jb5met+60QLKxjZOaQ2j1S3D9JRfU1iOLj7Q9Od+u0IgouV8ZENecIN68IHda6grwKdaBOL2Gg0Gai5YII=
+X-HE-Tag: 1759979863-906181
+X-HE-Meta: U2FsdGVkX1/ydKZD0/csl8wYPj7nIR9hSys9sJpniyg9tJr8jMb/UkP2vg3UWcPY3vENGclOPV/DLiz+FX9MDBvXVAk4hj0+Bw3BUWeJojP/0FTyxEB1jbx8wKLscrEWLVGheKN5pVxPIh4FxbLbXDpWFgV9Rc7sv5xtuyC9d0EhgS2VYAM8Dk01hAOJZ3HfzHXfzuSrndgDIclpaEVnQnmXGJnpffdyAbMTTk6vyWhex5Iov9Pe7MFnmzVHcZpJQ2azWkNW/oIxyBowd/+CcA6CE7SFed1NTQiyyVpi7ykEJCbsoUY238nUMqsxMjzDSU5ono8CnSkGBfcv2Xz6pwn6VLFS5SKohuw84wpBzMEfeMMVzqt0h+ZjiH8S85ZxP3CHCBdCUGO6Q6gTsJu+Wl/H+gs1zp6HMsnJNOcQlgxPALJ8OW+yP9W//2u7OiHr/wnx0cR/m3NPTgwXAw3c/Pb7B7tGaRAZIdGETGcK80RrPuspwHKeEPjscL2uF+rNL78jyGsiRZk+vm5dugewgdOhvngUwB5TaFBLri8Vl/FPcORoyXhxUzkDw98dmxeca83Wief3FiW6BF9h+4XCBY/xD1CxiESuD/nlHOeTChft9aF2RFxg8laPj8F9+LMTb5wR0nzsi3oqksS8fiPamzRo+UXtwukDjj2/Kmgp1P73/eWw9IktB12l42Wnuw5v1mHTr954qWgGdprBh5uJKEMxpYLjq3ihRkfRjir3AZudhnfdFAI8LJGMcNst8KGV41AuM02NcJpvFJFMhG+mnYwXiLkbJ2hOfYmSmLZjqIw8dsnQFI+W2ng98Kr+vm3nPQT4lbBR41RirFIm7yJSS5Uh+xPtx8B3gVZXTL5aXKRYqXrboCxuNIatYo2btucN8c9Fqa+yymwSLANqNA2//PNy5r4dIHHB7GMa+J+b8vJOeZKeUIkp386DQCnzJxbRIFcoAzJweSIQskiSN91
+ 9xwW86UG
+ zJcsIxfcOjA0HAXCPhtDA1qMeUYG82jq+McOKPgheu9jqB5GI0PcJQRP8A1R2v+AqpXVKn7loKuhHIOoyqkyPI7dj0wyo/7wW6/cxgmd6i6ASE/L4kXE4c4DGlCmC+FPPd5SscmgZhdq44ba7v4jqS1ki5o/mMHwFXkWhn9MHtHET6VovS+Y2aBe0QFA4UPLwAhiKjP6Tb/uRrF3TtV+0ZbDa9VzGUZa0UlDAW0edueBpoyFUWxAMhyNmXxfT7vnDTGcS9Gcs+Im4z8l2Hk75ZUeq7qaLohiiAMwfuRnzwjmB8L02AMTLFrZ/fg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,37 +103,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025/10/4 04:38, SeongJae Park wrote:
-> The change from commit 796c2c23e14e ("zswap: replace RB tree with
-> xarray") is not reflected on the document.  Update the document.
-> 
-> Signed-off-by: SeongJae Park <sj@kernel.org>
+On Wed,  1 Oct 2025 16:56:51 +1000 Balbir Singh <balbirs@nvidia.com> wrote:
 
-Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
+> This patch series introduces support for Transparent Huge Page
+> (THP) migration in zone device-private memory. The implementation enables
+> efficient migration of large folios between system memory and
+> device-private memory
 
-> ---
->   Documentation/admin-guide/mm/zswap.rst | 10 +++++-----
->   1 file changed, 5 insertions(+), 5 deletions(-)
+Lots of chatter for the v6 series, but none for v7.  I hope that's a
+good sign.
+
 > 
-> diff --git a/Documentation/admin-guide/mm/zswap.rst b/Documentation/admin-guide/mm/zswap.rst
-> index 283d77217c6f..2464425c783d 100644
-> --- a/Documentation/admin-guide/mm/zswap.rst
-> +++ b/Documentation/admin-guide/mm/zswap.rst
-> @@ -59,11 +59,11 @@ returned by the allocation routine and that handle must be mapped before being
->   accessed.  The compressed memory pool grows on demand and shrinks as compressed
->   pages are freed.  The pool is not preallocated.
->   
-> -When a swap page is passed from swapout to zswap, zswap maintains a mapping
-> -of the swap entry, a combination of the swap type and swap offset, to the
-> -zsmalloc handle that references that compressed swap page.  This mapping is
-> -achieved with a red-black tree per swap type.  The swap offset is the search
-> -key for the tree nodes.
-> +When a swap page is passed from swapout to zswap, zswap maintains a mapping of
-> +the swap entry, a combination of the swap type and swap offset, to the zsmalloc
-> +handle that references that compressed swap page.  This mapping is achieved
-> +with an xarray per swap type.  The swap offset is the search key for the xarray
-> +nodes.
->   
->   During a page fault on a PTE that is a swap entry, the swapin code calls the
->   zswap load function to decompress the page into the page allocated by the page
+> HMM support for large folios, patches are already posted and in
+> mm-unstable.
+
+Not any more.  Which series was this?
 
