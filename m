@@ -4,197 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32FE4CAC5BB
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 02:34:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51203CAC5BB
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 02:57:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 753408E0007; Wed,  8 Oct 2025 22:34:28 -0400 (EDT)
+	id 6770F8E0011; Wed,  8 Oct 2025 22:57:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72B258E0002; Wed,  8 Oct 2025 22:34:28 -0400 (EDT)
+	id 6269A8E0002; Wed,  8 Oct 2025 22:57:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 619EC8E0007; Wed,  8 Oct 2025 22:34:28 -0400 (EDT)
+	id 53C7F8E0011; Wed,  8 Oct 2025 22:57:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F18D8E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 22:34:28 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id ED74B5BA95
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 02:34:27 +0000 (UTC)
-X-FDA: 83977006974.02.0C25794
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012036.outbound.protection.outlook.com [52.101.53.36])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 189981C0009
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 02:34:24 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="hUXo/hoS";
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf20.hostedemail.com: domain of jhubbard@nvidia.com designates 52.101.53.36 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759977265;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4334B8E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 22:57:14 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E11755BB03
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 02:57:13 +0000 (UTC)
+X-FDA: 83977064346.06.085EE30
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E098D4000C
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 02:57:10 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=seYYx03h;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf12.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1759978632;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pu/YYrXIVy86D90cbSf3sSiagP5FIjQW0BqCG/sjnKw=;
-	b=1D7Zfwm3jU1fBmMkQBSY/c9ty2w7Qef1LRc9f6PBHnV4+eMUzlnDb3Fxim05cdcq9BqbqD
-	Cj+2ERWnnnXr0lg4uY6QSeyk3+eoo6XMxyNhlnrktolbdxyiHGIA3h5cxEryyuhP0n5bvI
-	9aJkkO9SnHFoFcADCAJ7hoZ1dqj4owU=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1759977265; a=rsa-sha256;
-	cv=pass;
-	b=K5OA/ZnNnQMmyEQPsysPousTfbHHlBLwsJma+3ccqb7B3hCDVd+vgcylMLGyST0BkDKzd0
-	UlzrasgN5eazTHNMmS/QBgI/KQYCxqJqxOZ1DAclOy5+g0HVXoehsqcFJloEDWhV1c1Xgy
-	dL+zivaWghjliv535Bct0aOscOQwscA=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="hUXo/hoS";
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf20.hostedemail.com: domain of jhubbard@nvidia.com designates 52.101.53.36 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gp8HQYbU3wKDKIIxPIeBDGsTBJKg+Uc67K1fBTGWdthkmVgkp4WaQdr535EVTbd0MEd986/SZuuhErDEuMnQzZHnOG0jsWUEwBFCeQorEj6Sub/yCSWKGMx01MltLTJ5nYJS0wjOOf2rIyGW1MV6SepdWJ7M+NnEQStC5TpLtUtELLWws0r9VTD2Tt5zTK8roXpYSlF8o/I6Jwj9YqrzdOL0iAIRehqxyJ1GDd5YeICPsTN9POraE4s9xyozXoItGg421AEJALywsux81gxcl9IXpWZHqAp4z4hzRbvJCd+wEP+yqM3J2PgMv4dQ9z0PoUQEQ7qYYqLR74aIyxkQow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pu/YYrXIVy86D90cbSf3sSiagP5FIjQW0BqCG/sjnKw=;
- b=vhz0saMk/jwac2BwYoMd6HZ1AP7aqFnqbibJzNjOe40d7QJyQIbwWWjyu9SBBiHTZnFu5QcQ6TDHRVSlHO6Dm85y3EvPUleSFg2bHPg7a2rmxvz/vlRXhHGl66ND3TfVd6vVtO1ijADdQ+fBAqF34vsUQucrpUxw024c+FGk4srMRA4Ni9q/pqF7lKlz383anPVfD7zjVtE5cz6NDRM9CcyjpnDbjQkLeuzmOCOfrlmG4j6HPfkn6G3kDbdgsC7sVJUECNZn6z1KTXU46q5gmxFkO3NmWCV+dvX/4/sSEjPGV7wZ9KOvdXbZc/wBV/LpfP6rXTfoBVM2qCksREThag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pu/YYrXIVy86D90cbSf3sSiagP5FIjQW0BqCG/sjnKw=;
- b=hUXo/hoSc3UdISqAx9rhLGREPIGnZxjUM/jXNFhdM4+VnyLR12b6Y+TfQw7AIkTfH5r7YNyvuEt39F3ORipaWU63MYVIK6YpyPiGSfW9Q1aHWp1F1Stnfq7PD3jh6JykSe9KdL0oTl+jsqhiGE59NkjXsrLxDjwk/kZqZquRIVsoLYt9AUbv3hxFwVKchmYFjp4H4r8gJ9MGugPyMX+i1XE2aqxwB+biav1r3fNTbs4WBx9haogwyg43W6a820TR8QH5sAg54kTLYWx8VD2ezb8nYj0i4Vcm1yvEGqSAok2MP4LETrDG2uO7VSA2h9LvcECwOpeVGb/jxkUncpR9Ew==
-Received: from BY5PR12MB4116.namprd12.prod.outlook.com (2603:10b6:a03:210::13)
- by DS7PR12MB5910.namprd12.prod.outlook.com (2603:10b6:8:7b::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9203.10; Thu, 9 Oct 2025 02:34:16 +0000
-Received: from BY5PR12MB4116.namprd12.prod.outlook.com
- ([fe80::81b6:1af8:921b:3fb4]) by BY5PR12MB4116.namprd12.prod.outlook.com
- ([fe80::81b6:1af8:921b:3fb4%4]) with mapi id 15.20.9182.017; Thu, 9 Oct 2025
- 02:34:16 +0000
-Message-ID: <26e23ce3-6108-4428-902c-95863f25d3ff@nvidia.com>
-Date: Wed, 8 Oct 2025 19:33:58 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: use enum for vm_flags
-To: Jakub Acs <acsjakub@amazon.de>, aliceryhl@google.com, djwong@kernel.org
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com,
- chengming.zhou@linux.dev, david@redhat.com, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, peterx@redhat.com,
- rust-for-linux@vger.kernel.org, xu.xin16@zte.com.cn
-References: <20251007162136.1885546-1-aliceryhl@google.com>
- <20251008125427.68735-1-acsjakub@amazon.de>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <20251008125427.68735-1-acsjakub@amazon.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR06CA0055.namprd06.prod.outlook.com
- (2603:10b6:a03:14b::32) To BY5PR12MB4116.namprd12.prod.outlook.com
- (2603:10b6:a03:210::13)
+	bh=GnDaONb6FN618EW5I46/MhGF+FSL1m5oZv89+qdE5Bc=;
+	b=H7r+atZuKcFzgV7EM1dHUsSqLIrxU5gP5pYUgvV3yBltu55Z4uC6bhZBsJ0fl4Vd6zv4at
+	vbbPxNYDbherQqEuQwTAYOKrP5R59BtGw1n7sBU9UWO12HsG4ZlyKaj/6atMS3ZvQEVNI8
+	OOHhNzp15sfiv6cBJD3ly7ukS11QV1E=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=seYYx03h;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf12.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759978632; a=rsa-sha256;
+	cv=none;
+	b=NWAy/2Ry8D8zIv7SuaJOqbQaoCOsk8OzFk+OJdOd21Cr9+Gl+H4haPA7RwLEbbGPoqrkGq
+	i9zfZN8rGmaTKB5nbDjLBUnaMSLKbqpK2nV0JxHses/7ykd847eADZIYSoHzfYvnguBv/U
+	LxBuHkqdw0EmnvtLux5t2X6Wu5OpKfc=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1759978627; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=GnDaONb6FN618EW5I46/MhGF+FSL1m5oZv89+qdE5Bc=;
+	b=seYYx03h2ISf1i3m3qf0FkP4VEFCqGqKSamca/M6ChUDu7B8xi0tt20arf8MATOvo+x4hv7lMyy5bn3/Kzjtf/CLVfxENf7igJe0GvcJ2YMEmFo2GtKZl/oUptRxceFU+TWkFx14bYrc4EchxislBiclOdIDd5N7nVnUCGrqKlk=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WphApVS_1759978626 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 09 Oct 2025 10:57:06 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Dave Hansen <dave.hansen@intel.com>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Brendan Jackman <jackmanb@google.com>,
+  Johannes Weiner <hannes@cmpxchg.org>,  Michal Hocko <mhocko@suse.com>,
+  Suren Baghdasaryan <surenb@google.com>,  Vlastimil Babka
+ <vbabka@suse.cz>,  Zi Yan <ziy@nvidia.com>,  linux-kernel@vger.kernel.org,
+  linux-mm@kvack.org
+Subject: Re: [RFC] [PATCH] mm/page_alloc: pcp->batch tuning
+In-Reply-To: <20251008193642.953032-1-joshua.hahnjy@gmail.com> (Joshua Hahn's
+	message of "Wed, 8 Oct 2025 12:36:41 -0700")
+References: <20251008193642.953032-1-joshua.hahnjy@gmail.com>
+Date: Thu, 09 Oct 2025 10:57:05 +0800
+Message-ID: <87ms60wzni.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY5PR12MB4116:EE_|DS7PR12MB5910:EE_
-X-MS-Office365-Filtering-Correlation-Id: dec961bd-137f-438f-85e2-08de06dc574c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Z3dEVElZeW5PNE5leFhtM2QrRzV3YzE1WkxYbzZ3aVJIRjhWV1hSdk9GN1Av?=
- =?utf-8?B?M2J3cUtlSUJVUHR5b2tEaEJxN1JyNVRTeitOTTNNNWNhbmhvQWwxVHZMSjFQ?=
- =?utf-8?B?OXpPeUdzZXpnSTVqWFlBMTNKU0dCbmszQzY2N0YvS00xNHBnUVdMcWNJRnNQ?=
- =?utf-8?B?T1RqUnVKVlE5SFh6STBlUnZtR3hVcE1iUmVpQjVKT2FEMEJwNVZDU0NFR1hy?=
- =?utf-8?B?UTRRNWlVRHRzajBuUE5QQ3F5eTVGSk9Zd21GbUtpWXMwU0s2UmhoVGJNUlcv?=
- =?utf-8?B?YUpjNzRGalJnbnQ5enYyUnQ3dUEvNmpNNkFUcnN2NlNBUHZjS3BaNTM4MkZn?=
- =?utf-8?B?NEp4aWxCY1V3OVZldXlXSnBQRGNNd2I5azJXT2ZmZE5XT3VOL3dEakxLZ2p0?=
- =?utf-8?B?VUVtc1pyUnROcXlOcDYxZmVSMktOd2Q5VFJnOURweXRwMERvcnBlUklXTUpr?=
- =?utf-8?B?a0sxYjZpaVdHM05xT3k3MklmR1k2bWpvYzdjcEFXTnJXMysySE5yemxqdElO?=
- =?utf-8?B?UTl6ZzhGdE5QQjF4UkF2TlkzUDQ0SDVHdmRzem52dVV4RTVod09WMThCMWNy?=
- =?utf-8?B?NkZqMmp5NHgwMEY3UUxLc0M0NFRpQkdKTnJWNlFnTHYvVk5qclNwYXlmQ255?=
- =?utf-8?B?aUFpUVpZZnMxVVZONkdHRm9LMXFFTUtiSm5sUGRTZjdYemlSdGx6aThZaDVD?=
- =?utf-8?B?Uy9aVzUyQUF1cmZDZW0rRjV3ZGVMOXBQOWtuTkNONUtMaGVjV0JNaDFLOVhj?=
- =?utf-8?B?TW5iNWJYRXVhQ2Fac3FRWlJaMUt4dTRnSVZDMCtQRm1MbG8yQW9rTlQ2azJH?=
- =?utf-8?B?TXRsTUF3QkFuZWJHSG4rQTdDaFJNS2czVDc4OWpPOVBZNTBHY2xZRXl6SW9U?=
- =?utf-8?B?bE1uTVRPeURsYWpVdXM3TzROTGVFOXRBY3FrN2swY1VhQzEzL2FFUWJTQmVr?=
- =?utf-8?B?OG5wK0wveEFCdGI2ek1XYkhSVWVWTjRGZmFkQm1RM0psUmFJTnF5Y3RYNTZ5?=
- =?utf-8?B?eDdBQlRXaVAyaGV5RW9qN3NONUZNL2ZReVMwMWhIaVR6K1RrMkI0UUhGZnpH?=
- =?utf-8?B?Q0xYYTJwRmVSZHd4WlREWGNva3duZDNCVVA5WXBkWWZzdWtpZ3FIQXA3RTlU?=
- =?utf-8?B?RitSYnA0c0V3QlVDK2RlSU1JV0kraEUxN1l4RjhXck1LUnoyOVBXeENGV1Er?=
- =?utf-8?B?ZFRtVTB5VXBUei9wdnlHK25MVXNrWml4ZXVOemluQ1prc3RNOWFzMjNhNEE0?=
- =?utf-8?B?M1ZkQ1AyMFpjUWJhZVVXaHkyZGEwYUk3dlR6UEE1NCtXMjJ3UWVid3hjcnJK?=
- =?utf-8?B?MVBwSStQNlNGaitMbURWZU1zazR6YzYwY2NibTNKT29VR3I1Z0pMd2FuUVVW?=
- =?utf-8?B?QWVMK2lnMDU2VitHNGFvb1JIUjJKVTQ4Ly9Udnk2b0NwcmIyWFVYc1NZaWV3?=
- =?utf-8?B?R3VJVjZBVFJya3BNT01sWk5oYVNOVFFnSG81eHFpRzNhSzBKTGNjcTMvbEdH?=
- =?utf-8?B?MWhMeVlkSzJOTS9iclRGWUV3Ykg1TytOa3ZubHhkTVdaUUk1NjMyWWJzN0Nq?=
- =?utf-8?B?ZkR3ZVZiNjhkTGwyM3prVXBtK1lYYmlmbVNCSklLTVBMZjNNdW1pNityT01u?=
- =?utf-8?B?K01UYnNoYTlIZ2JHSENhRmNFVUFTMFFCeGFESjlpL0sxd0FURk5TVE0vaUlv?=
- =?utf-8?B?VjVJaFFkQ0FXakRsUGk3M0NDbEd3ZTFQY3ZWNEFoU1BlV1d3WThJNFd0dTdF?=
- =?utf-8?B?NXhtTDliY1NiM2c1QXFwZlErbHNmNHEzYi9wY2VVRDA0N24vQ0lKQ2pLYlRx?=
- =?utf-8?B?UDZtSjBlbHlnZUhBc3czbmp3bzB5SkZlNC9ZQjlYVkVQUVNPQUlrejR0MVVN?=
- =?utf-8?B?Z1hPTW1zbzk1dW4rSDN0dkxxTDJIYTVYeGYvOFR2S3NOcDRXSk5WK1kxemV1?=
- =?utf-8?B?TWlKWXBuVitseXRjWElUU1ZSOE9kc3UyMk1MSGRRV3ErWW9HeVhUSVpEdlVt?=
- =?utf-8?B?UmhtRkQ4eXlRPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR12MB4116.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bTRRWWs3VTY4aGI2N1hKUlhpS3VmVnB6SW5sYmR4cG1pQnFrdjIvS1IvWnNP?=
- =?utf-8?B?MXhXcDlxWnJOYTJTVW9QMjF4UWpIMzJhYjV3R2E0cWZzMTlkZDJxckNWQkNt?=
- =?utf-8?B?anpvdCtnU1dYMndQWU1zNkM3ZVhHZUtlM0xvVW1JNlRBbk5KYjAwRHlEOENT?=
- =?utf-8?B?cmh1L25pN2VXVTdhclpWZmp3STRKMWtYOWRYTEhJb2MyaklmVDlWbkorREQ5?=
- =?utf-8?B?TXpnNDlscGkybS9OcVAzOHEwWHIyeEsxazlUK1Q5L3VHUzBjZmdXZW9UNzJQ?=
- =?utf-8?B?cjRvQlBKbmtvWlFxUklXYVVhOXVVVjJpUm1oelh4bEZ3dmVnVlpycUt5SmU4?=
- =?utf-8?B?WUZmS0xkdDRvR3lIYnFZaHNKY0tnb1VmbEt3bVArYnliTmRDMnBXMmFFMDZY?=
- =?utf-8?B?WXFiRkU3SHAxUFcwVHhHMUlpaWgvdHAva3ZjT3NjUXJtcHpPd1FiR0QwTzhE?=
- =?utf-8?B?NXlJT1Y2a0UveStNZDhnRFIrMGFIdzBFcng1U09lMnlzV3ZNWjN1UzF0a250?=
- =?utf-8?B?QjNMSmZIdnBsM1NCNHJobFVIODY2RVovajVMdFY5blFGSlBlMkN4UHpLazNC?=
- =?utf-8?B?cVp2MXdwVEVRYzNUU2xWdFhDZGFtWnB0dEZXclRvOHdYTk5KcHBBUGRLV0p1?=
- =?utf-8?B?ejJZTWFMVjdnSlM3aGtYRkR3UnM4MW8xNU92Y1FYMEFVbmVlSGlzTENOMUF5?=
- =?utf-8?B?TWczbkpjbVhnbU1tR1VXQXhNVEFOTCtiMFp1RDJwV3A3NktaTVk4ZzdLdkFt?=
- =?utf-8?B?R0xtdDdROTRJMGVHTHhzYzkvdFhZVk03V0l0UUpBUUticGdNaFhJUlFIM1R5?=
- =?utf-8?B?L2RLdjZOUTdEMHFhY1RjNEY3MVBWOVdVR1JDRUUyMjFrN2NrYk1paHVFTDIv?=
- =?utf-8?B?OS93V2M0MXZzTFpWSkhFRHl3Z1BQRnNWclo2RHhaRUY5RGdXTi9wSzY5OGxU?=
- =?utf-8?B?anhUeFlQOEl3R000aEV2a2xtbzY4cE00NVBRZG1LcWVsbmh5Q0xDMG5wZXMr?=
- =?utf-8?B?SHJnd3VyVGdOcnFkSU1yTG0xaTFpenhDL0xUYVQrT0FjK3l3YWxyeGVtTFYw?=
- =?utf-8?B?bGg1RnpjLzQ1My9MWE9rbjRmVjlBd0NBeHhDdktDd0I4bjh2KzVDTlEzbjli?=
- =?utf-8?B?cnhlNzNnY3g0dkdicFlJSkV5Q3VqMUZUOUJmTk44QnBwcFBrenhOQVVzcHA1?=
- =?utf-8?B?TjFRbnhRczg0UWpiSXF3VVVWTTkrbmdpM0lQS1d6OGxvY2k2ekMzTWxDQ1hw?=
- =?utf-8?B?MUgvTHZpZFJEeDFPQ2x6Z0FIUjBDVjJkeXFCdStZeGhrVlViS0d3WjZ4VmZE?=
- =?utf-8?B?THFFaTRrRnF0K1ZJN1ZJQXdzNEpRbWdnWWhBY0pQTFdFN0xqL0VuY3c3SWNX?=
- =?utf-8?B?b00rZHVBTSs1dEF4czV1dEFlWDROZm1ObzZpdkhQQzRKR2JxZnI0VUt3bTdG?=
- =?utf-8?B?eEJwdnA1Q2lnV2xQRk8vV1p1WTVLK1JDWHpSVWp4MTRxSEl2MnkweDFRK0hy?=
- =?utf-8?B?eTRnaDI4cW42OXZWUEdEU1pxQ0lNOVBWK3FMWGdnQjZEeW14VHkyN1I4ZDVi?=
- =?utf-8?B?bmNOaURvdjlhaU5VSy80VUp4VG1lYWRyQzhMQ0VFWVB5UzRCbjM2enVWazNQ?=
- =?utf-8?B?alVEcDlNK2phYy94N2ZTVHE3RDFjcDN1ZjFEWXg2TFJ1dHlMelowVy9ndTRB?=
- =?utf-8?B?Tk02V0ZCTlJQR0prQjJHWmQxTTFjZWZDc3FVeWpoYVFLU2ZlbFpaQzI0bDV0?=
- =?utf-8?B?SnhkY3dWdEhTT1JmSVBYbTk3RldwazJxaGJ5cEFTMXdEeEEvWjFmd1E3Y3d6?=
- =?utf-8?B?Qy9uVVBmK2tBWmQvbU9iNFZySVVscGNXQVJHbEZNbFl0L1pISlhydjUxODFr?=
- =?utf-8?B?azFUd0M1ODlnckM2bGIrRDZ3TjF3UXZBSllId3RLTHA3WjJUb1VjNS9CWEVy?=
- =?utf-8?B?emFkRXBrUTJKMWk5d09DdWh0aGp5YVdneEtYcWlNT3NEYVVGaTZJcGZ3R1NB?=
- =?utf-8?B?VDNEZWk3YTZyUkV4cG9Mb3lhNUxsQ2g3K0QxdmFsV1JXUjV3Sm9kMHRZalFo?=
- =?utf-8?B?OFB5L1plRkpvZExIVVhLSUJQYVZMRjg1SFZkYUZSMXI5SzJ1MGhFUW5vQXpv?=
- =?utf-8?Q?qJaoYd9pss2AjkGjjA2UFisOA?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dec961bd-137f-438f-85e2-08de06dc574c
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR12MB4116.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2025 02:34:16.1803
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5aEd8idkyxbC10JYGwYu9HcBt6xWCksq3KccWqqHqk8QU12Zr3BRjZrS666DqOXg82/BYZ7/jsdrKw3a3M+BIA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5910
-X-Rspamd-Server: rspam01
-X-Stat-Signature: psu6bpo63kr7z8ciyzfuycmpsmh59qi4
+Content-Type: text/plain; charset=ascii
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 189981C0009
-X-HE-Tag: 1759977264-986314
-X-HE-Meta: U2FsdGVkX180WUY2kTxasE7f6QTtmAKbLpZ2CjgimJ3LcqJJX4PmiPAPmWYybOvJFL4rAN4LwjXb+Kvnr3IkYemwmNQlv83/WlwwkWteukAvp5WDZAcH46YuGdM8hgAE+WMXhwkYIqsPHtl8ID6ke4RvXlri9KZaK4o3yA4FLUxTJy+ww5HpzhXVEirJlaBvYmrTbj0dxN1ceFWyDAjdO8EILYrihCblUms4kHrpagbdZBpIWofb/pqO1rxB1qRLFWkbAkL7tWSyRLzLpxfal5QixQl+wDUF++EL3LfKtfG+WHYTcDaO8vQiK8pJ+sWGhvovZplFN4CpnEEkAxT/2pumt5XqJP/lUA6Vly87a42Xv1w9ZYzGKKCPf1seQcs5fWxQOXCX2H3ODa8vaDkfOmb6QMc/sG36Eb5j2OTZSDGIYdlX8J7vwOMRtzzr7pJZTmGGRin6yjLitQ2rfwtWzi6PrV0EoFAGgh3jTYh3JQLjFLVKoTQBx5h0XxThREyAgivWIiR5Je6Cv+QfjmmcnKVgaAnrVhxQ9fzQCY5XiSHsLM/DNMw7D61rBWckY57Wk9cPRgGaKPcE25Z9tTtkDLmpApea4GMfBQDYTvNzkfr68nlSZTOsA/tDvlCZ/kFwrD6W1OUpMrjmp5/rJpMccD+jhyI10tje0H6jqfUevtbKQVfPgj9pqOEAUxLGsR9r305c6y5PuYq+zqqTrjWH7f7o2kH+bcB1XUVT0pk1uZjGGeSSQNEldvJXPn/HZImi3T0E+eCGaXtSuBZElL+BQ0KwykoHo8no4nl16oNyeByxR5uKXVyzDCxmaOTjFul/ewRqUD5kw3ymGg414MmuWi8inXgrMvqR8OcRvyJ0rGF7WQLNpgJzMXJ0U7Qa5/MkjzrlarGQPtuHMJf1LwEbmQW8Vojx3LrE1Y6CmDaBe7A+T0w5e1ZeEIvcrPKJU6XOOt5/dc107IsyXCq6jb9
- jZGQk2Rb
- u6DPCYG0mBmSINrZPKQtiGFcAK/Rd83bdDksiMtn1Tt9menMn0qwjdFy0HkWZDeoPLK5VkKtlfy3sjX5H2NPysrr6kkUebsNI9Bz/Ea59KFkGyyjSS1umsZ9NofBnqGo7TL0pAeRcCkcY88iRlIZYa0YwGRPOrUt/2NDZKMYxbGhmxzp55T4OJfNg9KM+/3xBa4F/DHmlU7oSQflN4iYQ1SLZrb9uM4ED/rflujnlfdw7lobxS7THVMhbxourKYulRt2dLlpPd9DBhUDCdhrCPZL3LrY7mYOQ8yDDb1+MhBIJVtSjyd2W5QH3p5JK4n2jhQqt2enCI+2I1YINSm7H7LQawxMw05B3ANiti7D4O1/+k5PGz3D72kAfk6jgQ5C8RDfM2TkXFcsla55elTTAaHFmrmadIFijhX6/53mIq/4q79J/c6qJAuVBtBHZhFpwSa22N5rqamh3F35j8RLJ1CPpcLo9oWXXO4hzKgoDtjJQoIrhey0sriC7CEfValll3Wd0eECpxBDxzQuIXCr5qASD89X0E2EYqKXEvD0fSU49a7THF9QdI3NsELyiUHfe085Pf3+q1cGlQIEtwhoIz1rUYBZn70iaXYZ9K6qjjNxc3LpP2sRRum+bkFZkBIFvDuXOZtXHkADjB3d2Ud/PB19iN9TSxd1a7W3p6D8m7p4B9Fg6Rh9yLLEiYvYAQfYpcLlYgYYRsBA5LNY=
+X-Rspamd-Queue-Id: E098D4000C
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 57kgdh5e41bam6p9jgke77ub8mpu6kxi
+X-HE-Tag: 1759978630-802827
+X-HE-Meta: U2FsdGVkX18YbfVidae4of228uZ6xEpISqk8tvmw1EFSwpIRB1eSbu6v8BFrUEIfyJKRIGrl0AmkoTBB4VnOaWOILhK+wptGdGrPugxaxGUu/vhA9yf83sYzFFGG8iXVCjtXY9N29XerELOmYuLpPkMi5TFZvFev5VrCtI0a6HOSCXupOh+NO4JfIqOARQf2kX3Zf7ns6qsY7GkremrpS4hMseNjAONGYGr5VcMF2cWuYHag6dU09mLWFzmcRnhU8LIhoy//9WD2hyuSi0KAg0ih5EuFZKrlB8otLQo44klfwirhzTSL+aZbUPrKBYVN3aXmWgRQFt1dnsgI50cB8GaZnI/ZnrMsn6SIFEpt6CTLugmzrNfS2iRA51bmpkwDz4EZYP5ENWrTT9MjORBnIcabnz8SVC8TAcb+RqqHQVjRMKPGzHTHWeJGpsx+k4Kb65grZmtC9qdEr9P0I/vKrdxVYUdf3JSVyaLEi2ZMyTL5Fh8P670+78EypkcxZFx9Wtwu/bZBH9ezCBNROcqGvwvbHSeuEX/E93Gmo6a5NgAOmQ8ICVbVpByrR9VpefPZlXa1V6perTqx6zp2TcYX6lt+kUAucop825HzMH301iWIOU37G34NjesfuqfRoof1pij4U3qkWrO48Ht4YAR0G/gxJzvM+7hN/XSy6Oo5uytvmSTjtQyY9zFDe/Vaxn5mODt4SNhwc3DXeKyV7dQPm7JwBt1UtkZoZUAJx3sVVuU5CI4srgVXvdvwKXXN7D0Js4ch9xtNnPpfxCYUQhNADWgj+0Nv7A5O6iIR2vuNSnEOSCwMrDWAtHYmyMhScIwv7f4Gc1Is62ZSJDDddbOZJA+ZHrinCm4MI5HzHmaMiJf6qscgKtFf0Na+ac/kv1XDPvY3xO7qom+HalNVsfpIHLr3L1ojDuXf8mpMr55uV12nSD9yuellqBkpV7cpZMoUrXasuwMKwZcMMUib2MB
+ PYXHLaqJ
+ rfpJsPVoua9Oay7CcSqttMAivbm/JrniBkYVeGIDonojwydI1OFwgQGhT4DjbD9Q8nS8zDgme0vbKuysf4JnSW+0XsehXDvFVfKfowrZlDtikuwX7MPgasWxWoXSKIZHdbAtgqhseS9t+tO/bDPeR05JJHIqpT4Hyoij1S6Ji/admoCzreOdyWKuOA1PrUfVsnclwTRQ0mkI19j+vYRcTvoytsgqMeW9i970WwjF6IzES8fPkPPqCpx7/GV24NMCgzw1yV5qBOdazCLoPxF4XoKwskPDdkC7riBYpAn7k10QOt5DirADFxEI2v/eBQSmLeoovGIZE6hF36xadpxLEMRBD6XTK5KVt4MKliVyZcFSONY6LtM4bBObQU/weUiyt99/WnGN2a4HBF7UF/JqRBcE9DOPbxzJkh06jaJgYCGL/Q9o5ppRgOlD5Nw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -203,280 +89,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/8/25 5:54 AM, Jakub Acs wrote:
-> redefine VM_* flag constants with BIT()
-> 
-> Make VM_* flag constant definitions consistent - unify all to use BIT()
-> macro and define them within an enum.
-> 
-> The bindgen tool is better able to handle BIT(_) declarations when used
-> in an enum.
-> 
-> Also add enum definitions for tracepoints.
-> 
-> We have previously changed VM_MERGEABLE in a separate bugfix. This is a
-> follow-up to make all the VM_* flag constant definitions consistent, as
-> suggested by David in [1].
-> 
-> [1]: https://lore.kernel.org/all/85f852f9-8577-4230-adc7-c52e7f479454@redhat.com/
-> 
-> Signed-off-by: Jakub Acs <acsjakub@amazon.de>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Xu Xin <xu.xin16@zte.com.cn>
-> Cc: Chengming Zhou <chengming.zhou@linux.dev>
-> Cc: Peter Xu <peterx@redhat.com>
-> Cc: Axel Rasmussen <axelrasmussen@google.com>
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> ---
-> 
-> Hi Alice,
-> 
-> thanks for the patch, I squashed it in (should I add your signed-off-by
-> too?) and added the TRACE_DEFINE_ENUM calls pointed out by Derrick.
-> 
-> I have the following points to still address, though: 
-> 
-> - can the fact that we're not controlling the type of the values if
->   using enum be a problem? (likely the indirect control we have through
->   the highest value is good enough, but I'm not sure)
-> 
-> - where do TRACE_DEFINE_ENUM calls belong?
->   I see them placed e.g. in include/trace/misc/nfs.h for nfs or
->   arch/x86/kvm/mmu/mmutrace.h, but I don't see a corresponding file for
->   mm.h - does this warrant creating a separate file for these
->   definitions?
-> 
-> - with the need for TRACE_DEFINE_ENUM calls, do we still deem this
->   to be a good trade-off? - isn't fixing all of these in
->   rust/bindings/bindings_helper.h better?
-> 
-> @Derrick, can you point me to how to test for the issue you pointed out?
-> 
-> Thanks,
-> Jakub
-> 
-> 
->  include/linux/mm.h              | 142 ++++++++++++++++++++++----------
->  rust/bindings/bindings_helper.h |   1 -
->  2 files changed, 98 insertions(+), 45 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 70a2a76007d4..8b9e7a9e7042 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -36,6 +36,7 @@
->  #include <linux/rcuwait.h>
->  #include <linux/bitmap.h>
->  #include <linux/bitops.h>
-> +#include <linux/tracepoint.h>
->  
->  struct mempolicy;
->  struct anon_vma;
-> @@ -273,57 +274,58 @@ extern unsigned int kobjsize(const void *objp);
->   * vm_flags in vm_area_struct, see mm_types.h.
->   * When changing, update also include/trace/events/mmflags.h
->   */
-> -#define VM_NONE		0x00000000
-> +enum {
-> +	VM_NONE		= 0,
->  
-> -#define VM_READ		0x00000001	/* currently active flags */
-> -#define VM_WRITE	0x00000002
-> -#define VM_EXEC		0x00000004
-> -#define VM_SHARED	0x00000008
-> +	VM_READ		= BIT(0),		/* currently active flags */
-> +	VM_WRITE	= BIT(1),
-> +	VM_EXEC		= BIT(2),
-> +	VM_SHARED	= BIT(3),
->  
->  /* mprotect() hardcodes VM_MAYREAD >> 4 == VM_READ, and so for r/w/x bits. */
-> -#define VM_MAYREAD	0x00000010	/* limits for mprotect() etc */
-> -#define VM_MAYWRITE	0x00000020
-> -#define VM_MAYEXEC	0x00000040
-> -#define VM_MAYSHARE	0x00000080
-> +	VM_MAYREAD	= BIT(4),		/* limits for mprotect() etc */
-> +	VM_MAYWRITE	= BIT(5),
-> +	VM_MAYEXEC	= BIT(6),
-> +	VM_MAYSHARE	= BIT(7),
->  
-> -#define VM_GROWSDOWN	0x00000100	/* general info on the segment */
-> +	VM_GROWSDOWN	= BIT(8),		/* general info on the segment */
->  #ifdef CONFIG_MMU
-> -#define VM_UFFD_MISSING	0x00000200	/* missing pages tracking */
-> +	VM_UFFD_MISSING	= BIT(9),		/* missing pages tracking */
->  #else /* CONFIG_MMU */
-> -#define VM_MAYOVERLAY	0x00000200	/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
-> +	VM_MAYOVERLAY	= BIT(9),		/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
->  #define VM_UFFD_MISSING	0
->  #endif /* CONFIG_MMU */
-> -#define VM_PFNMAP	0x00000400	/* Page-ranges managed without "struct page", just pure PFN */
-> -#define VM_UFFD_WP	0x00001000	/* wrprotect pages tracking */
-> -
-> -#define VM_LOCKED	0x00002000
-> -#define VM_IO           0x00004000	/* Memory mapped I/O or similar */
-> -
-> -					/* Used by sys_madvise() */
-> -#define VM_SEQ_READ	0x00008000	/* App will access data sequentially */
-> -#define VM_RAND_READ	0x00010000	/* App will not benefit from clustered reads */
-> -
-> -#define VM_DONTCOPY	0x00020000      /* Do not copy this vma on fork */
-> -#define VM_DONTEXPAND	0x00040000	/* Cannot expand with mremap() */
-> -#define VM_LOCKONFAULT	0x00080000	/* Lock the pages covered when they are faulted in */
-> -#define VM_ACCOUNT	0x00100000	/* Is a VM accounted object */
-> -#define VM_NORESERVE	0x00200000	/* should the VM suppress accounting */
-> -#define VM_HUGETLB	0x00400000	/* Huge TLB Page VM */
-> -#define VM_SYNC		0x00800000	/* Synchronous page faults */
-> -#define VM_ARCH_1	0x01000000	/* Architecture-specific flag */
-> -#define VM_WIPEONFORK	0x02000000	/* Wipe VMA contents in child. */
-> -#define VM_DONTDUMP	0x04000000	/* Do not include in the core dump */
-> +	VM_PFNMAP	= BIT(10),		/* Page-ranges managed without "struct page", just pure PFN */
-> +	VM_UFFD_WP	= BIT(12),		/* wrprotect pages tracking */
-> +
-> +	VM_LOCKED	= BIT(13),
-> +	VM_IO           = BIT(14),		/* Memory mapped I/O or similar */
-> +
-> +						/* Used by sys_madvise() */
-> +	VM_SEQ_READ	= BIT(15),		/* App will access data sequentially */
-> +	VM_RAND_READ	= BIT(16),		/* App will not benefit from clustered reads */
-> +
-> +	VM_DONTCOPY	= BIT(17),		/* Do not copy this vma on fork */
-> +	VM_DONTEXPAND	= BIT(18),		/* Cannot expand with mremap() */
-> +	VM_LOCKONFAULT	= BIT(19),		/* Lock the pages covered when they are faulted in */
-> +	VM_ACCOUNT	= BIT(20),		/* Is a VM accounted object */
-> +	VM_NORESERVE	= BIT(21),		/* should the VM suppress accounting */
-> +	VM_HUGETLB	= BIT(22),		/* Huge TLB Page VM */
-> +	VM_SYNC		= BIT(23),		/* Synchronous page faults */
-> +	VM_ARCH_1	= BIT(24),		/* Architecture-specific flag */
-> +	VM_WIPEONFORK	= BIT(25),		/* Wipe VMA contents in child. */
-> +	VM_DONTDUMP	= BIT(26),		/* Do not include in the core dump */
->  
->  #ifdef CONFIG_MEM_SOFT_DIRTY
-> -# define VM_SOFTDIRTY	0x08000000	/* Not soft dirty clean area */
-> +	VM_SOFTDIRTY	= BIT(27),		/* Not soft dirty clean area */
->  #else
->  # define VM_SOFTDIRTY	0
->  #endif
->  
-> -#define VM_MIXEDMAP	0x10000000	/* Can contain "struct page" and pure PFN pages */
-> -#define VM_HUGEPAGE	0x20000000	/* MADV_HUGEPAGE marked this vma */
-> -#define VM_NOHUGEPAGE	0x40000000	/* MADV_NOHUGEPAGE marked this vma */
-> -#define VM_MERGEABLE	BIT(31)		/* KSM may merge identical pages */
-> +	VM_MIXEDMAP	= BIT(28),		/* Can contain "struct page" and pure PFN pages */
-> +	VM_HUGEPAGE	= BIT(29),		/* MADV_HUGEPAGE marked this vma */
-> +	VM_NOHUGEPAGE	= BIT(30),		/* MADV_NOHUGEPAGE marked this vma */
-> +	VM_MERGEABLE	= BIT(31),		/* KSM may merge identical pages */
->  
->  #ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS
->  #define VM_HIGH_ARCH_BIT_0	32	/* bit only usable on 64-bit architectures */
-> @@ -333,14 +335,66 @@ extern unsigned int kobjsize(const void *objp);
->  #define VM_HIGH_ARCH_BIT_4	36	/* bit only usable on 64-bit architectures */
->  #define VM_HIGH_ARCH_BIT_5	37	/* bit only usable on 64-bit architectures */
->  #define VM_HIGH_ARCH_BIT_6	38	/* bit only usable on 64-bit architectures */
+Hi, Joshua,
 
-Is there really any value in having these defines, at this point?
+Joshua Hahn <joshua.hahnjy@gmail.com> writes:
 
-See below...
+> On Wed, 8 Oct 2025 08:34:21 -0700 Dave Hansen <dave.hansen@intel.com> wrote:
+>
+> Hello Dave, thank you for your feedback!
+>
+>> First of all, I do agree that the comment should go away or get fixed up.
+>> 
+>> But...
+>> 
+>> On 10/6/25 07:54, Joshua Hahn wrote:
+>> > This leaves us with a /= 4 with no corresponding *= 4 anywhere, which
+>> > leaves pcp->batch mistuned from the original intent when it was
+>> > introduced. This is made worse by the fact that pcp lists are generally
+>> > larger today than they were in 2013, meaning batch sizes should have
+>> > increased, not decreased.
+>> 
+>> pcp->batch and pcp->high do very different things. pcp->high is a limit
+>> on the amount of memory that can be tied up. pcp->batch balances
+>> throughput with latency. I'm not sure I buy the idea that a higher
+>> pcp->high means we should necessarily do larger batches.
+>
+> I agree with your observation that a higher pcp->high doesn't mean we should
+> do larger batches. I think what I was trying to get at here was that if
+> pcp lists are bigger, some other values might want to scale.
+>
+> For instance, in nr_pcp_free, pcp->batch is used to determine how many
+> pages should be left in the pcplist (and the rest be freed). Should this
+> value scale with a bigger pcp? (This is not a rhetorical question, I really
+> do want to understand what the implications are here).
+>
+> Another thing that I would like to note is that pcp->high is actually at
+> least in part a function of pcp->batch. In decay_pcp_high, we set
+>
+> pcp->high = max3(pcp->count - (batch << CONFIG_PCP_BATCH_SCALE_MAX), ...)
+>
+> So here, it seems like a higher batch value would actually lead to a much
+> lower pcp->high instead. This actually seems actively harmful to the system.
 
-> -#define VM_HIGH_ARCH_0	BIT(VM_HIGH_ARCH_BIT_0)
-> -#define VM_HIGH_ARCH_1	BIT(VM_HIGH_ARCH_BIT_1)
-> -#define VM_HIGH_ARCH_2	BIT(VM_HIGH_ARCH_BIT_2)
-> -#define VM_HIGH_ARCH_3	BIT(VM_HIGH_ARCH_BIT_3)
-> -#define VM_HIGH_ARCH_4	BIT(VM_HIGH_ARCH_BIT_4)
-> -#define VM_HIGH_ARCH_5	BIT(VM_HIGH_ARCH_BIT_5)
-> -#define VM_HIGH_ARCH_6	BIT(VM_HIGH_ARCH_BIT_6)
-> +	VM_HIGH_ARCH_0	= BIT(VM_HIGH_ARCH_BIT_0),
+Batch here is used to control the latency to free the pages from PCP to
+buddy.  Larger batch will lead to larger latency, however it helps to
+reduce the size of PCP more quickly when it becomes idle.  So, we need
+to balance here.
 
-Or just omit those bit 0 to bit 7 defines, and write:
+> So I'll do a take two of this patch and take your advice below and instead
+> of getting rid of the /= 4, just fold it in (or add a better explanation)
+> as to why we do this. Another candidate place to do this seems to be
+> where we do the rounddown_pow_of_two.
+>
+>> So I dunno... f someone wanted to alter the initial batch size, they'd
+>> ideally repeat some of Ying's experiments from: 52166607ecc9 ("mm:
+>> restrict the pcp batch scale factor to avoid too long latency").
+>
+> I ran a few very naive and quick tests on kernel builds, and it seems like
+> for larger machines (1TB memory, 316 processors), this leads to a very
+> significant speedup in system time during a kernel compilation (~10%).
+>
+> But for smaller machines (250G memory, 176 processors) and (62G memory and 36
+> processors), this leads to quite a regression (~5%).
+>
+> So maybe the answer is that this should actually be defined by the machine's
+> size. In zone_batchsize, we set the value of the batch to: 
+>
+> min(zone_managed_pages(zone) >> 10, SZ_1M / PAGE_SIZE)
+>
+> But maybe it makes sense to let this value grow bigger for larger machines? If
+> anything, I think that the experiment results above do show that batch size does
+> have an impact on the performance, and the effect can either be positive or
+> negative based on the machine's size. I can run some more experiments to 
+> see if there's an opportunity to better tune pcp->batch.
 
-	VM_HIGH_ARCH_0	= BIT(32),
-	...etc
+In fact, we do have some mechanism to scale batch size dynamically
+already, via pcp->alloc_factor and pcp->free_count.
 
-> +	VM_HIGH_ARCH_1	= BIT(VM_HIGH_ARCH_BIT_1),
-> +	VM_HIGH_ARCH_2	= BIT(VM_HIGH_ARCH_BIT_2),
-> +	VM_HIGH_ARCH_3	= BIT(VM_HIGH_ARCH_BIT_3),
-> +	VM_HIGH_ARCH_4	= BIT(VM_HIGH_ARCH_BIT_4),
-> +	VM_HIGH_ARCH_5	= BIT(VM_HIGH_ARCH_BIT_5),
-> +	VM_HIGH_ARCH_6	= BIT(VM_HIGH_ARCH_BIT_6),
+You could further tune them.  Per my understanding, it should be a
+balance between throughput and latency.
 
+>> Better yet, just absorb the /=4 into the two existing batch assignments.
+>> It will probably compile to exactly the same code and have no functional
+>> changes and get rid of the comment.
+>> 
+>> Wouldn't this compile to the same thing?
+>> 
+>>         batch = zone->managed_pages / 4096;
+>>         if (batch * PAGE_SIZE > 128 * 1024)
+>>                 batch = (128 * 1024) / PAGE_SIZE;
+>
+> But for now, this seems good to me. I'll get rid of the confusing comment,
+> and try to fold in the batch value and leave a new comment leaving this
+> as an explanation. 
+>
+> Thank you for your thoughtful review, Dave. I hope you have a great day!
+> Joshua
 
->  #endif /* CONFIG_ARCH_USES_HIGH_VMA_FLAGS */
-> +};
-> +
-> +TRACE_DEFINE_ENUM(VM_NONE);
-> +TRACE_DEFINE_ENUM(VM_READ);
-> +TRACE_DEFINE_ENUM(VM_WRITE);
-> +TRACE_DEFINE_ENUM(VM_EXEC);
-> +TRACE_DEFINE_ENUM(VM_SHARED);
-> +TRACE_DEFINE_ENUM(VM_MAYREAD);
-> +TRACE_DEFINE_ENUM(VM_MAYWRITE);
-> +TRACE_DEFINE_ENUM(VM_MAYEXEC);
-> +TRACE_DEFINE_ENUM(VM_MAYSHARE);
-> +TRACE_DEFINE_ENUM(VM_GROWSDOWN);
-> +TRACE_DEFINE_ENUM(VM_UFFD_MISSING);
-> +
-> +#ifndef CONFIG_MMU
-> +TRACE_DEFINE_ENUM(VM_MAYOVERLAY);
-
-The ifdef handling here for these two items, VM_UFFD_MISSING
-and VM_MAYOVERLAY, does not seem to match the way they are handled
-above in the enum.
-
-> +#endif /* CONFIG_MMU */
-> +
-> +TRACE_DEFINE_ENUM(VM_PFNMAP);
-> +TRACE_DEFINE_ENUM(VM_UFFD_WP);
-> +TRACE_DEFINE_ENUM(VM_LOCKED);
-> +TRACE_DEFINE_ENUM(VM_IO);
-> +TRACE_DEFINE_ENUM(VM_SEQ_READ);
-> +TRACE_DEFINE_ENUM(VM_RAND_READ);
-> +TRACE_DEFINE_ENUM(VM_DONTCOPY);
-> +TRACE_DEFINE_ENUM(VM_DONTEXPAND);
-> +TRACE_DEFINE_ENUM(VM_LOCKONFAULT);
-> +TRACE_DEFINE_ENUM(VM_ACCOUNT);
-> +TRACE_DEFINE_ENUM(VM_NORESERVE);
-> +TRACE_DEFINE_ENUM(VM_HUGETLB);
-> +TRACE_DEFINE_ENUM(VM_SYNC);
-> +TRACE_DEFINE_ENUM(VM_ARCH_1);
-> +TRACE_DEFINE_ENUM(VM_WIPEONFORK);
-> +TRACE_DEFINE_ENUM(VM_DONTDUMP);
-> +
-> +TRACE_DEFINE_ENUM(VM_SOFTDIRTY);
-> +
-> +TRACE_DEFINE_ENUM(VM_MIXEDMAP);
-> +TRACE_DEFINE_ENUM(VM_HUGEPAGE);
-> +TRACE_DEFINE_ENUM(VM_NOHUGEPAGE);
-> +TRACE_DEFINE_ENUM(VM_MERGEABLE);
-> +
-> +#ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS
-> +TRACE_DEFINE_ENUM(VM_HIGH_ARCH_0);
-> +TRACE_DEFINE_ENUM(VM_HIGH_ARCH_1);
-> +TRACE_DEFINE_ENUM(VM_HIGH_ARCH_2);
-> +TRACE_DEFINE_ENUM(VM_HIGH_ARCH_3);
-> +TRACE_DEFINE_ENUM(VM_HIGH_ARCH_4);
-> +TRACE_DEFINE_ENUM(VM_HIGH_ARCH_5);
-> +TRACE_DEFINE_ENUM(VM_HIGH_ARCH_6);
-> +#endif /* CONFIG_ARCH_USES_HIGH_VMA_FLAGS */
-> +
->  
->  #ifdef CONFIG_ARCH_HAS_PKEYS
->  # define VM_PKEY_SHIFT VM_HIGH_ARCH_BIT_0
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> index 2e43c66635a2..04b75d4d01c3 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -108,7 +108,6 @@ const xa_mark_t RUST_CONST_HELPER_XA_PRESENT = XA_PRESENT;
->  
->  const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC = XA_FLAGS_ALLOC;
->  const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC1 = XA_FLAGS_ALLOC1;
-> -const vm_flags_t RUST_CONST_HELPER_VM_MERGEABLE = VM_MERGEABLE;
->  
->  #if IS_ENABLED(CONFIG_ANDROID_BINDER_IPC_RUST)
->  #include "../../drivers/android/binder/rust_binder.h"
-
-thanks,
--- 
-John Hubbard
-
+---
+Best Regards,
+Huang, Ying
 
