@@ -4,125 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA57ACCD183
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 16:15:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EB30CCD183
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 16:22:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1955B8E009C; Thu,  9 Oct 2025 12:15:25 -0400 (EDT)
+	id B96D68E009D; Thu,  9 Oct 2025 12:22:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16C758E009B; Thu,  9 Oct 2025 12:15:25 -0400 (EDT)
+	id B18F68E009B; Thu,  9 Oct 2025 12:22:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05B358E009C; Thu,  9 Oct 2025 12:15:25 -0400 (EDT)
+	id 9E07C8E009D; Thu,  9 Oct 2025 12:22:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E85B68E009B
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 12:15:24 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 83F86C0A38
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 16:15:24 +0000 (UTC)
-X-FDA: 83979075768.28.D9945E2
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 8ED954001A
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 16:15:22 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=UqdDf3l+;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 863908E009B
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 12:22:20 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1B728C0A0D
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 16:22:20 +0000 (UTC)
+X-FDA: 83979093240.13.F2665A9
+Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 0400A2000D
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 16:22:17 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="d 9ttPxE";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=QVpu+eMF;
 	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760026522; a=rsa-sha256;
-	cv=none;
-	b=kNm9kPVwUHrD+TJFE3bUhyQG7UdXaGy0FppiIm/D1ojJ5JAljBmGN5xupmc1qYEizczZWP
-	sNeVMkqCoqnp2gNz5HJ/2l9tlgfGMlu3yh/bmfKg5D/BY1uRpbLZY/xZGkOFsnWbA2fK6C
-	slmKtONCdfuw+cww85ng7nnIf7u0C3A=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=UqdDf3l+;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	spf=pass (imf03.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.152 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760026522;
+	s=arc-20220608; t=1760026938;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=1+5SvdqRqDaLVpZovzo/tjgIBi731xvYHaxEt2u52vI=;
-	b=kA610zt8pVxydCuqbb2Kfg+yDXWoJSKlqfuchwt8jLTRa2nifU56HH/CqqMoa/T2sv9eIX
-	gA5YAujI8zuu1pZWzZqi/kJOASH9f1fazOUYeKXjN5WKM1kofT3r+gLLaHxv00T9MztdQw
-	r/zwe3UQjcqVnMY4KPZX3URvt5bPwX0=
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-856222505eeso116051785a.1
-        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 09:15:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1760026521; x=1760631321; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1+5SvdqRqDaLVpZovzo/tjgIBi731xvYHaxEt2u52vI=;
-        b=UqdDf3l+B+gIaEYJllNNnIt5I7zVhiOYwqrgrJgLuvX0plqt/Cd12MaPGk7mE32Hnk
-         AcKSAsmd4fkpHFqDLhBK39MpeOunA/OmDEUo6H3+7Bkl5U1skbxOwVgnUpqVr4yUCtj5
-         qQiBkTVnEmM9RMuH5/MKDP6WzPjvVRpSvsh+rILAwivmOroZOYPcBMASNlQwQ/9iv210
-         K6r3c3wXNAv8gVVGvSpnv++2IoE839Mcca9zj4PaMkGd2ePUOsEnruc9jgLEmkrG2uhd
-         u4NyOIf9XhiQ8sIz4aHsXfXnw3h2TWoj9hzuWK5gRMkbuc7USYkzhdqS1CmrxWMtOIrZ
-         +P6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760026521; x=1760631321;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1+5SvdqRqDaLVpZovzo/tjgIBi731xvYHaxEt2u52vI=;
-        b=MftdipuWuSZFokBcqGsSzkfs7jE4T6Eb5NlrRsCGpaSVkhfk0vsmKyqpifSc11SWhP
-         6K491A+QJ/xsKSVaV1mmOjnuEZz5JeWFPzp423i6SAidG4v/REw1O/5tfBB7KRqnnPnR
-         BDgEW0yZ9SOFrt2F/yiYk+qkIKGXwWBHK+tAQaPz9P80P9NcwRbZP2PE9XG3X3B2brI8
-         i3YdEJroY5CYuc/AZ1Z1Ul4NJ/L4bVKrzoRFNsGMvke3nxWUKQ9Ug2Vz77/NYKs6UtRV
-         Q5mN6pse5WpaFN90N+kw6xU8FoMnTGYk545sq7XQ+n8dEFPxoTicA/Nw+ZmR2bAAhVf1
-         QX1w==
-X-Gm-Message-State: AOJu0YzqvUNAyidW+Ko7NThxKUBvFLe4j3N0rL3aJUwH/Mg0ia2dcNDQ
-	K9MnIi48iJtkILyUmnJ8wgkVFrJAmuOf3EaMAp1s3mrZWlTQxdpajDanFuvFUTmBgWzQ8gXfgQV
-	Ilhof
-X-Gm-Gg: ASbGncu0Nxlaj7Z/UW0OVLm6RZE3yj3BHZLmRsQC+Gl8gextXshgjtdSI1/YylmSfAY
-	7mFiPQ59i+xyCvJGxaNWHf9JsYPCrFG2yA9rYnEIE6Q5E6wN0c1Bfw+P5F+Gd8RV7gfPgXg2rJa
-	+CtNnVR2TYh6OZTH5wFde9Arnvu/MraZFj4Eaq+y3m2bmN1ZCWgXpPd0Vv7SWxarZoZR3qF7f5s
-	bevqCZZy1xwehKPpwvoU/p9na4LE19kQ6yaw9cajmxSP/rN7RxUgs0ztC3K1AcyH/OozuhVrhFf
-	vCxRcKx/YvKfNsoiWhUvPvWLrAk1BRbdv6aVzPrkLqS7qsdKYjdy3fnXVZP/cepxsKPWetA1ZAd
-	MceLXkvXHo0Sthe0ws2cRHTDZ3QLNRkGOrzddsIGXIKgPwAfAWNIG6IwsPse2Ff1QW3e4sV7blO
-	J8PWYbQa6xGmqBXgwJl4EU0hf2XfC9wzZPAnNCyhXqkIk84Q==
-X-Google-Smtp-Source: AGHT+IEj2zy9apxWY9vObYs3hv/JmdQttOhxDDHvUjAsMStwiARm4lbIvINlMgC2GhXAwwntSoBprQ==
-X-Received: by 2002:a05:620a:bd5:b0:870:90ff:90d with SMTP id af79cd13be357-883533693admr1130340185a.8.1760026520890;
-        Thu, 09 Oct 2025 09:15:20 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8849f2e2098sm224285685a.13.2025.10.09.09.15.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Oct 2025 09:15:20 -0700 (PDT)
-From: Gregory Price <gourry@gourry.net>
-To: linux-mm@kvack.org
-Cc: corbet@lwn.net,
-	muchun.song@linux.dev,
-	osalvador@suse.de,
-	david@redhat.com,
-	akpm@linux-foundation.org,
-	hannes@cmpxchg.org,
-	laoar.shao@gmail.com,
-	gourry@gourry.net,
-	mclapinski@google.com,
-	joel.granados@kernel.org,
-	jack@suse.cz,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mel Gorman <mgorman@suse.de>,
-	Michal Hocko <mhocko@suse.com>,
-	Alexandru Moise <00moses.alexander00@gmail.com>,
-	David Rientjes <rientjes@google.com>
-Subject: [RFC PATCH] mm, hugetlb: implement movable_gigantic_pages sysctl
-Date: Thu,  9 Oct 2025 12:15:15 -0400
-Message-ID: <20251009161515.422292-1-gourry@gourry.net>
-X-Mailer: git-send-email 2.51.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=egk7Oe6IWqbN1+isawtTksqL1RtsIJ0Y3N3WpC9pjfs=;
+	b=2ZRLQ3gTdg4WT5lPnApkNInj37OKoOqb4eiDrbPMZbVGNLX9Qh4eCeb8aCGoR+913lLctU
+	yooamJyegsBj+jFZUvsNz8l28J1VYRF/hDPXGXM4rwDOJk1dDPRAC+TZlH0mfiUGB+Dznf
+	3nh6gQd7qO1eLAMf7HfRaPXWDqNNaaQ=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="d 9ttPxE";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=QVpu+eMF;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.152 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760026938; a=rsa-sha256;
+	cv=none;
+	b=6yohZ6s/Y9CSTb5H4bxnxS/qtSqtvikg1Gu/ihGNd+Bm6p4FT6jESMfNQixoxklkfBs/Pv
+	MmEvS1359QQra5y4wjZNVkoVV9bQmSEt+n+h4H0DX3d3kFffs6gaTiI4CTXntcW/8KnOOQ
+	brugh2WW7cDf/RyaEiIrq/j4ddw1mJc=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id DA9E57A00A4;
+	Thu,  9 Oct 2025 12:22:16 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Thu, 09 Oct 2025 12:22:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1760026936; x=
+	1760113336; bh=egk7Oe6IWqbN1+isawtTksqL1RtsIJ0Y3N3WpC9pjfs=; b=d
+	9ttPxE/fNAYDf16LWN9s2Bn3iFoiqg8trr7Zl9T86ZwoakQBfwWEn78Iu6kn8O+x
+	6dBNqeJ1QnqZuOE6Fi8YkIrwd7XAwo3UXTfS/4c7d9dNqoWrkEJLTk7g4KjWuIxi
+	XwtZiEsbBvuB/s6Te14UeUCx8lWoA1LrpoXDIQ9pYF8ke36g+igfiBavFTb+wDvX
+	VxB17Nl9QiPvth6FTMHFJG7oullYVonyVnZa7pj0WFrm4Ag60iEbnTcfgaxYCSOi
+	YGEFUTOUWWFbjvHrteamR210hnCF68VuA28tZ4TUIaD9ApUNUTy8YdSoCbARpZkA
+	iS3vRT+F0c2F3QHJjBODw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1760026936; x=1760113336; bh=egk7Oe6IWqbN1+isawtTksqL1RtsIJ0Y3N3
+	WpC9pjfs=; b=QVpu+eMFixBnn7GVxFdGsHOzlA0ul5Nd4HRlaRWea3uVy6ejC9P
+	jk5nQ9cI2YgEyELHuh9ODaw0VdxcghlywKyyvwESL7qruCJ8/zIwEFDxJGCr8s0v
+	egPazDO6ws2DdfKqzGsaEf/KoSXtoB3AnGreG/dQU/YTKaspZaqe9v7L0ztlvFYZ
+	uFS3ToauiOcXMudoPA9I9Q5yzUa28iGvsiuyeUFeyRg1QQVYuoBunIi0fws9A7VL
+	wHoWziSVVVGAYtVy2zasAUOogI+pl9hUZkXmftjFhoMYrxM3fFM+KpGb4kmLp7Oz
+	+sqLpk1rvA9aoGMb6jnw17ZbCTVYJWFR8mg==
+X-ME-Sender: <xms:OOHnaF4pjWnFFKIhkjU6-5lTu_BZ5meteBQbb9HYceGhO0xiDeQllg>
+    <xme:OOHnaATpCsf53hrlmdFCy7VNRaC6t8HEtxJJb-bNijsj0TFfx5LRdFYxuh-Y7jZMC
+    6jT-8KujD8jca3fHgGLvulJGtr4K43r1hsllan01X0nGd0xuZHfY7g>
+X-ME-Received: <xmr:OOHnaDxGsa2TNBAr5owoed4WwDVbjuwe0IDAudqs5b78GMynJmcgV-9wq9JBoQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddutdeiieehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
+    ftrfgrthhtvghrnhepjeehueefuddvgfejkeeivdejvdegjefgfeeiteevfffhtddvtdel
+    udfhfeefffdunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopedu
+    tddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepthhorhhvrghlughssehlihhnuh
+    igqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopeifihhllhihsehinhhfrhgr
+    uggvrggurdhorhhgpdhrtghpthhtohepmhgtghhrohhfsehkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtphhtthhopehlihhn
+    uhigqdhfshguvghvvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:OOHnaIo4pZQXjV-r4LDkfAz-LeJNGNfalvOTyGe54UyDYRUm9E8Zcg>
+    <xmx:OOHnaG0fz0jUFB-qsVFJybbe1nWWGs98PPAY8IgDn4hvkTYWbt3JnQ>
+    <xmx:OOHnaIwRYx62yzHA1ml-qzRGBTTVa5TefFJLJpQR3fzTBAzvFulrHA>
+    <xmx:OOHnaKjGeumwiIaxJbMmPnWb2PuvNfH-vEvmpNGU8FVa7K2RwaovlQ>
+    <xmx:OOHnaCsV4PszXl-ggSlFE5hpVrFPImXOv6zkNQ-Wk9ShDaCVn41yNEdY>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 9 Oct 2025 12:22:16 -0400 (EDT)
+Date: Thu, 9 Oct 2025 17:22:13 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Linux-MM <linux-mm@kvack.org>, linux-fsdevel@vger.kernel.org
+Subject: Re: Optimizing small reads
+Message-ID: <nhrb37zzltn5hi3h5phwprtmkj2z2wb4gchvp725bwcnsgvjyf@eohezc2gouwr>
+References: <4bjh23pk56gtnhutt4i46magq74zx3nlkuo4ym2tkn54rv4gjl@rhxb6t6ncewp>
+ <CAHk-=wi4Cma0HL2DVLWRrvte5NDpcb2A6VZNwUc0riBr2=7TXw@mail.gmail.com>
+ <5zq4qlllkr7zlif3dohwuraa7rukykkuu6khifumnwoltcijfc@po27djfyqbka>
+ <CAHk-=wjDvkQ9H9kEv-wWKTzdBsnCWpwgnvkaknv4rjSdLErG0g@mail.gmail.com>
+ <CAHk-=wiTqdaadro3ACg6vJWtazNn6sKyLuHHMn=1va2+DVPafw@mail.gmail.com>
+ <CAHk-=wgzXWxG=PCmi_NQ6Z50_EXAL9vGHQSGMNAVkK4ooqOLiA@mail.gmail.com>
+ <CAHk-=wgbQ-aS3U7gCg=qc9mzoZXaS_o+pKVOLs75_aEn9H_scw@mail.gmail.com>
+ <ik7rut5k6vqpaxatj5q2kowmwd6gchl3iik6xjdokkj5ppy2em@ymsji226hrwp>
+ <CAHk-=wghPWAJkt+4ZfDzGB03hT1DNz5_oHnGL3K1D-KaAC3gpw@mail.gmail.com>
+ <CAHk-=wi42ad9s1fUg7cC3XkVwjWFakPp53z9P0_xj87pr+AbqA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: in4ujy1rg4hpsa5xxa9uti3uypyohx1q
-X-Rspamd-Queue-Id: 8ED954001A
-X-Rspamd-Server: rspam06
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wi42ad9s1fUg7cC3XkVwjWFakPp53z9P0_xj87pr+AbqA@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1760026522-443529
-X-HE-Meta: U2FsdGVkX1+wBL2PEJQYmx7OuV5DEdeLS/hfhze8bihNEH/ivEblue2Xkkmd8r2H34OAFkkobhYqQrpodtYy5v7D2QZgWTggGnBnrrylvtUc2zZrZaGl3CoQ6pSut8P4KDFpQtm2HD6tgnjddzcH73aUBY9MlZeZQApmi9YzehiE/LPD1/GdWtnNolp9ZKRzWopNmIzsuiajywlVzWhwZGl4XAsgukQKq9aFGulECPGbhuSKop7NNl5+hp57cGbkakYD68+WLKCwUvZYHBNp9X+kS2OaamQ06vQSOOdAswYPECp4OqIIwWO9Ir8AmcDt6ZU3gn7gEMW4+8wDShb5Lg31MdsQitw41+D/CDFLKEkGEFaChGeqdQCDX91C/PwrA1fBd19gW6PIdpxUG0W887sXHoLhHt1oX3L4Wu7DIaYz0flsOTfZ7CSdzzLq46eerzQYt93heAA29SfVdwRnt9PFFe1qQ8aqdkJkEQV3WCgGEPsA9JOxzV16Vw4EozpFHIM/0Z3B+hU/xtl4EA7izGxpSVslD8hbHWukt1DzVI+CrGj9K0HNgRSL9gBOATJmd+HHAcexX56jpd5KG2ezYdK2Hpj01zZc3Fbt62swogfMvCDQnEE+/QcJ6Caz62h5pMAv1df2Rl8DGLs6wsS47TAaMYACvXZyO2k22c2iCmX6LDYN2w6QkDXSplWbsRqy4hOwFffqDPczDdRj79D9kmIDkfRo/lKmVNf2tqINMfbKBNl15Oo2Ndsbnk3udEpqTuTWd60P08pVnlOMe1kM/pOISGl9cQL1p09oXOTzbqZNDkZ08UUXsFGOy6S5n5b/FjkflcexhPKGQRorTiJiYL5C0NkSnfgGtU3whfbekL6y2MY2M8kkCZ4i+zDdz7gbtmZGWuBfiJl8XGgsZKW2SksncgJn3aVh1oUmJCMKRFvPp7uj5ibxeEaUr+s9DIHmZm90YlZ4rx4s+4uUug0
- M7sQb4xQ
- coqdeZbwOO6Ah/bCxBd6Y2EGjdl5S4yRM9eWlPbNWVrgUy/KG6KybRbKk/nb/qH9zQAAiu8NX+9WQYGOkmEXhvpNPZG42Jv2BdbpUbekWxpf4GEkr/rhhLmX11npm4gFLzMFlmFQDUL6keeSgnJEMeSSr+MCT3XSvcMNld11kpn7ybSn3k/9hP1LU1VBIp4ehh6ro37Xc8U3mCo/qKqU/3G+1I4v7yMgzaKy5YlwCL21NcAgT056H0Q67uHkcVE/p+5E/LkWWD1CMDcVRyRO3UIwcARCvcOQ3ceztBlepdkK5sobu0QZqNc5tdT8NcsWgv+JGfCH0nIOTuobDM+IcNQis6rp61a6A1432FmKY+hgSCuFPEkJ81aKWmEqKorWuHi+lP1RJpRNRHlWAT/VRJis2J5uG08c3Wg5qFnMwdHCNvWlWRFa23PlgVfL1b4ys7LGOsUAW8Sjo3BVyOYNusgWsNwC9VYaPT6lLB5Eoy+V9Zl1nMBTGT1ZzlLf4bDe8D59J1tUWz8CghnZQ7awdUAnWVObqWFlHm4RAasUihfZ6x1+HaaIwHVLuwL9j16GKZCnsIDir3/XQCArOcpvC0k+ULezKLTixREspeY1kTfQFn08eVJNa6Yj/VmcVX+HBTNHB
+X-Rspamd-Queue-Id: 0400A2000D
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 6ffjuqpbi4py84u6rf5tk1ajpnjawqyq
+X-HE-Tag: 1760026937-18766
+X-HE-Meta: U2FsdGVkX1/SggKxcZ6+0u/OfBkI7/AiayKIWsDXzV8DKdMCbIT9w8l1eEKVJk4k6kkADOP8SvR1T0Vqdaf5rzm4LGL5eX+jlO/R4Ji0+lf5dvR1/FsjGqF/eN4KHLIOjaws3V/6y0wj8Grcy5qKqfy2QkzPnoEMp6/qrLJwFzh5XAMFtPOmOmg5cD3HBMf/tlTTqR7Touu2/MwIw9deSQKVcpRXDOPH4tbJhD9MXpNwf2pdLnhBBMrssGABU14NFoFBe0VuGhI3LDBc3XxbRyW0bOshxPM4GLX8GJ9LqBcl7Y1sHJULj57sO56ng/HnVAH7aa3yIEzSxJR2z7wmo94JjiDlmGJHEc8ITnFamD3scHgbRW6YQwte3l2TFD+t6vE4yLZMJsYDg9MIXUXfgH6xdkOF7S64q8eJcCwOa/c8llEHPI/1ZzmWcW8fmZmBfEkVn9H/J0JtsmHnrIeRu2ZJncUNQnVfUi3yDtP7PbIfF7osuatB2AnLcqe5SA7TUWBHtVH/44V3AmuZPOtQTCDtxz+yjCuVZk6DNlZwou25GIGL4Vxn2VqLpmkno7MzV3AKRtGhrnvzcy/fwLfbnpZpx6jNq3OSiculsFf7rcbP3dJFPt+AVR0MJQSEOdZptQtQjgSjdPdcbluXEX2S7RXBcgP9SSKoR4zUASX28oLP8rh9VV+nSjZtvjLJxzJuWLHkCp4Fo+Yg2N0eFpEGg3uqcxD5o1hbojcCYcUTX2yv23/3GrMLzqDnFjbKa7+yKTwFzAbFRagBGquet1T6jLoY0o2+rQ5qRoDV9MFuxpG1DXBJ9gOrIdBJR3wNC8E97pLaD5vBnz5Hf3f0I/4prAiPIeqr56rXEQv7oypUvklvmIZ2tdccWjU249VkIC5unnKgmW6XGcLFV2rvg7ku1PY8BeTnWHAbH5oLSXejb3RzI5A7Ii4NU9AdanxGmKxChtIY5P7+P04CMrbKKpY
+ s0Bs7yUq
+ Qv/npW9DDTEG2JmK3PVluZv/iV0BUC+n3BpTLron3W0bYH1/MXNhVrDFC3XL9AfWKsBL48WOxoASRkUpRWZgIeFaGaUhBeOIJXdainizoJVznyFg2ZtU6fBJRtkss2XAm6RKtj5L1K4ZGNoIXNWYyGHn/0ON9gOx0bZ242U6xCz62v1IiaYuW9nUajUNcleIlZgaGThnd4/Ei3KCluc7BWIQmM+ewHieuW32VQFgMkDBwsQyrpraJ/D4OmkM1bAlPov1vqWBZv0WQMWS7f9eFw4hC6wWXr6nTnvO27CaPCfdIsAEPr84barm8T1Xe/0EX52bVpFdHg7qSdUHvuj4b330YvWfOKKRnbFgkYmahAJS3isoZl7WgoNjsTep6rziciXjJOnFlwgyqbw0SuPooU+Fg0vzazhDcFY6ZjAVXpbQGQqTMveuR4lf/ABoL070ikC7Vtt2JjfE849lmCXbG+vWkMg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,129 +140,296 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This reintroduces a concept removed by
-commit d6cb41cc44c6 ("mm, hugetlb: remove hugepages_treat_as_movable sysctl")
+On Wed, Oct 08, 2025 at 10:03:47AM -0700, Linus Torvalds wrote:
+> On Wed, 8 Oct 2025 at 09:27, Linus Torvalds
+> <torvalds@linux-foundation.org> wrote:
+> >
+> > On Wed, 8 Oct 2025 at 07:54, Kiryl Shutsemau <kirill@shutemov.name> wrote:
+> > >
+> > > Disabling SMAP (clearcpuid=smap) makes it 45.7GiB/s for mine patch and
+> > > 50.9GiB/s for yours. So it cannot be fully attributed to SMAP.
+> >
+> > It's not just smap. It's the iov iterator overheads I mentioned.
+> 
+> I also suspect that if the smap and iov overhead are fixed, the next
+> thing in line is the folio lookup.
 
-This sysctl provides some flexibility between multiple requirements which
-are difficult to square without adding significantly more complexity.
+Below is the patch I currently have.
 
-1) onlining memory in ZONE_MOVABLE to maintain hotplug compatibility
-2) onlining memory in ZONE_MOVABLE to increase reliability of hugepage
-   allocation.
+I went for more clear separation of fast and slow path.
 
-When the user's intent for ZONE_MOVABLE is to allow more reliable huge
-page allocation (as opposed to enabling hotplugability), disallowing 1GB
-hugepages in this region this region is pointless.  So if hotplug is not
-a requirement, we can loosen the restrictions to allow 1GB gigantic pages
-in ZONE_MOVABLE.
+Objtool is not happy about calling random stuff within UACCESS. I
+ignored it for now.
 
-Since 1GB can be difficult to migrate / has impacts on compaction /
-defragmentation, we don't enable this by default.  However, since there
-are scenarios where gigantic pages are migratable (hugetlb available in
-multiple places), we should allow use of these on zone movable regions.
+I am not sure if I use user_access_begin()/_end() correctly. Let me know
+if I misunderstood or misimplemented your idea.
 
-Note: Boot-time CMA is not possible for driver-managed hotplug memory,
-as CMA requires the memory to be registered as SystemRAM at boot time.
+This patch brings 4k reads from 512k files to ~60GiB/s. Making the
+buffer 4k, brings it ~95GiB/s (baseline is 100GiB/s).
 
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Alexandru Moise <00moses.alexander00@gmail.com>
-Suggested-by: David Rientjes <rientjes@google.com>
-Signed-off-by: Gregory Price <gourry@gourry.net>
-Link: https://lore.kernel.org/all/20180201193132.Hk7vI_xaU%25akpm@linux-foundation.org/
----
- Documentation/admin-guide/sysctl/vm.rst | 17 +++++++++++++++++
- include/linux/hugetlb.h                 |  3 ++-
- mm/hugetlb.c                            | 11 +++++++++++
- 3 files changed, 30 insertions(+), 1 deletion(-)
+I tried to optimized folio walk, but it got slower for some reason. I
+don't yet understand why. Maybe something silly. Will play with it more.
 
-diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
-index 4d71211fdad8..89dcee3c3239 100644
---- a/Documentation/admin-guide/sysctl/vm.rst
-+++ b/Documentation/admin-guide/sysctl/vm.rst
-@@ -54,6 +54,7 @@ Currently, these files are in /proc/sys/vm:
- - mmap_min_addr
- - mmap_rnd_bits
- - mmap_rnd_compat_bits
-+- movable_gigantic_pages
- - nr_hugepages
- - nr_hugepages_mempolicy
- - nr_overcommit_hugepages
-@@ -624,6 +625,22 @@ This value can be changed after boot using the
- /proc/sys/vm/mmap_rnd_compat_bits tunable
+Any other ideas?
+
+diff --git a/fs/inode.c b/fs/inode.c
+index ec9339024ac3..52163d28d630 100644
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -482,6 +482,8 @@ EXPORT_SYMBOL(inc_nlink);
+ static void __address_space_init_once(struct address_space *mapping)
+ {
+ 	xa_init_flags(&mapping->i_pages, XA_FLAGS_LOCK_IRQ | XA_FLAGS_ACCOUNT);
++	seqcount_spinlock_init(&mapping->i_pages_delete_seqcnt,
++			       &mapping->i_pages->xa_lock);
+ 	init_rwsem(&mapping->i_mmap_rwsem);
+ 	INIT_LIST_HEAD(&mapping->i_private_list);
+ 	spin_lock_init(&mapping->i_private_lock);
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 9e9d7c757efe..a900214f0f3a 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -522,6 +522,7 @@ struct address_space {
+ 	struct list_head	i_private_list;
+ 	struct rw_semaphore	i_mmap_rwsem;
+ 	void *			i_private_data;
++	seqcount_spinlock_t	i_pages_delete_seqcnt;
+ } __attribute__((aligned(sizeof(long)))) __randomize_layout;
+ 	/*
+ 	 * On most architectures that alignment is already the case; but
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 751838ef05e5..732756116b6a 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -138,8 +138,10 @@ static void page_cache_delete(struct address_space *mapping,
  
+ 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
  
-+movable_gigantic_pages
-+======================
-+
-+This parameter controls whether gigantic pages may be allocated from
-+ZONE_MOVABLE. If set to non-zero, gigantic hugepages can be allocated
-+from ZONE_MOVABLE. ZONE_MOVABLE memory may be created via the kernel
-+boot parameter `kernelcore` or via memory hotplug as discussed in
-+Documentation/admin-guide/mm/memory-hotplug.rst.
-+
-+Support may depend on specific architecture.
-+
-+Note that using ZONE_MOVABLE gigantic pages may make features like
-+memory hotremove more unreliable, as migrating gigantic pages is more
-+difficult due to needing larger amounts of phyiscally contiguous memory.
-+
-+
- nr_hugepages
- ============
++	write_seqcount_begin(&mapping->i_pages_delete_seqcnt);
+ 	xas_store(&xas, shadow);
+ 	xas_init_marks(&xas);
++	write_seqcount_end(&mapping->i_pages_delete_seqcnt);
  
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 526d27e88b3b..38870d21724a 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -172,6 +172,7 @@ bool hugetlbfs_pagecache_present(struct hstate *h,
- 
- struct address_space *hugetlb_folio_mapping_lock_write(struct folio *folio);
- 
-+extern int movable_gigantic_pages __read_mostly;
- extern int sysctl_hugetlb_shm_group;
- extern struct list_head huge_boot_pages[MAX_NUMNODES];
- 
-@@ -916,7 +917,7 @@ static inline bool hugepage_movable_supported(struct hstate *h)
- 	if (!hugepage_migration_supported(h))
- 		return false;
- 
--	if (hstate_is_gigantic(h))
-+	if (hstate_is_gigantic(h) && !movable_gigantic_pages)
- 		return false;
- 	return true;
+ 	folio->mapping = NULL;
+ 	/* Leave folio->index set: truncation lookup relies upon it */
+@@ -2659,41 +2661,106 @@ static void filemap_end_dropbehind_read(struct folio *folio)
+ 	}
  }
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 753f99b4c718..24dbd30d1b69 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -55,6 +55,8 @@
- #include "hugetlb_cma.h"
- #include <linux/page-isolation.h>
  
-+int movable_gigantic_pages;
+-/**
+- * filemap_read - Read data from the page cache.
+- * @iocb: The iocb to read.
+- * @iter: Destination for the data.
+- * @already_read: Number of bytes already read by the caller.
+- *
+- * Copies data from the page cache.  If the data is not currently present,
+- * uses the readahead and read_folio address_space operations to fetch it.
+- *
+- * Return: Total number of bytes copied, including those already read by
+- * the caller.  If an error happens before any bytes are copied, returns
+- * a negative error number.
+- */
+-ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
+-		ssize_t already_read)
++static bool filemap_read_fast(struct kiocb *iocb, struct iov_iter *iter,
++			      char *buffer, size_t buffer_size,
++			      ssize_t *already_read)
++{
++	struct address_space *mapping = iocb->ki_filp->f_mapping;
++	struct file_ra_state *ra = &iocb->ki_filp->f_ra;
++	loff_t last_pos = ra->prev_pos;
++	struct folio *folio;
++	loff_t file_size;
++	unsigned int seq;
 +
- int hugetlb_max_hstate __read_mostly;
- unsigned int default_hstate_idx;
- struct hstate hstates[HUGE_MAX_HSTATE];
-@@ -5195,6 +5197,15 @@ static const struct ctl_table hugetlb_table[] = {
- 		.mode		= 0644,
- 		.proc_handler	= hugetlb_overcommit_handler,
- 	},
-+#ifdef CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION
-+	{
-+		.procname	= "movable_gigantic_pages",
-+		.data		= &movable_gigantic_pages,
-+		.maxlen		= sizeof(int),
-+		.mode		= 0644,
-+		.proc_handler	= proc_dointvec,
-+	},
-+#endif
- };
++	/* Don't bother with flush_dcache_folio() */
++	if (ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE)
++		return false;
++
++	if (!iter_is_ubuf(iter))
++		return false;
++
++	/* Give up and go to slow path if raced with page_cache_delete() */
++	if (!raw_seqcount_try_begin(&mapping->i_pages_delete_seqcnt, seq))
++		return false;
++
++	if (!user_access_begin(iter->ubuf + iter->iov_offset, iter->count))
++		return false;
++
++	rcu_read_lock();
++	pagefault_disable();
++
++	do {
++		size_t to_read, read;
++		XA_STATE(xas, &mapping->i_pages, iocb->ki_pos >> PAGE_SHIFT);
++
++		xas_reset(&xas);
++		folio = xas_load(&xas);
++		if (xas_retry(&xas, folio))
++			break;
++
++		if (!folio || xa_is_value(folio))
++			break;
++
++		if (!folio_test_uptodate(folio))
++			break;
++
++		/* No fast-case if readahead is supposed to started */
++		if (folio_test_readahead(folio))
++			break;
++		/* .. or mark it accessed */
++		if (!folio_test_referenced(folio))
++			break;
++
++		/* i_size check must be after folio_test_uptodate() */
++		file_size = i_size_read(mapping->host);
++
++		do {
++			if (unlikely(iocb->ki_pos >= file_size))
++				goto out;
++
++			to_read = min(iov_iter_count(iter), buffer_size);
++			if (to_read > file_size - iocb->ki_pos)
++				to_read = file_size - iocb->ki_pos;
++
++			read = memcpy_from_file_folio(buffer, folio, iocb->ki_pos, to_read);
++
++			/* Give up and go to slow path if raced with page_cache_delete() */
++			if (read_seqcount_retry(&mapping->i_pages_delete_seqcnt, seq))
++				goto out;
++
++			unsafe_copy_to_user(iter->ubuf + iter->iov_offset, buffer,
++					    read, out);
++
++			iter->iov_offset += read;
++			iter->count -= read;
++			*already_read += read;
++			iocb->ki_pos += read;
++			last_pos = iocb->ki_pos;
++		} while (iov_iter_count(iter) && iocb->ki_pos % folio_size(folio));
++	} while (iov_iter_count(iter));
++out:
++	pagefault_enable();
++	rcu_read_unlock();
++	user_access_end();
++
++	file_accessed(iocb->ki_filp);
++	ra->prev_pos = last_pos;
++	return !iov_iter_count(iter);
++}
++
++static ssize_t filemap_read_slow(struct kiocb *iocb, struct iov_iter *iter,
++			      struct folio_batch *fbatch, ssize_t already_read)
+ {
+ 	struct file *filp = iocb->ki_filp;
+ 	struct file_ra_state *ra = &filp->f_ra;
+ 	struct address_space *mapping = filp->f_mapping;
+ 	struct inode *inode = mapping->host;
+-	struct folio_batch fbatch;
+ 	int i, error = 0;
+ 	bool writably_mapped;
+ 	loff_t isize, end_offset;
+ 	loff_t last_pos = ra->prev_pos;
  
- static void __init hugetlb_sysctl_init(void)
+-	if (unlikely(iocb->ki_pos < 0))
+-		return -EINVAL;
+-	if (unlikely(iocb->ki_pos >= inode->i_sb->s_maxbytes))
+-		return 0;
+-	if (unlikely(!iov_iter_count(iter)))
+-		return 0;
+-
+-	iov_iter_truncate(iter, inode->i_sb->s_maxbytes - iocb->ki_pos);
+-	folio_batch_init(&fbatch);
++	folio_batch_init(fbatch);
+ 
+ 	do {
+ 		cond_resched();
+@@ -2709,7 +2776,7 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
+ 		if (unlikely(iocb->ki_pos >= i_size_read(inode)))
+ 			break;
+ 
+-		error = filemap_get_pages(iocb, iter->count, &fbatch, false);
++		error = filemap_get_pages(iocb, iter->count, fbatch, false);
+ 		if (error < 0)
+ 			break;
+ 
+@@ -2737,11 +2804,11 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
+ 		 * mark it as accessed the first time.
+ 		 */
+ 		if (!pos_same_folio(iocb->ki_pos, last_pos - 1,
+-				    fbatch.folios[0]))
+-			folio_mark_accessed(fbatch.folios[0]);
++				    fbatch->folios[0]))
++			folio_mark_accessed(fbatch->folios[0]);
+ 
+-		for (i = 0; i < folio_batch_count(&fbatch); i++) {
+-			struct folio *folio = fbatch.folios[i];
++		for (i = 0; i < folio_batch_count(fbatch); i++) {
++			struct folio *folio = fbatch->folios[i];
+ 			size_t fsize = folio_size(folio);
+ 			size_t offset = iocb->ki_pos & (fsize - 1);
+ 			size_t bytes = min_t(loff_t, end_offset - iocb->ki_pos,
+@@ -2772,19 +2839,57 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
+ 			}
+ 		}
+ put_folios:
+-		for (i = 0; i < folio_batch_count(&fbatch); i++) {
+-			struct folio *folio = fbatch.folios[i];
++		for (i = 0; i < folio_batch_count(fbatch); i++) {
++			struct folio *folio = fbatch->folios[i];
+ 
+ 			filemap_end_dropbehind_read(folio);
+ 			folio_put(folio);
+ 		}
+-		folio_batch_init(&fbatch);
++		folio_batch_init(fbatch);
+ 	} while (iov_iter_count(iter) && iocb->ki_pos < isize && !error);
+ 
+ 	file_accessed(filp);
+ 	ra->prev_pos = last_pos;
+ 	return already_read ? already_read : error;
+ }
++
++/**
++ * filemap_read - Read data from the page cache.
++ * @iocb: The iocb to read.
++ * @iter: Destination for the data.
++ * @already_read: Number of bytes already read by the caller.
++ *
++ * Copies data from the page cache.  If the data is not currently present,
++ * uses the readahead and read_folio address_space operations to fetch it.
++ *
++ * Return: Total number of bytes copied, including those already read by
++ * the caller.  If an error happens before any bytes are copied, returns
++ * a negative error number.
++ */
++ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
++		ssize_t already_read)
++{
++	struct inode *inode = iocb->ki_filp->f_mapping->host;
++	union {
++		struct folio_batch fbatch;
++		__DECLARE_FLEX_ARRAY(char, buffer);
++		//char __buffer[4096];
++	} area __uninitialized;
++
++	if (unlikely(iocb->ki_pos < 0))
++		return -EINVAL;
++	if (unlikely(iocb->ki_pos >= inode->i_sb->s_maxbytes))
++		return 0;
++	if (unlikely(!iov_iter_count(iter)))
++		return 0;
++
++	iov_iter_truncate(iter, inode->i_sb->s_maxbytes - iocb->ki_pos);
++
++	if (filemap_read_fast(iocb, iter, area.buffer, sizeof(area), &already_read))
++		return already_read;
++
++	return filemap_read_slow(iocb, iter, &area.fbatch, already_read);
++}
+ EXPORT_SYMBOL_GPL(filemap_read);
+ 
+ int kiocb_write_and_wait(struct kiocb *iocb, size_t count)
 -- 
-2.51.0
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
