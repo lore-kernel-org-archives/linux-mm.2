@@ -4,92 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E126ACCD183
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 16:06:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA57ACCD183
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 16:15:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CEFA8E0008; Thu,  9 Oct 2025 12:06:25 -0400 (EDT)
+	id 1955B8E009C; Thu,  9 Oct 2025 12:15:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A6738E009B; Thu,  9 Oct 2025 12:06:25 -0400 (EDT)
+	id 16C758E009B; Thu,  9 Oct 2025 12:15:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E4BF8E0008; Thu,  9 Oct 2025 12:06:25 -0400 (EDT)
+	id 05B358E009C; Thu,  9 Oct 2025 12:15:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F2D0F8E009B
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 12:06:24 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B4052BC45E
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 16:06:24 +0000 (UTC)
-X-FDA: 83979053088.02.DE50EB8
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	by imf21.hostedemail.com (Postfix) with ESMTP id CBFDF1C0019
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 16:06:22 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZUm0GTpV;
-	spf=pass (imf21.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760025983; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E85B68E009B
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 12:15:24 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 83F86C0A38
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 16:15:24 +0000 (UTC)
+X-FDA: 83979075768.28.D9945E2
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 8ED954001A
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 16:15:22 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=UqdDf3l+;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760026522; a=rsa-sha256;
 	cv=none;
-	b=VoTDEglKbB4yu1KHQuJVHfzEYcHlj6HbtCBTabi0BOkaBHdNcmB3IRSXYfNJ+eXooHj0vZ
-	t2WDQULpw5B32FbWeqynqMJoiXlom2CzSnZOlm9KmJgWdlf2w+2FtOkkiSHNGf4c8Jz5mG
-	U/qrl7B/20efCS831GcddKNu0RRZH5E=
+	b=kNm9kPVwUHrD+TJFE3bUhyQG7UdXaGy0FppiIm/D1ojJ5JAljBmGN5xupmc1qYEizczZWP
+	sNeVMkqCoqnp2gNz5HJ/2l9tlgfGMlu3yh/bmfKg5D/BY1uRpbLZY/xZGkOFsnWbA2fK6C
+	slmKtONCdfuw+cww85ng7nnIf7u0C3A=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZUm0GTpV;
-	spf=pass (imf21.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf07.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=UqdDf3l+;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760025983;
+	s=arc-20220608; t=1760026522;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KukbsMbl2huYRhlfoo2l0mDAbmiuXFQP1BtPelYVi10=;
-	b=UrPPwPSPDiUOhXjVD14fQj0WMlG5KR2ziYIux8LPuBYHGCb3ETeTVw7arJrgaM6qpcHezG
-	NoTtEy8X5DbZtHtktnwaTh0H6r507rE6b/BgUkQZF27XIoe6UREcPkdOhpExF/4XQumUJR
-	vMukHAvsS3+YCt5jBt80vsGpA2nZ42U=
-Date: Thu, 9 Oct 2025 09:06:13 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760025980;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KukbsMbl2huYRhlfoo2l0mDAbmiuXFQP1BtPelYVi10=;
-	b=ZUm0GTpVawkjiuJwQRpZJGGk3dlnInR8BQqp+avz857kSA9AMtwUiJc7SoyzfdEfczhfgI
-	t4YvP0k8b3mNJ0nUQGPRRxpmwogQOXrODl08eBC2UrQ9b2x+HSYz41SR2yCPRxhwqnizPK
-	1dbY1/nAOQlraza2002+CzXHfj4NQzw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Daniel Sedlak <daniel.sedlak@cdn77.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Neal Cardwell <ncardwell@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, David Ahern <dsahern@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org, 
-	netdev@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, 
-	Tejun Heo <tj@kernel.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Matyas Hurtik <matyas.hurtik@cdn77.com>
-Subject: Re: [PATCH v5] memcg: expose socket memory pressure in a cgroup
-Message-ID: <tr7hsmxqqwpwconofyr2a6czorimltte5zp34sp6tasept3t4j@ij7acnr6dpjp>
-References: <20251007125056.115379-1-daniel.sedlak@cdn77.com>
- <87qzvdqkyh.fsf@linux.dev>
- <13b5aeb6-ee0a-4b5b-a33a-e1d1d6f7f60e@cdn77.com>
- <87o6qgnl9w.fsf@linux.dev>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=1+5SvdqRqDaLVpZovzo/tjgIBi731xvYHaxEt2u52vI=;
+	b=kA610zt8pVxydCuqbb2Kfg+yDXWoJSKlqfuchwt8jLTRa2nifU56HH/CqqMoa/T2sv9eIX
+	gA5YAujI8zuu1pZWzZqi/kJOASH9f1fazOUYeKXjN5WKM1kofT3r+gLLaHxv00T9MztdQw
+	r/zwe3UQjcqVnMY4KPZX3URvt5bPwX0=
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-856222505eeso116051785a.1
+        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 09:15:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1760026521; x=1760631321; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1+5SvdqRqDaLVpZovzo/tjgIBi731xvYHaxEt2u52vI=;
+        b=UqdDf3l+B+gIaEYJllNNnIt5I7zVhiOYwqrgrJgLuvX0plqt/Cd12MaPGk7mE32Hnk
+         AcKSAsmd4fkpHFqDLhBK39MpeOunA/OmDEUo6H3+7Bkl5U1skbxOwVgnUpqVr4yUCtj5
+         qQiBkTVnEmM9RMuH5/MKDP6WzPjvVRpSvsh+rILAwivmOroZOYPcBMASNlQwQ/9iv210
+         K6r3c3wXNAv8gVVGvSpnv++2IoE839Mcca9zj4PaMkGd2ePUOsEnruc9jgLEmkrG2uhd
+         u4NyOIf9XhiQ8sIz4aHsXfXnw3h2TWoj9hzuWK5gRMkbuc7USYkzhdqS1CmrxWMtOIrZ
+         +P6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760026521; x=1760631321;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1+5SvdqRqDaLVpZovzo/tjgIBi731xvYHaxEt2u52vI=;
+        b=MftdipuWuSZFokBcqGsSzkfs7jE4T6Eb5NlrRsCGpaSVkhfk0vsmKyqpifSc11SWhP
+         6K491A+QJ/xsKSVaV1mmOjnuEZz5JeWFPzp423i6SAidG4v/REw1O/5tfBB7KRqnnPnR
+         BDgEW0yZ9SOFrt2F/yiYk+qkIKGXwWBHK+tAQaPz9P80P9NcwRbZP2PE9XG3X3B2brI8
+         i3YdEJroY5CYuc/AZ1Z1Ul4NJ/L4bVKrzoRFNsGMvke3nxWUKQ9Ug2Vz77/NYKs6UtRV
+         Q5mN6pse5WpaFN90N+kw6xU8FoMnTGYk545sq7XQ+n8dEFPxoTicA/Nw+ZmR2bAAhVf1
+         QX1w==
+X-Gm-Message-State: AOJu0YzqvUNAyidW+Ko7NThxKUBvFLe4j3N0rL3aJUwH/Mg0ia2dcNDQ
+	K9MnIi48iJtkILyUmnJ8wgkVFrJAmuOf3EaMAp1s3mrZWlTQxdpajDanFuvFUTmBgWzQ8gXfgQV
+	Ilhof
+X-Gm-Gg: ASbGncu0Nxlaj7Z/UW0OVLm6RZE3yj3BHZLmRsQC+Gl8gextXshgjtdSI1/YylmSfAY
+	7mFiPQ59i+xyCvJGxaNWHf9JsYPCrFG2yA9rYnEIE6Q5E6wN0c1Bfw+P5F+Gd8RV7gfPgXg2rJa
+	+CtNnVR2TYh6OZTH5wFde9Arnvu/MraZFj4Eaq+y3m2bmN1ZCWgXpPd0Vv7SWxarZoZR3qF7f5s
+	bevqCZZy1xwehKPpwvoU/p9na4LE19kQ6yaw9cajmxSP/rN7RxUgs0ztC3K1AcyH/OozuhVrhFf
+	vCxRcKx/YvKfNsoiWhUvPvWLrAk1BRbdv6aVzPrkLqS7qsdKYjdy3fnXVZP/cepxsKPWetA1ZAd
+	MceLXkvXHo0Sthe0ws2cRHTDZ3QLNRkGOrzddsIGXIKgPwAfAWNIG6IwsPse2Ff1QW3e4sV7blO
+	J8PWYbQa6xGmqBXgwJl4EU0hf2XfC9wzZPAnNCyhXqkIk84Q==
+X-Google-Smtp-Source: AGHT+IEj2zy9apxWY9vObYs3hv/JmdQttOhxDDHvUjAsMStwiARm4lbIvINlMgC2GhXAwwntSoBprQ==
+X-Received: by 2002:a05:620a:bd5:b0:870:90ff:90d with SMTP id af79cd13be357-883533693admr1130340185a.8.1760026520890;
+        Thu, 09 Oct 2025 09:15:20 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F.lan (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8849f2e2098sm224285685a.13.2025.10.09.09.15.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Oct 2025 09:15:20 -0700 (PDT)
+From: Gregory Price <gourry@gourry.net>
+To: linux-mm@kvack.org
+Cc: corbet@lwn.net,
+	muchun.song@linux.dev,
+	osalvador@suse.de,
+	david@redhat.com,
+	akpm@linux-foundation.org,
+	hannes@cmpxchg.org,
+	laoar.shao@gmail.com,
+	gourry@gourry.net,
+	mclapinski@google.com,
+	joel.granados@kernel.org,
+	jack@suse.cz,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mel Gorman <mgorman@suse.de>,
+	Michal Hocko <mhocko@suse.com>,
+	Alexandru Moise <00moses.alexander00@gmail.com>,
+	David Rientjes <rientjes@google.com>
+Subject: [RFC PATCH] mm, hugetlb: implement movable_gigantic_pages sysctl
+Date: Thu,  9 Oct 2025 12:15:15 -0400
+Message-ID: <20251009161515.422292-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87o6qgnl9w.fsf@linux.dev>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: in4ujy1rg4hpsa5xxa9uti3uypyohx1q
+X-Rspamd-Queue-Id: 8ED954001A
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Stat-Signature: izaggh481s4437jg771sjwnikppk855u
-X-Rspamd-Queue-Id: CBFDF1C0019
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760025982-165288
-X-HE-Meta: U2FsdGVkX19oG4k/zd0rrGf8k2D9jyZFjCTIYKjdHLbCq0e3UgbWuQPxZku/dumiA/zYIIBbeFMoTeoI1FPvYrN9NBkzM3ZUPACftUk0j+8D+cFjBlwf3hzOj8Xg1Fc7tomH6nynfle7NGlaLNp7EC1+bJI2u/tXWN3zFhDJtqQ7aOxbsEgY5m/eMZT0Uj8Zku8y1uj1LzomK11kWdX+jbMMSZqgNbwcnlC/BEsMKqDBygE8PN7aCjJWILoYTk51JwftJ+oiZwSl/wE4tjWTOxpYtG8K5Ie9HUMFU2dGqL8t5l4//ehUth5oP/Ir/B0YZwyWSrA8bzEuoZkrCrer2SNrzAetyjNo7JQpxaNKfAWDVD9TVxt2IJ2q1VaxPDN2QfH+k7TUD4xuE/F+WtqlO1d18c67fNtnW32jBbHmwibDg9itCIEjnYu+sMkR+ZryleM1Yf+5i04kbn94ZNaylKq4K2ISMclAWRHMyLHik0QdNwE0uyMD7k9WhbTBF+UCgmCRgjltC45Xwv3Jpxtkx/GHBs+q/onuxLdI9J2ugd9TZ+J+oPhNwdX3OBe5uKhqe9DYPjsAL2BuJ27SIR33urDB5W47ulrwJxXHexLxN/CL4EEphF2Ank7SJqcvCFeWr7rkpuUC6VV4r61VVDUqehFTLrbboG2g/7jUjx4NPFau/jOYgWkqJk3hOLuPlZGqdpjGUZfCqmy3pq7EzVxOYJ6/bb7ZtwD48w0lbBSIYnx+sumRROSyv4x77nPFk73WYGeNdSARXGUXS+fob48g/swRfbJoKLEmPWqZ45CwgAIVkkkcofxIY9RxIOl0KAZsd/p0JAyRYewJjyg0pg9Zsj9r3/m2g5jogIsJ3T06lmYUjHVK4UaHa9VCIbxcFvoxG+clrMxdU/a7moElN3shdb1VWtWvPTTim+0oBozu0vfo5cg1ADkX0qOpvDLsRovZT52DMp/VR/vx1G3apdq
- 5Hmjq5v7
- a8pLHT5sL6xXwIAH5Te781HK8KIRfwFae/kvfCLQXOdmOfgOix6eJbGZ1ifMc98bG5fMjQQS4KJuhSwuC7cJQdOWx86e/tbgSKXgjm0mq4TSuWFDwy9iQwGqkMuKthu9iLMFXTMApMhzax0n8iIv2DGxawp1kaK0mIWr7hlmzDEZU9XOo33bcm3GehL/0AUj40qc6T1X+K/Z0rdma/G0AZ7UXuY7brpB6eHop/Mxq0GLCmZuWncrotGKfcQspZ7COsBQqm7Yor+4VxT3ORkAfhxSZrQYU0oqEjuXf3W4G0mhKAthIEnPX5AkX2g5Gt8mse1sRIBw7fy7OyZQ=
+X-HE-Tag: 1760026522-443529
+X-HE-Meta: U2FsdGVkX1+wBL2PEJQYmx7OuV5DEdeLS/hfhze8bihNEH/ivEblue2Xkkmd8r2H34OAFkkobhYqQrpodtYy5v7D2QZgWTggGnBnrrylvtUc2zZrZaGl3CoQ6pSut8P4KDFpQtm2HD6tgnjddzcH73aUBY9MlZeZQApmi9YzehiE/LPD1/GdWtnNolp9ZKRzWopNmIzsuiajywlVzWhwZGl4XAsgukQKq9aFGulECPGbhuSKop7NNl5+hp57cGbkakYD68+WLKCwUvZYHBNp9X+kS2OaamQ06vQSOOdAswYPECp4OqIIwWO9Ir8AmcDt6ZU3gn7gEMW4+8wDShb5Lg31MdsQitw41+D/CDFLKEkGEFaChGeqdQCDX91C/PwrA1fBd19gW6PIdpxUG0W887sXHoLhHt1oX3L4Wu7DIaYz0flsOTfZ7CSdzzLq46eerzQYt93heAA29SfVdwRnt9PFFe1qQ8aqdkJkEQV3WCgGEPsA9JOxzV16Vw4EozpFHIM/0Z3B+hU/xtl4EA7izGxpSVslD8hbHWukt1DzVI+CrGj9K0HNgRSL9gBOATJmd+HHAcexX56jpd5KG2ezYdK2Hpj01zZc3Fbt62swogfMvCDQnEE+/QcJ6Caz62h5pMAv1df2Rl8DGLs6wsS47TAaMYACvXZyO2k22c2iCmX6LDYN2w6QkDXSplWbsRqy4hOwFffqDPczDdRj79D9kmIDkfRo/lKmVNf2tqINMfbKBNl15Oo2Ndsbnk3udEpqTuTWd60P08pVnlOMe1kM/pOISGl9cQL1p09oXOTzbqZNDkZ08UUXsFGOy6S5n5b/FjkflcexhPKGQRorTiJiYL5C0NkSnfgGtU3whfbekL6y2MY2M8kkCZ4i+zDdz7gbtmZGWuBfiJl8XGgsZKW2SksncgJn3aVh1oUmJCMKRFvPp7uj5ibxeEaUr+s9DIHmZm90YlZ4rx4s+4uUug0
+ M7sQb4xQ
+ coqdeZbwOO6Ah/bCxBd6Y2EGjdl5S4yRM9eWlPbNWVrgUy/KG6KybRbKk/nb/qH9zQAAiu8NX+9WQYGOkmEXhvpNPZG42Jv2BdbpUbekWxpf4GEkr/rhhLmX11npm4gFLzMFlmFQDUL6keeSgnJEMeSSr+MCT3XSvcMNld11kpn7ybSn3k/9hP1LU1VBIp4ehh6ro37Xc8U3mCo/qKqU/3G+1I4v7yMgzaKy5YlwCL21NcAgT056H0Q67uHkcVE/p+5E/LkWWD1CMDcVRyRO3UIwcARCvcOQ3ceztBlepdkK5sobu0QZqNc5tdT8NcsWgv+JGfCH0nIOTuobDM+IcNQis6rp61a6A1432FmKY+hgSCuFPEkJ81aKWmEqKorWuHi+lP1RJpRNRHlWAT/VRJis2J5uG08c3Wg5qFnMwdHCNvWlWRFa23PlgVfL1b4ys7LGOsUAW8Sjo3BVyOYNusgWsNwC9VYaPT6lLB5Eoy+V9Zl1nMBTGT1ZzlLf4bDe8D59J1tUWz8CghnZQ7awdUAnWVObqWFlHm4RAasUihfZ6x1+HaaIwHVLuwL9j16GKZCnsIDir3/XQCArOcpvC0k+ULezKLTixREspeY1kTfQFn08eVJNa6Yj/VmcVX+HBTNHB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,73 +131,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 09, 2025 at 08:32:27AM -0700, Roman Gushchin wrote:
-> Daniel Sedlak <daniel.sedlak@cdn77.com> writes:
-> 
-> > Hi Roman,
-> >
-> > On 10/8/25 8:58 PM, Roman Gushchin wrote:
-> >>> This patch exposes a new file for each cgroup in sysfs which is a
-> >>> read-only single value file showing how many microseconds this cgroup
-> >>> contributed to throttling the throughput of network sockets. The file is
-> >>> accessible in the following path.
-> >>>
-> >>>    /sys/fs/cgroup/**/<cgroup name>/memory.net.throttled_usec
-> >> Hi Daniel!
-> >> How this value is going to be used? In other words, do you need an
-> >> exact number or something like memory.events::net_throttled would be
-> >> enough for your case?
-> >
-> > Just incrementing a counter each time the vmpressure() happens IMO
-> > provides bad semantics of what is actually happening, because it can
-> > hide important details, mainly the _time_ for how long the network
-> > traffic was slowed down.
-> >
-> > For example, when memory.events::net_throttled=1000, it can mean that
-> > the network was slowed down for 1 second or 1000 seconds or something
-> > between, and the memory.net.throttled_usec proposed by this patch
-> > disambiguates it.
-> >
-> > In addition, v1/v2 of this series started that way, then from v3 we
-> > rewrote it to calculate the duration instead, which proved to be
-> > better information for debugging, as it is easier to understand
-> > implications.
-> 
-> But how are you planning to use this information? Is this just
-> "networking is under pressure for non-trivial amount of time ->
-> raise the memcg limit" or something more complicated?
-> 
-> I am bit concerned about making this metric the part of cgroup API
-> simple because it's too implementation-defined and in my opinion
-> lack the fundamental meaning.
-> 
-> Vmpressure is calculated based on scanned/reclaimed ratio (which is
-> also not always the best proxy for the memory pressure level), then
-> if it reaches some level we basically throttle networking for 1s.
-> So it's all very arbitrary.
-> 
-> I totally get it from the debugging perspective, but not sure about
-> usefulness of it as a permanent metric. This is why I'm asking if there
-> are lighter alternatives, e.g. memory.events or maybe even tracepoints.
-> 
+This reintroduces a concept removed by
+commit d6cb41cc44c6 ("mm, hugetlb: remove hugepages_treat_as_movable sysctl")
 
-I also have a very similar opinion that if we expose the current
-implementation detail through a stable interface, we might get stuck
-with this implementation and I want to change this in future.
+This sysctl provides some flexibility between multiple requirements which
+are difficult to square without adding significantly more complexity.
 
-Coming back to what information should we expose that will be helpful
-for Daniel & Matyas and will be beneficial in general. After giving some
-thought, I think the time "network was slowed down" or more specifically
-time window when mem_cgroup_sk_under_memory_pressure() returns true
-might not be that useful without the actual network activity. Basically
-if no one is calling mem_cgroup_sk_under_memory_pressure() and doing
-some actions, the time window is not that useful.
+1) onlining memory in ZONE_MOVABLE to maintain hotplug compatibility
+2) onlining memory in ZONE_MOVABLE to increase reliability of hugepage
+   allocation.
 
-How about we track the actions taken by the callers of
-mem_cgroup_sk_under_memory_pressure()? Basically if network stack
-reduces the buffer size or whatever the other actions it may take when
-mem_cgroup_sk_under_memory_pressure() returns, tracking those actions
-is what I think is needed here, at least for the debugging use-case.
+When the user's intent for ZONE_MOVABLE is to allow more reliable huge
+page allocation (as opposed to enabling hotplugability), disallowing 1GB
+hugepages in this region this region is pointless.  So if hotplug is not
+a requirement, we can loosen the restrictions to allow 1GB gigantic pages
+in ZONE_MOVABLE.
 
-WDYT?
+Since 1GB can be difficult to migrate / has impacts on compaction /
+defragmentation, we don't enable this by default.  However, since there
+are scenarios where gigantic pages are migratable (hugetlb available in
+multiple places), we should allow use of these on zone movable regions.
+
+Note: Boot-time CMA is not possible for driver-managed hotplug memory,
+as CMA requires the memory to be registered as SystemRAM at boot time.
+
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Alexandru Moise <00moses.alexander00@gmail.com>
+Suggested-by: David Rientjes <rientjes@google.com>
+Signed-off-by: Gregory Price <gourry@gourry.net>
+Link: https://lore.kernel.org/all/20180201193132.Hk7vI_xaU%25akpm@linux-foundation.org/
+---
+ Documentation/admin-guide/sysctl/vm.rst | 17 +++++++++++++++++
+ include/linux/hugetlb.h                 |  3 ++-
+ mm/hugetlb.c                            | 11 +++++++++++
+ 3 files changed, 30 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
+index 4d71211fdad8..89dcee3c3239 100644
+--- a/Documentation/admin-guide/sysctl/vm.rst
++++ b/Documentation/admin-guide/sysctl/vm.rst
+@@ -54,6 +54,7 @@ Currently, these files are in /proc/sys/vm:
+ - mmap_min_addr
+ - mmap_rnd_bits
+ - mmap_rnd_compat_bits
++- movable_gigantic_pages
+ - nr_hugepages
+ - nr_hugepages_mempolicy
+ - nr_overcommit_hugepages
+@@ -624,6 +625,22 @@ This value can be changed after boot using the
+ /proc/sys/vm/mmap_rnd_compat_bits tunable
+ 
+ 
++movable_gigantic_pages
++======================
++
++This parameter controls whether gigantic pages may be allocated from
++ZONE_MOVABLE. If set to non-zero, gigantic hugepages can be allocated
++from ZONE_MOVABLE. ZONE_MOVABLE memory may be created via the kernel
++boot parameter `kernelcore` or via memory hotplug as discussed in
++Documentation/admin-guide/mm/memory-hotplug.rst.
++
++Support may depend on specific architecture.
++
++Note that using ZONE_MOVABLE gigantic pages may make features like
++memory hotremove more unreliable, as migrating gigantic pages is more
++difficult due to needing larger amounts of phyiscally contiguous memory.
++
++
+ nr_hugepages
+ ============
+ 
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 526d27e88b3b..38870d21724a 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -172,6 +172,7 @@ bool hugetlbfs_pagecache_present(struct hstate *h,
+ 
+ struct address_space *hugetlb_folio_mapping_lock_write(struct folio *folio);
+ 
++extern int movable_gigantic_pages __read_mostly;
+ extern int sysctl_hugetlb_shm_group;
+ extern struct list_head huge_boot_pages[MAX_NUMNODES];
+ 
+@@ -916,7 +917,7 @@ static inline bool hugepage_movable_supported(struct hstate *h)
+ 	if (!hugepage_migration_supported(h))
+ 		return false;
+ 
+-	if (hstate_is_gigantic(h))
++	if (hstate_is_gigantic(h) && !movable_gigantic_pages)
+ 		return false;
+ 	return true;
+ }
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 753f99b4c718..24dbd30d1b69 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -55,6 +55,8 @@
+ #include "hugetlb_cma.h"
+ #include <linux/page-isolation.h>
+ 
++int movable_gigantic_pages;
++
+ int hugetlb_max_hstate __read_mostly;
+ unsigned int default_hstate_idx;
+ struct hstate hstates[HUGE_MAX_HSTATE];
+@@ -5195,6 +5197,15 @@ static const struct ctl_table hugetlb_table[] = {
+ 		.mode		= 0644,
+ 		.proc_handler	= hugetlb_overcommit_handler,
+ 	},
++#ifdef CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION
++	{
++		.procname	= "movable_gigantic_pages",
++		.data		= &movable_gigantic_pages,
++		.maxlen		= sizeof(int),
++		.mode		= 0644,
++		.proc_handler	= proc_dointvec,
++	},
++#endif
+ };
+ 
+ static void __init hugetlb_sysctl_init(void)
+-- 
+2.51.0
+
 
