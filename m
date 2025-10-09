@@ -4,173 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15662CCD183
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 18:57:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9552CCCD184
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 19:02:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54DBB8E003E; Thu,  9 Oct 2025 14:57:30 -0400 (EDT)
+	id D95868E004C; Thu,  9 Oct 2025 15:02:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FE2E8E0002; Thu,  9 Oct 2025 14:57:30 -0400 (EDT)
+	id D46298E0002; Thu,  9 Oct 2025 15:02:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 413958E003E; Thu,  9 Oct 2025 14:57:30 -0400 (EDT)
+	id C5BB18E004C; Thu,  9 Oct 2025 15:02:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 305328E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 14:57:30 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AAFCA140B07
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 18:57:29 +0000 (UTC)
-X-FDA: 83979484218.25.EB3E693
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6CD2F40008
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 18:57:27 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=d3Q8Hln+;
-	spf=pass (imf12.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B02DB8E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 15:02:14 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5F47A140B0B
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 19:02:14 +0000 (UTC)
+X-FDA: 83979496188.21.CFB9CA9
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 57988120009
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 19:02:12 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iKpFldBH;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760036247;
+	s=arc-20220608; t=1760036532;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4iAzp85+07WQisNUePEagQ4q/g20R/GAnT+gB8Cya3Q=;
-	b=uT1+qb53Y3O+TmxkkYEbWdtCkJpnx0lt2LrSdS1Hc7vEmAPSadL0v11hrMXmxWY2U6tED4
-	bpfMyXLMQ+YYB2IUUsv+cImTh03U1+ukyku5C+PU3n1C0LN8i4IJkMnH+grThjOzxlBYo0
-	I/TEFVtvXqgeZz4vrBbc/V5M7Ii+U74=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=d3Q8Hln+;
-	spf=pass (imf12.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760036247; a=rsa-sha256;
+	bh=tEZY6b9Il/bPIuUgXhNINbaf1qEh3uV81jyRdL6VxBg=;
+	b=SvM8RignKwOqow8ClOriMbhtT19D8SKCU2jkvOCh8N0xnNUK9D8gXX9EDF+a3K9ZWwbXN6
+	8+8vAgrsUju6U0SAbrhKYbLA9h1EiftdRixgtaE24GKGBwVQ1+qr9bQ2ulIrIt91NuHBqc
+	QKdOoNF4cZ+TVQwKMXQVSSZdtRTQGnk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760036532; a=rsa-sha256;
 	cv=none;
-	b=Ntcq1IHss7wNscCsrGDy3HRTKAxhz4J779P4hKC5uiDP2sP3rbiXI7Ft0tMz+IY2JBW9vQ
-	0Gv0/X14XnaFp5JU/xEVQRbNCSs1GXXmVvRwm7JlzkipQa9dp255n4EnMOvANXxnM1EfQQ
-	SvMh69SdqAc+ra3s/C39HLk3n9Y7FgI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760036246;
+	b=qDwood2aIocIacTMaPJ8hRN44xPCVvbfWaczocZnHZxjbW0Tu27FUyqRzF2U5EVUyvSKmb
+	x4b01C2XRfieviN0vLHoB7nO61pDvd0U92EkwLra0d2jPVWxIdrBtLSI3SbocmenkWeH8m
+	HHhSR02sWgR/DLeexw05MnhjWjq3JqI=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iKpFldBH;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760036528;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=4iAzp85+07WQisNUePEagQ4q/g20R/GAnT+gB8Cya3Q=;
-	b=d3Q8Hln+8cfRzhbBk1f44gDV9fxnc3OQ82VUabbY7IZj1TNgc0V0z48DsK94IQ8jFVSq8c
-	LX3rgaVtiUqJMfTSNbN+n3rD/jPodoXJmEckQH/stR79JVo4FaX1vgustu3tAGHVdWrRwV
-	NhCEv4atwIMW9R7mUeJ4RdYd9hueaJM=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-676-u77PreJ1MoON0rtGVYHjyw-1; Thu, 09 Oct 2025 14:57:25 -0400
-X-MC-Unique: u77PreJ1MoON0rtGVYHjyw-1
-X-Mimecast-MFC-AGG-ID: u77PreJ1MoON0rtGVYHjyw_1760036244
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-46e502a37cdso8743325e9.0
-        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 11:57:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760036244; x=1760641044;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4iAzp85+07WQisNUePEagQ4q/g20R/GAnT+gB8Cya3Q=;
-        b=CEFHMuv4gns1Mve21S2AdeedBQbHuk8cjYOzKhMFCsQT/MvCTfKPWDiRUE75mRqLak
-         MdRB8ip6z0etb5Tl0DGFjakaDwVeAuZKQQXcGFazQE6WvP7EuWgINI4rT8e6wDCSmL46
-         S/xA7pAy0aDlVYzxCgTQCPa2104zZ6gM8ZAkLJ3oUoTsohxMFGwYhHRtMba5SkXnL1d8
-         fa05EMuCVOB1Ua7zo6crA8gNhYxj3MOyUvWfmTB+/0bOPI5yYQ32S92840+o3RCyRHm1
-         dLDXaN5KAG0RwfyVHW42Xw4NSFScYk6b/T+Bc+qEtXh+HXB+DtYDRwcd/wtRyCmwRzVs
-         Bh2A==
-X-Forwarded-Encrypted: i=1; AJvYcCXpY0eU6Gj1+mo0285f+6II8rr+SHMFfSRJtfZZjzg9bAhmwUzSmXtl+cN8lF8VRJW28EZJTx6BlQ==@kvack.org
-X-Gm-Message-State: AOJu0YwnnmejOD8xY1uPsvE9vUbb3AfvHLa9Bi9c9fSQ9ZSn5uE4IxPp
-	RPpave0VJn0Tnc9DNsRVU84hN5lznaBbwkh++ClNO2lvhUGPdJKpF1lw+OE8EY8mBfoVxKFPZaZ
-	/ulcER2zg3gkzSZGcxR8N2QXRKSxdrIRG2D8t3/Zs7rL8iWqkCtCCpOHcPrPq
-X-Gm-Gg: ASbGncsTQTc0XZ/GYiVIoGl7CxADGTmeES4Vfi+OeJkADdShrYXA+zSM+SKvspmKPdM
-	Oqzwr4Xzt24gPLihQyZP0TVpwuUwVm0kN4rGvm/CrlwerMNZ2610bXtDIccAQVa8KeDdcm5Tzdu
-	aOLZqmMT27LyJSgKF7XE3Tp+7NV3O7Y+8orNhfZORItqJX0j2WXoWrkewcTnfnVzbDzjnN7JZLC
-	onHgSPnV0RQnC42m5LMR0n0pndIIr6qL3VY9w6LtFRrzncz160U01RNGrGfQvgROnjzzhm2vAVM
-	fBhB2ucWbQxzg8oJ5+bgnxM8GCyGjAVAl/3cTgIotQUyGY99myopR7+BGEtRbYzWvWNv0b+Ei7s
-	1v0pgMXES
-X-Received: by 2002:a05:600c:628e:b0:46e:4cd3:7d6e with SMTP id 5b1f17b1804b1-46fa9aa0b49mr56621355e9.9.1760036244338;
-        Thu, 09 Oct 2025 11:57:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF7mys4/FDaXY2OCEWr6mej6Wrn1zZXPoZ5aHypkrEDlOnaV1ENckumi+N7FGBDiTJ4jMRNYA==
-X-Received: by 2002:a05:600c:628e:b0:46e:4cd3:7d6e with SMTP id 5b1f17b1804b1-46fa9aa0b49mr56621255e9.9.1760036243964;
-        Thu, 09 Oct 2025 11:57:23 -0700 (PDT)
-Received: from [192.168.3.141] (tmo-083-189.customers.d1-online.com. [80.187.83.189])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fb4982b30sm8459955e9.6.2025.10.09.11.57.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Oct 2025 11:57:23 -0700 (PDT)
-Message-ID: <8c4d8ebe-885e-40f0-a10e-7290067c7b96@redhat.com>
-Date: Thu, 9 Oct 2025 20:57:21 +0200
+	 in-reply-to:in-reply-to:references:references;
+	bh=tEZY6b9Il/bPIuUgXhNINbaf1qEh3uV81jyRdL6VxBg=;
+	b=iKpFldBHyIIoqxe6JgGEDlkn6AJo8vprgXkgchWpTr+HDYbXIVn0Wo0bfG6Qj9Kx1si1qA
+	dt5eDxW521POW0bcUPeN/UWnyHgbK7GLEwG1g3EPenu0oHvml/5Jc5SUsum/acZdSTrAH4
+	pezT2MwlyiGTAisl7TC1BJF2YoEM34I=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Daniel Sedlak <daniel.sedlak@cdn77.com>,  "David S. Miller"
+ <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  Simon
+ Horman <horms@kernel.org>,  Jonathan Corbet <corbet@lwn.net>,  Neal
+ Cardwell <ncardwell@google.com>,  Kuniyuki Iwashima <kuniyu@google.com>,
+  David Ahern <dsahern@kernel.org>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Yosry Ahmed <yosry.ahmed@linux.dev>,
+  linux-mm@kvack.org,  netdev@vger.kernel.org,  Johannes Weiner
+ <hannes@cmpxchg.org>,  Michal Hocko <mhocko@kernel.org>,  Muchun Song
+ <muchun.song@linux.dev>,  cgroups@vger.kernel.org,  Tejun Heo
+ <tj@kernel.org>,  Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>,
+  Matyas Hurtik
+ <matyas.hurtik@cdn77.com>
+Subject: Re: [PATCH v5] memcg: expose socket memory pressure in a cgroup
+In-Reply-To: <qdblzbalf3xqohvw2az3iogevzvgn3c3k64nsmyv2hsxyhw7r4@oo7yrgsume2h>
+	(Shakeel Butt's message of "Thu, 9 Oct 2025 11:32:56 -0700")
+References: <20251007125056.115379-1-daniel.sedlak@cdn77.com>
+	<87qzvdqkyh.fsf@linux.dev>
+	<13b5aeb6-ee0a-4b5b-a33a-e1d1d6f7f60e@cdn77.com>
+	<87o6qgnl9w.fsf@linux.dev>
+	<tr7hsmxqqwpwconofyr2a6czorimltte5zp34sp6tasept3t4j@ij7acnr6dpjp>
+	<87a5205544.fsf@linux.dev>
+	<qdblzbalf3xqohvw2az3iogevzvgn3c3k64nsmyv2hsxyhw7r4@oo7yrgsume2h>
+Date: Thu, 09 Oct 2025 12:02:00 -0700
+Message-ID: <875xcn526v.fsf@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 0/1] mm/ksm: Add recovery mechanism for memory
- failures
-To: Longlong Xia <xialonglong2025@163.com>, linmiaohe@huawei.com,
- nao.horiguchi@gmail.com
-Cc: akpm@linux-foundation.org, wangkefeng.wang@huawei.com,
- xu.xin16@zte.com.cn, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Longlong Xia <xialonglong@kylinos.cn>
-References: <20251009070045.2011920-1-xialonglong2025@163.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20251009070045.2011920-1-xialonglong2025@163.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ia2CCvFJm70pv-ySeCSu2v-heSft-1R-1mQPySS6SEo_1760036244
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6CD2F40008
-X-Stat-Signature: cfukrtzwpighm4xu71c1ody65s33qqs3
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1760036247-684073
-X-HE-Meta: U2FsdGVkX18r09X32mq6s4um5cseyhCJ13j96v011Fevd2aqmyqrFpIqfN53IDdYS3ROI4Hm33UroEKNXPivFG4G31B2VkOxHBADEqToW6xgfVJO5nSqKOguTgtgp8bDe5BsI04ob3w+QpDijnBU7ZsNnbZIWQ8SxpbssCiH6Rv5somxpVDL7wsjj81d+Z3LFdaXsoVQflvTN5kolAK1NldnXO4o7as8FUCtiz76C+x8bPosneZ0f0aqSrwVVtDwnhNMRpHJ0QVy6eGOfSgZZBCRZxbB4aHbaamWmJeqs3EJjWMEwXzlBR3lTTYJQBxOfB7ZYaFY7SwKQx69X8SKV6C3CGRPD0U6f/vkyOpxVv+BEbsK99Ynf8DHKN4QaIJOwj+zFw7eelG/oykrwep9AuzAbsNgp+fT358m52NNUHNk7BG/OzT+vxO49nxfXUv3CakDsmmV97WBlw0c/y5GMf8BmGIiQlwYTiOF7SuHyE804KX+aO/nv6kKwAk7luSQPSCtKFwijGa8fx1RWXLlOjvEo0c/kDQX3VatVg9Pigw/PHOIkCSje/zgBlLBcxRECooo0qHYdDJzPvww2ObnaUWAxFLNeZ1a9mY9ZS5aS2ORmkp9/ssUVWjUAVjhOPq4CYqoEQufkuQHf+f+LAzbXaI9866ccFHyMdRDTPo4eXHV4a78PTK6mqZzzVp1CP0YtOE6EGR3gNlOQTelTdqTJfqqhRGBPDYcJn+1OrWbJHe3lbcKt8Lzk2Wrx9JZLbFPsykwUcztzsi/Tp2KM6mrtVqlJKpLM5Iw6TkX5ED+n2+ak9HTHxaxZbIf/YHBJTEsSExt3Up68YRLIXjCS9PSQQLxcYXJ+l1PyrLhZeDwOznlw2AzHncAZGg2YomYXuFHyzTfSRjc1YQkWlu9QJO/Ikh4uw24O+G1/qFduIusFtvxDxM8GJ8NbfMO2qwnqcy8gM1LjqSM2hB2XWZVTq3
- /QmghWAg
- qnsD9UkfGaLHZYlZoHwcDsFsYODK72jWFdiwHKkVzFRmWLlUiexkZ58uKBVt7s6iq11+jF32VLRIrG31eqcmBKj2zmazW/icRio8PPpyQFEDdSlOsJL6KYGYu89uAqwU1phFKVh2dkyvDIFwn1Eu19Fw2fxDdBnXwaocucqKhDYSTuA6byczs75bJRhHxp3ps26lquoivWCx1PGyDr8whgpaZSmMlzuiKlFYn2zBeYejNejyB3mb70OLWetinEvKrWNeKMGfOljYf2Lg=
+X-Rspamd-Queue-Id: 57988120009
+X-Rspamd-Server: rspam02
+X-Stat-Signature: ut8f9hfnj38zfa36nrn4wt1gq5ms87yr
+X-HE-Tag: 1760036532-896587
+X-HE-Meta: U2FsdGVkX18+6Tq/Fowg5R+bDgkYcip2r+0W3bpNs6mcfD1DpHY5iJJ3KUubVpmBab1D1fiyVJ0wqtF32vJVTlBIkvR0bKORY8VXI4XdQZ6zbyfN1F9ZcU2sJF/mKZx2DydRYMMSFgglNcQQLsaT04Nx/OlrKr9AxOFgPUMU7LE5LsCpl1LkDotZTMfxo5YCx/ovm9r7YmfkrDxmcfl9Lh2ypNeVMkGXduhZztE9rKwsPJ5pGgpd37u7qkn8fhNDZCxNojTLKBaWJQs4BHy5etx8nV9j9k+Bje4fODwDAgMVBeRDduTDLU/DE4PM6PpWePnbjeIE1Mz3N7OqmkzNRo6ZMwc0KD0r6R9jFUL3jwDNBLGW4v4nXDEAXTHluZ5Ab0a+tK1BzPNjIVs6iWHiF3DmwGiqdUEpMT8A1nIThr/Ev+81s1EnRTs2kLk3XqQdjA/wLQkCErbdVNaPTUUJNenvuWojO1k061xbonAVcMY+itWdK451JF6y7otCKJkRAB2NjONp2IAyAv5OUdS6V2jjVj0goAFOSOIhFyp7b+NsYBhW5J7ZW65KJYZR75CtEvMmOANZZVxrkcY88X8XqgRncMc9CbNoU6QdLVe2arURIWD9dS9/2jwTU95Y6qebGnQ9ZILdk80rmagz8oX7nXHcTGGMTl+wPYKO7LJne/JfqxE4Jfp/mo94PLd+N4tBcto1xlChZ8JfPjUP4VPGy32ixWGNGBHUnoV6w2JPuHcCthtt3OWTWYuI4i4hISbtg7wJM2gefmWzcOva+dpu9DVPgMXS72p+M/+8EhMtmDQxreCXTY9/V0ShkixSZ5sxaXdW1z2zV1GcFo3Upi3DcFwKpW+p8BQKTj4ee9PT8pAUR03wE5W/qIaI3Xa0Q7FPj0glZshV2ZT42pbjYVTI2bIs72Feg2IcFORlzl+BdhV9UJoLl2kVgUsAhR7WHLZf8Jv0nPhFYoIl3Iu2YqL
+ KMK5naau
+ UwMQBVze067+SvTnV3ZmPSwgWVGeZJ1OPymgX3ZqwzCYOgjiPCaXr+MoXknv4bzTXS9CCbWcH89gRrcGD03jYDQkrwPrOjeGwPHTuUqf9n2mmsnhhZ2ojEbJ+z9y71eQrYbBlBmKSvv8J3mtDtcPMYzJBjIWJ9OYL/HOEo+QTwn7ECG1EnnQmB3m/9hTomsf2eSBKtiMjcJzGniuoRfppUpqW2khnqcGKRME6PsXAK9jvudloTQV/dsP1zxaKwNJZRg8PxDVpDOjOFBAC6L79kTHTiQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,51 +104,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09.10.25 09:00, Longlong Xia wrote:
-> From: Longlong Xia <xialonglong@kylinos.cn>
-> 
-> When a hardware memory error occurs on a KSM page, the current
-> behavior is to kill all processes mapping that page. This can
-> be overly aggressive when KSM has multiple duplicate pages in
-> a chain where other duplicates are still healthy.
-> 
-> This patch introduces a recovery mechanism that attempts to migrate
-> mappings from the failing page to another healthy duplicate within
-> the same chain before resorting to killing processes.
+Shakeel Butt <shakeel.butt@linux.dev> writes:
 
-An alternative could be to allocate a new page and effectively migrate 
-from the old (degraded) page to the new page by copying page content 
-from one of the healty duplicates.
+> On Thu, Oct 09, 2025 at 10:58:51AM -0700, Roman Gushchin wrote:
+>> Shakeel Butt <shakeel.butt@linux.dev> writes:
+>> 
+>> > On Thu, Oct 09, 2025 at 08:32:27AM -0700, Roman Gushchin wrote:
+>> >> Daniel Sedlak <daniel.sedlak@cdn77.com> writes:
+>> >> 
+>> >> > Hi Roman,
+>> >> >
+>> >> > On 10/8/25 8:58 PM, Roman Gushchin wrote:
+>> >> >>> This patch exposes a new file for each cgroup in sysfs which is a
+>> >> >>> read-only single value file showing how many microseconds this cgroup
+>> >> >>> contributed to throttling the throughput of network sockets. The file is
+>> >> >>> accessible in the following path.
+>> >> >>>
+>> >> >>>    /sys/fs/cgroup/**/<cgroup name>/memory.net.throttled_usec
+>> >> >> Hi Daniel!
+>> >> >> How this value is going to be used? In other words, do you need an
+>> >> >> exact number or something like memory.events::net_throttled would be
+>> >> >> enough for your case?
+>> >> >
+>> >> > Just incrementing a counter each time the vmpressure() happens IMO
+>> >> > provides bad semantics of what is actually happening, because it can
+>> >> > hide important details, mainly the _time_ for how long the network
+>> >> > traffic was slowed down.
+>> >> >
+>> >> > For example, when memory.events::net_throttled=1000, it can mean that
+>> >> > the network was slowed down for 1 second or 1000 seconds or something
+>> >> > between, and the memory.net.throttled_usec proposed by this patch
+>> >> > disambiguates it.
+>> >> >
+>> >> > In addition, v1/v2 of this series started that way, then from v3 we
+>> >> > rewrote it to calculate the duration instead, which proved to be
+>> >> > better information for debugging, as it is easier to understand
+>> >> > implications.
+>> >> 
+>> >> But how are you planning to use this information? Is this just
+>> >> "networking is under pressure for non-trivial amount of time ->
+>> >> raise the memcg limit" or something more complicated?
+>> >> 
+>> >> I am bit concerned about making this metric the part of cgroup API
+>> >> simple because it's too implementation-defined and in my opinion
+>> >> lack the fundamental meaning.
+>> >> 
+>> >> Vmpressure is calculated based on scanned/reclaimed ratio (which is
+>> >> also not always the best proxy for the memory pressure level), then
+>> >> if it reaches some level we basically throttle networking for 1s.
+>> >> So it's all very arbitrary.
+>> >> 
+>> >> I totally get it from the debugging perspective, but not sure about
+>> >> usefulness of it as a permanent metric. This is why I'm asking if there
+>> >> are lighter alternatives, e.g. memory.events or maybe even tracepoints.
+>> >> 
+>> >
+>> > I also have a very similar opinion that if we expose the current
+>> > implementation detail through a stable interface, we might get stuck
+>> > with this implementation and I want to change this in future.
+>> >
+>> > Coming back to what information should we expose that will be helpful
+>> > for Daniel & Matyas and will be beneficial in general. After giving some
+>> > thought, I think the time "network was slowed down" or more specifically
+>> > time window when mem_cgroup_sk_under_memory_pressure() returns true
+>> > might not be that useful without the actual network activity. Basically
+>> > if no one is calling mem_cgroup_sk_under_memory_pressure() and doing
+>> > some actions, the time window is not that useful.
+>> >
+>> > How about we track the actions taken by the callers of
+>> > mem_cgroup_sk_under_memory_pressure()? Basically if network stack
+>> > reduces the buffer size or whatever the other actions it may take when
+>> > mem_cgroup_sk_under_memory_pressure() returns, tracking those actions
+>> > is what I think is needed here, at least for the debugging use-case.
+>> >
+>> > WDYT?
+>> 
+>> I feel like if it's mostly intended for debugging purposes,
+>> a combination of a trace point and bpftrace can work pretty well,
+>> so there is no need to create a new sysfs interface.
+>> 
+>
+> Definitely not a new interface but I think having such information in
+> memory.events or memory.stat would be more convenient. Basically the
+> number of times the sockets in this memcg have to be clamped due to
+> memory pressure would be useful in general.
 
-That would keep the #mappings per page in the chain balanced.
-
-> 
-> The recovery process works as follows:
-> 1. When a memory failure is detected on a KSM page, identify if the
-> failing node is part of a chain (has duplicates) (maybe add dup_haed
-> item to save head_node to struct stable_node?, saving searching
-> the whole stable tree, or other way to find head_node)
-> 2. Search for another healthy duplicate page within the same chain
-> 3. For each process mapping the failing page:
-> - Update the PTE to point to the healthy duplicate page ( maybe reuse
-> replace_page?, or split repalce_page into smaller function and use the
-> common part)
-> - Migrate the rmap_item to the new stable node
-> 4. If all migrations succeed, remove the failing node from the chain
-> 5. Only kill processes if recovery is impossible or fails
-
-Does not sound too crazy.
-
-But how realistic do we consider that in practice? We need quite a bunch 
-of processes to dedup the same page to end up getting duplicates in the 
-chain IIRC.
-
-So isn't this rather an improvement only for less likely scenarios in 
-practice?
-
--- 
-Cheers
-
-David / dhildenb
-
+Yeah, if we're going to add something, memory.events looks like the best
+option, also because it allows to poll and get notified when the event
+occurs.
 
