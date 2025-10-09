@@ -4,134 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBEF2CCA470
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 09:19:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2F2CCCD18A
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 09:20:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18EBC8E0070; Thu,  9 Oct 2025 05:19:13 -0400 (EDT)
+	id 33D788E0071; Thu,  9 Oct 2025 05:20:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EFE38E0002; Thu,  9 Oct 2025 05:19:13 -0400 (EDT)
+	id 2EE148E0002; Thu,  9 Oct 2025 05:20:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED25C8E0070; Thu,  9 Oct 2025 05:19:12 -0400 (EDT)
+	id 1B6AA8E0071; Thu,  9 Oct 2025 05:20:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D58AC8E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 05:19:12 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8096616065E
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 09:19:12 +0000 (UTC)
-X-FDA: 83978026944.05.9940203
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 43CDC180005
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 09:19:10 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PLpDn2Tk;
-	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0748E8E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 05:20:38 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8E0D687990
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 09:20:37 +0000 (UTC)
+X-FDA: 83978030514.22.A056CF5
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 228641C0012
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 09:20:34 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gk842VPf;
+	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760001550;
+	s=arc-20220608; t=1760001635;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ym+DdkcmRG4wvpfz5ykb6s+kf1elRde6oG+aT4Hjw8w=;
-	b=j+vfscj/sA3wKdqoRpz1lbk3ru8mM8qXsV2yHhaaBeFrXaEjSf5PZDjjkLpNuwufMMsWkP
-	Ph82YeRAalQB6ywpqXiVFie2v2XvNtSgPIKZVNv2luLYJcNWpBzmLcua5XMTqlJ7BzUsny
-	JNquPFjEHDtgdEKMv2Y3XzfwFrAoS0k=
+	bh=nig+QThvSoNq9uOJUVuoYK6Ng7PXDFkVUD8omncLNk0=;
+	b=rKBuT+qhhxi9fsCFls/2opDn04SAHUxjF5EDAFzalNZuSs6GGlMF7XIG2w+S61PHmK3Kn/
+	VJSwikqNgjzf8NCp4tS5OCqxOgi6KGMEczrfKdRfAMaWeyPQ4vBmooqEhy990I5TgfhSbv
+	fHkbeQsp/D7sh0kTjzrT38M9/LPleD0=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PLpDn2Tk;
-	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gk842VPf;
+	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760001550; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760001635; a=rsa-sha256;
 	cv=none;
-	b=ShjO6Knp0BoBqxeuhb7Jf1Ix92hN+NTw0GTsf44aBRQzr3F1X+1Z4nikTdxgcweYTzzcvh
-	MArMmQsE5azX03kxJadxU4xgN0oJsD+JadJCJG8eTjZOB5qq4Y5REfT/H06U+0A1YvSNY5
-	QhqJONTo9EYRAucLOMHSgDcAtzi2lK8=
+	b=R3MT4Xp6MqtXeqg5RoOXEQDq2MLxH1tk/+S6i21kKBg4mDO4JhvEvi/mmaVk5LMoTcbNWh
+	7aApwv/l4qhZPsziZ+mUl8n3aFaDaf49YTTcci/zbXsyFvflDNyYSKPN6fYkeO6ofIA6Ab
+	Hr59UTRv0cyLUsWzluEBcyxQnrHvolU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760001549;
+	s=mimecast20190719; t=1760001633;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ym+DdkcmRG4wvpfz5ykb6s+kf1elRde6oG+aT4Hjw8w=;
-	b=PLpDn2TkF0qR74dNg4w+tzTok33vhEtBc+D3bSiW9sQjBSq2nG0GQ26usONRw12kME0ON+
-	gTDVvuONLHJCTHM4wpR2V1Pa/dDaRUh6omXllTfVh+RGleH61gG2iO8dB9eFiYFMqbz9k3
-	Wv+zvwT0kZIBRdyij2BAeKpqme3+Jg8=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=nig+QThvSoNq9uOJUVuoYK6Ng7PXDFkVUD8omncLNk0=;
+	b=gk842VPfyfIwF1lmQC6CnmosL9B2aSk/etE/AWfJEKKMU9sEYftpQgvAAe5rLvs7eD4xTT
+	THyEkMUQ2Cdh9b3ie+h5zJfzs4LHIpmuiq1ySj9FsFx0dnCyHHoNDv+bu+V+yu5Qy1nNxY
+	7CSdx5z1mWx6H2RUEQ8Ewuvi58mk6lI=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-523-Of3MlfCZNOGiIDFuAMUgSg-1; Thu, 09 Oct 2025 05:19:08 -0400
-X-MC-Unique: Of3MlfCZNOGiIDFuAMUgSg-1
-X-Mimecast-MFC-AGG-ID: Of3MlfCZNOGiIDFuAMUgSg_1760001547
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-46e44b9779eso3667635e9.1
-        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 02:19:08 -0700 (PDT)
+ us-mta-628-tSIubBtlOZOYAj30cxSxTA-1; Thu, 09 Oct 2025 05:20:31 -0400
+X-MC-Unique: tSIubBtlOZOYAj30cxSxTA-1
+X-Mimecast-MFC-AGG-ID: tSIubBtlOZOYAj30cxSxTA_1760001630
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-46e4cc8ed76so3708255e9.1
+        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 02:20:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760001547; x=1760606347;
+        d=1e100.net; s=20230601; t=1760001630; x=1760606430;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ym+DdkcmRG4wvpfz5ykb6s+kf1elRde6oG+aT4Hjw8w=;
-        b=b7o7obFqd5RRAU/cDDaCUv0ul/0Z8f9T9mnScLWRb7Z10J1x6/rIxFvlDWxWfQ0cNW
-         oAwnyK+hmhFOEo5GxTCZY+ZXPBcnsGr392yRZCO+fGxKwxek3AMlGUrKBsxQgQF0H7Ob
-         AChSfisQti9aeiME6nv1ymsaRsn0DqmxbvcbH2szoIs30gdKrzJQ1jlkj3ABjfeYXQYS
-         AIoNGMeykmGAVQMKDUcZEAsgdDtoOokzTPeye18e04rTLq3KMX5nnjWrjhqTLsgveb/V
-         8qsy5LIbA4INyAOrbm6xSL/hkgNLdT3QWpcjvDr8xsLkpxD3vrvuNeGtC2jMXxP8LYy5
-         VANw==
-X-Forwarded-Encrypted: i=1; AJvYcCXpQkiXOVEUaPjLwJuIZ9f5S0NiNAXXd8ONsc0hTaox3lGW3aQdpOnIZaJiT3flBmDu9jQT/RWSzw==@kvack.org
-X-Gm-Message-State: AOJu0YwBShO8WeE44E25nhscmvLvfcuHAt92vgKgSAha+8Vv3xDLekns
-	8kceRippvZptCMIdKtYJr4qNmZ94xUbDixBAs+o3mrZ/sZrYlzMoRMpZx3/ASN3r9QG34vRD6+U
-	p1mZK7X9a2bJvmlak7pgIJfidXqLwONnrw7GSGgUJW7ebBuMPUzMN
-X-Gm-Gg: ASbGncuEEw9mPHiN0Ede3pCHSsvpFF7TUfy+lc6srFqJxVXE8l0gN5hbuwY4bim+6ll
-	KTT+NZ9NOBlxJMX2MZu3dT25epbgQnpc99WFXFj6swu48LessdiHl6PmT4mycfih+JcvOvoQsaG
-	qbuscUKLKhNVdKRT7KIQlhwq8aQJduCYAeTc6XfNzSywF6xUAnjxiF+0ci8HAZJ/s643DbhPgrE
-	23B+vyXiPlBPp0jrixmFBrvmQk1Fphmr/GSKUANzqJG9W8DQ17B82b0RzPzT99jtJ8/bFTNrPTv
-	HcClbfwskzaIWWx+sZQOs2lOiZ40kmVwul4x6YzkBhoOFAI5Yq7NrwmAhUxBtjPpGWPAoELfsiQ
-	mowf/4TgC
-X-Received: by 2002:a05:600c:c4a3:b0:46e:1fc2:f9ac with SMTP id 5b1f17b1804b1-46fa9a98fc7mr50624105e9.10.1760001547015;
-        Thu, 09 Oct 2025 02:19:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFReIJdkF3acFZPAnWeL0i3BOZQC/foYxEC2R8ZxnsgKIO/Vq2BUJi9cBf7+x2XtZK2O/u2OA==
-X-Received: by 2002:a05:600c:c4a3:b0:46e:1fc2:f9ac with SMTP id 5b1f17b1804b1-46fa9a98fc7mr50623665e9.10.1760001546471;
-        Thu, 09 Oct 2025 02:19:06 -0700 (PDT)
+        bh=nig+QThvSoNq9uOJUVuoYK6Ng7PXDFkVUD8omncLNk0=;
+        b=O1mZDYzI/SBp3dvoA44FyaCCUZSh0+hjr6789shVBh7JoXvqvNy43zGEja4gIOi3Xi
+         YuUAg7WIB1ooWoW+soeC0zBWnfBJ0g226hyymCA6B7mt9N1kHrbmnHIrUbJ+WB6TyYNm
+         vbgVY5OnqIwDWjaCkbqyRbIEajix2vyVLKFzbT1Vy1HtEAiCM/5+nq4mMJNBWXyDMKKi
+         95VpBz9yh6Ic99/RDO/FLIeChv+397YDgfyH0I8k150zF8vw4rCDGS3RLX1KQj4u6m6q
+         7l3+PxII6MEIHiOIkxusVu1eEmK3cMC7qQRMpU5OB/a2jdj4T+Y7PqBelwU6j6i1DQRL
+         hRzw==
+X-Forwarded-Encrypted: i=1; AJvYcCW8k1MJ12S9YFtMRa1/lm/icl+xoDzrbUfDTsUVTEBpBUPdFJUiU+R5lFnVEtgQZf/uagyRBr985w==@kvack.org
+X-Gm-Message-State: AOJu0Yz+8EOV+5eC3kYZPiArEUH7Znd+ox+ZnC88XovBhLoK+T4l8K90
+	TT5+CwxCqeBnjgZCRNafXXpljRhnO5EbWh2VMt4Uhav4tMlV9gepOctqmz6+MEvowfppi0JbDep
+	B8w6fa9gEipouTtnfTgs2zWu/aV//jhe6KsCKu/Umz2tf+S1rvrxg
+X-Gm-Gg: ASbGncv/LtZwPlucEoC8rVT1EbGIKWk9Mny6EwCz9fkotlNB+I7qaEDmznv+/QmAAnx
+	FeEqGpHDL9oidDGAd7IFu+MJgRFQSwEAtGeTYBnIQjxz2XhXBQWCe4Thm9ocLFJMKbAj8zQlJ5m
+	Q6jmwQzi+fb/8MQNWj+JCzCbfZoUvUZtzsJwN+n+ir5DSmpMGYzz4/+VSxpWJWGrwnvOh5r8b+V
+	qAKKc92/dK5kaw6Oez8htyCbjQJ40UiZHK0AMUQ3D1AeH6Ep0R+8aYvCN6/gRcgfwyNEWa/yXUc
+	aX/gSbnV4t0a248y3k5VAuLQL0E0CSoEDAgfiVfZwyXowKsQlrpozJC73SD2lesAUuezZXao+nv
+	Zj/SAhOk2
+X-Received: by 2002:a05:600c:4ed4:b0:45d:f88f:9304 with SMTP id 5b1f17b1804b1-46fa9b0e7b3mr48455045e9.30.1760001630385;
+        Thu, 09 Oct 2025 02:20:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFH6dryW1Hp7SOcSF5pIq+EEl2O3Y7bdewmy6HJCehEpHpUM9rQ1drgsPXfQB4HV8Mtnkhnzg==
+X-Received: by 2002:a05:600c:4ed4:b0:45d:f88f:9304 with SMTP id 5b1f17b1804b1-46fa9b0e7b3mr48454685e9.30.1760001629923;
+        Thu, 09 Oct 2025 02:20:29 -0700 (PDT)
 Received: from [192.168.3.141] (tmo-083-189.customers.d1-online.com. [80.187.83.189])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8a6daasm34080730f8f.7.2025.10.09.02.19.03
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8ab8b0sm33676902f8f.18.2025.10.09.02.20.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Oct 2025 02:19:05 -0700 (PDT)
-Message-ID: <129379f6-18c7-4d10-8241-8c6c5596d6d5@redhat.com>
-Date: Thu, 9 Oct 2025 11:19:02 +0200
+        Thu, 09 Oct 2025 02:20:29 -0700 (PDT)
+Message-ID: <1db15a30-72d6-4045-8aa1-68bd8411b0ba@redhat.com>
+Date: Thu, 9 Oct 2025 11:20:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 mm-new 03/11] mm: thp: add support for BPF based THP
- order selection
-To: Yafang Shao <laoar.shao@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>, Alexei Starovoitov
- <alexei.starovoitov@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Andrew Morton <akpm@linux-foundation.org>, baolin.wang@linux.alibaba.com,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Liam Howlett <Liam.Howlett@oracle.com>, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, usamaarif642@gmail.com,
- gutierrez.asier@huawei-partners.com, Matthew Wilcox <willy@infradead.org>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Amery Hung <ameryhung@gmail.com>,
- David Rientjes <rientjes@google.com>, Jonathan Corbet <corbet@lwn.net>,
- 21cnbao@gmail.com, Shakeel Butt <shakeel.butt@linux.dev>,
- Tejun Heo <tj@kernel.org>, lance.yang@linux.dev,
- Randy Dunlap <rdunlap@infradead.org>, bpf <bpf@vger.kernel.org>,
- linux-mm <linux-mm@kvack.org>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>
-References: <20250930055826.9810-1-laoar.shao@gmail.com>
- <20250930055826.9810-4-laoar.shao@gmail.com>
- <CAADnVQJtrJZOCWZKH498GBA8M0mYVztApk54mOEejs8Wr3nSiw@mail.gmail.com>
- <27e002e3-b39f-40f9-b095-52da0fbd0fc7@redhat.com>
- <CALOAHbBFNNXHdzp1zNuD530r9ZjpQF__wGWyAdR7oDLvemYSMw@mail.gmail.com>
- <7723a2c7-3750-44f7-9eb5-4ef64b64fbb8@redhat.com>
- <CALOAHbD_tRSyx1LXKfFrUriH6BcRS6Hw9N1=KddCJpgXH8vZug@mail.gmail.com>
- <96AE1C18-3833-4EB8-9145-202517331DF5@nvidia.com>
- <f743cfcd-2467-42c5-9a3c-3dceb6ff7aa8@redhat.com>
- <CALOAHbAY9sjG-M=nwWRdbp3_m2cx_YJCb7DToaXn-kHNV+A5Zg@mail.gmail.com>
+Subject: Re: (bisected) [PATCH v2 08/37] mm/hugetlb: check for unreasonable
+ folio sizes when registering hstate
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ linux-kernel@vger.kernel.org
+Cc: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Alexander Potapenko <glider@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
+ Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ iommu@lists.linux.dev, io-uring@vger.kernel.org,
+ Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
+ Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
+ kasan-dev@googlegroups.com, kvm@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
+ linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, Marco Elver <elver@google.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
+ Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+ virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
+ wireguard@lists.zx2c4.com, x86@kernel.org,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <20250901150359.867252-1-david@redhat.com>
+ <20250901150359.867252-9-david@redhat.com>
+ <3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu>
+ <d3fc12d4-0b59-4b1f-bb5c-13189a01e13d@redhat.com>
+ <faf62f20-8844-42a0-a7a7-846d8ead0622@csgroup.eu>
+ <9361c75a-ab37-4d7f-8680-9833430d93d4@redhat.com>
+ <03671aa8-4276-4707-9c75-83c96968cbb2@csgroup.eu>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -177,21 +184,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CALOAHbAY9sjG-M=nwWRdbp3_m2cx_YJCb7DToaXn-kHNV+A5Zg@mail.gmail.com>
+In-Reply-To: <03671aa8-4276-4707-9c75-83c96968cbb2@csgroup.eu>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: -ur1poZkSca5FTCaDHv8uuDt5zDogTnlMycZN_g6JHY_1760001547
+X-Mimecast-MFC-PROC-ID: -WqpqRVRM3Uk8Rvqrh3h-EMBx9VDZKU2etGAls6dd-0_1760001630
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 43CDC180005
-X-Stat-Signature: i8f9tcn1c6agun8o83bh9z9gxbto7fbu
+X-Rspamd-Queue-Id: 228641C0012
+X-Stat-Signature: wn8qitmbxkahza7tkihpmeyzxdo5aoia
 X-Rspam-User: 
-X-HE-Tag: 1760001550-777848
-X-HE-Meta: U2FsdGVkX1+sWpj4LhwOn4/GVostbw2u04O096G3NvgqXrMKulyuz9O4Ow9KvPUvWiiD4ME4UtepoFIkRou3YvRYxoaKRYOM5+BFMI8svhNOrM0mFVMSSbVw8J5+KRsFKb9vykIRWgHrlE9igzAqAhOWFj6wjZ/O15mqrISzhzLZY5Y/lVNfNNYAop2f2t/hJKjZR6Nu0oRFoUK+rMIfUi/SWyPU/zYct5OAvWPLotIg08SsW4buOVzGg+HSTmmlCgKQcEUkpyS8PCp21/DRGOIAi/W66AUNUoPNjbHzETJZUbYF/+cQ/bDSYpD+aviUGYAUu51nlhnFlzHlywYh/795U7f0EBFJiCmzXcH9rNw0c/ynLbkL57qf78V8WkBrfXoKAJESY5+hBLmUD2A5gIo6n7qo4Vqlhoeqf5VUTao+KMOyRxvHJv9+UDa62i1DtaJJGwShaN8AMFiztTap9GrzveEL1oheNPG5F6W0UAX9QUtRB8hszJ/YfuJC1E9LYvZq4TZ8JK3bgAq8H2ynaitx03C6krToupB7qp+rukP7WNLHV2it2QRhKqBSKfbacNlbSFsr5CUSxhqBvCp0at5gJNsyKT+QLawTMjlPmS8o0glMr94OKPV8hGdDaK6aQ2eUrfvLqRh3LjNwFx4r/Yn+/uPAaVucY1v4W7IFhV1tc+EcmJvXc2mHPGIYQM2AL5Le4p8wcj0xUA6HpDbi9gjkgSoxollt6WfDqFBR3rLLrTHrjQ7DHNX9psvEnbWWJ6r5iXr8ZpMhngnWfb1JV6jWSWKz81Dkr2Aut+mHObXpXpvHbW5Xyuu6OU4XmsA2mlUlMJihiSu3xV0oe6uPK/d+P6sWEOFmDLiTICNA1XSKuXA7/1XF/rApAzFdzGEscVQWGtKtQdrGtJUmCXHP9PGQDJmoXw7wfBjdazoX5RiTbARBvbMWzaBw8deANw/r5EV7e9C647hctTgKnYo
- aH8yLCH9
- IlglhodzPjBd6Xqk8o7t036f6aOWf2B6QANw6REegVVTBjdNdqX0ZxAEkwAkdQtoIDepMQiuj11PM7BzIK/pJZq8SeYRtIZ1RKzfjAyxIrtwqTRO9Jtl5oK8R5FXsr7ECgOUDs58VnpbL6N6I9FaHNpTcdg7vur3qf3dWoeSSV7TK71nDTfKzczFNisANPDr1EFSKjOux8PZCVTs=
+X-HE-Tag: 1760001634-781446
+X-HE-Meta: U2FsdGVkX1+rv5As1kZfNHHbYn/Q2hg00vk0lFS9XnAaGvVYKwQr0ozzl/UXQrsK/cINVQK+mVft0QgbaJR+lCJHPmiASkDz+TEDIKpFcz614cBFObBgSuB5IrMm2qBiYCnknB/MGW/Xty5cosbCBZ1h/wcO6JoIyGobHMrNjvBNCN15kUNk5eZvpIN4orWZC7q0oAkJR72wOJetLb12TH2RG0EOzoDNeS7SLPvy0jFgbdzCB/t9cdl8S5nKed6cptKdmV/5AcCQX0v8A0+MaWTHYLUDcgcIpDagDqxdTqaGDYULXVb6AXWMu2QDSoUKTUnQwxVwAKPpTocSEPbnJMHhCyV5dHT3Ne+m5PAEIEyx0oK5Qi5syq8kj5sILbKtqhC68oFseIPvTNoRMUOXHq+SxuE/U2BNpSVDTxxR32Ukqq4oaKBHhIZRKiXr2m3GH5PN91Pl5I86scrak7Vtp7shZuKzntZL5b1WYgH0tVaI0CAq+wJJ1ROKmdiSzTN+olxcyc+ddiNeLCj8ElxAhUaIosU/rKN3pNoJgojLxW253WIX9Ylm9mkm/bx+3c9KRambfLfPNvNLcqN+KogSzcBl1oPTZ1/DsJl+UqJ4kxNT+GjNKfR8r804HFrj6TYAMAGlYtWBmmCQZG76l3jGuSUWRqG/1s8dy8Edvb5fZ0NhTOKu8hEiIYgHrsaoOVLB28/RR076vlLHJW7ljBsQYPMZKyEBDz85w+Koxk+HAZn4Km+F4nm0vu4dz+8ZKoYM1sm2m7J6zjq4iDVu12vRHejRmJeziwmh7yz2Fbl5TETSYgeobFDL5ilnmhGiu5x9pTtILTZK+Dj2U2umKKbUuKf0XV8QKw8QsIjLyB2ZNYkX/wEBhCD9Ngjtl4QtOLl+nmL7VUvt/ZgYjtLbqYWA8gIaoXJpd2/5ifg0tu/IjCPpamcBgT3ymbZ/29+kWStDzabUNadeChg63pArUvM
+ L0bDx6tN
+ TbKPfS7ZbW4DWFNQdNAOHJkD+DuApWCfvvKoyXgTWq+9Rrv0DZ09paP1NRpUQweSzvaQueeLyVhcSBzA6teoO0hg6tPDXvbRqxF1Bnb72hVmIRDRkqudd4BXPibT/RaeDRwRwCIvE90OGrl3e7TcNjQa9YIgDTqjQndkAdOb7oITk+ciWUnyL6iZ7L8rJ1Cc/88hRjzz8XhT6qchNMrc6aEzUmVKWEWAoTP/WieOwAPyzubl6M63yt1mRY9LSFnOc+kMqZQcVHoSOG12zd1iN/zZD0Pbb07v8MExs5pH2d3hHU8Sbzr9Xk/Nu/2RFRw12ilXaBly5nDMVJoScjLfvOIFkiTrTq3PsO8D+1B+L3l5nlh8bMzOrApLsTiv+VkQLSHXWBX6deT8QiJsWYa4JdIV74ehRw49611wWI9+KNPokghFguxvCq3/8tTy6LvvEl6HEttwS8oAlbt5CN8/9S5eH6D1JwT/kYy+DJo2fqKn+rtWfTa0d+oEVncgJWGv/vHwIYlDKHAjtuDpjVjc954ibOScW+QpuACOo
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -200,150 +207,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08.10.25 15:11, Yafang Shao wrote:
-> On Wed, Oct 8, 2025 at 8:07 PM David Hildenbrand <david@redhat.com> wrote:
->>
->> On 08.10.25 13:27, Zi Yan wrote:
->>> On 8 Oct 2025, at 5:04, Yafang Shao wrote:
->>>
->>>> On Wed, Oct 8, 2025 at 4:28 PM David Hildenbrand <david@redhat.com> wrote:
->>>>>
->>>>> On 08.10.25 10:18, Yafang Shao wrote:
->>>>>> On Wed, Oct 8, 2025 at 4:08 PM David Hildenbrand <david@redhat.com> wrote:
->>>>>>>
->>>>>>> On 03.10.25 04:18, Alexei Starovoitov wrote:
->>>>>>>> On Mon, Sep 29, 2025 at 10:59 PM Yafang Shao <laoar.shao@gmail.com> wrote:
->>>>>>>>>
->>>>>>>>> +unsigned long bpf_hook_thp_get_orders(struct vm_area_struct *vma,
->>>>>>>>> +                                     enum tva_type type,
->>>>>>>>> +                                     unsigned long orders)
->>>>>>>>> +{
->>>>>>>>> +       thp_order_fn_t *bpf_hook_thp_get_order;
->>>>>>>>> +       int bpf_order;
->>>>>>>>> +
->>>>>>>>> +       /* No BPF program is attached */
->>>>>>>>> +       if (!test_bit(TRANSPARENT_HUGEPAGE_BPF_ATTACHED,
->>>>>>>>> +                     &transparent_hugepage_flags))
->>>>>>>>> +               return orders;
->>>>>>>>> +
->>>>>>>>> +       rcu_read_lock();
->>>>>>>>> +       bpf_hook_thp_get_order = rcu_dereference(bpf_thp.thp_get_order);
->>>>>>>>> +       if (WARN_ON_ONCE(!bpf_hook_thp_get_order))
->>>>>>>>> +               goto out;
->>>>>>>>> +
->>>>>>>>> +       bpf_order = bpf_hook_thp_get_order(vma, type, orders);
->>>>>>>>> +       orders &= BIT(bpf_order);
->>>>>>>>> +
->>>>>>>>> +out:
->>>>>>>>> +       rcu_read_unlock();
->>>>>>>>> +       return orders;
->>>>>>>>> +}
->>>>>>>>
->>>>>>>> I thought I explained it earlier.
->>>>>>>> Nack to a single global prog approach.
->>>>>>>
->>>>>>> I agree. We should have the option to either specify a policy globally,
->>>>>>> or more refined for cgroups/processes.
->>>>>>>
->>>>>>> It's an interesting question if a program would ever want to ship its
->>>>>>> own policy: I can see use cases for that.
->>>>>>>
->>>>>>> So I agree that we should make it more flexible right from the start.
->>>>>>
->>>>>> To achieve per-process granularity, the struct-ops must be embedded
->>>>>> within the mm_struct as follows:
->>>>>>
->>>>>> +#ifdef CONFIG_BPF_MM
->>>>>> +struct bpf_mm_ops {
->>>>>> +#ifdef CONFIG_BPF_THP
->>>>>> +       struct bpf_thp_ops bpf_thp;
->>>>>> +#endif
->>>>>> +};
->>>>>> +#endif
->>>>>> +
->>>>>>     /*
->>>>>>      * Opaque type representing current mm_struct flag state. Must be accessed via
->>>>>>      * mm_flags_xxx() helper functions.
->>>>>> @@ -1268,6 +1281,10 @@ struct mm_struct {
->>>>>>     #ifdef CONFIG_MM_ID
->>>>>>                    mm_id_t mm_id;
->>>>>>     #endif /* CONFIG_MM_ID */
->>>>>> +
->>>>>> +#ifdef CONFIG_BPF_MM
->>>>>> +               struct bpf_mm_ops bpf_mm;
->>>>>> +#endif
->>>>>>            } __randomize_layout;
->>>>>>
->>>>>> We should be aware that this will involve extensive changes in mm/.
->>>>>
->>>>> That's what we do on linux-mm :)
->>>>>
->>>>> It would be great to use Alexei's feedback/experience to come up with
->>>>> something that is flexible for various use cases.
->>>>
->>>> I'm still not entirely convinced that allowing individual processes or
->>>> cgroups to run independent progs is a valid use case. However, since
->>>> we have a consensus that this is the right direction, I will proceed
->>>> with this approach.
->>>>
->>>>>
->>>>> So I think this is likely the right direction.
->>>>>
->>>>> It would be great to evaluate which scenarios we could unlock with this
->>>>> (global vs. per-process vs. per-cgroup) approach, and how
->>>>> extensive/involved the changes will be.
->>>>
->>>> 1. Global Approach
->>>>      - Pros:
->>>>        Simple;
->>>>        Can manage different THP policies for different cgroups or processes.
->>>>     - Cons:
->>>>        Does not allow individual processes to run their own BPF programs.
->>>>
->>>> 2. Per-Process Approach
->>>>       - Pros:
->>>>         Enables each process to run its own BPF program.
->>>>       - Cons:
->>>>         Introduces significant complexity, as it requires handling the
->>>> BPF program's lifecycle (creation, destruction, inheritance) within
->>>> every mm_struct.
->>>>
->>>> 3. Per-Cgroup Approach
->>>>       - Pros:
->>>>          Allows individual cgroups to run their own BPF programs.
->>>>          Less complex than the per-process model, as it can leverage the
->>>> existing cgroup operations structure.
->>>>       - Cons:
->>>>          Creates a dependency on the cgroup subsystem.
->>>>          might not be easy to control at the per-process level.
->>>
->>> Another issue is that how and who to deal with hierarchical cgroup, where one
->>> cgroup is a parent of another. Should bpf program to do that or mm code
->>> to do that? I remember hierarchical cgroup is the main reason THP control
->>> at cgroup level is rejected. If we do per-cgroup bpf control, wouldn't we
->>> get the same rejection from cgroup folks?
->>
->> Valid point.
->>
->> I do wonder if that problem was already encountered elsewhere with bpf
->> and if there is already a solution.
+On 09.10.25 11:16, Christophe Leroy wrote:
 > 
-> Our standard is to run only one instance of a BPF program type
-> system-wide to avoid conflicts. For example, we can't have both
-> systemd and a container runtime running bpf-thp simultaneously.
-
-Right, it's a good question how to combine policies, or "who wins".
-
 > 
-> Perhaps Alexei can enlighten us, though we'd need to read between his
-> characteristically brief lines. ;-)
+> Le 09/10/2025 à 10:14, David Hildenbrand a écrit :
+>> On 09.10.25 10:04, Christophe Leroy wrote:
+>>>
+>>>
+>>> Le 09/10/2025 à 09:22, David Hildenbrand a écrit :
+>>>> On 09.10.25 09:14, Christophe Leroy wrote:
+>>>>> Hi David,
+>>>>>
+>>>>> Le 01/09/2025 à 17:03, David Hildenbrand a écrit :
+>>>>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>>>>>> index 1e777cc51ad04..d3542e92a712e 100644
+>>>>>> --- a/mm/hugetlb.c
+>>>>>> +++ b/mm/hugetlb.c
+>>>>>> @@ -4657,6 +4657,7 @@ static int __init hugetlb_init(void)
+>>>>>>          BUILD_BUG_ON(sizeof_field(struct page, private) *
+>>>>>> BITS_PER_BYTE <
+>>>>>>                  __NR_HPAGEFLAGS);
+>>>>>> +    BUILD_BUG_ON_INVALID(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
+>>>>>>          if (!hugepages_supported()) {
+>>>>>>              if (hugetlb_max_hstate || default_hstate_max_huge_pages)
+>>>>>> @@ -4740,6 +4741,7 @@ void __init hugetlb_add_hstate(unsigned int
+>>>>>> order)
+>>>>>>          }
+>>>>>>          BUG_ON(hugetlb_max_hstate >= HUGE_MAX_HSTATE);
+>>>>>>          BUG_ON(order < order_base_2(__NR_USED_SUBPAGE));
+>>>>>> +    WARN_ON(order > MAX_FOLIO_ORDER);
+>>>>>>          h = &hstates[hugetlb_max_hstate++];
+>>>>>>          __mutex_init(&h->resize_lock, "resize mutex", &h->resize_key);
+>>>>>>          h->order = order;
+>>>>
+>>>> We end up registering hugetlb folios that are bigger than
+>>>> MAX_FOLIO_ORDER. So we have to figure out how a config can trigger that
+>>>> (and if we have to support that).
+>>>>
+>>>
+>>> MAX_FOLIO_ORDER is defined as:
+>>>
+>>> #ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
+>>> #define MAX_FOLIO_ORDER        PUD_ORDER
+>>> #else
+>>> #define MAX_FOLIO_ORDER        MAX_PAGE_ORDER
+>>> #endif
+>>>
+>>> MAX_PAGE_ORDER is the limit for dynamic creation of hugepages via
+>>> /sys/kernel/mm/hugepages/ but bigger pages can be created at boottime
+>>> with kernel boot parameters without CONFIG_ARCH_HAS_GIGANTIC_PAGE:
+>>>
+>>>      hugepagesz=64m hugepages=1 hugepagesz=256m hugepages=1
+>>>
+>>> Gives:
+>>>
+>>> HugeTLB: registered 1.00 GiB page size, pre-allocated 0 pages
+>>> HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
+>>> HugeTLB: registered 64.0 MiB page size, pre-allocated 1 pages
+>>> HugeTLB: 0 KiB vmemmap can be freed for a 64.0 MiB page
+>>> HugeTLB: registered 256 MiB page size, pre-allocated 1 pages
+>>> HugeTLB: 0 KiB vmemmap can be freed for a 256 MiB page
+>>> HugeTLB: registered 4.00 MiB page size, pre-allocated 0 pages
+>>> HugeTLB: 0 KiB vmemmap can be freed for a 4.00 MiB page
+>>> HugeTLB: registered 16.0 MiB page size, pre-allocated 0 pages
+>>> HugeTLB: 0 KiB vmemmap can be freed for a 16.0 MiB page
+>>
+>> I think it's a violation of CONFIG_ARCH_HAS_GIGANTIC_PAGE. The existing
+>> folio_dump() code would not handle it correctly as well.
+> 
+> I'm trying to dig into history and when looking at commit 4eb0716e868e
+> ("hugetlb: allow to free gigantic pages regardless of the
+> configuration") I understand that CONFIG_ARCH_HAS_GIGANTIC_PAGE is
+> needed to be able to allocate gigantic pages at runtime. It is not
+> needed to reserve gigantic pages at boottime.
+> 
+> What am I missing ?
 
-There might be some insights to be had in the bpf OOM discussion at
+That CONFIG_ARCH_HAS_GIGANTIC_PAGE has nothing runtime-specific in its name.
 
-https://lkml.kernel.org/r/CAEf4BzafXv-PstSAP6krers=S74ri1+zTB4Y2oT6f+33yznqsA@mail.gmail.com
-
-I didn't completely read through that, but that discussion also seems to 
-be about interaction between cgroups and bpd programs.
+Can't we just select CONFIG_ARCH_HAS_GIGANTIC_PAGE for the relevant 
+hugetlb config that allows for *gigantic pages*.
 
 -- 
 Cheers
