@@ -4,126 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC172CCD185
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 12:08:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD88CCCD185
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 12:14:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E8798E0091; Thu,  9 Oct 2025 08:08:13 -0400 (EDT)
+	id 1B5428E0092; Thu,  9 Oct 2025 08:14:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 098A68E0002; Thu,  9 Oct 2025 08:08:13 -0400 (EDT)
+	id 18C278E0002; Thu,  9 Oct 2025 08:14:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA28D8E0091; Thu,  9 Oct 2025 08:08:12 -0400 (EDT)
+	id 0C9538E0092; Thu,  9 Oct 2025 08:14:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D40C28E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 08:08:12 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 78F004655A
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 12:08:12 +0000 (UTC)
-X-FDA: 83978452824.15.8BADFA4
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 20502C000C
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 12:08:09 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu
+	by kanga.kvack.org (Postfix) with ESMTP id F04C38E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 08:14:16 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 94A385B94E
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 12:14:16 +0000 (UTC)
+X-FDA: 83978468112.24.E593627
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 7506B40012
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 12:14:14 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=g4nK0Y7p;
+	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760011690;
+	s=arc-20220608; t=1760012054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Mc1TIPZmtb3tKLWmvtpCO9BID0gxh7mz4dL5hPgt17w=;
-	b=zA/Hsf/eG7CPizw1G5iTS7QETmCuEk9PDi1jn2CL3goQriPf7YtDPB6x16v4kgKp+R9TNx
-	GKwSoEBb2/NULhf0FRqFWFTePXsv4Ecm+NLpUhN2/IwSOFhHIqm5xaaWWdoLZbpZK/Cg4I
-	5/7DFVEcFyLVXB/783yCAxqRGlueI2c=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4CUMZSpWPXzOS4pPPjCA/cHJPYX+kTpvk7j8DvEy4eQ=;
+	b=d8Qyip58L7GQB/fmGRicT7JfaGUQwED6njyEYSl+qreXXVrkyB+SvdgE54j+8BlsL2O6Np
+	DqeKA13Fz/h04dWLWOvJtEuPKqIKInz1bzKLtiTQNqJIYytn/7h/blaJJQDe7gBS5dZk07
+	d69VikHY7Vo/QP8WDSg0gzFlMM2h6lE=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760011690; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=g4nK0Y7p;
+	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760012054; a=rsa-sha256;
 	cv=none;
-	b=nup+SGv5Mz741zVMzIv+YiiJW2LfICNVcUJN2Qkgg+dOej33E9YGtRA0TYW0D31PSlvQGW
-	utUbAXc+yen/4RCpbIvdHikMTQoq8ytaC+uh2BR6qXFti2N9ZEzZOFfgOpGsEqBa6sXoAn
-	VDdAqNWmQCZcHc7ST87KpwVdq4+n/M8=
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cj7tc3BBqz9sSy;
-	Thu,  9 Oct 2025 14:08:08 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id t-GI2jPxTJia; Thu,  9 Oct 2025 14:08:08 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cj7tc1MWCz9sSv;
-	Thu,  9 Oct 2025 14:08:08 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 08F7B8B76C;
-	Thu,  9 Oct 2025 14:08:08 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id dX5DSkuE_w6O; Thu,  9 Oct 2025 14:08:07 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id BC52E8B767;
-	Thu,  9 Oct 2025 14:08:05 +0200 (CEST)
-Message-ID: <4632e721-0ac8-4d72-a8ed-e6c928eee94d@csgroup.eu>
-Date: Thu, 9 Oct 2025 14:08:05 +0200
+	b=wk61vKaJEAsrX0VQ1DhvK/WB74LPx7Vwi/v140NEQVPas4X2Ojx5Jb3AohDjMCc8UYm3W4
+	WrxGsv3tHcbX9dKVk32/+zFcJ6TKLgAcAb8M76RyWEjQv/tebCSAbbOrG4dX/bSihRN7PD
+	9ts2dHM8mEwrZrtEj/exMDDyPJJpctc=
+X-Forwarded-Encrypted: i=1; AJvYcCXbqLR9HebcwAfDpbxJThwHt+3GWL7rlaLCjyQLdk0wioEWhZWI4L7KnXxy6RAfP/nYRkNVbwHXpw==@kvack.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760012052;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4CUMZSpWPXzOS4pPPjCA/cHJPYX+kTpvk7j8DvEy4eQ=;
+	b=g4nK0Y7pSGChx42lsav5po4dImPgYgEdEMPK6q9mlZDc9BuifL4yRB2q3UwS6aitsG/1af
+	gaC2cRej4Jn7KODT5daf1FS5W6eZLIfrFEuN87WiqpYQ/dLfcwi8KlquZzS7Y2LFNW0Bbl
+	t05JoN959EvaBlXX0xNBh33T2wKXLuY=
+X-Gm-Message-State: AOJu0YxeuFwmXEg5/LgvqZa8c5Ij7N4vVVb1kqPE3fuOWxv24jYZONQW
+	r1rXocbImxY6M31t5Oyfl7DFlJlnkE3V2MmR3px84ZAclZu4qe/CK2JiAaIHEVFxlMZ6BNuBKCM
+	NZ4JqQl+V5KQBO/QcOSwEgc0GjnKbnwQ=
+X-Google-Smtp-Source: AGHT+IFyFmFwcV7VuN+oua1WO4Y4b9JOuSOx0GHrGSeP3Vz0UaQD1TeBB9STI2EBt42s1mOhK1VYbR5qXSf4vqmGaTU=
+X-Received: by 2002:a05:6214:d6b:b0:820:a83:ead4 with SMTP id
+ 6a1803df08f44-87b20fede09mr87452386d6.1.1760012050318; Thu, 09 Oct 2025
+ 05:14:10 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: (bisected) [PATCH v2 08/37] mm/hugetlb: check for unreasonable
- folio sizes when registering hstate
-To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-Cc: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Alexander Potapenko <glider@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
- Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
- dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- iommu@lists.linux.dev, io-uring@vger.kernel.org,
- Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
- Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
- kasan-dev@googlegroups.com, kvm@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
- linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
- linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, Marco Elver <elver@google.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
- Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
- virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
- wireguard@lists.zx2c4.com, x86@kernel.org,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <20250901150359.867252-1-david@redhat.com>
- <20250901150359.867252-9-david@redhat.com>
- <3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu>
- <d3fc12d4-0b59-4b1f-bb5c-13189a01e13d@redhat.com>
- <faf62f20-8844-42a0-a7a7-846d8ead0622@csgroup.eu>
- <9361c75a-ab37-4d7f-8680-9833430d93d4@redhat.com>
- <03671aa8-4276-4707-9c75-83c96968cbb2@csgroup.eu>
- <1db15a30-72d6-4045-8aa1-68bd8411b0ba@redhat.com>
- <0c730c52-97ee-43ea-9697-ac11d2880ab7@csgroup.eu>
- <543e9440-8ee0-4d9e-9b05-0107032d665b@redhat.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <543e9440-8ee0-4d9e-9b05-0107032d665b@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20251009070045.2011920-1-xialonglong2025@163.com> <20251009070045.2011920-2-xialonglong2025@163.com>
+In-Reply-To: <20251009070045.2011920-2-xialonglong2025@163.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+Date: Thu, 9 Oct 2025 20:13:33 +0800
+X-Gmail-Original-Message-ID: <CABzRoyYfx0QPgGG4WYEYmT8-J10ToRCUStd3tWC0CtT_D8ctiQ@mail.gmail.com>
+X-Gm-Features: AS18NWBIS184i6Kf0xw-Zy5px1Iv8SQwsppEhVOgel2w0XXUt5odRjDwHcgQWGE
+Message-ID: <CABzRoyYfx0QPgGG4WYEYmT8-J10ToRCUStd3tWC0CtT_D8ctiQ@mail.gmail.com>
+Subject: Re: [PATCH RFC 1/1] mm/ksm: Add recovery mechanism for memory failures
+To: Longlong Xia <xialonglong2025@163.com>
+Cc: linmiaohe@huawei.com, nao.horiguchi@gmail.com, akpm@linux-foundation.org, 
+	david@redhat.com, wangkefeng.wang@huawei.com, xu.xin16@zte.com.cn, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Longlong Xia <xialonglong@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7506B40012
+X-Stat-Signature: yp35tnc71rdqbf4fz9azfgdkzqtmes8u
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 20502C000C
-X-Rspamd-Server: rspam03
-X-Stat-Signature: j114hdfddq4emjqrajb7xfcb1z4yrm8u
-X-HE-Tag: 1760011689-421179
-X-HE-Meta: U2FsdGVkX191ZrrVP6WL99/OCvXaOJEiXyRhgy2QCB/D7G8spXUR37ZRyaWyBGEVnO9JQ73A5uw9t32vR+OuV2J1h5b6DgXC4xU0Jcc4Kc3YG/PLB44Q5WnjGd/FdYcs6Bxm+TTWBwBb3xCWJj5ieg6UVnTpaJL9E8zp9kVpKly45QNtthuZutrfm8YLPVK1fAufzwcbKKfiOeW0cKG4wLCiNNq+UckEpAEk65xDhhEH8RmCg8GLqCCT6tQNr83KscZBg5MsbcDXMU8R80Acwgm7HbS6RdbkRP44VlIuB43s7B+vRrWUFKlCaFxt8k5KcNjyqe6VJ6MX+TEvDfPWZkj9Sq10GV//Dx5BzuYFAgCKeOiKgz3h8CLN1yS2sgOHK/VH+Ys1V2FYhNWctu3NyUk1GriNtuVE5JSqQgaYWjQcLEtQ6V95d/ORYAdzRFbyfySMRfoubqnRFGG+tRtcabw64yJ63mo98+f5nDcCC2navORYYNNHv9wkWTHxABdqZ2ypzuzdeqFZb20iZYySr2pPVzoFrBgFfb69a9QiZjMi9N91PpYja740UnbAZUx8TkJzpRCfktUOjYQ8hXFbbnN24nRToNDRUPUgOES2IlsSvcvs/0oFQxRngT3T0KKyULp/zQBXeeJL1++d+VPAV8dQ9UIu+v4Mh+g1olGoNWl1t02xueQXB/uKX1fXVAPu8HODzk8KVrdzenxuleoFJjj4GSLeNB2+S1Zgw4A65bhKM9czk4IuipBD5nmN4cAMRRamOv5ZYAT45xcrFKZNw5goxodqVj+E9fh9vE/Yv1u8csa9WhnCUOqtAmVDSu+uYwWAFuCq6+FR1EWIcwRXO2s44gV6b9G0YZacakIzm0k1cXDmO4Z+CU8jFN+C+0Chd7BYWgDBy9bC4p6V8JM8D/7LNK/lOC+d8E+Sgvt8zrieXf+FlQwDgMNZyX9U3Bd0M/yFamjs476kGNE72yL
- j2MxvBek
- ftYQQWdF2i+ioBhZoE0oDEi1MywLIlEU1cVF4LF153beKdW0LlrPuTfs6EmRSr85ORIcL0UshZ35iPtAH6HYOOWifNOwarztjzYUJ+yXKZvztsQ4m5A3J656pN0mAHb6pzxXQEocpMzojvsfwNNvcMjorfyh4+xD1aKppTNM7YUrb+yHL9oWb2sDWBqxaJzNIk9T4Waywu5KtvxVdqjUtqsboQZCG6ry8x3yNV1rskmg8ghzYIgJTZoYjjnfMhBdsqU9JT2cSm8paObQCHbryF60SVNHwebyQRQYn
+X-HE-Tag: 1760012054-699714
+X-HE-Meta: U2FsdGVkX19VRRCpThtkhh2LBtQNBSX9R2oxeWRrDaY2a5oOLsWxT+UElcz+iDP7y7C6q6BXlakrTE5jg+UGVi2olwkD3LBhlMoLMFD7kyux0AwGTS0Sv54VYbK95b2asHM2pNigDTpcMLz5ROl9N9Vm0rU2rXc4rqJx9Mzo4F46lrLbthbjYIV4yu0UUQkLqbMcOymfZEQEb6oBD+65HyfTeVyDvhjqhARHjO9M1EndXJgHDqRLvbeme+PXgZTBerjwHu6sFFcchdBOdbJzvHMX3nloOLFi2Ti/tCzZSQiTQ/+HXPsnQOPQaUw6mdtInvtEnGf1nGaM+3WOYEXn5gaxKRCHNnTen4IDUGUTJlVNdh78UMRIc2TDsK8tzQqEXIxi9VVJ7Kq2f1ARApWaHQHymTut+1hKC1iS0e7lKIegC9ts0WdakCD4P2Bv2+wfvTxqaQFsM9qyyKjPxUNHL6/HppwjFTB0Lu1aGFaqCNaeCfX4G+5a+jvXKzjn7abPLOV+9i21PMXCWVV9ROuOr3thepHhUT85KM76C/J3KKomtbB3/jqbqmTubePyGlRRyzznhUHsU89h5gQ04I7mziEdfVNoWzqV2+fmRMHDusjpyasLu9+PKZfjTGiMmBMtKS09b+hSX75D2waRw7gv2n++sU3bcX1vKdBZfz3OiXQhfv+Kr7c5/NhQNqPuMKmYnWvUmGE7goOGKUjsyTdOqWh+SgJy6IgCasGJyWiFXp01IKArKFtoAoXpSrp703Y9452EMOVrsaE+jp/+zhGeY7YpxiAxFgNofclrMYnKHAYQCSHoumXN0f8S70jCbFEkdOeLbD78z6/FxycyVNGJNNOdU9TSmBs0O6EX9dT0oQBv3nebfre206iA5n/XDriWTO8SJiO+mlyu/9JSNYTrP2wiwAHDFBcbuNU3zaB0seza0xIeZ1HzkElxqs8iMasrfAgXNye3ML5tG8pyU43
+ KVBmXpOp
+ spaszV0JGMR4ePx7lds2pzKpW/8lH0Ahz2+NzqdkTEvEjiPbNbCIknDcY9hxLSiHxIk7bhH/LLC8ibLj30I7BezfYwIURaE06Zyyi8vXA9lS0R8b2oXw5TT8fW/xE0O95lFZFuq+lWpkotGzts2kWzv1LCqEALKMAAqxNEtJ+vUEAnTOZHCQDLfllz443MwiP4u9yXfcpCtQ5NMIhI4lHoAGehtowsZforcJFsqwBHrgYLRfg1QR4wlkCJtJCrqYKDIPRKlAYXs45ZVs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,236 +101,265 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Oct 9, 2025 at 3:56=E2=80=AFPM Longlong Xia <xialonglong2025@163.co=
+m> wrote:
+>
+> From: Longlong Xia <xialonglong@kylinos.cn>
+>
+> When a hardware memory error occurs on a KSM page, the current
+> behavior is to kill all processes mapping that page. This can
+> be overly aggressive when KSM has multiple duplicate pages in
+> a chain where other duplicates are still healthy.
+>
+> This patch introduces a recovery mechanism that attempts to migrate
+> mappings from the failing KSM page to another healthy KSM page within
+> the same chain before resorting to killing processes.
 
+Interesting, thanks for the patch! One question below.
 
-Le 09/10/2025 à 12:27, David Hildenbrand a écrit :
-> On 09.10.25 12:01, Christophe Leroy wrote:
->>
->>
->> Le 09/10/2025 à 11:20, David Hildenbrand a écrit :
->>> On 09.10.25 11:16, Christophe Leroy wrote:
->>>>
->>>>
->>>> Le 09/10/2025 à 10:14, David Hildenbrand a écrit :
->>>>> On 09.10.25 10:04, Christophe Leroy wrote:
->>>>>>
->>>>>>
->>>>>> Le 09/10/2025 à 09:22, David Hildenbrand a écrit :
->>>>>>> On 09.10.25 09:14, Christophe Leroy wrote:
->>>>>>>> Hi David,
->>>>>>>>
->>>>>>>> Le 01/09/2025 à 17:03, David Hildenbrand a écrit :
->>>>>>>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->>>>>>>>> index 1e777cc51ad04..d3542e92a712e 100644
->>>>>>>>> --- a/mm/hugetlb.c
->>>>>>>>> +++ b/mm/hugetlb.c
->>>>>>>>> @@ -4657,6 +4657,7 @@ static int __init hugetlb_init(void)
->>>>>>>>>           BUILD_BUG_ON(sizeof_field(struct page, private) *
->>>>>>>>> BITS_PER_BYTE <
->>>>>>>>>                   __NR_HPAGEFLAGS);
->>>>>>>>> +    BUILD_BUG_ON_INVALID(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
->>>>>>>>>           if (!hugepages_supported()) {
->>>>>>>>>               if (hugetlb_max_hstate ||
->>>>>>>>> default_hstate_max_huge_pages)
->>>>>>>>> @@ -4740,6 +4741,7 @@ void __init hugetlb_add_hstate(unsigned int
->>>>>>>>> order)
->>>>>>>>>           }
->>>>>>>>>           BUG_ON(hugetlb_max_hstate >= HUGE_MAX_HSTATE);
->>>>>>>>>           BUG_ON(order < order_base_2(__NR_USED_SUBPAGE));
->>>>>>>>> +    WARN_ON(order > MAX_FOLIO_ORDER);
->>>>>>>>>           h = &hstates[hugetlb_max_hstate++];
->>>>>>>>>           __mutex_init(&h->resize_lock, "resize mutex", &h-
->>>>>>>>>> resize_key);
->>>>>>>>>           h->order = order;
->>>>>>>
->>>>>>> We end up registering hugetlb folios that are bigger than
->>>>>>> MAX_FOLIO_ORDER. So we have to figure out how a config can trigger
->>>>>>> that
->>>>>>> (and if we have to support that).
->>>>>>>
->>>>>>
->>>>>> MAX_FOLIO_ORDER is defined as:
->>>>>>
->>>>>> #ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
->>>>>> #define MAX_FOLIO_ORDER        PUD_ORDER
->>>>>> #else
->>>>>> #define MAX_FOLIO_ORDER        MAX_PAGE_ORDER
->>>>>> #endif
->>>>>>
->>>>>> MAX_PAGE_ORDER is the limit for dynamic creation of hugepages via
->>>>>> /sys/kernel/mm/hugepages/ but bigger pages can be created at boottime
->>>>>> with kernel boot parameters without CONFIG_ARCH_HAS_GIGANTIC_PAGE:
->>>>>>
->>>>>>       hugepagesz=64m hugepages=1 hugepagesz=256m hugepages=1
->>>>>>
->>>>>> Gives:
->>>>>>
->>>>>> HugeTLB: registered 1.00 GiB page size, pre-allocated 0 pages
->>>>>> HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
->>>>>> HugeTLB: registered 64.0 MiB page size, pre-allocated 1 pages
->>>>>> HugeTLB: 0 KiB vmemmap can be freed for a 64.0 MiB page
->>>>>> HugeTLB: registered 256 MiB page size, pre-allocated 1 pages
->>>>>> HugeTLB: 0 KiB vmemmap can be freed for a 256 MiB page
->>>>>> HugeTLB: registered 4.00 MiB page size, pre-allocated 0 pages
->>>>>> HugeTLB: 0 KiB vmemmap can be freed for a 4.00 MiB page
->>>>>> HugeTLB: registered 16.0 MiB page size, pre-allocated 0 pages
->>>>>> HugeTLB: 0 KiB vmemmap can be freed for a 16.0 MiB page
->>>>>
->>>>> I think it's a violation of CONFIG_ARCH_HAS_GIGANTIC_PAGE. The 
->>>>> existing
->>>>> folio_dump() code would not handle it correctly as well.
->>>>
->>>> I'm trying to dig into history and when looking at commit 4eb0716e868e
->>>> ("hugetlb: allow to free gigantic pages regardless of the
->>>> configuration") I understand that CONFIG_ARCH_HAS_GIGANTIC_PAGE is
->>>> needed to be able to allocate gigantic pages at runtime. It is not
->>>> needed to reserve gigantic pages at boottime.
->>>>
->>>> What am I missing ?
->>>
->>> That CONFIG_ARCH_HAS_GIGANTIC_PAGE has nothing runtime-specific in its
->>> name.
->>
->> In its name for sure, but the commit I mention says:
->>
->>       On systems without CONTIG_ALLOC activated but that support gigantic
->> pages,
->>       boottime reserved gigantic pages can not be freed at all.  This 
->> patch
->>       simply enables the possibility to hand back those pages to memory
->>       allocator.
-> 
-> Right, I think it was a historical artifact.
-> 
->>
->> And one of the hunks is:
->>
->> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
->> index 7f7fbd8bd9d5b..7a1aa53d188d3 100644
->> --- a/arch/arm64/Kconfig
->> +++ b/arch/arm64/Kconfig
->> @@ -19,7 +19,7 @@ config ARM64
->>           select ARCH_HAS_FAST_MULTIPLIER
->>           select ARCH_HAS_FORTIFY_SOURCE
->>           select ARCH_HAS_GCOV_PROFILE_ALL
->> -       select ARCH_HAS_GIGANTIC_PAGE if CONTIG_ALLOC
->> +       select ARCH_HAS_GIGANTIC_PAGE
->>           select ARCH_HAS_KCOV
->>           select ARCH_HAS_KEEPINITRD
->>           select ARCH_HAS_MEMBARRIER_SYNC_CORE
->>
->> So I understand from the commit message that it was possible at that
->> time to have gigantic pages without ARCH_HAS_GIGANTIC_PAGE as long as
->> you didn't have to be able to free them during runtime.
-> 
-> Yes, I agree.
-> 
->>
->>>
->>> Can't we just select CONFIG_ARCH_HAS_GIGANTIC_PAGE for the relevant
->>> hugetlb config that allows for *gigantic pages*.
->>>
->>
->> We probably can, but I'd really like to understand history and how we
->> ended up in the situation we are now.
->> Because blind fixes often lead to more problems.
-> 
-> Yes, let's figure out how to to it cleanly.
-> 
->>
->> If I follow things correctly I see a helper gigantic_page_supported()
->> added by commit 944d9fec8d7a ("hugetlb: add support for gigantic page
->> allocation at runtime").
->>
->> And then commit 461a7184320a ("mm/hugetlb: introduce
->> ARCH_HAS_GIGANTIC_PAGE") is added to wrap gigantic_page_supported()
->>
->> Then commit 4eb0716e868e ("hugetlb: allow to free gigantic pages
->> regardless of the configuration") changed gigantic_page_supported() to
->> gigantic_page_runtime_supported()
->>
->> So where are we now ?
-> 
-> In
-> 
-> commit fae7d834c43ccdb9fcecaf4d0f33145d884b3e5c
-> Author: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Date:   Tue Feb 27 19:23:31 2024 +0000
-> 
->      mm: add __dump_folio()
-> 
-> 
-> We started assuming that a folio in the system (boottime, dynamic, 
-> whatever)
-> has a maximum of MAX_FOLIO_NR_PAGES.
-> 
-> Any other interpretation doesn't make any sense for MAX_FOLIO_NR_PAGES.
-> 
-> 
-> So we have two questions:
-> 
-> 1) How to teach MAX_FOLIO_NR_PAGES that hugetlb supports gigantic pages
-> 
-> 2) How do we handle CONFIG_ARCH_HAS_GIGANTIC_PAGE
-> 
-> 
-> We have the following options
-> 
-> (A) Rename existing CONFIG_ARCH_HAS_GIGANTIC_PAGE to something else that is
-> clearer and add a new CONFIG_ARCH_HAS_GIGANTIC_PAGE.
-> 
-> (B) Rename existing CONFIG_ARCH_HAS_GIGANTIC_PAGE -> to something else 
-> that is
-> clearer and derive somehow else that hugetlb in that config supports 
-> gigantic pages.
-> 
-> (c) Just use CONFIG_ARCH_HAS_GIGANTIC_PAGE if hugetlb on an architecture
-> supports gigantic pages.
-> 
-> 
-> I don't quite see why an architecture should be able to opt in into 
-> dynamically
-> allocating+freeing gigantic pages. That's just CONTIG_ALLOC magic and 
-> not some
-> arch-specific thing IIRC.
-> 
-> 
-> Note that in mm/hugetlb.c it is
-> 
->      #ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
->      #ifdef CONFIG_CONTIG_ALLOC
-> 
-> Meaning that at least the allocation side is guarded by CONTIG_ALLOC.
+>
+> The recovery process works as follows:
+> 1. When a memory failure is detected on a KSM page, identify if the
+> failing node is part of a chain (has duplicates)
+> 2. Search for another healthy KSM page within the same chain
+> 3. For each process mapping the failing page:
+> - Update the PTE to point to the healthy KSM page
+> - Migrate the rmap_item to the new stable node
+> 4. If all migrations succeed, remove the failing node from the chain
+> 5. Only kill processes if recovery is impossible or fails
+>
+> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+> ---
+>  mm/ksm.c | 183 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 183 insertions(+)
+>
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index 160787bb121c..590d30cfe800 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -3084,6 +3084,183 @@ void rmap_walk_ksm(struct folio *folio, struct rm=
+ap_walk_control *rwc)
+>  }
+>
+>  #ifdef CONFIG_MEMORY_FAILURE
+> +static struct ksm_stable_node *find_chain_head(struct ksm_stable_node *d=
+up_node)
+> +{
+> +       struct ksm_stable_node *stable_node, *dup;
+> +       struct rb_node *node;
+> +       int nid;
+> +
+> +       if (!is_stable_node_dup(dup_node))
+> +               return NULL;
+> +
+> +       for (nid =3D 0; nid < ksm_nr_node_ids; nid++) {
+> +               node =3D rb_first(root_stable_tree + nid);
+> +               for (; node; node =3D rb_next(node)) {
+> +                       stable_node =3D rb_entry(node,
+> +                                              struct ksm_stable_node,
+> +                                              node);
+> +
+> +                       if (!is_stable_node_chain(stable_node))
+> +                               continue;
+> +
+> +                       hlist_for_each_entry(dup, &stable_node->hlist,
+> +                                            hlist_dup) {
+> +                               if (dup =3D=3D dup_node)
+> +                                       return stable_node;
+> +                       }
+> +               }
+> +       }
+> +
+> +       return NULL;
+> +}
+> +
+> +static struct folio *
+> +find_target_folio(struct ksm_stable_node *failing_node, struct ksm_stabl=
+e_node **target_dup)
+> +{
+> +       struct ksm_stable_node *chain_head, *dup;
+> +       struct hlist_node *hlist_safe;
+> +       struct folio *target_folio;
+> +
+> +       if (!is_stable_node_dup(failing_node))
+> +               return NULL;
+> +
+> +       chain_head =3D find_chain_head(failing_node);
+> +       if (!chain_head)
+> +               return NULL;
+> +
+> +       hlist_for_each_entry_safe(dup, hlist_safe, &chain_head->hlist, hl=
+ist_dup) {
+> +               if (dup =3D=3D failing_node)
+> +                       continue;
+> +
+> +               target_folio =3D ksm_get_folio(dup, KSM_GET_FOLIO_TRYLOCK=
+);
+> +               if (target_folio) {
+> +                       *target_dup =3D dup;
+> +                       return target_folio;
+> +               }
+> +       }
+> +
+> +       return NULL;
+> +}
+> +
+> +static int replace_failing_page(struct vm_area_struct *vma, struct page =
+*page,
+> +                       struct page *kpage, unsigned long addr)
+> +{
+> +       struct folio *kfolio =3D page_folio(kpage);
+> +       struct mm_struct *mm =3D vma->vm_mm;
+> +       struct folio *folio =3D page_folio(page);
+> +       pmd_t *pmd;
+> +       pte_t *ptep;
+> +       pte_t newpte;
+> +       spinlock_t *ptl;
+> +       int err =3D -EFAULT;
+> +       struct mmu_notifier_range range;
+> +
+> +       pmd =3D mm_find_pmd(mm, addr);
+> +       if (!pmd)
+> +               goto out;
+> +
+> +       mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, addr,
+> +                               addr + PAGE_SIZE);
+> +       mmu_notifier_invalidate_range_start(&range);
+> +
+> +       ptep =3D pte_offset_map_lock(mm, pmd, addr, &ptl);
+> +       if (!ptep)
+> +               goto out_mn;
+> +
+> +       if (!is_zero_pfn(page_to_pfn(kpage))) {
+> +               folio_get(kfolio);
+> +               folio_add_anon_rmap_pte(kfolio, kpage, vma, addr, RMAP_NO=
+NE);
+> +               newpte =3D mk_pte(kpage, vma->vm_page_prot);
+> +       } else {
+> +               newpte =3D pte_mkdirty(pte_mkspecial(pfn_pte(page_to_pfn(=
+kpage), vma->vm_page_prot)));
+> +               ksm_map_zero_page(mm);
+> +               dec_mm_counter(mm, MM_ANONPAGES);
+> +       }
 
-Yes but not the freeing since commit 4eb0716e868e ("hugetlb: allow to 
-free gigantic pages regardless of the configuration")
+Can find_target_folio() return the shared zeropage? If not, the else block
+looks like dead code and can be removed.
 
-> 
-> So I think (C) is just the right thing to do.
-> 
-> diff --git a/fs/Kconfig b/fs/Kconfig
-> index 0bfdaecaa8775..12c11eb9279d3 100644
-> --- a/fs/Kconfig
-> +++ b/fs/Kconfig
-> @@ -283,6 +283,8 @@ config HUGETLB_PMD_PAGE_TABLE_SHARING
->          def_bool HUGETLB_PAGE
->          depends on ARCH_WANT_HUGE_PMD_SHARE && SPLIT_PMD_PTLOCKS
-> 
-> +# An architecture must select this option if there is any mechanism 
-> (esp. hugetlb)
-> +# could obtain gigantic folios.
->   config ARCH_HAS_GIGANTIC_PAGE
->          bool
-> 
-> 
+And, a real hardware failure on the shared zeropage would be
+non-recoverable, I guess.
 
-I gave it a try. That's not enough, it fixes the problem for 64 Mbytes 
-pages and 256 Mbytes pages, but not for 1 Gbytes pages.
+Cheers,
+Lance
 
-Max folio is defined by PUD_ORDER, but PUD_SIZE is 256 Mbytes so we need 
-to make MAX_FOLIO larger. Do we change it to P4D_ORDER or is it too much 
-? P4D_SIZE is 128 Gbytes
-
-Christophe
-
+> +
+> +       flush_cache_page(vma, addr, pte_pfn(ptep_get(ptep)));
+> +       ptep_clear_flush(vma, addr, ptep);
+> +       set_pte_at(mm, addr, ptep, newpte);
+> +
+> +       folio_remove_rmap_pte(folio, page, vma);
+> +       if (!folio_mapped(folio))
+> +               folio_free_swap(folio);
+> +       folio_put(folio);
+> +
+> +       pte_unmap_unlock(ptep, ptl);
+> +       err =3D 0;
+> +out_mn:
+> +       mmu_notifier_invalidate_range_end(&range);
+> +out:
+> +       return err;
+> +}
+> +
+> +static bool ksm_recover_within_chain(struct ksm_stable_node *failing_nod=
+e)
+> +{
+> +       struct ksm_rmap_item *rmap_item;
+> +       struct hlist_node *hlist_safe;
+> +       struct folio *failing_folio =3D NULL;
+> +       struct folio *target_folio =3D NULL;
+> +       struct ksm_stable_node *target_dup =3D NULL;
+> +       int err;
+> +
+> +       if (!is_stable_node_dup(failing_node))
+> +               return false;
+> +
+> +       failing_folio =3D ksm_get_folio(failing_node, KSM_GET_FOLIO_NOLOC=
+K);
+> +       if (!failing_folio)
+> +               return false;
+> +
+> +       target_folio =3D find_target_folio(failing_node, &target_dup);
+> +       if (!target_folio) {
+> +               folio_put(failing_folio);
+> +               return false;
+> +       }
+> +
+> +       hlist_for_each_entry_safe(rmap_item, hlist_safe, &failing_node->h=
+list, hlist) {
+> +               struct mm_struct *mm =3D rmap_item->mm;
+> +               unsigned long addr =3D rmap_item->address & PAGE_MASK;
+> +               struct vm_area_struct *vma;
+> +
+> +               mmap_read_lock(mm);
+> +               if (ksm_test_exit(mm)) {
+> +                       mmap_read_unlock(mm);
+> +                       continue;
+> +               }
+> +
+> +               vma =3D vma_lookup(mm, addr);
+> +               if (!vma) {
+> +                       mmap_read_unlock(mm);
+> +                       continue;
+> +               }
+> +
+> +               /* Update PTE to point to target_folio's page */
+> +               err =3D replace_failing_page(vma, &failing_folio->page,
+> +                                            &target_folio->page, addr);
+> +               if (!err) {
+> +                       hlist_del(&rmap_item->hlist);
+> +                       rmap_item->head =3D target_dup;
+> +                       hlist_add_head(&rmap_item->hlist, &target_dup->hl=
+ist);
+> +                       target_dup->rmap_hlist_len++;
+> +                       failing_node->rmap_hlist_len--;
+> +
+> +               }
+> +
+> +               mmap_read_unlock(mm);
+> +       }
+> +
+> +       folio_unlock(target_folio);
+> +       folio_put(target_folio);
+> +       folio_put(failing_folio);
+> +
+> +       if (failing_node->rmap_hlist_len =3D=3D 0) {
+> +               __stable_node_dup_del(failing_node);
+> +               free_stable_node(failing_node);
+> +               return true;
+> +       }
+> +
+> +       return false;
+> +}
+> +
+>  /*
+>   * Collect processes when the error hit an ksm page.
+>   */
+> @@ -3098,6 +3275,12 @@ void collect_procs_ksm(const struct folio *folio, =
+const struct page *page,
+>         stable_node =3D folio_stable_node(folio);
+>         if (!stable_node)
+>                 return;
+> +
+> +       if (ksm_recover_within_chain(stable_node)) {
+> +               pr_debug("recovery within chain successful, no need to ki=
+ll processes\n");
+> +               return;
+> +       }
+> +
+>         hlist_for_each_entry(rmap_item, &stable_node->hlist, hlist) {
+>                 struct anon_vma *av =3D rmap_item->anon_vma;
+>
+> --
+> 2.43.0
+>
+>
 
