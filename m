@@ -4,90 +4,225 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E4FCCCD185
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 14:44:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72136CCD184
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 14:48:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B218A8E0035; Thu,  9 Oct 2025 10:44:10 -0400 (EDT)
+	id B9FD88E0070; Thu,  9 Oct 2025 10:48:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD11A8E001A; Thu,  9 Oct 2025 10:44:10 -0400 (EDT)
+	id B77F38E001A; Thu,  9 Oct 2025 10:48:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C0118E0035; Thu,  9 Oct 2025 10:44:10 -0400 (EDT)
+	id A18338E0070; Thu,  9 Oct 2025 10:48:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 881BE8E001A
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 10:44:10 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 54A005BD1A
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 14:44:10 +0000 (UTC)
-X-FDA: 83978845860.09.05D83AF
-Received: from mail-internal.sh.cz (mail-internal.sh.cz [95.168.196.40])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 17B7F40005
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 14:44:07 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=cdn77.com header.s=dkim2019 header.b=4Sa3zM8D;
-	dmarc=pass (policy=quarantine) header.from=cdn77.com;
-	spf=pass (imf04.hostedemail.com: domain of daniel.sedlak@cdn77.com designates 95.168.196.40 as permitted sender) smtp.mailfrom=daniel.sedlak@cdn77.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760021048;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CD348E001A
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 10:48:33 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 28C7788618
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 14:48:33 +0000 (UTC)
+X-FDA: 83978856906.05.882EC17
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013005.outbound.protection.outlook.com [40.93.201.5])
+	by imf01.hostedemail.com (Postfix) with ESMTP id DC78E40017
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 14:48:28 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=UMlAkQsv;
+	spf=pass (imf01.hostedemail.com: domain of jgg@nvidia.com designates 40.93.201.5 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760021310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ToT0NvhlqFGtmHqtaoOHWloSTlf7psIb/sdAF5TIfxc=;
-	b=eGFvXzn0jVARdZ3lJXIzqDoRpFAHoGD4KGyoQo5rWl6bf25n0A2Wr/YXzbPYksYkmTulYf
-	2woKBGWUtv0CUtMXJDUcuB1NLu4ueYDxYdqgSx8PZtloKqGK5mt+Yfb/9nFepX8Uf0qBOt
-	/gKr1uWr4CSE3XiBQjEiMmc/7QSzoUo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760021048; a=rsa-sha256;
-	cv=none;
-	b=z0XtPyf7LKbZ2eVDPz/nyTMEbcf+gpvez2Y7o/LeXP/+iphuqGptXo7i9mr/0U78eOw3wF
-	jzrnOq1bfDsT3NlCfIgdmizMbzg4Z7owArbWLJsdssOgtHRgmM9krsFUmAlQGwd+heasK9
-	n6PKoy+vQSQTZWluGSr97jr4Dpj1iwA=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=cdn77.com header.s=dkim2019 header.b=4Sa3zM8D;
-	dmarc=pass (policy=quarantine) header.from=cdn77.com;
-	spf=pass (imf04.hostedemail.com: domain of daniel.sedlak@cdn77.com designates 95.168.196.40 as permitted sender) smtp.mailfrom=daniel.sedlak@cdn77.com
-DKIM-Signature: a=rsa-sha256; t=1760021046; x=1760625846; s=dkim2019; d=cdn77.com; c=relaxed/relaxed; v=1; bh=ToT0NvhlqFGtmHqtaoOHWloSTlf7psIb/sdAF5TIfxc=; h=From:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:References;
-   b=4Sa3zM8DcUS5rZ3SLc/w5A+CEPjq7es5HLlbIW2+08+b4NY32YTRJyokfqJFtHcRpGJ6HiIZYCZ16+lP9nsssmpXcE4ZS5JvB23bxUOFfZfAMujFDMIipf9jCXfpedIp3Z+FZQ/4AdsdVi8bwTbVFdKCt0yPZYbgvateGqvTEXs=
-Received: from [10.26.3.35] ([80.250.18.198])
-        by mail.sh.cz (14.1.0 build 17 ) with ASMTP (SSL) id 202510091644051992;
-        Thu, 09 Oct 2025 16:44:05 +0200
-Message-ID: <13b5aeb6-ee0a-4b5b-a33a-e1d1d6f7f60e@cdn77.com>
-Date: Thu, 9 Oct 2025 16:44:04 +0200
+	bh=6D3FEynlubYKXHXQPCYyRjPH86zjCm5TssKixQcGI2E=;
+	b=4McL/rmWCWeqYN6SPtD3PDwiJudlA3n/yEac7uAXlsSbTEODMV2bnweon1iTns9ggAs5e9
+	6z1eGg9O70JqzszL9HTLSLtSLvVtUCh6ocwflgO4i4EHf/NMmbv3COS/Nq4ChtaSM8rWAK
+	StubFWCaFQoE0rbA/4l22BScWQB82sw=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=UMlAkQsv;
+	spf=pass (imf01.hostedemail.com: domain of jgg@nvidia.com designates 40.93.201.5 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760021310; a=rsa-sha256;
+	cv=pass;
+	b=XvvHChfrB+QJDiVLLvPLUFx70Pe2s3j/4WOEyE6G3PF1v7Ca1nnzbLhMmnyWsrRVQDPk5k
+	zocKQAyDx9jqrbe7mittcVWapa4cm85fmB2Np/E9+EkGG4GGuZPGW+/k1sJoDqtLzREhV9
+	6EgCUPhefKkqPUNBfDuIig7LIiGPsuA=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IJ5jVp/IvCyf6C06HcMQ/o/QbLVfhmpnkedgbk2jOj5g9oM+O6rSC4H9el8TlcTagfUmsf+YnRaq6BlQQN0jbkHE5Zy/EVudxVsVclHCUyJNYDskPxNjo+QcAa2LctRKZ0liWZcaBuLLIsykp4ObxzY4rgdT1DwbrwcyStBu/FiKRR4NyFm6cmke+SxJV75a2boHYr3y7M/Y2dklwh2lTXNprnXDJipiRGcxaztX6F2sTdHgvDXN9ECvQbGExfOAXvrqjunoOySAwE5d4l6fHfeDc0QBgDIYcNFoIUO2OspedJWdE55NyKwPvj+ZN9D2fcQT4dyWhDn0s2VB5HxIzg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6D3FEynlubYKXHXQPCYyRjPH86zjCm5TssKixQcGI2E=;
+ b=isLQPq+E7hjouKeITgbMYzXstEk2CjSaXUXX5FLVyK0otzndhdIX9AJm5tIx7HD/wI0ZTHXIs69fzUfL8iqd6OVSf/9Yo3XupKXek+eetUrLXP1U/2Wz19ssDdh3q41bOzALo42Exhtr/cONwttGX8H3jvCq671JYpvX7LvMlie24c0bSq7MwLb+3FIZbUklDncUqEs7LFJkbX8MZwR7uux0NFlHXIQxJp0UkqFjfRcayItrrkujnuS/ylc63wCs3/Rn9nQk0enhTMX/uiW0wuetIxbBy/4mJFyWWUteaHz+7zeGx2Q29vJOMhPeDB1LIjuPaRuyjefHtZlqAkfQSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6D3FEynlubYKXHXQPCYyRjPH86zjCm5TssKixQcGI2E=;
+ b=UMlAkQsvSz0Cr7+PRFAgFiv+WLiQfB8FMxxDZyd6/cR8v1NDM6Tbs99M0MqEdUOWgrBVPGAuJSWBs8fhgpYOM0JbKPWsQWyIPfHz0ZMjlzj0MCtClmjjEB8qw9UIVv2hDZjAiGzMWbDlDG0XuiJJFta+xpZOW2jE9wPvV4Xm9UW4pY0SGNvBegO7v2htIzGdyKsrWZzxau2iRMT7QdX7XEnewkHH7XiqS6LkTn5IH4ZsVZtN+PGRAwVPHJ+vzRQb5ZnW09OqJmUg/f0Bl9+CBxahOZMTs17RPWR6OckqbzNMIgYuDlZjShB/MTqpIRJm9uIuwf74HJ97BwlNSOVVhQ==
+Received: from MN2PR12MB3613.namprd12.prod.outlook.com (2603:10b6:208:c1::17)
+ by CH1PPF0B4A257F6.namprd12.prod.outlook.com (2603:10b6:61f:fc00::605) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.9; Thu, 9 Oct
+ 2025 14:48:24 +0000
+Received: from MN2PR12MB3613.namprd12.prod.outlook.com
+ ([fe80::1b3b:64f5:9211:608b]) by MN2PR12MB3613.namprd12.prod.outlook.com
+ ([fe80::1b3b:64f5:9211:608b%4]) with mapi id 15.20.9203.009; Thu, 9 Oct 2025
+ 14:48:24 +0000
+Date: Thu, 9 Oct 2025 11:48:22 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Samiullah Khawaja <skhawaja@google.com>, pratyush@kernel.org,
+	jasonmiu@google.com, graf@amazon.com, changyuanl@google.com,
+	rppt@kernel.org, dmatlack@google.com, rientjes@google.com,
+	corbet@lwn.net, rdunlap@infradead.org,
+	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com,
+	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org,
+	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr,
+	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com,
+	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com,
+	vincent.guittot@linaro.org, hannes@cmpxchg.org,
+	dan.j.williams@intel.com, david@redhat.com,
+	joel.granados@kernel.org, rostedt@goodmis.org,
+	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
+	linux@weissschuh.net, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-mm@kvack.org,
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com,
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
+	aleksander.lobakin@intel.com, ira.weiny@intel.com,
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
+	brauner@kernel.org, linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
+	ajayachandra@nvidia.com, parav@nvidia.com, leonro@nvidia.com,
+	witu@nvidia.com, hughd@google.com, chrisl@kernel.org,
+	steven.sistare@oracle.com
+Subject: Re: [PATCH v4 00/30] Live Update Orchestrator
+Message-ID: <20251009144822.GD3839422@nvidia.com>
+References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
+ <CA+CK2bB+RdapsozPHe84MP4NVSPLo6vje5hji5MKSg8L6ViAbw@mail.gmail.com>
+ <CAAywjhSP=ugnSJOHPGmTUPGh82wt+qnaqZAqo99EfhF-XHD5Sg@mail.gmail.com>
+ <CA+CK2bAG+YAS7oSpdrZYDK0LU2mhfRuj2qTJtT-Hn8FLUbt=Dw@mail.gmail.com>
+ <20251008193551.GA3839422@nvidia.com>
+ <CA+CK2bDs1JsRCNFXkdUhdu5V-KMJXVTgETSHPvCtXKjkpD79Sw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+CK2bDs1JsRCNFXkdUhdu5V-KMJXVTgETSHPvCtXKjkpD79Sw@mail.gmail.com>
+X-ClientProxiedBy: BYAPR02CA0022.namprd02.prod.outlook.com
+ (2603:10b6:a02:ee::35) To MN2PR12MB3613.namprd12.prod.outlook.com
+ (2603:10b6:208:c1::17)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] memcg: expose socket memory pressure in a cgroup
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Neal Cardwell <ncardwell@google.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, David Ahern <dsahern@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry.ahmed@linux.dev>,
- linux-mm@kvack.org, netdev@vger.kernel.org,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
- Tejun Heo <tj@kernel.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
- <mkoutny@suse.com>, Matyas Hurtik <matyas.hurtik@cdn77.com>
-References: <20251007125056.115379-1-daniel.sedlak@cdn77.com>
- <87qzvdqkyh.fsf@linux.dev>
-Content-Language: en-US
-From: Daniel Sedlak <daniel.sedlak@cdn77.com>
-In-Reply-To: <87qzvdqkyh.fsf@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CTCH: RefID="str=0001.0A2D0305.68E7CA35.0040,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0"; Spam="Unknown"; VOD="Unknown"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN2PR12MB3613:EE_|CH1PPF0B4A257F6:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5809c0a6-62e1-465f-01ac-08de0742e643
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bUlXTUdqUUJoVjlXTkNUdmhQSElub0Yzd1YwYXBjeGhBeXlMeUNySTlpWHFU?=
+ =?utf-8?B?ZEtXWHA2SGJrOHg2WlJWdkk3bHpUSUdQQ0RYdWJ5VmpFVzVBbFRvSjNSVGxQ?=
+ =?utf-8?B?NlpVcW8zY1M0a2ZhdHhRamhWTW04aXBSSGN0cDJZaWxyZkJWN1RkRDZoZ2Nl?=
+ =?utf-8?B?ZWhvVTVtMXFVSFBEZkhqZDVlenNSakhtRm9vdWdPdWpFR284dUNIb2s5ckFE?=
+ =?utf-8?B?akpQL1FDbU9IWlU5OWd5RE14bjhmajlrZk9IOURkZXdQMTJQUzVub21iN2Z5?=
+ =?utf-8?B?RmJ1QnZEQnp3QUIzSU5NN3ordlNhUjNQVXR6U21sSVNHU1NEN3dnRUtubmo4?=
+ =?utf-8?B?ZU5mRTZQbXFjQ1VGRGc1eHVrdTNQRENjOU1mSWRNdDFyUHMzYUszZ1BBZGVq?=
+ =?utf-8?B?enc4R1pBd2xjQjdYckJiMUxIQ1RaRFEzZ01NVkl3aEI5U1JLSzhnKzlNUFdN?=
+ =?utf-8?B?L0l4WlZZdDM1U2FEOWJRaEl5THlJVjIwUTV0d0JDZGM3WTRYVTJoTUpHMytn?=
+ =?utf-8?B?aEJ3Z2FvZ2tOSDhPOERhMTFRK1cvMC9ZWWtqUERuNlkvRWk3VWZsZGNkQU5N?=
+ =?utf-8?B?cSs2OXRwUzRXREZaeWdzaVpGSlZtTjBXRytMR2QyNjVxOE1OaE84VmFISWw5?=
+ =?utf-8?B?WjRMbUh2VmFQNmNiM2s3elZ1MTFlM3RZZ00ybFRuTEZnTFVSN2FqRHpzRFlh?=
+ =?utf-8?B?Z0NvM3ppUE1lbDYyTUtPNmpvWEZSRGxKdnhsTVY5V2Zqcks2d0F3eWdvVU1F?=
+ =?utf-8?B?bzFZMnNiODhvQThnVTZZYnYzUjJWMm95eHdYNys3S1dFV1hadmRJV0FnNGQw?=
+ =?utf-8?B?bTB3WjZrSHRyeTk2QlZJOTNIOS91bEttN3ZIZDBWT3JMeG5kUXVzWU9RdzJQ?=
+ =?utf-8?B?S2EvVGZSRjByZXJqWUxyOTAyaXNvTjVsZ3h1blh5R0RaM1ExSHVaU1RwWVF1?=
+ =?utf-8?B?RnNMMUg0S2xUcWxOMC9DK1ZyVHp4RWh4aE01VStuOUdLV2VjcEMvSmJmaC92?=
+ =?utf-8?B?c1pYcGFjdktBcnJKaDlxV2JiNUF4ZXAzQXpHVGNNcHAwVVorckZZaHc3OHpK?=
+ =?utf-8?B?MTdUSGpoYW42YVdseFM2T2h0VDhrcUhyaHRhY1djZWJKTWpZV3RxT2dpWWpm?=
+ =?utf-8?B?VFJTa3luZGxQRXN4eHpQc0pmYS81SThaQVRzRzZkRzFzYmxvMG5nR1JEWmV6?=
+ =?utf-8?B?UTJMZGtRK3NTM0tTTFdBV1ZLQ1pPS3ZhTEhkNXdISmMzdXJuN1BXeDZMaGFN?=
+ =?utf-8?B?aVk4cTRjL0VMWE1Od0loZDRXV1pVbTNGWkdkRytIaWx4YWR3ejRaR0kySGo0?=
+ =?utf-8?B?Y3lOOFpQclJyaG5OVG9IeCtldWJqblhJV1Jva01sS1JJaUNqQjU1VnlLUzVv?=
+ =?utf-8?B?a0ZhMlZVS3RGK2JIZG45cjI2MFRtUW9UaTBnY3ArTDk2L3RoY24vb2xQZWtl?=
+ =?utf-8?B?dTJDbzRaYlNYalo2eVcwQW9EOXZUY2ErVVhSRlBadExVVXlRdWFKaXJMc1J4?=
+ =?utf-8?B?UUdBalJVNnlnM05wcE5UTFlFYUI5SXpTdE04ZFB6aXpzanNhYlZIYUhYdTZs?=
+ =?utf-8?B?eWJxM29OMkdTcEswYVhGVUw5ZlJha3JTUWdycGNVUnpJcU9GS3FuakFBb1JV?=
+ =?utf-8?B?VnJHTHh6Q2paWW8vWGdnd2xhRS9JQ1ZPQWRIM20ySnd4UXVucS9PTlZjYVFL?=
+ =?utf-8?B?UllyQnR5MVcrZEtwRm1UaW5ZbnJYamZKdkJPTmg3dzR3ZW1ZM3Z6K2xtSzhV?=
+ =?utf-8?B?UTdWQ2ZkK053UmY2Qk8rQXkvQXV4WUhjejZzTGdGZ3NFckwwMnlaUW9wMzA0?=
+ =?utf-8?B?Z040UDd3cUNlRVhaRXAvUUJaWnBZaFZUY3RFcUE2eVJTMW1yczl6UDRsdXVZ?=
+ =?utf-8?B?eHNjYlpmZzFyeHFxNEdsZHdLRXBJSnNoY0MwZHNYdEcvTXFuSG9CYTlFb3RK?=
+ =?utf-8?Q?wbctpof7x2Zyrad/LKwVBfrLqo826dhN?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3613.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?V1BtT05UUUNDUUxKek9yZENyczhFNHZTYnhBRDVzbzEzSXdjNWE3VVo2bjhX?=
+ =?utf-8?B?NmJOaGxpblFtMk5vdUQ2Q1FBSWJSYUdoU0Q0UXZFaW90R21CSW4zNEZVK1pJ?=
+ =?utf-8?B?bm9ETjJnZmE4ZW1WTFpzY2hwSXR2Zk5QT2JwbnhUM1pNbXhUV3NJZXRlakVs?=
+ =?utf-8?B?TXM1VjJMV1hmSzYxeFdYOE4yS0dBQ1hlb2ppR1hSb3dBQ0lCVUtsdk4xNWJw?=
+ =?utf-8?B?dmRxcHAzZS9jaDFQR0tXekp6REhTSVI0VnBFUGtqOXZJR1ZsQ05vaThSakNn?=
+ =?utf-8?B?T2N4eERhdUczTEJRYjQwQUsxaTZwOGVJRVNtUXNPMzBKNnZCeFpYVVkwRXdX?=
+ =?utf-8?B?ZUZzRjkyOU5Fa2xlT0tXb3BBMk9mRGhUeWJPbU1rWjdCVEpWK3BRZ2FTK2tw?=
+ =?utf-8?B?a0tWUDlXL252ekhtQUhXQkgzUUprMUpMbFk1TWpGdURqUXRVallsc01LYkl6?=
+ =?utf-8?B?Nm5HejB1TUFLYmFxVHI2cEJKd243dHdLNFlERTlaYWVLTTNWd0FpbTBMNTVS?=
+ =?utf-8?B?bndoLzJxZnpVQS9UMlRoaElna29pZEdsbnY3SDZBcmxDdE05b1JQSFNlSGlK?=
+ =?utf-8?B?TGloeFdxNXdKZlhnZWFxSXpHbFlndE1TRE0yUldsd3VvR2JjTGJiN0hBczB2?=
+ =?utf-8?B?ekZaZmxURFJGYXEwNEdlK0wxVTBLQkt2UmxuaDgrOW5QYURCSDk2WE5mdkIy?=
+ =?utf-8?B?ZzFWMDlyZTRzYWpmZngzeG52eDRmR04yenlqZFZkTlRZK0RhSzAzaVAwSWMv?=
+ =?utf-8?B?REpka2FYVWVXRTNza2xNbmtDQzJwZ3FPczVtb3NBQlhlNUM0NUlJVGNhSlIz?=
+ =?utf-8?B?U1NwS2FQMTdRVkt4NVNBdEttVnhkNTBKMGtZSkd6c0JpRXA5M0o2d0RGNjRZ?=
+ =?utf-8?B?WmNPaGlQOXgzWHFwOUNtR3I3Z3JOV0M2bUJ4bTFSTkx5TVQ2OVdvK1VDWVh1?=
+ =?utf-8?B?aTd2TXRHMTBMNS9qdmsxdWd6VVpOaWcrZzl6dzhndWFHeHAvTDJ1SkIza2x3?=
+ =?utf-8?B?OHhEVDE5S0ZYUXFIbDJyZDFXbGxZSTE3YU93ZmluNzJWZjdLWm80aHYwOFFX?=
+ =?utf-8?B?V2g4R21YL0tWRnR6dUtmWHIzdkdUdWRDYXpKMkhRdDVHaXU0dERsNnl2b0hm?=
+ =?utf-8?B?SlVxcmtQc2VuV0toRTFBWjBITWZ6R2xMR1BUenZtMFBGenk0by9JWnZRYWY5?=
+ =?utf-8?B?anN6NjR1RlpXL0pQY0dNNGRyaGtkMzVuc2ovZG1GZjF5dDhGOVJCRDkvYS9n?=
+ =?utf-8?B?ZmxMdmd6RGRHT3hnS0xPZTBrQ1FFNWVwRUdqR2VtalBudGd2SFMyTmo2UnJk?=
+ =?utf-8?B?b1c1d2JoYnp2TzNNWnBsZHd4VXNiZStWblpTd3EyM2tSMUVLNXVIUHhlZmox?=
+ =?utf-8?B?ZnRFY1BVSmJrU1EwQ1l6bm9wVG5YNktoNkVBUURnS2VPU2REYzBlOWx1OTNY?=
+ =?utf-8?B?ZmRMTzNBVzhPRkpNcytLQnJXOU12a1VqYjlWaWxleHFDeWxvanFZZTdwKzI4?=
+ =?utf-8?B?dTRXcVRLTnUwSkkyS0o2d0U4NE9GV0VEREpuL1M4OGJ4WHlLK0tQZVQ3dE9F?=
+ =?utf-8?B?Qnc2TEw2Nm5TRko2TVNsYWY4YWxZa2FhTjlhUE9sK3hobndocENTR0dEc1Bs?=
+ =?utf-8?B?OFVUbmdTR2NzS0dqWVVOYjZhemU4Q2RkUkhTWUtSNXFKLzBBWGYzekVXR2VD?=
+ =?utf-8?B?aG1FdUlNbDh2ZGtXTVJFMDR4aWJuNGR2SXU2R0ZlaEFaYmF3elJQQkZxUU5P?=
+ =?utf-8?B?ellTbHlJR3RwRWdhY3NjelRwSGVBYzBiRVhpVkM4VXRFUHg5YzJDUDJxeFBi?=
+ =?utf-8?B?UGQ2UDl3TEZFWEtocDRZR0pSUnFUVXVpU0w5eUNhTjRtRFZWTHJYS1Q3U0or?=
+ =?utf-8?B?RDREZHF5c2xJczhmWGFobmJ5OVI4aW5ueXc0QTdUQ0VOaVJRaWJ3WS9jODhj?=
+ =?utf-8?B?OHIvb3I1bnZSdHpZVi9oaW9qWWtxUXcxTHNReE5xMEkxdXJRZ0trRDI2eUJB?=
+ =?utf-8?B?R1BIZzZIWHpMQzlneXI2VTBQKzNuK2JsZGQ1cDN6THM5YnU5aFBhWlFpRjQv?=
+ =?utf-8?B?d0Vkek5zQ0NqNDJUZ2Z6NmE5MENTdllCUUlab0NlTGpaVnRvOGRTaTRkU0Nh?=
+ =?utf-8?Q?ebX1DPsLMSpxoLN0Nd16WfKkD?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5809c0a6-62e1-465f-01ac-08de0742e643
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3613.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2025 14:48:24.7623
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qGl70PdplLV+UurQDGzXwuMEvCQoo3s2b/xY5e2zw5dRJ1uA+w8crv1EpWH7YXad
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPF0B4A257F6
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DC78E40017
+X-Stat-Signature: atwrcaxctm49m7raxgp8kwcoywnwro5e
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 17B7F40005
-X-Rspamd-Server: rspam02
-X-Stat-Signature: n41p9d49dmkhc5i7nhgp7sa8d7e36dh9
-X-HE-Tag: 1760021047-100095
-X-HE-Meta: U2FsdGVkX1+3iKPwSMcy3Wdzkp+SEKs52FnrkC6H32CW6EtT5/Ww5MdVfKZFy4kFqCBb59OySE42egPwmrgM4LTuB+0vzPA8skAMFnnwn4whlMyqqpikNi2HnjUsaCHJNgEDDZ9H+wEnrd3HIvsqpCbp7+1dTs/l8BTCoA/RHmd5LBpM+p3Gw/RIa7Thm45ZpKyZUbSty+br4+CS0CLkF9jwqWwgOAl0jk3EESgHe5r8G1AxwwXvT/XAETnf6K97FsD7SIVkoJWl9qOkGUFM8TeSmz9Xl881G21uaF9MjlaCAOt2c6IpFaqYn/SWr8ptk1b1ay8m0YqnUdwTt5HtZuk+Jkri0okyGn6qvKT8eA0EpAnzsh6SbWhCQ15qMXzET6h/TBLWBO/D9F5Ixi0bHjvGhhI083/TsXGyoaz3S5f1cXPkW3h2u/oJNnfYSda0s6UHOCkZLJ7dLuXxPjIngiGOLMLrL53boKtAurYKKQc7FU8wPDkJZ7em7zAYxJG3ZyCp5+oyFxRiNm36wD63rpHGjW3q7r9gyaBOpyqKvnycCaBdqhVvXrD4JC9ZSHGeHhP5mXre+syzOYLIC96L2CCRnefyTUF91U5vh/6NuUQO8CArRwuxRQeuiZDU+1b28VHfR+8a73wiWUSmiFB6By4WCaozqLpkoFFFz2lebQoqZSVugz7AUoKvR0CVv/IQgIfl/Irt5LBIwpzN++qKpPxJIC12qr91tYMGaztAn18Jqhs8A4ZFfDzLVoLl7tVapvant2NVo/frsTBji+FTof8MiH88zsp46wXqv473dtrgoIvxl/yXIkFSkGdUdG1FKezmVcWQWn7LivcPGmCO2/7qtNjHXuJRRVkipovBt9Qj+GaGGNq5vwFrBCE9DPibFKtQ3f99/pEDj6jvgfxgnjNng307aJ/2ALvee7eLKNFDhZDzsixQEqZ3TNAz9ufAYGChr+FRSlg9m/dclIz
- fpnWXzXX
- 27zu0IX/VSPWEbYZ/Tz1iVUKJdc3dTfoTvGZyryEZ4KhXdLsdV6f8eRiYkyr3gW9rKH7wRlLr4XSEzvxpbTcaRPYJZYT3ZrPaJwiaH6p7aMJTuhA93hTttRJaeV2wcqrjIYfeBj4V0faTVSWgjgOca+HT85fp2M2f3CH7JNJy0CQ8VLD6F79Asy/OTGD37Aii4OAEWHdPBWK18faASIiznxN27igR0LzMiWo91yRchKosS+skMF6Q/ShIXvIU60CU/eBczkiG43pgTOY=
+X-HE-Tag: 1760021308-502308
+X-HE-Meta: U2FsdGVkX1/sdGswRDfR/TqmZfstQHneRvGAd6ItORrF0bQx6PNl/Dy2kLI1ylqnM/jwTSUyN0d5IwE6Osc0sr2MzrNKxYuNMY3ynPjO4AgIWUgC/rxcyKUQw5YLOkZL/jc8Rtpjb1nX7BVn+/pgcr2VvRo/Ef4IqTreVTBv2zz0ciPVdthQ+OkzCeaipgiXsnzpzoHfphemoK8JUl3cIHf+GCM/6BHHWsvdDm7L8K9ceiro504pLuLTTde0xLj3QiVsh3lSyZ/iuNW5+cA75QoBAZlDcnK4n+L7Yga+FksMu0fzNzBvnAvVkaYCi4cXGYB+XKgpGhpSiubY9QhWeSW24PmJgaoyY8+sRdlrYkuoc/AjssIbqDUeNHLIj6gla8emiwSroAzzt+xSH3Yujrik4ljKrjX337BOXB1x/w43rADISauq70C4fJ4WcRSSwFPpjapT/l+tJLRumNCGlUK9mY9rAN/ZXSkXzog94daTLZx60DBnccvTGdGkkTOJaTY1id22Azjoe9s8oBSsGP3WKMd0VExN79/ZipCRt13/3gR/mmrcFT+ne+x/Vlggt/UwjX83nTXahVa301WpMfxxAlv8wWUQMzDf8ntfChqcIXgTGUM2INFj26KUvEumVwYRjEA/WKUT6U/8hcUYQdU+fXSexo5PVscC1F+JP4mk/Kq/CDx4fBqkbbNyzXKsarUPkOHgm0E6Tn6jSbxlOexZtyN/GDSgUq9itxBKbm0V81/CcE/GxQklrODdbVWupUgEch8SM7hGRrEBDgnh/BOTRBn2qDeO4TaF3Mda/4GiaFWEMKdG9FsOjYdtHkq4WvTOrqZ6fSxBAlL2I+jmUqMVQliSjErLK1wuoukEn0cBIzumw267t4Uq84qeMjj0pJbYo1cgCHnJznX+0eIGunRA4Bvo1foEOrUSOiBOQ+sjmY/kHhlsVf/G9P/6ZP2APB1AjyGz/Y7cZMJ0aTI
+ S3gWxguy
+ SJG058oymBr9VZIgLHgBTaqEOSeCSwL8VrZviVaEd1r5ebxcafl3IodCHmcefeVE2wE+0PsQz82N9i2rG1PqQVAmFDnqmdMNCvPa7AZiNnGDSs+p4JMvW2ctmvAmWyEbOuxfnnrnoC1zgU4TdU5k2U/fwhWfi3qGnz7kwTYdKRg2izo97YthKLHskyg99Eb92KNf84rLiB0UsESLY9BK7IM9cv7bGLClA6orFi3wIE7W/C2E1ezeBqAmrU4F9H+Ha6qu4agE2v+XmgxTjE9ISr88Ebx8Vo7752uRGwt91mdp74G7sU0LU9WOcGUAoWrF9RTNWunuGEewWzHTpJydMmLU3O+meJ9c+sNVyqMLIf7UJuudb9e4sIR7RM6t/9YJnroPH/IokLSgFD2kZhTjkvJc8z13YDl5sERHR5bPeSB+hndXFI163hfOzN+HIkvca92ZAh0wqH0B5qDJOCcR1fKOzEZ6UgG1ZIzMX7XTUJ6KQUzwnIseBzZ7LjOPKLDfPiFB/tWkfKxTyQRZVaYMFE4ZB8Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,38 +231,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Roman,
-
-On 10/8/25 8:58 PM, Roman Gushchin wrote:
->> This patch exposes a new file for each cgroup in sysfs which is a
->> read-only single value file showing how many microseconds this cgroup
->> contributed to throttling the throughput of network sockets. The file is
->> accessible in the following path.
->>
->>    /sys/fs/cgroup/**/<cgroup name>/memory.net.throttled_usec
+On Wed, Oct 08, 2025 at 04:26:39PM -0400, Pasha Tatashin wrote:
+> On Wed, Oct 8, 2025 at 3:36 PM Jason Gunthorpe <jgg@nvidia.com> wrote:
+> >
+> > On Wed, Oct 08, 2025 at 12:40:34PM -0400, Pasha Tatashin wrote:
+> > > 1. Ordered Un-preservation
+> > > The un-preservation of file descriptors must also be ordered and must
+> > > occur in the reverse order of preservation. For example, if a user
+> > > preserves a memfd first and then an iommufd that depends on it, the
+> > > iommufd must be un-preserved before the memfd when the session is
+> > > closed or the FDs are explicitly un-preserved.
+> >
+> > Why?
+> >
+> > I imagined the first to unpreserve would restore the struct file * -
+> > that would satisfy the order.
 > 
-> Hi Daniel!
+> In my description, "un-preserve" refers to the action of canceling a
+> preservation request in the outgoing kernel, before kexec ever
+> happens. It's the pre-reboot counterpart to the PRESERVE_FD ioctl,
+> used when a user decides not to go through with the live update for a
+> specific FD.
 > 
-> How this value is going to be used? In other words, do you need an
-> exact number or something like memory.events::net_throttled would be
-> enough for your case?
+> The terminology I am using:
+> preserve: Put FD into LUO in the outgoing kernel
+> unpreserve: Remove FD from LUO from the outgoing kernel
+> retrieve: Restore FD and return it to user in the next kernel
 
-Just incrementing a counter each time the vmpressure() happens IMO 
-provides bad semantics of what is actually happening, because it can 
-hide important details, mainly the _time_ for how long the network 
-traffic was slowed down.
+Ok
 
-For example, when memory.events::net_throttled=1000, it can mean that 
-the network was slowed down for 1 second or 1000 seconds or something 
-between, and the memory.net.throttled_usec proposed by this patch 
-disambiguates it.
+> For the retrieval part, we are going to be using FIFO order, the same
+> as preserve.
 
-In addition, v1/v2 of this series started that way, then from v3 we 
-rewrote it to calculate the duration instead, which proved to be better 
-information for debugging, as it is easier to understand implications.
+This won't work. retrieval is driven by early boot discovery ordering
+and then by userspace. It will be in whatever order it wants. We need
+to be able to do things like make the struct file * at the moment
+something requests it..
 
-Thanks!
-Daniel
+> > This doesn't seem right, the API should be more like 'luo get
+> > serialization handle for this file *'
+> 
+> How about:
+> 
+> int liveupdate_find_token(struct liveupdate_session *session,
+>                           struct file *file, u64 *token);
 
+This sort of thing should not be used on the preserve side..
 
+> And if needed:
+> int liveupdate_find_file(struct liveupdate_session *session,
+>                          u64 token, struct file **file);
+> 
+> Return: 0 on success, or -ENOENT if the file is not preserved.
+
+I would argue it should always cause a preservation...
+
+But this is still backwards, what we need is something like
+
+liveupdate_preserve_file(session, file, &token);
+my_preserve_blob.file_token = token
+
+[..]
+
+file = liveupdate_retrieve_file(session, my_preserve_blob.file_token);
+
+And these can run in any order, and be called multiple times.
+
+Jason
 
