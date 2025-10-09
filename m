@@ -4,116 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77157CCD184
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 19:13:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20E61CCD183
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 19:16:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8AF48E00A6; Thu,  9 Oct 2025 15:13:17 -0400 (EDT)
+	id 79B378E00A7; Thu,  9 Oct 2025 15:16:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B62238E0002; Thu,  9 Oct 2025 15:13:17 -0400 (EDT)
+	id 772968E0002; Thu,  9 Oct 2025 15:16:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2A518E00A6; Thu,  9 Oct 2025 15:13:17 -0400 (EDT)
+	id 661068E00A7; Thu,  9 Oct 2025 15:16:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FB468E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 15:13:17 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3113611B222
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 19:13:17 +0000 (UTC)
-X-FDA: 83979524034.02.BDAD786
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id CA9BD40004
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 19:13:14 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AVxB8V9k;
-	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 55BFF8E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 15:16:46 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 145DB5C0F6
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 19:16:46 +0000 (UTC)
+X-FDA: 83979532812.01.9A72EF8
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf27.hostedemail.com (Postfix) with ESMTP id A067B40013
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 19:16:43 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fw1W9psU;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf27.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760037403; a=rsa-sha256;
+	cv=none;
+	b=ODrsmQKuMQTX+FTqZwpyALdRPY8q+tgIH4z4cXa8ouy6OlnoBwBI5ANtrxeu6DjHFUtg2W
+	ZXRdv85TuORD4hp5SF07lXHT5cuqVFjlCf7z/NTdj2lgS6RfJYtr78or6NuF4ILg4FYRg8
+	PRiKoY047+67xrbHw6tVyKTdr5cCxBI=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fw1W9psU;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf27.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760037194;
+	s=arc-20220608; t=1760037403;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uMfDHaIXjP5qW70eAEFIPvcXKGAAk4uyl5DbHMEw+mw=;
-	b=7u4lPHPUFUQRVMjcB33JLpHQapkoMm57HbiGczFcWWmMj3p7U60Vziu5PO7AgP8x2t6YdZ
-	W3BIxt/P4lpdB7EyWG/Q8UQWV7Iu8OPAT2vNcMsTWKkH795NfEfp0pCz8O6suGSkwCCEsF
-	llSYUxPh17iEWL34v1+KI6z1a6LvHNM=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AVxB8V9k;
-	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760037194; a=rsa-sha256;
-	cv=none;
-	b=iMOioeLNxrzWficvRVarp7gPYEjkzMb10KuSyLlEs7UYAM9408v+TM1ysAd5zIzTFSrDeg
-	5Gj2GPDLH0gVmGI9uJXSvtwEtAJWJ4i3AIGv4nm2x9e8LmBMHOr3RDCgQFXUTfFYtVVQHx
-	zgPXm4X+DXf8kvZhZ3JozHgUiGVMpls=
+	bh=/jjq7BLRoYI2nQdmAcFZDfdFEssHTj+qWciljr1C06A=;
+	b=QNtBDoaAg6BjhH9jqTDNyJbDG0Tmy+P+zcMS4NGVHPd+Fnr21bK1TWEJCkGR1t2/+8U/3a
+	UbbdZ5NuEMhIwSh1s9YzW3HeZg7FcPzbd+68EUXvOFJaYU+ZJBGLswA2LPg0YcvfpPnTpH
+	7TqN5jZAD+FmXIq/xpMoojJTPRProzA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760037194;
+	s=mimecast20190719; t=1760037403;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=uMfDHaIXjP5qW70eAEFIPvcXKGAAk4uyl5DbHMEw+mw=;
-	b=AVxB8V9kawN89zrXIfJAmaTrS793oJj0f9Xkr6jm13FtLfXdT4PeCAi+ojGm08fEpVWpwP
-	AOF8u2ljWrh3dYUMbTDhbrWAt2LTn/mfsu+e/YxJjN7JgNUnJ/SuDBkETEiTyLp+Qpoozw
-	yTz6CW4AAl//AMLJBJNC6u0kwafOwyg=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=/jjq7BLRoYI2nQdmAcFZDfdFEssHTj+qWciljr1C06A=;
+	b=fw1W9psUpzVpMRNInZc959PMwdIIrekEg3j7+u2ChwV/1FfyFY2Dz0jG3bV1XaB3Dr54Zc
+	yAwKJwVA7EOk2VEEuf96Jm5EFiqcwdo6JdRjUvui0BM9Z07DHvI0vVK61qJMyW6X9qmkOv
+	9lOEoIL9oUFAe1jJ3HByG6tNoIo+Pms=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-323-m5rhdVpbOfC6VTf86I2XXw-1; Thu, 09 Oct 2025 15:13:10 -0400
-X-MC-Unique: m5rhdVpbOfC6VTf86I2XXw-1
-X-Mimecast-MFC-AGG-ID: m5rhdVpbOfC6VTf86I2XXw_1760037189
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-46e36686ca1so13026625e9.2
-        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 12:13:10 -0700 (PDT)
+ us-mta-372-acU_uUzTPYyi_z0FdQWgLg-1; Thu, 09 Oct 2025 15:16:41 -0400
+X-MC-Unique: acU_uUzTPYyi_z0FdQWgLg-1
+X-Mimecast-MFC-AGG-ID: acU_uUzTPYyi_z0FdQWgLg_1760037400
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-46e4335fa87so8021155e9.0
+        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 12:16:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760037189; x=1760641989;
+        d=1e100.net; s=20230601; t=1760037400; x=1760642200;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=uMfDHaIXjP5qW70eAEFIPvcXKGAAk4uyl5DbHMEw+mw=;
-        b=FNM+1Ft/ln3S6QWCdGWD9rLDpS17hvj6yk9+uKwUXGHzrgDRqJ6QEhOR4gfyVQnZX2
-         G5P6FPZSN5H6CntoY6CI3ZnBmsIyY/E1qhRfNi3v650G8D88sRmFMX0EoiEFciduHwV9
-         xCYkCxa3aSel1+NmSBc95vxLEKaM3CEpmMheEOXmDkqMUZFfp7nGOdkMNWUoIVDRB5AH
-         skEaSrWx/VckyBQFMohw6EMeFTH22lPCAQ8x9V81ynSuCZdkxXBz9aeMNSZXMSjnqw3H
-         c1uAf1hqh74h/nLTZft7ccEAnExYNH4EdOJN+DCHel7OOc2K11Sq9pQXs9yF3yX5N1h2
-         04pw==
-X-Forwarded-Encrypted: i=1; AJvYcCWq41Y1qQR6IkgrfOjn5YkNYwu97KaE5okt3XM4m6pNghRZqAquwtwk0eYE0ZPo5ipPtDN72S6q1A==@kvack.org
-X-Gm-Message-State: AOJu0YzzCGrVyvN0qn0T7yJFxnfoMkff+ie7l5KjPzRzqJ8YPBX/6vFw
-	0dJyEeyZeA/t14J50S1FwEgCxG6Nfh1OtCilqWt+Cx2i5MN0HbW4OMLzSqNa9OU0oRfNBzXknDc
-	ojWSDVpmLj49VrjGHNmS4y/9/IL8s06+hAD461gCqcluHssnSbeJ8
-X-Gm-Gg: ASbGncsQFclac4NnGF9SMyZ0L/SAZzsn3HTlRDZd+VnyjesVThQAMBkB3LFt/zO6yWL
-	CpA+dVAW8+BJCVQ96i2+17ptX9d2tgtarcLHiqe8QhF5cYM6ItFswbRz5eSV83UiLH+D3gHD0dF
-	ABGRQtbdPIn/n2rgAEEsrni93zwB3GtbXXPQ8xpppRbrtJ+7Rf/nWf5TaxAbVm1cLktl7Rdwnl/
-	h1Cyumo3mcbY7ELvO98BY5tM6DL8Oe4VX51kfUwnC/+hRqOPQcAVAGScUJx+kRz8NhpRzmC6ev/
-	wljHPzTKjMXh6I1W+BmAHKCNmgzFg7oTBc2LcKlD2Pnn2kULtnKyj4orVdYSIIgH99Wh9pU3AyW
-	melcTC66b
-X-Received: by 2002:a05:600c:1394:b0:45b:7a93:f108 with SMTP id 5b1f17b1804b1-46fa9a8f090mr59071575e9.3.1760037189455;
-        Thu, 09 Oct 2025 12:13:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHBcImDsyxTunmBqgZfkDNrdR7pu/FzopoU++FfWBhFLzzgiDgfzJIo/TDjPU5ArHmmJTRIsA==
-X-Received: by 2002:a05:600c:1394:b0:45b:7a93:f108 with SMTP id 5b1f17b1804b1-46fa9a8f090mr59071425e9.3.1760037189032;
-        Thu, 09 Oct 2025 12:13:09 -0700 (PDT)
+        bh=/jjq7BLRoYI2nQdmAcFZDfdFEssHTj+qWciljr1C06A=;
+        b=E3BDPf8XHmYLZ5NEkWu1VwheZson30ACKlRMPFGhYfK6Q3xSqZgMg/Dvull/6a238o
+         dSoh4O0lkIdJeloeKaUyQNApx4loOohp3NFkv7ESWTSu8+cT1Kf90G1R6sY3f3gElPG2
+         IhUjmEwNi+LBcl3D0oBDiIHqeyUUC1YK7MlnTWMBN2NeKBq/eMHVKAYih53sEmWONRDD
+         +9lqqa6TXoo9pgbUTDt+7Iz5YkoaLbcn2boWI3EFAYMgQrpHF0ueXejvtm4yUFJTMSaQ
+         6sbZRK19MmxqpaxOiPHbNtTY+2wmptalpe4eJVsmEyRUznC2z0g+ocz7PpQlLMGDwwWT
+         pBhw==
+X-Forwarded-Encrypted: i=1; AJvYcCUKBzp0Ze3Oi11k09dvvpmsgKxZghqHu2cbad95FaiX9p5PzntdREU7I4MkKanWaFIhMI15sO5bYA==@kvack.org
+X-Gm-Message-State: AOJu0YwiQ47qricdqGpz4hdgZUuDbTm1BpwTSXs7pxYO9M0WzVvwQt4z
+	7eh6jy0O2zVfl3AciXnAjscYwvn08M3ZQVCkxCmj7/Q4xQueYeDLac+9K83udJxbYouGNe1dA1i
+	fk3zKAm6EchjCyL4o/tOH6HIof0VG6s4hf36w+ZMRDRI0qteLATG6
+X-Gm-Gg: ASbGncv/bezszPJCg6wqx0etI5e55F3Y5rEmvGlW+WkgRd21K8VtzFIWEEJgSroFKdi
+	thp7Gc8CcwcE8wmXFsWSLVBBdWhTZNUYOCQRZ4xfMZaqRYEixQ69YORxpm7Un+o8iuDe0ZkYfyz
+	wyNB1yLtVT9CaBbaUQl6RJsgA3IUd+WQy3oWIDQs8RqKgqQ95w8aDH4zByrLdC2+ViiDw1uzz6f
+	WfzBTnkbWpuT5zA9RrjS2xQpxdF3a5xTHLGh70GX3LztHi5gaOPCddWaskh5qYiE/gb0w3SvQdS
+	yKNItq9aQl37GH/6qQnSpX/4Axh3LKPIYqz6lNpsKWUoT0vv1xyjf8SmwiSJO2cLJGTIihlTW/V
+	duOch+Px+
+X-Received: by 2002:a05:600c:3e87:b0:46e:3d41:6001 with SMTP id 5b1f17b1804b1-46fa9b17df1mr59434175e9.34.1760037400218;
+        Thu, 09 Oct 2025 12:16:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHxEViiRN8Lw2h0KvemsqiiXPHU95kQiydslrrD2f9G9rGLUFyRDI7eBLoEqJHlLxcoXRSxgA==
+X-Received: by 2002:a05:600c:3e87:b0:46e:3d41:6001 with SMTP id 5b1f17b1804b1-46fa9b17df1mr59433925e9.34.1760037399787;
+        Thu, 09 Oct 2025 12:16:39 -0700 (PDT)
 Received: from [192.168.3.141] (tmo-083-189.customers.d1-online.com. [80.187.83.189])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce5cf6b4sm405958f8f.25.2025.10.09.12.13.07
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce5e0a03sm403646f8f.37.2025.10.09.12.16.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Oct 2025 12:13:08 -0700 (PDT)
-Message-ID: <ed7db8b9-e828-420d-a8b2-3e1b8aa8c95c@redhat.com>
-Date: Thu, 9 Oct 2025 21:13:06 +0200
+        Thu, 09 Oct 2025 12:16:39 -0700 (PDT)
+Message-ID: <abe539bb-375a-43ec-ba36-6d10a35dd85d@redhat.com>
+Date: Thu, 9 Oct 2025 21:16:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] s390/sclp: Add support for dynamic
- (de)configuration of memory
-To: Sumanth Korikkar <sumanthk@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>
-References: <20251009131839.3739108-1-sumanthk@linux.ibm.com>
- <20251009131839.3739108-3-sumanthk@linux.ibm.com>
+Subject: Re: [PATCH v5 0/8] Fix stale IOTLB entries for kernel address space
+To: Dave Hansen <dave.hansen@intel.com>, Lu Baolu <baolu.lu@linux.intel.com>,
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Jann Horn <jannh@google.com>,
+ Vasant Hegde <vasant.hegde@amd.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Alistair Popple <apopple@nvidia.com>, Peter Zijlstra <peterz@infradead.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Andy Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>
+Cc: iommu@lists.linux.dev, security@kernel.org, x86@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20250919054007.472493-1-baolu.lu@linux.intel.com>
+ <c04d4c9d-e868-4883-af92-26f142bc84be@intel.com>
+ <d3cf3716-98ec-419b-90b7-b91b83599498@intel.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -159,21 +169,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20251009131839.3739108-3-sumanthk@linux.ibm.com>
+In-Reply-To: <d3cf3716-98ec-419b-90b7-b91b83599498@intel.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: vk17ph6SXggDemhRXqNQAyaw6OKwXJfPXolIczUB1XA_1760037189
+X-Mimecast-MFC-PROC-ID: rFV_Q4aIaIrguOk5AAbuRjDkZ1FqD8tCX7d_o7K2tqI_1760037400
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: qkm55t5chc7mj8q9n1sxgchuwmgy6trm
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: CA9BD40004
-X-HE-Tag: 1760037194-198994
-X-HE-Meta: U2FsdGVkX18MsWpywtprsrFiTjmSKaIzJxX2XA9jA0RhqLg5+VPG2IJ/MjF+m1rC98JIuRe9rZjGVVwK/bIyheljs958WNBpuohnXaQt/eN8phSzcmFGVtxWnuvos4ljjsSXMCfKsr80eZi2B7fCe71v0MUFsNMEEzs51nlBeHeBEM6tcNqovPc1fgmEd9c12U1zAgHHDQmaUdr9QTIgDKa8EcVSMhI4X8WrvwZx6h7wlqHT/Ld7eAIIkAHB8B8fg8Wk3otK95ScZA4x/RGkT/kHBoCHlwM5WbJG8InfSX2Bl4Yc86IFJfXIsUQIgEFILraxNN9sODhVdLMvRLSXPTPXDNxJPKHh6qHJgzSNHhCBTwLkK8bhzdam9y1tByL4wCDDAnXuhwq+FfdSVzo2dE1l+rJhkkiWGgf7RXoROuQYQRJvRr9gm+U/yTM3WHZ3YIgd00oKxuKaeqwIM+AP0ylXMoJuVwjw0v7G7wYujubSxV5bpnPGPSi+IJgH2czhf03g/iZPrOMmYtK+wmwI5ahRNwWl8XSMFGST2puu64MdHoknFtr3Tmw0sPmip2/+cAQaIsiXpCvs2NEvb9IDAva3zE9fap/Qh0jEFWUTHEQPSCSz7V5aXG4LUl2wk22xxt4+kSHhfDNm6O0aLB7/+/t6gwCkwr1W/gT+QnTBWcJR3rAFmTyJy8+WY5myHJfI8NHoyWgIqWWVeCRfvCYlyKdqYkXUeiUCJMt+AcSL8ED9Z2+VFYhUSroHSys65SctKrpMte6TQbEn76tTrO0R1ccZHgASxfZEGs0a7a+xl+DQDNXDIWSPomdya/+JD0JR5HqIoTeFe0BXLeyqP013ABlv6HXsVj5cWw+HTHLKDSiZ5a+rKh2cvh4wMssBsU6+UCWM8B6/IlJ3hCf0keh4ANusPY3wUAliBvGddfR54xztn4Fum6cd0JozTn7wpCoqMIT/RAAbwEnH37n9GiT
- VZyEY72z
- c0SuK/al/geMrEVs5fj3bMCeheIJNIeMp1hy1CiHFlRHwkkAmgiCYsBiSFyagIK86O12Zdgw0lQ4L5G8HQ3gV7yrPFDPRKxpwEnuKSr32Kq89cMn3nB1gq9+c4fM3p3cmwxIdcy7hd+vW7+pSwZNXNGbOm+L+ZcLGU1C/heUW6NXvqn2lZGEnwEcH2+lBKrVJ7yNCKlDrtDOifNjV2C8Kqcb2bm8jqEixt8B0p+xINxnqYbUHkTXWWbLM5jNaDVYIi416xrK1OG6llymR1XKTpYca1CQXFL1pQGRsFSwGeHRYx82Wjj0YZFix3KstqCEY9MoOaTVbcbO726GHf9ViwKea1Be5s7QObxq8UPv5CxyJIyLjtY3PLw7iJUDIQXYhR/ZAyOOqDxlm6LGj17M/IalNh4y+UBg9ZuDZwkleqomSqDrzmXza824FSshK4OtgSY4bkd77idDBLD1VFbzel9X+MsabuJ8Dh2DdzjXX7icYjDFvrGl5Dn1eFV4iSLhn79wzB7eXAgqtJjMavIj+UrHPbQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A067B40013
+X-Stat-Signature: 9whim9yuqd7tw4sqbt5niq6nofrdhqzw
+X-HE-Tag: 1760037403-491721
+X-HE-Meta: U2FsdGVkX1+g9umrRd2OmPRWTJa7GKO1qvzsH3Jy3G34utB2dLJS66SoMjR7EKwvEvWFDp4wX7Xg0IYTF5XdVeFi8MA4IGn5+MMKSP9amcPnDWt+0cv1D6WI8/goI+iVNvsmGpjAW51r355wAH7DLYv25dYjk414oBPAJTUO1A9/yrVhA8g4ZLf8CLHz/If6mdf5+iqFt56MoyrcgGiojm8X50yAFH6TeZB4FYGz8A3idp68FfIH8SY1yVLaFulPqVNZRY9ehgY2uB6NlWE+YVPvx1pcAMENu29cQHNCmBg4m4IaZq+KfgFxO5chEaVOYD+9H0N7xXPVSu7TUtMhuMhoW8wEOUeBnKjCgUUX3ul7nhM61aG+FUB2J2/MXt65MCe7a8OsNR2LkwqCo9yE4oRAQ58kjaxxfEuPX9JTmg0JeD8O6yd99Ol2OkZBfJefW7SRvVtBiLKtvZpbtRmX1MBOz/Uso/dvFJjbolR/Jva+5tpH+jXDyUVWTMvQZME05M4Vd4hWxLVgehGSAal9jf8cha6IRl5l3kw2BoVTjn4q1rfhk0/wBQ9RW43wGO9Js8eF/AppL7wPRa6HpN6mevW5C14TB9+Sjp1mwsxe7h+c2ad8ySEGPI4N4cMf4RlBcAyPNaf3QTDCwGyf/dk/DAT9emb7h2yY8CwfIRREWFNj8Xi1mfEuj2nJvOQ72GZmDKO3RQhmzYzOGEujpkEGTfAL3X3bTHHTXDoWf4KarDsWZMbpynou3zU5Nl973zYhhPQ1Q3jEbP35y8AinyYcL5egP2rDOjcbrbdcHeaBvc3fb2/PeEcWiYQ5JA8AI8qMRuRKG9ioV1Cq6090t1gzi4rpSOz603FOWM1nc8xzcWGteMAFAU9RW6mHX4RSfobHw0DoVIW9byCnpklYFe+ZLGfnoNOemHScGxQVTraIP9wPSrKKvePKnRdriiDtHMmVa6Y5InqRE4VeIxj6Dyf
+ CMb2eTv7
+ WRrfpTfvvklu3PqevFdCLrbohMO937owX6F58q8xiNZy3lIl3LfqlBJfPRe0u/klmT1EQtNk/dKqY0aEycthPNIGIGpl2ibrZGyGnCCsdpLZnPifmq+EBmUyUxZ9oXHX3Kn5vOf+1mJTDPz+N18A2NrchwQojtmkCeXTQypt7O25anHVIAZ4T2Ey1soS9dWIwp/2l9DgdQSyqL/BBKdTlKFf27om6HPoNWlcORB7y1gA9HTgS6YC+lnKn0LA+63zTeRiyhNKi9nHBaj2Zv0FFzd8f3LNq85CRSdTX0swnIRW7ANZTYk6Qjw6VMoX03N9/F0Kv9BX1EMszdxEy2n0zeA9EBAIMSXG9/otAd+fQHGHd+ZgWFUlglC54D7GOd2fwQTypYIantf6SvrNZcqFhZKZr/VB6nXGnKL7mPiS3C0v6SQ5P6UIX2VISVhUt4IbxyyhFdGPHsJENlrKxTsu+pd/o+ol6G7CBBkk0UStulmAQTmwN4/DcaztoHCr22OswM987
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,111 +192,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 08.10.25 21:42, Dave Hansen wrote:
+> I wondered why no mm folks were commenting on this. linux-mm@ was cc'd,
+> but the _people_ on cc seem to have been almost all IOMMU and x86 folks.
+> so I added a few mm folks...
 
-Just a couple of nits
+Thanks. Lately I find myself scanning linux-mm only randomly. So if it's 
+not in my inbox, likely I won't realize easily that there is something 
+that needs our attention.
 
-> ---
->   drivers/s390/char/sclp_mem.c | 290 +++++++++++++++++++++++++----------
->   1 file changed, 207 insertions(+), 83 deletions(-)
+Will take a look.
+
 > 
-> diff --git a/drivers/s390/char/sclp_mem.c b/drivers/s390/char/sclp_mem.c
-> index 27f49f5fd358..e1302b1c98ac 100644
-> --- a/drivers/s390/char/sclp_mem.c
-> +++ b/drivers/s390/char/sclp_mem.c
-> @@ -9,9 +9,12 @@
->   #define pr_fmt(fmt) KMSG_COMPONENT ": " fmt
->   
->   #include <linux/cpufeature.h>
-> +#include <linux/container_of.h>
->   #include <linux/err.h>
->   #include <linux/errno.h>
->   #include <linux/init.h>
-> +#include <linux/kobject.h>
-> +#include <linux/kstrtox.h>
->   #include <linux/memory.h>
->   #include <linux/memory_hotplug.h>
->   #include <linux/mm.h>
-> @@ -27,7 +30,6 @@
->   #define SCLP_CMDW_ASSIGN_STORAGE		0x000d0001
->   #define SCLP_CMDW_UNASSIGN_STORAGE		0x000c0001
->   
-> -static DEFINE_MUTEX(sclp_mem_mutex);
->   static LIST_HEAD(sclp_mem_list);
->   static u8 sclp_max_storage_id;
->   static DECLARE_BITMAP(sclp_storage_ids, 256);
-> @@ -38,6 +40,18 @@ struct memory_increment {
->   	int standby;
->   };
->   
-> +struct sclp_mem {
-> +	struct kobject kobj;
-> +	unsigned int id;
-> +	unsigned int memmap_on_memory;
-> +	unsigned int config;
-> +};
-> +
-> +struct sclp_mem_arg {
-> +	struct sclp_mem *sclp_mems;
-> +	struct kset *kset;
-> +};
+> On 9/25/25 13:24, Dave Hansen wrote:
+>> On 9/18/25 22:39, Lu Baolu wrote:
+>>> This solution introduces a deferred freeing mechanism for kernel page
+>>> table pages, which provides a safe window to notify the IOMMU to
+>>> invalidate its caches before the page is reused.
+>>
+>> I think all the activity has died down and I everyone seems happy enough
+>> with how this looks. Right?
+>>
+>> So is this something we should prod Andrew to take through the mm tree,
+>> or is it x86-specific enough it should go through tip?
+> 
+> Hi Folks! We've got a bug fix here that has impact on x86, mm, and IOMMU
+> code. I know I've talked with a few of you about this along the way, but
+> it's really thin on mm reviews, probably because mm folks haven't been
+> cc'd. Any eyeballs on it would be appreciated!
+> 
+> It seems like it should _probably_ go through the mm tree, although I'm
+> happy to send it through tip if folks disagree.
+> 
+> Diffstat for reference:
+> 
+>   arch/x86/Kconfig              |  1 +
+>   arch/x86/mm/init_64.c         |  2 +-
+>   arch/x86/mm/pat/set_memory.c  |  2 +-
+>   arch/x86/mm/pgtable.c         | 12 ++++-----
+>   drivers/iommu/iommu-sva.c     | 29 +++++++++++++++++++++-
+>   include/asm-generic/pgalloc.h | 18 ++++++++++++++
+>   include/linux/iommu.h         |  4 +++
+>   include/linux/mm.h            | 24 +++++++++++++++---
+>   include/linux/page-flags.h    | 46 +++++++++++++++++++++++++++++++++++
+>   mm/Kconfig                    |  3 +++
+>   mm/pgtable-generic.c          | 39 +++++++++++++++++++++++++++++
+>   11 files changed, 168 insertions(+), 12 deletions(-)
+> 
 
-Just one thought: if you keep either as global variable you wouldn't 
-need this. (I would just keep both as globals, but whatever you prefer)
-
-Whatever you prefer.
-
-[...]
-
->   
-> -static void __init sclp_add_standby_memory(void)
-> +static int __init create_standby_sclp_mems(struct sclp_mem *sclp_mems, struct kset *kset)
->   {
->   	struct memory_increment *incr;
-> +	int rc = 0;
->   
->   	list_for_each_entry(incr, &sclp_mem_list, list) {
->   		if (incr->standby)
-> -			add_memory_merged(incr->rn);
-> +			rc = create_standby_sclp_mems_merged(sclp_mems, kset, incr->rn);
-> +		if (rc)
-> +			goto out;
-
-Why not "return rc;" to avoid the goto label?
-
->   	}
-> -	add_memory_merged(0);
-> +	rc = create_standby_sclp_mems_merged(sclp_mems, kset, 0);
-> +out:
-> +	return rc;
-> +}
-> +
-> +static int __init init_sclp_mem(void)
-> +{
-> +	const u64 block_size = memory_block_size_bytes();
-
-Instead of "u64" maybe "unsigned long" like memory_block_size_bytes() 
-returns?
-
-> +	const u64 max_sclp_mems = roundup(sclp.rnmax * sclp.rzm, block_size) / block_size;
-
-Instead of u64 maybe "unsigned int" like the ids you store per sclp_mem?
-
-> +	struct sclp_mem *sclp_mems;
-> +	struct sclp_mem_arg arg;
-> +	struct kset *kset;
-> +	int rc;
-> +
-> +	/* Allocate memory for all blocks ahead of time. */
-> +	sclp_mems = kcalloc(max_sclp_mems, sizeof(struct sclp_mem), GFP_KERNEL);
-> +	if (!sclp_mems)
-> +		return -ENOMEM;
-> +
-> +	kset = kset_create_and_add("memory", NULL, firmware_kobj);
-> +	if (!kset)
-> +		return -ENOMEM;
-
-I guess we don't care about freeing sclp_mems in that case? Likely it 
-should never ever happen either way.
 
 -- 
 Cheers
