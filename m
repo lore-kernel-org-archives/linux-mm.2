@@ -4,98 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9552CCCD184
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 19:02:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B59D4CCD184
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 19:03:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D95868E004C; Thu,  9 Oct 2025 15:02:14 -0400 (EDT)
+	id EAA638E005A; Thu,  9 Oct 2025 15:03:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D46298E0002; Thu,  9 Oct 2025 15:02:14 -0400 (EDT)
+	id E81BC8E0002; Thu,  9 Oct 2025 15:03:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5BB18E004C; Thu,  9 Oct 2025 15:02:14 -0400 (EDT)
+	id D703B8E005A; Thu,  9 Oct 2025 15:03:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B02DB8E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 15:02:14 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5F47A140B0B
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 19:02:14 +0000 (UTC)
-X-FDA: 83979496188.21.CFB9CA9
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 57988120009
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 19:02:12 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iKpFldBH;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id C67EE8E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 15:03:40 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9306CBCCB6
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 19:03:40 +0000 (UTC)
+X-FDA: 83979499800.18.9CCC0EB
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id F2A2D4000D
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 19:03:37 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LzY8HEM6;
+	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760036532;
+	s=arc-20220608; t=1760036618;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tEZY6b9Il/bPIuUgXhNINbaf1qEh3uV81jyRdL6VxBg=;
-	b=SvM8RignKwOqow8ClOriMbhtT19D8SKCU2jkvOCh8N0xnNUK9D8gXX9EDF+a3K9ZWwbXN6
-	8+8vAgrsUju6U0SAbrhKYbLA9h1EiftdRixgtaE24GKGBwVQ1+qr9bQ2ulIrIt91NuHBqc
-	QKdOoNF4cZ+TVQwKMXQVSSZdtRTQGnk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760036532; a=rsa-sha256;
-	cv=none;
-	b=qDwood2aIocIacTMaPJ8hRN44xPCVvbfWaczocZnHZxjbW0Tu27FUyqRzF2U5EVUyvSKmb
-	x4b01C2XRfieviN0vLHoB7nO61pDvd0U92EkwLra0d2jPVWxIdrBtLSI3SbocmenkWeH8m
-	HHhSR02sWgR/DLeexw05MnhjWjq3JqI=
+	bh=v/ssIfgtDfZ/vZQpJbYy04kO6t4txkot0+r1aHEyw0s=;
+	b=eYMKts4eTE5BY5dkQA2YENWUKONlU308XVWNR9Tq7A0uHLtM5DQawqX0fKfv1YMFVVcH6F
+	yFpyZ7KgOzs2H4xK4GmimHUXimC8rZa9TJ2PW35RyAoHdLgMtKsALk531VK7x1KSHyIlxp
+	75G7IxUIJOBzBu8YkcD9Bbb4HvzDWEA=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iKpFldBH;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760036528;
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LzY8HEM6;
+	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760036618; a=rsa-sha256;
+	cv=none;
+	b=t2TLwPKCufhzx2CERTtK6X7UsKYv+g3ch5m5Zc9llsYCegmNqPWWIuwMMBwdxVP97gpGha
+	74YCl9XZlT+IvvBMl1cNbTR8ycJ/rnVQU9CUrGhSZTiO+JvCOAwcYSOHhEIffSIg8bbAts
+	mmo83NVsCHNVZ8uSut5H+c3TPDH1YIk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760036617;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tEZY6b9Il/bPIuUgXhNINbaf1qEh3uV81jyRdL6VxBg=;
-	b=iKpFldBHyIIoqxe6JgGEDlkn6AJo8vprgXkgchWpTr+HDYbXIVn0Wo0bfG6Qj9Kx1si1qA
-	dt5eDxW521POW0bcUPeN/UWnyHgbK7GLEwG1g3EPenu0oHvml/5Jc5SUsum/acZdSTrAH4
-	pezT2MwlyiGTAisl7TC1BJF2YoEM34I=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Daniel Sedlak <daniel.sedlak@cdn77.com>,  "David S. Miller"
- <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
- Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  Simon
- Horman <horms@kernel.org>,  Jonathan Corbet <corbet@lwn.net>,  Neal
- Cardwell <ncardwell@google.com>,  Kuniyuki Iwashima <kuniyu@google.com>,
-  David Ahern <dsahern@kernel.org>,  Andrew Morton
- <akpm@linux-foundation.org>,  Yosry Ahmed <yosry.ahmed@linux.dev>,
-  linux-mm@kvack.org,  netdev@vger.kernel.org,  Johannes Weiner
- <hannes@cmpxchg.org>,  Michal Hocko <mhocko@kernel.org>,  Muchun Song
- <muchun.song@linux.dev>,  cgroups@vger.kernel.org,  Tejun Heo
- <tj@kernel.org>,  Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>,
-  Matyas Hurtik
- <matyas.hurtik@cdn77.com>
-Subject: Re: [PATCH v5] memcg: expose socket memory pressure in a cgroup
-In-Reply-To: <qdblzbalf3xqohvw2az3iogevzvgn3c3k64nsmyv2hsxyhw7r4@oo7yrgsume2h>
-	(Shakeel Butt's message of "Thu, 9 Oct 2025 11:32:56 -0700")
-References: <20251007125056.115379-1-daniel.sedlak@cdn77.com>
-	<87qzvdqkyh.fsf@linux.dev>
-	<13b5aeb6-ee0a-4b5b-a33a-e1d1d6f7f60e@cdn77.com>
-	<87o6qgnl9w.fsf@linux.dev>
-	<tr7hsmxqqwpwconofyr2a6czorimltte5zp34sp6tasept3t4j@ij7acnr6dpjp>
-	<87a5205544.fsf@linux.dev>
-	<qdblzbalf3xqohvw2az3iogevzvgn3c3k64nsmyv2hsxyhw7r4@oo7yrgsume2h>
-Date: Thu, 09 Oct 2025 12:02:00 -0700
-Message-ID: <875xcn526v.fsf@linux.dev>
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=v/ssIfgtDfZ/vZQpJbYy04kO6t4txkot0+r1aHEyw0s=;
+	b=LzY8HEM657UM8F5BhNcwW9BNcNr/dhsiuPlzXajZEngN4NyYsYGu61502QupZMvM+8u393
+	1wUjxM8dmPJX8lECSusVvCs34IGiCF63FQSmflhiGv4Kcl24ZJ7GnUPW6sTKWHXL3fzu/K
+	5RuMQb7qXILBs7PIsnDl2Fp/3NnDeAk=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-151-tBZufaDHN32p-J0RxUSoFw-1; Thu, 09 Oct 2025 15:03:36 -0400
+X-MC-Unique: tBZufaDHN32p-J0RxUSoFw-1
+X-Mimecast-MFC-AGG-ID: tBZufaDHN32p-J0RxUSoFw_1760036615
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-46e35baddc1so12490085e9.2
+        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 12:03:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760036615; x=1760641415;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=v/ssIfgtDfZ/vZQpJbYy04kO6t4txkot0+r1aHEyw0s=;
+        b=HmHPg11IUtZq1EkO8KrAYe8fhAn+cTtytxOowY3G2Fy+S5eHWd5KgT/Ju9t496jZMg
+         OVulBZSoZqQUDSHGq7yeEDiCcN/CKgVNtddiwo8QXLYBXwObm/BAJPL0ci67CyY0DoFb
+         5BZWtDqHEiF3BTC4klRlMrKCSIhmhyaQXQ+yCVq7A9m5zzn8g8JpEhietebjjEUD2BEO
+         gi2/D+eYrsnrKjpkfihH3KsLiDFiTHR51b1GrPoP+Xqig4H4Uhp/yJafFUksssLSmXjX
+         OI4Ws6PM5Xq2Ki1/xOA1frUU4CZjR7mPpTw1Q4DqC2wtsSAbKqPWx2vTC9mkVOKTE8Pb
+         aMPg==
+X-Forwarded-Encrypted: i=1; AJvYcCUNMC5tvGmS6RBf44+uyOpwXDjBVlFX0Q+WfSBRgjdOU0ISVDBYe3Rj73cZNbABDfFIv069Cq3WRg==@kvack.org
+X-Gm-Message-State: AOJu0Yx3xl4H2OKExlrMT0caN4nem6BO3fWckegJJjy21MVwOJX1nt7d
+	FpSjqdDsfAuE5eeyco2Hxl9s45b9qC36kcsaLuMkIMfFPDK1DbpiZkc8hA0jYVyHnQWYQXk0RRq
+	nhrqEBBeKSqo05btAO+ENHR9cuCgRMPPHBdTmvTVo7rbL688jqG/NI4xLVwbe
+X-Gm-Gg: ASbGncsRe0rQbJHyypVgK6G1Zn4bSr4FUOz43wOw1BsG2Ew1DFsqGr28o0kAnNEXuzY
+	mr9Kn/YI9hmpKGr0TozDcxwvMthq4M7nlfRcE4p54i+zIussMjjucLtST1LowirRNDevpLgt0Gs
+	PxSKMd26B3zkukUg1KXD1Dm/oZLj2IjoDp46RK77T2iNTZSoLtBXzJ/CXsADMEiKL6EQPseEH45
+	y68XPC6IUfxgr6oshK/xLlmONrWoJAGkB4j1sgQunmtYgw98ldgWpYRH0DxAOxqyh5EKA08Jhfe
+	YFTHS9g+FjsGc8wNR1jpywiUvevOzxvNN5TzfLGDcpGsrpjHe1/HSHAkxjNcaFaL6ovBiGSQz4G
+	85oGWRdpP
+X-Received: by 2002:a05:600c:6287:b0:46f:b42e:edcd with SMTP id 5b1f17b1804b1-46fb42eee07mr11006335e9.38.1760036614783;
+        Thu, 09 Oct 2025 12:03:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFKJxh6vFQ36gJauYPkq/a3ScSVmIoEQBpQlpefqbtkRe6rn2htikCoXY1hIWlxMFsl+Gqqiw==
+X-Received: by 2002:a05:600c:6287:b0:46f:b42e:edcd with SMTP id 5b1f17b1804b1-46fb42eee07mr11006155e9.38.1760036614381;
+        Thu, 09 Oct 2025 12:03:34 -0700 (PDT)
+Received: from [192.168.3.141] (tmo-083-189.customers.d1-online.com. [80.187.83.189])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce5cfe4esm352054f8f.26.2025.10.09.12.03.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Oct 2025 12:03:33 -0700 (PDT)
+Message-ID: <da27231d-e8dc-41f1-b5bd-e32b5eed52f3@redhat.com>
+Date: Thu, 9 Oct 2025 21:03:31 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/4] mm/memory_hotplug: Remove
+ MEM_PREPARE_ONLINE/MEM_FINISH_OFFLINE notifiers
+To: Sumanth Korikkar <sumanthk@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>
+References: <20251009131839.3739108-1-sumanthk@linux.ibm.com>
+ <20251009131839.3739108-5-sumanthk@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20251009131839.3739108-5-sumanthk@linux.ibm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: UFiqLEcj2UWbXMAImL2M3XdDuAy991ic65bZjv5IyQw_1760036615
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: F2A2D4000D
+X-Stat-Signature: 3a1suhi7ab3uhr1pawg3zmnhs6ezpj7b
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 57988120009
-X-Rspamd-Server: rspam02
-X-Stat-Signature: ut8f9hfnj38zfa36nrn4wt1gq5ms87yr
-X-HE-Tag: 1760036532-896587
-X-HE-Meta: U2FsdGVkX18+6Tq/Fowg5R+bDgkYcip2r+0W3bpNs6mcfD1DpHY5iJJ3KUubVpmBab1D1fiyVJ0wqtF32vJVTlBIkvR0bKORY8VXI4XdQZ6zbyfN1F9ZcU2sJF/mKZx2DydRYMMSFgglNcQQLsaT04Nx/OlrKr9AxOFgPUMU7LE5LsCpl1LkDotZTMfxo5YCx/ovm9r7YmfkrDxmcfl9Lh2ypNeVMkGXduhZztE9rKwsPJ5pGgpd37u7qkn8fhNDZCxNojTLKBaWJQs4BHy5etx8nV9j9k+Bje4fODwDAgMVBeRDduTDLU/DE4PM6PpWePnbjeIE1Mz3N7OqmkzNRo6ZMwc0KD0r6R9jFUL3jwDNBLGW4v4nXDEAXTHluZ5Ab0a+tK1BzPNjIVs6iWHiF3DmwGiqdUEpMT8A1nIThr/Ev+81s1EnRTs2kLk3XqQdjA/wLQkCErbdVNaPTUUJNenvuWojO1k061xbonAVcMY+itWdK451JF6y7otCKJkRAB2NjONp2IAyAv5OUdS6V2jjVj0goAFOSOIhFyp7b+NsYBhW5J7ZW65KJYZR75CtEvMmOANZZVxrkcY88X8XqgRncMc9CbNoU6QdLVe2arURIWD9dS9/2jwTU95Y6qebGnQ9ZILdk80rmagz8oX7nXHcTGGMTl+wPYKO7LJne/JfqxE4Jfp/mo94PLd+N4tBcto1xlChZ8JfPjUP4VPGy32ixWGNGBHUnoV6w2JPuHcCthtt3OWTWYuI4i4hISbtg7wJM2gefmWzcOva+dpu9DVPgMXS72p+M/+8EhMtmDQxreCXTY9/V0ShkixSZ5sxaXdW1z2zV1GcFo3Upi3DcFwKpW+p8BQKTj4ee9PT8pAUR03wE5W/qIaI3Xa0Q7FPj0glZshV2ZT42pbjYVTI2bIs72Feg2IcFORlzl+BdhV9UJoLl2kVgUsAhR7WHLZf8Jv0nPhFYoIl3Iu2YqL
- KMK5naau
- UwMQBVze067+SvTnV3ZmPSwgWVGeZJ1OPymgX3ZqwzCYOgjiPCaXr+MoXknv4bzTXS9CCbWcH89gRrcGD03jYDQkrwPrOjeGwPHTuUqf9n2mmsnhhZ2ojEbJ+z9y71eQrYbBlBmKSvv8J3mtDtcPMYzJBjIWJ9OYL/HOEo+QTwn7ECG1EnnQmB3m/9hTomsf2eSBKtiMjcJzGniuoRfppUpqW2khnqcGKRME6PsXAK9jvudloTQV/dsP1zxaKwNJZRg8PxDVpDOjOFBAC6L79kTHTiQ==
+X-HE-Tag: 1760036617-391591
+X-HE-Meta: U2FsdGVkX19eBU6yCPesAzIo7onvgcHMs/vIrh9qo7kumzpnXCkhHRgz07Rc/k25jDcEnJFZtwxyM02dDOmrtpkUv+W05VbHs83um88J94tMVKhgGwFnnBwaRZVmfC0Z3epOUQ0CseAAe0idCvMifnS6AgShZH7b2eyyZlwWJci/bL7mJH6QOUXNvDWWfFLFUAZAh1n3sN1Z3qwm2SnVW1yWBwupE+dIhAIqA8/cnOTRdnfiwiRzjdaU9GhEUdllvK+/bPl2UH1NaIw8sn+KJU2MQLfNRQThJkaZfawoB6s4CMlm94EVv4GEAd7/Uodv5Vs0qUajv6Twv2d7Cgf5NwIIxDgpTaReGWiwfYMDikl7qqcV4NYHs7jxvrYa6715Veu2UYjh8XqLvJhYBO2kVVmSE0a8CMczcfgplQ/C6AsMJj2+iNBXTfBnetDfIhqH0eeBe589A0VXJMBkPQ/+gh5FQylp3nR7gPQIuytx0zqh5rrx3oAAujiR3tUKQxEsbjLUQZlEQKNnWdUt6DQsDI8BzzsxeQJgB5XRyLvsxLk6WIrXHXz/eUNEnhiuLbm3cp7GoJbuEGj2kgkFNdu5h2v+p2OMqsjCfNyX2kxjmI1FNOVj4wZf31eiq4xzfdPpHMMRWx0s7XQKpXuWFmDOuSJ9cZdkKp4xxZ+Lue4Q8dGemDOrV2hKONqmbCp7wMPjKeZIxcJYj6KrtMnAjZfegICnUEhdEy8bG0fGf+VuX2N5d9oPWQhQ2TE2xG6VtXZXlnfxBSfwGzXkCXhXKRMlSbFbb4rxq9h7A8Xhy+rmURiBPEaiG3ANzK9Y39JJ/k0ztBscdvjI8TqHT6faJ0Tha2AHVA5v3LEzp58zZyRIyGrEFnPMLYf5jnFvlOKMde/AI6Kq+LI9sFWk1tP5wAPWpPYjePSo7m+5lgh+LdSXvPhgUIGtu2Dy1pGOqU8ghhTvE6OMCFd2oisU/gCMgc6
+ psqzY3bV
+ ciec3SkBwxdOIUw+NdgqcYEjHF6PeP95b2h2MtwhsAe8MPJJDDyGayUXYBo+lqUy3Y8XFo2o2v2m5lFgeYdyQDKyKI6ZL2uqylnAI9qf1q/V1W0p8ujJwWBq/0Zh1giP1DLqZSzK82nThE0kx8Oz2eP+wy8c4qbqlcuen+PNwMPydWTNYvwpQWqDUSulHZorTb9/adrolD66ynWAX10qt4swYk/hSK7N1x8z1CWolv+ADIl1wNDaExwGRKuriAZQMjNKIi/owf0GFNFerfMg8OsMwKpQCVjg6izqhUNfpj6QowTOpkB3hTVjgWXtyjem5Zdme+AgFt69TeUQRwovTENKiK57CSPmNqM8pxxbuFXJiycn/Znq04ZfxgCuuG6NlQlwiOFCJXCHKFxEJcvZ6ssy1EruqdK04HPdUugqAOTaTasUbDIhWGwbPFIpAxsbdzDZNHb+VhSFYgefosoW3TmOxGhU4ei5QlED8W/NPzRMo4wod5kuHUmwdogtU6IGmOZ1ceu0ktXWaUsDX+b//amQE5rul1IR1QcN9FjPjEXRmkwNe9JR/Kw0pOQDDx5vGfxkJxdD+mr7oe3WnWa0k9OaFrpWEQ6pHq+OcrGBGl13cqLqqAKmw5SWfa3NRYPx+8LDvFXOQmpH+hMmaDXwhAvgkVg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,92 +182,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Shakeel Butt <shakeel.butt@linux.dev> writes:
+On 09.10.25 15:18, Sumanth Korikkar wrote:
+> MEM_PREPARE_ONLINE/MEM_FINISH_OFFLINE memory notifiers were introduced
+> to prepare the transition of memory to and from a physically accessible
+> state. This enhancement was crucial for implementing the "memmap on memory"
+> feature for s390.
+> 
+> With introduction of dynamic (de)configuration of hotpluggable memory,
+> memory can be brought to accessible state before add_memory(). Memory
+> can be brought to inaccessible state before remove_memory(). Hence,
+> there is no need of MEM_PREPARE_ONLINE/MEM_FINISH_OFFLINE memory
+> notifiers anymore.
+> 
+> This basically reverts commit
+> c5f1e2d18909 ("mm/memory_hotplug: introduce MEM_PREPARE_ONLINE/MEM_FINISH_OFFLINE notifiers")
+> Additionally, apply minor adjustments to the function parameters of
+> move_pfn_range_to_zone() and mhp_supports_memmap_on_memory() to ensure
+> compatibility with the latest branch.
+> 
+> Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+> ---
 
-> On Thu, Oct 09, 2025 at 10:58:51AM -0700, Roman Gushchin wrote:
->> Shakeel Butt <shakeel.butt@linux.dev> writes:
->> 
->> > On Thu, Oct 09, 2025 at 08:32:27AM -0700, Roman Gushchin wrote:
->> >> Daniel Sedlak <daniel.sedlak@cdn77.com> writes:
->> >> 
->> >> > Hi Roman,
->> >> >
->> >> > On 10/8/25 8:58 PM, Roman Gushchin wrote:
->> >> >>> This patch exposes a new file for each cgroup in sysfs which is a
->> >> >>> read-only single value file showing how many microseconds this cgroup
->> >> >>> contributed to throttling the throughput of network sockets. The file is
->> >> >>> accessible in the following path.
->> >> >>>
->> >> >>>    /sys/fs/cgroup/**/<cgroup name>/memory.net.throttled_usec
->> >> >> Hi Daniel!
->> >> >> How this value is going to be used? In other words, do you need an
->> >> >> exact number or something like memory.events::net_throttled would be
->> >> >> enough for your case?
->> >> >
->> >> > Just incrementing a counter each time the vmpressure() happens IMO
->> >> > provides bad semantics of what is actually happening, because it can
->> >> > hide important details, mainly the _time_ for how long the network
->> >> > traffic was slowed down.
->> >> >
->> >> > For example, when memory.events::net_throttled=1000, it can mean that
->> >> > the network was slowed down for 1 second or 1000 seconds or something
->> >> > between, and the memory.net.throttled_usec proposed by this patch
->> >> > disambiguates it.
->> >> >
->> >> > In addition, v1/v2 of this series started that way, then from v3 we
->> >> > rewrote it to calculate the duration instead, which proved to be
->> >> > better information for debugging, as it is easier to understand
->> >> > implications.
->> >> 
->> >> But how are you planning to use this information? Is this just
->> >> "networking is under pressure for non-trivial amount of time ->
->> >> raise the memcg limit" or something more complicated?
->> >> 
->> >> I am bit concerned about making this metric the part of cgroup API
->> >> simple because it's too implementation-defined and in my opinion
->> >> lack the fundamental meaning.
->> >> 
->> >> Vmpressure is calculated based on scanned/reclaimed ratio (which is
->> >> also not always the best proxy for the memory pressure level), then
->> >> if it reaches some level we basically throttle networking for 1s.
->> >> So it's all very arbitrary.
->> >> 
->> >> I totally get it from the debugging perspective, but not sure about
->> >> usefulness of it as a permanent metric. This is why I'm asking if there
->> >> are lighter alternatives, e.g. memory.events or maybe even tracepoints.
->> >> 
->> >
->> > I also have a very similar opinion that if we expose the current
->> > implementation detail through a stable interface, we might get stuck
->> > with this implementation and I want to change this in future.
->> >
->> > Coming back to what information should we expose that will be helpful
->> > for Daniel & Matyas and will be beneficial in general. After giving some
->> > thought, I think the time "network was slowed down" or more specifically
->> > time window when mem_cgroup_sk_under_memory_pressure() returns true
->> > might not be that useful without the actual network activity. Basically
->> > if no one is calling mem_cgroup_sk_under_memory_pressure() and doing
->> > some actions, the time window is not that useful.
->> >
->> > How about we track the actions taken by the callers of
->> > mem_cgroup_sk_under_memory_pressure()? Basically if network stack
->> > reduces the buffer size or whatever the other actions it may take when
->> > mem_cgroup_sk_under_memory_pressure() returns, tracking those actions
->> > is what I think is needed here, at least for the debugging use-case.
->> >
->> > WDYT?
->> 
->> I feel like if it's mostly intended for debugging purposes,
->> a combination of a trace point and bpftrace can work pretty well,
->> so there is no need to create a new sysfs interface.
->> 
->
-> Definitely not a new interface but I think having such information in
-> memory.events or memory.stat would be more convenient. Basically the
-> number of times the sockets in this memcg have to be clamped due to
-> memory pressure would be useful in general.
+Acked-by: David Hildenbrand <david@redhat.com>
 
-Yeah, if we're going to add something, memory.events looks like the best
-option, also because it allows to poll and get notified when the event
-occurs.
+-- 
+Cheers
+
+David / dhildenb
+
 
