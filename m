@@ -4,94 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1B13CCA470
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 04:51:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 259F4CCA471
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 05:20:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 241248E004E; Thu,  9 Oct 2025 00:51:08 -0400 (EDT)
+	id 4821A8E0062; Thu,  9 Oct 2025 01:20:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F1DB8E0002; Thu,  9 Oct 2025 00:51:08 -0400 (EDT)
+	id 431678E0002; Thu,  9 Oct 2025 01:20:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12EFF8E004E; Thu,  9 Oct 2025 00:51:08 -0400 (EDT)
+	id 2F9578E0062; Thu,  9 Oct 2025 01:20:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F32208E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 00:51:07 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 98A681409DB
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 04:51:07 +0000 (UTC)
-X-FDA: 83977351374.24.B8051CC
-Received: from forward500a.mail.yandex.net (forward500a.mail.yandex.net [178.154.239.80])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5D6C320007
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 04:51:05 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=onurozkan.dev header.s=mail header.b="U5E/xReg";
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of work@onurozkan.dev designates 178.154.239.80 as permitted sender) smtp.mailfrom=work@onurozkan.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 18E1D8E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 01:20:42 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AF708160A01
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 05:20:41 +0000 (UTC)
+X-FDA: 83977425882.25.EB8A746
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0CE321A0007
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 05:20:39 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="EO/xg1I5";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf19.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759985466;
+	s=arc-20220608; t=1759987240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dd0xy8YVEGEJYa0deBqYb5TfXlH/zF7B3uABe0y3qUI=;
-	b=gRuA3Amw3cBDXYNZnOhLifwdbTOIhpZsPMDUgiavvK1PLhrPt9ncvWKRpOlm2+BLvt8dcJ
-	9hyAMjB/Pi3EPs2XeNzqsmixAz9OWeOj541VoZQ1QbCmApJ1VOOup8auQSzLbZkhBQTJyf
-	Ua70IybuKbRpce6w0UNXcM//TVrCKlo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759985466; a=rsa-sha256;
-	cv=none;
-	b=i2BF8sdnzXEhD4PmRnGJBUuQVAZJd0isLRaZTnHwTEUBDKBlegDAZkvor7ES2AxlbURxIa
-	9sCrybdf8hHQ/6Ssp6KUfUL3gVsyYk5JjwWKVbF7lw1WHgl17PxnGO2PJ4VEiz9mUtcG2p
-	w+Nn06sYp9VrjQcT3vYDb0IXjJhaKQY=
+	bh=De3VqLpqj2CiqrZMFK1q7cE9ACD3DwJWFkVMFXD3cds=;
+	b=f8WXmvHTnDY/Ojdzf3xAwY9EHiMaDhoclqIB6B6wj0mZP1c+oWTbC98HY53rNxz0ew9P1a
+	IOZ950Uod/Bo62yhs6SCBgcIWKt64iR0+I+Hp4PyrYkc0PzkUDq63OpTgBPp0xQUMQ5oiO
+	sTK+HCjOQ96Nu9SDlNMs9zDGINyu0h4=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=onurozkan.dev header.s=mail header.b="U5E/xReg";
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of work@onurozkan.dev designates 178.154.239.80 as permitted sender) smtp.mailfrom=work@onurozkan.dev
-Received: from mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:1311:0:640:df31:0])
-	by forward500a.mail.yandex.net (Yandex) with ESMTPS id 6B5DA81AA4;
-	Thu, 09 Oct 2025 07:51:02 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id uoB8DgVLPGk0-JyaASLja;
-	Thu, 09 Oct 2025 07:51:01 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1759985461;
-	bh=dd0xy8YVEGEJYa0deBqYb5TfXlH/zF7B3uABe0y3qUI=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=U5E/xRegcJD26gARSedDkHL71OVqDPD3OboEiPavvJuUUo1HWMap3/vcMEm17JiZ9
-	 OUtCaS3TcHjuLC+pz6wc4no/Nwz/qbZ3rqnVSaWPpYydq2xxssH0ML1fxG3xsYD20N
-	 26/6EAKblaYEFC8qnx0nFndDgLvGixd99of6T3cw=
-Date: Thu, 9 Oct 2025 07:50:54 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- dakr@kernel.org, linux-kernel@vger.kernel.org, acourbot@nvidia.com,
- airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, tzimmermann@suse.de, corbet@lwn.net, lyude@redhat.com,
- linux-doc@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 2/4] rust: xarray: abstract `xa_alloc`
-Message-ID: <20251009075054.7ed640c0@nimda.home>
-In-Reply-To: <CAJ-ks9nMziN2LU=T=XGhV8xau6UfGXOMZ49+2Lrt8KGbL7Qngg@mail.gmail.com>
-References: <20251008124619.3160-1-work@onurozkan.dev>
-	<20251008124619.3160-3-work@onurozkan.dev>
-	<CAJ-ks9mtfVmP+SwZvBVuQSwViiqo2ZngSGQuU5Y7A-Q_JSwjKQ@mail.gmail.com>
-	<20251008225002.011378ed@nimda.home>
-	<CAJ-ks9nMziN2LU=T=XGhV8xau6UfGXOMZ49+2Lrt8KGbL7Qngg@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
+	imf19.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="EO/xg1I5";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf19.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759987240; a=rsa-sha256;
+	cv=none;
+	b=5DVpvS/rU//g71SMaSgr1wVdDR8BAq7yNtlAvr//fbOdMiv1ZPzWgDWsJTi9N0XsGi5znF
+	vYeGxareZ+jHu8sS63nRZNgoOe5Pc9WMninfWO56Ir4tHx30qeLP2xc8vyLk6KslpBn+FD
+	9W0/OBSqxByV65snicMeZLO7lVOYq3c=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 97913621A4;
+	Thu,  9 Oct 2025 05:20:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EBDDC4CEE7;
+	Thu,  9 Oct 2025 05:20:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1759987238;
+	bh=OgkTj9432fZmlNS0UH+uhZjP/yq09nzN3kBXCzSELF8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EO/xg1I5JxJ6Gng6yPKjQlyZ9RssCFhDlylg693XLeMCae87nGqGQdAPxdnk8nFqp
+	 tGbZ2uEepHWq8ACteVrpxj3i53VzsVaJrIn5BN4RwNbKOGlLS4fHBgH090sMdPb0K2
+	 5VclVGHelHJoTEyjNpjKhoyN0Eu+X/Xlw7KJlSIQ=
+Date: Thu, 9 Oct 2025 07:20:35 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "yanjun.zhu" <yanjun.zhu@linux.dev>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, pratyush@kernel.org,
+	jasonmiu@google.com, graf@amazon.com, changyuanl@google.com,
+	rppt@kernel.org, dmatlack@google.com, rientjes@google.com,
+	corbet@lwn.net, rdunlap@infradead.org,
+	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com,
+	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org,
+	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr,
+	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com,
+	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com,
+	vincent.guittot@linaro.org, hannes@cmpxchg.org,
+	dan.j.williams@intel.com, david@redhat.com,
+	joel.granados@kernel.org, rostedt@goodmis.org,
+	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
+	linux@weissschuh.net, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-mm@kvack.org, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
+	aleksander.lobakin@intel.com, ira.weiny@intel.com,
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
+	brauner@kernel.org, linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
+	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
+	leonro@nvidia.com, witu@nvidia.com
+Subject: Re: [PATCH v3 19/30] liveupdate: luo_sysfs: add sysfs state
+ monitoring
+Message-ID: <2025100953-plug-acting-9530@gregkh>
+References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
+ <20250807014442.3829950-20-pasha.tatashin@soleen.com>
+ <a27f9f8f-dc03-441b-8aa7-7daeff6c82ae@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a27f9f8f-dc03-441b-8aa7-7daeff6c82ae@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5D6C320007
-X-Rspamd-Server: rspam02
-X-Stat-Signature: gjjxb6nz67afo5w9f68pau36guncaps7
-X-HE-Tag: 1759985465-162526
-X-HE-Meta: U2FsdGVkX18tsiZ8azkTi1cEFCgWAOnzDdhoRjEPeN+gdTp40uXFIedfm7+DXazP0aYAJ+P8Hugk8aB8bEodLwIsSDXGyB9ZtXyWr+ib2ebn4FcNHwvx1PD0s8/Lf/kroFRAsFCcw/fdbNMGx4tnXpYpqs9TVrLCzEPEm8tQ1vweu1djds87BKie6IKQlkMpSQdX44/E2BPRUZVb/TlwagLPhzUn1COs9+669c9pnfKfn8ijuUvOm79ji8VYGDbhI9a5pZrTBZlUdoQNgp9zI12O/gJY8+kVNVb6wL8g020j35VBCu8VqijgKaMINPa3sgwKlCSvHex19ZygNKkJLJ8084WxLl339ixuwQE3U7i19Uno2C+OzH87FexbzN1AJehWdQAA4yayc3cSvVH0lBU8d1tfURF++nf0Zj1hm4PA1dvWAPlVYRyMgSVroPGraN1/HfST3t/1QkPKZQhii0/6yfR3ue3B3dI7ts4uU8vbhEYj77vtM75tJcgJjT37EtRWLQSc/hwbh8oZlH+LKDxPMNx+0mgPEJAYL+XT6f3OTU9Kb5oMTazTzmACb3T9Mbk2w4b02PuErZyryCKrZYGFL0J63QvltUFAX6RqCy/uOCZOrvV7x6YCPjw1JqCkHAgF2MeSw4OPCAmm+L2JkQHRRG6nrCbJ1a3QnpLQOKwAUL69kfUNYE7z2fJVgt2WUnKUS5vP0NT+XlENM5yMkeg5vfHlg8+GyfYU1Lld2gx2S4RBZRqaQ/Sqi558dWDcgbkdGgm3P6oO/UeMnzUVLLHgE93vgN5LEFxsrfFTZoferCPw5Mw+6y/Z9urBWmhvb5+8iCVHpVSLTwNNlc47FOwC15onl5pWRDnx96ceqGr9c2KbB/e69ggDR1ikNcQNbfS1q/RSL951p3tSI7cen5A3VtrY1Eo2NjYtdS7n744wbWQRyvmjA7NmUCJr2vnJL+oGG7VonqQGrqfEizm
- Vvkxefu/
- IL2IodM9C42d8tFRcTSVTuFqD9ii0GKDnC6CHIZiIAfZ921I3lOqITf9iHjnfJmoM4MgiM0OWMarDyGnNrddohdmsV+QX7wg0n7MAhm7wNGTzd34FunYkkYYBbZ6Yx1ibocKOFhhyw6XlNc6bfQPYx5TWBQYDGtWrXbLMp5KhqgWYRTqNul3EoKVPVoCiHNO7A1XQIg8hlXVXF7a/VLM+95U8nqOZRN7iJ5KsQrRkKo3KstMN0uVPbY3o35n3xxqgtvMxQ0nS13bJy5xCePChALF83p4bpkKbqtDTPOyf/Anc28PM2dmhSvFJHI+Xd9LoY+6ig+BYd4UIp3OQIQfqew7XOutcR0CK9XCdTAj7A8QmFA3rJmf3+yDoS2Mf+7ljDTfm/PjAwtiKfmdFAazr7BEdWGz/0k/txBP9hVLmAJP8oQR/F3jKhyIQ9/JyaO9tcidAsBOFRtD2SpWiA8Ul5/gx9smyYyI2ISTm6/TMWfKykGcG9YMiI6zioQ==
+X-Rspamd-Queue-Id: 0CE321A0007
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 17wrjzy3simyxmbuu49337xi1gz799mh
+X-HE-Tag: 1759987239-744386
+X-HE-Meta: U2FsdGVkX19XkTM1CeDwKrOYLsbEtJAziuyl+CHl67kZ3Jrr1jKKMXIPkjO2S5YePLH/Rm5kbc6X7Wxf3c59MHMHHixbW7n8BiAHDDnfGTAzb4P+yGMmi39bs5jpOUZ1QeN+aCgU2Xo/RK2XhGiM//oMfSfe8lL8EYf4qdk4zib+s76xIODa8Qq2g6gPp9pcfkJODfrBPd5w+AGkJ8Cah2UMzFdZmqLiYy0sQE2+DlPt0XUvR9/CL1a+97eSyxPtOpkI99zHjwbDZeU+GI3oPrJ7rvA+mx+fWPGHrvWkUQ3K7VPlzJydUcs7z/VO+HqGSL3425NyfaHO5k5pfrA/3EUW6jvFl56xuUOWdWW64tPYsqX7BfSktTVgZWwBpaX5FbUxtFMPnQ0kp7ThNB/A4q//op47usPvyA/EkZp/rTjXglxqHHV5/KXuhgvvMyv5fRAi9e99l/UOQbwd8nEzI2w0CYOYSbTXVU0Kf5VtlYdwmKu8+jgfIDZzrVRojiMX+9SNXcD5IzKOJSOw41h1wc4QY2fbRvfP5lUV8HRZLBuysxpzrMLf5g6phmwP0W4e5NI6dNzhUMzTtjkkdz8Em9PflUp4HodNDBHUcEGR5pqpPmbXeATWp8WWXCVMzbSMTSWWbRl04SqHrTmWBmb3j6yrmppADKvxyUZu50oxON870t/lph7LMq2eU70fd51wC9jv33amfJj4rz1Yud5EQ31feIjM6XG7IGyjbUuIDVRZF8WAejbeejyEwn+J94cPQhZ1+758a+qjJ1vGyBF1CQIDFNXl+6Zi7uht7ahChGwUy36513tN1OpOoPaetaO1HGB0kcm1BUhRyUm2at8HQYKrWFL5e2/tWAz/uYSG5PnSVcXYIRoG8bYoChEFhyM4GGQDllK1HSEUCVVoI+uNB26amBq1vi1Mq2A+fcTFp7ONtBGYRv/SP1LICnI7/Im/cltaYjJ7wFU5QYEpiW2
+ D0OeYzop
+ tZMc/ae+SdeHBs1Ze+w/CYU8iCZNpqMP6oHp4vmFQMfu3Nr3boBUOiQBh0HA3cySI4tmR7cbJ7uxjIUkK06wN8pkQTSddiBZVJW9QYrGWOYVIZCfO5ShQKFX9/ML1JLhqW2oRvGMOCbt9sqgCOrOedvMEzTDc2xk1pyRLu6m3Dn1DwaPm9LB0TvooTpza2QDWSPVYDFUZJhBkEde/s4cv02w0pJyVBDHdktbKr32hUdBNpc1lWDCV346TAQ0oxkUTjkrRFmyxUG0cdKlB0SJPtoLFgB2IlubvkrGLnuzHZmZQNX8S9ASgb2QefAOWKwXabDx8L/yjF02RJC+/aPhLrICzKc8aiBSNBaoOrzZAfDl9i9wW3AiFfjO3mSklx/zbMsmx5spQbdRKx4Ikr7PLhEFun8zHGRkR+Kd6ixvwP8pYMA0TFmN0LYwYgQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,98 +117,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 8 Oct 2025 13:45:53 -0700
-Tamir Duberstein <tamird@gmail.com> wrote:
+On Wed, Oct 08, 2025 at 06:07:00PM -0700, yanjun.zhu wrote:
+> > +#define LUO_DIR_NAME	"liveupdate"
+> > +
+> > +void luo_sysfs_notify(void)
+> > +{
+> > +	if (luo_sysfs_initialized)
+> > +		sysfs_notify(kernel_kobj, LUO_DIR_NAME, "state");
+> > +}
+> > +
+> > +/* Show the current live update state */
+> > +static ssize_t state_show(struct kobject *kobj, struct kobj_attribute *attr,
+> > +			  char *buf)
+> > +{
+> > +	return sysfs_emit(buf, "%s\n", luo_current_state_str());
+> 
+> Because the window of kernel live update is short, it is difficult to
+> statistics how many times the kernel is live updated.
+> 
+> Is it possible to add a variable to statistics the times that the kernel is
+> live updated?
+> 
+> For example, define a global variable of type atomic_t or u64 in the core
+> module:
+> 
+> #include <linux/atomic.h>
+> 
+> static atomic_t klu_counter = ATOMIC_INIT(0);
+> 
+> 
+> Every time a live update completes successfully, increment the counter:
+> 
+> atomic_inc(&klu_counter);
+> 
+> Then exporting this value through /proc or /sys so that user space can check
+> it:
+> 
+> static ssize_t klu_counter_show(struct kobject *kobj, struct kobj_attribute
+> *attr, char *buf)
+> {
+>     return sprintf(buf, "%d\n", atomic_read(&klu_counter));
+> }
 
-> On Wed, Oct 8, 2025 at 12:50=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.d=
-ev> wrote:
-> >
-> > On Wed, 8 Oct 2025 09:59:12 -0700
-> > Tamir Duberstein <tamird@gmail.com> wrote:
-> >
-> > > On Wed, Oct 8, 2025 at 6:05=E2=80=AFAM Onur =C3=96zkan <work@onurozka=
-n.dev>
-> > > wrote:
-> > > >
-> > > > Implements `alloc` function to `XArray<T>` that wraps
-> > > > `xa_alloc` safely, which will be used to generate the
-> > > > auxiliary device IDs.
-> > > >
-> > > > Resolves a task from the nova/core task list under the "XArray
-> > > > bindings [XARR]" section in
-> > > > "Documentation/gpu/nova/core/todo.rst" file.
-> > > >
-> > > > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> > > > ---
-> > > >  rust/kernel/xarray.rs | 41
-> > > > ++++++++++++++++++++++++++++++++++++++++- 1 file changed, 40
-> > > > insertions(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-> > > > index 90e27cd5197e..0711ccf99fb4 100644
-> > > > --- a/rust/kernel/xarray.rs
-> > > > +++ b/rust/kernel/xarray.rs
-> > > > @@ -10,7 +10,7 @@
-> > > >      ffi::c_void,
-> > > >      types::{ForeignOwnable, NotThreadSafe, Opaque},
-> > > >  };
-> > > > -use core::{iter, marker::PhantomData, pin::Pin, ptr::NonNull};
-> > > > +use core::{iter, marker::PhantomData, ops::Range, pin::Pin,
-> > > > ptr::NonNull}; use pin_init::{pin_data, pin_init, pinned_drop,
-> > > > PinInit};
-> > > >
-> > > >  /// An array which efficiently maps sparse integer indices to
-> > > > owned objects. @@ -268,6 +268,45 @@ pub fn store(
-> > > >              Ok(unsafe { T::try_from_foreign(old) })
-> > > >          }
-> > > >      }
-> > > > +
-> > > > +    /// Allocates an empty slot within the given `limit` and
-> > > > stores `value` there.
-> > > > +    ///
-> > > > +    /// May drop the lock if needed to allocate memory, and
-> > > > then reacquire it afterwards.
-> > > > +    ///
-> > > > +    /// On success, returns the allocated index.
-> > >
-> > > Returning the index is not a very good abstraction. Would the
-> > > reservation API meet your needs?
-> > >
-> > > https://lore.kernel.org/all/20250713-xarray-insert-reserve-v2-3-b9396=
-45808a2@gmail.com/
-> > >
-> > > If yes, I would appreciate your tags there.
-> >
-> > It should be "allocated key", I misdocumented it. I don't have a
-> > use-case for this implementation, I am just trying to help on the
-> > nova task list:
-> >     https://docs.kernel.org/gpu/nova/core/todo.html#xarray-bindings-xarr
->=20
-> I think implementing things without understanding the use-case is a
-> good way to build the wrong thing.
->=20
+But the value can change right after you read it, so how do you "know"
+it is up to date?
 
-I was thinking I would get some review notes from people who actually
-need this if something wasn't right. Maybe Alexandre can clarify what
-the expected outcome was, since he created the task.
+What exactly do you want to do with this type of information?  What are
+you going to do with that information?
 
-Onur
+thanks,
 
-> > The task mentions "generate the auxiliary device IDs", which should
-> > be the returned key, right?
->=20
-> I dunno.
->=20
-> > There is also this reference [1] that shows that the returned key
-> > will be useful.
-> >
-> > [1]: https://lore.kernel.org/all/aOTyVzpJNDOaxxs6@google.com/
->=20
-> Sure, it's useful - the reservation API also exposes it. But it is not
-> a proper abstraction.
->=20
-> Cheers.
->=20
-> Tamir
-
+greg k-h
 
